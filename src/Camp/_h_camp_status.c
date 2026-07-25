@@ -2330,32 +2330,31 @@ static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
 void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                                 void* persona, s32 frame)
 {
-    CampVec2 drawPos;
-    s32 i;
-    s32 row;
-    s32 alpha;
+    f32 drawX;
+    f32 drawY;
+    u32 i;
+    u32 row;
+    s8 alpha;
+    s32 fade;
+    s32 rank;
     void* glyph;
+    CampVec2 bottomPos;
+    CampVec2 drawPos;
     char text[0x100];
-    f32 rowYPos[5];
-    s32 rankVals[5];
 
-
-    drawPos = position;
-    if (frame < 0) {
-        return;
-    }
+    if (frame >= 0) {
     if (frame < 5) {
-        /* Entry animation: slide in from right (retail offset 96-180) */
-        drawPos.x = position.x + 300.0f - (f32)((frame * 300) / 5);
+        drawX = position.x + 300.0f - (f32)((frame * 300) / 5);
         alpha = 0xff - (frame * 0xff) / 5;
     }
     else {
-        drawPos.x = position.x;
+        drawX = position.x;
         alpha = 0;
     }
-    drawPos.y = position.y;
+    drawY = position.y;
+    }
     if (frame >= 15) {
-        s32 fade = frame - 15;
+        fade = frame - 15;
         if (fade < 5) {
             alpha = 0xff - (fade * 0xff) / 5;
         }
@@ -2363,94 +2362,121 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
             alpha = 0;
         }
     }
-    /* Stat icons with per-icon animation (retail offset 276-464) */
     for (i = 0; i < 9; i++) {
-        if (i <= frame) {
-            drawPos.x = position.x + 500.0f -
-                        (f32)(((frame - i) * 500) / 10);
+        if ((u32)frame >= i) {
+            fade = frame - i;
+            if (fade < 10) {
+                drawX = position.x + 500.0f -
+                        (f32)((fade * 500) / 10);
+                alpha = 0xff - (fade * 0xff) / 10;
+            }
+            else {
+                alpha = 0;
+            }
+            drawY = position.y;
+            drawPos.x = drawX;
+            drawPos.y = drawY;
             h_campStatusRenderStatIcon(drawPos, scale, i, alpha);
         }
     }
-    /* Frame >= 3 section: background panels, labels, sprites, values,
-     * ranks, and equipment — retail at offsets 472-2140 */
-    if (frame > 2) {
-        drawPos.x = position.x + 100.0f -
-                    (f32)(((frame - 3) * 100) / 5);
-        /* Background panel sprites (retail offsets 620-928) */
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 0, alpha,
-                                 34.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 10, alpha,
-                                 50.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 11, alpha,
-                                 212.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833BA0, 1, alpha,
-                                 561.0f, 415.0f, 100.0f);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833BA0, 5, alpha,
-                                 361.0f, 415.0f, 100.0f);
-        /* Labels (retail offset 1020) */
+    if (frame >= 3) {
+        fade = frame - 3;
+        if (fade < 5) {
+            alpha = 0xff - (fade * 0xff) / 5;
+            drawX = position.x + 100.0f -
+                    (f32)((fade * 100) / 5);
+        }
+        else {
+            alpha = 0;
+            drawX = position.x;
+        }
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 0,
+                                 (u8)alpha, 34.0f, 415.0f, 100.0f);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 10,
+                                 (u8)alpha, 50.0f, 415.0f, 100.0f);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B74, 11,
+                                 (u8)alpha, 212.0f, 415.0f, 100.0f);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833BA0, 1,
+                                 (u8)alpha, 561.0f, 415.0f, 100.0f);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833BA0, 5,
+                                 (u8)alpha, 361.0f, 415.0f, 100.0f);
+        drawPos.x = drawX;
+        drawPos.y = position.y;
         h_campStatusDrawStatLabels(drawPos, scale, persona, alpha);
-        /* Sprites 0x12/0x13 (retail offsets 1256/1324) */
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x12, alpha,
-                                 drawPos.x + 30.0f, (125.0f + position.y) - 25.0f,
-                                 scale);
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x13, alpha,
-                                 drawPos.x + 30.0f, (184.0f + position.y) - 25.0f,
-                                 scale);
-        /* Stat values (retail offset 1420) */
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x12,
+                                 (u8)alpha, drawX + 30.0f,
+                                 (125.0f + position.y) - 25.0f, scale);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x13,
+                                 (u8)alpha, drawX + 30.0f,
+                                 (184.0f + position.y) - 25.0f, scale);
+        drawPos.x = drawX;
+        drawPos.y = position.y;
         h_campStatusDrawStatValues(drawPos, scale, NULL, persona, (u8)alpha);
-        /* Rank bars — 5 rows (retail offsets 1528+) */
-        for (row = 0; row < 5; row++) {
+    }
+    for (row = 0; row < 5; row++) {
+        if (frame >= 3) {
+            fade = frame - 3;
             switch (row) {
             case 0:
-                rankVals[row] = FUN_00173660(persona, 0) & 0xff;
+                rank = FUN_00173660(persona, 0) & 0xff;
                 break;
             case 1:
-                rankVals[row] = FUN_00173660(persona, 1) & 0xff;
+                rank = FUN_00173660(persona, 1) & 0xff;
                 break;
             case 2:
-                rankVals[row] = FUN_00173660(persona, 2) & 0xff;
+                rank = FUN_00173660(persona, 2) & 0xff;
                 break;
             case 3:
-                rankVals[row] = FUN_00173660(persona, 3) & 0xff;
+                rank = FUN_00173660(persona, 3) & 0xff;
                 break;
             case 4:
-                rankVals[row] = FUN_00173660(persona, 4) & 0xff;
+                rank = FUN_00173660(persona, 4) & 0xff;
                 break;
             }
-            rowYPos[row] = position.y + 129.0f + (f32)(row * 19) - 25.0f;
-            campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x14, alpha,
-                                     drawPos.x + 104.0f, rowYPos[row], scale);
-            campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x15, alpha,
-                                     drawPos.x + 333.0f, rowYPos[row], scale);
+            if (fade < 5) {
+                alpha = 0xff - (fade * 0xff) / 5;
+                drawX = position.x + 300.0f -
+                        (f32)((fade * 300) / 5);
+                rank = (rank * fade) / 5;
+            }
+            else {
+                alpha = 0;
+                drawX = position.x;
+            }
+            drawY = position.y + 129.0f + (f32)(row * 19) - 25.0f;
+            campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x14,
+                                     (u8)alpha, drawX + 104.0f, drawY,
+                                     scale);
+            campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x15,
+                                     (u8)alpha, drawX + 333.0f, drawY,
+                                     scale);
             glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
             *((f32*)glyph + 11) = scale;
-            *((f32*)glyph + 4) = drawPos.x + 108.0f;
-            *((f32*)glyph + 5) = rowYPos[row] + 1.0f;
+            *((f32*)glyph + 4) = drawX + 108.0f;
+            *((f32*)glyph + 5) = drawY + 1.0f;
             *((u8*)glyph + 0x18) = (u8)alpha;
-            *((s16*)glyph + 0x0e) = (s16)((rankVals[row] * 0xe3) / 99);
+            *((s16*)glyph + 0x0e) = (s16)((rank * 0xe3) / 99);
             FUN_001127d0(glyph, 1);
             FUN_00115980(glyph);
         }
-        /* Equipment (retail offset 2164) */
-        h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
     }
-    /* Bottom panel sprites — always (retail offsets 2300) */
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11, alpha,
-                             position.x + 33.0f, position.y + 278.0f,
-                             scale);
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22, alpha,
-                             position.x + 287.0f, position.y + 278.0f,
-                             scale);
-    /* Persona name / EXP text — always (retail offset 2524) */
+    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11,
+                             (u8)alpha, position.x + 33.0f,
+                             position.y + 278.0f, scale);
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22,
+                             (u8)alpha, position.x + 287.0f,
+                             position.y + 278.0f, scale);
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
     }
     else {
-        rankVals[0] = FUN_00173340(persona) - FUN_00173330(persona);
-        FUN_00523ac8(text, gp0xffff8978, rankVals[0]);
+        rank = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, rank);
     }
     FUN_0040eb50(0x42c80000, (s32)(position.x + 287.0f),
-                 (s32)(position.y + 280.0f), 0xff - alpha, 4, text, 1);
+                 (s32)(position.y + 280.0f), 0xff - alpha,
+                 4, text, 1);
 }
 
 // FUN_0012A560 NONMATCHING
