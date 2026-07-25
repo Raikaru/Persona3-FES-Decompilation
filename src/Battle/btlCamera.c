@@ -8101,12 +8101,10 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
 {
   int iVar1;
   int iVar2;
-  u8 bVar3;
-  u32 uVar4;
-  long lVar5;
+  int bVar3;
   int iVar6;
   int iVar7;
-  u32 targeting;
+  long lVar5;
   float fVar8;
   float fVar9;
   float fVar10;
