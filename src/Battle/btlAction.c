@@ -2387,6 +2387,32 @@ void btlActionUpdateStateAttack(BtlAction* action)
         btlPacketRegister(packet, BTLPACKET_TYPE_3D);
     }
 
+    /* Persona animation section (retail 7064-8100) */
+    if (ACTION_U16(victim, 0xfa) & 1)
+    {
+        FUN_002d5dc0(workBuf);
+        packet = FUN_002d7e20(victim, victim, workBuf, 1, 1);
+        packet->unk_00 = 4;
+        packet->parentUID = hitPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+        if (ACTION_U16(victim, 0xfa) & 2)
+        {
+            packet = FUN_00284200(victim->unit, 10, 0, 0, 1.0f);
+            packet->unk_00 = 4;
+            packet->parentUID = hitPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            packet = FUN_00284c90(victim->unit);
+            packet->unk_00 = 4;
+            packet->parentUID = hitPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+    }
+
     btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
 }
 
