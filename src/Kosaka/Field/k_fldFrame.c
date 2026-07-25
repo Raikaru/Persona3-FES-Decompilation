@@ -777,6 +777,12 @@ extern s32 func_00530da0(f32 value);
 extern s32 func_0052e118(s32 value);
 extern s32 func_0045ec20(s32 left, s32 right);
 extern f32 fGpffff82b0;
+extern void func_00318a30(Model* model, const RwV3d* offset, s32 combine);
+extern void func_00318a50(Model* model, const RwV3d* axis, f32 angle,
+                          s32 combine);
+extern void func_004c31b0(RwMatrix* matrix, const RwV3d* axis, f32 angle,
+                          s32 combine);
+extern void func_001ad9e0(KwlnTask* ctl, void* matrix);
 extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
 extern f32 func_0052e9e8(f32 value);
 extern KwlnTask* K_Draw_CreatePositionTask(s32 parent);
@@ -1361,19 +1367,58 @@ void* func_001ae580(KwlnTask* task)
     }
     case 7:
     {
-        RwV3d axis = {0.0f, 1.0f, 0.0f};
-        f32 step = localAngleStep;
-        f32 angleDiff = localAngle - localAngleB;
-        if (model != NULL)
+        if ((u32)work->frame < (u32)(s32)work->points[0].duration)
         {
-            mdlRotate(model, &axis, step, rwCOMBINEPOSTCONCAT);
+            RwV3d pivot;
+            RwV3d offset;
+            f32 step;
+            Model* target;
+
+            localDir = sAxisUp;
+            step = work->angleStep;
+            target = *(Model**)((u8*)fldFrameMoveCtl(work)->workData + 0x10);
+            if (target != NULL)
+            {
+                const u8* origin = (const u8*)func_00318b60((u32)target);
+
+                pivot.x = *(const f32*)(origin + 0x30);
+                pivot.y = *(const f32*)(origin + 0x34);
+                pivot.z = *(const f32*)(origin + 0x38);
+                offset.x = -1.0f * pivot.x;
+                offset.y = -1.0f * pivot.y;
+                offset.z = -1.0f * pivot.z;
+                func_00318a30(
+                    *(Model**)((u8*)fldFrameMoveCtl(work)->workData + 0x10),
+                    &offset, 2);
+                func_00318a50(
+                    *(Model**)((u8*)fldFrameMoveCtl(work)->workData + 0x10),
+                    &localDir, step, 2);
+                func_00318a30(
+                    *(Model**)((u8*)fldFrameMoveCtl(work)->workData + 0x10),
+                    &pivot, 2);
+            }
+            work->frame++;
+            return KWLNTASK_CONTINUE;
         }
-        work->frameCount--;
-        if (work->frameCount <= 0)
-        {
-            func_001ae480(task);
-            work->state = 1;
-        }
+        ((RwMatrix*)work->drawMatrix)->at.z = 1.0f;
+        ((RwMatrix*)work->drawMatrix)->up.y = 1.0f;
+        ((RwMatrix*)work->drawMatrix)->right.x = 1.0f;
+        ((RwMatrix*)work->drawMatrix)->up.x = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->right.z = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->right.y = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->at.y = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->at.x = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->up.z = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->pos.z = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->pos.y = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->pos.x = 0.0f;
+        ((RwMatrix*)work->drawMatrix)->flags |=
+            rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
+        func_004c31b0((RwMatrix*)work->drawMatrix, &localDir,
+                      work->currentAngle - 180.0f, 1);
+        func_001ad9e0(fldFrameMoveCtl(work), work->drawMatrix);
+        func_001ae480(task);
+        work->state = 1;
         return KWLNTASK_CONTINUE;
     }
     case 8:
