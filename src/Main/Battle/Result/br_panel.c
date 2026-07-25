@@ -278,11 +278,7 @@ void brPanel002350f0(void)
     u32 texture;
     u32 digitTexture;
     u32 frame;
-    u32 skyState;
-    u32 skyState2;
     s32 i;
-    u32 entryCount;
-    u32 panelFlags;
     void (*brPanelSetState)(u32 state, u32 value);
     void (*brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
 
