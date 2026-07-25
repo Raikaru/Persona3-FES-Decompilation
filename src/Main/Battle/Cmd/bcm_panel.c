@@ -5167,8 +5167,8 @@ void FUN_0022fa80(u32* object)
             pos_x = 80.0f + 5.0f + offset_x;
             pos_y = 6.0f + offset_y;
         } else if ((u32)counter_f < 12) {
-            pos_x = 66.0f + offset_x;
-            pos_y = 11.0f + offset_y;
+            pos_x = 80.0f + offset_x;
+            pos_y = 13.0f + offset_y;
         } else {
             pos_x = 80.0f + offset_x;
             pos_y = 13.0f + offset_y;
@@ -5214,6 +5214,7 @@ void FUN_0022fa80(u32* object)
         // Corner pair 2-3
         s0 = sinf(angle);
         c0 = cosf(angle);
+        // Corner pair 2-3
         {
             f32 x2 = rect[4] * c0 - rect[5] * s0;
             f32 y2 = rect[4] * s0 + rect[5] * c0;
