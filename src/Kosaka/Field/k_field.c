@@ -1365,7 +1365,6 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     u32 colOffset;
     u32 rowOffset;
     f32 angle;
-    volatile u8 framePadding[0x70];
     axis = *(RwV3d*)D_006833B0;
     colOffset = (u32)x * 0x10;
     rowOffset = (u32)y * 0x100;
@@ -1482,7 +1481,6 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
     source = *(u8**)(source + 0xa3c);
     matrix = func_004c38c0();
-    framePadding[0] = 0;
     if (source == NULL)
     {
         func_004c3880(matrix);
