@@ -1012,8 +1012,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         alpha = (0xffU - item->alpha) | 0xffffff00U;
         record = FUN_0017c670(selected);
         if (record != NULL) {
-            FUN_0017c6e0((s32)item->x, (s32)(item->y - 5.0f),
-                         item->texture, alpha, 1, 10, *(u16*)record);
+            FUN_0017c6e0((s32)item->x, (s32)(item->y - 2.0f - 3.0f),
+                         (s32)item->scale, alpha, 1, 10, *(u16*)record);
         }
         break;
     case 11:
