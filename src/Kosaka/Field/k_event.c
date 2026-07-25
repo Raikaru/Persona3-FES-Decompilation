@@ -1247,6 +1247,12 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     RwMatrix heroMatBuf;
     RwV3d markerPos;
     RwV3d offset;
+    RwV3d case4Marker;
+    RwV3d case6Marker;
+    RwV3d case8Offset;
+    RwV3d fovPos;
+    RwV3d npcOffset;
+    RwV3d idleCheckOffset;
     s32 currentActor;
     s32 taskResult;
     s32 model;
@@ -1262,6 +1268,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         u8 pad[0x90];
         u_long128 eventData[6];
     } eventStack;
+
 
 #define EVENT_WORD(index) (eventWords[(index)])
 #define EVENT_S16(offset) (*(s16*)((u8*)fldEvent + (offset)))
@@ -1721,32 +1728,32 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     switch (PTR_U32(hitData, 0x20))
                     {
                         case 4:
-                            markerPos.x = (*(f32*)((u8*)model + 0x128) + *(f32*)((u8*)model + 0x140)) * 0.5f;
-                            markerPos.y = (*(f32*)((u8*)model + 0x12c) + *(f32*)((u8*)model + 0x144)) * 0.5f;
-                            markerPos.z = (*(f32*)((u8*)model + 0x130) + *(f32*)((u8*)model + 0x148)) * 0.5f;
+                            fovPos.x = (*(f32*)((u8*)model + 0x128) + *(f32*)((u8*)model + 0x140)) * 0.5f;
+                            fovPos.y = (*(f32*)((u8*)model + 0x12c) + *(f32*)((u8*)model + 0x144)) * 0.5f;
+                            fovPos.z = (*(f32*)((u8*)model + 0x130) + *(f32*)((u8*)model + 0x148)) * 0.5f;
                             break;
                         case 3:
-                            markerPos.x = (*(f32*)((u8*)model + 0x134) + *(f32*)((u8*)model + 0x140)) * 0.5f;
-                            markerPos.y = (*(f32*)((u8*)model + 0x138) + *(f32*)((u8*)model + 0x144)) * 0.5f;
-                            markerPos.z = (*(f32*)((u8*)model + 0x13c) + *(f32*)((u8*)model + 0x148)) * 0.5f;
+                            fovPos.x = (*(f32*)((u8*)model + 0x134) + *(f32*)((u8*)model + 0x140)) * 0.5f;
+                            fovPos.y = (*(f32*)((u8*)model + 0x138) + *(f32*)((u8*)model + 0x144)) * 0.5f;
+                            fovPos.z = (*(f32*)((u8*)model + 0x13c) + *(f32*)((u8*)model + 0x148)) * 0.5f;
                             break;
                         case 2:
-                            markerPos.x = (*(f32*)((u8*)model + 0x11c) + *(f32*)((u8*)model + 0x134)) * 0.5f;
-                            markerPos.y = (*(f32*)((u8*)model + 0x120) + *(f32*)((u8*)model + 0x138)) * 0.5f;
-                            markerPos.z = (*(f32*)((u8*)model + 0x124) + *(f32*)((u8*)model + 0x13c)) * 0.5f;
+                            fovPos.x = (*(f32*)((u8*)model + 0x11c) + *(f32*)((u8*)model + 0x134)) * 0.5f;
+                            fovPos.y = (*(f32*)((u8*)model + 0x120) + *(f32*)((u8*)model + 0x138)) * 0.5f;
+                            fovPos.z = (*(f32*)((u8*)model + 0x124) + *(f32*)((u8*)model + 0x13c)) * 0.5f;
                             break;
                         case 1:
-                            markerPos.x = (*(f32*)((u8*)model + 0x11c) + *(f32*)((u8*)model + 0x128)) * 0.5f;
-                            markerPos.y = (*(f32*)((u8*)model + 0x120) + *(f32*)((u8*)model + 0x12c)) * 0.5f;
-                            markerPos.z = (*(f32*)((u8*)model + 0x124) + *(f32*)((u8*)model + 0x130)) * 0.5f;
+                            fovPos.x = (*(f32*)((u8*)model + 0x11c) + *(f32*)((u8*)model + 0x128)) * 0.5f;
+                            fovPos.y = (*(f32*)((u8*)model + 0x120) + *(f32*)((u8*)model + 0x12c)) * 0.5f;
+                            fovPos.z = (*(f32*)((u8*)model + 0x124) + *(f32*)((u8*)model + 0x130)) * 0.5f;
                             break;
                         default:
-                            markerPos.x = *(f32*)((u8*)model + 0x104);
-                            markerPos.y = *(f32*)((u8*)model + 0x108);
-                            markerPos.z = *(f32*)((u8*)model + 0x10c);
+                            fovPos.x = *(f32*)((u8*)model + 0x104);
+                            fovPos.y = *(f32*)((u8*)model + 0x108);
+                            fovPos.z = *(f32*)((u8*)model + 0x10c);
                             break;
                     }
-                    active = K_FldEvent_IsPosWithinFov(heroMat, &markerPos, 120.0f);
+                    active = K_FldEvent_IsPosWithinFov(heroMat, &fovPos, 120.0f);
                 }
                 if (active != false)
                 {
@@ -1897,10 +1904,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         case 4:
             if (FUN_00318990(PTR_U32(EVENT_WORD(9), 0x50), 0) >= 13.0f)
             {
-                heroMat = (RwMatrix*)FUN_00318b60(((u32*)0x008717f0)[FUN_00453480() * 0x70]);
-                markerPos = ((RwMatrix*)FUN_00318b60(((u32*)0x008717f0)[FUN_00453480() * 0x70]))->pos;
-                markerPos.y += 100.0f;
-                FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &markerPos), 3);
+                case4Marker = ((RwMatrix*)FUN_00318b60(((u32*)0x008717f0)[FUN_00453480() * 0x70]))->pos;
+                case4Marker.y += 100.0f;
+                FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &case4Marker), 3);
                 FUN_00103c30(3, 0xff, 3, 0);
                 FUN_0010a4e0(0, 7, 3, 0);
                 FUN_003182d0(((u32*)0x008717f0)[FUN_00453480() * 0x70], 0, 2, 0, 0);
@@ -1927,15 +1933,15 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
             FUN_003189f0(0.0f, DATA_U32(0x008717f0), 0);
             heroMat = (RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50));
-            markerPos = ((RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50)))->pos;
-            markerPos.y += 50.0f;
+            case6Marker = ((RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50)))->pos;
+            case6Marker.y += 50.0f;
             if (FUN_0017d800() == true)
             {
-                FUN_001a9390((KwlnTask*)FIELD_WORD(0x1214), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1214), &markerPos), 3);
+                FUN_001a9390((KwlnTask*)FIELD_WORD(0x1214), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1214), &case6Marker), 3);
             }
             else
             {
-                FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &markerPos), 3);
+                FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &case6Marker), 3);
             }
             FUN_0010a4e0(0, 7, 3, 0);
             FUN_003182d0(PTR_U32(EVENT_WORD(9), 0x50), 0, 2, 0, 0);
