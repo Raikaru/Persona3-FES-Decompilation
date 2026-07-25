@@ -3618,9 +3618,14 @@ void func_001f7210(void)
                 }
                 break;
             default:
-                break;
             }
         }
+        crd_flt[0] = eff_cnt[0];
+        crd_flt[1] = eff_cnt[1];
+        crd_flt[2] = eff_cnt[2];
+        crd_flt[3] = eff_cnt[3];
+        crd_flt[4] = eff_cnt[4];
+        crd_flt[5] = BR_U32(work, 0x3408);
         eff_total = eff_cnt[0] + eff_cnt[1] + eff_cnt[2] + eff_cnt[3] + eff_cnt[4];
         if (eff_total > 0) {
             kind = eff_total % 28;
