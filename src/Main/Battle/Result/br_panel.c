@@ -278,9 +278,13 @@ void brPanel002350f0(void)
     u32 texture;
     u32 digitTexture;
     u32 frame;
+    u32 skyState;
+    u32 skyState2;
+    s32 i;
+    u32 entryCount;
+    u32 panelFlags;
     void (*brPanelSetState)(u32 state, u32 value);
     void (*brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
-    s32 i;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
     work = (u8*)sBrPanel;
@@ -413,10 +417,14 @@ void brPanel002350f0(void)
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1d60), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x1d60), 4, 0, 2, 3);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
     frame = func_0021cce0(func_0021cca0(texture, 9));
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 2, 3);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
     if (*(u32*)work & 8) {
         frame = (u32)(uintptr_t)func_0021cca0(texture, 0xa);
     } else {
