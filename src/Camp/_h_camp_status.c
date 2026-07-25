@@ -1838,7 +1838,7 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
 void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
                                 s32 alpha)
 {
-    u32 parent;
+    u32 parent = 0x42c80000;
     s32 i;
     s32 value;
     s32 frame;
@@ -2284,8 +2284,8 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
 void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                               void* persona, s32 frame)
 {
-    u32 parentTop;
-    u32 parentBottom;
+    u32 parentTop = 0x42c80000;
+    u32 parentBottom = 0x42c80000;
     s32 alpha;
     s32 icon;
     s32 row;
