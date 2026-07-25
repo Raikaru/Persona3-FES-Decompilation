@@ -3191,6 +3191,7 @@ void func_001f7210(void)
     u32 slot;
     u32 entry_idx;
     u8 *entry;
+    u32 entry_type;
     u32 kind = 0;
     s32 value = 0;
     u32 i;
@@ -3211,8 +3212,11 @@ void func_001f7210(void)
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
     BR_U32(work, 0x34e8) = entry_idx + slot;
+    entry = work + entry_idx * 0x670 + 0x60;
+    entry_type = BR_U32(entry, 0);
+    debug_val = 0;
     BR_U32(work, 0x34e0) = entry_idx * 0x670;
-    switch (debug_val) {
+    switch (entry_type) {
     case 0:
     {
         u8 *wt_base;
