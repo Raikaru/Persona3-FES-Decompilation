@@ -1306,18 +1306,12 @@ void func_0010cdd0(void)
     const char* path;
     u32 size;
     u32 copySize;
-    s32 pathIndex;
     s32 i;
+    s32 pathIndex;
 
     for (i = 0; i < HSFD_DECODE_SLOTS; i++)
     {
         slot = &sSfdDecodeSlots[i];
-        pathIndex = slot->fileIndex * 3;
-        if ((pathIndex < 0) || ((u32)(pathIndex + 2) >= (sizeof(sSfdDecodePaths) / sizeof(sSfdDecodePaths[0]))))
-        {
-            continue;
-        }
-
         switch (slot->state)
         {
             case 0:
@@ -1327,6 +1321,7 @@ void func_0010cdd0(void)
                 break;
 
             case 2:
+                pathIndex = slot->fileIndex * 3;
                 path = sSfdDecodePaths[pathIndex];
                 slot->request = H_Cdvd_Request(path, 0);
                 slot->state = 3;
@@ -1335,8 +1330,9 @@ void func_0010cdd0(void)
             case 3:
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
-                    path = sSfdDecodePaths[pathIndex];
-                    slot->input = H_Cdvd_CacheFindFile(path, &size);
+                    pathIndex = slot->fileIndex * 3;
+                    slot->input = H_Cdvd_CacheFindFile(
+                        sSfdDecodePaths[pathIndex], &size);
                     slot->inputSize = size;
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
@@ -1345,16 +1341,18 @@ void func_0010cdd0(void)
                 break;
 
             case 4:
-                path = sSfdDecodePaths[pathIndex + 1];
-                slot->request = H_Cdvd_Request(path, 0);
+                pathIndex = slot->fileIndex * 3;
+                slot->request = H_Cdvd_Request(
+                    sSfdDecodePaths[pathIndex + 1], 0);
                 slot->state = 5;
                 break;
 
             case 5:
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
-                    path = sSfdDecodePaths[pathIndex + 1];
-                    slot->intermediate = H_Cdvd_CacheFindFile(path, &size);
+                    pathIndex = slot->fileIndex * 3;
+                    slot->intermediate = H_Cdvd_CacheFindFile(
+                        sSfdDecodePaths[pathIndex + 1], &size);
                     slot->intermediateSize = size;
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
@@ -1363,16 +1361,18 @@ void func_0010cdd0(void)
                 break;
 
             case 6:
-                path = sSfdDecodePaths[pathIndex + 2];
-                slot->request = H_Cdvd_Request(path, 0);
+                pathIndex = slot->fileIndex * 3;
+                slot->request = H_Cdvd_Request(
+                    sSfdDecodePaths[pathIndex + 2], 0);
                 slot->state = 7;
                 break;
 
             case 7:
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
-                    path = sSfdDecodePaths[pathIndex + 2];
-                    slot->output = H_Cdvd_CacheFindFile(path, &size);
+                    pathIndex = slot->fileIndex * 3;
+                    slot->output = H_Cdvd_CacheFindFile(
+                        sSfdDecodePaths[pathIndex + 2], &size);
                     slot->outputSize = size;
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
