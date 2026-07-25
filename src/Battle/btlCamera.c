@@ -8166,34 +8166,28 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   float fStack_40;
   float fStack_3c;
   float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  float sphere2[3];
+  float sphere1[3];
+  float sphere0[3];
   
   iVar6 = (int)camera;
   iVar7 = *(int *)(*(int *)(iVar6 + 0xe0) + 0x30);
   iVar1 = *(int *)(*(int *)(*(int *)(iVar6 + 0xe0) + 0x38) + 0x30);
   iVar2 = *(int *)(iVar7 + 0xa00);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar7), (RwV3d*)&fStack_10);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), (RwV3d*)&fStack_20);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)&fStack_30);
-  fVar15 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + fStack_c + 0.0f;
-  fVar12 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + fStack_1c + 0.0f;
-  fVar13 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.5f + fStack_2c + 0.0f;
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar7), (RwV3d*)sphere0);
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), (RwV3d*)sphere1);
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)sphere2);
+  fVar15 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + sphere0[1] + 0.0f;
+  fVar12 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1] + 0.0f;
+  fVar13 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.5f + sphere2[1] + 0.0f;
   fVar14 = *(float *)(iVar7 + 0x90) * *(float *)(iVar7 + 0x2c);
   fVar10 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c);
-  *(float *)(iVar6 + 0x104) = fStack_20;
-  *(float *)(iVar6 + 0x108) = fStack_1c;
-  *(float *)(iVar6 + 0x10c) = fStack_18;
+  *(float *)(iVar6 + 0x104) = sphere1[0];
+  *(float *)(iVar6 + 0x108) = sphere1[1];
+  *(float *)(iVar6 + 0x10c) = sphere1[2];
   *(undefined4 *)(iVar6 + 0x100) = *(undefined4 *)(*(int *)(iVar6 + 0xe0) + 0x38);
   if (fVar13 < 135.0f) {
-    fStack_2c = 67.5f;
+    sphere2[1] = 67.5f;
     fVar13 = 135.0f;
   }
   if ((*(u32 *)(iGpffffb6fc + 0xc) & 0x200000) == 0) {
@@ -8215,9 +8209,9 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     bVar3 = 1;
   }
   if (bVar3) {
-    fStack_60 = fStack_30 - fStack_20;
-    fStack_5c = fStack_2c - fStack_1c;
-    fStack_58 = fStack_28 - fStack_18;
+    fStack_60 = sphere2[0] - sphere1[0];
+    fStack_5c = sphere2[1] - sphere1[1];
+    fStack_58 = sphere2[2] - sphere1[2];
     fVar8 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
     fStack_48 = fGpffff8098 * fVar8;
     fStack_50 = fStack_60 * fStack_48;
@@ -8225,21 +8219,21 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     fStack_48 = fStack_58 * fStack_48;
   }
   else {
-    fStack_60 = (fStack_30 + fStack_10) * 0.5f;
-    fStack_5c = (fStack_2c + fStack_c) * 0.5f;
-    fStack_38 = (fStack_28 + fStack_8) * 0.5f;
-    fStack_60 = fStack_60 - fStack_20;
-    fStack_5c = fStack_5c - fStack_1c;
-    fStack_58 = fStack_38 - fStack_18;
+    fStack_60 = (sphere2[0] + sphere0[0]) * 0.5f;
+    fStack_5c = (sphere2[1] + sphere0[1]) * 0.5f;
+    fStack_38 = (sphere2[2] + sphere0[2]) * 0.5f;
+    fStack_60 = fStack_60 - sphere1[0];
+    fStack_5c = fStack_5c - sphere1[1];
+    fStack_58 = fStack_38 - sphere1[2];
     fVar8 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
     fStack_48 = fGpffff8098 * fVar8;
     fStack_50 = fStack_60 * fStack_48;
     fStack_4c = fStack_5c * fStack_48;
     fStack_48 = fStack_58 * fStack_48;
   }
-  fStack_50 = fStack_50 + fStack_20;
-  fStack_4c = fStack_4c + fStack_1c;
-  fStack_48 = fStack_48 + fStack_18;
+  fStack_50 = fStack_50 + sphere1[0];
+  fStack_4c = fStack_4c + sphere1[1];
+  fStack_48 = fStack_48 + sphere1[2];
   fStack_b8 = *(float *)(iVar6 + 0x9c) - fStack_50;
   fStack_b4 = *(float *)(iVar6 + 0xa4) - fStack_48;
   FUN_004c6b20(&fStack_b8,&fStack_b8);
@@ -8248,24 +8242,24 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar2),1);
     *(int *)(iVar6 + 0x120) = iVar2;
     *(undefined2 *)(iVar6 + 0x124) = 0;
-    fStack_40 = fStack_30;
-    fStack_3c = fStack_2c;
-    fStack_38 = fStack_28;
+    fStack_40 = sphere2[0];
+    fStack_3c = sphere2[1];
+    fStack_38 = sphere2[2];
     fVar9 = fVar10 * 1.5f;
     fStack_c0 = fStack_58;
     fStack_bc = -fStack_60;
     fVar16 = fStack_58 * fStack_b8 + fStack_bc * fStack_b4;
     if (0.0f <= fVar16) {
-      fStack_70 = fStack_58 * fVar9 + fStack_30 + 0.0f;
-      fStack_68 = (fStack_28 + 0.0f) - fStack_60 * fVar9;
+      fStack_70 = fStack_58 * fVar9 + sphere2[0] + 0.0f;
+      fStack_68 = (sphere2[2] + 0.0f) - fStack_60 * fVar9;
     }
     else {
-      fStack_70 = (fStack_30 + 0.0f) - fStack_58 * fVar9;
-      fStack_68 = fStack_60 * fVar9 + fStack_28 + 0.0f;
+      fStack_70 = (sphere2[0] + 0.0f) - fStack_58 * fVar9;
+      fStack_68 = fStack_60 * fVar9 + sphere2[2] + 0.0f;
       fVar8 = fVar8 * 0.5f;
-      fStack_50 = fStack_60 * fVar8 + fStack_20;
-      fStack_4c = fStack_5c * fVar8 + fStack_1c;
-      fStack_48 = fStack_58 * fVar8 + fStack_18;
+      fStack_50 = fStack_60 * fVar8 + sphere1[0];
+      fStack_4c = fStack_5c * fVar8 + sphere1[1];
+      fStack_48 = fStack_58 * fVar8 + sphere1[2];
     }
     if (fVar12 <= fVar13) {
       fStack_4c = fGpffff8094 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) +
@@ -8275,18 +8269,18 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
                     fStack_4c + 0.0f;
       }
       else {
-        fStack_6c = fStack_2c;
+        fStack_6c = sphere2[1];
       }
     }
     else if (((*(u32 *)(iGpffffb6fc + 0xc) & 0x200000) == 0) || (fVar12 < 500.0f)) {
       fStack_4c = (fStack_4c + 0.0f) -
                   fGpffff80b0 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c);
-      fStack_6c = fVar13 * 0.25f + fStack_2c + 0.0f;
+      fStack_6c = fVar13 * 0.25f + sphere2[1] + 0.0f;
     }
     else {
       fStack_4c = fGpffff8030 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) +
                   fStack_4c + 0.0f;
-      fStack_6c = fVar13 * 0.25f + fStack_2c + 0.0f;
+      fStack_6c = fVar13 * 0.25f + sphere2[1] + 0.0f;
     }
     FUN_002a4690(&uStack_d8, &fStack_60, &fStack_50, &D_00697880);
     FUN_004be1e0(&fStack_60,0x6978a0,1,&uStack_d8);
@@ -8336,20 +8330,20 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     if (fStack_e0 < 25.0f) {
       fStack_e0 = 25.0f;
     }
-    fStack_60 = fStack_10 - fStack_20;
-    fStack_5c = fStack_c - fStack_1c;
-    fStack_58 = fStack_8 - fStack_18;
+    fStack_60 = sphere0[0] - sphere1[0];
+    fStack_5c = sphere0[1] - sphere1[1];
+    fStack_58 = sphere0[2] - sphere1[2];
     fVar13 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
     fVar10 = fGpffff8098 * fVar13;
-    fStack_50 = fStack_60 * fVar10 + fStack_20;
-    fStack_4c = fStack_5c * fVar10 + fStack_1c;
-    fStack_48 = fStack_58 * fVar10 + fStack_18;
-    fStack_40 = fStack_10;
-    fStack_3c = fStack_c;
-    fStack_38 = fStack_8;
+    fStack_50 = fStack_60 * fVar10 + sphere1[0];
+    fStack_4c = fStack_5c * fVar10 + sphere1[1];
+    fStack_48 = fStack_58 * fVar10 + sphere1[2];
+    fStack_40 = sphere0[0];
+    fStack_3c = sphere0[1];
+    fStack_38 = sphere0[2];
     fVar10 = fVar14 * 2.0f;
     lVar5 = FUN_0017d800();
-    if ((lVar5 != 0) && (450.0f < fStack_1c)) {
+    if ((lVar5 != 0) && (450.0f < sphere1[1])) {
       fVar10 = fVar10 + 150.0f;
       fVar15 = fVar15 + 350.0f;
     }
@@ -8362,9 +8356,9 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       fStack_70 = (fStack_40 + 0.0f) - fStack_58 * fVar10;
       fStack_68 = fStack_60 * fVar10 + fStack_38 + 0.0f;
       fVar13 = fVar13 * 0.5f;
-      fStack_50 = fStack_60 * fVar13 + fStack_20;
-      fStack_4c = fStack_5c * fVar13 + fStack_1c;
-      fStack_48 = fStack_58 * fVar13 + fStack_18;
+      fStack_50 = fStack_60 * fVar13 + sphere1[0];
+      fStack_4c = fStack_5c * fVar13 + sphere1[1];
+      fStack_48 = fStack_58 * fVar13 + sphere1[2];
     }
     fStack_4c = fGpffff8030 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) + fStack_4c + 0.0f;
     FUN_002a4690(&uStack_f4, &fStack_60, &fStack_50, &D_00697880);
@@ -8406,30 +8400,30 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar2),0);
     *(int *)(iVar6 + 0x120) = iVar2;
     *(undefined2 *)(iVar6 + 0x124) = 1;
-    fStack_3c = fStack_1c;
-    fStack_38 = fStack_18;
+    fStack_3c = sphere1[1];
+    fStack_38 = sphere1[2];
     fVar14 = fGpffff80b8 * *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c);
     fVar10 = fVar10 * 0.75f;
     if (fVar10 <= fVar14) {
       fVar10 = fVar14;
     }
-    if (fStack_1c < 125.0f) {
+    if (sphere1[1] < 125.0f) {
       fStack_3c = 125.0f;
     }
-    fStack_40 = fStack_20;
+    fStack_40 = sphere1[0];
     fStack_c0 = fStack_58;
     fStack_bc = -fStack_60;
     fVar14 = fStack_58 * fStack_b8 + fStack_bc * fStack_b4;
     fStack_6c = fStack_3c;
     if (0.0f <= fVar14) {
-      fStack_70 = fStack_58 * fVar10 + fStack_20 + 0.0f;
-      fStack_68 = (fStack_18 + 0.0f) - fStack_60 * fVar10;
+      fStack_70 = fStack_58 * fVar10 + sphere1[0] + 0.0f;
+      fStack_68 = (sphere1[2] + 0.0f) - fStack_60 * fVar10;
       uStack_80 = PAIR44(fStack_5c,fStack_60);
       fStack_78 = fStack_58;
     }
     else {
-      fStack_70 = (fStack_20 + 0.0f) - fStack_58 * fVar10;
-      fStack_68 = fStack_60 * fVar10 + fStack_18 + 0.0f;
+      fStack_70 = (sphere1[0] + 0.0f) - fStack_58 * fVar10;
+      fStack_68 = fStack_60 * fVar10 + sphere1[2] + 0.0f;
     }
     if (fVar12 <= fVar13) {
       fStack_4c = fGpffff8030 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
@@ -8478,9 +8472,9 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     uStack_d4 = uStack_f0;
     uStack_d0 = uStack_ec;
     uStack_cc = uStack_e8;
-    fStack_60 = fStack_10 - fStack_100;
-    fStack_5c = fStack_c - fStack_fc;
-    fStack_58 = fStack_8 - fStack_f8;
+    fStack_60 = sphere0[0] - fStack_100;
+    fStack_5c = sphere0[1] - fStack_fc;
+    fStack_58 = sphere0[2] - fStack_f8;
     fStack_e4 = fStack_100;
     fStack_e0 = fStack_fc;
     fStack_dc = fStack_f8;
