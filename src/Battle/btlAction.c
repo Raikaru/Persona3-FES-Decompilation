@@ -3064,19 +3064,6 @@ void btlActionUpdateStateAttack(BtlAction* action)
         packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
-    /* Extra damage effect for victim */
-    {
-        packet = FUN_00284200(victim->unit, 10, 0, 0, 1.0f);
-        packet->unk_00 = 4;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_00284c90(victim->unit);
-        packet->unk_00 = 4;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
     /* Extra d5dc0 work buffer setup */
     {
         u32 extraWork[12];
