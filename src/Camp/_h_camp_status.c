@@ -855,9 +855,9 @@ void FUN_0012bfb0(CampVec2 position, f32 scale, void* currentStats,
     }
     h_campStatusDrawStatLabels(position, scale, persona, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
-                         position.y + 100.0f, scale, alpha);
+                         (125.0f + position.y) - 25.0f, scale, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
-                         position.y + 159.0f, scale, alpha);
+                         (184.0f + position.y) - 25.0f, scale, alpha);
     h_campStatusDrawSkillValues(position, scale, currentStats, persona,
                                 alpha);
     for (i = 0; i < 5; i++) {
@@ -2218,10 +2218,10 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         h_campStatusDrawStatLabels(drawPos, scale, persona, alpha);
         /* Sprites 0x12/0x13 (retail offsets 1256/1324) */
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x12, alpha,
-                                 drawPos.x + 30.0f, position.y + 100.0f,
+                                 drawPos.x + 30.0f, (125.0f + position.y) - 25.0f,
                                  scale);
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x13, alpha,
-                                 drawPos.x + 30.0f, position.y + 159.0f,
+                                 drawPos.x + 30.0f, (184.0f + position.y) - 25.0f,
                                  scale);
         /* Stat values (retail offset 1420) */
         h_campStatusDrawStatValues(drawPos, scale, NULL, persona, (u8)alpha);
