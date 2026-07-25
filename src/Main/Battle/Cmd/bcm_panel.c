@@ -4578,49 +4578,32 @@ void FUN_0022fa80(u32* object)
             FUN_0021d950(base + i * 256, colour);
         }
 
-        // Corner rotation and draw
+        // Draw without rotation (retail's case 0 has no sinf/cosf)
         resource = FUN_0021cca0(table, 0);
         {
             f32 pos_x = 66.0f + offset_x;
             f32 pos_y = 11.0f + offset_y;
             for (i = 0; i < 3; i++) {
+                f32 rect0[4], rect1[4], rect2[4];
                 f32 t = (f32)*(u32*)(base + i * 4 + 0x300);
-                f32 angle;
-                f32 s, c;
-                f32 x0, y0, x1, y1, x2, y2, x3, y3;
-                f32 w, h;
+                f32 x0, y0, x1, y1;
 
                 t = t / 30.0f;
-                angle = (1.0f - t) * 3.14159265f;
-                s = sinf(angle);
-                c = cosf(angle);
-
                 x0 = D_0068E4F0[i * 4 + 0];
                 y0 = D_0068E4F0[i * 4 + 1];
                 x1 = D_0068E4F0[i * 4 + 2];
                 y1 = D_0068E4F0[i * 4 + 3];
-                x2 = D_0068E4F0[i * 4 + 2];
-                y2 = D_0068E4F0[i * 4 + 3];
-                x3 = D_0068E4F0[i * 4 + 0];
-                y3 = D_0068E4F0[i * 4 + 1];
 
-                rect_work[0] = pos_x + x0 * c - y0 * s;
-                rect_work[1] = pos_y + x0 * s + y0 * c;
-                rect_work[2] = pos_x + x1 * c - y1 * s;
-                rect_work[3] = pos_y + x1 * s + y1 * c;
-                rect_work[4] = pos_x + x2 * c - y2 * s;
-                rect_work[5] = pos_y + x2 * s + y2 * c;
-                rect_work[6] = pos_x + x3 * c - y3 * s;
-                rect_work[7] = pos_y + x3 * s + y3 * c;
+                rect0[0] = pos_x + x0; rect0[1] = pos_y + y0;
+                rect0[2] = pos_x + x1; rect0[3] = pos_y + y1;
+                rect1[0] = pos_x + x1; rect1[1] = pos_y + y1;
+                rect1[2] = pos_x + x0; rect1[3] = pos_y + y0;
+                rect2[0] = 255.0f * x1;
+                rect2[1] = 255.0f * y1;
+                rect2[2] = 255.0f * x0;
+                rect2[3] = 255.0f * y0;
 
-                w = (f32)((u32*)resource)[3];
-                h = (f32)((u32*)resource)[4];
-                rect_work[8] = 255.0f * x1;
-                rect_work[9] = 255.0f * y1;
-                rect_work[10] = 255.0f * x0;
-                rect_work[11] = 255.0f * y0;
-
-                FUN_0021e170(base + i * 256, rect_work, rect_work + 4, rect_work + 8);
+                FUN_0021e170(base + i * 256, rect0, rect1, rect2);
             }
         }
         break;
@@ -4696,7 +4679,7 @@ void FUN_0022fa80(u32* object)
                 x1 = D_0068E490[s3 * 4 + 2];
                 y1 = D_0068E490[s3 * 4 + 3];
                 x2 = x1;
-                y2 = y1;
+                angle = (1.0f - t) * 3.14159265f + 2.0f * ((f32)(s3 & 1)) * 0.0001f;
                 x3 = x0;
                 y3 = y0;
 
@@ -4745,7 +4728,7 @@ void FUN_0022fa80(u32* object)
                 y2 = y1;
                 x3 = x0;
                 y3 = y0;
-
+                angle = 3.14159265f - t * 3.14159265f + 4.0f * ((f32)(s3 & 1)) * 0.00001f;
                 rect0[0] = pos_x + x0 * c - y0 * s;
                 rect0[1] = pos_y + x0 * s + y0 * c;
                 rect0[2] = pos_x + x1 * c - y1 * s;
@@ -4820,7 +4803,7 @@ void FUN_0022fa80(u32* object)
 
                 t = (f32)*(u32*)(base + i * 4 + 0x300);
                 t = t / 30.0f;
-                angle = (1.0f - t) * 3.14159265f;
+                angle = 3.14159265f - 3.14159265f * t;
                 s = sinf(angle);
                 c = cosf(angle);
 
@@ -5038,7 +5021,7 @@ void FUN_0022fa80(u32* object)
             colour[2] = 30;  colour[3] = 0xFF;
         }
 
-        // Draw loop with alpha
+        // Draw with corner rotation (retail has sinf/cosf here)
         {
             f32 pos_x = 66.0f + offset_x;
             f32 pos_y = 11.0f + offset_y;
@@ -5046,6 +5029,10 @@ void FUN_0022fa80(u32* object)
                 f32 val = (f32)*(u32*)(base + i * 4 + 0x200);
                 f32 t = val / 12.0f;
                 f32 alpha;
+                f32 angle;
+                f32 s, c;
+                f32 x0, y0, x1, y1;
+                f32 rect0[4], rect1[4], rect2[4];
 
                 if (t <= 0.6f) {
                     alpha = t / 0.6f;
@@ -5058,6 +5045,28 @@ void FUN_0022fa80(u32* object)
                 if (alpha < 0.0f) alpha = 0.0f;
                 colour[3] = (u8)(s32)(alpha * 255.0f);
                 FUN_0021d950(base + i * 256, colour);
+
+                // Rotation
+                angle = 3.14159265f * (val / 12.0f);
+                s = sinf(angle);
+                c = cosf(angle);
+                x0 = D_0068E4F0[0];
+                y0 = D_0068E4F0[1];
+                x1 = D_0068E4F0[2];
+                y1 = D_0068E4F0[3];
+                rect0[0] = pos_x + x0 * c - y0 * s;
+                rect0[1] = pos_y + x0 * s + y0 * c;
+                rect0[2] = pos_x + x1 * c - y1 * s;
+                rect0[3] = pos_y + x1 * s + y1 * c;
+                rect1[0] = pos_x + x1 * c - y1 * s;
+                rect1[1] = pos_y + x1 * s + y1 * c;
+                rect1[2] = pos_x + x0 * c - y0 * s;
+                rect1[3] = pos_y + x0 * s + y0 * c;
+                rect2[0] = 255.0f * x1;
+                rect2[1] = 255.0f * y1;
+                rect2[2] = 255.0f * x0;
+                rect2[3] = 255.0f * y0;
+                FUN_0021e170(base + i * 256, rect0, rect1, rect2);
             }
         }
         break;
@@ -5110,11 +5119,9 @@ void FUN_0022fa80(u32* object)
 
                 FUN_0021d3b0(base + i * 256 + 0x200, (u8*)(uintptr_t)slot_resource);
 
-                cnt = cnt % 40;
                 *(u32*)(base + i * 4 + 0x500) = cnt;
             }
         }
-
         // Colour write with alpha computation
         colour[0] = 0xFF; colour[1] = 0xFF;
         colour[2] = 0xFF; colour[3] = 0xFF;
@@ -5134,6 +5141,37 @@ void FUN_0022fa80(u32* object)
             if (alpha < 0.0f) alpha = 0.0f;
             colour[3] = (u8)(s32)(alpha * 255.0f);
             FUN_0021d950(base + i * 256, colour);
+        }
+        // Corner rotation draw (retail has sinf/cosf here)
+        {
+            f32 pos_x = 80.0f + offset_x;
+            f32 pos_y = 19.0f + offset_y;
+            f32 angle = 0.0f;
+            f32 s, c;
+            f32 rect0[4], rect1[4], rect2[4];
+            f32 x0, y0, x1, y1;
+
+            s = sinf(angle);
+            c = cosf(angle);
+            x0 = D_0068E4F0[0];
+            y0 = D_0068E4F0[1];
+            x1 = D_0068E4F0[2];
+            y1 = D_0068E4F0[3];
+            rect0[0] = pos_x + x0 * c - y0 * s;
+            rect0[1] = pos_y + x0 * s + y0 * c;
+            rect0[2] = pos_x + x1 * c - y1 * s;
+            rect0[3] = pos_y + x1 * s + y1 * c;
+            rect1[0] = pos_x + x1 * c - y1 * s;
+            rect1[1] = pos_y + x1 * s + y1 * c;
+            rect1[2] = pos_x + x0 * c - y0 * s;
+            rect1[3] = pos_y + x0 * s + y0 * c;
+            rect2[0] = 255.0f * x1;
+            rect2[1] = 255.0f * y1;
+            rect2[2] = 255.0f * x0;
+            rect2[3] = 255.0f * y0;
+            FUN_0021e170(base, rect0, rect1, rect2);
+            FUN_0021e170(base + 256, rect0, rect1, rect2);
+            FUN_0021e170(base + 512, rect0, rect1, rect2);
         }
         break;
     }
