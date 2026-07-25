@@ -3460,11 +3460,12 @@ void func_001f7210(void)
         func_003c7430(22);
         break;
     case 10:
-        /* off=6512: two patterns: guard check + HP stat chain */
-        /* Pattern 1: guarded item check */
-        tmp = func_001775a0(1);
-        func_003c7bc0(0, tmp);
-        func_003c7430(26);
+        /* off=6512: guard check (only for even kind) + HP stat chain */
+        if ((kind & 1) == 0) {
+            tmp = func_001775a0(1);
+            func_003c7bc0(0, tmp);
+            func_003c7430(26);
+        }
         /* Pattern 2: HP stat chain */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
@@ -3475,11 +3476,12 @@ void func_001f7210(void)
         func_003c7430(29);
         break;
     case 11:
-        /* off=6680: two patterns: guard check + SP stat chain */
-        /* Pattern 1: guarded item check */
-        tmp = func_001775a0(1);
-        func_003c7bc0(0, tmp);
-        func_003c7430(26);
+        /* off=6680: guard check (only for even kind) + SP stat chain */
+        if ((kind & 1) == 0) {
+            tmp = func_001775a0(1);
+            func_003c7bc0(0, tmp);
+            func_003c7430(26);
+        }
         /* Pattern 2: SP stat chain */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
@@ -3490,11 +3492,12 @@ void func_001f7210(void)
         func_003c7430(28);
         break;
     case 12:
-        /* off=6848: two patterns: guard check + Status stat chain */
-        /* Pattern 1: guarded item check */
-        tmp = func_001775a0(1);
-        func_003c7bc0(0, tmp);
-        func_003c7430(26);
+        /* off=6848: guard check (only for even kind) + Status stat chain */
+        if ((kind & 1) == 0) {
+            tmp = func_001775a0(1);
+            func_003c7bc0(0, tmp);
+            func_003c7430(26);
+        }
         /* Pattern 2: Status stat chain */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
