@@ -22194,7 +22194,7 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   param_7 = param_7 & 0xff;
 
-  param_1 = DAT_00960088 - param_1;
+  param_1 = *(float *)&DAT_00960088 - param_1;
 
   fVar5 = DAT_007cae00 + DAT_007caf14 * (float)param_8;
 
@@ -22206,13 +22206,11 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   fStack_bc = (float)param_3 + (float)-param_4 * fVar5;
 
-  fStack_a0 = (float)uVar1;
-
-  fStack_9c = (float)uVar3;
-
-  fStack_98 = (float)uVar2;
-
-  fStack_94 = (float)param_7;
+  { float *vc = (float *)&fStack_a0;
+    vc[0] = (float)uVar1;
+    vc[1] = (float)uVar3;
+    vc[2] = (float)uVar2;
+    vc[3] = (float)param_7; }
 
   fVar5 = DAT_007cae00 + DAT_007caf14 * (float)(param_8 + 0x78);
 
@@ -22228,13 +22226,11 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   fStack_7c = (float)param_3 + (float)-param_5 * fVar5;
 
-  fStack_60 = (float)uVar1;
-
-  fStack_5c = (float)uVar3;
-
-  fStack_58 = (float)uVar2;
-
-  fStack_54 = (float)param_7;
+  { float *vc = (float *)&fStack_60;
+    vc[0] = (float)uVar1;
+    vc[1] = (float)uVar3;
+    vc[2] = (float)uVar2;
+    vc[3] = (float)param_7; }
 
   fVar5 = DAT_007cae00 + DAT_007caf14 * (float)(param_8 + -0x78);
 
@@ -22250,13 +22246,11 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   fStack_3c = (float)param_3 + (float)-param_6 * fVar5;
 
-  fStack_20 = (float)uVar1;
-
-  fStack_1c = (float)uVar3;
-
-  fStack_18 = (float)uVar2;
-
-  fStack_14 = (float)param_7;
+  { float *vc = (float *)&fStack_20;
+    vc[0] = (float)uVar1;
+    vc[1] = (float)uVar3;
+    vc[2] = (float)uVar2;
+    vc[3] = (float)param_7; }
 
   fStack_38 = param_1;
 
