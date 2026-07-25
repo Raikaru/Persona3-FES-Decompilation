@@ -6723,14 +6723,17 @@ void func_002e7890(u64 param_1)
     action = work->action;
     if ((action->unk_1a & 1) == 0)
       break;
-    if (unit->genus == 0)
+    if (unit->genus == 0) {
       voiceData = base + 0x3ac + 4;
+      btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
+                               &startPosition, &endPosition);
+    }
     else {
       randomIndex = FUN_002ffbc0(2);
       voiceData = base + ((randomIndex & 0xffff) * 0x34) + 0x20c + 4;
+      btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
+                               &startPosition, &endPosition);
     }
-    btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
-                             &startPosition, &endPosition);
     FUN_002a3e80(0.0f, (u8 *)work->action, 0, 0, 0x40);
     break;
   }
