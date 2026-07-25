@@ -468,7 +468,7 @@ void bsaMain00210d90(BsaWork* work)
         origin[0] = p[0x4c40] < 10 ? 113.0f : 106.0f;
         origin[1] = 62.0f + base;
         bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
-        bsaSetColor(p + 0x4c50, bsaAlpha(alpha * 255.0f));
+        for (i = 0; i < 2; i++) bsaSetColor(p + 0x4c50 + i * 0x40, bsaAlpha(alpha * 255.0f));
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
@@ -484,7 +484,7 @@ void bsaMain00210d90(BsaWork* work)
     }
     if ((p[1] & BSA_FLAG_STATUS) == 0) {
         f32 origin[2];
-        origin[0] = 181.0f;
+        origin[0] = 162.0f;
         origin[1] = base + 113.0f;
         bpIFont00238a50(p + 0x1398, 4, p[0x1394], 1, origin);
         for (i = 0; i < 4; i++) bsaSetColor(p + 0x1398 + i * 0x40, bsaAlpha(alpha * 255.0f));
@@ -503,7 +503,7 @@ void bsaMain00210d90(BsaWork* work)
     }
     if ((p[1] & BSA_FLAG_PERSONA) == 0) {
         f32 origin[2];
-        origin[0] = 181.0f;
+        origin[0] = 162.0f;
         origin[1] = base + 130.0f;
         bpIFont00238a50(p + 0x149c, 4, p[0x1498], 1, origin);
         for (i = 0; i < 4; i++) bsaSetColor(p + 0x149c + i * 0x40, bsaAlpha(alpha * 255.0f));
