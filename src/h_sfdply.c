@@ -1311,7 +1311,7 @@ void func_0010cdd0(void)
 {
     HSfdDecodeSlot* slot;
     const char* path;
-    u32 size;
+    u32 size[1];
     u32 copySize;
     s32 i;
     s32 pathIndex;
@@ -1341,13 +1341,13 @@ void func_0010cdd0(void)
                     void* allocBuf;
 
                     pathIndex = slot->fileIndex * 3;
-                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex], &size);
-                    allocBuf = (void*)func_0050B690(0, size, 0);
+                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex], &size[0]);
+                    allocBuf = (void*)func_0050B690(0, size[0], 0);
                     if (allocBuf == NULL) { K_Assert("h_sndcom.c", 0x144); }
-                    func_00521250(D_00823650, fileData, size);
-                    func_0010cce0(allocBuf, D_00823650, size);
+                    func_00521250(D_00823650, fileData, size[0]);
+                    func_0010cce0(allocBuf, D_00823650, size[0]);
                     slot->input = allocBuf;
-                    slot->inputSize = size;
+                    slot->inputSize = size[0];
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
                     slot->state = 4;
@@ -1369,12 +1369,12 @@ void func_0010cdd0(void)
                     u32 remaining;
 
                     pathIndex = slot->fileIndex * 3;
-                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 1], &size);
+                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 1], &size[0]);
                     chunkBuf = (void*)func_0050B690(0, 0x1000, 0);
                     if (chunkBuf == NULL) { K_Assert("h_sndcom.c", 0x177); }
                     intermediate = slot->intermediate;
-                    slot->intermediateSize = size;
-                    remaining = size;
+                    slot->intermediateSize = size[0];
+                    remaining = size[0];
 
                     do {
                         u32 chunkSize;
@@ -1405,25 +1405,35 @@ void func_0010cdd0(void)
                 break;
 
             case 7:
+            {
+                void* fileData;
+                void* allocBuf;
+                void* input;
+                void* intermediate;
+                u32 inputSize;
+                u32 intermediateSize;
+                s32 queueHandle;
+                s32 decodeHandle;
+                s32 auxHandle;
+
+                input = slot->input;
+                inputSize = slot->inputSize;
+                intermediate = slot->intermediate;
+                intermediateSize = slot->intermediateSize;
+
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
-                    void* fileData;
-                    void* allocBuf;
-                    s32 queueHandle;
-                    s32 decodeHandle;
-                    s32 auxHandle;
-
                     pathIndex = slot->fileIndex * 3;
-                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 2], &size);
-                    allocBuf = (void*)func_0050B690(0, size, 0);
+                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 2], &size[0]);
+                    allocBuf = (void*)func_0050B690(0, size[0], 0);
                     if (allocBuf == NULL) { K_Assert("h_sndcom.c", 0x1A2); }
-                    func_0010cce0(allocBuf, fileData, size);
+                    func_0010cce0(allocBuf, fileData, size[0]);
                     slot->output = allocBuf;
-                    slot->outputSize = size;
+                    slot->outputSize = size[0];
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
 
-                    queueHandle = func_0051DC70(3, -1, (s32)slot->input, slot->inputSize, (s32)slot->intermediate, slot->intermediateSize);
+                    queueHandle = func_0051DC70(3, -1, (s32)input, inputSize, (s32)intermediate, intermediateSize);
                     if (queueHandle < 0) { K_Assert("h_sndcom.c", 0x1AE); }
                     slot->queueHandle = queueHandle;
 
@@ -1440,10 +1450,17 @@ void func_0010cdd0(void)
                     slot->state = 1;
                 }
                 break;
+            }
 
             case 8:
             {
-                void* resourceData = slot->resource;
+                void* input;
+                void* intermediate;
+                void* output;
+                u32 inputSize;
+                u32 intermediateSize;
+                u32 outputSize;
+                void* resourceData;
                 void* inputBuf;
                 void* auxBuf;
                 void* outputData;
@@ -1455,17 +1472,25 @@ void func_0010cdd0(void)
                 s32 decodeHandle;
                 s32 auxHandle;
 
-                copySize = slot->inputSize;
+                input = slot->input;
+                inputSize = slot->inputSize;
+                intermediate = slot->intermediate;
+                intermediateSize = slot->intermediateSize;
+                output = slot->output;
+                outputSize = slot->outputSize;
+                resourceData = slot->resource;
+
+                copySize = inputSize;
                 inputBuf = (void*)func_0050B690(0, copySize, 0);
                 if (inputBuf == NULL) { K_Assert("h_sndcom.c", 0x1C8); }
                 func_0010cce0(inputBuf, resourceData, copySize);
                 slot->input = inputBuf;
                 slot->inputSize = copySize;
 
-                remaining = slot->intermediateSize;
+                remaining = intermediateSize;
                 auxBuf = (void*)func_0050B690(0, 0x10000, 0);
                 if (auxBuf == NULL) { K_Assert("h_sndcom.c", 0x1DF); }
-                outputData = slot->intermediate;
+                outputData = intermediate;
 
                 do {
                     if (remaining > 0x10000) {
@@ -1484,7 +1509,7 @@ void func_0010cdd0(void)
                 func_0050B710(auxBuf);
 
                 sourceData = slot->sourceData;
-                copySize = slot->outputSize;
+                copySize = outputSize;
                 outputBuf = (void*)func_0050B690(0, copySize, 0);
                 if (outputBuf == NULL) { K_Assert("h_sndcom.c", 0x1FB); }
                 func_0010cce0(outputBuf, sourceData, copySize);
