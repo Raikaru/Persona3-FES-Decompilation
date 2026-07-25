@@ -2430,6 +2430,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     s16 soundId;
     s16 tempS16;
     s32 animLength;
+    u32 sp1d0;
     u32 sp160;
     u32 rotCount;
     u32 randExtra;
@@ -2458,6 +2459,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     packetUIDs[2] = 0;
     sp190 = -1;
     sp180 = -1;
+    sp1d0 = 0;
     unk1f0 = (action->unk_18 & 0x4000) != 0;
     if (unk1f0)
     {
