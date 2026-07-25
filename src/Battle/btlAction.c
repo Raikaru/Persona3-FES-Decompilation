@@ -6117,158 +6117,327 @@ void btlActionUpdateStateEscape(BtlAction* action)
     BtlAction* current;
     BtlAction* escapeActions[10];
     BtlUnit* unit;
-    BtlUnit* ecUnit;
-    BtlPacket* root;
+    BtlUnit* currentUnit;
+    BtlPacket* rootPacket;
     BtlPacket* packet;
     BtlPacket* movePacket;
+    RwV3d sphereCenter;
+    RwV3d direction;
+    RwV3d rotation;
     RwV3d destination;
-    RwV3d home;
-    RwV3d ecHome;
-    RwV3d ecDest;
-    u16 escapeCount;
+    u16 count;
     u16 i;
-    
+    u16 mode;
+    u16 hasDownEnemy;
+
     btlAction0028a780(action);
-    root = func_002bd780(action->unit, action->target.commandId);
-    root->actionUID = action->uid;
-    btlPacketRegister(root, BTLPACKET_TYPE_2D);
-    action->unk_18 |= 0x20;
-    action->unk_1a &= ~8;
-    
+    rootPacket = func_002bd780(action->unit, action->target.commandId);
+    rootPacket->actionUID = action->uid;
+    btlPacketRegister(rootPacket, BTLPACKET_TYPE_3D);
+
+    mode = 0;
+    hasDownEnemy = 0;
+    count = 0;
     unit = action->unit;
-    escapeCount = 0;
-    for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
+
+    switch (unit->genus)
     {
-        if ((current->unk_1a & 1) == 0)
-            continue;
-        ecUnit = current->unit;
-        if (ecUnit->genus != UNIT_GENUS_EC)
-            continue;
-        if (datCalcIsDead(ecUnit->datUnit, 0) != 0)
-            continue;
-        current->unk_18 |= 0x8000;
-        escapeActions[escapeCount] = current;
-        escapeCount++;
+    case UNIT_GENUS_PC:
+        if (unit->charId == 1)
+        {
+            hasDownEnemy = 1;
+            current = gBtl->actionList.tail;
+            while (current != NULL)
+            {
+                currentUnit = current->unit;
+                if ((current->unk_1a & 1) != 0 &&
+                    currentUnit->genus == UNIT_GENUS_EC &&
+                    currentUnit->datUnit != NULL &&
+                    datCalcChkBadStatus(currentUnit->datUnit, UNIT_BADSTATUS_DOWN) == 0)
+                {
+                    hasDownEnemy = 0;
+                    break;
+                }
+                current = current->prev;
+            }
+
+            if (func_0030c2a0(unit->datUnit) != 0 ||
+                hasDownEnemy != 0 ||
+                gBtl->order.flags == 1)
+            {
+                mode |= 4;
+            }
+            else
+            {
+                mode |= 2;
+            }
+
+            current = gBtl->actionList.tail;
+            while (current != NULL)
+            {
+                currentUnit = current->unit;
+                if ((current->unk_1a & 1) != 0 &&
+                    currentUnit->genus == UNIT_GENUS_PC &&
+                    datCalcIsDead(currentUnit->datUnit, 0) == 0)
+                {
+                    if ((mode & 2) != 0 && current != action)
+                    {
+                        current->unk_18 |= 0x8000;
+                    }
+                    escapeActions[count] = current;
+                    count++;
+                }
+                current = current->prev;
+            }
+
+            if ((gBtl->order.flags & 2) != 0)
+            {
+                FUN_0029a750();
+                gBtl->order.flags &= ~2;
+            }
+            mode |= 1;
+        }
+        else
+        {
+            count = 1;
+            action->unk_18 |= 0x20;
+            action->unk_1a &= ~8;
+        }
+        break;
+
+    case UNIT_GENUS_EC:
+        count = 1;
+        action->unk_18 |= 0x20;
+        action->unk_1a &= ~8;
+        break;
     }
-    
-    if (unit->genus == UNIT_GENUS_PC && (gBtl->flags & 2) != 0)
-    {
-        FUN_0029a750();
-        gBtl->flags &= ~2;
+
+    if ((mode & 2) == 0)
+        {
+        if ((mode & 1) == 0)
+        {
+            packet = btlCameraCreateSetStatePacket(action, 9);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+        }
+        else
+        {
+            packet = btlCameraCreateSetStatePacket(action, 7);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+        }
+
+        if (unit->genus == UNIT_GENUS_PC)
+        {
+            packet = func_002dd1f0(0xf, 2, 0);
+            packet->unk_00 = 5;
+            packet->parentUID = rootPacket->uid;
+            packet->preUpdateDelay = 0x20;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            if ((mode & 4) == 0)
+            {
+                if (action->oldState == 0x1a)
+                {
+                    movePacket = btlVoice002e2be0(action, 2, 0, 0, 0);
+                    movePacket->actionUID = action->uid;
+                    btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+                    packet = FUN_002db740(action, 3, 0, 0, 0);
+                    packet->unk_00 = 4;
+                    packet->parentUID = movePacket->uid;
+                    packet->actionUID = action->uid;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                }
+            }
+            else
+            {
+                packet = func_002bfb50();
+                packet->unk_00 = 5;
+                packet->parentUID = rootPacket->uid;
+                packet->preUpdateDelay = 0x16;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+        }
+        else
+        {
+            packet = func_002dd100(0xc, 2, 0x16);
+            packet->unk_00 = 5;
+            packet->parentUID = rootPacket->uid;
+            packet->preUpdateDelay = 0x1c;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            packet = FUN_002db740(action, 4, 0, 0, 0);
+            packet->actionUID = action->uid;
+            packet->preUpdateDelay = 0xc;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+
+        for (i = 0; i < count; i++)
+        {
+            current = escapeActions[i];
+            currentUnit = current->unit;
+            btlUnitGetSphereWorldCenter(currentUnit, &sphereCenter);
+            btlUnit0027f7c0(currentUnit, NULL, &rotation, NULL);
+            RtQuatTransformVectors(&direction, &D_006978A0, 1, (RtQuat*)&rotation);
+            if (unit->genus == UNIT_GENUS_PC)
+            {
+                direction.x *= 500.0f;
+                direction.y *= 500.0f;
+                direction.z *= 500.0f;
+                destination.x = sphereCenter.x + direction.x;
+                destination.y = sphereCenter.y + direction.y;
+                destination.z = sphereCenter.z + direction.z;
+                movePacket = btlUnitCreateMovePacket(currentUnit, &destination, 0.5f, 0);
+            }
+            else
+            {
+                if (iGpffffb728[currentUnit->charId].field_22 != 1)
+                {
+                    direction.x *= 129.6f;
+                    direction.y *= 129.6f;
+                    direction.z *= 129.6f;
+                    destination.x = sphereCenter.x + direction.x;
+                    destination.y = sphereCenter.y + direction.y;
+                    destination.z = sphereCenter.z + direction.z;
+                }
+                else
+                {
+                    destination = sphereCenter;
+                }
+                movePacket = btlUnitCreateMovePacket(currentUnit, &destination, 0.2f, 4);
+            }
+            movePacket->unk_00 = 5;
+            movePacket->parentUID = rootPacket->uid;
+            movePacket->preUpdateDelay = 0x16;
+            movePacket->actionUID = action->uid;
+            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+
+            packet = btlUnit00285d30(currentUnit, 0xffffff, 8, 0, 4, 0);
+            packet->unk_00 = 5;
+            packet->parentUID = movePacket->uid;
+            packet->preUpdateDelay = 0xc;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+
+        if ((mode & 4) != 0)
+        {
+            packet = btlCreateSetFlagsPacket(0x80);
+            packet->unk_00 = 4;
+            packet->parentUID = movePacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            *(u32*)((u8*)gBtl + 0x1c) = 3;
+        }
     }
-    
-    if (unit->genus == UNIT_GENUS_PC)
+    else
     {
-        packet = FUN_002db740(action, 3, 0, 0, 0);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
+        packet = btlCameraCreateSetStatePacket(action, 7);
         packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    
-    for (i = 0; i < escapeCount; i++)
-    {
-        current = escapeActions[i];
-        ecUnit = current->unit;
-        ecDest.x = ecUnit->pos.x * 501.0f;
-        ecDest.y = ecUnit->pos.y;
-        ecDest.z = ecUnit->pos.z * 501.0f;
-        movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 1.0f, 8);
-        movePacket->unk_00 = 5;
-        movePacket->parentUID = root->uid;
-        movePacket->actionUID = action->uid;
-        btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-        btlUnit0027f7c0(ecUnit, NULL, NULL, &ecDest);
-        packet = btlUnitCreateRotatePacket(ecUnit, &ecDest, 2);
-        packet->unk_00 = 4;
-        packet->parentUID = movePacket->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = btlUnit00285d30(ecUnit, 0xffffff, 8, 0, 4, 0);
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+        packet = func_002bfb50();
         packet->unk_00 = 5;
-        packet->parentUID = root->uid;
+        packet->parentUID = rootPacket->uid;
+        packet->preUpdateDelay = 0x16;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    
-    if (unit->genus == UNIT_GENUS_EC)
-    {
-        packet = FUN_002db740(action, 4, 0, 0, 0);
+
+        for (i = 0; i < count; i++)
+        {
+            current = escapeActions[i];
+            currentUnit = current->unit;
+            func_00280050(currentUnit, &sphereCenter);
+            btlUnit0027f7c0(currentUnit, NULL, &rotation, NULL);
+            RtQuatTransformVectors(&direction, &D_006978A0, 1, (RtQuat*)&rotation);
+            direction.x *= 500.0f;
+            direction.y *= 500.0f;
+            direction.z *= 500.0f;
+            destination.x = sphereCenter.x + direction.x;
+            destination.y = sphereCenter.y + direction.y;
+            destination.z = sphereCenter.z + direction.z;
+            movePacket = btlUnitCreateMovePacket(currentUnit, &destination, 0.5f, 8);
+            movePacket->unk_00 = 5;
+            movePacket->parentUID = rootPacket->uid;
+            movePacket->preUpdateDelay = 0xb;
+            movePacket->actionUID = action->uid;
+            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+
+            packet = btlUnit00285d30(currentUnit, 0xffffff, 8, 0, 4, 0);
+            packet->unk_00 = 5;
+            packet->parentUID = movePacket->uid;
+            packet->preUpdateDelay = 0xc;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+
+        packet = func_002bfae0();
         packet->unk_00 = 4;
-        packet->parentUID = root->uid;
+        packet->parentUID = rootPacket->uid;
+        packet->preUpdateDelay = 0xc;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+        packet = FUN_002bd850(action->unit, 0xd8);
+        packet->unk_00 = 4;
+        packet->parentUID = rootPacket->uid;
+        packet->preUpdateDelay = 4;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+
+        packet = FUN_002db740(action, 2, 0, 0, 2);
+        packet->unk_00 = 4;
+        packet->parentUID = rootPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+        for (i = 0; i < count; i++)
+        {
+            current = escapeActions[i];
+            currentUnit = current->unit;
+            func_00280050(currentUnit, &sphereCenter);
+            btlUnit0027f7c0(currentUnit, NULL, &rotation, NULL);
+            RtQuatTransformVectors(&direction, &D_006978A0, 1, (RtQuat*)&rotation);
+            direction.x *= 250.0f;
+            direction.y *= 250.0f;
+            direction.z *= 250.0f;
+            destination.x = sphereCenter.x + direction.x;
+            destination.y = sphereCenter.y + direction.y;
+            destination.z = sphereCenter.z + direction.z;
+
+            movePacket = btlUnitCreateMovePacket(currentUnit, &destination, 1.0f, 9);
+            movePacket->unk_00 = 4;
+            movePacket->parentUID = rootPacket->uid;
+            movePacket->actionUID = action->uid;
+            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+
+            unit = (BtlUnit*)btlUnitCreateMovePacket(currentUnit, &destination, 0.5f, 0x18);
+            ((BtlPacket*)unit)->unk_00 = 4;
+            ((BtlPacket*)unit)->parentUID = movePacket->uid;
+            ((BtlPacket*)unit)->actionUID = action->uid;
+            btlPacketRegister((BtlPacket*)unit, BTLPACKET_TYPE_1);
+
+            packet = btlUnitCreateRotatePacket(currentUnit, NULL, 0x20);
+            packet->unk_00 = 4;
+            packet->parentUID = ((BtlPacket*)unit)->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            packet = btlUnit00285d30(currentUnit, (u32)-1, 4, 0, 4, 0);
+            packet->unk_00 = 4;
+            packet->parentUID = rootPacket->uid;
+            packet->preUpdateDelay = 0xc;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
     }
-    
-    btlUnit0027f7c0(action->unit, &home, NULL, NULL);
-    destination = action->unit->pos;
-    destination.x += (action->unit->pos.x - home.x) * 500.0f;
-    destination.z += (action->unit->pos.z - home.z) * 500.0f;
-    packet = btlUnitCreateMovePacket(action->unit, &destination, 1.0f, 8);
-    packet->unk_00 = 5;
-    packet->parentUID = root->uid;
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = btlUnit00285d30(action->unit, 0xffffff, 8, 0, 4, 0);
-    packet->unk_00 = 5;
-    packet->parentUID = root->uid;
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
     packet = FUN_002d7fb0(action, 0);
-    packet->parentUID = root->uid;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    
-    for (i = 0; i < escapeCount; i++)
-    {
-        current = escapeActions[i];
-        ecUnit = current->unit;
-        btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-        ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 250.0f;
-        ecDest.y = ecUnit->pos.y;
-        ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 250.0f;
-        movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 0.5f, 24);
-        movePacket->unk_00 = 4;
-        movePacket->parentUID = root->uid;
-        movePacket->actionUID = action->uid;
-        btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-        packet = btlUnit00285d30(ecUnit, -1, 4, 0, 4, 0);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    
-    for (i = 0; i < escapeCount; i++)
-    {
-        current = escapeActions[i];
-        ecUnit = current->unit;
-        packet = btlCameraCreateSetStatePacket(action, 7);
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    
-    if (escapeCount != 0)
-    {
-        packet = btlCameraCreateSetStatePacket(action, 7);
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002dd100(10, 2, 0x12);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = btlVoice002e2be0(action, 4, 0, 0, 0);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002db740(action, 2, 0, 0, 0);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
     btlActionSetState(action, BTLACTION_STATE_PACKET);
 }
 
@@ -6527,154 +6696,324 @@ void btlActionInitStateRoundUp(BtlAction* action)
 // FUN_00298610 NONMATCHING
 void btlActionUpdateStateRoundUp(BtlAction* action)
 {
+    typedef struct
+    {
+        u32 w[4];
+    } RoundUpQuad;
+    typedef union
+    {
+        u32 words[0x24];
+        u8 bytes[0x90];
+    } RoundUpScratch;
+
     BtlPacket* packet;
-    BtlPacket* skillPacket;
-    BtlPacket* voicePacket;
+    BtlPacket* castPacket;
+    BtlPacket* movePacket;
+    BtlPacket* animPacket;
+    BtlPacket* rootPacket;
     BtlAction* target;
+    BtlAction* basis;
     BtlAction* current;
+    u64 actionUID;
     u32 rootH;
-    u32 stackBuf[3];
-    u16 i;
-    u16 j;
     u32 posX;
     u32 posY;
+    RoundUpScratch stackBuf;
+    u32 sp100;
+    u16 sp110;
+    u16 specificId;
+    u16 i;
+    u16 j;
+    u16 groupCount;
+    u16 delayStep;
+    RoundUpQuad loopQuad;
+    RoundUpQuad flagQuad;
+    RoundUpQuad resultQuad;
+    RoundUpQuad delayQuad;
+    u8* result;
+    u32 damageWork[7];
 
+    actionUID = action->uid;
     rootH = FUN_002b8f90(1);
     for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
     {
         if (current->unk_28 != 0)
         {
-            FUN_002d7fb0(current, 2);
+            packet = FUN_002d7fb0(current, 2);
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
     }
-    for (j = 0; j < 3; j++)
+
+    specificId = action->target.specificId;
+    for (i = 0; i < ACTION_U16(gBtl, 0xb98); i++)
     {
-        stackBuf[j] = 0;
+        stackBuf.words[i] = (u32)(*(BtlAction**)((u8*)gBtl + 0xb88 + i * 4))->unit;
     }
-    packet = FUN_002bc950(stackBuf[0], stackBuf[1], stackBuf[2]);
-    packet->actionUID = action->uid;
+    for (; i < 3; i++)
+    {
+        stackBuf.words[i] = 0;
+    }
+
+    packet = FUN_002bc950(stackBuf.words[0], stackBuf.words[1], stackBuf.words[2]);
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002e3c80();
-    packet->unk_00 = 0xa;
-    ACTION_U16(packet, 8) = 0xc06;
-    ACTION_U8(packet, 0x10) = 0xa;
-    ACTION_U16(packet, 0x18) = 0xc05;
-    packet->actionUID = action->uid;
+    rootPacket = FUN_002e3c80();
+    rootPacket->unk_00 = 0xa;
+    ACTION_U16(rootPacket, 8) = 0xc06;
+    ACTION_U8(rootPacket, 0x10) = 0xa;
+    ACTION_U16(rootPacket, 0x18) = 0xc05;
+    rootPacket->actionUID = actionUID;
+    btlPacketRegister(rootPacket, BTLPACKET_TYPE_1);
+
+    packet = btlVoice002e2be0((BtlAction*)ACTION_U32(action, 0x494), 5, 0, 0, 0);
+    packet->unk_00 = 5;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    voicePacket = btlVoice002e2be0((BtlAction*)ACTION_U32(action, 0x494), 5, 0, 0, 0);
-    voicePacket->unk_00 = 5;
-    voicePacket->parentUID = packet->uid;
-    voicePacket->actionUID = action->uid;
-    btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+    packet = FUN_002dd690(3, 0x693358);
+    packet->unk_00 = 5;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    voicePacket = FUN_002dd690(3, 0x693358);
-    voicePacket->unk_00 = 5;
-    voicePacket->parentUID = packet->uid;
-    voicePacket->actionUID = action->uid;
-    btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+    func_0029ea60(specificId, &posX, &posY);
+    packet = func_0029f4b0(posX, posY, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    {
+        void* area = func_0029ec00(specificId);
+        func_0029ec80(specificId, &posX, &posY);
+        sp100 = (s32)(s16)specificId;
+        packet = func_002a0050(area, posX, posY, 0x10,
+                               (iGpffffb710[specificId].flags & 2) != 0);
+        packet->unk_00 = 4;
+        packet->parentUID = rootPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    packet = func_002a1280(func_0029ec50(specificId), 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = func_002a1b00(action, specificId, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = rootPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    {
+        func_002bb6f0(specificId, stackBuf.bytes);
+        castPacket = FUN_002bac00(rootH, stackBuf.bytes, 0);
+        castPacket->unk_00 = 4;
+        castPacket->parentUID = rootPacket->uid;
+        castPacket->actionUID = actionUID;
+        btlPacketRegister(castPacket, BTLPACKET_TYPE_1);
+    }
+
+    movePacket = FUN_002baf90(rootH, action->unit,
+                              action->target.targetedActions[0]->unit, 0, 0);
+    movePacket->unk_00 = 4;
+    movePacket->parentUID = castPacket->uid;
+    movePacket->actionUID = actionUID;
+    btlPacketRegister(movePacket, BTLPACKET_TYPE_3D);
+
+    {
+        u32 delayKind = ACTION_U32(action, 0x498) != 0 ? 0x13 : 0x14;
+        packet = FUN_002dd100(0xc, 2, delayKind);
+        packet->unk_00 = 5;
+        packet->parentUID = movePacket->uid;
+        packet->preUpdateDelay = 0xf;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    sp110 = 0;
+    delayStep = FUN_002d4cc0(specificId) & 0xffff;
+    delayQuad = *(RoundUpQuad*)&delayStep;
 
     for (i = 0; i < action->target.targetedCount; i++)
     {
         target = action->target.targetedActions[i];
-        if (target == NULL)
-        {
-            continue;
-        }
+        groupCount = func_002b9640(&ACTION_U8(target, 0xc8));
+        basis = ACTION_U32(target, 0xd4) != 0 ? action : target;
 
-        skillPacket = FUN_002bd480(target->unit);
-        skillPacket->actionUID = action->uid;
-        btlPacketRegister(skillPacket, BTLPACKET_TYPE_1);
+        packet = FUN_002bd480(basis->unit);
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-        packet = FUN_002baf90(rootH, action->unit, target->unit, 1, 0);
+        movePacket = FUN_002baf90(rootH, action->unit, basis->unit, 1,
+                                  groupCount | 0x1000);
+        movePacket->unk_00 = 4;
+        movePacket->parentUID = castPacket->uid;
+        movePacket->preUpdateDelay = (s16)sp110;
+        movePacket->actionUID = actionUID;
+        btlPacketRegister(movePacket, BTLPACKET_TYPE_3D);
+
+        packet = FUN_002dd100(0xa, 0, 4);
         packet->unk_00 = 0xb;
-        packet->parentUID = skillPacket->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+        packet->parentUID = movePacket->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-        for (j = 0; j < ACTION_U8(target, 0xc8); j++)
+        if (ACTION_U32(target, 0xd4) != 0)
         {
-            u8* result = (u8*)target + 0xe0 + j * 0x1c;
-
-            packet = FUN_002bdbd0(action->unit, target->unit, action->target.specificId,
-                                  ACTION_U16(target, 0xcc), ACTION_U16(target, 0xce), j,
-                                  ACTION_U8(target, 0xc8), result);
-            packet->parentUID = skillPacket->uid;
-            packet->unk_47 &= ~0x20;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-
-            packet = FUN_00284200(0x3f800000, ACTION_U8(target, 0xc8) - 1, 0, 0, 0);
+            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc8c), action->unit,
+                                  target->unit, 1, 0);
             packet->unk_00 = 0xb;
-            packet->parentUID = skillPacket->uid;
-            packet->actionUID = action->uid;
+            packet->parentUID = movePacket->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
-
-            packet = FUN_002bd230(target->unit, 0, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = skillPacket->uid;
-            packet->unk_47 &= ~0x20;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
         }
-
+        if (ACTION_U16(target, 0xcc) == 0x400)
         {
-            func_0029ea60(target->uid, &posX, &posY);
-
-            packet = func_0029f4b0(posX, posY, 0x10);
-            packet->unk_00 = 4;
-            packet->parentUID = skillPacket->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-
-            {
-                void* area = func_0029ec00(target->uid);
-                func_0029ec80(target->uid, &posX, &posY);
-
-                packet = func_002a0050(area, posX, posY, 0x10, 0);
-                packet->unk_00 = 4;
-                packet->parentUID = skillPacket->uid;
-                packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-
-            {
-                void* hitArea = func_0029ec50(target->uid);
-                packet = func_002a1280(hitArea, 0x10);
-                packet->unk_00 = 4;
-                packet->parentUID = skillPacket->uid;
-                packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-
-            packet = func_002a1b00(action, target->uid, 0x10);
-            packet->unk_00 = 4;
-            packet->parentUID = skillPacket->uid;
-            packet->actionUID = action->uid;
+            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc90), action->unit,
+                                  basis->unit, 1, 0);
+            packet->unk_00 = 0xb;
+            packet->parentUID = movePacket->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
-        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+
+        for (j = 0; j < groupCount; j++)
+        {
+            result = (u8*)target + 0xe0 + j * 0x1c;
+            resultQuad = *(RoundUpQuad*)&result;
+            result = (u8*)resultQuad.w[0];
+
+            animPacket = btlUnitCreateAnimPacket(basis->unit,
+                                                 *(s8*)(result + 0x18), 0,
+                                                 1.0f, 0);
+            animPacket->unk_00 = 0xb;
+            animPacket->parentUID = movePacket->uid;
+            animPacket->actionUID = actionUID;
+            btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
+
+            packet = btlUnitCreateRotateTowardUnitPacket(target->unit,
+                                                         action->unit, 2);
+            packet->unk_00 = 5;
+            packet->parentUID = animPacket->uid;
+            packet->unk_47 &= ~0x20;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            packet = FUN_002d7e20(action, basis, result,
+                                  ACTION_U16(target, 0xcc),
+                                  ACTION_U16(target, 0xce));
+            packet->unk_00 = 5;
+            packet->parentUID = animPacket->uid;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            packet = FUN_002d8090(target);
+            packet->unk_00 = 5;
+            packet->parentUID = animPacket->uid;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+            if (i == action->target.targetedCount - 1 && j == groupCount - 1)
+            {
+                packet = FUN_002d8090(action);
+                packet->unk_00 = 5;
+                packet->parentUID = animPacket->uid;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+
+            if (j == 0 && *(u32*)result != 0)
+            {
+                packet = FUN_002bd230(basis->unit, 0, 0);
+                packet->unk_00 = 5;
+                packet->parentUID = animPacket->uid;
+                packet->unk_47 &= ~0x20;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+            }
+
+            flagQuad = *(RoundUpQuad*)&result;
+            flagQuad.w[0] += 0x1a;
+            if (*(u16*)flagQuad.w[0] & 1)
+            {
+                FUN_002d5dc0(damageWork);
+                damageWork[3] = 0x100000;
+                packet = FUN_002d7e20(target, target, damageWork, 1, 1);
+                packet->unk_00 = 4;
+                packet->parentUID = rootPacket->uid;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+                if (*(u16*)flagQuad.w[0] & 2)
+                {
+                    packet = btlUnitCreateAnimPacket(target->unit, 0xa, 0,
+                                                     1.0f, 0);
+                    packet->unk_00 = 4;
+                    packet->parentUID = animPacket->uid;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+                    packet = btlUnit00284c90(target->unit);
+                    packet->unk_00 = 4;
+                    packet->parentUID = animPacket->uid;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                }
+            }
+
+            packet = FUN_002bdbd0(action->unit, basis->unit, sp100,
+                                  ACTION_U16(target, 0xcc),
+                                  ACTION_U16(target, 0xce), j,
+                                  groupCount, result);
+            packet->unk_00 = 5;
+            packet->parentUID = animPacket->uid;
+            packet->unk_47 &= ~0x20;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+
+            loopQuad = *(RoundUpQuad*)&j;
+            j = (u16)loopQuad.w[0] + 1;
+        }
+
+        sp110 += (u16)delayQuad.w[0];
     }
 
-    packet = FUN_0029fa50(0x10);
+    packet = func_0029fa50(0x10);
     packet->unk_00 = 4;
+    packet->parentUID = animPacket->uid;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a1080(0x10, 0);
+    packet = func_002a1080(0x10, 0);
     packet->unk_00 = 4;
-    packet->parentUID = skillPacket->uid;
+    packet->parentUID = animPacket->uid;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a16c0(0x10);
+    packet = func_002a16c0(0x10);
     packet->unk_00 = 4;
-    packet->parentUID = skillPacket->uid;
+    packet->parentUID = animPacket->uid;
     packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002a1db0(8);
+    packet->unk_00 = 4;
+    packet->parentUID = movePacket->uid;
+    packet->unk_47 &= ~0x20;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+    packet = FUN_002bc950(0, 0, 0);
+    packet->unk_00 = 4;
+    packet->parentUID = movePacket->uid;
+    packet->preUpdateWait.type = 4;
+    packet->preUpdateWait.value = movePacket->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     FUN_002b9030(rootH);
