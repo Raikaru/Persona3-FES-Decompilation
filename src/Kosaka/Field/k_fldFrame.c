@@ -2040,7 +2040,6 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
     u16 resTypeMask;
     s32 xGrid;
     s32 zGrid;
-    u8 copyBuf[8 * 4];
 
     type10ListHead = (void*)func_003b5d50(10);
     type3ListHead = (void*)func_003b5d50(3);
@@ -2062,9 +2061,8 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
     }
     collector.owner = collisionWorld;
 
-    memset(copyBuf, 0, sizeof(copyBuf));
     func_004c69f0(&diff, translation);
-    memset(&diff, 0, 0xc);
+    memset(collector.tail, 0, 0xc);
 
     if (collisionWorld == NULL)
     {
@@ -2222,7 +2220,6 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
         }
     }
 }
-
 // FUN_001aca40 NONMATCHING
 void* func_001aca40(f32 fraction, const RwV3d* line,
                     void* unused, FldFrameRaycast* raycast)
