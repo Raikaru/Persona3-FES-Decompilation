@@ -460,9 +460,11 @@ void bsaMain00210d90(BsaWork* work)
     drawColor[2] = 0xff;
     drawColor[3] = color;
     func_0021d950(p + 0x10, drawColor);
-    image = func_0021cca0(table2, 0x28);
-    bsaPlaceQuad(p, 0x510, image, 18.0f, base + 54.0f + slide,
-                 -1.0f, -1.0f, bsaAlpha(iconAlpha * 255.0f));
+    /*
+     * Retail has no icon quad here: its call sequence goes straight from the
+     * frame colour write to bpIFont.  The cca0(0x28)/d8e0/d950 triple that
+     * used to sit at this point was three calls retail does not make.
+     */
     /*
      * The transition has a second copy of the command frame.  It is kept
      * separate from the persistent frame at 0x10 so that the old panel can
@@ -477,7 +479,6 @@ void bsaMain00210d90(BsaWork* work)
         origin[1] = 62.0f + base;
         bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
         bsaSetColor(p + 0x4c50, color);
-        bsaSetColor(p + 0x4c90, color);
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
