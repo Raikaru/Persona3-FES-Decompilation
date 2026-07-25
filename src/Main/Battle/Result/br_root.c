@@ -113,7 +113,6 @@ extern void sflCount0025b5f0(void);
 extern void sflCursor0025aa70(void);
 extern void sflCard00258490(void);
 extern u8 *func_00256030(void);
-extern u32 sflPanel0023f430(void);
 extern void sflCard00258090(void);
 extern void sflCard002580e0(void);
 extern void func_0023f1d0(void);
@@ -128,7 +127,7 @@ extern u32 func_003c7610(void);
 extern void func_003c7990(s32);
 extern u32 func_003c7850(void);
 extern u32 func_003c7650(s32);
-extern void func_003c78d0(void);
+extern u32 func_003c78d0(void);
 extern void func_002594c0(void);
 extern u32 sflCard002595c0(void);
 extern void func_003c94e0(void *);
@@ -260,7 +259,7 @@ extern u32 datGetScenarioMode(void);
 extern void func_0020e200(void);
 extern u32 func_001f9170(s32);
 extern void func_00173660(DatPersonaWork *, s32);
-extern void func_0021a120(void);
+extern u32 func_0021a120(void);
 extern void func_00258300(void);
 extern void func_002550b0(void);
 extern void *func_0034fcd0(void *);
@@ -287,6 +286,9 @@ extern void sflCard00259310(void);
 extern u32 sflCard002561c0(void *);
 extern u32 sflCard002561d0(void *);
 extern u32 sflCard00259380(void);
+extern void sflResult001f9100(void);
+extern void func_0020d650(void *, const float *);
+extern void func_0034fcf0(void *);
 extern u32 D_00684610[];
 extern u32 func_001775a0(u32, ...);
 extern u32 func_0016c6f0(u32);
@@ -1041,7 +1043,7 @@ void *func_001f2300(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
     u32 state;
-    /* All child systems are advanced before the state transition. */
+    u32 temp;
     if ((BR_U32(work, 4) & 0x80) != 0 && sflRes0020e380() == 0) {
         BR_U32(work, 4) &= ~0x80u;
     }
@@ -1054,11 +1056,11 @@ void *func_001f2300(KwlnTask *task)
     func_001f5b20();
     state = BR_U32(work, 8);
     switch (state) {
-    case 0:
+    case 1:
         if (sflRes0020dfe0() == 0 && func_00254f20() == 0 && BR_U32(work, 0x2a210) != 0) {
             func_00254f70();
             if (BR_U32(work, 0xe4) == 0) {
-                func_003c72d0(sflRes0020e790());
+                func_003c72d0((void *)sflRes0020e790());
                 func_0023d130();
                 sflRes0020e3d0();
                 sflRes0020eb40();
@@ -1068,147 +1070,236 @@ void *func_001f2300(KwlnTask *task)
             BR_U32(work, 8) = 2;
         }
         break;
-    case 1:
+    case 2:
         if (sflGround0023d1f0() == 0 && sflCard002592c0() == 0) {
             BR_U32(work, 8) = func_001f4990() ? 4 : 3;
         }
         break;
-    case 2:
+    case 3:
+        if ((BR_U32(work, 4) & 2) == 0) {
+            u16 v = *(volatile u16*)0x007E094E;
+            if ((v & 0x9ff) != 0 || (*(volatile u16*)0x007E094C & 0x10) != 0) {
+                func_001f4a00();
+            }
+        }
+        break;
+    case 7:
         if (sflCard002582b0() == 0) {
             sflScript00259640();
             BR_U32(work, 0x1fd5c) = 0;
             BR_U32(work, 8) = 8;
         }
         break;
-    case 3:
+    case 8:
+        temp = BR_U32(work, 0x1fd5c);
+        if (temp < 15) {
+            BR_U32(work, 0x1fd5c) = temp + 1;
+        }
+        if (BR_U32(work, 0x1fd5c) == 15) {
+            if ((*(volatile u16*)0x007E094E & 0x40) != 0 ||
+                (*(volatile u16*)0x007E094C & 0x10) != 0) {
+                func_00258a50();
+                BR_U32(work, 8) = 9;
+            } else {
+                func_00259740();
+                if (func_002596f0() == 0) {
+                    BR_U32(work, 0x14) = 0;
+                    BR_U32(work, 8) = 10;
+                }
+            }
+        } else {
+            func_00259740();
+            if (func_002596f0() == 0) {
+                BR_U32(work, 0x14) = 0;
+                BR_U32(work, 8) = 10;
+            }
+        }
+        break;
+    case 10:
+        if ((s32)BR_U32(work, 0x14) >= 0) {
+            func_001f55e0();
+        } else {
+            BR_U32(work, 0x14)++;
+        }
+        break;
+    case 9:
         if (sflCard00258af0() == 0) {
             func_001f55e0();
         }
         break;
-    case 4:
-        if (sflRes0020e4c0() == 0) {
-            func_001f4750(task);
-            sflCard002580e0();
-        }
-        break;
-    case 5:
-        if (sflRes0020e9b0() == 0) {
-            func_003c77a0();
-            func_003c7430(0);
-            BR_U32(work, 8) = 5;
-        }
-        break;
-    case 6:
-        if (sflRes0020e4c0() == 0) {
-            func_001f53a0();
-        }
-        break;
-    case 8:
-        if (sflCount0025b640() != 0) {
-            sflCount0025b5f0();
-            sflCursor0025aa70();
-            func_001f56b0();
-            sflCard00258490();
-            func_00256030();
-            func_003c7650(0);
-            BR_U32(work, 4) &= ~0x220u;
-            BR_U32(work, 8) = 9;
-        }
-        break;
-    case 9:
-        if (sflCard002561d0(work) != 0) {
-            BR_U32(work, 4) &= ~0x200u;
-        }
-        if ((BR_U32(work, 4) & 0x200) != 0) {
-            BR_U32(work, 8) = 0x12;
-        } else if (sflRes0020e4c0() == 0) {
-            func_001f53a0();
-        }
-        break;
-    case 10:
+    case 13:
         if (sflRes0020e4c0() == 0) {
             func_0010a4e0(1, 15, 6, 13);
+            func_0023f1d0();
+            func_0023cda0();
+            func_003c7430(5);
+            func_003c74e0();
             BR_U32(work, 8) = 0x0e;
         }
         break;
-    case 11:
+    case 17:
         if (sflPanel0023f390() == 0 && sflGround0023d0e0() == 0) {
-            func_001f4750(task);
-            BR_U32(work, 8) = 0x0f;
+            if ((BR_U32(work, 4) & 0x200) != 0) {
+                func_003c7990(1);
+                if (func_003c7850() == 0) {
+                    func_003c7650(1);
+                }
+            } else {
+                func_003c7990(0);
+                if (func_003c7850() == 0) {
+                    func_003c7650(0);
+                }
+            }
+            if ((BR_U32(work, 4) & 0x40) != 0) {
+                BR_U32(work, 4) &= ~0x40u;
+            } else {
+                func_00256030();
+                temp = BR_U32((u8 *)func_00256030(), 4);
+                switch (temp) {
+                case 1:
+                case 0:
+                    if (temp == 1) {
+                        func_001f6d20((const f32 *)&work[4]);
+                    } else if (func_002561c0(work) == 0 && func_001f5760(*(u16*)(task + 8)) == 0) {
+                        func_001f6d20((const f32 *)&work[4]);
+                    }
+                    break;
+                case 2:
+                    func_001f9630();
+                    break;
+                }
+                if (func_002561d0(work) != 0) {
+                    BR_U32(work, 4) |= 0x1000u;
+                }
+                if ((BR_U32(work, 4) & 0x200) != 0) {
+                    BR_U32(work, 8) = 0x12;
+                } else {
+                    func_00255fe0();
+                    func_001f53a0();
+                }
+            }
         }
         break;
-    case 12:
+    case 18:
+        if (sflRes0020e4c0() == 0) {
+            func_0023f010();
+            func_0010a4e0(1, 2, 6, 13);
+            if (BR_U32(work, 0xe4) == 0) {
+                func_0023ca10();
+            }
+            BR_U32(work, 8) = 0x13;
+        }
+        break;
+    case 19:
+        if (sflPanel0023f390() == 0 && func_0023cd50() == 0) {
+            if (func_0016f190(0x1416) == 0) {
+                func_003c7430(7);
+                func_0016f1f0(0x1416, 1);
+            } else {
+                func_003c7430(6);
+            }
+            func_003c74e0();
+            BR_U32(work, 8) = 0x14;
+        }
+        break;
+    case 20:
+        func_003c7990(0);
+        if (func_003c7850() == 0) {
+            BR_U32(work, 8) = 0x15;
+        }
+        break;
+    case 21:
+        func_003c7650(1);
+        temp = func_003c7610();
+        if (temp == 1) {
+            func_001f53a0();
+        } else if (temp == 0) {
+            func_001f5650();
+        }
+        break;
+    case 25:
         if (sflCard00259380() == 0) {
             BR_U32(work, 0xe4)++;
             func_00255fe0();
             func_002550b0();
             func_00258300();
             func_001f3270(task);
-            BR_U32(work, 8) = 0x0f;
-        }
-        break;
-    case 13:
-        if (func_003c7850() == 0) {
-            BR_U32(work, 8) = 0x0f;
         }
         break;
     case 14:
-        if (sflRes0020e4c0() == 0) {
-            func_001f5510();
-            BR_U32(work, 8) = 0x10;
+        func_003c7990(0);
+        if (func_003c7850() == 0) {
+            BR_U32(work, 8) = 0x0f;
         }
         break;
     case 15:
-        if (func_003c7850() == 0) {
+        if (func_003c78d0() == 0) {
+            func_003c7650(0);
+            printf((const char *)0x006846A0);
+            temp = func_003c7610();
+            if (temp == 1) {
+                func_001f4750(task);
+            } else if (temp == 0) {
+                func_002594c0();
+                BR_U32(work, 8) = 0x10;
+            }
+        }
+        break;
+    case 16:
+        if (sflCard002595c0() == 0) {
             func_001f4750(task);
         }
         break;
-    case 17:
+    case 22:
         if (func_001f65e0() == 0) {
             BR_U32(work, 8) = 0x17;
         }
         break;
-    case 18:
+    case 23:
         if (sflRes0020e4c0() == 0) {
             func_001f5510();
         }
         break;
-    case 19:
-        if (sflPanel0023f390() == 0) {
-            func_0010a4e0(1, 2, 6, 13);
-            BR_U32(work, 8) = 0x14;
+    case 4:
+        if (sflRes0020e9b0() == 0) {
+            func_003c77a0();
+            func_0020ea00();
+            func_003c72d0((void *)func_0020ea00());
+            func_003c7430(0);
+            BR_U32(work, 8) = 5;
         }
         break;
-    case 20:
+    case 5:
+        func_003c7990(1);
         if (func_003c7850() == 0) {
-            BR_U32(work, 8) = 0x15;
+            func_003c7650(1);
+            func_003c77a0();
+            func_0020ea00();
+            func_003c94e0((void *)func_0020ea00());
+            func_003c9790(0);
+            BR_U32(work, 8) = 6;
         }
         break;
-    case 21:
+    case 6:
+        func_003c7990(1);
         if (func_003c7850() == 0) {
-            BR_U32(work, 8) = 0x16;
-        }
-        break;
-    case 22:
-        if (func_003c7850() == 0) {
-            BR_U32(work, 8) = 0x17;
-        }
-        break;
-    case 23:
-        if (func_003c7850() == 0) {
-            func_001f53a0();
+            func_003c7650(1);
+            func_003c77a0();
+            func_0020ea80();
+            func_003c72d0((void *)sflRes0020e790());
+            BR_U32(work, 8) = 3;
         }
         break;
     case 24:
-        func_001f53a0();
-        break;
-    case 25:
+        func_003c7990(0);
         if (func_003c7850() == 0) {
+            func_003c7650(0);
             func_001f53a0();
         }
         break;
+    case 0:
+    case 12:
     default:
-        K_ASSERT(state < 0x1a, 0x1da);
         break;
     }
     func_0025b690();
@@ -2603,111 +2694,272 @@ reward_done:
 void *func_001f5b20(void)
 {
     u8 *work = sBrReward;
+    u32 flags;
     u32 sub_state;
+    s32 cnt;
+    f32 t;
+    u32 s0_val;
+    u8 *entry;
+    u8 col[4];
+    f32 temp;
+    u32 i;
     if (work == NULL) {
         K_ASSERT(work != NULL, 0x8c);
-        return KWLNTASK_CONTINUE;
+        goto final_exit;
     }
-    if ((BR_U32(work, 0) & 2) != 0) {
-        BR_U32(work, 0) &= ~2u;
-        return KWLNTASK_CONTINUE;
+    flags = BR_U32(work, 0);
+    if (flags & 2) {
+        BR_U32(work, 0) = flags & ~2u;
+        goto final_exit;
     }
-    if ((BR_U32(work, 0) & 1) == 0) {
-        return KWLNTASK_CONTINUE;
+    if (!(flags & 1)) {
+        goto final_exit;
     }
-    if ((BR_U32(work, 0) & 0x100) == 0) {
-        goto secondary_dispatch;
-    }
-    sub_state = BR_U32(work, 0x34c8);
-    if (sub_state == 1 || sub_state == 0) {
-        s32 cnt;
-        f32 t, v;
-        cnt = BR_S32(work, 0x34d0) + 1;
-        BR_S32(work, 0x34d0) = cnt;
-        t = (f32)cnt / 30.0f;
-        v = t * 256.0f;
-        BR_S32(work, 0x34cc) = (s32)v;
-        if (BR_S32(work, 0x34d0) == 30) {
-            BR_U32(work, 0) &= ~0x100u;
+    if (flags & 0x100) {
+        sub_state = BR_U32(work, 0x34c8);
+        if (sub_state == 0) {
+            cnt = BR_S32(work, 0x34d0) + 1;
+            BR_S32(work, 0x34d0) = cnt;
+            t = (f32)cnt / 30.0f;
+            BR_S32(work, 0x34cc) = (s32)(256.0f * t);
+            if (cnt == 30) {
+                BR_U32(work, 0) &= ~0x100u;
+            }
+        } else if (sub_state == 1) {
+            cnt = BR_S32(work, 0x34d0) + 1;
+            BR_S32(work, 0x34d0) = cnt;
+            t = (f32)cnt / 30.0f;
+            BR_S32(work, 0x34cc) = (s32)(256.0f * (1.0f - t));
+            if (cnt == 30) {
+                BR_U32(work, 0) &= ~0x100u;
+            }
         }
     }
-secondary_dispatch:
-    sub_state = BR_U32(work, 8);
+    flags = BR_U32(work, 0);
+    if (flags & 0x200) {
+        sub_state = BR_U32(work, 0x34d4);
+        if (sub_state == 0) {
+            cnt = BR_S32(work, 0x34dc) + 1;
+            BR_S32(work, 0x34dc) = cnt;
+            t = (f32)cnt / 30.0f;
+            BR_S32(work, 0x34d8) = (s32)(256.0f * t);
+            if (cnt == 30) {
+                BR_U32(work, 0) &= ~0x200u;
+            }
+        } else if (sub_state == 1) {
+            cnt = BR_S32(work, 0x34dc) + 1;
+            BR_S32(work, 0x34dc) = cnt;
+            t = (f32)cnt / 30.0f;
+            BR_S32(work, 0x34d8) = (s32)(256.0f * (1.0f - t));
+            if (cnt == 30) {
+                BR_U32(work, 0) &= ~0x200u;
+            }
+        }
+    }
+    sub_state = BR_U32(work, 4);
     if (sub_state >= 9) {
-        goto exit;
+        goto main_exit;
     }
     switch (sub_state) {
-        u32 i;
     case 0:
-        if (sflCard002592c0() == 0) {
-            BR_U32(work, 8) = 1;
+        if (func_0021a120() != 0) {
+            break;
         }
+        if (sflCard00259380() != 0) {
+            break;
+        }
+        func_00258300();
+        func_002550b0();
+        func_001f6630();
         break;
     case 1:
-        if (func_003c7850() == 0) {
-            BR_U32(work, 0x3510)++;
-            if (BR_U32(work, 0x3510) < BR_U32(work, 0x3514)) {
-                i = BR_U32(work, 0x3510);
-                func_003c7bc0(0, BR_U32(work, 0x34ec + i * 8));
-                func_003c7c20(1, BR_U32(work, 0x34e8 + i * 8), 0);
-                func_003c7430(0x17);
-            } else {
-                BR_U32(work, 0x3408)++;
-                if (BR_U32(work, 0x3408) >= BR_U32(work, 0x3418)) {
-                    func_001f6a60();
-                } else {
-                    func_001f7210();
-                }
-            }
-        }
         break;
     case 2:
-        if (func_003c7850() == 0) {
-            BR_U32(work, 0x3510)++;
-            if (BR_U32(work, 0x3510) >= BR_U32(work, 0x3514)) {
-                BR_U32(work, 0x3408)++;
-                if (BR_U32(work, 0x3408) >= BR_U32(work, 0x3418)) {
-                    func_001f6a60();
-                } else {
-                    func_001f7210();
-                }
+        flags = BR_U32(work, 0);
+        if (flags & 0x40) {
+            func_003c7990(1);
+            if (func_003c7850() != 0) {
+                break;
             }
+            func_003c7650(1);
+        } else {
+            func_003c7990(0);
+            if (func_003c7850() != 0) {
+                break;
+            }
+            func_003c7650(0);
         }
-        break;
-    case 3:
-        if (func_003c7850() == 0) {
+        cnt = BR_S32(work, 0x340c) + 1;
+        BR_S32(work, 0x340c) = cnt;
+        if (cnt != BR_S32(work, 0x341c)) {
+            func_001f6e80();
+        } else {
             func_001f6a60();
         }
         break;
-    case 4:
-        if (func_003c7850() == 0) {
+    case 3:
+        if (func_001b07d0() != 0) {
+            K_Fldrc_DestroyArchives();
             func_001f7170();
         }
         break;
+    case 4:
+        if (func_002168a0() != 0) {
+            break;
+        }
+        sflResult001f9100();
+        func_001f6a60();
+        break;
     case 5:
-        func_001f7030();
+        func_003c7990(0);
+        if (func_003c7850() != 0) {
+            break;
+        }
+        func_003c7650(0);
+        cnt = BR_S32(work, 0x3410) + 1;
+        BR_S32(work, 0x3410) = cnt;
+        if (cnt != BR_S32(work, 0x3400)) {
+            func_001f7030();
+        } else {
+            func_001f6a60();
+        }
         break;
     case 6:
-        func_001f70d0();
+        func_003c7990(0);
+        if (func_003c7850() != 0) {
+            break;
+        }
+        func_003c7650(0);
+        cnt = BR_S32(work, 0x3414) + 1;
+        BR_S32(work, 0x3414) = cnt;
+        if (cnt != BR_S32(work, 0x3404)) {
+            func_001f70d0();
+        } else {
+            func_001f6a60();
+        }
         break;
     case 7:
-        func_001f6e80();
-        break;
-    case 8:
-        if (func_003c7850() == 0) {
-            BR_U32(work, 0x3408)++;
-            if (BR_U32(work, 0x3408) >= BR_U32(work, 0x3418)) {
-                func_001f6a60();
+        sub_state = BR_U32(work, 0x34e4);
+        if (sub_state == 0) {
+            flags = BR_U32(work, 0);
+            if ((flags & 0x40) && (flags & 0x10)) {
+                s0_val = 1;
             } else {
+                s0_val = 0;
+            }
+            func_003c7990(s0_val);
+            if (func_003c7850() != 0) {
+                break;
+            }
+            func_003c7650(s0_val);
+            if (BR_U32(work, 0) & 0x800) {
+                func_0034fcf0((void *)BR_U32(work, 0x34e0));
+                BR_U32(work, 0) &= ~0x800u;
+            }
+            cnt = BR_S32(work, 0x3408) + 1;
+            BR_S32(work, 0x3408) = cnt;
+            if (cnt != BR_S32(work, 0x3418)) {
                 func_001f7210();
+            } else {
+                func_001f6a60();
+            }
+        } else if (sub_state == 1) {
+            flags = BR_U32(work, 0);
+            if ((flags & 0x40) && (flags & 0x10)) {
+                s0_val = 1;
+            } else {
+                s0_val = 0;
+            }
+            func_003c7990(s0_val);
+            if (func_003c7850() != 0) {
+                break;
+            }
+            func_003c7650(s0_val);
+            cnt = BR_S32(work, 0x3510) + 1;
+            BR_S32(work, 0x3510) = cnt;
+            if ((u32)cnt < BR_U32(work, 0x3514)) {
+                u32 idx = BR_U32(work, 0x34e8 + cnt * 8);
+                func_003c7bc0(0, ((u32 *)0x00684a10)[idx]);
+                func_003c7c20(1, BR_U32(work, 0x34ec + cnt * 8), 0);
+                func_003c7430(0x17);
+            } else {
+                cnt = BR_S32(work, 0x3408) + 1;
+                BR_S32(work, 0x3408) = cnt;
+                if (cnt != BR_S32(work, 0x3418)) {
+                    func_001f7210();
+                } else {
+                    func_001f6a60();
+                }
+            }
+        } else if (sub_state == 2) {
+            flags = BR_U32(work, 0);
+            if ((flags & 0x40) && (flags & 0x10)) {
+                s0_val = 1;
+            } else {
+                s0_val = 0;
+            }
+            func_003c7990(s0_val);
+            if (func_003c7850() != 0) {
+                break;
+            }
+            func_003c7650(s0_val);
+            cnt = BR_S32(work, 0x3408) + 1;
+            BR_S32(work, 0x3408) = cnt;
+            if (cnt != BR_S32(work, 0x3418)) {
+                func_001f7210();
+            } else {
+                func_001f6a60();
             }
         }
         break;
-    default:
-        K_ASSERT(sub_state < 9, 0x341);
+    case 8:
+    {
+        u32 result = scrForceTraceCode((void *)BR_U32(work, 0x34c4));
+        if (result == 2) {
+            func_001f6a60();
+        } else if (result == 0) {
+            K_ASSERT(0, 0x1da);
+        }
         break;
     }
-exit:
+    default:
+        break;
+    }
+main_exit:
+    if (BR_U32(work, 8) == 1) {
+        flags = BR_U32(work, 0);
+        if (flags & 0x400) {
+            for (i = 0; i < BR_U32(work, 0x341c); i++) {
+                u32 idx = BR_U32(work, 0x3c + i * 4);
+                entry = work + idx * 0x670 + 0x5c;
+                t = (f32)BR_S32(work, 0x34cc);
+                t = 255.0f * t / 256.0f;
+                col[0] = 0xff;
+                col[1] = 0xff;
+                col[2] = 0xff;
+                col[3] = (u8)(s32)t;
+                func_0020cc80(entry + 0xc, col);
+                gcPose0024f960(entry + 0x60c, &temp);
+                func_0020d650(entry + 0xc, &temp);
+                func_0020ac90(entry + 0xc);
+            }
+            for (i = 0; i < BR_U32(work, 0x3418); i++) {
+                u32 idx = BR_U32(work, 0x1c + i * 4);
+                entry = work + idx * 0x670 + 0x5c;
+                t = (f32)BR_S32(work, 0x34d8);
+                t = 255.0f * t / 256.0f;
+                col[0] = 0xff;
+                col[1] = 0xff;
+                col[2] = 0xff;
+                col[3] = (u8)(s32)t;
+                func_0020cc80(entry + 0xc, col);
+                gcPose0024f960(entry + 0x60c, &temp);
+                func_0020d650(entry + 0xc, &temp);
+                func_0020ac90(entry + 0xc);
+            }
+        }
+    }
+final_exit:
     return KWLNTASK_CONTINUE;
 }
 #pragma optimization_level 2
