@@ -2238,8 +2238,6 @@ void func_0010ec50(KwlnTask* task)
     s32 out6;
     s32 out7;
 
-    volatile u8 stackPad[0x20];
-    stackPad[0] = 0;
     work = (u8*)task->workData;
     setRenderState = (void (**)(u32, u32))D_00960090_abs;
     (*setRenderState)(8, 0);
@@ -2530,8 +2528,6 @@ void func_0010f6c0(KwlnTask* task)
     s32 out6;
     s32 out7;
 
-    volatile u8 stackPad[0x20];
-    stackPad[0] = 0;
     work = (u8*)task->workData;
     setRenderState = (void (**)(u32, u32))D_00960090_abs;
     (*setRenderState)(8, 0);
