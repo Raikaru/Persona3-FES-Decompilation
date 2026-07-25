@@ -5145,8 +5145,279 @@ void FUN_0022fa80(u32* object)
         break;
     }
     case 6:
+    {
+        u8* base;
+        u32 resource;
+        u32 i;
+        u8 colour[4];
+        f32 counter_f;
+        f32 pos_x, pos_y;
+        f32 rect[8];
+        f32 cx, cy;
+        f32 angle;
+        f32 s0, c0;
+        f32 t_val;
+        f32 size_w, size_h;
+        f32 alpha;
+
+        base = bytes + 0x1060;
         *(u32*)(bytes + 0x1360) = *(u32*)(bytes + 0x1360) + 1;
+        *(u32*)(bytes + 0x1360) = *(u32*)(bytes + 0x1360) % 20;
+        counter_f = (f32)*(u32*)(bytes + 0x1360);
+
+        resource = FUN_0021cca0(table, 13);
+        size_w = (f32)((u32*)resource)[3];
+        size_h = (f32)((u32*)resource)[4];
+
+        // -- Slot 0 position --
+        if ((u32)counter_f < 2) {
+            pos_x = 80.0f + 5.0f + offset_x;
+            pos_y = 6.0f + offset_y;
+        } else if ((u32)counter_f < 12) {
+            pos_x = 66.0f + offset_x;
+            pos_y = 11.0f + offset_y;
+        } else {
+            pos_x = 80.0f + offset_x;
+            pos_y = 13.0f + offset_y;
+        }
+
+        rect[0] = pos_x; rect[1] = pos_y;
+        rect[2] = pos_x + size_w; rect[3] = pos_y;
+        rect[4] = pos_x + size_w; rect[5] = pos_y + size_h;
+        rect[6] = pos_x; rect[7] = pos_y + size_h;
+
+        cx = (rect[0] + rect[2]) * 0.5f;
+        cy = (rect[1] + rect[5]) * 0.5f;
+        for (i = 0; i < 4; i++) {
+            rect[i * 2 + 0] -= cx;
+            rect[i * 2 + 1] -= cy;
+        }
+
+        // Angle from counter
+        if ((u32)counter_f < 2) {
+            t_val = 0.0f;
+        } else if ((u32)counter_f < 12) {
+            t_val = (f32)((u32)counter_f - 2) / 10.0f;
+        } else if ((u32)counter_f < 18) {
+            t_val = 1.0f;
+        } else {
+            t_val = 1.0f - (f32)((u32)counter_f - 18) / 2.0f;
+        }
+
+        angle = (1.0f - t_val) * 3.14159265f;
+
+        // Corner pair 0-1
+        s0 = sinf(angle);
+        c0 = cosf(angle);
+        {
+            f32 x0 = rect[0] * c0 - rect[1] * s0;
+            f32 y0 = rect[0] * s0 + rect[1] * c0;
+            f32 x1 = rect[2] * c0 - rect[3] * s0;
+            f32 y1 = rect[2] * s0 + rect[3] * c0;
+            rect[0] = x0; rect[1] = y0;
+            rect[2] = x1; rect[3] = y1;
+        }
+
+        // Corner pair 2-3
+        s0 = sinf(angle);
+        c0 = cosf(angle);
+        {
+            f32 x2 = rect[4] * c0 - rect[5] * s0;
+            f32 y2 = rect[4] * s0 + rect[5] * c0;
+            f32 x3 = rect[6] * c0 - rect[7] * s0;
+            f32 y3 = rect[6] * s0 + rect[7] * c0;
+            rect[4] = x2; rect[5] = y2;
+            rect[6] = x3; rect[7] = y3;
+        }
+
+        for (i = 0; i < 4; i++) {
+            rect[i * 2 + 0] += cx;
+            rect[i * 2 + 1] += cy;
+        }
+
+        FUN_0021d890(base, rect);
+
+        // Slot 0 alpha
+        if ((u32)counter_f < 2) {
+            alpha = 0.0f;
+        } else if ((u32)counter_f < 12) {
+            alpha = 1.0f - (f32)((u32)counter_f - 2) / 10.0f;
+        } else if ((u32)counter_f < 18) {
+            alpha = 1.0f;
+        } else {
+            alpha = 1.0f - (f32)((u32)counter_f - 18) / 2.0f;
+        }
+        if (alpha < 0.0f) alpha = 0.0f;
+        colour[0] = 0xFF;
+        colour[1] = 0xFF;
+        colour[2] = 0xFF;
+        colour[3] = (u8)(s32)(alpha * 255.0f);
+        FUN_0021d950(base, colour);
+
+        // -- Slots 1 and 2 --
+        resource = FUN_0021cca0(table, 14);
+        size_w = (f32)((u32*)resource)[3];
+        size_h = (f32)((u32*)resource)[4];
+
+        // Slot 1
+        {
+            f32 t_s1;
+            if ((u32)counter_f < 6) {
+                t_s1 = 0.0f;
+            } else if ((u32)counter_f < 15) {
+                t_s1 = (f32)((u32)counter_f - 6) / 9.0f;
+            } else if ((u32)counter_f < 18) {
+                t_s1 = 1.0f;
+            } else {
+                t_s1 = 1.0f - (f32)((u32)counter_f - 18) / 2.0f;
+            }
+
+            angle = (1.0f - t_s1) * 3.14159265f;
+            pos_x = 100.0f + offset_x;
+            pos_y = 30.0f + offset_y;
+
+            rect[0] = pos_x; rect[1] = pos_y;
+            rect[2] = pos_x + size_w; rect[3] = pos_y;
+            rect[4] = pos_x + size_w; rect[5] = pos_y + size_h;
+            rect[6] = pos_x; rect[7] = pos_y + size_h;
+
+            cx = (rect[0] + rect[2]) * 0.5f;
+            cy = (rect[1] + rect[5]) * 0.5f;
+            for (i = 0; i < 4; i++) {
+                rect[i * 2 + 0] -= cx;
+                rect[i * 2 + 1] -= cy;
+            }
+
+            // Corner pair 0-1
+            s0 = sinf(angle);
+            c0 = cosf(angle);
+            {
+                f32 x0 = rect[0] * c0 - rect[1] * s0;
+                f32 y0 = rect[0] * s0 + rect[1] * c0;
+                f32 x1 = rect[2] * c0 - rect[3] * s0;
+                f32 y1 = rect[2] * s0 + rect[3] * c0;
+                rect[0] = x0; rect[1] = y0;
+                rect[2] = x1; rect[3] = y1;
+            }
+
+            // Corner pair 2-3
+            s0 = sinf(angle);
+            c0 = cosf(angle);
+            {
+                f32 x2 = rect[4] * c0 - rect[5] * s0;
+                f32 y2 = rect[4] * s0 + rect[5] * c0;
+                f32 x3 = rect[6] * c0 - rect[7] * s0;
+                f32 y3 = rect[6] * s0 + rect[7] * c0;
+                rect[4] = x2; rect[5] = y2;
+                rect[6] = x3; rect[7] = y3;
+            }
+
+            for (i = 0; i < 4; i++) {
+                rect[i * 2 + 0] += cx;
+                rect[i * 2 + 1] += cy;
+            }
+
+            FUN_0021d890(base + 0x100, rect);
+
+            if ((u32)counter_f < 6) {
+                alpha = 0.0f;
+            } else if ((u32)counter_f < 15) {
+                alpha = 1.0f - (f32)((u32)counter_f - 6) / 9.0f;
+            } else if ((u32)counter_f < 18) {
+                alpha = 1.0f;
+            } else {
+                alpha = 1.0f - (f32)((u32)counter_f - 18) / 2.0f;
+            }
+            if (alpha < 0.0f) alpha = 0.0f;
+            colour[0] = 0xFF;
+            colour[1] = 0xFF;
+            colour[2] = 0xFF;
+            colour[3] = (u8)(s32)(alpha * 255.0f);
+            FUN_0021d950(base + 0x100, colour);
+        }
+        // Fetch resource again for slot 2 (retail fetches id 14 twice)
+        resource = FUN_0021cca0(table, 14);
+        size_w = (f32)((u32*)resource)[3];
+        size_h = (f32)((u32*)resource)[4];
+
+        // Slot 2
+        {
+            f32 t_s2;
+            if ((u32)counter_f < 7) {
+                t_s2 = 0.0f;
+            } else if ((u32)counter_f < 16) {
+                t_s2 = (f32)((u32)counter_f - 7) / 9.0f;
+            } else if ((u32)counter_f < 18) {
+                t_s2 = 1.0f;
+            } else {
+                t_s2 = 1.0f - (f32)((u32)counter_f - 18) / 2.0f;
+            }
+
+            angle = (1.0f - t_s2) * 3.14159265f;
+            pos_x = 100.0f + offset_x;
+            pos_y = 30.0f + offset_y + (5.0f * ((f32)((u32)counter_f) / 20.0f));
+
+            rect[0] = pos_x; rect[1] = pos_y;
+            rect[2] = pos_x + size_w; rect[3] = pos_y;
+            rect[4] = pos_x + size_w; rect[5] = pos_y + size_h;
+            rect[6] = pos_x; rect[7] = pos_y + size_h;
+
+            cx = (rect[0] + rect[2]) * 0.5f;
+            cy = (rect[1] + rect[5]) * 0.5f;
+            for (i = 0; i < 4; i++) {
+                rect[i * 2 + 0] -= cx;
+                rect[i * 2 + 1] -= cy;
+            }
+
+            // Corner pair 0-1
+            s0 = sinf(angle);
+            c0 = cosf(angle);
+            {
+                f32 x0 = rect[0] * c0 - rect[1] * s0;
+                f32 y0 = rect[0] * s0 + rect[1] * c0;
+                f32 x1 = rect[2] * c0 - rect[3] * s0;
+                f32 y1 = rect[2] * s0 + rect[3] * c0;
+                rect[0] = x0; rect[1] = y0;
+                rect[2] = x1; rect[3] = y1;
+            }
+
+            // Corner pair 2-3
+            s0 = sinf(angle);
+            c0 = cosf(angle);
+            {
+                f32 x2 = rect[4] * c0 - rect[5] * s0;
+                f32 y2 = rect[4] * s0 + rect[5] * c0;
+                f32 x3 = rect[6] * c0 - rect[7] * s0;
+                f32 y3 = rect[6] * s0 + rect[7] * c0;
+                rect[4] = x2; rect[5] = y2;
+                rect[6] = x3; rect[7] = y3;
+            }
+
+            for (i = 0; i < 4; i++) {
+                rect[i * 2 + 0] += cx;
+                rect[i * 2 + 1] += cy;
+            }
+
+            FUN_0021d890(base + 0x200, rect);
+
+            if ((u32)counter_f < 7) {
+                alpha = 0.0f;
+            } else if ((u32)counter_f < 16) {
+                alpha = 1.0f - (f32)((u32)counter_f - 7) / 9.0f;
+            } else if ((u32)counter_f < 18) {
+                alpha = 1.0f;
+            } else {
+                alpha = 1.0f - (f32)((u32)counter_f - 18) / 2.0f;
+            }
+            if (alpha < 0.0f) alpha = 0.0f;
+            colour[0] = 0xFF;
+            colour[1] = 0xFF;
+            colour[2] = 0xFF;
+            colour[3] = (u8)(s32)(alpha * 255.0f);
+            FUN_0021d950(base + 0x200, colour);
+        }
         break;
+    }
     case 7:
     {
         u32 i;
