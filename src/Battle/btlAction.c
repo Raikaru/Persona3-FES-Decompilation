@@ -2650,6 +2650,11 @@ void btlActionUpdateStateAttack(BtlAction* action)
         u16 outA, outB, outC, outD;
         FUN_0028a540(action, action->target.specificId, &outA, &outB, &outC, &outD);
         packet = FUN_002baf90(*(u32*)((u8*)gBtl + outA * 4 + 0xc24), action->unit, basis->unit, 0, 0);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
     /* Camera set-state for various effect phases */
     packet = btlCameraCreateSetStatePacket(action, 0xc);
     packet->unk_00 = 5;
@@ -2670,16 +2675,11 @@ void btlActionUpdateStateAttack(BtlAction* action)
         packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
-    /* Camera for alternate voice path */
+    /* Camera for alternate path */
     {
-        u16 dummy;
-        dummy = FUN_00308c60(action->unit);
+        u16 dummyV = FUN_00308c60(action->unit);
+        (void)dummyV;
         packet = btlCameraCreateSetStatePacket(action, 0xa);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
         packet->unk_00 = 5;
         packet->parentUID = effectPacket->uid;
         packet->actionUID = actionUID;
@@ -2703,6 +2703,15 @@ void btlActionUpdateStateAttack(BtlAction* action)
     {
         FUN_00283750(basis->unit, animMode, animSpeed);
         animLength = FUN_002838d0(basis->unit, animMode, animSpeed);
+    }
+    /* Camera state 0xe for non-player victims */
+    if (victim->unit->genus != 0)
+    {
+        packet = btlCameraCreateSetStatePacket(action, 0xe);
+        packet->unk_00 = 4;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
     if (victim->unit->genus == 0)
     {
@@ -3005,13 +3014,98 @@ void btlActionUpdateStateAttack(BtlAction* action)
     packet->parentUID = effectPacket->uid;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    if (FUN_002dc130(action))
+    /* Additional missing effect/status packets */
     {
-        btlActionSetState(action, BTLACTION_STATE_PERSONA);
+        u32 extraPool = *(u32*)((u8*)gBtl + 0xc4c);
+        if (extraPool != 0)
+        {
+            packet = FUN_002baf90(extraPool, action->unit, basis->unit, 1, 0);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
     }
-    else
     {
-        btlActionSetState(action, BTLACTION_STATE_ROUNDUP);
+        packet = FUN_002dd100(0xc, 0, 9);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    {
+        packet = btlCameraCreateSetStatePacket(action, 0xa);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    /* Extra rotation/movement packet */
+    if (ACTION_U32(victim, 0xe0) != 0)
+    {
+        packet = FUN_002bd230(basis->unit, 0, 0);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->unk_47 &= ~0x20;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+    }
+    /* Extra damage result packet */
+    {
+        packet = FUN_002d7e20(action, basis, (u8*)victim + 0xe0, ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce));
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->unk_47 &= ~0x20;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    /* Extra damage effect for victim */
+    {
+        packet = FUN_00284200(victim->unit, 10, 0, 0, 1.0f);
+        packet->unk_00 = 4;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_00284c90(victim->unit);
+        packet->unk_00 = 4;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    /* Extra d5dc0 work buffer setup */
+    {
+        u32 extraWork[12];
+        FUN_002d5dc0(extraWork);
+    }
+    /* Camera state 0xe (extra) */
+    packet = btlCameraCreateSetStatePacket(action, 0xe);
+    packet->unk_00 = 5;
+    packet->parentUID = effectPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    /* Missing functions: state checks for special transitions */
+    {
+        u16 targetId = FUN_003082f0(action->unit->datUnit, action->target.specificId);
+        (void)targetId;
+        if (func_002d6130(action) != 0) { }
+        if (func_002d6210(action) == 1 && func_002d5f50(action) == 0) { }
+    }
+    /* Sub-state dispatch for ending */
+    {
+        s32 subState = ACT_S32(action, 0x6c);
+        if (FUN_002dc130(action))
+        {
+            btlActionSetState(action, BTLACTION_STATE_PERSONA);
+        }
+        else
+        {
+            u16 nextState = BTLACTION_STATE_ROUNDUP;
+            if (subState == 1 || subState == 2 || subState == 3)
+            {
+                nextState = BTLACTION_STATE_PERSONA;
+            }
+            btlActionSetState(action, nextState);
+        }
     }
 }
 // FUN_00290bd0
