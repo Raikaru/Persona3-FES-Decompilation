@@ -83,6 +83,13 @@ extern void func_004ab410(void* image, f32 x0, f32 y0, f32 x1, f32 y1,
                           f32 x2, f32 y2);
 extern void func_00110650(void* view, s32 from, s32 to);
 extern s8 fGpffff7788[];
+extern void* func_0050B690(s32 arg1, u32 size, s32 arg3);
+extern void func_0050B710(void* ptr);
+extern void func_00521250(void* dst, const void* src, u32 size);
+extern void func_8051DBC0(s32 a0, void* a1, void* a2, u32 a3);
+extern s32 func_0051DC70(s32 a0, s32 a1, ...);
+extern s32 func_0051DDF0(s32 a0, s32 a1, ...);
+extern u8 D_00823650[];
 
 #define HSFD_QUEUE_COUNT 256
 #define HSFD_DECODE_SLOTS 6
@@ -1317,6 +1324,7 @@ void func_0010cdd0(void)
             case 0:
                 slot->state = 1;
                 break;
+
             case 1:
                 break;
 
@@ -1328,71 +1336,234 @@ void func_0010cdd0(void)
                 break;
 
             case 3:
+            {
+                void* fileData;
+                    allocBuf = (void*)func_0050B690(0, size, 0);
+
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
                     pathIndex = slot->fileIndex * 3;
-                    slot->input = H_Cdvd_CacheFindFile(
-                        sSfdDecodePaths[pathIndex], &size);
+                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex], &size);
+
+                    allocBuf = func_0050B690(0, size, 0);
+                    if (allocBuf == NULL)
+                    {
+                        K_Assert("h_sndcom.c", 0x144);
+                    }
+                    func_00521250(D_00823650, fileData, size);
+                    func_0010cce0(allocBuf, D_00823650, size);
+
+                    slot->input = allocBuf;
                     slot->inputSize = size;
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
                     slot->state = 4;
                 }
                 break;
+            }
 
             case 4:
                 pathIndex = slot->fileIndex * 3;
-                slot->request = H_Cdvd_Request(
-                    sSfdDecodePaths[pathIndex + 1], 0);
+                slot->request = H_Cdvd_Request(sSfdDecodePaths[pathIndex + 1], 0);
                 slot->state = 5;
                 break;
 
             case 5:
+            {
+                void* fileData;
+                void* chunkBuf;
+                void* intermediate;
+                    chunkBuf = (void*)func_0050B690(0, 0x1000, 0);
+
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
                     pathIndex = slot->fileIndex * 3;
-                    slot->intermediate = H_Cdvd_CacheFindFile(
-                        sSfdDecodePaths[pathIndex + 1], &size);
+                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 1], &size);
+
+                    chunkBuf = func_0050B690(0, 0x1000, 0);
+                    if (chunkBuf == NULL)
+                    {
+                        K_Assert("h_sndcom.c", 0x177);
+                    }
+
+                    intermediate = slot->intermediate;
                     slot->intermediateSize = size;
+                    remaining = size;
+
+                    do
+                    {
+                        u32 chunkSize;
+
+                        if (remaining > 0x1000)
+                        {
+                            chunkSize = 0x1000;
+                            remaining -= 0x1000;
+                        }
+                        else
+                        {
+                            chunkSize = remaining;
+                            remaining = 0;
+                        }
+                        func_0010cce0(chunkBuf, fileData, chunkSize);
+                        func_8051DBC0(1, chunkBuf, intermediate, chunkSize);
+                        fileData = (void*)((u8*)fileData + chunkSize);
+                        intermediate = (void*)((u8*)intermediate + chunkSize);
+                    }
+                    while (remaining != 0);
+
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
+                    func_0050B710(chunkBuf);
                     slot->state = 6;
                 }
                 break;
+            }
 
             case 6:
                 pathIndex = slot->fileIndex * 3;
-                slot->request = H_Cdvd_Request(
-                    sSfdDecodePaths[pathIndex + 2], 0);
+                slot->request = H_Cdvd_Request(sSfdDecodePaths[pathIndex + 2], 0);
                 slot->state = 7;
                 break;
 
             case 7:
+            {
+                void* fileData;
+                void* allocBuf;
+                s32 queueHandle;
+                s32 decodeHandle;
+                    allocBuf = (void*)func_0050B690(0, size, 0);
+
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
                     pathIndex = slot->fileIndex * 3;
-                    slot->output = H_Cdvd_CacheFindFile(
-                        sSfdDecodePaths[pathIndex + 2], &size);
+                    fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 2], &size);
+
+                    allocBuf = func_0050B690(0, size, 0);
+                    if (allocBuf == NULL)
+                    {
+                        K_Assert("h_sndcom.c", 0x1A2);
+                    }
+                    func_0010cce0(allocBuf, fileData, size);
+
+                    slot->output = allocBuf;
                     slot->outputSize = size;
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
-                    slot->resource = slot->output;
+
+                    queueHandle = func_0051DC70(3, -1, (s32)slot->input, slot->inputSize, (s32)slot->intermediate, slot->intermediateSize);
+                    if (queueHandle < 0)
+                    {
+                        K_Assert("h_sndcom.c", 0x1AE);
+                    }
+                    slot->queueHandle = queueHandle;
+
+                    decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
+                    if (decodeHandle < 0)
+                    {
+                        K_Assert("h_sndcom.c", 0x1B3);
+                    }
+                    slot->decodeHandle = decodeHandle;
+
+                    auxHandle = func_0051DDF0(0, -1, (s32)slot->output, slot->outputSize);
+                    if (auxHandle < 0)
+                    {
+                        K_Assert("h_sndcom.c", 0x1B7);
+                    }
+                    slot->aux = (void*)(s32)auxHandle;
+
+                    slot->completion = (void*)(s32)func_0051DDF0(5, slot->decodeHandle, (s32)slot->aux);
+                    slot->status = 1;
                     slot->state = 1;
                 }
                 break;
+            }
 
             case 8:
-                if ((slot->input != NULL) && (slot->output != NULL))
+            {
+                void* resourceData;
+                void* inputBuf;
+                void* intermediate;
+                void* auxBuf;
+                void* outputData;
+                void* outputBuf;
+                void* sourceData;
+                u32 chunkSize;
+                u32 remaining;
+                inputBuf = (void*)func_0050B690(0, copySize, 0);
+                s32 decodeHandle;
+                s32 auxHandle;
+
+                resourceData = slot->resource;
+                copySize = slot->inputSize;
+
+                inputBuf = func_0050B690(0, copySize, 0);
+                if (inputBuf == NULL)
                 {
-                    copySize = slot->inputSize;
-                    if (copySize > slot->outputSize)
-                    {
-                        copySize = slot->outputSize;
-                    }
-                    func_0010cce0(slot->output, slot->input, copySize);
-                    slot->state = 1;
+                    K_Assert("h_sndcom.c", 0x1C8);
                 }
+                func_0010cce0(inputBuf, resourceData, copySize);
+                auxBuf = (void*)func_0050B690(0, 0x10000, 0);
+                slot->input = inputBuf;
+                slot->inputSize = copySize;
+
+                intermediate = slot->aux;
+                remaining = slot->intermediateSize;
+
+                auxBuf = func_0050B690(0, 0x10000, 0);
+                if (auxBuf == NULL)
+                {
+                    K_Assert("h_sndcom.c", 0x1DF);
+                }
+
+                outputData = slot->intermediate;
+
+                do
+                {
+                    if (remaining > 0x10000)
+                    {
+                        chunkSize = 0x10000;
+                        remaining -= 0x10000;
+                    }
+                    else
+                    {
+                        chunkSize = (remaining + 0x7F) & ~0x7F;
+                        remaining = 0;
+                    }
+                    func_0010cce0(auxBuf, inputBuf, chunkSize);
+                    func_8051DBC0(1, auxBuf, outputData, chunkSize);
+                outputBuf = (void*)func_0050B690(0, copySize, 0);
+                    outputData = (void*)((u8*)outputData + chunkSize);
+                }
+                while (remaining != 0);
+
+                func_0050B710(auxBuf);
+
+                sourceData = slot->sourceData;
+                copySize = slot->outputSize;
+
+                outputBuf = func_0050B690(0, copySize, 0);
+                if (outputBuf == NULL)
+                {
+                    K_Assert("h_sndcom.c", 0x1FB);
+                }
+                func_0010cce0(outputBuf, sourceData, copySize);
+
+                slot->output = outputBuf;
+
+                queueHandle = func_0051DC70(3, -1, (s32)slot->input, slot->inputSize, (s32)slot->intermediate, slot->intermediateSize);
+                slot->queueHandle = queueHandle;
+
+                decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
+                slot->decodeHandle = decodeHandle;
+
+                auxHandle = func_0051DDF0(0, -1, (s32)slot->output, slot->outputSize);
+                slot->aux = (void*)(s32)auxHandle;
+
+                slot->completion = (void*)(s32)func_0051DDF0(5, slot->decodeHandle, (s32)slot->aux);
+                slot->status = 1;
+                slot->state = 1;
                 break;
+            }
         }
     }
 }

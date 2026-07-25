@@ -2484,11 +2484,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 fldEvent->eventType = 0x1f;
             }
             break;
-
-        case FLDEVENT_TYPE_DESTROY:
-            return KWLNTASK_STOP;
+        case 0x1f:
+            break;
     }
-
+    
     /* Retail updates the interaction marker after every non-destroy state. */
     if (EVENT_WORD(0x38) == true)
     {
