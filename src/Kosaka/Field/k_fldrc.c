@@ -11,6 +11,20 @@
 #include "Main/g_data.h"
 #include "h_cdvd.h"
 #include "temporary.h"
+/* K_Field_Get aliases to prevent CSE/write-sinking from folding repeated calls. */
+#pragma alias K_Field_Get_A K_Field_Get
+extern void* K_Field_Get_A(void);
+#pragma alias K_Field_Get_B K_Field_Get
+extern void* K_Field_Get_B(void);
+#pragma alias K_Field_Get_C K_Field_Get
+extern void* K_Field_Get_C(void);
+#pragma alias K_Field_Get_D K_Field_Get
+extern void* K_Field_Get_D(void);
+#pragma alias K_Field_Get_E K_Field_Get
+extern void* K_Field_Get_E(void);
+#pragma alias K_Field_Get_Z K_Field_Get
+extern void* K_Field_Get_Z(void);
+
 /* Retail field-resource callbacks use fixed-width aliases in the original EE build. */
 typedef u8 undefined1;
 typedef u16 undefined2;
@@ -583,7 +597,7 @@ init_phase0:
     *(void**)((u8*)K_Field_Get() + 0x116c + count * 4) =
         FUN_001b2780((u16)*(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4),
                      (u16)*(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4));
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 1;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 1;
 
 init_phase1:
     count = *(u32*)((u8*)K_Field_Get() + 0x1168);
@@ -593,7 +607,7 @@ init_phase1:
         return false;
     }
     FUN_001b2b90((u32)resource);
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 2;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 2;
 
 init_phase2:
     count = *(u32*)((u8*)K_Field_Get() + 0x1168);
@@ -605,7 +619,7 @@ init_phase2:
     *(u32*)((u8*)K_Field_Get() + 0x1168) = count + 1;
     if (*(s32*)((u8*)K_Field_Get() + 0x105c) > 0)
     {
-        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0;
+        *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0;
         return false;
     }
     if ((gMtScene->flags & 0x80000000) != 0)
@@ -619,7 +633,7 @@ init_phase2:
         resource = *(void**)((u8*)K_Field_Get() + 0x116c + i * 4);
         FUN_001b3480((u32)resource);
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 3;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 3;
 
 init_phase3:
     errors = 0;
@@ -640,7 +654,7 @@ init_phase3:
         H_Cdvd_Destroy(sFldFpcCdvd);
         sFldFpcCdvd = NULL;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 4;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 4;
 
 init_phase4:
     if ((*(Model**)((u8*)K_Field_Get() + 0x11ec) != NULL) &&
@@ -662,7 +676,7 @@ init_phase4:
     D_00867EF8 = (void*)func_001b8160();
     D_00867EFC = (void*)func_001b8680();
     D_00867F00 = (void*)func_001b88d0();
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 5;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 5;
 
 init_phase5:
     if ((D_00867EF8 != NULL) &&
@@ -700,7 +714,7 @@ init_phase5:
                               gMtScene->unk_14);
         }
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 6;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 6;
 
 init_phase6:
     errors = 0;
@@ -733,7 +747,7 @@ init_phase6:
     {
         return false;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 7;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 7;
 
 init_phase7:
     errors = 0;
@@ -794,7 +808,7 @@ init_phase7:
         *(HCdvd**)((u8*)K_Field_Get() + 0x10cc) =
             func_001e6cb0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId);
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 8;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 8;
 
 init_phase8:
     if ((gMtScene->fldMajorId < 0x3b) ||
@@ -946,13 +960,13 @@ init_camera_common:
         gMtScene->cmrCdvd = func_001d6b10();
         if (gMtScene->cmrCdvd == NULL)
         {
-            *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
+            *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
             return false;
         }
-        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x0a;
+        *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x0a;
         goto init_phase10;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 9;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 9;
 
 init_phase9:
     if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
@@ -962,10 +976,10 @@ init_phase9:
     gMtScene->cmrCdvd = func_001d6b10();
     if (gMtScene->cmrCdvd == NULL)
     {
-        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
+        *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
         return false;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x0a;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x0a;
 
 init_phase10:
     if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
@@ -975,7 +989,7 @@ init_phase10:
     gMtScene->cmrCdvd = func_001d6b10();
     if (gMtScene->cmrCdvd == NULL)
     {
-        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
+        *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
         return false;
     }
     if (func_001d6bc0(gMtScene->cmrCdvd, &cameraMatrix, &cameraFov,
@@ -986,7 +1000,7 @@ init_phase10:
     }
     func_003b6f50(0, cameraType, cameraFov, &cameraMatrix, &cameraOffset,
                   xzDeadZone, yDeadZone);
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
     return false;
 
 init_phase1e:
@@ -1021,7 +1035,7 @@ init_phase1e:
                               gMtScene->unk_14);
         }
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x1f;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x1f;
 
 init_phase1f:
     errors = 0;
@@ -1054,7 +1068,7 @@ init_phase1f:
     {
         return false;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x20;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x20;
 
 init_phase20:
     node = *(u8**)((u8*)K_Field_Get() + 0x116c);
@@ -1093,18 +1107,18 @@ init_phase20:
 init_phase28:
     if ((gMtScene->flags & 4) == 0)
     {
-        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
+        *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
         return false;
     }
     gMtScene->cmrCdvd = (HCdvd*)FUN_001b6100((u16)gMtScene->unk_16);
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x29;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x29;
 
 init_phase29:
     if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
     {
         return false;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
+    *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x3e7;
     return false;
 }
 #pragma pop
