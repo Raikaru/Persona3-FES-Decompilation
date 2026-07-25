@@ -4097,7 +4097,7 @@ extern u64 FUN_00357fd0();
 extern u64 FUN_00395170();
 extern u64 FUN_004be1e0();
 extern u64 FUN_004be310();
-extern u64 FUN_004c31b0();
+extern u64 FUN_004c31b0(float param_1, void* param_2, u32 param_3, u32 param_4);
 extern float FUN_004c69f0(void* dst, const void* src);
 extern u64 FUN_004c6b20();
 extern void FUN_004c6be0(float* out, const RwV3d* basis, void* source);
