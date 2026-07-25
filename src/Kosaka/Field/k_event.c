@@ -1975,19 +1975,19 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         case 8:
             currentActor = (s32)FUN_00318990(DATA_U32(0x008717f0), 0);
             heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
-            offset = heroMat->at;
+            case8Offset = heroMat->at;
             if (currentActor < PTR_S16((void*)EVENT_WORD(0x40), 4))
             {
-                offset.x = -offset.x; offset.y = -offset.y; offset.z = -offset.z;
+                offset.x = -case8Offset.x; offset.y = -case8Offset.y; offset.z = -case8Offset.z;
                 RwV3dNormalize(&offset, &offset);
                 RwV3dScale(&offset, &offset, (f32)EVENT_WORD(0x43));
                 FUN_00318a30(DATA_U32(0x008717f0), &offset, 2);
             }
             if (currentActor > PTR_S16((void*)EVENT_WORD(0x40), 6))
             {
-                RwV3dNormalize(&offset, &offset);
-                RwV3dScale(&offset, &offset, (f32)EVENT_WORD(0x44));
-                FUN_00318a30(DATA_U32(0x008717f0), &offset, 2);
+                RwV3dNormalize(&case8Offset, &case8Offset);
+                RwV3dScale(&case8Offset, &case8Offset, (f32)EVENT_WORD(0x44));
+                FUN_00318a30(DATA_U32(0x008717f0), &case8Offset, 2);
             }
             if (FUN_0017d800() == true && EVENT_WORD(0x3a) == 0 && currentActor > 20)
             {
