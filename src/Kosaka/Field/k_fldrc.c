@@ -1073,10 +1073,14 @@ init_phase1e:
     {
         for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
-            *(void**)(node + 0xa44) =
-                func_001e2da0(*(u16*)(node + 4), *(u16*)(node + 6),
-                              gMtScene->unk_14);
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                      0xa44) =
+                func_001e2da0(
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                         i * 4) + 4),
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                         i * 4) + 6),
+                    gMtScene->unk_14);
         }
     }
     *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0x1f;
@@ -1087,7 +1091,8 @@ init_phase1f:
     {
         node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         if (func_001e2e50(*(void**)(node + 0xa44),
-                          (void**)(node + 0xa48),
+                          (void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                                   0xa48),
                           (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
                           gMtScene->unk_14) == false)
         {
@@ -1098,11 +1103,16 @@ init_phase1f:
     {
         for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
-            if (func_001e2e50(*(void**)(node + 0xa44),
-                              (void**)(node + 0xa48),
-                              *(u16*)(node + 4), *(u16*)(node + 6),
-                              gMtScene->unk_14) == false)
+            if (func_001e2e50(
+                    *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                           i * 4) + 0xa44),
+                    (void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                          i * 4) + 0xa48),
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                         i * 4) + 4),
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                         i * 4) + 6),
+                    gMtScene->unk_14) == false)
             {
                 errors++;
             }
