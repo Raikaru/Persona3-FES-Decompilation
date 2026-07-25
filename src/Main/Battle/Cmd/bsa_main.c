@@ -659,7 +659,13 @@ void bsaMain00210d90(BsaWork* work)
                              (f32)(i & 3) * 30.0f + 271.0f,
                              -1.0f, -1.0f, color);
             }
-            if ((p[1] & BSA_FLAG_RESOURCE) != 0) {
+            if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
+                if (i < (s32)p[0xd]) {
+                    func_003b0d70(p[i + 5], (s32)((groupX + 89.0f) * 16.0f),
+                                  (s32)((groupY - 18.0f) * 8.0f));
+                    func_003b0e20(p[i + 5], 0xffffff00u | color);
+                }
+            } else {
                 image = func_0021cca0(table2, 0x32);
                 bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image,
                              groupX + 142.0f, groupY - 14.0f,
@@ -675,10 +681,6 @@ void bsaMain00210d90(BsaWork* work)
                 bsaPlaceQuad(p, i * 0x100 + 0x1cec, image,
                              groupX + 208.0f, groupY - 14.0f,
                              -1.0f, -1.0f, color);
-            } else if (i < (s32)p[0xd]) {
-                func_003b0d70(p[i + 5], (s32)((groupX + 89.0f) * 16.0f),
-                              (s32)((groupY - 18.0f) * 8.0f));
-                func_003b0e20(p[i + 5], 0xffffff00u | color);
             }
         }
     }
