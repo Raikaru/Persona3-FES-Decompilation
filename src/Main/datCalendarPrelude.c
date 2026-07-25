@@ -451,9 +451,10 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
     else if (id == 30 && size == 0x100) destination = PTR8(0x0083a734);
     else if (id == 31 && size == 0x90) destination = PTR8(0x0083a834);
     else if (id == 32 && size == 0) destination = PTR8(0);
-    else if (id == 33 && size == 0x1a8) destination = PTR8(0);
-    else if (id == 34 && size == 1) destination = PTR8(0);
-    else if (id == 35 && size == 4) destination = PTR8(0);
+    else if (id == 33 && size == 0x1a8) destination = PTR8(0x0083a8f0);
+    else if (id == 34 && size == 1) destination = PTR8(0x0083679e);
+    else if (id == 35 && size == 4) destination = PTR8(0x0083aa98);
+    else if (id == 36 && size == 4) destination = PTR8(0x0083a6f8);
     
     if (destination != NULL) FUN_00521250(destination, data, size);
 }
