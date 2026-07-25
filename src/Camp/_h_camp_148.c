@@ -130,6 +130,8 @@ extern void campDrawTransition(f32 depth, void* transition, s32 drawMode,
                                u64 start, u64 end, s32 param0, s32 tile,
                                s32 startFrame, s32 endFrame);
 #pragma alias campDrawTransition func_0018bc10
+#pragma alias campDrawItemFrameAlias FUN_0014EF60
+extern void campDrawItemFrameAlias(int param_1);
 extern void h_campItemDestroyNewItemTask(KwlnTask* task);
 
 extern u32 FUN_00100d80();
@@ -1916,6 +1918,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   int iVar8;
   int iVar9;
   float fVar10;
+  u64 uStack_118;
+  u64 uStack_40;
   u64 uStack_20;
   volatile CampBits pair;
   volatile CampBits tmp;
@@ -2234,6 +2238,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     break;
   case 9:
     FUN_00156140(puVar1[4],puVar1 + 5,puVar1[0x55],puVar1 + 0x56);
+    campDrawItemFrameAlias((int)puVar1);
     pair.u = 0x444bc00041a80000ULL;
     tmp.u = pair.u;
     tmp.f[0] -= 600.0f;
