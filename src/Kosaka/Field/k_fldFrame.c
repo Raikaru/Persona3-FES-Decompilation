@@ -14,6 +14,8 @@
 #define COLLISCTL_SUBSTEPS 3
 
 static RwRGBA sDebugSphereColor = {0, 168, 168, 168};
+static const RwV3d sAxisUp = {0.0f, 1.0f, 0.0f};
+static const RwV3d sAxisForward = {0.0f, 0.0f, 1.0f};
 
 KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent);
 void K_FldFrame_CollisSphereSetDrawEnabled(KwlnTask* collisSphereTask, u32 drawEnabled);
@@ -770,7 +772,11 @@ extern s32 func_003182d0(Model* model, s32 layer, s32 animation, s32 mode, s32 f
 extern void func_003189f0(Model* model, s32 layer, f32 speed);
 extern s32 func_00318540(Model* model, s32 layer);
 extern void* func_00318b60(u32 id);
-extern s32 func_001a5aa0(void* matrix);
+extern f32 func_001a5aa0(void* matrix);
+extern s32 func_00530da0(f32 value);
+extern s32 func_0052e118(s32 value);
+extern s32 func_0045ec20(s32 left, s32 right);
+extern f32 fGpffff82b0;
 extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
 extern f32 func_0052e9e8(f32 value);
 extern KwlnTask* K_Draw_CreatePositionTask(s32 parent);
@@ -968,12 +974,8 @@ void* func_001ae580(KwlnTask* task)
     localAngleStep = 0.0f;
     localAngle = 0.0f;
     localAngleB = 0.0f;
-    localDir.x = 0.0f;
-    localDir.y = 0.0f;
-    localDir.z = 0.0f;
-    localPosition.x = 0.0f;
-    localPosition.y = 0.0f;
-    localPosition.z = 0.0f;
+    localDir = sAxisUp;
+    localPosition = sAxisForward;
     switch (work->state)
     {
     case 0:
@@ -1164,22 +1166,62 @@ void* func_001ae580(KwlnTask* task)
             work->startPosition.x = *(const f32*)(origin + 0x30);
             work->startPosition.y = *(const f32*)(origin + 0x34);
             work->startPosition.z = *(const f32*)(origin + 0x38);
-            localPosition = work->points[0].position;
+            translation = work->points[0].position;
             work->startPosition.y = 0.0f;
-            localPosition.y = 0.0f;
-            work->direction.x = localPosition.x - work->startPosition.x;
+            translation.y = 0.0f;
+            work->direction.x = translation.x - work->startPosition.x;
             work->direction.y = 0.0f - work->startPosition.y;
-            work->direction.z = localPosition.z - work->startPosition.z;
+            work->direction.z = translation.z - work->startPosition.z;
             work->directionLength =
                 func_004c69f0(&work->direction, &work->direction);
         }
-        localFrameCount = (s32)work->points[0].duration;
-        work->frameCount = localFrameCount;
-        if (localFrameCount < 1)
+        localAngle = fGpffff82b0 *
+                     func_0052e9e8(work->direction.y * localPosition.y +
+                                   work->direction.x * localPosition.x +
+                                   work->direction.z * localPosition.z);
+        if (work->direction.x < 0.0f)
         {
-            work->frameCount = 1;
+            localAngle = localAngle * -1.0f;
         }
-        work->state = (work->points[0].kind == 3) ? 4 : 3;
+        if (work->turnMode != 0)
+        {
+            localAngleStep =
+                180.0f +
+                func_001a5aa0(func_00318b60((u32)fldFrameMoveModel(work)));
+            work->currentAngle = localAngleStep;
+            localAngle = 180.0f + localAngle;
+            if (localAngle <= localAngleStep)
+            {
+                localAngleB = (360.0f - localAngleStep) + localAngle;
+            }
+            else
+            {
+                localAngleB = (360.0f - localAngle) + localAngleStep;
+            }
+            amount = localAngle - localAngleStep;
+            if (func_0045ec20(func_0052e118(func_00530da0(localAngleB)),
+                              func_0052e118(func_00530da0(amount))) != 0)
+            {
+                localAngleB = amount;
+            }
+            work->frame = 0;
+            work->angleStep = localAngleB / (f32)(u32)work->turnMode;
+            work->currentAngle = localAngle;
+        }
+        else
+        {
+            work->currentAngle = 180.0f + localAngle;
+        }
+        work->frameCount =
+            (s32)(work->directionLength / work->points[0].duration);
+        work->frameRemainder =
+            work->directionLength -
+            work->points[0].duration * (f32)work->frameCount;
+        if (work->frameRemainder > 0.0f)
+        {
+            work->frameCount++;
+        }
+        work->state = 3;
         return KWLNTASK_CONTINUE;
     }
     case 3:
