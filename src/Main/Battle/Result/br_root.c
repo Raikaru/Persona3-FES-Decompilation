@@ -3768,38 +3768,29 @@ void func_001f7210(void)
      * the disassembly; all distinct entries force MWCC to emit the table.
      */
     switch (kind) {
-    case 0:
-    {
-        u32 tmp;
-        /* off=7504: lw v1, 0x3408(s0); beqz v1, ..  (re-entry loop) */
-        for (tmp = 0; tmp < BR_U32(work, 0x3418); tmp++) {
-            BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
-        }
-        break;
-    }
     case 1:
-        /* off=5948: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10  -> (u16)entry_kind */
+        /* off=5948 */
         func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), BR_S16(entry, 8)));
         func_003c7430(10);
-        break;
+        goto animation_tail;
     case 2:
-        /* off=6008: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10 -> (u16)entry_kind */
+        /* off=6008 */
         func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), 0));
         func_003c7c20(1, value, 0);
         func_003c7430(11);
-        break;
+        goto animation_tail;
     case 3:
-        /* off=6084: move a0,zero -> func_003c7c20(0, stack_var, 0) */
+        /* off=6084 */
         func_003c7c20(0, BR_U32(entry, 8), 0);
         func_003c7430(12);
-        break;
+        goto animation_tail;
     case 4:
     {
         u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(17);
-        break;
+        goto animation_tail;
     }
     case 5:
     {
@@ -3807,7 +3798,7 @@ void func_001f7210(void)
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(20);
-        break;
+        goto animation_tail;
     }
     case 6:
     {
@@ -3815,7 +3806,7 @@ void func_001f7210(void)
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(18);
-        break;
+        goto animation_tail;
     }
     case 7:
     {
@@ -3823,7 +3814,7 @@ void func_001f7210(void)
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(19);
-        break;
+        goto animation_tail;
     }
     case 8:
     {
@@ -3831,19 +3822,19 @@ void func_001f7210(void)
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(21);
-        break;
+        goto animation_tail;
     }
     case 9:
     {
         u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7430(22);
-        break;
+        goto animation_tail;
     }
     case 10:
     {
         u32 tmp;
-        /* off=6512: guard on debug_val, then academic level string */
+        /* off=6512 */
         if ((debug_val & 1) == 0) {
             tmp = func_001775a0(1);
             func_003c7bc0(0, tmp);
@@ -3857,12 +3848,12 @@ void func_001f7210(void)
             func_003c7bc0(1, tmp);
             func_003c7430(29);
         }
-        break;
+        goto animation_tail;
     }
     case 11:
     {
         u32 tmp;
-        /* off=6680: guard on debug_val, then charm level string */
+        /* off=6680 */
         if ((debug_val & 1) == 0) {
             tmp = func_001775a0(1);
             func_003c7bc0(0, tmp);
@@ -3876,12 +3867,12 @@ void func_001f7210(void)
             func_003c7bc0(1, tmp);
             func_003c7430(28);
         }
-        break;
+        goto animation_tail;
     }
     case 12:
     {
         u32 tmp;
-        /* off=6848: guard on debug_val, then courage level string */
+        /* off=6848 */
         if ((debug_val & 1) == 0) {
             tmp = func_001775a0(1);
             func_003c7bc0(0, tmp);
@@ -3895,114 +3886,87 @@ void func_001f7210(void)
             func_003c7bc0(1, tmp);
             func_003c7430(27);
         }
-        break;
+        goto animation_tail;
     }
     case 13:
-        /* off=7016: addiu a0,zero,0x1e -> plain func_003c7430(30) */
         func_003c7430(30);
-        break;
+        goto animation_tail;
     case 14:
     {
         u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(25);
-        break;
+        goto animation_tail;
     }
     case 15:
-        /* off=7084: addiu a0,zero,0x20 -> plain func_003c7430(32) */
         func_003c7430(32);
-        break;
+        goto animation_tail;
     case 16:
     {
         u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(27);
-        break;
+        goto animation_tail;
     }
     case 17:
-        /* off=7152: addiu a0,zero,0x22 -> plain func_003c7430(34) */
         func_003c7430(34);
-        break;
+        goto animation_tail;
     case 18:
     {
         u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(31);
-        break;
+        goto animation_tail;
     }
     case 19:
-        /* off=7220: addiu a0,zero,0x24 -> plain func_003c7430(36) */
         func_003c7430(36);
-        break;
+        goto animation_tail;
     case 20:
     {
         u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7430(37);
-        break;
+        goto animation_tail;
     }
     case 21:
     {
         u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(38);
-        break;
+        goto animation_tail;
     }
     case 22:
-        /* off=7336: addiu a0,zero,0x27 -> plain func_003c7430(39) */
         func_003c7430(39);
-        break;
+        goto animation_tail;
     case 23:
     {
         u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(40);
-        break;
+        goto animation_tail;
     }
     case 24:
-        /* off=7404: addiu a0,zero,0x29 -> plain func_003c7430(41) */
         func_003c7430(41);
-        break;
+        goto animation_tail;
     case 25:
     {
         u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(42);
-        break;
+        goto animation_tail;
     }
     case 26:
-        /* off=7472: addiu a0,zero,0x2b -> plain func_003c7430(43) */
         func_003c7430(43);
-        break;
+        goto animation_tail;
     case 27:
-        /* off=7508: addiu a0,zero,0x2c -> plain func_003c7430(44) */
         func_003c7430(44);
-        break;
+        goto animation_tail;
+    case 0:
+        goto animation_tail;
     default:
-        break;
+        goto animation_tail;
     }
-    /* Keep the selected reward for the script and advance the current item. */
-    BR_U32(work, 0x34c0) = kind;
-    BR_U32(work, 0x34c4) = (u32)value;
-    for (i = 0; i < BR_U32(work, 0x341c); i++) {
-        u32 idx = BR_U32(work, 0x3c + i * 4);
-        if (idx == slot) {
-            BR_U32(work, idx * 0x670 + 0x60) = kind;
-        }
-    }
-    if (slot + 1 >= BR_U32(work, 0x3418)) {
-        BR_U32(work, 0) |= 0x40;
-    }
-    BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
-    /*
-     * Item substate dispatch: 6-entry jump table (retail 0x7b7080).
-     */
-    /*
-     * Reward-card animation tail (retail at func+7504-7908).
-     * Iterates slots bounded by work[0x3418], animating each card position.
-     * Float constants: 0x435c=184.0f, 0x43a0=320.0f, 0x4348=200.0f,
-     * 0x42c8=100.0f.  Calls func_0020c500, func_0020c400, func_002508c0.
-     */
+animation_tail:
     {
         u32 slot_count = BR_U32(work, 0x3408);
         u32 anim_i;
