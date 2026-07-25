@@ -278,16 +278,24 @@ void brPanel002350f0(void)
     u32 texture;
     u32 digitTexture;
     u32 frame;
+    u32 digitFrame;
     s32 i;
+    s32 mode;
+    s32 entryCount;
+    u32 workFlags;
+    s32 entryType;
+    u8* entryBase;
+    u8* digitRowBase;
     void (*brPanelSetState)(u32 state, u32 value);
     void (*brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
 
     K_ASSERT(sBrPanel != NULL, 0x99);
     work = (u8*)sBrPanel;
-    if ((*(u32*)work & 1) == 0) {
+    workFlags = *(u32*)work;
+    if ((workFlags & 1) == 0) {
         return;
     }
-
+    
     texture = brRes00234570(0);
     digitTexture = brRes00234570(1);
     brPanelSetState = brPanelSetStateRaw;
@@ -325,9 +333,10 @@ void brPanel002350f0(void)
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
 
+    digitRowBase = work + 0x520;
     for (i = 0; i < 7; i++) {
-        D_0096009C((u32*)(work + 0x520 + i * 0x100), 4, 0, 1, 2);
-        D_0096009C((u32*)(work + 0x520 + i * 0x100), 4, 0, 2, 3);
+        D_0096009C((u32*)(digitRowBase + i * 0x100), 4, 0, 1, 2);
+        D_0096009C((u32*)(digitRowBase + i * 0x100), 4, 0, 2, 3);
     }
     frame = func_0021cce0(func_0021cca0(texture, 2));
     D_00960090(1, frame);
@@ -335,9 +344,11 @@ void brPanel002350f0(void)
     D_0096009C((u32*)(work + 0xc20), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
+    entryCount = *(s32*)(work + 0x1d50);
+    entryBase = work + 0xe20;
 
-    for (i = 0; i < (s32)*(u32*)(work + 0x1d50); i++) {
-        entry = work + 0xe20 + i * 0x510;
+    for (i = 0; i < entryCount; i++) {
+        entry = entryBase + i * 0x510;
         frame = func_0021cce0(func_0021cca0(texture, 4));
         D_00960090(1, frame);
         D_0096009C((u32*)(entry + 0x10), 4, 0, 1, 2);
@@ -353,12 +364,13 @@ void brPanel002350f0(void)
         D_00960090(1, frame);
         D_0096009C((u32*)(entry + 0x110), 4, 0, 1, 2);
         D_0096009C((u32*)(entry + 0x110), 4, 0, 2, 3);
-        if (*(s32*)entry == 0) {
-            frame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xa);
+        entryType = *(s32*)entry;
+        if (entryType == 0) {
+            digitFrame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xa);
         } else {
-            frame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xb);
+            digitFrame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xb);
         }
-        frame = func_0021cce0((void*)(uintptr_t)frame);
+        frame = func_0021cce0((void*)(uintptr_t)digitFrame);
         D_00960090(1, frame);
         D_0096009C((u32*)(entry + 0x410), 4, 0, 1, 2);
         D_0096009C((u32*)(entry + 0x410), 4, 0, 2, 3);
@@ -394,13 +406,12 @@ void brPanel002350f0(void)
     D_00960090(6, 1);
     D_00960090(1, 0);
     D_0096009C((u32*)(work + 0x2460), 4, 0, 1, 2);
+    mode = *(s32*)(work + 0x266c);
     D_0096009C((u32*)(work + 0x2460), 4, 0, 2, 3);
-
-    if (*(s32*)(work + 0x266c) == 1) {
+    if (mode == 1) {
         D_00960090(1, 0);
         D_0096009C((u32*)(work + 0x2360), 4, 0, 1, 2);
-        D_0096009C((u32*)(work + 0x2360), 4, 0, 2, 3);
-    } else if (*(s32*)(work + 0x266c) == 2) {
+    } else if (mode == 2) {
         D_00960090(6, 0);
         D_00960090(8, 0);
         D_00960090(1, 0);
@@ -420,8 +431,7 @@ void brPanel002350f0(void)
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, 0x717fb);
-    RpSkyRenderStateSet(2, 0x44);
-    if (*(u32*)work & 8) {
+    if (workFlags & 8) {
         frame = (u32)(uintptr_t)func_0021cca0(texture, 0xa);
     } else {
         frame = (u32)(uintptr_t)func_0021cca0(texture, 8);
@@ -429,8 +439,7 @@ void brPanel002350f0(void)
     frame = func_0021cce0((void*)(uintptr_t)frame);
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1f60), 4, 0, 1, 2);
-    D_0096009C((u32*)(work + 0x1f60), 4, 0, 2, 3);
-    if (*(u32*)work & 4) {
+    if (workFlags & 4) {
         frame = func_0021cce0(func_0021cca0(texture, 7));
         D_00960090(1, frame);
         D_0096009C((u32*)(work + 0x2160), 4, 0, 1, 2);
