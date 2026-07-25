@@ -426,53 +426,72 @@ volatile u32* FUN_00780800(u32 value)
 // FUN_00780828 NONMATCHING
 void FUN_00780828(void)
 {
-  Code2Entry *entries;
-  u16 sVar1;
-  u64 uVar3;
-  u32 uVar4;
-  int iVar5;
-  int iVar6;
-  int lVar7;
-  int iStack_ac;
-  u32 uStack_a8;
-  u32 uStack_a4;
+    Code2Entry *entries;
+    u32 count;
+    u32 i;
+    u16 id0;
+    u16 id1;
+    u64 bitmask;
+    int bitpos;
+    u32 temp32;
+    u64 temp64;
 
-  entries = (Code2Entry *)&uRam80076740;
-  iVar6 = 0;
-  do {
-    if (iRam80076700 <= iVar6) goto LAB_007808bc;
-    sVar1 = entries[iVar6].id;
-    iVar6 = iVar6 + 1;
-  } while (sRam80076740 == sVar1);
-  func_0x00076460(sVar1);
-LAB_007808bc:
-  do {
-    uVar4 = uRam80076750;
-    uVar3 = uRam80076748;
-    sVar1 = sRam80076740;
-    lVar7 = 0;
-    iRam80076700 = iRam80076700 - 1;
-    iStack_ac = (int)((u64)uRam80076742 >> 0x10);
-    if (0 < iRam80076700) {
-      do {
-        iVar5 = lVar7 + 1;
-        entries[lVar7] = entries[iVar5];
-        lVar7 = iVar5;
-      } while (lVar7 < iRam80076700);
+    entries = (Code2Entry *)&uRam80076740;
+    i = 0;
+    count = iRam80076700;
+
+    /* First scan: while entries[0].id == entries[1].id, loop */
+    id1 = entries[1].id;
+    while (i < count) {
+        if (entries[0].id != id1) {
+            break;
+        }
+        i++;
     }
-    uRam80076708 = uRam80076708 & ~(1ULL << (long)iStack_ac);
-    uStack_a8 = (u32)uVar3;
-    uStack_a4 = (u32)(uVar3 >> 0x20);
-    func_0x00076680(0x82000,uStack_a8,(long)iStack_ac,sVar1,
-                    uStack_a4,iRam80076700,uVar4);
-  } while ((0 < iRam80076700) && (sVar1 == sRam80076740));
-  if (iRam80076700 < 1) {
-    uRamb0001810 = 0x83;
-  }
-  else {
-    func_0x00076460(sRam80076740);
-  }
-  SYNC(0);
-  EI();
-  return;
+
+    /* If a differing entry was found, notify */
+    if (entries[0].id != id1) {
+        func_0x00076460(id1);
+    }
+
+    /* Main processing loop */
+    while (count > 0) {
+        temp32 = uRam80076750;
+        temp64 = uRam80076748;
+        id0 = entries[0].id;
+
+        count = count - 1;
+        iRam80076700 = count;
+
+        bitpos = (int)((u64)uRam80076742 >> 0x10);
+
+        if (count > 0) {
+            i = 0;
+            do {
+                entries[i] = entries[i + 1];
+                i = i + 1;
+            } while (i < count);
+        }
+
+        /* Clear the bit in the bitmask */
+        bitmask = uRam80076708;
+        uRam80076708 = bitmask & ~(1ULL << bitpos);
+
+        func_0x00076680(0x82000, (u32)temp64, bitpos, id0,
+                        (u32)(temp64 >> 0x20), count, temp32);
+
+        count = iRam80076700;
+        if (count <= 0) break;
+        if (id0 != entries[0].id) break;
+    }
+
+    if (iRam80076700 < 1) {
+        uRamb0001810 = 0x483;
+    } else {
+        func_0x00076460(entries[0].id);
+    }
+
+    SYNC(0);
+    EI();
+    return;
 }
