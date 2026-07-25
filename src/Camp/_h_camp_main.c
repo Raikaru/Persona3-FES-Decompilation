@@ -262,6 +262,7 @@ extern int sprintf(char* buffer, const char* format, ...);
 extern void* D_00833BA4;
 extern void* D_00833B44;
 extern void* D_00833B48;
+extern void* D_00833B58;
 extern char gp0xffff897c[];
 
 /* Pack the two f32 coordinates exactly as the retail ld/sd pair does. */
@@ -2265,51 +2266,132 @@ void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
     }
 }
 
+#pragma alias campMainDrawCardSprite FUN_001159F0
+extern void campMainDrawCardSprite(void* owner, void* resource, s32 frame,
+                                   u32 alpha, f32 x, f32 y, f32 scale);
 // FUN_00139660 NONMATCHING
 void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                   s32 textAlpha)
 {
-    CampCarouselPackedPosition p;
-    s32 maxEntries;
     s32 i;
-    s32 icon;
+    s32 rowOffset;
     s16 entryId;
     char text[0x100];
     u32 color;
 
-    p = campCarouselUnpackPosition(position);
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
     if (id == 0) {
-        maxEntries = 9;
-        for (i = 0; i < maxEntries && DAT_00833A60[i] != 0; i++) {
+        CampCarouselPackedPosition p0;
+        s32 textX0;
+        s32 textY0;
+
+        p0.packed = position;
+        textX0 = (s32)p0.value.x + 0x38;
+        textY0 = (s32)p0.value.y + 0xc2;
+        for (i = 0; i < 9; i++) {
             entryId = DAT_00833A60[i];
-            FUN_00523AC8(text, gp0xffff897c, FUN_001775A0(entryId));
-            campDrawCardSprite(DAT_00833B40, 0, alpha,
-                               p.value.x + 35.0f,
-                               p.value.y + 196.0f + i * 24.0f, textAlpha);
-            campDrawCardText(alpha, p.value.x + 56.0f,
-                             p.value.y + 194.0f + i * 24.0f,
-                             color, i == selected ? 6 : 10, text);
+            if (entryId == 0) {
+                return;
+            }
+            sprintf(text, gp0xffff897c, FUN_001775A0(entryId));
+            rowOffset = i * 0x18;
+            if (i == selected) {
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
+                                       (u32)textAlpha, p0.value.x + 262.0f,
+                                       p0.value.y + 189.0f + (f32)rowOffset,
+                                       alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
+                                       (u32)textAlpha, p0.value.x + 35.0f,
+                                       p0.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
+                FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
+                             color, 6, 1, text, 0x10, 0);
+            }
+            else {
+                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
+                                       (u32)textAlpha, p0.value.x + 35.0f,
+                                       p0.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
+                FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
+                             color, 10, 1, text, 0x10, 0);
+            }
         }
-    } else if (id == 0x1d) {
-        for (i = 0; i < 8 && DAT_00833A60[i] != 0; i++) {
+        return;
+    }
+    if (id == 0x1d) {
+        CampCarouselPackedPosition p1;
+        s32 textX1;
+        s32 textY1;
+
+        p1.packed = position;
+        textX1 = (s32)p1.value.x + 0x38;
+        textY1 = (s32)p1.value.y + 0xc2;
+        for (i = 0; i < 8; i++) {
             entryId = DAT_00833A60[i];
-            FUN_00523AC8(text, gp0xffff897c, FUN_001775A0(entryId));
-            campDrawCardText(alpha, p.value.x + 56.0f,
-                             p.value.y + 194.0f + i * 24.0f,
-                             color, i == selected ? 6 : 10, text);
+            if (entryId == 0) {
+                return;
+            }
+            sprintf(text, gp0xffff897c, FUN_001775A0(entryId));
+            rowOffset = i * 0x18;
+            if (i == selected) {
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
+                                       (u32)textAlpha, p1.value.x + 262.0f,
+                                       p1.value.y + 189.0f + (f32)rowOffset,
+                                       alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
+                                       (u32)textAlpha, p1.value.x + 35.0f,
+                                       p1.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
+                FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
+                             color, 6, 1, text, 0x10, 0);
+            }
+            else {
+                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
+                                       (u32)textAlpha, p1.value.x + 35.0f,
+                                       p1.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
+                FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
+                             color, 10, 1, text, 0x10, 0);
+            }
         }
-    } else {
+        return;
+    }
+    {
+        CampCarouselPackedPosition p2;
+        s32 textX2;
+        s32 textY2;
+
+        p2.packed = position;
+        textX2 = (s32)p2.value.x + 0x38;
+        textY2 = (s32)p2.value.y + 0xc2;
         for (i = 0; i < 3; i++) {
             entryId = D_005DBB00[id * 3 + i];
             if (entryId == 0) {
-                break;
+                return;
             }
-            icon = FUN_001775A0(entryId);
-            FUN_00523AC8(text, gp0xffff897c, icon);
-            campDrawCardText(alpha, p.value.x + 56.0f,
-                             p.value.y + 194.0f + i * 24.0f,
-                             color, i == selected ? 6 : 10, text);
+            sprintf(text, gp0xffff897c,
+                    FUN_001775A0((s16)entryId));
+            rowOffset = i * 0x18;
+            if (i == selected) {
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
+                                       (u32)textAlpha, p2.value.x + 262.0f,
+                                       p2.value.y + 189.0f + (f32)rowOffset,
+                                       alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
+                                       (u32)textAlpha, p2.value.x + 35.0f,
+                                       p2.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
+                FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
+                             color, 6, 1, text, 0x10, 0);
+            }
+            else {
+                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
+                                       (u32)textAlpha, p2.value.x + 35.0f,
+                                       p2.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
+                FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
+                             color, 10, 1, text, 0x10, 0);
+            }
         }
     }
 }
