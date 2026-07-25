@@ -100,10 +100,8 @@ typedef struct CampSkillSelectorWork
     s16 pcId;             /* 0x08 */
     s16 reserved0a;       /* 0x0a */
     u8 reserved0c[4];
-    s16 sourcePcId;         /* 0x10 */
-    s16 reserved12;         /* 0x12 */
-    u32 reserved14;         /* 0x14 */
-    KwlnTask* child;        /* 0x18 */
+    u32 frame;            /* 0x10 */
+    KwlnTask* child;      /* 0x14 */
     u8 reserved1c[8];
     s16 characterIds[9];    /* 0x24 */
     s16 reserved36;         /* 0x36 */
@@ -1937,7 +1935,7 @@ static s16 campSkillSelectorCurrentId(CampSkillSelectorWork* work)
     if (work->pcId != 0) {
         return work->pcId;
     }
-    return work->sourcePcId;
+    return work->pcId;
 }
 
 static void campSkillSelectorStartChild(KwlnTask* parent,
