@@ -1244,72 +1244,126 @@ void* func_001d9860(KwlnTask* task)
 {
     PeriodicWork* work;
     u32 i;
-    u32 now;
-    if (task == NULL || task->workData == NULL)
-    {
-        return KWLNTASK_CONTINUE;
-    }
+    u32 j;
+    u32 found;
+    u32 valid;
+    FldUnit* pc;
+    EncounterRecord* rec;
+    KwlnTask* child;
+
     work = (PeriodicWork*)task->workData;
-    if (work->disabled != 0)
+    if (work->disabled == 1)
     {
         return KWLNTASK_CONTINUE;
     }
-    if (work->state == 4)
+    switch (work->state)
     {
+    case 4:
         return KWLNTASK_STOP;
-    }
-    now = K_Encount_Now(task);
-    if (work->state == 3)
-    {
-        for (i = 0; i < 16; ++i)
+    case 3:
+        for (i = 0; i < 16; i++)
         {
-            if (work->scriptTask[i] != NULL && kwlnTaskExists(work->scriptTask[i]) != 0)
+            if (kwlnTaskExists(work->scriptTask[i]) == 1)
             {
                 return KWLNTASK_CONTINUE;
             }
             work->scriptTask[i] = NULL;
         }
-        work->timestamp = now;
+        work->timestamp = iGpffffb418;
         work->state = 1;
-    }
-    if (work->state == 0)
-    {
-        work->timestamp = now;
-        work->state = 1;
-    }
-    if (now - work->timestamp < 0x385)
-    {
         return KWLNTASK_CONTINUE;
-    }
-    if (work->initialGate == 0 && func_001d3830((KwlnTask*)K_Encount_FieldWord(0x24)) == 2)
-    {
-        for (i = 0; i < 16 && work->scriptTask[i] != NULL; ++i)
+    case 0:
+        work->timestamp = iGpffffb418;
+        work->state++;
+        /* fallthrough */
+    case 1:
+        if (work->initialGate == 0)
         {
+            for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+            K_ASSERT(i < 16, 0x72);
+            if (func_001d3830(*(KwlnTask**)((u8*)K_Field_Get() + 0x24)) == 2)
+            {
+                child = scrCreateTaskFromHeader(10, D_007CE220, 2);
+                work->scriptTask[i] = child;
+                func_0035c1a0(child, (int)&work->records[i]);
+                work->initialGate = 1;
+                work->state = 3;
+            }
         }
-        if (i < 16)
+        if (iGpffffb418 - work->timestamp < 0x385)
         {
-            K_Encount_CreatePeriodicScript(work, i, 2);
-            work->initialGate = 1;
+            return KWLNTASK_CONTINUE;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        found = 0;
+        rec = &work->records[i];
+        memset(rec, 0, 16);
+        for (j = 1; j < 4; j++)
+        {
+            pc = &gFldUnitsPc[j];
+            valid = 0;
+            if (pc->genusBase != NULL && pc->resrc != NULL)
+            {
+                valid = 1;
+            }
+            if (valid != 0 && func_002ff790(pc->genusBase) == 1)
+            {
+                rec->ids[rec->count] = pc->charId;
+                rec->count++;
+                found = 1;
+            }
+        }
+        if (found != 0)
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 0);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)rec);
             work->state = 3;
         }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d3830(*(KwlnTask**)((u8*)K_Field_Get() + 0x24)) == 1)
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 1);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d9310(&work->records[i]))
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 4);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d94d0(&work->records[i]))
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 5);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        for (i = 0; i < 16 && work->scriptTask[i] != NULL; i++) {}
+        K_ASSERT(i < 16, 0x72);
+        if (func_001d96a0(&work->records[i]))
+        {
+            child = scrCreateTaskFromHeader(10, D_007CE220, 6);
+            work->scriptTask[i] = child;
+            func_0035c1a0(child, (int)&work->records[i]);
+            work->state = 3;
+        }
+        work->timestamp = iGpffffb418;
+        return KWLNTASK_CONTINUE;
+    default:
+        return KWLNTASK_CONTINUE;
     }
-    if (func_001d9310(&work->records[0]))
-    {
-        K_Encount_CreatePeriodicScript(work, 0, 4);
-        work->state = 3;
-    }
-    if (func_001d94d0(&work->records[1]))
-    {
-        K_Encount_CreatePeriodicScript(work, 1, 5);
-        work->state = 3;
-    }
-    if (func_001d96a0(&work->records[2]))
-    {
-        K_Encount_CreatePeriodicScript(work, 2, 6);
-        work->state = 3;
-    }
-    work->timestamp = now;
-    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001d9ee0
