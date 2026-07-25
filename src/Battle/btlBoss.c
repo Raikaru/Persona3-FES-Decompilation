@@ -1828,37 +1828,50 @@ encounter_default:
     return 0;
 }
 
+#pragma opt_loop_invariants off
 // FUN_002fb860 NONMATCHING
 u16 func_002fb860(BtlUnit* unit, u16 index)
 {
-    u16 encounterId;
-    u16 charId;
-    u8* table;
-    u16 value;
-
-    encounterId = btlBossGetEncounterId();
-    if (unit->genus != 1)
-    {
-        return 0xffff;
-    }
-    charId = unit->charId;
-    table = NULL;
+    u16 encounterId = btlBossGetEncounterId();
     switch (encounterId)
     {
-        case 0x1a0: if (charId == 0x100) table = (u8*)0x00699bf0; break;
+        case 0x1a0:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x100) return ((u8*)0x00699bf0)[index];
+            return 0xffff;
+        }
         case 0x1a1:
-            if (charId == 0x102) table = (u8*)0x00699c3a;
-            else if (charId == 0x101) table = (u8*)0x00699c20;
-            break;
-        case 0x1a2: if (charId == 0x103) table = (u8*)0x00699c90; break;
-        case 0x1a3: if (charId == 0x104) table = (u8*)0x00699ce0; break;
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x102) return ((u8*)0x00699c3a)[index];
+            if (unit->charId == 0x101) return ((u8*)0x00699c20)[index];
+            return 0xffff;
+        }
+        case 0x1a2:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x103) return ((u8*)0x00699c90)[index];
+            return 0xffff;
+        }
+        case 0x1a3:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x104) return ((u8*)0x00699ce0)[index];
+            return 0xffff;
+        }
         case 0x1a4:
-            if (charId == 0x115) table = (u8*)0x00699d64;
-            else if (charId == 0x106) table = (u8*)0x00699d4a;
-            else if (charId == 0x105) table = (u8*)0x00699d30;
-            break;
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x105) return ((u8*)0x00699d30)[index];
+            if (unit->charId == 0x106) return ((u8*)0x00699d4a)[index];
+            if (unit->charId == 0x115) return ((u8*)0x00699d64)[index];
+            return 0xffff;
+        }
         case 0x1a5:
-            if (charId == 0x107)
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x107)
             {
                 if ((index == 0x11 || index == 3 || index == 0) &&
                     *(void**)((u8*)gBtl + 0xb44) != NULL)
@@ -1870,77 +1883,135 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                 {
                     *(u32*)((u8*)gBtl + 0xb4c) = 0;
                 }
-                table = (u8*)0x00699dd0;
+                return ((u8*)0x00699dd0)[index];
             }
-            break;
+            return 0xffff;
+        }
         case 0x1a6:
-            if (charId == 0x10a) table = (u8*)0x00699e3a;
-            else if (charId == 0x109)
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x10a) return ((u8*)0x00699e3a)[index];
+            if (unit->charId == 0x109)
             {
                 if ((index == 9 || index == 0x11 || index == 3 || index == 0) &&
                     *(u32*)((u8*)gBtl + 0xb50) == 1)
                 {
                     return 6;
                 }
-                table = (u8*)0x00699e20;
+                return ((u8*)0x00699e20)[index];
             }
-            else if (charId == 0xe8 || charId == 0xe7 || charId == 0xe6 ||
-                     charId == 0xe5 || charId == 0xe4 || charId == 0xe3 ||
-                     charId == 0xe2)
+            if (unit->charId == 0xe8 || unit->charId == 0xe7 || unit->charId == 0xe6 ||
+                unit->charId == 0xe5 || unit->charId == 0xe4 || unit->charId == 0xe3 ||
+                unit->charId == 0xe2)
             {
                 return 0xffff;
             }
-            break;
+            return 0xffff;
+        }
         case 0x1a7:
-            if (charId == 0x10c) table = (u8*)0x0069a03a;
-            else if (charId == 0x10b) table = (u8*)0x0069a020;
-            break;
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x10c) return ((u8*)0x0069a03a)[index];
+            if (unit->charId == 0x10b) return ((u8*)0x0069a020)[index];
+            return 0xffff;
+        }
         case 0x1a8:
-            if (charId == 0x127 || charId == 0x119)
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x127 || unit->charId == 0x119)
             {
                 if (index == 3 && func_00300580(*(u32*)unit->datUnit, 0x400) != 0)
                 {
                     return 0xf;
                 }
-                table = (u8*)0x0069a0ce;
+                return ((u8*)0x0069a0ce)[index];
             }
-            else if (charId == 0x118 || charId == 0x117 || charId == 0x116)
+            if (unit->charId == 0x118 || unit->charId == 0x117 || unit->charId == 0x116)
             {
-                table = (u8*)0x0069a0b4;
+                return ((u8*)0x0069a0b4)[index];
             }
-            else if (charId == 0x10d)
+            if (unit->charId == 0x10d)
             {
-                table = *(u32*)((u8*)gBtl + 0xb54) == 0
-                    ? (u8*)0x0069a080 : (u8*)0x0069a09a;
+                if (*(u32*)((u8*)gBtl + 0xb54) == 0)
+                {
+                    return ((u8*)0x0069a080)[index];
+                }
+                return ((u8*)0x0069a09a)[index];
             }
-            break;
-        case 0x1a9: if (charId == 0x108) table = (u8*)0x0069a130; break;
-        case 0x1aa: if (charId == 0x10f) table = (u8*)0x0069a170; break;
-        case 0x1ab: if (charId == 0x110) table = (u8*)0x0069a1b0; break;
+            return 0xffff;
+        }
+        case 0x1a9:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x108) return ((u8*)0x0069a130)[index];
+            return 0xffff;
+        }
+        case 0x1aa:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x10f) return ((u8*)0x0069a170)[index];
+            return 0xffff;
+        }
+        case 0x1ab:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x110) return ((u8*)0x0069a1b0)[index];
+            return 0xffff;
+        }
         case 0x1ac:
-            if ((index == 0x11 || index == 3 || index == 0) &&
-                func_00301750(*(u32*)unit->datUnit, 0xb) > 0)
+        {
+            if (unit->genus != 1) return 0xffff;
             {
-                *(u32*)((u8*)gBtl + 0xb50) = 1;
-                return 0xf;
+                if ((index == 0x11 || index == 3 || index == 0) &&
+                    func_00301750(*(u32*)unit->datUnit, 0xb) > 0)
+                {
+                    *(u32*)((u8*)gBtl + 0xb50) = 1;
+                    return 0xf;
+                }
+                if (func_00301750(*(u32*)unit->datUnit, 0xb) == 0)
+                {
+                    *(u32*)((u8*)gBtl + 0xb50) = 0;
+                }
+                return ((u8*)0x0069a230)[index];
             }
-            if (func_00301750(*(u32*)unit->datUnit, 0xb) == 0)
-            {
-                *(u32*)((u8*)gBtl + 0xb50) = 0;
-            }
-            table = (u8*)0x0069a230;
-            break;
-        case 0x1ad: if (charId == 0x112) table = (u8*)0x0069a380; break;
-        case 0x1ae: if (charId == 0x126) table = (u8*)0x0069a490; break;
-        case 0x1af: if (charId == 0xe9) table = (u8*)0x0069a4d0; break;
-        case 0x1b0: if (charId == 0xea) table = (u8*)0x0069a510; break;
+        }
+        case 0x1ad:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x112) return ((u8*)0x0069a380)[index];
+            return 0xffff;
+        }
+        case 0x1ae:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0x126) return ((u8*)0x0069a490)[index];
+            return 0xffff;
+        }
+        case 0x1af:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0xe9) return ((u8*)0x0069a4d0)[index];
+            return 0xffff;
+        }
+        case 0x1b0:
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0xea) return ((u8*)0x0069a510)[index];
+            return 0xffff;
+        }
         case 0x1b1:
         case 0x1b2:
         case 0x1b3:
-            if (charId >= 0xeb && charId <= 0xf0) table = (u8*)0x0069a530;
-            break;
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId >= 0xeb && unit->charId <= 0xf0)
+                return ((u8*)0x0069a530)[index];
+            return 0xffff;
+        }
         case 0x1b4:
-            if (charId == 0xf1)
+        {
+            if (unit->genus != 1) return 0xffff;
+            if (unit->charId == 0xf1)
             {
                 if (*(u32*)((u8*)gBtl + 0xb48) == 0)
                 {
@@ -1948,23 +2019,18 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                     {
                         return 6;
                     }
-                    table = (u8*)0x0069a570;
+                    return ((u8*)0x0069a570)[index];
                 }
                 else
                 {
-                    table = (u8*)0x0069a58a;
+                    return ((u8*)0x0069a58a)[index];
                 }
             }
-            break;
+            return 0xffff;
+        }
         default:
-            break;
+            return 0xffff;
     }
-    if (table == NULL)
-    {
-        return 0xffff;
-    }
-    value = table[index];
-    return value;
 }
 
 static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1A8(BtlUnit* unit)
