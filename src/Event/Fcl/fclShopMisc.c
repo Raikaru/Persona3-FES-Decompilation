@@ -21951,11 +21951,10 @@ void FUN_0040d610(float param_1,int param_2,int param_3,int param_4,int param_5,
 
 
 // FUN_0040D640 NONMATCHING
+
 void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6,
 
                  long param_7,long param_8)
-
-
 
 {
 
@@ -21967,87 +21966,18 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   u32 uVar4;
 
-  float fStack_140;
-
-  float fStack_13c;
-
-  float fStack_138;
-
-  u32 uStack_130;
-
-  u32 uStack_12c;
-
-  float fStack_128;
-
-  float fStack_120;
-
-  float fStack_11c;
-
-  float fStack_118;
-
-  float fStack_114;
-
-  float fStack_100;
-
-  float fStack_fc;
-
-  float fStack_f8;
-
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  float fStack_e8;
-
-  float fStack_e0;
-
-  float fStack_dc;
-
-  float fStack_d8;
-
-  float fStack_d4;
-
-  float fStack_c0;
-
-  float fStack_bc;
-
-  float fStack_b8;
-
-  u32 uStack_b0;
-
-  u32 uStack_ac;
-
-  float fStack_a8;
-
-  float fStack_a0;
-
-  float fStack_9c;
-
-  float fStack_98;
-
-  float fStack_94;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_54;
-
-  
+  float fStack_140, fStack_13c, fStack_138, fStack_128;
+  float fStack_120, fStack_11c, fStack_118, fStack_114;
+  float fStack_100, fStack_fc, fStack_f8, fStack_e8;
+  float fStack_e0, fStack_dc, fStack_d8, fStack_d4;
+  float fStack_c0, fStack_bc, fStack_b8, fStack_a8;
+  float fStack_a0, fStack_9c, fStack_98, fStack_94;
+  float fStack_80, fStack_7c, fStack_78, fStack_68;
+  float fStack_60, fStack_5c, fStack_58, fStack_54;
+  u32 uStack_130, uStack_12c;
+  u32 uStack_f0, uStack_ec;
+  u32 uStack_b0, uStack_ac;
+  u32 uStack_70, uStack_6c;
 
   if (param_7 == 0) {
 
@@ -22080,8 +22010,7 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
   uVar3 = param_6 >> 8 & 0xff;
 
   param_6 = param_6 & 0xff;
-
-  param_1 = DAT_00960088 - param_1;
+  param_1 = *(float *)&DAT_00960088 - param_1;
 
   if (param_8 != 0) {
 
@@ -22091,94 +22020,57 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 
     fStack_128 = 1.0 / *(float *)(iVar2 + 0x84);
 
-    uStack_130 = 0;
-
-    uStack_12c = 0;
-
-    uStack_f0 = 0;
-
-    uStack_ec = 0x3f800000;
-
-    uStack_b0 = 0x3f800000;
-
-    uStack_ac = 0;
-
-    uStack_70 = 0x3f800000;
-
-    uStack_6c = 0x3f800000;
-
-    fStack_e8 = fStack_128;
-
-    fStack_a8 = fStack_128;
-
-    fStack_68 = fStack_128;
-
   }
 
-  fStack_140 = (float)param_2;
+  // Use a float array as a single addressable object to prevent dead-store elimination
+  { float *v = (float *)&fStack_140;
+    v[0]  = (float)param_2;           // vertex 0 x
+    v[1]  = (float)param_3;           // vertex 0 y
+    v[3]  = (float)uVar1;             // vertex 0 r
+    v[4]  = (float)uVar4;             // vertex 0 g
+    v[5]  = (float)uVar3;             // vertex 0 b
+    v[6]  = (float)param_6;           // vertex 0 a
+    v[7]  = (float)param_2;           // vertex 1 x
+    v[8]  = (float)(param_3 + param_5); // vertex 1 y
+    v[10] = (float)uVar1;             // vertex 1 r
+    v[11] = (float)uVar4;             // vertex 1 g
+    v[12] = (float)uVar3;             // vertex 1 b
+    v[13] = (float)param_6;           // vertex 1 a
+    v[14] = (float)(param_2 + param_4); // vertex 2 x
+    v[15] = (float)param_3;           // vertex 2 y
+    v[17] = (float)uVar1;             // vertex 2 r
+    v[18] = (float)uVar4;             // vertex 2 g
+    v[19] = (float)uVar3;             // vertex 2 b
+    v[20] = (float)param_6;           // vertex 2 a
+    v[21] = (float)(param_2 + param_4); // vertex 3 x
+    v[22] = (float)(param_3 + param_5); // vertex 3 y
+    v[24] = (float)uVar1;             // vertex 3 r
+    v[25] = (float)uVar4;             // vertex 3 g
+    v[26] = (float)uVar3;             // vertex 3 b
+    v[27] = (float)param_6;           // vertex 3 a
+    v[2]  = param_1;                  // vertex 0 z
+    v[9]  = param_1;                  // vertex 1 z
+    v[16] = param_1;                  // vertex 2 z
+    v[23] = param_1;                  // vertex 3 z
+  }
 
-  fStack_13c = (float)param_3;
-
-  fStack_120 = (float)uVar1;
-
-  fStack_11c = (float)uVar4;
-
-  fStack_118 = (float)uVar3;
-
-  fStack_114 = (float)param_6;
-
-  fStack_100 = (float)param_2;
-
-  fStack_fc = (float)(param_3 + param_5);
-
-  fStack_e0 = (float)uVar1;
-
-  fStack_dc = (float)uVar4;
-
-  fStack_d8 = (float)uVar3;
-
-  fStack_d4 = (float)param_6;
-
-  fStack_c0 = (float)(param_2 + param_4);
-
-  fStack_bc = (float)param_3;
-
-  fStack_a0 = (float)uVar1;
-
-  fStack_9c = (float)uVar4;
-
-  fStack_98 = (float)uVar3;
-
-  fStack_94 = (float)param_6;
-
-  fStack_80 = (float)(param_2 + param_4);
-
-  fStack_7c = (float)(param_3 + param_5);
-
-  fStack_60 = (float)uVar1;
-
-  fStack_5c = (float)uVar4;
-
-  fStack_58 = (float)uVar3;
-
-  fStack_54 = (float)param_6;
-
-  fStack_138 = param_1;
-
-  fStack_f8 = param_1;
-
-  fStack_b8 = param_1;
-
-  fStack_78 = param_1;
+  if (param_8 != 0) {
+    uStack_130 = 0;
+    uStack_12c = 0;
+    uStack_f0 = 0;
+    uStack_ec = 0x3f800000;
+    uStack_b0 = 0x3f800000;
+    uStack_ac = 0;
+    uStack_70 = 0x3f800000;
+    uStack_6c = 0x3f800000;
+    fStack_e8 = fStack_128;
+    fStack_a8 = fStack_128;
+    fStack_68 = fStack_128;
+  }
 
   (*DAT_009600a0)(4,&fStack_140,4);
-
   (*DAT_00960090)(1,0);
-
-  return;
-
 }
-
 
 
 
