@@ -2276,7 +2276,7 @@ void func_001f4a00(void)
     s32 lastGroup;
     s32 groupSize[4];
     u32 enabled[4];
-    volatile u32 framePad[8];
+    u32 weightTable[8];
     f32 progress;
     f32 maxProgress;
     f32 ratio0;
@@ -2328,14 +2328,14 @@ void func_001f4a00(void)
 
     maxProgress = (f32)(s32)actTable[2] +
                   (f32)(RpRandom() % 1);
-    framePad[0] = actTable[0];
-    framePad[1] = actTable[2];
-    framePad[2] = actTable[2];
-    framePad[3] = actTable[1];
+    weightTable[0] = actTable[0];
+    weightTable[1] = actTable[2];
+    weightTable[2] = actTable[2];
+    weightTable[3] = actTable[1];
     if (actTable[0] == 0 && actTable[2] != 0) {
-        framePad[0] = 1;
+        weightTable[0] = 1;
     }
-    framePad[7] = 0;
+    weightTable[7] = 0;
 
     groups = 0;
     lastGroup = 0;
@@ -2365,7 +2365,7 @@ void func_001f4a00(void)
         totalWeight = 0;
         for (i = 0; i < 4; i++) {
             if (enabled[i] != 0) {
-                totalWeight += framePad[i];
+                totalWeight += weightTable[i];
             }
         }
         if (totalWeight == 0) {
@@ -2376,7 +2376,7 @@ void func_001f4a00(void)
         for (i = 0; i < 4; i++) {
             if (enabled[i] != 0) {
                 selected = (s32)i;
-                random -= framePad[i];
+                random -= weightTable[i];
                 if ((s32)random < 0) {
                     break;
                 }
