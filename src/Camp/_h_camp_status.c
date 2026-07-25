@@ -808,9 +808,9 @@ void FUN_0012b860(CampVec2 position, f32 scale, void* currentStats,
     }
     h_campStatusDrawStatLabels(position, scale, persona, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
-                         position.y + 100.0f, scale, alpha);
+                         (125.0f + position.y) - 25.0f, scale, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
-                         position.y + 159.0f, scale, alpha);
+                         (184.0f + position.y) - 25.0f, scale, alpha);
     h_campStatusDrawStatValues(position, scale, currentStats, persona, alpha);
     for (i = 0; i < 5; i++) {
         value = FUN_00173660(persona, i) & 0xff;
@@ -834,9 +834,9 @@ void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
     }
     h_campStatusDrawStatLabels(position, scale, persona, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
-                         position.y + 100.0f, scale, alpha);
+                         (125.0f + position.y) - 25.0f, scale, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
-                         position.y + 159.0f, scale, alpha);
+                         (184.0f + position.y) - 25.0f, scale, alpha);
     campStatusDrawExp(position, scale, NULL, persona, alpha);
 }
 
