@@ -212,7 +212,15 @@ BtlPacket* func_002a1280(void* param_1, u32 param_2);
 BtlPacket* func_002a1b00(BtlAction* action, u16 param_2, u32 param_3);
 void func_002bb6f0(u16 param_1, void* param_2);
 BtlPacket* func_0027f2f0(void);
+extern u64 FUN_0027f940();
+extern f32 FUN_004c6ac0(RwV3d* vec);
+extern f32 FUN_004c69f0(RwV3d* dst, const RwV3d* src);
 BtlPacket* func_002bb2f0(u32 param_1, BtlUnit* unit, u32 param_3, u64 param_4, u16 param_5);
+u32 FUN_002fdb70(void);
+u32 FUN_002fdb90(void);
+u32 FUN_002fde40(BtlAction* action, f32* position);
+extern s32 FUN_002d63b0(BtlUnit* unit, s32 param_2, s32 param_3);
+extern s64 func_00284040(BtlUnit* a, BtlUnit* b, s16 c, s32 d);
 void* FUN_00289650(u32 param_1, u16 param_2, u32 param_3);
 BtlPacket* btlSoundCreateSkillSEPacket(u16 skillId, u16 flags);
 BtlPacket* btlUnit00285d30(BtlUnit* unit, u32 targetCol, s16 param_3, s16 param_4, u8 mode, u8 flags);
@@ -1859,37 +1867,453 @@ void btlActionUpdateStateReady(BtlAction* action)
 // FUN_0028df00 NONMATCHING
 void btlActionInitStateMoveTarget(BtlAction* action)
 {
-    BtlAction* target = action->target.targetedActions[0];
-    BtlPacket* packet;
+    BtlAction* target;
+    BtlAction* victim;
+    BtlUnit* actionUnit;
+    BtlUnit* victimUnit;
+    BtlUnit* personaUnit;
     f32 distance;
+    f32 extraOffset;
+    f32 moveSpeed;
+    f32 speedScale;
+    u16 specificId;
+    u16 someFlag;
+    u16 isSkillType;
+    u16 isFirstSpecial;
+    BtlPacket* packet;
+    RwV3d spE0;
+    RwV3d spD0;
+    RwV3d sp120;
+    RwV3d sp110;
+    RwV3d sp100;
+    RwV3d spF0;
+    u32 localFlag;
+    s32 personaActionType;
+    u8* battleStateTable;
 
-    packet = btlUnitCreateLookAtUnitPacket(NULL, action->unit, BTLUNIT_LOOKAT_FLAG_ALLPLAYER | BTLUNIT_LOOKAT_FLAG_ALLENEMY);
+    target = action->target.targetedActions[0];
+    victim = target;
+    specificId = action->target.specificId;
+    localFlag = 1;
+    someFlag = 1;
+    isSkillType = 0;
+    isFirstSpecial = 0;
+    actionUnit = action->unit;
+
+    packet = FUN_002886e0(NULL, actionUnit, 3);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = btlUnitCreateLookAtDeactivatePacket(action->unit, 0);
+
+    packet = FUN_00288950(actionUnit, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
     action->unk_18 |= 0x200;
-    if (target == NULL)
+
+    battleStateTable = iGpffffb708;
+    if ((battleStateTable[(u32)specificId * 0x2c] & 2) != 0)
     {
-        action->unk_18 |= 0x10;
-        return;
+        if (actionUnit->genus == UNIT_GENUS_PC)
+        {
+            if (FUN_0028a0f0(action) != 0)
+            {
+                if (FUN_002fdb70() != 0)
+                {
+                    goto position_section;
+                }
+                someFlag = 0;
+                goto unified_end;
+            }
+            goto genus_dispatch;
+        }
+        else
+        {
+            goto genus_dispatch;
+        }
     }
-    distance = FUN_002812d0(action->unit, target->unit, FUN_002d5e10(action) ? 11 : 4);
-    if (distance <= 0.0f)
+    else
     {
-        action->unk_18 |= 0x10;
-        return;
+        goto specificid_invalid;
     }
-    btlAction0028a780(action);
-    packet = btlUnitCreateMoveToUnitPacket(action->unit, target->unit, distance, 2.0f,
-                                            (action->unk_18 & 0x4000) ? 0x48 : 0x40);
+
+position_section:
+    {
+        f32 checkDist;
+
+        victimUnit = target->unit;
+        actionUnit = action->unit;
+
+        FUN_0027ffb0(actionUnit, &spE0);
+        FUN_00280480(victimUnit, actionUnit, &spD0);
+
+        checkDist = FUN_002d1ed0(&spE0, &spD0);
+
+        if (checkDist > 500.0f)
+        {
+            isSkillType = someFlag;
+            someFlag = 0;
+            goto unified_end;
+        }
+        extraOffset = checkDist;
+        goto unified_end;
+    }
+
+genus_dispatch:
+    if (actionUnit->genus == UNIT_GENUS_EC)
+    {
+        if (FUN_002fde40(action, (f32*)&sp120) != 0)
+        {
+            localFlag = 0;
+            goto unified_end;
+        }
+    }
+    goto distance_section;
+
+distance_section:
+    {
+        u16 distanceType;
+
+        victimUnit = target->unit;
+        if (FUN_002d5e10(action) == 0)
+        {
+            distanceType = (specificId == 11) ? 11 : 4;
+        }
+        else
+        {
+            distanceType = 11;
+        }
+
+        distance = FUN_002812d0(actionUnit, victimUnit, distanceType);
+        extraOffset = distance;
+
+        if ((action->unk_18 & 0x4000) != 0)
+        {
+            isFirstSpecial = 1;
+        }
+        goto final_dispatch;
+    }
+
+unified_end:
+    if ((action->unk_18 & 0x4000) != 0)
+    {
+        isFirstSpecial = 1;
+    }
+    goto final_dispatch;
+
+specificid_invalid:
+    actionUnit = action->unit;
+    if (actionUnit->genus == someFlag)
+    {
+        goto persona_dispatch_genus_match;
+    }
+    if (actionUnit->genus == UNIT_GENUS_PC)
+    {
+        goto genus0_action;
+    }
+    goto final_dispatch;
+
+persona_dispatch_genus_match:
+    victim = action->target.targetedActions[0];
+    if (victim == NULL)
+    {
+        goto final_dispatch;
+    }
+    /* fall through */
+
+genus0_action:
+    victimUnit = target->unit;
+    personaUnit = victimUnit->personaUnit;
+    personaActionType = func_002d6290(action);
+
+    func_00284040(personaUnit, victimUnit, (s16)specificId, personaActionType);
+
+    personaActionType = FUN_002d63b0(personaUnit, specificId, personaActionType);
+
+    FUN_0027ffb0(victimUnit, &spE0);
+    FUN_00280480(victimUnit->personaUnit, victimUnit, &spD0);
+    moveSpeed = FUN_002d1ed0(&spE0, &spD0);
+    {
+        f32 vz = victimUnit->pos.z;
+        f32 vy = victimUnit->pos.y;
+        f32 pz = victimUnit->personaUnit->pos.z;
+        f32 py = victimUnit->personaUnit->pos.y;
+        (void)vz;
+        (void)vy;
+        (void)pz;
+        (void)py;
+    }
+
+    if (personaActionType == 0)
+    {
+        goto check_boss_flag2;
+    }
+
+    if (FUN_002fdb90() == 0)
+    {
+        goto check_boss_flag2;
+    }
+    goto position_check_thresholds;
+
+check_boss_flag2:
+    if (FUN_002fdb90() == 0)
+    {
+        goto check_distance_threshold;
+    }
+    goto check_distance_threshold;
+
+position_check_thresholds:
+    if (moveSpeed >= 300.0f)
+    {
+        extraOffset = moveSpeed - 300.0f;
+        if (extraOffset >= 200.0f)
+        {
+            goto compute_vector_offset;
+        }
+        action->unk_18 |= 0x10;
+        someFlag = 0;
+        goto final_dispatch;
+    }
+    goto check_boss_flag2;
+
+check_distance_threshold:
+    {
+        f32 vz2 = victimUnit->pos.z;
+        f32 vy2 = victimUnit->pos.y;
+        f32 pz2 = victimUnit->personaUnit->pos.z;
+        f32 py2 = victimUnit->personaUnit->pos.y;
+        (void)vz2;
+        (void)vy2;
+        (void)pz2;
+        (void)py2;
+    }
+    goto compute_vector_offset;
+
+compute_vector_offset:
+    {
+        FUN_0027f940(personaUnit, victimUnit, actionUnit, (s32)(u32)personaActionType, &sp110, NULL, 2);
+
+        spE0.x = sp110.x - spE0.x;
+        spE0.y = 0.0f;
+        spE0.z = sp110.z - spE0.z;
+
+        FUN_004c6ac0(&spE0);
+        extraOffset = extraOffset + moveSpeed;
+
+        if (extraOffset > moveSpeed)
+        {
+            action->unk_18 |= 0x10;
+            someFlag = 0;
+        }
+        goto final_dispatch;
+    }
+
+final_dispatch:
+    {
+        u16 field_6E;
+
+        if (someFlag != 0)
+        {
+            btlAction0028a780(action);
+        }
+
+        field_6E = action->target.specificId;
+        if ((iGpffffb708[(u32)field_6E * 0x2c] & 2) == 0)
+        {
+            isSkillType = 1;
+        }
+        else
+        {
+            isSkillType = 0;
+        }
+
+        actionUnit = action->unit;
+        {
+            u8 unitGenus;
+            u32* datUnitPtr;
+
+            datUnitPtr = (u32*)actionUnit->datUnit;
+            {
+                u16 recordField2 = *(u16*)((u8*)datUnitPtr + 2);
+                (void)recordField2;
+            }
+
+            unitGenus = actionUnit->genus;
+
+            if (unitGenus == UNIT_GENUS_EC)
+            {
+                goto enemy_action;
+            }
+            if (unitGenus == UNIT_GENUS_PC)
+            {
+                goto pc_action;
+            }
+            goto no_special_action;
+        }
+    }
+
+enemy_action:
+    {
+        actionUnit = action->unit;
+        {
+            BtlEnemyRecord* enemyEntry = &iGpffffb728[actionUnit->datUnit->id];
+            (void)enemyEntry;
+        }
+        goto enemy_packet_dispatch;
+    }
+
+pc_action:
+    goto enemy_packet_dispatch;
+
+no_special_action:
+    goto enemy_packet_dispatch;
+
+enemy_packet_dispatch:
+    {
+        actionUnit = action->unit;
+        {
+            u16 enemyId2 = actionUnit->datUnit->id;
+            (void)enemyId2;
+        }
+
+        {
+            u16 flagsOffset = action->target.specificId;
+            u16 commandField2;
+            commandField2 = *(u16*)((u8*)iGpffffb710 + (u32)flagsOffset * sizeof(BtlCommandRecord) + 2);
+            (void)commandField2;
+        }
+
+        if (isFirstSpecial == 1)
+        {
+            goto create_posrotcol_packet;
+        }
+
+        if (isSkillType == 0)
+        {
+            packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+            goto create_camera_packet;
+        }
+    }
+
+create_posrotcol_packet:
+    {
+        if (victim == NULL)
+        {
+            victim = action->target.targetedActions[0];
+        }
+
+        if (victim != NULL)
+        {
+            FUN_0027ffb0(victimUnit, &spE0);
+            FUN_00280480(actionUnit, victimUnit, &spD0);
+
+            sp100.x = spE0.x - spD0.x;
+            sp100.z = spE0.z - spD0.z;
+            sp100.y = 0.0f;
+
+            FUN_004c69f0(&sp100, &sp100);
+
+            sp110.x = spD0.x + sp100.x * (extraOffset + 50.0f);
+            sp110.z = spD0.z + sp100.z * (extraOffset + 50.0f);
+            sp110.y = spD0.y + sp100.y * (extraOffset + 50.0f);
+            sp110.y = victimUnit->pos.y + 8.0f;
+
+            packet = btlUnitCreatePosRotColPacket(victimUnit, &sp110, NULL, NULL);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+            extraOffset = extraOffset * uGpffff8088;
+            someFlag |= 8;
+
+            goto create_camera_packet;
+        }
+
+        extraOffset = extraOffset * 1.25f;
+
+        if (localFlag == 1)
+        {
+            packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+            goto create_camera_packet;
+        }
+
+        {
+            f32 distFromHome = FUN_002d1ed0(&actionUnit->pos, &sp120);
+            if (distFromHome <= 75.0f)
+            {
+                goto create_camera_packet;
+            }
+        }
+
+        packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    }
+
+create_camera_packet:
+    {
+        u32 victimVal;
+
+        victimVal = (u32)victim;
+        if (victimVal == 0 && isSkillType != 0)
+        {
+            if (isFirstSpecial != 0)
+            {
+                goto do_camera_packet_0x13;
+            }
+            goto do_camera_packet_0x12;
+        }
+
+        if (isFirstSpecial != 0)
+        {
+            goto do_camera_packet_0x13;
+        }
+
+        if (isFirstSpecial != 0)
+        {
+            goto do_camera_packet_0x12;
+        }
+
+        if (victimVal == 0 && isSkillType != 0)
+        {
+            if (isFirstSpecial != 0)
+            {
+                goto do_camera_packet_0x13;
+            }
+        }
+
+        if (isFirstSpecial != 0)
+        {
+            goto do_camera_packet_0x13;
+        }
+
+        if (isFirstSpecial != 0)
+        {
+            goto do_camera_packet_0x12;
+        }
+
+        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+        goto epilogue;
+    }
+
+do_camera_packet_0x12:
+    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    packet = btlCameraCreateSetStatePacket(action,
-                (action->unk_18 & 0x4000) ? BTLCAMERA_STATE_MOVETARET_A : BTLCAMERA_STATE_MOVETARGET);
+    goto epilogue;
+
+do_camera_packet_0x13:
+    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARET_A);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    goto epilogue;
+
+epilogue:
     action->unk_18 &= ~0x10;
 }
 // FUN_0028e740
@@ -2431,7 +2855,6 @@ extern u16 func_00283a70(BtlUnit *, u32);
 extern s64 func_00284040(BtlUnit *, BtlUnit *, s16, s32);
 extern s64 func_002b7060(u32);
 extern s32 func_002b8f90(u32);
-extern u32 func_002b9030(s32);
 extern f32 func_002b9590(BtlUnit *);
 extern u64 func_002b9640(u8 *);
 extern s32 func_002d1600(BtlTarget *);
