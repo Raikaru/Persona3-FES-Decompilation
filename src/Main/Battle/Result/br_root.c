@@ -3368,12 +3368,12 @@ void func_001f7210(void)
         func_003c7430(22);
         break;
     case 10:
-        /* off=6512: lw v0,0x150(sp); not v0,v0; andi v0,v0,1; beqz -> guarded item */
-        func_003c7bc0(0, func_001775a0(1));
+        /* off=6512: two patterns: guard check + HP stat chain */
+        /* Pattern 1: guarded item check */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
         func_003c7430(26);
-        break;
-    case 11:
-        /* off=6580: a0=1 -> func_001775a0(1); then persona-stat chain */
+        /* Pattern 2: HP stat chain */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         tmp = func_0016c6f0(1);
@@ -3381,22 +3381,14 @@ void func_001f7210(void)
         tmp = func_0011a810(tmp);
         func_003c7bc0(1, tmp);
         func_003c7430(29);
-        /* retail continues with debug assertion and table setup */
-        func_0010a4e0(1, 0, 6, 8);
-        tmp = (u32)func_00209cc0();
-        func_001775a0(1);
         break;
-    case 12:
-        /* off=6680: lw v0,0x150(sp); not v0,v0; andi -> guarded item */
-        func_003c7bc0(0, func_001775a0(1));
-        func_003c7430(25);
-        break;
-    case 13:
-        /* off=7016: addiu a0,zero,0x1e -> plain func_003c7430(30) */
-        func_003c7430(30);
-        break;
-    case 14:
-        /* off=7036: a0=1 -> func_001775a0(1); then persona-stat chain */
+    case 11:
+        /* off=6680: two patterns: guard check + SP stat chain */
+        /* Pattern 1: guarded item check */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(26);
+        /* Pattern 2: SP stat chain */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         tmp = func_0016c740(1);
@@ -3405,12 +3397,37 @@ void func_001f7210(void)
         func_003c7bc0(1, tmp);
         func_003c7430(28);
         break;
+    case 12:
+        /* off=6848: two patterns: guard check + Status stat chain */
+        /* Pattern 1: guarded item check */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(26);
+        /* Pattern 2: Status stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        tmp = func_0016c790(1);
+        tmp = func_00177360(tmp);
+        tmp = func_0011a870(tmp);
+        func_003c7bc0(1, tmp);
+        func_003c7430(33);
+        break;
+    case 13:
+        /* off=7016: addiu a0,zero,0x1e -> plain func_003c7430(30) */
+        func_003c7430(30);
+        break;
+    case 14:
+        /* off=7036: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(25) */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(25);
+        break;
     case 15:
         /* off=7084: addiu a0,zero,0x20 -> plain func_003c7430(32) */
         func_003c7430(32);
         break;
     case 16:
-        /* off=7104: a0=1 -> func_001775a0(1); then persona-stat chain */
+        /* off=7104: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(27) */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(27);
@@ -3420,10 +3437,10 @@ void func_001f7210(void)
         func_003c7430(34);
         break;
     case 18:
-        /* off=7172: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(33) */
+        /* off=7172: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(31) */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
-        func_003c7430(33);
+        func_003c7430(31);
         break;
     case 19:
         /* off=7220: addiu a0,zero,0x24 -> plain func_003c7430(36) */
@@ -3436,7 +3453,7 @@ void func_001f7210(void)
         func_003c7430(37);
         break;
     case 21:
-        /* off=7288: a0=1 -> func_001775a0(1); then persona-stat chain */
+        /* off=7288: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(38) */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(38);
@@ -3446,7 +3463,7 @@ void func_001f7210(void)
         func_003c7430(39);
         break;
     case 23:
-        /* off=7356: a0=1 -> func_001775a0(1); then persona-stat chain */
+        /* off=7356: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(40) */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(40);
@@ -3456,7 +3473,7 @@ void func_001f7210(void)
         func_003c7430(41);
         break;
     case 25:
-        /* off=7424: a0=1 -> func_001775a0(1); then persona-stat chain */
+        /* off=7424: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(42) */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(42);
@@ -3894,30 +3911,28 @@ void func_001f7210(void)
     K_ASSERT(work != NULL, 0x450);
     K_ASSERT(work != NULL, 0x770);
     K_ASSERT(work != NULL, 0x469);
-    func_001775a0(1);
-    func_001775a0(1);
-    /* Stat capping chains - compute HP/SP caps */
+    /* Stat capping chains - compute HP/SP caps via double 177xxx per retail */
     {
         s32 cap_val;
         u32 capped;
-        /* HP capping: func_0016c6f0 -> func_00177280 -> func_0011a810 -> func_0016cfe0 */
+        /* HP capping: func_0016c6f0 -> func_00177280 -> func_00177280 -> func_0016cfe0 */
         cap_val = (s32)func_0016c6f0(1);
         cap_val = (s32)func_00177280((u32)cap_val);
-        cap_val = (s32)func_0011a810((u32)cap_val);
+        cap_val = (s32)func_00177280((u32)cap_val);
         capped = (u32)cap_val + (u32)value;
         if (capped > 999) capped = 999;
         func_0016cfe0(1, capped);
-        /* SP capping: func_0016c740 -> func_001772f0 -> func_0011a840 -> func_0016d090 */
+        /* SP capping: func_0016c740 -> func_001772f0 -> func_001772f0 -> func_0016d090 */
         cap_val = (s32)func_0016c740(1);
         cap_val = (s32)func_001772f0((u32)cap_val);
-        cap_val = (s32)func_0011a840((u32)cap_val);
+        cap_val = (s32)func_001772f0((u32)cap_val);
         capped = (u32)cap_val + (u32)value;
         if (capped > 999) capped = 999;
         func_0016d090(1, capped);
-        /* Status capping: func_0016c790 -> func_00177360 -> func_0011a870 -> func_0016d160 */
+        /* Status capping: func_0016c790 -> func_00177360 -> func_00177360 -> func_0016d160 */
         cap_val = (s32)func_0016c790(1);
         cap_val = (s32)func_00177360((u32)cap_val);
-        cap_val = (s32)func_0011a870((u32)cap_val);
+        cap_val = (s32)func_00177360((u32)cap_val);
         capped = (u32)cap_val + (u32)value;
         if (capped > 999) capped = 999;
         func_0016d160(1, capped);
