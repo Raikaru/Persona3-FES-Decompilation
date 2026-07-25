@@ -4013,7 +4013,6 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
         f32 pad_scaled;
         RwV3d normalized;
     } work;
-    volatile f32 pad[4];
     BtlUnit* unit;
     BtlUnit* target;
     RwV3d* framePos;
@@ -7175,7 +7174,6 @@ void FUN_002b7bd0(u32 param_1,u32 param_2,float param_3,u16 param_4)
 u32 FUN_002b7c50(u32 *work)
 {
     u32 *work_p = work;
-    volatile u8 pad[0x50];
     BtlAction *action;
     BtlAction *targetAction;
     BtlUnit *source;
@@ -7227,7 +7225,6 @@ u32 FUN_002b7c50(u32 *work)
     f32 workX3;
     RtQuat rotation;
 
-    pad[0] = 0;
     action = *(BtlAction **)work_p;
     specificId = action->target.specificId;
     switch (action->unit->genus)
@@ -9258,7 +9255,6 @@ u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4
         f32 sp10c;
     } work;
     BtlCamera* cam;
-    volatile f32 lowPad[4];
     f32 temp_f0;
     f32 temp_f1;
     f32 temp_f2;
@@ -9274,7 +9270,6 @@ u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4
     u32 value;
 
     cam = camera;
-    lowPad[0] = 0.0f;
     FUN_002a4470((f32*)&work.first, (f32*)&cam->pos);
     temp_f21 = FUN_00280870(2, 0, &work.generated, &work.sp10c, 0, 1);
     work.generated.y = DAT_007cadb4 * work.sp10c;
@@ -9765,11 +9760,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   float fStack_10;
   undefined1 auStack_8 [4];
   float fStack_4;
-  volatile u8 stackPad[0xa0];
-  volatile u8 framePad[0x10];
   
-  stackPad[0] = 0;
-  framePad[0] = 0;
   iVar3 = (int)camera;
   iVar1 = *(int *)(iVar3 + 0xe0);
   iVar2 = FUN_002c0880(iVar1 + 0x88);
