@@ -299,8 +299,7 @@ void brPanel002350f0(void)
     D_00960090(6, 0);
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
-    frame = func_0021cce0(func_0021cca0(texture, 4));
-    D_00960090(1, frame);
+    D_00960090(1, 0);
     D_0096009C((u32*)(work + 0x2560), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x2560), 4, 0, 2, 3);
 
