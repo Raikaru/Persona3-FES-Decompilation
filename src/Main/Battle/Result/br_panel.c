@@ -315,8 +315,7 @@ void brPanel002350f0(void)
     D_00960090(6, 0);
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
-    frame = func_0021cce0(func_0021cca0(texture, 4));
-    D_00960090(1, frame);
+    D_00960090(1, 0);
     D_0096009C((u32*)(work + 0x2260), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x2260), 4, 0, 2, 3);
 
@@ -338,6 +337,8 @@ void brPanel002350f0(void)
         D_0096009C((u32*)(digitRowBase + i * 0x100), 4, 0, 1, 2);
         D_0096009C((u32*)(digitRowBase + i * 0x100), 4, 0, 2, 3);
     }
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
     frame = func_0021cce0(func_0021cca0(texture, 2));
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0xc20), 4, 0, 1, 2);
@@ -364,6 +365,14 @@ void brPanel002350f0(void)
         D_00960090(1, frame);
         D_0096009C((u32*)(entry + 0x110), 4, 0, 1, 2);
         D_0096009C((u32*)(entry + 0x110), 4, 0, 2, 3);
+        frame = func_0021cce0(func_0021cca0(digitTexture, 0));
+        D_00960090(1, frame);
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        D_0096009C((u32*)(entry + 0x210), 4, 0, 1, 2);
+        D_0096009C((u32*)(entry + 0x210), 4, 0, 2, 3);
+        D_0096009C((u32*)(entry + 0x310), 4, 0, 1, 2);
+        D_0096009C((u32*)(entry + 0x310), 4, 0, 2, 3);
         entryType = *(s32*)entry;
         if (entryType == 0) {
             digitFrame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xa);
@@ -424,13 +433,10 @@ void brPanel002350f0(void)
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1d60), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x1d60), 4, 0, 2, 3);
-    RpSkyRenderStateSet(3, 0x717fb);
-    RpSkyRenderStateSet(2, 0x44);
     frame = func_0021cce0(func_0021cca0(texture, 9));
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 2, 3);
-    RpSkyRenderStateSet(3, 0x717fb);
     if (workFlags & 8) {
         frame = (u32)(uintptr_t)func_0021cca0(texture, 0xa);
     } else {
