@@ -693,7 +693,7 @@ void bsaMain00210d90(BsaWork* work)
         rect[0] = -1.0f; rect[1] = 39.0f; rect[2] = 51.0f; rect[3] = 370.0f;
         break;
     }
-    func_0021d8e0((u8*)p + 0x90b0, rect);
+    func_0021d8e0(p + 0x242c, rect);
     switch (p[0]) {
     case 0:
         rect[0] = 50.0f; rect[1] = 219.0f; rect[2] = 500.0f; rect[3] = 190.0f;
@@ -702,7 +702,7 @@ void bsaMain00210d90(BsaWork* work)
         rect[0] = 50.0f; rect[1] = 39.0f; rect[2] = 500.0f; rect[3] = 370.0f;
         break;
     }
-    func_0021d8e0((u8*)p + 0x91b0, rect);
+    func_0021d8e0(p + 0x246c, rect);
     /*
      * Retail lays these panels out with rect writes only; their colours are
      * applied by the shared block below, so a bsaPlaceQuad here would emit a
@@ -710,24 +710,24 @@ void bsaMain00210d90(BsaWork* work)
      */
     x = base + 54.0f;
     rect[0] = 53.0f;  rect[1] = x; rect[2] = 220.0f; rect[3] = 97.0f;
-    func_0021d8e0((u8*)p + 0x92b0, rect);
+    func_0021d8e0(p + 0x24ac, rect);
     rect[0] = (f32)0x111; rect[1] = x; rect[2] = 120.0f; rect[3] = 97.0f;
-    func_0021d8e0((u8*)p + 0x93b0, rect);
+    func_0021d8e0(p + 0x24ec, rect);
     y = base + 158.0f;
     rect[0] = 53.0f;  rect[1] = y; rect[2] = 220.0f; rect[3] = 54.0f;
-    func_0021d8e0((u8*)p + 0x94b0, rect);
+    func_0021d8e0(p + 0x252c, rect);
     rect[0] = (f32)0x111; rect[1] = y; rect[2] = 130.0f; rect[3] = 54.0f;
-    func_0021d8e0((u8*)p + 0x95b0, rect);
+    func_0021d8e0(p + 0x256c, rect);
     for (i = 0; i < 8; i++) {
         f32 groupX;
         f32 groupY;
         groupX = ((i / 4) == 0 ? 0.0f : 270.0f) + 53.0f;
         groupY = (f32)(i & 3) * 30.0f + (f32)0x113;
         rect[0] = groupX; rect[1] = groupY; rect[2] = 118.0f; rect[3] = 26.0f;
-        func_0021d8e0((u8*)p + i * 0x200 + 0x96b0, rect);
+        func_0021d8e0(p + i * 0x80 + 0x25ac, rect);
         rect[0] = groupX + 118.0f; rect[1] = groupY;
         rect[2] = 200.0f; rect[3] = 26.0f;
-        func_0021d8e0((u8*)p + i * 0x200 + 0x97b0, rect);
+        func_0021d8e0(p + i * 0x80 + 0x25ec, rect);
     }
     {
         u8 fill[16];
@@ -741,8 +741,8 @@ void bsaMain00210d90(BsaWork* work)
         fill[10] = drawColor[2]; fill[11] = 0;
         fill[12] = drawColor[0]; fill[13] = drawColor[1];
         fill[14] = drawColor[2]; fill[15] = drawColor[3];
-        func_0021d950((u8*)p + 0x90b0, drawColor);
-        func_0021dd60((u8*)p + 0x91b0, fill);
+        func_0021d950(p + 0x242c, drawColor);
+        func_0021dd60(p + 0x246c, fill);
         drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
         drawColor[3] = bsaAlpha(alpha * 204.0f);
         fill[0] = drawColor[0]; fill[1] = drawColor[1];
@@ -753,13 +753,13 @@ void bsaMain00210d90(BsaWork* work)
         fill[10] = drawColor[2]; fill[11] = 0;
         fill[12] = drawColor[0]; fill[13] = drawColor[1];
         fill[14] = drawColor[2]; fill[15] = drawColor[3];
-        func_0021d950((u8*)p + 0x92b0, drawColor);
-        func_0021dd60((u8*)p + 0x93b0, fill);
-        func_0021d950((u8*)p + 0x94b0, drawColor);
-        func_0021dd60((u8*)p + 0x95b0, fill);
+        func_0021d950(p + 0x24ac, drawColor);
+        func_0021dd60(p + 0x24ec, fill);
+        func_0021d950(p + 0x252c, drawColor);
+        func_0021dd60(p + 0x256c, fill);
         for (i = 0; i < 8; i++) {
-            func_0021d950((u8*)p + i * 0x200 + 0x96b0, drawColor);
-            func_0021dd60((u8*)p + i * 0x200 + 0x97b0, fill);
+            func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
+            func_0021dd60(p + i * 0x80 + 0x25ec, fill);
         }
     }
 }
