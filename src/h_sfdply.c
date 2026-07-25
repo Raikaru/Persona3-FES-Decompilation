@@ -1710,11 +1710,11 @@ void func_0010e010(HSfdImage* image, s32 bitDepth)
 HSfdImage* func_0010e0d0(const u8* stream)
 {
     HSfdImage* image;
-    u8 bits;
-    u8 encoding;
-    u32 pixels;
+    s32 bits;
     const u8* payload;
-    if ((stream == NULL) || (stream[0] != 2) || (stream[1] != 0) ||
+
+    payload = stream + 0x40;
+    if ((stream[0] != 2) || (stream[1] != 0) ||
         (stream[8] != 'T') || (stream[9] != 'M') ||
         (stream[10] != 'X') || (stream[11] != '0'))
     {
@@ -1731,7 +1731,7 @@ HSfdImage* func_0010e0d0(const u8* stream)
             bits = 0x18;
             break;
         case 2:
-        case 10:
+        case 0x0A:
             bits = 0x10;
             break;
         case 0x13:
@@ -1756,11 +1756,7 @@ HSfdImage* func_0010e0d0(const u8* stream)
 
     func_004cbf20(image);
     image->stride = image->width * 4;
-    pixels = image->width * image->height;
-    payload = stream + 0x40;
-    encoding = stream[0x10];
-
-    if (encoding != 0)
+    if (stream[0x10] != 0)
     {
         if (bits == 4)
         {
@@ -1775,18 +1771,31 @@ HSfdImage* func_0010e0d0(const u8* stream)
     switch (stream[0x16])
     {
         case 0:
-            func_0010dd10(image, payload);
+            if (stream[0x10] != 0)
+                func_0010df60(image, payload);
+            func_0010e010(image, bits);
             break;
         case 1:
+            func_0010e010(image, bits);
             func_0010ddc0(image, payload);
             break;
         case 2:
-        case 10:
-            func_0010de40(image, payload);
+        case 0x0A:
+            if (stream[0x10] != 0)
+                func_0010de40(image, payload);
+            func_0010dd10(image, payload);
+            func_0010e010(image, bits);
             break;
         case 0x13:
         case 0x1B:
+            func_0010e010(image, bits);
             func_0010dee0(image, payload);
+            break;
+        case 0x14:
+        case 0x24:
+        case 0x2C:
+            func_0010e010(image, bits);
+            func_0010df60(image, payload);
             break;
         default:
             if (image->pixels != NULL)
@@ -1794,7 +1803,6 @@ HSfdImage* func_0010e0d0(const u8* stream)
                 u8* dst = image->pixels;
                 u32 y;
                 u32 x;
-
                 y = 0;
                 while (y < image->height)
                 {
@@ -1809,10 +1817,9 @@ HSfdImage* func_0010e0d0(const u8* stream)
                     y++;
                 }
             }
+            func_0010e010(image, bits);
             break;
     }
-
-    func_0010e010(image, bits);
     return image;
 }
 
