@@ -1024,7 +1024,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         campMenuDrawSprite(parent, *labels, 0x32, item->alpha,
                            item->x, item->y, item->scale);
         campMenuDrawSprite(parent, *labels, 0xa0, item->alpha,
-                           item->x + 365.0f, item->y, item->scale);
+                           424.0f + item->x - 59.0f, item->y, item->scale);
         break;
     case 13:
         alpha = (0xffU - item->alpha) | 0xffffff00U;
