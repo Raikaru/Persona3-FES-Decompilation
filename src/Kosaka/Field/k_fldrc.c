@@ -834,14 +834,20 @@ init_phase8:
     {
         for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
-            if (func_001e6d50(*(HCdvd**)(node + 0xa38),
-                              (void**)(node + 0xa3c),
-                              *(u16*)(node + 4), *(u16*)(node + 6)) == false)
+            if (func_001e6d50(
+                    *(HCdvd**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                            i * 4) + 0xa38),
+                    (void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                          i * 4) + 0xa3c),
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                         i * 4) + 4),
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c +
+                                         i * 4) + 6)) == false)
             {
                 return false;
             }
-            *(HCdvd**)(node + 0xa38) = NULL;
+            *(HCdvd**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                       0xa38) = NULL;
         }
         output = NULL;
         if (func_001e6d50(*(HCdvd**)((u8*)K_Field_Get() + 0x10cc), &output,
@@ -861,12 +867,11 @@ init_phase8:
     {
         for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
-            if (*(void**)(node + 0xa3c) != NULL)
-            {
-                func_001e6ea0(*(void**)(node + 0xa3c));
-            }
-            *(HCdvd**)(node + 0xa38) = NULL;
+            func_001e6ea0(
+                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                          0xa3c));
+            *(HCdvd**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                       0xa38) = NULL;
         }
     }
     scenePath = K_Scene_001a0250();
@@ -876,8 +881,9 @@ init_phase8:
     {
         for (i = 0; i < 9; i++)
         {
-            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
-            D_0086BDC0[i] = *(void**)(node + 0xa3c);
+            D_0086BDC0[i] =
+                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                          0xa3c);
         }
         if (scenePath == 1)
         {
