@@ -1157,26 +1157,21 @@ void* func_001ae580(KwlnTask* task)
             work->state = 1;
             return KWLNTASK_CONTINUE;
         }
-        if (model != NULL)
         {
-            localPosition = mdlGetMatrix(model)->pos;
-            work->startPosition = localPosition;
-            localDir.x = work->points[0].position.x - localPosition.x;
-            localDir.y = work->points[0].position.y - localPosition.y;
-            localDir.z = work->points[0].position.z - localPosition.z;
-            directionLength = sqrtf(localDir.x * localDir.x +
-                                    localDir.y * localDir.y +
-                                    localDir.z * localDir.z);
-            work->directionLength = directionLength;
-            localAngleStep = directionLength;
-            if (directionLength > 0.0f)
-            {
-                work->direction.x = localDir.x / directionLength;
-                work->direction.y = localDir.y / directionLength;
-                work->direction.z = localDir.z / directionLength;
-                localAngle = work->direction.x;
-                localAngleB = work->direction.z;
-            }
+            const u8* origin =
+                (const u8*)func_00318b60((u32)fldFrameMoveModel(work));
+
+            work->startPosition.x = *(const f32*)(origin + 0x30);
+            work->startPosition.y = *(const f32*)(origin + 0x34);
+            work->startPosition.z = *(const f32*)(origin + 0x38);
+            localPosition = work->points[0].position;
+            work->startPosition.y = 0.0f;
+            localPosition.y = 0.0f;
+            work->direction.x = localPosition.x - work->startPosition.x;
+            work->direction.y = 0.0f - work->startPosition.y;
+            work->direction.z = localPosition.z - work->startPosition.z;
+            work->directionLength =
+                func_004c69f0(&work->direction, &work->direction);
         }
         localFrameCount = (s32)work->points[0].duration;
         work->frameCount = localFrameCount;
