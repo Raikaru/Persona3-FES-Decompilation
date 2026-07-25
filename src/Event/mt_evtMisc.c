@@ -701,7 +701,7 @@ void FUN_00386e40(int param_1,u32 param_2);
 void FUN_00386e50(void);
 void FUN_00386f70(float param_1,float *param_2,float *param_3,u8 *param_4);
 void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 *param_5,u8 *param_6);
-void FUN_00388000(float param_1,u32 param_2,float *param_3,float *param_4,u32 *param_5 ,u32 *param_6,u32 *param_7,u8 *param_8,long param_9);
+void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 *param_6,u8 *param_7,u32 param_8);
 void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4);
 void FUN_00388ff0(int param_1);
 void FUN_003890e0(int param_1);
@@ -1216,475 +1216,217 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
 
 
 // FUN_00388000 NONMATCHING
-void FUN_00388000(float param_1,u32 param_2,float *param_3,float *param_4,u32 *param_5
-
-                 ,u32 *param_6,u32 *param_7,u8 *param_8,long param_9)
-
-
-
+void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 *param_6,u8 *param_7,u32 param_8)
 {
-
-  int iVar1;
-
-  float fVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  u32 uStack_240;
-
-  u32 uStack_23c;
-
-  u32 uStack_238;
-
-  u32 uStack_234;
-
-  u32 uStack_230;
-
-  u32 uStack_22c;
-
-  u32 uStack_228;
-
-  u32 uStack_220;
-
-  u32 uStack_21c;
-
-  u32 uStack_218;
-
-  u32 uStack_210;
-
-  u32 uStack_20c;
-
-  u32 uStack_208;
-
-  float fStack_200;
-
-  float fStack_1fc;
-
-  float fStack_1f8;
-
-  u32 uStack_1f0;
-
-  u32 uStack_1ec;
-
-  float fStack_1e8;
-
-  float fStack_1e0;
-
-  float fStack_1dc;
-
-  float fStack_1d8;
-
-  float fStack_1d4;
-
-  float fStack_1c0;
-
-  float fStack_1bc;
-
-  float fStack_1b8;
-
-  u32 uStack_1b0;
-
-  u32 uStack_1ac;
-
-  float fStack_1a8;
-
-  float fStack_1a0;
-
-  float fStack_19c;
-
-  float fStack_198;
-
-  float fStack_194;
-
-  float fStack_180;
-
-  float fStack_17c;
-
-  float fStack_178;
-
-  u32 uStack_170;
-
-  u32 uStack_16c;
-
-  float fStack_168;
-
-  float fStack_160;
-
-  float fStack_15c;
-
-  float fStack_158;
-
-  float fStack_154;
-
-  float fStack_140;
-
-  float fStack_13c;
-
-  float fStack_138;
-
-  u32 uStack_130;
-
-  u32 uStack_12c;
-
-  float fStack_128;
-
-  float fStack_120;
-
-  float fStack_11c;
-
-  float fStack_118;
-
-  float fStack_114;
-
-  float fStack_100;
-
-  float fStack_fc;
-
-  float fStack_f8;
-
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  float fStack_e8;
-
-  float fStack_e0;
-
-  float fStack_dc;
-
-  float fStack_d8;
-
-  float fStack_d4;
-
-  float fStack_c0;
-
-  float fStack_bc;
-
-  float fStack_b8;
-
-  u32 uStack_b0;
-
-  u32 uStack_ac;
-
-  float fStack_a8;
-
-  float fStack_a0;
-
-  float fStack_9c;
-
-  float fStack_98;
-
-  float fStack_94;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_50;
-
-  float fStack_4c;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  u32 uStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  u32 uStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  u32 uStack_8;
-
-  u8 bStack_4;
-
-  u8 bStack_3;
-
-  u8 bStack_2;
-
-  u8 bStack_1;
-
-  
-
-  fVar4 = *param_3;
-
-  fVar5 = *param_4;
-
-  fVar2 = param_3[1];
-
-  fVar3 = param_4[1];
-
-  bStack_4 = *param_8;
-
-  bStack_3 = param_8[1];
-
-  bStack_2 = param_8[2];
-
-  bStack_1 = param_8[3];
-
-  fVar6 = fVar4 + fVar5 / 2.0;
-
-  fVar7 = fVar2 + fVar3 / 2.0;
-
-  uStack_218 = 0x3f800000;
-
-  uStack_22c = 0x3f800000;
-
-  uStack_240 = 0x3f800000;
-
-  uStack_230 = 0;
-
-  uStack_238 = 0;
-
-  uStack_23c = 0;
-
-  uStack_21c = 0;
-
-  uStack_220 = 0;
-
-  uStack_228 = 0;
-
-  uStack_208 = 0;
-
-  uStack_20c = 0;
-
-  uStack_210 = 0;
-
-  uStack_234 = uStack_234 | 0x20003;
-
-  FUN_004c31b0(param_2,&uStack_240,0x6a2a80,1);
-
-  fStack_30 = (float)(int)fVar4 - fVar6;
-
-  fStack_1c = (float)(int)fVar2 - fVar7;
-
-  uStack_8 = 0;
-
-  fStack_40 = (float)(int)(fVar4 + fVar5) - fVar6;
-
-  uStack_18 = 0;
-
-  fStack_3c = (float)(int)(fVar2 + fVar3) - fVar7;
-
-  uStack_28 = 0;
-
-  uStack_38 = 0;
-
-  fStack_2c = fStack_3c;
-
-  fStack_20 = fStack_40;
-
-  fStack_10 = fStack_30;
-
-  fStack_c = fStack_1c;
-
-  FUN_004c6be0(&fStack_50,&fStack_10,&uStack_240);
-
-  FUN_004c6be0(&fStack_60,&fStack_20,&uStack_240);
-
-  FUN_004c6be0(&fStack_70,&fStack_30,&uStack_240);
-
-  FUN_004c6be0(&fStack_80,&fStack_40,&uStack_240);
-
-  fStack_50 = fStack_50 + fVar6;
-
-  fStack_4c = fStack_4c + fVar7;
-
-  fStack_60 = fStack_60 + fVar6;
-
-  fStack_5c = fStack_5c + fVar7;
-
-  fStack_70 = fStack_70 + fVar6;
-
-  fStack_6c = fStack_6c + fVar7;
-
-  fStack_80 = fStack_80 + fVar6;
-
-  fStack_7c = fStack_7c + fVar7;
-
-  iVar1 = FUN_00198590();
-
-  fStack_1e8 = 1.0 / *(float *)(iVar1 + 0x80);
-
-  fStack_1f8 = DAT_00960088 - param_1;
-
-  fStack_200 = fStack_50;
-
-  fStack_1fc = fStack_4c;
-
-  fStack_1e0 = (float)bStack_4;
-
-  fStack_1dc = (float)bStack_3;
-
-  fStack_1d8 = (float)bStack_2;
-
-  fStack_1d4 = (float)bStack_1;
-
-  uStack_1f0 = *param_5;
-
-  uStack_1ec = param_5[1];
-
-  fStack_1c0 = fStack_60;
-
-  fStack_1bc = fStack_5c;
-
-  fStack_1a0 = (float)bStack_4;
-
-  fStack_19c = (float)bStack_3;
-
-  fStack_198 = (float)bStack_2;
-
-  fStack_194 = (float)bStack_1;
-
-  uStack_1b0 = *param_6;
-
-  uStack_1ac = param_5[1];
-
-  fStack_180 = fStack_70;
-
-  fStack_17c = fStack_6c;
-
-  fStack_160 = (float)bStack_4;
-
-  fStack_15c = (float)bStack_3;
-
-  fStack_158 = (float)bStack_2;
-
-  fStack_154 = (float)bStack_1;
-
-  uStack_170 = *param_5;
-
-  uStack_16c = param_6[1];
-
-  fStack_140 = fStack_70;
-
-  fStack_13c = fStack_6c;
-
-  fStack_120 = (float)bStack_4;
-
-  fStack_11c = (float)bStack_3;
-
-  fStack_118 = (float)bStack_2;
-
-  fStack_114 = (float)bStack_1;
-
-  uStack_130 = *param_5;
-
-  uStack_12c = param_6[1];
-
-  fStack_100 = fStack_60;
-
-  fStack_fc = fStack_5c;
-
-  fStack_e0 = (float)bStack_4;
-
-  fStack_dc = (float)bStack_3;
-
-  fStack_d8 = (float)bStack_2;
-
-  fStack_d4 = (float)bStack_1;
-
-  uStack_f0 = *param_6;
-
-  uStack_ec = param_5[1];
-
-  fStack_c0 = fStack_80;
-
-  fStack_bc = fStack_7c;
-
-  fStack_a0 = (float)bStack_4;
-
-  fStack_9c = (float)bStack_3;
-
-  fStack_98 = (float)bStack_2;
-
-  fStack_94 = (float)bStack_1;
-
-  uStack_b0 = *param_6;
-
-  uStack_ac = param_6[1];
-
-  fStack_1b8 = fStack_1f8;
-
-  fStack_1a8 = fStack_1e8;
-
-  fStack_178 = fStack_1f8;
-
-  fStack_168 = fStack_1e8;
-
-  fStack_138 = fStack_1f8;
-
-  fStack_128 = fStack_1e8;
-
-  fStack_f8 = fStack_1f8;
-
-  fStack_e8 = fStack_1e8;
-
-  fStack_b8 = fStack_1f8;
-
-  fStack_a8 = fStack_1e8;
-
-  (*DAT_00960090)(1,*param_7);
-
-  (*DAT_00960090)(7,2);
-
-  (*DAT_00960090)(0xc,1);
-
-  (*DAT_00960090)(6,1);
-
-  (*DAT_00960090)(8,1);
-
-  if (param_9 == 1) {
-
+  f32 centerX;
+  f32 centerY;
+  f32 fVar2;
+  f32 fVar3;
+  f32 fVar4;
+  f32 fVar5;
+  f32 fStack_30;
+  f32 fStack_1c;
+  f32 fStack_40;
+  f32 fStack_3c;
+  f32 corners[4][2];
+  f32 texcoords[6][2];
+  s32 left;
+  s32 right;
+  s32 top;
+  s32 bottom;
+  s32 i;
+  RwIm2DVertex vertices[6];
+  RwRGBA color;
+  f32 recipZ;
+  f32 z;
+  int camera;
+  code *fn;
+  f32 auStack_d0[4];
+  f32 afStack_c0[2];
+  f32 afStack_b0[2];
+  f32 afStack_a0[2];
+  f32 afStack_90[4];
+  f32 afStack_80[4];
+  f32 afStack_70[4];
+  f32 afStack_60[4];
+
+  fVar4 = *param_2;
+  fVar5 = *param_3;
+  fVar2 = param_2[1];
+  fVar3 = param_3[1];
+  color = *(RwRGBA *)param_7;
+  asm volatile("" : "+m"(color));
+
+  left = (s32)fVar4;
+  right = (s32)(fVar4 + fVar5);
+  top = (s32)fVar2;
+  bottom = (s32)(fVar2 + fVar3);
+
+  centerX = fVar4 + fVar5 / 2.0f;
+  centerY = fVar2 + fVar3 / 2.0f;
+
+  fStack_30 = (f32)left - centerX;
+  fStack_1c = (f32)top - centerY;
+  fStack_40 = (f32)right - centerX;
+  fStack_3c = (f32)bottom - centerY;
+
+  auStack_d0[0] = 1.0f;
+  auStack_d0[1] = 0.0f;
+  auStack_d0[2] = 0.0f;
+  auStack_d0[3] = 0.0f;
+  afStack_c0[0] = 1.0f;
+  afStack_c0[1] = 0.0f;
+  afStack_b0[0] = 1.0f;
+  afStack_b0[1] = 0.0f;
+  afStack_a0[0] = 1.0f;
+  afStack_a0[1] = 0.0f;
+  afStack_90[0] = 1.0f;
+  afStack_90[1] = 0.0f;
+  afStack_90[2] = 0.0f;
+  afStack_90[3] = 0.0f;
+  afStack_80[0] = 1.0f;
+  afStack_80[1] = 0.0f;
+  afStack_80[2] = 0.0f;
+  afStack_80[3] = 0.0f;
+  afStack_70[0] = 1.0f;
+  afStack_70[1] = 0.0f;
+  afStack_70[2] = 0.0f;
+  afStack_70[3] = 0.0f;
+  afStack_60[0] = 1.0f;
+  afStack_60[1] = 0.0f;
+  afStack_60[2] = 0.0f;
+  afStack_60[3] = 0.0f;
+
+  *(u32 *)&afStack_90[3] = *(u32 *)&afStack_90[3] | 0x20003;
+
+  FUN_004c31b0(param_6,afStack_90,0x6a2a80,1);
+
+  corners[0][0] = fStack_30;
+  corners[0][1] = fStack_1c;
+  FUN_004c6be0(&corners[0][0],&fStack_30,auStack_d0);
+
+  corners[1][0] = fStack_40;
+  corners[1][1] = fStack_3c;
+  FUN_004c6be0(&corners[1][0],&fStack_40,auStack_d0);
+
+  corners[2][0] = fStack_30;
+  corners[2][1] = fStack_3c;
+  FUN_004c6be0(&corners[2][0],&fStack_30,auStack_d0);
+
+  corners[3][0] = fStack_40;
+  corners[3][1] = fStack_1c;
+  FUN_004c6be0(&corners[3][0],&fStack_40,auStack_d0);
+
+  for (i = 0; i < 4; i++) {
+    corners[i][0] = corners[i][0] + centerX;
+    corners[i][1] = corners[i][1] + centerY;
+  }
+
+  camera = FUN_00198590();
+  recipZ = 1.0f / *(float *)(camera + 0x80);
+  z = *(float *)DAT_00960088_abs - param_1;
+
+  texcoords[0][0] = param_4[0];
+  texcoords[0][1] = param_4[1];
+  texcoords[1][0] = param_5[0];
+  texcoords[1][1] = param_5[1];
+  texcoords[2][0] = param_4[0];
+  texcoords[2][1] = param_4[1];
+  texcoords[3][0] = param_5[0];
+  texcoords[3][1] = param_5[1];
+  texcoords[4][0] = param_5[0];
+  texcoords[4][1] = param_4[1];
+  texcoords[5][0] = param_4[0];
+  texcoords[5][1] = param_5[1];
+
+  fStack_30 = (f32)color.r;
+  fStack_1c = (f32)color.g;
+  fStack_40 = (f32)color.b;
+  fStack_3c = (f32)color.a;
+
+  vertices[0].u.els.scrVertex.x = corners[0][0];
+  vertices[0].u.els.scrVertex.y = corners[0][1];
+  vertices[0].u.els.scrVertex.z = z;
+  vertices[0].u.els.color.r = fStack_30;
+  vertices[0].u.els.color.g = fStack_1c;
+  vertices[0].u.els.color.b = fStack_40;
+  vertices[0].u.els.color.a = fStack_3c;
+  vertices[0].u.els.u = texcoords[0][0];
+  vertices[0].u.els.v = texcoords[0][1];
+  vertices[0].u.els.recipZ = recipZ;
+
+  vertices[1].u.els.scrVertex.x = corners[1][0];
+  vertices[1].u.els.scrVertex.y = corners[1][1];
+  vertices[1].u.els.scrVertex.z = z;
+  vertices[1].u.els.color.r = fStack_30;
+  vertices[1].u.els.color.g = fStack_1c;
+  vertices[1].u.els.color.b = fStack_40;
+  vertices[1].u.els.color.a = fStack_3c;
+  vertices[1].u.els.u = texcoords[1][0];
+  vertices[1].u.els.v = texcoords[1][1];
+  vertices[1].u.els.recipZ = recipZ;
+
+  vertices[2].u.els.scrVertex.x = corners[2][0];
+  vertices[2].u.els.scrVertex.y = corners[2][1];
+  vertices[2].u.els.scrVertex.z = z;
+  vertices[2].u.els.color.r = fStack_30;
+  vertices[2].u.els.color.g = fStack_1c;
+  vertices[2].u.els.color.b = fStack_40;
+  vertices[2].u.els.color.a = fStack_3c;
+  vertices[2].u.els.u = texcoords[2][0];
+  vertices[2].u.els.v = texcoords[2][1];
+  vertices[2].u.els.recipZ = recipZ;
+
+  vertices[3].u.els.scrVertex.x = corners[3][0];
+  vertices[3].u.els.scrVertex.y = corners[3][1];
+  vertices[3].u.els.scrVertex.z = z;
+  vertices[3].u.els.color.r = fStack_30;
+  vertices[3].u.els.color.g = fStack_1c;
+  vertices[3].u.els.color.b = fStack_40;
+  vertices[3].u.els.color.a = fStack_3c;
+  vertices[3].u.els.u = texcoords[3][0];
+  vertices[3].u.els.v = texcoords[3][1];
+  vertices[3].u.els.recipZ = recipZ;
+
+  vertices[4].u.els.scrVertex.x = corners[3][0];
+  vertices[4].u.els.scrVertex.y = corners[3][1];
+  vertices[4].u.els.scrVertex.z = z;
+  vertices[4].u.els.color.r = fStack_30;
+  vertices[4].u.els.color.g = fStack_1c;
+  vertices[4].u.els.color.b = fStack_40;
+  vertices[4].u.els.color.a = fStack_3c;
+  vertices[4].u.els.u = texcoords[4][0];
+  vertices[4].u.els.v = texcoords[4][1];
+  vertices[4].u.els.recipZ = recipZ;
+
+  vertices[5].u.els.scrVertex.x = corners[0][0];
+  vertices[5].u.els.scrVertex.y = corners[0][1];
+  vertices[5].u.els.scrVertex.z = z;
+  vertices[5].u.els.color.r = fStack_30;
+  vertices[5].u.els.color.g = fStack_1c;
+  vertices[5].u.els.color.b = fStack_40;
+  vertices[5].u.els.color.a = fStack_3c;
+  vertices[5].u.els.u = texcoords[5][0];
+  vertices[5].u.els.v = texcoords[5][1];
+  vertices[5].u.els.recipZ = recipZ;
+
+  fn = (code *)&DAT_00960090_abs;
+  (*fn)(1,*param_6);
+  (*fn)(7,2);
+  (*fn)(0xc,1);
+  (*fn)(6,1);
+  (*fn)(8,1);
+
+  if (param_8 == 1) {
     FUN_004d7f60(2,0x48);
-
     FUN_004d7f60(3,0x71801);
-
-  }
-
-  else if (param_9 == 0) {
-
+  } else if (param_8 == 0) {
     FUN_004d7f60(2,0x44);
-
     FUN_004d7f60(3,0x717fb);
-
   }
 
-  (*DAT_009600a0)(3,&fStack_200,6);
-
-  return;
-
+  (*DAT_009600a0_abs)(3,vertices,6);
 }
-
-
 // FUN_00388A40
 void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
 {
