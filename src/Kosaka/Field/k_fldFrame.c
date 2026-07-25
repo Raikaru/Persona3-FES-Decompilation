@@ -2220,6 +2220,53 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
         }
     }
 }
+// FUN_001ac950 NONMATCHING
+void* func_001ac950(const RwV3d* line, void* unused,
+                    const void* triangle, FldFrameRaycast* raycast)
+{
+    const FldFrameCollisionTriangle* candidate;
+    RwV3d segment;
+    RwV3d fromVertex;
+    f32 denominator;
+    f32 fraction;
+
+    (void)unused;
+    if (line == NULL || triangle == NULL || raycast == NULL)
+    {
+        return (void*)triangle;
+    }
+
+    candidate = (const FldFrameCollisionTriangle*)triangle;
+    if (candidate->vertices[0] == NULL)
+    {
+        return (void*)triangle;
+    }
+
+    segment.x = line[1].x - line[0].x;
+    segment.y = line[1].y - line[0].y;
+    segment.z = line[1].z - line[0].z;
+    denominator = FldFrame_Dot(&candidate->normal, &segment);
+    if (fabsf(denominator) < 0.000001f)
+    {
+        return (void*)triangle;
+    }
+
+    fromVertex.x = candidate->vertices[0]->x - line[0].x;
+    fromVertex.y = candidate->vertices[0]->y - line[0].y;
+    fromVertex.z = candidate->vertices[0]->z - line[0].z;
+    fraction = FldFrame_Dot(&candidate->normal, &fromVertex) / denominator;
+    if (fraction < 0.0f || fraction > 1.0f)
+    {
+        return (void*)triangle;
+    }
+
+    raycast->hitPointDst->x = line[0].x + segment.x * fraction;
+    raycast->hitPointDst->y = line[0].y + segment.y * fraction;
+    raycast->hitPointDst->z = line[0].z + segment.z * fraction;
+    raycast->didHit = true;
+    return (void*)triangle;
+}
+
 // FUN_001aca40 NONMATCHING
 void* func_001aca40(f32 fraction, const RwV3d* line,
                     void* unused, FldFrameRaycast* raycast)
