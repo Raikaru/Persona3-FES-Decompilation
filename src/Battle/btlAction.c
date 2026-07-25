@@ -2650,6 +2650,36 @@ void btlActionUpdateStateAttack(BtlAction* action)
         u16 outA, outB, outC, outD;
         FUN_0028a540(action, action->target.specificId, &outA, &outB, &outC, &outD);
         packet = FUN_002baf90(*(u32*)((u8*)gBtl + outA * 4 + 0xc24), action->unit, basis->unit, 0, 0);
+    /* Camera set-state for various effect phases */
+    packet = btlCameraCreateSetStatePacket(action, 0xc);
+    packet->unk_00 = 5;
+    packet->parentUID = effectPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = btlCameraCreateSetStatePacket(action, 0xd);
+    packet->unk_00 = 5;
+    packet->parentUID = effectPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    /* Camera for voice-check path */
+    if (FUN_0028a0f0(action))
+    {
+        packet = btlCameraCreateSetStatePacket(action, 0xb);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+    /* Camera for alternate voice path */
+    {
+        u16 dummy;
+        dummy = FUN_00308c60(action->unit);
+        packet = btlCameraCreateSetStatePacket(action, 0xa);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
         packet->unk_00 = 5;
         packet->parentUID = effectPacket->uid;
         packet->actionUID = actionUID;
@@ -5795,11 +5825,6 @@ void btlActionUpdateStateEscape(BtlAction* action)
         movePacket->parentUID = root->uid;
         movePacket->actionUID = action->uid;
         btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-        packet = btlUnitCreateRotatePacket(ecUnit, NULL, 0x20);
-        packet->unk_00 = 4;
-        packet->parentUID = movePacket->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
         packet = btlUnit00285d30(ecUnit, -1, 4, 0, 4, 0);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
