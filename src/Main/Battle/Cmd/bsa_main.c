@@ -434,7 +434,6 @@ void bsaMain00210d90(BsaWork* work)
     f32 rect[4];
     u8 drawColor[4];
     u8 colorArray[16];
-    u8 color;
 
     p = (s32*)work->words;
     table6 = func_0021c3f0(6);
