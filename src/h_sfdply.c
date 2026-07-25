@@ -396,7 +396,6 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
     u8* camera;
     u8* raster;
     u8 frameInfo[0x30];
-    volatile u8 stackPad[0x10];
     u8* source;
     u8* destination;
     u32 savedState;
@@ -418,8 +417,6 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
     void (**setRenderState)(u32, u32);
     register u8* config;
     work = (HSfd*)sfdPlayTask->workData;
-    stackPad[0] = 0;
-    config = work->streamConfig;
 
     switch (work->state)
     {
@@ -470,6 +467,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             H_Pad_IgnoreRumbleCallback(0, -1, 0, -1);
             datSetFlag(0x1407, 1);
             work->streamAux = *(void**)HSFD_TABLE(D_005D4B84, work->id);
+            config = work->streamConfig;
             memset(config, 0, 0x30);
             *(s32*)(config + 0x20) = 0x11;
             *(s32*)(config + 0x00) = 1;
@@ -489,8 +487,37 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             datSetFlag(0x141A, 0);
             if (work->compressedFrameBuffer == NULL ||
                 work->displayBuffer == NULL)
-                goto cleanup;
-
+            {
+                if (work->isStart != 0)
+                    return KWLNTASK_STOP;
+                if (work->decoder != NULL)
+                {
+                    if (work->streamAux != NULL)
+                        func_00584338(work->decoder);
+                    func_0057db58(work->decoder);
+                    work->decoder = NULL;
+                }
+                if (work->compressedFrameBuffer != NULL)
+                {
+                    D_0096017c(work->compressedFrameBuffer);
+                    work->compressedFrameBuffer = NULL;
+                }
+                if (work->displayBuffer != NULL)
+                {
+                    D_0096017c(work->displayBuffer);
+                    work->displayBuffer = NULL;
+                    uGpffffb220 = NULL;
+                }
+                if (work->renderTarget != NULL)
+                {
+                    func_004cde90(work->renderTarget);
+                    work->renderTarget = NULL;
+                }
+                datSetFlag(0x1407, 0);
+                work->stateTimer = 0;
+                work->state = HSFD_STATE_IDLE;
+                return KWLNTASK_CONTINUE;
+            }
             *(void**)(config + 0x18) = work->compressedFrameBuffer;
             work->streamDescriptor = func_0057d5d8(config);
             if (work->streamDescriptor == NULL)
@@ -520,7 +547,37 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 work->renderTarget = func_004ce0f0(0x280, 0x170, 0x20, 0x584);
             datSetFlag(0x141A, 0);
             if (work->renderTarget == NULL)
-                goto cleanup;
+            {
+                if (work->isStart != 0)
+                    return KWLNTASK_STOP;
+                if (work->decoder != NULL)
+                {
+                    if (work->streamAux != NULL)
+                        func_00584338(work->decoder);
+                    func_0057db58(work->decoder);
+                    work->decoder = NULL;
+                }
+                if (work->compressedFrameBuffer != NULL)
+                {
+                    D_0096017c(work->compressedFrameBuffer);
+                    work->compressedFrameBuffer = NULL;
+                }
+                if (work->displayBuffer != NULL)
+                {
+                    D_0096017c(work->displayBuffer);
+                    work->displayBuffer = NULL;
+                    uGpffffb220 = NULL;
+                }
+                if (work->renderTarget != NULL)
+                {
+                    func_004cde90(work->renderTarget);
+                    work->renderTarget = NULL;
+                }
+                datSetFlag(0x1407, 0);
+                work->stateTimer = 0;
+                work->state = HSFD_STATE_IDLE;
+                return KWLNTASK_CONTINUE;
+            }
 
             for (i = 0; i < 4; i++)
             {
@@ -549,6 +606,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             camera = (u8*)kwlnGetMainCamera();
             raster = *(u8**)(camera + 0x60);
             cameraHeight = (f32)*(s32*)(raster + 0x10);
+            camera = (u8*)kwlnGetMainCamera();
             reciprocalNear = 1.0f / *(f32*)(camera + 0x80);
             movieType = *(s16*)HSFD_TABLE(D_005D4B70, work->id);
             if (movieType == 5)
@@ -738,7 +796,37 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 H_Fade_SetType(8);
                 H_Fade_SetCustomColor(0xFF, 0xFF, 0xFF);
             }
-            goto cleanup;
+            {
+                if (work->isStart != 0)
+                    return KWLNTASK_STOP;
+                if (work->decoder != NULL)
+                {
+                    if (work->streamAux != NULL)
+                        func_00584338(work->decoder);
+                    func_0057db58(work->decoder);
+                    work->decoder = NULL;
+                }
+                if (work->compressedFrameBuffer != NULL)
+                {
+                    D_0096017c(work->compressedFrameBuffer);
+                    work->compressedFrameBuffer = NULL;
+                }
+                if (work->displayBuffer != NULL)
+                {
+                    D_0096017c(work->displayBuffer);
+                    work->displayBuffer = NULL;
+                    uGpffffb220 = NULL;
+                }
+                if (work->renderTarget != NULL)
+                {
+                    func_004cde90(work->renderTarget);
+                    work->renderTarget = NULL;
+                }
+                datSetFlag(0x1407, 0);
+                work->stateTimer = 0;
+                work->state = HSFD_STATE_IDLE;
+                return KWLNTASK_CONTINUE;
+            }
 
         case 7:
             work->stateTimer = 0x1E;
@@ -750,48 +838,78 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
         case 10:
             work->stateTimer--;
             if (work->stateTimer == 0)
-                goto cleanup;
+            {
+                if (work->isStart != 0)
+                    return KWLNTASK_STOP;
+                if (work->decoder != NULL)
+                {
+                    if (work->streamAux != NULL)
+                        func_00584338(work->decoder);
+                    func_0057db58(work->decoder);
+                    work->decoder = NULL;
+                }
+                if (work->compressedFrameBuffer != NULL)
+                {
+                    D_0096017c(work->compressedFrameBuffer);
+                    work->compressedFrameBuffer = NULL;
+                }
+                if (work->displayBuffer != NULL)
+                {
+                    D_0096017c(work->displayBuffer);
+                    work->displayBuffer = NULL;
+                    uGpffffb220 = NULL;
+                }
+                if (work->renderTarget != NULL)
+                {
+                    func_004cde90(work->renderTarget);
+                    work->renderTarget = NULL;
+                }
+                datSetFlag(0x1407, 0);
+                work->stateTimer = 0;
+                work->state = HSFD_STATE_IDLE;
+                return KWLNTASK_CONTINUE;
+            }
             break;
 
         case 11:
             H_Dbprt_FmtAt((RwV2d){2.0f, 10.0f}, D_005D5280);
             H_Dbprt_FmtAt((RwV2d){2.0f, 11.0f}, uGpffff8840);
             if ((DAT_007e094e & 0x10) != 0)
-                goto cleanup;
+            {
+                if (work->isStart != 0)
+                    return KWLNTASK_STOP;
+                if (work->decoder != NULL)
+                {
+                    if (work->streamAux != NULL)
+                        func_00584338(work->decoder);
+                    func_0057db58(work->decoder);
+                    work->decoder = NULL;
+                }
+                if (work->compressedFrameBuffer != NULL)
+                {
+                    D_0096017c(work->compressedFrameBuffer);
+                    work->compressedFrameBuffer = NULL;
+                }
+                if (work->displayBuffer != NULL)
+                {
+                    D_0096017c(work->displayBuffer);
+                    work->displayBuffer = NULL;
+                    uGpffffb220 = NULL;
+                }
+                if (work->renderTarget != NULL)
+                {
+                    func_004cde90(work->renderTarget);
+                    work->renderTarget = NULL;
+                }
+                datSetFlag(0x1407, 0);
+                work->stateTimer = 0;
+                work->state = HSFD_STATE_IDLE;
+                return KWLNTASK_CONTINUE;
+            }
             break;
     }
     return KWLNTASK_CONTINUE;
 
-cleanup:
-    if (work->isStart != 0)
-        return KWLNTASK_STOP;
-    if (work->decoder != NULL)
-    {
-        if (work->streamAux != NULL)
-            func_00584338(work->decoder);
-        func_0057db58(work->decoder);
-        work->decoder = NULL;
-    }
-    if (work->compressedFrameBuffer != NULL)
-    {
-        D_0096017c(work->compressedFrameBuffer);
-        work->compressedFrameBuffer = NULL;
-    }
-    if (work->displayBuffer != NULL)
-    {
-        D_0096017c(work->displayBuffer);
-        work->displayBuffer = NULL;
-        uGpffffb220 = NULL;
-    }
-    if (work->renderTarget != NULL)
-    {
-        func_004cde90(work->renderTarget);
-        work->renderTarget = NULL;
-    }
-    datSetFlag(0x1407, 0);
-    work->stateTimer = 0;
-    work->state = HSFD_STATE_IDLE;
-    return KWLNTASK_CONTINUE;
 }
 
 // FUN_0010BB00
