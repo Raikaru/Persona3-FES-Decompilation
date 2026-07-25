@@ -2117,6 +2117,7 @@ void func_001140d0(f32 depth,
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+#pragma opt_loop_invariants on
 // FUN_00114450 NONMATCHING
 void func_00114450(f32 depth,
                    f32 x,
@@ -2127,39 +2128,202 @@ void func_00114450(f32 depth,
                    s32 height,
                    const u32* textureState)
 {
-    RwIm2DVertex vertices[4];
-    u32 drawColor;
+    RwIm2DVertex vertices[8];
+    f32 corners[8][2];
+    f32 farX;
+    f32 farY;
     f32 recipZ;
+    f32 z;
+    f32 tmp;
+    void (**setState)(u32, u32);
+    s32 r;
+    s32 g;
+    s32 b;
+    s32 a;
+    s32 a2;
+    s32 r1;
+    s32 g1;
+    s32 b1;
+    s32 a1;
+    s32 i;
 
-    (void)ignoredWidth; /* Retail uses the fixed 320-pixel split width. */
-    Maestro_SetPrimitiveStates(0x44, 0x717fb);
-    (*D_00960090)(1, textureState != NULL ? *textureState : 0);
-    drawColor = (color & 0xffffff00) | (colorAlpha & 0xff);
-    recipZ = Maestro_NearReciprocal();
-    Maestro_DrawQuad(&vertices[0],
-                     x,
-                     y,
-                     320.0f,
-                     (f32)height,
-                     D_00960088 - depth,
-                     recipZ,
-                     drawColor,
-                     0.0f,
-                     0.0f,
-                     0.0f,
-                     0.0f);
-    Maestro_DrawQuad(&vertices[0],
-                     x + 320.0f,
-                     y,
-                     320.0f,
-                     (f32)height,
-                     D_00960088 - depth,
-                     recipZ,
-                     drawColor,
-                     0.0f,
-                     0.0f,
-                     0.0f,
-                     0.0f);
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    r = (s32)((color & 0xff000000) >> 24);
+    g = (s32)((color & 0xff0000) >> 16);
+    b = (s32)((color & 0xff00) >> 8);
+    a = (s32)(color & 0xff);
+    a2 = (s32)(colorAlpha & 0xff);
+
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(6, 1);
+    (*setState)(7, 2);
+    (*setState)(8, 1);
+    (*setState)(9, 2);
+    (*setState)(0xc, 1);
+    (*setState)(0xb, 6);
+    (*setState)(0xa, 5);
+    (*setState)(2, 4);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+
+    corners[0][0] = x;
+    corners[0][1] = y;
+    farX = x + 320.0f;
+    farY = y + (f32)height;
+    corners[1][0] = farX;
+    corners[1][1] = y;
+    corners[2][0] = x;
+    corners[2][1] = farY;
+    corners[3][0] = farX;
+    corners[3][1] = farY;
+    corners[4][0] = farX;
+    corners[4][1] = y;
+    corners[5][0] = farX + 320.0f;
+    corners[5][1] = y;
+    corners[6][0] = farX;
+    corners[6][1] = farY;
+    corners[7][0] = farX + 320.0f;
+    corners[7][1] = farY;
+
+    z = D_00960088 - depth;
+
+    r1 = r & 1;
+    g1 = g & 1;
+    b1 = b & 1;
+    a1 = a & 1;
+
+    for (i = 0; i < 4; i++)
+    {
+        vertices[i].u.els.camVertex_z = z;
+        vertices[i].u.els.recipZ = recipZ;
+        if (r >= 0) {
+            vertices[i].u.els.color.r = (f32)r;
+        } else {
+            tmp = (f32)(s32)(((u32)r >> 1) | r1);
+            vertices[i].u.els.color.r = tmp + tmp;
+        }
+        if (g >= 0) {
+            vertices[i].u.els.color.g = (f32)g;
+        } else {
+            tmp = (f32)(s32)(((u32)g >> 1) | g1);
+            vertices[i].u.els.color.g = tmp + tmp;
+        }
+        if (b >= 0) {
+            vertices[i].u.els.color.b = (f32)b;
+        } else {
+            tmp = (f32)(s32)(((u32)b >> 1) | b1);
+            vertices[i].u.els.color.b = tmp + tmp;
+        }
+        if (a >= 0) {
+            vertices[i].u.els.color.a = (f32)a;
+        } else {
+            tmp = (f32)(s32)(((u32)a >> 1) | a1);
+            vertices[i].u.els.color.a = tmp + tmp;
+        }
+        vertices[i].u.els.scrVertex.x = corners[i][0];
+        vertices[i].u.els.scrVertex.y = corners[i][1];
+
+        vertices[i + 4].u.els.camVertex_z = z;
+        vertices[i + 4].u.els.recipZ = recipZ;
+        if (r >= 0) {
+            vertices[i + 4].u.els.color.r = (f32)r;
+        } else {
+            tmp = (f32)(s32)(((u32)r >> 1) | r1);
+            vertices[i + 4].u.els.color.r = tmp + tmp;
+        }
+        if (g >= 0) {
+            vertices[i + 4].u.els.color.g = (f32)g;
+        } else {
+            tmp = (f32)(s32)(((u32)g >> 1) | g1);
+            vertices[i + 4].u.els.color.g = tmp + tmp;
+        }
+        if (b >= 0) {
+            vertices[i + 4].u.els.color.b = (f32)b;
+        } else {
+            tmp = (f32)(s32)(((u32)b >> 1) | b1);
+            vertices[i + 4].u.els.color.b = tmp + tmp;
+        }
+        if (a >= 0) {
+            vertices[i + 4].u.els.color.a = (f32)a;
+        } else {
+            tmp = (f32)(s32)(((u32)a >> 1) | a1);
+            vertices[i + 4].u.els.color.a = tmp + tmp;
+        }
+        vertices[i + 4].u.els.scrVertex.x = corners[i + 4][0];
+        vertices[i + 4].u.els.scrVertex.y = corners[i + 4][1];
+    }
+
+    if (r >= 0) {
+        vertices[0].u.els.color.r = (f32)r;
+    } else {
+        tmp = (f32)(s32)(((u32)r >> 1) | r1);
+        vertices[0].u.els.color.r = tmp + tmp;
+    }
+    if (g >= 0) {
+        vertices[0].u.els.color.g = (f32)g;
+    } else {
+        tmp = (f32)(s32)(((u32)g >> 1) | g1);
+        vertices[0].u.els.color.g = tmp + tmp;
+    }
+    if (b >= 0) {
+        vertices[0].u.els.color.b = (f32)b;
+    } else {
+        tmp = (f32)(s32)(((u32)b >> 1) | b1);
+        vertices[0].u.els.color.b = tmp + tmp;
+    }
+    if (a2 >= 0) {
+        vertices[0].u.els.color.a = (f32)a2;
+    } else {
+        tmp = (f32)(s32)(((u32)a2 >> 1) | (a2 & 1));
+        vertices[0].u.els.color.a = tmp + tmp;
+    }
+
+    if (r >= 0) {
+        vertices[2].u.els.color.r = (f32)r;
+    } else {
+        tmp = (f32)(s32)(((u32)r >> 1) | r1);
+        vertices[2].u.els.color.r = tmp + tmp;
+    }
+    if (g >= 0) {
+        vertices[2].u.els.color.g = (f32)g;
+    } else {
+        tmp = (f32)(s32)(((u32)g >> 1) | g1);
+        vertices[2].u.els.color.g = tmp + tmp;
+    }
+    if (b >= 0) {
+        vertices[2].u.els.color.b = (f32)b;
+    } else {
+        tmp = (f32)(s32)(((u32)b >> 1) | b1);
+        vertices[2].u.els.color.b = tmp + tmp;
+    }
+    if (a2 >= 0) {
+        vertices[2].u.els.color.a = (f32)a2;
+    } else {
+        tmp = (f32)(s32)(((u32)a2 >> 1) | (a2 & 1));
+        vertices[2].u.els.color.a = tmp + tmp;
+    }
+
+    vertices[0].u.els.u = 0.0f;
+    vertices[0].u.els.v = 0.0f;
+    vertices[1].u.els.u = 0.5f;
+    vertices[1].u.els.v = 0.0f;
+    vertices[2].u.els.u = 0.0f;
+    vertices[2].u.els.v = 1.0f;
+    vertices[3].u.els.u = 0.5f;
+    vertices[3].u.els.v = 1.0f;
+    vertices[4].u.els.u = 0.5f;
+    vertices[4].u.els.v = 0.0f;
+    vertices[5].u.els.u = 1.0f;
+    vertices[5].u.els.v = 0.0f;
+    vertices[6].u.els.u = 0.5f;
+    vertices[6].u.els.v = 1.0f;
+    vertices[7].u.els.u = 1.0f;
+    vertices[7].u.els.v = 1.0f;
+
+    (*setState)(1, *textureState);
+    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*D_009600A0)(rwPRIMTYPETRISTRIP, &vertices[4], 4);
 }
 
 // FUN_00114AF0 NONMATCHING
