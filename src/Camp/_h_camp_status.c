@@ -390,9 +390,9 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     }
     current = datGetHp(pcId);
     maximum = datGetMaxHp(pcId);
-    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 58.0f,
+    campStatusDrawNumber(alpha, position.x + 79.0f, (70.0f + position.y) - 12.0f,
                          current);
-    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 58.0f,
+    campStatusDrawNumber(alpha, position.x + 138.0f, (70.0f + position.y) - 12.0f,
                          maximum);
 }
 
