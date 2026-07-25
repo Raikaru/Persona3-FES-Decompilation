@@ -548,7 +548,7 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
                             s32 maxWidth, s32 shadow);
     s32 i;
     u32 parent = 0;
-    u8 text[0x130];
+    u8 text[0x100];
 
     switch (mode) {
     case 99:
@@ -558,14 +558,36 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
         break;
     case 6:
         for (i = 0; i < 8; i++) {
-            void* record = FUN_0016f190(personaBase + i + 0x13d0);
-            if (record != NULL) {
-                u32 col = (0xff - item->alpha) | 0xffffff00U;
-                FUN_00523ac8(text, 0x7cb66c, DAT_007ce4ec + (personaBase + i + 0x110) * 0x13);
-                FUN_003b2cb0(item->scale,
-                    (s32)(35.0f + item->x),
-                    (s32)(14.0f + item->y + (f32)(i * 0x23)),
-                    col, 10, 1, (const char*)text, 0x11, 0);
+            s32 rowOffset = i * 0x23;
+            if (FUN_0016f190(personaBase + i + 0x13d0) != NULL) {
+                if (selected == i) {
+                    campMenuDrawSpriteAlt(parent, DAT_00833B70, 0x1f,
+                        item->alpha, 0xff, 0xbe, 0x5f, item->x,
+                        1.0f + item->y + (f32)rowOffset, item->scale);
+                } else {
+                    campMenuDrawSpriteAlt(parent, DAT_00833B70, 0x1e,
+                        item->alpha, 0x20, 0x43, 0x78, item->x,
+                        1.0f + item->y + (f32)rowOffset, item->scale);
+                }
+                {
+                    u32 col = (0xff - item->alpha) | 0xffffff00U;
+                    FUN_00523ac8(text, 0x7cb66c,
+                        DAT_007ce4ec + (personaBase + i + 0x110) * 0x13);
+                    FUN_003b2cb0(item->scale,
+                        (s32)(35.0f + item->x),
+                        (s32)((8.0f + (9.0f + item->y +
+                                      (f32)rowOffset)) - 3.0f - 2.0f),
+                        col, selected == i ? 6 : 10, 1, (const char*)text,
+                        0x10, 0);
+                }
+            } else if (selected == i) {
+                campMenuDrawSprite(parent, *labels, 0x15, item->alpha,
+                    99.0f + item->x, 15.0f + item->y + (f32)rowOffset,
+                    item->scale);
+            } else {
+                campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
+                    99.0f + item->x, 15.0f + item->y + (f32)rowOffset,
+                    item->scale);
             }
         }
         break;
@@ -652,7 +674,12 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
                     col, 10, 1, (const char*)text, 0x10, 0);
             }
         } else {
-            campMenuDrawSprite(parent, *labels, 0, item->alpha, 94.0f + item->x, 40.0f + item->y, item->scale);
+            campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
+                127.0f + item->x - 33.0f, 127.0f + item->y - 87.0f,
+                item->scale);
+            campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
+                127.0f + item->x - 33.0f,
+                28.0f + (127.0f + item->y - 87.0f), item->scale);
         }
         break;
     case 0:
