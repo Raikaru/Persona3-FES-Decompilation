@@ -587,7 +587,7 @@ alpha_done:
         handle = (u32)*(void**)(selRecord + 8);
         halfWidth = FUN_003b19d0((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
-        *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
+        *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
         goto sel_join;
     sel_kind02:
@@ -676,7 +676,7 @@ alpha_done:
         handle = (u32)*(void**)(record + 8);
         halfWidth = FUN_003b19d0((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
-        layout[0] = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
+        layout[0] = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
         if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
             selColour = colourA;
@@ -2627,7 +2627,7 @@ void FUN_0022A2B0(void)
     frame = (void*)FUN_0021cca0(table0, 0x23);
     rect[0] = 47.0f + basePos[0];
     rect[1] = 19.0f + basePos[1] +
-              (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
+              (f32)((*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26);
     rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
     rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     FUN_0021d8e0(work + 0x4230, rect);
@@ -2635,7 +2635,7 @@ void FUN_0022A2B0(void)
     frame = (void*)FUN_0021cca0(table0, 0x23);
     rect[0] = 47.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
     rect[1] = 19.0f + basePos[1] +
-              (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
+              (f32)((*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26);
     rect[2] = 312.0f;
     rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     FUN_0021d8e0(work + 0x4330, rect);
@@ -3040,19 +3040,19 @@ void FUN_0022B630(void)
 // flag from state fields 0x463c/0x4644, gating func_003b1360 + a resource
 // draw, matching FUN_0022C5A0's D_00960090_abs/D_0096009C_abs style.
 // nd 89->7 (obj 612B/624B); residual is the state-1 loop's register-bank
-// choice (retail s3, mine s4) - 2 declaration-order attempts had no effect.
-// FUN_0022BCF0 NONMATCHING
+// Fixed: swapping i and record declaration order resolved the s3/s4 register coloring.
+// FUN_0022BCF0
 void FUN_0022BCF0(void)
 {
     u8* work;
     u32 table6;
     u32 resource;
     u32 texture;
-    u8* record;
+    s32 i;
     u32 state1;
     u32 state2;
     u32 flag;
-    s32 i;
+    u8* record;
     void (**setState)(u32, u32);
     void (**setQuad)(u32*, u32, u32, u32, u32);
 
