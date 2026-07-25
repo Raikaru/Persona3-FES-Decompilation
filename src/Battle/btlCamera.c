@@ -8288,6 +8288,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
                   fStack_4c + 0.0f;
       fStack_6c = fVar13 * 0.25f + fStack_2c + 0.0f;
     }
+    FUN_002a4690(&uStack_d8, &fStack_60, &fStack_50, &D_00697880);
     FUN_004be1e0(&fStack_60,0x6978a0,1,&uStack_d8);
     fStack_b0 = fStack_50;
     fStack_ac = fStack_48;
@@ -8366,6 +8367,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       fStack_48 = fStack_58 * fVar13 + fStack_18;
     }
     fStack_4c = fGpffff8030 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) + fStack_4c + 0.0f;
+    FUN_002a4690(&uStack_f4, &fStack_60, &fStack_50, &D_00697880);
     FUN_004be1e0(&fStack_60,0x6978a0,1,&uStack_f4);
     fStack_b0 = fStack_50;
     fStack_ac = fStack_48;
@@ -8437,6 +8439,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       fStack_4c = fGpffff80bc * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
                   fStack_4c + 0.0f;
     }
+    FUN_002a4690(&uStack_f4, &fStack_60, &fStack_50, &D_00697880);
     FUN_004be1e0(&fStack_60,0x6978a0,1,&uStack_f4);
     fStack_b0 = fStack_50;
     fStack_ac = fStack_48;
@@ -8484,6 +8487,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     fVar10 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
     btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar7), (RwV3d*)&fStack_40);
     fStack_3c = fGpffff8030 * *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) + fStack_3c + 0.0f;
+    FUN_002a4690(&uStack_d8, &fStack_100, &fStack_40, &D_00697880);
     fVar10 = fGpffff8098 * fVar10;
     fStack_60 = fStack_60 * fVar10;
     fStack_5c = fStack_5c * fVar10;
