@@ -1488,7 +1488,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 180.0f);
 
             /* Near field geometry, map objects, NPCs, and hit volumes all share the idle marker. */
-            if ((DATA_U16(0x007e094e) & 0x40) == 0 && K_FldEvent_IsUnitNearFldHit(&gFldUnitsPc[FLDUNIT_PC_HERO]) == true)
+            if (EVENT_WORD(9) == 0 && K_FldEvent_IsUnitNearFldHit(&gFldUnitsPc[FLDUNIT_PC_HERO]) == true)
             {
                 if (EVENT_WORD(9) == 0) EVENT_WORD(0x38) = true;
                 if ((DATA_U16(0x007e094e) & 0x40) != 0)
