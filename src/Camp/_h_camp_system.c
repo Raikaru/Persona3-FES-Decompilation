@@ -1395,7 +1395,6 @@ void FUN_0015E150(CampDrawWork *work)
 void FUN_0015E6E0(CampDrawWork *work)
 {
     void *draw;
-    f32 x;
     f32 tailHeight;
     u64 first;
     u64 second;
@@ -1414,36 +1413,35 @@ void FUN_0015E6E0(CampDrawWork *work)
 
     for (i = 0; i < 4; ++i) {
         if (i < work->partyCount) {
-            x = (f32)(i * 0x55) + 42.0f;
             if (i == work->cursor || work->cursor == -2) {
                 tailHeight = 48.0f;
-                first = camp_draw_concat44_f32(x + 2.0f, 14.0f);
-                second = camp_draw_concat44_f32(x + 2.0f, 62.0f);
+                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
                 FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
                 0, 2, 1, first, second, 0, 0);
             } else {
                 tailHeight = 27.0f;
                 camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
             }
-            first = camp_draw_concat44_f32(x + 8.0f, 65.0f);
-            second = camp_draw_concat44_f32(x + 8.0f, tailHeight + 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
                          0, 2, 0, first, second, 0, 0);
             base = i * 10;
-            first = camp_draw_concat44_f32(x + 31.0f, 65.0f);
-            second = camp_draw_concat44_f32(x + 31.0f, tailHeight + 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
                          0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(x + 45.0f, 65.0f);
-            second = camp_draw_concat44_f32(x + 45.0f, tailHeight + 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
                          0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(x + 64.0f, 65.0f);
-            second = camp_draw_concat44_f32(x + 64.0f, tailHeight + 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
                          0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(x + 2.0f, 14.0f);
-            second = camp_draw_concat44_f32(x + 2.0f, tailHeight + 14.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
                          0, 2, 0, first, second, 0, 0);
             camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
@@ -1528,7 +1526,6 @@ void FUN_0015EE40(CampDrawWork *work, s32 changedIndex)
 void FUN_0015F320(CampDrawWork *work)
 {
     void *draw;
-    f32 x;
     f32 tailHeight;
     u64 first;
     u64 second;
@@ -1547,36 +1544,35 @@ void FUN_0015F320(CampDrawWork *work)
 
     for (i = 0; i < 4; ++i) {
         if (i < work->partyCount) {
-            x = (f32)(i * 0x55) + 42.0f;
             if (i == work->cursor || work->cursor == -2) {
                 tailHeight = 48.0f;
-                first = camp_draw_concat44_f32(x + 2.0f, 62.0f);
-                second = camp_draw_concat44_f32(x + 2.0f, 14.0f);
+                first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 62.0f);
+                second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
                 FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
                 0, 2, 2, first, second, 0, 0);
             } else {
                 tailHeight = 27.0f;
                 camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
             }
-            first = camp_draw_concat44_f32(x + 8.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(x + 8.0f, 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 8.0f, 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
                          0, 2, 0, first, second, 0, 0);
             base = i * 10;
-            first = camp_draw_concat44_f32(x + 31.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(x + 31.0f, 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 31.0f, 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
                          0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(x + 45.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(x + 45.0f, 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 45.0f, 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
                          0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(x + 64.0f, tailHeight + 65.0f);
-            second = camp_draw_concat44_f32(x + 64.0f, 65.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, tailHeight + 65.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 64.0f, 65.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
                          0, 2, 0, first, second, 0, 0);
-            first = camp_draw_concat44_f32(x + 2.0f, tailHeight + 14.0f);
-            second = camp_draw_concat44_f32(x + 2.0f, 14.0f);
+            first = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, tailHeight + 14.0f);
+            second = camp_draw_concat44_f32(((f32)(i * 0x55) + 42.0f) + 2.0f, 14.0f);
             FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
                          0, 2, 0, first, second, 0, 0);
             camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x400, 0);
