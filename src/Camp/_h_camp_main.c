@@ -388,9 +388,9 @@ void FUN_00133E10(register CampMainDrawItem* item,
     switch (mode) {
     case 0:
         campMainQueueSprite(item, campMainResource(resources, 0), 0,
-                            item->x + 250.0f, item->y);
+                            310.0f + item->x - 60.0f, item->y);
         campMainQueueSprite(item, campMainResource(resources, 0), 0,
-                            item->x + 1000.0f, item->y);
+                            1060.0f + item->x - 60.0f, item->y);
         item->scrollX -= 1.0f;
         if (item->scrollX < -750.0f) {
             item->scrollX += 750.0f;
@@ -422,45 +422,45 @@ void FUN_00133E10(register CampMainDrawItem* item,
             persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
             if (personaIndex == (s32)selected) {
                 FUN_001159f0(parent, campMainResource(resources, 1), 8,
-                             (u8)item->alpha, item->x + 60.0f,
-                             item->y + 3.0f, item->spriteScale);
+                             (u8)item->alpha, 120.0f + item->x - 60.0f,
+                             15.0f + item->y - 12.0f, item->spriteScale);
                 level = persona->level;
                 if (level >= 10) {
                     digit = level / 10;
                     fontResource = H_Maestro_001120a0(1);
                     FUN_001159f0(parent, fontResource, digit + 11,
-                                 (u8)item->alpha, item->x + 88.0f,
-                                 item->y + 12.0f, item->spriteScale);
+                                 (u8)item->alpha, 148.0f + item->x - 60.0f,
+                                 24.0f + item->y - 12.0f, item->spriteScale);
                 }
                 digit = level % 10;
                 fontResource = H_Maestro_001120a0(1);
                 FUN_001159f0(parent, fontResource, digit + 11,
-                             (u8)item->alpha, item->x + 104.0f,
-                             item->y + 12.0f, item->spriteScale);
+                             (u8)item->alpha, 164.0f + item->x - 60.0f,
+                             24.0f + item->y - 12.0f, item->spriteScale);
             } else {
                 equippedPersona = datGetPersonaId(1);
                 if (persona->id == (u16)equippedPersona) {
                     FUN_001159f0(parent, campMainResource(resources, 0), 5,
-                                 (u8)item->alpha, item->x + 60.0f,
-                                 item->y + 3.0f, item->spriteScale);
+                                 (u8)item->alpha, 120.0f + item->x - 60.0f,
+                                 15.0f + item->y - 12.0f, item->spriteScale);
                 } else {
                     FUN_001159f0(parent, campMainResource(resources, 1), 7,
-                                 (u8)item->alpha, item->x + 60.0f,
-                                 item->y + 3.0f, item->spriteScale);
+                                 (u8)item->alpha, 120.0f + item->x - 60.0f,
+                                 15.0f + item->y - 12.0f, item->spriteScale);
                 }
                 level = persona->level;
                 if (level >= 10) {
                     digit = level / 10;
                     fontResource = H_Maestro_001120a0(2);
                     FUN_001159f0(parent, fontResource, digit + 11,
-                                 (u8)item->alpha, item->x + 88.0f,
-                                 item->y + 12.0f, item->spriteScale);
+                                 (u8)item->alpha, 148.0f + item->x - 60.0f,
+                                 24.0f + item->y - 12.0f, item->spriteScale);
                 }
                 digit = level % 10;
                 fontResource = H_Maestro_001120a0(2);
                 FUN_001159f0(parent, fontResource, digit + 11,
-                             (u8)item->alpha, item->x + 104.0f,
-                             item->y + 12.0f, item->spriteScale);
+                             (u8)item->alpha, 164.0f + item->x - 60.0f,
+                             24.0f + item->y - 12.0f, item->spriteScale);
             }
         }
         break;
@@ -543,10 +543,10 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
         campMainDrawSprite(item, campMainResource(resources, 0), 0,
                            item->x, item->y);
         campMainDrawSprite(item, campMainResource(resources, 2), 2,
-                           item->x + 16.0f, item->y);
-        campMainDrawSprite(item, D_00833BA4, 2, item->x + 433.0f,
+                           76.0f + item->x - 60.0f, item->y);
+        campMainDrawSprite(item, D_00833BA4, 2, 493.0f + item->x - 60.0f,
                            item->y);
-        campMainDrawSprite(item, D_00833BA4, 3, item->x + 527.0f,
+        campMainDrawSprite(item, D_00833BA4, 3, 587.0f + item->x - 60.0f,
                            item->y);
         break;
     default:
@@ -1885,7 +1885,7 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     input.value = position;
     local.value = 0;
     FUN_001159f0(NULL, DAT_00833B48, 0, 0,
-                 local.coordinates.x + 55.0f,
+                 115.0f + local.coordinates.x + - 60.0f,
                  local.coordinates.y + 36.0f, alpha);
     if (frame < 0x17) {
         for (i = 0; i < 5; i++) {
@@ -1969,7 +1969,7 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
         local.coordinates.y = 0.0f;
         sprite = FUN_001158b0(NULL, DAT_00833B40, 1);
         sprite->spriteScale = alpha;
-        sprite->x = local.coordinates.x + 219.0f;
+        sprite->x = 279.0f + local.coordinates.x + - 60.0f;
         sprite->y = local.coordinates.y + 20.0f;
         sprite->rotation = 0x1f40;
         sprite->alpha = (u8)fade;
@@ -1982,25 +1982,25 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     x = input.coordinates.x;
     y = input.coordinates.y;
     FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
-                 x + 600.0f, y + 308.0f, alpha - 1.0f);
+                 660.0f + x + - 60.0f, y + 308.0f, alpha - 1.0f);
     FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
-                 x + 600.0f, y + 402.0f, alpha - 1.0f);
+                 660.0f + x + - 60.0f, y + 402.0f, alpha - 1.0f);
     if (count > 5) {
         fade = offset * 59 / (count - 5);
     } else {
         fade = 0;
     }
     FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
-                 x + 597.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
+                 657.0f + x + - 60.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
     FUN_001159f0(NULL, DAT_00833B48, 8, 0,
-                 x + 598.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
+                 658.0f + x + - 60.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
     FUN_001159f0(NULL, DAT_00833B48, 9, 0,
-                 x + 598.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
+                 658.0f + x + - 60.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
 
     local.value = 0;
     sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
     sprite->spriteScale = alpha;
-    sprite->x = local.coordinates.x + 97.0f;
+    sprite->x = 157.0f + local.coordinates.x + - 60.0f;
     sprite->y = local.coordinates.y - 33.0f;
     sprite->alpha = 0;
     FUN_001127D0(sprite, 1);
@@ -2226,16 +2226,16 @@ void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 unused)
 
     p = campCarouselUnpackPosition(position);
     kind = FUN_0016DBA0((s16)id);
-    FUN_00115BC0(p.value.x + 24.0f, p.value.y + 37.0f, alpha);
-    FUN_00115BC0(p.value.x + 24.0f, p.value.y + 169.0f, alpha);
-    FUN_00115BC0(p.value.x + 34.0f, p.value.y + 18.0f, alpha);
-    FUN_00115BC0(p.value.x + 34.0f, p.value.y + 150.0f, alpha);
+    FUN_00115BC0(84.0f + p.value.x - 60.0f, 62.0f + p.value.y - 25.0f, alpha);
+    FUN_00115BC0(84.0f + p.value.x - 60.0f, 194.0f + p.value.y - 25.0f, alpha);
+    FUN_00115BC0(94.0f + p.value.x - 60.0f, 43.0f + p.value.y - 25.0f, alpha);
+    FUN_00115BC0(94.0f + p.value.x - 60.0f, 175.0f + p.value.y - 25.0f, alpha);
     if (kind == '\n') {
-        FUN_001159F0(p.value.x + 51.0f, p.value.y + 23.0f, alpha);
+        FUN_001159F0(111.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
     } else {
-        FUN_001159F0(p.value.x + 42.0f, p.value.y + 23.0f, alpha);
+        FUN_001159F0(102.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
         FUN_001120A0(1);
-        FUN_001159F0(p.value.x + 105.0f, p.value.y + 24.0f, alpha);
+        FUN_001159F0(165.0f + p.value.x - 60.0f, 49.0f + p.value.y - 25.0f, alpha);
     }
 }
 
@@ -2257,10 +2257,10 @@ void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
                          1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
         } else {
             p = campCarouselUnpackPosition(position);
-            FUN_00114E70(alpha, p.value.x + 28.0f, p.value.y + 43.0f,
+            FUN_00114E70(alpha, 88.0f + p.value.x - 60.0f, 68.0f + p.value.y - 25.0f,
                          1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
-            FUN_001159F0(p.value.x + 15.0f, p.value.y + 33.0f, alpha);
-            FUN_001159F0(p.value.x + 26.0f, p.value.y + 148.0f, alpha);
+            FUN_001159F0(75.0f + p.value.x - 60.0f, 58.0f + p.value.y - 25.0f, alpha);
+            FUN_001159F0(86.0f + p.value.x - 60.0f, 173.0f + p.value.y - 25.0f, alpha);
         }
     }
 }
@@ -2554,7 +2554,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         {
             textAlpha = 0xB2;
         }
-        FUN_001140D0(param_1, position.x + 374.0f, position.y + 109.0f, textAlpha, 300, 300);
+        FUN_001140D0(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, textAlpha, 300, 300);
     }
 
     if (param_9 < 5)
@@ -2568,7 +2568,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     id = *item;
     if (iGpffffb280 != 0)
     {
-        FUN_001140D0(param_1, position.x + 360.0f, position.y + 114.0f,
+        FUN_001140D0(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
                      (0xFF - alpha) | 0xFFFFFF00, 300, 300);
         hasResource = FUN_00172160(id);
         if (hasResource == 0)
@@ -2577,13 +2577,13 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             if (hasResource != 0)
             {
                 campDrawSprite(D_00833B64, 3, (u8)alpha,
-                               position.x + 519.0f, position.y + 135.0f, param_1);
+                               579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
             }
         }
         else
         {
             campDrawSprite(D_00833B64, 2, (u8)alpha,
-                           position.x + 519.0f, position.y + 135.0f, param_1);
+                           579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
         }
     }
 
@@ -2599,16 +2599,16 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
         id = *item;
         campDrawSprite(D_00833B58, DAT_005E3220[id] - 1, (u8)alpha,
-                       position.x + 140.0f, position.y + 18.0f, param_1);
+                       200.0f + position.x - 60.0f, position.y + 18.0f, param_1);
         rowY = position.y + 40.0f;
         campDrawSprite(D_00833B58, 0x2B, (u8)alpha,
-                       position.x + 142.0f, rowY, param_1);
+                       202.0f + position.x - 60.0f, rowY, param_1);
         campDrawSprite(D_00833B58, 0x2C, (u8)alpha,
-                       position.x + 548.0f, rowY, param_1);
+                       608.0f + position.x - 60.0f, rowY, param_1);
         campDrawSprite(D_00833B44, DAT_005E3220[id] + 0x31, (u8)alpha,
-                       position.x + 147.0f, position.y + 40.0f, param_1);
+                       207.0f + position.x - 60.0f, position.y + 40.0f, param_1);
         campDrawSprite(D_00833B58, 0x2D, (u8)alpha,
-                       position.x + 231.0f, position.y + 48.0f, param_1);
+                       291.0f + position.x - 60.0f, position.y + 48.0f, param_1);
     }
 
     if (stage > 2)
@@ -2626,7 +2626,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         mark = FUN_0016DBA0((s16)id);
         text = D_005D80E4[id * 10 + mark];
         FUN_00523AC8(textBuffer, gp0xffff897c, text);
-        FUN_003B2F90(100.0f, (s32)(position.x - 3.0f), (s32)(position.y + 48.0f),
+        FUN_003B2F90(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
                      textAlpha | 0xFFFFFF00, 6, 1, textBuffer, 0x10, -1);
 
         mark = FUN_0016DBA0((s16)*item);
@@ -2671,13 +2671,13 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
         rowY = position.y + 415.0f;
         campDrawSprite(D_00833B68, 0, (u8)alpha,
-                       position.x + 36.0f, rowY, param_1 - 4.0f);
+                       96.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
         campDrawSprite(D_00833B68, 7, (u8)alpha,
-                       position.x + 52.0f, rowY, param_1 - 4.0f);
+                       112.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
         campDrawSprite(D_00833BA4, 3, (u8)alpha,
-                       position.x + 561.0f, rowY, param_1 - 4.0f);
+                       621.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
         campDrawSprite(D_00833BA4, 8, (u8)alpha,
-                       position.x + 427.0f, rowY, param_1 - 4.0f);
+                       487.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
         id = *item;
         if (id == 0 || id == 0x1D)
         {
@@ -2685,12 +2685,12 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             level = D_00833A60[param_7];
             rowY = position.y + 334.0f;
             campDrawSprite(D_00833B58, 0x1F, (u8)alpha,
-                           position.x + 272.0f, rowY, param_1 - 2.0f);
+                           332.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             campDrawSprite(D_00833B58, 0x20, (u8)alpha,
-                           position.x + 607.0f, rowY, param_1 - 2.0f);
+                           667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             if (mark != 0)
             {
-                FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+                FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                              (s32)(position.y + 333.0f), (0xFF - alpha) | 0xFFFFFF00,
                              1, 10, 0, 7, D_005D72AA[level * 10 + mark]);
             }
@@ -2701,12 +2701,12 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             reward = D_005DBB00[param_7 + id * 3];
             rowY = position.y + 334.0f;
             campDrawSprite(D_00833B58, 0x1F, (u8)alpha,
-                           position.x + 272.0f, rowY, param_1 - 2.0f);
+                           332.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             campDrawSprite(D_00833B58, 0x20, (u8)alpha,
-                           position.x + 607.0f, rowY, param_1 - 2.0f);
+                           667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             if (mark != 0)
             {
-                FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+                FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                              (s32)(position.y + 333.0f), (0xFF - alpha) | 0xFFFFFF00,
                              1, 10, 0, 7, D_005D72AA[reward * 10 + mark]);
             }
@@ -2726,7 +2726,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     {
         iGpffffb27c = 0;
     }
-    x = position.x + 576.0f;
+    x = 636.0f + position.x - 60.0f;
     shiftedPosition = campPackPosition(x, position.y + 199.0f + (f32)iGpffffb27c);
     campDrawSprite(D_00833B60, 0, (u8)alpha,
                    campPackedX(shiftedPosition), campPackedY(shiftedPosition),
@@ -2773,12 +2773,12 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     if (iGpffffb280 != 0)
     {
-        FUN_001140D0(param_1, position.x + 374.0f, position.y + 109.0f, 0xB2, 300, 300);
+        FUN_001140D0(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, 0xB2, 300, 300);
     }
     id = *item;
     if (iGpffffb280 != 0)
     {
-        FUN_001140D0(param_1, position.x + 360.0f, position.y + 114.0f,
+        FUN_001140D0(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
                      0xFFFFFF00, 300, 300);
         hasResource = FUN_00172160(id);
         if (hasResource == 0)
@@ -2787,44 +2787,44 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             if (hasResource != 0)
             {
                 campDrawSprite(D_00833B64, 3, 0,
-                               position.x + 519.0f, position.y + 135.0f, param_1);
+                               579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
             }
         }
         else
         {
             campDrawSprite(D_00833B64, 2, 0,
-                           position.x + 519.0f, position.y + 135.0f, param_1);
+                           579.0f + position.x - 60.0f, position.y + 135.0f, param_1);
         }
     }
 
     campDrawSprite(D_00833B58, DAT_005E3220[id] - 1, 0,
-                   position.x + 140.0f, position.y + 18.0f, param_1);
+                   200.0f + position.x - 60.0f, position.y + 18.0f, param_1);
     rowY = position.y + 40.0f;
     campDrawSprite(D_00833B58, 0x2B, 0,
-                   position.x + 142.0f, rowY, param_1);
+                   202.0f + position.x - 60.0f, rowY, param_1);
     campDrawSprite(D_00833B58, 0x2C, 0,
-                   position.x + 548.0f, rowY, param_1);
+                   608.0f + position.x - 60.0f, rowY, param_1);
     campDrawSprite(D_00833B44, DAT_005E3220[id] + 0x31, 0,
-                   position.x + 147.0f, position.y + 40.0f, param_1);
+                   207.0f + position.x - 60.0f, position.y + 40.0f, param_1);
     campDrawSprite(D_00833B58, 0x2D, 0,
-                   position.x + 231.0f, position.y + 48.0f, param_1);
+                   291.0f + position.x - 60.0f, position.y + 48.0f, param_1);
 
     id = *item;
     mark = FUN_0016DBA0((s16)id);
     text = D_005D80E4[id * 10 + mark];
     FUN_00523AC8(textBuffer, gp0xffff897c, text);
-    FUN_003B2F90(100.0f, (s32)(position.x - 3.0f), (s32)(position.y + 48.0f),
+    FUN_003B2F90(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
                  0xFFFFFFFF, 6, 1, textBuffer, 0x10, -1);
 
     rowY = position.y + 415.0f;
     campDrawSprite(D_00833B68, 0, 0,
-                   position.x + 36.0f, rowY, param_1 - 4.0f);
+                   96.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
     campDrawSprite(D_00833B68, 7, 0,
-                   position.x + 52.0f, rowY, param_1 - 4.0f);
+                   112.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
     campDrawSprite(D_00833BA4, 3, 0,
-                   position.x + 561.0f, rowY, param_1 - 4.0f);
+                   621.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
     campDrawSprite(D_00833BA4, 8, 0,
-                   position.x + 427.0f, rowY, param_1 - 4.0f);
+                   487.0f + position.x - 60.0f, rowY, param_1 - 4.0f);
 
     mark = FUN_0016DBA0((s16)*item);
     id = *item;
@@ -2836,20 +2836,20 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             hasResource = FUN_00172160(id);
             if (hasResource == 0)
             {
-                FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                FUN_003C7E20(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
                              (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                              D_005D6FEE[id * 0x0C + mark]);
             }
             else
             {
-                FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                FUN_003C7E20(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
                              (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                              D_005D7006[id * 0x0C]);
             }
         }
         else
         {
-            FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+            FUN_003C7E20(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
                          (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                          D_005D7004[id * 0x0C]);
         }
@@ -2862,12 +2862,12 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         level = D_00833A60[(s32)param_7];
         rowY = position.y + 334.0f;
         campDrawSprite(D_00833B58, 0x1F, 0,
-                       position.x + 272.0f, rowY, param_1 - 2.0f);
+                       332.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
         campDrawSprite(D_00833B58, 0x20, 0,
-                       position.x + 607.0f, rowY, param_1 - 2.0f);
+                       667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
         if (mark != 0)
         {
-            FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+            FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                          (s32)(position.y + 333.0f), 0xFFFFFFFF, 1, 10, 0, 7,
                          D_005D72AA[level * 10 + mark]);
         }
@@ -2878,12 +2878,12 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         reward = D_005DBB00[(s32)param_7 + id * 3];
         rowY = position.y + 334.0f;
         campDrawSprite(D_00833B58, 0x1F, 0,
-                       position.x + 272.0f, rowY, param_1 - 2.0f);
+                       332.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
         campDrawSprite(D_00833B58, 0x20, 0,
-                       position.x + 607.0f, rowY, param_1 - 2.0f);
+                       667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
         if (mark != 0)
         {
-            FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+            FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                          (s32)(position.y + 333.0f), 0xFFFFFFFF, 1, 10, 0, 7,
                          D_005D72AA[reward * 10 + mark]);
         }
@@ -2894,7 +2894,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     {
         iGpffffb27c = 0;
     }
-    x = position.x + 576.0f;
+    x = 636.0f + position.x - 60.0f;
     campDrawSprite(D_00833B60, 0, (u8)param_7, x,
                    position.y + 199.0f + (f32)iGpffffb27c, param_1 - 3.0f);
     campDrawSprite(D_00833B60, 1, (u8)param_7, x,
