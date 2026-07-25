@@ -1312,19 +1312,51 @@ void* func_001ae580(KwlnTask* task)
     }
     case 6:
     {
-        RwV3d axis = {0.0f, 1.0f, 0.0f};
-        f32 step = localAngleStep;
-        f32 cur = localAngle;
-        if (model != NULL)
+        const u8* origin =
+            (const u8*)func_00318b60((u32)fldFrameMoveModel(work));
+
+        work->startPosition.x = *(const f32*)(origin + 0x30);
+        work->startPosition.y = *(const f32*)(origin + 0x34);
+        work->startPosition.z = *(const f32*)(origin + 0x38);
+        work->direction.x =
+            work->points[0].position.x - work->startPosition.x;
+        work->direction.y =
+            work->points[0].position.y - work->startPosition.y;
+        work->direction.z =
+            work->points[0].position.z - work->startPosition.z;
+        work->directionLength =
+            func_004c69f0(&work->direction, &work->direction);
+        localAngle = fGpffff82b0 *
+                     func_0052e9e8(work->direction.y * localPosition.y +
+                                   work->direction.x * localPosition.x +
+                                   work->direction.z * localPosition.z);
+        if (work->direction.x < 0.0f)
         {
-            mdlRotate(model, &axis, step, rwCOMBINEPOSTCONCAT);
+            localAngle = localAngle * -1.0f;
         }
-        work->frameCount--;
-        if (work->frameCount <= 0)
+        localAngleStep =
+            180.0f +
+            func_001a5aa0(func_00318b60((u32)fldFrameMoveModel(work)));
+        work->currentAngle = localAngleStep;
+        localAngle = 180.0f + localAngle;
+        if (localAngle <= localAngleStep)
         {
-            func_001ae480(task);
-            work->state = 1;
+            localAngleB = (360.0f - localAngleStep) + localAngle;
         }
+        else
+        {
+            localAngleB = (360.0f - localAngle) + localAngleStep;
+        }
+        amount = localAngle - localAngleStep;
+        if (func_0045ec20(func_0052e118(func_00530da0(localAngleB)),
+                          func_0052e118(func_00530da0(amount))) != 0)
+        {
+            localAngleB = amount;
+        }
+        work->frame = 0;
+        work->angleStep = localAngleB / work->points[0].duration;
+        work->currentAngle = localAngle;
+        work->state = 7;
         return KWLNTASK_CONTINUE;
     }
     case 7:
