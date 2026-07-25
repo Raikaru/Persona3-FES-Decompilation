@@ -3470,7 +3470,12 @@ void func_001f7210(void)
         s32 party_mem;
         s32 member_count;
         u16 scan_arr[12];
-        s32 eff_total = 0;
+        u32 eff_total = 0;
+        u32 eff_cnt[5];
+        /* Additional stack data arrays matching retail's 0x1a0-0x24c usage */
+        u32 crd_flt[24];
+        u32 i_idx2;
+        eff_cnt[0] = 0; eff_cnt[1] = 0; eff_cnt[2] = 0; eff_cnt[3] = 0; eff_cnt[4] = 0;
         for (party_eff = 0; party_eff < 13; party_eff++) {
             /* Accumulator slot per effect type */
             switch (party_eff) {
@@ -3484,7 +3489,7 @@ void func_001f7210(void)
                 cur = func_0016c4f0(1);
                 mx = func_0016c5f0(1);
                 if (cur < mx) {
-                    eff_total++;
+                    eff_cnt[0]++;
                 }
                 break;
             case 1:
@@ -3499,7 +3504,7 @@ void func_001f7210(void)
                     }
                 }
                 if (i_idx < (u32)member_count) {
-                    eff_total++;
+                    eff_cnt[0]++;
                 }
                 break;
             case 2:
@@ -3507,7 +3512,7 @@ void func_001f7210(void)
                 cur = func_0016c570(1);
                 mx = func_0016c670(1);
                 if (cur < mx) {
-                    eff_total++;
+                    eff_cnt[1]++;
                 }
                 break;
             case 3:
@@ -3522,14 +3527,14 @@ void func_001f7210(void)
                     }
                 }
                 if (i_idx < (u32)member_count) {
-                    eff_total++;
+                    eff_cnt[1]++;
                 }
                 break;
             case 4:
                 /* Bad-status clear (direct) */
                 st = func_0016c970(1);
                 if ((st & 0x80) == 0) {
-                    eff_total++;
+                    eff_cnt[2]++;
                 }
                 break;
             case 5:
@@ -3543,7 +3548,7 @@ void func_001f7210(void)
                     }
                 }
                 if (i_idx < (u32)member_count) {
-                    eff_total++;
+                    eff_cnt[2]++;
                 }
                 break;
             case 6:
@@ -3553,7 +3558,7 @@ void func_001f7210(void)
                 /* setPhysicalCondition (direct, a1=0) */
                 st = func_0016c920(1);
                 if (st >= 3 && st <= 5) {
-                    eff_total++;
+                    eff_cnt[3]++;
                 }
                 break;
             case 8:
@@ -3567,14 +3572,14 @@ void func_001f7210(void)
                     }
                 }
                 if (i_idx < (u32)member_count) {
-                    eff_total++;
+                    eff_cnt[3]++;
                 }
                 break;
             case 9:
                 /* setPhysicalCondition (direct, a1=1, filter 1/2) */
                 st = func_0016c920(1);
                 if (st == 1 || st == 2) {
-                    eff_total++;
+                    eff_cnt[4]++;
                 }
                 break;
             case 10:
@@ -3588,14 +3593,14 @@ void func_001f7210(void)
                     }
                 }
                 if (i_idx < (u32)member_count) {
-                    eff_total++;
+                    eff_cnt[4]++;
                 }
                 break;
             case 11:
                 /* setPhysicalCondition (direct, a1=2, filter 2-only) */
                 st = func_0016c920(1);
                 if (st != 2) {
-                    eff_total++;
+                    eff_cnt[4]++;
                 }
                 break;
             case 12:
@@ -3609,13 +3614,14 @@ void func_001f7210(void)
                     }
                 }
                 if (i_idx < (u32)member_count) {
-                    eff_total++;
+                    eff_cnt[4]++;
                 }
                 break;
             default:
                 break;
             }
         }
+        eff_total = eff_cnt[0] + eff_cnt[1] + eff_cnt[2] + eff_cnt[3] + eff_cnt[4];
         if (eff_total > 0) {
             kind = eff_total % 28;
         }
