@@ -2405,6 +2405,10 @@ void btlActionInitStateAttack(BtlAction* action)
     (void)action;
 }
 extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
+extern BtlPacket* FUN_00284200(BtlUnit*, u16, u32, u32, f32);
+extern s64 FUN_002835e0(BtlUnit*, u16, f32);
+extern void FUN_00283750(BtlUnit*, u16, f32);
+extern s64 FUN_002838d0(BtlUnit*, u16, f32);
 
 // FUN_0028eb50 NONMATCHING
 void btlActionUpdateStateAttack(BtlAction* action)
@@ -2971,7 +2975,14 @@ void btlActionUpdateStateAttack(BtlAction* action)
     packet->parentUID = effectPacket->uid;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
+    if (FUN_002dc130(action))
+    {
+        btlActionSetState(action, BTLACTION_STATE_PERSONA);
+    }
+    else
+    {
+        btlActionSetState(action, BTLACTION_STATE_ROUNDUP);
+    }
 }
 // FUN_00290bd0
 void btlActionInitStateSkill(BtlAction* action)
