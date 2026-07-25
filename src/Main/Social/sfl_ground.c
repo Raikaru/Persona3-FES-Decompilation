@@ -354,6 +354,7 @@ void sflGround00239280(void)
 }
 
 // FUN_002392D0 NONMATCHING
+#pragma schedule off
 void func_002392d0(void)
 {
     u32* work;
@@ -843,44 +844,129 @@ void func_002392d0(void)
     }
 
     /*
-     * The six narrow strips are the final transition layer.  Three texture
-     * phases are used, repeated for the two halves of the strip array.
+     * The six narrow strips are the final transition layer.  Retail
+     * recomputes normFade = clamp(work[1]/30) * 255 per strip rather than
+     * once, re-sets rect[1..3] at every strip, and interleaves strips 0-1
+     * (both colours then both rects), keeping both rect vectors live
+     * simultaneously to create the register pressure that requires 0xf0.
      */
     if (work[3] == 3 || work[3] == 4) {
-        panelPhase = (f32)(work[0x1abc] % 240) / 240.0f;
+        f32 rect0[4];
+        f32 rect1[4];
+        f32 stripFade;
+
+        /*
+         * Strip 0: offset 0x64f0, phase offset 0, rect[1]=0.
+         * Colour set (alpha through recomputed normFade).
+         */
+        {
+            f32 _normFade;
+            if ((s32)work[1] >= 30) _normFade = 1.0f;
+            else _normFade = (f32)work[1] / 30.0f;
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+        }
+        func_0021d950(GROUND_PTR(work, 0x64f0), &color);
+
+        /*
+         * Strip 1: offset 0x65f0, phase offset +160, rect[1]=0.
+         * Colour set (normFade recomputed again).
+         */
+        {
+            f32 _normFade;
+            if ((s32)work[1] >= 30) _normFade = 1.0f;
+            else _normFade = (f32)work[1] / 30.0f;
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+        }
+        func_0021d950(GROUND_PTR(work, 0x65f0), &color);
+
+        /*
+         * Strip 0 rect: set after strip 1 colour to match retail interleave.
+         */
+        stripFade = (f32)(work[0x1abc] % 240) / 240.0f;
+        rect0[0] = (1.0f - stripFade) * 1659.0f - 503.0f;
+        rect0[1] = 0.0f;
+        rect0[2] = 503.0f;
+        rect0[3] = 44.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x64f0), rect0);
+
+        /*
+         * Strip 1 rect: after strip 0 rect.  stripFade and rect0 live
+         * until here, doubling register pressure.
+         */
+        stripFade = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
+        rect1[0] = (1.0f - stripFade) * 1659.0f - 503.0f;
+        rect1[1] = 0.0f;
+        rect1[2] = 503.0f;
+        rect1[3] = 44.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x65f0), rect1);
+
+        /*
+         * Strip 2: offset 0x66f0, phase offset +80, rect[1]=0.
+         */
+        {
+            f32 _normFade;
+            if ((s32)work[1] >= 30) _normFade = 1.0f;
+            else _normFade = (f32)work[1] / 30.0f;
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+        }
+        func_0021d950(GROUND_PTR(work, 0x66f0), &color);
+        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         rect[1] = 0.0f;
         rect[2] = 503.0f;
         rect[3] = 44.0f;
-    { f32 _sgav = fade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
-        func_0021d8e0(GROUND_PTR(work, 0x64f0), rect);
-        func_0021d950(GROUND_PTR(work, 0x64f0), &color);
-
-        panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
-        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x65f0), rect);
-        func_0021d950(GROUND_PTR(work, 0x65f0), &color);
-
-        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
-        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         func_0021d8e0(GROUND_PTR(work, 0x66f0), rect);
-        func_0021d950(GROUND_PTR(work, 0x66f0), &color);
-        rect[1] = 404.0f;
 
+        /*
+         * Strip 3: offset 0x67f0, phase offset +160, rect[1]=404.
+         */
+        {
+            f32 _normFade;
+            if ((s32)work[1] >= 30) _normFade = 1.0f;
+            else _normFade = (f32)work[1] / 30.0f;
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+        }
+        func_0021d950(GROUND_PTR(work, 0x67f0), &color);
         panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        rect[1] = 404.0f;
+        rect[2] = 503.0f;
+        rect[3] = 44.0f;
         func_0021d8e0(GROUND_PTR(work, 0x67f0), rect);
-        func_0021d950(GROUND_PTR(work, 0x67f0), &color);
 
-        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
-        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x68f0), rect);
+        /*
+         * Strip 4: offset 0x68f0, phase offset +80, rect[1]=404.
+         */
+        {
+            f32 _normFade;
+            if ((s32)work[1] >= 30) _normFade = 1.0f;
+            else _normFade = (f32)work[1] / 30.0f;
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+        }
         func_0021d950(GROUND_PTR(work, 0x68f0), &color);
-
         panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x69f0), rect);
+        rect[1] = 404.0f;
+        rect[2] = 503.0f;
+        rect[3] = 44.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x68f0), rect);
+
+        /*
+         * Strip 5: offset 0x69f0, phase offset +80, rect[1]=404.
+         */
+        {
+            f32 _normFade;
+            if ((s32)work[1] >= 30) _normFade = 1.0f;
+            else _normFade = (f32)work[1] / 30.0f;
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+        }
         func_0021d950(GROUND_PTR(work, 0x69f0), &color);
+        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        rect[1] = 404.0f;
+        rect[2] = 503.0f;
+        rect[3] = 44.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x69f0), rect);
     }
 
     { f32 _sgav = (128.0f / 255.0f) * panelFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
