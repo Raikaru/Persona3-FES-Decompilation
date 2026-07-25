@@ -5789,21 +5789,11 @@ void func_002e58a0(u64 param_1)
   float fStack_5c;
   float fStack_58;
   float fStack_54;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  float dir[3];
+  float cam[3];
+  float target[3];
+  float pos2[3];
+  float pos1[3];
   
   iVar5 = (int)param_1;
   iVar4 = *(int *)(iVar5 + 0xe0);
@@ -5864,25 +5854,25 @@ LAB_002e59dc:
     iVar4 = (int)DAT_00697c80;
   }
   else {
-    FUN_00280050(iVar8,&fStack_10);
-    FUN_00280050(iVar7,&fStack_20);
+    FUN_00280050(iVar8,pos1);
+    FUN_00280050(iVar7,pos2);
     fVar13 = *(float *)(iVar8 + 0x90) * *(float *)(iVar8 + 0x2c);
-    fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5 + fStack_c + 0.0;
-    fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5 + fStack_1c + 0.0;
-    fStack_50 = fStack_10 - fStack_20;
-    fStack_4c = fStack_c - fStack_1c;
-    fStack_48 = fStack_8 - fStack_18;
-    fVar9 = (float)FUN_004c69f0(&fStack_50,&fStack_50);
+    fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5 + pos1[1] + 0.0;
+    fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5 + pos2[1] + 0.0;
+    dir[0] = pos1[0] - pos2[0];
+    dir[1] = pos1[1] - pos2[1];
+    dir[2] = pos1[2] - pos2[2];
+    fVar9 = (float)FUN_004c69f0(dir,dir);
     fVar9 = DAT_007cad84 * fVar9;
-    fStack_30 = fStack_50 * fVar9 + fStack_20;
-    fStack_2c = fStack_4c * fVar9 + fStack_1c;
-    fStack_28 = fStack_48 * fVar9 + fStack_18;
-    fStack_a8 = *(float *)(iVar5 + 0x9c) - fStack_30;
-    fStack_a4 = *(float *)(iVar5 + 0xa4) - fStack_28;
+    target[0] = dir[0] * fVar9 + pos2[0];
+    target[1] = dir[1] * fVar9 + pos2[1];
+    target[2] = dir[2] * fVar9 + pos2[2];
+    fStack_a8 = *(float *)(iVar5 + 0x9c) - target[0];
+    fStack_a4 = *(float *)(iVar5 + 0xa4) - target[2];
     FUN_004c6b20(&fStack_a8,&fStack_a8);
-    fStack_b0 = fStack_48;
-    fStack_ac = -fStack_50;
-    fVar9 = fStack_48 * fStack_a8 + fStack_ac * fStack_a4;
+    fStack_b0 = dir[2];
+    fStack_ac = -dir[0];
+    fVar9 = dir[2] * fStack_a8 + fStack_ac * fStack_a4;
     if (bVar1) {
       fVar10 = 2.5;
     }
@@ -5891,55 +5881,55 @@ LAB_002e59dc:
     }
     fVar10 = fVar10 * fVar13;
     if (0.0 <= fVar9) {
-      fStack_40 = fStack_48 * fVar10 + fStack_10 + 0.0;
-      fStack_38 = (fStack_8 + 0.0) - fStack_50 * fVar10;
+      cam[0] = dir[2] * fVar10 + pos1[0] + 0.0;
+      cam[2] = (pos1[2] + 0.0) - dir[0] * fVar10;
     }
     else {
-      fStack_40 = (fStack_10 + 0.0) - fStack_48 * fVar10;
-      fStack_38 = fStack_50 * fVar10 + fStack_8 + 0.0;
+      cam[0] = (pos1[0] + 0.0) - dir[2] * fVar10;
+      cam[2] = dir[0] * fVar10 + pos1[2] + 0.0;
     }
-    fStack_3c = fVar11;
+    cam[1] = fVar11;
     if (bVar1) {
-      fStack_2c = (fStack_2c + 0.0) - DAT_007cad84 * fVar12;
+      target[1] = (target[1] + 0.0) - DAT_007cad84 * fVar12;
       fVar11 = 3.5;
     }
     else {
       if (fVar11 < fVar12) {
-        fStack_2c = (fStack_2c + 0.0) - DAT_007cad84 * fVar12;
+        target[1] = (target[1] + 0.0) - DAT_007cad84 * fVar12;
       }
       else {
-        fStack_2c = DAT_007cad20 * fVar12 + fStack_2c + 0.0;
-        fStack_3c = (fStack_c + 0.0) - DAT_007cad20 * fVar11;
+        target[1] = DAT_007cad20 * fVar12 + target[1] + 0.0;
+        cam[1] = (pos1[1] + 0.0) - DAT_007cad20 * fVar11;
       }
       fVar11 = 2.5;
     }
-    FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_78);
-    fStack_c0 = fStack_30;
-    fStack_bc = fStack_28;
-    fStack_b8 = fStack_40;
-    fStack_b4 = fStack_38;
-    fStack_58 = fStack_10;
-    fStack_54 = fStack_8;
+    FUN_004be1e0(dir,0x6978a0,1,&uStack_78);
+    fStack_c0 = target[0];
+    fStack_bc = target[2];
+    fStack_b8 = cam[0];
+    fStack_b4 = cam[2];
+    fStack_58 = pos1[0];
+    fStack_54 = pos1[2];
     fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,&fStack_58,&fStack_60);
-    fStack_40 = fStack_60;
-    fStack_38 = fStack_5c;
+    cam[0] = fStack_60;
+    cam[2] = fStack_5c;
     fVar10 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5);
     fVar10 = (fVar12 + fVar11 * fVar13) / fVar10;
-    fStack_50 = fStack_50 * fVar10;
-    fStack_4c = fStack_4c * fVar10;
-    fStack_48 = fStack_48 * fVar10;
+    dir[0] = dir[0] * fVar10;
+    dir[1] = dir[1] * fVar10;
+    dir[2] = dir[2] * fVar10;
     if (fVar9 < 0.0) {
       fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5);
       fVar9 = fVar10 * fVar9 * 0.21875 * 1.25;
-      fStack_68 = fStack_50;
-      fStack_64 = fStack_48;
+      fStack_68 = dir[0];
+      fStack_64 = dir[2];
       FUN_004c6b20(&fStack_68,&fStack_68);
-      fStack_40 = fStack_64 * fVar9 + fStack_40 + 0.0;
-      fStack_38 = (fStack_38 + 0.0) - fStack_68 * fVar9;
+      cam[0] = fStack_64 * fVar9 + cam[0] + 0.0;
+      cam[2] = (cam[2] + 0.0) - fStack_68 * fVar9;
     }
-    fStack_84 = fStack_40 + fStack_50;
-    fStack_80 = fStack_3c + fStack_4c;
-    fStack_7c = fStack_38 + fStack_48;
+    fStack_84 = cam[0] + dir[0];
+    fStack_80 = cam[1] + dir[1];
+    fStack_7c = cam[2] + dir[2];
     if (fStack_80 < 25.0) {
       fStack_80 = 25.0;
     }
@@ -5949,14 +5939,14 @@ LAB_002e59dc:
       uStack_90 = uStack_74;
       uStack_8c = uStack_70;
       uStack_88 = uStack_6c;
-      FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_78);
+      FUN_004be1e0(dir,0x6978a0,1,&uStack_78);
       fVar10 = fVar10 + 200.0;
-      fStack_50 = fStack_50 * fVar10;
-      fStack_4c = fStack_4c * fVar10;
-      fStack_48 = fStack_48 * fVar10;
-      fStack_a0 = fStack_40 + fStack_50;
-      fStack_9c = fStack_3c + fStack_4c;
-      fStack_98 = fStack_38 + fStack_48;
+      dir[0] = dir[0] * fVar10;
+      dir[1] = dir[1] * fVar10;
+      dir[2] = dir[2] * fVar10;
+      fStack_a0 = cam[0] + dir[0];
+      fStack_9c = cam[1] + dir[1];
+      fStack_98 = cam[2] + dir[2];
       if (fStack_9c < 25.0) {
         fStack_9c = 25.0;
       }
