@@ -681,6 +681,8 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
 {
     CampSkillRecord* record;
+    char text[0x100];
+    CampSkillVec2 position;
 
     record = (CampSkillRecord*)recordData;
     switch (index) {
@@ -716,7 +718,6 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
         u16 id;
         u8 effect;
         s32 valueA;
-        char text[0x100];
         CampSkillVec2 position;
 
         equipment = datGetEquipmentIdx(work->pcId, (s16)work->category);
@@ -818,7 +819,6 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
         s16 equipment;
         u8* data;
         void* atlas;
-        char text[0x100];
 
         data = work->detailData;
         count = *(s32*)(data + 0x2d64);
@@ -900,7 +900,6 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 u16 statA = *(u16*)(entry + 0x80);
                 u16 statB = *(u16*)(entry + 0x82);
                 void* numAtlas;
-                CampSkillVec2 position;
 
                 position.x = record->x + 317.0f;
                 position.y = record->y + 9.0f + (f32)rowOffset;
@@ -949,7 +948,6 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
             } else if (work->category == 1) {
                 u16 statA = *(u16*)(entry + 0x84);
                 void* numAtlas;
-                CampSkillVec2 position;
 
                 position.x = record->x + 317.0f;
                 position.y = record->y + 9.0f + (f32)rowOffset;
@@ -976,7 +974,6 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
             } else if (work->category == 2) {
                 u16 statA = *(u16*)(entry + 0x86);
                 void* numAtlas;
-                CampSkillVec2 position;
 
                 position.x = record->x + 317.0f;
                 position.y = record->y + 9.0f + (f32)rowOffset;
