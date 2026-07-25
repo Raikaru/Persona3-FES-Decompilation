@@ -592,20 +592,25 @@ init_phase0:
     {
         return false;
     }
-    count = (u32)(*(s32*)((u8*)K_Field_Get() + 0x105c) - 1);
-    *(u32*)((u8*)K_Field_Get() + 0x105c) = count;
-    *(void**)((u8*)K_Field_Get() + 0x116c + count * 4) =
-        FUN_001b2780((u16)*(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4),
-                     (u16)*(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4));
+    *(s32*)((u8*)K_Field_Get() + 0x105c) -= 1;
+    *(void**)((u8*)K_Field_Get() + 0x116c +
+              *(u32*)((u8*)K_Field_Get() + 0x1168) * 4) =
+        FUN_001b2780(
+            (u16)*(s16*)((u8*)K_Field_Get() + 0x1060 +
+                         *(u32*)((u8*)K_Field_Get() + 0x105c) * 4),
+            (u16)*(s16*)((u8*)K_Field_Get() + 0x1062 +
+                         *(u32*)((u8*)K_Field_Get() + 0x105c) * 4));
     *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 1;
 
 init_phase1:
-    count = *(u32*)((u8*)K_Field_Get() + 0x1168);
-    resource = *(void**)((u8*)K_Field_Get() + 0x116c + count * 4);
+    resource = *(void**)((u8*)K_Field_Get() + 0x116c +
+                         *(u32*)((u8*)K_Field_Get() + 0x1168) * 4);
     if (FUN_001b2b30((u32)resource) == false)
     {
         return false;
     }
+    resource = *(void**)((u8*)K_Field_Get() + 0x116c +
+                         *(u32*)((u8*)K_Field_Get() + 0x1168) * 4);
     FUN_001b2b90((u32)resource);
     *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 2;
 
@@ -616,7 +621,7 @@ init_phase2:
     {
         return false;
     }
-    *(u32*)((u8*)K_Field_Get() + 0x1168) = count + 1;
+    *(u32*)((u8*)K_Field_Get() + 0x1168) += 1;
     if (*(s32*)((u8*)K_Field_Get() + 0x105c) > 0)
     {
         *(u32*)((u8*)K_Field_Get_Z() + 0x1058) = 0;
@@ -624,9 +629,10 @@ init_phase2:
     }
     if ((gMtScene->flags & 0x80000000) != 0)
     {
-        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
-        gMtScene->fldMajorId = *(u16*)(node + 4);
-        gMtScene->fldMinorId = *(u16*)(node + 6);
+        gMtScene->fldMajorId =
+            *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 4);
+        gMtScene->fldMinorId =
+            *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 6);
     }
     for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
     {
