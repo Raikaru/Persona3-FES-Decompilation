@@ -63,6 +63,7 @@ BtlPacket* FUN_002bddd0(void);
 BtlPacket* FUN_002dd100(u32 a, u32 b, u32 c);
 BtlPacket* FUN_002d7e20(BtlAction* action, BtlAction* target, void* result, u32 a, u32 b);
 extern f32 D_00693300[];
+extern s16 D_00690E20[];
 s64 FUN_002dc670(BtlAction* action);
 u32 FUN_002dc130(BtlAction* action);
 BtlPacket* FUN_002dd5e0();
@@ -2563,686 +2564,850 @@ void btlActionUpdateStateAttack(BtlAction* action)
     BtlAction* victim;
     BtlAction* basis;
     BtlPacket* packet;
-    BtlPacket* hitPacket;
+    BtlPacket* animPacket;
+    BtlPacket* subHitPacket;
     extern BtlPacket* FUN_00284200(BtlUnit*, u16, u32, u32, f32);
     extern s64 FUN_002835e0(BtlUnit*, u16, f32);
-    extern void FUN_00283750(BtlUnit*, u16, f32);
+    extern s16 FUN_00283750(BtlUnit*, u16, f32);
     extern s64 FUN_002838d0(BtlUnit*, u16, f32);
-    BtlPacket* skillPacket;
-    BtlPacket* cameraPacket;
-    BtlPacket* voicePacket;
-    BtlPacket* effectPacket;
-    BtlPacket* rootPacket;
-    BtlPacket* syncPacket;
+    extern s64 FUN_00283c70(BtlUnit*, u16);
+    extern s64 FUN_00283e40(BtlUnit*, u16);
+    extern s16* FUN_00283fe0(BtlUnit*, u16);
+    extern s32 FUN_002f8eb0(BtlUnit*, u16);
+    extern u16 FUN_00308c60(DatUnit*);
+    extern u16 FUN_00308ed0(DatUnit*);
     u64 actionUID;
-    u64 packetUIDs[4];
+    u64 sp260;
+    u64 sp258;
     u32 workBuf[12];
     s16 sp190;
     s16 sp180;
-    s16 delay;
-    s16 aDelay;
-    s16 animId;
-    s16 soundId;
-    s16 tempS16;
-    s32 animLength;
-    u32 sp1d0;
-    u32 sp160;
-    u32 rotCount;
-    u32 randExtra;
-    u32 pkCount;
-    u32 animMode;
-    u8 group;
-    u8 hit;
+    s16 sp1D0;
+    s16 sp1C0;
+    s16 sp1B0;
+    s16 sp1AE;
+    s16 sp1E0;
+    s16 sp2BE, sp2BC, sp2BA, sp2B8;
+    s32 sp240;
+    s32 sp230;
+    s32 sp220;
+    s32 sp210;
+    s32 sp200;
+    s32 sp1F0;
+    s32 sp160;
+    s32 weaponType;
+    s32 var_17;
+    s32 var_21;
+    s32 subHit;
+    s32 var_30_2;
+    s32 spC0;
+    s32 spB0;
+    s16* sp17C;
+    void* sp270;
     u8 groupCount;
     u8 hitCount;
-    u8 genus;
-    f32 speed;
-    f32 animSpeed;
-    f32 accF;
-    f32 normFactor;
+    u8 sp120;
+    u8 unk1f0;
     u8* result;
-    u8* result2;
-    u16 groupFlags;
-    u16 resultFlags;
-    u8 attackAnim;
-    u32 unk1f0;
+    f32 var_f20;
+    f32 var_f22;
+    f32 var_f21;
 
     btlAction0028a780(action);
     actionUID = action->uid;
-    packetUIDs[0] = 0;
-    packetUIDs[1] = 0;
-    packetUIDs[2] = 0;
+    sp260 = 0;
+    sp1C0 = 0;
+    sp258 = 0;
     sp190 = -1;
     sp180 = -1;
-    sp1d0 = 0;
     unk1f0 = (action->unk_18 & 0x4000) != 0;
-    if (unk1f0)
+    var_f20 = unk1f0 ? 1.75f : 1.0f;
+    victim = action->target.targetedActions[0];
+    basis = ACTION_U32(victim, 0xd4) != 0 ? action : victim;
+    if (ACTION_U32(victim, 0xd0) != 0 && action->unit->genus != basis->unit->genus)
     {
-        animSpeed = 1.75f;
+        sp1F0 = 1;
     }
     else
     {
-        animSpeed = 1.0f;
+        sp1F0 = 0;
     }
-    victim = action->target.targetedActions[0];
-    basis = ACTION_U32(victim, 0xd4) != 0 ? action : victim;
-    if (ACTION_U32(victim, 0xd0) == 0 && action->unit->genus == victim->unit->genus)
-    {
-        basis = action;
-    }
-    speed = unk1f0 ? 1.0f : 1.75f;
-    rotCount = 1;
-    rootPacket = FUN_002bd590(action->unit, action->target.specificId);
-    rootPacket->actionUID = actionUID;
-    btlPacketRegister(rootPacket, BTLPACKET_TYPE_2D);
+    btlPacketRegister(FUN_002bd590(action->unit, action->target.specificId), BTLPACKET_TYPE_2D);
     packet = btlUnitCreateRotateTowardUnitPacket(action->unit, victim->unit, 0);
     packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    sp1D0 = 0;
     groupCount = ACTION_U8(victim, 0xc8);
-    hitCount = unk1f0 ? 1 : groupCount;
-    for (group = 0; group < groupCount; group++)
+    hitCount = unk1f0 ? 1 : ACTION_U8(victim, 0xc9);
+    sp120 = unk1f0 ? 1 : (FUN_00308f80(action->unit->datUnit) & 0xFF);
+    var_f22 = (f32)ACTION_U32(victim, 0xe0) / (f32)hitCount;
+    if (ACTION_U16(victim, 0xce) & 6)
     {
-        result = (u8*)victim + 0xe0 + group * 0x1c;
-        groupFlags = ACTION_U16(victim, 0xcc);
-        resultFlags = ACTION_U16(result, 0x1a);
-        attackAnim = resultFlags & 4 ? 11 : 4;
-        delay = 0;
-        for (hit = 0; hit < hitCount; hit++)
+        var_f22 *= *(f32*)((u8*)gBtl - 0x7c64);
+    }
+    var_f21 = 0.0f;
+    packet = FUN_002bd480(basis->unit);
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    weaponType = FUN_00308c60(action->unit->datUnit) & 0xFF;
+    if (action->unit->genus == 0)
+    {
+        u16 charId = action->unit->charId;
+        if (charId == 1)
         {
-            u8 datVal = FUN_00308f80(action->unit->datUnit);
-            normFactor = (f32)ACTION_U32(result, 0) / (f32)groupCount;
+            sp270 = (u8*)gBtl - 0x482C + weaponType * 8;
+        }
+        else
+        {
+            sp270 = (u8*)gBtl - 0x4828 + (charId - 2) * 8;
+        }
+    }
+    else
+    {
+        sp270 = (u8*)gBtl - 0x67C8;
+    }
+    {
+        u32 sp110 = (ACTION_U32(victim, 0xe8) & 0x100000) != 0;
+        u32 sp100 = (ACTION_U16(victim, 0xce) & 6) != 0;
+        if (FUN_0028a0f0(action) && (unk1f0 || (!sp100 && !sp110)))
+        {
+            packet = btlCameraCreateSetStatePacket(action, 0xB);
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+        }
+        packet = btlUnitCreateLookAtUnitPacket(NULL, victim->unit, 3);
+        packet->actionUID = actionUID;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        if (!(ACTION_U16(victim, 0xfa) & 4))
+        {
+            packet = btlUnitCreateLookAtUnitPacket(victim->unit, action->unit, 0);
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+        packet = btlUnitCreateLookAtDeactivatePacket(action->unit, 0);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        action->unk_18 |= 0x200;
+        sp240 = 0;
+        for (sp240 = 0; sp240 < groupCount; sp240++)
+        {
+            u16 resultFlags;
+            sp230 = 4;
+            var_21 = 0;
+            result = (u8*)victim + 0xe0 + sp240 * 0x1c;
+            resultFlags = ACTION_U16(result, 0x1a);
+            for (var_21 = 0; var_21 < hitCount; var_21++)
             {
-                u16 cVal = ACTION_U16(victim, 0xce);
-                if (cVal & 6)
+                s32 animResult;
+                sp160 = 1;
+                if (!(resultFlags & 4))
                 {
-                    f32 gpMul;
-                    gpMul = 1.0f;
-                    normFactor = normFactor * gpMul;
+                    if (action->unit->genus == 0)
+                    {
+                        if (weaponType != 7)
+                        {
+                            var_17 = *(u8*)((u8*)gBtl - 0x486C + weaponType * 3 + var_21 + 0x18);
+                            if (ACTION_U16(victim, 0xcc) & 4)
+                            {
+                                u16 charId2 = action->unit->charId;
+                                switch (charId2)
+                                {
+                                    case 4:
+                                        var_17 = 6;
+                                        break;
+                                    case 7:
+                                        var_17 = 5;
+                                        break;
+                                    case 8:
+                                        var_17 = 5;
+                                        break;
+                                    default:
+                                        if (charId2 == 1 && (FUN_00308c60(action->unit->datUnit) & 0xFF) == 3)
+                                        {
+                                            var_17 = 5;
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            s32 wt;
+                            sp190 = 2;
+                            wt = FUN_003093a0(action->unit->datUnit) & 0xFF;
+                            switch (wt)
+                            {
+                                case 2:
+                                    var_17 = 5;
+                                    sp180 = 0xD;
+                                    break;
+                                case 3:
+                                    var_17 = 6;
+                                    sp180 = 0xE;
+                                    break;
+                                default:
+                                case 1:
+                                    var_17 = 4;
+                                    sp180 = 0xC;
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var_17 = (s16)FUN_002f8eb0(action->unit, action->target.specificId);
+                        if (var_17 == -1)
+                        {
+                            var_17 = 4;
+                        }
+                    }
+                }
+                else
+                {
+                    var_17 = 0xB;
+                }
+                if (var_17 != 6 && var_17 != 5 && var_17 != 4)
+                {
+                    sp17C = NULL;
+                    sp210 = 0;
+                    sp220 = 1;
+                }
+                else
+                {
+                    sp17C = FUN_00283fe0(action->unit, (u16)var_17);
+                    if (sp17C == NULL)
+                    {
+                        sp210 = (s16)FUN_00283e40(action->unit, (u16)var_17);
+                    }
+                    else
+                    {
+                        sp210 = 0;
+                    }
+                    sp220 = (s16)FUN_00283c70(action->unit, (u16)var_17);
+                }
+                if (sp17C == NULL)
+                {
+                    var_30_2 = (s16)FUN_002835e0(action->unit, (u16)var_17, var_f20);
+                }
+                else
+                {
+                    var_30_2 = *sp17C;
+                }
+                var_30_2 += sp230;
+                animPacket = btlUnitCreateAnimPacket(action->unit, (u16)var_17, (u16)sp230, var_f20,
+                                                     var_17 == 0xB ? 2 : 0);
+                animPacket->preUpdateDelay = sp1D0;
+                animPacket->actionUID = actionUID;
+                btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
+                if (sp240 == 0 && var_21 == 0 && (sp100 || sp110) && !unk1f0)
+                {
+                    if (action->unit->genus == 0)
+                    {
+                        if (sp110)
+                        {
+                            packet = func_002b7bd0(action->unit, victim->unit, 3, 400.0f);
+                            packet->unk_00 = 5;
+                            packet->parentUID = animPacket->uid;
+                            packet->actionUID = actionUID;
+                            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                        }
+                        packet = btlCameraCreateSetStatePacket(action, 0xC);
+                        packet->unk_00 = 5;
+                        packet->parentUID = animPacket->uid;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                    }
+                    else if (sp110)
+                    {
+                        packet = btlCameraCreateSetStatePacket(action, 0xD);
+                        packet->unk_00 = 5;
+                        packet->parentUID = animPacket->uid;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                        *(u32*)((u8*)gBtl + 0xc) |= 0x400000;
+                        *(u16*)((u8*)gBtl + 0x18) |= 0xE;
+                    }
+                    else if (FUN_0028a0f0(action))
+                    {
+                        packet = btlCameraCreateSetStatePacket(action, 0xB);
+                        packet->unk_00 = 5;
+                        packet->parentUID = animPacket->uid;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                    }
+                    else
+                    {
+                        packet = btlCameraCreateSetStatePacket(action, 0xA);
+                        packet->unk_00 = 5;
+                        packet->parentUID = animPacket->uid;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                    }
+                }
+                FUN_0028a540(action, action->target.specificId, (u16*)&sp2BE, (u16*)&sp2BC, (u16*)&sp2BA, (u16*)&sp2B8);
+                packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24 + sp2BE * 4), action->unit, victim->unit, 0, 0);
+                packet->unk_00 = 5;
+                packet->parentUID = animPacket->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                if (sp240 == 0 && var_21 == 0 && !FUN_0028a0f0(action) && !sp100 && !sp110 && !unk1f0)
+                {
+                    packet = btlCameraCreateSetStatePacket(action, 0xA);
+                    packet->unk_00 = 5;
+                    packet->parentUID = animPacket->uid;
+                    packet->preUpdateDelay = var_30_2 < 0xF ? 0 : var_30_2 - 0xF;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                }
+                if (var_21 == hitCount - 1 ||
+                    (spC0 = *(s16*)((u8*)sp270 + var_21 * 4), spC0 == -1))
+                {
+                    spC0 = (s16)FUN_002838d0(action->unit, (u16)var_17, var_f20);
+                }
+                spC0 = (s16)(spC0 + (s16)sp230);
+                sp1D0 += spC0;
+                if (var_21 == hitCount - 1 ||
+                    (sp230 = *(s8*)((u8*)sp270 + var_21 * 4 + 2), sp230 == -1))
+                {
+                    sp230 = 4;
+                }
+                if (var_30_2 < (s16)spC0)
+                {
+                    sp1E0 = (s16)(*(f32*)((u8*)gBtl - 0x7c64) * (f32)((s16)spC0 - var_30_2));
+                }
+                else
+                {
+                    sp1E0 = 0;
+                }
+                if (ACTION_U32(victim, 0xd0) != 0 || ACTION_U32(victim, 0xd4) != 0)
+                {
+                    sp1E0 += 0xC;
+                }
+                if (ACTION_U32(victim, 0xd4) != 0 && ACTION_U16(victim, 0xcc) != 0x400)
+                {
+                    sp220 = 1;
+                }
+                else if (ACTION_U16(victim, 0xcc) == 0x400)
+                {
+                    sp220 = 1;
+                    sp160 = 0;
+                }
+                if ((ACTION_U16(victim, 0xcc) & 4) || (resultFlags & 4))
+                {
+                    sp160 = 0;
+                }
+                if (resultFlags & 4)
+                {
+                    spB0 = var_30_2 >= 7 ? var_30_2 - 6 : 0;
+                    animResult = FUN_00283750(action->unit, (u16)var_17, var_f20);
+                    if (action->unit->genus == 0)
+                    {
+                        packet = btlCameraCreateSetStatePacket(action, 0xE);
+                        packet->unk_00 = 4;
+                        packet->parentUID = animPacket->uid;
+                        packet->preUpdateDelay = (s16)spB0;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                    }
+                    packet = FUN_002dd100(0xC, 2, 9);
+                    packet->unk_00 = 4;
+                    packet->parentUID = animPacket->uid;
+                    packet->preUpdateDelay = (s16)animResult >= 9 ? (s16)animResult - 8 : 0;
+                    packet->actionUID = action->uid;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xcf8), action->unit, action->unit, 1, 0);
+                    packet->unk_00 = 4;
+                    packet->parentUID = animPacket->uid;
+                    packet->preUpdateDelay = (s16)animResult;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                    packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xcf0), action->unit, action->unit, 1, 0);
+                    packet->unk_00 = 4;
+                    packet->parentUID = animPacket->uid;
+                    packet->preUpdateDelay = (s16)spB0;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                    FUN_002d5dc0(workBuf);
+                    workBuf[2] = 0x100000;
+                    packet = FUN_002d7e20(action, action, workBuf, 1, 1);
+                    packet->unk_00 = 4;
+                    packet->parentUID = animPacket->uid;
+                    packet->preUpdateDelay = (s16)(spC0 - (spC0 >> 2));
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    if (action->unit->genus == 1 && !unk1f0)
+                    {
+                        packet = FUN_002db740(victim, 0x18, 0, 0, 0);
+                        packet->unk_00 = 4;
+                        packet->parentUID = packet->uid;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    }
+                    packet = func_0027f2f0();
+                    packet->unk_00 = 5;
+                    packet->parentUID = animPacket->uid;
+                    packet->preUpdateDelay = (s16)spC0;
+                    packet->postUpdateDelay = 0xC;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    if (!unk1f0)
+                    {
+                        packet = btlVoice002e2be0(action, 0xA, 0, 0, 0);
+                        packet->unk_00 = 4;
+                        packet->parentUID = packet->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    }
+                    *(u32*)((u8*)gBtl + 0xc) |= 0x400000;
+                    *(u16*)((u8*)gBtl + 0x18) |= 0xF;
+                }
+                for (subHit = 0; subHit < sp220; subHit++)
+                {
+                    sp200 = (s8)ACTION_U8(result, 0x18);
+                    if ((sp200 == 0x12 || sp200 == 8) &&
+                        (var_21 != hitCount - 1 || subHit != sp220 - 1))
+                    {
+                        sp200 = 2;
+                    }
+                    subHitPacket = btlUnitCreateAnimPacket(basis->unit, (u16)(s16)sp200, 0, 1.0f, 0);
+                    subHitPacket->unk_00 = 4;
+                    subHitPacket->parentUID = animPacket->uid;
+                    if (sp200 != -3 && sp200 != 0x16)
+                    {
+                        subHitPacket->preUpdateDelay = var_30_2;
+                    }
+                    else
+                    {
+                        subHitPacket->preUpdateDelay = var_30_2 >= 7 ? var_30_2 - 6 : 0;
+                    }
+                    if (ACTION_U32(victim, 0xd4) != 0)
+                    {
+                        subHitPacket->preUpdateDelay += 5;
+                    }
+                    subHitPacket->actionUID = actionUID;
+                    btlPacketRegister(subHitPacket, BTLPACKET_TYPE_1);
+                    sp260 = subHitPacket->uid;
+                    if (sp240 == 0 && var_21 == 0 && subHit == 0)
+                    {
+                        sp258 = sp260;
+                    }
+                    if ((ACTION_U16(victim, 0xcc) & 4) && !(resultFlags & 4) && !unk1f0)
+                    {
+                        packet = btlVoice002e2be0(action, 0x18, 0, 0, 0);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    }
+                    if (subHit != sp220 - 1 || var_21 != hitCount - 1)
+                    {
+                        if (*(u32*)((u8*)gBtl + 0xc) & 0x10)
+                        {
+                            var_f21 += var_f22 / (f32)sp220;
+                        }
+                        packet = FUN_002bd230(basis->unit, 0, (u32)(s16)var_f21);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        packet->unk_47 &= ~0x20;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+                    }
+                    if (ACTION_U32(victim, 0xd4) != 0)
+                    {
+                        u32 d4Pool = FUN_002fd160(victim);
+                        if (d4Pool == 0)
+                        {
+                            d4Pool = *(u32*)((u8*)gBtl + 0xc8c);
+                        }
+                        packet = FUN_002baf90(d4Pool, action->unit, victim->unit, 1, 0);
+                        packet->unk_00 = 4;
+                        packet->parentUID = animPacket->uid;
+                        packet->preUpdateDelay = (s16)var_30_2 + 5;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                        packet = FUN_002dd100(0xD, 2, 6);
+                        packet->unk_00 = 4;
+                        packet->parentUID = animPacket->uid;
+                        packet->preUpdateDelay = (s16)var_30_2 + 5;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    }
+                    if (ACTION_U16(victim, 0xcc) == 0x400)
+                    {
+                        packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc90), action->unit, basis->unit, 1, 0);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                        packet = FUN_002dd100(0xC, 2, 7);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                        sp1C0 = 0xA;
+                    }
+                    if (sp190 >= 0 && sp180 >= 0)
+                    {
+                        packet = FUN_002dd100(0xC, (u32)(u16)sp190, (u32)(u16)sp180);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                        sp190 = -1;
+                        sp180 = -1;
+                    }
+                    if (sp160)
+                    {
+                        if ((sp110 || sp100) && hitCount == sp120 &&
+                            subHit == sp220 - 1 && var_21 == hitCount - 1)
+                        {
+                            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc58), action->unit, basis->unit, 1, 0);
+                            packet->unk_00 = 5;
+                            packet->parentUID = subHitPacket->uid;
+                            packet->actionUID = actionUID;
+                            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                        }
+                        else if (hitCount >= 2 && (var_21 != 0 || subHit != 0))
+                        {
+                            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc54), action->unit, basis->unit, 1, 0);
+                            packet->unk_00 = 5;
+                            packet->parentUID = subHitPacket->uid;
+                            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                            if (!sp110 && !sp100)
+                            {
+                                packet = btlCameraCreateSetStatePacket(action, 0xF);
+                                packet->unk_00 = 5;
+                                packet->parentUID = subHitPacket->uid;
+                                btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                            }
+                        }
+                        packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24 + sp2BE * 4), action->unit, basis->unit, 1, 0);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                        if (action->unit->genus == 0)
+                        {
+                            s32 val6 = 0;
+                            u16 charId3 = action->unit->charId;
+                            sp1AE = 0;
+                            switch (charId3)
+                            {
+                                case 4:
+                                    if (var_21 == 2 && subHit == sp220 - 1)
+                                    {
+                                        val6 = 4;
+                                    }
+                                    break;
+                                case 8:
+                                    if (var_21 == 1 && subHit == sp220 - 1)
+                                    {
+                                        val6 = 4;
+                                    }
+                                    break;
+                                case 9:
+                                    if (var_21 == 1 && subHit == sp220 - 1)
+                                    {
+                                        val6 = 4;
+                                    }
+                                    break;
+                            }
+                            if ((s16)val6 == 0)
+                            {
+                                u16 ed0 = FUN_00308ed0(action->unit->datUnit) & 0xFFFF;
+                                val6 = *(s16*)((u8*)D_00690E20 + ed0 * 2);
+                            }
+                            if (sp1AE >= 0 && (s16)val6 >= 0)
+                            {
+                                packet = FUN_002dd100(0xA, (u32)(u16)sp1AE, (u32)(u16)val6);
+                                packet->unk_00 = 5;
+                                packet->parentUID = subHitPacket->uid;
+                                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                            }
+                        }
+                        else
+                        {
+                            sp1AE = 0;
+                        }
+                        packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc4c), action->unit, basis->unit, 1, 0);
+                        packet->unk_00 = 5;
+                        packet->parentUID = subHitPacket->uid;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                        if (var_21 == hitCount - 1 && subHit == sp220 - 1 && (ACTION_U16(victim, 0xce) & 6))
+                        {
+                            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24 + sp2BC * 4), action->unit, basis->unit, 1, 0);
+                            packet->unk_00 = 5;
+                            packet->parentUID = subHitPacket->uid;
+                            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                            packet = FUN_002dd100(0xC, 0, 9);
+                            packet->unk_00 = 5;
+                            packet->parentUID = subHitPacket->uid;
+                            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                        }
+                        if (subHit == sp220 - 1 && var_21 == hitCount - 1)
+                        {
+                            sp1B0 = -1;
+                            if (ACTION_U16(victim, 0xce) & 6)
+                            {
+                                sp1B0 = sp2B8;
+                            }
+                            else if (hitCount >= 2 || (action->unit->genus == 0 && FUN_0028a0f0(action)))
+                            {
+                                sp1B0 = sp2BA;
+                            }
+                            if (sp1B0 >= 0)
+                            {
+                                packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24 + sp1B0 * 4), action->unit, basis->unit, 1, 0);
+                                packet->unk_00 = 5;
+                                packet->parentUID = subHitPacket->uid;
+                                btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                            }
+                        }
+                    }
+                    packet = btlUnitCreateRotateTowardUnitPacket(victim->unit, action->unit, 2);
+                    packet->unk_00 = 5;
+                    packet->parentUID = sp260;
+                    packet->unk_47 &= ~0x20;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    if (subHit != sp220 - 1)
+                    {
+                        s32 delayDelta;
+                        if (sp17C != NULL)
+                        {
+                            delayDelta = sp17C[subHit * 2 + 1] - sp17C[subHit * 2];
+                        }
+                        else
+                        {
+                            delayDelta = sp210;
+                        }
+                        if (var_f20 != 1.0f)
+                        {
+                            delayDelta = (s32)((f32)delayDelta / var_f20);
+                        }
+                        var_30_2 += delayDelta;
+                        if (delayDelta < sp1E0)
+                        {
+                            sp1E0 -= (s16)delayDelta;
+                        }
+                        else
+                        {
+                            sp1E0 = 0;
+                        }
+                    }
                 }
             }
-            packet = FUN_002bd480(basis->unit);
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            animLength = btlUnitGetAnimFrame(action->unit);
-            packet = btlUnitCreateAnimPacket(action->unit, attackAnim, 4, speed,
-                                             attackAnim == 11 ? BTLUNIT_ANIM_MODE_LOOP : BTLUNIT_ANIM_MODE_ONCE);
-            ACTION_S16(packet, 0x48) = delay;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            hitPacket = btlUnitCreateAnimPacket(basis->unit, ACTION_U8(result, 0x18), 0, animSpeed, BTLUNIT_ANIM_MODE_ONCE);
-            hitPacket->unk_00 = 4;
-            hitPacket->parentUID = packet->uid;
-            ACTION_S16(hitPacket, 0x48) = delay;
-            hitPacket->actionUID = actionUID;
-            btlPacketRegister(hitPacket, BTLPACKET_TYPE_1);
-            if ((groupFlags & 4) == 0 && (resultFlags & 4) == 0)
+            if ((ACTION_U32(result, 0x8) & 0x100000) && !unk1f0)
             {
-                packet = btlUnitCreateRotateTowardUnitPacket(victim->unit, action->unit, 2);
+                BtlPacket* tailPacket = FUN_00282130(basis->unit, 0x10);
+                tailPacket->unk_00 = 5;
+                tailPacket->parentUID = sp260;
+                tailPacket->preUpdateDelay = 1;
+                tailPacket->postUpdateDelay = 0xC;
+                tailPacket->actionUID = actionUID;
+                btlPacketRegister(tailPacket, BTLPACKET_TYPE_1);
+                if (ACTION_U32(victim, 0xd0) == 0)
+                {
+                    packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xcf4), basis->unit, basis->unit, 1, 0);
+                    packet->unk_00 = 5;
+                    packet->parentUID = tailPacket->uid;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+                }
+                packet = FUN_00284c90(basis->unit);
                 packet->unk_00 = 5;
-                packet->parentUID = hitPacket->uid;
+                packet->parentUID = tailPacket->uid;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+            packet = FUN_002d7e20(action, basis, result, ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce));
+            packet->unk_00 = 5;
+            packet->parentUID = sp260;
+            packet->preUpdateDelay = sp1C0;
+            packet->postUpdateDelay = sp1E0;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_002d8090(victim);
+            packet->unk_00 = 5;
+            packet->parentUID = sp260;
+            packet->preUpdateDelay = sp1C0;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            if (sp240 == groupCount - 1)
+            {
+                packet = FUN_002d8090(action);
+                packet->unk_00 = 5;
+                packet->parentUID = sp260;
+                packet->preUpdateDelay = sp1C0;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+            if (sp240 == 0 && !(action->unk_18 & 4))
+            {
+                packet = FUN_002d7fb0(action, ACTION_U8(action, 0xca));
+                packet->unk_00 = 5;
+                packet->parentUID = sp260;
+                packet->preUpdateDelay = sp1C0;
+                packet->actionUID = actionUID;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+            if (sp240 == groupCount - 1)
+            {
+                s16 wd = ACTION_S16(action, 0xdc);
+                if (wd != 0)
+                {
+                    packet = FUN_002bd850(action->unit, wd);
+                    packet->unk_00 = 5;
+                    packet->parentUID = sp260;
+                    packet->unk_47 &= ~0x20;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+                }
+                else
+                {
+                    s16 vwd = ACTION_S16(victim, 0xdc);
+                    if (vwd != 0)
+                    {
+                        packet = FUN_002bd850(victim->unit, vwd);
+                        packet->unk_00 = 5;
+                        packet->parentUID = sp260;
+                        packet->unk_47 &= ~0x20;
+                        packet->actionUID = actionUID;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+                    }
+                }
+            }
+            packet = FUN_002bdbd0(action->unit, basis->unit, action->target.specificId,
+                                  ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce), 0, 1, result);
+            packet->unk_00 = 5;
+            packet->parentUID = subHitPacket->uid;
+            packet->preUpdateDelay = sp1C0;
+            packet->unk_47 &= ~0x20;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+            if (sp240 == 0 && ACTION_U32(result, 0) != 0)
+            {
+                packet = FUN_002bd230(basis->unit, 0, 0);
+                packet->unk_00 = 5;
+                packet->parentUID = subHitPacket->uid;
+                packet->preUpdateDelay = sp1C0;
                 packet->unk_47 &= ~0x20;
                 packet->actionUID = actionUID;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                btlPacketRegister(packet, BTLPACKET_TYPE_2D);
             }
-            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24), action->unit, basis->unit, 1, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = hitPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24 + 4), action->unit, basis->unit, 1, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = hitPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            delay += animLength > 0 ? animLength : 4;
-        }
-        if ((ACTION_U16(victim, 0xfa) & 4) == 0)
-        {
-            packet = FUN_002886e0(victim->unit, action->unit, 0);
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            packet = FUN_00288950(action->unit, 0);
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-        action->unk_18 |= 0x200;
-    }
-    genus = action->unit->genus;
-    animId = ACTION_U16(victim, 0xce);
-    soundId = ACTION_U16(victim, 0xcc);
-    pkCount = packetUIDs[0] + packetUIDs[1] + packetUIDs[2];
-    if (animSpeed > 1.0f)
-    {
-        accF = speed + animSpeed;
-    }
-    animMode = 11;
-    if (genus == 0)
-    {
-        s16 soundResult;
-        soundResult = FUN_002f8eb0(action->unit, action->target.specificId);
-        if (soundResult == -1)
-        {
-            animMode = 4;
-        }
-    }
-    else if (genus == 1)
-    {
-        animMode = 5;
-        sp180 = 0xd;
-    }
-    else if (genus == 2)
-    {
-        animMode = 6;
-        sp180 = 0xe;
-    }
-    else
-    {
-        animMode = 4;
-        sp180 = 0xc;
-    }
-    pkCount = FUN_00283fe0(basis->unit, animMode);
-    if (pkCount != 0)
-    {
-        animLength = FUN_00283e40(basis->unit, animMode);
-    }
-    else
-    {
-        animLength = 0;
-    }
-    {
-        u32 animArg = (animMode == 11) ? 2 : 0;
-        packet = FUN_00284200(basis->unit, animMode, 0, animArg, animSpeed);
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        effectPacket = packet;
-    }
-    {
-        u32 hasVoice = 0;
-        if (genus == 1)
-        {
-            if (victim->unit->genus == 0)
+            if (!unk1f0 && basis->unit->genus == 1)
             {
-                packet = func_002b7bd0(action->unit, basis->unit, 3, 400.0f);
-                packet->unk_00 = 5;
-                packet->parentUID = effectPacket->uid;
-                packet->actionUID = actionUID;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-            voicePacket = btlVoice002e2be0(action, 0xc, 0, 0, 0);
-            voicePacket->unk_00 = 5;
-            voicePacket->parentUID = effectPacket->uid;
-            voicePacket->actionUID = actionUID;
-            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-            *(u32*)((u8*)gBtl + 0xc) |= 0x400000;
-            *(u16*)((u8*)gBtl + 0x18) |= 0xe;
-            hasVoice = 1;
-        }
-        else if (FUN_0028a0f0(action))
-        {
-            voicePacket = btlVoice002e2be0(action, 0xb, 0, 0, 0);
-            voicePacket->unk_00 = 5;
-            voicePacket->parentUID = effectPacket->uid;
-            voicePacket->actionUID = actionUID;
-            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-            hasVoice = 1;
-        }
-        if (hasVoice == 0)
-        {
-            voicePacket = btlVoice002e2be0(action, 0xa, 0, 0, 0);
-            voicePacket->unk_00 = 5;
-            voicePacket->parentUID = effectPacket->uid;
-            voicePacket->actionUID = actionUID;
-            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-        }
-    }
-    FUN_00283c70(basis->unit, animMode, 0);
-    animLength = FUN_002835e0(basis->unit, animMode, animSpeed);
-    {
-        u16 outA, outB, outC, outD;
-        FUN_0028a540(action, action->target.specificId, &outA, &outB, &outC, &outD);
-        packet = FUN_002baf90(*(u32*)((u8*)gBtl + outA * 4 + 0xc24), action->unit, basis->unit, 0, 0);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Camera set-state for various effect phases */
-    packet = btlCameraCreateSetStatePacket(action, 0xc);
-    packet->unk_00 = 5;
-    packet->parentUID = effectPacket->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = btlCameraCreateSetStatePacket(action, 0xd);
-    packet->unk_00 = 5;
-    packet->parentUID = effectPacket->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    /* Camera for voice-check path */
-    if (FUN_0028a0f0(action))
-    {
-        packet = btlCameraCreateSetStatePacket(action, 0xb);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Camera for alternate path */
-    {
-        u16 dummyV = FUN_00308c60(action->unit);
-        (void)dummyV;
-        packet = btlCameraCreateSetStatePacket(action, 0xa);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    {
-        u16 genusCheck = FUN_00308c60(action->unit);
-        if (genusCheck == 1)
-        {
-            u16 genusCheck2 = FUN_003093a0(action->unit->datUnit);
-            if (genusCheck2 == 1)
-            {
-                animId = ACTION_U16(victim, 0xce);
-                if (animId != 8 && animId != 4)
+                if (sp1F0 > 0)
                 {
-                    animMode = 4;
+                    if (action->unit->genus == 0)
+                    {
+                        u32 checkVal = FUN_002d4e10(2, 0x80000) & 0xffff;
+                        if ((s32)action->unk_28 <= 0 && action->unit->charId != 1 && FUN_002ffbc0(0x64) < 0x32)
+                        {
+                            u32 hasOverride = 0;
+                            if (action->unit->genus != 0)
+                            {
+                                hasOverride = 0;
+                            }
+                            else
+                            {
+                                s32 gBtVal = *(s32*)((u8*)gBtl + 0xa38);
+                                if (gBtVal != -1)
+                                {
+                                    s32 diff = (s16)(checkVal - sp1F0);
+                                    if (diff <= 0)
+                                    {
+                                        u32 chk2 = FUN_002d4e10(2, 0x80000) & 0xffff;
+                                        if ((*(s16*)((u8*)gBtl + 0xa3a) >> 1) >= chk2)
+                                        {
+                                            s16 personaId = *(s16*)((u8*)gBtl + 0xa38);
+                                            if (personaId != (s16)FUN_002b7060())
+                                            {
+                                                hasOverride = 1;
+                                            }
+                                        }
+                                    }
+                                    else if ((*(s16*)((u8*)gBtl + 0xa3a) >> 1) >= diff)
+                                    {
+                                        hasOverride = 1;
+                                    }
+                                }
+                            }
+                            if (hasOverride)
+                            {
+                                packet = FUN_002db740(action, 0x16, sp1F0, 0, 0);
+                                packet->unk_00 = 5;
+                                packet->parentUID = sp260;
+                                packet->actionUID = actionUID;
+                                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                            }
+                            else
+                            {
+                                packet = btlVoice002e2be0(action, 0xD, sp1F0, 0, 0);
+                                packet->unk_00 = 5;
+                                packet->parentUID = sp260;
+                                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                            }
+                        }
+                    }
+                }
+                else if (ACTION_U32(result, 0x8) & 0x100000)
+                {
+                    packet = FUN_002db740(action, 0x17, ACTION_U16(victim, 0xce), 0, 0);
+                    packet->unk_00 = 5;
+                    packet->parentUID = sp260;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                }
+                else if (sp1F0 == 0)
+                {
+                    if (func_002d6130(action))
+                    {
+                        packet = btlVoice002e2be0(action, 0xE, 0, 0, 0);
+                        packet->unk_00 = 5;
+                        packet->parentUID = sp260;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    }
+                    else if (func_002d6210(action) == 1 && func_002d5f50(action) == 0)
+                    {
+                        u16 targetId = FUN_003082f0(action->unit->datUnit, action->target.specificId);
+                        packet = btlVoice002e2be0(action, 0xF, (s32)(s16)targetId, 0, 0);
+                        packet->unk_00 = 5;
+                        packet->parentUID = sp260;
+                        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    }
                 }
             }
-        }
-    }
-    {
-        FUN_00283750(basis->unit, animMode, animSpeed);
-        animLength = FUN_002838d0(basis->unit, animMode, animSpeed);
-    }
-    /* Camera state 0xe for non-player victims */
-    if (victim->unit->genus != 0)
-    {
-        packet = btlCameraCreateSetStatePacket(action, 0xe);
-        packet->unk_00 = 4;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    if (victim->unit->genus == 0)
-    {
-        voicePacket = btlVoice002e2be0(action, 0xe, 0, 0, 0);
-        voicePacket->unk_00 = 4;
-        voicePacket->parentUID = effectPacket->uid;
-        voicePacket->actionUID = actionUID;
-        btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-        syncPacket = FUN_002dd100(0xc, 2, 9);
-        syncPacket->unk_00 = 4;
-        syncPacket->parentUID = effectPacket->uid;
-        syncPacket->actionUID = actionUID;
-        btlPacketRegister(syncPacket, BTLPACKET_TYPE_1);
-    }
-    /* Hit result packet */
-    {
-        packet = FUN_002d7e20(action, basis, (u8*)victim + 0xe0, soundId, animId);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Effect for victim */
-    packet = FUN_002d8090(victim);
-    packet->unk_00 = 5;
-    packet->parentUID = effectPacket->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    /* Effect for action */
-    if (victim != action)
-    {
-        packet = FUN_002d8090(action);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Parameter packet */
-    if (!(action->unk_18 & 4))
-    {
-        packet = FUN_002d7fb0(action, ACTION_U8(action, 0xca));
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Weapon packets */
-    {
-        s16 weaponDelay = ACTION_S16(action, 0xdc);
-        if (weaponDelay != 0)
-        {
-            packet = FUN_002bd850(action->unit, weaponDelay);
-            packet->unk_00 = 5;
-            packet->parentUID = effectPacket->uid;
-            packet->unk_47 &= ~0x20;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        }
-    }
-    {
-        s16 weaponDelay = ACTION_S16(victim, 0xdc);
-        if (weaponDelay != 0)
-        {
-            packet = FUN_002bd850(basis->unit, weaponDelay);
-            packet->unk_00 = 5;
-            packet->parentUID = effectPacket->uid;
-            packet->unk_47 &= ~0x20;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        }
-    }
-    /* Final hit result packet */
-    {
-        packet = FUN_002bdbd0(action->unit, basis->unit, action->target.specificId,
-                              soundId, animId, 0, groupCount, (u8*)victim + 0xe0);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->unk_47 &= ~0x20;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-    }
-    /* Rotation/movement packet */
-    if (ACTION_U32(victim, 0xe0) != 0)
-    {
-        packet = FUN_002bd230(basis->unit, 0, 0);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->unk_47 &= ~0x20;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-    }
-    /* Extended damage/effect packet chain */
-    packet = FUN_002db740(victim, 0x18, 0, 0, 0);
-    packet->unk_00 = 4;
-    packet->parentUID = packet->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = func_0027f2f0();
-    packet->unk_00 = 5;
-    packet->parentUID = packet->uid;
-    ACTION_S16(packet, 0x48) = 0;
-    ACTION_S16(packet, 0x4a) = 0xc;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    /* Set global battle flags */
-    *(u32*)((u8*)gBtl + 0xc) |= 0x400000;
-    if (action->unit->genus == 1)
-    {
-        {
-            u32 poolId = *(u32*)((u8*)gBtl + 0xcf4);
-            if (poolId != 0)
+            if (ACTION_U16(result, 0x1a) & 1)
             {
-                packet = FUN_002baf90(poolId, basis->unit, action->unit, 1, 0);
-                packet->unk_00 = 5;
-                packet->parentUID = effectPacket->uid;
+                FUN_002d5dc0(workBuf);
+                workBuf[3] = 0x100000;
+                packet = FUN_002d7e20(victim, victim, workBuf, 1, 1);
+                packet->unk_00 = 4;
+                packet->parentUID = sp258;
                 packet->actionUID = actionUID;
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-        }
-        packet = FUN_00284200(basis->unit, animMode, 0, 0, 1.0f);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    {
-        u32 animFlags = ACTION_U16(victim, 0xce);
-        if ((animFlags & 6) != 0)
-        {
-            packet = FUN_002dd100(0xd, 2, 6);
-            packet->unk_00 = 5;
-            packet->parentUID = effectPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-        if (ACTION_U16(victim, 0xcc) != 0x400)
-        {
-            u32 poolId2 = *(u32*)((u8*)gBtl + 0xc90);
-            packet = FUN_002baf90(poolId2, action->unit, basis->unit, 1, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = effectPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-    }
-    if (sp190 != 0xffff && sp180 != 0xffff)
-    {
-        packet = FUN_002dd100(0xa, sp190, sp180);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    sp190 = -1;
-    sp180 = -1;
-    {
-        s32 stateVal = ACTION_S32(action, 0x6c);
-        if (stateVal == 1)
-        {
-            u32 poolId3 = *(u32*)((u8*)gBtl + 0xc58);
-            if (poolId3 != 0)
-            {
-                packet = FUN_002baf90(poolId3, action->unit, basis->unit, 1, 0);
-                packet->unk_00 = 5;
-                packet->parentUID = effectPacket->uid;
-                packet->actionUID = actionUID;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-        }
-        else if (stateVal == 0)
-        {
-            if (hitCount == 0 && groupCount == 0)
-            {
-                u32 poolId4 = *(u32*)((u8*)gBtl + 0xc54);
-                if (poolId4 != 0)
+                if (ACTION_U16(result, 0x1a) & 2)
                 {
-                    packet = FUN_002baf90(poolId4, action->unit, basis->unit, 1, 0);
-                    packet->unk_00 = 5;
-                    packet->parentUID = effectPacket->uid;
+                    packet = FUN_00284200(victim->unit, 10, 0, 0, 1.0f);
+                    packet->unk_00 = 4;
+                    packet->parentUID = sp258;
+                    packet->actionUID = actionUID;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                    packet = FUN_00284c90(victim->unit);
+                    packet->unk_00 = 4;
+                    packet->parentUID = sp258;
                     packet->actionUID = actionUID;
                     btlPacketRegister(packet, BTLPACKET_TYPE_1);
                 }
             }
         }
-    }
-    /* Additional targeting-based effect checks */
-    if (action->unit->genus == 1)
-    {
-        if (FUN_002fd160(action) != 0)
-        {
-            pkCount = *(u32*)((u8*)gBtl + 0xc8c);
-            if (pkCount != 0)
-            {
-                packet = FUN_002baf90(pkCount, action->unit, basis->unit, 1, 0);
-                packet->unk_00 = 4;
-                packet->parentUID = effectPacket->uid;
-                packet->actionUID = actionUID;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-        }
-    }
-    {
-        u32 checkVal = FUN_002d4e10(2, 0x80000) & 0xffff;
-        u32 randomCheck = FUN_002ffbc0(0x64);
-        if (randomCheck < 0x32)
-        {
-            s32 gBtVal = *(s32*)((u8*)gBtl + 0xa38);
-            checkVal = 0;
-            if (gBtVal != -1)
-            {
-                checkVal = FUN_002d4e10(2, 0x80000) & 0xffff;
-                if ((*(s16*)((u8*)gBtl + 0xa3a) >> 1) >= checkVal)
-                {
-                    s16 gBtA38 = *(s16*)((u8*)gBtl + 0xa38);
-                    s32 personaId = FUN_002b7060();
-                    if (gBtA38 != personaId)
-                    {
-                        checkVal = 1;
-                    }
-                    else checkVal = 0;
-                }
-                else checkVal = 0;
-            }
-            if (checkVal)
-            {
-                packet = FUN_002db740(action, 0x16, rotCount, 0, 0);
-                packet->unk_00 = 5;
-                packet->parentUID = effectPacket->uid;
-                packet->actionUID = actionUID;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-            else
-            {
-                voicePacket = btlVoice002e2be0(action, 0xd, rotCount, 0, 0);
-                voicePacket->unk_00 = 5;
-                voicePacket->parentUID = effectPacket->uid;
-                voicePacket->actionUID = actionUID;
-                btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-            }
-        }
-    }
-    {
-        u32 e8Flags = ACTION_U32(victim, 0xe8);
-        if ((e8Flags & 0x100000) != 0)
-        {
-            u16 animId2 = ACTION_U16(victim, 0xce);
-            packet = FUN_002db740(action, 0x17, animId2, 0, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = effectPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-    }
-    {
-        u16 ed0Result = FUN_00308ed0(action->unit->datUnit);
-        if (ed0Result != 0xFFFF)
-        {
-            u32 poolId6 = *(u32*)((u8*)gBtl + 0xc24 + ed0Result * 4);
-            if (poolId6 != 0)
-            {
-                packet = FUN_002baf90(poolId6, action->unit, basis->unit, 1, 0);
-                packet->unk_00 = 5;
-                packet->parentUID = effectPacket->uid;
-                packet->actionUID = actionUID;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            }
-        }
-    }
-    /* Persona animation section */
-    if (ACTION_U16(victim, 0xfa) & 1)
-    {
-        FUN_002d5dc0(workBuf);
-        packet = FUN_002d7e20(victim, victim, workBuf, 1, 1);
-        packet->unk_00 = 4;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        if (ACTION_U16(victim, 0xfa) & 2)
-        {
-            packet = FUN_00284200(victim->unit, 10, 0, 0, 1.0f);
-            packet->unk_00 = 4;
-            packet->parentUID = effectPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            packet = FUN_00284c90(victim->unit);
-            packet->unk_00 = 4;
-            packet->parentUID = effectPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-    }
-    /* Additional unconditional packets */
-    packet = FUN_002dd100(0xa, action->unit->genus, groupCount);
-    packet->unk_00 = 5;
-    packet->parentUID = effectPacket->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = FUN_002baf90(*(u32*)((u8*)gBtl + 0xc24), action->unit, basis->unit, 1, 0);
-    packet->unk_00 = 5;
-    packet->parentUID = effectPacket->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    /* Additional missing effect/status packets */
-    {
-        u32 extraPool = *(u32*)((u8*)gBtl + 0xc4c);
-        if (extraPool != 0)
-        {
-            packet = FUN_002baf90(extraPool, action->unit, basis->unit, 1, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = effectPacket->uid;
-            packet->actionUID = actionUID;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-    }
-    {
-        packet = FUN_002dd100(0xc, 0, 9);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    {
-        packet = btlCameraCreateSetStatePacket(action, 0xa);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Extra rotation/movement packet */
-    if (ACTION_U32(victim, 0xe0) != 0)
-    {
-        packet = FUN_002bd230(basis->unit, 0, 0);
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->unk_47 &= ~0x20;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-    }
-    /* Extra damage result packet */
-    {
-        packet = FUN_002d7e20(action, basis, (u8*)victim + 0xe0, ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce));
-        packet->unk_00 = 5;
-        packet->parentUID = effectPacket->uid;
-        packet->unk_47 &= ~0x20;
-        packet->actionUID = actionUID;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    /* Extra d5dc0 work buffer setup */
-    {
-        u32 extraWork[12];
-        FUN_002d5dc0(extraWork);
-    }
-    /* Camera state 0xe (extra) */
-    packet = btlCameraCreateSetStatePacket(action, 0xe);
-    packet->unk_00 = 5;
-    packet->parentUID = effectPacket->uid;
-    packet->actionUID = actionUID;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    /* Missing functions: state checks for special transitions */
-    {
-        u16 targetId = FUN_003082f0(action->unit->datUnit, action->target.specificId);
-        (void)targetId;
-        if (func_002d6130(action) != 0) { }
-        if (func_002d6210(action) == 1 && func_002d5f50(action) == 0) { }
-    }
-    /* Sub-state dispatch for ending */
-    {
-        s32 subState = ACTION_S32(action, 0x6c);
         if (FUN_002dc130(action))
         {
             btlActionSetState(action, BTLACTION_STATE_PERSONA);
+            return;
         }
-        else
         {
-            u16 nextState = BTLACTION_STATE_ROUNDUP;
-            if (subState == 1 || subState == 2 || subState == 3)
+            s32 subState = ACTION_S32(action, 0x6c);
+            if (subState == 2 || subState == 3 || subState == 1)
             {
-                nextState = BTLACTION_STATE_PERSONA;
+                btlActionSetState(action, BTLACTION_STATE_EXIT);
             }
-            btlActionSetState(action, nextState);
+            else
+            {
+                btlActionSetState(action, BTLACTION_STATE_EXIT);
+            }
         }
     }
 }
