@@ -725,52 +725,13 @@ void bsaMain00210d90(BsaWork* work)
         drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
         drawColor[3] = bsaAlpha(alpha * 255.0f);
         func_0021d950(p + 0x242c, drawColor);
-        func_0021d950(p + 0x24ac, drawColor);
-        func_0021d950(p + 0x252c, drawColor);
-        for (i = 0; i < 8; i++) {
-            func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
-        }
-        // Second rendering pass (second set of main panels)
-        {
-            f32 y2, x2, yy;
-            if (p[0] == 1) { y2 = 39.0f; x2 = 370.0f; }
-            else { y2 = 219.0f; x2 = 190.0f; }
-            rect[0] = -1.0f; rect[1] = y2; rect[2] = 51.0f; rect[3] = x2;
-            func_0021d8e0(p + 0x90b0, rect);
-            if (p[0] == 1) { yy = 219.0f; x2 = 190.0f; }
-            else { yy = 39.0f; x2 = 370.0f; }
-            rect[0] = 50.0f; rect[1] = yy; rect[2] = 500.0f; rect[3] = x2;
-            func_0021d8e0(p + 0x91b0, rect);
-        }
-        rect[0] = 53.0f; rect[1] = base + 54.0f; rect[2] = 220.0f; rect[3] = 97.0f;
-        func_0021d8e0(p + 0x92b0, rect);
-        rect[0] = 273.0f; rect[1] = base + 54.0f; rect[2] = 120.0f; rect[3] = 97.0f;
-        func_0021d8e0(p + 0x93b0, rect);
-        rect[0] = 53.0f; rect[1] = base + 158.0f; rect[2] = 220.0f; rect[3] = 54.0f;
-        func_0021d8e0(p + 0x94b0, rect);
-        rect[0] = 273.0f; rect[1] = base + 158.0f; rect[2] = 130.0f; rect[3] = 54.0f;
-        func_0021d8e0(p + 0x95b0, rect);
-        for (i = 0; i < 8; i++) {
-            f32 gX, gY;
-            gX = ((i / 4) == 0 ? 0.0f : 270.0f) + 53.0f;
-            gY = (f32)(i & 3) * 30.0f + 275.0f;
-            rect[0] = gX; rect[1] = gY; rect[2] = 118.0f; rect[3] = 26.0f;
-            func_0021d8e0(p + i * 0x80 + 0x25ac, rect);
-            rect[0] = gX + 118.0f; rect[1] = gY;
-            rect[2] = 200.0f; rect[3] = 26.0f;
-            func_0021d8e0(p + i * 0x80 + 0x25ec, rect);
-        }
-        // Colors for second pass
-        drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
-        drawColor[3] = bsaAlpha(alpha * 255.0f);
-        func_0021d950(p + 0x90b0, drawColor);
-        func_0021dd60(p + 0x91b0, drawColor);
+        func_0021dd60(p + 0x246c, drawColor);
         drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
         drawColor[3] = bsaAlpha(alpha * 204.0f);
-        func_0021d950(p + 0x92b0, drawColor);
-        func_0021dd60(p + 0x93b0, drawColor);
-        func_0021d950(p + 0x94b0, drawColor);
-        func_0021dd60(p + 0x95b0, drawColor);
+        func_0021d950(p + 0x24ac, drawColor);
+        func_0021dd60(p + 0x24ec, drawColor);
+        func_0021d950(p + 0x252c, drawColor);
+        func_0021dd60(p + 0x256c, drawColor);
         for (i = 0; i < 8; i++) {
             func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
             func_0021dd60(p + i * 0x80 + 0x25ec, drawColor);
