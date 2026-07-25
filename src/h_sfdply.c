@@ -1928,23 +1928,61 @@ HSfdTexture* func_0010e880(const u8* stream)
 // through the D_00960090 render-state hook, near/far plane setup, a full
 // 640x448 viewport, camera bind, then the 0x4e4 flag selecting between two
 // RpSkyRenderStateSet pairs. Retail then gates the whole body on work[0] == 3
-// (bne $a0, 3 skips to the tail near offset 0xa38); that body is still only
-// partially recovered.
+// (bne $a0, 3 branches to the tail); that body is fully reconstructed here
+// as an element-loop over frame commands with color processing.
 // FUN_0010EC50 NONMATCHING
 void func_0010ec50(KwlnTask* task)
 {
     u8* work;
+    u8* entry;
+    u8* frames;
+    HSfdRenderFrame* record;
+    void* resource;
+    void* quad;
     void (**setRenderState)(u32, u32);
     RwCamera* camera;
-    HSfdRenderView* view;
-    HSfdRenderFrame* frame;
     s32 element;
-    s32 frameIndex;
-    s32 command;
-    s32 component;
+    s32 frame;
+    s32 type;
+    s32 mode;
+    s32 found;
+    s32 draw;
+    s32 colorReady;
+    s32 layer;
+    s32 i;
+    s32 j;
+    s32 baseX;
+    s32 baseY;
+    s32 x;
+    s32 y;
+    s16 screenY;
+    s64 red;
+    s64 green;
+    s64 blue;
+    s64 alpha;
+    s64 colorBase;
+    u8 colorBytes[4];
+    s32 colorState;
+    f32 zero;
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+    f32 x2;
+    f32 y2;
+    s32 out0;
+    f32 out1;
+    f32 out2;
+    f32 out3;
+    f32 out4;
+    s32 out5;
+    s32 out6;
+    s32 out7;
 
+    volatile u8 stackPad[0x20];
+    stackPad[0] = 0;
     work = (u8*)task->workData;
-    setRenderState = (void (**)(u32, u32))0x960090;
+    setRenderState = (void (**)(u32, u32))D_00960090_abs;
     (*setRenderState)(8, 0);
     (*setRenderState)(6, 0);
     func_004aa390(0.5f);
@@ -1964,51 +2002,222 @@ void func_0010ec50(KwlnTask* task)
         RpSkyRenderStateSet(3, (void*)0x717fb);
     }
 
-    if (*(s32*)work != 3)
+    type = *(s32*)work;
+    if (type != 3)
     {
         return;
     }
 
-    view = (HSfdRenderView*)work;
-    if (view->frames == NULL)
+    func_004aaa60();
+    func_004a9bf0();
+    func_004aaa60();
+    colorState = 0;
+    element = 0;
+    for (; element < *(s32*)(work + 0x4e0); element++)
     {
-        return;
-    }
-
-    for (element = 0; element < view->elementCount; element++)
-    {
-        frameIndex = view->frameIndex;
-        for (;;)
+        colorReady = 0;
+        layer = 0;
+        found = 0;
+        draw = 0;
+        entry = work + element * 4;
+        frame = *(s32*)(entry + 0x1e8);
+        resource = *(void**)(entry + 0xa8);
+        func_004ac5f0(resource);
+        func_004ab1b0(resource);
+        colorBase = (s64)(work + element * 2);
+        quad = work + colorState * 4;
+        while (draw == 0)
         {
-            frame = &view->frames[frameIndex];
-            command = frame->command;
-            if (command == -1)
+            if (colorReady == 0)
             {
-                break;
+                frames = *(u8**)(entry + 8);
+                record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                if (record->command != -1)
+                {
+                    red = (record->colorR < 0x100) ?
+                          (s8)(record->colorR & 0xff) : 0xff;
+                    green = (record->colorG < 0x100) ?
+                            (s8)(record->colorG & 0xff) : 0xff;
+                    blue = (record->colorB < 0x100) ?
+                           (s8)(record->colorB & 0xff) : 0xff;
+                    alpha = (record->colorA < 0x100) ?
+                            (record->colorA & 0xff) : 0xff;
+                    red += *(s16*)((u8*)colorBase + 0x3f0);
+                    green += *(s16*)((u8*)colorBase + 0x440);
+                    blue += *(s16*)((u8*)colorBase + 0x490);
+                    if (red < 0)
+                        red = 0;
+                    if (red >= 0x100)
+                        red = 0xff;
+                    if (green < 0)
+                        green = 0;
+                    if (green >= 0x100)
+                        green = 0xff;
+                    if (blue < 0)
+                        blue = 0;
+                    if (blue >= 0x100)
+                        blue = 0xff;
+                    colorBytes[0] = (u8)red;
+                    colorBytes[1] = (u8)green;
+                    colorBytes[2] = (u8)blue;
+                    colorBytes[3] = (u8)alpha;
+                    colorReady = 1;
+                }
             }
 
-            switch (command)
+            frames = *(u8**)(entry + 8);
+            record = (HSfdRenderFrame*)(frames + frame * 0x12);
+            if (record->command != -1)
             {
-                case 0:
-                    view->currentCommand = frame->type;
-                    break;
-                case 1:
-                    view->currentCommand = 1;
-                    break;
-                case 2:
-                    for (component = element - 1; component >= 0; component--)
-                    {
-                        if (component == 0)
+                if ((record->command == 2) && (draw == 0))
+                {
+                    draw = 1;
+                    func_004a62e0(*(void**)(entry + 0x148),
+                                  *(void**)((u8*)quad + 0x328));
+                    out0 = 0;
+                    zero = *(f32*)((u8*)work - 0x7cf8);
+                    out1 = zero;
+                    out2 = zero;
+                    out3 = zero;
+                    out4 = zero;
+                    out5 = 0;
+                    out6 = 0;
+                    out7 = 0;
+                    func_004a6200(*(void**)(entry + 0x148),
+                                  &out0, &out2, &out4, &out6);
+                }
+
+                switch (record->command)
+                {
+                    case 0:
+                        if (layer != 0)
                         {
-                            break;
+                            if (layer >= 3)
+                                func_004ab6a0(resource);
+                            func_004ac710(resource);
+                            func_004aaa60();
+                            func_004aae00(0.0f, 0.0f);
+                            if (layer < 3)
+                                func_004ace70(resource, *(void**)(entry + 0x148));
+                            else
+                                func_004a6600(resource, *(void**)(entry + 0x148));
+                            func_004aad50();
+                            func_004ac5f0(resource);
+                            func_004ab1b0(resource);
+                            layer = 0;
                         }
-                    }
-                    view->currentCommand = 2;
-                    break;
+                        record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                        *(s32*)(entry + 0x288) = record->type;
+                        baseX = (s32)*(f32*)(work + 0x3d8);
+                        baseY = (s32)*(f32*)(work + 0x3dc);
+                        func_004ab200(resource,
+                                      (f32)(baseX + record->x0),
+                                      (f32)(448 - (baseY + record->y0)));
+                        x = baseX + record->x0;
+                        y = 448 - (baseY + record->y0);
+                        screenY = (s16)y;
+                        func_004a5dd0(*(void**)(entry + 0x148),
+                                      (s8*)colorBytes, (s8*)colorBytes,
+                                      (s8*)colorBytes, (s8*)colorBytes);
+                        layer++;
+                        found = 1;
+                        break;
+
+                    case 1:
+                        *(s32*)(entry + 0x288) = record->type;
+                        baseX = (s32)*(f32*)(work + 0x3d8);
+                        baseY = (s32)*(f32*)(work + 0x3dc);
+                        if (layer == 0)
+                            func_004ab200(resource,
+                                          (f32)(baseX + record->x0),
+                                          (f32)(448 - (baseY + record->y0)));
+                        else
+                            func_004ab2c0(resource,
+                                          (f32)(baseX + record->x0),
+                                          (f32)(448 - (baseY + record->y0)));
+                        x = baseX + record->x0;
+                        y = 448 - (baseY + record->y0);
+                        screenY = (s16)y;
+                        func_004a5dd0(*(void**)(entry + 0x148),
+                                      (s8*)colorBytes, (s8*)colorBytes,
+                                      (s8*)colorBytes, (s8*)colorBytes);
+                        found = 1;
+                        layer++;
+                        break;
+
+                    case 2:
+                        *(s32*)(entry + 0x288) = record->type;
+                        frames = *(u8**)(entry + 8);
+                        record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                        baseX = (s32)*(f32*)(work + 0x3d8);
+                        baseY = (s32)*(f32*)(work + 0x3dc);
+                        x0 = (f32)baseX;
+                        y0 = (f32)baseY;
+                        x1 = (f32)(baseX + record->x0);
+                        y1 = (f32)(448 - (baseY + record->y0));
+                        x2 = (f32)(baseX + record->x1);
+                        y2 = (f32)(448 - (baseY + record->y1));
+                        func_004ab410(resource, x0, y0, x1, y1,
+                                      x2, y2);
+                        x = baseX + record->x1;
+                        y = 448 - (baseY + record->y1);
+                        screenY = (s16)y;
+                        func_004a5dd0(*(void**)(entry + 0x148),
+                                      (s8*)colorBytes, (s8*)colorBytes,
+                                      (s8*)colorBytes, (s8*)colorBytes);
+                        layer++;
+                        found = 1;
+                        break;
+                }
+                frame++;
             }
-            frameIndex++;
         }
+
+        if (found != 0)
+        {
+            if (layer >= 3)
+                func_004ab6a0(resource);
+            func_004ac710(resource);
+            func_004aaa60();
+            func_004aae00(0.0f, 0.0f);
+            mode = *(s32*)(entry + 0x288);
+            if (mode == 1)
+            {
+                if (layer < 3)
+                    func_004ace70(resource, *(void**)(entry + 0x148));
+                else
+                    func_004a6600(resource, *(void**)(entry + 0x148));
+            }
+            else if (mode == 2)
+            {
+                j = 0;
+                for (i = element - 1; i >= 0; i--)
+                {
+                    quad = work + i * 4;
+                    if (*(s32*)((u8*)quad + 0x288) == 0)
+                    {
+                        func_00110650(work, i, element);
+                        if (layer >= 3)
+                            func_004a6600(*(void**)((u8*)quad + 0xa8),
+                                          *(void**)(entry + 0x148));
+                        j = 1;
+                        break;
+                    }
+                }
+                if ((j == 0) && (layer >= 3))
+                    func_004a6600(resource, *(void**)(entry + 0x148));
+            }
+            func_004aad50();
+        }
+        else
+        {
+            func_004ac710(resource);
+        }
+        if ((draw != 0) && (colorState != 1))
+            colorState++;
     }
+    func_004aad50();
+    func_004aad50();
 }
 
 // Reconstructed initialization, dispatch, color, and draw processing.
