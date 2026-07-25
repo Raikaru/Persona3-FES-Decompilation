@@ -508,7 +508,7 @@ void func_002392d0(void)
         rect[2] = 640.0f;
         rect[3] = 448.0f;
         func_0021d8e0(GROUND_PTR(work, 0x10), rect);
-        color.a = sflGroundAlpha(panelFade);
+    { f32 _sgav = panelFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
         func_0021d950(GROUND_PTR(work, 0x10), &color);
     }
 
