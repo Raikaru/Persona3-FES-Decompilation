@@ -751,32 +751,31 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
     f32 fade;
     u32 fadeAlpha;
     u8 text[0x110];
-
     switch (mode) {
     case 0:
+        parent = (u32)FUN_001158b0(0, *labels, 0x13);
         {
-            u32 id = (u32)FUN_001158b0(0, *labels, 0x13);
-            u8* work = (u8*)id;
+            u8* work = (u8*)parent;
             *(u32*)(work + 0x2c) = item->texture;
             *(f32*)(work + 0x10) = item->x;
             *(f32*)(work + 0x14) = item->y;
             work[0x18] = (u8)item->alpha;
             *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
+            FUN_001127d0(parent, 1);
+            FUN_00115980(parent);
         }
         break;
     case 1:
+        parent = (u32)FUN_001158b0(0, *labels, 0x1b);
         {
-            u32 id = (u32)FUN_001158b0(0, *labels, 0x1b);
-            u8* work = (u8*)id;
+            u8* work = (u8*)parent;
             *(u32*)(work + 0x2c) = item->texture;
             *(f32*)(work + 0x10) = item->x;
             *(f32*)(work + 0x14) = item->y;
             work[0x18] = (u8)item->alpha;
             *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
+            FUN_001127d0(parent, 1);
+            FUN_00115980(parent);
         }
         break;
     case 2:
@@ -1109,10 +1108,10 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
     case 99:
         campMenuDrawSprite(parent, *(labels + 1), 0, item->alpha,
                            item->x, item->y, item->scale);
-        campMenuDrawSprite(parent, *(labels + 1), 0, item->alpha,
+        campMenuDrawSprite(parent, *(labels + 1), 0xa, item->alpha,
                            item->x + 16.0f, item->y, item->scale);
         campMenuDrawSprite(parent, DAT_00833BA0, 1, item->alpha,
-                           item->x + 540.0f, item->y + 30.0f,
+                           item->x + 530.0f, item->y + 30.0f,
                            item->scale);
         break;
     default:
