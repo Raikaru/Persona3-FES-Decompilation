@@ -433,7 +433,6 @@ void bsaMain00210d90(BsaWork* work)
     s32 i;
     f32 rect[4];
     u8 drawColor[4];
-    u8 colorArray[16];
 
     p = (s32*)work->words;
     table6 = func_0021c3f0(6);
@@ -731,51 +730,45 @@ void bsaMain00210d90(BsaWork* work)
         func_0021d8e0(p + i * 0x80 + 0x25ec, rect);
     }
     {
+        u32 c;
+        u32 c0;
         drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
         drawColor[3] = bsaAlpha(alpha * 255.0f);
         func_0021d950(p + 0x242c, drawColor);
-        colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
-        colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
-        colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
-        colorArray[6] = drawColor[2]; colorArray[7] = 0;
-        colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
-        colorArray[10] = drawColor[2]; colorArray[11] = 0;
-        colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
-        colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
-        func_0021dd60(p + 0x246c, colorArray);
+        c = *(u32*)drawColor;
+        c0 = c & 0x00ffffffu;
+        ((u32*)rect)[0] = c;
+        ((u32*)rect)[1] = c0;
+        ((u32*)rect)[2] = c0;
+        ((u32*)rect)[3] = c;
+        func_0021dd60(p + 0x246c, (u8*)rect);
         drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
         drawColor[3] = bsaAlpha(alpha * 204.0f);
         func_0021d950(p + 0x24ac, drawColor);
-        colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
-        colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
-        colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
-        colorArray[6] = drawColor[2]; colorArray[7] = 0;
-        colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
-        colorArray[10] = drawColor[2]; colorArray[11] = 0;
-        colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
-        colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
-        func_0021dd60(p + 0x24ec, colorArray);
+        c = *(u32*)drawColor;
+        c0 = c & 0x00ffffffu;
+        ((u32*)rect)[0] = c;
+        ((u32*)rect)[1] = c0;
+        ((u32*)rect)[2] = c0;
+        ((u32*)rect)[3] = c;
+        func_0021dd60(p + 0x24ec, (u8*)rect);
         func_0021d950(p + 0x252c, drawColor);
-        colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
-        colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
-        colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
-        colorArray[6] = drawColor[2]; colorArray[7] = 0;
-        colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
-        colorArray[10] = drawColor[2]; colorArray[11] = 0;
-        colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
-        colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
-        func_0021dd60(p + 0x256c, colorArray);
+        c = *(u32*)drawColor;
+        c0 = c & 0x00ffffffu;
+        ((u32*)rect)[0] = c;
+        ((u32*)rect)[1] = c0;
+        ((u32*)rect)[2] = c0;
+        ((u32*)rect)[3] = c;
+        func_0021dd60(p + 0x256c, (u8*)rect);
         for (i = 0; i < 8; i++) {
             func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
-            colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
-            colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
-            colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
-            colorArray[6] = drawColor[2]; colorArray[7] = 0;
-            colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
-            colorArray[10] = drawColor[2]; colorArray[11] = 0;
-            colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
-            colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
-            func_0021dd60(p + i * 0x80 + 0x25ec, colorArray);
+            c = *(u32*)drawColor;
+            c0 = c & 0x00ffffffu;
+            ((u32*)rect)[0] = c;
+            ((u32*)rect)[1] = c0;
+            ((u32*)rect)[2] = c0;
+            ((u32*)rect)[3] = c;
+            func_0021dd60(p + i * 0x80 + 0x25ec, (u8*)rect);
         }
     }
 }
