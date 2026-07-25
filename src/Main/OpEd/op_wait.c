@@ -369,7 +369,6 @@ void opWait0026e780(void)
     u8* work;
     void* atlas;
     void* frame;
-    volatile u8 pad[16];
     f32 layout[4];
     s32 order[3];
     s32 i;
@@ -377,7 +376,6 @@ void opWait0026e780(void)
     s32 k;
     s32 width;
     s32 height;
-    __asm__ volatile ("" : : "r"(pad) : "memory");
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (u8*)sOpWait;
