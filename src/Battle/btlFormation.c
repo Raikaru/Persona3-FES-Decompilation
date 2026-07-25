@@ -306,7 +306,7 @@ extern u64 func_00325920();
 extern u32 func_00325920_u32(u32 param_1);
 extern u64 func_00325c10();
 extern u64 func_00325d60();
-extern u64 func_00325e40();
+extern void func_00325e40(float param_1, int param_2);
 extern u64 func_00326030();
 extern void func_003297a0(float *position);
 extern u64 func_00329ed0();
@@ -337,7 +337,7 @@ extern u64 func_00521408();
 extern u64 func_00523ac8();
 extern u32 func_00524270();
 extern u32 func_00524388();
-extern u64 func_0052ea18();
+extern u32 func_0052ea18(float param_1, float param_2);
 extern u8 DAT_00696440;
 extern u8 DAT_00696460;
 extern u8 DAT_00696d70;
@@ -3467,7 +3467,7 @@ void func_002bce10(float param_1,float param_2,int param_3,int param_4,float *pa
   if (0.0f <= *param_5) {
     param_5[3] = *param_5;
     param_5[2] = param_5[1];
-    *param_5 = -1.0;
+    *param_5 = -1.0f;
     *(u16 *)(param_5 + 4) = 0;
   }
   sVar1 = *(short *)(param_5 + 4);
