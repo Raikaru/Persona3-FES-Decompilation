@@ -696,21 +696,31 @@ void bsaMain00210d90(BsaWork* work)
         rect[0] = 50.0f; rect[1] = 219.0f; rect[2] = 500.0f; rect[3] = 190.0f;
         func_0021d8e0(p + 0x246c, rect);
     }
+    /*
+     * Retail lays these panels out with rect writes only; their colours are
+     * applied by the shared block below, so a bsaPlaceQuad here would emit a
+     * second, redundant func_0021d950 per quad.
+     */
     x = base + 54.0f;
-    bsaPlaceQuad(p, 0x24ac, 0, 53.0f, x, 220.0f, 97.0f, 0xff);
-    bsaPlaceQuad(p, 0x24ec, 0, 273.0f, x, 120.0f, 97.0f, 0xff);
+    rect[0] = 53.0f;  rect[1] = x; rect[2] = 220.0f; rect[3] = 97.0f;
+    func_0021d8e0(p + 0x24ac, rect);
+    rect[0] = 273.0f; rect[1] = x; rect[2] = 120.0f; rect[3] = 97.0f;
+    func_0021d8e0(p + 0x24ec, rect);
     y = base + 158.0f;
-    bsaPlaceQuad(p, 0x252c, 0, 53.0f, y, 220.0f, 54.0f, 0xff);
-    bsaPlaceQuad(p, 0x256c, 0, 273.0f, y, 130.0f, 54.0f, 0xff);
+    rect[0] = 53.0f;  rect[1] = y; rect[2] = 220.0f; rect[3] = 54.0f;
+    func_0021d8e0(p + 0x252c, rect);
+    rect[0] = 273.0f; rect[1] = y; rect[2] = 130.0f; rect[3] = 54.0f;
+    func_0021d8e0(p + 0x256c, rect);
     for (i = 0; i < 8; i++) {
         f32 groupX;
         f32 groupY;
         groupX = ((i / 4) == 0 ? 0.0f : 270.0f) + 53.0f;
         groupY = (f32)(i & 3) * 30.0f + 275.0f;
-        bsaPlaceQuad(p, i * 0x80 + 0x25ac, 0, groupX, groupY,
-                     118.0f, 26.0f, 0xff);
-        bsaPlaceQuad(p, i * 0x80 + 0x25ec, 0, groupX + 118.0f,
-                     groupY, 200.0f, 26.0f, 0xff);
+        rect[0] = groupX; rect[1] = groupY; rect[2] = 118.0f; rect[3] = 26.0f;
+        func_0021d8e0(p + i * 0x80 + 0x25ac, rect);
+        rect[0] = groupX + 118.0f; rect[1] = groupY;
+        rect[2] = 200.0f; rect[3] = 26.0f;
+        func_0021d8e0(p + i * 0x80 + 0x25ec, rect);
     }
     {
         drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
