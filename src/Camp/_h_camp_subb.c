@@ -2079,7 +2079,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
         persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
         selected = menu->highlightedSlot == menuCode - 10;
         campDrawSprite(parent, DAT_00833A50[1], selected ? 8 : 7,
-                       item->alpha, item->x + 50.0f, item->y + 3.0f,
+                       item->alpha, 60.0f + item->x - 10.0f, item->y + 3.0f,
                        campTextureAsFloat(item));
         resourceRecord = func_00170e90(DAT_007cdf94);
         resourceItemId = campEquipmentResourceItem(resourceRecord);
@@ -2101,12 +2101,12 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
         if (persona->level > 9) {
             campDrawSpriteDigit(parent, H_Maestro_001120a0(selected ? 1 : 2),
                                 persona->level / 10 + 0xb, item->alpha,
-                                item->x + 78.0f, item->y + 11.0f,
+                               88.0f + item->x - 10.0f, item->y + 11.0f,
                                 campTextureAsFloat(item));
         }
         campDrawSpriteDigit(parent, H_Maestro_001120a0(selected ? 1 : 2),
                             persona->level % 10 + 0xb, item->alpha,
-                            item->x + 94.0f, item->y + 11.0f,
+                               104.0f + item->x - 10.0f, item->y + 11.0f,
                             campTextureAsFloat(item));
         resourceText = FUN_00173220(persona->id);
         textColor = (0xffU - item->alpha) | 0xffffff00;
@@ -2162,7 +2162,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                        campTextureAsFloat(item));
         if (gaugeWidth != 0) {
             campDrawGauge(campTextureAsFloat(item) - 1.0f,
-                          item->x + 56.0f + (f32)(0x4c - gaugeWidth),
+                          item->x + 56.0f + ((f32)0x4c - (f32)gaugeWidth),
                           item->y + 1.0f, 0xffffff00U, gaugeWidth, 10);
         }
         campDrawSprite(parent, DAT_00833A50[1], 0xb, item->alpha,
@@ -2204,7 +2204,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                        campTextureAsFloat(item));
         if (gaugeWidth != 0) {
             campDrawGauge(campTextureAsFloat(item) - 1.0f,
-                          item->x + 56.0f + (f32)(0x4c - gaugeWidth),
+                          item->x + 56.0f + ((f32)0x4c - (f32)gaugeWidth),
                           item->y + 1.0f, 0xffffff00U, gaugeWidth, 10);
         }
         campDrawSprite(parent, DAT_00833A50[1], 0xb, item->alpha,
