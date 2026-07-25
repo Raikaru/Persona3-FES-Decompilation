@@ -2599,30 +2599,57 @@ reward_done:
 }
 
 // FUN_001f5b20 NONMATCHING
-void *func_001f5b20(void)
 #pragma optimization_level 3
+void *func_001f5b20(void)
 {
     u8 *work = sBrReward;
-    u32 state;
+    u32 sub_state;
     if (work == NULL) {
+        K_ASSERT(work != NULL, 0x8c);
         return KWLNTASK_CONTINUE;
     }
-    state = BR_U32(work, 4);
-    switch (state) {
+    if ((BR_U32(work, 0) & 2) != 0) {
+        BR_U32(work, 0) &= ~2u;
+        return KWLNTASK_CONTINUE;
+    }
+    if ((BR_U32(work, 0) & 1) == 0) {
+        return KWLNTASK_CONTINUE;
+    }
+    if ((BR_U32(work, 0) & 0x100) == 0) {
+        goto secondary_dispatch;
+    }
+    sub_state = BR_U32(work, 0x34c8);
+    if (sub_state == 1 || sub_state == 0) {
+        s32 cnt;
+        f32 t, v;
+        cnt = BR_S32(work, 0x34d0) + 1;
+        BR_S32(work, 0x34d0) = cnt;
+        t = (f32)cnt / 30.0f;
+        v = t * 256.0f;
+        BR_S32(work, 0x34cc) = (s32)v;
+        if (BR_S32(work, 0x34d0) == 30) {
+            BR_U32(work, 0) &= ~0x100u;
+        }
+    }
+secondary_dispatch:
+    sub_state = BR_U32(work, 8);
+    if (sub_state >= 9) {
+        goto exit;
+    }
+    switch (sub_state) {
+        u32 i;
     case 0:
-        if ((BR_U32(work, 0) & 0x40) != 0 && (BR_U32(work, 0) & 0x10) != 0) {
-            func_003c7990(0);
-            if (func_003c7850() == 0) {
-                BR_U32(work, 4) = 1;
-            }
+        if (sflCard002592c0() == 0) {
+            BR_U32(work, 8) = 1;
         }
         break;
     case 1:
         if (func_003c7850() == 0) {
             BR_U32(work, 0x3510)++;
             if (BR_U32(work, 0x3510) < BR_U32(work, 0x3514)) {
-                func_003c7bc0(0, BR_U32(work, 0x34ec + BR_U32(work, 0x3510) * 8));
-                func_003c7c20(1, BR_U32(work, 0x34e8 + BR_U32(work, 0x3510) * 8), 0);
+                i = BR_U32(work, 0x3510);
+                func_003c7bc0(0, BR_U32(work, 0x34ec + i * 8));
+                func_003c7c20(1, BR_U32(work, 0x34e8 + i * 8), 0);
                 func_003c7430(0x17);
             } else {
                 BR_U32(work, 0x3408)++;
@@ -2667,12 +2694,20 @@ void *func_001f5b20(void)
         func_001f6e80();
         break;
     case 8:
-        func_001f6630();
+        if (func_003c7850() == 0) {
+            BR_U32(work, 0x3408)++;
+            if (BR_U32(work, 0x3408) >= BR_U32(work, 0x3418)) {
+                func_001f6a60();
+            } else {
+                func_001f7210();
+            }
+        }
         break;
     default:
-        K_ASSERT(state < 9, 0x341);
+        K_ASSERT(sub_state < 9, 0x341);
         break;
     }
+exit:
     return KWLNTASK_CONTINUE;
 }
 #pragma optimization_level 2
