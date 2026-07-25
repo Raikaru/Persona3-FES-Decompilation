@@ -5970,7 +5970,6 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     BtlPacket* pkt;
     BtlPacket* rootPkt;
     BtlAction* selected;
-    BtlAction* iter;
     BtlUnit* unit;
     u16 i;
     u16 count;
@@ -6042,19 +6041,19 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
         rootPkt->actionUID = action->uid;
         btlPacketRegister(rootPkt, BTLPACKET_TYPE_0);
 
-        iter = *(void**)((u8*)gBtl + 0x150);
-        while (iter != NULL)
+        selected = *(void**)((u8*)gBtl + 0x150);
+        while (selected != NULL)
         {
-            if (FUN_00300580(ACTION_U32(iter->unit, 0xa2c), 0x180000) == 0 &&
-                FUN_0030b5a0(ACTION_U32(iter->unit, 0xa2c), 0) == 0)
+            if (FUN_00300580(ACTION_U32(selected->unit, 0xa2c), 0x180000) == 0 &&
+                FUN_0030b5a0(ACTION_U32(selected->unit, 0xa2c), 0) == 0)
             {
-                pkt = FUN_002819d0(iter, 0, D_00693300[0], 24);
+                pkt = FUN_002819d0(selected, 0, D_00693300[0], 24);
                 pkt->unk_00 = 4;
                 pkt->parentUID = rootPkt->uid;
                 pkt->actionUID = action->uid;
                 btlPacketRegister(pkt, BTLPACKET_TYPE_1);
             }
-            iter = *(void**)((u8*)iter + 0xa34);
+            selected = *(void**)((u8*)selected + 0xa34);
         }
     }
     else
@@ -6106,17 +6105,17 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
 
     if ((gBtl->flags & 0x40000000) && (ACTION_U16(gBtl, 0x18) & 2))
     {
-        iter = *(void**)((u8*)gBtl + 0x14c);
-        while (iter != NULL)
+        selected = *(void**)((u8*)gBtl + 0x14c);
+        while (selected != NULL)
         {
-            if ((ACTION_U16(iter, 0x1a) & 1) &&
-                FUN_0030b5a0(ACTION_U32(iter->unit, 0xa2c), 0) == 0)
+            if ((ACTION_U16(selected, 0x1a) & 1) &&
+                FUN_0030b5a0(ACTION_U32(selected->unit, 0xa2c), 0) == 0)
             {
-                pkt = FUN_002843e0(iter->unit, 0);
+                pkt = FUN_002843e0(selected->unit, 0);
                 pkt->actionUID = action->uid;
                 btlPacketRegister(pkt, BTLPACKET_TYPE_1);
             }
-            iter = *(void**)((u8*)iter + 0x4a8);
+            selected = *(void**)((u8*)selected + 0x4a8);
         }
     }
 
