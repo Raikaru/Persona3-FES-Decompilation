@@ -3691,6 +3691,8 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       if (fStack_c0 < 25.0f) {
         fStack_c0 = 25.0f;
       }
+      FUN_002a2290((u16*)param_2,(RwV3d*)&fStack_e0,(RwV3d*)&fStack_dc,1);
+      FUN_002a3110((u16*)param_2,2.5f);
     }
     else {
       fVar16 = *(float *)(iVar5 + 0x90) * *(float *)(iVar5 + 0x2c);
@@ -3732,6 +3734,8 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       if (fStack_c0 < 25.0f) {
         fStack_c0 = 25.0f;
       }
+      FUN_002a2290((u16*)param_2,(RwV3d*)&fStack_e0,(RwV3d*)&fStack_dc,1);
+      FUN_002a3110((u16*)param_2,2.5f);
     }
     if (fVar13 <= fVar11) {
       fVar13 = fVar11;
@@ -3760,6 +3764,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       }
     }
   }
+  FUN_002a3e80(fVar13,(u8*)*(undefined4 *)(iVar4 + 0xe0),(u8*)(iVar5 + 4),(u8*)&uStack_ac,3);
   return;
 }
 
