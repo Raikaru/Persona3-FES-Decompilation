@@ -30,6 +30,7 @@ typedef struct BtlEnemyRecord
 #define ACTION_U8(action, offset) (*(u8*)((u8*)(action) + (offset)))
 #define ACTION_U16(action, offset) (*(u16*)((u8*)(action) + (offset)))
 #define ACTION_S16(action, offset) (*(s16*)((u8*)(action) + (offset)))
+#define ACTION_S32(action, offset) (*(s32*)((u8*)(action) + (offset)))
 #define ACTION_U32(action, offset) (*(u32*)((u8*)(action) + (offset)))
 #define BATTLE_U16(offset) (*(u16*)((u8*)gBtl + (offset)))
 
@@ -2692,7 +2693,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
             u16 genusCheck2 = FUN_003093a0(action->unit->datUnit);
             if (genusCheck2 == 1)
             {
-                animId = ACT_U16(victim, 0xce);
+                animId = ACTION_U16(victim, 0xce);
                 if (animId != 8 && animId != 4)
                 {
                     animMode = 4;
@@ -2838,7 +2839,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
     {
-        u32 animFlags = ACT_U16(victim, 0xce);
+        u32 animFlags = ACTION_U16(victim, 0xce);
         if ((animFlags & 6) != 0)
         {
             packet = FUN_002dd100(0xd, 2, 6);
@@ -2847,7 +2848,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
             packet->actionUID = actionUID;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
-        if (ACT_U16(victim, 0xcc) != 0x400)
+        if (ACTION_U16(victim, 0xcc) != 0x400)
         {
             u32 poolId2 = *(u32*)((u8*)gBtl + 0xc90);
             packet = FUN_002baf90(poolId2, action->unit, basis->unit, 1, 0);
@@ -2868,7 +2869,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     sp190 = -1;
     sp180 = -1;
     {
-        s32 stateVal = ACT_S32(action, 0x6c);
+        s32 stateVal = ACTION_S32(action, 0x6c);
         if (stateVal == 1)
         {
             u32 poolId3 = *(u32*)((u8*)gBtl + 0xc58);
@@ -2954,10 +2955,10 @@ void btlActionUpdateStateAttack(BtlAction* action)
         }
     }
     {
-        u32 e8Flags = ACT_U32(victim, 0xe8);
+        u32 e8Flags = ACTION_U32(victim, 0xe8);
         if ((e8Flags & 0x100000) != 0)
         {
-            u16 animId2 = ACT_U16(victim, 0xce);
+            u16 animId2 = ACTION_U16(victim, 0xce);
             packet = FUN_002db740(action, 0x17, animId2, 0, 0);
             packet->unk_00 = 5;
             packet->parentUID = effectPacket->uid;
@@ -3092,7 +3093,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     }
     /* Sub-state dispatch for ending */
     {
-        s32 subState = ACT_S32(action, 0x6c);
+        s32 subState = ACTION_S32(action, 0x6c);
         if (FUN_002dc130(action))
         {
             btlActionSetState(action, BTLACTION_STATE_PERSONA);
