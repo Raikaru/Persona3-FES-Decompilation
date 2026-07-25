@@ -46,7 +46,7 @@ typedef struct FldFrameAtomicQuery
 } FldFrameAtomicQuery;
 extern void func_001ab390(void* collision, const RwV3d* pos, RwV3d* translation,
                           f32 sphereCollisRadius);
-extern void func_001abd20(void* collisionWorld, const RwV3d* pos, RwV3d* translation,
+extern s32 func_001abd20(void* collisionWorld, const RwV3d* pos, RwV3d* translation,
                           f32 sphereCollisRadius, u16 resTypeId);
 extern void* func_001ac950(const RwV3d* line, void* unused,
                            const void* triangle, FldFrameRaycast* raycast);
@@ -1759,7 +1759,7 @@ typedef struct FldFrameCollisionCollector
     RwV3d points[64];
     RwV3d normals[64];
     f32 distances[64];
-    u8 reserved[0x400];
+    u8 reserved[0x478];
     u32 mode;
     u32 count;
     u32 blockingCount;
@@ -2229,12 +2229,13 @@ extern u32 func_001acb70(void* collisionWorld, const RwV3d* line, RwV3d* hitPoin
 extern u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position);
 
 // FUN_001abd20 NONMATCHING
-void func_001abd20(void* collisionWorld, const RwV3d* pos,
+// Remaining: post-grid collision processing (type1 walk, final apply, dampening)
+s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                    RwV3d* translation, f32 sphereCollisRadius, u16 resTypeId)
 {
     FldFrameCollisionCollector collector;
-    RwV3d query;
     void* type10ListHead;
+    RwV3d query;
     void* type3ListHead;
     void* type1ListHead;
     s32 i;
@@ -2245,8 +2246,9 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
     RwV3d rayOrigin;
     RwV3d hitPoint;
     u16 resTypeMask;
-    s32 xGrid;
-    s32 zGrid;
+    s32 returnVal;
+
+    returnVal = 0;
 
     type10ListHead = (void*)func_003b5d50(10);
     type3ListHead = (void*)func_003b5d50(3);
@@ -2255,8 +2257,6 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
     query.x = pos->x + translation->x;
     query.y = pos->y + translation->y;
     query.z = pos->z + translation->z;
-
-    collector.mode = 0;
     collector.count = 0;
     collector.blockingCount = 0;
     collector.owner = NULL;
@@ -2265,20 +2265,24 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
         memset(&collector.points[i], 0, sizeof(RwV3d));
         memset(&collector.normals[i], 0, sizeof(RwV3d));
         collector.distances[i] = 1.0e30f;
+        *(u32*)((u8*)&collector + 0xa00 + i * 4) = 0;
     }
     collector.owner = collisionWorld;
 
-    func_004c69f0(&diff, translation);
-    memset(collector.tail, 0, 0xc);
-
-    if (collisionWorld == NULL)
+    for (i = 0; i < 7; i++)
     {
-        return;
+        *(u32*)((u8*)&collector + 0xb18 + i * 4) =
+            *(u32*)((u8*)&collector + 0xb60 + i * 4);
     }
 
-    resTypeMask = resTypeId;
+    func_004c69f0((RwV3d*)((u8*)&collector + 0xb0c), translation);
+    memset((u8*)&collector + 0xb38, 0, 0xc);
 
-    /* === LIST WALK 1: type 10 === */
+    if (collisionWorld == NULL)
+        return 0;
+
+    resTypeMask = (u16)resTypeId;
+
     listNode = *(void**)((u8*)type10ListHead + 0xf8);
     while (listNode != NULL)
     {
@@ -2289,36 +2293,15 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
             if (model != NULL)
             {
                 FUN_004916d0(model, func_001abcd0, &collector);
-
                 rayOrigin = *pos;
                 rayOrigin.y += 400.0f;
                 hitPoint.x = 0.0f;
                 hitPoint.y = 0.0f;
                 hitPoint.z = 0.0f;
-
                 if (func_001acb70(model, &rayOrigin, &hitPoint) == 1)
-                {
                     translation->y = hitPoint.y - (pos->y - sphereCollisRadius);
-                }
             }
         }
-        listNode = *(void**)((u8*)listNode + 0xf8);
-    }
-
-    /* === LIST WALK 2: type 3 === */
-    xGrid = 0;
-    zGrid = 0;
-
-    if (func_001a0250() != 0)
-    {
-        f32 xv = (pos->x + 400.0f) / 800.0f;
-        xGrid = (xv >= 0.0f) ? ((s32)xv / 4) : -(((s32)(-xv) + 3) / 4);
-    }
-
-    if (func_001a0250() != 0)
-    {
-        f32 zv = (pos->z + 400.0f) / 800.0f;
-        zGrid = (zv >= 0.0f) ? ((s32)zv / 4) : -(((s32)(-zv) + 3) / 4);
     }
 
     listThree = *(void**)((u8*)type3ListHead + 0xf8);
@@ -2331,45 +2314,31 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
             if (model != NULL)
             {
                 FUN_004916d0(model, func_001abcd0, &collector);
-
                 rayOrigin = *pos;
                 rayOrigin.y -= 600.0f;
                 hitPoint.x = 0.0f;
                 hitPoint.y = 0.0f;
                 hitPoint.z = 0.0f;
-
                 if (func_001acb70(model, &rayOrigin, &hitPoint) == 1)
-                {
                     translation->y = hitPoint.y - (pos->y - sphereCollisRadius);
-                }
             }
         }
         listThree = *(void**)((u8*)listThree + 0xf8);
     }
-
-    /* === Grid quadrant loop === */
+    func_001abd20(collisionWorld, pos, translation, sphereCollisRadius, resTypeId);
     {
-        s32 s5;
-        for (s5 = 0; s5 < 4; s5++)
+        s32 quadIter;
+        for (quadIter = 0; quadIter < 4; quadIter++)
         {
             void* gridEntry;
-            void* rootObj;
             void* objData;
-            s32 entryOff = s5 * 448;
-
+            s32 entryOff = quadIter * 448;
             void* gridBase = (void*)func_00318b60(*(u32*)(DAT_008717f0 + 0));
             gridEntry = (u8*)gridBase + entryOff;
 
-            if (*(u32*)((u8*)gridEntry + 0x48) == 0)
-                continue;
-            if (*(u32*)((u8*)gridEntry + 0x54) == 0)
-                continue;
-
-            {
-                u16 typeId = *(u16*)(*(void**)((u8*)gridEntry + 0x54));
-                if (typeId == resTypeMask)
-                    continue;
-            }
+            if (*(u32*)((u8*)gridEntry + 0x48) == 0) continue;
+            if (*(u32*)((u8*)gridEntry + 0x54) == 0) continue;
+            if (*(u16*)(*(void**)((u8*)gridEntry + 0x54)) == resTypeMask) continue;
 
             objData = *(void**)((u8*)gridEntry + 0x54);
             model = (void*)func_00318b80(*(u32*)((u8*)objData + 0x1e8));
@@ -2379,6 +2348,7 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
             }
             else if (resTypeMask == 0x400)
             {
+                void* rootObj;
                 RwV3d* vecA;
                 RwV3d* vecB;
                 f32 dist;
@@ -2393,23 +2363,17 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
                 diff.z = vecB->z - vecA->z;
 
                 dist = func_004c69f0(&diff, &diff);
-
-                if (dist >= 97.0f)
-                    continue;
+                if (dist >= 97.0f) continue;
 
                 moveCount = func_001b0220(*(void**)((u8*)gridEntry + 0x170));
-                if (moveCount != 0)
-                    continue;
-
-                if (*(u32*)((u8*)gridEntry + 0x48) == 0)
-                    continue;
+                if (moveCount != 0) continue;
+                if (*(u32*)((u8*)gridEntry + 0x48) == 0) continue;
 
                 {
                     u8 typeCode;
                     void* typeInfo = func_004353f0(gridEntry);
                     typeCode = (u8)(((u32)typeInfo >> 24) >> 8);
-                    if (typeCode == 5)
-                        continue;
+                    if (typeCode == 5) continue;
                 }
 
                 {
@@ -2426,6 +2390,88 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
             }
         }
     }
+    /* Type 1 list walk (post-grid) */
+    listNode = *(void**)((u8*)type1ListHead + 0xf8);
+    while (listNode != NULL)
+    {
+        if ((*(u32*)((u8*)listNode + 0x28) & 2))
+        {
+            s32 field114 = *(s32*)((u8*)listNode + 0x114);
+            if (field114 != 0)
+            {
+                model = (void*)func_00318b80(field114);
+                if (model != NULL)
+                    FUN_004916d0(model, func_001abcd0, &collector);
+            }
+        }
+        listNode = *(void**)((u8*)listNode + 0xf8);
+    }
+
+    for (i = 0; i < (s32)collector.count; i++)
+    {
+        f32 dv;
+        f32 corr;
+        u32 fl;
+
+        dv = collector.distances[i];
+        if (dv >= 1.0e30f) continue;
+
+        diff.x = collector.points[i].x - pos->x;
+        diff.y = collector.points[i].y - pos->y;
+        diff.z = collector.points[i].z - pos->z;
+        func_004c69f0(&diff, &diff);
+
+        if (collector.distances[i] <= 0.0f) continue;
+
+        corr = sphereCollisRadius - collector.distances[i];
+        if (corr <= 0.0f) continue;
+
+        fl = *(u32*)((u8*)&collector + 0xa00 + i * 4);
+        if (fl == 1)
+        {
+            RwV3d nrm;
+            f32 nd;
+            nrm = collector.normals[i];
+            func_004c69f0(&nrm, &nrm);
+            nd = FldFrame_Dot(&nrm, &diff);
+            if (nd > 0.0f)
+            {
+                translation->x += nrm.x * corr;
+                translation->y += nrm.y * corr;
+                translation->z += nrm.z * corr;
+            }
+        }
+        else
+        {
+            translation->x += diff.x * corr;
+            translation->y += diff.y * corr;
+            translation->z += diff.z * corr;
+        }
+
+        returnVal = 1;
+
+        if (fabsf(translation->x) < 0.000001f &&
+            fabsf(translation->y) < 0.000001f &&
+            fabsf(translation->z) < 0.000001f)
+        {
+            translation->x += diff.x * corr;
+            translation->y += diff.y * corr;
+            translation->z += diff.z * corr;
+        }
+    }
+
+    {
+        f32 trLen;
+        trLen = func_004c69f0(&diff, translation);
+        if (trLen > 9.0f)
+        {
+            translation->x = 8.5f * diff.x;
+            translation->y = 8.5f * diff.y;
+            translation->z = 8.5f * diff.z;
+        }
+    }
+
+    return returnVal;
 }
 // FUN_001ac950 NONMATCHING
 void* func_001ac950(const RwV3d* line, void* unused,
