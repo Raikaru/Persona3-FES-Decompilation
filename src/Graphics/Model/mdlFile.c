@@ -12541,7 +12541,6 @@ void FUN_003282e0(int param_1)
 
   fVar18 = DAT_00960088;
 
-  uVar2 = DAT_007caf08;
 
   iStack_8 = *(int *)(param_1 + 4);
 
@@ -12559,10 +12558,6 @@ void FUN_003282e0(int param_1)
 
   auStack_50 = _sqc2(auVar5);
 
-  iVar7 = *(int *)(param_1 + 0x4c);
-
-  pauVar8 = *(u8 (**) [16])(iVar7 + 0x18);
-
   fVar14 = DAT_0096008c;
 
   iVar3 = FUN_00198590();
@@ -12572,6 +12567,10 @@ void FUN_003282e0(int param_1)
   iVar3 = FUN_00198590();
 
   fVar15 = *(float *)(iVar3 + 0x80);
+
+  iVar7 = *(int *)(param_1 + 0x4c);
+
+  pauVar8 = *(u8 (**) [16])(iVar7 + 0x18);
 
   iVar3 = *(int *)(iVar7 + 8);
 
@@ -12597,7 +12596,7 @@ void FUN_003282e0(int param_1)
 
           auVar23 = _vitof0(auVar5);
 
-          auVar5 = _qmtc2(uVar2);
+          auVar5 = _qmtc2(DAT_007caf08);
 
           auVar5 = _vmulbc(auVar23,auVar5);
 
@@ -12617,23 +12616,19 @@ void FUN_003282e0(int param_1)
 
           auVar5 = _ppacb(in_zero_qw,auVar5);
 
-          uStack_14 = auVar5._0_4_;
-
-          (*((u8 *)((u8 *)&uStack_4 + 3))) = (*((u8 *)&auVar5 + 3));
-
-          bVar1 = (*((u8 *)((u8 *)&uStack_4 + 3))) != '\0';
-
-          uStack_4 = uStack_14;
+          bVar1 = (*((u8 *)&auVar5 + 3)) != '\0';
 
           if (bVar1) {
+            u32 uStack_14 = auVar5._0_4_;
+            uStack_4 = uStack_14;
 
             FUN_00322fd0((int)(*(u32 *)(param_1 + 0x48)),(u32)(*(int *)pauVar8[1]),(u32 *)(&fStack_1d0));
 
             (*DAT_00960090)(1,*puStack_1c0);
 
-            fVar21 = *(float *)(pauVar8[1] + 8) * (fStack_1c8 / 32.0) * fStack_1d0;
+            fVar21 = *(float *)(pauVar8[1] + 8) * (fStack_1c8 / 32.0f) * fStack_1d0;
 
-            fVar22 = *(float *)(pauVar8[1] + 8) * (fStack_1c4 / 32.0) * fStack_1cc;
+            fVar22 = *(float *)(pauVar8[1] + 8) * (fStack_1c4 / 32.0f) * fStack_1cc;
 
             uVar6 = uStack_4 & 0xff;
 
@@ -12679,9 +12674,8 @@ void FUN_003282e0(int param_1)
 
             RwV3dTransformPoint(&fStack_38,&uStack_28,iVar4 + 0x20);
 
-            if (((fStack_38 / fStack_30 < -2.0) || (2.0 < fStack_38 / fStack_30)) ||
-
-               ((fStack_34 / fStack_30 < -2.0 || (2.0 < fStack_34 / fStack_30)))) {
+            if (((fStack_38 / fStack_30 < -2.0f) || (2.0f < fStack_38 / fStack_30)) ||
+               ((fStack_34 / fStack_30 < -2.0f || (2.0f < fStack_34 / fStack_30)))) {
 
               bVar1 = true;
 
@@ -12696,16 +12690,12 @@ void FUN_003282e0(int param_1)
             if (!bVar1) {
 
               fVar20 = (fVar15 / fStack_30) * (fStack_30 - fVar13) * (fVar18 / fVar16) +
-
-                       fVar14 + 0.0;
-
-              if (fVar20 < 0.0) {
-
-                fVar20 = 0.0;
-
+                       fVar14 + 0.0f;
+              if (fVar20 < 0.0f) {
+                fVar20 = 0.0f;
               }
 
-              fVar19 = 1.0 / fVar20;
+              fVar19 = 1.0f / fVar20;
 
               fVar9 = (float)FUN_0052e6d8(*(u32 *)(pauVar8[1] + 0xc));
 
@@ -12723,33 +12713,33 @@ void FUN_003282e0(int param_1)
 
               uStack_13c = 0;
 
-              fStack_100 = 1.0;
+              fStack_100 = 1.0f;
 
               uStack_fc = 0;
 
               uStack_c0 = 0;
 
-              fStack_bc = 1.0;
+              fStack_bc = 1.0f;
 
-              fStack_80 = 1.0;
+              fStack_80 = 1.0f;
 
-              fStack_7c = 1.0;
+              fStack_7c = 1.0f;
 
-              fStack_150 = ((fStack_38 + -fVar12 + fVar22) / fStack_30) * 640.0;
+              fStack_150 = ((fStack_38 + -fVar12 + fVar22) / fStack_30) * 640.0f;
 
-              fStack_14c = ((fStack_34 - (-fVar21 - fVar9)) / fStack_30) * 448.0;
+              fStack_14c = ((fStack_34 - (-fVar21 - fVar9)) / fStack_30) * 448.0f;
 
-              fStack_110 = ((fStack_38 + fVar12 + fVar22) / fStack_30) * 640.0;
+              fStack_110 = ((fStack_38 + fVar12 + fVar22) / fStack_30) * 640.0f;
 
-              fStack_10c = ((fStack_34 - (fVar21 - fVar9)) / fStack_30) * 448.0;
+              fStack_10c = ((fStack_34 - (fVar21 - fVar9)) / fStack_30) * 448.0f;
 
-              fStack_d0 = ((fStack_38 + (-fVar12 - fVar22)) / fStack_30) * 640.0;
+              fStack_d0 = ((fStack_38 + (-fVar12 - fVar22)) / fStack_30) * 640.0f;
 
-              fStack_cc = ((fStack_34 - (-fVar21 + fVar9)) / fStack_30) * 448.0;
+              fStack_cc = ((fStack_34 - (-fVar21 + fVar9)) / fStack_30) * 448.0f;
 
-              fStack_90 = ((fStack_38 + (fVar12 - fVar22)) / fStack_30) * 640.0;
+              fStack_90 = ((fStack_38 + (fVar12 - fVar22)) / fStack_30) * 640.0f;
 
-              fStack_8c = ((fStack_34 - (fVar21 + fVar9)) / fStack_30) * 448.0;
+              fStack_8c = ((fStack_34 - (fVar21 + fVar9)) / fStack_30) * 448.0f;
 
               fStack_148 = fVar20;
 
@@ -12801,12 +12791,11 @@ void FUN_003282e0(int param_1)
 
       auStack_180 = _sqc2(auVar5);
 
-      fVar16 = 32.0;
 
-      fVar22 = 1.0;
+      fVar22 = 1.0f;
 
-      fVar21 = 448.0;
-
+      fVar21 = 448.0f;
+      fVar16 = 32.0f;
       for (iVar7 = 0; iVar7 < iVar3; iVar7 = iVar7 + 1) {
 
         if (-1 < *(int *)pauVar8[1]) {
@@ -12847,7 +12836,7 @@ void FUN_003282e0(int param_1)
 
           auVar23 = _vitof0(auVar5);
 
-          auVar5 = _qmtc2(uVar2);
+          auVar5 = _qmtc2(DAT_007caf08);
 
           auVar5 = _vmulbc(auVar23,auVar5);
 
@@ -12868,13 +12857,8 @@ void FUN_003282e0(int param_1)
           auVar5 = _ppacb(in_zero_qw,auVar5);
 
           uStack_18 = auVar5._0_4_;
-
-          (*((u8 *)((u8 *)&uStack_4 + 3))) = (*((u8 *)&auVar5 + 3));
-
-          bVar1 = (*((u8 *)((u8 *)&uStack_4 + 3))) != '\0';
-
+          bVar1 = (*((u8 *)&auVar5 + 3)) != '\0';
           uStack_4 = uStack_18;
-
           if (bVar1) {
 
             FUN_00322fd0((int)(*(u32 *)(param_1 + 0x48)),(u32)(*(u32 *)pauVar8[1]),(u32 *)(&fStack_1d0));
