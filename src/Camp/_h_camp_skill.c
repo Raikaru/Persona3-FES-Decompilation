@@ -718,7 +718,6 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
         u16 id;
         u8 effect;
         s32 valueA;
-        CampSkillVec2 position;
 
         equipment = datGetEquipmentIdx(work->pcId, (s16)work->category);
         style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
