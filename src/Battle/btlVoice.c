@@ -5340,7 +5340,7 @@ void func_002e4a40(u64 param_1)
   float fVar6;
   float fVar7;
   float fVar8;
-  u32 uVar9;
+  float fVar9;
   float fStack_80;
   float fStack_7c;
   float fStack_78;
@@ -5444,12 +5444,8 @@ LAB_002e4af0:
       if (fStack_60 < 25.0) {
         fStack_60 = 25.0;
       }
-      if (bVar3) {
-        uVar9 = 0x40200000;
-      }
-      else {
-        uVar9 = 0x3fa00000;
-      }
+      FUN_002a2290((u8 *)DAT_007ce3ec + 0x20, &fStack_80, &fStack_64, 1);
+      FUN_002a3110((u8 *)DAT_007ce3ec + 0x20, bVar3 ? 2.5f : 1.25f);
     }
     else {
       if ((*(char *)(iVar2 + 0xa2) == '\x01') &&
