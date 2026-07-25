@@ -89,9 +89,9 @@ extern u32 FUN_00111f20();
 extern u32 FUN_00111f30();
 extern u32 FUN_00112420();
 extern u32 FUN_001124b0();
-extern u32 FUN_00113a30();
+extern void FUN_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height);
 extern u32 FUN_00114450();
-extern u32 FUN_001159f0();
+extern void FUN_001159f0(f32 x, f32 y, ...);
 #pragma alias FUN_001159f0_typed FUN_001159f0
 extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 f32 x, f32 y, f32 depth);
@@ -1243,7 +1243,7 @@ void FUN_00169110(undefined8 param_1, undefined8 param_2,
                  0xffU - (u32)param_4 | 0x20808000, 0x280, 0x1c0);
     depth = (f32)FUN_0021ea00(0x28);
     FUN_0013d1a0(DAT_00960088 - depth,
-                 (((undefined8)(u32)(y + 50.0)) << 32) | (u32)(x + 40.0),
+                 (((undefined8)(u32)(y + 50.0f)) << 32) | (u32)(x + 40.0f),
                  param_3, param_4);
 }
 
@@ -1261,14 +1261,14 @@ void FUN_001691F0(undefined8 param_1, undefined8 param_2,
     FUN_00113a30(DAT_00960088 - depth, 0, 0,
                  0xffU - (u32)param_5 | 0x20808000, 0x280, 0x1c0);
     x = (f32)param_2;
-    depth = y + 50.0;
+    depth = y + 50.0f;
     depth = (f32)FUN_0021ea00(0x28);
     FUN_0013fca0(DAT_00960088 - depth,
-                 (((undefined8)(u32)(y + 50.0)) << 32) | (u32)(x + 40.0),
+                 (((undefined8)(u32)(y + 50.0f)) << 32) | (u32)(x + 40.0f),
                  param_3, param_5);
     depth = (f32)FUN_0021ea00(0x28);
     FUN_0013d1a0(DAT_00960088 - depth,
-                 (((undefined8)(u32)(y + 80.0)) << 32) | (u32)(x + 40.0),
+                 (((undefined8)(u32)(y + 80.0f)) << 32) | (u32)(x + 40.0f),
                  param_4, param_5);
 }
 
