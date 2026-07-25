@@ -787,9 +787,9 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
     }
     h_campStatusDrawStatLabels(position, scale, persona, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
-                         position.y + 100.0f, scale, alpha);
+                         (125.0f + position.y) - 25.0f, scale, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
-                         position.y + 159.0f, scale, alpha);
+                         (184.0f + position.y) - 25.0f, scale, alpha);
     h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
     campStatusDrawStats(position, scale, persona, alpha, 0);
     campStatusDrawExp(position, scale, NULL, persona, alpha);
