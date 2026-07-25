@@ -2513,6 +2513,19 @@ void btlActionUpdateStateAttack(BtlAction* action)
             }
             delay += animLength > 0 ? animLength : 4;
         }
+
+        /* Retail +768..+888: check victim->flags_0xfa & 4. If zero, create two target packets. */
+        if ((ACTION_U16(victim, 0xfa) & 4) == 0)
+        {
+            packet = FUN_002886e0(victim->unit, action->unit, 0);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_00288950(action->unit, 0);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+        action->unk_18 |= 0x200;
+
         packet = FUN_002d7e20(action, basis, result, ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce));
         ACTION_S16(packet, 0x48) = delay;
         packet->actionUID = action->uid;
@@ -2797,13 +2810,185 @@ void btlActionUpdateStateAttack(BtlAction* action)
         btlPacketRegister(packet, BTLPACKET_TYPE_3D);
     }
 
+    /* Retail +3364..+3640: Extended damage/effect packet chain */
+    packet = FUN_002db740(victim, 0x18, 0, 0, 0);
+    packet->unk_00 = 4;
+    packet->parentUID = packet->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = func_0027f2f0();
+    packet->unk_00 = 5;
+    packet->parentUID = packet->uid;
+    ACTION_S16(packet, 0x48) = 0;
+    ACTION_S16(packet, 0x4a) = 0xc;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    if (victim->unit->genus == 0)
+    {
+        voicePacket = btlVoice002e2be0(action, 0xa, 0, 0, 0);
+        voicePacket->unk_00 = 4;
+        voicePacket->parentUID = packet->uid;
+        voicePacket->actionUID = action->uid;
+        btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+    }
+
+    /* Set global battle flags */
+    *(u32*)((u8*)gBtl + 0xc) |= 0x400000;
+    *(u16*)((u8*)gBtl + 0x18) |= 0xf;
+
+    /* Add more effect/skill packets */
+    {
+        u16 outA, outB, outC, outD;
+        FUN_0028a540(action, action->target.specificId, &outA, &outB, &outC, &outD);
+
+        {
+            u32 poolId = *(u32*)((u8*)gBtl + outA * 4 + 0xc24);
+            if (poolId != 0)
+            {
+                packet = FUN_002baf90(poolId, action->unit, basis->unit, 1, 0);
+                packet->unk_00 = 4;
+                packet->parentUID = effectPacket->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+        }
+
+        if (outC != 0 || outD != 0)
+        {
+            packet = FUN_002dd100(0xc, outC, outD);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+    }
+
+    if (action->unit->genus == 1)
+    {
+        {
+            u32 poolId = *(u32*)((u8*)gBtl + 0xcf4);
+            if (poolId != 0)
+            {
+                packet = FUN_002baf90(poolId, basis->unit, action->unit, 1, 0);
+                packet->unk_00 = 5;
+                packet->parentUID = effectPacket->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+        }
+
+        packet = FUN_00284200(basis->unit, animMode, 0, 0, 1.0f);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+        packet = FUN_00284c90(basis->unit);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    {
+        u32 animFlags = ACT_U16(victim, 0xce);
+        if ((animFlags & 6) != 0)
+        {
+            packet = FUN_002dd100(0xd, 2, 6);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+
+        if (ACT_U16(victim, 0xcc) != 0x400)
+        {
+            u32 poolId2 = *(u32*)((u8*)gBtl + 0xc90);
+            packet = FUN_002baf90(poolId2, action->unit, basis->unit, 1, 0);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+    }
+
+    if (sp190 != 0xffff && sp180 != 0xffff)
+    {
+        packet = FUN_002dd100(0xa, sp190, sp180);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    sp190 = -1;
+    sp180 = -1;
+
+    {
+        s32 stateVal = ACT_S32(action, 0x6c);
+        if (stateVal == 1)
+        {
+            u32 poolId3 = *(u32*)((u8*)gBtl + 0xc58);
+            if (poolId3 != 0)
+            {
+                packet = FUN_002baf90(poolId3, action->unit, basis->unit, 1, 0);
+                packet->unk_00 = 5;
+                packet->parentUID = effectPacket->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+        }
+        else if (stateVal == 0)
+        {
+            if (hitCount == 0 && groupCount == 0)
+            {
+                u32 poolId4 = *(u32*)((u8*)gBtl + 0xc54);
+                if (poolId4 != 0)
+                {
+                    packet = FUN_002baf90(poolId4, action->unit, basis->unit, 1, 0);
+                    packet->unk_00 = 5;
+                    packet->parentUID = effectPacket->uid;
+                    packet->actionUID = action->uid;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                }
+            }
+        }
+    }
+
+    if (action->unit->genus == 1)
+    {
+        if (FUN_002d6130(action))
+        {
+            voicePacket = btlVoice002e2be0(action, 0xe, 0, 0, 0);
+            voicePacket->unk_00 = 5;
+            voicePacket->parentUID = effectPacket->uid;
+            voicePacket->actionUID = action->uid;
+            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+        }
+
+        if (FUN_002d6210(action) == 1)
+        {
+            if (!FUN_002d5f50(action))
+            {
+                u16 personaSound = FUN_003082f0(action->unit->datUnit, action->target.specificId);
+                voicePacket = btlVoice002e2be0(action, 0xf, 0, 0, 0);
+                voicePacket->unk_00 = 5;
+                voicePacket->parentUID = effectPacket->uid;
+                voicePacket->actionUID = action->uid;
+                btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+            }
+        }
+    }
+
     /* Persona animation section (retail 7064-8100) */
     if (ACTION_U16(victim, 0xfa) & 1)
     {
         FUN_002d5dc0(workBuf);
         packet = FUN_002d7e20(victim, victim, workBuf, 1, 1);
         packet->unk_00 = 4;
-        packet->parentUID = hitPacket->uid;
+        packet->parentUID = effectPacket->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
@@ -2811,13 +2996,13 @@ void btlActionUpdateStateAttack(BtlAction* action)
         {
             packet = FUN_00284200(victim->unit, 10, 0, 0, 1.0f);
             packet->unk_00 = 4;
-            packet->parentUID = hitPacket->uid;
+            packet->parentUID = effectPacket->uid;
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
             packet = FUN_00284c90(victim->unit);
             packet->unk_00 = 4;
-            packet->parentUID = hitPacket->uid;
+            packet->parentUID = effectPacket->uid;
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
