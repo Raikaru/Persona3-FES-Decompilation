@@ -3204,8 +3204,6 @@ void func_001f7210(void)
     entry_idx = BR_U32(work, 0x1c + slot * 4);
     BR_U32(work, 0x34e8) = entry_idx + slot;
     BR_U32(work, 0x34e0) = entry_idx * 0x670;
-    entry = work + 0x670 + 0x60;
-    debug_val = BR_U32(entry, 0);
     switch (debug_val) {
     case 0:
     {
