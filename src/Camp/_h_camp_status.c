@@ -832,6 +832,7 @@ void FUN_0012b860(CampVec2 position, f32 scale, void* currentStats,
     s32 i;
     s32 value;
     s32 current;
+    char text[0x100];
 
     for (i = 0; i < 9; i++) {
         h_campStatusRenderStatIcon(position, scale, i, alpha);
@@ -843,20 +844,49 @@ void FUN_0012b860(CampVec2 position, f32 scale, void* currentStats,
                          (184.0f + position.y) - 25.0f, scale, alpha);
     h_campStatusDrawStatValues(position, scale, currentStats, persona, alpha);
     for (i = 0; i < 5; i++) {
-        value = FUN_00173660(persona, i) & 0xff;
-        current = currentStats != NULL
-            ? *((u8*)currentStats + 0x38 + i)
-            : 0;
+        switch (i) {
+        case 0: value = FUN_00173660(persona, 0) & 0xff; break;
+        case 1: value = FUN_00173660(persona, 1) & 0xff; break;
+        case 2: value = FUN_00173660(persona, 2) & 0xff; break;
+        case 3: value = FUN_00173660(persona, 3) & 0xff; break;
+        case 4: value = FUN_00173660(persona, 4) & 0xff; break;
+        }
+        if (currentStats != NULL) {
+            switch (i) {
+            case 0: current = *((u8*)currentStats + 0x38); break;
+            case 1: current = *((u8*)currentStats + 0x39); break;
+            case 2: current = *((u8*)currentStats + 0x3a); break;
+            case 3: current = *((u8*)currentStats + 0x3b); break;
+            case 4: current = *((u8*)currentStats + 0x3c); break;
+            }
+        } else {
+            current = 0;
+        }
         h_campStatusDrawRankValue(position, scale, i, value, current, alpha);
     }
-    campStatusDrawExp(position, scale, currentStats, persona, alpha);
+    h_campStatusDrawEquipment(position, scale, currentStats, persona, alpha);
+    campStatusDrawSprite(DAT_00833B90, 0x11, position.x + 33.0f,
+                         position.y + 278.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B90, 0x22, position.x + 287.0f,
+                         position.y + 280.0f, scale, alpha);
+    if (*((u8*)persona + 4) == 0x63) {
+        sprintf(text, "%d", 0);
+    } else {
+        value = FUN_00173340(persona);
+        current = FUN_00173330(persona);
+        sprintf(text, "%d", value - current);
+    }
+    FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
+                 (u8)(0xff - alpha), 4, text, 1);
 }
-
 // FUN_0012BCE0 NONMATCHING
 void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
                   void* persona, u8 alpha)
 {
     s32 i;
+    s32 value;
+    s32 current;
+    char text[0x100];
 
     (void)unused;
     for (i = 0; i < 9; i++) {
@@ -867,7 +897,20 @@ void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
                          (125.0f + position.y) - 25.0f, scale, alpha);
     campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
                          (184.0f + position.y) - 25.0f, scale, alpha);
-    campStatusDrawExp(position, scale, NULL, persona, alpha);
+    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    campStatusDrawSprite(DAT_00833B90, 0x11, position.x + 33.0f,
+                         position.y + 278.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B90, 0x22, position.x + 287.0f,
+                         position.y + 280.0f, scale, alpha);
+    if (*((u8*)persona + 4) == 0x63) {
+        sprintf(text, "%d", 0);
+    } else {
+        value = FUN_00173340(persona);
+        current = FUN_00173330(persona);
+        sprintf(text, "%d", value - current);
+    }
+    FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
+                 (u8)(0xff - alpha), 4, text, 1);
 }
 
 // FUN_0012BFB0 NONMATCHING
