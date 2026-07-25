@@ -343,6 +343,7 @@ extern u32 datGetMaxHp(s16 pcId);
 extern void func_0035c1a0(KwlnTask* task, int record);
 extern ScrHeader* D_007CE220;
 extern void func_001b00c0(KwlnTask* task);
+extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
 
 static u32 K_Encount_Now(KwlnTask* task)
 {
@@ -535,11 +536,39 @@ void* func_001d7d40(KwlnTask* task)
     EncounterWork* work;
     FldUnit* pc;
     FldUnit* ec;
+    FldUnit* ec2;
     DatUnit* src;
     DatUnit* dst;
+    DatUnit* t4;
     u32 i;
+    u32 j;
     u32 alivePc;
     u32 aliveEc;
+    u32 deadPc;
+    u32 deadEc;
+    u32 faceDir;
+    u32 modelType;
+    u32 randVal;
+    s16 hpVal;
+    u8* base;
+    void* effectField;
+    void* modelId;
+    void* fieldWord;
+    void* fieldWord2;
+    RwV3d pos;
+    RwV3d epos;
+    RwV3d ppos;
+    RwV3d tmpPos;
+    f32 half;
+    f32 scale;
+    f32 yOffset;
+    u32 pcAliveCount;
+    u32 ecAliveCount;
+    u32 curIdx;
+    u32 total;
+    s32 genResult;
+    u32 procIdx;
+    u32 offset1200;
 
     if (task == NULL || task->workData == NULL)
     {
@@ -561,14 +590,19 @@ void* func_001d7d40(KwlnTask* task)
         pc = work->pc[0];
         ec = work->ec[0];
         {
-            RwV3d pos = mdlGetMatrix(pc->mdl)->pos;
-            RwV3d epos = mdlGetMatrix(ec->mdl)->pos;
-            pos.x = (pos.x + epos.x) * 0.5f;
-            pos.y = (pos.y + epos.y) * 0.5f + 3.0f;
-            pos.z = (pos.z + epos.z) * 0.5f;
-            work->effectHandle = func_001a91b0((KwlnTask*)K_Encount_FieldWord(0x1200), &pos);
-            func_001a9390((KwlnTask*)K_Encount_FieldWord(0x1200),
-                          work->effectHandle, 3);
+            pos = mdlGetMatrix(pc->mdl)->pos;
+            epos = mdlGetMatrix(ec->mdl)->pos;
+            half = 0.5f;
+            yOffset = 3.0f;
+            pos.x = (pos.x + epos.x) * half;
+            pos.y = (pos.y + epos.y) * half + yOffset;
+            pos.z = (pos.z + epos.z) * half;
+            fieldWord = K_Encount_FieldWord(0x1200);
+            base = (u8*)fieldWord;
+            offset1200 = 0x1200;
+            effectField = func_001a91b0(*(KwlnTask**)(base + offset1200), &pos);
+            work->effectHandle = effectField;
+            func_001a9390(*(KwlnTask**)(base + offset1200), effectField, 3);
         }
         K_Encount_Face(pc, ec);
         K_Encount_Face(ec, pc);
@@ -614,6 +648,10 @@ void* func_001d7d40(KwlnTask* task)
         work->state = 2;
         return KWLNTASK_CONTINUE;
     }
+    if (func_001fc720(src) == 0)
+    {
+        goto skip_attack;
+    }
     if (work->selectedFlatIndex < work->pcTotal && work->reaperFlag == 0)
     {
         pc = func_001d7c60(task, (s32)work->selectedFlatIndex);
@@ -627,6 +665,24 @@ void* func_001d7d40(KwlnTask* task)
             if (dst != NULL)
             {
                 func_001fc590(src, dst);
+                pos = mdlGetMatrix(pc->mdl)->pos;
+                base = (u8*)K_Encount_FieldWord(0x1200);
+                func_001a91b0(*(KwlnTask**)(base + 0x120c), &pos);
+                func_0010a4e0(1, 8, 2, 0x15);
+                randVal = RpRandom();
+                t4 = func_001d7b70(task,
+                                  (s32)(work->pcTotal + (randVal % work->ecTotal)));
+                if (t4 != NULL && (s16)t4->hp > 0)
+                {
+                    src = func_001d7b70(task, (s32)work->selectedFlatIndex);
+                    if (src != NULL)
+                    {
+                        func_001fc590(t4, src);
+                        pos = mdlGetMatrix(pc->mdl)->pos;
+                        base = (u8*)K_Encount_FieldWord(0x1200);
+                        func_001a91b0(*(KwlnTask**)(base + 0x120c), &pos);
+                    }
+                }
             }
         }
     }
@@ -639,24 +695,69 @@ void* func_001d7d40(KwlnTask* task)
         if (dst != NULL)
         {
             func_001fc590(src, dst);
+            if (work->ec[0] != NULL && work->ec[0]->mdl != NULL)
+            {
+                pos = mdlGetMatrix(work->ec[0]->mdl)->pos;
+                base = (u8*)K_Encount_FieldWord(0x1200);
+                func_001a91b0(*(KwlnTask**)(base + 0x120c), &pos);
+            }
+            func_0010a4e0(1, 8, 2, 0x15);
         }
     }
+skip_attack:
+    /* Count alive PCs and set animations */
     alivePc = 0;
+    deadPc = 0;
     for (i = 0; i < work->pcCount; ++i)
     {
-        if (work->pc[i] != NULL && work->pc[i]->genusBase != NULL &&
-            func_002ff790(work->pc[i]->genusBase) == 0)
+        if (work->pc[i] != NULL && work->pc[i]->genusBase != NULL)
         {
-            ++alivePc;
+            genResult = func_002ff790(work->pc[i]->genusBase);
+            if (genResult == 0)
+            {
+                ++alivePc;
+                ppos = mdlGetMatrix(work->pc[i]->mdl)->pos;
+                mdlAnimSet(work->pc[i]->mdl, 0, 0, 2, 0);
+                mdlAnimSetSpeed(work->pc[i]->mdl, 0, 1.0f);
+            }
+            else
+            {
+                ++deadPc;
+                if (work->pc[i]->mdl != NULL)
+                {
+                    ppos = mdlGetMatrix(work->pc[i]->mdl)->pos;
+                    base = (u8*)K_Encount_FieldWord(0x1200);
+                    func_001a91b0(*(KwlnTask**)(base + 0x1204), &ppos);
+                }
+                func_0010a4e0(1, 8, 3, 0);
+            }
         }
     }
     if (alivePc == 0)
     {
-        func_001a9400((KwlnTask*)K_Encount_FieldWord(0x1200), work->effectHandle);
+        base = (u8*)K_Encount_FieldWord(0x1200);
+        func_001a9400(*(KwlnTask**)(base + 0x1200), work->effectHandle);
         work->state = 2;
         return KWLNTASK_CONTINUE;
     }
+    if (deadPc != 0)
+    {
+        fieldWord = K_Encount_FieldWord(0x1200);
+        for (procIdx = 0; procIdx < work->pcCount; ++procIdx)
+        {
+            pc = work->pc[procIdx];
+            if (pc != NULL && pc->genusBase != NULL &&
+                func_002ff790(pc->genusBase) == 0)
+            {
+                ppos = mdlGetMatrix(pc->mdl)->pos;
+                mdlAnimSet(pc->mdl, 0, 0, 2, 1);
+                mdlAnimSetSpeed(pc->mdl, 0, 1.0f);
+            }
+        }
+    }
+    /* Count alive ECs and set animations */
     aliveEc = 0;
+    deadEc = 0;
     for (i = 0; i < work->ecCount; ++i)
     {
         ec = work->ec[i];
@@ -664,12 +765,28 @@ void* func_001d7d40(KwlnTask* task)
         {
             continue;
         }
-        if (func_002ff790(ec->genusBase) == 0)
+        genResult = func_002ff790(ec->genusBase);
+        if (genResult == 0)
         {
             ++aliveEc;
+            if (ec->mdl != NULL)
+            {
+                ppos = mdlGetMatrix(ec->mdl)->pos;
+                mdlAnimSet(ec->mdl, 0, 0, 2, 0);
+                mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+            }
         }
         else
         {
+            ++deadEc;
+            if (ec->mdl != NULL)
+            {
+                ppos = mdlGetMatrix(ec->mdl)->pos;
+                ppos.y += 100.0f;
+                base = (u8*)K_Encount_FieldWord(0x1200);
+                func_001a91b0(*(KwlnTask**)(base + 0x1204), &ppos);
+                func_0010a4e0(1, 8, 3, 0);
+            }
             K_FldUnit_Destroy(ec);
             work->ec[i] = NULL;
         }
@@ -677,13 +794,58 @@ void* func_001d7d40(KwlnTask* task)
     K_Encount_CompactEc(work);
     if (aliveEc == 0)
     {
-        func_001a9400((KwlnTask*)K_Encount_FieldWord(0x1200), work->effectHandle);
+        base = (u8*)K_Encount_FieldWord(0x1200);
+        func_001a9400(*(KwlnTask**)(base + 0x1200), work->effectHandle);
         work->state = 2;
         return KWLNTASK_CONTINUE;
     }
+    if (deadEc != 0)
+    {
+        fieldWord2 = K_Encount_FieldWord(0x1200);
+        for (procIdx = 0; procIdx < work->ecCount; ++procIdx)
+        {
+            ec = work->ec[procIdx];
+            if (ec != NULL && ec->genusBase != NULL && ec->mdl != NULL &&
+                func_002ff790(ec->genusBase) == 0)
+            {
+                ppos = mdlGetMatrix(ec->mdl)->pos;
+                mdlAnimSet(ec->mdl, 0, 0, 2, 1);
+                mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+            }
+        }
+    }
+    /* Final pass: iterate units and apply effects */
+    for (procIdx = 0; procIdx < work->ecCount; ++procIdx)
+    {
+        ec = work->ec[procIdx];
+        if (ec != NULL && ec->genusBase != NULL && ec->mdl != NULL &&
+            func_002ff790(ec->genusBase) == 0)
+        {
+            ppos = mdlGetMatrix(ec->mdl)->pos;
+            mdlAnimSet(ec->mdl, 0, 0, 0, 1);
+            mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+        }
+    }
+    for (procIdx = 0; procIdx < work->pcCount; ++procIdx)
+    {
+        pc = work->pc[procIdx];
+        if (pc != NULL && pc->genusBase != NULL && pc->mdl != NULL &&
+            func_002ff790(pc->genusBase) == 0)
+        {
+            ppos = mdlGetMatrix(pc->mdl)->pos;
+            mdlAnimSet(pc->mdl, 0, 0, 0, 1);
+            mdlAnimSetSpeed(pc->mdl, 0, 1.0f);
+        }
+    }
     if (work->totalActive != 0)
     {
-        work->selectedFlatIndex = (work->selectedFlatIndex + 1) % work->totalActive;
+        curIdx = work->selectedFlatIndex + 1;
+        total = work->totalActive;
+        if (curIdx >= total)
+        {
+            curIdx = 0;
+        }
+        work->selectedFlatIndex = curIdx;
     }
     if (work->duration > 0x16)
     {
