@@ -2080,23 +2080,33 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     puVar1[0xc] = uVar2;
     break;
   case 4:
-    uVar5 = *(u64 *)(puVar1[3] + 0x30);
-    func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 2, uVar5, uVar5, 0, 0, 0, 0);
-    uVar5 = CAMP_PAIR_FLOAT_HIGH((float)(puVar1[1] * 0x21) + 124.0f,0x44138000);
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x88), 0, 2, 2, uVar5, uVar5, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x44), 0, 2, 2, 0x42fa000043c50000, 0x42fa000043c50000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0xcc), 0, 2, 2, 0x42fc000043c90000, 0x42fc000043c90000, 0, 0, 0, 0);
+  {
+    volatile CampBits p1;
+    volatile CampBits p2;
+    p1.u = *(u64 *)(puVar1[3] + 0x30);
+    func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 2, p1.u, p1.u, 0, 0, 0, 0);
+    p2.u = CAMP_PAIR_FLOAT_HIGH((float)(puVar1[1] * 0x21) + 124.0f,0x44138000);
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x88), 0, 2, 2, p2.u, p2.u, 0, 0, 0, 0);
+    p1.u = 0x42fa000043c50000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x44), 0, 2, 2, p1.u, p1.u, 0, 0, 0, 0);
+    p2.u = 0x42fc000043c90000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0xcc), 0, 2, 2, p2.u, p2.u, 0, 0, 0, 0);
     *(u32 *)(puVar1[3] + 0x150) = 0;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x110), 0, 2, 2, 0x4170000043a08000, 0x4170000043a08000, 0, 0, 0, 0);
+    p1.u = 0x4170000043a08000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x110), 0, 2, 2, p1.u, p1.u, 0, 0, 0, 0);
     *(u32 *)(puVar1[3] + 0x194) = 0;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x154), 0, 2, 2, 0x42f8000043b18000, 0x42f8000043b18000, 0, 0, 0, 0);
+    p2.u = 0x42f8000043b18000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x154), 0, 2, 2, p2.u, p2.u, 0, 0, 0, 0);
     *(u32 *)(puVar1[3] + 0x194) = 0;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x198), 0, 2, 2, 0x43c08000423c0000, 0x43c08000423c0000, 0, 0, 0, 0);
+    p1.u = 0x43c08000423c0000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x198), 0, 2, 2, p1.u, p1.u, 0, 0, 0, 0);
     *(u32 *)(puVar1[3] + 0x194) = 0;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x1dc), 0, 2, 2, 0x43c0800043c40000, 0x43c0800043c40000, 0, 0, 0, 0);
+    p1.u = 0x43c0800043c40000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x1dc), 0, 2, 2, p1.u, p1.u, 0, 0, 0, 0);
     FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     *puVar1 = 5;
     break;
+  }
   case 5:
     lVar4 = FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     if (lVar4 != 0) {
