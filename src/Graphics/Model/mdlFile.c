@@ -30091,7 +30091,8 @@ void FUN_003397b0(int param_1,float *param_2)
 
 
 
-// FUN_003397D0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_003397D0
 void FUN_003397d0(int param_1)
 {
   u16 *puVar1;
@@ -30114,6 +30115,7 @@ void FUN_003397d0(int param_1)
     puVar4 = puVar4 + 6;
   }
 }
+#pragma opt_loop_invariants off
 // FUN_003398C0 NONMATCHING
 
 
@@ -30856,7 +30858,8 @@ void FUN_0033a220(u64 param_1)
 
 
 
-// FUN_0033A3E0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033A3E0
 
 
 void FUN_0033a3e0(int param_1)
@@ -30905,6 +30908,7 @@ void FUN_0033a3e0(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -31675,7 +31679,8 @@ void FUN_0033af10(u64 param_1)
 
 
 
-// FUN_0033B0D0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033B0D0
 
 
 void FUN_0033b0d0(int param_1)
@@ -31728,6 +31733,7 @@ void FUN_0033b0d0(int param_1)
 
 }
 
+#pragma opt_loop_invariants off
 
 
 
@@ -32475,7 +32481,8 @@ void FUN_0033bbe0(u64 param_1)
 
 
 
-// FUN_0033BDA0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033BDA0
 
 
 void FUN_0033bda0(int param_1)
@@ -32527,6 +32534,7 @@ void FUN_0033bda0(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -33382,9 +33390,9 @@ void FUN_0033c960(u64 param_1)
 }
 
 
+#pragma opt_loop_invariants on
 
-
-// FUN_0033CB20 NONMATCHING
+// FUN_0033CB20
 
 
 void FUN_0033cb20(int param_1)
@@ -33436,6 +33444,7 @@ void FUN_0033cb20(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -34285,7 +34294,8 @@ void FUN_0033d6d0(u64 param_1)
 
 
 
-// FUN_0033D890 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033D890
 
 
 void FUN_0033d890(int param_1)
@@ -34337,6 +34347,7 @@ void FUN_0033d890(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -35228,7 +35239,8 @@ void FUN_0033e540(u64 param_1)
 
 
 
-// FUN_0033E700 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033E700
 
 
 void FUN_0033e700(int param_1)
@@ -35273,6 +35285,7 @@ void FUN_0033e700(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -36067,7 +36080,8 @@ void FUN_0033f2e0(u64 param_1)
 
 
 
-// FUN_0033F4A0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033F4A0
 
 
 void FUN_0033f4a0(int param_1)
@@ -36118,6 +36132,7 @@ void FUN_0033f4a0(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
