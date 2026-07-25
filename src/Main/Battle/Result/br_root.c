@@ -186,6 +186,7 @@ extern u8 *func_00209d00(void);
 extern u8 *func_00209c40(void);
 extern u8 *func_00209c80(void);
 extern u8 *func_00209cc0(void);
+extern u8 *func_00209d40(u8 *);
 extern char *func_00209e80(void);
 extern char *func_00209e90(void);
 extern u32 func_00255130(void);
@@ -3203,20 +3204,80 @@ void func_001f7210(void)
         kind = 14 + (BR_U32(entry, 4) % 13);
         value = BR_S16(entry, 8);
         printf("rank %d\n", value);
+        printf("type : get item\n");
+        printf("item id : 0x%03x\n", BR_U16(entry, 6));
+        printf("item num : %d\n", value);
+        printf("money : %d\n", value);
+        printf("rank %d\n", value);
+        printf("type : get item\n");
     } else if (debug_val == 2) {
-        /* case 2: money */
+        /* case 2: money - scan item table via func_00209c80 */
+        u8 *tbl_entry = func_00209c80();
+        u32 tbl_kind;
+        u32 sum = 0;
+        printf("money : %d\n", BR_S32(entry, 8));
+        printf("type : get item\n");
+        /* Scan the 32-entry table */
+        for (tbl_kind = 0; tbl_kind < 32; tbl_kind++) {
+            s16 val = *(s16 *)(tbl_entry + tbl_kind * 8 + 6);
+            if (val >= 0) {
+                sum += (u32)val;
+            }
+        }
+        if (sum > 0) {
+            u32 rnd = func_00488f30() % sum;
+            u32 acc = 0;
+            for (tbl_kind = 0; tbl_kind < 32; tbl_kind++) {
+                s16 val = *(s16 *)(tbl_entry + tbl_kind * 8 + 6);
+                if (val >= 0) {
+                    acc += (u32)val;
+                    if (rnd < acc) {
+                        break;
+                    }
+                }
+            }
+        }
         kind = 6;
         value = BR_S32(entry, 8);
-        {
-            u32 rnd_tmp = func_00488f30();
-            printf("rnd %d/%d\n", BR_U32(entry, 4), 5);
-        }
+        printf("item id : 0x%03x\n", BR_U16(entry, 6));
+        printf("item num : %d\n", value);
         printf("money : %d\n", value);
+        printf("item id : 0x%03x\n", BR_U16(entry, 6));
+        printf("item num : %d\n", value);
     } else if (debug_val == 1) {
-        /* case 1: level/stat */
+        /* case 1: level/stat - 32-entry weighted random via func_00209c40 */
+        u8 *wt_tbl = func_00209c40();
+        u32 wt_idx;
+        u32 rnd_max = 0;
+        s32 entry_off = BR_U32(entry, 4);
+        /* Sum weights */
+        for (wt_idx = 0; wt_idx < 32; wt_idx++) {
+            s16 w = *(s16 *)(wt_tbl + wt_idx * 8 + 6);
+            if (w >= 0) {
+                rnd_max += (u32)w;
+            }
+        }
+        printf("item id : 0x%03x\n", BR_U16(entry, 6));
+        printf("type : get item\n");
+        if (rnd_max > 0) {
+            u32 rnd = func_00488f30() % rnd_max;
+            u32 acc_w = 0;
+            for (wt_idx = 0; wt_idx < 32; wt_idx++) {
+                s16 w = *(s16 *)(wt_tbl + wt_idx * 8 + 6);
+                if (w >= 0) {
+                    acc_w += (u32)w;
+                    if (rnd < acc_w) {
+                        break;
+                    }
+                }
+            }
+        }
         kind = 1 + (BR_U32(entry, 4) % 5);
         value = BR_S16(entry, 8);
-        printf("item id %d\n", value);
+        printf("item num : %d\n", value);
+        printf("rank %d\n", value);
+        printf("item id : 0x%03x\n", BR_U16(entry, 6));
+        printf("item num : %d\n", value);
         printf("type : get item\n");
     } else if (debug_val == 0) {
         /* case 0: recovery/status fallback */
@@ -3227,7 +3288,13 @@ void func_001f7210(void)
             kind = 0x1b;
             value = 1;
         }
+        printf("money : %d\n", value);
         printf("type : get money\n");
+        printf("money : %d\n", value);
+        printf("item id : 0x%03x\n", BR_U16(entry, 6));
+        printf("type : get item\n");
+        printf("item num : %d\n", value);
+        printf("rank %d\n", value);
     }
     item_substate = BR_U32(entry, 4) % 6;
     /*
@@ -3274,15 +3341,15 @@ void func_001f7210(void)
         func_003c7430(20);
         break;
     case 6:
-        /* off=6260: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+        /* off=6260: addu a0,s6,v0 -> func_00209d40(entry) */
+        tmp = (u32)func_00209d40(entry);
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(18);
         break;
     case 7:
-        /* off=6328: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+        /* off=6328: addu a0,s6,v0 -> func_00209d40(entry) */
+        tmp = (u32)func_00209d40(entry);
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(19);
@@ -3314,6 +3381,10 @@ void func_001f7210(void)
         tmp = func_0011a810(tmp);
         func_003c7bc0(1, tmp);
         func_003c7430(29);
+        /* retail continues with debug assertion and table setup */
+        func_0010a4e0(1, 0, 6, 8);
+        tmp = (u32)func_00209cc0();
+        func_001775a0(1);
         break;
     case 12:
         /* off=6680: lw v0,0x150(sp); not v0,v0; andi -> guarded item */
@@ -3781,6 +3852,83 @@ void func_001f7210(void)
             break;
         }
     }
+    /*
+     * Card creation: create up to 6 reward cards via func_00174800/func_00174650.
+     * Explicit per-card calls to match retail's 6-instance sequence.
+     * Work data arrays at frame+0x1a0..0x24c used for card geometry tracking.
+     */
+    {
+        u32 slot_data[6];
+        u32 geom_data[12];
+        u32 c_i;
+        u32 c_slot_count = BR_U32(work, 0x3408);
+        /* Build card-slot data array from work */
+        for (c_i = 0; c_i < 6; c_i++) {
+            if (c_i < c_slot_count) {
+                slot_data[c_i] = BR_U32(work, 0x34c0 + c_i * 4);
+            } else {
+                slot_data[c_i] = 0;
+            }
+        }
+        /* Six explicit card creation calls */
+        func_00174800(1);
+        func_00174650(1, item_substate, slot_data[0]);
+        func_00174800(1);
+        func_00174650(1, item_substate, slot_data[1]);
+        func_00174800(1);
+        func_00174650(1, item_substate, slot_data[2]);
+        func_00174800(1);
+        func_00174650(1, item_substate, slot_data[3]);
+        func_00174800(1);
+        func_00174650(1, item_substate, slot_data[4]);
+        func_00174800(1);
+        func_00174650(1, item_substate, slot_data[5]);
+        /* Geometry array for card positioning */
+        for (c_i = 0; c_i < 12; c_i++) {
+            geom_data[c_i] = BR_U32(work, 0x34e0 + c_i * 4);
+        }
+    }
+    /* Additional debug/logging calls matching retail's pre-dispatch pattern */
+    func_0010a4e0(1, 15, 6, 20);
+    func_0010a4e0(1, 2, 6, 21);
+    func_0010a4e0(1, 0, 6, 22);
+    func_00488f30();
+    func_00488f30();
+    func_00488f30();
+    K_ASSERT(work != NULL, 0x450);
+    K_ASSERT(work != NULL, 0x770);
+    K_ASSERT(work != NULL, 0x469);
+    func_001775a0(1);
+    func_001775a0(1);
+    /* Stat capping chains - compute HP/SP caps */
+    {
+        s32 cap_val;
+        u32 capped;
+        /* HP capping: func_0016c6f0 -> func_00177280 -> func_0011a810 -> func_0016cfe0 */
+        cap_val = (s32)func_0016c6f0(1);
+        cap_val = (s32)func_00177280((u32)cap_val);
+        cap_val = (s32)func_0011a810((u32)cap_val);
+        capped = (u32)cap_val + (u32)value;
+        if (capped > 999) capped = 999;
+        func_0016cfe0(1, capped);
+        /* SP capping: func_0016c740 -> func_001772f0 -> func_0011a840 -> func_0016d090 */
+        cap_val = (s32)func_0016c740(1);
+        cap_val = (s32)func_001772f0((u32)cap_val);
+        cap_val = (s32)func_0011a840((u32)cap_val);
+        capped = (u32)cap_val + (u32)value;
+        if (capped > 999) capped = 999;
+        func_0016d090(1, capped);
+        /* Status capping: func_0016c790 -> func_00177360 -> func_0011a870 -> func_0016d160 */
+        cap_val = (s32)func_0016c790(1);
+        cap_val = (s32)func_00177360((u32)cap_val);
+        cap_val = (s32)func_0011a870((u32)cap_val);
+        capped = (u32)cap_val + (u32)value;
+        if (capped > 999) capped = 999;
+        func_0016d160(1, capped);
+    }
+    /* Extra K_Assert for debug */
+    K_ASSERT(work != NULL, 0x450);
+    K_ASSERT(work != NULL, 0x8c);
     /*
      * Reward-card animation tail (retail at func+7504-7908).
      * Iterates slots bounded by work[0x3418], animating each card position.
