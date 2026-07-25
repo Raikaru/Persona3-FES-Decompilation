@@ -8202,6 +8202,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar2),1);
     *(int *)(iVar6 + 0x120) = iVar2;
     *(undefined2 *)(iVar6 + 0x124) = 0;
+    iVar7 = iVar1;
     target[0] = sphere2[0];
     target[1] = sphere2[1];
     target[2] = sphere2[2];
@@ -8354,7 +8355,6 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       result[1] = 25.0f;
     }
     uVar11 = 0x40200000;
-    iVar7 = iVar1;
   }
   else {
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar2),0);
@@ -8432,12 +8432,12 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     work2[1] = work1[1];
     work2[2] = work1[2];
     work2[3] = work1[3];
-    dir[0] = sphere0[0] - result[0];
-    dir[1] = sphere0[1] - result[1];
-    dir[2] = sphere0[2] - result[2];
     resultPos[0] = result[0];
     resultPos[1] = result[1];
     resultPos[2] = result[2];
+    dir[0] = sphere0[0] - resultPos[0];
+    dir[1] = sphere0[1] - resultPos[1];
+    dir[2] = sphere0[2] - resultPos[2];
     fVar10 = (float)FUN_004c69f0(dir,dir);
     btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar7), (RwV3d*)target);
     target[1] = fGpffff8030 * *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) + target[1] + 0.0f;
