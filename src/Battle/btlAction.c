@@ -5976,9 +5976,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     u16 count;
     u32 changeForm;
     u16 speedIdx;
-    f32 distThreshold;
     RwV3d homePos;
-    s32 workArea[2];
 
     selected = NULL;
     unit = action->unit;
@@ -6078,8 +6076,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
             u8 genus;
 
             btlUnit0027f7c0(unit, &homePos, NULL, NULL);
-            distThreshold = 75.0f;
-            if (FUN_002d1ed0(&unit->pos, &homePos) > distThreshold)
+            if (FUN_002d1ed0(&unit->pos, &homePos) > 75.0f)
             {
                 if (FUN_00300580(unit->datUnit, 0x180000) == 0)
                 {
