@@ -1253,6 +1253,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     RwV3d fovPos;
     RwV3d npcOffset;
     RwV3d idleCheckOffset;
+    RwV3d case6UpVec;
+    RwMatrix case6MatBuf;
     s32 currentActor;
     s32 taskResult;
     s32 model;
@@ -1332,6 +1334,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     extern s32 FUN_0045af40();
     extern f32 FUN_00318990();
     extern f32 FUN_004c6ac0();
+    extern void litodp();
+    extern u32 func_0010a770();
 
     fldEvent = (FldEvent*)fldEventTask->workData;
     eventWords = (u32*)fldEvent;
@@ -1932,12 +1936,19 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             FUN_004350e0(false, true);
             FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
             FUN_003189f0(0.0f, DATA_U32(0x008717f0), 0);
-            heroMat = (RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50));
             case6Marker = ((RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50)))->pos;
             case6Marker.y += 50.0f;
             if (FUN_0017d800() == true)
             {
-                FUN_001a9390((KwlnTask*)FIELD_WORD(0x1214), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1214), &case6Marker), 3);
+                case6UpVec = *(RwV3d*)0x00683740;
+                taskResult = FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1214), &case6Marker);
+                case6MatBuf = *(RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+                case6MatBuf.pos.x = 0.0f;
+                case6MatBuf.pos.y = 0.0f;
+                case6MatBuf.pos.z = 0.0f;
+                litodp(&case6MatBuf, &case6UpVec, 2);
+                case6MatBuf.pos = case6UpVec;
+                FUN_001a9330((KwlnTask*)FIELD_WORD(0x1214), taskResult, &case6MatBuf);
             }
             else
             {
@@ -2272,7 +2283,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             FUN_001d69e0((KwlnTask*)FIELD_WORD(4), &EVENT_WORD(0x20));
             FUN_001d5f30((KwlnTask*)FIELD_WORD(4), DATA_U32(0x008717f4));
             if (FUN_001a01c0() == true) FIELD_WORD(0x18) = FUN_00429d40(fldEventTask);
-            FIELD_WORD(0x1054) = (u32)H_Snd_CreateStreamTask(fldEventTask, (void*)2, NULL, (void*)2, 0x1ea, true);
+            FIELD_WORD(0x1054) = func_0010a770(fldEventTask, 2, 0, 2, 0x1ea, 1);
             fldEvent->eventType = 0x13;
             break;
 
