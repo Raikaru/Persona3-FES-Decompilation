@@ -3191,13 +3191,10 @@ void func_001f7210(void)
     u32 i;
     u32 item_substate;
     u32 debug_val;
-    u32 frame_pad[0x40];
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
-    frame_pad[0] = entry_idx;
-    frame_pad[0x3f] = slot;
-    BR_U32(work, 0x34e8) = frame_pad[0] + frame_pad[0x3f];
+    BR_U32(work, 0x34e8) = entry_idx + slot;
     BR_U32(work, 0x34e0) = entry_idx * 0x670;
     entry = work + 0x670 + 0x60;
     debug_val = BR_U32(entry, 0);
