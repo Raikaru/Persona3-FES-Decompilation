@@ -4395,1663 +4395,522 @@ void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4)
 
 
 void FUN_0041c180(int param_1,int param_2,int param_3)
-
-
-
 {
-
-  u32 uVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  u64 uVar4;
-
-  int iVar5;
-
+  u32 bigBuf[12][84];
+  u32 smallBuf[12][8];
+  u32 s0;
   u32 *puVar6;
-
   u32 *puVar7;
-
-  u32 auStack_1140 [6];
-
-  u16 uStack_1128;
-
-  u32 uStack_1124;
-
-  u16 uStack_110c;
-
-  u32 uStack_1108;
-
-  u16 uStack_10f0;
-
-  u32 uStack_10ec;
-
-  u16 uStack_10d4;
-
-  u32 uStack_10d0;
-
-  u16 uStack_10b8;
-
-  u32 uStack_10b4;
-
-  u16 uStack_109c;
-
-  u32 uStack_1098;
-
-  u16 uStack_1080;
-
-  u32 uStack_107c;
-
-  u16 uStack_1064;
-
-  u32 uStack_1060;
-
-  u16 uStack_1048;
-
-  u32 uStack_1044;
-
-  u16 uStack_102c;
-
-  u32 uStack_1028;
-
-  u16 uStack_1010;
-
-  u32 auStack_100c [6];
-
-  u16 uStack_ff4;
-
-  u32 auStack_ff0 [6];
-
-  u16 uStack_fd8;
-
-  u32 uStack_fd4;
-
-  u16 uStack_fbc;
-
-  u32 uStack_fb8;
-
-  u16 uStack_fa0;
-
-  u32 uStack_f9c;
-
-  u16 uStack_f84;
-
-  u32 uStack_f80;
-
-  u16 uStack_f68;
-
-  u32 uStack_f64;
-
-  u16 uStack_f4c;
-
-  u32 uStack_f48;
-
-  u16 uStack_f30;
-
-  u32 uStack_f2c;
-
-  u16 uStack_f14;
-
-  u32 uStack_f10;
-
-  u16 uStack_ef8;
-
-  u32 uStack_ef4;
-
-  u16 uStack_edc;
-
-  u32 auStack_ed8 [6];
-
-  u16 uStack_ec0;
-
-  u32 uStack_ebc;
-
-  u16 uStack_ea4;
-
-  u32 auStack_ea0 [6];
-
-  u16 uStack_e88;
-
-  u32 uStack_e84;
-
-  u16 uStack_e6c;
-
-  u32 uStack_e68;
-
-  u16 uStack_e50;
-
-  u32 uStack_e4c;
-
-  u16 uStack_e34;
-
-  u32 uStack_e30;
-
-  u16 uStack_e18;
-
-  u32 uStack_e14;
-
-  u16 uStack_dfc;
-
-  u32 uStack_df8;
-
-  u16 uStack_de0;
-
-  u32 uStack_ddc;
-
-  u16 uStack_dc4;
-
-  u32 uStack_dc0;
-
-  u16 uStack_da8;
-
-  u32 auStack_da4 [6];
-
-  u16 uStack_d8c;
-
-  u32 uStack_d88;
-
-  u16 uStack_d70;
-
-  u32 uStack_d6c;
-
-  u16 uStack_d54;
-
-  u32 auStack_d50 [6];
-
-  u16 uStack_d38;
-
-  u32 uStack_d34;
-
-  u16 uStack_d1c;
-
-  u32 uStack_d18;
-
-  u16 uStack_d00;
-
-  u32 uStack_cfc;
-
-  u16 uStack_ce4;
-
-  u32 uStack_ce0;
-
-  u16 uStack_cc8;
-
-  u32 uStack_cc4;
-
-  u16 uStack_cac;
-
-  u32 uStack_ca8;
-
-  u16 uStack_c90;
-
-  u32 uStack_c8c;
-
-  u16 uStack_c74;
-
-  u32 auStack_c70 [6];
-
-  u16 uStack_c58;
-
-  u32 uStack_c54;
-
-  u16 uStack_c3c;
-
-  u32 uStack_c38;
-
-  u16 uStack_c20;
-
-  u32 uStack_c1c;
-
-  u16 uStack_c04;
-
-  u32 auStack_c00 [6];
-
-  u16 uStack_be8;
-
-  u32 uStack_be4;
-
-  u16 uStack_bcc;
-
-  u32 uStack_bc8;
-
-  u16 uStack_bb0;
-
-  u32 uStack_bac;
-
-  u16 uStack_b94;
-
-  u32 uStack_b90;
-
-  u16 uStack_b78;
-
-  u32 uStack_b74;
-
-  u16 uStack_b5c;
-
-  u32 uStack_b58;
-
-  u16 uStack_b40;
-
-  u32 auStack_b3c [6];
-
-  u16 uStack_b24;
-
-  u32 uStack_b20;
-
-  u16 uStack_b08;
-
-  u32 uStack_b04;
-
-  u16 uStack_aec;
-
-  u32 uStack_ae8;
-
-  u16 uStack_ad0;
-
-  u32 uStack_acc;
-
-  u16 uStack_ab4;
-
-  u32 auStack_ab0 [6];
-
-  u16 uStack_a98;
-
-  u32 uStack_a94;
-
-  u16 uStack_a7c;
-
-  u32 uStack_a78;
-
-  u16 uStack_a60;
-
-  u32 uStack_a5c;
-
-  u16 uStack_a44;
-
-  u32 uStack_a40;
-
-  u16 uStack_a28;
-
-  u32 auStack_a24 [6];
-
-  u16 uStack_a0c;
-
-  u32 uStack_a08;
-
-  u16 uStack_9f0;
-
-  u32 uStack_9ec;
-
-  u16 uStack_9d4;
-
-  u32 uStack_9d0;
-
-  u16 uStack_9b8;
-
-  u32 uStack_9b4;
-
-  u16 uStack_99c;
-
-  u32 uStack_998;
-
-  u16 uStack_980;
-
-  u32 uStack_97c;
-
-  u16 uStack_964;
-
-  u32 auStack_960 [6];
-
-  u16 uStack_948;
-
-  u32 uStack_944;
-
-  u16 uStack_92c;
-
-  u32 uStack_928;
-
-  u16 uStack_910;
-
-  u32 auStack_90c [6];
-
-  u16 uStack_8f4;
-
-  u32 uStack_8f0;
-
-  u16 uStack_8d8;
-
-  u32 uStack_8d4;
-
-  u16 uStack_8bc;
-
-  u32 uStack_8b8;
-
-  u16 uStack_8a0;
-
-  u32 uStack_89c;
-
-  u16 uStack_884;
-
-  u32 uStack_880;
-
-  u16 uStack_868;
-
-  u32 uStack_864;
-
-  u16 uStack_84c;
-
-  u32 uStack_848;
-
-  u16 uStack_830;
-
-  u32 uStack_82c;
-
-  u16 uStack_814;
-
-  u32 auStack_810 [6];
-
-  u16 uStack_7f8;
-
-  u32 uStack_7f4;
-
-  u16 uStack_7dc;
-
-  u32 uStack_7d8;
-
-  u16 uStack_7c0;
-
-  u32 uStack_7bc;
-
-  u16 uStack_7a4;
-
-  u32 uStack_7a0;
-
-  u16 uStack_788;
-
-  u32 uStack_784;
-
-  u16 uStack_76c;
-
-  u32 auStack_768 [6];
-
-  u16 uStack_750;
-
-  u32 uStack_74c;
-
-  u16 uStack_734;
-
-  u32 uStack_730;
-
-  u16 uStack_718;
-
-  u32 uStack_714;
-
-  u16 uStack_6fc;
-
-  u32 uStack_6f8;
-
-  u16 uStack_6e0;
-
-  u32 uStack_6dc;
-
-  u16 uStack_6c4;
-
-  u32 auStack_6c0 [6];
-
-  u16 uStack_6a8;
-
-  u32 uStack_6a4;
-
-  u16 uStack_68c;
-
-  u32 uStack_688;
-
-  u16 uStack_670;
-
-  u32 uStack_66c;
-
-  u16 uStack_654;
-
-  u32 auStack_650 [6];
-
-  u16 uStack_638;
-
-  u32 uStack_634;
-
-  u16 uStack_61c;
-
-  u32 uStack_618;
-
-  u16 uStack_600;
-
-  u32 uStack_5fc;
-
-  u16 uStack_5e4;
-
-  u32 uStack_5e0;
-
-  u16 uStack_5c8;
-
-  u32 uStack_5c4;
-
-  u16 uStack_5ac;
-
-  u32 uStack_5a8;
-
-  u16 uStack_590;
-
-  u32 uStack_58c;
-
-  u16 uStack_574;
-
-  u32 auStack_570 [6];
-
-  u16 uStack_558;
-
-  u32 uStack_554;
-
-  u16 uStack_53c;
-
-  u32 auStack_538 [6];
-
-  u16 uStack_520;
-
-  u32 uStack_51c;
-
-  u16 uStack_504;
-
-  u32 uStack_500;
-
-  u16 uStack_4e8;
-
-  u32 uStack_4e4;
-
-  u16 uStack_4cc;
-
-  u32 uStack_4c8;
-
-  u16 uStack_4b0;
-
-  u32 uStack_4ac;
-
-  u16 uStack_494;
-
-  u32 uStack_490;
-
-  u16 uStack_478;
-
-  u32 uStack_474;
-
-  u16 uStack_45c;
-
-  u32 uStack_458;
-
-  u16 uStack_440;
-
-  u32 uStack_43c;
-
-  u16 uStack_424;
-
-  u32 auStack_420 [6];
-
-  u16 uStack_408;
-
-  u32 auStack_404 [6];
-
-  u16 uStack_3ec;
-
-  u32 uStack_3e8;
-
-  u16 uStack_3d0;
-
-  u32 uStack_3cc;
-
-  u16 uStack_3b4;
-
-  u32 uStack_3b0;
-
-  u16 uStack_398;
-
-  u32 uStack_394;
-
-  u16 uStack_37c;
-
-  u32 uStack_378;
-
-  u16 uStack_360;
-
-  u32 uStack_35c;
-
-  u16 uStack_344;
-
-  u32 uStack_340;
-
-  u16 uStack_328;
-
-  u32 uStack_324;
-
-  u16 uStack_30c;
-
-  u32 uStack_308;
-
-  u16 uStack_2f0;
-
-  u32 uStack_2ec;
-
-  u16 uStack_2d4;
-
-  u32 auStack_2d0 [6];
-
-  u16 uStack_2b8;
-
-  u32 uStack_2b4;
-
-  u16 uStack_29c;
-
-  u32 uStack_298;
-
-  u16 uStack_280;
-
-  u32 uStack_27c;
-
-  u16 uStack_264;
-
-  u32 uStack_260;
-
-  u16 uStack_248;
-
-  u32 uStack_244;
-
-  u16 uStack_22c;
-
-  u32 uStack_228;
-
-  u16 uStack_210;
-
-  u32 uStack_20c;
-
-  u16 uStack_1f4;
-
-  u32 uStack_1f0;
-
-  u16 uStack_1d8;
-
-  u32 uStack_1d4;
-
-  u16 uStack_1bc;
-
-  u32 uStack_1b8;
-
-  u16 uStack_1a0;
-
-  u32 uStack_19c;
-
-  u16 uStack_184;
-
-  u8 auStack_180 [4];
-
-  u32 uStack_17c;
-
-  u8 auStack_160 [4];
-
-  u32 uStack_15c;
-
-  u8 auStack_140 [4];
-
-  u32 uStack_13c;
-
-  u8 auStack_120 [4];
-
-  u32 uStack_11c;
-
-  u8 auStack_100 [4];
-
-  u32 uStack_fc;
-
-  u8 auStack_e0 [4];
-
-  u32 uStack_dc;
-
-  u8 auStack_c0 [4];
-
-  u32 uStack_bc;
-
-  u8 auStack_a0 [4];
-
-  u32 uStack_9c;
-
-  u8 auStack_80 [4];
-
-  u32 uStack_7c;
-
-  u8 auStack_60 [4];
-
-  u32 uStack_5c;
-
-  u8 auStack_40 [4];
-
-  u32 uStack_3c;
-
-  u8 auStack_20 [4];
-
-  u32 uStack_1c;
-
-  
+  u32 uVar2;
+  u32 uVar3;
+  int iVar5;
+  u32 result;
 
   if (param_2 == 5) {
-
     if (param_3 == 0) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_ff0;
-
+      puVar6 = bigBuf[1];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_ff0[0] = 5;
-
-      uStack_fd8 = 0;
-
-      uStack_fd4 = 5;
-
-      uStack_fbc = 0;
-
-      uStack_fb8 = 5;
-
-      uStack_fa0 = 0;
-
-      uStack_f9c = 5;
-
-      uStack_f84 = 0;
-
-      uStack_f80 = 5;
-
-      uStack_f68 = 0;
-
-      uStack_f64 = 5;
-
-      uStack_f4c = 0;
-
-      uStack_f48 = 5;
-
-      uStack_f30 = 0;
-
-      uStack_f2c = 5;
-
-      uStack_f14 = 0;
-
-      uStack_f10 = 5;
-
-      uStack_ef8 = 0;
-
-      uStack_ef4 = 5;
-
-      uStack_edc = 0;
-
-      auStack_ed8[0] = 5;
-
-      uStack_ec0 = 0;
-
-      uStack_ebc = 5;
-
-      uStack_ea4 = 0;
-
-      memcpy(auStack_160,auStack_ed8,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,5,uStack_15c);
-
-      fclCombineList003df100(uVar4,auStack_160);
-
-      **(u16 **)((int)uVar4 + 0x34) = 0;
-
+      bigBuf[1][0] = 5;
+      *(u16 *)&bigBuf[1][6] = 0;
+      bigBuf[1][7] = 5;
+      *(u16 *)&bigBuf[1][13] = 0;
+      bigBuf[1][14] = 5;
+      *(u16 *)&bigBuf[1][20] = 0;
+      bigBuf[1][21] = 5;
+      *(u16 *)&bigBuf[1][27] = 0;
+      bigBuf[1][28] = 5;
+      *(u16 *)&bigBuf[1][34] = 0;
+      bigBuf[1][35] = 5;
+      *(u16 *)&bigBuf[1][41] = 0;
+      bigBuf[1][42] = 5;
+      *(u16 *)&bigBuf[1][48] = 0;
+      bigBuf[1][49] = 5;
+      *(u16 *)&bigBuf[1][55] = 0;
+      bigBuf[1][56] = 5;
+      *(u16 *)&bigBuf[1][62] = 0;
+      bigBuf[1][63] = 5;
+      *(u16 *)&bigBuf[1][69] = 0;
+      bigBuf[1][70] = 5;
+      *(u16 *)&bigBuf[1][76] = 0;
+      bigBuf[1][77] = 5;
+      *(u16 *)&bigBuf[1][83] = 0;
+      memcpy(smallBuf[1], &bigBuf[1][70], 0x1c);
+      result = FUN_003dffc0(s0, 5, smallBuf[1][1]);
+      fclCombineList003df100(result, smallBuf[1]);
+      **(u16 **)(result + 0x34) = 0;
     }
-
     else if (param_3 == 1) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_1140;
-
+      puVar6 = bigBuf[0];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_1140[0] = 5;
-
-      uStack_1128 = 0;
-
-      uStack_1124 = 5;
-
-      uStack_110c = 0;
-
-      uStack_1108 = 5;
-
-      uStack_10f0 = 0;
-
-      uStack_10ec = 5;
-
-      uStack_10d4 = 0;
-
-      uStack_10d0 = 5;
-
-      uStack_10b8 = 0;
-
-      uStack_10b4 = 5;
-
-      uStack_109c = 0;
-
-      uStack_1098 = 5;
-
-      uStack_1080 = 0;
-
-      uStack_107c = 5;
-
-      uStack_1064 = 0;
-
-      uStack_1060 = 5;
-
-      uStack_1048 = 0;
-
-      uStack_1044 = 5;
-
-      uStack_102c = 0;
-
-      uStack_1028 = 5;
-
-      uStack_1010 = 0;
-
-      auStack_100c[0] = 5;
-
-      uStack_ff4 = 0;
-
-      memcpy(auStack_180,auStack_100c,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,5,uStack_17c);
-
-      fclCombineList003df100(uVar4,auStack_180);
-
-      **(u16 **)((int)uVar4 + 0x34) = 0;
-
+      bigBuf[0][0] = 5;
+      *(u16 *)&bigBuf[0][6] = 0;
+      bigBuf[0][7] = 5;
+      *(u16 *)&bigBuf[0][13] = 0;
+      bigBuf[0][14] = 5;
+      *(u16 *)&bigBuf[0][20] = 0;
+      bigBuf[0][21] = 5;
+      *(u16 *)&bigBuf[0][27] = 0;
+      bigBuf[0][28] = 5;
+      *(u16 *)&bigBuf[0][34] = 0;
+      bigBuf[0][35] = 5;
+      *(u16 *)&bigBuf[0][41] = 0;
+      bigBuf[0][42] = 5;
+      *(u16 *)&bigBuf[0][48] = 0;
+      bigBuf[0][49] = 5;
+      *(u16 *)&bigBuf[0][55] = 0;
+      bigBuf[0][56] = 5;
+      *(u16 *)&bigBuf[0][62] = 0;
+      bigBuf[0][63] = 5;
+      *(u16 *)&bigBuf[0][69] = 0;
+      bigBuf[0][70] = 5;
+      *(u16 *)&bigBuf[0][76] = 0;
+      bigBuf[0][77] = 5;
+      *(u16 *)&bigBuf[0][83] = 0;
+      memcpy(smallBuf[0], &bigBuf[0][77], 0x1c);
+      result = FUN_003dffc0(s0, 5, smallBuf[0][1]);
+      fclCombineList003df100(result, smallBuf[0]);
+      **(u16 **)(result + 0x34) = 0;
     }
-
   }
-
   else if (param_2 == 4) {
-
     if (param_3 == 0) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_d50;
-
+      puVar6 = bigBuf[3];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_d50[0] = 4;
-
-      uStack_d38 = 0;
-
-      uStack_d34 = 4;
-
-      uStack_d1c = 0;
-
-      uStack_d18 = 4;
-
-      uStack_d00 = 0;
-
-      uStack_cfc = 4;
-
-      uStack_ce4 = 0;
-
-      uStack_ce0 = 4;
-
-      uStack_cc8 = 0;
-
-      uStack_cc4 = 4;
-
-      uStack_cac = 0;
-
-      uStack_ca8 = 4;
-
-      uStack_c90 = 0;
-
-      uStack_c8c = 4;
-
-      uStack_c74 = 0;
-
-      auStack_c70[0] = 4;
-
-      uStack_c58 = 0;
-
-      uStack_c54 = 4;
-
-      uStack_c3c = 0;
-
-      uStack_c38 = 4;
-
-      uStack_c20 = 0;
-
-      uStack_c1c = 4;
-
-      uStack_c04 = 0;
-
-      memcpy(auStack_120,auStack_c70,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,4,uStack_11c);
-
-      fclCombineList003df100(uVar4,auStack_120);
-
+      bigBuf[3][0] = 4;
+      *(u16 *)&bigBuf[3][6] = 0;
+      bigBuf[3][7] = 4;
+      *(u16 *)&bigBuf[3][13] = 0;
+      bigBuf[3][14] = 4;
+      *(u16 *)&bigBuf[3][20] = 0;
+      bigBuf[3][21] = 4;
+      *(u16 *)&bigBuf[3][27] = 0;
+      bigBuf[3][28] = 4;
+      *(u16 *)&bigBuf[3][34] = 0;
+      bigBuf[3][35] = 4;
+      *(u16 *)&bigBuf[3][41] = 0;
+      bigBuf[3][42] = 4;
+      *(u16 *)&bigBuf[3][48] = 0;
+      bigBuf[3][49] = 4;
+      *(u16 *)&bigBuf[3][55] = 0;
+      bigBuf[3][56] = 4;
+      *(u16 *)&bigBuf[3][62] = 0;
+      bigBuf[3][63] = 4;
+      *(u16 *)&bigBuf[3][69] = 0;
+      bigBuf[3][70] = 4;
+      *(u16 *)&bigBuf[3][76] = 0;
+      bigBuf[3][77] = 4;
+      *(u16 *)&bigBuf[3][83] = 0;
+      memcpy(smallBuf[3], &bigBuf[3][56], 0x1c);
+      result = FUN_003dffc0(s0, 4, smallBuf[3][1]);
+      fclCombineList003df100(result, smallBuf[3]);
     }
-
     else if (param_3 == 1) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_ea0;
-
+      puVar6 = bigBuf[2];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_ea0[0] = 4;
-
-      uStack_e88 = 0;
-
-      uStack_e84 = 4;
-
-      uStack_e6c = 0;
-
-      uStack_e68 = 4;
-
-      uStack_e50 = 0;
-
-      uStack_e4c = 4;
-
-      uStack_e34 = 0;
-
-      uStack_e30 = 4;
-
-      uStack_e18 = 0;
-
-      uStack_e14 = 4;
-
-      uStack_dfc = 0;
-
-      uStack_df8 = 4;
-
-      uStack_de0 = 0;
-
-      uStack_ddc = 4;
-
-      uStack_dc4 = 0;
-
-      uStack_dc0 = 4;
-
-      uStack_da8 = 0;
-
-      auStack_da4[0] = 4;
-
-      uStack_d8c = 0;
-
-      uStack_d88 = 4;
-
-      uStack_d70 = 0;
-
-      uStack_d6c = 4;
-
-      uStack_d54 = 0;
-
-      memcpy(auStack_140,auStack_da4,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,4,uStack_13c);
-
-      fclCombineList003df100(uVar4,auStack_140);
-
+      bigBuf[2][0] = 4;
+      *(u16 *)&bigBuf[2][6] = 0;
+      bigBuf[2][7] = 4;
+      *(u16 *)&bigBuf[2][13] = 0;
+      bigBuf[2][14] = 4;
+      *(u16 *)&bigBuf[2][20] = 0;
+      bigBuf[2][21] = 4;
+      *(u16 *)&bigBuf[2][27] = 0;
+      bigBuf[2][28] = 4;
+      *(u16 *)&bigBuf[2][34] = 0;
+      bigBuf[2][35] = 4;
+      *(u16 *)&bigBuf[2][41] = 0;
+      bigBuf[2][42] = 4;
+      *(u16 *)&bigBuf[2][48] = 0;
+      bigBuf[2][49] = 4;
+      *(u16 *)&bigBuf[2][55] = 0;
+      bigBuf[2][56] = 4;
+      *(u16 *)&bigBuf[2][62] = 0;
+      bigBuf[2][63] = 4;
+      *(u16 *)&bigBuf[2][69] = 0;
+      bigBuf[2][70] = 4;
+      *(u16 *)&bigBuf[2][76] = 0;
+      bigBuf[2][77] = 4;
+      *(u16 *)&bigBuf[2][83] = 0;
+      memcpy(smallBuf[2], &bigBuf[2][63], 0x1c);
+      result = FUN_003dffc0(s0, 4, smallBuf[2][1]);
+      fclCombineList003df100(result, smallBuf[2]);
     }
-
   }
-
   else if (param_2 == 6) {
-
     if (param_3 == 0) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_570;
-
+      puVar6 = bigBuf[7];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_570[0] = 1;
-
-      uStack_558 = 0;
-
-      uStack_554 = 1;
-
-      uStack_53c = 0;
-
-      auStack_538[0] = 1;
-
-      uStack_520 = 0;
-
-      uStack_51c = 1;
-
-      uStack_504 = 0;
-
-      uStack_500 = 1;
-
-      uStack_4e8 = 0;
-
-      uStack_4e4 = 1;
-
-      uStack_4cc = 0;
-
-      uStack_4c8 = 1;
-
-      uStack_4b0 = 0;
-
-      uStack_4ac = 1;
-
-      uStack_494 = 0;
-
-      uStack_490 = 1;
-
-      uStack_478 = 0;
-
-      uStack_474 = 1;
-
-      uStack_45c = 0;
-
-      uStack_458 = 1;
-
-      uStack_440 = 0;
-
-      uStack_43c = 1;
-
-      uStack_424 = 0;
-
-      memcpy(auStack_60,auStack_538,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,1,uStack_5c);
-
-      fclCombineList003df100(uVar4,auStack_60);
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      bigBuf[7][0] = 1;
+      *(u16 *)&bigBuf[7][6] = 0;
+      bigBuf[7][7] = 1;
+      *(u16 *)&bigBuf[7][13] = 0;
+      bigBuf[7][14] = 1;
+      *(u16 *)&bigBuf[7][20] = 0;
+      bigBuf[7][21] = 1;
+      *(u16 *)&bigBuf[7][27] = 0;
+      bigBuf[7][28] = 1;
+      *(u16 *)&bigBuf[7][34] = 0;
+      bigBuf[7][35] = 1;
+      *(u16 *)&bigBuf[7][41] = 0;
+      bigBuf[7][42] = 1;
+      *(u16 *)&bigBuf[7][48] = 0;
+      bigBuf[7][49] = 1;
+      *(u16 *)&bigBuf[7][55] = 0;
+      bigBuf[7][56] = 1;
+      *(u16 *)&bigBuf[7][62] = 0;
+      bigBuf[7][63] = 1;
+      *(u16 *)&bigBuf[7][69] = 0;
+      bigBuf[7][70] = 1;
+      *(u16 *)&bigBuf[7][76] = 0;
+      bigBuf[7][77] = 1;
+      *(u16 *)&bigBuf[7][83] = 0;
+      memcpy(smallBuf[7], &bigBuf[7][42], 0x1c);
+      result = FUN_003dffc0(s0, 1, smallBuf[7][1]);
+      fclCombineList003df100(result, smallBuf[7]);
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_6c0;
-
+      puVar6 = bigBuf[6];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_6c0[0] = 2;
-
-      uStack_6a8 = 0;
-
-      uStack_6a4 = 2;
-
-      uStack_68c = 0;
-
-      uStack_688 = 2;
-
-      uStack_670 = 0;
-
-      uStack_66c = 2;
-
-      uStack_654 = 0;
-
-      auStack_650[0] = 2;
-
-      uStack_638 = 0;
-
-      uStack_634 = 2;
-
-      uStack_61c = 0;
-
-      uStack_618 = 2;
-
-      uStack_600 = 0;
-
-      uStack_5fc = 2;
-
-      uStack_5e4 = 0;
-
-      uStack_5e0 = 2;
-
-      uStack_5c8 = 0;
-
-      uStack_5c4 = 2;
-
-      uStack_5ac = 0;
-
-      uStack_5a8 = 2;
-
-      uStack_590 = 0;
-
-      uStack_58c = 2;
-
-      uStack_574 = 0;
-
-      memcpy(auStack_80,auStack_650,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,2,uStack_7c);
-
-      fclCombineList003df100(uVar4,auStack_80);
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      bigBuf[6][0] = 2;
+      *(u16 *)&bigBuf[6][6] = 0;
+      bigBuf[6][7] = 2;
+      *(u16 *)&bigBuf[6][13] = 0;
+      bigBuf[6][14] = 2;
+      *(u16 *)&bigBuf[6][20] = 0;
+      bigBuf[6][21] = 2;
+      *(u16 *)&bigBuf[6][27] = 0;
+      bigBuf[6][28] = 2;
+      *(u16 *)&bigBuf[6][34] = 0;
+      bigBuf[6][35] = 2;
+      *(u16 *)&bigBuf[6][41] = 0;
+      bigBuf[6][42] = 2;
+      *(u16 *)&bigBuf[6][48] = 0;
+      bigBuf[6][49] = 2;
+      *(u16 *)&bigBuf[6][55] = 0;
+      bigBuf[6][56] = 2;
+      *(u16 *)&bigBuf[6][62] = 0;
+      bigBuf[6][63] = 2;
+      *(u16 *)&bigBuf[6][69] = 0;
+      bigBuf[6][70] = 2;
+      *(u16 *)&bigBuf[6][76] = 0;
+      bigBuf[6][77] = 2;
+      *(u16 *)&bigBuf[6][83] = 0;
+      memcpy(smallBuf[6], &bigBuf[6][21], 0x1c);
+      result = FUN_003dffc0(s0, 2, smallBuf[6][1]);
+      fclCombineList003df100(result, smallBuf[6]);
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_810;
-
+      puVar6 = bigBuf[5];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_810[0] = 3;
-
-      uStack_7f8 = 0;
-
-      uStack_7f4 = 3;
-
-      uStack_7dc = 0;
-
-      uStack_7d8 = 3;
-
-      uStack_7c0 = 0;
-
-      uStack_7bc = 3;
-
-      uStack_7a4 = 0;
-
-      uStack_7a0 = 3;
-
-      uStack_788 = 0;
-
-      uStack_784 = 3;
-
-      uStack_76c = 0;
-
-      auStack_768[0] = 3;
-
-      uStack_750 = 0;
-
-      uStack_74c = 3;
-
-      uStack_734 = 0;
-
-      uStack_730 = 3;
-
-      uStack_718 = 0;
-
-      uStack_714 = 3;
-
-      uStack_6fc = 0;
-
-      uStack_6f8 = 3;
-
-      uStack_6e0 = 0;
-
-      uStack_6dc = 3;
-
-      uStack_6c4 = 0;
-
-      memcpy(auStack_a0,auStack_768,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,3,uStack_9c);
-
-      fclCombineList003df100(uVar4,auStack_a0);
-
+      bigBuf[5][0] = 3;
+      *(u16 *)&bigBuf[5][6] = 0;
+      bigBuf[5][7] = 3;
+      *(u16 *)&bigBuf[5][13] = 0;
+      bigBuf[5][14] = 3;
+      *(u16 *)&bigBuf[5][20] = 0;
+      bigBuf[5][21] = 3;
+      *(u16 *)&bigBuf[5][27] = 0;
+      bigBuf[5][28] = 3;
+      *(u16 *)&bigBuf[5][34] = 0;
+      bigBuf[5][35] = 3;
+      *(u16 *)&bigBuf[5][41] = 0;
+      bigBuf[5][42] = 3;
+      *(u16 *)&bigBuf[5][48] = 0;
+      bigBuf[5][49] = 3;
+      *(u16 *)&bigBuf[5][55] = 0;
+      bigBuf[5][56] = 3;
+      *(u16 *)&bigBuf[5][62] = 0;
+      bigBuf[5][63] = 3;
+      *(u16 *)&bigBuf[5][69] = 0;
+      bigBuf[5][70] = 3;
+      *(u16 *)&bigBuf[5][76] = 0;
+      bigBuf[5][77] = 3;
+      *(u16 *)&bigBuf[5][83] = 0;
+      memcpy(smallBuf[5], &bigBuf[5][35], 0x1c);
+      result = FUN_003dffc0(s0, 3, smallBuf[5][1]);
+      fclCombineList003df100(result, smallBuf[5]);
     }
-
     else if (param_3 == 1) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_960;
-
+      puVar6 = bigBuf[4];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_960[0] = 1;
-
-      uStack_948 = 0;
-
-      uStack_944 = 1;
-
-      uStack_92c = 0;
-
-      uStack_928 = 1;
-
-      uStack_910 = 0;
-
-      auStack_90c[0] = 1;
-
-      uStack_8f4 = 0;
-
-      uStack_8f0 = 1;
-
-      uStack_8d8 = 0;
-
-      uStack_8d4 = 1;
-
-      uStack_8bc = 0;
-
-      uStack_8b8 = 1;
-
-      uStack_8a0 = 0;
-
-      uStack_89c = 1;
-
-      uStack_884 = 0;
-
-      uStack_880 = 1;
-
-      uStack_868 = 0;
-
-      uStack_864 = 1;
-
-      uStack_84c = 0;
-
-      uStack_848 = 1;
-
-      uStack_830 = 0;
-
-      uStack_82c = 1;
-
-      uStack_814 = 0;
-
-      memcpy(auStack_c0,auStack_90c,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,1,uStack_bc);
-
-      fclCombineList003df100(uVar4,auStack_c0);
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      bigBuf[4][0] = 1;
+      *(u16 *)&bigBuf[4][6] = 0;
+      bigBuf[4][7] = 1;
+      *(u16 *)&bigBuf[4][13] = 0;
+      bigBuf[4][14] = 1;
+      *(u16 *)&bigBuf[4][20] = 0;
+      bigBuf[4][21] = 1;
+      *(u16 *)&bigBuf[4][27] = 0;
+      bigBuf[4][28] = 1;
+      *(u16 *)&bigBuf[4][34] = 0;
+      bigBuf[4][35] = 1;
+      *(u16 *)&bigBuf[4][41] = 0;
+      bigBuf[4][42] = 1;
+      *(u16 *)&bigBuf[4][48] = 0;
+      bigBuf[4][49] = 1;
+      *(u16 *)&bigBuf[4][55] = 0;
+      bigBuf[4][56] = 1;
+      *(u16 *)&bigBuf[4][62] = 0;
+      bigBuf[4][63] = 1;
+      *(u16 *)&bigBuf[4][69] = 0;
+      bigBuf[4][70] = 1;
+      *(u16 *)&bigBuf[4][76] = 0;
+      bigBuf[4][77] = 1;
+      *(u16 *)&bigBuf[4][83] = 0;
+      memcpy(smallBuf[4], &bigBuf[4][49], 0x1c);
+      result = FUN_003dffc0(s0, 1, smallBuf[4][1]);
+      fclCombineList003df100(result, smallBuf[4]);
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_ab0;
-
+      puVar6 = bigBuf[3];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_ab0[0] = 2;
-
-      uStack_a98 = 0;
-
-      uStack_a94 = 2;
-
-      uStack_a7c = 0;
-
-      uStack_a78 = 2;
-
-      uStack_a60 = 0;
-
-      uStack_a5c = 2;
-
-      uStack_a44 = 0;
-
-      uStack_a40 = 2;
-
-      uStack_a28 = 0;
-
-      auStack_a24[0] = 2;
-
-      uStack_a0c = 0;
-
-      uStack_a08 = 2;
-
-      uStack_9f0 = 0;
-
-      uStack_9ec = 2;
-
-      uStack_9d4 = 0;
-
-      uStack_9d0 = 2;
-
-      uStack_9b8 = 0;
-
-      uStack_9b4 = 2;
-
-      uStack_99c = 0;
-
-      uStack_998 = 2;
-
-      uStack_980 = 0;
-
-      uStack_97c = 2;
-
-      uStack_964 = 0;
-
-      memcpy(auStack_e0,auStack_a24,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,2,uStack_dc);
-
-      fclCombineList003df100(uVar4,auStack_e0);
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      bigBuf[3][0] = 2;
+      *(u16 *)&bigBuf[3][6] = 0;
+      bigBuf[3][7] = 2;
+      *(u16 *)&bigBuf[3][13] = 0;
+      bigBuf[3][14] = 2;
+      *(u16 *)&bigBuf[3][20] = 0;
+      bigBuf[3][21] = 2;
+      *(u16 *)&bigBuf[3][27] = 0;
+      bigBuf[3][28] = 2;
+      *(u16 *)&bigBuf[3][34] = 0;
+      bigBuf[3][35] = 2;
+      *(u16 *)&bigBuf[3][41] = 0;
+      bigBuf[3][42] = 2;
+      *(u16 *)&bigBuf[3][48] = 0;
+      bigBuf[3][49] = 2;
+      *(u16 *)&bigBuf[3][55] = 0;
+      bigBuf[3][56] = 2;
+      *(u16 *)&bigBuf[3][62] = 0;
+      bigBuf[3][63] = 2;
+      *(u16 *)&bigBuf[3][69] = 0;
+      bigBuf[3][70] = 2;
+      *(u16 *)&bigBuf[3][76] = 0;
+      bigBuf[3][77] = 2;
+      *(u16 *)&bigBuf[3][83] = 0;
+      memcpy(smallBuf[3], &bigBuf[3][56], 0x1c);
+      result = FUN_003dffc0(s0, 2, smallBuf[3][1]);
+      fclCombineList003df100(result, smallBuf[3]);
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_c00;
-
+      puVar6 = bigBuf[2];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_c00[0] = 3;
-
-      uStack_be8 = 0;
-
-      uStack_be4 = 3;
-
-      uStack_bcc = 0;
-
-      uStack_bc8 = 3;
-
-      uStack_bb0 = 0;
-
-      uStack_bac = 3;
-
-      uStack_b94 = 0;
-
-      uStack_b90 = 3;
-
-      uStack_b78 = 0;
-
-      uStack_b74 = 3;
-
-      uStack_b5c = 0;
-
-      uStack_b58 = 3;
-
-      uStack_b40 = 0;
-
-      auStack_b3c[0] = 3;
-
-      uStack_b24 = 0;
-
-      uStack_b20 = 3;
-
-      uStack_b08 = 0;
-
-      uStack_b04 = 3;
-
-      uStack_aec = 0;
-
-      uStack_ae8 = 3;
-
-      uStack_ad0 = 0;
-
-      uStack_acc = 3;
-
-      uStack_ab4 = 0;
-
-      memcpy(auStack_100,auStack_b3c,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,3,uStack_fc);
-
-      fclCombineList003df100(uVar4,auStack_100);
-
+      bigBuf[2][0] = 3;
+      *(u16 *)&bigBuf[2][6] = 0;
+      bigBuf[2][7] = 3;
+      *(u16 *)&bigBuf[2][13] = 0;
+      bigBuf[2][14] = 3;
+      *(u16 *)&bigBuf[2][20] = 0;
+      bigBuf[2][21] = 3;
+      *(u16 *)&bigBuf[2][27] = 0;
+      bigBuf[2][28] = 3;
+      *(u16 *)&bigBuf[2][34] = 0;
+      bigBuf[2][35] = 3;
+      *(u16 *)&bigBuf[2][41] = 0;
+      bigBuf[2][42] = 3;
+      *(u16 *)&bigBuf[2][48] = 0;
+      bigBuf[2][49] = 3;
+      *(u16 *)&bigBuf[2][55] = 0;
+      bigBuf[2][56] = 3;
+      *(u16 *)&bigBuf[2][62] = 0;
+      bigBuf[2][63] = 3;
+      *(u16 *)&bigBuf[2][69] = 0;
+      bigBuf[2][70] = 3;
+      *(u16 *)&bigBuf[2][76] = 0;
+      bigBuf[2][77] = 3;
+      *(u16 *)&bigBuf[2][83] = 0;
+      memcpy(smallBuf[2], &bigBuf[2][63], 0x1c);
+      result = FUN_003dffc0(s0, 3, smallBuf[2][1]);
+      fclCombineList003df100(result, smallBuf[2]);
     }
-
   }
-
   else if (param_2 == 0) {
-
     if (param_3 == 0) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_2d0;
-
+      puVar6 = bigBuf[11];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_2d0[0] = 0;
-
-      uStack_2b8 = 0;
-
-      uStack_2b4 = 0;
-
-      uStack_29c = 0;
-
-      uStack_298 = 0;
-
-      uStack_280 = 0;
-
-      uStack_27c = 0;
-
-      uStack_264 = 0;
-
-      uStack_260 = 0;
-
-      uStack_248 = 0;
-
-      uStack_244 = 0;
-
-      uStack_22c = 0;
-
-      uStack_228 = 0;
-
-      uStack_210 = 0;
-
-      uStack_20c = 0;
-
-      uStack_1f4 = 0;
-
-      uStack_1f0 = 0;
-
-      uStack_1d8 = 0;
-
-      uStack_1d4 = 0;
-
-      uStack_1bc = 0;
-
-      uStack_1b8 = 0;
-
-      uStack_1a0 = 0;
-
-      uStack_19c = 0;
-
-      uStack_184 = 0;
-
-      memcpy(auStack_20,auStack_2d0,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,0,uStack_1c);
-
-      fclCombineList003df100(uVar4,auStack_20);
-
+      bigBuf[11][0] = 0;
+      *(u16 *)&bigBuf[11][6] = 0;
+      bigBuf[11][7] = 0;
+      *(u16 *)&bigBuf[11][13] = 0;
+      bigBuf[11][14] = 0;
+      *(u16 *)&bigBuf[11][20] = 0;
+      bigBuf[11][21] = 0;
+      *(u16 *)&bigBuf[11][27] = 0;
+      bigBuf[11][28] = 0;
+      *(u16 *)&bigBuf[11][34] = 0;
+      bigBuf[11][35] = 0;
+      *(u16 *)&bigBuf[11][41] = 0;
+      bigBuf[11][42] = 0;
+      *(u16 *)&bigBuf[11][48] = 0;
+      bigBuf[11][49] = 0;
+      *(u16 *)&bigBuf[11][55] = 0;
+      bigBuf[11][56] = 0;
+      *(u16 *)&bigBuf[11][62] = 0;
+      bigBuf[11][63] = 0;
+      *(u16 *)&bigBuf[11][69] = 0;
+      bigBuf[11][70] = 0;
+      *(u16 *)&bigBuf[11][76] = 0;
+      bigBuf[11][77] = 0;
+      *(u16 *)&bigBuf[11][83] = 0;
+      memcpy(smallBuf[11], &bigBuf[11][0], 0x1c);
+      result = FUN_003dffc0(s0, 0, smallBuf[11][1]);
+      fclCombineList003df100(result, smallBuf[11]);
     }
-
     else if (param_3 == 1) {
-
-      uVar1 = *(u32 *)(param_1 + 0x3ac);
-
+      s0 = *(u32 *)(param_1 + 0x3ac);
       puVar7 = &DAT_006b3f60;
-
-      puVar6 = auStack_420;
-
+      puVar6 = bigBuf[10];
       iVar5 = 0x2a;
-
       do {
-
         uVar2 = *puVar7;
-
         uVar3 = puVar7[1];
-
         puVar7 = puVar7 + 2;
-
         iVar5 = iVar5 + -1;
-
         *puVar6 = uVar2;
-
         puVar6[1] = uVar3;
-
         puVar6 = puVar6 + 2;
-
       } while (0 < iVar5);
-
-      auStack_420[0] = 0;
-
-      uStack_408 = 0;
-
-      auStack_404[0] = 0;
-
-      uStack_3ec = 0;
-
-      uStack_3e8 = 0;
-
-      uStack_3d0 = 0;
-
-      uStack_3cc = 0;
-
-      uStack_3b4 = 0;
-
-      uStack_3b0 = 0;
-
-      uStack_398 = 0;
-
-      uStack_394 = 0;
-
-      uStack_37c = 0;
-
-      uStack_378 = 0;
-
-      uStack_360 = 0;
-
-      uStack_35c = 0;
-
-      uStack_344 = 0;
-
-      uStack_340 = 0;
-
-      uStack_328 = 0;
-
-      uStack_324 = 0;
-
-      uStack_30c = 0;
-
-      uStack_308 = 0;
-
-      uStack_2f0 = 0;
-
-      uStack_2ec = 0;
-
-      uStack_2d4 = 0;
-
-      memcpy(auStack_40,auStack_404,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,0,uStack_3c);
-
-      fclCombineList003df100(uVar4,auStack_40);
-
+      bigBuf[10][0] = 0;
+      *(u16 *)&bigBuf[10][6] = 0;
+      bigBuf[10][7] = 0;
+      *(u16 *)&bigBuf[10][13] = 0;
+      bigBuf[10][14] = 0;
+      *(u16 *)&bigBuf[10][20] = 0;
+      bigBuf[10][21] = 0;
+      *(u16 *)&bigBuf[10][27] = 0;
+      bigBuf[10][28] = 0;
+      *(u16 *)&bigBuf[10][34] = 0;
+      bigBuf[10][35] = 0;
+      *(u16 *)&bigBuf[10][41] = 0;
+      bigBuf[10][42] = 0;
+      *(u16 *)&bigBuf[10][48] = 0;
+      bigBuf[10][49] = 0;
+      *(u16 *)&bigBuf[10][55] = 0;
+      bigBuf[10][56] = 0;
+      *(u16 *)&bigBuf[10][62] = 0;
+      bigBuf[10][63] = 0;
+      *(u16 *)&bigBuf[10][69] = 0;
+      bigBuf[10][70] = 0;
+      *(u16 *)&bigBuf[10][76] = 0;
+      bigBuf[10][77] = 0;
+      *(u16 *)&bigBuf[10][83] = 0;
+      memcpy(smallBuf[10], &bigBuf[10][7], 0x1c);
+      result = FUN_003dffc0(s0, 0, smallBuf[10][1]);
+      fclCombineList003df100(result, smallBuf[10]);
     }
-
   }
-
   return;
-
 }
