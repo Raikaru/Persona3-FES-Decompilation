@@ -2436,7 +2436,11 @@ extern void func_00224150(void);
 extern void func_002289b0(void);
 extern void func_00226040(void);
 extern void (*D_00960090)(u32, u32);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 
 static inline void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32* x, f32* y)
 {
@@ -3092,184 +3096,302 @@ void func_00221b60(void)
 {
     u8* work;
     void* texture;
+    s32 mask;
+    void* currentFrame;
+    void* previousFrame;
+    void* frame;
+    void (**setState)(u32, u32);
     u32 mode;
-    u32 mask;
-    u32 current;
-    u32 previous;
     u32 sub;
     u32 previousSub;
     u32 timer;
     u32 i;
-    void* frame;
 
     K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
     work = BP_PANEL_GLOBAL;
-    K_ASSERT((*(u32*)work & 1) != 0, 0x47b);
     texture = func_0021c3f0(0);
-    D_00960090(9, 2);
-    D_00960090(0x14, 2);
-    D_00960090(8, 0);
-    D_00960090(6, 1);
-    D_00960090(0x0e, 0);
+    K_ASSERT((*(u32*)work & 1) != 0, 0x47b);
+
+    mask = 0;
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(9, 2);
+    (*setState)(0x14, 2);
+    (*setState)(8, 0);
+    (*setState)(6, 1);
+    (*setState)(0x0e, 0);
+    (*setState)(0x0c, 1);
     func_0022bcf0();
 
-    bpPanelDrawBridgeQuad(work, 0x10, texture, 0x10);
-    bpPanelDrawBridgeQuad(work, 0x110, texture, 0x1b);
-    bpPanelDrawBridgeQuad(work, 0x210, texture, 0x1c);
-    bpPanelDrawBridgeQuad(work, 0x1430, texture, 0x22);
+    {
+        void (**setQuad)(u32*, u32, u32, u32, u32);
+
+        frame = func_0021cca0(texture, 0x10);
+        (*setState)(1, func_0021cce0(frame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)(work + 0x10), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x10), 4, 0, 2, 3);
+
+        frame = func_0021cca0(texture, 0x1b);
+        (*setState)(1, func_0021cce0(frame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        (*setQuad)((u32*)(work + 0x110), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x110), 4, 0, 2, 3);
+
+        frame = func_0021cca0(texture, 0x1c);
+        (*setState)(1, func_0021cce0(frame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        (*setQuad)((u32*)(work + 0x210), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x210), 4, 0, 2, 3);
+
+        frame = func_0021cca0(texture, 0x22);
+        (*setState)(1, func_0021cce0(frame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        (*setQuad)((u32*)(work + 0x1430), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x1430), 4, 0, 2, 3);
+    }
 
     mode = *(u32*)(work + 0x4630);
-    current = *(u32*)(work + 0x4634);
-    previous = *(u32*)(work + 0x4638);
-    sub = *(u32*)(work + 0x463c);
-    previousSub = *(u32*)(work + 0x4640);
-    timer = *(u32*)(work + 0x4650);
-    (void)sub;
-    (void)previousSub;
-    mask = 0;
-    if (mode == 1 || mode == 2)
+    switch (mode)
     {
-        frame = func_0021cca0(texture, (s32)current);
-        (void)frame;
-        mask |= 1;
+    case 1:
+    case 2:
+        frame = texture;
+        currentFrame = func_0021cca0(frame, (s32)*(u32*)(work + 0x4634));
+        previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
+        mask = 1;
         if (*(u32*)(work + 0x464c) != 4)
         {
             mask |= 2;
         }
-    }
-    else if (mode == 3)
-    {
-        frame = func_0021cca0(texture, (s32)current);
-        (void)frame;
-        if (*(u32*)(work + 0x463c) >= 1 && *(u32*)(work + 0x463c) <= 4)
+        break;
+    case 3:
+        currentFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
+        previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634) + 7);
+        sub = *(u32*)(work + 0x463c);
+        switch (sub)
         {
-            mask |= 2;
-            if (timer != 3)
-            {
-                mask |= 1;
-            }
-        }
-        else if (*(u32*)(work + 0x463c) == 0)
-        {
-            mask |= 1;
-            if (timer != 3)
+        case 0:
+            mask = 1;
+            if (*(u32*)(work + 0x4650) != 3)
             {
                 mask |= 2;
             }
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            mask = 2;
+            if (*(u32*)(work + 0x4650) != 3)
+            {
+                mask |= 1;
+            }
+            break;
         }
-    }
-    else
-    {
-        if (*(u32*)(work + 0x463c) == 0)
+        break;
+    default:
+        sub = *(u32*)(work + 0x463c);
+        switch (sub)
         {
-            mask |= 1;
+        case 0:
+            currentFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
+            mask = 1;
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634) + 7);
+            mask = 2;
+            break;
         }
-        else if (*(u32*)(work + 0x463c) >= 1 && *(u32*)(work + 0x463c) <= 4)
-        {
-            mask |= 2;
-        }
+        break;
     }
+
     if ((mask & 1) != 0)
     {
-        frame = func_0021cca0(texture, (s32)current);
-        bpPanelBindAndDraw(work, 0x1230, frame);
+        void (**setQuad)(u32*, u32, u32, u32, u32);
+
+        (*setState)(1, func_0021cce0(currentFrame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)(work + 0x1230), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x1230), 4, 0, 2, 3);
     }
     if ((mask & 2) != 0)
     {
-        if (mode == 1 || mode == 2)
-        {
-            frame = func_0021cca0(texture, (s32)previous);
-        }
-        else
-        {
-            frame = func_0021cca0(texture, (s32)(current + 7));
-        }
-        bpPanelBindAndDraw(work, 0x1330, frame);
+        void (**setQuad)(u32*, u32, u32, u32, u32);
+
+        (*setState)(1, func_0021cce0(previousFrame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)(work + 0x1330), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x1330), 4, 0, 2, 3);
     }
-    if ((*(u32*)work & 0x10) == 0)
+    if ((~*(u32*)work & 0x10) != 0)
     {
+        void (**setQuad)(u32*, u32, u32, u32, u32);
+
         frame = func_0021cca0(texture, 0x0e);
-        bpPanelBindAndDraw(work, 0x310, frame);
+        (*setState)(1, func_0021cce0(frame));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)(work + 0x310), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x310), 4, 0, 2, 3);
     }
 
-    for (i = 0; i < 7; i++)
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
     {
-        s32 frameId;
+        void (**setQuad)(u32*, u32, u32, u32, u32);
+        u32* destination;
 
-        frameId = (*(u32*)(work + 0x1210 + i * 4) & 1) != 0 ? (s32)(i + 0x11) : (s32)(i + 0x41);
-        frame = func_0021cca0(texture, frameId);
-        bpPanelBindAndDraw(work, 0x410 + i * 0x100, frame);
-    }
-    for (i = 0; i < 7; i++)
-    {
-        frame = func_0021cca0(texture, i + 0x14);
-        bpPanelBindAndDraw(work, 0xb10 + i * 0x100, frame);
-    }
-
-    sub = *(u32*)(work + 0x463c);
-    previousSub = *(u32*)(work + 0x4640);
-    timer = *(u32*)(work + 0x4650);
-    if (sub == 3 || sub == 4 ||
-        (sub == 0 && (previousSub == 3 || previousSub == 4) && timer != 3))
-    {
-        func_00227800();
-    }
-    sub = *(u32*)(work + 0x463c);
-    previousSub = *(u32*)(work + 0x4640);
-    timer = *(u32*)(work + 0x4650);
-    if (sub == 2 || (sub == 0 && previousSub == 2 && timer < 3))
-    {
-        if (*(u32*)(work + 0x4644) == 3)
+        for (mask = 0; mask < 7; mask++)
         {
-            func_0022c5a0();
+            if ((*(u32*)(work + 0x1210 + mask * 4) & 1) != 0)
+            {
+                frame = func_0021cca0(texture, 0x11);
+            }
+            else
+            {
+                frame = func_0021cca0(texture, 0x41);
+            }
+            (*setState)(1, func_0021cce0(frame));
+            destination = (u32*)(work + 0x410 + mask * 0x100);
+            setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+            (*setQuad)(destination, 4, 0, 1, 2);
+            (*setQuad)(destination, 4, 0, 2, 3);
         }
-        else if (*(u32*)(work + 0x4644) == 0)
+    }
+    {
+        void (**setQuad)(u32*, u32, u32, u32, u32);
+        u32* destination;
+        s32 j;
+
+        for (j = 0; j < 7; j++)
         {
+            frame = func_0021cca0(texture, (s32)(j + 0x14));
+            (*setState)(1, func_0021cce0(frame));
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+            destination = (u32*)(work + 0xb10 + j * 0x100);
+            setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+            (*setQuad)(destination, 4, 0, 1, 2);
+            (*setQuad)(destination, 4, 0, 2, 3);
+        }
+    }
+
+    sub = *(u32*)(work + 0x463c);
+    switch (sub)
+    {
+    case 3:
+    case 4:
+        func_00227800();
+        break;
+    case 0:
+        previousSub = *(u32*)(work + 0x4640);
+        switch (previousSub)
+        {
+        case 3:
+        case 4:
+            if (*(u32*)(work + 0x4650) != 3)
+            {
+                func_00227800();
+            }
+            break;
+        }
+        break;
+    }
+
+    sub = *(u32*)(work + 0x463c);
+    if (sub == 2 ||
+        (sub == 0 && *(u32*)(work + 0x4640) == 2 &&
+         *(u32*)(work + 0x4650) < 3))
+    {
+        switch (*(u32*)(work + 0x4644))
+        {
+        case 0:
             func_00227800();
+            break;
+        case 3:
+            func_0022c5a0();
+            break;
         }
         func_00229b40();
     }
-    else if (sub == 1 || (sub == 0 && previousSub == 1 && timer < 3))
+    else if (sub == 1 ||
+             (sub == 0 && *(u32*)(work + 0x4640) == 1 &&
+              *(u32*)(work + 0x4650) < 3))
     {
-        if (*(u32*)(work + 0x4644) == 4)
+        switch (*(u32*)(work + 0x4644))
         {
-            func_0022c5a0();
-        }
-        else if (*(u32*)(work + 0x4644) == 0)
-        {
+        case 0:
             func_00227800();
+            break;
+        case 4:
+            func_0022c5a0();
+            break;
         }
         func_0022ae80();
     }
-    else if (sub == 4 || (sub == 0 && previousSub == 4 && timer < 3))
+    else if (sub == 4 ||
+             (sub == 0 && *(u32*)(work + 0x4640) == 4 &&
+              *(u32*)(work + 0x4650) < 3))
     {
         func_00225040();
     }
+
     sub = *(u32*)(work + 0x463c);
-    previousSub = *(u32*)(work + 0x4640);
-    timer = *(u32*)(work + 0x4650);
-    if (sub == 3 || (sub == 0 && previousSub == 3 && timer < 3))
+    if (sub == 3 ||
+        (sub == 0 && *(u32*)(work + 0x4640) == 3 &&
+         *(u32*)(work + 0x4650) < 3))
     {
         func_00224150();
     }
-    sub = *(u32*)(work + 0x463c);
-    if (sub == 3)
+
+    if (*(u32*)(work + 0x463c) == 3)
     {
-        if (*(u32*)(work + 0x4644) == 1 ||
-            (*(u32*)(work + 0x4644) == 0 &&
-             *(u32*)(work + 0x4648) == 1 &&
-             *(u32*)(work + 0x4658) != 6))
+        switch (*(u32*)(work + 0x4644))
         {
+        case 1:
             func_002289b0();
+            break;
+        case 0:
+            if (*(u32*)(work + 0x4648) == 1 &&
+                *(u32*)(work + 0x4658) != 6)
+            {
+                func_002289b0();
+            }
+            break;
         }
     }
-    sub = *(u32*)(work + 0x463c);
-    if (sub == 3 &&
-        (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2 ||
-         (*(u32*)(work + 0x4644) == 0 &&
-          (*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
-          *(u32*)(work + 0x4658) < 6)))
+
+    if (*(u32*)(work + 0x463c) != 3)
     {
+        return;
+    }
+    switch (*(u32*)(work + 0x4644))
+    {
+    case 0:
+        if ((*(u32*)(work + 0x4648) == 1 ||
+             *(u32*)(work + 0x4648) == 2) &&
+            *(u32*)(work + 0x4658) < 6)
+        {
+            func_00226040();
+            return;
+        }
+        return;
+    case 1:
+    case 2:
         func_00226040();
+        break;
     }
 }
