@@ -6352,16 +6352,26 @@ void btlActionInitStateRoundUp(BtlAction* action)
 // FUN_00298610 NONMATCHING
 void btlActionUpdateStateRoundUp(BtlAction* action)
 {
-    BtlPacket* root;
     BtlPacket* packet;
     BtlPacket* skillPacket;
     BtlPacket* voicePacket;
     BtlAction* target;
+    BtlAction* current;
+    u32 rootH;
     u32 stackBuf[3];
     u16 i;
     u16 j;
+    u32 posX;
+    u32 posY;
 
-    root = (BtlPacket*)FUN_002b8f90(1);
+    rootH = FUN_002b8f90(1);
+    for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
+    {
+        if (current->unk_28 != 0)
+        {
+            FUN_002d7fb0(current, 2);
+        }
+    }
     for (j = 0; j < 3; j++)
     {
         stackBuf[j] = 0;
@@ -6402,7 +6412,7 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
         skillPacket->actionUID = action->uid;
         btlPacketRegister(skillPacket, BTLPACKET_TYPE_1);
 
-        packet = FUN_002baf90(root->uid, action->unit, target->unit, 1, 0);
+        packet = FUN_002baf90(rootH, action->unit, target->unit, 1, 0);
         packet->unk_00 = 0xb;
         packet->parentUID = skillPacket->uid;
         packet->actionUID = action->uid;
@@ -6435,8 +6445,6 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
         }
 
         {
-            u32 posX;
-            u32 posY;
             func_0029ea60(target->uid, &posX, &posY);
 
             packet = func_0029f4b0(posX, posY, 0x10);
@@ -6447,11 +6455,9 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
 
             {
                 void* area = func_0029ec00(target->uid);
-                u32 areaX;
-                u32 areaY;
-                func_0029ec80(target->uid, &areaX, &areaY);
+                func_0029ec80(target->uid, &posX, &posY);
 
-                packet = func_002a0050(area, areaX, areaY, 0x10, 0);
+                packet = func_002a0050(area, posX, posY, 0x10, 0);
                 packet->unk_00 = 4;
                 packet->parentUID = skillPacket->uid;
                 packet->actionUID = action->uid;
@@ -6473,29 +6479,30 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
-              btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
     }
 
-    packet = FUN_0029fa50();
+    packet = FUN_0029fa50(0x10);
     packet->unk_00 = 4;
     packet->unk_47 &= ~0x20;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
-    packet = FUN_002a1080();
-    packet->unk_00 = 4;
-    packet->parentUID = skillPacket->uid;
-    packet->unk_47 &= ~0x20;
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-
-    packet = FUN_002a16c0();
+    packet = FUN_002a1080(0x10, 0);
     packet->unk_00 = 4;
     packet->parentUID = skillPacket->uid;
     packet->unk_47 &= ~0x20;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
+    packet = FUN_002a16c0(0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = skillPacket->uid;
+    packet->unk_47 &= ~0x20;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    FUN_002b9030(rootH);
     btlActionSetState(action, BTLACTION_STATE_PACKET);
 }
 
