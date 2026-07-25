@@ -2405,10 +2405,6 @@ void btlActionInitStateAttack(BtlAction* action)
     (void)action;
 }
 extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
-extern BtlPacket* FUN_00284200(BtlUnit*, u16, u32, u32, f32);
-extern s64 FUN_002835e0(BtlUnit*, u16, f32);
-extern void FUN_00283750(BtlUnit*, u16, f32);
-extern s64 FUN_002838d0(BtlUnit*, u16, f32);
 
 // FUN_0028eb50 NONMATCHING
 void btlActionUpdateStateAttack(BtlAction* action)
@@ -2417,6 +2413,10 @@ void btlActionUpdateStateAttack(BtlAction* action)
     BtlAction* basis;
     BtlPacket* packet;
     BtlPacket* hitPacket;
+    extern BtlPacket* FUN_00284200(BtlUnit*, u16, u32, u32, f32);
+    extern s64 FUN_002835e0(BtlUnit*, u16, f32);
+    extern void FUN_00283750(BtlUnit*, u16, f32);
+    extern s64 FUN_002838d0(BtlUnit*, u16, f32);
     BtlPacket* skillPacket;
     BtlPacket* cameraPacket;
     BtlPacket* voicePacket;
