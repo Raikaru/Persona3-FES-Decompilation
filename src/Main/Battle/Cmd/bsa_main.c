@@ -478,108 +478,108 @@ void bsaMain00210d90(BsaWork* work)
         origin[0] = p[0x4c40] < 10 ? 113.0f : 106.0f;
         origin[1] = 62.0f + base;
         bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
-        bsaSetColor(p + 0x4c50, color);
+        bsaSetColor(p + 0x4c50, drawColor[3]);
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x33);
         bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image),
-                     base + 58.0f, 30.0f, -1.0f, color);
+                     base + 58.0f, 30.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x36);
         bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
     }
     if ((p[1] & BSA_FLAG_STATUS) == 0) {
         f32 origin[2];
         origin[0] = 181.0f;
         origin[1] = base + 113.0f;
         bpIFont00238a50(p + 0x1398, 4, p[0x1394], 1, origin);
-        for (i = 0; i < 4; i++) bsaSetColor(p + 0x1398 + i * 0x40, color);
+        for (i = 0; i < 4; i++) bsaSetColor(p + 0x1398 + i * 0x40, drawColor[3]);
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x192c, image, 178.0f, base + 109.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x34);
         bsaPlaceQuad(p, 0x196c, image, 167.0f, base + 109.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         bsaPlaceQuad(p, 0x19ac, image, 167.0f + BSA_FRAME_W(image),
-                     base + 109.0f, 43.0f, -1.0f, color);
+                     base + 109.0f, 43.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x36);
         bsaPlaceQuad(p, 0x19ec, image, 214.0f, base + 109.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
     }
     if ((p[1] & BSA_FLAG_PERSONA) == 0) {
         f32 origin[2];
         origin[0] = 181.0f;
         origin[1] = base + 130.0f;
         bpIFont00238a50(p + 0x149c, 4, p[0x1498], 1, origin);
-        for (i = 0; i < 4; i++) bsaSetColor(p + 0x149c + i * 0x40, color);
+        for (i = 0; i < 4; i++) bsaSetColor(p + 0x149c + i * 0x40, drawColor[3]);
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x1a2c, image, 178.0f, base + 126.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x34);
         bsaPlaceQuad(p, 0x1a6c, image, 167.0f, base + 126.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         bsaPlaceQuad(p, 0x1aac, image, 167.0f + BSA_FRAME_W(image),
-                     base + 126.0f, 43.0f, -1.0f, color);
+                     base + 126.0f, 43.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x36);
         bsaPlaceQuad(p, 0x1aec, image, 214.0f, base + 126.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
     }
 
 
     resource = p[4];
-    func_003b0e20(resource, 0xffffff00u | color);
+    func_003b0e20(resource, 0xffffff00u | drawColor[3]);
     func_003b0d70(resource, 0xa10, (s32)((base + 77.0f) * 8.0f));
     image = bsaMain00215830(DAT_007ce410[(*(u16*)(p + 3)) * 0x3e + 2]);
     bsaPlaceQuad(p, 0x590, image, 59.0f, base + 78.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table2, 0x2f);
     bsaPlaceQuad(p, 0x5d0, image, 148.0f, base + 88.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table1, 0x47);
     bsaPlaceQuad(p, 0x50, image, 59.0f, base + 111.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table2, 0x30);
     bsaPlaceQuad(p, 0x90, image, 146.0f, base + 112.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table1, 0x48);
     bsaPlaceQuad(p, 0xd0, image, 59.0f, base + 128.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table2, 0x30);
     bsaPlaceQuad(p, 0x110, image, 146.0f, base + 129.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table2, 0x21);
     bsaPlaceQuad(p, 0x150, image, 46.0f, base + 141.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     bsaPlaceQuad(p, 0x190, image, 46.0f, base + 53.0f,
-                 -1.0f, 88.0f, color);
+                 -1.0f, 88.0f, drawColor[3]);
     image = func_0021cca0(table2, 0x24);
     bsaPlaceQuad(p, 0x1d0, image, 58.0f, base + 141.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     bsaPlaceQuad(p, 0x210, image, 58.0f + BSA_FRAME_W(image),
-                 base + 141.0f, 318.0f, -1.0f, color);
+                 base + 141.0f, 318.0f, -1.0f, drawColor[3]);
     image = func_0021cca0(table2, 0x22);
     bsaPlaceQuad(p, 0x250, image, 46.0f, base + 203.0f,
-                 -1.0f, -1.0f, color);
+                 -1.0f, -1.0f, drawColor[3]);
     bsaPlaceQuad(p, 0x290, image, 46.0f, base + 158.0f,
-                 -1.0f, 45.0f, color);
+                 -1.0f, 45.0f, drawColor[3]);
 
     for (i = 0; i < 9; i++) {
         image = func_0021cca0(table2, 0x26);
         bsaPlaceQuad(p, i * 0x40 + 0x2d0, image,
                      (f32)i * 37.0f + 53.0f, base + 203.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
     }
     for (i = 0; i < 9; i++) {
         image = func_0021cca0(table2, i + 0x16);
         bsaPlaceQuad(p, i * 0x40 + 0x610, image,
                      (f32)i * 37.0f + 53.0f, base + 166.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
     }
     if ((p[1] & BSA_FLAG_AILMENT) == 0) {
         for (i = 0; i < 9; i++) {
@@ -587,21 +587,21 @@ void bsaMain00210d90(BsaWork* work)
                 image = func_0021cca0(table2, p[0x159c + i] + 0x29);
                 bsaPlaceQuad(p, i * 0x40 + 0x15a8, image,
                              (f32)i * 37.0f + 53.0f, base + 190.0f,
-                             -1.0f, -1.0f, color);
+                             -1.0f, -1.0f, drawColor[3]);
             }
         }
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x1b2c, image, 178.0f, base + 171.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x35);
         bsaPlaceQuad(p, 0x1b6c, image, 137.0f, base + 171.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         bsaPlaceQuad(p, 0x1bac, image, 137.0f + BSA_FRAME_W(image),
-                     base + 171.0f, 103.0f, -1.0f, color);
+                     base + 171.0f, 103.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x36);
         bsaPlaceQuad(p, 0x1bec, image, 244.0f, base + 171.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
     }
 
     if (p[0] == 1) {
@@ -625,10 +625,10 @@ void bsaMain00210d90(BsaWork* work)
                      -1.0f, -1.0f, bsaAlpha(personaAlpha * 255.0f));
         image = func_0021cca0(table2, 0x20);
         bsaPlaceQuad(p, 0x12d0, image, 46.0f, 227.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         image = func_0021cca0(table2, 0x31);
         bsaPlaceQuad(p, 0x1250, image, 82.0f, 227.0f,
-                     -1.0f, -1.0f, color);
+                     -1.0f, -1.0f, drawColor[3]);
         if ((p[1] & BSA_FLAG_BOSS) == 0 && p[0x17e8] != 7)
             image = func_0021cca0(table2, p[0x17e8] + 0x16);
         else
@@ -643,44 +643,44 @@ void bsaMain00210d90(BsaWork* work)
             groupY = (f32)(i & 3) * 30.0f + 292.0f;
             image = func_0021cca0(table2, 0x23);
             bsaPlaceQuad(p, i * 0x80 + 0x850, image,
-                         groupX, groupY, -1.0f, -1.0f, color);
+                         groupX, groupY, -1.0f, -1.0f, drawColor[3]);
             bsaPlaceQuad(p, i * 0x80 + 0x890, image,
-                         groupX, groupY - 17.0f, 17.0f, -1.0f, color);
+                         groupX, groupY - 17.0f, 17.0f, -1.0f, drawColor[3]);
             image = func_0021cca0(table2, 0x25);
             bsaPlaceQuad(p, i * 0x80 + 0xc50, image,
-                         groupX + 58.0f, groupY, -1.0f, -1.0f, color);
+                         groupX + 58.0f, groupY, -1.0f, -1.0f, drawColor[3]);
             bsaPlaceQuad(p, i * 0x80 + 0xc90, image,
-                         groupX + 58.0f, groupY, 236.0f, -1.0f, color);
+                         groupX + 58.0f, groupY, 236.0f, -1.0f, drawColor[3]);
             if (i < (s32)p[0xd]) {
                 image = func_0021cca0(table6,
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
                 bsaPlaceQuad(p, i * 0x40 + 0x1050, image,
                              ((i / 4) == 0 ? 0.0f : 270.0f) + 54.0f,
                              (f32)(i & 3) * 30.0f + 271.0f,
-                             -1.0f, -1.0f, color);
+                             -1.0f, -1.0f, drawColor[3]);
             }
             if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
                 if (i < (s32)p[0xd]) {
                     func_003b0d70(p[i + 5], (s32)((groupX + 89.0f) * 16.0f),
                                   (s32)((groupY - 18.0f) * 8.0f));
-                    func_003b0e20(p[i + 5], 0xffffff00u | color);
+                    func_003b0e20(p[i + 5], 0xffffff00u | drawColor[3]);
                 }
             } else {
                 image = func_0021cca0(table2, 0x32);
                 bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image,
                              groupX + 142.0f, groupY - 14.0f,
-                             -1.0f, -1.0f, color);
+                             -1.0f, -1.0f, drawColor[3]);
                 image = func_0021cca0(table2, 0x35);
                 bsaPlaceQuad(p, i * 0x100 + 0x1c6c, image,
                              groupX + 101.0f, groupY - 14.0f,
-                             -1.0f, -1.0f, color);
+                             -1.0f, -1.0f, drawColor[3]);
                 bsaPlaceQuad(p, i * 0x100 + 0x1cac, image,
                              groupX + 101.0f + BSA_FRAME_W(image), groupY - 14.0f,
-                             103.0f, -1.0f, color);
+                             103.0f, -1.0f, drawColor[3]);
                 image = func_0021cca0(table2, 0x36);
                 bsaPlaceQuad(p, i * 0x100 + 0x1cec, image,
                              groupX + 208.0f, groupY - 14.0f,
-                             -1.0f, -1.0f, color);
+                             -1.0f, -1.0f, drawColor[3]);
             }
         }
     }
