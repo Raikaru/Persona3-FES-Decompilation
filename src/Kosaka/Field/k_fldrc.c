@@ -119,7 +119,7 @@ extern u32 FUN_0048ee70();
 extern u32 FUN_0048eed0();
 extern f32 FUN_0048ef60();
 extern void FUN_0048efa0();
-extern void FUN_0048efc0();
+extern void FUN_0048efc0(int param_1, int param_2, f32 param_3);
 extern u32 FUN_004916d0();
 extern u32 FUN_00491cc0();
 extern u32 FUN_00491ea0();
