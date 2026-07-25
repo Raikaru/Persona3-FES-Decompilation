@@ -753,49 +753,6 @@ void bsaMain00210d90(BsaWork* work)
             func_0021dd60(p + i * 0x80 + 0x25ec, (u8*)rect);
         }
     }
-    /*
-     * Additional background panels — these duplicate the main panels at
-     * 0x90B0-0x97B0 byte offsets for an always-visible backdrop layer.
-     */
-    for (i = 0; i < 8; i++) {
-        rect[0] = ((i / 4) == 0 ? -1.0f : 50.0f);
-        rect[1] = ((i / 4) == 0 ? y : y);
-        rect[2] = ((i / 4) == 0 ? 51.0f : 500.0f);
-        rect[3] = ((i / 4) == 0 ? x : x);
-        func_0021d8e0((void*)((u8*)p + i * 0x200 + 0x90b0), rect);
-    }
-    {
-        u8* col = (u8*)rect;
-        u8 a255 = bsaAlpha(alpha * 255.0f);
-        drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
-        col[0] = col[4] = col[8] = col[12] = 0x1e;
-        col[1] = col[5] = col[9] = col[13] = 0x1e;
-        col[2] = col[6] = col[10] = col[14] = 0x1e;
-        col[3] = a255; col[15] = a255;
-        col[7] = col[11] = 0;
-        func_0021d950((void*)((u8*)p + 0x90b0), drawColor);
-        func_0021dd60((void*)((u8*)p + 0x91b0), col);
-        drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
-        drawColor[3] = bsaAlpha(alpha * 204.0f);
-        col[0] = col[4] = col[8] = col[12] = 0x22;
-        col[1] = col[5] = col[9] = col[13] = 0x21;
-        col[2] = col[6] = col[10] = col[14] = 0x1f;
-        col[3] = col[15] = drawColor[3];
-        col[7] = col[11] = 0;
-        func_0021d950((void*)((u8*)p + 0x92b0), drawColor);
-        func_0021dd60((void*)((u8*)p + 0x93b0), col);
-        func_0021d950((void*)((u8*)p + 0x94b0), drawColor);
-        func_0021dd60((void*)((u8*)p + 0x95b0), col);
-        for (i = 0; i < 8; i++) {
-            func_0021d950((void*)((u8*)p + i * 0x200 + 0x96b0), drawColor);
-            col[0] = col[4] = col[8] = col[12] = 0x22;
-            col[1] = col[5] = col[9] = col[13] = 0x21;
-            col[2] = col[6] = col[10] = col[14] = 0x1f;
-            col[3] = col[15] = drawColor[3];
-            col[7] = col[11] = 0;
-            func_0021dd60((void*)((u8*)p + i * 0x200 + 0x97b0), col);
-        }
-    }
 }
 #pragma optimization_level 2
 
