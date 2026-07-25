@@ -1157,7 +1157,7 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
 {
     register u32 parent;
     s32 i;
-    u8 text[0x100];
+    u8 text[0x110];
     u32 workId;
 
     switch (mode) {
