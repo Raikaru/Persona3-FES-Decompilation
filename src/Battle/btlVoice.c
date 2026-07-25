@@ -4182,7 +4182,7 @@ void func_002e77c0(BtlCamera* camera);
 void func_002e7810(int param_1);
 void func_002e7880(void);
 void func_002e7890(u64 param_1);
-void func_002e7db0(u64 param_1);
+void func_002e7db0(BtlCamera* param_1);
 void func_002e82b0(u64 param_1);
 void func_002e87b0(BtlCamera* camera);
 void func_002e8820(BtlCamera* camera);
@@ -6742,30 +6742,19 @@ void func_002e7890(u64 param_1)
 
 
 // FUN_002e7db0 NONMATCHING
-void func_002e7db0(u64 param_1)
+void func_002e7db0(BtlCamera* param_1)
 
 {
   int iVar1;
   int iVar2;
-  int iVar3;
   float fVar4;
   float fVar5;
   float fVar6;
   float fVar7;
-  float fStack_50;
-  float fStack_54;
-  float fStack_58;
-  u32 uStack_5c;
-  u32 uStack_60;
-  u32 uStack_64;
-  u32 uStack_68;
-  float fStack_6c;
-  float fStack_70;
-  float fStack_74;
-  float fStack_78;
-  float fStack_7c;
-  float fStack_80;
-  float fStack_84;
+  RwV3d nearPt;
+  RtQuat quat;
+  RwV3d farPt;
+  RtQuat quatCopy;
   float fStack_90;
   float fStack_94;
   float fStack_98;
@@ -6778,83 +6767,68 @@ void func_002e7db0(u64 param_1)
   float fStack_b4;
   float fStack_b8;
   float fStack_bc;
-  float fStack_c0;
-  float fStack_c4;
-  float fStack_c8;
-  float fStack_d0;
-  float fStack_d4;
-  float fStack_d8;
-  float fStack_e0;
-  float fStack_e4;
-  float fStack_e8;
-  float fStack_f0;
-  float fStack_f4;
-  float fStack_f8;
-  float fStack_100;
-  float fStack_104;
-  float fStack_108;
-  float fStack_110;
-  float fStack_114;
-  float fStack_118;
-  float fStack_120;
-  float fStack_124;
-  float fStack_128;
+  RwV3d dirCopy;
+  RwV3d camOff;
+  RwV3d dir;
+  RwV3d target;
+  RwV3d sphere2Copy;
+  RwV3d sphere2;
+  RwV3d sphere1;
 
-  iVar3 = (int)param_1;
-  iVar1 = *(int *)(*(int *)(iVar3 + 0xe0) + 0x30);
-  iVar2 = *(int *)(*(int *)(*(int *)(iVar3 + 0xe0) + 0x38) + 0x30);
-  FUN_0027ffb0(iVar1,&fStack_120);
-  FUN_0027ffb0(iVar2,&fStack_110);
+  iVar1 = *(int *)(*(int *)((int)param_1 + 0xe0) + 0x30);
+  iVar2 = *(int *)(*(int *)(*(int *)((int)param_1 + 0xe0) + 0x38) + 0x30);
+  FUN_0027ffb0(iVar1,&sphere1);
+  FUN_0027ffb0(iVar2,&sphere2);
   fVar5 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c);
-  if (450.0f <= fVar5 * 0.5f + fStack_124 + 0.0f) {
-    fStack_124 = (fStack_124 + 0.0f) - DAT_007cad20 * fVar5;
+  if (450.0f <= fVar5 * 0.5f + sphere1.y + 0.0f) {
+    sphere1.y = (sphere1.y + 0.0f) - DAT_007cad20 * fVar5;
   }
-  fStack_e0 = fStack_120 - fStack_110;
-  fStack_e4 = fStack_124 - fStack_114;
-  fStack_e8 = fStack_128 - fStack_118;
-  fVar5 = (float)FUN_004c69f0(&fStack_e0,&fStack_e0);
-  fStack_98 = *(float *)(iVar3 + 0x9c) - fStack_120;
-  fStack_9c = *(float *)(iVar3 + 0xa4) - fStack_128;
+  dir.x = sphere1.x - sphere2.x;
+  dir.y = sphere1.y - sphere2.y;
+  dir.z = sphere1.z - sphere2.z;
+  fVar5 = (float)FUN_004c69f0(&dir,&dir);
+  fStack_98 = param_1->pos.x - sphere1.x;
+  fStack_9c = param_1->pos.z - sphere1.z;
   FUN_004c6b20(&fStack_98,&fStack_98);
   fVar5 = DAT_007cad88 * fVar5;
-  fStack_f0 = fStack_e0 * fVar5 + fStack_110;
-  fStack_f4 = fStack_e4 * fVar5 + fStack_114;
-  fStack_f8 = fStack_e8 * fVar5 + fStack_118;
-  fStack_90 = fStack_e0;
-  fStack_94 = fStack_e8;
-  fStack_100 = fStack_110;
-  fStack_104 = fStack_114;
-  fStack_108 = fStack_118;
+  target.x = dir.x * fVar5 + sphere2.x;
+  target.y = dir.y * fVar5 + sphere2.y;
+  target.z = dir.z * fVar5 + sphere2.z;
+  fStack_90 = dir.x;
+  fStack_94 = dir.z;
+  sphere2Copy.x = sphere2.x;
+  sphere2Copy.y = sphere2.y;
+  sphere2Copy.z = sphere2.z;
   fVar5 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 1.5f;
-  fStack_90 = fStack_e8;
-  fStack_94 = -fStack_e0;
+  fStack_90 = dir.z;
+  fStack_94 = -dir.x;
   fVar7 = fStack_90 * fStack_98 + fStack_94 * fStack_9c;
-  fStack_d4 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.25f + fStack_114 + 0.0f;
+  camOff.y = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.25f + sphere2.y + 0.0f;
   if (0.0f <= fVar7) {
-    fStack_d0 = fStack_90 * fVar5 + fStack_110 + 0.0f;
-    fStack_d8 = (fStack_118 + 0.0f) - fStack_e0 * fVar5;
+    camOff.x = fStack_90 * fVar5 + sphere2.x + 0.0f;
+    camOff.z = (sphere2.z + 0.0f) - dir.x * fVar5;
   }
   else {
-    fStack_d0 = (fStack_110 + 0.0f) - fStack_90 * fVar5;
-    fStack_d8 = fStack_e0 * fVar5 + fStack_118 + 0.0f;
+    camOff.x = (sphere2.x + 0.0f) - fStack_90 * fVar5;
+    camOff.z = dir.x * fVar5 + sphere2.z + 0.0f;
   }
-  fStack_c0 = fStack_e0;
-  fStack_c4 = fStack_e4;
-  fStack_c8 = fStack_e8;
-  FUN_002a4690(&uStack_5c,&fStack_d0,&fStack_f0,D_00697880);
-  FUN_004be1e0(&fStack_e0,D_006978A0,1,&uStack_5c);
-  fStack_a0 = fStack_f0;
-  fStack_a4 = fStack_f8;
-  fStack_a8 = fStack_d0;
-  fStack_ac = fStack_d8;
-  fStack_b8 = fStack_100;
-  fStack_bc = fStack_108;
+  dirCopy.x = dir.x;
+  dirCopy.y = dir.y;
+  dirCopy.z = dir.z;
+  FUN_002a4690(&quat,&camOff,&target,D_00697880);
+  FUN_004be1e0(&dir,D_006978A0,1,&quat);
+  fStack_a0 = target.x;
+  fStack_a4 = target.z;
+  fStack_a8 = camOff.x;
+  fStack_ac = camOff.z;
+  fStack_b8 = sphere2Copy.x;
+  fStack_bc = sphere2Copy.z;
   FUN_002d1fd0(&fStack_a0,&fStack_a8,&fStack_b8,&fStack_b0);
   fVar6 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 3.5f + fVar5 + 0.0f;
-  fStack_d0 = fStack_b0;
-  fStack_d4 = fStack_104;
-  fStack_d8 = fStack_b4;
-  fVar4 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar3 + 0xb8) * 0.5f);
+  camOff.x = fStack_b0;
+  camOff.y = sphere2Copy.y;
+  camOff.z = fStack_b4;
+  fVar4 = (float)FUN_0052e930(DAT_007cad60 * param_1->fovRad * 0.5f);
   fVar5 = 500.0f;
   if (500.0f <= fVar6 / fVar4) {
     fVar5 = fVar6 / fVar4;
@@ -6862,30 +6836,30 @@ void func_002e7db0(u64 param_1)
   fVar4 = fVar5 - 15.0f;
   if (0.0f <= fVar7) {
     fVar7 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c);
-    fStack_d0 = (fStack_d0 + 0.0f) - fStack_c8 * fVar7;
-    fStack_d8 = fStack_c0 * fVar7 + fStack_d8 + 0.0f;
+    camOff.x = (camOff.x + 0.0f) - dirCopy.z * fVar7;
+    camOff.z = dirCopy.x * fVar7 + camOff.z + 0.0f;
   }
-  fStack_d4 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.25f + fStack_114 + 0.0f;
-  fStack_50 = fStack_d0 + fStack_e0 * fVar4;
-  fStack_54 = fStack_d4 + fStack_e4 * fVar4;
-  fStack_58 = fStack_d8 + fStack_e8 * fVar4;
-  fStack_78 = (float)uStack_5c;
-  fStack_7c = (float)uStack_60;
-  fStack_80 = (float)uStack_64;
-  fStack_84 = (float)uStack_68;
+  camOff.y = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.25f + sphere2.y + 0.0f;
+  nearPt.x = camOff.x + dir.x * fVar4;
+  nearPt.y = camOff.y + dir.y * fVar4;
+  nearPt.z = camOff.z + dir.z * fVar4;
+  quatCopy.imag.x = quat.imag.x;
+  quatCopy.imag.y = quat.imag.y;
+  quatCopy.imag.z = quat.imag.z;
+  quatCopy.real = quat.real;
   fVar5 = fVar5 + 85.0f;
-  fStack_6c = fStack_e0 * fVar5 + fStack_d0 + 0.0f;
-  fStack_70 = fStack_e4 * fVar5 + fStack_d4 + 0.0f;
-  fStack_74 = fStack_e8 * fVar5 + fStack_d8 + 0.0f;
-  if (fStack_54 < 25.0f) {
-    fStack_54 = 25.0f;
+  farPt.x = dir.x * fVar5 + camOff.x + 0.0f;
+  farPt.y = dir.y * fVar5 + camOff.y + 0.0f;
+  farPt.z = dir.z * fVar5 + camOff.z + 0.0f;
+  if (nearPt.y < 25.0f) {
+    nearPt.y = 25.0f;
   }
-  if (fStack_70 < 25.0f) {
-    fStack_70 = 25.0f;
+  if (farPt.y < 25.0f) {
+    farPt.y = 25.0f;
   }
-  FUN_002a3e80(50.0f,(u8 *)*(int *)(iVar3 + 0xe0),(u8 *)(iVar1 + 4),(u8 *)(iVar2 + 4),3);
-  FUN_002a2290((void *)iVar3,&fStack_50,&fStack_6c,1);
-  FUN_002a3110((void *)iVar3,2.0f);
+  FUN_002a3e80(50.0f,(u8 *)param_1->action,(u8 *)(iVar1 + 4),(u8 *)(iVar2 + 4),3);
+  FUN_002a2290((void *)param_1,(f32 *)&nearPt,(f32 *)&farPt,1);
+  FUN_002a3110((void *)param_1,2.0f);
 }
 
 // FUN_002e82b0 NONMATCHING
@@ -6960,14 +6934,14 @@ void func_002e82b0(u64 param_1)
     break;
   case 2:
     if ((uVar5 & 2) == 0) {
-      func_002e7db0(param_1);
+      func_002e7db0((BtlCamera*)param_1);
       return;
     }
   case 4:
     if ((uVar5 & 2) == 0) {
       lVar6 = FUN_0030c3a0(*(u32 *)(*(int *)(*(int *)(iVar7 + 0xe0) + 0x30) + 0xa2c));
       if ((lVar6 == 0) || (lVar6 = FUN_00289f40(*(u32 *)(iVar7 + 0xe0)), lVar6 == 0)) {
-        func_002e7db0(param_1);
+        func_002e7db0((BtlCamera*)param_1);
       }
       else {
         func_002e6a20((BtlCamera*)param_1,0.75f);
