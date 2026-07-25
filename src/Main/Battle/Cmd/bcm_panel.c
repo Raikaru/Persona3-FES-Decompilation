@@ -60,6 +60,7 @@ extern u8 D_0068E4B0[];
 extern u8 D_0068E4D8[];
 extern f32 D_007CB0D4;
 extern f32 sinf(f32 angle);
+extern f32 cosf(f32 angle);
 extern f32 D_0068E4F0[];
 extern f32 D_0068E460[];
 extern f32 D_0068E490[];
@@ -4523,10 +4524,10 @@ void FUN_0022fa80(u32* object)
     u8* bytes;
     u32 i;
     u32 table;
-    u32 count;
     u32 state;
     f32 offset_x;
     f32 offset_y;
+    f32 rect_work[12];
 
     bytes = (u8*)object;
     offset_x = *(f32*)(bytes + 0x510) + *(f32*)(bytes + 0x518) + *(f32*)(bytes + 0x520);
@@ -4583,7 +4584,6 @@ void FUN_0022fa80(u32* object)
             f32 pos_x = 66.0f + offset_x;
             f32 pos_y = 11.0f + offset_y;
             for (i = 0; i < 3; i++) {
-                f32 rect0[4], rect1[4], rect2[4];
                 f32 t = (f32)*(u32*)(base + i * 4 + 0x300);
                 f32 angle;
                 f32 s, c;
@@ -4604,23 +4604,23 @@ void FUN_0022fa80(u32* object)
                 x3 = D_0068E4F0[i * 4 + 0];
                 y3 = D_0068E4F0[i * 4 + 1];
 
-                rect0[0] = pos_x + x0 * c - y0 * s;
-                rect0[1] = pos_y + x0 * s + y0 * c;
-                rect0[2] = pos_x + x1 * c - y1 * s;
-                rect0[3] = pos_y + x1 * s + y1 * c;
-                rect1[0] = pos_x + x2 * c - y2 * s;
-                rect1[1] = pos_y + x2 * s + y2 * c;
-                rect1[2] = pos_x + x3 * c - y3 * s;
-                rect1[3] = pos_y + x3 * s + y3 * c;
+                rect_work[0] = pos_x + x0 * c - y0 * s;
+                rect_work[1] = pos_y + x0 * s + y0 * c;
+                rect_work[2] = pos_x + x1 * c - y1 * s;
+                rect_work[3] = pos_y + x1 * s + y1 * c;
+                rect_work[4] = pos_x + x2 * c - y2 * s;
+                rect_work[5] = pos_y + x2 * s + y2 * c;
+                rect_work[6] = pos_x + x3 * c - y3 * s;
+                rect_work[7] = pos_y + x3 * s + y3 * c;
 
                 w = (f32)((u32*)resource)[3];
                 h = (f32)((u32*)resource)[4];
-                rect2[0] = 255.0f * x1;
-                rect2[1] = 255.0f * y1;
-                rect2[2] = 255.0f * x0;
-                rect2[3] = 255.0f * y0;
+                rect_work[8] = 255.0f * x1;
+                rect_work[9] = 255.0f * y1;
+                rect_work[10] = 255.0f * x0;
+                rect_work[11] = 255.0f * y0;
 
-                FUN_0021e170(base + i * 256, rect0, rect1, rect2);
+                FUN_0021e170(base + i * 256, rect_work, rect_work + 4, rect_work + 8);
             }
         }
         break;
