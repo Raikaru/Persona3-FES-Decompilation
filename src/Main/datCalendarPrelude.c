@@ -396,65 +396,95 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
     u32 index;
     (void)saveType;
     
-    /* Special cases with direct destination */
-    if (id == 0x1000 && size == 400) destination = PTR8(0x00833e80);
-    else if (id == 0x1001 && size == 600) destination = PTR8(0x00833c20);
-    
-    /* Indexed dispatch: ids 0x0100 through 0x0a0b with low byte selecting sub-field */
-    else if (id >= 0x100 && id <= 0xa0b)
+    /* Retail tests every id explicitly, in this exact order: 0x1001, 0x1000,
+     * then the twelve sub-field groups from low byte 0x0b down to 0x00 (each
+     * comparing high byte 0x0a down to 0x01), then single ids 0x24 down to 1. */
+    if (id == 0x1001 && size == 600) destination = PTR8(0x00833c20);
+    else if (id == 0x1000 && size == 400) destination = PTR8(0x00833e80);
+    else if (id == 0x0a0b || id == 0x090b || id == 0x080b || id == 0x070b || id == 0x060b || id == 0x050b || id == 0x040b || id == 0x030b || id == 0x020b || id == 0x010b)
     {
-        index = (id >> 8) - 1;
-        if ((id & 0xff) == 0 && size == 4) destination = PTR8(0x00834010 + index * 0x364);
-        else if ((id & 0xff) == 1 && size == 0x50) destination = PTR8(0x00834014 + index * 0x364);
-        else if ((id & 0xff) == 2 && size == 8) destination = PTR8(0x00834064 + index * 0x364);
-        else if ((id & 0xff) == 3 && size == 0x50) destination = PTR8(0x0083406c + index * 0x364);
-        else if ((id & 0xff) == 4 && size == 0x30) destination = PTR8(0x008340bc + index * 0x364);
-        else if ((id & 0xff) == 5 && size == 0x34) destination = PTR8(0x008340ec + index * 0x364);
-        else if ((id & 0xff) == 6 && size == 0x10) destination = PTR8(0x00834120 + index * 0x364);
-        else if ((id & 0xff) == 7 && size == 0x10) destination = PTR8(0x00834130 + index * 0x364);
-        else if ((id & 0xff) == 8 && size == 0x50) destination = PTR8(0x00834140 + index * 0x364);
-        else if ((id & 0xff) == 9 && size == 0x190) destination = PTR8(0x00834190 + index * 0x364);
-        else if ((id & 0xff) == 10 && size == 0x50) destination = PTR8(0x00834320 + index * 0x364);
-        else if ((id & 0xff) == 11 && size == 4) destination = PTR8(0x00834370 + index * 0x364);
+        if (size == 4) destination = PTR8(0x00834370 + ((id >> 8) - 1) * 0x364);
     }
-    
-    /* Low IDs 1-0x24 with individual size checks and destinations */
-    else if (id == 1 && size == 0x24) destination = PTR8(0x00836200);
-    else if (id == 2 && size == 0x50) destination = PTR8(0x00836224);
-    else if (id == 3 && size == 0x508) destination = PTR8(0x00836274);
-    else if (id == 4 && size == 0x10) destination = PTR8(0x0083677c);
-    else if (id == 5 && size == 8) destination = PTR8(0x0083678c);
-    else if (id == 6 && size == 6000) destination = PTRP(0x00836794);
-    else if (id == 7 && size == 600) destination = PTRP(0x00836798);
-    else if (id == 8 && size == 2) destination = PTR8(0x0083679c);
-    else if (id == 9 && size == 1) destination = PTR8(0x0083679e);
-    else if (id == 10 && size == 4) destination = PTR8(0x008367a0);
-    else if (id == 11 && size == 2) destination = PTR8(0x008367a4);
-    else if (id == 12 && size == 1) destination = PTR8(0x008367a6);
-    else if (id == 13 && size == 0x400) destination = PTR8(0x008367a7);
-    else if (id == 14 && size == 2) destination = PTR8(0x00836ba8);
-    else if (id == 15 && size == 0x270) destination = PTR8(0x00836bac);
-    else if (id == 16 && size == 0x3400) destination = PTR8(0x00836e1c);
-    else if (id == 17 && size == 0x2c0) destination = PTR8(0x0083a21c);
-    else if (id == 18 && size == 4) destination = PTR8(0x0083a6dc);
-    else if (id == 19 && size == 8) destination = PTR8(0x0083a6e0);
-    else if (id == 20 && size == 4) destination = PTR8(0x0083a6e8);
-    else if (id == 21 && size == 4) destination = PTR8(0x0083a6ec);
-    else if (id == 22 && size == 4) destination = PTR8(0x0083a6f0);
-    else if (id == 23 && size == 4) destination = PTR8(0x0083a6f4);
-    else if (id == 24 && size == 0x2c) destination = PTR8(0x0083a8c4);
-    else if (id == 25 && size == 0x200) destination = PTR8(0x0083a4dc);
-    else if (id == 26 && size == 0x1c) destination = PTR8(0x0083a6fc);
-    else if (id == 27 && size == 0x10) destination = PTR8(0x0083a718);
-    else if (id == 28 && size == 8) destination = PTR8(0x0083a728);
-    else if (id == 29 && size == 4) destination = PTR8(0x0083a730);
-    else if (id == 30 && size == 0x100) destination = PTR8(0x0083a734);
-    else if (id == 31 && size == 0x90) destination = PTR8(0x0083a834);
-    else if (id == 32 && size == 0) destination = PTR8(0);
-    else if (id == 33 && size == 0x1a8) destination = PTR8(0x0083a8f0);
-    else if (id == 34 && size == 1) destination = PTR8(0x0083679e);
-    else if (id == 35 && size == 4) destination = PTR8(0x0083aa98);
+    else if (id == 0x0a0a || id == 0x090a || id == 0x080a || id == 0x070a || id == 0x060a || id == 0x050a || id == 0x040a || id == 0x030a || id == 0x020a || id == 0x010a)
+    {
+        if (size == 0x50) destination = PTR8(0x00834320 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a09 || id == 0x0909 || id == 0x0809 || id == 0x0709 || id == 0x0609 || id == 0x0509 || id == 0x0409 || id == 0x0309 || id == 0x0209 || id == 0x0109)
+    {
+        if (size == 0x190) destination = PTR8(0x00834190 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a08 || id == 0x0908 || id == 0x0808 || id == 0x0708 || id == 0x0608 || id == 0x0508 || id == 0x0408 || id == 0x0308 || id == 0x0208 || id == 0x0108)
+    {
+        if (size == 0x50) destination = PTR8(0x00834140 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a07 || id == 0x0907 || id == 0x0807 || id == 0x0707 || id == 0x0607 || id == 0x0507 || id == 0x0407 || id == 0x0307 || id == 0x0207 || id == 0x0107)
+    {
+        if (size == 0x10) destination = PTR8(0x00834130 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a06 || id == 0x0906 || id == 0x0806 || id == 0x0706 || id == 0x0606 || id == 0x0506 || id == 0x0406 || id == 0x0306 || id == 0x0206 || id == 0x0106)
+    {
+        if (size == 0x10) destination = PTR8(0x00834120 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a05 || id == 0x0905 || id == 0x0805 || id == 0x0705 || id == 0x0605 || id == 0x0505 || id == 0x0405 || id == 0x0305 || id == 0x0205 || id == 0x0105)
+    {
+        if (size == 0x34) destination = PTR8(0x008340ec + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a04 || id == 0x0904 || id == 0x0804 || id == 0x0704 || id == 0x0604 || id == 0x0504 || id == 0x0404 || id == 0x0304 || id == 0x0204 || id == 0x0104)
+    {
+        if (size == 0x30) destination = PTR8(0x008340bc + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a03 || id == 0x0903 || id == 0x0803 || id == 0x0703 || id == 0x0603 || id == 0x0503 || id == 0x0403 || id == 0x0303 || id == 0x0203 || id == 0x0103)
+    {
+        if (size == 0x50) destination = PTR8(0x0083406c + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a02 || id == 0x0902 || id == 0x0802 || id == 0x0702 || id == 0x0602 || id == 0x0502 || id == 0x0402 || id == 0x0302 || id == 0x0202 || id == 0x0102)
+    {
+        if (size == 8) destination = PTR8(0x00834064 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a01 || id == 0x0901 || id == 0x0801 || id == 0x0701 || id == 0x0601 || id == 0x0501 || id == 0x0401 || id == 0x0301 || id == 0x0201 || id == 0x0101)
+    {
+        if (size == 0x50) destination = PTR8(0x00834014 + ((id >> 8) - 1) * 0x364);
+    }
+    else if (id == 0x0a00 || id == 0x0900 || id == 0x0800 || id == 0x0700 || id == 0x0600 || id == 0x0500 || id == 0x0400 || id == 0x0300 || id == 0x0200 || id == 0x0100)
+    {
+        if (size == 4) destination = PTR8(0x00834010 + ((id >> 8) - 1) * 0x364);
+    }
     else if (id == 36 && size == 4) destination = PTR8(0x0083a6f8);
+    else if (id == 35 && size == 4) destination = PTR8(0x0083aa98);
+    else if (id == 34 && size == 1) destination = PTR8(0x0083679e);
+    else if (id == 33 && size == 0x1a8) destination = PTR8(0x0083a8f0);
+    else if (id == 32 && size == 0) destination = PTR8(0);
+    else if (id == 31 && size == 0x90) destination = PTR8(0x0083a834);
+    else if (id == 30 && size == 0x100) destination = PTR8(0x0083a734);
+    else if (id == 29 && size == 4) destination = PTR8(0x0083a730);
+    else if (id == 28 && size == 8) destination = PTR8(0x0083a728);
+    else if (id == 27 && size == 0x10) destination = PTR8(0x0083a718);
+    else if (id == 26 && size == 0x1c) destination = PTR8(0x0083a6fc);
+    else if (id == 25 && size == 0x200) destination = PTR8(0x0083a4dc);
+    else if (id == 24 && size == 0x2c) destination = PTR8(0x0083a8c4);
+    else if (id == 23 && size == 4) destination = PTR8(0x0083a6f4);
+    else if (id == 22 && size == 4) destination = PTR8(0x0083a6f0);
+    else if (id == 21 && size == 4) destination = PTR8(0x0083a6ec);
+    else if (id == 20 && size == 4) destination = PTR8(0x0083a6e8);
+    else if (id == 19 && size == 8) destination = PTR8(0x0083a6e0);
+    else if (id == 18 && size == 4) destination = PTR8(0x0083a6dc);
+    else if (id == 17 && size == 0x2c0) destination = PTR8(0x0083a21c);
+    else if (id == 16 && size == 0x3400) destination = PTR8(0x00836e1c);
+    else if (id == 15 && size == 0x270) destination = PTR8(0x00836bac);
+    else if (id == 14 && size == 2) destination = PTR8(0x00836ba8);
+    else if (id == 13 && size == 0x400) destination = PTR8(0x008367a7);
+    else if (id == 12 && size == 1) destination = PTR8(0x008367a6);
+    else if (id == 11 && size == 2) destination = PTR8(0x008367a4);
+    else if (id == 10 && size == 4) destination = PTR8(0x008367a0);
+    else if (id == 9 && size == 1) destination = PTR8(0x0083679e);
+    else if (id == 8 && size == 2) destination = PTR8(0x0083679c);
+    else if (id == 7 && size == 600) destination = PTRP(0x00836798);
+    else if (id == 6 && size == 6000) destination = PTRP(0x00836794);
+    else if (id == 5 && size == 8) destination = PTR8(0x0083678c);
+    else if (id == 4 && size == 0x10) destination = PTR8(0x0083677c);
+    else if (id == 3 && size == 0x508) destination = PTR8(0x00836274);
+    else if (id == 2 && size == 0x50) destination = PTR8(0x00836224);
+    else if (id == 1 && size == 0x24) destination = PTR8(0x00836200);
     
     if (destination != NULL) FUN_00521250(destination, data, size);
 }
