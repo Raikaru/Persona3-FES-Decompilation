@@ -753,6 +753,55 @@ void bsaMain00210d90(BsaWork* work)
             func_0021dd60(p + i * 0x80 + 0x25ec, (u8*)rect);
         }
     }
+    /*
+     * Additional background panels — these are always visible and render a
+     * darker overlay behind the command/target areas.  Retail places them
+     * after the regular panel loop.
+     */
+    for (i = 0; i < 8; i++) {
+        rect[0] = ((i / 4) == 0 ? -1.0f : 50.0f);
+        rect[1] = ((i / 4) == 0 ? y : y);
+        rect[2] = ((i / 4) == 0 ? 51.0f : 500.0f);
+        rect[3] = ((i / 4) == 0 ? x : x);
+        func_0021d8e0(p + i * 0x200 + 0x90b0, rect);
+    }
+    {
+        u8 color0;
+        u8 colorA;
+        color0 = 0x1e;
+        drawColor[0] = color0;
+        drawColor[1] = color0;
+        drawColor[2] = color0;
+        drawColor[3] = bsaAlpha(alpha * 255.0f);
+        ((u32*)rect)[0] = *(u32*)drawColor;
+        ((u32*)rect)[1] = *(u32*)drawColor;
+        ((u32*)rect)[2] = *(u32*)drawColor;
+        ((u32*)rect)[3] = *(u32*)drawColor;
+        func_0021d950(p + 0x90b0, drawColor);
+        func_0021dd60(p + 0x91b0, (u8*)rect);
+        drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
+        drawColor[3] = bsaAlpha(alpha * 204.0f);
+        ((u32*)rect)[0] = *(u32*)drawColor;
+        ((u32*)rect)[1] = *(u32*)drawColor;
+        ((u32*)rect)[2] = *(u32*)drawColor;
+        ((u32*)rect)[3] = *(u32*)drawColor;
+        func_0021d950(p + 0x92b0, drawColor);
+        func_0021dd60(p + 0x93b0, (u8*)rect);
+        func_0021d950(p + 0x94b0, drawColor);
+        ((u32*)rect)[0] = *(u32*)drawColor;
+        ((u32*)rect)[1] = *(u32*)drawColor;
+        ((u32*)rect)[2] = *(u32*)drawColor;
+        ((u32*)rect)[3] = *(u32*)drawColor;
+        func_0021dd60(p + 0x95b0, (u8*)rect);
+        for (i = 0; i < 8; i++) {
+            func_0021d950(p + i * 0x200 + 0x96b0, drawColor);
+            ((u32*)rect)[0] = *(u32*)drawColor;
+            ((u32*)rect)[1] = *(u32*)drawColor;
+            ((u32*)rect)[2] = *(u32*)drawColor;
+            ((u32*)rect)[3] = *(u32*)drawColor;
+            func_0021dd60(p + i * 0x200 + 0x97b0, (u8*)rect);
+        }
+    }
 }
 #pragma optimization_level 2
 
