@@ -518,10 +518,12 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
     if (phase > 3) {
         level = datGetLevel(pcId);
         campStatusDrawNumber((f32)campStatusClampFade(fade),
-                             position.x + 81.0f, position.y + 40.0f,
+                             position.x + 81.0f,
+                             52.0f + position.y - 1.0f - 12.0f,
                              level);
         campStatusDrawNumber((f32)campStatusClampFade(fade),
-                             position.x + 96.0f, position.y + 40.0f,
+                             position.x + 96.0f,
+                             52.0f + position.y - 1.0f - 12.0f,
                              level);
     }
     hpFade = phase < 9 ? 0xff - ((phase - 4) * 0xff) / 4 : 0;
