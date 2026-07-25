@@ -1244,6 +1244,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     FldEvent* fldEvent;
     u32* eventWords;
     RwMatrix* heroMat;
+    RwMatrix heroMatBuf;
     RwV3d markerPos;
     RwV3d offset;
     s32 currentActor;
@@ -2491,8 +2492,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     /* Retail updates the interaction marker after every non-destroy state. */
     if (EVENT_WORD(0x38) == true)
     {
-        heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
-        markerPos = heroMat->pos;
+        heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0), &heroMatBuf);
+        markerPos = heroMatBuf.pos;
         markerPos.y += 200.0f;
         if (DATA_U32(0x00871914) != 0)
         {
