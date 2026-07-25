@@ -2693,7 +2693,6 @@ reward_done:
 #pragma optimization_level 3
 void *func_001f5b20(void)
 {
-    u8 *work = sBrReward;
     u32 flags;
     u32 sub_state;
     s32 cnt;
@@ -2703,9 +2702,9 @@ void *func_001f5b20(void)
     u8 col[4];
     f32 temp;
     u32 i;
-    if (work == NULL) {
+    u8 *work;
+    if ((work = sBrReward) == NULL) {
         K_ASSERT(work != NULL, 0x8c);
-        goto final_exit;
     }
     flags = BR_U32(work, 0);
     if (flags & 2) {
@@ -3185,17 +3184,39 @@ void func_001f7210(void)
 {
     u8 *work = sBrReward;
     u32 slot;
+    u32 entry_idx;
     u8 *entry;
     u32 kind = 0;
     s32 value = 0;
     u32 i;
     u32 item_substate;
+    u32 debug_val;
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
-    entry = work + slot * 0x670 + 0x60;
-    switch (BR_U32(entry, 0)) {
-    case 0:
-        /* Recovery/status reward: choose a party member which can benefit. */
+    entry_idx = BR_U32(work, 0x1c + slot * 4);
+    BR_U32(work, 0x34e0) = entry_idx * 0x670;
+    entry = work + 0x670 + 0x60;
+    debug_val = BR_U32(entry, 0);
+    if (debug_val == 3) {
+        /* case 3: recovery/status */
+        kind = 14 + (BR_U32(entry, 4) % 13);
+        value = BR_S16(entry, 8);
+        printf("rank %d\n", value);
+    } else if (debug_val == 2) {
+        /* case 2: money */
+        kind = 6;
+        value = BR_S32(entry, 8);
+        {
+            u32 rnd_tmp = func_00488f30();
+            printf("rnd %d/%d\n", BR_U32(entry, 4), 5);
+        }
+    } else if (debug_val == 1) {
+        /* case 1: level/stat */
+        kind = 1 + (BR_U32(entry, 4) % 5);
+        value = BR_S16(entry, 8);
+        printf("item id %d\n", value);
+    } else if (debug_val == 0) {
+        /* case 0: recovery/status fallback */
         if (BR_U32(entry, 4) != 0) {
             kind = 14 + (BR_U32(entry, 4) % 13);
             value = BR_S32(entry, 8);
@@ -3203,21 +3224,7 @@ void func_001f7210(void)
             kind = 0x1b;
             value = 1;
         }
-        break;
-    case 1:
-        kind = 1 + (BR_U32(entry, 4) % 5);
-        value = BR_S16(entry, 8);
-        break;
-    case 2:
-        kind = 6;
-        value = BR_S32(entry, 8);
-        break;
-    case 3:
-        kind = 14 + (BR_U32(entry, 4) % 13);
-        value = BR_S16(entry, 8);
-        break;
-    default:
-        break;
+        printf("type : get money\n");
     }
     item_substate = BR_U32(entry, 4) % 6;
     /*
@@ -3250,19 +3257,39 @@ void func_001f7210(void)
         func_003c7430(12);
         break;
     case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-        /* off=6124-6396: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        /* off=6124: lhu a0,2(s3) -> func_00173220(entry[1]) */
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
-        if (kind == 4) { func_003c7430(17); }
-        else if (kind == 5) { func_003c7430(20); }
-        else if (kind == 6) { func_003c7430(18); }
-        else if (kind == 7) { func_003c7430(19); }
-        else { func_003c7430(21); }
+        func_003c7430(17);
+        break;
+    case 5:
+        /* off=6192: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7c20(1, value, 0);
+        func_003c7430(20);
+        break;
+    case 6:
+        /* off=6260: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7c20(1, value, 0);
+        func_003c7430(18);
+        break;
+    case 7:
+        /* off=6328: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7c20(1, value, 0);
+        func_003c7430(19);
+        break;
+    case 8:
+        /* off=6396: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7c20(1, value, 0);
+        func_003c7430(21);
         break;
     case 9:
         /* off=6464: lhu a0,2(s3) -> func_00173220(entry[1]) */
