@@ -3420,13 +3420,9 @@ void func_001f7210(void)
         func_003c7430(34);
         break;
     case 18:
-        /* off=7172: a0=1 -> func_001775a0(1); then persona-stat chain */
+        /* off=7172: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(33) */
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
-        tmp = func_0016c790(1);
-        tmp = func_00177360(tmp);
-        tmp = func_0011a870(tmp);
-        func_003c7bc0(1, tmp);
         func_003c7430(33);
         break;
     case 19:
