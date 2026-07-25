@@ -13916,23 +13916,23 @@ void FUN_00400740(u64 param_1,u64 param_2,u8 param_3,int param_4)
 
   iVar1 = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
 
-    FUN_0040e3c0(1.0f,param_1,param_2,param_3,0x15,0);
+    FUN_0040e3c0(0x3f800000,param_1,param_2,param_3,0x15,0);
 
-    FUN_0040e3c0(1.0f,param_1,param_2,param_3,0x16,0);
+    FUN_0040e3c0(0x3f800000,param_1,param_2,param_3,0x16,0);
 
   iVar4 = (int)param_1;
 
-    FUN_0040e3c0(1.0f,iVar4 + 0x15d,param_2,param_3,0x15,0);
+    FUN_0040e3c0(0x3f800000,iVar4 + 0x15d,param_2,param_3,0x15,0);
 
-    FUN_0040e3c0(1.0f,iVar4 + 0x15d,param_2,param_3,0x16,0);
+    FUN_0040e3c0(0x3f800000,iVar4 + 0x15d,param_2,param_3,0x16,0);
 
-    FUN_0040e3c0(1.0f,iVar4 + 0x70,param_2,param_3,0x17,0);
+    FUN_0040e3c0(0x3f800000,iVar4 + 0x70,param_2,param_3,0x17,0);
 
-    FUN_0040e3c0(1.0f,iVar4 + 0x70,param_2,param_3,0x18,0);
+    FUN_0040e3c0(0x3f800000,iVar4 + 0x70,param_2,param_3,0x18,0);
 
-    FUN_0040e3c0(1.0f,iVar4 + 0xe0,param_2,param_3,0x17,0);
+    FUN_0040e3c0(0x3f800000,iVar4 + 0xe0,param_2,param_3,0x17,0);
 
-    FUN_0040e3c0(1.0f,iVar4 + 0xe0,param_2,param_3,0x18,0);
+    FUN_0040e3c0(0x3f800000,iVar4 + 0xe0,param_2,param_3,0x18,0);
 
   iVar1 = *(int *)(iVar1 + 4);
 
