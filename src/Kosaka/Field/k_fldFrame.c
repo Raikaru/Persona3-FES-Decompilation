@@ -957,7 +957,6 @@ void* func_001ae580(KwlnTask* task)
     FldFrameMoveWork* work;
     Model* model;
     s32 i;
-    f32 directionLength;
     f32 amount;
     f32 localAngleStep;
     f32 localAngle;
@@ -965,7 +964,6 @@ void* func_001ae580(KwlnTask* task)
     RwV3d translation;
     RwV3d localDir;
     RwV3d localPosition;
-    s32 localFrameCount;
     s32 mode;
     s32 pointCount;
 
@@ -1104,7 +1102,7 @@ void* func_001ae580(KwlnTask* task)
             }
             else if (work->pointCount + pending * 4 < 48)
             {
-                RwV3d curvePoints[16];
+                RwV3d curvePoints[13];
                 void* curve;
                 s32 index;
                 s32 step;
