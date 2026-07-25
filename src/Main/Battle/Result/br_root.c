@@ -3274,11 +3274,8 @@ void func_001f7210(void)
         }
         kind = 1 + (BR_U32(entry, 4) % 5);
         value = BR_S16(entry, 8);
-        printf("item num : %d\n", value);
-        printf("rank %d\n", value);
-        printf("item id : 0x%03x\n", BR_U16(entry, 6));
-        printf("item num : %d\n", value);
-        printf("type : get item\n");
+        func_00209d40(entry);
+        func_00209d40(entry);
     } else if (debug_val == 0) {
         /* case 0: recovery/status fallback */
         if (BR_U32(entry, 4) != 0) {
