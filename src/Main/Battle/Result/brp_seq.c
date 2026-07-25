@@ -97,8 +97,12 @@ extern const char D_0068EE60[];
 extern const char D_0068EE80[];
 extern const char D_0068EE90[];
 extern u32 gp0xffff97d0;
+extern void FUN_005225a8(u32 format, ...);
+extern const char D_0068ED98[];
+extern const char D_0068EDA8[];
+extern u32 FUN_00108570(void);
+extern void FUN_00108670(s16 type);
 extern void FUN_00523ac8(void*, ...);
-extern void FUN_005225a8(u32, ...);
 extern s32 FUN_00488f30(void);
 extern u8* FUN_003d5c90(void);
 extern u8 FUN_0016c470(s32);
@@ -517,30 +521,7 @@ void func_00272810(void)
                 break;
             case 3:
                 pad = DAT_007e0952;
-                if ((DAT_007e094e & 0x40) == 0)
-                {
-                    mode = brpSeqU32(0x1b8);
-                    page = brpSeqU32(0x1bc);
-                    if (mode < 2 && (pad & 0x4000) != 0)
-                        page = page < 3 ? page + 1 : 0;
-                    else if (mode < 2 && (pad & 0x1000) != 0)
-                        page = page != 0 ? page - 1 : 3;
-                    else if ((pad & 0x8000) != 0)
-                        mode = mode != 0 ? mode - 1 : 2;
-                    else if ((pad & 0x2000) != 0)
-                        mode = mode < 2 ? mode + 1 : 0;
-                    brpSeqPutU32(0x1b8, mode);
-                    brpSeqPutU32(0x1bc, page);
-                    if ((pad & 0xf000) != 0)
-                    {
-                        func_00279890(mode, page);
-                        FUN_0010a4e0(0, 0, 0, 0);
-                    }
-                    index = mode == 2 ? 8 : page + mode * 4;
-                    skillId = brpSeqU16(0x60 + index * 2);
-                    uGpffff97ec = skillId == 0 ? (u32)-1 : skillId;
-                }
-                else
+                if ((DAT_007e094e & 0x40) != 0)
                 {
                     index = brpSeqU32(0x1b8) == 2 ?
                             8 : brpSeqU32(0x1bc) +
@@ -552,24 +533,93 @@ void func_00272810(void)
                     FUN_0010a4e0(0, 0, 0, 1);
                     brpSeqPutU32(0x18, 4);
                 }
-                break;
-            case 4:
-                FUN_003c7990(1);
-                if (FUN_003c7850() == 0 && FUN_003c7610() == 0)
+                else
                 {
-                    FUN_003c7650(1);
+                    if (brpSeqU32(0x1b8) < 2 && (pad & 0x4000) != 0)
+                    {
+                        page = brpSeqU32(0x1bc);
+                        page = page < 3 ? page + 1 : 0;
+                        brpSeqPutU32(0x1bc, page);
+                        if (brpSeqU32(0x1b8) == 2)
+                            func_00279890(brpSeqU32(0x1b8), 1);
+                        else
+                            func_00279890(brpSeqU32(0x1b8),
+                                          brpSeqU32(0x1bc));
+                        FUN_0010a4e0(0, 0, 0, 0);
+                    }
+                    else if (brpSeqU32(0x1b8) < 2 &&
+                             (pad & 0x1000) != 0)
+                    {
+                        page = brpSeqU32(0x1bc);
+                        page = page != 0 ? page - 1 : 3;
+                        brpSeqPutU32(0x1bc, page);
+                        if (brpSeqU32(0x1b8) == 2)
+                            func_00279890(brpSeqU32(0x1b8), 1);
+                        else
+                            func_00279890(brpSeqU32(0x1b8),
+                                          brpSeqU32(0x1bc));
+                        FUN_0010a4e0(0, 0, 0, 0);
+                    }
+                    else if ((pad & 0x2000) != 0)
+                    {
+                        mode = brpSeqU32(0x1b8);
+                        mode = mode < 2 ? mode + 1 : 0;
+                        brpSeqPutU32(0x1b8, mode);
+                        if (brpSeqU32(0x1b8) == 2)
+                            func_00279890(brpSeqU32(0x1b8), 1);
+                        else
+                            func_00279890(brpSeqU32(0x1b8),
+                                          brpSeqU32(0x1bc));
+                        FUN_0010a4e0(0, 0, 0, 0);
+                    }
+                    else if ((pad & 0x8000) != 0)
+                    {
+                        mode = brpSeqU32(0x1b8);
+                        mode = mode != 0 ? mode - 1 : 2;
+                        brpSeqPutU32(0x1b8, mode);
+                        if (brpSeqU32(0x1b8) == 2)
+                            func_00279890(brpSeqU32(0x1b8), 1);
+                        else
+                            func_00279890(brpSeqU32(0x1b8),
+                                          brpSeqU32(0x1bc));
+                        FUN_0010a4e0(0, 0, 0, 0);
+                    }
                     index = brpSeqU32(0x1b8) == 2 ?
                             8 : brpSeqU32(0x1bc) +
                             brpSeqU32(0x1b8) * 4;
                     skillId = brpSeqU16(0x60 + index * 2);
-                    for (slot = index; slot + 1 < brpSeqU32(0x74); slot++)
-                        brpSeqPutU16(0x60 + slot * 2,
-                                     brpSeqU16(0x62 + slot * 2));
-                    brpSeqPutU32(0x74, brpSeqU32(0x74) - 1);
-                    FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-                    FUN_003c7bc0(1, DAT_007ce4ec + skillId * 0x13);
-                    FUN_003c7430(index == 8 ? 6 : 7);
-                    brpSeqPutU32(0x18, 5);
+                    uGpffff97ec = skillId == 0 ? (u32)-1 : skillId;
+                }
+                break;
+            case 4:
+                FUN_003c7990(1);
+                if (FUN_003c7850() == 0)
+                {
+                    done = FUN_003c7610();
+                    if (done == 1)
+                    {
+                        FUN_003c7650(1);
+                        brpSeqPutU32(0x18, 3);
+                    }
+                    else if (done == 0)
+                    {
+                        FUN_003c7650(1);
+                        index = brpSeqU32(0x1b8) == 2 ?
+                                8 : brpSeqU32(0x1bc) +
+                                brpSeqU32(0x1b8) * 4;
+                        skillId = brpSeqU16(0x60 + index * 2);
+                        for (slot = index; slot + 1 < brpSeqU32(0x74); slot++)
+                            brpSeqPutU16(0x60 + slot * 2,
+                                         brpSeqU16(0x62 + slot * 2));
+                        brpSeqPutU32(0x74, brpSeqU32(0x74) - 1);
+                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7bc0(1, DAT_007ce4ec + skillId * 0x13);
+                        if (index == 8)
+                            FUN_003c7430(6);
+                        else
+                            FUN_003c7430(7);
+                        brpSeqPutU32(0x18, 5);
+                    }
                 }
                 break;
             case 5:
@@ -583,32 +633,53 @@ void func_00272810(void)
             }
             break;
         case 4:
-            FUN_003c7990(1);
-            if (FUN_003c7850() == 0)
+            if (brpSeqU32(0x20) == 1)
             {
-                FUN_003c7650(1);
-                if (brpSeqU32(0x20) == 1)
+                FUN_003c7990(1);
+                if (FUN_003c7850() == 0)
                 {
+                    FUN_003c7650(1);
                     func_00273800();
                 }
-                else if (FUN_003c7610() == 1)
+            }
+            else if (brpSeqU32(0x20) == 0)
+            {
+                FUN_003c7990(1);
+                if (FUN_003c7850() == 0)
                 {
-                    FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-                    FUN_003c7430(0xe);
-                    brpSeqPutU32(0x20, 1);
-                }
-                else
-                {
-                    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-                    FUN_003c7bc0(0, DAT_007ce4ec +
-                                  brpSeqU16(0xa2) * 0x13);
-                    FUN_003c7bc0(1, DAT_007ce4ec +
-                                  brpSeqU16(0xa2) * 0x13);
-                    FUN_003c7430(brpSeqU32(0x9c) == 1 ? 0x10 : 0xf);
-                    FUN_0010a4e0(1, 0, 8, 3);
-                    FUN_001768e0(persona, brpSeqS16(0xa0));
-                    FUN_00176840(persona, brpSeqU16(0xa2));
-                    brpSeqPutU32(0x20, 1);
+                    FUN_003c7650(1);
+                    done = FUN_003c7610();
+                    if (done == 1)
+                    {
+                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7430(0xe);
+                        brpSeqPutU32(0x20, 1);
+                    }
+                    else if (done == 0)
+                    {
+                        if (brpSeqU32(0x9c) == 1)
+                        {
+                            FUN_003c7bc0(0, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7bc0(1, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7430(0x10);
+                            FUN_0010a4e0(1, 0, 8, 3);
+                        }
+                        else if (brpSeqU32(0x9c) == 0)
+                        {
+                            FUN_003c7bc0(0, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7bc0(1, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7430(0xf);
+                            FUN_0010a4e0(1, 0, 8, 3);
+                        }
+                        persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
+                        FUN_001768e0(persona, brpSeqS16(0xa0));
+                        FUN_00176840(persona, brpSeqU16(0xa2));
+                        brpSeqPutU32(0x20, 1);
+                    }
                 }
             }
             break;
@@ -619,34 +690,50 @@ void func_00272810(void)
                 FUN_003c7990(0);
                 if (FUN_003c7850() == 0)
                 {
-                    FUN_003c7650(0);
-                    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-                    if (FUN_003c7610() == 1)
+                    done = FUN_003c7610();
+                    if (done == 1)
                     {
+                        FUN_003c7650(0);
                         FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
                         FUN_003c7430(10);
                         brpSeqPutU32(0x1c, 1);
                     }
-                    else
+                    else if (done == 0)
                     {
-                        brpSeqPutU32(0x1c, 3);
+                        FUN_003c7650(1);
+                        persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
                         if ((persona->flags & 8) != 0)
-                        {
-                            brpSeqPutU16(0x84, (u16)FUN_001fba70(brpSeqS16(4)));
-                            brpSeqPutU32(0xa4, 1);
-                            brpSeqPutU32(0, brpSeqU32(0) | 8);
-                            FUN_0024a7f0();
-                        }
-                        else
                         {
                             brpSeqPutU16(0x80, FUN_001fb560(brpSeqS16(4)));
                             brpSeqPutU32(0xa4, 0);
                             brpSeqPutU32(0, brpSeqU32(0) | 4);
+                            FUN_005225a8((u32)(uintptr_t)D_0068ED98,
+                                         brpSeqU16(0x80));
                             FUN_0024a7f0();
+                            brpSeqPutU32(0, brpSeqU32(0) | 0x40);
+                            func_0024ab10(brpSeqU16(0x80));
+                            H_Fade_FadeOut();
+                            H_Fade_SetType(2);
+                            brpSeqPutU32(0x1c, 3);
                         }
-                        FUN_003c77a0();
-                        persona->flags &= (u16)~0x0cu;
+                        else
+                        {
+                            brpSeqPutU16(0x84, FUN_001fba70(brpSeqS16(4)));
+                            brpSeqPutU32(0xa4, 1);
+                            brpSeqPutU32(0, brpSeqU32(0) | 8);
+                            FUN_005225a8((u32)(uintptr_t)D_0068EDA8,
+                                         brpSeqU32(0x84));
+                            FUN_0024a7f0();
+                            brpSeqPutU32(0, brpSeqU32(0) | 0x40);
+                            func_0024abd0();
+                            H_Fade_FadeOut();
+                            H_Fade_SetType(2);
+                            brpSeqPutU32(0x1c, 3);
+                        }
                     }
+                    FUN_003c77a0();
+                    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
+                    persona->flags &= (u16)~0x0cu;
                 }
                 break;
             case 1:
