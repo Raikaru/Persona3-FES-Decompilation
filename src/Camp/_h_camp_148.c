@@ -2945,6 +2945,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
       FUN_0017f990();
       FUN_001ba8d0();
     }
+    break;
   }
   return 0;
 }
