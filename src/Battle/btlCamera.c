@@ -7944,6 +7944,8 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fStack_d0 = fStack_d0 + axis[0];
     fStack_cc = uStack_70.f._4_4_ + axis[1];
     fStack_c8 = mid[2] + axis[2];
+    FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,
+                        (const void*)mid,(const void*)&D_00697880);
     uVar16 = uGpffff8074;
   }
   else {
