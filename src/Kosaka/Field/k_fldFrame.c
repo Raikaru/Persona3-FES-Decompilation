@@ -766,6 +766,9 @@ extern void func_004c3880(void* matrix);
 extern void func_0045edc0(void* work);
 extern s32 func_001dde00(s32 value);
 extern s32 func_001ded40(s32 value);
+extern s32 func_003182d0(Model* model, s32 layer, s32 animation, s32 mode, s32 flag);
+extern void func_003189f0(Model* model, s32 layer, f32 speed);
+extern s32 func_00318540(Model* model, s32 layer);
 extern s32 func_001a5aa0(void* matrix);
 extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
 extern f32 func_0052e9e8(f32 value);
@@ -980,55 +983,86 @@ void* func_001ae580(KwlnTask* task)
     }
     case 1:
     {
-        if (pointCount > 0)
+        s32 kind;
+        s32 anim;
+
+        if (pointCount > 0 || work->pendingPointCount > 0)
         {
-            localFrameCount = (s32)work->points[0].duration;
-            work->frameCount = localFrameCount;
-            if (localFrameCount < 1)
+            kind = (s32)work->points[0].kind;
+            if (kind == 1 || kind == 4)
             {
-                work->frameCount = 1;
+                if ((*(u16*)work->resource & 0x3ff) < 100)
+                {
+                    func_003182d0(fldFrameMoveModel(work), 0,
+                                  (s16)func_001dde00(work->animation), 2, 1);
+                }
+                else
+                {
+                    func_003182d0(fldFrameMoveModel(work), 0, 0, 8, 1);
+                }
+                func_003189f0(fldFrameMoveModel(work), 0, 1.0f);
+                work->frameCount = (s32)work->points[0].duration;
+                work->state = 5;
             }
-            if (work->points[0].kind == 3)
+            else if (kind == 2)
             {
-                work->state = 4;
-            }
-            else if (work->points[0].kind == 2)
-            {
+                anim = (s16)func_001dde00(work->animation);
+                if ((*(u16*)work->resource & 0x3ff) < 100)
+                {
+                    func_003182d0(fldFrameMoveModel(work), 0, anim, 2, 1);
+                }
+                else
+                {
+                    func_003182d0(fldFrameMoveModel(work), 0, anim, 8, anim);
+                }
+                func_003189f0(fldFrameMoveModel(work), 0, 1.0f);
+                work->frameCount = (s32)work->points[0].duration;
                 work->state = 6;
             }
-            else
+            else if (kind != 5)
             {
-                work->state = 5;
+                if ((*(u16*)work->resource & 0x3ff) < 100)
+                {
+                    anim = (s16)func_00318540(fldFrameMoveModel(work), 0);
+                    if (anim != func_001ded40(work->animation))
+                    {
+                        func_003182d0(fldFrameMoveModel(work), 0,
+                                      (s16)func_001ded40(work->animation), 8, 1);
+                    }
+                }
+                else
+                {
+                    anim = (s16)func_00318540(fldFrameMoveModel(work), 0);
+                    if (anim != 1)
+                    {
+                        func_003182d0(fldFrameMoveModel(work), 0, 1, 8, 1);
+                    }
+                }
+                work->targetAnimation = 8;
+                work->state = 2;
             }
             return KWLNTASK_CONTINUE;
         }
+        if (work->targetAnimation > 0)
         {
-            s32 pending = work->pendingPointCount;
-            if (pending > 0)
+            work->targetAnimation--;
+            return KWLNTASK_CONTINUE;
+        }
+        anim = (s16)func_00318540(fldFrameMoveModel(work), 0);
+        if ((*(u16*)work->resource & 0x3ff) < 100)
+        {
+            if (anim != 4 && anim != 0x15 &&
+                anim != func_001dde00(work->animation))
             {
-                if (pointCount + pending < 48)
-                {
-                    for (i = 0; i < pending; i++)
-                    {
-                        u8* source = (u8*)work + 0x4e0 + i * 0x18;
-                        FldFrameMovePoint* destination =
-                            &work->points[pointCount + i];
-
-                        destination->kind = 0;
-                        memcpy(&destination->position, source, sizeof(RwV3d));
-                        destination->duration = *(f32*)(source + 0x0c);
-                        destination->drawTask = NULL;
-                        fldFrameMoveCreateDebugPoint(work, destination,
-                                                     &sDebugSphereColor);
-                    }
-                    work->pointCount += pending;
-                }
-                work->pendingPointCount = 0;
+                func_003182d0(fldFrameMoveModel(work), 0,
+                              (s16)func_001dde00(work->animation), 8, 1);
+                func_003189f0(fldFrameMoveModel(work), 0, 1.0f);
             }
-            if (work->frame > 0)
-            {
-                work->frame--;
-            }
+        }
+        else if (anim != 3 && anim != 0)
+        {
+            func_003182d0(fldFrameMoveModel(work), 0, 0, 8, 1);
+            func_003189f0(fldFrameMoveModel(work), 0, 1.0f);
         }
         return KWLNTASK_CONTINUE;
     }
