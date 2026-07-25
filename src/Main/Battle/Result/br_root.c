@@ -3203,19 +3203,96 @@ void func_001f7210(void)
     BR_U32(work, 0x34e0) = entry_idx * 0x670;
     entry = work + 0x670 + 0x60;
     debug_val = BR_U32(entry, 0);
-    if (debug_val == 3) {
-        u8 *flag_base;
-        u8 *res_base;
-        /* case 3: full reward simulation */
-        flag_base = (u8 *)func_00209d00();
-        res_base = (u8 *)func_0020e710(1);
-        printf("type : get item\n");
-        printf("money : %d\n", BR_S32(entry, 4));
-        func_0010a4e0(1, 0, 6, 9);
-        func_0034fcd0(res_base);
-        kind = 14 + (BR_U32(entry, 4) % 13);
+    switch (debug_val) {
+    case 0:
+    {
+        u8 *wt_base;
+        u32 wt_idx;
+        u32 sum_w;
+        u32 search_idx;
+        s16 wt_ids[32];
+        s16 wt_wgts[32];
+        /* case 0: weighted random via func_00209c40 */
+        printf("money : %d\n", value);
+        func_0010a4e0(1, 0, 6, 6);
+        wt_base = (u8 *)func_00209c40();
+        printf("type : get money\n", BR_U32(entry, 4));
+        wt_base += BR_U32(entry, 4) * 256;
+        for (wt_idx = 0; wt_idx < 32; wt_idx++) {
+            wt_ids[wt_idx] = *(s16 *)(wt_base + wt_idx * 8);
+            wt_wgts[wt_idx] = *(s16 *)(wt_base + wt_idx * 8 + 6);
+            if (wt_ids[wt_idx] < 0) break;
+        }
+        sum_w = 0;
+        for (wt_idx = 0; wt_idx < 32; wt_idx++) {
+            s16 w = *(s16 *)(wt_base + wt_idx * 8);
+            if (w < 0) break;
+            if (wt_wgts[wt_idx] >= 0) {
+                sum_w += (u32)wt_wgts[wt_idx];
+            }
+        }
+        printf("rank %d\n", sum_w);
+        if (sum_w > 0) {
+            u32 rnd = func_00488f30() % sum_w;
+            for (search_idx = 0; search_idx < wt_idx; search_idx++) {
+                s16 w = wt_wgts[search_idx];
+                if (w >= 0) {
+                    if (rnd < (u32)w) break;
+                    rnd -= (u32)w;
+                }
+            }
+            wt_base += search_idx * 8;
+        }
+        printf("item id : 0x%03x\n", *(u16 *)wt_base);
+        kind = 1;
         value = BR_S16(entry, 8);
-    } else if (debug_val == 2) {
+        break;
+    }
+    case 1:
+    {
+        u8 *tbl_entry;
+        u32 new_kind;
+        u32 rnd;
+        u32 entry_count;
+        /* case 1: item-table scan via func_00209c80 */
+        printf("type : get item\n");
+        func_0010a4e0(1, 0, 6, 7);
+        tbl_entry = (u8 *)func_00209c80();
+        printf("money : %d\n", BR_S32(entry, 4));
+        printf("type : get item\n");
+        tbl_entry += BR_U32(entry, 4) * 192;
+        for (new_kind = 0; new_kind < 16; new_kind++) {
+            u32 ret = (u32)func_00209d40(tbl_entry + new_kind * 12);
+            if (ret == 2) break;
+        }
+        if (new_kind == 0) {
+            /* No matching entry found */
+            K_ASSERT(work != NULL, 0x450);
+        } else {
+            rnd = func_00488f30() % new_kind;
+            printf("item id : 0x%03x\n", rnd);
+            tbl_entry += rnd * 12;
+            entry_count = (u32)func_00209d40(tbl_entry);
+            if (entry_count == 1) {
+                printf("item id : 0x%03x\n", BR_U16(entry, 4));
+                value = BR_S16(entry, 8);
+                kind = 2;
+            } else if (entry_count == 0) {
+                printf("rank %d\n", value);
+                printf("rank %d\n", value);
+                if (datGetFlag(0xbd1) != 0) {
+                    value = (s32)((f32)BR_S32(entry, 4) * 0.25f);
+                }
+                kind = 3;
+            } else {
+                K_ASSERT(work != NULL, 0x450);
+            }
+        }
+        printf("money : %d\n", value);
+        break;
+    }
+    case 2:
+    {
         u8 *tbl_entry;
         u32 entry_off;
         u32 rnd;
@@ -3237,80 +3314,23 @@ void func_001f7210(void)
         func_00488f30();
         kind = 6 + entry_off;
         value = BR_S16(entry, 8);
-    } else if (debug_val == 1) {
-        u8 *tbl_entry;
-        u32 new_kind;
-        u32 rnd;
-        u32 entry_count;
-        /* case 1: item-table scan via func_00209c80 */
+        break;
+    }
+    case 3:
+    {
+        u8 *flag_base;
+        u8 *res_base;
+        /* case 3: full reward simulation */
+        flag_base = (u8 *)func_00209d00();
+        res_base = (u8 *)func_0020e710(1);
         printf("type : get item\n");
-        func_0010a4e0(1, 0, 6, 7);
-        tbl_entry = (u8 *)func_00209c80();
         printf("money : %d\n", BR_S32(entry, 4));
-        tbl_entry += BR_U32(entry, 4) * 192;
-        for (new_kind = 0; new_kind < 16; new_kind++) {
-            u32 ret = (u32)func_00209d40(tbl_entry + new_kind * 12);
-            if (ret == 2) break;
-        }
-        if (new_kind == 0) {
-            /* No matching entry found */
-            K_ASSERT(work != NULL, 0x450);
-        } else {
-            rnd = func_00488f30() % new_kind;
-            printf("item id : 0x%03x\n", rnd);
-            tbl_entry += rnd * 12;
-            entry_count = (u32)func_00209d40(tbl_entry);
-            if (entry_count == 1) {
-                printf("item id : 0x%03x\n", BR_U16(entry, 4));
-                value = BR_S16(entry, 8);
-                kind = 2;
-            } else if (entry_count == 0) {
-                printf("rank %d\n", value);
-                if (datGetFlag(0xbd1) != 0) {
-                    value = (s32)((f32)BR_S32(entry, 4) * 0.25f);
-                }
-                kind = 3;
-            } else {
-                K_ASSERT(work != NULL, 0x450);
-            }
-        }
-        printf("money : %d\n", value);
-    } else {
-        u8 *wt_base;
-        u32 wt_idx;
-        u32 sum_w;
-        u32 search_idx;
-        /* case 0: weighted random via func_00209c40 */
-        printf("money : %d\n", value);
-        func_0010a4e0(1, 0, 6, 6);
-        wt_base = (u8 *)func_00209c40();
-        printf("type : get money\n", BR_U32(entry, 4));
-        wt_base += BR_U32(entry, 4) * 256;
-        for (wt_idx = 0; wt_idx < 32; wt_idx++) {
-            if (*(s16 *)(wt_base + wt_idx * 8) < 0) break;
-        }
-        sum_w = 0;
-        for (wt_idx = 0; wt_idx < 32; wt_idx++) {
-            s16 w = *(s16 *)(wt_base + wt_idx * 8);
-            if (w < 0) break;
-            if (*(s16 *)(wt_base + wt_idx * 8 + 6) >= 0) {
-                sum_w += (u32)*(s16 *)(wt_base + wt_idx * 8 + 6);
-            }
-        }
-        if (sum_w > 0) {
-            u32 rnd = func_00488f30() % sum_w;
-            for (search_idx = 0; search_idx < wt_idx; search_idx++) {
-                s16 w = *(s16 *)(wt_base + search_idx * 8 + 6);
-                if (w >= 0) {
-                    if (rnd < (u32)w) break;
-                    rnd -= (u32)w;
-                }
-            }
-            wt_base += search_idx * 8;
-        }
-        printf("item id : 0x%03x\n", *(u16 *)wt_base);
-        kind = 1;
+        func_0010a4e0(1, 0, 6, 9);
+        func_0034fcd0(res_base);
+        kind = 14 + (BR_U32(entry, 4) % 13);
         value = BR_S16(entry, 8);
+        break;
+    }
     }
     /* Per-kind custom processing (retail first dispatch at 0x7b6f90) */
     if (kind < 28) {
@@ -3785,7 +3805,7 @@ void func_001f7210(void)
         crd_flt[3] = eff_cnt[3];
         crd_flt[4] = eff_cnt[4];
         crd_flt[5] = BR_U32(work, 0x3408);
-        eff_total = eff_cnt[0] + eff_cnt[1] + eff_cnt[2] + eff_cnt[3] + eff_cnt[4];
+        eff_total = crd_flt[0] + crd_flt[1] + crd_flt[2] + crd_flt[3] + crd_flt[4];
         if (eff_total > 0) {
             kind = eff_total % 28;
         }
@@ -3810,6 +3830,7 @@ void func_001f7210(void)
             /* off=4924: DIRECT HP apply (member 1) */
             cur_hp = (u16)func_0016c4f0(1);
             max_hp = (u16)func_0016c5f0(1);
+            printf("rank %d\n", cur_hp);
             if (cur_hp < max_hp) {
                 u32 amount = max_hp * value / 100;
                 u32 new_hp = cur_hp + amount;
