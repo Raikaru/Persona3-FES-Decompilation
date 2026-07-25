@@ -2764,13 +2764,13 @@ u64 FUN_003f2320(int param_1,int param_2)
 
           if ((*puVar1 & 4) == 0) {
 
-            puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0) - (float)(int)puVar1[4] * 0.25);
+            puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0f) - (float)(int)puVar1[4] * 0.25f);
 
           }
 
           else {
 
-            puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0) - fGpffff808c * (float)(int)puVar1[4]);
+            puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0f) - fGpffff808c * (float)(int)puVar1[4]);
 
           }
 
@@ -2778,7 +2778,7 @@ u64 FUN_003f2320(int param_1,int param_2)
 
         else {
 
-          puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0) - (float)(int)puVar1[4] * 0.5);
+          puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0f) - (float)(int)puVar1[4] * 0.5f);
 
         }
 
@@ -6329,17 +6329,16 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   fVar3 = fVar11;
 
-  if (2.1474836e+09 <= fVar11) {
+  if (2.1474836e+09f <= fVar11) {
 
-    fVar3 = fVar11 - 2.1474836e+09;
+    fVar3 = fVar11 - 2.1474836e+09f;
 
   }
 
   FUN_0040e3c0(0,param_1,param_2,(int)fVar3 & 0xff,0x75,0);
 
-  if (2.1474836e+09 <= fVar11) {
-
-    fVar11 = fVar11 - 2.1474836e+09;
+  if (2.1474836e+09f <= fVar11) {
+    fVar11 = fVar11 - 2.1474836e+09f;
 
   }
 
@@ -6363,8 +6362,7 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   if (acStack_10[iVar9] != '\0') {
 
-    uVar10 = (u32)((float)(int)param_3 * 0.5);
-
+    uVar10 = (u32)((float)(int)param_3 * 0.5f);
   }
 
   FUN_0040e3c0(0,param_1,param_2,uVar10 & 0xff,0x7b,0);
@@ -6377,8 +6375,7 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   if (acStack_20[iVar9] == -1) {
 
-    FUN_0040e3c0(0,param_1,iVar7 + 0x23,(int)((float)(int)param_3 * 0.5) & 0xff,0x7e,0);
-
+    FUN_0040e3c0(0,param_1,iVar7 + 0x23,(int)((float)(int)param_3 * 0.5f) & 0xff,0x7e,0);
   }
 
   else {
@@ -6393,8 +6390,7 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   if (acStack_20[iVar9 + 1] == -1) {
 
-    FUN_0040e3c0(0,param_1,iVar7 + 0x3e,(int)((float)(int)param_3 * 0.5) & 0xff,0x7e,0);
-
+    FUN_0040e3c0(0,param_1,iVar7 + 0x3e,(int)((float)(int)param_3 * 0.5f) & 0xff,0x7e,0);
   }
 
   else {
