@@ -506,7 +506,7 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
         fade = 0;
         slide = 0.0f;
     }
-    FUN_001159f0(position.x - slide + 22.0f, position.y + 27.0f,
+    FUN_001159f0(position.x - slide + 22.0f, (39.0f + position.y) - 12.0f,
                  alpha, DAT_00833B90, 0, fade);
     if (phase != 0) {
         if (phase < 4) {
