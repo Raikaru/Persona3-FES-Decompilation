@@ -80,7 +80,7 @@ void FUN_004264a0(int param_1);
 u32 FUN_004264d0(u64 param_1,s8 param_2);
 u32 FUN_00426590(int param_1);
 void FUN_00427640(int param_1);
-u32 FUN_00427670(u32 param_1,u32 param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
+u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
 u64 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4, u32 param_5,u64 param_6,u32 param_7,u64 param_8, u32 param_9,u32 *param_10);
@@ -2142,13 +2142,13 @@ u64 FUN_004260a0(int param_1)
 
       if ((DAT_007e094c & 0x20) == 0) {
 
-        mdlAnimSetSpeed(0x3f800000,(&DAT_0095bec0)[DAT_007ce6b4],0);
+        mdlAnimSetSpeed((&DAT_0095bec0)[DAT_007ce6b4],0,1.0f);
 
       }
 
       else {
 
-        mdlAnimSetSpeed(0x40000000,(&DAT_0095bec0)[DAT_007ce6b4],0);
+        mdlAnimSetSpeed((&DAT_0095bec0)[DAT_007ce6b4],0,2.0f);
 
       }
 
@@ -2960,7 +2960,7 @@ void FUN_00427640(int param_1)
 
 
 u32
-FUN_00427670(u32 param_1,u32 param_2,u64 param_3,u32 param_4,
+FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4,
             char param_5,u8 param_6)
 
 
@@ -3009,19 +3009,19 @@ FUN_00427670(u32 param_1,u32 param_2,u64 param_3,u32 param_4,
 
     }
 
-    *(u32 *)(puVar4 + 0x134) = 0x42c80000;
+    *(float *)(puVar4 + 0x134) = 100.0f;
 
-    *(u32 *)(puVar4 + 0x138) = 0x42c80000;
+    *(float *)(puVar4 + 0x138) = 100.0f;
 
     if (param_5 < '\x05') {
 
-      *(u32 *)(puVar4 + 0x17c) = 0x3d000000;
+      *(float *)(puVar4 + 0x17c) = 0.03125f;
 
-      *(u32 *)(puVar4 + 0x180) = 0x3d000000;
+      *(float *)(puVar4 + 0x180) = 0.03125f;
 
-      *(u32 *)(puVar4 + 0x178) = 0x3f180000;
+      *(float *)(puVar4 + 0x178) = 0.59375f;
 
-      *(u32 *)(puVar4 + 0x174) = 0x3f180000;
+      *(float *)(puVar4 + 0x174) = 0.59375f;
 
       *(u32 *)(puVar4 + 300) = 0x13;
 
@@ -3031,13 +3031,13 @@ FUN_00427670(u32 param_1,u32 param_2,u64 param_3,u32 param_4,
 
     else {
 
-      *(u32 *)(puVar4 + 0x17c) = 0x3c800000;
+      *(float *)(puVar4 + 0x17c) = 0.015625f;
 
-      *(u32 *)(puVar4 + 0x180) = 0x3c800000;
+      *(float *)(puVar4 + 0x180) = 0.015625f;
 
-      *(u32 *)(puVar4 + 0x178) = 0x3f140000;
+      *(float *)(puVar4 + 0x178) = 0.578125f;
 
-      *(u32 *)(puVar4 + 0x174) = 0x3f140000;
+      *(float *)(puVar4 + 0x174) = 0.578125f;
 
       *(u32 *)(puVar4 + 300) = 0x25;
 
@@ -3045,13 +3045,13 @@ FUN_00427670(u32 param_1,u32 param_2,u64 param_3,u32 param_4,
 
     }
 
-    *(u32 *)(puVar4 + 0x130) = 0x40a00000;
+    *(float *)(puVar4 + 0x130) = 5.0f;
 
-    *(u32 *)(puVar4 + 0x14c) = 0x3f800000;
+    *(float *)(puVar4 + 0x14c) = 1.0f;
 
-    *(u32 *)(puVar4 + 0x174) = param_1;
+    *(float *)(puVar4 + 0x174) = param_1;
 
-    *(u32 *)(puVar4 + 0x178) = param_2;
+    *(float *)(puVar4 + 0x178) = param_2;
 
     *(u32 *)(puVar4 + 0x13c) = param_4;
 
@@ -3190,7 +3190,7 @@ FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
 
     puVar4[0x141] = param_8;
 
-    *(u32 *)(puVar4 + 0x14c) = 0x3f800000;
+    *(float *)(puVar4 + 0x14c) = 1.0f;
 
     *(float *)(puVar4 + 0x144) = (1.0 / (float)iVar5) * (float)iVar6;
 
@@ -3327,7 +3327,7 @@ FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
 
     puVar4[0x141] = param_8;
 
-    *(u32 *)(puVar4 + 0x14c) = 0x3f800000;
+    *(float *)(puVar4 + 0x14c) = 1.0f;
 
     *(float *)(puVar4 + 0x144) = (1.0 / (float)iVar5) * (float)iVar6;
 
@@ -3458,7 +3458,7 @@ FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
 
     puVar4[0x141] = 3;
 
-    *(u32 *)(puVar4 + 0x14c) = 0x3f800000;
+    *(float *)(puVar4 + 0x14c) = 1.0f;
 
     puVar4[0x150] = 1;
 
