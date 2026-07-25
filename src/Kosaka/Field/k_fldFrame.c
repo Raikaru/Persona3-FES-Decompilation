@@ -1071,24 +1071,28 @@ void* func_001ae580(KwlnTask* task)
         s32 pending = work->pendingPointCount;
         if (pending > 0)
         {
-            if (pending < 3 && pointCount + pending < 48)
+            if (pending < 3)
             {
-                for (i = 0; i < pending; i++)
+                if (work->pointCount + pending < 48)
                 {
-                    u8* source = (u8*)work + 0x4e0 + i * 0x18;
-                    FldFrameMovePoint* destination =
-                        &work->points[pointCount + i];
+                    for (i = 0; i < work->pendingPointCount; i++)
+                    {
+                        const u8* source = (const u8*)work + 0x4e0 + i * 0x18;
 
-                    destination->kind = 0;
-                    memcpy(&destination->position, source, sizeof(RwV3d));
-                    destination->duration = *(f32*)(source + 0x0c);
-                    destination->drawTask = NULL;
-                    fldFrameMoveCreateDebugPoint(work, destination,
-                                                 &sDebugSphereColor);
+                        work->points[work->pointCount].position.x =
+                            *(const f32*)(source + 0x00);
+                        work->points[work->pointCount].position.y =
+                            *(const f32*)(source + 0x04);
+                        work->points[work->pointCount].position.z =
+                            *(const f32*)(source + 0x08);
+                        work->points[work->pointCount].duration =
+                            *(const f32*)(source + 0x0c);
+                        work->points[work->pointCount].kind = 0;
+                        work->pointCount++;
+                    }
+                    work->pendingPointCount = 0;
                 }
-                work->pointCount += pending;
             }
-            work->pendingPointCount = 0;
         }
         pointCount = work->pointCount;
         if (pointCount <= 0)
