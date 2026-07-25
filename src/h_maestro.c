@@ -5103,6 +5103,8 @@ void* func_00117540(KwlnTask* task)
 // runtime loop) and dispatches via switch, not if/else-if. Rewritten from
 // disasm; nd 261->10. Residual: 1 addu operand-order floor + 1 hoisted
 // D_00833B70 pointer register-bank floor in the state-3-promote loop.
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00119AA0 NONMATCHING
 void* func_00119aa0(KwlnTask* task)
 {
@@ -5172,6 +5174,7 @@ void* func_00119aa0(KwlnTask* task)
     func_003c7b90();
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 // FUN_00119E00
 void func_00119e00(KwlnTask* task)
