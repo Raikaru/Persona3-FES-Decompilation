@@ -1221,6 +1221,7 @@ static void campDrawSkillSources(CampMenuDrawItem* item, s32 category, s32 selec
 void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 category,
                   s32 selected)
 {
+    register u32 parent;
     s32 i;
     u8 text[0x100];
     u32 workId;
@@ -1247,26 +1248,47 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 2:
-        campDrawRows(item, 5, 28.0f);
+        for (i = 0; i < 5; i++) {
+            campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                               campDrawX(item),
+                               campDrawY(item) + (f32)(i * 28),
+                               item->scale);
+        }
         break;
     case 3:
-        campSprite(item, campDrawX(item) + 242.0f, campDrawY(item) - 11.0f);
-        FUN_001120a0(1);
+        campMenuDrawSprite(parent, *labels, 0x39, item->alpha,
+                           campDrawX(item) + 242.0f,
+                           campDrawY(item) - 11.0f, item->scale);
         if (category < 10) {
-            campSprite(item, campDrawX(item) + 16.0f, campDrawY(item));
+            campMenuDrawSprite(parent, FUN_001120a0(1), category + 0xb,
+                               item->alpha, campDrawX(item) + 16.0f,
+                               campDrawY(item), item->scale);
         } else {
-            campSprite(item, campDrawX(item), campDrawY(item));
-            FUN_001120a0(1);
-            campSprite(item, campDrawX(item) + 16.0f, campDrawY(item));
+            campMenuDrawSprite(parent, FUN_001120a0(1), category / 10 + 0xb,
+                               item->alpha, campDrawX(item),
+                               campDrawY(item), item->scale);
+            campMenuDrawSprite(parent, FUN_001120a0(1), category % 10 + 0xb,
+                               item->alpha, campDrawX(item) + 16.0f,
+                               campDrawY(item), item->scale);
         }
-        campSprite(item, campDrawX(item) + 34.0f, campDrawY(item) - 2.0f);
-        FUN_001120a0(1);
-        campSprite(item, campDrawX(item) + 52.0f, campDrawY(item));
+        campMenuDrawSprite(parent, *labels, 0x44, item->alpha,
+                           campDrawX(item) + 34.0f,
+                           campDrawY(item) - 2.0f, item->scale);
         if (selected >= 10) {
-            FUN_001120a0(1);
-            campSprite(item, campDrawX(item) + 68.0f, campDrawY(item));
+            campMenuDrawSprite(parent, FUN_001120a0(1), selected / 10 + 0xb,
+                               item->alpha, campDrawX(item) + 52.0f,
+                               campDrawY(item), item->scale);
+            campMenuDrawSprite(parent, FUN_001120a0(1), selected % 10 + 0xb,
+                               item->alpha, campDrawX(item) + 68.0f,
+                               campDrawY(item), item->scale);
+        } else {
+            campMenuDrawSprite(parent, FUN_001120a0(1), selected + 0xb,
+                               item->alpha, campDrawX(item) + 52.0f,
+                               campDrawY(item), item->scale);
         }
-        campSprite(item, campDrawX(item) + 93.0f, campDrawY(item) - 2.0f);
+        campMenuDrawSprite(parent, *labels, 0x42, item->alpha,
+                           campDrawX(item) + 93.0f,
+                           campDrawY(item) - 2.0f, item->scale);
         {
             s32 val = FUN_0017dae0(FUN_0017d8b0(category, selected));
             s32 spriteType = 0x40;
@@ -1281,20 +1303,23 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 case 6: spriteType = 0x40; break;
                 }
             }
-            campMenuDrawSprite(0, NULL, spriteType, item->alpha,
-                               campDrawX(item) + 104.0f, campDrawY(item) - 2.0f,
-                               item->scale);
-            campMenuDrawSprite(0, NULL, 0x43, item->alpha,
-                               campDrawX(item) + 128.0f, campDrawY(item) - 2.0f,
-                               item->scale);
+            campMenuDrawSprite(parent, *labels, spriteType, item->alpha,
+                               campDrawX(item) + 104.0f,
+                               campDrawY(item) - 2.0f, item->scale);
+            campMenuDrawSprite(parent, *labels, 0x43, item->alpha,
+                               campDrawX(item) + 128.0f,
+                               campDrawY(item) - 2.0f, item->scale);
         }
         break;
     case 4:
         campDrawSkillSources(item, category, selected);
         break;
     case 5:
-        campMenuDrawSprite(0, NULL, 0x4a, item->alpha,
+        campMenuDrawSprite(0, *labels, 0x4a, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
+        campMenuDrawSprite(0, *labels, 0x4b, item->alpha,
+                           (f32)0x23e + campDrawX(item) - (f32)0x145,
+                           campDrawY(item), item->scale);
         break;
     case 6:
         if (category < 4) {
@@ -1302,71 +1327,125 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         } else {
             FUN_00523ac8(text, gp0xffff8990);
         }
-        for (i = 0; i < 4; i++) {
-            if (text[i] >= '0' && text[i] <= '9') {
-                campSpriteAlt(item, campDrawX(item) + 65.0f + (f32)(i * 17),
-                              campDrawY(item) - 1.0f);
+        {
+            f32 digitX = campDrawX(item) + 65.0f;
+            f32 digitY = campDrawY(item);
+            for (i = 0; i < 4; i++) {
+                s32 digit = -1;
+                if (text[i] == '0') digit = 0;
+                else if (text[i] == '1') digit = 1;
+                else if (text[i] == '2') digit = 2;
+                else if (text[i] == '3') digit = 3;
+                else if (text[i] == '4') digit = 4;
+                else if (text[i] == '5') digit = 5;
+                else if (text[i] == '6') digit = 6;
+                else if (text[i] == '7') digit = 7;
+                else if (text[i] == '8') digit = 8;
+                else if (text[i] == '9') digit = 9;
+                if (digit != -1) {
+                    campMenuDrawSpriteAlt(0, *labels, digit + 0x7c,
+                        item->alpha, 0xdc, 0xf3, 0xff,
+                        digitX, digitY - 1.0f, item->scale);
+                }
+                digitX += 17.0f;
             }
         }
-        campSprite(item, campDrawX(item) + 40.0f, campDrawY(item) - 3.0f);
+        campMenuDrawSprite(0, *labels, 0x4c, item->alpha,
+                           campDrawX(item) + 40.0f,
+                           campDrawY(item) + 49.0f - 51.0f - 1.0f,
+                           item->scale);
+        if (category >= 10) {
+            f32 catY = campDrawY(item) - 1.0f;
+            campMenuDrawSprite(0, *labels, category / 10 + 0x7c,
+                item->alpha, campDrawX(item), catY, item->scale);
+            campMenuDrawSprite(0, *labels, category % 10 + 0x7c,
+                item->alpha, campDrawX(item) + 17.0f, catY, item->scale);
+        }
         break;
     case 7:
-        campMenuDrawSprite(0, NULL, 0x55, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x55, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 8:
-        campMenuDrawSprite(0, NULL, 0x54, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x54, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 9:
-        campMenuDrawSprite(0, NULL, 0x4e, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x4e, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 10:
-        campMenuDrawSprite(0, NULL, 0x4f, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x4f, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 11:
-        campMenuDrawSprite(0, NULL, 0x50, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x50, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 12:
-        campMenuDrawSprite(0, NULL, 0x51, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x51, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 13:
-        campMenuDrawSprite(0, NULL, 0x52, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x52, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 14:
-        campMenuDrawSprite(0, NULL, 0x53, item->alpha,
+        campMenuDrawSprite(parent, *labels, 0x53, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 15:
-        campDrawRows(item, 6, 0x2c);
+        for (i = 0; i < 6; i++) {
+            campMenuDrawSprite(0, *labels, 0x56, item->alpha,
+                               campDrawX(item),
+                               campDrawY(item) + (f32)(i * 0x2c),
+                               item->scale);
+            campMenuDrawSprite(0, *labels, 0x56, item->alpha,
+                               campDrawX(item) + (f32)0x265 - 326.0f,
+                               campDrawY(item) + (f32)(i * 0x2c),
+                               item->scale);
+        }
         for (i = 1; i < 0x2b; i++) {
-            campSprite(item, campDrawX(item) + (f32)(((i - 1) % 7) * 0x29),
-                       campDrawY(item) + (f32)(((i - 1) / 7) * 0x2c));
+            campMenuDrawSprite(0, *labels, 0x58, item->alpha,
+                campDrawX(item) + (f32)(((i - 1) % 7) * 0x29) + (f32)0x147 - 326.0f,
+                campDrawY(item) + (f32)(((i - 1) / 7) * 0x2c) + (f32)0x66 - 102.0f,
+                item->scale);
         }
         break;
     case 16:
-        campDrawSkillGrid(item, category, selected, selected, 0);
-        campSprite(item, campDrawX(item) - 1.0f, campDrawY(item) - 1.0f);
+        {
+            s32 first = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
+            s32 count = DAT_005e3b5e[category];
+            for (i = 1; i <= count; i++) {
+                s32 slot = first + i - 1;
+                campMenuDrawSprite(parent, *labels, 0x59, item->alpha,
+                    campDrawX(item) + (f32)((slot % 7) * 0x29),
+                    campDrawY(item) + (f32)((slot / 7) * 0x2c),
+                    item->scale);
+            }
+            campMenuDrawSprite(parent, *labels, 0x56, item->alpha,
+                campDrawX(item) - 1.0f, campDrawY(item) - 1.0f,
+                item->scale);
+        }
         break;
     case 17:
         if (category == (s32)FUN_0017d920()) {
             s32 start = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
             start += FUN_0017da40() - 1;
-            campSprite(item, campDrawX(item) + (f32)((start % 7) * 0x29),
-                       campDrawY(item) + (f32)((start / 7) * 0x2c));
+            campMenuDrawSprite(parent, *labels, 0x5a, item->alpha,
+                campDrawX(item) + (f32)((start % 7) * 0x29),
+                campDrawY(item) + (f32)((start / 7) * 0x2c),
+                item->scale);
         }
         break;
     case 18:
         {
             s32 start = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
             s32 slot = start + selected - 1;
-            campSprite(item, campDrawX(item) + (f32)((slot % 7) * 0x29),
-                       campDrawY(item) + (f32)((slot / 7) * 0x2c));
+            campMenuDrawSprite(parent, *labels, 0x49, item->alpha,
+                campDrawX(item) + (f32)((slot % 7) * 0x29),
+                campDrawY(item) + (f32)((slot / 7) * 0x2c),
+                item->scale);
         }
         break;
     case 19:
@@ -1376,13 +1455,20 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         campDrawSkillGrid(item, category, selected, selected, 0);
         break;
     case 99:
-        campSprite(item, campDrawX(item), campDrawY(item));
-        campSprite(item, campDrawX(item) + 16.0f, campDrawY(item));
-        campSprite(item, campDrawX(item) + 530.0f, campDrawY(item) + 30.0f);
+        campMenuDrawSprite(parent, *(labels + 1), 0, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        campMenuDrawSprite(parent, *(labels + 1), 9, item->alpha,
+                           campDrawX(item) + 16.0f, campDrawY(item),
+                           item->scale);
+        campMenuDrawSprite(parent, DAT_00833BA0, 1, item->alpha,
+                           campDrawX(item) + 530.0f, campDrawY(item) + 30.0f,
+                           item->scale);
         break;
     default:
         if (mode > 0x14 && mode < 0x35) {
-            campDrawPanel(item);
+            campMenuDrawSprite(parent, *labels, 0x57, item->alpha,
+                               campDrawX(item), campDrawY(item),
+                               item->scale);
         }
         break;
     }
