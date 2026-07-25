@@ -2651,6 +2651,10 @@ void btlActionUpdateStateAttack(BtlAction* action)
             btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
         }
     }
+    /* Hit animation timing call (retail +1476: FUN_00283c70) */
+    FUN_00283c70(basis->unit, animMode, 0);
+    /* Extended animation timing (retail +1544: FUN_002835e0) */
+    animLength = FUN_002835e0(basis->unit, animMode, animSpeed);
     /* Target info extraction and effect packets */
     {
         u16 outA, outB, outC, outD;
@@ -2674,11 +2678,26 @@ void btlActionUpdateStateAttack(BtlAction* action)
         }
     }
 
+    /* Data unit conversion for genus-based processing (retail +1104, +1188) */
+    {
+        u16 genusCheck = FUN_00308c60(action->unit);
+        u16 genusCheck2 = FUN_003093a0(action->unit->datUnit);
+        if (genusCheck == 1 && genusCheck2 == 1)
+        {
+            animId = ACT_U16(victim, 0xce);
+            if (animId != 8 && animId != 4)
+            {
+                animMode = 4;
+            }
+        }
+    }
+
     /* Hit animation chain */
     {
         s32 j;
         for (j = 0; j < 1; j++)
         {
+            FUN_00283750(basis->unit, animMode, animSpeed);
             animLength = FUN_002838d0(basis->unit, animMode, animSpeed);
         }
     }
@@ -2982,6 +3001,103 @@ void btlActionUpdateStateAttack(BtlAction* action)
         }
     }
 
+
+    /* Additional targeting-based effect checks */
+    if (action->unit->genus == 1)
+    {
+        if (FUN_002fd160(action) != 0)
+        {
+            pkCount = *(u32*)((u8*)gBtl + 0xc8c);
+            if (pkCount != 0)
+            {
+                packet = FUN_002baf90(pkCount, action->unit, basis->unit, 1, 0);
+                packet->unk_00 = 4;
+                packet->parentUID = effectPacket->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+        }
+    }
+
+    {
+        u32 checkVal = FUN_002d4e10(2, 0x80000) & 0xffff;
+        u32 randomCheck = FUN_002ffbc0(0x64);
+        if (randomCheck < 0x32)
+        {
+            s32 gBtVal = *(s32*)((u8*)gBtl + 0xa38);
+            checkVal = 0;
+            if (gBtVal != -1)
+            {
+                checkVal = FUN_002d4e10(2, 0x80000) & 0xffff;
+                if ((*(s16*)((u8*)gBtl + 0xa3a) >> 1) >= checkVal)
+                {
+                    s16 gBtA38 = *(s16*)((u8*)gBtl + 0xa38);
+                    s32 personaId = FUN_002b7060();
+                    if (gBtA38 != personaId)
+                    {
+                        checkVal = 1;
+                    }
+                    else checkVal = 0;
+                }
+                else checkVal = 0;
+            }
+
+            if (checkVal)
+            {
+                packet = FUN_002db740(action, 0x16, rotCount, 0, 0);
+                packet->unk_00 = 5;
+                packet->parentUID = effectPacket->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+            else
+            {
+                voicePacket = btlVoice002e2be0(action, 0xd, rotCount, 0, 0);
+                voicePacket->unk_00 = 5;
+                voicePacket->parentUID = effectPacket->uid;
+                voicePacket->actionUID = action->uid;
+                btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+            }
+        }
+    }
+
+    {
+        u32 e8Flags = ACT_U32(victim, 0xe8);
+        if ((e8Flags & 0x100000) != 0)
+        {
+            u16 animId2 = ACT_U16(victim, 0xce);
+            packet = FUN_002db740(action, 0x17, animId2, 0, 0);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+    }
+
+    if (rotCount == 0 && action->unit->genus == 1)
+    {
+        if (FUN_002d6130(action))
+        {
+            voicePacket = btlVoice002e2be0(action, 0xe, 0, 0, 0);
+            voicePacket->unk_00 = 5;
+            voicePacket->parentUID = effectPacket->uid;
+            voicePacket->actionUID = action->uid;
+            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+        }
+
+        if (FUN_002d6210(action) == 1)
+        {
+            if (!FUN_002d5f50(action))
+            {
+                sp160 = FUN_003082f0(action->unit->datUnit, action->target.specificId);
+                voicePacket = btlVoice002e2be0(action, 0xf, 0, 0, 0);
+                voicePacket->unk_00 = 5;
+                voicePacket->parentUID = effectPacket->uid;
+                voicePacket->actionUID = action->uid;
+                btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+            }
+        }
+    }
     /* Persona animation section (retail 7064-8100) */
     if (ACTION_U16(victim, 0xfa) & 1)
     {
