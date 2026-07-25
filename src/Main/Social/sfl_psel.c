@@ -1953,7 +1953,7 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     u8* frame;
     void* handle;
     u32 colorValue;
-
+    s32 i;
     K_ASSERT(sSflPsel != NULL, 0xcb);
     destination = (u8*)panel;
     texture = sflRes0020ec50();
@@ -1981,9 +1981,9 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     color[1] = 0xff;
     color[2] = 0xff;
     color[3] = alphaByte;
-    func_0021d950(destination, color);
-    func_0021d950(destination + 0x100, color);
-    func_0021d950(destination + 0x200, color);
+    for (i = 0; i < 3; i++) {
+        func_0021d950(destination + i * 0x100, color);
+    }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x17);
     rect[0] = x + 202.0f;
     rect[1] = y + 93.0f;
@@ -2047,8 +2047,9 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     color[1] = 0xff;
     color[2] = 0xff;
     color[3] = alphaByte;
-    func_0021d950(destination + 0x700, color);
-    func_0021d950(destination + 0x800, color);
+    for (i = 0; i < 2; i++) {
+        func_0021d950(destination + 0x700 + i * 0x100, color);
+    }
     rect[0] = x + 290.0f;
     rect[1] = y + 90.0f;
     func_003b0d70(*(u32*)(destination + 0x900),
