@@ -2325,6 +2325,7 @@ void func_00114450(f32 depth,
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
     (*D_009600A0)(rwPRIMTYPETRISTRIP, &vertices[4], 4);
 }
+#pragma opt_loop_invariants off
 
 // FUN_00114AF0 NONMATCHING
 // Same reconstruction pattern as func_001140d0 above.
