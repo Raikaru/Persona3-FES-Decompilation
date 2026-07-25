@@ -31,6 +31,7 @@ typedef struct BtlEnemyRecord
 #define ACTION_U16(action, offset) (*(u16*)((u8*)(action) + (offset)))
 #define ACTION_S16(action, offset) (*(s16*)((u8*)(action) + (offset)))
 #define ACTION_S32(action, offset) (*(s32*)((u8*)(action) + (offset)))
+#define ACTION_U64(action, offset) (*(u64*)((u8*)(action) + (offset)))
 #define ACTION_U32(action, offset) (*(u32*)((u8*)(action) + (offset)))
 #define BATTLE_U16(offset) (*(u16*)((u8*)gBtl + (offset)))
 
@@ -82,6 +83,8 @@ BtlPacket* FUN_002e3c80(void);
 BtlPacket* FUN_002d8090(BtlAction* action);
 BtlPacket* FUN_002dd690(u32 a, u32 b);
 BtlPacket* FUN_002a1db0();
+BtlPacket* FUN_002dd4a0(u16 param_1, u16 param_2);
+void FUN_002b9030(u32 param_1);
 BtlPacket* FUN_002e38a0(u16 a);
 BtlPacket* FUN_002b8f40(u32 a);
 BtlPacket* FUN_002b8d60(u32 a, u32 b);
@@ -849,6 +852,7 @@ void btlActionInitStateStart(BtlAction* action)
 {
     BtlUnit* unit = action->unit;
     u32 flags;
+    s16 var_2;
 
     if (action->unk_18 & 0x8000)
     {
@@ -863,12 +867,21 @@ void btlActionInitStateStart(BtlAction* action)
         btlActionSetState(action, BTLACTION_STATE_EVENT);
         return;
     }
-    if (unit->genus == UNIT_GENUS_PC && ACTION_S16(gBtl, 0xa38) != -1 &&
-        ((u32)(ACTION_S16(gBtl, 0xa3a) >> 1) >= (FUN_002d4e10(2, 0x80000) & 0xffff)) &&
-        ACTION_S16(gBtl, 0xa38) != FUN_002b7060() && FUN_00300580(unit->datUnit, 0x180000) == 0)
+    if (unit->genus == UNIT_GENUS_PC)
     {
-        btlActionSetStateWithDelay(action, BTLACTION_STATE_CHANGEFORMA, 1);
-        return;
+        if (ACTION_S16(gBtl, 0xa38) != -1 &&
+            ((u32)(ACTION_S16(gBtl, 0xa3a) >> 1) >= (FUN_002d4e10(2, 0x80000) & 0xffff)) &&
+            ACTION_S16(gBtl, 0xa38) != FUN_002b7060() &&
+            FUN_00300580(unit->datUnit, 0x180000) == 0)
+        {
+            btlActionSetStateWithDelay(action, BTLACTION_STATE_CHANGEFORMA, 1);
+            return;
+        }
+        var_2 = 1;
+    }
+    else
+    {
+        var_2 = 0;
     }
     flags = gBtl->flags;
     if (FUN_001feec0() == 0 && FUN_002d1a70() == 1)
@@ -897,6 +910,139 @@ void btlActionInitStateStart(BtlAction* action)
         btlActionSetState(action, (s8)FUN_00302f50(unit->datUnit) < 0 ?
                                   (FUN_002dc070(action) ? BTLACTION_STATE_BAD : action->unk_14) :
                                   BTLACTION_STATE_SUPPORT);
+    }
+    if (var_2 != 0)
+    {
+        if (unit->genus == 0 && unit->datUnit->aiTactic == 0xA)
+        {
+            u32 rootH;
+            u8 buf[4];
+            u32 posX, posY;
+            u32 animLen;
+            BtlPacket* pkt;
+            BtlPacket* pktB;
+            
+            btlAction0028a780(action);
+            rootH = FUN_002b8f90(0);
+            func_002bb6f0(0x156, buf);
+            pktB = FUN_002bac00(rootH, (s8*)buf, 0);
+            pktB->actionUID = action->uid;
+            btlPacketRegister(pktB, BTLPACKET_TYPE_1);
+            
+            pkt = FUN_002dd4a0(0x156, 0);
+            pkt->unk_00 = 4;
+            pkt->parentUID = pktB->uid;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            func_0029ea60(0x156, &posX, &posY);
+            pkt = func_0029f4b0(posX, posY, 0x10);
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            {
+                void* area = func_0029ec00(0x156);
+                func_0029ec80(0x156, &posX, &posY);
+                pkt = func_002a0050(area, posX, posY, 0x10, 0);
+                pkt->actionUID = action->uid;
+                btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            }
+            
+            {
+                void* hitArea = func_0029ec50(0x156);
+                pkt = func_002a1280(hitArea, 0x10);
+                pkt->actionUID = action->uid;
+                btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            }
+            
+            pkt = FUN_002a3b40(action, 9);
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            {
+                s16 weaponId = unit->genus == 0 ? 0x88 : 0x89;
+                pkt = FUN_002bd850(unit, weaponId);
+                ACTION_S16(pkt, 0x48) += 0x12;
+                pkt->actionUID = action->uid;
+                btlPacketRegister(pkt, BTLPACKET_TYPE_3D);
+            }
+            {
+                extern s64 FUN_002838d0(BtlUnit* unit, u16 a, f32 b);
+                animLen = (u32)(s16)FUN_002838d0(unit, 0xc, 1.0f);
+            }
+            
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            pktB = FUN_00284200(unit, 0xc, 6, 4, 1.0f);
+            ACTION_S16(pktB, 0x4a) = animLen + 6;
+            pktB->actionUID = action->uid;
+            btlPacketRegister(pktB, BTLPACKET_TYPE_1);
+            
+            pkt = FUN_002baf90(rootH, unit, unit, 1, 0);
+            pkt->unk_00 = 4;
+            pkt->parentUID = pktB->uid;
+            pkt->preUpdateWait.type = 4;
+            pkt->preUpdateWait.value = pktB->uid;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_2D);
+            
+            pkt = FUN_002dd5e0(1);
+            pkt->unk_00 = 5;
+            pkt->parentUID = pktB->uid;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            {
+                u32 extraWork[12];
+                FUN_002d5dc0(extraWork);
+                extraWork[2] = 0x100;
+                
+                pkt = FUN_002d7e20(action, action, extraWork, 1, 1);
+                pkt->unk_00 = 5;
+                pkt->parentUID = pktB->uid;
+                pkt->actionUID = action->uid;
+                btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            }
+            
+            pkt = FUN_002a3b40(action, 0x1b);
+            ACTION_S16(pkt, 0x48) = (animLen + 6) - (animLen + 6) / 4;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            pkt = FUN_002843e0(unit, 6);
+            pkt->unk_00 = 4;
+            pkt->parentUID = pktB->uid;
+            ACTION_S16(pkt, 0x4a) = 0x18;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            pkt = FUN_0029fa50(0x10);
+            pkt->unk_00 = 4;
+            pkt->parentUID = pktB->uid;
+            pkt->unk_47 &= ~0x20;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            pkt = FUN_002a1080(0x10, 0);
+            pkt->unk_00 = 4;
+            pkt->parentUID = pktB->uid;
+            pkt->unk_47 &= ~0x20;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            pkt = FUN_002a16c0(0x10);
+            pkt->unk_00 = 4;
+            pkt->parentUID = pktB->uid;
+            pkt->unk_47 &= ~0x20;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            
+            FUN_002b9030(rootH);
+            
+            gBtl->flags |= 0x400000;
+            BATTLE_U16(0x18) |= 4;
+        }
     }
 }
 // FUN_0028b230 NONMATCHING
