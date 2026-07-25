@@ -3244,6 +3244,7 @@ void func_001f7210(void)
         /* off=7504: lw v1, 0x3408(s0); beqz v1, ..  (re-entry loop) */
         for (tmp = 0; tmp < BR_U32(work, 0x3418); tmp++) {
             BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
+            printf("item num : %d\n", tmp);
         }
         break;
     case 1:
@@ -3255,17 +3256,20 @@ void func_001f7210(void)
         break;
     case 2:
         /* off=6008: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10 -> (u16)entry_kind */
+        printf("money : %d\n", value);
         func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), 0));
         func_003c7c20(1, value, 0);
         func_003c7430(11);
         break;
     case 3:
         /* off=6084: move a0,zero -> func_003c7c20(0, stack_var, 0) */
+        printf("item num : %d\n", BR_U32(entry, 8));
         func_003c7c20(0, BR_U32(entry, 8), 0);
         func_003c7430(12);
         break;
     case 4:
         /* off=6124: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("money : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
@@ -3273,6 +3277,7 @@ void func_001f7210(void)
         break;
     case 5:
         /* off=6192: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("item num : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
@@ -3280,6 +3285,7 @@ void func_001f7210(void)
         break;
     case 6:
         /* off=6260: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("item num : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
@@ -3287,6 +3293,7 @@ void func_001f7210(void)
         break;
     case 7:
         /* off=6328: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("money : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
@@ -3294,6 +3301,7 @@ void func_001f7210(void)
         break;
     case 8:
         /* off=6396: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("item num : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
@@ -3301,17 +3309,20 @@ void func_001f7210(void)
         break;
     case 9:
         /* off=6464: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("item num : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7430(22);
         break;
     case 10:
         /* off=6512: lw v0,0x150(sp); not v0,v0; andi v0,v0,1; beqz -> guarded item */
+        printf("money : %d\n", value);
         func_003c7bc0(0, func_001775a0(1));
         func_003c7430(26);
         break;
     case 11:
         /* off=6580: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("money : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         tmp = func_0016c6f0(1);
@@ -3322,15 +3333,18 @@ void func_001f7210(void)
         break;
     case 12:
         /* off=6680: lw v0,0x150(sp); not v0,v0; andi -> guarded item */
+        printf("item num : %d\n", value);
         func_003c7bc0(0, func_001775a0(1));
         func_003c7430(25);
         break;
     case 13:
         /* off=7016: addiu a0,zero,0x1e -> plain func_003c7430(30) */
+        printf("money : %d\n", value);
         func_003c7430(30);
         break;
     case 14:
         /* off=7036: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("money : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         tmp = func_0016c740(1);
@@ -3341,20 +3355,24 @@ void func_001f7210(void)
         break;
     case 15:
         /* off=7084: addiu a0,zero,0x20 -> plain func_003c7430(32) */
+        printf("item num : %d\n", value);
         func_003c7430(32);
         break;
     case 16:
         /* off=7104: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("money : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(27);
         break;
     case 17:
         /* off=7152: addiu a0,zero,0x22 -> plain func_003c7430(34) */
+        printf("item num : %d\n", value);
         func_003c7430(34);
         break;
     case 18:
         /* off=7172: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("money : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         tmp = func_0016c790(1);
@@ -3365,46 +3383,55 @@ void func_001f7210(void)
         break;
     case 19:
         /* off=7220: addiu a0,zero,0x24 -> plain func_003c7430(36) */
+        printf("money : %d\n", value);
         func_003c7430(36);
         break;
     case 20:
         /* off=7240: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        printf("money : %d\n", value);
         tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7430(37);
         break;
     case 21:
         /* off=7288: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("item num : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(38);
         break;
     case 22:
         /* off=7336: addiu a0,zero,0x27 -> plain func_003c7430(39) */
+        printf("money : %d\n", value);
         func_003c7430(39);
         break;
     case 23:
         /* off=7356: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("money : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(40);
         break;
     case 24:
         /* off=7404: addiu a0,zero,0x29 -> plain func_003c7430(41) */
+        printf("money : %d\n", value);
         func_003c7430(41);
         break;
     case 25:
         /* off=7424: a0=1 -> func_001775a0(1); then persona-stat chain */
+        printf("money : %d\n", value);
         tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(42);
         break;
     case 26:
         /* off=7472: addiu a0,zero,0x2b -> plain func_003c7430(43) */
+        printf("money : %d\n", value);
         func_003c7430(43);
         break;
     case 27:
         /* off=7508: addiu a0,zero,0x2c -> plain func_003c7430(44) */
+        printf("money : %d\n", value);
         func_003c7430(44);
         break;
     default:
