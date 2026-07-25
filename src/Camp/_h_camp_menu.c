@@ -1431,12 +1431,59 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 s32 slot = first + i - 1;
                 f32 x = campDrawX(item) + (f32)((slot % 7) * 0x29);
                 f32 y = campDrawY(item) + (f32)((slot / 7) * 0x2c);
-                void* skill = (void*)FUN_0017d8b0(selected, i);
-                s32 kind = FUN_00181b50(skill);
-                if (kind == 0x1d || kind == 6 || kind == 0x0e || kind == 0x16) {
-                    campSprite(item, x, y);
+                void* skill;
+                s32 kind;
+                s32 red;
+                s32 green;
+                s32 blue;
+                skill = (void*)FUN_0017d8b0(selected, i);
+                kind = FUN_0017dae0(skill);
+                if (kind == 0) {
+                    red = 148; green = 69; blue = 93;
+                    if (i == selected) {
+                        red += 100; green += 100; blue += 100;
+                    }
                 } else {
-                    campSpriteAlt(item, x, y);
+                    s32 kind2;
+                    kind2 = FUN_0017db40((s16)(u32)FUN_0017d8b0(selected, i));
+                    if (kind2 != 0) {
+                        red = 148; green = 69; blue = 93;
+                        if (i == selected) {
+                            red += 100; green += 100; blue += 100;
+                        }
+                    } else {
+                        s32 kind3;
+                        kind3 = FUN_0017dae0((void*)FUN_0017d8b0(selected, i));
+                        if (kind3 == 6) {
+                            red = 64; green = 110; blue = 255;
+                            if (i == selected) {
+                                red += 90; green += 90; blue += 100;
+                            }
+                        } else {
+                            red = 104; green = 113; blue = 119;
+                            if (i == selected) {
+                                red += 120; green += 120; blue += 120;
+                            }
+                        }
+                    }
+                }
+                if (red > 255) red = 255;
+                if (green > 255) green = 255;
+                if (blue > 255) blue = 255;
+                if (red < 0) red = 0;
+                if (green < 0) green = 0;
+                if (blue < 0) blue = 0;
+                if (i < 10) {
+                    campMenuDrawSpriteAlt(0, *labels, i + 0x5b,
+                        item->alpha, red, green, blue,
+                        x + 16.0f, y, item->scale);
+                } else {
+                    campMenuDrawSpriteAlt(0, *labels, (i / 10) + 0x5b,
+                        item->alpha, red, green, blue,
+                        x, y, item->scale);
+                    campMenuDrawSpriteAlt(0, *labels, (i % 10) + 0x5b,
+                        item->alpha, red, green, blue,
+                        x + 16.0f, y, item->scale);
                 }
             }
         }
@@ -1451,8 +1498,19 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 f32 y = campDrawY(item) + (f32)((slot / 7) * 0x2c);
                 void* skill = (void*)FUN_0017d8b0(selected, i);
                 s32 kind = FUN_00181b50(skill);
-                if (kind == 0x1d || kind == 6 || kind == 0x0e || kind == 0x16) {
-                    campSprite(item, x, y);
+                s32 frame = 0;
+                if (kind == 0x1d) {
+                    frame = 0x48;
+                } else if (kind == 6) {
+                    frame = 0x46;
+                } else if (kind == 0x0e) {
+                    frame = 0x45;
+                } else if (kind == 0x16) {
+                    frame = 0x47;
+                }
+                if (frame != 0) {
+                    campMenuDrawSprite(parent, *labels, frame, item->alpha,
+                        x, y, item->scale);
                 }
             }
         }
