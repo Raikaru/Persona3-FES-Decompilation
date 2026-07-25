@@ -3618,6 +3618,7 @@ void func_001f7210(void)
                 }
                 break;
             default:
+                break;
             }
         }
         crd_flt[0] = eff_cnt[0];
