@@ -548,7 +548,7 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
                             s32 maxWidth, s32 shadow);
     s32 i;
     u32 parent = 0;
-    u8 text[0x110];
+    u8 text[0x130];
 
     switch (mode) {
     case 99:
