@@ -769,6 +769,7 @@ extern s32 func_001ded40(s32 value);
 extern s32 func_003182d0(Model* model, s32 layer, s32 animation, s32 mode, s32 flag);
 extern void func_003189f0(Model* model, s32 layer, f32 speed);
 extern s32 func_00318540(Model* model, s32 layer);
+extern void* func_00318b60(u32 id);
 extern s32 func_001a5aa0(void* matrix);
 extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
 extern f32 func_0052e9e8(f32 value);
@@ -1092,6 +1093,62 @@ void* func_001ae580(KwlnTask* task)
                     }
                     work->pendingPointCount = 0;
                 }
+            }
+            else if (work->pointCount + pending * 4 < 48)
+            {
+                RwV3d curvePoints[16];
+                void* curve;
+                s32 index;
+                s32 step;
+                f32 stepScale;
+
+                index = -1;
+                if (work->pointCount > 0)
+                {
+                    index = work->pointCount - 1;
+                    while (index >= 0 && work->points[index].kind != 0)
+                    {
+                        index--;
+                    }
+                }
+                if (index >= 0)
+                {
+                    curvePoints[0] = work->points[index].position;
+                }
+                else
+                {
+                    const u8* origin =
+                        (const u8*)func_00318b60((u32)fldFrameMoveModel(work));
+
+                    curvePoints[0].x = *(const f32*)(origin + 0x30);
+                    curvePoints[0].y = *(const f32*)(origin + 0x34);
+                    curvePoints[0].z = *(const f32*)(origin + 0x38);
+                }
+                for (i = 0; i < work->pendingPointCount; i++)
+                {
+                    const u8* source = (const u8*)work + 0x4e0 + i * 0x18;
+
+                    curvePoints[i + 1].x = *(const f32*)(source + 0x00);
+                    curvePoints[i + 1].y = *(const f32*)(source + 0x04);
+                    curvePoints[i + 1].z = *(const f32*)(source + 0x08);
+                }
+                curve = func_0048dab0(work->pendingPointCount + 1, 1, curvePoints);
+                stepScale = 1.0f / (f32)(work->pendingPointCount * 4);
+                for (step = 1; step < work->pendingPointCount * 4; step++)
+                {
+                    func_0048d480((f32)step * stepScale, curve, 0xa,
+                                  &work->points[work->pointCount].position, 0);
+                    work->points[work->pointCount].duration =
+                        *(const f32*)((const u8*)work + 0x4ec +
+                                      (work->pendingPointCount / 4) * 0x18);
+                    work->points[work->pointCount].kind = 0;
+                    fldFrameMoveCreateDebugPoint(
+                        work, &work->points[work->pointCount],
+                        &sDebugSphereColor);
+                    work->pointCount++;
+                }
+                work->pendingPointCount = 0;
+                func_0048da30(curve);
             }
         }
         pointCount = work->pointCount;
