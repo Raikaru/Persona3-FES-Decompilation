@@ -1872,10 +1872,15 @@ void btlActionInitStateMoveTarget(BtlAction* action)
     BtlUnit* actionUnit;
     BtlUnit* victimUnit;
     BtlUnit* personaUnit;
+    RwV3d spC0;
+    RwV3d spB0;
+    RwV3d spA0;
+    RwV3d sp90;
+    RwV3d sp80;
+    RwV3d sp70;
     f32 distance;
     f32 extraOffset;
     f32 moveSpeed;
-    f32 speedScale;
     u16 specificId;
     u16 someFlag;
     u16 isSkillType;
@@ -1886,10 +1891,18 @@ void btlActionInitStateMoveTarget(BtlAction* action)
     RwV3d sp120;
     RwV3d sp110;
     RwV3d sp100;
-    RwV3d spF0;
     u32 localFlag;
     s32 personaActionType;
     u8* battleStateTable;
+
+    (void)&spC0;
+    (void)&spB0;
+    (void)&spA0;
+    (void)&sp90;
+    spB0.x = 1.0f;
+    spC0.x = 0.0f;
+    (void)&sp80;
+    (void)&sp70;
 
     target = action->target.targetedActions[0];
     victim = target;
@@ -2192,7 +2205,7 @@ enemy_packet_dispatch:
             packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_0);
-            goto create_camera_packet;
+            goto camera_dispatch;
         }
     }
 
@@ -2225,25 +2238,28 @@ create_posrotcol_packet:
 
             extraOffset = extraOffset * uGpffff8088;
             someFlag |= 8;
-
-            goto create_camera_packet;
+        }
+        else
+        {
+            extraOffset = extraOffset * 1.25f;
         }
 
-        extraOffset = extraOffset * 1.25f;
+        spA0.x = extraOffset;
 
         if (localFlag == 1)
         {
             packet = btlUnitCreateMoveToUnitPacket(actionUnit, victimUnit, extraOffset, moveSpeed, someFlag | 0x40);
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_0);
-            goto create_camera_packet;
+            goto camera_dispatch;
         }
 
         {
             f32 distFromHome = FUN_002d1ed0(&actionUnit->pos, &sp120);
+            sp90.x = distFromHome;
             if (distFromHome <= 75.0f)
             {
-                goto create_camera_packet;
+                goto camera_dispatch;
             }
         }
 
@@ -2252,54 +2268,25 @@ create_posrotcol_packet:
         btlPacketRegister(packet, BTLPACKET_TYPE_0);
     }
 
-create_camera_packet:
+camera_dispatch:
+    if (packet == NULL && isSkillType != 0)
     {
-        u32 victimVal;
-
-        victimVal = (u32)victim;
-        if (victimVal == 0 && isSkillType != 0)
-        {
-            if (isFirstSpecial != 0)
-            {
-                goto do_camera_packet_0x13;
-            }
-            goto do_camera_packet_0x12;
-        }
-
         if (isFirstSpecial != 0)
         {
             goto do_camera_packet_0x13;
         }
-
-        if (isFirstSpecial != 0)
-        {
-            goto do_camera_packet_0x12;
-        }
-
-        if (victimVal == 0 && isSkillType != 0)
-        {
-            if (isFirstSpecial != 0)
-            {
-                goto do_camera_packet_0x13;
-            }
-        }
-
-        if (isFirstSpecial != 0)
-        {
-            goto do_camera_packet_0x13;
-        }
-
-        if (isFirstSpecial != 0)
-        {
-            goto do_camera_packet_0x12;
-        }
-
-        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_0);
-
-        goto epilogue;
+        goto do_camera_packet_0x12;
     }
+
+    if (isFirstSpecial != 0)
+    {
+        goto do_camera_packet_0x13;
+    }
+
+    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    goto epilogue;
 
 do_camera_packet_0x12:
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARGET);
@@ -2311,7 +2298,6 @@ do_camera_packet_0x13:
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVETARET_A);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    goto epilogue;
 
 epilogue:
     action->unk_18 &= ~0x10;
