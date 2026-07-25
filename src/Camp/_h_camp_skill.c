@@ -680,12 +680,10 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
 {
     CampSkillRecord* record;
-    u8 colourState[0x30];
+    u8 colourState[0x20];
     s32 selectedRow;
     s32 font;
     s32 tileUpDown[6][4];
-    CampSkillVec2 position;
-    CampSkillVec2 position2;
     char text[0x100];
 
     colourState[0] = colourState[1] = colourState[2] = colourState[3] = 0xff;
@@ -722,6 +720,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
     }
     case 2:
     {
+        CampSkillVec2 position;
         s16 equipment;
         s32 style;
         u16 id;
@@ -817,6 +816,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
     }
     case 3:
     {
+        CampSkillVec2 position2;
         s32 row;
         s32 count;
         s32 first;
