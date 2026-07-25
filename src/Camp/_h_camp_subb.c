@@ -969,7 +969,6 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
 
 {
   register void* parent;
-  volatile f32 framePad[20];
   char textBuffer[256];
   char category;
   u16 value;
@@ -992,7 +991,6 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
   
   originX = position.x;
   originY = position.y;
-  framePad[0] = originX;
   color = 0xffU - alpha | 0xffffff00;
   if (work->entryCount != 0) {
     campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,
