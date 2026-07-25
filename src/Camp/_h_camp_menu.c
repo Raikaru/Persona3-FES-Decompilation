@@ -1142,27 +1142,6 @@ u32 FUN_00159900(CampMenuDrawItem* items, const char** labels, s32 count)
     return complete;
 }
 
-static void campDrawSkillGrid(CampMenuDrawItem* item, s32 category, s32 start,
-                              s32 selected, s32 drawSelected)
-{
-    s32 i;
-    s32 count = DAT_005e3b5e[category];
-    s32 first = (s32)FUN_0017dae0(FUN_0017d8b0(start, 1));
-
-    for (i = 1; i <= count; i++) {
-        s32 slot = first + i - 1;
-        f32 x = campDrawX(item) + (f32)((slot % 7) * 0x29);
-        f32 y = campDrawY(item) + (f32)((slot / 7) * 0x2c);
-        void* skill = (void*)FUN_0017d8b0(start, i);
-        s32 kind = FUN_00181b50(skill);
-        if (kind == 0x1d || kind == 6 || kind == 0x0e || kind == 0x16) {
-            campSprite(item, x, y);
-        } else if (drawSelected) {
-            campSpriteAlt(item, x, y);
-        }
-    }
-    (void)selected;
-}
 
 static void campDrawSkillDescription(CampMenuDrawItem* item, s32 skillId, s32 selected)
 {
@@ -1173,52 +1152,6 @@ static void campDrawSkillDescription(CampMenuDrawItem* item, s32 skillId, s32 se
              (const char*)text, selected ? 6 : 10, 0x78);
 }
 
-static void campDrawSkillSources(CampMenuDrawItem* item, s32 category, s32 selected)
-{
-    s16* record;
-    u8 text[0x100];
-    u32 alpha = campDrawAlpha(item);
-    s32 row = 0;
-    s32 i;
-
-    for (i = 0; i < 9999; i++) {
-        record = (s16*)((u8*)iGpffffb2c8 + i * 0xc);
-        if (record[0] == 0) {
-            break;
-        }
-        if (record[0] == category && record[1] == selected) {
-            int available = record[2] == 0;
-            if (!available && FUN_0016f190() != NULL) {
-                available = 1;
-            }
-            if (record[0] == 3 && record[4] == 0x13) {
-                available = 1;
-            }
-            if (available) {
-                FUN_00523ac8(text, gp0xffff897c, DAT_0083aaa0[record[4]]);
-                FUN_003b32d0(0, (s32)campDrawX(item),
-                             (s32)(campDrawY(item) + (f32)(row * 0x1c) + 2.0f),
-                             alpha, 10, 1, text, 0x10, 0);
-                row++;
-            }
-        }
-    }
-
-    for (i = 0; i < 0x100; i++) {
-        u8* learned = (u8*)FUN_0017ae30(i);
-        if (learned == NULL || learned[0] == 0) {
-            break;
-        }
-        if (learned[0] == category && learned[1] == selected) {
-            FUN_00524270(text, uGpffff8884);
-            FUN_00523e68(text, FUN_003c3fe0(learned[2]));
-            FUN_003b32d0(0, (s32)campDrawX(item),
-                         (s32)(campDrawY(item) + (f32)(row * 0x1c) + 2.0f),
-                         alpha, 10, 1, text, 0x10, 0);
-            row++;
-        }
-    }
-}
 
 // FUN_001599F0 NONMATCHING
 void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 category,
@@ -1315,7 +1248,48 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         }
         break;
     case 4:
-        campDrawSkillSources(item, category, selected);
+        {
+            s16* record;
+            u32 alpha = campDrawAlpha(item);
+            s32 row = 0;
+            s32 j;
+            for (j = 0; j < 9999; j++) {
+                record = (s16*)((u8*)iGpffffb2c8 + j * 0xc);
+                if (record[0] == 0) {
+                    break;
+                }
+                if (record[0] == category && record[1] == selected) {
+                    int available = record[2] == 0;
+                    if (!available && FUN_0016f190() != NULL) {
+                        available = 1;
+                    }
+                    if (record[0] == 3 && record[4] == 0x13) {
+                        available = 1;
+                    }
+                    if (available) {
+                        FUN_00523ac8(text, gp0xffff897c, DAT_0083aaa0[record[4]]);
+                        FUN_003b32d0(0, (s32)campDrawX(item),
+                                     (s32)(campDrawY(item) + (f32)(row * 0x1c) + 2.0f),
+                                     alpha, 10, 1, text, 0x10, 0);
+                        row++;
+                    }
+                }
+            }
+            for (j = 0; j < 0x100; j++) {
+                u8* learned = (u8*)FUN_0017ae30(j);
+                if (learned == NULL || learned[0] == 0) {
+                    break;
+                }
+                if (learned[0] == category && learned[1] == selected) {
+                    FUN_00524270(text, uGpffff8884);
+                    FUN_00523e68(text, FUN_003c3fe0(learned[2]));
+                    FUN_003b32d0(0, (s32)campDrawX(item),
+                                 (s32)(campDrawY(item) + (f32)(row * 0x1c) + 2.0f),
+                                 alpha, 10, 1, text, 0x10, 0);
+                    row++;
+                }
+            }
+        }
         break;
     case 5:
         campMenuDrawSprite(0, *labels, 0x4a, item->alpha,
@@ -1452,10 +1426,38 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         }
         break;
     case 19:
-        campDrawSkillGrid(item, category, selected, selected, 1);
+        {
+            s32 count = DAT_005e3b5e[category];
+            s32 first = (s32)FUN_0017dae0(FUN_0017d8b0(selected, 1));
+            for (i = 1; i <= count; i++) {
+                s32 slot = first + i - 1;
+                f32 x = campDrawX(item) + (f32)((slot % 7) * 0x29);
+                f32 y = campDrawY(item) + (f32)((slot / 7) * 0x2c);
+                void* skill = (void*)FUN_0017d8b0(selected, i);
+                s32 kind = FUN_00181b50(skill);
+                if (kind == 0x1d || kind == 6 || kind == 0x0e || kind == 0x16) {
+                    campSprite(item, x, y);
+                } else {
+                    campSpriteAlt(item, x, y);
+                }
+            }
+        }
         break;
     case 20:
-        campDrawSkillGrid(item, category, selected, selected, 0);
+        {
+            s32 count = DAT_005e3b5e[category];
+            s32 first = (s32)FUN_0017dae0(FUN_0017d8b0(selected, 1));
+            for (i = 1; i <= count; i++) {
+                s32 slot = first + i - 1;
+                f32 x = campDrawX(item) + (f32)((slot % 7) * 0x29);
+                f32 y = campDrawY(item) + (f32)((slot / 7) * 0x2c);
+                void* skill = (void*)FUN_0017d8b0(selected, i);
+                s32 kind = FUN_00181b50(skill);
+                if (kind == 0x1d || kind == 6 || kind == 0x0e || kind == 0x16) {
+                    campSprite(item, x, y);
+                }
+            }
+        }
         break;
     case 99:
         campMenuDrawSprite(parent, *(labels + 1), 0, item->alpha,
