@@ -3389,6 +3389,100 @@ void func_001f7210(void)
             printf("money : %d\n", per_kind_val);
             break;
         }
+        case 4:
+        {
+            DatPersonaWork *persona = datPersonaGetByPcId(1);
+            datPersonaAddToNaturalStat(persona, 0, (s8)BR_S16(entry, 2));
+            break;
+        }
+        case 5:
+        {
+            DatPersonaWork *persona = datPersonaGetByPcId(1);
+            datPersonaAddToNaturalStat(persona, 3, (s8)BR_S16(entry, 2));
+            break;
+        }
+        case 6:
+        {
+            DatPersonaWork *persona = datPersonaGetByPcId(1);
+            datPersonaAddToNaturalStat(persona, 2, (s8)BR_S16(entry, 2));
+            break;
+        }
+        case 7:
+        {
+            DatPersonaWork *persona = datPersonaGetByPcId(1);
+            datPersonaAddToNaturalStat(persona, 1, (s8)BR_S16(entry, 2));
+            break;
+        }
+        case 8:
+        {
+            DatPersonaWork *persona = datPersonaGetByPcId(1);
+            datPersonaAddToNaturalStat(persona, 4, (s8)BR_S16(entry, 2));
+            break;
+        }
+        case 9:
+        {
+            u32 stat_cnt[5];
+            u32 i_idx;
+            u32 out_idx;
+            u32 rnd_stat;
+            DatPersonaWork *persona;
+            for (i_idx = 0; i_idx < 5; i_idx++) {
+                stat_cnt[i_idx] = 0;
+            }
+            for (i_idx = 0; i_idx < (u32)BR_S16(entry, 2); i_idx++) {
+                rnd_stat = func_00488f30() % 5;
+                persona = datPersonaGetByPcId(1);
+                datPersonaAddToNaturalStat(persona, (u16)rnd_stat, 1);
+                stat_cnt[rnd_stat]++;
+            }
+            out_idx = 0;
+            for (i_idx = 0; i_idx < 5; i_idx++) {
+                if (stat_cnt[i_idx] != 0) {
+                    BR_U32(work, 0x34e8 + out_idx * 8) = i_idx;
+                    BR_U32(work, 0x34ec + out_idx * 8) = stat_cnt[i_idx];
+                    out_idx++;
+                }
+            }
+            BR_U32(work, 0x3514) = out_idx;
+            BR_U32(work, 0x3510) = 0;
+            break;
+        }
+        case 10:
+        {
+            s16 cur_pts = datGetAcademicPoint(1);
+            s16 old_lvl = datGetAcademicLevel(cur_pts);
+            s16 new_pts = cur_pts + BR_S16(entry, 2);
+            if (new_pts >= 1000) new_pts = 999;
+            datSetAcademicPoint(1, new_pts);
+            if (datGetAcademicLevel(new_pts) != old_lvl) {
+                debug_val |= 1;
+            }
+            break;
+        }
+        case 11:
+        {
+            s16 cur_pts = datGetCharmPoint(1);
+            s16 old_lvl = datGetCharmLevel(cur_pts);
+            s16 new_pts = cur_pts + BR_S16(entry, 2);
+            if (new_pts >= 1000) new_pts = 999;
+            datSetCharmPoint(1, new_pts);
+            if (datGetCharmLevel(new_pts) != old_lvl) {
+                debug_val |= 1;
+            }
+            break;
+        }
+        case 12:
+        {
+            s16 cur_pts = datGetCouragePoint(1);
+            s16 old_lvl = datGetCourageLevel(cur_pts);
+            s16 new_pts = cur_pts + BR_S16(entry, 2);
+            if (new_pts >= 1000) new_pts = 999;
+            datSetCouragePoint(1, new_pts);
+            if (datGetCourageLevel(new_pts) != old_lvl) {
+                debug_val |= 1;
+            }
+            break;
+        }
         default:
             break;
         }
@@ -3397,7 +3491,6 @@ void func_001f7210(void)
         K_ASSERT(work != NULL, 0x6b1);
     }
     printf("rank %d\n", kind);
-    func_00488f30();
     item_substate = BR_U32(entry, 4) % 6;
     /*
      * Kind dispatch: 28-entry jump table (retail 0x7b6f20).
@@ -3991,68 +4084,6 @@ void func_001f7210(void)
             break;
         }
     }
-    }
-    /*
-     * Card creation: create up to 6 reward cards via func_00174800/func_00174650.
-     * Explicit per-card calls to match retail's 6-instance sequence.
-     * Work data arrays at frame+0x1a0..0x24c used for card geometry tracking.
-     */
-    {
-        u32 slot_data[6];
-        u32 geom_data[12];
-        u32 c_i;
-        u32 c_slot_count = BR_U32(work, 0x3408);
-        /* Build card-slot data array from work */
-        for (c_i = 0; c_i < 6; c_i++) {
-            if (c_i < c_slot_count) {
-                slot_data[c_i] = BR_U32(work, 0x34c0 + c_i * 4);
-            } else {
-                slot_data[c_i] = 0;
-            }
-        }
-        /* Six explicit card creation calls */
-        func_00174800(1);
-        func_00174650(1, item_substate, slot_data[0]);
-        func_00174800(1);
-        func_00174650(1, item_substate, slot_data[1]);
-        func_00174800(1);
-        func_00174650(1, item_substate, slot_data[2]);
-        func_00174800(1);
-        func_00174650(1, item_substate, slot_data[3]);
-        func_00174800(1);
-        func_00174650(1, item_substate, slot_data[4]);
-        func_00174800(1);
-        func_00174650(1, item_substate, slot_data[5]);
-        /* Geometry array for card positioning */
-        for (c_i = 0; c_i < 12; c_i++) {
-            geom_data[c_i] = BR_U32(work, 0x34e0 + c_i * 4);
-        }
-    }
-    /* Stat capping chains - compute HP/SP caps via double 177xxx per retail */
-    {
-        s32 cap_val;
-        u32 capped;
-        /* HP capping: func_0016c6f0 -> func_00177280 -> func_00177280 -> func_0016cfe0 */
-        cap_val = (s32)func_0016c6f0(1);
-        cap_val = (s32)func_00177280((u32)cap_val);
-        cap_val = (s32)func_00177280((u32)cap_val);
-        capped = (u32)cap_val + (u32)value;
-        if (capped > 999) capped = 999;
-        func_0016cfe0(1, capped);
-        /* SP capping: func_0016c740 -> func_001772f0 -> func_001772f0 -> func_0016d090 */
-        cap_val = (s32)func_0016c740(1);
-        cap_val = (s32)func_001772f0((u32)cap_val);
-        cap_val = (s32)func_001772f0((u32)cap_val);
-        capped = (u32)cap_val + (u32)value;
-        if (capped > 999) capped = 999;
-        func_0016d090(1, capped);
-        /* Status capping: func_0016c790 -> func_00177360 -> func_00177360 -> func_0016d160 */
-        cap_val = (s32)func_0016c790(1);
-        cap_val = (s32)func_00177360((u32)cap_val);
-        cap_val = (s32)func_00177360((u32)cap_val);
-        capped = (u32)cap_val + (u32)value;
-        if (capped > 999) capped = 999;
-        func_0016d160(1, capped);
     }
     /*
      * Reward-card animation tail (retail at func+7504-7908).
