@@ -3430,15 +3430,10 @@ void FUN_00207340(void)
             state = bpRoot_0021c720_ret();
             bpRoot_003c72d0_arg(state);
             effect = bpMisc001ff740();
-            if (effect == 0)
+            if (effect == 1)
             {
                 func_003c7430(0xf);
                 func_003c74e0(0x10);
-            }
-            else if (effect == 1)
-            {
-                func_003c7430(0x11);
-                func_003c74e0(0x12);
             }
             else
             {

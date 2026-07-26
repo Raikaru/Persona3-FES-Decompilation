@@ -1135,8 +1135,7 @@ typedef union CampSkillAnimPair
 
 static inline void campSkillOpenMain(CampSkillInnerWork* work)
 {
-    CampSkillAnimPair start;
-    CampSkillAnimPair end;
+    CampSkillAnimPair pairs[10];
     s32 i;
 
     if (DAT_007cdf54 != NULL) {
@@ -1146,54 +1145,54 @@ static inline void campSkillOpenMain(CampSkillInnerWork* work)
         FUN_00122710(DAT_007cdf58, 2);
     }
     for (i = 0; i < 4; i++) {
-        start.f[0] = 15.0f;
-        start.f[1] = 47.0f + (f32)(i * 0x24);
-        end = start;
+        pairs[i].f[0] = 15.0f;
+        pairs[i].f[1] = 47.0f + (f32)(i * 0x24);
+        pairs[i + 4] = pairs[i];
         if (work->displayMode != 0) {
-            end.f[0] -= 300.0f;
+            pairs[i + 4].f[0] -= 300.0f;
         } else {
-            end.f[1] += 300.0f;
+            pairs[i + 4].f[1] += 300.0f;
         }
         FUN_0018bc10(100.0f, &work->listRecords[i + 2], 0, 2, 1,
-                     end.q, start.q, 0, 0);
+                     pairs[i + 4].q, pairs[i].q, 0, 0);
     }
-    start.f[0] = 400.0f;
-    start.f[1] = 0.0f;
+    pairs[0].f[0] = 400.0f;
+    pairs[0].f[1] = 0.0f;
     FUN_0018bc10(100.0f, &work->listRecords[6], 0, 2, 1,
-                 start.q, start.q, 0, 0);
+                 pairs[0].q, pairs[0].q, 0, 0);
 
-    start.f[0] = 188.0f;
-    start.f[1] = 0.0f;
-    end = start;
+    pairs[1].f[0] = 188.0f;
+    pairs[1].f[1] = 0.0f;
+    pairs[5] = pairs[1];
     if (work->displayMode != 0) {
-        end.f[0] -= 300.0f;
+        pairs[5].f[0] -= 300.0f;
     } else {
-        end.f[1] += 300.0f;
+        pairs[5].f[1] += 300.0f;
     }
     FUN_0018bc10(100.0f, work->listRecords, 0, 2, 1,
-                 end.q, start.q, 0, 0);
+                 pairs[5].q, pairs[1].q, 0, 0);
 
-    start.f[0] = 358.0f;
-    start.f[1] = 36.0f;
-    end = start;
+    pairs[2].f[0] = 358.0f;
+    pairs[2].f[1] = 36.0f;
+    pairs[6] = pairs[2];
     if (work->displayMode != 0) {
-        end.f[0] -= 300.0f;
+        pairs[6].f[0] -= 300.0f;
     } else {
-        end.f[1] += 300.0f;
+        pairs[6].f[1] += 300.0f;
     }
     FUN_0018bc10(100.0f, &work->listRecords[7], 0, 2, 1,
-                 end.q, start.q, 0, 0);
+                 pairs[6].q, pairs[2].q, 0, 0);
 
-    start.f[0] = 0.0f;
-    start.f[1] = 415.0f;
-    end = start;
+    pairs[3].f[0] = 0.0f;
+    pairs[3].f[1] = 415.0f;
+    pairs[7] = pairs[3];
     if (work->displayMode != 0) {
-        end.f[0] -= 300.0f;
+        pairs[7].f[0] -= 300.0f;
     } else {
-        end.f[1] += 300.0f;
+        pairs[7].f[1] += 300.0f;
     }
     FUN_0018bc10(100.0f, &work->listRecords[8], 0, 2, 1,
-                 end.q, start.q, 0, 0);
+                 pairs[7].q, pairs[3].q, 0, 0);
 }
 
 static inline void campSkillCloseMain(CampSkillInnerWork* work)

@@ -2629,6 +2629,9 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     char text[0x100];
     void* glyph;
     CampVec2 drawPosition;
+    CampVec2 labelPosition;
+    CampVec2 valuePosition;
+    CampVec2 equipmentPosition;
     f32 panelX;
     f32 panelY;
     f32 panelBottomY;
@@ -2664,12 +2667,14 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                              561.0f, 415.0f, 100.0f);
     campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 5, alpha,
                              361.0f, 415.0f, 100.0f);
-    h_campStatusDrawStatLabels(drawPosition, scale, persona, alpha);
+    labelPosition = drawPosition;
+    h_campStatusDrawStatLabels(labelPosition, scale, persona, alpha);
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x12, alpha,
                              panelX, panelY, scale);
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x13, alpha,
                              panelX, panelBottomY, scale);
-    h_campStatusDrawStatValues(drawPosition, scale, NULL, persona, alpha);
+    valuePosition = drawPosition;
+    h_campStatusDrawStatValues(valuePosition, scale, NULL, persona, alpha);
     for (row = 0; row < 5; row++) {
         switch (row) {
         case 0:
@@ -2688,9 +2693,9 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
             value = FUN_00173660(persona, 4) & 0xff;
             break;
         }
-        rowLeftX = drawPosition.x + 104.0f;
-        rowRightX = drawPosition.x + 333.0f;
-        rowY = drawPosition.y + 129.0f + (f32)(row * 19) - 25.0f;
+        rowLeftX = valuePosition.x + 104.0f;
+        rowRightX = valuePosition.x + 333.0f;
+        rowY = valuePosition.y + 129.0f + (f32)(row * 19) - 25.0f;
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x14, alpha,
                                  rowLeftX, rowY, scale);
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x15, alpha,
@@ -2707,7 +2712,8 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
         FUN_001127d0(glyph, 1);
         FUN_00115980(glyph);
     }
-    h_campStatusDrawEquipment(drawPosition, scale, NULL, persona, alpha);
+    equipmentPosition = drawPosition;
+    h_campStatusDrawEquipment(equipmentPosition, scale, NULL, persona, alpha);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x11, alpha,
                              drawPosition.x + 33.0f,
                              drawPosition.y + 278.0f, scale);

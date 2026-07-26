@@ -1571,11 +1571,22 @@ void FUN_0015E150(CampDrawWork *work)
         camp_draw_store_u32(draw, (size_t)base + 0x444, 0);
     }
 
+    x = 415.0f;
+    y = 17.0f;
+    pair = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xd48), 0, 2, 2,
-                 UINT64_C(0x43cf800041880000), UINT64_C(0x43cf800041880000), 0, 0);
+                 pair, pair, 0, 0);
     camp_draw_store_u32(draw, 0xd90, 0);
-    FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 2,
-                 UINT64_C(0x43cf800043f40000), UINT64_C(0x43cf800044068000), 0, 0);
+    x = 415.0f;
+    y = 488.0f;
+    pair = camp_draw_concat44_f32(x, y);
+    x = 415.0f;
+    y = 537.0f;
+    {
+        u64 endPair = camp_draw_concat44_f32(x, y);
+        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xdd0), 0, 2, 2,
+                     pair, endPair, 0, 0);
+    }
 }
 
 // FUN_0015E6E0 NONMATCHING
