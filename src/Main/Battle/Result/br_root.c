@@ -3974,19 +3974,17 @@ animation_tail:
             for (anim_i = 0; anim_i < BR_U32(work, 0x3418); anim_i++) {
                 u32 slot_idx = BR_U32(work, 0x1c + anim_i * 4);
                 u8 *card = work + slot_idx * 0x670 + 0x5c;
-                f32 offset = (f32)((s32)(anim_i - slot_count));
-                f32 t;
-                f32 result;
+                f32 delta = (f32)((s32)(anim_i - slot_count));
+                f32 scale;
+                f32 output[2];
                 f32 vec_in[2];
-                /* offset * 184.0f -> 0x435c0000 */
-                offset = offset * 184.0f;
-                t = func_0020c500(card + 0xc, offset);
-                /* build vec_in for func_0020c400 */
-                vec_in[0] = 184.0f;
-                vec_in[1] = 200.0f;
-                func_0020c400(card + 0xc, vec_in, t, &result);
-                result = result + 100.0f;
-                func_002508c0(card + 0x60c, &result, 0x14);
+                /* retail 0x1f8fa8-0x1f8fd0: 320.0f + delta * 220.0f */
+                vec_in[0] = 320.0f + delta * 220.0f;
+                vec_in[1] = 184.0f;
+                scale = func_0020c500(card + 0xc, 200.0f);
+                func_0020c400(card + 0xc, vec_in, scale, output);
+                output[1] = output[1] + 100.0f;
+                func_002508c0(card + 0x60c, output, 0x14);
             }
         }
         if (slot_count == BR_U32(work, 0x3418) - 1) {
