@@ -1582,7 +1582,6 @@ void FUN_002265D0(void)
     f32 panelAlpha;
     f32 transAlpha;
     f32 rowOffset;
-    f32 rowStepKeep;
     f32 rowStep;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
@@ -1592,7 +1591,6 @@ void FUN_002265D0(void)
     stateAlpha = panelAlpha;
     rowOffset = -26.0f * (f32)*(s32*)(work + 0x7210);
     rowStep = 26.0f * (f32)*(s32*)(work + 0x7210);
-    rowStepKeep = 26.0f * (f32)*(s32*)(work + 0x7210);
 
     if (*(u32*)(work + 0x463c) == 3) {
         if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
@@ -1658,7 +1656,7 @@ void FUN_002265D0(void)
     *(f32*)(work + 0x6054) = rowY;
 
     {
-        f32 y150 = 150.0f + rowStepKeep;
+        f32 y150 = 150.0f + rowStep;
         for (i = 0; i < 9; ++i) {
             switch (i) {
             case 0: case 1: case 2: case 3:
