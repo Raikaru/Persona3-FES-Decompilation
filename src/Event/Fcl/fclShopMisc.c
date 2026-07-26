@@ -422,7 +422,7 @@ void FUN_00402c80(int param_1);
 s16 FUN_004030b0(u16 param_1);
 s16 FUN_004030f0(u16 param_1);
 void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,u16 param_7);
-void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,u16 param_7);
+void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,s16 param_7);
 void FUN_004032f0(u64 param_1);
 void FUN_00403340(u16 param_1);
 u8 FUN_00403380(u64 param_1);
@@ -555,6 +555,8 @@ void FUN_0040e3c0_f32(float param_1,int param_2,int param_3,u8 param_4,int param
 void FUN_0040e3c0_u32(float param_1,int param_2,int param_3,u32 param_4,int param_5,int param_6);
 #pragma alias FUN_003c7e20_f32 FUN_003c7e20
 void FUN_003c7e20_f32(f32 p1,s32 p2,s32 p3,u32 p4,s32 p5,s32 p6,s32 p7,u32 p8);
+#pragma alias FUN_003c7e20_f32_u64 FUN_003c7e20
+void FUN_003c7e20_f32_u64(f32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,s32 p7,u32 p8);
 #pragma alias FUN_003c6270_u32 FUN_003c6270
 u32 FUN_003c6270_u32(u32 param_1);
 #pragma alias FUN_003c6ce0_u32 FUN_003c6ce0
@@ -16043,20 +16045,23 @@ void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4,
 
 
 void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4,
-
-                 u64 param_5,u64 param_6,u16 param_7)
+                 u64 param_5,u64 param_6,s16 param_7)
 
 
 
 {
 
-  u16 uVar1;
+  s16 sVar1;
+  float fVar2;
 
   
 
 
 
-  FUN_003c7e20((float)param_3,param_1,param_2,param_4,param_5,param_6,6,uVar1);
+  fVar2 = (float)param_3;
+  FUN_00402800(param_7);
+  sVar1 = FUN_00403780(param_7);
+  FUN_003c7e20_f32_u64(fVar2,param_1,param_2,param_4,param_5,param_6,6,sVar1);
 
   return;
 
