@@ -16557,7 +16557,7 @@ u32 FUN_003826f0(int param_1,int param_2,int param_3)
 #pragma push
 #pragma opt_propagation off
 #pragma opt_rebuildconditionals off
-// FUN_00382760 NONMATCHING
+// FUN_00382760
 void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
 {
   u32 uVar1;
