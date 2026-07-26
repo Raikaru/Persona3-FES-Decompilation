@@ -1040,39 +1040,69 @@ void func_00271230(u32* param)
 // FUN_002716D0 NONMATCHING
 void func_002716d0(u32* param)
 {
+    extern f32 fGpffff846c;
     u8* context;
     RwIm2DVertex* vertex;
-    RwCamera* camera;
+    f32 recipZ;
     f32 width;
     f32 height;
     f32 x;
     f32 y;
     f32 angle;
+    f32 angle2;
     f32 distance;
     f32 wave;
-    f32 scale;
+    f32 wave2;
+    f32 wave3;
+    f32 distance2;
+    f32 alpha;
 
     context = (u8*)(uintptr_t)param[3];
-    camera = kwlnGetMainCamera();
-    width = (f32)*(s32*)(context + 0x2c);
-    height = (f32)*(s32*)(context + 0x30);
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    width = (f32)*(s32*)(context + 0x2c) / 180.0f;
+    height = (f32)*(s32*)(context + 0x30) / 512.0f;
     x = *(f32*)&param[1] * 640.0f;
     y = *(f32*)&param[2] * 448.0f;
-    angle = func_0052ea18(y, x);
-    distance = sqrtf(x * x + y * y);
-    wave = func_00269c80(fGpffff8248 * (distance / 1200.0f -
-                                           width / 180.0f) * 2.0f);
-    wave = fGpffff8294 * wave + angle;
-    scale = func_00269c80(fGpffff8248 * (distance / 30.0f) * 3.0f -
+    angle = func_0052ea18(y - 100.0f, x - 100.0f);
+    distance = sqrtf((y - 100.0f) * (y - 100.0f) +
+                     (x - 100.0f) * (x - 100.0f));
+
+    wave = func_00269c80(fGpffff8248 *
+                         (fGpffff846c + distance / 1200.0f - width) * 2.0f);
+    wave2 = func_00269c80(fGpffff8248 *
+                          (distance / 640.0f - height) * 2.0f);
+    angle2 = angle + fGpffff8294 * wave2;
+    (void)func_00269ca0(angle2);
+    (void)func_00269c80(angle2);
+
+    width = x / 640.0f;
+    height = y / 448.0f;
+    distance2 = sqrtf((*(f32*)&param[1] * 640.0f) *
+                      (*(f32*)&param[1] * 640.0f) +
+                      (*(f32*)&param[2] * 448.0f) *
+                      (*(f32*)&param[2] * 448.0f));
+    wave3 = func_00269c80((f32)*(s32*)(context + 0x30) / 30.0f * 3.0f -
                           distance / 100.0f);
-    scale = func_00269c80(fGpffff8248 *
-                          (fGpffff82fc * scale + distance / 1200.0f +
-                           angle / fGpffff81f8) * 2.0f);
-    wave = fGpffff82fc * scale + fGpffff839c;
+    wave = func_00269c80(fGpffff8248 *
+                         (fGpffff82fc * wave3 + distance / 1200.0f +
+                          angle / fGpffff81f8) * 2.0f);
+    alpha = fGpffff839c + fGpffff82fc * wave;
+
     vertex = opWaitVertex(param);
-    opWaitSetVertex(vertex, x, y, *(f32*)&param[1], *(f32*)&param[2],
-                    wave * 204.0f * *(f32*)(context + 0x1178),
-                    1.0f / camera->nearPlane);
+    vertex->u.els.scrVertex.x = x;
+    vertex->u.els.scrVertex.y = y;
+    vertex->u.els.u = width;
+    vertex->u.els.v = height;
+    vertex->u.els.color.r =
+        (f32)(u8)(255.0f * alpha * *(f32*)(context + 0x1178));
+    vertex->u.els.color.g =
+        (f32)(u8)(255.0f * alpha * *(f32*)(context + 0x1178));
+    vertex->u.els.color.b =
+        (f32)(u8)(255.0f * alpha * *(f32*)(context + 0x1178));
+    vertex->u.els.color.a =
+        (f32)(u8)(204.0f * alpha * *(f32*)(context + 0x1178));
+    vertex->u.els.scrVertex.z = D_00960088;
+    vertex->u.els.recipZ = recipZ;
 }
 
 // FUN_00271C10
