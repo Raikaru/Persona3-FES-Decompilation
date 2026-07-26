@@ -4131,6 +4131,7 @@ void bpRush0025d6c0(void);
 void bpRush0025d710(void);
 void func_002083d0(void);
 
+// W112BpRoot reconstruction: retail request-mask logging and state-transition paths recovered.
 // FUN_001FF890 NONMATCHING
 void FUN_001ff890(void)
 {

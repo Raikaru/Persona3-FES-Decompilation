@@ -30032,6 +30032,7 @@ void FUN_003399a0(int param_1)
   int iVar4;
 
   int iVar5;
+  int iVar7;
 
   bool bVar6;
 
@@ -30393,6 +30394,25 @@ void FUN_003399a0(int param_1)
             puVar15[4] = DAT_0069c4d4;
 
             puVar15[5] = DAT_0069c4d8;
+            sx = (float)(int)uVar22 * (float)piVar16[3];
+            sy = (float)(int)uVar23 * (float)piVar16[4];
+            sz = (float)piVar16[5] * fVar21;
+            tx = sx + sy;
+            ty = sy + sz;
+            tz = sz + sx;
+            *(float *)&puVar15[0] = tx;
+            *(float *)&puVar15[1] = ty;
+            *(float *)&puVar15[2] = tz;
+            for (iVar7 = 1; iVar7 < 5; iVar7 = iVar7 + 1) {
+              tscale = (float)iVar7 * 0.25f;
+              tx = sx * tscale + sz;
+              ty = sy * tscale + sx;
+              tz = sz * tscale + sy;
+              *(float *)&puVar15[iVar7 * 3] = tx;
+              *(float *)&puVar15[iVar7 * 3 + 1] = ty;
+              *(float *)&puVar15[iVar7 * 3 + 2] = tz;
+            }
+
 
             if (iVar10 < iVar19) {
 
@@ -31744,6 +31764,13 @@ void FUN_0033b2a0(int param_1)
   float fVar29;
 
   float fVar30;
+  float sx;
+  float sy;
+  float sz;
+  float tx;
+  float ty;
+  float tz;
+  float tscale;
 
   __int128 in_vf0;
 
@@ -32022,6 +32049,25 @@ void FUN_0033b2a0(int param_1)
             puVar13[1] = DAT_0069c4d4;
 
             puVar13[2] = DAT_0069c4d8;
+            sx = (float)(int)uVar20 * (float)piVar14[4];
+            sy = (float)(int)uVar21 * (float)piVar14[5];
+            sz = fVar28 + fVar29;
+            tx = sx + sz;
+            ty = sy + sz;
+            tz = sx + sy;
+            *(float *)&puVar13[0] = tx;
+            *(float *)&puVar13[1] = ty;
+            *(float *)&puVar13[2] = tz;
+            for (iVar11 = 1; iVar11 < 5; iVar11 = iVar11 + 1) {
+              tscale = (float)iVar11 * 0.25f;
+              tx = sx * tscale + fVar28;
+              ty = sy * tscale + fVar29;
+              tz = sz * tscale + fVar22;
+              *(float *)&puVar13[iVar11 * 3] = tx;
+              *(float *)&puVar13[iVar11 * 3 + 1] = ty;
+              *(float *)&puVar13[iVar11 * 3 + 2] = tz;
+            }
+
 
             for (iVar11 = 0; iVar11 < 6; iVar11 = iVar11 + 1) {
 
