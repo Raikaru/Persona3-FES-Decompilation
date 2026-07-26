@@ -4235,6 +4235,10 @@ void FUN_001FFF40(void)
     u32 value;
     u8* entry;
     void* persona;
+    u32 func_0017b260(u16);
+    /* Retail offsets: +0x2a0 guard; +0x3bc/+0x4e8/+0x56c/+0x5c0
+       helper arguments; +0x1028/+0x1050 case layout; +0x1110-+0x127c
+       secondary-1 path; +0x13f8/+0x1520/+0x1634 diagnostics. */
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = (u32*)gBcmWork;
@@ -4328,7 +4332,8 @@ void FUN_001FFF40(void)
                             if (!(work[3] & 1))
                             {
                                 if (work[0] & 0x80)
-                                    bpRoot001fea10();
+                                    bpRoot001fea10(
+                                        *(u32*)(DAT_007ce3ec + 0xba0), 0xcf);
                                 else
                                     func_002bf8b0();
                             }
@@ -4343,7 +4348,8 @@ void FUN_001FFF40(void)
                             if (!(work[3] & 2))
                             {
                                 if (work[0] & 0x100)
-                                    bpRoot001fea10();
+                                    bpRoot001fea10(
+                                        *(u32*)(DAT_007ce3ec + 0xba0), 0xd2);
                                 else
                                     func_002bf8e0();
                             }
@@ -4360,9 +4366,11 @@ void FUN_001FFF40(void)
                                 if (work[0] & 0x200)
                                 {
                                     if (FUN_0016F190(0x1317) != 0)
-                                        bpRoot001fea10();
+                                        bpRoot001fea10(
+                                            *(u32*)(DAT_007ce3ec + 0xba0), 0xd4);
                                     else
-                                        bpRoot001fea10();
+                                        bpRoot001fea10(
+                                            *(u32*)(DAT_007ce3ec + 0xba0), 0xd3);
                                 }
                             }
                             else
@@ -4376,7 +4384,8 @@ void FUN_001FFF40(void)
                             if (!(work[3] & 8))
                             {
                                 if (work[0] & 0x400)
-                                    bpRoot001fea10();
+                                    bpRoot001fea10(
+                                        *(u32*)(DAT_007ce3ec + 0xba0), 0xd5);
                                 else
                                     func_002bf910();
                             }
@@ -4419,6 +4428,7 @@ void FUN_001FFF40(void)
                 }
                 else
                 {
+                    K_ASSERT((flags & 2) == 0, 0x2b5);
                     if ((*(u16*)0x007E0952) & 0x20)
                     {
                         if (work[0x24 / 4] != 0)
@@ -4777,11 +4787,53 @@ void FUN_001FFF40(void)
                     renderFlags |= 0x40;
             }
             break;
-        case 1:
+        case 9:
             if (!bcmPanel0022b530())
             {
                 FUN_00206EB0();
                 work[4] = 4;
+            }
+            break;
+        case 1:
+            if (!func_0021b6f0())
+            {
+                if (func_0021b740() == 0)
+                {
+                    if (work[0] & 0x80000000u)
+                    {
+                        work[6] = 0;
+                    }
+                    else
+                    {
+                        work[4] = 0;
+                        work[0] &= ~0x80000000u;
+                    }
+                }
+                else
+                {
+                    work[0x7654 / 4] = func_0021b7c0();
+                    persona = (void*)(uintptr_t)FUN_001FF430(
+                        work[0x7654 / 4]);
+                    entry = *(u8**)((u8*)persona + 0xa2c);
+                    if (func_0017b260(*(u16*)(entry + 2)))
+                    {
+                        FUN_005225a8((const char*)0x685050,
+                                     *(u16*)(entry + 2));
+                        FUN_005225a8((const char*)0x685060);
+                        func_0024a6e0(work[0x7654 / 4]);
+                        work[0] &= ~0x4001u;
+                        work[6] = 2;
+                    }
+                    else
+                    {
+                        FUN_005225a8((const char*)0x685050,
+                                     *(u16*)(entry + 2));
+                        FUN_005225a8((const char*)0x685070);
+                        work[0] |= 0x4000;
+                        work[0] &= ~0x20001u;
+                        func_002dbac0();
+                    }
+                }
             }
             break;
         case 2:
@@ -4825,7 +4877,7 @@ void FUN_001FFF40(void)
             }
             else
             {
-                func_002db9f0(0x20, 0x5f1);
+                K_ASSERT(0, 0x5f1);
             }
             work[6] = 4;
             break;
@@ -4863,7 +4915,7 @@ void FUN_001FFF40(void)
             }
             else
             {
-                func_002db9f0(0x20, 0x62a);
+                K_ASSERT(0, 0x62a);
             }
             work[6] = 6;
             break;
@@ -4895,13 +4947,9 @@ void FUN_001FFF40(void)
             {
                 func_003c7430(0x11);
             }
-            else if (effect == 0)
-            {
-                func_002db9f0(0x20, 0x660);
-            }
             else
             {
-                func_002db9f0(0x20, 0x660);
+                K_ASSERT(0, 0x660);
             }
             work[6] = 8;
             break;
@@ -4912,13 +4960,6 @@ void FUN_001FFF40(void)
             func_003c7650(1);
             func_003c77a0();
             FUN_00206E40();
-            break;
-        case 9:
-            if (!bcmPanel0022b530())
-            {
-                FUN_00206EB0();
-                work[4] = 4;
-            }
             break;
         default:
             break;
