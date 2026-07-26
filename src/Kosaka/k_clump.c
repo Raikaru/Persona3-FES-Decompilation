@@ -1408,9 +1408,9 @@ s32 func_001a89c0(const u32* left, const u32* right)
 {
     RwCamera* camera;
     RwMatrix* cameraMatrix;
-    RwV3d cameraPosition;
     RwV3d leftDelta;
     RwV3d rightDelta;
+    RwV3d cameraPosition;
     f32 leftDistance;
     f32 rightDistance;
 

@@ -409,7 +409,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
     u32 j;
     const EffRenderState* renderState;
     RwIm2DVertex vertices[4];
-    u32 savedRenderStates[6];
+    volatile u32 savedRenderStates[6];
     f32 zBufferNear;
     f32 recipZ;
 
@@ -418,7 +418,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (i = 0; i < 6; i++)
         {
             renderState = &sEffRenderStates[i];
-            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, &savedRenderStates[i]);
+            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, (void*)&savedRenderStates[i]);
             (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)renderState->value);
         }
 

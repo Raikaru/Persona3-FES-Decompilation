@@ -3954,28 +3954,22 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
 void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
                   float *param_5,float *param_6,float *param_7)
 {
-  float fStack_28;
-  float fStack_24;
-  float fStack_20;
-  float fStack_18;
-  float fStack_14;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  float fStack_4;
+  RwV3d delta;
+  RwV3d first;
+  RwV3d second;
 
-  FUN_003bbc90_scene_typed(param_1,param_3,param_4,param_5,&fStack_4,&fStack_c,&fStack_14);
-  FUN_003bbc90_scene_typed(param_2,param_3,param_4,param_5,&fStack_8,&fStack_10,&fStack_18);
-  fStack_28 = fStack_8 - fStack_4;
-  fStack_24 = fStack_10 - fStack_c;
-  fStack_20 = fStack_18 - fStack_14;
-  FUN_004c6ac0_scene_vec((const RwV3d *)&fStack_28);
-  *param_6 = fStack_4;
-  param_6[1] = fStack_c;
-  param_6[2] = fStack_14;
-  *param_7 = fStack_8;
-  param_7[1] = fStack_10;
-  param_7[2] = fStack_18;
+  FUN_003bbc90_scene_typed(param_1,param_3,param_4,param_5,&first.x,&first.y,&first.z);
+  FUN_003bbc90_scene_typed(param_2,param_3,param_4,param_5,&second.x,&second.y,&second.z);
+  delta.x = second.x - first.x;
+  delta.y = second.y - first.y;
+  delta.z = second.z - first.z;
+  FUN_004c6ac0_scene_vec(&delta);
+  *param_6 = first.x;
+  param_6[1] = first.y;
+  param_6[2] = first.z;
+  *param_7 = second.x;
+  param_7[1] = second.y;
+  param_7[2] = second.z;
   return;
 }
 #define FUN_003bbfd0(...) ((void (*)(...))FUN_003bbfd0)(__VA_ARGS__)
