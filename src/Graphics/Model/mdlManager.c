@@ -62,6 +62,12 @@ void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
 #pragma alias func_004b74c0_typed func_004b74c0
 extern void func_004b74c0_typed(f32 frame);
+#pragma alias func_004b74c0_frame FUN_004b74c0
+extern void func_004b74c0_frame(f32 frame, u32 interpolator);
+#pragma alias func_004b7240_frame FUN_004b7240
+extern u32 func_004b7240_frame(f32 frame, u64 interpolator);
+#pragma alias func_00320640_frame FUN_00320640
+extern void func_00320640_frame(u32 arg0, f32 frame, u32 interpolator);
 void func_00316970(Model* mdl);
 u32 func_003115a0(void* param_1, u32* param_2);
 u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
@@ -2750,7 +2756,7 @@ void func_00312d40(u8* param_1,u8* param_2)
                    *(int *)(*(int *)(iVar2 + 0x20) + 0x24) * *(int *)(iVar3 + 0x34);
     DAT_009571b8 = DAT_009571b4;
 
-    if (*(float *)(iVar3 + 8) == 0.0) {
+    if (*(float *)(iVar3 + 8) == 0.0f) {
       DAT_009571b8 = 0;
 
     }
@@ -3589,7 +3595,7 @@ void func_00313ca0(int *param_1,u64 param_2)
 
       iVar3 = *(int *)(iVar2 + sVar1 * 8);
 
-      if (*(float *)(iVar7 + 0x1c) < 1.0) {
+      if (*(float *)(iVar7 + 0x1c) < 1.0f) {
 
         iVar2 = *(int *)(iVar2 + *(short *)(iVar7 + 0x10) * 8);
 
@@ -3597,7 +3603,7 @@ void func_00313ca0(int *param_1,u64 param_2)
 
           if (iVar3 != 0) {
 
-            func_00320640(0,1.0 - *(float *)(iVar7 + 0x1c),iVar3);
+            func_00320640_frame(0,1.0f - *(float *)(iVar7 + 0x1c),iVar3);
 
           }
 
@@ -4137,13 +4143,13 @@ void func_00314730(f32 param_1,u8* param_2)
 
         if (lVar4 != 0) {
 
-          func_004b74c0(param_1,lVar4);
+          func_004b74c0_frame(param_1,lVar4);
 
         }
 
         if ((*(char *)(param_2 + 2) != '\x01') && (lVar4 = func_004b97b0(*puVar2), lVar4 != 0)) {
 
-          func_004b74c0(param_1,lVar4);
+          func_004b74c0_frame(param_1,lVar4);
 
         }
 
@@ -5636,10 +5642,8 @@ void func_003164f0(int param_1,int param_2)
 
       if (uVar1 == 0) {
 
-        fVar5 = 1.0 / *(float *)(param_2 + 0x184);
-
-        in_f5 = (1.0 / *(float *)(param_2 + 0x188)) *
-
+        fVar5 = 1.0f / *(float *)(param_2 + 0x184);
+        in_f5 = (1.0f / *(float *)(param_2 + 0x188)) *
                 fVar5 * *(float *)(param_2 + 0x18c) * *(float *)(param_2 + 400);
 
         in_f1 = *(float *)(param_2 + 0x18c) * fVar5;
@@ -6027,15 +6031,15 @@ void FUN_00317a20(Model* param_1)
           if ((*(u16 *)(iVar8 + 0xd8) & 0x80) == 0) {
             uStack_4 = (u8)
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd0) *
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a) * 255.0 + 0.5);
+                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a) * 255.0f + 0.5f);
             uStack_3 = (u8)
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd1) *
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b) * 255.0 + 0.5);
+                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b) * 255.0f + 0.5f);
             uStack_2 = (u8)
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd2) *
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c) * 255.0 + 0.5);
+                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c) * 255.0f + 0.5f);
             cStack_1 = (char)(int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd3) *
-                                   DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d) * 255.0 + 0.5);
+                                   DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d) * 255.0f + 0.5f);
             FUN_0031dd40(*(u32 *)(iVar8 + 0x3f4),&uStack_4);
             if (cStack_1 != '\0') {
               FUN_0031dc80(*(u32 *)(iVar8 + 0x3f4),*(u16 *)(iVar8 + 0x418));
@@ -6301,23 +6305,23 @@ void func_00317a20(u64 param_1)
 
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd0) *
 
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a) * 255.0 + 0.5);
+                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a) * 255.0f + 0.5f);
 
             uStack_3 = (u8)
 
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd1) *
 
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b) * 255.0 + 0.5);
+                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b) * 255.0f + 0.5f);
 
             uStack_2 = (u8)
 
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd2) *
 
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c) * 255.0 + 0.5);
+                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c) * 255.0f + 0.5f);
 
             cStack_1 = (char)(int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd3) *
 
-                                   DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d) * 255.0 + 0.5);
+                                   DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d) * 255.0f + 0.5f);
 
             func_0031dd40(*(u32 *)(iVar8 + 0x3f4),&uStack_4);
 

@@ -24,6 +24,17 @@ extern s32 campStatusDrawSpriteCallXY(u32 parent, void* resource, s32 frame,
 #pragma alias campStatusDrawFadeSprite FUN_001159f0
 extern s32 campStatusDrawFadeSprite(f32 x, f32 y, f32 alpha, void* resource,
                                     s32 frame, s32 fade);
+#pragma alias campStatusDrawSprite3Call FUN_001159f0
+extern void campStatusDrawSprite3Call(f32 x, f32 y, u32 parent);
+#pragma alias campStatusDrawSprite4Call FUN_001159f0
+extern void campStatusDrawSprite4Call(f32 x, f32 y, f32 alpha, s32 digit);
+#pragma alias campStatusDrawGaugeCall FUN_00113a30
+extern void campStatusDrawGaugeCall(f32 scale, f32 x, f32 y, u32 color,
+                                    s32 width, s32 height);
+#pragma alias campStatusDrawTextCall FUN_003b32d0
+extern void campStatusDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
+                                   s32 font, s32 alignment, const char* text,
+                                   s32 maxWidth, s32 shadow);
 
 extern s32 FUN_001120a0();
 #pragma alias campStatusGetFont FUN_001120a0
@@ -214,7 +225,7 @@ static s32 campStatusClampFade(s32 fade)
 static void campStatusDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
 {
     FUN_001120a0(2);
-    FUN_001159f0(x, y, alpha, digit);
+    campStatusDrawSprite4Call(x, y, alpha, digit);
 }
 
 static void campStatusDrawNumber(f32 alpha, f32 x, f32 y, u32 value)
@@ -396,13 +407,13 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
 
     FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
     bright = campStatusClampFade(0xff - fade);
-    FUN_003b32d0(alpha - 1.0f, (s32)(position.x + 125.0f),
-                 (s32)(position.y + 36.0f),
-                 bright | 0xffffff00, 10, 1, text, 0x10, 0x78);
+    campStatusDrawTextCall(alpha - 1.0f, (s32)(position.x + 125.0f),
+                           (s32)(position.y + 36.0f),
+                           bright | 0xffffff00, 10, 1, text, 0x10, 0x78);
     if (barOffset != 0) {
-        FUN_00113a30(alpha - 1.0f, position.y + 196.0f +
-                     (f32)(0x4c - barOffset),
-                     position.x + 59.0f, 0xffffff00, barOffset, 10);
+        campStatusDrawGaugeCall(alpha - 1.0f, position.y + 196.0f +
+                                (f32)(0x4c - barOffset),
+                                position.x + 59.0f, 0xffffff00, barOffset, 10);
     }
     dy = (70.0f + position.y) - 12.0f;
     campStatusGetFont(2);
@@ -454,9 +465,9 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     f32 dy;
 
     if (barOffset != 0) {
-        FUN_00113a30(alpha - 1.0f, position.y + 196.0f +
-                     (f32)(0x4c - barOffset),
-                     position.x + 75.0f, 0xffffff00, barOffset, 10);
+        campStatusDrawGaugeCall(alpha - 1.0f, position.y + 196.0f +
+                                (f32)(0x4c - barOffset),
+                                position.x + 75.0f, 0xffffff00, barOffset, 10);
     }
     dy = position.y + 73.0f;
     campStatusGetFont(2);
@@ -692,8 +703,8 @@ void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
     s32 bright;
 
     bright = campStatusClampFade(fade);
-    FUN_001159f0(position.x + 22.0f, position.y + 27.0f, alpha,
-                 DAT_00833B90, 0, bright);
+    campStatusDrawFadeSprite(position.x + 22.0f, position.y + 27.0f, alpha,
+                             DAT_00833B90, 0, bright);
     level = datGetLevel(pcId);
     campStatusDrawNumber(alpha, position.x + 81.0f, position.y + 40.0f,
                          level);
@@ -1709,35 +1720,35 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
     left = position.x + 21.0f;
     right = position.x + 127.0f;
     y = position.y + 49.0f;
-    FUN_001159f0(left, y, 0x42c80000);
-    FUN_001159f0(right, y, 0x42c80000);
-    FUN_001159f0(left, y, 0x42c80000);
-    FUN_001159f0(right, y, 0x42c80000);
+    campStatusDrawSprite3Call(left, y, 0x42c80000);
+    campStatusDrawSprite3Call(right, y, 0x42c80000);
+    campStatusDrawSprite3Call(left, y, 0x42c80000);
+    campStatusDrawSprite3Call(right, y, 0x42c80000);
     count = FUN_00177280(FUN_0016c6f0(parent));
-    FUN_001159f0(position.x + 129.0f, position.y + 72.0f,
-                 0x42c80000);
-    FUN_001159f0(right, position.y + 63.0f, 0x42c80000);
-    FUN_001159f0(position.x + 128.0f + (f32)((count - 1) * 20),
-                 position.y + 63.0f, 0x42c80000);
-    FUN_001159f0(left, position.y + 97.0f, 0x42c80000);
-    FUN_001159f0(right, position.y + 97.0f, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 129.0f, position.y + 72.0f,
+                              0x42c80000);
+    campStatusDrawSprite3Call(right, position.y + 63.0f, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 128.0f + (f32)((count - 1) * 20),
+                              position.y + 63.0f, 0x42c80000);
+    campStatusDrawSprite3Call(left, position.y + 97.0f, 0x42c80000);
+    campStatusDrawSprite3Call(right, position.y + 97.0f, 0x42c80000);
     count = FUN_001772F0(FUN_0016c740(parent));
-    FUN_001159f0(position.x + 129.0f, position.y + 120.0f,
-                 0x42c80000);
-    FUN_001159f0(right, position.y + 111.0f, 0x42c80000);
-    FUN_001159f0(position.x + 128.0f + (f32)((count - 1) * 20),
-                 position.y + 111.0f, 0x42c80000);
-    FUN_001159f0(left, position.y + 145.0f, 0x42c80000);
-    FUN_001159f0(right, position.y + 145.0f, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 129.0f, position.y + 120.0f,
+                              0x42c80000);
+    campStatusDrawSprite3Call(right, position.y + 111.0f, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 128.0f + (f32)((count - 1) * 20),
+                              position.y + 111.0f, 0x42c80000);
+    campStatusDrawSprite3Call(left, position.y + 145.0f, 0x42c80000);
+    campStatusDrawSprite3Call(right, position.y + 145.0f, 0x42c80000);
     count = FUN_00177360(FUN_0016c790(parent));
-    FUN_001159f0(position.x + 129.0f, position.y + 168.0f,
-                 0x42c80000);
-    FUN_001159f0(right, position.y + 159.0f, 0x42c80000);
-    FUN_001159f0(position.x + 128.0f + (f32)((count - 1) * 20),
-                 position.y + 159.0f, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 129.0f, position.y + 168.0f,
+                              0x42c80000);
+    campStatusDrawSprite3Call(right, position.y + 159.0f, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 128.0f + (f32)((count - 1) * 20),
+                              position.y + 159.0f, 0x42c80000);
     y = position.y + 320.0f;
-    FUN_001159f0(position.x + 51.0f, y, 0x42c80000);
-    FUN_001159f0(position.x + 305.0f, y, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 51.0f, y, 0x42c80000);
+    campStatusDrawSprite3Call(position.x + 305.0f, y, 0x42c80000);
     {
         char text[264];
         FUN_00523ac8(text, gp0xffff8980, FUN_0016d2f0(parent));
@@ -2267,10 +2278,12 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
 
     (void)scale;
     parent = 0x42c80000;
-    FUN_001159f0(position.x + 104.0f,
-                 position.y + 129.0f + (f32)(row * 19) - 25.0f, parent);
-    FUN_001159f0(position.x + 333.0f,
-                 position.y + 129.0f + (f32)(row * 19) - 25.0f, parent);
+    campStatusDrawSprite3Call(position.x + 104.0f,
+                              position.y + 129.0f + (f32)(row * 19) - 25.0f,
+                              parent);
+    campStatusDrawSprite3Call(position.x + 333.0f,
+                              position.y + 129.0f + (f32)(row * 19) - 25.0f,
+                              parent);
     length = (value * 0xe3) / 99;
     text = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
     *((u32*)text + 11) = parent;
