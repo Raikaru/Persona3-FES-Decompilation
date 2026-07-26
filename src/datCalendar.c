@@ -2366,7 +2366,7 @@ void* func_00181cc0(KwlnTask* task)
     CalendarFieldSequenceData fieldData;
     parent = task;
     work = (CalendarAigesWork*)parent->workData;
-    scenarioTable = (CalendarScenarioEntry*)CLND_SCENARIO_TABLE_abs;
+    scenarioTable = (CalendarScenarioEntry*)CLND_SCENARIO_TABLE;
     switch (work->state)
     {
         case 0:

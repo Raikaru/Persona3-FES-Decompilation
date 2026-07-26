@@ -22347,7 +22347,7 @@ void FUN_00332200(int param_1)
 // Residual: retail hoists a loop-invariant 0xffffffff store constant and
 // uses a different loop-register mapping; not reproduced after 3 tries.
 #pragma opt_loop_invariants on
-// FUN_00332210 NONMATCHING
+// FUN_00332210
 
 
 void FUN_00332210(int param_1)
@@ -22357,8 +22357,8 @@ void FUN_00332210(int param_1)
 {
 
   u16 *puVar2;
-  int iVar3;
   u32 uVar4;
+  int iVar3;
   u32 uVar1;
   u32 negOne;
 

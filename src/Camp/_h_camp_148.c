@@ -28,10 +28,6 @@ static inline u32 campFloatBits(f32 value)
     bits.f = value;
     return bits.u;
 }
-static inline f32 campAdd389(f32 value)
-{
-    return 389.0f + value;
-}
 #define CAMP_PAIR_WORDS(high, low) ((((u64)(u32)(high)) << 32) | (u32)(low))
 #define CAMP_PAIR_FLOAT_HIGH(high, low) (((u64)campFloatBits(high) << 32) | (u32)(low))
 #define CAMP_PAIR_WORD_HIGH(high, low) ((((u64)(u32)(high)) << 32) | campFloatBits(low))
@@ -368,7 +364,7 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
                         *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
         campDrawSpriteXY(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 9,
                          *(f32*)(param_1 + 0x38) + 97.0f,
-                         campAdd389(*(f32*)(param_1 + 0x3c)) - 415.0f,
+                         (*(f32*)(param_1 + 0x3c) + 389.0f) - 415.0f,
                          *(u8*)(param_1 + 0x40), *(f32*)(param_1 + 0x24));
         campDrawSpriteX(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 3,
                         *(f32*)(param_1 + 0x38) + 122.0f,

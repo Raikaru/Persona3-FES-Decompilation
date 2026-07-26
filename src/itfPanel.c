@@ -365,7 +365,6 @@ u32 FUN_003a8b00(int param_1,int param_2)
   u32 uVar2;
 
   int iVar3;
-  u32 size;
 
 
   
@@ -395,8 +394,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
     *(int *)(iVar3 + 4) = (int)uVar2;
 
     *(int *)(iVar3 + 8) = (int)uVar2;
-    size = DAT_006a1d10_abs[param_1];
-    FUN_00521408(uVar2,0,size);
+    FUN_00521408(uVar2,0,DAT_006a1d10_abs[param_1]);
 
 
   }

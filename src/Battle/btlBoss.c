@@ -808,7 +808,7 @@ u64 func_002f88c0()
     BtlUnit* unit;
     u16 encounterId;
     u16 charId;
-    long result;
+    s64 result;
 
     encounterId = btlBossGetEncounterId();
     switch (encounterId)

@@ -29,9 +29,9 @@ extern int datSocialLinkLevelIsNotZero(int);
 #pragma alias memcpy_003d6e60 memcpy
 extern void *memcpy_003d6e60(void *dest,const void *src,u32 size);
 #pragma alias datPersonaFindSkillIdx_003d6e60 datPersonaFindSkillIdx
-extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,u16 param_2);
+extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,s32 param_2);
 #pragma alias datPersonaSetSkill_003d6e60 datPersonaSetSkill
-extern void datPersonaSetSkill_003d6e60(s32 param_1,u16 param_2);
+extern void datPersonaSetSkill_003d6e60(s32 param_1,s32 param_2);
 u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 #pragma alias FUN_003d5510_i FUN_003d5510
 extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);

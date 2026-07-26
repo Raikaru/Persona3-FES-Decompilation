@@ -2330,11 +2330,14 @@ void func_002bacb0(u32 *param_1)
 // FUN_002bad60 NONMATCHING
 
 u32 func_002bad60(u32 *param_1)
-
-{
   short sVar1;
   u16 *puVar2;
   int iVar3;
+  u16 index;
+  u32 state;
+  u32 uVar4;
+  u32 unaff_s1_lo;
+  u32 unaff_s2_lo;
   u32 uVar4;
   u32 unaff_s1_lo;
   u32 unaff_s2_lo;
@@ -2344,7 +2347,9 @@ u32 func_002bad60(u32 *param_1)
   puVar2 = (u16 *)param_1[4];
     if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
       uVar4 = 1;
-    }
+      index = *(u16 *)(param_1 + 3);
+      state = *param_1;
+      iVar3 = func_002b9370(state,index);
     else {
       iVar3 = func_002b9370(*param_1,*(u16 *)(param_1 + 3));
       if ((*puVar2 & 0x40) == 0) {

@@ -13532,7 +13532,7 @@ bool FUN_0036d320(int param_1)
     goto L_done;
 L_false:
     bVar2 = false;
-L_done:
+L_done:;
   }
   else if (iVar1 == 0x17) {
     bVar2 = false;
