@@ -2023,10 +2023,11 @@ void func_001d19d0(void)
         {
             valid = 1;
         }
-        if ((predicate = valid > 0) == 1)
+        if ((predicate = valid > 0) != 1)
         {
-            offset = i * sizeof(FldUnit);
-            unit2 = (FldUnit*)((int)gFldUnitsPc + offset);
+            continue;
+        }
+        {
             unit2->unk_17c = 0;
             func_001a60d0(0, unit2->mdl, 0xff);
         }

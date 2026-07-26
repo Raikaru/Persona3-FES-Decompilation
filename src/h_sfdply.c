@@ -2317,7 +2317,7 @@ void func_0010e630(void* destination, const void* source, u32 size)
 // FUN_0010E880 NONMATCHING
 void* func_0010e880(const u8* stream)
 {
-    s32 bits;
+    u32 bits;
     s32 flags = 0;
     s32 paletteFormat = 0;
     const u8* source;
@@ -2403,6 +2403,7 @@ void* func_0010e880(const u8* stream)
 
     pixels = func_004ce200(raster, NULL, 1);
     if (pixels == NULL)
+    {
         K_Assert(&gp0xffff8840, 0x490);
     }
 
