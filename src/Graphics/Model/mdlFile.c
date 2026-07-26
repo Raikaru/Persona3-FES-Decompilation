@@ -22856,7 +22856,7 @@ void FUN_00332a30(int *param_1,u16 param_2,int *param_3)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   
 

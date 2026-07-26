@@ -1439,11 +1439,11 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 
   iVar1 = *(int *)(param_2 + 0xc);
 
-  piVar7 = (int *)&DAT_006afaf0;
+  iVar5 = 4;
 
   piVar6 = aiStack_20;
 
-  iVar5 = 4;
+  piVar7 = (int *)&DAT_006afaf0;
 
   do {
 
