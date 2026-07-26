@@ -721,6 +721,7 @@ u32 FUN_003a2660(void)
       FUN_0019d3f0("itfMesManager.c",0x3a9);
 
     }
+    uVar4 = FUN_0035ed20(0);
 
 
     if (*(short *)(iVar1 + 0x54) == 0) {

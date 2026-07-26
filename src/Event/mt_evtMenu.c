@@ -6722,7 +6722,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
   iVar7 = **(int **)(param_3 + 0x164);
   iVar5 = iVar7;
-  iVar5 = iVar5 - iVar7;
+  iVar5 = 0;
   psVar3 = (short *)(DAT_0069e1a0 + iVar7 * 0xc);
   iVar6 = param_2 * 0xc;
 
