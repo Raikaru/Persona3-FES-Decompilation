@@ -371,6 +371,8 @@ extern u8 DAT_00833a54_abs[];
 extern u8 DAT_00833a58_abs[];
 #pragma alias DAT_00833b78_abs DAT_00833b78
 extern u8 DAT_00833b78_abs[];
+#pragma alias DAT_00833BA0_abs DAT_00833BA0
+extern u8 DAT_00833BA0_abs[];
 extern void *DAT_00833a50;
 extern void *DAT_00833b70;
 extern void *DAT_00833a54;
@@ -452,8 +454,17 @@ extern u32 FUN_00523AC8(void *dst, u32 stringId, u64 arg2);
 extern void campCE50FormatText(void *dst, const char *format, u64 arg);
 extern void FUN_003B32D0(u32 drawContext, s32 x, s32 y, u32 color, s32 font, s32 flags, void *text, s32 width, s32 height);
 #pragma alias campCE50DrawSprite FUN_001159F0
+#pragma alias campSystemDrawSprite FUN_001159F0
+extern void campSystemDrawSprite(void *parent, void *resource, s32 frame,
+                                 u8 alpha, f32 x, f32 y, f32 scale);
 extern void campCE50DrawSprite(u64 parent, void *resource, s32 frame,
                                u32 alpha, f32 x, f32 y, f32 scale);
+/* FUN_00115AD0's value-glyph entry point uses the integer style and alpha
+ * arguments after the first three integer parameters. */
+#pragma alias campCE50DrawValueGlyph FUN_00115AD0
+extern void campCE50DrawValueGlyph(void *parent, void *resource, s32 frame,
+                                   f32 x, f32 y, u8 style, u8 alpha,
+                                   f32 scale);
 #pragma alias campCE50DrawSpriteAlt FUN_00115BC0
 extern void campCE50DrawSpriteAlt(u64 parent, void *resource, s32 frame,
                                   u32 alpha, s32 red, s32 green, s32 blue,
@@ -1719,58 +1730,190 @@ void FUN_0015F320(CampDrawWork *work)
 void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampDrawWork *work)
 {
     u8 textBuffer[256];
-    u8 digitCount;
-    u16 itemId;
-    u16 itemWord;
-    u32 value;
-    u32 maximum;
-    u32 alpha;
-    u64 spriteHandle;
-    void *sprite;
-    u8 hasHundreds;
-    s16 category;
+    s32 digitCount;
+    s32 value;
+    s32 maximum;
+    s32 hasHundreds;
     s32 group;
     s32 barWidth;
-    long iconKind;
+    s32 iconKind;
+    s16 itemId;
+    s16 itemWord;
+    s16 category;
+    u8 alpha;
+    u64 spriteHandle;
+    CampD8Object *sprite;
     u8 *groupBase;
-    f32 ownerValue;
-    ownerValue = camp_draw_load_f32(record, 0x24);
-    if (recordIndex == 0x34) {
-        FUN_001159F0(record->x, record->y, record->owner);
-        FUN_001159F0(record->x + 73.0f, record->y, record->owner);
-    } else if (recordIndex == 0x33) {
-        FUN_001159F0(record->x, record->y, record->owner);
-        FUN_001159F0(record->x + 16.0f, record->y, record->owner);
-    } else if (recordIndex == 0x32) {
-        FUN_001159F0(record->x, record->y, record->owner);
-        FUN_001159F0(record->x + 16.0f, record->y, record->owner);
-    } else if (recordIndex == 0x2e || recordIndex == 0x24 ||
-               recordIndex == 0x1a || recordIndex == 0x10) {
-        FUN_001159F0(record->x, record->y, record->owner);
-    } else if (recordIndex == 0x2d || recordIndex == 0x23 ||
-               recordIndex == 0x19 || recordIndex == 0x0f) {
-        FUN_001159F0(record->x, record->y, record->owner);
-    } else if (recordIndex == 0x2c || recordIndex == 0x22 ||
-               recordIndex == 0x18 || recordIndex == 0x0e) {
-        FUN_001159F0(record->x, record->y, record->owner);
-    } else if (recordIndex == 0x2b || recordIndex == 0x21 ||
-               recordIndex == 0x17 || recordIndex == 0x0d) {
-        group = ((s32)recordIndex - 0x0c) / 10;
+
+    switch (recordIndex) {
+    case 1:
+        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 2:
+        campSystemDrawSprite(record, *(void **)DAT_00833a50_abs, 1,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 3:
+        sprite = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0e);
+        sprite->drawContext = camp_draw_load_f32(record, 0x24);
+        sprite->x = record->x;
+        sprite->y = record->y;
+        sprite->alpha = (u8)record->alpha;
+        camp_draw_store_u32(sprite, 0x20, 0xc2340000);
+        campD8SetSprite(sprite, 1);
+        campD8SubmitSprite(sprite);
+        break;
+    case 4:
+        groupBase = (u8 *)work;
+        FUN_0015CE50(camp_draw_load_u64(record, 0x38),
+                     (void *)(uintptr_t)camp_draw_load_u32(groupBase, 0x28),
+                     record->alpha, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0:
+        FUN_0015D8E0(camp_draw_load_u64(record, 0x38),
+                     camp_draw_load_f32(record, 0x24), record->alpha);
+        break;
+    case 0x0a:
+    case 0x14:
+    case 0x1e:
+    case 0x28:
+        group = (recordIndex - 0x0a) / 10;
         groupBase = (u8 *)work + group * 4;
-        itemId = camp_draw_load_u16(groupBase, 0x3c);
-        digitCount = FUN_0016C470(itemId);
-        if (digitCount > 9) {
-            FUN_001120A0(2);
-            FUN_00115AD0(record->x, record->y, record->owner);
+        alpha = (u8)record->alpha;
+        spriteHandle = FUN_00177790(
+            *(const s16 *)((const u8 *)groupBase + 0x3c));
+        campCE50FormatText(textBuffer, DAT_007cb66c, spriteHandle);
+        campCE50DrawText(
+            (s32)record->x, (s32)(record->y + 3.0f),
+            ((u32)(0xffU - alpha) | 0xffffff00U),
+            camp_draw_load_f32(record, 0x24), 10, 1,
+            (const char *)textBuffer, 0x10, 0x78);
+        break;
+    case 0x0b:
+    case 0x15:
+    case 0x1f:
+    case 0x29:
+        group = (recordIndex - 0x0b) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C4F0(itemId) & 0xffff;
+        hasHundreds = value >= 0x64;
+        alpha = (u8)record->alpha;
+        if (hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 100) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 100;
         }
-        FUN_001120A0(2);
-        FUN_00115AD0(record->x + 16.0f, record->y, record->owner);
-        if ((FUN_0016C970(itemId) & UINT64_C(0x80000)) != 0) {
+        if (value >= 0x0a || hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 10) + 0x0b,
+                record->x + 16.0f, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (value % 10) + 0x0b,
+            record->x + 32.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C4F0(itemWord) & 0xffff;
+        maximum = FUN_0016C5F0(itemWord) & 0xffff;
+        barWidth = 0x4c - ((value * 0x4c) / maximum);
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
+                             alpha, record->x + 50.0f, record->y + 2.0f,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0b,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        if (barWidth != 0) {
+            FUN_00113a30(
+                camp_draw_load_f32(record, 0x24) - 1.0f,
+                record->x + 56.0f + (f32)(0x4c - barWidth),
+                record->y + 1.0f, 0xffffff00U, barWidth, 10);
+        }
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 9,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0c:
+    case 0x16:
+    case 0x20:
+    case 0x2a:
+        group = (recordIndex - 0x0c) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C570(itemId) & 0xffff;
+        hasHundreds = value >= 0x64;
+        alpha = (u8)record->alpha;
+        if (hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 100) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 100;
+        }
+        if (value >= 0x0a || hasHundreds) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (value / 10) + 0x0b,
+                record->x + 16.0f, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            value %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (value % 10) + 0x0b,
+            record->x + 32.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        itemWord = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        value = FUN_0016C570(itemWord) & 0xffff;
+        maximum = FUN_0016C670(itemWord) & 0xffff;
+        barWidth = 0x4c - ((value * 0x4c) / maximum);
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0d,
+                             alpha, record->x + 50.0f, record->y + 2.0f,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0c,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        if (barWidth != 0) {
+            FUN_00113a30(
+                camp_draw_load_f32(record, 0x24) - 1.0f,
+                record->x + 56.0f + (f32)(0x4c - barWidth),
+                record->y + 1.0f, 0xffffff00U, barWidth, 10);
+        }
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 0x0a,
+                             alpha, record->x + 55.0f, record->y + 1.0f,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0d:
+    case 0x17:
+    case 0x21:
+    case 0x2b:
+        group = (recordIndex - 0x0c) / 10;
+        groupBase = (u8 *)work + group * 4;
+        itemId = *(const s16 *)((const u8 *)groupBase + 0x3c);
+        digitCount = FUN_0016C470(itemId) & 0xff;
+        alpha = (u8)record->alpha;
+        if (digitCount >= 0x0a) {
+            campCE50DrawValueGlyph(
+                record, campCE50Font(2), (digitCount / 10) + 0x0b,
+                record->x, record->y, 0x27, alpha,
+                camp_draw_load_f32(record, 0x24));
+            digitCount %= 10;
+        }
+        campCE50DrawValueGlyph(
+            record, campCE50Font(2), (digitCount % 10) + 0x0b,
+            record->x + 16.0f, record->y, 0x27, alpha,
+            camp_draw_load_f32(record, 0x24));
+        if (((u32)FUN_0016C970(itemId) & 0x80000U) != 0) {
             iconKind = 0x0e;
-        } else if ((FUN_0016C970(itemId) & UINT64_C(0x80)) != 0) {
+        } else if (((u32)FUN_0016C970(itemId) & 0x80U) != 0) {
             iconKind = 0x0f;
         } else {
-            category = FUN_0016C920(itemId);
+            category = FUN_0016C920(itemId) & 0xffff;
             if (category == 5) {
                 iconKind = 1;
             } else if (category == 4) {
@@ -1782,100 +1925,60 @@ void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampDrawWork *work)
             }
         }
         if (iconKind != -1) {
-            FUN_001159F0(record->x + 44.0f, record->y - 6.0f, record->owner);
+            campSystemDrawSprite(
+                record, *(void **)DAT_00833a54_abs, iconKind,
+                alpha, record->x + 44.0f, record->y - 6.0f,
+                camp_draw_load_f32(record, 0x24));
         }
-    } else if (recordIndex == 0x2a || recordIndex == 0x20 ||
-               recordIndex == 0x16 || recordIndex == 0x0c) {
-        group = ((s32)recordIndex - 0x0c) / 10;
-        groupBase = (u8 *)work + group * 4;
-        itemId = camp_draw_load_u16(groupBase, 0x3c);
-        value = FUN_0016C570(itemId) & 0xffff;
-        hasHundreds = value > 99;
-        if (hasHundreds) {
-            FUN_001120A0(2);
-            FUN_00115AD0(record->x, record->y, record->owner);
-            value %= 100;
-        }
-        if (value > 9 || hasHundreds) {
-            FUN_001120A0(2);
-            FUN_00115AD0(record->x + 16.0f, record->y, record->owner);
-        }
-        FUN_001120A0(2);
-        FUN_00115AD0(record->x + 32.0f, record->y, record->owner);
-        itemWord = (u16)camp_draw_load_u32(groupBase, 0x3c);
-        value = FUN_0016C570(itemWord) & 0xffff;
-        maximum = FUN_0016C670(itemWord) & 0xffff;
-        barWidth = 0x4c - (s32)((value * 0x4c) / maximum);
-        FUN_001159F0(record->x + 50.0f, record->y + 2.0f, record->owner);
-        FUN_001159F0(record->x + 55.0f, record->y + 1.0f, record->owner);
-        if (barWidth != 0) {
-            FUN_00113a30(ownerValue - 1.0f,
-                         record->x + 56.0f + (f32)(0x4c - barWidth),
-                         record->y + 1.0f, UINT64_C(0xffffffffffffff00), barWidth, 10);
-        }
-        FUN_001159F0(record->x + 55.0f, record->y + 1.0f, record->owner);
-    } else if (recordIndex == 0x29 || recordIndex == 0x1f ||
-               recordIndex == 0x15 || recordIndex == 0x0b) {
-        group = ((s32)recordIndex - 0x0b) / 10;
-        groupBase = (u8 *)work + group * 4;
-        itemId = camp_draw_load_u16(groupBase, 0x3c);
-        value = FUN_0016C4F0(itemId) & 0xffff;
-        hasHundreds = value > 99;
-        if (hasHundreds) {
-            FUN_001120A0(2);
-            FUN_00115AD0(record->x, record->y, record->owner);
-            value %= 100;
-        }
-        if (value > 9 || hasHundreds) {
-            FUN_001120A0(2);
-            FUN_00115AD0(record->x + 16.0f, record->y, record->owner);
-        }
-        FUN_001120A0(2);
-        FUN_00115AD0(record->x + 32.0f, record->y, record->owner);
-        itemWord = (u16)camp_draw_load_u32(groupBase, 0x3c);
-        value = FUN_0016C4F0(itemWord) & 0xffff;
-        maximum = FUN_0016C5F0(itemWord) & 0xffff;
-        barWidth = 0x4c - (s32)((value * 0x4c) / maximum);
-        FUN_001159F0(record->x + 50.0f, record->y + 2.0f, record->owner);
-        FUN_001159F0(record->x + 55.0f, record->y + 1.0f, record->owner);
-        if (barWidth != 0) {
-            FUN_00113a30(ownerValue - 1.0f,
-                         record->x + 56.0f + (f32)(0x4c - barWidth),
-                         record->y + 1.0f, UINT64_C(0xffffffffffffff00), barWidth, 10);
-        }
-        FUN_001159F0(record->x + 55.0f, record->y + 1.0f, record->owner);
-    } else if (recordIndex == 0x28 || recordIndex == 0x1e ||
-               recordIndex == 0x14 || recordIndex == 0x0a) {
-        group = ((s32)recordIndex - 10) / 10;
-        groupBase = (u8 *)work + group * 4;
-        alpha = record->alpha;
-        spriteHandle = FUN_00177790(camp_draw_load_u16(groupBase, 0x3c));
-        FUN_00523AC8(textBuffer, 0x7cb66c, spriteHandle);
-        FUN_003B32D0(record->owner, (s32)record->x,
-                     (s32)record->y + 3,
-                     (u32)(0xffU - alpha) | 0xffffff00U,
-                     10, 1, textBuffer, 0x10, 0x78);
-    } else if (recordIndex == 0) {
-        FUN_0015D8E0(camp_draw_record_xy(record), camp_draw_load_f32(record, 0x24), record->alpha);
-    } else if (recordIndex == 4) {
-        groupBase = (u8 *)work;
-        FUN_0015CE50(camp_draw_record_xy(record),
-                     (void *)(uintptr_t)camp_draw_load_u32(groupBase, 0x28),
-                     record->alpha, camp_draw_load_f32(record, 0x24));
-    } else if (recordIndex == 3) {
-        spriteHandle = FUN_001158B0(0, DAT_00833a50, 0x0e);
-        sprite = (void *)(uintptr_t)spriteHandle;
-        camp_draw_store_u32(sprite, 0x2c, record->owner);
-        camp_draw_store_f32(sprite, 0x10, record->x);
-        camp_draw_store_f32(sprite, 0x14, record->y);
-        camp_draw_store_u8(sprite, 0x18, (u8)record->alpha);
-        camp_draw_store_u32(sprite, 0x20, 0xc2340000);
-        FUN_001127D0(spriteHandle, 1);
-        FUN_00115980(spriteHandle);
-    } else if (recordIndex == 2) {
-        FUN_001159F0(record->x, record->y, record->owner);
-    } else if (recordIndex == 1) {
-        FUN_001159F0(record->x, record->y, record->owner);
+        break;
+    case 0x0e:
+    case 0x18:
+    case 0x22:
+    case 0x2c:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x0f:
+    case 0x19:
+    case 0x23:
+    case 0x2d:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x10:
+    case 0x1a:
+    case 0x24:
+    case 0x2e:
+        campSystemDrawSprite(record, *(void **)DAT_00833a54_abs, 4,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x32:
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 1,
+                             (u8)record->alpha, record->x + 16.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x33:
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 0,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833a58_abs, 2,
+                             (u8)record->alpha, record->x + 16.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
+    case 0x34:
+        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 3,
+                             (u8)record->alpha, record->x, record->y,
+                             camp_draw_load_f32(record, 0x24));
+        campSystemDrawSprite(record, *(void **)DAT_00833BA0_abs, 1,
+                             (u8)record->alpha, record->x + 73.0f,
+                             record->y, camp_draw_load_f32(record, 0x24));
+        break;
     }
 }
 
