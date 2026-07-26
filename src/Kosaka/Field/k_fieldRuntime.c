@@ -1446,15 +1446,318 @@ s32 func_001e3940(void* resource, u8* fileData)
 }
 
 // FUN_001E3F10 NONMATCHING
-void func_001e3f10(RuntimeWork* work)
+void func_001e3f10(RuntimeTask* task)
 {
-    if (work != NULL)
+    RuntimeControllerWork* work;
+    RuntimeVec3 axis;
+    RuntimeVec3 base;
+    RuntimeVec3 direction;
+    RuntimeVec3 center;
+    RuntimeVec3 adjusted;
+    RuntimeVec3 cameraPosition;
+    RuntimeVec3 cameraDirection;
+    RuntimeVec3 position;
+    RuntimeVec3 angles;
+    RuntimeMatrix rotation;
+    RuntimeMatrix* matrix;
+    FieldRuntimeResourceNode* resourceNode;
+    void* camera;
+    void* object;
+    void* frame;
+    u32 input;
+    u32 result;
+    u32 value;
+    u32 matrixFlags;
+    s32 signedValue;
+    u16 resourceId;
+    f32 distance;
+    f32 angle;
+    f32 x;
+    f32 y;
+
+    work = (RuntimeControllerWork*)task->workData;
+    switch (work->state)
     {
-        if (work->childTask != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(work->childTask);
-        }
-        RwFree(work);
+        case 0:
+            work->windowTask = func_001a3b10(task, 0x122, 0xdc, 2);
+            func_001a3f20(work->windowTask, D_00684120);
+            func_001a3f20(work->windowTask, D_00684128);
+            func_001a3bf0(work->windowTask, 1);
+            work->state++;
+            break;
+
+        case 1:
+            if ((DAT_007e094e & 0x40) != 0)
+            {
+                result = (u32)func_001a4510(work->windowTask);
+                if (result == 0)
+                {
+                    func_00195020(work->windowTask);
+                    work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
+                    func_001a3dc0(work->windowTask, D_00684120, 8);
+                    func_001a3bf0(work->windowTask, 1);
+                    work->state = 2;
+                }
+                else if (result == 1)
+                {
+                    func_00195020(work->windowTask);
+                    work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
+                    func_001a3dc0(work->windowTask, D_00684220, 2);
+                    func_001a3bf0(work->windowTask, 1);
+                    work->state = 3;
+                }
+            }
+            break;
+
+        case 2:
+            if ((DAT_007e094e & 0x40) != 0)
+            {
+                result = (u32)func_001a4510(work->windowTask);
+                if (result == 7)
+                {
+                    work->majorId = (u16)*(u32*)func_001a41b0(
+                        work->windowTask, 1);
+                    work->minorId = (u16)*(u32*)func_001a41b0(
+                        work->windowTask, 2);
+                    resourceId = *(u16*)func_001a41b0(
+                        work->windowTask, 0);
+                    signedValue = *(s32*)func_001a41b0(
+                        work->windowTask, 4);
+                    work->angle = (f32)signedValue;
+                    work->sourceType = (u8)*(u32*)func_001a41b0(
+                        work->windowTask, 5);
+                    signedValue = *(s32*)func_001a41b0(
+                        work->windowTask, 6);
+                    work->scale = (f32)signedValue;
+                    work->sourceFlags = 0;
+                    value = *(u32*)func_001a41b0(work->windowTask, 3);
+                    if (value == 1)
+                    {
+                        work->flags |= 1;
+                    }
+                    else
+                    {
+                        work->flags &= (u8)~1;
+                    }
+                    value = ((u32)resourceId & 0x3ff) | 0xc00;
+                    if (func_001e2810(value) != NULL)
+                    {
+                        func_001a1540((s32)task, 0, 0xb4, D_00684270);
+                    }
+                    else
+                    {
+                        work->model = func_00316e00(
+                            work->majorId, work->minorId, 0);
+                        work->state = 4;
+                    }
+                    break;
+                }
+            }
+            if ((DAT_007e094e & 0x20) != 0)
+            {
+                work->state = 6;
+            }
+            break;
+
+        case 3:
+            if ((DAT_007e094e & 0x40) != 0)
+            {
+                result = (u32)func_001a4510(work->windowTask);
+                if (result == 1)
+                {
+                    resourceId = *(u16*)func_001a41b0(
+                        work->windowTask, 0);
+                    work->majorId = 4;
+                    work->minorId = 0xffff;
+                    work->angle = 120.0f;
+                    work->sourceType = 3;
+                    work->scale = 60.0f;
+                    work->sourceFlags = 1;
+                    value = ((u32)resourceId & 0x3ff) | 0xc00;
+                    if (func_001e2810(value) != NULL)
+                    {
+                        func_001a1540((s32)task, 0, 0xb4, D_00684270);
+                    }
+                    else
+                    {
+                        work->model = func_00316b40(
+                            4, 0xffff, D_00684290, 0);
+                        work->state = 4;
+                    }
+                    break;
+                }
+            }
+            if ((DAT_007e094e & 0x20) != 0)
+            {
+                work->state = 6;
+            }
+            break;
+
+        case 4:
+            resourceId = *(u16*)func_001a41b0(work->windowTask, 0);
+            if (func_00316f70(work->model) == 0)
+            {
+                break;
+            }
+            work->resourceId = func_003b6270(
+                resourceId, work->sourceType, work->model);
+            func_001a0dc0(work->resourceId, 1);
+            object = func_003b5d10(work->resourceId);
+            work->controller = *(void**)((u8*)object + 0x1e8);
+            func_001ad8c0(work->angle, work->controller);
+            func_001ad870(work->controller, 0x80000000);
+            func_00195020(work->windowTask);
+            camera = func_00198590();
+            frame = *(void**)((u8*)camera + 4);
+            matrix = (RuntimeMatrix*)func_004cb2f0(frame);
+            cameraDirection.x = matrix->values[12];
+            cameraDirection.y = matrix->values[13];
+            cameraDirection.z = matrix->values[14];
+            cameraPosition.x = matrix->values[8];
+            cameraPosition.y = matrix->values[9];
+            cameraPosition.z = matrix->values[10];
+            func_004c69f0(&cameraPosition, &cameraPosition);
+            cameraPosition.x *= 1000.0f;
+            cameraPosition.y *= 1000.0f;
+            cameraPosition.z *= 1000.0f;
+            cameraDirection.x += cameraPosition.x;
+            cameraDirection.y += cameraPosition.y;
+            cameraDirection.z += cameraPosition.z;
+            func_001adc20(work->controller, &cameraDirection);
+            break;
+
+        case 5:
+            axis = D_00684260;
+            input = DAT_007e094c;
+            x = (f32)DAT_007e095e[1] * 2.0f - 128.0f;
+            y = (f32)DAT_007e095e[0] * 2.0f - 128.0f;
+            if ((input & 0x1000) != 0)
+            {
+                x = -128.0f;
+            }
+            if ((input & 0x4000) != 0)
+            {
+                x = 128.0f;
+            }
+            if ((input & 0x8000) != 0)
+            {
+                y = -128.0f;
+            }
+            if ((input & 0x2000) != 0)
+            {
+                y = 128.0f;
+            }
+            base.x = y;
+            base.y = 0.0f;
+            base.z = x;
+            camera = func_00198590();
+            frame = *(void**)((u8*)camera + 4);
+            angle = func_001a5aa0(func_004cb2f0(frame));
+            if (x < -48.0f || x > 48.0f ||
+                y < -48.0f || y > 48.0f)
+            {
+                matrixFlags = *(u32*)&rotation.values[3];
+                rotation.values[0] = 1.0f;
+                rotation.values[5] = 1.0f;
+                rotation.values[10] = 1.0f;
+                rotation.values[1] = 0.0f;
+                rotation.values[2] = 0.0f;
+                rotation.values[4] = 0.0f;
+                rotation.values[6] = 0.0f;
+                rotation.values[8] = 0.0f;
+                rotation.values[9] = 0.0f;
+                rotation.values[12] = 0.0f;
+                rotation.values[13] = 0.0f;
+                rotation.values[14] = 0.0f;
+                matrixFlags |= 0x20003;
+                *(u32*)&rotation.values[3] = matrixFlags;
+                func_004c31b0(&rotation, &axis, angle, 1);
+                direction = base;
+                func_004c69f0(&direction, &base);
+                direction.x = -direction.x;
+                direction.y = -direction.y;
+                direction.z = -direction.z;
+                func_004c6be0(&direction, &direction, &rotation);
+                distance = (x + y) * D_007CB118[0] / 2.0f;
+                func_001addf0(
+                    distance, work->controller, &direction);
+            }
+            if (x < -48.0f || x > 48.0f)
+            {
+                position = D_00684260;
+                distance = y * D_007CB118[1];
+                func_001adff0(
+                    distance, work->controller, &position);
+            }
+            if ((input & 6) != 0)
+            {
+                func_001ad940(&center, work->controller);
+                adjusted = center;
+                adjusted.y -= 10.0f;
+                func_001adc20(work->controller, &adjusted);
+            }
+            if ((input & 9) != 0)
+            {
+                func_001ad940(&center, work->controller);
+                adjusted = center;
+                adjusted.y += 10.0f;
+                func_001adc20(work->controller, &adjusted);
+            }
+            if ((input & 0x80) != 0)
+            {
+                func_001ae0d0(work->controller);
+            }
+            if ((input & 0x20) != 0)
+            {
+                func_003b7090(work->resourceId);
+                work->state = 0;
+                break;
+            }
+            if ((input & 0x40) != 0)
+            {
+                resourceNode = func_001e2850();
+                resourceNode->resource = work->model;
+                resourceNode->areaId = work->majorId;
+                resourceNode->roomId = work->minorId;
+                resourceNode->resourceId = work->resourceId;
+                resourceNode->angle = work->angle;
+                resourceNode->type = work->type;
+                resourceNode->flags = work->flags;
+                resourceNode->value = work->value;
+                resourceNode->state = work->sourceType;
+                resourceNode->sourceType = work->sourceFlags;
+                resourceNode->scale = work->scale;
+                object = func_003b5d10(work->resourceId);
+                if ((resourceNode->flags & 1) != 0)
+                {
+                    *(u32*)((u8*)object + 0x28) |= 0x80000000;
+                }
+                else
+                {
+                    *(u32*)((u8*)object + 0x28) &= 0x7fffffff;
+                }
+                *(u16*)((u8*)object + 0x1e0) = resourceNode->type;
+                *(u32*)((u8*)object + 0x1e4) = resourceNode->value;
+                matrix = (RuntimeMatrix*)func_00318b60(work->model);
+                resourceNode->matrix = *matrix;
+                func_0019c320(
+                    work->scale, *(void**)((u8*)object + 0x1f0));
+                angles.x = func_001a5b30(&resourceNode->matrix);
+                angles.y = func_001a5aa0(&resourceNode->matrix);
+                angles.z = func_001a5bc0(&resourceNode->matrix);
+                func_003b78b0(
+                    resourceNode->resourceId,
+                    (u8*)resourceNode + 0x50, &angles);
+                func_001ad890(
+                    *(void**)((u8*)object + 0x1e8), 0x80000000);
+                matrix = (RuntimeMatrix*)func_00318b60(work->model);
+                func_004c2f10(matrix);
+                work->state = 0;
+            }
+            break;
+
+        case 6:
+            return;
     }
 }
 
