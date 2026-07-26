@@ -9138,7 +9138,7 @@ u64 FUN_00368830(u64 param_1,u64 param_2,int param_3)
 }
 
 
-// FUN_003688D0 NONMATCHING
+// FUN_003688D0
 
 
 u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
@@ -9208,7 +9208,7 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
     *(short *)(iVar2 + 0x20) = (short)*(u32 *)(context + 0x1b0);
 
-    *(char *)(iVar2 + 0x24) = (char)*(u16 *)(context + 0x1b4);
+    *(char *)(iVar2 + 0x24) = (char)*(short *)(context + 0x1b4);
 
     FUN_0036f640(context);
 

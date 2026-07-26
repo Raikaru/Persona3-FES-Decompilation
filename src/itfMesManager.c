@@ -5986,10 +5986,11 @@ void FUN_003a8350(int param_1)
 {
 
   float fVar1;
-  volatile float fVar2;
   volatile float fVar3;
+  volatile float fVar2;
   int iVar2;
   int iVar3;
+  int alpha;
 
   fVar2 = (float)(int)*(short *)(param_1 + 0x1e0);
   fVar3 = (float)(int)*(short *)(param_1 + 0x1e2);
@@ -5998,11 +5999,14 @@ void FUN_003a8350(int param_1)
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  if (2.1474836e+09f <= fVar1) {
-    fVar1 = fVar1 - 2.1474836e+09f;
+  if (fVar1 < 2.1474836e+09f) {
+    alpha = (int)fVar1;
+  }
+  else {
+    alpha = (int)(fVar1 - 2.1474836e+09f) | 0x80000000;
   }
 
-  FUN_003a8710_typed(0,iVar2,iVar3,(int)fVar1 & 0xff,0x10);
+  FUN_003a8710_typed(0,iVar2,iVar3,alpha & 0xff,0x10);
 
   return;
 
