@@ -785,8 +785,6 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
 {
     int index;
     u32* values;
-    u32 value;
-    u32 base;
 
     if (param_2 == 0 || param_3 == 0)
     {
@@ -799,11 +797,9 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
     values = (u32*)param_2;
     for (index = 0; index < param_3; index++)
     {
-        value = *(u32 *)((int)param_2 + index * 4);
-        base = (u32)(param_1 + 4);
-        FUN_003c4710_u32(base,
+        FUN_003c4710_u32((u32)(param_1 + 4),
                          *(u32 *)(param_1 + 8),
-                         value);
+                         *(u32 *)((int)param_2 + index * 4));
     }
     return index;
 }

@@ -3861,7 +3861,6 @@ count_check:
 
 set_start:
   color = (u8)param_4;
-set_load:
   candidate = *(int *)(param_1 + 0x1c);
   goto set_check;
 
@@ -3880,7 +3879,7 @@ set_check:
   }
   candidate = *(int *)(param_1 + 8);
   if (cat == candidate) {
-    goto set_load;
+    goto set_start;
   }
   goto done;
 
