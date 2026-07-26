@@ -959,7 +959,6 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
   u16 uVar1;
   u8 bVar2;
   u32 base;
-  u32 offset;
 
   if ((s32)(param_2 & 0xffff) < 0 || (s32)(param_2 & 0xffff) >= 5) {
     FUN_0019d3f0((u32)D_0069aa80, 0x2e1);
@@ -969,9 +968,9 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
     if (uVar1 >= 0x150) {
       FUN_0019d3f0((u32)D_0069aa80, 0x2e8);
     }
-    base = *(volatile u32 *)&iGpffffb720;
-    offset = (u32)uVar1 * 0x3e + base + 8;
-    bVar2 = *(u8 *)(((u32)param_2 & 0xffff) + offset);
+    base = iGpffffb720;
+    bVar2 = *(u8 *)(((u32)param_2 & 0xffff) + (u32)uVar1 * 0x3e + base + 8);
+    if ((u32)uVar1 >= 0xb) {
   }
   else {
     if (uVar1 >= 0xb) {
