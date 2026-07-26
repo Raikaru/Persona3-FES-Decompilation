@@ -3543,6 +3543,74 @@ u32 FUN_003f2f70(u64 param_1,long param_2,u32 param_3)
 
 }
 
+// Retail sibling begins at 0x3f3280; comparator body reconstructed from 0x3f3280-0x3f33c8.
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_003F3280
+s32 FUN_003f3280(u32 *param_1,u32 *param_2)
+{
+  u32 entryA;
+  u32 entryB;
+  s32 fieldA;
+  s32 fieldB;
+  s32 result;
+  s32 catA;
+  s32 catB;
+
+  entryA = *(u32 *)(*param_1 + 0x14);
+  entryA = *(u32 *)(entryA + 0x1c);
+  entryB = *(u32 *)(*param_2 + 0x14);
+  entryB = *(u32 *)(entryB + 0x1c);
+  fieldB = *(u32 *)(entryB + 8);
+  fieldA = *(u32 *)(entryA + 8);
+  result = (fieldA & 0xff) - (fieldB & 0xff);
+  if (result != 0) {
+    goto ret;
+  }
+  switch ((fieldB & 0xf00) >> 8) {
+  case 0:
+    catB = *(short *)(entryB + 0x14);
+    break;
+  case 1:
+    catB = *(short *)(entryB + 0x18);
+    break;
+  case 2:
+    catB = *(short *)(entryB + 0x1a);
+    break;
+  case 4:
+    catB = 0x98967f - *(int *)(entryB + 0x10);
+    break;
+  default:
+    catB = 0;
+    break;
+  }
+  switch ((fieldA & 0xf00) >> 8) {
+  case 0:
+    catA = *(short *)(entryA + 0x14);
+    break;
+  case 1:
+    catA = *(short *)(entryA + 0x18);
+    break;
+  case 2:
+    catA = *(short *)(entryA + 0x1a);
+    break;
+  case 4:
+    catA = 0x98967f - *(int *)(entryA + 0x10);
+    break;
+  default:
+    catA = 0;
+    break;
+  }
+  result = catB - catA;
+  if (result != 0) {
+    goto ret;
+  }
+  result = *(short *)(entryB + 4) - *(short *)(entryA + 4);
+ret:
+  return result;
+}
+#pragma pop
+
 // FUN_003F33D0 NONMATCHING
 
 
