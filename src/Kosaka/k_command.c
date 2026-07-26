@@ -1344,7 +1344,7 @@ u32 FUN_001C3FE0()
 u32 FUN_001C4080()
 {
     s32 index;
-    u32 result;
+    u16 result;
     u32 valid;
     u32 predicate;
     u32 offset;

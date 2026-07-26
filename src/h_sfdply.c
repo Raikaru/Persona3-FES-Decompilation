@@ -1815,20 +1815,24 @@ void func_0010d950(s16 index)
 
     if (sSfdDecodeSlots_abs[index].state != 1)
     {
-        return;
+        goto done;
     }
     slot = &sSfdDecodeSlots_abs[index];
-    if (slot->status != 0)
+    if (slot->status == 0)
     {
-        FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
-        FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);
-        FUN_0051dd48(5, (u32)sSfdDecodeSlots_abs[index].outputHandle);
-        FUN_0051dd48(3, (u32)sSfdDecodeSlots_abs[index].queueHandle);
-        *(u32*)slot = 0;
-        func_0050B710(sSfdDecodeSlots_abs[index].output);
-        func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
+        goto final_clear;
     }
+    FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
+    FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);
+    FUN_0051dd48(5, (u32)sSfdDecodeSlots_abs[index].outputHandle);
+    FUN_0051dd48(3, (u32)sSfdDecodeSlots_abs[index].queueHandle);
     *(u32*)slot = 0;
+    func_0050B710(sSfdDecodeSlots_abs[index].output);
+    func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
+final_clear:
+    *(u32*)slot = 0;
+done:
+    ;
 }
 
 // FUN_0010DA70
