@@ -787,7 +787,7 @@ u64 FUN_003c63f0(int param_1)
 }
 #define FUN_003c63f0(...) ((u64 (*)(...))FUN_003c63f0)(__VA_ARGS__)
 #undef FUN_003c6900
-// FUN_003C6900 NONMATCHING
+// FUN_003C6900
 
 
 void FUN_003c6900(int param_1)
@@ -820,7 +820,7 @@ void FUN_003c6900(int param_1)
     if ((uVar2 & 0x400000) != 0) {
       uVar2 = uVar2 & 0xfffffffb;
       *puVar1 = uVar2;
-      uVar2 = uVar2 & 0xffbffffb;
+      uVar2 = uVar2 & 0xffbfffff;
       *puVar1 = uVar2;
       uVar2 = uVar2 | 1;
       *puVar1 = uVar2;

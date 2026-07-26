@@ -1349,26 +1349,23 @@ void* func_001a8820(void* item)
 {
     void (*render)(void);
 
-    if ((*(u8*)((u8*)item + 2) & 4) != 0)
+    if ((*(u8*)((u8*)item + 2) & 4) != 0 && *(u32*)((u8*)item + 0x18) != 0)
     {
-        if (*(u32*)((u8*)item + 0x18) != 0)
+        RwSphere* sphere = func_004912b0(item);
+        if (sphere != NULL && RwCameraFrustumTestSphere(*(RwCamera**)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            RwSphere* sphere = func_004912b0(item);
-            if (sphere != NULL && RwCameraFrustumTestSphere(*(RwCamera**)0x00960070, sphere) != rwSPHEREOUTSIDE)
+            render = *(void (**)(void))((u8*)item + 0x48);
+            if (render != NULL)
             {
-                render = *(void (**)(void))((u8*)item + 0x48);
-                if (render != NULL)
-                {
-                    render();
-                }
-                if (D_007CE204 == 1)
-                {
-                    f32 debugValue;
-                    RwSphere* sphere2;
-                    debugValue = D_007CE154;
-                    sphere2 = func_004912b0(item);
-                    primSphereLine3D((RwV3d*)sphere2, sphere2->radius, (const RwRGBA*)&debugValue, 0);
-                }
+                render();
+            }
+            if (D_007CE204 == 1)
+            {
+                f32 debugValue;
+                RwSphere* sphere2;
+                debugValue = D_007CE154;
+                sphere2 = func_004912b0(item);
+                primSphereLine3D((RwV3d*)sphere2, sphere2->radius, (const RwRGBA*)&debugValue, 0);
             }
         }
     }
