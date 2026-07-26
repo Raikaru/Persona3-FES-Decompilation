@@ -1716,9 +1716,9 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
     if (work == NULL) {
         return NULL;
     }
-    task = kwlnTaskCreate(parent, "H_CampCommuRoot", priority,
-                          (void* (*)(KwlnTask*))FUN_001355C0,
-                          (void (*)(KwlnTask*))FUN_001365b0, work);
+    task = ((KwlnTask* (*)())kwlnTaskCreate)(parent, "H_CampCommuRoot", priority,
+                                             (void* (*)(KwlnTask*))FUN_001355C0,
+                                             (void (*)(KwlnTask*))FUN_001365b0, work);
     if (task == NULL) {
         return NULL;
     }
