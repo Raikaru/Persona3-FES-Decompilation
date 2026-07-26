@@ -3805,18 +3805,18 @@ void* func_003140c0(void* param_1,u16 *param_2)
 
 
 {
-  int rawIndex;
+  s16 rawIndex;
+  u16 count;
   s64 lVar2;
   int *piVar1;
-  u16 count;
   rawIndex = (s16)param_2[2];
   piVar1 = *(int **)(param_2 + 0xc);
   if (piVar1 != (int *)0x0) {
     lVar2 = (s64)rawIndex;
     count = *(u16 *)(piVar1 + 3);
-    if (((((s64)(u32)count > lVar2) &&
+    if ((((lVar2 < (s64)(u32)count) &&
           (*(int *)(*piVar1 + rawIndex * 8) != 0)) && ((*param_2 & 1) == 0)) &&
-        (((s64)(u32)count > lVar2) && (0 <= rawIndex))) {
+        ((lVar2 < (s64)(u32)count && (0 <= rawIndex)))) {
       func_004b74c0_typed(*(f32 *)(*(int *)param_1 + 0xc));
       *(u8 *)(param_2 + 1) = 1;
     }

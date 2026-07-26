@@ -323,7 +323,6 @@ u64 FUN_003c8550(u8 *param_1)
   u32 uVar1;
   u32 lVar2;
   u32 *puVar3;
-  u32 mode;
   u8 auStack_20[32];
 
   if (param_1 == 0) {
@@ -339,18 +338,17 @@ u64 FUN_003c8550(u8 *param_1)
       } else {
         lVar2 = FUN_0017d800();
         if (lVar2 != 0) {
-          mode = puVar3[1];
-          if (mode == 1) {
+          if (puVar3[1] == 1) {
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xe8);
-          } else if (mode == 9) {
+          } else if (puVar3[1] == 9) {
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x108);
           } else {
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128);
           }
         } else {
-          FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,mode);
+          FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,puVar3[1]);
         }
-        }
+      }
       uVar1 = FUN_00112370(auStack_20);
       puVar3[2] = uVar1;
     } else {
