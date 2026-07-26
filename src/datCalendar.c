@@ -1452,7 +1452,7 @@ u32 clndGetCurrentWeekDay()
 }
 
 // FUN_0017dcf0 NONMATCHING
-u8 clndIsHolidayOrSunday()
+u32 clndIsHolidayOrSunday()
 {
     s16 daysSinceApr5;
     s16 currDayOfMonth;

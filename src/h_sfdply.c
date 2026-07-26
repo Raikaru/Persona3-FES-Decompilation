@@ -1922,10 +1922,13 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     u8* pixel;
     s32 width;
     s32 height;
+    u8 opaque;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    opaque = 0xFF;
+    asm volatile("" : "+r"(opaque));
     y = 0;
     while (y < height)
     {
@@ -1936,7 +1939,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
-            pixel[3] = 0xFF;
+            pixel[3] = opaque;
             source += 3;
             x++;
         }
@@ -2199,6 +2202,7 @@ HSfdImage* func_0010e500(void* stream)
     u32 payloadSize;
     HSfdImage* image;
 
+    stream = func_004c58a0(2, 1, stream);
     if (stream == NULL)
     {
         return NULL;
@@ -2207,21 +2211,12 @@ HSfdImage* func_0010e500(void* stream)
     func_004c5250(stream, header, sizeof(header));
     payloadSize = (u32)(header[4] | (header[5] << 8) | (header[6] << 16) |
                         (header[7] << 24));
-    if (payloadSize < sizeof(header))
-    {
-        return NULL;
-    }
-
-    buffer = RwCalloc(1, payloadSize, HSFD_STREAM_HINT);
-    if (buffer == NULL)
-    {
-        return NULL;
-    }
-
-    memcpy(buffer, header, sizeof(header));
+    buffer = D_00960178(payloadSize, HSFD_STREAM_HINT);
     func_004c5250(stream, buffer + sizeof(header), payloadSize - sizeof(header));
+    func_00521250(buffer, header, sizeof(header));
     image = func_0010e0d0(buffer);
-    RwFree(buffer);
+    D_0096017c(buffer);
+    func_004c5780(stream, 0);
     return image;
 }
 

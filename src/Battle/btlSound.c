@@ -1756,12 +1756,13 @@ u32 FUN_002defe0(int param_1)
 
   u32 uVar3;
 
-  u16 uVar4;
+  u32 uVar4;
 
   int aiStack_30 [12];
-
+  u16 idxTemp;
   
-  if (FUN_0010a500(4) == 1) {
+  lVar2 = FUN_0010a500(4);
+  if (lVar2 == 1) {
 
     return 0xffffffff;
 
@@ -1791,7 +1792,7 @@ u32 FUN_002defe0(int param_1)
 
         ) && (*(u16 *)(iVar1 + 0xa4) != 1)) {
 
-      aiStack_30[uVar4] = iVar1;
+      aiStack_30[uVar4 & 0xffff] = iVar1;
 
       uVar4 = uVar4 + 1 & 0xffff;
 
@@ -1799,7 +1800,8 @@ u32 FUN_002defe0(int param_1)
 
   }
 
-  if (uVar4 == 0) {
+  idxTemp = uVar4 & 0xffff;
+  if (idxTemp == 0) {
 
     return -1;
 

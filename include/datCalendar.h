@@ -144,7 +144,7 @@ s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5);
 u32 clndGetCurrentDay();
 s32 clndGetWeekDay(s32 daysSinceApr5);
 u32 clndGetCurrentWeekDay();
-u8 clndIsHolidayOrSunday();
+u32 clndIsHolidayOrSunday();
 u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest, u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range);

@@ -742,7 +742,6 @@ void FUN_003c5af0(u32 param_1)
   iVar2 = FUN_003c4d20(param_1,iVar4 + 4);
 
   if (iVar2 != 0) {
-
     if (*(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc) <
 
         *(int *)(*(int *)(iVar2 + 0x14) + 0xc)) {
