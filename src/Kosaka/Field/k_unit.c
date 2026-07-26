@@ -1749,6 +1749,7 @@ void func_001d0e50(s32 isDungeon)
             resourceId = func_003b6030(i, 1, unit->mdl);
             resource = (ResrcModelChar*)func_003b5d10(resourceId);
             unit->resrc = resource;
+            func_00318a90(unit->mdl, &DAT_00683780[unit->scaleIdx], 2);
             modelMatrix = (RwV3d*)func_00318b60(unit->mdl);
             *(RwMatrix*)func_00318b60(unit->mdl) = unit->matBeforeBtl;
             modelData = func_00318b70(unit->mdl);
@@ -1768,7 +1769,8 @@ void func_001d0e50(s32 isDungeon)
             light.x = func_001ad8b0(resource->collisCtlTask);
             light.y = light.x;
             light.z = light.x;
-            func_00318a90(resource->baseMdl, &light, 2);
+            scale = light;
+            func_00318a90(resource->baseMdl, &scale, 2);
             func_004cb420(modelData, func_00318b70(resource->baseMdl));
             func_00317730(resource->baseMdl);
             if (func_002ff790(unit->genusBase) == 0)

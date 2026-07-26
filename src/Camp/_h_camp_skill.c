@@ -813,6 +813,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
                                6, 1, scratch.text, 0x10, 0);
             break;
+        default:
+            break;
         }
         break;
     }
@@ -2020,7 +2022,6 @@ void* FUN_00166c70(KwlnTask* task)
     u32* personaWork;
 
     work = (CampSkillSelectorWork*)task->workData;
-    owner = task;
     switch (work->state) {
     case 0:
         work->scrollX = 320.0f;

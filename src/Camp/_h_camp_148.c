@@ -2503,7 +2503,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     pair.u = 0x4357000041a80000ULL;
     tmp70.u = pair.u;
     tmp70.f[1] -= 600.0f;
-    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, tmp70.u, pair.u, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, tmp70.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.u = 0x43830000424c0000ULL;
     tmp78.u = pair.u;
     tmp78.f[1] -= 600.0f;
