@@ -31,6 +31,8 @@ extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
 extern u64 FUN_0052efd8(u64, u64, u64 *);
+#pragma alias FUN_0052eac8_alt FUN_0052eac8
+extern u64 FUN_0052eac8_alt(u64);
 extern u32 FUN_0052f7d0(long, long, long);
 
 static const float sAtanHi[] = {
@@ -183,11 +185,11 @@ float cosf(float x)
 // FUN_0052e788 NONMATCHING
 float fabsf(float x)
 {
-    s32 bits;
-
-    bits = *(s32*)&x;
-    bits &= 0x7FFFFFFF;
-    return *(float*)&bits;
+    if (x < 0.0f)
+    {
+        return -x;
+    }
+    return x;
 }
 #pragma optimization_level 2
 
