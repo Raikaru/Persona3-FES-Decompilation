@@ -974,16 +974,16 @@ u32 scrComu00360ed0(int param_1)
                 result = 0;
                 break;
             }
-            if (bVar2 == 2) {
-                goto SelectFlag2;
-            }
-            if (bVar2 == 0) {
-                goto SelectFlag0;
-            }
-            if (bVar2 == 1) {
+            switch (bVar2) {
+            case 1:
                 goto SelectFlag1;
+            case 0:
+                goto SelectFlag0;
+            case 2:
+                goto SelectFlag2;
+            default:
+                goto SelectFlagDefault;
             }
-            goto SelectFlagDefault;
 SelectFlagDefault:
             goto CheckFlagValue;
 SelectFlag0:

@@ -831,11 +831,12 @@ u32 func_001114b0(KwlnTask* task)
 
 
 // FUN_00111500 NONMATCHING
-void func_00111500(KwlnTask* task)
+void func_00111500(param_1)
+int param_1;
 {
     int iVar1;
 
-    iVar1 = *(int *)((int)task + 0x3c);
+    iVar1 = *(int *)(param_1 + 0x3c);
     *(int *)(iVar1 + 0xc0) = 1;
     *(int *)(iVar1 + 0xbc) = 0;
 }

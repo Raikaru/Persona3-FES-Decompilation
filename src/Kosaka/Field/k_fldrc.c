@@ -1566,26 +1566,27 @@ void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
     u16 type;
-    f32 color[3];
+    u64 colorWord;
+    f32 colorTail;
 
-    *(u64*)color = DAT_00678f68_abs[0];
-    color[2] = DAT_00678f70_abs[0];
+    colorWord = DAT_00678f68_abs[0];
+    colorTail = DAT_00678f70_abs[0];
     if ((*resource & 1) == 0)
     {
         if (resource[2] != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[2] + 4), color, angle, 2);
+            FUN_004cb890_typed(*(u32*)(resource[2] + 4), (void*)&colorWord, angle, 2);
         }
         if (resource[4] != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[4] + 4), color, angle, 2);
+            FUN_004cb890_typed(*(u32*)(resource[4] + 4), (void*)&colorWord, angle, 2);
         }
     }
     for (i = 0; i < resource[5]; i++)
     {
         if (resource[i + 6] != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[i + 6] + 4), color, angle, 2);
+            FUN_004cb890_typed(*(u32*)(resource[i + 6] + 4), (void*)&colorWord, angle, 2);
         }
     }
     for (i = 0; i < resource[0x46]; i++)
@@ -1593,7 +1594,7 @@ void FUN_001b5200(u32* resource, f32 angle)
         type = (u16)resource[i * 6 + 0x47];
         if ((type == 0) || (type == 2))
         {
-            FUN_00318a50_typed(resource[i * 6 + 0x4a], angle, color, 2);
+            FUN_00318a50_typed(resource[i * 6 + 0x4a], angle, (void*)&colorWord, 2);
         }
         else if (type == 1)
         {
