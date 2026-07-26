@@ -1619,32 +1619,14 @@ void func_0010cdd0(void)
                 void* intermediate;
                 s32 inputSize;
                 s32 intermediateSize;
-                void** inputField;
-                s32* inputSizeField;
-                void** intermediateField;
-                s32* intermediateSizeField;
-                void** outputField;
-                s32* outputSizeField;
-                s32* queueHandleField;
-                s32* decodeHandleField;
-                void** auxField;
                 s32 queueHandle;
                 s32 decodeHandle;
                 s32 auxHandle;
 
-                inputField = &slot->input;
-                inputSizeField = (s32*)&slot->inputSize;
-                intermediateField = &slot->intermediate;
-                intermediateSizeField = (s32*)&slot->intermediateSize;
-                outputField = &slot->output;
-                outputSizeField = (s32*)&slot->outputSize;
-                queueHandleField = &slot->queueHandle;
-                decodeHandleField = &slot->decodeHandle;
-                auxField = &slot->aux;
-                input = *inputField;
-                inputSize = *inputSizeField;
-                intermediate = *intermediateField;
-                intermediateSize = *intermediateSizeField;
+                input = slot->input;
+                inputSize = slot->inputSize;
+                intermediate = slot->intermediate;
+                intermediateSize = slot->intermediateSize;
 
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
@@ -1653,8 +1635,8 @@ void func_0010cdd0(void)
                     allocBuf = (void*)func_0050B690(0, size[0], 0);
                     if (allocBuf == NULL) { K_Assert("h_sndcom.c", 0x1A2); }
                     func_0010cce0(allocBuf, fileData, size[0]);
-                    *outputField = allocBuf;
-                    *outputSizeField = (s32)size[0];
+                    slot->output = allocBuf;
+                    slot->outputSize = size[0];
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
 
@@ -1662,19 +1644,19 @@ void func_0010cdd0(void)
                                                 inputSize, (s32)intermediate,
                                                 intermediateSize);
                     if (queueHandle < 0) { K_Assert("h_sndcom.c", 0x1AE); }
-                    *queueHandleField = queueHandle;
+                    slot->queueHandle = queueHandle;
 
                     decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
                     if (decodeHandle < 0) { K_Assert("h_sndcom.c", 0x1B3); }
-                    *decodeHandleField = decodeHandle;
+                    slot->decodeHandle = decodeHandle;
 
-                    auxHandle = func_0051DDF0(0, -1, (s32)*outputField,
-                                              *outputSizeField);
+                    auxHandle = func_0051DDF0(0, -1, (s32)slot->output,
+                                              slot->outputSize);
                     if (auxHandle < 0) { K_Assert("h_sndcom.c", 0x1B7); }
-                    *auxField = (void*)(s32)auxHandle;
+                    slot->aux = (void*)(s32)auxHandle;
 
                     slot->completion = (void*)(s32)func_0051DDF0(
-                        5, *decodeHandleField, (s32)*auxField);
+                        5, slot->decodeHandle, (s32)slot->aux);
                     slot->status = 1;
                     slot->state = 1;
                 }
@@ -1701,38 +1683,38 @@ void func_0010cdd0(void)
                 void** inputField;
                 void** intermediateField;
                 void** outputField;
-                s32* queueHandleField;
-                s32* decodeHandleField;
-                void** auxField;
+                void* input;
+                void* intermediate;
+                void* output;
+                s32 inputSize;
+                s32 intermediateSize;
+                s32 outputSize;
+                void* resourceData;
+                void* inputBuf;
+                void* auxBuf;
+                void* outputData;
+                void* outputBuf;
+                void* sourceData;
                 s32 chunkSize;
                 s32 remaining;
                 s32 queueHandle;
                 s32 decodeHandle;
                 s32 auxHandle;
 
-                inputField = &slot->input;
-                inputSizeField = (s32*)&slot->inputSize;
-                intermediateField = &slot->intermediate;
-                intermediateSizeField = (s32*)&slot->intermediateSize;
-                outputField = &slot->output;
-                outputSizeField = (s32*)&slot->outputSize;
-                queueHandleField = &slot->queueHandle;
-                decodeHandleField = &slot->decodeHandle;
-                auxField = &slot->aux;
-                input = *inputField;
-                inputSize = *inputSizeField;
-                intermediate = *intermediateField;
-                intermediateSize = *intermediateSizeField;
-                output = *outputField;
-                outputSize = *outputSizeField;
+                input = slot->input;
+                inputSize = slot->inputSize;
+                intermediate = slot->intermediate;
+                intermediateSize = slot->intermediateSize;
+                output = slot->output;
+                outputSize = slot->outputSize;
                 resourceData = slot->resource;
 
                 copySize = inputSize;
                 inputBuf = (void*)func_0050B690(0, copySize, 0);
                 if (inputBuf == NULL) { K_Assert("h_sndcom.c", 0x1C8); }
                 func_0010cce0(inputBuf, resourceData, copySize);
-                *inputField = inputBuf;
-                *inputSizeField = copySize;
+                slot->input = inputBuf;
+                slot->inputSize = copySize;
 
                 remaining = intermediateSize;
                 auxBuf = (void*)func_0050B690(0, 0x10000, 0);
@@ -1760,40 +1742,22 @@ void func_0010cdd0(void)
                 outputBuf = (void*)func_0050B690(0, copySize, 0);
                 if (outputBuf == NULL) { K_Assert("h_sndcom.c", 0x1FB); }
                 func_0010cce0(outputBuf, sourceData, copySize);
-                *outputField = outputBuf;
+                slot->output = outputBuf;
 
-                queueHandle = func_0051DC70(3, -1, (s32)*inputField,
-                                            *inputSizeField,
-                                            (s32)*intermediateField,
-                                            *intermediateSizeField);
-                *queueHandleField = queueHandle;
+                queueHandle = func_0051DC70(3, -1, (s32)slot->input,
+                                            slot->inputSize,
+                                            (s32)slot->intermediate,
+                                            slot->intermediateSize);
+                slot->queueHandle = queueHandle;
                 decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
-                *decodeHandleField = decodeHandle;
-                auxHandle = func_0051DDF0(0, -1, (s32)*outputField,
-                                          *outputSizeField);
-                *auxField = (void*)(s32)auxHandle;
+                slot->decodeHandle = decodeHandle;
+                auxHandle = func_0051DDF0(0, -1, (s32)slot->output,
+                                          slot->outputSize);
+                slot->aux = (void*)(s32)auxHandle;
                 slot->completion = (void*)(s32)func_0051DDF0(
-                    5, *decodeHandleField, (s32)*auxField);
+                    5, slot->decodeHandle, (s32)slot->aux);
                 slot->status = 1;
                 slot->state = 1;
-                break;
-            }
-        }
-    }
-}
-
-
-// FUN_0010D6F0 NONMATCHING
-void func_0010d6f0(s32 index, s16 fileIndex)
-{
-    HSfdDecodeSlot* slot;
-
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-    {
-        return;
-    }
-
-    slot = &sSfdDecodeSlots[index];
     if (slot->state == 1)
     {
         slot->fileIndex = fileIndex;

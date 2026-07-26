@@ -2110,8 +2110,8 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     unit->sphereCenter.x = bounds->centerX;
     unit->sphereCenter.y = bounds->centerY;
     unit->sphereCenter.z = bounds->centerZ;
-    unit->unk_8c = bounds->unk_6;
-    unit->sphereRadius = bounds->radius;
+    unit->unk_8c = (f32)bounds->unk_6 * 2.0f;
+    unit->sphereRadius = (f32)bounds->radius * 2.0f;
 
     if (id == 15 || id == 7)
     {

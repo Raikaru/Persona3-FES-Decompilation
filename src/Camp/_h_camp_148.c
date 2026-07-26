@@ -220,18 +220,30 @@ void h_campDrawStatusOverview(int param_1)
     tmp[5].u = *(u64*)&pair;
     tmp[5].f[0] += 0.0f;
 
+    pair.x = 379.0f;
+    pair.y = 12.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
-                  tmp[0].u, tmp[0].u, 0, 0, 0, 10);
+                  tmp[0].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 13.0f;
+    pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 0, 2, 2,
-                  tmp[1].u, tmp[1].u, 0, 0, 0, 10);
+                  tmp[1].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 112.0f;
+    pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x88), 0, 2, 2,
-                  tmp[2].u, tmp[2].u, 0, 0, 0, 10);
+                  tmp[2].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 135.0f;
+    pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0xcc), 0, 2, 2,
-                  tmp[3].u, tmp[3].u, 0, 0, 0, 10);
+                  tmp[3].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 278.0f;
+    pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x110), 0, 2, 2,
-                  tmp[4].u, tmp[4].u, 0, 0, 0, 10);
+                  tmp[4].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 301.0f;
+    pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x154), 0, 2, 2,
-                  tmp[5].u, tmp[5].u, 0, 0, 0, 10);
+                  tmp[5].u, *(u64*)&pair, 0, 0, 0, 10);
     for (i = 0; i < 4; i++) {
         if (*(s32*)(param_1 + 0x1c) - 1 < i) {
             *(u32*)(*(u32*)(param_1 + 0xc0) + i * 0x44 + 0x2ac) = 0;
@@ -262,14 +274,22 @@ void h_campDrawStatusOverview(int param_1)
     pair.y = 415.0f;
     tmp[9].u = *(u64*)&pair;
     tmp[9].f[0] += 0.0f;
+    pair.x = 104.0f;
+    pair.y = 61.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 0, 2, 2,
-                  tmp[6].u, tmp[6].u, 0, 0, 0, 10);
+                  tmp[6].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 124.0f;
+    pair.y = 219.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 0, 2, 2,
-                  tmp[7].u, tmp[7].u, 0, 0, 0, 10);
+                  tmp[7].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 226.0f;
+    pair.y = 415.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x83c), 0, 2, 2,
-                  tmp[8].u, tmp[8].u, 0, 0, 0, 10);
+                  tmp[8].u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 439.0f;
+    pair.y = 415.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 0, 2, 2,
-                  tmp[9].u, tmp[9].u, 0, 0, 0, 10);
+                  tmp[9].u, *(u64*)&pair, 0, 0, 0, 10);
 }
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
