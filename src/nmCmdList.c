@@ -1991,22 +1991,16 @@ u32 FUN_003c77a0(void)
   u8 *lVar2;
 
   int *piVar3;
-  u32 message;
-  u32 source;
 
   
 
   lVar2 = FUN_003c7d50_direct();
 
-  message = (u32)&gp0xffffaa08;
-  source = (u32)DAT_006a3e18;
-  FUN_005225a8(message,source,0x158);
+  FUN_005225a8((u32)&gp0xffffaa08,(u32)DAT_006a3e18,0x158);
 
-  message = (u32)DAT_006a3e30;
-  FUN_005225a8(message);
+  FUN_005225a8((u32)DAT_006a3e30);
 
-  message = (u32)DAT_006a3e30;
-  FUN_001052b0(message);
+  FUN_001052b0((u32)DAT_006a3e30);
 
   if (lVar2 == 0) {
 

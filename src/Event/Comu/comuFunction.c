@@ -58,9 +58,9 @@ extern u32 FUN_0016f190_comu(int param_1);
 extern u32 DAT_0095b280;
 extern u16* DAT_0095b2a0;
 #pragma alias DAT_0095b2a0_abs DAT_0095b2a0
-extern u8 DAT_0095b2a0_abs[];
+extern u32 DAT_0095b2a0_abs[];
 #pragma alias DAT_0095b2a8_abs DAT_0095b2a8
-extern u8 DAT_0095b2a8_abs[];
+extern u32 DAT_0095b2a8_abs[];
 extern u32 DAT_0095b2a8;
 extern u32 DAT_0095b4f0;
 extern u32 DAT_0095b568;

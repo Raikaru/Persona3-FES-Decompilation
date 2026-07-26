@@ -488,13 +488,13 @@ long FUN_0052eda0(void)
   if (-1 < lVar2) {
     uVar3 = FUN_00531230_u64(uVar1,0x3df0000000000000);
     uVar4 = FUN_005318f8_u32(uVar3);
-    lVar5 = uVar4 << 0x20;
+    lVar5 = (long)(u64)uVar4 << 0x20;
     if (lVar5 < 0) {
       uVar3 = FUN_0052eac8((uVar4 & 0xffffffff) << 0x1f);
       uVar3 = FUN_00531170_u64(uVar3,uVar3);
     }
     else {
-      uVar3 = FUN_0052eac8(lVar5);
+      uVar3 = FUN_0052eac8_alt(lVar5);
     }
     uVar1 = FUN_005311c8_u64(uVar1,uVar3);
     lVar2 = FUN_005316d0_u64(uVar1,0);
