@@ -1970,8 +1970,6 @@ u32 FUN_00361dd0(int param_1,u32 param_2,u16 param_3,u32 param_4)
     case 0x30:
       *(u8 *)((int)piVar3 + 0x22) = 0xff;
       break;
-    default:
-      break;
     }
     FUN_00361b60((int *)lVar1,param_2);
   }

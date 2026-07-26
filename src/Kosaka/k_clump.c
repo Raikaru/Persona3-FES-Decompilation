@@ -594,11 +594,13 @@ void* func_001a70a0(void* object, void* data)
     {
         goto state2;
     }
-    if (state == 1)
+    switch (state)
     {
+    case 1:
         goto normal;
+    default:
+        goto default_state;
     }
-    goto default_state;
 state2:
     func_0048a3f0(object);
     goto normal;

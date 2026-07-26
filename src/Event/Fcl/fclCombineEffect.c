@@ -34,7 +34,7 @@ extern void FUN_0034fe30_fcl(s32, f32, f32, f32);
 #pragma alias RwMatrixRotate_fcl RwMatrixRotate
 extern void *RwMatrixRotate_fcl(void *, const void *, f32, s32);
 #pragma alias FUN_004bdde0_fcl FUN_004bdde0
-extern void FUN_004bdde0_fcl(f32, void *, const void *, s32);
+extern void FUN_004bdde0_fcl(f32, s32, const void *, s32);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
