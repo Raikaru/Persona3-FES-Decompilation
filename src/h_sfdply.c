@@ -65,6 +65,7 @@ extern void func_004aa410(RwCamera* camera);
 extern void* func_004a5470(void);
 extern void func_004a5dd0(void* image, const s8* c0, const s8* c1,
                           const s8* c2, const s8* c3);
+extern void func_004cb270(void* value);
 extern void* func_004ac570(void);
 extern void func_004ac5f0(void* image);
 extern void func_004ab1b0(void* image);
