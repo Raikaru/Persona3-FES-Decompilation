@@ -164,10 +164,13 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     if (enemyId == 0x126)
         p[1] |= BSA_FLAG_BOSS;
 
-    func_0017b1e0(enemyId);
+    /* Retail 0x010c: re-fetch the unit calculation pointer for this call. */
+    func_0017b1e0(
+        *(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2));
     func_003b0e70(1);
     func_003b0e90(2);
-    image = func_003b0970(DAT_007ce4e8 + enemyId * 0x3e,
+    image = func_003b0970(
+        DAT_007ce4e8 + *(u16*)(p + 3) * 0x3e,
                           2, 6, 0, 0);
     func_003b0e90(1);
     func_003b0e70(2);
@@ -176,15 +179,20 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_003b2c60(image, 0.0f);
     p[4] = image;
 
-    flags = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 0x1e);
-    if ((flags & 2) != 0) p[1] |= BSA_FLAG_TOP_LABEL;
-    if ((flags & 0x40) != 0) p[1] |= BSA_FLAG_RESOURCE;
-    if ((flags & 8) != 0) p[1] |= BSA_FLAG_STATUS;
-    if ((flags & 0x10) != 0) p[1] |= BSA_FLAG_PERSONA;
-    if ((flags & 0x20) != 0) p[1] |= BSA_FLAG_AILMENT;
-    p[0x1310] = DAT_007ce410[enemyId * 0x3e + 3];
-    p[0x1394] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 4);
-    p[0x1498] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 6);
+    /* Retail 0x0134-0x031c: re-read the stored enemy id for each table access. */
+    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 2) != 0)
+        p[1] |= BSA_FLAG_TOP_LABEL;
+    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 0x40) != 0)
+        p[1] |= BSA_FLAG_RESOURCE;
+    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 8) != 0)
+        p[1] |= BSA_FLAG_STATUS;
+    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 0x10) != 0)
+        p[1] |= BSA_FLAG_PERSONA;
+    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 0x20) != 0)
+        p[1] |= BSA_FLAG_AILMENT;
+    p[0x1310] = DAT_007ce410[*(u16*)(p + 3) * 0x3e + 3];
+    p[0x1394] = *(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 4);
+    p[0x1498] = *(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 6);
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0: slotId = 0; break;
@@ -198,14 +206,33 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         case 8: slotId = 9; break;
         default: slotId = 0; K_ASSERT(0, 0xd9); break;
         }
-        p[0x159c + i] = (u32)(s32)bsaSkillCategory(
-            func_00306e80(calc, slotId));
+        /* Retail 0x03dc-0x0478: reload calc flags and classify high-bit masks. */
+        flags = func_00306e80(
+            *(u32*)((u8*)unit + 0xa2c), slotId);
+        if ((flags & 0x100000) != 0)
+            p[0x159c + i] = 1;
+        else if ((flags & 0x200000) != 0)
+            p[0x159c + i] = 4;
+        else if ((flags & 0x400000) != 0)
+            p[0x159c + i] = 3;
+        else if ((flags & 0x800000) != 0)
+            p[0x159c + i] = 0;
+        else if ((flags & 0x1000000) != 0)
+            p[0x159c + i] = 2;
+        else
+            p[0x159c + i] = 5;
     }
-    p[0x17e8] = (u32)(s32)func_003082f0(calc, 0);
-    slots = func_00308bb0(calc);
+    /* Retail 0x0498-0x04b8: reload calc for the result and slot list. */
+    p[0x17e8] = (u32)(s32)func_003082f0(
+        *(u32*)((u8*)unit + 0xa2c), 0);
+    slots = func_00308bb0(*(u32*)((u8*)unit + 0xa2c));
+    /* Retail 0x04c0-0x04f4: keep an index separate from the nonzero count. */
     count = 0;
-    while (count < 8 && slots[count] != 0)
+    for (i = 0; i < 8; i++) {
+        if (slots[i] == 0)
+            break;
         count++;
+    }
     p[0xd] = count;
 
     p[0x10] = func_0021cca0(table2, 0x1f);
