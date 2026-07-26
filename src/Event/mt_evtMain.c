@@ -2666,20 +2666,20 @@ void FUN_003625e0(void)
     if (DAT_007e095f < 0x3c) {
 
       *(float *)(iVar2 + 4) = fStack_10 * 13.0f + *(float *)(iVar2 + 4) + 0.0f;
-      *(float *)(iVar2 + 8) = fStack_c * 13.0f + *(float *)(iVar2 + 8) + 0.0f;
-      *(float *)(iVar2 + 0xc) = fStack_8 * 13.0f + *(float *)(iVar2 + 0xc) + 0.0f;
 
-      *(float *)(iVar2 + 0xc) = fStack_8 * 13.0 + *(float *)(iVar2 + 0xc) + 0.0;
+      *(float *)(iVar2 + 8) = fStack_c * 13.0f + *(float *)(iVar2 + 8) + 0.0f;
+
+      *(float *)(iVar2 + 0xc) = fStack_8 * 13.0f + *(float *)(iVar2 + 0xc) + 0.0f;
 
     }
 
     else if (0xbb < DAT_007e095f) {
 
       *(float *)(iVar2 + 4) = (*(float *)(iVar2 + 4) + 0.0f) - fStack_10 * 13.0f;
-      *(float *)(iVar2 + 8) = (*(float *)(iVar2 + 8) + 0.0f) - fStack_c * 13.0f;
-      *(float *)(iVar2 + 0xc) = (*(float *)(iVar2 + 0xc) + 0.0f) - fStack_8 * 13.0f;
 
-      *(float *)(iVar2 + 0xc) = (*(float *)(iVar2 + 0xc) + 0.0) - fStack_8 * 13.0;
+      *(float *)(iVar2 + 8) = (*(float *)(iVar2 + 8) + 0.0f) - fStack_c * 13.0f;
+
+      *(float *)(iVar2 + 0xc) = (*(float *)(iVar2 + 0xc) + 0.0f) - fStack_8 * 13.0f;
 
     }
 
@@ -2896,40 +2896,40 @@ void FUN_003628f0(void)
       if (DAT_007e095f < 0x3c) {
 
         *(float *)(iVar7 + 4) = fStack_10 * 10.0f + *(float *)(iVar7 + 4) + 0.0f;
-        *(float *)(iVar7 + 8) = fStack_c * 10.0f + *(float *)(iVar7 + 8) + 0.0f;
-        *(float *)(iVar7 + 0xc) = fStack_8 * 10.0f + *(float *)(iVar7 + 0xc) + 0.0f;
 
-        *(float *)(iVar7 + 0xc) = fStack_8 * 10.0 + *(float *)(iVar7 + 0xc) + 0.0;
+        *(float *)(iVar7 + 8) = fStack_c * 10.0f + *(float *)(iVar7 + 8) + 0.0f;
+
+        *(float *)(iVar7 + 0xc) = fStack_8 * 10.0f + *(float *)(iVar7 + 0xc) + 0.0f;
 
       }
 
       else if (0xbb < DAT_007e095f) {
 
         *(float *)(iVar7 + 4) = (*(float *)(iVar7 + 4) + 0.0f) - fStack_10 * 10.0f;
-        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0f) - fStack_c * 10.0f;
-        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0f) - fStack_8 * 10.0f;
 
-        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0) - fStack_8 * 10.0;
+        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0f) - fStack_c * 10.0f;
+
+        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0f) - fStack_8 * 10.0f;
 
       }
 
       if (DAT_007e095e < 0x3c) {
 
         *(float *)(iVar7 + 4) = fStack_40 * 10.0f + *(float *)(iVar7 + 4) + 0.0f;
-        *(float *)(iVar7 + 8) = fStack_3c * 10.0f + *(float *)(iVar7 + 8) + 0.0f;
-        *(float *)(iVar7 + 0xc) = fStack_38 * 10.0f + *(float *)(iVar7 + 0xc) + 0.0f;
 
-        *(float *)(iVar7 + 0xc) = fStack_38 * 10.0 + *(float *)(iVar7 + 0xc) + 0.0;
+        *(float *)(iVar7 + 8) = fStack_3c * 10.0f + *(float *)(iVar7 + 8) + 0.0f;
+
+        *(float *)(iVar7 + 0xc) = fStack_38 * 10.0f + *(float *)(iVar7 + 0xc) + 0.0f;
 
       }
 
       else if (0xbb < DAT_007e095e) {
 
         *(float *)(iVar7 + 4) = (*(float *)(iVar7 + 4) + 0.0f) - fStack_40 * 10.0f;
-        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0f) - fStack_3c * 10.0f;
-        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0f) - fStack_38 * 10.0f;
 
-        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0) - fStack_38 * 10.0;
+        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0f) - fStack_3c * 10.0f;
+
+        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0f) - fStack_38 * 10.0f;
 
       }
 

@@ -757,7 +757,7 @@ u32 scrComu00360110(void)
     int slPtr;
     int data;
     int idx;
-    int limit;
+    u32 predicate;
 
     slPtr = datGetActiveSocialLinkPtr();
     d4 = sDat007ce5d4;
@@ -765,7 +765,6 @@ u32 scrComu00360110(void)
     handle = scrGetMesHandleIdx();
     K_ASSERT(handle >= 0, 0x25e);
     bVar1 = *(u8*)(d4 + slPtr + 0x480);
-    limit = bVar1 + 2;
     i = 0;
     goto tail;
 
@@ -780,7 +779,8 @@ loop:
     i++;
 
 tail:
-    if (i < limit) {
+    predicate = i < bVar1 + 2;
+    if (predicate == 1) {
         goto loop;
     }
     scrSetIntReturnVal();

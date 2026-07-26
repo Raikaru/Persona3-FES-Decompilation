@@ -51001,6 +51001,9 @@ u32 FUN_0034e690(int param_1)
   int iVar3;
 
   u32 *puVar4;
+  u32 *destination;
+
+  u8 *source;
 
   u32 uVar5;
 
@@ -51044,7 +51047,9 @@ u32 FUN_0034e690(int param_1)
 
   puVar4[0x16] = 0;
 
-  FUN_00521250(puVar4 + 3,iVar3 + 0xc,0x48);
+  destination = puVar4 + 3;
+  source = (u8 *)(iVar3 + 0xc);
+  FUN_00521250(destination,source,0x48);
 
   FUN_0034e820(uVar2,*(volatile u16 *)*(int *)(iVar3 + 0x5c),iVar1);
 

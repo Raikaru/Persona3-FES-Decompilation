@@ -118,6 +118,7 @@ extern void FUN_00100ec0_pm(u32 param_1);
 u64 FUN_00397950(void)
 {
   u16 uVar1;
+  u16 status;
   int *piVar2;
   int iVar3;
   s32 lVar4;
@@ -254,7 +255,8 @@ u64 FUN_00397950(void)
     case 6:
       uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
       *(u16 *)(piVar2 + 6) = uVar1;
-      if (*(u16 *)(piVar2 + 6) > 0) {
+      status = *(u16 *)(piVar2 + 6);
+      if (status > 0) {
         FUN_00395170();
       }
       *piVar2 = 7;
