@@ -1783,16 +1783,36 @@ void FUN_00141660(CampEquipmentPanelWork* work)
   volatile u64 spriteTopLeft3;
   volatile u64 spriteTopLeft4;
   volatile u64 spriteTopLeft5;
+  volatile u64 pair0;
+  volatile u64 pair1;
+  volatile u64 pair2;
+  volatile u64 pair3;
+  volatile u64 pair4;
+  volatile u64 pair5;
+  volatile u64 pair6;
+  volatile u64 pair7;
+  volatile u64 pair8;
+  volatile u64 pairEnd;
+  pair0 = 0x4140000042b40000;
+  pairEnd = 0x4140000042200000;
+  pair1 = 0x41d8000043868000;
+  pair2 = 0x41d8000043b80000;
+  pair3 = 0x41d8000043c38000;
+  pair4 = 0x41d8000044058000;
+  pair5 = 0x41d80000440b4000;
+  pair6 = 0x4274000043310000;
+  pair7 = 0x435b000043450000;
+  pair8 = 0x4286000043fe0000;
   
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, 0x4140000042b40000, 0x4140000042200000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d8000043868000, 0x41d80000435b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, 0x41d8000043b80000, 0x41d80000439f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, 0x41d8000043c38000, 0x41d8000043aa8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, 0x41d8000044058000, 0x41d8000043f20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, 0x41d80000440b4000, 0x41d8000043fd8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, 0x4274000043310000, 0x4274000043630000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, 0x435b000043450000, 0x435b000043770000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, 0x4286000043fe0000, 0x42860000440b8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, pair0, pairEnd, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1, 0x41d80000435b0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair2, 0x41d80000439f0000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair3, 0x41d8000043aa8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair4, 0x41d8000043f20000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair5, 0x41d8000043fd8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, pair6, 0x4274000043630000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, pair7, 0x435b000043770000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, pair8, 0x42860000440b8000, 0, 0, 0, 0);
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
       slotX = (float)(row * 0x55) + 62.0f;

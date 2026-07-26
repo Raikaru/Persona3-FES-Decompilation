@@ -454,7 +454,7 @@ void FUN_003296a0(u32 *param_1,u8 (*param_2) [16]);
 void FUN_00329740(u32 *param_1);
 void FUN_003297a0(u32 *param_1);
 void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16]);
-void FUN_00329890(u32 param_1);
+void FUN_00329890(float param_1);
 void FUN_003299b0(void);
 u32 FUN_00329a60(void);
 float FUN_00329ba0(float param_1);
@@ -13560,90 +13560,56 @@ void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
 // FUN_00329890 NONMATCHING
 
 
-void FUN_00329890(u32 param_1)
-
-
-
+void FUN_00329890(float param_1)
 {
-
-  __int128 auVar1;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
   __int128 extraout_vf10;
+  Vec128 input;
+  u32 qxBits;
+  u32 qyBits;
+  u32 qzBits;
+  float s;
+  float c;
+  float x;
+  float y;
+  float z;
+  float k;
+  float xy;
+  float xz;
+  float yz;
+  float m00;
+  float m01;
+  float m02;
+  float m10;
+  float m11;
+  float m12;
+  float m20;
+  float m21;
+  float m22;
+  volatile float vuMatrixSum;
 
-  u32 uStack_50;
-
-  u32 uStack_4c;
-
-  u32 uStack_48;
-
-  
-
-  fVar4 = (float)FUN_0052e6d8();
-
-  fVar5 = (float)FUN_0052e878(param_1);
-
-  auVar1 = _sqc2(extraout_vf10);
-
-  uStack_50 = auVar1._0_4_;
-
-  uStack_4c = auVar1._4_4_;
-
-  fVar8 = 1.0f - fVar4;
-
-  uStack_48 = auVar1._8_4_;
-
-  fVar7 = uStack_50 * uStack_4c * fVar8;
-
-  fVar6 = uStack_50 * uStack_48 * fVar8;
-
-  fVar8 = uStack_4c * uStack_48 * fVar8;
-
-  auVar1._4_4_ = uStack_48 * fVar5 + fVar7;
-
-  auVar1._0_4_ = (1.0f - uStack_50 * uStack_50) * fVar4 + uStack_50 * uStack_50 + 0.0f;
-
-  auVar1._8_4_ = fVar6 - uStack_4c * fVar5;
-
-  auVar1._12_4_ = 0;
-
-  _lqc2(auVar1);
-
-  auVar2._4_4_ = (1.0f - uStack_4c * uStack_4c) * fVar4 + uStack_4c * uStack_4c + 0.0f;
-
-  auVar2._0_4_ = fVar7 - uStack_48 * fVar5;
-
-  auVar2._8_4_ = uStack_50 * fVar5 + fVar8;
-
-  auVar2._12_4_ = 0;
-
-  _lqc2(auVar2);
-
-  auVar3._4_4_ = fVar8 - uStack_50 * fVar5;
-
-  auVar3._0_4_ = uStack_4c * fVar5 + fVar6;
-
-  auVar3._8_4_ = (1.0f - uStack_48 * uStack_48) * fVar4 + uStack_48 * uStack_48 + 0.0f;
-
-  auVar3._12_4_ = 0;
-
-  _lqc2(auVar3);
-
-  return;
-
+  s = FUN_0052e6d8_f32(param_1);
+  c = FUN_0052e878_f32(param_1);
+  input = _sqc2(extraout_vf10);
+  qxBits = input._0_4_;
+  qyBits = input._4_4_;
+  qzBits = input._8_4_;
+  x = (float)qxBits;
+  y = (float)qyBits;
+  z = (float)qzBits;
+  k = 1.0f - s;
+  xy = x * y * k;
+  xz = x * z * k;
+  yz = y * z * k;
+  m00 = (1.0f - x * x) * s + x * x;
+  m01 = z * c + xy;
+  m02 = xz - y * c;
+  m10 = xy - z * c;
+  m11 = (1.0f - y * y) * s + y * y;
+  m12 = x * c + yz;
+  m20 = y * c + xz;
+  m21 = yz - x * c;
+  m22 = (1.0f - z * z) * s + z * z;
+  vuMatrixSum = m00 + m01 + m02 + m10 + m11 + m12 + m20 + m21 + m22;
 }
 
 

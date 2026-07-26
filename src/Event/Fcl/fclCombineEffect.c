@@ -2511,9 +2511,7 @@ done:
 
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
-// FUN_00419C10 NONMATCHING
+// FUN_00419C10
 u32 FUN_00419c10(int param_1,int *param_2)
 {
   int *piVar1;
@@ -2560,7 +2558,6 @@ u32 FUN_00419c10(int param_1,int *param_2)
   }
   return 1;
 }
-#pragma pop
 
 #pragma optimization_level 3
 // FUN_00419F20 NONMATCHING
