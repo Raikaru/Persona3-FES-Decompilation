@@ -1696,20 +1696,12 @@ void func_0010cdd0(void)
                 s32 decodeHandle;
                 s32 auxHandle;
                 u32* intermediateSizePtr;
-                void** inputPtr;
-                u32* inputSizePtr;
-                void** intermediatePtr;
-                u32* outputSizePtr;
 
                 input = slot->input;
                 inputSize = slot->inputSize;
                 intermediate = slot->intermediate;
                 intermediateSize = slot->intermediateSize;
                 intermediateSizePtr = &slot->intermediateSize;
-                inputPtr = &slot->input;
-                inputSizePtr = &slot->inputSize;
-                intermediatePtr = &slot->intermediate;
-                outputSizePtr = &slot->outputSize;
                 output = slot->output;
                 outputSize = slot->outputSize;
                 resourceData = slot->resource;
@@ -1749,14 +1741,14 @@ void func_0010cdd0(void)
                 func_0010cce0(outputBuf, sourceData, copySize);
                 slot->output = outputBuf;
 
-                queueHandle = func_0051DC70(3, -1, (s32)*inputPtr,
-                                            *inputSizePtr,
-                                            (s32)*intermediatePtr,
+                queueHandle = func_0051DC70(3, -1, (s32)slot->input,
+                                            slot->inputSize,
+                                            (s32)slot->intermediate,
                                             *intermediateSizePtr);
                 slot->queueHandle = queueHandle;
                 decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
                 auxHandle = func_0051DDF0(0, -1, (s32)slot->output,
-                                          *outputSizePtr);
+                                          slot->outputSize);
                 slot->aux = (void*)(s32)auxHandle;
                 slot->completion = (void*)(s32)func_0051DDF0(
                     5, slot->decodeHandle, (s32)slot->aux);

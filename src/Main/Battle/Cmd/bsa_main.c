@@ -643,14 +643,7 @@ void bsaMain00210d90(BsaWork* work)
         func_0021d950(p + 0x17ec, drawColor);
 
         for (i = 0; i < 8; i++) {
-            switch (i / 4) {
-            case 0:
-                baseX = 0.0f;
-                break;
-            default:
-                baseX = 270.0f;
-                break;
-            }
+            baseX = (f32)(i / 4) * 270.0f;
             rowY = (f32)(i & 3) * 30.0f;
             image = func_0021cca0(table2, 0x23);
             groupX = baseX + 46.0f;
