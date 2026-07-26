@@ -3047,7 +3047,7 @@ void func_002f5d80(u64 param_1)
             if (*(u16 *)(DAT_007ce3ec + 0xb58) < *(u16 *)(DAT_007ce3ec + 0xb56)) {
               fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0f) /
                       (float)*(u16 *)(DAT_007ce3ec + 0xb56);
-              if (fVar5 < 2.1474836e+09) {
+              if (fVar5 < 2.1474836e+09f) {
                 cVar7 = (char)(int)fVar5;
               }
               else {
