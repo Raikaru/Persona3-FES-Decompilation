@@ -812,12 +812,7 @@ void func_001a7710(u32* state)
 
     if (state != NULL)
     {
-        goto work;
-    }
-done:
-    return;
-work:
-    work = (KClumpFreeState*)(void*)state;
+        work = (KClumpFreeState*)(void*)state;
 
     while (work->list8 != 0)
     {
@@ -892,6 +887,7 @@ work:
     }
 
     (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
+    }
 }
 
 // FUN_001a7910 NONMATCHING

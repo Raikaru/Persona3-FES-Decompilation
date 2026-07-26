@@ -258,9 +258,10 @@ void func_001b9140(u16 majorId, u16 minorId)
     RwV3d cameraPosition;
     RwV3d delta;
     RwMatrix* cameraMatrix;
+    u32 rootReady;
 
     scale = 0.0f;
-    if ((void*)FIELD_U32(0x008717e8) != NULL)
+    if ((rootReady = FIELD_U32(0x008717e8) != 0) == 1)
     {
         if ((void*)FIELD_U32(0x008717f4) != NULL)
         {

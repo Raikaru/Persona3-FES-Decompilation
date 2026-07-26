@@ -9158,8 +9158,8 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
   
 
-  context = iVar3;
   iVar3 = (int)param_3;
+  context = iVar3;
 
 
   if (*(int *)(iVar3 + 0x164) == 0) {

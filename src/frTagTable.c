@@ -606,11 +606,11 @@ u64 FUN_003aed10(u64 param_1,int param_2)
 {
   int offset;
   int base;
+  int key;
   u8 low;
   u8 high;
   short sVar2;
   u32 uVar3;
-  int key;
   u8 *pcVar4;
 
   offset = *(volatile int *)((int)param_2 + 0x18);
