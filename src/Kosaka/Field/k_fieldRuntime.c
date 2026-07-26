@@ -1880,8 +1880,14 @@ s32 func_001e4bc0(RuntimeTask* task)
                     work->sourceType;
                 *(u32*)func_001a41b0(work->windowTask, 6) =
                     (u32)(s32)work->scale;
-                *(u32*)func_001a41b0(work->windowTask, 3) =
-                    (work->flags & 1) != 0;
+                if ((work->flags & 1) != 0)
+                {
+                    *(u32*)func_001a41b0(work->windowTask, 3) = 1;
+                }
+                else
+                {
+                    *(u32*)func_001a41b0(work->windowTask, 3) = 0;
+                }
                 func_001a4380(work->windowTask, 1);
                 func_001a4380(work->windowTask, 2);
                 func_001a4380(work->windowTask, 0);
