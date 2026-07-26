@@ -21,6 +21,8 @@ extern u32 mdlAnimSet_u32(u32 mdl, u32 slotIdx, s16 id, u32 blendFrameCount,
 extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 mode);
 #pragma alias FUN_004cb750_typed FUN_004cb750
 extern void FUN_004cb750_typed(u32 frame,void *axis,u32 mode);
+extern f32 func_0020c500(const f32 *value,f32 scale);
+extern void func_0020c320(s32 unused,const f32 *source,f32 scale,void *viewport);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -1253,6 +1255,7 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   u32 uVar5;
 
+  f32 fVar18;
   u8 auStack_80 [72];
 
   float fStack_38;
@@ -1333,8 +1336,8 @@ u8 FUN_00418510(int param_1,int *param_2)
   else if (cVar1 == '\x06') {
     fStack_38 = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
     fStack_34 = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
-    uVar5 = func_0020c500((float)(*(int *)(iVar3 + 0x14) / 0xffff),*(u32 *)(iVar2 + 8));
-    func_0020c320(uVar5,*(u32 *)(iVar2 + 8),&fStack_38,&fStack_10);
+    fVar18 = func_0020c500((const f32 *)(iVar2 + 8),fStack_8);
+    func_0020c320(iVar2 + 8,&fStack_38,fVar18,&fStack_10);
     sflRes0020d650(*(u32 *)(iVar2 + 8),&fStack_10);
   }
   else if (cVar1 == '\x03') {
@@ -1389,31 +1392,7 @@ u32 FUN_00418880(int param_1,int *param_2)
 
   float fVar12;
 
-  float fStack_a0;
-
-  float fStack_9c;
-
-  float fStack_98;
-
-  u32 uStack_94;
-
-  float fStack_90;
-
-  float fStack_8c;
-
-  float fStack_88;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  u32 uStack_68;
+  RwMatrix matrix;
 
   u8 auStack_60 [64];
 
@@ -1477,20 +1456,21 @@ u32 FUN_00418880(int param_1,int *param_2)
     fVar9 = fVar12 * fVar7;
     fVar6 = fVar10 * fVar7;
     fVar7 = fVar11 * fVar7;
-    fStack_a0 = 1.0f - (fVar10 * fVar6 + fVar11 * fVar7);
-    fStack_9c = fVar12 * fVar6 + fVar7 * fVar8;
-    fStack_98 = fVar11 * fVar9 - fVar6 * fVar8;
-    fStack_90 = fVar12 * fVar6 - fVar7 * fVar8;
-    fStack_8c = 1.0f - (fVar11 * fVar7 + fVar12 * fVar9);
-    fStack_88 = fVar10 * fVar7 + fVar9 * fVar8;
-    fStack_80 = fVar11 * fVar9 + fVar6 * fVar8;
-    fStack_7c = fVar10 * fVar7 - fVar9 * fVar8;
-    fStack_78 = 1.0f - (fVar12 * fVar9 + fVar10 * fVar6);
-    uStack_70 = 0;
-    uStack_6c = 0;
-    uStack_68 = 0;
-    uStack_94 = 3;
-    FUN_004c3760(&fStack_a0,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
+    matrix.right.x = 1.0f - (fVar10 * fVar6 + fVar11 * fVar7);
+    matrix.right.y = fVar12 * fVar6 + fVar7 * fVar8;
+    matrix.right.z = fVar11 * fVar9 - fVar6 * fVar8;
+    matrix.up.x = fVar12 * fVar6 - fVar7 * fVar8;
+    matrix.up.y = 1.0f - (fVar11 * fVar7 + fVar12 * fVar9);
+    matrix.up.z = fVar10 * fVar7 + fVar9 * fVar8;
+    matrix.at.x = fVar11 * fVar9 + fVar6 * fVar8;
+    matrix.at.y = fVar10 * fVar7 - fVar9 * fVar8;
+    matrix.at.z = 1.0f - (fVar12 * fVar9 + fVar10 * fVar6);
+    matrix.pos.x = 0.0f;
+    matrix.pos.y = 0.0f;
+    matrix.pos.z = 0.0f;
+    matrix.flags = 3;
+    FUN_004c3760(&matrix,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
+    FUN_004bdcb0((void *)(iVar5 + 0x10),&matrix);
   }
   else if (cVar1 == '\x03') {
     mdl00318a70(*(u32 *)(iVar2 + 8),auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
@@ -1544,15 +1524,12 @@ u8 FUN_00418c70(int param_1,int *param_2)
   float fVar9;
   u32 uVar10;
   float fVar11;
+  f32 fVar12;
   u32 auStack_60 [12];
   float fStack_30;
   float fStack_2c;
   float fStack_28;
-  float fStack_18;
-  float fStack_14;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  float afStack_a8 [2];
   float afStack_b0 [3];
 
   iVar4 = param_2[1];
@@ -1611,10 +1588,11 @@ u8 FUN_00418c70(int param_1,int *param_2)
     }
     break;
   case '\x06':
-    fStack_18 = (float)(*(int *)(iVar1 + 0xc) / 0xffff);
-    fStack_14 = (float)(*(int *)(iVar1 + 0x10) / 0xffff);
-    uVar10 = func_0020c500(*(u32 *)(iVar4 + 8));
-    func_0020c320(uVar10,*(u32 *)(iVar4 + 8),&fStack_18,afStack_b0);
+    afStack_a8[0] = (float)(*(int *)(iVar1 + 0xc) / 0xffff);
+    afStack_a8[1] = (float)(*(int *)(iVar1 + 0x10) / 0xffff);
+    fVar12 = (float)(*(int *)(iVar1 + 0x14) / 0xffff);
+    fVar12 = func_0020c500((const f32 *)(iVar4 + 8),fVar12);
+    func_0020c320(iVar4 + 8,afStack_a8,fVar12,afStack_b0);
     sflRes0020d650(*(u32 *)(iVar4 + 8),afStack_b0);
     break;
   }

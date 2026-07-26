@@ -3270,6 +3270,7 @@ void FUN_0022C2D0(void)
     u32 table0;
     void* resourceA;
     f32 weight;
+    f32 alpha;
     f32 rect[4];
     u8 color[4];
 
@@ -3288,33 +3289,47 @@ void FUN_0022C2D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    weight = 255.0f * weight;
-    color[3] = (u8)(u32)weight;
+    alpha = 255.0f * weight;
+    if (alpha < 2147483648.0f) {
+        color[3] = (u8)((s32)alpha & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     FUN_0021d950(work + 0x6a00, color);
-
+ 
     rect[0] = 57.0f + (f32)*(s32*)((u8*)resourceA + 0xc);
     rect[1] = (f32)0x13d;
     rect[2] = 133.0f;
     rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
     FUN_0021d8e0(work + 0x6b00, rect);
-
+ 
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)weight;
+    alpha = 255.0f * weight;
+    if (alpha < 2147483648.0f) {
+        color[3] = (u8)((s32)alpha & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     FUN_0021d950(work + 0x6b00, color);
-
+ 
     resourceA = (void*)FUN_0021cca0(table0, 0x43);
     rect[0] = 400.0f;
     rect[1] = (f32)0x13d;
     rect[2] = (f32)*(s32*)((u8*)resourceA + 0xc);
     rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
     FUN_0021d8e0(work + 0x6c00, rect);
-
+ 
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)weight;
+    alpha = 255.0f * weight;
+    if (alpha < 2147483648.0f) {
+        color[3] = (u8)((s32)alpha & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     FUN_0021d950(work + 0x6c00, color);
 }
 
@@ -3874,7 +3889,7 @@ void FUN_0022c8a0(u32* object_param)
             rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
             FUN_0021d8e0(object + 0x530, rect);
         }
-
+ 
         s0 = 0;
         if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
             if (*(s32*)(object + 0x528) < 6) {
@@ -3910,8 +3925,13 @@ void FUN_0022c8a0(u32* object_param)
             colorTmp[2] = 0xff;
             colorTmp[3] = 0xff;
         }
-        FUN_0021d950(object + 0x530, colorTmp);
+    } else {
+        colorTmp[0] = 0xff;
+        colorTmp[1] = 0xff;
+        colorTmp[2] = 0xff;
+        colorTmp[3] = 0xff;
     }
+    FUN_0021d950(object + 0x530, colorTmp);
     {
         void* resource = (void*)FUN_0021cca0(table3, 0xa);
         rect[0] = 60.0f + pos1X;

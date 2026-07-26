@@ -537,10 +537,6 @@ void FUN_0013c780(CampEquipmentWork* work)
     s32 category;
     s16 candidate;
     CampEquipmentEntry* entry;
-    u16* candidatePtr;
-    u8* classPtr;
-    u32* availablePtr;
-    u32* categoryCounts;
     u32 categoryMask;
 
     while (scanIndex < 300) {
@@ -559,16 +555,17 @@ void FUN_0013c780(CampEquipmentWork* work)
     while (scanIndex < 0x14) {
         if (datGetEquipmentId(-1, scanIndex) != 0) {
             entry = &work->entries[recordCount];
-            classPtr = &entry->equipmentClass;
             entry->itemId = datGetEquipmentId(-1, scanIndex);
-            entry->categoryMask = FUN_0013c6a0((s16)entry->itemId);
-            *classPtr = (u8)func_00171250((s16)entry->itemId);
+            entry->categoryMask =
+                FUN_0013c6a0((s16)entry->itemId);
+            entry->equipmentClass =
+                (u8)func_00171250((s16)entry->itemId);
             entry->effect = datGetEquipmentEffect(-1, scanIndex);
             entry->slotType = func_0016f810(-1, scanIndex);
             entry->sourceIndex = scanIndex + 0x1000;
             entry->ownedFlag = 1;
             entry->availableFlag = 1;
-            switch (*classPtr) {
+            switch (entry->equipmentClass) {
             case 0:
                 entry->valueA = func_0016f9f0(-1, scanIndex);
                 entry->valueB = func_0016fae0(-1, scanIndex);
@@ -589,49 +586,51 @@ void FUN_0013c780(CampEquipmentWork* work)
         scanIndex++;
     }
 
-    categoryCounts = work->categoryCounts;
-    categoryCounts[0] = recordCount;
+    work->categoryCounts[0] = recordCount;
     index = 0;
     while (index < candidateCount) {
-        candidatePtr = &candidateIndices[index];
-        candidate = (s16)*candidatePtr;
+        candidate = (s16)candidateIndices[index];
         if (datGetEquipmentId(1, candidate) != 0) {
-            entry = &work->entries[recordCount];
-            availablePtr = &entry->availableFlag;
-            classPtr = &entry->equipmentClass;
-            candidatePtr = &candidateIndices[index];
-            entry->itemId = datGetEquipmentId(1, (s16)*candidatePtr);
-            categoryMask = func_0016f720(1, (s16)*candidatePtr);
+            work->entries[recordCount].itemId =
+                datGetEquipmentId(1, (s16)candidateIndices[index]);
+            categoryMask = func_0016f720(1, (s16)candidateIndices[index]);
             category = 0;
             while (category < 0x15) {
                 if ((categoryMask & (1u << category)) != 0) {
-                    entry->categoryMask = category;
+                    work->entries[recordCount].categoryMask = category;
                     break;
                 }
                 category++;
             }
-            *classPtr = (u8)func_00171250((s16)entry->itemId);
-            entry->effect = datGetEquipmentEffect(1, (s16)*candidatePtr);
-            entry->slotType = func_0016f810(1, (s16)*candidatePtr);
-            entry->sourceIndex = *candidatePtr;
-            entry->ownedFlag = 0;
-            *availablePtr = 1;
+            work->entries[recordCount].equipmentClass =
+                (u8)func_00171250((s16)work->entries[recordCount].itemId);
+            work->entries[recordCount].effect =
+                datGetEquipmentEffect(1, (s16)candidateIndices[index]);
+            work->entries[recordCount].slotType =
+                func_0016f810(1, (s16)candidateIndices[index]);
+            work->entries[recordCount].sourceIndex = candidateIndices[index];
+            work->entries[recordCount].ownedFlag = 0;
+            work->entries[recordCount].availableFlag = 1;
             if (candidate == datGetEquipmentIdx(1, 0) ||
                 candidate == datGetEquipmentIdx(1, 1) ||
                 candidate == datGetEquipmentIdx(1, 2) ||
                 candidate == datGetEquipmentIdx(1, 3)) {
-                *availablePtr = 0;
+                work->entries[recordCount].availableFlag = 0;
             }
-            switch (*classPtr) {
+            switch (work->entries[recordCount].equipmentClass) {
             case 0:
-                entry->valueA = func_0016f9f0(1, (s16)*candidatePtr);
-                entry->valueB = func_0016fae0(1, (s16)*candidatePtr);
+                work->entries[recordCount].valueA =
+                    func_0016f9f0(1, (s16)candidateIndices[index]);
+                work->entries[recordCount].valueB =
+                    func_0016fae0(1, (s16)candidateIndices[index]);
                 break;
             case 1:
-                entry->valueC = func_0016fbd0(1, (s16)*candidatePtr);
+                work->entries[recordCount].valueC =
+                    func_0016fbd0(1, (s16)candidateIndices[index]);
                 break;
             case 2:
-                entry->valueD = func_0016fcc0(1, (s16)*candidatePtr);
+                work->entries[recordCount].valueD =
+                    func_0016fcc0(1, (s16)candidateIndices[index]);
                 break;
             case 3:
                 break;
@@ -645,7 +644,7 @@ void FUN_0013c780(CampEquipmentWork* work)
 
     category = 0;
     while (category < 0x15) {
-        categoryCounts[category] = 0;
+        work->categoryCounts[category] = 0;
         category++;
     }
     work->entryCount = recordCount;
@@ -820,7 +819,6 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   float originX;
   float originY;
   char textBuffer[256];
-  
   originX = (f32)(u32)position;
   originY = (f32)(u32)(position >> 32);
   if (work->entryCount != 0) {
@@ -2028,7 +2026,6 @@ void FUN_00142930(CampEquipmentPanelWork* work)
   u64 spriteTopLeft5;
   u64 spriteTopLeft6;
   u64 spriteTopLeft7;
-  
   func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, 0x4140000042dc0000, 0x4140000042200000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d800004404c000, 0x41d80000435b0000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, 0x41d800004404c000, 0x41d800004404c000, 0, 0, 0, 0);

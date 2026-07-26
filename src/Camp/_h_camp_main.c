@@ -1712,17 +1712,30 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {
     CampCarouselPackedPosition p;
     CampCardSprite* sprite;
+    f32 x;
+    f32 y;
 
     p = campCarouselUnpackPosition(position);
-    sprite = campQueueCardSprite(DAT_00833B40, 1, alpha,
-                                 p.value.x + 218.0f,
-                                 p.value.y + 20.0f + (f32)DAT_007cdf9c,
-                                 drawAlpha);
+    x = p.value.x + 218.0f;
+    y = p.value.y + 20.0f + (f32)DAT_007cdf9c;
+    sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40, 1);
     if (sprite != NULL) {
-        campQueueCardSprite(DAT_00833B40, 1, alpha,
-                            p.value.x + 218.0f,
-                            p.value.y + 1126.0f + (f32)DAT_007cdf9c,
-                            drawAlpha);
+        sprite->spriteScale = alpha;
+        sprite->x = x;
+        sprite->y = y;
+        sprite->alpha = drawAlpha;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
+    }
+    if (sprite != NULL) {
+        y = p.value.y + 1126.0f + (f32)DAT_007cdf9c;
+        sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40, 1);
+        sprite->spriteScale = alpha;
+        sprite->x = x;
+        sprite->y = y;
+        sprite->alpha = drawAlpha;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
     }
     DAT_007cdf9c--;
     if (DAT_007cdf9c < -0x452) {
@@ -1912,6 +1925,9 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
 {
     CampMainPackedPosition input;
     volatile CampMainPackedPosition local;
+    volatile CampMainQuadPosition headerStage;
+    volatile CampMainQuadPosition rowStage;
+    volatile CampMainQuadPosition footerStage;
     CampMainSpriteNode* sprite;
     s32 i;
     s32 start;
@@ -1927,9 +1943,13 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     f32 inputY;
 
     input.value = position;
-    inputX = input.coordinates.x;
-    inputY = input.coordinates.y;
-    local.value = 0;
+    headerStage.x = 0.0f;
+    headerStage.y = 0.0f;
+    headerStage.z = alpha;
+    headerStage.w = 0.0f;
+    FUN_001159f0(NULL, DAT_00833B48, 0, 0,
+                 55.0f + headerStage.x,
+                 headerStage.y + 36.0f, headerStage.z);
     FUN_001159f0(NULL, DAT_00833B48, 0, 0,
                  55.0f + local.coordinates.x,
                  local.coordinates.y + 36.0f, alpha);
@@ -2395,6 +2415,9 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
     s16 entryId;
     char text[0x100];
     u32 color;
+    volatile CampMainQuadPosition stage0;
+    volatile CampMainQuadPosition stage1;
+    volatile CampMainQuadPosition stage2;
 
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
     if (id == 0) {
@@ -2403,8 +2426,12 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
         s32 textY0;
 
         p0.packed = position;
-        textX0 = (s32)p0.value.x + 0x38;
-        textY0 = (s32)p0.value.y + 0xc2;
+        stage0.x = p0.value.x;
+        stage0.y = p0.value.y;
+        stage0.z = alpha;
+        stage0.w = (f32)textAlpha;
+        textX0 = (s32)stage0.x + 0x38;
+        textY0 = (s32)stage0.y + 0xc2;
         for (i = 0; i < 9; i++) {
             entryId = DAT_00833A60[i];
             if (entryId == 0) {
@@ -2414,20 +2441,19 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             rowOffset = i * 0x18;
             if (i == selected) {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
-                                       (u32)textAlpha, p0.value.x + 262.0f,
-                                       p0.value.y + 189.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage0.x + 262.0f,
+                                       stage0.y + 189.0f + (f32)rowOffset,
                                        alpha);
                 campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
-                                       (u32)textAlpha, p0.value.x + 35.0f,
-                                       p0.value.y + 196.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage0.x + 35.0f,
+                                       stage0.y + 196.0f + (f32)rowOffset,
                                        alpha);
                 FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
-            }
-            else {
+            } else {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x19,
-                                       (u32)textAlpha, p0.value.x + 35.0f,
-                                       p0.value.y + 196.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage0.x + 35.0f,
+                                       stage0.y + 196.0f + (f32)rowOffset,
                                        alpha);
                 FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
@@ -2441,8 +2467,12 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
         s32 textY1;
 
         p1.packed = position;
-        textX1 = (s32)p1.value.x + 0x38;
-        textY1 = (s32)p1.value.y + 0xc2;
+        stage1.x = p1.value.x;
+        stage1.y = p1.value.y;
+        stage1.z = alpha;
+        stage1.w = (f32)textAlpha;
+        textX1 = (s32)stage1.x + 0x38;
+        textY1 = (s32)stage1.y + 0xc2;
         for (i = 0; i < 8; i++) {
             entryId = DAT_00833A60[i];
             if (entryId == 0) {
@@ -2452,20 +2482,19 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             rowOffset = i * 0x18;
             if (i == selected) {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
-                                       (u32)textAlpha, p1.value.x + 262.0f,
-                                       p1.value.y + 189.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage1.x + 262.0f,
+                                       stage1.y + 189.0f + (f32)rowOffset,
                                        alpha);
                 campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
-                                       (u32)textAlpha, p1.value.x + 35.0f,
-                                       p1.value.y + 196.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage1.x + 35.0f,
+                                       stage1.y + 196.0f + (f32)rowOffset,
                                        alpha);
                 FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
-            }
-            else {
+            } else {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x19,
-                                       (u32)textAlpha, p1.value.x + 35.0f,
-                                       p1.value.y + 196.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage1.x + 35.0f,
+                                       stage1.y + 196.0f + (f32)rowOffset,
                                        alpha);
                 FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
@@ -2479,8 +2508,12 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
         s32 textY2;
 
         p2.packed = position;
-        textX2 = (s32)p2.value.x + 0x38;
-        textY2 = (s32)p2.value.y + 0xc2;
+        stage2.x = p2.value.x;
+        stage2.y = p2.value.y;
+        stage2.z = alpha;
+        stage2.w = (f32)textAlpha;
+        textX2 = (s32)stage2.x + 0x38;
+        textY2 = (s32)stage2.y + 0xc2;
         for (i = 0; i < 3; i++) {
             entryId = D_005DBB00[id * 3 + i];
             if (entryId == 0) {
@@ -2491,20 +2524,19 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             rowOffset = i * 0x18;
             if (i == selected) {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
-                                       (u32)textAlpha, p2.value.x + 262.0f,
-                                       p2.value.y + 189.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage2.x + 262.0f,
+                                       stage2.y + 189.0f + (f32)rowOffset,
                                        alpha);
                 campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
-                                       (u32)textAlpha, p2.value.x + 35.0f,
-                                       p2.value.y + 196.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage2.x + 35.0f,
+                                       stage2.y + 196.0f + (f32)rowOffset,
                                        alpha);
                 FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
-            }
-            else {
+            } else {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x19,
-                                       (u32)textAlpha, p2.value.x + 35.0f,
-                                       p2.value.y + 196.0f + (f32)rowOffset,
+                                       (u32)textAlpha, stage2.x + 35.0f,
+                                       stage2.y + 196.0f + (f32)rowOffset,
                                        alpha);
                 FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
