@@ -2665,7 +2665,7 @@ void FUN_003625e0(void)
 
     FUN_004c31b0_evt_main(&uStack_80,&uStack_30,*(float *)(iVar2 + 0x14),2);
 
-    FUN_004c35d0_evt_main(&uStack_80,iVar2 + 4,2);
+    FUN_004c35d0_evt_main(&uStack_80,(void *)(iVar2 + 4),2);
 
     FUN_004c6c60_evt_main(&fStack_10,&uStack_20,&uStack_80);
 
@@ -2887,7 +2887,7 @@ void FUN_003628f0(void)
 
     FUN_004c31b0_evt_main(&uStack_c0,&uStack_50,*(float *)(iVar7 + 0x14),2);
 
-    FUN_004c35d0_evt_main(&uStack_c0,iVar7 + 4,2);
+    FUN_004c35d0_evt_main(&uStack_c0,(void *)(iVar7 + 4),2);
 
     FUN_004c6c60_evt_main(&fStack_10,&uStack_20,&uStack_c0);
 
