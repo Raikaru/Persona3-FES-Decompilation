@@ -2181,53 +2181,33 @@ u32 FUN_003f1830(short *param_1,int param_2)
 
 
 u32 FUN_003f1910(u64 param_1)
-
-
-
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
   int iVar3;
-
   int iStack_4;
 
-  
-
   iStack_4 = -1;
-
   uVar2 = 0;
-
   func_00170ed0(param_1,&iStack_4);
-
-  if (iStack_4 == 4) {
-
-    uVar2 = func_00170760(1,param_1);
-
-    uVar2 = uVar2 & 0xffff;
-
-  }
-
-  else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
-
+  switch (iStack_4) {
+  case 0:
+  case 1:
+  case 2:
+  case 3:
     for (iVar3 = 0; iVar3 < 300; iVar3 = iVar3 + 1) {
-
       uVar1 = datGetEquipmentId(1,iVar3);
-
       if ((long)(short)param_1 == (uVar1 & 0xffff)) {
-
         uVar2 = uVar2 + 1;
-
       }
-
     }
-
+    break;
+  case 4:
+    uVar2 = func_00170760(1,param_1);
+    uVar2 = uVar2 & 0xffff;
+    break;
   }
-
   return uVar2;
-
 }
 
 // FUN_003F1A10 NONMATCHING
