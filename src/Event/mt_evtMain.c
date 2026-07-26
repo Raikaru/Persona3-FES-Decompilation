@@ -2070,17 +2070,19 @@ int FUN_00361f60(int param_1,int param_2)
   iVar1 = 0;
   for (piVar2 = *(int **)(param_2 + 0x84); piVar2 != (int *)0x0;
       piVar2 = (int *)piVar2[0x25]) {
-    if (param_1 == 2) {
+    switch (param_1) {
+    case 2:
       item = *piVar2;
       if ((item != 5) && (item != 0x13)) {
         iVar1 = iVar1 + piVar2[0x1a];
       }
-    }
-    else if (param_1 == 3) {
+      break;
+    case 3:
       item = *piVar2;
       if ((item == 5) || (item == 0x13)) {
         iVar1 = iVar1 + piVar2[0x1a];
       }
+      break;
     }
   }
   return iVar1;

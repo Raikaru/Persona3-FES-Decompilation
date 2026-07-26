@@ -3051,7 +3051,7 @@ void func_002f5d80(u64 param_1)
                 cVar7 = (char)(int)fVar5;
               }
               else {
-                cVar7 = (char)(int)(fVar5 - 2.1474836e+09);
+                cVar7 = (char)(int)(fVar5 - 2.1474836e+09f);
               }
               uStack_4 = CONCAT13(-1 - cVar7,0xffffff);
               *(short *)(DAT_007ce3ec + 0xb58) = *(short *)(DAT_007ce3ec + 0xb58) + 1;
@@ -3069,11 +3069,11 @@ void func_002f5d80(u64 param_1)
           if (*(u16 *)(DAT_007ce3ec + 0xb58) < *(u16 *)(DAT_007ce3ec + 0xb56)) {
             fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0f) /
                     (float)*(u16 *)(DAT_007ce3ec + 0xb56);
-            if (fVar5 < 2.1474836e+09) {
+            if (fVar5 < 2.1474836e+09f) {
               uVar6 = (u8)(int)fVar5;
             }
             else {
-              uVar6 = (u8)(int)(fVar5 - 2.1474836e+09);
+              uVar6 = (u8)(int)(fVar5 - 2.1474836e+09f);
             }
             uStack_4 = CONCAT13(uVar6,0xffffff);
             *(short *)(DAT_007ce3ec + 0xb58) = *(short *)(DAT_007ce3ec + 0xb58) + 1;
