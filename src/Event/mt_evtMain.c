@@ -13518,43 +13518,41 @@ void FUN_0036d030(int param_1)
 bool FUN_0036d320(int param_1)
 {
   int iVar1;
+  bool bVar2;
 
   iVar1 = *(int *)(param_1 + 0xd4);
   if (iVar1 == 0x1a) {
     iVar1 = *(int *)(param_1 + 0x16c);
-    if ((iVar1 == 0xd) || (iVar1 == 0xc) || (iVar1 == 10) || (iVar1 == 9) ||
-        (iVar1 == 8) || (iVar1 == 6) || (iVar1 == 1) || (iVar1 == 0)) {
-      return false;
+    if ((((((iVar1 == 0xd) || (iVar1 == 0xc)) || (iVar1 == 10)) || ((iVar1 == 9 || (iVar1 == 8))))
+        || ((iVar1 == 6 || ((bVar2 = true, iVar1 == 1 || (iVar1 == 0)))))) || (iVar1 == 4)) {
+      bVar2 = false;
     }
-    if (iVar1 == 4) {
-      return false;
-    }
-    return true;
   }
   else if (iVar1 == 0x17) {
-    return false;
+    bVar2 = false;
   }
   else if (iVar1 == 0x19) {
-    return false;
+    bVar2 = false;
   }
   else if (iVar1 == 0x18) {
-    return false;
+    bVar2 = false;
   }
   else if (iVar1 == 0x13) {
-    return false;
+    bVar2 = false;
   }
   else if (iVar1 == 0x1c) {
-    return false;
+    bVar2 = false;
   }
   else if (iVar1 == 10) {
-    return false;
+    bVar2 = false;
   }
   else if (iVar1 == 0x28) {
-    return false;
+    bVar2 = false;
   }
   else {
-    return iVar1 != 0x2e;
+    bVar2 = iVar1 != 0x2e;
   }
+  return bVar2;
 }
 
 

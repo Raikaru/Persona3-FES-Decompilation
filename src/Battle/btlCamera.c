@@ -403,21 +403,21 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
     const BtlCameraStateEntry* bossEntry;
     s32 temp_3;
     s32 temp_6;
-    u64 var_7;
+    long var_7;
 
     bossEntry = btlBossGetCameraStateEntry(state);
-    if (bossEntry != NULL)
+    if (bossEntry == NULL)
     {
-        entry = bossEntry;
+        entry = &sCameraStateEntries[state];
     }
     else
     {
-        entry = &sCameraStateEntries[state];
+        entry = bossEntry;
     }
     temp_6 = state & 0xffff;
     if (gBtl->camera.state != temp_6 || entry->unk_08 != 0)
     {
-        var_7 = 2ULL;
+        var_7 = 2;
         while ((u16)var_7 == 0)
         {
             *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) =
@@ -1395,18 +1395,18 @@ close_frame:
         FUN_002d1de0(&quaternion, &candidate, &targetCenter);
         RtQuatTransformVectors(&rotated, &D_00697890, 1, &quaternion);
     }
-    radius = 4.0f * (unit->sphereRadius * unit->scale);
+    nearAngle = 4.0f * (unit->sphereRadius * unit->scale);
     half = 2.5f * (unit->sphereRadius * unit->scale);
     switch (datCalcRand(3))
     {
     case 0:
-        nearAngle = 30.0f;
+        radius = 30.0f;
         break;
     case 1:
-        nearAngle = -30.0f;
+        radius = -30.0f;
         break;
     default:
-        nearAngle = 0.0f;
+        radius = 0.0f;
         break;
     }
     switch (datCalcRand(3))
@@ -1422,9 +1422,9 @@ close_frame:
         break;
     }
     RwMatrixRotate(&rotation, &D_00697870, angle, 0);
-    RwMatrixRotate(&rotation, &D_00697880, nearAngle, 2);
+    RwMatrixRotate(&rotation, &D_00697880, radius, 2);
     FUN_004c6c60(&forward, &rotated, &rotation);
-    distance = radius / tanf(fGpffff8070 * (0.5f * camera->fovRad));
+    distance = nearAngle / tanf(fGpffff8070 * (0.5f * camera->fovRad));
     forward.x *= distance;
     forward.y *= distance;
     forward.z *= distance;

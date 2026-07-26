@@ -4608,18 +4608,18 @@ u64 FUN_003ade70(u64 param_1,int param_2)
   u32 uVar7;
   u32 uVar8;
 
-  bVar1 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[0];
+  bVar1 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[0];
   uVar5 = (u8)(bVar1 - 1);
-  bVar2 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[1];
+  bVar2 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[1];
   if (bVar2 == 0xff) {
     uVar6 = 0;
   } else {
     uVar6 = (u8)(bVar2 - 1);
   }
   uVar5 = (u8)uVar6 << 8 | uVar5 & 0xff;
-  bVar3 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[2];
+  bVar3 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[2];
   uVar7 = (u8)(bVar3 - 1);
-  bVar4 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[3];
+  bVar4 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[3];
   if (bVar4 == 0xff) {
     uVar8 = 0;
     sVar5 = uVar5;

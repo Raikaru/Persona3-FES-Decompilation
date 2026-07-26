@@ -651,23 +651,24 @@ u32 FUN_003c4e60(u64 param_1, int param_2)
 
 int *FUN_003c4e70(int *param_1)
 {
-  int *node;
+  int *ctx;
   int *next;
+  int *node;
   int result;
 
-  node = (int *)param_1[1];
+  ctx = param_1;
+  node = (int *)ctx[1];
   while (node != 0) {
-    result = (*(code *)((u8 *)param_1 + 0x1c))(param_1,node);
+    result = (*(code *)((u8 *)ctx + 0x1c))(ctx,node);
     if (result != 0) {
-      next = (int *)FUN_003c4820_typed(param_1 + 1,node);
-      if (node == *(int **)((u8 *)param_1 + 0xc)) {
-        *(int **)((u8 *)param_1 + 0xc) = next;
+      next = (int *)FUN_003c4820_typed(ctx + 1,node);
+      if (node == (int *)ctx[3]) {
+        ctx[3] = (int)next;
       }
-      (*(code *)((u8 *)param_1 + 0x18))(param_1,node);
+      (*(code *)((u8 *)ctx + 0x18))(ctx,node);
       FUN_003c4f30_typed((int)node);
       node = next;
-    }
-    else {
+    } else {
       node = *(int **)((u8 *)node + 0x10);
     }
   }

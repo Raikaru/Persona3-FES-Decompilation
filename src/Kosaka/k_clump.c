@@ -1351,14 +1351,14 @@ void* func_001a8820(void* item)
     if ((*(u8*)((u8*)item + 2) & 4) != 0 && *(u32*)((u8*)item + 0x18) != 0)
     {
         RwSphere* sphere = func_004912b0(item);
-        if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        if (sphere != NULL && RwCameraFrustumTestSphere(*(RwCamera**)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
             render = *(void (**)(void))((u8*)item + 0x48);
             if (render != NULL)
             {
                 render();
             }
-            if (D_007CE154 == 1)
+            if (D_007CE204 == 1)
             {
                 f32 debugValue;
                 RwSphere* sphere2;
