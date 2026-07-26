@@ -49866,8 +49866,11 @@ u64 FUN_0034d6f0(int param_1)
   FUN_00521250(uVar2 + 0x10,iVar3 + 0x10,0x44);
   FUN_0034d8a0(uVar2,**(u16 **)(iVar3 + 0x58),iVar1);
   if (*(int *)(*(int *)(uVar2 + 0x58) + 8) != 0) {
-    FUN_0034d810(uVar2,param_1);
+    goto do_update;
   }
+  return uVar2;
+do_update:
+  FUN_0034d810(uVar2,param_1);
   return uVar2;
 }
 

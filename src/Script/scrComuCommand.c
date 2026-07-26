@@ -977,11 +977,11 @@ u32 scrComu00360ed0(int param_1)
             if (bVar2 == 2) {
                 goto SelectFlag2;
             }
-            if (bVar2 == 1) {
-                goto SelectFlag1;
-            }
             if (bVar2 == 0) {
                 goto SelectFlag0;
+            }
+            if (bVar2 == 1) {
+                goto SelectFlag1;
             }
             goto SelectFlagDefault;
 SelectFlagDefault:
