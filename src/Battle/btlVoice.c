@@ -5516,226 +5516,207 @@ void func_002e5040(void)
 }
 
 // FUN_002e5060 NONMATCHING
-void func_002e5060(BtlCamera* param_1)
-
+void func_002e5060(BtlCamera* camera)
 {
-  u32 bVar1;
-  short sVar2;
-  u16 uVar3;
-  int iVar4;
-  s32 lVar5;
-  u32 uVar6;
-  int iVar7;
-  float fVar8;
-  float fVar9;
-  f32 uVar10;
-  f32 uVar11;
-  float fVar12;
-  float fStack_110;
-  float fStack_10c;
-  float fStack_108;
-  float fStack_104;
-  float fStack_100;
-  float fStack_fc;
-  float fStack_f8;
-  float fStack_f4;
-  float fStack_f0;
-  int iStack_ec;
-  float fStack_e0;
-  float fStack_dc;
-  float fStack_d8;
-  u8 auStack_d4 [16];
-  float fStack_c4;
-  float fStack_c0;
-  float fStack_bc;
-  float fStack_b8;
-  float fStack_b4;
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
-  float fStack_94;
-  u8 auStack_90 [64];
-  u8 auStack_50 [16];
-  VoiceVector position;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
-     (lVar5 = FUN_002f6510(), lVar5 != 0)) {
+  BtlAction *action;
+  BtlUnit *unit;
+  BtlUnit *targetUnit;
+  u8 *voiceData;
+  u16 state;
+  u16 charId;
+  u16 targetId;
+  u32 usePreset;
+  u32 useLargeOffset;
+  s32 result;
+  s32 index;
+  s16 kind;
+  f32 angleA;
+  f32 angleB;
+  f32 radius;
+  f32 width;
+  f32 height;
+  f32 scale;
+  f32 factorA;
+  f32 factorB;
+  f32 curve;
+  f32 poly;
+  f32 tmp;
+  RwV3d position;
+  RwV3d start;
+  RwV3d end;
+  RwV3d direction;
+  RwV3d transformed;
+  RwV3d output;
+  RtQuat startRot;
+  RtQuat endRot;
+  RtQuat blendRot;
+  RwMatrix matrix;
+  f32 blend[10];
+
+  if ((*(u16 *)(*(u32 *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
+      (FUN_002f6510() != 0)) {
     return;
   }
-  iVar7 = (int)param_1;
-  iVar4 = *(int *)(iVar7 + 0xe0);
-  if (iVar4 == 0) {
-    bVar1 = true;
-  }
-  else {
-    if (*(char *)(*(int *)(iVar4 + 0x30) + 0xa2) == '\0') {
-      if ((*(short *)(DAT_007ce3ec + 0x104) == 0x1d) || (*(short *)(DAT_007ce3ec + 0x104) == 0x1c))
-      {
-        bVar1 = false;
-        goto LAB_002e5140;
-      }
+
+  action = camera->action;
+  if (action == 0) {
+    usePreset = 1;
+  } else if (action->unit->genus == 0) {
+    state = *(u16 *)(DAT_007ce3ec + 0x104);
+    if ((state == 0x1d) || (state == 0x1c)) {
+      usePreset = 0;
+    } else {
+      usePreset = 1;
     }
-    else if ((*(short *)(DAT_007ce3ec + 0x104) == 0x1f) ||
-            (*(short *)(DAT_007ce3ec + 0x104) == 0x12)) {
-      bVar1 = false;
-      goto LAB_002e5140;
-    }
-    bVar1 = true;
-  }
-LAB_002e5140:
-  iVar4 = *(int *)(iVar4 + 0x30);
-  FUN_0027ffb0(iVar4,&position);
-  lVar5 = FUN_0030c3a0(*(u32 *)(*(int *)(*(int *)(iVar7 + 0xe0) + 0x30) + 0xa2c));
-  if ((lVar5 == 0) || (!bVar1)) {
-    position.y = (position.y + 0.0f) -
-                 DAT_007cad20 * *(float *)(iVar4 + 0x8c) * *(float *)(iVar4 + 0x2c);
-    iVar4 = FUN_002ffbc0(2);
-    iVar4 = *(int *)(DAT_007ce3ec + 0xb18) + iVar4 * 0x34;
-    if (!bVar1) {
-    }
-    else {
-      fStack_e0 = *(float *)(iVar4 + 0x1a8);
-      fStack_dc = *(float *)(iVar4 + 0x1ac);
-      fStack_d8 = *(float *)(iVar4 + 0x1b0);
-    }
-    fStack_c4 = fStack_e0;
-    fStack_c0 = fStack_dc;
-    fStack_bc = fStack_d8;
-    FUN_004be310(auStack_d4,&fStack_b8,&fStack_110);
-    fVar8 = DAT_007cad7c;
-    fVar12 = DAT_007cadd0;
-    if (iStack_ec == 0) {
-      fVar12 = DAT_007cad7c * fStack_f0;
-      fVar8 = fVar12 * fVar12;
-      fVar8 = fVar8 * fVar12 *
-              (fVar8 * (fVar8 * (fVar8 * (fVar8 * (DAT_007cad34 * fVar8 + DAT_007cad38 + 0.0f) +
-                                         DAT_007cad3c + 0.0f) + DAT_007cad40 + 0.0f) +
-                       DAT_007cad44 + 0.0f) + DAT_007cad48 + 0.0f) + fVar12 + 0.0f;
-      fStack_f0 = DAT_007cadd0 * fStack_f0;
-      fVar12 = fStack_f0 * fStack_f0;
-      fVar12 = fVar12 * fStack_f0 *
-               (fVar12 * (fVar12 * (fVar12 * (fVar12 * (DAT_007cad34 * fVar12 + DAT_007cad38 + 0.0f)
-                                             + DAT_007cad3c + 0.0f) + DAT_007cad40 + 0.0f) +
-                         DAT_007cad44 + 0.0f) + DAT_007cad48 + 0.0f) + fStack_f0 + 0.0f;
-    }
-    fStack_b8 = fStack_100 * fVar12 + fStack_110 * fVar8 + 0.0f;
-    fStack_b4 = fStack_fc * fVar12 + fStack_10c * fVar8 + 0.0f;
-    fStack_b0 = fStack_f8 * fVar12 + fStack_108 * fVar8 + 0.0f;
-    fStack_ac = fStack_104 * fVar8 + fStack_f4 * fVar12;
-    fStack_a0 = fStack_b8;
-    fStack_9c = fStack_b4;
-    fStack_98 = fStack_b0;
-    fStack_94 = fStack_ac;
-    if (bVar1) {
-      FUN_00351bb0(8);
+  } else {
+    state = *(u16 *)(DAT_007ce3ec + 0x104);
+    if ((state == 0x1f) || (state == 0x12)) {
+      usePreset = 0;
+    } else {
+      usePreset = 1;
     }
   }
-  else {
-    if (((*(short *)(iVar4 + 0xa4) == 0x110) || (*(short *)(iVar4 + 0xa4) == 0x10b)) &&
-       (sVar2 = FUN_00282c30(iVar4), sVar2 != 4)) {
-      bVar1 = true;
+
+  unit = action->unit;
+  FUN_0027ffb0(unit, &position);
+  result = FUN_0030c3a0(unit->datUnit);
+  if ((result != 0) && (usePreset != 0)) {
+    charId = unit->charId;
+    if (((charId == 0x110) || (charId == 0x10b)) &&
+        ((kind = (s16)FUN_00282c30(unit)), kind != 4)) {
+      useLargeOffset = 1;
+    } else {
+      useLargeOffset = 0;
     }
-    else {
-      bVar1 = false;
+    if (useLargeOffset == 0) {
+      position.y = unit->unk_8c * unit->scale * 0.25f +
+                   position.y + 0.0f;
     }
-    if (!bVar1) {
-      position.y = *(float *)(iVar4 + 0x8c) * *(float *)(iVar4 + 0x2c) * 0.25f + position.y + 0.0f;
+    result = FUN_002d6290(action);
+    if (result == 0) {
+      targetId = FUN_002d1600((u8 *)action + 0x38);
+      FUN_00280870(targetId, 1, &end, 0, 0, 1);
+    } else {
+      targetUnit = action->target.targetedActions[0]->unit;
+      FUN_0027ffb0(targetUnit, &end);
     }
-    lVar5 = FUN_002d6290(*(u32 *)(iVar7 + 0xe0));
-    if (lVar5 == 0) {
-      uVar3 = FUN_002d1600(*(int *)(iVar7 + 0xe0) + 0x38);
-      FUN_00280870(uVar3,1,auStack_50,0,0,1);
+    FUN_002d1de0(&startRot, &position, &end);
+    FUN_004be1e0(&direction, &D_006978A0, 1, &startRot);
+    radius = unit->sphereRadius * unit->scale;
+    if (useLargeOffset != 0) {
+      width = radius * 2.75f;
+      height = radius * 2.25f;
+    } else {
+      width = DAT_007cadc8 * radius;
+      height = DAT_007cadcc * radius;
     }
-    else {
-      FUN_0027ffb0(*(u32 *)(*(int *)(*(int *)(iVar7 + 0xe0) + 0x38) + 0x30),auStack_50);
-    }
-    FUN_002d1de0(&fStack_a0,&position,auStack_50);
-    FUN_004be1e0(&fStack_20,0x697890,1,&fStack_a0);
-    if (bVar1) {
-      fVar8 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-      fVar12 = fVar8 * 2.75f;
-      fVar8 = fVar8 * 2.25f;
-      uVar6 = FUN_00357fd0(0);
-      if ((uVar6 & 1) == 0) {
-        uVar11 = -30.0f;
+    if (useLargeOffset != 0) {
+      if (((u32)FUN_00357fd0(0) & 1) == 0) {
+        angleA = -30.0f;
+      } else {
+        angleA = 30.0f;
       }
-      else {
-        uVar11 = 30.0f;
-      }
-    }
-    else {
-      fVar8 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-      fVar12 = DAT_007cadc8 * fVar8;
-      fVar8 = DAT_007cadcc * fVar8;
-      lVar5 = FUN_002ffbc0(3);
-      if (lVar5 == 1) {
-        uVar11 = -30.0f;
-      }
-      else if (lVar5 == 0) {
-        uVar11 = 30.0f;
-      }
-      else {
-        uVar11 = 0.0f;
-      }
-    }
-    if (bVar1) {
-      uVar10 = -40.0f;
-    }
-    else {
-      lVar5 = FUN_002ffbc0(3);
-      if (lVar5 == 1) {
-        uVar10 = -15.0f;
-      }
-      else if (lVar5 == 0) {
-        uVar10 = 15.0f;
-      }
-      else {
-        uVar10 = 0.0f;
+    } else {
+      result = FUN_002ffbc0(3);
+      if (result == 1) {
+        angleA = -30.0f;
+      } else if (result == 0) {
+        angleA = 30.0f;
+      } else {
+        angleA = 0.0f;
       }
     }
-    FUN_004c31b0(uVar10,auStack_90,0x697870,0);
-    FUN_004c31b0(uVar11,auStack_90,0x697880,2);
-    FUN_004c6c60(&fStack_10,&fStack_20,auStack_90);
-    fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar7 + 0xb8) * 0.5f);
-    fVar12 = fVar12 / fVar9;
-    fStack_10 = fStack_10 * fVar12;
-    fStack_c = fStack_c * fVar12;
-    fStack_8 = fStack_8 * fVar12;
-    fStack_30 = position.x;
-    fStack_2c = position.y;
-    fStack_28 = position.z;
-    fStack_e0 = position.x + fStack_10;
-    fStack_dc = position.y + fStack_c;
-    fStack_d8 = position.z + fStack_8;
-    fVar12 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar7 + 0xb8) * 0.5f);
-    fVar8 = fVar8 / fVar12;
-    fStack_10 = fStack_20 * fVar8;
-    fStack_c = fStack_1c * fVar8;
-    fStack_8 = fStack_18 * fVar8;
-    fStack_30 = position.x;
-    fStack_2c = position.y;
-    fStack_28 = position.z;
-    fStack_c4 = position.x + fStack_10;
-    fStack_c0 = position.y + fStack_c;
-    fStack_bc = position.z + fStack_8;
-    if (fStack_dc < 25.0f) {
-      fStack_dc = 25.0f;
+    if (useLargeOffset != 0) {
+      angleB = -40.0f;
+    } else {
+      result = FUN_002ffbc0(3);
+      if (result == 1) {
+        angleB = -15.0f;
+      } else if (result == 0) {
+        angleB = 15.0f;
+      } else {
+        angleB = 0.0f;
+      }
     }
-    if (fStack_c0 < 25.0f) {
-      fStack_c0 = 25.0f;
+    FUN_004c31b0(angleB, &matrix, 0x697870, 0);
+    FUN_004c31b0(angleA, &matrix, 0x697880, 2);
+    FUN_004c6c60(&transformed, &direction, &matrix);
+    scale = (f32)FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f);
+    scale = width / scale;
+    transformed.x = transformed.x * scale;
+    transformed.y = transformed.y * scale;
+    transformed.z = transformed.z * scale;
+    start.x = position.x + transformed.x;
+    start.y = position.y + transformed.y;
+    start.z = position.z + transformed.z;
+    scale = (f32)FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f);
+    scale = height / scale;
+    output.x = direction.x * scale;
+    output.y = direction.y * scale;
+    output.z = direction.z * scale;
+    end.x = position.x + output.x;
+    end.y = position.y + output.y;
+    end.z = position.z + output.z;
+    FUN_002a4690(&endRot, &start, &position, D_00697880);
+    FUN_002a4690(&blendRot, &end, &position, D_00697880);
+    FUN_002a3e80(0.0f, (u8 *)action, 0, 0, 1);
+    if (start.y < 25.0f) {
+      start.y = 25.0f;
     }
+    if (end.y < 25.0f) {
+      end.y = 25.0f;
+    }
+    FUN_002a2290(camera, (f32 *)&start, (f32 *)&end, 1);
+    FUN_002a3110(camera, 2.0f);
+    return;
   }
+
+  position.y = (position.y + 0.0f) -
+               DAT_007cad20 * unit->unk_8c * unit->scale;
+  index = (s32)FUN_002ffbc0(2);
+  voiceData = (u8 *)(*(u32 *)(DAT_007ce3ec + 0xb18) +
+                     index * 0x34 + 0x1a4);
+  if (usePreset != 0) {
+    FUN_002a4690(&startRot, voiceData + 4, voiceData + 0x10,
+                 D_00697880);
+    start = *(RwV3d *)(voiceData + 4);
+  } else {
+    FUN_002a4470((f32 *)&start, (f32 *)&camera->pos);
+  }
+  FUN_002a4690(&endRot, &start, &position, D_00697880);
+  end = start;
+  FUN_004be310((f32 *)&startRot, (f32 *)&endRot, blend);
+  factorA = DAT_007cad7c;
+  factorB = DAT_007cadd0;
+  if (blend[9] == 0.0f) {
+    tmp = DAT_007cad7c * blend[8];
+    curve = tmp * tmp;
+    poly = DAT_007cad34 * curve + DAT_007cad38 + 0.0f;
+    poly = curve * poly + DAT_007cad3c + 0.0f;
+    poly = curve * poly + DAT_007cad40 + 0.0f;
+    poly = curve * poly + DAT_007cad44 + 0.0f;
+    poly = curve * poly + DAT_007cad48 + 0.0f;
+    factorA = curve * tmp;
+    factorA = factorA * poly + tmp + 0.0f;
+    tmp = DAT_007cadd0 * blend[8];
+    curve = tmp * tmp;
+    poly = DAT_007cad34 * curve + DAT_007cad38 + 0.0f;
+    poly = curve * poly + DAT_007cad3c + 0.0f;
+    poly = curve * poly + DAT_007cad40 + 0.0f;
+    poly = curve * poly + DAT_007cad44 + 0.0f;
+    poly = curve * poly + DAT_007cad48 + 0.0f;
+    factorB = curve * tmp;
+    factorB = factorB * poly + tmp + 0.0f;
+  }
+  blendRot.imag.x = blend[0] * factorA + blend[4] * factorB;
+  blendRot.imag.y = blend[1] * factorA + blend[5] * factorB;
+  blendRot.imag.z = blend[2] * factorA + blend[6] * factorB;
+  blendRot.real = blend[3] * factorA + blend[7] * factorB;
+  if (usePreset != 0) {
+    FUN_00351bb0(8);
+  }
+  FUN_002a2290(camera, (f32 *)&start, (f32 *)&end, 1);
+  FUN_002a3110(camera, 2.0f);
   return;
 }
 
