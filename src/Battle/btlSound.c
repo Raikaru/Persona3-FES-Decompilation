@@ -4376,7 +4376,7 @@ default_case:
 }
 
  
-// FUN_002E2680 NONMATCHING
+// FUN_002E2680
 
 
 u32 FUN_002e2680(int param_1)
@@ -4405,14 +4405,7 @@ u32 FUN_002e2680(int param_1)
     switch (*(u16*)(unit + 0xa4))
     {
     case 2:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c2_high;
-        result = 0x443;
-        goto c2_done;
-c2_high:
-        result = 0x444;
-c2_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x443 : 0x444;
         break;
     case 3:
         if (*(s32*)DAT_00697be4_abs == -1)
@@ -4421,87 +4414,31 @@ c2_done:
             flagResult = FUN_0016f190(*(s32*)DAT_00697be4_abs);
         if (flagResult == 0)
             goto c3_zero;
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c3_flag_high;
-        result = 0x449;
-        goto c3_flag_done;
-c3_flag_high:
-        result = 0x44a;
-c3_flag_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x449 : 0x44a;
         goto c3_done;
 c3_zero:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c3_zero_high;
-        result = 0x447;
-        goto c3_zero_done;
-c3_zero_high:
-        result = 0x448;
-c3_zero_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x447 : 0x448;
 c3_done:
         break;
     case 4:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c4_high;
-        result = 0x44d;
-        goto c4_done;
-c4_high:
-        result = 0x44e;
-c4_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x44d : 0x44e;
         break;
     case 5:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c5_high;
-        result = 0x451;
-        goto c5_done;
-c5_high:
-        result = 0x452;
-c5_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x451 : 0x452;
         break;
     case 7:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c7_high;
-        result = 0x453;
-        goto c7_done;
-c7_high:
-        result = 0x454;
-c7_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x453 : 0x454;
         break;
     case 8:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c8_high;
-        result = 0x459;
-        goto c8_done;
-c8_high:
-        result = 0x45a;
-c8_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x459 : 0x45a;
         break;
     case 9:
         if (FUN_0017d800() != 0)
             goto c9_fes;
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c9_journey_high;
-        result = 0x45b;
-        goto c9_journey_done;
-c9_journey_high:
-        result = 0x45c;
-c9_journey_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x45b : 0x45c;
         goto c9_done;
 c9_fes:
-        rand = FUN_002ffbc0(100);
-        if (rand < 0x32)
-            goto c9_fes_high;
-        result = 0x4b3;
-        goto c9_fes_done;
-c9_fes_high:
-        result = 0x4b4;
-c9_fes_done:
+        result = (u32)FUN_002ffbc0(100) >= 0x32 ? 0x4b3 : 0x4b4;
 c9_done:
         break;
     case 10:

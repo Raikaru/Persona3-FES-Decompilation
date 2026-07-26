@@ -3199,13 +3199,17 @@ void func_001eba50(RuntimeResetWork* work)
 // FUN_001EBA80 NONMATCHING
 void func_001eba80(RuntimeCommandWork* work, u32* unused)
 {
+    u32 workAddress;
+    RuntimeCommandWork* command;
     u16* cursor;
     u32 duration;
     u16* durationParts;
     RuntimeWork* target;
     s32 stop;
+    workAddress = (u32)work;
+    command = (RuntimeCommandWork*)workAddress;
 
-    cursor = work->cursor;
+    cursor = command->cursor;
     stop = 0;
     do
     {
