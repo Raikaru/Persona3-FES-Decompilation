@@ -3121,34 +3121,32 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (uVar4 >= 0x32) {
+        if (uVar4 < 0x32) {
       
-          if (*(s32 *)DAT_00697c00_abs == -1) {
-      
-            lVar3 = 0;
-      
-          }
-      
-          else {
-      
-            lVar3 = FUN_0016f190(*(s32 *)DAT_00697c00_abs);
-      
-          }
-      
-          switch (lVar3 != 0) {
-          case 1:
-            lVar3 = 0x2c2;
-            break;
-          case 0:
-            lVar3 = 0x2c1;
-            break;
-          }
-    
-          return lVar3;
+          return 0x2c4;
       
         }
       
-        return 0x2c4;
+        if (*(s32 *)DAT_00697c00_abs == -1) {
+      
+          lVar3 = 0;
+      
+        }
+      
+        else {
+      
+          lVar3 = FUN_0016f190(*(s32 *)DAT_00697c00_abs);
+      
+        }
+      
+        if (lVar3 != 0) {
+      
+          return 0x2c2;
+      
+        }
+      
+        return 0x2c1;
+      
       default:
       
         return -1;

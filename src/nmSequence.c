@@ -795,7 +795,6 @@ void FUN_003c5bb0(u32 param_1)
 
 {
 
-  int *ctx;
   int iVar3;
   int iVar2;
   int iVar1;
@@ -804,10 +803,9 @@ void FUN_003c5bb0(u32 param_1)
 
   
 
-  ctx = (int *)param_1;
-  iVar1 = *(int *)((int)ctx + 0x24);
-  iVar3 = (int)ctx;
-  iVar2 = FUN_003c4c80((u32)ctx,iVar3 + 4);
+  iVar1 = *(int *)((int)param_1 + 0x24);
+  iVar3 = (int)param_1;
+  iVar2 = FUN_003c4c80(param_1,iVar3 + 4);
 
   if (iVar2 != 0) {
 

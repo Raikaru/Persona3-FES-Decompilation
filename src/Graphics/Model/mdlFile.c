@@ -22880,7 +22880,7 @@ void FUN_00332a30(int *param_1,u16 param_2,int *param_3)
 
     if (param_1[10] != 0) {
 
-      FUN_003338b0((u32)(param_1));
+      FUN_003338b0((u32)(param_1[10]));
 
     }
 
@@ -39128,7 +39128,7 @@ u32 FUN_00342890(u32 *param_1,int param_2)
     param_1[0x23] = 3;
   }
 
-  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],(u8 *)0x69bcf0,4,0x4c);
+  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],0x69bcf0,4,0x4c);
 
   if (param_2 == 0) {
     uVar3 = FUN_003210a0(0x14);
