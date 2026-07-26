@@ -53,6 +53,11 @@ extern RwV3d D_00957180;
 #pragma alias D_00957180_abs D_00957180
 extern RwV3d D_00957180_abs;
 extern u8* DAT_007ce42c;
+extern const u8 iGpffffb718[];
+extern const u8 iGpffffb71c[];
+extern const u8 iGpffffb73c[];
+extern void func_002ff890(DatUnit* unit, u32 param_2, u16 id);
+extern void* func_00308c60(DatUnit* unit);
 
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
@@ -1485,8 +1490,8 @@ u32 btlUnitUpdateMovePacket(void* work)
 {
     BtlUnitPacketMove* packet;
     BtlUnit* unit;
-    RwV3d direction;
     RwV3d target;
+    RwV3d direction;
     RwV3d start;
     RwV3d end;
 
@@ -1500,7 +1505,8 @@ u32 btlUnitUpdateMovePacket(void* work)
         case 0:
             if (packet->flags & 0x10)
             {
-                btlUnit0027f7c0(unit, &packet->targetPos, NULL, NULL);
+                btlUnit0027f7c0(unit, &target, NULL, NULL);
+                packet->targetPos = target;
             }
             packet->state++;
             break;
@@ -1509,7 +1515,7 @@ u32 btlUnitUpdateMovePacket(void* work)
             func_002d4800(&unit->unk_ec);
             unit->unk_e8 = packet->unk_1c;
             unit->unk_c4 = packet->flags;
-            unit->unk_cc = 27.0f * packet->speed;
+            unit->unk_cc = 13.5f * packet->speed;
 
             if (!(packet->flags & 1))
             {
@@ -1562,7 +1568,8 @@ u32 btlUnitUpdateMovePacket(void* work)
         case 0:
             if (packet->flags & 0x10)
             {
-                btlUnit0027f7c0(unit, &packet->targetPos, NULL, NULL);
+                btlUnit0027f7c0(unit, &target, NULL, NULL);
+                packet->targetPos = target;
             }
             packet->state++;
             break;
@@ -1571,7 +1578,7 @@ u32 btlUnitUpdateMovePacket(void* work)
             func_002d4800(&unit->unk_ec);
             unit->unk_e8 = packet->unk_1c;
             unit->unk_c4 = packet->flags;
-            unit->unk_cc = 27.0f * packet->speed;
+            unit->unk_cc = 13.5f * packet->speed;
             start.x = unit->pos.x;
             start.y = unit->pos.z;
             start.z = 0.0f;
@@ -1676,13 +1683,18 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
     BtlUnit* unit;
     const BtlUnitAnimBounds* bounds;
     RwV3d targetPos;
-    RwV3d scaledCenter;
-    RwV3d rotatedCenter;
+    RwV3d scaledCenterA;
+    RwV3d rotatedCenterA;
+    RwV3d scaledCenterB;
+    RwV3d rotatedCenterB;
+    RwV3d scaledCenterC;
+    RwV3d rotatedCenterC;
+    RwV3d scaledCenterD;
+    RwV3d rotatedCenterD;
     RtQuat targetRot;
     RwV3d offset;
 
     packet = (BtlUnitPacketMoveToUnit*)work;
-
     if (packet->move.timer == 0)
     {
         targetUnit = packet->targetUnit;
@@ -1690,43 +1702,54 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
 
         if (!(targetUnit->flags3 & BTLUNIT_FLAG3_NOROT))
         {
-            func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &unit->pos);
             if (packet->move.flags & 0x40)
             {
-                bounds = func_00288da0(targetUnit, 0);
-                scaledCenter.x = bounds->centerX * targetUnit->scale;
-                scaledCenter.y = bounds->centerY * targetUnit->scale;
-                scaledCenter.z = bounds->centerZ * targetUnit->scale;
+                func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &unit->pos);
+                scaledCenterA.x = targetUnit->sphereCenter.x * targetUnit->scale;
+                scaledCenterA.y = targetUnit->sphereCenter.y * targetUnit->scale;
+                scaledCenterA.z = targetUnit->sphereCenter.z * targetUnit->scale;
+                RtQuatTransformVectors(&rotatedCenterA, &scaledCenterA, 1, &targetRot);
+                targetPos.x = targetUnit->pos.x + rotatedCenterA.x;
+                targetPos.y = targetUnit->pos.y + rotatedCenterA.y;
+                targetPos.z = targetUnit->pos.z + rotatedCenterA.z;
             }
             else
             {
-                scaledCenter.x = targetUnit->sphereCenter.x * targetUnit->scale;
-                scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
-                scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
+                func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &unit->pos);
+                bounds = func_00288da0(targetUnit, 0);
+                scaledCenterB.x = bounds->centerX * targetUnit->scale;
+                scaledCenterB.y = bounds->centerY * targetUnit->scale;
+                scaledCenterB.z = bounds->centerZ * targetUnit->scale;
+                RtQuatTransformVectors(&rotatedCenterB, &scaledCenterB, 1, &targetRot);
+                targetPos.x = targetUnit->pos.x + rotatedCenterB.x;
+                targetPos.y = targetUnit->pos.y + rotatedCenterB.y;
+                targetPos.z = targetUnit->pos.z + rotatedCenterB.z;
             }
-            RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &targetRot);
         }
         else
         {
             if (packet->move.flags & 0x40)
             {
                 bounds = func_00288da0(targetUnit, 0);
-                scaledCenter.x = bounds->centerX * targetUnit->scale;
-                scaledCenter.y = bounds->centerY * targetUnit->scale;
-                scaledCenter.z = bounds->centerZ * targetUnit->scale;
+                scaledCenterC.x = bounds->centerX * targetUnit->scale;
+                scaledCenterC.y = bounds->centerY * targetUnit->scale;
+                scaledCenterC.z = bounds->centerZ * targetUnit->scale;
+                RtQuatTransformVectors(&rotatedCenterC, &scaledCenterC, 1, &targetUnit->rot);
+                targetPos.x = targetUnit->pos.x + rotatedCenterC.x;
+                targetPos.y = targetUnit->pos.y + rotatedCenterC.y;
+                targetPos.z = targetUnit->pos.z + rotatedCenterC.z;
             }
             else
             {
-                scaledCenter.x = targetUnit->sphereCenter.x * targetUnit->scale;
-                scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
-                scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
+                scaledCenterD.x = targetUnit->sphereCenter.x * targetUnit->scale;
+                scaledCenterD.y = targetUnit->sphereCenter.y * targetUnit->scale;
+                scaledCenterD.z = targetUnit->sphereCenter.z * targetUnit->scale;
+                RtQuatTransformVectors(&rotatedCenterD, &scaledCenterD, 1, &targetUnit->rot);
+                targetPos.x = targetUnit->pos.x + rotatedCenterD.x;
+                targetPos.y = targetUnit->pos.y + rotatedCenterD.y;
+                targetPos.z = targetUnit->pos.z + rotatedCenterD.z;
             }
-            RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &targetUnit->rot);
         }
-
-        targetPos.x = targetUnit->pos.x + rotatedCenter.x;
-        targetPos.y = targetUnit->pos.y + rotatedCenter.y;
-        targetPos.z = targetUnit->pos.z + rotatedCenter.z;
 
         RtQuatTransformVectors(&offset, &D_00697890, 1, &targetUnit->rot);
         targetPos.x += offset.x * packet->move.unk_1c;
@@ -4160,59 +4183,67 @@ BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags)
 // FUN_002889c0 NONMATCHING
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
-    const BtlUnitAnimBounds* bounds;
-    const u8* data;
-    s16 scale;
+    const u8* table;
+    u16 scale;
+    u16 radius;
+    u32 unitId;
 
     unit->charId = id;
-
     switch (unit->genus)
     {
     case UNIT_GENUS_PC:
         unit->datUnit->id = id;
-        datUnitInit(unit->datUnit, UNIT_GENUS_PC, id);
+        func_002ff890(unit->datUnit, 0, id);
         break;
 
     case UNIT_GENUS_EC:
-    case UNIT_GENUS_PS:
         unit->datUnit->id = id;
         break;
-    }
-
-    bounds = func_00288da0(unit, 0);
-    data = (const u8*)bounds;
-
-    unit->sphereCenter.x = bounds->centerX;
-    unit->sphereCenter.y = bounds->centerY;
-    unit->sphereCenter.z = bounds->centerZ;
-    unit->unk_8c = bounds->unk_6;
-    unit->sphereRadius = bounds->radius;
-
-    switch (unit->genus)
-    {
-    case UNIT_GENUS_PC:
-        scale = *(const s16*)(data + 0x14);
-        unit->unk_9ec = (void*)(data + 0x24);
-        unit->unk_9d8 = id == 1 ? 0x1a : 0x17;
-        break;
-
-    case UNIT_GENUS_EC:
-        scale = *(const s16*)(data + 0x14);
-        unit->unk_9ec = (void*)(data + 0x2a);
-        unit->unk_9d8 = 0x13;
-        break;
 
     case UNIT_GENUS_PS:
-        scale = *(const s16*)(data + 0x16);
-        unit->unk_9ec = (void*)(data + 0x18);
+        table = iGpffffb73c + (u32)id * 0x58;
+        scale = *(const u16*)(table + 0x18);
+        unit->unk_9ec = (void*)(table + 2);
         unit->unk_9d8 = 6;
-        break;
+        unit->sphereCenter.x = (f32)*(const s16*)(table + 0);
+        unit->sphereCenter.y = (f32)*(const s16*)(table + 2);
+        unit->sphereCenter.z = (f32)*(const s16*)(table + 4);
+        radius = *(const u16*)(table + 6);
+        unit->sphereRadius = (f32)radius * 2.0f;
+        unit->scale = ((f32)scale * 2.0f) / 100.0f;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+        func_002bcde0(unit, &unit->unkData8);
+        return;
 
     default:
         return;
     }
 
-    unit->scale = (f32)scale / 100.0f;
+    if (id == 1)
+    {
+        unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
+        table = iGpffffb718 + (unitId & 0xff) * 0x128;
+        scale = *(const u16*)(table + 0x14);
+        unit->unk_9ec = (void*)(table + 0x24);
+        unit->unk_9d8 = 0x1a;
+    }
+    else
+    {
+        table = iGpffffb71c + (u32)id * 0x10a;
+        scale = *(const u16*)(table + 0x14);
+        if (unit->genus == UNIT_GENUS_EC)
+        {
+            unit->unk_9ec = (void*)(table + 0x2a);
+            unit->unk_9d8 = 0x13;
+        }
+        else
+        {
+            unit->unk_9ec = (void*)(table + 0x24);
+            unit->unk_9d8 = 0x17;
+        }
+    }
+
+    unit->scale = ((f32)scale * 2.0f) / 100.0f;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     func_002bcde0(unit, &unit->unkData8);
 }

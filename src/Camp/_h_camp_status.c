@@ -2739,12 +2739,28 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
     s32 row;
     s32 value;
     s32 length;
+    s32 rowOffset;
     f32 rowY;
+    f32 rowBaseY;
+    f32 rowLeftX;
+    f32 rowRightX;
+    f32 glyphX;
+    f32 glyphY;
+    CampVec2 drawPosition;
+    CampVec2 panelPosition;
+    CampVec2 footerPosition;
     char text[0x100];
     void* glyph;
 
+    drawPosition = position;
+    panelPosition = drawPosition;
+    panelPosition.x += 30.0f;
+    panelPosition.y += 100.0f;
+    footerPosition = drawPosition;
+    footerPosition.x += 287.0f;
+    footerPosition.y += 280.0f;
     for (icon = 0; icon < 9; icon++) {
-        h_campStatusRenderStatIcon(position, scale, icon, alpha);
+        h_campStatusRenderStatIcon(drawPosition, scale, icon, alpha);
     }
     campStatusDrawSpriteCall(parentTop, DAT_00833B74, 0, (u8)alpha,
                              34.0f, 415.0f, 100.0f);
@@ -2756,15 +2772,21 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
                              561.0f, 415.0f, 100.0f);
     campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 5, (u8)alpha,
                              361.0f, 415.0f, 100.0f);
-    h_campStatusDrawStatLabels(position, scale, persona, alpha);
+    h_campStatusDrawStatLabels(drawPosition, scale, persona, alpha);
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x12, (u8)alpha,
-                             position.x + 30.0f, position.y + 100.0f,
-                             scale);
+                             panelPosition.x, panelPosition.y, scale);
+    panelPosition.y += 59.0f;
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x13, (u8)alpha,
-                             position.x + 30.0f, position.y + 159.0f,
-                             scale);
-    h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
+                             panelPosition.x, panelPosition.y, scale);
+    h_campStatusDrawStatValues(drawPosition, scale, NULL, persona, alpha);
     for (row = 0; row < 5; row++) {
+        rowOffset = row * 19;
+        rowBaseY = drawPosition.y + 129.0f + (f32)rowOffset;
+        rowY = rowBaseY - 25.0f;
+        rowLeftX = drawPosition.x + 104.0f;
+        rowRightX = drawPosition.x + 333.0f;
+        glyphX = drawPosition.x + 108.0f;
+        glyphY = rowY + 1.0f;
         switch (row) {
         case 0:
             value = FUN_00173660(persona, 0) & 0xff;
@@ -2782,27 +2804,26 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
             value = FUN_00173660(persona, 4) & 0xff;
             break;
         }
-        rowY = position.y + 129.0f + (f32)(row * 19) - 25.0f;
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x14, (u8)alpha,
-                                 position.x + 104.0f, rowY, scale);
+                                 rowLeftX, rowY, scale);
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x15, (u8)alpha,
-                                 position.x + 333.0f, rowY, scale);
+                                 rowRightX, rowY, scale);
         glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
         *((f32*)glyph + 11) = scale;
-        *((f32*)glyph + 4) = position.x + 108.0f;
-        *((f32*)glyph + 5) = rowY + 1.0f;
+        *((f32*)glyph + 4) = glyphX;
+        *((f32*)glyph + 5) = glyphY;
         *((u8*)glyph + 0x18) = (u8)alpha;
         length = (value * 0xe3) / 99;
         *((s16*)glyph + 0x0e) = (s16)length;
         FUN_001127d0(glyph, 1);
         FUN_00115980(glyph);
     }
-    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    h_campStatusDrawEquipment(drawPosition, scale, NULL, persona, alpha);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x11, (u8)alpha,
                              position.x + 33.0f, position.y + 278.0f,
                              scale);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22, (u8)alpha,
-                             position.x + 287.0f, position.y + 278.0f,
+                             footerPosition.x, position.y + 278.0f,
                              scale);
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
@@ -2811,9 +2832,8 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
         value = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, value);
     }
-    FUN_0040eb50(parentBottom, (s32)(position.x + 287.0f),
-                 (s32)(position.y + 280.0f), 0xff - alpha,
-                 4, text, 1);
+    FUN_0040eb50(parentBottom, (s32)footerPosition.x,
+                 (s32)footerPosition.y, 0xff - alpha, 4, text, 1);
 }
 /*
  * Persona status draw task.

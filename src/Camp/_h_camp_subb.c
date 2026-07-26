@@ -152,6 +152,11 @@ typedef struct CampPair
     f32 x;
     f32 y;
 } CampPair;
+typedef union CampBits
+{
+    u64 u;
+    f32 f[2];
+} CampBits;
 
 typedef struct CampEquipmentResourceRecord
 {
@@ -1774,73 +1779,138 @@ void FUN_00141590(CampEquipmentWork* work)
 // FUN_00141660 NONMATCHING
 
 void FUN_00141660(CampEquipmentPanelWork* work)
-
 {
-  int index;
-  int row;
-  float slotX;
-  u64 spriteTopLeft;
-  u64 spriteTopLeft2;
-  u64 spriteTopLeft3;
-  u64 spriteTopLeft4;
-  u64 spriteTopLeft5;
-  u64 pair0;
-  u64 pair1;
-  u64 pair2;
-  u64 pair3;
-  u64 pair4;
-  u64 pair5;
-  u64 pair6;
-  u64 pair7;
-  u64 pair8;
-  u64 pairEnd;
-  pair0 = 0x4140000042b40000;
-  pairEnd = 0x4140000042200000;
-  pair1 = 0x41d8000043868000;
-  pair2 = 0x41d8000043b80000;
-  pair3 = 0x41d8000043c38000;
-  pair4 = 0x41d8000044058000;
-  pair5 = 0x41d80000440b4000;
-  pair6 = 0x4274000043310000;
-  pair7 = 0x435b000043450000;
-  pair8 = 0x4286000043fe0000;
-  
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1,
-                 pair0, pairEnd, 0, 0, 0, 0);
+  CampBits pairE8;
+  CampPair pair;
+  CampBits pairD8;
+  CampBits pairD0;
+  CampBits pairC8;
+  CampBits pairC0;
+  CampBits pairB8;
+  CampBits pairB0;
+  CampBits pairA8;
+  CampBits pairA0;
+  CampBits pair98;
+  CampBits pair90;
+  CampBits pair88;
+  CampBits pair80;
+  CampBits pair78;
+  CampBits pair70;
+  CampBits pair68;
+  s32 index;
+  s32 row;
+  f32 slotX;
+
+  pair.x = 40.0f;
+  pair.y = 12.0f;
+  pairE8.u = *(u64*)&pair;
+  pairE8.f[0] += 50.0f;
+  func_0018bc10(100.0f, (void*)work->drawBuffer, 0, 2, 1,
+                 pairE8.u, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 219.0f;
+  pair.y = 27.0f;
+  pair68.u = *(u64*)&pair;
+  pair68.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1,
-                 pair1, 0x41d80000435b0000, 0, 0, 0, 0);
+                 pair68.u, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 318.0f;
+  pair.y = 27.0f;
+  pair70.u = *(u64*)&pair;
+  pair70.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1,
-                 pair2, 0x41d80000439f0000, 0, 0, 0, 0);
+                 pair70.u, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 341.0f;
+  pair.y = 27.0f;
+  pair78.u = *(u64*)&pair;
+  pair78.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1,
-                 pair3, 0x41d8000043aa8000, 0, 0, 0, 0);
+                 pair78.u, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 484.0f;
+  pair.y = 27.0f;
+  pair80.u = *(u64*)&pair;
+  pair80.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1,
-                 pair4, 0x41d8000043f20000, 0, 0, 0, 0);
+                 pair80.u, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 507.0f;
+  pair.y = 27.0f;
+  pair88.u = *(u64*)&pair;
+  pair88.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1,
-                 pair5, 0x41d8000043fd8000, 0, 0, 0, 0);
+                 pair88.u, *(u64*)&pair, 0, 0, 6, 13);
+
+  pair.x = 227.0f;
+  pair.y = 61.0f;
+  pair90.u = *(u64*)&pair;
+  pair90.f[0] -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1,
-                 pair6, 0x4274000043630000, 0, 0, 0, 0);
+                 pair90.u, *(u64*)&pair, 0, 0, 8, 13);
+
+  pair.x = 247.0f;
+  pair.y = 219.0f;
+  pair98.u = *(u64*)&pair;
+  pair98.f[0] -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1,
-                 pair7, 0x435b000043770000, 0, 0, 0, 0);
+                 pair98.u, *(u64*)&pair, 0, 0, 8, 13);
+
+  pair.x = 558.0f;
+  pair.y = 67.0f;
+  pairA0.u = *(u64*)&pair;
+  pairA0.f[0] -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1,
-                 pair8, 0x42860000440b8000, 0, 0, 0, 0);
+                 pairA0.u, *(u64*)&pair, 0, 0, 8, 13);
+
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
-      slotX = (float)(row * 0x55) + 62.0f;
-      spriteTopLeft = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x41700000);
+      slotX = (f32)(row * 0x44) + 62.0f;
+
+      pair.x = 65.0f;
+      pair.y = slotX + 8.0f;
+      pairA8.u = *(u64*)&pair;
+      pairA8.f[0] -= 50.0f;
       index = row * 10;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 1, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft2 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x41700000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 1, spriteTopLeft2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft3 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x41700000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 1, spriteTopLeft3, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft4 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x41700000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 1, spriteTopLeft4, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft5 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0xc2100000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 1, spriteTopLeft5, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
+      func_0018bc10(100.0f,
+                    (void*)(work->drawBuffer + (index + 0x1e) * 0x44),
+                    0, 2, 1, pairA8.u, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 65.0f;
+      pair.y = slotX + 31.0f;
+      pairB0.u = *(u64*)&pair;
+      pairB0.f[0] -= 50.0f;
+      func_0018bc10(100.0f,
+                    (void*)(work->drawBuffer + (index + 0x1f) * 0x44),
+                    0, 2, 1, pairB0.u, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 65.0f;
+      pair.y = slotX + 45.0f;
+      pairB8.u = *(u64*)&pair;
+      pairB8.f[0] -= 50.0f;
+      func_0018bc10(100.0f,
+                    (void*)(work->drawBuffer + (index + 0x20) * 0x44),
+                    0, 2, 1, pairB8.u, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 65.0f;
+      pair.y = slotX + 64.0f;
+      pairC0.u = *(u64*)&pair;
+      pairC0.f[0] -= 50.0f;
+      func_0018bc10(100.0f,
+                    (void*)(work->drawBuffer + (index + 0x21) * 0x44),
+                    0, 2, 1, pairC0.u, *(u64*)&pair, 0, 0, 6, 13);
+
+      pair.x = 14.0f;
+      pair.y = slotX + 2.0f;
+      pairC8.u = *(u64*)&pair;
+      pairC8.f[0] -= 50.0f;
+      func_0018bc10(100.0f,
+                    (void*)(work->drawBuffer + (index + 0x22) * 0x44),
+                    0, 2, 1, pairC8.u, *(u64*)&pair, 0, 0, 6, 13);
       *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
       *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x994) = 0;
-    }
-    else {
+    } else {
       index = row * 0x2a8;
       *(u32 *)(work->drawBuffer + index + 0x7fc) = 0;
       *(u32 *)(work->drawBuffer + index + 0x840) = 0;
@@ -1851,10 +1921,21 @@ void FUN_00141660(CampEquipmentPanelWork* work)
       *(u32 *)(work->drawBuffer + index + 0x994) = 0;
     }
   }
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, 0x43cf800041400000, 0x43cf800042780000, 0, 0, 0, 0);
+
+  pair.x = 62.0f;
+  pair.y = (f32)0x19f;
+  pairD0.u = *(u64*)&pair;
+  pairD0.f[0] -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1,
+                 pairD0.u, *(u64*)&pair, 0, 0, 8, 13);
   *(u32 *)(work->drawBuffer + 0x12e0) = 0;
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, 0x43cf8000433d0000, 0x43cf8000436f0000, 0, 0, 0, 0);
-  return;
+
+  pair.x = 239.0f;
+  pair.y = (f32)0x19f;
+  pairD8.u = *(u64*)&pair;
+  pairD8.f[0] -= 50.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1,
+                 pairD8.u, *(u64*)&pair, 0, 0, 8, 13);
 }
 
 

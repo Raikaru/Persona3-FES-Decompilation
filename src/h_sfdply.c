@@ -269,6 +269,12 @@ extern s32 func_0051df58(s32 outputHandle, s32 channel, s32 count, s32 value, ..
 extern void func_0051e028_t(s32 outputHandle, s32 channel, s32 count, s32 value);
 #pragma alias func_0051df58_t func_0051df58
 extern s32 func_0051df58_t(s32 outputHandle, s32 channel, s32 count, s32 value, ...);
+extern u32 FUN_00512868(void);
+extern u32 FUN_0051d5b0(u32 base, u32 stride, u32 count);
+extern u64 FUN_0051da48(void);
+extern u64 FUN_0051da50(u64 size);
+extern void FUN_0051db00(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4);
+extern u32 FUN_0051d6f8(s32 size);
 extern void FUN_0051deb0(u32 channel, u32 handle);
 extern void FUN_0051dd48(u32 channel, u32 handle);
 extern s32 FUN_0050d3f0(void);
@@ -1443,29 +1449,32 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {
-    s32 i;
+    
 
-    for (i = 0; i < HSFD_DECODE_SLOTS; i++)
-    {
-        memset(&sSfdDecodeSlots[i], 0, sizeof(HSfdDecodeSlot));
-        sSfdDecodeSlots[i].index = i;
-    }
+    FUN_00512868();
+    FUN_0051da48();
+    FUN_0051da50(0x20);
+    FUN_0051d5b0((u32)sSfdDecodeSlots, 0x20, 0);
+    FUN_0051db00(0, 0x8F, 0, 0, 0);
+    FUN_0051db00(3, 0x83, 0x105, 0x3C, 0);
+    FUN_0051db00(3, 0x84, 0x3C, 0x3C, 0);
+    FUN_0051db00(3, 0x82, 1, 0x3C, 0);
+    FUN_005129c0(1, 0x8010, 0x800, 0xFC0);
+    FUN_005129c0(1, 0x8010, 0x801, 0xFCC);
+    FUN_0051db00(3, 0x80, 0x7F, 0x7F, 0);
 
     if (sSfdScratch == NULL)
-    {
-        sSfdScratch = RwCalloc(1, 0x96000, HSFD_STREAM_HINT);
-    }
+        sSfdScratch = (u8*)FUN_0051d6f8(0x96000);
     if (sSfdDecodeBuffer == NULL)
-    {
-        sSfdDecodeBuffer = RwCalloc(1, 0xAF000, HSFD_STREAM_HINT);
-    }
-    for (i = 0; i < 4; i++)
-    {
-        if (sSfdFrameBuffers[i] == NULL)
-        {
-            sSfdFrameBuffers[i] = RwCalloc(1, 0x19000, HSFD_STREAM_HINT);
-        }
-    }
+        sSfdDecodeBuffer = (u8*)FUN_0051d6f8(0xAF000);
+    if (sSfdFrameBuffers[0] == NULL)
+        sSfdFrameBuffers[0] = (u8*)FUN_0051d6f8(0x19000);
+    if (sSfdFrameBuffers[1] == NULL)
+        sSfdFrameBuffers[1] = (u8*)FUN_0051d6f8(0x19000);
+    if (sSfdFrameBuffers[2] == NULL)
+        sSfdFrameBuffers[2] = (u8*)FUN_0051d6f8(0x19000);
+    if (sSfdFrameBuffers[3] == NULL)
+        sSfdFrameBuffers[3] = (u8*)FUN_0051d6f8(0x19000);
 }
 
 // FUN_0010CCE0
@@ -1510,7 +1519,7 @@ void func_0010cdd0(void)
     HSfdDecodeSlot* slot;
     const char* path;
     u32 size[1];
-    u32 copySize;
+    s32 copySize;
     s32 i;
     s32 pathIndex;
 
@@ -1564,7 +1573,7 @@ void func_0010cdd0(void)
                     void* fileData;
                     void* chunkBuf;
                     void* intermediate;
-                    u32 remaining;
+                    s32 remaining;
 
                     pathIndex = slot->fileIndex * 3;
                     fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 1], &size[0]);
@@ -1575,7 +1584,7 @@ void func_0010cdd0(void)
                     remaining = size[0];
 
                     do {
-                        u32 chunkSize;
+                        s32 chunkSize;
                         if (remaining > 0x1000) {
                             chunkSize = 0x1000;
                             remaining -= 0x1000;
@@ -1608,8 +1617,8 @@ void func_0010cdd0(void)
                 void* allocBuf;
                 void* input;
                 void* intermediate;
-                u32 inputSize;
-                u32 intermediateSize;
+                s32 inputSize;
+                s32 intermediateSize;
                 s32 queueHandle;
                 s32 decodeHandle;
                 s32 auxHandle;
@@ -1655,17 +1664,17 @@ void func_0010cdd0(void)
                 void* input;
                 void* intermediate;
                 void* output;
-                u32 inputSize;
-                u32 intermediateSize;
-                u32 outputSize;
+                s32 inputSize;
+                s32 intermediateSize;
+                s32 outputSize;
                 void* resourceData;
                 void* inputBuf;
                 void* auxBuf;
                 void* outputData;
                 void* outputBuf;
                 void* sourceData;
-                u32 chunkSize;
-                u32 remaining;
+                s32 chunkSize;
+                s32 remaining;
                 s32 queueHandle;
                 s32 decodeHandle;
                 s32 auxHandle;

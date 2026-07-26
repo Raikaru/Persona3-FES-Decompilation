@@ -2846,6 +2846,7 @@ void FUN_001b3480(u32 resource)
     u32 entry;
     u32 count;
     u32 i;
+    u32 query[16];
     u32 active;
     u32 id;
     u32 overlay;
@@ -2854,7 +2855,7 @@ void FUN_001b3480(u32 resource)
     u32 record;
     u32 metadata;
     u32 stream;
-    char path[64];
+    char path[256];
     char token[64];
     u32 fieldId;
 
@@ -2864,25 +2865,28 @@ void FUN_001b3480(u32 resource)
         count = FUN_001a6c00(*(u32*)(entry + 0x18), 0x678e50);
         for (i = 0; i < count; i++)
         {
-            FUN_001a6e90(&active, *(u32*)(entry + 0x18), 0x678eb0, i);
+            FUN_001a6e90(&query[0], *(u32*)(entry + 0x18), 0x678eb0, i);
+            active = query[0];
             if (active == 0)
             {
                 continue;
             }
-            FUN_001a6e90(&id, *(u32*)(entry + 0x18), 0x678e70, i);
+            FUN_001a6e90(&query[1], *(u32*)(entry + 0x18), 0x678e70, i);
+            id = query[1];
             if (id == 0)
             {
                 FUN_0019d3f0(0x678df8, 0x60a);
             }
             record = resource + *(u32*)(resource + 0x118) * 0x18;
             *(u16*)(record + 0x20) = (u16)id;
-            FUN_001a6e90(&overlay, *(u32*)(entry + 0x18), 0x678e90, i);
+            FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), 0x678e90, i);
+            overlay = query[2];
             if (overlay != 0)
             {
                 *(u16*)(record + 0x1e) = 2;
             }
-            FUN_001a6e90(&mode, *(u32*)(entry + 0x18), 0x678e50, i);
-            *(u16*)(record + 0x1c) = (u16)mode;
+            FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), 0x678e50, i);
+            mode = query[3];
             if (mode == 0)
             {
                 if (iGpffffb470 == 0)
@@ -2947,7 +2951,8 @@ void FUN_001b3480(u32 resource)
                 *(u32*)(record + 0x28) =
                     FUN_00316b40(4, fieldId, path, 0);
             }
-            FUN_001a6e90(&flags, *(u32*)(entry + 0x18), 0x678f40, i);
+            FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), 0x678f40, i);
+            flags = query[4];
             if (mode == 0)
             {
                 *(u16*)(record + 0x1e) |= (u16)flags;
@@ -3169,10 +3174,12 @@ static void fldrc_render_begin(void)
 // FUN_001b3e50 NONMATCHING
 void FUN_001b3e50(void* camera, u32* resource)
 {
-    u32 savedLight[4];
-    u32 savedFog[4];
+    f32 savedLight[4];
+    f32 savedFog[4];
     u32 savedStates[16];
     u32* state;
+    f32* fstate;
+    u32* stateData;
     u32 light;
     u32 value;
     u32 world;
@@ -3180,20 +3187,23 @@ void FUN_001b3e50(void* camera, u32* resource)
 
     FUN_004d7f60(2, 0x44);
     FUN_004d7f60(3, 0x717fb);
-    state = (u32*)FUN_00198560();
-    savedLight[0] = state[6];
-    savedLight[1] = state[7];
-    savedLight[2] = state[8];
-    savedLight[3] = state[9];
+    fstate = (f32*)FUN_00198560();
+    savedLight[0] = fstate[6];
+    savedLight[1] = fstate[7];
+    savedLight[2] = fstate[8];
+    savedLight[3] = fstate[9];
+    fstate = (f32*)FUN_00198570();
+    savedFog[0] = fstate[6];
+    savedFog[1] = fstate[7];
+    savedFog[2] = fstate[8];
+    savedFog[3] = fstate[9];
     state = (u32*)FUN_00198570();
-    savedFog[0] = state[6];
-    savedFog[1] = state[7];
-    savedFog[2] = state[8];
-    savedFog[3] = state[9];
-    state = (u32*)FUN_00198570();
-    for (i = 0; i < 16; i++)
+    stateData = (u32*)(*(u32*)((u8*)state + 4) + 0x10);
+    for (i = 0; i < 8; i++)
     {
-        savedStates[i] = ((u32*)(*(u32*)((u8*)state + 4) + 0x10))[i];
+        savedStates[i * 2] = stateData[0];
+        savedStates[i * 2 + 1] = stateData[1];
+        stateData += 2;
     }
     light = FUN_00198560();
     value = FUN_0019fd40();
@@ -3207,13 +3217,7 @@ void FUN_001b3e50(void* camera, u32* resource)
     *((u8*)state + 2) = 3;
     FUN_00198570();
 
-    if ((*resource & 1) == 0)
-    {
-        light = FUN_00198540(uGpffffb3dc);
-        value = FUN_00198580();
-        FUN_0049c480(light, value);
-    }
-    else
+    if ((*resource & 1) != 0)
     {
         light = FUN_00198540(uGpffffb3dc);
         FUN_0049c1b0(light, (u32)camera);
@@ -3262,6 +3266,12 @@ void FUN_001b3e50(void* camera, u32* resource)
             value = FUN_00198570();
             FUN_0049c3d0(resource[3], value);
         }
+    }
+    else
+    {
+        light = FUN_00198540(uGpffffb3dc);
+        value = FUN_00198580();
+        FUN_0049c3d0(light, value);
     }
 
     if ((*resource & 1) == 0)

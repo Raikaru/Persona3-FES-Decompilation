@@ -53590,12 +53590,12 @@ bool FUN_00351290(int param_1)
 
 
 
-// Reconstructed camera-fade full-screen-quad draw; obj 904B/1072B window (84%).
-// Residual: retail applies a bltz-guarded halve-then-double idiom to the
-// height/width/alpha float conversions here (6 sites); reproducing it with
-// an explicit if/else inflates codegen well past the window (structural
-// floor, several verified attempts). Camera typing, DAT_00960090/DAT_009600a0/
-// DAT_0096008c_abs vtable+data caching are fixed (see sibling FUN_00351290).
+// Reconstructed camera-fade full-screen-quad draw; obj 1068B/1072B window (99%).
+// The retail frame, seven-call census, unsigned dimension/alpha conversions,
+// and all four packed vertex records now match. Residual is 16 words: one
+// commutative FPU operand-order floor and relocation-masked global loads.
+// Camera typing and DAT_00960090/DAT_009600a0/DAT_0096008c_abs caching follow
+// the sibling FUN_00351290 implementation.
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
 {
@@ -53614,11 +53614,11 @@ void FUN_00351510(int param_1)
 
   camera = FUN_00198590_camera();
   if (RwCameraBeginUpdate(camera) != 0) {
-    heightF = (f32)(u32)(*(u16 *)(param_1 + 4)) * 2.0f;
-    widthF = (f32)(u32)(*(u16 *)(param_1 + 2)) * 2.0f;
+    heightF = (f32)(u32)(*(u16 *)(param_1 + 4));
+    widthF = (f32)(u32)(*(u16 *)(param_1 + 2));
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
-    ratio = 255.0f * ratio;
+    ratio = ratio * 255.0f;
     if (2147483648.0f <= ratio) {
       alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
     } else {
@@ -53641,8 +53641,8 @@ void FUN_00351510(int param_1)
     (*setState)(3, 3);
     (*setState)(4, 3);
 
-    camera = FUN_00198590_camera();
     zScale = *(f32 *)DAT_0096008c_abs;
+    camera = FUN_00198590_camera();
     recipFov = 1.0f / *(float *)((u8*)camera + 0x84);
 
     buf[0] = 0.0f;
@@ -53651,7 +53651,7 @@ void FUN_00351510(int param_1)
     buf[8] = 255.0f;
     buf[9] = 255.0f;
     buf[10] = 255.0f;
-    buf[11] = (f32)alphaS32 * 2.0f;
+    buf[11] = (f32)alphaS32;
     buf[6] = recipFov;
     buf[4] = 0.0f;
     buf[5] = 0.0f;
@@ -53662,7 +53662,7 @@ void FUN_00351510(int param_1)
     buf[24] = 255.0f;
     buf[25] = 255.0f;
     buf[26] = 255.0f;
-    buf[27] = (f32)alphaS32 * 2.0f;
+    buf[27] = (f32)alphaS32;
     buf[22] = recipFov;
     buf[20] = 0.0f;
     buf[21] = 1.0f;
@@ -53673,7 +53673,7 @@ void FUN_00351510(int param_1)
     buf[40] = 255.0f;
     buf[41] = 255.0f;
     buf[42] = 255.0f;
-    buf[43] = (f32)alphaS32 * 2.0f;
+    buf[43] = (f32)alphaS32;
     buf[38] = recipFov;
     buf[36] = 1.0f;
     buf[37] = 0.0f;
@@ -53684,7 +53684,7 @@ void FUN_00351510(int param_1)
     buf[56] = 255.0f;
     buf[57] = 255.0f;
     buf[58] = 255.0f;
-    buf[59] = (f32)alphaS32 * 2.0f;
+    buf[59] = (f32)alphaS32;
     buf[54] = recipFov;
     buf[52] = 1.0f;
     buf[53] = 1.0f;

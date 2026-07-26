@@ -15,7 +15,7 @@
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void FUN_0029ee20(u64 param_1);
+void FUN_0029ee20(u32 param_1);
 typedef struct BtlMainColorWork BtlMainColorWork;
 typedef struct BtlMainLerpWork
 {
@@ -1053,28 +1053,31 @@ void btlMainInitStateRevival(BtlStateWork* work)
     spellContext = FUN_002b8f90(0);
     FUN_002bb6f0(0x1b7, skillData);
     packet = FUN_002bac00(spellContext, skillData, 0);
-    btlMainSetPacketAction(packet, action);
+    packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     dependentPacket = FUN_002dd4a0(0x1b7, 0);
-    btlMainRegisterDependentPacket(dependentPacket, BTLPACKET_TYPE_1, packet->uid);
-    btlMainSetPacketAction(dependentPacket, action);
+    dependentPacket->unk_00 = 4;
+    dependentPacket->parentUID = packet->uid;
+    btlPacketRegister(dependentPacket, BTLPACKET_TYPE_1);
+    dependentPacket->actionUID = action->uid;
 
     FUN_0029ea60(0x1b7, &paramA, &paramB);
-    btlMainSetPacketAction(packet, action);
+    packet = FUN_0029f4b0(paramA, paramB, 0x10);
+    packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     color = FUN_0029ec00(0x1b7);
     FUN_0029ec80(0x1b7, &paramA, &paramB);
-    btlMainSetPacketAction(packet, action);
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-
-    btlMainSetPacketAction(packet, action);
+    packet = FUN_002a0050(color, paramA, paramB, 0x10, 0);
+    packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
     spellPacket = FUN_002baf90(spellContext, action->unit, action->unit, 0, 0);
-    btlMainRegisterDependentPacket(spellPacket, BTLPACKET_TYPE_2D, dependentPacket->uid);
-    btlMainSetPacketAction(spellPacket, action);
+    spellPacket->unk_00 = 4;
+    spellPacket->parentUID = dependentPacket->uid;
+    btlPacketRegister(spellPacket, BTLPACKET_TYPE_2D);
+    spellPacket->actionUID = action->uid;
     dependentPacket = FUN_002dd5e0(0);
     BTL_PACKET_U8(dependentPacket, 0x00) = 5;
     dependentPacket->parentUID = spellPacket->uid;
@@ -1092,14 +1095,16 @@ void btlMainInitStateRevival(BtlStateWork* work)
         }
 
         packet = FUN_002bd480(unit);
-        btlMainSetPacketAction(packet, action);
+        packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
 
         dependentPacket = FUN_002baf90(spellContext, unit, unit, 1, 0);
-        btlMainRegisterDependentPacket(dependentPacket, BTLPACKET_TYPE_2D, spellPacket->uid);
+        dependentPacket->unk_00 = 4;
+        dependentPacket->parentUID = spellPacket->uid;
+        btlPacketRegister(dependentPacket, BTLPACKET_TYPE_2D);
         BTL_PACKET_U8(dependentPacket, 0x10) = 4;
         BTL_PACKET_U64(dependentPacket, 0x18) = previousUID;
-        btlMainSetPacketAction(dependentPacket, action);
+        dependentPacket->actionUID = action->uid;
 
         packet = FUN_002dd5e0(1);
         BTL_PACKET_U8(packet, 0x00) = 5;
@@ -1112,7 +1117,7 @@ void btlMainInitStateRevival(BtlStateWork* work)
         BTL_PACKET_U8(packet, 0x20) = 0xb;
         BTL_PACKET_U64(packet, 0x28) = dependentPacket->uid;
         BTL_PACKET_U16(packet, 0x4a) = 0x12;
-        btlMainSetPacketAction(packet, action);
+        packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_0);
         previousUID = packet->uid;
 
@@ -1121,32 +1126,47 @@ void btlMainInitStateRevival(BtlStateWork* work)
             packet = FUN_00284200(1.0f, unit, 0x13, 0, 0);
             BTL_PACKET_U8(packet, 0x00) = 0xb;
             packet->parentUID = dependentPacket->uid;
-            btlMainSetPacketAction(packet, action);
+            packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
 
         packet = FUN_002d7e20(unitAction, unitAction, &recovery, 1, 1);
         BTL_PACKET_U8(packet, 0x00) = 0xb;
         packet->parentUID = dependentPacket->uid;
-        btlMainSetPacketAction(packet, action);
+        packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         if (recovery.hpDelta != 0)
         {
             dependentPacket = FUN_002bd230(unit, 0, 0);
-            btlMainRegisterDependentPacket(dependentPacket, BTLPACKET_TYPE_3D, packet->uid);
+            dependentPacket->unk_00 = 4;
+            dependentPacket->parentUID = packet->uid;
+            btlPacketRegister(dependentPacket, BTLPACKET_TYPE_3D);
             BTL_PACKET_U8(dependentPacket, 0x47) &= 0xdf;
         }
         dependentPacket = FUN_002bdbd0(unit, unit, BTL_UIDMAX, 0, 0, 0, 1, &recovery);
-        btlMainRegisterDependentPacket(dependentPacket, BTLPACKET_TYPE_3D, packet->uid);
+        dependentPacket->unk_00 = 4;
+        dependentPacket->parentUID = packet->uid;
+        btlPacketRegister(dependentPacket, BTLPACKET_TYPE_3D);
         BTL_PACKET_U8(dependentPacket, 0x47) &= 0xdf;
     }
 
-    btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, previousUID);
-    btlMainSetPacketAction(packet, action);
-    btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, previousUID);
-    btlMainSetPacketAction(packet, action);
-    btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, previousUID);
-    btlMainSetPacketAction(packet, action);
+    packet = FUN_0029fa50(0x10);
+    BTL_PACKET_U8(packet, 0x00) = 4;
+    packet->parentUID = previousUID;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002a1080(0x10, 0);
+    BTL_PACKET_U8(packet, 0x00) = 4;
+    packet->parentUID = previousUID;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002a16c0(0x10);
+    BTL_PACKET_U8(packet, 0x00) = 4;
+    packet->parentUID = previousUID;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
     FUN_002b9030(spellContext);
 }
 // FUN_0029ccd0
@@ -1999,7 +2019,7 @@ void FUN_0029ec80(u32 index, u32* colorA, u32* colorB)
 
 
 
-void FUN_0029ee20(u64 param_1)
+void FUN_0029ee20(u32 param_1)
 
 
 
@@ -3818,7 +3838,7 @@ u32 FUN_002a1710(int *param_1)
   u32 uVar7;
   u8 uVar8;
   float fVar9;
-  u32 uStack_8;
+  u8 uStack_8[4];
   u32 uStack_4;
   uVar7 = 1;
   iVar1 = *param_1;
@@ -3875,8 +3895,11 @@ u32 FUN_002a1710(int *param_1)
       }
       for (uVar4 = 0; uVar4 < *(u16 *)(iVar1 + 0x6a); uVar4 = uVar4 + 1 & 0xffff) {
         iVar2 = *(int *)(*(int *)(iVar1 + uVar4 * 4 + 0x38) + 0x30);
-        uStack_8 = ((((u32)(0xff) & 0xffu) << 24) | ((u32)(*(u32 *)(iVar2 + 0x30) & 0x00ffffffu) & 0x00ffffffu));
-        FUN_0027f730(iVar2,uStack_8);
+        uStack_8[0] = *(u8 *)(iVar2 + 0x30);
+        uStack_8[1] = *(u8 *)(iVar2 + 0x31);
+        uStack_8[2] = *(u8 *)(iVar2 + 0x32);
+        uStack_8[3] = 0xff;
+        FUN_0027f730(iVar2,*(u32*)uStack_8);
       }
       param_1[2] = param_1[2] + 1;
     }

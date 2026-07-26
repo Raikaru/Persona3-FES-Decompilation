@@ -468,6 +468,8 @@ void* func_001107d0(KwlnTask* task)
             work->state = 5;
             break;
         }
+        case 3:
+            break;
 
         case 4:
         {
@@ -508,27 +510,41 @@ void* func_001107d0(KwlnTask* task)
                 resourceWork->renderFlags = work->renderFlags;
                 resourceWork->x = work->x;
                 resourceWork->y = work->y;
-                func_001105d0(work->resourceTask, 0, work->resources[0]);
-                func_001105d0(work->resourceTask, 1, work->resources[1]);
+                resourceWork->runtimeResources[0] = work->resources[0];
+                if (work->resources[0] != NULL)
+                {
+                    *(u32*)((u8*)work->resources[0] + 0x50) =
+                        (*(u32*)((u8*)work->resources[0] + 0x50) & 0xFFFFFF00) | 2;
+                }
+                resourceWork->runtimeResources[1] = work->resources[1];
+                if (work->resources[1] != NULL)
+                {
+                    *(u32*)((u8*)work->resources[1] + 0x50) =
+                        (*(u32*)((u8*)work->resources[1] + 0x50) & 0xFFFFFF00) | 2;
+                }
                 for (i = 0; i < 3; i++)
                 {
                     destinationIndex = i == 2 ? 1 : (i == 0 ? 3 : 4);
-                    func_00110620(work->resourceTask,
-                                   destinationIndex,
-                                   *(s16*)(work->archiveHeader + 0xA + i * 2),
-                                   *(s16*)(work->archiveHeader + 0x12 + i * 2),
-                                   *(s16*)(work->archiveHeader + 0x1A + i * 2));
+                    resourceWork->coordinates0[destinationIndex] =
+                        *(s16*)(work->archiveHeader + 0xA + i * 2);
+                    resourceWork->coordinates1[destinationIndex] =
+                        *(s16*)(work->archiveHeader + 0x12 + i * 2);
+                    resourceWork->coordinates2[destinationIndex] =
+                        *(s16*)(work->archiveHeader + 0x1A + i * 2);
                 }
             }
             work->state = 7;
             break;
         }
-
+        case 6:
+            break;
         case 7:
         {
+            MaestroResourceWork* resourceWork;
             s32 i;
 
-            if (!func_001104b0(work->resourceTask))
+            resourceWork = (MaestroResourceWork*)work->resourceTask->workData;
+            if (resourceWork->state < 2)
             {
                 break;
             }
@@ -546,9 +562,12 @@ void* func_001107d0(KwlnTask* task)
                     func_0010a4e0(0, 1, action[4], action[5]);
                 }
             }
-            func_001104d0(work->resourceTask);
-            ((MaestroResourceWork*)work->resourceTask->workData)->x = work->x;
-            ((MaestroResourceWork*)work->resourceTask->workData)->y = work->y;
+            if (resourceWork->state == 2)
+            {
+                resourceWork->state = 3;
+            }
+            resourceWork->x = work->x;
+            resourceWork->y = work->y;
             work->state = 8;
             break;
         }
@@ -2577,7 +2596,6 @@ void func_00115350(f32 depth,
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
-
     r = (s32)((color >> 24) & 0xff);
     g = (s32)((color >> 16) & 0xff);
     b = (s32)((color >> 8) & 0xff);
@@ -2615,7 +2633,6 @@ void func_00115350(f32 depth,
     for (i = 0; i < 4; i++)
     {
         RwIm2DVertex* v = &vertices[i];
-
         v->u.els.scrVertex.z = z;
         v->u.els.recipZ = recipZ;
         if (r >= 0)
@@ -2654,7 +2671,6 @@ void func_00115350(f32 depth,
             v->u.els.color.a = alpha3f;
             break;
         }
-
         v->u.els.scrVertex.x = points[i][0];
         v->u.els.scrVertex.y = points[i][1];
     }
