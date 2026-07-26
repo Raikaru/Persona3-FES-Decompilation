@@ -2177,7 +2177,7 @@ u32 FUN_003f1830(short *param_1,int param_2)
 }
 
 
-// FUN_003F1910 NONMATCHING
+// FUN_003F1910
 
 
 u32 FUN_003f1910(u64 param_1)
@@ -2195,8 +2195,9 @@ u32 FUN_003f1910(u64 param_1)
   case 1:
   case 2:
   case 3:
+    iVar3 = 0;
     param_1 = (short)param_1;
-    for (iVar3 = 0; iVar3 < 300; iVar3 = iVar3 + 1) {
+    for (; iVar3 < 300; iVar3 = iVar3 + 1) {
       uVar1 = datGetEquipmentId(1,iVar3);
       if (param_1 == (uVar1 & 0xffff)) {
         uVar2 = uVar2 + 1;
@@ -2204,9 +2205,7 @@ u32 FUN_003f1910(u64 param_1)
     }
     break;
   case 4:
-    uVar2 = func_00170760(1,param_1);
-    uVar2 = uVar2 & 0xffff;
-    break;
+    return func_00170760(1,param_1) & 0xffff;
   }
   return uVar2;
 }
