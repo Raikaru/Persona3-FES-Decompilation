@@ -22,7 +22,7 @@ extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 m
 #pragma alias FUN_004cb750_typed FUN_004cb750
 extern void FUN_004cb750_typed(u32 frame,void *axis,u32 mode);
 #pragma alias FUN_0034fdb0_fcl FUN_0034fdb0
-extern void FUN_0034fdb0_fcl(u64 param_1, u16 param_2);
+extern void FUN_0034fdb0_fcl(u32 param_1, u16 param_2);
 extern f32 func_0020c500(const f32 *value,f32 scale);
 extern void func_0020c320(s32 unused,const f32 *source,f32 scale,void *viewport);
 extern void FUN_003c7070_typed(f32 t, void *out, const void *a, const void *b);
