@@ -1080,7 +1080,6 @@ void FUN_003c9390(int *param_1)
   }
 done:
   ;
-
 }
 #define FUN_003c9390(...) ((void (*)(...))FUN_003c9390)(__VA_ARGS__)
 #undef FUN_003c9460

@@ -181,13 +181,16 @@ float cosf(float x)
 
 #pragma optimization_level 3
 // FUN_0052e788 NONMATCHING
-float fabsf(float x)
+float fabsf(register float x)
 {
-    u32 bits;
+    union {
+        float f;
+        u32 i;
+    } ux;
 
-    bits = *(u32*)&x;
-    bits &= 0x7FFFFFFF;
-    return *(float*)&bits;
+    ux.f = x;
+    ux.i &= 0x7FFFFFFF;
+    return ux.f;
 }
 #pragma optimization_level 2
 
@@ -273,7 +276,7 @@ large_argument:
     }
     return -func_0052d2d8(y[0], y[1]);
 }
-#pragma optimization_level 2
+#pragma optimization_level 3
 
 // FUN_0052e930 NONMATCHING
 float tanf(float x)
@@ -451,19 +454,23 @@ long FUN_0052ec28(u64 param_1)
 #pragma optimization_level 2
 // FUN_0052ED30 NONMATCHING
 long FUN_0052ed30(u64 param_1)
-
 {
-  long lVar1;
-  u64 uVar2;
-  
-  lVar1 = FUN_005316d0_u64(param_1,0);
-  if (-1 < lVar1) {
-    lVar1 = FUN_0052ec28(param_1);
-    return lVar1;
-  }
-  uVar2 = FUN_005311c8_u64(0,param_1);
-  lVar1 = FUN_0052ec28(uVar2);
-  return -lVar1;
+    long lVar1;
+    u64 uVar2;
+    long zero;
+    u64 input;
+
+    zero = 0;
+    input = param_1;
+    lVar1 = FUN_005316d0_u64(input, zero);
+    if (-1 < lVar1)
+    {
+        lVar1 = FUN_0052ec28(input);
+        return lVar1;
+    }
+    uVar2 = FUN_005311c8_u64(zero, input);
+    lVar1 = FUN_0052ec28(uVar2);
+    return -lVar1;
 }
 // FUN_0052EDA0 NONMATCHING
 #pragma optimization_level 3

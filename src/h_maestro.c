@@ -2877,7 +2877,7 @@ typedef struct MaestroCampSpriteSetupWork
     void* ownerPool;                  /* +0x44 */
 } MaestroCampSpriteSetupWork;
 
-// FUN_001158B0 NONMATCHING
+// FUN_001158B0
 
 
 void* func_001158b0(param_1,param_2,param_3)
@@ -2914,7 +2914,6 @@ int param_3;
     piVar1 = DAT_007cdf3c;
 
     if (DAT_007cdf3c == (int *)0x0) {
-
       DAT_007cdf3c = piVar2;
 
       piVar2[1] = 0;
@@ -2922,12 +2921,15 @@ int param_3;
     }
 
     else {
-      do {
-        piVar3 = piVar1;
-        piVar1 = (int *)*piVar3;
-      } while ((int *)*piVar3 != (int *)0x0);
-      *piVar3 = (int)piVar2;
-      piVar2[1] = (int)piVar3;
+      while (1) {
+        piVar3 = (int *)*piVar1;
+        if (piVar3 == (int *)0x0) {
+          *piVar1 = (int)piVar2;
+          piVar2[1] = (int)piVar1;
+          break;
+        }
+        piVar1 = piVar3;
+      }
     }
 
   }
@@ -3724,7 +3726,9 @@ void func_001165c0(int param_1)
 
   int iVar2;
 
-  int iVar3;
+  int *p;
+
+  int *slot;
 
   
 
@@ -3756,18 +3760,13 @@ void func_001165c0(int param_1)
 
   }
 
-  for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
-
-    iVar2 = iVar1 + iVar3 * 4;
-
-    if (*(int *)(iVar2 + 0xaac) != 0) {
-
+  p = (int *)iVar1;
+  for (iVar2 = 0; iVar2 < 2; iVar2 = iVar2 + 1) {
+    slot = p + iVar2 + 0x2ab;
+    if (*slot != 0) {
       FUN_0034fcf0();
-
-      *(u32 *)(iVar2 + 0xaac) = 0;
-
+      *slot = 0;
     }
-
   }
 
   MAESTRO_FREE((void*)iVar1);

@@ -2005,7 +2005,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
                  (u8*)&camera->pos,
                  (u8*)camera + 0x100,
                  3);
-    if (!(radius1 <= radius2))
+    if (radius1 > radius2)
     {
         radius1 = radius1 + 0.0f;
     }
@@ -4765,15 +4765,14 @@ void FUN_002b2940(void *arg0)
         RwV3d targetCenter;
         u8 pad_fc[4];
     } scratch;
+    BtlCamera *camera;
+    BtlAction *action;
     BtlUnit *unit;
     BtlUnit *target;
     u16 genus;
-    BtlAction *action;
-    BtlCamera *camera;
     f32 radius;
     f32 distance;
     f32 facing;
-
     camera = (BtlCamera*)arg0;
     action = camera->action;
     unit = action->unit;
@@ -4821,7 +4820,7 @@ void FUN_002b2940(void *arg0)
     scratch.normX = scratch.direction.x;
     scratch.normZ = scratch.direction.z;
     FUN_004c6b20(&scratch.normX, &scratch.normX);
-    FUN_004be1e0(&scratch.direction, 0x697870, 1,
+    FUN_004be1e0(&scratch.direction, &D_00697870, 1,
                  (u8*)target + 0x1c);
     scratch.eyeX = scratch.direction.x;
     scratch.eyeZ = scratch.direction.z;
@@ -4888,7 +4887,7 @@ void FUN_002b2940(void *arg0)
     distance = radius +
                distance / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
     distance = (distance <= 0.0f) ? 0.0f : distance;
-    FUN_004be1e0(&scratch.direction, 0x6978a0, 1,
+    FUN_004be1e0(&scratch.direction, &D_006978A0, 1,
                  (u8*)&scratch.transform);
     scratch.direction.x = scratch.direction.x * distance;
     scratch.direction.y = scratch.direction.y * distance;

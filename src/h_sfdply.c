@@ -1813,11 +1813,11 @@ void func_0010d950(s16 index)
 {
     HSfdDecodeSlot* slot;
 
-    slot = &sSfdDecodeSlots[index];
     if (sSfdDecodeSlots[index].state != 1)
     {
         return;
     }
+    slot = &sSfdDecodeSlots[index];
     if (sSfdDecodeSlots[index].status == 0)
     {
         return;
@@ -1827,9 +1827,10 @@ void func_0010d950(s16 index)
     FUN_0051deb0(0, (u32)sSfdDecodeSlots[index].decodeHandle);
     FUN_0051dd48(5, (u32)sSfdDecodeSlots[index].outputHandle);
     FUN_0051dd48(3, (u32)sSfdDecodeSlots[index].queueHandle);
-    sSfdDecodeSlots[index].state = 0;
+    *(u32*)slot = 0;
     func_0050B710(sSfdDecodeSlots[index].output);
     func_0050B710(sSfdDecodeSlots[index].sourceData);
+    *(u32*)slot = 0;
 }
 
 // FUN_0010DA70
@@ -1877,11 +1878,11 @@ void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
 void func_0010dd10(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    s32 y;
-    s32 x;
-    u32 alpha;
-    s32 width;
     s32 height;
+    s32 width;
+    s32 x;
+    s32 y;
+    u32 alpha;
 
     dst = image->pixels;
     width = image->width;
@@ -1906,6 +1907,7 @@ void func_0010dd10(HSfdImage* image, const u8* source)
             {
                 pixel[3] = (u8)((u32)(u16)((alpha * 0xFF) - alpha) >> 7);
             }
+            source += 4;
             x++;
         }
         dst += image->stride;
@@ -1932,7 +1934,6 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
         while (x < width)
         {
             pixel = dst + (x * 4);
-
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];

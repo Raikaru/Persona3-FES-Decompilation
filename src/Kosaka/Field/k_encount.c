@@ -348,6 +348,8 @@ extern void func_00434f70(void);
 extern u32 func_001fc720(DatUnit* unit);
 extern void func_001fc590(DatUnit* src, DatUnit* dst);
 extern u32 func_002ff790(DatUnitGenusBase* genus);
+#pragma alias func_002ffb00_u32 func_002ffb00
+extern u32 func_002ffb00_u32(DatUnitGenusBase* genus);
 extern u16 func_002ffb00(DatUnitGenusBase* genus);
 extern u32 datGetMaxHp(s16 pcId);
 extern void func_0035c1a0(KwlnTask* task, int record);
@@ -396,69 +398,44 @@ static void K_Encount_Face(FldUnit* unit, FldUnit* target)
 // FUN_001d7b70 NONMATCHING
 DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
 {
-    s32 temp_3;
-    s32 temp_6;
-    s32 var_10;
-    s32 var_11;
-    s32 var_4;
-    s32 var_9;
+    EncounterWork* work;
+    s32 active;
+    s32 i;
+    s32 j;
     s32 pcCount;
     s32 ecCount;
-    void* temp_8;
-    void* ecBase;
 
-    temp_8 = task->workData;
-    var_10 = 0;
-    var_4 = 0;
-    pcCount = *(s32*)((u8*)temp_8 + 0x10);
-    goto pc_check;
-pc_body:
-    if (flatIndex == var_10)
+    work = (EncounterWork*)task->workData;
+    active = 0;
+    i = 0;
+    pcCount = work->pcCount;
+    while (i < pcCount)
     {
-        return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + var_4 * 4 + 0x18) +
-                                      0x48))->unit;
-    }
-    var_10 += 1;
-    var_4 += 1;
-pc_check:
-    if (var_4 < pcCount)
-    {
-        goto pc_body;
-    }
-    var_9 = 0;
-    ecCount = *(s32*)((u8*)temp_8 + 0x14);
-    goto ec_check;
-ec_body:
-    var_11 = 0;
-    temp_6 = var_9 * 4;
-    ecBase = (u8*)temp_8 + temp_6;
-    goto unit_check;
-unit_body:
-    temp_3 = var_11 * 0x3c;
-    if (((*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) + 0x48))->unit +
-         var_11)->id != 0)
-    {
-        if (flatIndex == var_10)
+        if (flatIndex == active)
         {
-            return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + temp_6 +
-                                                           0x28) +
-                                          0x48))->unit + var_11;
+            return work->pc[i]->genusBase->unit;
         }
-        var_10 += 1;
-        goto unit_next;
+        active += 1;
+        i += 1;
     }
-unit_next:
-    var_11 += 1;
-unit_check:
-    if (var_11 < 6)
+    i = 0;
+    ecCount = work->ecCount;
+    while (i < ecCount)
     {
-        goto unit_body;
-    }
-    var_9 += 1;
-ec_check:
-    if (var_9 < ecCount)
-    {
-        goto ec_body;
+        j = 0;
+        while (j < 6)
+        {
+            if (work->ec[i]->genusBase->unit[j].id != 0)
+            {
+                if (flatIndex == active)
+                {
+                    return &work->ec[i]->genusBase->unit[j];
+                }
+                active += 1;
+            }
+            j += 1;
+        }
+        i += 1;
     }
     return NULL;
 }
@@ -864,7 +841,7 @@ skip_attack:
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001d89b0 NONMATCHING
+// FUN_001d89b0
 void func_001d89b0(KwlnTask* task)
 {
     EncounterWork* work;
@@ -874,33 +851,26 @@ void func_001d89b0(KwlnTask* task)
     for (i = 0; i < work->pcCount; ++i)
     {
         FldUnit** slot = &work->pc[i];
-        FldUnit* unit = *slot;
-
-        if (unit->genusBase == NULL)
+        if ((*slot)->genusBase != NULL)
         {
-            continue;
-        }
-        if (datGetFlag(0xC22) != 0 || datGetScenarioMode() != 0)
-        {
-            continue;
-        }
-        if (RpRandom() % 100 >= 50)
-        {
-            continue;
-        }
-        if (func_002ff790((*slot)->genusBase) != 0)
-        {
-            continue;
-        }
-        if (K_Encount_FieldWord(0x28) != NULL)
-        {
-            func_0018bee0(K_Encount_FieldWord(0x28), (*slot)->charId, 0);
+            if (datGetFlag(0xC22) == 0 &&
+                datGetScenarioMode() == 0 &&
+                RpRandom() % 100 < 50)
+            {
+                func_002ffb00_u32((*slot)->genusBase);
+            }
+            if (func_002ff790((*slot)->genusBase) == 0)
+            {
+                if (*(KwlnTask**)((u8*)K_Field_Get() + 0x28) != NULL)
+                {
+                    func_0018bee0(
+                        *(KwlnTask**)((u8*)K_Field_Get() + 0x28),
+                        (*slot)->charId, 0);
+                }
+            }
         }
     }
-    if (work->taskSlot < 3)
-    {
-        D_00875A40[work->taskSlot] = NULL;
-    }
+    D_00875A40[work->taskSlot] = NULL;
     RwFree(task->workData);
 }
 

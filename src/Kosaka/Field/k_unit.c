@@ -2730,8 +2730,6 @@ void func_001d3810(KwlnTask* task, u32 value)
 }
 
 #pragma push
-#pragma opt_propagation off
-#pragma opt_rebuildconditionals off
 // FUN_001d3830 NONMATCHING
 s32 func_001d3830(KwlnTask* task)
 {
@@ -2739,26 +2737,22 @@ s32 func_001d3830(KwlnTask* task)
     s32 result;
 
     result = -1;
-    if (((s32*)task->workData)[3] != 0)
+    switch (((s32*)task->workData)[3])
     {
-        goto have_work;
+    case 0:
+        break;
+    default:
+        remaining = func_001d38a0(task);
+        if (remaining == 0)
+        {
+            result = 2;
+        }
+        else if (remaining < 0x3c)
+        {
+            result = 1;
+        }
+        break;
     }
-    goto done;
-have_work:
-    remaining = func_001d38a0(task);
-    if (remaining != 0)
-    {
-        goto check_remaining;
-    }
-    result = 2;
-    goto done;
-check_remaining:
-    if (remaining >= 0x3c)
-    {
-        goto done;
-    }
-    result = 1;
-done:
     return result;
 }
 #pragma pop

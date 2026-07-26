@@ -169,23 +169,22 @@ state_done:
 
 void FUN_00397030(int param_1)
 {
-    int iVar1;
-    int lVar2;
-    int iVar3;
-    int iVar4;
+    int manager;
+    int base;
+    int offset;
+    u32 *state_ptr;
 
-    lVar2 = FUN_00195340("koma_Manager");
-    if ((lVar2 != 0) && (param_1 < 3)) {
-        iVar1 = FUN_00195540(lVar2);
-        iVar4 = param_1 * 0xc;
-        iVar3 = iVar4 + iVar1;
-        if (*(int *)(iVar3 + 8) != 0) {
-            FUN_00195020(*(u32 *)(iVar3 + 8));
-            *(u32 *)(iVar3 + 8) = 0;
-            *(u32 *)(iVar1 + iVar4) = 0;
-        }
+    manager = FUN_00195340("koma_Manager");
+    if (manager == 0) return;
+    if (param_1 >= 3) return;
+    base = FUN_00195540(manager);
+    offset = param_1 * 0xc;
+    state_ptr = (u32 *)(base + offset + 8);
+    if (*state_ptr != 0) {
+        FUN_00195020(*state_ptr);
+        *state_ptr = 0;
+        *(u32 *)(base + offset) = 0;
     }
-    return;
 }
 #define FUN_00397030(...) ((void (*)(...))FUN_00397030)(__VA_ARGS__)
 #undef FUN_003970d0
@@ -495,7 +494,7 @@ u32 FUN_00397520(int param_1,u32 *param_2)
 }
 #define FUN_00397520(...) ((u32 (*)(...))FUN_00397520)(__VA_ARGS__)
 #undef FUN_00397580
-// FUN_00397580 NONMATCHING
+// FUN_00397580
 
 
 u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
@@ -523,13 +522,14 @@ u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
         }
     }
     }
-    if (!bVar2) goto done;
+    if (!bVar2) {
+        return 0;
+    }
     index = *(volatile int *)(param_1 + 0x970);
     iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
     *param_3 = *(u16 *)(*(int *)(iVar2 + 4) +
                         index * 0x8c + param_2 * 2);
-done:
-    return bVar2;
+    return 1;
 }
 #define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
 #undef FUN_00397630
@@ -542,8 +542,8 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
     int iVar2;
     int index;
     int length;
-    u8 bVar2;
-    u32 uVar3;
+    int base;
+    u32 bVar2;
 
     iVar1 = *(int *)(param_1 + 8);
     if (iVar1 == 0) {
@@ -555,26 +555,24 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
         } else {
             index = *(volatile int *)(param_1 + 0x970);
             length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
-            if (index < length) {
-                bVar2 = 1;
-            } else {
+            if (length <= index) {
                 bVar2 = 0;
+            } else {
+                bVar2 = 1;
             }
         }
     }
-    if (bVar2) {
-        if (param_2 >= 10) {
-            uVar3 = 0;
-        } else {
-            *param_3 = (u32)*(u8 *)(param_2 +
-                                    *(int *)(param_1 + 0x970) * 0x8c +
-                                    (int)*(int *)((u8 *)iVar1 + 0x60) + 0x16);
-            uVar3 = 1;
-        }
-    } else {
-        uVar3 = 0;
+    if (!bVar2) {
+        return 0;
     }
-    return uVar3;
+    if (param_2 >= 10) {
+        return 0;
+    }
+    index = *(volatile int *)(param_1 + 0x970);
+    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
+    base = *(volatile int *)(iVar2 + 4);
+    *param_3 = (u32)*(u8 *)(base + index * 0x8c + param_2 + 0x16);
+    return 1;
 }
 #define FUN_00397630(...) ((u32 (*)(...))FUN_00397630)(__VA_ARGS__)
 #undef FUN_003976f0
@@ -582,77 +580,47 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
 
 
 u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4)
-
-
-
 {
+    int iVar1;
+    int iVar2;
+    int index;
+    int length;
+    int base;
+    int offset;
+    int scaled;
+    u32 bVar1;
 
-  u8 bVar1;
-
-  u32 uVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = *(int *)(param_1 + 8);
-
-  if (iVar3 == 0) {
-
-    bVar1 = 0;
-
-  }
-
-  else if (*(int *)(iVar3 + 0x60) == 0) {
-
-    bVar1 = 0;
-
-  }
-
-  else if (*(int *)(param_1 + 0x970) < (int)(u32)*(u16 *)(*(int *)(iVar3 + 0x60) + 2)) {
-
-    bVar1 = 1;
-
-  }
-
-  else {
-
-    bVar1 = 0;
-
-  }
-
-  if (bVar1) {
-
-    if (param_2 < 10) {
-
-      iVar3 = (int)param_2 * 2 +
-
-              *(int *)(param_1 + 0x970) * 0x8c + *(int *)(*(int *)(iVar3 + 0x60) + 4);
-
-      *param_3 = (u32)*(u8 *)(iVar3 + 0x20);
-
-      *param_4 = (u32)*(u8 *)(iVar3 + 0x21);
-
-      uVar2 = 1;
-
+    iVar1 = *(int *)(param_1 + 8);
+    if (iVar1 == 0) {
+        bVar1 = 0;
+    } else {
+        iVar2 = *(int *)(iVar1 + 0x60);
+        if (iVar2 == 0) {
+            bVar1 = 0;
+        } else {
+            index = *(volatile int *)(param_1 + 0x970);
+            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            if (length <= index) {
+                bVar1 = 0;
+            } else {
+                bVar1 = 1;
+            }
+        }
     }
-
-    else {
-
-      uVar2 = 0;
-
+    if (!bVar1) {
+        return 0;
     }
-
-  }
-
-  else {
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+    if (param_2 >= 10) {
+        return 0;
+    }
+    index = *(volatile int *)(param_1 + 0x970);
+    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
+    base = *(volatile int *)(iVar2 + 4);
+    offset = param_2 * 2;
+    scaled = index * 0x8c;
+    *param_3 = (u32)*(u8 *)(scaled + base + offset + 0x20);
+    *param_4 = (u32)*(u8 *)(scaled + base + offset + 0x21);
+    return 1;
 }
 #define FUN_003976f0(...) ((u32 (*)(...))FUN_003976f0)(__VA_ARGS__)
 #undef FUN_003977c0

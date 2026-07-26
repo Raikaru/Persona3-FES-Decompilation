@@ -4594,7 +4594,7 @@ bool FUN_00372c40(int param_1)
 }
 
 
-// FUN_00373590 NONMATCHING
+// FUN_00373590
 u64 FUN_00373590(u64 param_1,u64 param_2,int param_3)
 {
   int iVar1;
@@ -4643,15 +4643,15 @@ u64 FUN_00373590(u64 param_1,u64 param_2,int param_3)
     break;
   }
 LAB_003736a4:
-  if (cVar2 != '\0') {
-    uVar3 = 0;
-  }
-  else {
+  if (!cVar2) {
     if (*(int *)(iVar4 + 0xe8) != 0) {
       FUN_0035adb0(*(int *)(iVar4 + 0xe8),1);
       *(u32 *)(iVar4 + 0xe8) = 0;
     }
     uVar3 = 1;
+  }
+  else {
+    uVar3 = 0;
   }
   return uVar3;
 }
@@ -17918,16 +17918,23 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 {
 
   int iVar1;
-
+  int iVar2;
+  typedef struct {
+    u8 pad[0x190];
+    int field190;
+  } EvtMenuState;
+  EvtMenuState *pState;
+  pState = (EvtMenuState *)param_3;
   
 
   FUN_00361830(param_3);
 
-  FUN_0036f900(param_1,param_2,0x1e,9,0,1,param_3,0x384060,(code *)FUN_003840d0);
+  FUN_0036f900(param_1,param_2,0x1e,9,0,1,param_3,0x380000 + (short)0x4060,
+               (code *)((int)&FUN_003840d0 + 0));
 
-  iVar1 = (int)param_3;
+  iVar1 = *(int *)(param_3 + 0xd4);
 
-  if (*(int *)(iVar1 + 0xd4) != 0x2c) {
+  if (iVar1 != 0x2c) {
 
     iVar1 = 0;
 
@@ -17935,17 +17942,17 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
   else {
 
-    if ((DAT_007e0952 & 0x1000) != 0) {
+    if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
 
-      if (*(int *)(iVar1 + 400) == 0) {
-
-        *(u32 *)(iVar1 + 400) = 3;
+      iVar2 = pState->field190;
+      if (iVar2 == 0) {
+        pState->field190 = 3;
 
       }
 
       else {
 
-        *(int *)(iVar1 + 400) = *(int *)(iVar1 + 400) + -1;
+        pState->field190 = iVar2 + -1;
 
       }
 
@@ -17953,35 +17960,30 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
     else {
 
-      if ((DAT_007e0952 & 0x4000) != 0) {
+      if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
 
-        if (*(int *)(iVar1 + 400) == 3) {
-
-          *(u32 *)(iVar1 + 400) = 0;
+        iVar2 = pState->field190;
+        if (iVar2 == 3) {
+          pState->field190 = 0;
 
         }
 
         else {
 
-          *(int *)(iVar1 + 400) = *(int *)(iVar1 + 400) + 1;
+          pState->field190 = iVar2 + 1;
 
         }
 
       }
 
     }
-
-    if ((DAT_007e094e & 0x40) == 0) {
-
-      iVar1 = -(u32)((DAT_007e094e & 0x20) != 0);
-
-    }
-
-    else {
-
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
       iVar1 = 1;
-
     }
+    else {
+      iVar1 = -(u32)((*(u16 *)DAT_007e094e_abs & 0x20) != 0);
+    }
+
 
   }
 

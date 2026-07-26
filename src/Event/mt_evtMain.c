@@ -611,7 +611,7 @@ void FUN_00362240(int param_1);
 void FUN_00362390(u64 param_1);
 void FUN_003625e0(void);
 void FUN_003628f0(void);
-void FUN_00362f20(u64 param_1);
+void FUN_00362f20(int param_1);
 void FUN_00362fa0(int param_1);
 void FUN_00362ff0(int param_1);
 void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4);
@@ -3130,38 +3130,25 @@ void FUN_003628f0(void)
 // FUN_00362F20 NONMATCHING
 
 
-void FUN_00362f20(u64 param_1)
-
-
-
+void FUN_00362f20(int param_1)
 {
-
-  long lVar1;
-
-  
+  u32 lVar1;
 
   lVar1 = FUN_003b5d00();
-
-  if (lVar1 != 0) {
-
-    lVar1 = FUN_0038a0b0(param_1);
-
-    if (lVar1 == 1) {
-
-      FUN_0038a0c0(param_1,0);
-
-    }
-
-    else if (lVar1 == 0) {
-
-      FUN_0038a0c0(param_1,0);
-
-    }
-
+  if (lVar1 == 0) {
+    return;
   }
-
+  lVar1 = FUN_0038a0b0(param_1);
+  if (lVar1 == 1) goto LAB_00362f70;
+  if (lVar1 == 0) goto LAB_00362f68;
+  goto LAB_00362f8c;
+LAB_00362f70:
+  FUN_0038a0c0(param_1,0);
+  goto LAB_00362f8c;
+LAB_00362f68:
+  FUN_0038a0c0(param_1,1);
+LAB_00362f8c:
   return;
-
 }
 
 
