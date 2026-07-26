@@ -5757,13 +5757,19 @@ s32 FUN_002dc830(BtlAction* action)
 
     if (result < 0)
     {
-        return -1;
+        goto return_minus_one;
     }
     if (unit->genus != 0)
     {
-        result++;
+        goto increment_result;
     }
+    goto return_result;
+increment_result:
+    result++;
+return_result:
     return result;
+return_minus_one:
+    return -1;
 }
 
 // FUN_002dca60

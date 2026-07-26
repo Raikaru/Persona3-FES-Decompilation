@@ -46353,7 +46353,7 @@ void FUN_0034a280(int param_1)
 
     *pfVar3 = 0.0;
 
-    pfVar3[4] = *(float *)(param_1 + 0xd0);
+    *(u32 *)((int)pfVar3 + 0x10) = *(u32 *)(param_1 + 0xd0);
 
     pfVar3[5] = *(float *)(param_1 + 0xd4);
 
