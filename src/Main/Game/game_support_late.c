@@ -820,8 +820,8 @@ void func_0018b7b0(void* transition, f32* position)
                           ((f32)elapsed * (GS_F32(transition, 0x30) - GS_F32(transition, 0x28))) /
                           (f32)total;
             position[1] = GS_F32(transition, 0x2c) +
-                          ((GS_F32(transition, 0x34) - GS_F32(transition, 0x2c)) *
-                           (f32)elapsed) / (f32)total;
+                          ((f32)elapsed * (GS_F32(transition, 0x34) - GS_F32(transition, 0x2c))) /
+                          (f32)total;
         }
         break;
     case 2:

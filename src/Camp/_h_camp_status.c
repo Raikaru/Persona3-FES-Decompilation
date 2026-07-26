@@ -105,6 +105,8 @@ extern void* DAT_00833B98;
 extern u8 DAT_00833B90_abs[];
 #pragma alias DAT_00833B98_abs DAT_00833B98
 extern u8 DAT_00833B98_abs[];
+#pragma alias DAT_00833B88_abs DAT_00833B88
+extern u8 DAT_00833B88_abs[];
 extern void* DAT_00833B74;
 extern void* DAT_00833BA0;
 extern char gp0xffff897c[];
@@ -3120,11 +3122,11 @@ void FUN_00133180(CampVec2 position, f32 alpha, void* persona,
     FUN_0012b860_s32(position, alpha, persona, currentStats, drawAlpha);
     position.x += 12.0f;
     position.y += 96.0f;
-    campStatusDrawSpriteCall((u32)persona, DAT_00833B90, 1,
+    campStatusDrawSpriteCall((u32)persona, DAT_00833B90_abs, 1,
                              drawAlpha, position.x + 22.0f,
                              position.y + 117.0f, alpha);
     campStatusDrawSpriteCall(
-        (u32)persona, DAT_00833B88,
+        (u32)persona, DAT_00833B88_abs,
         (FUN_00173280(*(u16*)((u8*)currentStats + 2)) & 0xff) - 1,
         drawAlpha, position.x + 105.0f, position.y + 142.0f, alpha);
     FUN_00124e60(position, alpha, currentStats, drawAlpha);
@@ -3144,11 +3146,11 @@ void FUN_001332f0(CampVec2 position, f32 alpha, void* unused,
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;
-    campStatusDrawSpriteCall((u32)0, DAT_00833B90, 1, (u32)drawAlpha,
+    campStatusDrawSpriteCall((u32)0, DAT_00833B90_abs, 1, (u32)drawAlpha,
                              drawPosition.x + 22.0f,
                              drawPosition.y + 117.0f, alpha);
     arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
-    campStatusDrawSpriteCall((u32)0, DAT_00833B88, arcanaFrame,
+    campStatusDrawSpriteCall((u32)0, DAT_00833B88_abs, arcanaFrame,
                              (u32)drawAlpha,
                              drawPosition.x + 105.0f,
                              drawPosition.y + 142.0f, alpha);
@@ -3170,11 +3172,11 @@ void FUN_00133460(CampVec2 position, f32 alpha, void* currentStats,
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;
-    campStatusDrawSpriteCall((u32)0, DAT_00833B90, 1, (u32)drawAlpha,
+    campStatusDrawSpriteCall((u32)0, DAT_00833B90_abs, 1, (u32)drawAlpha,
                              drawPosition.x + 22.0f,
                              drawPosition.y + 117.0f, alpha);
     arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
-    campStatusDrawSpriteCall((u32)0, DAT_00833B88, arcanaFrame,
+    campStatusDrawSpriteCall((u32)0, DAT_00833B88_abs, arcanaFrame,
                              (u32)drawAlpha,
                              drawPosition.x + 105.0f,
                              drawPosition.y + 142.0f, alpha);

@@ -764,7 +764,7 @@ void FUN_0034c660(int param_1, float param_2);
 u64 FUN_0034c670(long param_1);
 #pragma alias FUN_0034c670_u32 FUN_0034c670
 extern u32 FUN_0034c670_u32(int param_1);
-void FUN_0034c890(u64 param_1);
+void FUN_0034c890(int param_1);
 u32 FUN_0034c940(int param_1);
 void FUN_0034c9b0(int param_1,int param_2);
 void FUN_0034cb60(int param_1);
@@ -48871,7 +48871,7 @@ u64 FUN_0034c670(long param_1)
 // FUN_0034C890 NONMATCHING
 
 
-void FUN_0034c890(u64 param_1)
+void FUN_0034c890(int param_1)
 
 
 
@@ -48899,11 +48899,11 @@ void FUN_0034c890(u64 param_1)
 
     }
 
-    (*DAT_0096017c)(*(u32 *)(iVar1 + 0x9c));
+    DAT_0096017c_abs[0](*(u32 *)(iVar1 + 0x9c));
 
   }
 
-  (*DAT_0096017c)(param_1);
+  DAT_0096017c_abs[0](param_1);
 
   return;
 
