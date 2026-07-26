@@ -43,7 +43,7 @@ extern void* DAT_007ce0cc;
 extern u64 DAT_00678f58;
 extern u32 DAT_00678f60;
 extern u64 DAT_00678f68;
-extern u32 DAT_00678f70;
+extern f32 DAT_00678f70;
 #pragma alias DAT_00678f68_abs DAT_00678f68
 extern u64 DAT_00678f68_abs[];
 #pragma alias DAT_00678f70_abs DAT_00678f70

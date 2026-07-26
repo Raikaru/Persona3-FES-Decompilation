@@ -631,7 +631,7 @@ u64 FUN_003aed10(u64 param_1,int param_2)
   uVar3 = FUN_003c3f80(sVar2);
   goto join_path;
 normal_path:
-  uVar3 = FUN_003c3f80();
+  uVar3 = FUN_003c3f80(key);
 join_path:
   FUN_003b22a0(param_2);
   FUN_003b2020(uVar3,param_2);

@@ -21,6 +21,8 @@ extern u32 mdlAnimSet_u32(u32 mdl, u32 slotIdx, s16 id, u32 blendFrameCount,
 extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 mode);
 #pragma alias FUN_004cb750_typed FUN_004cb750
 extern void FUN_004cb750_typed(u32 frame,void *axis,u32 mode);
+#pragma alias FUN_0034fdb0_fcl FUN_0034fdb0
+extern void FUN_0034fdb0_fcl(u64 param_1, u16 param_2);
 extern f32 func_0020c500(const f32 *value,f32 scale);
 extern void func_0020c320(s32 unused,const f32 *source,f32 scale,void *viewport);
 extern void FUN_003c7070_typed(f32 t, void *out, const void *a, const void *b);
@@ -3663,7 +3665,7 @@ u64 FUN_0041b950(int param_1)
       cVar1 = (char)puVar2[1];
       switch (cVar1) {
       case 1:
-        FUN_0034fdb0(*(u32 *)(puVar2 + 4));
+        FUN_0034fdb0_fcl(*(u32 *)(puVar2 + 4), 2);
         if (*(int *)(puVar2 + 2) != 0) {
           iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4));
           if (!(iVar3 < *(int *)(puVar2 + 2))) {
