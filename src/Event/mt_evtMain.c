@@ -5483,9 +5483,9 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
           uVar5 = 1;
         }
         sVar6 = *(short *)((int)puVar1 + 0x14);
-        FUN_003b8e10_evt(uVar7,uVar8,sVar6,uVar5);
+        uVar7 = *(u16 *)(param_3 + 0xc);
         uVar8 = (u8)puVar1[0xc];
-        FUN_003b8e10(uVar7,uVar8,sVar6,uVar5);
+        FUN_003b8e10_evt(uVar7,uVar8,sVar6,uVar5);
 
       }
 

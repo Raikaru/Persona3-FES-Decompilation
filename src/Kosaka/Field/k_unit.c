@@ -1979,14 +1979,10 @@ void func_001d1910(void)
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        switch (unit->genusBase != NULL && unit->resrc != NULL)
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-        case 1:
             func_001a60d0(0, unit->mdl, 0, 1);
             unit->unk_17c = 0;
-            break;
-        default:
-            break;
         }
     }
 }
@@ -2743,19 +2739,14 @@ s32 func_001d3830(KwlnTask* task)
     result = -1;
     if (((s32*)task->workData)[3] != 0)
     {
-        switch (1)
+        remaining = func_001d38a0(task);
+        if (remaining == 0)
         {
-        case 1:
-            remaining = func_001d38a0(task);
-            if (remaining == 0)
-            {
-                result = 2;
-            }
-            else if (remaining < 0x3c)
-            {
-                result = 1;
-            }
-            break;
+            result = 2;
+        }
+        else if (remaining < 0x3c)
+        {
+            result = 1;
         }
     }
     return result;

@@ -1330,12 +1330,15 @@ void func_001a8140(void* state, u32 mode)
 // FUN_001a8820 NONMATCHING
 void* func_001a8820(void* item)
 {
-    if ((*(u8*)((u8*)item + 2) & 4) != 0 && kclump_word(item, 0x18) != 0)
+    if ((*(u8*)((u8*)item + 2) & 4) == 0 || *(void**)((u8*)item + 0x18) == NULL)
+    {
+        return item;
+    }
     {
         RwSphere* sphere = func_004912b0(item);
         if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
         {
-            kclump_call_resource(item);
+            (*(void (**)(void))((u8*)item + 0x48))();
             if (*(u32*)0x007ce154 == 1)
             {
                 RwV3d line;

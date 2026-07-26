@@ -126,7 +126,7 @@ void FUN_003a3530(u32 *param_1);
 void FUN_003a3680(u32 *param_1);
 void FUN_003a37c0(int param_1,u64 param_2);
 #pragma alias FUN_003a37c0_direct FUN_003a37c0
-extern void FUN_003a37c0_direct(int param_1,u64 param_2);
+extern void FUN_003a37c0_direct(int param_1,u32 param_2);
 #pragma alias FUN_003a3ab0_direct FUN_003a3ab0
 extern void FUN_003a3ab0_direct(int param_1);
 void FUN_003a3ab0(int param_1);
@@ -722,21 +722,20 @@ u32 FUN_003a2660(void)
 
     }
 
-    uVar4 = FUN_0035ed20(0);
 
     if (*(short *)(iVar1 + 0x54) == 0) {
 
-      FUN_003a37c0(lVar3,uVar4);
+      FUN_003a37c0_direct(lVar3,uVar4);
 
     }
 
     else if (*(short *)(iVar1 + 0x54) < 0) {
 
-      *(u16 *)(iVar1 + 0x54) = 0;
+      FUN_003a3ab0_direct(lVar3);
 
       FUN_0035f060(*(u16 *)(iVar1 + 0x56));
 
-      FUN_003a3ab0(lVar3);
+      FUN_003a3ab0_direct(lVar3);
 
       return 1;
 
