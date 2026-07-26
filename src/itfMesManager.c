@@ -3830,14 +3830,14 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 
 void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
 {
-  int iVar1;
   int color;
-  int iVar2;
-  u8 *child;
+  int diff;
+  int cat;
+  int candidate;
 
-  iVar1 = param_3 - param_2;
-  param_2 = iVar1 - 1;
-  iVar2 = *(int *)(param_1 + 8);
+  diff = param_3 - param_2;
+  param_2 = diff - 1;
+  cat = *(int *)(param_1 + 8);
   goto count_check;
 
 advance:
@@ -3847,12 +3847,12 @@ advance:
   }
 
 load:
-  iVar1 = *(int *)(param_1 + 8);
-  if (iVar2 == iVar1) {
+  candidate = *(int *)(param_1 + 8);
+  if (cat == candidate) {
     goto advance;
   }
   param_2 = param_2 - 1;
-  iVar2 = iVar1;
+  cat = candidate;
 
 count_check:
   if (param_2 > 0) {
@@ -3861,15 +3861,15 @@ count_check:
 
 set_start:
   color = (u8)param_4;
-  iVar1 = *(int *)(param_1 + 0x1c);
+  candidate = *(int *)(param_1 + 0x1c);
   goto set_check;
 
 set_store:
-  *(u8 *)(iVar1 + 0x14) = (u8)color;
-  iVar1 = *(int *)(iVar1 + 0x28);
+  *(u8 *)(candidate + 0x14) = (u8)color;
+  candidate = *(int *)(candidate + 0x28);
 
 set_check:
-  if (iVar1 != 0) {
+  if (candidate != 0) {
     goto set_store;
   }
   param_1 = *(int *)(param_1 + 0x24);
@@ -3877,8 +3877,8 @@ set_check:
   case 0:
     goto done;
   }
-  iVar1 = *(int *)(param_1 + 8);
-  if (iVar2 == iVar1) {
+  candidate = *(int *)(param_1 + 8);
+  if (cat == candidate) {
     goto set_start;
   }
   goto done;
