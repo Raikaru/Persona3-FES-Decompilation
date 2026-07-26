@@ -631,6 +631,7 @@ void func_001ce880(void)
 }
 
 #pragma opt_loop_invariants on
+// Retail offsets 0x000-0x2f0 re-fetch gFldUnitsPc fields; 0x478-0x4b0 and 0x8d8-0x930 copy matrices inline; 0x52c-0x79c and 0x9d8-0xe44 expand formation/dungeon dispatches.
 // FUN_001CE960 NONMATCHING
 u32 func_001ce960(void)
 {
@@ -656,45 +657,50 @@ u32 func_001ce960(void)
     axis = DAT_00683910;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        unit = &gFldUnitsPc[i];
-        if (unit->genusBase == NULL || unit->resrc != NULL)
+        if (gFldUnitsPc[i].genusBase == NULL ||
+            gFldUnitsPc[i].resrc != NULL)
         {
             continue;
         }
-        if (func_00316f70(unit->mdl) == false)
+        if (func_00316f70(gFldUnitsPc[i].mdl) == false)
         {
             return false;
         }
         for (j = 0; j < 5; j++)
         {
-            if (func_00319770(unit->mdl, (u16)j) == false)
+            if (func_00319770(gFldUnitsPc[i].mdl, (u16)j) == false)
             {
                 return false;
             }
         }
-        cdvd = unit->scrCdvd;
-        if (cdvd == NULL)
+        if (gFldUnitsPc[i].scrCdvd == NULL)
         {
             continue;
         }
-        if (H_Cdvd_IsFileLoaded(cdvd) == false)
+        if (H_Cdvd_IsFileLoaded(gFldUnitsPc[i].scrCdvd) == false)
         {
             return false;
         }
         allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
-        unit->unk_1b4 = allocate(1, cdvd->fileSize, 0x40000);
-        *(u32*)((u8*)unit + 0x1b8) = cdvd->fileSize;
-        memcpy(unit->unk_1b4, cdvd->fileMemory, cdvd->fileSize);
-        H_Cdvd_Destroy(cdvd);
-        unit->scrCdvd = NULL;
+        gFldUnitsPc[i].unk_1b4 =
+            allocate(1, gFldUnitsPc[i].scrCdvd->fileSize, 0x40000);
+        *(u32*)((u8*)&gFldUnitsPc[i] + 0x1b8) =
+            gFldUnitsPc[i].scrCdvd->fileSize;
+        memcpy(gFldUnitsPc[i].unk_1b4,
+               gFldUnitsPc[i].scrCdvd->fileMemory,
+               gFldUnitsPc[i].scrCdvd->fileSize);
+        H_Cdvd_Destroy(gFldUnitsPc[i].scrCdvd);
+        gFldUnitsPc[i].scrCdvd = NULL;
         for (j = 0; j < 5; j++)
         {
-            weapon = *(Model**)((u8*)unit->mdl + 0x3b8 + j * 0xc);
+            weapon = *(Model**)((u8*)gFldUnitsPc[i].mdl + 0x3b8 + j * 0xc);
             if (weapon != NULL)
             {
-                *(u16*)((u8*)unit + 0x19e + j * sizeof(u16)) =
+                *(u16*)((u8*)&gFldUnitsPc[i] + 0x19e + j * sizeof(u16)) =
                     *(u16*)((u8*)weapon + 0x418);
-                func_00319230(weapon, 3);
+                func_00319230(
+                    *(Model**)((u8*)gFldUnitsPc[i].mdl + 0x3b8 + j * 0xc),
+                    3);
             }
         }
     }
@@ -708,28 +714,35 @@ u32 func_001ce960(void)
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        unit = &gFldUnitsPc[i];
-        if (unit->genusBase == NULL || unit->resrc != NULL)
+        if (gFldUnitsPc[i].genusBase == NULL ||
+            gFldUnitsPc[i].resrc != NULL)
         {
             continue;
         }
-        resourceId = func_003b6030((u32)i, 1, unit->mdl);
-        resource = (ResrcModelChar*)func_003b5d10(resourceId);
-        unit->resrc = resource;
-        if (resource == NULL)
+        resourceId = func_003b6030((u32)i, 1, gFldUnitsPc[i].mdl);
+        gFldUnitsPc[i].resrc =
+            (ResrcModelChar*)func_003b5d10(resourceId);
+        if (gFldUnitsPc[i].resrc == NULL)
         {
             return false;
         }
-        func_001ad8c0(i == 0 ? 60.0f : 35.0f,
-                      resource->collisCtlTask);
-        resource->baseMdl = (Model*)func_00317450(uGpffffb52c);
-        scale.x = func_001ad8b0(resource->collisCtlTask);
+        if (i == 0)
+        {
+            func_001ad8c0(60.0f, gFldUnitsPc[i].resrc->collisCtlTask);
+        }
+        else
+        {
+            func_001ad8c0(35.0f, gFldUnitsPc[i].resrc->collisCtlTask);
+        }
+        gFldUnitsPc[i].resrc->baseMdl =
+            (Model*)func_00317450(uGpffffb52c);
+        scale.x = func_001ad8b0(gFldUnitsPc[i].resrc->collisCtlTask);
         scale.y = scale.x;
         scale.z = scale.x;
-        func_00318a90(resource->baseMdl, &scale, 2);
-        func_004cb420(func_00318b70(unit->mdl),
-                      func_00318b70(resource->baseMdl));
-        func_00317730(resource->baseMdl);
+        func_00318a90(gFldUnitsPc[i].resrc->baseMdl, &scale, 2);
+        func_004cb420(func_00318b70(gFldUnitsPc[i].mdl),
+                      func_00318b70(gFldUnitsPc[i].resrc->baseMdl));
+        func_00317730(gFldUnitsPc[i].resrc->baseMdl);
 
         if (K_Scene_001a0250() == 1)
         {
@@ -738,9 +751,15 @@ u32 func_001ce960(void)
             fieldPosition.y = 2.0f;
             field = func_001b9120();
             fieldPosition.z = (f32)(u8)field[0x3d] * 72.0f;
-            memcpy(reference,
-                   mdlGetMatrix(((ResrcModelChar*)gFldUnitsPc[0].resrc)->mdl),
-                   sizeof(RwMatrix));
+            field = (u8*)mdlGetMatrix(gFldUnitsPc[0].resrc->mdl);
+            cell = (u8*)reference;
+            for (j = 0; j < 8; j++)
+            {
+                *(f32*)cell = *(f32*)field;
+                *(f32*)(cell + 4) = *(f32*)(field + 4);
+                field += 8;
+                cell += 8;
+            }
             field = func_001b9120();
             orientation = (u8)field[0x3d] << 8;
             field = func_001b9120();
@@ -748,13 +767,14 @@ u32 func_001ce960(void)
             cell = func_001b9120();
             orientation = (u8)cell[orientation + 0x4e] + 2;
             orientation &= ~3;
-            func_001adff0(resource->collisCtlTask,
+            func_001adff0(gFldUnitsPc[i].resrc->collisCtlTask,
                           &axis, (f32)orientation * 90.0f);
             if (func_001c0040() == 4)
             {
                 if (i == 0)
                 {
-                    func_001adc20(resource->collisCtlTask, &fieldPosition);
+                    func_001adc20(gFldUnitsPc[i].resrc->collisCtlTask,
+                                  &fieldPosition);
                 }
                 else
                 {
@@ -766,52 +786,208 @@ u32 func_001ce960(void)
                             partyCount++;
                         }
                     }
-                    ((void (*)(void*, u32, u32))func_001d0bc0)(
-                        partyPositions, (u32)partyCount, (u32)j);
-                    func_001adc20(resource->collisCtlTask,
-                                  (const RwV3d*)(partyPositions +
-                                      (i - 1) * 0x110 + 0x190));
+                    func_001d0bc0(partyPositions, (u32)partyCount);
+                    func_001adc20(
+                        gFldUnitsPc[i].resrc->collisCtlTask,
+                        (const RwV3d*)(partyPositions +
+                            (i - 1) * 0x110 + 0x190));
                 }
             }
             else
             {
-                FldUnit_SetPcFormationPosition(i, unit, reference,
-                                               &fieldPosition);
+                switch (i)
+                {
+                case 0:
+                    func_001adc20(gFldUnitsPc[i].resrc->collisCtlTask,
+                                  &fieldPosition);
+                    break;
+                case 1:
+                    {
+                        RwV3d position;
+                        RwV3d offset;
+                        position = reference->pos;
+                        offset = reference->right;
+                        RwV3dNormalize(&offset, &offset);
+                        position.x += offset.x * 120.0f;
+                        position.y += offset.y * 120.0f;
+                        position.z += offset.z * 120.0f;
+                        func_001adc20(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &position);
+                    }
+                    break;
+                case 2:
+                    {
+                        RwV3d position;
+                        RwV3d offset;
+                        position = reference->pos;
+                        offset = reference->right;
+                        RwV3dNormalize(&offset, &offset);
+                        offset.x = -offset.x;
+                        offset.y = -offset.y;
+                        offset.z = -offset.z;
+                        position.x += offset.x * 120.0f;
+                        position.y += offset.y * 120.0f;
+                        position.z += offset.z * 120.0f;
+                        func_001adc20(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &position);
+                    }
+                    break;
+                case 3:
+                    {
+                        RwV3d position;
+                        RwV3d offset;
+                        position = reference->pos;
+                        offset = reference->at;
+                        RwV3dNormalize(&offset, &offset);
+                        offset.x = -offset.x;
+                        offset.y = -offset.y;
+                        offset.z = -offset.z;
+                        position.x += offset.x * 150.0f;
+                        position.y += offset.y * 150.0f;
+                        position.z += offset.z * 150.0f;
+                        func_001adc20(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &position);
+                    }
+                    break;
+                }
             }
         }
         else
         {
-            if (unit->unk_168 == NULL)
+            if (gFldUnitsPc[i].unk_168 == NULL)
             {
-                func_001adc20(resource->collisCtlTask, &fixedPosition);
-                RwMatrixUpdate(mdlGetMatrix(unit->mdl));
-                func_003182d0(unit->mdl, 0,
-                              (u32)func_001dde00(unit->charId), 0, 1);
+                func_001adc20(gFldUnitsPc[i].resrc->collisCtlTask,
+                              &fixedPosition);
+                RwMatrixUpdate(mdlGetMatrix(gFldUnitsPc[i].mdl));
+                func_003182d0(
+                    gFldUnitsPc[i].mdl, 0,
+                    (u32)func_001dde00(gFldUnitsPc[i].charId), 0, 1);
             }
             else
             {
-                memcpy(reference,
-                       mdlGetMatrix(((ResrcModelChar*)gFldUnitsPc[0].resrc)->mdl),
-                       sizeof(RwMatrix));
-                if (func_002ff790(unit->genusBase) == false)
+                field = (u8*)mdlGetMatrix(gFldUnitsPc[0].resrc->mdl);
+                cell = (u8*)reference;
+                for (j = 0; j < 8; j++)
                 {
-                    func_003182d0(unit->mdl, 0, 0x15, 0, 0);
-                    func_00318770(unit->mdl, 0, func_00318910(unit->mdl, 0, 0x15) - 10.0f);
+                    *(f32*)cell = *(f32*)field;
+                    *(f32*)(cell + 4) = *(f32*)(field + 4);
+                    field += 8;
+                    cell += 8;
                 }
-                FldUnit_SetPcDungeonPosition(i, unit, reference, &axis);
+                if (func_002ff790(gFldUnitsPc[i].genusBase) == false)
+                {
+                    func_003182d0(
+                        gFldUnitsPc[i].mdl, 0,
+                        (u32)func_001dde00(gFldUnitsPc[i].charId), 0, 1);
+                }
+                else
+                {
+                    func_003182d0(gFldUnitsPc[i].mdl, 0, 0x15, 0, 0);
+                    func_00318770(
+                        gFldUnitsPc[i].mdl, 0,
+                        func_00318910(gFldUnitsPc[i].mdl, 0, 0x15) - 10.0f);
+                }
+                switch (i)
+                {
+                case 0:
+                    func_001adff0(
+                        gFldUnitsPc[i].resrc->collisCtlTask, &axis,
+                        *(f32*)((u8*)gFldUnitsPc[i].unk_168 + 0x10c));
+                    func_001adc20(
+                        gFldUnitsPc[i].resrc->collisCtlTask,
+                        (const RwV3d*)((u8*)gFldUnitsPc[i].unk_168 + 0x100));
+                    break;
+                case 1:
+                    {
+                        RwV3d position;
+                        RwV3d offset;
+                        position = reference->pos;
+                        offset = reference->right;
+                        RwV3dNormalize(&offset, &offset);
+                        position.x += offset.x * 90.0f;
+                        position.y += offset.y * 90.0f;
+                        position.z += offset.z * 90.0f;
+                        offset = reference->at;
+                        RwV3dNormalize(&offset, &offset);
+                        offset.x = -offset.x;
+                        offset.y = -offset.y;
+                        offset.z = -offset.z;
+                        position.x += offset.x * 70.0f;
+                        position.y += offset.y * 70.0f;
+                        position.z += offset.z * 70.0f;
+                        func_001adff0(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &axis,
+                            *(f32*)((u8*)gFldUnitsPc[i].unk_168 + 0x10c));
+                        func_001adc20(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &position);
+                    }
+                    break;
+                case 2:
+                    {
+                        RwV3d position;
+                        RwV3d offset;
+                        position = reference->pos;
+                        offset = reference->right;
+                        RwV3dNormalize(&offset, &offset);
+                        offset.x = -offset.x;
+                        offset.y = -offset.y;
+                        offset.z = -offset.z;
+                        position.x += offset.x * 90.0f;
+                        position.y += offset.y * 90.0f;
+                        position.z += offset.z * 90.0f;
+                        offset = reference->at;
+                        RwV3dNormalize(&offset, &offset);
+                        offset.x = -offset.x;
+                        offset.y = -offset.y;
+                        offset.z = -offset.z;
+                        position.x += offset.x * 70.0f;
+                        position.y += offset.y * 70.0f;
+                        position.z += offset.z * 70.0f;
+                        func_001adff0(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &axis,
+                            *(f32*)((u8*)gFldUnitsPc[i].unk_168 + 0x10c));
+                        func_001adc20(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &position);
+                    }
+                    break;
+                case 3:
+                    {
+                        RwV3d position;
+                        RwV3d offset;
+                        position = reference->pos;
+                        offset = reference->at;
+                        RwV3dNormalize(&offset, &offset);
+                        offset.x = -offset.x;
+                        offset.y = -offset.y;
+                        offset.z = -offset.z;
+                        position.x += offset.x * 150.0f;
+                        position.y += offset.y * 150.0f;
+                        position.z += offset.z * 150.0f;
+                        func_001adff0(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &axis,
+                            *(f32*)((u8*)gFldUnitsPc[i].unk_168 + 0x10c));
+                        func_001adc20(
+                            gFldUnitsPc[i].resrc->collisCtlTask, &position);
+                    }
+                    break;
+                }
             }
             func_001a01c0();
         }
 
         if (i != 0)
         {
-            unit->unk_170 = (KwlnTask*)func_001af930(0, resource);
-            unit->unk_16c = (KwlnTask*)func_00431670(0, i, unit);
+            gFldUnitsPc[i].unk_170 =
+                (KwlnTask*)func_001af930(0, gFldUnitsPc[i].resrc);
+            gFldUnitsPc[i].unk_16c =
+                (KwlnTask*)func_00431670(0, i, &gFldUnitsPc[i]);
         }
-        unit->unk_180 = func_001d40e0(NULL, unit);
-        RwMatrixUpdate(mdlGetMatrix(unit->mdl));
+        gFldUnitsPc[i].unk_180 =
+            func_001d40e0(NULL, &gFldUnitsPc[i]);
+        RwMatrixUpdate(mdlGetMatrix(gFldUnitsPc[i].mdl));
         func_001a0dc0(resourceId, 1);
-        func_001ad870(resource->collisCtlTask, 0x40000000);
+        func_001ad870(gFldUnitsPc[i].resrc->collisCtlTask,
+                      0x40000000);
     }
     if ((PTR_DAT_007cd540[0] == 0xE && PTR_DAT_007cd540[1] == 5) ||
         K_Scene_001a0250() == 1)
