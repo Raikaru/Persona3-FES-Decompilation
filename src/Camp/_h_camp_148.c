@@ -1973,6 +1973,9 @@ void h_campDrawItemFrame(int param_1)
                   end.u, start.u, 0, 0, 0, 10);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
                   start.u, end.u, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0xcc), 0, 2, 1,
+                  CAMP_PAIR_FLOATS(126.0f, 703.0f),
+                  CAMP_PAIR_FLOATS(126.0f, 402.0f), 0, 0, 0, 10);
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 0,
                   CAMP_PAIR_FLOATS(-285.0f, 321.0f),
