@@ -72,6 +72,10 @@ extern u32 FUN_003c6c50_typed(int param_1);
 extern u32 FUN_003c6c80_typed(int param_1);
 #pragma alias FUN_003c7c90_typed FUN_003c7c90
 extern void FUN_003c7c90_typed(int param_1);
+#pragma alias FUN_005225a8_nm FUN_005225a8
+extern void FUN_005225a8_nm(const char *format,...);
+#pragma alias FUN_001052b0_nm FUN_001052b0
+extern void FUN_001052b0_nm(const char *format,...);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003c5e20(int param_1,u32 param_2);
 void FUN_003c5e80(int param_1,u32 param_2);
@@ -2000,11 +2004,11 @@ u32 FUN_003c77a0(void)
 
   lVar2 = FUN_003c7d50_direct();
 
-  FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x158);
+  FUN_005225a8_nm(&gp0xffffaa08,DAT_006a3e18_abs,0x158);
 
-  FUN_005225a8(DAT_006a3e30_abs);
+  FUN_005225a8_nm(DAT_006a3e30_abs);
 
-  FUN_001052b0(DAT_006a3e30_abs);
+  FUN_001052b0_nm(DAT_006a3e30_abs);
 
   if (lVar2 == 0) {
 

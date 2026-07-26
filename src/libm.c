@@ -181,16 +181,13 @@ float cosf(float x)
 
 #pragma optimization_level 3
 // FUN_0052e788 NONMATCHING
-float fabsf(register float x)
+float fabsf(float x)
 {
-    union {
-        float f;
-        u32 i;
-    } ux;
-
-    ux.f = x;
-    ux.i &= 0x7FFFFFFF;
-    return ux.f;
+    if (x < 0.0f)
+    {
+        return -x;
+    }
+    return x;
 }
 #pragma optimization_level 2
 

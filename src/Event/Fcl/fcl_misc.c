@@ -407,9 +407,9 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
 // FUN_003C8810 NONMATCHING
 u64 FUN_003c8810(int *param_1)
 {
-  int *node;
   int *item;
-
+  int *node;
+  int *next;
   item = *(int **)(param_1[6] + 4);
   while (item != 0) {
     node = *(int **)((u8 *)item + 0x14);

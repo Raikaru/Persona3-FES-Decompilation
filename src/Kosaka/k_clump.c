@@ -317,8 +317,8 @@ u32 func_001a66f0(void* clump, const char* name)
 u32 func_001a6740(void* geometry, const char* name)
 {
     void* material;
-    s32 resourceIndex;
     s32 materialIndex;
+    s32 resourceIndex;
     RpUserDataArray* userData;
     u32 result;
 

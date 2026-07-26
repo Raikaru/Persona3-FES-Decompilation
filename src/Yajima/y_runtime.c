@@ -16630,7 +16630,7 @@ u8 FUN_00454400(u32 *param_1,char param_2)
     uStack_8 = uStack_28;
     lVar2 = FUN_001acc30_typed((void*)(&uStack_30),(void*)(&uStack_10));
     if (lVar2 == 1) {
-      bVar1 = fStack_c <= 50.0f;
+      bVar1 = fStack_c <= 50.0;
     }
     else {
       bVar1 = 0;

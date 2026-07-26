@@ -13538,45 +13538,24 @@ bool FUN_0036d320(int param_1)
 
 
 u32 FUN_0036d470(int param_1)
-
-
-
 {
-
   int *piVar1;
-
   int iVar2;
-
   u32 uVar3;
 
-  
-
   uVar3 = 0;
-
   if (param_1 != 0) {
-
     piVar1 = *(int **)((int)param_1 + 0x164);
-
     if ((piVar1 != (int *)0x0) && (iVar2 = *piVar1, *(int *)((int)param_1 + 0xd4) == 5)) {
-
       if ((iVar2 == 3) || ((iVar2 == 0x1a || (iVar2 == 0x11)))) {
-
         uVar3 = 0;
-
       }
-
       else if (iVar2 == 0x21) {
-
         uVar3 = 0xfffffffa;
-
       }
-
     }
-
   }
-
   return uVar3;
-
 }
 
 
