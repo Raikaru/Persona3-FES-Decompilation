@@ -1613,7 +1613,7 @@ u64 FUN_003962c0(int param_1)
       *(u32 *)(iVar4 + 0x67c) = 0;
 
     }
-    if (*(int *)(iVar4 + 0x680) != 1) goto skip_680;
+    if (*(int *)(iVar4 + 0x680) == 1) {
 
       auStack_4[0] = 0x14;
 
@@ -1626,8 +1626,8 @@ u64 FUN_003962c0(int param_1)
       FUN_00359b40(*(f32 *)(iVar4 + 0x690),(void *)(iVar4 + 0x684),auStack_4);
 
       *(u32 *)(iVar4 + 0x680) = 0;
+    }
 
-skip_680:
 
     FUN_00395950_typed(lVar1);
 
