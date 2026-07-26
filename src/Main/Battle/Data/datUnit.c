@@ -47,8 +47,8 @@ DatUnitEc* datUnitCreateEc(u16 encountId)
     u16 j;
     u16 k;
 
-    count = 0;
     i = 0;
+    count = 0;
     for (; (u32)(i & 0xFFFF) < 5U; i++)
     {
         if (gEncountTbl[encountId].enmIds[i] != 0)

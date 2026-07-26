@@ -2781,7 +2781,7 @@ journey_true:
     
         }
     
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc0) {
+        if (*(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc0) {
     
           return 0xa9;
     
@@ -2819,15 +2819,21 @@ journey_true:
       
           if (lVar3 != 0) {
       
-            return 0xf8;
+            lVar3 = 0xf8;
       
           }
       
-          return 0xf7;
+          else {
+      
+            lVar3 = 0xf7;
+      
+          }
+      
+          return lVar3;
       
         }
       
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc2) {
+        if (*(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc2) {
       
           return 0xfa;
       
@@ -2865,15 +2871,21 @@ journey_true:
       
           if (lVar3 != 0) {
       
-            return 0x15d;
+            lVar3 = 0x15d;
       
           }
       
-          return 0x15c;
+          else {
+      
+            lVar3 = 0x15c;
+      
+          }
+      
+          return lVar3;
       
         }
       
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc4) {
+        if (*(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc4) {
       
           return 0x15f;
       
@@ -2911,15 +2923,21 @@ journey_true:
       
           if (lVar3 != 0) {
       
-            return 0x1a6;
+            lVar3 = 0x1a6;
       
           }
       
-          return 0x1a5;
+          else {
+      
+            lVar3 = 0x1a5;
+      
+          }
+      
+          return lVar3;
       
         }
       
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc6) {
+        if (*(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc6) {
       
           return 0x1a8;
       
@@ -2957,15 +2975,21 @@ journey_true:
       
           if (lVar3 != 0) {
       
-            return 0x1ef;
+            lVar3 = 0x1ef;
       
           }
       
-          return 0x1ee;
+          else {
+      
+            lVar3 = 0x1ee;
+      
+          }
+      
+          return lVar3;
       
         }
       
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xca) {
+        if (*(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xca) {
       
           return 0x1f1;
       
@@ -3003,15 +3027,21 @@ journey_true:
       
           if (lVar3 != 0) {
       
-            return 0x238;
+            lVar3 = 0x238;
       
           }
       
-          return 0x237;
+          else {
+      
+            lVar3 = 0x237;
+      
+          }
+      
+          return lVar3;
       
         }
       
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xcc) {
+        if (*(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xcc) {
       
           return 0x23a;
       

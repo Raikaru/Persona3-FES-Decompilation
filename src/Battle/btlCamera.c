@@ -1355,7 +1355,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
             radius = 1.0f;
             if (ratio > radius)
             {
-                radius = ratio * radius;
+                radius = radius * ratio;
             }
             ratio = 2.0f;
             if (radius <= ratio)

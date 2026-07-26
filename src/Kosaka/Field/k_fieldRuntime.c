@@ -77,6 +77,10 @@ extern u8 D_00684370[];
 extern char D_00684330[];
 extern char D_00684380[];
 extern void* func_001a4cd0(s32 parent);
+}
+
+// FUN_001E4B10
+void func_001e4b10(RuntimeTask* task, u32 request)
 struct RuntimeListNode
 {
     u32 flags;

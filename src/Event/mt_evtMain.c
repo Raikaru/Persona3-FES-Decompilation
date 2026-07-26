@@ -1867,7 +1867,7 @@ void FUN_00361c30(int param_1,int param_2)
 }
 
 
-// FUN_00361CA0 NONMATCHING
+// FUN_00361CA0
 
 int FUN_00361ca0(int param_1,int param_2)
 
@@ -1893,14 +1893,14 @@ int FUN_00361ca0(int param_1,int param_2)
 
   *piVar2 = param_1;
 
-  piVar2[2] = -1;
+  iVar3 = piVar2[2] = -1;
 
   *(u16 *)(piVar2 + 3) = 0;
 
   piVar2[0x19] = 0;
   switch (param_1) {
   case 0x30:
-    *(u8 *)((int)piVar2 + 0x22) = (u8)-1;
+    *(u8 *)((int)piVar2 + 0x22) = (u8)iVar3;
     break;
   }
   FUN_00361b60((int *)lVar1,param_2);

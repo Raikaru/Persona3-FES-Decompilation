@@ -12653,7 +12653,7 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
                  ,char param_6)
 
 {
-  u8 uVar3;
+  int uVar3;
   u32 uVar2;
   int iVar1;
   
@@ -12677,7 +12677,7 @@ void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int pa
                  ,char param_6)
 
 {
-  u8 uVar3;
+  int uVar3;
   u32 uVar2;
   int iVar1;
   
