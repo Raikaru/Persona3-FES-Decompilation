@@ -1619,14 +1619,32 @@ void func_0010cdd0(void)
                 void* intermediate;
                 s32 inputSize;
                 s32 intermediateSize;
+                void** inputField;
+                s32* inputSizeField;
+                void** intermediateField;
+                s32* intermediateSizeField;
+                void** outputField;
+                s32* outputSizeField;
+                s32* queueHandleField;
+                s32* decodeHandleField;
+                void** auxField;
                 s32 queueHandle;
                 s32 decodeHandle;
                 s32 auxHandle;
 
-                input = slot->input;
-                inputSize = slot->inputSize;
-                intermediate = slot->intermediate;
-                intermediateSize = slot->intermediateSize;
+                inputField = &slot->input;
+                inputSizeField = (s32*)&slot->inputSize;
+                intermediateField = &slot->intermediate;
+                intermediateSizeField = (s32*)&slot->intermediateSize;
+                outputField = &slot->output;
+                outputSizeField = (s32*)&slot->outputSize;
+                queueHandleField = &slot->queueHandle;
+                decodeHandleField = &slot->decodeHandle;
+                auxField = &slot->aux;
+                input = *inputField;
+                inputSize = *inputSizeField;
+                intermediate = *intermediateField;
+                intermediateSize = *intermediateSizeField;
 
                 if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
                 {
@@ -1635,24 +1653,28 @@ void func_0010cdd0(void)
                     allocBuf = (void*)func_0050B690(0, size[0], 0);
                     if (allocBuf == NULL) { K_Assert("h_sndcom.c", 0x1A2); }
                     func_0010cce0(allocBuf, fileData, size[0]);
-                    slot->output = allocBuf;
-                    slot->outputSize = size[0];
+                    *outputField = allocBuf;
+                    *outputSizeField = (s32)size[0];
                     H_Cdvd_Destroy(slot->request);
                     slot->request = NULL;
 
-                    queueHandle = func_0051DC70(3, -1, (s32)input, inputSize, (s32)intermediate, intermediateSize);
+                    queueHandle = func_0051DC70(3, -1, (s32)input,
+                                                inputSize, (s32)intermediate,
+                                                intermediateSize);
                     if (queueHandle < 0) { K_Assert("h_sndcom.c", 0x1AE); }
-                    slot->queueHandle = queueHandle;
+                    *queueHandleField = queueHandle;
 
                     decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
                     if (decodeHandle < 0) { K_Assert("h_sndcom.c", 0x1B3); }
-                    slot->decodeHandle = decodeHandle;
+                    *decodeHandleField = decodeHandle;
 
-                    auxHandle = func_0051DDF0(0, -1, (s32)slot->output, slot->outputSize);
+                    auxHandle = func_0051DDF0(0, -1, (s32)*outputField,
+                                              *outputSizeField);
                     if (auxHandle < 0) { K_Assert("h_sndcom.c", 0x1B7); }
-                    slot->aux = (void*)(s32)auxHandle;
+                    *auxField = (void*)(s32)auxHandle;
 
-                    slot->completion = (void*)(s32)func_0051DDF0(5, slot->decodeHandle, (s32)slot->aux);
+                    slot->completion = (void*)(s32)func_0051DDF0(
+                        5, *decodeHandleField, (s32)*auxField);
                     slot->status = 1;
                     slot->state = 1;
                 }

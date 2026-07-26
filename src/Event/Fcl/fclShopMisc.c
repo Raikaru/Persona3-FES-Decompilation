@@ -246,7 +246,7 @@ u32 FUN_003f25e0(u64 param_1,long param_2,u32 param_3);
 u32 FUN_003f2940(u64 param_1,short *param_2,int param_3,u32 param_4);
 u64 FUN_003f2d60(int param_1);
 u64 FUN_003f2dc0(int param_1,int param_2);
-u32 FUN_003f2f70(u64 param_1,long param_2,u32 param_3);
+u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3);
  #pragma alias FUN_003f33d0_i FUN_003f33d0
  u64 FUN_003f33d0_i(int param_1,u32 param_2);
  #pragma alias FUN_003f3970_i FUN_003f3970
@@ -3408,163 +3408,85 @@ u64 FUN_003f2dc0(int param_1,int param_2)
 // FUN_003F2F70 NONMATCHING
 
 
-u32 FUN_003f2f70(u64 param_1,long param_2,u32 param_3)
-
-
-
+u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3)
 {
+  u32 option_flags;
+  u32 helper_flags;
+  u32 mode;
+  int source_index;
+  int source_count;
+  int i;
+  int list_index;
+  int *source;
+  int *entry;
+  int *choice;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  long lVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  int *piVar6;
-
-  u32 uVar7;
-
-  int iStack_4;
-
-  
-
-  uVar7 = 0;
-
+  option_flags = 0;
   if ((param_3 & 1) != 0) {
-
-    uVar7 = 0x400;
-
+    option_flags = 0x400;
   }
-
   if ((param_3 & 2) != 0) {
-
-    uVar7 = uVar7 | 0x800;
-
+    option_flags |= 0x800;
+  }
+  if ((param_2 < 0) || (param_2 > 8)) {
+    FUN_0019d3f0_fcl((const char *)(u32)0x6aede8,0xb9);
   }
 
-  if ((param_2 < 0) || (8 < param_2)) {
-
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
-
+  mode = datGetScenarioMode();
+  source_index = param_2;
+  if (mode != 0) {
+    source_index += 9;
   }
+  source = (int *)((u8 *)&DAT_006ac9d0 + source_index * 0x24);
+  *(short *)(*(int *)(*(int *)(param_1 + 0x24) + 0x44) + 4) = (short)param_2;
+  *(short *)(*(int *)(*(int *)(param_1 + 0x24) + 0x44) + 6) = (short)param_2;
 
-  lVar3 = datGetScenarioMode();
-
-  iVar5 = (int)param_2;
-
-  if (lVar3 != 0) {
-
-    iVar5 = iVar5 + 9;
-
+  choice = FUN_003f00d0_i(source,1,(int *)0);
+  if (choice == (int *)0) {
+    choice = FUN_003f00d0_i(source,0,(int *)0);
   }
-
-  iVar4 = iVar5 * 0x24;
-
-  iVar2 = *(int *)(*(int *)((int)param_1 + 0x24) + 0x44);
-
-  *(short *)(iVar2 + 4) = (short)param_2;
-
-  *(short *)(iVar2 + 6) = (short)param_2;
-
-
-  if (lVar3 == 0) {
-
-
-  }
-
-  if ((lVar3 != 0) && (lVar3 = FUN_003f25e0(param_1,lVar3,uVar7 | 0x1000), lVar3 != 0)) {
-
+  if ((mode != 0) && (choice != (int *)0) &&
+      (FUN_003f25e0_i(param_1,choice,option_flags | 0x1000) != 0)) {
     return 1;
-
   }
 
-  iStack_4 = 0;
-
-  while( 1 ) {
-
-    if (iStack_4 < *(int *)(&DAT_006ac9e8 + iVar4)) {
-
-      piVar6 = (int *)(((u32 **)&PTR_DAT_006ac9ec)[iVar5 * 9] + iStack_4 * 0xc);
-
-      iStack_4 = iStack_4 + 1;
-
+  helper_flags = option_flags | 0x1000;
+  source_count = *(int *)((u8 *)source + 0x18);
+  for (i = 0; i < source_count; i++) {
+    entry = (int *)(((u32 **)&PTR_DAT_006ac9ec)[source_index * 9] + i * 0xc);
+    if (entry == (int *)0) {
+      break;
     }
-
-    else {
-
-      piVar6 = (int *)0x0;
-
+    if ((datGetLevel(1) & 0xff) < (u32)*entry) {
+      break;
     }
-
-    if ((piVar6 == (int *)0x0) ||
-
-       (iVar2 = *piVar6, uVar1 = datGetLevel(1), (int)(uVar1 & 0xff) < iVar2)) break;
-
-
-    if (lVar3 != 0) {
-
+    if (mode != 0) {
       return 1;
-
     }
-
-  }
-
-  iStack_4 = 0;
-
-  while( 1 ) {
-
-
-    if (lVar3 == 0) {
-
-      lVar3 = 0;
-
-    }
-
-    else {
-
-      iStack_4 = iStack_4 + 1;
-
-    }
-
-    if (lVar3 == 0) break;
-
-
-    if (lVar3 != 0) {
-
+    if (FUN_003f2940_i(param_1,(short *)entry[2],entry[1],helper_flags) != 0) {
       return 1;
-
     }
-
   }
 
-
-  iStack_4 = 1;
-
-  while( 1 ) {
-
-    if (iVar2 < iStack_4) {
-
-      return 0;
-
+  list_index = 0;
+  choice = (int *)(u32)mode;
+  while (FUN_003f25e0_i(param_1,choice,option_flags | 0x1001) != 0) {
+    choice = FUN_003f00d0_i((int *)((u8 *)source + 0x10),0,&list_index);
+    if (choice == (int *)0) {
+      break;
     }
-
-    iVar4 = *(int *)(((u32 **)&PTR_DAT_006ac9f0)[iVar5 * 9] + 8) + iStack_4 * 0x20;
-
-    if ((iVar4 != 0) &&
-
-       (lVar3 = FUN_003f2940(param_1,*(short **)(iVar4 + 8),*(u32 *)(iVar4 + 4),
-                             uVar7 | 0x1000), lVar3 != 0)) break;
-
-    iStack_4 = iStack_4 + 1;
-
+    list_index++;
   }
 
-  return 1;
-
+  source_count = FUN_003f03e0(param_2);
+  for (i = 1; i <= source_count; i++) {
+    entry = (int *)(*(int *)(*(int *)((u8 *)source + 0x20) + 8) + i * 0x20);
+    if ((entry != (int *)0) &&
+        (FUN_003f2940_i(param_1,(short *)entry[2],entry[1],helper_flags) != 0)) {
+      break;
+    }
+  }
+  return 0;
 }
 
 // Retail sibling begins at 0x3f3280; comparator body reconstructed from 0x3f3280-0x3f33c8.

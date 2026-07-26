@@ -1319,6 +1319,8 @@ void FUN_001b4720(void* camera, u32* resource)
     {
         FUN_0019d3f0(0x678df8, 0x82d);
     }
+    FUN_00198610(2, 0);
+    FUN_00198610(2, 1);
     if ((*resource & 0xc0000000) == 0)
     {
         count = resource[5];
