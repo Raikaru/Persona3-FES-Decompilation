@@ -67,7 +67,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 void FUN_003b35e0(int count)
 {
   int i;
-  int limit;
+  register int limit;
   int size;
   u32 memory;
   int *node;

@@ -563,8 +563,8 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
     void* reallocated;
-    s32 intrState;
     size_t copySize;
+    s32 intrState;
     RwUInt32 mallocHint;
 
     mallocHint = hint;

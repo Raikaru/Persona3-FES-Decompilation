@@ -779,6 +779,7 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
 #undef campEquipmentDrawDigit
 #define campEquipmentDrawDigit(scale,alpha,font,frame,x,y) \
     campDrawSprite((void*)(u32)(scale),H_Maestro_001120a0(font),(frame),(u32)(alpha),(x),(y),(scale))
+#define campEquipmentEntry(work,index) (&(work)->entries[(index)])
  
 // FUN_0013d1a0 NONMATCHING
 
@@ -792,10 +793,10 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   int rowIndex;
   s32 entryIndex;
   int textureIndex;
-  float xBase;
-  float xMarker;
-  float yBase;
-  float xValue;
+  volatile float xBase;
+  volatile float xMarker;
+  volatile float yBase;
+  volatile float xValue;
   float yValue;
   float xIcon;
   float xRow;
@@ -1014,6 +1015,7 @@ LAB_0013e694:
 #undef campEquipmentDrawAtlas
 #undef campEquipmentDrawAlt
 #undef campEquipmentDrawDigit
+#undef campEquipmentEntry
  
 #define campEquipmentDrawFixed(texture,alpha,frame,x,y) \
   campDrawSprite(parent,DAT_00833A50[0],(frame),(alpha),(x),(y),(texture))

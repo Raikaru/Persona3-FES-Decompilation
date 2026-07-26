@@ -788,11 +788,9 @@ void func_001a7710(u32* state)
     KClumpMaterialNode* node;
     KClumpMaterialNode* next;
 
-    if (state == NULL)
+    if (state != NULL)
     {
-        return;
-    }
-    work = (KClumpFreeState*)(void*)state;
+        work = (KClumpFreeState*)(void*)state;
 
     while (work->list8 != 0)
     {
@@ -867,6 +865,7 @@ void func_001a7710(u32* state)
     }
 
     (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
+    }
 }
 
 // FUN_001a7910 NONMATCHING

@@ -63,6 +63,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2);
 u8 FUN_0041a730(u64 param_1,int param_2);
 u8 FUN_0041a900(u64 param_1,int param_2);
 u8 FUN_0041abc0(int param_1,int *param_2);
+u32 FUN_0041add0(int param_1,int *param_2);
 u32 FUN_0041ae20(int param_1);
 u8 FUN_0041aff0(int param_1,int param_2);
 u8 FUN_0041b530(int param_1);
@@ -3350,6 +3351,23 @@ u8 FUN_0041abc0(int param_1,int *param_2)
   return *(int *)(iVar1 + 8) <= iVar4 + 1;
 
 }
+// FUN_0041ADD0
+u32 FUN_0041add0(int param_1,int *param_2)
+{
+  int *piVar1;
+  int iVar2;
+  int iVar3;
+
+  piVar1 = *(int **)(param_2 + 1);
+  iVar2 = 0;
+  do {
+    iVar3 = *(int *)(piVar1 + iVar2 + 2);
+    *(s16 *)iVar3 = *(s16 *)iVar3 & -2;
+    iVar2 = iVar2 + 1;
+  } while (iVar2 < *(int *)(piVar1 + 1));
+  return 1;
+}
+
 #pragma optimization_level 2
 
 // FUN_0041AE20 NONMATCHING

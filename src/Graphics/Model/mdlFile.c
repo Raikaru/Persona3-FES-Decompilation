@@ -9819,8 +9819,10 @@ void FUN_00326030(int param_1,int param_2)
       PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
                 (*(u32 *)(*(int *)(node + 0x90) + 8), color);
     }
-    if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
-      PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
+    if (*(code *)((u8 *)PTR_LAB_0069be20_abs +
+                  ((u32)type * 0xc + (u32)type) * 4 + 0x30) != NULL) {
+      (*(code *)((u8 *)PTR_LAB_0069be20_abs +
+                 ((u32)type * 0xc + (u32)type) * 4 + 0x30))
                 (*(u32 *)(*(int *)(node + 0x90) + 8));
     }
     node = *(int *)(node + 0xac);
