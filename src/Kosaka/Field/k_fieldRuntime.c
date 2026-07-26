@@ -3196,11 +3196,6 @@ void func_001eba50(RuntimeResetWork* work)
     func_001ed0b0(work->work);
 }
 
-static inline u16 Runtime_CommandCode(u16 value)
-{
-    return value;
-}
-
 // FUN_001EBA80 NONMATCHING
 void func_001eba80(RuntimeCommandWork* work, u32* unused)
 {
@@ -3214,7 +3209,7 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
     stop = 0;
     do
     {
-        switch (Runtime_CommandCode(*cursor))
+        switch (*cursor)
         {
         case 0:
             stop = 1;

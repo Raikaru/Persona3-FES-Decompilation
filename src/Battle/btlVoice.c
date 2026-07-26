@@ -7321,52 +7321,59 @@ void func_002e9170(void)
     }
 }
 
-// FUN_002e92c0 NONMATCHING
+// FUN_002e92c0
 void func_002e92c0(void)
 
 {
-  short sVar1;
+  RwV3d position;
+  u16 sVar1;
   int iVar2;
-  f32 uStack_10;
-  f32 uStack_c;
-  f32 uStack_8;
-  uStack_c = 0.0f;
+
+  position.y = 0.0f;
   for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-    sVar1 = *(short *)(iVar2 + 0xa4);
-    if (sVar1 == 5) {
-      uStack_10 = 0.0f;
-      uStack_8 = 400.0f;
-      *(u8 *)(iVar2 + 0x9f0) = 1;
-    }
-    else if (sVar1 == 2) {
-      uStack_10 = 250.0f;
-      uStack_8 = 500.0f;
-      *(u8 *)(iVar2 + 0x9f0) = 2;
-    }
-    else if (sVar1 == 1) {
-      uStack_10 = -250.0f;
-      uStack_8 = 500.0f;
+    sVar1 = *(u16 *)(iVar2 + 0xa4);
+    switch (sVar1) {
+    case 1:
+      position.x = -250.0f;
+      position.z = 500.0f;
       *(u8 *)(iVar2 + 0x9f0) = 0;
+      break;
+    case 2:
+      position.x = 250.0f;
+      position.z = 500.0f;
+      *(u8 *)(iVar2 + 0x9f0) = 2;
+      break;
+    case 5:
+      position.x = 0.0f;
+      position.z = 400.0f;
+      *(u8 *)(iVar2 + 0x9f0) = 1;
+      break;
+    default:
+      break;
     }
-    FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&uStack_10);
-    FUN_0027f650(iVar2,&uStack_10);
+    FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&position.x);
+    FUN_0027f650(iVar2,&position.x);
   }
   for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-    sVar1 = *(short *)(iVar2 + 0xa4);
-    if (sVar1 == 0x114) {
-      uStack_10 = 200.0f;
-      uStack_8 = 100.0f;
+    sVar1 = *(u16 *)(iVar2 + 0xa4);
+    switch (sVar1) {
+    case 0x100:
+      position.x = 0.0f;
+      position.z = -400.0f;
+      break;
+    case 0x113:
+      position.x = -200.0f;
+      position.z = 100.0f;
+      break;
+    case 0x114:
+      position.x = 200.0f;
+      position.z = 100.0f;
+      break;
+    default:
+      break;
     }
-    else if (sVar1 == 0x113) {
-      uStack_10 = -200.0f;
-      uStack_8 = 100.0f;
-    }
-    else if (sVar1 == 0x100) {
-      uStack_10 = 0.0f;
-      uStack_8 = -400.0f;
-    }
-    FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&uStack_10);
-    FUN_0027f650(iVar2,&uStack_10);
+    FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&position.x);
+    FUN_0027f650(iVar2,&position.x);
   }
   return;
 }

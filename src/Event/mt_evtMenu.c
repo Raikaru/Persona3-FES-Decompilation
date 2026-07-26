@@ -16835,10 +16835,10 @@ void FUN_00382c80(int param_1,int param_2,int param_3,int param_4)
   case 0:
     iVar3 = param_2 * 0xc;
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_f32_5(fVar2,param_1 * 0xc,iVar3,0,(void *)0x6a0010);
+    FUN_0038a260_i2fi(param_1 * 0xc,iVar3,fVar2,0,(void *)(DAT_006a0000_abs + 0x10));
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_f32_6(fVar2,(param_1 + 0x19) * 0xc,iVar3,uVar1,
-                       &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
+    FUN_0038a260_i2f3((param_1 + 0x19) * 0xc,iVar3,fVar2,uVar1,
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
     break;
   default:
     return;
