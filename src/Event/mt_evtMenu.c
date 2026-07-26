@@ -75,6 +75,10 @@ extern u8 DAT_0069fe10_abs[];
 extern u8 DAT_0069fe30_abs[];
 #pragma alias DAT_0069ff60_abs DAT_0069ff60
 extern u8 DAT_0069ff60_abs[];
+#pragma alias DAT_0069ff80_abs DAT_0069ff80
+extern u8 DAT_0069ff80_abs[];
+#pragma alias DAT_0069ffa0_abs DAT_0069ffa0
+extern u8 DAT_0069ffa0_abs[];
 #pragma alias DAT_0069ffc0_abs DAT_0069ffc0
 extern u8 DAT_0069ffc0_abs[];
 extern u32 DAT_0069e420;
