@@ -32,6 +32,10 @@ extern s32 FUN_001158b0();
 extern s32 FUN_001127d0();
 extern s32 FUN_00115980();
 extern void FUN_003b32d0();
+#pragma alias campPersonaDrawTextCall FUN_003b32d0
+extern s32 campPersonaDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
+                                   s32 font, s32 alignment, const char* text,
+                                   s32 maxWidth, s32 shadow);
 extern void FUN_00523ac8();
 extern KwlnTask* DAT_007cdf60;
 extern s32 DAT_007cdf68;
@@ -624,7 +628,7 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
     bright = 0xff - fade;
     FUN_00523ac8(text, gp0xffff897c,
                  FUN_00173220(*(u16*)((u8*)persona + 2)));
-    FUN_003b32d0(alpha, (s32)(position.x + 111.0f),
+    campPersonaDrawTextCall(alpha, (s32)(position.x + 111.0f),
                  (s32)(position.y + 122.0f),
                  (u32)(bright | 0xffffff00), 10, 1, text, 0x10, 0x74);
     if (FUN_00176600(persona) == 0) {
