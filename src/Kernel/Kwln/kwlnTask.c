@@ -478,15 +478,14 @@ void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_001944C0 NONMATCHING. Set task flags for one task, its hierarchy, or the task lists.
+// FUN_001944C0. Set task flags for one task, its hierarchy, or the task lists.
 void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
 {
-    u32 listIndex;
+    s32 listIndex;
     KwlnTask* currentTask;
     u32 maskedFlags;
     u32 clearFlags;
     currentTask = NULL;
-
     switch (scope)
     {
         case 0:
@@ -510,11 +509,10 @@ scopeZero:
     if (enabled != 0)
     {
         task->stateAndFlags |= flags & 0x0ffffff0;
+        return;
     }
-    else
-    {
-        task->stateAndFlags &= ~(flags & 0x0ffffff0);
-    }
+
+    task->stateAndFlags &= ~(flags & 0x0ffffff0);
     return;
 
 scopeOne:
@@ -524,9 +522,9 @@ scopeOne:
     }
 
 scopeLists:
+    listIndex = 0;
     maskedFlags = flags & 0x0ffffff0;
     clearFlags = ~maskedFlags;
-    listIndex = 0;
     for (; listIndex < 3; listIndex++)
     {
         switch (listIndex)
@@ -546,7 +544,7 @@ scopeLists:
 
         while (currentTask != NULL)
         {
-            if (scope == 3 || currentTask != task)
+            if ((currentTask != task && scope == 1) || scope == 3)
             {
                 if (enabled != 0)
                 {
@@ -780,33 +778,41 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
 {
     u32 maxPriority;
     KwlnTask* currParent;
-    u32 priorityLimit;
     u32 currPriority;
     KwlnTask* task;
 
-    maxPriority = 0;
-    if (parentTask != NULL)
+    currParent = parentTask;
+    if (currParent == NULL)
     {
-        priorityLimit = priority + 1024;
-        currParent = parentTask;
-        while (currParent != NULL)
-        {
-            currPriority = currParent->priority;
-            if (currPriority >= priority &&
-                currPriority < priorityLimit &&
-                currPriority > maxPriority)
-            {
-                maxPriority = currPriority;
-            }
+        goto noParent;
+    }
 
-            currParent = currParent->parent;
-        }
+    maxPriority = 0;
+    goto parentCheck;
+
+parentBody:
+    currPriority = currParent->priority;
+    if (currPriority >= priority &&
+        currPriority < priority + 1024 &&
+        currPriority > maxPriority)
+    {
+        maxPriority = currPriority;
+    }
+
+    currParent = currParent->parent;
+
+parentCheck:
+    if (currParent != NULL)
+    {
+        goto parentBody;
     }
 
     if (maxPriority != 0)
     {
         priority = maxPriority + 1;
     }
+
+noParent:
 
     task = kwlnTaskInit(name, priority, update, destroy, workData);
     kwlnTaskAddChild(parentTask, task);
