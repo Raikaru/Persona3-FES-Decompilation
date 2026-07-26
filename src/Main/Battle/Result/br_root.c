@@ -3314,6 +3314,8 @@ void func_001f7210(void)
     u16 selected_id;
     s16 selected_value;
     u16 selected_aux;
+    u32 stat_cnt[5];
+    u8 card_buf[20];
     u32 item_substate;
     u32 debug_val;
     u32 total_weight;
@@ -3334,7 +3336,6 @@ void func_001f7210(void)
     u16 apply_mbr;
     u32 amount;
     u32 new_val;
-    u8 card_buf[20];
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
@@ -3414,7 +3415,10 @@ void func_001f7210(void)
         entry_count = (u32)func_00209d40(tbl_entry);
         if (entry_count == 1) {
             printf("item id : 0x%03x\n", BR_U16(entry, 4));
-            value = BR_S16(entry, 8);
+            selected_id = BR_U16(entry, 4);
+            selected_value = BR_S16(entry, 8);
+            selected_aux = BR_U16(entry, 4);
+            value = (s32)selected_value;
             kind = 2;
         } else if (entry_count == 0) {
             printf("rank %d\n", value);
@@ -3688,12 +3692,12 @@ void func_001f7210(void)
             /* Kind 1: card slot management */
             printf("rank %d\n", value);
             printf("type : get item\n");
-            if (BR_S16(entry, 2) < 0) {
-                func_001828d0((s16)BR_U16(entry, 0), (void *)card_buf, (void *)0);
+            if (selected_value < 0) {
+                func_001828d0((s16)selected_id, (void *)card_buf, (void *)0);
                 value = (s32)*(u8 *)(card_buf + 8);
             } else {
-                func_00182d90((s16)BR_U16(entry, 0), (u8)BR_U16(entry, 4),
-                             BR_U32(entry, 8), (void *)card_buf);
+                func_00182d90((s16)selected_id, (u8)selected_value,
+                             (u32)selected_aux, (void *)card_buf);
             }
             if (BR_U32(work, 0x34c0) >= 8) {
                 K_ASSERT(work != NULL, 0x5b9);
@@ -3709,13 +3713,13 @@ void func_001f7210(void)
             u8 item_count;
             /* Kind 1: item reward */
             printf("rank %d\n", value);
-            printf("item id : 0x%03x\n", BR_U16(entry, 0));
-            printf("item num : %d\n", BR_S32(entry, 8));
-            item_count = (u8)func_00170760(1, (s16)BR_U16(entry, 0));
+            printf("item id : 0x%03x\n", selected_id);
+            printf("item num : %d\n", (s32)selected_value);
+            item_count = (u8)func_00170760(1, (s16)selected_id);
             printf("money : %d\n", item_count);
-            item_count += (u8)value;
+            item_count += (u8)selected_value;
             if (item_count >= 100) item_count = 99;
-            func_00170860(1, (s16)BR_U16(entry, 0), item_count);
+            func_00170860(1, (s16)selected_id, item_count);
             printf("money : %d\n", item_count);
             break;
         }
@@ -3765,7 +3769,6 @@ void func_001f7210(void)
         }
         case 9:
         {
-            u32 stat_cnt[5];
             u32 i_idx;
             u32 out_idx;
             u32 rnd_stat;
@@ -3942,12 +3945,12 @@ void func_001f7210(void)
     switch (kind) {
     case 1:
         /* off=5948 */
-        func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), BR_S16(entry, 8)));
+        func_003c7bc0(0, (u32)func_00171110((u32)selected_id, (s32)selected_value));
         func_003c7430(10);
         goto animation_tail;
     case 2:
         /* off=6008 */
-        func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), 0));
+        func_003c7bc0(0, (u32)func_00171110((u32)selected_id, 0));
         func_003c7c20(1, value, 0);
         func_003c7430(11);
         goto animation_tail;
