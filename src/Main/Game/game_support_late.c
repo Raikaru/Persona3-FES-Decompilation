@@ -1319,54 +1319,8 @@ void func_0018d320(KwlnTask* task)
     u32 alpha;
     u32 burstAlpha;
     u32 randomFrame;
-    s16 pcId;
-    u32 hp;
-    u32 maxHp;
-    u32 sp;
-    u32 maxSp;
     gsDrawHeader(object, 6, 4, 5);
     gsDrawStatusBars(object);
-    pcId = GS_S16(object, 0x14);
-    gsDrawSprite(GS_PTR(object, 0x2c), 6, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 20.0f,
-                 GS_F32(transition, 0x3c) + 18.0f,
-                 GS_F32(transition, 0x24));
-    gsDrawSprite(GS_PTR(object, 0x2c), 4, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 20.0f,
-                 GS_F32(transition, 0x3c) + 18.0f,
-                 GS_F32(transition, 0x24));
-    gsDrawSprite(GS_PTR(object, 0x2c), 5, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 44.0f,
-                 GS_F32(transition, 0x3c) + 39.0f,
-                 GS_F32(transition, 0x24));
-    hp = datGetHp(pcId);
-    maxHp = func_0016c5f0(pcId);
-    width = ((hp & 0xffff) << 5) / (maxHp & 0xffff);
-    if (width != 0x20)
-    {
-        func_00113a30(GS_F32(transition, 0x24) - 1.0f,
-                      GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 46.0f,
-                      0xffffff00, 0x20 - width, 0x14);
-    }
-    gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 50.0f,
-                 GS_F32(transition, 0x3c) + 46.0f,
-                 GS_F32(transition, 0x24));
-    sp = datGetSp(pcId);
-    maxSp = func_0016c670(pcId);
-    width = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
-    if (width != 0x20)
-    {
-        func_00113a30(GS_F32(transition, 0x24) - 3.0f,
-                      GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 51.0f,
-                      0xffffff00, 0x20 - width, 0x14);
-    }
-    gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 50.0f,
-                 GS_F32(transition, 0x3c) + 51.0f,
-                 GS_F32(transition, 0x24) - 2.0f);
     frame = GS_S32(object, 0x18);
     if (frame > 5)
     {

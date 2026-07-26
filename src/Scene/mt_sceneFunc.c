@@ -4957,7 +4957,6 @@ u32 FUN_003bd230(void)
 #define FUN_003bd230(...) ((u32 (*)(...))FUN_003bd230)(__VA_ARGS__)
 #define DAT_0095b074 (*(u32 *)DAT_0095b074_abs)
 #define DAT_0095b1f8 (*(u32 *)DAT_0095b1f8_abs)
-#define DAT_0095b204 (*(u32 *)DAT_0095b204_abs)
 #define DAT_0095b208 (*(u32 *)DAT_0095b208_abs)
 #define DAT_0095b20c (*(u32 *)DAT_0095b20c_abs)
 #define DAT_0095b210 (*(u32 *)DAT_0095b210_abs)
@@ -5270,7 +5269,6 @@ void FUN_003bd280(void)
 #define FUN_003bd280(...) ((void (*)(...))FUN_003bd280)(__VA_ARGS__)
 #undef DAT_0095b074
 #undef DAT_0095b1f8
-#undef DAT_0095b204
 #undef DAT_0095b208
 #undef DAT_0095b20c
 #undef DAT_0095b210
