@@ -1979,7 +1979,7 @@ u32 FUN_003c7700(void)
 }
 #define FUN_003c7700(...) ((u32 (*)(...))FUN_003c7700)(__VA_ARGS__)
 #undef FUN_003c77a0
-// FUN_003C77A0 NONMATCHING
+// FUN_003C77A0
 
 
 u32 FUN_003c77a0(void)
@@ -2017,7 +2017,7 @@ u32 FUN_003c77a0(void)
 
     if (*(int *)lVar2 >= 0) {
 
-      FUN_003a3060();
+      FUN_003a3060_typed(*piVar3);
 
       *piVar3 = -1;
 

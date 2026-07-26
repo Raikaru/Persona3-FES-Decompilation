@@ -35,6 +35,14 @@ typedef struct BtlEnemyRecord
 #define ACTION_U32(action, offset) (*(u32*)((u8*)(action) + (offset)))
 #define BATTLE_U16(offset) (*(u16*)((u8*)gBtl + (offset)))
 
+#pragma alias FUN_002819d0_btlAction FUN_002819d0
+extern BtlPacket* FUN_002819d0_btlAction(BtlUnit*, const RwV3d*, f32, u32);
+#pragma alias FUN_00282d40_btlAction FUN_00282d40
+extern void FUN_00282d40_btlAction(f32, BtlUnit*, s16, u32, s8);
+#pragma alias FUN_002835e0_btlAction FUN_002835e0
+extern s16 FUN_002835e0_btlAction(f32, BtlUnit*, u16);
+#pragma alias FUN_002838d0_btlAction FUN_002838d0
+extern u16 FUN_002838d0_btlAction(f32, BtlUnit*, u16);
 /* Packet constructors not yet assigned public subsystem names. */
 BtlPacket* FUN_002819d0();
 BtlPacket* FUN_00282130();
@@ -5560,7 +5568,7 @@ void btlActionUpdateStateReinforce(BtlAction* action)
     btlUnitAnimate(action->unit, -1, 0xc, 1.0f, 3);
     FUN_002b77c0(action->unit);
     btlUnit0027f7c0(action->unit, &pos, NULL, &direction);
-    FUN_00282d40(action->unit->unk_9e4, action->unit, action->unit->unk_9e0, 0, action->unit->unk_9e8);
+    FUN_00282d40_btlAction(action->unit->unk_9e4, action->unit, action->unit->unk_9e0, 0, action->unit->unk_9e8);
     packet = FUN_002864a0(action->unit, action->unit->charId, 0x10);
     packet->unk_00 = 4;
     packet->parentUID = root->uid;
@@ -5583,7 +5591,7 @@ void btlActionUpdateStateReinforce(BtlAction* action)
     destination.y = pos.y + destination.y * 300.0f;
     destination.z = pos.z + destination.z * 300.0f;
     btlUnitSetPos(action->unit, &destination);
-    packet = FUN_002819d0(action->unit, &destination, 0.5f, 0);
+    packet = FUN_002819d0_btlAction(action->unit, &destination, 0.5f, 0);
     packet->unk_00 = 4;
     packet->parentUID = root->uid;
     packet->actionUID = action->uid;
@@ -5927,13 +5935,13 @@ void btlActionUpdateStateError(BtlAction* action)
     {
         animation = action->target.commandId == 3 ? 0x15 : 0xc;
         table = action->target.commandId == 3 ? 0x38 : 0x1c;
-        duration = FUN_002838d0(one, unit, animation);
+        duration = FUN_002838d0_btlAction(one, unit, animation);
     }
     else
     {
         animation = FUN_002d6370(action->target.specificId) == 0 ? 7 : 4;
         table = 0x21;
-        duration = FUN_002835e0(one, unit, animation);
+        duration = FUN_002835e0_btlAction(one, unit, animation);
     }
     animPacket = btlUnitCreateAnimPacket(unit, animation, 6, one, BTLUNIT_ANIM_MODE_ONCE);
     ACTION_U16(animPacket, 0x4a) = duration + 6;
@@ -6784,7 +6792,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
             if (FUN_00300580(ACTION_U32(selected->unit, 0xa2c), 0x180000) == 0 &&
                 FUN_0030b5a0(ACTION_U32(selected->unit, 0xa2c), 0) == 0)
             {
-                pkt = FUN_002819d0(selected, 0, D_00693300[0], 24);
+                pkt = FUN_002819d0_btlAction(selected, 0, D_00693300[0], 24);
                 pkt->unk_00 = 4;
                 pkt->parentUID = rootPkt->uid;
                 pkt->actionUID = action->uid;
@@ -6827,7 +6835,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
                     {
                         speedIdx = 0;
                     }
-                    pkt = FUN_002819d0(selected, 0, D_00693300[speedIdx], 24);
+                    pkt = FUN_002819d0_btlAction(selected, 0, D_00693300[speedIdx], 24);
                     pkt->actionUID = action->uid;
                     btlPacketRegister(pkt, BTLPACKET_TYPE_1);
                 }

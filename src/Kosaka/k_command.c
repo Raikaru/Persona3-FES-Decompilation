@@ -1347,6 +1347,7 @@ u32 FUN_001C4080()
     s32 index;
     u32 valid;
     u16 result;
+    u32 resultArg;
 
     index = scrGetIntPara(0);
     result = 0;
@@ -1361,7 +1362,8 @@ u32 FUN_001C4080()
     {
         result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
     }
-    scrSetIntReturnVal((s32)result);
+    resultArg = result;
+    scrSetIntReturnVal((s32)resultArg);
     return true;
 }
 

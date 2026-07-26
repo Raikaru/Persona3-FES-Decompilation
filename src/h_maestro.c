@@ -3722,18 +3722,17 @@ void func_001165c0(int param_1)
 
 {
 
-  int *p;
-
   int iVar2;
 
   int *slot;
 
   int iVar1;
 
+  int *p;
+
   
 
-  slot = (int *)param_1;
-  iVar1 = *(int *)((int)slot + 0x3c);
+  iVar1 = *(int *)(param_1 + 0x3c);
 
   if (*(int *)(iVar1 + 400) != 0) {
 
