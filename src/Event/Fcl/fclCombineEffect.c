@@ -3322,20 +3322,20 @@ u8 FUN_0041aff0(int param_1,int param_2)
     if (((DAT_007e094e & 8) != 0) || ((DAT_007e0958 & 8) != 0)) {
       *(u32 *)(*(int *)(param_1 + 0x3c) + 8) = 499;
     }
-    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0;
+    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0f;
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
       fVar7 = 0.0f - fGpffff82cc * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0;
+    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0f;
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
       uStack_10 = *(u64 *)(iVar1 + 0x10);
       uStack_8 = *(u32 *)(iVar1 + 0x18);
       fVar7 = (fVar7 + 0.0f) - fGpffff82cc * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0;
-    if ((fVar6 < -48.0f) || (48.0 < fVar6)) {
+    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0f;
+    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
       fStack_40 = *(float *)(iVar1 + 0x30);
       fStack_3c = *(float *)(iVar1 + 0x34);
       fStack_38 = *(float *)(iVar1 + 0x38);
@@ -3346,8 +3346,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
       fStack_38 = fStack_38 * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0;
-    if ((fVar6 < -48.0f) || (48.0 < fVar6)) {
+    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0f;
+    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
       fStack_40 = *(float *)(iVar1 + 0x10);
       fStack_3c = *(float *)(iVar1 + 0x14);
       fStack_38 = *(float *)(iVar1 + 0x18);
@@ -3360,12 +3360,12 @@ u8 FUN_0041aff0(int param_1,int param_2)
     }
     if (((DAT_007e094c & 4) == 0) && ((DAT_007e0956 & 4) == 0)) {
       if (((DAT_007e094c & 8) != 0) || ((DAT_007e0956 & 8) != 0)) {
-        fStack_3c = fStack_3c + 10.0;
+        fStack_3c = fStack_3c + 10.0f;
         bVar3 = 1;
       }
     }
     else {
-      fStack_3c = fStack_3c - 10.0;
+      fStack_3c = fStack_3c - 10.0f;
       bVar3 = 1;
     }
     if (bVar3) {
@@ -3373,8 +3373,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
       fStack_1c = *(float *)(iVar1 + 0x44);
       fStack_18 = *(float *)(iVar1 + 0x48);
       fStack_30 = fStack_20 * -1.0f;
-      fStack_2c = fStack_1c * -1.0;
-      fStack_28 = fStack_18 * -1.0;
+      fStack_2c = fStack_1c * -1.0f;
+      fStack_28 = fStack_18 * -1.0f;
       FUN_004cb750_typed(iVar1,&fStack_30,2);
       FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&uStack_10,2);
       FUN_004cb750_typed(iVar1,&fStack_40,2);
