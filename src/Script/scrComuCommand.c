@@ -962,7 +962,7 @@ u32 scrComu00360ed0(int param_1)
         cVar1 = *(char*)(param_1 + 0xc);
         switch (cVar1) {
         case 0:
-            result = cVar1 == 0;
+            result = 1;
             break;
         case 1:
             value = FUN_0038d6f0(*(short*)(param_1 + 8));

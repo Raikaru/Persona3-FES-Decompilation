@@ -589,7 +589,6 @@ void* func_001a70a0(void* object, void* data)
     {
         goto normal;
     }
-    state_two = 2;
     switch (state)
     {
     case 1:
@@ -599,6 +598,7 @@ void* func_001a70a0(void* object, void* data)
     default:
         goto default_state;
     }
+state2:
     func_0048a3f0(object);
     goto normal;
 default_state:
