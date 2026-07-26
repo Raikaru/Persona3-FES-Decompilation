@@ -4043,7 +4043,8 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
 
   for (uVar7 = 0; uVar7 < 8; uVar7 = uVar7 + 1) {
 
-    if ((*(short *)(&DAT_006acc60 + uVar7 * 2) == -1) || (lVar3 = datGetFlag(), lVar3 == 0)) {
+    if ((*(short *)(&DAT_006acc60 + uVar7 * 2) == -1) ||
+        (lVar3 = datGetFlag_s32(*(short *)(&DAT_006acc60 + uVar7 * 2)), lVar3 == 0)) {
 
       if ((uVar7 == 6) && (lVar3 = datGetScenarioMode(), lVar3 != 0)) {
 
@@ -4074,10 +4075,9 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
       }
 
       else {
-
-        datSetFlag();
-
+        datSetFlag(*(short *)(&DAT_006acc60 + uVar7 * 2),1);
       }
+
 
     }
 
@@ -4126,8 +4126,7 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
   }
 
   if (puVar6 != (u8 *)0x0) {
-
-
+    FUN_003f25e0(uVar4,(long)puVar6,uVar1 | 0x6000);
   }
 
   iStack_4 = 0;
@@ -4149,17 +4148,14 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
     }
 
     if ((puVar6 == (u8 *)0x0) || ((int)(u32)bStack_10 < iStack_4)) break;
-
-
-  }
+    FUN_003f2940(uVar4,*(short **)(puVar6 + 8),*(int *)(puVar6 + 4),uVar1 | 0x6000);
 
   for (iStack_4 = 1; iStack_4 <= (int)(u32)bStack_f; iStack_4 = iStack_4 + 1) {
 
     iVar2 = *(int *)(((u32 **)&PTR_DAT_006ac9f0)[iVar5 * 9] + 8) + iStack_4 * 0x20;
 
     if (iVar2 != 0) {
-
-
+      FUN_003f2940(uVar4,*(short **)(iVar2 + 8),*(int *)(iVar2 + 4),uVar1 | 0x6000);
     }
 
   }
@@ -4177,8 +4173,8 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
       }
 
       else {
-
-        datSetFlag();
+        datSetFlag(*(short *)(&DAT_006acc60 + uVar7 * 2),1);
+      }
 
       }
 

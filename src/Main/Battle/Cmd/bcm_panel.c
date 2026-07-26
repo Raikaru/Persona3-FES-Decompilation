@@ -2483,7 +2483,6 @@ void FUN_00229B40(void)
     u32 i;
     u32 state;
     void (*setState)(u32, u32);
-    void (*setQuad)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     base = (u8*)sBcmPanel;
@@ -2493,11 +2492,10 @@ void FUN_00229B40(void)
     resource = FUN_0021cca0(table0, 0x23);
     setState = D_00960090_fn;
     setState(1, FUN_0021cce0(resource));
-    setQuad = D_0096009C_fn;
-    setQuad((u32*)(base + 0x4230), 4, 0, 1, 2);
-    setQuad((u32*)(base + 0x4230), 4, 0, 2, 3);
-    setQuad((u32*)(base + 0x4330), 4, 0, 1, 2);
-    setQuad((u32*)(base + 0x4330), 4, 0, 2, 3);
+    BCM_29_QUAD((u32*)(base + 0x4230), 4, 0, 1, 2);
+    BCM_29_QUAD((u32*)(base + 0x4230), 4, 0, 2, 3);
+    BCM_29_QUAD((u32*)(base + 0x4330), 4, 0, 1, 2);
+    BCM_29_QUAD((u32*)(base + 0x4330), 4, 0, 2, 3);
     for (i = 0; i < *(u32*)(base + 0x6070); i++) {
         record = records + i * 0x510;
         RpSkyRenderStateSet(3, (void*)0x717fb);
@@ -2517,24 +2515,24 @@ void FUN_00229B40(void)
             RpSkyRenderStateSet(3, (void*)0x717fb);
             RpSkyRenderStateSet(2, (void*)0x44);
         }
-        setQuad((u32*)(record + 0x10), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x10), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x10), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x10), 4, 0, 2, 3);
         setState = D_00960090_fn;
         BCM_29_STATE(1, FUN_00239140(1));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        setQuad((u32*)(record + 0x110), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x110), 4, 0, 2, 3);
-        setQuad((u32*)(record + 0x210), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x210), 4, 0, 2, 3);
-        setQuad((u32*)(record + 0x310), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x110), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x110), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x210), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x210), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x310), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x310), 4, 0, 2, 3);
         resource = FUN_0021cca0(table6, 0x2b);
         BCM_29_STATE(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        setQuad((u32*)(record + 0x410), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x410), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x410), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x410), 4, 0, 2, 3);
     }
     if (*(u32*)(base + 0x4644) == 3) {
         record = base + 0x6d00;
@@ -2551,24 +2549,23 @@ void FUN_00229B40(void)
         BCM_29_STATE(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        setQuad = D_0096009C_fn;
-        setQuad((u32*)(record + 0x10), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x10), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x10), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x10), 4, 0, 2, 3);
         BCM_29_STATE(1, FUN_00239140(1));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        setQuad((u32*)(record + 0x110), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x110), 4, 0, 2, 3);
-        setQuad((u32*)(record + 0x210), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x210), 4, 0, 2, 3);
-        setQuad((u32*)(record + 0x310), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x110), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x110), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x210), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x210), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x310), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x310), 4, 0, 2, 3);
         resource = FUN_0021cca0(table6, 0x2b);
         BCM_29_STATE(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        setQuad((u32*)(record + 0x410), 4, 0, 1, 2);
-        setQuad((u32*)(record + 0x410), 4, 0, 2, 3);
+        BCM_29_QUAD((u32*)(record + 0x410), 4, 0, 1, 2);
+        BCM_29_QUAD((u32*)(record + 0x410), 4, 0, 2, 3);
     }
 }
 #undef BCM_29_STATE
@@ -2796,6 +2793,8 @@ void FUN_0022A2B0(void)
     FUN_0021d950(overlay + 0x310, color);
 }
 
+#define BCM_2AE_STATE(...) ((void (*)(u32, u32))D_00960090)(__VA_ARGS__)
+#define BCM_2AE_QUAD(...) ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)(__VA_ARGS__)
 // FUN_0022AE80 NONMATCHING
 void FUN_0022AE80(void)
 {
@@ -2818,12 +2817,12 @@ void FUN_0022AE80(void)
 
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x23));
     pRender = (void (*)(u32, u32))D_00960090;
-    pRender(1, texture);
+    BCM_2AE_STATE(1, texture);
     pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
-    pQuad((u32*)(work + 0x4230), 4, 0, 1, 2);
-    pQuad((u32*)(work + 0x4230), 4, 0, 2, 3);
-    pQuad((u32*)(work + 0x4330), 4, 0, 1, 2);
-    pQuad((u32*)(work + 0x4330), 4, 0, 2, 3);
+    BCM_2AE_QUAD((u32*)(work + 0x4230), 4, 0, 1, 2);
+    BCM_2AE_QUAD((u32*)(work + 0x4230), 4, 0, 2, 3);
+    BCM_2AE_QUAD((u32*)(work + 0x4330), 4, 0, 1, 2);
+    BCM_2AE_QUAD((u32*)(work + 0x4330), 4, 0, 2, 3);
 
     for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
         record = records + i * 0x410;
@@ -2832,12 +2831,12 @@ void FUN_0022AE80(void)
 
         texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
         pRender = (void (*)(u32, u32))D_00960090;
-        pRender(1, texture);
+        BCM_2AE_STATE(1, texture);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
-        pQuad((u32*)(record + 0x10), 4, 0, 1, 2);
-        pQuad((u32*)(record + 0x10), 4, 0, 2, 3);
+        BCM_2AE_QUAD((u32*)(record + 0x10), 4, 0, 1, 2);
+        BCM_2AE_QUAD((u32*)(record + 0x10), 4, 0, 2, 3);
 
         texture = FUN_00239140(1);
         pRender(1, texture);
@@ -2893,6 +2892,8 @@ void FUN_0022AE80(void)
     pQuad((u32*)(overlay + 0x310), 4, 0, 1, 2);
     pQuad((u32*)(overlay + 0x310), 4, 0, 2, 3);
 }
+#undef BCM_2AE_STATE
+#undef BCM_2AE_QUAD
 
 // FUN_0022B630 NONMATCHING
 void FUN_0022B630(void)

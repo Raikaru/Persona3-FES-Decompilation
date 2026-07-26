@@ -3353,13 +3353,28 @@ void FUN_00207340(void)
         {
             state = *(u32*)(work + 0x77b0);
             if (state == 1)
-                func_002dba80(0), func_002db9f0(0x20, 0xbc);
+            {
+                func_002dba80(0);
+                func_002db9f0(0x20, 0xbc);
+            }
             else if (state == 2)
-                func_002dba80(0), func_002db9f0(0x20, 0xbd);
+            {
+                func_002dba80(0);
+                func_002db9f0(0x20, 0xbd);
+            }
             else if (state == 3)
-                func_002dba80(0), func_002db9f0(0x20, 0xbe);
+            {
+                func_002dba80(0);
+                func_002db9f0(0x20, 0xbe);
+            }
             else
+            {
                 K_ASSERT(0, 0x126e);
+            }
+            K_ASSERT(gBcmWork != NULL, 0x164);
+            work = gBcmWork;
+            func_002255f0();
+            FUN_0010a4e0(0, 0, 0, 4);
             *(u32*)(work + 0x18) = 9;
         }
         else if (flags & 0x10000)
@@ -3389,13 +3404,27 @@ void FUN_00207340(void)
             func_002dba80(0);
             func_002db9f0(0x20, 0xb8);
             *(u32*)work |= 0x10000;
+            K_ASSERT(gBcmWork != NULL, 0x164);
+            work = gBcmWork;
+            func_002255f0();
+            FUN_0010a4e0(0, 0, 0, 4);
             *(u32*)(work + 0x18) = 9;
         }
     }
     else
     {
         flags = *(u32*)work;
-        if (flags & 0x1000)
+        if (flags & 0x100000)
+        {
+            func_002dba80(0);
+            func_002db9f0(0x20, 0xb0);
+            K_ASSERT(gBcmWork != NULL, 0x164);
+            work = gBcmWork;
+            func_002255f0();
+            FUN_0010a4e0(0, 0, 0, 4);
+            *(u32*)(work + 0x18) = 9;
+        }
+        else if (flags & 0x8000)
         {
             func_002dba80(0);
             state = bpRoot_0021c720_ret();
@@ -3422,6 +3451,10 @@ void FUN_00207340(void)
             func_002dba80(0);
             func_002db9f0(0x20, 0xaf);
             *(u32*)work |= 0x8000;
+            K_ASSERT(gBcmWork != NULL, 0x164);
+            work = gBcmWork;
+            func_002255f0();
+            FUN_0010a4e0(0, 0, 0, 4);
             *(u32*)(work + 0x18) = 9;
         }
     }
