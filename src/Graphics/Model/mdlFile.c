@@ -922,6 +922,8 @@ extern u64 FUN_001956d0();
 extern u64 FUN_00195710();
 extern u64 FUN_00198560();
 extern u64 FUN_00198580();
+#pragma alias FUN_00198580_u32 FUN_00198580
+extern u32 FUN_00198580_u32(void);
 extern u64 FUN_00198590();
 #pragma alias FUN_00198590_u32 FUN_00198590
 extern u32 FUN_00198590_u32(void);
@@ -5459,7 +5461,7 @@ u64 FUN_00321a60(void)
 
 {
 
-  u64 iVar1;
+  int iVar1;
 
   u64 uVar2;
 
@@ -5479,7 +5481,7 @@ u64 FUN_00321a60(void)
 
     FUN_004944b0_typed(uVar2,(u32 *)DAT_009572c0_abs);
 
-    iVar1 = FUN_00198580();
+    iVar1 = FUN_00198580_u32();
 
     FUN_004cb7f0_typed(*(u32 *)(iVar1 + 4),DAT_00957270_abs,0);
 

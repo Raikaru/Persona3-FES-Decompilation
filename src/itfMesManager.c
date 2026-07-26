@@ -3825,7 +3825,7 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 }
 
 #undef FUN_003a6380
-// FUN_003A6380 NONMATCHING
+// FUN_003A6380
 
 
 void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
@@ -3878,6 +3878,7 @@ set_check:
   case 0:
     goto done;
   }
+  candidate = *(int *)(param_1 + 8);
   if (cat == candidate) {
     goto set_load;
   }

@@ -959,7 +959,7 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
   u16 uVar1;
   u8 bVar2;
 
-  if ((s32)(param_2 & 0xffff) < 0 || 4 < (s32)(param_2 & 0xffff)) {
+  if ((s32)(param_2 & 0xffff) < 0 || (s32)(param_2 & 0xffff) >= 5) {
     FUN_0019d3f0((u32)D_0069aa80, 0x2e1);
   }
   uVar1 = param_1[1];
