@@ -1457,7 +1457,10 @@ u8 clndIsHolidayOrSunday()
     s16 daysSinceApr5;
     s16 currDayOfMonth;
     s16 currMonth;
-    s16 i;
+    s32 i;
+    s32 month;
+    const Holiday* holidays;
+    s32 day;
 
     daysSinceApr5 = datGetDaysSinceApr5();
     if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
@@ -1467,13 +1470,16 @@ u8 clndIsHolidayOrSunday()
 
     currMonth = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
     currDayOfMonth = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+    holidays = sHolidays;
+    month = currMonth;
+    day = currDayOfMonth;
     for (i = 0; i < 0x164; i++)
     {
-        if (sHolidays[i].month == -1)
+        if (holidays[i].month == -1)
         {
             break;
         }
-        if (currMonth == sHolidays[i].month && currDayOfMonth == sHolidays[i].day)
+        if (month == holidays[i].month && day == holidays[i].day)
         {
             return true;
         }
@@ -4272,17 +4278,15 @@ void func_00186050(void* resource, u64 position, u32 alpha)
     f32 y;
     f32 x;
     void* unused;
-    u32 savedAlpha;
 
     packed.value = position;
-    savedAlpha = alpha;
     y = packed.coords.y;
     asm volatile("" : "+m"(y));
-    func_001159f0(unused, resource, 0x2b, savedAlpha & 0xff,
+    func_001159f0(unused, resource, 0x2b, alpha & 0xff,
                   packed.coords.x, y, 48.0f);
     x = packed.coords.x + 449.0f;
     asm volatile("" : "+m"(x));
-    func_001159f0(unused, resource, 0x2c, savedAlpha & 0xff,
+    func_001159f0(unused, resource, 0x2c, alpha & 0xff,
                   x, y, 48.0f);
 }
 #pragma pop

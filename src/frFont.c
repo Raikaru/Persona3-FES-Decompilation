@@ -2442,15 +2442,16 @@ int FUN_003b1a90(int param_1)
 {
   int iVar2;
   int iVar3;
-  int iVar1;
   iVar2 = 0;
   if (param_1 == 0) {
     return iVar2;
   }
   param_1 = *(int *)(param_1 + 0x2c);
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x28)) {
+    int iVar1;
     iVar3 = param_1;
-    iVar1 = *(int *)(param_1 + 8) + 100;
+    iVar1 = *(int *)(param_1 + 8);
+    iVar1 = iVar1 + 100;
     while (iVar3 != 0) {
       if (*(int *)(iVar3 + 8) >= iVar1) {
         break;

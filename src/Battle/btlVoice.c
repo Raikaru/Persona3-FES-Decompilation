@@ -3834,6 +3834,8 @@ extern const char DAT_00699d00[];
 extern const char DAT_00699df0[];
 extern const char DAT_0069a0f8[];
 extern u8 DAT_0069a000[];
+#pragma alias DAT_0069a000_abs DAT_0069a000
+extern u32 DAT_0069a000_abs[];
 extern u8 DAT_0069a060[];
 extern f32 DAT_007cad20;
 extern f32 DAT_007cad34;
@@ -9951,7 +9953,7 @@ void func_002eec60(void)
   u32 *puVar5;
   u32 *puVar6;
   s16 sVar7;
-  puVar6 = (u32*)DAT_0069a000;
+  puVar6 = (u32*)DAT_0069a000_abs;
 
   puVar5 = work.data;
   iVar4 = 3;
@@ -9985,8 +9987,8 @@ void func_002eec60(void)
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&work.position.x);
     FUN_0027f650(iVar4,&work.position.x);
   }
-  for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    switch (*(u16 *)(iVar4 + 0xa4)) {
+  for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xa34)) {
+    switch (*(u16 *)(iVar3 + 0xa4)) {
     case 0x10b:
       work.position.x = -200.0f;
       work.position.z = -350.0f;
@@ -9998,8 +10000,8 @@ void func_002eec60(void)
     default:
       break;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&work.position.x);
-    FUN_0027f650(iVar4,&work.position.x);
+    FUN_002d2280(iVar3 + 0x94,iVar3 + 0x96,&work.position.x);
+    FUN_0027f650(iVar3,&work.position.x);
   }
   return;
 }

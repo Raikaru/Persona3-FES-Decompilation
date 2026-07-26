@@ -269,9 +269,6 @@ void FUN_0029a690(u16 genus)
     u32 swapped;
     u32 i;
     BtlAction** actions;
-    u16 targetGenus;
-
-    targetGenus = genus;
     scan = gBtl->order.actions;
     count = 0;
     while (count < BTL_MAXACTIONS)
@@ -302,7 +299,7 @@ void FUN_0029a690(u16 genus)
             {
                 firstGenus = first->unit->genus;
                 secondGenus = second->unit->genus;
-                if (firstGenus != secondGenus && firstGenus != targetGenus)
+                if (firstGenus != secondGenus && firstGenus != genus)
                 {
                     *actions = second;
                     actions[1] = first;

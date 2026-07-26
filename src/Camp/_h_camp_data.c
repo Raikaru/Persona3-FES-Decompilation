@@ -15,6 +15,11 @@ typedef u32 undefined4;
 typedef u64 undefined8;
 typedef int bool;
 typedef unsigned long ulong;
+typedef struct CampFloatPair
+{
+    f32 x;
+    f32 y;
+} CampFloatPair;
 #define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
 
 /* Retail globals shared by the Camp bridge state machines. */
@@ -233,7 +238,7 @@ void FUN_00167ec0(KwlnTask*);
 void FUN_00167ef0(KwlnTask*);
 void FUN_00167f10(KwlnTask*);
 u32 FUN_00167f30(KwlnTask*);
-KwlnTask* FUN_00167f40(KwlnTask*, u32, ulong, u16, u16, u16);
+KwlnTask* FUN_00167f40(KwlnTask*, u32, CampFloatPair, u16, u16, u16);
 u32 FUN_00168040(void);
 u32 FUN_00168100(void);
 bool FUN_001681d0(void);
@@ -735,7 +740,7 @@ u32 FUN_00167f30(KwlnTask* task)
 }
 
 // FUN_00167f40 NONMATCHING
-KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, ulong packedValue,
+KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue,
                        u16 param4, u16 param5, u16 param6)
 {
     CampBridgeScreenWork* work;
@@ -752,8 +757,8 @@ KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, ulong packedValue,
     if (taskValue == 0) {
         return 0;
     }
-    work->timer = (u32)packedValue;
-    work->personaId = (u32)(packedValue >> 32);
+    *(f32*)((u8*)work + 4) = packedValue.x;
+    *(f32*)((u8*)work + 8) = packedValue.y;
     work->active = 1;
     *(u16*)((u8*)work + 0x0e) = param4;
     *(u16*)((u8*)work + 0x12) = param5;
