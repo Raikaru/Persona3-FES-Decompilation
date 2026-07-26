@@ -4163,7 +4163,7 @@ void FUN_0022e9a0(u32* object, s32 value)
     FUN_0022ecb0((u8*)object + 0xf60, resource, scale);
 }
 
-// FUN_0022EA40 NONMATCHING
+// FUN_0022EA40
 void FUN_0022ea40(u32* object, u32 value)
 {
     char text[0x100];

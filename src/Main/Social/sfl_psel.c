@@ -294,6 +294,8 @@ void sflPsel00260e00(void)
     u32 texture;
     SflPselStateCallback state;
     void (**draw)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    void (**drawCase0)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    void (**drawCase1)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
@@ -347,17 +349,19 @@ void sflPsel00260e00(void)
     {
     case 0:
         ((void (*)(u32))state)(6);
+        drawCase0 = &D_0096009C;
         D_00960090(8, 1);
         D_00960090(1, 0);
-        (*draw)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
-        (*draw)(&work[0x44], 4, 0, 2, 3);
+        (*drawCase0)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        (*drawCase0)(&work[0x44], 4, 0, 2, 3);
         break;
     case 1:
         D_00960090(6, 0);
+        drawCase1 = &D_0096009C;
         D_00960090(8, 1);
         D_00960090(1, 0);
-        (*draw)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
-        (*draw)(&work[0x44], 4, 0, 2, 3);
+        (*drawCase1)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        (*drawCase1)(&work[0x44], 4, 0, 2, 3);
         break;
     }
 

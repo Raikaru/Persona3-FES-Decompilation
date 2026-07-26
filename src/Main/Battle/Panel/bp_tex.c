@@ -2406,8 +2406,7 @@ void bpTexApplyActions(void)
         while (node != NULL)
         {
             if ((node[0] & 2) == 0 &&
-                node[4] == (u32)i &&
-                node[0xfc4] == 0)
+                node[4] == (u32)i)
             {
                 break;
             }
