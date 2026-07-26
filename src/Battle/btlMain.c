@@ -3304,11 +3304,9 @@ u32 FUN_002a0440(float *param_1)
 
       *(float *)(DAT_007ce3ec + 0x224) = fStack_10;
 
-      *(float *)(iVar7 + 0x228) = fStack_c;
-
-      *(float *)(iVar7 + 0x22c) = fStack_8;
-
-      *(u32 *)(iVar7 + 0x230) = 0x3f800000;
+      *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x228) = fStack_c;
+      *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x22c) = fStack_8;
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x230) = 0x3f800000;
 
       FUN_0019f8f0(&fStack_10);
 
@@ -3466,20 +3464,16 @@ u32 FUN_002a0440(float *param_1)
 
       *(float *)(DAT_007ce3ec + 0x224) = fStack_20;
 
-      *(float *)(iVar7 + 0x228) = fStack_1c;
-
-      *(float *)(iVar7 + 0x22c) = fStack_18;
-
-      *(float *)(iVar7 + 0x230) = fStack_14;
+      *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x228) = fStack_1c;
+      *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x22c) = fStack_18;
+      *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x230) = fStack_14;
 
       puVar6 = (u32 *)FUN_0019fd40();
 
-      uVar15 = *(u32 *)(iVar7 + 0x198);
-
-      uVar9 = *(u32 *)(iVar7 + 0x19c);
-      uVar13 = *(u32 *)(iVar7 + 0x1a0);
-
-      *puVar6 = *(u32 *)(iVar7 + 0x194);
+      uVar15 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x198);
+      uVar9 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x19c);
+      uVar13 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1a0);
+      *puVar6 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x194);
 
       puVar6[1] = uVar15;
 
@@ -3491,12 +3485,10 @@ u32 FUN_002a0440(float *param_1)
 
       puVar6 = (u32 *)FUN_0019fd70();
 
-      uVar15 = *(u32 *)(iVar7 + 0x1a8);
-
-      uVar9 = *(u32 *)(iVar7 + 0x1ac);
-      uVar13 = *(u32 *)(iVar7 + 0x1b0);
-
-      *puVar6 = *(u32 *)(iVar7 + 0x1a4);
+      uVar15 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1a8);
+      uVar9 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1ac);
+      uVar13 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1b0);
+      *puVar6 = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1a4);
 
       puVar6[1] = uVar15;
 
@@ -3514,19 +3506,13 @@ u32 FUN_002a0440(float *param_1)
 
       *(u32 *)(DAT_007ce3ec + 0x1c4) = *(u32 *)(DAT_007ce3ec + 500);
 
-      *(u32 *)(iVar7 + 0x1c8) = *puVar6;
-
-      *(u32 *)(iVar7 + 0x1cc) = uVar9;
-
-      *(u32 *)(iVar7 + 0x1d0) = uVar13;
-
-      *(u32 *)(iVar7 + 0x1d4) = *(u32 *)(iVar7 + 0x204);
-
-      *(u32 *)(iVar7 + 0x1d8) = *(u32 *)(iVar7 + 0x208);
-
-      *(u32 *)(iVar7 + 0x1dc) = *(u32 *)(iVar7 + 0x20c);
-
-      *(u32 *)(iVar7 + 0x1e0) = *(u32 *)(iVar7 + 0x210);
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1c8) = *puVar6;
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1cc) = uVar9;
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1d0) = uVar13;
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1d4) = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x204);
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1d8) = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x208);
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1dc) = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x20c);
+      *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x1e0) = *(u32 *)((int)(uintptr_t)DAT_007ce3ec + 0x210);
 
       if ((*(u16 *)((u8 *)param_1 + 0x58) & 2) == 0) {
         u32 uVar5;
