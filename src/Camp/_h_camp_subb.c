@@ -2490,7 +2490,6 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     s16 statType;
     s32 icon;
     char textBuffer[264];
-    register f32 ten;
 
     switch (menuCode) {
     case 0:
@@ -2537,15 +2536,14 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x13:
     case 0x14:
     case 0x15:
-        ten = 10.0f;
         persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
         if (selected != 0) {
             campDrawSprite(parent, DAT_00833A50[1], 8, item->alpha,
-                           60.0f + item->x - ten, item->y + 3.0f,
+                           60.0f + item->x - 10.0f, item->y + 3.0f,
                            campTextureAsFloat(item));
         } else {
             campDrawSprite(parent, DAT_00833A50[1], 7, item->alpha,
-                           60.0f + item->x - ten, item->y + 3.0f,
+                           60.0f + item->x - 10.0f, item->y + 3.0f,
                            campTextureAsFloat(item));
         }
         resourceRecord = func_00170e90(DAT_007cdf94);
@@ -2575,26 +2573,26 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
         if (selected != 0 && persona->level > 9) {
             campDrawSprite(parent, H_Maestro_001120a0(1),
                            persona->level / 10 + 0xb, item->alpha,
-                           88.0f + item->x - ten, item->y + 11.0f,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
                            campTextureAsFloat(item));
             campDrawSprite(parent, H_Maestro_001120a0(1),
                            persona->level % 10 + 0xb, item->alpha,
-                           104.0f + item->x - ten, item->y + 11.0f,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
                            campTextureAsFloat(item));
         } else {
             campDrawSprite(parent, H_Maestro_001120a0(2),
                            persona->level / 10 + 0xb, item->alpha,
-                           88.0f + item->x - ten, item->y + 11.0f,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
                            campTextureAsFloat(item));
             campDrawSprite(parent, H_Maestro_001120a0(2),
                            persona->level % 10 + 0xb, item->alpha,
-                           104.0f + item->x - ten, item->y + 11.0f,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
                            campTextureAsFloat(item));
         }
         resourceText = FUN_00173220(persona->id);
         textColor = (0xffU - item->alpha) | 0xffffff00;
-        campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - ten),
-                     (s32)(item->y + ten), textColor, 10, 1, resourceText,
+        campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
+                     (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
                      0x10, 0);
         break;
     case 0x1e:
