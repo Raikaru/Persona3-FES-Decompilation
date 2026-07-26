@@ -27,6 +27,16 @@ extern u8* DAT_007ce4b4;
 extern u8* DAT_007ce4b8;
 extern u32 iGpffffb418;
 extern s32* PTR_DAT_007cd540;
+extern RwMatrix* func_004c38c0(void);
+extern void func_004c3880(RwMatrix* matrix);
+extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
+extern f32 acosf(f32 value);
+#pragma alias sDegreesPerRadian D_007CAFA0
+extern f32 sDegreesPerRadian;
+#pragma alias sEncountAxis D_00683B78
+extern RwV3d sEncountAxis;
+#pragma alias sEncountForward D_00683B88
+extern RwV3d sEncountForward;
 
 // FUN_001d75f0
 u8 K_Encount_001d75f0(u32 param_1, u16 flag, u32 areaId)
@@ -1030,46 +1040,126 @@ KwlnTask* func_001d8d80(FldUnit* unit)
     return NULL;
 }
 
+// Retail offsets 0x00-0x4a8 reconstruct unit registration, facing rotation,
+// field updates, and active-count aggregation; 1196 of 1200 bytes are implemented.
 // FUN_001d8e60 NONMATCHING
 u32 func_001d8e60(KwlnTask* owner, FldUnit* pc, FldUnit* ec)
 {
     EncounterWork* work;
-    u32 changed = 0;
-    if (owner == NULL || owner->workData == NULL)
-    {
-        return 0;
-    }
+    RwV3d axis;
+    RwV3d forward;
+    RwV3d delta;
+    RwMatrix* matrix;
+    f32 angle;
+    s32 i;
+    u32 changed;
+
     work = (EncounterWork*)owner->workData;
-    if (pc != NULL && work->pcCount < 4)
+    changed = 0;
+    axis = sEncountAxis;
+    forward = sEncountForward;
+    matrix = func_004c38c0();
+    if (pc != NULL)
     {
-        work->pc[work->pcCount++] = pc;
-        K_Encount_Face(pc, work->ecCount != 0 ? work->ec[0] : NULL);
+        work->pc[work->pcCount] = pc;
+        work->pcCount += 1;
         mdlAnimSet(pc->mdl, 0, 4, 0, 1);
         func_001b00c0(pc->unk_170);
+
+        delta.x = mdlGetMatrix(work->ec[0]->mdl)->pos.x -
+                  mdlGetMatrix(pc->mdl)->pos.x;
+        delta.y = mdlGetMatrix(work->ec[0]->mdl)->pos.y -
+                  mdlGetMatrix(pc->mdl)->pos.y;
+        delta.z = mdlGetMatrix(work->ec[0]->mdl)->pos.z -
+                  mdlGetMatrix(pc->mdl)->pos.z;
+        RwV3dNormalize(&delta, &delta);
+        angle = sDegreesPerRadian *
+                acosf(delta.x * forward.x +
+                      delta.y * forward.y +
+                      delta.z * forward.z);
+        if (delta.x < 0.0f)
+        {
+            angle *= -1.0f;
+        }
+
+        matrix->at.z = 1.0f;
+        matrix->up.y = 1.0f;
+        matrix->right.x = 1.0f;
+        matrix->up.x = 0.0f;
+        matrix->right.z = 0.0f;
+        matrix->right.y = 0.0f;
+        matrix->at.y = 0.0f;
+        matrix->at.x = 0.0f;
+        matrix->up.z = 0.0f;
+        matrix->pos.z = 0.0f;
+        matrix->pos.y = 0.0f;
+        matrix->pos.x = 0.0f;
+        matrix->flags |= 0x20003;
+        RwMatrixRotate(matrix, &axis, angle, rwCOMBINEPRECONCAT);
+        K_FldFrame_CtlUpdateMdlMat(pc->resrc->collisCtlTask, matrix);
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x28) != NULL)
+        {
+            func_0018bee0(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x28), pc->charId, 1);
+        }
         changed = 1;
     }
-    if (ec != NULL && work->ecCount < 4)
+    if (ec != NULL)
     {
-        work->ec[work->ecCount++] = ec;
-        K_Encount_Face(ec, work->pcCount != 0 ? work->pc[0] : NULL);
+        work->ec[work->ecCount] = ec;
+        work->ecCount += 1;
         mdlAnimSet(ec->mdl, 0, 3, 0, 1);
         func_001b00c0(ec->unk_170);
+
+        delta.x = mdlGetMatrix(work->pc[0]->mdl)->pos.x -
+                  mdlGetMatrix(ec->mdl)->pos.x;
+        delta.y = mdlGetMatrix(work->pc[0]->mdl)->pos.y -
+                  mdlGetMatrix(ec->mdl)->pos.y;
+        delta.z = mdlGetMatrix(work->pc[0]->mdl)->pos.z -
+                  mdlGetMatrix(ec->mdl)->pos.z;
+        RwV3dNormalize(&delta, &delta);
+        angle = sDegreesPerRadian *
+                acosf(delta.x * forward.x +
+                      delta.y * forward.y +
+                      delta.z * forward.z);
+        if (delta.x < 0.0f)
+        {
+            angle *= -1.0f;
+        }
+
+        matrix->at.z = 1.0f;
+        matrix->up.y = 1.0f;
+        matrix->right.x = 1.0f;
+        matrix->up.x = 0.0f;
+        matrix->right.z = 0.0f;
+        matrix->right.y = 0.0f;
+        matrix->at.y = 0.0f;
+        matrix->at.x = 0.0f;
+        matrix->up.z = 0.0f;
+        matrix->pos.z = 0.0f;
+        matrix->pos.y = 0.0f;
+        matrix->pos.x = 0.0f;
+        matrix->flags |= 0x20003;
+        RwMatrixRotate(matrix, &axis, angle, rwCOMBINEPRECONCAT);
+        K_FldFrame_CtlUpdateMdlMat(ec->resrc->collisCtlTask, matrix);
         changed = 1;
     }
-    if (changed)
+    if (changed == 1)
     {
-        u32 i;
-        work->pcTotal = work->pcCount;
-        work->ecTotal = 0;
-        for (i = 0; i < work->ecCount; ++i)
+        EncounterWork* activeWork;
+
+        activeWork = (EncounterWork*)owner->workData;
+        activeWork->pcTotal = activeWork->pcCount;
+        activeWork->ecTotal = 0;
+        i = 0;
+        while (i < (s32)activeWork->ecCount)
         {
-            if (work->ec[i] != NULL && work->ec[i]->genusBase != NULL)
-            {
-                work->ecTotal += work->ec[i]->genusBase->count;
-            }
+            activeWork->ecTotal += activeWork->ec[i]->genusBase->count;
+            i += 1;
         }
-        work->totalActive = work->pcTotal + work->ecTotal;
+        activeWork->totalActive = activeWork->pcTotal + activeWork->ecTotal;
     }
+    func_004c3880(matrix);
     return changed;
 }
 
