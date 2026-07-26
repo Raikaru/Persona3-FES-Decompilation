@@ -831,14 +831,15 @@ u32 func_001114b0(KwlnTask* task)
 
 
 // FUN_00111500 NONMATCHING
-void func_00111500(param_1)
-int param_1;
+void func_00111500(KwlnTask* task)
 {
-    int iVar1;
+    MaestroStreamWork* work;
+    register s32 value;
 
-    iVar1 = *(int *)(param_1 + 0x3c);
-    *(int *)(iVar1 + 0xc0) = 1;
-    *(int *)(iVar1 + 0xbc) = 0;
+    work = (MaestroStreamWork*)task->workData;
+    value = 1;
+    work->stopAtFrame = value;
+    work->complete = 0;
 }
 
 // FUN_00111520
