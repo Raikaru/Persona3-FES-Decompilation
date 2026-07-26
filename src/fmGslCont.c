@@ -584,7 +584,7 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
 
 {
 
-  char cVar4;
+  int cVar4;
   u32 *puVar1;
   u32 *puVar2;
   u32 *puVar3;
@@ -601,18 +601,18 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
     *puVar1 = (u32)puVar2;
     puVar3 = (u32 *)((int)puVar1 + param_4);
     puVar1[1] = (u32)puVar3;
-    puVar1[2] = (int)cVar4;
+    puVar1[2] = (int)(s8)cVar4;
     puVar2 = puVar1;
     puVar1 = puVar3;
     param_3 = param_3 + -1;
-    cVar4 = cVar4 + '\x01';
+    cVar4 = (s8)(cVar4 + 1);
   } while (1 < param_3);
 
   *puVar1 = (u32)puVar2;
 
   puVar1[1] = 0;
 
-  puVar1[2] = (int)cVar4;
+  puVar1[2] = (int)(s8)cVar4;
 
   *param_1 = 0;
 
