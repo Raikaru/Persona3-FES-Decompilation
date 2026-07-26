@@ -4793,11 +4793,11 @@ void FUN_002b2940(void *arg0)
     else
     {
         scratch.targetCenter.y =
-            (scratch.targetCenter.y + 0.0f) +
-            fGpffff8094 * (target->unk_8c * target->scale);
+            (scratch.targetCenter.y + 0.0f) -
+            (target->unk_8c * target->scale) * fGpffff8094;
         scratch.sourceCenter.y =
-            (scratch.sourceCenter.y + 0.0f) -
-            fGpffff8094 * (unit->unk_8c * unit->scale);
+            (scratch.sourceCenter.y + 0.0f) +
+            (unit->unk_8c * unit->scale) * fGpffff806c;
     }
     if (scratch.targetCenter.y < 65.0f)
     {

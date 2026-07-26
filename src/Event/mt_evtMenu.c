@@ -968,6 +968,10 @@ void FUN_0036f4d0(void);
 void FUN_0036f5f0(u32 param_1,u16 param_2,u16 param_3,int param_4);
 void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5, int param_6,int param_7);
 void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,int param_8,code *param_9);
+#pragma alias FUN_0036f900_evt FUN_0036f900
+extern void FUN_0036f900_evt(int param_1,int param_2,int param_3,int param_4,
+                             int param_5,int param_6,int param_7,code *param_8,
+                             code *param_9);
 void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4);
 void FUN_003702a0(int param_1,int param_2,int param_3,int param_4);
 void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4);
@@ -17925,12 +17929,10 @@ int FUN_00384370(int param_1,int param_2,int param_3)
   } EvtMenuState;
   EvtMenuState *pState;
   pState = (EvtMenuState *)param_3;
-  
-
   FUN_00361830(param_3);
 
-  FUN_0036f900(param_1,param_2,0x1e,9,0,1,param_3,0x380000 + (short)0x4060,
-               (code *)((int)&FUN_003840d0 + 0));
+  FUN_0036f900_evt(param_1,param_2,0x1e,9,0,1,param_3,
+                   (code *)&FUN_00384060,(code *)&FUN_003840d0);
 
   iVar1 = *(int *)(param_3 + 0xd4);
 
