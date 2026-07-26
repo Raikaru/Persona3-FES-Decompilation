@@ -27,6 +27,12 @@ typedef struct CampTextureParserWork
     HCdvd* cdvd;
 } CampTextureParserWork;
 
+typedef struct CampCommuRootWork
+{
+    u8 padding[0x150];
+    void* cdvd;
+} CampCommuRootWork;
+
 extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize, u32 hint);
 #pragma alias DAT_00960184_abs DAT_00960184
 extern void* (*DAT_00960184_abs[])(...);
@@ -51,13 +57,15 @@ extern KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd);
 extern u32 func_0018b700(void* animation);
 
 
-// FUN_001339A0 NONMATCHING
-KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
-                       f32 alpha)
+// FUN_001339A0
+KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, f32 alpha,
+                       u32 personaId, u32 mode)
 {
+    f32 savedAlpha;
     CampPersonaDispCtlWork* work;
     KwlnTask* task;
 
+    savedAlpha = alpha;
     work = (CampPersonaDispCtlWork*)(*DAT_00960184_abs)(1, 0x12c, 0x40000);
     if (work == NULL) {
         return NULL;
@@ -69,7 +77,7 @@ KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
     }
     work->personaId = personaId;
     work->mode = mode;
-    work->alpha = alpha;
+    work->alpha = savedAlpha;
     return task;
 }
 
@@ -1711,20 +1719,18 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
     KwlnTask* task;
     void* work;
-    void** requestPtr;
 
     work = (void*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
     if (work == NULL) {
         return NULL;
     }
-    requestPtr = (void**)((u8*)work + 0x150);
     task = kwlnTaskCreate(parent, "H_CampCommuRoot", priority,
                               (void* (*)(KwlnTask*))FUN_001355C0,
                               (void (*)(KwlnTask*))FUN_001365b0, work);
     if (task == NULL) {
         return NULL;
     }
-    *requestPtr = H_Cdvd_Request("camp_comu.pak", 0);
+    *(void**)((u8*)work + 0x150) = H_Cdvd_Request("camp_comu.pak", 0);
     return task;
 }
 
