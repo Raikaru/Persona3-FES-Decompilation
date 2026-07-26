@@ -33456,17 +33456,19 @@ u32 FUN_0033ce10(int param_1)
 {
   int iVar1;
   int iVar3;
+  u32 uVar4;
   int *piVar2;
 
   iVar3 = *(int *)(param_1 + 0x3c);
   iVar1 = *(int *)(param_1 + 0x40);
-  *(u32 *)(piVar2 = (int *)(*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000)) =
-    (u32)(piVar2 + 4);
+  uVar4 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
+  piVar2 = (int *)uVar4;
+  *piVar2 = (int)(piVar2 + 4);
   piVar2[2] = (int)piVar2;
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
   piVar2[1] = iVar3;
-  FUN_0033cc10((u32)piVar2,iVar1);
-  return (u32)piVar2;
+  FUN_0033cc10(uVar4,iVar1);
+  return uVar4;
 
 
 

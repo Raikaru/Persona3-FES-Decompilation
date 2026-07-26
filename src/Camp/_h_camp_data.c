@@ -739,7 +739,7 @@ u32 FUN_00167f30(KwlnTask* task)
     return ((u32*)task->workData)[5];
 }
 
-// FUN_00167f40 NONMATCHING
+// FUN_00167f40
 KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue,
                        u16 param4, u16 param5, u16 param6)
 {

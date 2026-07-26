@@ -1711,18 +1711,20 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
     KwlnTask* task;
     void* work;
+    void** requestPtr;
 
     work = (void*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
     if (work == NULL) {
         return NULL;
     }
+    requestPtr = (void**)((u8*)work + 0x150);
     task = kwlnTaskCreate(parent, "H_CampCommuRoot", priority,
                               (void* (*)(KwlnTask*))FUN_001355C0,
                               (void (*)(KwlnTask*))FUN_001365b0, work);
     if (task == NULL) {
         return NULL;
     }
-    *(void**)((u8*)work + 0x150) = H_Cdvd_Request("camp_comu.pak", 0);
+    *requestPtr = H_Cdvd_Request("camp_comu.pak", 0);
     return task;
 }
 
