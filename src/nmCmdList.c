@@ -1812,13 +1812,18 @@ u32 FUN_003c75b0(void)
   u32 uVar2;
   piVar1 = (int *)FUN_003c7d50_direct();
 
-  if (piVar1 == 0) {
-    uVar2 = 0xffffffffffffffff;
-  } else if (*piVar1 < 0) {
-    uVar2 = 0xffffffffffffffff;
-  } else {
-    uVar2 = FUN_003a2830();
-  }
+  if (piVar1 == 0)
+    goto null_fail;
+  if (0 > *piVar1)
+    goto status_fail;
+  uVar2 = FUN_003a2830();
+  goto done;
+null_fail:
+  uVar2 = 0xffffffffffffffff;
+  goto done;
+status_fail:
+  uVar2 = 0xffffffffffffffff;
+done:
 
   return uVar2;
 }

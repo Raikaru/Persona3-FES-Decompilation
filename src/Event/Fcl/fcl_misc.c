@@ -1055,29 +1055,34 @@ void FUN_003c9390(int *param_1)
 
   state = *param_1;
   if (state < 0) {
-    return;
+    goto done;
   }
   mode = *(s8 *)((u8 *)param_1 + 4);
-  switch (mode) {
-  case 0:
-    goto done;
-  case 1:
-    if (fclMiscA2580Call(state) < 0) {
-      *(u8 *)(param_1 + 1) = 2;
-    }
-    break;
-  case 2:
-    if (param_1[2] >= 0) {
-      param_1[2] = -1;
-    }
-    if (*(s8 *)((u8 *)param_1 + 5) == 0) {
-      *(u8 *)(param_1 + 1) = 3;
-    }
-    break;
-  case 3:
-    fclMisc9460Call((u32 *)param_1);
-    break;
+  if (mode == 3) {
+    goto mode3;
   }
+  if (mode == 2) {
+    goto mode2;
+  }
+  if (mode == 1) {
+    goto mode1;
+  }
+  goto done;
+mode1:
+  if (fclMiscA2580Call(state) < 0) {
+    *(u8 *)(param_1 + 1) = 2;
+  }
+  goto done;
+mode2:
+  if (param_1[2] >= 0) {
+    param_1[2] = -1;
+  }
+  if (*(s8 *)((u8 *)param_1 + 5) == 0) {
+    *(u8 *)(param_1 + 1) = 3;
+  }
+  goto done;
+mode3:
+  fclMisc9460Call((u32 *)param_1);
 done:
   ;
 }

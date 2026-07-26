@@ -45766,14 +45766,17 @@ void FUN_00349a30(int param_1)
 {
 
   int lVar1;
+  u8 *model;
 
   u8 auStack_100 [256];
 
   
 
-  if ((*(char *)(*(int *)(param_1 + 0x24) + 0xc3) != '\0') &&
+  model = *(u8 **)(param_1 + 0x24);
 
-     (lVar1 = FUN_00348340((u8 *)(*(int *)(param_1 + 0x24) + 0xc0),(float *)(auStack_100)), lVar1 != 0)) {
+  if ((*(u8 *)(model + 0xc3) != '\0') &&
+
+     (lVar1 = FUN_00348340(model + 0xc0,(float *)(auStack_100)), lVar1 != 0)) {
 
     (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
 
