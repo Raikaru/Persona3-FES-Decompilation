@@ -1666,12 +1666,15 @@ void func_001a0dc0(u16 resTypeId, u32 visible)
 
     if (gMtScene->resManager == NULL)
     {
-        return;
+        goto done;
     }
-    else
-    {
-        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
-    }
+    res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+    goto setFlags;
+
+done:
+    return;
+
+setFlags:
     if (visible == 1)
     {
         res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
