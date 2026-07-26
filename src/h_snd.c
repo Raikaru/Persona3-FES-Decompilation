@@ -542,6 +542,7 @@ void H_Snd_00109180(s32 channelIndex)
 {
     char name[0x100];
     void** handle;
+    s32 channelOffset;
     s16* requestType;
 
     if (channelIndex == 0)
@@ -578,7 +579,8 @@ void H_Snd_00109180(s32 channelIndex)
         return;
     }
 
-    handle = &sChannels[channelIndex].handle;
+    channelOffset = channelIndex * sizeof(HsndChannel);
+    handle = (void**)((char*)sChannels + channelOffset + 0x10);
     if (*handle != NULL)
     {
         func_0054d060(*handle);
@@ -592,7 +594,7 @@ void H_Snd_00109180(s32 channelIndex)
     sBackendControls[channelIndex].voiceCount = 2;
     sBackendControls[channelIndex].timeout = 0x5DC0;
 
-    requestType = &sChannels[channelIndex].requestType;
+    requestType = (s16*)((char*)sChannels + channelOffset + 0x14);
     switch (*requestType)
     {
         case HSND_START_NAMED_STREAM:
@@ -609,8 +611,8 @@ void H_Snd_00109180(s32 channelIndex)
             else
             {
                 func_0054d220(*handle, 0);
+            }
             func_0054d0a0(*handle, (char*)(requestType + 1));
-            func_0054d0a0(*handle, sChannels[channelIndex].name);
             func_0054d208(*handle, 1);
             break;
 
@@ -618,9 +620,9 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_SE:
         case HSND_START_CDVD:
             if (channelIndex >= 2)
+            {
                 if (*requestType == HSND_START_BGM ||
                     *requestType == HSND_START_CDVD)
-                    sChannels[channelIndex].requestType == HSND_START_CDVD)
                 {
                     sBackendControls[channelIndex].data20 = 0;
                 }
@@ -641,19 +643,19 @@ void H_Snd_00109180(s32 channelIndex)
                 {
                     func_0054d220(*handle, 0);
                 }
+            }
             if (*requestType == HSND_START_CDVD)
-            if (sChannels[channelIndex].requestType == HSND_START_CDVD)
             {
                 func_0054d0b8(*handle, sChannels[channelIndex].modeArg.data,
                               sChannels[channelIndex].id);
             }
             else if (channelIndex == 0)
+            {
                 func_00102530(*handle, (char*)(requestType + 1));
-                func_00102530(*handle, sChannels[channelIndex].name);
             }
             else
+            {
                 func_001025c0(*handle, (char*)(requestType + 1));
-                func_001025c0(*handle, sChannels[channelIndex].name);
             }
             func_0054d208(*handle, 1);
             break;
@@ -664,8 +666,8 @@ void H_Snd_00109180(s32 channelIndex)
             {
                 sBackendControls[channelIndex].class =
                     channelIndex == 2 ? 2 : 3;
+                sBackendControls[channelIndex].pending = 1;
                 if (*requestType == HSND_START_STREAM_FADE)
-                    HSND_START_STREAM_FADE)
                 {
                     sBackendControls[channelIndex].data20 = 0;
                     sBackendControls[channelIndex].pending = 2;
@@ -778,31 +780,29 @@ done:
 void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
                          u32 data1Size, void* data2, u32 data2Size)
 {
-    HsndSlotWork* slot;
-
     if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
         sSlotWork[slotIndex].param2 = 0x3E7;
         return;
     }
 
-    slot = &sSlotWork[slotIndex];
-    if (slot->state == HSND_CHANNEL_PLAYING && slot->param2 != 0x3E7)
+    if (sSlotWork[slotIndex].state == HSND_CHANNEL_PLAYING &&
+        sSlotWork[slotIndex].param2 != 0x3E7)
     {
         K_Assert(__FILE__, 0x32C);
     }
 
-    slot->callbackMode = true;
-    slot->completed = false;
-    slot->param1 = slotIndex;
-    slot->param2 = 0x3E7;
-    slot->state = 2;
-    slot->data0 = data0;
-    slot->data3 = data0Size;
-    slot->data1 = data1;
-    slot->data4 = data1Size;
-    slot->data2 = data2;
-    slot->data5 = data2Size;
+    sSlotWork[slotIndex].callbackMode = true;
+    sSlotWork[slotIndex].completed = false;
+    sSlotWork[slotIndex].param1 = slotIndex;
+    sSlotWork[slotIndex].param2 = 0x3E7;
+    sSlotWork[slotIndex].state = 2;
+    sSlotWork[slotIndex].data0 = data0;
+    sSlotWork[slotIndex].data3 = data0Size;
+    sSlotWork[slotIndex].data1 = data1;
+    sSlotWork[slotIndex].data4 = data1Size;
+    sSlotWork[slotIndex].data2 = data2;
+    sSlotWork[slotIndex].data5 = data2Size;
 }
 // FUN_00109CA0
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter)

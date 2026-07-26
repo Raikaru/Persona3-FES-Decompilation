@@ -1841,8 +1841,16 @@ void func_001a9760(KwlnTask* task, u32 value, const RwV3d* position, u32 sound, 
 {
     u32* work;
     u32 index;
+    u32 savedValue;
+    const RwV3d* savedPosition;
+    u32 savedSound;
+    u32 savedFlags;
     f32* dst;
 
+    savedValue = value;
+    savedPosition = position;
+    savedSound = sound;
+    savedFlags = flags;
     if (task == NULL)
     {
         return;
@@ -1852,15 +1860,14 @@ void func_001a9760(KwlnTask* task, u32 value, const RwV3d* position, u32 sound, 
     if (index >= 8)
     {
         K_Assert((const char*)0x007c8620, 0x260);
-        return;
     }
-    work[4 + index] = value;
+    work[4 + index] = savedValue;
     dst = (f32*)((u8*)work + 0x30 + index * 0x0c);
-    dst[0] = position->x;
-    dst[1] = position->y;
-    dst[2] = position->z;
-    work[0x24 + index] = sound;
-    work[0x2c + index] = flags;
+    dst[0] = savedPosition->x;
+    dst[1] = savedPosition->y;
+    dst[2] = savedPosition->z;
+    work[0x24 + index] = savedSound;
+    work[0x2c + index] = savedFlags;
     work[3] = index + 1;
 }
 

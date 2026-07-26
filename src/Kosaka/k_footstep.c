@@ -931,6 +931,13 @@ void* func_001dcb60(KwlnTask* task)
         (*(void (**)(u32, void*))0x960094)(0xe, &savedState);
         (*renderState)(0xe, 0);
     }
+    drawPrim = (void (**)(u32, void*, u32))0x9600a0;
+    (*renderState)(7, 2);
+    (*renderState)(0xc, 1);
+    (*drawPrim)(4, (void*)((u8*)0x00960120 + 0x20), 4);
+    (*renderState)(9, 2);
+    (*renderState)(1, *(u32*)D_00875A60[*(u32*)((u8*)0x00960120 + 8) + 1]);
+    (*drawPrim)(4, (void*)((u8*)0x00960120 + 0x120), 4);
     (*renderState)(6, 1);
     if (*(s32*)(work + 4) != 0)
     {

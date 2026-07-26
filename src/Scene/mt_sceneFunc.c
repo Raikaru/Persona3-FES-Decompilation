@@ -4725,86 +4725,33 @@ void FUN_003bcc80(void)
 
 
 int FUN_003bcda0(int *param_1,int *param_2)
-
-
-
 {
+  int matrix;
+  int second;
+  RwV3d origin;
+  RwV3d first;
+  RwV3d secondPos;
+  RwV3d firstDelta;
+  RwV3d secondDelta;
 
-  int iVar1;
+  matrix = FUN_00198590();
+  matrix = FUN_004cb2f0(*(u32 *)(matrix + 4));
+  origin.x = *(float *)(matrix + 0x30);
+  origin.y = *(float *)(matrix + 0x34);
+  origin.z = *(float *)(matrix + 0x38);
 
-  float fVar2;
+  second = *param_2;
+  FUN_0034ffc0(*(u32 *)(*param_1 + 0x104),&secondPos);
+  FUN_0034ffc0(*(u32 *)(second + 0x104),&first);
 
-  float fVar3;
+  firstDelta.x = first.x - origin.x;
+  firstDelta.y = first.y - origin.y;
+  firstDelta.z = first.z - origin.z;
+  secondDelta.x = secondPos.x - origin.x;
+  secondDelta.y = secondPos.y - origin.y;
+  secondDelta.z = secondPos.z - origin.z;
 
-  u8 auStack_b0 [48];
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  u8 auStack_70 [48];
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  iVar1 = FUN_00198590();
-
-  iVar1 = FUN_004cb2f0(*(u32 *)(iVar1 + 4));
-
-  fStack_30 = *(float *)(iVar1 + 0x30);
-
-  fStack_2c = *(float *)(iVar1 + 0x34);
-
-  fStack_28 = *(float *)(iVar1 + 0x38);
-
-  iVar1 = *param_2;
-
-  FUN_0034ffc0(*(u32 *)(*param_1 + 0x104),auStack_70);
-
-  FUN_0034ffc0(*(u32 *)(iVar1 + 0x104),auStack_b0);
-
-  fStack_10 = fStack_40 - fStack_30;
-
-  fStack_c = fStack_3c - fStack_2c;
-
-  fStack_8 = fStack_38 - fStack_28;
-
-  fStack_20 = fStack_80 - fStack_30;
-
-  fStack_1c = fStack_7c - fStack_2c;
-
-  fStack_18 = fStack_78 - fStack_28;
-
-  fVar2 = (float)FUN_004c6ac0(&fStack_10);
-  fVar3 = (float)FUN_004c6ac0(&fStack_20);
-
-  return (int)(fVar2 - fVar3);
-
+  return (int)(FUN_004c6ac0(&firstDelta) - FUN_004c6ac0(&secondDelta));
 }
 #define FUN_003bcda0(...) ((int (*)(...))FUN_003bcda0)(__VA_ARGS__)
 #undef FUN_003bceb0
