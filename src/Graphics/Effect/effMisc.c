@@ -417,7 +417,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (i = 0; i < 6; i++)
         {
             renderState = &sEffRenderStates[i];
-            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, &savedRenderStates[i]);
+            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)((*(volatile const EffRenderState*)renderState).renderState, &savedRenderStates[i]);
             (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)renderState->value);
         }
 

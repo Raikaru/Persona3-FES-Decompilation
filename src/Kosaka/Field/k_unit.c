@@ -1912,10 +1912,7 @@ void func_001d1360(void)
 // FUN_001d1640 NONMATCHING
 void func_001d1640(FldUnit* unit, s32 destroyModel)
 {
-    if (unit->genusBase != NULL)
-    {
-        if (unit->resrc != NULL)
-        {
+    if (unit->genusBase != NULL && unit->resrc != NULL)
     {
         unit->matBeforeBtl = *mdlGetMatrix(unit->mdl);
         func_003b7090(unit->resrc->base.resTypeId);
@@ -1931,8 +1928,6 @@ void func_001d1640(FldUnit* unit, s32 destroyModel)
         if (unit->unk_180 != NULL) { func_00195020(unit->unk_180); unit->unk_180 = NULL; }
         if (unit->unk_174 != NULL) { func_00195020(unit->unk_174); unit->unk_174 = NULL; }
     }
-    }
-}
 
 // FUN_001d1780
 void func_001d1780(s32 includeHero)
