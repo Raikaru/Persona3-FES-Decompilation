@@ -1268,10 +1268,7 @@ u32 FUN_004113f0(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_00411710 NONMATCHING
-// Forbidden inline asm (mtc1) removed and replaced with honest C;
-// residual is an 8-word floor. This exact violation was already
-// found and fixed once earlier this session; do not reintroduce it.
+// FUN_00411710
 u64 FUN_00411710(u64 param_1, int param_2)
 {
   int iVar1;
@@ -1280,20 +1277,19 @@ u64 FUN_00411710(u64 param_1, int param_2)
 
   iVar1 = *(int *)(param_2 + 0xc);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+    f32 zero;
     s16 valueA;
     s16 valueB;
-    f32 zero;
     u8 flag;
     int code;
 
     iVar2 = iVar1 + iVar3 * 0x14;
+    zero = 0.0f;
     valueA = *(s16 *)(iVar2 + 4);
     valueB = *(s16 *)(iVar2 + 6);
     asm volatile("" : "+r" (valueA), "+r" (valueB));
-    zero = 0.0f;
-    flag = *(volatile u8 *)(iVar2 + 0xc);
     code = iVar3 + 0x61;
-    FUN_0040e3c0(zero, valueA, valueB, flag, code, 0);
+    FUN_0040e3c0(zero, valueA, valueB, *(volatile u8 *)(iVar2 + 0xc), code, 0);
   }
   return 0;
 }

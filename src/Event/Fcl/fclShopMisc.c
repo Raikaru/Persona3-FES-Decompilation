@@ -1532,21 +1532,24 @@ long FUN_003f0d60(int param_1,u64 param_2)
   case 0:
     var_16 = 0xf;
     iVar1 = func_00170ed0(param_2,&iStack_4);
-    switch (iStack_4) {
-    case 0:
-      var_17 = (long)*(int *)(iVar1 + 0x24);
-      break;
-    case 1:
-      var_17 = (long)*(int *)(iVar1 + 0x1c);
-      break;
-    case 2:
-      var_17 = (long)*(int *)(iVar1 + 0x1c);
-      break;
-    case 3:
-      var_17 = (long)*(int *)(iVar1 + 0x20);
-      break;
-    case 4:
-      var_17 = (long)*(int *)(iVar1 + 0x18);
+    for (;;) {
+      switch (iStack_4) {
+      case 0:
+        var_17 = (long)*(int *)(iVar1 + 0x24);
+        break;
+      case 1:
+        var_17 = (long)*(int *)(iVar1 + 0x1c);
+        break;
+      case 2:
+        var_17 = (long)*(int *)(iVar1 + 0x1c);
+        break;
+      case 3:
+        var_17 = (long)*(int *)(iVar1 + 0x20);
+        break;
+      case 4:
+        var_17 = (long)*(int *)(iVar1 + 0x18);
+        break;
+      }
       break;
     }
     break;
