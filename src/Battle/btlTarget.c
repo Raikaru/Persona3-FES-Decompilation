@@ -2026,6 +2026,141 @@ int FUN_002d8f70(int param_1)
   return iVar4;
 }
 
+// Retail VA range: 0x002d9aa0-0x002d9b1f (128 bytes)
+// FUN_002d9aa0 NONMATCHING
+s32 FUN_002d9aa0(BtlAction* action, u32 flags)
+{
+    if (action->unit->genus != 0)
+    {
+        return -1;
+    }
+    if (*(BtlAction**)(iGpffffb6fc + 0x148) != action)
+    {
+        return -1;
+    }
+    if ((flags & 2) != 0)
+    {
+        return 0x150;
+    }
+    if ((flags & 4) != 0)
+    {
+        return 0x14f;
+    }
+    return -1;
+}
+
+// Retail VA range: 0x002d9b20-0x002d9bdf (192 bytes)
+// FUN_002d9b20 NONMATCHING
+s32 FUN_002d9b20(BtlAction* action)
+{
+    if (action->unit->genus != 0)
+    {
+        return -1;
+    }
+    switch (action->unit->charId)
+    {
+    case 1:
+        return 0x151;
+    case 2:
+        return 0x152;
+    case 3:
+        return 0x153;
+    case 4:
+        return 0x154;
+    case 5:
+        return 0x155;
+    case 7:
+        return 0x156;
+    case 8:
+        return 0x157;
+    case 9:
+        return 0x158;
+    case 10:
+        return 0x159;
+    case 0:
+    case 6:
+    default:
+        return -1;
+    }
+}
+
+// Retail VA range: 0x002d9be0-0x002d9c9f (192 bytes)
+// FUN_002d9be0 NONMATCHING
+s32 FUN_002d9be0(BtlAction* action)
+{
+    if (action->unit->genus != 0)
+    {
+        return -1;
+    }
+    switch (action->unit->charId)
+    {
+    case 1:
+        return 0x15a;
+    case 2:
+        return 0x15b;
+    case 3:
+        return 0x15c;
+    case 4:
+        return 0x15d;
+    case 5:
+        return 0x15e;
+    case 7:
+        return 0x15f;
+    case 8:
+        return 0x160;
+    case 9:
+        return 0x161;
+    case 10:
+        return 0x162;
+    case 0:
+    case 6:
+    default:
+        return -1;
+    }
+}
+
+// Retail VA range: 0x002d9ca0-0x002d9d5f (192 bytes)
+// FUN_002d9ca0 NONMATCHING
+s32 FUN_002d9ca0(BtlAction* action)
+{
+    if (action->unit->genus != 0)
+    {
+        return -1;
+    }
+    switch (action->unit->charId)
+    {
+    case 1:
+        return -1;
+    case 2:
+        return 0x163;
+    case 3:
+        return 0x165;
+    case 4:
+        return 0x167;
+    case 5:
+        return 0x169;
+    case 7:
+        return 0x16b;
+    case 8:
+        return 0x16d;
+    case 9:
+        return 0x16f;
+    case 10:
+        return 0x171;
+    case 0:
+    case 6:
+    default:
+        return -1;
+    }
+}
+
+// Retail VA range: 0x002d9d60-0x002d9d6f (16 bytes)
+// FUN_002d9d60 NONMATCHING
+s32 FUN_002d9d60(BtlAction* action)
+{
+    return -1;
+}
+
 // FUN_002d9d70 NONMATCHING
 
 short FUN_002d9d70(int param_1)
