@@ -1718,9 +1718,9 @@ void FUN_001365b0(KwlnTask* task)
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
     KwlnTask* task;
-    void* work;
+    CampCommuRootWork* work;
 
-    work = (void*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
+    work = (CampCommuRootWork*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
     if (work == NULL) {
         return NULL;
     }
@@ -1730,7 +1730,7 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
     if (task == NULL) {
         return NULL;
     }
-    *(void**)((u8*)work + 0x150) = H_Cdvd_Request("camp_comu.pak", 0);
+    work->cdvd = H_Cdvd_Request("camp_comu.pak", 0);
     return task;
 }
 
