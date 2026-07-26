@@ -745,7 +745,7 @@ u32 scrComu00360020(void)
 }
 #pragma optimization_level 2
 
-// FUN_00360110 NONMATCHING
+// FUN_00360110
 u32 scrComu00360110(void)
 {
     int i;
@@ -781,7 +781,7 @@ tail:
     if (i < bVar1 + 2) {
         goto loop;
     }
-    scrSetIntReturnVal();
+    scrSetIntReturnVal(bVar1 + 2);
     return 1;
 }
 
