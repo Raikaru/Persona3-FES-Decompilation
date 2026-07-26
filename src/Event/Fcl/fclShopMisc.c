@@ -18963,7 +18963,7 @@ void FUN_00409f20(u64 param_1,int param_2)
 
 }
 
-// FUN_00409F50 NONMATCHING
+// FUN_00409F50
 
 
 u32 FUN_00409f50(u32 param_1,int param_2)
@@ -18990,13 +18990,15 @@ u32 FUN_00409f50(u32 param_1,int param_2)
     *(u32 *)(iVar1 + 4) = 0xfffffff7;
     for (iVar9 = 0; uVar4 = FUN_00175410(),
          iVar9 < (int)(uVar4 & 0xffff); iVar9++) {
-      lVar7 = FUN_00174a90_fcl((short)iVar9);
-      if (lVar7 != 0 && (lVar8 = FUN_0017ca10(lVar7)) == 1) {
-        iVar3 = FUN_003c5a40(uVar6,*(u16 *)(iVar2 + 0x10) + 1,0x10,0);
-        iVar3 = *(int *)(*(int *)(iVar3 + 0x14) + 0x1c);
-        *(int *)(iVar3 + 4) = (int)lVar7;
-        uVar5 = FUN_003dfeb0(0);
-        *(u32 *)(iVar3 + 0xc) = uVar5;
+      if ((lVar7 = FUN_00174a90_fcl((short)iVar9)) != 0) {
+        lVar8 = FUN_0017ca10(lVar7);
+        if (lVar8 == 1) {
+          iVar3 = FUN_003c5a40(uVar6,*(u16 *)(iVar2 + 0x10) + 1,0x10,0);
+          iVar3 = *(int *)(*(int *)(iVar3 + 0x14) + 0x1c);
+          *(int *)(iVar3 + 4) = (int)lVar7;
+          uVar5 = FUN_003dfeb0(0);
+          *(u32 *)(iVar3 + 0xc) = uVar5;
+        }
       }
     }
   }

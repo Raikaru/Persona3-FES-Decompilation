@@ -64,7 +64,7 @@ extern s32* DAT_007cdfdc;
 extern u8* DAT_007cdfe0;
 extern u8* DAT_007cdfe4;
 extern void* DAT_007cdfe8;
-extern u32 DAT_0083bb30;
+extern u32 DAT_0083bb30[];
 extern u8 DAT_0083bb40;
 extern u32 DAT_0083aaa0[0x23];
 extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
@@ -2244,8 +2244,8 @@ void FUN_0016c2f0(void)
     u32 count;
     s32 n;
     u8* p;
-
-    piVar1 = (s32*)0x83bb30;
+    u32* output;
+    piVar1 = (s32*)DAT_0083bb30;
     count = (u32)*piVar1;
     p = (u8*)piVar1 + 0x10;
     DAT_007cdfe4 = p;
@@ -2298,8 +2298,10 @@ void FUN_0016c2f0(void)
     p += 0x10;
     p += ((n << 1) + n) << 2;
     piVar1 = (s32*)p;
-    for (uVar2 = 0; uVar2 < 0x23; uVar2++) {
-        ((u32*)0x83aaa0)[uVar2] = (u32)piVar1;
+    uVar2 = 0;
+    output = DAT_0083aaa0;
+    for (; uVar2 < 0x23; uVar2++) {
+        output[uVar2] = (u32)piVar1;
         piVar1 += 8;
     }
 }

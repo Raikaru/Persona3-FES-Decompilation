@@ -2303,35 +2303,33 @@ u64 FUN_003b18c0(void)
 #undef FUN_003b1920
 // FUN_003B1920 NONMATCHING
 
-
-int FUN_003b1920(int param_1,int param_2,int param_3)
+int FUN_003b1920(int param_1, int param_2, int param_3)
 {
-  int lVar1;
+    if (param_1 != 0)
+    {
+        goto checkParam2;
+    }
+    return param_2;
 
-  lVar1 = param_2;
+checkParam2:
+    if (param_2 != 0)
+    {
+        goto body;
+    }
+    return param_1;
 
-  if ((param_1 != 0) && (lVar1 = param_1, param_2 != 0)) {
+body:
+    *(u32*)(param_1 + 0x28) = *(u32*)(param_2 + 0x2c);
+    *(int*)(*(int*)(param_2 + 0x2c) + 0x24) = param_1;
+    *(u32*)(param_2 + 0x2c) = *(u32*)(param_1 + 0x2c);
 
-    *(u32 *)(param_1 + 0x28) = *(u32 *)(param_2 + 0x2c);
-
-    *(int *)(*(int *)(param_2 + 0x2c) + 0x24) = param_1;
-
-    *(u32 *)(param_2 + 0x2c) = *(u32 *)(param_1 + 0x2c);
-
-    lVar1 = param_2;
-
-    if (param_3 == 1) {
-
-      *(int *)(param_2 + 4) = *(int *)(param_1 + 4) + *(int *)(param_1 + 0xc) * 0x10;
-
-      *(u32 *)(param_2 + 8) = *(u32 *)(param_1 + 8);
-
+    if (param_3 == 1)
+    {
+        *(int*)(param_2 + 4) = *(int*)(param_1 + 4) + *(int*)(param_1 + 0xc) * 0x10;
+        *(u32*)(param_2 + 8) = *(u32*)(param_1 + 8);
     }
 
-  }
-
-  return lVar1;
-
+    return param_2;
 }
 #define FUN_003b1920(...) ((long (*)(...))FUN_003b1920)(__VA_ARGS__)
 #undef FUN_003b19a0

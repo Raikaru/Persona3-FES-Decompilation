@@ -55,6 +55,8 @@ void FUN_003c5af0(u32 param_1);
 void FUN_003c5bb0(u32 param_1);
 u32 FUN_003c5c50(u32 param_1);
 void FUN_003c5d40(u32 param_1,int param_2,int param_3);
+#pragma alias FUN_003c4c80_nm FUN_003c4c80
+extern u32 FUN_003c4c80_nm(u32 param_1,u32 param_2);
 
 /* Region call-cast macros */
 #define FUN_003c5240(...) ((u32 (*)(...))FUN_003c5240)(__VA_ARGS__)
@@ -882,7 +884,7 @@ u32 FUN_003c5c50(u32 param_1)
     }
     iVar6 = *(int *)(iVar6 + 0x10);
     *(u32 *)(iVar1 + 0x2c) = *(u32 *)(*(int *)(iVar1 + 0x2c) + 0x10);
-    uVar7 = FUN_003c4c80(param_1,iVar4 + 4);
+    uVar7 = FUN_003c4c80_nm(param_1,iVar4 + 4);
     iVar3 = iVar3 + 1;
   }
 
