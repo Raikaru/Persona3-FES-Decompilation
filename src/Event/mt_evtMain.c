@@ -462,6 +462,7 @@ u64 FUN_003952d0(u64 param_1,int param_2,s16 param_3);
 u64 FUN_003952b0(u64 param_1,int param_2);
 u64 FUN_003952a0(u64 param_1,int param_2);
 u32 FUN_00397870(int param_1,long param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6);
+void FUN_00396f50(int param_1);
 long FUN_0038ab00(int param_1,u64 param_2);
 short FUN_0036f640(int param_1);
 #pragma alias FUN_0036f640_evt FUN_0036f640

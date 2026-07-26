@@ -714,8 +714,8 @@ u32 func_0019ab80(f32 alpha,
     u32 collisionCount;
     u32 i;
     u32 j;
-    ResrcFld* fields[4];
-    u16 resourceIds[4];
+    ResrcFld* fields[5];
+    u16 resourceIds[5];
 
     field = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     stateSet = (volatile void (**)(u32, u32))D_00960090_abs;
