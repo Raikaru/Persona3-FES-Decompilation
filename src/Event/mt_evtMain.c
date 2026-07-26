@@ -5453,10 +5453,14 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
   u32 uVar3;
 
   u32 uVar4;
-  u32 uVar5;
+
   short sVar6;
+
   u16 uVar7;
+
   u8 uVar8;
+
+  u32 uVar5;
 
   
 
@@ -5482,10 +5486,8 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
         if (*(char *)((int)puVar1 + 0x19) != '\0') {
           uVar5 = 1;
         }
-        sVar6 = *(short *)((int)puVar1 + 0x14);
-        uVar7 = *(u16 *)(param_3 + 0xc);
-        uVar8 = (u8)puVar1[0xc];
-        FUN_003b8e10_evt(uVar7,uVar8,sVar6,uVar5);
+        FUN_003b8e10_evt(*(u16 *)(param_3 + 0xc),(u8)puVar1[0xc],
+                         *(short *)((int)puVar1 + 0x14),uVar5);
 
       }
 

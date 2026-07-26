@@ -1659,7 +1659,7 @@ RwMatrix* func_001a0d80()
     return NULL;
 }
 
-// FUN_001a0dc0 NONMATCHING
+// FUN_001a0dc0
 void func_001a0dc0(u16 resTypeId, u32 visible)
 {
     Resrc* res;
@@ -1685,19 +1685,22 @@ setFlags:
     }
 }
 
-// FUN_001a0e50 NONMATCHING
+// FUN_001a0e50
 void func_001a0e50(u16 resTypeId, u32 persona)
 {
     Resrc* res;
 
     if (gMtScene->resManager == NULL)
     {
-        return;
+        goto done;
     }
-    else
-    {
-        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
-    }
+    res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+    goto setFlags;
+
+done:
+    return;
+
+setFlags:
     if (persona == 1)
     {
         res->flags |= SCENEDRAW_RESRC_FLAG_PERSONA;

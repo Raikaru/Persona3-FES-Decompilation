@@ -575,6 +575,7 @@ void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
 HCdvd* func_001d6b10(void)
 {
     char path[128];
+    const char* format;
 
     if (PTR_DAT_007cd540[0] == 0xffffffff)
     {
@@ -583,7 +584,8 @@ HCdvd* func_001d6b10(void)
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        sprintf(path, D_00683AD0,
+        format = D_00683AD0;
+        sprintf(path, format,
                 (s32)PTR_DAT_007cd540[0], (s32)PTR_DAT_007cd540[1]);
         if (H_Cdvd_FileExists(path) == false)
         {
