@@ -3348,7 +3348,7 @@ u32 FUN_003cdba0(u64 param_1,u16 param_2)
   u32 result;
   u8 *context;
   u32 flags;
-  context = fclMiscContextCall();
+  context = (u8 *)fclMiscContextCall();
   if (context == 0) {
     fclMiscAssertCall((u32)DAT_006a3e18,0x9e2);
   }
