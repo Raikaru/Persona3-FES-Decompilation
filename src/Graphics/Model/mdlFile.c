@@ -760,8 +760,10 @@ u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src);
 void FUN_0034c650(int param_1, int param_2);
 void FUN_0034c660(int param_1, float param_2);
 u64 FUN_0034c670(long param_1);
+#pragma alias FUN_0034c670_u32 FUN_0034c670
+extern u32 FUN_0034c670_u32(int param_1);
 void FUN_0034c890(u64 param_1);
-u64 FUN_0034c940(u64 param_1);
+u32 FUN_0034c940(int param_1);
 void FUN_0034c9b0(int param_1,int param_2);
 void FUN_0034cb60(int param_1);
 void FUN_0034cc00(u32 *param_1);
@@ -48892,22 +48894,22 @@ void FUN_0034c890(u64 param_1)
 
 
 
-// FUN_0034C940 NONMATCHING
+// FUN_0034C940
 
 
-u64 FUN_0034c940(u64 param_1)
+u32 FUN_0034c940(int param_1)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   
 
-  uVar1 = FUN_0034c670(0);
+  uVar1 = FUN_0034c670_u32(0);
 
-  FUN_00521250((int)uVar1 + 0x30,(int)param_1 + 0x30,0x68);
+  FUN_00521250((int)uVar1 + 0x30,param_1 + 0x30,0x68);
 
   FUN_0034c9b0(uVar1,param_1);
 

@@ -398,44 +398,69 @@ static void K_Encount_Face(FldUnit* unit, FldUnit* target)
 // FUN_001d7b70 NONMATCHING
 DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
 {
-    EncounterWork* work;
-    s32 active;
-    s32 i;
-    s32 j;
+    s32 temp_3;
+    s32 temp_6;
+    s32 var_10;
+    s32 var_11;
+    s32 var_4;
+    s32 var_9;
     s32 pcCount;
     s32 ecCount;
+    void* temp_8;
+    void* ecBase;
 
-    work = (EncounterWork*)task->workData;
-    active = 0;
-    i = 0;
-    pcCount = work->pcCount;
-    while (i < pcCount)
+    temp_8 = task->workData;
+    var_10 = 0;
+    var_4 = 0;
+    pcCount = *(s32*)((u8*)temp_8 + 0x10);
+    goto pc_check;
+pc_body:
+    if (flatIndex == var_10)
     {
-        if (flatIndex == active)
-        {
-            return work->pc[i]->genusBase->unit;
-        }
-        active += 1;
-        i += 1;
+        return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + var_4 * 4 + 0x18) +
+                                      0x48))->unit;
     }
-    i = 0;
-    ecCount = work->ecCount;
-    while (i < ecCount)
+    var_10 += 1;
+    var_4 += 1;
+pc_check:
+    if (var_4 < pcCount)
     {
-        j = 0;
-        while (j < 6)
+        goto pc_body;
+    }
+    var_9 = 0;
+    ecCount = *(s32*)((u8*)temp_8 + 0x14);
+    goto ec_check;
+ec_body:
+    var_11 = 0;
+    temp_6 = var_9 * 4;
+    ecBase = (u8*)temp_8 + temp_6;
+    goto unit_check;
+unit_body:
+    temp_3 = var_11 * 0x3c;
+    if (((*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) + 0x48))->unit +
+         var_11)->id != 0)
+    {
+        if (flatIndex == var_10)
         {
-            if (work->ec[i]->genusBase->unit[j].id != 0)
-            {
-                if (flatIndex == active)
-                {
-                    return work->ec[i]->genusBase->unit + j;
-                }
-                active += 1;
-            }
-            j += 1;
+            return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + temp_6 +
+                                                           0x28) +
+                                          0x48))->unit + var_11;
         }
-        i += 1;
+        var_10 += 1;
+        goto unit_next;
+    }
+unit_next:
+    var_11 += 1;
+unit_check:
+    if (var_11 < 6)
+    {
+        goto unit_body;
+    }
+    var_9 += 1;
+ec_check:
+    if (var_9 < ecCount)
+    {
+        goto ec_body;
     }
     return NULL;
 }
