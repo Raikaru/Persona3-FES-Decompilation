@@ -47,6 +47,10 @@ u32 FUN_002d6370(s16 commandId);
 u32 FUN_003088b0(u16 commandId);
 s32 FUN_002d6290(void);
 s32 FUN_002d63b0(BtlUnit* unit, s32 commandId, s32 param_3);
+/* Single-precision. Left implicitly declared these promoted their float
+   argument to double, emitting fptodp calls retail does not make. */
+extern f32 FUN_0052e6d8(f32 x);
+extern f32 FUN_0052e878(f32 x);
 extern f32 DAT_007caee4;
 extern f32 DAT_007caf58;
 extern f32 DAT_007caf5c;
