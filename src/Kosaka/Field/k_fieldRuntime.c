@@ -44,6 +44,38 @@ struct RuntimeWork
     u32 slots[1024];
 };
 
+typedef struct RuntimeTransitionWork
+{
+    u32 state;
+    void* windowTask;
+    u32 flags;
+    u32 reserved0c;
+    u16 resourceId;
+    u8 reserved12[2];
+    void* positionTask;
+} RuntimeTransitionWork;
+
+extern void* func_001a3b10(void* parent, u32 width, u32 height, u32 mode);
+extern void func_001a3dc0(void* task, const void* descriptors, u32 count);
+extern void func_001a3bf0(void* task, u32 request);
+extern s32 func_001a4510(void* task);
+extern s32* func_001a41b0(void* task, u32 id);
+extern void* func_004cb2f0(void* frame);
+extern void K_Draw_CopyPositionCenter(RuntimeVec3* destination, void* task);
+extern RuntimeMatrix* K_Draw_GetPositionMatrix(void* task);
+extern void K_Draw_SetPositionPos(void* task, const RuntimeVec3* position);
+extern void K_Draw_MovePositionInDir(f32 distance, void* task,
+                                     const RuntimeVec3* direction);
+extern void K_Draw_RotatePosition(void* task, const RuntimeVec3* axis,
+                                  f32 angle);
+extern void* func_001a5000(void* task);
+extern u16 DAT_007e094c;
+extern u16 DAT_007e094e;
+extern u8 DAT_007e095e[];
+extern u8 DAT_007e0960[];
+extern u8 D_00684370[];
+extern char D_00684330[];
+extern char D_00684380[];
 struct RuntimeListNode
 {
     u32 flags;

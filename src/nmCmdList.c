@@ -2389,7 +2389,7 @@ void FUN_003c7c90(int param_1)
 
 {
 
-  u8 *lVar1;
+  u32 lVar1;
 
   u32 *puVar2;
 

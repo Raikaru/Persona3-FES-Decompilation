@@ -2776,10 +2776,10 @@ void *func_001f5b20(void)
         }
         cnt = BR_S32(work, 0x340c) + 1;
         BR_S32(work, 0x340c) = cnt;
-        if (cnt != BR_S32(work, 0x341c)) {
-            func_001f6e80();
-        } else {
+        if (cnt == BR_S32(work, 0x341c)) {
             func_001f6a60();
+        } else {
+            func_001f6e80();
         }
         break;
     case 3:
@@ -2803,10 +2803,10 @@ void *func_001f5b20(void)
         func_003c7650(0);
         cnt = BR_S32(work, 0x3410) + 1;
         BR_S32(work, 0x3410) = cnt;
-        if (cnt != BR_S32(work, 0x3400)) {
-            func_001f7030();
-        } else {
+        if (cnt == BR_S32(work, 0x3400)) {
             func_001f6a60();
+        } else {
+            func_001f7030();
         }
         break;
     case 6:
@@ -2817,10 +2817,10 @@ void *func_001f5b20(void)
         func_003c7650(0);
         cnt = BR_S32(work, 0x3414) + 1;
         BR_S32(work, 0x3414) = cnt;
-        if (cnt != BR_S32(work, 0x3404)) {
-            func_001f70d0();
-        } else {
+        if (cnt == BR_S32(work, 0x3404)) {
             func_001f6a60();
+        } else {
+            func_001f70d0();
         }
         break;
     case 7:
@@ -2844,10 +2844,10 @@ void *func_001f5b20(void)
             }
             cnt = BR_S32(work, 0x3408) + 1;
             BR_S32(work, 0x3408) = cnt;
-            if (cnt != BR_S32(work, 0x3418)) {
-                func_001f7210();
-            } else {
+            if (cnt == BR_S32(work, 0x3418)) {
                 func_001f6a60();
+            } else {
+                func_001f7210();
             }
         } else if (sub_state == 1) {
             flags = BR_U32(work, 0);
@@ -2869,12 +2869,10 @@ void *func_001f5b20(void)
                 func_003c7c20(1, BR_U32(work, 0x34ec + cnt * 8), 0);
                 func_003c7430(0x17);
             } else {
-                cnt = BR_S32(work, 0x3408) + 1;
-                BR_S32(work, 0x3408) = cnt;
-                if (cnt != BR_S32(work, 0x3418)) {
-                    func_001f7210();
-                } else {
+                if (cnt == BR_S32(work, 0x3418)) {
                     func_001f6a60();
+                } else {
+                    func_001f7210();
                 }
             }
         } else if (sub_state == 2) {
@@ -2891,20 +2889,19 @@ void *func_001f5b20(void)
             func_003c7650(s0_val);
             cnt = BR_S32(work, 0x3408) + 1;
             BR_S32(work, 0x3408) = cnt;
-            if (cnt != BR_S32(work, 0x3418)) {
-                func_001f7210();
-            } else {
+            if (cnt == BR_S32(work, 0x3418)) {
                 func_001f6a60();
+            } else {
+                func_001f7210();
             }
         }
         break;
     case 8:
     {
-        u32 result = scrForceTraceCode((void *)BR_U32(work, 0x34c4));
-        if (result == 2) {
-            func_001f6a60();
-        } else if (result == 0) {
+        if (result == 0) {
             K_ASSERT(0, 0x1da);
+        } else if (result == 2) {
+            func_001f6a60();
         }
         break;
     }

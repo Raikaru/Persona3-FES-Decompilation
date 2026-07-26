@@ -1408,8 +1408,6 @@ s32 func_001a89c0(const u32* left, const u32* right)
 {
     RwCamera* camera;
     RwMatrix* cameraMatrix;
-    RwMatrix* leftMatrix;
-    RwMatrix* rightMatrix;
     RwV3d cameraPosition;
     RwV3d leftDelta;
     RwV3d rightDelta;
@@ -1419,14 +1417,12 @@ s32 func_001a89c0(const u32* left, const u32* right)
     camera = kwlnGetMainCamera();
     cameraMatrix = func_004cb2f0(*(void**)((u8*)camera + 4));
     cameraPosition = cameraMatrix->pos;
-    leftMatrix = func_004cb2f0(*(void**)(*left + 4));
-    rightMatrix = func_004cb2f0(*(void**)(*right + 4));
-    leftDelta.x = leftMatrix->pos.x - cameraPosition.x;
-    leftDelta.y = leftMatrix->pos.y - cameraPosition.y;
-    leftDelta.z = leftMatrix->pos.z - cameraPosition.z;
-    rightDelta.x = rightMatrix->pos.x - cameraPosition.x;
-    rightDelta.y = rightMatrix->pos.y - cameraPosition.y;
-    rightDelta.z = rightMatrix->pos.z - cameraPosition.z;
+    leftDelta.x = func_004cb2f0(*(void**)(*left + 4))->pos.x - cameraPosition.x;
+    leftDelta.y = func_004cb2f0(*(void**)(*left + 4))->pos.y - cameraPosition.y;
+    leftDelta.z = func_004cb2f0(*(void**)(*left + 4))->pos.z - cameraPosition.z;
+    rightDelta.x = func_004cb2f0(*(void**)(*right + 4))->pos.x - cameraPosition.x;
+    rightDelta.y = func_004cb2f0(*(void**)(*right + 4))->pos.y - cameraPosition.y;
+    rightDelta.z = func_004cb2f0(*(void**)(*right + 4))->pos.z - cameraPosition.z;
     leftDistance = RwV3dLength(&leftDelta);
     rightDistance = RwV3dLength(&rightDelta);
     return (s32)(leftDistance - rightDistance);

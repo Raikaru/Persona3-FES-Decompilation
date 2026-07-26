@@ -424,6 +424,8 @@ extern float FUN_004c69f0();
 #pragma alias FUN_003951d0_i32 FUN_003951d0
 extern int FUN_003951d0_i32(int param_1);
 extern float FUN_004c6ac0();
+#pragma alias FUN_004c6ac0_scene_vec FUN_004c6ac0
+extern float FUN_004c6ac0_scene_vec(const RwV3d *param_1);
 void FUN_003bcc80();
 void FUN_003bceb0(int param);
 void FUN_0034fd70(Model* mdl, s32 type);
@@ -3967,7 +3969,7 @@ void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
   fStack_28 = fStack_8 - fStack_4;
   fStack_24 = fStack_10 - fStack_c;
   fStack_20 = fStack_18 - fStack_14;
-  FUN_004c6ac0(&fStack_28);
+  FUN_004c6ac0_scene_vec((const RwV3d *)&fStack_28);
   *param_6 = fStack_4;
   param_6[1] = fStack_c;
   param_6[2] = fStack_14;
