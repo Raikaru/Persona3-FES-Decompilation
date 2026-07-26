@@ -110,7 +110,7 @@ s16 FUN_003a2830(int param_1);
 u32 FUN_003a28a0(void);
 u32 FUN_003a2900(void);
 u32 FUN_003a2970(void);
-void FUN_003a2a30(u64 param_1);
+void FUN_003a2a30(s32 param_1);
 #pragma alias FUN_003a2a30_s32 FUN_003a2a30
 extern void FUN_003a2a30_s32(s32 param_1);
 u32 FUN_003a2b30(void);
@@ -543,6 +543,14 @@ extern void FUN_003a3420_typed(s32, s32);
 extern void FUN_003a6900_typed(u32*, s32);
 extern void FUN_003a6930_typed(u32*, s32);
 extern void FUN_003a69d0_typed(u32*);
+#pragma alias FUN_003a42c0_typed FUN_003a42c0
+#pragma alias FUN_003a6980_typed FUN_003a6980
+#pragma alias FUN_003a6a10_typed FUN_003a6a10
+#pragma alias FUN_003a6a40_typed FUN_003a6a40
+extern u32 FUN_003a42c0_typed(int, u32);
+extern void FUN_003a6980_typed(u32*);
+extern void FUN_003a6a10_typed(int);
+extern void FUN_003a6a40_typed(u8*, s32);
 extern void FUN_003a3e90_typed(s32, s32);
 // FUN_003A2260
 
@@ -940,10 +948,10 @@ u32 FUN_003a2970(void)
 #define FUN_003a2a30(...) ((void (*)(...))FUN_003a2a30)(__VA_ARGS__)
 #define FUN_003a2970(...) ((u32 (*)(...))FUN_003a2970)(__VA_ARGS__)
 #undef FUN_003a2a30
-// FUN_003A2A30 NONMATCHING
+// FUN_003A2A30
 
 
-void FUN_003a2a30(u64 param_1)
+void FUN_003a2a30(s32 param_1)
 
 
 
@@ -989,9 +997,9 @@ void FUN_003a2a30(u64 param_1)
 
   }
 
-  FUN_003a3420(param_1,1);
+  FUN_003a3420_typed(param_1,1);
 
-  FUN_003a3ab0(param_1);
+  FUN_003a3ab0_direct(param_1);
 
   *puVar1 = *puVar1 & 0xffdfffff;
 
@@ -1160,7 +1168,7 @@ u32 FUN_003a2ef0(u32 param_1)
 
   puVar3[1] = 0;
 
-  FUN_003a42c0(uVar2,param_1);
+  FUN_003a42c0_typed(uVar2,param_1);
 
   *puVar3 = 0;
 
@@ -1170,7 +1178,7 @@ u32 FUN_003a2ef0(u32 param_1)
 
   puVar3[0x79] = 0;
 
-  FUN_003a6900(puVar3 + 5,1);
+  FUN_003a6900_typed(puVar3 + 5,1);
 
   FUN_003a6930(puVar3 + 9,1);
 
