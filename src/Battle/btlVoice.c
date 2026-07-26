@@ -6130,192 +6130,214 @@ f32 func_002e6130(BtlUnit* param_1,BtlUnit* param_2,float* param_3,float* param_
   return fVar6;
 }
 
+typedef struct
+{
+  RwV3d pos;
+  RtQuat rot;
+} BtlVoicePose6a20;
+
+#pragma alias FUN_002d1de0_6a20 FUN_002d1de0
+extern void FUN_002d1de0_6a20(RtQuat* out, const RwV3d* from,
+                              const RwV3d* to);
+#pragma alias FUN_002a4690_6a20 FUN_002a4690
+extern void FUN_002a4690_6a20(RtQuat* out, const RwV3d* from,
+                              const RwV3d* to, const RwV3d* config);
+#pragma alias FUN_004be1e0_6a20 FUN_004be1e0
+extern void FUN_004be1e0_6a20(RwV3d* out, const RwV3d* basis, s32 count,
+                              const RtQuat* source);
+#pragma alias FUN_004c6b20_6a20 FUN_004c6b20
+extern void FUN_004c6b20_6a20(f32* out, const f32* in);
+#pragma alias FUN_004c69f0_6a20 FUN_004c69f0
+extern f32 FUN_004c69f0_6a20(RwV3d* out, const RwV3d* in);
+#pragma alias FUN_002d1f30_6a20 FUN_002d1f30
+extern f32 FUN_002d1f30_6a20(const RtQuat* first, const RtQuat* second);
+#pragma alias FUN_0052e930_6a20 FUN_0052e930
+extern f32 FUN_0052e930_6a20(f32 angle);
+#pragma alias FUN_002a44f0_6a20 FUN_002a44f0
+extern void FUN_002a44f0_6a20(f32* first, f32* second);
+#pragma alias FUN_002a4470_6a20 FUN_002a4470
+extern void FUN_002a4470_6a20(f32* dst, f32* src);
+
+/* Retail 0x00-0x67f: reconstruct the paired-unit quaternion, projection, and playback paths; 1644/1680 bytes emitted, with no unjustified bytes. */
 // FUN_002e6a20 NONMATCHING
 void func_002e6a20(BtlCamera* camera, float weight)
-
 {
-  int iVar1;
-  int iVar2;
-  u64 uVar3;
-  int iVar4;
-  int iVar5;
-  float fVar6;
-  float fVar7;
-  float fVar8;
-  float fStack_f0;
-  float fStack_ec;
-  float fStack_e8;
-  u8 auStack_e4 [16];
-  float fStack_d4;
-  float fStack_d0;
-  float fStack_cc;
-  u8 auStack_c8 [24];
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a8;
-  float fStack_a4;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
-  float fStack_94;
-  u8 auStack_90 [16];
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
-  float fStack_74;
-  float fStack_70;
-  float fStack_6c;
-  float fStack_68;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  float fStack_8c;
-  float fStack_90;
-  float fStack_94_b;
-  float fStack_100;
-  float fStack_104;
-  float fStack_108;
-  
-  iVar2 = (int)camera;
-  iVar5 = *(int *)(*(int *)(iVar2 + 0xe0) + 0x30);
-  iVar1 = *(int *)(*(int *)(*(int *)(iVar2 + 0xe0) + 0x38) + 0x30);
-  fVar6 = func_002e6130((BtlUnit*)(uintptr_t)iVar5,(BtlUnit*)(uintptr_t)iVar1,&fStack_10,&fStack_20);
-  fVar8 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c);
-  fStack_a8 = *(float *)(iVar2 + 0x9c) - fStack_10;
-  fStack_a4 = *(float *)(iVar2 + 0xa4) - fStack_8;
-  FUN_004c6b20(&fStack_a8,&fStack_a8);
-  if (*(char *)(iVar5 + 0xa2) == '\0') {
-    FUN_002d1de0(auStack_90,&fStack_10,&fStack_20);
-    FUN_004be1e0(&fStack_50,0x6978a0,1,auStack_90);
-    fStack_50 = fStack_50 * fVar8;
-    fStack_4c = fStack_4c * fVar8;
-    fStack_48 = fStack_48 * fVar8;
-    fStack_20 = fStack_20 + fStack_50;
-    fStack_1c = fStack_1c + fStack_4c;
-    fStack_18 = fStack_18 + fStack_48;
-    fStack_60 = fStack_10 - fStack_20;
-    fStack_5c = fStack_c - fStack_1c;
-    fStack_58 = fStack_8 - fStack_18;
-    fStack_38 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
-    fStack_30 = fStack_10;
-    fStack_28 = fStack_8;
-    fVar8 = *(float *)(iVar5 + 0x90) * *(float *)(iVar5 + 0x2c) * 1.25f;
-    fStack_38 = DAT_007cad88 * fStack_38;
-    fStack_40 = fStack_60 * fStack_38;
-    fStack_3c = fStack_5c * fStack_38;
-    fStack_38 = fStack_58 * fStack_38;
-    fVar7 = fStack_c;
-    iVar4 = iVar5;
-    iVar5 = iVar1;
-  }
-  else {
-    FUN_002d1de0(auStack_90,&fStack_20,&fStack_10);
-    FUN_004be1e0(&fStack_50,0x6978a0,1,auStack_90);
-    fStack_50 = fStack_50 * fVar7;
-    fStack_4c = fStack_4c * fVar7;
-    fStack_48 = fStack_48 * fVar7;
-    fStack_10 = fStack_10 + fStack_50;
-    fStack_c = fStack_c + fStack_4c;
-    fStack_8 = fStack_8 + fStack_48;
-    fStack_60 = fStack_10 - fStack_20;
-    fStack_5c = fStack_c - fStack_1c;
-    fStack_58 = fStack_8 - fStack_18;
-    fStack_38 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
-    fStack_30 = fStack_20;
-    fStack_28 = fStack_18;
-    fVar8 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5f;
-    fStack_38 = DAT_007cad50 * fStack_38;
-    fStack_40 = fStack_60 * fStack_38;
-    fStack_3c = fStack_5c * fStack_38;
-    fStack_38 = fStack_58 * fStack_38;
-    fVar7 = fStack_1c;
-    iVar4 = iVar1;
-  }
-  fStack_40 = fStack_40 + fStack_20;
-  fStack_3c = fStack_3c + fStack_1c;
-  fStack_38 = fStack_38 + fStack_18;
-  fStack_b0 = fStack_58;
-  fStack_ac = -fStack_60;
-  if (0.0f <= fStack_58 * fStack_a8 + fStack_ac * fStack_a4) {
-    fStack_70 = fStack_58 * fVar8 + fStack_30 + 0.0f;
-    fStack_68 = (fStack_28 + 0.0f) - fStack_60 * fVar8;
-  }
-  else {
-    fStack_70 = (fStack_30 + 0.0f) - fStack_58 * fVar8;
-    fStack_68 = fStack_60 * fVar8 + fStack_28 + 0.0f;
-  }
-  fVar8 = fStack_28;
-  FUN_004be1e0(&fStack_60,0x6978a0,1,auStack_c8);
-  fVar8 = FUN_002d1fd0(&fStack_a0,&fStack_98,&fStack_78,&fStack_80);
-  fStack_9c = fStack_38;
-  fStack_98 = fStack_70;
-  fStack_94 = fStack_68;
-  fStack_78 = fStack_30;
-  fVar7 = FUN_0052e930(DAT_007cad60 * *(float *)(iVar2 + 0xb8) * 0.5f);
-  fVar8 = fVar6 * *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c) + fVar8 + 0.0f;
-  fStack_70 = fStack_80;
-  fStack_68 = fStack_7c;
-  fStack_6c = fVar7;
-  fVar6 = 100.0f;
-  if (100.0f <= fVar8 / fVar7) {
-    fVar6 = fVar8 / fVar7;
-  }
-  fStack_60 = fStack_60 * fVar6;
-  fStack_5c = fStack_5c * fVar6;
-  fStack_58 = fStack_58 * fVar6;
-  fStack_d4 = fStack_70 + fStack_60;
-  fStack_d0 = fStack_6c + fStack_5c;
-  fStack_cc = fStack_68 + fStack_58;
-  if (fStack_d0 < 22.5f) {
-    fStack_d0 = 22.5f;
-  }
-  fVar6 = FUN_002d1f30(auStack_e4,auStack_c8);
-  FUN_002a4470(&fStack_70,(f32*)(iVar2 + 0x9c));
-  fVar6 = FUN_002d1f30(&fStack_7c,&fStack_98);
-  if (DAT_007cadc4 < fVar6) {
-    FUN_002a44f0(&fStack_70,&fStack_8c);
-    uVar3 = 3;
-  }
-  else {
-    uVar3 = 0x33;
-  }
-  FUN_002a3e80(50.0f,(u8*)*(int*)(iVar2 + 0xe0),(u8*)(iVar4 + 4),(u8*)&fStack_8c,uVar3);
-  FUN_002a44f0(&fStack_70,&fStack_8c);
-  FUN_004be1e0(&fStack_100,0x6978a0,1,&fStack_7c);
-  fStack_100 = fStack_100 * 150.0f;
-  fStack_104 = fStack_104 * 150.0f;
-  fStack_108 = fStack_108 * 150.0f;
-  fStack_8c = fStack_70 + fStack_100;
-  fStack_90 = fStack_74 + fStack_104;
-  fStack_94_b = fStack_78 + fStack_108;
-  if (fStack_90 < 22.5f) {
-    fStack_90 = 22.5f;
-  }
-  if (weight == 0.0f) {
-    FUN_002a2290(camera,&fStack_70,&fStack_8c,1);
-    FUN_002a3110(camera,2.0f);
-  }
-  else {
-    FUN_002a2290(camera,&fStack_70,&fStack_8c,1);
-    FUN_002a3110(camera,weight);
-  }
-  return;
-}
+  typedef struct
+  {
+    RwV3d first;
+    RwV3d second;
+    RwV3d rotated;
+    RwV3d delta;
+    RwV3d lateral;
+    RwV3d base;
+    RwV3d camera;
+    RwV3d target;
+    BtlVoicePose6a20 pose;
+    RtQuat rotation;
+    RtQuat aim;
+    f32 viewXZ[2];
+    f32 fromXZ[2];
+    f32 toXZ[2];
+    f32 eyeXZ[2];
+    f32 projected[2];
+    f32 firstRadius;
+    f32 secondRadius;
+    f32 distance;
+    f32 scale;
+    f32 projection;
+    f32 fovScale;
+    f32 sideDot;
+    f32 quatDot;
+    f32 temp0;
+    f32 temp1;
+    f32 temp2;
+    f32 temp3;
+  } VoiceWork;
+  VoiceWork work;
+  BtlUnit* firstUnit;
+  BtlUnit* secondUnit;
+  BtlUnit* selectedUnit;
+  u32 mode;
 
+  firstUnit = camera->action->unit;
+  secondUnit = camera->action->target.targetedActions[0]->unit;
+  work.distance = func_002e6130(firstUnit, secondUnit,
+                                (f32*)&work.first, (f32*)&work.second);
+  work.firstRadius = firstUnit->sphereRadius * firstUnit->scale;
+  work.secondRadius = secondUnit->sphereRadius * secondUnit->scale;
+  work.viewXZ[0] = camera->pos.x - work.first.x;
+  work.viewXZ[1] = camera->pos.z - work.first.z;
+  FUN_004c6b20_6a20(work.viewXZ, work.viewXZ);
+
+  if (firstUnit->genus == 0) {
+    FUN_002d1de0_6a20(&work.rotation, &work.first, &work.second);
+    FUN_004be1e0_6a20(&work.rotated, (const RwV3d*)(uintptr_t)0x6978a0,
+                      1, &work.rotation);
+    work.rotated.x = work.rotated.x * work.secondRadius;
+    work.rotated.y = work.rotated.y * work.secondRadius;
+    work.rotated.z = work.rotated.z * work.secondRadius;
+    work.second.x = work.second.x + work.rotated.x;
+    work.second.y = work.second.y + work.rotated.y;
+    work.second.z = work.second.z + work.rotated.z;
+    work.delta.x = work.first.x - work.second.x;
+    work.delta.y = work.first.y - work.second.y;
+    work.delta.z = work.first.z - work.second.z;
+    work.base = work.first;
+    work.scale = firstUnit->sphereRadius * firstUnit->scale * 1.25f;
+    work.temp0 = work.secondRadius;
+    selectedUnit = secondUnit;
+  }
+  else {
+    FUN_002d1de0_6a20(&work.rotation, &work.second, &work.first);
+    FUN_004be1e0_6a20(&work.rotated, (const RwV3d*)(uintptr_t)0x6978a0,
+                      1, &work.rotation);
+    work.rotated.x = work.rotated.x * work.firstRadius;
+    work.rotated.y = work.rotated.y * work.firstRadius;
+    work.rotated.z = work.rotated.z * work.firstRadius;
+    work.first.x = work.first.x + work.rotated.x;
+    work.first.y = work.first.y + work.rotated.y;
+    work.first.z = work.first.z + work.rotated.z;
+    work.delta.x = work.first.x - work.second.x;
+    work.delta.y = work.first.y - work.second.y;
+    work.delta.z = work.first.z - work.second.z;
+    work.base = work.second;
+    work.scale = secondUnit->sphereRadius * secondUnit->scale * 0.5f;
+    work.temp0 = work.firstRadius;
+    selectedUnit = firstUnit;
+  }
+
+  work.scale = work.scale * DAT_007cad88;
+  FUN_004c69f0_6a20(&work.delta, &work.delta);
+  work.delta.x = work.delta.x * work.scale;
+  work.delta.y = work.delta.y * work.scale;
+  work.delta.z = work.delta.z * work.scale;
+  work.base.x = work.base.x + work.delta.x;
+  work.base.y = work.base.y + work.delta.y;
+  work.base.z = work.base.z + work.delta.z;
+  work.lateral.x = work.delta.z;
+  work.lateral.y = 0.0f;
+  work.lateral.z = -work.delta.x;
+  work.sideDot = work.lateral.x * work.viewXZ[0] +
+                 work.lateral.z * work.viewXZ[1];
+  if (work.sideDot >= 0.0f) {
+    work.camera.x = work.base.x + work.lateral.x * work.temp0;
+    work.camera.z = work.base.z - work.lateral.z * work.temp0;
+  }
+  else {
+    work.camera.x = work.base.x - work.lateral.x * work.temp0;
+    work.camera.z = work.base.z + work.lateral.z * work.temp0;
+  }
+  work.camera.y = work.base.y;
+
+  FUN_002a4690_6a20(&work.aim, &work.camera, &work.base,
+                    (const RwV3d*)D_00697880);
+  FUN_004be1e0_6a20(&work.rotated, (const RwV3d*)(uintptr_t)0x6978a0,
+                    1, &work.aim);
+  work.fromXZ[0] = work.base.x;
+  work.fromXZ[1] = work.base.z;
+  work.toXZ[0] = work.camera.x;
+  work.toXZ[1] = work.camera.z;
+  work.eyeXZ[0] = work.second.x;
+  work.eyeXZ[1] = work.second.z;
+  work.projected[0] = work.rotated.x;
+  work.projected[1] = work.rotated.z;
+  work.projection = FUN_002d1fd0(work.fromXZ, work.toXZ, work.eyeXZ,
+                                  work.projected);
+  work.fovScale = FUN_0052e930_6a20(DAT_007cad60 * camera->fovRad * 0.5f);
+  work.temp1 = work.distance * (selectedUnit->sphereRadius *
+                                selectedUnit->scale) +
+              work.temp0;
+  work.projection = work.temp1 / work.fovScale;
+  work.scale = 100.0f;
+  if (100.0f <= work.projection) {
+    work.scale = work.projection;
+  }
+  work.delta.x = work.rotated.x * work.scale;
+  work.delta.y = work.projected[0] * work.scale;
+  work.delta.z = work.rotated.z * work.scale;
+  work.target.x = work.camera.x + work.delta.x;
+  work.target.y = work.camera.y + work.delta.y;
+  work.target.z = work.camera.z + work.delta.z;
+  if (work.target.y < 22.5f) {
+    work.target.y = 22.5f;
+  }
+
+  FUN_002a4470_6a20((f32*)&work.pose, (f32*)&camera->pos);
+  work.quatDot = FUN_002d1f30_6a20(&work.pose.rot, &work.aim);
+  if (DAT_007cadc4 < work.quatDot) {
+    FUN_002a44f0_6a20((f32*)&work.pose.pos, (f32*)&work.target);
+    mode = 3;
+  }
+  else {
+    mode = 0x33;
+  }
+  FUN_002a3e80(50.0f, (u8*)camera->action, (u8*)&selectedUnit->pos,
+               (u8*)&work.target, mode);
+
+  if (weight == 0.0f) {
+    FUN_002a44f0_6a20((f32*)&work.pose.pos, (f32*)&work.target);
+    FUN_004be1e0_6a20(&work.rotated,
+                      (const RwV3d*)(uintptr_t)0x6978a0, 1,
+                      &work.pose.rot);
+    work.rotated.x = work.rotated.x * 150.0f;
+    work.rotated.y = work.rotated.y * 150.0f;
+    work.rotated.z = work.rotated.z * 150.0f;
+    work.target.x = work.pose.pos.x + work.rotated.x;
+    work.target.y = work.pose.pos.y + work.rotated.y;
+    work.target.z = work.pose.pos.z + work.rotated.z;
+    if (work.target.y < 22.5f) {
+      work.target.y = 22.5f;
+    }
+    work.temp2 = 2.0f;
+    FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    FUN_002a3110(camera, work.temp2);
+  }
+  else {
+    work.temp3 = weight;
+    FUN_002a2290(camera, (f32*)&work.pose.pos, (f32*)&work.target, 1);
+    FUN_002a3110(camera, work.temp3);
+  }
+}
 // FUN_002e70b0
 void func_002e70b0(BtlCamera* camera)
 
