@@ -734,6 +734,7 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
     CampVec2 originalPosition;
     CampVec2 iconPosition;
     CampVec2 levelPosition;
+    CampVec2 fadePosition;
     register void* parent;
     shortFrame = (s16)frame;
 
@@ -788,7 +789,8 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
         } else {
             bright = 0;
         }
-        FUN_00124fd0(originalPosition, alpha, persona, bright);
+        fadePosition = originalPosition;
+        FUN_00124fd0(fadePosition, alpha, persona, bright);
     }
 }
 

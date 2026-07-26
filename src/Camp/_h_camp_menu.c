@@ -482,15 +482,20 @@ void FUN_00155830(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                                        item->x, item->y + (f32)row,
                                        item->scale);
                     campMenuDrawSprite(0, *labels, 0x96, item->alpha,
-                                       item->x + 135.0f,
+                                       (item->x + 135.0f) - 95.0f,
                                        item->y + (f32)(i * 0x21),
                                        item->scale);
-                } else {
-                    campMenuDrawSprite(0, *labels,
-                                       i < 6 ? i + 0x91 : i + 0x90,
-                                       item->alpha, item->x,
-                                       item->y + (f32)(i * 0x21),
-                                       item->scale);
+                    if (i < 6) {
+                        campMenuDrawSprite(0, *labels, i + 0x91,
+                                           item->alpha, item->x,
+                                           item->y + (f32)(i * 0x21),
+                                           item->scale);
+                    } else {
+                        campMenuDrawSprite(0, *labels, i + 0x90,
+                                           item->alpha, item->x,
+                                           item->y + (f32)(i * 0x21),
+                                           item->scale);
+                    }
                 }
             } else if (i == 5) {
                 campMenuDrawSprite(0, *labels, 0x8c, item->alpha,
@@ -501,11 +506,17 @@ void FUN_00155830(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                                    item->y + (f32)(i * 0x21),
                                    item->scale);
             } else {
-                campMenuDrawSprite(0, *labels,
-                                   i < 6 ? i + 0x88 : i + 0x87,
-                                   item->alpha, item->x,
-                                   item->y + (f32)(i * 0x21),
-                                   item->scale);
+                if (i < 6) {
+                    campMenuDrawSprite(0, *labels, i + 0x88,
+                                       item->alpha, item->x,
+                                       item->y + (f32)(i * 0x21),
+                                       item->scale);
+                } else {
+                    campMenuDrawSprite(0, *labels, i + 0x87,
+                                       item->alpha, item->x,
+                                       item->y + (f32)(i * 0x21),
+                                       item->scale);
+                }
             }
         }
         break;
