@@ -271,7 +271,8 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
     list = (NmlistList *)param_1;
     node = (NmlistNode *)param_2;
     list->count--;
-    if (node->prev == 0) {
+    prev = node->prev;
+    if (prev == 0) {
         next = node->next;
         if (next == 0) {
             if (list->head == node) {
@@ -286,7 +287,6 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
         }
     }
     else {
-        prev = node->prev;
         next = node->next;
         if (next == 0) {
             prev->next = 0;
