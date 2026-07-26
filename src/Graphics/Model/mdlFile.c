@@ -374,7 +374,7 @@ int FUN_003245b0(int param_1);
 extern u64 FUN_003245b0_wide(void);
 int FUN_003245f0(int param_1);
 u32 FUN_00324680(u32 param_1);
-void FUN_00324740(u64 param_1);
+void FUN_00324740(int param_1);
 void FUN_003247d0(int param_1);
 void FUN_00324820(int param_1);
 u32 FUN_00324870(u32 param_1);
@@ -8123,7 +8123,7 @@ u32 FUN_00324680(u32 param_1)
 // FUN_00324740 NONMATCHING
 
 
-void FUN_00324740(u64 param_1)
+void FUN_00324740(int param_1)
 
 
 
@@ -8145,7 +8145,7 @@ void FUN_00324740(u64 param_1)
 
   FUN_00324820(param_1);
 
-  (*DAT_0096017c)(param_1);
+  DAT_0096017c_abs[0](param_1);
 
   return;
 
