@@ -377,7 +377,7 @@ void* func_001b8160(void)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_001b81f0 NONMATCHING
+// FUN_001b81f0
 u32 func_001b81f0(HCdvd* request)
 {
     char path[76];
