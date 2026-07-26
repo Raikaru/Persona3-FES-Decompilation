@@ -887,7 +887,7 @@ static s32 hmallocTaskUpdateE(void* task)
     }
     return 0;
 }
-extern const u32 D_005E4D80[];
+#define HMALLOC_CONFIG_WORDS ((const u32*)0x005e4d80)
 
 // FUN_00192E70 NONMATCHING
 static void hmallocApplyInputTable(void)
@@ -895,7 +895,6 @@ static void hmallocApplyInputTable(void)
     u32 copied[0x28];
     u8 entry[0x34];
     u32 value;
-    u32 value2;
     s32 word;
     s32 bit;
     s32 i;
@@ -907,23 +906,24 @@ static void hmallocApplyInputTable(void)
     u32* bitWord;
     s32 copyCount;
 
-    config = D_005E4D80;
+    config = HMALLOC_CONFIG_WORDS;
     dst = copied;
-    copyCount = 0x14;
-    do
+    for (copyCount = 0x14; copyCount != 0; copyCount--)
     {
-        value = config[0];
-        value2 = config[1];
+        dst[0] = config[0];
+        dst[1] = config[1];
         config += 2;
-        copyCount--;
-        dst[0] = value;
-        dst[1] = value2;
         dst += 2;
-    } while (copyCount > 0);
-    resourceA = sHmallocResourceA;
-    func_0016cfe0(1, *(s16*)((u8*)resourceA + 0x3c));
-    func_0016d090(1, *(s16*)((u8*)resourceA + 0x3e));
-    func_0016d160(1, *(s16*)((u8*)resourceA + 0x40));
+    }
+    i = 1;
+    word = *(s16*)((u8*)resourceA + 0x3c);
+    func_0016cfe0(i, word);
+    i = 1;
+    word = *(s16*)((u8*)resourceA + 0x3e);
+    func_0016d090(i, word);
+    i = 1;
+    word = *(s16*)((u8*)resourceA + 0x40);
+    func_0016d160(i, word);
 
     for (i = 0; i < 0x100; i++)
     {

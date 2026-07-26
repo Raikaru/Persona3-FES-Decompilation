@@ -1808,21 +1808,17 @@ void FUN_003c7560(u8 param_1)
 u32 FUN_003c75b0(void)
 {
   extern u8 *FUN_003c7d50_direct(void);
-  u8 *lVar1;
+  s32 iVar3;
+  int *piVar1;
   u32 uVar2;
-  int iVar3;
-
-  lVar1 = FUN_003c7d50_direct();
+  piVar1 = (int *)FUN_003c7d50_direct();
 
   if (lVar1 == 0) {
     uVar2 = 0xffffffffffffffff;
+  } else if ((iVar3 = *(int *)lVar1) < 0) {
+    uVar2 = 0xffffffffffffffff;
   } else {
-    iVar3 = *(int *)lVar1;
-    if (iVar3 < 0) {
-      uVar2 = 0xffffffffffffffff;
-    } else {
-      uVar2 = FUN_003a2830();
-    }
+    uVar2 = FUN_003a2830();
   }
 
   return uVar2;

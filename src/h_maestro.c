@@ -3722,9 +3722,9 @@ void func_001165c0(int param_1)
 
 {
 
-  int *slot;
-
   int iVar2;
+
+  int *slot;
 
   int iVar1;
 

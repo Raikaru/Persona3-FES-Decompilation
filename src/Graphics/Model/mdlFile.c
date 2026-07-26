@@ -28204,7 +28204,7 @@ u64 FUN_00337e90(int param_1)
 
   
 
-  uVar5 = (u64)(*DAT_00960178_abs)(4,0x40000);
+  uVar5 = (*DAT_00960178)(4,0x40000);
 
   if (*(u32 *)(param_1 + 0x38) < 3) {
 
@@ -45765,7 +45765,7 @@ void FUN_00349a30(int param_1)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   u8 auStack_100 [256];
 
@@ -45775,13 +45775,13 @@ void FUN_00349a30(int param_1)
 
      (lVar1 = FUN_00348340((u8 *)(*(int *)(param_1 + 0x24) + 0xc0),(float *)(auStack_100)), lVar1 != 0)) {
 
-    (*DAT_00960090)(1,DAT_00957ba8);
+    (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
 
     RpSkyRenderStateSet(3,0x31001);
 
     FUN_003295c0(0x6fc009fc00a);
 
-    (*DAT_009600a4)(3,auStack_100,4,0x69cb80,6);
+    (*DAT_009600a4_abs)(3,auStack_100,4,0x69cb80,6);
 
     FUN_00329630();
 
@@ -46335,7 +46335,7 @@ void FUN_0034a280(int param_1)
 
   iVar1 = *(int *)(param_1 + 0xc0);
 
-  iVar2 = (*DAT_00960178)(iVar1 * 0x34,0x40000);
+  iVar2 = (*DAT_00960178_abs)(iVar1 * 0x34,0x40000);
 
   for (iVar4 = 0; iVar4 < iVar1; iVar4 = iVar4 + 1) {
 

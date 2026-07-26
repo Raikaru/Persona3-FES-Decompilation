@@ -302,7 +302,7 @@ static void H_Chrdsp_ParseLayer(HChrdspWork* work)
 }
 
 #pragma opt_loop_invariants on
-// FUN_00105800 NONMATCHING
+// FUN_00105800
 void H_Chrdsp_Init(void)
 {
     s16 workIndex;
@@ -312,7 +312,7 @@ void H_Chrdsp_Init(void)
 
     for (workIndex = 0; workIndex < HCHRDP_WORK_COUNT; workIndex++)
     {
-        offset = workIndex;
+        offset = (long)workIndex;
         offset *= 0x670;
         work = (HChrdspWork*)((u8*)D_007E2680 + offset);
         work->state = HCHRDP_STATE_IDLE;
