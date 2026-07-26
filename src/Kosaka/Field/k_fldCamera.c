@@ -585,8 +585,8 @@ HCdvd* func_001d6b10(void)
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        fieldId0 = ((volatile u32*)PTR_DAT_007cd540)[0];
-        fieldId1 = ((volatile u32*)PTR_DAT_007cd540)[1];
+        fieldId0 = *(volatile u32*)((u8*)PTR_DAT_007cd540 + 0);
+        fieldId1 = *(volatile u32*)((u8*)PTR_DAT_007cd540 + 4);
         sprintf(path, D_00683AD0, fieldId0, fieldId1);
         if (H_Cdvd_FileExists(path) != false)
         {

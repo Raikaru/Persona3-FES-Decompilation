@@ -976,13 +976,15 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
     bVar2 = FUN_00173510(uVar1, param_2);
   }
   if ((s32)bVar2 > 0) {
-    if (99 < bVar2) {
-      bVar2 = 99;
-    }
+    goto clamp_bvar2;
   }
-  else {
-    bVar2 = 1;
+  bVar2 = 1;
+  goto done_bvar2;
+clamp_bvar2:
+  if (99 < bVar2) {
+    bVar2 = 99;
   }
+done_bvar2:
   return bVar2;
 }
 
