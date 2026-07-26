@@ -497,12 +497,14 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
         {
             for (count = 0; count < 9; count++)
             {
-                K_Field_Get_A();
-                *(void**)((u8*)K_Field_Get() + 0x116c + count * 4) =
+                field = (u8*)K_Field_Get_A();
+                *(void**)(field + 0x116c + count * 4) =
                     D_0086BDC0[count];
             }
-            *(u32*)((u8*)K_Field_Get() + 0x1168) = 9;
-            *(u32*)((u8*)K_Field_Get() + 0x1058) = 4;
+            field = (u8*)K_Field_Get_B();
+            *(u32*)(field + 0x1168) = 9;
+            field = (u8*)K_Field_Get_C();
+            *(u32*)(field + 0x1058) = 4;
         }
     }
     else
@@ -512,14 +514,18 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
             sprintf(path2, D_00678D80, majorId, minorId);
             sFldFpcCdvd = H_Cdvd_Request(path2, HCDVD_FILEARCHIVE);
         }
-        K_Field_Get_B();
-        K_Field_Get_C();
-        count = *(u32*)((u8*)K_Field_Get() + 0x105c);
-        *(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4) = majorId;
-        count = *(u32*)((u8*)K_Field_Get() + 0x105c);
-        *(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4) = minorId;
-        count = *(u32*)((u8*)K_Field_Get() + 0x105c);
-        *(u32*)((u8*)K_Field_Get() + 0x105c) = count + 1;
+        field = (u8*)K_Field_Get_A();
+        count = *(u32*)(field + 0x105c);
+        field = (u8*)K_Field_Get_B();
+        *(s16*)(field + 0x1060 + count * 4) = majorId;
+        field = (u8*)K_Field_Get_C();
+        count = *(u32*)(field + 0x105c);
+        field = (u8*)K_Field_Get_D();
+        *(s16*)(field + 0x1062 + count * 4) = minorId;
+        field = (u8*)K_Field_Get_E();
+        count = *(u32*)(field + 0x105c);
+        field = (u8*)K_Field_Get_A();
+        *(u32*)(field + 0x105c) = count + 1;
     }
     if (((majorId >= 21) && (majorId < 29) && (minorId == 0)) ||
         ((majorId >= 41) && (majorId < 49) && (minorId == 0)) ||
