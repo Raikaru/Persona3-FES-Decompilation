@@ -6,8 +6,8 @@ typedef u32 int3;
 
 extern void FUN_0019d3f0(const char *file,s32 line);
 extern u32 FUN_00171250(s16 id);
-extern void *FUN_00170d60(s16 id);
-extern const char *FUN_00171110(s16 id,s16 field);
+extern u32 FUN_00170d60(s16 id);
+extern u64 FUN_00171110(s16 id,s16 field);
 extern const char DAT_006a1bf8[];
 extern u32 DAT_006a1d10;
 #pragma alias DAT_006a1d10_abs DAT_006a1d10
@@ -3946,118 +3946,57 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 
   lVar3 = FUN_00171250(param_1);
 
-  if (lVar3 == 4) {
-
-    cVar8 = '\r';
-
-  }
-
-  else if (lVar3 == 3) {
-
-    cVar8 = '\v';
-
-  }
-
-  else if (lVar3 == 2) {
-
-    cVar8 = '\n';
-
-  }
-
-  else if (lVar3 == 1) {
-
-    cVar8 = '\t';
-
-  }
-
-  else if (lVar3 == 0) {
-
+  switch ((int)lVar3) {
+  case 0:
     iVar2 = FUN_00170d60(param_1);
-
     if ((*(u32 *)(iVar2 + 4) & 0xff00) != 0) {
-
       iVar7 = 8;
-
     }
-
     uVar5 = *(u32 *)(iVar2 + 4) >> iVar7;
-
     if ((uVar5 & 1) == 0) {
-
       if ((uVar5 & 2) == 0) {
-
         if ((uVar5 & 4) == 0) {
-
           if ((uVar5 & 8) == 0) {
-
             if ((uVar5 & 0x10) == 0) {
-
               if ((uVar5 & 0x20) == 0) {
-
                 if ((uVar5 & 0x40) == 0) {
-
                   if ((uVar5 & 0x80) != 0) {
-
                     cVar8 = '\a';
-
                   }
-
-                }
-
-                else {
-
+                } else {
                   cVar8 = '\x06';
-
                 }
-
-              }
-
-              else {
-
+              } else {
                 cVar8 = '\x05';
-
               }
-
-            }
-
-            else {
-
+            } else {
               cVar8 = '\x04';
-
             }
-
-          }
-
-          else {
-
+          } else {
             cVar8 = '\x03';
-
           }
-
-        }
-
-        else {
-
+        } else {
           cVar8 = '\x02';
-
         }
-
-      }
-
-      else {
-
+      } else {
         cVar8 = '\x01';
-
       }
-
-    }
-
-    else {
-
+    } else {
       cVar8 = '\0';
-
     }
-
+    break;
+  case 1:
+    cVar8 = '\t';
+    break;
+  case 2:
+    cVar8 = '\n';
+    break;
+  case 3:
+    cVar8 = '\v';
+    break;
+  case 4:
+    cVar8 = '\r';
+    break;
   }
 
   uStack_8 = 0x83;
