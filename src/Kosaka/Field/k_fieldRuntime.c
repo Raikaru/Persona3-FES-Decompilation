@@ -1868,6 +1868,7 @@ s32 func_001e4bc0(RuntimeTask* task)
             input = DAT_007e094e;
             if ((input & 0x40) != 0)
             {
+                func_00195020(work->windowTask);
                 work->model = selected->resource;
                 work->resourceId = selected->resourceId;
                 object = func_003b5d10(work->resourceId);
