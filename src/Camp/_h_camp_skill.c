@@ -675,7 +675,6 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 
 #pragma push
 // FUN_00163330 NONMATCHING
-#pragma optimization_level 3
 #pragma schedule on
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
 {
@@ -879,7 +878,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
             value = (s32)func_00171110(id, effect);
             sprintf(scratch.text, "%d", value);
             rowOffset = row * 26;
-            selectedRow = selected == row;
+            selectedRow = *(s32*)(work->detailData + 0x2d68) == row;
             font = selectedRow ? 6 : 10;
             tileUp = selectedRow ? 0x1e : 0x1f;
             tileDown = selectedRow ? 0x20 : 0x21;
