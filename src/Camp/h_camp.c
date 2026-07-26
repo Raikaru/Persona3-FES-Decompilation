@@ -974,6 +974,11 @@ void h_campDestroyRootDrawTask(KwlnTask* task)
     sCampRootDrawTask = NULL;
 }
 
+// FUN_0011bba0
+void h_campNoopRootDrawCallback(void)
+{
+}
+
 // FUN_0011bad0
 KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 menuMode)
 {
