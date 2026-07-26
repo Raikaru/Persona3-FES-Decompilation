@@ -17,6 +17,10 @@ void K_View_SetFov_typed(RwCamera *camera,f32 fov);
 #pragma alias mdlAnimSet_u32 mdlAnimSet
 extern u32 mdlAnimSet_u32(u32 mdl, u32 slotIdx, s16 id, u32 blendFrameCount,
                           u32 flags);
+#pragma alias FUN_004cb890_typed FUN_004cb890
+extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 mode);
+#pragma alias FUN_004cb750_typed FUN_004cb750
+extern void FUN_004cb750_typed(u32 frame,void *axis,u32 mode);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -3656,13 +3660,13 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
       fStack_28 = fStack_18 * -1.0;
 
-      FUN_004cb750(iVar1,&fStack_30,2);
+      FUN_004cb750_typed(iVar1,&fStack_30,2);
 
-      FUN_004cb890(fVar7,iVar1,&uStack_10,2);
+      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&uStack_10,2);
 
-      FUN_004cb750(iVar1,&fStack_40,2);
+      FUN_004cb750_typed(iVar1,&fStack_40,2);
 
-      FUN_004cb750(iVar1,&fStack_20,2);
+      FUN_004cb750_typed(iVar1,&fStack_20,2);
 
     }
 

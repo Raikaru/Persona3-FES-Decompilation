@@ -824,7 +824,8 @@ u64 func_002f88c0()
                         break;
                     case 0x113:
                     case 0x114:
-                        return 1LL;
+                        result = 1;
+                        return result;
                 }
                 unit = unit->next;
             }
@@ -845,7 +846,8 @@ u64 func_002f88c0()
                     case 0x106:
                         if (unit->flags3 & 8)
                         {
-                            return 1LL;
+                            result = 1;
+                            return result;
                         }
                         break;
                     default:

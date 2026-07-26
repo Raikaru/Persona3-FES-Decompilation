@@ -1763,9 +1763,8 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
     s32 roomY;
     s32 row;
     s32 col;
-    u8* fieldCell;
+    u8* field;
     u8* neighbor;
-    u8 patternFlags;
     u8 neighborFlags;
 
     for (roomY = 0, startY = *y;
@@ -1776,71 +1775,90 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
              roomX < pattern->raw[1];
              roomX++, startX--)
         {
+            field = (u8*)K_Field_Get();
             for (row = 0; row < pattern->raw[2]; row++)
             {
                 for (col = 0; col < pattern->raw[1]; col++)
                 {
-                    patternFlags = dungeonPatternCell((DungeonPattern*)pattern,
-                                                       (u32)col,
-                                                       (u32)row)[0x0e];
-                    fieldCell = dungeonCell(roomX + col, roomY + row);
+                    u8* fieldCell;
+                    fieldCell = field + (startY + row) * 0x100 +
+                                (startX + col) * 0x10;
                     if (fieldCell[0x48] != 0)
                     {
                         goto reject;
                     }
-                    if (roomY == 0x0e && (patternFlags & 0x40) != 0)
+                }
+            }
+
+            for (row = 0; row < pattern->raw[2]; row++)
+            {
+                for (col = 0; col < pattern->raw[1]; col++)
+                {
+                    if (startY == 0x0e &&
+                        (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x40) != 0)
                     {
                         goto reject;
                     }
-                    if (roomY == 1 && (patternFlags & 0x10) != 0)
+                    if (startY == 1 &&
+                        (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x10) != 0)
                     {
                         goto reject;
                     }
-                    if (roomX + col == 0x0e && (patternFlags & 0x80) != 0)
+                    if (startX + col == 0x0e &&
+                        (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x80) != 0)
                     {
                         goto reject;
                     }
-                    if (roomX + col == 1 && (patternFlags & 0x20) != 0)
+                    if (startX + col == 1 &&
+                        (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x20) != 0)
                     {
                         goto reject;
                     }
 
-                    neighbor = fieldCell - 0x100;
+                    neighbor = (u8*)K_Field_Get() +
+                               (startY + row) * 0x100 +
+                               (startX + col) * 0x10 - 0x100;
                     if (neighbor[0x48] != 0)
                     {
                         neighborFlags = neighbor[0x53];
                         if (((neighborFlags & 0x40) != 0) !=
-                            ((patternFlags & 0x10) != 0))
+                            ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x10) != 0))
                         {
                             goto reject;
                         }
                     }
-                    neighbor = fieldCell + 0x100;
-                    if (neighbor[0x48] != 0)
-                    {
-                        neighborFlags = neighbor[0x53];
-                        if (((neighborFlags & 0x10) != 0) !=
-                            ((patternFlags & 0x40) != 0))
-                        {
-                            goto reject;
-                        }
-                    }
-                    neighbor = fieldCell - 0x10;
+                    neighbor = (u8*)K_Field_Get() +
+                               (startY + row) * 0x100 +
+                               (startX + col) * 0x10 - 0x10;
                     if (neighbor[0x48] != 0)
                     {
                         neighborFlags = neighbor[0x53];
                         if (((neighborFlags & 0x80) != 0) !=
-                            ((patternFlags & 0x20) != 0))
+                            ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x20) != 0))
                         {
                             goto reject;
                         }
                     }
-                    neighbor = fieldCell + 0x10;
+                    neighbor = (u8*)K_Field_Get() +
+                               (startY + row) * 0x100 +
+                               (startX + col) * 0x10 + 0x100;
+                    if (neighbor[0x48] != 0)
+                    {
+                        neighborFlags = neighbor[0x53];
+                        if (((neighborFlags & 0x10) != 0) !=
+                            ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x40) != 0))
+                        {
+                            goto reject;
+                        }
+                    }
+                    neighbor = (u8*)K_Field_Get() +
+                               (startY + row) * 0x100 +
+                               (startX + col) * 0x10 + 0x10;
                     if (neighbor[0x48] != 0)
                     {
                         neighborFlags = neighbor[0x53];
                         if (((neighborFlags & 0x20) != 0) !=
-                            ((patternFlags & 0x80) != 0))
+                            ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x80) != 0))
                         {
                             goto reject;
                         }
@@ -1848,8 +1866,8 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                 }
             }
 
-            *x = roomX;
-            *y = roomY;
+            *x = startX;
+            *y = startY;
             return true;
 
         reject:
@@ -2242,7 +2260,7 @@ void func_001bd8c0(void)
 
 // FUN_001bd950 NONMATCHING
 #pragma optimization_level 3
-#pragma schedule on
+#pragma schedule off
 void func_001bd950(void)
 {
     Resrc* fieldResource;

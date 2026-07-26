@@ -585,13 +585,10 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
 
 {
 
-  char cVar4;
-
   u32 *puVar1;
-
   u32 *puVar2;
-
   u32 *puVar3;
+  char cVar4;
 
   
 

@@ -818,7 +818,7 @@ static void campStatusDrawSprite(void* resource, s32 frame, f32 x, f32 y,
          scale);
 }
 
-static void campStatusDrawBar(f32 scale, f32 x, f32 y, u8 alpha,
+static inline void campStatusDrawBar(f32 scale, f32 x, f32 y, u8 alpha,
                               s32 frame, s32 value)
 {
     CampStatusSprite* sprite;
@@ -927,30 +927,34 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
         h_campStatusRenderStatIcon(position, scale, i, alpha);
     }
     h_campStatusDrawStatLabels(position, scale, persona, alpha);
-    campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
-                         (125.0f + position.y) - 25.0f, scale, alpha);
-    campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
-                         (184.0f + position.y) - 25.0f, scale, alpha);
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x12, alpha,
+                             position.x + 30.0f,
+                             (125.0f + position.y) - 25.0f, scale);
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x13, alpha,
+                             position.x + 30.0f,
+                             (184.0f + position.y) - 25.0f, scale);
     h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
     for (i = 0; i < 5; i++) {
         value = FUN_00173660(persona, i) & 0xff;
-        campStatusDrawSprite(DAT_00833B98, 0x14,
-                             position.x + 104.0f,
-                             position.y + 104.0f + (f32)(i * 11),
-                             scale, alpha);
-        campStatusDrawSprite(DAT_00833B98, 0x15,
-                             position.x + 333.0f,
-                             position.y + 104.0f + (f32)(i * 11),
-                             scale, alpha);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x14, alpha,
+                                 position.x + 104.0f,
+                                 position.y + 104.0f +
+                                     (f32)(i * 11), scale);
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x15, alpha,
+                                 position.x + 333.0f,
+                                 position.y + 104.0f +
+                                     (f32)(i * 11), scale);
         campStatusDrawBar(scale, position.x + 108.0f,
                           position.y + 105.0f + (f32)(i * 11),
                           alpha, 0x18, value);
     }
     h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
-    campStatusDrawSprite(DAT_00833B90, 0x11, position.x + 33.0f,
-                         position.y + 278.0f, scale, alpha);
-    campStatusDrawSprite(DAT_00833B90, 0x22, position.x + 287.0f,
-                         position.y + 280.0f, scale, alpha);
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11, alpha,
+                             position.x + 33.0f,
+                             position.y + 278.0f, scale);
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22, alpha,
+                             position.x + 287.0f,
+                             position.y + 280.0f, scale);
     if (*((u8*)persona + 4) == 0x63) {
         sprintf(text, "%d", 0);
     } else {
@@ -2583,7 +2587,6 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     s32 row;
     s32 value;
     s32 length;
-    f32 rowY;
     char text[0x100];
     void* glyph;
 
@@ -2631,15 +2634,19 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
             value = FUN_00173660(persona, 4) & 0xff;
             break;
         }
-        rowY = position.y + 129.0f + (f32)(row * 19) - 25.0f;
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x14, alpha,
-                                 position.x + 104.0f, rowY, scale);
+                                 position.x + 104.0f,
+                                 position.y + 129.0f +
+                                     (f32)(row * 19) - 25.0f, scale);
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x15, alpha,
-                                 position.x + 333.0f, rowY, scale);
+                                 position.x + 333.0f,
+                                 position.y + 129.0f +
+                                     (f32)(row * 19) - 25.0f, scale);
         glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
         *((f32*)glyph + 11) = scale;
         *((f32*)glyph + 4) = position.x + 108.0f;
-        *((f32*)glyph + 5) = rowY + 1.0f;
+        *((f32*)glyph + 5) = position.y + 129.0f +
+                             (f32)(row * 19) - 24.0f;
         *((u8*)glyph + 0x18) = (u8)alpha;
         length = (value * 0xe3) / 99;
         *((s16*)glyph + 0x0e) = (s16)length;
