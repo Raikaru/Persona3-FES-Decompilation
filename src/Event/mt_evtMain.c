@@ -13556,17 +13556,27 @@ u32 FUN_0036d470(int param_1)
   u32 uVar3;
 
   uVar3 = 0;
-  if (param_1 != 0) {
-    piVar1 = *(int **)((int)param_1 + 0x164);
-    if ((piVar1 != (int *)0x0) && (iVar2 = *piVar1, *(int *)((int)param_1 + 0xd4) == 5)) {
-      if ((iVar2 == 3) || ((iVar2 == 0x1a || (iVar2 == 0x11)))) {
-        uVar3 = 0;
-      }
-      else if (iVar2 == 0x21) {
-        uVar3 = 0xfffffffa;
-      }
-    }
-  }
+  if (param_1 != 0) goto have_param;
+  goto done;
+have_param:
+  piVar1 = *(int **)((int)param_1 + 0x164);
+  if (piVar1 != (int *)0x0) goto have_pi;
+  goto done;
+have_pi:
+  iVar2 = *piVar1;
+  if (*(int *)((int)param_1 + 0xd4) == 5) goto have_type;
+  goto done;
+have_type:
+  if (iVar2 == 3) goto zero;
+  if (iVar2 == 0x1a) goto zero;
+  if (iVar2 != 0x11) goto check_21;
+zero:
+  uVar3 = 0;
+  goto done;
+check_21:
+  if (iVar2 != 0x21) goto done;
+  uVar3 = 0xfffffffa;
+done:
   return uVar3;
 }
 

@@ -22,6 +22,10 @@ extern char gp0xffffaad0;
 extern void (*PTR_LAB_007bb900[])();
 extern unsigned char DAT_006a6b20[];
 extern void FUN_003e6e80(void);
+#pragma alias DAT_006a6b20_second DAT_006a6b20
+extern unsigned char DAT_006a6b20_second[];
+#pragma alias DAT_006a6b20_log DAT_006a6b20
+extern unsigned char DAT_006a6b20_log[];
 /* FUSION_PROTOS */
 u64 FUN_003df4a0(u64 param_1,int param_2);
 u32 FUN_003dfac0(int *param_1);
@@ -3339,7 +3343,7 @@ u32 FUN_003e0940(void)
 
 }
 
-// FUN_003E0950 NONMATCHING
+// FUN_003E0950
 void FUN_003e0950(s32 arg)
 {
     s32 work;
@@ -3355,8 +3359,8 @@ void FUN_003e0950(s32 arg)
     *(s32*)(work + 0x98) = (s32)FUN_003dfeb0(work);
     *(s32*)(work + 4) = 1;
     printf(&gp0xffffaad0, (char*)DAT_006a6b20 - 0x28, 0x1a9);
-    printf((char*)DAT_006a6b20 - 0x18, param_1);
-    H_Dbprt_FmtLog((char*)DAT_006a6b20 - 0x18, param_1);
+    printf((char*)DAT_006a6b20_second - 0x18, param_1);
+    H_Dbprt_FmtLog((char*)DAT_006a6b20_log - 0x18, param_1);
 }
 
 // FUN_003E0A10 NONMATCHING
