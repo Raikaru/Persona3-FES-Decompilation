@@ -1731,6 +1731,7 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
             }
             break;
         case 4:
+            btlAction0028a780(action);
             packet = FUN_002db740(action, 10, 0, 0, 0);
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
             FUN_002ddbe0();
@@ -5986,6 +5987,7 @@ void btlActionInitStateEndure(BtlAction* action)
 void btlActionUpdateStateEndure(BtlAction* action)
 {
     BtlPacket* packet;
+    BtlPacket* root;
     BtlUnit* unit;
     s32 work[4];
     u16 skillId;
@@ -6006,35 +6008,46 @@ void btlActionUpdateStateEndure(BtlAction* action)
     }
     else if (skillId == 0x23c)
     {
-        messageId = action->unit->genus == UNIT_GENUS_PC ? 0x42 : 0x43;
+        messageId = unit->genus == UNIT_GENUS_PC ? 0x42 : 0x43;
     }
     else
     {
-        messageId = action->unit->genus == UNIT_GENUS_PC ? 0x40 : 0x41;
+        messageId = unit->genus == UNIT_GENUS_PC ? 0x40 : 0x41;
     }
-    packet = FUN_002bd850(action->unit, messageId);
+    packet = FUN_002bd850(unit, messageId);
     ACTION_U16(packet, 0x48) = 8;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-    btlPacketRegister(FUN_00284c90(action->unit), BTLPACKET_TYPE_1);
+    btlPacketRegister(FUN_00284c90(unit), BTLPACKET_TYPE_1);
     if (skillId == 0x23c)
     {
-        count = func_00170760((s16)action->unit->datUnit->id, 0xfc7);
-        func_00170860((s16)action->unit->datUnit->id, 0xfc7, count - 1);
+        count = func_00170760((s16)unit->datUnit->id, 0xfc7);
+        func_00170860((s16)unit->datUnit->id, 0xfc7, count - 1);
         FUN_002d5dc0(work);
-        work[0] = (FUN_002ffdf0(action->unit->datUnit) & 0xffff) -
-                  (FUN_002ffd70(action->unit->datUnit) & 0xffff);
-        packet = FUN_002d7e20(action, action, work, 1, 1);
+        work[0] = (FUN_002ffdf0(unit->datUnit) & 0xffff) -
+                  (FUN_002ffd70(unit->datUnit) & 0xffff);
+        root = FUN_002d7e20(action, action, work, 1, 1);
+        root->actionUID = action->uid;
+        btlPacketRegister(root, BTLPACKET_TYPE_1);
+        packet = FUN_002bd480(unit);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002bd480(action->unit);
+        packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, work);
+        packet->unk_00 = 4;
+        packet->parentUID = root->uid;
+        packet->unk_47 &= ~0x20;
         packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002bdbd0(action->unit, action->unit, -1, 0, 0, 0, 1, work);
         btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-        packet = FUN_002bd230(action->unit, 0, 0);
+        packet = FUN_002bd230(unit, 0, 0);
+        packet->unk_00 = 4;
+        packet->parentUID = root->uid;
+        packet->unk_47 &= ~0x20;
+        packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002baf90(ACTION_U32(gBtl, 0xc24), action->unit, action->unit, 0, 0);
+        packet = FUN_002baf90(ACTION_U32(gBtl, 0xc24), unit, unit, 0, 0);
+        packet->unk_00 = 4;
+        packet->parentUID = root->uid;
+        packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
     btlPacketRegister(FUN_0027dc80(0x80000), BTLPACKET_TYPE_0);
@@ -6183,7 +6196,7 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
     BtlPacket* packet;
     BtlUnit* unit;
     s32 work;
-    s16 damage;
+    s32 damage;
 
     unit = action->unit;
 
@@ -6206,7 +6219,7 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
         return;
     }
     FUN_002d5dc0(&work);
-    damage = (s16)FUN_002dc670(action);
+    damage = (s32)FUN_002dc670(action);
     work = damage;
     if (damage < 0)
     {
@@ -6868,7 +6881,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     BtlPacket* packet;
     BtlPacket* callbackPacket;
     BtlAction* selected = (BtlAction*)action->movedAwayFromHome;
-    u32 partyIds[3];
+    u16 partyIds[3];
     u32 setup[16];
     u32 i;
     u32 special;

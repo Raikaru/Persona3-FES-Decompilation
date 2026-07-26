@@ -1162,7 +1162,7 @@ void func_0010c050(void)
 {
     s32 i;
     s32 threadId;
-    s32 threadParam[6];
+    s32 threadParam[14];
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
@@ -1331,6 +1331,7 @@ void func_0010c5f0(void)
 {
     HSfdAsyncEntry* entry;
     s32 i;
+    s32 enabled;
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
@@ -1339,10 +1340,14 @@ void func_0010c5f0(void)
         {
             if (entry->state == 0)
             {
+                    enabled = FUN_0050d3f0();
                 if (entry->path[0] == '\0')
                 {
                     sSfdQueue[i].state = 1;
                     entry->state = 2;
+                    if (enabled != 0)
+                        FUN_0050d3a0();
+                    func_00503090();
                 }
                 else
                 {
@@ -1350,14 +1355,18 @@ void func_0010c5f0(void)
                     entry->state = 1;
                 }
             }
+                enabled = FUN_0050d3f0();
             else if ((entry->state == 1) && H_Cdvd_IsFileLoaded(entry->request))
             {
                 sSfdQueue[i].state = 1;
                 entry->state = 2;
+                if (enabled != 0)
+                    FUN_0050d3a0();
             }
             else if (entry->state == 2)
             {
                 entry->age++;
+                FUN_0050d3f0();
             }
             entry = entry->next;
         }
@@ -1755,6 +1764,10 @@ void func_0010d6f0(s32 index, s16 fileIndex)
         return;
 
     slot = &sSfdDecodeSlots[index];
+    if (slot->status != 0)
+    {
+        func_0010d950((s16)index);
+    }
     if (slot->state == 1)
     {
         slot->fileIndex = fileIndex;
@@ -2275,6 +2288,20 @@ void func_0010e630(void* destination, const void* source, u32 size)
     regs[-0xC00] = 0x101;
     while ((regs[-0xC00] & 0x100) != 0)
         ;
+
+    if ((regs[-0xB00] & 0x100) != 0)
+    {
+        regs[-0x7F8] = (u32)-0x400;
+        regs[-0x7FC] = 0x100;
+        regs[-0xBFC] = (u32)dst;
+        regs[-0xBF8] = count;
+        regs[-0xBE0] = 0x70000000;
+        value = regs[-0x7F8] | 0x100;
+        regs[-0x7F8] = value;
+        regs[-0xC00] = 0x101;
+        while ((regs[-0xC00] & 0x100) != 0)
+            ;
+    }
 }
 
 // Retail reconstruction covers TMX validation, raster setup, pixel decode, and palette upload from offsets 0x00-0x3C8; all non-padding retail logic is represented, with only register/relocation differences remaining.

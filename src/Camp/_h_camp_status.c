@@ -3319,10 +3319,10 @@ void* FUN_001311d0(KwlnTask* task)
                 FUN_0010a4e0(0, 0, 0, 2);
                 *(u32*)work = 5;
             } else {
+
                 s32 oldSelected;
                 s32 changed;
                 u32 held;
-
                 oldSelected = selected;
                 changed = 0;
                 held = ((u32)DAT_007e0952 & 0x1000) != 0 ||
@@ -3426,8 +3426,8 @@ void* FUN_001311d0(KwlnTask* task)
         s32 selected;
         s32 previous;
         s32 count;
-        s32 changed;
         u32 input;
+        s32 changed;
 
         detailRecords = *(void**)(work + 0x68);
         selected = *(s32*)(work + 0x4);
@@ -3563,7 +3563,6 @@ void* FUN_001311d0(KwlnTask* task)
         s32 count;
         s32 result;
         s32 i;
-        u32 personaId;
 
         primaryRecords = *(void**)(work + 0x64);
         child = *(KwlnTask**)(work + 0x54);

@@ -2242,6 +2242,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   CampBits tmp190;
   CampBits tmp198;
   CampBits tmp1a8;
+  CampBits draw6[1];
   int iStack_8;
   u8 auStack_4 [4];
   u32 *puVar1;
@@ -2507,7 +2508,12 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     tmp78.u = pair.u;
     tmp78.f[1] -= 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 1, tmp78.u, pair.u, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1, 0x42b8000042ae0000, 0x42b8000042ae0000, 0, 0, 0, 10);
+    pair.f[0] = 87.0f;
+    pair.f[1] = 92.0f;
+    draw6[0].u = pair.u;
+    draw6[0].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1,
+                  draw6[0].u, pair.u, 0, 0, 0, 10);
     pair.u = 0x42b8000042ae0000ULL;
     tmp80.u = pair.u;
     tmp80.f[1] -= 600.0f;

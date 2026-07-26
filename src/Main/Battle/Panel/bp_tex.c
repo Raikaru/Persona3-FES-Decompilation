@@ -2404,7 +2404,9 @@ void bpTexApplyActions(void)
         node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
         while (node != NULL)
         {
-            if ((node[0] & 2) == 0 && node[4] == (u32)i)
+            if ((node[0] & 2) == 0 &&
+                node[4] == (u32)i &&
+                node[0xfc4] == 0)
             {
                 break;
             }
@@ -2513,7 +2515,25 @@ void bpTexPrepareNodes(void)
     origin[2] = *(u32*)0x0068ea98;
     for (i = 0; i < (s32)BP_TEX_U32(work, 0x499f * 4); i++)
     {
-        node = bpTexFindNode((u32)i);
+        if (BP_TEX_GLOBAL == NULL)
+        {
+            func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        }
+        node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+        while (node != NULL)
+        {
+            if ((node[0] & 2) == 0 &&
+                node[4] == (u32)i &&
+                node[0xfc4] == 0)
+            {
+                break;
+            }
+            node = (u32*)node[0x3f1];
+        }
+        if (node == NULL)
+        {
+            func_0019d3f0((const char*)0x0068ea00, 0x47a);
+        }
         func_00250cf0(*(f32*)0x007caf38, 0, (u8*)node + 0x45a, origin, 0xc);
         node[0x494] = 0;
         node[0x495] = 0xc;
@@ -2802,17 +2822,21 @@ static inline void bpPanelSetRotatedQuad(void* destination,
     sourceY[2] = top + height;
     sourceX[3] = left;
     sourceY[3] = top + height;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 4; i += 2)
     {
-        f32 dx;
-        f32 dy;
-
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
-        dx = sourceX[i] - centerX;
-        dy = sourceY[i] - centerY;
-        vertices[i * 2] = centerX + dx * cosine - dy * sine;
-        vertices[i * 2 + 1] = centerY + dx * sine + dy * cosine;
+        vertices[i * 2] = centerX + (sourceX[i] - centerX) * cosine -
+                          (sourceY[i] - centerY) * sine;
+        vertices[i * 2 + 1] = centerY + (sourceX[i] - centerX) * sine +
+                              (sourceY[i] - centerY) * cosine;
+        sine = func_0052e878(angle);
+        cosine = func_0052e6d8(angle);
+        vertices[(i + 1) * 2] = centerX + (sourceX[i + 1] - centerX) * cosine -
+                                (sourceY[i + 1] - centerY) * sine;
+        vertices[(i + 1) * 2 + 1] =
+            centerY + (sourceX[i + 1] - centerX) * sine +
+            (sourceY[i + 1] - centerY) * cosine;
     }
     func_0021d890(destination, vertices);
 }
@@ -3275,16 +3299,6 @@ void func_0021f410(void)
     case 2:
     case 1:
         func_0022c2d0();
-        break;
-    default:
-        switch (*(u32*)(work + 0x4644))
-        {
-        case 0:
-        case 3:
-        case 4:
-            func_0022c2d0();
-            break;
-        }
         break;
     }
     sub = *(u32*)(work + 0x463c);

@@ -597,6 +597,10 @@ extern u32 FUN_001c65e0_typed(void *param_1);
 extern long FUN_001c6720(u32 param_1, u32 param_2);
 extern code FUN_001c6d70;
 extern code FUN_001c6dd0;
+#pragma alias FUN_001c6d70_typed FUN_001c6d70
+extern long FUN_001c6d70_typed(u32 param_1, void *param_2);
+#pragma alias FUN_001c6dd0_typed FUN_001c6dd0
+extern long FUN_001c6dd0_typed(u32 param_1, void *param_2);
 extern long FUN_001c7130(u32 param_1, u32 param_2);
 extern long FUN_001c7160(u32 param_1, void *param_2, void *param_3);
 extern code FUN_001c7270;
@@ -14490,11 +14494,9 @@ u32 FUN_0044f300(char param_1)
     fStack_bc = fStack_c - fStack_1c;
     fStack_b8 = fStack_8 - fStack_18;
     fVar10 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_c0));
-    lVar3 = ((code)FUN_001c6d70)(*(u32 *)(iVar8 + 0x14),(u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0)
-    ;
+    lVar3 = FUN_001c6d70_typed(*(u32 *)(iVar8 + 0x14),(u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0);
     if (lVar3 != 0) {
-      lVar3 = ((code)FUN_001c6dd0)(*(u32 *)(iVar8 + 0x14),
-                           (u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0);
+      lVar3 = FUN_001c6dd0_typed(*(u32 *)(iVar8 + 0x14),(u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0);
       if (*(char *)(iVar1 + 0x18) != lVar3) {
         FUN_001ad940(&fStack_40,
                      *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar1 + 0x18) * 0x70] + 0x1e0));

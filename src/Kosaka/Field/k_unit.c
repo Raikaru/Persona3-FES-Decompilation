@@ -1671,7 +1671,6 @@ void func_001d0bc0(void* output, u32 count)
 {
     u8* node;
     u8* dst;
-    RwV3d heroPos;
     RwV3d* nodePos;
     RwV3d delta;
     f32 distance;
@@ -1693,7 +1692,6 @@ void func_001d0bc0(void* output, u32 count)
         {
             K_ASSERT(0, 0x60d);
         }
-        heroPos = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos;
         for (i = 0; i < count; i++)
         {
             bestDistance = 1.1754944e-38f;
@@ -1701,9 +1699,9 @@ void func_001d0bc0(void* output, u32 count)
             while (node != NULL)
             {
                 nodePos = FldUnit_NodePos(node);
-                delta.x = nodePos->x - heroPos.x;
-                delta.y = nodePos->y - heroPos.y;
-                delta.z = nodePos->z - heroPos.z;
+                delta.x = nodePos->x - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.x;
+                delta.y = nodePos->y - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.y;
+                delta.z = nodePos->z - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.z;
                 distance = func_004c6ac0(&delta);
                 for (j = 0; j < i; j++)
                 {
@@ -1752,7 +1750,7 @@ void func_001d0e50(s32 isDungeon)
             resource = (ResrcModelChar*)func_003b5d10(resourceId);
             unit->resrc = resource;
             modelMatrix = (RwV3d*)func_00318b60(unit->mdl);
-            memcpy(func_00318b60(unit->mdl), &unit->matBeforeBtl, sizeof(RwMatrix));
+            *(RwMatrix*)func_00318b60(unit->mdl) = unit->matBeforeBtl;
             modelData = func_00318b70(unit->mdl);
             func_004c2f10(modelData);
             func_001a0dc0(resourceId, 1);
@@ -2471,10 +2469,11 @@ void func_001d2a10(void)
             for (k = 0; k < FLDUNIT_EC_MAX; k++)
             {
                 unit = (u8*)&gFldUnitsEc[k];
-                if (gFldUnitsEc[k].genusBase != NULL)
+                if (K_Scene_001a0250() != 0 &&
+                    gFldUnitsEc[k].genusBase != NULL)
                 {
                     kind = gFldUnitsEc[k].unk_18c;
-                    if (kind != 4)
+                    if (K_Scene_001a0250() != 0 && kind != 4)
                     {
                         extent = iGpffffb5a0[kind * 0x10] * (kind == 3 ? 3.0f : 2.0f);
                         matrix = mdlGetMatrix(gFldUnitsEc[k].mdl);
@@ -2484,7 +2483,8 @@ void func_001d2a10(void)
                         {
                             gridX = FldUnit_GridCoord(x + extent * dir);
                             gridZ = FldUnit_GridCoord(z);
-                            if (gridX == i && gridZ == j)
+                            if (K_Scene_001a0250() != 0 &&
+                                gridX == i && gridZ == j)
                             {
                                 if (slot >= 0x18) { K_ASSERT(0, 0xa47); break; }
                                 cell[slot++] = unit;
@@ -2498,7 +2498,7 @@ void func_001d2a10(void)
             for (k = 0; k < 0x20; k++)
             {
                 record = DAT_0086be80 + k * 0x138;
-                if (*(u32*)record != 0)
+                if (K_Scene_001a0250() != 0 && *(u32*)record != 0)
                 {
                     x = *(f32*)(record + 0x10c) - 80.0f;
                     z = *(f32*)(record + 0x114) - 80.0f;
@@ -2506,7 +2506,8 @@ void func_001d2a10(void)
                     {
                         gridX = FldUnit_GridCoord(x + dir * 80.0f);
                         gridZ = FldUnit_GridCoord(z);
-                        if (gridX == i && gridZ == j)
+                        if (K_Scene_001a0250() != 0 &&
+                            gridX == i && gridZ == j)
                         {
                             if (slot >= 0x18) { K_ASSERT(0, 0xa52); break; }
                             cell[0x18 + slot++] = record;
@@ -2515,7 +2516,8 @@ void func_001d2a10(void)
                     }
                 }
             }
-            if (*(u32*)DAT_0086e580 == 1 &&
+            if (K_Scene_001a0250() != 0 &&
+                *(u32*)DAT_0086e580 == 1 &&
                 FldUnit_GridCoord(*(f32*)(DAT_0086e580 + 0x104)) == i &&
                 FldUnit_GridCoord(*(f32*)(DAT_0086e580 + 0x10c)) == j)
             {
@@ -2858,7 +2860,7 @@ void* func_001d3ce0(KwlnTask* task)
     s32 damage;
     u8* scene;
 
-    work = (s32*)task->workData;
+    u8* colorData;
     unit = (FldUnit*)work[1];
     status = func_0016c970((s16)unit->charId);
     if ((status & 0x80) != 0 &&
@@ -2896,15 +2898,22 @@ void* func_001d3ce0(KwlnTask* task)
             func_0016cf40((s16)unit->charId, (u16)damage);
             work[4] = now;
         }
-        color = *(RwRGBA*)func_00318b00(unit->mdl);
-        color.a = color.a;
+        colorData = (u8*)func_00318b00(unit->mdl);
+        color.r = colorData[0];
+        color.g = colorData[1];
+        color.b = colorData[2];
+        color.a = colorData[3];
         func_00318ad0(unit->mdl, &color);
         scene = func_001b9120();
         func_001a92d0(*(void**)(scene + 0x11f8), (void*)work[3], &pos);
     }
     else
     {
-        color = *(RwRGBA*)func_00318b00(unit->mdl);
+        colorData = (u8*)func_00318b00(unit->mdl);
+        color.r = colorData[0];
+        color.g = colorData[1];
+        color.b = colorData[2];
+        color.a = colorData[3];
         if (work[2] == 1)
         {
             work[2] = 0;

@@ -444,7 +444,8 @@ void* func_001107d0(KwlnTask* task)
                 strcpy(fullPath, work->basePath);
                 strcat(fullPath, (char*)externalPath);
                 printf(D_005D58A8, fullPath);
-                work->stream = func_0010c1a0(NULL, fullPath, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+                work->stream = func_0010c1a0(NULL, fullPath, NULL, NULL, NULL, NULL, NULL, NULL,
+                                             NULL, NULL, D_005D58A8, 0x506);
                 work->state = 4;
                 break;
             }
@@ -493,16 +494,41 @@ void* func_001107d0(KwlnTask* task)
         case 5:
         {
             MaestroResourceWork* resourceWork;
+            KwlnTask* resourceTask;
             s32 i;
             s32 destinationIndex;
 
             if (work->createCustomPriorityTask != 0)
             {
-                work->resourceTask = func_001103e0(task, work->resourceTaskPriority, (u32)work->records, (u32)work->recordCount);
+                resourceWork = (MaestroResourceWork*)MAESTRO_ALLOC(1, sizeof(MaestroResourceWork), 0x40000);
+                resourceTask = NULL;
+                if (resourceWork != NULL)
+                {
+                    resourceTask = kwlnTaskCreate(task, D_005D5898, work->resourceTaskPriority,
+                                                  func_0010f6c0, func_001102e0, resourceWork);
+                    if (resourceTask != NULL)
+                    {
+                        resourceWork->resourceIndex = (u32)work->records;
+                        resourceWork->resourceCount = (u32)work->recordCount;
+                    }
+                }
+                work->resourceTask = resourceTask;
             }
             else
             {
-                work->resourceTask = func_001103e0(task, 0x14A6, (u32)work->records, (u32)work->recordCount);
+                resourceWork = (MaestroResourceWork*)MAESTRO_ALLOC(1, sizeof(MaestroResourceWork), 0x40000);
+                resourceTask = NULL;
+                if (resourceWork != NULL)
+                {
+                    resourceTask = kwlnTaskCreate(task, D_005D5898, 0x14A6,
+                                                  func_0010f6c0, func_001102e0, resourceWork);
+                    if (resourceTask != NULL)
+                    {
+                        resourceWork->resourceIndex = (u32)work->records;
+                        resourceWork->resourceCount = (u32)work->recordCount;
+                    }
+                }
+                work->resourceTask = resourceTask;
             }
             if (work->resourceTask != NULL)
             {
@@ -2471,19 +2497,19 @@ void func_00114e70(f32 depth,
     f32 z;
     void (**setState)(u32, u32);
     RwCamera* camera;
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
+    s8 r;
+    s8 g;
+    s8 b;
+    s8 a;
     s32 i;
 
     camera = kwlnGetMainCamera();
     recipZ = 1.0f / camera->nearPlane;
 
-    r = (s32)((color & 0xff000000) >> 24);
-    g = (s32)((color & 0xff0000) >> 16);
-    b = (s32)((color & 0xff00) >> 8);
-    a = (s32)(color & 0xff);
+    r = (s8)(color >> 24);
+    g = (s8)(color >> 16);
+    b = (s8)(color >> 8);
+    a = (s8)color;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2581,24 +2607,26 @@ void func_00115350(f32 depth,
     f32 points[4][2];
     f32 recipZ;
     f32 z;
-    f32 tmp;
+    f32 tmpR;
+    f32 tmpG;
+    f32 tmpB;
     f32 alpha0f;
     f32 alpha1f;
     f32 alpha2f;
     f32 alpha3f;
     void (**setState)(u32, u32);
-    s32 r;
-    s32 g;
-    s32 b;
+    s8 r;
+    s8 g;
+    s8 b;
     s32 r1;
     s32 g1;
     s32 b1;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
-    r = (s32)((color >> 24) & 0xff);
-    g = (s32)((color >> 16) & 0xff);
-    b = (s32)((color >> 8) & 0xff);
+    r = (s8)(color >> 24);
+    g = (s8)(color >> 16);
+    b = (s8)(color >> 8);
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2639,22 +2667,22 @@ void func_00115350(f32 depth,
             v->u.els.color.r = (f32)r;
         else
         {
-            tmp = (f32)(s32)(((u32)r >> 1) | r1);
-            v->u.els.color.r = tmp + tmp;
+            tmpR = (f32)(s32)(((u32)r >> 1) | r1);
+            v->u.els.color.r = tmpR + tmpR;
         }
         if (g >= 0)
             v->u.els.color.g = (f32)g;
         else
         {
-            tmp = (f32)(s32)(((u32)g >> 1) | g1);
-            v->u.els.color.g = tmp + tmp;
+            tmpG = (f32)(s32)(((u32)g >> 1) | g1);
+            v->u.els.color.g = tmpG + tmpG;
         }
         if (b >= 0)
             v->u.els.color.b = (f32)b;
         else
         {
-            tmp = (f32)(s32)(((u32)b >> 1) | b1);
-            v->u.els.color.b = tmp + tmp;
+            tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+            v->u.els.color.b = tmpB + tmpB;
         }
         switch (i)
         {
