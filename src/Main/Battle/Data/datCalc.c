@@ -609,6 +609,8 @@ u32 FUN_00306e80(s32 param_1,s32 param_2);
 int FUN_003080c0(short param_1);
 short FUN_00308120(short param_1,int param_2);
 s32 FUN_003082f0(s32 param_1,u32 param_2);
+#pragma alias FUN_003082f0_u16 FUN_003082f0
+extern s32 FUN_003082f0_u16(s32 param_1,u16 param_2);
 #pragma alias FUN_003082f0_one FUN_003082f0
 extern s32 FUN_003082f0_one(s32 param_1);
 u32 FUN_003083f0(u32 param_1,u32 param_2);
@@ -4453,7 +4455,7 @@ short FUN_00308120(short param_1,int param_2)
 {
   short unaff_s0_lo;
   
-  if ((param_1 != -1) && (unaff_s0_lo = FUN_003082f0(0,param_1), unaff_s0_lo == 8)) {
+  if ((param_1 != -1) && (unaff_s0_lo = FUN_003082f0_u16(0,param_1), unaff_s0_lo == 8)) {
     return 8;
   }
   if (param_2 == 0x100000) {
