@@ -5917,7 +5917,7 @@ int FUN_00375000(int param_1,int param_2,int param_3)
 
   
 
-  FUN_0036f900(param_1,param_2,0x12,0xb,0,8,param_3,0x374d30,0x374d30);
+  FUN_0036f900(param_1,param_2,0x12,0xb,0,8,param_3,0x374c90,(code *)0x374d30);
 
   iVar1 = (int)param_3;
 

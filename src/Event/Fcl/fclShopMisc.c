@@ -11160,7 +11160,7 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
   u8 auStack_40 [32];
 
-  u8 *apuStack_20 [4];
+  u8 *apuStack_20 [8];
 
   u8 *puStack_10;
 
@@ -11212,6 +11212,10 @@ u32 FUN_003fe020(int param_1,u64 param_2)
   apuStack_20[2] = (u8 *)DAT_006af178;
 
   apuStack_20[3] = (u8 *)DAT_006af17c;
+  apuStack_20[4] = (u8 *)(DAT_006af170);
+  apuStack_20[5] = (u8 *)DAT_006af174;
+  apuStack_20[6] = (u8 *)DAT_006af178;
+  apuStack_20[7] = (u8 *)DAT_006af17c;
 
   FUN_003c5e20(uVar4,apuStack_20[param_1 + 6]);
 

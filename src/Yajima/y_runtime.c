@@ -5798,7 +5798,6 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_lifetimes off
 // Preserve every helper-facing vector as one aggregate; the remaining normalized diff is a stack/codegen floor.
 // FUN_00435C00 NONMATCHING
 
@@ -5858,6 +5857,8 @@ void FUN_00435c00(int param_1)
   float fStack_b0 [3];
   float fStack_a0 [3];
   float fStack_90 [3];
+  RwV3d vec90;
+  RwV3d veca0;
   float fStack_80 [3];
   u32 uStack_70[3];
   u32 uStack_60[3];
@@ -6100,9 +6101,11 @@ LAB_004363c0:
     fStack_a0[0] = *(float *)(iVar12 + 0x30);
     fStack_a0[1] = *(float *)(iVar12 + 0x34);
     fStack_a0[2] = *(float *)(iVar12 + 0x38);
-    fStack_80[0] = fStack_90[0] - fStack_a0[0];
-    fStack_80[1] = fStack_90[1] - fStack_a0[1];
-    fStack_80[2] = fStack_90[2] - fStack_a0[2];
+    vec90 = *(RwV3d *)fStack_90;
+    veca0 = *(RwV3d *)fStack_a0;
+    fStack_80[0] = vec90.x - veca0.x;
+    fStack_80[1] = vec90.y - veca0.y;
+    fStack_80[2] = vec90.z - veca0.z;
     FUN_004c69f0(fStack_80,fStack_80);
     lVar13 = FUN_001c7130(800.0f,uVar20);
     if (lVar13 == 0) {

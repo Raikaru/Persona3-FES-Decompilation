@@ -1654,8 +1654,6 @@ void FUN_002265D0(void)
     {
         f32 complement = 1.0f - transAlpha;
         f32 negRowOffset = -rowOffset;
-        rect[0] = rect[0];
-        rect[1] = rect[1];
         rect[1] = rect[1] + complement * negRowOffset;
         rect[1] = rect[1] + rowOffset;
     }
@@ -1673,8 +1671,8 @@ void FUN_002265D0(void)
                 resource = (void*)FUN_0021cca0(table0, i + 0x1a);
                 break;
             }
-            rect[0] = rect[0];
-            rect[1] = rect[1];
+            rect[0] = *(f32*)(work + 0x6050);
+            rect[1] = *(f32*)(work + 0x6054);
             switch (i) {
             case 0: rect[0] += 11.0f; rect[1] += 4.0f; break;
             case 1: rect[0] += 11.0f; rect[1] += y150; break;
@@ -1733,31 +1731,31 @@ void FUN_002265D0(void)
 
     resource = (void*)FUN_0021cca0(table0, 0x26);
     {
-        rect[0] = 20.0f + rect[0];
-        rect[1] = 32.0f + rect[1] - 4.0f;
+        rect[0] = 20.0f + *(f32*)(work + 0x6050);
+        rect[1] = 32.0f + *(f32*)(work + 0x6054) - 4.0f;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
         FUN_0021d8e0(work + 0x1e30, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x27);
-        rect[0] = 20.0f + rect[0];
-        rect[1] = 102.0f + rect[1] + rowStep;
+        rect[0] = 20.0f + *(f32*)(work + 0x6050);
+        rect[1] = 102.0f + *(f32*)(work + 0x6054) + rowStep;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
         FUN_0021d8e0(work + 0x1f30, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x26);
-        rect[0] = 20.0f + rect[0];
-        rect[1] = 16.0f + (32.0f + rect[1]) - 4.0f;
+        rect[0] = 20.0f + *(f32*)(work + 0x6050);
+        rect[1] = 16.0f + (32.0f + *(f32*)(work + 0x6054)) - 4.0f;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = 57.0f + rowStep;
         FUN_0021d8e0(work + 0x2030, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x1d);
         {
-            f32 top = (36.0f + rect[1] + rowOffset) - 4.0f;
-            f32 bottom = 91.0f + rect[1] + rowOffset;
-            rect[0] = 22.0f + rect[0];
+            f32 top = (36.0f + *(f32*)(work + 0x6054) + rowOffset) - 4.0f;
+            f32 bottom = 91.0f + *(f32*)(work + 0x6054) + rowOffset;
+            rect[0] = 22.0f + *(f32*)(work + 0x6050);
             if (*(s32*)(work + 0x6074) >= 5) {
                 f32 t = (f32)*(s32*)(work + 0x606c);
                 f32 range = bottom - top;
@@ -1790,14 +1788,14 @@ void FUN_002265D0(void)
     {
         for (j = 0; j < 6; ++j) {
             u8* slot = work + j * 0x200;
-            f32 quadY = 43.0f + rect[1] + (f32)(j * 26);
-            rect[0] = 47.0f + rect[0];
+            f32 quadY = 43.0f + *(f32*)(work + 0x6054) + (f32)(j * 26);
+            rect[0] = 47.0f + *(f32*)(work + 0x6050);
             rect[1] = quadY;
             rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
             rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
             FUN_0021d8e0(slot + 0x2230, rect);
 
-            rect[0] = 47.0f + rect[0] + (f32)*(s32*)((u8*)resource + 0xc);
+            rect[0] = 47.0f + *(f32*)(work + 0x6050) + (f32)*(s32*)((u8*)resource + 0xc);
             rect[1] = quadY;
             rect[2] = 311.0f;
             rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
