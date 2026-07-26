@@ -190,6 +190,9 @@ extern void FUN_0012b860_status(CampVec2 position, void* currentStats,
 extern void FUN_0012bce0_s32(CampVec2 position, f32 scale, void* unused,
                              void* persona, s32 alpha);
 #pragma alias FUN_0012bce0_s32 FUN_0012bce0
+#pragma alias FUN_0012bce0_status FUN_0012bce0
+extern void FUN_0012bce0_status(CampVec2 position, void* unused,
+                                void* persona, u32 alpha, f32 scale);
 extern void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
                              void* persona, s32 alpha);
 #pragma alias FUN_0012bfb0_s32 FUN_0012bfb0
@@ -3149,7 +3152,8 @@ void FUN_001332f0(CampVec2 position, f32 alpha, void* unused,
     s32 drawAlpha;
     s32 arcanaFrame;
     drawAlpha = 0xff - fade;
-    FUN_0012bce0_s32(position, alpha, unused, persona, (u8)drawAlpha);
+    FUN_0012bce0_status(position, unused, persona, (u32)drawAlpha,
+                        alpha);
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;

@@ -91,6 +91,11 @@ typedef struct RuntimeMatrix
 {
     f32 values[16];
 } RuntimeMatrix;
+typedef struct RuntimeTransitionAngles
+{
+    u8 reserved[0x24];
+    RuntimeVec3 value;
+} RuntimeTransitionAngles;
 
 typedef struct RuntimeResetWork
 {
@@ -1471,6 +1476,7 @@ s32 func_001e58d0(RuntimeTask* task)
     RuntimeVec3 center;
     RuntimeVec3 adjusted;
     RuntimeMatrix rotation;
+    RuntimeTransitionAngles angles;
     FieldRuntimeTaskNode* taskNode;
     RuntimeMatrix* positionMatrix;
     void* camera;
@@ -1630,11 +1636,11 @@ state2:
         positionMatrix = (RuntimeMatrix*)K_Draw_GetPositionMatrix(
             work->positionTask);
         taskNode->matrix = *positionMatrix;
-        firstAxis.x = func_001a5b30(&taskNode->matrix);
-        firstAxis.y = func_001a5aa0(&taskNode->matrix);
-        firstAxis.z = func_001a5bc0(&taskNode->matrix);
+        angles.value.x = func_001a5b30(&taskNode->matrix);
+        angles.value.y = func_001a5aa0(&taskNode->matrix);
+        angles.value.z = func_001a5bc0(&taskNode->matrix);
         func_003b78b0(taskNode->resourceId, (u8*)taskNode + 0x40,
-                     &firstAxis);
+                     &angles.value);
         work->state = 0;
     }
     return 0;

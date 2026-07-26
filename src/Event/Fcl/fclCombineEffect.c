@@ -3666,7 +3666,7 @@ u64 FUN_0041b950(int param_1)
         if (*(int *)(puVar2 + 2) != 0) {
           iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4));
           if (*(int *)(puVar2 + 2) <= iVar3) {
-            *puVar2 = *puVar2 & 0xfffe;
+            *puVar2 = *puVar2 & (u16)-2;
           }
         }
         break;
