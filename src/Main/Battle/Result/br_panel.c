@@ -615,9 +615,6 @@ static void brPanel00236390(void)
     void* frame;
     u32 texture;
     u32 digitTexture;
-    s32 mode;
-    s32 timer;
-    s32 value;
     s32 length;
     s32 i;
     f32 alpha;
@@ -632,8 +629,8 @@ static void brPanel00236390(void)
     f32 anim;
     u8 color[4];
     f32 rect[8];
-    char text[0x100];
-    char text2[0xf0];
+    char text[0xf0];
+    char text2[0x100];
     u32 packedColor;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
@@ -642,9 +639,10 @@ static void brPanel00236390(void)
     texture = brPanelResRaw(0);
     digitTexture = brPanelResRaw(1);
     frame = func_0021cca0(texture, 0);
-    mode = *(s32*)(work + 0x266c);
-    timer = *(s32*)(work + 0x2668);
 
+#define mode (*(s32*)(work + 0x266c))
+#define timer (*(s32*)(work + 0x2668))
+#define value (*(s32*)(work + 0x2660))
     if (mode == 2) {
         shift = (f32)((*(s32*)((u8*)frame + 0xc) + 1) / 2);
         alpha = 0.0f;
@@ -736,7 +734,6 @@ static void brPanel00236390(void)
     BR_PANEL_ANIMATE(work + 0x210, 0x28);
     BR_PANEL_SET_COLOR(work + 0x210, alpha);
 
-    value = *(s32*)(work + 0x2660);
     K_ASSERT(value > 0 && value < 100, 0x3bd);
     if (mode == 0) {
         shift = 0.0f;
@@ -804,8 +801,8 @@ static void brPanel00236390(void)
         }
     }
     frame = func_0021cca0(brRes00234570(0), 2);
-    sprintf(text2, "%d", *(s32*)(work + 0x2664));
-    length = (s32)strlen(text2);
+    sprintf(text, "%d", *(s32*)(work + 0x2664));
+    length = (s32)strlen(text);
     textWidth = (f32)(length * 23);
     rect[0] = 350.0f - (textWidth + 40.0f +
                         (f32)*(s32*)((u8*)frame + 0xc)) / 2.0f + shift;
@@ -1289,6 +1286,9 @@ static void brPanel00236390(void)
     color[3] = 0xff;
     func_0021d950(work + 0x2460, color);
 }
+#undef value
+#undef mode
+#undef timer
 #pragma opt_loop_invariants off
 #undef brRes00234570
 #undef BR_PANEL_SET_RECT

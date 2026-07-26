@@ -2012,51 +2012,106 @@ void* func_001aaf30(const RwV3d* point, void* unused,
     RwV3d delta;
     f32 signedDistance;
     f32 distance;
+    f32 edgeDistance;
     s32 i;
+    s32 index;
 
     (void)unused;
-    if (point == NULL || triangle == NULL || collector == NULL)
-    {
-        return (void*)triangle;
-    }
-
     vertices[0] = triangle->vertices[0];
     vertices[1] = triangle->vertices[1];
     vertices[2] = triangle->vertices[2];
-    if (vertices[0] == NULL || vertices[1] == NULL || vertices[2] == NULL)
-    {
-        return (void*)triangle;
-    }
 
-    signedDistance = FldFrame_Dot(vertices[0], &triangle->normal) -
-                     FldFrame_Dot(point, &triangle->normal);
+    signedDistance =
+        vertices[0]->x * triangle->normal.x +
+        vertices[0]->y * triangle->normal.y +
+        vertices[0]->z * triangle->normal.z -
+        (point->x * triangle->normal.x +
+         point->y * triangle->normal.y +
+         point->z * triangle->normal.z);
     projected.x = point->x + triangle->normal.x * signedDistance;
     projected.y = point->y + triangle->normal.y * signedDistance;
     projected.z = point->z + triangle->normal.z * signedDistance;
 
-    if (K_FldFrame_IsPointInTriangle(&projected, vertices, &triangle->normal))
+    if (K_FldFrame_IsPointInTriangle(&projected, vertices,
+                                      &triangle->normal))
     {
         distance = fabsf(signedDistance);
-        FldFrame_RecordCollision(collector, &projected, &triangle->normal, distance);
+        index = 0;
+        while (index < (s32)collector->count &&
+               (collector->normals[index].x != triangle->normal.x ||
+                collector->normals[index].y != triangle->normal.y ||
+                collector->normals[index].z != triangle->normal.z))
+        {
+            index++;
+        }
+        if (index < (s32)collector->count)
+        {
+            if (distance < collector->distances[index])
+            {
+                collector->points[index] = projected;
+                collector->normals[index] = triangle->normal;
+                collector->distances[index] = distance;
+            }
+        }
+        else
+        {
+            index = collector->count;
+            if (distance < collector->distances[index])
+            {
+                collector->points[index] = projected;
+                collector->normals[index] = triangle->normal;
+                collector->distances[index] = distance;
+                collector->count++;
+            }
+        }
     }
     else
     {
         distance = 1.0e30f;
         for (i = 0; i < 3; i++)
         {
-            func_001aae10(&closest, &projected, vertices[i], vertices[(i + 1) % 3]);
+            func_001aae10(&closest, &projected, vertices[i],
+                          vertices[(i + 1) % 3]);
             delta.x = point->x - closest.x;
             delta.y = point->y - closest.y;
             delta.z = point->z - closest.z;
-            if (FldFrame_LengthSquared(&delta) < distance * distance)
+            edgeDistance = func_004c6ac0(&delta);
+            if (edgeDistance < distance)
             {
-                distance = RwV3dLength(&delta);
+                distance = edgeDistance;
                 projected = closest;
             }
         }
         if (distance < 1.0e30f)
         {
-            FldFrame_RecordCollision(collector, &projected, &triangle->normal, distance);
+            index = 0;
+            while (index < (s32)collector->count &&
+                   (collector->normals[index].x != triangle->normal.x ||
+                    collector->normals[index].y != triangle->normal.y ||
+                    collector->normals[index].z != triangle->normal.z))
+            {
+                index++;
+            }
+            if (index < (s32)collector->count)
+            {
+                if (distance < collector->distances[index])
+                {
+                    collector->points[index] = projected;
+                    collector->normals[index] = triangle->normal;
+                    collector->distances[index] = distance;
+                }
+            }
+            else
+            {
+                index = collector->count;
+                if (distance < collector->distances[index])
+                {
+                    collector->points[index] = projected;
+                    collector->normals[index] = triangle->normal;
+                    collector->distances[index] = distance;
+                    collector->count++;
+                }
+            }
         }
     }
 
@@ -2397,7 +2452,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         }
         listThree = *(void**)((u8*)listThree + 0xf8);
     }
-    func_001abd20(collisionWorld, pos, translation, sphereCollisRadius, resTypeId);
+    if (K_Scene_001a0250())
     {
         s32 quadIter;
         for (quadIter = 0; quadIter < 4; quadIter++)
@@ -2481,54 +2536,52 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
     for (i = 0; i < (s32)collector.count; i++)
     {
-        f32 dv;
-        f32 corr;
-        u32 fl;
+        RwV3d normal;
+        f32 distance;
+        f32 correction;
+        f32 direction;
+        u32 blocking;
 
-        dv = collector.distances[i];
-        if (dv >= 1.0e30f) continue;
+        distance = collector.distances[i];
+        if (distance >= 1.0e30f)
+            continue;
 
         diff.x = collector.points[i].x - pos->x;
         diff.y = collector.points[i].y - pos->y;
         diff.z = collector.points[i].z - pos->z;
         func_004c69f0(&diff, &diff);
 
-        if (collector.distances[i] <= 0.0f) continue;
+        correction = sphereCollisRadius - collector.distances[i];
+        if (correction <= 0.0f)
+            continue;
 
-        corr = sphereCollisRadius - collector.distances[i];
-        if (corr <= 0.0f) continue;
+        diff.x *= correction;
+        diff.y *= correction;
+        diff.z *= correction;
 
-        fl = *(u32*)((u8*)&collector + 0xa00 + i * 4);
-        if (fl == 1)
+        blocking = *(u32*)((u8*)&collector + 0xa00 + i * 4);
+        if (collector.mode == 1 && blocking == 1)
         {
-            RwV3d nrm;
-            f32 nd;
-            nrm = collector.normals[i];
-            func_004c69f0(&nrm, &nrm);
-            nd = FldFrame_Dot(&nrm, &diff);
-            if (nd > 0.0f)
-            {
-                translation->x += nrm.x * corr;
-                translation->y += nrm.y * corr;
-                translation->z += nrm.z * corr;
-            }
-        }
-        else
-        {
-            translation->x += diff.x * corr;
-            translation->y += diff.y * corr;
-            translation->z += diff.z * corr;
+            normal = collector.normals[i];
+            direction = translation->x * normal.x +
+                        translation->y * normal.y +
+                        translation->z * normal.z;
+            if (direction < 0.0f)
+                continue;
         }
 
+        translation->x += diff.x;
+        translation->y += diff.y;
+        translation->z += diff.z;
         returnVal = 1;
 
-        if (fabsf(translation->x) < 0.000001f &&
-            fabsf(translation->y) < 0.000001f &&
-            fabsf(translation->z) < 0.000001f)
+        if (translation->x == 0.0f &&
+            translation->y == 0.0f &&
+            translation->z == 0.0f)
         {
-            translation->x += diff.x * corr;
-            translation->y += diff.y * corr;
-            translation->z += diff.z * corr;
+            translation->x += diff.x;
+            translation->y += diff.y;
+            translation->z += diff.z;
         }
     }
 

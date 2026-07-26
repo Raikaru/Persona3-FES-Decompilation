@@ -73,6 +73,16 @@ extern KwlnTask* campStatusCreatePersonaChild(KwlnTask* parent,
                                               u32 priority, u32 personaId,
                                               u32 mode, f32 alpha);
 extern s32 FUN_00133a80();
+/* Typed aliases keep MWCC's call ABI visible without changing legacy declarations. */
+#pragma alias campStatusDestroyPersonaChild FUN_00133a80
+extern void campStatusDestroyPersonaChild(KwlnTask* task);
+#pragma alias campStatusDrawPersonaList FUN_001344B0
+extern u32 campStatusDrawPersonaList(void* items, const void* resources,
+                                     const s16* personaIds, s16 selected);
+#pragma alias campStatusDrawPersonaDetail FUN_00134900
+extern u32 campStatusDrawPersonaDetail(void* items, const void* resources,
+                                       const s16* personaIds, s16 selected,
+                                       s16 previous);
 extern void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode);
 extern s32 FUN_00121de0();
 extern s32 FUN_00122710();
@@ -118,6 +128,19 @@ extern const char D_005DB158[];
 extern const char D_005DACB0[];
 extern const char D_005DB170[];
 extern void* func_0010c1a0();
+/* These command-list helpers have concrete narrow signatures in nmCmdList.c. */
+#pragma alias campStatusCmd7430 FUN_003c7430
+extern u32 campStatusCmd7430(u64 command);
+#pragma alias campStatusCmd74e0 FUN_003c74e0
+extern u32 campStatusCmd74e0(s32 command);
+#pragma alias campStatusCmd7560 FUN_003c7560
+extern void campStatusCmd7560(u8 command);
+#pragma alias campStatusCmd7610 FUN_003c7610
+extern s8 campStatusCmd7610(void);
+#pragma alias campStatusCmd7700 FUN_003c7700
+extern u32 campStatusCmd7700(void);
+#pragma alias campStatusCmd7850 FUN_003c7850
+extern s8 campStatusCmd7850(void);
 extern void* func_0010c3a0();
 extern int printf(const char* format, ...);
 extern void FUN_00174c10();

@@ -3511,8 +3511,8 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
 #define FUN_003093a0 FUN_003093a0_b280
 #define FUN_0052e930 FUN_0052e930_b280
   int iVar1;
-  char cVar2;
-  long lVar3;
+  u8 cVar2;
+  s32 lVar3;
   int iVar4;
   int iVar5;
   int iVar6;
@@ -7895,7 +7895,7 @@ extern u8* iGpffffb73c;
 
 void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
 {
-  short sVar1;
+  u16 sVar1;
   int iVar2;
   int iVar3;
   u8 bVar4;
@@ -7951,8 +7951,8 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   iVar9 = (int)camera;
   iVar2 = *(int *)(*(int *)(iVar9 + 0xe0) + 0x30);
   iVar3 = *(int *)(iVar2 + 0xa00);
-  lVar6 = FUN_002a3520(iVar9);
-  if ((lVar6 == 0) && (lVar6 = FUN_002a3550((u8*)camera), lVar6 == 0)) {
+  lVar6 = FUN_002a3520_result(iVar9);
+  if ((lVar6 == 0) && (lVar6 = FUN_002a3550_s32((u8*)camera), lVar6 == 0)) {
     bVar4 = 0;
   }
   else {
@@ -8160,6 +8160,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       uVar16 = 0x40700000;
     }
     else {
+      sVar1 = *(short *)(*(int *)(iVar9 + 0xe0) + 0x6e);
       if (sVar1 == 0x38) {
         mid[1] = 1000.0f;
         fStack_cc = 500.0f;
