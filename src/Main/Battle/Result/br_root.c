@@ -315,6 +315,12 @@ extern void func_0016cf90(u32, u32);
 extern void func_0016d8b0(u32, u32);
 extern void func_0016d6b0(u32, u32);
 extern u32 func_00488f30(void);
+extern void func_0020e8f0(void);
+extern u32 func_0016f190(u32);
+extern void func_0023f430(void);
+extern u32 func_002561c0(void *);
+extern u32 func_002561d0(void *);
+extern void func_005225a8(const char *, s32, s32);
 extern void func_00174800(u32);
 extern void func_00174650(u32, u32, u32);
 extern void func_0016cfe0(u32, u32);
@@ -1082,7 +1088,9 @@ void *func_001f2300(KwlnTask *task)
         break;
     case 3:
         if ((BR_U32(work, 4) & 2) == 0) {
-            u16 v = *(volatile u16*)0x007E094E;
+            u16 v;
+            func_0020e8f0();
+            v = *(volatile u16*)0x007E094E;
             if ((v & 0x9ff) != 0 || (*(volatile u16*)0x007E094C & 0x10) != 0) {
                 func_001f4a00();
             }
@@ -1100,18 +1108,11 @@ void *func_001f2300(KwlnTask *task)
         if (temp < 15) {
             BR_U32(work, 0x1fd5c) = temp + 1;
         }
-        if (BR_U32(work, 0x1fd5c) == 15) {
-            if ((*(volatile u16*)0x007E094E & 0x40) != 0 ||
-                (*(volatile u16*)0x007E094C & 0x10) != 0) {
-                func_00258a50();
-                BR_U32(work, 8) = 9;
-            } else {
-                func_00259740();
-                if (func_002596f0() == 0) {
-                    BR_U32(work, 0x14) = 0;
-                    BR_U32(work, 8) = 10;
-                }
-            }
+        if (BR_U32(work, 0x1fd5c) == 15 &&
+            ((*(volatile u16*)0x007E094E & 0x40) != 0 ||
+             (*(volatile u16*)0x007E094C & 0x10) != 0)) {
+            func_00258a50();
+            BR_U32(work, 8) = 9;
         } else {
             func_00259740();
             if (func_002596f0() == 0) {
@@ -1132,6 +1133,74 @@ void *func_001f2300(KwlnTask *task)
             func_001f55e0();
         }
         break;
+    case 11:
+    {
+        u8 *card;
+        u32 randomValue;
+        u32 chance;
+        u32 ready;
+
+        if (sflCount0025b640() != 0 &&
+            (*(volatile u16 *)0x007E094E & 0x40) == 0 &&
+            (*(volatile u16 *)0x007E094C & 0x10) == 0) {
+            break;
+        }
+        sflCount0025b5f0();
+        sflCursor0025aa70();
+        func_001f56b0();
+        sflCard00258490();
+        card = func_00256030();
+        func_0023f430();
+        func_003c7650(0);
+        BR_U32(work, 4) &= ~0x20u;
+        if (BR_U32(work, 0xe4) < 7 && func_0016f190(0x1318) != 0) {
+            randomValue = func_00488f30() % 100;
+            chance = ((const u8 *)0x007CC378)[BR_U32(work, 0xe4)];
+            func_005225a8((const char *)0x00684680, (s32)randomValue, (s32)chance);
+            if (randomValue < ((const u8 *)0x007CC378)[BR_U32(work, 0xe4)]) {
+                BR_U32(work, 4) |= 0x200;
+            }
+        }
+        if (BR_U32(card, 4) != 2) {
+            BR_U32(work, 4) &= ~0x200u;
+        }
+        if (func_002561d0(card) == 0) {
+            BR_U32(work, 4) &= ~0x200u;
+        }
+        if (BR_U32(card, 4) == 0 && func_002561c0(card) == 0) {
+            BR_U32(work, 4) &= ~0x200u;
+        }
+        ready = 0;
+        if ((BR_U32(work, 4) & 0x200) == 0) {
+            randomValue = func_00488f30() % 100;
+            switch (BR_U32(card, 4)) {
+            case 0:
+                if (func_002561c0(card) != 0 && randomValue < 3) {
+                    ready = 1;
+                }
+                break;
+            case 1:
+                if (func_002561d0(card) != 0 && randomValue < 10) {
+                    ready = 1;
+                }
+                break;
+            case 2:
+                if (randomValue < 10) {
+                    ready = 1;
+                }
+                break;
+            }
+        }
+        func_0010a4e0(1, 0, 6, 1);
+        if (ready != 0) {
+            BR_U32(work, 8) = 13;
+            sflCard00258090();
+        } else {
+            func_001f4750(task);
+            sflCard002580e0();
+        }
+        break;
+    }
     case 13:
         if (sflRes0020e4c0() == 0) {
             func_0010a4e0(1, 15, 6, 13);
@@ -1143,6 +1212,9 @@ void *func_001f2300(KwlnTask *task)
         }
         break;
     case 17:
+    {
+        u8 *card;
+
         if (sflPanel0023f390() == 0 && sflGround0023d0e0() == 0) {
             if ((BR_U32(work, 4) & 0x200) != 0) {
                 func_003c7990(1);
@@ -1158,22 +1230,23 @@ void *func_001f2300(KwlnTask *task)
             if ((BR_U32(work, 4) & 0x40) != 0) {
                 BR_U32(work, 4) &= ~0x40u;
             } else {
-                func_00256030();
-                temp = BR_U32((u8 *)func_00256030(), 4);
+                card = func_00256030();
+                temp = BR_U32(card, 4);
                 switch (temp) {
-                case 1:
                 case 0:
-                    if (temp == 1) {
-                        func_001f6d20((const f32 *)&work[4]);
-                    } else if (func_002561c0(work) == 0 && func_001f5760(*(u16*)(task + 8)) == 0) {
-                        func_001f6d20((const f32 *)&work[4]);
+                    if (func_002561c0(card) == 0 &&
+                        func_001f5760(*(u16 *)(card + 8)) == 0) {
+                        func_001f6d20((const f32 *)&card[4]);
                     }
+                    break;
+                case 1:
+                    func_001f6d20((const f32 *)&card[4]);
                     break;
                 case 2:
                     func_001f9630();
                     break;
                 }
-                if (func_002561d0(work) != 0) {
+                if (func_002561d0(card) != 0) {
                     BR_U32(work, 4) |= 0x1000u;
                 }
                 if ((BR_U32(work, 4) & 0x200) != 0) {
@@ -1185,6 +1258,7 @@ void *func_001f2300(KwlnTask *task)
             }
         }
         break;
+    }
     case 18:
         if (sflRes0020e4c0() == 0) {
             func_0023f010();
@@ -1268,7 +1342,6 @@ void *func_001f2300(KwlnTask *task)
     case 4:
         if (sflRes0020e9b0() == 0) {
             func_003c77a0();
-            func_0020ea00();
             func_003c72d0((void *)func_0020ea00());
             func_003c7430(0);
             BR_U32(work, 8) = 5;
@@ -1279,7 +1352,6 @@ void *func_001f2300(KwlnTask *task)
         if (func_003c7850() == 0) {
             func_003c7650(1);
             func_003c77a0();
-            func_0020ea00();
             func_003c94e0((void *)func_0020ea00());
             func_003c9790(0);
             BR_U32(work, 8) = 6;
