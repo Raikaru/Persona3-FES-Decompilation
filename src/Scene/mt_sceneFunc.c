@@ -10,6 +10,9 @@ typedef u32 int3;
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
+#ifndef ABS
+#define ABS(x) ((x) < 0 ? -(x) : (x))
+#endif
 extern u32 DAT_0067ef00;
 extern u32 DAT_006a2da0;
 extern u32 DAT_006a2da8;
@@ -304,6 +307,24 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3);
 void FUN_003bbfd0(u32 param_1,u32 param_2,u64 param_3,u64 param_4,  u64 param_5,float *param_6,float *param_7);
 float FUN_003bc0e0(char *param_1);
 float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 *param_5);
+/* Retail call: FUN_003b8ff0 + 0x160. */
+#pragma alias FUN_00318770_scene_typed FUN_00318770
+extern void FUN_00318770_scene_typed(float param_1,u32 param_2,u32 param_3,u32 param_4);
+/* Retail calls: FUN_003bbd40 + 0x0ac, + 0x178; FUN_003bc220 + 0x110, + 0x138, + 0x2a0, + 0x2d8, + 0x3e0, + 0x408; FUN_003bc730 + 0x0e0, + 0x118. */
+#pragma alias FUN_003bbc90_scene_typed FUN_003bbc90
+extern void FUN_003bbc90_scene_typed(float param_1,...);
+/* Retail call: FUN_003bbed0 + 0x0d4. */
+#pragma alias FUN_003bbd40_scene_typed FUN_003bbd40
+extern void FUN_003bbd40_scene_typed(float param_1,...);
+/* Retail calls: FUN_003b9610 + 0x52c, + 0x978. */
+#pragma alias FUN_003bbed0_scene_typed FUN_003bbed0
+extern float FUN_003bbed0_scene_typed(float param_1,float param_2,...);
+/* Retail call: FUN_003bc0e0 + 0x0d8. */
+#pragma alias FUN_003bbfd0_scene_typed FUN_003bbfd0
+extern void FUN_003bbfd0_scene_typed(float param_1,float param_2,...);
+/* Retail call: FUN_003b9610 + 0x604. */
+#pragma alias FUN_003bc220_scene_typed FUN_003bc220
+extern float FUN_003bc220_scene_typed(char *param_1,float param_2,float param_3,...);
 float FUN_003bc730(char *param_1,int param_2);
 int FUN_003bc8f0(char *param_1);
 u8 FUN_003bc900(float *param_1);
@@ -1065,7 +1086,7 @@ selected:
   FUN_003189f0(uVar1,param_2 & 0xffff,param_3);
   FUN_003182d0(uVar1,param_2 & 0xffff,(short)param_3,param_4,uVar3);
   if (0 < param_6) {
-    FUN_00318770((float)(int)param_6,uVar1,param_2 & 0xffff,param_3);
+    FUN_00318770_scene_typed((float)(int)param_6,uVar1,param_2 & 0xffff,param_3);
   }
   FUN_005225a8(0x6a2e10,uVar1,param_2,param_3);
 complete:
@@ -1641,7 +1662,7 @@ void FUN_003b9610(Resrc* param_1)
 
           case 5:
 
-            fVar11 = (float)FUN_003bbed0((float)*(u32 *)(puVar8 + 0x30),
+            fVar11 = (float)FUN_003bbed0_scene_typed((float)*(u32 *)(puVar8 + 0x30),
 
                                          (float)*(u32 *)(puVar8 + 0x2e));
 
@@ -1679,7 +1700,7 @@ void FUN_003b9610(Resrc* param_1)
 
       else if (cVar9 == '\x02') {
 
-        FUN_003bc220((char *)*(u32 *)(puVar8 + 0x2a),*(float *)(puVar8 + 0x2e),
+        FUN_003bc220_scene_typed((char *)*(u32 *)(puVar8 + 0x2a),*(float *)(puVar8 + 0x2e),
                      *(float *)(puVar8 + 0x30),&uStack_58,&uStack_68);
 
         if (*(float *)(puVar8 + 0x30) <= *(float *)(puVar8 + 0x2e)) {
@@ -1782,7 +1803,7 @@ void FUN_003b9610(Resrc* param_1)
 
         case 5:
 
-          fVar12 = (float)FUN_003bbed0((float)*(u32 *)(puVar8 + 0x40),
+          fVar12 = (float)FUN_003bbed0_scene_typed((float)*(u32 *)(puVar8 + 0x40),
 
                                        (float)*(u32 *)(puVar8 + 0x42),
 
@@ -3018,11 +3039,11 @@ void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,
 
   fVar2 = param_5[2];
 
-  *param_6 = (*param_5 + 0.0) - fStack_20 * param_1;
+  *param_6 = (*param_5 + 0.0f) - fStack_20 * param_1;
 
-  param_6[1] = (fVar1 + 0.0) - fStack_1c * param_1;
+  param_6[1] = (fVar1 + 0.0f) - fStack_1c * param_1;
 
-  param_6[2] = (fVar2 + 0.0) - fStack_18 * param_1;
+  param_6[2] = (fVar2 + 0.0f) - fStack_18 * param_1;
 
   return;
 
@@ -3140,9 +3161,9 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
     FUN_004c69f0(afStack_50,&uStack_40);
 
-    fStack_10 = (fStack_10 + 0.0) - afStack_50[0] * 15.0;
+    fStack_10 = (fStack_10 + 0.0f) - afStack_50[0] * 15.0f;
 
-    fStack_8 = (fStack_8 + 0.0) - fStack_48 * 15.0;
+    fStack_8 = (fStack_8 + 0.0f) - fStack_48 * 15.0f;
 
   }
 
@@ -3332,15 +3353,15 @@ void FUN_003bb9b0(float *param_1)
 
     pfVar1 = afStack_10 + iVar2;
 
-    while (360.0 <= *pfVar1) {
+    while (360.0f <= *pfVar1) {
 
-      *pfVar1 = *pfVar1 - 360.0;
+      *pfVar1 = *pfVar1 - 360.0f;
 
     }
 
-    while (*pfVar1 < 0.0) {
+    while (*pfVar1 < 0.0f) {
 
-      *pfVar1 = *pfVar1 + 360.0;
+      *pfVar1 = *pfVar1 + 360.0f;
 
     }
 
@@ -3414,9 +3435,9 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
 
     fVar2 = afStack_20[iVar1];
 
-    if (180.0 < fVar2) {
+    if (180.0f < fVar2) {
 
-      afStack_20[iVar1] = -(360.0 - fVar2);
+      afStack_20[iVar1] = -(360.0f - fVar2);
 
     }
 
@@ -3460,7 +3481,7 @@ void FUN_003bbb90(u64 param_1,u32 *param_2)
 
   fVar2 = (float)FUN_004c69f0(afStack_20,param_1);
 
-  if (fVar2 == 0.0) {
+  if (fVar2 == 0.0f) {
 
     *param_2 = 0;
 
@@ -3472,10 +3493,10 @@ void FUN_003bbb90(u64 param_1,u32 *param_2)
 
   else {
 
-    afStack_20[1] = 0.0;
+    afStack_20[1] = 0.0f;
 
-    uVar1 = FUN_00530da0(afStack_20[2] * fStack_8 +
-                         afStack_20[0] * (float)uStack_10 + 0.0 + 0.0);
+    uVar1 = FUN_00530da0_scene(afStack_20[2] * fStack_8 +
+                         afStack_20[0] * (float)uStack_10 + 0.0f + 0.0f);
 
     uVar1 = FUN_0052e9a0(uVar1);
 
@@ -3483,9 +3504,9 @@ void FUN_003bbb90(u64 param_1,u32 *param_2)
 
     fVar2 = fGpffff8228 * fVar2;
 
-    if (afStack_20[0] < 0.0) {
+    if (afStack_20[0] < 0.0f) {
 
-      fVar2 = fVar2 * -1.0;
+      fVar2 = fVar2 * -1.0f;
 
     }
 
@@ -3537,13 +3558,13 @@ void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,flo
 
   
 
-  fVar8 = 1.0 - param_1;
+  fVar8 = 1.0f - param_1;
 
   fVar11 = fVar8 * fVar8 * fVar8;
 
-  fVar9 = param_1 * fVar8 * fVar8 * 3.0;
+  fVar9 = param_1 * fVar8 * fVar8 * 3.0f;
 
-  fVar10 = fVar8 * 3.0 * param_1 * param_1;
+  fVar10 = fVar8 * 3.0f * param_1 * param_1;
 
   param_1 = param_1 * param_1 * param_1;
 
@@ -3643,7 +3664,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
       }
 
-      FUN_003bbc90(param_1 / fVar5,auStack_10,auStack_20,auStack_30,param_3,param_3 + 1,param_3 + 2);
+      FUN_003bbc90_scene_typed(param_1 / fVar5,auStack_10,auStack_20,auStack_30,param_3,param_3 + 1,param_3 + 2);
 
     }
 
@@ -3703,9 +3724,9 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
 
   }
 
-  if (param_1 == 0.0) {
+  if (param_1 == 0.0f) {
 
-    param_2 = 1.0;
+    param_2 = 1.0f;
 
   }
 
@@ -3743,7 +3764,7 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
 
   uStack_110 = 0;
 
-  FUN_003bbd40(param_2,auStack_140,auStack_10);
+  FUN_003bbd40_scene_typed(param_2,auStack_140,auStack_10);
 
   return fStack_c * param_1;
 
@@ -3862,7 +3883,7 @@ float FUN_003bc0e0(char *param_1)
 
     for (iVar3 = 0; iVar3 < 0x14; iVar3 = iVar3 + 1) {
 
-      FUN_003bbfd0((float)iVar3 * DAT_007cb0b8,(float)(iVar3 + 1) * DAT_007cb0b8,
+      FUN_003bbfd0_scene_typed((float)iVar3 * DAT_007cb0b8,(float)(iVar3 + 1) * DAT_007cb0b8,
                    auStack_30,auStack_40,auStack_50,auStack_10,auStack_20);
       fVar4 = 0.0f;
 
@@ -4064,9 +4085,9 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
         fVar9 = (float)iVar3 * DAT_007cad5c;
 
-        FUN_003bbc90(fVar9,auStack_d0,auStack_e0,auStack_f0,&fStack_1c,&fStack_24,&fStack_2c);
+        FUN_003bbc90_scene_typed(fVar9,auStack_d0,auStack_e0,auStack_f0,&fStack_1c,&fStack_24,&fStack_2c);
 
-        FUN_003bbc90((float)(iVar3 + 1) * DAT_007cad5c,auStack_d0,auStack_e0,auStack_f0,&fStack_20,
+        FUN_003bbc90_scene_typed((float)(iVar3 + 1) * DAT_007cad5c,auStack_d0,auStack_e0,auStack_f0,&fStack_20,
 
                      &fStack_28,&fStack_30);
 
@@ -4103,9 +4124,9 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
           fVar9 = fVar9 + fVar6 * fVar8;
 
-          FUN_003bbc90(fVar9,auStack_d0,auStack_e0,auStack_f0,&fStack_34,&fStack_3c,&fStack_44);
+          FUN_003bbc90_scene_typed(fVar9,auStack_d0,auStack_e0,auStack_f0,&fStack_34,&fStack_3c,&fStack_44);
 
-          FUN_003bbc90(fVar9 - DAT_007caf1c,auStack_d0,auStack_e0,auStack_f0,&fStack_38,&fStack_40,
+          FUN_003bbc90_scene_typed(fVar9 - DAT_007caf1c,auStack_d0,auStack_e0,auStack_f0,&fStack_38,&fStack_40,
 
                        &fStack_48);
 
@@ -4223,11 +4244,11 @@ float FUN_003bc730(char *param_1,int param_2)
 
     for (iVar2 = 0; iVar2 < 0x14; iVar2 = iVar2 + 1) {
 
-      FUN_003bbc90((float)iVar2 * DAT_007cb0b8,auStack_40,auStack_50,auStack_60,&fStack_4,&fStack_c,
+      FUN_003bbc90_scene_typed((float)iVar2 * DAT_007cb0b8,auStack_40,auStack_50,auStack_60,&fStack_4,&fStack_c,
 
                    &fStack_14);
 
-      FUN_003bbc90((float)(iVar2 + 1) * DAT_007cb0b8,auStack_40,auStack_50,auStack_60,&fStack_8,
+      FUN_003bbc90_scene_typed((float)(iVar2 + 1) * DAT_007cb0b8,auStack_40,auStack_50,auStack_60,&fStack_8,
 
                    &fStack_10,&fStack_18);
 
@@ -4547,7 +4568,6 @@ int FUN_003bcda0(int *param_1,int *param_2)
   fStack_18 = fStack_78 - fStack_28;
 
   fVar2 = (float)FUN_004c6ac0(&fStack_10);
-
   fVar3 = (float)FUN_004c6ac0(&fStack_20);
 
   return (int)(fVar2 - fVar3);
