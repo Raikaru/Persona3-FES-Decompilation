@@ -1763,25 +1763,23 @@ void func_0010d6f0(s32 index, s16 fileIndex)
 }
 
 // FUN_0010D7B0 NONMATCHING
-void func_0010d7b0(s32 index, s16 fileIndex, void* data0, u32 data0Size,
+void func_0010d7b0(s16 index, s16 fileIndex, void* data0, u32 data0Size,
                    void* data1, u32 data1Size, void* data2, u32 data2Size)
 {
-    HSfdDecodeSlot* slot;
 
-    slot = &sSfdDecodeSlots[index];
-    if (slot->status != 0)
+    if (sSfdDecodeSlots[index].status != 0)
     {
-        func_0010d950((s16)index);
+        func_0010d950(index);
     }
 
-    slot->fileIndex = fileIndex;
-    slot->state = 8;
-    slot->resource = data0;
-    slot->aux = data1;
-    slot->sourceData = data2;
-    slot->inputSize = data0Size;
-    slot->intermediateSize = data1Size;
-    slot->outputSize = data2Size;
+    sSfdDecodeSlots[index].fileIndex = fileIndex;
+    sSfdDecodeSlots[index].state = 8;
+    sSfdDecodeSlots[index].resource = data0;
+    sSfdDecodeSlots[index].aux = data1;
+    sSfdDecodeSlots[index].sourceData = data2;
+    sSfdDecodeSlots[index].inputSize = data0Size;
+    sSfdDecodeSlots[index].intermediateSize = data1Size;
+    sSfdDecodeSlots[index].outputSize = data2Size;
 }
 
 // FUN_0010D910
@@ -1793,26 +1791,24 @@ u32 func_0010d910(s16 index)
 // FUN_0010D950 NONMATCHING
 void func_0010d950(s16 index)
 {
-    HSfdDecodeSlot* slot;
 
-    slot = &sSfdDecodeSlots[index];
-    if (slot->state != 1)
+    if (sSfdDecodeSlots[index].state != 1)
     {
         return;
     }
-    if (slot->status == 0)
+    if (sSfdDecodeSlots[index].status == 0)
     {
         return;
     }
 
-    FUN_0051deb0(5, (u32)slot->completion);
-    FUN_0051deb0(0, (u32)slot->decodeHandle);
-    FUN_0051dd48(5, (u32)slot->outputHandle);
-    FUN_0051dd48(3, (u32)slot->queueHandle);
-    slot->state = 0;
-    func_0050B710(slot->output);
-    func_0050B710(slot->sourceData);
-    slot->state = 0;
+    FUN_0051deb0(5, (u32)sSfdDecodeSlots[index].completion);
+    FUN_0051deb0(0, (u32)sSfdDecodeSlots[index].decodeHandle);
+    FUN_0051dd48(5, (u32)sSfdDecodeSlots[index].outputHandle);
+    FUN_0051dd48(3, (u32)sSfdDecodeSlots[index].queueHandle);
+    *(s32*)&sSfdDecodeSlots[index].state = 0;
+    func_0050B710(sSfdDecodeSlots[index].output);
+    func_0050B710(sSfdDecodeSlots[index].sourceData);
+    *(s32*)&sSfdDecodeSlots[index].state = 0;
 }
 
 // FUN_0010DA70

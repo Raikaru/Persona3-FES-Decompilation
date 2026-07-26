@@ -2452,42 +2452,30 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     tmpe0.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0xcc), 0, 2, 2,
                   tmpe0.u, pair.u, 0, 0, 0, 10);
-SWAP 2446.=2447:
+    *(u32 *)(puVar1[3] + 0x150) = 0;
     pair.u = 0x4170000043a08000ULL;
     tmpe8.u = pair.u;
     tmpe8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x110), 0, 2, 2,
                   tmpe8.u, pair.u, 0, 0, 0, 10);
-SWAP 2449.=2450:
+    *(u32 *)(puVar1[3] + 0x194) = 0;
     pair.u = 0x42f8000043b18000ULL;
     tmpf0.u = pair.u;
     tmpf0.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x154), 0, 2, 2,
                   tmpf0.u, pair.u, 0, 0, 0, 10);
-SWAP 2452.=2453:
+    *(u32 *)(puVar1[3] + 0x194) = 0;
     pair.u = 0x43c08000423c0000ULL;
     tmpf8.u = pair.u;
     tmpf8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x198), 0, 2, 2,
                   tmpf8.u, pair.u, 0, 0, 0, 10);
-SWAP 2455.=2456:
+    *(u32 *)(puVar1[3] + 0x194) = 0;
     pair.u = 0x43c0800043c40000ULL;
     tmp100.u = pair.u;
     tmp100.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x1dc), 0, 2, 2,
                   tmp100.u, pair.u, 0, 0, 0, 10);
-    *(u32 *)(puVar1[3] + 0x150) = 0;
-    pair.u = 0x4170000043a08000ULL;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x110), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
-    *(u32 *)(puVar1[3] + 0x194) = 0;
-    pair.u = 0x42f8000043b18000ULL;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x154), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
-    *(u32 *)(puVar1[3] + 0x194) = 0;
-    pair.u = 0x43c08000423c0000ULL;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x198), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
-    *(u32 *)(puVar1[3] + 0x194) = 0;
-    pair.u = 0x43c0800043c40000ULL;
-    func_0018bc10(100.0f, (void*)(puVar1[3] + 0x1dc), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
     FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     *puVar1 = 5;
     break;
