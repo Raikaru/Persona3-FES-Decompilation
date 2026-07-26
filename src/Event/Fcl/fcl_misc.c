@@ -3346,7 +3346,7 @@ void FUN_003cda60(u32 param_1)
 u32 FUN_003cdba0(u64 param_1,u16 param_2)
 {
   u32 result;
-  s32 context;
+  u8 *context;
   u32 flags;
   context = fclMiscContextCall();
   if (context == 0) {
