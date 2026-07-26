@@ -23129,7 +23129,7 @@ void FUN_00332e10(int *param_1)
   int iVar2;
 
   int iVar3;
-  u16 uVar5;
+  u16 *puVar5;
 
   __int128 auStack_10;
 
@@ -23162,8 +23162,8 @@ void FUN_00332e10(int *param_1)
 
       }
 
-      uVar5 = *(u16 *)(iVar3 + 0x54);
-      FUN_003342c0(iVar2,uVar5);
+      puVar5 = (u16 *)(iVar3 + 0x54);
+      FUN_003342c0(iVar2,*puVar5);
 
     }
 

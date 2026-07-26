@@ -16820,7 +16820,7 @@ u32 FUN_00382c10(int param_1,int param_2,int param_3)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_00382C80 NONMATCHING
+// FUN_00382C80
 void FUN_00382c80(int param_1,int param_2,int param_3,int param_4)
 {
   u32 uVar1;

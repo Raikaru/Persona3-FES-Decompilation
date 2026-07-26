@@ -351,7 +351,6 @@ u64 FUN_003c8550(u8 *param_1)
           FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,mode);
         }
         }
-      }
       uVar1 = FUN_00112370(auStack_20);
       puVar3[2] = uVar1;
     } else {
