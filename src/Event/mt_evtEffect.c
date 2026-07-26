@@ -1920,11 +1920,11 @@ void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
       }
       *puVar5 = 0;
     }
-    if (param_3 < *(int *)(param_1 + 4)) {
-      iVar4 = *(int *)(param_3 * 0x2c + param_1 + 0x34);
+    if (param_3 >= *(int *)(param_1 + 4)) {
+      iVar4 = 0;
     }
     else {
-      iVar4 = 0;
+      iVar4 = *(int *)(param_3 * 0x2c + param_1 + 0x34);
     }
     if (iVar4 != 0) {
       uVar2 = FUN_003b64c0_typed((int)param_2 + 200U & 0xffff,iVar4,param_4);

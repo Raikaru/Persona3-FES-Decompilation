@@ -4206,8 +4206,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     work.scaled.z = work.normalized.z * distance;
     goto distance_done;
 negative_distance:
-    tempHalf = 0.5f * distance;
-    distance = tempHalf;
+    distance = 0.5f * distance;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;
