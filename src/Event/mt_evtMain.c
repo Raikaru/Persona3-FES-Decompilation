@@ -1967,8 +1967,12 @@ u32 FUN_00361dd0(int param_1,u32 param_2,u16 param_3,u32 param_4)
     *(u16 *)(piVar3 + 3) = 0;
     piVar3[0x19] = 0;
     if (param_1 == 0x30) {
-      *(u8 *)((int)piVar3 + 0x22) = 0xff;
+      goto set_ff;
     }
+    goto after_set_ff;
+set_ff:
+    *(u8 *)((int)piVar3 + 0x22) = 0xff;
+after_set_ff:
     FUN_00361b60((int *)lVar1,param_2);
   }
   if ((lVar1 != 0) && (lVar1 != 0)) {

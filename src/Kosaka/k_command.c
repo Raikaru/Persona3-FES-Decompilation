@@ -1357,7 +1357,7 @@ u32 FUN_001C4080()
     {
         valid = 1;
     }
-    if (valid > 0)
+    if ((valid > 0) == 1)
     {
         result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
     }
