@@ -7244,6 +7244,7 @@ void func_003197c0(Model* param_1,RwMatrix* param_2)
     int iVar3;
     uVar6 = 0;
     uVar7 = 8;
+    __asm__ volatile ("" : "+r"(uVar7));
     for (; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
         iVar3 = *(int *)((u8 *)param_1 + (u16)uVar6 * 0xc + 0x3b8);
         if (iVar3 != 0) {
