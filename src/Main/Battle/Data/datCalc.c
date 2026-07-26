@@ -958,7 +958,7 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
 {
   u16 uVar1;
   u8 bVar2;
-  s32 callArg;
+  u32 check;
   u32 base;
 
   if ((s32)(param_2 & 0xffff) < 0 || (s32)(param_2 & 0xffff) >= 5) {
@@ -973,15 +973,11 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
     bVar2 = *(u8 *)(((u32)param_2 & 0xffff) + (u32)uVar1 * 0x3e + base + 8);
   }
   else {
-    {
-      s32 check;
-      check = (s32)(u32)uVar1;
-      if (check >= 0xb) {
-        FUN_0019d3f0((u32)D_0069aa80, 0x2eb);
-      }
+    check = uVar1;
+    if ((s32)check >= 0xb) {
+      FUN_0019d3f0((u32)D_0069aa80, 0x2eb);
     }
-    callArg = (s32)(u32)uVar1;
-    bVar2 = FUN_00173510(callArg, param_2);
+    bVar2 = FUN_00173510(uVar1, param_2);
   }
   if ((s32)bVar2 > 0) {
     goto clamp_bvar2;
