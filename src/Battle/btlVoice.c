@@ -4054,6 +4054,8 @@ extern u64 FUN_002d1de0();
 extern void FUN_002d1de0_btlVoice_typed(RtQuat* out, const RwV3d* from,
                                          const RwV3d* to);
 extern float FUN_002d1f30(const void* first, const void* second);
+#pragma alias FUN_002d1f30_btlVoice_typed FUN_002d1f30
+extern f32 FUN_002d1f30_btlVoice_typed(const f32* first, const f32* second);
 extern float FUN_002d1fd0(void* from, void* to, void* eye, void* out);
 extern float FUN_004c69f0(void* dst, const void* src);
 extern u64 FUN_002d3e00();
@@ -4118,6 +4120,8 @@ extern u64 FUN_003195f0();
 extern u64 FUN_00351bb0();
 extern void FUN_00352c50(u32 param_1, u32 param_2, u32 param_3);
 extern u64 FUN_00357fd0();
+#pragma alias FUN_00357fd0_btlVoice_typed FUN_00357fd0
+extern u32 FUN_00357fd0_btlVoice_typed(u32 seed);
 extern u64 FUN_00395170();
 extern u64 FUN_004be1e0();
 #pragma alias FUN_004be1e0_btlVoice_typed FUN_004be1e0
@@ -4136,6 +4140,9 @@ extern float FUN_004c69f0(void* dst, const void* src);
 extern u64 FUN_004c6b20();
 extern void FUN_004c6be0(float* out, const RwV3d* basis, void* source);
 extern u64 FUN_004c6c60();
+#pragma alias FUN_004c6c60_btlVoice_typed FUN_004c6c60
+extern void FUN_004c6c60_btlVoice_typed(RwV3d* out, const RwV3d* src,
+                                         const RwMatrix* matrix);
 extern u64 FUN_00521408();
 extern float FUN_0052e930(float x);
 u32 func_002e2c70(u16 *param_1);
