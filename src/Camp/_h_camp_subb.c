@@ -2490,6 +2490,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     s16 statType;
     s32 icon;
     char textBuffer[264];
+    CampBits drawPair;
 
     switch (menuCode) {
     case 0:
@@ -2537,13 +2538,15 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x14:
     case 0x15:
         persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
+        drawPair.f[0] = item->x;
+        drawPair.f[1] = item->y;
         if (selected != 0) {
             campDrawSprite(parent, DAT_00833A50[1], 8, item->alpha,
-                           60.0f + item->x - 10.0f, item->y + 3.0f,
+                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
                            campTextureAsFloat(item));
         } else {
             campDrawSprite(parent, DAT_00833A50[1], 7, item->alpha,
-                           60.0f + item->x - 10.0f, item->y + 3.0f,
+                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
                            campTextureAsFloat(item));
         }
         resourceRecord = func_00170e90(DAT_007cdf94);
