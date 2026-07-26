@@ -12654,8 +12654,8 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
 
 {
   int iVar1;
-  u32 uVar2;
   u32 uVar3;
+  u32 uVar2;
   
   uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_5 + 0x3c) + 4),param_6);
   iVar1 = (int)uVar2;
@@ -12681,8 +12681,8 @@ void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int pa
 
 {
   int iVar1;
-  u32 uVar2;
   u32 uVar3;
+  u32 uVar2;
   
   uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_5 + 0x3c) + 0xe8),param_6);
   iVar1 = (int)uVar2;

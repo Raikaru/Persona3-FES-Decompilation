@@ -406,18 +406,18 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
     u64 var_7;
 
     bossEntry = btlBossGetCameraStateEntry(state);
-    if (bossEntry == NULL)
+    if (bossEntry != NULL)
     {
-        entry = &sCameraStateEntries[state];
+        entry = bossEntry;
     }
     else
     {
-        entry = bossEntry;
+        entry = &sCameraStateEntries[state];
     }
     temp_6 = state & 0xffff;
     if (gBtl->camera.state != temp_6 || entry->unk_08 != 0)
     {
-        var_7 = 2;
+        var_7 = 2ULL;
         while ((u16)var_7 == 0)
         {
             *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) =
