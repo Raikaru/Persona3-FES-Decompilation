@@ -196,7 +196,7 @@ extern u32 FUN_0017d830();
 void h_campDrawStatusOverview(int param_1)
 {
     CampPair pair;
-    CampBits tmp[12];
+    CampBits tmp[10];
     s32 i;
 
     pair.x = 379.0f;
@@ -219,21 +219,6 @@ void h_campDrawStatusOverview(int param_1)
     pair.x = 301.0f;
     tmp[5].u = *(u64*)&pair;
     tmp[5].f[0] += 0.0f;
-    pair.x = 104.0f;
-    pair.y = 61.0f;
-    tmp[6].u = *(u64*)&pair;
-    tmp[6].f[0] += 0.0f;
-    pair.x = 124.0f;
-    pair.y = 219.0f;
-    tmp[7].u = *(u64*)&pair;
-    tmp[7].f[0] += 0.0f;
-    pair.x = 226.0f;
-    pair.y = 415.0f;
-    tmp[8].u = *(u64*)&pair;
-    tmp[8].f[0] += 0.0f;
-    pair.x = 439.0f;
-    tmp[9].u = *(u64*)&pair;
-    tmp[9].f[0] += 0.0f;
 
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
                   tmp[0].u, tmp[0].u, 0, 0, 0, 10);
@@ -253,14 +238,30 @@ void h_campDrawStatusOverview(int param_1)
         } else {
             pair.x = 30.0f;
             pair.y = 64.0f + (f32)(i * 0x55);
-            tmp[10 + (i & 1)].u = *(u64*)&pair;
-            tmp[10 + (i & 1)].f[0] += 0.0f;
+            tmp[8 + (i & 1)].u = *(u64*)&pair;
+            tmp[8 + (i & 1)].f[0] += 0.0f;
             func_0018bc10(100.0f,
                           (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
-                          0, 2, 2, tmp[10 + (i & 1)].u, tmp[10 + (i & 1)].u,
+                          0, 2, 2, tmp[8 + (i & 1)].u, tmp[8 + (i & 1)].u,
                           0, 0, 0, 10);
         }
     }
+    pair.x = 104.0f;
+    pair.y = 61.0f;
+    tmp[6].u = *(u64*)&pair;
+    tmp[6].f[0] += 0.0f;
+    pair.x = 124.0f;
+    pair.y = 219.0f;
+    tmp[7].u = *(u64*)&pair;
+    tmp[7].f[0] += 0.0f;
+    pair.x = 226.0f;
+    pair.y = 415.0f;
+    tmp[8].u = *(u64*)&pair;
+    tmp[8].f[0] += 0.0f;
+    pair.x = 439.0f;
+    pair.y = 415.0f;
+    tmp[9].u = *(u64*)&pair;
+    tmp[9].f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 0, 2, 2,
                   tmp[6].u, tmp[6].u, 0, 0, 0, 10);
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 0, 2, 2,
