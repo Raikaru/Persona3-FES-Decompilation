@@ -944,7 +944,6 @@ void func_001a7b50(void* state, u32 mode)
     u32 found;
     void* object;
     void (**resourceCall)(void*);
-    u32 enabled;
     if (state == NULL)
     {
         return;
@@ -976,7 +975,7 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            if (*(volatile u32*)((u8*)item + 4) == 1)
+            if (item->enabled == 1)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
             }
