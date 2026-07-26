@@ -5422,6 +5422,11 @@ LAB_003bd9f0:
   }
   return 0;
 }
+#define FUN_003bd9a0(...) ((u16 (*)(...))FUN_003bd9a0)(__VA_ARGS__)
+#undef FUN_003bda60
+// FUN_003BDA60 NONMATCHING
+
+
 
 u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 

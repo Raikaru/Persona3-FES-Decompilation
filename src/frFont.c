@@ -282,9 +282,6 @@ void FUN_003afad0(u32 param_1,int param_2,int param_3)
 
   }
 
-  param_1 = param_1 & 0xff;
-
-  iVar1 = param_1 * 0x20;
 
   if (8 < param_1) {
 
