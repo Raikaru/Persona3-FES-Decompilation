@@ -321,10 +321,10 @@ u32 func_001a66f0(void* clump, const char* name)
 // FUN_001a6740 NONMATCHING
 u32 func_001a6740(void* geometry, const char* name)
 {
-    u32 result;
-    void* material;
     s32 resourceIndex;
+    void* material;
     s32 materialIndex;
+    u32 result;
     RpUserDataArray* userData;
 
     

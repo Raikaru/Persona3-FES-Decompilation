@@ -1880,12 +1880,12 @@ void func_0010dd10(HSfdImage* image, const u8* source)
     s32 width;
     s32 x;
     s32 y;
-    u8 alpha;
-    u8 opaque = 0xFF;
-
+    u32 alpha;
+    u32 opaque;
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    opaque = 0xFF;
     y = 0;
     while (y < height)
     {
@@ -1916,18 +1916,16 @@ void func_0010dd10(HSfdImage* image, const u8* source)
 // FUN_0010DDC0 NONMATCHING
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
-    u8 opaque = 0xFF;
-    s32 x;
-    s32 y;
     u8* dst;
     u8* pixel;
     s32 width;
     s32 height;
+    s32 x;
+    s32 y;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
-    asm volatile("" : "+m"(opaque));
     y = 0;
     while (y < height)
     {
@@ -1938,7 +1936,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
-            pixel[3] = opaque;
+            pixel[3] = 0xFF;
             source += 3;
             x++;
         }
@@ -1957,7 +1955,7 @@ void func_0010de40(HSfdImage* image, const u8* source)
     const u16* pixels;
     s32 y;
     s32 x;
-    u8 opaque;
+    u32 opaque;
     dst = image->pixels;
     width = image->width;
     height = image->height;

@@ -2767,11 +2767,17 @@ journey_true:
     
           if (lVar3 != 0) {
     
-            return 0xa7;
+            lVar3 = 0xa7;
     
           }
     
-          return 0xa6;
+          else {
+    
+            lVar3 = 0xa6;
+    
+          }
+    
+          return lVar3;
     
         }
     
