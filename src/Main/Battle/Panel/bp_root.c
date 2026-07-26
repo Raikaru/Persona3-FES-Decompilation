@@ -1555,7 +1555,7 @@ void FUN_00202A10(void)
     panelSetWork32(0, panelWork32(0) | 2);
 }
 
-// FUN_00202BC0 NONMATCHING
+// FUN_00202BC0
 void FUN_00202BC0(void)
 {
     s32 i;
@@ -1564,7 +1564,7 @@ void FUN_00202BC0(void)
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
     K_ASSERT((*(u32*)work & 2) != 0, 0x910);
-    for (i = 0; i < *(u32*)(work + 0x70); i++)
+    for (i = 0; i < *(s32*)(work + 0x70); i++)
     {
         func_003b0170(*(u32*)(work + 0x78 + i * 4));
     }
