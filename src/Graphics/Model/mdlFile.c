@@ -53618,11 +53618,11 @@ void FUN_00351510(int param_1)
     widthF = (f32)(u32)(*(u16 *)(param_1 + 2));
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
-    ratio = ratio * 255.0f;
-    if (2147483648.0f <= ratio) {
-      alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
-    } else {
+    ratio = 255.0f * ratio;
+    if (ratio < 2147483648.0f) {
       alphaByte = (s32)ratio & 0xff;
+    } else {
+      alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
     }
     alphaS32 = alphaByte & 0xff;
 
