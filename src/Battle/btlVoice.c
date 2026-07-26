@@ -1072,7 +1072,7 @@ u32 func_002f1b60(BtlAction* param_1,float *param_2)
             FUN_00280480(uVar3,iVar1,&fStack_20);
             fStack_30 = afStack_10[0] - fStack_20;
             fStack_28 = fStack_8 - fStack_18;
-            fStack_2c = 0.0;
+            fStack_2c = 0.0f;
             FUN_004c69f0(&fStack_30,&fStack_30);
             lVar4 = FUN_002d5e10(param_1);
             if (lVar4 == 0) {
@@ -5399,10 +5399,10 @@ LAB_002e4af0:
     if (*(char *)(iVar2 + 0xa2) == '\0') {
       FUN_00280870(2,1,&fStack_10,0,0,1);
       FUN_0027ffb0(iVar2,afStack_20);
-      afStack_20[1] = 0.0;
-      fStack_c = 0.0;
+      afStack_20[1] = 0.0f;
+      fStack_c = 0.0f;
       fStack_40 = afStack_20[0] - fStack_10;
-      fStack_3c = 0.0;
+      fStack_3c = 0.0f;
       fStack_38 = afStack_20[2] - fStack_8;
       fVar8 = (float)FUN_004c69f0(&fStack_40,&fStack_40);
       fVar8 = DAT_007cad50 * fVar8;
@@ -5411,17 +5411,17 @@ LAB_002e4af0:
       fStack_8 = fStack_8 + fStack_38 * fVar8;
       fStack_30 = afStack_20[0];
       fStack_2c = DAT_007cad54 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
-                  fStack_2c + 0.0;
+                  fStack_2c + 0.0f;
       fStack_28 = afStack_20[2];
-      fVar8 = (float)FUN_0052e930(*(float *)(iVar5 + 0xb8) * 0.5);
-      fVar8 = (fVar6 * fVar7 * 5.5) / fVar8;
+      fVar8 = (float)FUN_0052e930(*(float *)(iVar5 + 0xb8) * 0.5f);
+      fVar8 = (fVar6 * fVar7 * 5.5f) / fVar8;
       fStack_40 = fStack_30 - fStack_10;
       fStack_3c = fStack_2c - fStack_c;
       fStack_38 = fStack_28 - fStack_8;
       FUN_004c69f0(&fStack_40,&fStack_40);
-      fStack_64 = fStack_40 * fVar8 + fStack_30 + 0.0;
-      fStack_60 = fStack_3c * fVar8 + fStack_2c + 0.0;
-      fStack_5c = fStack_38 * fVar8 + fStack_28 + 0.0;
+      fStack_64 = fStack_40 * fVar8 + fStack_30 + 0.0f;
+      fStack_60 = fStack_3c * fVar8 + fStack_2c + 0.0f;
+      fStack_5c = fStack_38 * fVar8 + fStack_28 + 0.0f;
     }
     else {
       if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
@@ -5433,19 +5433,19 @@ LAB_002e4af0:
       fStack_64 = fStack_80;
       fStack_60 = fStack_7c;
       fStack_5c = fStack_78;
-      fVar6 = fStack_4 * 1.25;
-      if (fStack_4 * 1.25 <= fStack_7c) {
+      fVar6 = fStack_4 * 1.25f;
+      if (fStack_4 * 1.25f <= fStack_7c) {
         fVar6 = fStack_60;
       }
       fStack_60 = fVar6;
     }
     fVar6 = (float)FUN_002d1f30(auStack_74,auStack_58);
     if ((fVar6 <= DAT_007cad58) || (!bVar3)) {
-      if (fStack_7c < 25.0) {
-        fStack_7c = 25.0;
+      if (fStack_7c < 25.0f) {
+        fStack_7c = 25.0f;
       }
-      if (fStack_60 < 25.0) {
-        fStack_60 = 25.0;
+      if (fStack_60 < 25.0f) {
+        fStack_60 = 25.0f;
       }
       FUN_002a2290((u8 *)DAT_007ce3ec + 0x20, &fStack_80, &fStack_64, 1);
       FUN_002a3110((u8 *)DAT_007ce3ec + 0x20, bVar3 ? 2.5f : 1.25f);
@@ -9096,17 +9096,17 @@ void func_002ecc60(s32 param_1,s32 param_2)
       if ((lVar2 != 0) &&
          (lVar2 = FUN_00318ed0(*(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),puVar3[1],
                                afStack_24), lVar2 != 0)) {
-        fStack_50 = (afStack_24[0] + afStack_30[0] + 0.0) / 3.0 - 0.0;
-        fStack_4c = (fStack_1c + fStack_28 + 0.0) / 3.0 - 0.0;
+        fStack_50 = (afStack_24[0] + afStack_30[0] + 0.0f) / 3.0f - 0.0f;
+        fStack_4c = (fStack_1c + fStack_28 + 0.0f) / 3.0f - 0.0f;
         FUN_004c6b20(&fStack_50,&fStack_50);
-        fStack_48 = afStack_30[0] - 0.0;
-        fStack_44 = fStack_28 - 0.0;
+        fStack_48 = afStack_30[0] - 0.0f;
+        fStack_44 = fStack_28 - 0.0f;
         FUN_004c6b20(&fStack_48,&fStack_48);
-        fStack_40 = afStack_24[0] - 0.0;
-        fStack_3c = fStack_1c - 0.0;
+        fStack_40 = afStack_24[0] - 0.0f;
+        fStack_3c = fStack_1c - 0.0f;
         FUN_004c6b20(&fStack_40,&fStack_40);
-        fStack_38 = fVar8 - 0.0;
-        fStack_34 = fStack_8 - 0.0;
+        fStack_38 = fVar8 - 0.0f;
+        fStack_34 = fStack_8 - 0.0f;
         FUN_004c6b20(&fStack_38,&fStack_38);
         fVar7 = fStack_50 * fStack_38 + fStack_4c * fStack_34;
         if ((fStack_50 * fStack_48 + fStack_4c * fStack_44 <= fVar7) &&
@@ -10006,7 +10006,7 @@ u32 func_002eee20(BtlAction* param_1,float *param_2)
             FUN_00280480(uVar3,iVar1,&fStack_20);
             fStack_30 = afStack_10[0] - fStack_20;
             fStack_28 = fStack_8 - fStack_18;
-            fStack_2c = 0.0;
+            fStack_2c = 0.0f;
             FUN_004c69f0(&fStack_30,&fStack_30);
             lVar4 = FUN_002d5e10(param_1);
             if (lVar4 == 0) {
