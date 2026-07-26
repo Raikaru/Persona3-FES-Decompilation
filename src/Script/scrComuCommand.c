@@ -960,53 +960,58 @@ u32 scrComu00360ed0(int param_1)
         result = 1;
     } else {
         cVar1 = *(char*)(param_1 + 0xc);
-        switch (cVar1) {
-        case 0:
-            result = 1;
-            break;
-        case 1:
-            value = FUN_0038d6f0(*(short*)(param_1 + 8));
-            result = *(short*)(param_1 + 10) == value;
-            break;
-        case 2:
-            bVar2 = *(u8*)(param_1 + 0xe);
-            if (bVar2 >= 3) {
-                result = 0;
-                break;
-            }
-            switch (bVar2) {
-            case 1:
-                goto SelectFlag1;
-            case 0:
-                goto SelectFlag0;
-            case 2:
-                goto SelectFlag2;
-            default:
-                goto SelectFlagDefault;
-            }
-SelectFlagDefault:
-            goto CheckFlagValue;
-SelectFlag0:
-            goto CheckFlagValue;
-SelectFlag1:
-            flag = 0x400;
-            goto CheckFlagValue;
-SelectFlag2:
-            flag = 0x1000;
-CheckFlagValue:
-            if (*(short*)(param_1 + 10) == 0) {
-                result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 0;
-            } else {
-                result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 1;
-            }
-            break;
-        default:
-            printf("ASSERT!! Comp flag Invalid Value!! objtype =%d\n", *(u32*)(param_1 + 0x38));
-            memset(param_1 + 8, 0, 8);
-            result = 1;
-            break;
+        if (cVar1 == 2) goto ObjCase2;
+        if (cVar1 == 1) goto ObjCase1;
+        if (cVar1 == 0) goto ObjCase0;
+        goto ObjDefault;
+
+ObjCase0:
+        result = 1;
+        goto ObjDone;
+
+ObjCase1:
+        value = FUN_0038d6f0(*(short*)(param_1 + 8));
+        result = *(short*)(param_1 + 10) == value;
+        goto ObjDone;
+
+ObjCase2:
+        bVar2 = *(u8*)(param_1 + 0xe);
+        if (bVar2 >= 3) {
+            result = 0;
+            goto ObjDone;
         }
-    }
+        switch (bVar2) {
+        case 1:
+            goto SelectFlag1;
+        case 0:
+            goto SelectFlag0;
+        case 2:
+            goto SelectFlag2;
+        default:
+            goto SelectFlagDefault;
+        }
+SelectFlagDefault:
+        goto CheckFlagValue;
+SelectFlag0:
+        goto CheckFlagValue;
+SelectFlag1:
+        flag = 0x400;
+        goto CheckFlagValue;
+SelectFlag2:
+        flag = 0x1000;
+CheckFlagValue:
+        if (*(short*)(param_1 + 10) == 0) {
+            result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 0;
+        } else {
+            result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 1;
+        }
+        goto ObjDone;
+
+ObjDefault:
+        printf("ASSERT!! Comp flag Invalid Value!! objtype =%d\n", *(u32*)(param_1 + 0x38));
+        memset(param_1 + 8, 0, 8);
+        result = 1;
+ObjDone:
     return result;
 }
 #pragma pop

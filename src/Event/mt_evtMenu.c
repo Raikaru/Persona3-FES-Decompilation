@@ -6715,9 +6715,10 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
   
 
+  iVar5 = 0;
+
   psVar3 = (short *)(DAT_0069e1a0 + **(int **)(param_3 + 0x164) * 0xc);
 
-  iVar5 = 0;
   iVar6 = param_2 * 0xc;
 
   while (iVar5 < *psVar3) {
