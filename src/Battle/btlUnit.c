@@ -1033,6 +1033,7 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
     s16 mode;
     f32 speed;
     u16 blend;
+    s16 animCheck;
 
     nextAnimation = 0;
     canUseLowHp = 0;
@@ -1093,9 +1094,15 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
         break;
     }
 
-    if (btlUnit00282c60(unit) && unit->unk_9e0 != nextAnimation)
+    animCheck = 0;
+    if (unit->genus == UNIT_GENUS_EC || unit->genus == UNIT_GENUS_PC)
     {
-        btlUnitAnimate(unit, nextAnimation, blendFrameCount, speed, mode);
+        if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
+            animCheck = unit->unk_9ce;
+        if (unit->unk_9e0 == animCheck && unit->unk_9e0 != nextAnimation)
+        {
+            btlUnitAnimate(unit, nextAnimation, blendFrameCount, speed, mode);
+        }
     }
     unit->unk_9e0 = nextAnimation;
     unit->unk_9e2 = blend;

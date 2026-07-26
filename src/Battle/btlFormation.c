@@ -5202,10 +5202,8 @@ void func_002c0070(int param_1,int param_2)
   float fStack_4c = 0;
   float fStack_48 = 0;
   float fStack_44 = 0;
-  float afStack_40 [2] = {0};
-  float fStack_38 = 0;
-  float afStack_30 [2] = {0};
-  float fStack_28 = 0;
+  RwV3d center = {0};
+  RwV3d origin = {0};
   float fStack_20 = 0;
   float fStack_1c = 0;
   float fStack_18 = 0;
@@ -5312,24 +5310,24 @@ void func_002c0070(int param_1,int param_2)
       }
     }
     else if ((iVar6 == 0) || (iVar6 == 1)) {
-      func_0027ffb0(*(u32 *)(param_1 + 0x30),afStack_30);
+      func_0027ffb0_v3d(*(u32 *)(param_1 + 0x30),&origin);
       uVar4 = func_002c09f0(param_2);
-      func_00280870(uVar4,0,afStack_40,0,0,1);
-      fStack_50 = afStack_30[0];
-      fStack_4c = fStack_28;
-      fStack_48 = afStack_40[0];
-      fStack_44 = fStack_38;
-      fStack_18 = afStack_30[0] - afStack_40[0];
-      fStack_20 = fStack_28 - fStack_38;
+      func_00280870(uVar4,0,&center,0,0,1);
+      fStack_50 = origin.x;
+      fStack_4c = origin.y;
+      fStack_48 = center.x;
+      fStack_44 = center.y;
+      fStack_18 = origin.x - center.x;
+      fStack_20 = origin.y - center.y;
       fStack_1c = -fStack_18;
       fStack_14 = fStack_20;
       func_004c6b20(&fStack_20,&fStack_20);
       uVar11 = 0;
       for (uVar8 = 0; uVar8 < *(u16 *)(iVar7 + 0x38); uVar8 = uVar8 + 1 & 0xffff) {
         uVar5 = *(u32 *)(iVar7 + uVar8 * 4);
-        func_0027ffb0(*(u32 *)(uVar5 + 0x30),afStack_30);
-        fStack_8 = afStack_30[0];
-        fStack_4 = fStack_28;
+        func_0027ffb0_v3d(*(u32 *)(uVar5 + 0x30),&origin);
+        fStack_8 = origin.x;
+        fStack_4 = origin.y;
         fVar12 = (float)func_002d1fd0(&fStack_50,&fStack_48,&fStack_8,&fStack_10);
         fStack_18 = fStack_8 - fStack_10;
         fStack_14 = fStack_4 - fStack_c;

@@ -16681,32 +16681,38 @@ u64 FUN_00454620(char param_1)
   int iVar5;
   float *pfVar6;
   float fVar7;
-  float afStack_c0 [3];
+  float afStack_c0 [4];
   float fStack_b4;
   u32 uStack_b0;
   float fStack_ac;
   float fStack_a0;
   float fStack_9c;
-  float fStack_98;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  u8 auStack_80 [8];
+  float afStack_90 [4];
+  float afStack_88_unused;
+  float afStack_8c_unused;
+  
+#define fStack_90 afStack_90[0]
+#define fStack_8c afStack_90[1]
+#define fStack_88 afStack_90[2]
+  u8 auStack_80 [16];
   float fStack_78;
-  u8 auStack_70 [4];
+  u8 auStack_70 [16];
   float fStack_6c;
   float afStack_60 [4];
-  u8 auStack_50 [8];
+  u8 auStack_50 [16];
   float fStack_48;
-  u8 auStack_40 [4];
+  u8 auStack_40 [16];
   float fStack_3c;
   float afStack_30 [4];
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  float afStack_20 [4];
+  float afStack_10 [4];
+  
+#define fStack_20 afStack_20[0]
+#define fStack_1c afStack_20[1]
+#define fStack_18 afStack_20[2]
+#define fStack_10 afStack_10[0]
+#define fStack_c afStack_10[1]
+#define fStack_8 afStack_10[2]
   
   iVar1 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_1 * 0x1c0) + 0x3c);
   pfVar6 = (float *)(DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + *(char *)(iVar1 + 1) * 0x1c0) * 0x40);
@@ -16770,6 +16776,12 @@ u64 FUN_00454620(char param_1)
   }
   return 0;
 }
+#undef fStack_20
+#undef fStack_c
+#undef fStack_8
+#undef fStack_90
+#undef fStack_8c
+#undef fStack_88
 
 // FUN_00454A70 NONMATCHING
 

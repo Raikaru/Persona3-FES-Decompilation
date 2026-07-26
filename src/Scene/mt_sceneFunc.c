@@ -174,6 +174,9 @@ extern u32 DAT_0095b71c;
 extern u32 DAT_0095b720;
 extern u32 DAT_0095b724;
 extern u32 DAT_0095b728;
+#pragma alias DAT_0095b070_abs DAT_0095b070
+extern u8 DAT_0095b070_abs[];
+
 #pragma alias DAT_0095b074_abs DAT_0095b074
 #pragma alias DAT_0095b078_abs DAT_0095b078
 #pragma alias DAT_0095b0f8_abs DAT_0095b0f8
@@ -287,6 +290,7 @@ extern u32 DAT_0095b728;
 #pragma alias DAT_0095b720_abs DAT_0095b720
 #pragma alias DAT_0095b724_abs DAT_0095b724
 #pragma alias DAT_0095b728_abs DAT_0095b728
+extern u8 DAT_0095b070_abs[];
 extern u8 DAT_0095b074_abs[];
 extern u8 DAT_0095b078_abs[];
 extern u8 DAT_0095b0f8_abs[];
@@ -5050,7 +5054,7 @@ u32 FUN_003bd230(void)
 #define DAT_0095b6e8 (*(u32 *)DAT_0095b6e8_abs)
 #define DAT_0095b6ec (*(u32 *)DAT_0095b6ec_abs)
 #define DAT_0095b6f0 (*(u32 *)DAT_0095b6f0_abs)
-#define DAT_0095b6f4 (*(u32 *)DAT_0095b6f4_abs)
+#define DAT_0095b6f4 (*(u32 **)DAT_0095b6f4_abs)
 #define DAT_0095b6f8 (*(u32 *)DAT_0095b6f8_abs)
 #define DAT_0095b6fc (*(u32 *)DAT_0095b6fc_abs)
 #define DAT_0095b700 (*(u32 *)DAT_0095b700_abs)
@@ -5272,6 +5276,120 @@ void FUN_003bd280(void)
 
 }
 #define FUN_003bd280(...) ((void (*)(...))FUN_003bd280)(__VA_ARGS__)
+#undef DAT_0095b074
+#undef DAT_0095b078
+#undef DAT_0095b0f8
+#undef DAT_0095b178
+#undef DAT_0095b1f8
+#undef DAT_0095b204
+#undef DAT_0095b208
+#undef DAT_0095b20c
+#undef DAT_0095b210
+#undef DAT_0095b218
+#undef DAT_0095b21c
+#undef DAT_0095b220
+#undef DAT_0095b224
+#undef DAT_0095b238
+#undef DAT_0095b240
+#undef DAT_0095b244
+#undef DAT_0095b248
+#undef DAT_0095b24c
+#undef DAT_0095b254
+#undef DAT_0095b258
+#undef DAT_0095b25c
+#undef DAT_0095b260
+#undef DAT_0095b264
+#undef DAT_0095b268
+#undef DAT_0095b26c
+#undef DAT_0095b270
+#undef DAT_0095b274
+#undef DAT_0095b278
+#undef DAT_0095b27c
+#undef DAT_0095b284
+#undef DAT_0095b288
+#undef DAT_0095b290
+#undef DAT_0095b294
+#undef DAT_0095b298
+#undef DAT_0095b2a4
+#undef DAT_0095b2b4
+#undef DAT_0095b434
+#undef DAT_0095b440
+#undef DAT_0095b444
+#undef DAT_0095b448
+#undef DAT_0095b44c
+#undef DAT_0095b454
+#undef DAT_0095b458
+#undef DAT_0095b45c
+#undef DAT_0095b460
+#undef DAT_0095b474
+#undef DAT_0095b47c
+#undef DAT_0095b480
+#undef DAT_0095b484
+#undef DAT_0095b488
+#undef DAT_0095b4a0
+#undef DAT_0095b4a8
+#undef DAT_0095b4b4
+#undef DAT_0095b4c0
+#undef DAT_0095b4d0
+#undef DAT_0095b4d4
+#undef DAT_0095b4e0
+#undef DAT_0095b4f0
+#undef DAT_0095b568
+#undef DAT_0095b5e0
+#undef DAT_0095b658
+#undef DAT_0095b65c
+#undef DAT_0095b660
+#undef DAT_0095b664
+#undef DAT_0095b668
+#undef DAT_0095b66c
+#undef DAT_0095b670
+#undef DAT_0095b674
+#undef DAT_0095b678
+#undef DAT_0095b67c
+#undef DAT_0095b680
+#undef DAT_0095b684
+#undef DAT_0095b688
+#undef DAT_0095b68c
+#undef DAT_0095b690
+#undef DAT_0095b694
+#undef DAT_0095b698
+#undef DAT_0095b69c
+#undef DAT_0095b6a0
+#undef DAT_0095b6a4
+#undef DAT_0095b6a8
+#undef DAT_0095b6ac
+#undef DAT_0095b6b0
+#undef DAT_0095b6b4
+#undef DAT_0095b6b8
+#undef DAT_0095b6bc
+#undef DAT_0095b6c0
+#undef DAT_0095b6c4
+#undef DAT_0095b6c8
+#undef DAT_0095b6cc
+#undef DAT_0095b6d0
+#undef DAT_0095b6d4
+#undef DAT_0095b6d8
+#undef DAT_0095b6dc
+#undef DAT_0095b6e0
+#undef DAT_0095b6e4
+#undef DAT_0095b6e8
+#undef DAT_0095b6ec
+#undef DAT_0095b6f0
+#undef DAT_0095b6f4
+#undef DAT_0095b6f8
+#undef DAT_0095b6fc
+#undef DAT_0095b700
+#undef DAT_0095b704
+#undef DAT_0095b708
+#undef DAT_0095b70c
+#undef DAT_0095b710
+#undef DAT_0095b714
+#undef DAT_0095b718
+#undef DAT_0095b71c
+#undef DAT_0095b720
+#undef DAT_0095b724
+#undef DAT_0095b728
+#undef DAT_0095b070
 #undef FUN_003bd870
 // FUN_003BD870
 

@@ -2689,7 +2689,13 @@ void func_00115350(f32 depth,
                 tmpG = (f32)(s32)(((u32)g >> 1) | g1);
                 v->u.els.color.g = tmpG + tmpG;
             }
-            v->u.els.color.b = blue;
+            if (b >= 0)
+                v->u.els.color.b = (f32)b;
+            else
+            {
+                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+                v->u.els.color.b = tmpB + tmpB;
+            }
             v->u.els.color.a = alpha0f;
             v->u.els.scrVertex.x = points[0][0];
             v->u.els.scrVertex.y = points[0][1];
@@ -2711,7 +2717,13 @@ void func_00115350(f32 depth,
                 tmpG = (f32)(s32)(((u32)g >> 1) | g1);
                 v->u.els.color.g = tmpG + tmpG;
             }
-            v->u.els.color.b = blue;
+            if (b >= 0)
+                v->u.els.color.b = (f32)b;
+            else
+            {
+                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+                v->u.els.color.b = tmpB + tmpB;
+            }
             v->u.els.color.a = alpha1f;
             v->u.els.scrVertex.x = points[1][0];
             v->u.els.scrVertex.y = points[1][1];
