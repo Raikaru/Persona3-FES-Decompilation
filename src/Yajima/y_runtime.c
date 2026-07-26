@@ -16689,16 +16689,15 @@ u64 FUN_00454620(char param_1)
   float fStack_9c;
   float fStack_98;
   float afStack_90 [4];
-  float afStack_88_unused;
-  float afStack_8c_unused;
   
 #define fStack_90 afStack_90[0]
 #define fStack_8c afStack_90[1]
 #define fStack_88 afStack_90[2]
   u8 auStack_80 [16];
-  float fStack_78;
-  u8 auStack_70 [16];
-  float fStack_6c;
+  float afStack_70 [4];
+  
+#define fStack_78 afStack_70[0]
+#define fStack_6c afStack_70[1]
   float afStack_60 [4];
   u8 auStack_50 [16];
   float fStack_48;
@@ -16784,6 +16783,8 @@ u64 FUN_00454620(char param_1)
 #undef fStack_c
 #undef fStack_8
 #undef fStack_90
+#undef fStack_78
+#undef fStack_6c
 #undef fStack_8c
 #undef fStack_88
 
