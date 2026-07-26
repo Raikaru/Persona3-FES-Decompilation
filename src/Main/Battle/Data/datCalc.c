@@ -4971,7 +4971,7 @@ u32 FUN_00309080(u16 *param_1,char param_2)
 // FUN_00309250 NONMATCHING
 u32 FUN_00309250(u16 *param_1,u8 param_2)
 {
-  u16 uVar1;
+  s16 uVar1;
   u16 uVar2;
   u32 uVar3;
 
@@ -5010,10 +5010,12 @@ normal_dispatch:
   if (param_2 == '\x01') {
     goto calc_one;
   }
-  if (param_2 == '\0') {
+  switch (param_2) {
+  case '\0':
     goto calc_zero;
+  default:
+    goto assert_114b;
   }
-  goto assert_114b;
 
 calc_zero:
   uVar2 = FUN_0016cb80(uVar1, 2);
