@@ -139,7 +139,7 @@ extern u32 FUN_0034fd50();
 extern u32 FUN_0034fdf0();
 extern u32 FUN_0034fe30();
 #pragma alias FUN_00318a50_typed FUN_00318a50
-extern u32 FUN_00318a50_typed(u32 model, f32 angle, void* color, u32 mode);
+extern u32 FUN_00318a50_typed(u32 model, void* color, f32 angle, u32 mode);
 #pragma alias FUN_0034fe30_typed FUN_0034fe30
 extern u32 FUN_0034fe30_typed(u32 model, f32 x, f32 y, f32 z);
 extern u32 FUN_0035bb40();
@@ -1602,7 +1602,7 @@ void FUN_001b5200(u32* resource, f32 angle)
         if ((type == 0) || (type == 2))
         {
             FUN_00318a50_typed(*(u32*)((u8*)resource + i * 0x18 + 0x128),
-                               angle, &color, 2);
+                               &color, angle, 2);
         }
         else if (type == 1)
         {

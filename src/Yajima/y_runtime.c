@@ -3375,7 +3375,7 @@ void FUN_00430a40(char param_1)
   iVar1 = FUN_001b9120_u32();
   iVar1 = *(int *)(*(int *)(iVar1 + 0x18) + 0x3c);
   for (iVar4 = 0; iVar4 < 5; iVar4 = iVar4 + 1) {
-    iVar3 = iVar4 + (iVar1 + param_1 * 5);
+    iVar3 = (int)((u8 *)iVar1 + param_1 * 5 + iVar4);
     *(char *)(iVar3 + 0x8e2) = (char)(iVar4 << 2);
     *(u8 *)(iVar3 + 0x8d3) = 0;
     iVar3 = iVar1 + (param_1 + -1) * 10 + iVar4 * 2;
