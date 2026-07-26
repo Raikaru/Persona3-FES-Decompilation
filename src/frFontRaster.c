@@ -73,7 +73,6 @@ void FUN_003b35e0(int count)
   int *node;
   u32 block;
   int *current;
-
   size = count * 0x21c + 0x18;
   if (piGpffffb954 != (int *)0x0) {
     FUN_0019d3f0("frFontRaster.c",0x24);
