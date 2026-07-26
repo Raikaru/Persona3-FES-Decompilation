@@ -1128,6 +1128,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         item->y + 340.0f - 333.0f, item->scale);
                 }
             }
+            break;
         }
         dataId = *(u16*)record;
         record = FUN_00403880(dataId);
