@@ -3315,6 +3315,7 @@ void func_001f7210(void)
     u32 debug_val;
     u32 total_weight;
     u32 weightTable[13];
+    s32 *weight_slot;
     u16 scan_arr[6];
     s32 member_count;
     u16 cur_hp, max_hp;
@@ -3468,15 +3469,16 @@ void func_001f7210(void)
         BR_U32(work, 0) |= 0x800;
         total_weight = 0;
         for (effect_idx = 0; effect_idx < 13; effect_idx++) {
-            weightTable[effect_idx] = 0;
+            weight_slot = (s32 *)&weightTable[effect_idx];
+            *weight_slot = 0;
             switch (effect_idx) {
             case 0:
             {
                 u16 cur = (u16)func_0016c4f0(1);
                 u16 max = (u16)func_0016c5f0(1);
                 if (cur < max) {
-                    weightTable[0] = (s32)*(s8 *)(effect_table + 0);
-                    total_weight += weightTable[0];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 0);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
@@ -3490,8 +3492,8 @@ void func_001f7210(void)
                     if (cur < max) break;
                 }
                 if (effect_scan1 < (u32)member_count) {
-                    weightTable[1] = (s32)*(s8 *)(effect_table + 2);
-                    total_weight += weightTable[1];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 2);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
@@ -3500,8 +3502,8 @@ void func_001f7210(void)
                 u16 cur = (u16)func_0016c570(1);
                 u16 max = (u16)func_0016c670(1);
                 if (cur < max) {
-                    weightTable[2] = (s32)*(s8 *)(effect_table + 4);
-                    total_weight += weightTable[2];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 4);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
@@ -3515,15 +3517,15 @@ void func_001f7210(void)
                     if (cur < max) break;
                 }
                 if (effect_scan3 < (u32)member_count) {
-                    weightTable[3] = (s32)*(s8 *)(effect_table + 6);
-                    total_weight += weightTable[3];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 6);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
             case 4:
                 if ((func_0016c970(1) & 0x80) != 0) {
-                    weightTable[4] = (s32)*(s8 *)(effect_table + 8);
-                    total_weight += weightTable[4];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 8);
+                    total_weight += *weight_slot;
                 }
                 break;
             case 5:
@@ -3533,8 +3535,8 @@ void func_001f7210(void)
                     if ((func_0016c970(scan_arr[effect_scan5]) & 0x80) != 0) break;
                 }
                 if (effect_scan5 < (u32)member_count) {
-                    weightTable[5] = (s32)*(s8 *)(effect_table + 10);
-                    total_weight += weightTable[5];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 10);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
@@ -3543,8 +3545,8 @@ void func_001f7210(void)
             case 7:
                 st_val = func_0016c920(1);
                 if (st_val >= 3 && st_val <= 5) {
-                    weightTable[7] = (s32)*(s8 *)(effect_table + 14);
-                    total_weight += weightTable[7];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 14);
+                    total_weight += *weight_slot;
                 }
                 break;
             case 8:
@@ -3555,16 +3557,16 @@ void func_001f7210(void)
                     if (st_val >= 3 && st_val <= 5) break;
                 }
                 if (effect_scan8 < (u32)member_count) {
-                    weightTable[8] = (s32)*(s8 *)(effect_table + 16);
-                    total_weight += weightTable[8];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 16);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
             case 9:
                 st_val = func_0016c920(1);
                 if (st_val == 1 || st_val == 2) {
-                    weightTable[9] = (s32)*(s8 *)(effect_table + 18);
-                    total_weight += weightTable[9];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 18);
+                    total_weight += *weight_slot;
                 }
                 break;
             case 10:
@@ -3575,16 +3577,16 @@ void func_001f7210(void)
                     if (st_val == 1 || st_val == 2) break;
                 }
                 if (effect_scan10 < (u32)member_count) {
-                    weightTable[10] = (s32)*(s8 *)(effect_table + 20);
-                    total_weight += weightTable[10];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 20);
+                    total_weight += *weight_slot;
                 }
                 break;
             }
             case 11:
                 st_val = func_0016c920(1);
                 if (st_val != 2) {
-                    weightTable[11] = (s32)*(s8 *)(effect_table + 22);
-                    total_weight += weightTable[11];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 22);
+                    total_weight += *weight_slot;
                 }
                 break;
             case 12:
@@ -3595,8 +3597,8 @@ void func_001f7210(void)
                     if (st_val != 2) break;
                 }
                 if (effect_scan12 < (u32)member_count) {
-                    weightTable[12] = (s32)*(s8 *)(effect_table + 24);
-                    total_weight += weightTable[12];
+                    *weight_slot = (s32)*(s8 *)(effect_table + 24);
+                    total_weight += *weight_slot;
                 }
                 break;
             }

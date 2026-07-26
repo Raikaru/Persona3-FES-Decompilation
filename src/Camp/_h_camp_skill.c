@@ -684,7 +684,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
     s32 selectedRow;
     s32 font;
     struct {
-        s32 tileUpDown[6][4];
+        s32 tileUpDown[5][4];
         char text[0x100];
     } scratch;
 

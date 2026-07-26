@@ -139,8 +139,8 @@ u32 DAT_006b3020;
 u32 DAT_006b3038;
 u32 DAT_006b3040;
 u32 DAT_006b3050;
-u32 DAT_006b3090;
-u32 DAT_006b3098;
+u64 DAT_006b3090;
+float DAT_006b3098;
 u32 DAT_006b30a0;
 u32 DAT_006b3f60;
 u32 DAT_007cda6c;
@@ -1434,9 +1434,7 @@ u32 FUN_00418880(int param_1,int *param_2)
   uVar4 = *(u32 *)(param_1 + 0x38);
 
   auStack_20[0] = DAT_006b2e48;
-
   auStack_20[1] = DAT_006b2e4c;
-
   auStack_20[2] = DAT_006b2e50;
 
   uStack_10 = 0x3f800000;
@@ -1493,7 +1491,6 @@ u32 FUN_00418880(int param_1,int *param_2)
     uStack_68 = 0;
     uStack_94 = 3;
     FUN_004c3760(&fStack_a0,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
-    RtQuatConvertFromMatrix(*(int *)(iVar2 + 8) + 0x10,&fStack_a0);
   }
   else if (cVar1 == '\x03') {
     mdl00318a70(*(u32 *)(iVar2 + 8),auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
@@ -1535,115 +1532,61 @@ u32 FUN_00418c10(u64 param_1,int *param_2)
 
 
 u8 FUN_00418c70(int param_1,int *param_2)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   u32 uVar3;
-
   int iVar4;
-
   u32 *puVar5;
-
   u32 *puVar6;
-
   int iVar7;
-
   int iVar8;
-
   float fVar9;
-
   u32 uVar10;
-
   float fVar11;
-
   u32 auStack_60 [12];
-
   float fStack_30;
-
   float fStack_2c;
-
   float fStack_28;
-
   float fStack_18;
-
   float fStack_14;
-
   float fStack_10;
-
   float fStack_c;
-
   float fStack_8;
   float afStack_b0 [3];
 
-  
-
   iVar4 = param_2[1];
-
   iVar1 = *param_2;
-
   iVar2 = *(int *)(param_1 + 0x38);
-
   if (param_2[3] == 0) {
-
     if (*(char *)(iVar1 + 4) == '@') {
-
       if ((*(char *)(iVar1 + 5) != '\x02') && (*(char *)(iVar1 + 5) == '\x01')) {
-
         iVar7 = *(int *)(iVar2 + 0x44);
-
         iVar8 = *(int *)(iVar2 + 0x48);
-
         param_2[0x18] = *(int *)(iVar2 + 0x40);
-
         param_2[0x19] = iVar7;
-
         param_2[0x1a] = iVar8;
-
       }
-
     }
-
     else if (*(char *)(iVar1 + 4) == '\x06') {
-
       sflRes0020d670(*(u32 *)(iVar4 + 8),param_2 + 0x18);
-
     }
-
   }
-
   fVar11 = (float)param_2[0x18];
-
   fVar9 = (float)sinf(fGpffff81fc +
-
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-
   afStack_b0[0] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0xc) / 0xffff)) - fVar11) *
                        (fVar9 + 1.0f)) / 2.0f;
-
   fVar11 = (float)param_2[0x19];
-
   fVar9 = (float)sinf(fGpffff81fc +
-
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-
   afStack_b0[1] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x10) / 0xffff)) - fVar11) *
                       (fVar9 + 1.0f)) / 2.0f;
-
   fVar11 = (float)param_2[0x1a];
-
   fVar9 = (float)sinf(fGpffff81fc +
-
                               (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar1 + 8));
-
   afStack_b0[2] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11) *
                       (fVar9 + 1.0f)) / 2.0f;
-
   switch (*(char *)(iVar1 + 4)) {
   case '@':
     switch (*(char *)(iVar1 + 5)) {
@@ -1675,13 +1618,9 @@ u8 FUN_00418c70(int param_1,int *param_2)
     sflRes0020d650(*(u32 *)(iVar4 + 8),afStack_b0);
     break;
   }
-
   iVar4 = param_2[3];
-
   param_2[3] = iVar4 + 1;
-
   return *(int *)(iVar1 + 8) <= iVar4 + 1;
-
 }
 #pragma optimization_level 2
 
@@ -1731,9 +1670,9 @@ u8 FUN_00419050(int param_1,int *param_2)
 
   u8 auStack_100[16];
 
-  u8 auStack_f0[16];
+  u8 auStack_f0[32];
 
-  u8 auStack_e0[16];
+  u8 auStack_e0[32];
 
   float fStack_d0;
 
@@ -3436,7 +3375,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   uStack_10 = DAT_006b3090;
 
-  uStack_8 = DAT_006b3098;
+  uStack_8 = *(u32 *)&DAT_006b3098;
 
   bVar3 = 0;
 

@@ -1410,7 +1410,6 @@ LAB_0013fc20:
 void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 {
     register void* parent;
-    CampEquipmentEntry* selectedEquipment;
     const char* textValue;
     u32 categoryMask;
     u32 color;
@@ -1423,8 +1422,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     f32 digitY;
     char textBuffer[256];
 
-    selectedEquipment = &work->entries[work->firstVisibleEntry + work->selectedEntry];
-    categoryMask = selectedEquipment->categoryMask;
+    categoryMask = work->entries[work->firstVisibleEntry + work->selectedEntry].categoryMask;
     frame = 0x1a;
     switch (categoryMask) {
     case 0:
@@ -1480,14 +1478,14 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     originY = (f32)(u32)(position >> 32);
     campDrawSprite(parent, DAT_00833B70, frame + 1, (u32)alpha,
                    originX + 15.0f, originY + 1.0f, texture);
-    textValue = func_00171110((s16)selectedEquipment->itemId,
-                               (s16)selectedEquipment->slotType);
+    textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + work->selectedEntry].itemId,
+                               (s16)work->entries[work->firstVisibleEntry + work->selectedEntry].slotType);
     sprintf(textBuffer, DAT_007cb66c, textValue);
     color = (0xffU - alpha) | 0xffffff00;
     campDrawText(texture, (s32)(originX + 55.0f),
                  (s32)(originY + 12.0f), color, 10, 1, textBuffer, 0x10, 0);
 
-    category = selectedEquipment->equipmentClass;
+    category = work->entries[work->firstVisibleEntry + work->selectedEntry].equipmentClass;
     digitY = originY + 13.0f;
     if (category == 3) {
         return;
@@ -1495,7 +1493,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     if (category == 2) {
         campDrawSprite(parent, DAT_00833A50[0], 0x32, (u32)alpha,
                        originX + 288.0f, originY + 9.0f, texture);
-        value = selectedEquipment->valueD;
+        value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueD;
         hadHundreds = 0;
         if (value >= 100) {
             hadHundreds = 1;
@@ -1517,7 +1515,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     if (category == 1) {
         campDrawSprite(parent, DAT_00833A50[0], 0x30, (u32)alpha,
                        originX + 288.0f, originY + 9.0f, texture);
-        value = selectedEquipment->valueC;
+        value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueC;
         hadHundreds = 0;
         if (value >= 100) {
             hadHundreds = 1;
@@ -1542,7 +1540,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 
     campDrawSprite(parent, DAT_00833A50[0], 0x2e, (u32)alpha,
                    originX + 288.0f, originY + 9.0f, texture);
-    value = selectedEquipment->valueA;
+    value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueA;
     hadHundreds = 0;
     if (value >= 100) {
         hadHundreds = 1;
@@ -1561,7 +1559,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
                         originX + 357.0f, digitY, texture);
     campDrawSprite(parent, DAT_00833A50[0], 0x34, (u32)alpha,
                    originX + 404.0f, originY + 9.0f, texture);
-    value = selectedEquipment->valueB;
+    value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueB;
     hadHundreds = 0;
     if (value >= 100) {
         hadHundreds = 1;
