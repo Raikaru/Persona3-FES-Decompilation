@@ -462,6 +462,8 @@ void FUN_004072d0(int param_1,long param_2,long param_3);
  #pragma alias FUN_004072d0_i FUN_004072d0
  void FUN_004072d0_i(u32 param_1,int param_2,int param_3);
 u64 FUN_00409c80(u64 param_1);
+ #pragma alias FUN_00409c80_i FUN_00409c80
+ u32 FUN_00409c80_i(u32 param_1);
 u32 FUN_00409e90(void);
 void FUN_00409f20(u64 param_1,int param_2);
 u32 FUN_00409f50(u32 param_1,int param_2);
@@ -470,6 +472,10 @@ void FUN_0040a260(int param_1);
 u8 FUN_0040a2b0(u64 param_1);
 u32 FUN_0040a490(u32 param_1);
 void FUN_0040a6d0(u64 param_1,long param_2);
+ #pragma alias FUN_0040a6d0_i FUN_0040a6d0
+ void FUN_0040a6d0_i(u32 param_1,int param_2);
+ #pragma alias FUN_00174a90_fcl FUN_00174a90
+ u32 FUN_00174a90_fcl(short param_1);
 void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3);
 void FUN_0040a7f0(u64 param_1,int param_2,int *param_3);
 void FUN_0040b3a0(u64 param_1,int param_2,int param_3);
@@ -18997,12 +19003,14 @@ u32 FUN_00409f50(u32 param_1,int param_2)
   iVar1 = *(int *)(*(int *)(iVar2 + 0x24) + 0x44);
   if (param_2 == 0) {
     *(u32 *)(iVar1 + 4) = 0xfffffff8;
+    FUN_00409c80_i(uVar6);
+    FUN_0040a6d0_i(uVar6,1);
   }
   else {
     *(u32 *)(iVar1 + 4) = 0xfffffff7;
     for (iVar9 = 0; uVar4 = FUN_00175410(),
          iVar9 < (int)(uVar4 & 0xffff); iVar9++) {
-      lVar7 = datPersonaGetHeroPersona((short)iVar9);
+      lVar7 = FUN_00174a90_fcl((short)iVar9);
       if ((lVar7 != 0) && (lVar8 = FUN_0017ca10(lVar7), lVar8 == 1)) {
         iVar3 = FUN_003c5a40(uVar6,*(u16 *)(iVar2 + 0x10) + 1,0x10,0);
         iVar3 = *(int *)(*(int *)(iVar3 + 0x14) + 0x1c);

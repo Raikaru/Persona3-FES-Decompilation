@@ -579,6 +579,8 @@ void FUN_0013c780(CampEquipmentWork* work)
             case 2:
                 entry->valueD = func_0016fcc0(-1, scanIndex);
                 break;
+            case 3:
+                break;
             default:
                 break;
             }
@@ -630,6 +632,8 @@ void FUN_0013c780(CampEquipmentWork* work)
                 break;
             case 2:
                 entry->valueD = func_0016fcc0(1, (s16)*candidatePtr);
+                break;
+            case 3:
                 break;
             default:
                 break;

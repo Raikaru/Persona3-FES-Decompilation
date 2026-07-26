@@ -2632,25 +2632,26 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     CampVec2 labelPosition;
     CampVec2 valuePosition;
     CampVec2 equipmentPosition;
-    CampVec2 panelPosition;
-    CampVec2 footerPosition;
+    f32 panelX;
+    f32 panelY;
+    f32 panelBottomY;
     f32 rowLeftX;
     f32 rowRightX;
     f32 rowY;
     f32 glyphX;
     f32 glyphY;
-
+    f32 footerX;
+    f32 footerY;
     if (frame >= 5) {
         return;
     }
     drawPosition = position;
     drawPosition.x += (f32)((frame * 300) / 5);
-    panelPosition = drawPosition;
-    panelPosition.x += 30.0f;
-    panelPosition.y += 100.0f;
-    footerPosition = drawPosition;
-    footerPosition.x += 287.0f;
-    footerPosition.y += 280.0f;
+    panelX = drawPosition.x + 30.0f;
+    panelY = drawPosition.y + 100.0f;
+    panelBottomY = drawPosition.y + 159.0f;
+    footerX = drawPosition.x + 287.0f;
+    footerY = drawPosition.y + 280.0f;
     alpha = (frame * 0xff) / 5;
     for (icon = 0; icon < 9; icon++) {
         h_campStatusRenderStatIcon(drawPosition, scale, icon, alpha);

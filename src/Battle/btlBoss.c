@@ -2166,43 +2166,98 @@ BtlUnitAnimBounds* func_002fc520(BtlUnit* unit)
 // FUN_002fc5d0 NONMATCHING
 f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 animation)
 {
-    u16 charId;
-    f32 base;
+    u16 value;
 
-    if ((gBtl->flags & 0x200000) == 0 || target->genus != 1)
+    if ((gBtl->flags & 0x200000) == 0)
     {
         return -1.0f;
     }
-    base = target->sphereRadius * target->scale;
-    charId = target->charId;
-    if (unit->genus == 2 && charId == 0xf1)
-    {
-        return (animation == 2 || animation == 0) ? base + 500.0f : -1.0f;
-    }
-    if (animation != 0xb && animation != 6 && animation != 5 && animation != 4)
+    if (target->genus != 1)
     {
         return -1.0f;
     }
-    switch (charId)
+    if (unit->genus == 2 && target->charId == 0xf1)
     {
-        case 0xf1: return base + 950.0f;
-        case 0x128: case 0x125: case 0x124: case 0x123: case 0x122:
-        case 0x121: case 0x120: case 0x11f: case 0x11e: case 0x11d:
-        case 0x11c: case 0x11b: case 0x11a: case 0x111: return base + 375.0f;
-        case 0x110: case 0x10f: return -1.0f;
-        case 0x10d: return base + 100.0f;
-        case 0x10c: case 0x10b: return -1.0f;
-        case 0x10a: return base + 200.0f;
-        case 0x109: return base;
-        case 0x108: return -1.0f;
-        case 0x107: return base + 125.0f;
-        case 0x115: return base + 50.0f;
-        case 0x106: return base + 175.0f;
-        case 0x105: case 0x104: return base + 150.0f;
-        case 0x103: case 0x102: case 0x101: return base + 100.0f;
-        case 0x100: return base + 150.0f;
-        default: return -1.0f;
+        if (animation == 2 || animation == 0)
+        {
+            return target->sphereRadius * target->scale + 500.0f;
+        }
+        return -1.0f;
     }
+    value = (u16)animation;
+    if (value != 0xb && value != 6 && value != 5 && value != 4)
+    {
+        return -1.0f;
+    }
+    if (target->charId == 0xf1)
+    {
+        return target->sphereRadius * target->scale + 550.0f;
+    }
+    if (target->charId == 0x1af || target->charId == 0x126 ||
+        target->charId == 0x112 || target->charId == 0x128)
+    {
+        return -1.0f;
+    }
+    if (target->charId == 0x125 || target->charId == 0x124 ||
+        target->charId == 0x123 || target->charId == 0x122 ||
+        target->charId == 0x121 || target->charId == 0x120 ||
+        target->charId == 0x11f || target->charId == 0x11e ||
+        target->charId == 0x11d || target->charId == 0x11c ||
+        target->charId == 0x11b || target->charId == 0x11a ||
+        target->charId == 0x111)
+    {
+        return target->sphereRadius * target->scale + 375.0f;
+    }
+    if (target->charId == 0x110 || target->charId == 0x10f)
+    {
+        return -1.0f;
+    }
+    if (target->charId == 0x10d)
+    {
+        return target->sphereRadius * target->scale + 200.0f;
+    }
+    if (target->charId == 0x10c || target->charId == 0x10b)
+    {
+        return -1.0f;
+    }
+    if (target->charId == 0x10a)
+    {
+        return target->sphereRadius * target->scale + 100.0f;
+    }
+    if (target->charId == 0x109)
+    {
+        return target->sphereRadius * target->scale;
+    }
+    if (target->charId == 0x108)
+    {
+        return -1.0f;
+    }
+    if (target->charId == 0x107)
+    {
+        return target->sphereRadius * target->scale + 125.0f;
+    }
+    if (target->charId == 0x115)
+    {
+        return target->sphereRadius * target->scale + 50.0f;
+    }
+    if (target->charId == 0x106)
+    {
+        return target->sphereRadius * target->scale + 175.0f;
+    }
+    if (target->charId == 0x105 || target->charId == 0x104)
+    {
+        return target->sphereRadius * target->scale + 150.0f;
+    }
+    if (target->charId == 0x103 || target->charId == 0x102 ||
+        target->charId == 0x101)
+    {
+        return target->sphereRadius * target->scale + 100.0f;
+    }
+    if (target->charId == 0x100)
+    {
+        return target->sphereRadius * target->scale + 150.0f;
+    }
+    return -1.0f;
 }
 
 /* Recovered battle-misc harvest: 0x002FCAA0-0x002FED10 */
