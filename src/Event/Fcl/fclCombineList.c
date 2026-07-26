@@ -1011,8 +1011,8 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     FclDb650TextData* text_data;
     s32 index;
     s32 draw_variant;
-    s32 x;
-    s32 y;
+    s16 x;
+    s16 y;
     s16 alpha;
     char number_text[0x10];
 
