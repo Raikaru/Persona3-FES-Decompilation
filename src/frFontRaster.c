@@ -38,6 +38,15 @@ extern u8 *DAT_007ce644;
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
+typedef struct FrRasterNode {
+  int field0;
+  int field1;
+  int field2;
+  int data;
+  int field4;
+  int block;
+  int next;
+} FrRasterNode;
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003b35e0(int param_1);
@@ -70,9 +79,9 @@ void FUN_003b35e0(int count)
   register int limit;
   int size;
   u32 memory;
-  int *node;
+  FrRasterNode *node;
   u32 block;
-  int *current;
+  FrRasterNode *current;
   size = count * 0x21c + 0x18;
   if (piGpffffb954 != (int *)0x0) {
     FUN_0019d3f0("frFontRaster.c",0x24);
@@ -82,25 +91,25 @@ void FUN_003b35e0(int count)
   FUN_00521408(memory,0,size);
   *piGpffffb954 = count;
   piGpffffb954[1] = (int)(piGpffffb954 + 6);
-  node = (int *)piGpffffb954[1];
-  node[3] = (int)(node + 7);
+  node = (FrRasterNode *)piGpffffb954[1];
+  node->data = (int)(node + 7);
   piGpffffb954[4] = (int)node;
   i = 0;
   limit = count - 1;
   for (; i < limit; i = i + 1) {
-    node[6] = (int)(node[3] + 0x200);
-    node = (int *)node[6];
-    node[3] = (int)(node + 7);
+    node->next = (int)(node->data + 0x200);
+    node = (FrRasterNode *)node->next;
+    node->data = (int)(node + 7);
   }
   piGpffffb954[5] = (int)node;
-  current = (int *)piGpffffb954[4];
-  while (current != (int *)0x0) {
+  current = (FrRasterNode *)piGpffffb954[4];
+  while (current != (FrRasterNode *)0x0) {
     block = FUN_004ce0f0(0x20,0x20,4,0x4504);
-    current[5] = block;
+    current->block = block;
     if (block == 0) {
       FUN_005225a8((u32)(uintptr_t)DAT_006a28b0);
     } else {
-      current = (int *)current[6];
+      current = (FrRasterNode *)current->next;
     }
   }
 }

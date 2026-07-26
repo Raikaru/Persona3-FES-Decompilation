@@ -1150,65 +1150,53 @@ u8 FUN_00418390(int param_1,int *param_2)
 
   char cVar1;
 
-  u16 uVar2;
+  s16 uVar2;
 
-  u16 uVar3;
+  s16 uVar3;
 
-  u16 *puVar4;
+  s16 *puVar4;
 
   int *piVar5;
 
   int iVar6;
+  int iVar7;
 
   
 
-  puVar4 = (u16 *)param_2[1];
+  puVar4 = (s16 *)param_2[1];
 
   piVar5 = (int *)*param_2;
 
   cVar1 = (char)piVar5[1];
 
-  if (cVar1 == '@') {
-
-    if (*(char *)((int)piVar5 + 5) == '\x03') {
-
-      if ((piVar5[3] & 1U) == 0) {
-
-        if ((piVar5[4] & 1U) != 0) {
-
-          FUN_003cde70(*(u32 *)(param_1 + 0x18),1);
-
-        }
-
-      }
-
-      else {
-
-        FUN_003cde00(*(u32 *)(param_1 + 0x18),1);
-
-      }
-
-    }
-
-  }
-
-  else if (cVar1 == '\x02') {
-
-    if ((piVar5[3] & 0x200U) != 0) {
-
-
-      FUN_0041bf10(*(u32 *)(param_1 + 0x18),1);
-    }
-
-  }
-
-  else if (cVar1 == '\x01') {
-
+  switch (cVar1) {
+  case '\x01':
     FUN_0034fd10(*(u32 *)(puVar4 + 4));
-
+    break;
+  case '\x02':
+    if ((piVar5[3] & 1U) != 0) {
+      iVar7 = param_2[3];
+      iVar7 = (iVar7 << 8) - iVar7;
+      iVar7 = iVar7 / piVar5[2];
+      iVar7 = iVar7 | 0xffffff00;
+      FUN_0041bf10(*(u32 *)(puVar4 + 4),iVar7);
+    }
+    break;
+  case '@':
+    if (*(char *)((int)piVar5 + 5) == '\x03') {
+      if ((piVar5[3] & 1U) == 0) {
+        if ((piVar5[4] & 1U) != 0) {
+          FUN_003cde70(*(u32 *)(param_1 + 0x18),1);
+        }
+      }
+      else {
+        FUN_003cde00(*(u32 *)(param_1 + 0x18),1);
+      }
+    }
+    break;
   }
 
-  uVar2 = *(u16 *)(piVar5 + 3);
+  uVar2 = *(s16 *)(piVar5 + 3);
 
   uVar3 = *puVar4;
 

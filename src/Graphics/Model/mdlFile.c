@@ -33435,32 +33435,32 @@ void FUN_0033cc10(int param_1,int param_2)
 u32 FUN_0033cd20(int param_1,int param_2)
 {
   u32 block;
-  u32 uVar3;
   int *piVar1;
-  int iVar2;
   u32 uVar4;
 
   block = (*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x18 + 0x10,0x40000);
 
   *(u32 *)block = block + 0x10;
   *(u32 *)(block + 8) = block;
-  uVar3 = block;
-  piVar1 = (int *)uVar3;
 
   iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),2,4,DAT_0069bdc8_abs,0x4c);
+  piVar1 = (int *)block;
+  iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),2,4,DAT_0069bdc8_abs,0x4c);
   piVar1[1] = iVar2;
-
   if (param_2 == 0) {
     uVar4 = FUN_003210a0(0x13);
+    FUN_00494d50(*(u32 *)(*(int *)(block + 4) + 0x14),uVar4);
     FUN_00494d50(*(u32 *)(piVar1[1] + 0x14),uVar4);
   }
   else {
+    FUN_00323b90_i(*(int *)(block + 4),param_2);
     FUN_00323b90_i(piVar1[1],param_2);
   }
 
-  FUN_0033cc10(uVar3,param_1);
-
-  return uVar3;
+  FUN_0033cc10(block,param_1);
+  FUN_0033cc10((u32)piVar1,param_1);
+  return block;
+  return (u32)piVar1;
 }
 
 
@@ -35112,25 +35112,23 @@ u32 FUN_0033e7f0(int param_1)
 
 
 {
-  int *piVar1;
-  u32 uVar3;
+  u32 *puVar2;
   int iVar2;
   
   
   
-  uVar3 = (*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x2c + 0x10,0x40000);
+  puVar2 = (u32 *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x2c + 0x10,0x40000);
   
   
   
 
 
-  *(u32 *)uVar3 = uVar3 + 0x10;
-  *(u32 *)(uVar3 + 8) = uVar3;
-  piVar1 = (int *)uVar3;
+  *puVar2 = (u32)(puVar2 + 4);
+  puVar2[2] = (u32)puVar2;
 
   iVar2 = FUN_003233a0(*(u16 *)(param_1 + 0x38),3,5,(int)DAT_0069bd60_abs,0x48);
-  piVar1[1] = iVar2;
-  return (u32)piVar1;
+  puVar2[1] = iVar2;
+  return (u32)puVar2;
 
 }
 
