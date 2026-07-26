@@ -1813,23 +1813,23 @@ void func_0010d950(s16 index)
 {
     HSfdDecodeSlot* slot;
 
-    if (sSfdDecodeSlots[index].state != 1)
+    if (sSfdDecodeSlots_abs[index].state != 1)
     {
         return;
     }
-    slot = &sSfdDecodeSlots[index];
-    if (sSfdDecodeSlots[index].status == 0)
+    slot = &sSfdDecodeSlots_abs[index];
+    if (sSfdDecodeSlots_abs[index].status == 0)
     {
         return;
     }
 
-    FUN_0051deb0(5, (u32)sSfdDecodeSlots[index].completion);
-    FUN_0051deb0(0, (u32)sSfdDecodeSlots[index].decodeHandle);
-    FUN_0051dd48(5, (u32)sSfdDecodeSlots[index].outputHandle);
-    FUN_0051dd48(3, (u32)sSfdDecodeSlots[index].queueHandle);
+    FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
+    FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);
+    FUN_0051dd48(5, (u32)sSfdDecodeSlots_abs[index].outputHandle);
+    FUN_0051dd48(3, (u32)sSfdDecodeSlots_abs[index].queueHandle);
     *(u32*)slot = 0;
-    func_0050B710(sSfdDecodeSlots[index].output);
-    func_0050B710(sSfdDecodeSlots[index].sourceData);
+    func_0050B710(sSfdDecodeSlots_abs[index].output);
+    func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
     *(u32*)slot = 0;
 }
 

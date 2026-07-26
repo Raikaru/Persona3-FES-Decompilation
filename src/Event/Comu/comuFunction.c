@@ -185,7 +185,7 @@ void FUN_003bdbd0(int param_1)
         }
         else {
           cVar3 = FUN_0016dba0((s16)(iVar5 + 6));
-          if ((long)cVar3 >= (long)(u32)*(u8 *)(*(u32 *)DAT_0095b2a8_abs + iVar5)) {
+          if ((long)cVar3 >= (long)(u32)*(u8 *)(DAT_0095b2a8_abs[0] + iVar5)) {
             bVar2 = 1;
           }
           else {
@@ -194,7 +194,7 @@ void FUN_003bdbd0(int param_1)
         }
 
         if (bVar2) {
-          sVar1 = *(volatile s16 *)(*(u32 *)DAT_0095b2a0_abs);
+          sVar1 = *(volatile s16 *)(DAT_0095b2a0_abs[0]);
           FUN_00171960(iVar5 + 6,(s32)sVar1);
         }
       }

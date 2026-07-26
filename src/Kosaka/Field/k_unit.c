@@ -1979,10 +1979,14 @@ void func_001d1910(void)
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL && unit->resrc != NULL)
+        switch (unit->genusBase != NULL && unit->resrc != NULL)
         {
+        case 1:
             func_001a60d0(0, unit->mdl, 0, 1);
             unit->unk_17c = 0;
+            break;
+        default:
+            break;
         }
     }
 }
