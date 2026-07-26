@@ -12963,7 +12963,7 @@ void FUN_0037dfc0(int param_1,int param_2,int param_3,int param_4)
         uVar4 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
 
         FUN_0038a260_f32_6(uVar4,param_1,param_2,uVar3,(void *)0x69fbc0,
-                           apuStack_10[3]);
+                           (u32)apuStack_10[3]);
 
       }
 
@@ -12981,7 +12981,7 @@ void FUN_0037dfc0(int param_1,int param_2,int param_3,int param_4)
 
     FUN_0038a260_f32_6(uVar4,param_1 * 0xc,param_2 * 0xc,uVar3,
                        (void *)0x69fb98,
-                       apuStack_10[*(int *)(iVar2 + 0x198)]);
+                       (u32)apuStack_10[*(int *)(iVar2 + 0x198)]);
 
   }
 

@@ -955,7 +955,7 @@ s32 FUN_00300af0(s32 param_1)
 
 
 
-// FUN_00300b60 NONMATCHING
+// FUN_00300b60
 u8 FUN_00300b60(u16 *param_1,u32 param_2)
 {
   u16 uVar1;
