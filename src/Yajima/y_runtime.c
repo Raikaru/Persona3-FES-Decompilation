@@ -302,6 +302,10 @@ extern u8 DAT_0086e6e8_abs[];
 #pragma alias FUN_00195020_call FUN_00195020
 extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
+#pragma alias DAT_0086ede8_abs DAT_0086ede8
+extern u8 DAT_0086ede8_abs[];
+#pragma alias DAT_0086edf4_abs DAT_0086edf4
+extern u8 DAT_0086edf4_abs[];
 #pragma alias DAT_0086ef0c_abs DAT_0086ef0c
 #pragma alias DAT_0086ef10_abs DAT_0086ef10
 extern u8 DAT_0086ef10_abs[];
@@ -5269,7 +5273,7 @@ void FUN_00434c90(char param_1)
   int iVar3;
   u8 *base;
 
-  base = (u8 *)DAT_007ce6e8;
+  base = (u8 *)&DAT_007ce6e8;
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
     iVar1 = 0;
     for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
@@ -16072,29 +16076,33 @@ LAB_00453278:
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_004532D0 NONMATCHING
+// FUN_004532D0
 
 void FUN_004532d0(char param_1)
-
 {
-  u8 bVar1;
+  u8 *base;
+  u8 *puVar1;
   int iVar2;
   int iVar3;
-  
-  for (iVar3 = 0; iVar3 < 0x18; iVar3 = iVar3 + 1) {
-    bVar1 = 0;
-    iVar2 = iVar3 * 0x1c0;
-    if ((*(int *)((u8 *)DAT_0086ede8 + iVar2) != 0) && (*(int *)((u8 *)DAT_0086edf4 + iVar2) != 0)) {
-      bVar1 = 1;
+  int valid;
+
+  iVar3 = 0;
+  for (; iVar3 < 0x18; iVar3 = iVar3 + 1) {
+    base = DAT_0086ede8_abs;
+    valid = 0;
+    puVar1 = base + iVar3 * 0x1c0;
+    if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
+      valid = 1;
     }
-    if (bVar1) {
-      iVar2 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + iVar2) + 0x3c);
+    valid = valid != 0;
+    if (valid == 1) {
+      iVar2 = *(int *)(*(int *)(puVar1 + 0x16c) + 0x3c);
       *(char *)(iVar2 + 0x40) = param_1;
       if (param_1 == '\0') {
-        FUN_001b0260(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0),0);
+        FUN_001b0260(*(u32 *)(DAT_0086ef10_abs + *(char *)(iVar2 + 1) * 0x1c0 + 0x170),0);
       }
       else {
-        FUN_001b0260(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0),1);
+        FUN_001b0260(*(u32 *)(DAT_0086ef10_abs + *(char *)(iVar2 + 1) * 0x1c0 + 0x170),1);
       }
     }
   }

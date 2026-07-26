@@ -375,7 +375,7 @@ u32 FUN_00324680(u32 param_1);
 void FUN_00324740(u64 param_1);
 void FUN_003247d0(int param_1);
 void FUN_00324820(int param_1);
-u64 FUN_00324870(int param_1);
+u32 FUN_00324870(u32 param_1);
 void FUN_00324930(int param_1);
 void FUN_00324990(int param_1);
 void FUN_003249e0(int param_1);
@@ -504,7 +504,7 @@ u64 FUN_00332370(int param_1);
 void FUN_00332470(u32 *param_1,u16 param_2,int *param_3);
 u32 *FUN_003325d0(int *param_1);
 void FUN_00332700(u64 param_1);
-u64 FUN_00332780(int param_1);
+u32 FUN_00332780(int param_1);
 u32 *FUN_00332880(int *param_1);
 void FUN_00332990(u32 *param_1,int param_2);
 void FUN_00332a30(int *param_1,u16 param_2,int *param_3);
@@ -856,7 +856,7 @@ void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
 bool FUN_00352c70(int param_1,u8 *param_2);
-u32 FUN_00352e10(u32 param_1,short param_2,int param_3,int param_4);
+u32 FUN_00352e10(u32 param_1,u16 param_2,int param_3,int param_4);
 u64 FUN_00352eb0(int param_1);
 void FUN_00352f20(u32 param_1);
 void FUN_00352f70(float *param_1);
@@ -1517,6 +1517,8 @@ extern void* PTR_LAB_0069be30;
 #pragma alias PTR_LAB_0069be30_abs PTR_LAB_0069be30
 extern u8 PTR_LAB_0069be30_abs[];
 extern void* PTR_LAB_0069be34;
+#pragma alias PTR_LAB_0069be34_abs PTR_LAB_0069be34
+extern code PTR_LAB_0069be34_abs[];
 extern code PTR_LAB_0069be3c[];
 extern code PTR_LAB_0069be40[];
 extern void* PTR_LAB_0069be44;
@@ -8167,10 +8169,10 @@ void FUN_00324820(int param_1)
 
 
 
-// FUN_00324870 NONMATCHING
+// FUN_00324870
 
 
-u64 FUN_00324870(int param_1)
+u32 FUN_00324870(u32 param_1)
 
 
 
@@ -8182,13 +8184,15 @@ u64 FUN_00324870(int param_1)
 
   u32 uVar3;
 
+  int iVar4;
+
   u32 *puVar4;
 
-  
+  iVar4 = (int)param_1;
 
-  uVar1 = *(u16 *)(param_1 + 4);
+  uVar1 = *(u16 *)(iVar4 + 4);
 
-  uVar3 = (*DAT_00960178)(0x2c,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0x2c,0x40000);
 
   FUN_00521408(uVar3,0,0x2c);
 
@@ -8198,15 +8202,15 @@ u64 FUN_00324870(int param_1)
 
   *(u16 *)(puVar4 + 1) = uVar1;
 
-  *(u16 *)(puVar4 + 3) = *(u16 *)(param_1 + 0xc);
+  *(u16 *)(puVar4 + 3) = *(u16 *)(iVar4 + 0xc);
 
-  *(u16 *)(puVar4 + 7) = *(u16 *)(param_1 + 0x1c);
+  *(u16 *)(puVar4 + 7) = *(u16 *)(iVar4 + 0x1c);
 
-  uVar2 = (*(code *)(&PTR_LAB_0069be34)
+  uVar2 = (*(code *)((u8 *)PTR_LAB_0069be34_abs +
 
-                    [(u32)*(u16 *)(puVar4 + 1) * 0xc + (u32)*(u16 *)(puVar4 + 1)])
+                    ((u32)*(u16 *)(puVar4 + 1) * 0xc + (u32)*(u16 *)(puVar4 + 1)) * 4))
 
-                    (*(u32 *)(param_1 + 8));
+                    (*(u32 *)(iVar4 + 8));
 
   puVar4[2] = uVar2;
 
@@ -22685,10 +22689,10 @@ void FUN_00332700(u64 param_1)
 
 
 
-// FUN_00332780 NONMATCHING
+// FUN_00332780
 
 
-u64 FUN_00332780(int param_1)
+u32 FUN_00332780(int param_1)
 
 
 
@@ -22724,7 +22728,7 @@ u64 FUN_00332780(int param_1)
 
   }
 
-  uVar2 = (*DAT_00960178)(0x38,0x40000);
+  uVar2 = (*DAT_00960178_abs)(0x38,0x40000);
 
   FUN_00521408(uVar2,0,0x38);
 
@@ -22771,8 +22775,8 @@ u32 *FUN_00332880(int *arg0)
   result[1] = -1;
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
-  FUN_00332a30((int *)result,*(u16 *)*(u32 *)((u8 *)arg0 + 0x30),(int *)((u8 *)arg0 + 0xc));
-  FUN_00332ac0(result,*(u16 *)*(u32 *)((u8 *)arg0 + 0x30),model);
+  FUN_00332a30((int *)result,(u16)(**(u16 **)((int)arg0 + 0x30)),(int *)((u8 *)arg0 + 0xc));
+  FUN_00332ac0(result,(u16)(**(u16 **)((int)arg0 + 0x30)),model);
   FUN_00332990(result,(int)arg0);
   return result;
 }
@@ -55095,10 +55099,10 @@ bool FUN_00352c70(int param_1,u8 *param_2)
 
 
 
-// FUN_00352E10 NONMATCHING
+// FUN_00352E10
 
 
-u32 FUN_00352e10(u32 param_1,short param_2,int param_3,int param_4)
+u32 FUN_00352e10(u32 param_1,u16 param_2,int param_3,int param_4)
 
 
 
@@ -55110,19 +55114,16 @@ u32 FUN_00352e10(u32 param_1,short param_2,int param_3,int param_4)
 
   
 
-  uVar2 = (*DAT_00960178_u32)(4,0x40000);
+  uVar2 = (*DAT_00960178_abs)(4,0x40000);
 
-  if ((param_3 == 0) || (param_2 != 3)) {
-
-    *(u32 *)uVar2 = 0;
-
-  }
-
-  else {
+  if ((param_3 != 0) && (param_2 == 3)) {
 
     uVar1 = FUN_0034bdf0(param_3,param_4);
-
     *(u32 *)uVar2 = uVar1;
+
+  }
+  else {
+    *(u32 *)uVar2 = 0;
 
   }
 

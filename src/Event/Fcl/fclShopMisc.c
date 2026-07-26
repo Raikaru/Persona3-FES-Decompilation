@@ -235,8 +235,8 @@ int clndIsDateInRangeFromStart_long(long month,long day,u32 range);
 #pragma alias clndIsDateInRange_long clndIsDateInRange
 int clndIsDateInRange_long(long startMonth,long startDay,long endMonth,long endDay);
 void FUN_0017c220(u16 *param_1);
-u16 FUN_003f1720(u32 param_1,u16 param_2);
-u32 FUN_003f1830(short *param_1,short param_2);
+u32 FUN_003f1720(u32 param_1,short param_2);
+u32 FUN_003f1830(short *param_1,int param_2);
 u32 FUN_003f1910(u64 param_1);
 u32 FUN_003f1a10(u32 param_1);
 void FUN_003f1ba0(long param_1,u32 param_2);
@@ -2109,83 +2109,68 @@ check:
   return -1;
 }
 
-// FUN_003F1720 NONMATCHING
-
-
-u16 FUN_003f1720(u32 param_1,u16 param_2)
-
-
-
+// FUN_003F1720
+u32 FUN_003f1720(u32 param_1,short param_2)
 {
-
   u16 uVar1;
-
-  u16 unaff_s0_lo;
-
-  u8 auStack_20 [24];
-
-  u32 uStack_8;
-
+  u32 unaff_s0_lo;
+  u8 auStack_20[24];
   int iStack_4;
-
-  
+  struct PairKeyLocal {
+    u16 lo;
+    u16 hi;
+  } key;
+  extern u32 FUN_0017d1a0();
 
   iStack_4 = -1;
-
   func_00170ed0(param_1,&iStack_4);
 
-  if (iStack_4 == 4) {
-
-    func_00170c00(1,param_1,param_2);
-
-    unaff_s0_lo = (u16)param_1;
-
-  }
-
-  else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
-
+  switch (iStack_4) {
+  case 0:
+  case 1:
+  case 2:
+  case 3:
     func_001828d0(param_1,auStack_20);
-    unaff_s0_lo = (u16)FUN_003f1690_i((int)auStack_20);
-
-
+    unaff_s0_lo = FUN_003f1690_i((int)auStack_20);
+    break;
+  case 4:
+    func_00170c00(1,param_1,param_2);
+    unaff_s0_lo = (s16)param_1;
+    break;
   }
 
   uVar1 = FUN_003e6dc0();
-
-  uStack_8 = (u32)uVar1;
-
-  FUN_0017d1a0(uStack_8,param_1 & 0xffff,param_2);
-
+  key.lo = uVar1;
+  key.hi = 0;
+  FUN_0017d1a0(*(u32 *)&key,param_1 & 0xffff,param_2);
   return unaff_s0_lo;
-
 }
 
-// FUN_003F1830 NONMATCHING
-
-
-u32 FUN_003f1830(short *param_1,short param_2)
-
-
-
+// FUN_003F1830
+u32 FUN_003f1830(short *param_1,int param_2)
 {
-
-  int iStack_4;
   short sVar1;
+  int iStack_4;
 
-  
   iStack_4 = -1;
   sVar1 = *param_1;
   func_00170ed0(sVar1,&iStack_4);
 
-  if (iStack_4 == 4) {
-    func_00170c00(1,sVar1,-param_2);
-  }
-  else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
+  switch (iStack_4) {
+  case 0:
+  case 1:
+  case 2:
+  case 3:
     func_0016fea0(1,param_1[1],0);
+    break;
+  case 4:
+    func_00170c00(1,sVar1,(short)(-param_2));
+    break;
   }
 
   return 1;
 }
+
 
 // FUN_003F1910 NONMATCHING
 
@@ -6634,11 +6619,10 @@ void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5)
 }
 
 // FUN_003F7C60 NONMATCHING
-
-
 void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 {
   int iVar1;
+  u16 uVar2;
 
   iVar1 = *(int *)(*(int *)(param_5 + 0x14) + 0x1c);
   if ((*(short *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 6) == -1) &&
@@ -6647,8 +6631,9 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
     return;
   }
   if ((*(u32 *)(iVar1 + 8) & 0x1000) != 0) {
+    uVar2 = *(u16 *)(iVar1 + 4);
     FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00,1,5,1,
-                     ((*(u8 *)(iVar1 + 0xd) << 16) & 0xffff0000) | (u32)*(u16 *)(iVar1 + 4));
+                     ((*(u8 *)(iVar1 + 0xd) << 16) & 0xffff0000) | uVar2);
     return;
   }
   FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00,1,5,0,*(short *)(iVar1 + 4));
