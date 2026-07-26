@@ -517,7 +517,7 @@ invalid:
     return 0;
 found:
     for (bit = 0; bit < 32; bit++) {
-        if ((categoryMask & (1 << bit)) != 0) {
+        if (((1 << bit) & categoryMask) != 0) {
             return bit;
         }
     }

@@ -36,7 +36,7 @@ u32 FUN_003dff30(int *param_1);
 int FUN_003dff80(int *param_1,int param_2);
 void FUN_003c4710(int *param_1, int *param_2, int *param_3);
 int *FUN_003c4820(int *param_1, int *param_2);
-int FUN_003dffc0(int *param_1,int param_2,long param_3);
+int FUN_003dffc0(int *param_1,int param_2,s32 param_3);
 void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4);
 int FUN_003e0260(u64 param_1,u64 param_2);
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4);
@@ -2743,7 +2743,7 @@ int FUN_003dff80(int* param_1, int param_2)
 // FUN_003DFFC0 NONMATCHING
 
 
-int FUN_003dffc0(int *param_1,int param_2,long param_3)
+int FUN_003dffc0(int *param_1,int param_2,s32 param_3)
 
 
 
@@ -2758,15 +2758,20 @@ int FUN_003dffc0(int *param_1,int param_2,long param_3)
   
 
   iVar1 = *param_1;
+  iVar2 = *(int *)(iVar1 + 4);
+  goto loop_check;
 
-  for (iVar2 = *(int *)(iVar1 + 4); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x10)) {
+loop_body:
+  iVar3 = *(int *)(iVar2 + 0x14);
+  if (*(int *)(iVar3 + 0x10) != param_2)
+    goto loop_next;
+  goto LAB_003e0008;
 
-    iVar3 = *(int *)(iVar2 + 0x14);
-
-    if (*(int *)(iVar3 + 0x10) == param_2) goto LAB_003e0008;
-
-  }
-
+loop_next:
+  iVar2 = *(int *)(iVar2 + 0x10);
+loop_check:
+  if (iVar2 != 0)
+    goto loop_body;
   iVar3 = 0;
 
 LAB_003e0008:

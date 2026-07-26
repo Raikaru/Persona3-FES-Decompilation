@@ -3879,6 +3879,12 @@ extern u32 DAT_007cc9ac;
 extern u32 DAT_007cc9b0;
 extern u32 DAT_007cc9b2;
 extern u32 DAT_007cc9b4;
+ #pragma alias DAT_007cc9b0_s16 DAT_007cc9b0
+ extern s16 DAT_007cc9b0_s16;
+ #pragma alias DAT_007cc9b2_s16 DAT_007cc9b2
+ extern s16 DAT_007cc9b2_s16;
+ #pragma alias DAT_007cc9b4_s16 DAT_007cc9b4
+ extern s16 DAT_007cc9b4_s16;
 extern u32 DAT_007cc9b8;
 extern u32 DAT_007cc9ba;
 extern u32 DAT_007cc9bc;
@@ -9932,23 +9938,22 @@ void func_002eeb70(BtlAction* action)
 void func_002eec60(void)
 
 {
+  typedef struct {
+    u32 data[6];
+    u16 ids[4];
+    RwV3d position;
+  } VoicePositionWork;
+  VoicePositionWork work;
   u32 uVar1;
   u32 uVar2;
   int iVar3;
   int iVar4;
   u32 *puVar5;
   u32 *puVar6;
-  short sVar7;
-  u32 auStack_40030 [49158];
-  u16 auStack_10018 [32748];
-  u32 auStack_30 [6];
-  u16 auStack_18 [4];
-  f32 uStack_10;
-  f32 uStack_c;
-  f32 uStack_8;
-  
+  u16 sVar7;
+
   puVar6 = (u32*)DAT_0069a000;
-  puVar5 = auStack_30;
+  puVar5 = work.data;
   iVar4 = 3;
   do {
     uVar1 = *puVar6;
@@ -9959,38 +9964,42 @@ void func_002eec60(void)
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
   } while (0 < iVar4);
-  auStack_18[0] = DAT_007cc9b0;
-  auStack_18[1] = DAT_007cc9b2;
-  auStack_18[2] = DAT_007cc9b4;
+  work.ids[0] = DAT_007cc9b0_s16;
+  work.ids[1] = DAT_007cc9b2_s16;
+  work.ids[2] = DAT_007cc9b4_s16;
   sVar7 = 0;
-  uStack_c = 0.0f;
+  work.position.y = 0.0f;
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 1) {
-      uStack_10 = 150.0f;
-      uStack_8 = 350.0f;
+    if (*(u16 *)(iVar4 + 0xa4) == 1) {
+      work.position.x = 150.0f;
+      work.position.z = 350.0f;
       *(u8 *)(iVar4 + 0x9f0) = 2;
     }
     else {
       iVar3 = (int)sVar7;
-      uStack_10 = *(f32*)&auStack_30[iVar3 * 2];
-      uStack_8 = *(f32*)&auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
-      sVar7 = sVar7 + 1;
+      work.position.x = *(f32*)&work.data[iVar3 * 2];
+      work.position.z = *(f32*)&work.data[iVar3 * 2 + 1];
+      *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
+      sVar7++;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&work.position.x);
+    FUN_0027f650(iVar4,&work.position.x);
   }
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 0x10c) {
-      uStack_10 = 200.0f;
-      uStack_8 = -350.0f;
+    switch (*(u16 *)(iVar4 + 0xa4)) {
+    case 0x10b:
+      work.position.x = -200.0f;
+      work.position.z = -350.0f;
+      break;
+    case 0x10c:
+      work.position.x = 200.0f;
+      work.position.z = -350.0f;
+      break;
+    default:
+      break;
     }
-    else if (*(short *)(iVar4 + 0xa4) == 0x10b) {
-      uStack_10 = -200.0f;
-      uStack_8 = -350.0f;
-    }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&work.position.x);
+    FUN_0027f650(iVar4,&work.position.x);
   }
   return;
 }
