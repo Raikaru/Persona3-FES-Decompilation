@@ -812,6 +812,8 @@ void func_001a7710(u32* state)
 
     switch ((u32)state)
     {
+    case 0:
+        break;
     default:
         work = (KClumpFreeState*)(void*)state;
 
@@ -888,8 +890,6 @@ void func_001a7710(u32* state)
     }
 
         (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
-        break;
-    case 0:
         break;
     }
 }

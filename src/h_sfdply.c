@@ -1904,7 +1904,7 @@ void func_0010dd10(HSfdImage* image, const u8* source)
             }
             else
             {
-                pixel[3] = (u8)((u32)(u16)((alpha * 0xFF) - alpha) >> 7);
+                pixel[3] = (u8)((u32)(u16)((alpha * 0x100) - alpha) >> 7);
             }
             source += 4;
             x++;
