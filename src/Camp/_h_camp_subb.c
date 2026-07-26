@@ -1775,9 +1775,9 @@ void FUN_00141590(CampEquipmentWork* work)
 void FUN_00141660(CampEquipmentPanelWork* work)
 
 {
-  int index;
-  int row;
-  float slotX;
+  volatile int index;
+  volatile int row;
+  volatile float slotX;
   volatile u64 spriteTopLeft;
   volatile u64 spriteTopLeft2;
   volatile u64 spriteTopLeft3;

@@ -1301,8 +1301,7 @@ u64 FUN_00411710(u64 param_1, int param_2)
     valueB = *(s16 *)(iVar2 + 6);
     asm volatile("" : "+r" (valueA), "+r" (valueB));
     zero = 0.0f;
-    flag = *(u8 *)(iVar2 + 0xc);
-    asm volatile("" : "+r" (flag));
+    flag = *(volatile u8 *)(iVar2 + 0xc);
     code = iVar3 + 0x61;
     FUN_0040e3c0(zero, valueA, valueB, flag, code, 0);
   }

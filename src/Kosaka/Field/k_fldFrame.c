@@ -248,8 +248,8 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
     s32 zGrid;
     u16 gridResTypeId;
 
-
-    state = *(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET);
+    state = *(FldFrameCollisionState**)((u8*)K_Field_Get() +
+                                        FLDFRAME_FIELD_STATE_OFFSET);
     if (state->flags & FLDFRAME_COLLIS_FLAG_STATICWORLD)
     {
         state = *(FldFrameCollisionState**)((u8*)K_Field_Get() +
@@ -266,7 +266,7 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
             func_00464020(state->staticCollision, &staticRaycast.line[0],
                           func_001ac950, &staticRaycast);
         }
-        return raycast.didHit;
+        return staticRaycast.didHit;
     }
 
     collisionWorld = NULL;
@@ -276,13 +276,15 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
         fldRes = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
         xGrid = (line[0].x + 400.0f) / 800.0f;
         zGrid = (line[0].z + 400.0f) / 800.0f;
-        gridResTypeId = *(u16*)((u8*)K_Field_Get() + 0x4c + zGrid * 0x100 + xGrid * 0x10);
-
+        gridResTypeId = *(u16*)((u8*)K_Field_Get() + 0x4c +
+                                zGrid * 0x100 + xGrid * 0x10);
         while (fldRes != NULL)
         {
             if (fldRes->resTypeId == gridResTypeId)
             {
-                collisionWorld = ((FldFrameResourceCollision*)((ResrcFld*)fldRes)->unk_160)->collisionWorld;
+                collisionWorld =
+                    ((FldFrameResourceCollision*)((ResrcFld*)fldRes)->unk_160)
+                        ->collisionWorld;
                 break;
             }
             fldRes = fldRes->next;
@@ -290,6 +292,12 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
     }
     else
     {
+        collisionWorld =
+            (*(FldFrameCollisionState**)((u8*)K_Field_Get() +
+                                         FLDFRAME_FIELD_STATE_OFFSET))
+                ->collisionWorld;
+    }
+
     if (collisionWorld != NULL)
     {
         raycast.hitPointDst = hitPointDst;
@@ -303,11 +311,6 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
         return raycast.didHit;
     }
     return false;
-    if (collisionWorld != NULL)
-    {
-        FUN_004916d0(collisionWorld, func_001acb20, &raycast);
-    }
-    return raycast.didHit;
 }
 
 // FUN_001ad2f0
