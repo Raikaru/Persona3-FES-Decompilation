@@ -19,6 +19,9 @@ extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
 #pragma alias campStatusDrawSpriteCallXY FUN_001159f0
 extern s32 campStatusDrawSpriteCallXY(u32 parent, void* resource, s32 frame,
                                       f32 x, f32 y, u32 alpha, f32 scale);
+#pragma alias campStatusDrawFadeSprite FUN_001159f0
+extern s32 campStatusDrawFadeSprite(f32 x, f32 y, f32 alpha, void* resource,
+                                    s32 frame, s32 fade);
 
 extern s32 FUN_001120a0();
 #pragma alias campStatusGetFont FUN_001120a0
@@ -574,8 +577,9 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
         fade = 0;
         slide = 0.0f;
     }
-    FUN_001159f0(position.x - slide + 22.0f, (39.0f + position.y) - 12.0f,
-                 alpha, DAT_00833B90, 0, fade);
+    campStatusDrawFadeSprite(position.x - slide + 22.0f,
+                             (39.0f + position.y) - 12.0f,
+                             alpha, DAT_00833B90, 0, fade);
     if (phase != 0) {
         if (phase < 4) {
             fade = 0xff - ((phase - 1) * 0xff) / 3;
