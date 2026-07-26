@@ -1596,14 +1596,16 @@ void FUN_001b5200(u32* resource, f32 angle)
     }
     for (i = 0; i < resource[0x46]; i++)
     {
-        type = (u16)resource[i * 6 + 0x47];
+        type = *(u16*)((u8*)resource + i * 0x18 + 0x11c);
         if ((type == 0) || (type == 2))
         {
-            FUN_00318a50_typed(resource[i * 6 + 0x4a], angle, &color, 2);
+            FUN_00318a50_typed(*(u32*)((u8*)resource + i * 0x18 + 0x128),
+                               angle, &color, 2);
         }
         else if (type == 1)
         {
-            FUN_0034fe30_typed(resource[i * 6 + 0x4b], 0.0f, angle, 0.0f);
+            FUN_0034fe30_typed(*(u32*)((u8*)resource + i * 0x18 + 0x12c),
+                               0.0f, angle, 0.0f);
         }
     }
 }

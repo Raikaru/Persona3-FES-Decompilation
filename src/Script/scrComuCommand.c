@@ -1011,6 +1011,7 @@ ObjDefault:
         printf("ASSERT!! Comp flag Invalid Value!! objtype =%d\n", *(u32*)(param_1 + 0x38));
         memset(param_1 + 8, 0, 8);
         result = 1;
+    }
 ObjDone:
     return result;
 }

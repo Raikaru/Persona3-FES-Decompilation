@@ -1340,7 +1340,7 @@ u32 FUN_001C3FE0()
     return true;
 }
 
-// FUN_001C4080 NONMATCHING
+// FUN_001C4080
 u32 FUN_001C4080()
 {
     s32 index;
