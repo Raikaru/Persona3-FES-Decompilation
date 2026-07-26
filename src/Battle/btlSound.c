@@ -1083,19 +1083,7 @@ u32 FUN_002de4e0(int param_1)
 
         }
 
-        if (lVar4 != 0) {
-
-          uVar1 = 0x9f;
-
-        }
-
-        else {
-
-          uVar1 = 0x9c;
-
-        }
-
-        return uVar1;
+        return lVar4 != 0 ? 0x9f : 0x9c;
 
       case 3:
 
@@ -1112,12 +1100,12 @@ u32 FUN_002de4e0(int param_1)
         }
 
         if (lVar4 != 0) {
-
-          return 0xf0;
-
+          uVar1 = 0xf0;
         }
-
-        return 0xed;
+        else {
+          uVar1 = 0xed;
+        }
+        return uVar1;
 
       case 4:
 

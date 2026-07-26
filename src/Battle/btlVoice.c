@@ -9945,6 +9945,11 @@ void func_002eec60(void)
     u16 ids[4];
     RwV3d position;
   } VoicePositionWork;
+  typedef struct {
+    s16 a;
+    s16 b;
+    s16 c;
+  } VoiceIds;
   VoicePositionWork work;
   u32 uVar1;
   u32 uVar2;
@@ -9966,9 +9971,7 @@ void func_002eec60(void)
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
   } while (0 < iVar4);
-  work.ids[0] = DAT_007cc9b0_s16;
-  work.ids[1] = DAT_007cc9b2_s16;
-  work.ids[2] = DAT_007cc9b4_s16;
+  *(VoiceIds *)&work.ids[0] = *(VoiceIds *)&DAT_007cc9b0_s16;
   sVar7 = 0;
   work.position.y = 0.0f;
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
@@ -9979,8 +9982,8 @@ void func_002eec60(void)
     }
     else {
       iVar3 = (int)sVar7;
-      work.position.x = *(f32*)((u8*)&work + iVar3 * 8 + 0x30);
-      work.position.z = *(f32*)((u8*)&work + iVar3 * 8 + 0x34);
+      work.position.x = *(f32*)((u8*)&work + iVar3 * 8);
+      work.position.z = *(f32*)((u8*)&work + iVar3 * 8 + 4);
       *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
       sVar7++;
     }

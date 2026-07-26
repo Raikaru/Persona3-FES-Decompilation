@@ -202,6 +202,8 @@ extern void* H_Maestro_001120a0(s32 font);
 extern void* func_00170e90(s16 id);
 extern DatPersonaWork* datPersonaGetHeroPersona(s16 index);
 extern void* func_00170ed0(s16 id, s32* category);
+#pragma alias campGetEquipmentData func_00170ed0
+extern void* campGetEquipmentData(s16 id, s32* category);
 extern const char* func_00171110(s16 id, s16 field);
 extern u32 func_00171250(s16 id);
 extern u16 func_001712d0(s16 id);
@@ -481,10 +483,9 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
-    u32* values = (u32*)func_00170ed0(equipmentId, &category);
+    u32* values = (u32*)campGetEquipmentData(equipmentId, &category);
     u32 categoryMask;
     s32 bit;
-    s32 one;
 
     if (category == 3) {
         goto category3;
@@ -517,10 +518,9 @@ category3:
 invalid:
     return 0;
 found:
-    one = 1;
     bit = 0;
     for (; bit < 32; bit++) {
-        if ((categoryMask & (one << bit)) != 0) {
+        if ((categoryMask & (1 << bit)) != 0) {
             return bit;
         }
     }

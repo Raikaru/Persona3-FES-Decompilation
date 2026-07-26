@@ -979,7 +979,7 @@ void FUN_0036f490(int param_1);
 void FUN_0036f4d0(void);
 void FUN_0036f5f0(u32 param_1,u16 param_2,u16 param_3,int param_4);
 void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5, int param_6,int param_7);
-void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,int param_8,code *param_9);
+void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,code *param_8,code *param_9);
 #pragma alias FUN_0036f900_evt FUN_0036f900
 extern void FUN_0036f900_evt(int param_1,int param_2,int param_3,int param_4,
                              int param_5,int param_6,int param_7,code *param_8,
@@ -1423,7 +1423,7 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5,
 
 
 void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
-                 int param_6,int param_7,int param_8,code *param_9)
+                 int param_6,int param_7,code *param_8,code *param_9)
 
 
 
