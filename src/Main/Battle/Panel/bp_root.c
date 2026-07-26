@@ -2824,7 +2824,6 @@ void FUN_00205D60(void)
         {
             color = -1;
         }
-        type = *(u32*)(entry + 4);
         if (type == 0)
         {
             handle = *(u32*)(entry + 0x90);

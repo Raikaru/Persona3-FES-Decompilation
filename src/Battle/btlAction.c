@@ -5986,10 +5986,13 @@ void btlActionInitStateEndure(BtlAction* action)
 void btlActionUpdateStateEndure(BtlAction* action)
 {
     BtlPacket* packet;
+    BtlUnit* unit;
     s32 work[4];
     u16 skillId;
     u16 messageId;
     u16 count;
+
+    unit = action->unit;
 
     if (btlPacketCountById(0xff03) != 0)
     {
@@ -6178,15 +6181,18 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
 {
     BtlPacket* root;
     BtlPacket* packet;
+    BtlUnit* unit;
     s32 work;
     s16 damage;
+
+    unit = action->unit;
 
     if (btlPacketCountById(0x700) || btlPacketCountById(0x506) ||
         btlPacketCountById(0x507) || btlPacketCountById(0x301))
     {
         return;
     }
-    if ((datCalcGetBadStatus(action->unit->datUnit) & 0xfffff) != 0x80)
+    if ((datCalcGetBadStatus(unit->datUnit) & 0xfffff) != 0x80)
     {
         if (action->target.commandId == 2 || action->target.commandId == 3 ||
             action->target.commandId == 1)
@@ -6206,21 +6212,21 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
     {
         root = FUN_002d7e20(action, action, &work, 1, 1);
         btlPacketRegister(root, BTLPACKET_TYPE_1);
-        packet = FUN_002bd480(action->unit);
+        packet = FUN_002bd480(unit);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002bdbd0(action->unit, action->unit, -1, 0, 0, 0, 1, &work);
+        packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, &work);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
         packet->unk_47 &= ~0x20;
         btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        packet = FUN_002bd230(action->unit, 0, 0);
+        packet = FUN_002bd230(unit, 0, 0);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
         packet->unk_47 &= ~0x20;
         btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        packet = btlUnitCreateAnimPacket(action->unit, BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+        packet = btlUnitCreateAnimPacket(unit, BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
         packet->actionUID = action->uid;

@@ -2618,7 +2618,7 @@ u8 func_00182810(u32 index)
 u32 func_001828d0(s16 id, DatEquipment* out)
 {
     u8* resource;
-    u16* range;
+    register u16* range;
     s32 percent;
     s32 value;
 
