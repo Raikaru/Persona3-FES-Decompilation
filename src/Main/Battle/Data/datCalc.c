@@ -4968,7 +4968,7 @@ u32 FUN_00309080(u16 *param_1,char param_2)
 
 
 
-// FUN_00309250 NONMATCHING
+// FUN_00309250
 u32 FUN_00309250(u16 *param_1,u8 param_2)
 {
   u16 uVar1;
