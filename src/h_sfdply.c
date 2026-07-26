@@ -1935,9 +1935,10 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     while (y < height)
     {
         x = 0;
+        while (x < width)
         {
             pixel = dst + (x * 4);
-            pixel[3] = 0xFF;
+            pixel[3] = alpha;
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];

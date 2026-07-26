@@ -6739,6 +6739,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
                       &gp0xffffa068,*(u32 *)(param_3 + 0x27c));
 
       iVar2 = *(int *)(param_3 + 0x280);
+      param_1 = param_1 + iVar2;
 
     }
 
@@ -6750,10 +6751,10 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
                       &gp0xffffa068,(u32)(&PTR_s_START_0069e100)[cVar1]);
 
       iVar2 = (int)(char)(&DAT_0069e180)[*(char *)((int)psVar3 + iVar4 + 2)];
+      param_1 = param_1 + iVar2;
 
     }
 
-    param_1 = param_1 + iVar2;
 
     iVar5 = iVar4 + 1;
 

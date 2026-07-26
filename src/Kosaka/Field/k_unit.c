@@ -1957,14 +1957,21 @@ void func_001d1860(u32 value)
 {
     s32 i;
     FldUnit* unit;
+    u32 valid;
+    u32 predicate;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL &&
-            ((volatile FldUnit*)unit)->resrc != NULL)
+        valid = 0;
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            func_0019c2f0(((volatile FldUnit*)unit)->resrc->renderTexShadowTask, value);
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
+        {
+            func_0019c2f0(unit->resrc->renderTexShadowTask, value);
         }
     }
 }

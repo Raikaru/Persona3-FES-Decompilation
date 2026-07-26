@@ -51046,7 +51046,7 @@ u64 FUN_0034e690(int param_1)
 
   FUN_00521250(puVar4 + 3,iVar3 + 0xc,0x48);
 
-  FUN_0034e820((u64)(uVar2),(u16)(**(u16 **)(iVar3 + 0x5c)),(u64)(iVar1));
+  FUN_0034e820(uVar2,**(u16 **)(iVar3 + 0x5c),iVar1);
 
   if (*(int *)(puVar4[0x17] + 8) != 0) {
 
