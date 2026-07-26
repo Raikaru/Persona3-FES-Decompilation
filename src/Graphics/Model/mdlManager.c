@@ -1174,6 +1174,8 @@ extern void* RpMaterialGetUserDataArray(void* material,int data);
 extern char* RpUserDataArrayGetName(void* userData);
 extern int RpUserDataArrayGetFormat(void* userData);
 extern f32 func_0052e9e8(f32 value);
+#pragma alias func_0052ea18_typed func_0052ea18
+extern f32 func_0052ea18_typed(f32 x, f32 y);
 u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
                   RtAnimInterpolator* param_4, f32 param_1);
 u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
@@ -1973,7 +1975,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             fVar23 = fGpffff80d0 * fVar20 - 90.0f;
 
-            fVar20 = (float)func_0052ea18(fStack_40,fStack_38);
+            fVar20 = (float)func_0052ea18_typed(fStack_40,fStack_38);
 
             fVar22 = fGpffff80d0 * fVar20 + 180.0f;
 
@@ -1981,7 +1983,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             fVar21 = fGpffff80d0 * fVar20 - 90.0f;
 
-            fVar20 = (float)func_0052ea18(fStack_30,fStack_28);
+            fVar20 = (float)func_0052ea18_typed(fStack_30,fStack_28);
 
             fVar20 = fGpffff80d0 * fVar20;
 
