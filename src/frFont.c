@@ -160,7 +160,7 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3);
 void FUN_003b1c40(int param_1,int param_2,int param_3);
 void FUN_003b1c90(int param_1,int param_2,int param_3);
 void FUN_003b1d90(u32 param_1,int param_2);
-void FUN_003b2020(long param_1,int param_2);
+void FUN_003b2020(int param_1,int param_2);
 void FUN_003b22a0(u32 *param_1);
 void FUN_003b2400(FrFontState *state);
 u32 FUN_003b2430(void *param_1);
@@ -2840,7 +2840,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 // FUN_003B2020 NONMATCHING
 
 
-void FUN_003b2020(long param_1,int param_2)
+void FUN_003b2020(int param_1,int param_2)
 
 
 
@@ -2858,7 +2858,7 @@ void FUN_003b2020(long param_1,int param_2)
 
   u32 uVar6;
 
-  int lVar7;
+  long lVar7;
 
   u8 *pbVar8;
 

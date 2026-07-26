@@ -18,6 +18,10 @@ float fGpffff8204;
 float fGpffffad18;
 u32 uGpffff8208;
 u32 uGpffffad1c;
+#pragma alias sinf_fclShop sinf
+extern f32 sinf_fclShop(f32);
+#pragma alias cosf_fclShop cosf
+extern f32 cosf_fclShop(f32);
 /* FUSION_EXACT_PROTOS */
 void FUN_0040e3c0(float, s32, s32, u8, s32, s32);
 #pragma alias FUN_0040e3c0_i FUN_0040e3c0
@@ -347,7 +351,7 @@ u32 FUN_004105e0(int param_1,int param_2,long param_3)
 
       puVar1[7] = sVar4 + 1;
 
-      puVar1[2] = (short)(int)(255.0f - (float)((short)(sVar4 + 1) * 0xff) / 10.0);
+      puVar1[2] = (short)(int)(255.0f - (float)((short)(sVar4 + 1) * 0xff) / 10.0f);
 
       if (9 < (short)puVar1[7]) {
 
@@ -571,7 +575,7 @@ u64 FUN_00410a10(u64 param_1,int param_2)
 
   }
 
-  FUN_0040e3f0(0,fGpffff80d0 * -fVar8,fVar7,fVar7,iVar3,iVar4,(int)fVar2 & 0xff,0x55,0,iVar5,iVar6);
+  FUN_0040e3f0_typed(0.0f,fGpffff80d0 * -fVar8,fVar7,fVar7,iVar3,iVar4,(int)fVar2 & 0xff,0x55,0,iVar5,iVar6);
 
   fVar2 = fVar9;
 
@@ -581,9 +585,9 @@ u64 FUN_00410a10(u64 param_1,int param_2)
 
   }
 
-  FUN_0040e3f0(0,fGpffff80d0 * (fGpffff8110 - fVar8),fVar7,fVar7,iVar3,iVar4,(int)fVar2 & 0xff,0x55,
+  FUN_0040e3f0_typed(0.0f,fGpffff80d0 * (fGpffff8110 - fVar8),fVar7,fVar7,iVar3,iVar4,(int)fVar2 & 0xff,0x55,
 
-               0,iVar5,iVar6);
+                    0,iVar5,iVar6);
 
   fVar2 = fVar9;
 
@@ -593,9 +597,9 @@ u64 FUN_00410a10(u64 param_1,int param_2)
 
   }
 
-  FUN_0040e3f0(0,fGpffff80d0 * (fGpffff81fc - fVar8),fVar7,fVar7,iVar3,iVar4,(int)fVar2 & 0xff,0x55,
+  FUN_0040e3f0_typed(0.0f,fGpffff80d0 * (fGpffff81fc - fVar8),fVar7,fVar7,iVar3,iVar4,(int)fVar2 & 0xff,0x55,
 
-               0,iVar5,iVar6);
+                    0,iVar5,iVar6);
 
   if (2.1474836e+09f <= fVar9) {
 
@@ -603,9 +607,9 @@ u64 FUN_00410a10(u64 param_1,int param_2)
 
   }
 
-  FUN_0040e3f0(0,fGpffff80d0 * (fGpffff8168 - fVar8),fVar7,fVar7,iVar3,iVar4,(int)fVar9 & 0xff,0x55,
+  FUN_0040e3f0_typed(0.0f,fGpffff80d0 * (fGpffff8168 - fVar8),fVar7,fVar7,iVar3,iVar4,(int)fVar9 & 0xff,0x55,
 
-               0,iVar5,iVar6);
+                    0,iVar5,iVar6);
 
   return 0;
 
@@ -1669,7 +1673,7 @@ u32 FUN_00411790(u64 param_1,int param_2,long param_3)
 
             sVar4 = *(short *)((int)puVar9 + 0xe);
 
-            fVar11 = (float)sinf((fGpffff8110 * (float)(int)sVar5) / 14.0f);
+            fVar11 = (float)sinf_fclShop((fGpffff8110 * (float)(int)sVar5) / 14.0f);
 
             *(short *)(puVar9 + 3) =
 
@@ -2906,7 +2910,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
     iVar10 = (int)sVar3 >> 1;
 
-    FUN_0040e3f0(0,fGpffff80d0 * *(float *)(psVar9 + 4),0x3f800000,0x3f800000,
+    FUN_0040e3f0_typed(0.0f,fGpffff80d0 * *(float *)(psVar9 + 4),1.0f,1.0f,
 
                  ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
 
@@ -3292,19 +3296,19 @@ u64 FUN_00413680(u64 param_1,int param_2)
 
       sVar3 = *psVar8;
 
-      fVar9 = (float)cosf(fVar14);
+      fVar9 = (float)cosf_fclShop(fVar14);
 
       fVar13 = (float)(int)sVar3;
 
-      fVar10 = (float)sinf(fVar14);
+      fVar10 = (float)sinf_fclShop(fVar14);
 
       iVar11 = (int)((float)(int)sVar3 - (fVar13 * fVar9 + (float)(int)psVar8[1] * fVar10));
 
-      fVar9 = (float)sinf(fVar14);
+      fVar9 = (float)sinf_fclShop(fVar14);
 
       fVar13 = (float)-(int)*psVar8;
 
-      fVar10 = (float)cosf(fVar14);
+      fVar10 = (float)cosf_fclShop(fVar14);
 
       iVar12 = (int)((float)(int)psVar8[1] - (fVar13 * fVar9 + (float)(int)psVar8[1] * fVar10));
 
