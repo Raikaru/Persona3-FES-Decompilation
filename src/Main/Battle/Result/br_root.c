@@ -1555,6 +1555,7 @@ void func_001f3270(KwlnTask *task)
     u32 value;
     u32 value2;
     s32 currentLevel;
+    s32 baseLevel;
     s32 threshold;
     s32 lower;
     s32 upper;
@@ -1585,6 +1586,7 @@ void func_001f3270(KwlnTask *task)
     /* Retail 0x1f32d8-0x1f33b0: level-to-card threshold. */
     candidateCount = 0;
     currentLevel = (s32)(s8)(datGetLevel(1) & 0xff);
+    baseLevel = currentLevel;
     if (datGetScenarioMode() != 0) {
         if (currentLevel >= 0x19 && currentLevel < 0x23) {
             threshold = ((s16 *)D_006846CE)[currentLevel] + 1;
@@ -1619,7 +1621,7 @@ void func_001f3270(KwlnTask *task)
         if (currentLevel < level || level < lower) {
             continue;
         }
-        if (currentLevel < level && level < upper) {
+        if (baseLevel < level && level < upper) {
             best = (s32)i;
             upper = level;
         }
@@ -1671,7 +1673,8 @@ void func_001f3270(KwlnTask *task)
     } else if (value == 0) {
         mode = BR_U32(work, 0xe4) != 0 ? 1 : 0;
     } else {
-        mode = 2;
+        K_Assert(D_00684620, 0x5f2);
+        mode = value;
     }
 
     /* Retail 0x1f36e0-0x1f3bf0: choose cards and mark special flags. */
@@ -1927,6 +1930,7 @@ void func_001f3270(KwlnTask *task)
         if (!done) {
             printf(D_00684770);
             out->kind = 1;
+            for (;;) {
             choice = RpRandom() & 3;
             printf(D_00684788, choice);
             switch (choice) {
@@ -1988,6 +1992,8 @@ void func_001f3270(KwlnTask *task)
             }
             out->high = (u32)choice;
             out->low = value2;
+                break;
+            }
         }
     }
 
