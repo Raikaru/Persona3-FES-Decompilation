@@ -2164,8 +2164,12 @@ void bpTexApplyActions(void)
     for (i = 0; i < actionCount; i++)
     {
         action = (u32*)((u8*)work + 0x12688 + i * 0x24);
-        if (action[0] == 2)
+        switch (action[0])
         {
+        case 1:
+            frame -= (s32)action[8] - 1;
+            break;
+        case 2:
             directCount = 0;
             for (child = BP_TEX_PTR(work, 0x1265c);
                  child != NULL;
@@ -2181,10 +2185,7 @@ void bpTexApplyActions(void)
                 func_0019d3f0((const char*)0x0068ea00, 0xbc);
             }
             frame += directCount - 1;
-        }
-        else if (action[0] == 1)
-        {
-            frame -= (s32)action[8] - 1;
+            break;
         }
     }
 
