@@ -585,7 +585,7 @@ typedef struct
 extern float fGpffff8028;
 extern u8 gp0xffff9d68;
 extern void LAB_0035aa10(void);
-extern void LAB_0035a850(void);
+extern u32 LAB_0035a850(void* param_1);
 extern void FUN_004c33d0(u8* out, int src, int mode);
 extern void FUN_004c2f30(int dst, u8* a, float* b);
 extern long FUN_004c1750(u64 stream, void* buf, int size);
@@ -830,6 +830,17 @@ u64 FUN_0035a770(u64 param_1,u64 param_2)
   return 0;
 
 }
+// FUN_0035a850
+u32 LAB_0035a850(void* param_1)
+{
+    u32 index = *(u32*)((u8*)param_1 + 4);
+    u32 result = index << 1;
+    result += index;
+    result <<= 2;
+    result += index;
+    result <<= 2;
+    return result;
+}
 
 // The retail callback table places a second callback at 0x0035AA10; its
 // marker below narrows this function's true window to 0x1A0 bytes.
@@ -948,7 +959,7 @@ u32 FUN_0035aba0(void)
     desc.funcD = FUN_0035a870;
     desc.funcE = FUN_0035a770;
     desc.funcF = FUN_0035a6a0;
-    desc.funcG = &LAB_0035a850;
+    desc.funcG = (void (*)())LAB_0035a850;
     desc.zero = 0;
 
     result = FUN_004b6680(&desc);
