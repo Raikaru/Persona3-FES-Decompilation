@@ -839,7 +839,8 @@ void func_00111500(KwlnTask* task)
 
     taskCopy = task;
     work = (MaestroStreamWork*)taskCopy->workData;
-    work->stopAtFrame = (value = 1);
+    value = 1;
+    work->stopAtFrame = value;
     work->complete = 0;
 }
 
@@ -3265,16 +3266,13 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
 
 {
-  int *piVar1;
-
-  void* uVar3;
-
   int *piVar2;
 
+  int *piVar1;
 
 
-  uVar3 = func_001158b0(0);
-  piVar2 = (int *)uVar3;
+
+  piVar2 = (int *)func_001158b0(0);
   ((f32 *)piVar2)[0xb] = param_3;
 
   ((f32 *)piVar2)[4] = param_1;

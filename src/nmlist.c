@@ -783,6 +783,7 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
 {
     int index;
     u32* values;
+    u32 *valuePtr;
 
     if (param_2 == 0 || param_3 == 0)
     {
@@ -795,9 +796,11 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
     values = (u32*)param_2;
     for (index = 0; index < param_3; index++)
     {
+        valuePtr = values;
+        valuePtr = valuePtr + index;
         FUN_003c4710_typed((int *)(param_1 + 4),
                            (int *)*(u32 *)(param_1 + 8),
-                           (int *)values[index]);
+                           (int *)*valuePtr);
     }
     return index;
 }

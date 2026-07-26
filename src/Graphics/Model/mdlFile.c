@@ -407,6 +407,8 @@ extern void FUN_00325e40_passthru(void);
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
+#pragma alias FUN_00325d60_ptr FUN_00325d60
+extern void FUN_00325d60_ptr(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
@@ -815,7 +817,7 @@ u32 FUN_0034fd50();
 void FUN_0034fd70(u64 param_1,u16 param_2);
 void FUN_0034fdb0(u64 param_1,u16 param_2);
 void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2);
-void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4);
+void FUN_0034fe30(u8 (*param_1) [16],float param_2,float param_3,float param_4);
 void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034ff70(float param_1,u8 (*param_2) [16]);
 void FUN_0034ff90(int param_1,u32 *param_2);
@@ -52342,12 +52344,12 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2)
 
 // FUN_0034FE30 NONMATCHING
 
-void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4)
+void FUN_0034fe30(u8 (*param_1) [16],float param_2,float param_3,float param_4)
 {
   __int128 extraout_vf10;
 
   FUN_00357ea0(DAT_007caf14 * param_2,DAT_007caf14 * param_3,DAT_007caf14 * param_4);
-  FUN_00325d60(param_1,(u8 (*)[16])&extraout_vf10);
+  FUN_00325d60_ptr(param_1,(u8 (*)[16])&extraout_vf10);
 }
 
 
@@ -52616,8 +52618,8 @@ void FUN_00350190(void)
 
   *(volatile u32 *)DAT_00957bc0_abs = uVar1;
   *(volatile u16 *)DAT_00957bc4_abs = uVar2;
-  *(volatile u32 *)DAT_00957bc8_abs = 0;
-  *(volatile u32 *)DAT_00957bcc_abs = 0;
+  *(volatile u32 *)(u32)DAT_00957bc8_abs = 0;
+  *(volatile u32 *)(u32)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   DAT_007ce578 = 1;
   return;

@@ -4160,11 +4160,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     f32 halfDistance;
     f32 angle;
     f32 half;
-    union
-    {
-        u32 narrow;
-        s64 wide;
-    } index;
+    u32 index;
     f32 tempHalf;
     f32 sourceProduct;
     unit = camera->action->unit;

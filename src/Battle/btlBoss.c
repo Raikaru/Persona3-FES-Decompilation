@@ -824,11 +824,14 @@ u64 func_002f88c0()
                         break;
                     case 0x113:
                     case 0x114:
-                        return 1LL;
+                        result = 1LL;
+                        goto case_1a0_done;
                 }
                 unit = unit->next;
             }
-            return 0;
+            result = 0;
+case_1a0_done:
+            return result;
         case 0x1a4:
             unit = *(BtlUnit**)((u8*)gBtl + 0x158);
             while (unit != NULL)
@@ -838,15 +841,16 @@ u64 func_002f88c0()
                     case 0x115:
                         if (unit->flags3 & 8)
                         {
-                            return 0;
+                            result = 0;
+                            goto case_1a4_done;
                         }
                         break;
                     case 0x105:
                     case 0x106:
                         if (unit->flags3 & 8)
                         {
-                            result = 1;
-                            return result;
+                            result = 1LL;
+                            goto case_1a4_done;
                         }
                         break;
                     default:
@@ -854,7 +858,9 @@ u64 func_002f88c0()
                 }
                 unit = unit->next;
             }
-            return 0;
+            result = 0;
+case_1a4_done:
+            return result;
         case 0x1a6:
             return func_002ecac0() != 1;
         case 0x1a8:

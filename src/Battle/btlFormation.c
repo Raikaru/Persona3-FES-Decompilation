@@ -549,6 +549,8 @@ extern void func_002b90d0(int param_1,u32 param_2);
 extern void func_002b9220(int param_1);
 extern void func_002b9300(int param_1);
 extern bool func_002b9350(int param_1);
+#pragma alias func_002b9350_u32 func_002b9350
+extern u32 func_002b9350_u32(int param_1);
 extern u32 func_002b9370(int param_1,u16 param_2);
 extern u32 func_002b93c0(int param_1,u16 param_2);
 extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
@@ -2337,7 +2339,7 @@ u32 func_002bad60(u32 *param_1)
   u32 unaff_s1_lo;
   u32 unaff_s2_lo;
   
-  if (func_002b9350(*param_1) == 0)
+  if (func_002b9350_u32(*param_1) == 0)
     return 0;
   puVar2 = (u16 *)param_1[4];
     if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {

@@ -389,7 +389,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
   if (DAT_006a1d10_abs[param_1] != 0) {
 
 
-    uVar2 = FUN_00191af0();
+    uVar2 = FUN_00191af0(DAT_006a1d10_abs[param_1]);
 
     *(int *)(iVar3 + 4) = (int)uVar2;
 
