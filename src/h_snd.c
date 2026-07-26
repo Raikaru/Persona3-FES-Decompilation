@@ -167,7 +167,7 @@ typedef struct HsndInitParams
 
 static HsndInitParams sSndInitParams;
 
-extern f32 DAT_007cad28;
+extern const f32 DAT_007cad28;
 extern void func_0057f768(void* params);
 extern void func_0054cfe8(void);
 extern void func_0054d468(void);

@@ -2244,7 +2244,7 @@ void FUN_0016c2f0(void)
     s32* piVar1;
     u32 uVar2;
     u32 count;
-    u32 n;
+    s32 n;
     s32 scaled;
     u8* p;
     u32* output;
@@ -2294,8 +2294,7 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfb4 = (s32*)p;
-    scaled = n * 0x20;
-    p += scaled;
+    p += n << 5;
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfc8 = (s32*)p;

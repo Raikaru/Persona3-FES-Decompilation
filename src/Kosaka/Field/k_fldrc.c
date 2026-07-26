@@ -2413,7 +2413,7 @@ u32 FUN_001b6eb0(u16 group, u32 id)
     return result;
 }
 
-// FUN_001b75e0 NONMATCHING
+// FUN_001b75e0
 u32 FUN_001b75e0(u32 task)
 {
     s32* work;
