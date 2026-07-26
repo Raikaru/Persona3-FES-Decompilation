@@ -2182,10 +2182,10 @@ u32 FUN_001b6eb0(u16 group, u32 id)
     u32 event;
 
     id &= 0xffff;
+    result = id;
     FUN_0017d920();
     FUN_0017da40();
     mode = (u8)FUN_0016ef30();
-    result = id;
     if ((group == 0x0f) && (id == 6))
     {
         return id;
@@ -2205,11 +2205,14 @@ u32 FUN_001b6eb0(u16 group, u32 id)
         event = FUN_001a01c0();
         if ((event != 1) && (group < 200))
         {
+            /*
+             * Retail mode jump table 0x7b6b00.  The case declaration order
+             * below follows the retail body order: 0x1b7034, 0x1b73bc,
+             * 0x1b7468, 0x1b7484, and 0x1b7490.
+             */
             switch (mode)
             {
-                case 0:
-                    result = id + 400;
-                    break;
+                /* Retail mode 1-4 body: 0x1b7034-0x1b7138. */
                 case 1:
                 case 2:
                 case 3:
@@ -2233,19 +2236,24 @@ u32 FUN_001b6eb0(u16 group, u32 id)
                     {
                         result = id + 700;
                     }
-                    if (fldrc_event_override(group, id) != 0xffffffff)
-                    {
-                        result = id;
-                    }
                     break;
+
+                /* Retail mode 5 body: 0x1b73bc-0x1b7468. */
                 case 5:
-                    if ((group == 7 && ((id == 0x0e) || (id == 0x0f))) ||
-                        group == 8 ||
-                        (group == 9 && ((id == 3) || (id == 4) || (id == 5) || (id == 6))))
+                    result = id + 100;
+                    if (((group == 7) && (id == 0x0e)) ||
+                        ((group == 7) && (id == 0x0f)) ||
+                        (group == 8) ||
+                        ((group == 9) && (id == 3)) ||
+                        ((group == 9) && (id == 4)) ||
+                        ((group == 9) && (id == 5)) ||
+                        ((group == 9) && (id == 6)))
                     {
                         result = id;
                     }
                     break;
+
+                /* Retail modes 6-7 body: 0x1b7468-0x1b7490. */
                 case 6:
                 case 7:
                     result = id + 200;
@@ -2254,17 +2262,40 @@ u32 FUN_001b6eb0(u16 group, u32 id)
                         result = id;
                     }
                     break;
+
+                /* Retail mode 0 body: 0x1b7484-0x1b7490. */
+                case 0:
+                    result = id + 400;
+                    break;
+
+                /* Retail mode 8 body: 0x1b7490-0x1b7494. */
                 case 8:
                     result = id + 300;
                     break;
+
                 default:
                     break;
             }
-            if (((group == 6) && (id == 0x16)) ||
-                ((group == 7) && ((id == 10) || (id == 0x0b) || (id == 0x0c) ||
-                                  (id == 0x0d))) ||
-                ((group == 8) && (id == 3)) ||
-                ((group == 9) && (id == 5)) ||
+
+            /*
+             * Retail's inlined event override chain occupies 0x1b7154-
+             * 0x1b73b0; keep each accessor call at its retail use site.
+             */
+            if (((group == 6) && (id == 4)) ||
+                ((group == 6) && (id == 5)) ||
+                ((group == 6) && (id == 7)) ||
+                ((group == 6) && (id == 8)) ||
+                ((group == 6) && (id == 0x15)) ||
+                ((group == 6) && (id == 0x16)) ||
+                ((group == 7) && (id == 1)) ||
+                ((group == 7) && (id == 3)) ||
+                ((group == 7) && ((id == 4) || (id == 5) ||
+                                  (id == 6) || (id == 7) || (id == 0x0e) || (id == 0x0f))) ||
+                (group == 8) ||
+                ((group == 9) && ((id == 3) || (id == 4) || (id == 5) || (id == 6))) ||
+                ((group == 10) && (id == 2)) ||
+                ((group == 0x0e) && (id == 2)) ||
+                ((group == 0x0f) && (id == 1)) ||
                 ((group == 0x10) && ((id == 4) || (id == 5))))
             {
                 if ((FUN_0017e480(4, 0x1b, 0x0c, 0x1f) == 1) ||
@@ -2272,6 +2303,22 @@ u32 FUN_001b6eb0(u16 group, u32 id)
                 {
                     result = id;
                 }
+            }
+            /*
+             * Retail post-dispatch overrides: 0x1b74ac-0x1b7570.
+             * Preserve the repeated group comparisons that drive layout.
+             */
+            if (((group == 6) && (id == 0x16)) ||
+                ((group == 7) && (id == 0x0a)) ||
+                ((group == 7) && (id == 0x0b)) ||
+                ((group == 7) && (id == 0x0c)) ||
+                ((group == 7) && (id == 0x0d)) ||
+                ((group == 8) && (id == 3)) ||
+                ((group == 9) && (id == 5)) ||
+                ((group == 0x10) && (id == 4)) ||
+                ((group == 0x10) && (id == 5)))
+            {
+                result = id;
             }
             if (group == 4)
             {
