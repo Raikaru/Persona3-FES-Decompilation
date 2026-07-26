@@ -526,50 +526,119 @@ void FUN_0013c780(CampEquipmentWork* work)
 {
     u16 candidateIndices[304];
     s32 candidateCount = 0;
-    s32 scanIndex;
-    s32 recordCount = 0;
+    s32 scanIndex = 0;
+    s32 recordCount;
+    s32 index;
+    s32 category;
+    s16 candidate;
+    CampEquipmentEntry* entry;
+    u16* candidatePtr;
+    u8* classPtr;
+    u32* availablePtr;
+    u32* categoryCounts;
+    u32 categoryMask;
 
-    for (scanIndex = 0; scanIndex < 300; scanIndex++) {
+    while (scanIndex < 300) {
         if (datGetEquipmentId(1, scanIndex) != 0) {
-            candidateIndices[candidateCount++] = (u16)scanIndex;
+            candidateIndices[candidateCount] = (u16)scanIndex;
+            candidateCount++;
         }
+        scanIndex++;
     }
-    if (candidateCount > 1) {
-        qsort(candidateIndices, candidateCount, sizeof(candidateIndices[0]),
-              campCompareEquipmentIndex);
+    if (candidateCount >= 2) {
+        qsort(candidateIndices, candidateCount, 2, campCompareEquipmentIndex);
     }
+    recordCount = 0;
 
-    for (scanIndex = 0; scanIndex < 0x14; scanIndex++) {
+    scanIndex = 0;
+    while (scanIndex < 0x14) {
         if (datGetEquipmentId(-1, scanIndex) != 0) {
-            CampEquipmentEntry* entry = campEquipmentEntry(work, recordCount++);
-            campEquipmentPopulate(entry, -1, scanIndex);
-            entry->categoryMask = campEquipmentFirstCategory((s16)entry->itemId);
+            entry = &work->entries[recordCount];
+            classPtr = &entry->equipmentClass;
+            entry->itemId = datGetEquipmentId(-1, scanIndex);
+            entry->categoryMask = FUN_0013c6a0((s16)entry->itemId);
+            *classPtr = (u8)func_00171250((s16)entry->itemId);
+            entry->effect = datGetEquipmentEffect(-1, scanIndex);
+            entry->slotType = func_0016f810(-1, scanIndex);
             entry->sourceIndex = scanIndex + 0x1000;
             entry->ownedFlag = 1;
             entry->availableFlag = 1;
-        }
-    }
-    for (scanIndex = 0; scanIndex < candidateCount; scanIndex++) {
-        s16 candidate = (s16)candidateIndices[scanIndex];
-        CampEquipmentEntry* entry;
-        s32 slot;
-
-        if (datGetEquipmentId(1, candidate) == 0) {
-            continue;
-        }
-        entry = campEquipmentEntry(work, recordCount++);
-        campEquipmentPopulateWithCategory(entry, 1, candidate,
-                                          campFirstSetBit(func_0016f720(1, candidate)));
-        entry->ownedFlag = 0;
-        entry->availableFlag = 1;
-        for (slot = 0; slot < 4; slot++) {
-            if (candidate == datGetEquipmentIdx(1, (s16)slot)) {
-                entry->availableFlag = 0;
+            switch (*classPtr) {
+            case 0:
+                entry->valueA = func_0016f9f0(-1, scanIndex);
+                entry->valueB = func_0016fae0(-1, scanIndex);
+                break;
+            case 1:
+                entry->valueC = func_0016fbd0(-1, scanIndex);
+                break;
+            case 2:
+                entry->valueD = func_0016fcc0(-1, scanIndex);
+                break;
+            default:
                 break;
             }
+            recordCount++;
         }
+        scanIndex++;
     }
-    campEquipmentClearCategoryCounts(work);
+
+    categoryCounts = work->categoryCounts;
+    categoryCounts[0] = recordCount;
+    index = 0;
+    while (index < candidateCount) {
+        candidatePtr = &candidateIndices[index];
+        candidate = (s16)*candidatePtr;
+        if (datGetEquipmentId(1, candidate) != 0) {
+            entry = &work->entries[recordCount];
+            availablePtr = &entry->availableFlag;
+            classPtr = &entry->equipmentClass;
+            candidatePtr = &candidateIndices[index];
+            entry->itemId = datGetEquipmentId(1, (s16)*candidatePtr);
+            categoryMask = func_0016f720(1, (s16)*candidatePtr);
+            category = 0;
+            while (category < 0x15) {
+                if ((categoryMask & (1u << category)) != 0) {
+                    entry->categoryMask = category;
+                    break;
+                }
+                category++;
+            }
+            *classPtr = (u8)func_00171250((s16)entry->itemId);
+            entry->effect = datGetEquipmentEffect(1, (s16)*candidatePtr);
+            entry->slotType = func_0016f810(1, (s16)*candidatePtr);
+            entry->sourceIndex = *candidatePtr;
+            entry->ownedFlag = 0;
+            *availablePtr = 1;
+            if (candidate == datGetEquipmentIdx(1, 0) ||
+                candidate == datGetEquipmentIdx(1, 1) ||
+                candidate == datGetEquipmentIdx(1, 2) ||
+                candidate == datGetEquipmentIdx(1, 3)) {
+                *availablePtr = 0;
+            }
+            switch (*classPtr) {
+            case 0:
+                entry->valueA = func_0016f9f0(1, (s16)*candidatePtr);
+                entry->valueB = func_0016fae0(1, (s16)*candidatePtr);
+                break;
+            case 1:
+                entry->valueC = func_0016fbd0(1, (s16)*candidatePtr);
+                break;
+            case 2:
+                entry->valueD = func_0016fcc0(1, (s16)*candidatePtr);
+                break;
+            default:
+                break;
+            }
+            recordCount++;
+        }
+        index++;
+    }
+
+    category = 0;
+    while (category < 0x15) {
+        categoryCounts[category] = 0;
+        category++;
+    }
     work->entryCount = recordCount;
 }
 
