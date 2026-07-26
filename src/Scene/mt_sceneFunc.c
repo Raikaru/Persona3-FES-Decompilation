@@ -3949,60 +3949,32 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
 #undef FUN_003bbfd0
 // FUN_003BBFD0 NONMATCHING
 
-
-void FUN_003bbfd0(u32 param_1,u32 param_2,u64 param_3,u64 param_4,
-                  u64 param_5,float *param_6,float *param_7)
-
-
-
+void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
+                  float *param_5,float *param_6,float *param_7)
 {
-
   float fStack_28;
-
   float fStack_24;
-
   float fStack_20;
-
   float fStack_18;
-
   float fStack_14;
-
   float fStack_10;
-
   float fStack_c;
-
   float fStack_8;
-
   float fStack_4;
 
-  
-
-  FUN_003bbc90();
-
-  FUN_003bbc90(param_2,param_3,param_4,param_5,&fStack_8,&fStack_10,&fStack_18);
-
+  FUN_003bbc90_scene_typed(param_1,param_3,param_4,param_5,&fStack_4,&fStack_c,&fStack_14);
+  FUN_003bbc90_scene_typed(param_2,param_3,param_4,param_5,&fStack_8,&fStack_10,&fStack_18);
   fStack_28 = fStack_8 - fStack_4;
-
   fStack_24 = fStack_10 - fStack_c;
-
   fStack_20 = fStack_18 - fStack_14;
-
   FUN_004c6ac0(&fStack_28);
-
   *param_6 = fStack_4;
-
   param_6[1] = fStack_c;
-
   param_6[2] = fStack_14;
-
   *param_7 = fStack_8;
-
   param_7[1] = fStack_10;
-
   param_7[2] = fStack_18;
-
   return;
-
 }
 #define FUN_003bbfd0(...) ((void (*)(...))FUN_003bbfd0)(__VA_ARGS__)
 #undef FUN_003bc0e0

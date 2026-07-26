@@ -1463,12 +1463,11 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
   } while (0 < iVar5);
 
   for (iVar5 = 0; iVar5 < 8; iVar5 = iVar5 + 1) {
-
     psVar4 = (short *)(iVar1 + aiStack_20[iVar5] * 0xc);
-
-    ((void (*)(...))FUN_0040e3f0)(0,0,*(u32 *)(psVar4 + 4),*(u32 *)(psVar4 + 4),*psVar4 + 0x10,
-
-                 psVar4[1] + 0xd,(char)psVar4[2],iVar5 + 0x5a,0,0,0);
+    FUN_0040e3f0(0.0f, 0.0f,
+                 *(float *)(psVar4 + 4), *(float *)(psVar4 + 4),
+                 *psVar4 + 0x10, psVar4[1] + 0xd, (char)psVar4[2],
+                 iVar5 + 0x5a, 0, 0, 0);
 
   }
 
