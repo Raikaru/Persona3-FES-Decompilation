@@ -2749,37 +2749,39 @@ journey_true:
     
         }
     
-        if (FUN_002ffbc0(100) < 0x32) {
+        uVar4 = FUN_002ffbc0(100);
     
-          if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc0) {
+        if (uVar4 >= 0x32) {
     
-            return 0xa9;
+          if (*(s32 *)DAT_00697BE0_abs == -1) {
+    
+            lVar3 = 0;
     
           }
     
-          return 0xaa;
+          else {
+    
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BE0_abs);
+    
+          }
+    
+          if (lVar3 != 0) {
+    
+            return 0xa7;
+    
+          }
+    
+          return 0xa6;
     
         }
     
-        if (*(s32 *)DAT_00697BE0_abs == -1) {
+        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc0) {
     
-          lVar3 = 0;
-    
-        }
-    
-        else {
-    
-          lVar3 = FUN_0016f190(*(s32 *)DAT_00697BE0_abs);
+          return 0xa9;
     
         }
     
-        if (lVar3 != 0) {
-    
-          return 0xa7;
-    
-        }
-    
-        return 0xa6;
+        return 0xaa;
       
       case 3:
       
@@ -2795,7 +2797,7 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (0x31 < uVar4) {
+        if (uVar4 >= 0x32) {
       
           if (*(s32 *)DAT_00697be4_abs == -1) {
       
@@ -2841,7 +2843,7 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (0x31 < uVar4) {
+        if (uVar4 >= 0x32) {
       
           if (*(s32 *)DAT_00697BE8_abs == -1) {
       
@@ -2887,7 +2889,7 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (0x31 < uVar4) {
+        if (uVar4 >= 0x32) {
       
           if (*(s32 *)DAT_00697BEC_abs == -1) {
       
@@ -2933,7 +2935,7 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (0x31 < uVar4) {
+        if (uVar4 >= 0x32) {
       
           if (*(s32 *)DAT_00697BF4_abs == -1) {
       
@@ -2979,7 +2981,7 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (0x31 < uVar4) {
+        if (uVar4 >= 0x32) {
       
           if (*(s32 *)DAT_00697BF8_abs == -1) {
       
@@ -3083,7 +3085,7 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (0x31 < uVar4) {
+        if (uVar4 >= 0x32) {
       
           if (*(s32 *)DAT_00697c00_abs == -1) {
       

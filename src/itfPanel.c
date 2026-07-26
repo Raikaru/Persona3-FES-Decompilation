@@ -4632,11 +4632,10 @@ u64 FUN_003ade70(u64 param_1,int param_2)
   bVar4 = ((volatile u8 *)(base + offset))[3];
   if (bVar4 == 0xff) {
     uVar8 = 0;
-    sVar5 = uVar5;
   } else {
     uVar8 = (u8)(bVar4 - 1);
-    sVar5 = uVar5;
   }
+  sVar5 = uVar5;
   FUN_003bb060(sVar5,(u16)(uVar8 << 8 | uVar7 & 0xff));
   return 0;
 }
