@@ -2898,6 +2898,7 @@ void *func_001f5b20(void)
         break;
     case 8:
     {
+        u32 result = scrForceTraceCode((void *)BR_U32(work, 0x34c4));
         if (result == 0) {
             K_ASSERT(0, 0x1da);
         } else if (result == 2) {
