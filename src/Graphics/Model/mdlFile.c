@@ -23532,6 +23532,13 @@ void FUN_00333420(int param_1,int *param_2)
   __int128 auVar17;
 
   __int128 auVar18;
+  u32 color0;
+  u32 color1;
+  u32 color2;
+  u32 color3;
+  u32 scalarPackedA;
+  u32 scalarPackedB;
+  float scalarMix;
 
   
 
@@ -23606,6 +23613,10 @@ void FUN_00333420(int param_1,int *param_2)
   auVar15 = _sqc2(auVar15);
 
   uVar6 = 0;
+  color0 = *param_2;
+  color1 = param_2[1];
+  color2 = param_2[2];
+  color3 = param_2[3];
 
   puVar8 = puVar4;
 
@@ -23675,6 +23686,31 @@ void FUN_00333420(int param_1,int *param_2)
 
       *(u8 *)((int)puVar8 + 10) = *(u8 *)((int)puVar8 + 2);
 
+      *(u8 *)((int)puVar8 + 0xb) = *(u8 *)((int)puVar8 + 3);
+      scalarMix = fVar12;
+      scalarPackedA =
+          (u32)(u8)((float)(color0 & 0xff) * (1.0f - scalarMix) +
+                    (float)(color2 & 0xff) * scalarMix) |
+          ((u32)(u8)((float)((color0 >> 8) & 0xff) * (1.0f - scalarMix) +
+                     (float)((color2 >> 8) & 0xff) * scalarMix) << 8) |
+          ((u32)(u8)((float)((color0 >> 16) & 0xff) * (1.0f - scalarMix) +
+                     (float)((color2 >> 16) & 0xff) * scalarMix) << 16) |
+          ((u32)(u8)((float)(color0 >> 24) * (1.0f - scalarMix) +
+                     (float)(color2 >> 24) * scalarMix) << 24);
+      scalarPackedB =
+          (u32)(u8)((float)(color1 & 0xff) * (1.0f - scalarMix) +
+                    (float)(color3 & 0xff) * scalarMix) |
+          ((u32)(u8)((float)((color1 >> 8) & 0xff) * (1.0f - scalarMix) +
+                     (float)((color3 >> 8) & 0xff) * scalarMix) << 8) |
+          ((u32)(u8)((float)((color1 >> 16) & 0xff) * (1.0f - scalarMix) +
+                     (float)((color3 >> 16) & 0xff) * scalarMix) << 16) |
+          ((u32)(u8)((float)(color1 >> 24) * (1.0f - scalarMix) +
+                     (float)(color3 >> 24) * scalarMix) << 24);
+      puVar8[1] = scalarPackedA;
+      *puVar8 = scalarPackedB;
+      *(u8 *)(puVar8 + 2) = *(u8 *)puVar8;
+      *(u8 *)((int)puVar8 + 9) = *(u8 *)((int)puVar8 + 1);
+      *(u8 *)((int)puVar8 + 10) = *(u8 *)((int)puVar8 + 2);
       *(u8 *)((int)puVar8 + 0xb) = *(u8 *)((int)puVar8 + 3);
 
       fVar12 = fVar12 + 1.0f / (float)uVar1;
@@ -30849,6 +30885,15 @@ void FUN_0033a5b0(int param_1)
   float fVar24;
 
   float fVar25;
+  float sx;
+  float sy;
+  float sz;
+  float sw;
+  float tx;
+  float ty;
+  float tz;
+  float tw;
+  float scalarScale;
 
   __int128 in_vf0;
 

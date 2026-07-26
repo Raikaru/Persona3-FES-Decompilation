@@ -140,7 +140,8 @@ extern u64 FUN_00102100();
 extern u32 FUN_00103c30();
 extern u32 FUN_00103cb0();
 extern u32 FUN_0010a4e0();
-extern u32 FUN_0010c1a0();
+extern u32 FUN_0010c1a0(int param_1, u32 param_2, int param_3, int param_4,
+                        int param_5, int param_6, int param_7, int param_8);
 extern u32 FUN_0010c3a0();
 extern u32 FUN_00111f30();
 extern u32 FUN_00112420();
@@ -2257,6 +2258,37 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     uVar2 = FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     puVar1[0xc] = uVar2;
     break;
+  case 0x1f:
+    FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
+    lVar4 = FUN_003c7850();
+    if (lVar4 == 0) {
+      lVar4 = FUN_003c7610();
+      if (lVar4 == 0) {
+        *puVar1 = 0x20;
+      }
+      else {
+        *puVar1 = 3;
+      }
+      FUN_003c7700();
+    }
+    break;
+  case 0x20:
+    FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
+    puVar1[0x5e] = 0;
+    FUN_0016f1f0(0x141d,1);
+    *puVar1 = 0x21;
+    break;
+  case 0x21:
+    FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
+    FUN_00113a30(0.0f,0.0f,0.0f,(puVar1[0x5e] * 0xff) / 10 | 0xf1f2800,0x280,0x1c0);
+    iVar3 = puVar1[0x5e];
+    puVar1[0x5e] = iVar3 + 1;
+    if (9 < iVar3 + 1) {
+      puVar1[0x5e] = 10;
+      FUN_0017f990();
+      FUN_001ba8d0();
+    }
+    break;
   case 4:
     pair.u = *(u64 *)(puVar1[3] + 0x30);
     func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
@@ -3057,37 +3089,6 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     if (lVar4 != 0) {
       puVar1[0xc] = 0;
       *puVar1 = 3;
-    }
-    break;
-  case 0x1f:
-    FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
-    lVar4 = FUN_003c7850();
-    if (lVar4 == 0) {
-      lVar4 = FUN_003c7610();
-      if (lVar4 == 0) {
-        *puVar1 = 0x20;
-      }
-      else {
-        *puVar1 = 3;
-      }
-      FUN_003c7700();
-    }
-    break;
-  case 0x20:
-    FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
-    puVar1[0x5e] = 0;
-    FUN_0016f1f0(0x141d,1);
-    *puVar1 = 0x21;
-    break;
-  case 0x21:
-    FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
-    FUN_00113a30(0.0f,0.0f,0.0f,(puVar1[0x5e] * 0xff) / 10 | 0xf1f2800,0x280,0x1c0);
-    iVar3 = puVar1[0x5e];
-    puVar1[0x5e] = iVar3 + 1;
-    if (9 < iVar3 + 1) {
-      puVar1[0x5e] = 10;
-      FUN_0017f990();
-      FUN_001ba8d0();
     }
     break;
   }

@@ -1111,15 +1111,47 @@ u32 func_0017e050(s32 category, s16 month, s32 day)
 
     if (category == 0x65)
     {
-        return clndGetCurrentWeekDay() != CALENDAR_DAY_SUNDAY;
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX != CALENDAR_DAY_SUNDAY;
     }
     if (category == 100)
     {
         return func_0017db40(datGetDaysSinceApr5());
     }
-    if (category >= 1 && category <= 7)
+    if (category == 7)
     {
-        return clndGetCurrentWeekDay() == (category - 1);
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_SATURDAY;
+    }
+    if (category == 6)
+    {
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_FRIDAY;
+    }
+    if (category == 5)
+    {
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_THURSDAY;
+    }
+    if (category == 4)
+    {
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_WEDNESDAY;
+    }
+    if (category == 3)
+    {
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_TUESDAY;
+    }
+    if (category == 2)
+    {
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_MONDAY;
+    }
+    if (category == 1)
+    {
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY;
     }
     if (category == 0)
     {
@@ -1127,7 +1159,8 @@ u32 func_0017e050(s32 category, s16 month, s32 day)
     }
 
     return week == category / 10 - 1 &&
-           clndGetCurrentWeekDay() == category % 10 - 1;
+           (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+               CALENDAR_DAY_MAX == category % 10 - 1;
 }
 
 // FUN_0017F8D0
@@ -4871,7 +4904,14 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     local[3] = (RwV3d){15.0f, 22.0f, 0.0f};
     axis = (RwV3d){0.0f, 0.0f, 1.0f};
 
-    angle = clndNormalizeAngle(angle);
+    while (angle > 180)
+    {
+        angle -= 360;
+    }
+    while (angle < -180)
+    {
+        angle += 360;
+    }
     angleRadians = DAT_007caf38 * (f32)angle / 180.0f;
     matrix = func_004c38c0();
     func_004c2fc0(1.0f - cosf(angleRadians),
@@ -4882,9 +4922,43 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     func_004c6c20(transformed, local, 4, matrix);
     func_004c3880(matrix);
 
-    scaleAngle = clndNormalizeAngle(scaleAngle);
+    while (scaleAngle > 180)
+    {
+        scaleAngle -= 360;
+    }
+    while (scaleAngle < -180)
+    {
+        scaleAngle += 360;
+    }
     radians = DAT_007caf38 * (f32)scaleAngle / 180.0f;
     scale = cosf(radians);
+    for (i = 0; i < 4; i++)
+    {
+        transformed[i].x *= scale;
+        vertices[i].u.els.scrVertex.x = transformed[i].x + 585.0f;
+        vertices[i].u.els.scrVertex.y = transformed[i].y + 406.0f;
+        vertices[i].u.els.scrVertex.z = D_00960088;
+        vertices[i].u.els.camVertex_z = recipZ;
+        vertices[i].u.els.u = 0.0f;
+        vertices[i].u.els.v = 0.0f;
+        vertices[i].u.els.recipZ = recipZ;
+        vertices[i].u.els.color.r = 14.0f;
+        vertices[i].u.els.color.g = 139.0f;
+        vertices[i].u.els.color.b = 236.0f;
+        vertices[i].u.els.color.a = (f32)alpha;
+    }
+    D_00960090(1, 0);
+    D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+    if (scaleAngle > 180)
+    {
+        scaleAngle -= 360;
+    }
+    if (scaleAngle < -180)
+    {
+        scaleAngle += 360;
+    }
+    radians = DAT_007caf38 * (f32)scaleAngle / 180.0f;
+    scale = 1.0f - radians * radians * 0.5f;
     for (i = 0; i < 4; i++)
     {
         transformed[i].x *= scale;
@@ -5002,7 +5076,6 @@ KwlnTask* func_00187e20(void)
 void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
 {
     CalendarTransitionMessageWork* work;
-    s32 tile;
 
     work = (CalendarTransitionMessageWork*)task->workData;
     if (datGetFlag(0x141d) != 0 || datGetFlag(0x1407) != 0)
@@ -5046,35 +5119,64 @@ void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
 
     if (month == 3 && day == 0x1f && time == 4)
     {
-        tile = 0x50;
+        func_001159f0(NULL,
+                      work->resource,
+                      0x50,
+                      0,
+                      CLND_CALENDAR_X + 416.0f,
+                      14.0f,
+                      72.0f);
     }
     else if (month == 3 && day == 0x1f && time == 6)
     {
-        tile = 0x51;
+        func_001159f0(NULL,
+                      work->resource,
+                      0x51,
+                      0,
+                      CLND_CALENDAR_X + 416.0f,
+                      14.0f,
+                      72.0f);
     }
     else if (month == 3 && day == 0x1f && time == 7)
     {
-        tile = 0x52;
+        func_001159f0(NULL,
+                      work->resource,
+                      0x52,
+                      0,
+                      CLND_CALENDAR_X + 416.0f,
+                      14.0f,
+                      72.0f);
     }
     else if (month == 4 && day == 2 && time == 7)
     {
-        tile = 0x53;
+        func_001159f0(NULL,
+                      work->resource,
+                      0x53,
+                      0,
+                      CLND_CALENDAR_X + 416.0f,
+                      14.0f,
+                      72.0f);
     }
     else if (month == 4 && day == 1 && time == 2)
     {
-        tile = 0x54;
+        func_001159f0(NULL,
+                      work->resource,
+                      0x54,
+                      0,
+                      CLND_CALENDAR_X + 416.0f,
+                      14.0f,
+                      72.0f);
     }
     else
     {
-        tile = 0x55;
+        func_001159f0(NULL,
+                      work->resource,
+                      0x55,
+                      0,
+                      CLND_CALENDAR_X + 416.0f,
+                      14.0f,
+                      72.0f);
     }
-    func_001159f0(NULL,
-                  work->resource,
-                  tile,
-                  0,
-                  CLND_CALENDAR_X + 416.0f,
-                  14.0f,
-                  72.0f);
 }
 
 // FUN_00188250 NONMATCHING

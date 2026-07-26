@@ -806,8 +806,8 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   float originY;
   char textBuffer[256];
   
-  originX = campPackedX(position);
-  originY = campPackedY(position);
+  originX = (f32)(u32)position;
+  originY = (f32)(u32)(position >> 32);
   if (work->entryCount != 0) {
     campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,
                            originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
@@ -923,7 +923,8 @@ LAB_0013db80:
 LAB_0013ddc4:
       ;
       campDrawValue(texture,(int)(originX + 10.0f),(int)(originY + 200.0f),color,1,10,1,
-                   (u32)campEquipmentEffectAndId(campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)));
+                   ((u32)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->effect << 16) |
+                   (campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId & 0xffff));
     }
     else {
       textureIndex = rowIndex * 0x1a;
@@ -2336,16 +2337,22 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x13:
     case 0x14:
     case 0x15:
-        persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
-        selected = menu->highlightedSlot == menuCode - 10;
-        campDrawSprite(parent, DAT_00833A50[1], selected ? 8 : 7,
-                       item->alpha, 60.0f + item->x - 10.0f, item->y + 3.0f,
-                       campTextureAsFloat(item));
+        if (selected != 0) {
+            campDrawSprite(parent, DAT_00833A50[1], 8, item->alpha,
+                           60.0f + item->x - 10.0f, item->y + 3.0f,
+                           campTextureAsFloat(item));
+        } else {
+            campDrawSprite(parent, DAT_00833A50[1], 7, item->alpha,
+                           60.0f + item->x - 10.0f, item->y + 3.0f,
+                           campTextureAsFloat(item));
+        }
         resourceRecord = func_00170e90(DAT_007cdf94);
-        resourceItemId = campEquipmentResourceItem(resourceRecord);
+        resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
         hasAvailableBonus = 0;
         if (FUN_0017bf70(resourceItemId) != 0) {
             for (index = 0; index < 5; index++) {
+                resourceRecord = func_00170e90(DAT_007cdf94);
+                resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
                 if (FUN_0017bfa0(resourceItemId, (u8)index) != 0 &&
                     datPersonaGetTotalStat(persona, (u16)index) != 99) {
                     hasAvailableBonus = 1;
@@ -2353,21 +2360,35 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
             }
         }
         if (hasAvailableBonus != 0) {
-            campDrawSprite(parent, DAT_00833A50[0], selected ? 0x26 : 0x25,
-                           item->alpha, item->x + (selected ? 9.0f : 8.0f),
-                           item->y + (selected ? 9.0f : 8.0f),
+            if (selected != 0) {
+                campDrawSprite(parent, DAT_00833A50[0], 0x26, item->alpha,
+                               item->x + 9.0f, item->y + 9.0f,
+                               campTextureAsFloat(item));
+            } else {
+                campDrawSprite(parent, DAT_00833A50[0], 0x25, item->alpha,
+                               item->x + 8.0f, item->y + 8.0f,
+                               campTextureAsFloat(item));
+            }
+        }
+        if (selected != 0 && persona->level > 9) {
+            campDrawSprite(parent, H_Maestro_001120a0(1),
+                           persona->level / 10 + 0xb, item->alpha,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
+                           campTextureAsFloat(item));
+            campDrawSprite(parent, H_Maestro_001120a0(1),
+                           persona->level % 10 + 0xb, item->alpha,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
+                           campTextureAsFloat(item));
+        } else {
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           persona->level / 10 + 0xb, item->alpha,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
+                           campTextureAsFloat(item));
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           persona->level % 10 + 0xb, item->alpha,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
                            campTextureAsFloat(item));
         }
-        if (persona->level > 9) {
-            campDrawSpriteDigit(parent, H_Maestro_001120a0(selected ? 1 : 2),
-                                persona->level / 10 + 0xb, item->alpha,
-                               88.0f + item->x - 10.0f, item->y + 11.0f,
-                                campTextureAsFloat(item));
-        }
-        campDrawSpriteDigit(parent, H_Maestro_001120a0(selected ? 1 : 2),
-                            persona->level % 10 + 0xb, item->alpha,
-                               104.0f + item->x - 10.0f, item->y + 11.0f,
-                            campTextureAsFloat(item));
         resourceText = FUN_00173220(persona->id);
         textColor = (0xffU - item->alpha) | 0xffffff00;
         campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
@@ -2379,7 +2400,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x32:
     case 0x3c:
         statIndex = (menuCode - 0x1e) / 10;
-        statValue = campMenuCategoryValue(menu, statIndex);
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
         resourceText = FUN_00177790(statValue);
         textColor = (0xffU - item->alpha) | 0xffffff00;
         sprintf(textBuffer, DAT_007cb66c, resourceText);
@@ -2392,7 +2413,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x33:
     case 0x3d:
         statIndex = (menuCode - 0x1f) / 10;
-        statValue = campMenuCategoryValue(menu, statIndex);
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
         value = FUN_0016c4f0(statValue) & 0xffff;
         rank = value > 99;
         if (rank != 0) {
@@ -2434,7 +2455,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x34:
     case 0x3e:
         statIndex = (menuCode - 0x20) / 10;
-        statValue = campMenuCategoryValue(menu, statIndex);
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
         value = FUN_0016c570(statValue) & 0xffff;
         rank = value > 99;
         if (rank != 0) {
@@ -2476,7 +2497,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x35:
     case 0x3f:
         statIndex = (menuCode - 0x20) / 10;
-        statValue = campMenuCategoryValue(menu, statIndex);
+        statValue = *(s16*)((const u8*)menu + 0x0c + statIndex * 4);
         rank = FUN_0016c470(statValue);
         if (rank > 9) {
             campDrawSpriteDigit(parent, H_Maestro_001120a0(2),

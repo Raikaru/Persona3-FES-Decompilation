@@ -480,7 +480,7 @@ void FUN_00223290(void)
     u8* selRecord;
     u32 kind;
     s32 halfWidth;
-    u32 colourA, colourB, colourC, colourD;
+    u32 colours[4];
     u32 scaledAlphaColour;
     s32 i;
     u32 selColour;
@@ -572,11 +572,11 @@ alpha_done:
         if (*(s32*)(base + 0x4658) >= 6) goto sel_done;
         K_ASSERT((*(u32*)base & 4) != 0, 0x711);
     sel:
-        colourA = (alphaByte & 0xff) | 0xffffff00u;
-        *(u32*)(records + 0x18c4) = colourA;
-        colourB = 0xff - (alphaByte & 0xff);
-        *(u32*)(records + 0x18c8) = colourB | 0xff9d9d00u;
-        *(u32*)(records + 0x18cc) = colourB | 0xffffff00u;
+        colours[0] = (alphaByte & 0xff) | 0xffffff00u;
+        *(u32*)(records + 0x18c4) = colours[0];
+        colours[1] = 0xff - (alphaByte & 0xff);
+        *(u32*)(records + 0x18c8) = colours[1] | 0xff9d9d00u;
+        *(u32*)(records + 0x18cc) = colours[1] | 0xffffff00u;
         selIndex = *(u32*)(records + 0x18c0);
         selRecord = records + selIndex * 0x420;
         kind = *(u32*)selRecord;
@@ -616,10 +616,10 @@ alpha_done:
         FUN_0021d950(records + 0x18f0, colour);
     }
 
-    colourA = (alphaByte & 0xff) | 0xffffff00u;
-    colourB = (alphaByte & 0xff) | 0xbeffd200u;
-    colourC = (alphaByte & 0xff) | 0xcccccc00u;
-    colourD = (alphaByte & 0xff) | 0x64cc6400u;
+    colours[0] = (alphaByte & 0xff) | 0xffffff00u;
+    colours[1] = (alphaByte & 0xff) | 0xbeffd200u;
+    colours[2] = (alphaByte & 0xff) | 0xcccccc00u;
+    colours[3] = (alphaByte & 0xff) | 0x64cc6400u;
     scaledAlphaColour = ((alphaByte & 0xff) << 7) / 0xff;
     scaledAlphaColour = 0xffffff00u | scaledAlphaColour;
     for (i = 0; i < *(u32*)(base + 0x6070); i++) {
@@ -637,17 +637,17 @@ alpha_done:
             if (*(u32*)(record + 0x410) != 0) {
                 selColour = scaledAlphaColour;
             } else if (kind == 2) {
-                selColour = colourB;
+                selColour = colours[1];
             } else if (kind == 0) {
-                selColour = colourA;
+                selColour = colours[0];
             }
         } else {
             if (*(u32*)(record + 0x410) != 0) {
                 selColour = scaledAlphaColour;
             } else if (kind == 2) {
-                selColour = colourD;
+                selColour = colours[3];
             } else if (kind == 0) {
-                selColour = colourC;
+                selColour = colours[2];
             }
         }
         x = (s32)layout[0] << 4;
@@ -680,9 +680,9 @@ alpha_done:
         layout[0] = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
         if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
-            selColour = colourA;
+            selColour = colours[0];
         } else {
-            selColour = colourC;
+            selColour = colours[2];
         }
         x = (s32)layout[0] << 4;
         y = (s32)layout[1] << 3;
@@ -1565,8 +1565,6 @@ panel_tail:
     }
 }
 
-#pragma push
-#pragma opt_common_subs off
 // FUN_002265D0 NONMATCHING
 void FUN_002265D0(void)
 {
@@ -1581,16 +1579,20 @@ void FUN_002265D0(void)
     s32 i;
     s32 j;
     f32 stateAlpha;
+    f32 panelAlpha;
     f32 transAlpha;
     f32 rowOffset;
+    f32 rowStepKeep;
     f32 rowStep;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
-    stateAlpha = *(f32*)(work + 0x7214);
+    panelAlpha = *(f32*)(work + 0x7214);
+    stateAlpha = panelAlpha;
     rowOffset = -26.0f * (f32)*(s32*)(work + 0x7210);
     rowStep = 26.0f * (f32)*(s32*)(work + 0x7210);
+    rowStepKeep = 26.0f * (f32)*(s32*)(work + 0x7210);
 
     if (*(u32*)(work + 0x463c) == 3) {
         if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
@@ -1656,7 +1658,7 @@ void FUN_002265D0(void)
     *(f32*)(work + 0x6054) = rowY;
 
     {
-        f32 y150 = 150.0f + rowStep;
+        f32 y150 = 150.0f + rowStepKeep;
         for (i = 0; i < 9; ++i) {
             switch (i) {
             case 0: case 1: case 2: case 3:
@@ -1705,32 +1707,29 @@ void FUN_002265D0(void)
     color[1] = (u8)(u32)(40.0f + 215.0f * transAlpha);
     color[2] = (u8)(u32)(30.0f + 225.0f * transAlpha);
     color[3] = (u8)(u32)(stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) *
-                          *(f32*)(work + 0x7214));
+                          panelAlpha);
     for (i = 0; i < 9; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1530, color);
     }
 
     resource = (void*)FUN_0021cca0(table0, 0x26);
     {
-        f32 baseX = 20.0f + posX;
-        f32 baseY = 32.0f + rowY;
-
-        rect[0] = baseX;
-        rect[1] = baseY - 4.0f;
+        rect[0] = 20.0f + posX;
+        rect[1] = 32.0f + rowY - 4.0f;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
         FUN_0021d8e0(work + 0x1e30, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x27);
-        rect[0] = baseX;
+        rect[0] = 20.0f + posX;
         rect[1] = 102.0f + rowY + rowStep;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
         FUN_0021d8e0(work + 0x1f30, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x26);
-        rect[0] = baseX;
-        rect[1] = 16.0f + baseY - 4.0f;
+        rect[0] = 20.0f + posX;
+        rect[1] = 16.0f + (32.0f + rowY) - 4.0f;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = 57.0f + rowStep;
         FUN_0021d8e0(work + 0x2030, rect);
@@ -1757,7 +1756,7 @@ void FUN_002265D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(255.0f * stateAlpha * *(f32*)(work + 0x7214));
+    color[3] = (u8)(u32)(255.0f * stateAlpha * panelAlpha);
     for (i = 0; i < 3; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1e30, color);
     }
@@ -1765,25 +1764,22 @@ void FUN_002265D0(void)
 
     resource = (void*)FUN_0021cca0(table0, 0x2c);
     {
-        f32 quadX = 47.0f + posX;
-        f32 rowBaseY = 43.0f + rowY;
         for (j = 0; j < 6; ++j) {
             u8* slot = work + j * 0x200;
-            f32 quadY = rowBaseY + (f32)(j * 26);
-            rect[0] = quadX;
+            f32 quadY = 43.0f + rowY + (f32)(j * 26);
+            rect[0] = 47.0f + posX;
             rect[1] = quadY;
             rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
             rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
             FUN_0021d8e0(slot + 0x2230, rect);
 
-            rect[0] = quadX + (f32)*(s32*)((u8*)resource + 0xc);
+            rect[0] = 47.0f + posX + (f32)*(s32*)((u8*)resource + 0xc);
             rect[1] = quadY;
             rect[2] = 311.0f;
             rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
             FUN_0021d8e0(slot + 0x2330, rect);
         }
     }
-
     if (*(u32*)(work + 0x463c) == 3) {
         if (*(u32*)(work + 0x4644) == 0) {
             if ((*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
@@ -1805,7 +1801,7 @@ void FUN_002265D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     color[3] = (u8)(u32)((f32)((s32)(30.0f + 225.0f * transAlpha) & 0xff) * 2.0f *
-                          stateAlpha * *(f32*)(work + 0x7214));
+                          stateAlpha * panelAlpha);
     for (j = 0; j < 2; ++j) {
         u8* slot = work + j * 0x200;
         FUN_0021d950(slot + 0x2230, color);
@@ -1819,7 +1815,6 @@ void FUN_002265D0(void)
         FUN_0021d950(slot + 0x2330, color);
     }
 }
-#pragma pop
 
 // Previous body was a wrong-helper stub (232B) unrelated to retail (1296B
 // window). Rewritten from disasm: retail does a 9-entry jump-table
