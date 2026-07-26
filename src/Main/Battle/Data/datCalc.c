@@ -7333,16 +7333,25 @@ void FUN_0030ddf0(void)
   float fVar3;
 
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar2 = (float)FUN_0030fdf0(0x1a,0);
-    fVar3 = (float)FUN_0030fdf0(0x13,0);
-    fVar2 = fVar2 * 0.5f + fVar3 + 0.0f;
+  switch (lVar1) {
+  case 0:
+    goto path_zero;
+  default:
+    goto path_one;
   }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0x13,0);
-    fVar3 = (float)FUN_0030fdf0(0x1a,0);
-    fVar2 = (fVar2 + fVar3) * 1.5f;
-  }
+
+path_one:
+  fVar2 = (float)FUN_0030fdf0(0x13,0);
+  fVar3 = (float)FUN_0030fdf0(0x1a,0);
+  fVar2 = (fVar2 + fVar3) * 1.5f;
+  goto done;
+
+path_zero:
+  fVar2 = (float)FUN_0030fdf0(0x1a,0);
+  fVar3 = (float)FUN_0030fdf0(0x13,0);
+  fVar2 = fVar2 * 0.5f + fVar3 + 0.0f;
+
+done:
   FUN_00311190((int)fVar2);
   return;
 }

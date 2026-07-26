@@ -887,7 +887,7 @@ static s32 hmallocTaskUpdateE(void* task)
     }
     return 0;
 }
-#define HMALLOC_CONFIG_WORDS ((const u32*)0x005e4d80)
+extern const u32 D_005E4D80[];
 
 // FUN_00192E70 NONMATCHING
 static void hmallocApplyInputTable(void)
@@ -906,7 +906,7 @@ static void hmallocApplyInputTable(void)
     u32* bitWord;
     s32 copyCount;
 
-    config = HMALLOC_CONFIG_WORDS;
+    config = D_005E4D80;
     dst = copied;
     for (copyCount = 0x14; copyCount != 0; copyCount--)
     {

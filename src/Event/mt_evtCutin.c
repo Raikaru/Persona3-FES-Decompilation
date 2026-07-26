@@ -169,22 +169,29 @@ state_done:
 
 void FUN_00397030(int param_1)
 {
-    int iVar1;
-    int lVar2;
-    int iVar3;
-    int iVar4;
+    int manager;
+    u8 *base;
+    int offset;
+    u32 *entry;
 
-    lVar2 = FUN_00195340("koma_Manager");
-    if ((lVar2 != 0) && (param_1 < 3)) {
-        iVar1 = FUN_00195540(lVar2);
-        iVar4 = param_1 * 0xc;
-        iVar3 = iVar4 + iVar1;
-        if (*(int *)(iVar3 + 8) != 0) {
-            FUN_00195020(*(u32 *)(iVar3 + 8));
-            *(u32 *)(iVar3 + 8) = 0;
-            *(u32 *)(iVar1 + iVar4) = 0;
-        }
+    manager = FUN_00195340("koma_Manager");
+    if (manager == 0) {
+        goto done;
     }
+    if (param_1 >= 3) {
+        goto done;
+    }
+    base = (u8 *)FUN_00195540(manager);
+    offset = param_1 * 0xc;
+    entry = (u32 *)(base + offset);
+    if (entry[2] == 0) {
+        goto done;
+    }
+    FUN_00195020(entry[2]);
+    entry[2] = 0;
+    *(u32 *)(base + offset) = 0;
+done:
+    ;
 }
 #define FUN_00397030(...) ((void (*)(...))FUN_00397030)(__VA_ARGS__)
 #undef FUN_003970d0
