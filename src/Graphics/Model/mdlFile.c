@@ -23694,6 +23694,8 @@ void FUN_00333420(int param_1,int *param_2)
              ((param_2[3] >> 8) & 0xff) * scalarWeight) >> 8) << 8) |
           (((( (param_2[1] >> 16) & 0xff) * scalarInv +
              ((param_2[3] >> 16) & 0xff) * scalarWeight) >> 8) << 16);
+      scalarPackedA = scalarPackedA | (*param_2 & 0xff000000);
+      scalarPackedB = scalarPackedB | (param_2[1] & 0xff000000);
       *puVar8 = scalarPackedB;
       puVar8[1] = scalarPackedA;
 
