@@ -19095,7 +19095,7 @@ void FUN_003858c0(int param_1)
 
   u32 *puVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
 

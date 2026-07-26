@@ -2352,6 +2352,7 @@ extern u8 DAT_008717f0[];
 extern void* func_00318b80(u32 id);
 extern void* func_00318b60(u32 id);
 extern void* func_004353f0(void* arg);
+extern void* func_002ff790(void* object);
 extern u32 func_001acb70(void* collisionWorld, const RwV3d* line, RwV3d* hitPointDst);
 extern u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position);
 
@@ -2440,14 +2441,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             model = (void*)func_00318b80(*(u32*)((u8*)listThree + 0x104));
             if (model != NULL)
             {
-                FUN_004916d0(model, func_001abcd0, &collector);
-                rayOrigin = *pos;
-                rayOrigin.y -= 600.0f;
-                hitPoint.x = 0.0f;
-                hitPoint.y = 0.0f;
-                hitPoint.z = 0.0f;
-                if (func_001acb70(model, &rayOrigin, &hitPoint) == 1)
-                    translation->y = hitPoint.y - (pos->y - sphereCollisRadius);
+                translation->y = -(pos->y - sphereCollisRadius);
             }
         }
         listThree = *(void**)((u8*)listThree + 0xf8);
@@ -2518,6 +2512,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         }
     }
     /* Type 1 list walk (post-grid) */
+    type1ListHead = func_002ff790(type1ListHead);
     listNode = *(void**)((u8*)type1ListHead + 0xf8);
     while (listNode != NULL)
     {
