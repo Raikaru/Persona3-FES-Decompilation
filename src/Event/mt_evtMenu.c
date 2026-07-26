@@ -16318,9 +16318,14 @@ void FUN_00382390(int param_1,int param_2,int param_3,int param_4)
     uVar1 = 4;
   }
 
-  if (param_3 == 1) goto FUN_00382390_case1;
-  if (param_3 == 0) goto FUN_00382390_case0;
-  goto FUN_00382390_done;
+  switch (param_3) {
+  case 0:
+    goto FUN_00382390_case0;
+  case 1:
+    goto FUN_00382390_case1;
+  default:
+    goto FUN_00382390_done;
+  }
 
 FUN_00382390_case0:
   iVar2 = param_2 * 0xc;

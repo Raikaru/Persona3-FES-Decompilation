@@ -1313,7 +1313,7 @@ void FUN_001691F0(undefined8 param_1, undefined8 param_2,
                           (void*)(uintptr_t)param_4, (s32)param_5);
 }
 
-// FUN_00169330 NONMATCHING
+// FUN_00169330
 undefined4 FUN_00169330(void)
 {
     void* task;

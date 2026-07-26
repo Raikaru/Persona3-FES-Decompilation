@@ -5459,7 +5459,7 @@ u64 FUN_00321a60(void)
 
 {
 
-  int iVar1;
+  u64 iVar1;
 
   u64 uVar2;
 
