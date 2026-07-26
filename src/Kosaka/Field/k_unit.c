@@ -1935,6 +1935,7 @@ void func_001d1640(FldUnit* unit, s32 destroyModel)
         if (unit->unk_180 != NULL) { func_00195020(unit->unk_180); unit->unk_180 = NULL; }
         if (unit->unk_174 != NULL) { func_00195020(unit->unk_174); unit->unk_174 = NULL; }
     }
+    }
 
 // FUN_001d1780
 void func_001d1780(s32 includeHero)
