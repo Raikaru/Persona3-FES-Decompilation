@@ -577,6 +577,7 @@ void* func_001a70a0(void* object, void* data)
 {
     s32 state;
 
+    s32 kind;
     if (func_0048a2c0(*(void**)((u8*)object + 0x18)) == 0)
     {
         goto fail;
@@ -590,7 +591,8 @@ void* func_001a70a0(void* object, void* data)
     {
         goto normal;
     }
-    if (state == 2)
+    kind = 2;
+    if (kind == state)
     {
         goto state2;
     }

@@ -3339,10 +3339,10 @@ u32 FUN_003e0940(void)
 }
 
 // FUN_003E0950 NONMATCHING
-void FUN_003e0950(s32 param_1)
+void FUN_003e0950(s32 arg)
 {
     s32 work;
-
+    s32 param_1 = arg;
     if (iGpffffb998 != 0)
     {
         return;
