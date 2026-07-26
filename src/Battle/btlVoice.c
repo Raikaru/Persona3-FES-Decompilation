@@ -9374,7 +9374,7 @@ u32 func_002ed360(u64 *param_1)
   FUN_0027f650(*(u32 *)(DAT_007ce3ec + 0xb4c),uStack_28);
   FUN_0027f710(0.5f,*(u32 *)(DAT_007ce3ec + 0xb44));
   FUN_0027f710(0.5f,*(u32 *)(DAT_007ce3ec + 0xb48));
-  FUN_0027f710((float)*(u16 *)(DAT_007ce418 + 0xd254) / 100.0f,
+  FUN_0027f710((float)*(u16 *)(DAT_007ce418 + 0xd254) / 100.0,
                *(u32 *)(DAT_007ce3ec + 0xb4c));
   *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9d4) = 0;
   *(u32 *)(*(int *)(DAT_007ce3ec + 0xb48) + 0x9d4) = 0;
