@@ -814,6 +814,9 @@ static void brPanel00236390(void)
     rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     brPanel00235ff0(work + 0x520, 7, *(s32*)(work + 0x2664), 0, rect);
     BR_PANEL_SET_COLOR(work + 0x520, alpha);
+    sprintf(text2, "%d", *(s32*)(work + 0x2664));
+    length = (s32)strlen(text2);
+    textWidth = (f32)(length * 23);
 
     frame = func_0021cca0(brRes00234570(0), 2);
     rect[0] = 40.0f + textWidth +
@@ -876,10 +879,11 @@ static void brPanel00236390(void)
         BR_PANEL_ANIMATE(entry + 0x110, 0x28);
         BR_PANEL_SET_COLOR(entry + 0x110, alpha);
 
-        sprintf(text, "%d", *(s32*)(entry + 8));
-        length = (s32)strlen(text);
-        rect[0] = (*(s32*)(entry + 8) < 10 ? 401.0f : 393.0f) -
-                  (f32)(length * 23) / 2.0f + shift;
+        if (*(s32*)(entry + 8) < 10) {
+            rect[0] = 389.5f + shift;
+        } else {
+            rect[0] = 370.0f + shift;
+        }
         rect[1] = 221.0f + (f32)i;
         brPanel00235ff0(entry + 0x210, 2, *(s32*)(entry + 8), 1, rect);
         BR_PANEL_SET_COLOR(entry + 0x210, alpha);

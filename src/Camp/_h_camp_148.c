@@ -1985,9 +1985,10 @@ void h_campDrawItemFrame(int param_1)
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 1,
                   CAMP_PAIR_FLOATS(384.0f, 47.0f),
                   CAMP_PAIR_FLOATS(384.0f, 47.0f), 0, 0, 0, 10);
+    start.f[0] = 392.0f;
+    start.f[1] = 384.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 1,
-                  CAMP_PAIR_FLOATS(384.0f, 392.0f),
-                  CAMP_PAIR_FLOATS(384.0f, 392.0f), 0, 0, 0, 10);
+                  start.u, start.u, 0, 0, 0, 10);
 }
 
 // FUN_0014F320 NONMATCHING

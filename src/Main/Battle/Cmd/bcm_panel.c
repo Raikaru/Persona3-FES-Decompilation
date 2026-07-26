@@ -2839,22 +2839,22 @@ void FUN_0022AE80(void)
         BCM_2AE_QUAD((u32*)(record + 0x10), 4, 0, 2, 3);
 
         texture = FUN_00239140(1);
-        pRender(1, texture);
+        BCM_2AE_STATE(1, texture);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        pQuad((u32*)(record + 0x110), 4, 0, 1, 2);
-        pQuad((u32*)(record + 0x110), 4, 0, 2, 3);
-        pQuad((u32*)(record + 0x210), 4, 0, 1, 2);
-        pQuad((u32*)(record + 0x210), 4, 0, 2, 3);
-        pQuad((u32*)(record + 0x310), 4, 0, 1, 2);
-        pQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+        BCM_2AE_QUAD((u32*)(record + 0x110), 4, 0, 1, 2);
+        BCM_2AE_QUAD((u32*)(record + 0x110), 4, 0, 2, 3);
+        BCM_2AE_QUAD((u32*)(record + 0x210), 4, 0, 1, 2);
+        BCM_2AE_QUAD((u32*)(record + 0x210), 4, 0, 2, 3);
+        BCM_2AE_QUAD((u32*)(record + 0x310), 4, 0, 1, 2);
+        BCM_2AE_QUAD((u32*)(record + 0x310), 4, 0, 2, 3);
 
         texture = FUN_0021cce0(FUN_0021cca0(table6, 0x1a));
-        pRender(1, texture);
+        BCM_2AE_STATE(1, texture);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        pQuad((u32*)(record + 0x310), 4, 0, 1, 2);
-        pQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+        BCM_2AE_QUAD((u32*)(record + 0x310), 4, 0, 1, 2);
+        BCM_2AE_QUAD((u32*)(record + 0x310), 4, 0, 2, 3);
     }
 
     if (*(u32*)(work + 0x4644) != 4) {
@@ -2867,15 +2867,15 @@ void FUN_0022AE80(void)
 
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
     pRender = (void (*)(u32, u32))D_00960090;
-    pRender(1, texture);
+    BCM_2AE_STATE(1, texture);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
-    pQuad((u32*)(overlay + 0x10), 4, 0, 1, 2);
-    pQuad((u32*)(overlay + 0x10), 4, 0, 2, 3);
+    BCM_2AE_QUAD((u32*)(overlay + 0x10), 4, 0, 1, 2);
+    BCM_2AE_QUAD((u32*)(overlay + 0x10), 4, 0, 2, 3);
 
     texture = FUN_00239140(1);
-    pRender(1, texture);
+    BCM_2AE_STATE(1, texture);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     pQuad((u32*)(overlay + 0x110), 4, 0, 1, 2);
@@ -2886,11 +2886,11 @@ void FUN_0022AE80(void)
     pQuad((u32*)(overlay + 0x310), 4, 0, 2, 3);
 
     texture = FUN_0021cce0(FUN_0021cca0(table6, 0x1a));
-    pRender(1, texture);
+    BCM_2AE_STATE(1, texture);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    pQuad((u32*)(overlay + 0x310), 4, 0, 1, 2);
-    pQuad((u32*)(overlay + 0x310), 4, 0, 2, 3);
+    BCM_2AE_QUAD((u32*)(overlay + 0x310), 4, 0, 1, 2);
+    BCM_2AE_QUAD((u32*)(overlay + 0x310), 4, 0, 2, 3);
 }
 #undef BCM_2AE_STATE
 #undef BCM_2AE_QUAD
