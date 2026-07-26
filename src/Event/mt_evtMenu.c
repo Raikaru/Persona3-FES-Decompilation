@@ -6713,13 +6713,15 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
   short *psVar3;
 
   int iVar4;
+
   int iVar7;
+
   f32 uVar6;
 
   
 
   iVar7 = **(int **)(param_3 + 0x164);
-  iVar5 = iVar7 - iVar7;
+  iVar5 = 0;
   psVar3 = (short *)(DAT_0069e1a0 + iVar7 * 0xc);
   iVar6 = param_2 * 0xc;
 
