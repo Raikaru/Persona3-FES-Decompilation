@@ -1532,24 +1532,21 @@ long FUN_003f0d60(int param_1,u64 param_2)
   case 0:
     var_16 = 0xf;
     iVar1 = func_00170ed0(param_2,&iStack_4);
-    for (;;) {
-      switch (iStack_4) {
-      case 0:
-        var_17 = (long)*(int *)(iVar1 + 0x24);
-        break;
-      case 1:
-        var_17 = (long)*(int *)(iVar1 + 0x1c);
-        break;
-      case 2:
-        var_17 = (long)*(int *)(iVar1 + 0x1c);
-        break;
-      case 3:
-        var_17 = (long)*(int *)(iVar1 + 0x20);
-        break;
-      case 4:
-        var_17 = (long)*(int *)(iVar1 + 0x18);
-        break;
-      }
+    switch (iStack_4) {
+    case 0:
+      var_17 = (long)*(int *)(iVar1 + 0x24);
+      break;
+    case 1:
+      var_17 = (long)*(int *)(iVar1 + 0x1c);
+      break;
+    case 2:
+      var_17 = (long)*(int *)(iVar1 + 0x1c);
+      break;
+    case 3:
+      var_17 = (long)*(int *)(iVar1 + 0x20);
+      break;
+    case 4:
+      var_17 = (long)*(int *)(iVar1 + 0x18);
       break;
     }
     break;
@@ -2198,9 +2195,10 @@ u32 FUN_003f1910(u64 param_1)
   case 1:
   case 2:
   case 3:
+    param_1 = (short)param_1;
     for (iVar3 = 0; iVar3 < 300; iVar3 = iVar3 + 1) {
       uVar1 = datGetEquipmentId(1,iVar3);
-      if ((long)(short)param_1 == (uVar1 & 0xffff)) {
+      if (param_1 == (uVar1 & 0xffff)) {
         uVar2 = uVar2 + 1;
       }
     }

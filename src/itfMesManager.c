@@ -235,8 +235,6 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,
 u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5);
  #pragma alias FUN_003a8710_typed FUN_003a8710
 extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,int param_5);
-#pragma alias FUN_003a8710_alpha16 FUN_003a8710
-extern u64 FUN_003a8710_alpha16(float param_1,int param_2,int param_3,u16 param_4,int param_5);
 
 /* Region call-cast macros */
 #define FUN_003a2150(...) ((u32 (*)(...))FUN_003a2150)(__VA_ARGS__)
@@ -6002,10 +6000,14 @@ void FUN_003a8350(int param_1)
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  if (2.1474836e+09f <= fVar1) {
-    fVar1 = fVar1 - 2.1474836e+09f;
-  }
-  FUN_003a8710_alpha16(0,iVar2,iVar3,(int)fVar1,0x10);
+  if (2.1474836e+09f <= fVar1) goto LAB_003a8400;
+  iVar1 = (int)fVar1 & 0xff;
+  goto LAB_003a8418;
+LAB_003a8400:
+  iVar1 = (int)(fVar1 - 2.1474836e+09f);
+  iVar1 = (iVar1 | 0x80000000) & 0xff;
+LAB_003a8418:
+  FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
 }
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)
 #undef FUN_003a8440
