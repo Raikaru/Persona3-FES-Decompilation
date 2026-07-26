@@ -6136,7 +6136,7 @@ u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
 {
   u32 uVar2;
   int iVar1;
-  uVar2 = FUN_001158b0(0,DAT_007ce654,param_5);
+  uVar2 = FUN_001158b0(0, DAT_007ce654, param_5);
   iVar1 = (int)uVar2;
   *(float *)(iVar1 + 0x10) = (float)param_2;
   *(float *)(iVar1 + 0x14) = (float)param_3;

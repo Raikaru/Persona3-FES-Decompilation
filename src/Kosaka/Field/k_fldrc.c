@@ -1589,9 +1589,11 @@ void FUN_001b5200(u32* resource, f32 angle)
     }
     for (i = 0; i < resource[5]; i++)
     {
-        if (resource[i + 6] != 0)
+        if (*(u32*)((u8*)resource + i * 4 + 0x18) != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[i + 6] + 4), &color, angle, 2);
+            FUN_004cb890_typed(
+                *(u32*)(*(u32*)((u8*)resource + i * 4 + 0x18) + 4),
+                &color, angle, 2);
         }
     }
     for (i = 0; i < resource[0x46]; i++)
