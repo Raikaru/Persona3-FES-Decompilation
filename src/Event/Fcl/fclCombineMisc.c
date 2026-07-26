@@ -1468,7 +1468,7 @@ s32 FUN_003d6e60(s32 param_1,s32 param_2)
   s32 temp_2;
   s32 var_16;
   s32 var_5;
-  u16 temp_19;
+  s32 temp_19;
   u16 temp_3;
   u8 *temp_4;
   void *dest;
@@ -1485,8 +1485,8 @@ outer_body:
     if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
       return 0;
     }
-    if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_19) == -1) {
-      datPersonaSetSkill_003d6e60(param_1 + 4,temp_19);
+    if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,(u16)temp_19) == -1) {
+      datPersonaSetSkill_003d6e60(param_1 + 4,(u16)temp_19);
     }
   }
 outer_increment:

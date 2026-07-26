@@ -1811,28 +1811,26 @@ u32 func_0010d910(s16 index)
 // FUN_0010D950 NONMATCHING
 void func_0010d950(s16 index)
 {
-    s32* status;
+    HSfdDecodeSlot* slot;
 
     if (sSfdDecodeSlots_abs[index].state != 1)
     {
-        goto done;
+        return;
     }
+    slot = &sSfdDecodeSlots_abs[index];
     if (sSfdDecodeSlots_abs[index].status == 0)
     {
-        goto final_clear;
+        return;
     }
-    status = &sSfdDecodeSlots_abs[index].status;
+
     FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
     FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);
     FUN_0051dd48(5, (u32)sSfdDecodeSlots_abs[index].outputHandle);
     FUN_0051dd48(3, (u32)sSfdDecodeSlots_abs[index].queueHandle);
-    *status = 0;
+    *(u32*)slot = 0;
     func_0050B710(sSfdDecodeSlots_abs[index].output);
     func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
-final_clear:
-    sSfdDecodeSlots_abs[index].status = 0;
-done:
-    ;
+    *(u32*)slot = 0;
 }
 
 // FUN_0010DA70
@@ -1925,12 +1923,10 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     u8* pixel;
     s32 width;
     s32 height;
-    u8 alpha;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
-    alpha = (u8)-1;
     y = 0;
     while (y < height)
     {
@@ -1938,10 +1934,10 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
         while (x < width)
         {
             pixel = dst + (x * 4);
-            pixel[3] = alpha;
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
+            pixel[3] = 0xFF;
             source += 3;
             x++;
         }

@@ -749,7 +749,7 @@ u32 scrComu00360020(void)
 u32 scrComu00360110(void)
 {
     int i;
-    int bVar1;
+    u8 bVar1;
     int handle;
     int uVar2;
     int uVar3;
@@ -778,7 +778,7 @@ loop:
     i++;
 
 tail:
-    if ((bVar1 + 2) > i) {
+    if (i < bVar1 + 2) {
         goto loop;
     }
     scrSetIntReturnVal();

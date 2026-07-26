@@ -2294,9 +2294,9 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfb4 = (s32*)p;
-    scaled = n << 5;
-    n = *(s32*)(p + scaled);
+    scaled = n * 0x20;
     p += scaled;
+    n = *(s32*)p;
     p += 0x10;
     DAT_007cdfc8 = (s32*)p;
     scaled = n << 1;

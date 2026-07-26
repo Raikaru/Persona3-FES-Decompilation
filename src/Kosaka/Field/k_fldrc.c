@@ -2419,19 +2419,17 @@ u32 FUN_001b75e0(u32 task)
     s32* work;
 
     work = (s32*)*(u32*)(task + 0x3c);
-    if (work[0] == 2)
+    switch (work[0])
     {
-        goto state2;
-    }
-    if (work[0] == 1)
-    {
-        goto state1;
-    }
-    if (work[0] == 0)
-    {
+    case 0:
         goto state0;
+    case 1:
+        goto state1;
+    case 2:
+        goto state2;
+    default:
+        goto done;
     }
-    goto done;
 state0:
     if (FUN_001016b0((u32)work[1]) != 0)
     {
