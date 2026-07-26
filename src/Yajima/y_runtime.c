@@ -20584,7 +20584,6 @@ void FUN_0045ce90(int param_1)
   u32 uVar12;
   int iVar13;
   int iVar14;
-  float fVar15;
   u32 uStack_20;
   u32 uStack_1c;
   u32 uStack_18;
@@ -20646,6 +20645,7 @@ void FUN_0045ce90(int param_1)
       else {
         lVar3 = FUN_0045b480(iVar11);
         if (lVar3 != 0) {
+          float fVar15;
           fVar15 = (float)FUN_0045b4e0(iVar11);
           fVar15 = (1.0f - fVar15) * 255.0f;
           if (2.1474836e+09f <= fVar15) {
