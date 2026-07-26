@@ -28,8 +28,6 @@ extern f32 FUN_00112740(void* particle);
 extern s32 FUN_00114450(f32 x, f32 y, f32 z, s32 a, s32 b, s32 c,
                         s32 d);
 extern s32 FUN_0011bba0(s32 a, s32 b, f32 z, s32 c, s32 d);
-#pragma alias campPersonaDrawNoop FUN_0011bba0
-extern s32 campPersonaDrawNoop(f32 x, f32 y, s32 a, s32 b);
 extern s32 FUN_001158b0();
 extern s32 FUN_001127d0();
 extern s32 FUN_00115980();
@@ -805,8 +803,10 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
     void* resource;
     s32 personaId;
     u8 level;
+    CampVec2 finalPosition;
 
     drawAlpha = alpha;
+    finalPosition = position;
     campPersonaDrawSprite(parent, DAT_00833B90, 1,
                           position.x + 22.0f, position.y + 117.0f,
                           fade, drawAlpha);
@@ -831,7 +831,7 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
                               position.x + 75.0f,
                               position.y + 127.0f, fade, alpha);
     }
-    FUN_00124fd0(position, alpha, persona, fade);
+    FUN_00124fd0(finalPosition, alpha, persona, fade);
 }
 
 static s32 campPersonaTransitionIsReady(void)
@@ -871,7 +871,7 @@ process:
                 FUN_00114450(102.0f, 0.0f, -87.0f, -1,
                              0x4fa4ff19, 0x280, 0x280);
             }
-            campPersonaDrawNoop(0.0f, 102.0f, 0, 0);
+            FUN_0011bba0(0, 0, 102.0f, 0, 0);
             particle = (CampPersonaParticle*)FUN_001158b0(
                 0, *(void**)DAT_00833B78_abs, 0);
             particle->drawAlpha = 101.0f;
@@ -891,7 +891,7 @@ process:
                 FUN_00114450(102.0f, (f32)-fade, (f32)fade - 87.0f,
                              -1, 0x4fa4ff19, 0x280, 0x280);
             }
-            campPersonaDrawNoop(102.0f, 102.0f, fade, 0);
+            FUN_0011bba0(0, 0, 102.0f, (u16)fade, 0);
         }
         if (work->timer > 14) {
             fade = campPersonaClampFade((20 - work->timer) * 0xff / 5);
