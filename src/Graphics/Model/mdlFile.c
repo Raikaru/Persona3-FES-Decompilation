@@ -28225,7 +28225,7 @@ u64 FUN_00337e90(int param_1)
 
   int iVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
