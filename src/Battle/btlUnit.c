@@ -4185,8 +4185,8 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
     const u8* table;
     u16 scale;
     u16 radius;
+    u16 radius2;
     u32 unitId;
-
     unit->charId = id;
     switch (unit->genus)
     {
@@ -4208,8 +4208,9 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
         unit->sphereCenter.y = (f32)*(const s16*)(table + 2);
         unit->sphereCenter.z = (f32)*(const s16*)(table + 4);
         radius = *(const u16*)(table + 6);
-        unit->sphereRadius = (f32)radius * 2.0f;
-        unit->scale = ((f32)scale * 2.0f) / 100.0f;
+        radius2 = *(const u16*)(table + 8);
+        unit->unk_8c = (f32)radius * 2.0f;
+        unit->sphereRadius = (f32)radius2 * 2.0f;
         unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
         func_002bcde0(unit, &unit->unkData8);
         return;

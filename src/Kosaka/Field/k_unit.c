@@ -2544,6 +2544,7 @@ void* func_001d32a0(KwlnTask* task)
     u16 grid;
     u32 available;
     RwV3d spawnPos;
+    RwV3d spawnPosCopy;
 
     work = (s32*)task->workData;
     if ((piGpffffa850[0] == 0xe && piGpffffa850[1] == 5) || work[1] == 1 || work[2] == 1)
@@ -2615,7 +2616,8 @@ void* func_001d32a0(KwlnTask* task)
         if (work[3] != 0 && work[3] < work[4] / 0x1e && work[5] == 0)
         {
             func_00452010(&spawnPos);
-            K_FldUnit_CreateReaper(1, &spawnPos);
+            spawnPosCopy = spawnPos;
+            K_FldUnit_CreateReaper(1, &spawnPosCopy);
             datSetFlag(0x1423, 1);
             work[5]++;
             work[0] = 1;
