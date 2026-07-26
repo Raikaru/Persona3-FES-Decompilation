@@ -9834,78 +9834,147 @@ void func_002ae740(BtlCamera* camera, int param_2)
     FUN_002a3110((u16*)camera, 0.75f);
 }
 
+/* Retail 0x2AEF80-0x2AF7E0: retain the measured framing frame slots as real aggregates. */
+typedef struct BtlCameraFramingPoseLocal {
+  RwV3d pos;
+  RtQuat rot;
+} BtlCameraFramingPoseLocal;
+
+typedef struct BtlCameraFramingWork {
+  f32 fStack_140;
+  f32 fStack_13c;
+  f32 fStack_138;
+  f32 fStack_134;
+  f32 fStack_130;
+  f32 fStack_12c;
+  f32 fStack_128;
+  f32 fStack_124;
+  f32 fStack_120;
+  int iStack_11c;
+  f32 fStack_110;
+  f32 fStack_10c;
+  f32 fStack_108;
+  Local128 auStack_104;
+  f32 fStack_f4;
+  f32 fStack_f0;
+  f32 fStack_ec;
+  struct {
+    Local128 quat;
+    f32 aux0;
+    f32 aux1;
+  } auStack_e8;
+  BtlCameraFramingPoseLocal auStack_d0;
+  f32 fStack_b4;
+  f32 fStack_b0;
+  f32 fStack_ac;
+  f32 fStack_a8;
+  f32 fStack_a4;
+  f32 fStack_a0;
+  f32 fStack_9c;
+  f32 fStack_90;
+  f32 fStack_8c;
+  f32 fStack_88;
+  f32 fStack_80;
+  f32 fStack_7c;
+  f32 fStack_78;
+  f32 fStack_70;
+  f32 fStack_6c;
+  f32 fStack_68;
+  f32 fStack_64;
+  f32 fStack_60;
+  f32 fStack_58;
+  f32 fStack_54;
+  f32 fStack_50;
+  f32 fStack_48;
+  f32 fStack_44;
+  f32 fStack_40;
+  f32 fStack_38;
+  f32 fStack_34;
+  f32 fStack_30;
+  f32 fStack_28;
+  f32 fStack_24;
+  f32 fStack_20;
+  f32 fStack_18;
+  f32 fStack_14;
+  f32 fStack_10;
+  f32 auStack_8;
+  f32 fStack_4;
+} BtlCameraFramingWork;
 // FUN_002AEF80 NONMATCHING
 
 void func_002aef80(BtlCamera* camera, int param_2)
 {
+  BtlCameraFramingWork work;
   int iVar1;
   int iVar2;
   int iVar3;
-  float fVar4;
-  float fVar5;
-  float fVar6;
-  float fVar7;
-  float fStack_140;
-  float fStack_13c;
-  float fStack_138;
-  float fStack_134;
-  float fStack_130;
-  float fStack_12c;
-  float fStack_128;
-  float fStack_124;
-  float fStack_120;
-  int iStack_11c;
-  float fStack_110;
-  float fStack_10c;
-  float fStack_108;
-  undefined1 auStack_104 [16];
-  float fStack_f4;
-  float fStack_f0;
-  float fStack_ec;
-  undefined1 auStack_e8 [24];
-  undefined1 auStack_d0 [28];
-  float fStack_b4;
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a8;
-  float fStack_a4;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
-  float fStack_70;
-  float fStack_6c;
-  float fStack_68;
-  float fStack_64;
-  float fStack_60;
-  float fStack_58;
-  float fStack_54;
-  float fStack_50;
-  float fStack_48;
-  float fStack_44;
-  float fStack_40;
-  float fStack_38;
-  float fStack_34;
-  float fStack_30;
-  float fStack_28;
-  float fStack_24;
-  float fStack_20;
-  float fStack_18;
-  float fStack_14;
-  float fStack_10;
-  undefined1 auStack_8 [4];
-  float fStack_4;
+  f32 fVar4;
+  f32 fVar5;
+  f32 fVar6;
+  f32 fVar7;
+#define fStack_140 work.fStack_140
+#define fStack_13c work.fStack_13c
+#define fStack_138 work.fStack_138
+#define fStack_134 work.fStack_134
+#define fStack_130 work.fStack_130
+#define fStack_12c work.fStack_12c
+#define fStack_128 work.fStack_128
+#define fStack_124 work.fStack_124
+#define fStack_120 work.fStack_120
+#define iStack_11c work.iStack_11c
+#define fStack_110 work.fStack_110
+#define fStack_10c work.fStack_10c
+#define fStack_108 work.fStack_108
+#define auStack_104 work.auStack_104
+#define fStack_f4 work.fStack_f4
+#define fStack_f0 work.fStack_f0
+#define fStack_ec work.fStack_ec
+#define auStack_e8 work.auStack_e8
+#define auStack_d0 work.auStack_d0
+#define fStack_b4 work.fStack_b4
+#define fStack_b0 work.fStack_b0
+#define fStack_ac work.fStack_ac
+#define fStack_a8 work.fStack_a8
+#define fStack_a4 work.fStack_a4
+#define fStack_a0 work.fStack_a0
+#define fStack_9c work.fStack_9c
+#define fStack_90 work.fStack_90
+#define fStack_8c work.fStack_8c
+#define fStack_88 work.fStack_88
+#define fStack_80 work.fStack_80
+#define fStack_7c work.fStack_7c
+#define fStack_78 work.fStack_78
+#define fStack_70 work.fStack_70
+#define fStack_6c work.fStack_6c
+#define fStack_68 work.fStack_68
+#define fStack_64 work.fStack_64
+#define fStack_60 work.fStack_60
+#define fStack_58 work.fStack_58
+#define fStack_54 work.fStack_54
+#define fStack_50 work.fStack_50
+#define fStack_48 work.fStack_48
+#define fStack_44 work.fStack_44
+#define fStack_40 work.fStack_40
+#define fStack_38 work.fStack_38
+#define fStack_34 work.fStack_34
+#define fStack_30 work.fStack_30
+#define fStack_28 work.fStack_28
+#define fStack_24 work.fStack_24
+#define fStack_20 work.fStack_20
+#define fStack_18 work.fStack_18
+#define fStack_14 work.fStack_14
+#define fStack_10 work.fStack_10
+#define auStack_8 work.auStack_8
+#define fStack_4 work.fStack_4
   
+  /* Retail 0x2AEFC8: snapshot the camera position before target framing. */
+  FUN_002a4470((f32*)&auStack_d0, (f32*)&camera->pos);
   iVar3 = (int)camera;
   iVar1 = *(int *)(iVar3 + 0xe0);
   iVar2 = FUN_002c0880(iVar1 + 0x88);
   iVar1 = *(int *)(iVar1 + 0x30);
-  fVar5 = (float)func_00280870(1 << (*(byte *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,1,
-                              &fStack_18,&fStack_4,auStack_8,1);
+  fVar5 = func_00280870_ae740(1 << (*(byte *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,1,
+                              &fStack_18,&fStack_4,&auStack_8,1);
   func_00280050(iVar1,&fStack_58);
   fVar4 = *(float *)(iVar1 + 0x2c);
   fVar6 = *(float *)(iVar1 + 0x8c);
@@ -9945,6 +10014,8 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fVar4 = (float)FUN_002d1e70(&fStack_48,&fStack_18);
   fVar6 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar3 + 0xb8) * 0.5f);
   fVar6 = (DAT_007cadf0 * fVar5) / fVar6;
+  /* Retail 0x2AF1F0: derive the first framing quaternion before applying its transform. */
+  FUN_002a4690((void*)&auStack_104,&fStack_48,&fStack_18,&D_00697880);
   FUN_004be1e0(&fStack_38,0x6978a0,1,auStack_104);
   if (fVar4 <= fVar6) {
     fVar4 = fVar6;
@@ -9982,6 +10053,8 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fVar4 = (float)FUN_002d1e70(&fStack_48,&fStack_68);
   fVar7 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar3 + 0xb8) * 0.5f);
   fVar7 = (DAT_007cadb0 * fVar5) / fVar7;
+  /* Retail 0x2AF438: derive the second framing quaternion before applying its transform. */
+  FUN_002a4690((void*)&auStack_e8,&fStack_48,&fStack_68,&D_00697880);
   FUN_004be1e0(&fStack_38,0x6978a0,1,auStack_e8);
   if (fVar4 <= fVar7) {
     fVar4 = fVar7;
@@ -10044,6 +10117,67 @@ void func_002aef80(BtlCamera* camera, int param_2)
   }
   FUN_002a2290((u16*)camera,(RwV3d*)&auStack_d0,(RwV3d*)&fStack_b4,1);
   FUN_002a3110((u16*)camera,1.25f);
+#undef fStack_4
+#undef auStack_8
+#undef fStack_10
+#undef fStack_14
+#undef fStack_18
+#undef fStack_20
+#undef fStack_24
+#undef fStack_28
+#undef fStack_30
+#undef fStack_34
+#undef fStack_38
+#undef fStack_40
+#undef fStack_44
+#undef fStack_48
+#undef fStack_50
+#undef fStack_54
+#undef fStack_58
+#undef fStack_60
+#undef fStack_64
+#undef fStack_68
+#undef fStack_6c
+#undef fStack_70
+#undef fStack_78
+#undef fStack_7c
+#undef fStack_80
+#undef fStack_88
+#undef fStack_8c
+#undef fStack_90
+#undef fStack_9c
+#undef fStack_a0
+#undef fStack_a4
+#undef fStack_a8
+#undef fStack_ac
+#undef fStack_b0
+#undef fStack_b4
+#undef auStack_d0
+#undef auStack_e8
+#undef fStack_ec
+#undef fStack_f0
+#undef fStack_f4
+#undef auStack_104
+#undef fStack_108
+#undef fStack_10c
+#undef fStack_110
+#undef iStack_11c
+#undef fStack_120
+#undef fStack_124
+#undef fStack_128
+#undef fStack_12c
+#undef fStack_130
+#undef fStack_134
+#undef fStack_138
+#undef fStack_13c
+#undef fStack_140
+#undef fVar4
+#undef fVar5
+#undef fVar6
+#undef fVar7
+#undef iVar1
+#undef iVar2
+#undef iVar3
 }
 
 extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
