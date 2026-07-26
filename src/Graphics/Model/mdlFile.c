@@ -28235,7 +28235,7 @@ u64 FUN_00337e90(int param_1)
 
   
 
-  uVar5 = (*DAT_00960178)(4,0x40000);
+  uVar5 = (*(u32 (**)(...))DAT_00960178_abs)(4,0x40000);
 
   if (*(u32 *)(param_1 + 0x38) < 3) {
 
@@ -39129,6 +39129,7 @@ u32 FUN_00342890(u32 *param_1,int param_2)
   }
 
   iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],0x69bcf0,4,0x4c);
+  piVar4[1] = iVar1;
 
   if (param_2 == 0) {
     uVar3 = FUN_003210a0(0x14);
