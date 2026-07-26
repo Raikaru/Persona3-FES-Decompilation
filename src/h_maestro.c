@@ -834,13 +834,16 @@ u32 func_001114b0(KwlnTask* task)
 void func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
-    s32* stop;
-    u32 value;
 
     work = (MaestroStreamWork*)task->workData;
-    stop = &work->stopAtFrame;
-    value = 1;
-    *stop = value;
+    switch (1)
+    {
+    case 1:
+        work->stopAtFrame = 1;
+        break;
+    default:
+        break;
+    }
     work->complete = 0;
 }
 

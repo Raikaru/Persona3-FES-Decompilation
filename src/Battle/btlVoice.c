@@ -9955,17 +9955,17 @@ void func_002eec60(void)
   u32 uVar2;
   int iVar4;
   u32 *puVar5;
-  u32 *puVar6;
+  u8 *puVar6;
   int iVar3;
   s16 sVar7;
-  puVar6 = (u32*)((u8*)0x006a0000 - 0x6000);
+  puVar6 = DAT_0069a000_abs;
 
   puVar5 = work.data;
   iVar4 = 3;
   do {
-    uVar1 = *puVar6;
-    uVar2 = puVar6[1];
-    puVar6 = puVar6 + 2;
+    uVar1 = *(u32*)puVar6;
+    uVar2 = *(u32*)(puVar6 + 4);
+    puVar6 = puVar6 + 8;
     iVar4 = iVar4 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;

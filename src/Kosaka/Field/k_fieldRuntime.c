@@ -297,7 +297,7 @@ extern s32 func_001ed9e0(void* work);
 extern void func_001edbe0(void* work);
 extern void func_001edf10(void* work);
 extern void func_001eba50(RuntimeResetWork* work);
-extern void func_001eba80(void* param_1, u32* result);
+extern void func_001eba80(RuntimeCommandWork* work, u32* result);
 extern void func_001ebd80(RuntimeWork* work, s32 param2);
 extern f32 func_001ecd90(void* data, s32 index, s32 vectorSet);
 extern f32 func_001ecec0(void* data, s32 index);
@@ -3197,15 +3197,13 @@ void func_001eba50(RuntimeResetWork* work)
 }
 
 // FUN_001EBA80 NONMATCHING
-void func_001eba80(void* param_1, u32* unused)
+void func_001eba80(RuntimeCommandWork* work, u32* unused)
 {
     u16* cursor;
     u32 duration;
     u16* durationParts;
     RuntimeWork* target;
     s32 stop;
-    RuntimeCommandWork* work;
-    work = (RuntimeCommandWork*)param_1;
 
     cursor = work->cursor;
     stop = 0;
