@@ -1459,7 +1459,7 @@ void FUN_00449d60(u64 param_1);
 void FUN_00449ed0(void);
 void FUN_00449fa0(void);
 void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
-void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5 ,u8 param_6);
+void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
 void FUN_0044a630(int param_1);
 void FUN_0044a790(u32 *param_1);
 void FUN_0044a990(int param_1,u32 *param_2);
@@ -2877,7 +2877,7 @@ void FUN_00449d60(u64 param_1);
 void FUN_00449ed0(void);
 void FUN_00449fa0(void);
 void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
-void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5 ,u8 param_6);
+void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
 void FUN_0044a630(int param_1);
 void FUN_0044a790(u32 *param_1);
 void FUN_0044a990(int param_1,u32 *param_2);
@@ -12678,17 +12678,17 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
 // FUN_0044A330 NONMATCHING
 
 void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5
-                 ,u8 param_6)
+                 ,char param_6)
 
 {
   int iVar1;
   u32 uVar2;
-  u8 uVar3;
+  u32 uVar3;
   
   uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_5 + 0x3c) + 0xe8),param_6);
   iVar1 = (int)uVar2;
   *(float *)(iVar1 + 0x2c) = param_4;
-  if (param_3 < 2.1474836e+09f) {
+  if (2.1474836e+09f >= param_3) {
     uVar3 = (u8)(int)param_3;
   }
   else {
