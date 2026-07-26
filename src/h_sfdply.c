@@ -2582,8 +2582,8 @@ void func_0010ec50(KwlnTask* task)
     func_004aad50();
 }
 
-// Reconstructed initialization, dispatch, color, and draw processing.
-// Residual differences are MWCC register allocation and 128-bit stack-spill layout.
+// Retail 0x10fbe4-0x110250 re-fetches command pointers and carries the prior
+// endpoint into command-2 rectangles; preserve those conversions and spill slots.
 // FUN_0010F6C0 NONMATCHING
 void func_0010f6c0(KwlnTask* task)
 {
@@ -2592,7 +2592,7 @@ void func_0010f6c0(KwlnTask* task)
     u8* frames;
     HSfdRenderFrame* record;
     void* resource;
-    void* quad;
+    unsigned __int128 quad;
     void (**setRenderState)(u32, u32);
     RwCamera* camera;
     s32 element;
@@ -2607,14 +2607,14 @@ void func_0010f6c0(KwlnTask* task)
     s32 j;
     s32 baseX;
     s32 baseY;
-    s32 x;
-    s32 y;
+    s64 screenX;
     s16 screenY;
     s64 red;
     s64 green;
     s64 blue;
     s64 alpha;
-    s64 colorBase;
+    unsigned __int128 colorBase;
+    u64 frameOffset;
     u8 colorBytes[4];
     s32 colorState;
     f32 zero;
@@ -2721,14 +2721,15 @@ void func_0010f6c0(KwlnTask* task)
                 resource = *(void**)(entry + 0xa8);
                 func_004ac5f0(resource);
                 func_004ab1b0(resource);
-                colorBase = (s64)(work + element * 2);
-                quad = work + colorState * 4;
+                colorBase = (unsigned __int128)(work + element * 2);
+                quad = (unsigned __int128)(work + colorState * 4);
                 while (draw == 0)
                 {
                     if (colorReady == 0)
                     {
                         frames = *(u8**)(entry + 8);
-                        record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                        frameOffset = (unsigned __int128)(frame * 0x12);
+                        record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                         if (record->command != -1)
                         {
                             red = (record->colorR < 0x100) ?
@@ -2763,7 +2764,8 @@ void func_0010f6c0(KwlnTask* task)
                     }
 
                     frames = *(u8**)(entry + 8);
-                    record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                    frameOffset = (unsigned __int128)(frame * 0x12);
+                    record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                     if (record->command != -1)
                     {
                         if ((record->command == 2) && (draw == 0))
@@ -2783,6 +2785,8 @@ void func_0010f6c0(KwlnTask* task)
                             func_004a6200(*(void**)(entry + 0x148),
                                           &out0, &out2, &out4, &out6);
                         }
+                        frames = *(u8**)(entry + 8);
+                        record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
 
                         switch (record->command)
                         {
@@ -2801,18 +2805,21 @@ void func_0010f6c0(KwlnTask* task)
                                     func_004aad50();
                                     func_004ac5f0(resource);
                                     func_004ab1b0(resource);
-                                    layer = 0;
                                 }
-                                record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                                record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                                 *(s32*)(entry + 0x288) = record->type;
-                                baseX = (s32)*(f32*)(work + 0x3d8);
-                                baseY = (s32)*(f32*)(work + 0x3dc);
-                                func_004ab200(resource,
-                                              (f32)(baseX + record->x0),
-                                              (f32)(448 - (baseY + record->y0)));
-                                x = baseX + record->x0;
-                                y = 448 - (baseY + record->y0);
-                                screenY = (s16)y;
+                                func_004ab200(
+                                    resource,
+                                    (f32)((s32)*(f32*)(work + 0x3d8) + record->x0),
+                                    (f32)(448 - ((s32)*(f32*)(work + 0x3dc) + record->y0)));
+                                frames = *(u8**)(entry + 8);
+                                frameOffset = (u64)(frame * 0x12);
+                                record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
+                                screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
+                                                     record->x0);
+                                screenY = (s16)(448 -
+                                                ((s32)*(f32*)(work + 0x3dc) +
+                                                 record->y0));
                                 func_004a5dd0(*(void**)(entry + 0x148),
                                               (s8*)colorBytes, (s8*)colorBytes,
                                               (s8*)colorBytes, (s8*)colorBytes);
@@ -2822,43 +2829,74 @@ void func_0010f6c0(KwlnTask* task)
 
                             case 1:
                                 *(s32*)(entry + 0x288) = record->type;
-                                baseX = (s32)*(f32*)(work + 0x3d8);
-                                baseY = (s32)*(f32*)(work + 0x3dc);
                                 if (layer == 0)
-                                    func_004ab200(resource,
-                                                  (f32)(baseX + record->x0),
-                                                  (f32)(448 - (baseY + record->y0)));
+                                {
+                                    frames = *(u8**)(entry + 8);
+                                    frameOffset = (u64)(frame * 0x12);
+                                    record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
+                                    func_004ab200(
+                                        resource,
+                                        (f32)((s32)*(f32*)(work + 0x3d8) +
+                                              record->x0),
+                                        (f32)(448 -
+                                              ((s32)*(f32*)(work + 0x3dc) +
+                                               record->y0)));
+                                }
                                 else
-                                    func_004ab2c0(resource,
-                                                  (f32)(baseX + record->x0),
-                                                  (f32)(448 - (baseY + record->y0)));
-                                x = baseX + record->x0;
-                                y = 448 - (baseY + record->y0);
-                                screenY = (s16)y;
+                                {
+                                    frames = *(u8**)(entry + 8);
+                                    frameOffset = (u64)(frame * 0x12);
+                                    record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
+                                    func_004ab2c0(
+                                        resource,
+                                        (f32)((s32)*(f32*)(work + 0x3d8) +
+                                              record->x0),
+                                        (f32)(448 -
+                                              ((s32)*(f32*)(work + 0x3dc) +
+                                               record->y0)));
+                                }
+                                frames = *(u8**)(entry + 8);
+                                frameOffset = (u64)(frame * 0x12);
+                                record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
+                                screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
+                                                     record->x0);
+                                screenY = (s16)(448 -
+                                                ((s32)*(f32*)(work + 0x3dc) +
+                                                 record->y0));
                                 func_004a5dd0(*(void**)(entry + 0x148),
                                               (s8*)colorBytes, (s8*)colorBytes,
                                               (s8*)colorBytes, (s8*)colorBytes);
                                 found = 1;
                                 layer++;
                                 break;
-
+ 
                             case 2:
                                 *(s32*)(entry + 0x288) = record->type;
                                 frames = *(u8**)(entry + 8);
-                                record = (HSfdRenderFrame*)(frames + frame * 0x12);
-                                baseX = (s32)*(f32*)(work + 0x3d8);
-                                baseY = (s32)*(f32*)(work + 0x3dc);
-                                x0 = (f32)baseX;
-                                y0 = (f32)baseY;
-                                x1 = (f32)(baseX + record->x0);
-                                y1 = (f32)(448 - (baseY + record->y0));
-                                x2 = (f32)(baseX + record->x1);
-                                y2 = (f32)(448 - (baseY + record->y1));
+                                frameOffset = (unsigned __int128)(frame * 0x12);
+                                record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
+                                x0 = (f32)(s32)screenX;
+                                y0 = (f32)screenY;
+                                x1 = (f32)((s32)*(f32*)(work + 0x3d8) +
+                                           record->x0);
+                                y1 = (f32)(448 -
+                                           ((s32)*(f32*)(work + 0x3dc) +
+                                            record->y0));
+                                x2 = (f32)((s32)*(f32*)(work + 0x3d8) +
+                                           record->x1);
+                                y2 = (f32)(448 -
+                                           ((s32)*(f32*)(work + 0x3dc) +
+                                            record->y1));
                                 func_004ab410(resource, x0, y0, x1, y1,
                                               x2, y2);
-                                x = baseX + record->x1;
-                                y = 448 - (baseY + record->y1);
-                                screenY = (s16)y;
+                                frames = *(u8**)(entry + 8);
+                                frameOffset = (u64)(frame * 0x12);
+                                record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
+                                screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
+                                                     record->x1);
+                                screenY = (s16)(448 -
+                                                ((s32)*(f32*)(work + 0x3dc) +
+                                                 record->y1));
                                 func_004a5dd0(*(void**)(entry + 0x148),
                                               (s8*)colorBytes, (s8*)colorBytes,
                                               (s8*)colorBytes, (s8*)colorBytes);
@@ -2867,6 +2905,10 @@ void func_0010f6c0(KwlnTask* task)
                                 break;
                         }
                         frame++;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
 
@@ -2890,7 +2932,7 @@ void func_0010f6c0(KwlnTask* task)
                         j = 0;
                         for (i = element - 1; i >= 0; i--)
                         {
-                            quad = work + i * 4;
+                            quad = (unsigned __int128)(work + i * 4);
                             if (*(s32*)((u8*)quad + 0x288) == 0)
                             {
                                 func_00110650(work, i, element);
