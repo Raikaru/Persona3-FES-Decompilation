@@ -459,6 +459,8 @@ extern void FUN_003b9550_evt(u32 param_1,u32 param_2);
 #pragma alias FUN_00388df0_evt FUN_00388df0
 extern u32 FUN_00388df0_evt(u32 param_1,u32 *param_2);
 u64 FUN_003952d0(u64 param_1,int param_2,s16 param_3);
+u64 FUN_003952b0(u64 param_1,int param_2);
+u64 FUN_003952a0(u64 param_1,int param_2);
 long FUN_0038ab00(int param_1,u64 param_2);
 short FUN_0036f640(int param_1);
 #pragma alias FUN_0036f640_evt FUN_0036f640
@@ -3533,6 +3535,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
 
           uVar8 = FUN_00386e10((int)param_4);
+          FUN_003952b0(uVar8,param_2[9]);
 
           break;
 
@@ -3546,6 +3549,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
 
           uVar8 = FUN_00386e10((int)param_4);
+          FUN_003952a0(uVar8,param_2[9]);
 
           break;
 

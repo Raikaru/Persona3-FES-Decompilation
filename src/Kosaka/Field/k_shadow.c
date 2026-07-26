@@ -177,9 +177,7 @@ static inline void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
 {
     RwIm3DVertex* output;
     s32 vertexCount;
-    u8 alpha0;
-    u8 alpha1;
-    u8 alpha2;
+    u8 alpha;
 
     if (vertices[0].z < 0.0f && vertices[1].z < 0.0f && vertices[2].z < 0.0f)
     {
@@ -223,29 +221,42 @@ static inline void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
 
     if (work->depthAlpha == 0)
     {
-        alpha0 = work->alpha;
-        alpha1 = work->alpha;
-        alpha2 = work->alpha;
+        alpha = work->alpha;
     }
     else
     {
-        alpha0 = K_FldShadow_DepthAlpha(vertices[0].z, work->alpha);
-        alpha1 = K_FldShadow_DepthAlpha(vertices[1].z, work->alpha);
-        alpha2 = K_FldShadow_DepthAlpha(vertices[2].z, work->alpha);
+        alpha = K_FldShadow_DepthAlpha(vertices[0].z, work->alpha);
     }
+    output[0].c.color.r = alpha;
+    output[0].c.color.g = alpha;
+    output[0].c.color.b = alpha;
+    output[0].c.color.a = alpha;
 
-    output[0].c.color.r = alpha0;
-    output[0].c.color.g = alpha0;
-    output[0].c.color.b = alpha0;
-    output[0].c.color.a = alpha0;
-    output[1].c.color.r = alpha1;
-    output[1].c.color.g = alpha1;
-    output[1].c.color.b = alpha1;
-    output[1].c.color.a = alpha1;
-    output[2].c.color.r = alpha2;
-    output[2].c.color.g = alpha2;
-    output[2].c.color.b = alpha2;
-    output[2].c.color.a = alpha2;
+    if (work->depthAlpha == 0)
+    {
+        alpha = work->alpha;
+    }
+    else
+    {
+        alpha = K_FldShadow_DepthAlpha(vertices[1].z, work->alpha);
+    }
+    output[1].c.color.r = alpha;
+    output[1].c.color.g = alpha;
+    output[1].c.color.b = alpha;
+    output[1].c.color.a = alpha;
+
+    if (work->depthAlpha == 0)
+    {
+        alpha = work->alpha;
+    }
+    else
+    {
+        alpha = K_FldShadow_DepthAlpha(vertices[2].z, work->alpha);
+    }
+    output[2].c.color.r = alpha;
+    output[2].c.color.g = alpha;
+    output[2].c.color.b = alpha;
+    output[2].c.color.a = alpha;
     work->vertexCount = vertexCount + 3;
 }
 static inline u32 K_FldShadow_EmitProjectedTriangle(
@@ -256,9 +267,7 @@ static inline u32 K_FldShadow_EmitProjectedTriangle(
 {
     RwIm3DVertex* output;
     s32 vertexCount;
-    u8 alpha0;
-    u8 alpha1;
-    u8 alpha2;
+    u8 alpha;
 
     if (clipVertices[0].z < 0.0f &&
         clipVertices[1].z < 0.0f &&
@@ -312,32 +321,45 @@ static inline u32 K_FldShadow_EmitProjectedTriangle(
 
     if (*(const s32*)(workFields + 0x54) == 0)
     {
-        alpha0 = *(const u8*)(workFields + 0x50);
-        alpha1 = *(const u8*)(workFields + 0x50);
-        alpha2 = *(const u8*)(workFields + 0x50);
+        alpha = *(const u8*)(workFields + 0x50);
     }
     else
     {
-        alpha0 = K_FldShadow_DepthAlpha(
+        alpha = K_FldShadow_DepthAlpha(
             clipVertices[0].z, *(const u8*)(workFields + 0x50));
-        alpha1 = K_FldShadow_DepthAlpha(
+    }
+    output[0].c.color.r = alpha;
+    output[0].c.color.g = alpha;
+    output[0].c.color.b = alpha;
+    output[0].c.color.a = alpha;
+
+    if (*(const s32*)(workFields + 0x54) == 0)
+    {
+        alpha = *(const u8*)(workFields + 0x50);
+    }
+    else
+    {
+        alpha = K_FldShadow_DepthAlpha(
             clipVertices[1].z, *(const u8*)(workFields + 0x50));
-        alpha2 = K_FldShadow_DepthAlpha(
+    }
+    output[1].c.color.r = alpha;
+    output[1].c.color.g = alpha;
+    output[1].c.color.b = alpha;
+    output[1].c.color.a = alpha;
+
+    if (*(const s32*)(workFields + 0x54) == 0)
+    {
+        alpha = *(const u8*)(workFields + 0x50);
+    }
+    else
+    {
+        alpha = K_FldShadow_DepthAlpha(
             clipVertices[2].z, *(const u8*)(workFields + 0x50));
     }
-
-    output[0].c.color.r = alpha0;
-    output[0].c.color.g = alpha0;
-    output[0].c.color.b = alpha0;
-    output[0].c.color.a = alpha0;
-    output[1].c.color.r = alpha1;
-    output[1].c.color.g = alpha1;
-    output[1].c.color.b = alpha1;
-    output[1].c.color.a = alpha1;
-    output[2].c.color.r = alpha2;
-    output[2].c.color.g = alpha2;
-    output[2].c.color.b = alpha2;
-    output[2].c.color.a = alpha2;
+    output[2].c.color.r = alpha;
+    output[2].c.color.g = alpha;
+    output[2].c.color.b = alpha;
+    output[2].c.color.a = alpha;
     work->vertexCount = vertexCount + 3;
     return 1;
 }

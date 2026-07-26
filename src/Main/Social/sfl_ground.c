@@ -989,9 +989,13 @@ void func_0023b990(void)
     stateTable = (const u32*)D_00960090_abs;
     drawTable = (const u32*)D_0096009C_abs;
     
+    stateTable = (const volatile u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
+    stateTable = (const volatile u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
+    stateTable = (const volatile u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
+    stateTable = (const volatile u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
 
     state = work[3];
@@ -1007,12 +1011,13 @@ void func_0023b990(void)
             1, (u32)sflRes0020e590(0));
         for (i = 0; i < 6; i++) {
             void* vertices = GROUND_PTR(work, 0x110 + i * 0x200);
+            drawTable = (const u32*)D_0096009C_abs;
             ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 1, 2);
+            drawTable = (const u32*)D_0096009C_abs;
             ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 2, 3);
         }
         break;
     }
-
     if (state == 1) {
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 3);
@@ -1041,8 +1046,10 @@ void func_0023b990(void)
                 }
                 if (particleType <= 2) {
                     
+                    drawTable = (const u32*)D_0096009C_abs;
                     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                         particle + 0x10, 4, 0, 1, 2);
+                    drawTable = (const u32*)D_0096009C_abs;
                     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                         particle + 0x10, 4, 0, 2, 3);
                 }
@@ -1059,9 +1066,11 @@ void func_0023b990(void)
             1, (u32)sflRes0020e690(4));
         for (i = 0; i < 7; i++) {
             for (j = 0; j < 4; j++) {
+                drawTable = (const u32*)D_0096009C_abs;
                 ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                     GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100 + 0x10),
                     4, 0, 1, 2);
+                drawTable = (const u32*)D_0096009C_abs;
                 ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                     GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100 + 0x10),
                     4, 0, 2, 3);

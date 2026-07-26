@@ -8,6 +8,12 @@ typedef struct YajimaVec3 {
     f32 y;
     f32 z;
 } YajimaVec3;
+typedef struct YajimaVec4 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} YajimaVec4;
 typedef struct YajimaVec16 {
     f32 lane[16];
 } YajimaVec16;
@@ -5713,8 +5719,7 @@ void FUN_0042adb0(int param_1)
   YajimaVec3 delta;
 
   YajimaVec3 posTarget;
-
-  u64 uStack_28;
+  YajimaVec4 rotScratch;
 
   u32 uStack_20;
 
@@ -5740,9 +5745,11 @@ void FUN_0042adb0(int param_1)
 
   posTarget.z = posCamera.z;
 
-  uStack_28 = DAT_006b44c0;
+  ((u32 *)&rotScratch)[0] = DAT_006b44c0;
 
-  uStack_20 = DAT_006b44c8;
+  ((u32 *)&rotScratch)[1] = 0;
+
+  ((u32 *)&rotScratch)[2] = DAT_006b44c8;
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
@@ -5787,8 +5794,7 @@ void FUN_0042adb0(int param_1)
   RwMatrixRotate(*(u32 *)
 
                 (*(short *)(iVar1 + 0xb90) * 0x28 + *piGpffffa850 * 0x3c4 + iGpffffb5c0 + -0x74a0),
-
-               uVar3,&uStack_28,2);
+               uVar3,&rotScratch,2);
 
   delta.x = *(float *)(iVar1 + 0xba4) - posTarget.x;
 

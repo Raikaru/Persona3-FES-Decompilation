@@ -1011,8 +1011,8 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     FclDb650TextData* text_data;
     s32 index;
     s32 draw_variant;
-    s16 x;
-    s16 y;
+    s32 x;
+    s32 y;
     s16 alpha;
     char number_text[0x10];
 
@@ -1089,7 +1089,6 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 13:
-    case 14:
         if ((owner->container->work->flags & 0x10000) == 0) return;
         index = (s32)(FUN_00175410() & 0xffff) - 4;
         FUN_0040e3f0(1.0f, 1.0f, 1.0f + 0.2f * (float)index,
@@ -1098,6 +1097,14 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                       y + 0x88 + index * 6, alpha, 0x2e, 0, 0, 0);
         return;
 
+    case 14:
+        if ((owner->container->work->flags & 0x10000) == 0) return;
+        index = (s32)(FUN_00175410() & 0xffff) - 4;
+        FUN_0040e3f0(1.0f, 1.0f, 1.0f + 0.2f * (float)index,
+                      1.0f + 0.2f * (float)index,
+                      x + 0x16c + index * 5,
+                      y + 0x88 + index * 6, alpha, 0x2e, 0, 0, 0);
+        return;
     case 15:
         if ((owner->container->work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(2.0f, x, y, alpha, 0x0b, 0);
