@@ -1343,11 +1343,10 @@ u32 FUN_001C3FE0()
 // FUN_001C4080 NONMATCHING
 u32 FUN_001C4080()
 {
-    u32 offset;
     s32 index;
+    u32 result;
     u32 valid;
-    u16 result;
-    u32 resultArg;
+    u32 offset;
 
     index = scrGetIntPara(0);
     result = 0;
@@ -1362,8 +1361,7 @@ u32 FUN_001C4080()
     {
         result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
     }
-    resultArg = result;
-    scrSetIntReturnVal((s32)resultArg);
+    scrSetIntReturnVal((s32)result);
     return true;
 }
 
