@@ -2180,7 +2180,7 @@ void FUN_00227F30(void)
 // D_00960090_abs/D_0096009C_abs style. nd 198->16 (obj 1156B/1168B);
 // residual is a table0/loop-counter register-bank swap, unfixable per
 // the usual declaration-order floor (2 attempts tried).
-// FUN_002289B0 NONMATCHING
+// FUN_002289B0
 void FUN_002289B0(void)
 {
     u8* work;
