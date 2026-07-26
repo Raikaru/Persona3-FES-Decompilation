@@ -186,7 +186,7 @@ void FUN_0077fdc0(void)
 }
 // Retail sibling recovered from 0x0077FE80-0x0077FF24.
 // FUN_0077FE80 NONMATCHING
-u32 FUN_0077fe80(u8 *param_1,u32 param_2,u32 param_3)
+u64 FUN_0077fe80(u8 *param_1,u32 param_2,u32 param_3)
 {
   u8 *dst;
   u32 end;
@@ -332,8 +332,6 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
   return param_1;
 }
 #pragma pop
-#pragma push
-#pragma schedule off
 // Retail sibling recovered from 0x007803A0-0x007803D0.
 // FUN_007803A0 NONMATCHING
 u32 FUN_007803a0(u32 param_1)
@@ -342,7 +340,7 @@ u32 FUN_007803a0(u32 param_1)
   u32 *table;
 
   i = 0;
-  table = (u32 *)0x80076710;
+  table = uRam80076710;
   do {
     if (param_1 == table[0]) {
       return table[1];
@@ -352,7 +350,6 @@ u32 FUN_007803a0(u32 param_1)
   } while (i < 6);
   return 0;
 }
-#pragma pop
 
 // Retail sibling recovered from 0x007803D4-0x007803F4.
 // FUN_007803D4 NONMATCHING
