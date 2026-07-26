@@ -833,13 +833,13 @@ u32 func_001114b0(KwlnTask* task)
 // FUN_00111500 NONMATCHING
 void func_00111500(KwlnTask* task)
 {
-    s16 value;
     MaestroStreamWork* work;
+    u32 value;
 
     work = (MaestroStreamWork*)task->workData;
-    value = 1;
-    work->stopAtFrame = value;
-    work->complete = 0;
+    value = true;
+    *(u32*)((u8*)work + 0xc0) = value;
+    *(u32*)((u8*)work + 0xbc) = 0;
 }
 
 // FUN_00111520

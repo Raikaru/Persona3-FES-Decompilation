@@ -61,7 +61,7 @@ void func_0031ef80(void* data, s16 id, u16 blendFrameCount);
 void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
 #pragma alias func_004b74c0_typed func_004b74c0
-extern void func_004b74c0_typed(f32 frame);
+extern void func_004b74c0_typed(f32 frame, void* interpolator);
 #pragma alias func_004b74c0_frame FUN_004b74c0
 extern void func_004b74c0_frame(f32 frame, u32 interpolator);
 #pragma alias func_004b7240_frame FUN_004b7240
@@ -3797,7 +3797,7 @@ void FUN_003140b0(void)
 {
 }
 
-// FUN_003140C0 NONMATCHING
+// FUN_003140C0
 
 
 void* func_003140c0(void* param_1,u16 *param_2)
@@ -3817,7 +3817,7 @@ void* func_003140c0(void* param_1,u16 *param_2)
     if ((((lVar2 < (s64)(u32)count) &&
           (*(int *)(*piVar1 + rawIndex * 8) != 0)) && ((*param_2 & 1) == 0)) &&
         ((lVar2 < (s64)(u32)count && (0 <= rawIndex)))) {
-      func_004b74c0_typed(*(f32 *)(*(int *)param_1 + 0xc));
+      func_004b74c0_typed(*(f32 *)(*(int *)param_1 + 0xc),param_1);
       *(u8 *)(param_2 + 1) = 1;
     }
   }
