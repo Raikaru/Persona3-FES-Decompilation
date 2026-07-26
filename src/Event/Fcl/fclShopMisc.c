@@ -1535,21 +1535,20 @@ long FUN_003f0d60(int param_1,u64 param_2)
     switch (iStack_4) {
     case 0:
       var_17 = (long)*(int *)(iVar1 + 0x24);
-      goto inner_done;
+      break;
     case 1:
       var_17 = (long)*(int *)(iVar1 + 0x1c);
-      goto inner_done;
+      break;
     case 2:
       var_17 = (long)*(int *)(iVar1 + 0x1c);
-      goto inner_done;
+      break;
     case 3:
       var_17 = (long)*(int *)(iVar1 + 0x20);
-      goto inner_done;
+      break;
     case 4:
       var_17 = (long)*(int *)(iVar1 + 0x18);
       break;
     }
-inner_done:
     break;
   case 4:
     var_16 = 3;

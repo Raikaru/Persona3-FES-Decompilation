@@ -1574,7 +1574,8 @@ void FUN_001b5200(u32* resource, f32 angle)
     u32 i;
     u16 type;
     FldrcColor color;
-    color = DAT_00678f68_color[0];
+    color.word = DAT_00678f68_abs[0];
+    color.tail = DAT_00678f70_abs[0];
 
     if ((*resource & 1) == 0)
     {
