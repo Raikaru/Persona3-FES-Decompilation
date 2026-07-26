@@ -1051,6 +1051,44 @@ u64 FUN_003af460(u64 unused, int context)
   D_0095ABEC[0] = (u32)high << 8 | low;
   return 0;
 }
+// FUN_003AF454 NONMATCHING
+u64 FUN_003af454(u64 unused, int context)
+{
+  u8* data;
+  u8 low;
+  u8 high;
+  int base;
+  int offset;
+
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  data = (u8 *)(base + offset);
+  low = data[0] - 1;
+  if (data[1] == 0xff)
+  {
+    high = 0;
+  }
+  else
+  {
+    high = data[1] - 1;
+  }
+  D_0095ABE8[0] = (u32)high << 8 | low;
+
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  data = (u8 *)(offset + base);
+  low = data[2] - 1;
+  if (data[3] == 0xff)
+  {
+    high = 0;
+  }
+  else
+  {
+    high = data[3] - 1;
+  }
+  D_0095ABEC[0] = (u32)high << 8 | low;
+  return 0;
+}
 
 
 #undef FUN_003af520
