@@ -1165,7 +1165,6 @@ void btlMainInitStateRevival(BtlStateWork* work)
     packet = FUN_002a16c0(0x10);
     BTL_PACKET_U8(packet, 0x00) = 4;
     packet->parentUID = previousUID;
-    packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     FUN_002b9030(spellContext);
 }

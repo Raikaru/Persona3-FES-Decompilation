@@ -5345,16 +5345,17 @@ u32 FUN_002dbb00(BtlUnit* param_1)
                 count++;
             }
         }
-        if (count == 0)
+        switch (count)
         {
+        case 0:
             if (*(u16*)(encounter + 8) == 0x1a1)
                 result = *(u16*)(table + 0xbc);
             else
                 result = *(u16*)(table + datCalcRand(*(u8*)(table + 0xba)) * 2 + 0xb4);
-        }
-        else
-        {
+            break;
+        default:
             result = candidates[datCalcRand(count)];
+            break;
         }
     }
     else if (firstCount < 2)
