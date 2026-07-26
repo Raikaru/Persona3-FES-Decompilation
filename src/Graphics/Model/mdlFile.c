@@ -1203,9 +1203,6 @@ extern MdlStridedCallback28 DAT_0069c980[];
 extern MdlStridedCallback28 DAT_0069c984[];
 extern u32 DAT_0069c988;
 extern u32 DAT_0069c9e0;
-extern u8 DAT_0069cb80[];
-#pragma alias DAT_0069cb80_abs DAT_0069cb80
-extern u8 DAT_0069cb80_abs[];
 extern MdlTypeDispatch DAT_0069cb90[];
 extern u32 DAT_0069cb94;
 extern u32 DAT_0069cb98;
@@ -45790,7 +45787,7 @@ void FUN_00349a30(int param_1)
 
     FUN_003295c0(0x6fc009fc00a);
 
-    (*DAT_009600a4_abs)(3,auStack_100,4,(u32)DAT_0069cb80_abs,6);
+    (*DAT_009600a4_abs)(3,auStack_100,4,0x69cb80,6);
 
     FUN_00329630();
 

@@ -5638,7 +5638,7 @@ u16 * FUN_003655f0(u32 param_1,int param_2)
 
       if ((int)(puVar4[10] & 0xfc00) >> 10 != 0) {
 
-        FUN_003bb390((float)(int)(short)puVar4[0xb],0x1e58);
+        FUN_003bb390_evt((float)(int)(short)puVar4[0xb],0x1e58);
 
         FUN_005225a8(0x69d720);
 
