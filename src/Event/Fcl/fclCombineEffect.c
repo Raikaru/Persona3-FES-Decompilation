@@ -3279,34 +3279,35 @@ u32 FUN_0041ae20(int param_1)
 u8 FUN_0041aff0(int param_1,int param_2)
 {
   int iVar1;
+  float *pfVar2;
   u8 bVar3;
-  f32 fVar6;
-  f32 fVar7;
-  struct {
-    RwV3d vecA;
-    u32 padA;
-    RwV3d vecNeg;
-    u32 padNeg;
-    RwV3d vecPos;
-    u32 padPos;
-    u64 axisXY;
-    f32 axisZ;
-  } work;
-  u8 *pfVar2;
-  u8 *pfVar4;
-  u8 *pfVar5;
+  float *pfVar4;
+  float *pfVar5;
+  float fVar6;
+  float fVar7;
+  float fStack_40;
+  float fStack_3c;
+  float fStack_38;
+  float fStack_30;
+  float fStack_2c;
+  float fStack_28;
+  float fStack_20;
+  float fStack_1c;
+  float fStack_18;
+  u64 uStack_10;
+  u32 uStack_8;
   iVar1 = *(int *)(param_1 + 0x38);
   fVar7 = 0.0f;
-  work.axisXY = DAT_006b3090;
-  work.axisZ = DAT_006b3098;
+  uStack_10 = DAT_006b3090;
+  uStack_8 = *(u32 *)&DAT_006b3098;
   bVar3 = 0;
-  pfVar4 = (u8 *)0xc;
-  pfVar5 = (u8 *)(u32)&work.vecA;
+  pfVar4 = (float *)0xc;
+  pfVar5 = &fStack_40;
   pfVar2 = pfVar5;
-  while (pfVar2 != (u8 *)0x0) {
-    *pfVar5 = 0;
-    pfVar5 = pfVar5 + 1;
-    pfVar4 = pfVar4 - 1;
+  while (pfVar2 != (float *)0x0) {
+    *(u8 *)pfVar5 = 0;
+    pfVar5 = (float *)((int)pfVar5 + 1);
+    pfVar4 = (float *)((int)pfVar4 + -1);
     pfVar2 = pfVar4;
   }
   if (((DAT_007e094e & 0x80) != 0) || ((DAT_007e0958 & 0x80) != 0)) {
@@ -3321,63 +3322,63 @@ u8 FUN_0041aff0(int param_1,int param_2)
     if (((DAT_007e094e & 8) != 0) || ((DAT_007e0958 & 8) != 0)) {
       *(u32 *)(*(int *)(param_1 + 0x3c) + 8) = 499;
     }
-    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0f;
+    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0;
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
       fVar7 = 0.0f - fGpffff82cc * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0f;
+    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0;
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-      work.axisXY = *(u64 *)(iVar1 + 0x10);
-      work.axisZ = *(f32 *)(iVar1 + 0x18);
+      uStack_10 = *(u64 *)(iVar1 + 0x10);
+      uStack_8 = *(u32 *)(iVar1 + 0x18);
       fVar7 = (fVar7 + 0.0f) - fGpffff82cc * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0f;
-    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-      work.vecA.x = *(f32 *)(iVar1 + 0x30);
-      work.vecA.y = *(f32 *)(iVar1 + 0x34);
-      work.vecA.z = *(f32 *)(iVar1 + 0x38);
-      RwV3dNormalize(&work.vecA,&work.vecA);
+    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0;
+    if ((fVar6 < -48.0f) || (48.0 < fVar6)) {
+      fStack_40 = *(float *)(iVar1 + 0x30);
+      fStack_3c = *(float *)(iVar1 + 0x34);
+      fStack_38 = *(float *)(iVar1 + 0x38);
+      RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
       fVar6 = fGpffff8328 * fVar6;
-      work.vecA.x = work.vecA.x * fVar6;
-      work.vecA.y = work.vecA.y * fVar6;
-      work.vecA.z = work.vecA.z * fVar6;
+      fStack_40 = fStack_40 * fVar6;
+      fStack_3c = fStack_3c * fVar6;
+      fStack_38 = fStack_38 * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0f;
-    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-      work.vecA.x = *(f32 *)(iVar1 + 0x10);
-      work.vecA.y = *(f32 *)(iVar1 + 0x14);
-      work.vecA.z = *(f32 *)(iVar1 + 0x18);
-      RwV3dNormalize(&work.vecA,&work.vecA);
+    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0;
+    if ((fVar6 < -48.0f) || (48.0 < fVar6)) {
+      fStack_40 = *(float *)(iVar1 + 0x10);
+      fStack_3c = *(float *)(iVar1 + 0x14);
+      fStack_38 = *(float *)(iVar1 + 0x18);
+      RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
       fVar6 = fGpffff8328 * fVar6;
-      work.vecA.x = work.vecA.x * fVar6;
-      work.vecA.y = work.vecA.y * fVar6;
-      work.vecA.z = work.vecA.z * fVar6;
+      fStack_40 = fStack_40 * fVar6;
+      fStack_3c = fStack_3c * fVar6;
+      fStack_38 = fStack_38 * fVar6;
       bVar3 = 1;
     }
     if (((DAT_007e094c & 4) == 0) && ((DAT_007e0956 & 4) == 0)) {
       if (((DAT_007e094c & 8) != 0) || ((DAT_007e0956 & 8) != 0)) {
-        work.vecA.y = work.vecA.y + 10.0f;
+        fStack_3c = fStack_3c + 10.0;
         bVar3 = 1;
       }
     }
     else {
-      work.vecA.y = work.vecA.y - 10.0f;
+      fStack_3c = fStack_3c - 10.0;
       bVar3 = 1;
     }
     if (bVar3) {
-      work.vecPos.x = *(f32 *)(iVar1 + 0x40);
-      work.vecPos.y = *(f32 *)(iVar1 + 0x44);
-      work.vecPos.z = *(f32 *)(iVar1 + 0x48);
-      work.vecNeg.x = work.vecPos.x * -1.0f;
-      work.vecNeg.y = work.vecPos.y * -1.0f;
-      work.vecNeg.z = work.vecPos.z * -1.0f;
-      FUN_004cb750_typed(iVar1,&work.vecNeg,2);
-      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&work.axisXY,2);
-      FUN_004cb750_typed(iVar1,&work.vecA,2);
-      FUN_004cb750_typed(iVar1,&work.vecPos,2);
+      fStack_20 = *(float *)(iVar1 + 0x40);
+      fStack_1c = *(float *)(iVar1 + 0x44);
+      fStack_18 = *(float *)(iVar1 + 0x48);
+      fStack_30 = fStack_20 * -1.0f;
+      fStack_2c = fStack_1c * -1.0;
+      fStack_28 = fStack_18 * -1.0;
+      FUN_004cb750_typed(iVar1,&fStack_30,2);
+      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&uStack_10,2);
+      FUN_004cb750_typed(iVar1,&fStack_40,2);
+      FUN_004cb750_typed(iVar1,&fStack_20,2);
     }
     bVar3 = 0;
   }
