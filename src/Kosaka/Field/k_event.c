@@ -1393,9 +1393,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 
             func_001cd790((KwlnTask*)EVENT_WORD(0x17), false);
             EVENT_WORD(0x38) = false;
-            currentActor = FUN_00453460();
-            if (currentActor >= 0)
+            if (FUN_00453460() >= 0)
             {
+                currentActor = FUN_00453460();
                 EVENT_WORD(9) = 0x0086eda0 + currentActor * 0x1c0;
                 if (FUN_002ff790(PTR_U32(EVENT_WORD(9), 0x48)) != true)
                 {
@@ -1516,10 +1516,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             active = false;
             if (FUN_001a0250() != false && DATA_U32(0x008717e8) != 0 && (model = FUN_003b5d10(0x2bff)) != 0)
             {
-                heroMat = (RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104));
-                offset.x = heroMat->pos.x - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
-                offset.y = heroMat->pos.y - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
-                offset.z = heroMat->pos.z - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
+                offset.x = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.x - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
+                offset.y = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.y - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
+                offset.z = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.z - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
                 active = RwV3dLength(&offset) < 200.0f;
             }
             if (active != false)
@@ -1545,7 +1544,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 
             heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
             currentActor = FUN_001a0250() != false ? (s32)(heroMat->pos.x + 400.0f) : 0;
-            currentArea = FUN_001a0250() != false ? (u32)(s32)(heroMat->pos.z + 400.0f) : 0;
+            currentArea = FUN_001a0250() != false ? (u32)(s32)(((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z + 400.0f) : 0;
             currentActor /= 800;
             currentArea = (u32)((s32)currentArea / 800);
             if (currentActor < 0) currentActor = (currentActor + 3) >> 2; else currentActor >>= 2;
@@ -1710,26 +1709,27 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             hit = K_FldEvent_FindFldHitAt(&heroMat->pos, (ResrcFldHit**)&model);
             if ((u16)hit != 0xffff)
             {
-                u8* hitData = (u8*)FIELD_WORD(0x1148) + ((hit & 0x3ff) * 0x2c);
+                /* Retail offset 0x1640 re-fetches the field hit table for every access. */
+#define HIT_DATA_PTR(offset) ((u8*)FIELD_WORD(0x1148) + ((hit & 0x3ff) * 0x2c) + (offset))
                 active = true;
                 if (FIELD_WORD(0x1144) <= (u32)(hit & 0x3ff)) FUN_0019d3f0(0x00683730, 0x756);
                 for (i = 0; i < 3; i++)
                 {
-                    currentActor = PTR_S32(hitData, i * 4);
+                    currentActor = PTR_S32(HIT_DATA_PTR(0), i * 4);
                     if (currentActor != -1 && FUN_0016f190(currentActor) == false)
                     {
                         active = false;
                         break;
                     }
                 }
-                if (active != false && PTR_U16(hitData, 0x0e) != 0 && EVENT_WORD(0x39) != PTR_U16(hitData, 0x0e))
+                if (active != false && PTR_U16(HIT_DATA_PTR(0), 0x0e) != 0 && EVENT_WORD(0x39) != PTR_U16(HIT_DATA_PTR(0), 0x0e))
                 {
-                    EVENT_WORD(0x39) = PTR_U16(hitData, 0x0e);
+                    EVENT_WORD(0x39) = PTR_U16(HIT_DATA_PTR(0), 0x0e);
                     FUN_001ddca0();
                 }
-                if (active != false && PTR_U8(hitData, 0x0c) == 1)
+                if (active != false && PTR_U8(HIT_DATA_PTR(0), 0x0c) == 1)
                 {
-                    switch (PTR_U32(hitData, 0x20))
+                    switch (PTR_U32(HIT_DATA_PTR(0), 0x20))
                     {
                         case 4:
                             fovPos.x = (*(f32*)((u8*)model + 0x128) + *(f32*)((u8*)model + 0x140)) * 0.5f;
@@ -1761,35 +1761,35 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 }
                 if (active != false)
                 {
-                if (PTR_U8(hitData, 0x0d) != 0) EVENT_WORD(0x38) = true;
-                if (PTR_S16(hitData, 0x10) == -1 &&
-                    (PTR_U8(hitData, 0x0d) == 0 || (DATA_U16(0x007e094e) & 0x40) != 0))
+                if (PTR_U8(HIT_DATA_PTR(0), 0x0d) != 0) EVENT_WORD(0x38) = true;
+                if (PTR_S16(HIT_DATA_PTR(0), 0x10) == -1 &&
+                    (PTR_U8(HIT_DATA_PTR(0), 0x0d) == 0 || (DATA_U16(0x007e094e) & 0x40) != 0))
                 {
                     EVENT_WORD(6) = 0;
-                    if (PTR_S16(hitData, 0x18) != 0)
+                    if (PTR_S16(HIT_DATA_PTR(0), 0x18) != 0)
                     {
                         EVENT_WORD(6) = FUN_003b5d50(10);
-                        while (EVENT_WORD(6) != 0 && PTR_S16((void*)EVENT_WORD(6), 0) != PTR_S16(hitData, 0x18))
+                        while (EVENT_WORD(6) != 0 && PTR_S16((void*)EVENT_WORD(6), 0) != PTR_S16(HIT_DATA_PTR(0), 0x18))
                         {
                             EVENT_WORD(6) = PTR_U32((void*)EVENT_WORD(6), 0xf8);
                         }
                         if (EVENT_WORD(6) != 0)
                         {
                             FUN_003189f0(1.0f, PTR_U32((void*)EVENT_WORD(6), 0x104), 0);
-                            FUN_003182d0(PTR_U32((void*)EVENT_WORD(6), 0x104), 0, PTR_U16(hitData, 0x1a), 0, 0);
+                            FUN_003182d0(PTR_U32((void*)EVENT_WORD(6), 0x104), 0, PTR_U16(HIT_DATA_PTR(0), 0x1a), 0, 0);
                         }
                     }
-                    if (PTR_S32(hitData, 0x1c) != -1) FUN_0010a4e0(0, 6, 2, PTR_U16(hitData, 0x1c));
+                    if (PTR_S32(HIT_DATA_PTR(0), 0x1c) != -1) FUN_0010a4e0(0, 6, 2, PTR_U16(HIT_DATA_PTR(0), 0x1c));
                     EVENT_WORD(0x38) = false;
                     EVENT_S16(0x0c) = (s16)hit;
                     fldEvent->eventType = FLDEVENT_TYPE_FLDHIT_INTERACT;
                     FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                     break;
                 }
-                if (PTR_S16(hitData, 0x10) != -1 &&
-                    (PTR_U8(hitData, 0x0d) == 0 || (DATA_U16(0x007e094e) & 0x40) != 0))
+                if (PTR_S16(HIT_DATA_PTR(0), 0x10) != -1 &&
+                    (PTR_U8(HIT_DATA_PTR(0), 0x0d) == 0 || (DATA_U16(0x007e094e) & 0x40) != 0))
                 {
-                    EVENT_WORD(0x18) = FUN_0035bc00(10, FIELD_WORD(0x1048), FIELD_WORD(0x104c), PTR_U16(hitData, 0x10));
+                    EVENT_WORD(0x18) = FUN_0035bc00(10, FIELD_WORD(0x1048), FIELD_WORD(0x104c), PTR_U16(HIT_DATA_PTR(0), 0x10));
                     FUN_001d8c60(true);
                     FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
                     FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
@@ -2541,10 +2541,13 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             break;
         case 0x1f:
             break;
+        case 0x20:
+            /* Retail offset 0x4e60 returns -1 without entering the common completion path. */
+            return (void*)-1;
     }
     
-    /* Retail updates the interaction marker after every non-destroy state. */
-    if (EVENT_WORD(0x38) == true)
+    /* Retail offsets 0x4e6c-0x4f0c use the completion flag at event offset 0xe0. */
+    if (EVENT_WORD(0xe0) == 1)
     {
         heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0), &heroMatBuf);
         markerPos = heroMatBuf.pos;
@@ -2574,7 +2577,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 #undef PTR_S16
 #undef PTR_U16
 #undef PTR_U8
-#undef PTR_S32
+#undef HIT_DATA_PTR
 
     return KWLNTASK_CONTINUE;
 }
