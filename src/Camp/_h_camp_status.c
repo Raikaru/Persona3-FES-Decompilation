@@ -184,6 +184,9 @@ extern void FUN_0012b300_s32(CampVec2 position, f32 scale, void* persona,
 extern void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
                              void* persona, s32 alpha);
 #pragma alias FUN_0012b860_s32 FUN_0012b860
+#pragma alias FUN_0012b860_status FUN_0012b860
+extern void FUN_0012b860_status(CampVec2 position, void* currentStats,
+                                void* persona, u32 alpha, f32 scale);
 extern void FUN_0012bce0_s32(CampVec2 position, f32 scale, void* unused,
                              void* persona, s32 alpha);
 #pragma alias FUN_0012bce0_s32 FUN_0012bce0
@@ -3119,7 +3122,8 @@ void FUN_00133180(CampVec2 position, f32 alpha, void* currentStats,
     s32 drawAlpha;
 
     drawAlpha = 0xff - fade;
-    FUN_0012b860_s32(position, alpha, currentStats, persona, drawAlpha);
+    FUN_0012b860_status(position, currentStats, persona, (u32)drawAlpha,
+                        alpha);
     position.x += 12.0f;
     position.y += 96.0f;
     campStatusDrawSpriteCall((u32)persona, DAT_00833B90_abs, 1,
