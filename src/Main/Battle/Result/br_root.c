@@ -3197,7 +3197,6 @@ void func_001f7210(void)
     u32 entry_type;
     u32 kind = 0;
     s32 value = 0;
-    u32 i;
     u32 item_substate;
     u32 debug_val;
     u32 total_weight;
@@ -3259,7 +3258,6 @@ void func_001f7210(void)
         {
             u16 sel_id = *(u16 *)wt_base;
             s16 sel_val = *(s16 *)(wt_base + 2);
-            u16 sel_f4 = *(u16 *)(wt_base + 4);
             printf("item id %d\n", sel_id);
             kind = 1;
             value = (s32)sel_val;
