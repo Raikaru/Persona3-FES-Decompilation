@@ -8,6 +8,9 @@ typedef struct YajimaVec3 {
     f32 y;
     f32 z;
 } YajimaVec3;
+typedef struct YajimaVec16 {
+    f32 lane[16];
+} YajimaVec16;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -22,6 +25,7 @@ static inline uintptr_t Yajima_AddOffsetFirst(uintptr_t offset, uintptr_t base)
 {
   return offset + base;
 }
+extern f32 sinf(f32 value);
 
 /* FUSION_EXACT_PROTOS */
 u16 func_00170a40(s16 pcId, s16 index);
@@ -2137,6 +2141,7 @@ u64 FUN_004260a0(int param_1)
     }
 
     else if (cVar5 == '\x01') {
+      uVar4 = FUN_00425d50(1,(u8)pcVar1[1]);
 
       FUN_00317a20((&DAT_0095bec0)[DAT_007ce6b4]);
 
@@ -2166,6 +2171,7 @@ u64 FUN_004260a0(int param_1)
 
     else if (cVar5 == '\0') {
 
+      uVar4 = FUN_00425d50(0,(u8)pcVar1[1]);
 
       mdlAnimSet((&DAT_0095bec0)[DAT_007ce6b4],0,uVar4,0,0);
 
@@ -3595,7 +3601,7 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
 
   float fVar2;
 
-  float afStack_120 [5];
+  float afStack_120 [8];
 
   float fStack_10c;
 
@@ -3603,7 +3609,7 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
 
   float fStack_104;
 
-  float afStack_100 [4];
+  YajimaVec16 afStack_100 [4];
 
   u32 uStack_f0;
 
@@ -3665,21 +3671,21 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
 
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
 
-    afStack_100[iVar1 * 0x10 + 2] = DAT_00960088 - param_1;
+    afStack_100[iVar1].lane[2] = DAT_00960088 - param_1;
 
-    afStack_100[iVar1 * 0x10 + 6] = 1.0f / fVar2;
+    afStack_100[iVar1].lane[6] = 1.0f / fVar2;
 
-    afStack_100[iVar1 * 0x10 + 8] = (float)(param_4 >> 0x18);
+    afStack_100[iVar1].lane[8] = (float)(param_4 >> 0x18);
 
-    afStack_100[iVar1 * 0x10 + 9] = (float)((param_4 & 0xff0000) >> 0x10);
+    afStack_100[iVar1].lane[9] = (float)((param_4 & 0xff0000) >> 0x10);
 
-    afStack_100[iVar1 * 0x10 + 10] = (float)((param_4 & 0xff00) >> 8);
+    afStack_100[iVar1].lane[10] = (float)((param_4 & 0xff00) >> 8);
 
-    afStack_100[iVar1 * 0x10 + 0xb] = (float)(param_4 & 0xff);
+    afStack_100[iVar1].lane[0xb] = (float)(param_4 & 0xff);
 
-    afStack_100[iVar1 * 0x10] = afStack_120[iVar1 * 2];
+    afStack_100[iVar1].lane[0] = afStack_120[iVar1 * 2];
 
-    afStack_100[iVar1 * 0x10 + 1] = afStack_120[iVar1 * 2 + 1];
+    afStack_100[iVar1].lane[1] = afStack_120[iVar1 * 2 + 1];
 
   }
 
@@ -3700,7 +3706,17 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
   uStack_2c = 0x3f800000;
 
   (*DAT_00960090)(1,*param_7);
+  (*DAT_009600a0)(4,afStack_100,4);
 
+  afStack_100[0].lane[4] = 0.0f;
+  afStack_100[0].lane[5] = 0.0f;
+  afStack_100[1].lane[4] = 1.0f;
+  afStack_100[1].lane[5] = 0.0f;
+  afStack_100[2].lane[4] = 0.0f;
+  afStack_100[2].lane[5] = 1.0f;
+  afStack_100[3].lane[4] = 1.0f;
+  afStack_100[3].lane[5] = 1.0f;
+  (*DAT_00960090)(1,*param_7);
   (*DAT_009600a0)(4,afStack_100,4);
 
   return;
@@ -5690,21 +5706,13 @@ void FUN_0042adb0(int param_1)
 
   float fVar11;
 
-  float fStack_58;
+  YajimaVec3 posCamera;
 
-  float fStack_54;
+  YajimaVec3 transformed;
 
-  float fStack_50;
+  YajimaVec3 delta;
 
-  float afStack_48 [2];
-
-  float fStack_40;
-
-  float fStack_38;
-
-  float fStack_34;
-
-  float fStack_30;
+  YajimaVec3 posTarget;
 
   u64 uStack_28;
 
@@ -5724,13 +5732,13 @@ void FUN_0042adb0(int param_1)
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  K_FldFrame_CtlCopyPos(&fStack_58,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&posCamera,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-  fStack_18 = fStack_58;
+  posTarget.x = posCamera.x;
 
-  fStack_14 = fStack_54;
+  posTarget.y = posCamera.y;
 
-  fStack_10 = fStack_50;
+  posTarget.z = posCamera.z;
 
   uStack_28 = DAT_006b44c0;
 
@@ -5738,11 +5746,11 @@ void FUN_0042adb0(int param_1)
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
-    fStack_18 = *(float *)(iVar1 + 0x868);
+    posTarget.x = *(float *)(iVar1 + 0x868);
 
-    fStack_14 = *(float *)(iVar1 + 0x86c);
+    posTarget.y = *(float *)(iVar1 + 0x86c);
 
-    fStack_10 = *(float *)(iVar1 + 0x870);
+    posTarget.z = *(float *)(iVar1 + 0x870);
 
   }
 
@@ -5782,13 +5790,13 @@ void FUN_0042adb0(int param_1)
 
                uVar3,&uStack_28,2);
 
-  fStack_38 = *(float *)(iVar1 + 0xba4) - fStack_18;
+  delta.x = *(float *)(iVar1 + 0xba4) - posTarget.x;
 
-  fStack_34 = *(float *)(iVar1 + 0xba8) - fStack_14;
+  delta.y = *(float *)(iVar1 + 0xba8) - posTarget.y;
 
-  fStack_30 = *(float *)(iVar1 + 0xbac) - fStack_10;
+  delta.z = *(float *)(iVar1 + 0xbac) - posTarget.z;
 
-  RwV3dTransformPoint(afStack_48,&fStack_38,uVar3);
+  RwV3dTransformPoint(&transformed,&delta,uVar3);
 
   fVar6 = *(float *)(iVar1 + 0xba4);
 
@@ -5810,11 +5818,11 @@ void FUN_0042adb0(int param_1)
 
     fStack_8 = *(float *)(iVar4 + 0xb2c) +
 
-               ((63.0f - (((fVar6 - afStack_48[0]) - fVar8) * 2.25f) / 100.0f) - fVar9);
+               ((63.0f - (((fVar6 - transformed.x) - fVar8) * 2.25f) / 100.0f) - fVar9);
 
     fStack_4 = *(float *)(iVar4 + 0xb30) +
 
-               ((63.0f - (((fVar7 - fStack_40) - fVar10) * 2.25f) / 100.0f) - fVar11);
+               ((63.0f - (((fVar7 - transformed.z) - fVar10) * 2.25f) / 100.0f) - fVar11);
 
     iVar4 = *(int *)(*(int *)(iVar4 + 0x5c) + 0x3c);
 

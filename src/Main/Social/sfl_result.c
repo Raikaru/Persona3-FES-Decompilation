@@ -180,6 +180,12 @@ extern char* pcGpffffb778;
 extern u8 DAT_00684d70[];
 #pragma alias DAT_00684d60 DAT_00684d70
 extern u8 DAT_00684d60[];
+#pragma alias FUN_00182c50_typed FUN_00182c50
+extern void FUN_00182c50_typed(s16 skill, u8* dst);
+#pragma alias FUN_001831e0_typed FUN_001831e0
+extern void FUN_001831e0_typed(s16 slot, u32 index, int arg);
+#pragma alias FUN_0016da50_typed FUN_0016da50
+extern void FUN_0016da50_typed(s16 slot, s16 type, s16 index);
 
 
 // FUN_001f9170 NONMATCHING
@@ -466,6 +472,7 @@ void sflResult001f9e90(u16 owner, s32 exp)
 
     K_ASSERT(exp >= 0, 0x5e);
     K_ASSERT(owner >= 2 && owner <= 10, 0x6f);
+    FUN_005225a8(0x684bb8, owner);
     level = datGetLevel(owner);
     persona = datPersonaGetByPcId(owner);
     K_ASSERT(persona != NULL, 0x75);
@@ -483,14 +490,20 @@ void sflResult001f9e90(u16 owner, s32 exp)
         u8* skill = iGpffffb740 + (persona->id - 0xc0) * 0x26e +
                     4 + skillOffset * 4 + i * 4;
         if (skill[1] == 2) {
+            FUN_005225a8(0x684be0, *(u16*)(skill + 2));
             func_001768e0(persona, *(u16*)(skill + 2));
         } else if (skill[1] == 1) {
+            FUN_005225a8(0x684bc8, *(u16*)(skill + 2));
             func_00176840(persona, *(u16*)(skill + 2));
         }
     }
+    FUN_005225a8(0x684bf8, owner, level);
     (void)level;
 }
 #pragma optimization_level 3
+#define FUN_00182c50 FUN_00182c50_typed
+#define FUN_001831e0 FUN_001831e0_typed
+#define FUN_0016da50 FUN_0016da50_typed
 // FUN_001FA0D0 NONMATCHING
 
 
@@ -499,7 +512,7 @@ void func_001fa0d0(void)
     u16 uVar1;
     char* pcVar2;
     u32 uVar3;
-    u8 auStack_20[32];
+    u8 auStack_20[16];
 
     for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
         uVar1 = (u16)uVar3;
@@ -582,6 +595,9 @@ void func_001fa0d0(void)
         }
     }
 }
+#undef FUN_00182c50
+#undef FUN_001831e0
+#undef FUN_0016da50
 #pragma optimization_level 2
 
 

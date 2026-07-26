@@ -1733,11 +1733,6 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
 {
     f32 x;
     f32 y;
-    f32 rowY;
-    f32 spriteX;
-    f32 textX;
-    f32 textY;
-    f32 selectedY;
     s32 i;
     s32 row;
     s32 visibleCount;
@@ -1772,39 +1767,37 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
     selected = *(s32*)((u8*)param_4 + 0x2d68);
     totalCount = *(s32*)((u8*)param_4 + 0x2d64);
     row = *(s32*)((u8*)param_4 + 0x2d6c);
-    rowY = y + 43.0f;
-    selectedY = y + 61.0f;
-    spriteX = x + 196.0f;
-    textX = x + 246.0f;
-    textY = x + 525.0f;
 
     for (i = 0; i < 6; i++) {
         s32 recordIndex;
         s32 hasRecord;
-        f32 itemY;
 
         recordIndex = row + i;
         hasRecord = *(s32*)((u8*)param_4 + recordIndex * 0x24 + 0x70);
-        itemY = rowY + (f32)(i * 0x21);
         if (selected == i) {
             if (hasRecord != 0) {
-                campDataDrawSpriteFade(spriteX, selectedY + (f32)(i * 0x21),
+                campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
                              param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
             }
-            campDataDrawSpriteFade(textX, itemY, param_1, (void*)(uintptr_t)drawData[1], 0x40, param_5);
-            campDataDrawSpriteFade(textY, itemY, param_1, (void*)(uintptr_t)drawData[1], 0x41, param_5);
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x40, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x41, param_5);
         } else if (hasRecord == 0) {
-            campDataDrawSpriteFade(textX, itemY, param_1, (void*)(uintptr_t)drawData[1], 0x3c, param_5);
-            campDataDrawSpriteFade(textY, itemY, param_1, (void*)(uintptr_t)drawData[1], 0x3d, param_5);
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3c, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3d, param_5);
         } else {
-            campDataDrawSpriteFade(spriteX, selectedY + (f32)(i * 0x21),
+            campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
                          param_1, (void*)(uintptr_t)drawData[1], 0x25, param_5);
-            campDataDrawSpriteFade(textX, itemY, param_1, (void*)(uintptr_t)drawData[1], 0x3e, param_5);
-            campDataDrawSpriteFade(textY, itemY, param_1, (void*)(uintptr_t)drawData[1], 0x3f, param_5);
+            campDataDrawSpriteFade(x + 246.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3e, param_5);
+            campDataDrawSpriteFade(x + 525.0f, y + 43.0f + (f32)(i * 0x21),
+                                   param_1, (void*)(uintptr_t)drawData[1], 0x3f, param_5);
         }
     }
 
-    textX = x + 252.0f;
     for (i = 0; i < 6; i++) {
         s32 recordIndex;
         if (i + row >= totalCount) {
@@ -1812,7 +1805,6 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
         }
         recordIndex = row + i;
         type = *(u32*)((u8*)param_4 + recordIndex * 0x24 + 0x78);
-        textY = y + 43.0f + (f32)(i * 0x21);
 
         if (i == selected) {
             /* jtbl_007B63A0: the cases are not empty; they select the
@@ -1842,8 +1834,9 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
             case 20: spriteCode = 0x1a; break;
             default: break;
             }
-            campDataDrawSpriteFade(textX, textY, param_1, (void*)(uintptr_t)drawData[0], spriteCode + 1,
-                         param_5);
+            campDataDrawSpriteFade(x + 252.0f,
+                         y + 43.0f + (f32)(i * 0x21), param_1,
+                         (void*)(uintptr_t)drawData[0], spriteCode + 1, param_5);
 
             {
                 u8* record = (u8*)param_4 + recordIndex * 0x24;
@@ -1881,8 +1874,9 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
             case 20: spriteCode = 0x1b; break;
             default: break;
             }
-            campDataDrawSpriteAltFade(textX, textY, param_1,
-                                       (void*)(uintptr_t)drawData[0],
+            campDataDrawSpriteAltFade(x + 252.0f,
+                                       y + 43.0f + (f32)(i * 0x21),
+                                       param_1, (void*)(uintptr_t)drawData[0],
                                        spriteCode - 1, param_5, 0x20, 0x43,
                                        0x78, 0);
             {
@@ -1918,14 +1912,12 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
     s32 condition;
     u32 type;
     u32 mainSprite;
-    u32 alpha;
     u32 textId;
     u32* drawData;
     undefined1 text[0x100];
     x = *(f32*)&param_3;
     y = *(f32*)((u8*)&param_3 + 4);
     drawData = (u32*)param_2;
-    alpha = 0xffU - (u32)param_5;
 
     FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x48,
                        (u8)param_5, x + 36.0f, y + 242.0f, param_1);
@@ -1984,7 +1976,8 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
             textId = *(undefined2*)((u8*)record + 0x86);
             FUN_00523ac8(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
-                             (s32)(y + 313.0f + 8.0f), (u8)(alpha & 0xffU), 4,
+                             (s32)(y + 313.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
                              (const char*)text, 0);
             FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
@@ -1999,7 +1992,8 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
             textId = *(undefined2*)((u8*)record + 0x84);
             FUN_00523ac8(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
-                             (s32)(y + 313.0f + 8.0f), (u8)(alpha & 0xffU), 4,
+                             (s32)(y + 313.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
                              (const char*)text, 0);
             FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
@@ -2014,12 +2008,14 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
             textId = *(undefined2*)((u8*)record + 0x80);
             FUN_00523ac8(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 55.0f + 74.0f),
-                             (s32)(y + 286.0f + 8.0f), (u8)(alpha & 0xffU), 4,
+                             (s32)(y + 286.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
                              (const char*)text, 0);
             textId = *(undefined2*)((u8*)record + 0x82);
             FUN_00523ac8(text, gp0xffff8998, textId);
             campDataDrawText(param_1, (s32)(x + 198.0f + 74.0f),
-                             (s32)(y + 286.0f + 8.0f), (u8)(alpha & 0xffU), 4,
+                             (s32)(y + 286.0f + 8.0f),
+                             (u8)((0xffU - (u32)param_5) & 0xffU), 4,
                              (const char*)text, 0);
             FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
                                (u8)param_5, x + 55.0f + 74.0f,
@@ -2045,7 +2041,7 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
         rowY = y + 356.0f;
         barY = x + 55.0f;
         campDataDrawDigits(param_1, (s32)barY, (s32)rowY,
-                           alpha | 0xffffff00U, 1, 10, 1,
+                           (0xffU - (u32)param_5) | 0xffffff00U, 1, 10, 1,
                            (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
                                  *(undefined2*)((u8*)record + 100)));
     } else {
@@ -2200,14 +2196,19 @@ void FUN_0016c010(void)
                                 (descriptor[1] << 4));
     root->groups[1].auxiliaryData =
         (u8*)root->groups[1].records + (descriptor[4] << 5);
-    payload = (u8*)(descriptor + 8);
-    FUN_00521250(root->groups[0].records, payload, descriptor[0] << 5);
-    payload += descriptor[0] << 5;
-    FUN_00521250(root->groups[0].auxiliaryData, payload, descriptor[1] << 4);
-    payload += descriptor[1] << 4;
-    FUN_00521250(root->groups[1].records, payload, descriptor[4] << 5);
+    FUN_00521250(root->groups[0].records,
+                 (u8*)(descriptor + 8), descriptor[0] << 5);
+    FUN_00521250(root->groups[0].auxiliaryData,
+                 (u8*)(descriptor + 8) + (descriptor[0] << 5),
+                 descriptor[1] << 4);
+    FUN_00521250(root->groups[1].records,
+                 (u8*)(descriptor + 8) + (descriptor[0] << 5) +
+                     (descriptor[1] << 4),
+                 descriptor[4] << 5);
     FUN_00521250(root->groups[1].auxiliaryData,
-                 payload + (descriptor[4] << 5), descriptor[5] << 4);
+                 (u8*)(descriptor + 8) + (descriptor[0] << 5) +
+                     (descriptor[1] << 4) + (descriptor[4] << 5),
+                 descriptor[5] << 4);
     FUN_00100ec0(cdvd);
 }
 

@@ -24,7 +24,7 @@ extern u32 LAB_00392bb0;
 
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-void FUN_0038dad0(u32 param_1,long param_2,u64 param_3);
+void FUN_0038dad0(u32 param_1,long param_2,u32 param_3);
 void FUN_0038e660(int param_1,int param_2,int param_3);
 u32 FUN_0038e860(u32 param_1,u32 param_2);
 void FUN_0038f0f0(u32 param_1);
@@ -72,7 +72,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2);
 // FUN_0038DAD0 NONMATCHING
 
 
-void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
+void FUN_0038dad0(u32 param_1,long param_2,u32 param_3)
 
 
 
@@ -99,6 +99,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
   int iVar10;
 
   int iVar11;
+  int *pBase;
 
   int iVar12;
 
@@ -180,9 +181,9 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
     iVar4 = FUN_00361f60(param_2,param_3);
     aSize[1] = iVar4 * 0x3c;
 
-    iVar11 = (int)param_3;
+    pBase = (int *)param_3;
 
-    iVar1 = *(int *)(iVar11 + 0x50);
+    iVar1 = *(int *)((int)pBase + 0x50);
     aSize[0] = iVar1 * 0x20;
 
     lVar5 = FUN_00361ee0(2,param_3);
@@ -190,7 +191,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iVar15 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 10) {
 
@@ -209,7 +210,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iStack_60 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0xb) {
 
@@ -228,7 +229,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iVar16 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0xd) {
 
@@ -247,7 +248,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iVar10 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0xe) {
 
@@ -266,7 +267,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iVar13 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0xf) {
 
@@ -285,7 +286,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iStack_70 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0x10) {
 
@@ -304,7 +305,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iStack_80 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0x11) {
 
@@ -323,7 +324,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iVar14 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0x17) {
 
@@ -342,7 +343,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iStack_90 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0x1b) {
 
@@ -364,7 +365,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iStack_a0 = 0;
 
-    for (piVar8 = *(int **)(iVar11 + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
+    for (piVar8 = *(int **)((int)pBase + 0x84); piVar8 != (int *)0x0; piVar8 = (int *)piVar8[0x25]) {
 
       if (*piVar8 == 0x19) {
 
@@ -383,7 +384,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
     iVar9 = 0;
 
-    for (iStack_b0 = *(int *)(iVar11 + 0x84); iStack_b0 != 0; iStack_b0 = *(int *)(iStack_b0 + 0x94)
+    for (iStack_b0 = *(int *)((int)pBase + 0x84); iStack_b0 != 0; iStack_b0 = *(int *)(iStack_b0 + 0x94)
 
         ) {
 

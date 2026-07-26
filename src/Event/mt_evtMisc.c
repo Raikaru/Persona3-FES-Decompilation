@@ -6,6 +6,8 @@ typedef u8 bool;
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 extern u32 FUN_00530da0(float);
+#pragma alias FUN_001050e0_typed FUN_001050e0
+extern void FUN_001050e0_typed(u64 param_1,float param_2,u32 param_3,u8 *param_4);
 extern void FUN_00523ac8(u8 *,const char *,u32);
 extern char DAT_006a0a20[];
 #pragma alias DAT_006a0a20_abs DAT_006a0a20
@@ -711,8 +713,7 @@ void FUN_00389d80(u64 param_1,u64 param_2);
 void FUN_00389f40(void);
 void FUN_0038a0c0(int param_1,int param_2);
 void FUN_0038a140(u32 param_1,u32 *param_2);
-void FUN_0038a180(int param_1,int param_2);
-void FUN_0038a260(u32 param_1,int param_2,int param_3,int param_4,u32 param_5, u64 param_6,u64 param_7,u64 param_8,u64 param_9);
+void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5, u64 param_6,u64 param_7,u64 param_8,u64 param_9);
 void FUN_0038a590(int param_1,int param_2);
 void FUN_0038a620(int param_1,int param_2);
 void FUN_0038a6c0(int param_1);
@@ -3057,11 +3058,8 @@ float FUN_0038a220(int param_1)
 
 
 
-
-void FUN_0038a260(u32 param_1,int param_2,int param_3,int param_4,u32 param_5,
-
-                 u64 param_6,u64 param_7,u64 param_8,u64 param_9)
-
+void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5,
+                  u64 param_6,u64 param_7,u64 param_8,u64 param_9)
 
 
 {
@@ -3085,7 +3083,6 @@ void FUN_0038a260(u32 param_1,int param_2,int param_3,int param_4,u32 param_5,
   u64 uStack_8;
 
   
-
   uStack_30 = param_5;
 
   uStack_20 = param_6;
@@ -3096,7 +3093,7 @@ void FUN_0038a260(u32 param_1,int param_2,int param_3,int param_4,u32 param_5,
 
   uStack_8 = param_9;
 
-  FUN_005288c8(auStack_180,param_5,&uStack_20);
+  FUN_005288c8(auStack_180,uStack_30,&uStack_20);
 
   if (param_4 == 0xe) {
 
@@ -3143,12 +3140,11 @@ void FUN_0038a260(u32 param_1,int param_2,int param_3,int param_4,u32 param_5,
     }
 
   }
+  fStack_80 = (float)param_1;
 
-  fStack_80 = (float)param_2;
+  fStack_7c = (float)param_2;
 
-  fStack_7c = (float)param_3;
-
-  FUN_001050e0(param_1,CONCAT44(fStack_7c,fStack_80),uStack_74,auStack_180);
+  FUN_001050e0_typed(CONCAT44(fStack_7c,fStack_80),param_3,uStack_74,auStack_180);
 
   return;
 

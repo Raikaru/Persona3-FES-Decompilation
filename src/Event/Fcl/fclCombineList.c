@@ -1008,134 +1008,136 @@ void fclCombineList003db5e0(FclOwner* param_1)
 void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                              FclOwner* owner)
 {
-    FclList* work;
     FclDb650TextData* text_data;
     s32 index;
     s32 draw_variant;
-    byte alpha;
+    s16 x;
+    s16 y;
+    s16 alpha;
     char number_text[0x10];
 
-    work = owner->container->work;
-    alpha = (byte)result->alpha;
+    x = result->x;
+    y = result->y;
+    alpha = result->alpha;
     (void)stream;
 
     switch (result->mode) {
     case 4:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x1a, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x1b, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x1c, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x1d, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x1e, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x1f, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1a, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1b, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1c, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1d, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1e, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x1f, 0);
         return;
 
     case 5:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x20, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x20, 0);
         for (index = 0; index < (s32)owner->callback_entry_count; index++) {
-            FUN_0040e3c0(0.0f, result->x + index * 0x16, result->y, alpha,
-                          0x21, index * 2);
+            FUN_0040e3c0(0.0f, x + index * 0x16, y, alpha,
+                         0x21, index * 2);
         }
         return;
 
     case 6:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x32, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x33, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x34, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x35, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x36, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x32, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x33, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x34, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x35, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x36, 0);
         return;
 
     case 9:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x47, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x48, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x49, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x4a, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x4b, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x4c, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x4d, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x47, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x48, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x49, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x4a, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x4b, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x4c, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x4d, 0);
         return;
 
     case 10:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x3f, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x40, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x41, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x42, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x43, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x44, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x45, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x46, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x3f, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x40, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x41, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x42, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x43, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x44, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x45, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x46, 0);
         return;
 
     case 12:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x0e, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x0f, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x10, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x11, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x12, 0);
-        FUN_003b32d0(0.0f, result->x + 0x197, result->y + 0x33,
-                      (s32)alpha | -0x100, 6, 1, FUN_00177790(1), 0x10, 0x74);
-        FUN_0040e3c0(0.0f, result->x + 3, result->y, alpha, 0x13, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x0e, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x0f, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x10, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x11, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x12, 0);
+        FUN_003b32d0(0.0f, x + 0x197, y + 0x33,
+                     (s32)alpha | -0x100, 6, 1, FUN_00177790(1), 0x10, 0x74);
+        FUN_0040e3c0(0.0f, x + 3, y, alpha, 0x13, 0);
         sprintf(number_text, DAT_007cd798.format_string, (s32)datGetLevel(1));
-        FUN_0040eb50(0.0f, result->x + 0x26b, result->y + 0x35, alpha,
+        FUN_0040eb50(0.0f, x + 0x26b, y + 0x35, alpha,
                       3, number_text, 1);
         return;
 
     case 13:
     case 14:
-        if ((work->flags & 0x10000) == 0) return;
+        if ((owner->container->work->flags & 0x10000) == 0) return;
         index = (s32)(FUN_00175410() & 0xffff) - 4;
         FUN_0040e3f0(1.0f, 1.0f, 1.0f + 0.2f * (float)index,
                       1.0f + 0.2f * (float)index,
-                      result->x + 0x16c + index * 5,
-                      result->y + 0x88 + index * 6, alpha, 0x2e, 0, 0, 0);
+                      x + 0x16c + index * 5,
+                      y + 0x88 + index * 6, alpha, 0x2e, 0, 0, 0);
         return;
 
     case 15:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(2.0f, result->x, result->y, alpha, 0x0b, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x0c, work->mode);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(2.0f, x, y, alpha, 0x0b, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x0c, owner->container->work->mode);
         return;
 
     case 20:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x15, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x16, 0);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x17, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x15, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x16, 0);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x17, 0);
         text_data = result->text_data;
         if (text_data == 0 || text_data->glyph_index == 0) return;
         draw_variant = (s32)DAT_007ce420[text_data->glyph_index]->field_02.draw_variant;
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x18,
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x18,
                       (byte)((draw_variant - 1) * 2));
-        FUN_003b32d0(0.0f, result->x + 0x8a, result->y + 0x35,
-                      (s32)alpha | -0x100, 6, 3,
-                      DAT_007ce4e4[text_data->glyph_index], 0x10, 0x6e);
-        FUN_0040e3c0(0.0f, result->x, result->y, alpha, 0x14, 0);
+        FUN_003b32d0(0.0f, x + 0x8a, y + 0x35,
+                     (s32)alpha | -0x100, 6, 3,
+                     DAT_007ce4e4[text_data->glyph_index], 0x10, 0x6e);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x14, 0);
         sprintf(number_text, DAT_007cd798.format_string, (s32)text_data->decimal_value);
-        FUN_0040eb50(0.0f, result->x + 0x157, result->y + 0x34, alpha,
+        FUN_0040eb50(0.0f, x + 0x157, y + 0x34, alpha,
                       3, number_text, 1);
         return;
 
     case 21:
-        if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, result->x, result->y + 0x1a, alpha, 0x16, 1);
-        FUN_0040e3c0(0.0f, result->x, result->y + 0x1a, alpha, 0x17, 0);
+        if ((owner->container->work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x16, 1);
+        FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x17, 0);
         text_data = result->text_data;
         if (text_data == 0 || text_data->glyph_index == 0) return;
         draw_variant = (s32)DAT_007ce420[text_data->glyph_index]->field_02.draw_variant;
-        FUN_0040e3c0(0.0f, result->x, result->y + 0x1a, alpha, 0x18,
+        FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x18,
                       (byte)((draw_variant - 1) * 2));
-        FUN_003b32d0(0.0f, result->x + 0x8a, result->y + 0x4f,
-                      (s32)alpha | -0x100, 6, 3,
-                      DAT_007ce4e4[text_data->glyph_index], 0x10, 0x6e);
-        FUN_0040e3c0(0.0f, result->x, result->y + 0x1a, alpha, 0x14, 0);
+        FUN_003b32d0(0.0f, x + 0x8a, y + 0x4f,
+                     (s32)alpha | -0x100, 6, 3,
+                     DAT_007ce4e4[text_data->glyph_index], 0x10, 0x6e);
+        FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x14, 0);
         sprintf(number_text, DAT_007cd798.format_string, (s32)text_data->decimal_value);
-        FUN_0040eb50(0.0f, result->x + 0x157, result->y + 0x4e, alpha,
+        FUN_0040eb50(0.0f, x + 0x157, y + 0x4e, alpha,
                       3, number_text, 1);
         return;
 
@@ -1485,7 +1487,67 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
     alternate = (record->flags & 2) != 0;
 
     if (alpha != 0) {
-        if (result->mode == 8) {
+        switch (result->mode) {
+        case 11:
+            if ((record->work->flags & 0x10000) == 0) {
+                fclCombineList003dcfb0(callback_target, result, record, selected);
+            }
+            break;
+
+        case 0:
+            if ((record->work->flags & 0x10000) == 0) {
+                fclCombineList003dc2d0(x, y, alpha, record->owner, record->candidate,
+                                        selected, alternate);
+            } else {
+                if (alternate != 0) {
+                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x23, selected);
+                } else {
+                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x22, selected);
+                }
+                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x29, 0);
+            }
+            break;
+
+        case 1:
+            if ((record->work->flags & 0x10000) != 0) {
+                fclCombineList003dca10(x, y, alpha, record->owner,
+                                        record->candidate, selected);
+            }
+            break;
+
+        case 2:
+            if ((record->work->flags & 0x10000) != 0) {
+                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
+                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3d, 0);
+                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3e, 0);
+            }
+            break;
+
+        case 3:
+            if (alternate == 0) {
+                if ((record->work->flags & 0x10000) == 0) {
+                    fclCombineList003dcc90(x, y, alpha, record->owner,
+                                            record->candidate, selected);
+                } else {
+                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x37, 0);
+                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x38, selected);
+                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3a, 0);
+                }
+            }
+            break;
+
+        case 7:
+            if ((record->work->flags & 0x10000) == 0) {
+                fclCombineList003dcc90(x - 0x145, y, alpha, record->owner,
+                                        record->candidate, selected);
+            } else {
+                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x37, 0);
+                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x38, selected);
+                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x3a, 0);
+            }
+            break;
+
+        case 8:
             if (selected != 0) {
                 if ((record->work->flags & 0x10000) == 0) {
                     for (i = 0; i < record->owner->container->work->capacity; i++) {
@@ -1506,53 +1568,7 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
                                             record->owner, record->candidate, 0, 0);
                 }
             }
-        } else if (result->mode == 7) {
-            if ((record->work->flags & 0x10000) == 0) {
-                fclCombineList003dcc90(x - 0x145, y, alpha, record->owner,
-                                        record->candidate, selected);
-            } else {
-                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x37, 0);
-                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x38, selected);
-                FUN_0040e3c0(0.0f, x - 0x145, y, (byte)alpha, 0x3a, 0);
-            }
-        } else if (result->mode == 3) {
-            if (alternate == 0) {
-                if ((record->work->flags & 0x10000) == 0) {
-                    fclCombineList003dcc90(x, y, alpha, record->owner,
-                                            record->candidate, selected);
-                } else {
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x37, 0);
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x38, selected);
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3a, 0);
-                }
-            }
-        } else if (result->mode == 2) {
-            if ((record->work->flags & 0x10000) != 0) {
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x31, 0);
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3d, 0);
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x3e, 0);
-            }
-        } else if (result->mode == 1) {
-            if ((record->work->flags & 0x10000) != 0) {
-                fclCombineList003dca10(x, y, alpha, record->owner,
-                                        record->candidate, selected);
-            }
-        } else if (result->mode == 0) {
-            if ((record->work->flags & 0x10000) == 0) {
-                fclCombineList003dc2d0(x, y, alpha, record->owner, record->candidate,
-                                        selected, alternate);
-            } else {
-                if (alternate != 0) {
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x23, selected);
-                } else {
-                    FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x22, selected);
-                }
-                FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x29, 0);
-            }
-        } else if (result->mode == 0xb) {
-            if ((record->work->flags & 0x10000) == 0) {
-                fclCombineList003dcfb0(callback_target, result, record, selected);
-            }
+            break;
         }
     }
 }
