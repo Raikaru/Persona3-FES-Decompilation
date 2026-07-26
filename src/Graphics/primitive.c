@@ -592,6 +592,10 @@ extern long FUN_004c1750(u64 stream, void* buf, int size);
 extern long FUN_004c17f0(u64 stream, void* buf, int size);
 extern long FUN_004c18b0(u64 stream, void* buf, int size);
 extern long FUN_004c1910(u64 stream, void* buf, int size);
+#pragma alias FUN_004c18b0_typed FUN_004c18b0
+extern long FUN_004c18b0_typed(void* stream, void* buf, int size);
+#pragma alias FUN_004c1910_typed FUN_004c1910
+extern long FUN_004c1910_typed(void* stream, void* buf, int size);
 extern long FUN_004b6680(void* desc);
 extern void FUN_005225a8(u8* fmt, ...);
 extern f32 FUN_0052e878(f32 angle);
@@ -817,9 +821,9 @@ void* FUN_0035a770(void* param_1, void* param_2)
 
     piVar3 = (int *)(iVar1 + iVar4 * 0x34);
 
-    lVar2 = FUN_004c18b0(param_1,piVar3 + 1,0x30);
+    lVar2 = FUN_004c18b0_typed(param_1,piVar3 + 1,0x30);
 
-    if ((lVar2 == 0) || (lVar2 = FUN_004c1910(param_1,&iStack_4,4), lVar2 == 0)) break;
+    if ((lVar2 == 0) || (lVar2 = FUN_004c1910_typed(param_1,&iStack_4,4), lVar2 == 0)) break;
 
     *piVar3 = iVar1 + iStack_4;
 
@@ -957,7 +961,7 @@ u32 FUN_0035aba0(void)
     desc.funcB2 = FUN_0035a620;
     desc.funcC = &LAB_0035aa10;
     desc.funcD = FUN_0035a870;
-    desc.funcE = FUN_0035a770;
+    desc.funcE = (u64 (*)(u64, u64))FUN_0035a770;
     desc.funcF = FUN_0035a6a0;
     desc.funcG = (void (*)())LAB_0035a850;
     desc.zero = 0;

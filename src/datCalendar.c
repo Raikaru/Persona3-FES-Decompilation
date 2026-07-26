@@ -1460,6 +1460,7 @@ u8 clndIsHolidayOrSunday()
     s16 i;
     s32 month;
     const Holiday* holidays;
+    const Holiday* holiday;
     s32 day;
     s16 sentinel;
 
@@ -1478,15 +1479,12 @@ u8 clndIsHolidayOrSunday()
     sentinel = -1;
     for (; i < 0x164; i++)
     {
-        if (holidays[i].month == sentinel)
+        holiday = &holidays[i];
+        if (holiday->month == sentinel)
         {
             break;
         }
-        if (month == holidays[i].month && day == holidays[i].day)
-        {
-            return true;
-        }
-    }
+        if (month == holiday->month && day == holiday->day)
 
     return false;
 }

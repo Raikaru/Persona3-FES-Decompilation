@@ -481,10 +481,10 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
-    s32 one;
-    s32 bit;
-    u32 categoryMask;
     u32* values = (u32*)func_00170ed0(equipmentId, &category);
+    u32 categoryMask;
+    s32 bit;
+    s32 one;
     if (category == 3) {
         goto category3;
     }
@@ -503,26 +503,23 @@ u32 FUN_0013c6a0(s16 equipmentId)
 
 category0:
     categoryMask = values[1];
-    one = 1;
     goto found;
 category1:
     categoryMask = values[1];
     goto found;
-    one = 1;
 category2:
     categoryMask = values[1];
     goto found;
 category3:
-    one = 1;
     categoryMask = values[0];
     goto found;
-    one = 1;
 invalid:
     return 0;
 found:
+    one = 1;
     bit = 0;
     for (; bit < 32; bit++) {
-        if ((categoryMask & (1 << bit)) != 0) {
+        if ((categoryMask & (one << bit)) != 0) {
             return bit;
         }
     }
