@@ -1592,6 +1592,7 @@ void FUN_002265D0(void)
     f32 transAlpha;
     f32 rowOffset;
     f32 rowStep;
+    f32 ratio;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -1710,11 +1711,25 @@ void FUN_002265D0(void)
         }
     }
 
-    color[0] = (u8)(u32)(40.0f + 215.0f * transAlpha);
-    color[1] = (u8)(u32)(40.0f + 215.0f * transAlpha);
-    color[2] = (u8)(u32)(30.0f + 225.0f * transAlpha);
-    color[3] = (u8)(u32)(stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) *
-                          panelAlpha);
+    ratio = 40.0f + 215.0f * transAlpha;
+    if (ratio < 2147483648.0f) {
+        color[0] = (u8)((s32)ratio & 0xff);
+    } else {
+        color[0] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
+    }
+    color[1] = color[0];
+    ratio = 30.0f + 225.0f * transAlpha;
+    if (ratio < 2147483648.0f) {
+        color[2] = (u8)((s32)ratio & 0xff);
+    } else {
+        color[2] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
+    }
+    ratio = stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) * panelAlpha;
+    if (ratio < 2147483648.0f) {
+        color[3] = (u8)((s32)ratio & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     for (i = 0; i < 9; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1530, color);
     }

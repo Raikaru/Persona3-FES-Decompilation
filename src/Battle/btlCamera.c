@@ -7940,7 +7940,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   float fStack_78;
   GhidraPair uStack_70;
   float fStack_68;
-  float mid[4];
+  float mid[3];
   float centerB[3];
   float target[3];
   float centerA[3];

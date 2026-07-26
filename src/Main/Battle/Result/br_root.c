@@ -3311,6 +3311,9 @@ void func_001f7210(void)
     u32 entry_type;
     u32 kind = 0;
     s32 value = 0;
+    u16 selected_id;
+    s16 selected_value;
+    u16 selected_aux;
     u32 item_substate;
     u32 debug_val;
     u32 total_weight;
@@ -3376,11 +3379,12 @@ void func_001f7210(void)
         }
         printf("rnd %d/%d\n", search_idx, sum_w);
         {
-            u16 sel_id = *(u16 *)wt_base;
-            s16 sel_val = *(s16 *)(wt_base + 2);
-            printf("item id %d\n", sel_id);
+            selected_id = *(u16 *)wt_base;
+            selected_value = *(s16 *)(wt_base + 2);
+            selected_aux = *(u16 *)(wt_base + 4);
+            printf("item id %d\n", selected_id);
             kind = 1;
-            value = (s32)sel_val;
+            value = (s32)selected_value;
         }
         printf("type : get money\n");
         break;
