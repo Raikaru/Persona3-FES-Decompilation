@@ -164,7 +164,7 @@ state_done:
 #pragma pop
 #define FUN_00396f50(...) ((void (*)(...))FUN_00396f50)(__VA_ARGS__)
 #undef FUN_00397030
-// FUN_00397030 NONMATCHING
+// FUN_00397030
 
 
 void FUN_00397030(int param_1)
