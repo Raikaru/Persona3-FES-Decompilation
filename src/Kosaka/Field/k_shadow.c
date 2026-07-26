@@ -796,33 +796,100 @@ u32 func_0019ab80(f32 alpha,
             gridCell = (u8*)K_Field_Get_A() +
                        0x4c + zGrid * 0x100 + xGrid * 0x10;
             resourceIds[0] = *(u16*)(gridCell + 0x4c);
+            for (j = 0; j < fieldCount; j++)
+            {
+                if (resourceIds[0] == resourceIds[j])
+                {
+                    break;
+                }
+            }
+            if (j == fieldCount)
+            {
+                fields[fieldCount] =
+                    (ResrcFld*)MT_Scene_GetRes(resourceIds[0]);
+                if (fields[fieldCount] != NULL)
+                {
+                    fieldCount++;
+                }
+            }
+
             gridCell = (u8*)K_Field_Get_B() +
                        0x4c + zGrid * 0x100 + xGrid * 0x10;
             resourceIds[1] = *(u16*)(gridCell + 0x5c);
+            for (j = 0; j < fieldCount; j++)
+            {
+                if (resourceIds[1] == resourceIds[j])
+                {
+                    break;
+                }
+            }
+            if (j == fieldCount)
+            {
+                fields[fieldCount] =
+                    (ResrcFld*)MT_Scene_GetRes(resourceIds[1]);
+                if (fields[fieldCount] != NULL)
+                {
+                    fieldCount++;
+                }
+            }
+
             gridCell = (u8*)K_Field_Get_C() +
                        0x4c + zGrid * 0x100 + xGrid * 0x10;
             resourceIds[2] = *(u16*)(gridCell + 0x3c);
+            for (j = 0; j < fieldCount; j++)
+            {
+                if (resourceIds[2] == resourceIds[j])
+                {
+                    break;
+                }
+            }
+            if (j == fieldCount)
+            {
+                fields[fieldCount] =
+                    (ResrcFld*)MT_Scene_GetRes(resourceIds[2]);
+                if (fields[fieldCount] != NULL)
+                {
+                    fieldCount++;
+                }
+            }
+
             gridCell = (u8*)K_Field_Get_D() +
                        0x4c + zGrid * 0x100 + xGrid * 0x10;
-            resourceIds[3] = *(u16*)(gridCell - 0xb4);
-
-            for (i = 0; i < 4; i++)
+            resourceIds[3] = *(u16*)(gridCell + 0x14c);
+            for (j = 0; j < fieldCount; j++)
             {
-                for (j = 0; j < fieldCount; j++)
+                if (resourceIds[3] == resourceIds[j])
                 {
-                    if (resourceIds[i] == resourceIds[j])
-                    {
-                        break;
-                    }
+                    break;
                 }
-                if (j == fieldCount)
+            }
+            if (j == fieldCount)
+            {
+                fields[fieldCount] =
+                    (ResrcFld*)MT_Scene_GetRes(resourceIds[3]);
+                if (fields[fieldCount] != NULL)
                 {
-                    fields[fieldCount] =
-                        (ResrcFld*)MT_Scene_GetRes(resourceIds[i]);
-                    if (fields[fieldCount] != NULL)
-                    {
-                        fieldCount++;
-                    }
+                    fieldCount++;
+                }
+            }
+
+            gridCell = (u8*)K_Field_Get_E() +
+                       0x4c + zGrid * 0x100 + xGrid * 0x10;
+            resourceIds[4] = *(u16*)(gridCell - 0xb4);
+            for (j = 0; j < fieldCount; j++)
+            {
+                if (resourceIds[4] == resourceIds[j])
+                {
+                    break;
+                }
+            }
+            if (j == fieldCount)
+            {
+                fields[fieldCount] =
+                    (ResrcFld*)MT_Scene_GetRes(resourceIds[4]);
+                if (fields[fieldCount] != NULL)
+                {
+                    fieldCount++;
                 }
             }
         }
