@@ -1883,10 +1883,12 @@ void func_0010dd10(HSfdImage* image, const u8* source)
     s32 x;
     s32 y;
     u32 alpha;
+    u32 opaque;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    opaque = 0xFF;
     y = 0;
     while (y < height)
     {
@@ -1901,7 +1903,7 @@ void func_0010dd10(HSfdImage* image, const u8* source)
             alpha = source[3];
             if ((s32)alpha >= 0x7F)
             {
-                pixel[3] = 0xFF;
+                pixel[3] = opaque;
             }
             else
             {

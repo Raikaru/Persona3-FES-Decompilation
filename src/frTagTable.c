@@ -613,8 +613,8 @@ u64 FUN_003aed10(u64 param_1,int param_2)
   u32 key;
   u8 *pcVar4;
 
-  offset = *(int *)((int)param_2 + 0x18);
-  base = *(int *)((int)param_2 + 0x10);
+  offset = *(volatile int *)((int)param_2 + 0x18);
+  base = *(volatile int *)((int)param_2 + 0x10);
   pcVar4 = (u8 *)(base + offset);
   low = pcVar4[0] - 1;
   high = pcVar4[1];
