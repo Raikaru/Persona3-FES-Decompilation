@@ -1047,7 +1047,7 @@ s8 FUN_003c9340(int *param_1)
 }
 #define FUN_003c9340(...) ((s8 (*)(...))FUN_003c9340)(__VA_ARGS__)
 #undef FUN_003c9390
-// FUN_003C9390 NONMATCHING
+// FUN_003C9390
 void FUN_003c9390(int *param_1)
 {
   int state;
@@ -1055,38 +1055,29 @@ void FUN_003c9390(int *param_1)
 
   state = *param_1;
   if (state < 0) {
-    goto done;
+    return;
   }
   mode = *(s8 *)((u8 *)param_1 + 4);
-  if (mode == 3) {
-    goto mode3;
-  }
-  if (mode == 2) {
-    goto mode2;
-  }
   switch (mode) {
+  case 0:
+    return;
   case 1:
-    goto mode1;
-  default:
-    goto done;
+    if (fclMiscA2580Call(state) < 0) {
+      *(u8 *)(param_1 + 1) = 2;
+    }
+    break;
+  case 2:
+    if (param_1[2] >= 0) {
+      param_1[2] = -1;
+    }
+    if (*(s8 *)((u8 *)param_1 + 5) == 0) {
+      *(u8 *)(param_1 + 1) = 3;
+    }
+    break;
+  case 3:
+    fclMisc9460Call((u32 *)param_1);
+    break;
   }
-mode1:
-  if (fclMiscA2580Call(state) < 0) {
-    *(u8 *)(param_1 + 1) = 2;
-  }
-  goto done;
-mode2:
-  if (param_1[2] >= 0) {
-    param_1[2] = -1;
-  }
-  if (*(s8 *)((u8 *)param_1 + 5) == 0) {
-    *(u8 *)(param_1 + 1) = 3;
-  }
-  goto done;
-mode3:
-  fclMisc9460Call((u32 *)param_1);
-done:
-  ;
 }
 #define FUN_003c9390(...) ((void (*)(...))FUN_003c9390)(__VA_ARGS__)
 #undef FUN_003c9460

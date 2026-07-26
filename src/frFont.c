@@ -3152,7 +3152,7 @@ u32 FUN_003b2430(void *param_1)
 
   u32 uVar8;
 
-  long lVar9;
+  int lVar9;
 
   int iVar10;
 
@@ -3560,7 +3560,7 @@ u64 FUN_003b2a30(u64 param_1,u32 param_2)
 
   u8 bVar4;
 
-  long lVar5;
+  int lVar5;
 
   u32 uVar6;
 

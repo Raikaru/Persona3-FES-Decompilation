@@ -1203,6 +1203,7 @@ extern MdlStridedCallback28 DAT_0069c980[];
 extern MdlStridedCallback28 DAT_0069c984[];
 extern u32 DAT_0069c988;
 extern u32 DAT_0069c9e0;
+extern u8 DAT_0069cb80[];
 extern MdlTypeDispatch DAT_0069cb90[];
 extern u32 DAT_0069cb94;
 extern u32 DAT_0069cb98;
@@ -45781,7 +45782,7 @@ void FUN_00349a30(int param_1)
      (lVar1 = FUN_00348340(data,(float *)(auStack_100)), lVar1 != 0)) {
 
     (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
-
+    (*DAT_009600a4_abs)(3,auStack_100,4,(u32)DAT_0069cb80,6);
     RpSkyRenderStateSet(3,0x31001);
 
     FUN_003295c0(0x6fc009fc00a);

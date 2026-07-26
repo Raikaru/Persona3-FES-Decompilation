@@ -3722,17 +3722,18 @@ void func_001165c0(int param_1)
 
 {
 
+  int *p;
+
   int iVar2;
 
-  int slot;
+  int *slot;
 
   int iVar1;
 
-  int *p;
-
   
 
-  iVar1 = *(int *)(param_1 + 0x3c);
+  slot = (int *)param_1;
+  iVar1 = *(int *)((int)slot + 0x3c);
 
   if (*(int *)(iVar1 + 400) != 0) {
 
@@ -3762,10 +3763,10 @@ void func_001165c0(int param_1)
 
   p = (int *)iVar1;
   for (iVar2 = 0; iVar2 < 2; iVar2 = iVar2 + 1) {
-    slot = (int)(p + iVar2 + 0x2ab);
-    if (*(int *)slot != 0) {
+    slot = p + iVar2 + 0x2ab;
+    if (*slot != 0) {
       FUN_0034fcf0();
-      *(u32 *)slot = 0;
+      *slot = 0;
     }
   }
 

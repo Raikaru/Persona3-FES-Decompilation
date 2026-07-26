@@ -1345,7 +1345,7 @@ u32 FUN_001C4080()
 {
     u32 offset;
     s32 index;
-    u32 result;
+    u16 result;
     u32 valid;
 
     index = scrGetIntPara(0);

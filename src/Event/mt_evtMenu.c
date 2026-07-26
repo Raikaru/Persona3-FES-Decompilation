@@ -70,6 +70,8 @@ extern u8 DAT_0069e888_abs[];
 #pragma alias DAT_0069fdf0_abs DAT_0069fdf0
 extern u8 DAT_0069fdf0_abs[];
 #pragma alias DAT_0069fe30_abs DAT_0069fe30
+#pragma alias DAT_0069fe10_abs DAT_0069fe10
+extern u8 DAT_0069fe10_abs[];
 extern u8 DAT_0069fe30_abs[];
 #pragma alias DAT_0069ff60_abs DAT_0069ff60
 extern u8 DAT_0069ff60_abs[];
@@ -15450,14 +15452,19 @@ void FUN_00381110(int param_1,int param_2,int param_3,int param_4)
     iVar1 = 4;
   }
 
-  if (param_3 == 1) goto FUN_00381110_case1;
-  if (param_3 == 0) goto FUN_00381110_case0;
-  goto FUN_00381110_done;
+  switch (param_3) {
+  case 0:
+    goto FUN_00381110_case0;
+  case 1:
+    goto FUN_00381110_case1;
+  default:
+    goto FUN_00381110_done;
+  }
 
 FUN_00381110_case0:
   iVar2 = param_2 * 0xc;
   uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-  FUN_0038a260_f(param_1 * 0xc,iVar2,uVar2,0,(u32)0x69fe10);
+  FUN_0038a260_f(param_1 * 0xc,iVar2,uVar2,0,(u32)DAT_0069fe10_abs);
 
   uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
   FUN_0038a260_f6((param_1 + 0x18) * 0xc,iVar2,uVar2,iVar1,
