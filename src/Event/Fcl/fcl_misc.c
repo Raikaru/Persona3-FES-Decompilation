@@ -407,32 +407,31 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
  
  
 // FUN_003C8810 NONMATCHING
-u64 FUN_003c8810(int *param_1)
-{
-  u8 *item;
-  u8 *node;
-  u8 *next;
-  item = *(u8 **)(param_1[6] + 4);
+  int *item;
+  int *node;
+
+  item = *(int **)(param_1[6] + 4);
   while (item != 0) {
-    node = *(u8 **)(item + 0x14);
-    if (*(int *)(node + 8) == 0) {
-      next = (u8 *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
-      item = next;
+    node = *(int **)((u8 *)item + 0x14);
+    if (*(int *)((u8 *)node + 8) == 0) {
+      item = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
     }
     else {
-      item = *(u8 **)(item + 0x10);
+      item = *(int **)((u8 *)item + 0x10);
     }
   }
-  item = *(u8 **)(*param_1 + 4);
+  item = *(int **)(*param_1 + 4);
   while (item != 0) {
-    node = *(u8 **)(item + 0x14);
-    if ((*(u32 *)(node + 4) & 2) == 0) {
-      next = (u8 *)fclMiscC49e0Call(*param_1, *param_1 + 4);
-      item = next;
+    node = *(int **)((u8 *)item + 0x14);
+    if ((*(u32 *)((u8 *)node + 4) & 2) == 0) {
+      item = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
     }
     else {
-      item = *(u8 **)(item + 0x10);
+      item = *(int **)((u8 *)item + 0x10);
     }
+  }
+  return 0;
+}
   }
   return 0;
 }

@@ -533,7 +533,7 @@ u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
 }
 #define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
 #undef FUN_00397630
-// FUN_00397630 NONMATCHING
+// FUN_00397630
 
 
 u32 FUN_00397630(int param_1,int param_2,u32 *param_3)

@@ -25,6 +25,7 @@ extern u32 DAT_0095be90;
 extern u32 DAT_007cd6f8;
 extern u32 gp0xffffaa08;
 extern char DAT_006a3e18[];
+extern char DAT_006a3e30[];
 #pragma alias DAT_006a3e18_abs DAT_006a3e18
 extern char DAT_006a3e18_abs[];
 #pragma alias DAT_006a3e30_abs DAT_006a3e30
@@ -2004,11 +2005,11 @@ u32 FUN_003c77a0(void)
 
   lVar2 = FUN_003c7d50_direct();
 
-  FUN_005225a8_nm(&gp0xffffaa08,DAT_006a3e18,0x158);
+  FUN_005225a8(&gp0xffffaa08,DAT_006a3e18,0x158);
 
-  FUN_005225a8_nm(DAT_006a3e30);
+  FUN_005225a8(DAT_006a3e30);
 
-  FUN_001052b0_nm(DAT_006a3e30);
+  FUN_001052b0(DAT_006a3e30);
 
   if (lVar2 == 0) {
 

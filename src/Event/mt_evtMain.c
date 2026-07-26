@@ -5449,6 +5449,7 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
   u32 uVar3;
 
   u32 uVar4;
+  u32 uVar5;
 
   
 
@@ -5470,9 +5471,12 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
 
       if (uVar3 == param_1) {
 
+        uVar5 = 0;
+        if (*(u8 *)((int)puVar1 + 0x19) != '\0') {
+          uVar5 = 1;
+        }
         FUN_003b8e10(*(u16 *)(param_3 + 0xc),(u8)puVar1[0xc],(short)puVar1[10],
-
-                     *(u8 *)((int)puVar1 + 0x19) != '\0');
+                     uVar5);
 
       }
 
