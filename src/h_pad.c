@@ -417,7 +417,7 @@ void H_Pad_UpdateRumble(void)
             {
                 if (sRumblePhase == 0)
                 {
-                    u32 intensity;
+                    u16 intensity;
                     u8 intensityByte;
                     intensityByte = sRumbleIntensity.b;
                     intensity = intensityByte;

@@ -1954,39 +1954,29 @@ void func_0010de40(HSfdImage* image, const u8* source)
     s32 width;
     s32 height;
     const u16* pixels;
-    u32 alpha;
     s32 y;
     s32 x;
-
     dst = image->pixels;
     width = image->width;
     height = image->height;
     pixels = (const u16*)source;
-    alpha = 0xff;
     y = 0;
-    goto outer_test;
-outer_body:
-    x = 0;
-    goto inner_test;
-inner_body:
+    while (y < height)
     {
-        u8* pixel = dst + (x * 4);
-        pixel[0] = (u8)((pixels[0] & 0x1F) << 3);
-        pixel[1] = (u8)(((pixels[0] >> 5) & 0x1F) << 3);
-        pixel[2] = (u8)(((pixels[0] >> 10) & 0x1F) << 3);
-        pixel[3] = (u8)alpha;
-    }
-    pixels++;
-    x++;
-inner_test:
-    if (x < width) {
-        goto inner_body;
-    }
-    dst += image->stride;
-    y++;
-outer_test:
-    if (y < height) {
-        goto outer_body;
+        x = 0;
+        while (x < width)
+        {
+            u8* pixel = dst + (x * 4);
+
+            pixel[0] = (u8)((pixels[0] & 0x1F) << 3);
+            pixel[1] = (u8)(((pixels[0] >> 5) & 0x1F) << 3);
+            pixel[2] = (u8)(((pixels[0] >> 10) & 0x1F) << 3);
+            pixel[3] = 0xFF;
+            pixels++;
+            x++;
+        }
+        dst += image->stride;
+        y++;
     }
 }
 

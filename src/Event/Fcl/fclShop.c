@@ -381,8 +381,8 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
             fVar4 = DAT_007cad84 * (f32)*(u8 *)(param_2 + 8);
             alpha = (u8)fVar4;
             FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
-                         1.0f, 1.0f, *(u16 *)(param_2 + 4),
-                         *(u16 *)(param_2 + 6),
+                         1.0f, 1.0f, *(s16 *)(param_2 + 4),
+                         *(s16 *)(param_2 + 6),
                          alpha,
                          0xf7, 0, 0, 0);
         }

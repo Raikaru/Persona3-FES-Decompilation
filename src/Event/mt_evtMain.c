@@ -18,6 +18,8 @@ extern u8 *FUN_003b55b0_evt_main(int param_1);
 extern u8 *FUN_003b5d10_evt_main(u16 param_1);
 #pragma alias FUN_0039f710_evt_main FUN_0039f710
 extern u32 FUN_0039f710_evt_main(int *param_1);
+#pragma alias FUN_003bb390_evt FUN_003bb390
+extern void FUN_003bb390_evt(float param_1,u32 param_2);
 extern u32 DAT_0069d590;
 extern u32 DAT_0069d5c8;
 extern u32 DAT_0069d5d0;

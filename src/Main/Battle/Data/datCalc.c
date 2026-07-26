@@ -7333,12 +7333,8 @@ void FUN_0030ddf0(void)
   float fVar3;
 
   lVar1 = FUN_003111f0();
-  switch (lVar1) {
-  case 0:
-    goto path_zero;
-  default:
-    goto path_one;
-  }
+  if (lVar1 == 0) goto path_zero;
+  goto path_one;
 
 path_one:
   fVar2 = (float)FUN_0030fdf0(0x13,0);
