@@ -4773,7 +4773,6 @@ void FUN_002b2940(void *arg0)
     f32 radius;
     f32 distance;
     f32 facing;
-    f32 targetHeight;
     camera = (BtlCamera*)arg0;
     action = camera->action;
     unit = action->unit;
@@ -4793,10 +4792,9 @@ void FUN_002b2940(void *arg0)
     }
     else
     {
-        targetHeight = target->unk_8c * target->scale;
         scratch.targetCenter.y =
             (scratch.targetCenter.y + 0.0f) +
-            targetHeight * fGpffff8094;
+            fGpffff8094 * (target->unk_8c * target->scale);
         scratch.sourceCenter.y =
             (scratch.sourceCenter.y + 0.0f) -
             fGpffff8094 * (unit->unk_8c * unit->scale);

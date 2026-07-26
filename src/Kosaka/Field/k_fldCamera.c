@@ -60,6 +60,8 @@ extern const char D_00683A8C[];
 extern const char D_00683AD0[];
 #pragma alias D_00683AD0_scalar D_00683AD0
 extern const char D_00683AD0_scalar;
+#pragma alias D_00683AD0_ptr D_00683AD0
+extern const char* D_00683AD0_ptr;
 extern const char D_00683A90[];
 extern void* DAT_00960184[];
 #pragma alias sprintf_fixed sprintf
@@ -591,7 +593,7 @@ HCdvd* func_001d6b10(void)
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        format = &D_00683AD0_scalar;
+        format = D_00683AD0_ptr;
         fieldId0 = (s32)PTR_DAT_007cd540[0];
         fieldId1 = (s32)PTR_DAT_007cd540[1];
         sprintf_fixed(path, format, fieldId0, fieldId1);

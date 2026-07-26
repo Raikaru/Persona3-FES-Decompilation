@@ -909,7 +909,8 @@ static void hmallocApplyInputTable(void)
 
     config = D_005E4D80;
     dst = copied;
-    for (copyCount = 0x14; copyCount > 0;)
+    copyCount = 0x14;
+    do
     {
         value = config[0];
         value2 = config[1];
@@ -918,7 +919,7 @@ static void hmallocApplyInputTable(void)
         dst[0] = value;
         dst[1] = value2;
         dst += 2;
-    }
+    } while (copyCount > 0);
     i = 1;
     resourceA = sHmallocResourceA;
     word = *(s16*)((u8*)resourceA + 0x3c);
