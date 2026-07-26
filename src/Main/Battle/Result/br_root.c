@@ -2266,9 +2266,9 @@ void func_001f4a00(void)
     s32 active;
     s32 groups;
     s32 lastGroup;
-    s32 groupSize[4];
     u32 enabled[4];
     u32 weightTable[8];
+    s32 groupSize[4];
     f32 progress;
     f32 maxProgress;
     f32 ratio0;

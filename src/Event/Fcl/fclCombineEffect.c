@@ -143,18 +143,6 @@ u32 DAT_006b3040;
 u32 DAT_006b3050;
 u64 DAT_006b3090;
 float DAT_006b3098;
-#pragma alias DAT_006b3090_abs DAT_006b3090
-#pragma alias DAT_006b3098_abs DAT_006b3098
-extern u8 DAT_006b3090_abs[];
-extern u8 DAT_006b3098_abs[];
-#pragma alias DAT_007e094c_abs DAT_007e094c
-#pragma alias DAT_007e094e_abs DAT_007e094e
-#pragma alias DAT_007e0956_abs DAT_007e0956
-#pragma alias DAT_007e0958_abs DAT_007e0958
-extern u8 DAT_007e094c_abs[];
-extern u8 DAT_007e094e_abs[];
-extern u8 DAT_007e0956_abs[];
-extern u8 DAT_007e0958_abs[];
 u32 DAT_006b30a0;
 u32 DAT_006b3f60;
 u32 DAT_007cda6c;
@@ -3289,223 +3277,111 @@ u32 FUN_0041ae20(int param_1)
 #pragma optimization_level 3
 // FUN_0041AFF0 NONMATCHING
 u8 FUN_0041aff0(int param_1,int param_2)
-
-
-
 {
-
   int iVar1;
-
   u8 bVar3;
-
   f32 fVar6;
-
   f32 fVar7;
-
   struct {
-
     RwV3d vecA;
-
     u32 padA;
-
     RwV3d vecNeg;
-
     u32 padNeg;
-
     RwV3d vecPos;
-
     u32 padPos;
-
     u64 axisXY;
-
     f32 axisZ;
-
   } work;
-
   u8 *pfVar2;
-
   u8 *pfVar4;
-
   u8 *pfVar5;
-
-  
-
   iVar1 = *(int *)(param_1 + 0x38);
-
   fVar7 = 0.0f;
-
-  work.axisXY = *(u64 *)DAT_006b3090_abs;
-
-  work.axisZ = *(f32 *)DAT_006b3098_abs;
-
-
+  work.axisXY = DAT_006b3090;
+  work.axisZ = DAT_006b3098;
+  bVar3 = 0;
   pfVar4 = (u8 *)0xc;
-
   pfVar5 = (u8 *)(u32)&work.vecA;
   pfVar2 = pfVar5;
-
   while (pfVar2 != (u8 *)0x0) {
-
     *pfVar5 = 0;
-
     pfVar5 = pfVar5 + 1;
-
-  if (((*(u16 *)DAT_007e094e_abs & 0x80) != 0) ||
-      ((*(u16 *)DAT_007e0958_abs & 0x80) != 0)) {
-
+    pfVar4 = pfVar4 - 1;
     pfVar2 = pfVar4;
-
   }
-
-  bVar3 = 0;
-
   if (((DAT_007e094e & 0x80) != 0) || ((DAT_007e0958 & 0x80) != 0)) {
-
     *(u32 *)(param_2 + 0x10) = *(u32 *)(param_2 + 0x10) ^ 1;
-
   }
-
   if (*(int *)(param_2 + 0x10) == 0) {
-
-    if (((*(u16 *)DAT_007e094e_abs & 8) != 0) ||
-        ((*(u16 *)DAT_007e0958_abs & 8) != 0)) {
-
+    bVar3 = (*(u32 *)(*(int *)(param_1 + 0x3c) + 0x10) & 1) != 0;
   }
-
   else {
-
-    *(int *)(*(int *)(param_1 + 0x3c) + 8) = *(int *)(*(int *)(param_1 + 0x3c) + 8) + -1;
-
+    *(int *)(*(int *)(param_1 + 0x3c) + 8) =
+      *(int *)(*(int *)(param_1 + 0x3c) + 8) + -1;
     if (((DAT_007e094e & 8) != 0) || ((DAT_007e0958 & 8) != 0)) {
-
       *(u32 *)(*(int *)(param_1 + 0x3c) + 8) = 499;
-
     }
-
     fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0f;
-
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-
       fVar7 = 0.0f - fGpffff82cc * fVar6;
-
       bVar3 = 1;
-
     }
-
     fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0f;
-
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-
       work.axisXY = *(u64 *)(iVar1 + 0x10);
-
       work.axisZ = *(f32 *)(iVar1 + 0x18);
-
       fVar7 = (fVar7 + 0.0f) - fGpffff82cc * fVar6;
-
       bVar3 = 1;
-
     }
-
     fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0f;
-
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-
       work.vecA.x = *(f32 *)(iVar1 + 0x30);
-
       work.vecA.y = *(f32 *)(iVar1 + 0x34);
-
       work.vecA.z = *(f32 *)(iVar1 + 0x38);
-
       RwV3dNormalize(&work.vecA,&work.vecA);
-
       fVar6 = fGpffff8328 * fVar6;
-
       work.vecA.x = work.vecA.x * fVar6;
-
       work.vecA.y = work.vecA.y * fVar6;
-
       work.vecA.z = work.vecA.z * fVar6;
-
       bVar3 = 1;
-
     }
-
     fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0f;
-
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-
       work.vecA.x = *(f32 *)(iVar1 + 0x10);
-
       work.vecA.y = *(f32 *)(iVar1 + 0x14);
-
       work.vecA.z = *(f32 *)(iVar1 + 0x18);
-
       RwV3dNormalize(&work.vecA,&work.vecA);
-
       fVar6 = fGpffff8328 * fVar6;
-
       work.vecA.x = work.vecA.x * fVar6;
-
-    if (((*(u16 *)DAT_007e094c_abs & 4) == 0) &&
-        ((*(u16 *)DAT_007e0956_abs & 4) == 0)) {
-
-      if (((*(u16 *)DAT_007e094c_abs & 8) != 0) ||
-          ((*(u16 *)DAT_007e0956_abs & 8) != 0)) {
-
+      work.vecA.y = work.vecA.y * fVar6;
+      work.vecA.z = work.vecA.z * fVar6;
       bVar3 = 1;
-
     }
-
     if (((DAT_007e094c & 4) == 0) && ((DAT_007e0956 & 4) == 0)) {
-
       if (((DAT_007e094c & 8) != 0) || ((DAT_007e0956 & 8) != 0)) {
-
         work.vecA.y = work.vecA.y + 10.0f;
-
         bVar3 = 1;
-
       }
-
     }
-
     else {
-
       work.vecA.y = work.vecA.y - 10.0f;
-
       bVar3 = 1;
-
     }
-
     if (bVar3) {
-
       work.vecPos.x = *(f32 *)(iVar1 + 0x40);
-
       work.vecPos.y = *(f32 *)(iVar1 + 0x44);
-
       work.vecPos.z = *(f32 *)(iVar1 + 0x48);
-
       work.vecNeg.x = work.vecPos.x * -1.0f;
-
       work.vecNeg.y = work.vecPos.y * -1.0f;
-
       work.vecNeg.z = work.vecPos.z * -1.0f;
-
       FUN_004cb750_typed(iVar1,&work.vecNeg,2);
-
       FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&work.axisXY,2);
-
       FUN_004cb750_typed(iVar1,&work.vecA,2);
-
       FUN_004cb750_typed(iVar1,&work.vecPos,2);
-
     }
-
     bVar3 = 0;
-
   }
-
   return bVar3;
-
 }
 #pragma optimization_level 2
 
