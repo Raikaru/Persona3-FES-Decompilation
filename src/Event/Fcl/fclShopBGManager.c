@@ -5609,7 +5609,6 @@ void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
                0xf9,0);
 
   FUN_003c7e20(0,param_3 + 0x148,param_4 + 0xf9,param_6 | 0xffffffffffffff00,1,5,1,
-
                (u32)CONCAT12(*(u8 *)(iVar1 + 0xa9),*(u16 *)(iVar1 + 0xa0)));
 
   return;
