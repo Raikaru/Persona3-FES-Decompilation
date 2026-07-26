@@ -126,7 +126,7 @@ void FUN_003a3530(u32 *param_1);
 void FUN_003a3680(u32 *param_1);
 void FUN_003a37c0(int param_1,u64 param_2);
 #pragma alias FUN_003a37c0_direct FUN_003a37c0
-extern void FUN_003a37c0_direct(int param_1,u32 param_2);
+extern void FUN_003a37c0_direct();
 #pragma alias FUN_003a3ab0_direct FUN_003a3ab0
 extern void FUN_003a3ab0_direct(int param_1);
 void FUN_003a3ab0(int param_1);
