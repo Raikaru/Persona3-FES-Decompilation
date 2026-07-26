@@ -1817,11 +1817,11 @@ void func_0010d950(s16 index)
     {
         return;
     }
-    slot = &sSfdDecodeSlots_abs[index];
     if (sSfdDecodeSlots_abs[index].status == 0)
     {
         return;
     }
+    slot = &sSfdDecodeSlots_abs[index];
 
     FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
     FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);

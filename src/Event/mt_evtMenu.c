@@ -6708,19 +6708,21 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
   int iVar4;
 
-  long lVar5;
+  int iVar5;
 
+  int iVar6;
   f32 uVar6;
 
   
 
   psVar3 = (short *)(DAT_0069e1a0 + **(int **)(param_3 + 0x164) * 0xc);
 
-  lVar5 = 0;
+  iVar5 = 0;
+  iVar6 = param_2 * 0xc;
 
-  while (lVar5 < *psVar3) {
+  while (iVar5 < *psVar3) {
 
-    iVar4 = (int)lVar5;
+    iVar4 = iVar5;
 
     cVar1 = *(char *)((int)psVar3 + iVar4 + 2);
 
@@ -6732,7 +6734,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
       uVar6 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-      FUN_0038a260_f6(param_1 * 0xc,param_2 * 0xc,uVar6,0xe,
+      FUN_0038a260_f6(param_1 * 0xc,iVar6,uVar6,0xe,
                       &gp0xffffa068,*(u32 *)(param_3 + 0x27c));
 
       iVar2 = *(int *)(param_3 + 0x280);
@@ -6743,7 +6745,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
       uVar6 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-      FUN_0038a260_f6(param_1 * 0xc,param_2 * 0xc,uVar6,0xe,
+      FUN_0038a260_f6(param_1 * 0xc,iVar6,uVar6,0xe,
                       &gp0xffffa068,(u32)(&PTR_s_START_0069e100)[cVar1]);
 
       iVar2 = (int)(char)(&DAT_0069e180)[*(char *)((int)psVar3 + iVar4 + 2)];
@@ -6752,7 +6754,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
     param_1 = param_1 + iVar2;
 
-    lVar5 = (long)(iVar4 + 1);
+    iVar5 = iVar4 + 1;
 
   }
 

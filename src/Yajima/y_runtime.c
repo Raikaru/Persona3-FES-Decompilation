@@ -3380,9 +3380,9 @@ void FUN_00430a40(char param_1)
     *(u8 *)(iVar3 + 0x8d3) = 0;
     iVar3 = iVar1 + (param_1 + -1) * 10 + iVar4 * 2;
     uVar2 = FUN_00488f30();
-    *(short *)(iVar3 + 0x8f6) = (short)(int)(8.0 - (float)(uVar2 & 0xf));
+    *(short *)(iVar3 + 0x8f6) = (short)(int)(8.0f - (float)(uVar2 & 0xf));
     uVar2 = FUN_00488f30();
-    *(short *)(iVar3 + 0x914) = (short)(int)(8.0 - (float)(uVar2 & 0xf));
+    *(short *)(iVar3 + 0x914) = (short)(int)(8.0f - (float)(uVar2 & 0xf));
   }
   return;
 }
