@@ -69,6 +69,8 @@ extern u32 func_00176100(DatPersonaWork *, u16 *);
 extern u32 func_001fbdf0(u32, u32, u32, u32, u32);
 extern u32 func_001fbfa0(u32, u32, u32, u32, u32, u32);
 extern u32 func_001f9e90(u16, u32);
+extern void func_001fb4b0(void *, s32, s32, s32, s32 *, s32 *);
+extern u8 *DAT_007ce430;
 extern u32 func_001f9680(s32 *);
 extern void func_001f9c60(void);
 extern u32 func_001f9a80(void);
@@ -715,100 +717,162 @@ void func_001f1240(KwlnTask *task)
 }
 #pragma optimization_level 2
 
+/* Retail 0x1f13f0-0x1f1a64: level-up propagation, hero/party EXP, and
+ * newly learned-skill collection. */
 // FUN_001f13b0 NONMATCHING
 #pragma optimization_level 3
 void *func_001f13b0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    u32 oldLevel = datGetLevel(1);
+    u32 oldLevel;
     u32 newLevel;
+    u32 heroCount;
     u32 i;
+    u16 heroId;
+    DatPersonaWork *persona;
+    u16 *skills;
+    u32 skillCount;
+    u32 skill;
+    s32 firstIndex;
+    s32 indexCount;
+    s32 j;
+    u8 *entry;
+    u8 *current;
+
+    /* Retail +0x24..+0x94: apply the hero's pending EXP before deriving
+     * the resulting level, then print the level transition. */
+    oldLevel = datGetLevel(1);
     BR_U32(work, 0xbc) = oldLevel;
+    datDidCharacterLevelUp(1, BR_U32(work, 0x2a50));
     newLevel = func_0016d280(datGetNextExp(1));
     datSetLevel(1, (u8)newLevel);
     BR_U32(work, 0xc0) = datGetLevel(1);
-    if (oldLevel != newLevel) {
+    printf((const char *)0x006845f0, BR_U32(work, 0xbc), BR_U32(work, 0xc0));
+    if (BR_U32(work, 0xbc) != BR_U32(work, 0xc0)) {
         BR_U32(work, 0) |= 8;
-        if (newLevel > 0 && !datGetFlag(0x120c)) {
+        if (BR_U32(work, 0xc0) > 0 && !datGetFlag(0x120c)) {
             datSetFlag(0x120c, 1);
             BR_U32(work, 0) |= 0x40000;
         }
-        if (newLevel >= 10 && !datGetFlag(0x120d)) {
+        if (BR_U32(work, 0xc0) >= 10 && !datGetFlag(0x120d)) {
             datSetFlag(0x120d, 1);
             BR_U32(work, 0) |= 0x40000;
         }
-        if (newLevel >= 20 && !datGetFlag(0x1201)) {
+        if (BR_U32(work, 0xc0) >= 20 && !datGetFlag(0x1201)) {
             datSetFlag(0x1201, 1);
             BR_U32(work, 0) |= 0x40000;
         }
-        if (newLevel >= 30 && !datGetFlag(0x1202)) {
+        if (BR_U32(work, 0xc0) >= 30 && !datGetFlag(0x1202)) {
             datSetFlag(0x1202, 1);
             BR_U32(work, 0) |= 0x40000;
         }
     }
+
+    /* Retail +0x1c8..+0x3d0: walk every hero Persona.  The three skill
+     * IDs are separate retail call sites, not one merged fallback call. */
     BR_U32(work, 0xec) = 0;
-    for (i = 0; i < func_001756f0(); i++) {
-        DatPersonaWork *persona = datPersonaGetHeroPersona((s16)i);
-        if (persona == NULL) {
-            continue;
-        }
-        if (persona->id == datGetPersonaId(1)) {
-            datPersonaAddExp(persona, (s32)BR_U32(work, 0x2a50));
+    heroId = datPersonaGetByPcId(1)->id;
+    heroCount = func_001756f0();
+    for (i = 0; i < heroCount; i++) {
+        persona = datPersonaGetHeroPersona((s16)i);
+        K_ASSERT(persona != NULL, 0x665);
+        if (persona->id == heroId) {
+            datPersonaAddExp(persona, (s32)func_001fbdf0(
+                (u32)persona->level, BR_U32(work, 0x2a54),
+                BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
+                BR_U32(work, 0x11c)));
         } else {
-            u16 *skills = datPersonaGetSkills(persona);
-            u32 skillCount = datPersonaCountValidSkills(persona);
-            u32 skill = 0;
+            skills = datPersonaGetSkills(persona);
+            skillCount = datPersonaCountValidSkills(persona);
+            skill = 0;
             while (skill < skillCount && skills[skill] != 0x22b) {
                 skill++;
             }
-            if (skill == skillCount) {
+            if (skill < skillCount) {
+                datPersonaAddExp(persona, (s32)func_001fbfa0(
+                    (u32)persona->level, BR_U32(work, 0x2a54),
+                    BR_U32(work, 0xb8), 0x22b,
+                    BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+            } else {
                 skill = 0;
                 while (skill < skillCount && skills[skill] != 0x22a) {
                     skill++;
                 }
-            }
-            if (skill == skillCount) {
-                skill = 0;
-                while (skill < skillCount && skills[skill] != 0x229) {
-                    skill++;
+                if (skill < skillCount) {
+                    datPersonaAddExp(persona, (s32)func_001fbfa0(
+                        (u32)persona->level, BR_U32(work, 0x2a54),
+                        BR_U32(work, 0xb8), 0x22a,
+                        BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+                } else {
+                    skill = 0;
+                    while (skill < skillCount && skills[skill] != 0x229) {
+                        skill++;
+                    }
+                    if (skill < skillCount) {
+                        datPersonaAddExp(persona, (s32)func_001fbfa0(
+                            (u32)persona->level, BR_U32(work, 0x2a54),
+                            BR_U32(work, 0xb8), 0x229,
+                            BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+                    }
                 }
             }
-            if (skill < skillCount) {
-                datPersonaAddExp(persona, (s32)func_001fbfa0(datPersonaGetLevel(persona),
-                    BR_U32(work, 0x2a54), BR_U32(work, 0xb8), skills[skill],
-                    BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
-            }
         }
     }
-    for (i = 0; i < BR_U32(work, 0x114); i++) {
-        u16 pc = BR_U16(work, 0x10c + i * 2);
-        u32 exp = func_001fbdf0(datGetLevel((s16)pc), BR_U32(work, 0x2a54),
-                                BR_U32(work, 0xb8), BR_U32(work, 0x2a58), BR_U32(work, 0x11c));
-        func_001f9e90(pc, exp);
-    }
-    if (datGetFlag(0x140)) {
-        DatPersonaWork *p = datPersonaGetByPcId(6);
-        if (p != NULL) {
-            datPersonaAddExp(p, (s32)func_001fbdf0(datPersonaGetLevel(p),
-                BR_U32(work, 0x2a54), BR_U32(work, 0xb8), BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
-            BR_U32(work, 0x150) = 0;
-            /* The skill table is generated by the battle-data helper. */
-            if (func_00175ce0(p, (u16 *)(work + 0x158)) != 0) {
-                BR_U32(work, 0) |= 4;
-            }
-            func_00176100(p, (u16 *)(work + 0x158));
-        }
-    }
+
+    /* Retail +0x3e0..+0x464: collect Personas that learned skills. */
     BR_U32(work, 0xec) = 0;
-    for (i = 0; i < func_001756f0(); i++) {
-        DatPersonaWork *p = datPersonaGetHeroPersona((s16)i);
-        if (p != NULL && func_001761b0(p) != 0 && BR_U32(work, 0xec) < 8) {
-            BR_U16(work, 0xd4 + BR_U32(work, 0xec) * 2) = p->id;
+    for (i = 0; i < heroCount; i++) {
+        persona = datPersonaGetHeroPersona((s16)i);
+        K_ASSERT(persona != NULL, 0x6ac);
+        if (func_001761b0(persona) != 0 && BR_U32(work, 0xec) < 8) {
+            BR_U16(work, 0xd4 + BR_U32(work, 0xec) * 2) = persona->id;
             BR_U32(work, 0xec)++;
         }
     }
     if (BR_U32(work, 0xec) != 0) {
         BR_U32(work, 0) |= 0x20;
+    }
+
+    /* Retail +0x494..+0x4d8: update each non-hero party member's result. */
+    for (i = 0; i < BR_U32(work, 0x114); i++) {
+        u8 *pcEntry = work + 0x10c + i * 2;
+        s16 pc = *(s16 *)pcEntry;
+        u32 exp = func_001fbdf0(datGetLevel(pc), BR_U32(work, 0x2a54),
+                                BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
+                                BR_U32(work, 0x11c));
+        func_001f9e90(*(u16 *)pcEntry, exp);
+    }
+
+    /* Retail +0x4e0..+0x640: process the optional sixth Persona's
+     * learned-skill table and copy type-1 entries into the result. */
+    if (datGetFlag(0x140)) {
+        persona = datPersonaGetByPcId(6);
+        K_ASSERT(persona != NULL, 0x6c9);
+        datPersonaAddExp(persona, (s32)func_001fbdf0(
+            datGetLevel(6), BR_U32(work, 0x2a54), BR_U32(work, 0xb8),
+            BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+        if (func_001761b0(persona) != 0) {
+            func_00175ce0(persona, (u16 *)(work + 0x158));
+            entry = DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
+            func_001fb4b0(entry, 0x20, persona->level,
+                          BR_U8(work, 0x158), &firstIndex, &indexCount);
+            BR_U32(work, 0x150) = 0;
+            current = entry + firstIndex * 4;
+            for (j = 0; j < indexCount; j++, current += 4) {
+                if (current[1] == 1) {
+                    BR_U16(work, 0x140 + BR_U32(work, 0x150) * 2) =
+                        BR_U16(current, 2);
+                    BR_U32(work, 0x150)++;
+                }
+            }
+            func_00176100(persona, (u16 *)(work + 0x158));
+            if (BR_U32(work, 0x150) != 0) {
+                BR_U32(work, 0) |= 4;
+            }
+        }
+    }
+
+    if (BR_U32(work, 0xec) != 0) {
         BR_U32(work, 0x10000 - 0x5980) = 3;
     } else if ((BR_U32(work, 0) & 8) != 0) {
         BR_U32(work, 0x10000 - 0x5980) = 2;
