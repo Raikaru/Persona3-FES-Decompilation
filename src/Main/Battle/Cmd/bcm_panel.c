@@ -3357,6 +3357,7 @@ void FUN_0022c8a0(u32* object_param)
     f32 pos2X, pos2Y;
     f32 pos3X, pos3Y;
     f32 colorF;
+    f32 blendF3;
     s32 colorI;
 
     object = (u8*)object_param;
@@ -3413,8 +3414,9 @@ void FUN_0022c8a0(u32* object_param)
     }
 
     {
-        f32 f3 = *(f32*)(object + 0x850);
-        f32 g = 1.0f - (2.0f * f3 - f3 * f3);
+        f32 g;
+        blendF3 = *(f32*)(object + 0x850);
+        g = 1.0f - (2.0f * blendF3 - blendF3 * blendF3);
         *(f32*)(object + 0x520) = 180.0f * g;
         *(f32*)(object + 0x524) = -80.0f * g;
     }
@@ -3459,9 +3461,32 @@ void FUN_0022c8a0(u32* object_param)
         color[3] = 0xff;
     } else if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
-            color[0] = 0x32;
-            color[1] = 0;
-            color[2] = 0;
+            /* Retail 0x484-0x578: the conversion remains runtime-valued in
+             * the retail path even though this branch's color is constant. */
+            colorF = (f32)*(s32*)(object + 0x844) -
+                (f32)*(s32*)(object + 0x844) + 50.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[0] = (u8)colorI;
+            colorF = (f32)*(s32*)(object + 0x844) -
+                (f32)*(s32*)(object + 0x844);
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[1] = (u8)colorI;
+            colorF = (f32)*(s32*)(object + 0x844) -
+                (f32)*(s32*)(object + 0x844);
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[2] = (u8)colorI;
             color[3] = 0xff;
         } else {
             f32 t2 = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
@@ -3574,10 +3599,39 @@ void FUN_0022c8a0(u32* object_param)
     color2 = *(u32*)color;
     if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
-            color[0] = 0xc8;
-            color[1] = 0;
-            color[2] = 0;
-            color[3] = 0xff;
+            /* Retail 0xa3c-0xb84: keep the float-to-byte conversions and
+             * retain the animation blend for the alpha byte. */
+            colorF = (f32)*(s32*)(object + 0x844) -
+                (f32)*(s32*)(object + 0x844) + 200.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[0] = (u8)colorI;
+            colorF = (f32)*(s32*)(object + 0x844) -
+                (f32)*(s32*)(object + 0x844);
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[1] = (u8)colorI;
+            colorF = (f32)*(s32*)(object + 0x844) -
+                (f32)*(s32*)(object + 0x844);
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[2] = (u8)colorI;
+            colorF = 255.0f * blendF3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[3] = (u8)colorI;
         } else {
             f32 t = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
             f32 f3 = 1.0f - t;
