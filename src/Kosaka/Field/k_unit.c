@@ -1982,11 +1982,19 @@ void func_001d1910(void)
 {
     s32 i;
     FldUnit* unit;
+    u32 valid;
+    u32 predicate;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
+        valid = 0;
         unit = &gFldUnitsPc[i];
         if (unit->genusBase != NULL && unit->resrc != NULL)
+        {
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
         {
             func_001a60d0(0, unit->mdl, 0, 1);
             unit->unk_17c = 0;

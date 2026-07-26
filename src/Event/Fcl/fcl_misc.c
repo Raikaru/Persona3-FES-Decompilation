@@ -332,7 +332,7 @@ u64 FUN_003c8550(u8 *param_1)
   iVar5 = *(int *)(*(int *)(context + 0x18) + 4);
   if (iVar5 != 0) {
     puVar3 = *(u32 **)(iVar5 + 0x14);
-    if (puVar3[2] == 0) {
+    if ((uVar1 = puVar3[2]) == 0) {
       if (puVar3[1] == 0) {
         FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xc8);
       } else {
