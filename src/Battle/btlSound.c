@@ -3137,9 +3137,6 @@ journey_true:
       
       switch(*(u16 *)(iVar2 + 0xa4)) {
       
-      default:
-      
-        return -1;
       
       case 2:
     
@@ -3514,6 +3511,9 @@ journey_true:
         }
       
         return 0x2c4;
+      default:
+      
+        return -1;
       
       } }
 }

@@ -1830,7 +1830,7 @@ void func_0020cd50(void* work, void* resource)
     *(u32*)work |= 8;
 }
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {
@@ -1856,8 +1856,10 @@ void func_0020cda0(u8* work)
     *(f32*)(work + 0x9a4) = 0.375f;
     vertex = work + 4;
     row = 0;
-    widthEven = 7;
-    widthOdd = 8;
+    if (row == 0) {
+        widthEven = 7;
+        widthOdd = 8;
+    }
     rowStep = fGpffff8338;
     yOffset = fGpffff8318;
     six = 6.0f;

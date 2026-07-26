@@ -3071,7 +3071,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (iVar6 == 0) {
 
-      FUN_0019d3f0("frFont.c",0x818);
+      FUN_0019d3f0(DAT_006a2730,0x818);
 
     }
 
@@ -3087,7 +3087,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (puVar3 == (u16 *)0x0) {
 
-      FUN_0019d3f0("frFont.c",0x82c);
+      FUN_0019d3f0(DAT_006a2730,0x82c);
 
     }
 
@@ -3107,7 +3107,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (iVar6 == 0) {
 
-      FUN_0019d3f0("frFont.c",0x88c);
+      FUN_0019d3f0(DAT_006a2730,0x88c);
 
     }
 
