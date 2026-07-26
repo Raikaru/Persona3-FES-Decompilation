@@ -407,28 +407,34 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
 // FUN_003C8810 NONMATCHING
 u64 FUN_003c8810(int *param_1)
 {
-  int *item;
   int *node;
+  int *item;
 
   item = *(int **)(param_1[6] + 4);
-  while (item != 0) {
-    node = *(int **)((u8 *)item + 0x14);
-    if (*(int *)((u8 *)node + 8) == 0) {
-      item = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
-    }
-    else {
-      item = *(int **)((u8 *)item + 0x10);
-    }
+  goto loop1_check;
+loop1_body:
+  node = *(int **)((u8 *)item + 0x14);
+  if (*(int *)((u8 *)node + 8) == 0) {
+    item = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
+    goto loop1_check;
+  }
+  item = *(int **)((u8 *)item + 0x10);
+loop1_check:
+  if (item != 0) {
+    goto loop1_body;
   }
   item = *(int **)(*param_1 + 4);
-  while (item != 0) {
-    node = *(int **)((u8 *)item + 0x14);
-    if ((*(u32 *)((u8 *)node + 4) & 2) == 0) {
-      item = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
-    }
-    else {
-      item = *(int **)((u8 *)item + 0x10);
-    }
+  goto loop2_check;
+loop2_body:
+  node = *(int **)((u8 *)item + 0x14);
+  if ((*(u32 *)((u8 *)node + 4) & 2) == 0) {
+    item = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
+    goto loop2_check;
+  }
+  item = *(int **)((u8 *)item + 0x10);
+loop2_check:
+  if (item != 0) {
+    goto loop2_body;
   }
   return 0;
 }

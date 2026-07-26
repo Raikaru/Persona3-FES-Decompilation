@@ -421,6 +421,8 @@ extern code DAT_0096017c;
 extern code DAT_00960184;
 
 extern float FUN_004c69f0();
+#pragma alias FUN_003951d0_i32 FUN_003951d0
+extern int FUN_003951d0_i32(int param_1);
 extern float FUN_004c6ac0();
 void FUN_003bcc80();
 void FUN_003bceb0(int param);
