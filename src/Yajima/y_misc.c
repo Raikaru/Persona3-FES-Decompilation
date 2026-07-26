@@ -4874,29 +4874,23 @@ void FUN_00429c60(int param_1)
 
   for (iVar3 = 0; iVar3 < 9; iVar3 = iVar3 + 1) {
 
-    iVar2 = iVar1 + iVar3 * 4;
-
-    if (*(int *)(iVar2 + 0x28) != 0) {
-
+    iVar2 = iVar1 + iVar3 * 4 + 0x28;
+    if (*(int *)iVar2 != 0) {
       FUN_004d0f00();
-
-      *(u32 *)(iVar2 + 0x28) = 0;
-
+      *(u32 *)iVar2 = 0;
     }
+
 
   }
 
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
 
-    iVar2 = iVar1 + iVar3 * 4;
-
-    if (*(int *)(iVar2 + 0x4c) != 0) {
-
+    iVar2 = iVar1 + iVar3 * 4 + 0x4c;
+    if (*(int *)iVar2 != 0) {
       FUN_00115980();
-
-      *(u32 *)(iVar2 + 0x4c) = 0;
-
+      *(u32 *)iVar2 = 0;
     }
+
 
   }
 

@@ -2836,10 +2836,12 @@ void *func_001f5b20(void)
             if (func_003c7850() != 0) {
                 break;
             }
+            if (BR_U32(work, 0) & 0x800) {
+                func_001f9c60();
+            }
             func_003c7650(s0_val);
             if (BR_U32(work, 0) & 0x800) {
                 func_0034fcf0((void *)BR_U32(work, 0x34e0));
-                func_001f9c60();
                 BR_U32(work, 0) &= ~0x800u;
             }
             cnt = BR_S32(work, 0x3408) + 1;
