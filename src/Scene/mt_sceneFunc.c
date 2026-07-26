@@ -3915,22 +3915,8 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
 float FUN_003bbed0(float param_1,float param_2,u32 param_3)
 {
-  u32 *puVar1;
-  u8 auStack_140 [4];
-  u32 uStack_13c;
-  u32 uStack_138;
-  u32 uStack_134;
-  u32 uStack_130;
-  u32 uStack_12c;
-  u32 uStack_128;
-  u32 uStack_124;
-  u32 uStack_120;
-  u32 uStack_11c;
-  u32 uStack_118;
-  u32 uStack_114;
-  u32 uStack_110;
-  u8 auStack_10 [4];
-  float fStack_c;
+  float *pfVar1;
+  u8 auStack[0x138];
 
   if (5 < param_3) {
     FUN_0019d3f0("mt_sceneFunc.c",0x980);
@@ -3941,22 +3927,22 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
   else {
     param_2 = param_2 / param_1;
   }
-  auStack_140[0] = 1;
-  uStack_13c = 0;
-  uStack_138 = 0;
-  uStack_134 = 0;
-  puVar1 = (u32 *)FUN_003b55b0(param_3);
-  uStack_130 = *puVar1;
-  uStack_12c = puVar1[2];
-  uStack_128 = 0;
-  uStack_124 = puVar1[1];
-  uStack_120 = puVar1[3];
-  uStack_11c = 0;
-  uStack_118 = 0x3f800000;
-  uStack_114 = 0x3f800000;
-  uStack_110 = 0;
-  FUN_003bbd40_scene_typed(param_2,auStack_140,auStack_10);
-  return fStack_c * param_1;
+  pfVar1 = (float *)FUN_003b55b0(param_3);
+  auStack[0] = 1;
+  *(u32 *)(auStack + 4) = 0;
+  *(u32 *)(auStack + 8) = 0;
+  *(u32 *)(auStack + 0xc) = 0;
+  *(float *)(auStack + 0x10) = pfVar1[0];
+  *(float *)(auStack + 0x14) = pfVar1[2];
+  *(u32 *)(auStack + 0x18) = 0;
+  *(float *)(auStack + 0x1c) = pfVar1[1];
+  *(float *)(auStack + 0x20) = pfVar1[3];
+  *(u32 *)(auStack + 0x24) = 0;
+  *(u32 *)(auStack + 0x28) = 0x3f800000;
+  *(u32 *)(auStack + 0x2c) = 0x3f800000;
+  *(u32 *)(auStack + 0x30) = 0;
+  FUN_003bbd40_scene_typed(param_2,auStack,(float *)(auStack + 0x130));
+  return *(float *)(auStack + 0x134) * param_1;
 }
 #define FUN_003bbed0(...) ((float (*)(...))FUN_003bbed0)(__VA_ARGS__)
 #undef FUN_003bbfd0
