@@ -5982,7 +5982,7 @@ void FUN_003a8350(int param_1)
     fVar1 = fVar1 - 2.1474836e+09f;
   }
 
-  FUN_003a8710(0,iVar2,iVar3,(int)fVar1 & 0xff,0x10);
+  FUN_003a8710_typed(0,iVar2,iVar3,(int)fVar1 & 0xff,0x10);
 
   return;
 
