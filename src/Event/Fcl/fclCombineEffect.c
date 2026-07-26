@@ -143,6 +143,10 @@ u32 DAT_006b3040;
 u32 DAT_006b3050;
 u64 DAT_006b3090;
 float DAT_006b3098;
+#pragma alias DAT_006b3090_abs DAT_006b3090
+#pragma alias DAT_006b3098_abs DAT_006b3098
+extern u8 DAT_006b3090_abs[];
+extern u8 DAT_006b3098_abs[];
 u32 DAT_006b30a0;
 u32 DAT_006b3f60;
 u32 DAT_007cda6c;

@@ -394,18 +394,21 @@ static inline void bsaTransition(BsaWork* work, f32* alpha, f32* slide, f32* ico
     *iconAlpha = 1.0f;
     if ((work->words[1] & BSA_FLAG_TRANSITION) == 0)
         return;
-    if (work->words[0x29ad] != 1) {
+    switch (work->words[0x29ad]) {
+    case 0:
         if (timer < 10) work->words[0x29ac] = ++timer;
         else work->words[1] &= ~BSA_FLAG_TRANSITION;
-        *alpha = (f32)work->words[0x29ac] / 10.0f;
-    } else {
+        *alpha = (f32)(s32)work->words[0x29ac] / 10.0f;
+        break;
+    case 1:
         if (timer < 10) work->words[0x29ac] = ++timer;
         else {
             work->words[1] &= ~BSA_FLAG_TRANSITION;
             bsaMain00215770(work);
             work->words[1] &= ~BSA_FLAG_ACTIVE;
         }
-        *alpha = 1.0f - (f32)work->words[0x29ac] / 10.0f;
+        *alpha = 1.0f - (f32)(s32)work->words[0x29ac] / 10.0f;
+        break;
     }
     if ((work->words[1] & BSA_FLAG_TRANSITION) == 0) {
         *alpha = work->words[0x29ad] == 1 ? 0.0f : 1.0f;

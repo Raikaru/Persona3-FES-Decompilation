@@ -2449,7 +2449,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         }
         listThree = *(void**)((u8*)listThree + 0xf8);
     }
-    if (K_Scene_001a0250())
+    if (K_Scene_001a0250() && K_Scene_001a0250())
     {
         s32 quadIter;
         for (quadIter = 0; quadIter < 4; quadIter++)
@@ -2457,8 +2457,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             void* gridEntry;
             void* objData;
             s32 entryOff = quadIter * 448;
-            void* gridBase = (void*)func_00318b60(*(u32*)(DAT_008717f0 + 0));
-            gridEntry = (u8*)gridBase + entryOff;
+            gridEntry = (u8*)0x008717a0 + entryOff;
 
             if (*(u32*)((u8*)gridEntry + 0x48) == 0) continue;
             if (*(u32*)((u8*)gridEntry + 0x54) == 0) continue;
@@ -2556,7 +2555,13 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         }
     }
     /* Type 1 list walk (post-grid) */
-    type1ListHead = func_002ff790(type1ListHead);
+        objData = *(void**)(cell + 0x310);
+        if (objData != NULL)
+        {
+            model = (void*)func_00318b80(*(u32*)((u8*)objData + 0x114));
+            if (model != NULL)
+                FUN_004916d0(model, func_001abcd0, &collector);
+        }
     listNode = *(void**)((u8*)type1ListHead + 0xf8);
     while (listNode != NULL)
     {
