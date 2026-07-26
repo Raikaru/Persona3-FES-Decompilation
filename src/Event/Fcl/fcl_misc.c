@@ -127,6 +127,8 @@ extern void fclMiscFreeCall(s32);
 extern void fclMiscAssertCall(u32, u32);
 #pragma alias fclMisc3174e0Call FUN_003174e0
 extern void fclMisc3174e0Call(s32);
+#pragma alias fclMisc11f30Call FUN_00111f30
+extern u32 fclMisc11f30Call(s16 *);
 #pragma alias fclMisc9460Call FUN_003c9460
 extern u32 fclMisc9460Call(u32 *);
 #pragma alias fclMisc8d80Int FUN_003c8d80
@@ -352,7 +354,7 @@ u64 FUN_003c8550(u8 *param_1)
       uVar1 = FUN_00112370(auStack_20);
       puVar3[2] = uVar1;
     } else {
-      lVar2 = FUN_00111f30();
+      lVar2 = fclMisc11f30Call((s16 *)puVar3[2]);
       if (lVar2 != 0) {
         *puVar3 = *puVar3 | 2;
         FUN_003c49e0(*(int *)(context + 0x18),*(int *)(context + 0x18) + 4,iVar5);
@@ -364,7 +366,7 @@ u64 FUN_003c8550(u8 *param_1)
     uVar1 = *puVar3;
     if ((uVar1 & 4) != 0) {
       if (puVar3[2] != 0) {
-        lVar2 = FUN_00111f30();
+        lVar2 = fclMisc11f30Call((s16 *)puVar3[2]);
         if (lVar2 != 0) {
           *puVar3 &= 0xfffffffb;
           *puVar3 &= 0xfffffffd;
