@@ -1195,6 +1195,7 @@ u8 FUN_00418390(int param_1,int *param_2)
     if ((piVar5[3] & 0x200U) != 0) {
 
 
+      FUN_0041bf10(*(u32 *)(param_1 + 0x18),1);
     }
 
   }

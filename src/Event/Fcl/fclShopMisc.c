@@ -2190,7 +2190,6 @@ u32 FUN_003f1910(u64 param_1)
   iStack_4 = -1;
   uVar2 = 0;
   func_00170ed0(param_1,&iStack_4);
-  param_1 = (short)param_1;
   switch (iStack_4) {
   case 0:
   case 1:
@@ -2198,7 +2197,7 @@ u32 FUN_003f1910(u64 param_1)
   case 3:
     for (iVar3 = 0; iVar3 < 300; iVar3 = iVar3 + 1) {
       uVar1 = datGetEquipmentId(1,iVar3);
-      if ((int)param_1 == (uVar1 & 0xffff)) {
+      if ((long)(short)param_1 == (uVar1 & 0xffff)) {
         uVar2 = uVar2 + 1;
       }
     }
