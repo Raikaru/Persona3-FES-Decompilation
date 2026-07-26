@@ -1222,7 +1222,6 @@ void func_0018c780(KwlnTask* task)
     s16 scale;
     u8 fadeAlpha;
     void* sprite;
-    GsSprite* node;
     f32 width;
     f32 height;
 
@@ -1233,19 +1232,18 @@ void func_0018c780(KwlnTask* task)
         frame = 5;
     }
     sprite = func_001158b0(NULL, GS_PTR(object, 0x3c), 1);
-    node = (GsSprite*)sprite;
-    node->depth = GS_F32(transition, 0x24) - 4.0f;
+    ((GsSprite*)sprite)->depth = GS_F32(transition, 0x24) - 4.0f;
     scale = (s16)(((frame << 0xc) / 5) + 1);
-    node->scaleX = scale;
-    node->scaleY = scale;
+    ((GsSprite*)sprite)->scaleX = scale;
+    ((GsSprite*)sprite)->scaleY = scale;
     width = func_001126b0(sprite);
-    node->centerX = (s16)(s32)(width / 2.0f);
+    ((GsSprite*)sprite)->centerX = (s16)(s32)(width / 2.0f);
     height = func_00112740(sprite);
-    node->centerY = (s16)(s32)(height / 2.0f);
-    node->angle = 90.0f;
-    node->x = GS_F32(transition, 0x38) + 48.0f - width / 2.0f;
-    node->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
-    node->alpha = (u8)(0xff - (frame * 0xff) / 5);
+    ((GsSprite*)sprite)->centerY = (s16)(s32)(height / 2.0f);
+    ((GsSprite*)sprite)->angle = 90.0f;
+    ((GsSprite*)sprite)->x = GS_F32(transition, 0x38) + 48.0f - width / 2.0f;
+    ((GsSprite*)sprite)->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
+    ((GsSprite*)sprite)->alpha = (u8)(0xff - (frame * 0xff) / 5);
     func_001127d0(sprite, 1);
     func_00115980(sprite);
 
@@ -1255,17 +1253,16 @@ void func_0018c780(KwlnTask* task)
         scale = (s16)((fadeFrame * 0x1000) >> 3);
         fadeAlpha = (u8)(0xff - ((fadeFrame * 0xff) >> 3));
         sprite = func_001158b0(NULL, GS_PTR(object, 0x3c), 0);
-        node = (GsSprite*)sprite;
-        node->depth = GS_F32(transition, 0x24) - 4.0f;
-        node->scaleX = (s16)(scale + 1);
-        node->scaleY = (s16)(scale + 1);
+        ((GsSprite*)sprite)->depth = GS_F32(transition, 0x24) - 4.0f;
+        ((GsSprite*)sprite)->scaleX = (s16)(scale + 1);
+        ((GsSprite*)sprite)->scaleY = (s16)(scale + 1);
         width = func_001126b0(sprite);
-        node->centerX = (s16)(s32)(width / 2.0f);
+        ((GsSprite*)sprite)->centerX = (s16)(s32)(width / 2.0f);
         height = func_00112740(sprite);
-        node->centerY = (s16)(s32)(height / 2.0f);
-        node->x = GS_F32(transition, 0x38) + 49.0f - width / 2.0f;
-        node->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
-        node->alpha = fadeAlpha;
+        ((GsSprite*)sprite)->centerY = (s16)(s32)(height / 2.0f);
+        ((GsSprite*)sprite)->x = GS_F32(transition, 0x38) + 49.0f - width / 2.0f;
+        ((GsSprite*)sprite)->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
+        ((GsSprite*)sprite)->alpha = fadeAlpha;
         func_001127d0(sprite, 1);
         func_00115980(sprite);
     }
@@ -1747,8 +1744,6 @@ void func_0018e8e0(void* workData)
     void* transition;
     u32 active;
     u32 alpha;
-    s32 x;
-    s32 y;
     const char* text;
 
     for (i = 0; i < 3; i++)
@@ -1758,18 +1753,20 @@ void func_0018e8e0(void* workData)
         if (active != 0 && GS_U32(work, 0x20c) != 0)
         {
             alpha = 0xff - GS_U32(transition, 0x40) | 0xffffff00;
-            x = (s32)GS_F32(transition, 0x38) - 10;
-            y = (s32)GS_F32(transition, 0x3c) + 5;
             if (i == 2)
             {
                 text = (const char*)(work + 0x108);
-                func_003b2cb0(GS_F32(transition, 0x24), x, y,
+                func_003b2cb0(GS_F32(transition, 0x24),
+                              (s32)GS_F32(transition, 0x38) - 10,
+                              (s32)GS_F32(transition, 0x3c) + 5,
                               alpha, 5, 1, text, 0x10, 0);
             }
             else if (i == 1)
             {
                 text = (const char*)(work + 8);
-                func_003b2cb0(GS_F32(transition, 0x24), x, y,
+                func_003b2cb0(GS_F32(transition, 0x24),
+                              (s32)GS_F32(transition, 0x38) - 10,
+                              (s32)GS_F32(transition, 0x3c) + 5,
                               alpha, 5, 1, text, 0x10, 0);
             }
             else

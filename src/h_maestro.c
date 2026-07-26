@@ -2615,18 +2615,19 @@ void func_00115350(f32 depth,
     f32 alpha2f;
     f32 alpha3f;
     void (**setState)(u32, u32);
-    s8 r;
-    s8 g;
-    s8 b;
+    s32 r;
+    s32 g;
+    s32 b;
     s32 r1;
     s32 g1;
     s32 b1;
     s32 i;
+    RwIm2DVertex* v;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
-    r = (s8)(color >> 24);
-    g = (s8)(color >> 16);
-    b = (s8)(color >> 8);
+    r = color >> 24;
+    g = color >> 16;
+    b = color >> 8;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2660,42 +2661,111 @@ void func_00115350(f32 depth,
 
     for (i = 0; i < 4; i++)
     {
-        RwIm2DVertex* v = &vertices[i];
-        v->u.els.scrVertex.z = z;
-        v->u.els.recipZ = recipZ;
-        if (r >= 0)
-            v->u.els.color.r = (f32)r;
-        else
-        {
-            tmpR = (f32)(s32)(((u32)r >> 1) | r1);
-            v->u.els.color.r = tmpR + tmpR;
-        }
-        if (g >= 0)
-            v->u.els.color.g = (f32)g;
-        else
-        {
-            tmpG = (f32)(s32)(((u32)g >> 1) | g1);
-            v->u.els.color.g = tmpG + tmpG;
-        }
-        if (b >= 0)
-            v->u.els.color.b = (f32)b;
-        else
-        {
-            tmpB = (f32)(s32)(((u32)b >> 1) | b1);
-            v->u.els.color.b = tmpB + tmpB;
-        }
+        v = &vertices[i];
         switch (i)
         {
         case 0:
+            v->u.els.scrVertex.z = z;
+            v->u.els.recipZ = recipZ;
+            if (r >= 0)
+                v->u.els.color.r = (f32)r;
+            else
+            {
+                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
+                v->u.els.color.r = tmpR + tmpR;
+            }
+            if (g >= 0)
+                v->u.els.color.g = (f32)g;
+            else
+            {
+                tmpG = (f32)(s32)(((u32)g >> 1) | g1);
+                v->u.els.color.g = tmpG + tmpG;
+            }
+            if (b >= 0)
+                v->u.els.color.b = (f32)b;
+            else
+            {
+                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+                v->u.els.color.b = tmpB + tmpB;
+            }
             v->u.els.color.a = alpha0f;
             break;
         case 1:
+            v->u.els.scrVertex.z = z;
+            v->u.els.recipZ = recipZ;
+            if (r >= 0)
+                v->u.els.color.r = (f32)r;
+            else
+            {
+                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
+                v->u.els.color.r = tmpR + tmpR;
+            }
+            if (g >= 0)
+                v->u.els.color.g = (f32)g;
+            else
+            {
+                tmpG = (f32)(s32)(((u32)g >> 1) | g1);
+                v->u.els.color.g = tmpG + tmpG;
+            }
+            if (b >= 0)
+                v->u.els.color.b = (f32)b;
+            else
+            {
+                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+                v->u.els.color.b = tmpB + tmpB;
+            }
             v->u.els.color.a = alpha1f;
             break;
         case 2:
+            v->u.els.scrVertex.z = z;
+            v->u.els.recipZ = recipZ;
+            if (r >= 0)
+                v->u.els.color.r = (f32)r;
+            else
+            {
+                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
+                v->u.els.color.r = tmpR + tmpR;
+            }
+            if (g >= 0)
+                v->u.els.color.g = (f32)g;
+            else
+            {
+                tmpG = (f32)(s32)(((u32)g >> 1) | g1);
+                v->u.els.color.g = tmpG + tmpG;
+            }
+            if (b >= 0)
+                v->u.els.color.b = (f32)b;
+            else
+            {
+                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+                v->u.els.color.b = tmpB + tmpB;
+            }
             v->u.els.color.a = alpha2f;
             break;
         case 3:
+            v->u.els.scrVertex.z = z;
+            v->u.els.recipZ = recipZ;
+            if (r >= 0)
+                v->u.els.color.r = (f32)r;
+            else
+            {
+                tmpR = (f32)(s32)(((u32)r >> 1) | r1);
+                v->u.els.color.r = tmpR + tmpR;
+            }
+            if (g >= 0)
+                v->u.els.color.g = (f32)g;
+            else
+            {
+                tmpG = (f32)(s32)(((u32)g >> 1) | g1);
+                v->u.els.color.g = tmpG + tmpG;
+            }
+            if (b >= 0)
+                v->u.els.color.b = (f32)b;
+            else
+            {
+                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+                v->u.els.color.b = tmpB + tmpB;
+            }
             v->u.els.color.a = alpha3f;
             break;
         }

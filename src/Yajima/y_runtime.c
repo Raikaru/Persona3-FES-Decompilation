@@ -5831,40 +5831,76 @@ void FUN_00435c00(int param_1)
   u32 uVar25;
   float in_f21;
   float unaff_f20;
-  float fStack_220 [3];
-  float fStack_210 [3];
-  float fStack_200 [3];
-  float fStack_1f0 [3];
-  float fStack_1e0 [3];
-  float fStack_1d0 [3];
-  float fStack_1c0 [3];
-  float fStack_1b0 [3];
-  float fStack_1a0 [3];
-  float fStack_190 [3];
-  float fStack_180 [3];
-  float fStack_170 [3];
-  float fStack_160 [3];
-  float fStack_150 [3];
-  float fStack_140 [3];
-  float fStack_130 [3];
-  float fStack_120 [3];
-  float fStack_110 [3];
-  float fStack_100 [3];
-  float fStack_f0 [3];
-  float fStack_e0 [3];
-  float fStack_d0 [3];
-  float fStack_c0 [3];
-  float fStack_b0 [3];
-  float fStack_a0 [3];
-  float fStack_90 [3];
-  float fStack_80 [3];
-  u32 uStack_70[3];
-  u32 uStack_60[3];
-  float fStack_50 [3];
-  float fStack_40 [3];
-  u8 auStack_30 [16];
-  u8 auStack_20 [16];
-  float afStack_10[3];
+  struct {
+    float fStack_220[4];
+    float fStack_210[4];
+    float fStack_200[4];
+    float fStack_1f0[4];
+    float fStack_1e0[4];
+    float fStack_1d0[4];
+    float fStack_1c0[4];
+    float fStack_1b0[4];
+    float fStack_1a0[4];
+    float fStack_190[4];
+    float fStack_180[4];
+    float fStack_170[4];
+    float fStack_160[4];
+    float fStack_150[4];
+    float fStack_140[4];
+    float fStack_130[4];
+    float fStack_120[4];
+    float fStack_110[4];
+    float fStack_100[4];
+    float fStack_f0[4];
+    float fStack_e0[4];
+    float fStack_d0[4];
+    float fStack_c0[4];
+    float fStack_b0[4];
+    float fStack_a0[4];
+    float fStack_90[4];
+    float fStack_80[4];
+    u32 uStack_70[4];
+    u32 uStack_60[4];
+    float fStack_50[4];
+    float fStack_40[4];
+    u8 auStack_30[16];
+    u8 auStack_20[16];
+    float afStack_10[4];
+  } stack;
+#define fStack_220 stack.fStack_220
+#define fStack_210 stack.fStack_210
+#define fStack_200 stack.fStack_200
+#define fStack_1f0 stack.fStack_1f0
+#define fStack_1e0 stack.fStack_1e0
+#define fStack_1d0 stack.fStack_1d0
+#define fStack_1c0 stack.fStack_1c0
+#define fStack_1b0 stack.fStack_1b0
+#define fStack_1a0 stack.fStack_1a0
+#define fStack_190 stack.fStack_190
+#define fStack_180 stack.fStack_180
+#define fStack_170 stack.fStack_170
+#define fStack_160 stack.fStack_160
+#define fStack_150 stack.fStack_150
+#define fStack_140 stack.fStack_140
+#define fStack_130 stack.fStack_130
+#define fStack_120 stack.fStack_120
+#define fStack_110 stack.fStack_110
+#define fStack_100 stack.fStack_100
+#define fStack_f0 stack.fStack_f0
+#define fStack_e0 stack.fStack_e0
+#define fStack_d0 stack.fStack_d0
+#define fStack_c0 stack.fStack_c0
+#define fStack_b0 stack.fStack_b0
+#define fStack_a0 stack.fStack_a0
+#define fStack_90 stack.fStack_90
+#define fStack_80 stack.fStack_80
+#define uStack_70 stack.uStack_70
+#define uStack_60 stack.uStack_60
+#define fStack_50 stack.fStack_50
+#define fStack_40 stack.fStack_40
+#define auStack_30 stack.auStack_30
+#define auStack_20 stack.auStack_20
+#define afStack_10 stack.afStack_10
   
   iVar2 = *(int *)((int)param_1 + 0x3c);
   iVar12 = DAT_007ce290;
@@ -6643,6 +6679,40 @@ LAB_00437890:
   }
   return;
 }
+#undef fStack_220
+#undef fStack_210
+#undef fStack_200
+#undef fStack_1f0
+#undef fStack_1e0
+#undef fStack_1d0
+#undef fStack_1c0
+#undef fStack_1b0
+#undef fStack_1a0
+#undef fStack_190
+#undef fStack_180
+#undef fStack_170
+#undef fStack_160
+#undef fStack_150
+#undef fStack_140
+#undef fStack_130
+#undef fStack_120
+#undef fStack_110
+#undef fStack_100
+#undef fStack_f0
+#undef fStack_e0
+#undef fStack_d0
+#undef fStack_c0
+#undef fStack_b0
+#undef fStack_a0
+#undef fStack_90
+#undef fStack_80
+#undef uStack_70
+#undef uStack_60
+#undef fStack_50
+#undef fStack_40
+#undef auStack_30
+#undef auStack_20
+#undef afStack_10
 
 #pragma pop
 // FUN_00437E00
@@ -16569,12 +16639,16 @@ u8 FUN_00454520(float *param_1,char param_2)
   int iVar1;
   float *pfVar2;
   float fVar3;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  struct {
+    float fStack_20[4];
+    float fStack_10[4];
+  } stack;
+#define fStack_20 stack.fStack_20[0]
+#define fStack_1c stack.fStack_20[1]
+#define fStack_18 stack.fStack_20[2]
+#define fStack_10 stack.fStack_10[0]
+#define fStack_c stack.fStack_10[1]
+#define fStack_8 stack.fStack_10[2]
   
   fStack_10 = *param_1;
   fStack_c = param_1[1];
@@ -20574,9 +20648,9 @@ void FUN_0045ce90(int param_1)
   u32 uVar2;
   long lVar3;
   int iVar4;
-  u64 uVar5;
-  u64 uVar6;
-  u64 uVar7;
+  u32 uVar5;
+  u32 uVar6;
+  u32 uVar7;
   int iVar8;
   int iVar9;
   int iVar10;
@@ -20584,14 +20658,25 @@ void FUN_0045ce90(int param_1)
   u32 uVar12;
   int iVar13;
   int iVar14;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u32 uStack_18;
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
-  float fStack_8;
-  float fStack_4;
+  union {
+    struct {
+      u32 uStack_20;
+      u32 uStack_1c;
+      u32 uStack_18;
+      u32 uStack_14;
+      u32 uStack_10;
+      u32 uStack_c;
+    } words;
+    float afStack_8[2];
+  } scratch;
+#define uStack_20 scratch.words.uStack_20
+#define uStack_1c scratch.words.uStack_1c
+#define uStack_18 scratch.words.uStack_18
+#define uStack_14 scratch.words.uStack_14
+#define uStack_10 scratch.words.uStack_10
+#define uStack_c scratch.words.uStack_c
+#define fStack_8 scratch.afStack_8[0]
+#define fStack_4 scratch.afStack_8[1]
   
   iVar10 = *(int *)((int)param_1 + 0x3c);
   FUN_001159f0_3fv(0,0,0,param_1,(u8 *)DAT_007ce718,0xa4,0);
@@ -20733,6 +20818,14 @@ void FUN_0045ce90(int param_1)
   }
   return;
 }
+#undef uStack_20
+#undef uStack_1c
+#undef uStack_18
+#undef uStack_14
+#undef uStack_10
+#undef uStack_c
+#undef fStack_8
+#undef fStack_4
 
 #pragma push
 #pragma opt_loop_invariants on

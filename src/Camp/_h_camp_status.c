@@ -2482,6 +2482,9 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     CampVec2 bottomPos;
     CampVec2 drawPos;
     char text[0x100];
+    bottomPos = position;
+    bottomPos.x += 12.0f;
+    bottomPos.y += 96.0f;
 
     if (frame >= 0) {
     if (frame < 5) {
@@ -2604,11 +2607,11 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     }
     h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11,
-                             (u8)alpha, position.x + 33.0f,
-                             position.y + 278.0f, scale);
+                             (u8)alpha, bottomPos.x + 21.0f,
+                             bottomPos.y + 86.0f, scale);
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22,
-                             (u8)alpha, position.x + 287.0f,
-                             position.y + 278.0f, scale);
+                             (u8)alpha, bottomPos.x + 275.0f,
+                             bottomPos.y + 86.0f, scale);
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
     }
@@ -2616,8 +2619,8 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         rank = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, rank);
     }
-    FUN_0040eb50(0x42c80000, (s32)(position.x + 287.0f),
-                 (s32)(position.y + 280.0f), 0xff - alpha,
+    FUN_0040eb50(0x42c80000, (s32)(bottomPos.x + 275.0f),
+                 (s32)(bottomPos.y + 88.0f), 0xff - alpha,
                  4, text, 1);
 }
 
@@ -2638,6 +2641,7 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     CampVec2 labelPosition;
     CampVec2 valuePosition;
     CampVec2 equipmentPosition;
+    CampVec2 bottomPosition;
     f32 panelX;
     f32 panelY;
     f32 panelBottomY;
@@ -2652,7 +2656,9 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
         return;
     }
     drawPosition = position;
-    drawPosition.x += (f32)((frame * 300) / 5);
+    bottomPosition = drawPosition;
+    bottomPosition.x += 12.0f;
+    bottomPosition.y += 96.0f;
     panelX = drawPosition.x + 30.0f;
     panelY = drawPosition.y + 100.0f;
     panelBottomY = drawPosition.y + 159.0f;
@@ -2720,10 +2726,11 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     equipmentPosition = drawPosition;
     h_campStatusDrawEquipment(equipmentPosition, scale, NULL, persona, alpha);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x11, alpha,
-                             drawPosition.x + 33.0f,
-                             drawPosition.y + 278.0f, scale);
+                             bottomPosition.x + 21.0f,
+                             bottomPosition.y + 86.0f, scale);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22, alpha,
-                             footerX, drawPosition.y + 278.0f, scale);
+                             bottomPosition.x + 275.0f,
+                             bottomPosition.y + 86.0f, scale);
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
     }
@@ -2731,7 +2738,8 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
         value = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, value);
     }
-    FUN_0040eb50(parentBottom, (s32)footerX, (s32)footerY,
+    FUN_0040eb50(parentBottom, (s32)(bottomPosition.x + 275.0f),
+                 (s32)(bottomPosition.y + 88.0f),
                  0xff - alpha, 4, text, 1);
 }
 // FUN_0012AC60 NONMATCHING

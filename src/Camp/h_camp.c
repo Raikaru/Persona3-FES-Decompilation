@@ -1977,16 +1977,22 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
         u32 secondary = work->command;
         switch (secondary) {
         case 0:
+            work->state = 3;
+            break;
         case 1:
             work->state = 3;
             break;
         case 2:
-        case 9:
-        case 13:
             work->transitionComplete = 1;
             break;
         case 3:
             work->state = 9;
+            break;
+        case 9:
+            work->transitionComplete = 1;
+            break;
+        case 13:
+            work->transitionComplete = 1;
             break;
         }
         break;
@@ -1996,64 +2002,57 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
         u32 secondary = work->command;
         switch (secondary) {
         case 0:
+            work->state = 7;
+            break;
         case 1:
+            work->state = 7;
+            break;
         case 2:
+            work->state = 7;
+            break;
         case 3:
             work->state = 7;
             break;
         case 9:
+            work->transitionComplete = 1;
+            break;
         case 13:
             work->transitionComplete = 1;
             break;
         }
         break;
     }
-    case 4:
-        if (work->command == 5) {
-            work->state = 55;
-        }
-        else if (work->command == 1) {
-            work->state = 45;
-        }
-        break;
-    case 5:
-        if (work->command == 4) {
-            work->state = 53;
-        }
-        break;
-    case 6:
-        if (work->command == 1) {
-            work->state = 57;
-        }
-        break;
-    case 7:
-        if (work->command == 8) {
-            work->state = 37;
-        }
-        else if (work->command == 1) {
-            work->state = 33;
-        }
-        break;
-    case 8:
-        if (work->command == 7) {
-            work->state = 35;
-        }
-        break;
     case 9:
     {
         u32 secondary = work->command;
         switch (secondary) {
         case 0:
-        case 2:
-        case 3:
-        case 9:
-        case 13:
             work->transitionComplete = 1;
             break;
         case 1:
             work->state = 15;
             break;
+        case 2:
+            work->transitionComplete = 1;
+            break;
+        case 3:
+            work->transitionComplete = 1;
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        case 9:
+            work->transitionComplete = 1;
+            break;
         case 10:
+            work->state = 19;
+            break;
+        case 13:
+            work->transitionComplete = 1;
+            break;
         case 14:
             work->state = 19;
             break;
@@ -2063,78 +2062,176 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
         case 12:
             work->state = 29;
             break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-            break;
         }
         break;
     }
     case 10:
-        if (work->command == 9 || work->command == 13) {
-            work->state = 17;
-        }
-        break;
-    case 11:
-        if (work->command == 1) {
-            work->state = 15;
-        }
-        else if (work->command == 9) {
-            work->state = 21;
-        }
-        else if (work->command == 12) {
-            work->state = 31;
-        }
-        break;
-    case 12:
-        if (work->command == 1) {
-            work->state = 15;
-        }
-        else if (work->command == 9) {
-            work->state = 25;
-        }
-        else if (work->command == 11) {
-            work->state = 27;
-        }
-        break;
-    case 13:
-        switch (work->command) {
-        case 0:
-        case 2:
-        case 3:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
         case 9:
-        case 10:
+            work->state = 17;
+            break;
         case 13:
+            work->state = 17;
+            break;
+        }
+        break;
+    }
+    case 11:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 1:
+            work->state = 15;
+            break;
+        case 9:
+            work->state = 21;
+            break;
+        case 12:
+            work->state = 31;
+            break;
+        }
+        break;
+    }
+    case 12:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 1:
+            work->state = 15;
+            break;
+        case 9:
+            work->state = 25;
+            break;
+        case 11:
+            work->state = 27;
+            break;
+        }
+        break;
+    }
+    case 13:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 0:
             work->transitionComplete = 1;
             break;
         case 1:
             work->state = 39;
+            break;
+        case 2:
+            work->transitionComplete = 1;
+            break;
+        case 3:
+            work->transitionComplete = 1;
+            break;
+        case 9:
+            work->transitionComplete = 1;
+            break;
+        case 10:
+            work->transitionComplete = 1;
+            break;
+        case 13:
+            work->transitionComplete = 1;
             break;
         case 14:
             work->state = 43;
             break;
         }
         break;
+    }
     case 14:
-        if (work->command == 13) {
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 13:
             work->state = 41;
+            break;
         }
         break;
+    }
+    case 7:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 1:
+            work->state = 33;
+            break;
+        case 7:
+            break;
+        case 8:
+            work->state = 37;
+            break;
+        }
+        break;
+    }
+    case 8:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 7:
+            work->state = 35;
+            break;
+        }
+        break;
+    }
     case 15:
-        if (work->command == 1) {
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 1:
             work->state = 45;
-        }
-        else if (work->command == 16) {
+            break;
+        case 16:
             work->state = 49;
+            break;
         }
         break;
+    }
     case 16:
-        if (work->command == 15) {
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 15:
             work->state = 47;
+            break;
         }
         break;
+    }
+    case 4:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 1:
+            work->state = 45;
+            break;
+        case 5:
+            work->state = 55;
+            break;
+        }
+        break;
+    }
+    case 5:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 4:
+            work->state = 53;
+            break;
+        }
+        break;
+    }
+    case 6:
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
+        case 1:
+            work->state = 57;
+            break;
+        }
+        break;
+    }
     }
     work->command = command;
     return 1;

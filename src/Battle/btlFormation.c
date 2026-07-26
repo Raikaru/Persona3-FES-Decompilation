@@ -137,6 +137,17 @@ extern u64 func_001fdda0();
 extern u64 func_001fddf0();
 extern u64 func_001fdec0();
 extern u64 func_001fdf10();
+typedef struct FormationUpdateResult {
+  u32 flags;
+  s32 state;
+  u16 value0;
+  u16 value1;
+  u16 value2;
+  u16 value3;
+  u32 value4;
+} FormationUpdateResult;
+#pragma alias func_001fdf10_btlFormation_result func_001fdf10
+extern void func_001fdf10_btlFormation_result(FormationUpdateResult *result);
 extern u64 func_001fe3b0();
 extern u64 func_001fe430();
 extern u64 func_001fe5f0();
@@ -4502,107 +4513,102 @@ void func_002bedd0(int param_1)
 // FUN_002bef20 NONMATCHING
 
 u64 func_002bef20(u64 param_1)
-
 {
-  short sVar1 = 0;
-  int iVar2 = 0;
-  u16 uVar3 = 0;
-  short *psVar4;
-  long lVar5 = 0;
-  u32 uStack_20 = 0;
-  int iStack_1c = 0;
-  u16 uStack_18 = 0;
-  u16 uStack_16 = 0;
-  u16 uStack_14 = 0;
-  u32 uStack_10 = 0;
-  
-  lVar5 = btlFadeSuppressesFormationUpdates();
-  if ((lVar5 == 0) && ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) {
-    psVar4 = (short *)func_00195540(param_1);
-    sVar1 = *psVar4;
-    if ((sVar1 != 8) && (((sVar1 != 7 && (sVar1 != 5)) && (sVar1 != 3)))) {
+  short state;
+  int work;
+  u16 value;
+  short *menu;
+  long result;
+  FormationUpdateResult update;
+
+  result = btlFadeSuppressesFormationUpdates();
+  if ((result == 0) && ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) {
+    menu = (short *)func_00195540(param_1);
+    state = *menu;
+    if ((state != 8) && (state != 7) && (state != 5) && (state != 3)) {
       if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
         func_0016f1f0(0x140c,0);
         func_0016f1f0(0x1409,0);
-        iVar2 = *(int *)(psVar4 + 2);
-        lVar5 = func_001fddf0();
-        if (lVar5 != 0) {
-          func_001fdf10(&uStack_20);
-          *(short *)(iVar2 + 0x6c) = (short)iStack_1c;
-          if (iStack_1c == 0xd) {
-            *psVar4 = 8;
+        work = *(int *)(menu + 2);
+        result = func_001fddf0();
+        if (result != 0) {
+          func_001fdf10_btlFormation_result(&update);
+          *(short *)(work + 0x6c) = (short)update.state;
+          if (update.state == 0xd) {
+            *menu = 8;
           }
-          else if ((iStack_1c == 7) || (iStack_1c == 6)) {
-            *psVar4 = 5;
+          else if ((update.state == 7) || (update.state == 6)) {
+            *(u16 *)(work + 0x6e) = update.value1;
+            *menu = 5;
           }
-          else if (iStack_1c == 10) {
-            func_002db650(uStack_10);
-            *psVar4 = 7;
+          else if (update.state == 10) {
+            func_002db650(update.value4);
+            *menu = 7;
           }
-          else if (iStack_1c == 5) {
-            *(u16 *)(iVar2 + 0x74) = uStack_14;
-            *psVar4 = 5;
+          else if (update.state == 5) {
+            *(u16 *)(work + 0x74) = update.value2;
+            *menu = 5;
           }
-          else if (iStack_1c == 4) {
-            if (((uStack_20 & 1) == 0) && ((uStack_20 & 2) == 0)) {
-              *psVar4 = 5;
+          else if (update.state == 4) {
+            if (((update.flags & 1) == 0) && ((update.flags & 2) == 0)) {
+              *menu = 5;
             }
             else {
-              *(u16 *)(iVar2 + 0x6e) = uStack_16;
-              *psVar4 = 3;
+              *(u16 *)(work + 0x6e) = update.value1;
+              *menu = 3;
             }
           }
-          else if (iStack_1c == 3) {
-            *(u16 *)(iVar2 + 0x70) = uStack_18;
-            uVar3 = func_0030bc20(uStack_18);
-            *(u16 *)(iVar2 + 0x6e) = uVar3;
-            *psVar4 = 3;
+          else if (update.state == 3) {
+            *(u16 *)(work + 0x70) = update.value0;
+            value = func_0030bc20(update.value0);
+            *(u16 *)(work + 0x6e) = value;
+            *menu = 3;
           }
-          else if (iStack_1c == 2) {
-            *(u16 *)(iVar2 + 0x6e) = uStack_16;
-            *psVar4 = 3;
+          else if (update.state == 2) {
+            *(u16 *)(work + 0x6e) = update.value1;
+            *menu = 3;
           }
-          else if (iStack_1c == 1) {
-            uVar3 = func_00308930(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
-            *(u16 *)(iVar2 + 0x6e) = uVar3;
-            *psVar4 = 3;
+          else if (update.state == 1) {
+            value = func_00308930(*(u32 *)(*(int *)(work + 0x30) + 0xa2c));
+            *(u16 *)(work + 0x6e) = value;
+            *menu = 3;
           }
         }
       }
       else {
         func_0016f1f0(0x140c,1);
         func_0016f1f0(0x1409,1);
-        if (*psVar4 == 6) {
-          *psVar4 = 2;
+        if (*menu == 6) {
+          *menu = 2;
           return 0;
         }
-        iVar2 = *(int *)(psVar4 + 6);
-        if ((iVar2 != 0) && (*(code **)(iVar2 + 0x14) != (code *)0x0)) {
-          uVar3 = (**(code **)(iVar2 + 0x14))(iVar2,*(u32 *)(psVar4 + 2));
-          switch(uVar3) {
+        work = *(int *)(menu + 6);
+        if ((work != 0) && (*(code **)(work + 0x14) != (code *)0)) {
+          value = (**(code **)(work + 0x14))(work,*(u32 *)(menu + 2));
+          switch(value) {
           case 1:
-            iVar2 = *(int *)(iVar2 + 0x20);
-            if (iVar2 != 0) {
-              *(int *)(psVar4 + 6) = iVar2;
-              *(u32 *)(iVar2 + 0x24) = 0;
+            work = *(int *)(work + 0x20);
+            if (work != 0) {
+              *(int *)(menu + 6) = work;
+              *(u32 *)(work + 0x24) = 0;
             }
             break;
           case 2:
-            if (*(int *)(iVar2 + 0x24) != 0) {
-              *(int *)(psVar4 + 6) = *(int *)(iVar2 + 0x24);
+            if (*(int *)(work + 0x24) != 0) {
+              *(int *)(menu + 6) = *(int *)(work + 0x24);
             }
             break;
           case 4:
-            iVar2 = *(int *)(iVar2 + 0x20);
-            if (iVar2 != 0) {
-              *(int *)(psVar4 + 6) = iVar2;
-              *(u32 *)(iVar2 + 0x24) = 0;
+            work = *(int *)(work + 0x20);
+            if (work != 0) {
+              *(int *)(menu + 6) = work;
+              *(u32 *)(work + 0x24) = 0;
             }
           case 3:
-            *psVar4 = 3;
+            *menu = 3;
             break;
           case 6:
-            *psVar4 = 5;
+            *menu = 5;
           }
         }
       }
@@ -5529,9 +5535,13 @@ void func_002c0ac0(int param_1,int param_2)
   u32 uVar7 = 0;
   u16 uVar8 = 0;
   
-  if ((1 < *(u16 *)(param_2 + 0x38)) &&
-     (((state = *(u16 *)(param_1 + 0x6c), state == 2 || (state == 3)) || (state == 1)))) {
-    iVar6 = ((u32)*(u16 *)(param_1 + 0x6e) * 10 + (u32)*(u16 *)(param_1 + 0x6e)) * 4;
+  if (1 < *(u16 *)(param_2 + 0x38)) {
+    state = *(u16 *)(param_1 + 0x6c);
+    switch (state) {
+    case 2:
+    case 3:
+    case 1:
+      iVar6 = ((u32)*(u16 *)(param_1 + 0x6e) * 10 + (u32)*(u16 *)(param_1 + 0x6e)) * 4;
     if (*(char *)(iVar6 + iGpffffb708 + 8) == '\0') {
       if ((*(char *)(iVar6 + iGpffffb708 + 0x18) == '\x02') &&
          (iVar2 = *(int *)(iGpffffb708 + 0x1c + iVar6), iVar2 != 0)) {
@@ -5592,6 +5602,7 @@ void func_002c0ac0(int param_1,int param_2)
       }
     }
   }
+    }
   return;
 }
 
