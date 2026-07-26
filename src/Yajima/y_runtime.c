@@ -1848,6 +1848,8 @@ extern u32 DAT_0095c221;
 extern u32 DAT_0095c23e;
 extern u32 DAT_0095c23f;
 extern u32 DAT_0095c240;
+#pragma alias DAT_0095c240_abs DAT_0095c240
+extern u8 DAT_0095c240_abs[];
 extern u32 DAT_0095c241;
 extern u32 DAT_00960088;
 extern code DAT_00960090;
@@ -20256,15 +20258,15 @@ void FUN_0045bcb0(int param_1,u64 param_2)
   int iVar1;
   
   iVar1 = *(int *)((int)param_1 + 0x3c);
-  if (iGpffffba20 < 0x10) {
-    if (iGpffffba20 < 8) {
-      FUN_00524828((u8 *)DAT_0095c240 + iGpffffba20 * 2,(void *)param_2,2);
+  if ((int)iGpffffba20 < 0x10) {
+    if ((int)iGpffffba20 < 8) {
+      FUN_00524828((u8 *)DAT_0095c240_abs + iGpffffba20 * 2,(void *)param_2,2);
     }
     else {
       FUN_00524828((u8 *)DAT_0095c220 + (iGpffffba20 + -8) * 2,(void *)param_2,2);
     }
     iGpffffba20 = iGpffffba20 + 1;
-    if (iGpffffba20 < 0x10) {
+    if ((int)iGpffffba20 < 0x10) {
       if (iGpffffba20 == 8) {
         *(u32 *)(iVar1 + 0x1c34) = 1;
         FUN_0045b830(param_1,1);

@@ -18,7 +18,7 @@ extern int DAT_006a66d0[];
 extern u32 DAT_007ce688;
 extern u32 uGpffffb998;
 extern s32 iGpffffb998;
-extern char gp0xffffaad0[];
+extern char gp0xffffaad0;
 extern void (*PTR_LAB_007bb900[])();
 extern unsigned char DAT_006a6b20[];
 /* FUSION_PROTOS */
