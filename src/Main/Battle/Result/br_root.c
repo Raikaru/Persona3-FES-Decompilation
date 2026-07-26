@@ -3304,7 +3304,7 @@ void func_001f7170(void)
 #pragma optimization_level 3
 void func_001f7210(void)
 {
-    u8 *work = sBrReward;
+    u8 *work;
     u32 slot;
     u32 entry_idx;
     u8 *entry;
@@ -3336,8 +3336,8 @@ void func_001f7210(void)
     u16 apply_mbr;
     u32 amount;
     u32 new_val;
-    K_ASSERT(work != NULL, 0x8c);
-    debug_val = 0;
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
     BR_U32(work, 0x34e8) = entry_idx + slot;
