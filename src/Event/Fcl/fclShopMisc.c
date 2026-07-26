@@ -200,7 +200,7 @@ u8 * FUN_003efff0(int param_1);
 u8 * FUN_003efff0_u64(u64 param_1);
 s16 FUN_003f0090(int param_1);
 s16 FUN_003f00b0(int param_1);
-int FUN_003f00d0(int *param_1,u64 param_2,int *param_3);
+int FUN_003f00d0(int *param_1,int param_2,int *param_3);
  #pragma alias FUN_003f00d0_i FUN_003f00d0
  int *FUN_003f00d0_i(int *param_1,int param_2,int *param_3);
  #pragma alias FUN_003f25e0_i FUN_003f25e0
@@ -867,7 +867,7 @@ s16 FUN_003f00b0(int param_1)
 // FUN_003F00D0 NONMATCHING
 
 
-int FUN_003f00d0(int *param_1,u64 param_2,int *param_3)
+int FUN_003f00d0(int *param_1,int param_2,int *param_3)
 
 
 
@@ -914,6 +914,7 @@ int FUN_003f00d0(int *param_1,u64 param_2,int *param_3)
     if ((sVar1 == 0) || (uVar2 = datGetLevel(1), sVar1 <= (short)(uVar2 & 0xff))) {
 
 
+      lVar3 = FUN_003f04f0((u32)(iVar5 + 0xc),param_2);
       if (lVar3 != 0) {
 
         *param_3 = iVar4;

@@ -7212,7 +7212,7 @@ found:
       iVar1 = (uVar5 & 0xffff) * 0xe0;
       afStack_10[0] = *(float *)(iVar3 + iVar1 + 0x694f14);
       afStack_10[2] = *(float *)(iVar3 + iVar1 + 0x694f18);
-      FUN_002d2280_b77c0(param_1 + 0x94,param_1 + 0x96,afStack_10);
+      FUN_002d2280(param_1 + 0x94,param_1 + 0x96,afStack_10);
       FUN_0027f650(param_1,afStack_10);
       switch (*(u8 *)(param_1 + 0xa2)) {
       case 0:
