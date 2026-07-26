@@ -2592,6 +2592,7 @@ set_action:
     }
 }
 
+/* W111: reconstructed MoveHome, RoundUpMes, and RoundUp packet/state paths from retail. */
 // FUN_0028e7f0 NONMATCHING
 void btlActionInitStateMoveHome(BtlAction* action)
 {

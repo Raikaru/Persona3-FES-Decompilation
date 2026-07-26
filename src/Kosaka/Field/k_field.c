@@ -2212,7 +2212,7 @@ generate:
             {
                 rooms++;
             }
-            if (field[0x4a] == 4)
+            if (((u8*)K_Field_Get() + y * 0x100 + x * 0x10)[0x4a] == 4)
             {
                 exits++;
             }

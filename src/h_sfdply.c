@@ -1363,65 +1363,82 @@ void func_0010c5f0(void)
 void func_0010c7d0(HSfdQueueSlot* slot)
 {
     HSfdAsyncEntry* entry;
-    u32 size;
+    s32 enabled;
 
-    if ((slot == NULL) || (slot->state != 1))
+    func_00503080();
+    if (slot == NULL)
     {
+        FUN_0050d3f0();
         return;
     }
-
     entry = slot->entry;
     if (entry == NULL)
     {
         slot->state = 0;
+        FUN_0050d3f0();
         return;
     }
-
-    size = 0;
-    if (entry->request != NULL)
-    {
-        entry->source = H_Cdvd_CacheFindFile(entry->path, &size);
-        H_Cdvd_Destroy(entry->request);
-        entry->request = NULL;
-    }
-    entry->byteCount = size;
 
     switch (entry->kind)
     {
         case 0:
-            entry->result0 = entry->source;
+            if (entry->cacheName[0] != '\0')
+                func_004cc5c0(entry->cacheName);
+            entry->result0 = func_004d1260(entry->name + 0x24, 0);
+            func_004cc5c0(uGpffff8840);
             break;
         case 1:
-            entry->resultC = entry->source;
+            if (entry->cacheName[0] != '\0')
+                func_004cc5c0(entry->cacheName);
+            entry->resultC = func_00490050(entry->source);
+            func_004cc5c0(uGpffff8840);
             break;
         case 2:
-            entry->resultD = entry->source;
+            if (entry->cacheName[0] != '\0')
+                func_004cc5c0(entry->cacheName);
+            if (entry->result3 != NULL)
+                func_004b7760(entry->result3);
+            entry->resultD = func_004920a0(entry->source);
+            func_004cc5c0(uGpffff8840);
             break;
         case 3:
-            entry->resultE = entry->source;
+            entry->resultE = func_004b69b0(entry->name + 0x24);
             break;
         case 4:
-            entry->result1 = entry->source;
+            entry->result1 = func_004c5250(entry->source,
+                                          (u32)entry->buffer,
+                                          (u32)entry->byteCount);
+            entry->resultF = func_00464540(entry->source);
             break;
         case 5:
-            entry->resultF = entry->source;
+            entry->resultG = func_0048d960(entry->name + 0x24);
             break;
         case 6:
-            entry->resultG = entry->source;
+            entry->result2 = func_004b79d0((u32)entry->buffer,
+                                           entry->source);
             break;
         case 7:
-            entry->result2 = entry->source;
+            entry->result3 = func_004c8680(entry->source);
             break;
-        case 8:
-            entry->result3 = entry->source;
-            break;
-        case 9:
-            entry->result5 = entry->source;
+        default:
+            entry->result5 = func_004b45b0(0, entry->source);
+            if (entry->request != NULL)
+            {
+                enabled = FUN_0050d3a0();
+                func_00100ec0(entry->request);
+                entry->request = NULL;
+                if (enabled != 0)
+                    FUN_0050d3f0();
+            }
             break;
     }
 
+    enabled = FUN_0050d3a0();
     entry->state = 3;
     slot->state = 0;
+    if (enabled != 0)
+        FUN_0050d3f0();
+    FUN_0050d3f0();
 }
 
 // FUN_0010CAC0 NONMATCHING

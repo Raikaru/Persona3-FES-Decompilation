@@ -13572,19 +13572,10 @@ void FUN_00329890(float param_1)
   float x;
   float y;
   float z;
-  float k;
-  float xy;
-  float xz;
-  float yz;
-  float m00;
-  float m01;
-  float m02;
-  float m10;
-  float m11;
-  float m12;
-  float m20;
-  float m21;
-  float m22;
+  float oneMinus;
+  float row0;
+  float row1;
+  float row2;
   volatile float vuMatrixSum;
 
   s = FUN_0052e6d8_f32(param_1);
@@ -13596,20 +13587,11 @@ void FUN_00329890(float param_1)
   x = (float)qxBits;
   y = (float)qyBits;
   z = (float)qzBits;
-  k = 1.0f - s;
-  xy = x * y * k;
-  xz = x * z * k;
-  yz = y * z * k;
-  m00 = (1.0f - x * x) * s + x * x;
-  m01 = z * c + xy;
-  m02 = xz - y * c;
-  m10 = xy - z * c;
-  m11 = (1.0f - y * y) * s + y * y;
-  m12 = x * c + yz;
-  m20 = y * c + xz;
-  m21 = yz - x * c;
-  m22 = (1.0f - z * z) * s + z * z;
-  vuMatrixSum = m00 + m01 + m02 + m10 + m11 + m12 + m20 + m21 + m22;
+  oneMinus = 1.0f - s;
+  row0 = (1.0f - x * x) * s + x * x;
+  row1 = z * c + x * y * oneMinus;
+  row2 = x * z * oneMinus - y * c;
+  vuMatrixSum = row0 + row1 + row2;
 }
 
 
