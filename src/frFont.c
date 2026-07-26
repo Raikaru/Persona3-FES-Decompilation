@@ -91,7 +91,7 @@ extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
 extern u32 LAB_003b28b8;
-extern u32 bGpffffb950;
+extern u8 bGpffffb950;
 extern u32 gp0xffffa808;
 extern u32 gp0xffffa838;
 extern u32 iGpffffa800;

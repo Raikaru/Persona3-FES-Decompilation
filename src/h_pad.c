@@ -562,8 +562,8 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
-    void* reallocated;
     size_t copySize;
+    void* reallocated;
     s32 intrState;
     RwUInt32 mallocHint;
 
