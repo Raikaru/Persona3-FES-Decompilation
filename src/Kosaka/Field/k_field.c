@@ -1820,7 +1820,9 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                                (startX + col) * 0x10 - 0x100;
                     if (neighbor[0x48] != 0)
                     {
-                        neighborFlags = neighbor[0x53];
+                        neighborFlags = ((u8*)K_Field_Get() +
+                                         (startY + row) * 0x100 +
+                                         (startX + col) * 0x10 - 0x100)[0x53];
                         if (((neighborFlags & 0x40) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x10) != 0))
                         {
@@ -1832,7 +1834,9 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                                (startX + col) * 0x10 - 0x10;
                     if (neighbor[0x48] != 0)
                     {
-                        neighborFlags = neighbor[0x53];
+                        neighborFlags = ((u8*)K_Field_Get() +
+                                         (startY + row) * 0x100 +
+                                         (startX + col) * 0x10 - 0x10)[0x53];
                         if (((neighborFlags & 0x80) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x20) != 0))
                         {
@@ -1844,7 +1848,9 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                                (startX + col) * 0x10 + 0x100;
                     if (neighbor[0x48] != 0)
                     {
-                        neighborFlags = neighbor[0x53];
+                        neighborFlags = ((u8*)K_Field_Get() +
+                                         (startY + row) * 0x100 +
+                                         (startX + col) * 0x10 + 0x100)[0x53];
                         if (((neighborFlags & 0x10) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x40) != 0))
                         {
@@ -1856,7 +1862,9 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                                (startX + col) * 0x10 + 0x10;
                     if (neighbor[0x48] != 0)
                     {
-                        neighborFlags = neighbor[0x53];
+                        neighborFlags = ((u8*)K_Field_Get() +
+                                         (startY + row) * 0x100 +
+                                         (startX + col) * 0x10 + 0x10)[0x53];
                         if (((neighborFlags & 0x20) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x80) != 0))
                         {
