@@ -3511,11 +3511,9 @@ journey_true:
         }
       
         return 0x2c4;
-      default:
-      
-        return -1;
-      
-      } }
+      }
+      return -1;
+    }
 }
 
 // FUN_002E0F70

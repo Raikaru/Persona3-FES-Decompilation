@@ -2335,8 +2335,6 @@ u32 func_002bad60(u32 *param_1)
   short sVar1;
   u16 *puVar2;
   int iVar3;
-  u16 index;
-  u32 state;
   u32 uVar4;
   u32 unaff_s1_lo;
   u32 unaff_s2_lo;
@@ -2348,9 +2346,7 @@ u32 func_002bad60(u32 *param_1)
       uVar4 = 1;
     }
     else {
-      index = *(u16 *)(param_1 + 3);
-      state = *param_1;
-      iVar3 = func_002b9370(state,index);
+      iVar3 = func_002b9370(*param_1,*(u16 *)(param_1 + 3));
       if ((*puVar2 & 0x40) == 0) {
         if (iVar3 * 2 + -0xd <= (int)param_1[6]) {
           *puVar2 = *puVar2 | 0x100;

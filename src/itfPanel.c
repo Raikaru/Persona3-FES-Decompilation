@@ -9,6 +9,7 @@ extern u32 FUN_00171250(s16 id);
 extern u32 FUN_00170d60(s16 id);
 extern u64 FUN_00171110(s16 id,s16 field);
 extern const char DAT_006a1bf8[];
+extern void FUN_0016f1f0(u32 flag,int enabled);
 extern u32 DAT_006a1d10;
 #pragma alias DAT_006a1d10_abs DAT_006a1d10
 extern u32 DAT_006a1d10_abs[];
@@ -365,7 +366,6 @@ u32 FUN_003a8b00(int param_1,int param_2)
   u32 uVar2;
 
   int iVar3;
-  volatile u32 size;
 
 
   
@@ -395,8 +395,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
     *(int *)(iVar3 + 4) = (int)uVar2;
 
     *(int *)(iVar3 + 8) = (int)uVar2;
-    size = DAT_006a1d10_abs[param_1];
-    FUN_00521408(uVar2,0,size);
+    FUN_00521408(uVar2,0,DAT_006a1d10_abs[param_1]);
 
 
   }

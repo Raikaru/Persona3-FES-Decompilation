@@ -1856,10 +1856,8 @@ void func_0020cda0(u8* work)
     *(f32*)(work + 0x9a4) = 0.375f;
     vertex = work + 4;
     row = 0;
-    if (row == 0) {
-        widthEven = 7;
-        widthOdd = 8;
-    }
+    widthEven = 7;
+    widthOdd = 8;
     rowStep = fGpffff8338;
     yOffset = fGpffff8318;
     six = 6.0f;
