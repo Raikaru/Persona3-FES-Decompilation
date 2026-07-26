@@ -3329,8 +3329,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   pfVar4 = (u8 *)0xc;
 
-  pfVar5 = (u8 *)&work.vecA;
-
+  pfVar5 = (u8 *)(u32)&work.vecA;
   pfVar2 = pfVar5;
 
   while (pfVar2 != (u8 *)0x0) {

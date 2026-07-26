@@ -2408,6 +2408,9 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
     if (collisionWorld == NULL)
         return 0;
+    collector.mode = 1;
+    FUN_004916d0(collisionWorld, func_001abcd0, &collector);
+    collector.mode = 0;
 
     resTypeMask = (u16)resTypeId;
 
@@ -2508,6 +2511,45 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                     func_001afd40(50.0f, *(KwlnTask**)(*(u32*)((u8*)gridEntry + 0x170)),
                                   &scaled);
                 }
+            }
+        }
+    }
+    if ((resTypeMask & 0x3ff) < 100)
+    {
+        u8* cell;
+        s32 cellX;
+        s32 cellZ;
+
+        cellX = (s32)((pos->x + 400.0f) / 800.0f);
+        cellZ = (s32)((pos->z + 400.0f) / 800.0f);
+        cell = (u8*)0x0086b180 + cellZ * 0x310 + cellX * 0xc4;
+        for (i = 0; i < 100; i++)
+        {
+            void* entry;
+            entry = *(void**)(cell + i * 4);
+            if (entry != NULL && *(u32*)((u8*)entry + 0x48) != 0 &&
+                *(void**)((u8*)entry + 0x54) != NULL)
+            {
+                void* data = *(void**)((u8*)entry + 0x54);
+                if (*(u32*)((u8*)data + 0x28) & 2)
+                {
+                    model = (void*)func_00318b80(
+                        *(u32*)((u8*)data + 0x1e8));
+                    if (model != NULL)
+                        FUN_004916d0(model, func_001abcd0, &collector);
+                }
+            }
+        }
+        for (i = 0; i < 100; i++)
+        {
+            void* entry;
+            entry = *(void**)(cell + 0x60 + i * 4);
+            if (entry != NULL && *(u32*)entry != 0)
+            {
+                model = (void*)func_00318b80(
+                    *(u32*)((u8*)entry + 0x134));
+                if (model != NULL)
+                    FUN_004916d0(model, func_001abcd0, &collector);
             }
         }
     }

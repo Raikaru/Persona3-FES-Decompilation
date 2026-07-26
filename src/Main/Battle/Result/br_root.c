@@ -3454,9 +3454,49 @@ void func_001f7210(void)
         if (entry_off >= 6) {
             K_ASSERT(work != NULL, 0x469);
         }
-        func_00488f30();
-        kind = 6 + entry_off;
-        value = BR_S16(entry, 8);
+        switch (entry_off) {
+        case 0:
+            rnd = func_00488f30() % 5;
+            value = (s32)*(s16 *)(tbl_entry + 2);
+            switch (rnd) {
+            case 0:
+                kind = 4;
+                break;
+            case 1:
+                kind = 7;
+                break;
+            case 2:
+                kind = 6;
+                break;
+            case 3:
+                kind = 5;
+                break;
+            case 4:
+                kind = 8;
+                break;
+            }
+            break;
+        case 1:
+            value = (s32)*(s16 *)(tbl_entry + 6);
+            kind = 9;
+            break;
+        case 2:
+            value = (s32)*(s16 *)(tbl_entry + 10);
+            kind = 11;
+            break;
+        case 3:
+            value = (s32)*(s16 *)(tbl_entry + 14);
+            kind = 12;
+            break;
+        case 4:
+            value = (s32)*(s16 *)(tbl_entry + 18);
+            kind = 10;
+            break;
+        case 5:
+            value = (s32)*(s16 *)(tbl_entry + 22);
+            kind = 13;
+            break;
+        }
         break;
     }
     case 3:
