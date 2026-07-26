@@ -292,6 +292,7 @@ extern void* func_004ce0f0(s32 width, s32 height, s32 format, s32 flags);
 extern void* func_004cdf30(void* raster, s32 palette);
 extern void* func_004ce200(void* raster, void* mipData, s32 level);
 extern void* func_004cde00(void* raster);
+extern void FUN_004d5e90(void);
 extern void func_004cde40(void* raster);
 extern void func_004cde90(void* renderTarget);
 extern void* func_004c58a0(s32 source, s32 mode, void* stream);
@@ -2164,30 +2165,68 @@ void* func_0010e5f0(void* stream, void* output)
 // FUN_0010E630 NONMATCHING
 void func_0010e630(void* destination, const void* source, u32 size)
 {
+    volatile u32* regs;
     u8* dst;
     const u8* src;
-    u32 blockSize;
+    u32 count;
+    u32 value;
 
-    if ((destination == NULL) || (source == NULL) || (size == 0))
-    {
-        return;
-    }
-
+    regs = (volatile u32*)0x10010000;
     dst = (u8*)destination;
     src = (const u8*)source;
-    while (size > 0x400)
+    count = size >> 4;
+    FUN_004d5e90();
+
+    while (count >= 0x401)
     {
-        memcpy(dst, src, 0x400);
-        dst += 0x400;
+        regs[-0x7F8] = (u32)-0x400;
+        regs[-0x7FC] = 0x200;
+        regs[-0xAFC] = (u32)src;
+        regs[-0xAF8] = 0x400;
+        regs[-0xAE0] = 0x70000000;
+        value = regs[-0x7F8] | 0x200;
+        regs[-0x7F8] = value;
+        regs[-0xB00] = 0x101;
+        while ((regs[-0xB00] & 0x100) != 0)
+            ;
+
+        regs[-0x7F8] = (u32)-0x400;
+        regs[-0x7FC] = 0x100;
+        regs[-0xBFC] = (u32)dst;
+        regs[-0xBF8] = 0x400;
+        regs[-0xBE0] = 0x70000000;
+        value = regs[-0x7F8] | 0x100;
+        regs[-0x7F8] = value;
+        regs[-0xC00] = 0x100;
+        while ((regs[-0xC00] & 0x100) != 0)
+            ;
+
         src += 0x4000;
-        size -= 0x400;
+        dst += 0x4000;
+        count -= 0x400;
     }
 
-    blockSize = size;
-    if (blockSize != 0)
-    {
-        memcpy(dst, src, blockSize);
-    }
+    regs[-0x7F8] = (u32)-0x400;
+    regs[-0x7FC] = 0x200;
+    regs[-0xAFC] = (u32)src;
+    regs[-0xAF8] = count;
+    regs[-0xAE0] = 0x70000000;
+    value = regs[-0x7F8] | 0x200;
+    regs[-0x7F8] = value;
+    regs[-0xB00] = 0x101;
+    while ((regs[-0xB00] & 0x100) != 0)
+        ;
+
+    regs[-0x7F8] = (u32)-0x400;
+    regs[-0x7FC] = 0x100;
+    regs[-0xBFC] = (u32)dst;
+    regs[-0xBF8] = count;
+    regs[-0xBE0] = 0x70000000;
+    value = regs[-0x7F8] | 0x100;
+    regs[-0x7F8] = value;
+    regs[-0xC00] = 0x101;
+    while ((regs[-0xC00] & 0x100) != 0)
+        ;
 }
 
 // Retail reconstruction covers TMX validation, raster setup, pixel decode, and palette upload from offsets 0x00-0x3C8; all non-padding retail logic is represented, with only register/relocation differences remaining.

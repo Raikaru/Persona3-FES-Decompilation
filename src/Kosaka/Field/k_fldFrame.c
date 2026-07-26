@@ -258,9 +258,12 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
     state = *(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET);
     if (state->flags & FLDFRAME_COLLIS_FLAG_STATICWORLD)
     {
+        state = *(FldFrameCollisionState**)((u8*)K_Field_Get() +
+                                            FLDFRAME_FIELD_STATE_OFFSET);
         if (state->staticCollision != NULL)
         {
-            func_00464020(state->staticCollision, &raycast.line[0], func_001ac950, &raycast);
+            func_00464020(state->staticCollision, &raycast.line[0],
+                          func_001ac950, &raycast);
         }
         return raycast.didHit;
     }
@@ -286,7 +289,9 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
     }
     else
     {
-        collisionWorld = state->collisionWorld;
+        collisionWorld =
+            (*(FldFrameCollisionState**)((u8*)K_Field_Get() +
+                                         FLDFRAME_FIELD_STATE_OFFSET))->collisionWorld;
     }
 
     if (collisionWorld != NULL)
