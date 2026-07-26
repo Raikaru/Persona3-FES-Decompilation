@@ -19,6 +19,10 @@ extern void (*D_009600A0)(u32 primitive, void* vertices, s32 count);
 extern void* (*D_00960178)(u32 size, u32 flags);
 extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
 extern void (*D_0096017c)(void* memory);
+#pragma alias D_00960178_abs D_00960178
+extern void* (*D_00960178_abs)(u32 size, u32 flags);
+#pragma alias D_0096017c_abs D_0096017c
+extern void (*D_0096017c_abs)(void* memory);
 extern u16 DAT_007e094e;
 extern void* D_0077e4f0;
 extern s16 D_005D4B70[];
@@ -2198,25 +2202,23 @@ HSfdImage* func_0010e0d0(const u8* stream)
 HSfdImage* func_0010e500(void* stream)
 {
     u8 header[0x40];
+    void* handle;
     u8* buffer;
-    u32 payloadSize;
     HSfdImage* image;
 
-    stream = func_004c58a0(2, 1, stream);
-    if (stream == NULL)
+    image = NULL;
+    handle = func_004c58a0(2, 1, stream);
+    if (handle != NULL)
     {
-        return NULL;
+        func_004c5250(handle, header, sizeof(header));
+        buffer = D_00960178_abs(*(u32*)(header + 4), HSFD_STREAM_HINT);
+        func_004c5250(handle, buffer + sizeof(header),
+                      *(u32*)(header + 4) - sizeof(header));
+        func_00521250(buffer, header, sizeof(header));
+        image = func_0010e0d0(buffer);
+        D_0096017c(buffer);
+        func_004c5780(handle, 0);
     }
-
-    func_004c5250(stream, header, sizeof(header));
-    payloadSize = (u32)(header[4] | (header[5] << 8) | (header[6] << 16) |
-                        (header[7] << 24));
-    buffer = D_00960178(payloadSize, HSFD_STREAM_HINT);
-    func_004c5250(stream, buffer + sizeof(header), payloadSize - sizeof(header));
-    func_00521250(buffer, header, sizeof(header));
-    image = func_0010e0d0(buffer);
-    D_0096017c(buffer);
-    func_004c5780(stream, 0);
     return image;
 }
 

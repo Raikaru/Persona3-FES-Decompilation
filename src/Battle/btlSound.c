@@ -1759,7 +1759,6 @@ u32 FUN_002defe0(int param_1)
   u32 uVar4;
 
   int aiStack_30 [12];
-  u16 idxTemp;
   
   lVar2 = FUN_0010a500(4);
   if (lVar2 == 1) {
@@ -1800,12 +1799,12 @@ u32 FUN_002defe0(int param_1)
 
   }
 
-  idxTemp = uVar4 & 0xffff;
-  if (idxTemp == 0) {
+  if ((uVar4 & 0xffff) == 0) {
 
     return -1;
 
   }
+
 
   {
 
