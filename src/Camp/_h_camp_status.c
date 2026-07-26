@@ -3113,13 +3113,13 @@ static inline void campStatusResetPersonaAnimations(void* records)
 }
 
 // FUN_00133180 NONMATCHING
-void FUN_00133180(CampVec2 position, f32 alpha, void* persona,
-                  void* currentStats, s32 fade)
+void FUN_00133180(CampVec2 position, f32 alpha, void* currentStats,
+                  void* persona, s32 fade)
 {
     s32 drawAlpha;
 
     drawAlpha = 0xff - fade;
-    FUN_0012b860_s32(position, alpha, persona, currentStats, drawAlpha);
+    FUN_0012b860_s32(position, alpha, currentStats, persona, drawAlpha);
     position.x += 12.0f;
     position.y += 96.0f;
     campStatusDrawSpriteCall((u32)persona, DAT_00833B90_abs, 1,
@@ -3127,10 +3127,10 @@ void FUN_00133180(CampVec2 position, f32 alpha, void* persona,
                              position.y + 117.0f, alpha);
     campStatusDrawSpriteCall(
         (u32)persona, DAT_00833B88_abs,
-        (FUN_00173280(*(u16*)((u8*)currentStats + 2)) & 0xff) - 1,
+        (FUN_00173280(*(u16*)((u8*)persona + 2)) & 0xff) - 1,
         drawAlpha, position.x + 105.0f, position.y + 142.0f, alpha);
-    FUN_00124e60(position, alpha, currentStats, drawAlpha);
-    FUN_00124fd0(position, alpha, currentStats, drawAlpha);
+    FUN_00124e60(position, alpha, persona, drawAlpha);
+    FUN_00124fd0(position, alpha, persona, drawAlpha);
 }
 
 // FUN_001332F0 NONMATCHING

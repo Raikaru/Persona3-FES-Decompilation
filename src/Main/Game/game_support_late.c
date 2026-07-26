@@ -791,7 +791,7 @@ u32 func_0018b700(void* transition)
     return 0;
 }
 
-// FUN_0018B7B0 NONMATCHING
+// FUN_0018B7B0
 void func_0018b7b0(void* transition, f32* position)
 {
     s32 total;

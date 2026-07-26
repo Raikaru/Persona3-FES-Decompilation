@@ -6915,10 +6915,10 @@ void func_002e7db0(BtlCamera* param_1)
 void func_002e82b0(BtlCamera* camera)
 {
   typedef struct {
-    f32 startTransform[4];
-    f32 endTransform[4];
     RwV3d startPosition;
+    f32 startTransform[4];
     RwV3d endPosition;
+    f32 endTransform[4];
   } BtlVoicePlayback;
   BtlVoiceCameraWork* work;
   u16 modeFlags;
