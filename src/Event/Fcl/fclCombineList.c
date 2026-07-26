@@ -591,25 +591,12 @@ void fclCombineList003ded40(FclCallbackProxy*);
 // FUN_003da0c0 NONMATCHING
 FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 {
-    s32 mode;
     FclOwner* task;
     FclList* work;
+    s32 mode;
 
-    if (param_2 == 1)
-        goto set_mode_three;
-    if (param_2 != 0)
-        goto invalid_mode;
-    mode = 2;
-    goto mode_done;
-
-set_mode_three:
-    mode = 3;
-    goto mode_done;
-
-invalid_mode:
-    K_ASSERT(false, 0x3b8);
-
-mode_done:
+    mode = param_2 == 0 ? 2 : (param_2 == 1 ? 3 : 0);
+    K_ASSERT(mode != 0, 0x3b8);
     task = FUN_003c58f0(0, mode * 4 + 0x1b0, 0xc, 0x18);
     work = task->container->work;
     work->list = task;
@@ -618,7 +605,6 @@ mode_done:
     work->flags = 0;
     work->values = work->embedded_values;
     memcpy(work->input_copy, param_1, 0x90);
-    work->result = FUN_003dfeb0((s32)work);
     FUN_003d9cc0((s32)work);
     FUN_003d8850((s32)work, 0xb, 0);
     FUN_003d8850((s32)work, 0, 0);
@@ -631,19 +617,6 @@ mode_done:
     FUN_003d8850((s32)work, 0xd, 0);
     FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 5, 0);
     return work;
-}
-
-// FUN_003da2a0 NONMATCHING
-void fclCombineList003da2a0(FclList* param_1)
-{
-    FclTaskLink* node;
-    s32 i;
-    s32 j;
-    FclTaskLink* selected;
-
-    node = param_1->list->links;
-    i = 0;
-    selected = 0;
     while (node != 0) {
         FclNodeData* data = node->payload->data.node_data;
         if (data->selection_detail != 0 &&

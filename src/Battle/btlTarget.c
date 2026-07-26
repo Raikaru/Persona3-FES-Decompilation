@@ -5673,7 +5673,7 @@ s16 FUN_002dc670(BtlAction* action)
     return result;
 }
 
-// FUN_002dc830 NONMATCHING
+// FUN_002dc830
 s32 FUN_002dc830(BtlAction* action)
 {
     BtlUnit* unit;
@@ -5757,19 +5757,14 @@ s32 FUN_002dc830(BtlAction* action)
 
     if (result < 0)
     {
-        goto return_minus_one;
+        return -1;
     }
-    switch (unit->genus)
+    if (unit->genus == 0)
     {
-    case 0:
-        break;
-    default:
-        result++;
-        break;
+        return result;
     }
+    result++;
     return result;
-return_minus_one:
-    return -1;
 }
 
 // FUN_002dca60

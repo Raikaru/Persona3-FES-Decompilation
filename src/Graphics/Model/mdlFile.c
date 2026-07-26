@@ -1063,6 +1063,8 @@ extern u64 FUN_00493710();
 extern u32 FUN_00493710_u32(u32 param_1,u32 param_2,u32 param_3);
 extern u64 FUN_00493b60();
 extern u64 FUN_004944b0();
+#pragma alias FUN_004944b0_typed FUN_004944b0
+extern u64 FUN_004944b0_typed(u64 param_1, u32 *param_2);
 extern u64 FUN_00494be0();
 #pragma alias FUN_00494be0_u32 FUN_00494be0
 extern u32 FUN_00494be0_u32(void);
@@ -1345,11 +1347,17 @@ extern u32 DAT_00957260;
 #pragma alias DAT_00957260_abs DAT_00957260
 extern u8 DAT_00957260_abs[];
 extern u32 DAT_00957270;
+#pragma alias DAT_00957270_abs DAT_00957270
+extern u8 DAT_00957270_abs[];
 extern u32 DAT_009572b0;
+#pragma alias DAT_009572b0_abs DAT_009572b0
+extern u8 DAT_009572b0_abs[];
+extern u32 DAT_009572c0;
+#pragma alias DAT_009572c0_abs DAT_009572c0
+extern u8 DAT_009572c0_abs[];
 extern u32 DAT_009572b4;
 extern u32 DAT_009572b8;
 extern u32 DAT_009572bc;
-extern u32 DAT_009572c0;
 extern u32 DAT_009572c4;
 extern u32 DAT_009572c8;
 extern u32 DAT_009572cc;
@@ -5465,15 +5473,15 @@ u64 FUN_00321a60(void)
 
     uVar2 = FUN_00198560();
 
-    FUN_004944b0(uVar2,(u32)&DAT_009572b0);
+    FUN_004944b0_typed(uVar2,(u32 *)DAT_009572b0_abs);
 
     uVar2 = FUN_00198580();
 
-    FUN_004944b0(uVar2,(u32)&DAT_009572c0);
+    FUN_004944b0_typed(uVar2,(u32 *)DAT_009572c0_abs);
 
     iVar1 = FUN_00198580();
 
-    FUN_004cb7f0(*(u32 *)(iVar1 + 4),(u32)&DAT_00957270,0);
+    FUN_004cb7f0_typed(*(u32 *)(iVar1 + 4),DAT_00957270_abs,0);
 
     *(u32 *)DAT_009572d0_abs = 0;
 

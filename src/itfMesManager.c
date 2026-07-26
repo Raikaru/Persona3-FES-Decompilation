@@ -3830,7 +3830,6 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 
 void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
 {
-  int color;
   int diff;
   int cat;
   int candidate;
@@ -3860,12 +3859,11 @@ count_check:
   }
 
 set_start:
-  color = (u8)param_4;
   candidate = *(int *)(param_1 + 0x1c);
   goto set_check;
 
 set_store:
-  *(u8 *)(candidate + 0x14) = (u8)color;
+  *(u8 *)(candidate + 0x14) = (u8)param_4;
   candidate = *(int *)(candidate + 0x28);
 
 set_check:
