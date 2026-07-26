@@ -839,8 +839,7 @@ void func_00111500(KwlnTask* task)
 
     taskCopy = task;
     work = (MaestroStreamWork*)taskCopy->workData;
-    value = 1;
-    work->stopAtFrame = value;
+    work->stopAtFrame = (value = 1);
     work->complete = 0;
 }
 

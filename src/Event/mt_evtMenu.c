@@ -9536,7 +9536,6 @@ u32 FUN_0037a150(int param_1,int param_2,int param_3)
   f32 uVar1;
 
   u8 auStack_10 [16];
-
   FUN_00523ac8_evt4(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
