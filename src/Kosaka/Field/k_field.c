@@ -2148,92 +2148,107 @@ void func_001bd450(u32 patternId)
     u32 x;
     u32 y;
 
-    for (;;)
-    {
-        field = (u8*)K_Field_Get();
-        targetCell = field + field[0x3c] * 0x100 + field[0x3d] * 0x10;
-        if (targetCell[0x48] == 1 &&
-            targetCell[0x4a] == 4 &&
-            sDungeonGenerationFailed == 0)
-        {
-            return;
-        }
+    goto check;
 
-        sDungeonGenerationFailed = 0;
-        sDungeonGenerationAttempts = 0;
-        sDungeonRoomCounter = 0;
-        memset((u8*)K_Field_Get() + 0x48, 0, 0x1000);
+generate:
+    sDungeonGenerationFailed = 0;
+    sDungeonGenerationAttempts = 0;
+    sDungeonRoomCounter = 0;
+    memset((u8*)K_Field_Get() + 0x48, 0, 0x1000);
+    for (x = 0; x < 0x10; x++)
+    {
+        *(u8*)((u8*)K_Field_Get() + x * 0x10 + 0x48) = 2;
+        *(u8*)((u8*)K_Field_Get() + x * 0x10 + 0xf48) = 2;
+    }
+    for (y = 0; y < 0x10; y++)
+    {
+        *(u8*)((u8*)K_Field_Get() + y * 0x100 + 0x48) = 2;
+        *(u8*)((u8*)K_Field_Get() + y * 0x100 + 0x138) = 2;
+    }
+
+    *(u8*)((u8*)K_Field_Get() + 0x3c) = 0;
+    *(u8*)((u8*)K_Field_Get() + 0x3d) = 0;
+    *(u8*)((u8*)K_Field_Get() + 0x3e) = 0;
+    *(u8*)((u8*)K_Field_Get() + 0x3f) = 0;
+    do
+    {
+        startX = (s32)(RpRandom() % 12) + 2;
+        *(u8*)((u8*)K_Field_Get() + 0x3c) = (u8)startX;
+        startY = (s32)(RpRandom() % 12) + 2;
+        *(u8*)((u8*)K_Field_Get() + 0x3d) = (u8)startY;
+    } while (*(u8*)((u8*)K_Field_Get() +
+                     startY * 0x100 + startX * 0x10 + 0x48) != 0);
+    *(u8*)((u8*)K_Field_Get() + 0x40) = (u8)(RpRandom() & 3);
+    func_001bcac0(patternId, (u32)startX, (u32)startY, 0, 0);
+
+    do
+    {
+        targetX = (s32)(RpRandom() % 11) + 2;
+        *(u8*)((u8*)K_Field_Get() + 0x3e) = (u8)targetX;
+        targetY = (s32)(RpRandom() % 11) + 2;
+        *(u8*)((u8*)K_Field_Get() + 0x3f) = (u8)targetY;
+        *(u8*)((u8*)K_Field_Get() + 0x41) = (u8)(RpRandom() & 3);
+        targetCell = (u8*)K_Field_Get() +
+                     targetY * 0x100 + targetX * 0x10;
+    } while (targetCell[0x48] != 0 ||
+             *(u8*)((u8*)K_Field_Get() +
+                    targetY * 0x100 + (targetX + 1) * 0x10 + 0x48) != 0 ||
+             *(u8*)((u8*)K_Field_Get() +
+                    (targetY + 1) * 0x100 + targetX * 0x10 + 0x48) != 0 ||
+             *(u8*)((u8*)K_Field_Get() +
+                    (targetY + 1) * 0x100 + (targetX + 1) * 0x10 + 0x48) != 0);
+    func_001bcac0(patternId,
+                  *(u8*)((u8*)K_Field_Get() + 0x3e),
+                  *(u8*)((u8*)K_Field_Get() + 0x3f), 0, 0);
+
+    rooms = 0;
+    exits = 0;
+    for (y = 0; y < 0x10; y++)
+    {
         for (x = 0; x < 0x10; x++)
         {
-            *(u8*)((u8*)K_Field_Get() + x * 0x10 + 0x48) = 2;
-            *(u8*)((u8*)K_Field_Get() + x * 0x10 + 0xf48) = 2;
-        }
-        for (y = 0; y < 0x10; y++)
-        {
-            *(u8*)((u8*)K_Field_Get() + y * 0x100 + 0x48) = 2;
-            *(u8*)((u8*)K_Field_Get() + y * 0x100 + 0x138) = 2;
-        }
-
-        *(u8*)((u8*)K_Field_Get() + 0x3c) = 0;
-        *(u8*)((u8*)K_Field_Get() + 0x3d) = 0;
-        *(u8*)((u8*)K_Field_Get() + 0x3e) = 0;
-        *(u8*)((u8*)K_Field_Get() + 0x3f) = 0;
-        do
-        {
-            startX = (s32)(RpRandom() % 12) + 2;
-            *(u8*)((u8*)K_Field_Get() + 0x3c) = (u8)startX;
-            startY = (s32)(RpRandom() % 12) + 2;
-            *(u8*)((u8*)K_Field_Get() + 0x3d) = (u8)startY;
-        } while (*(u8*)((u8*)K_Field_Get() +
-                         startY * 0x100 + startX * 0x10 + 0x48) != 0);
-        *(u8*)((u8*)K_Field_Get() + 0x40) = (u8)(RpRandom() & 3);
-        func_001bcac0(patternId, (u32)startX, (u32)startY, 0, 0);
-
-        do
-        {
-            targetX = (s32)(RpRandom() % 11) + 2;
-            *(u8*)((u8*)K_Field_Get() + 0x3e) = (u8)targetX;
-            targetY = (s32)(RpRandom() % 11) + 2;
-            *(u8*)((u8*)K_Field_Get() + 0x3f) = (u8)targetY;
-            *(u8*)((u8*)K_Field_Get() + 0x41) = (u8)(RpRandom() & 3);
-            targetCell = (u8*)K_Field_Get() +
-                         targetY * 0x100 + targetX * 0x10;
-        } while (targetCell[0x48] != 0 ||
-                 *(u8*)((u8*)K_Field_Get() +
-                        targetY * 0x100 + (targetX + 1) * 0x10 + 0x48) != 0 ||
-                 *(u8*)((u8*)K_Field_Get() +
-                        (targetY + 1) * 0x100 + targetX * 0x10 + 0x48) != 0 ||
-                 *(u8*)((u8*)K_Field_Get() +
-                        (targetY + 1) * 0x100 + (targetX + 1) * 0x10 + 0x48) != 0);
-        func_001bcac0(patternId, (u32)targetX, (u32)targetY, 0, 0);
-
-        rooms = 0;
-        exits = 0;
-        for (y = 0; y < 0x10; y++)
-        {
-            for (x = 0; x < 0x10; x++)
+            field = (u8*)K_Field_Get() + y * 0x100 + x * 0x10;
+            if (field[0x48] == 1)
             {
-                field = (u8*)K_Field_Get() + y * 0x100 + x * 0x10;
-                if (field[0x48] == 1)
-                {
-                    rooms++;
-                }
-                if (field[0x4a] == 4)
-                {
-                    exits++;
-                }
+                rooms++;
+            }
+            if (field[0x4a] == 4)
+            {
+                exits++;
             }
         }
+    }
 
-        if (rooms < (s32)*(u8*)((u8*)K_Field_Get() + 0x42) ||
-            rooms > (s32)*(u8*)((u8*)K_Field_Get() + 0x43))
-        {
-            sDungeonGenerationFailed = 1;
-        }
-        if (exits < 2)
-        {
-            sDungeonGenerationFailed = 1;
-        }
+    if (rooms < (s32)*(u8*)((u8*)K_Field_Get() + 0x42) ||
+        rooms > (s32)*(u8*)((u8*)K_Field_Get() + 0x43))
+    {
+        sDungeonGenerationFailed = 1;
+    }
+    if (exits < 2)
+    {
+        sDungeonGenerationFailed = 1;
+    }
+
+check:
+    field = (u8*)K_Field_Get();
+    targetCell = field +
+                 (*(u8*)((u8*)K_Field_Get() + 0x3d) * 0x100) +
+                 (*(u8*)((u8*)K_Field_Get() + 0x3c) * 0x10);
+    if (targetCell[0x48] != 1)
+    {
+        goto generate;
+    }
+    field = (u8*)K_Field_Get();
+    targetCell = field +
+                 (*(u8*)((u8*)K_Field_Get() + 0x3d) * 0x100) +
+                 (*(u8*)((u8*)K_Field_Get() + 0x3c) * 0x10);
+    if (targetCell[0x4a] != 4)
+    {
+        goto generate;
+    }
+    if (sDungeonGenerationFailed != 0)
+    {
+        goto generate;
     }
 }
 

@@ -9792,7 +9792,7 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
 void FUN_00326030(int param_1,int param_2)
 {
   int node;
-  volatile u16 type;
+  u16 type;
   u32 baseColor;
   u32 nodeColor;
   u32 color;
@@ -9818,10 +9818,6 @@ void FUN_00326030(int param_1,int param_2)
     if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
       PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
                 (*(u32 *)(*(int *)(node + 0x90) + 8), color);
-    }
-    if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
-      PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
-                (*(u32 *)(*(int *)(node + 0x90) + 8));
     }
     node = *(int *)(node + 0xac);
   }
@@ -49372,103 +49368,42 @@ void FUN_0034d150(int param_1,u32 *param_2)
 
 
 u64 FUN_0034d3a0(int param_1,int param_2,int param_3)
-
-
-
 {
+  int count;
+  int index;
+  int weight;
+  int invWeight;
+  u32 current;
+  u32 next;
+  u32 result;
+  u32 r;
+  u32 g;
+  u32 b;
+  u32 a;
+  float fraction;
 
-  int iVar1;
-
-  u64 uVar2;
-
-  __int128 auVar3;
-
-  float fVar4;
-
-  __int128 in_vf10;
-
-  __int128 auVar5;
-
-  __int128 auVar6;
-
-  __int128 auVar7;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x38) / 6;
-
-  if (iVar1 < 1) {
-
-    auVar3 = _pextlb(0,(long)*(int *)(*(char *)(param_2 + 0x14) * 4 + param_1 + 0x3c));
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    uVar2 = auVar3._0_8_;
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar5 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(DAT_007caf08);
-
-    auVar3 = _vmulbc(auVar5,auVar3);
-
-    _vmul(in_vf10,auVar3);
-
+  count = *(int *)(param_1 + 0x38) / 6;
+  if (count < 1) {
+    index = (int)*(s8 *)(param_2 + 0x14);
+    return (u64)*(u32 *)(param_1 + 0x3c + index * 4);
   }
 
-  else {
-
-    auVar7 = _vmove(in_vf10);
-
-    fVar4 = (float)(param_3 % iVar1) / (float)iVar1;
-
-    iVar1 = ((int)*(char *)(param_2 + 0x14) + param_3 / iVar1) % 6;
-
-    auVar3 = _pextlb(0,(long)*(int *)(((iVar1 + 1) % 6) * 4 + param_1 + 0x3c));
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar5 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(DAT_007caf08);
-
-    auVar6 = _vmulbc(auVar5,auVar3);
-
-    auVar3 = _pextlb(0,(long)*(int *)(iVar1 * 4 + param_1 + 0x3c));
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    uVar2 = auVar3._0_8_;
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar5 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(DAT_007caf08);
-
-    auVar5 = _vmulbc(auVar5,auVar3);
-
-    auVar3 = _qmtc2(1.0f - fVar4);
-
-    auVar5 = _vmulbc(auVar5,auVar3);
-
-    auVar3 = _qmtc2(fVar4);
-
-    auVar3 = _vmulbc(auVar6,auVar3);
-
-    auVar3 = _vadd(auVar5,auVar3);
-
-    auVar5 = _vmove(auVar7);
-
-    _vmul(auVar3,auVar5);
-
-  }
-
-  return uVar2;
-
+  fraction = (float)(param_3 % count) / (float)count;
+  index = ((int)*(s8 *)(param_2 + 0x14) + param_3 / count) % 6;
+  next = *(u32 *)(param_1 + 0x3c + ((index + 1) % 6) * 4);
+  current = *(u32 *)(param_1 + 0x3c + index * 4);
+  weight = (int)(fraction * 256.0f);
+  invWeight = 256 - weight;
+  r = ((next & 0xff) * weight + (current & 0xff) * invWeight) >> 8;
+  g = (((next >> 8) & 0xff) * weight +
+       ((current >> 8) & 0xff) * invWeight) >> 8;
+  b = (((next >> 16) & 0xff) * weight +
+       ((current >> 16) & 0xff) * invWeight) >> 8;
+  a = (((next >> 24) & 0xff) * weight +
+       ((current >> 24) & 0xff) * invWeight) >> 8;
+  result = (r & 0xff) | ((g & 0xff) << 8) |
+           ((b & 0xff) << 16) | ((a & 0xff) << 24);
+  return (u64)current | ((u64)result << 32);
 }
 
 

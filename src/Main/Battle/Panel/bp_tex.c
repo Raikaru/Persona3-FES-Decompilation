@@ -1442,6 +1442,7 @@ s32 bpTexGetNodeCount(void)
     return count;
 }
 
+/* Retail queueing performs its root census and action-record writes inline. */
 // FUN_00255570 NONMATCHING
 void bpTexQueueNodeRange(s32 start, s32 count)
 {

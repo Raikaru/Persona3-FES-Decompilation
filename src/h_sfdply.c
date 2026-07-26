@@ -1148,9 +1148,12 @@ void func_0010c050(void)
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
         sSfdEntries[i].next = NULL;
+        sSfdEntries[i].queue = NULL;
+        sSfdEntries[i].state = 0;
     }
 
     sSfdQueue[0].state = 0;
+    sSfdQueue[0].padding02 = 0;
     sSfdQueue[0].entry = NULL;
     threadParam[1] = (s32)func_0010c7d0;
     threadParam[2] = 0x803640;
@@ -1159,6 +1162,9 @@ void func_0010c050(void)
     threadParam[5] = 0x1C;
     threadId = func_00502f60(threadParam);
     func_005042a0(threadId, &sSfdQueue[0]);
+    uGpffffb220 = (void*)(s32)threadId;
+    uGpffffb228 = 0;
+    uGpffffb218 = 0;
     uGpffffb230 = 1;
 }
 

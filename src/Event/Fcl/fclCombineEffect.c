@@ -3357,14 +3357,22 @@ u32 FUN_0041add0(int param_1,int *param_2)
   int *piVar1;
   int iVar2;
   int iVar3;
+  int iVar4;
 
   piVar1 = *(int **)(param_2 + 1);
+  piVar1 = *(int **)(piVar1 + 2);
+  iVar4 = -2;
   iVar2 = 0;
-  do {
-    iVar3 = *(int *)(piVar1 + iVar2 + 2);
-    *(s16 *)iVar3 = *(s16 *)iVar3 & -2;
-    iVar2 = iVar2 + 1;
-  } while (iVar2 < *(int *)(piVar1 + 1));
+  goto loop_check;
+
+loop_body:
+  iVar3 = *(int *)(piVar1 + iVar2 + 2);
+  *(s16 *)iVar3 = *(s16 *)iVar3 & iVar4;
+  iVar2 = iVar2 + 1;
+
+loop_check:
+  if (iVar2 < *(int *)(piVar1 + 1))
+    goto loop_body;
   return 1;
 }
 
