@@ -5901,7 +5901,7 @@ LAB_002e59dc:
     fVar11 = 2.5f;
   }
   FUN_002a4690(&quat,&camOff,&target,D_00697880);
-  FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)D_006978A0,1,&quat);
+  FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
   fStack_c0 = target.x;
   fStack_bc = target.z;
   fStack_b8 = camOff.x;
@@ -5932,7 +5932,7 @@ LAB_002e59dc:
   fVar9 = (float)FUN_002d1f30(&quatCopy,&quat);
   if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
     quatCopy = quat;
-    FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)D_006978A0,1,&quat);
+    FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
     fVar10 = fVar10 + 200.0f;
     dir.x = dir.x * fVar10;
     dir.y = dir.y * fVar10;
@@ -6837,7 +6837,7 @@ void func_002e7db0(BtlCamera* param_1)
   dirCopy.y = dir.y;
   dirCopy.z = dir.z;
   FUN_002a4690(&quat,&camOff,&target,D_00697880);
-  FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)D_006978A0,1,&quat);
+  FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
   fStack_a0 = target.x;
   fStack_a4 = target.z;
   fStack_a8 = camOff.x;
