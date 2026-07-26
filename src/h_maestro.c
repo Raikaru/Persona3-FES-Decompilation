@@ -1521,8 +1521,7 @@ void func_001127d0(void* param_1, u32 enabled)
     u32 alpha;
 
     node = (MaestroRenderNode*)param_1;
-    record = (MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80);
-    resource = node->blob->resources[record->resourceIndex];
+    /* Retail 0x2c-0x50 computes the camera reciprocal before any state or record work. */
     camera = kwlnGetMainCamera();
     recipZ = 1.0f / camera->nearPlane;
 
@@ -1538,6 +1537,9 @@ void func_001127d0(void* param_1, u32 enabled)
         D_00960090(2, 4);
         D_00960090(14, 0);
     }
+
+    record = (MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80);
+    resource = node->blob->resources[record->resourceIndex];
 
     if (resource != NULL)
     {
