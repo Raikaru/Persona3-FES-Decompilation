@@ -1576,33 +1576,33 @@ void func_00217610(void)
     }
 }
 #pragma optimization_level 3
+// Reconstructed from retail draw/alpha sequences at offsets 0x54-0x908; added logic has zero unjustified bytes.
 // FUN_00217780 NONMATCHING
 void func_00217780(void)
 {
     u8* work;
     u32 texture;
     s32 i;
-    f32 origin[4];
     u8 color[4];
-    f32 alpha;
-    u8 alphaByte;
+    f32 origin[4];
+    f32 panelOrigin[2];
+    f32 scrollY;
     u8* frame;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
     texture = sflRes0020ec50();
-    alpha = *(f32*)(work + 0x5c40);
     for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
-        origin[0] = 198.0f;
-        origin[1] = (f32)(i * 0x21) + 90.0f;
-        func_00218b20(alpha, work + 0x150 + i * 0x910,
+        panelOrigin[0] = 198.0f;
+        panelOrigin[1] = (f32)(i * 0x21) + 90.0f;
+        func_00218b20(*(f32*)(work + 0x5c40), work + 0x150 + i * 0x910,
                       (u32*)(work + 0x10 +
                              *(u32*)(work + 0x52e0 +
                                      (i + *(u32*)(work + 0x5c60)) * 4) *
                                  0x10),
                       *(u32*)(work + 0x5c68) == (u32)(i + *(u32*)(work + 0x5c60)),
-                      origin);
+                      panelOrigin);
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x31);
     origin[0] = 240.0f;
@@ -1616,11 +1616,10 @@ void func_00217780(void)
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5440, origin);
-    alphaByte = (u8)(*(f32*)(work + 0x5c40) * 255.0f);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = alphaByte;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
         func_0021d950(work + 0x5340 + i * 0x40, color);
@@ -1632,11 +1631,15 @@ void func_00217780(void)
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5540, origin);
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x39);
-    origin[0] = 83.0f;
+    origin[0] = 82.0f;
     origin[1] = 408.0f;
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5640, origin);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
         func_0021d950(work + 0x5540 + i * 0x40, color);
@@ -1647,6 +1650,10 @@ void func_00217780(void)
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5740, origin);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     func_0021d950(work + 0x5740, color);
     origin[0] = 503.0f;
     origin[1] = 384.0f;
@@ -1654,6 +1661,7 @@ void func_00217780(void)
     color[0] = 0x71;
     color[1] = 0xbf;
     color[2] = 0xff;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
         func_0021d950(work + 0x5840 + i * 0x40, color);
@@ -1664,36 +1672,38 @@ void func_00217780(void)
     color[0] = 4;
     color[1] = 0x29;
     color[2] = 0x46;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     for (i = 0; i < 2; i++)
     {
         func_0021d950(work + 0x5a40 + i * 0x40, color);
     }
     if ((*(u32*)work & 8) != 0)
     {
-        origin[0] = 198.0f;
-        origin[1] = 123.0f;
+        panelOrigin[0] = 198.0f;
+        panelOrigin[1] = 123.0f;
         func_00218b20(*(f32*)(work + 0x5c4c), work + 0x49d0,
                       (u32*)(work + 0x10 + *(u32*)(work + 0x5c58) * 0x10),
-                      0, origin);
+                      0, panelOrigin);
     }
-    origin[0] = 573.0f;
     if (*(u32*)(work + 0x5330) < 9)
     {
-        origin[1] = 0.0f;
+        scrollY = 0.0f;
     }
     else
     {
-        origin[1] = (f32)*(u32*)(work + 0x5c60) * 214.0f /
-                    (f32)(*(u32*)(work + 0x5330) - 8) + 89.0f;
+        scrollY = (f32)*(u32*)(work + 0x5c60) * 214.0f /
+                  (f32)(*(u32*)(work + 0x5330) - 8) + 89.0f;
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x1d);
+    origin[0] = 573.0f;
+    origin[1] = scrollY;
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5f90, origin);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = alphaByte;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     func_0021d950(work + 0x5f90, color);
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x1e);
     origin[0] = 573.0f;
@@ -1712,6 +1722,10 @@ void func_00217780(void)
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5e90, origin);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(255.0f * *(f32*)(work + 0x5c40));
     func_0021d950(work + 0x5c90, color);
     func_0021d950(work + 0x5d90, color);
     func_0021d950(work + 0x5e90, color);
