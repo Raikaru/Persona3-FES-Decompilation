@@ -3861,6 +3861,7 @@ count_check:
 
 set_start:
   color = (u8)param_4;
+set_load:
   candidate = *(int *)(param_1 + 0x1c);
   goto set_check;
 
@@ -3879,7 +3880,7 @@ set_check:
   }
   candidate = *(int *)(param_1 + 8);
   if (cat == candidate) {
-    goto set_start;
+    goto set_load;
   }
   goto done;
 
@@ -6135,8 +6136,7 @@ u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
 {
   u32 uVar2;
   int iVar1;
-  uVar2 = FUN_001158b0(0, DAT_007ce654, param_5);
-  iVar1 = (int)uVar2;
+  uVar2 = FUN_001158b0(0,DAT_007ce654,param_5);
   *(float *)(iVar1 + 0x10) = (float)param_2;
   *(float *)(iVar1 + 0x14) = (float)param_3;
   *(char *)(iVar1 + 0x19) = 0xff - (u8)param_4;

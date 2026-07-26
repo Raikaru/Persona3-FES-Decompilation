@@ -1962,8 +1962,8 @@ void func_001d1860(u32 value)
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        unit = &gFldUnitsPc[i];
         valid = 0;
+        unit = &gFldUnitsPc[i];
         if (unit->genusBase != NULL && unit->resrc != NULL)
         {
             valid = 1;

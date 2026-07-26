@@ -193,6 +193,9 @@ void func_003b0e70(u32);
 void func_003b0e90(u32);
 void func_003b2c60(u32, ...);
 u32 func_003a5540(u32, ...);
+#pragma alias bpRoot_003a5540_typed func_003a5540
+extern u32 bpRoot_003a5540_typed(u32 p1, u32 p2, s32 p3, f32 angle,
+                                  u32 p4, u32 p5, void* p6, u32 p7);
 void* func_0030c0c0(void);
 u32 func_003086f0(u32, u16);
 u32 func_003083f0(u32, u16);
@@ -1113,9 +1116,9 @@ void FUN_00201880(void)
     {
         func_00208360();
     }
-    request = func_003a5540(100, 100, -0x4e, 2, 6,
-                            *(void**)(work + 0x7790),
-                            *(u32*)(work + 0x24));
+    request = bpRoot_003a5540_typed(100, 100, -0x4e, 0.0f, 2, 6,
+                                    *(void**)(work + 0x7790),
+                                    *(u32*)(work + 0x24));
     func_002082c0(request);
     *(u32*)(work + 0x6d28) = 0;
 }
