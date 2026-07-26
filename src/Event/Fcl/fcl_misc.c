@@ -114,7 +114,7 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #pragma alias fclMiscA2580Call FUN_003a2580
 extern s32 fclMiscA2580Call(s32);
 #pragma alias fclMiscC49e0Call FUN_003c49e0
-extern s32 fclMiscC49e0Call(s32, s32);
+extern int *fclMiscC49e0Call(int *, int *, int *);
 #pragma alias fclMiscContextCall FUN_00195540
 extern s32 fclMiscContextCall(void);
 #pragma alias fclMiscAllocCall FUN_00119a60
@@ -416,7 +416,7 @@ u64 FUN_003c8810(int *param_1)
   while (item != 0) {
     node = *(int **)((u8 *)item + 0x14);
     if (*(int *)((u8 *)node + 8) == 0) {
-      item = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
+      item = fclMiscC49e0Call(param_1[6], param_1[6] + 4,item);
     }
     else {
       item = *(int **)((u8 *)item + 0x10);
@@ -426,7 +426,7 @@ u64 FUN_003c8810(int *param_1)
   while (item != 0) {
     node = *(int **)((u8 *)item + 0x14);
     if ((*(u32 *)((u8 *)node + 4) & 2) == 0) {
-      item = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
+      item = fclMiscC49e0Call(*param_1, *param_1 + 4,item);
     }
     else {
       item = *(int **)((u8 *)item + 0x10);
