@@ -88,6 +88,9 @@ extern char D_00678C78[];
 #pragma alias D_00678C78_abs D_00678C78
 extern char D_00678C78_abs[];
 extern u32 D_00678C00[];
+extern const char D_00678C28[];
+extern const char D_00678C38[];
+extern const char D_00678C48[];
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
 extern const char D_00678C88[];
@@ -685,8 +688,8 @@ void* func_001a7370(void* material, u32* state)
     s32 selected;
     s32 value;
 
-    value = K_Clump_MatUsrDataGetInt((RpMaterial*)material, (const char*)0x00678c28);
-    if (K_Clump_MatUsrDataHasData((RpMaterial*)material, (const char*)0x00678c38))
+    value = K_Clump_MatUsrDataGetInt((RpMaterial*)material, D_00678C28);
+    if (K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C38))
     {
         if (value < 2)
         {
@@ -694,17 +697,17 @@ void* func_001a7370(void* material, u32* state)
         }
         state[2] = 1;
     }
-    for (candidate = 0; candidate < 10 && state[0] != D_00678C00[candidate]; candidate++)
+    for (candidate = 0; candidate < 10 && state[0] != kclump_word((void*)0x00678c00, candidate * 4); candidate++)
     {
     }
-    for (current = 0; current < 10 && value != D_00678C00[current]; current++)
+    for (current = 0; current < 10 && value != kclump_word((void*)0x00678c00, current * 4); current++)
     {
     }
     if (candidate < current)
     {
-        state[0] = D_00678C00[current];
+        state[0] = kclump_word((void*)0x00678c00, current * 4);
     }
-    selected = K_Clump_MatUsrDataHasData((RpMaterial*)material, (const char*)0x00678c48);
+    selected = K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C48);
     if (selected == 1)
     {
         state[1] = 1;
@@ -1331,19 +1334,12 @@ void func_001a8140(void* state, u32 mode)
 // FUN_001a8820 NONMATCHING
 void* func_001a8820(void* item)
 {
-    if ((*(u8*)((u8*)item + 2) & 4) == 0)
-    {
-        return item;
-    }
-    if (*(void**)((u8*)item + 0x18) == NULL)
-    {
-        return item;
-    }
+    if ((*(u8*)((u8*)item + 2) & 4) != 0 && kclump_word(item, 0x18) != 0)
     {
         RwSphere* sphere = func_004912b0(item);
         if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
         {
-            (*(void (**)(void))((u8*)item + 0x48))();
+            kclump_call_resource(item);
             if (*(u32*)0x007ce154 == 1)
             {
                 RwV3d line;

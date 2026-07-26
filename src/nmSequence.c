@@ -848,6 +848,7 @@ u32 FUN_003c5c50(u32 param_1)
   int iVar5;
 
   int iVar6;
+  int iVar7;
 
   u32 uVar7;
 
@@ -863,41 +864,29 @@ u32 FUN_003c5c50(u32 param_1)
 
   iVar6 = *(int *)(iVar1 + 0x2c);
 
-  iVar3 = FUN_003c6f80();
+  iVar7 = FUN_003c6f80() - 1;
 
   iVar5 = 0;
-
-  while( 1 ) {
-
-    if (iVar3 + -1 <= iVar5) {
-
-      iVar3 = 0;
-
-      while ((iVar3 < iVar2 && (iVar6 != *(int *)(iVar4 + 8)))) {
-
-        iVar6 = *(int *)(iVar6 + 0x10);
-
-        *(u32 *)(iVar1 + 0x2c) = *(u32 *)(*(int *)(iVar1 + 0x2c) + 0x10);
-
-        uVar7 = FUN_003c4c80(param_1,iVar4 + 4);
-
-        iVar3 = iVar3 + 1;
-
-      }
-
-      return uVar7;
-
+  while (iVar5 < iVar7) {
+    if (iVar6 == 0) {
+      return 0;
     }
-
-    if (iVar6 == 0) break;
-
     iVar6 = *(int *)(iVar6 + 0x10);
-
     iVar5 = iVar5 + 1;
-
   }
 
-  return 0;
+  iVar3 = 0;
+  while (iVar3 < iVar2) {
+    if (iVar6 == *(int *)(iVar4 + 8)) {
+      break;
+    }
+    iVar6 = *(int *)(iVar6 + 0x10);
+    *(u32 *)(iVar1 + 0x2c) = *(u32 *)(*(int *)(iVar1 + 0x2c) + 0x10);
+    uVar7 = FUN_003c4c80(param_1,iVar4 + 4);
+    iVar3 = iVar3 + 1;
+  }
+
+  return uVar7;
 
 }
 #define FUN_003c5c50(...) ((u64 (*)(...))FUN_003c5c50)(__VA_ARGS__)

@@ -314,47 +314,44 @@ void kwlnTaskUpdateAll()
     KwlnTask* prevTask;
     KwlnTask* cursor;
 
-    if (sRunningTaskHead != NULL)
+    currTask = sRunningTaskHead;
+    while (currTask != NULL)
     {
-        currTask = sRunningTaskHead;
-        while (currTask != NULL)
+        prevTask = currTask->prev;
+
+        if (kwlnTaskUpdate(currTask))
         {
-            prevTask = currTask->prev;
+            currTask = currTask->next;
+        }
+        else
+        {
+            currTask = sRunningTaskHead;
 
-            if (kwlnTaskUpdate(currTask))
+            if (prevTask != NULL)
             {
-                currTask = currTask->next;
-            }
-            else
-            {
-                currTask = sRunningTaskHead;
-
-                if (prevTask != NULL)
+                cursor = prevTask;
+                while ((u32)(cursor != NULL) != 0 &&
+                       (KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY))
                 {
-                    cursor = prevTask;
-                    while ((u32)(cursor != NULL) != 0 &&
-                           (KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY))
+                    prevTask = cursor->prev;
+                    if (prevTask != NULL)
                     {
-                        prevTask = cursor->prev;
-                        if (prevTask != NULL)
-                        {
-                            cursor = prevTask;
-                        }
-                        else
-                        {
-                            cursor = cursor->unk_48;
-                            break;
-                        }
-                    }
-
-                    if (cursor != NULL)
-                    {
-                        currTask = cursor->next;
+                        cursor = prevTask;
                     }
                     else
                     {
-                        currTask = sRunningTaskHead;
+                        cursor = cursor->unk_48;
+                        break;
                     }
+                }
+
+                if (cursor != NULL)
+                {
+                    currTask = cursor->next;
+                }
+                else
+                {
+                    currTask = sRunningTaskHead;
                 }
             }
         }
