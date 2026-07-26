@@ -690,6 +690,7 @@ void *func_001f1210(void)
 }
 
 // FUN_001f1240 NONMATCHING
+#pragma optimization_level 3
 void func_001f1240(KwlnTask *task)
 {
     u32 *work = (u32 *)BR_TASK_WORK(task);

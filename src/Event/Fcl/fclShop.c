@@ -354,7 +354,7 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
 
         fVar4 = (f32)*(s8 *)(param_2 + 0xc);
         fVar4 /= 5.0f;
-        fVar4 = 1.0f + fVar4;
+        fVar4 = fVar4 + 1.0f;
         fVar4 = (f32)*(s16 *)(param_2 + 0xe) + fVar4;
         *(s16 *)(param_2 + 0xe) = (s16)(int)fVar4;
         if (*(s16 *)(param_2 + 0xe) < 0)
