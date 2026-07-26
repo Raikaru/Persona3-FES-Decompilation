@@ -322,6 +322,8 @@ u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3);
 int FUN_00323240(u32 param_1,int param_2,u16 param_3,u64 param_4);
 int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u64 param_5);
 u64 FUN_003234f0(u16 param_1,u32 param_2);
+#pragma alias FUN_003234f0_u32 FUN_003234f0
+extern u32 FUN_003234f0_u32(u16 param_1,u32 param_2);
 u64 FUN_00323640(u16 *param_1);
 #pragma alias FUN_00323640_u32 FUN_00323640
 extern u32 FUN_00323640_u32(u16 *param_1);
@@ -424,7 +426,7 @@ void FUN_00326740(u64 param_1);
 u64 FUN_003268c0(u64 param_1);
 void FUN_003269e0(int param_1,int param_2);
 void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
-void FUN_00326cf0(int param_1,u16 param_2,long param_3);
+void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
 void FUN_00326db0(int param_1,u16 param_2);
 void FUN_00326e50(int param_1,u64 param_2);
 void FUN_00326f00(int param_1,u32 param_2);
@@ -10744,7 +10746,7 @@ void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3)
 // FUN_00326CF0 NONMATCHING
 
 
-void FUN_00326cf0(int param_1,u16 param_2,long param_3)
+void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
 
 
 
@@ -10764,7 +10766,7 @@ void FUN_00326cf0(int param_1,u16 param_2,long param_3)
 
     if (param_3 == 2) {
 
-      uVar1 = FUN_003234f0(param_2,0x200000a7);
+      uVar1 = FUN_003234f0_u32(param_2,0x200000a7);
 
       *(u32 *)(param_1 + 0x50) = uVar1;
 
@@ -10772,7 +10774,7 @@ void FUN_00326cf0(int param_1,u16 param_2,long param_3)
 
     else if ((param_3 == 4) || (param_3 == 1)) {
 
-      uVar1 = FUN_003234f0(param_2,0x20080027);
+      uVar1 = FUN_003234f0_u32(param_2,0x20080027);
 
       *(u32 *)(param_1 + 0x50) = uVar1;
 
