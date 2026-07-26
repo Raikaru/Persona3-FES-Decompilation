@@ -111,6 +111,17 @@ extern u32 func_00319010(Model* model);
 extern u32 mdlStreamRead(Model* model);
 
 extern void* func_00464020(void* collisionWorld, void* query, void* callback, void* context);
+extern void* func_004916d0(void* list, void* callback, void* context);
+#pragma alias K_Field_Get_A K_Field_Get
+extern void* K_Field_Get_A(void);
+#pragma alias K_Field_Get_B K_Field_Get
+extern void* K_Field_Get_B(void);
+#pragma alias K_Field_Get_C K_Field_Get
+extern void* K_Field_Get_C(void);
+#pragma alias K_Field_Get_D K_Field_Get
+extern void* K_Field_Get_D(void);
+#pragma alias K_Field_Get_E K_Field_Get
+extern void* K_Field_Get_E(void);
 typedef struct FldShadowTriangle
 {
     RwV3d normal;                 // 0x00
@@ -737,35 +748,16 @@ u32 func_0019ab80(f32 alpha,
         RwMatrixScale(projectionMatrix, &scale, rwCOMBINEPOSTCONCAT);
 
         translation.x = 0.5f;
-        translation.y = 0.5f;
-        translation.z = 0.0f;
-        RwMatrixTranslate(projectionMatrix, &translation, rwCOMBINEPOSTCONCAT);
-    }
-
-    work->depthAlpha = (s32)depthAlpha;
-    alpha *= 255.0f;
-    work->alpha = (u8)alpha;
-    work->flushedTriangles = 0;
-    work->vertexCount = 0;
-
     if (drawField == 0)
     {
         collisionData = (u8*)field->unk_160;
         collisionWorld = *(void**)(collisionData + 0x10);
-        if (collisionWorld != NULL)
+        if (collisionWorld == NULL)
         {
-            func_00464020(collisionWorld, (void*)position,
-                          (void*)func_00199d90, work);
+            collisionWorld = *(void**)(collisionData + 0x08);
         }
-        else
-        {
-            collisionCount = *(u32*)(collisionData + 0x14);
-            for (i = 0; i < collisionCount; i++)
-            {
-                func_00464020(*(void**)(collisionData + 0x18 + i * sizeof(void*)),
-                              (void*)position, (void*)func_00199d90, work);
-            }
-        }
+        func_00464020(collisionWorld, (void*)position,
+                      (void*)func_00199d90, work);
     }
     else if (drawField == 1)
     {
@@ -777,46 +769,70 @@ u32 func_0019ab80(f32 alpha,
         u8* gridCell;
 
         fieldCount = 0;
-        gridModel = MT_Scene_GetRes(0x400);
-        collisionTask = gridModel != NULL
-            ? ((ResrcModelChar*)gridModel)->collisCtlTask : NULL;
-        xGrid = collisionTask != NULL ? K_FldFrame_CtlGetXGrid(collisionTask) : 0;
-        zGrid = collisionTask != NULL ? K_FldFrame_CtlGetZGrid(collisionTask) : 0;
-        gridCell = (u8*)K_Field_Get() + 0x4c + zGrid * 0x100 + xGrid * 0x10;
-        resourceIds[0] = *(u16*)(gridCell + 0x4c);
-        resourceIds[1] = *(u16*)(gridCell + 0x5c);
-        resourceIds[2] = *(u16*)(gridCell + 0x3c);
-        resourceIds[3] = *(u16*)(gridCell - 0xb4);
-        for (i = 0; i < 4; i++)
+        if ((K_Scene_001a0250() == 1) ||
+            ((gMtScene->fldMajorId > 0x32) &&
+             (gMtScene->fldMajorId < 0x3b)) ||
+            ((gMtScene->fldMajorId > 0x46) &&
+             (gMtScene->fldMajorId < 0x4f)))
         {
-            for (j = 0; j < fieldCount; j++)
+            gridModel = MT_Scene_GetRes(0x400);
+            collisionTask = gridModel != NULL
+                ? ((ResrcModelChar*)gridModel)->collisCtlTask : NULL;
+            xGrid = collisionTask != NULL
+                ? K_FldFrame_CtlGetXGrid(collisionTask) : 0;
+            zGrid = collisionTask != NULL
+                ? K_FldFrame_CtlGetZGrid(collisionTask) : 0;
+
+            gridCell = (u8*)K_Field_Get_A() +
+                       0x4c + zGrid * 0x100 + xGrid * 0x10;
+            resourceIds[0] = *(u16*)(gridCell + 0x4c);
+            gridCell = (u8*)K_Field_Get_B() +
+                       0x4c + zGrid * 0x100 + xGrid * 0x10;
+            resourceIds[1] = *(u16*)(gridCell + 0x5c);
+            gridCell = (u8*)K_Field_Get_C() +
+                       0x4c + zGrid * 0x100 + xGrid * 0x10;
+            resourceIds[2] = *(u16*)(gridCell + 0x3c);
+            gridCell = (u8*)K_Field_Get_D() +
+                       0x4c + zGrid * 0x100 + xGrid * 0x10;
+            resourceIds[3] = *(u16*)(gridCell - 0xb4);
+
+            for (i = 0; i < 4; i++)
             {
-                if (resourceIds[i] == resourceIds[j])
-                    break;
-            }
-            if (j == fieldCount)
-            {
-                fields[fieldCount] = (ResrcFld*)MT_Scene_GetRes(resourceIds[i]);
-                if (fields[fieldCount] != NULL)
-                    fieldCount++;
+                for (j = 0; j < fieldCount; j++)
+                {
+                    if (resourceIds[i] == resourceIds[j])
+                    {
+                        break;
+                    }
+                }
+                if (j == fieldCount)
+                {
+                    fields[fieldCount] =
+                        (ResrcFld*)MT_Scene_GetRes(resourceIds[i]);
+                    if (fields[fieldCount] != NULL)
+                    {
+                        fieldCount++;
+                    }
+                }
             }
         }
+
         for (i = 0; i < fieldCount; i++)
         {
             collisionData = (u8*)fields[i]->unk_160;
             collisionWorld = *(void**)(collisionData + 0x10);
             if (collisionWorld != NULL)
             {
-                func_00464020(collisionWorld, (void*)position,
-                              (void*)func_00199d90, work);
+                func_004916d0(collisionWorld, (void*)func_00199d90, work);
             }
             else
             {
                 collisionCount = *(u32*)(collisionData + 0x14);
                 for (j = 0; j < collisionCount; j++)
                 {
-                    func_00464020(*(void**)(collisionData + 0x18 + j * sizeof(void*)),
-                                  (void*)position, (void*)func_00199d90, work);
+                    func_004916d0(
+                        *(void**)(collisionData + 0x18 + j * sizeof(void*)),
+                        (void*)func_00199d90, work);
                 }
             }
         }

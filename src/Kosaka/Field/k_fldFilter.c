@@ -422,8 +422,20 @@ void FUN_001d5130(u32 alpha)
 s32 FUN_001d5140(KwlnTask* cameraTask)
 {
     FldFilterCameraWork* work;
-    RwV3d playerPos;
-    RwV3d point;
+    struct
+    {
+        f32 x;
+        f32 y;
+        f32 z;
+        f32 w;
+    } playerPos;
+    struct
+    {
+        f32 x;
+        f32 y;
+        f32 z;
+        f32 w;
+    } point;
     f32 bestDistance;
     f32 dx;
     f32 dy;
@@ -439,9 +451,10 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     for (index = 0; index < 9; index++)
     {
         point = work->cameraPoints[index];
-        dx = point.x - playerPos.x;
-        dy = point.y - playerPos.y;
-        dz = point.z - playerPos.z;
+        pointCopy = point;
+        dx = pointCopy.x - playerPos.x;
+        dy = pointCopy.y - playerPos.y;
+        dz = pointCopy.z - playerPos.z;
         distance = sqrtf(dx * dx + dy * dy + dz * dz);
         if (bestDistance > distance)
         {

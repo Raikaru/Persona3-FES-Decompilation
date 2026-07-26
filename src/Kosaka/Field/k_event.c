@@ -813,8 +813,7 @@ void func_001c8120(void* work)
 {
     RwV3d candidates[5];
     RwV3d center;
-    RwV3d deltaPc;
-    RwV3d deltaEc;
+    RwV3d delta;
     s32 target;
     s32 slot;
     s32 i;
@@ -885,10 +884,10 @@ void func_001c8120(void* work)
                 {
                     continue;
                 }
-                deltaPc.x = candidates[i].x - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.x;
-                deltaPc.y = candidates[i].y - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.y;
-                deltaPc.z = candidates[i].z - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.z;
-                if (RwV3dLength(&deltaPc) < 70.0f)
+                delta.x = candidates[i].x - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.x;
+                delta.y = candidates[i].y - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.y;
+                delta.z = candidates[i].z - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.z;
+                if (RwV3dLength(&delta) < 70.0f)
                 {
                     occupied = true;
                     break;
@@ -902,10 +901,10 @@ void func_001c8120(void* work)
                     {
                         continue;
                     }
-                    deltaEc.x = candidates[i].x - gFldUnitsEc[j].spawnPos.x;
-                    deltaEc.y = candidates[i].y - gFldUnitsEc[j].spawnPos.y;
-                    deltaEc.z = candidates[i].z - gFldUnitsEc[j].spawnPos.z;
-                    if (RwV3dLength(&deltaEc) < 70.0f)
+                    delta.x = candidates[i].x - gFldUnitsEc[j].spawnPos.x;
+                    delta.y = candidates[i].y - gFldUnitsEc[j].spawnPos.y;
+                    delta.z = candidates[i].z - gFldUnitsEc[j].spawnPos.z;
+                    if (RwV3dLength(&delta) < 70.0f)
                     {
                         occupied = true;
                         break;

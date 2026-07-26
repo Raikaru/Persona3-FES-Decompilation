@@ -3444,7 +3444,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
   
 
-  FUN_005225a8((const char *)0x6a0c10);
+  FUN_005225a8(0x6a0c10);
 
   uVar7 = FUN_0016c920(1);
 

@@ -250,7 +250,7 @@ bool FUN_00169420(void);
 undefined4 FUN_00169470(undefined8);
 void FUN_00169AE0(int);
 void FUN_00169B90(void* resources, undefined8 coordinates,
-                  void* list, s32 alpha);
+                  void* list, s32 alpha, undefined8 stackArg);
 undefined4 FUN_0016A030(void);
 undefined4 FUN_0016A6A0(void);
 f32 FUN_0016ba00(u32, u32);
@@ -1360,8 +1360,6 @@ undefined4 FUN_00169470(undefined8 param_1)
     s32 entry;
     s32 nextFrame;
     s16 itemId;
-    u32 stackHeaderA;
-    u32 stackHeaderB;
     CampTargetItemRecord itemRecord;
 
     task = (KwlnTask*)(uintptr_t)param_1;
@@ -1404,10 +1402,9 @@ undefined4 FUN_00169470(undefined8 param_1)
         if (nextFrame > 0x13) {
             work->state = 3;
         }
-        stackHeaderA = 0;
-        stackHeaderB = 0;
         FUN_00169B90(work->resources, 0, work->list,
-                     (s32)(0xff - (work->frame * 0xff) / 0x14));
+                     (s32)(0xff - (work->frame * 0xff) / 0x14),
+                     (undefined8)0);
         break;
     case 3:
         if ((DAT_007e094e & 0x40) == 0) {
@@ -1429,9 +1426,7 @@ undefined4 FUN_00169470(undefined8 param_1)
                 work->state = 4;
             }
         }
-        stackHeaderA = 0;
-        stackHeaderB = 0;
-        FUN_00169B90(work->resources, 0, work->list, 0);
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
         break;
     case 4:
         if (FUN_003c7850() == 0) {
@@ -1488,18 +1483,14 @@ undefined4 FUN_00169470(undefined8 param_1)
                 work->state = 3;
             }
         }
-        stackHeaderA = 0;
-        stackHeaderB = 0;
-        FUN_00169B90(work->resources, 0, work->list, 0);
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
         break;
     case 5:
         if (FUN_003c7850() == 0) {
             FUN_003c7700();
             work->state = 3;
         }
-        stackHeaderA = 0;
-        stackHeaderB = 0;
-        FUN_00169B90(work->resources, 0, work->list, 0);
+        FUN_00169B90(work->resources, 0, work->list, 0, (undefined8)0);
         break;
     case 6:
         nextFrame = work->frame - 1;
@@ -1507,10 +1498,9 @@ undefined4 FUN_00169470(undefined8 param_1)
         if (nextFrame < 1) {
             work->state = 7;
         }
-        stackHeaderA = 0;
-        stackHeaderB = 0;
         FUN_00169B90(work->resources, 0, work->list,
-                     (s32)(0xff - (work->frame * 0xff) / 10));
+                     (s32)(0xff - (work->frame * 0xff) / 10),
+                     (undefined8)0);
         break;
     case 7:
         return 0xffffffff;
@@ -1543,7 +1533,7 @@ void FUN_00169AE0(int param_1)
 
 // FUN_00169B90 NONMATCHING
 void FUN_00169B90(void* param_1, undefined8 param_2,
-                  void* param_3, s32 param_4)
+                  void* param_3, s32 param_4, undefined8 param_5)
 {
     f32 x;
     f32 y;
