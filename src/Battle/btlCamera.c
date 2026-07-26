@@ -4160,7 +4160,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     f32 halfDistance;
     f32 angle;
     f32 half;
-    u32 index;
+    s64 index;
     f32 tempHalf;
     f32 sourceProduct;
     unit = camera->action->unit;
@@ -4222,7 +4222,7 @@ distance_done:
     halfDistance = param_1 / 3.0f;
     angle = halfDistance;
     index = (u64)1;
-    while ((s32)(index & 0xffff) < 4)
+    while ((u16)index < 4)
     {
         if (dot < 0.0f)
             goto rotate_negative;

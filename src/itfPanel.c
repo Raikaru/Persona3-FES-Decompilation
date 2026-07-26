@@ -9,7 +9,6 @@ extern u32 FUN_00171250(s16 id);
 extern u32 FUN_00170d60(s16 id);
 extern u64 FUN_00171110(s16 id,s16 field);
 extern const char DAT_006a1bf8[];
-extern void FUN_0016f1f0(u32 flag,int enabled);
 extern u32 DAT_006a1d10;
 #pragma alias DAT_006a1d10_abs DAT_006a1d10
 extern u32 DAT_006a1d10_abs[];
