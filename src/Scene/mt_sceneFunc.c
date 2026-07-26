@@ -5393,27 +5393,27 @@ u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3)
 
 u16 FUN_003bd9a0(u32 param_1,u32 param_2)
 {
-  long lVar1;
+  int iVar1;
   int iVar2;
   int iVar3;
 
   iVar2 = 0;
   while (1) {
-    if (DAT_0095b728 <= iVar2) {
+    if (*(int *)DAT_0095b728_abs <= iVar2) {
       return 0;
     }
     iVar3 = iVar2 * 8;
-    if ((param_1 == *(u16 *)(DAT_0095b724 + iVar3)) &&
-        (param_2 == (u8)((u16 *)(DAT_0095b724 + iVar3))[1])) {
+    if ((param_1 == *(u16 *)((u8 *)DAT_0095b724_abs + iVar3)) &&
+        (param_2 == *(u8 *)((u8 *)DAT_0095b724_abs + iVar3 + 2))) {
       break;
     }
     iVar2 = iVar2 + 1;
   }
-  lVar1 = FUN_003951d0(0xa88);
+  iVar1 = FUN_003951d0_i32(0xa88);
   if (lVar1 == 1) {
-    return *(u16 *)(iVar3 + DAT_0095b724 + 4);
+    return *(u16 *)((u8 *)DAT_0095b724_abs + iVar3 + 4);
   }
-  return *(u16 *)(iVar3 + DAT_0095b724 + 6);
+  return *(u16 *)((u8 *)DAT_0095b724_abs + iVar3 + 6);
 }
 #define FUN_003bd9a0(...) ((u16 (*)(...))FUN_003bd9a0)(__VA_ARGS__)
 #undef FUN_003bda60
