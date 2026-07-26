@@ -2554,14 +2554,20 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             }
         }
     }
-    /* Type 1 list walk (post-grid) */
-        objData = *(void**)(cell + 0x310);
-        if (objData != NULL)
+    {
+        u8* cell;
+        void* extraData;
+        cell = (u8*)0x0086b180 +
+               (s32)((pos->z + 400.0f) / 800.0f) * 0x310 +
+               (s32)((pos->x + 400.0f) / 800.0f) * 0xc4;
+        extraData = *(void**)(cell + 0x310);
+        if (extraData != NULL)
         {
-            model = (void*)func_00318b80(*(u32*)((u8*)objData + 0x114));
+            model = (void*)func_00318b80(*(u32*)((u8*)extraData + 0x114));
             if (model != NULL)
                 FUN_004916d0(model, func_001abcd0, &collector);
         }
+    }
     listNode = *(void**)((u8*)type1ListHead + 0xf8);
     while (listNode != NULL)
     {
