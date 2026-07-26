@@ -2500,7 +2500,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     puVar1[0x55] = 0;
     FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     h_campDrawItemFrameSelected((int)puVar1);
-    pair.u = 0x4357000041a80000ULL;
+    pair.f[0] = 21.0f;
+    pair.f[1] = 215.0f;
     tmp70.u = pair.u;
     tmp70.f[1] -= 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, tmp70.u, *(u64*)&pair, 0, 0, 0, 10);
@@ -2518,7 +2519,9 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     tmp80.u = pair.u;
     tmp80.f[1] -= 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 1, tmp80.u, pair.u, 0, 0, 0, 10);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1, 0x42b8000043c20000, 0x42b8000043c20000, 0, 0, 0, 10);
+    pair.u = 0x42b8000043c20000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1,
+                  *(u64*)&pair, *(u64*)&pair, 0, 0, 0, 10);
     pair.u = 0x42b8000043c20000ULL;
     tmp88.u = pair.u;
     tmp88.f[1] -= 600.0f;

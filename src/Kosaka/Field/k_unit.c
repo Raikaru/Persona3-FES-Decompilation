@@ -1677,6 +1677,10 @@ void func_001d0bc0(void* output, u32 count)
     f32 bestDistance;
     u32 i;
     u32 j;
+    typedef struct
+    {
+        u8 data[0x110];
+    } SpawnCopy;
 
     memset(output, 0, 0x330);
     if (K_Scene_001a0250() == 1)
@@ -1714,7 +1718,7 @@ void func_001d0bc0(void* output, u32 count)
                 if (distance > bestDistance)
                 {
                     dst = (u8*)output + i * 0x110;
-                    memcpy(dst, node, 0x110);
+                    *(SpawnCopy*)dst = *(SpawnCopy*)node;
                     bestDistance = distance;
                 }
                 node = *(u8**)(node + 0xf8);
