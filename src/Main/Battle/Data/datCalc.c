@@ -962,7 +962,7 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
   u8 bVar2;
   u32 check;
   u32 base;
-
+  u32 index;
   if ((s32)(param_2 & 0xffff) < 0 || (s32)(param_2 & 0xffff) >= 5) {
     FUN_0019d3f0((u32)D_0069aa80, 0x2e1);
   }
@@ -972,8 +972,10 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
       FUN_0019d3f0((u32)D_0069aa80, 0x2e8);
     }
     base = iGpffffb720;
-    base = (u32)uVar1 * 0x3e + base;
-    base = ((u32)param_2 & 0xffff) + base;
+    index = (u32)uVar1 * 0x3e;
+    base = index + base;
+    index = (u32)param_2 & 0xffff;
+    base = index + base;
     bVar2 = *(u8 *)(base + 8);
   }
   else {
