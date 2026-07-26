@@ -6082,6 +6082,8 @@ LAB_004363c0:
       *(u8 *)(iVar2 + 0x1222) = 0;
     }
     break;
+  case 2:
+    break;
   case 1:
     afStack_10[0] = (float)(int)*(char *)(iVar2 + 0xdc) * 800.0f;
     afStack_10[2] = (float)(int)*(char *)(iVar2 + 0xdd) * 800.0f;

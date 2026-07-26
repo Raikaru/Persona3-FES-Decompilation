@@ -2440,38 +2440,45 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   case 4:
     pair.u = *(u64 *)(puVar1[3] + 0x30);
     func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
-    pair.u = CAMP_PAIR_FLOAT_HIGH((float)(puVar1[1] * 0x21) + 124.0f,0x44138000);
+    pair.f[0] = 592.0f;
+    pair.f[1] = (float)(puVar1[1] * 0x21) + 124.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x88), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x42fa000043c50000ULL;
+    pair.f[0] = 394.0f;
+    pair.f[1] = 125.0f;
     tmpd8.u = pair.u;
     tmpd8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x44), 0, 2, 2,
                   tmpd8.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x42fc000043c90000ULL;
+    pair.f[0] = 402.0f;
+    pair.f[1] = 126.0f;
     tmpe0.u = pair.u;
     tmpe0.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0xcc), 0, 2, 2,
                   tmpe0.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x150) = 0;
-    pair.u = 0x4170000043a08000ULL;
+    pair.f[0] = 321.0f;
+    pair.f[1] = 15.0f;
     tmpe8.u = pair.u;
     tmpe8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x110), 0, 2, 2,
                   tmpe8.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x194) = 0;
-    pair.u = 0x42f8000043b18000ULL;
+    pair.f[0] = 355.0f;
+    pair.f[1] = 124.0f;
     tmpf0.u = pair.u;
     tmpf0.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x154), 0, 2, 2,
                   tmpf0.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x194) = 0;
-    pair.u = 0x43c08000423c0000ULL;
+    pair.f[0] = 47.0f;
+    pair.f[1] = 385.0f;
     tmpf8.u = pair.u;
     tmpf8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x198), 0, 2, 2,
                   tmpf8.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x194) = 0;
-    pair.u = 0x43c0800043c40000ULL;
+    pair.f[0] = 392.0f;
+    pair.f[1] = 385.0f;
     tmp100.u = pair.u;
     tmp100.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x1dc), 0, 2, 2,

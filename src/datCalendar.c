@@ -2618,7 +2618,7 @@ u8 func_00182810(u32 index)
 u32 func_001828d0(s16 id, DatEquipment* out)
 {
     u8* resource;
-    register u16* range;
+    u16* range;
     s32 percent;
     s32 value;
 
@@ -2965,6 +2965,8 @@ void* func_00183410(KwlnTask* task)
                 }
                 break;
 
+            case 3:
+                break;
             case 4:
                 datSetFlag(0x1421, true);
                 work->child = func_00185880(task,

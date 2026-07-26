@@ -811,6 +811,12 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   float xRow;
   float yValue2;
   float yValue3;
+  float xSecondaryIcon;
+  float xSecondaryHundreds;
+  float xSecondaryTens;
+  float xSecondaryOnes;
+  s32 valueX;
+  s32 valueY;
   float originX;
   float originY;
   char textBuffer[256];
@@ -843,6 +849,12 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   xValue = originX + 325.0f;
   xBase = originX + 341.0f;
   xMarker = originX + 357.0f;
+  xSecondaryIcon = originX + 404.0f;
+  xSecondaryHundreds = originX + 441.0f;
+  xSecondaryTens = originX + 457.0f;
+  xSecondaryOnes = originX + 473.0f;
+  valueX = (s32)(originX + 10.0f);
+  valueY = (s32)(originY + 200.0f);
   do {
     if ((4 < rowIndex) ||
        (entryIndex = rowIndex + work->firstVisibleEntry, work->entryCount <= entryIndex)) {
@@ -896,20 +908,20 @@ LAB_0013d8a8:
             yValue2 = (yBase + (float)(rowIndex * 0x1a)) - 3.0f;
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                    xMarker, yValue2);
-            campEquipmentDrawFixed(texture, (u32)alpha, 0x35, originX + 404.0f, yValue3);
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x35, xSecondaryIcon, yValue3);
             value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueB;
             if (value < 100) {
               if (9 < value) goto LAB_0013da24;
             }
             else {
               campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
-                                     originX + 441.0f, yValue2);
+                                     xSecondaryHundreds, yValue2);
 LAB_0013da24:
               campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
-                                     originX + 457.0f, yValue2);
+                                     xSecondaryTens, yValue2);
             }
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
-                                   originX + 473.0f, yValue2);
+                                   xSecondaryOnes, yValue2);
             goto LAB_0013ddc4;
           }
           campEquipmentDrawFixed(texture, (u32)alpha, 0x31, xIcon,
@@ -931,7 +943,7 @@ LAB_0013db80:
       }
 LAB_0013ddc4:
       ;
-      campDrawValue(texture,(int)(originX + 10.0f),(int)(originY + 200.0f),color,1,10,1,
+      campDrawValue(texture,valueX,valueY,color,1,10,1,
                    ((u32)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->effect << 16) |
                    (campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId & 0xffff));
     }
@@ -983,20 +995,20 @@ LAB_0013e178:
             yValue2 = (yBase + (float)(rowIndex * 0x1a)) - 3.0f;
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                    xMarker, yValue2);
-            campEquipmentDrawFixed(texture, (u32)alpha, 0x34, originX + 404.0f, yValue3);
+            campEquipmentDrawFixed(texture, (u32)alpha, 0x34, xSecondaryIcon, yValue3);
             value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueB;
             if (value < 100) {
               if (9 < value) goto LAB_0013e2f4;
             }
             else {
               campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
-                                     originX + 441.0f, yValue2);
+                                     xSecondaryHundreds, yValue2);
 LAB_0013e2f4:
               campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
-                                     originX + 457.0f, yValue2);
+                                     xSecondaryTens, yValue2);
             }
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
-                                   originX + 473.0f, yValue2);
+                                   xSecondaryOnes, yValue2);
             goto LAB_0013e694;
           }
           campEquipmentDrawFixed(texture, (u32)alpha, 0x30, xIcon,

@@ -634,9 +634,12 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                  alpha);
     }
 
+    hpFade = phase < 15 ? 0xff - ((phase - 11) * 0xff) / 4 : 0;
+    spFade = phase < 19 ? 0xff - ((phase - 15) * 0xff) / 4 : 0;
+    effectFade = phase < 20 ? 0xff - ((phase - 16) * 0xff) / 4 : 0;
+
     if (phase > 10) {
         if (phase < 15) {
-            hpFade = 0xff - ((phase - 11) * 0xff) / 4;
             hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
             maxHp = (s32)(u32)datGetMaxHp(pcId);
             ratio = hpScaled / maxHp;
@@ -645,9 +648,7 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                 hpBarOffset = ratio;
             }
             hpBarOffset = 0x4c - hpBarOffset;
-        }
-        else {
-            hpFade = 0;
+        } else {
             hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
             maxHp = (s32)(u32)datGetMaxHp(pcId);
             hpBarOffset = 0x4c - hpScaled / maxHp;
@@ -657,7 +658,6 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
 
     if (phase > 14) {
         if (phase < 19) {
-            spFade = 0xff - ((phase - 15) * 0xff) / 4;
             spScaled = (s32)(u32)datGetSp(pcId) * 0x4c;
             maxSp = (s32)(u32)func_0016c670(pcId);
             ratio = spScaled / maxSp;
@@ -666,9 +666,7 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                 spBarOffset = ratio;
             }
             spBarOffset = 0x4c - spBarOffset;
-        }
-        else {
-            spFade = 0;
+        } else {
             spScaled = (s32)(u32)datGetSp(pcId) * 0x4c;
             maxSp = (s32)(u32)func_0016c670(pcId);
             spBarOffset = 0x4c - spScaled / maxSp;
@@ -678,12 +676,6 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
     }
 
     if (phase > 15) {
-        if (phase < 20) {
-            effectFade = 0xff - ((phase - 16) * 0xff) / 4;
-        }
-        else {
-            effectFade = 0;
-        }
         h_campStatusDrawBadStatus(position, alpha, pcId, effectFade);
     }
 }
