@@ -5470,9 +5470,9 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
 
       if (uVar3 == param_1) {
 
-        FUN_003b8e10(*(u16 *)(param_3 + 0xc),(char)puVar1[0xc],puVar1[10],
+        FUN_003b8e10(*(u16 *)(param_3 + 0xc),(u8)puVar1[0xc],puVar1[10],
 
-                     *(char *)((int)puVar1 + 0x19) != '\0');
+                     *(u8 *)((int)puVar1 + 0x19) != '\0');
 
       }
 
