@@ -19011,7 +19011,7 @@ u32 FUN_00409f50(u32 param_1,int param_2)
     for (iVar9 = 0; uVar4 = FUN_00175410(),
          iVar9 < (int)(uVar4 & 0xffff); iVar9++) {
       lVar7 = FUN_00174a90_fcl((short)iVar9);
-      if ((lVar7 != 0) && (lVar8 = FUN_0017ca10(lVar7), lVar8 == 1)) {
+      if (lVar7 != 0 && (lVar8 = FUN_0017ca10(lVar7)) == 1) {
         iVar3 = FUN_003c5a40(uVar6,*(u16 *)(iVar2 + 0x10) + 1,0x10,0);
         iVar3 = *(int *)(*(int *)(iVar3 + 0x14) + 0x1c);
         *(int *)(iVar3 + 4) = (int)lVar7;
@@ -19030,9 +19030,9 @@ u32 FUN_00409f50(u32 param_1,int param_2)
     *(u32 *)(iVar1 + 0x20) = uVar5;
   }
   FUN_003c6ee0(uVar6);
-  FUN_003c5f40(uVar6,0x409f20);
-  FUN_003c5e20(uVar6,0x40b630);
-  FUN_003c5ee0(uVar6,0x40b780);
+  FUN_003c5f40(uVar6,FUN_00409f20);
+  FUN_003c5e20(uVar6,FUN_0040b630);
+  FUN_003c5ee0(uVar6,FUN_0040b780);
   FUN_003c6d40(uVar6,0,0);
   *(u16 *)(*(int *)(iVar2 + 0x24) + 6) = 10;
   *(u16 *)(*(int *)(iVar2 + 0x24) + 8) = 5;
