@@ -1922,19 +1922,20 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     s32 height;
     s32 x;
     s32 y;
+    s8 opaque = -1;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
     for (y = 0; y < height; y++)
     {
-        x = 0;
         for (x = 0; x < width; x++)
         {
             pixel = dst + (x * 4);
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
+            pixel[3] = (u8)opaque;
             source += 3;
         }
         dst += image->stride;

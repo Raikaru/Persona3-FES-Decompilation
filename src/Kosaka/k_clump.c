@@ -344,10 +344,10 @@ u32 func_001a6740(void* geometry, const char* name)
         }
         if (result == 1)
         {
-            break;
+            return result;
         }
     }
-    return result;
+    return 0;
 }
 
 // FUN_001a6860
