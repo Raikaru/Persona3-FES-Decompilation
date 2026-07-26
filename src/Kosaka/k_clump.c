@@ -88,8 +88,6 @@ extern char D_00678C78[];
 #pragma alias D_00678C78_abs D_00678C78
 extern char D_00678C78_abs[];
 extern u32 D_00678C00[];
-#pragma alias D_00678C00_abs D_00678C00
-extern u32 D_00678C00_abs[];
 extern const char D_00678C28[];
 extern const char D_00678C38[];
 extern const char D_00678C48[];
@@ -710,16 +708,17 @@ void* func_001a7370(void* material, u32* state)
         {
             value = 2;
         }
+        state[2] = 1;
     }
-    for (candidate = 0; candidate < 10 && state[0] != D_00678C00_abs[candidate]; candidate++)
+    for (candidate = 0; candidate < 10 && state[0] != D_00678C00[candidate]; candidate++)
     {
     }
-    for (current = 0; current < 10 && value != D_00678C00_abs[current]; current++)
+    for (current = 0; current < 10 && value != D_00678C00[current]; current++)
     {
     }
     if (candidate < current)
     {
-        state[0] = D_00678C00_abs[current];
+        state[0] = D_00678C00[current];
     }
     selected = K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C48);
     if (selected == 1)
