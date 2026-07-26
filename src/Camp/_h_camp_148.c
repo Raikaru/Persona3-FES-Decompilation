@@ -2440,7 +2440,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     break;
   case 4:
     pair.u = *(u64 *)(puVar1[3] + 0x30);
-    func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 2, pair.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.f[0] = 592.0f;
     pair.f[1] = (float)(puVar1[1] * 0x21) + 124.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x88), 0, 2, 2, pair.u, pair.u, 0, 0, 0, 10);

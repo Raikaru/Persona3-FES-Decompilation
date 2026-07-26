@@ -23,6 +23,7 @@ extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 m
 extern void FUN_004cb750_typed(u32 frame,void *axis,u32 mode);
 extern f32 func_0020c500(const f32 *value,f32 scale);
 extern void func_0020c320(s32 unused,const f32 *source,f32 scale,void *viewport);
+extern int *FUN_003c4b50(int *param_1,int *param_2,int param_3);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -2398,7 +2399,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
   int iVar3;
 
-  long lVar4;
+  int *lVar4;
 
   int iVar5;
 
