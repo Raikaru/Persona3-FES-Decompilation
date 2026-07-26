@@ -565,56 +565,104 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
     s32 fade;
     s32 hpFade;
     s32 spFade;
-    s32 conditionFade;
     s32 effectFade;
+    s32 hpBarOffset;
+    s32 spBarOffset;
+    s32 hpScaled;
+    s32 maxHp;
+    s32 spScaled;
+    s32 maxSp;
+    s32 ratio;
+    s32 level;
     f32 slide;
-    u32 level;
+    f32 transitionX;
+
+    void* font;
 
     if (phase < 3) {
-        fade = 0xff - phase * 0xff / 3;
+        fade = 0xff - (phase * 0xff) / 3;
         slide = (f32)(((3 - phase) * 0x14) / 3);
     } else {
         fade = 0;
         slide = 0.0f;
     }
-    campStatusDrawFadeSprite(position.x - slide + 22.0f,
-                             (39.0f + position.y) - 12.0f,
-                             alpha, DAT_00833B90, 0, fade);
+    transitionX = position.x - slide;
+    campStatusDrawSpriteCall(0, DAT_00833B90, 0, fade,
+                             transitionX + 22.0f,
+                             (39.0f + position.y) - 12.0f, alpha);
+
     if (phase != 0) {
         if (phase < 4) {
             fade = 0xff - ((phase - 1) * 0xff) / 3;
+            slide = (f32)(((4 - phase) * 0x28) / 3);
         } else {
             fade = 0;
+            slide = 0.0f;
         }
+        transitionX = position.x - slide;
     }
+
+
     if (phase > 3) {
+
+        fade = phase < 9 ? 0xff - ((phase - 4) * 0xff) / 4 : 0;
+        if (datGetLevel(pcId) >= 10) {
+            font = campStatusGetFont(2);
+            level = datGetLevel(pcId);
+            campStatusDrawSpriteCall(0, font, level / 10 + 0xb, fade,
+                                     transitionX + 81.0f,
+                                     ((52.0f + position.y) - 1.0f) - 12.0f,
+                                     alpha);
+        }
+        font = campStatusGetFont(2);
         level = datGetLevel(pcId);
-        campStatusDrawNumber((f32)campStatusClampFade(fade),
-                             position.x + 81.0f,
-                             52.0f + position.y - 1.0f - 12.0f,
-                             level);
-        campStatusDrawNumber((f32)campStatusClampFade(fade),
-                             position.x + 96.0f,
-                             52.0f + position.y - 1.0f - 12.0f,
-                             level);
+        campStatusDrawSpriteCall(0, font, level % 10 + 0xb, fade,
+                                 transitionX + 96.0f,
+                                 ((52.0f + position.y) - 1.0f) - 12.0f,
+                                 alpha);
     }
-    hpFade = phase < 9 ? 0xff - ((phase - 4) * 0xff) / 4 : 0;
-    spFade = phase < 0x13 ? 0xff - ((phase - 0xf) * 0xff) / 4 : 0;
-    conditionFade = phase < 0x13 ? 0xff - ((phase - 0xf) * 0xff) / 4 : 0;
-    effectFade = phase < 0x14 ? 0xff - ((phase - 0x10) * 0xff) / 4 : 0;
+
+    hpFade = phase < 15 ? 0xff - ((phase - 11) * 0xff) / 4 : 0;
+    spFade = phase < 19 ? 0xff - ((phase - 15) * 0xff) / 4 : 0;
+    effectFade = phase < 20 ? 0xff - ((phase - 16) * 0xff) / 4 : 0;
+
     if (phase > 10) {
-        u32 hp = datGetHp(pcId);
-        u32 maxHp = datGetMaxHp(pcId);
-        s32 hpBarOffset = maxHp > 0 ? 0x4c - (hp * 0x4c) / maxHp : 0x4c;
+        if (phase < 15) {
+            hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
+            maxHp = (s32)(u32)datGetMaxHp(pcId);
+            ratio = hpScaled / maxHp;
+            hpBarOffset = (ratio * (phase - 11)) / 4;
+            if (ratio < hpBarOffset) {
+                hpBarOffset = ratio;
+            }
+            hpBarOffset = 0x4c - hpBarOffset;
+        } else {
+            hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
+            maxHp = (s32)(u32)datGetMaxHp(pcId);
+            hpBarOffset = 0x4c - hpScaled / maxHp;
+        }
         h_campStatusDrawHp(position, alpha, pcId, hpBarOffset, hpFade);
     }
+
     if (phase > 14) {
-        u32 sp = datGetSp(pcId);
-        u32 maxSp = func_0016c670(pcId);
-        s32 spBarOffset = maxSp > 0 ? 0x4c - (sp * 0x4c) / maxSp : 0x4c;
+        if (phase < 19) {
+            spScaled = (s32)(u32)datGetSp(pcId) * 0x4c;
+            maxSp = (s32)(u32)func_0016c670(pcId);
+            ratio = spScaled / maxSp;
+            spBarOffset = (ratio * (phase - 15)) / 4;
+            if (ratio < spBarOffset) {
+                spBarOffset = ratio;
+            }
+            spBarOffset = 0x4c - spBarOffset;
+        } else {
+            spScaled = (s32)(u32)datGetSp(pcId) * 0x4c;
+            maxSp = (s32)(u32)func_0016c670(pcId);
+            spBarOffset = 0x4c - spScaled / maxSp;
+        }
         h_campStatusDrawSp(position, alpha, pcId, spBarOffset, spFade);
-        h_campStatusDrawPhysicalCondition(position, alpha, pcId, conditionFade);
+        h_campStatusDrawPhysicalCondition(position, alpha, pcId, spFade);
     }
+
     if (phase > 15) {
         h_campStatusDrawBadStatus(position, alpha, pcId, effectFade);
     }
