@@ -628,50 +628,57 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 6:
         {
-            CampMenuAnimPair state6Pair;
+            CampMenuAnimPair state6Pair0;
+            CampMenuAnimPair state6Pair1;
+            CampMenuAnimPair state6Pair2;
+            CampMenuAnimPair state6Pair3;
+            CampMenuAnimPair state6Pair4;
+            CampMenuAnimPair state6Pair5;
+            CampMenuAnimPair state6Pair6;
+            CampMenuAnimPair state6Pair7;
             CampMenuAnimPair state6Shifted;
         work->selectedPanel = 0;
-        state6Pair.f[0] = 21.0f;
-        state6Pair.f[1] = 215.0f;
-        state6Shifted = state6Pair;
+        state6Pair0.f[0] = 21.0f;
+        state6Pair0.f[1] = 215.0f;
+        state6Shifted = state6Pair0;
         state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
-        state6Pair.f[0] = 50.0f;
-        state6Pair.f[1] = 263.0f;
-        state6Shifted = state6Pair;
+                     0, 2, 1, state6Shifted.q, state6Pair0.q, 0, 0);
+        state6Pair1.f[0] = 50.0f;
+        state6Pair1.f[1] = 263.0f;
+        state6Shifted = state6Pair1;
         state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
-        state6Pair.f[0] = 87.0f;
-        state6Pair.f[1] = 92.0f;
+                     0, 2, 1, state6Shifted.q, state6Pair1.q, 0, 0);
+        state6Pair2.f[0] = 87.0f;
+        state6Pair2.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 1, state6Pair.q, state6Pair.q, 0, 0);
-        state6Shifted = state6Pair;
+                     0, 2, 1, state6Pair2.q, state6Pair2.q, 0, 0);
+        state6Shifted = state6Pair2;
         state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
-        state6Pair.f[0] = 388.0f;
-        state6Pair.f[1] = 92.0f;
+                     0, 2, 1, state6Shifted.q, state6Pair2.q, 0, 0);
+        state6Pair4.f[0] = 388.0f;
+        state6Pair4.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 1, state6Pair.q, state6Pair.q, 0, 0);
-        state6Shifted = state6Pair;
+                     0, 2, 1, state6Pair4.q, state6Pair4.q, 0, 0);
+        state6Shifted = state6Pair4;
         state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
-        state6Pair.f[0] = 95.0f;
-        state6Pair.f[1] = 93.0f;
-        state6Shifted = state6Pair;
+                     0, 2, 1, state6Shifted.q, state6Pair4.q, 0, 0);
+        state6Pair6.f[0] = 95.0f;
+        state6Pair6.f[1] = 93.0f;
+        state6Shifted = state6Pair6;
         state6Shifted.f[1] += 200.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
+                     0, 2, 1, state6Shifted.q, state6Pair6.q, 0, 0);
         for (index = 0; index < 7; index++) {
             work->panelFlags[index] = FUN_0016f190(index + 0x183);
         }
-        state6Pair.f[0] = 392.0f;
-        state6Pair.f[1] = 385.0f;
+        state6Pair7.f[0] = 392.0f;
+        state6Pair7.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 1, state6Pair.q, state6Pair.q, 0, 0);
+                     0, 2, 1, state6Pair7.q, state6Pair7.q, 0, 0);
         work->entriesReady = 0;
         work->state = 7;
         break;

@@ -1008,6 +1008,7 @@ void fclCombineList003db5e0(FclOwner* param_1)
 void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                              FclOwner* owner)
 {
+    FclList* work;
     FclDb650TextData* text_data;
     s32 index;
     s32 draw_variant;
@@ -1015,7 +1016,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     s16 y;
     s16 alpha;
     char number_text[0x10];
-
+    work = owner->container->work;
     x = result->x;
     y = result->y;
     alpha = result->alpha;
@@ -1023,7 +1024,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
 
     switch (result->mode) {
     case 4:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x1a, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x1b, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x1c, 0);
@@ -1033,7 +1034,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 5:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x20, 0);
         for (index = 0; index < (s32)owner->callback_entry_count; index++) {
             FUN_0040e3c0(0.0f, x + index * 0x16, y, alpha,
@@ -1042,7 +1043,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 6:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x32, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x33, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x34, 0);
@@ -1051,7 +1052,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 9:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x47, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x48, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x49, 0);
@@ -1062,7 +1063,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 10:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x3f, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x40, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x41, 0);
@@ -1074,7 +1075,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 12:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x0e, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x0f, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x10, 0);
@@ -1089,7 +1090,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 13:
-        if ((owner->container->work->flags & 0x10000) == 0) return;
+        if ((work->flags & 0x10000) == 0) return;
         index = (s32)(FUN_00175410() & 0xffff) - 4;
         FUN_0040e3f0(1.0f, 1.0f, 1.0f + 0.2f * (float)index,
                       1.0f + 0.2f * (float)index,
@@ -1098,7 +1099,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 14:
-        if ((owner->container->work->flags & 0x10000) == 0) return;
+        if ((work->flags & 0x10000) == 0) return;
         index = (s32)(FUN_00175410() & 0xffff) - 4;
         FUN_0040e3f0(1.0f, 1.0f, 1.0f + 0.2f * (float)index,
                       1.0f + 0.2f * (float)index,
@@ -1106,13 +1107,13 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                       y + 0x88 + index * 6, alpha, 0x2e, 0, 0, 0);
         return;
     case 15:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(2.0f, x, y, alpha, 0x0b, 0);
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x0c, owner->container->work->mode);
+        FUN_0040e3c0(0.0f, x, y, alpha, 0x0c, work->mode);
         return;
 
     case 20:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x15, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x16, 0);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x17, 0);
@@ -1131,7 +1132,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
 
     case 21:
-        if ((owner->container->work->flags & 0x10000) != 0) return;
+        if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x16, 1);
         FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x17, 0);
         text_data = result->text_data;
@@ -1475,7 +1476,6 @@ void fclCombineList003dcfb0(FclResultStream* callback_target, FclDrawResult* res
 
     (void)callback_target;
 }
-
 // FUN_003dd260 NONMATCHING
 void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* result,
                              FclDrawCallbackRecord* record)
@@ -1485,6 +1485,7 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
     s32 i;
     s32 selected;
     s32 alternate;
+    s32 mode;
     s16 alpha;
 
     x = record->x + result->x_offset;
@@ -1492,9 +1493,10 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
     alpha = (s16)(((s32)record->alpha * (s32)result->alpha_scale) / 0xff);
     selected = (record->flags & 1) != 0;
     alternate = (record->flags & 2) != 0;
+    mode = result->mode;
 
     if (alpha != 0) {
-        switch (result->mode) {
+        switch (mode) {
         case 11:
             if ((record->work->flags & 0x10000) == 0) {
                 fclCombineList003dcfb0(callback_target, result, record, selected);

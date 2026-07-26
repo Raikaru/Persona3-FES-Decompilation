@@ -3275,7 +3275,7 @@ u32 FUN_003cda00(void)
 // FUN_003CDA60 NONMATCHING
 
 
-void FUN_003cda60(u64 param_1)
+void FUN_003cda60(u32 param_1)
 
 
 

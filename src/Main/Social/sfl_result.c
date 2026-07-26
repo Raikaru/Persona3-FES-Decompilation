@@ -515,7 +515,7 @@ void func_001fa0d0(void)
     u8 auStack_20[16];
 
     for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
-        uVar1 = (u16)uVar3;
+        uVar1 = (s16)uVar3;
         switch (uVar3) {
         case 2:
         case 3:
@@ -558,23 +558,23 @@ void func_001fa0d0(void)
             if (*pcVar2 != '\0') {
                 FUN_0019d3f0(0x684ba8, 200);
             }
-            if (*(short*)(pcVar2 + 2) != 0) {
-                FUN_00182c50(*(short*)(pcVar2 + 2), auStack_20);
+            if (*(u16*)(pcVar2 + 2) != 0) {
+                FUN_00182c50((s16)*(u16*)(pcVar2 + 2), auStack_20);
                 FUN_001831e0(uVar1, 0, auStack_20);
                 FUN_0016da50(uVar1, 0, 0);
             }
-            if (*(short*)(pcVar2 + 4) != 0) {
-                FUN_00182c50(*(short*)(pcVar2 + 4), auStack_20);
+            if (*(u16*)(pcVar2 + 4) != 0) {
+                FUN_00182c50((s16)*(u16*)(pcVar2 + 4), auStack_20);
                 FUN_001831e0(uVar1, 1, auStack_20);
                 FUN_0016da50(uVar1, 1, 1);
             }
-            if (*(short*)(pcVar2 + 6) != 0) {
-                FUN_00182c50(*(short*)(pcVar2 + 6), auStack_20);
+            if (*(u16*)(pcVar2 + 6) != 0) {
+                FUN_00182c50((s16)*(u16*)(pcVar2 + 6), auStack_20);
                 FUN_001831e0(uVar1, 2, auStack_20);
                 FUN_0016da50(uVar1, 2, 2);
             }
-            if (*(short*)(pcVar2 + 8) != 0) {
-                FUN_00182c50(*(short*)(pcVar2 + 8), auStack_20);
+            if (*(u16*)(pcVar2 + 8) != 0) {
+                FUN_00182c50((s16)*(u16*)(pcVar2 + 8), auStack_20);
                 FUN_001831e0(uVar1, 3, auStack_20);
                 FUN_0016da50(uVar1, 3, 3);
             }
