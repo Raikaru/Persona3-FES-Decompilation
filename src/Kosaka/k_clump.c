@@ -980,9 +980,14 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                u32 enabled;
+
+                enabled = item->enabled;
+                if (enabled == 1)
+                {
+                    (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                }
             }
         }
         item = item->next;
@@ -1001,9 +1006,14 @@ void func_001a7b50(void* state, u32 mode)
                 sphere = func_004912b0(item->object);
                 if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
                 {
-                    if (item->enabled == 1)
                     {
-                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                        u32 enabled;
+
+                        enabled = item->enabled;
+                        if (enabled == 1)
+                        {
+                            (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                        }
                     }
                     if (D_007CC1C0 == 1)
                     {
@@ -1011,9 +1021,14 @@ void func_001a7b50(void* state, u32 mode)
                         resourceCall = (void (**)(void*))((u8*)object + 0x48);
                         (*resourceCall)(object);
                     }
-                    if (item->enabled == 1)
                     {
-                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                        u32 enabled;
+
+                        enabled = item->enabled;
+                        if (enabled == 1)
+                        {
+                            (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                        }
                     }
                 }
             }
@@ -1036,9 +1051,14 @@ void func_001a7b50(void* state, u32 mode)
         sphere = func_004912b0(item->object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                u32 enabled;
+
+                enabled = item->enabled;
+                if (enabled == 1)
+                {
+                    (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                }
             }
             if (*(u32*)((u8*)&D_007CC1C0 + 0x10) == 1)
             {
@@ -1046,9 +1066,14 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                u32 enabled;
+
+                enabled = item->enabled;
+                if (enabled == 1)
+                {
+                    (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                }
             }
         }
         item = item->next;
@@ -1069,9 +1094,14 @@ void func_001a7b50(void* state, u32 mode)
         sphere = func_004912b0(item->object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                u32 enabled;
+
+                enabled = item->enabled;
+                if (enabled == 1)
+                {
+                    (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                }
             }
             if (*(u32*)((u8*)&D_007CC1C0 + 0x14) == 1)
             {
@@ -1079,9 +1109,14 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                u32 enabled;
+
+                enabled = item->enabled;
+                if (enabled == 1)
+                {
+                    (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                }
             }
         }
         item = item->next;

@@ -2013,7 +2013,7 @@ void func_001d19d0(void)
     FldUnit* unit;
     FldUnit* unit2;
     u32 valid;
-    u16 predicate;
+    u32 predicate;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
@@ -2023,7 +2023,7 @@ void func_001d19d0(void)
         {
             valid = 1;
         }
-        predicate = valid > 0;
+        predicate = valid != 0;
         if (predicate == 1)
         {
             offset = i * sizeof(FldUnit);

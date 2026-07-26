@@ -1481,6 +1481,8 @@ extern void (*DAT_009600a4)(...);
 #pragma alias DAT_009600a4_abs DAT_009600a4
 extern code DAT_009600a4_abs[];
 extern u64 (*DAT_00960178)(...);
+#pragma alias DAT_00960178_u32_abs DAT_00960178
+extern u32 (*DAT_00960178_u32_abs[])(...);
 #pragma alias DAT_00960178_u32 DAT_00960178
 extern u32 (*DAT_00960178_u32)(...);
 #pragma alias DAT_00960178_abs DAT_00960178
@@ -33463,7 +33465,7 @@ u32 FUN_0033ce10(int param_1)
   {
     u8 *puVar2;
 
-    puVar2 = (u8 *)(*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
+    puVar2 = (u8 *)(*DAT_00960178_u32_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
     *(u32 *)puVar2 = (u32)(puVar2 + 0x10);
     *(u32 *)(puVar2 + 8) = (u32)puVar2;
     uVar4 = (u32)puVar2;

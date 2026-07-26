@@ -321,7 +321,6 @@ u64 FUN_003c8550(u8 *param_1)
   int iVar5;
   int iVar6;
   u32 uVar1;
-  u32 p;
   u32 lVar2;
   u32 *puVar3;
   u8 auStack_20[32];
@@ -333,8 +332,7 @@ u64 FUN_003c8550(u8 *param_1)
   iVar5 = *(int *)(*(int *)(context + 0x18) + 4);
   if (iVar5 != 0) {
     puVar3 = *(u32 **)(iVar5 + 0x14);
-    p = puVar3[2];
-    if (p == 0) {
+    if (puVar3[2] == 0) {
       if (puVar3[1] == 0) {
         FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xc8);
       } else {
