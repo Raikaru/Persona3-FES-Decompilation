@@ -469,8 +469,8 @@ extern code pcRam006974bc;
 extern code pcRam006974c8;
 extern code pcRam006974f8;
 extern code pcRam00697504;
-extern void LAB_002bd060(void);
-extern void LAB_002bd210(void);
+extern void LAB_002bd060(u32 **param_1);
+extern void LAB_002bd210(u32 **param_1);
 extern char* PTR_s_N_00646555_0x12_00696dcc[];
 extern char* PTR_s_battle_effect_ATC_D_BED_00696c80;
 #pragma alias PTR_s_battle_effect_ATC_D_BED_abs PTR_s_battle_effect_ATC_D_BED_00696c80
@@ -3501,6 +3501,19 @@ void func_002bce10(float param_1,float param_2,int param_3,int param_4,float *pa
     *(short *)(param_5 + 4) = *(short *)(param_5 + 4) + 1;
   }
   return;
+}
+// FUN_002bd060
+void LAB_002bd060(u32 **param_1)
+{
+  u16 *value = (u16 *)((u8 *)(*param_1) + 0xa0);
+  *value = *value + 1;
+}
+
+// FUN_002bd210
+void LAB_002bd210(u32 **param_1)
+{
+  u16 *value = (u16 *)((u8 *)(*param_1) + 0xa0);
+  *value = *value - 1;
 }
 
 
