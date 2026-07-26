@@ -216,6 +216,9 @@ extern f32 func_0020c500(void *, f32);
 extern void func_0020c400(void *, const float *, float, float *);
 extern void func_0020cc80(void *, const u8 *);
 extern void gcPose0024f960(void *, const float *);
+extern void func_0020d630(void *, const f32 *);
+extern void func_0020d690(void *, const f32 *);
+extern void func_004bdde0(f32, f32 *, const f32 *, u32);
 extern void func_0020ac90(void *);
 extern u32 sflResult001f99f0(void);
 extern void func_001831e0(void);
@@ -3074,30 +3077,105 @@ u32 func_001f65e0(void)
     return BR_U32(sBrReward, 0) & 1;
 }
 
+/* Retail reconstruction spans 0x001f6630-0x001f6a5c: reward reset, card setup, and two indexed animation passes. */
 // FUN_001f6630 NONMATCHING
 void func_001f6630(void)
 {
-    u8 *work = sBrReward;
-    u32 i;
-    K_ASSERT(work != NULL, 0x8c);
-    BR_U32(work, 0x340c) = 0;
-    BR_U32(work, 0x3408) = 0;
-    BR_U32(work, 0x3410) = 0;
-    BR_U32(work, 0x3414) = 0;
-    BR_U32(work, 0x3404) = 0;
-    BR_U32(work, 0x3400) = 0;
-    if (BR_U32(work, 0x341c) != 0) {
-        BR_U32(work, 0) |= 8;
-        for (i = 0; i < BR_U32(work, 0x341c) && i < 8; i++) {
-            BR_U16(work, 0x33f0 + i * 2) = BR_U16(work + BR_U32(work, 0x3c + i * 4) * 0x670, 0x60);
+    u32 *work;
+    s32 count;
+    s32 i;
+
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = (u32 *)sBrReward;
+    work[0xd03] = 0;
+    work[0xd02] = 0;
+    work[0xd04] = 0;
+    work[0xd05] = 0;
+    work[0xd01] = 0;
+    work[0xd00] = 0;
+    count = work[0xd07];
+    if (count != 0) {
+        u32 available = func_001756f0() & 0xffff;
+        work[0] |= 8;
+        if ((func_00175410() & 0xffff) < available + count) {
+            work[0] |= 0x10;
+        } else {
+            K_ASSERT(count < 9, 0x272);
+            for (i = 0; i < count; i++) {
+                *(u16 *)((u8 *)work + 0x33f0 + i * 2) =
+                    *(u16 *)((u8 *)work +
+                             ((u32 *)((u8 *)work + 0x3c))[i] * 0x670 + 0x60);
+            }
+            work[0xd01] = count;
         }
-        BR_U32(work, 0x3404) = BR_U32(work, 0x341c);
     }
-    if (BR_U32(work, 0x3418) != 0) {
-        BR_U32(work, 0) |= 0x20;
+    if (work[0xd06] != 0) {
+        work[0] |= 0x20;
     }
-    BR_U32(work, 0) |= 0x400;
-    BR_U32(work, 4) = 1;
+    switch (work[2]) {
+    case 1:
+    {
+        f32 output[4];
+        for (i = 0; i < (s32)work[0xcf7]; i++) {
+            u8 *entry;
+            entry = (u8 *)work +
+                    ((u32 *)((u8 *)work + 0x3c))[i] * 0x670 + 0x5c;
+            switch (BR_U32(entry, 0)) {
+            case 0:
+                func_00209f00(entry + 0xc);
+                func_0020c590(entry + 0xc, BR_U16(entry, 4));
+                break;
+            case 1:
+                func_0020a800(entry + 0xc);
+                func_0020c5f0(entry + 0xc, BR_U32(entry, 4),
+                              BR_U32(entry, 8));
+                break;
+            }
+            {
+                static const f32 scale[3] = {10.0f, 10.0f, 10.0f};
+                static const f32 axis[3] = {0.0f, 1.0f, 0.0f};
+                f32 rotation[4];
+                func_0020d630(entry + 0xc, scale);
+                func_004bdde0(180.0f, rotation, axis, 0);
+                func_0020d690(entry + 0xc, rotation);
+            }
+            func_0024fd80(entry + 0x60c);
+            func_0024da60(entry + 0x60c);
+            func_0024f090(entry + 0x60c);
+        }
+        for (i = 0; i < (s32)work[0xd07]; i++) {
+            u8 *entry;
+            f32 position[2];
+            position[0] = (f32)i * 220.0f + 320.0f;
+            position[1] = 184.0f;
+            entry = (u8 *)work +
+                    ((u32 *)((u8 *)work + 0x3c))[i] * 0x670 + 0x5c;
+            func_0020c400(entry + 0xc, position,
+                          func_0020c500(entry + 0xc, 200.0f), output);
+            output[1] += 100.0f;
+            func_0024f9f0(entry + 0x60c, output);
+        }
+        for (i = 0; i < (s32)work[0xd06]; i++) {
+            u8 *entry;
+            f32 position[2];
+            position[0] = (f32)i * 220.0f + 320.0f;
+            position[1] = 184.0f;
+            entry = (u8 *)work +
+                    ((u32 *)((u8 *)work + 0x1c))[i] * 0x670 + 0x5c;
+            func_0020c400(entry + 0xc, position,
+                          func_0020c500(entry + 0xc, 200.0f), output);
+            output[1] += 100.0f;
+            func_0024f9f0(entry + 0x60c, output);
+        }
+        work[0xd33] = 0;
+        work[0xd36] = 0;
+        break;
+    }
+    case 0:
+        break;
+    }
+    work[0] |= 0x400;
+    work[1] = 1;
     func_001f6a60();
 }
 
