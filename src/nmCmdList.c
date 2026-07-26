@@ -1813,9 +1813,9 @@ u32 FUN_003c75b0(void)
   u32 uVar2;
   piVar1 = (int *)FUN_003c7d50_direct();
 
-  if (lVar1 == 0) {
+  if (piVar1 == 0) {
     uVar2 = 0xffffffffffffffff;
-  } else if ((iVar3 = *(int *)lVar1) < 0) {
+  } else if ((iVar3 = *piVar1) < 0) {
     uVar2 = 0xffffffffffffffff;
   } else {
     uVar2 = FUN_003a2830();
