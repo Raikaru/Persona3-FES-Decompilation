@@ -1558,7 +1558,7 @@ void FUN_00202A10(void)
 // FUN_00202BC0 NONMATCHING
 void FUN_00202BC0(void)
 {
-    u32 i;
+    s32 i;
     u8* work;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
@@ -1572,7 +1572,7 @@ void FUN_00202BC0(void)
     {
         func_003b0170(*(u32*)(work + 0x88));
     }
-    *(u32*)work &= ~3u;
+    *(u32*)work &= ~2u;
 }
 static PanelSkillRow* panelItemRow(u32 index)
 {

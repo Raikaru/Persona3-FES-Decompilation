@@ -9950,6 +9950,7 @@ void func_002eec60(void)
   int iVar4;
   u32 *puVar5;
   u32 *puVar6;
+  s16 sVar7;
   puVar6 = (u32*)DAT_0069a000;
 
   puVar5 = work.data;
