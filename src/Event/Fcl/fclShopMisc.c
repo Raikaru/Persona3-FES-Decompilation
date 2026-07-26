@@ -21682,157 +21682,71 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
 
 {
-
+  extern float cosf(float);
+  extern float sinf(float);
   u32 uVar1;
-
   u32 uVar2;
-
   u32 uVar3;
-
   float fVar4;
-
   float fVar5;
-
-  float fStack_c0;
-
-  float fStack_bc;
-
-  float fStack_b8;
-
-  float fStack_a0;
-
-  float fStack_9c;
-
-  float fStack_98;
-
-  float fStack_94;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_54;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_14;
-
-  
+  float render_data[44];
+  code render_state = DAT_00960090;
 
   if (param_9 == 0) {
-
     RpSkyRenderStateSet(2,0x44);
-
     RpSkyRenderStateSet(3,0x717fb);
-
-    (*DAT_00960090)(6,1);
-
-    (*DAT_00960090)(8,1);
-
-    (*DAT_00960090)(7,2);
-
-    (*DAT_00960090)(9,2);
-
-    (*DAT_00960090)(0xc,1);
-
-    (*DAT_00960090)(0xe,0);
-
-    (*DAT_00960090)(0x14,2);
-
-    (*DAT_00960090)(1,0);
-
+    (*render_state)(6,1);
+    (*render_state)(8,1);
+    (*render_state)(7,2);
+    (*render_state)(9,2);
+    (*render_state)(0xc,1);
+    (*render_state)(0xe,0);
+    (*render_state)(0x14,2);
+    (*render_state)(1,0);
   }
 
   uVar1 = param_7 >> 0x18;
-
   uVar3 = param_7 >> 0x10 & 0xff;
-
   uVar2 = param_7 >> 8 & 0xff;
-
   param_7 = param_7 & 0xff;
-
   param_1 = *(float *)&DAT_00960088 - param_1;
 
   fVar5 = DAT_007cae00 + DAT_007caf14 * (float)param_8;
-
   fVar4 = (float)cosf(fVar5);
-
   fVar5 = (float)sinf(fVar5);
-
-  fStack_c0 = (float)param_2 + (float)param_4 * fVar4;
-
-  fStack_bc = (float)param_3 + (float)-param_4 * fVar5;
-
-  { float *vc = (float *)&fStack_a0;
-    vc[0] = (float)uVar1;
-    vc[1] = (float)uVar3;
-    vc[2] = (float)uVar2;
-    vc[3] = (float)param_7; }
+  render_data[0] = (float)param_2 + (float)param_4 * fVar4;
+  render_data[1] = (float)param_3 + (float)-param_4 * fVar5;
+  render_data[2] = param_1;
+  render_data[8] = (float)uVar1;
+  render_data[9] = (float)uVar3;
+  render_data[10] = (float)uVar2;
+  render_data[11] = (float)param_7;
 
   fVar5 = DAT_007cae00 + DAT_007caf14 * (float)(param_8 + 0x78);
-
-  fStack_b8 = param_1;
-
   fVar4 = (float)cosf(fVar5);
-
   fVar4 = (float)param_5 * fVar4;
-
   fVar5 = (float)sinf(fVar5);
-
-  fStack_80 = (float)param_2 + fVar4;
-
-  fStack_7c = (float)param_3 + (float)-param_5 * fVar5;
-
-  { float *vc = (float *)&fStack_60;
-    vc[0] = (float)uVar1;
-    vc[1] = (float)uVar3;
-    vc[2] = (float)uVar2;
-    vc[3] = (float)param_7; }
+  render_data[16] = (float)param_2 + fVar4;
+  render_data[17] = (float)param_3 + (float)-param_5 * fVar5;
+  render_data[18] = param_1;
+  render_data[24] = (float)uVar1;
+  render_data[25] = (float)uVar3;
+  render_data[26] = (float)uVar2;
+  render_data[27] = (float)param_7;
 
   fVar5 = DAT_007cae00 + DAT_007caf14 * (float)(param_8 + -0x78);
-
-  fStack_78 = param_1;
-
   fVar4 = (float)cosf(fVar5);
-
   fVar4 = (float)param_6 * fVar4;
-
   fVar5 = (float)sinf(fVar5);
+  render_data[32] = (float)param_2 + fVar4;
+  render_data[33] = (float)param_3 + (float)-param_6 * fVar5;
+  render_data[34] = param_1;
+  render_data[40] = (float)uVar1;
+  render_data[41] = (float)uVar3;
+  render_data[42] = (float)uVar2;
+  render_data[43] = (float)param_7;
 
-  fStack_40 = (float)param_2 + fVar4;
-
-  fStack_3c = (float)param_3 + (float)-param_6 * fVar5;
-
-  { float *vc = (float *)&fStack_20;
-    vc[0] = (float)uVar1;
-    vc[1] = (float)uVar3;
-    vc[2] = (float)uVar2;
-    vc[3] = (float)param_7; }
-
-  fStack_38 = param_1;
-
-  (*DAT_009600a0)(3,&fStack_c0,3);
-
-  (*DAT_00960090)(1,0);
-
+  (*DAT_009600a0)(3,render_data,3);
+  (*render_state)(1,0);
   return;
-
 }

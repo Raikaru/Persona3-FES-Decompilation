@@ -1410,7 +1410,7 @@ LAB_0013fc20:
 void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 {
     register void* parent;
-    u32 drawAlpha;
+    CampEquipmentEntry* selectedEquipment;
     const char* textValue;
     u32 categoryMask;
     u32 color;
@@ -1423,8 +1423,8 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     f32 digitY;
     char textBuffer[256];
 
-    drawAlpha = (u32)alpha & 0xff;
-    categoryMask = work->entries[work->firstVisibleEntry + work->selectedEntry].categoryMask;
+    selectedEquipment = &work->entries[work->firstVisibleEntry + work->selectedEntry];
+    categoryMask = selectedEquipment->categoryMask;
     frame = 0x1a;
     switch (categoryMask) {
     case 0:
@@ -1478,56 +1478,61 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 
     originX = (f32)(u32)position;
     originY = (f32)(u32)(position >> 32);
-    campDrawSprite(parent, DAT_00833B70, frame + 1, drawAlpha,
+    campDrawSprite(parent, DAT_00833B70, frame + 1, (u32)alpha,
                    originX + 15.0f, originY + 1.0f, texture);
-    textValue = func_00171110(
-        (s16)work->entries[work->firstVisibleEntry + work->selectedEntry].itemId,
-        (s16)work->entries[work->firstVisibleEntry + work->selectedEntry].slotType);
+    textValue = func_00171110((s16)selectedEquipment->itemId,
+                               (s16)selectedEquipment->slotType);
     sprintf(textBuffer, DAT_007cb66c, textValue);
     color = (0xffU - alpha) | 0xffffff00;
     campDrawText(texture, (s32)(originX + 55.0f),
                  (s32)(originY + 12.0f), color, 10, 1, textBuffer, 0x10, 0);
 
-    category = work->entries[work->firstVisibleEntry + work->selectedEntry].equipmentClass;
+    category = selectedEquipment->equipmentClass;
     digitY = originY + 13.0f;
     if (category == 3) {
         return;
     }
     if (category == 2) {
-        campDrawSprite(parent, DAT_00833A50[0], 0x32, drawAlpha,
+        campDrawSprite(parent, DAT_00833A50[0], 0x32, (u32)alpha,
                        originX + 288.0f, originY + 9.0f, texture);
-        value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueD;
+        value = selectedEquipment->valueD;
         hadHundreds = 0;
         if (value >= 100) {
             hadHundreds = 1;
             campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, (u32)alpha,
                                 originX + 325.0f, digitY, texture);
             value %= 100;
         }
         if (value >= 10 || hadHundreds != 0) {
             campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, (u32)alpha,
                                 originX + 341.0f, digitY, texture);
         }
         campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, (u32)alpha,
                             originX + 357.0f, digitY, texture);
         return;
     }
     if (category == 1) {
-        campDrawSprite(parent, DAT_00833A50[0], 0x30, drawAlpha,
+        campDrawSprite(parent, DAT_00833A50[0], 0x30, (u32)alpha,
                        originX + 288.0f, originY + 9.0f, texture);
-        value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueC;
+        value = selectedEquipment->valueC;
         hadHundreds = 0;
         if (value >= 100) {
             hadHundreds = 1;
             campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, (u32)alpha,
                                 originX + 325.0f, digitY, texture);
             value %= 100;
         }
         if (value >= 10 || hadHundreds != 0) {
             campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, (u32)alpha,
                                 originX + 341.0f, digitY, texture);
         }
         campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, (u32)alpha,
                             originX + 357.0f, digitY, texture);
         return;
     }
@@ -1535,35 +1540,39 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
         return;
     }
 
-    campDrawSprite(parent, DAT_00833A50[0], 0x2e, drawAlpha,
+    campDrawSprite(parent, DAT_00833A50[0], 0x2e, (u32)alpha,
                    originX + 288.0f, originY + 9.0f, texture);
-    value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueA;
+    value = selectedEquipment->valueA;
     hadHundreds = 0;
     if (value >= 100) {
         hadHundreds = 1;
         campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 100 + 0xb, (u32)alpha,
                             originX + 325.0f, digitY, texture);
         value %= 100;
     }
     if (value >= 10 || hadHundreds != 0) {
         campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 10 + 0xb, (u32)alpha,
                             originX + 341.0f, digitY, texture);
     }
     campDrawSprite(parent, H_Maestro_001120a0(2),
                         value % 10 + 0xb, (u32)alpha,
                         originX + 357.0f, digitY, texture);
-    campDrawSprite(parent, DAT_00833A50[0], 0x34, drawAlpha,
+    campDrawSprite(parent, DAT_00833A50[0], 0x34, (u32)alpha,
                    originX + 404.0f, originY + 9.0f, texture);
-    value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueB;
+    value = selectedEquipment->valueB;
     hadHundreds = 0;
     if (value >= 100) {
         hadHundreds = 1;
         campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 100 + 0xb, (u32)alpha,
                             originX + 441.0f, digitY, texture);
         value %= 100;
     }
     if (value >= 10 || hadHundreds != 0) {
         campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 10 + 0xb, (u32)alpha,
                             originX + 457.0f, digitY, texture);
     }
     campDrawSprite(parent, H_Maestro_001120a0(2),
