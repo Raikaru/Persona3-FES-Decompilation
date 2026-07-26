@@ -922,15 +922,9 @@ static void hmallocApplyInputTable(void)
         dst += 2;
     } while (copyCount > 0);
     resourceA = sHmallocResourceA;
-    i = 1;
-    word = *(s16*)((u8*)resourceA + 0x3c);
-    func_0016cfe0(i, word);
-    i = 1;
-    word = *(s16*)((u8*)resourceA + 0x3e);
-    func_0016d090(i, word);
-    i = 1;
-    word = *(s16*)((u8*)resourceA + 0x40);
-    func_0016d160(i, word);
+    func_0016cfe0(1, *(s16*)((u8*)resourceA + 0x3c));
+    func_0016d090(1, *(s16*)((u8*)resourceA + 0x3e));
+    func_0016d160(1, *(s16*)((u8*)resourceA + 0x40));
 
     for (i = 0; i < 0x100; i++)
     {

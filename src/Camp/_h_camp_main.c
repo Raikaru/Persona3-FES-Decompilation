@@ -1629,7 +1629,7 @@ static CampCardSprite* campQueueCardSprite(void* resource, s32 frame,
 static void campDrawCardSprite(void* resource, s32 frame, f32 scale,
                                f32 x, f32 y, s32 alpha)
 {
-    FUN_001159f0(NULL, resource, frame, (u32)alpha, x, y, scale);
+    hCampMainDrawSprite7(NULL, resource, frame, (u32)alpha, x, y, scale);
 }
 
 static void campDrawCardText(f32 scale, f32 x, f32 y, u32 color,
@@ -1794,19 +1794,19 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
     socialLevel = datGetSocialLinkLevel((s16)id);
     if (selected != 0) {
         if (socialLevel != 10) {
-            FUN_001159F0(parent, D_00833B44, 0x2c, (u8)textAlpha,
+            hCampMainDrawSprite7(parent, D_00833B44, 0x2c, (u8)textAlpha,
                          p.value.x + 84.0f, p.value.y + 34.0f, alpha);
-            FUN_001159F0(parent, H_Maestro_001120a0(1), socialLevel + 0xb,
+            hCampMainDrawSprite7(parent, H_Maestro_001120a0(1), socialLevel + 0xb,
                          (u8)textAlpha, p.value.x + 146.0f,
                          p.value.y + 35.0f, alpha);
         } else {
-            FUN_001159F0(parent, D_00833B44, 0x2e, (u8)textAlpha,
+            hCampMainDrawSprite7(parent, D_00833B44, 0x2e, (u8)textAlpha,
                          p.value.x + 87.0f, p.value.y + 29.0f, alpha);
         }
-        FUN_001159F0(parent, D_00833B44, 0x2f, (u8)textAlpha,
+        hCampMainDrawSprite7(parent, D_00833B44, 0x2f, (u8)textAlpha,
                      p.value.x + 83.0f, p.value.y + 47.0f, alpha);
         frame = (DAT_005E3220[id] - 1) * 2 + 1;
-        FUN_001159F0(parent, D_00833B44, frame, (u8)textAlpha,
+        hCampMainDrawSprite7(parent, D_00833B44, frame, (u8)textAlpha,
                      p.value.x + 84.0f, p.value.y + 46.0f, alpha);
         sprintf(text, gp0xffff897c,
                 D_005D80E4[id * 10 + socialLevel]);
@@ -1814,21 +1814,21 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
                      (s32)p.value.y + 0x35, color, 6, 1, text, 0x10, -1);
     } else {
         if (socialLevel != 10) {
-            FUN_001159F0(parent, D_00833B44, 0x2d, (u8)textAlpha,
+            hCampMainDrawSprite7(parent, D_00833B44, 0x2d, (u8)textAlpha,
                          p.value.x + 84.0f, p.value.y + 34.0f, alpha);
-            FUN_001159F0(parent, H_Maestro_001120a0(2), socialLevel + 0xb,
+            hCampMainDrawSprite7(parent, H_Maestro_001120a0(2), socialLevel + 0xb,
                          (u8)textAlpha, p.value.x + 146.0f,
                          p.value.y + 35.0f, alpha);
         } else {
-            FUN_001159F0(parent, D_00833B44, 0x2e, (u8)textAlpha,
+            hCampMainDrawSprite7(parent, D_00833B44, 0x2e, (u8)textAlpha,
                          p.value.x + 87.0f, p.value.y + 29.0f, alpha);
         }
         if (socialLevel != 10) {
-            FUN_00115BC0(parent, D_00833B44, 0x30, (u8)textAlpha,
+            hCampMainDrawSpriteAlt10(parent, D_00833B44, 0x30, (u8)textAlpha,
                          0x4f, 0xa4, 0xff, p.value.x + 83.0f,
                          p.value.y + 47.0f, alpha);
         } else {
-            FUN_001159F0(parent, D_00833B44, 0x2f, (u8)textAlpha,
+            hCampMainDrawSprite7(parent, D_00833B44, 0x2f, (u8)textAlpha,
                          p.value.x + 83.0f, p.value.y + 47.0f, alpha);
         }
         socialLevel = datGetSocialLinkLevel((s16)id);
@@ -1837,7 +1837,7 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
         } else {
             frame = (DAT_005E3220[id] - 1) * 2 + 1;
         }
-        FUN_001159F0(parent, D_00833B44, frame, (u8)textAlpha,
+        hCampMainDrawSprite7(parent, D_00833B44, frame, (u8)textAlpha,
                      p.value.x + 84.0f, p.value.y + 46.0f, alpha);
         socialLevel = datGetSocialLinkLevel((s16)id);
         sprintf(text, gp0xffff897c,
@@ -1846,13 +1846,13 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
                      (s32)p.value.y + 0x35, color, 10, 1, text, 0x10, -1);
     }
     if (FUN_00172160(id) != NULL) {
-        FUN_001159F0(parent, D_00833B48, selected != 0 ? 0x10 : 6,
+        hCampMainDrawSprite7(parent, D_00833B48, selected != 0 ? 0x10 : 6,
                      (u8)textAlpha, p.value.x + 165.0f,
                      p.value.y + 34.0f, alpha);
         return;
     }
     if (FUN_001717C0(id) != NULL) {
-        FUN_001159F0(parent, D_00833B48, selected != 0 ? 0xf : 5,
+        hCampMainDrawSprite7(parent, D_00833B48, selected != 0 ? 0xf : 5,
                      (u8)textAlpha, p.value.x + 165.0f,
                      p.value.y + 34.0f, alpha);
         return;
@@ -1867,10 +1867,10 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
             socialLevel = 0x14;
         }
     }
-    FUN_001159F0(parent, D_00833B48, frame, (u8)textAlpha,
+    hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
                  p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     for (i = 0; i < datGetSocialLinkLevel((s16)id); i++) {
-        FUN_001159F0(parent, D_00833B48, socialLevel, (u8)textAlpha,
+        hCampMainDrawSprite7(parent, D_00833B48, socialLevel, (u8)textAlpha,
                      p.value.x + 174.0f + i * 17.0f,
                      p.value.y + 37.0f, alpha);
     }
@@ -1940,10 +1940,10 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
     }
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
     if (FUN_001717C0(id) == NULL) {
-        FUN_001140D0(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
+        hCampMainDrawQuad7(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      color, 0x40, 0x40, resource);
     } else {
-        FUN_00114E70(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
+        hCampMainDrawTexQuad(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      1.0f, 1.0f, 2, color, 0x40, 0x40, resource);
     }
     if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL ||
@@ -2411,16 +2411,16 @@ void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 unused)
 
     p = campCarouselUnpackPosition(position);
     kind = FUN_0016DBA0((s16)id);
-    FUN_00115BC0(84.0f + p.value.x - 60.0f, 62.0f + p.value.y - 25.0f, alpha);
-    FUN_00115BC0(84.0f + p.value.x - 60.0f, 194.0f + p.value.y - 25.0f, alpha);
-    FUN_00115BC0(94.0f + p.value.x - 60.0f, 43.0f + p.value.y - 25.0f, alpha);
-    FUN_00115BC0(94.0f + p.value.x - 60.0f, 175.0f + p.value.y - 25.0f, alpha);
+    hCampMainDrawSpriteAlt3(84.0f + p.value.x - 60.0f, 62.0f + p.value.y - 25.0f, alpha);
+    hCampMainDrawSpriteAlt3(84.0f + p.value.x - 60.0f, 194.0f + p.value.y - 25.0f, alpha);
+    hCampMainDrawSpriteAlt3(94.0f + p.value.x - 60.0f, 43.0f + p.value.y - 25.0f, alpha);
+    hCampMainDrawSpriteAlt3(94.0f + p.value.x - 60.0f, 175.0f + p.value.y - 25.0f, alpha);
     if (kind == '\n') {
-        FUN_001159F0(111.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
+        hCampMainDrawSprite3(111.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
     } else {
-        FUN_001159F0(102.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
+        hCampMainDrawSprite3(102.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
         FUN_001120A0(1);
-        FUN_001159F0(165.0f + p.value.x - 60.0f, 49.0f + p.value.y - 25.0f, alpha);
+        hCampMainDrawSprite3(165.0f + p.value.x - 60.0f, 49.0f + p.value.y - 25.0f, alpha);
     }
 }
 
@@ -2437,15 +2437,15 @@ void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
     if (iGpffffb284 != 0) {
         color = (0xffU - (u32)textAlpha) | 0xffffff00U;
         if (FUN_00172160((s32)resource) == NULL && FUN_001717C0((s32)resource) == NULL) {
-            FUN_00114E70(alpha, campCarouselUnpackPosition(position).value.x + 28.0f,
+            hCampMainDrawTexQuad(alpha, campCarouselUnpackPosition(position).value.x + 28.0f,
                          campCarouselUnpackPosition(position).value.y + 43.0f,
                          1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
         } else {
             p = campCarouselUnpackPosition(position);
-            FUN_00114E70(alpha, 88.0f + p.value.x - 60.0f, 68.0f + p.value.y - 25.0f,
+            hCampMainDrawTexQuad(alpha, 88.0f + p.value.x - 60.0f, 68.0f + p.value.y - 25.0f,
                          1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
-            FUN_001159F0(75.0f + p.value.x - 60.0f, 58.0f + p.value.y - 25.0f, alpha);
-            FUN_001159F0(86.0f + p.value.x - 60.0f, 173.0f + p.value.y - 25.0f, alpha);
+            hCampMainDrawSprite3(75.0f + p.value.x - 60.0f, 58.0f + p.value.y - 25.0f, alpha);
+            hCampMainDrawSprite3(86.0f + p.value.x - 60.0f, 173.0f + p.value.y - 25.0f, alpha);
         }
     }
 }
@@ -2656,7 +2656,7 @@ extern void FUN_001140D0();
 extern void FUN_001159F0();
 static void campDrawSprite(void* resource, s32 frame, u32 alpha, f32 x, f32 y, f32 scale)
 {
-    FUN_001159F0(NULL, resource, frame, alpha, x, y, scale);
+    hCampMainDrawSprite7(NULL, resource, frame, alpha, x, y, scale);
 }
 extern s32 FUN_0016DBA0(s16 id);
 extern void* FUN_00172160(s32 id);
@@ -2770,7 +2770,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     stage = (s32)param_8;
     FUN_00139DC0(param_1);
-    FUN_001368A0(param_1, 0, 0);
+    hCampMainDrawSpriteAlpha(param_1, 0, 0);
 
     position.x = campPackedX(param_2);
     position.y = campPackedY(param_2);
@@ -2832,7 +2832,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         {
             textAlpha = 0xB2;
         }
-        FUN_001140D0(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, textAlpha, 300, 300);
+        hCampMainDrawQuad6(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, textAlpha, 300, 300);
     }
 
     if (param_9 < 5)
@@ -2846,7 +2846,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     id = *item;
     if (iGpffffb280 != 0)
     {
-        FUN_001140D0(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
+        hCampMainDrawQuad6(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
                      (0xFF - alpha) | 0xFFFFFF00, 300, 300);
         hasResource = FUN_00172160(id);
         if (hasResource == 0)
@@ -2904,7 +2904,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         mark = FUN_0016DBA0((s16)id);
         text = D_005D80E4[id * 10 + mark];
         FUN_00523AC8(textBuffer, gp0xffff897c, text);
-        FUN_003B2F90(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
+        hCampMainDrawText(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
                      textAlpha | 0xFFFFFF00, 6, 1, textBuffer, 0x10, -1);
 
         mark = FUN_0016DBA0((s16)*item);
@@ -2917,20 +2917,20 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                 hasResource = FUN_00172160(id);
                 if (hasResource == 0)
                 {
-                    FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                    hCampMainDrawValue(param_1 - 2.0f, (s32)(position.x + 129.0f),
                                  (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
                                  1, 10, 7, D_005D6FEE[id * 0x0C + mark]);
                 }
                 else
                 {
-                    FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                    hCampMainDrawValue(param_1 - 2.0f, (s32)(position.x + 129.0f),
                                  (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
                                  1, 10, 7, D_005D7006[id * 0x0C]);
                 }
             }
             else
             {
-                FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                hCampMainDrawValue(param_1 - 2.0f, (s32)(position.x + 129.0f),
                              (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
                              1, 10, 7, D_005D7004[id * 0x0C]);
             }
@@ -2968,7 +2968,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                            667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             if (mark != 0)
             {
-                FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
+                hCampMainDrawValueGlyph(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                              (s32)(position.y + 333.0f), (0xFF - alpha) | 0xFFFFFF00,
                              1, 10, 0, 7, D_005D72AA[level * 10 + mark]);
             }
@@ -2984,7 +2984,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                            667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
             if (mark != 0)
             {
-                FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
+                hCampMainDrawValueGlyph(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                              (s32)(position.y + 333.0f), (0xFF - alpha) | 0xFFFFFF00,
                              1, 10, 0, 7, D_005D72AA[reward * 10 + mark]);
             }
@@ -3038,7 +3038,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     (void)param_4;
     FUN_00139DC0(param_1);
-    FUN_001368A0(param_1, 0, 0);
+    hCampMainDrawSpriteAlpha(param_1, 0, 0);
 
     position.x = campPackedX(param_2);
     position.y = campPackedY(param_2);
@@ -3051,12 +3051,12 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
     if (iGpffffb280 != 0)
     {
-        FUN_001140D0(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, 0xB2, 300, 300);
+        hCampMainDrawQuad6(param_1, 434.0f + position.x - 60.0f, position.y + 109.0f, 0xB2, 300, 300);
     }
     id = *item;
     if (iGpffffb280 != 0)
     {
-        FUN_001140D0(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
+        hCampMainDrawQuad6(param_1, 420.0f + position.x - 60.0f, position.y + 114.0f,
                      0xFFFFFF00, 300, 300);
         hasResource = FUN_00172160(id);
         if (hasResource == 0)
@@ -3091,7 +3091,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     mark = FUN_0016DBA0((s16)id);
     text = D_005D80E4[id * 10 + mark];
     FUN_00523AC8(textBuffer, gp0xffff897c, text);
-    FUN_003B2F90(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
+    hCampMainDrawText(100.0f, (s32)(57.0f + position.x - 60.0f), (s32)(position.y + 48.0f),
                  0xFFFFFFFF, 6, 1, textBuffer, 0x10, -1);
 
     rowY = position.y + 415.0f;
@@ -3114,20 +3114,20 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             hasResource = FUN_00172160(id);
             if (hasResource == 0)
             {
-                FUN_003C7E20(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
+                hCampMainDrawValue(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
                              (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                              D_005D6FEE[id * 0x0C + mark]);
             }
             else
             {
-                FUN_003C7E20(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
+                hCampMainDrawValue(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
                              (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                              D_005D7006[id * 0x0C]);
             }
         }
         else
         {
-            FUN_003C7E20(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
+            hCampMainDrawValue(param_1 - 2.0f, (s32)(189.0f + position.x - 60.0f),
                          (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
                          D_005D7004[id * 0x0C]);
         }
@@ -3145,7 +3145,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                        667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
         if (mark != 0)
         {
-            FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
+            hCampMainDrawValueGlyph(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                          (s32)(position.y + 333.0f), 0xFFFFFFFF, 1, 10, 0, 7,
                          D_005D72AA[level * 10 + mark]);
         }
@@ -3161,7 +3161,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                        667.0f + position.x - 60.0f, rowY, param_1 - 2.0f);
         if (mark != 0)
         {
-            FUN_003C7E50(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
+            hCampMainDrawValueGlyph(param_1 - 2.0f, (s32)(345.0f + position.x - 60.0f),
                          (s32)(position.y + 333.0f), 0xFFFFFFFF, 1, 10, 0, 7,
                          D_005D72AA[reward * 10 + mark]);
         }
