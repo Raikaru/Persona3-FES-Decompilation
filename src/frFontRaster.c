@@ -608,18 +608,15 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
         uVar9 = pixelOffset & 0xffff;
         pbVar11 = (u8 *)(iVar4 + ((int)uVar9 >> 1));
 
-        rawByte = *src;
-        uVar10 = rawByte >> ((uVar7 & 1) << 2);
+        uVar10 = *src >> ((uVar7 & 1) << 2);
 
         if ((pixelOffset & 1) == 0) {
 
           *pbVar11 = (u8)uVar10 & 0xf;
-
         }
         else {
 
           *pbVar11 = *pbVar11 | (u8)((uVar10 & 0xf) << 4);
-
         }
 
         if ((uVar7 & 1) != 0) {

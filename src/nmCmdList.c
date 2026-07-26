@@ -795,57 +795,34 @@ void FUN_003c6900(int param_1)
 
 
 {
-
   u32 *puVar1;
-
   u32 uVar2;
 
-  
-
   puVar1 = *(u32 **)(param_1 + 0x24);
-
   uVar2 = *puVar1;
-
   if ((uVar2 & 8) != 0) {
-
     if ((uVar2 & 0x100000) != 0) {
-
       uVar2 = uVar2 & 0xfffffffb;
       *puVar1 = uVar2;
-      uVar2 = uVar2 & 0xffeffffb;
+      uVar2 = uVar2 & 0xffefffff;
       *puVar1 = uVar2;
-      uVar2 = uVar2 & 0xffeffffa;
+      uVar2 = uVar2 & 0xfffffffe;
       *puVar1 = uVar2;
       *(u16 *)((int)puVar1 + 10) = 1;
-
-    }
-
-    else if ((uVar2 & 0x200000) != 0) {
-
+    } else if ((uVar2 & 0x200000) != 0) {
       uVar2 = uVar2 & 0xfffffffb;
       *puVar1 = uVar2;
-      uVar2 = uVar2 & 0xffdffffb;
+      uVar2 = uVar2 & 0xffdfffff;
       *puVar1 = uVar2;
       *(u16 *)((int)puVar1 + 10) = 3;
-
     }
-
     uVar2 = *puVar1;
-
     if ((uVar2 & 0x400000) != 0) {
-
       *puVar1 = uVar2 & 0xfffffffb;
-
-      *puVar1 = uVar2 & 0xffbffffb;
-
-      *puVar1 = uVar2 & 0xffbffffb | 1;
-
+      *puVar1 = uVar2 & 0xffbfffff;
+      *puVar1 = uVar2 & 0xffbfffff | 1;
     }
-
   }
-
-  return;
-
 }
 #define FUN_003c6900(...) ((void (*)(...))FUN_003c6900)(__VA_ARGS__)
 #undef FUN_003c69d0
