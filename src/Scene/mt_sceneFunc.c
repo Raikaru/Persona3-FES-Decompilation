@@ -4956,9 +4956,6 @@ u32 FUN_003bd230(void)
 }
 #define FUN_003bd230(...) ((u32 (*)(...))FUN_003bd230)(__VA_ARGS__)
 #define DAT_0095b074 (*(u32 *)DAT_0095b074_abs)
-#define DAT_0095b078 (*(u32 *)DAT_0095b078_abs)
-#define DAT_0095b0f8 (*(u32 *)DAT_0095b0f8_abs)
-#define DAT_0095b178 (*(u32 *)DAT_0095b178_abs)
 #define DAT_0095b1f8 (*(u32 *)DAT_0095b1f8_abs)
 #define DAT_0095b204 (*(u32 *)DAT_0095b204_abs)
 #define DAT_0095b208 (*(u32 *)DAT_0095b208_abs)
@@ -4990,7 +4987,6 @@ u32 FUN_003bd230(void)
 #define DAT_0095b294 (*(u32 *)DAT_0095b294_abs)
 #define DAT_0095b298 (*(u32 *)DAT_0095b298_abs)
 #define DAT_0095b2a4 (*(u32 *)DAT_0095b2a4_abs)
-#define DAT_0095b2b4 (*(u32 *)DAT_0095b2b4_abs)
 #define DAT_0095b434 (*(u32 *)DAT_0095b434_abs)
 #define DAT_0095b440 (*(u32 *)DAT_0095b440_abs)
 #define DAT_0095b444 (*(u32 *)DAT_0095b444_abs)
@@ -5012,9 +5008,6 @@ u32 FUN_003bd230(void)
 #define DAT_0095b4d0 (*(u32 *)DAT_0095b4d0_abs)
 #define DAT_0095b4d4 (*(u32 *)DAT_0095b4d4_abs)
 #define DAT_0095b4e0 (*(u32 *)DAT_0095b4e0_abs)
-#define DAT_0095b4f0 (*(u32 *)DAT_0095b4f0_abs)
-#define DAT_0095b568 (*(u32 *)DAT_0095b568_abs)
-#define DAT_0095b5e0 (*(u32 *)DAT_0095b5e0_abs)
 #define DAT_0095b658 (*(u32 *)DAT_0095b658_abs)
 #define DAT_0095b65c (*(u32 *)DAT_0095b65c_abs)
 #define DAT_0095b660 (*(u32 *)DAT_0095b660_abs)
@@ -5041,7 +5034,6 @@ u32 FUN_003bd230(void)
 #define DAT_0095b6b4 (*(u32 *)DAT_0095b6b4_abs)
 #define DAT_0095b6b8 (*(u32 *)DAT_0095b6b8_abs)
 #define DAT_0095b6bc (*(u32 *)DAT_0095b6bc_abs)
-#define DAT_0095b6c0 (*(u32 *)DAT_0095b6c0_abs)
 #define DAT_0095b6c4 (*(u32 *)DAT_0095b6c4_abs)
 #define DAT_0095b6c8 (*(u32 *)DAT_0095b6c8_abs)
 #define DAT_0095b6cc (*(u32 *)DAT_0095b6cc_abs)
@@ -5277,9 +5269,6 @@ void FUN_003bd280(void)
 }
 #define FUN_003bd280(...) ((void (*)(...))FUN_003bd280)(__VA_ARGS__)
 #undef DAT_0095b074
-#undef DAT_0095b078
-#undef DAT_0095b0f8
-#undef DAT_0095b178
 #undef DAT_0095b1f8
 #undef DAT_0095b204
 #undef DAT_0095b208
@@ -5311,7 +5300,6 @@ void FUN_003bd280(void)
 #undef DAT_0095b294
 #undef DAT_0095b298
 #undef DAT_0095b2a4
-#undef DAT_0095b2b4
 #undef DAT_0095b434
 #undef DAT_0095b440
 #undef DAT_0095b444
@@ -5333,9 +5321,6 @@ void FUN_003bd280(void)
 #undef DAT_0095b4d0
 #undef DAT_0095b4d4
 #undef DAT_0095b4e0
-#undef DAT_0095b4f0
-#undef DAT_0095b568
-#undef DAT_0095b5e0
 #undef DAT_0095b658
 #undef DAT_0095b65c
 #undef DAT_0095b660
@@ -5362,7 +5347,6 @@ void FUN_003bd280(void)
 #undef DAT_0095b6b4
 #undef DAT_0095b6b8
 #undef DAT_0095b6bc
-#undef DAT_0095b6c0
 #undef DAT_0095b6c4
 #undef DAT_0095b6c8
 #undef DAT_0095b6cc
