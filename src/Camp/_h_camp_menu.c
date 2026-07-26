@@ -1296,17 +1296,26 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                            campDrawX(item), campDrawY(item), item->scale);
         break;
     case 2:
-        for (i = 0; i < 5; i++) {
-            campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
-                               campDrawX(item),
-                               campDrawY(item) + (f32)(i * 28),
-                               item->scale);
-        }
+        campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                           campDrawX(item), campDrawY(item) + 28.0f,
+                           item->scale);
+        campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                           campDrawX(item), campDrawY(item) + 56.0f,
+                           item->scale);
+        campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                           campDrawX(item), campDrawY(item) + 84.0f,
+                           item->scale);
+        campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                           campDrawX(item), campDrawY(item) + 112.0f,
+                           item->scale);
         break;
     case 3:
         campMenuDrawSprite(parent, *labels, 0x39, item->alpha,
-                           campDrawX(item) + 242.0f,
-                           campDrawY(item) - 11.0f, item->scale);
+                           (f32)0x116 + campDrawX(item) - 36.0f,
+                           campDrawY(item) + (f32)0x57 - 98.0f,
+                           item->scale);
         if (category < 10) {
             campMenuDrawSprite(parent, FUN_001120a0(1), category + 0xb,
                                item->alpha, campDrawX(item) + 16.0f,
@@ -1320,23 +1329,28 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                                campDrawY(item), item->scale);
         }
         campMenuDrawSprite(parent, *labels, 0x44, item->alpha,
-                           campDrawX(item) + 34.0f,
-                           campDrawY(item) - 2.0f, item->scale);
+                           (f32)0x3c + campDrawX(item) - 36.0f,
+                           campDrawY(item) + (f32)0x60 - 98.0f,
+                           item->scale);
         if (selected >= 10) {
             campMenuDrawSprite(parent, FUN_001120a0(1), selected / 10 + 0xb,
-                               item->alpha, campDrawX(item) + 52.0f,
+                               item->alpha,
+                               (f32)0x58 + campDrawX(item) - 36.0f,
                                campDrawY(item), item->scale);
             campMenuDrawSprite(parent, FUN_001120a0(1), selected % 10 + 0xb,
-                               item->alpha, campDrawX(item) + 68.0f,
+                               item->alpha,
+                               campDrawX(item) + (f32)0x58 - 36.0f + 16.0f,
                                campDrawY(item), item->scale);
         } else {
             campMenuDrawSprite(parent, FUN_001120a0(1), selected + 0xb,
-                               item->alpha, campDrawX(item) + 52.0f,
+                               item->alpha,
+                               (f32)0x58 + campDrawX(item) - 36.0f,
                                campDrawY(item), item->scale);
         }
         campMenuDrawSprite(parent, *labels, 0x42, item->alpha,
-                           campDrawX(item) + 93.0f,
-                           campDrawY(item) - 2.0f, item->scale);
+                           (f32)0x93 + campDrawX(item) - 36.0f - 18.0f,
+                           campDrawY(item) + (f32)0x60 - 98.0f,
+                           item->scale);
         {
             s32 val = FUN_0017dae0(FUN_0017d8b0(category, selected));
             s32 spriteType = 0x40;
@@ -1352,17 +1366,19 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 }
             }
             campMenuDrawSprite(parent, *labels, spriteType, item->alpha,
-                               campDrawX(item) + 104.0f,
-                               campDrawY(item) - 2.0f, item->scale);
+                               (f32)0x9e + campDrawX(item) - 36.0f - 18.0f,
+                               campDrawY(item) + (f32)0x60 - 98.0f,
+                               item->scale);
             campMenuDrawSprite(parent, *labels, 0x43, item->alpha,
-                               campDrawX(item) + 128.0f,
-                               campDrawY(item) - 2.0f, item->scale);
+                               (f32)0xb4 + campDrawX(item) - 52.0f,
+                               campDrawY(item) + (f32)0x60 - 98.0f,
+                               item->scale);
         }
         break;
     case 4:
         {
             s16* record;
-            u32 alpha = campDrawAlpha(item);
+            u32 alpha = (0xffU - campDrawAlpha8(item)) | 0xffffff00U;
             s32 row = 0;
             s32 j;
             for (j = 0; j < 9999; j++) {
@@ -1380,6 +1396,10 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                     }
                     if (available) {
                         FUN_00523ac8(text, gp0xffff897c, DAT_0083aaa0[record[4]]);
+                        FUN_003b2cb0_typed(
+                            0.0f, (s32)item->x,
+                            (s32)(item->y + (f32)(row * 0x1c) + 2.0f),
+                            alpha, 10, 1, (const char*)text, 0x10, 0);
                         row++;
                     }
                 }
@@ -1392,6 +1412,10 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 if (learned[0] == category && learned[1] == selected) {
                     FUN_00524270(text, uGpffff8884);
                     FUN_00523e68(text, FUN_003c3fe0(learned[2]));
+                    FUN_003b2cb0_typed(
+                        0.0f, (s32)item->x,
+                        (s32)(item->y + (f32)(row * 0x1c) + 2.0f),
+                        alpha, 10, 1, (const char*)text, 0x10, 0);
                     row++;
                 }
             }
@@ -1636,10 +1660,11 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         campMenuDrawSprite(parent, *(labels + 1), 0, item->alpha,
                            campDrawX(item), campDrawY(item), item->scale);
         campMenuDrawSprite(parent, *(labels + 1), 9, item->alpha,
-                           campDrawX(item) + 16.0f, campDrawY(item),
-                           item->scale);
+                           (f32)0x2f + campDrawX(item) - (f32)0x1f,
+                           campDrawY(item), item->scale);
         campMenuDrawSprite(parent, DAT_00833BA0, 1, item->alpha,
-                           campDrawX(item) + 530.0f, campDrawY(item) + 30.0f,
+                           (f32)0x231 + campDrawX(item) - (f32)0x1f,
+                           campDrawY(item) + (f32)0x19f - (f32)0x181,
                            item->scale);
         break;
     default:
