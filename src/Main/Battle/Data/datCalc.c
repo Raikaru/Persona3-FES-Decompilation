@@ -961,7 +961,7 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
   u16 uVar1;
   u8 bVar2;
   u32 check;
-  u8 *base;
+  u32 index;
   if ((s32)(param_2 & 0xffff) < 0 || (s32)(param_2 & 0xffff) >= 5) {
     FUN_0019d3f0((u32)D_0069aa80, 0x2e1);
   }
@@ -971,8 +971,10 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
       FUN_0019d3f0((u32)D_0069aa80, 0x2e8);
     }
     base = (u8 *)iGpffffb720;
-    bVar2 = base[(u32)uVar1 * 0x3e +
-                 ((u32)param_2 & 0xffff) + 8];
+    index = (u32)uVar1 * 0x3e;
+    base = (u8 *)(index + (u32)base);
+    base = (u8 *)(((u32)param_2 & 0xffff) + (u32)base);
+    bVar2 = *(u8 *)(base + 8);
   }
   else {
     check = uVar1;

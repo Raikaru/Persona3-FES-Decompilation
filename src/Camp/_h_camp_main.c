@@ -1513,6 +1513,40 @@ extern void* FUN_001158B0(void* owner, void* resource, s32 frame);
 extern void FUN_001127D0(void* sprite, s32 enabled);
 extern void FUN_00115980(void* sprite);
 extern void FUN_001159F0();
+#pragma alias hCampMainDrawSprite7 FUN_001159F0
+extern void hCampMainDrawSprite7(void* parent, void* resource, s32 frame,
+                                 u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias hCampMainDrawSprite3 FUN_001159F0
+extern void hCampMainDrawSprite3(f32 x, f32 y, f32 scale);
+#pragma alias hCampMainDrawSpriteAlt10 FUN_00115BC0
+extern void hCampMainDrawSpriteAlt10(void* parent, void* resource, s32 frame,
+                                     u32 alpha, s32 red, s32 green, s32 blue,
+                                     f32 x, f32 y, f32 scale);
+#pragma alias hCampMainDrawSpriteAlt3 FUN_00115BC0
+extern void hCampMainDrawSpriteAlt3(f32 x, f32 y, f32 scale);
+#pragma alias hCampMainDrawQuad7 FUN_001140D0
+extern void hCampMainDrawQuad7(f32 depth, f32 x, f32 y, u32 color,
+                               s32 width, s32 height, const void* textureState);
+#pragma alias hCampMainDrawQuad6 FUN_001140D0
+extern void hCampMainDrawQuad6(f32 depth, f32 x, f32 y, u32 color,
+                               s32 width, s32 height);
+#pragma alias hCampMainDrawTexQuad FUN_00114E70
+extern void hCampMainDrawTexQuad(f32 depth, f32 x, f32 y,
+                                 f32 textureX, f32 textureY, s32 orientation,
+                                 u32 color, s32 width, s32 height, s32 textureDimensions);
+#pragma alias hCampMainDrawSpriteAlpha FUN_001368A0
+extern void hCampMainDrawSpriteAlpha(f32 alpha, u64 position, u8 drawAlpha);
+#pragma alias hCampMainDrawValue FUN_003C7E20
+extern void hCampMainDrawValue(f32 scale, s32 x, s32 y, u32 color,
+                               u32 font, u32 alignment, u32 style, u32 value);
+#pragma alias hCampMainDrawValueGlyph FUN_003C7E50
+extern void hCampMainDrawValueGlyph(f32 scale, s32 x, s32 y, u32 color,
+                                    u32 font, u32 alignment, u32 style,
+                                    u32 value);
+#pragma alias hCampMainDrawText FUN_003B2F90
+extern void hCampMainDrawText(f32 scale, s32 x, s32 y, u32 color,
+                              u32 font, u32 alignment, const char* text,
+                              u32 maxWidth, s32 shadow);
 extern void FUN_00115BC0();
 extern void FUN_00115AD0();
 extern void FUN_001140D0();

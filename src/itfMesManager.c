@@ -685,7 +685,7 @@ void FUN_003a25f0(int param_1,u8 param_2)
 }
 #define FUN_003a25f0(...) ((void (*)(...))FUN_003a25f0)(__VA_ARGS__)
 #undef FUN_003a2660
-// FUN_003A2660 NONMATCHING
+// FUN_003A2660
 
 
 u32 FUN_003a2660(void)
@@ -701,6 +701,7 @@ u32 FUN_003a2660(void)
   int lVar3;
 
   s32 uVar4;
+  int base;
 
   
 
@@ -724,6 +725,7 @@ u32 FUN_003a2660(void)
     uVar4 = FUN_0035ed20(0);
 
 
+    base = iVar1 + 0x40;
     if (*(short *)(iVar1 + 0x54) == 0) {
 
       FUN_003a37c0_direct(lVar3,uVar4);
@@ -733,8 +735,8 @@ u32 FUN_003a2660(void)
     else if (*(short *)(iVar1 + 0x54) < 0) {
 
 
-      *(short *)(iVar1 + 0x54) = 0;
-      FUN_0035f060(*(short *)(iVar1 + 0x56));
+      *(short *)(base + 0x14) = 0;
+      FUN_0035f060(*(short *)(base + 0x16));
 
       FUN_003a3ab0_direct(lVar3);
 
