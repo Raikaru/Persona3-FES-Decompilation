@@ -314,73 +314,51 @@ void kwlnTaskUpdateAll()
     KwlnTask* prevTask;
     KwlnTask* cursor;
 
-    currTask = sRunningTaskHead;
-    if (currTask == NULL)
+    if (sRunningTaskHead != NULL)
     {
-        goto done;
+        currTask = sRunningTaskHead;
+        while (currTask != NULL)
+        {
+            prevTask = currTask->prev;
+
+            if (kwlnTaskUpdate(currTask))
+            {
+                currTask = currTask->next;
+            }
+            else
+            {
+                currTask = sRunningTaskHead;
+
+                if (prevTask != NULL)
+                {
+                    cursor = prevTask;
+                    while ((u32)(cursor != NULL) != 0 &&
+                           (KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY))
+                    {
+                        prevTask = cursor->prev;
+                        if (prevTask != NULL)
+                        {
+                            cursor = prevTask;
+                        }
+                        else
+                        {
+                            cursor = cursor->unk_48;
+                            break;
+                        }
+                    }
+
+                    if (cursor != NULL)
+                    {
+                        currTask = cursor->next;
+                    }
+                    else
+                    {
+                        currTask = sRunningTaskHead;
+                    }
+                }
+            }
+        }
     }
-    goto loop_test;
-
-loop_start:
-    prevTask = currTask->prev;
-
-    if (kwlnTaskUpdate(currTask))
-    {
-        currTask = currTask->next;
-        goto loop_test;
-    }
-
-    currTask = sRunningTaskHead;
-    if (prevTask == NULL)
-    {
-        goto no_prev;
-    }
-
-    cursor = prevTask;
-
-cursor_step:
-    prevTask = cursor->prev;
-    if (prevTask != NULL)
-    {
-        cursor = prevTask;
-        goto cursor_check;
-    }
-    cursor = cursor->unk_48;
-
-cursor_check:
-    if (cursor != NULL &&
-        KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY)
-    {
-        goto cursor_step;
-    }
-
-    if (cursor == NULL)
-    {
-        goto no_cursor;
-    }
-
-    currTask = cursor->next;
-    if (currTask != NULL)
-    {
-        goto loop_start;
-    }
-    goto loop_test;
-
-no_cursor:
-    currTask = sRunningTaskHead;
-    goto loop_test;
-
-no_prev:
-    currTask = sRunningTaskHead;
-
-loop_test:
-    if (currTask != NULL)
-    {
-        goto loop_start;
-    }
-
-done:
-    return;
 }
 
 // FUN_001941f0. Destroy every task in the hierarchy
@@ -1116,13 +1094,13 @@ u32 kwlnTaskGetState(KwlnTask* task)
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
 {
     KwlnTask* list;
+    s32 j;
+    s32 k;
     s32 i;
     s32 nameHash;
     KwlnTask* stagedList;
     KwlnTask* runningList;
     KwlnTask* destroyList;
-    s32 j;
-    s32 k;
     
     list = NULL;
     nameHash = 0;

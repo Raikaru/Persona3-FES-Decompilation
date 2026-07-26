@@ -3829,59 +3829,57 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 
 
 void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
 
-  
+  iVar1 = param_3 - param_2;
+  param_2 = iVar1 - 1;
+  iVar2 = *(int *)(param_1 + 8);
+  goto count_check;
 
-  param_3 = param_3 - param_2;
+advance:
+  param_1 = *(int *)(param_1 + 0x24);
+  if (param_1 == 0) {
+    goto done;
+  }
 
+load:
   iVar1 = *(int *)(param_1 + 8);
+  if (iVar2 == iVar1) {
+    goto advance;
+  }
+  param_2 = param_2 - 1;
+  iVar2 = iVar1;
 
-  do {
+count_check:
+  if (param_2 > 0) {
+    goto load;
+  }
 
-    iVar2 = iVar1;
+set_start:
+  param_2 = (u8)param_4;
+  param_1 = *(int *)(param_1 + 0x24);
+  iVar1 = *(int *)(param_1 + 0x1c);
+  goto set_check;
 
-    param_3 = param_3 + -1;
+set_store:
+  *(u8 *)(iVar1 + 0x14) = (u8)param_2;
+  iVar1 = *(int *)(iVar1 + 0x28);
 
-    if (param_3 < 1) {
+set_check:
+  if (iVar1 != 0) {
+    goto set_store;
+  }
+  param_1 = *(int *)(param_1 + 0x24);
+  if (param_1 == 0) {
+    goto done;
+  }
+  iVar1 = *(int *)(param_1 + 8);
+  goto load;
 
-      do {
-
-        for (iVar1 = *(int *)(param_1 + 0x1c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
-
-          *(u8 *)(iVar1 + 0x14) = param_4;
-
-        }
-
-        param_1 = *(int *)(param_1 + 0x24);
-
-      } while ((param_1 != 0) && (iVar2 == *(int *)(param_1 + 8)));
-
-      return;
-
-    }
-
-    while (iVar1 = *(int *)(param_1 + 8), iVar2 == *(int *)(param_1 + 8)) {
-
-      param_1 = *(int *)(param_1 + 0x24);
-
-      if (param_1 == 0) {
-
-        return;
-
-      }
-
-    }
-
-  } while( 1 );
-
+done:
+  return;
 }
 #define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #undef FUN_003a6410

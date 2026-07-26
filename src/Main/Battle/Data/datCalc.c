@@ -4444,47 +4444,90 @@ short FUN_00308120(short param_1,int param_2)
     return 8;
   }
   if (param_2 == 0x100000) {
-    unaff_s0_lo = 7;
+    goto case_100000;
   }
-  else if (param_2 == 0x80000) {
-    unaff_s0_lo = 9;
+  if (param_2 == 0x80000) {
+    goto case_80000;
   }
-  else if (param_2 == 0x400) {
-    unaff_s0_lo = 7;
+  if (param_2 == 0x400) {
+    goto case_400;
   }
-  else if (param_2 == 0x200) {
-    unaff_s0_lo = 7;
+  if (param_2 == 0x200) {
+    goto case_200;
   }
-  else if (param_2 == 0x100) {
-    unaff_s0_lo = 7;
+  if (param_2 == 0x100) {
+    goto case_100;
   }
-  else if (param_2 == 0x80) {
-    unaff_s0_lo = 0xb;
+  if (param_2 == 0x80) {
+    goto case_80;
   }
-  else if (param_2 == 0x40) {
-    unaff_s0_lo = 5;
+  if (param_2 == 0x40) {
+    goto case_40;
   }
-  else if (param_2 == 0x20) {
-    unaff_s0_lo = 4;
+  if (param_2 == 0x20) {
+    goto case_20;
   }
-  else if (param_2 == 0x10) {
-    unaff_s0_lo = 0xf;
+  if (param_2 == 0x10) {
+    goto case_10;
   }
-  else if (param_2 == 8) {
-    unaff_s0_lo = 0xe;
+  if (param_2 == 8) {
+    goto case_8;
   }
-  else if (param_2 == 4) {
-    unaff_s0_lo = 0xd;
+  if (param_2 == 4) {
+    goto case_4;
   }
-  else if (param_2 == 2) {
-    unaff_s0_lo = 0xc;
+  if (param_2 == 2) {
+    goto case_2;
   }
-  else if (param_2 == 1) {
-    unaff_s0_lo = 10;
+  if (param_2 == 1) {
+    goto case_1;
   }
-  else {
-    FUN_0019d3f0((u32)D_0069aa80, 0xee9);
-  }
+  goto assert_ee9;
+
+case_1:
+  unaff_s0_lo = 10;
+  goto done;
+case_2:
+  unaff_s0_lo = 0xc;
+  goto done;
+case_4:
+  unaff_s0_lo = 0xd;
+  goto done;
+case_8:
+  unaff_s0_lo = 0xe;
+  goto done;
+case_10:
+  unaff_s0_lo = 0xf;
+  goto done;
+case_20:
+  unaff_s0_lo = 4;
+  goto done;
+case_40:
+  unaff_s0_lo = 5;
+  goto done;
+case_80:
+  unaff_s0_lo = 0xb;
+  goto done;
+case_100:
+  unaff_s0_lo = 7;
+  goto done;
+case_200:
+  unaff_s0_lo = 7;
+  goto done;
+case_400:
+  unaff_s0_lo = 7;
+  goto done;
+case_80000:
+  unaff_s0_lo = 9;
+  goto done;
+case_100000:
+  unaff_s0_lo = 7;
+  goto done;
+
+assert_ee9:
+  FUN_0019d3f0((u32)D_0069aa80, 0xee9);
+
+done:
   return unaff_s0_lo;
 }
 

@@ -1352,6 +1352,8 @@ extern u32 DAT_009572c4;
 extern u32 DAT_009572c8;
 extern u32 DAT_009572cc;
 extern u32 DAT_009572d0;
+#pragma alias DAT_009572d0_abs DAT_009572d0
+extern u8 DAT_009572d0_abs[];
 #pragma alias DAT_009572b0_f32 DAT_009572b0
 extern f32 DAT_009572b0_f32;
 #pragma alias DAT_009572b4_f32 DAT_009572b4
@@ -5457,21 +5459,21 @@ u64 FUN_00321a60(void)
 
   FUN_00347d60();
 
-  if (DAT_009572d0 != 0) {
+  if (*(u32 *)DAT_009572d0_abs != 0) {
 
     uVar2 = FUN_00198560();
 
-    FUN_004944b0(uVar2,0x9572b0);
+    FUN_004944b0(uVar2,(u32)&DAT_009572b0);
 
     uVar2 = FUN_00198580();
 
-    FUN_004944b0(uVar2,0x9572c0);
+    FUN_004944b0(uVar2,(u32)&DAT_009572c0);
 
     iVar1 = FUN_00198580();
 
-    FUN_004cb7f0(*(u32 *)(iVar1 + 4),0x957270,0);
+    FUN_004cb7f0(*(u32 *)(iVar1 + 4),(u32)&DAT_00957270,0);
 
-    DAT_009572d0 = 0;
+    *(u32 *)DAT_009572d0_abs = 0;
 
   }
 
