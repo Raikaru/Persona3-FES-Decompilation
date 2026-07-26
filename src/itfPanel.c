@@ -5,6 +5,9 @@ typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
 extern void FUN_0019d3f0(const char *file,s32 line);
+extern u32 FUN_00171250(s16 id);
+extern void *FUN_00170d60(s16 id);
+extern const char *FUN_00171110(s16 id,s16 field);
 extern const char DAT_006a1bf8[];
 extern u32 DAT_006a1d10;
 #pragma alias DAT_006a1d10_abs DAT_006a1d10
@@ -170,10 +173,9 @@ u64 FUN_003acbc0(u64 param_1,int param_2);
 u64 FUN_003acb10(int param_1,int param_2);
 u64 FUN_003acda0(u64 param_1,int param_2);
 u64 FUN_003ace60(u64 param_1,int param_2);
-u64 FUN_003acf80(u64 param_1,int param_2);
 u64 FUN_003ad030(u64 param_1,int param_2);
 u64 FUN_003ad1b0(u32 param_1,int param_2);
-u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u64 param_4);
+u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4);
 #pragma alias FUN_003ad400_typed FUN_003ad400
 extern u64 FUN_003ad400_typed(u16 param_1,u16 param_2,u64 param_3,int param_4);
 u64 FUN_003ad640(u64 param_1,u64 param_2);
@@ -3903,7 +3905,7 @@ u64 FUN_003ad380(u64 param_1,int param_2)
 // FUN_003AD400 NONMATCHING
 
 
-u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u64 param_4)
+u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 
 
 
@@ -3918,8 +3920,7 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u64 param_4)
   u64 uVar4;
 
   u32 uVar5;
-
-  int iVar6;
+  u32 iVar6;
 
   int iVar7;
 
@@ -4860,9 +4861,8 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   int iVar4;
 
-  u32 uVar5;
-
   u32 uVar6;
+  u32 uVar5;
   int iVar8;
   u32 firstLow;
   u32 secondLow;

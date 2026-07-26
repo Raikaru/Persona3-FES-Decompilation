@@ -1395,7 +1395,7 @@ LAB_0013fc20:
 
 // FUN_0013fca0 NONMATCHING
 
-void FUN_0013fca0(void* texture,u64 position,CampEquipmentWork* work,s32 alpha)
+void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 
 {
   char category;

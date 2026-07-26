@@ -13976,177 +13976,38 @@ float FUN_00329ba0(float param_1)
 
 
 void FUN_00329d60(float param_1,u8 (*param_2) [16])
-
-
-
 {
-
-  __int128 auVar1;
-
-  float fVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  __int128 auVar6;
-
-  __int128 auVar7;
-
-  __int128 auVar8;
-
-  __int128 auVar9;
-
-  __int128 auVar10;
-
-  u32 uStack_64;
-
-  u32 uStack_54;
-
-  u32 uStack_44;
-
-  u32 uStack_34;
-
-  u32 uStack_24;
-
-  
-
-  fVar4 = param_1 * param_1;
-
-  fVar5 = fVar4 * param_1;
-
-  auVar6 = _lqc2(param_2[1]);
-
-  auVar7 = _lqc2(*param_2);
-
-  auVar6 = _vsub(auVar6,auVar7);
-
-  auVar8 = _vmove(auVar6);
-
-  auVar6 = _lqc2(param_2[2]);
-
-  auVar7 = _lqc2(param_2[1]);
-
-  auVar6 = _vsub(auVar6,auVar7);
-
-  auVar6 = _vadd(auVar6,auVar8);
-
-  auVar10._8_4_ = 0x3f000000;
-
-  auVar10._0_8_ = 0x3f0000003f000000;
-
-  auVar10._12_4_ = uStack_24;
-
-  auVar7 = _lqc2(auVar10);
-
-  auVar6 = _vmul(auVar6,auVar7);
-
-  auVar6 = _sqc2(auVar6);
-
-  auVar7 = _lqc2(param_2[2]);
-
-  auVar8 = _lqc2(param_2[1]);
-
-  auVar7 = _vsub(auVar7,auVar8);
-
-  auVar9 = _vmove(auVar7);
-
-  auVar7 = _lqc2(param_2[3]);
-
-  auVar8 = _lqc2(param_2[2]);
-
-  auVar7 = _vsub(auVar7,auVar8);
-
-  auVar7 = _vadd(auVar7,auVar9);
-
-  auVar1._8_4_ = 0x3f000000;
-
-  auVar1._0_8_ = 0x3f0000003f000000;
-
-  auVar1._12_4_ = uStack_24;
-
-  auVar8 = _lqc2(auVar1);
-
-  auVar7 = _vmul(auVar7,auVar8);
-
-  auVar7 = _sqc2(auVar7);
-
-  fVar2 = (fVar5 * 2.0f - fVar4 * 3.0f) + 1.0f;
-
-  param_1 = param_1 + ((fVar5 + 0.0f) - fVar4 * 2.0f);
-
-  fVar3 = fVar5 - fVar4;
-
-  fVar4 = fVar5 * -2.0f + fVar4 * 3.0f + 0.0f;
-
-  auVar8._4_4_ = fVar2;
-
-  auVar8._0_4_ = fVar2;
-
-  auVar8._8_4_ = fVar2;
-
-  auVar8._12_4_ = uStack_64;
-
-  auVar8 = _lqc2(auVar8);
-
-  auVar9 = _lqc2(param_2[1]);
-
-  auVar8 = _vmul(auVar8,auVar9);
-
-  auVar10 = _vmove(auVar8);
-
-  auVar9._4_4_ = param_1;
-
-  auVar9._0_4_ = param_1;
-
-  auVar9._8_4_ = param_1;
-
-  auVar9._12_4_ = uStack_54;
-
-  auVar8 = _lqc2(auVar9);
-
-  auVar6 = _lqc2(auVar6);
-
-  auVar6 = _vmul(auVar8,auVar6);
-
-  auVar8 = _vadd(auVar10,auVar6);
-
-  auVar6._4_4_ = fVar3;
-
-  auVar6._0_4_ = fVar3;
-
-  auVar6._8_4_ = fVar3;
-
-  auVar6._12_4_ = uStack_44;
-
-  auVar6 = _lqc2(auVar6);
-
-  auVar7 = _lqc2(auVar7);
-
-  auVar6 = _vmul(auVar6,auVar7);
-
-  auVar8 = _vadd(auVar8,auVar6);
-
-  auVar7._4_4_ = fVar4;
-
-  auVar7._0_4_ = fVar4;
-
-  auVar7._8_4_ = fVar4;
-
-  auVar7._12_4_ = uStack_34;
-
-  auVar6 = _lqc2(auVar7);
-
-  auVar7 = _lqc2(param_2[2]);
-
-  auVar6 = _vmul(auVar6,auVar7);
-
-  _vadd(auVar6,auVar8);
-
-  return;
-
+  float t2;
+  float t3;
+  float h00;
+  float h10;
+  float h01;
+  float h11;
+  float *p0;
+  float *p1;
+  float *p2;
+  float *p3;
+  volatile float vuResult[4];
+  int i;
+
+  t2 = param_1 * param_1;
+  t3 = t2 * param_1;
+  h00 = t3 * 2.0f - t2 * 3.0f + 1.0f;
+  h10 = t3 - t2 * 2.0f + param_1;
+  h01 = t3 - t2;
+  h11 = t3 * -2.0f + t2 * 3.0f;
+  p0 = (float *)param_2[0];
+  p1 = (float *)param_2[1];
+  p2 = (float *)param_2[2];
+  p3 = (float *)param_2[3];
+  for (i = 0; i < 4; i++) {
+    float d01;
+    float d12;
+
+    d01 = (p1[i] - p0[i]) * 0.5f;
+    d12 = (p3[i] - p2[i]) * 0.5f;
+    vuResult[i] = p1[i] * h00 + d01 * h10 + d12 * h01 + p2[i] * h11;
+  }
 }
 
 
@@ -14156,95 +14017,46 @@ void FUN_00329d60(float param_1,u8 (*param_2) [16])
 
 
 void FUN_00329ed0(float *param_1)
-
-
-
 {
+  u32 axis;
+  u32 next;
+  u32 other;
+  float trace;
+  volatile float result[4];
 
-  u32 uVar1;
-
-  u32 uVar2;
-
-  __int128 auVar3;
-
-  u32 uVar4;
-
-  float fVar5;
-
-  float afStack_10 [4];
-
-  
-
-  fVar5 = param_1[10] + *param_1 + param_1[5] + 1.0f;
-
-  if (1.0f <= fVar5) {
-
-    fVar5 = SQRT(fVar5) * 2.0f;
-
-    afStack_10[3] = -(fVar5 / 4.0f);
-
-    afStack_10[0] = (param_1[6] - param_1[9]) / fVar5;
-
-    afStack_10[1] = (param_1[8] - param_1[2]) / fVar5;
-
-    afStack_10[2] = (param_1[1] - param_1[4]) / fVar5;
-
+  trace = param_1[5] + param_1[0] + param_1[10] + 1.0f;
+  if (1.0f <= trace) {
+    trace = sqrtf(trace) * 2.0f;
+    result[3] = -(trace / 4.0f);
+    result[0] = (param_1[6] - param_1[9]) / trace;
+    result[1] = (param_1[8] - param_1[2]) / trace;
+    result[2] = (param_1[1] - param_1[4]) / trace;
   }
-
   else {
-
-    uVar4 = param_1[5] < *param_1 ^ 1;
-
-    if (param_1[uVar4 * 5] < param_1[10]) {
-
-      uVar4 = 2;
-
+    axis = (param_1[5] < param_1[0]) ^ 1;
+    if (param_1[axis * 5] < param_1[10]) {
+      axis = 2;
     }
-
-    uVar1 = (uVar4 + 1) % 3;
-
-    uVar2 = (uVar1 + 1) % 3;
-
-    fVar5 = SQRT(((param_1[uVar4 * 5] - param_1[uVar1 * 5]) - param_1[uVar2 * 5]) + 1.0f) * 2.0f;
-
-    if (fVar5 == 0.0f) {
-
-      afStack_10[uVar4] = 1.0f;
-
-      afStack_10[uVar1] = 0.0f;
-
-      afStack_10[uVar2] = 0.0f;
-
-      afStack_10[3] = 0.0f;
-
+    next = (axis + 1) % 3;
+    other = (next + 1) % 3;
+    trace = sqrtf((param_1[axis * 5] - param_1[next * 5]) -
+                  param_1[other * 5] + 1.0f) * 2.0f;
+    if (trace == 0.0f) {
+      result[axis] = 1.0f;
+      result[next] = 0.0f;
+      result[other] = 0.0f;
+      result[3] = 0.0f;
     }
-
     else {
-
-      afStack_10[uVar4] = fVar5 / 4.0f;
-
-      afStack_10[uVar1] = (param_1[uVar4 * 4 + uVar1] + param_1[uVar1 * 4 + uVar4]) / fVar5;
-
-      afStack_10[uVar2] = (param_1[uVar4 * 4 + uVar2] + param_1[uVar2 * 4 + uVar4]) / fVar5;
-
-      afStack_10[3] = -((param_1[uVar1 * 4 + uVar2] - param_1[uVar2 * 4 + uVar1]) / fVar5);
-
+      result[axis] = trace / 4.0f;
+      result[next] = (param_1[axis * 4 + next] +
+                      param_1[next * 4 + axis]) / trace;
+      result[other] = (param_1[axis * 4 + other] +
+                       param_1[other * 4 + axis]) / trace;
+      result[3] = -((param_1[next * 4 + other] -
+                     param_1[other * 4 + next]) / trace);
     }
-
   }
-
-  auVar3._4_4_ = afStack_10[1];
-
-  auVar3._0_4_ = afStack_10[0];
-
-  auVar3._8_4_ = afStack_10[2];
-
-  auVar3._12_4_ = afStack_10[3];
-
-  _lqc2(auVar3);
-
-  return;
-
 }
 
 
@@ -33594,15 +33406,19 @@ u32 FUN_0033ce10(int param_1)
 {
   int iVar1;
   int iVar3;
+  volatile int *piVar2;
   u32 uVar4;
+  u32 uVar5;
 
   iVar3 = *(int *)(param_1 + 0x3c);
   iVar1 = *(int *)(param_1 + 0x40);
   uVar4 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
-  *(u32 *)uVar4 = uVar4 + 0x10;
-  *(u32 *)(uVar4 + 8) = uVar4;
+  uVar5 = uVar4;
+  *(u32 *)uVar5 = uVar5 + 0x10;
+  *(u32 *)(uVar5 + 8) = uVar5;
+  piVar2 = (int *)uVar4;
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
-  *(u32 *)(uVar4 + 4) = iVar3;
+  piVar2[1] = iVar3;
   FUN_0033cc10(uVar4,iVar1);
   return uVar4;
 }
@@ -47239,7 +47055,7 @@ void FUN_0034ada0(int param_1)
   u8 *puVar2;
   u8 auStack_100 [256];
   void (**setState)(int, int);
-  void (**setBuffer)(int, void*, int, int, int);
+  void (**setBuffer)(int, void*, int, short*, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
   puVar2 = (u8 *)(iVar1 + 0xc0);
@@ -47253,8 +47069,8 @@ void FUN_0034ada0(int param_1)
 
     RpSkyRenderStateSet(3,0x31001);
 
-    setBuffer = (void (**)(int, void*, int, int, int))DAT_009600a4_abs;
-    (*setBuffer)(3,auStack_100,4,0x69cb80,6);
+    setBuffer = (void (**)(int, void*, int, short*, int))DAT_009600a4_abs;
+    (*setBuffer)(3,auStack_100,4,(short *)((u8 *)0x6a0000 - 0x3480),6);
 
   }
 

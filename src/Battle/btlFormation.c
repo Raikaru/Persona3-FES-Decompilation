@@ -602,7 +602,7 @@ extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
 extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
 extern void func_002bccd0(u32 param_1, u32 param_2);
 extern void func_002bcde0(u64 param_1,u32 *param_2);
-extern void func_002bce10(float param_1,float param_2,int param_3,int param_4,float *param_5);
+extern void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5);
 extern u32 func_002bd080(int *param_1);
 extern void func_002bd230(u32 param_1,u8 param_2,u16 param_3);
 extern u32 func_002bd2e0(int *param_1);
@@ -3451,7 +3451,7 @@ void func_002bcde0(u64 param_1,u32 *param_2)
 
 // FUN_002bce10 NONMATCHING
 
-void func_002bce10(float param_1,float param_2,int param_3,int param_4,float *param_5)
+void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5)
 
 {
   short sVar1 = 0;
@@ -3834,13 +3834,15 @@ u32 func_002bd8e0(int *param_1)
   u32 uVar7 = 0;
   int iVar8 = 0;
   int iVar9 = 0;
-  int iStack_20 = 0;
-  int iStack_1c = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_14 = 0;
-  u32 uStack_10 = 0;
-  u32 uStack_c = 0;
-  u32 uStack_8 = 0;
+  struct {
+    u32 iStack_20;
+    u32 iStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    u32 uStack_10;
+    u32 uStack_c;
+    u32 uStack_8;
+  } packet;
   
   if (param_1[0xc] == 0) {
     lVar5 = func_001feb50(*(u32 *)(param_1[1] + 0xa8));
@@ -3913,14 +3915,14 @@ u32 func_002bd8e0(int *param_1)
         uVar7 = uVar7 & 0xfffffffb;
       }
     }
-    uStack_14 = *(u32 *)(*param_1 + 0xa8);
-    uStack_10 = *(u32 *)(param_1[1] + 0xa8);
-    uStack_8 = (u32)*(u16 *)(param_1 + 0xb);
-    uStack_c = (u32)*(u16 *)((int)param_1 + 0x2e);
-    iStack_20 = iVar9;
-    iStack_1c = iVar8;
-    uStack_18 = uVar7;
-    func_001fe650(&iStack_20);
+    packet.uStack_14 = *(u32 *)(*param_1 + 0xa8);
+    packet.uStack_10 = *(u32 *)(param_1[1] + 0xa8);
+    packet.uStack_8 = (u32)*(u16 *)(param_1 + 0xb);
+    packet.uStack_c = (u32)*(u16 *)((int)param_1 + 0x2e);
+    packet.iStack_20 = iVar9;
+    packet.iStack_1c = iVar8;
+    packet.uStack_18 = uVar7;
+    func_001fe650(&packet);
     param_1[0xc] = 0;
   }
   return 0;
@@ -4938,7 +4940,7 @@ void func_002bf9b0(void)
           callColor = alpha | 0xb4736400;
           dest = (float *)(entry + 0xa04);
           firstZero = zero;
-          func_002bce10(firstZero, zero, entry, callColor, dest);
+          func_002bce10(firstZero, zero, (u8*)entry, callColor, dest);
         }
       }
     }

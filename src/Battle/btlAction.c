@@ -2581,22 +2581,78 @@ set_action:
 // FUN_0028e7f0 NONMATCHING
 void btlActionInitStateMoveHome(BtlAction* action)
 {
+    BtlUnit* unit = action->unit;
     BtlPacket* packet;
     RwV3d homePos;
+    u16 commandId;
+    u16 nextState;
+    u32 allowMove;
+    u16 unitDatId;
+    u16 speedIdx;
+    u8 genus;
+    f32 speed;
 
     if ((gBtl->flags & 0x400000) && (BATTLE_U16(0x18) & 2))
     {
-        btlActionUpdateStateMoveTarget(action);
+        commandId = action->target.commandId;
+        if (commandId == 9)
+        {
+            nextState = BTLACTION_STATE_SUMMON;
+        }
+        else if (commandId == 3 || commandId == 2)
+        {
+            nextState = BTLACTION_STATE_SKILL;
+        }
+        else if (commandId == 1)
+        {
+            nextState = BTLACTION_STATE_ATTACK;
+        }
+        else
+        {
+            nextState = BTLACTION_STATE_NON;
+        }
+        btlActionSetState(action, nextState);
         return;
     }
-    btlUnit0027f7c0(action->unit, &homePos, NULL, NULL);
-    if (FUN_002d1ed0(&action->unit->pos, &homePos) <= 75.0f)
+
+    btlUnit0027f7c0(unit, &homePos, NULL, NULL);
+    if (FUN_002d1ed0(&unit->pos, &homePos) <= 75.0f)
     {
-        btlActionUpdateStateMoveTarget(action);
+        commandId = action->target.commandId;
+        if (commandId == 9)
+        {
+            nextState = BTLACTION_STATE_SUMMON;
+        }
+        else if (commandId == 3 || commandId == 2)
+        {
+            nextState = BTLACTION_STATE_SKILL;
+        }
+        else if (commandId == 1)
+        {
+            nextState = BTLACTION_STATE_ATTACK;
+        }
+        else
+        {
+            nextState = BTLACTION_STATE_NON;
+        }
+        btlActionSetState(action, nextState);
         return;
     }
+
     btlAction0028a780(action);
-    packet = btlUnitCreateMovePacket(action->unit, &homePos, 2.0f, 0);
+    allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
+    unitDatId = unit->datUnit->id;
+    genus = unit->genus;
+    if (genus == UNIT_GENUS_EC)
+    {
+        speedIdx = *(u16*)((u8*)iGpffffb728 + unitDatId * 0xe8 + allowMove * 4 + 0x24);
+    }
+    else
+    {
+        speedIdx = 0;
+    }
+    speed = D_00693300[speedIdx] * uGpffff8088;
+    packet = btlUnitCreateMovePacket(unit, &homePos, speed, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVEHOME);

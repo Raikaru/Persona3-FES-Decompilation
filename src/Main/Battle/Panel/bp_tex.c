@@ -1445,20 +1445,53 @@ void bpTexQueueNodeRange(s32 start, s32 count)
     s32 total;
     s32 i;
 
-    work = bpTexWork();
-    total = bpTexNodeCount();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
+    total = 0;
+    for (node = BP_TEX_PTR(work, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        if ((node[0] & 2) == 0)
+        {
+            total++;
+        }
+    }
     K_ASSERT(total <= 6, 0x49f);
     K_ASSERT(start >= 0 && start + count <= total, 0x4a4);
+
     for (i = 0; i < total; i++)
     {
-        selected[i] = bpTexFindNode((u32)i);
+        for (node = BP_TEX_PTR(work, 0x1265c);
+             node != NULL;
+             node = (u32*)node[0x3f1])
+        {
+            if ((node[0] & 2) == 0 && node[4] == (u32)i)
+            {
+                break;
+            }
+        }
+        if (node == NULL)
+        {
+            K_ASSERT(false, 0x47a);
+        }
+        selected[i] = node;
+        K_ASSERT(i < 7, 0x47a);
     }
     for (i = 0; i < count; i++)
     {
-        node = selected[start + i];
-        node[0] |= 0x20;
+        selected[start + i][0] |= 0x20;
     }
-    action = bpTexActionRecord();
+
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    action = (u32*)((u8*)work + 0x12688 +
+                    BP_TEX_U32(work, 0x127a8) * 0x24);
     action[0] = 1;
     action[1] = BP_TEX_U32(work, 0x127b0);
     action[8] = 0;
@@ -1510,10 +1543,6 @@ void bpTexRemoveNodeAt(s32 index)
     K_ASSERT(i < 7, 0x4d2);
     for (i = 0; i < count - 1; i++)
     {
-        if (BP_TEX_GLOBAL == NULL)
-        {
-            func_0019d3f0((const char*)0x0068ea00, 0xbc);
-        }
         scan = BP_TEX_PTR(work, 0x1265c);
         while (scan != NULL)
         {
