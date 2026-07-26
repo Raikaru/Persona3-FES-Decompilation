@@ -1653,11 +1653,14 @@ void FUN_003c9fb0(void)
 }
 #define FUN_003c9fb0(...) ((void (*)(...))FUN_003c9fb0)(__VA_ARGS__)
 #undef FUN_003c9fe0
-// FUN_003C9FE0 NONMATCHING
+// FUN_003C9FE0
 
 
 void FUN_003c9fe0(int *param_1)
 {
+  extern u8 DAT_006a4130[];
+  extern u8 DAT_006a4150[];
+  extern u8 DAT_006a4170[];
   int iVar1;
   int iVar2;
   u32 uVar3;
@@ -1665,12 +1668,12 @@ void FUN_003c9fe0(int *param_1)
 
   iVar2 = param_1[0x32];
   FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x718);
-  FUN_005225a8(0x6a4130);
-  FUN_001052b0(0x6a4130);
+  FUN_005225a8(DAT_006a4130);
+  FUN_001052b0(DAT_006a4130);
   FUN_00119a20();
   FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x71a);
-  FUN_005225a8(0x6a4150);
-  FUN_001052b0(0x6a4150);
+  FUN_005225a8(DAT_006a4150);
+  FUN_001052b0(DAT_006a4150);
 
   uVar3 = FUN_00102100(iVar2,0,auStack_4);
   uVar3 = FUN_00112420(uVar3);
@@ -1707,8 +1710,8 @@ void FUN_003c9fe0(int *param_1)
   }
 
   FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x730);
-  FUN_005225a8(0x6a4170);
-  FUN_001052b0(0x6a4170);
+  FUN_005225a8(DAT_006a4170);
+  FUN_001052b0(DAT_006a4170);
   return;
 }
 #define FUN_003c9fe0(...) ((void (*)(...))FUN_003c9fe0)(__VA_ARGS__)

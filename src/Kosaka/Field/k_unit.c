@@ -1982,6 +1982,7 @@ void func_001d1910(void)
 {
     s32 i;
     FldUnit* unit;
+    FldUnit* unit2;
     u32 valid;
     u32 predicate;
 
@@ -1996,9 +1997,9 @@ void func_001d1910(void)
         predicate = valid > 0;
         if (predicate == 1)
         {
-            unit = &gFldUnitsPc[i];
-            func_001a60d0(0, unit->mdl, 0, 1);
-            unit->unk_17c = 0;
+            unit2 = &gFldUnitsPc[i];
+            func_001a60d0(0, unit2->mdl, 0, 1);
+            unit2->unk_17c = 0;
         }
     }
 }

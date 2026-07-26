@@ -9177,7 +9177,6 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
     for (;
         (iVar1 < iVar4 && (iVar2 != 0));
-
         iVar2 = *(int *)(iVar2 + 0x4c), iVar1 = iVar1 + 1) {
     }
 
