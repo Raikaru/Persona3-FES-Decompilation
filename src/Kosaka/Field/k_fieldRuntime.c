@@ -62,7 +62,7 @@ extern s32 func_001a4510(void* task);
 extern s32* func_001a41b0(void* task, u32 id);
 extern void* func_004cb2f0(void* frame);
 extern void K_Draw_CopyPositionCenter(RuntimeVec3* destination, void* task);
-extern RuntimeMatrix* K_Draw_GetPositionMatrix(void* task);
+extern void* K_Draw_GetPositionMatrix(void* task);
 extern void K_Draw_SetPositionPos(void* task, const RuntimeVec3* position);
 extern void K_Draw_MovePositionInDir(f32 distance, void* task,
                                      const RuntimeVec3* direction);
@@ -1625,7 +1625,8 @@ state2:
         taskNode = func_001e2a20();
         taskNode->resourceId = work->resourceId;
         taskNode->task = work->positionTask;
-        positionMatrix = K_Draw_GetPositionMatrix(work->positionTask);
+        positionMatrix = (RuntimeMatrix*)K_Draw_GetPositionMatrix(
+            work->positionTask);
         taskNode->matrix = *positionMatrix;
         firstAxis.x = func_001a5b30(&taskNode->matrix);
         firstAxis.y = func_001a5aa0(&taskNode->matrix);

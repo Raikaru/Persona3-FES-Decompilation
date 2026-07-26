@@ -3955,21 +3955,25 @@ void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
                   float *param_5,float *param_6,float *param_7)
 {
   RwV3d delta;
-  RwV3d first;
-  RwV3d second;
+  float first_x;
+  float first_y;
+  float first_z;
+  float second_x;
+  float second_y;
+  float second_z;
 
-  FUN_003bbc90_scene_typed(param_1,param_3,param_4,param_5,&first.x,&first.y,&first.z);
-  FUN_003bbc90_scene_typed(param_2,param_3,param_4,param_5,&second.x,&second.y,&second.z);
-  delta.x = second.x - first.x;
-  delta.y = second.y - first.y;
-  delta.z = second.z - first.z;
+  FUN_003bbc90_scene_typed(param_1,param_3,param_4,param_5,&first_x,&first_y,&first_z);
+  FUN_003bbc90_scene_typed(param_2,param_3,param_4,param_5,&second_x,&second_y,&second_z);
+  delta.x = second_x - first_x;
+  delta.y = second_y - first_y;
+  delta.z = second_z - first_z;
   FUN_004c6ac0_scene_vec(&delta);
-  *param_6 = first.x;
-  param_6[1] = first.y;
-  param_6[2] = first.z;
-  *param_7 = second.x;
-  param_7[1] = second.y;
-  param_7[2] = second.z;
+  *param_6 = first_x;
+  param_6[1] = first_y;
+  param_6[2] = first_z;
+  *param_7 = second_x;
+  param_7[1] = second_y;
+  param_7[2] = second_z;
   return;
 }
 #define FUN_003bbfd0(...) ((void (*)(...))FUN_003bbfd0)(__VA_ARGS__)

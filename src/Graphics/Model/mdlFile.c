@@ -579,7 +579,7 @@ void FUN_00339680(int param_1);
 void FUN_003396d0(int param_1);
 u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src);
 void FUN_003397d0(int param_1);
-u64 FUN_003398c0(int param_1);
+u32 FUN_003398c0(int param_1);
 void FUN_00339950(int param_1);
 void FUN_003399a0(int param_1);
 void FUN_0033a220(u64 param_1);
@@ -29986,7 +29986,7 @@ void FUN_003397d0(int param_1)
 // FUN_003398C0 NONMATCHING
 
 
-u64 FUN_003398c0(int param_1)
+u32 FUN_003398c0(int param_1)
 
 
 
@@ -29998,7 +29998,7 @@ u64 FUN_003398c0(int param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   
 
