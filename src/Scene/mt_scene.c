@@ -133,6 +133,8 @@ u32 FUN_003b8690(float *param_1,float *param_2,float *param_3);
 u8 FUN_003b86c0(float param_1,Resrc* param_2,RwV3d* param_3);
 u32 FUN_003b8730(u16 param_1,RwV3d* param_2,float param_3);
 u8 FUN_003b87f0(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
+#pragma alias FUN_003b5d10_typed FUN_003b5d10
+extern Resrc* FUN_003b5d10_typed(void);
 
 /* Region call-cast macros */
 #define FUN_003b55b0(...) ((u8 * (*)(...))FUN_003b55b0)(__VA_ARGS__)
@@ -2663,7 +2665,7 @@ u8 FUN_003b87f0(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
   int iVar3;
 
-  long lVar4;
+  Resrc* lVar4;
 
   u32 uVar5;
 
@@ -2671,7 +2673,7 @@ u8 FUN_003b87f0(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
   
 
-  lVar4 = FUN_003b5d10();
+  lVar4 = FUN_003b5d10_typed();
 
   if (lVar4 == 0) {
 
