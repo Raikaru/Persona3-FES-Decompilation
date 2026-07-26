@@ -1508,13 +1508,18 @@ void FUN_0015E150(CampDrawWork *work)
 {
     void *draw;
     f32 x;
+    f32 y;
     u64 pair;
     s32 i;
     s32 base;
 
     draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 79.0f;
+    y -= 50.0f;
+    pair = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 2,
-                 UINT64_C(0x41b0000041e80000), UINT64_C(0x41b0000041e80000), 0, 0);
+                 pair, pair, 0, 0);
     FUN_0018bc10(100.0f, draw, 0, 2, 2, 0, 0, 0, 0);
     camp_draw_store_u32(draw, 0x8c, 0);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 2,

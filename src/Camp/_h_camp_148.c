@@ -1972,15 +1972,11 @@ void h_campDrawItemFrame(int param_1)
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 1,
                   end.u, start.u, 0, 0, 0, 10);
     start.f[0] = 394.0f;
-    start.f[1] = 125.0f;
-    end.f[0] = 394.0f;
-    end.f[1] = 126.0f;
-    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
-                  CAMP_PAIR_FLOATS(125.0f, 394.0f),
-    start.f[0] = 394.0f;
     start.f[1] = -475.0f;
     end.f[0] = 394.0f;
     end.f[1] = 125.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
+                  start.u, end.u, 0, 0, 0, 10);
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 0,
                   CAMP_PAIR_FLOATS(-285.0f, 321.0f),
@@ -2044,28 +2040,6 @@ void h_campDrawItemFrameSelected(int param_1)
                   first.u, first.u, 0, 0, 0, 10);
 }
 
-// FUN_0014F320 NONMATCHING
-void h_campDrawItemFrameSelected(int param_1)
-
-{
-  u64 uVar1;
-  
-  uVar1 = *(u64 *)(*(int *)(param_1 + 0xc) + 0x30);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc)), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 10);
-  uVar1 = CAMP_PAIR_FLOAT_HIGH((float)(*(int *)(param_1 + 4) * 0x21) + 124.0f,0x44138000);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 2, 0x42fa000043c50000, 0x42fa000043c50000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0xcc), 0, 2, 2, 0x42fc000043c90000, 0x42fc000043c90000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 2, 0x4170000043a08000, 0x4419c00043a08000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x154), 0, 2, 2, 0x42f8000043b18000, 0x4435000043b18000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 2, 0x43c08000423c0000, 0x43c08000423c0000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 2, 0x43c0800043c40000, 0x43c0800043c40000, 0, 0, 0, 10);
-  return;
-}
 
 #pragma opt_loop_invariants on
 // FUN_0014F680

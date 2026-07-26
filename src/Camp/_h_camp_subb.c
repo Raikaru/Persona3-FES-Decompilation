@@ -1789,45 +1789,69 @@ void FUN_00141660(CampEquipmentPanelWork* work)
   CampPair pair7;
   CampPair pair8;
   CampPair pairEnd;
+  CampPair end1;
+  CampPair end2;
+  CampPair end3;
+  CampPair end4;
+  CampPair end5;
+  CampPair end6;
+  CampPair end7;
+  CampPair end8;
   pair0.x = 90.0f;
   pair0.y = 12.0f;
   pairEnd.x = 40.0f;
   pairEnd.y = 12.0f;
   pair1.x = 269.0f;
   pair1.y = 27.0f;
-  pair2.x = 277.0f;
+  end1.x = 219.0f;
+  end1.y = 27.0f;
+  pair2.x = 368.0f;
   pair2.y = 27.0f;
-  pair3.x = 283.0f;
+  end2.x = 318.0f;
+  end2.y = 27.0f;
+  pair3.x = 391.0f;
   pair3.y = 27.0f;
-  pair4.x = 331.0f;
+  end3.x = 341.0f;
+  end3.y = 27.0f;
+  pair4.x = 534.0f;
   pair4.y = 27.0f;
-  pair5.x = 350.0f;
+  end4.x = 485.0f;
+  end4.y = 27.0f;
+  pair5.x = 558.5f;
   pair5.y = 27.0f;
+  end5.x = 507.0f;
+  end5.y = 27.0f;
   pair6.x = 177.0f;
   pair6.y = 60.0f;
-  pair7.x = 181.0f;
+  end6.x = 227.0f;
+  end6.y = 60.0f;
+  pair7.x = 197.0f;
   pair7.y = 219.0f;
+  end7.x = 247.0f;
+  end7.y = 219.0f;
   pair8.x = 508.0f;
   pair8.y = 67.0f;
+  end8.x = 559.0f;
+  end8.y = 67.0f;
   
   func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1,
                  *(u64*)&pair0, *(u64*)&pairEnd, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1,
-                 *(u64*)&pair1, *(u64*)&(CampPair){269.0f, 27.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair1, *(u64*)&end1, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1,
-                 *(u64*)&pair2, *(u64*)&(CampPair){319.0f, 27.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair2, *(u64*)&end2, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1,
-                 *(u64*)&pair3, *(u64*)&(CampPair){341.0f, 27.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair3, *(u64*)&end3, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1,
-                 *(u64*)&pair4, *(u64*)&(CampPair){484.0f, 27.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair4, *(u64*)&end4, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1,
-                 *(u64*)&pair5, *(u64*)&(CampPair){507.0f, 27.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair5, *(u64*)&end5, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1,
-                 *(u64*)&pair6, *(u64*)&(CampPair){227.0f, 60.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair6, *(u64*)&end6, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1,
-                 *(u64*)&pair7, *(u64*)&(CampPair){247.0f, 247.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair7, *(u64*)&end7, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1,
-                 *(u64*)&pair8, *(u64*)&(CampPair){559.0f, 67.0f}, 0, 0, 0, 0);
+                 *(u64*)&pair8, *(u64*)&end8, 0, 0, 0, 0);
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
       slotX = (float)(row * 0x55) + 62.0f;

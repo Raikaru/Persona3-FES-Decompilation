@@ -23696,17 +23696,6 @@ void FUN_00333420(int param_1,int *param_2)
              ((param_2[3] >> 16) & 0xff) * scalarWeight) >> 8) << 16);
       *puVar8 = scalarPackedB;
       puVar8[1] = scalarPackedA;
-DEL 23693.=23702
-      scalarPackedB =
-          (((param_2[1] & 0xff) * scalarInv + (param_2[3] & 0xff) * scalarWeight) >> 8) |
-          (((( (param_2[1] >> 8) & 0xff) * scalarInv +
-             ((param_2[3] >> 8) & 0xff) * scalarWeight) >> 8) << 8) |
-          (((( (param_2[1] >> 16) & 0xff) * scalarInv +
-             ((param_2[3] >> 16) & 0xff) * scalarWeight) >> 8) << 16) |
-          (((( (param_2[1] >> 24) & 0xff) * scalarInv +
-             ((param_2[3] >> 24) & 0xff) * scalarWeight) >> 8) << 24);
-      *puVar8 = scalarPackedB;
-      puVar8[1] = scalarPackedA;
 
       fVar12 = fVar12 + 1.0f / (float)uVar1;
 
@@ -54691,6 +54680,9 @@ void FUN_003520a0(u64 param_1)
         puVar12[7] = DAT_0069c4d4;
 
         puVar12[8] = DAT_0069c4d8;
+        *(float *)&puVar12[6] = qx - dx;
+        *(float *)&puVar12[7] = qy - dy;
+        *(float *)&puVar12[8] = qz - dz;
 
         puVar14 = puVar14 + 4;
 
