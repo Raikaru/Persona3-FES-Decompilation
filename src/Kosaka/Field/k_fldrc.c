@@ -420,10 +420,12 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     u32 count;
     u32 index;
     u32 dungeon;
+    u8* field;
 
-    *(u32*)((u8*)K_Field_Get() + 0x1168) = 0;
-    K_Field_Get_A();
-    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0;
+    field = (u8*)K_Field_Get();
+    *(u32*)(field + 0x1168) = 0;
+    field = (u8*)K_Field_Get_A();
+    *(u32*)(field + 0x1058) = 0;
 
     index = (u16)majorId;
     dungeon = (((majorId >= 51) && (majorId < 59)) ||

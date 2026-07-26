@@ -1902,66 +1902,40 @@ u8 FUN_00419050(int param_1,int *param_2)
 
   memcpy(&fStack_d0,auStack_100,0x10);
 
-  if (*(char *)(iVar2 + 4) == '@') {
-
-    if ((*(char *)(iVar2 + 5) != '\x02') && (*(char *)(iVar2 + 5) == '\x01')) {
-
+  switch (*(char *)(iVar2 + 4)) {
+  case '@':
+    switch (*(char *)(iVar2 + 5)) {
+    case '\x01':
       fVar12 = 2.0f / (fStack_c4 * fStack_c4 +
-
                      fStack_c8 * fStack_c8 + fStack_d0 * fStack_d0 + fStack_cc * fStack_cc);
-
       fVar14 = fStack_d0 * fVar12;
-
       fVar11 = fStack_cc * fVar12;
-
       fVar12 = fStack_c8 * fVar12;
-
       afStack_60[0] = 1.0f - (fStack_cc * fVar11 + fStack_c8 * fVar12);
-
       afStack_60[1] = fStack_d0 * fVar11 + fVar12 * fStack_c4;
-
       afStack_60[2] = fStack_c8 * fVar14 - fVar11 * fStack_c4;
-
       afStack_60[4] = fStack_d0 * fVar11 - fVar12 * fStack_c4;
-
       fStack_4c = 1.0f - (fStack_c8 * fVar12 + fStack_d0 * fVar14);
-
       fStack_48 = fStack_cc * fVar12 + fVar14 * fStack_c4;
-
       fStack_40 = fStack_c8 * fVar14 + fVar11 * fStack_c4;
-
       fStack_3c = fStack_cc * fVar12 - fVar14 * fStack_c4;
-
       fStack_38 = 1.0f - (fStack_d0 * fVar14 + fStack_cc * fVar11);
-
       uStack_30 = 0;
-
       uStack_2c = 0;
-
       uStack_28 = 0;
-
       afStack_60[3] = 4.2039e-45f;
-
       RwMatrixTranslate((void*)afStack_60,(void*)(iVar3 + 0x40),0);
-
       FUN_004cb7f0(iVar3,afStack_60,0);
-
+      break;
     }
-
-  }
-
-  else if (*(char *)(iVar2 + 4) == '\x06') {
-
+    break;
+  case '\x06':
     iVar1 = *(int *)(iVar1 + 8);
-
     *(float *)(iVar1 + 0x10) = fStack_d0;
-
     *(float *)(iVar1 + 0x14) = fStack_cc;
-
     *(float *)(iVar1 + 0x18) = fStack_c8;
-
     *(float *)(iVar1 + 0x1c) = fStack_c4;
-
+    break;
   }
 
   iVar1 = param_2[3];
