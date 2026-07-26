@@ -1209,10 +1209,10 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     f32 distance;
     f32 fovDistance;
     f32 nearDistance;
-    f32 nearAngle;
+    f32 radius;
     f32 half;
     f32 angle;
-    f32 radius;
+    f32 nearAngle;
     f32 ratio;
     f32 firstWeight;
     f32 x;

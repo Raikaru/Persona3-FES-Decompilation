@@ -1093,6 +1093,9 @@ extern void FUN_0038a260_i2fi(int param_1,int param_2,f32 param_3,int param_4,
 #pragma alias FUN_0038a260_f32_6 FUN_0038a260
 extern void FUN_0038a260_f32_6(f32 param_1,int param_2,int param_3,u32 param_4,
                                void *param_5,u32 param_6);
+#pragma alias FUN_0038a260_i2f3 FUN_0038a260
+extern void FUN_0038a260_i2f3(int param_1,int param_2,f32 param_3,u32 param_4,
+                               void *param_5,u32 param_6);
 #pragma alias FUN_0038a260_f32_p6 FUN_0038a260
 extern void FUN_0038a260_f32_p6(f32 param_1,int param_2,int param_3,u32 param_4,
                                 void *param_5,void *param_6);
@@ -16572,8 +16575,8 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
     FUN_0038a260_i2fi((int)(param_1 * 0xc),iVar3,fVar2,0,
                       (void *)DAT_0069ffe0_abs);
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_f32_6(fVar2,(param_1 + 0x1a) * 0xc,iVar3,uVar1,
-                       &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
+    FUN_0038a260_i2f3((int)((param_1 + 0x1a) * 0xc),iVar3,fVar2,uVar1,
+                      (void *)&gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
     break;
   default:
     return;

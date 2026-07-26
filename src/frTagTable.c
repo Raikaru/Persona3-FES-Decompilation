@@ -229,12 +229,14 @@ u64 FUN_003ae560(u64 param_1,int param_2)
 u64 FUN_003ae650(u64 param_1,int param_2)
 {
   int index;
+  int current;
   int base;
   int offset;
   u8 *data;
   u32 value;
   u32 mask;
   u32 newline;
+  u32 p;
 
   index = 0;
   offset = *(volatile int *)(param_2 + 0x18);
@@ -242,17 +244,20 @@ u64 FUN_003ae650(u64 param_1,int param_2)
   data = (u8 *)(base + offset);
   mask = 0xf0;
   newline = 10;
-  do {
-    value = data[index];
-    index++;
-    if (value != newline) {
-      if ((value & mask) == mask) {
-        index += ((value & 0xf) - 1) * 2 + 1;
-      } else if (value >= 0x80) {
-        index++;
-      }
-    }
-  } while (value != newline);
+  goto loop_test;
+loop_body:
+  if ((value & mask) == mask) {
+    index += ((value & 0xf) - 1) * 2 + 1;
+    goto loop_test;
+  }
+  p = value < 0x80;
+  if (p == 1) goto loop_test;
+  index++;
+loop_test:
+  current = index;
+  index++;
+  value = data[current];
+  if (value != newline) goto loop_body;
 
   FUN_00521408(DAT_0095abf0_abs,0,0x80);
   FUN_00521250(DAT_0095abf0_abs,*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18),index);
