@@ -4608,18 +4608,28 @@ u64 FUN_003ade70(u64 param_1,int param_2)
   u32 uVar7;
   u32 uVar8;
 
-  bVar1 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[0];
+  int offset;
+  int base;
+  offset = *(int *)(param_2 + 0x18);
+  base = *(int *)(param_2 + 0x10);
+  bVar1 = ((volatile u8 *)(base + offset))[0];
   uVar5 = (u8)(bVar1 - 1);
-  bVar2 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[1];
+  offset = *(int *)(param_2 + 0x18);
+  base = *(int *)(param_2 + 0x10);
+  bVar2 = ((volatile u8 *)(base + offset))[1];
   if (bVar2 == 0xff) {
     uVar6 = 0;
   } else {
     uVar6 = (u8)(bVar2 - 1);
   }
   uVar5 = (u8)uVar6 << 8 | uVar5 & 0xff;
-  bVar3 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[2];
+  offset = *(int *)(param_2 + 0x18);
+  base = *(int *)(param_2 + 0x10);
+  bVar3 = ((volatile u8 *)(base + offset))[2];
   uVar7 = (u8)(bVar3 - 1);
-  bVar4 = ((volatile u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10)))[3];
+  offset = *(int *)(param_2 + 0x18);
+  base = *(int *)(param_2 + 0x10);
+  bVar4 = ((volatile u8 *)(base + offset))[3];
   if (bVar4 == 0xff) {
     uVar8 = 0;
     sVar5 = uVar5;

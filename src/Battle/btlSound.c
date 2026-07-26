@@ -2749,39 +2749,37 @@ journey_true:
     
         }
     
-        uVar4 = FUN_002ffbc0(100);
+        if (FUN_002ffbc0(100) < 0x32) {
     
-        if (0x31 < uVar4) {
+          if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc0) {
     
-          if (*(s32 *)DAT_00697BE0_abs == -1) {
-    
-            lVar3 = 0;
+            return 0xa9;
     
           }
     
-          else {
-    
-            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BE0_abs);
-    
-          }
-    
-          if (lVar3 != 0) {
-    
-            return 0xa7;
-    
-          }
-    
-          return 0xa6;
+          return 0xaa;
     
         }
     
-        if (*(short *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa00) + 0xa4) == 0xc0) {
+        if (*(s32 *)DAT_00697BE0_abs == -1) {
     
-          return 0xa9;
+          lVar3 = 0;
     
         }
     
-        return 0xaa;
+        else {
+    
+          lVar3 = FUN_0016f190(*(s32 *)DAT_00697BE0_abs);
+    
+        }
+    
+        if (lVar3 != 0) {
+    
+          return 0xa7;
+    
+        }
+    
+        return 0xa6;
       
       case 3:
       
