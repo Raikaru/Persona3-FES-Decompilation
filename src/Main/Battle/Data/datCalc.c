@@ -6368,21 +6368,21 @@ u32 FUN_0030bc50(int param_1)
   lVar1 = FUN_0016f190(0xbd0);
   if (lVar1 == 1) {
     fVar3 = fGpffff8194 * (float)uVar2;
-    if (fVar3 < 2.1474836e+09) {
+    if (fVar3 < 2.1474836e+09f) {
       uVar2 = (u32)fVar3;
     }
     else {
-      uVar2 = (int)(fVar3 - 2.1474836e+09) | 0x80000000;
+      uVar2 = (int)(fVar3 - 2.1474836e+09f) | 0x80000000;
     }
   }
   lVar1 = FUN_0016f190(0x1311);
   if (lVar1 == 1) {
     fVar3 = fGpffff8070 * (float)uVar2;
-    if (fVar3 < 2.1474836e+09) {
+    if (fVar3 < 2.1474836e+09f) {
       uVar2 = (u32)fVar3;
     }
     else {
-      uVar2 = (int)(fVar3 - 2.1474836e+09) | 0x80000000;
+      uVar2 = (int)(fVar3 - 2.1474836e+09f) | 0x80000000;
     }
   }
   return uVar2;
