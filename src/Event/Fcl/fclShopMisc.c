@@ -16161,89 +16161,45 @@ u8 FUN_00403410(void)
 
 
 u32 FUN_00403520(void)
-
-
-
 {
-
   short sVar1;
-
   long lVar2;
-
   u64 uVar3;
-
   int iVar4;
-
   int iVar5;
 
-  
-
   iVar5 = 0;
-
   do {
-
     if (2 < iVar5) {
-
       return 0;
-
     }
-
     lVar2 = FUN_0017c670(iVar5);
-
     if (lVar2 != 0) {
-
       sVar1 = *(short *)lVar2;
-
       lVar2 = datGetFlag(sVar1 + 0x1170);
-
       if (lVar2 == 0) {
-
-
-
         if (lVar2 == 0) {
-
           iVar4 = 2;
-
         }
-
         else {
-
           lVar2 = FUN_0017c610(sVar1);
-
           if (lVar2 == 0) {
-
             iVar4 = 0;
-
           }
-
           else {
-
             iVar4 = 1;
-
           }
-
         }
-
       }
-
       else {
-
         iVar4 = 3;
-
       }
-
       if (iVar4 == 2) {
-
         return 1;
-
       }
-
     }
-
     iVar5 = iVar5 + 1;
-
-  } while( 1 );
-
+  } while (1);
 }
 
 // FUN_00403610 NONMATCHING

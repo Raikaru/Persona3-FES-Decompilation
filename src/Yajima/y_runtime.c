@@ -1,6 +1,10 @@
 #include "temporary.h"
 
 typedef int (*code)(...);
+typedef struct YajimaVec2 {
+  f32 x;
+  f32 y;
+} YajimaVec2;
 typedef u8 bool;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -1066,7 +1070,7 @@ u32 FUN_004af130(u64 param_1);
 u32 FUN_00430180(u64 param_1);
 u64 FUN_00430060(int param_1);
 u64 FUN_00430bb0(int param_1);
-u32 FUN_00431110(u64 param_1,u64 param_2,char param_3,u8 param_4);
+u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4);
 u64 FUN_004312b0(int param_1);
 u32 FUN_00431670(int param_1,char param_2,u32 param_3);
 u64 FUN_00439f60(u64 param_1,char param_2);
@@ -2484,7 +2488,7 @@ u32 FUN_004af130(u64 param_1);
 u32 FUN_00430180(u64 param_1);
 u64 FUN_00430060(int param_1);
 u64 FUN_00430bb0(int param_1);
-u32 FUN_00431110(u64 param_1,u64 param_2,char param_3,u8 param_4);
+u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4);
 u32 FUN_00431670(int param_1,char param_2,u32 param_3);
 u64 FUN_00439f60(u64 param_1,char param_2);
 u64 FUN_00439f60(u64 param_1,char param_2);
@@ -3540,15 +3544,13 @@ void FUN_004310e0(int param_1)
 
 // FUN_00431110 NONMATCHING
 
-u32 FUN_00431110(u64 param_1,u64 param_2,char param_3,u8 param_4)
+u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
 
 {
-  u32 lVar1;
-  u32 uVar2;
   u8 uVar3;
   u8 *puVar4;
-  u32 uStack_8;
-  u32 uStack_4;
+  u32 lVar1;
+  u32 uVar2;
   
   lVar1 = (*DAT_00960184)(1,0x80,0x40000);
   if (lVar1 == 0) {
@@ -3558,10 +3560,7 @@ u32 FUN_00431110(u64 param_1,u64 param_2,char param_3,u8 param_4)
     uVar2 = FUN_00194b20_u32(param_1,DAT_006b45e0,0x18a6,(u32 (*)(int))FUN_00430bb0,FUN_004310e0,lVar1);
     puVar4 = (u8 *)lVar1;
     *puVar4 = 0;
-    uStack_8 = (u32)param_2;
-    uStack_4 = (u32)((u32)param_2 >> 0x20);
-    *(u32 *)(puVar4 + 0x14) = uStack_8;
-    *(u32 *)(puVar4 + 0x18) = uStack_4;
+    *(YajimaVec2 *)(puVar4 + 0x14) = param_2;
     uVar3 = (u8)((int)param_3 >> 1);
     if (param_3 < '\0') {
       uVar3 = (u8)(param_3 + 1 >> 1);
