@@ -222,8 +222,10 @@ extern void func_0020d630(void *, const f32 *);
 extern void func_0020d690(void *, const f32 *);
 extern void func_004bdde0(f32, f32 *, const f32 *, u32);
 extern void func_0020ac90(void *);
+extern void *func_0020e790(void);
+extern u32 func_0035c250(u32);
 extern u32 sflResult001f99f0(void);
-extern void func_001831e0(void);
+extern u32 func_001831e0(s16, s16, const void *);
 extern u32 scrForceTraceCode(void *);
 extern void K_Fldrc_DestroyArchives(void);
 extern void func_00217590(u16);
@@ -3099,53 +3101,84 @@ void func_001f6630(void)
 // FUN_001f6a60 NONMATCHING
 void func_001f6a60(void)
 {
-    u8 *work = sBrReward;
-    K_ASSERT(work != NULL, 0x8c);
-    switch (BR_U32(work, 4)) {
-    case 0:
-        if ((BR_U32(work, 0) & 8) != 0) {
-            sflResult001f99f0();
-        } else {
-            BR_U32(work, 4) = 2;
+    u8 *work;
+    u32 state;
+    s32 i;
+    u32 result;
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
+    state = BR_U32(work, 4);
+    for (;;) {
+        switch (state) {
+        case 1:
+            if ((BR_U32(work, 0) & 8) != 0) {
+                sflResult001f99f0();
+                return;
+            }
+            state = 2;
+            break;
+        case 2:
+            if ((BR_U32(work, 0) & 0x10) != 0) {
+                BR_U32(work, 4) = 3;
+                return;
+            }
+            state = 4;
+            break;
+        case 4:
+            if ((BR_U32(work, 0) & 0x10) != 0 &&
+                BR_U32(work, 0x3400) != 0) {
+                func_001f7030();
+                return;
+            }
+            state = 5;
+            break;
+        case 5:
+            if ((BR_U32(work, 0) & 0x10) != 0 &&
+                BR_U32(work, 0x3404) != 0) {
+                func_001f70d0();
+                return;
+            }
+            state = 6;
+            break;
+        case 6:
+            if ((BR_U32(work, 0) & 0x20) != 0) {
+                func_001f9a80();
+                return;
+            }
+            state = 7;
+            break;
+        case 7:
+            func_003c77a0();
+            for (i = 0; i < (s32)BR_U32(work, 0x34c0); i++) {
+                func_001831e0(-1, (s16)i,
+                              work + (u32)i * 20 + 0x3420);
+            }
+            result = func_0035c250(BR_U32(work, 0x34c4));
+            if (result == 2) {
+                BR_U32(work, 4) = 8;
+                return;
+            }
+            if (result == 1) {
+                state = 8;
+                break;
+            }
+            if (result == 0) {
+                K_ASSERT(0, 0x32d);
+            }
+            K_ASSERT(0, 0x337);
+            break;
+        case 8:
+            func_003c72d0(func_0020e790());
+            if (sBrReward == NULL) {
+                K_ASSERT(sBrReward != NULL, 0x8c);
+            }
+            BR_U32(sBrReward, 0) &= ~2u;
+            BR_U32(sBrReward, 4) = 9;
+            return;
+        default:
+            K_ASSERT(0, 0x341);
+            break;
         }
-        break;
-    case 1:
-        if ((BR_U32(work, 0) & 0x10) != 0) {
-            BR_U32(work, 4) = 3;
-        } else {
-            BR_U32(work, 4) = 2;
-        }
-        break;
-    case 2:
-        BR_U32(work, 4) = 3;
-        break;
-    case 3:
-        if (BR_U32(work, 0x3404) != 0) {
-            func_001f7030();
-        } else {
-            BR_U32(work, 4) = 8;
-        }
-        break;
-    case 4:
-        func_001f7170();
-        break;
-    case 5:
-        func_001f7030();
-        break;
-    case 6:
-        func_001f70d0();
-        break;
-    case 7:
-        func_001f6e80();
-        break;
-    case 8:
-        func_003c77a0();
-        func_001831e0();
-        BR_U32(work, 4) = 0;
-        break;
-    default:
-        K_ASSERT(BR_U32(work, 4) < 9, 0x341);
-        break;
     }
 }
 
@@ -3188,16 +3221,32 @@ void func_001f6d20(const f32 *entry)
 void func_001f6e80(void)
 {
     u8 *work = sBrReward;
-    u32 i;
+    s32 i;
+    u32 count;
+    u32 idx;
+    u8 *entry;
+    f32 output[2];
+    f32 position[2];
+    f32 scale;
     K_ASSERT(work != NULL, 0x8c);
-    for (i = 0; i < BR_U32(work, 0x341c); i++) {
-        u32 idx = BR_U32(work, 0x3c + i * 4);
-        func_0020c500(work + idx * 0x670 + 0x68, 0x43480000);
+    count = BR_U32(work, 0x340c);
+    if (count != 0) {
+        for (i = 0; i < BR_S32(work, 0x341c); i++) {
+            idx = BR_U32(work, 0x3c + i * 4);
+            entry = work + idx * 0x670 + 0x5c;
+            position[0] = (f32)(i - (s32)count) * 220.0f + 320.0f;
+            position[1] = 184.0f;
+            scale = func_0020c500(entry + 0xc, 200.0f);
+            func_0020c400(entry + 0xc, position, scale, output);
+            output[1] += 100.0f;
+            func_002508c0(entry + 0x60c, output, 0x14);
+        }
     }
-    if (BR_U32(work, 0x340c) < BR_U32(work, 0x341c)) {
-        u32 idx = BR_U32(work, 0x3c + BR_U32(work, 0x340c) * 4);
-        func_003c7bc0(0, func_00173220(BR_U16(work + idx * 0x670, 0x60)));
-        func_003c7430(9);
+    idx = BR_U32(work, 0x3c + count * 4);
+    entry = work + idx * 0x670 + 0x5c;
+    func_003c7bc0(0, func_00173220(BR_U16(entry, 0x60)));
+    func_003c7430(9);
+    if (count == BR_U32(work, 0x341c) - 1) {
         BR_U32(work, 0) |= 0x40;
     }
     func_0010a4e0(1, 0, 6, 10);

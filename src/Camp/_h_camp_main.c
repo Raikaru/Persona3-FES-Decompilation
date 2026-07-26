@@ -275,6 +275,13 @@ typedef union CampMainPackedPosition
     } coordinates;
     u64 value;
 } CampMainPackedPosition;
+typedef struct CampMainQuadPosition
+{
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} CampMainQuadPosition;
 
 static u64 campMainPackPosition(f32 x, f32 y)
 {
@@ -516,8 +523,8 @@ extern void FUN_001345B0_s16(CampMainDrawItem* item, const void* resources,
                              s16 personaIndex, s16 alternatePersonaIndex);
 // FUN_001345B0 NONMATCHING
 void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
-                  const s16* personaIds, s32 personaIndex,
-                  s32 alternatePersonaIndex)
+                  const s16* personaIds, s16 personaIndex,
+                  s16 alternatePersonaIndex)
 {
 
     switch (mode) {
@@ -529,26 +536,29 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
                                 0.0f, 0.0f);
         break;
     case 2:
-        campMainDrawSprite(item, campMainResource(resources, 0), 2,
-                           item->x, item->y);
+        FUN_001159f0(NULL, campMainResource(resources, 0), 2,
+                     item->alpha, item->x, item->y, item->spriteScale);
         break;
     case 3:
-        campMainDrawSprite(item, campMainResource(resources, 0), 3,
-                           item->x, item->y);
+        FUN_001159f0(NULL, campMainResource(resources, 0), 3,
+                     item->alpha, item->x, item->y, item->spriteScale);
         break;
     case 4:
-        campMainDrawSprite(item, campMainResource(resources, 0), 1,
-                           item->x, item->y);
+        FUN_001159f0(NULL, campMainResource(resources, 0), 1,
+                     item->alpha, item->x, item->y, item->spriteScale);
         break;
     case 5:
-        campMainDrawSprite(item, campMainResource(resources, 0), 0,
-                           item->x, item->y);
-        campMainDrawSprite(item, campMainResource(resources, 2), 2,
-                           76.0f + item->x - 60.0f, item->y);
-        campMainDrawSprite(item, D_00833BA4, 2, 493.0f + item->x - 60.0f,
-                           item->y);
-        campMainDrawSprite(item, D_00833BA4, 3, 587.0f + item->x - 60.0f,
-                           item->y);
+        FUN_001159f0(NULL, campMainResource(resources, 0), 0,
+                     item->alpha, item->x, item->y, item->spriteScale);
+        FUN_001159f0(NULL, campMainResource(resources, 2), 2,
+                     item->alpha, item->x + 76.0f - 60.0f,
+                     item->y, item->spriteScale);
+        FUN_001159f0(NULL, D_00833BA4, 2,
+                     item->alpha, item->x + 493.0f - 60.0f,
+                     item->y, item->spriteScale);
+        FUN_001159f0(NULL, D_00833BA4, 3,
+                     item->alpha, item->x + 587.0f - 60.0f,
+                     item->y, item->spriteScale);
         break;
     default:
         break;
@@ -1860,8 +1870,8 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
     }
     if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL ||
         FUN_0016DBA0((s16)id) == '\n') {
-        campDrawCardSprite(DAT_00833B40, kind + 1, alpha,
-                           p.value.x + 10.0f, p.value.y + 5.0f, textAlpha);
+        FUN_001159F0(NULL, DAT_00833B40, kind + 1, (u32)textAlpha,
+                     p.value.x + 10.0f, p.value.y + 5.0f, alpha);
     }
 }
 
@@ -2063,8 +2073,9 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     CampMainPackedPosition input;
     register f32 inputX;
     register f32 inputY;
-    volatile u64 copied;
-    volatile CampMainPackedPosition local;
+    CampMainQuadPosition copied;
+    CampMainQuadPosition local;
+    CampMainPackedPosition packed;
     CampMainSpriteNode* sprite;
     s32 i;
     s32 start;
@@ -2077,17 +2088,19 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     input.value = position;
     inputX = input.coordinates.x;
     inputY = input.coordinates.y;
-    local.value = 0;
-    copied = local.value;
+    local.x = 0.0f;
+    local.y = 0.0f;
+    local.z = 0.0f;
+    local.w = 0.0f;
+    copied = local;
     FUN_001159f0(NULL, DAT_00833B48, 0, 0,
-                 55.0f + *((volatile f32*)&copied),
-                 36.0f + *(((volatile f32*)&copied) + 1), alpha);
+                 55.0f + copied.x, 36.0f + copied.y, alpha);
     for (i = 0; i < 5; i++) {
-        local.coordinates.y = inputY + (f32)i * 64.0f + 49.0f;
+        local.y = inputY + (f32)i * 64.0f + 49.0f;
         sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
         sprite->spriteScale = alpha;
-        sprite->x = local.coordinates.x;
-        sprite->y = local.coordinates.y + 24.0f;
+        sprite->x = local.x;
+        sprite->y = local.y + 24.0f;
         sprite->rotation = 0x1000;
         sprite->alpha = (u8)frame;
         FUN_001127D0(sprite, 1);
@@ -2106,16 +2119,18 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     }
     for (i = 0; i < visibleCount; i++) {
         id = entries[offset + i];
-        local.coordinates.y = inputY + (f32)(i + start) * 64.0f + 49.0f;
-        x = local.coordinates.x;
-        y = local.coordinates.y + 24.0f;
+        local.y = inputY + (f32)(i + start) * 64.0f + 49.0f;
+        packed.coordinates.x = local.x;
+        packed.coordinates.y = local.y;
+        x = packed.coordinates.x;
+        y = packed.coordinates.y + 24.0f;
         if (i == selected) {
             FUN_001159f0(NULL, DAT_00833B48, 0xe, 0, x, y, alpha);
-            FUN_00136a10(alpha, local.value, id, 1, 0);
-            FUN_00137300(alpha, local.value, id, 1, 0, 0);
+            FUN_00136a10(alpha, packed.value, id, 1, 0);
+            FUN_00137300(alpha, packed.value, id, 1, 0, 0);
         } else {
-            FUN_00136a10(alpha, local.value, id, 0, 0);
-            FUN_00137300(alpha, local.value, id, 0, 0, 0);
+            FUN_00136a10(alpha, packed.value, id, 0, 0);
+            FUN_00137300(alpha, packed.value, id, 0, 0, 0);
         }
     }
 
@@ -2239,7 +2254,6 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     FUN_001159f0(NULL, DAT_00833B68, 6, 0, 80.0f, 415.0f, alpha);
     FUN_001159f0(NULL, D_00833BA4, 1, 0, 465.0f, 415.0f, alpha);
     FUN_001159f0(NULL, D_00833BA4, 3, 0, 561.0f, 415.0f, alpha);
-    FUN_001159f0(NULL, DAT_00833B48, 1, 0, 528.0f, 415.0f, alpha);
 }
 
 extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,
@@ -2344,22 +2358,19 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             sprintf(text, gp0xffff897c, FUN_001775A0(entryId));
             rowOffset = i * 0x18;
             if (i == selected) {
-                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
-                                       (u32)textAlpha, p0.value.x + 262.0f,
-                                       p0.value.y + 189.0f + (f32)rowOffset,
-                                       alpha);
-                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
-                                       (u32)textAlpha, p0.value.x + 35.0f,
-                                       p0.value.y + 196.0f + (f32)rowOffset,
-                                       alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x1b,
+                             (u32)textAlpha, p0.value.x + 262.0f,
+                             p0.value.y + 189.0f + (f32)rowOffset, alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x1d,
+                             (u32)textAlpha, p0.value.x + 35.0f,
+                             p0.value.y + 196.0f + (f32)rowOffset, alpha);
                 FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
             }
             else {
-                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
-                                       (u32)textAlpha, p0.value.x + 35.0f,
-                                       p0.value.y + 196.0f + (f32)rowOffset,
-                                       alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x19,
+                             (u32)textAlpha, p0.value.x + 35.0f,
+                             p0.value.y + 196.0f + (f32)rowOffset, alpha);
                 FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
             }
@@ -2382,22 +2393,19 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             sprintf(text, gp0xffff897c, FUN_001775A0(entryId));
             rowOffset = i * 0x18;
             if (i == selected) {
-                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
-                                       (u32)textAlpha, p1.value.x + 262.0f,
-                                       p1.value.y + 189.0f + (f32)rowOffset,
-                                       alpha);
-                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
-                                       (u32)textAlpha, p1.value.x + 35.0f,
-                                       p1.value.y + 196.0f + (f32)rowOffset,
-                                       alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x1b,
+                             (u32)textAlpha, p1.value.x + 262.0f,
+                             p1.value.y + 189.0f + (f32)rowOffset, alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x1d,
+                             (u32)textAlpha, p1.value.x + 35.0f,
+                             p1.value.y + 196.0f + (f32)rowOffset, alpha);
                 FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
             }
             else {
-                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
-                                       (u32)textAlpha, p1.value.x + 35.0f,
-                                       p1.value.y + 196.0f + (f32)rowOffset,
-                                       alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x19,
+                             (u32)textAlpha, p1.value.x + 35.0f,
+                             p1.value.y + 196.0f + (f32)rowOffset, alpha);
                 FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
             }
@@ -2421,22 +2429,19 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                     FUN_001775A0((s16)entryId));
             rowOffset = i * 0x18;
             if (i == selected) {
-                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
-                                       (u32)textAlpha, p2.value.x + 262.0f,
-                                       p2.value.y + 189.0f + (f32)rowOffset,
-                                       alpha);
-                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
-                                       (u32)textAlpha, p2.value.x + 35.0f,
-                                       p2.value.y + 196.0f + (f32)rowOffset,
-                                       alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x1b,
+                             (u32)textAlpha, p2.value.x + 262.0f,
+                             p2.value.y + 189.0f + (f32)rowOffset, alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x1d,
+                             (u32)textAlpha, p2.value.x + 35.0f,
+                             p2.value.y + 196.0f + (f32)rowOffset, alpha);
                 FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
             }
             else {
-                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
-                                       (u32)textAlpha, p2.value.x + 35.0f,
-                                       p2.value.y + 196.0f + (f32)rowOffset,
-                                       alpha);
+                FUN_001159F0(NULL, D_00833B58, 0x19,
+                             (u32)textAlpha, p2.value.x + 35.0f,
+                             p2.value.y + 196.0f + (f32)rowOffset, alpha);
                 FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
             }

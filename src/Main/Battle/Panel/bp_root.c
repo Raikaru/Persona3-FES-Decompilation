@@ -2428,53 +2428,85 @@ void FUN_00204CC0(void)
 // FUN_00205000 NONMATCHING
 void FUN_00205000(void)
 {
-    u32 i;
-    u32 count;
+    u8* work;
+    u8* row;
+    u8* slot;
+    s32 i;
+    s8 alpha;
     u32 type;
     u32 handle;
-    u16 id;
 
-    count = panelWork32(0x3ac);
-    for (i = 0; i < count; i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    for (i = 0; i < *(s32*)(work + 0x3ac); i++)
     {
-        handle = *(u32*)(panelWork() + 0x370 + i * 8);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x370 + i * 8) = 0;
-        handle = *(u32*)(panelWork() + 0x374 + i * 8);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x374 + i * 8) = 0;
+        handle = *(u32*)(work + 0x370 + i * 8);
+        if (handle != 0)
+            func_003b0170(handle);
+        *(u32*)(work + 0x370 + i * 8) = 0;
+        handle = *(u32*)(work + 0x374 + i * 8);
+        if (handle != 0)
+            func_003b0170(handle);
+        *(u32*)(work + 0x374 + i * 8) = 0;
     }
     func_003b0e70(1);
     func_003b0e90(2);
-    for (i = 0; i < count; i++)
+    for (i = 0; i < *(s32*)(work + 0x3ac); i++)
     {
-        type = panelWork32(0x2e4 + i * 0x18);
-        id = panelWork16(0x2ec + i * 0x18);
+        row = work + (i + *(u32*)(work + 0x76f8)) * 0x18 + 0x2e0;
+        alpha = *(u32*)(work + 0x7700) ==
+                        (u32)(i + *(u32*)(work + 0x76f8))
+                    ? 6
+                    : 0;
+        type = *(u32*)(row + 4);
         if (type == 0)
         {
-            handle = func_003b0970(0, 2, i == panelWork32(0x7700) ? 6 : 0, 0, 0);
-            func_003b2c60(handle);
+            handle = func_003b0970(*(u32*)0x00684f24, 2, alpha, 0, 0);
+            func_003b2c60(handle, 0.0f);
             func_003b0e20(handle, -1);
-            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
+            *(u32*)(work + 0x370 + i * 8) = handle;
         }
-        else
+        else if (type == 1)
         {
-            handle = func_003b0970(func_00177790((s16)id), 2,
-                                    i == panelWork32(0x7700) ? 6 : 0, 0, 0);
-            func_003b2c60(handle);
+            handle = func_003b0970(
+                func_00177790(*(s16*)(row + 0xc)), 2, alpha, 0, 0);
+            func_003b2c60(handle, 0.0f);
             func_003b0e20(handle, -1);
-            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
-            if (type == 1)
+            slot = work + i * 8;
+            *(u32*)(slot + 0x370) = handle;
+            handle = func_003b0970(
+                ((u32*)0x00684efc)[*(u32*)(row + 0x10) - 1],
+                2, alpha, 0, 0);
+            func_003b2c60(handle, 0.0f);
+            func_003b0e20(handle, -1);
+            *(u32*)(slot + 0x374) = handle;
+        }
+        else if (type == 2)
+        {
+            if (*(u32*)(work + 0x20) == 2)
+                K_ASSERT(0, 0xde2);
+            if (*(u32*)(work + 0x20) == 1)
             {
-                *(u32*)(panelWork() + 0x374 + i * 8) =
-                    func_003b0970(0, 2, 0, 0, 0);
+                handle = func_003b0970(
+                    func_00177790(6), 2, alpha, 0, 0);
             }
+            else if (*(u32*)(work + 0x20) == 0)
+            {
+                handle = func_003b0970(
+                    func_00177790(4), 2, alpha, 0, 0);
+            }
+            func_003b2c60(handle, 0.0f);
+            func_003b0e20(handle, -1);
+            slot = work + i * 8;
+            *(u32*)(slot + 0x370) = handle;
+            handle = func_003b0970(*(u32*)0x00684f20, 2, alpha, 0, 0);
+            func_003b2c60(handle, 0.0f);
+            func_003b0e20(handle, -1);
+            *(u32*)(slot + 0x374) = handle;
         }
     }
     func_003b0e90(1);
     func_003b0e70(2);
-    func_002230e0();
-    panelSetWork32(0x1c, 2);
 }
 
 // FUN_002053C0
@@ -2908,32 +2940,53 @@ void FUN_00206310(void)
 // FUN_002063F0 NONMATCHING
 void FUN_002063F0(void)
 {
+    u8* work;
+    u8* row;
+    u32 i;
     u32 index;
     u32 id;
-    u32 handle;
     u32 type;
 
-    index = panelWork32(0x7734);
-    id = panelWork32(0x3b0 + index * 4);
-    type = panelDataType((u16)id);
-    if (type == 7)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    index = *(u32*)(work + 0x7734);
+    id = *(u32*)(work + 0x3b0 + index * 4);
+    if (id == 7)
     {
-        func_0021b670();
-        func_002085e0();
-        panelSetWork32(0x1c, 1);
+        FUN_005225a8((const char*)0x684f48);
+        FUN_0021B670(0);
+        FUN_002085E0();
+        *(u32*)(work + 0x1c) = 1;
     }
-    else if (type == 0)
+    else
     {
-        panelSetWork32(0x10, 0);
-        panelSetWork32(0x3b0 + index * 4, id);
-        func_00208790();
-    }
-    else if (type == 1)
-    {
-        func_00208860((u16)id);
+        row = work + *(u32*)(work + 0x7700) * 0x18 + 0x2e0;
+        type = *(u32*)(row + 4);
+        if (type == 2)
+        {
+            K_ASSERT(0, 0x104e);
+        }
+        else if (type == 1)
+        {
+            *(u32*)(row + 0x10) = id;
+            *(u32*)row |= 1;
+            FUN_00208860(*(u16*)(row + 0xc));
+        }
+        else if (type == 0)
+        {
+            for (i = 0; i < *(u32*)(work + 0x3a8); i++)
+            {
+                row = work + i * 0x18 + 0x2e0;
+                if ((*(u32*)row & 2) == 0 && *(u32*)(row + 4) == 1)
+                {
+                    *(u32*)(row + 0x10) = id;
+                    *(u32*)row |= 1;
+                }
+            }
+            FUN_00208790();
+        }
     }
     FUN_00205D60();
-    (void)handle;
 }
 
 // FUN_002065A0 NONMATCHING

@@ -1524,7 +1524,7 @@ void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
 void FUN_0045ce90(u64 param_1);
-void FUN_0045d990(u64 param_1,long param_2);
+void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
 void FUN_0045e7e0(void);
 void FUN_0045ea80(int param_1);
@@ -2936,7 +2936,7 @@ void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
 void FUN_0045ce90(u64 param_1);
-void FUN_0045d990(u64 param_1,long param_2);
+void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
 void FUN_0045e7e0(void);
 void FUN_0045ea80(int param_1);
@@ -20672,7 +20672,7 @@ void FUN_0045ce90(u64 param_1)
 #pragma opt_loop_invariants on
 // FUN_0045D990 NONMATCHING
 
-void FUN_0045d990(u64 param_1,long param_2)
+void FUN_0045d990(int param_1,long param_2)
 
 {
   int iVar1;
@@ -20691,7 +20691,7 @@ void FUN_0045d990(u64 param_1,long param_2)
   iVar3 = *(int *)((int)param_1 + 0x3c);
   if ((-1 < param_2) && (lVar4 = FUN_0045b4b0(iVar3 + 0x178), lVar4 == 0)) {
     FUN_0045b4e0(iVar3 + 0x178);
-    FUN_001159f0_va(0,0,0);
+    FUN_001159f0_3f(0,0,0);
   }
   if (0 < param_2) {
     FUN_0045cdd0(param_1,1);
@@ -20699,8 +20699,8 @@ void FUN_0045d990(u64 param_1,long param_2)
     if (lVar4 == 0) {
       FUN_0045b420((iVar3 + 0x210),(float*)(auStack_8));
       FUN_0045b4e0(iVar3 + 0x210);
-      FUN_001159f0_va(4.0f,(float)(int)fStack_4,0);
-      FUN_001159f0_va(321.0f,(float)(int)fStack_4,0);
+      FUN_001159f0_3f(4.0f,(float)(int)fStack_4,0);
+      FUN_001159f0_3f(321.0f,(float)(int)fStack_4,0);
     }
   }
   if (1 < param_2) {
@@ -20709,7 +20709,7 @@ void FUN_0045d990(u64 param_1,long param_2)
       lVar4 = FUN_0045b4b0(iVar6);
       if (lVar4 == 0) {
         FUN_0045b4e0(iVar6);
-        FUN_001159f0_va((float)((iVar8 / 6) * 0x94 + 0x1b),(float)((iVar8 % 6) * 0x19 + 0xe5),0);
+        FUN_001159f0_3f((float)((iVar8 / 6) * 0x94 + 0x1b),(float)((iVar8 % 6) * 0x19 + 0xe5),0);
       }
     }
   }
@@ -20741,9 +20741,9 @@ void FUN_0045d990(u64 param_1,long param_2)
               fVar9 = fVar9 - 2.1474836e+09f;
             }
             FUN_0045b420((iVar6 + 0x1180),(float*)(auStack_8));
-            FUN_00115bc0_va((float)iVar7,(float)(iVar8 * 0x19 + 0xe5 + (int)fStack_4),0,uStack_c,
-                         DAT_007ce718,sVar2 + 0x20,0xff - ((int)fVar9 & 0xffU) & 0xff,0x2e,0x3c,0x44
-                        );
+          FUN_00115bc0_3fv((float)iVar7,(float)(iVar8 * 0x19 + 0xe5 + (int)fStack_4),0,uStack_c,
+                       DAT_007ce718,sVar2 + 0x20,0xff - ((int)fVar9 & 0xffU) & 0xff,0x2e,0x3c,0x44
+                      );
           }
         }
       }

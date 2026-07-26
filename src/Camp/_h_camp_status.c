@@ -935,7 +935,23 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
                              (184.0f + position.y) - 25.0f, scale);
     h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
     for (i = 0; i < 5; i++) {
-        value = FUN_00173660(persona, i) & 0xff;
+        switch (i) {
+        case 0:
+            value = FUN_00173660(persona, 0) & 0xff;
+            break;
+        case 1:
+            value = FUN_00173660(persona, 1) & 0xff;
+            break;
+        case 2:
+            value = FUN_00173660(persona, 2) & 0xff;
+            break;
+        case 3:
+            value = FUN_00173660(persona, 3) & 0xff;
+            break;
+        case 4:
+            value = FUN_00173660(persona, 4) & 0xff;
+            break;
+        }
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x14, alpha,
                                  position.x + 104.0f,
                                  position.y + 104.0f +
