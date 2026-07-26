@@ -173,6 +173,7 @@ u64 FUN_003acbc0(u64 param_1,int param_2);
 u64 FUN_003acb10(int param_1,int param_2);
 u64 FUN_003acda0(u64 param_1,int param_2);
 u64 FUN_003ace60(u64 param_1,int param_2);
+u64 FUN_003acf80(u64 param_1,int param_2);
 u64 FUN_003ad030(u64 param_1,int param_2);
 u64 FUN_003ad1b0(u32 param_1,int param_2);
 u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4);
@@ -182,7 +183,7 @@ u64 FUN_003ad640(u64 param_1,u64 param_2);
 u64 FUN_003ad740(u64 param_1,int param_2);
 u64 FUN_003ad860(u64 param_1,int param_2);
 u64 FUN_003ad930(u64 param_1,int param_2);
-u64 FUN_003ada00(u64 param_1,u64 param_2);
+u64 FUN_003ada00(u64 param_1,int param_2);
 u64 FUN_003adb00(u64 param_1,int param_2);
 u64 FUN_003adb80(u64 param_1,int param_2);
 u64 FUN_003add00(void);
@@ -4327,13 +4328,15 @@ u64 FUN_003ad930(u64 param_1,int param_2)
 // FUN_003ADA00 NONMATCHING
 
 
-u64 FUN_003ada00(u64 param_1,u64 param_2)
+u64 FUN_003ada00(u64 param_1,int param_2)
 
 
 
 {
 
-  u8 bVar1;
+  char msg[8];
+
+  int bVar7;
 
   u8 uVar2;
 
@@ -4345,39 +4348,35 @@ u64 FUN_003ada00(u64 param_1,u64 param_2)
 
   u8 bVar6;
 
-  u8 uStack_8;
-
-  u8 uStack_7;
-
-  u8 uStack_6;
+  u8 bVar1;
 
   
 
-  iVar5 = (int)param_2;
+  iVar5 = param_2;
 
-  pbVar4 = (u8 *)(*(int *)(iVar5 + 0x10) + *(int *)(iVar5 + 0x18));
+  pbVar4 = (u8 *)(*(int *)(iVar5 + 0x18) + *(int *)(iVar5 + 0x10));
 
-  bVar1 = *pbVar4;
+  bVar1 = *pbVar4 - 1;
 
   bVar6 = pbVar4[1];
 
   if (bVar6 == 0xff) {
 
-    bVar6 = 0;
+    bVar7 = 0;
 
   }
 
   else {
 
-    bVar6 = bVar6 - 1;
+    bVar7 = (bVar6 - 1) & 0xff;
 
   }
 
-  uStack_8 = 0x83;
+  msg[0] = 0x83;
 
-  uStack_7 = 0xd5;
+  msg[1] = 0xd5;
 
-  uStack_6 = 0;
+  msg[2] = 0;
 
   uVar2 = *(u8 *)(iVar5 + 0xd);
 
@@ -4385,11 +4384,11 @@ u64 FUN_003ada00(u64 param_1,u64 param_2)
 
   FUN_003b22a0(param_2);
 
-  FUN_003b2020(&uStack_8,param_2);
+  FUN_003b2020(msg,param_2);
 
   FUN_003b22a0(param_2);
 
-  uVar3 = FUN_00171110((u16)bVar6 << 8 | bVar1 - 1 & 0xff,0);
+  uVar3 = FUN_00171110((u16)((bVar7 & 0xff) << 8 | bVar1),0);
 
   FUN_003b2020(uVar3,param_2);
 
