@@ -22810,7 +22810,7 @@ u32 *FUN_00332880(int *arg0)
   result[1] = -1;
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
-  FUN_00332a30((int *)result,(u16)(*( *(u16 * volatile *)((int)arg0 + 0x30))),(int *)((u8 *)arg0 + 0xc));
+  FUN_00332a30((int *)result,(u16)(**(u16 **)((int)arg0 + 0x30)),(int *)((u8 *)arg0 + 0xc));
   FUN_00332ac0(result,(u16)(**(u16 **)((int)arg0 + 0x30)),model);
   FUN_00332990(result,(int)arg0);
   return result;
@@ -48821,14 +48821,12 @@ void FUN_0034c890(int param_1)
 {
 
   int iVar1;
-
   u32 uVar2;
-
   
 
   iVar1 = (int)param_1;
 
-  if (*(int *)(iVar1 + 0xa0) != 0) {
+  if (*(int *)(param_1 + 0xa0) != 0) {
 
     FUN_0034bef0();
 
@@ -48838,7 +48836,7 @@ void FUN_0034c890(int param_1)
 
     for (uVar2 = 0; uVar2 < *(u32 *)(iVar1 + 0x28); uVar2 = uVar2 + 1) {
 
-      FUN_003257e0((u64)(*(u32 *)(*(int *)(iVar1 + 0x98) + uVar2 * 4)));
+      FUN_003257e0(*(u32 *)(*(int *)(iVar1 + 0x98) + uVar2 * 4));
 
     }
 
