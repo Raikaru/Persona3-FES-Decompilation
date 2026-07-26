@@ -631,7 +631,11 @@ u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
 {
     int iVar1;
     int iVar2;
-    u8 bVar1;
+    int index;
+    int length;
+    int base;
+    int scaled;
+    u32 bVar1;
 
     iVar1 = *(int *)(param_1 + 8);
     if (iVar1 == 0) {
@@ -640,20 +644,27 @@ u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
         iVar2 = *(int *)(iVar1 + 0x60);
         if (iVar2 == 0) {
             bVar1 = 0;
-        } else if ((int)(u32)*(u16 *)(iVar2 + 2) <= *(int *)(param_1 + 0x970)) {
-            bVar1 = 0;
         } else {
-            bVar1 = 1;
+            index = *(volatile int *)(param_1 + 0x970);
+            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            if (length <= index) {
+                bVar1 = 0;
+            } else {
+                bVar1 = 1;
+            }
         }
     }
-    if (bVar1) {
-        iVar2 = *(int *)(param_1 + 0x970) * 0x8c +
-                (int)*(int *)((u8 *)iVar1 + 0x60) + 4;
-        *param_2 = (u32)*(u16 *)(iVar2 + 10);
-        *param_3 = (u32)*(u16 *)(iVar2 + 0xe);
-        *param_4 = (u32)*(u16 *)(iVar2 + 0x12);
+    if (!bVar1) {
+        return 0;
     }
-    return bVar1;
+    index = *(volatile int *)(param_1 + 0x970);
+    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
+    base = *(volatile int *)(iVar2 + 4);
+    scaled = index * 0x8c;
+    *param_2 = (u32)*(u16 *)((scaled + base) + 0xa);
+    *param_3 = (u32)*(u16 *)(scaled + base + 0xe);
+    *param_4 = (u32)*(u16 *)(scaled + base + 0x12);
+    return 1;
 }
 #define FUN_003977c0(...) ((u8 (*)(...))FUN_003977c0)(__VA_ARGS__)
 #undef FUN_00397870
