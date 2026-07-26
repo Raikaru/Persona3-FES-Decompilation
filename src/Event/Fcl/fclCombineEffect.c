@@ -3284,39 +3284,27 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   int iVar1;
 
-  float *pfVar2;
-
   u8 bVar3;
 
-  float *pfVar4;
+  f32 fVar6;
 
-  float *pfVar5;
+  f32 fVar7;
 
-  float fVar6;
+  u64 axisXY;
 
-  float fVar7;
+  f32 axisZ;
 
-  float fStack_40;
+  RwV3d vecA;
 
-  float fStack_3c;
+  RwV3d vecNeg;
 
-  float fStack_38;
+  RwV3d vecPos;
 
-  float fStack_30;
+  u8 *pfVar2;
 
-  float fStack_2c;
+  u8 *pfVar4;
 
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  u64 uStack_10;
-
-  u32 uStack_8;
+  u8 *pfVar5;
 
   
 
@@ -3324,25 +3312,25 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   fVar7 = 0.0f;
 
-  uStack_10 = DAT_006b3090;
+  axisXY = DAT_006b3090;
 
-  uStack_8 = *(u32 *)&DAT_006b3098;
+  axisZ = DAT_006b3098;
 
   bVar3 = 0;
 
-  pfVar4 = (float *)0xc;
+  pfVar4 = (u8 *)0xc;
 
-  pfVar5 = &fStack_40;
+  pfVar5 = (u8 *)&vecA;
 
   pfVar2 = pfVar5;
 
-  while (pfVar2 != (float *)0x0) {
+  while (pfVar2 != (u8 *)0x0) {
 
-    *(u8 *)pfVar5 = 0;
+    *pfVar5 = 0;
 
-    pfVar5 = (float *)((int)pfVar5 + 1);
+    pfVar5 = pfVar5 + 1;
 
-    pfVar4 = (float *)((int)pfVar4 + -1);
+    pfVar4 = pfVar4 - 1;
 
     pfVar2 = pfVar4;
 
@@ -3370,7 +3358,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     }
 
-    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0;
+    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0f;
 
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
@@ -3380,13 +3368,13 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     }
 
-    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0;
+    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0f;
 
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
-      uStack_10 = *(u64 *)(iVar1 + 0x10);
+      axisXY = *(u64 *)(iVar1 + 0x10);
 
-      uStack_8 = *(u32 *)(iVar1 + 0x18);
+      axisZ = *(f32 *)(iVar1 + 0x18);
 
       fVar7 = (fVar7 + 0.0f) - fGpffff82cc * fVar6;
 
@@ -3394,49 +3382,49 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     }
 
-    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0;
+    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0f;
 
-    if ((fVar6 < -48.0f) || (48.0 < fVar6)) {
+    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
-      fStack_40 = *(float *)(iVar1 + 0x30);
+      vecA.x = *(f32 *)(iVar1 + 0x30);
 
-      fStack_3c = *(float *)(iVar1 + 0x34);
+      vecA.y = *(f32 *)(iVar1 + 0x34);
 
-      fStack_38 = *(float *)(iVar1 + 0x38);
+      vecA.z = *(f32 *)(iVar1 + 0x38);
 
-      RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+      RwV3dNormalize(&vecA,&vecA);
 
       fVar6 = fGpffff8328 * fVar6;
 
-      fStack_40 = fStack_40 * fVar6;
+      vecA.x = vecA.x * fVar6;
 
-      fStack_3c = fStack_3c * fVar6;
+      vecA.y = vecA.y * fVar6;
 
-      fStack_38 = fStack_38 * fVar6;
+      vecA.z = vecA.z * fVar6;
 
       bVar3 = 1;
 
     }
 
-    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0;
+    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0f;
 
-    if ((fVar6 < -48.0f) || (48.0 < fVar6)) {
+    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
-      fStack_40 = *(float *)(iVar1 + 0x10);
+      vecA.x = *(f32 *)(iVar1 + 0x10);
 
-      fStack_3c = *(float *)(iVar1 + 0x14);
+      vecA.y = *(f32 *)(iVar1 + 0x14);
 
-      fStack_38 = *(float *)(iVar1 + 0x18);
+      vecA.z = *(f32 *)(iVar1 + 0x18);
 
-      RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+      RwV3dNormalize(&vecA,&vecA);
 
       fVar6 = fGpffff8328 * fVar6;
 
-      fStack_40 = fStack_40 * fVar6;
+      vecA.x = vecA.x * fVar6;
 
-      fStack_3c = fStack_3c * fVar6;
+      vecA.y = vecA.y * fVar6;
 
-      fStack_38 = fStack_38 * fVar6;
+      vecA.z = vecA.z * fVar6;
 
       bVar3 = 1;
 
@@ -3446,7 +3434,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
       if (((DAT_007e094c & 8) != 0) || ((DAT_007e0956 & 8) != 0)) {
 
-        fStack_3c = fStack_3c + 10.0;
+        vecA.y = vecA.y + 10.0f;
 
         bVar3 = 1;
 
@@ -3456,7 +3444,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     else {
 
-      fStack_3c = fStack_3c - 10.0;
+      vecA.y = vecA.y - 10.0f;
 
       bVar3 = 1;
 
@@ -3464,25 +3452,25 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     if (bVar3) {
 
-      fStack_20 = *(float *)(iVar1 + 0x40);
+      vecPos.x = *(f32 *)(iVar1 + 0x40);
 
-      fStack_1c = *(float *)(iVar1 + 0x44);
+      vecPos.y = *(f32 *)(iVar1 + 0x44);
 
-      fStack_18 = *(float *)(iVar1 + 0x48);
+      vecPos.z = *(f32 *)(iVar1 + 0x48);
 
-      fStack_30 = fStack_20 * -1.0f;
+      vecNeg.x = vecPos.x * -1.0f;
 
-      fStack_2c = fStack_1c * -1.0;
+      vecNeg.y = vecPos.y * -1.0f;
 
-      fStack_28 = fStack_18 * -1.0;
+      vecNeg.z = vecPos.z * -1.0f;
 
-      FUN_004cb750_typed(iVar1,&fStack_30,2);
+      FUN_004cb750_typed(iVar1,&vecNeg,2);
 
-      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&uStack_10,2);
+      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&axisXY,2);
 
-      FUN_004cb750_typed(iVar1,&fStack_40,2);
+      FUN_004cb750_typed(iVar1,&vecA,2);
 
-      FUN_004cb750_typed(iVar1,&fStack_20,2);
+      FUN_004cb750_typed(iVar1,&vecPos,2);
 
     }
 

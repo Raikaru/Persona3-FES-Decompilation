@@ -583,7 +583,7 @@ void FUN_00301690(u32 param_1);
 s8 FUN_00301750(int param_1,u32 param_2);
 void FUN_00301870(int param_1);
 
-float FUN_00301880(u32 param_1,u32 param_2,...);
+float FUN_00301880(u32 param_1,u32 param_2,u32 param_3);
 u8 FUN_00301ca0(u32 param_1,u32 param_2);
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
 void FUN_00302c50(u32 param_1);
@@ -609,7 +609,7 @@ short FUN_00308120(short param_1,int param_2);
 s32 FUN_003082f0(s32 param_1,u32 param_2);
 #pragma alias FUN_003082f0_one FUN_003082f0
 extern s32 FUN_003082f0_one(s32 param_1);
-u32 FUN_003083f0(u32 param_1,u32 param_2);
+u32 FUN_003083f0(u32 param_1,u16 param_2);
 u8 FUN_003086c0(void *param_1,u32 param_2);
 u32 FUN_003086f0(u32 param_1,u32 param_2);
 u32 FUN_00308860(u16 param_1);
@@ -1336,7 +1336,7 @@ void FUN_00301870(int param_1)
 
 // FUN_00301880 NONMATCHING
 
-float FUN_00301880(u32 param_1,u32 param_2,...)
+float FUN_00301880(u32 param_1,u32 param_2,u32 param_3)
 
 {
   u8 bVar1;
@@ -1378,22 +1378,22 @@ float FUN_00301880(u32 param_1,u32 param_2,...)
   else {
     iVar3 = (int)cVar2;
     if (uVar4 == 4) {
-      fVar6 = (float)*(u8 *)(iVar3 + (u32)bVar1 * 3 + iGpffffb790 + 7) / 100.0;
+      fVar6 = (float)*(u8 *)(iVar3 + (u32)bVar1 * 3 + iGpffffb790 + 7) / 100.0f;
     }
     else if (uVar4 == 3) {
-      fVar6 = (float)*(u8 *)(((u32)bVar1 * 3 + iGpffffb790 + 1) - iVar3) / 100.0;
+      fVar6 = (float)*(u8 *)(((u32)bVar1 * 3 + iGpffffb790 + 1) - iVar3) / 100.0f;
     }
     else if (uVar4 == 2) {
-      fVar6 = (float)*(u8 *)(((u32)bVar1 * 3 + iGpffffb790 + 7) - iVar3) / 100.0;
+      fVar6 = (float)*(u8 *)(((u32)bVar1 * 3 + iGpffffb790 + 7) - iVar3) / 100.0f;
     }
     else if (uVar4 == 1) {
-      fVar6 = (float)*(u8 *)(iVar3 + (u32)bVar1 * 3 + iGpffffb790 + 1) / 100.0;
+      fVar6 = (float)*(u8 *)(iVar3 + (u32)bVar1 * 3 + iGpffffb790 + 1) / 100.0f;
       if ((*(u32 *)(puVar5 + 10) & 0x100000) != 0) {
         fVar6 = fVar6 * fGpffff82a0;
       }
     }
     else if ((uVar4 == 0) &&
-            (fVar6 = (float)*(u8 *)((int)cVar2 + (u32)bVar1 * 3 + iGpffffb790 + 1) / 100.0,
+            (fVar6 = (float)*(u8 *)((int)cVar2 + (u32)bVar1 * 3 + iGpffffb790 + 1) / 100.0f,
             (*(u32 *)(puVar5 + 10) & 0x80000) != 0)) {
       fVar6 = fVar6 * fGpffff82a0;
     }
@@ -4523,7 +4523,7 @@ s32 FUN_003082f0(s32 param_1,u32 param_2)
 
 
 // FUN_003083f0 NONMATCHING
-u32 FUN_003083f0(u32 param_1,u32 param_2)
+u32 FUN_003083f0(u32 param_1,u16 param_2)
 
 {
   char cVar1;

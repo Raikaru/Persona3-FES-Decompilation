@@ -1593,6 +1593,7 @@ void FUN_002265D0(void)
     f32 rowOffset;
     f32 rowStep;
     f32 ratio;
+    f32 y150;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -1658,15 +1659,19 @@ void FUN_002265D0(void)
     {
         f32 complement = 1.0f - transAlpha;
         f32 negRowOffset = -rowOffset;
-        posY = posY + complement * negRowOffset;
-        rowY = posY + rowOffset;
-        posY = rowY;
+        rect[0] = posX;
+        rect[1] = posY;
+        rect[1] = rect[1] + complement * negRowOffset;
+        rect[1] = rect[1] + rowOffset;
+        posX = rect[0];
+        posY = rect[1];
+        rowY = rect[1];
     }
     *(f32*)(work + 0x6050) = posX;
     *(f32*)(work + 0x6054) = rowY;
 
     {
-        f32 y150 = 150.0f + rowStep;
+        y150 = 150.0f + rowStep;
         for (i = 0; i < 9; ++i) {
             switch (i) {
             case 0: case 1: case 2: case 3:

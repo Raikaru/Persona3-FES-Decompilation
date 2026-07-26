@@ -39,7 +39,7 @@ static inline u32 campFloatBits(f32 value)
         temp.u = *(u64*)&pair; \
         temp.f[0] = temp.f[0] + (delta); \
         campDrawTransition((depth), (target), 0, 2, (mode), \
-                           temp.u, *(u64*)&pair, 0, 0, 0, 0); \
+                           temp.u, *(u64*)&pair, 0, 0, 0, 10); \
     } while (0)
 #define CAMP_DRAW_CALC_SECOND(depth, target, mode, xval, yval, delta) \
     do { \
@@ -48,7 +48,7 @@ static inline u32 campFloatBits(f32 value)
         temp.u = *(u64*)&pair; \
         pair.x = pair.x + (delta); \
         campDrawTransition((depth), (target), 0, 2, (mode), \
-                           temp.u, *(u64*)&pair, 0, 0, 0, 0); \
+                           temp.u, *(u64*)&pair, 0, 0, 0, 10); \
     } while (0)
 
 #define CAMP_DRAW_CALC_FIRST_AT(tmp, depth, target, mode, xval, yval, delta) \
@@ -58,7 +58,7 @@ static inline u32 campFloatBits(f32 value)
         (tmp).u = *(u64*)&pair; \
         (tmp).f[0] = (tmp).f[0] + (delta); \
         campDrawTransition((depth), (target), 0, 2, (mode), \
-                           (tmp).u, *(u64*)&pair, 0, 0, 0, 0); \
+                           (tmp).u, *(u64*)&pair, 0, 0, 0, 10); \
     } while (0)
 #define CAMP_DRAW_CALC_SECOND_AT(tmp, depth, target, mode, xval, yval, delta) \
     do { \
@@ -67,7 +67,7 @@ static inline u32 campFloatBits(f32 value)
         (tmp).u = *(u64*)&pair; \
         pair.x = pair.x + (delta); \
         campDrawTransition((depth), (target), 0, 2, (mode), \
-                           (tmp).u, *(u64*)&pair, 0, 0, 0, 0); \
+                           (tmp).u, *(u64*)&pair, 0, 0, 0, 10); \
     } while (0)
 #define CAMP_DRAW_CALC_FIRST_AT_TILE(tmp, depth, target, mode, xval, yval, delta, tile) \
     do { \
@@ -76,9 +76,8 @@ static inline u32 campFloatBits(f32 value)
         (tmp).u = *(u64*)&pair; \
         (tmp).f[0] = (tmp).f[0] + (delta); \
         campDrawTransition((depth), (target), 0, 2, (mode), \
-                           (tmp).u, *(u64*)&pair, 0, (tile), 0, 0); \
+                           (tmp).u, *(u64*)&pair, 0, (tile), 0, 10); \
     } while (0)
-
 extern s16 DAT_005e3b5e[];
 extern s32 DAT_005e3b64;
 extern void* DAT_007cdf50;

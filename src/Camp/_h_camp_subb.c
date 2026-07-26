@@ -200,6 +200,7 @@ static inline u32 campSubbFloatBits(f32 value)
 /* Canonical APIs recovered in Main/g_data.c and datPersona.c. */
 extern void* H_Maestro_001120a0(s32 font);
 extern void* func_00170e90(s16 id);
+extern DatPersonaWork* datPersonaGetHeroPersona(s16 index);
 extern void* func_00170ed0(s16 id, s32* category);
 extern const char* func_00171110(s16 id, s16 field);
 extern u32 func_00171250(s16 id);
@@ -2066,12 +2067,7 @@ void FUN_00142930(CampEquipmentPanelWork* work)
   int row;
   float slotX;
   float slotY;
-  u64 spriteTopLeft2;
-  u64 spriteTopLeft3;
-  u64 spriteTopLeft4;
-  u64 spriteTopLeft5;
-  u64 spriteTopLeft6;
-  u64 spriteTopLeft7;
+  u64 spriteTopLeft;
   func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, 0x4140000042dc0000, 0x4140000042200000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d800004404c000, 0x41d80000435b0000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, 0x41d800004404c000, 0x41d800004404c000, 0, 0, 0, 0);
@@ -2087,24 +2083,24 @@ void FUN_00142930(CampEquipmentPanelWork* work)
       slotX = (float)(row * 0x55) + 62.0f;
       if ((row == work->selectedSlot) || (work->selectedSlot == -2)) {
         slotY = 48.0f;
-        spriteTopLeft2 = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x42780000);
-        func_0018bc10(100.0f, (void*)(work->drawBuffer + (row * 10 + 0x24) * 0x44), 0, 2, 2, spriteTopLeft2, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
+        spriteTopLeft = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x42780000);
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (row * 10 + 0x24) * 0x44), 0, 2, 2, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
       }
       else {
         slotY = 27.0f;
         *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x994) = 0;
       }
-      spriteTopLeft3 = CAMP_SUBB_PAIR_FLOATS(slotX + 8.0f, slotY + 65.0f);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 8.0f, slotY + 65.0f);
       index = row * 10;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, spriteTopLeft3, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft4 = CAMP_SUBB_PAIR_FLOATS(slotX + 31.0f, slotY + 65.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, spriteTopLeft4, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft5 = CAMP_SUBB_PAIR_FLOATS(slotX + 45.0f, slotY + 65.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, spriteTopLeft5, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft6 = CAMP_SUBB_PAIR_FLOATS(slotX + 64.0f, slotY + 65.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, spriteTopLeft6, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeft7 = CAMP_SUBB_PAIR_FLOATS(slotX + 2.0f, slotY + 14.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, spriteTopLeft7, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 31.0f, slotY + 65.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 45.0f, slotY + 65.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 64.0f, slotY + 65.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 0);
+      spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 2.0f, slotY + 14.0f);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
       *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
     }
     else {
@@ -2456,9 +2452,9 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
 
 void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
 {
-    CampEquipmentMenuWork* menu = (CampEquipmentMenuWork*)workData;
     register void* parent;
     DatPersonaWork* persona;
+    CampEquipmentMenuWork* menu = (CampEquipmentMenuWork*)workData;
     void* resourceRecord;
     const char* resourceText;
     u16 resourceItemId;
@@ -2522,6 +2518,8 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x13:
     case 0x14:
     case 0x15:
+        selected = menu->highlightedSlot == menuCode - 10;
+        persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
         if (selected != 0) {
             campDrawSprite(parent, DAT_00833A50[1], 8, item->alpha,
                            60.0f + item->x - 10.0f, item->y + 3.0f,
