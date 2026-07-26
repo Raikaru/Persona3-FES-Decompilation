@@ -1213,6 +1213,8 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     f32 half;
     f32 angle;
     f32 nearAngle;
+    f32 unitScale;
+    f32 unitHeight;
     f32 ratio;
     f32 firstWeight;
     f32 x;
@@ -1244,7 +1246,9 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         }
         else
         {
-            half = unit->scale * unit->unk_8c;
+            unitScale = unit->scale;
+            unitHeight = unit->unk_8c;
+            half = unitHeight * unitScale;
             if (half > scaled.y)
             {
                 scaled.y = half;
