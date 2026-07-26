@@ -27,6 +27,8 @@ extern void FUN_003c7070_typed(f32 t, void *out, const void *a, const void *b);
 #pragma alias FUN_003c7070_typed FUN_003c7070
 extern f32 FUN_004c69f0_typed(RwV3d *out, const RwV3d *in);
 #pragma alias FUN_004c69f0_typed FUN_004c69f0
+extern void FUN_004c3760_typed(RwMatrix *out, const RwMatrix *in, u32 mode);
+#pragma alias FUN_004c3760_typed FUN_004c3760
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -1863,7 +1865,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
   } while (0 < iVar6);
 
-  FUN_004c3760(aiStack_a0,afStack_60,auStack_20[*(u32 *)(iVar2 + 0x18) & 3]);
+  FUN_004c3760_typed((RwMatrix *)aiStack_a0,(const RwMatrix *)afStack_60,auStack_20[*(u32 *)(iVar2 + 0x18) & 3]);
 
   RtQuatConvertFromMatrix(auStack_c0,aiStack_a0);
 
@@ -3293,6 +3295,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
   float fStack_2c;
   float fStack_28;
   float fStack_20;
+  RwV3d work40;
+  RwV3d work20;
   float fStack_1c;
   float fStack_18;
   u64 uStack_10;
@@ -3376,8 +3380,20 @@ u8 FUN_0041aff0(int param_1,int param_2)
       fStack_30 = fStack_20 * -1.0f;
       fStack_2c = fStack_1c * -1.0f;
       fStack_28 = fStack_18 * -1.0f;
-      FUN_004c69f0_typed((RwV3d *)&fStack_40,(const RwV3d *)&fStack_40);
-      FUN_004c69f0_typed((RwV3d *)&fStack_20,(const RwV3d *)&fStack_20);
+      work40.x = fStack_40;
+      work40.y = fStack_3c;
+      work40.z = fStack_38;
+      FUN_004c69f0_typed(&work40,&work40);
+      fStack_40 = work40.x;
+      fStack_3c = work40.y;
+      fStack_38 = work40.z;
+      work20.x = fStack_20;
+      work20.y = fStack_1c;
+      work20.z = fStack_18;
+      FUN_004c69f0_typed(&work20,&work20);
+      fStack_20 = work20.x;
+      fStack_1c = work20.y;
+      fStack_18 = work20.z;
       FUN_004cb750_typed(iVar1,&fStack_30,2);
       FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&uStack_10,2);
       FUN_004cb750_typed(iVar1,&fStack_40,2);

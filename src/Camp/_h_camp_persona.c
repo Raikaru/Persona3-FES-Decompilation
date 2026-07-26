@@ -727,7 +727,7 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
 void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
                   s32 frame)
 {
-    s32 localFrame;
+    s16 localFrame;
     s16 shortFrame;
     s32 bright;
     f32 slide;

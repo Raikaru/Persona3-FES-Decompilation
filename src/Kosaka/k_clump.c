@@ -1065,6 +1065,9 @@ void func_001a7b50(void* state, u32 mode)
 void func_001a7fc0(void* state, u32 mode)
 {
     KClumpMaterialNode* item;
+    RwSphere* sphere;
+    void* object;
+    void (*resourceCall)(void*);
     u32 found;
 
     if (state == NULL)
@@ -1082,16 +1085,32 @@ void func_001a7fc0(void* state, u32 mode)
     while (item != NULL)
     {
         found = 0;
-        if (item->object != NULL)
+        object = item->object;
+        if (object != NULL)
         {
-            func_004932c0(((KClumpContainer*)item->object)->resources, (KClumpCallback)kclump_alpha_callback, &found);
-            if (found == 0)
+            func_004932c0(((KClumpContainer*)object)->resources,
+                          (KClumpCallback)kclump_alpha_callback, &found);
+            if (found != 0)
             {
-                /* Keep the retail callback ordering even when alpha is absent. */
-                item = item->next;
-                continue;
+                sphere = func_004912b0(object);
+                if (sphere != NULL &&
+                    RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+                {
+                    if (item->enabled == 1)
+                    {
+                        D_00960090(0xe, 0);
+                    }
+                    if (*(u32*)((u8*)&D_007CC1F8 + 4) == 1)
+                    {
+                        resourceCall = *(void (**)(void*))((u8*)object + 0x48);
+                        (*resourceCall)(object);
+                    }
+                    if (item->enabled == 1)
+                    {
+                        D_00960090(0xe);
+                    }
+                }
             }
-            kclump_render_item(item, 0x007cc1fc);
         }
         item = item->next;
     }

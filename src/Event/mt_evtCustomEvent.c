@@ -48,6 +48,8 @@ extern void FUN_0039ea20_e820(u64,u32);
 extern void FUN_003196f0_ea20(int,u32);
 #pragma alias FUN_005225a8_eaa0 FUN_005225a8
 extern void FUN_005225a8_eaa0(const char *,...);
+#pragma alias FUN_00388000_d1c0 FUN_00388000
+extern void FUN_00388000_d1c0(f64, u32, void *, void *, void *, void *, u32, void *, long);
 
 extern char DAT_006a1820[];
 #pragma alias FUN_003b5d10_eb90 FUN_003b5d10
@@ -4490,8 +4492,8 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.65625f;
 
-    FUN_00388000(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
- 
+    FUN_00388000_d1c0(5.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+
                  *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     uStack_10 = 137.0f;
@@ -4508,8 +4510,8 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.65625f;
 
-    FUN_00388000(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
- 
+    FUN_00388000_d1c0(5.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+
                  *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     uStack_10 = 504.0f;
@@ -4526,8 +4528,8 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.65625f;
 
-    FUN_00388000(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
- 
+    FUN_00388000_d1c0(5.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+
                  *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     if (*(int *)(param_1 + 0x1c) == 0) {
@@ -4558,8 +4560,8 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.2109375f;
 
-    FUN_00388000(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
- 
+    FUN_00388000_d1c0(4.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+
                  *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     if (*(int *)(param_1 + 0x1c) == 1) {
@@ -4590,8 +4592,8 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0x3ed80000;
 
-    FUN_00388000(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
- 
+    FUN_00388000_d1c0(4.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+
                  *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     uStack_10 = 0x43aa8000;
@@ -4610,8 +4612,8 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0x3f220000;
 
-    FUN_00388000(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
- 
+    FUN_00388000_d1c0(4.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+
                  *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
   }

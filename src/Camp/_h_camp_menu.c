@@ -428,10 +428,15 @@ void FUN_00155830(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         break;
     case 4:
         for (i = 0; i < 7; i++) {
-            campMenuDrawSprite(0, *labels,
-                               i == 2 && enabled[1] == 0 ? 0x9b : 0x9a,
-                               item->alpha, item->x,
-                               item->y + (f32)(i * 0x21), item->scale);
+            if (i == 2 && enabled[1] == 0) {
+                campMenuDrawSprite(0, *labels, 0x9b, item->alpha,
+                                   item->x, item->y + (f32)(i * 0x21),
+                                   item->scale);
+            } else {
+                campMenuDrawSprite(0, *labels, 0x9a, item->alpha,
+                                   item->x, item->y + (f32)(i * 0x21),
+                                   item->scale);
+            }
         }
         break;
     case 5:
