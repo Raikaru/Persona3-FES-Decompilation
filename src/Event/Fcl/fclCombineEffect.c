@@ -1483,7 +1483,7 @@ u32 FUN_00418880(int param_1,int *param_2)
 
     fVar8 = *(float *)(iVar5 + 0x1c);
 
-    fVar7 = 2.0 / (fVar8 * fVar8 + fVar11 * fVar11 + fVar12 * fVar12 + fVar10 * fVar10);
+    fVar7 = 2.0f / (fVar8 * fVar8 + fVar11 * fVar11 + fVar12 * fVar12 + fVar10 * fVar10);
 
     fVar9 = fVar12 * fVar7;
 
@@ -1491,7 +1491,7 @@ u32 FUN_00418880(int param_1,int *param_2)
 
     fVar7 = fVar11 * fVar7;
 
-    fStack_a0 = 1.0 - (fVar10 * fVar6 + fVar11 * fVar7);
+    fStack_a0 = 1.0f - (fVar10 * fVar6 + fVar11 * fVar7);
 
     fStack_9c = fVar12 * fVar6 + fVar7 * fVar8;
 
@@ -1499,7 +1499,7 @@ u32 FUN_00418880(int param_1,int *param_2)
 
     fStack_90 = fVar12 * fVar6 - fVar7 * fVar8;
 
-    fStack_8c = 1.0 - (fVar11 * fVar7 + fVar12 * fVar9);
+    fStack_8c = 1.0f - (fVar11 * fVar7 + fVar12 * fVar9);
 
     fStack_88 = fVar10 * fVar7 + fVar9 * fVar8;
 
@@ -1507,7 +1507,7 @@ u32 FUN_00418880(int param_1,int *param_2)
 
     fStack_7c = fVar10 * fVar7 - fVar9 * fVar8;
 
-    fStack_78 = 1.0 - (fVar12 * fVar9 + fVar10 * fVar6);
+    fStack_78 = 1.0f - (fVar12 * fVar9 + fVar10 * fVar6);
 
     uStack_70 = 0;
 
@@ -1661,7 +1661,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
 
   fStack_10 = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0xc) / 0xffff)) - fVar11) *
 
-                       (fVar9 + 1.0)) / 2.0;
+                       (fVar9 + 1.0f)) / 2.0f;
 
   fVar11 = (float)param_2[0x19];
 
@@ -1671,7 +1671,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
 
   fStack_c = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x10) / 0xffff)) - fVar11) *
 
-                      (fVar9 + 1.0)) / 2.0;
+                      (fVar9 + 1.0f)) / 2.0f;
 
   fVar11 = (float)param_2[0x1a];
 
@@ -1681,7 +1681,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
 
   fStack_8 = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11) *
 
-                      (fVar9 + 1.0)) / 2.0;
+                      (fVar9 + 1.0f)) / 2.0f;
 
   if (*(char *)(iVar1 + 4) == '@') {
 
@@ -1896,7 +1896,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       fVar14 = *(float *)(iVar6 + 0x1c);
 
-      fVar12 = 2.0 / (fVar14 * fVar14 + fVar16 * fVar16 + fVar17 * fVar17 + fVar15 * fVar15);
+      fVar12 = 2.0f / (fVar14 * fVar14 + fVar16 * fVar16 + fVar17 * fVar17 + fVar15 * fVar15);
 
       fVar13 = fVar17 * fVar12;
 
@@ -1904,7 +1904,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       fVar12 = fVar16 * fVar12;
 
-      afStack_60[0] = 1.0 - (fVar15 * fVar11 + fVar16 * fVar12);
+      afStack_60[0] = 1.0f - (fVar15 * fVar11 + fVar16 * fVar12);
 
       afStack_60[1] = fVar17 * fVar11 + fVar12 * fVar14;
 
@@ -1912,7 +1912,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       afStack_60[4] = fVar17 * fVar11 - fVar12 * fVar14;
 
-      fStack_4c = 1.0 - (fVar16 * fVar12 + fVar17 * fVar13);
+      fStack_4c = 1.0f - (fVar16 * fVar12 + fVar17 * fVar13);
 
       fStack_48 = fVar15 * fVar12 + fVar13 * fVar14;
 
@@ -1920,7 +1920,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       fStack_3c = fVar15 * fVar12 - fVar13 * fVar14;
 
-      fStack_38 = 1.0 - (fVar17 * fVar13 + fVar15 * fVar11);
+      fStack_38 = 1.0f - (fVar17 * fVar13 + fVar15 * fVar11);
 
       uStack_30 = 0;
 
@@ -1928,7 +1928,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       uStack_28 = 0;
 
-      afStack_60[3] = 4.2039e-45;
+      afStack_60[3] = 4.2039e-45f;
 
       pfVar9 = afStack_60;
 
@@ -2020,7 +2020,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
                                (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar2 + 8));
 
-  FUN_003c7070((fVar11 + 1.0) / 2.0,auStack_100,auStack_e0,auStack_f0);
+  FUN_003c7070((fVar11 + 1.0f) / 2.0f,auStack_100,auStack_e0,auStack_f0);
 
   memcpy(&fStack_d0,auStack_100,0x10);
 
@@ -2028,7 +2028,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
     if ((*(char *)(iVar2 + 5) != '\x02') && (*(char *)(iVar2 + 5) == '\x01')) {
 
-      fVar12 = 2.0 / (fStack_c4 * fStack_c4 +
+      fVar12 = 2.0f / (fStack_c4 * fStack_c4 +
 
                      fStack_c8 * fStack_c8 + fStack_d0 * fStack_d0 + fStack_cc * fStack_cc);
 
@@ -2038,7 +2038,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       fVar12 = fStack_c8 * fVar12;
 
-      afStack_60[0] = 1.0 - (fStack_cc * fVar11 + fStack_c8 * fVar12);
+      afStack_60[0] = 1.0f - (fStack_cc * fVar11 + fStack_c8 * fVar12);
 
       afStack_60[1] = fStack_d0 * fVar11 + fVar12 * fStack_c4;
 
@@ -2046,7 +2046,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       afStack_60[4] = fStack_d0 * fVar11 - fVar12 * fStack_c4;
 
-      fStack_4c = 1.0 - (fStack_c8 * fVar12 + fStack_d0 * fVar14);
+      fStack_4c = 1.0f - (fStack_c8 * fVar12 + fStack_d0 * fVar14);
 
       fStack_48 = fStack_cc * fVar12 + fVar14 * fStack_c4;
 
@@ -2054,7 +2054,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       fStack_3c = fStack_cc * fVar12 - fVar14 * fStack_c4;
 
-      fStack_38 = 1.0 - (fStack_d0 * fVar14 + fStack_cc * fVar11);
+      fStack_38 = 1.0f - (fStack_d0 * fVar14 + fStack_cc * fVar11);
 
       uStack_30 = 0;
 
@@ -2062,7 +2062,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
       uStack_28 = 0;
 
-      afStack_60[3] = 4.2039e-45;
+      afStack_60[3] = 4.2039e-45f;
 
       RwMatrixTranslate((void*)afStack_60,(void*)(iVar3 + 0x40),0);
 
@@ -2536,29 +2536,29 @@ u32 FUN_00419c10(int param_1,int *param_2)
       FUN_003ce060(*(u32 *)(param_1 + 0x18),&fStack_20);
     }
     else if (iVar3 == 0) {
-      if (fStack_20 < 2.1474836e+09) {
+      if (fStack_20 < 2.1474836e+09f) {
         uStack_4 = (u8)(int)fStack_20;
       }
       else {
-        uStack_4 = (u8)(int)(fStack_20 - 2.1474836e+09);
+        uStack_4 = (u8)(int)(fStack_20 - 2.1474836e+09f);
       }
-      if (fStack_1c < 2.1474836e+09) {
+      if (fStack_1c < 2.1474836e+09f) {
         uStack_3 = (u8)(int)fStack_1c;
       }
       else {
-        uStack_3 = (u8)(int)(fStack_1c - 2.1474836e+09);
+        uStack_3 = (u8)(int)(fStack_1c - 2.1474836e+09f);
       }
-      if (fStack_18 < 2.1474836e+09) {
+      if (fStack_18 < 2.1474836e+09f) {
         uStack_2 = (u8)(int)fStack_18;
       }
       else {
-        uStack_2 = (u8)(int)(fStack_18 - 2.1474836e+09);
+        uStack_2 = (u8)(int)(fStack_18 - 2.1474836e+09f);
       }
-      if (fStack_14 < 2.1474836e+09) {
+      if (fStack_14 < 2.1474836e+09f) {
         uStack_1 = (u8)(int)fStack_14;
       }
       else {
-        uStack_1 = (u8)(int)(fStack_14 - 2.1474836e+09);
+        uStack_1 = (u8)(int)(fStack_14 - 2.1474836e+09f);
       }
       FUN_003cdf40(*(u32 *)(param_1 + 0x18),&uStack_4);
     }
@@ -2678,7 +2678,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
     fVar9 = (float)sinf((fGpffff8110 * (float)param_2[3]) / (float)piVar1[2]);
 
-    fGpffffad78 = fVar9 * 20.0 + 35.0;
+    fGpffffad78 = fVar9 * 20.0f + 35.0f;
 
     lVar4 = FUN_003c4b50(**(int **)(param_1 + 0x3c),**(int **)(param_1 + 0x3c) + 4,4);
 
@@ -2696,7 +2696,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
         fVar10 = (float)cosf((float)iVar8 * afStack_70[*(int *)(iVar5 + 4) * 2 + 1] +
 
-                                     afStack_70[*(int *)(iVar5 + 4) * 2] + 0.0);
+                                     afStack_70[*(int *)(iVar5 + 4) * 2] + 0.0f);
 
         iVar3 = *(int *)(iVar5 + 4);
 
@@ -2704,11 +2704,11 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
         fStack_2c = (float)sinf((float)iVar8 * afStack_70[iVar3 * 2 + 1] +
 
-                                        afStack_70[iVar3 * 2] + 0.0);
+                                        afStack_70[iVar3 * 2] + 0.0f);
 
         fStack_2c = -afStack_c8[*(int *)(iVar5 + 4)] * fStack_2c;
 
-        fStack_28 = 0.0;
+        fStack_28 = 0.0f;
 
         RwMatrixRotate((void*)auStack_a0,(void*)&uStack_20,fGpffffad78,0);
 
@@ -2734,11 +2734,11 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
       iVar5 = *(int *)((int)lVar4 + 0x14);
 
-      fStack_30 = 0.0;
+      fStack_30 = 0.0f;
 
-      fStack_2c = 23.0;
+      fStack_2c = 23.0f;
 
-      fStack_28 = 550.0;
+      fStack_28 = 550.0f;
 
       RwMatrixRotate((void*)auStack_a0,(void*)&uStack_20,fGpffffad78,0);
 
@@ -2960,7 +2960,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
       fVar9 = (float)cosf((float)(int)uVar8 * afStack_80[puVar1[1] * 2 + 1] +
 
-                                  afStack_80[puVar1[1] * 2] + 0.0);
+                                  afStack_80[puVar1[1] * 2] + 0.0f);
 
       uVar3 = puVar1[1];
 
@@ -2968,11 +2968,11 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
       fStack_3c = (float)sinf((float)(int)uVar8 * afStack_80[uVar3 * 2 + 1] +
 
-                                      afStack_80[uVar3 * 2] + 0.0);
+                                      afStack_80[uVar3 * 2] + 0.0f);
 
       fStack_3c = -afStack_d8[puVar1[1]] * fStack_3c;
 
-      fStack_38 = 0.0;
+      fStack_38 = 0.0f;
 
       RwMatrixRotate((void*)auStack_b0,(void*)&uStack_10,*(float*)&(u32){0x420c0000},0);
 
@@ -3057,7 +3057,7 @@ u8 FUN_0041a730(u64 param_1,int param_2)
 
        (FUN_004bdde0(0xc1f00000,iVar2 + 0x10,&uStack_10),
 
-       (float)*(int *)(param_2 + 0xc) == ((float)(int)(uVar4 << 1) + 6.0) - 1.0)) {
+       (float)*(int *)(param_2 + 0xc) == ((float)(int)(uVar4 << 1) + 6.0f) - 1.0f)) {
 
       *puVar1 = *puVar1 & ~uVar3;
 
@@ -3067,7 +3067,7 @@ u8 FUN_0041a730(u64 param_1,int param_2)
 
   *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
 
-  return (float)(int)(puVar1[1] << 1) + 6.0 < (float)*(int *)(param_2 + 0xc);
+  return (float)(int)(puVar1[1] << 1) + 6.0f < (float)*(int *)(param_2 + 0xc);
 
 }
 
@@ -3181,11 +3181,11 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
   fVar7 = (float)sinf(fGpffff81fc +
 
-                              (fGpffff8248 * (5.0 - (float)*(int *)(param_2 + 0xc))) / 5.0);
+                              (fGpffff8248 * (5.0f - (float)*(int *)(param_2 + 0xc))) / 5.0f);
 
   fVar2 = fStack_18;
 
-  fVar9 = (afStack_c8[*(int *)(iVar1 + 4)] * (fVar7 + 1.0)) / 2.0;
+  fVar9 = (afStack_c8[*(int *)(iVar1 + 4)] * (fVar7 + 1.0f)) / 2.0f;
 
   fVar10 = -fVar9;
 
@@ -3197,17 +3197,17 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
     fVar8 = (float)cosf((float)iVar4 * afStack_70[*(int *)(iVar1 + 4) * 2 + 1] +
 
-                                afStack_70[*(int *)(iVar1 + 4) * 2] + 0.0);
+                                afStack_70[*(int *)(iVar1 + 4) * 2] + 0.0f);
 
     fStack_30 = fVar9 * fVar8;
 
     fStack_2c = (float)sinf((float)iVar4 * afStack_70[*(int *)(iVar1 + 4) * 2 + 1] +
 
-                                    afStack_70[*(int *)(iVar1 + 4) * 2] + 0.0);
+                                    afStack_70[*(int *)(iVar1 + 4) * 2] + 0.0f);
 
     fStack_2c = fVar10 * fStack_2c;
 
-    fStack_28 = 0.0;
+    fStack_28 = 0.0f;
 
     RwMatrixRotate((void*)auStack_a0,(void*)&uStack_10,*(float*)&uGpffffad78,0);
 
@@ -3225,7 +3225,7 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
   *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
 
-  return 5.0 < (float)*(int *)(param_2 + 0xc);
+  return 5.0f < (float)*(int *)(param_2 + 0xc);
 
 }
 #pragma optimization_level 2
@@ -3314,11 +3314,11 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
   iVar4 = kwlnGetMainCamera();
 
-  fStack_10 = (-((float)uStack_20 - 320.0) * *(float *)(iVar4 + 0x68)) / 320.0;
+  fStack_10 = (-((float)uStack_20 - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
 
-  fStack_c = (-((*(u32*)((u8*)&uStack_20 + 4)) - 224.0) * *(float *)(iVar4 + 0x6c)) / 224.0;
+  fStack_c = (-((*(u32*)((u8*)&uStack_20 + 4)) - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
 
-  fStack_8 = 1.0;
+  fStack_8 = 1.0f;
 
   RwV3dNormalize((RwV3d*)&fStack_10,(RwV3d*)&fStack_10);
 
