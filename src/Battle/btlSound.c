@@ -12,6 +12,7 @@
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
+extern s32 FUN_0010a500(s16 param);
 void FUN_002dd8e0(u32 param_1);
 void FUN_002dd960(u32 param_1);
 u32 FUN_002dddc0(int param_1);
@@ -1760,9 +1761,7 @@ u32 FUN_002defe0(int param_1)
   int aiStack_30 [12];
 
   
-  lVar2 = FUN_0010a500(4);
-
-  if (lVar2 == 1) {
+  if (FUN_0010a500(4) == 1) {
 
     return 0xffffffff;
 
