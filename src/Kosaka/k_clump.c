@@ -976,8 +976,7 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            enabled = item->enabled;
-            if (enabled == 1)
+            if (*(volatile u32*)((u8*)item + 4) == 1)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
             }
