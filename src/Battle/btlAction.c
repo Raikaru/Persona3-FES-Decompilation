@@ -1859,15 +1859,26 @@ void btlActionInitStateBad(BtlAction* action)
     action->movedAwayFromHome = true;
     action->unk_488 = 0;
 }
+/* Retail reconstruction covers the guard, down-status packet sequence, result dispatch, and moved-home state paths at 0x28d5e8-0x28dbc0. */
 // FUN_0028d5a0 NONMATCHING
 void btlActionUpdateStateBad(BtlAction* action)
 {
     BtlPacket* packet;
+    BtlPacket* cameraPacket;
+    BtlPacket* animPacket;
     u32 badStatus;
     s32 work[4];
     s32 result;
+    s32 playAnim;
+    s32 threshold;
+    BtlUnit* unit;
+    s16 messageId;
 
-    if (btlPacketCountById(0x506) != 0 || btlPacketCountById(0x105) != 0)
+    if (btlPacketCountById(0x506) != 0)
+    {
+        return;
+    }
+    if (btlPacketCountById(0x105) != 0)
     {
         return;
     }
@@ -1875,16 +1886,76 @@ void btlActionUpdateStateBad(BtlAction* action)
     badStatus = FUN_00300550(action->unit->datUnit);
     if (FUN_00300580(action->unit->datUnit, UNIT_BADSTATUS_DOWN) != 0 && action->unk_488 == 0)
     {
-        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_0);
-        packet = btlUnitCreateAnimPacket(action->unit, 10, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-        packet->unk_00 = 4;
-        packet->parentUID = packet->uid;
-        ACTION_U16(packet, 0x48) = 0x1e;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        btlPacketRegister(btlVoice002e2be0(action, 8, 0, 0, 0), BTLPACKET_TYPE_1);
+        playAnim = 1;
+        if ((FUN_003005a0(action->unit->datUnit) & 0xffff) == 3)
+        {
+            if (datGetFlag(0x1319) != 0)
+            {
+                threshold = 10;
+            }
+            else
+            {
+                threshold = 0x1e;
+            }
+            if ((s32)datCalcRand(0x64) < threshold)
+            {
+                playAnim = 0;
+            }
+        }
+        cameraPacket = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
+        cameraPacket->actionUID = action->uid;
+        btlPacketRegister(cameraPacket, BTLPACKET_TYPE_0);
+        if (playAnim != 0)
+        {
+            animPacket = btlUnitCreateAnimPacket(action->unit, 10, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+            animPacket->unk_00 = 4;
+            animPacket->parentUID = cameraPacket->uid;
+            animPacket->preUpdateDelay = 0x1e;
+            animPacket->actionUID = action->uid;
+            btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
+            packet = btlVoice002e2be0(action, 8, 0, 0, 0);
+            packet->unk_00 = 4;
+            packet->parentUID = animPacket->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            FUN_002d5dc0(work);
+            work[3] = 0x100000;
+            packet = FUN_002d7e20(action, action, work, 1, 1);
+            packet->unk_00 = 4;
+            packet->parentUID = animPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_00284c90(action->unit);
+            packet->unk_00 = 4;
+            packet->parentUID = animPacket->uid;
+            packet->postUpdateDelay = 0xc;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_002db740(action, 0x14, 0, 0, 0);
+            packet->unk_00 = 4;
+            packet->parentUID = animPacket->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+        else
+        {
+            unit = action->unit;
+            if (unit->genus == UNIT_GENUS_PC)
+            {
+                messageId = 0xa2;
+            }
+            else
+            {
+                messageId = 0xa3;
+            }
+            packet = FUN_002bd850(unit, messageId);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+            packet = FUN_002db740(action, 0x15, 0, 0, 0);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        }
+        btlPacketRegister(btlUnitCreateLookAtUnitPacket(NULL, action->unit, 1), BTLPACKET_TYPE_1);
+        btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(action->unit, 0), BTLPACKET_TYPE_1);
         action->unk_18 |= 0x200;
         action->movedAwayFromHome = 0;
         action->unk_488 = 1;
@@ -1893,15 +1964,20 @@ void btlActionUpdateStateBad(BtlAction* action)
     result = FUN_002dc180(action);
     if (result != 0)
     {
+        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
         FUN_002d5dc0(work);
-        work[3] = result;
         if (result & 0x100)
         {
             work[2] = 0x200;
-            btlPacketRegister(btlVoice002e2be0(action, 0x16, 0, 0, 0), BTLPACKET_TYPE_1);
+            packet = btlVoice002e2be0(action, 0x16, 0, 0, 0);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
+        work[3] = result;
         packet = FUN_002d7e20(action, action, work, 1, 1);
-        ACTION_U16(packet, 0x48) = 0x12;
+        packet->preUpdateDelay = 0x12;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         if (result & 0x200)
         {
@@ -1912,7 +1988,7 @@ void btlActionUpdateStateBad(BtlAction* action)
         {
             packet = FUN_002bd850(action->unit, result);
             packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
         }
         return;
     }
@@ -1929,20 +2005,32 @@ void btlActionUpdateStateBad(BtlAction* action)
             result = FUN_002dc830(action);
             if (result > 0)
             {
+                packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_0);
                 packet = FUN_002bd850(action->unit, result);
                 packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+                btlPacketRegister(packet, BTLPACKET_TYPE_3D);
             }
             packet = FUN_002db740(action, 0x1e, 0, 0, 0);
-            ACTION_U16(packet, 0x48) = 0x25;
+            packet->preUpdateDelay = 0x25;
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            if (badStatus == 0x10 && action->unk_28 == 0 && ACTION_U8(action, 0x29) == 0)
+            {
+                ACTION_U8(action, 0x29) = datCalcRand(1) + 2;
+            }
             btlActionSetState(action, BTLACTION_STATE_READY);
+            return;
         }
+    }
+    if (FUN_002dc130(action) != 0)
+    {
+        btlActionSetState(action, BTLACTION_STATE_BADDMG);
     }
     else
     {
-        btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
+        btlActionSetState(action, BTLACTION_STATE_PACKET);
     }
 }
 
