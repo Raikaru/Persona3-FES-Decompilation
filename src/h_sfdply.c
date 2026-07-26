@@ -2317,9 +2317,9 @@ void func_0010e630(void* destination, const void* source, u32 size)
 // FUN_0010E880 NONMATCHING
 void* func_0010e880(const u8* stream)
 {
-    u32 bits;
+    s32 bits;
     s32 flags = 0;
-    s32 paletteFormat = 0;
+    u32 paletteFormat = 0;
     const u8* source;
     const u8* pixelSource;
     s32 pixelsPerPalette;
