@@ -176,7 +176,7 @@ static f32 campPackedY(u64 position)
     return (f32)(u32)(position >> 32);
 }
 
-static u32 campSubbFloatBits(f32 value)
+static inline u32 campSubbFloatBits(f32 value)
 {
     union
     {
@@ -1396,146 +1396,176 @@ LAB_0013fc20:
 // FUN_0013fca0 NONMATCHING
 
 void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
-
 {
-  char category;
-  u16 value;
-  int entryIndex;
-  const char* textValue;
-  CampEquipmentEntry* selectedEquipment;
-  float panelY;
-  float panelBase;
-  float originX;
-  float originY;
-  char textBuffer[256];
-  
-  entryIndex = work->selectedEntry;
-  switch(campEquipmentEntry(work, work->firstVisibleEntry + entryIndex)->categoryMask) {
-  case 0:
-    break;
-  case 1:
-    break;
-  case 2:
-    break;
-  case 3:
-    break;
-  case 4:
-    break;
-  case 5:
-    break;
-  case 6:
-    break;
-  case 7:
-    break;
-  case 8:
-    break;
-  case 9:
-    break;
-  case 10:
-    break;
-  case 0xb:
-    break;
-  case 0xc:
-    break;
-  case 0xd:
-    break;
-  case 0xe:
-    break;
-  case 0xf:
-    break;
-  case 0x10:
-    break;
-  case 0x11:
-    break;
-  case 0x12:
-    break;
-  case 0x13:
-    break;
-  case 0x14:
+    register void* parent;
+    CampEquipmentEntry* selectedEquipment;
+    const char* textValue;
+    u32 categoryMask;
+    u32 color;
+    u16 value;
+    s32 frame;
+    s32 hadHundreds;
+    char category;
+    f32 originX;
+    f32 originY;
+    f32 digitY;
+    char textBuffer[256];
+
+    selectedEquipment = &work->entries[work->firstVisibleEntry + work->selectedEntry];
+    categoryMask = selectedEquipment->categoryMask;
+    frame = 0x1a;
+    switch (categoryMask) {
+    case 0:
+    case 8:
+        frame = 0;
         break;
-  }
-  originY = campPackedY(position);
-  originX = campPackedX(position);
-  FUN_001159f0(originX + 15.0f,(originY + 2.0f) - 1.0f,texture);
-  selectedEquipment = campEquipmentEntry(work, work->firstVisibleEntry + entryIndex);
-  textValue = func_00171110((s16)selectedEquipment->itemId,
-                             (s16)selectedEquipment->slotType);
-  sprintf(textBuffer,DAT_007cb66c,textValue);
-  FUN_003b2cb0(texture,(int)((float)(int)originX + 55.0f),
-               (int)((float)(int)originY + 11.0f + 1.0f),0xffU - alpha | 0xffffff00,10,1,
-               textBuffer,0x10,0);
-  category = campEquipmentEntry(work, work->firstVisibleEntry + entryIndex)->equipmentClass;
-  if (category == '\x03') {
-    return;
-  }
-  if (category == '\x02') {
-    FUN_001159f0(originX + 288.0f,originY + 9.0f,texture);
-    value = campEquipmentEntry(work, work->firstVisibleEntry + entryIndex)->valueD;
-    if (value < 100) {
-      if (value < 10) goto LAB_0014062c;
+    case 1:
+    case 9:
+        frame = 2;
+        break;
+    case 2:
+    case 10:
+        frame = 4;
+        break;
+    case 3:
+    case 11:
+        frame = 6;
+        break;
+    case 4:
+    case 12:
+        frame = 8;
+        break;
+    case 5:
+    case 13:
+        frame = 10;
+        break;
+    case 6:
+    case 14:
+        frame = 12;
+        break;
+    case 7:
+    case 15:
+        frame = 14;
+        break;
+    case 16:
+        frame = 18;
+        break;
+    case 17:
+        frame = 20;
+        break;
+    case 18:
+        frame = 22;
+        break;
+    case 19:
+    case 20:
+        frame = 26;
+        break;
+    default:
+        break;
     }
-    else {
-      H_Maestro_001120a0(2);
-      FUN_001159f0(originX + 325.0f,(originY + 16.0f) - 3.0f,texture);
+
+    originX = (f32)(u32)position;
+    originY = (f32)(u32)(position >> 32);
+    campDrawSprite(parent, DAT_00833B70, frame + 1, (u32)alpha,
+                   originX + 15.0f, originY + 1.0f, texture);
+    textValue = func_00171110((s16)selectedEquipment->itemId,
+                               (s16)selectedEquipment->slotType);
+    sprintf(textBuffer, DAT_007cb66c, textValue);
+    color = (0xffU - alpha) | 0xffffff00;
+    campDrawText(texture, (s32)(originX + 55.0f),
+                 (s32)(originY + 12.0f), color, 10, 1, textBuffer, 0x10, 0);
+
+    category = selectedEquipment->equipmentClass;
+    digitY = originY + 13.0f;
+    if (category == 3) {
+        return;
     }
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 341.0f,(originY + 16.0f) - 3.0f,texture);
-LAB_0014062c:
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 357.0f,(originY + 16.0f) - 3.0f,texture);
-    return;
-  }
-  if (category == '\x01') {
-    FUN_001159f0(originX + 288.0f,originY + 9.0f,texture);
-    value = campEquipmentEntry(work, work->firstVisibleEntry + entryIndex)->valueC;
-    if (value < 100) {
-      if (value < 10) goto LAB_00140450;
+    if (category == 2) {
+        campDrawSprite(parent, DAT_00833A50[0], 0x32, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = selectedEquipment->valueD;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, (u32)alpha,
+                                originX + 325.0f, digitY, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, (u32)alpha,
+                                originX + 341.0f, digitY, texture);
+        }
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, (u32)alpha,
+                            originX + 357.0f, digitY, texture);
+        return;
     }
-    else {
-      H_Maestro_001120a0(2);
-      FUN_001159f0(originX + 325.0f,(originY + 16.0f) - 3.0f,texture);
+    if (category == 1) {
+        campDrawSprite(parent, DAT_00833A50[0], 0x30, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = selectedEquipment->valueC;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, (u32)alpha,
+                                originX + 325.0f, digitY, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, (u32)alpha,
+                                originX + 341.0f, digitY, texture);
+        }
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, (u32)alpha,
+                            originX + 357.0f, digitY, texture);
+        return;
     }
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 341.0f,(originY + 16.0f) - 3.0f,texture);
-LAB_00140450:
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 357.0f,(originY + 16.0f) - 3.0f,texture);
-    return;
-  }
-  if (category != '\0') {
-    return;
-  }
-  panelY = originY + 9.0f;
-  FUN_001159f0(originX + 288.0f,panelY,texture);
-  value = campEquipmentEntry(work, work->firstVisibleEntry + entryIndex)->valueA;
-  if (value < 100) {
-    if (9 < value) goto LAB_0014008c;
-  }
-  else {
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 325.0f,(originY + 16.0f) - 3.0f,texture);
-LAB_0014008c:
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 341.0f,(originY + 16.0f) - 3.0f,texture);
-  }
-  panelBase = (originY + 16.0f) - 3.0f;
-  H_Maestro_001120a0(2);
-  FUN_001159f0(originX + 357.0f,panelBase,texture);
-  FUN_001159f0(originX + 404.0f,panelY,texture);
-  value = campEquipmentEntry(work, work->firstVisibleEntry + entryIndex)->valueB;
-  if (value < 100) {
-    if (value < 10) goto LAB_00140290;
-  }
-  else {
-    H_Maestro_001120a0(2);
-    FUN_001159f0(originX + 441.0f,panelBase,texture);
-  }
-  H_Maestro_001120a0(2);
-  FUN_001159f0(originX + 457.0f,panelBase,texture);
-LAB_00140290:
-  H_Maestro_001120a0(2);
-  FUN_001159f0(originX + 473.0f,panelBase,texture);
-  return;
+    if (category != 0) {
+        return;
+    }
+
+    campDrawSprite(parent, DAT_00833A50[0], 0x2e, (u32)alpha,
+                   originX + 288.0f, originY + 9.0f, texture);
+    value = selectedEquipment->valueA;
+    hadHundreds = 0;
+    if (value >= 100) {
+        hadHundreds = 1;
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 100 + 0xb, (u32)alpha,
+                            originX + 325.0f, digitY, texture);
+        value %= 100;
+    }
+    if (value >= 10 || hadHundreds != 0) {
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 10 + 0xb, (u32)alpha,
+                            originX + 341.0f, digitY, texture);
+    }
+    campDrawSprite(parent, H_Maestro_001120a0(2),
+                        value % 10 + 0xb, (u32)alpha,
+                        originX + 357.0f, digitY, texture);
+    campDrawSprite(parent, DAT_00833A50[0], 0x34, (u32)alpha,
+                   originX + 404.0f, originY + 9.0f, texture);
+    value = selectedEquipment->valueB;
+    hadHundreds = 0;
+    if (value >= 100) {
+        hadHundreds = 1;
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 100 + 0xb, (u32)alpha,
+                            originX + 441.0f, digitY, texture);
+        value %= 100;
+    }
+    if (value >= 10 || hadHundreds != 0) {
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                            value / 10 + 0xb, (u32)alpha,
+                            originX + 457.0f, digitY, texture);
+    }
+    campDrawSprite(parent, H_Maestro_001120a0(2),
+                        value % 10 + 0xb, (u32)alpha,
+                        originX + 473.0f, digitY, texture);
 }
 
 

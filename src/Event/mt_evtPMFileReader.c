@@ -132,7 +132,7 @@ u64 FUN_00397950(void)
     if (iVar3 == 7) {
       goto done;
     }
-    if (1 == iVar3) {
+    if (iVar3 == 1) {
       goto state1_nonzero;
     }
     switch (iVar3) {
@@ -252,7 +252,7 @@ u64 FUN_00397950(void)
     case 6:
       uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
       *(u16 *)(piVar2 + 6) = uVar1;
-      if (*(u16 *)(piVar2 + 6) > 0) {
+      if (uVar1 > 0) {
         FUN_00395170();
       }
       *piVar2 = 7;

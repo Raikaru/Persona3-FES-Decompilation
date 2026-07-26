@@ -2510,6 +2510,8 @@ done:
 
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_00419C10 NONMATCHING
 u32 FUN_00419c10(int param_1,int *param_2)
 {
@@ -2517,41 +2519,43 @@ u32 FUN_00419c10(int param_1,int *param_2)
   u32 uVar2;
   u32 uVar3;
   int iVar4;
-  float fStack_10;
-  float fStack_14;
-  float fStack_18;
-  float fStack_1c;
-  u8 auStack_2c[4];
+  struct {
+    float colors[4];
+    u8 gap[12];
+    u8 bytes[4];
+  } stack;
 
   piVar1 = (int *)*param_2;
   uVar2 = *(u32 *)((int)piVar1 + 0xc);
   uVar3 = *(u32 *)((int)piVar1 + 0x14);
   iVar4 = *(int *)((int)piVar1 + 0x10);
-  fStack_10 = (float)((uVar2 >> 0x18) & 0xff);
-  fStack_14 = (float)((uVar2 >> 0x10) & 0xff);
-  fStack_18 = (float)((uVar2 >> 8) & 0xff);
-  fStack_1c = (float)(uVar2 & 0xff);
+  stack.colors[0] = (float)((uVar2 >> 0x18) & 0xff);
+  stack.colors[1] = (float)((uVar2 >> 0x10) & 0xff);
+  stack.colors[2] = (float)((uVar2 >> 8) & 0xff);
+  stack.colors[3] = (float)(uVar2 & 0xff);
 
-  if ((*(char *)((int)piVar1 + 4) == '@') &&
-      (*(char *)((int)piVar1 + 5) == '\x03')) {
+  if (*(char *)((int)piVar1 + 4) == '@') {
+    if (*(char *)((int)piVar1 + 5) == '\x03') {
     switch (iVar4) {
     case 0:
-      auStack_2c[0] = (u8)fStack_10;
-      auStack_2c[1] = (u8)fStack_14;
-      auStack_2c[2] = (u8)fStack_18;
-      auStack_2c[3] = (u8)fStack_1c;
-      FUN_003cdf40(*(u32 *)(param_1 + 0x18),auStack_2c);
+      stack.bytes[0] = (u8)stack.colors[0];
+      stack.bytes[1] = (u8)stack.colors[1];
+      stack.bytes[2] = (u8)stack.colors[2];
+      stack.bytes[3] = (u8)stack.colors[3];
+      FUN_003cdf40(*(u32 *)(param_1 + 0x18),stack.bytes);
       break;
     case 1:
-      FUN_003ce060(*(u32 *)(param_1 + 0x18),&fStack_10);
+      FUN_003ce060(*(u32 *)(param_1 + 0x18),stack.colors);
       break;
     case 2:
-      FUN_003ce180(*(u32 *)(param_1 + 0x18),&fStack_10,uVar3);
+      FUN_003ce180(*(u32 *)(param_1 + 0x18),stack.colors,uVar3);
       break;
     }
   }
+  }
   return 1;
 }
+#pragma pop
 
 #pragma optimization_level 3
 // FUN_00419F20 NONMATCHING

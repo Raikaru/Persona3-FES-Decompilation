@@ -3924,13 +3924,9 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 
   int iVar7;
 
-  char cVar8;
+  int cVar8;
 
-  u8 uStack_8;
-
-  char cStack_7;
-
-  u8 uStack_6;
+  u8 msg[3];
 
   
 
@@ -3999,15 +3995,11 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
     break;
   }
 
-  uStack_8 = 0x83;
-
-  cStack_7 = cVar8 + -0x38;
-
-  uStack_6 = 0;
-
+  msg[0] = 0x83;
+  msg[1] = cVar8 + -0x38;
+  msg[2] = 0;
   FUN_003b22a0(param_4);
-
-  FUN_003b2020(&uStack_8,param_4);
+  FUN_003b2020(msg,param_4);
 
   FUN_003b22a0(param_4);
 

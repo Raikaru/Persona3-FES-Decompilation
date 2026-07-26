@@ -2445,10 +2445,10 @@ int FUN_003b1a90(int param_1)
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x28)) {
     int iVar1;
     iVar3 = param_1;
-    iVar1 = *(int *)(param_1 + 8) + 100;
+    current = *(int *)(param_1 + 8) + 100;
     while (iVar3 != 0) {
-      current = *(int *)(iVar3 + 8);
-      if (current >= iVar1) {
+      iVar1 = *(int *)(iVar3 + 8);
+      if (iVar1 >= current) {
         break;
       }
       iVar3 = *(int *)(iVar3 + 0x28);

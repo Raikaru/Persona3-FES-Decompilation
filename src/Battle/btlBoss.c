@@ -1162,61 +1162,68 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     u32 i;
 
     encounterId = btlBossGetEncounterId();
-    charId = unit->genus == 1 ? unit->charId : 0;
-    if (charId == 0)
+    switch (encounterId)
     {
-        return -1;
+    case 0x1a1:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if ((charId == 0x102 || charId == 0x101) && id == 0x170)
+            return 0x17;
+        break;
+    case 0x1a2:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if (charId == 0x103 && id == 0x163)
+            return 0x17;
+        break;
+    case 0x1a3:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if (charId == 0x104 && func_002d6370(id) != 0)
+            return 0x18;
+        break;
+    case 0x1a5:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if (charId == 0x107)
+        {
+            if (id == 0x16b)
+                return 0x17;
+            if (id == 0x16c)
+                return 0x19;
+        }
+        break;
+    case 0x1a6:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if (charId == 0x10a &&
+            (id == 0x90 || id == 0x8e || id == 0x8d || id == 0x83 ||
+             id == 0x80 || id == 0x7f || id == 0x77 || id == 0x75 || id == 0x73))
+            return 0x18;
+        break;
+    case 0x1a8:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if (charId == 0x10d && id == 0x134)
+            return *(u32*)((u8*)gBtl + 0xb54) == 0 ? 7 : 0x15;
+        break;
+    case 0x1b4:
+        charId = unit->genus == 1 ? unit->charId : 0;
+        if (charId == 0xf1 &&
+            (id == 0x126 || id == 0x128 || id == 0x127 || id == 0x125))
+            return 0;
+        break;
+    default:
+        break;
     }
 
-    if (encounterId == 0x1b4 && charId == 0xf1)
+    if (encounterId == 0x1a6 &&
+        (unit->genus == 1) &&
+        (unit->charId >= 0xe2 && unit->charId <= 0xe8))
     {
-        return (id == 0x126 || id == 0x128 || id == 0x127 || id == 0x125) ? 0 : -1;
+        return 0xffff;
     }
-    if (encounterId == 0x1a8 && charId == 0x10d && id == 0x134)
-    {
-        return *(u32*)((u8*)gBtl + 0xb54) == 0 ? 7 : 0x15;
-    }
-    if (encounterId == 0x1a6 && charId == 0x10a &&
-        (id == 0x90 || id == 0x8e || id == 0x8d || id == 0x83 ||
-         id == 0x80 || id == 0x7f || id == 0x77 || id == 0x75 || id == 0x73))
-    {
-        return 0x18;
-    }
-    if (encounterId == 0x1a5 && charId == 0x107)
-    {
-        if (id == 0x16b)
-        {
-            return 0x17;
-        }
-        if (id == 0x16c)
-        {
-            return 0x19;
-        }
-        return -1;
-    }
-    if (encounterId == 0x1a3 && charId == 0x104 &&
-        func_002d6370(id) != 0)
-    {
-        return 0x18;
-    }
-    if (encounterId == 0x1a2 && charId == 0x103 && id == 0x163)
-    {
-        return 0x17;
-    }
-    if (encounterId == 0x1a1 &&
-        (charId == 0x102 || charId == 0x101) && id == 0x170)
-    {
-        return 0x17;
-    }
-    if (charId >= 0x95 && charId <= 0x9c)
+    if (unit->genus == 1 && unit->charId >= 0x95 && unit->charId <= 0x9c)
     {
         for (i = 0; i < 4; i++)
         {
-            value = *(u16*)(DAT_007ce4b4 + (charId - 0x95) * 8 + i * 2);
+            value = *(u16*)(DAT_007ce4b4 + (unit->charId - 0x95) * 8 + i * 2);
             if (id == value)
-            {
                 return i == 3 ? 0x18 : i == 2 ? 0x17 : i == 1 ? 7 : 4;
-            }
         }
         return 7;
     }
@@ -1884,7 +1891,7 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
         case 0x1a0:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x100) return DAT_00699BF0[index];
+            if (unit->charId == 0x100) return (s16)DAT_00699BF0[index];
             return 0xffff;
         }
         case 0x1a1:

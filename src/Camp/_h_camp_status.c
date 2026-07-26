@@ -1664,8 +1664,8 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         if (work->detailFrame == 8) {
             return KWLNTASK_STOP;
         }
-        frame = work->detailFrame;
-        position.x = 188.0f - (f32)((frame * 500) / 8);
+        position.x = 188.0f -
+            (f32)((work->detailFrame * 500) / 8);
         position.y = work->scrollY;
         h_campStatusDrawViewport(
             105.0f, work->parsedResource, position, 0xff);
@@ -1673,9 +1673,9 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         if (work->scrollY < -1104.0f) {
             work->scrollY = 0.0f;
         }
-        position.x = -(f32)((frame * 500) / 8);
+        position.x = -(f32)((work->detailFrame * 500) / 8);
         position.y = 0.0f;
-        alpha = (frame * 255) / 8;
+        alpha = (work->detailFrame * 255) / 8;
         h_campStatusDrawPanelFrame(1, position, alpha);
         break;
     }
