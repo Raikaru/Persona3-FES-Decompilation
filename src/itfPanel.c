@@ -99,6 +99,9 @@ extern u32 gp0xffffa7e0;
 extern u32 gp0xffffa7e8;
 extern u32 gp0xffffa7f0;
 extern u32 gp0xffffb934;
+extern u32 gp0xffffb938;
+extern u32 gp0xffffb93c;
+extern u32 gp0xffffb944;
 extern f32 uGpffff8070;
 extern f32 uGpffff8458;
 extern void FUN_003c9000(float param_1,float param_2,float param_3,int param_4,int param_5,int param_6,int param_7,int param_8);
@@ -189,6 +192,18 @@ u64 FUN_003ae000(u64 param_1,int param_2);
 u64 FUN_003ae160(u64 param_1,int param_2);
 u64 FUN_003ae260(u64 param_1,int param_2);
 u64 FUN_003ae360(u64 param_1,int param_2);
+u64 FUN_003ad360(u32 param_1,int param_2);
+u64 FUN_003ad380(u64 param_1,int param_2);
+void FUN_003a9d90(int param_1,int param_2,int param_3,int param_4,int param_5);
+void FUN_003a9db0(int param_1,int param_2,int param_3,int param_4,int param_5);
+void FUN_003a9de0(int param_1);
+u64 FUN_003ae140(u64 param_1,int param_2);
+u64 FUN_003ae150(u64 param_1,int param_2);
+u64 FUN_003aca30(u64 param_1,u64 param_2);
+u64 FUN_003aca40(u64 param_1,u64 param_2);
+u64 FUN_003ad130(u32 param_1,int param_2);
+u64 FUN_003ade60(u64 param_1,int param_2);
+void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 
 /* Region call-cast macros */
 #define FUN_003a87d0(...) ((void (*)(...))FUN_003a87d0)(__VA_ARGS__)
@@ -1176,6 +1191,19 @@ void FUN_003a9930(int *param_1,int param_2,int param_3,int param_4,int param_5)
 
 }
 #define FUN_003a9930(...) ((void (*)(...))FUN_003a9930)(__VA_ARGS__)
+// Retail 0x003a9ac0-0x003a9ae4
+// FUN_003A9AC0
+void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5)
+{
+  *(int *)(param_1 + 0) = param_2;
+  *(int *)(param_1 + 4) = param_3;
+  *(int *)(param_1 + 8) = param_4;
+  *(int *)(param_1 + 0xc) = param_3;
+  *(int *)(param_1 + 0x10) = param_4;
+  *(int *)(param_1 + 0x14) = param_5;
+  *(int *)(param_1 + 0x18) = param_2;
+  *(int *)(param_1 + 0x1c) = param_5;
+}
 #undef FUN_003a9af0
 // FUN_003A9AF0
 
@@ -1356,6 +1384,43 @@ void FUN_003a9cf0(int param_1,u64 param_2,u64 param_3,u64 param_4,
 
 }
 #define FUN_003a9cf0(...) ((void (*)(...))FUN_003a9cf0)(__VA_ARGS__)
+// Retail 0x003a9d90-0x003a9da4
+// FUN_003A9D90
+void FUN_003a9d90(int param_1,int param_2,int param_3,int param_4,int param_5)
+{
+  *(int *)(param_1 + 0x20) = param_2;
+  *(int *)(param_1 + 0x24) = param_3;
+  *(int *)(param_1 + 0x28) = param_4;
+  *(int *)(param_1 + 0x2c) = param_5;
+}
+
+// Retail 0x003a9db0-0x003a9dd4
+// FUN_003A9DB0
+void FUN_003a9db0(int param_1,int param_2,int param_3,int param_4,int param_5)
+{
+  *(int *)(param_1 + 0x30) = param_2;
+  *(int *)(param_1 + 0x34) = param_3;
+  *(int *)(param_1 + 0x38) = param_4;
+  *(int *)(param_1 + 0x3c) = 0;
+  *(int *)(param_1 + 0x40) = param_2;
+  *(int *)(param_1 + 0x44) = param_3;
+  *(int *)(param_1 + 0x48) = param_4;
+  *(int *)(param_1 + 0x4c) = param_5;
+}
+
+// Retail 0x003a9de0-0x003a9e10
+// FUN_003A9DE0
+void FUN_003a9de0(int param_1)
+{
+  *(int *)(param_1 + 0x44) = 0x73;
+  *(int *)(param_1 + 0x48) = 0x87;
+  *(int *)(param_1 + 0x4c) = 0xff;
+  *(int *)(param_1 + 0x50) = 0;
+  *(int *)(param_1 + 0x54) = 0x73;
+  *(int *)(param_1 + 0x58) = 0x87;
+  *(int *)(param_1 + 0x5c) = 0xff;
+  *(int *)(param_1 + 0x60) = 0;
+}
 #undef FUN_003a9e20
 // FUN_003A9E20
 
@@ -3201,6 +3266,19 @@ u64 FUN_003ac900(u64 param_1,u64 param_2)
   return 0;
 }
 #define FUN_003ac900(...) ((u64 (*)(...))FUN_003ac900)(__VA_ARGS__)
+// Retail 0x003aca30-0x003aca38
+// FUN_003ACA30
+u64 FUN_003aca30(u64 param_1,u64 param_2)
+{
+  return 0;
+}
+
+// Retail 0x003aca40-0x003aca48
+// FUN_003ACA40
+u64 FUN_003aca40(u64 param_1,u64 param_2)
+{
+  return 0;
+}
 #undef FUN_003aca50
 // FUN_003ACA50
 
@@ -3645,6 +3723,36 @@ u64 FUN_003ad030(u64 param_1,int param_2)
 
 }
 #define FUN_003ad030(...) ((u64 (*)(...))FUN_003ad030)(__VA_ARGS__)
+// Retail 0x003ad130-0x003ad1ac
+// FUN_003AD130
+u64 FUN_003ad130(u32 param_1,int param_2)
+{
+  u8 low;
+  u8 high;
+  u32 value;
+  u8 *data;
+  int offset;
+  int base;
+
+  if (*(int *)(*(int *)(param_2 + 0x14) + 0x34) != 0) {
+    *(u32 *)(*(int *)(param_2 + 0x14) + 0x38) = 1;
+  }
+  *(u32 *)(*(int *)(param_2 + 0x14) + 0x30) = param_1;
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  base = base + offset;
+  data = (u8 *)base;
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = (u32)high << 8 | low & 0xff;
+  *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = value;
+  return 0;
+}
 #undef FUN_003ad1b0
 // FUN_003AD1B0 NONMATCHING
 
@@ -3713,6 +3821,84 @@ u64 FUN_003ad1b0(u32 param_1,int param_2)
 
 }
 #define FUN_003ad1b0(...) ((u64 (*)(...))FUN_003ad1b0)(__VA_ARGS__)
+// Retail 0x003ad2a0-0x003ad354
+// FUN_003AD2A0
+u64 FUN_003ad2a0(u64 param_1,int param_2)
+{
+  u8 low;
+  u8 high;
+  u32 value;
+  u8 *data;
+  int offset;
+  int base;
+
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  base = base + offset;
+  data = (u8 *)base;
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = (u32)high << 8 | low & 0xff;
+  gp0xffffb938 = value;
+
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  data = (u8 *)(offset + base);
+  low = data[2] - 1;
+  high = data[3];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = (u32)high << 8 | low & 0xff;
+  gp0xffffb93c = value;
+  uGpffffa7f8 = uGpffffa7f8 | 8;
+  return 0;
+}
+
+// Retail 0x003ad360-0x003ad370
+// FUN_003AD360
+u64 FUN_003ad360(u32 param_1,int param_2)
+{
+  *(u32 *)(*(int *)(param_2 + 0x14) + 0x34) = param_1;
+  return 0;
+}
+
+// Retail 0x003ad380-0x003ad3f0
+// FUN_003AD380
+u64 FUN_003ad380(u64 param_1,int param_2)
+{
+  u8 low;
+  u8 high;
+  u32 value;
+  u8 *data;
+  int offset;
+  int base;
+
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  base = base + offset;
+  data = (u8 *)base;
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = (u32)high << 8 | low & 0xff;
+  if (value != 0) {
+    return 0;
+  }
+  gp0xffffb944 = 0x14;
+  return 0;
+}
 #undef FUN_003ad400
 // FUN_003AD400 NONMATCHING
 
@@ -4467,6 +4653,12 @@ u64 FUN_003add40(u64 param_1,int param_2)
 
 }
 #define FUN_003add40(...) ((u64 (*)(...))FUN_003add40)(__VA_ARGS__)
+// Retail 0x003ade60-0x003ade68
+// FUN_003ADE60
+u64 FUN_003ade60(u64 param_1,int param_2)
+{
+  return 0;
+}
 #undef FUN_003ade70
 // FUN_003ADE70 NONMATCHING
 u64 FUN_003ade70(u64 param_1,int param_2)
@@ -4637,6 +4829,19 @@ u64 FUN_003ae000(u64 param_1,int param_2)
 
 }
 #define FUN_003ae000(...) ((u64 (*)(...))FUN_003ae000)(__VA_ARGS__)
+// Retail 0x003ae140-0x003ae148
+// FUN_003AE140
+u64 FUN_003ae140(u64 param_1,int param_2)
+{
+  return 0;
+}
+
+// Retail 0x003ae150-0x003ae158
+// FUN_003AE150
+u64 FUN_003ae150(u64 param_1,int param_2)
+{
+  return 0;
+}
 #undef FUN_003ae160
 // FUN_003AE160 NONMATCHING
 
