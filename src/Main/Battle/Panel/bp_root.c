@@ -1067,11 +1067,12 @@ void FUN_00201780(void)
 // FUN_00201880 NONMATCHING
 void FUN_00201880(void)
 {
-    u8* work;
-    u32* flags;
-    u32* entry;
-    u32 request;
     s32 i;
+    s32 selector;
+    u32 request;
+    u32* entry;
+    u32* flags;
+    u8* work;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
@@ -1081,7 +1082,8 @@ void FUN_00201880(void)
         entry = (u32*)work + i;
         flags = entry + 0x590;
         *flags &= ~1u;
-        switch (i)
+        selector = i;
+        switch (selector)
         {
         case 0:
             if (*(u32*)(work + 0xc) & 0x20) request = 1;

@@ -757,7 +757,6 @@ u32 scrComu00360110(void)
     int slPtr;
     int data;
     int idx;
-    u32 predicate;
 
     slPtr = datGetActiveSocialLinkPtr();
     d4 = sDat007ce5d4;
@@ -779,8 +778,7 @@ loop:
     i++;
 
 tail:
-    predicate = i < bVar1 + 2;
-    if (predicate == 1) {
+    if ((bVar1 + 2) > i) {
         goto loop;
     }
     scrSetIntReturnVal();
