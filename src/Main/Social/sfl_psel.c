@@ -1938,7 +1938,7 @@ void func_00218810(void* panel, const u32* entry, s32 selected)
     func_0021eac0(destination + 0x800, func_0021ea00(0x28));
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 2
 // FUN_00218B20 NONMATCHING
 void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
                    const f32* origin)
@@ -1954,6 +1954,11 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     void* handle;
     u32 colorValue;
     s32 i;
+    s32 j;
+    u32 alphaValueSelected;
+    u32 alphaValueUnselected;
+    s32 frameId;
+    s32 mode;
     K_ASSERT(sSflPsel != NULL, 0xcb);
     destination = (u8*)panel;
     texture = sflRes0020ec50();
@@ -1976,10 +1981,10 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x200, rect);
-    alphaByte = (u8)(alpha * 255.0f);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
+    alphaByte = (u8)(alpha * 255.0f);
     color[3] = alphaByte;
     for (i = 0; i < 3; i++) {
         func_0021d950(destination + i * 0x100, color);
@@ -1990,6 +1995,10 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x300, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
     func_0021d950(destination + 0x300, color);
     frame = (u8*)(uintptr_t)func_002180b0(entry[2]);
     rect[0] = x + 202.0f;
@@ -1997,28 +2006,30 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x400, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
     func_0021d950(destination + 0x400, color);
-    if (selected == 0)
-    {
-        if ((*entry & 2) == 0)
-        {
-            color[0] = 0x71;
-            color[1] = 0xbf;
-            color[2] = 0xff;
-        }
-        else
-        {
-            color[0] = 0xff;
-            color[1] = 0xfe;
-            color[2] = 0xbb;
-        }
-    }
-    else
+    if (selected != 0)
     {
         color[0] = 4;
         color[1] = 0x29;
         color[2] = 0x46;
     }
+    else if ((*entry & 2) != 0)
+    {
+        color[0] = 0xff;
+        color[1] = 0xfe;
+        color[2] = 0xbb;
+    }
+    else
+    {
+        color[0] = 0x71;
+        color[1] = 0xbf;
+        color[2] = 0xff;
+    }
+    color[3] = (u8)(alpha * 255.0f);
     func_0021d950(destination + 0x400, color);
     if ((*entry & 2) != 0)
     {
@@ -2028,34 +2039,64 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
         rect[2] = (f32)*(s32*)(frame + 0xc);
         rect[3] = (f32)*(s32*)(frame + 0x10);
         func_0021d8e0(destination + 0x500, rect);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = (u8)(alpha * 255.0f);
         func_0021d950(destination + 0x500, color);
     }
-    frame = (u8*)(uintptr_t)func_0021cca0(texture, selected == 0 ? 0x19 : 0x1a);
+    if (selected != 0)
+    {
+        frameId = 0x1a;
+    }
+    else
+    {
+        frameId = 0x19;
+    }
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, frameId);
     rect[0] = x + 482.0f;
     rect[1] = y + 105.0f;
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x600, rect);
-    func_0021d950(destination + 0x600, color);
-    rect[0] = x + 514.0f;
-    rect[1] = y + 105.0f;
-    rect[2] = 0.0f;
-    rect[3] = 0.0f;
-    handle = func_00238dc0(destination + 0x700, 2, entry[3],
-                           selected == 0 ? 2 : 1, rect);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = alphaByte;
-    for (i = 0; i < 2; i++) {
-        func_0021d950(destination + 0x700 + i * 0x100, color);
+    color[3] = (u8)(alpha * 255.0f);
+    func_0021d950(destination + 0x600, color);
+    if (selected != 0)
+    {
+        mode = 1;
+    }
+    else
+    {
+        mode = 2;
+    }
+    rect[0] = x + 514.0f;
+    rect[1] = y + 105.0f;
+    handle = func_00238dc0(destination + 0x700, 2, entry[3], mode, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
+    for (j = 0; j < 2; j++) {
+        func_0021d950(destination + 0x700 + j * 0x100, color);
     }
     rect[0] = x + 290.0f;
-    rect[1] = y + 90.0f;
+    rect[1] = y + 93.0f;
     func_003b0d70(*(u32*)(destination + 0x900),
                   (s32)rect[0] << 4, (s32)rect[1] << 3);
-    colorValue = alphaByte | (selected == 0 ? 0x64648c00u : 0xffffff00u);
-    func_003b0e54(*(u32*)(destination + 0x900), colorValue);
+    if (selected != 0)
+    {
+        alphaValueSelected = (u32)(alpha * 255.0f);
+        colorValue = alphaValueSelected | 0xffffff00u;
+    }
+    else
+    {
+        alphaValueUnselected = (u32)(alpha * 255.0f);
+        colorValue = alphaValueUnselected | 0x64648c00u;
+    }
+    func_003b0e20(*(u32*)(destination + 0x900), colorValue);
     (void)handle;
 }
 #pragma optimization_level 2
