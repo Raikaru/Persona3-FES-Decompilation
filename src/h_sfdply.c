@@ -1817,11 +1817,11 @@ void func_0010d950(s16 index)
     {
         goto done;
     }
-    status = &sSfdDecodeSlots_abs[index].status;
-    if (*status == 0)
+    if (sSfdDecodeSlots_abs[index].status == 0)
     {
         goto final_clear;
     }
+    status = &sSfdDecodeSlots_abs[index].status;
     FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
     FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);
     FUN_0051dd48(5, (u32)sSfdDecodeSlots_abs[index].outputHandle);
@@ -1830,7 +1830,7 @@ void func_0010d950(s16 index)
     func_0050B710(sSfdDecodeSlots_abs[index].output);
     func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
 final_clear:
-    *status = 0;
+    sSfdDecodeSlots_abs[index].status = 0;
 done:
     ;
 }

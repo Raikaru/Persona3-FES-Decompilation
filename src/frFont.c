@@ -130,8 +130,6 @@ void FUN_003b0430(int param_1,u32 param_2);
 extern void FUN_003b0430_typed(int param_1,u32 param_2);
 #pragma alias FUN_003b01d0_typed FUN_003b01d0
 u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
-#pragma alias FUN_003b0970_typed FUN_003b0970
-extern u8 *FUN_003b0970_typed(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
 void FUN_003b05c0(u16 *param_1);
 long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 int FUN_003b0840(short *param_1);
@@ -154,8 +152,6 @@ u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
 void FUN_003b19a0(u64 param_1);
 int FUN_003b19d0(FrFontNode *node);
-#pragma alias FUN_003b1920_typed FUN_003b1920
-extern int FUN_003b1920_typed(int param_1,int param_2,int param_3);
 u16 FUN_003b1a10(u32 param_1);
 u16 FUN_003b1a40(u32 param_1);
 void FUN_003b1a70(void);
