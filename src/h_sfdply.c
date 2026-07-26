@@ -1757,7 +1757,6 @@ void func_0010cdd0(void)
                 decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
                 auxHandle = func_0051DDF0(0, -1, (s32)slot->output,
                                           *outputSizePtr);
-                                          slot->outputSize);
                 slot->aux = (void*)(s32)auxHandle;
                 slot->completion = (void*)(s32)func_0051DDF0(
                     5, slot->decodeHandle, (s32)slot->aux);
