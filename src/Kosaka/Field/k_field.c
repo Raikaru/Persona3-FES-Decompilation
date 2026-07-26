@@ -2280,7 +2280,7 @@ void func_001bd8c0(void)
 
 // FUN_001bd950 NONMATCHING
 #pragma optimization_level 3
-#pragma schedule off
+#pragma schedule on
 void func_001bd950(void)
 {
     Resrc* fieldResource;

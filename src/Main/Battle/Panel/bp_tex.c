@@ -1858,7 +1858,7 @@ void bpTexUpdateNode(void* nodeData)
     f32 position[3];
     f32 direction[3];
     f32 alpha;
-    volatile f32 leafAlpha;
+    f32 leafAlpha;
     u8 color[4];
     u32 mode;
     u32 flags;
