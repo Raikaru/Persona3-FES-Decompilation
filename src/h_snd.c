@@ -217,6 +217,7 @@ void func_00108740(void)
     sBackendControls[0].timeout = 0xBB80;
     sBackendControls[0].pending = 1;
     context = func_0054d080(&sBackendControls[0]);
+    backendAlloc = (void* (*)(void*, u32))D_00960178;
     backendData = backendAlloc(context, 0x40000);
     sChannelData0[0] = backendData;
     sChannelData1[0] = context;
