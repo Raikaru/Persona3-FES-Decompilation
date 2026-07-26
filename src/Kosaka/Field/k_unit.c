@@ -2009,16 +2009,27 @@ void func_001d1910(void)
 void func_001d19d0(void)
 {
     s32 i;
+    s32 offset;
     FldUnit* unit;
+    FldUnit* unit2;
+    u32 valid;
+    u32 predicate;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
+        valid = 0;
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL &&
-            unit->resrc != NULL)
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            unit->unk_17c = 0;
-            func_001a60d0(0, ((volatile FldUnit*)unit)->mdl, 0xff);
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
+        {
+            offset = i * sizeof(FldUnit);
+            unit2 = (FldUnit*)((int)gFldUnitsPc + offset);
+            unit2->unk_17c = 0;
+            func_001a60d0(0, unit2->mdl, 0xff);
         }
     }
 }

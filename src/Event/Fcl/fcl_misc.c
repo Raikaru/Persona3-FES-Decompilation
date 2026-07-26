@@ -320,7 +320,7 @@ u64 FUN_003c8550(u8 *param_1)
   register u8 *context;
   int iVar5;
   int iVar6;
-  u64 uVar1;
+  u32 uVar1;
   u32 lVar2;
   u32 *puVar3;
   u8 auStack_20[32];
