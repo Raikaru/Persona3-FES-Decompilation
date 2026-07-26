@@ -54726,18 +54726,6 @@ void FUN_003520a0(u64 param_1)
         *(float *)&puVar12[6] = qx - dx;
         *(float *)&puVar12[7] = qy - dy;
         *(float *)&puVar12[8] = qz - dz;
-        px = qx + fStack_20 * fVar17;
-        py = qy + fStack_1c * fVar17;
-        pz = qz + fStack_18 * fVar17;
-        *(float *)&puVar12[0] = px;
-        *(float *)&puVar12[1] = py;
-        *(float *)&puVar12[2] = pz;
-        *(float *)&puVar12[3] = qx;
-        *(float *)&puVar12[4] = qy;
-        *(float *)&puVar12[5] = qz;
-        *(float *)&puVar12[6] = qx - dx;
-        *(float *)&puVar12[7] = qy - dy;
-        *(float *)&puVar12[8] = qz - dz;
 
         puVar14 = puVar14 + 4;
 
