@@ -24056,397 +24056,531 @@ bool FUN_00333940(int param_1,u32 param_2)
 
 // FUN_00333970 NONMATCHING
 void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
+
+
+
 {
+
   u16 uVar1;
+
   u32 *puVar2;
+
   u16 *puVar3;
+
   u16 uVar4;
+
   u32 uVar5;
+
   u32 *puVar6;
+
   u32 uVar7;
+
   u32 uVar8;
+
   u32 *puVar9;
+
   u32 uVar10;
+
   u32 uVar11;
-  u32 vuBits;
+
   float fVar12;
+
   float fVar13;
+
   float fVar14;
+
   float fVar15;
-  float fVar16;
-  float auStack_20[4];
-  float auStack_10[4];
+
+  __int128 in_vf0;
+
+  __int128 auVar16;
+
+  __int128 auVar17;
+
+  __int128 auVar18;
+
+  __int128 auVar19;
+
+  __int128 extraout_vf12;
+
+  __int128 extraout_vf12_00;
+
+  __int128 auVar20;
+
+  __int128 extraout_vf24;
+
+  __int128 extraout_vf24_00;
+
+  __int128 extraout_vf28;
+
+  __int128 extraout_vf28_00;
+
+  __int128 extraout_vf29;
+
+  __int128 extraout_vf29_00;
+
+  __int128 extraout_vf30;
+
+  __int128 extraout_vf30_00;
+
+  __int128 auStack_20;
+
+  __int128 auStack_10;
+
+  
 
   uVar1 = *(u16 *)(*(int *)param_2[1] + 8);
+
   puVar9 = (u32 *)
+
            (*(int *)(*(int *)(*(int *)(*(int *)(*(int *)param_2[1] + 0x10) + 0x18) + 0x5c) + 0x14) +
+
            (u32)uVar1 * (param_3 & 0xffff) * 0xc);
+
   puVar2 = puVar9 + (uVar1 - 5) * 3;
+
   puVar6 = puVar9 + (uVar1 - 2) * 3;
+
   for (uVar4 = 3; uVar4 < uVar1; uVar4 = uVar4 + 3) {
+
     uVar10 = puVar2[1];
+
     uVar11 = puVar2[2];
+
     *puVar6 = *puVar2;
+
     puVar6[1] = uVar10;
+
     puVar6[2] = uVar11;
-    puVar2 = puVar2 - 9;
-    puVar6 = puVar6 - 9;
+
+    puVar2 = puVar2 + -9;
+
+    puVar6 = puVar6 + -9;
+
   }
+
   uVar10 = param_4[1];
+
   uVar11 = param_4[2];
+
   puVar9[3] = *param_4;
+
   puVar9[4] = uVar10;
+
   puVar9[5] = uVar11;
+
   uVar7 = uVar1 / 3 - 1 & 0xffff;
+
   puVar3 = (u16 *)(*(int *)(param_2[1] + 8) + (param_3 & 0xffff) * 2);
+
   uVar1 = *puVar3;
+
   uVar5 = (u32)uVar1;
+
   if (uVar5 <= uVar7) {
+
     uVar1 = uVar1 + 1;
+
     uVar5 = (u32)uVar1;
+
     *puVar3 = uVar1;
+
   }
+
   fVar12 = 0.0f;
-  /* Retail 0x0140-0x014c: clear the two VU scratch vectors. */
-  __asm__ volatile (
-      ".set noreorder\n"
-      "sqc2 vf0, 0(%0)\n"
-      ".set reorder"
-      : : "r"(auStack_20) : "memory");
-  __asm__ volatile (
-      ".set noreorder\n"
-      "sqc2 vf0, 0(%0)\n"
-      ".set reorder"
-      : : "r"(auStack_10) : "memory");
+
+  auStack_10 = _sqc2(in_vf0);
+
+  auStack_20 = _sqc2(in_vf0);
+
   uVar8 = 0;
+
   puVar2 = puVar9;
+
   if (1 < uVar5) {
+
     fVar14 = (float)uVar5 / (float)uVar7;
+
     fVar15 = fVar14 / (float)uVar5;
+
     fVar12 = param_1 * fVar14;
-    /* Retail 0x0244-0x0260: load the basis vectors and project the input. */
-    __asm__ volatile (
-        ".set noreorder\n"
-        "lqc2 vf10, 0(%1)\n"
-        "vmove.xyzw vf24, vf10\n"
-        "lqc2 vf11, 0(%2)\n"
-        "vmul.xyz vf2, vf10, vf11\n"
-        "vaddy.x vf2, vf2, vf2y\n"
-        "vaddz.x vf2, vf2, vf2z\n"
-        "qmfc2.ni %0, vf2\n"
-        ".set reorder"
-        : "=r"(vuBits)
-        : "r"((void *)(u32)0x0069c4c0), "r"(param_2)
-        : "vf2", "vf10", "vf11", "vf24", "memory");
-    fVar13 = *(float *)&vuBits;
-    *(u32 *)(u32)0x0069c4d0 = puVar9[3];
-    *(u32 *)(u32)0x0069c4d4 = puVar9[4];
-    *(u32 *)(u32)0x0069c4d8 = puVar9[5];
-    *(u32 *)(u32)0x0069c4d0 = puVar9[0xc];
-    *(u32 *)(u32)0x0069c4d4 = puVar9[0xd];
-    *(u32 *)(u32)0x0069c4d8 = puVar9[0xe];
-    /* Retail 0x0290-0x02e0: normalize the segment delta into auStack_20. */
-    __asm__ volatile (
-        ".set noreorder\n"
-        "lqc2 vf12, 0(%0)\n"
-        "lqc2 vf10, 0(%1)\n"
-        "vsub.xyz vf10, vf10, vf12\n"
-        "vmul.xyz vf2, vf10, vf10\n"
-        "vmulax.w ACC, vf0, vf2x\n"
-        "vmadday.w ACC, vf0, vf2y\n"
-        "vmaddz.w vf2, vf0, vf2z\n"
-        "vrsqrt Q, vf0w, vf2w\n"
-        "vwaitq\n"
-        "vmulq.xyz vf10, vf10, Q\n"
-        "sqc2 vf10, 0(%2)\n"
-        ".set reorder"
-        : : "r"((void *)(u32)0x0069c4d0), "r"((void *)(u32)0x0069c4d0), "r"(auStack_20)
-        : "vf2", "vf10", "vf12", "ACC", "Q", "memory");
-    __asm__ volatile (
-        ".set noreorder\n"
-        "mov.s $f12, %0\n"
-        "jal FUN_00329890\n"
-        "nop\n"
-        ".set reorder"
-        : : "f"(fVar13) : "$f12", "$ra", "memory");
-    /* Retail 0x02f8-0x0308: rotate the helper's three output vectors. */
-    __asm__ volatile (
-        ".set noreorder\n"
-        "vmove.xyzw vf10, vf24\n"
-        "vmulax.xyzw ACC, vf28, vf10x\n"
-        "vmadday.xyzw ACC, vf29, vf10y\n"
-        "vmaddz.xyzw vf10, vf30, vf10z\n"
-        "sqc2 vf10, 0(%0)\n"
-        ".set reorder"
-        : : "r"(auStack_10)
-        : "vf10", "vf24", "vf28", "vf29", "vf30", "ACC", "memory");
-    /* Retail 0x0310-0x0330: scale and add the normalized input. */
-    __asm__ volatile (
-        ".set noreorder\n"
-        "mfc1 %0, %1\n"
-        "nop\n"
-        "qmtc2.ni %0, vf2\n"
-        "vmulx.xyzw vf10, vf10, vf2x\n"
-        "vadd.xyzw vf12, vf12, vf10\n"
-        "sqc2 vf12, 0(%2)\n"
-        ".set reorder"
-        : "=r"(vuBits)
-        : "f"(fVar12), "r"((void *)(u32)0x0069c4d0)
-        : "vf2", "vf10", "vf12", "memory");
-    *puVar9 = *(u32 *)(u32)0x0069c4d0;
-    puVar9[1] = *(u32 *)(u32)0x0069c4d4;
-    puVar9[2] = *(u32 *)(u32)0x0069c4d8;
-    /* Retail 0x0358-0x0360: subtract the scaled vector twice. */
-    __asm__ volatile (
-        ".set noreorder\n"
-        "vsub.xyzw vf12, vf12, vf10\n"
-        "vsub.xyzw vf12, vf12, vf10\n"
-        "sqc2 vf12, 0(%0)\n"
-        ".set reorder"
-        : : "r"((void *)(u32)0x0069c4d0) : "vf12", "memory");
-    puVar9[6] = *(u32 *)(u32)0x0069c4d0;
-    puVar9[7] = *(u32 *)(u32)0x0069c4d4;
-    puVar9[8] = *(u32 *)(u32)0x0069c4d8;
+
+    auVar16 = _lqc2(_DAT_0069c4c0);
+
+    _vmove(auVar16);
+
+    auVar18 = _lqc2(*param_2);
+
+    auVar16 = _vmul(auVar16,auVar18);
+
+    auVar16 = _vaddbc(auVar16,auVar16);
+
+    auVar16 = _vaddbc(auVar16,auVar16);
+
+    auVar16 = _qmfc2(auVar16._0_4_);
+
+    fVar13 = fGpffff8110 * auVar16._0_4_;
+
+    memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar9 + 3), 12);
+
+    auVar18 = _lqc2(_DAT_0069c4d0);
+
+    memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar9 + 0xc), 12);
+
+    auVar16 = _lqc2(_DAT_0069c4d0);
+
+    auVar18 = _vsub(auVar16,auVar18);
+
+    auVar16 = _vmul(auVar18,auVar18);
+
+    _vmulabc(in_vf0,auVar16);
+
+    _vmaddabc(in_vf0,auVar16);
+
+    auVar16 = _vmaddbc(in_vf0,auVar16);
+
+    _vrsqrt(in_vf0,auVar16);
+
+    uVar10 = _vwaitq();
+
+    auVar16 = _vmulq(auVar18,uVar10);
+
+    auStack_10 = _sqc2(auVar16);
+
+    FUN_00329890(fVar13);
+
+    auVar16 = _vmove(extraout_vf24);
+
+    _vmulabc(extraout_vf28,auVar16);
+
+    _vmaddabc(extraout_vf29,auVar16);
+
+    auVar18 = _vmaddbc(extraout_vf30,auVar16);
+
+    auStack_20 = _sqc2(auVar18);
+
+    auVar16 = _qmtc2(fVar12);
+
+    auVar16 = _vmulbc(auVar18,auVar16);
+
+    auVar18 = _vadd(extraout_vf12,auVar16);
+
+    _DAT_0069c4d0 = _sqc2(auVar18);
+
+    *puVar9 = DAT_0069c4d0;
+
+    puVar9[1] = DAT_0069c4d4;
+
+    puVar9[2] = DAT_0069c4d8;
+
+    auVar18 = _vsub(auVar18,auVar16);
+
+    auVar16 = _vsub(auVar18,auVar16);
+
+    _DAT_0069c4d0 = _sqc2(auVar16);
+
+    puVar9[6] = DAT_0069c4d0;
+
+    puVar9[7] = DAT_0069c4d4;
+
+    puVar9[8] = DAT_0069c4d8;
+
     uVar8 = 1;
+
     puVar6 = puVar9;
-    while (true) {
+
+    while( true ) {
+
       puVar2 = puVar6 + 9;
+
       fVar14 = fVar14 - fVar15;
+
       if ((uVar5 - 1 & 0xffff) <= uVar8) break;
-      DAT_0069c4d0 = puVar6[0xc];
-      DAT_0069c4d4 = puVar6[0xd];
-      DAT_0069c4d8 = puVar6[0xe];
-      DAT_0069c4d0 = puVar6[0x15];
-      DAT_0069c4d4 = puVar6[0x16];
-      DAT_0069c4d8 = puVar6[0x17];
-      /* Retail 0x03cc-0x0414: normalize each following segment. */
-      __asm__ volatile (
-          ".set noreorder\n"
-          "lqc2 vf12, 0(%0)\n"
-          "lqc2 vf10, 0(%1)\n"
-          "vsub.xyz vf10, vf10, vf12\n"
-          "vmul.xyz vf2, vf10, vf10\n"
-          "vmulax.w ACC, vf0, vf2x\n"
-          "vmadday.w ACC, vf0, vf2y\n"
-          "vmaddz.w vf2, vf0, vf2z\n"
-          "vrsqrt Q, vf0w, vf2w\n"
-          "vwaitq\n"
-          "vmulq.xyz vf10, vf10, Q\n"
-          ".set reorder"
-          : : "r"(&DAT_0069c4d0), "r"(&DAT_0069c4d0)
-          : "vf2", "vf10", "vf12", "ACC", "Q", "memory");
-      __asm__ volatile (
-          ".set noreorder\n"
-          "mov.s $f12, %0\n"
-          "jal FUN_00329890\n"
-          "nop\n"
-          ".set reorder"
-          : : "f"(fVar13) : "$f12", "$ra", "memory");
-      /* Retail 0x0424-0x0430: rotate the helper's output vectors. */
-      __asm__ volatile (
-          ".set noreorder\n"
-          "vmove.xyzw vf10, vf24\n"
-          "vmulax.xyzw ACC, vf28, vf10x\n"
-          "vmadday.xyzw ACC, vf29, vf10y\n"
-          "vmaddz.xyzw vf10, vf30, vf10z\n"
-          ".set reorder"
-          : : : "vf10", "vf24", "vf28", "vf29", "vf30", "ACC");
-      fVar16 = param_1 * fVar14;
-      /* Retail 0x0434-0x0454: blend this row and write it to the scratch vector. */
-      __asm__ volatile (
-          ".set noreorder\n"
-          "mfc1 %0, %1\n"
-          "nop\n"
-          "qmtc2.ni %0, vf2\n"
-          "vmulx.xyzw vf10, vf10, vf2x\n"
-          "vadd.xyzw vf12, vf12, vf10\n"
-          "sqc2 vf12, 0(%2)\n"
-          ".set reorder"
-          : "=r"(vuBits)
-          : "f"(fVar16), "r"(&DAT_0069c4d0)
-          : "vf2", "vf10", "vf12", "memory");
+
+      memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar6 + 0xc), 12);
+
+      auVar18 = _lqc2(_DAT_0069c4d0);
+
+      memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar6 + 0x15), 12);
+
+      auVar16 = _lqc2(_DAT_0069c4d0);
+
+      auVar18 = _vsub(auVar16,auVar18);
+
+      auVar16 = _vmul(auVar18,auVar18);
+
+      _vmulabc(in_vf0,auVar16);
+
+      _vmaddabc(in_vf0,auVar16);
+
+      auVar16 = _vmaddbc(in_vf0,auVar16);
+
+      _vrsqrt(in_vf0,auVar16);
+
+      uVar10 = _vwaitq();
+
+      _vmulq(auVar18,uVar10);
+
+      FUN_00329890(fVar13);
+
+      auVar16 = _vmove(extraout_vf24_00);
+
+      _vmulabc(extraout_vf28_00,auVar16);
+
+      _vmaddabc(extraout_vf29_00,auVar16);
+
+      auVar18 = _vmaddbc(extraout_vf30_00,auVar16);
+
+      auVar16 = _qmtc2(param_1 * fVar14);
+
+      auVar16 = _vmulbc(auVar18,auVar16);
+
+      auVar18 = _vadd(extraout_vf12_00,auVar16);
+
+      _DAT_0069c4d0 = _sqc2(auVar18);
+
       *puVar2 = DAT_0069c4d0;
+
       puVar6[10] = DAT_0069c4d4;
+
       puVar6[0xb] = DAT_0069c4d8;
-      /* Retail 0x047c-0x0484: write the opposite row. */
-      __asm__ volatile (
-          ".set noreorder\n"
-          "vsub.xyzw vf12, vf12, vf10\n"
-          "vsub.xyzw vf12, vf12, vf10\n"
-          "sqc2 vf12, 0(%0)\n"
-          ".set reorder"
-          : : "r"(&DAT_0069c4d0) : "vf12", "memory");
+
+      auVar18 = _vsub(auVar18,auVar16);
+
+      auVar16 = _vsub(auVar18,auVar16);
+
+      _DAT_0069c4d0 = _sqc2(auVar16);
+
       puVar6[0xf] = DAT_0069c4d0;
+
       puVar6[0x10] = DAT_0069c4d4;
+
       puVar6[0x11] = DAT_0069c4d8;
+
       uVar8 = uVar8 + 1 & 0xffff;
+
       puVar6 = puVar2;
+
     }
+
   }
+
   *puVar2 = puVar2[3];
+
   puVar2[1] = puVar2[4];
+
   puVar2[2] = puVar2[5];
+
   puVar2[6] = puVar2[3];
+
   puVar2[7] = puVar2[4];
+
   puVar2[8] = puVar2[5];
+
   puVar6 = puVar2;
+
   for (; uVar8 < uVar7; uVar8 = uVar8 + 1 & 0xffff) {
+
     uVar10 = puVar2[1];
+
     uVar11 = puVar2[2];
+
     puVar6[9] = *puVar2;
+
     puVar6[10] = uVar10;
+
     puVar6[0xb] = uVar11;
+
     uVar10 = puVar2[4];
+
     uVar11 = puVar2[5];
+
     puVar6[0xc] = puVar2[3];
+
     puVar6[0xd] = uVar10;
+
     puVar6[0xe] = uVar11;
+
     uVar10 = puVar2[7];
+
     uVar11 = puVar2[8];
+
     puVar6[0xf] = puVar2[6];
+
     puVar6[0x10] = uVar10;
+
     puVar6[0x11] = uVar11;
+
     puVar6 = puVar6 + 9;
+
   }
-  puVar2 = (u32 *)(*(int *)(*(int *)(*(int *)(*(int *)(*(int *)(param_2[1] + 4) + 0x10) + 0x18) + 0x5c) + 0x14) +
-                    (u32)*(u16 *)(*(int *)(param_2[1] + 4) + 8) * (param_3 & 0xffff) * 0xc);
+
+  puVar2 = (u32 *)
+
+           (*(int *)(*(int *)(*(int *)(*(int *)(*(int *)(param_2[1] + 4) + 0x10) + 0x18) + 0x5c) +
+
+                    0x14) +
+
+           (u32)*(u16 *)(*(int *)(param_2[1] + 4) + 8) * (param_3 & 0xffff) * 0xc);
+
   uVar10 = puVar9[4];
+
   uVar11 = puVar9[5];
+
   *puVar2 = puVar9[3];
+
   puVar2[1] = uVar10;
+
   puVar2[2] = uVar11;
+
   uVar10 = puVar9[1];
+
   uVar11 = puVar9[2];
+
   puVar2[3] = *puVar9;
+
   puVar2[4] = uVar10;
+
   puVar2[5] = uVar11;
+
   uVar10 = puVar9[7];
+
   uVar11 = puVar9[8];
+
   puVar2[0x15] = puVar9[6];
+
   puVar2[0x16] = uVar10;
+
   puVar2[0x17] = uVar11;
-  /* Retail 0x05ec-0x0618: scale the normalized source vector. */
-  fVar16 = fVar12 * 2.0f;
-  __asm__ volatile (
-      ".set noreorder\n"
-      "lqc2 vf11, 0(%0)\n"
-      "vsub.xyz vf11, vf0, vf11\n"
-      "mfc1 %1, %2\n"
-      "nop\n"
-      "qmtc2.ni %1, vf2\n"
-      "vmulx.xyzw vf11, vf11, vf2x\n"
-      ".set reorder"
-      : "=r"(vuBits)
-      : "r"(auStack_20), "f"(fVar16)
-      : "vf2", "vf11", "memory");
-  DAT_0069c4d0 = puVar9[3];
-  DAT_0069c4d4 = puVar9[4];
-  DAT_0069c4d8 = puVar9[5];
-  fVar16 = fGpffff8194 * fVar12;
-  /* Retail 0x0644-0x0688: build the first transformed output row. */
-  __asm__ volatile (
-      ".set noreorder\n"
-      "lqc2 vf12, 0(%1)\n"
-      "lqc2 vf10, 0(%2)\n"
-      "mfc1 %0, %3\n"
-      "nop\n"
-      "qmtc2.ni %0, vf2\n"
-      "vmulx.xyzw vf10, vf10, vf2x\n"
-      "qmtc2.ni %4, vf2\n"
-      "vsubx.w vf3, vf0, vf2x\n"
-      "vmulax.xyzw ACC, vf11, vf2x\n"
-      "vmaddw.xyzw vf10, vf10, vf3w\n"
-      "vadd.xyzw vf10, vf10, vf12\n"
-      "sqc2 vf10, 0(%1)\n"
-      ".set reorder"
-      : "=r"(vuBits)
-      : "r"(&DAT_0069c4d0), "r"(auStack_10), "f"(fVar16), "r"(uGpffff8198)
-      : "vf2", "vf3", "vf10", "vf11", "vf12", "ACC", "memory");
+
+  auVar16 = _lqc2(auStack_10);
+
+  auVar18 = _vsub(in_vf0,auVar16);
+
+  auVar16 = _qmtc2(fVar12 * 2.0f);
+
+  auVar19 = _vmulbc(auVar18,auVar16);
+
+  memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar9 + 3), 12);
+
+  auVar20 = _lqc2(_DAT_0069c4d0);
+
+  auVar18 = _lqc2(auStack_20);
+
+  auVar16 = _qmtc2(fGpffff8194 * fVar12);
+
+  auVar17 = _vmulbc(auVar18,auVar16);
+
+  auVar16 = _qmtc2(uGpffff8198);
+
+  auVar18 = _vsubbc(in_vf0,auVar16);
+
+  _vmulabc(auVar19,auVar16);
+
+  auVar16 = _vmaddbc(auVar17,auVar18);
+
+  auVar16 = _vadd(auVar16,auVar20);
+
+  _DAT_0069c4d0 = _sqc2(auVar16);
+
   puVar2[6] = DAT_0069c4d0;
+
   puVar2[7] = DAT_0069c4d4;
+
   puVar2[8] = DAT_0069c4d8;
-  fVar16 = fGpffff819c * fVar12;
-  /* Retail 0x06b0-0x06ec: build the second transformed output row. */
-  __asm__ volatile (
-      ".set noreorder\n"
-      "lqc2 vf10, 0(%1)\n"
-      "mfc1 %0, %2\n"
-      "nop\n"
-      "qmtc2.ni %0, vf2\n"
-      "vmulx.xyzw vf10, vf10, vf2x\n"
-      "qmtc2.ni %3, vf2\n"
-      "vsubx.w vf3, vf0, vf2x\n"
-      "vmulax.xyzw ACC, vf11, vf2x\n"
-      "vmaddw.xyzw vf10, vf10, vf3w\n"
-      "vadd.xyzw vf10, vf10, vf12\n"
-      "sqc2 vf10, 0(%4)\n"
-      ".set reorder"
-      : "=r"(vuBits)
-      : "r"(auStack_10), "f"(fVar16), "r"(uGpffff805c), "r"(&DAT_0069c4d0)
-      : "vf2", "vf3", "vf10", "vf11", "vf12", "ACC", "memory");
+
+  auVar18 = _lqc2(auStack_20);
+
+  auVar16 = _qmtc2(fGpffff819c * fVar12);
+
+  auVar17 = _vmulbc(auVar18,auVar16);
+
+  auVar16 = _qmtc2(uGpffff805c);
+
+  auVar18 = _vsubbc(in_vf0,auVar16);
+
+  _vmulabc(auVar19,auVar16);
+
+  auVar16 = _vmaddbc(auVar17,auVar18);
+
+  auVar16 = _vadd(auVar16,auVar20);
+
+  _DAT_0069c4d0 = _sqc2(auVar16);
+
   puVar2[9] = DAT_0069c4d0;
+
   puVar2[10] = DAT_0069c4d4;
+
   puVar2[0xb] = DAT_0069c4d8;
-  fVar16 = fGpffff8194 * fVar12;
-  /* Retail 0x0714-0x0748: build the third transformed output row. */
-  __asm__ volatile (
-      ".set noreorder\n"
-      "lqc2 vf10, 0(%1)\n"
-      "mfc1 %0, %2\n"
-      "nop\n"
-      "qmtc2.ni %0, vf2\n"
-      "vmulx.xyzw vf10, vf10, vf2x\n"
-      "vsub.xyz vf10, vf0, vf10\n"
-      "qmtc2.ni %3, vf2\n"
-      "vsubx.w vf3, vf0, vf2x\n"
-      "vmulax.xyzw ACC, vf11, vf2x\n"
-      "vmaddw.xyzw vf10, vf10, vf3w\n"
-      "vadd.xyzw vf10, vf10, vf12\n"
-      "sqc2 vf10, 0(%4)\n"
-      ".set reorder"
-      : "=r"(vuBits)
-      : "r"(auStack_10), "f"(fVar16), "r"(uGpffff8198), "r"(&DAT_0069c4d0)
-      : "vf2", "vf3", "vf10", "vf11", "vf12", "ACC", "memory");
+
+  auVar18 = _lqc2(auStack_20);
+
+  auVar16 = _qmtc2(fGpffff8194 * fVar12);
+
+  auVar16 = _vmulbc(auVar18,auVar16);
+
+  auVar17 = _vsub(in_vf0,auVar16);
+
+  auVar16 = _qmtc2(uGpffff8198);
+
+  auVar18 = _vsubbc(in_vf0,auVar16);
+
+  _vmulabc(auVar19,auVar16);
+
+  auVar16 = _vmaddbc(auVar17,auVar18);
+
+  auVar16 = _vadd(auVar16,auVar20);
+
+  _DAT_0069c4d0 = _sqc2(auVar16);
+
   puVar2[0x12] = DAT_0069c4d0;
+
   puVar2[0x13] = DAT_0069c4d4;
+
   puVar2[0x14] = DAT_0069c4d8;
-  fVar16 = fGpffff819c * fVar12;
-  /* Retail 0x0750-0x07a4: build the fourth transformed output row. */
-  __asm__ volatile (
-      ".set noreorder\n"
-      "lqc2 vf10, 0(%1)\n"
-      "mfc1 %0, %2\n"
-      "nop\n"
-      "qmtc2.ni %0, vf2\n"
-      "vmulx.xyzw vf10, vf10, vf2x\n"
-      "vsub.xyz vf10, vf0, vf10\n"
-      "qmtc2.ni %3, vf2\n"
-      "vsubx.w vf3, vf0, vf2x\n"
-      "vmulax.xyzw ACC, vf11, vf2x\n"
-      "vmaddw.xyzw vf10, vf10, vf3w\n"
-      "vadd.xyzw vf10, vf10, vf12\n"
-      "sqc2 vf10, 0(%4)\n"
-      ".set reorder"
-      : "=r"(vuBits)
-      : "r"(auStack_10), "f"(fVar16), "r"(uGpffff805c), "r"(&DAT_0069c4d0)
-      : "vf2", "vf3", "vf10", "vf11", "vf12", "ACC", "memory");
+
+  auVar18 = _lqc2(auStack_20);
+
+  auVar16 = _qmtc2(fGpffff819c * fVar12);
+
+  auVar16 = _vmulbc(auVar18,auVar16);
+
+  auVar17 = _vsub(in_vf0,auVar16);
+
+  auVar16 = _qmtc2(uGpffff805c);
+
+  auVar18 = _vsubbc(in_vf0,auVar16);
+
+  _vmulabc(auVar19,auVar16);
+
+  auVar16 = _vmaddbc(auVar17,auVar18);
+
+  auVar16 = _vadd(auVar16,auVar20);
+
+  _DAT_0069c4d0 = _sqc2(auVar16);
+
   puVar2[0xf] = DAT_0069c4d0;
+
   puVar2[0x10] = DAT_0069c4d4;
+
   puVar2[0x11] = DAT_0069c4d8;
-  /* Retail 0x07cc-0x07e0: add the final transformed offset. */
-  __asm__ volatile (
-      ".set noreorder\n"
-      "qmtc2.ni %0, vf2\n"
-      "vmulx.xyzw vf11, vf11, vf2x\n"
-      "vadd.xyzw vf11, vf11, vf12\n"
-      "sqc2 vf11, 0(%1)\n"
-      ".set reorder"
-      : : "r"(uGpffff80a4), "r"(&DAT_0069c4d0)
-      : "vf2", "vf11", "vf12", "memory");
+
+  auVar16 = _qmtc2(uGpffff80a4);
+
+  auVar16 = _vmulbc(auVar19,auVar16);
+
+  auVar16 = _vadd(auVar16,auVar20);
+
+  _DAT_0069c4d0 = _sqc2(auVar16);
+
   puVar2[0xc] = DAT_0069c4d0;
+
   puVar2[0xd] = DAT_0069c4d4;
+
   puVar2[0xe] = DAT_0069c4d8;
+
   return;
+
 }
 
 
