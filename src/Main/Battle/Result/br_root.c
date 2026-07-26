@@ -2299,13 +2299,13 @@ void func_001f4a00(void)
 
     valueTable += BR_U32(work, 0x1fd54) * 6;
     actTable += BR_U32(work, 0x1fd58) * 3;
-    ratio0 = (f32)(s32)valueTable[0];
-    ratio1 = (f32)(s32)valueTable[1];
-    ratio2 = (f32)(s32)valueTable[2];
+    ratio0 = (f32)(u32)valueTable[0];
+    ratio1 = (f32)(u32)valueTable[1];
+    ratio2 = (f32)(u32)valueTable[2];
     maxProgress = ratio0 + ratio1 + ratio2;
-    ratio0 = (f32)(s32)valueTable[0] / maxProgress;
-    ratio1 = (f32)(s32)valueTable[2] / maxProgress;
-    ratio2 = (f32)(s32)valueTable[1] / maxProgress;
+    ratio0 = (f32)(u32)valueTable[0] / maxProgress;
+    ratio1 = (f32)(u32)valueTable[2] / maxProgress;
+    ratio2 = (f32)(u32)valueTable[1] / maxProgress;
     printf(D_00696950, valueTable[1], valueTable[0]);
     printf(D_006847E0, (s32)func_00530da0(ratio0));
     printf(D_006847F0, (s32)func_00530da0(ratio1));
@@ -2320,7 +2320,7 @@ void func_001f4a00(void)
            (s32)func_00530da0(ratio0 * ratio1 + ratio2 * ratio0));
     printf(D_00684820, actTable[2]);
 
-    maxProgress = (f32)(s32)actTable[2] +
+    maxProgress = (f32)(u32)actTable[2] +
                   (f32)(RpRandom() % 1);
     weightTable[0] = actTable[0];
     weightTable[1] = actTable[2];
@@ -2342,9 +2342,9 @@ void func_001f4a00(void)
         u32 totalWeight;
         u32 choiceWeight;
 
-        sflScript00259c60((u16)((f32)actTable[0] +
-                                progress * ((f32)actTable[1] -
-                                            (f32)actTable[0]) / maxProgress));
+        sflScript00259c60((u16)((f32)(s32)actTable[0] +
+                                progress * ((f32)(s32)actTable[1] -
+                                            (f32)(s32)actTable[0]) / maxProgress));
         for (i = 0; i < 4; i++) {
             enabled[i] = 0;
         }

@@ -4743,10 +4743,23 @@ u32 FUN_004339d0(int param_1)
   if (((*(u8 *)(iVar4 + cVar2 * 0x100 + cVar1 * 0x10 + 0x53) & 1) != 0) &&
      (*(u8 *)(cVar2 * 0x10 + cVar1 + iVar3 + 0xf9) <= bVar6)) {
     *(char *)(iVar3 + 0xf9) = *(char *)(iVar3 + 0xf9) + -1;
-    FUN_001b9120_u32();
-    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 + *(char *)(iVar3 + 0xdc) + iVar3 + 0xf9);
-    *(u8 *)(iVar3 + 0x102) = 1;
-    uVar5 = 1;
+    iVar4 = FUN_001b9120_u32();
+    iVar4 = *(u8 *)(iVar4 + (u32)*(u8 *)(iVar3 + 0xf9) * 0x100 +
+                    (u32)*(u8 *)(iVar3 + 0xf8) * 0x10 + 0x4a);
+    switch (iVar4) {
+    case 4:
+      iVar4 = 0;
+      break;
+    default:
+      iVar4 = 0;
+      break;
+    }
+    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 +
+                    *(char *)(iVar3 + 0xdc) + iVar3 + 0xf9);
+    if (iVar4 == 0) {
+      *(u8 *)(iVar3 + 0x102) = 1;
+      uVar5 = 1;
+    }
     *(char *)(iVar3 + 0xf9) = *(char *)(iVar3 + 0xf9) + '\x01';
   }
   cVar1 = *(char *)(iVar3 + 0xdd);
@@ -4755,10 +4768,59 @@ u32 FUN_004339d0(int param_1)
   if (((*(u8 *)(iVar4 + cVar1 * 0x100 + cVar2 * 0x10 + 0x53) & 2) != 0) &&
      (*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x108) <= bVar6)) {
     *(char *)(iVar3 + 0xf8) = *(char *)(iVar3 + 0xf8) + -1;
-    FUN_001b9120_u32();
-    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 + *(char *)(iVar3 + 0xdc) + iVar3 + 0x108);
-    *(u8 *)(iVar3 + 0x102) = 2;
-    uVar5 = 2;
+    iVar4 = FUN_001b9120_u32();
+    iVar4 = *(u8 *)(iVar4 + (u32)*(u8 *)(iVar3 + 0xf9) * 0x100 +
+                    (u32)*(u8 *)(iVar3 + 0xf8) * 0x10 + 0x4a);
+    switch (iVar4) {
+    case 4:
+      iVar4 = 0;
+      break;
+    default:
+      iVar4 = 0;
+      break;
+    }
+    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 +
+                    *(char *)(iVar3 + 0xdc) + iVar3 + 0x108);
+    if (iVar4 == 0) {
+      *(u8 *)(iVar3 + 0x102) = 2;
+      uVar5 = 2;
+    }
+SWAP 4786.=4790:
+    iVar4 = FUN_001b9120_u32();
+    iVar4 = *(u8 *)(iVar4 + (u32)*(u8 *)(iVar3 + 0xf9) * 0x100 +
+                    (u32)*(u8 *)(iVar3 + 0xf8) * 0x10 + 0x4a);
+    switch (iVar4) {
+    case 4:
+      iVar4 = 0;
+      break;
+    default:
+      iVar4 = 0;
+      break;
+    }
+    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 +
+                    *(char *)(iVar3 + 0xdc) + iVar3 + 0x10a);
+    if (iVar4 == 0) {
+      *(u8 *)(iVar3 + 0x102) = 4;
+      uVar5 = 4;
+    }
+SWAP 4800.=4804:
+    iVar4 = FUN_001b9120_u32();
+    iVar4 = *(u8 *)(iVar4 + (u32)*(u8 *)(iVar3 + 0xf9) * 0x100 +
+                    (u32)*(u8 *)(iVar3 + 0xf8) * 0x10 + 0x4a);
+    switch (iVar4) {
+    case 4:
+      iVar4 = 0;
+      break;
+    default:
+      iVar4 = 0;
+      break;
+    }
+    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 +
+                    *(char *)(iVar3 + 0xdc) + iVar3 + 0x119);
+    if (iVar4 == 0) {
+      *(u8 *)(iVar3 + 0x102) = 3;
+      uVar5 = 3;
+    }
     *(char *)(iVar3 + 0xf8) = *(char *)(iVar3 + 0xf8) + '\x01';
   }
   cVar1 = *(char *)(iVar3 + 0xdd);
@@ -4767,8 +4829,9 @@ u32 FUN_004339d0(int param_1)
   if (((*(u8 *)(iVar4 + cVar1 * 0x100 + cVar2 * 0x10 + 0x53) & 8) != 0) &&
      (*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x10a) <= bVar6)) {
     *(char *)(iVar3 + 0xf8) = *(char *)(iVar3 + 0xf8) + '\x01';
-    FUN_001b9120_u32();
-    bVar6 = *(u8 *)(*(char *)(iVar3 + 0xdd) * 0x10 + *(char *)(iVar3 + 0xdc) + iVar3 + 0x10a);
+    iVar4 = FUN_001b9120_u32();
+    bVar6 = *(u8 *)(iVar4 + (u32)*(u8 *)(iVar3 + 0xf9) * 0x100 +
+                    (u32)*(u8 *)(iVar3 + 0xf8) * 0x10 + 0x4a);
     *(u8 *)(iVar3 + 0x102) = 4;
     uVar5 = 4;
     *(char *)(iVar3 + 0xf8) = *(char *)(iVar3 + 0xf8) + -1;
@@ -4779,7 +4842,9 @@ u32 FUN_004339d0(int param_1)
   if (((*(u8 *)(iVar4 + cVar1 * 0x100 + cVar2 * 0x10 + 0x53) & 4) != 0) &&
      (*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x119) <= bVar6)) {
     *(char *)(iVar3 + 0xf9) = *(char *)(iVar3 + 0xf9) + '\x01';
-    FUN_001b9120_u32();
+    iVar4 = FUN_001b9120_u32();
+    bVar6 = *(u8 *)(iVar4 + (u32)*(u8 *)(iVar3 + 0xf9) * 0x100 +
+                    (u32)*(u8 *)(iVar3 + 0xf8) * 0x10 + 0x4a);
     *(u8 *)(iVar3 + 0x102) = 3;
     uVar5 = 3;
     *(char *)(iVar3 + 0xf9) = *(char *)(iVar3 + 0xf9) + -1;

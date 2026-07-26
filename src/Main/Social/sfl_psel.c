@@ -675,7 +675,7 @@ void sflPsel00261480(void)
     color[3] = 0xff;
     channel = color[0];
     if (channel >= 0) {
-        channelFloat = (f32)channel;
+        channelFloat = (f32)(u32)channel;
     } else {
         channelFloat = (f32)((channel >> 1) | (channel & 1));
         channelFloat += channelFloat;

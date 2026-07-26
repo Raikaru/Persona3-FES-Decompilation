@@ -3205,13 +3205,34 @@ u32 FUN_002d41c0(RwV2d* output, f32 radius)
             p0 = points[count - 1];
         p1 = points[index];
         if (index == 0)
+        {
             p2 = points[0];
+            previousDelta.x = points[0].x - p1.x;
+            previousDelta.y = points[0].y - p1.y;
+            FUN_004C6B20(&previousUnit, &previousDelta);
+            p2.x = points[0].x + previousUnit.x * 300.0f;
+            p2.y = points[0].y + previousUnit.y * 300.0f;
+        }
         else
+        {
             p2 = points[index - 1];
+        }
         if (index < count - 1)
+        {
             p3 = points[index + 1];
+        }
         else
+        {
             p3 = points[count - 1];
+        }
+        if (index < 2)
+        {
+            previousDelta.x = points[0].x - p1.x;
+            previousDelta.y = points[0].y - p1.y;
+            FUN_004C6B20(&previousUnit, &previousDelta);
+            p3.x = points[0].x + previousUnit.x * 500.0f;
+            p3.y = points[0].y + previousUnit.y * 500.0f;
+        }
 
         output[i] = p1;
         output[i + 1].x = 0.8671875f * p1.x -
@@ -3437,6 +3458,7 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
     }
     if (result != 0)
     {
+        FUN_002d41c0(work, radius);
         *(u8*)((u8*)work + 0x404) = 2;
     }
     else
@@ -4894,18 +4916,32 @@ void FUN_002dae30(u64 param_1)
                 u8* slot = btl + slotIndex * 4;
                 if (*(u16*)(slot + 0x9fa) <= *(u16*)(slot + 0x9f8))
                 {
-                    if (bit == 4)
+                    switch (bit)
                     {
-                        BtlAction* action = *(BtlAction**)(btl + 0x148);
-                        if (FUN_0029adf0(action) == 0)
+                    case 1:
+                        if ((*(u16*)(btl + 0xa06) & 1) == 0 &&
+                            FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
                         {
-                            action->unk_16 = 7;
-                            FUN_0029a380(action);
-                            stop = 1;
-                            *(u16*)(btl + 0xa04) &= (u16)~4;
+                            if (FUN_002db480() == 0 && *(u32*)(btl + 0xa10) != 0)
+                            {
+                                u8* selected = *(u8**)(btl + 0xa10);
+                                BtlAction* action = (BtlAction*)FUN_00289650(
+                                    0, *(u16*)(*(u8**)(selected + 4) + 2));
+                                *(u16*)(selected + 0xa) |= 1;
+                                FUN_001fdd40();
+                                action->unk_16 = 0x11;
+                                FUN_0029a380(action);
+                                *(u16*)(btl + 0xa06) |= 1;
+                                stop = 1;
+                                FUN_002db2a0(0);
+                            }
+                            else
+                            {
+                                *(u16*)(btl + 0xa04) &= (u16)~1;
+                            }
                         }
-                    }
-                    else if (bit == 2)
+                        break;
+                    case 2:
                     {
                         BtlAction* action = *(BtlAction**)(btl + 0x148);
                         if (FUN_0029adf0(action) == 0)
@@ -4915,27 +4951,22 @@ void FUN_002dae30(u64 param_1)
                             stop = 1;
                             *(u16*)(btl + 0xa04) &= (u16)~2;
                         }
+                        break;
                     }
-                    else if (bit == 1 && (*(u16*)(btl + 0xa06) & 1) == 0 &&
-                             FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
+                    case 4:
                     {
-                        if (FUN_002db480() == 0 && *(u32*)(btl + 0xa10) != 0)
+                        BtlAction* action = *(BtlAction**)(btl + 0x148);
+                        if (FUN_0029adf0(action) == 0)
                         {
-                            u8* selected = *(u8**)(btl + 0xa10);
-                            BtlAction* action = (BtlAction*)FUN_00289650(
-                                0, *(u16*)(*(u8**)(selected + 4) + 2));
-                            *(u16*)(selected + 0xa) |= 1;
-                            FUN_001fdd40();
-                            action->unk_16 = 0x11;
+                            action->unk_16 = 7;
                             FUN_0029a380(action);
-                            *(u16*)(btl + 0xa06) |= 1;
                             stop = 1;
-                            FUN_002db2a0(0);
+                            *(u16*)(btl + 0xa04) &= (u16)~4;
                         }
-                        else
-                        {
-                            *(u16*)(btl + 0xa04) &= (u16)~1;
-                        }
+                        break;
+                    }
+                    default:
+                        break;
                     }
                 }
             }

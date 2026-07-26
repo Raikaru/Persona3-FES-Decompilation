@@ -837,33 +837,97 @@ void h_campDrawPersonaList(int param_1)
 
 // FUN_0014BCE0 NONMATCHING
 void h_campDrawSocialList(int param_1)
-
 {
-  int iVar1;
-  float fVar2;
-  u64 uStack_38;
-  
-  func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 2, 0x4140000043be8000, 0x4140000043be8000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 0, 2, 2, 0x41d8000041500000, 0x41d8000041500000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 0, 2, 2, 0x41d8000042e00000, 0x41d8000042e00000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 0, 2, 2, 0x41d8000043070000, 0x41d8000043070000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 0, 2, 2, 0x41d8000043888000, 0x41d8000043888000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 0, 2, 2, 0x41d8000043968000, 0x41d8000043968000, 0, 0, 0, 10);
-  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-    if (*(int *)(param_1 + 0x1c) + -1 < iVar1) {
-      *(u32 *)(*(int *)(param_1 + 0xc4) + iVar1 * 0x44 + 0x2ac) = 0;
+    CampPair pair;
+    CampBits tmp[12];
+    s32 i;
+    f32 y;
+
+    pair.x = 381.0f;
+    pair.y = 12.0f;
+    tmp[10].u = *(u64*)&pair;
+    tmp[11].u = tmp[10].u;
+    tmp[11].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 2,
+                  tmp[11].u, tmp[10].u, 0, 0, 0, 10);
+    pair.x = 13.0f;
+    pair.y = 27.0f;
+    tmp[0].u = *(u64*)&pair;
+    tmp[1].u = tmp[0].u;
+    tmp[1].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x44), 0, 2, 2,
+                  tmp[1].u, tmp[0].u, 0, 0, 0, 10);
+    pair.x = 112.0f;
+    pair.y = 27.0f;
+    tmp[2].u = *(u64*)&pair;
+    tmp[3].u = tmp[2].u;
+    tmp[3].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x88), 0, 2, 2,
+                  tmp[3].u, tmp[2].u, 0, 0, 0, 10);
+    pair.x = 135.0f;
+    pair.y = 27.0f;
+    tmp[4].u = *(u64*)&pair;
+    tmp[5].u = tmp[4].u;
+    tmp[5].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0xcc), 0, 2, 2,
+                  tmp[5].u, tmp[4].u, 0, 0, 0, 10);
+    pair.x = 272.0f;
+    pair.y = 27.0f;
+    tmp[6].u = *(u64*)&pair;
+    tmp[7].u = tmp[6].u;
+    tmp[7].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x110), 0, 2, 2,
+                  tmp[7].u, tmp[6].u, 0, 0, 0, 10);
+    pair.x = 301.0f;
+    pair.y = 27.0f;
+    tmp[8].u = *(u64*)&pair;
+    tmp[9].u = tmp[8].u;
+    tmp[9].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x154), 0, 2, 2,
+                  tmp[9].u, tmp[8].u, 0, 0, 0, 10);
+    for (i = 0; i < 4; i++) {
+        if (*(s32*)(param_1 + 0x1c) - 1 < i) {
+            *(u32*)(*(u32 *)(param_1 + 0xc4) + i * 0x44 + 0x2ac) = 0;
+        } else {
+            y = (f32)(i * 0x55) + 64.0f;
+            pair.x = 610.0f;
+            pair.y = y;
+            tmp[10].u = *(u64*)&pair;
+            tmp[11].u = tmp[10].u;
+            tmp[11].f[0] += 0.0f;
+            func_0018bc10(100.0f,
+                          (void*)(*(u32 *)(param_1 + 0xc4) + (i + 10) * 0x44),
+                          0, 2, 2, tmp[11].u, tmp[10].u, 0, 0, 0, 10);
+        }
     }
-    else {
-      fVar2 = (float)(iVar1 * 0x55) + 64.0f;
-      uStack_38 = CAMP_PAIR_FLOAT_HIGH(fVar2,0x44188000);
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar1 + 10) * 0x44), 0, 2, 2, uStack_38, CAMP_PAIR_FLOAT_HIGH(fVar2,0x44188000), 0, 0, 0, 10);
-    }
-  }
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 0, 2, 2, 0x42740000423c0000, 0x42740000423c0000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 0, 2, 2, 0x435b000042860000, 0x435b000042860000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 0, 2, 2, 0x43cf800043620000, 0x43cf800043620000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 0, 2, 2, 0x43cf8000440c4000, 0x43cf8000440c4000, 0, 0, 0, 10);
-  return;
+    pair.x = 47.0f;
+    pair.y = 61.0f;
+    tmp[0].u = *(u64*)&pair;
+    tmp[1].u = tmp[0].u;
+    tmp[1].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x550), 0, 2, 2,
+                  tmp[1].u, tmp[0].u, 0, 0, 0, 10);
+    pair.x = 272.0f;
+    pair.y = 219.0f;
+    tmp[2].u = *(u64*)&pair;
+    tmp[3].u = tmp[2].u;
+    tmp[3].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x594), 0, 2, 2,
+                  tmp[3].u, tmp[2].u, 0, 0, 0, 10);
+    pair.x = 226.0f;
+    pair.y = 415.0f;
+    tmp[4].u = *(u64*)&pair;
+    tmp[5].u = tmp[4].u;
+    tmp[5].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x7f8), 0, 2, 2,
+                  tmp[5].u, tmp[4].u, 0, 0, 0, 10);
+    pair.x = 561.0f;
+    pair.y = 415.0f;
+    tmp[6].u = *(u64*)&pair;
+    tmp[7].u = tmp[6].u;
+    tmp[7].f[0] += 0.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x83c), 0, 2, 2,
+                  tmp[7].u, tmp[6].u, 0, 0, 0, 10);
 }
 
 // FUN_0014C290
