@@ -130,8 +130,8 @@ void FUN_003b3740(void)
 
 void FUN_003b3770(void)
 {
-  int *current;
   int *previous;
+  int *current;
 
   previous = (int *)0x0;
   current = *(int **)(iGpffffb954 + 8);

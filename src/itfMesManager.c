@@ -6136,11 +6136,14 @@ u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
 {
   u32 uVar2;
   int iVar1;
+  int x;
+  int y;
+  x = param_2;
+  y = param_3;
   uVar2 = FUN_001158b0(0,DAT_007ce654,param_5);
   iVar1 = (int)uVar2;
-  *(float *)(iVar1 + 0x10) = (float)param_2;
-  *(float *)(iVar1 + 0x14) = (float)param_3;
-  *(float *)(iVar1 + 0x2c) = param_1;
+  *(float *)(iVar1 + 0x10) = (float)x;
+  *(float *)(iVar1 + 0x14) = (float)y;
   *(char *)(iVar1 + 0x19) = 0xff - (u8)param_4;
   FUN_001127d0(uVar2,1);
   FUN_00115980(uVar2);
