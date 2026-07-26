@@ -1209,14 +1209,14 @@ u32 func_001d9310(EncounterRecord* out)
         {
             continue;
         }
-        maxValue = (f32)maxHp;
+        maxValue = (f32)(u32)maxHp;
         maxValue += maxValue;
         hp = datGetHp((s16)unit->charId);
         if (hp < 0)
         {
             continue;
         }
-        hpValue = (f32)hp;
+        hpValue = (f32)(u32)hp;
         hpValue += hpValue;
         if (hpValue / maxValue < 0.26f)
         {
@@ -1252,15 +1252,14 @@ u32 func_001d94d0(EncounterRecord* out)
         {
             continue;
         }
-        maxValue = (f32)maxHp;
+        maxValue = (f32)(u32)maxHp;
         maxValue += maxValue;
         hp = datGetHp((s16)unit->charId);
         if (hp < 0)
         {
             continue;
         }
-        hpValue = (f32)hp;
-        hpValue += hpValue;
+        hpValue = (f32)(u32)hp;
         if (hpValue / maxValue >= 0.26f)
         {
             out->ids[out->count++] = unit->charId;
@@ -1294,15 +1293,14 @@ u32 func_001d96a0(EncounterRecord* out)
         {
             continue;
         }
-        maxValue = (f32)maxHp;
+        maxValue = (f32)(u32)maxHp;
         maxValue += maxValue;
         hp = datGetHp((s16)unit->charId);
         if (hp < 0)
         {
             continue;
         }
-        hpValue = (f32)hp;
-        hpValue += hpValue;
+        hpValue = (f32)(u32)hp;
         if (hpValue / maxValue >= 0.26f && hpValue / maxValue < 0.75f)
         {
             out->ids[out->count++] = unit->charId;

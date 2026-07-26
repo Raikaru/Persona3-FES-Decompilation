@@ -4691,31 +4691,49 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
 u16 func_00283e40(BtlUnit* unit, s16 id)
 {
     s16 category;
+    u8 genus = unit->genus;
     u16 charId;
     u32 unitId;
     const u8* table;
 
-    category = btlUnitAnimCategory(unit, id);
-    if (category < 0)
+    if (genus == UNIT_GENUS_PC)
     {
+        if (id == 6 || id == 5 || id == 4)
+            category = 0;
+        else
+            category = -1;
+    }
+    else
+    {
+        if (id == 6)
+            category = 2;
+        else if (id == 5)
+            category = 1;
+        else if (id == 4)
+            category = 0;
+        else
+            category = -1;
+    }
+
+    if (category == -1)
         return 0;
-    }
 
-    charId = unit->charId;
-    if (unit->genus == UNIT_GENUS_EC)
-    {
-        table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1c;
-        return *(const u16*)(table + category * 4);
-    }
-
-    if (charId == 1)
+    if (genus == UNIT_GENUS_PC)
     {
         unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
         table = iGpffffb718 + (unitId & 0xff) * 0x128 + 0x1a;
     }
     else
     {
-        table = iGpffffb71c + ((u32)charId * 0x10a) + 0x1a;
+        charId = unit->charId;
+        if (charId == 1)
+        {
+            table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1c;
+        }
+        else
+        {
+            table = iGpffffb71c + ((u32)charId * 0x10a) + 0x1a;
+        }
     }
 
     return *(const u16*)(table + category * 4);

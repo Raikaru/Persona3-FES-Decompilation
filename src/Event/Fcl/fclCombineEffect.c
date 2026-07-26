@@ -23,6 +23,8 @@ extern void FUN_004cb890_typed(RwFrame *frame,f32 amount,const RwV3d *axis,u32 m
 extern void FUN_004cb750_typed(u32 frame,void *axis,u32 mode);
 extern f32 func_0020c500(const f32 *value,f32 scale);
 extern void func_0020c320(s32 unused,const f32 *source,f32 scale,void *viewport);
+extern void FUN_003c7070_typed(f32 t, void *out, const void *a, const void *b);
+#pragma alias FUN_003c7070_typed FUN_003c7070
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -1262,7 +1264,7 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   float fStack_34;
 
-  u32 auStack_30 [4];
+  float auStack_30 [4];
 
   float fStack_20;
 
@@ -1284,11 +1286,9 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   uVar5 = *(u32 *)(param_1 + 0x38);
 
-  auStack_30[0] = DAT_006b2e38;
-
-  auStack_30[1] = DAT_006b2e3c;
-
-  auStack_30[2] = DAT_006b2e40;
+  auStack_30[0] = *(float *)&DAT_006b2e38;
+  auStack_30[1] = *(float *)&DAT_006b2e3c;
+  auStack_30[2] = *(float *)&DAT_006b2e40;
 
   fStack_10 = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
 
@@ -1525,7 +1525,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
   u32 uVar10;
   float fVar11;
   f32 fVar12;
-  u32 auStack_60 [12];
+  u32 auStack_60 [16];
   float fStack_30;
   float fStack_2c;
   float fStack_28;
@@ -1684,7 +1684,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
   u32 uStack_28;
 
-  u32 auStack_20 [4];
+  float auStack_20 [4];
 
   u32 uStack_10;
 
@@ -1700,11 +1700,10 @@ u8 FUN_00419050(int param_1,int *param_2)
 
   iVar3 = *(int *)(param_1 + 0x38);
 
-  auStack_20[0] = DAT_006b2e58;
+  auStack_20[0] = *(float *)&DAT_006b2e58;
+  auStack_20[1] = *(float *)&DAT_006b2e5c;
+  auStack_20[2] = *(float *)&DAT_006b2e60;
 
-  auStack_20[1] = DAT_006b2e5c;
-
-  auStack_20[2] = DAT_006b2e60;
 
   if (param_2[3] == 0) {
 
@@ -1876,7 +1875,7 @@ u8 FUN_00419050(int param_1,int *param_2)
 
                                (fGpffff8248 * (float)param_2[3]) / (float)*(int *)(iVar2 + 8));
 
-  FUN_003c7070((fVar11 + 1.0f) / 2.0f,auStack_100,auStack_e0,auStack_f0);
+  FUN_003c7070_typed((fVar11 + 1.0f) / 2.0f,auStack_100,auStack_e0,auStack_f0);
 
   memcpy(&fStack_d0,auStack_100,0x10);
 

@@ -871,25 +871,41 @@ void func_001a7710(u32* state)
 // FUN_001a7910 NONMATCHING
 void func_001a7910(void* object, f32* scale)
 {
-    void* resources;
+    KClumpResourceList* resources;
     s32 i;
     u32 color;
-    u32 red;
-    u32 green;
-    u32 blue;
-    u32 alpha;
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 alpha;
     void* material;
 
-    resources = (void*)kclump_word(object, 0x18);
-    for (i = 0; i < (s32)kclump_word(resources, 0x24); i++)
+    resources = (KClumpResourceList*)((KClumpContainer*)object)->resources;
+    for (i = 0; i < (s32)resources->count; i++)
     {
-        material = *(void**)((u8*)kclump_word(resources, 0x20) + i * 4);
+        material = resources->materials[i];
         func_001b5a30(material);
         color = (u32)K_Clump_MatUsrDataGetInt((RpMaterial*)material, (const char*)0x00678c60);
-        red = kclump_scale_color((color >> 16) & 0xff, scale[0]);
-        green = kclump_scale_color((color >> 8) & 0xff, scale[1]);
-        blue = kclump_scale_color(color & 0xff, scale[2]);
-        alpha = kclump_scale_color((color >> 24) & 0xff, scale[3]);
+        red = (s32)((f32)((color >> 16) & 0xff) * scale[0]);
+        green = (s32)((f32)((color >> 8) & 0xff) * scale[1]);
+        blue = (s32)((f32)(color & 0xff) * scale[2]);
+        alpha = (s32)((f32)((color >> 24) & 0xff) * scale[3]);
+        if ((u32)red >= 0x100)
+        {
+            red = 0xff;
+        }
+        if ((u32)green >= 0x100)
+        {
+            green = 0xff;
+        }
+        if ((u32)blue >= 0x100)
+        {
+            blue = 0xff;
+        }
+        if ((u32)alpha >= 0x100)
+        {
+            alpha = 0xff;
+        }
         *(u8*)((u8*)material + 4) = (u8)red;
         *(u8*)((u8*)material + 5) = (u8)green;
         *(u8*)((u8*)material + 6) = (u8)blue;

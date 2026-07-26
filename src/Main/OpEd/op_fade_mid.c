@@ -142,13 +142,19 @@ extern u32 *DAT_007ce3d0;
 #define OP_WORKD ((u8 *)gOpWorkD0)
 
 
-static u8 opClampByte(f32 value)
+static inline u8 opFadeColorByte(f32 value)
 {
-    if (value <= 0.0f)
-        return 0;
-    if (value >= 255.0f)
-        return 0xff;
-    return (u8)value;
+    s32 result;
+
+    if (value < 2147483648.0f)
+    {
+        result = (s32)value & 0xff;
+    }
+    else
+    {
+        result = ((s32)(value - 2147483648.0f) | 0x80000000) & 0xff;
+    }
+    return (u8)result;
 }
 
 
@@ -561,6 +567,7 @@ void func_002760f0(void)
     f32 rect[4];
     u8 color[4];
     f32 alpha;
+    f32 alphaScaled;
     f32 offset;
     u32 resource;
     u32 baseResource;
@@ -594,7 +601,8 @@ void func_002760f0(void)
     rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 4, rect);
     color[0] = color[1] = color[2] = 0xff;
-    color[3] = opClampByte(alpha * 255.0f);
+    alphaScaled = alpha * 255.0f;
+    color[3] = opFadeColorByte(alphaScaled);
     func_0021d950(work + 4, color);
     resource = func_0021cca0(baseResource, 1);
     rect[0] = offset + 359.0f;
@@ -602,7 +610,8 @@ void func_002760f0(void)
     rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
     rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x84, rect);
-    color[3] = opClampByte(alpha * 255.0f);
+    alphaScaled = alpha * 255.0f;
+    color[3] = opFadeColorByte(alphaScaled);
     func_0021d950(work + 0x84, color);
     if ((OP_U32(work, 0) & 2) == 0)
         alpha = 0.0f;
@@ -624,7 +633,8 @@ void func_002760f0(void)
     rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
     rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x44, rect);
-    color[3] = opClampByte(alpha * 255.0f);
+    alphaScaled = alpha * 255.0f;
+    color[3] = opFadeColorByte(alphaScaled);
     func_0021d950(work + 0x44, color);
     resource = func_0021cca0(baseResource, 3);
     rect[0] = 359.0f;

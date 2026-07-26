@@ -65,6 +65,8 @@ int * FUN_003b49a0(int *param_1);
 void FUN_003b4a20(int *param_1,u32 *param_2);
 void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,int *param_6,  int param_7);
 void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4);
+#pragma alias FUN_003b4b40_typed FUN_003b4b40
+extern void FUN_003b4b40_typed(int param_1,int param_2,u8 *param_3,u8 *param_4,u64 param_5,u64 param_6);
 void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5  );
 void FUN_003b4e90(void);
 void FUN_003b4ea0(void);
@@ -88,7 +90,6 @@ void FUN_003b4ee0(void);
 #define FUN_003b49a0(...) ((int * (*)(...))FUN_003b49a0)(__VA_ARGS__)
 #define FUN_003b4a20(...) ((void (*)(...))FUN_003b4a20)(__VA_ARGS__)
 #define FUN_003b4a90(...) ((void (*)(...))FUN_003b4a90)(__VA_ARGS__)
-#define FUN_003b4b40(...) ((void (*)(...))FUN_003b4b40)(__VA_ARGS__)
 #define FUN_003b4d10(...) ((void (*)(...))FUN_003b4d10)(__VA_ARGS__)
 #define FUN_003b4e90(...) ((void (*)(...))FUN_003b4e90)(__VA_ARGS__)
 #define FUN_003b4ea0(...) ((void (*)(...))FUN_003b4ea0)(__VA_ARGS__)
@@ -907,113 +908,46 @@ void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
   return;
 
 }
-#define FUN_003b4b40(...) ((void (*)(...))FUN_003b4b40)(__VA_ARGS__)
 #undef FUN_003b4d10
 // FUN_003B4D10 NONMATCHING
 
 
-void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5
-
-                 )
-
-
-
+void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5)
 {
+    int iVar1;
+    u32 stack[16];
 
-  int iVar1;
+    stack[8] = *param_1;
+    iVar1 = (param_1[2] - stack[8]) + param_4 * -2;
+    stack[0] = param_2[0];
+    stack[1] = param_2[1];
+    stack[2] = param_2[2];
+    stack[3] = 0;
+    stack[4] = param_2[3];
+    stack[9] = param_1[1];
+    stack[10] = stack[8] + param_4;
+    stack[11] = stack[9];
+    stack[12] = stack[10];
+    stack[13] = stack[8];
+    stack[14] = param_1[3];
+    stack[15] = param_1[3];
 
-  u32 uStack_40;
+    FUN_003b4b40_typed((int)&stack[8],(int)&stack[0],(u8 *)0x7cd52c,
+                       (u8 *)0x6a2a28,param_3,param_5);
+    stack[8] += param_4;
+    stack[10] += iVar1;
+    stack[12] += iVar1;
+    stack[13] += param_4;
 
-  u32 uStack_3c;
+    FUN_003b4b40_typed((int)&stack[8],(int)&stack[0],(u8 *)0x7cd52c,
+                       (u8 *)0x6a2a2c,param_3,param_5);
+    stack[8] += iVar1;
+    stack[10] += param_4;
+    stack[12] += param_4;
+    stack[13] += iVar1;
 
-  u32 uStack_38;
-
-  u32 uStack_34;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  u32 uStack_24;
-
-  int iStack_20;
-
-  int iStack_1c;
-
-  int iStack_18;
-
-  int iStack_14;
-
-  int iStack_10;
-
-  int iStack_c;
-
-  int iStack_8;
-
-  int iStack_4;
-
-  
-
-  iStack_20 = *param_1;
-
-  iVar1 = (param_1[2] - iStack_20) + param_4 * -2;
-
-  uStack_40 = *param_2;
-
-  uStack_3c = param_2[1];
-
-  uStack_38 = param_2[2];
-
-  uStack_34 = 0;
-
-  uStack_24 = param_2[3];
-
-  iStack_1c = param_1[1];
-
-  iStack_18 = iStack_20 + param_4;
-
-  iStack_c = param_1[3];
-
-  uStack_30 = uStack_40;
-
-  uStack_2c = uStack_3c;
-
-  uStack_28 = uStack_38;
-
-  iStack_14 = iStack_1c;
-
-  iStack_10 = iStack_18;
-
-  iStack_8 = iStack_20;
-
-  iStack_4 = iStack_c;
-
-  FUN_003b4b40(&iStack_20,&uStack_40,0x7cd52c,0x6a2a28,param_3,param_5);
-
-  iStack_20 = iStack_20 + param_4;
-
-  iStack_18 = iStack_18 + iVar1;
-
-  iStack_10 = iStack_10 + iVar1;
-
-  iStack_8 = iStack_8 + param_4;
-
-  FUN_003b4b40(&iStack_20,&uStack_40,0x7cd52c,0x6a2a2c,param_3,param_5);
-
-  iStack_20 = iStack_20 + iVar1;
-
-  iStack_18 = iStack_18 + param_4;
-
-  iStack_10 = iStack_10 + param_4;
-
-  iStack_8 = iStack_8 + iVar1;
-
-  FUN_003b4b40(&iStack_20,&uStack_40,0x7cd52c,0x6a2a30,param_3,param_5);
-
-  return;
-
+    FUN_003b4b40_typed((int)&stack[8],(int)&stack[0],(u8 *)0x7cd52c,
+                       (u8 *)0x6a2a30,param_3,param_5);
 }
 #define FUN_003b4d10(...) ((void (*)(...))FUN_003b4d10)(__VA_ARGS__)
 #undef FUN_003b4e90

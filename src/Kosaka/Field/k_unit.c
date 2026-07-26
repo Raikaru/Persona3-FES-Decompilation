@@ -2875,7 +2875,6 @@ KwlnTask* func_001d3c40(KwlnTask* parent, u32 model)
 void* func_001d3ce0(KwlnTask* task)
 {
     s32* work;
-    FldUnit* unit;
     RwV3d pos;
     RwRGBA color;
     u32 status;
@@ -2885,55 +2884,55 @@ void* func_001d3ce0(KwlnTask* task)
     u8* scene;
 
     u8* colorData;
-    unit = (FldUnit*)work[1];
-    status = func_0016c970((s16)unit->charId);
+    work = (s32*)task->workData;
+    status = func_0016c970((s16)((FldUnit*)work[1])->charId);
     if ((status & 0x80) != 0 &&
         !(piGpffffa850[0] == 0x20 && piGpffffa850[1] == 2) &&
         !(piGpffffa850[0] == 0x27 && piGpffffa850[1] == 3))
     {
         if (work[2] == 0)
         {
-            if (func_00318ed0(unit->mdl, 2, &pos) == 0)
+            if (func_00318ed0(((FldUnit*)work[1])->mdl, 2, &pos) == 0)
             {
-                pos = ((RwMatrix*)func_00318b60(unit->mdl))->pos;
+                pos = ((RwMatrix*)func_00318b60(((FldUnit*)work[1])->mdl))->pos;
                 pos.y += 200.0f;
             }
             scene = func_001b9120();
             work[3] = (s32)func_001a91b0(*(void**)(scene + 0x11f8), &pos);
             scene = func_001b9120();
             func_001a9390(*(void**)(scene + 0x11f8), (void*)work[3], 3);
-            work[4] = func_001ad930(unit->resrc->collisCtlTask);
+            work[4] = func_001ad930(((FldUnit*)work[1])->resrc->collisCtlTask);
             work[2] = 1;
             return NULL;
         }
-        if (func_00318ed0(unit->mdl, 2, &pos) == 0)
+        if (func_00318ed0(((FldUnit*)work[1])->mdl, 2, &pos) == 0)
         {
-            pos = ((RwMatrix*)func_00318b60(unit->mdl))->pos;
+            pos = ((RwMatrix*)func_00318b60(((FldUnit*)work[1])->mdl))->pos;
             pos.y += 200.0f;
         }
-        now = func_001ad930(unit->resrc->collisCtlTask);
+        now = func_001ad930(((FldUnit*)work[1])->resrc->collisCtlTask);
         if ((u32)work[4] + 0x960 < now)
         {
-            hp = func_0016c5f0((s16)unit->charId);
+            hp = func_0016c5f0((s16)((FldUnit*)work[1])->charId);
             damage = hp / 20;
             if (damage < 1) damage = 1;
-            damage = (s32)func_0016c4f0((s16)unit->charId) - damage;
+            damage = (s32)func_0016c4f0((s16)((FldUnit*)work[1])->charId) - damage;
             if (damage < 1) damage = 1;
-            func_0016cf40((s16)unit->charId, (u16)damage);
+            func_0016cf40((s16)((FldUnit*)work[1])->charId, (u16)damage);
             work[4] = now;
         }
-        colorData = (u8*)func_00318b00(unit->mdl);
+        colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
         color.r = colorData[0];
         color.g = colorData[1];
         color.b = colorData[2];
         color.a = colorData[3];
-        func_00318ad0(unit->mdl, &color);
+        func_00318ad0(((FldUnit*)work[1])->mdl, &color);
         scene = func_001b9120();
         func_001a92d0(*(void**)(scene + 0x11f8), (void*)work[3], &pos);
     }
     else
     {
-        colorData = (u8*)func_00318b00(unit->mdl);
+        colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
         color.r = colorData[0];
         color.g = colorData[1];
         color.b = colorData[2];
@@ -2944,7 +2943,7 @@ void* func_001d3ce0(KwlnTask* task)
             scene = func_001b9120();
             func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
         }
-        func_00318ad0(unit->mdl, &color);
+        func_00318ad0(((FldUnit*)work[1])->mdl, &color);
     }
     return NULL;
 }
@@ -2977,22 +2976,25 @@ void func_001d4180(void)
 {
     s32 i;
     FldUnit* unit;
+    KwlnTask* effectTask;
     s32* work;
     u8* scene;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL && unit->resrc != NULL && unit->unk_180 != NULL)
+        if (unit->genusBase != NULL && unit->resrc != NULL &&
+            unit->unk_180 != NULL)
         {
-            work = (s32*)unit->unk_180->workData;
-            if (work[2] == 1)
+            effectTask = unit->unk_180;
+            if (((s32*)effectTask->workData)[2] == 1)
             {
+                work = (s32*)effectTask->workData;
                 work[2] = 0;
                 scene = func_001b9120();
                 func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
             }
-            func_00195020(unit->unk_180);
+            func_00195020(effectTask);
             unit->unk_180 = NULL;
         }
     }
