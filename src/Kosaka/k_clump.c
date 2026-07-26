@@ -183,16 +183,20 @@ static u32 kclump_render_item(KClumpMaterialNode* item, u32 callbackFlag)
     return 1;
 }
 
-static inline u32 kclump_scale_color(u32 component, f32 scale)
+static u32 kclump_scale_color(u32 component, f32 scale)
 {
-    u32 value;
+    f32 value;
 
-    value = (u32)((f32)component * scale);
-    if (value < 0x100)
+    value = (f32)component * scale;
+    if (value > 255.0f)
     {
-        return value;
+        return 0xff;
     }
-    return 0xff;
+    if (value < 0.0f)
+    {
+        return 0;
+    }
+    return (u32)value;
 }
 
 // FUN_001a74b0 MATCHING
@@ -867,29 +871,29 @@ void func_001a7710(u32* state)
 // FUN_001a7910 NONMATCHING
 void func_001a7910(void* object, f32* scale)
 {
-    KClumpResourceList* resources;
+    void* resources;
     s32 i;
     u32 color;
-    u8 red;
-    u8 green;
-    u8 blue;
-    u8 alpha;
+    u32 red;
+    u32 green;
+    u32 blue;
+    u32 alpha;
     void* material;
 
-    resources = (KClumpResourceList*)((KClumpContainer*)object)->resources;
-    for (i = 0; i < (s32)resources->count; i++)
+    resources = (void*)kclump_word(object, 0x18);
+    for (i = 0; i < (s32)kclump_word(resources, 0x24); i++)
     {
-        material = resources->materials[i];
+        material = *(void**)((u8*)kclump_word(resources, 0x20) + i * 4);
         func_001b5a30(material);
         color = (u32)K_Clump_MatUsrDataGetInt((RpMaterial*)material, (const char*)0x00678c60);
-        red = (u8)kclump_scale_color((color >> 16) & 0xff, scale[0]);
-        green = (u8)kclump_scale_color((color >> 8) & 0xff, scale[1]);
-        blue = (u8)kclump_scale_color(color & 0xff, scale[2]);
-        alpha = (u8)kclump_scale_color((color >> 24) & 0xff, scale[3]);
-        *(u8*)((u8*)material + 4) = red;
-        *(u8*)((u8*)material + 5) = green;
-        *(u8*)((u8*)material + 6) = blue;
-        *(u8*)((u8*)material + 7) = alpha;
+        red = kclump_scale_color((color >> 16) & 0xff, scale[0]);
+        green = kclump_scale_color((color >> 8) & 0xff, scale[1]);
+        blue = kclump_scale_color(color & 0xff, scale[2]);
+        alpha = kclump_scale_color((color >> 24) & 0xff, scale[3]);
+        *(u8*)((u8*)material + 4) = (u8)red;
+        *(u8*)((u8*)material + 5) = (u8)green;
+        *(u8*)((u8*)material + 6) = (u8)blue;
+        *(u8*)((u8*)material + 7) = (u8)alpha;
     }
 }
 

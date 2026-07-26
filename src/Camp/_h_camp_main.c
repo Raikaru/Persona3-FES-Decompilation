@@ -1925,9 +1925,9 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
 {
     CampMainPackedPosition input;
     volatile CampMainPackedPosition local;
-    volatile CampMainQuadPosition headerStage;
-    volatile CampMainQuadPosition rowStage;
-    volatile CampMainQuadPosition footerStage;
+    CampMainQuadPosition headerStage;
+    CampMainQuadPosition rowStage;
+    CampMainQuadPosition footerStage;
     CampMainSpriteNode* sprite;
     s32 i;
     s32 start;
@@ -2428,9 +2428,9 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
     s16 entryId;
     char text[0x100];
     u32 color;
-    volatile CampMainQuadPosition stage0;
-    volatile CampMainQuadPosition stage1;
-    volatile CampMainQuadPosition stage2;
+    CampMainQuadPosition stage0;
+    CampMainQuadPosition stage1;
+    CampMainQuadPosition stage2;
 
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
     if (id == 0) {

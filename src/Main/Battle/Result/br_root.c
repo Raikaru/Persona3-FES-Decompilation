@@ -747,7 +747,7 @@ void *func_001f13b0(KwlnTask *task)
     BR_U32(work, 0xbc) = oldLevel;
     datDidCharacterLevelUp(1, BR_U32(work, 0x2a50));
     newLevel = func_0016d280(datGetNextExp(1));
-    datSetLevel(1, (u8)newLevel);
+    datSetLevel(1, newLevel);
     BR_U32(work, 0xc0) = datGetLevel(1);
     printf((const char *)0x006845f0, BR_U32(work, 0xbc), BR_U32(work, 0xc0));
     if (BR_U32(work, 0xbc) != BR_U32(work, 0xc0)) {
@@ -2702,9 +2702,8 @@ void *func_001f5b20(void)
     f32 temp;
     u32 i;
     u8 *work;
-    if ((work = sBrReward) == NULL) {
-        K_ASSERT(work != NULL, 0x8c);
-    }
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
     flags = BR_U32(work, 0);
     if (flags & 2) {
         BR_U32(work, 0) = flags & ~2u;
@@ -2936,7 +2935,11 @@ main_exit:
                 col[0] = 0xff;
                 col[1] = 0xff;
                 col[2] = 0xff;
-                col[3] = (u8)(s32)t;
+                if (t < 2147483648.0f) {
+                    col[3] = (u8)((s32)t & 0xff);
+                } else {
+                    col[3] = (u8)(((s32)(t - 2147483648.0f) | 0x80000000) & 0xff);
+                }
                 func_0020cc80(entry + 0xc, col);
                 gcPose0024f960(entry + 0x60c, &temp);
                 func_0020d650(entry + 0xc, &temp);
@@ -2950,7 +2953,11 @@ main_exit:
                 col[0] = 0xff;
                 col[1] = 0xff;
                 col[2] = 0xff;
-                col[3] = (u8)(s32)t;
+                if (t < 2147483648.0f) {
+                    col[3] = (u8)((s32)t & 0xff);
+                } else {
+                    col[3] = (u8)(((s32)(t - 2147483648.0f) | 0x80000000) & 0xff);
+                }
                 func_0020cc80(entry + 0xc, col);
                 gcPose0024f960(entry + 0x60c, &temp);
                 func_0020d650(entry + 0xc, &temp);
@@ -3326,12 +3333,7 @@ void func_001f7210(void)
     u16 cur_hp, max_hp;
     u16 cur_sp, max_sp;
     u32 st_val;
-    u32 effect_scan1;
-    u32 effect_scan3;
-    u32 effect_scan5;
-    u32 effect_scan8;
-    u32 effect_scan10;
-    u32 effect_scan12;
+    u32 effect_idx;
     u32 apply_idx;
     s16 *apply_ptr;
     u32 amount;
@@ -3494,13 +3496,13 @@ void func_001f7210(void)
             case 1:
             {
                 brRoot001f1df0((u16 *)scan_arr, &member_count);
-                for (effect_scan1 = 0; effect_scan1 < (u32)member_count; effect_scan1++) {
-                    u16 mbr = scan_arr[effect_scan1];
+                for (effect_idx = 0; effect_idx < (u32)member_count; effect_idx++) {
+                    s16 mbr = scan_arr[effect_idx];
                     u16 cur = (u16)func_0016c4f0(mbr);
                     u16 max = (u16)func_0016c5f0(mbr);
                     if (cur < max) break;
                 }
-                if (effect_scan1 < (u32)member_count) {
+                if (effect_idx < (u32)member_count) {
                     *weight_slot = (s32)*(s8 *)(effect_table + 2);
                     total_weight += *weight_slot;
                 }
@@ -3519,13 +3521,13 @@ void func_001f7210(void)
             case 3:
             {
                 brRoot001f1df0((u16 *)scan_arr, &member_count);
-                for (effect_scan3 = 0; effect_scan3 < (u32)member_count; effect_scan3++) {
-                    u16 mbr = scan_arr[effect_scan3];
+                for (effect_idx = 0; effect_idx < (u32)member_count; effect_idx++) {
+                    s16 mbr = scan_arr[effect_idx];
                     u16 cur = (u16)func_0016c570(mbr);
                     u16 max = (u16)func_0016c670(mbr);
                     if (cur < max) break;
                 }
-                if (effect_scan3 < (u32)member_count) {
+                if (effect_idx < (u32)member_count) {
                     *weight_slot = (s32)*(s8 *)(effect_table + 6);
                     total_weight += *weight_slot;
                 }
@@ -3540,10 +3542,10 @@ void func_001f7210(void)
             case 5:
             {
                 brRoot001f1df0((u16 *)scan_arr, &member_count);
-                for (effect_scan5 = 0; effect_scan5 < (u32)member_count; effect_scan5++) {
-                    if ((func_0016c970(scan_arr[effect_scan5]) & 0x80) != 0) break;
+                for (effect_idx = 0; effect_idx < (u32)member_count; effect_idx++) {
+                    if ((func_0016c970(scan_arr[effect_idx]) & 0x80) != 0) break;
                 }
-                if (effect_scan5 < (u32)member_count) {
+                if (effect_idx < (u32)member_count) {
                     *weight_slot = (s32)*(s8 *)(effect_table + 10);
                     total_weight += *weight_slot;
                 }
@@ -3561,11 +3563,11 @@ void func_001f7210(void)
             case 8:
             {
                 brRoot001f1df0((u16 *)scan_arr, &member_count);
-                for (effect_scan8 = 0; effect_scan8 < (u32)member_count; effect_scan8++) {
-                    st_val = func_0016c920(scan_arr[effect_scan8]);
+                for (effect_idx = 0; effect_idx < (u32)member_count; effect_idx++) {
+                    st_val = func_0016c920(scan_arr[effect_idx]);
                     if (st_val >= 3 && st_val <= 5) break;
                 }
-                if (effect_scan8 < (u32)member_count) {
+                if (effect_idx < (u32)member_count) {
                     *weight_slot = (s32)*(s8 *)(effect_table + 16);
                     total_weight += *weight_slot;
                 }
@@ -3581,11 +3583,11 @@ void func_001f7210(void)
             case 10:
             {
                 brRoot001f1df0((u16 *)scan_arr, &member_count);
-                for (effect_scan10 = 0; effect_scan10 < (u32)member_count; effect_scan10++) {
-                    st_val = func_0016c920(scan_arr[effect_scan10]);
+                for (effect_idx = 0; effect_idx < (u32)member_count; effect_idx++) {
+                    st_val = func_0016c920(scan_arr[effect_idx]);
                     if (st_val == 1 || st_val == 2) break;
                 }
-                if (effect_scan10 < (u32)member_count) {
+                if (effect_idx < (u32)member_count) {
                     *weight_slot = (s32)*(s8 *)(effect_table + 20);
                     total_weight += *weight_slot;
                 }
@@ -3601,11 +3603,11 @@ void func_001f7210(void)
             case 12:
             {
                 brRoot001f1df0((u16 *)scan_arr, &member_count);
-                for (effect_scan12 = 0; effect_scan12 < (u32)member_count; effect_scan12++) {
-                    st_val = func_0016c920(scan_arr[effect_scan12]);
+                for (effect_idx = 0; effect_idx < (u32)member_count; effect_idx++) {
+                    st_val = func_0016c920(scan_arr[effect_idx]);
                     if (st_val != 2) break;
                 }
-                if (effect_scan12 < (u32)member_count) {
+                if (effect_idx < (u32)member_count) {
                     *weight_slot = (s32)*(s8 *)(effect_table + 24);
                     total_weight += *weight_slot;
                 }
