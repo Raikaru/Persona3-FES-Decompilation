@@ -760,9 +760,9 @@ extern void func_002c2be0(int param_1,u32 param_2);
 extern void func_002c2c40(int param_1,u32 param_2);
 extern void func_002c2ca0(int param_1,u32 param_2);
 extern u32 func_002c2d00(int param_1,u32 param_2);
-extern bool func_002c2ed0(u64 param_1,u16 param_2,long param_3);
-extern void func_002c30f0(u64 param_1,u16 param_2);
-extern void func_002c3120(u64 param_1,u16 param_2);
+extern bool func_002c2ed0(int param_1,u16 param_2,int param_3);
+extern void func_002c30f0(int param_1,u16 param_2);
+extern void func_002c3120(int param_1,u16 param_2);
 extern void func_002c3150(int param_1,u32 param_2);
 extern void func_002c31b0(int param_1,u32 param_2);
 extern void func_002c3210(int param_1,u32 param_2);
@@ -6902,7 +6902,7 @@ u32 func_002c2d00(int param_1,u32 param_2)
 
 // FUN_002c2ed0 NONMATCHING
 
-bool func_002c2ed0(u64 param_1,u16 param_2,long param_3)
+bool func_002c2ed0(int param_1,u16 param_2,int param_3)
 
 {
   short sVar1 = 0;
@@ -6957,7 +6957,7 @@ bool func_002c2ed0(u64 param_1,u16 param_2,long param_3)
 
 // FUN_002c30f0
 
-void func_002c30f0(u64 param_1,u16 param_2)
+void func_002c30f0(int param_1,u16 param_2)
 
 {
   func_002c2ed0(param_1,param_2,1);
@@ -6966,7 +6966,7 @@ void func_002c30f0(u64 param_1,u16 param_2)
 
 // FUN_002c3120
 
-void func_002c3120(u64 param_1,u16 param_2)
+void func_002c3120(int param_1,u16 param_2)
 
 {
   func_002c2ed0(param_1,param_2,0);
