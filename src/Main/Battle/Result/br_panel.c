@@ -30,6 +30,11 @@ extern int sprintf(char* buffer, const char* format, ...);
 extern u32 strlen(const char* string);
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_0096009C)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
+/* Retail +0x84/+0x114 materialize the state/quad callback-table addresses. */
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 #pragma alias brPanelSetStateRaw D_00960090
 #pragma alias brPanelSetQuadRaw D_0096009C
 extern void (*brPanelSetStateRaw)(u32 state, u32 value);
@@ -263,13 +268,13 @@ void brPanel00235010(void)
     brPanel00236390();
 }
 
+/* Retail +0x84 and +0x114 reload these callback tables before their jalr sites. */
+#define D_00960090 (*brPanelSetState)
+#define D_0096009C (*brPanelSetQuad)
 #pragma push
 #pragma opt_common_subs off
 #pragma optimization_level 3
 #pragma schedule on
-#define D_0096009C brPanelSetQuad
-#define D_00960090 brPanelSetState
-#pragma opt_loop_invariants on
 // FUN_002350f0 NONMATCHING
 void brPanel002350f0(void)
 {
@@ -282,12 +287,12 @@ void brPanel002350f0(void)
     s32 i;
     s32 mode;
     s32 entryCount;
+    void (**brPanelSetState)(u32 state, u32 value);
+    void (**brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
     u32 workFlags;
     s32 entryType;
     u8* entryBase;
     u8* digitRowBase;
-    void (*brPanelSetState)(u32 state, u32 value);
-    void (*brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
 
     K_ASSERT(sBrPanel != NULL, 0x99);
     work = (u8*)sBrPanel;
@@ -298,8 +303,7 @@ void brPanel002350f0(void)
     
     texture = brRes00234570(0);
     digitTexture = brRes00234570(1);
-    brPanelSetState = brPanelSetStateRaw;
-    brPanelSetQuad = brPanelSetQuadRaw;
+    brPanelSetState = (void (**)(u32, u32))D_00960090_abs;
 
     D_00960090(9, 2);
     D_00960090(0x14, 2);
@@ -308,6 +312,7 @@ void brPanel002350f0(void)
     RpSkyRenderStateSet(3, 0x717fb);
     RpSkyRenderStateSet(2, 0x44);
     D_00960090(1, 0);
+    brPanelSetQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
     D_0096009C((u32*)(work + 0x2560), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x2560), 4, 0, 2, 3);
 
