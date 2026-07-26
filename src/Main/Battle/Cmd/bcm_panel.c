@@ -749,7 +749,7 @@ void FUN_00224150(void)
 {
     u8* work;
     u8* records;
-    u8* slot0;
+    u32* slot0;
     u8* record;
     u8* quadTarget;
     u32 table0;
@@ -769,7 +769,7 @@ void FUN_00224150(void)
     work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
     records = work + 0x4660;
-    slot0 = work + 0x6080;
+    slot0 = (u32*)(work + 0x6080);
 
     resource = FUN_0021cca0(table0, 0x23);
     setState = (void (**)(u32, u32))D_00960090_abs;
@@ -799,9 +799,9 @@ void FUN_00224150(void)
         case 1:
             break;
         }
-        func_003b1360(*(u32*)(slot0 + 0x560), 1, 0);
-        if (*(u32*)(slot0 + 0x564) != 0) {
-            func_003b1360(*(u32*)(slot0 + 0x564), 1, 0);
+        func_003b1360(*(u32*)((u8*)slot0 + 0x560), 1, 0);
+        if (*(u32*)((u8*)slot0 + 0x564) != 0) {
+            func_003b1360(*(u32*)((u8*)slot0 + 0x564), 1, 0);
         }
     }
 

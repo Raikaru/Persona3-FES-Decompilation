@@ -1723,7 +1723,7 @@ case3_check:
 }
 #define FUN_003bf510(...) ((u32 (*)(...))FUN_003bf510)(__VA_ARGS__)
 #undef FUN_003bf610
-// FUN_003BF610 NONMATCHING
+// FUN_003BF610
 
 u32 FUN_003bf610(void)
 {
@@ -1758,7 +1758,7 @@ u32 FUN_003bf610(void)
     else {
       bVar2 = 0;
     }
-    if (bVar2) {
+    if (bVar2 == 1) {
       return 0xffffffff;
     }
     break;
