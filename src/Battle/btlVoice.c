@@ -9954,9 +9954,9 @@ void func_002eec60(void)
   u32 uVar1;
   u32 uVar2;
   int iVar4;
-  int copyCount;
-  u32 *puVar5;
   u32 *puVar6;
+  u32 *puVar5;
+  int copyCount;
   int iVar3;
   s16 sVar7;
   puVar6 = (u32*)DAT_0069a000_abs;

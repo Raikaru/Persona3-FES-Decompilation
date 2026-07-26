@@ -481,11 +481,10 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
-    u32* values = (u32*)func_00170ed0(equipmentId, &category);
-    u32 categoryMask;
-    s32 bit;
     s32 one;
-
+    s32 bit;
+    u32 categoryMask;
+    u32* values = (u32*)func_00170ed0(equipmentId, &category);
     if (category == 3) {
         goto category3;
     }
