@@ -1215,7 +1215,7 @@ u32 func_003186e0(int param_1,u32 param_2,short param_3);
 void func_00318b10(u32 *param_1);
 u32 func_00318b90(u64 param_1);
 u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3);
-bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3);
+bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3);
 u32 func_00318fc0(int param_1);
 void func_00319230(int param_1,u16 param_2);
 void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5);
@@ -6850,7 +6850,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 // FUN_00318ED0 NONMATCHING
 
 
-bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
+bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3)
 
 
 
@@ -6864,29 +6864,23 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
 
   u32 lVar4;
 
-  int iVar5;
-
   u32 *puVar6;
 
-  u32 auStack_40 [12];
+  int iVar5;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  RwMatrix matrix;
 
   
 
   if (*(int *)(param_1 + 0x3f0) != 0) {
 
-    lVar4 = func_00315090((RwMatrix*)auStack_40,(u16 *)*(int *)(param_1 + 0x3f0),param_2 & 0xffff,
+    lVar4 = func_00315090(&matrix,(u16 *)*(int *)(param_1 + 0x3f0),param_2 & 0xffff,
                          *(int *)(param_1 + 0xdc));
 
   }
   else {
 
-    lVar4 = func_001a69a0(*(u32 *)(param_1 + 0xdc),0x69abb8,param_2);
+    lVar4 = func_001a69a0(*(u32 *)(param_1 + 0xdc),DAT_0069abb8,param_2);
 
     if (lVar4 == 0) {
 
@@ -6897,7 +6891,7 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
 
       puVar3 = (u32 *)func_004cb2f0(lVar4);
 
-      puVar6 = auStack_40;
+      puVar6 = (u32 *)&matrix;
 
       iVar5 = 8;
 
@@ -6925,17 +6919,13 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
 
   }
 
-  if (lVar4 != 0) {
-
-    *param_3 = uStack_10;
-
-    param_3[1] = uStack_c;
-
-    param_3[2] = uStack_8;
-
+  if (lVar4 == 0) {
+    return false;
   }
 
-  return lVar4 != 0;
+    *param_3 = matrix.pos;
+
+  return true;
 
 }
 
