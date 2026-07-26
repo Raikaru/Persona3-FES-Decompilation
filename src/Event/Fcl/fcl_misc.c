@@ -133,6 +133,8 @@ extern u32 fclMisc9460Call(u32 *);
 extern u32 fclMisc8d80Int(void);
 #pragma alias fclMisc8550Call FUN_003c8550
 extern u64 fclMisc8550Call(u32);
+#pragma alias fclMiscFormatTextCall FUN_00523ac8
+extern void fclMiscFormatTextCall(u8 *buffer, const void *format, u32 value);
 
 
 
@@ -346,7 +348,7 @@ u64 FUN_003c8550(u8 *param_1)
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128);
           }
         } else {
-          FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,puVar3[1]);
+          fclMiscFormatTextCall(auStack_20,DAT_006a3e18_abs + 0x128,puVar3[1]);
         }
       }
       uVar1 = FUN_00112370(auStack_20);
