@@ -3066,6 +3066,12 @@ void FUN_003ccc40(int *param_1)
   return;
 }
 #define FUN_003ccc40(...) ((void (*)(...))FUN_003ccc40)(__VA_ARGS__)
+// Retail sibling at 0x3cd0a0: standalone jr $ra nullsub.
+// FUN_003CD0A0
+void FUN_003cd0a0(void)
+{
+}
+
 #undef FUN_003cd0b0
 // FUN_003CD0B0 NONMATCHING
 
@@ -3148,6 +3154,11 @@ void FUN_003cd0b0(int *param_1)
   return;
 }
 #define FUN_003cd0b0(...) ((void (*)(...))FUN_003cd0b0)(__VA_ARGS__)
+// Retail sibling at 0x3cd590: standalone jr $ra nullsub.
+// FUN_003CD590
+void FUN_003cd590(void)
+{
+}
 #undef FUN_003cd5a0
 // FUN_003CD5A0 NONMATCHING
 
