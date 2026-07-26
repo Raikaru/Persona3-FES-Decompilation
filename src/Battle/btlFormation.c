@@ -774,7 +774,7 @@ extern u32 func_002c3770(u64 param_1,u64 param_2);
 #pragma alias func_002c3770_u32 func_002c3770
 extern u32 func_002c3770_u32(u32 param_1,u32 param_2);
 extern u32 func_002c3be0(u32 param_1);
-extern u32 func_002c3ce0(u64 param_1);
+extern u32 func_002c3ce0(u32 param_1);
 extern u64 func_002c3e10(void);
 extern void func_002c3e20(u64 param_1,u64 param_2);
 extern void func_002c3e60(u64 param_1,u64 param_2);
@@ -7361,7 +7361,7 @@ u32 func_002c3be0(u32 param_1)
 
 // FUN_002c3ce0 NONMATCHING
 
-u32 func_002c3ce0(u64 param_1)
+u32 func_002c3ce0(u32 param_1)
 
 {
   int iVar1 = 0;
@@ -7373,7 +7373,7 @@ u32 func_002c3ce0(u64 param_1)
   int iVar7 = 0;
   
   iVar7 = (int)param_1;
-  sVar2 = func_002bff60(param_1,iVar7 + 0x88,*(u16 *)(iVar7 + 0x6e),0);
+  sVar2 = func_002bff60_u16(param_1,iVar7 + 0x88,*(u16 *)(iVar7 + 0x6e),0);
   if (sVar2 == 0) {
     iVar4 = 0;
     uVar6 = 0xffff;
