@@ -1573,8 +1573,7 @@ void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
     u16 type;
-    FldrcColor color;
-    color = DAT_00678f68_color[0];
+    FldrcColor color = { DAT_00678f68_color[0].word, DAT_00678f68_color[0].tail };
 
     if ((*resource & 1) == 0)
     {

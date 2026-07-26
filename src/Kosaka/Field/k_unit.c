@@ -2011,7 +2011,6 @@ void func_001d19d0(void)
     s32 i;
     s32 offset;
     FldUnit* unit;
-    FldUnit* unit2;
     u32 valid;
     u32 predicate;
 
@@ -2027,9 +2026,9 @@ void func_001d19d0(void)
         if (predicate == 1)
         {
             offset = i * sizeof(FldUnit);
-            unit2 = (FldUnit*)((int)gFldUnitsPc + offset);
-            unit2->unk_17c = 0;
-            func_001a60d0(0, unit2->mdl, 0xff);
+            unit = (FldUnit*)((int)gFldUnitsPc + offset);
+            unit->unk_17c = 0;
+            func_001a60d0(0, unit->mdl, 0xff);
         }
     }
 }

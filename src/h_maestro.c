@@ -834,10 +834,9 @@ u32 func_001114b0(KwlnTask* task)
 void func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
-    register s32 value;
+    register s32 value = 1;
 
     work = (MaestroStreamWork*)task->workData;
-    value = 1;
     work->stopAtFrame = value;
     work->complete = 0;
 }
@@ -5554,6 +5553,7 @@ void* func_00119aa0(KwlnTask* task)
 {
     MaestroCampSpriteSetupWork* work;
     u32 size;
+    void** table;
     s32 i;
     u32 ready;
 
@@ -5596,11 +5596,12 @@ void* func_00119aa0(KwlnTask* task)
         {
             {
                 s32 j = 0;
-                void** table = D_00833B70;
+                table = D_00833B70;
 
                 for (; j < 14; j++)
                 {
-                    table[j] = work->resources[j];
+                    *(void**)((u8*)table + j * 4) =
+                        *(void**)((u8*)work->resources + j * 4);
                 }
             }
             work->state = 3;

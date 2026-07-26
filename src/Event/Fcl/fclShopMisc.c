@@ -16054,7 +16054,6 @@ void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4,
 
 {
 
-  s16 sVar1;
   float fVar2;
 
   
@@ -16063,8 +16062,7 @@ void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4,
 
   fVar2 = (float)param_3;
   FUN_00402800(param_7);
-  sVar1 = FUN_00403780(param_7);
-  FUN_003c7e20_f32_u64(fVar2,param_1,param_2,param_4,param_5,param_6,6,sVar1);
+  FUN_003c7e20_mid(param_1,param_2,fVar2,param_4,param_5,param_6,6,FUN_00403780((long)param_7));
 
   return;
 

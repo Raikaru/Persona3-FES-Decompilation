@@ -371,7 +371,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
 
   FUN_005225a8(DAT_006a1d50);
 
-  if ((param_1 < 0) || (0xe < param_1)) {
+  if ((param_1 < 0) || !(param_1 < 0xf)) {
 
     FUN_0019d3f0(DAT_006a1bf8, 0x1b5);
 
