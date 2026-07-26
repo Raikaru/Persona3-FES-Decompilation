@@ -1874,10 +1874,10 @@ void btlMain0029e4b0(void)
     vertices[0].u.els.color.g = (f32)green;
     vertices[0].u.els.color.b = (f32)blue;
     vertices[0].u.els.color.a = (f32)alpha;
-    vertices[1].u.els.color.r = (f32)red;
-    vertices[1].u.els.color.g = (f32)green;
-    vertices[1].u.els.color.b = (f32)blue;
-    vertices[1].u.els.color.a = (f32)alpha;
+    vertices[1].u.els.color.r = redf;
+    vertices[1].u.els.color.g = greenf;
+    vertices[1].u.els.color.b = bluef;
+    vertices[1].u.els.color.a = alphaf;
     vertices[2].u.els.color.r = redf;
     vertices[2].u.els.color.g = greenf;
     vertices[2].u.els.color.b = bluef;
