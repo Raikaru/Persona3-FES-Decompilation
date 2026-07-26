@@ -30032,7 +30032,6 @@ void FUN_003399a0(int param_1)
   int iVar4;
 
   int iVar5;
-  int iVar7;
 
   bool bVar6;
 
@@ -30077,13 +30076,6 @@ void FUN_003399a0(int param_1)
   float fVar25;
 
   float fVar26;
-  float sx;
-  float sy;
-  float sz;
-  float tx;
-  float ty;
-  float tz;
-  float tscale;
 
   __int128 in_vf0;
 
@@ -30394,25 +30386,6 @@ void FUN_003399a0(int param_1)
             puVar15[4] = DAT_0069c4d4;
 
             puVar15[5] = DAT_0069c4d8;
-            sx = (float)(int)uVar22 * (float)piVar16[3];
-            sy = (float)(int)uVar23 * (float)piVar16[4];
-            sz = (float)piVar16[5] * fVar21;
-            tx = sx + sy;
-            ty = sy + sz;
-            tz = sz + sx;
-            *(float *)&puVar15[0] = tx;
-            *(float *)&puVar15[1] = ty;
-            *(float *)&puVar15[2] = tz;
-            for (iVar7 = 1; iVar7 < 5; iVar7 = iVar7 + 1) {
-              tscale = (float)iVar7 * 0.25f;
-              tx = sx * tscale + sz;
-              ty = sy * tscale + sx;
-              tz = sz * tscale + sy;
-              *(float *)&puVar15[iVar7 * 3] = tx;
-              *(float *)&puVar15[iVar7 * 3 + 1] = ty;
-              *(float *)&puVar15[iVar7 * 3 + 2] = tz;
-            }
-
 
             if (iVar10 < iVar19) {
 
@@ -30898,15 +30871,6 @@ void FUN_0033a5b0(int param_1)
   float fVar24;
 
   float fVar25;
-  float sx;
-  float sy;
-  float sz;
-  float sw;
-  float tx;
-  float ty;
-  float tz;
-  float tw;
-  float scalarScale;
 
   __int128 in_vf0;
 
@@ -31249,13 +31213,6 @@ void FUN_0033a5b0(int param_1)
             puVar11[1] = DAT_0069c4d4;
 
             puVar11[2] = DAT_0069c4d8;
-            sx = (*(float *)&uVar19) * (float)piVar12[3];
-            sy = 0.0f;
-            sz = (*(float *)&uVar20) * (float)piVar12[4];
-            sw = fVar17 * (fVar21 * 0.5f + fVar25) + fVar18;
-            *(float *)&puVar11[0] = sx;
-            *(float *)&puVar11[1] = sy;
-            *(float *)&puVar11[2] = sz;
 
             for (iVar22 = 0; iVar22 < 6; iVar22 = iVar22 + 1) {
 
@@ -31282,14 +31239,6 @@ void FUN_0033a5b0(int param_1)
               puVar11[iVar22 * 3 + 4] = DAT_0069c4d4;
 
               puVar11[iVar22 * 3 + 5] = DAT_0069c4d8;
-              scalarScale = (float)piVar12[6];
-              tx = *(float *)((u8 *)&DAT_0069c6f0 + iVar22 * 4);
-              ty = *(float *)((u8 *)&DAT_0069c6b0 + iVar22 * 4);
-              tz = tx * scalarScale + sx;
-              tw = ty * scalarScale + sy;
-              *(float *)&puVar11[iVar22 * 3 + 3] = tz + sw * 0.0f;
-              *(float *)&puVar11[iVar22 * 3 + 4] = tw;
-              *(float *)&puVar11[iVar22 * 3 + 5] = sz + tx * scalarScale;
 
             }
 
@@ -31318,14 +31267,6 @@ void FUN_0033a5b0(int param_1)
               puVar11[iVar22 * 3 + 4] = DAT_0069c4d4;
 
               puVar11[iVar22 * 3 + 5] = DAT_0069c4d8;
-              scalarScale = (float)piVar12[5];
-              tx = *(float *)((u8 *)&DAT_0069c6f0 + iVar22 * 4);
-              ty = *(float *)((u8 *)&DAT_0069c6b0 + iVar22 * 4);
-              tz = tx * scalarScale + sx;
-              tw = ty * scalarScale + sy;
-              *(float *)&puVar11[iVar22 * 3 + 3] = tz + sw * 0.0f;
-              *(float *)&puVar11[iVar22 * 3 + 4] = tw;
-              *(float *)&puVar11[iVar22 * 3 + 5] = sz + ty * scalarScale;
 
             }
 
@@ -31764,13 +31705,6 @@ void FUN_0033b2a0(int param_1)
   float fVar29;
 
   float fVar30;
-  float sx;
-  float sy;
-  float sz;
-  float tx;
-  float ty;
-  float tz;
-  float tscale;
 
   __int128 in_vf0;
 
@@ -32049,25 +31983,6 @@ void FUN_0033b2a0(int param_1)
             puVar13[1] = DAT_0069c4d4;
 
             puVar13[2] = DAT_0069c4d8;
-            sx = (float)(int)uVar20 * (float)piVar14[4];
-            sy = (float)(int)uVar21 * (float)piVar14[5];
-            sz = fVar28 + fVar29;
-            tx = sx + sz;
-            ty = sy + sz;
-            tz = sx + sy;
-            *(float *)&puVar13[0] = tx;
-            *(float *)&puVar13[1] = ty;
-            *(float *)&puVar13[2] = tz;
-            for (iVar11 = 1; iVar11 < 5; iVar11 = iVar11 + 1) {
-              tscale = (float)iVar11 * 0.25f;
-              tx = sx * tscale + fVar28;
-              ty = sy * tscale + fVar29;
-              tz = sz * tscale + fVar22;
-              *(float *)&puVar13[iVar11 * 3] = tx;
-              *(float *)&puVar13[iVar11 * 3 + 1] = ty;
-              *(float *)&puVar13[iVar11 * 3 + 2] = tz;
-            }
-
 
             for (iVar11 = 0; iVar11 < 6; iVar11 = iVar11 + 1) {
 
@@ -54329,17 +54244,6 @@ void FUN_003520a0(u64 param_1)
   float fVar16;
 
   float fVar17;
-  float dx;
-  float dy;
-  float dz;
-  float inv;
-  float px;
-  float py;
-  float pz;
-  float qx;
-  float qy;
-  float qz;
-  float blend;
 
   u32 in_vc6;
 
@@ -54753,18 +54657,6 @@ void FUN_003520a0(u64 param_1)
 
         auVar18 = _vsub(auVar18,auVar11);
 
-        px = *((float *)&fStack_70 + (uVar13 & 3));
-        py = *((float *)&fStack_70 + ((uVar13 + 1) & 3));
-        pz = *((float *)&fStack_70 + ((uVar13 + 2) & 3));
-        dx = px - py;
-        dy = py - pz;
-        dz = pz - px;
-        blend = (float)uVar10 * (float)*puVar14 / 65535.0f;
-        inv = dx * dx + dy * dy + dz * dz;
-        inv = 1.0f / (inv + 1.0f);
-        qx = py + dx * blend * inv;
-        qy = pz + dy * blend * inv;
-        qz = px + dz * blend * inv;
         auVar11 = _vsub(auVar18,auVar11);
 
         auVar11 = _sqc2(auVar11);
@@ -54776,9 +54668,6 @@ void FUN_003520a0(u64 param_1)
         puVar12[7] = DAT_0069c4d4;
 
         puVar12[8] = DAT_0069c4d8;
-        *(float *)&puVar12[6] = qx - dx;
-        *(float *)&puVar12[7] = qy - dy;
-        *(float *)&puVar12[8] = qz - dz;
 
         puVar14 = puVar14 + 4;
 
