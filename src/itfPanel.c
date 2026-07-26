@@ -4336,7 +4336,7 @@ u64 FUN_003ada00(u64 param_1,int param_2)
 
   char msg[8];
 
-  int bVar7;
+  u8 bVar1;
 
   u8 uVar2;
 
@@ -4348,13 +4348,17 @@ u64 FUN_003ada00(u64 param_1,int param_2)
 
   u8 bVar6;
 
-  u8 bVar1;
+  int bVar7;
+  int offset;
+  int base;
 
   
 
   iVar5 = param_2;
 
-  pbVar4 = (u8 *)(*(int *)(iVar5 + 0x18) + *(int *)(iVar5 + 0x10));
+  offset = *(volatile int *)(iVar5 + 0x18);
+  base = *(int *)(iVar5 + 0x10);
+  pbVar4 = (u8 *)(base + offset);
 
   bVar1 = *pbVar4 - 1;
 

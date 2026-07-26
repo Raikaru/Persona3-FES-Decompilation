@@ -604,19 +604,27 @@ u64 FUN_003aec20(u64 param_1,int param_2)
 
 u64 FUN_003aed10(u64 param_1,int param_2)
 {
-  char cVar1;
+  int offset;
+  int base;
+  u8 low;
+  u8 high;
   short sVar2;
   u32 uVar3;
-  char *pcVar4;
+  u32 key;
+  u8 *pcVar4;
 
-  pcVar4 = (char *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
-  cVar1 = pcVar4[1];
-  if (cVar1 == -1) {
-    cVar1 = '\0';
+  offset = *(int *)((int)param_2 + 0x18);
+  base = *(int *)((int)param_2 + 0x10);
+  pcVar4 = (u8 *)(base + offset);
+  low = pcVar4[0] - 1;
+  high = pcVar4[1];
+  if (high == 0xff) {
+    high = 0;
   } else {
-    cVar1 = cVar1 + -1;
+    high = high - 1;
   }
-  if (cVar1 == '\0' && *pcVar4 == '\x01') {
+  key = (high << 8) | (low & 0xff);
+  if (key == 0) {
     sVar2 = FUN_0016dd40();
     if (sVar2 == 0) {
       FUN_0019d3f0("frTagTable.c",0x38c);

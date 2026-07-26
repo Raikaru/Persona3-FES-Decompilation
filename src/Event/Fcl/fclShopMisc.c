@@ -1532,20 +1532,22 @@ long FUN_003f0d60(int param_1,u64 param_2)
     switch (iStack_4) {
     case 0:
       var_17 = (long)*(int *)(iVar1 + 0x24);
-      break;
+      goto inner_join;
     case 1:
       var_17 = (long)*(int *)(iVar1 + 0x1c);
-      break;
+      goto inner_join;
     case 2:
       var_17 = (long)*(int *)(iVar1 + 0x1c);
-      break;
+      goto inner_join;
     case 3:
       var_17 = (long)*(int *)(iVar1 + 0x20);
-      break;
+      goto inner_join;
     case 4:
       var_17 = (long)*(int *)(iVar1 + 0x18);
-      break;
+      goto inner_join;
     }
+inner_join:
+    goto social_check;
     break;
   case 4:
     var_16 = 3;
@@ -1558,6 +1560,7 @@ long FUN_003f0d60(int param_1,u64 param_2)
   default:
     return 0;
   }
+social_check:
   if (datSocialLinkLevelIsNotZero((s16)var_16) == 0) {
     return 0;
   }
