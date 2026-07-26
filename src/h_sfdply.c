@@ -39,6 +39,8 @@ extern s16 uGpffffb218;
 extern s32 uGpffffb230;
 extern s32 uGpffffb22c;
 extern char uGpffff8840[];
+#pragma alias gp0xffff8840 uGpffff8840
+extern char gp0xffff8840;
 extern void H_Pad_IgnoreRumbleCallback(s32 a, s32 b, s32 c, s32 d);
 extern void func_004b6500(void);
 extern void func_004aa5c0(void);
@@ -282,6 +284,10 @@ extern s32 func_00581840(void* decoder);
 extern void func_00584338(void* streamAux);
 extern void func_0057db58(void* decoder);
 extern void* func_004ce0f0(s32 width, s32 height, s32 format, s32 flags);
+extern void* func_004cdf30(void* raster, s32 palette);
+extern void* func_004ce200(void* raster, void* mipData, s32 level);
+extern void* func_004cde00(void* raster);
+extern void func_004cde40(void* raster);
 extern void func_004cde90(void* renderTarget);
 extern void* func_004c58a0(s32 source, s32 mode, void* stream);
 extern s32 func_004c5250(void* stream, void* dst, u32 bytes);
@@ -2145,41 +2151,140 @@ void func_0010e630(void* destination, const void* source, u32 size)
     }
 }
 
+// Retail reconstruction covers TMX validation, raster setup, pixel decode, and palette upload from offsets 0x00-0x3C8; all non-padding retail logic is represented, with only register/relocation differences remaining.
 // FUN_0010E880 NONMATCHING
-HSfdTexture* func_0010e880(const u8* stream)
+void* func_0010e880(const u8* stream)
 {
-    HSfdTexture* texture;
-    HSfdImage* image;
-    u32 paletteSize;
+    s32 paletteFormat;
+    s32 flags;
+    s32 bits;
+    const u8* source;
+    const u8* pixelSource;
+    s32 pixelsPerPalette;
+    void* raster;
+    void* pixels;
+    void* palette;
 
-    image = func_0010e0d0(stream);
-    if (image == NULL)
+    bits = 0;
+    flags = 0;
+    paletteFormat = 0;
+    if (stream == NULL)
     {
-        return NULL;
+        K_Assert(&gp0xffff8840, 0x454);
+    }
+    if (stream[0] != 2)
+    {
+        K_Assert(&gp0xffff8840, 0x458);
+    }
+    if (stream[1] != 0)
+    {
+        K_Assert(&gp0xffff8840, 0x459);
+    }
+    if (((stream[8] != 'T') || (stream[9] != 'M') || (stream[10] != 'X')) &&
+        (stream[11] != '0'))
+    {
+        K_Assert(&gp0xffff8840, 0x45A);
     }
 
-    texture = RwCalloc(1, sizeof(HSfdTexture), HSFD_STREAM_HINT);
-    if (texture == NULL)
+    switch (stream[0x16])
     {
-        RwFree(image);
-        return NULL;
+        case 0:
+            bits = 0x20;
+            break;
+        case 1:
+            bits = 0x18;
+            break;
+        case 0x0A:
+        case 2:
+            bits = 0x10;
+            break;
+        case 0x1B:
+        case 0x13:
+            bits = 8;
+            flags = 0x2000;
+            break;
+        case 0x24:
+        case 0x2C:
+        case 0x14:
+            bits = 4;
+            flags = 0x4000;
+            break;
+        default:
+            bits = 0;
+            break;
     }
 
-    texture->image = *image;
-    RwFree(image);
     if (stream[0x10] != 0)
     {
-        paletteSize = 1U << texture->image.depth;
-        texture->palette = RwCalloc(paletteSize, 4, HSFD_STREAM_HINT);
-        if (texture->palette == NULL)
+        switch (stream[0x11])
         {
-            RwFree(texture);
-            return NULL;
+            case 0:
+                paletteFormat = 0x20;
+                break;
+            case 2:
+            case 0x0A:
+                paletteFormat = 0x10;
+                break;
+            default:
+                paletteFormat = 0;
+                break;
         }
-        texture->paletteSize = paletteSize * 4;
-        func_0010e630(texture->palette, stream + 0x40, texture->paletteSize);
     }
-    return texture;
+
+    source = stream + 0x40;
+    pixelsPerPalette = 1 << bits;
+    pixelSource = source +
+                  ((paletteFormat * (stream[0x10] * pixelsPerPalette)) >> 3);
+    raster = func_004ce0f0(*(const u16*)(stream + 0x12),
+                           *(const u16*)(stream + 0x14), bits, flags | 0x504);
+    if (raster == NULL)
+    {
+        K_Assert(&gp0xffff8840, 0x48E);
+    }
+
+    pixels = func_004ce200(raster, NULL, 1);
+    if (pixels == NULL)
+    {
+        K_Assert(&gp0xffff8840, 0x490);
+    }
+
+    switch (bits)
+    {
+        case 0x20:
+        case 0x18:
+            func_0010e630(pixels, pixelSource,
+                          *(const u16*)(stream + 0x12) *
+                              *(const u16*)(stream + 0x14) * 4);
+            break;
+        case 0x10:
+            func_0010e630(pixels, pixelSource,
+                          *(const u16*)(stream + 0x12) *
+                              *(const u16*)(stream + 0x14) * 2);
+            break;
+        case 8:
+            func_0010e630(pixels, pixelSource,
+                          *(const u16*)(stream + 0x12) *
+                              *(const u16*)(stream + 0x14));
+            break;
+        case 4:
+            func_0010e630(pixels, pixelSource,
+                          ((s32)*(const u16*)(stream + 0x12) >> 1) *
+                              *(const u16*)(stream + 0x14));
+            break;
+    }
+
+    func_004cde00(raster);
+    if (stream[0x10] != 0)
+    {
+        palette = func_004cdf30(raster, 1);
+        if (palette == NULL)
+        {
+        K_Assert(&gp0xffff8840, 0x4BB);
+        }
+        func_0010e630(palette, source, pixelsPerPalette * 4);
+        func_004cde40(raster);
+    }
+    return raster;
 }
 
 // Reconstructed from the retail window. The opening is the same render-state
