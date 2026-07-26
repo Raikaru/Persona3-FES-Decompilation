@@ -2311,63 +2311,88 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
     s32 count;
     u32 disabledColor;
     u32 enabledColor;
+    f32 slotX;
+    f32 slotY;
+    f32 textX;
+    f32 textY;
+    f32 bonusX;
+    f32 bonusY;
+    f32 rankX;
+    f32 rankY;
+    f32 rankCountX;
+    f32 rankCountY;
+    f32 equippedX;
+    f32 equippedY;
+    f32 equippedTextX;
+    f32 equippedTextY;
+    f32 separatorX;
+    f32 separatorY;
 
     parent = 0x42c80000;
     bonusPtr = (bonus != NULL) ? (u16*)((u8*)bonus + 0x3e) : NULL;
     disabledColor = (0xff - (u32)alpha) | 0x95b9ff00;
     enabledColor = (0xff - (u32)alpha) | 0x77ffcf00;
+    slotX = position.x + 34.0f;
+    slotY = position.y + 316.0f;
+    textX = position.x + 44.0f;
+    textY = position.y + 323.0f;
+    bonusX = position.x + 39.0f;
+    bonusY = position.y + 332.0f;
+    rankX = position.x + 411.0f;
+    rankY = position.y + 326.0f;
+    rankCountX = position.x + 534.0f;
+    rankCountY = position.y + 328.0f;
+    equippedX = position.x + 414.0f;
+    equippedY = position.y + 340.0f;
+    equippedTextX = position.x + 414.0f;
+    equippedTextY = position.y + 347.0f;
+    separatorX = position.x + 414.0f;
+    separatorY = position.y + 366.0f;
 
     for (row = 0; row < 2; row++) {
         for (col = 0; col < 4; col++) {
             i = row * 4 + col;
             campStatusDrawSpriteCall(parent, DAT_00833B90, 0x12, (u8)alpha,
-                                     position.x + 34.0f + (f32)(row * 190),
-                                     position.y + 316.0f + (f32)(col * 24),
-                                     scale);
+                                     slotX + (f32)(row * 190),
+                                     slotY + (f32)(col * 24), scale);
             item = *((u16*)persona + 6 + i);
             if (item == 0) {
                 continue;
             }
             if (bonusPtr == NULL || *(s16*)((u8*)bonusPtr + i * 2) == 0) {
                 FUN_00523ac8(text, gp0xffff897c, iGpffffb7fc + item * 0x13);
-                FUN_003b32d0_typed(scale, (s32)position.x + 44 + row * 190,
-                             (s32)position.y + 323 + col * 24,
+                FUN_003b32d0_typed(scale, (s32)textX + row * 190,
+                             (s32)textY + col * 24,
                              disabledColor, 6, 1, text, 0x10, 0x78);
             } else {
                 campStatusDrawSpriteCall(parent, DAT_00833B90, 0x19, (u8)alpha,
-                                         position.x + 39.0f + (f32)(row * 190),
-                                         position.y + 332.0f + (f32)(col * 24),
-                                         scale);
+                                         bonusX + (f32)(row * 190),
+                                         bonusY + (f32)(col * 24), scale);
                 FUN_00523ac8(text, gp0xffff897c, iGpffffb7fc + item * 0x13);
-                FUN_003b32d0_typed(scale, (s32)position.x + 44 + row * 190,
-                             (s32)position.y + 323 + col * 24,
+                FUN_003b32d0_typed(scale, (s32)textX + row * 190,
+                             (s32)textY + col * 24,
                              enabledColor, 6, 1, text, 0x10, 0x78);
             }
         }
     }
     if (FUN_001fc230(persona) != 0) {
         campStatusDrawSpriteCall(parent, DAT_00833B90, 0x15, (u8)alpha,
-                                 position.x + 411.0f, position.y + 326.0f,
-                                 scale);
+                                 rankX, rankY, scale);
         campStatusDrawSpriteCall(parent, DAT_00833B90, 0x17, (u8)alpha,
-                                 position.x + 557.0f, position.y + 326.0f,
-                                 scale);
+                                 rankX + 146.0f, rankY, scale);
         count = FUN_001fc3c0(persona);
         if (count < 10) {
             campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
                                      count % 10 + 0xb, (u8)alpha,
-                                     position.x + 534.0f, position.y + 328.0f,
-                                     scale);
+                                     rankCountX, rankCountY, scale);
         }
         else {
             campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
                                      count / 10 + 0xb, (u8)alpha,
-                                     position.x + 526.0f, position.y + 328.0f,
-                                     scale);
+                                     rankCountX - 8.0f, rankCountY, scale);
             campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
                                      count % 10 + 0xb, (u8)alpha,
-                                     position.x + 541.0f, position.y + 328.0f,
-                                     scale);
+                                     rankCountX + 7.0f, rankCountY, scale);
         }
     }
     count = 0;
@@ -2379,20 +2404,18 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
         if (equipped[i] != 0) {
             if (i == 0) {
                 campStatusDrawSpriteCall(parent, DAT_00833B90, 0x13, (u8)alpha,
-                                         position.x + 414.0f, position.y + 340.0f,
-                                         scale);
+                                         equippedX, equippedY, scale);
             }
             FUN_00523ac8(text, gp0xffff897c, iGpffffb7fc + equipped[i] * 0x13);
-            FUN_003b32d0_typed(scale, (s32)position.x + 414,
-                         (s32)position.y + 347,
-                         disabledColor, 6, 1, text, 0x10, 0x78);
+            FUN_003b32d0_typed(scale, (s32)equippedTextX,
+                         (s32)equippedTextY, disabledColor, 6, 1, text,
+                         0x10, 0x78);
         }
     }
     for (i = 0; i < count - 1; i++) {
         campStatusDrawSpriteCall(parent, DAT_00833B90, 0x14, (u8)alpha,
-                                 position.x + 414.0f + (f32)((i / 2) * 62),
-                                 position.y + 366.0f + (f32)((i & 1) * 24),
-                                 scale);
+                                 separatorX + (f32)((i / 2) * 62),
+                                 separatorY + (f32)((i & 1) * 24), scale);
     }
 }
 

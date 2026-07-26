@@ -668,12 +668,14 @@ static void brPanel00236390(void)
         shift = 0.0f;
         alpha = 0.0f;
     }
-    BR_PANEL_SET_RECT(work + 0x10, 381.0f + shift, 55.0f,
-                      (f32)*(s32*)((u8*)frame + 0xc),
-                      (f32)*(s32*)((u8*)frame + 0x10));
+    rect[0] = 381.0f + shift;
+    rect[1] = 55.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    frame = func_0021cca0(brRes00234570(0), 0);
+    func_0021d8e0(work + 0x10, rect);
     BR_PANEL_ANIMATE(work + 0x10, 0x28);
     BR_PANEL_SET_COLOR(work + 0x10, alpha);
-
     frame = func_0021cca0(brRes00234570(0), 5);
     if (mode == 0) {
         shift = 0.0f;
@@ -897,20 +899,110 @@ static void brPanel00236390(void)
     }
 
     frame = func_0021cca0(brRes00234570(0), 6);
-    BR_PANEL_SET_RECT(work + 0x1d60, 320.0f, 448.0f,
-                      (f32)*(s32*)((u8*)frame + 0xc),
-                      (f32)*(s32*)((u8*)frame + 0x10));
+    if (mode == 0) {
+        rect[0] = 0.0f;
+        rect[1] = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        alpha = 1.0f;
+        if (timer < 5) {
+            shift = (f32)timer / 5.0f;
+            scale = (f32)*(s32*)((u8*)frame + 0x10);
+            baseShift = scale - 12.0f;
+            progressShift = 21.0f + baseShift;
+            rect[0] = progressShift +
+                      shift * (21.0f - progressShift);
+            rect[1] = -12.0f - baseShift +
+                      shift * (-12.0f - (-12.0f - baseShift));
+        } else {
+            rect[0] = 21.0f;
+            rect[1] = -12.0f;
+        }
+    } else {
+        alpha = 1.0f;
+        if (timer < 3) {
+            shift = (f32)timer / 3.0f;
+            scale = shift * 100.0f;
+            rect[0] = 21.0f + scale;
+            rect[1] = -12.0f + scale;
+            alpha = 1.0f - shift;
+        } else {
+            rect[0] = 121.0f;
+            rect[1] = 88.0f;
+            alpha = 0.0f;
+        }
+    }
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    BR_PANEL_SET_RECT(work + 0x1d60, rect[0], rect[1],
+                      rect[2], rect[3]);
     BR_PANEL_SET_COLOR(work + 0x1d60, alpha);
+
     frame = func_0021cca0(brRes00234570(0), 7);
-    BR_PANEL_SET_RECT(work + 0x2160, 128.0f, 180.0f,
+    if (mode == 0) {
+        shift = 0.0f;
+        scale = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        alpha = 1.0f;
+        scale = (f32)*(s32*)((u8*)frame + 0x10) + 260.0f;
+        if (timer < 3) {
+            shift = scale;
+            shift2 = -scale;
+        } else if (timer < 6) {
+            progressShift = (f32)(timer - 3) / 3.0f;
+            shift = (1.0f - progressShift) * scale;
+            shift2 = -(1.0f - progressShift) * scale;
+        } else {
+            shift = 0.0f;
+            shift2 = 0.0f;
+        }
+    } else {
+        if (timer < 3) {
+            progressShift = (f32)timer / 3.0f;
+            shift = progressShift * 100.0f;
+            shift2 = progressShift * 100.0f;
+            alpha = 1.0f - progressShift;
+        } else {
+            shift = 100.0f;
+            shift2 = 100.0f;
+            alpha = 0.0f;
+        }
+    }
+    if (BR_PANEL_WORD(0) & 8) {
+        frame = func_0021cca0(brRes00234570(0), 10);
+        rect[0] = 141.0f + shift;
+        rect[1] = 1.0f + shift2;
+    } else {
+        frame = func_0021cca0(brRes00234570(0), 8);
+        rect[0] = 158.0f + shift;
+        rect[1] = 44.0f + shift2;
+    }
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    BR_PANEL_SET_RECT(work + 0x1f60, rect[0], rect[1],
+                      rect[2], rect[3]);
+    BR_PANEL_SET_COLOR(work + 0x1f60, alpha);
+
+    frame = func_0021cca0(brRes00234570(0), 9);
+    BR_PANEL_SET_RECT(work + 0x1e60, 132.0f + shift, 136.0f + shift2,
                       (f32)*(s32*)((u8*)frame + 0xc),
                       (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_SET_COLOR(work + 0x1e60, alpha);
+
+    frame = func_0021cca0(brRes00234570(0), 7);
+    BR_PANEL_SET_RECT(work + 0x2160, 34.0f + shift, 180.0f + shift2,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_ANIMATE(work + 0x2160, 0x28);
     BR_PANEL_SET_COLOR(work + 0x2160, alpha);
+
     frame = func_0021cca0(brRes00234570(0), 9);
-    BR_PANEL_SET_RECT(work + 0x2060, 8.0f, 260.0f,
+    BR_PANEL_SET_RECT(work + 0x2060, 8.0f + shift, 260.0f + shift2,
                       (f32)*(s32*)((u8*)frame + 0xc),
                       (f32)*(s32*)((u8*)frame + 0x10));
     BR_PANEL_SET_COLOR(work + 0x2060, alpha);
+
     if (mode == 0) {
         rect[0] = 0.0f;
         rect[1] = 0.0f;
@@ -922,24 +1014,26 @@ static void brPanel00236390(void)
         rect[7] = 0.0f;
         alpha = 0.0f;
     } else if (mode == 1) {
+        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -640.0f / root2;
         rect[2] = -448.0f / root2;
         rect[3] = 224.0f;
         scale = (timer < 8) ? (f32)timer / 8.0f : 1.0f;
-        shift = 1096.0f * scale / root2;
+        shift = (1096.0f * scale) / root2;
         rect[4] = rect[2] + shift;
         rect[5] = rect[3] + shift;
         rect[6] = rect[0] + shift;
         rect[7] = rect[1] + shift;
         alpha = 1.0f;
     } else {
+        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -640.0f / root2;
         rect[2] = -448.0f / root2;
         rect[3] = 224.0f;
         scale = (timer < 10) ? (f32)timer / 10.0f : 1.0f;
-        shift = 1096.0f * scale / root2;
+        shift = (1096.0f * scale) / root2;
         rect[4] = rect[2] + shift;
         rect[5] = rect[3] + shift;
         rect[6] = rect[0] + shift;
@@ -965,18 +1059,20 @@ static void brPanel00236390(void)
         rect[7] = 0.0f;
         alpha = 0.0f;
     } else if (mode == 1) {
+        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -640.0f / root2;
         rect[2] = -448.0f / root2;
         rect[3] = 224.0f;
         scale = (timer < 10) ? (f32)timer / 10.0f : 1.0f;
-        shift = 1096.0f * scale / root2;
+        shift = (1096.0f * scale) / root2;
         rect[4] = rect[2] + shift;
         rect[5] = rect[3] + shift;
         rect[6] = rect[0] + shift;
         rect[7] = rect[1] + shift;
         alpha = 1.0f;
     } else {
+        root2 = sqrtf(2.0f);
         scale = (f32)timer / 10.0f;
         if (timer >= 10) {
             scale = 0.0f;
@@ -1000,183 +1096,41 @@ static void brPanel00236390(void)
     color[3] = (u8)(u32)(255.0f * alpha);
     func_0021d950(work + 0x2360, color);
 
-    /*
-     * The result panel's decorative sweep is a second animation pass.  It
-     * moves the reward emblems first, then rebuilds the dark transition quad
-     * before the foreground quad is submitted below.
-     */
-    if (mode == 0) {
-        shift = 0.0f;
-        scale = 0.0f;
-        alpha = 0.0f;
-    } else if (mode == 1) {
-        if (timer < 3) {
-            scale = (f32)timer / 3.0f;
-            shift = 100.0f * scale;
-            alpha = 1.0f - scale;
-        } else {
-            shift = 100.0f;
-            scale = 100.0f;
-            alpha = 0.0f;
-        }
-    } else {
-        shift = 100.0f;
-        scale = 100.0f;
-        alpha = 0.0f;
-    }
-    if (BR_PANEL_WORD(0) & 8) {
-        frame = func_0021cca0(brRes00234570(0), 10);
-        rect[0] = 141.0f + shift;
-        rect[1] = 1.0f + scale;
-    } else {
-        frame = func_0021cca0(brRes00234570(0), 8);
-        rect[0] = 158.0f + shift;
-        rect[1] = 44.0f + scale;
-    }
-    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
-    BR_PANEL_SET_RECT(work + 0x1f60, rect[0], rect[1], rect[2], rect[3]);
-    BR_PANEL_SET_COLOR(work + 0x1f60, alpha);
-
-    frame = func_0021cca0(brRes00234570(0), 9);
-    BR_PANEL_SET_RECT(work + 0x1e60, 132.0f + shift, 136.0f + scale,
-                      (f32)*(s32*)((u8*)frame + 0xc),
-                      (f32)*(s32*)((u8*)frame + 0x10));
-    BR_PANEL_SET_COLOR(work + 0x1e60, alpha);
-
-    frame = func_0021cca0(brRes00234570(0), 7);
-    BR_PANEL_SET_RECT(work + 0x2160, 34.0f + shift, 180.0f + scale,
-                      (f32)*(s32*)((u8*)frame + 0xc),
-                      (f32)*(s32*)((u8*)frame + 0x10));
-    BR_PANEL_ANIMATE(work + 0x2160, 0x28);
-    BR_PANEL_SET_COLOR(work + 0x2160, alpha);
-
-    (void)func_0021cca0(brRes00234570(0), 9);
-    (void)func_0021cca0(brRes00234570(0), 6);
-
-    /*
-     * The dark quad is submitted once more after the emblem pass.  Retail
-     * uses a fixed 100-pixel diagonal for the opening state and a
-     * timer-scaled diagonal while closing.
-     */
-    /*
-     * The diagonal mask is rebuilt for the transition pass as well.  Its
-     * opening animation uses an eight-tick ramp (the closing pass below
-     * uses ten ticks), which is why this cannot share the earlier quad.
-     */
     if (mode == 2) {
-        rect[4] = 864.0f;
-        rect[5] = 224.0f;
-        rect[6] = 320.0f;
-        rect[7] = 768.0f;
-        if (timer < 10) {
-            scale = 1.0f - (f32)timer / 10.0f;
-            baseShift = 544.0f -
-                        (350.0f - DAT_007caff0) / root2;
-            shift = baseShift * scale;
-            rect[0] = 320.0f - shift;
-            rect[1] = 768.0f - shift;
-            rect[2] = 864.0f - shift;
-            rect[3] = 224.0f - shift;
-        } else {
-            baseShift = (1088.0f / root2) / root2;
-            rect[1] = baseShift;
-            rect[2] = baseShift + 320.0f;
-            rect[3] = baseShift - (640.0f / root2) / root2;
-            rect[0] = baseShift - (448.0f / root2) / root2;
-            rect[1] = baseShift + 224.0f;
-            rect[4] = rect[2];
-            rect[5] = rect[3];
-            rect[6] = rect[0];
-            rect[7] = rect[1];
+        root2 = sqrtf(2.0f);
+        scale = (f32)timer / 10.0f;
+        if (timer >= 10) {
+            scale = 0.0f;
         }
+        alpha = 1.0f - scale;
+        baseShift = (350.0f / root2 - DAT_007caff0) / root2;
+        progressShift = scale * (544.0f - baseShift);
+        shift2 = (40.0f + 283.0f / root2) / root2;
+        rect[0] = 320.0f - 40.0f / root2 + progressShift;
+        rect[1] = -320.0f - 40.0f / root2 + progressShift;
+        rect[2] = -224.0f - 40.0f / root2 + progressShift;
+        rect[3] = 224.0f - 40.0f / root2 + progressShift;
+        rect[4] = rect[2] + shift2;
+        rect[5] = rect[3] + shift2;
+        rect[6] = rect[0] + shift2;
+        rect[7] = rect[1] + shift2;
     } else if (mode == 1) {
-        rect[0] = 320.0f;
-        rect[1] = -(640.0f / root2) / root2;
-        rect[2] = -(448.0f / root2) / root2;
-        rect[3] = 224.0f;
-        if (timer < 8) {
-            scale = (f32)timer / 8.0f;
-            shift = (1088.0f * scale) / root2;
-        } else {
-            shift = 1088.0f / root2;
-        }
-        rect[4] = rect[2] + shift;
-        rect[5] = rect[3] + shift;
-        rect[6] = rect[0] + shift;
-        rect[7] = rect[1] + shift;
-    } else {
-        for (i = 0; i < 8; i++) {
-            rect[i] = 0.0f;
-        }
-    }
-
-    if (mode == 2) {
-        if (timer < 10) {
-            scale = (f32)timer / 10.0f;
-            alpha = 1.0f - scale;
-            baseShift = (350.0f / root2 - DAT_007caff0) / root2;
-            shift = scale * (544.0f - baseShift);
-            secondShift = (40.0f + 283.0f / root2) / root2;
-            rect[0] = 320.0f - 40.0f / root2 + shift;
-            rect[1] = -320.0f - 40.0f / root2 + shift;
-            rect[2] = -224.0f - 40.0f / root2 + shift;
-            rect[3] = 224.0f - 40.0f / root2 + shift;
-            rect[4] = rect[2] + secondShift;
-            rect[5] = rect[3] + secondShift;
-            rect[6] = rect[0] + secondShift;
-            rect[7] = rect[1] + secondShift;
-        } else {
-            for (i = 0; i < 8; i++) {
-                rect[i] = 0.0f;
-            }
-            alpha = 0.0f;
-        }
-    } else if (mode == 1) {
+        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -320.0f;
         rect[2] = -224.0f;
         rect[3] = 224.0f;
-        secondShift = (283.0f / root2) / root2;
-        rect[4] = rect[2] + secondShift;
-        rect[5] = rect[3] + secondShift;
-        rect[6] = rect[0] + secondShift;
-        rect[7] = rect[1] + secondShift;
+        shift2 = (283.0f / root2) / root2;
+        rect[4] = rect[2] + shift2;
+        rect[5] = rect[3] + shift2;
+        rect[6] = rect[0] + shift2;
+        rect[7] = rect[1] + shift2;
         alpha = 1.0f;
     } else {
         for (i = 0; i < 8; i++) {
             rect[i] = 0.0f;
         }
         alpha = 0.0f;
-    }
-
-    if (mode == 2) {
-        scale = (f32)timer / 10.0f;
-        baseShift = (350.0f / root2 - DAT_007caff0) / root2;
-        progressShift = scale * (544.0f - baseShift);
-        rect[0] = 320.0f + baseShift + progressShift;
-        rect[1] = -320.0f + baseShift + progressShift;
-        rect[2] = -224.0f + baseShift + progressShift;
-        rect[3] = 224.0f + baseShift + progressShift;
-        secondShift = (350.0f / root2) / root2;
-        rect[4] = -224.0f + secondShift + progressShift;
-        rect[5] = 224.0f + secondShift + progressShift;
-        rect[6] = 320.0f + secondShift + progressShift;
-        rect[7] = -320.0f + secondShift + progressShift;
-    } else if (mode == 1) {
-        rect[0] = 320.0f;
-        rect[1] = -320.0f;
-        rect[2] = -224.0f;
-        rect[3] = 224.0f;
-        secondShift = (350.0f / root2) / root2;
-        rect[4] = rect[2] + secondShift;
-        rect[5] = rect[3] + secondShift;
-        rect[6] = rect[0] + secondShift;
-        rect[7] = rect[1] + secondShift;
-    } else {
-        for (i = 0; i < 8; i++) {
-            rect[i] = 0.0f;
-        }
     }
     BR_PANEL_SET_VERTICES(work + 0x2460);
     BR_PANEL_ANIMATE(work + 0x2460, 0x23);

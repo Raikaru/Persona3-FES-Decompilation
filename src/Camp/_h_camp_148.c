@@ -1955,25 +1955,93 @@ KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)
 
 // FUN_0014EF60 NONMATCHING
 void h_campDrawItemFrame(int param_1)
-
 {
-  float fVar1;
-  u64 uStack_10;
-  
-  func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc)), 0, 2, 1, 0xc1600000423c0000, 0xc1600000423c0000, 0, 0, 0, 10);
-  fVar1 = (float)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
-  uStack_10 = CAMP_PAIR_FLOAT_HIGH(fVar1 - 300.0f,0x44138000);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 1, uStack_10, CAMP_PAIR_FLOAT_HIGH(fVar1,0x44138000), 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1, 0xc3ed800043c50000, 0x42fa000043c50000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0xcc), 0, 2, 1, 0x42fc0000442f8000, 0x42fc000043c90000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 0, 0xc38e800043a08000, 0x4170000043a08000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x154), 0, 2, 1, 0xc330000043b18000, 0x42f8000043b18000, 0, 0, 0, 10);
-  *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 1, 0x43c08000423c0000, 0x43c08000423c0000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 1, 0x43c0800043c40000, 0x43c0800043c40000, 0, 0, 0, 10);
-  return;
+    f32 fVar1;
+    CampBits start;
+    CampBits end;
+
+    start.f[0] = 47.0f;
+    start.f[1] = -14.0f;
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc)), 0, 2, 1,
+                  start.u, start.u, 0, 0, 0, 10);
+    fVar1 = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
+    end.f[0] = 590.0f;
+    end.f[1] = fVar1 - 300.0f;
+    start.f[0] = 590.0f;
+    start.f[1] = fVar1;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 1,
+                  end.u, start.u, 0, 0, 0, 10);
+    start.f[0] = 394.0f;
+    start.f[1] = 125.0f;
+    end.f[0] = 394.0f;
+    end.f[1] = 126.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
+                  CAMP_PAIR_FLOATS(125.0f, 394.0f),
+    start.f[0] = 394.0f;
+    start.f[1] = -475.0f;
+    end.f[0] = 394.0f;
+    end.f[1] = 125.0f;
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 0,
+                  CAMP_PAIR_FLOATS(-285.0f, 321.0f),
+                  CAMP_PAIR_FLOATS(15.0f, 321.0f), 0, 0, 0, 10);
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x154), 0, 2, 1,
+                  CAMP_PAIR_FLOATS(-176.0f, 354.0f),
+                  CAMP_PAIR_FLOATS(124.0f, 354.0f), 0, 0, 0, 10);
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 1,
+                  CAMP_PAIR_FLOATS(384.0f, 47.0f),
+                  CAMP_PAIR_FLOATS(384.0f, 47.0f), 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 1,
+                  CAMP_PAIR_FLOATS(384.0f, 392.0f),
+                  CAMP_PAIR_FLOATS(384.0f, 392.0f), 0, 0, 0, 10);
+}
+
+// FUN_0014F320 NONMATCHING
+void h_campDrawItemFrameSelected(int param_1)
+{
+    CampBits pair;
+    CampBits first;
+    CampBits second;
+
+    pair.u = *(u64 *)(*(int *)(param_1 + 0xc) + 0x30);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc)), 0, 2, 2,
+                  pair.u, pair.u, 0, 0, 0, 10);
+    first.f[0] = 590.0f;
+    first.f[1] = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 2,
+                  first.u, first.u, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 2,
+                  CAMP_PAIR_FLOATS(125.0f, 394.0f),
+                  CAMP_PAIR_FLOATS(125.0f, 394.0f), 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0xcc), 0, 2, 2,
+                  CAMP_PAIR_FLOATS(126.0f, 402.0f),
+                  CAMP_PAIR_FLOATS(126.0f, 402.0f), 0, 0, 0, 10);
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
+    first.f[0] = 321.0f;
+    first.f[1] = 126.0f;
+    second.f[0] = 321.0f;
+    second.f[1] = 614.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 2,
+                  first.u, second.u, 0, 0, 0, 10);
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
+    first.f[0] = 354.0f;
+    first.f[1] = 124.0f;
+    second.f[0] = 354.0f;
+    second.f[1] = 726.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x154), 0, 2, 2,
+                  first.u, second.u, 0, 0, 0, 10);
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
+    first.f[0] = 47.0f;
+    first.f[1] = 384.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 2,
+                  first.u, first.u, 0, 0, 0, 10);
+    *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
+    first.f[0] = 392.0f;
+    first.f[1] = 384.0f;
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 2,
+                  first.u, first.u, 0, 0, 0, 10);
 }
 
 // FUN_0014F320 NONMATCHING

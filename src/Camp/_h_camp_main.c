@@ -1870,8 +1870,8 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
     }
     if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL ||
         FUN_0016DBA0((s16)id) == '\n') {
-        FUN_001159F0(NULL, DAT_00833B40, kind + 1, (u32)textAlpha,
-                     p.value.x + 10.0f, p.value.y + 5.0f, alpha);
+        campDrawCardSprite(DAT_00833B40, kind + 1, alpha,
+                           p.value.x + 10.0f, p.value.y + 5.0f, textAlpha);
     }
 }
 
@@ -2358,19 +2358,22 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             sprintf(text, gp0xffff897c, FUN_001775A0(entryId));
             rowOffset = i * 0x18;
             if (i == selected) {
-                FUN_001159F0(NULL, D_00833B58, 0x1b,
-                             (u32)textAlpha, p0.value.x + 262.0f,
-                             p0.value.y + 189.0f + (f32)rowOffset, alpha);
-                FUN_001159F0(NULL, D_00833B58, 0x1d,
-                             (u32)textAlpha, p0.value.x + 35.0f,
-                             p0.value.y + 196.0f + (f32)rowOffset, alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
+                                       (u32)textAlpha, p0.value.x + 262.0f,
+                                       p0.value.y + 189.0f + (f32)rowOffset,
+                                       alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
+                                       (u32)textAlpha, p0.value.x + 35.0f,
+                                       p0.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
                 FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
             }
             else {
-                FUN_001159F0(NULL, D_00833B58, 0x19,
-                             (u32)textAlpha, p0.value.x + 35.0f,
-                             p0.value.y + 196.0f + (f32)rowOffset, alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
+                                       (u32)textAlpha, p0.value.x + 35.0f,
+                                       p0.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
                 FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
             }
@@ -2393,19 +2396,22 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
             sprintf(text, gp0xffff897c, FUN_001775A0(entryId));
             rowOffset = i * 0x18;
             if (i == selected) {
-                FUN_001159F0(NULL, D_00833B58, 0x1b,
-                             (u32)textAlpha, p1.value.x + 262.0f,
-                             p1.value.y + 189.0f + (f32)rowOffset, alpha);
-                FUN_001159F0(NULL, D_00833B58, 0x1d,
-                             (u32)textAlpha, p1.value.x + 35.0f,
-                             p1.value.y + 196.0f + (f32)rowOffset, alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
+                                       (u32)textAlpha, p1.value.x + 262.0f,
+                                       p1.value.y + 189.0f + (f32)rowOffset,
+                                       alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
+                                       (u32)textAlpha, p1.value.x + 35.0f,
+                                       p1.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
                 FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
             }
             else {
-                FUN_001159F0(NULL, D_00833B58, 0x19,
-                             (u32)textAlpha, p1.value.x + 35.0f,
-                             p1.value.y + 196.0f + (f32)rowOffset, alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
+                                       (u32)textAlpha, p1.value.x + 35.0f,
+                                       p1.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
                 FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
             }
@@ -2429,19 +2435,22 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                     FUN_001775A0((s16)entryId));
             rowOffset = i * 0x18;
             if (i == selected) {
-                FUN_001159F0(NULL, D_00833B58, 0x1b,
-                             (u32)textAlpha, p2.value.x + 262.0f,
-                             p2.value.y + 189.0f + (f32)rowOffset, alpha);
-                FUN_001159F0(NULL, D_00833B58, 0x1d,
-                             (u32)textAlpha, p2.value.x + 35.0f,
-                             p2.value.y + 196.0f + (f32)rowOffset, alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1b,
+                                       (u32)textAlpha, p2.value.x + 262.0f,
+                                       p2.value.y + 189.0f + (f32)rowOffset,
+                                       alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x1d,
+                                       (u32)textAlpha, p2.value.x + 35.0f,
+                                       p2.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
                 FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
                              color, 6, 1, text, 0x10, 0);
             }
             else {
-                FUN_001159F0(NULL, D_00833B58, 0x19,
-                             (u32)textAlpha, p2.value.x + 35.0f,
-                             p2.value.y + 196.0f + (f32)rowOffset, alpha);
+                campMainDrawCardSprite(NULL, D_00833B58, 0x19,
+                                       (u32)textAlpha, p2.value.x + 35.0f,
+                                       p2.value.y + 196.0f + (f32)rowOffset,
+                                       alpha);
                 FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
                              color, 10, 1, text, 0x10, 0);
             }

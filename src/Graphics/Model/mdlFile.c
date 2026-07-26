@@ -23532,13 +23532,10 @@ void FUN_00333420(int param_1,int *param_2)
   __int128 auVar17;
 
   __int128 auVar18;
-  u32 color0;
-  u32 color1;
-  u32 color2;
-  u32 color3;
+  u32 scalarWeight;
+  u32 scalarInv;
   u32 scalarPackedA;
   u32 scalarPackedB;
-  float scalarMix;
 
   
 
@@ -23613,10 +23610,6 @@ void FUN_00333420(int param_1,int *param_2)
   auVar15 = _sqc2(auVar15);
 
   uVar6 = 0;
-  color0 = *param_2;
-  color1 = param_2[1];
-  color2 = param_2[2];
-  color3 = param_2[3];
 
   puVar8 = puVar4;
 
@@ -23687,31 +23680,33 @@ void FUN_00333420(int param_1,int *param_2)
       *(u8 *)((int)puVar8 + 10) = *(u8 *)((int)puVar8 + 2);
 
       *(u8 *)((int)puVar8 + 0xb) = *(u8 *)((int)puVar8 + 3);
-      scalarMix = fVar12;
+      scalarWeight = (u32)(fVar12 * 255.0f);
+      scalarInv = 255 - scalarWeight;
       scalarPackedA =
-          (u32)(u8)((float)(color0 & 0xff) * (1.0f - scalarMix) +
-                    (float)(color2 & 0xff) * scalarMix) |
-          ((u32)(u8)((float)((color0 >> 8) & 0xff) * (1.0f - scalarMix) +
-                     (float)((color2 >> 8) & 0xff) * scalarMix) << 8) |
-          ((u32)(u8)((float)((color0 >> 16) & 0xff) * (1.0f - scalarMix) +
-                     (float)((color2 >> 16) & 0xff) * scalarMix) << 16) |
-          ((u32)(u8)((float)(color0 >> 24) * (1.0f - scalarMix) +
-                     (float)(color2 >> 24) * scalarMix) << 24);
+          (((*param_2 & 0xff) * scalarInv + (param_2[2] & 0xff) * scalarWeight) >> 8) |
+          (((( (*param_2 >> 8) & 0xff) * scalarInv +
+             ((param_2[2] >> 8) & 0xff) * scalarWeight) >> 8) << 8) |
+          (((( (*param_2 >> 16) & 0xff) * scalarInv +
+             ((param_2[2] >> 16) & 0xff) * scalarWeight) >> 8) << 16);
       scalarPackedB =
-          (u32)(u8)((float)(color1 & 0xff) * (1.0f - scalarMix) +
-                    (float)(color3 & 0xff) * scalarMix) |
-          ((u32)(u8)((float)((color1 >> 8) & 0xff) * (1.0f - scalarMix) +
-                     (float)((color3 >> 8) & 0xff) * scalarMix) << 8) |
-          ((u32)(u8)((float)((color1 >> 16) & 0xff) * (1.0f - scalarMix) +
-                     (float)((color3 >> 16) & 0xff) * scalarMix) << 16) |
-          ((u32)(u8)((float)(color1 >> 24) * (1.0f - scalarMix) +
-                     (float)(color3 >> 24) * scalarMix) << 24);
-      puVar8[1] = scalarPackedA;
+          (((param_2[1] & 0xff) * scalarInv + (param_2[3] & 0xff) * scalarWeight) >> 8) |
+          (((( (param_2[1] >> 8) & 0xff) * scalarInv +
+             ((param_2[3] >> 8) & 0xff) * scalarWeight) >> 8) << 8) |
+          (((( (param_2[1] >> 16) & 0xff) * scalarInv +
+             ((param_2[3] >> 16) & 0xff) * scalarWeight) >> 8) << 16);
       *puVar8 = scalarPackedB;
-      *(u8 *)(puVar8 + 2) = *(u8 *)puVar8;
-      *(u8 *)((int)puVar8 + 9) = *(u8 *)((int)puVar8 + 1);
-      *(u8 *)((int)puVar8 + 10) = *(u8 *)((int)puVar8 + 2);
-      *(u8 *)((int)puVar8 + 0xb) = *(u8 *)((int)puVar8 + 3);
+      puVar8[1] = scalarPackedA;
+DEL 23693.=23702
+      scalarPackedB =
+          (((param_2[1] & 0xff) * scalarInv + (param_2[3] & 0xff) * scalarWeight) >> 8) |
+          (((( (param_2[1] >> 8) & 0xff) * scalarInv +
+             ((param_2[3] >> 8) & 0xff) * scalarWeight) >> 8) << 8) |
+          (((( (param_2[1] >> 16) & 0xff) * scalarInv +
+             ((param_2[3] >> 16) & 0xff) * scalarWeight) >> 8) << 16) |
+          (((( (param_2[1] >> 24) & 0xff) * scalarInv +
+             ((param_2[3] >> 24) & 0xff) * scalarWeight) >> 8) << 24);
+      *puVar8 = scalarPackedB;
+      puVar8[1] = scalarPackedA;
 
       fVar12 = fVar12 + 1.0f / (float)uVar1;
 
@@ -31236,6 +31231,13 @@ void FUN_0033a5b0(int param_1)
             puVar11[1] = DAT_0069c4d4;
 
             puVar11[2] = DAT_0069c4d8;
+            sx = (*(float *)&uVar19) * (float)piVar12[3];
+            sy = 0.0f;
+            sz = (*(float *)&uVar20) * (float)piVar12[4];
+            sw = fVar17 * (fVar21 * 0.5f + fVar25) + fVar18;
+            *(float *)&puVar11[0] = sx;
+            *(float *)&puVar11[1] = sy;
+            *(float *)&puVar11[2] = sz;
 
             for (iVar22 = 0; iVar22 < 6; iVar22 = iVar22 + 1) {
 
@@ -31262,6 +31264,14 @@ void FUN_0033a5b0(int param_1)
               puVar11[iVar22 * 3 + 4] = DAT_0069c4d4;
 
               puVar11[iVar22 * 3 + 5] = DAT_0069c4d8;
+              scalarScale = (float)piVar12[6];
+              tx = *(float *)((u8 *)&DAT_0069c6f0 + iVar22 * 4);
+              ty = *(float *)((u8 *)&DAT_0069c6b0 + iVar22 * 4);
+              tz = tx * scalarScale + sx;
+              tw = ty * scalarScale + sy;
+              *(float *)&puVar11[iVar22 * 3 + 3] = tz + sw * 0.0f;
+              *(float *)&puVar11[iVar22 * 3 + 4] = tw;
+              *(float *)&puVar11[iVar22 * 3 + 5] = sz + tx * scalarScale;
 
             }
 
@@ -31290,6 +31300,14 @@ void FUN_0033a5b0(int param_1)
               puVar11[iVar22 * 3 + 4] = DAT_0069c4d4;
 
               puVar11[iVar22 * 3 + 5] = DAT_0069c4d8;
+              scalarScale = (float)piVar12[5];
+              tx = *(float *)((u8 *)&DAT_0069c6f0 + iVar22 * 4);
+              ty = *(float *)((u8 *)&DAT_0069c6b0 + iVar22 * 4);
+              tz = tx * scalarScale + sx;
+              tw = ty * scalarScale + sy;
+              *(float *)&puVar11[iVar22 * 3 + 3] = tz + sw * 0.0f;
+              *(float *)&puVar11[iVar22 * 3 + 4] = tw;
+              *(float *)&puVar11[iVar22 * 3 + 5] = sz + ty * scalarScale;
 
             }
 
@@ -54195,6 +54213,17 @@ void FUN_003520a0(u64 param_1)
   float fVar16;
 
   float fVar17;
+  float dx;
+  float dy;
+  float dz;
+  float inv;
+  float px;
+  float py;
+  float pz;
+  float qx;
+  float qy;
+  float qz;
+  float blend;
 
   u32 in_vc6;
 
@@ -54608,6 +54637,49 @@ void FUN_003520a0(u64 param_1)
 
         auVar18 = _vsub(auVar18,auVar11);
 
+        px = *((float *)&fStack_70 + (uVar13 & 3));
+        py = *((float *)&fStack_70 + ((uVar13 + 1) & 3));
+        pz = *((float *)&fStack_70 + ((uVar13 + 2) & 3));
+        dx = px - py;
+        dy = py - pz;
+        dz = pz - px;
+        blend = (float)uVar10 * (float)*puVar14 / 65535.0f;
+        inv = dx * dx + dy * dy + dz * dz;
+        if (inv != 0.0f) {
+          inv = 1.0f / inv;
+        } else {
+          inv = 1.0f;
+        }
+        qx = py + dx * blend * inv;
+        qy = pz + dy * blend * inv;
+        qz = px + dz * blend * inv;
+        dx = qx - fStack_20;
+        dy = qy - fStack_1c;
+        dz = qz - fStack_18;
+        px = qx + fVar16 * fVar17 * dx;
+        py = qy + fVar16 * fVar17 * dy;
+        pz = qz + fVar16 * fVar17 * dz;
+        *(float *)&puVar12[0xc] = qx;
+        *(float *)&puVar12[0xd] = qy;
+        *(float *)&puVar12[0xe] = qz;
+        *(float *)&puVar12[9] = px;
+        *(float *)&puVar12[10] = py;
+        *(float *)&puVar12[0xb] = pz;
+        *(float *)&puVar12[0xf] = qx - dx;
+        *(float *)&puVar12[0x10] = qy - dy;
+        *(float *)&puVar12[0x11] = qz - dz;
+        qx = fStack_70 + fVar15 * fVar17;
+        qy = fStack_6c + fVar15 * fVar17;
+        qz = fStack_68;
+        *(float *)&puVar12[3] = qx;
+        *(float *)&puVar12[4] = qy;
+        *(float *)&puVar12[5] = qz;
+        *(float *)&puVar12[0] = qx + dx;
+        *(float *)&puVar12[1] = qy + dy;
+        *(float *)&puVar12[2] = qz + dz;
+        *(float *)&puVar12[6] = qx - dx;
+        *(float *)&puVar12[7] = qy - dy;
+        *(float *)&puVar12[8] = qz - dz;
         auVar11 = _vsub(auVar18,auVar11);
 
         auVar11 = _sqc2(auVar11);
