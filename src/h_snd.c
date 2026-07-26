@@ -542,6 +542,7 @@ void H_Snd_00109180(s32 channelIndex)
 {
     char name[0x100];
     void** handle;
+    s16* requestType;
 
     if (channelIndex == 0)
     {
@@ -591,7 +592,8 @@ void H_Snd_00109180(s32 channelIndex)
     sBackendControls[channelIndex].voiceCount = 2;
     sBackendControls[channelIndex].timeout = 0x5DC0;
 
-    switch (sChannels[channelIndex].requestType)
+    requestType = &sChannels[channelIndex].requestType;
+    switch (*requestType)
     {
         case HSND_START_NAMED_STREAM:
             sBackendControls[channelIndex].data20 = 0;
@@ -607,7 +609,7 @@ void H_Snd_00109180(s32 channelIndex)
             else
             {
                 func_0054d220(*handle, 0);
-            }
+            func_0054d0a0(*handle, (char*)(requestType + 1));
             func_0054d0a0(*handle, sChannels[channelIndex].name);
             func_0054d208(*handle, 1);
             break;
@@ -616,8 +618,8 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_SE:
         case HSND_START_CDVD:
             if (channelIndex >= 2)
-            {
-                if (sChannels[channelIndex].requestType == HSND_START_BGM ||
+                if (*requestType == HSND_START_BGM ||
+                    *requestType == HSND_START_CDVD)
                     sChannels[channelIndex].requestType == HSND_START_CDVD)
                 {
                     sBackendControls[channelIndex].data20 = 0;
@@ -639,18 +641,18 @@ void H_Snd_00109180(s32 channelIndex)
                 {
                     func_0054d220(*handle, 0);
                 }
-            }
+            if (*requestType == HSND_START_CDVD)
             if (sChannels[channelIndex].requestType == HSND_START_CDVD)
             {
                 func_0054d0b8(*handle, sChannels[channelIndex].modeArg.data,
                               sChannels[channelIndex].id);
             }
             else if (channelIndex == 0)
-            {
+                func_00102530(*handle, (char*)(requestType + 1));
                 func_00102530(*handle, sChannels[channelIndex].name);
             }
             else
-            {
+                func_001025c0(*handle, (char*)(requestType + 1));
                 func_001025c0(*handle, sChannels[channelIndex].name);
             }
             func_0054d208(*handle, 1);
@@ -662,8 +664,7 @@ void H_Snd_00109180(s32 channelIndex)
             {
                 sBackendControls[channelIndex].class =
                     channelIndex == 2 ? 2 : 3;
-                sBackendControls[channelIndex].pending = 1;
-                if (sChannels[channelIndex].requestType ==
+                if (*requestType == HSND_START_STREAM_FADE)
                     HSND_START_STREAM_FADE)
                 {
                     sBackendControls[channelIndex].data20 = 0;
