@@ -57944,11 +57944,13 @@ u32 FUN_00356fd0(float ignored,u64 param_1,u16 param_2,u32 param_3,u32 param_4)
 #pragma opt_rebuildconditionals off
 u32 FUN_003570b0(int param_1)
 {
+  int *piVar1;
+
   u32 *puVar2;
 
   u32 uVar3;
+
   u32 iVar4;
-  int *piVar1;
 
   piVar1 = *(int **)(param_1 + 0x30);
   puVar2 = (u32 *)(*DAT_00960178_abs)(8,0x40000);

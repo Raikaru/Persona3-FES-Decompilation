@@ -646,14 +646,14 @@ u32 FUN_003c4e60(u64 param_1, int param_2)
 }
 #define FUN_003c4e60(...) ((u32 (*)(...))FUN_003c4e60)(__VA_ARGS__)
 #undef FUN_003c4e70
-// FUN_003C4E70 NONMATCHING
+// FUN_003C4E70
 
 
 int *FUN_003c4e70(int *param_1)
 {
   int *ctx;
-  int *next;
   int *node;
+  int *next;
   int result;
 
   ctx = param_1;
