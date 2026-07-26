@@ -2428,60 +2428,116 @@ void FUN_00146710(CampEquipmentPanelWork* work)
 void FUN_001474f0(CampEquipmentPanelWork* work)
 
 {
-  u64 packedValue;
-  int row;
-  int entryIndex;
-  float slotY;
-  volatile u32 spritePairs[4];
-  u32 spriteYBits;
-  
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, 0x41400000c2700000, 0x4140000042200000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d8000042ee0000, 0x41d80000435b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, 0x41d80000435a0000, 0x41d80000439f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, 0x41d8000043710000, 0x41d8000043aa8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, 0x41d8000043c00000, 0x41d8000043f20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, 0x41d8000043cb8000, 0x41d8000043fd8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, 0x4274000042fe0000, 0x4274000043630000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, 0x435b000043130000, 0x435b000043770000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, 0x4286000043e50000, 0x42860000440b8000, 0, 0, 0, 0);
+  u64 pair0;
+  CampPair base;
+  u64 pair25;
+  u64 pair24;
+  u64 pair23;
+  u64 pair22;
+  u64 pair21;
+  u64 pair20;
+  u64 pair19;
+  u64 pair18;
+  u64 pair17;
+  u64 pair16;
+  u64 pair15;
+  u64 pair14;
+  u64 pair13;
+  u64 pair12;
+  u64 pair11;
+  u64 pair10;
+  u64 pair9;
+  u64 pair8;
+  u64 pair7;
+  u64 pair6;
+  u64 pair5;
+  u64 pair4;
+  u64 pair3;
+  u64 pair2;
+  u64 pair1;
+  f32 tempFloat;
+  s32 row;
+  s32 entryIndex;
+  f32 slotY;
+
+  base.x = 40.0f;
+  base.y = 12.0f;
+  pair0 = *(u64*)&base;
+  *(f32*)&pair0 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, pair0, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 219.0f;
+  base.y = 27.0f;
+  pair1 = *(u64*)&base;
+  *(f32*)&pair1 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 318.0f;
+  base.y = 27.0f;
+  pair2 = *(u64*)&base;
+  *(f32*)&pair2 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair2, *(u64*)&base, 0, 0, 0, 10);
+  base.x = (f32)0x155;
+  base.y = 27.0f;
+  pair3 = *(u64*)&base;
+  *(f32*)&pair3 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair3, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 484.0f;
+  base.y = 27.0f;
+  pair4 = *(u64*)&base;
+  *(f32*)&pair4 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair4, *(u64*)&base, 0, 0, 0, 10);
+  base.x = (f32)0x1fb;
+  base.y = 27.0f;
+  pair5 = *(u64*)&base;
+  *(f32*)&pair5 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair5, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 227.0f;
+  base.y = 61.0f;
+  pair6 = *(u64*)&base;
+  *(f32*)&pair6 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, pair6, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 247.0f;
+  base.y = 219.0f;
+  pair7 = *(u64*)&base;
+  *(f32*)&pair7 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, pair7, *(u64*)&base, 0, 0, 0, 10);
+  base.x = (f32)0x22e;
+  base.y = 67.0f;
+  pair8 = *(u64*)&base;
+  *(f32*)&pair8 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, pair8, *(u64*)&base, 0, 0, 0, 10);
+
   for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
     if (entryIndex < work->visibleCount) {
-      slotY = (float)(entryIndex * 0x55) + 62.0f;
-      spriteYBits = campSubbFloatBits(slotY + 8.0f);
-      spritePairs[0] = 0xc20c0000;
-      spritePairs[1] = spriteYBits;
-      spritePairs[2] = 0x42820000;
-      spritePairs[3] = spriteYBits;
+      slotY = (f32)(entryIndex * 0x55) + 62.0f;
+      base.x = 65.0f;
+      base.y = 8.0f + slotY;
+      pair9 = *(u64*)&base;
+      *(f32*)&pair9 += -100.0f;
       row = entryIndex * 10;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
-      spriteYBits = campSubbFloatBits(slotY + 31.0f);
-      spritePairs[0] = 0xc20c0000;
-      spritePairs[1] = spriteYBits;
-      spritePairs[2] = 0x42820000;
-      spritePairs[3] = spriteYBits;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
-      spriteYBits = campSubbFloatBits(slotY + 45.0f);
-      spritePairs[0] = 0xc20c0000;
-      spritePairs[1] = spriteYBits;
-      spritePairs[2] = 0x42820000;
-      spritePairs[3] = spriteYBits;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
-      spriteYBits = campSubbFloatBits(slotY + 64.0f);
-      spritePairs[0] = 0xc20c0000;
-      spritePairs[1] = spriteYBits;
-      spritePairs[2] = 0x42820000;
-      spritePairs[3] = spriteYBits;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
-      spriteYBits = campSubbFloatBits(slotY + 2.0f);
-      spritePairs[0] = 0xc2ac0000;
-      spritePairs[1] = spriteYBits;
-      spritePairs[2] = 0x41600000;
-      spritePairs[3] = spriteYBits;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 1, pair9, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 31.0f + slotY;
+      pair10 = *(u64*)&base;
+      *(f32*)&pair10 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 1, pair10, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 45.0f + slotY;
+      pair11 = *(u64*)&base;
+      *(f32*)&pair11 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 1, pair11, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 65.0f;
+      base.y = 64.0f + slotY;
+      pair12 = *(u64*)&base;
+      *(f32*)&pair12 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 1, pair12, *(u64*)&base, 0, 0, 0, 10);
+      base.x = 14.0f;
+      base.y = 2.0f + slotY;
+      pair13 = *(u64*)&base;
+      *(f32*)&pair13 += -100.0f;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 1, pair13, *(u64*)&base, 0, 0, 0, 10);
       *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x950) = 0;
       *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x994) = 0;
-    }
-    else {
+    } else {
       row = entryIndex * 0x2a8;
       *(u32 *)(work->drawBuffer + row + 0x7fc) = 0;
       *(u32 *)(work->drawBuffer + row + 0x840) = 0;
@@ -2492,28 +2548,83 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
       *(u32 *)(work->drawBuffer + row + 0x994) = 0;
     }
   }
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, 0x43cf8000c2180000, 0x43cf800042780000, 0, 0, 0, 0);
+
+  base.x = 62.0f;
+  base.y = (f32)0x19f;
+  pair14 = *(u64*)&base;
+  *(f32*)&pair14 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, pair14, *(u64*)&base, 0, 0, 0, 10);
   *(u32 *)(work->drawBuffer + 0x12e0) = 0;
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, 0x43cf8000430b0000, 0x43cf8000436f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)work->statusBuffer), 0, 2, 2, 0x4140000043bd8000, 0x4140000043ef8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x44)), 0, 2, 2, 0x41d8000041500000, 0x41d8000042e20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x88)), 0, 2, 2, 0x41d8000042e00000, 0x41d8000043540000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0xcc)), 0, 2, 2, 0x41d8000043070000, 0x41d80000436b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x110)), 0, 2, 2, 0x41d80000438b0000, 0x41d8000043bd0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x154)), 0, 2, 2, 0x41d8000043968000, 0x41d8000043c88000, 0, 0, 0, 0);
+  base.x = 239.0f;
+  base.y = (f32)0x19f;
+  pair15 = *(u64*)&base;
+  *(f32*)&pair15 += -100.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, pair15, *(u64*)&base, 0, 0, 0, 10);
+
+  tempFloat = (f32)0x17b;
+  base.x = tempFloat;
+  base.y = 12.0f;
+  pair16 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)work->statusBuffer), 0, 2, 2, *(u64*)&pair16, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 13.0f;
+  base.y = 27.0f;
+  pair17 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x44)), 0, 2, 2, *(u64*)&pair17, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 112.0f;
+  base.y = 27.0f;
+  pair18 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x88)), 0, 2, 2, *(u64*)&pair18, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 135.0f;
+  base.y = 27.0f;
+  pair19 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0xcc)), 0, 2, 2, *(u64*)&pair19, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 278.0f;
+  base.y = 27.0f;
+  pair20 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x110)), 0, 2, 2, *(u64*)&pair20, *(u64*)&base, 0, 0, 0, 10);
+  tempFloat = (f32)0x12d;
+  base.x = tempFloat;
+  base.y = 27.0f;
+  pair21 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x154)), 0, 2, 2, *(u64*)&pair21, *(u64*)&base, 0, 0, 0, 10);
+
   for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
     if (work->visibleCount + -1 < entryIndex) {
       *(u32 *)(work->statusBuffer + entryIndex * 0x44 + 0x2ac) = 0;
-    }
-    else {
-      packedValue = CAMP_SUBB_PAIR_FLOAT_HIGH((float)(entryIndex * 0x55) + 64.0f, 0x41f00000);
-      func_0018bc10(100.0f, (void*)(work->statusBuffer + (entryIndex + 10) * 0x44), 0, 2, 2, packedValue, packedValue, 0, 0, 0, 0);
+    } else {
+      base.x = 30.0f;
+      base.y = 64.0f + (f32)(entryIndex * 0x55);
+      func_0018bc10(100.0f, (void*)(work->statusBuffer + (entryIndex + 10) * 0x44), 0, 2, 2, *(u64*)&base, *(u64*)&base, 0, 0, 0, 10);
     }
   }
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x550)), 0, 2, 2, 0x4274000042d00000, 0x42740000434c0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x594)), 0, 2, 2, 0x435b000042f80000, 0x435b000043600000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x83c)), 0, 2, 2, 0x43cf800043620000, 0x43cf800043a30000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x880)), 0, 2, 2, 0x43cf800043db8000, 0x43cf80004406c000, 0, 0, 0, 0);
+
+  base.x = 104.0f;
+  base.y = 61.0f;
+  pair22 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x550)), 0, 2, 2, *(u64*)&pair22, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 124.0f;
+  base.y = 219.0f;
+  pair23 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x594)), 0, 2, 2, *(u64*)&pair23, *(u64*)&base, 0, 0, 0, 10);
+  base.x = 226.0f;
+  base.y = (f32)0x19f;
+  pair24 = *(u64*)&base;
+  base.x += 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x83c)), 0, 2, 2, *(u64*)&pair24, *(u64*)&base, 0, 0, 0, 10);
+  tempFloat = (f32)0x1b7;
+  base.x = tempFloat;
+  base.y = (f32)0x19f;
+  pair25 = *(u64*)&base;
+  base.x = tempFloat + 100.0f;
+  func_0018bc10(100.0f, (void*)((u32)(work->statusBuffer + 0x880)), 0, 2, 2, *(u64*)&pair25, *(u64*)&base, 0, 0, 0, 10);
   return;
 }
 
