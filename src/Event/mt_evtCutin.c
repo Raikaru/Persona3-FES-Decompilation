@@ -169,21 +169,21 @@ state_done:
 
 void FUN_00397030(int param_1)
 {
-    int manager;
-    int base;
-    int offset;
-    u32 *state_ptr;
+    int iVar1;
+    int lVar2;
+    int iVar3;
+    int iVar4;
 
-    manager = FUN_00195340("koma_Manager");
-    if (manager == 0) return;
-    if (param_1 >= 3) return;
-    base = FUN_00195540(manager);
-    offset = param_1 * 0xc;
-    state_ptr = (u32 *)(base + offset + 8);
-    if (*state_ptr != 0) {
-        FUN_00195020(*state_ptr);
-        *state_ptr = 0;
-        *(u32 *)(base + offset) = 0;
+    lVar2 = FUN_00195340("koma_Manager");
+    if ((lVar2 != 0) && (param_1 < 3)) {
+        iVar1 = FUN_00195540(lVar2);
+        iVar4 = param_1 * 0xc;
+        iVar3 = iVar4 + iVar1;
+        if (*(int *)(iVar3 + 8) != 0) {
+            FUN_00195020(*(u32 *)(iVar3 + 8));
+            *(u32 *)(iVar3 + 8) = 0;
+            *(u32 *)(iVar1 + iVar4) = 0;
+        }
     }
 }
 #define FUN_00397030(...) ((void (*)(...))FUN_00397030)(__VA_ARGS__)

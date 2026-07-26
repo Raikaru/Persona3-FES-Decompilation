@@ -1344,7 +1344,7 @@ u32 FUN_001C3FE0()
 u32 FUN_001C4080()
 {
     s32 index;
-    u16 result;
+    u32 result;
     u32 valid;
     u32 offset;
 
@@ -1357,7 +1357,7 @@ u32 FUN_001C4080()
     {
         valid = 1;
     }
-    if (valid == 1)
+    if (valid > 0)
     {
         result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
     }
