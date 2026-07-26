@@ -56,6 +56,10 @@ extern void FUN_0012e170(void* atlas, s32 baseTile, CampVec2 position,
                          s32 scale, s32 red, s32 green, s32 blue, s32 alpha,
                          s32 value, s32 digits);
 extern s32 FUN_003b2cb0();
+#pragma alias campEquipDrawTextRawCall FUN_003b2cb0
+extern s32 campEquipDrawTextRawCall(f32 scale, s32 x, s32 y, s32 color,
+                                    s32 style, s32 alignment, const char* text,
+                                    s32 maxWidth, s32 shadow);
 extern s32 FUN_003c7e20();
 extern void FUN_00523ac8();
 #pragma alias campEquipDrawSpriteCall FUN_001159f0
@@ -1459,7 +1463,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             campEquipDrawSpriteCall(
                 parent, DAT_00833B70, style * 2 + 1,
                 alpha, posX + 130.0f, posY + 1.0f, scale);
-            FUN_003b2cb0(
+            campEquipDrawTextRawCall(
                 scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
                 (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
             equipVecA.x = posX + 434.0f;
@@ -1483,7 +1487,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             campEquipDrawSpriteCall(
                 parent, DAT_00833B70, style * 2 + 1,
                 alpha, posX + 130.0f, posY + 1.0f, scale);
-            FUN_003b2cb0(
+            campEquipDrawTextRawCall(
                 scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
                 (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
             equipVecA.x = posX + 434.0f;
@@ -1502,7 +1506,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             campEquipDrawSpriteCall(
                 parent, DAT_00833B70, style * 2 + 1,
                 alpha, posX + 130.0f, posY + 1.0f, scale);
-            FUN_003b2cb0(
+            campEquipDrawTextRawCall(
                 scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
                 (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
             equipVecA.x = posX + 434.0f;
@@ -1521,7 +1525,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             campEquipDrawSpriteCall(
                 parent, DAT_00833B70, style * 2 + 1,
                 alpha, posX + 130.0f, posY + 1.0f, scale);
-            FUN_003b2cb0(
+            campEquipDrawTextRawCall(
                 scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
                 (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
             break;
@@ -1637,7 +1641,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                         posX + 13.0f, posY - 5.0f + (f32)(row * 26), scale);
                 }
 
-                FUN_003b2cb0(
+                campEquipDrawTextRawCall(
                     scale, (s32)(posX + 53.0f),
                     (s32)(9.0f + posY + (f32)(row * 26) - 2.0f),
                     (0xff - alpha) | 0xffffff00,
@@ -1788,7 +1792,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                              *(s32*)((u8*)work + 0x24)) * 2);
         id = datGetEquipmentId(pcId, equipment);
         effect = datGetEquipmentEffect(pcId, equipment);
-        FUN_003c7e20(
+        campEquipDrawValueCall(
             *(f32*)(record + 0x24), (s32)*(f32*)(record + 0x38),
             (s32)*(f32*)(record + 0x3c),
             (0xff - (u8)*(u32*)(record + 0x40)) | 0xffffff00, 1, 10, 1,
