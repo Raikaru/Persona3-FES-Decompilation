@@ -670,6 +670,8 @@ extern const u16 D_005DBB00[];
 extern s16 DAT_00833A60[9];
 extern void* DAT_00833A80[0x17];
 extern void* DAT_00833B40[0x0b];
+#pragma alias DAT_00833B40_abs DAT_00833B40
+extern u8 DAT_00833B40_abs[];
 extern u32 DAT_00833AD8;
 extern KwlnTask* DAT_007cdf50;
 extern u32 DAT_007cdf6c;
@@ -788,10 +790,9 @@ void* FUN_00134a10(KwlnTask* task)
             if (ready != 0) {
                 {
                     s32 copyIndex;
-                    void** table;
-                    table = DAT_00833B40;
                     for (copyIndex = 0; copyIndex < 0x0b; copyIndex++) {
-                        table[copyIndex] = (void*)work[0x34 + copyIndex];
+                        ((void**)DAT_00833B40_abs)[copyIndex] =
+                            (void*)work[0x34 + copyIndex];
                     }
                 }
                 H_Cdvd_Destroy((HCdvd*)work[0x30]);

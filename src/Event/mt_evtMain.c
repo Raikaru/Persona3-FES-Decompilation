@@ -1891,7 +1891,8 @@ int FUN_00361ca0(int param_1,int param_2)
 
   *piVar2 = param_1;
 
-  piVar2[2] = -1;
+  iVar3 = -1;
+  piVar2[2] = iVar3;
 
   *(u16 *)(piVar2 + 3) = 0;
 
@@ -1899,7 +1900,7 @@ int FUN_00361ca0(int param_1,int param_2)
 
   switch (param_1) {
   case 0x30:
-    *(u8 *)((int)piVar2 + 0x22) = (u8)-1;
+    *(u8 *)((int)piVar2 + 0x22) = (u8)iVar3;
     break;
   }
   FUN_00361b60((int *)lVar1,param_2);
@@ -13521,18 +13522,10 @@ bool FUN_0036d320(int param_1)
   iVar1 = *(int *)(param_1 + 0xd4);
   if (iVar1 == 0x1a) {
     iVar1 = *(int *)(param_1 + 0x16c);
-    if ((iVar1 == 0xd) || (iVar1 == 0xc) || (iVar1 == 10) ||
-        (iVar1 == 9) || (iVar1 == 8) || (iVar1 == 6)) {
-      goto L_false;
+    if ((((((iVar1 == 0xd) || (iVar1 == 0xc)) || (iVar1 == 10)) || ((iVar1 == 9 || (iVar1 == 8))))
+        || ((iVar1 == 6 || ((bVar2 = true, iVar1 == 1 || (iVar1 == 0)))))) || (iVar1 == 4)) {
+      bVar2 = false;
     }
-    bVar2 = true;
-    if (iVar1 == 1) goto L_false;
-    if (iVar1 == 0) goto L_false;
-    if (iVar1 == 4) goto L_false;
-    goto L_done;
-L_false:
-    bVar2 = false;
-L_done:;
   }
   else if (iVar1 == 0x17) {
     bVar2 = false;
