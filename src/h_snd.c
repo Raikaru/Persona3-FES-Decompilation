@@ -194,7 +194,6 @@ void func_00108740(void)
 {
     void* context;
     void* backendData;
-    void* (*backendAlloc)(void*, u32);
     s32 i;
     HsndSlotWork* slotWork;
 
@@ -217,8 +216,7 @@ void func_00108740(void)
     sBackendControls[0].timeout = 0xBB80;
     sBackendControls[0].pending = 1;
     context = func_0054d080(&sBackendControls[0]);
-    backendAlloc = (void* (*)(void*, u32))D_00960178;
-    backendData = backendAlloc(context, 0x40000);
+    backendData = HSND_BACKEND_ALLOC(context, 0x40000);
     sChannelData0[0] = backendData;
     sChannelData1[0] = context;
     sChannels[0].handle = func_0054d030(&sBackendControls[0], backendData, context);
@@ -241,7 +239,7 @@ void func_00108740(void)
     sBackendControls[2].timeout = 0x5DC0;
     sBackendControls[2].pending = 1;
     context = func_0054d080(&sBackendControls[2]);
-    sChannelData0[2] = backendAlloc(context, 0x40000);
+    sChannelData0[2] = HSND_BACKEND_ALLOC(context, 0x40000);
     sChannelData1[2] = context;
     sChannels[2].handle = NULL;
 
@@ -255,7 +253,7 @@ void func_00108740(void)
     sBackendControls[3].timeout = 0x5DC0;
     sBackendControls[3].pending = 1;
     context = func_0054d080(&sBackendControls[3]);
-    sChannelData0[3] = backendAlloc(context, 0x40000);
+    sChannelData0[3] = HSND_BACKEND_ALLOC(context, 0x40000);
     sChannelData1[3] = context;
 
     sChannels[3].handle = NULL;
@@ -269,7 +267,7 @@ void func_00108740(void)
     sBackendControls[4].timeout = 0x5DC0;
     sBackendControls[4].pending = 1;
     context = func_0054d080(&sBackendControls[4]);
-    sChannelData0[4] = backendAlloc(context, 0x40000);
+    sChannelData0[4] = HSND_BACKEND_ALLOC(context, 0x40000);
     sChannelData1[4] = context;
 
     sChannels[4].handle = NULL;

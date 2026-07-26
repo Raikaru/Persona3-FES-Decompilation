@@ -2294,7 +2294,7 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfb4 = (s32*)p;
-    p += n << 5;
+    p = (u8*)((n << 5) + (s32)p);
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfc8 = (s32*)p;

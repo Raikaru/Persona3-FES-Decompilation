@@ -51046,14 +51046,14 @@ u32 FUN_0034e690(int param_1)
 
   FUN_00521250(puVar4 + 3,iVar3 + 0xc,0x48);
 
-  FUN_0034e820(uVar2,**(u16 **)(iVar3 + 0x5c),iVar1);
+  FUN_0034e820(uVar2,*(volatile u16 *)*(int *)(iVar3 + 0x5c),iVar1);
 
   if (*(int *)(puVar4[0x17] + 8) != 0) {
-
-    FUN_0034e800(uVar2,param_1);
-
+    goto do_update_e;
   }
-
+  return uVar2;
+do_update_e:
+  FUN_0034e800(uVar2,param_1);
   return uVar2;
 
 }
