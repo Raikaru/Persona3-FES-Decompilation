@@ -2370,7 +2370,6 @@ void* func_001ab640(const RwV3d* point, const void* triangle,
     }
     return (void*)triangle;
 }
-
 // FUN_001abcd0
 void* func_001abcd0(void* collisionWorld, void* state)
 {
@@ -2403,6 +2402,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     void* listThree;
     void* model;
     RwV3d diff;
+    RwV3d finalDiff;
     RwV3d rayOrigin;
     RwV3d hitPoint;
     u16 resTypeMask;
@@ -2637,12 +2637,6 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
         if (correction <= 0.0f)
             continue;
 
-        diff.x *= correction;
-        diff.y *= correction;
-        diff.z *= correction;
-
-        blocking = *(u32*)((u8*)&collector + 0xa00 + i * 4);
-        if (collector.mode == 1 && blocking == 1)
         {
             normal = collector.normals[i];
             direction = translation->x * normal.x +

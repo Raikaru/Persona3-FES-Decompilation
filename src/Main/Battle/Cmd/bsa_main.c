@@ -441,6 +441,7 @@ void bsaMain00210d90(BsaWork* work)
     f32 baseX;
     f32 groupX;
     f32 groupY;
+    f32 rowY;
     s32 i;
     f32 rect[4];
     u8 drawColor[4];
@@ -650,10 +651,10 @@ void bsaMain00210d90(BsaWork* work)
                 baseX = 270.0f;
                 break;
             }
-            groupY = (f32)(i & 3) * 30.0f;
+            rowY = (f32)(i & 3) * 30.0f;
             image = func_0021cca0(table2, 0x23);
             groupX = baseX + 46.0f;
-            groupY += 292.0f;
+            groupY = rowY + 292.0f;
             bsaPlaceQuad(p, i * 0x80 + 0x850, image,
                          groupX, groupY, -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
             bsaPlaceQuad(p, i * 0x80 + 0x890, image,
@@ -667,7 +668,7 @@ void bsaMain00210d90(BsaWork* work)
                 image = func_0021cca0(table6,
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
                 rect[0] = baseX + 54.0f;
-                rect[1] = (f32)(i & 3) * 30.0f + 271.0f;
+                rect[1] = rowY + 271.0f;
                 rect[2] = BSA_FRAME_W(image);
                 rect[3] = BSA_FRAME_H(image);
                 func_0021d8e0(p + i * 0x40 + 0x1050, rect);

@@ -2265,8 +2265,6 @@ void func_001f4a00(void)
     f32 ratio1;
     f32 ratio2;
     u32 random;
-    u32 actStart;
-    u32 actEnd;
 
     if (work == NULL) {
         K_Assert("sfl_root.c", 0xfe);
@@ -2289,8 +2287,6 @@ void func_001f4a00(void)
 
     valueTable += BR_U32(work, 0x1fd54) * 6;
     actTable += BR_U32(work, 0x1fd58) * 3;
-    actStart = (u32)actTable[0];
-    actEnd = (u32)actTable[1];
     ratio0 = (f32)(u32)valueTable[0];
     ratio1 = (f32)(u32)valueTable[1];
     ratio2 = (f32)(u32)valueTable[2];
@@ -2314,11 +2310,11 @@ void func_001f4a00(void)
 
     maxProgress = (f32)(u32)actTable[2] +
                   (f32)(RpRandom() % 1);
-    weightTable[0] = actStart;
+    weightTable[0] = actTable[0];
     weightTable[1] = actTable[2];
     weightTable[2] = actTable[2];
-    weightTable[3] = actEnd;
-    if (actStart == 0 && actTable[2] != 0) {
+    weightTable[3] = actTable[1];
+    if (actTable[0] == 0 && actTable[2] != 0) {
         weightTable[0] = 1;
     }
     weightTable[7] = 0;
@@ -2334,9 +2330,9 @@ void func_001f4a00(void)
         u32 totalWeight;
         u32 choiceWeight;
 
-        sflScript00259c60((u16)((f32)(s32)actStart +
-                                progress * ((f32)(s32)actEnd -
-                                            (f32)(s32)actStart) / maxProgress));
+        sflScript00259c60((u16)((f32)(s32)actTable[0] +
+                                progress * ((f32)(s32)actTable[1] -
+                                            (f32)(s32)actTable[0]) / maxProgress));
         for (i = 0; i < 4; i++) {
             enabled[i] = 0;
         }
