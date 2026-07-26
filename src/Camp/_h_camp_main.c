@@ -1530,10 +1530,15 @@ extern void hCampMainDrawQuad7(f32 depth, f32 x, f32 y, u32 color,
 #pragma alias hCampMainDrawQuad6 FUN_001140D0
 extern void hCampMainDrawQuad6(f32 depth, f32 x, f32 y, u32 color,
                                s32 width, s32 height);
-#pragma alias hCampMainDrawTexQuad FUN_00114E70
-extern void hCampMainDrawTexQuad(f32 depth, f32 x, f32 y,
-                                 f32 textureX, f32 textureY, s32 orientation,
-                                 u32 color, s32 width, s32 height, s32 textureDimensions);
+#pragma alias hCampMainDrawTexQuadPtr FUN_00114E70
+extern void hCampMainDrawTexQuadPtr(f32 depth, f32 x, f32 y,
+                                    f32 textureX, f32 textureY, s32 orientation,
+                                    u32 color, s32 width, s32 height,
+                                    const void* textureDimensions);
+ #pragma alias hCampMainDrawTexQuad FUN_00114E70
+ extern void hCampMainDrawTexQuad(f32 depth, f32 x, f32 y,
+                                  f32 textureX, f32 textureY, s32 orientation,
+                                  u32 color, s32 width, s32 height, s32 textureDimensions);
 #pragma alias hCampMainDrawSpriteAlpha FUN_001368A0
 extern void hCampMainDrawSpriteAlpha(f32 alpha, u64 position, u8 drawAlpha);
 #pragma alias hCampMainDrawValue FUN_003C7E20
@@ -1542,7 +1547,7 @@ extern void hCampMainDrawValue(f32 scale, s32 x, s32 y, u32 color,
 #pragma alias hCampMainDrawValueGlyph FUN_003C7E50
 extern void hCampMainDrawValueGlyph(f32 scale, s32 x, s32 y, u32 color,
                                     u32 font, u32 alignment, u32 style,
-                                    u32 value);
+                                    u32 value, u32 value2);
 #pragma alias hCampMainDrawText FUN_003B2F90
 extern void hCampMainDrawText(f32 scale, s32 x, s32 y, u32 color,
                               u32 font, u32 alignment, const char* text,
@@ -1943,7 +1948,7 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
         hCampMainDrawQuad7(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      color, 0x40, 0x40, resource);
     } else {
-        hCampMainDrawTexQuad(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
+        hCampMainDrawTexQuadPtr(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      1.0f, 1.0f, 2, color, 0x40, 0x40, resource);
     }
     if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL ||
