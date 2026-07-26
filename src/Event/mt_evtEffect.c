@@ -1142,7 +1142,7 @@ void FUN_00395950(int param_1)
 
       for (iVar6 = 0; iVar6 < (int)(u32)*(u8 *)(iVar2 + 1); iVar6 = iVar6 + 1) {
 
-        fVar9 = 0.0;
+        fVar9 = 0.0f;
 
         for (iVar7 = 0; iVar7 < 0x14; iVar7 = iVar7 + 1) {
 
@@ -1413,9 +1413,9 @@ void FUN_00395e20(int param_1)
 
     fStack_68 = pfVar3[3];
 
-    fStack_18 = 210.0;
+    fStack_18 = 210.0f;
 
-    fStack_14 = 70.0;
+    fStack_14 = 70.0f;
 
     uStack_20 = 0x435c0000;
 
@@ -1423,9 +1423,9 @@ void FUN_00395e20(int param_1)
 
     FUN_00386f70(0x41000000,&fStack_18,&uStack_20,auStack_10);
 
-    fStack_18 = fStack_5c * 220.0 + 210.0;
+    fStack_18 = fStack_5c * 220.0f + 210.0f;
 
-    fStack_14 = (1.0 - fStack_6c) * 220.0 + 70.0;
+    fStack_14 = (1.0f - fStack_6c) * 220.0f + 70.0f;
 
     uStack_20 = 0x40400000;
 
@@ -1433,9 +1433,9 @@ void FUN_00395e20(int param_1)
 
     FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_8);
 
-    fStack_18 = fStack_58 * 220.0 + 210.0;
+    fStack_18 = fStack_58 * 220.0f + 210.0f;
 
-    fStack_14 = (1.0 - fStack_68) * 220.0 + 70.0;
+    fStack_14 = (1.0f - fStack_68) * 220.0f + 70.0f;
 
     FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_8);
 
@@ -1453,9 +1453,9 @@ void FUN_00395e20(int param_1)
 
     FUN_0038a260(0x40e00000,0x24,0x60,0,0x6a0f40);
 
-    fStack_18 = 36.0;
+    fStack_18 = 36.0f;
 
-    fStack_14 = 72.0;
+    fStack_14 = 72.0f;
 
     uStack_20 = 0x43200000;
 
@@ -1463,7 +1463,7 @@ void FUN_00395e20(int param_1)
 
     FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_10);
 
-    fVar9 = 0.0;
+    fVar9 = 0.0f;
 
     for (iVar6 = 0; iVar6 < 0x29; iVar6 = iVar6 + 1) {
 
@@ -1471,13 +1471,13 @@ void FUN_00395e20(int param_1)
 
       if (0 < iVar6) {
 
-        fStack_48 = (float)uStack_40 * 220.0 + 210.0;
+        fStack_48 = (float)uStack_40 * 220.0f + 210.0f;
 
-        fStack_44 = (1.0 - ((float *)&uStack_40)[1]) * 220.0 + 70.0;
+        fStack_44 = (1.0f - ((float *)&uStack_40)[1]) * 220.0f + 70.0f;
 
-        fStack_50 = fStack_30 * 220.0 + 210.0;
+        fStack_50 = fStack_30 * 220.0f + 210.0f;
 
-        fStack_4c = (1.0 - fStack_2c) * 220.0 + 70.0;
+        fStack_4c = (1.0f - fStack_2c) * 220.0f + 70.0f;
 
         FUN_00388a40(0x40800000,&fStack_48,&fStack_50,auStack_10 + 4);
 
