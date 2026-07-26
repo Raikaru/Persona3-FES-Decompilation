@@ -68,6 +68,10 @@ extern s32 FUN_00129b30();
 extern s32 FUN_0012a560();
 extern s32 FUN_0012ac60();
 extern s32 FUN_001339a0();
+#pragma alias campStatusCreatePersonaChild FUN_001339a0
+extern KwlnTask* campStatusCreatePersonaChild(KwlnTask* parent,
+                                              u32 priority, u32 personaId,
+                                              u32 mode, f32 alpha);
 extern s32 FUN_00133a80();
 extern void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode);
 extern s32 FUN_00121de0();
@@ -2982,6 +2986,9 @@ void FUN_00133460(CampVec2 position, f32 alpha, void* currentStats,
     FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
 }
 
+/* Retail 0x1313e0 uses the direct child-create call; case 1 reloads archive
+ * state at 0x13132c/0x131368/0x1313a4, and case 3 reloads records at
+ * 0x131504/0x1315f0/0x13169c/0x1316e8. */
 // FUN_001311D0 NONMATCHING
 void* FUN_001311d0(KwlnTask* task)
 {
@@ -3021,22 +3028,20 @@ void* FUN_001311d0(KwlnTask* task)
     case 1:
     {
         HCdvd* cdvd;
-        void** resources;
         u32 fileSize;
 
         cdvd = *(HCdvd**)(work + 0x50);
         if (H_Cdvd_IsFileLoaded(cdvd) == 0) {
             return KWLNTASK_CONTINUE;
         }
-        resources = (void**)(work + 0x58);
-        resources[0] = func_00112420(
-            H_Cdvd_ArchiveGetFile(cdvd, 0, &fileSize));
-        resources[1] = func_00112420(
-            H_Cdvd_ArchiveGetFile(cdvd, 1, &fileSize));
-        resources[2] = func_00112420(
-            H_Cdvd_ArchiveGetFile(cdvd, 2, &fileSize));
+        *(void**)(work + 0x58) = func_00112420(
+            H_Cdvd_ArchiveGetFile(*(HCdvd**)(work + 0x50), 0, &fileSize));
+        *(void**)(work + 0x5c) = func_00112420(
+            H_Cdvd_ArchiveGetFile(*(HCdvd**)(work + 0x50), 1, &fileSize));
+        *(void**)(work + 0x60) = func_00112420(
+            H_Cdvd_ArchiveGetFile(*(HCdvd**)(work + 0x50), 2, &fileSize));
         *(KwlnTask**)(work + 0x54) =
-            ((CampStatusPersonaChildCreateFn)FUN_001339a0)(
+            campStatusCreatePersonaChild(
                 task, 0x18bf, *(u16*)(work + 0x1a), (u32)-1, 100.0f);
         *(u32*)work = 2;
         break;
@@ -3056,42 +3061,38 @@ void* FUN_001311d0(KwlnTask* task)
     }
     case 3:
     {
-        void* primaryRecords;
         CampVec2 position;
         CampVec2 start;
-        s32 selected;
-        s32 count;
         s32 i;
 
-        primaryRecords = *(void**)(work + 0x64);
-        selected = *(s32*)(work + 0x4);
-        count = *(s16*)(work + 0x4a);
         position.x = 0.0f;
         position.y = 0.0f;
         start = position;
-        func_0018bc10(100.0f, primaryRecords, 0, 2, 1,
+        func_0018bc10(100.0f, *(void**)(work + 0x64), 0, 2, 1,
                       *(u64*)&start, *(u64*)&position, 0, 0, 5, 5);
-        for (i = 0; i < count; i++) {
+        for (i = 0; i < *(s16*)(work + 0x4a); i++) {
             position.x = 119.0f;
             position.y = 73.0f + (f32)(i * 29);
-            if (i == selected) {
+            if (i == *(s32*)(work + 0x4)) {
                 position.x += 21.0f;
             }
             start = position;
             start.x -= 600.0f;
             func_0018bc10(100.0f,
-                          (u8*)primaryRecords + (i + 1) * 0x44,
+                          (u8*)*(void**)(work + 0x64) +
+                              (i + 1) * 0x44,
                           0, 2, 1, *(u64*)&start, *(u64*)&position,
                           0, 0, 0, 10);
             position.x = -11.0f;
             position.y = 63.0f + (f32)(i * 29);
-            if (i == selected) {
+            if (i == *(s32*)(work + 0x4)) {
                 position.x += 21.0f;
             }
             start = position;
             start.x -= 600.0f;
             func_0018bc10(100.0f,
-                          (u8*)primaryRecords + (i + 14) * 0x44,
+                          (u8*)*(void**)(work + 0x64) +
+                              (i + 14) * 0x44,
                           0, 2, 1, *(u64*)&start, *(u64*)&position,
                           0, 0, 0, 6);
         }
@@ -3099,14 +3100,16 @@ void* FUN_001311d0(KwlnTask* task)
         position.y = 26.0f;
         start = position;
         start.x += 600.0f;
-        func_0018bc10(100.0f, (u8*)primaryRecords + 27 * 0x44,
+        func_0018bc10(100.0f,
+                      (u8*)*(void**)(work + 0x64) + 27 * 0x44,
                       0, 2, 1, *(u64*)&start, *(u64*)&position,
                       0, 0, 0, 10);
         position.x = 34.0f;
         position.y = 415.0f;
         start = position;
         start.x += 600.0f;
-        func_0018bc10(100.0f, (u8*)primaryRecords + 28 * 0x44,
+        func_0018bc10(100.0f,
+                      (u8*)*(void**)(work + 0x64) + 28 * 0x44,
                       0, 2, 1, *(u64*)&start, *(u64*)&position,
                       0, 0, 0, 10);
         *(u32*)work = 4;
