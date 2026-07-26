@@ -447,6 +447,7 @@ void FUN_00155830(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                                    item->x, item->y + (f32)(i * 0x21),
                                    item->scale);
             }
+        }
         break;
     case 5:
         for (i = 0; i < 7; i++) {

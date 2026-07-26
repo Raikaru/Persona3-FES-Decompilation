@@ -2481,14 +2481,10 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     void* glyph;
     CampVec2 bottomPos;
     CampVec2 drawPos;
-    CampVec2 bottomSpritePos;
-    CampVec2 bottomTextPos;
     char text[0x100];
     bottomPos = position;
     bottomPos.x += 12.0f;
     bottomPos.y += 96.0f;
-    bottomSpritePos = bottomPos;
-    bottomTextPos = bottomPos;
 
     if (frame >= 0) {
     if (frame < 5) {
@@ -2610,17 +2606,24 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         }
     }
     h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
-    bottomSpritePos.x += 21.0f;
-    bottomSpritePos.y += 86.0f;
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11,
-                             (u8)alpha, bottomSpritePos.x,
-                             bottomSpritePos.y, scale);
-    bottomTextPos.x += 275.0f;
-    bottomTextPos.y += 86.0f;
+                             (u8)alpha, bottomPos.x + 21.0f,
+                             bottomPos.y + 86.0f, scale);
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22,
-                             (u8)alpha, bottomTextPos.x,
-                             bottomTextPos.y, scale);
-    bottomTextPos.y += 2.0f;
+                             (u8)alpha, bottomPos.x + 275.0f,
+                             bottomPos.y + 86.0f, scale);
+    bottomPos.y += 88.0f;
+    if (*((u8*)persona + 4) == 0x63) {
+        FUN_00523ac8(text, gp0xffff8980);
+    }
+    else {
+        rank = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, rank);
+    }
+    FUN_0040eb50(0x42c80000, (s32)bottomPos.x + 275,
+                 (s32)bottomPos.y, 0xff - alpha,
+                 4, text, 1);
+DEL 2653
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
     }
@@ -2665,9 +2668,6 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
         return;
     }
     drawPosition = position;
-    bottomPosition = drawPosition;
-    bottomPosition.x += 12.0f;
-    bottomPosition.y += 96.0f;
     panelX = drawPosition.x + 30.0f;
     panelY = drawPosition.y + 100.0f;
     panelBottomY = drawPosition.y + 159.0f;
@@ -2735,11 +2735,11 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     equipmentPosition = drawPosition;
     h_campStatusDrawEquipment(equipmentPosition, scale, NULL, persona, alpha);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x11, alpha,
-                             bottomPosition.x + 21.0f,
-                             bottomPosition.y + 86.0f, scale);
+                             drawPosition.x + 33.0f,
+                             drawPosition.y + 278.0f, scale);
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22, alpha,
-                             bottomPosition.x + 275.0f,
-                             bottomPosition.y + 86.0f, scale);
+                             drawPosition.x + 287.0f,
+                             drawPosition.y + 278.0f, scale);
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
     }
