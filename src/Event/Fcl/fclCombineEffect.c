@@ -147,6 +147,14 @@ float DAT_006b3098;
 #pragma alias DAT_006b3098_abs DAT_006b3098
 extern u8 DAT_006b3090_abs[];
 extern u8 DAT_006b3098_abs[];
+#pragma alias DAT_007e094c_abs DAT_007e094c
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0956_abs DAT_007e0956
+#pragma alias DAT_007e0958_abs DAT_007e0958
+extern u8 DAT_007e094c_abs[];
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e0956_abs[];
+extern u8 DAT_007e0958_abs[];
 u32 DAT_006b30a0;
 u32 DAT_006b3f60;
 u32 DAT_007cda6c;
@@ -3326,9 +3334,9 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   fVar7 = 0.0f;
 
-  work.axisZ = DAT_006b3098;
+  work.axisXY = *(u64 *)DAT_006b3090_abs;
 
-  work.axisXY = DAT_006b3090;
+  work.axisZ = *(f32 *)DAT_006b3098_abs;
 
 
   pfVar4 = (u8 *)0xc;
@@ -3342,7 +3350,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     pfVar5 = pfVar5 + 1;
 
-    pfVar4 = pfVar4 - 1;
+  if (((*(u16 *)DAT_007e094e_abs & 0x80) != 0) ||
+      ((*(u16 *)DAT_007e0958_abs & 0x80) != 0)) {
 
     pfVar2 = pfVar4;
 
@@ -3358,7 +3367,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   if (*(int *)(param_2 + 0x10) == 0) {
 
-    bVar3 = (*(u32 *)(*(int *)(param_1 + 0x3c) + 0x10) & 1) != 0;
+    if (((*(u16 *)DAT_007e094e_abs & 8) != 0) ||
+        ((*(u16 *)DAT_007e0958_abs & 8) != 0)) {
 
   }
 
@@ -3436,9 +3446,11 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
       work.vecA.x = work.vecA.x * fVar6;
 
-      work.vecA.y = work.vecA.y * fVar6;
+    if (((*(u16 *)DAT_007e094c_abs & 4) == 0) &&
+        ((*(u16 *)DAT_007e0956_abs & 4) == 0)) {
 
-      work.vecA.z = work.vecA.z * fVar6;
+      if (((*(u16 *)DAT_007e094c_abs & 8) != 0) ||
+          ((*(u16 *)DAT_007e0956_abs & 8) != 0)) {
 
       bVar3 = 1;
 
