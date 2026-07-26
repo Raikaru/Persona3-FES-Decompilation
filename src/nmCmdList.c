@@ -820,9 +820,9 @@ void FUN_003c6900(int param_1)
     if ((uVar2 & 0x400000) != 0) {
       uVar2 = uVar2 & 0xfffffffb;
       *puVar1 = uVar2;
-      uVar2 = uVar2 & 0xffbfffff;
+      uVar2 = uVar2 & 0xffbffffb;
       *puVar1 = uVar2;
-      uVar2 = uVar2 & 0xffbfffff | 1;
+      uVar2 = uVar2 | 1;
       *puVar1 = uVar2;
   }
 }

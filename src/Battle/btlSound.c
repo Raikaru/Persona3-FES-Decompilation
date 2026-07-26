@@ -3071,23 +3071,21 @@ journey_true:
       
         uVar4 = FUN_002ffbc0(100);
       
-        if (uVar4 < 0x32) {
+        if (uVar4 >= 0x32) {
       
           lVar3 = FUN_0017d800();
       
-          if (lVar3 != 0) {
+          if (lVar3 == 0) {
       
-            return 0x46e;
+            if (*(s32 *)DAT_00697BFC_abs != -1) {
+      
+              FUN_0016f190(*(s32 *)DAT_00697BFC_abs);
+      
+            }
+      
+            return 0x27b;
       
           }
-      
-          return 0x27d;
-      
-        }
-      
-        lVar3 = FUN_0017d800();
-      
-        if (lVar3 == 0) {
       
           if (*(s32 *)DAT_00697BFC_abs != -1) {
       
@@ -3095,17 +3093,19 @@ journey_true:
       
           }
       
-          return 0x27b;
+          return 0x46c;
       
         }
       
-        if (*(s32 *)DAT_00697BFC_abs != -1) {
+        lVar3 = FUN_0017d800();
       
-          FUN_0016f190(*(s32 *)DAT_00697BFC_abs);
+        if (lVar3 != 0) {
+      
+          return 0x46e;
       
         }
       
-        return 0x46c;
+        return 0x27d;
       
       case 10:
       

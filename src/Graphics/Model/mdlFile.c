@@ -39119,9 +39119,8 @@ u32 FUN_00342890(u32 *param_1,int param_2)
   u32 uVar2;
   u32 uVar3;
 
-  uVar2 = (*DAT_00960178_abs)(param_1[0xe] * 0x30 + 0xc,0x40000);
-
-  piVar4 = (int *)uVar2;
+  piVar4 = (int *)(*DAT_00960178_abs)(param_1[0xe] * 0x30 + 0xc,0x40000);
+  uVar2 = (u32)piVar4;
   *piVar4 = (int)(piVar4 + 3);
   piVar4[2] = (int)piVar4;
 

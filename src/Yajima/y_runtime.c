@@ -12653,16 +12653,21 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
                  ,char param_6)
 
 {
-  int uVar3;
+  u8 uVar3;
+  u32 uVar4;
   u32 uVar2;
   int iVar1;
   
   uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_5 + 0x3c) + 4),param_6);
   iVar1 = (int)uVar2;
   *(float *)(iVar1 + 0x2c) = param_4;
-  uVar3 = (2.1474836e+09f > param_3)
-    ? (u8)(int)param_3
-    : (u8)((int)(param_3 - 2.1474836e+09f) | 0x80000000);
+  if (2.1474836e+09f > param_3) {
+    uVar3 = (u8)(int)param_3;
+  }
+  else {
+    uVar4 = 0x80000000;
+    uVar3 = (u8)((int)(param_3 - 2.1474836e+09f) | uVar4);
+  }
   *(u8 *)(iVar1 + 0x18) = uVar3;
   *(float *)(iVar1 + 0x10) = param_1;
   *(float *)(iVar1 + 0x14) = param_2;
@@ -12677,16 +12682,21 @@ void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int pa
                  ,char param_6)
 
 {
-  int uVar3;
+  u8 uVar3;
+  u32 uVar4;
   u32 uVar2;
   int iVar1;
   
   uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_5 + 0x3c) + 0xe8),param_6);
   iVar1 = (int)uVar2;
   *(float *)(iVar1 + 0x2c) = param_4;
-  uVar3 = (2.1474836e+09f > param_3)
-    ? (u8)(int)param_3
-    : (u8)((int)(param_3 - 2.1474836e+09f) | 0x80000000);
+  if (2.1474836e+09f > param_3) {
+    uVar3 = (u8)(int)param_3;
+  }
+  else {
+    uVar4 = 0x80000000;
+    uVar3 = (u8)((int)(param_3 - 2.1474836e+09f) | uVar4);
+  }
   *(u8 *)(iVar1 + 0x18) = uVar3;
   *(float *)(iVar1 + 0x10) = param_1;
   *(float *)(iVar1 + 0x14) = param_2;

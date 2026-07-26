@@ -1925,12 +1925,12 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     u8 opaque = 0xFF;
 
     dst = image->pixels;
-    asm volatile("" : : "r"(opaque));
     width = image->width;
     height = image->height;
     y = 0;
     while (y < height)
     {
+        opaque = 0xFF;
         x = 0;
         while (x < width)
         {
@@ -1938,7 +1938,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
-            pixel[3] = 0xFF;
+            pixel[3] = opaque;
             source += 3;
             x++;
         }
@@ -1955,8 +1955,8 @@ void func_0010de40(HSfdImage* image, const u8* source)
     s32 width;
     s32 height;
     const u16* pixels;
-    s32 y;
-    s32 x;
+    u32 y;
+    u32 x;
     u32 opaque;
     dst = image->pixels;
     width = image->width;
