@@ -2488,6 +2488,8 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
                 dist = func_004c69f0(&diff, &diff);
                 if (dist >= 97.0f) continue;
+                if (func_002ff790(*(void**)((u8*)gridEntry + 0x48)) != NULL)
+                    continue;
 
                 moveCount = func_001b0220(*(void**)((u8*)gridEntry + 0x170));
                 if (moveCount != 0) continue;
