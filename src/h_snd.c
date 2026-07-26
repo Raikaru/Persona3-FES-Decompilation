@@ -541,9 +541,6 @@ u8 func_00109170(void)
 void H_Snd_00109180(s32 channelIndex)
 {
     char name[0x100];
-    HsndChannel* channel;
-    HsndBackendControl* control;
-    u32* controlData20;
     void** handle;
 
     if (channelIndex == 0)
@@ -580,30 +577,28 @@ void H_Snd_00109180(s32 channelIndex)
         return;
     }
 
-    channel = &sChannels[channelIndex];
-    handle = &channel->handle;
+    handle = &sChannels[channelIndex].handle;
     if (*handle != NULL)
     {
         func_0054d060(*handle);
         *handle = NULL;
     }
 
-    control = &sBackendControls[channelIndex];
-    controlData20 = &control->data20;
-    control->data18 = 0;
-    *controlData20 = 0;
-    control->data1C = 0;
-    control->flags = 2;
-    control->voiceCount = 2;
-    control->timeout = 0x5DC0;
+    sBackendControls[channelIndex].data18 = 0;
+    sBackendControls[channelIndex].data20 = 0;
+    sBackendControls[channelIndex].data1C = 0;
+    sBackendControls[channelIndex].flags = 2;
+    sBackendControls[channelIndex].voiceCount = 2;
+    sBackendControls[channelIndex].timeout = 0x5DC0;
 
-    switch (channel->requestType)
+    switch (sChannels[channelIndex].requestType)
     {
         case HSND_START_NAMED_STREAM:
-            *controlData20 = 0;
-            control->pending = 1;
-            *handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
+            sBackendControls[channelIndex].data20 = 0;
+            sBackendControls[channelIndex].pending = 1;
+            *handle = func_0054d030(&sBackendControls[channelIndex],
+                                    sChannelData0[channelIndex],
+                                    sChannelData1[channelIndex]);
             func_0054d238(*handle, 0);
             if (channelIndex == 4)
             {
@@ -613,7 +608,7 @@ void H_Snd_00109180(s32 channelIndex)
             {
                 func_0054d220(*handle, 0);
             }
-            func_0054d0a0(*handle, channel->name);
+            func_0054d0a0(*handle, sChannels[channelIndex].name);
             func_0054d208(*handle, 1);
             break;
 
@@ -622,15 +617,16 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_CDVD:
             if (channelIndex >= 2)
             {
-                if (channel->requestType == HSND_START_BGM ||
-                    channel->requestType == HSND_START_CDVD)
+                if (sChannels[channelIndex].requestType == HSND_START_BGM ||
+                    sChannels[channelIndex].requestType == HSND_START_CDVD)
                 {
-                    *controlData20 = 0;
+                    sBackendControls[channelIndex].data20 = 0;
                 }
-                control->pending = 1;
-                *handle = func_0054d030(control, sChannelData0[channelIndex],
-                                                 sChannelData1[channelIndex]);
-                if (*controlData20 != 0)
+                sBackendControls[channelIndex].pending = 1;
+                *handle = func_0054d030(&sBackendControls[channelIndex],
+                                        sChannelData0[channelIndex],
+                                        sChannelData1[channelIndex]);
+                if (sBackendControls[channelIndex].data20 != 0)
                 {
                     func_0054d328(*handle);
                 }
@@ -644,17 +640,18 @@ void H_Snd_00109180(s32 channelIndex)
                     func_0054d220(*handle, 0);
                 }
             }
-            if (channel->requestType == HSND_START_CDVD)
+            if (sChannels[channelIndex].requestType == HSND_START_CDVD)
             {
-                func_0054d0b8(*handle, channel->modeArg.data, channel->id);
+                func_0054d0b8(*handle, sChannels[channelIndex].modeArg.data,
+                              sChannels[channelIndex].id);
             }
             else if (channelIndex == 0)
             {
-                func_00102530(*handle, channel->name);
+                func_00102530(*handle, sChannels[channelIndex].name);
             }
             else
             {
-                func_001025c0(*handle, channel->name);
+                func_001025c0(*handle, sChannels[channelIndex].name);
             }
             func_0054d208(*handle, 1);
             break;
@@ -663,16 +660,19 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_STREAM_FADE:
             if (channelIndex >= 2)
             {
-                control->class = channelIndex == 2 ? 2 : 3;
-                control->pending = 1;
-                if (channel->requestType == HSND_START_STREAM_FADE)
+                sBackendControls[channelIndex].class =
+                    channelIndex == 2 ? 2 : 3;
+                sBackendControls[channelIndex].pending = 1;
+                if (sChannels[channelIndex].requestType ==
+                    HSND_START_STREAM_FADE)
                 {
-                    *controlData20 = 0;
-                    control->pending = 2;
+                    sBackendControls[channelIndex].data20 = 0;
+                    sBackendControls[channelIndex].pending = 2;
                 }
-                *handle = func_0054d030(control, sChannelData0[channelIndex],
-                                                 sChannelData1[channelIndex]);
-                if (*controlData20 != 0)
+                *handle = func_0054d030(&sBackendControls[channelIndex],
+                                        sChannelData0[channelIndex],
+                                        sChannelData1[channelIndex]);
+                if (sBackendControls[channelIndex].data20 != 0)
                 {
                     func_0054d328(*handle);
                 }
@@ -693,12 +693,13 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_STREAM:
             if (channelIndex >= 2)
             {
-                control->class = 3;
-                control->pending = 2;
-                *controlData20 = 0;
-                *handle = func_0054d030(control, sChannelData0[channelIndex],
-                                                 sChannelData1[channelIndex]);
-                if (*controlData20 != 0)
+                sBackendControls[channelIndex].class = 3;
+                sBackendControls[channelIndex].pending = 2;
+                sBackendControls[channelIndex].data20 = 0;
+                *handle = func_0054d030(&sBackendControls[channelIndex],
+                                        sChannelData0[channelIndex],
+                                        sChannelData1[channelIndex]);
+                if (sBackendControls[channelIndex].data20 != 0)
                 {
                     func_0054d328(*handle);
                 }
@@ -712,8 +713,8 @@ void H_Snd_00109180(s32 channelIndex)
                     func_0054d220(*handle, 0);
                 }
             }
-            func_0054d0e8(*handle, channel->modeData,
-                          channel->modeArg.parameter);
+            func_0054d0e8(*handle, sChannels[channelIndex].modeData,
+                          sChannels[channelIndex].modeArg.parameter);
             break;
 
         default:
