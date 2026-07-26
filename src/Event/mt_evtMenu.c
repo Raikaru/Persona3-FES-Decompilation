@@ -761,8 +761,6 @@ code * FUN_0036ee30(void);
 float FUN_0038a220(int param_1);
 #pragma alias FUN_00523ac8_evt4 FUN_00523ac8
 extern void FUN_00523ac8_evt4(u8 *param_1,void *param_2,int param_3,int param_4);
-#pragma alias FUN_00523ac8_evt4_typed FUN_00523ac8
-extern void FUN_00523ac8_evt4_typed(u8 *param_1,u8 *param_2,u32 param_3,u32 param_4);
 float FUN_0038a900(int param_1);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
@@ -9539,7 +9537,7 @@ u32 FUN_0037a150(int param_1,int param_2,int param_3)
 
   u8 auStack_10 [16];
 
-  FUN_00523ac8_evt4_typed(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
+  FUN_00523ac8_evt4(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 

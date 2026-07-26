@@ -813,6 +813,7 @@ void func_001a7710(u32* state)
     if (state == NULL)
     {
         return;
+    }
         work = (KClumpFreeState*)(void*)state;
 
     while (work->list8 != 0)
@@ -887,7 +888,6 @@ void func_001a7710(u32* state)
         work->list28 = (u32)next;
     }
 
-    }
 }
 
 // FUN_001a7910 NONMATCHING
