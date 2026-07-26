@@ -746,7 +746,7 @@ KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue
     CampBridgeScreenWork* work;
     KwlnTask* taskValue;
 
-    work = (CampBridgeScreenWork*)(*DAT_00960184)(1, 0x2c, 0x40000);
+    work = (CampBridgeScreenWork*)(*DAT_00960184_abs)(1, 0x2c, 0x40000);
     if (work == 0) {
         return 0;
     }
@@ -757,8 +757,7 @@ KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, CampFloatPair packedValue
     if (taskValue == 0) {
         return 0;
     }
-    *(f32*)((u8*)work + 4) = packedValue.x;
-    *(f32*)((u8*)work + 8) = packedValue.y;
+    *(CampFloatPair*)((u8*)work + 4) = packedValue;
     work->active = 1;
     *(u16*)((u8*)work + 0x0e) = param4;
     *(u16*)((u8*)work + 0x12) = param5;

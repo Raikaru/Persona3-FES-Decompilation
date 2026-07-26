@@ -1457,7 +1457,7 @@ u8 clndIsHolidayOrSunday()
     s16 daysSinceApr5;
     s16 currDayOfMonth;
     s16 currMonth;
-    s32 i;
+    s16 i;
     s32 month;
     const Holiday* holidays;
     s32 day;
@@ -1470,9 +1470,9 @@ u8 clndIsHolidayOrSunday()
 
     currMonth = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
     currDayOfMonth = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
-    holidays = sHolidays;
     month = currMonth;
     day = currDayOfMonth;
+    holidays = sHolidays;
     for (i = 0; i < 0x164; i++)
     {
         if (holidays[i].month == -1)

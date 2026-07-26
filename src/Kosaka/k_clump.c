@@ -942,13 +942,15 @@ void func_001a7b50(void* state, u32 mode)
     RwSphere* sphere;
     void* resources;
     u32 found;
+    u32 one;
     void* object;
     void (**resourceCall)(void*);
     if (state == NULL)
     {
         return;
     }
-    if (mode == 1)
+    one = 1;
+    if (mode == one)
     {
         void (**renderState)(u32, ...);
 
@@ -965,7 +967,7 @@ void func_001a7b50(void* state, u32 mode)
         sphere = func_004912b0(object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->enabled == 1)
+            if (item->enabled == one)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
@@ -976,7 +978,7 @@ void func_001a7b50(void* state, u32 mode)
                 (*resourceCall)(object);
             }
             if (item->enabled == 1)
-            {
+            if (item->enabled == one)
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
             }
         }
@@ -996,7 +998,7 @@ void func_001a7b50(void* state, u32 mode)
                 sphere = func_004912b0(item->object);
                 if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
                 {
-                    if (item->enabled == 1)
+                    if (item->enabled == one)
                     {
                         (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
                     }
@@ -1006,7 +1008,7 @@ void func_001a7b50(void* state, u32 mode)
                         resourceCall = (void (**)(void*))((u8*)object + 0x48);
                         (*resourceCall)(object);
                     }
-                    if (item->enabled == 1)
+                    if (item->enabled == one)
                     {
                         (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
                     }
@@ -1015,7 +1017,7 @@ void func_001a7b50(void* state, u32 mode)
         }
         item = item->next;
     }
-    if (mode == 1)
+    if (mode == one)
     {
         void (**renderState)(u32, ...);
 
@@ -1031,7 +1033,7 @@ void func_001a7b50(void* state, u32 mode)
         sphere = func_004912b0(item->object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->enabled == 1)
+            if (item->enabled == one)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
@@ -1041,14 +1043,14 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            if (item->enabled == 1)
+            if (item->enabled == one)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
             }
         }
         item = item->next;
     }
-    if (mode == 1)
+    if (mode == one)
     {
         void (**renderState)(u32, ...);
 
@@ -1064,7 +1066,7 @@ void func_001a7b50(void* state, u32 mode)
         sphere = func_004912b0(item->object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->enabled == 1)
+            if (item->enabled == one)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
@@ -1074,7 +1076,7 @@ void func_001a7b50(void* state, u32 mode)
                 resourceCall = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
-            if (item->enabled == 1)
+            if (item->enabled == one)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
             }

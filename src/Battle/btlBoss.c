@@ -824,8 +824,7 @@ u64 func_002f88c0()
                         break;
                     case 0x113:
                     case 0x114:
-                        result = 1;
-                        return result;
+                        return (u64)(uintptr_t)1;
                 }
                 unit = unit->next;
             }

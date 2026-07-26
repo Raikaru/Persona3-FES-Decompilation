@@ -1812,6 +1812,8 @@ u32 func_0010d910(s16 index)
 void func_0010d950(s16 index)
 {
     u32* slot;
+    u32 channel;
+    u32 handle;
 
     if (sSfdDecodeSlots_abs[index].state != 1)
     {
@@ -1820,10 +1822,18 @@ void func_0010d950(s16 index)
     slot = (u32*)((u8*)sSfdDecodeSlots_abs + 0x18) + index * 17;
     if (*slot != 0)
     {
-        FUN_0051deb0(5, (u32)sSfdDecodeSlots_abs[index].completion);
-        FUN_0051deb0(0, (u32)sSfdDecodeSlots_abs[index].decodeHandle);
-        FUN_0051dd48(5, (u32)sSfdDecodeSlots_abs[index].outputHandle);
-        FUN_0051dd48(3, (u32)sSfdDecodeSlots_abs[index].queueHandle);
+        channel = 5;
+        handle = (u32)sSfdDecodeSlots_abs[index].completion;
+        FUN_0051deb0(channel, handle);
+        channel = 0;
+        handle = (u32)sSfdDecodeSlots_abs[index].decodeHandle;
+        FUN_0051deb0(channel, handle);
+        channel = 5;
+        handle = (u32)sSfdDecodeSlots_abs[index].outputHandle;
+        FUN_0051dd48(channel, handle);
+        channel = 3;
+        handle = (u32)sSfdDecodeSlots_abs[index].queueHandle;
+        FUN_0051dd48(channel, handle);
         *slot = 0;
         func_0050B710(sSfdDecodeSlots_abs[index].output);
         func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
