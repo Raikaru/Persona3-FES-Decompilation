@@ -1943,6 +1943,9 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     f32 inputY;
 
     input.value = position;
+    inputX = input.coordinates.x;
+    inputY = input.coordinates.y;
+    local.value = 0;
     headerStage.x = 0.0f;
     headerStage.y = 0.0f;
     headerStage.z = alpha;
@@ -1950,9 +1953,6 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     FUN_001159f0(NULL, DAT_00833B48, 0, 0,
                  55.0f + headerStage.x,
                  headerStage.y + 36.0f, headerStage.z);
-    FUN_001159f0(NULL, DAT_00833B48, 0, 0,
-                 55.0f + local.coordinates.x,
-                 local.coordinates.y + 36.0f, alpha);
     if (frame < 0x17) {
         for (i = 0; i < 5; i++) {
             visible = frame - i * 3;
@@ -1964,27 +1964,35 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                 local.coordinates.x = 0.0f;
                 fade = (8 - visible) * 25;
                 local.coordinates.y += (f32)fade;
+                rowStage.x = local.coordinates.x;
+                rowStage.y = local.coordinates.y;
+                rowStage.z = alpha;
+                rowStage.w = (f32)visible;
                 rotation = visible * 0x1000 / 8;
                 if (rotation != 0) {
                     sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
                     sprite->spriteScale = alpha;
-                    sprite->x = local.coordinates.x;
-                    sprite->y = local.coordinates.y + 24.0f;
+                    sprite->x = rowStage.x;
+                    sprite->y = rowStage.y + 24.0f;
                     sprite->rotation = (u16)rotation;
                     sprite->alpha = 0;
                     FUN_001127D0(sprite, 1);
                     FUN_00115980(sprite);
                 } else {
                     FUN_001159f0(NULL, DAT_00833B48, 0xd, 0,
-                                 local.coordinates.x,
-                                 local.coordinates.y + 24.0f, alpha);
+                                 rowStage.x,
+                                 rowStage.y + 24.0f, rowStage.z);
                 }
             } else {
                 local.coordinates.x = inputX;
+                rowStage.x = local.coordinates.x;
+                rowStage.y = local.coordinates.y;
+                rowStage.z = alpha;
+                rowStage.w = (f32)visible;
                 sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
                 sprite->spriteScale = alpha;
-                sprite->x = local.coordinates.x;
-                sprite->y = local.coordinates.y + 24.0f;
+                sprite->x = rowStage.x;
+                sprite->y = rowStage.y + 24.0f;
                 sprite->rotation = 0x1000;
                 sprite->alpha = 0;
                 FUN_001127D0(sprite, 1);
@@ -2103,17 +2111,22 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
 
     if (frame < 10) {
         fade = (10 - frame) * 0xff / 10;
-        local.coordinates.x = (f32)(-(10 - frame) * 640 / 10);
-        local.coordinates.y = 0.0f;
+        footerStage.x = (f32)(-(10 - frame) * 640 / 10);
+        footerStage.y = 0.0f;
+        footerStage.z = alpha;
+        footerStage.w = (f32)fade;
     } else {
         fade = 0;
-        local.value = 0;
+        footerStage.x = 0.0f;
+        footerStage.y = 0.0f;
+        footerStage.z = alpha;
+        footerStage.w = 0.0f;
     }
     sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
-    sprite->spriteScale = alpha;
-    sprite->x = 289.0f + local.coordinates.x;
-    sprite->y = local.coordinates.y - 33.0f;
-    sprite->alpha = (u8)fade;
+    sprite->spriteScale = footerStage.z;
+    sprite->x = 289.0f + footerStage.x;
+    sprite->y = footerStage.y - 33.0f;
+    sprite->alpha = (u8)footerStage.w;
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
 }

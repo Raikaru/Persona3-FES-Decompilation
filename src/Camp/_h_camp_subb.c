@@ -1089,9 +1089,10 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
   float yValue3;
   float originX;
   float originY;
-  
-  originX = position.x;
-  originY = position.y;
+  CampPair origin;
+  origin = position;
+  originX = origin.x;
+  originY = origin.y;
   colorBase = 0xffU - alpha;
   if (work->entryCount != 0) {
     campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,

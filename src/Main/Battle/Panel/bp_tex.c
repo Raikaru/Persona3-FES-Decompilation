@@ -2503,16 +2503,16 @@ void bpTexPrepareNodes(void)
     u32* work;
     u32* node;
     s32 i;
-    u32 origin[3];
+    f32 origin[3];
 
     if (BP_TEX_GLOBAL == NULL)
     {
         func_0019d3f0((const char*)0x0068ea00, 0xbc);
     }
     work = BP_TEX_GLOBAL;
-    origin[0] = *(u32*)0x0068ea90;
-    origin[1] = *(u32*)0x0068ea94;
-    origin[2] = *(u32*)0x0068ea98;
+    origin[0] = *(f32*)0x0068ea90;
+    origin[1] = *(f32*)0x0068ea94;
+    origin[2] = *(f32*)0x0068ea98;
     for (i = 0; i < (s32)BP_TEX_U32(work, 0x499f * 4); i++)
     {
         if (BP_TEX_GLOBAL == NULL)
@@ -2523,8 +2523,7 @@ void bpTexPrepareNodes(void)
         while (node != NULL)
         {
             if ((node[0] & 2) == 0 &&
-                node[4] == (u32)i &&
-                node[0xfc4] == 0)
+                node[4] == (u32)i)
             {
                 break;
             }

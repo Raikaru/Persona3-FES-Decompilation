@@ -5911,32 +5911,34 @@ void btlActionUpdateStateError(BtlAction* action)
     BtlPacket* animPacket;
     BtlPacket* effectPacket;
     BtlPacket* cameraPacket;
+    BtlUnit* unit;
     s16 animation;
     s16 duration;
     u32 table;
 
+    unit = action->unit;
     btlAction0028a780(action);
-    packet = action->target.commandId == 3 ? FUN_002bd690(action->unit, action->target.unk_38) :
-                                             FUN_002bd590(action->unit, action->target.specificId);
+    packet = action->target.commandId == 3 ? FUN_002bd690(unit, action->target.unk_38) :
+                                             FUN_002bd590(unit, action->target.specificId);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-    if (action->unit->genus == UNIT_GENUS_PC)
+    if (unit->genus == UNIT_GENUS_PC)
     {
         animation = action->target.commandId == 3 ? 0x15 : 0xc;
         table = action->target.commandId == 3 ? 0x38 : 0x1c;
-        duration = FUN_002838d0(1.0f, action->unit, animation);
+        duration = FUN_002838d0(1.0f, unit, animation);
     }
     else
     {
         animation = FUN_002d6370(action->target.specificId) == 0 ? 7 : 4;
         table = 0x21;
-        duration = FUN_002835e0(1.0f, action->unit, animation);
+        duration = FUN_002835e0(1.0f, unit, animation);
     }
-    animPacket = btlUnitCreateAnimPacket(action->unit, animation, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+    animPacket = btlUnitCreateAnimPacket(unit, animation, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
     ACTION_U16(animPacket, 0x4a) = duration + 6;
     animPacket->actionUID = action->uid;
     btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
-    effectPacket = func_002bb2f0(ACTION_U32(gBtl, 0xc24 + table * 4), action->unit, 0, animPacket->uid, 0x100);
+    effectPacket = func_002bb2f0(ACTION_U32(gBtl, 0xc24 + table * 4), unit, 0, animPacket->uid, 0x100);
     effectPacket->actionUID = action->uid;
     btlPacketRegister(effectPacket, BTLPACKET_TYPE_3D);
     cameraPacket = btlCameraCreateSetStatePacket(action, 2);
@@ -5944,7 +5946,7 @@ void btlActionUpdateStateError(BtlAction* action)
     cameraPacket->parentUID = effectPacket->uid;
     cameraPacket->actionUID = action->uid;
     btlPacketRegister(cameraPacket, BTLPACKET_TYPE_0);
-    packet = FUN_002bd850(action->unit, ACTION_U16(action, 0xdc));
+    packet = FUN_002bd850(unit, ACTION_U16(action, 0xdc));
     packet->unk_00 = 4;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
