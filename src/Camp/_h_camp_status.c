@@ -3148,8 +3148,6 @@ void FUN_001332f0(CampVec2 position, f32 alpha, void* unused,
     CampVec2 drawPosition;
     s32 drawAlpha;
     s32 arcanaFrame;
-    s32 arcanaFrame;
-    drawAlpha = 0xff - fade;
     drawAlpha = 0xff - fade;
     FUN_0012bce0_s32(position, alpha, unused, persona, (u8)drawAlpha);
     drawPosition = position;

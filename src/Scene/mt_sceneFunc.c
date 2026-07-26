@@ -3956,10 +3956,10 @@ void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
 {
   RwV3d delta;
   float first_x;
-  float first_y;
-  float first_z;
   float second_x;
+  float first_y;
   float second_y;
+  float first_z;
   float second_z;
 
   FUN_003bbc90_scene_typed(param_1,param_3,param_4,param_5,&first_x,&first_y,&first_z);
