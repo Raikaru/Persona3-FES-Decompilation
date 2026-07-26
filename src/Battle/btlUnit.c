@@ -1095,14 +1095,13 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
 
     if (btlUnit00282c60(unit) && unit->unk_9e0 != nextAnimation)
     {
-        btlUnitAnimate(unit, nextAnimation, blend, speed, mode);
+        btlUnitAnimate(unit, nextAnimation, blendFrameCount, speed, mode);
     }
     unit->unk_9e0 = nextAnimation;
     unit->unk_9e2 = blend;
     unit->unk_9e4 = speed;
     unit->unk_9e8 = (s8)mode;
 
-    (void)blendFrameCount;
 }
 // FUN_0027F530
 void func_0027f530(BtlUnit* unit)
@@ -4226,6 +4225,7 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
         scale = *(const u16*)(table + 0x14);
         unit->unk_9ec = (void*)(table + 0x24);
         unit->unk_9d8 = 0x1a;
+        unit->scale = ((f32)scale * 2.0f) / 100.0f;
     }
     else
     {
@@ -4235,15 +4235,16 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
         {
             unit->unk_9ec = (void*)(table + 0x2a);
             unit->unk_9d8 = 0x13;
+            unit->scale = ((f32)scale * 2.0f) / 100.0f;
         }
         else
         {
             unit->unk_9ec = (void*)(table + 0x24);
             unit->unk_9d8 = 0x17;
+            unit->scale = ((f32)scale * 2.0f) / 100.0f;
         }
     }
 
-    unit->scale = ((f32)scale * 2.0f) / 100.0f;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     func_002bcde0(unit, &unit->unkData8);
 }

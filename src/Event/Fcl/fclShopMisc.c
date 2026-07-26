@@ -3760,36 +3760,44 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
 
   fn_src = (u8 **)&PTR_FUN_006aee00;
   copy_dst = auStack_30;
-  for (i = 0; i < 4; i++) {
+  i = 4;
+  do {
     copy_dst[0] = (u32)fn_src[0];
     copy_dst[1] = (u32)fn_src[1];
     fn_src += 2;
+    i--;
     copy_dst += 2;
-  }
+  } while (0 < i);
   fn_src = (u8 **)&PTR_FUN_006aee20;
   copy_dst = auStack_50;
-  for (i = 0; i < 4; i++) {
+  i = 4;
+  do {
     copy_dst[0] = (u32)fn_src[0];
     copy_dst[1] = (u32)fn_src[1];
     fn_src += 2;
+    i--;
     copy_dst += 2;
-  }
+  } while (0 < i);
   fn_src = (u8 **)&PTR_FUN_006aee40;
   copy_dst = auStack_70;
-  for (i = 0; i < 4; i++) {
+  i = 4;
+  do {
     copy_dst[0] = (u32)fn_src[0];
     copy_dst[1] = (u32)fn_src[1];
     fn_src += 2;
+    i--;
     copy_dst += 2;
-  }
+  } while (0 < i);
   copy_src = &DAT_006aee60;
   copy_dst = auStack_b0;
-  for (i = 0; i < 8; i++) {
+  i = 8;
+  do {
     copy_dst[0] = copy_src[0];
     copy_dst[1] = copy_src[1];
     copy_src += 2;
+    i--;
     copy_dst += 2;
-  }
+  } while (0 < i);
 
   FUN_003c5e80(task,auStack_30[source_index]);
   FUN_003c5e20(task,auStack_50[source_index]);

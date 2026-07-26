@@ -507,16 +507,16 @@ void* func_001107d0(KwlnTask* task)
             if (work->resourceTask != NULL)
             {
                 resourceWork = (MaestroResourceWork*)work->resourceTask->workData;
-                resourceWork->renderFlags = work->renderFlags;
-                resourceWork->x = work->x;
-                resourceWork->y = work->y;
-                resourceWork->runtimeResources[0] = work->resources[0];
+                *(u32*)((u8*)resourceWork + 0x4E4) = work->renderFlags;
+                *(f32*)((u8*)resourceWork + 0x3D8) = work->x;
+                *(f32*)((u8*)resourceWork + 0x3DC) = work->y;
+                *(void**)((u8*)resourceWork + 0x328) = work->resources[0];
                 if (work->resources[0] != NULL)
                 {
                     *(u32*)((u8*)work->resources[0] + 0x50) =
                         (*(u32*)((u8*)work->resources[0] + 0x50) & 0xFFFFFF00) | 2;
                 }
-                resourceWork->runtimeResources[1] = work->resources[1];
+                *(void**)((u8*)resourceWork + 0x32C) = work->resources[1];
                 if (work->resources[1] != NULL)
                 {
                     *(u32*)((u8*)work->resources[1] + 0x50) =
@@ -525,11 +525,11 @@ void* func_001107d0(KwlnTask* task)
                 for (i = 0; i < 3; i++)
                 {
                     destinationIndex = i == 2 ? 1 : (i == 0 ? 3 : 4);
-                    resourceWork->coordinates0[destinationIndex] =
+                    *(s16*)((u8*)resourceWork + 0x3E8 + destinationIndex * 2) =
                         *(s16*)(work->archiveHeader + 0xA + i * 2);
-                    resourceWork->coordinates1[destinationIndex] =
+                    *(s16*)((u8*)resourceWork + 0x438 + destinationIndex * 2) =
                         *(s16*)(work->archiveHeader + 0x12 + i * 2);
-                    resourceWork->coordinates2[destinationIndex] =
+                    *(s16*)((u8*)resourceWork + 0x488 + destinationIndex * 2) =
                         *(s16*)(work->archiveHeader + 0x1A + i * 2);
                 }
             }
@@ -4760,8 +4760,19 @@ void* func_001193d0(KwlnTask* task)
 
     case 2:
         work->frame++;
-        MaestroMarkSpriteDraw(work, 0x10, 0x60,
-                              (f32)((work->frame * 0x1e) / 3 - 0x14), 0);
+        {
+            MaestroRenderNode* node;
+            node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
+            node->depth = work->animation.depth;
+            node->x = work->animation.x;
+            node->y = work->animation.y;
+            node->pivotX = 0x10;
+            node->pivotY = 0x60;
+            node->angle = (f32)((work->frame * 0x1e) / 3 - 0x14);
+            node->alphaCutoff = 0;
+            func_001127d0(node, true);
+            func_00115980((int*)node);
+        }
         if (work->frame == 3)
         {
             work->frame = 0;
@@ -4771,8 +4782,19 @@ void* func_001193d0(KwlnTask* task)
 
     case 3:
         work->frame++;
-        MaestroMarkSpriteDraw(work, 0x10, 0x60,
-                              (f32)(10 - (work->frame * 10) / 3), 0);
+        {
+            MaestroRenderNode* node;
+            node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
+            node->depth = work->animation.depth;
+            node->x = work->animation.x;
+            node->y = work->animation.y;
+            node->pivotX = 0x10;
+            node->pivotY = 0x60;
+            node->angle = (f32)(10 - (work->frame * 10) / 3);
+            node->alphaCutoff = 0;
+            func_001127d0(node, true);
+            func_00115980((int*)node);
+        }
         if (work->frame == 2)
         {
             work->frame = 0;
@@ -4782,11 +4804,21 @@ void* func_001193d0(KwlnTask* task)
 
     case 4:
         work->frame++;
-        MaestroMarkSpriteDraw(work, 0x10, 0x60,
-                              0.0f,
-                              work->frame < 0x0f
-                                  ? 0
-                                  : (u8)(((work->frame - 0x0f) * 0xff) / 3));
+        {
+            MaestroRenderNode* node;
+            node = (MaestroRenderNode*)func_001158b0(NULL, work->blob, 0);
+            node->depth = work->animation.depth;
+            node->x = work->animation.x;
+            node->y = work->animation.y;
+            node->pivotX = 0x10;
+            node->pivotY = 0x60;
+            node->angle = 0.0f;
+            node->alphaCutoff = work->frame < 0x0f
+                              ? 0
+                              : (u8)(((work->frame - 0x0f) * 0xff) / 3);
+            func_001127d0(node, true);
+            func_00115980((int*)node);
+        }
         if (work->frame == 0x12)
         {
             return KWLNTASK_STOP;

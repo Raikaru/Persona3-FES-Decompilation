@@ -2062,11 +2062,10 @@ static inline void fldrc_apply_field_config(u32 config)
 
     if (version > 0x10000)
     {
-        field = (u32*)K_Field_Get();
-        count = *(u32*)((u8*)field + 0x1168);
+        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
         for (i = 0; i < count; i++)
         {
-            node = *(u32*)((u8*)field + 0x116c + i * 4);
+            node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
             fldrc_copy_words(node + 0xa20, config + 0x130, 3);
             FUN_001b5610((u32*)node, (const f32*)(node + 0xa20));
         }
@@ -2085,11 +2084,10 @@ static inline void fldrc_apply_field_config(u32 config)
     {
         listA = FUN_003b5d50(1);
         listB = FUN_003b5d50(3);
-        field = (u32*)K_Field_Get();
-        count = *(u32*)((u8*)field + 0x1168);
+        count = *(u32*)((u8*)K_Field_Get() + 0x1168);
         for (i = 0; i < count; i++)
         {
-            node = *(u32*)((u8*)field + 0x116c + i * 4);
+            node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
             fldrc_copy_words(node + 0xa2c, config + 0x1f0, 3);
         }
         while (listA != 0)

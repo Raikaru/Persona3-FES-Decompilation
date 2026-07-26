@@ -3158,13 +3158,10 @@ u32 FUN_002a0440(float *param_1)
 
       param_1[3] = fVar10;
 
-      fVar14 = *(float *)(iVar7 + 0x1c8);
-
-      fVar8 = *(float *)(iVar7 + 0x1cc);
-
-      fVar10 = *(float *)(iVar7 + 0x1d0);
-
-      param_1[0xc] = *(float *)(iVar7 + 0x1c4);
+      fVar14 = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1c8);
+      fVar8 = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1cc);
+      fVar10 = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1d0);
+      param_1[0xc] = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1c4);
 
       param_1[0xd] = fVar14;
 
@@ -3172,13 +3169,10 @@ u32 FUN_002a0440(float *param_1)
 
       param_1[0xf] = fVar10;
 
-      fVar14 = *(float *)(iVar7 + 0x1d8);
-
-      fVar8 = *(float *)(iVar7 + 0x1dc);
-
-      fVar10 = *(float *)(iVar7 + 0x1e0);
-
-      param_1[0x10] = *(float *)(iVar7 + 0x1d4);
+      fVar14 = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1d8);
+      fVar8 = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1dc);
+      fVar10 = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1e0);
+      param_1[0x10] = *(float *)((int)(uintptr_t)DAT_007ce3ec + 0x1d4);
 
       param_1[0x11] = fVar14;
 
