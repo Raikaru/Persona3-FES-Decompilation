@@ -606,8 +606,8 @@ u64 FUN_003aed10(u64 param_1,int param_2)
 {
   int offset;
   int base;
-  u8 low;
-  u8 high;
+  u32 low;
+  u32 high;
   short sVar2;
   u32 uVar3;
   u32 key;
@@ -616,22 +616,23 @@ u64 FUN_003aed10(u64 param_1,int param_2)
   offset = *(volatile int *)((int)param_2 + 0x18);
   base = *(volatile int *)((int)param_2 + 0x10);
   pcVar4 = (u8 *)(base + offset);
-  low = pcVar4[0] - 1;
+  low = (u8)(pcVar4[0] - 1);
   high = pcVar4[1];
   if (high == 0xff) {
     high = 0;
   } else {
     high = high - 1;
   }
-  if ((key = (low & 0xff) | (high << 8)) == 0) {
-    sVar2 = FUN_0016dd40();
-    if (sVar2 == 0) {
-      FUN_0019d3f0("frTagTable.c",0x38c);
-    }
-    uVar3 = FUN_003c3f80(sVar2);
-  } else {
-    uVar3 = FUN_003c3f80();
+  if (((key = (low & 0xff) | (high << 8))) != 0) goto normal_path;
+  sVar2 = FUN_0016dd40();
+  if (sVar2 == 0) {
+    FUN_0019d3f0("frTagTable.c",0x38c);
   }
+  uVar3 = FUN_003c3f80(sVar2);
+  goto join_path;
+normal_path:
+  uVar3 = FUN_003c3f80();
+join_path:
   FUN_003b22a0(param_2);
   FUN_003b2020(uVar3,param_2);
   return 0;
