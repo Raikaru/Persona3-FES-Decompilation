@@ -4653,7 +4653,7 @@ FUN_003f4a90(int param_1,int param_2,int param_3,int param_4,u64 param_5,short *
 
   param_2 = param_2 + param_6[1];
 
-  uVar1 = (u32)((DAT_007caef0 * (float)param_3 * (float)(int)param_6[6]) / 255.0);
+  uVar1 = (u32)((DAT_007caef0 * (float)param_3 * (float)(int)param_6[6]) / 255.0f);
 
   if (param_4 != 4) {
 
@@ -6138,7 +6138,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
   if (lVar9 == -1) {
 
-    uVar14 = (u32)((float)(int)param_3 * 0.5);
+      uVar14 = (u32)((float)(int)param_3 * 0.5);
 
     FUN_0040e3c0(0,param_1,iVar10 + 0x1c,uVar14 & 0xff,0xce,0);
 
@@ -6184,7 +6184,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
   if (lVar12 == -1) {
 
-    uVar14 = (u32)((float)(int)param_3 * 0.5);
+      uVar14 = (u32)((float)(int)param_3 * 0.5);
 
     FUN_0040e3c0(0,param_1,iVar10 + 0x38,uVar14 & 0xff,0xce,0);
 
