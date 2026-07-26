@@ -3334,6 +3334,8 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
             work->flags |= 8;
             cursor++;
             break;
+        default:
+            break;
         }
     } while ((u32)(stop != 0) ^ 1);
     work->cursor = cursor;

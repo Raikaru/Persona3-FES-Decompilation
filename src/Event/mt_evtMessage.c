@@ -61,7 +61,7 @@ extern int FUN_00194b20();
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-long FUN_0039ec70(int *param_1,u64 param_2);
+int FUN_0039ec70(int *param_1,u64 param_2);
 long FUN_0039ed20(int *param_1,u64 param_2);
 long FUN_0039edd0(int *param_1,u64 param_2);
 void FUN_0039ee80(int *param_1);
@@ -136,10 +136,10 @@ void FUN_003a2090(u64 param_1,u16 param_2,u32 param_3,u16 param_4);
 #define FUN_003a2090(...) ((void (*)(...))FUN_003a2090)(__VA_ARGS__)
 
 #undef FUN_0039ec70
-// FUN_0039EC70 NONMATCHING
+// FUN_0039EC70
 
 
-long FUN_0039ec70(int *param_1,u64 param_2)
+int FUN_0039ec70(int *param_1,u64 param_2)
 
 
 
@@ -147,9 +147,12 @@ long FUN_0039ec70(int *param_1,u64 param_2)
 
   int lVar1;
 
+  u32 p;
+
   
 
-  if (*param_1 != 0) {
+  p = *param_1 != 0;
+  if (p == 1) {
 
     FUN_0019d3f0("mt_evtMessage.c",0x1f);
 

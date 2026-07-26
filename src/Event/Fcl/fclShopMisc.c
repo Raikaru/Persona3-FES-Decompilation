@@ -1529,20 +1529,22 @@ long FUN_003f0d60(int param_1,u64 param_2)
   case 0:
     var_16 = 0xf;
     iVar1 = func_00170ed0(param_2,&iStack_4);
-    if (iStack_4 == 4) {
-      var_17 = (long)*(int *)(iVar1 + 0x18);
-    }
-    else if (iStack_4 == 3) {
-      var_17 = (long)*(int *)(iVar1 + 0x20);
-    }
-    else if (iStack_4 == 2) {
-      var_17 = (long)*(int *)(iVar1 + 0x1c);
-    }
-    else if (iStack_4 == 1) {
-      var_17 = (long)*(int *)(iVar1 + 0x1c);
-    }
-    else if (iStack_4 == 0) {
+    switch (iStack_4) {
+    case 0:
       var_17 = (long)*(int *)(iVar1 + 0x24);
+      break;
+    case 1:
+      var_17 = (long)*(int *)(iVar1 + 0x1c);
+      break;
+    case 2:
+      var_17 = (long)*(int *)(iVar1 + 0x1c);
+      break;
+    case 3:
+      var_17 = (long)*(int *)(iVar1 + 0x20);
+      break;
+    case 4:
+      var_17 = (long)*(int *)(iVar1 + 0x18);
+      break;
     }
     break;
   case 4:
@@ -16028,6 +16030,7 @@ void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4,
   
 
   datSetFlag(0x1424,1);
+  FUN_00402800(param_7);
 
 
   datSetFlag(0x1424,0);
