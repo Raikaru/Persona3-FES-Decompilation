@@ -1419,9 +1419,6 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5,
 }
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
-#pragma opt_propagation off
 // FUN_0036F900 NONMATCHING
 
 
@@ -1468,7 +1465,6 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
   return;
 
 }
-#pragma pop
 
 
 // FUN_0036FA40

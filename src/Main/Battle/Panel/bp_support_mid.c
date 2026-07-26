@@ -1850,7 +1850,6 @@ void func_0020cda0(u8* work)
     register s32 width;
     register s32 widthEven;
     register s32 widthOdd;
-
     *(u32*)(work + 0) = 0;
     half = 0.5f;
     *(f32*)(work + 0x9a0) = half;
@@ -1859,9 +1858,8 @@ void func_0020cda0(u8* work)
     row = 0;
     widthEven = 7;
     widthOdd = 8;
-    rowStep = *(volatile f32*)&fGpffff8338;
-    yOffset = *(volatile f32*)&fGpffff8318;
-    six = 6.0f;
+    rowStep = fGpffff8338;
+    yOffset = fGpffff8318;
     zero = 0.0f;
     three = 3.0f;
     while (row < 9) {
