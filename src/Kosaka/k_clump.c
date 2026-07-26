@@ -316,11 +316,11 @@ u32 func_001a66f0(void* clump, const char* name)
 // FUN_001a6740 NONMATCHING
 u32 func_001a6740(void* geometry, const char* name)
 {
-    void* material;
-    s32 materialIndex;
-    s32 resourceIndex;
-    RpUserDataArray* userData;
     u32 result;
+    void* material;
+    s32 resourceIndex;
+    s32 materialIndex;
+    RpUserDataArray* userData;
 
     result = 0;
     for (resourceIndex = 0; resourceIndex < (s32)*(u32*)((u8*)geometry + 0x14); resourceIndex++)

@@ -1981,11 +1981,8 @@ void func_001d1910(void)
         unit = &gFldUnitsPc[i];
         if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            if (0 < 1)
-            {
-                func_001a60d0(0, unit->mdl, 0, 1);
-                unit->unk_17c = 0;
-            }
+            func_001a60d0(0, unit->mdl, 0, 1);
+            unit->unk_17c = 0;
         }
     }
 }

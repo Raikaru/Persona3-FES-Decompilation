@@ -2004,11 +2004,11 @@ u32 FUN_003c77a0(void)
 
   lVar2 = FUN_003c7d50_direct();
 
-  FUN_005225a8_nm(&gp0xffffaa08,DAT_006a3e18_abs,0x158);
+  FUN_005225a8_nm(&gp0xffffaa08,DAT_006a3e18,0x158);
 
-  FUN_005225a8_nm(DAT_006a3e30_abs);
+  FUN_005225a8_nm(DAT_006a3e30);
 
-  FUN_001052b0_nm(DAT_006a3e30_abs);
+  FUN_001052b0_nm(DAT_006a3e30);
 
   if (lVar2 == 0) {
 
