@@ -5214,35 +5214,28 @@ float FUN_0042a310(float param_1,char param_2)
   return half + 0.0f - delta * ratio;
 }
 
-// FUN_0042A3F0 NONMATCHING
+// FUN_0042A3F0
 
 
 float FUN_0042a3f0(float param_1,float *param_2)
-
-
-
 {
-
   int iVar1;
+  YajimaVec3 pos = *(YajimaVec3 *)param_2;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  fStack_10 = *param_2;
-
-  fStack_c = param_2[1];
-
-  fStack_8 = param_2[2];
-
-  iVar1 = FUN_0044f120(&fStack_10);
-
-  return (param_1 / 2.0f + 0.0f) - (fStack_10 - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f);
-
+  iVar1 = FUN_0044f120(&pos);
+  grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = pos.x - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return half + 0.0f - delta * ratio;
 }
 
 // FUN_0042A4A0

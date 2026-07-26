@@ -1547,7 +1547,6 @@ long FUN_003f0d60(int param_1,u64 param_2)
       goto inner_join;
     }
 inner_join:
-    goto social_check;
     break;
   case 4:
     var_16 = 3;
