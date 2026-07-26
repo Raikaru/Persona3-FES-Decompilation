@@ -58897,3 +58897,113 @@ void FUN_00357ce0(u64 param_1)
 
 
 
+/* Retail sibling body starts at offset 0xB0 from 0x00357CE0. */
+// FUN_00357D90
+u_long128 FUN_00357d90(Vec128 *dst,const Vec128 *src)
+{
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+/* Retail sibling body starts at offset 0xC0 from 0x00357CE0. */
+// FUN_00357DA0
+u_long128 FUN_00357da0(Vec128 *dst,const Vec128 *src)
+{
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
+}
+
+/* Retail sibling body starts at offset 0xD0 from 0x00357CE0. */
+// FUN_00357DB0
+void FUN_00357db0(int param_1,int param_2)
+{
+  *(int *)(param_1 + 0x24) = param_2;
+}
+
+/* Retail sibling body starts at offset 0xE0 from 0x00357CE0. */
+// FUN_00357DC0
+void FUN_00357dc0(int param_1,float param_2)
+{
+  *(float *)(param_1 + 0x20) = param_2;
+}
+
+/* Retail sibling body starts at offset 0x290 from 0x003571C0. */
+// FUN_00357450
+void FUN_00357450(void)
+{
+  extern float fGpffff8148;
+  *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8148;
+}
+
+/* Retail sibling body starts at offset 0x2B0 from 0x003571C0. */
+// FUN_00357470 NONMATCHING
+void FUN_00357470(int param_1)
+{
+  u32 *param_2;
+  int iVar2;
+  int iVar1;
+  float fVar1;
+  float fVar2;
+  float fVar3;
+  extern float fGpffff8144;
+
+  param_2 = *(u32 **)(param_1 + 0x38);
+  iVar1 = *(int *)(param_1 + 0x28);
+  iVar2 = *(int *)param_2;
+  if (iVar2 == 0) goto ret;
+  if ((u32)iVar2 >= (u32)iVar1) goto process;
+  goto ret;
+process:
+  fVar2 = *(float *)(param_2 + 1);
+  if (iVar1 >= 0) {
+    fVar1 = (float)iVar1;
+  }
+  else {
+    iVar1 = ((u32)iVar1 >> 1) | ((u32)iVar1 & 1);
+    fVar1 = (float)iVar1;
+    fVar1 += fVar1;
+  }
+  if (iVar2 >= 0) {
+    fVar3 = (float)iVar2;
+  }
+  else {
+    iVar2 = ((u32)iVar2 >> 1) | ((u32)iVar2 & 1);
+    fVar3 = (float)iVar2;
+    fVar3 += fVar3;
+  }
+  fVar1 = fVar1 / fVar3;
+  fVar3 = (*(float *)(param_2 + 2) - fVar2) * fVar1;
+  fVar1 = fVar3 + fVar2;
+  *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8144 * fVar1;
+ret:
+  return;
+}
+// FUN_00357540
+void FUN_00357540(void)
+{
+}
+
+/* Retail sibling body starts at offset 0x80 from 0x0034B600. */
+// FUN_0034B680
+u_long128 FUN_0034b680(Vec128 *dst,const Vec128 *src)
+{
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+/* Retail sibling body starts at offset 0x90 from 0x0034B600. */
+// FUN_0034B690
+void FUN_0034b690(int param_1,int param_2)
+{
+  *(int *)(param_1 + 0x10) = param_2;
+}
+
+/* Retail sibling body starts at offset 0xA0 from 0x0034B600. */
+// FUN_0034B6A0
+void FUN_0034b6a0(int param_1,float param_2)
+{
+  *(float *)(param_1 + 0x14) = param_2;
+}
