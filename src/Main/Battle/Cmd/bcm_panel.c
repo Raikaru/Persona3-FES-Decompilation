@@ -637,6 +637,50 @@ alpha_done:
         default:
             goto loop_next;
         }
+    loop_kind02:
+        handle = (u32)*(void**)(record + 8);
+        layout[0] = 51.0f + *(f32*)(pos + 0);
+        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
+        if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
+            if (*(u32*)(record + 0x410) != 0) {
+                selColour = scaledAlphaColour;
+            } else if (kind == 2) {
+                selColour = colours[1];
+            } else if (kind == 0) {
+                selColour = colours[0];
+            }
+        } else {
+            if (*(u32*)(record + 0x410) != 0) {
+                selColour = scaledAlphaColour;
+            } else if (kind == 2) {
+                selColour = colours[3];
+            } else if (kind == 0) {
+                selColour = colours[2];
+            }
+        }
+        x = (s32)layout[0] << 4;
+        y = (s32)layout[1] << 3;
+        FUN_003b0d70((u32)handle, x, y);
+        FUN_003b0e20((u32)handle, selColour);
+        handle = (u32)*(void**)(record + 0xc);
+        layout[0] = 182.0f + *(f32*)(pos + 0);
+        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
+        x = (s32)layout[0] << 4;
+        y = (s32)layout[1] << 3;
+        FUN_003b0d70((u32)handle, x, y);
+        FUN_003b0e20((u32)handle, selColour);
+        frame = (void*)FUN_0021cca0(table0, 0x2f);
+        layout[0] = 171.0f + *(f32*)(pos + 0);
+        layout[1] = 28.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x10, layout);
+        colour[0] = 0xff;
+        colour[1] = 0xff;
+        colour[2] = 0xff;
+        colour[3] = (u8)alphaByte;
+        FUN_0021d950(record + 0x10, colour);
+        goto loop_next;
     loop_kind1:
         handle = (u32)*(void**)(record + 8);
         halfWidth = FUN_003b19d0((u32)handle);
@@ -684,50 +728,6 @@ alpha_done:
                 FUN_0021d950(record + j * 0x100 + 0x10, colour);
             }
         }
-        goto loop_next;
-    loop_kind02:
-        handle = (u32)*(void**)(record + 8);
-        layout[0] = 51.0f + *(f32*)(pos + 0);
-        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
-        if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
-            if (*(u32*)(record + 0x410) != 0) {
-                selColour = scaledAlphaColour;
-            } else if (kind == 2) {
-                selColour = colours[1];
-            } else if (kind == 0) {
-                selColour = colours[0];
-            }
-        } else {
-            if (*(u32*)(record + 0x410) != 0) {
-                selColour = scaledAlphaColour;
-            } else if (kind == 2) {
-                selColour = colours[3];
-            } else if (kind == 0) {
-                selColour = colours[2];
-            }
-        }
-        x = (s32)layout[0] << 4;
-        y = (s32)layout[1] << 3;
-        FUN_003b0d70((u32)handle, x, y);
-        FUN_003b0e20((u32)handle, selColour);
-        handle = (u32)*(void**)(record + 0xc);
-        layout[0] = 182.0f + *(f32*)(pos + 0);
-        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
-        x = (s32)layout[0] << 4;
-        y = (s32)layout[1] << 3;
-        FUN_003b0d70((u32)handle, x, y);
-        FUN_003b0e20((u32)handle, selColour);
-        frame = (void*)FUN_0021cca0(table0, 0x2f);
-        layout[0] = 171.0f + *(f32*)(pos + 0);
-        layout[1] = 28.0f + *(f32*)(pos + 4);
-        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-        FUN_0021d8e0(record + 0x10, layout);
-        colour[0] = 0xff;
-        colour[1] = 0xff;
-        colour[2] = 0xff;
-        colour[3] = (u8)alphaByte;
-        FUN_0021d950(record + 0x10, colour);
         goto loop_next;
     loop_next:
         ;
