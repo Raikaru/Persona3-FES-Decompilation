@@ -240,34 +240,31 @@ FldUnit* K_FldUnit_FindFreePc()
 
 static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 {
-    FldUnitMdl* cache;
     Model* model;
 
-    cache = &gFldUnitsPcMdl[slot];
     model = NULL;
-    if (cache->type == type &&
-        gFldUnitsPcMdl[slot].id == id)
+    if (gFldUnitsPcMdl[slot].type == type)
     {
-        model = cache->mdl;
+        if (gFldUnitsPcMdl[slot].id == id)
+        {
+            model = gFldUnitsPcMdl[slot].mdl;
+        }
     }
     if (model == NULL)
     {
         model = (Model*)func_00316e00(type, id, 0);
-        if (type == 1 && model != NULL)
+        if (type == 1)
         {
             func_0031c1d0(model);
         }
-        if (cache->mdl != NULL)
+        if (gFldUnitsPcMdl[slot].mdl != NULL)
         {
-            func_003174e0(cache->mdl);
-            cache->mdl = NULL;
+            func_003174e0(gFldUnitsPcMdl[slot].mdl);
+            gFldUnitsPcMdl[slot].mdl = NULL;
         }
-        cache->mdl = model;
-        if (model != NULL)
-        {
-            gFldUnitsPcMdl[slot].type = model->type;
-            cache->id = model->id;
-        }
+        gFldUnitsPcMdl[slot].mdl = model;
+        gFldUnitsPcMdl[slot].type = model->type;
+        gFldUnitsPcMdl[slot].id = gFldUnitsPcMdl[slot].mdl->id;
     }
     else
     {
@@ -329,22 +326,25 @@ void* func_001cd9a0(u32 charId)
         }
         else if (func_001a01c0() == true ||
                  (PTR_DAT_007cd540[0] == 21 && PTR_DAT_007cd540[1] == 50) ||
-                 (PTR_DAT_007cd540[0] == 22 &&
-                  (PTR_DAT_007cd540[1] == 50 || PTR_DAT_007cd540[1] == 51)) ||
-                 (PTR_DAT_007cd540[0] == 23 &&
-                  (PTR_DAT_007cd540[1] == 50 || PTR_DAT_007cd540[1] == 51)) ||
-                 (PTR_DAT_007cd540[0] == 24 &&
-                  (PTR_DAT_007cd540[1] == 50 || PTR_DAT_007cd540[1] == 51)) ||
+                 (PTR_DAT_007cd540[0] == 22 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 22 && PTR_DAT_007cd540[1] == 51) ||
+                 (PTR_DAT_007cd540[0] == 23 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 23 && PTR_DAT_007cd540[1] == 51) ||
+                 (PTR_DAT_007cd540[0] == 24 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 24 && PTR_DAT_007cd540[1] == 51) ||
                  (PTR_DAT_007cd540[0] == 25 && PTR_DAT_007cd540[1] == 50) ||
                  (PTR_DAT_007cd540[0] == 26 && PTR_DAT_007cd540[1] == 50) ||
                  (PTR_DAT_007cd540[0] == 27 && PTR_DAT_007cd540[1] == 50) ||
-                 (PTR_DAT_007cd540[0] >= 41 &&
-                  PTR_DAT_007cd540[0] <= 47 &&
-                  PTR_DAT_007cd540[1] == 50) ||
-                 (PTR_DAT_007cd540[0] == 39 &&
-                  (PTR_DAT_007cd540[1] == 1 ||
-                   PTR_DAT_007cd540[1] == 2 ||
-                   PTR_DAT_007cd540[1] == 3)))
+                 (PTR_DAT_007cd540[0] == 41 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 42 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 43 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 44 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 45 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 46 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 47 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 39 && PTR_DAT_007cd540[1] == 1) ||
+                 (PTR_DAT_007cd540[0] == 39 && PTR_DAT_007cd540[1] == 2) ||
+                 (PTR_DAT_007cd540[0] == 39 && PTR_DAT_007cd540[1] == 3))
         {
             type = 1;
             id = 1;
