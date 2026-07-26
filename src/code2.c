@@ -332,6 +332,16 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
 }
 #pragma pop
 
+// Retail shape: move $v0,$zero / slt $a0,$a1,$a0 / beqz $a0,+24 / lui $v0,1 /
+// jr $ra / or $v0,$a1,$v0 / jr $ra / move $v0,$a1 (32B code + 4B nop pad).
+// It needs the dead `result = 0` init AND a duplicated, separately scheduled
+// return block. The join form below keeps the init (offsets 0/20/24 match) but
+// MWCC merges the exits. Ruled out at b210: two-return form (O2 and O3, exits
+// still merged and the init folded away), booleanized condition variable,
+// `#pragma schedule on` (fills the jr delay slot but drops to 28B, one exit),
+// `#pragma optimization_level 3` on the join form (24B, matches offsets 12/16/20
+// instead but loses the init), single-case `switch (param_2 < param_1)` (48B,
+// far over window), and `else { return param_2; }` (40B, over window).
 // Retail sibling recovered from 0x007803D4-0x007803F4.
 // FUN_007803D4 NONMATCHING
 int FUN_007803d4(int param_1,int param_2)

@@ -4917,7 +4917,6 @@ void func_002bf9b0(void)
   u32 listIndex = 0;
   float firstZero;
   float zero;
-  int callUnit;
   u32 callColor;
   float *dest;
 
@@ -4938,9 +4937,8 @@ void func_002bf9b0(void)
           }
           callColor = alpha | 0xb4736400;
           dest = (float *)(entry + 0xa04);
-          callUnit = entry;
           firstZero = zero;
-          func_002bce10(firstZero, zero, callUnit, callColor, dest);
+          func_002bce10(firstZero, zero, entry, callColor, dest);
         }
       }
     }

@@ -1759,7 +1759,7 @@ typedef struct FldFrameCollisionCollector
     RwV3d points[64];
     RwV3d normals[64];
     f32 distances[64];
-    u8 reserved[0x478];
+    u8 reserved[0x400];
     u32 mode;
     u32 count;
     u32 blockingCount;

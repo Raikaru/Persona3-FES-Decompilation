@@ -938,12 +938,12 @@ static void campEquipDrawCategory(void* work, u8* record, s16 category,
  * branch. Keep explicit aliases so the source preserves those load modes,
  * even though the remaining function-wide register/scheduling residual is
  * larger than the direct GP-relative form. */
-#pragma opt_loop_invariants on
-#pragma optimization_level 3
+#pragma opt_loop_invariants off
+#pragma opt_propagation off
 // FUN_0012E3B0 NONMATCHING
 void FUN_0012e3b0(void* work, s32 index, u8* record)
 {
-    register void* parent;
+    void* parent;
     s32 styles[4];
     char labels[4][0x100];
     CampVec2 position;
@@ -1316,6 +1316,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
         return;
     }
 }
+#pragma opt_propagation on
 #pragma optimization_level 2
 #pragma opt_loop_invariants off
 

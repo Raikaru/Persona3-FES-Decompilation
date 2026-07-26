@@ -6128,24 +6128,23 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,
 
 u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
 {
+  int x;
+  int y;
+  float f;
   u32 uVar2;
   int iVar1;
 
+  x = param_2;
+  y = param_3;
+  f = param_1;
   uVar2 = FUN_001158b0(0,DAT_007ce654,param_5);
-
   iVar1 = (int)uVar2;
-
-  *(float *)(iVar1 + 0x10) = (float)param_2;
-
-  *(float *)(iVar1 + 0x14) = (float)param_3;
-
-  *(float *)(iVar1 + 0x2c) = param_1;
-
+  *(float *)(iVar1 + 0x10) = (float)x;
+  *(float *)(iVar1 + 0x14) = (float)y;
+  *(float *)(iVar1 + 0x2c) = f;
   *(char *)(iVar1 + 0x19) = 0xff - (u8)param_4;
-
   FUN_001127d0(uVar2,1);
   FUN_00115980(uVar2);
-
   return 0;
 
 }
