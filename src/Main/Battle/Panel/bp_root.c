@@ -1068,7 +1068,6 @@ void FUN_00201780(void)
 void FUN_00201880(void)
 {
     s32 i;
-    s32 selector;
     u32 request;
     u32* entry;
     u32* flags;
@@ -1082,8 +1081,7 @@ void FUN_00201880(void)
         entry = (u32*)work + i;
         flags = entry + 0x590;
         *flags &= ~1u;
-        selector = i;
-        switch (selector)
+        switch (i)
         {
         case 0:
             if (*(u32*)(work + 0xc) & 0x20) request = 1;
