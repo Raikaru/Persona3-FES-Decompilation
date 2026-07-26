@@ -30076,6 +30076,13 @@ void FUN_003399a0(int param_1)
   float fVar25;
 
   float fVar26;
+  float sx;
+  float sy;
+  float sz;
+  float tx;
+  float ty;
+  float tz;
+  float tscale;
 
   __int128 in_vf0;
 
