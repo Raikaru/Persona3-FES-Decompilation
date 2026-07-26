@@ -5394,16 +5394,20 @@ u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3)
 u16 FUN_003bd9a0(u32 param_1,u32 param_2)
 {
   int iVar1;
+  u32 base;
+  int count;
   int iVar2;
 
   iVar2 = 0;
+  base = *(u32 *)DAT_0095b724_abs;
+  count = *(int *)DAT_0095b728_abs;
   goto LAB_003bd9f0;
 LAB_003bd9b0:
   iVar1 = iVar2 * 8;
-  if (param_1 != *(u16 *)((int)*(u32 *)DAT_0095b724_abs + iVar1)) {
+  if (param_1 != *(u16 *)(base + iVar1)) {
     goto LAB_003bda30;
   }
-  if (param_2 != *(u8 *)((int)*(u32 *)DAT_0095b724_abs + iVar1 + 2)) {
+  if (param_2 != *(u8 *)(base + iVar1 + 2)) {
     goto LAB_003bda30;
   }
   if (FUN_003951d0_i32(0xa88) == 1) {
@@ -5413,15 +5417,11 @@ LAB_003bd9b0:
 LAB_003bda30:
   iVar2 = iVar2 + 1;
 LAB_003bd9f0:
-  if (iVar2 < *(int *)DAT_0095b728_abs) {
+  if (iVar2 < count) {
     goto LAB_003bd9b0;
   }
   return 0;
 }
-#define FUN_003bd9a0(...) ((u16 (*)(...))FUN_003bd9a0)(__VA_ARGS__)
-#undef FUN_003bda60
-// FUN_003BDA60 NONMATCHING
-
 
 u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
