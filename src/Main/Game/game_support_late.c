@@ -1319,9 +1319,11 @@ void func_0018d320(KwlnTask* task)
     u32 alpha;
     u32 burstAlpha;
     u32 randomFrame;
-
-    gsDrawHeader(object, 6, 4, 5);
-    gsDrawStatusBars(object);
+    s16 pcId;
+    u32 hp;
+    u32 maxHp;
+    u32 sp;
+    u32 maxSp;
     frame = GS_S32(object, 0x18);
     if (frame > 5)
     {

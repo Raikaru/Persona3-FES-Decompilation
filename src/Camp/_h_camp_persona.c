@@ -752,8 +752,7 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
     campPersonaDrawSprite(parent, DAT_00833B90, 1,
                           position.x + 22.0f,
                           position.y + 117.0f, (u8)bright, alpha);
-    if (localFrame > 0) {
-    iconPosition = originalPosition;
+        iconPosition = originalPosition;
         campPersonaDrawSprite(parent, DAT_00833B88,
                               FUN_00173280(*(u16*)((u8*)persona + 2)) - 1,
                               iconPosition.x + 105.0f, iconPosition.y + 142.0f,
@@ -761,9 +760,9 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
     }
     if (localFrame > 4) {
         {
-        levelPosition = originalPosition;
             u8 level;
 
+            levelPosition = originalPosition;
             level = *((u8*)persona + 4);
             if (level >= 10) {
                 campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
