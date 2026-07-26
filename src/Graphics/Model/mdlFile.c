@@ -32518,7 +32518,7 @@ u32 FUN_0033bfa0(u32 *param_1,int param_2)
     param_1[0x1c] = 1;
   }
 
-  iVar2 = FUN_003233a0(((u16 *)param_1)[0x1c],2,4,0x69bdc8,0x4c);
+  iVar2 = FUN_003233a0_ptr(((u16 *)param_1)[0x1c],2,4,DAT_0069bdc8_abs,0x4c);
   *(u32 *)(uVar3 + 4) = iVar2;
 
   if (param_2 == 0) {
