@@ -825,13 +825,13 @@ void func_0018b7b0(void* transition, f32* position)
         }
         break;
     case 2:
-        if (total == 0)
+        if (total != 0)
         {
-            phase = 90.0f;
+            phase = (f32)((elapsed * 0x5a) / total);
         }
         else
         {
-            phase = (f32)((elapsed * 0x5a) / total);
+            phase = 90.0f;
         }
         phase = cosf((DAT_007caf38 * phase) / 180.0f);
         if (elapsed == total)
@@ -841,20 +841,20 @@ void func_0018b7b0(void* transition, f32* position)
         }
         else
         {
-            position[0] = phase * (GS_F32(transition, 0x30) - GS_F32(transition, 0x28)) +
+            position[0] = (GS_F32(transition, 0x30) - GS_F32(transition, 0x28)) * phase +
                           GS_F32(transition, 0x28);
-            position[1] = phase * (GS_F32(transition, 0x34) - GS_F32(transition, 0x2c)) +
+            position[1] = (GS_F32(transition, 0x34) - GS_F32(transition, 0x2c)) * phase +
                           GS_F32(transition, 0x2c);
         }
         break;
     case 3:
-        if (total == 0)
+        if (total != 0)
         {
-            phase = 90.0f;
+            phase = (f32)((elapsed * 0x5a) / total);
         }
         else
         {
-            phase = (f32)((elapsed * 0x5a) / total);
+            phase = 90.0f;
         }
         phase = sinf((DAT_007caf38 * phase) / 180.0f);
         if (elapsed == total)
@@ -865,9 +865,9 @@ void func_0018b7b0(void* transition, f32* position)
         else
         {
             position[0] = GS_F32(transition, 0x30) -
-                          phase * (GS_F32(transition, 0x28) - GS_F32(transition, 0x30));
+                          (GS_F32(transition, 0x28) - GS_F32(transition, 0x30)) * phase;
             position[1] = GS_F32(transition, 0x34) -
-                          phase * (GS_F32(transition, 0x2c) - GS_F32(transition, 0x34));
+                          (GS_F32(transition, 0x2c) - GS_F32(transition, 0x34)) * phase;
         }
         break;
     }
