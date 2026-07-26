@@ -40074,6 +40074,42 @@ void FUN_00343410(u64 param_1)
   return;
 
 }
+// FUN_00343790 NONMATCHING
+void FUN_00343790(int param_1)
+{
+  u32 *chain;
+  u32 *cursor;
+  u32 *header;
+  u32 *records;
+  u8 *entry;
+  u32 count;
+  u32 n;
+
+  chain = *(u32 **)(param_1 + 0x3c);
+  cursor = (u32 *)*chain;
+  header = *(u32 **)(param_1 + 0x40);
+  count = header[0xe];
+  records = *(u32 **)(chain[1] + 0xa);
+  for (n = 0; n < count; n = n + 1) {
+    entry = (u8 *)records[n & 0xffff];
+    if (bGpffffb857 == 0xff) {
+      bGpffffb857 = 0xfe;
+      entry[4] = (u8)uGpffffb854;
+      entry[5] = (u8)uGpffffb855;
+      entry[6] = (u8)uGpffffb856;
+      entry[7] = bGpffffb857;
+      bGpffffb857 = 0xff;
+    }
+    else {
+      entry[4] = (u8)uGpffffb854;
+      entry[5] = (u8)uGpffffb855;
+      entry[6] = (u8)uGpffffb856;
+      entry[7] = bGpffffb857;
+    }
+    *cursor = 0xffffffff;
+    cursor = (u32 *)((u8 *)cursor + 0x30);
+  }
+}
 
 
 
@@ -41091,6 +41127,42 @@ void FUN_00344720(u64 param_1)
 
   return;
 
+}
+// FUN_00344AA0 NONMATCHING
+void FUN_00344AA0(int param_1)
+{
+  u32 *chain;
+  u32 *cursor;
+  u32 *header;
+  u32 *records;
+  u8 *entry;
+  u32 count;
+  u32 n;
+
+  chain = *(u32 **)(param_1 + 0x3c);
+  cursor = (u32 *)*chain;
+  header = *(u32 **)(param_1 + 0x40);
+  count = header[0xe];
+  records = *(u32 **)(chain[1] + 0xa);
+  for (n = 0; n < count; n = n + 1) {
+    entry = (u8 *)records[n & 0xffff];
+    if (DAT_007ce547 == 0xff) {
+      DAT_007ce547 = 0xfe;
+      entry[4] = DAT_007ce544;
+      entry[5] = DAT_007ce545;
+      entry[6] = DAT_007ce546;
+      entry[7] = 0xfe;
+      DAT_007ce547 = 0xff;
+    }
+    else {
+      entry[4] = DAT_007ce544;
+      entry[5] = DAT_007ce545;
+      entry[6] = DAT_007ce546;
+      entry[7] = DAT_007ce547;
+    }
+    *cursor = 0xffffffff;
+    cursor = (u32 *)((u8 *)cursor + 0x2c);
+  }
 }
 
 
@@ -54634,41 +54706,10 @@ void FUN_003520a0(u64 param_1)
         dz = pz - px;
         blend = (float)uVar10 * (float)*puVar14 / 65535.0f;
         inv = dx * dx + dy * dy + dz * dz;
-        if (inv != 0.0f) {
-          inv = 1.0f / inv;
-        } else {
-          inv = 1.0f;
-        }
+        inv = 1.0f / (inv + 1.0f);
         qx = py + dx * blend * inv;
         qy = pz + dy * blend * inv;
         qz = px + dz * blend * inv;
-        dx = qx - fStack_20;
-        dy = qy - fStack_1c;
-        dz = qz - fStack_18;
-        px = qx + fVar16 * fVar17 * dx;
-        py = qy + fVar16 * fVar17 * dy;
-        pz = qz + fVar16 * fVar17 * dz;
-        *(float *)&puVar12[0xc] = qx;
-        *(float *)&puVar12[0xd] = qy;
-        *(float *)&puVar12[0xe] = qz;
-        *(float *)&puVar12[9] = px;
-        *(float *)&puVar12[10] = py;
-        *(float *)&puVar12[0xb] = pz;
-        *(float *)&puVar12[0xf] = qx - dx;
-        *(float *)&puVar12[0x10] = qy - dy;
-        *(float *)&puVar12[0x11] = qz - dz;
-        qx = fStack_70 + fVar15 * fVar17;
-        qy = fStack_6c + fVar15 * fVar17;
-        qz = fStack_68;
-        *(float *)&puVar12[3] = qx;
-        *(float *)&puVar12[4] = qy;
-        *(float *)&puVar12[5] = qz;
-        *(float *)&puVar12[0] = qx + dx;
-        *(float *)&puVar12[1] = qy + dy;
-        *(float *)&puVar12[2] = qz + dz;
-        *(float *)&puVar12[6] = qx - dx;
-        *(float *)&puVar12[7] = qy - dy;
-        *(float *)&puVar12[8] = qz - dz;
         auVar11 = _vsub(auVar18,auVar11);
 
         auVar11 = _sqc2(auVar11);

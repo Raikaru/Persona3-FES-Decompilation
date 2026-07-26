@@ -1971,10 +1971,6 @@ void h_campDrawItemFrame(int param_1)
     start.f[1] = fVar1;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 1,
                   end.u, start.u, 0, 0, 0, 10);
-    start.f[0] = 394.0f;
-    start.f[1] = -475.0f;
-    end.f[0] = 394.0f;
-    end.f[1] = 125.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
                   start.u, end.u, 0, 0, 0, 10);
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;

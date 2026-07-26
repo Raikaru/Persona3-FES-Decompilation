@@ -180,15 +180,15 @@ static inline void camp_list_store_u32(uintptr_t base, size_t offset, u32 value)
 {
     *(u32 *)(base + offset) = value;
 }
-static f32 camp_list_bits_to_float(u32 bits)
+static inline f32 camp_list_bits_to_float(u32 bits)
 {
     union { u32 bits; f32 value; } converter; converter.bits = bits; return converter.value;
 }
-static u32 camp_list_float_to_bits(f32 value)
+static inline u32 camp_list_float_to_bits(f32 value)
 {
     union { u32 bits; f32 value; } converter; converter.value = value; return converter.bits;
 }
-static u64 camp_list_pack_f32(f32 high, f32 low)
+static inline u64 camp_list_pack_f32(f32 high, f32 low)
 {
     return ((u64)camp_list_float_to_bits(high) << 32) | camp_list_float_to_bits(low);
 }
@@ -1420,16 +1420,14 @@ void FUN_0015DA70(void *param_1)
         if (i < camp_list_load_s32(work_address, 0x4c)) {
             f32 row = (f32)(i * 0x55) + 42.0f;
             s32 item_offset = i * 10;
+            x = row + 8.0f;
+            y = camp_list_bits_to_float(0x41700000);
             FUN_0018bc10(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
                                     (size_t)(i + 1) * 0x2a8),
-                0, 2, 1,
-                camp_list_pack_f32(row + 8.0f,
-                                    camp_list_bits_to_float(0x41700000)),
-                camp_list_pack_f32(row + 8.0f,
-                                    camp_list_bits_to_float(0x42820000)),
-                0, 0);
+                0, 2, 1, camp_list_pack_f32(x, y),
+                camp_list_pack_f32(x, y + 50.0f), 0, 0);
             FUN_0018bc10(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
@@ -1491,16 +1489,22 @@ void FUN_0015DA70(void *param_1)
         camp_list_store_u32(item, 0x444, 0);
     }
 
-    FUN_0018bc10(100.0f,
-                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xd48),
-                 0, 2, 1, 0x43cf8000c2040000ULL,
-                 0x43cf800041880000ULL, 0, 0);
+    x = 415.0f;
+    y = -33.0f;
+    FUN_0018bc10(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xd48),
+        0, 2, 1, camp_list_pack_f32(x, y),
+        camp_list_pack_f32(x, y + 50.0f), 0, 0);
     camp_list_store_u32(
         (uintptr_t)camp_list_load_u32(work_address, 0x38), 0xd90, 0);
-    FUN_0018bc10(100.0f,
-                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xdd0),
-                 0, 2, 1, 0x43cf800043db0000ULL,
-                 0x43cf800043f40000ULL, 0, 0);
+    x = 439.0f;
+    y = 415.0f;
+    FUN_0018bc10(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xdd0),
+        0, 2, 1, camp_list_pack_f32(x, y),
+        camp_list_pack_f32(x, y + 73.0f), 0, 0);
 }
 
 // FUN_0015E150 NONMATCHING
@@ -1522,10 +1526,16 @@ void FUN_0015E150(CampDrawWork *work)
                  pair, pair, 0, 0);
     FUN_0018bc10(100.0f, draw, 0, 2, 2, 0, 0, 0, 0);
     camp_draw_store_u32(draw, 0x8c, 0);
+    x = 411.0f;
+    y = 447.0f;
+    pair = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 2,
-                 UINT64_C(0x43cd800043df8000), UINT64_C(0x43cd800043df8000), 0, 0);
+                 pair, pair, 0, 0);
+    x = 24.0f;
+    y = 247.0f;
+    pair = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 2,
-                 UINT64_C(0x41c0000043770000), UINT64_C(0x41c0000043770000), 0, 0);
+                 pair, pair, 0, 0);
 
     for (i = 0; i < 4; ++i) {
         if (i < work->partyCount) {

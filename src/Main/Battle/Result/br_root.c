@@ -3357,7 +3357,6 @@ void func_001f7210(void)
                 sum_w += (u32)*(s16 *)(wt_base + j * 8 + 6);
             }
         }
-        printf("item id %d\n", sum_w);
         if (sum_w > 0) {
             u32 rnd = func_00488f30() % sum_w;
             for (search_idx = 0; search_idx < wt_idx; search_idx++) {
@@ -3390,7 +3389,6 @@ void func_001f7210(void)
         func_0010a4e0(1, 0, 6, 7);
         tbl_entry = (u8 *)func_00209c80();
         printf("money : %d\n", BR_S32(entry, 4));
-        printf("type : get item\n");
         tbl_entry += BR_U32(entry, 4) * 192;
         for (new_kind = 0; new_kind < 16; new_kind++) {
             u8 *p = tbl_entry + new_kind * 12;
@@ -3398,27 +3396,23 @@ void func_001f7210(void)
             tbl_scan[new_kind] = p;
             if (ret == 2) break;
         }
-        if (new_kind == 0) {
-            K_ASSERT(work != NULL, 0x450);
-        } else {
-            rnd = func_00488f30() % new_kind;
-            printf("item id : 0x%03x\n", rnd);
-            tbl_entry = tbl_scan[rnd];
-            entry_count = (u32)func_00209d40(tbl_entry);
-            if (entry_count == 1) {
-                printf("item id : 0x%03x\n", BR_U16(entry, 4));
-                value = BR_S16(entry, 8);
-                kind = 2;
-            } else if (entry_count == 0) {
-                printf("rank %d\n", value);
-                printf("rank %d\n", value);
-                if (datGetFlag(0xbd1) != 0) {
-                    value = (s32)((f32)BR_S32(entry, 4) * 0.25f);
-                }
-                kind = 3;
-            } else {
-                K_ASSERT(work != NULL, 0x450);
+        rnd = func_00488f30() % new_kind;
+        printf("item id : 0x%03x\n", rnd);
+        tbl_entry = tbl_scan[rnd];
+        entry_count = (u32)func_00209d40(tbl_entry);
+        if (entry_count == 1) {
+            printf("item id : 0x%03x\n", BR_U16(entry, 4));
+            value = BR_S16(entry, 8);
+            kind = 2;
+        } else if (entry_count == 0) {
+            printf("rank %d\n", value);
+            printf("rank %d\n", value);
+            if (datGetFlag(0xbd1) != 0) {
+                value = (s32)((f32)BR_S32(entry, 4) * 0.25f);
             }
+            kind = 3;
+        } else {
+            K_ASSERT(work != NULL, 0x450);
         }
         printf("money : %d\n", value);
         break;
@@ -3615,9 +3609,66 @@ void func_001f7210(void)
                 random_value -= weightTable[selected_idx];
                 if ((s32)random_value < 0) break;
             }
-            if (selected_idx < 13) {
-                kind = 14 + selected_idx;
-                value = (s32)*(s8 *)(effect_table + selected_idx * 2 + 1);
+            if (selected_idx >= 13) {
+                K_ASSERT(0, 0x59d);
+            } else {
+                switch (selected_idx) {
+                case 0:
+                    kind = 14;
+                    value = (s32)*(s8 *)(effect_table + 1);
+                    break;
+                case 1:
+                    kind = 15;
+                    value = (s32)*(s8 *)(effect_table + 3);
+                    break;
+                case 2:
+                    kind = 16;
+                    value = (s32)*(s8 *)(effect_table + 5);
+                    break;
+                case 3:
+                    kind = 17;
+                    value = (s32)*(s8 *)(effect_table + 7);
+                    break;
+                case 4:
+                    kind = 18;
+                    value = (s32)*(s8 *)(effect_table + 9);
+                    break;
+                case 5:
+                    kind = 19;
+                    value = (s32)*(s8 *)(effect_table + 11);
+                    break;
+                case 6:
+                    kind = 20;
+                    value = (s32)*(s8 *)(effect_table + 13);
+                    break;
+                case 7:
+                    kind = 21;
+                    value = (s32)*(s8 *)(effect_table + 15);
+                    break;
+                case 8:
+                    kind = 22;
+                    value = (s32)*(s8 *)(effect_table + 17);
+                    break;
+                case 9:
+                    kind = 23;
+                    value = (s32)*(s8 *)(effect_table + 19);
+                    break;
+                case 10:
+                    kind = 24;
+                    value = (s32)*(s8 *)(effect_table + 21);
+                    break;
+                case 11:
+                    kind = 25;
+                    value = (s32)*(s8 *)(effect_table + 23);
+                    break;
+                case 12:
+                    kind = 26;
+                    value = (s32)*(s8 *)(effect_table + 25);
+                    break;
+                default:
+                    K_ASSERT(0, 0x59d);
+                    break;
+                }
             }
         }
         break;
