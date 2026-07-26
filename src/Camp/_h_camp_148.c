@@ -2242,7 +2242,6 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   CampBits tmp190;
   CampBits tmp198;
   CampBits tmp1a8;
-  CampBits draw6[1];
   int iStack_8;
   u8 auStack_4 [4];
   u32 *puVar1;
