@@ -73,16 +73,6 @@ extern KwlnTask* campStatusCreatePersonaChild(KwlnTask* parent,
                                               u32 priority, u32 personaId,
                                               u32 mode, f32 alpha);
 extern s32 FUN_00133a80();
-/* Typed aliases keep MWCC's call ABI visible without changing legacy declarations. */
-#pragma alias campStatusDestroyPersonaChild FUN_00133a80
-extern void campStatusDestroyPersonaChild(KwlnTask* task);
-#pragma alias campStatusDrawPersonaList FUN_001344B0
-extern u32 campStatusDrawPersonaList(void* items, const void* resources,
-                                     const void* personaIds, s16 selected);
-#pragma alias campStatusDrawPersonaDetail FUN_00134900
-extern u32 campStatusDrawPersonaDetail(void* items, const void* resources,
-                                       const void* personaIds, s16 selected,
-                                       s16 previous);
 extern void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode);
 extern s32 FUN_00121de0();
 extern s32 FUN_00122710();
@@ -123,29 +113,11 @@ extern const char D_005DB080[];
 extern const char D_005DB0A0[];
 extern const char D_005DB030[];
 extern void* FUN_00125d70(KwlnTask* task);
-/* Persona-data actions use the exact narrow types from datPersona.c. */
-#pragma alias campStatusSetHeroPersona FUN_00174c10
-extern u32 campStatusSetHeroPersona(s16 heroPersonaIdx);
-#pragma alias campStatusGetHeroPersona FUN_00175200
-extern u8 campStatusGetHeroPersona(s16 heroPersonaIdx);
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha);
 extern const char D_005DB158[];
 extern const char D_005DACB0[];
 extern const char D_005DB170[];
 extern void* func_0010c1a0();
-/* These command-list helpers have concrete narrow signatures in nmCmdList.c. */
-#pragma alias campStatusCmd7430 FUN_003c7430
-extern u32 campStatusCmd7430(u64 command);
-#pragma alias campStatusCmd74e0 FUN_003c74e0
-extern u32 campStatusCmd74e0(s32 command);
-#pragma alias campStatusCmd7560 FUN_003c7560
-extern void campStatusCmd7560(u8 command);
-#pragma alias campStatusCmd7610 FUN_003c7610
-extern s8 campStatusCmd7610(void);
-#pragma alias campStatusCmd7700 FUN_003c7700
-extern u32 campStatusCmd7700(void);
-#pragma alias campStatusCmd7850 FUN_003c7850
-extern s8 campStatusCmd7850(void);
 extern void* func_0010c3a0();
 extern int printf(const char* format, ...);
 extern void FUN_00174c10();
@@ -3571,12 +3543,12 @@ void* FUN_001311d0(KwlnTask* task)
                      (s16)selected);
         personaId = *(u16*)(work + 0x32 + selected * 2);
         if (personaId == (u16)datGetEquippedPersona(1)) {
-            campStatusCmd7430(2);
+            FUN_003c7430(2);
             *(u32*)work = 13;
         } else {
-            campStatusCmd7430(1);
-            campStatusCmd74e0(0);
-            campStatusCmd7560(0);
+            FUN_003c7430(1);
+            FUN_003c74e0(0);
+            FUN_003c7560(0);
             *(u32*)work = 12;
         }
         break;
@@ -3599,10 +3571,10 @@ void* FUN_001311d0(KwlnTask* task)
         FUN_00133a80(child);
         FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
                      (s16)selected);
-        if (campStatusCmd7850() != 0) {
+        if (FUN_003c7850() != 0) {
             break;
         }
-        result = campStatusCmd7610();
+        result = FUN_003c7610();
         if (result == 0) {
             FUN_00174c10(*(u16*)(work + 0x32 + selected * 2));
             campStatusRebuildPersonaList(work);
@@ -3633,7 +3605,7 @@ void* FUN_001311d0(KwlnTask* task)
                                         position, 0, 6);
             }
         }
-        campStatusCmd7700();
+        FUN_003c7700();
         *(u32*)work = 4;
         break;
     }
@@ -3647,8 +3619,8 @@ void* FUN_001311d0(KwlnTask* task)
         FUN_00133a80(child);
         FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
                      *(s16*)(work + 0x4));
-        if (campStatusCmd7850() == 0) {
-            campStatusCmd7700();
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
             *(u32*)work = 4;
         }
         break;
@@ -3670,9 +3642,9 @@ void* FUN_001311d0(KwlnTask* task)
         FUN_00133a80(child);
         FUN_00134900(detailRecords, work + 0x58, work + 0x32,
                      (s16)selected, (s16)previous);
-        campStatusCmd7430(3);
-        campStatusCmd74e0(0);
-        campStatusCmd7560(0);
+        FUN_003c7430(3);
+        FUN_003c74e0(0);
+        FUN_003c7560(0);
         *(u32*)work = 15;
         break;
     }
@@ -3692,15 +3664,15 @@ void* FUN_001311d0(KwlnTask* task)
         FUN_00133a80(child);
         FUN_00134900(detailRecords, work + 0x58, work + 0x32,
                      (s16)selected, *(s16*)(work + 0xc));
-        if (campStatusCmd7850() != 0) {
+        if (FUN_003c7850() != 0) {
             break;
         }
-        result = campStatusCmd7610();
+        result = FUN_003c7610();
         if (result == 0) {
             FUN_0010a4e0(0, 0, 2, 4);
             FUN_00175200(*(u16*)(work + 0x32 + selected * 2));
             h_campReplacePersonaTextureControlResource(datGetPersonaId(1));
-            campStatusCmd7700();
+            FUN_003c7700();
             *(u32*)work = 8;
         }
         break;

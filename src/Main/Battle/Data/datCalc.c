@@ -609,7 +609,7 @@ short FUN_00308120(short param_1,int param_2);
 s32 FUN_003082f0(s32 param_1,u32 param_2);
 #pragma alias FUN_003082f0_one FUN_003082f0
 extern s32 FUN_003082f0_one(s32 param_1);
-u32 FUN_003083f0(u32 param_1,u16 param_2);
+u32 FUN_003083f0(u32 param_1,u32 param_2);
 u8 FUN_003086c0(void *param_1,u32 param_2);
 u32 FUN_003086f0(u32 param_1,u32 param_2);
 u32 FUN_00308860(u16 param_1);
@@ -4523,7 +4523,7 @@ s32 FUN_003082f0(s32 param_1,u32 param_2)
 
 
 // FUN_003083f0 NONMATCHING
-u32 FUN_003083f0(u32 param_1,u16 param_2)
+u32 FUN_003083f0(u32 param_1,u32 param_2)
 
 {
   char cVar1;
