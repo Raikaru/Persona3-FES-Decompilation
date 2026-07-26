@@ -1029,7 +1029,7 @@ u32 FUN_002de3c0(int param_1)
     return uVar1;
 }
 
-// FUN_002DE4E0 NONMATCHING
+// FUN_002DE4E0
 
 
 u32 FUN_002de4e0(int param_1)

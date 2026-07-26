@@ -1573,20 +1573,21 @@ void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
     u16 type;
-    u64 colorWord;
-    f32 colorTail;
-    colorWord = DAT_00678f68_color[0].word;
-    colorTail = DAT_00678f68_color[0].tail;
+    FldrcColor color;
+    u8* colorBytes;
+    colorBytes = (u8*)&color;
+    *(u64*)colorBytes = DAT_00678f68_color[0].word;
+    *(f32*)(colorBytes + 8) = DAT_00678f68_color[0].tail;
 
     if ((*resource & 1) == 0)
     {
         if (resource[2] != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[2] + 4), &colorWord, angle, 2);
+            FUN_004cb890_typed(*(u32*)(resource[2] + 4), &color, angle, 2);
         }
         if (resource[4] != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[4] + 4), &colorWord, angle, 2);
+            FUN_004cb890_typed(*(u32*)(resource[4] + 4), &color, angle, 2);
         }
     }
     for (i = 0; i < resource[5]; i++)
@@ -1595,7 +1596,7 @@ void FUN_001b5200(u32* resource, f32 angle)
         {
             FUN_004cb890_typed(
                 *(u32*)(*(u32*)((u8*)resource + i * 4 + 0x18) + 4),
-                &colorWord, angle, 2);
+                &color, angle, 2);
         }
     }
     for (i = 0; i < resource[0x46]; i++)
@@ -1604,7 +1605,7 @@ void FUN_001b5200(u32* resource, f32 angle)
         if ((type == 0) || (type == 2))
         {
             FUN_00318a50_typed(*(u32*)((u8*)resource + i * 0x18 + 0x128),
-                               &colorWord, angle, 2);
+                               &color, angle, 2);
         }
         else if (type == 1)
         {
