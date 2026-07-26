@@ -1475,17 +1475,60 @@ void bpTexRemoveNodeAt(s32 index)
 {
     u32* work;
     u32* node;
-    u32* children[8];
+    u32* children[7];
+    u32* scan;
+    u32* action;
     s32 childCount;
     s32 count;
     s32 i;
 
-    work = bpTexWork();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
     count = BP_TEX_S32(work, 0x12684);
     K_ASSERT(index >= 0 && index < count, 0x4c9);
     index = count - 1 - index;
     node = BP_TEX_PTR(work, 0x12664 + index * 4);
     K_ASSERT((*node & 2) == 0, 0x4cf);
+
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    i = 0;
+    for (scan = BP_TEX_PTR(work, 0x1265c);
+         scan != NULL;
+         scan = (u32*)scan[0x3f1])
+    {
+        if ((scan[0] & 2) == 0)
+        {
+            i++;
+        }
+    }
+    K_ASSERT(i < 7, 0x4d2);
+    for (i = 0; i < count - 1; i++)
+    {
+        if (BP_TEX_GLOBAL == NULL)
+        {
+            func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        }
+        scan = BP_TEX_PTR(work, 0x1265c);
+        while (scan != NULL)
+        {
+            if ((scan[0] & 2) == 0 && scan[4] == (u32)i)
+            {
+                break;
+            }
+            scan = (u32*)scan[0x3f1];
+        }
+        if (scan == NULL)
+        {
+            K_ASSERT(false, 0x47a);
+        }
+    }
+
     func_00259190(node, children, &childCount);
     for (i = 0; i < childCount; i++)
     {
@@ -1497,7 +1540,16 @@ void bpTexRemoveNodeAt(s32 index)
             BP_TEX_PTR(work, 0x12664 + (i + 1) * 4);
     }
     BP_TEX_S32(work, 0x12684) = count - 1;
-    bpTexQueueNodeAction(2, node, BP_TEX_U32(work, 0x127b0));
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    action = (u32*)((u8*)work + 0x12688 +
+                    BP_TEX_U32(work, 0x127a8) * 0x24);
+    action[0] = 2;
+    action[1] = BP_TEX_U32(work, 0x127b0);
+    action[2] = (u32)node;
+    BP_TEX_U32(work, 0x127a8)++;
 }
 
 // FUN_00255B20 NONMATCHING
