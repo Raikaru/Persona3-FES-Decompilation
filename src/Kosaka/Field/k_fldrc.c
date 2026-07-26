@@ -48,6 +48,13 @@ extern u32 DAT_00678f70;
 extern u64 DAT_00678f68_abs[];
 #pragma alias DAT_00678f70_abs DAT_00678f70
 extern f32 DAT_00678f70_abs[];
+typedef struct FldrcColor
+{
+    u64 word;
+    f32 tail;
+} FldrcColor;
+#pragma alias DAT_00678f68_color DAT_00678f68
+extern FldrcColor DAT_00678f68_color[];
 #pragma alias FUN_004cb890_typed FUN_004cb890
 extern u32 FUN_004cb890_typed(u32 model, void* color, f32 angle, u32 mode);
 extern u32 DAT_007ce0d4;
@@ -1566,14 +1573,9 @@ void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
     u16 type;
-    struct
-    {
-        u64 word;
-        f32 tail;
-    } color;
+    FldrcColor color;
 
-    color.word = DAT_00678f68_abs[0];
-    color.tail = DAT_00678f70_abs[0];
+    color = DAT_00678f68_color[0];
     if ((*resource & 1) == 0)
     {
         if (resource[2] != 0)
