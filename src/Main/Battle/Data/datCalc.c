@@ -8663,6 +8663,17 @@ float FUN_0030fdf0(int param_1,u32 param_2)
   return unaff_f20;
 }
 
+// Recovered sibling: FUN_0030fdf0's Ghidra window ran to 0x00311190, but its own
+// `jr $ra` is at 0x0031116c followed by four padding nops. A separate 16-byte
+// function begins at 0x00311180 (addiu $v0, $zero, 1 / jr $ra / nop / nop) and is
+// reached only through a raw pointer stored at ELF file offset 0x6b94b8, never by
+// a direct jal, which is why Ghidra never split it out.
+// FUN_00311180
+u32 FUN_00311180(void)
+{
+  return 1;
+}
+
 
 
 
