@@ -4502,6 +4502,7 @@ void func_002bedd0(int param_1)
 // FUN_002bef20 NONMATCHING
 
 u64 func_002bef20(u64 param_1)
+
 {
   short sVar1 = 0;
   int iVar2 = 0;
@@ -4514,105 +4515,95 @@ u64 func_002bef20(u64 param_1)
   u16 uStack_16 = 0;
   u16 uStack_14 = 0;
   u32 uStack_10 = 0;
-
+  
   lVar5 = btlFadeSuppressesFormationUpdates();
-  if ((lVar5 != 0) || ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) != 0)) {
-    return 0;
-  }
-  psVar4 = (short *)func_00195540_u32((u32)param_1);
-  sVar1 = *psVar4;
-  if ((sVar1 == 8) || (sVar1 == 7) || (sVar1 == 5) || (sVar1 == 3)) {
-    return 0;
-  }
-  if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
-    func_0016f1f0(0x140c, 0);
-    func_0016f1f0(0x1409, 0);
-    iVar2 = *(int *)(psVar4 + 2);
-    lVar5 = func_001fddf0();
-    if (lVar5 != 0) {
-      func_001fdf10(&uStack_20);
-      *(short *)(iVar2 + 0x6c) = (short)iStack_1c;
-      switch (iStack_1c) {
-      case 1:
-        uVar3 = (u16)func_00308930(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
-        *(u16 *)(iVar2 + 0x6e) = uVar3;
-        *psVar4 = 3;
-        break;
-      case 2:
-        *(u16 *)(iVar2 + 0x6e) = uStack_16;
-        *psVar4 = 3;
-        break;
-      case 3:
-        *(u16 *)(iVar2 + 0x70) = uStack_18;
-        uVar3 = (u16)func_0030bc20(uStack_18);
-        *(u16 *)(iVar2 + 0x6e) = uVar3;
-        *psVar4 = 3;
-        break;
-      case 4:
-        if (((uStack_20 & 1) == 0) && ((uStack_20 & 2) == 0)) {
-          *psVar4 = 5;
-        } else {
-          *(u16 *)(iVar2 + 0x6e) = uStack_16;
-          *psVar4 = 3;
+  if ((lVar5 == 0) && ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) {
+    psVar4 = (short *)func_00195540(param_1);
+    sVar1 = *psVar4;
+    if ((sVar1 != 8) && (((sVar1 != 7 && (sVar1 != 5)) && (sVar1 != 3)))) {
+      if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
+        func_0016f1f0(0x140c,0);
+        func_0016f1f0(0x1409,0);
+        iVar2 = *(int *)(psVar4 + 2);
+        lVar5 = func_001fddf0();
+        if (lVar5 != 0) {
+          func_001fdf10(&uStack_20);
+          *(short *)(iVar2 + 0x6c) = (short)iStack_1c;
+          if (iStack_1c == 0xd) {
+            *psVar4 = 8;
+          }
+          else if ((iStack_1c == 7) || (iStack_1c == 6)) {
+            *psVar4 = 5;
+          }
+          else if (iStack_1c == 10) {
+            func_002db650(uStack_10);
+            *psVar4 = 7;
+          }
+          else if (iStack_1c == 5) {
+            *(u16 *)(iVar2 + 0x74) = uStack_14;
+            *psVar4 = 5;
+          }
+          else if (iStack_1c == 4) {
+            if (((uStack_20 & 1) == 0) && ((uStack_20 & 2) == 0)) {
+              *psVar4 = 5;
+            }
+            else {
+              *(u16 *)(iVar2 + 0x6e) = uStack_16;
+              *psVar4 = 3;
+            }
+          }
+          else if (iStack_1c == 3) {
+            *(u16 *)(iVar2 + 0x70) = uStack_18;
+            uVar3 = func_0030bc20(uStack_18);
+            *(u16 *)(iVar2 + 0x6e) = uVar3;
+            *psVar4 = 3;
+          }
+          else if (iStack_1c == 2) {
+            *(u16 *)(iVar2 + 0x6e) = uStack_16;
+            *psVar4 = 3;
+          }
+          else if (iStack_1c == 1) {
+            uVar3 = func_00308930(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
+            *(u16 *)(iVar2 + 0x6e) = uVar3;
+            *psVar4 = 3;
+          }
         }
-        break;
-      case 5:
-        *(u16 *)(iVar2 + 0x74) = uStack_14;
-        *psVar4 = 5;
-        break;
-      case 10:
-        func_002db650(uStack_10);
-        *psVar4 = 7;
-        break;
-      case 6:
-      case 7:
-        *psVar4 = 5;
-        break;
-      case 13:
-        *psVar4 = 8;
-        break;
-      default:
-        break;
       }
-    }
-  } else {
-    func_0016f1f0(0x140c, 1);
-    func_0016f1f0(0x1409, 1);
-    if (*psVar4 == 6) {
-      *psVar4 = 2;
-      return 0;
-    }
-    iVar2 = *(int *)(psVar4 + 6);
-    if (iVar2 != 0) {
-      if (*(code **)(iVar2 + 0x14) != NULL) {
-        iStack_1c = (int)(**(code **)(iVar2 + 0x14))(iVar2, *(u32 *)(psVar4 + 2));
-        switch (iStack_1c) {
-        case 1:
-          iVar2 = *(int *)(iVar2 + 0x20);
-          if (iVar2 != 0) {
-            *(int *)(psVar4 + 6) = iVar2;
-            *(u32 *)(iVar2 + 0x24) = 0;
+      else {
+        func_0016f1f0(0x140c,1);
+        func_0016f1f0(0x1409,1);
+        if (*psVar4 == 6) {
+          *psVar4 = 2;
+          return 0;
+        }
+        iVar2 = *(int *)(psVar4 + 6);
+        if ((iVar2 != 0) && (*(code **)(iVar2 + 0x14) != (code *)0x0)) {
+          uVar3 = (**(code **)(iVar2 + 0x14))(iVar2,*(u32 *)(psVar4 + 2));
+          switch(uVar3) {
+          case 1:
+            iVar2 = *(int *)(iVar2 + 0x20);
+            if (iVar2 != 0) {
+              *(int *)(psVar4 + 6) = iVar2;
+              *(u32 *)(iVar2 + 0x24) = 0;
+            }
+            break;
+          case 2:
+            if (*(int *)(iVar2 + 0x24) != 0) {
+              *(int *)(psVar4 + 6) = *(int *)(iVar2 + 0x24);
+            }
+            break;
+          case 4:
+            iVar2 = *(int *)(iVar2 + 0x20);
+            if (iVar2 != 0) {
+              *(int *)(psVar4 + 6) = iVar2;
+              *(u32 *)(iVar2 + 0x24) = 0;
+            }
+          case 3:
+            *psVar4 = 3;
+            break;
+          case 6:
+            *psVar4 = 5;
           }
-          break;
-        case 2:
-          if (*(int *)(iVar2 + 0x24) != 0) {
-            *(int *)(psVar4 + 6) = *(int *)(iVar2 + 0x24);
-          }
-          break;
-        case 4:
-          iVar2 = *(int *)(iVar2 + 0x20);
-          if (iVar2 != 0) {
-            *(int *)(psVar4 + 6) = iVar2;
-            *(u32 *)(iVar2 + 0x24) = 0;
-          }
-        case 3:
-          *psVar4 = 3;
-          break;
-        case 6:
-          *psVar4 = 5;
-          break;
-        default:
-          break;
         }
       }
     }

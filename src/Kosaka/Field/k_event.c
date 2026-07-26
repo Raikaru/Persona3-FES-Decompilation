@@ -27,6 +27,7 @@ extern s16 D_006836B0[];
 extern f32 DAT_007caefc;
 #pragma alias DAT_0086b180_abs DAT_0086b180
 extern u8 DAT_0086b180_abs[];
+extern f32 func_004c6ac0(const RwV3d* vector);
 extern s32 func_001c6dd0(const FldUnit* unit, f32 maxDist);
 u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat,
                                const RwV3d* targetPos,
@@ -589,9 +590,34 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
     void* object;
     RwV3d delta;
     s32 i;
+    s32 rawX;
+    s32 rawZ;
+    s32 x;
+    s32 z;
 
     viewerMat = mdlGetMatrix(unit->mdl);
-    cell = FldEvent_MapCell(&viewerMat->pos);
+    x = 0;
+    if (K_Scene_001a0250() != false)
+    {
+        rawX = (s32)((viewerMat->pos.x + 400.0f) / 800.0f);
+        x = rawX >> 2;
+        if (rawX < 0)
+        {
+            x = (rawX + 3) >> 2;
+        }
+    }
+    viewerMat = mdlGetMatrix(unit->mdl);
+    z = 0;
+    if (K_Scene_001a0250() != false)
+    {
+        rawZ = (s32)((viewerMat->pos.z + 400.0f) / 800.0f);
+        z = rawZ >> 2;
+        if (rawZ < 0)
+        {
+            z = (rawZ + 3) >> 2;
+        }
+    }
+    cell = DAT_0086b180_abs + z * 0x310 + x * 0xc4;
     for (i = 0; i < 0x31; i++)
     {
         object = *(void**)(cell + 0x60 + i * sizeof(void*));
@@ -603,10 +629,13 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
         {
             continue;
         }
-        delta.x = *(f32*)((u8*)object + 0x10c) - viewerMat->pos.x;
-        delta.y = *(f32*)((u8*)object + 0x110) - viewerMat->pos.y;
-        delta.z = *(f32*)((u8*)object + 0x114) - viewerMat->pos.z;
-        if (RwV3dLength(&delta) < maxDist)
+        delta.x = *(f32*)((u8*)object + 0x10c) -
+                  mdlGetMatrix(unit->mdl)->pos.x;
+        delta.y = *(f32*)((u8*)object + 0x110) -
+                  mdlGetMatrix(unit->mdl)->pos.y;
+        delta.z = *(f32*)((u8*)object + 0x114) -
+                  mdlGetMatrix(unit->mdl)->pos.z;
+        if (func_004c6ac0(&delta) < maxDist)
         {
             return *(void**)(cell + 0x1e0 + i * sizeof(void*));
         }

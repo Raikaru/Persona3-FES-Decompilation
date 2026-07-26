@@ -597,6 +597,8 @@ extern void* func_001a91b0(KwlnTask* task, const RwV3d* position);
 extern void func_001a9390(KwlnTask* task, void* handle, u32 value);
 extern u32 func_002ff790(DatUnitGenusBase* genus);
 extern void func_0018bee0(void* owner, s32 charId, u32 variant);
+extern u8 datPersonaGetLevelByPcId(u16 pcId);
+extern void func_0035bc00(s32 arg0, u32 arg1, u32 arg2, u32 arg3);
 extern u8 D_006792E0[];
 extern u8 D_006799FC[];
 extern u8 D_00679A16[];
@@ -1066,27 +1068,55 @@ u32 func_001dd600(void)
 void func_001dd8e0(void)
 {
     u32 i;
-    Field* field = K_Field_Get();
-    void* owner = field != NULL ? *(void**)((u8*)field + 0x28) : NULL;
+    Field* field;
+    void* owner;
+
+    field = K_Field_Get();
+    owner = field != NULL ? *(void**)((u8*)field + 0x28) : NULL;
     if (owner == NULL)
     {
         return;
     }
     for (i = 0; i < FLDUNIT_PC_MAX; ++i)
     {
-        FldUnit* unit = &gFldUnitsPc[i];
+        FldUnit* unit;
+        u32 personaLevel;
+        u32 dataLevel;
+
+        unit = &gFldUnitsPc[i];
         if (unit->genusBase == NULL || unit->resrc == NULL)
         {
             continue;
         }
         if (func_002ff790(unit->genusBase) == 1)
         {
-            func_0018bee0(owner, unit->charId, 2);
+            func_0018bee0(*(void**)((u8*)K_Field_Get() + 0x28), unit->charId, 2);
+            continue;
         }
-        else if (datGetLevel((s16)unit->charId) < unit->unk_184)
+        personaLevel = datPersonaGetLevelByPcId(unit->charId) & 0xff;
+        if (unit->charId == 1)
         {
-            unit->unk_184 = datGetLevel((s16)unit->charId);
-            func_0018bee0(owner, unit->charId, 0);
+            dataLevel = datGetLevel((s16)unit->charId) & 0xff;
+            unit->unk_184 = personaLevel;
+            if (unit->unk_188 < dataLevel)
+            {
+                unit->unk_188 = dataLevel;
+                func_0018bee0(*(void**)((u8*)K_Field_Get() + 0x28), unit->charId, 3);
+                func_0035bc00(10, (u32)unit->unk_1b4, *(u32*)((u8*)unit + 0x1b8), 8);
+            }
+            else
+            {
+                func_0018bee0(*(void**)((u8*)K_Field_Get() + 0x28), unit->charId, 0);
+            }
+        }
+        else if (unit->unk_184 < personaLevel)
+        {
+            unit->unk_184 = personaLevel;
+            func_0018bee0(*(void**)((u8*)K_Field_Get() + 0x28), unit->charId, 3);
+        }
+        else
+        {
+            func_0018bee0(*(void**)((u8*)K_Field_Get() + 0x28), unit->charId, 0);
         }
     }
 }
