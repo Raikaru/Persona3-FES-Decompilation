@@ -410,36 +410,37 @@ void H_Pad_UpdateRumble(void)
         if (sRumbleDuration == 0)
         {
             sRumbleState = HPAD_STATE_WAITING_FOR_MODE;
+            break;
         }
-        else
+        if (sRumbleCadence != 0)
         {
-            if (sRumbleCadence == 0)
-            {
-                if (sRumblePhase == 0)
-                {
-                    u16 intensity;
-                    u8 intensityByte;
-                    intensityByte = sRumbleIntensity.b;
-                    intensity = intensityByte;
-                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = intensity;
-                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = intensity;
-                    sRumbleCadence = sRumbleOnFrames;
-                    sRumblePhase = 1;
-                }
-                else
-                {
-                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = 0;
-                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = 0;
-                    sRumbleCadence = sRumbleOffFrames;
-                    sRumblePhase = 0;
-                }
-            }
-            else
-            {
-                sRumbleCadence--;
-            }
-            sRumbleDuration--;
+            goto decrement_cadence;
         }
+        if (sRumblePhase != 0)
+        {
+            goto rumble_off;
+        }
+        {
+            u16 intensity;
+            u8 intensityByte;
+            intensityByte = sRumbleIntensity.b;
+            intensity = intensityByte;
+            ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = intensity;
+            ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = intensity;
+            sRumbleCadence = sRumbleOnFrames;
+            sRumblePhase = 1;
+        }
+        goto rumble_done;
+rumble_off:
+        ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = 0;
+        ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = 0;
+        sRumbleCadence = sRumbleOffFrames;
+        sRumblePhase = 0;
+        goto rumble_done;
+decrement_cadence:
+        sRumbleCadence--;
+rumble_done:
+        sRumbleDuration--;
         break;
     }
 }

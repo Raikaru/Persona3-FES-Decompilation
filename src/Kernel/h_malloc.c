@@ -905,6 +905,8 @@ static void hmallocApplyInputTable(void)
     u32* dst;
     u32* bitWord;
     s32 copyCount;
+    u32 first;
+    u32 second;
 
     config = D_005E4D80;
     dst = copied;
@@ -915,6 +917,7 @@ static void hmallocApplyInputTable(void)
         config += 2;
         dst += 2;
     }
+    resourceA = sHmallocResourceA;
     i = 1;
     word = *(s16*)((u8*)resourceA + 0x3c);
     func_0016cfe0(i, word);
