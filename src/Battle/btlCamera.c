@@ -4181,10 +4181,9 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     work.normalized.z = unit->unk_dc.z - work.center.z;
     distance = RwV3dNormalize(&work.normalized, &work.normalized);
     half = 0.5f;
-    tempHalf = half * distance;
-    work.scaled.x = tempHalf * work.normalized.x;
-    work.scaled.y = tempHalf * work.normalized.y;
-    work.scaled.z = tempHalf * work.normalized.z;
+    work.scaled.x = work.normalized.x * (half * distance);
+    work.scaled.y = work.normalized.y * (half * distance);
+    work.scaled.z = work.normalized.z * (half * distance);
     work.scaled.x = work.scaled.x + work.center.x;
     work.scaled.y = work.scaled.y + work.center.y;
     work.scaled.z = work.scaled.z + work.center.z;
@@ -4201,15 +4200,15 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     if (dot < 0.0f)
         goto negative_distance;
     distance = fGpffff8094 * distance;
-    work.scaled.x = work.normalized.x * distance;
-    work.scaled.y = work.normalized.y * distance;
-    work.scaled.z = work.normalized.z * distance;
+    work.scaled.x = distance * work.normalized.x;
+    work.scaled.y = distance * work.normalized.y;
+    work.scaled.z = distance * work.normalized.z;
     goto distance_done;
 negative_distance:
     distance = 0.5f * distance;
-    work.scaled.x = work.normalized.x * distance;
-    work.scaled.y = work.normalized.y * distance;
-    work.scaled.z = work.normalized.z * distance;
+    work.scaled.x = distance * work.normalized.x;
+    work.scaled.y = distance * work.normalized.y;
+    work.scaled.z = distance * work.normalized.z;
 distance_done:
     work.scaled.x = work.scaled.x + work.center.x;
     work.scaled.y = work.scaled.y + work.center.y;

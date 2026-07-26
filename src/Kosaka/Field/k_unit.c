@@ -1981,21 +1981,24 @@ void func_001d1860(u32 value)
 void func_001d1910(void)
 {
     s32 i;
+    FldUnit* unit;
     u32 valid;
     u32 predicate;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         valid = 0;
-        if (gFldUnitsPc[i].genusBase != NULL && gFldUnitsPc[i].resrc != NULL)
+        unit = &gFldUnitsPc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
             valid = 1;
         }
         predicate = valid > 0;
         if (predicate == 1)
         {
-            func_001a60d0(0, gFldUnitsPc[i].mdl, 0, 1);
-            gFldUnitsPc[i].unk_17c = 0;
+            unit = &gFldUnitsPc[i];
+            func_001a60d0(0, unit->mdl, 0, 1);
+            unit->unk_17c = 0;
         }
     }
 }
