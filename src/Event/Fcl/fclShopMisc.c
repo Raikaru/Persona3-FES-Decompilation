@@ -18994,8 +18994,8 @@ u32 FUN_00409f50(u32 param_1,int param_2)
   u32 uVar4;
   u32 uVar5;
   u32 uVar6;
-  long lVar7;
-  long lVar8;
+  u32 lVar7;
+  u32 lVar8;
   int iVar9;
 
   uVar6 = FUN_003c58f0(0,0x28,8,0x18);

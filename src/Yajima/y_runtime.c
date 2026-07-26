@@ -20743,17 +20743,30 @@ void FUN_0045d990(int param_1,long param_2)
   
   iVar3 = *(int *)((int)param_1 + 0x3c);
   if ((-1 < param_2) && (lVar4 = FUN_0045b4b0(iVar3 + 0x178), lVar4 == 0)) {
-    FUN_0045b4e0(iVar3 + 0x178);
-    FUN_001159f0_3f(0,0,0);
+    fVar9 = (float)FUN_0045b4e0(iVar3 + 0x178);
+    fVar9 = fVar9 * 255.0f;
+    if (2.1474836e+09f <= fVar9) {
+      fVar9 = fVar9 - 2.1474836e+09f;
+    }
+    FUN_001159f0_3fv(0,0,0,param_1,(u8 *)DAT_007ce718,0xa4,
+                     0xff - ((int)fVar9 & 0xffU) & 0xff);
   }
   if (0 < param_2) {
     FUN_0045cdd0(param_1,1);
     lVar4 = FUN_0045b4b0(iVar3 + 0x210);
     if (lVar4 == 0) {
       FUN_0045b420((iVar3 + 0x210),afStack_8);
-      FUN_0045b4e0(iVar3 + 0x210);
-      FUN_001159f0_3f(4.0f,(float)(int)afStack_8[1],0);
-      FUN_001159f0_3f(321.0f,(float)(int)afStack_8[1],0);
+      fVar9 = (float)FUN_0045b4e0(iVar3 + 0x210);
+      fVar9 = fVar9 * 255.0f;
+      if (2.1474836e+09f <= fVar9) {
+        fVar9 = fVar9 - 2.1474836e+09f;
+      }
+      FUN_001159f0_3fv(4.0f,(float)(int)afStack_8[1],0,param_1,
+                       (u8 *)DAT_007ce718,0,
+                       0xff - ((int)fVar9 & 0xffU) & 0xff);
+      FUN_001159f0_3fv(321.0f,(float)(int)afStack_8[1],0,param_1,
+                       (u8 *)DAT_007ce718,1,
+                       0xff - ((int)fVar9 & 0xffU) & 0xff);
     }
   }
   if (1 < param_2) {
@@ -20761,8 +20774,15 @@ void FUN_0045d990(int param_1,long param_2)
       iVar6 = iVar3 + iVar8 * 0x98 + 0x340;
       lVar4 = FUN_0045b4b0(iVar6);
       if (lVar4 == 0) {
-        FUN_0045b4e0(iVar6);
-        FUN_001159f0_3f((float)((iVar8 / 6) * 0x94 + 0x1b),(float)((iVar8 % 6) * 0x19 + 0xe5),0);
+        fVar9 = (float)FUN_0045b4e0(iVar6);
+        fVar9 = fVar9 * 255.0f;
+        if (2.1474836e+09f <= fVar9) {
+          fVar9 = fVar9 - 2.1474836e+09f;
+        }
+        FUN_001159f0_3fv((float)((iVar8 / 6) * 0x94 + 0x1b),
+                         (float)((iVar8 % 6) * 0x19 + 0xe5),0,param_1,
+                         (u8 *)DAT_007ce718,0x1b,
+                         0xff - ((int)fVar9 & 0xffU) & 0xff);
       }
     }
   }
