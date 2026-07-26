@@ -279,7 +279,7 @@ void FUN_003afad0(u32 param_1,int param_2,int param_3)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0("frFont.c",0x3ff);
+    FUN_0019d3f0(DAT_006a2730,0x3ff);
 
   }
   param_1 = param_1 & 0xff;
@@ -1259,7 +1259,7 @@ processFont:
 
       if (param_5 == 0) {
 
-        FUN_0019d3f0("frFont.c",0x7da);
+        FUN_0019d3f0(DAT_006a2730,0x7da);
 
       }
 
@@ -1303,7 +1303,7 @@ processFont:
 
       if (iVar3 == 0) {
 
-        FUN_0019d3f0("frFont.c",0x7ef);
+        FUN_0019d3f0(DAT_006a2730,0x7ef);
 
       }
 
@@ -2795,7 +2795,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
         if (iVar6 == 0) {
 
-          FUN_0019d3f0("frFont.c",0x818);
+          FUN_0019d3f0(DAT_006a2730,0x818);
 
         }
 
@@ -2819,7 +2819,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
       if (lVar8 == 0) {
 
-        FUN_0019d3f0("frFont.c",0x848);
+        FUN_0019d3f0(DAT_006a2730,0x848);
 
       }
 
@@ -2971,7 +2971,7 @@ void FUN_003b2020(int param_1,int param_2)
 
         if (iVar5 == 0) {
 
-          FUN_0019d3f0("frFont.c",0x818);
+          FUN_0019d3f0(DAT_006a2730,0x818);
 
         }
 
@@ -2995,7 +2995,7 @@ void FUN_003b2020(int param_1,int param_2)
 
       if (lVar7 == 0) {
 
-        FUN_0019d3f0("frFont.c",0x848);
+        FUN_0019d3f0(DAT_006a2730,0x848);
 
       }
 
@@ -3249,7 +3249,7 @@ u32 FUN_003b2430(void *param_1)
 
           if (puVar4 == (u16 *)0x0) {
 
-            FUN_0019d3f0("frFont.c",0x82c);
+            FUN_0019d3f0(DAT_006a2730,0x82c);
 
           }
 
@@ -3269,7 +3269,7 @@ u32 FUN_003b2430(void *param_1)
 
           if (iVar10 == 0) {
 
-            FUN_0019d3f0("frFont.c",0x88c);
+            FUN_0019d3f0(DAT_006a2730,0x88c);
 
           }
 
@@ -3365,7 +3365,7 @@ u32 FUN_003b2430(void *param_1)
 
         if (iVar6 == 0) {
 
-          FUN_0019d3f0("frFont.c",0x848);
+          FUN_0019d3f0(DAT_006a2730,0x848);
 
         }
 
@@ -3387,7 +3387,7 @@ u32 FUN_003b2430(void *param_1)
 
         if (iVar10 == 0) {
 
-          FUN_0019d3f0("frFont.c",0x8a5);
+          FUN_0019d3f0(DAT_006a2730,0x8a5);
 
         }
 
@@ -3405,13 +3405,13 @@ u32 FUN_003b2430(void *param_1)
 
     if (0x4c < bVar1) {
 
-      FUN_0019d3f0("frFont.c",0xdf9);
+      FUN_0019d3f0(DAT_006a2730,0xdf9);
 
     }
 
     if (bVar1 < 2) {
 
-      FUN_0019d3f0("frFont.c",0xdfa);
+      FUN_0019d3f0(DAT_006a2730,0xdfa);
 
     }
 
