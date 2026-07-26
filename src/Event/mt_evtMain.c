@@ -2059,11 +2059,7 @@ int FUN_00361f20(int param_1)
 
 
 int FUN_00361f60(int param_1,int param_2)
-
-
-
 {
-
   int iVar1;
   int *piVar2;
   int item;
@@ -2091,7 +2087,6 @@ next:
 loop_test:
   if (piVar2 != (int *)0x0) goto loop_body;
   return iVar1;
-
 }
 
 
