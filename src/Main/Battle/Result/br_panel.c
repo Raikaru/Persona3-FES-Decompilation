@@ -1092,6 +1092,27 @@ static void brPanel00236390(void)
         rect[6] = rect[0] + shift;
         rect[7] = rect[1] + shift;
         alpha = 0.5f + scale * 0.5f;
+        if (timer < 3) {
+            shift2 = (f32)(timer + 1) / 3.0f;
+            rect[0] += baseShift * (1.0f - shift2);
+            rect[1] -= baseShift * (1.0f - shift2);
+            rect[2] -= secondShift * (1.0f - shift2);
+            rect[3] += secondShift * (1.0f - shift2);
+            rect[4] = rect[2] + shift + secondShift * shift2;
+            rect[5] = rect[3] + shift + secondShift * shift2;
+            rect[6] = rect[0] + shift + secondShift * shift2;
+            rect[7] = rect[1] + shift + secondShift * shift2;
+        } else if (timer < 7) {
+            shift2 = (f32)(timer - 2) / 5.0f;
+            rect[0] += progressShift * shift2;
+            rect[1] += progressShift * shift2;
+            rect[2] += progressShift * shift2;
+            rect[3] += progressShift * shift2;
+            rect[4] += progressShift * shift2;
+            rect[5] += progressShift * shift2;
+            rect[6] += progressShift * shift2;
+            rect[7] += progressShift * shift2;
+        }
     } else {
         root2 = sqrtf(2.0f);
         scale = (timer < 10) ? (f32)timer / 10.0f : 1.0f;
