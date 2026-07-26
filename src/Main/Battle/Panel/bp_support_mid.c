@@ -1841,8 +1841,6 @@ void func_0020cda0(u8* work)
     f32 six;
     f32 three;
     f32 zero;
-    f32 rowStep;
-    f32 yOffset;
     register u8* vertex;
     register s32 alternating;
     register s32 col;
@@ -1858,8 +1856,6 @@ void func_0020cda0(u8* work)
     row = 0;
     widthEven = 7;
     widthOdd = 8;
-    rowStep = *(volatile f32*)&fGpffff8338;
-    yOffset = *(volatile f32*)&fGpffff8318;
     six = 6.0f;
     zero = 0.0f;
     three = 3.0f;
@@ -1871,7 +1867,7 @@ void func_0020cda0(u8* work)
             width = widthEven;
         }
         col = 0;
-        rowY = rowStep * (f32)row - yOffset;
+        rowY = fGpffff8338 * (f32)row - fGpffff8318;
         while (col < width) {
             if (alternating != 0) {
                 if (col == 0) {

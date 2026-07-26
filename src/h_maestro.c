@@ -3261,7 +3261,7 @@ void func_00115cd0(int unused0, int unused1, int unused2,
 
 
 void func_00115de0(int unused0, int unused1, int unused2,
-                   f32 param_1, f32 param_2, u16 param_4, u8 param_5,
+                   f32 param_1, f32 param_2, s16 param_4, u8 param_5,
                    u8 param_6, u8 param_7, u8 param_8, f32 param_3)
 
 

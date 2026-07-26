@@ -9954,6 +9954,7 @@ void func_002eec60(void)
   u32 uVar1;
   u32 uVar2;
   int iVar4;
+  int copyCount;
   u32 *puVar5;
   u32 *puVar6;
   int iVar3;
@@ -9961,16 +9962,16 @@ void func_002eec60(void)
   puVar6 = (u32*)DAT_0069a000_abs;
 
   puVar5 = work.data;
-  iVar4 = 3;
+  copyCount = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    copyCount = copyCount + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
+  } while (0 < copyCount);
   *(VoiceIds *)&work.ids[0] = *(VoiceIds *)&DAT_007cc9b0_s16;
   sVar7 = 0;
   work.position.y = 0.0f;

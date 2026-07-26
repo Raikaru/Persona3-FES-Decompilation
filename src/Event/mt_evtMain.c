@@ -13516,21 +13516,23 @@ void FUN_0036d030(int param_1)
 bool FUN_0036d320(int param_1)
 {
   int iVar1;
-  u32 bVar2;
+  bool bVar2;
 
   iVar1 = *(int *)(param_1 + 0xd4);
   if (iVar1 == 0x1a) {
     iVar1 = *(int *)(param_1 + 0x16c);
-    if ((iVar1 != 0xd) && (iVar1 != 0xc) && (iVar1 != 10) &&
-        (iVar1 != 9) && (iVar1 != 8) && (iVar1 != 6)) {
-      bVar2 = true;
-      if ((iVar1 == 1) || (iVar1 == 0) || (iVar1 == 4)) {
-        bVar2 = false;
-      }
+    if ((iVar1 == 0xd) || (iVar1 == 0xc) || (iVar1 == 10) ||
+        (iVar1 == 9) || (iVar1 == 8) || (iVar1 == 6)) {
+      goto L_false;
     }
-    else {
-      bVar2 = false;
-    }
+    bVar2 = true;
+    if (iVar1 == 1) goto L_false;
+    if (iVar1 == 0) goto L_false;
+    if (iVar1 == 4) goto L_false;
+    goto L_done;
+L_false:
+    bVar2 = false;
+L_done:
   }
   else if (iVar1 == 0x17) {
     bVar2 = false;

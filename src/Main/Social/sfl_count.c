@@ -127,6 +127,7 @@ void FUN_0025b690(void)
     s32 var_3;
     s32 var_3_2;
     s32 var_3_3;
+    u32 var_3_4;
     u32 var_3_5;
     u8* resource;
     u8* temp_2_4;
@@ -234,11 +235,12 @@ void FUN_0025b690(void)
             fVar7 = 255.0f * var_f1 * fVar8;
             temp_f1 = 0.25f * fVar7;
             if (2147483648.0f <= temp_f1) goto alpha1_high;
-            stack.spAF = (u8)((s32)temp_f1 & 0xff);
+            var_3_4 = (s32)temp_f1 & 0xff;
             goto alpha1_done;
 alpha1_high:
-            stack.spAF = (u8)(((s32)(temp_f1 - 2147483648.0f) | 0x80000000) & 0xff);
+            var_3_4 = ((s32)(temp_f1 - 2147483648.0f) | 0x80000000) & 0xff;
 alpha1_done:
+            stack.spAF = var_3_4;
             FUN_0021d950(puVar2 + iVar5 * 0x40 + 4, &stack.spAC);
             stack.spAC = 0xff;
             stack.spAD = 0xff;
