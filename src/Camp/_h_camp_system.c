@@ -1385,25 +1385,36 @@ void FUN_0015D8E0(u64 param_1, f32 param_2, u8 param_3)
 void FUN_0015DA70(void *param_1)
 {
     uintptr_t work_address = (uintptr_t)(u32)(uintptr_t)param_1;
+    f32 x;
+    f32 y;
     s32 i;
 
-    FUN_0018bc10(100.0f,
-                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x44),
-                 0, 2, 1, 0x41b0000042480000ULL,
-                 0x41b0000041e80000ULL, 0, 0);
+    x = 22.0f;
+    y = 50.0f;
+    FUN_0018bc10(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x44),
+        0, 2, 1, camp_list_pack_f32(x, y),
+        camp_list_pack_f32(x, y - 21.0f), 0, 0);
     FUN_0018bc10(100.0f,
                  (void *)(uintptr_t)camp_list_load_u32(work_address, 0x38),
                  0, 2, 1, 0, 0, 0, 0);
     camp_list_store_u32(
         (uintptr_t)camp_list_load_u32(work_address, 0x38), 0x8c, 0);
-    FUN_0018bc10(100.0f,
-                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xcc),
-                 0, 2, 1, 0x43cd800043f88000ULL,
-                 0x43cd800043df8000ULL, 0, 0);
-    FUN_0018bc10(100.0f,
-                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x110),
-                 0, 2, 1, 0x41c0000043450000ULL,
-                 0x41c0000043770000ULL, 0, 0);
+    x = 411.0f;
+    y = 496.0f;
+    FUN_0018bc10(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xcc),
+        0, 2, 1, camp_list_pack_f32(x, y),
+        camp_list_pack_f32(x, y - 49.0f), 0, 0);
+    x = 24.0f;
+    y = 197.0f;
+    FUN_0018bc10(
+        100.0f,
+        (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x110),
+        0, 2, 1, camp_list_pack_f32(x, y),
+        camp_list_pack_f32(x, y + 50.0f), 0, 0);
 
     for (i = 0; i < 4; ++i) {
         if (i < camp_list_load_s32(work_address, 0x4c)) {
@@ -1587,13 +1598,8 @@ void FUN_0015E6E0(CampDrawWork *work)
     second = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
                  first, second, 0, 0);
-    x = 24.0f;
-    y = 247.0f;
-    first = camp_draw_concat44_f32(x, y);
-    y += 33.0f;
-    second = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
-                 first, second, 0, 0);
+                 UINT64_C(0x41c0000043770000), UINT64_C(0x41c00000438c0000), 0, 0);
 
     for (i = 0; i < 4; ++i) {
         if (i < work->partyCount) {
@@ -1712,18 +1718,36 @@ void FUN_0015F320(CampDrawWork *work)
 {
     void *draw;
     f32 tailHeight;
+    f32 x;
+    f32 y;
     u64 first;
     u64 second;
     s32 i;
     s32 base;
 
     draw = camp_draw_ptr32(work->records);
+    x = 22.0f;
+    y = 79.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y -= 50.0f;
+    second = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x44), 0, 2, 1,
-                 UINT64_C(0x41b00000429e0000), UINT64_C(0x41b0000041e80000), 0, 0);
+                 first, second, 0, 0);
+    x = 22.0f;
+    y = 77.0f;
+    first = camp_draw_concat44_f32(x, y);
+    y -= 50.0f;
+    second = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x88), 0, 2, 2,
-                 UINT64_C(0x41b00000429a0000), UINT64_C(0x41b0000041d80000), 0, 0);
+                 first, second, 0, 0);
+    x = 402.0f;
+    y = 504.0f;
+    first = camp_draw_concat44_f32(x, y);
+    x += 9.0f;
+    y -= 57.0f;
+    second = camp_draw_concat44_f32(x, y);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0xcc), 0, 2, 0,
-                 UINT64_C(0x43c9000043fc0000), UINT64_C(0x43cd800043df8000), 0, 0);
+                 first, second, 0, 0);
     FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, 0x110), 0, 2, 0,
                  UINT64_C(0x41c00000438c0000), UINT64_C(0x41c0000043770000), 0, 0);
 

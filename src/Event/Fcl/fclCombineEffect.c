@@ -1464,86 +1464,45 @@ u32 FUN_00418880(int param_1,int *param_2)
   RwMatrixRotate((void*)auStack_60,(void*)&uStack_10,(float)(*(int *)(iVar3 + 0x14) / 0xffff),2);
 
   cVar1 = *(char *)(iVar3 + 4);
-
   if (cVar1 == '@') {
-
     if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
-
       FUN_004cb7f0(uVar4,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
-
     }
-
   }
-
   else if (cVar1 == '\x06') {
-
     iVar5 = *(int *)(iVar2 + 8);
-
     fVar10 = *(float *)(iVar5 + 0x14);
-
     fVar12 = *(float *)(iVar5 + 0x10);
-
     fVar11 = *(float *)(iVar5 + 0x18);
-
     fVar8 = *(float *)(iVar5 + 0x1c);
-
     fVar7 = 2.0f / (fVar8 * fVar8 + fVar11 * fVar11 + fVar12 * fVar12 + fVar10 * fVar10);
-
     fVar9 = fVar12 * fVar7;
-
     fVar6 = fVar10 * fVar7;
-
     fVar7 = fVar11 * fVar7;
-
     fStack_a0 = 1.0f - (fVar10 * fVar6 + fVar11 * fVar7);
-
     fStack_9c = fVar12 * fVar6 + fVar7 * fVar8;
-
     fStack_98 = fVar11 * fVar9 - fVar6 * fVar8;
-
     fStack_90 = fVar12 * fVar6 - fVar7 * fVar8;
-
     fStack_8c = 1.0f - (fVar11 * fVar7 + fVar12 * fVar9);
-
     fStack_88 = fVar10 * fVar7 + fVar9 * fVar8;
-
     fStack_80 = fVar11 * fVar9 + fVar6 * fVar8;
-
     fStack_7c = fVar10 * fVar7 - fVar9 * fVar8;
-
     fStack_78 = 1.0f - (fVar12 * fVar9 + fVar10 * fVar6);
-
     uStack_70 = 0;
-
     uStack_6c = 0;
-
     uStack_68 = 0;
-
     uStack_94 = 3;
-
     FUN_004c3760(&fStack_a0,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
-
     RtQuatConvertFromMatrix(*(int *)(iVar2 + 8) + 0x10,&fStack_a0);
-
   }
-
   else if (cVar1 == '\x03') {
-
     mdl00318a70(*(u32 *)(iVar2 + 8),auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
-
   }
-
   else if (cVar1 == '\x02') {
-
-
   }
-
   else if (cVar1 == '\x01') {
-
     FUN_0034fe30((float)(*(int *)(iVar3 + 0xc) / 0xffff),(float)(*(int *)(iVar3 + 0x10) / 0xffff),
-
                  (float)(*(int *)(iVar3 + 0x14) / 0xffff),*(u32 *)(iVar2 + 8));
-
   }
 
   return 1;
@@ -2709,6 +2668,8 @@ u8 FUN_00419f20(int param_1,int *param_2)
       fStack_28 = 550.0f;
 
       RwMatrixRotate((void*)auStack_a0,(void*)&uStack_20,fGpffffad78,0);
+      FUN_0041bee0(*(u32 *)(iVar5 + 8));
+      FUN_0041beb0(*(u32 *)(iVar5 + 8));
 
 
 

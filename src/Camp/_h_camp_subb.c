@@ -1779,41 +1779,55 @@ void FUN_00141660(CampEquipmentPanelWork* work)
   int index;
   int row;
   float slotX;
-  u64 spriteTopLeft;
-  u64 spriteTopLeft2;
-  u64 spriteTopLeft3;
-  u64 spriteTopLeft4;
-  u64 spriteTopLeft5;
-  u64 pair0;
-  u64 pair1;
-  u64 pair2;
-  u64 pair3;
-  u64 pair4;
-  u64 pair5;
-  u64 pair6;
-  u64 pair7;
-  u64 pair8;
-  u64 pairEnd;
-  pair0 = 0x4140000042b40000;
-  pairEnd = 0x4140000042200000;
-  pair1 = 0x41d8000043868000;
-  pair2 = 0x41d8000043b80000;
-  pair3 = 0x41d8000043c38000;
-  pair4 = 0x41d8000044058000;
-  pair5 = 0x41d80000440b4000;
-  pair6 = 0x4274000043310000;
-  pair7 = 0x435b000043450000;
-  pair8 = 0x4286000043fe0000;
+  CampPair pair0;
+  CampPair pair1;
+  CampPair pair2;
+  CampPair pair3;
+  CampPair pair4;
+  CampPair pair5;
+  CampPair pair6;
+  CampPair pair7;
+  CampPair pair8;
+  CampPair pairEnd;
+  pair0.x = 90.0f;
+  pair0.y = 12.0f;
+  pairEnd.x = 40.0f;
+  pairEnd.y = 12.0f;
+  pair1.x = 269.0f;
+  pair1.y = 27.0f;
+  pair2.x = 277.0f;
+  pair2.y = 27.0f;
+  pair3.x = 283.0f;
+  pair3.y = 27.0f;
+  pair4.x = 331.0f;
+  pair4.y = 27.0f;
+  pair5.x = 350.0f;
+  pair5.y = 27.0f;
+  pair6.x = 177.0f;
+  pair6.y = 60.0f;
+  pair7.x = 181.0f;
+  pair7.y = 219.0f;
+  pair8.x = 508.0f;
+  pair8.y = 67.0f;
   
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, pair0, pairEnd, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1, 0x41d80000435b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair2, 0x41d80000439f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair3, 0x41d8000043aa8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair4, 0x41d8000043f20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair5, 0x41d8000043fd8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1, pair6, 0x4274000043630000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1, pair7, 0x435b000043770000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1, pair8, 0x42860000440b8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1,
+                 *(u64*)&pair0, *(u64*)&pairEnd, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1,
+                 *(u64*)&pair1, *(u64*)&(CampPair){269.0f, 27.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1,
+                 *(u64*)&pair2, *(u64*)&(CampPair){319.0f, 27.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1,
+                 *(u64*)&pair3, *(u64*)&(CampPair){341.0f, 27.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1,
+                 *(u64*)&pair4, *(u64*)&(CampPair){484.0f, 27.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1,
+                 *(u64*)&pair5, *(u64*)&(CampPair){507.0f, 27.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1,
+                 *(u64*)&pair6, *(u64*)&(CampPair){227.0f, 60.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1,
+                 *(u64*)&pair7, *(u64*)&(CampPair){247.0f, 247.0f}, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1,
+                 *(u64*)&pair8, *(u64*)&(CampPair){559.0f, 67.0f}, 0, 0, 0, 0);
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
       slotX = (float)(row * 0x55) + 62.0f;

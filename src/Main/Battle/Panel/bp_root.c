@@ -3022,13 +3022,13 @@ void FUN_00206740(void)
     u8* work;
     DatPersonaWork* persona;
     u16* skills;
-    u32 i;
+    s32 i;
     u32 mode;
-    u32 count;
+    s32 count;
     u32 type;
-    u32 alpha;
+    s8 alpha;
     u32 handle;
-    u32 value;
+    s32 value;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
@@ -3095,11 +3095,11 @@ void FUN_00206740(void)
                        (i + *(u32*)(work + 0x7760)) * 4);
         if (type == 0)
         {
-            if (*(u32*)(work + 0x20) == 0)
-                handle = func_003b0970(func_0030bb40(0x144),
+            if (*(u32*)(work + 0x20) == 1)
+                handle = func_003b0970(func_0030bb40(0x146),
                                         2, alpha, 0, 0);
-            else
-                handle = func_003b0970(func_0030bb40(0x145),
+            else if (*(u32*)(work + 0x20) == 0)
+                handle = func_003b0970(func_0030bb40(0x144),
                                         2, alpha, 0, 0);
         }
         else if (type == 1)
@@ -3109,12 +3109,26 @@ void FUN_00206740(void)
         }
         else
         {
-            K_ASSERT(*(u32*)(work + 0x20) == 1, 0x1124);
+            if (*(u32*)(work + 0x20) != 1)
+                K_ASSERT(0, 0x1124);
             handle = func_003b0970(func_0030bb40(0x145),
                                     2, alpha, 0, 0);
         }
         *(u32*)(work + 0x414 + i * 4) = handle;
     }
+    if (*(u32*)(work + 0x20) == 1)
+    {
+        handle = func_003b0970(func_001775a0(6), 2, 6, 0, 0);
+    }
+    else if (*(u32*)(work + 0x20) == 0)
+    {
+        handle = func_003b0970(func_001775a0(4), 2, 6, 0, 0);
+    }
+    else
+    {
+        K_ASSERT(0, 0x113d);
+    }
+    *(u32*)(work + 0x77a8) = handle;
     func_003b0e90(1);
     func_003b0e70(2);
     *(u32*)work |= 0x2000;
