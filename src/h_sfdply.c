@@ -1791,7 +1791,9 @@ u32 func_0010d910(s16 index)
 // FUN_0010D950 NONMATCHING
 void func_0010d950(s16 index)
 {
+    HSfdDecodeSlot* slot;
 
+    slot = &sSfdDecodeSlots[index];
     if (sSfdDecodeSlots[index].state != 1)
     {
         return;
@@ -1805,10 +1807,9 @@ void func_0010d950(s16 index)
     FUN_0051deb0(0, (u32)sSfdDecodeSlots[index].decodeHandle);
     FUN_0051dd48(5, (u32)sSfdDecodeSlots[index].outputHandle);
     FUN_0051dd48(3, (u32)sSfdDecodeSlots[index].queueHandle);
-    *(s32*)&sSfdDecodeSlots[index].state = 0;
+    sSfdDecodeSlots[index].state = 0;
     func_0050B710(sSfdDecodeSlots[index].output);
     func_0050B710(sSfdDecodeSlots[index].sourceData);
-    *(s32*)&sSfdDecodeSlots[index].state = 0;
 }
 
 // FUN_0010DA70

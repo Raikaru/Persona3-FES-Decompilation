@@ -469,7 +469,7 @@ void FUN_00409f20(u64 param_1,int param_2);
 u32 FUN_00409f50(u32 param_1,int param_2);
 void FUN_0040a200(int param_1);
 void FUN_0040a260(int param_1);
-u8 FUN_0040a2b0(u64 param_1);
+u8 FUN_0040a2b0(u32 param_1);
 u32 FUN_0040a490(u32 param_1);
 void FUN_0040a6d0(u64 param_1,long param_2);
  #pragma alias FUN_0040a6d0_i FUN_0040a6d0
@@ -19106,78 +19106,52 @@ void FUN_0040a260(int param_1)
 // FUN_0040A2B0 NONMATCHING
 
 
-u8 FUN_0040a2b0(u64 param_1)
+u8 FUN_0040a2b0(u32 param_1)
 
 
 
 {
-
   int iVar1;
-
   u32 uVar2;
-
-  long lVar3;
-
-  long lVar4;
-
+  u32 lVar3;
+  u32 lVar4;
   int iVar5;
-
   
 
-  iVar1 = *(int *)(*(int *)((int)param_1 + 0x24) + 0x44);
-
+  iVar1 = *(int *)(*(int *)(param_1 + 0x24) + 0x44);
   uVar2 = *(u32 *)(iVar1 + 0x20);
-
   FUN_003e0650(*(u32 *)(iVar1 + 0x1c));
-
   if (*(int *)(iVar1 + 0x20) != 0) {
-
     FUN_003e0650(uVar2);
-
   }
-
-  for (iVar5 = *(int *)((int)param_1 + 4); iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x10)) {
-
+  for (iVar5 = *(int *)(param_1 + 4); iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x10)) {
     FUN_003e0650(*(u32 *)(*(int *)(*(int *)(iVar5 + 0x14) + 0x1c) + 0xc));
-
   }
-
-  lVar3 = FUN_003c6270(param_1);
-
-  lVar4 = FUN_003c6ce0(param_1);
-
-  if ((lVar4 != 0) || (lVar4 = FUN_003c6d10(param_1), lVar4 != 0)) {
+  lVar3 = FUN_003c6270_u32(param_1);
+  lVar4 = FUN_003c6ce0_u32(param_1);
+  if ((lVar4 != 0) || ((lVar4 = FUN_003c6d10_u32(param_1)), lVar4 != 0)) {
 
     func_0010a4e0(0,0,0,0);
-
   }
-
-  lVar4 = FUN_003c6ca0(param_1);
-
-  if ((lVar4 != 0) || (lVar4 = FUN_003c6cc0(param_1), lVar4 != 0)) {
-
+  lVar4 = FUN_003c6ca0_u32(param_1);
+  if ((lVar4 != 0) || ((lVar4 = FUN_003c6cc0_u32(param_1)), lVar4 != 0)) {
     func_0010a4e0(0,0,0,5);
-
   }
-
-
+  FUN_004072d0_i(param_1,2,1);
   if (lVar3 == 3) {
-
     if (*(int *)(iVar1 + 4) == -8) {
-
-
-
-
+      FUN_004072d0_i(param_1,0xe,1);
+      FUN_004072d0_i(param_1,0xf,1);
+      FUN_004072d0_i(param_1,0xd,1);
     }
-
     else {
-
-
-
-
+      FUN_004072d0_i(param_1,0xe,1);
+      FUN_004072d0_i(param_1,0x10,1);
+      FUN_004072d0_i(param_1,0xd,1);
     }
-
   }
+
+
 
   return lVar3 == 3;
 
