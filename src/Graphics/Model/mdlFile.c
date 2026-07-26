@@ -33466,7 +33466,7 @@ u32 FUN_0033ce10(int param_1)
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
   *(u32 *)(puVar2 + 4) = iVar3;
   FUN_0033cc10(puVar2,iVar1);
-  return uVar4;
+  return puVar2;
 
 
 

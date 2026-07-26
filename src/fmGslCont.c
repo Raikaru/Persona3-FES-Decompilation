@@ -280,18 +280,18 @@ int * FUN_003b4520(void)
 
 void FUN_003b4580(int param_1)
 {
-  int iVar2;
-  int iVar1;
+  int *piVar2;
+  int *piVar1;
 
   if (param_1 == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
-  iVar2 = *(int *)DAT_0095aebc_abs;
-  iVar1 = *(int *)(*(int *)DAT_0095aebc_abs + 0x1c);
-  *(int *)(param_1 + 0x18) = *(int *)DAT_0095aebc_abs;
-  *(int *)(param_1 + 0x1c) = iVar1;
-  *(int *)(iVar2 + 0x1c) = param_1;
-  *(int *)(iVar1 + 0x18) = param_1;
+  piVar2 = (int *)*(int *)DAT_0095aebc_abs;
+  piVar1 = (int *)*(int *)((int)piVar2 + 0x1c);
+  *(int *)(param_1 + 0x18) = (int)piVar2;
+  *(int *)(param_1 + 0x1c) = (int)piVar1;
+  *(int *)((int)piVar2 + 0x1c) = param_1;
+  *(int *)((int)piVar1 + 0x18) = param_1;
   *(int *)DAT_0095aeb8_abs = *(int *)DAT_0095aeb8_abs + 1;
   return;
 

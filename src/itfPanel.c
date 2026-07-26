@@ -4795,8 +4795,8 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   int iVar4;
 
-  u32 uVar5;
-  u32 uVar6;
+  int uVar5;
+  int uVar6;
   int iVar8;
   u32 firstLow;
   u32 secondLow;

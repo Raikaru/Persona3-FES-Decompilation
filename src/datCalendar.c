@@ -4260,10 +4260,7 @@ void func_00185b40(void* resource,
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
-    f32 x;
-    f32 y;
-    u32 drawAlpha;
-    union
+    volatile union
     {
         u64 value;
         struct
@@ -4272,18 +4269,20 @@ void func_00186050(void* resource, u64 position, u32 alpha)
             f32 y;
         } coords;
     } packed;
+    f32 y;
+    f32 x;
     void* unused;
+    u32 savedAlpha;
 
     packed.value = position;
+    savedAlpha = alpha;
     y = packed.coords.y;
     asm volatile("" : "+m"(y));
-    x = packed.coords.x;
-    drawAlpha = alpha & 0xff;
-    func_001159f0(unused, resource, 0x2b, drawAlpha,
-                  x, y, 48.0f);
-    x += 449.0f;
+    func_001159f0(unused, resource, 0x2b, savedAlpha & 0xff,
+                  packed.coords.x, y, 48.0f);
+    x = packed.coords.x + 449.0f;
     asm volatile("" : "+m"(x));
-    func_001159f0(unused, resource, 0x2c, drawAlpha,
+    func_001159f0(unused, resource, 0x2c, savedAlpha & 0xff,
                   x, y, 48.0f);
 }
 #pragma pop

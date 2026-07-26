@@ -3219,7 +3219,7 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
             stop = 1;
             break;
         case 1:
-            if ((~work->flags & 1) != 0)
+            if ((~command->flags & 1) != 0)
             {
                 if ((((u32)(cursor + 1) >> 1) & 1) != 0)
                 {
@@ -3231,12 +3231,12 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
                 {
                     duration = *(u32*)(cursor + 1);
                 }
-                work->flags |= 1;
-                work->elapsed = 0;
+                command->flags |= 1;
+                command->elapsed = 0;
             }
             else
             {
-                work->elapsed++;
+                command->elapsed++;
             }
             if ((((u32)(cursor + 1) >> 1) & 1) != 0)
             {
@@ -3249,23 +3249,23 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
                 duration = *(u32*)(cursor + 1);
             }
             stop = 1;
-            if (work->elapsed >= duration)
+            if (command->elapsed >= duration)
             {
                 cursor += 3;
-                work->flags &= ~1;
+                command->flags &= ~1;
                 stop = 0;
             }
             break;
         case 0x100:
-            work->flags |= 2;
+            command->flags |= 2;
             cursor++;
             break;
         case 0x101:
-            work->flags &= ~2;
+            command->flags &= ~2;
             cursor++;
             break;
         case 0x102:
-            target = work->target;
+            target = command->target;
             target->completedFlags = 0;
             target->state = 0;
             cursor++;
@@ -3312,12 +3312,12 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
                     "addiu %0, %0, 2\n"
                     ".set reorder\n"
                     : "+r"(cursor)
-                    : "r"(work)
+                    : "r"(command)
                     : "$v0", "$v1", "$a0", "$f0", "$f1", "$f12", "memory");
             }
             break;
         case 0x201:
-            work->delay = (s16)cursor[1];
+            command->delay = (s16)cursor[1];
             cursor += 2;
             break;
         case 0x202:
@@ -3331,16 +3331,16 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
             {
                 duration = *(u32*)(cursor + 1);
             }
-            work->duration = duration;
+            command->duration = duration;
             cursor += 3;
             break;
         case 0x400:
-            work->flags |= 8;
+            command->flags |= 8;
             cursor++;
             break;
         }
     } while ((u32)(stop != 0) ^ 1);
-    work->cursor = cursor;
+    command->cursor = cursor;
 }
 
 // FUN_001EBD80 NONMATCHING

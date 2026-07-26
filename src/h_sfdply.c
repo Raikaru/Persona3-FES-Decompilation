@@ -2320,11 +2320,11 @@ void* func_0010e880(const u8* stream)
     s32 bits;
     s32 flags = 0;
     s32 paletteFormat = 0;
+    void* pixels;
     const u8* source;
     const u8* pixelSource;
     s32 pixelsPerPalette;
     void* raster;
-    void* pixels;
     void* palette;
 
     if (stream == NULL)

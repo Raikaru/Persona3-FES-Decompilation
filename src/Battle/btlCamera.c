@@ -4160,7 +4160,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     f32 halfDistance;
     f32 angle;
     f32 half;
-    u32 index;
+    u64 index;
     f32 tempHalf;
     f32 sourceProduct;
     unit = camera->action->unit;
@@ -4221,8 +4221,8 @@ distance_done:
     work.difference.z = work.frames[0].pos.z - work.scaled.z;
     halfDistance = param_1 / 3.0f;
     angle = halfDistance;
-    index = (u32)((u8*)0 + 1);
-    while ((s32)(index & 0xffff) < 4)
+    index = (u64)1;
+    while ((u64)(index & 0xffff) < 4)
     {
         if (dot < 0.0f)
             goto rotate_negative;
@@ -4239,7 +4239,7 @@ rotate_done:
         FUN_002a4690(&work.frames[(u16)index].rot, &work.frames[(u16)index].pos,
                      &work.scaled, &D_00697880);
         halfDistance = halfDistance + angle;
-        index = (index + 1) & 0xffff;
+        index = (u64)((u32)index + 1) & 0xffff;
     }
     FUN_002a2660(camera, &work.frames[0], &work.frames[1],
                  &work.frames[2], &work.frames[3], 1);
