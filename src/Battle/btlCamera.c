@@ -1244,7 +1244,11 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         }
         else
         {
-            half = unit->scale * unit->unk_8c;
+            f32 localScale;
+            f32 localHeight;
+            localScale = unit->scale;
+            localHeight = unit->unk_8c;
+            half = localHeight * localScale;
             if (half > scaled.y)
             {
                 scaled.y = half;
@@ -4200,15 +4204,15 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     if (dot < 0.0f)
         goto negative_distance;
     distance = fGpffff8094 * distance;
-    work.scaled.x = distance * work.normalized.x;
-    work.scaled.y = distance * work.normalized.y;
-    work.scaled.z = distance * work.normalized.z;
+    work.scaled.x = work.normalized.x * distance;
+    work.scaled.y = work.normalized.y * distance;
+    work.scaled.z = work.normalized.z * distance;
     goto distance_done;
 negative_distance:
     distance = 0.5f * distance;
-    work.scaled.x = distance * work.normalized.x;
-    work.scaled.y = distance * work.normalized.y;
-    work.scaled.z = distance * work.normalized.z;
+    work.scaled.x = work.normalized.x * distance;
+    work.scaled.y = work.normalized.y * distance;
+    work.scaled.z = work.normalized.z * distance;
 distance_done:
     work.scaled.x = work.scaled.x + work.center.x;
     work.scaled.y = work.scaled.y + work.center.y;

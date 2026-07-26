@@ -1085,6 +1085,9 @@ extern void FUN_0038a260_f32_5(f32 param_1,int param_2,int param_3,int param_4,
 #pragma alias FUN_0038a260_f32_6 FUN_0038a260
 extern void FUN_0038a260_f32_6(f32 param_1,int param_2,int param_3,u32 param_4,
                                void *param_5,u32 param_6);
+#pragma alias FUN_0038a260_f32_p6 FUN_0038a260
+extern void FUN_0038a260_f32_p6(f32 param_1,int param_2,int param_3,u32 param_4,
+                                void *param_5,void *param_6);
 #pragma alias FUN_0038a260_f32_var FUN_0038a260
 extern void FUN_0038a260_f32_var(f32 param_1,...);
 extern void FUN_0038a260_evt6(u32 param_1,int param_2,int param_3,u32 param_4,u32 param_5,
@@ -5837,8 +5840,6 @@ u32 FUN_00374c90(int param_1,int param_2,int param_3)
 
 
 {
-
-
   f32 uVar1;
   u8 auStack_20 [32];
 
@@ -5849,8 +5850,8 @@ u32 FUN_00374c90(int param_1,int param_2,int param_3)
                *(s16 *)((u8 *)&DAT_007cca6c - 0x6284));
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
-  FUN_0038a260_f32_6(uVar1,param_1 * 0xc,param_2 * 0xc,0,
-                    &gp0xffffa068 - 0x5f98,(u32)auStack_20);
+  FUN_0038a260_f32_p6(uVar1,param_1 * 0xc,param_2 * 0xc,0,
+                    &gp0xffffa068 - 0x5f98,(void *)auStack_20);
   return 2;
 
 }

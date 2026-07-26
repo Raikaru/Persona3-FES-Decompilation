@@ -1958,10 +1958,12 @@ void func_0010de40(HSfdImage* image, const u8* source)
     const u16* pixels;
     s32 y;
     s32 x;
+    u32 opaque;
     dst = image->pixels;
     width = image->width;
     height = image->height;
     pixels = (const u16*)source;
+    opaque = 0xFF;
     y = 0;
     while (y < height)
     {
@@ -1973,7 +1975,7 @@ void func_0010de40(HSfdImage* image, const u8* source)
             pixel[0] = (u8)((pixels[0] & 0x1F) << 3);
             pixel[1] = (u8)(((pixels[0] >> 5) & 0x1F) << 3);
             pixel[2] = (u8)(((pixels[0] >> 10) & 0x1F) << 3);
-            pixel[3] = 0xFF;
+            pixel[3] = opaque;
             pixels++;
             x++;
         }
