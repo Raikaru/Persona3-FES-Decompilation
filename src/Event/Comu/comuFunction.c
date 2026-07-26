@@ -56,13 +56,8 @@ extern void FUN_0016f1f0(int param_1,int param_2);
 #pragma alias FUN_0016f190_comu FUN_0016f190
 extern u32 FUN_0016f190_comu(int param_1);
 extern u32 DAT_0095b280;
-extern u16* DAT_0095b2a0;
-#pragma alias DAT_0095b2a0_abs DAT_0095b2a0
-extern u32 DAT_0095b2a0_abs[];
-#pragma alias DAT_0095b2a8_abs DAT_0095b2a8
-extern u32 DAT_0095b2a8_abs[];
-extern u32 DAT_0095b2a8;
-extern u32 DAT_0095b4f0;
+extern u32 DAT_0095b2a0[];
+extern u32 DAT_0095b2a8[];
 extern u32 DAT_0095b568;
 extern u32 DAT_0095b5e0[];
 extern u32 DAT_0095b678[];
@@ -187,6 +182,7 @@ void FUN_003bdbd0(int param_1)
           cVar3 = FUN_0016dba0((s16)(iVar5 + 6));
           if ((long)cVar3 >= (long)(u32)*(u8 *)(DAT_0095b2a8_abs[0] + iVar5)) {
             bVar2 = 1;
+          if ((long)cVar3 >= (long)(u32)*(u8 *)(DAT_0095b2a8[0] + iVar5)) {
           }
           else {
             bVar2 = 0;
@@ -196,6 +192,7 @@ void FUN_003bdbd0(int param_1)
         if (bVar2) {
           sVar1 = *(volatile s16 *)(DAT_0095b2a0_abs[0]);
           FUN_00171960(iVar5 + 6,(s32)sVar1);
+          sVar1 = *(volatile s16 *)(DAT_0095b2a0[0]);
         }
       }
     }

@@ -731,7 +731,6 @@ u32 FUN_003a2660(void)
 
     else if (*(short *)(iVar1 + 0x54) < 0) {
 
-      FUN_003a3ab0_direct(lVar3);
 
       FUN_0035f060(*(u16 *)(iVar1 + 0x56));
 
