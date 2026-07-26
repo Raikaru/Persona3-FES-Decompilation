@@ -1232,8 +1232,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         campMenuDrawSprite(parent, *(labels + 1), 0xa, item->alpha,
                            item->x + 47.0f - 31.0f, item->y, item->scale);
         campMenuDrawSprite(parent, DAT_00833BA0, 1, item->alpha,
-                           item->x + 561.0f - 31.0f, item->y + 31.0f - 1.0f,
-                           item->scale);
+                           (f32)0x231 + item->x - 31.0f,
+                           item->y + (f32)0x19f - (f32)0x181, item->scale);
     default:
         break;
     }
