@@ -1801,7 +1801,7 @@ s32 func_001e4bc0(RuntimeTask* task)
     RuntimeVec3 position;
     RuntimeVec3 angles;
     RuntimeMatrix rotation;
-    char text[128];
+    char text[96];
     u32 input;
     u32 index;
     u32 result;
@@ -1873,10 +1873,22 @@ s32 func_001e4bc0(RuntimeTask* task)
                 func_003b5d10(work->resourceId);
                 work->windowTask = func_001a3b10(
                     task, 0x20, 0x20, 2);
+                func_001a3dc0(work->windowTask, D_00684120, 8);
+                *(u32*)func_001a41b0(work->windowTask, 4) =
+                    (u32)(s32)work->angle;
+                *(u32*)func_001a41b0(work->windowTask, 5) =
+                    work->sourceType;
+                *(u32*)func_001a41b0(work->windowTask, 6) =
+                    (u32)(s32)work->scale;
+                *(u32*)func_001a41b0(work->windowTask, 3) =
+                    (work->flags & 1) != 0;
+                func_001a4380(work->windowTask, 1);
+                func_001a4380(work->windowTask, 2);
+                func_001a4380(work->windowTask, 0);
+                func_001a4380(work->windowTask, 7);
                 func_001a3f20(work->windowTask, D_006843D0);
                 func_001a3f20(work->windowTask, D_006843E0);
                 func_001a3bf0(work->windowTask, 1);
-                work->state++;
             }
             else if ((input & 0x20) != 0)
             {

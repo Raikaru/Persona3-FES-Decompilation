@@ -22817,7 +22817,7 @@ u32 *FUN_00332880(int *arg0)
 
 
 
-// FUN_00332990 NONMATCHING
+// FUN_00332990
 
 
 void FUN_00332990(u32 *param_1,int param_2)
@@ -22844,7 +22844,7 @@ void FUN_00332990(u32 *param_1,int param_2)
 
   if (*(int *)(*(int *)(param_2 + 0x2c) + 0x50) != 0) {
 
-    uVar2 = FUN_00323640((u16 *)(param_1));
+    uVar2 = FUN_00323640_u32((u16 *)*(u32 *)(*(int *)(param_2 + 0x2c) + 0x50));
 
     *(u32 *)(param_1[0xb] + 0x50) = uVar2;
 
@@ -28225,7 +28225,7 @@ u64 FUN_00337e90(int param_1)
 
   int iVar4;
 
-  u32 uVar5;
+  u64 uVar5;
 
   int iVar6;
 
@@ -28235,7 +28235,7 @@ u64 FUN_00337e90(int param_1)
 
   
 
-  uVar5 = (*(u32 (**)(...))DAT_00960178_abs)(4,0x40000);
+  uVar5 = (*DAT_00960178)(4,0x40000);
 
   if (*(u32 *)(param_1 + 0x38) < 3) {
 
