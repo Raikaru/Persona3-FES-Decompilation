@@ -795,11 +795,9 @@ void FUN_003c5bb0(u32 param_1)
 
 {
 
-  int iVar1;
-
-  int iVar2;
-
   int iVar3;
+  int iVar2;
+  int iVar1;
 
   u32 uVar4;
 

@@ -30018,13 +30018,11 @@ u32 FUN_003398c0(int param_1)
 
   uVar1 = *(u32 *)(param_1 + 0x38);
 
-  uVar4 = (*DAT_00960178)(uVar1 * 0x18 + 0x10,0x40000);
+  uVar4 = (*(u32 (**)(...))DAT_00960178_abs)(uVar1 * 0x18 + 0x10,0x40000);
 
+  *(u32 *)uVar4 = uVar4 + 0x10;
+  *(u32 *)(uVar4 + 8) = uVar4;
   piVar2 = (int *)uVar4;
-
-  *piVar2 = (int)(piVar2 + 4);
-
-  piVar2[2] = (int)piVar2;
 
   iVar3 = FUN_003233a0(uVar1 & 0xffff,3,5,0x69bd60,0x48);
 
