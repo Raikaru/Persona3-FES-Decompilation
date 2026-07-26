@@ -3140,7 +3140,7 @@ void FUN_003628f0(void)
 }
 
 
-// FUN_00362F20 NONMATCHING
+// FUN_00362F20
 
 
 void FUN_00362f20(int param_1)
@@ -3151,16 +3151,20 @@ void FUN_00362f20(int param_1)
   if (lVar1 == 0) {
     return;
   }
+
   lVar1 = FUN_0038a0b0(param_1);
-  if (lVar1 == 1) goto LAB_00362f70;
-  if (lVar1 == 0) goto LAB_00362f68;
-  goto LAB_00362f8c;
-LAB_00362f70:
-  FUN_0038a0c0(param_1,0);
-  goto LAB_00362f8c;
-LAB_00362f68:
-  FUN_0038a0c0(param_1,1);
-LAB_00362f8c:
+
+  switch (lVar1) {
+  case 0:
+    FUN_0038a0c0(param_1,1);
+    break;
+  case 1:
+    FUN_0038a0c0(param_1,0);
+    break;
+  default:
+    break;
+  }
+
   return;
 }
 

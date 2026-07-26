@@ -12,6 +12,7 @@ extern void FUN_00523ac8(u8 *,const char *,u32);
 extern char DAT_006a0a20[];
 #pragma alias DAT_006a0a20_abs DAT_006a0a20
 extern u8 DAT_006a0a20_abs[];
+extern u8 DAT_006a0ac0[];
 typedef struct MtEvtMiscObj {
   u8 pad_928[0x928];
   int value_928;
@@ -7142,7 +7143,7 @@ u64 FUN_0038da10(u16 *param_1)
   case 1:
   case 0x30:
 common_case:
-    FUN_005225a8(0x6a0ac0,*param_1);
+    FUN_005225a8(DAT_006a0ac0,*param_1);
     if (*(char *)(param_1 + 8) != '\x01') goto done_index;
     if (*(char *)(param_1 + 10) != '\x01') goto done_index;
     return 1;

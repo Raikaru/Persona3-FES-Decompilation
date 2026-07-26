@@ -4888,10 +4888,11 @@ void FUN_002b2940(void *arg0)
                distance / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
     if (distance <= 0.0f)
         goto distance_clamp;
-    goto distance_done;
+distance_done:
+    goto after_distance;
 distance_clamp:
     distance = 0.0f;
-distance_done:
+after_distance:
     FUN_004be1e0(&scratch.direction, &D_006978A0, 1,
                  (u8*)&scratch.transform);
     scratch.direction.x = scratch.direction.x * distance;
