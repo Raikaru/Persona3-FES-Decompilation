@@ -1882,37 +1882,84 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     s32 rotation;
     f32 x;
     f32 y;
+    f32 inputX;
+    f32 inputY;
 
     input.value = position;
+    inputX = input.coordinates.x;
+    inputY = input.coordinates.y;
     local.value = 0;
     FUN_001159f0(NULL, DAT_00833B48, 0, 0,
-                 115.0f + local.coordinates.x + - 60.0f,
+                 55.0f + local.coordinates.x,
                  local.coordinates.y + 36.0f, alpha);
     if (frame < 0x17) {
         for (i = 0; i < 5; i++) {
             visible = frame - i * 3;
-            local.coordinates.y = input.coordinates.y + i * 64.0f + 49.0f;
+            local.coordinates.y = inputY + i * 64.0f + 49.0f;
             if (visible < 0) {
                 continue;
             }
             if (visible < 8) {
                 local.coordinates.x = 0.0f;
+                fade = (8 - visible) * 25;
+                local.coordinates.y += (f32)fade;
                 rotation = visible * 0x1000 / 8;
+                if (rotation != 0) {
+                    sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
+                    sprite->spriteScale = alpha;
+                    sprite->x = local.coordinates.x;
+                    sprite->y = local.coordinates.y + 24.0f;
+                    sprite->rotation = (u16)rotation;
+                    sprite->alpha = 0;
+                    FUN_001127D0(sprite, 1);
+                    FUN_00115980(sprite);
+                } else {
+                    FUN_001159f0(NULL, DAT_00833B48, 0xd, 0,
+                                 local.coordinates.x,
+                                 local.coordinates.y + 24.0f, alpha);
+                }
+            } else {
+                local.coordinates.x = inputX;
                 sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
                 sprite->spriteScale = alpha;
                 sprite->x = local.coordinates.x;
-                sprite->y = local.coordinates.y - 49.0f + 73.0f;
-                sprite->rotation = (u16)rotation;
+                sprite->y = local.coordinates.y + 24.0f;
+                sprite->rotation = 0x1000;
                 sprite->alpha = 0;
                 FUN_001127D0(sprite, 1);
                 FUN_00115980(sprite);
-            } else {
-                local.coordinates.x = input.coordinates.x;
-                FUN_001159f0(NULL, DAT_00833B48, 0xd, 0,
-                             local.coordinates.x,
-                             local.coordinates.y - 49.0f + 73.0f, alpha);
             }
         }
+    } else {
+        for (i = 0; i < 5; i++) {
+            local.coordinates.x = inputX;
+            local.coordinates.y = inputY + i * 64.0f + 49.0f;
+            sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
+            sprite->spriteScale = alpha;
+            sprite->x = local.coordinates.x;
+            sprite->y = local.coordinates.y + 24.0f;
+            sprite->rotation = 0x1000;
+            sprite->alpha = 0;
+            FUN_001127D0(sprite, 1);
+            FUN_00115980(sprite);
+        }
+    }
+
+    if (frame < 10) {
+        fade = (10 - frame) * 0xff / 10;
+        local.coordinates.x = (f32)(-(10 - frame) * 640 / 10);
+        local.coordinates.y = 0.0f;
+        sprite = FUN_001158b0(NULL, DAT_00833B40, 1);
+        sprite->spriteScale = alpha;
+        sprite->x = 218.0f + local.coordinates.x;
+        sprite->y = local.coordinates.y + 20.0f;
+        sprite->rotation = 0x1f40;
+        sprite->alpha = (u8)fade;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
+    } else {
+        local.value = 0;
+        FUN_001368a0(alpha, local.value, 0);
     }
 
     visibleCount = count;
@@ -1933,13 +1980,14 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
         id = entries[offset + slot];
         i = slot + start;
         visible = frame - (i * 3 + 8);
-        local.coordinates.y = input.coordinates.y + i * 64.0f + 49.0f;
+        local.coordinates.x = inputX;
+        local.coordinates.y = inputY + i * 64.0f + 49.0f;
         if (visible > 0 && visible < 8) {
             fade = (8 - visible) * 0xff / 8;
             if (slot == selected) {
                 FUN_001159f0(NULL, DAT_00833B48, 0xe, (u32)fade,
                              local.coordinates.x,
-                             local.coordinates.y - 49.0f + 73.0f, alpha);
+                             local.coordinates.y + 24.0f, alpha);
                 FUN_00136a10(alpha, local.value, id, 1, fade);
                 FUN_00137300(alpha, local.value, id, 1, fade, 0);
             } else {
@@ -1950,7 +1998,7 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
             if (slot == selected) {
                 FUN_001159f0(NULL, DAT_00833B48, 0xe, 0,
                              local.coordinates.x,
-                             local.coordinates.y - 49.0f + 73.0f, alpha);
+                             local.coordinates.y + 24.0f, alpha);
                 FUN_00136a10(alpha, local.value, id, 1, 0);
                 FUN_00137300(alpha, local.value, id, 1, 0, 0);
             } else {
@@ -1958,56 +2006,56 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                 FUN_00137300(alpha, local.value, id, 0, 0, 0);
             }
         }
-        i -= i - slot;
-    }
-    if (count < 10) {
-        FUN_001368a0(alpha, local.value, 0);
     }
 
     if (frame < 10) {
         fade = (10 - frame) * 0xff / 10;
-        local.coordinates.x = -64.0f * (f32)(10 - frame);
-        local.coordinates.y = 0.0f;
-        sprite = FUN_001158b0(NULL, DAT_00833B40, 1);
-        sprite->spriteScale = alpha;
-        sprite->x = 279.0f + local.coordinates.x + - 60.0f;
-        sprite->y = local.coordinates.y + 20.0f;
-        sprite->rotation = 0x1f40;
-        sprite->alpha = (u8)fade;
-        FUN_001127D0(sprite, 1);
-        FUN_00115980(sprite);
-    } else {
-        local.value = 0;
-    }
-
-    x = input.coordinates.x;
-    y = input.coordinates.y;
-    FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
-                 660.0f + x + - 60.0f, y + 308.0f, alpha - 1.0f);
-    FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
-                 660.0f + x + - 60.0f, y + 402.0f, alpha - 1.0f);
-    if (count > 5) {
-        fade = offset * 59 / (count - 5);
     } else {
         fade = 0;
     }
-    FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
-                 657.0f + x + - 60.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
-    FUN_001159f0(NULL, DAT_00833B48, 8, 0,
-                 658.0f + x + - 60.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
-    FUN_001159f0(NULL, DAT_00833B48, 9, 0,
-                 658.0f + x + - 60.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
+    x = inputX + 600.0f;
+    y = inputY;
+    FUN_001159f0(NULL, DAT_00833B48, 0xb, (u32)fade,
+                 x, y + 308.0f, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 0xc, (u32)fade,
+                 x, y + 402.0f, alpha - 1.0f);
+    if (count > 5) {
+        rotation = offset * 59 / (count - 5);
+    } else {
+        rotation = 0;
+    }
+    FUN_001159f0(NULL, DAT_00833B48, 0xa, (u32)fade,
+                 inputX + 597.0f, inputY + 311.0f + (f32)rotation,
+                 alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 8, (u32)fade,
+                 inputX + 598.0f, inputY + 318.0f + (f32)rotation,
+                 alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 9, (u32)fade,
+                 inputX + 598.0f, inputY + 331.0f + (f32)rotation,
+                 alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 8, (u32)fade,
+                 inputX + 598.0f, inputY + 318.0f + (f32)rotation,
+                 alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 9, (u32)fade,
+                 inputX + 598.0f, inputY + 331.0f + (f32)rotation,
+                 alpha - 1.0f);
 
-    local.value = 0;
+    if (frame < 10) {
+        fade = (10 - frame) * 0xff / 10;
+        local.coordinates.x = (f32)(-(10 - frame) * 640 / 10);
+        local.coordinates.y = 0.0f;
+    } else {
+        fade = 0;
+        local.value = 0;
+    }
     sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
     sprite->spriteScale = alpha;
-    sprite->x = 157.0f + local.coordinates.x + - 60.0f;
+    sprite->x = 289.0f + local.coordinates.x;
     sprite->y = local.coordinates.y - 33.0f;
-    sprite->alpha = 0;
+    sprite->alpha = (u8)fade;
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
 }
-
 // FUN_001380E0 NONMATCHING
 void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
