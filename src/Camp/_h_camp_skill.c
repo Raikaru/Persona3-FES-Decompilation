@@ -673,6 +673,7 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
     return work->detailData + index * 0x24;
 }
 
+// Retail row-coordinate recomputation is preserved at 0x163E34-0x1646D4.
 #pragma push
 // FUN_00163330 NONMATCHING
 #pragma schedule on
@@ -912,17 +913,15 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 u16 statB = *(u16*)(entry + 0x82);
                 void* numAtlas;
 
-                position2.x = record->x + 317.0f;
-                position2.y = record->y + 9.0f + (f32)rowOffset;
                 if ((s32)statA != baselineA) {
                     if (statA > baselineA) {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 317.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     } else {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 317.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     }
                 }
                 numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
@@ -934,7 +933,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                     colourState[0] = r;
                     colourState[1] = g;
                     colourState[2] = b;
-                    FUN_0012e170(numAtlas, 0xb, position2,
+                    FUN_0012e170(numAtlas, 0xb, (CampSkillVec2){record->x + 317.0f,
+                                 record->y + 9.0f + (f32)rowOffset},
                                  (s32)record->depth,
                                  colourState[0], colourState[1], colourState[2],
                                  (s32)record->alpha, statA, 3);
@@ -942,16 +942,15 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                     font = scratch.tileUpDown[row][2];
                 }
 
-                position2.x = record->x + 408.0f;
                 if ((s32)statB != baselineB) {
                     if (statB > baselineB) {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 408.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     } else {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 408.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     }
                 }
                 numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
@@ -963,7 +962,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                     colourState[3] = (u8)(r & font);
                     colourState[4] = g;
                     colourState[5] = b;
-                    FUN_0012e170(numAtlas, 0xb, position2,
+                    FUN_0012e170(numAtlas, 0xb, (CampSkillVec2){record->x + 408.0f,
+                                 record->y + 9.0f + (f32)rowOffset},
                                  (s32)record->depth,
                                  colourState[3], colourState[4], colourState[5],
                                  (s32)record->alpha, statB, 3);
@@ -974,17 +974,15 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 u16 statA = *(u16*)(entry + 0x84);
                 void* numAtlas;
 
-                position2.x = record->x + 317.0f;
-                position2.y = record->y + 9.0f + (f32)rowOffset;
                 if ((s32)statA != baselineA) {
                     if (statA > baselineA) {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 317.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     } else {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 317.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     }
                 }
                 numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
@@ -996,7 +994,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                     colourState[6] = r;
                     colourState[7] = g;
                     colourState[8] = b;
-                    FUN_0012e170(numAtlas, 0xb, position2,
+                    FUN_0012e170(numAtlas, 0xb, (CampSkillVec2){record->x + 317.0f,
+                                 record->y + 9.0f + (f32)rowOffset},
                                  (s32)record->depth,
                                  colourState[6], colourState[7], colourState[8],
                                  (s32)record->alpha, statA, 3);
@@ -1007,17 +1006,15 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 u16 statA = *(u16*)(entry + 0x86);
                 void* numAtlas;
 
-                position2.x = record->x + 317.0f;
-                position2.y = record->y + 9.0f + (f32)rowOffset;
                 if ((s32)statA != baselineA) {
                     if (statA > baselineA) {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 317.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     } else {
                         FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
-                                           record->alpha, position2.x + 49.0f,
-                                           position2.y - 3.0f, record->depth);
+                                           record->alpha, record->x + 317.0f + 49.0f,
+                                           record->y + 9.0f + (f32)rowOffset - 3.0f, record->depth);
                     }
                 }
                 numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
@@ -1029,7 +1026,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                     colourState[9] = r;
                     colourState[10] = g;
                     colourState[11] = b;
-                    FUN_0012e170(numAtlas, 0xb, position2,
+                    FUN_0012e170(numAtlas, 0xb, (CampSkillVec2){record->x + 317.0f,
+                                 record->y + 9.0f + (f32)rowOffset},
                                  (s32)record->depth,
                                  colourState[9], colourState[10], colourState[11],
                                  (s32)record->alpha, statA, 3);
