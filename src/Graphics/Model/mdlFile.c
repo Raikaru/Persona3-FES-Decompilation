@@ -49864,7 +49864,7 @@ u32 FUN_0034d6f0(int param_1)
   puVar4[1] = 0xffffffff;
   puVar4[2] = 0x3f800000;
   FUN_00521250(uVar2 + 0x10,iVar3 + 0x10,0x44);
-  FUN_0034d8a0(uVar2,**(u16 **)(iVar3 + 0x58),iVar1);
+  FUN_0034d8a0(uVar2,*(volatile u16 *)*(int *)(iVar3 + 0x58),iVar1);
   if (*(int *)(*(int *)(uVar2 + 0x58) + 8) != 0) {
     goto do_update;
   }
