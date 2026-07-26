@@ -816,13 +816,12 @@ void func_0018b7b0(void* transition, f32* position)
         }
         else
         {
-            phase = (f32)elapsed;
+            phase = GS_F32(transition, 0x30) - GS_F32(transition, 0x28);
             position[0] = GS_F32(transition, 0x28) +
-                          ((GS_F32(transition, 0x30) - GS_F32(transition, 0x28)) * phase) /
-                          (f32)total;
+                          (phase * (f32)elapsed) / (f32)total;
+            phase = GS_F32(transition, 0x34) - GS_F32(transition, 0x2c);
             position[1] = GS_F32(transition, 0x2c) +
-                          ((f32)elapsed * (GS_F32(transition, 0x34) - GS_F32(transition, 0x2c))) /
-                          (f32)total;
+                          (phase * (f32)elapsed) / (f32)total;
         }
         break;
     case 2:

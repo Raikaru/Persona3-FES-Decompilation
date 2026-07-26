@@ -590,7 +590,7 @@ u64 FUN_004177e0(int param_1)
                  *(u16 *)((int)auStack_80 + uVar6 * 8),
                  *(int *)((int)auStack_80 + uVar6 * 8 + 4));
   }
-  FUN_004180e0(*(u32 *)(param_1 + 0x3c),0x40);
+  FUN_004180e0(*(u32 **)(param_1 + 0x3c),0x40);
   return 0;
 }
 
