@@ -422,20 +422,9 @@ void FUN_001d5130(u32 alpha)
 s32 FUN_001d5140(KwlnTask* cameraTask)
 {
     FldFilterCameraWork* work;
-    struct
-    {
-        f32 x;
-        f32 y;
-        f32 z;
-        f32 w;
-    } playerPos;
-    struct
-    {
-        f32 x;
-        f32 y;
-        f32 z;
-        f32 w;
-    } point;
+    RwV3d playerPos;
+    RwV3d point;
+    RwV3d pointCopy;
     f32 bestDistance;
     f32 dx;
     f32 dy;
