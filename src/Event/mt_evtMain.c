@@ -9147,9 +9147,9 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
 {
 
-  int iVar1;
-
   int iVar2;
+
+  int iVar1;
 
   int iVar3;
   int iVar4;

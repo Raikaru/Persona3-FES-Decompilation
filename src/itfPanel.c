@@ -4338,7 +4338,7 @@ u64 FUN_003ada00(u64 param_1,int param_2)
 
   u8 bVar1;
 
-  int bVar7;
+  u32 bVar7;
 
   u64 uVar3;
 

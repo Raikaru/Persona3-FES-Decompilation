@@ -2009,7 +2009,7 @@ void func_001d1910(void)
 void func_001d19d0(void)
 {
     s32 i;
-    u32 predicate;
+    s32 predicate;
     u32 valid;
     s32 offset;
     FldUnit* unit;

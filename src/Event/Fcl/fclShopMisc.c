@@ -432,7 +432,7 @@ int FUN_00403610(void);
 s16 FUN_00403740(short param_1);
 s16 FUN_00403760(short param_1);
 #pragma alias FUN_00403760_i FUN_00403760
-int FUN_00403760_i(int param_1);
+s16 FUN_00403760_i(int param_1);
 s16 FUN_00403780(short param_1);
 s16 FUN_004037a0(short param_1);
 s16 FUN_004037c0(short param_1);
