@@ -2243,6 +2243,7 @@ void FUN_0016c2f0(void)
     u32 uVar2;
     u32 count;
     s32 n;
+    s32 scaled;
     u8* p;
     u32* output;
     piVar1 = (s32*)DAT_0083bb30;
@@ -2265,7 +2266,8 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfd4 = (s32*)p;
-    p += ((n << 3) + n) << 2;
+    scaled = n << 3;
+    p += (scaled + n) << 2;
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfd0 = (s32*)p;
@@ -2285,7 +2287,8 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfbc = (s32*)p;
-    p += ((n << 2) + n) << 2;
+    scaled = n << 2;
+    p += (scaled + n) << 2;
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfb4 = (s32*)p;
@@ -2293,10 +2296,12 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfc8 = (s32*)p;
-    p += ((n << 1) + n) << 2;
+    scaled = n << 1;
+    p += (scaled + n) << 2;
     n = *(s32*)p;
     p += 0x10;
-    p += ((n << 1) + n) << 2;
+    scaled = n << 1;
+    p += (scaled + n) << 2;
     piVar1 = (s32*)p;
     uVar2 = 0;
     output = DAT_0083aaa0;

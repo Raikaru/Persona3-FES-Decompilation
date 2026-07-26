@@ -58,8 +58,13 @@ extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern const char DAT_00683b10[];
 extern const char D_00683A8C[];
 extern const char D_00683AD0[];
+#pragma alias D_00683AD0_scalar D_00683AD0
+extern const char D_00683AD0_scalar;
 extern const char D_00683A90[];
 extern void* DAT_00960184[];
+#pragma alias sprintf_fixed sprintf
+extern int sprintf_fixed(char* buffer, const char* format, s32 fieldId0,
+                         s32 fieldId1);
 extern u32* PTR_DAT_007cd540;
 extern void* D_007CE2B0;
 extern void* func_00100d80(const char* path, u32 mode);
@@ -576,6 +581,8 @@ HCdvd* func_001d6b10(void)
 {
     char path[128];
     const char* format;
+    s32 fieldId0;
+    s32 fieldId1;
 
     if (PTR_DAT_007cd540[0] == 0xffffffff)
     {
@@ -584,9 +591,10 @@ HCdvd* func_001d6b10(void)
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        format = D_00683AD0;
-        sprintf(path, format,
-                (s32)PTR_DAT_007cd540[0], (s32)PTR_DAT_007cd540[1]);
+        format = &D_00683AD0_scalar;
+        fieldId0 = (s32)PTR_DAT_007cd540[0];
+        fieldId1 = (s32)PTR_DAT_007cd540[1];
+        sprintf_fixed(path, format, fieldId0, fieldId1);
         if (H_Cdvd_FileExists(path) == false)
         {
             return NULL;
