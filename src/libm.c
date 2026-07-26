@@ -31,8 +31,6 @@ extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
 extern u64 FUN_0052efd8(u64, u64, u64 *);
-#pragma alias FUN_0052eac8_alt FUN_0052eac8
-extern u64 FUN_0052eac8_alt(u64);
 extern u32 FUN_0052f7d0(long, long, long);
 
 static const float sAtanHi[] = {
@@ -425,11 +423,11 @@ long FUN_0052ec28(u64 param_1)
     uVar3 = FUN_005318f8_u32(uVar2);
     lVar4 = (long)(u64)uVar3 << 0x20;
     if (lVar4 < 0) {
-      uVar2 = FUN_0052eac8((uVar3 & 0xffffffff) << 0x1f);
+    lVar4 = uVar3 << 0x20;
       uVar2 = FUN_00531170_u64(uVar2,uVar2);
     }
     else {
-      uVar2 = FUN_0052eac8_alt(lVar4);
+      uVar2 = FUN_0052eac8(lVar4);
     }
     uVar2 = FUN_005311c8_u64(param_1,uVar2);
     lVar1 = FUN_005316d0_u64(uVar2,0);
@@ -486,11 +484,11 @@ long FUN_0052eda0(void)
     uVar4 = FUN_005318f8_u32(uVar3);
     lVar5 = (long)(u64)uVar4 << 0x20;
     if (lVar5 < 0) {
-      uVar3 = FUN_0052eac8((uVar4 & 0xffffffff) << 0x1f);
+    lVar5 = uVar4 << 0x20;
       uVar3 = FUN_00531170_u64(uVar3,uVar3);
     }
     else {
-      uVar3 = FUN_0052eac8_alt(lVar5);
+      uVar3 = FUN_0052eac8(lVar5);
     }
     uVar1 = FUN_005311c8_u64(uVar1,uVar3);
     lVar2 = FUN_005316d0_u64(uVar1,0);

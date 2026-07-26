@@ -735,7 +735,8 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
     }
     if (func_001b0910() == false)
     {
-        if (func_00523ac8(path, 0x6836f0, resourceId, variant) == 0)
+        func_00523ac8(path, 0x6836f0, resourceId, variant);
+        if (func_001008b0(path) == 0)
         {
             return false;
         }
@@ -743,8 +744,8 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
         return true;
     }
     return true;
-}
 
+}
 // FUN_001c7f20 NONMATCHING
 u32 func_001c7f20(void* resource)
 {
