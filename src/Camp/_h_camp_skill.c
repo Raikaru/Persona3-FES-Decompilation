@@ -2020,6 +2020,7 @@ void* FUN_00166c70(KwlnTask* task)
     u32* personaWork;
 
     work = (CampSkillSelectorWork*)task->workData;
+    owner = task;
     switch (work->state) {
     case 0:
         work->scrollX = 320.0f;

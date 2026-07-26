@@ -1756,7 +1756,14 @@ void func_001d0e50(s32 isDungeon)
             func_001a0dc0(resourceId, 1);
             func_001ad870(resource->collisCtlTask, 0x40000000);
             func_001add40(resource->collisCtlTask);
-            func_001ad8c0(i == 0 ? 60.0f : 35.0f, resource->collisCtlTask);
+            if (i == 0)
+            {
+                func_001ad8c0(60.0f, resource->collisCtlTask);
+            }
+            else
+            {
+                func_001ad8c0(35.0f, resource->collisCtlTask);
+            }
             resource->baseMdl = (Model*)func_00317450(uGpffffb52c);
             light.x = func_001ad8b0(resource->collisCtlTask);
             light.y = light.x;
