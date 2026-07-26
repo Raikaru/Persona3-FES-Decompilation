@@ -561,7 +561,7 @@ float * FUN_003385d0(u64 param_1);
 void FUN_00338770(int param_1);
 void FUN_003387c0(int param_1);
 void FUN_00338ac0(u64 param_1);
-u64 FUN_00338d60(int param_1);
+u32 FUN_00338d60(int param_1);
 void FUN_00338e50(int param_1);
 void FUN_00338ea0(int param_1);
 void FUN_00339200(u64 param_1);
@@ -29276,7 +29276,7 @@ u32 FUN_00338d60(int param_1)
 
   uVar5 = (*DAT_00960178_abs)(4,0x40000);
 
-  if (*(u32 *)(param_1 + 0x38) < 3) {
+  if (*(volatile u32 *)(param_1 + 0x38) < 3) {
 
     *(u32 *)(param_1 + 0x38) = 3;
 

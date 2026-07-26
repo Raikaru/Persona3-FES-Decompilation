@@ -3045,7 +3045,7 @@ void func_002f5d80(u64 param_1)
         if (*(int *)(DAT_007ce3ec + 0xb50) == 0) {
           if (bVar1) {
             if (*(u16 *)(DAT_007ce3ec + 0xb58) < *(u16 *)(DAT_007ce3ec + 0xb56)) {
-              fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0) /
+              fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0f) /
                       (float)*(u16 *)(DAT_007ce3ec + 0xb56);
               if (fVar5 < 2.1474836e+09) {
                 cVar7 = (char)(int)fVar5;
@@ -3067,7 +3067,7 @@ void func_002f5d80(u64 param_1)
         }
         else if (bVar1) {
           if (*(u16 *)(DAT_007ce3ec + 0xb58) < *(u16 *)(DAT_007ce3ec + 0xb56)) {
-            fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0) /
+            fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0f) /
                     (float)*(u16 *)(DAT_007ce3ec + 0xb56);
             if (fVar5 < 2.1474836e+09) {
               uVar6 = (u8)(int)fVar5;
@@ -9374,7 +9374,7 @@ u32 func_002ed360(u64 *param_1)
   FUN_0027f650(*(u32 *)(DAT_007ce3ec + 0xb4c),uStack_28);
   FUN_0027f710(0.5f,*(u32 *)(DAT_007ce3ec + 0xb44));
   FUN_0027f710(0.5f,*(u32 *)(DAT_007ce3ec + 0xb48));
-  FUN_0027f710((float)*(u16 *)(DAT_007ce418 + 0xd254) / 100.0,
+  FUN_0027f710((float)*(u16 *)(DAT_007ce418 + 0xd254) / 100.0f,
                *(u32 *)(DAT_007ce3ec + 0xb4c));
   *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9d4) = 0;
   *(u32 *)(*(int *)(DAT_007ce3ec + 0xb48) + 0x9d4) = 0;

@@ -5838,11 +5838,11 @@ type_done:
 void FUN_00365a40(u32 param_1,int param_2)
 {
   u16 uVar1;
+  int *piVar6;
   u16 *puVar2;
   u32 uVar3;
   u32 lVar4;
   u32 uVar5;
-  int *piVar6;
 
   for (piVar6 = *(int **)(param_2 + 0x84); piVar6 != (int *)0x0; piVar6 = (int *)piVar6[0x25]) {
     if (*piVar6 == 0x31) {
