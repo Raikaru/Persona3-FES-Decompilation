@@ -2059,31 +2059,23 @@ int FUN_00361f60(int param_1,int param_2)
 
   int iVar1;
   int *piVar2;
-  int key2;
-  int key5;
-  int key19;
-  int key3;
   int item;
 
   iVar1 = 0;
-  key2 = 2;
-  key5 = 5;
-  key19 = 0x13;
-  key3 = 3;
   piVar2 = *(int **)(param_2 + 0x84);
   goto loop_test;
 loop_body:
-  if (param_1 != key2) goto case3;
+  if (param_1 != 2) goto case3;
 case2:
   item = *piVar2;
-  if (item == key5) goto next;
-  if (item == key19) goto next;
+  if (item == 5) goto next;
+  if (item == 0x13) goto next;
   goto add;
 case3:
-  if (param_1 != key3) goto next;
+  if (param_1 != 3) goto next;
   item = *piVar2;
-  if (item == key5) goto add;
-  if (item != key19) goto next;
+  if (item == 5) goto add;
+  if (item != 0x13) goto next;
   goto add;
 add:
   iVar1 = iVar1 + piVar2[0x1a];

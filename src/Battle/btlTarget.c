@@ -5759,14 +5759,14 @@ s32 FUN_002dc830(BtlAction* action)
     {
         goto return_minus_one;
     }
-    if (unit->genus != 0)
+    switch (unit->genus)
     {
-        goto increment_result;
+    case 0:
+        break;
+    default:
+        result++;
+        break;
     }
-    goto return_result;
-increment_result:
-    result++;
-return_result:
     return result;
 return_minus_one:
     return -1;

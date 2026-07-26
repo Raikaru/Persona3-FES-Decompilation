@@ -591,12 +591,25 @@ void fclCombineList003ded40(FclCallbackProxy*);
 // FUN_003da0c0 NONMATCHING
 FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 {
+    s32 mode;
     FclOwner* task;
     FclList* work;
-    s32 mode;
 
-    mode = param_2 == 0 ? 2 : (param_2 == 1 ? 3 : 0);
-    K_ASSERT(mode != 0, 0x3b8);
+    if (param_2 == 1)
+        goto set_mode_three;
+    if (param_2 != 0)
+        goto invalid_mode;
+    mode = 2;
+    goto mode_done;
+
+set_mode_three:
+    mode = 3;
+    goto mode_done;
+
+invalid_mode:
+    K_ASSERT(false, 0x3b8);
+
+mode_done:
     task = FUN_003c58f0(0, mode * 4 + 0x1b0, 0xc, 0x18);
     work = task->container->work;
     work->list = task;
@@ -605,6 +618,7 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
     work->flags = 0;
     work->values = work->embedded_values;
     memcpy(work->input_copy, param_1, 0x90);
+    work->result = FUN_003dfeb0((s32)work);
     FUN_003d9cc0((s32)work);
     FUN_003d8850((s32)work, 0xb, 0);
     FUN_003d8850((s32)work, 0, 0);

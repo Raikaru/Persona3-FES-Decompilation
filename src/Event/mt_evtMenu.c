@@ -16313,7 +16313,7 @@ void FUN_00382390(int param_1,int param_2,int param_3,int param_4)
 
 {
 
-  u64 uVar1;
+  int uVar1;
 
   f32 uVar2;
 
