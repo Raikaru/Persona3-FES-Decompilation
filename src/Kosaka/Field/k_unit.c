@@ -1914,7 +1914,7 @@ void func_001d1640(FldUnit* unit, s32 destroyModel)
 {
     if (unit->genusBase != NULL && unit->resrc != NULL)
     {
-        memcpy(&unit->matBeforeBtl, &mdlGetMatrix(unit->mdl)->right, sizeof(RwMatrix));
+        unit->matBeforeBtl = *mdlGetMatrix(unit->mdl);
         func_003b7090(unit->resrc->base.resTypeId);
         unit->resrc = NULL;
         if (unit->mdl != NULL && destroyModel == 1)
