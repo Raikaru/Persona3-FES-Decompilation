@@ -33,6 +33,8 @@ extern u32 DAT_006a2370;
 extern const char DAT_006a2730[];
 extern u8 DAT_006a2830[];
 extern u32 DAT_007cd4f8;
+#pragma alias DAT_007cd4f8_abs DAT_007cd4f8
+extern u8 DAT_007cd4f8_abs[];
 extern s16 DAT_007cd500;
 extern u32 DAT_007ce638;
 extern u32 DAT_007ce63c;
@@ -781,11 +783,11 @@ void FUN_003b01d0(int param_1,int param_2)
 
   uVar3 = (u32)*(u8 *)(param_1 + 0x15);
 
-  *(u8 *)(param_1 + 0x18) = (&DAT_007cd4f8)[uVar3];
+  *(u8 *)(param_1 + 0x18) = DAT_007cd4f8_abs[uVar3];
 
-  *(u8 *)(param_1 + 0x19) = (&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
+  *(u8 *)(param_1 + 0x19) = DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
 
-  *(int *)(param_1 + 0xc) = (int)(char)(&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
+  *(int *)(param_1 + 0xc) = (int)(char)DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
 
   if ((((*(u8 *)(param_1 + 0x17) & 1) != 0) &&
 
@@ -825,7 +827,7 @@ void FUN_003b01d0(int param_1,int param_2)
 
       }
 
-      iVar5 = -iVar5 * (int)(char)(&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
+      iVar5 = -iVar5 * (int)(char)DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
 
       if (iVar5 < 0) {
 
@@ -835,7 +837,7 @@ void FUN_003b01d0(int param_1,int param_2)
 
       *(int *)(param_1 + 4) = iVar5 >> 5;
 
-      iVar4 = iVar4 * (char)(&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
+      iVar4 = iVar4 * (char)DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
 
       if (iVar4 < 0) {
 
@@ -1208,7 +1210,7 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   u16 uVar5;
 

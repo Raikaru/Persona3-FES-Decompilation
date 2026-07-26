@@ -7131,7 +7131,7 @@ done_index:
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_0038DA10 NONMATCHING
+// FUN_0038DA10
 
 
 u64 FUN_0038da10(u16 *param_1)

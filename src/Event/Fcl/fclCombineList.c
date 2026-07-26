@@ -3339,50 +3339,23 @@ u32 FUN_003e0940(void)
 }
 
 // FUN_003E0950 NONMATCHING
-
-
-void FUN_003e0950(u64 param_1)
-
-
-
+void FUN_003e0950(s32 param_1)
 {
+    s32 work;
 
-  u32 *puVar1;
+    if (iGpffffb998 != 0)
+    {
+        return;
+    }
 
-  u32 uVar2;
-
-  u64 uVar3;
-
-  
-
-  if (iGpffffb998 == 0) {
-
-    uVar3 = FUN_003c5180(0x3e6e80,0x9c);
-
-    iGpffffb998 = (int)uVar3;
-
-    uVar3 = FUN_003c5460(uVar3);
-
-    puVar1 = (u32 *)uVar3;
-
-    *puVar1 = (int)param_1;
-
-    uVar2 = (u32)FUN_003dfeb0((int)uVar3);
-
-    puVar1[0x26] = uVar2;
-
-    puVar1[1] = 1;
-
-    printf(&gp0xffffaad0,0x6a6af8,0x1a9);
-
-    printf(0x6a6b08,param_1);
-
-    H_Dbprt_FmtLog(0x6a6b08,param_1);
-
-  }
-
-  return;
-
+    iGpffffb998 = FUN_003c5180(0x3e6e80, 0x9c);
+    work = FUN_003c5460(iGpffffb998);
+    *(s32*)work = param_1;
+    *(s32*)(work + 0x98) = (s32)FUN_003dfeb0(work);
+    *(s32*)(work + 4) = 1;
+    printf(&gp0xffffaad0, 0x6a6af8, 0x1a9);
+    printf(0x6a6b08, param_1);
+    H_Dbprt_FmtLog(0x6a6b08, param_1);
 }
 
 // FUN_003E0A10 NONMATCHING

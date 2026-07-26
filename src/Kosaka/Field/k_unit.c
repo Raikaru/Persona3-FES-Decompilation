@@ -115,6 +115,9 @@ extern u32 func_0017d800(void);
 extern void func_00195020(void* task);
 extern void func_0019c2f0(void* task, u32 value);
 extern void func_001a60d0();
+#pragma alias func_001a60d0_typed func_001a60d0
+extern KwlnTask* func_001a60d0_typed(KwlnTask* parentTask, Model* mdl,
+                                     u32 targetAlpha, s32 frames);
 extern u32 func_00195460(void);
 extern void func_001ad870(void* task, u32 flags);
 extern void func_001add40(void* task);

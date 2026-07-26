@@ -48,6 +48,8 @@ extern s32 func_0048ef30(void* object);
 extern s32 func_0048a2c0(void* object);
 extern s32 func_0048a480(void* object);
 extern void func_0048a3f0(void* object);
+ #pragma alias func_0048a3f0_alt func_0048a3f0
+extern void func_0048a3f0_alt(void* object);
 extern void func_0048a2a0(void* object, void* data);
 extern void func_00466640(void* data);
 extern void func_001b5a30(void* material);
@@ -599,7 +601,7 @@ void* func_001a70a0(void* object, void* data)
         goto normal;
     }
 state2:
-    func_0048a3f0(object);
+    func_0048a3f0_alt(object);
     goto normal;
 default_state:
     func_0048a3f0(object);
