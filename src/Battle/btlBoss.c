@@ -51,6 +51,15 @@ s32 FUN_002d63b0(BtlUnit* unit, s32 commandId, s32 param_3);
    argument to double, emitting fptodp calls retail does not make. */
 extern f32 FUN_0052e6d8(f32 x);
 extern f32 FUN_0052e878(f32 x);
+extern f32 sqrtf(f32 value);
+
+/* Absolute vtable aliases preserve the retail address materialization. */
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
+#pragma alias DAT_009600a0_abs DAT_009600a0
+extern u8 DAT_009600a0_abs[];
+#pragma alias DAT_0096008c_abs DAT_0096008c
+extern u8 DAT_0096008c_abs[];
 extern f32 DAT_007caee4;
 extern f32 DAT_007caf58;
 extern f32 DAT_007caf5c;
@@ -3511,139 +3520,97 @@ void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
 
 
 
+/* Retail reconstruction: state setup 0x2fe7d4-0x2fe880, vertex setup
+   0x2fe888-0x2fe9cc, 40-iteration strip 0x2fe9e0-0x2feb60, and final
+   vertex/draw path 0x2feb70-0x2fecbc. */
 // FUN_002FE780 NONMATCHING
-void FUN_002fe780(float param_1,u8 *param_2,u8 *param_3,u64 param_4,u64 param_5)
-
-
-
+void FUN_002fe780(float param_1, u8* param_2, u8* param_3,
+                  u64 param_4, u64 param_5)
 {
-
-  u16 uVar1;
-
-  int iVar2;
-
-  u32 uVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float afStack_a80 [6];
-
-  float afStack_a68 [4];
-
-  float fStack_a58;
-
-  float fStack_a54;
-
-  float fStack_a40;
-
-  float fStack_a3c;
-
-  float fStack_a38;
-
-  
-
-  iVar2 = FUN_00198590();
-
-  (*DAT_00960090)(7,2);
-
-  (*DAT_00960090)(0x14,1);
-
-  (*DAT_00960090)(0xe,0);
-
-  (*DAT_00960090)(6,0);
-
-  (*DAT_00960090)(8,0);
-
-  (*DAT_00960090)(0xc,1);
-
-  (*DAT_00960090)(1,0);
-
-  FUN_004d7f60(2,param_4);
-
-  FUN_004d7f60(3,param_5);
-
-  fVar7 = 1.0f / *(float *)(iVar2 + 0x84);
-
-  fVar8 = 0.0f;
-
-  afStack_a80[0] = 320.0f;
-
-  afStack_a80[1] = 224.0f;
-
-  afStack_a80[2] = (float)(uintptr_t)DAT_0096008c;
-
-  afStack_a68[2] = (float)*param_2;
-
-  afStack_a68[3] = (float)param_2[1];
-
-  fStack_a58 = (float)param_2[2];
-
-  fStack_a54 = (float)param_2[3];
-
-  uVar3 = 1;
-
-  fVar6 = (float)(uintptr_t)DAT_0096008c;
-
-  afStack_a68[0] = fVar7;
-
-  for (uVar1 = 0; uVar1 < 0x28; uVar1 = uVar1 + 1) {
-
-    fVar4 = (float)FUN_0052e6d8(fVar8);
-
-    fVar5 = (float)FUN_0052e878(fVar8);
-
-    afStack_a80[uVar3 * 0x10] = param_1 * 390.60977f * fVar4 + 320.0f;
-
-    afStack_a80[uVar3 * 0x10 + 1] = param_1 * 390.60977f * fVar5 + 224.0f;
-
-    afStack_a80[uVar3 * 0x10 + 2] = fVar6;
-
-    afStack_a68[uVar3 * 0x10] = fVar7;
-
-    afStack_a68[uVar3 * 0x10 + 2] = (float)*param_3;
-
-    afStack_a68[uVar3 * 0x10 + 3] = (float)param_3[1];
-
-    afStack_a68[uVar3 * 0x10 + 4] = (float)param_3[2];
-
-    afStack_a68[uVar3 * 0x10 + 5] = (float)param_3[3];
-
-    uVar3 = uVar3 + 1 & 0xffff;
-
-    fVar8 = fVar8 + DAT_007caf58;
-
-  }
-
-  afStack_a80[uVar3 * 0x10] = fStack_a40;
-
-  afStack_a80[uVar3 * 0x10 + 1] = fStack_a3c;
-
-  afStack_a80[uVar3 * 0x10 + 2] = fStack_a38;
-
-  afStack_a80[uVar3 * 0x10 + 2] = fVar6;
-
-  afStack_a68[uVar3 * 0x10] = fVar7;
-
-  afStack_a68[uVar3 * 0x10 + 2] = (float)*param_3;
-
-  afStack_a68[uVar3 * 0x10 + 3] = (float)param_3[1];
-
-  afStack_a68[uVar3 * 0x10 + 4] = (float)param_3[2];
-
-  afStack_a68[uVar3 * 0x10 + 5] = (float)param_3[3];
-
-  (*DAT_009600a0)(5,afStack_a80,0x2a);
-
-  return;
-
+    u16 uVar1;
+    int iVar2;
+    u16 uVar3;
+    float fVar8;
+    float fVar7;
+    float fVar6;
+    float fVar5;
+    float fVar4;
+    void (**setState)(...);
+    u8 vertices[0x2a][0x40];
+    u32 value;
+
+    iVar2 = FUN_00198590();
+    setState = (void (**)(...))DAT_00960090_abs;
+    (*setState)(7, 2);
+    (*setState)(0x14, 1);
+    (*setState)(0xe, 0);
+    (*setState)(6, 0);
+    (*setState)(8, 0);
+    (*setState)(0xc, 1);
+    (*setState)(1, 0);
+    FUN_004d7f60(2, param_4);
+    FUN_004d7f60(3, param_5);
+    fVar6 = *(f32*)DAT_0096008c_abs;
+    fVar7 = 1.0f / *(float*)(iVar2 + 0x84);
+    fVar4 = 152576.0f;
+    fVar4 = sqrtf(fVar4);
+    param_1 = param_1 * fVar4;
+    fVar8 = 0.0f;
+    *(f32*)(vertices[0] + 0x00) = 320.0f;
+    *(f32*)(vertices[0] + 0x04) = 224.0f;
+    *(f32*)(vertices[0] + 0x08) = fVar6;
+    *(f32*)(vertices[0] + 0x18) = fVar7;
+
+    value = param_2[0];
+    *(f32*)(vertices[0] + 0x20) = (f32)value;
+    value = param_2[1];
+    *(f32*)(vertices[0] + 0x24) = (f32)value;
+    value = param_2[2];
+    *(f32*)(vertices[0] + 0x28) = (f32)value;
+    value = param_2[3];
+    *(f32*)(vertices[0] + 0x2c) = (f32)value;
+
+    uVar3 = 1;
+    for (uVar1 = 0; uVar1 < 0x28; uVar1 = uVar1 + 1)
+    {
+        fVar4 = FUN_0052e6d8(fVar8);
+        fVar4 = param_1 * fVar4 + 320.0f;
+        fVar5 = FUN_0052e878(fVar8);
+        *(f32*)(vertices[uVar3] + 0x00) = fVar4;
+        *(f32*)(vertices[uVar3] + 0x04) =
+            param_1 * fVar5 + 224.0f;
+        *(f32*)(vertices[uVar3] + 0x08) = fVar6;
+        *(f32*)(vertices[uVar3] + 0x18) = fVar7;
+
+        value = param_3[0];
+        *(f32*)(vertices[uVar3] + 0x20) = (f32)value;
+        value = param_3[1];
+        *(f32*)(vertices[uVar3] + 0x24) = (f32)value;
+        value = param_3[2];
+        *(f32*)(vertices[uVar3] + 0x28) = (f32)value;
+        value = param_3[3];
+        *(f32*)(vertices[uVar3] + 0x2c) = (f32)value;
+
+        uVar3 = uVar3 + 1 & 0xffff;
+        fVar8 = fVar8 + DAT_007caf58;
+    }
+
+    *(f32*)(vertices[uVar3] + 0x00) = *(f32*)(vertices[1] + 0x00);
+    *(f32*)(vertices[uVar3] + 0x04) = *(f32*)(vertices[1] + 0x04);
+    *(f32*)(vertices[uVar3] + 0x08) = *(f32*)(vertices[1] + 0x08);
+    *(f32*)(vertices[uVar3] + 0x08) = fVar6;
+    *(f32*)(vertices[uVar3] + 0x18) = fVar7;
+
+    value = param_3[0];
+    *(f32*)(vertices[uVar3] + 0x20) = (f32)value;
+    value = param_3[1];
+    *(f32*)(vertices[uVar3] + 0x24) = (f32)value;
+    value = param_3[2];
+    *(f32*)(vertices[uVar3] + 0x28) = (f32)value;
+    value = param_3[3];
+    *(f32*)(vertices[uVar3] + 0x2c) = (f32)value;
+
+    (*(void (**)(...))DAT_009600a0_abs)(5, vertices, 0x2a);
 }
 
 // FUN_002FED10 NONMATCHING
