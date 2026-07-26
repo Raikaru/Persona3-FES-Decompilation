@@ -3209,49 +3209,31 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
     stop = 0;
     do
     {
-        if (0x400 == *cursor)
+        switch (*cursor)
         {
-            goto command_400;
-        }
-        if (0x202 == *cursor)
-        {
-            goto command_202;
-        }
-        if (0x201 == *cursor)
-        {
-            goto command_201;
-        }
-        if (0x200 == *cursor)
-        {
-            goto command_200;
-        }
-        if (0x102 == *cursor)
-        {
-            goto command_102;
-        }
-        if (0x101 == *cursor)
-        {
-            goto command_101;
-        }
-        if (0x100 == *cursor)
-        {
-            goto command_100;
-        }
-        if (1 == *cursor)
-        {
-            goto command_1;
-        }
-        if (0 == *cursor)
-        {
-            goto command_0;
-        }
-        goto command_done;
-command_0:
-        stop = 1;
-        goto command_done;
-command_1:
-        if ((~work->flags & 1) != 0)
-        {
+        case 0:
+            stop = 1;
+            break;
+        case 1:
+            if ((~work->flags & 1) != 0)
+            {
+                if ((((u32)(cursor + 1) >> 1) & 1) != 0)
+                {
+                    durationParts = (u16*)&duration;
+                    durationParts[0] = cursor[1];
+                    durationParts[1] = cursor[2];
+                }
+                else
+                {
+                    duration = *(u32*)(cursor + 1);
+                }
+                work->flags |= 1;
+                work->elapsed = 0;
+            }
+            else
+            {
+                work->elapsed++;
+            }
             if ((((u32)(cursor + 1) >> 1) & 1) != 0)
             {
                 durationParts = (u16*)&duration;
@@ -3262,114 +3244,97 @@ command_1:
             {
                 duration = *(u32*)(cursor + 1);
             }
-            work->flags |= 1;
-            work->elapsed = 0;
-        }
-        else
-        {
-            work->elapsed++;
-        }
-        if ((((u32)(cursor + 1) >> 1) & 1) != 0)
-        {
-            durationParts = (u16*)&duration;
-            durationParts[0] = cursor[1];
-            durationParts[1] = cursor[2];
-        }
-        else
-        {
-            duration = *(u32*)(cursor + 1);
-        }
-        stop = 1;
-        if (work->elapsed >= duration)
-        {
+            stop = 1;
+            if (work->elapsed >= duration)
+            {
+                cursor += 3;
+                work->flags &= ~1;
+                stop = 0;
+            }
+            break;
+        case 0x100:
+            work->flags |= 2;
+            cursor++;
+            break;
+        case 0x101:
+            work->flags &= ~2;
+            cursor++;
+            break;
+        case 0x102:
+            target = work->target;
+            target->completedFlags = 0;
+            target->state = 0;
+            cursor++;
+            break;
+        case 0x200:
+            {
+                __asm__ volatile (
+                    ".set noreorder\n"
+                    "lhu $v1, 0x18(%1)\n"
+                    "beq $v1, $zero, command_delay_zero\n"
+                    "nop\n"
+                    "b command_delay_done\n"
+                    "nop\n"
+                    "command_delay_zero:\n"
+                    "lw $a0, 0x1c(%1)\n"
+                    "beq $a0, $zero, command_delay_done\n"
+                    "nop\n"
+                    "bltz $a0, command_delay_unsigned\n"
+                    "nop\n"
+                    "mtc1 $a0, $f0\n"
+                    "nop\n"
+                    "cvt.s.w $f1, $f0\n"
+                    "b command_delay_converted\n"
+                    "nop\n"
+                    "command_delay_unsigned:\n"
+                    "srl $v1, $a0, 1\n"
+                    "andi $v0, $a0, 1\n"
+                    "or $v1, $v1, $v0\n"
+                    "mtc1 $v1, $f0\n"
+                    "nop\n"
+                    "cvt.s.w $f1, $f0\n"
+                    "add.s $f1, $f1, $f1\n"
+                    "command_delay_converted:\n"
+                    "lui $v0, 0x41f0\n"
+                    "mtc1 $v0, $f0\n"
+                    "nop\n"
+                    "div.s $f12, $f1, $f0\n"
+                    "nop\n"
+                    "nop\n"
+                    "lw $a0, 0x10(%1)\n"
+                    "jal func_001ed080\n"
+                    "nop\n"
+                    "command_delay_done:\n"
+                    "addiu %0, %0, 2\n"
+                    ".set reorder\n"
+                    : "+r"(cursor)
+                    : "r"(work)
+                    : "$v0", "$v1", "$a0", "$f0", "$f1", "$f12", "memory");
+            }
+            break;
+        case 0x201:
+            work->delay = (s16)cursor[1];
+            cursor += 2;
+            break;
+        case 0x202:
+            if ((((u32)(cursor + 1) >> 1) & 1) != 0)
+            {
+                durationParts = (u16*)&duration;
+                durationParts[0] = cursor[1];
+                durationParts[1] = cursor[2];
+            }
+            else
+            {
+                duration = *(u32*)(cursor + 1);
+            }
+            work->duration = duration;
             cursor += 3;
-            work->flags &= ~1;
-            stop = 0;
+            break;
+        case 0x400:
+            work->flags |= 8;
+            cursor++;
+            break;
         }
-        goto command_done;
-command_100:
-        work->flags |= 2;
-        cursor++;
-        goto command_done;
-command_101:
-        work->flags &= ~2;
-        cursor++;
-        goto command_done;
-command_102:
-        target = work->target;
-        target->completedFlags = 0;
-        target->state = 0;
-        cursor++;
-        goto command_done;
-command_200:
-        {
-            __asm__ volatile (
-                ".set noreorder\n"
-                "lhu $v1, 0x18(%1)\n"
-                "beq $v1, $zero, command_delay_zero\n"
-                "nop\n"
-                "b command_delay_done\n"
-                "nop\n"
-                "command_delay_zero:\n"
-                "lw $a0, 0x1c(%1)\n"
-                "beq $a0, $zero, command_delay_done\n"
-                "nop\n"
-                "bltz $a0, command_delay_unsigned\n"
-                "nop\n"
-                "mtc1 $a0, $f0\n"
-                "nop\n"
-                "cvt.s.w $f1, $f0\n"
-                "b command_delay_converted\n"
-                "nop\n"
-                "command_delay_unsigned:\n"
-                "srl $v1, $a0, 1\n"
-                "andi $v0, $a0, 1\n"
-                "or $v1, $v1, $v0\n"
-                "mtc1 $v1, $f0\n"
-                "nop\n"
-                "cvt.s.w $f1, $f0\n"
-                "add.s $f1, $f1, $f1\n"
-                "command_delay_converted:\n"
-                "lui $v0, 0x41f0\n"
-                "mtc1 $v0, $f0\n"
-                "nop\n"
-                "div.s $f12, $f1, $f0\n"
-                "nop\n"
-                "nop\n"
-                "lw $a0, 0x10(%1)\n"
-                "jal func_001ed080\n"
-                "nop\n"
-                "command_delay_done:\n"
-                "addiu %0, %0, 2\n"
-                ".set reorder\n"
-                : "+r"(cursor)
-                : "r"(work)
-                : "$v0", "$v1", "$a0", "$f0", "$f1", "$f12", "memory");
-        }
-        goto command_done;
-command_201:
-        work->delay = (s16)cursor[1];
-        cursor += 2;
-        goto command_done;
-command_202:
-        if ((((u32)(cursor + 1) >> 1) & 1) != 0)
-        {
-            durationParts = (u16*)&duration;
-            durationParts[0] = cursor[1];
-            durationParts[1] = cursor[2];
-        }
-        else
-        {
-            duration = *(u32*)(cursor + 1);
-        }
-        work->duration = duration;
-        cursor += 3;
-        goto command_done;
-command_400:
-        work->flags |= 8;
-        cursor++;
-command_done:
-        ;
     } while ((u32)(stop != 0) ^ 1);
     work->cursor = cursor;
 }

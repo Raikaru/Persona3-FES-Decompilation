@@ -5982,24 +5982,32 @@ void FUN_003a8260(int param_1)
 
 void FUN_003a8350(int param_1)
 {
+  volatile u64 uStack_18;
   float fVar1;
-  volatile float fVar2;
-  volatile float fVar3;
+  float fVar2;
+  float fVar3;
+  int iVar1;
   int iVar2;
   int iVar3;
 
+  uStack_18 = gp0xffffa7c8;
   fVar2 = (float)(int)*(short *)(param_1 + 0x1e0);
+  *(volatile float *)&uStack_18 = fVar2;
   fVar3 = (float)(int)*(short *)(param_1 + 0x1e2);
+  *((volatile float *)&uStack_18 + 1) = fVar3;
   iVar2 = (int)fVar2;
   iVar3 = (int)fVar3 + -5 + (int)*(short *)(param_1 + 0x1da);
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  if (2.1474836e+09f <= fVar1) {
-    fVar1 = fVar1 - 2.1474836e+09f;
-  }
-
-  FUN_003a8710_typed(0,iVar2,iVar3,(int)fVar1 & 0xff,0x10);
+  if (2.1474836e+09f <= fVar1) goto LAB_003a8400;
+  iVar1 = (int)fVar1 & 0xff;
+  goto LAB_003a8418;
+LAB_003a8400:
+  iVar1 = (int)(fVar1 - 2.1474836e+09f);
+  iVar1 = (iVar1 | 0x80000000) & 0xff;
+LAB_003a8418:
+  FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
 
   return;
 }

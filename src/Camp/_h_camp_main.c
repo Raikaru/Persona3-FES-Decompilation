@@ -49,8 +49,6 @@ extern void FUN_00114450(f32 alpha, u32 mode, u32 color,
 extern s32 printf(const char* format, ...);
 extern KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd);
 extern u32 func_0018b700(void* animation);
-#pragma alias kwlnTaskCreate_old kwlnTaskCreate
-extern KwlnTask* kwlnTaskCreate_old();
 
 
 // FUN_001339A0 NONMATCHING
@@ -1718,7 +1716,7 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
     if (work == NULL) {
         return NULL;
     }
-    task = kwlnTaskCreate_old(parent, "H_CampCommuRoot", priority,
+    task = kwlnTaskCreate(parent, "H_CampCommuRoot", priority,
                               (void* (*)(KwlnTask*))FUN_001355C0,
                               (void (*)(KwlnTask*))FUN_001365b0, work);
     if (task == NULL) {
