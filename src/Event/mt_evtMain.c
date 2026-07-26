@@ -2063,32 +2063,29 @@ int FUN_00361f60(int param_1,int param_2)
   int iVar1;
   int *piVar2;
   int item;
-  int type2;
-  int value5;
-  int value13;
-  int type3;
 
   iVar1 = 0;
   piVar2 = *(int **)(param_2 + 0x84);
-  type2 = 2;
-  value5 = 5;
-  value13 = 0x13;
-  type3 = 3;
-  while (piVar2 != (int *)0x0) {
-    if (param_1 == type2) {
-      item = *piVar2;
-      if ((item != value5) && (item != value13)) {
-        iVar1 = iVar1 + piVar2[0x1a];
-      }
-    }
-    else if (param_1 == 3) {
-    else if (param_1 == type3) {
-      if ((item == 5) || (item == 0x13)) {
-      if ((item == value5) || (item == value13)) {
-      }
-    }
-    piVar2 = (int *)piVar2[0x25];
-  }
+  goto loop_test;
+loop_body:
+  if (param_1 != 2) goto case3;
+case2:
+  item = *piVar2;
+  if (item == 5) goto next;
+  if (item == 0x13) goto next;
+  goto add;
+case3:
+  if (param_1 != 3) goto next;
+  item = *piVar2;
+  if (item == 5) goto add;
+  if (item != 0x13) goto next;
+  goto add;
+add:
+  iVar1 = iVar1 + piVar2[0x1a];
+next:
+  piVar2 = (int *)piVar2[0x25];
+loop_test:
+  if (piVar2 != (int *)0x0) goto loop_body;
   return iVar1;
 }
 

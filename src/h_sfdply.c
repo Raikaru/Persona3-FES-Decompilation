@@ -1940,8 +1940,8 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
             source += 3;
             x++;
         }
-        y++;
         dst += image->stride;
+        y++;
     }
 }
 
@@ -1953,8 +1953,8 @@ void func_0010de40(HSfdImage* image, const u8* source)
     s32 width;
     s32 height;
     const u16* pixels;
-    s32 x;
     s32 y;
+    s32 x;
     u32 opaque;
     dst = image->pixels;
     width = image->width;

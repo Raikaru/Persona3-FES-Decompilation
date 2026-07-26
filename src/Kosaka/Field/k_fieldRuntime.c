@@ -88,8 +88,10 @@ extern void func_001ad8c0(f32 value, void* controller);
 extern void func_001ad870(void* controller, u32 flags);
 extern void func_001ad890(void* controller, u32 flags);
 extern void func_001ad940(RuntimeVec3* output, void* controller);
-extern void func_001addf0(void* controller, const RuntimeVec3* direction);
-extern void func_001adff0(void* controller, const RuntimeVec3* direction);
+extern void func_001addf0(f32 amount, void* controller,
+                          const RuntimeVec3* direction);
+extern void func_001adff0(f32 amount, void* controller,
+                          const RuntimeVec3* direction);
 extern void func_001ae0d0(void* controller);
 extern void func_0019c320(f32 value, void* controller);
 extern void func_004c2f10(void* matrix);
