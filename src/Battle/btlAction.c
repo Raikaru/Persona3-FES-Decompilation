@@ -6792,7 +6792,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
             if (FUN_00300580(ACTION_U32(selected->unit, 0xa2c), 0x180000) == 0 &&
                 FUN_0030b5a0(ACTION_U32(selected->unit, 0xa2c), 0) == 0)
             {
-                pkt = FUN_002819d0_btlAction(selected, 0, D_00693300[0], 24);
+                pkt = FUN_002819d0_btlAction((BtlUnit*)selected, 0, D_00693300[0], 24);
                 pkt->unk_00 = 4;
                 pkt->parentUID = rootPkt->uid;
                 pkt->actionUID = action->uid;
@@ -6835,7 +6835,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
                     {
                         speedIdx = 0;
                     }
-                    pkt = FUN_002819d0_btlAction(selected, 0, D_00693300[speedIdx], 24);
+                    pkt = FUN_002819d0_btlAction((BtlUnit*)selected, 0, D_00693300[speedIdx], 24);
                     pkt->actionUID = action->uid;
                     btlPacketRegister(pkt, BTLPACKET_TYPE_1);
                 }

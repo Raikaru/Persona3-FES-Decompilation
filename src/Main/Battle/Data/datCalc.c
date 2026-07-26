@@ -4972,7 +4972,7 @@ u32 FUN_00309080(u16 *param_1,char param_2)
 u32 FUN_00309250(u16 *param_1,u8 param_2)
 {
   u16 uVar1;
-  u16 uVar2;
+  s16 uVar2;
   u32 uVar3;
 
   if ((*param_1 & 4) == 0) {
@@ -5016,9 +5016,11 @@ normal_dispatch:
   default:
     goto assert_114b;
   }
+calc_zero:
   uVar2 = FUN_0016cb80((s16)uVar1, 2);
   uVar3 = FUN_0016fcc0((s16)uVar1, (s16)uVar2);
   return uVar3;
+calc_one:
   uVar2 = FUN_0016cb80((s16)uVar1, 1);
   uVar3 = FUN_0016fbd0((s16)uVar1, (s16)uVar2);
   return uVar3;
