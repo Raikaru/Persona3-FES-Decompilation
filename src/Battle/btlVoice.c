@@ -9936,7 +9936,7 @@ void func_002eeb70(BtlAction* action)
     }
 }
 
-// FUN_002eec60 NONMATCHING
+// FUN_002eec60
 void func_002eec60(void)
 
 {

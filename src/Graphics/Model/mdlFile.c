@@ -52615,8 +52615,8 @@ void FUN_00350190(void)
 
   *(volatile u32 *)DAT_00957bc0_abs = uVar1;
   *(volatile u16 *)DAT_00957bc4_abs = uVar2;
-  *(volatile u32 *)(u32)DAT_00957bc8_abs = 0;
-  *(volatile u32 *)(u32)DAT_00957bcc_abs = 0;
+  *(volatile u32 *)DAT_00957bc8_abs = 0;
+  *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   DAT_007ce578 = 1;
   return;
