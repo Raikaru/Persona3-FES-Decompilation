@@ -51664,11 +51664,11 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
     fVar7 = (float)FUN_0052e6d8(*param_2);
 
-    fVar10 = (float)param_2[2] * fVar7 + fVar8 + 0.0;
+    fVar10 = (float)param_2[2] * fVar7 + fVar8 + 0.0f;
 
     fVar7 = (float)FUN_0052e6d8(param_2[3]);
 
-    fVar7 = (float)param_2[5] * fVar7 + fVar8 + 0.0;
+    fVar7 = (float)param_2[5] * fVar7 + fVar8 + 0.0f;
 
     if (param_7 == '\x01') {
 
@@ -51684,11 +51684,11 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
       }
 
-      fVar8 = ((float)(*(u32 *)(param_3 + 0x14) >> 0x18) * 255.0) /
+      fVar8 = ((float)(*(u32 *)(param_3 + 0x14) >> 0x18) * 255.0f) /
 
               (float)*(u32 *)(*(int *)(*(int *)(param_1 + 0x5c) + 0x20) + 0x50);
 
-      if (fVar8 < 2.1474836e+09) {
+      if (fVar8 < 2.1474836e+09f) {
 
         bVar5 = (u8)(int)fVar8;
 
@@ -51696,45 +51696,45 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
       else {
 
-        bVar5 = (u8)(int)(fVar8 - 2.1474836e+09);
+        bVar5 = (u8)(int)(fVar8 - 2.1474836e+09f);
 
       }
 
       uStack_4 = ((u32)bVar5 << 24) | (uStack_4 & 0xffffff);
 
-      in_f23 = (float)param_2[6] * *(float *)(param_1 + 0x28) * ((*param_6 * fVar10) / 32.0);
+      in_f23 = (float)param_2[6] * *(float *)(param_1 + 0x28) * ((*param_6 * fVar10) / 32.0f);
 
-      unaff_f22 = (float)param_2[6] * *(float *)(param_1 + 0x2c) * ((param_6[1] * fVar7) / 32.0);
+      unaff_f22 = (float)param_2[6] * *(float *)(param_1 + 0x2c) * ((param_6[1] * fVar7) / 32.0f);
 
-      fStack_110 = 255.0;
+      fStack_110 = 255.0f;
 
-      fStack_10c = 255.0;
+      fStack_10c = 255.0f;
 
-      fStack_108 = 255.0;
+      fStack_108 = 255.0f;
 
       fStack_104 = (float)bVar5;
 
-      fStack_d0 = 255.0;
+      fStack_d0 = 255.0f;
 
-      fStack_cc = 255.0;
+      fStack_cc = 255.0f;
 
-      fStack_c8 = 255.0;
+      fStack_c8 = 255.0f;
 
       fStack_c4 = (float)bVar5;
 
-      fStack_90 = 255.0;
+      fStack_90 = 255.0f;
 
-      fStack_8c = 255.0;
+      fStack_8c = 255.0f;
 
-      fStack_88 = 255.0;
+      fStack_88 = 255.0f;
 
       fStack_84 = (float)bVar5;
 
-      fStack_50 = 255.0;
+      fStack_50 = 255.0f;
 
-      fStack_4c = 255.0;
+      fStack_4c = 255.0f;
 
-      fStack_48 = 255.0;
+      fStack_48 = 255.0f;
 
       fStack_44 = (float)bVar5;
 
@@ -51742,9 +51742,9 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
     else if (param_7 == '\0') {
 
-      in_f23 = (*param_6 * fVar10) / 32.0;
+      in_f23 = (*param_6 * fVar10) / 32.0f;
 
-      unaff_f22 = (param_6[1] * fVar7) / 32.0;
+      unaff_f22 = (param_6[1] * fVar7) / 32.0f;
 
       uVar6 = uStack_4 & 0xff;
 
@@ -51796,9 +51796,9 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
     fVar7 = DAT_00960088;
 
-    if ((((fStack_30 / fStack_28 < -2.0) || (2.0 < fStack_30 / fStack_28)) ||
+    if ((((fStack_30 / fStack_28 < -2.0f) || (2.0f < fStack_30 / fStack_28)) ||
 
-        (fStack_2c / fStack_28 < -2.0)) || (2.0 < fStack_2c / fStack_28)) {
+        (fStack_2c / fStack_28 < -2.0f)) || (2.0f < fStack_2c / fStack_28)) {
 
       bVar1 = true;
 
@@ -51822,15 +51822,15 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
                    (fStack_28 - fVar10) * ((fVar7 - fVar8) / (*(float *)(iVar2 + 0x80) - fVar10)) +
 
-                   fVar8 + 0.0;
+                   fVar8 + 0.0f;
 
-      if (fStack_128 < 0.0) {
+      if (fStack_128 < 0.0f) {
 
-        fStack_128 = 0.0;
+        fStack_128 = 0.0f;
 
       }
 
-      fVar9 = 1.0 / fStack_128;
+      fVar9 = 1.0f / fStack_128;
 
       fVar7 = (float)FUN_0052e6d8(DAT_007cae58 + *(float *)(param_3 + 0x1c));
 
@@ -51844,37 +51844,37 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
       fVar8 = unaff_f22 * fVar8;
 
-      fStack_120 = 0.0;
+      fStack_120 = 0.0f;
 
-      fStack_11c = 0.0;
+      fStack_11c = 0.0f;
 
-      fStack_e0 = 1.0;
+      fStack_e0 = 1.0f;
 
-      fStack_dc = 0.0;
+      fStack_dc = 0.0f;
 
-      fStack_a0 = 0.0;
+      fStack_a0 = 0.0f;
 
-      fStack_9c = 1.0;
+      fStack_9c = 1.0f;
 
-      fStack_60 = 1.0;
+      fStack_60 = 1.0f;
 
-      fStack_5c = 1.0;
+      fStack_5c = 1.0f;
 
-      fStack_130 = ((fStack_30 + -fVar10 + fVar8) / fStack_28) * 640.0;
+      fStack_130 = ((fStack_30 + -fVar10 + fVar8) / fStack_28) * 640.0f;
 
-      fStack_12c = ((fStack_2c - (-in_f23 - fVar7)) / fStack_28) * 448.0;
+      fStack_12c = ((fStack_2c - (-in_f23 - fVar7)) / fStack_28) * 448.0f;
 
-      fStack_f0 = ((fStack_30 + fVar10 + fVar8) / fStack_28) * 640.0;
+      fStack_f0 = ((fStack_30 + fVar10 + fVar8) / fStack_28) * 640.0f;
 
-      fStack_ec = ((fStack_2c - (in_f23 - fVar7)) / fStack_28) * 448.0;
+      fStack_ec = ((fStack_2c - (in_f23 - fVar7)) / fStack_28) * 448.0f;
 
-      fStack_b0 = ((fStack_30 + (-fVar10 - fVar8)) / fStack_28) * 640.0;
+      fStack_b0 = ((fStack_30 + (-fVar10 - fVar8)) / fStack_28) * 640.0f;
 
-      fStack_ac = ((fStack_2c - (-in_f23 + fVar7)) / fStack_28) * 448.0;
+      fStack_ac = ((fStack_2c - (-in_f23 + fVar7)) / fStack_28) * 448.0f;
 
-      fStack_70 = ((fStack_30 + (fVar10 - fVar8)) / fStack_28) * 640.0;
+      fStack_70 = ((fStack_30 + (fVar10 - fVar8)) / fStack_28) * 640.0f;
 
-      fStack_6c = ((fStack_2c - (in_f23 + fVar7)) / fStack_28) * 448.0;
+      fStack_6c = ((fStack_2c - (in_f23 + fVar7)) / fStack_28) * 448.0f;
 
       fStack_118 = fVar9;
 
@@ -51924,9 +51924,9 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
         fStack_11c = *(float *)(param_1 + 0x58);
 
-        fStack_e0 = fStack_120 + 1.0;
+        fStack_e0 = fStack_120 + 1.0f;
 
-        fStack_9c = fStack_11c + 1.0;
+        fStack_9c = fStack_11c + 1.0f;
 
         fStack_dc = fStack_11c;
 
