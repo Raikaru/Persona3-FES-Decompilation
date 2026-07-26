@@ -16653,6 +16653,8 @@ u8 FUN_00454520(float *param_1,char param_2)
   fStack_10 = *param_1;
   fStack_c = param_1[1];
   fStack_8 = param_1[2];
+  stack.v10[3] = 0.0f;
+  stack.v20[3] = 0.0f;
   iVar1 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + param_2 * 0x1c0) + 0x3c) + 1) * 0x1c0;
   pfVar2 = (float *)(DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + iVar1) * 0x40);
   iVar1 = *(int *)((u8 *)DAT_0086ef08 + iVar1);
@@ -16695,10 +16697,8 @@ u64 FUN_00454620(char param_1)
 #define fStack_88 afStack_90[2]
   u8 auStack_80 [16];
   u8 auStack_70 [16];
-  float afStack_70 [4];
-  
-#define fStack_78 afStack_70[0]
-#define fStack_6c afStack_70[1]
+  float fStack_78;
+  float fStack_6c;
   float afStack_60 [4];
   u8 auStack_50 [16];
   float fStack_48;
@@ -16749,6 +16749,7 @@ u64 FUN_00454620(char param_1)
     fStack_ac = fStack_8;
     afStack_c0[0] = fStack_10;
     afStack_c0[2] = fStack_8;
+    afStack_c0[3] = 0.0f;
     afStack_c0[1] = 400.0f;
     uStack_b0 = 0xc3c80000;
     fStack_a0 = fStack_90;
@@ -16784,8 +16785,6 @@ u64 FUN_00454620(char param_1)
 #undef fStack_c
 #undef fStack_8
 #undef fStack_90
-#undef fStack_78
-#undef fStack_6c
 #undef fStack_8c
 #undef fStack_88
 
