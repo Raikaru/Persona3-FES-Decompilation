@@ -1485,8 +1485,9 @@ outer_body:
     if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
       return 0;
     }
-    if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,(u16)temp_19) == -1) {
-      datPersonaSetSkill_003d6e60(param_1 + 4,(u16)temp_19);
+    temp_3 = (u16)temp_19;
+    if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_3) == -1) {
+      datPersonaSetSkill_003d6e60(param_1 + 4,temp_3);
     }
   }
 outer_increment:
