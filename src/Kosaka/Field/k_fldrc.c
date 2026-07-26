@@ -1565,8 +1565,7 @@ void FUN_001b4e00(u32 unused, u32* resource, const f32* offset)
 void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
-    u32 count;
-    s16 type;
+    u16 type;
     f32 color[3];
 
     *(u64*)color = DAT_00678f68_abs[0];
@@ -1582,18 +1581,16 @@ void FUN_001b5200(u32* resource, f32 angle)
             FUN_004cb890_typed(*(u32*)(resource[4] + 4), color, angle, 2);
         }
     }
-    count = resource[5];
-    for (i = 0; i < count; i++)
+    for (i = 0; i < resource[5]; i++)
     {
         if (resource[i + 6] != 0)
         {
             FUN_004cb890_typed(*(u32*)(resource[i + 6] + 4), color, angle, 2);
         }
     }
-    count = resource[0x46];
-    for (i = 0; i < count; i++)
+    for (i = 0; i < resource[0x46]; i++)
     {
-        type = (s16)resource[i * 6 + 0x47];
+        type = (u16)resource[i * 6 + 0x47];
         if ((type == 0) || (type == 2))
         {
             FUN_00318a50_typed(resource[i * 6 + 0x4a], angle, color, 2);

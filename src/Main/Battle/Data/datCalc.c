@@ -975,11 +975,13 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
     }
     bVar2 = FUN_00173510(uVar1, param_2);
   }
-  if (bVar2 == 0) {
-    bVar2 = 1;
+  if ((s32)bVar2 > 0) {
+    if (99 < bVar2) {
+      bVar2 = 99;
+    }
   }
-  else if (99 < bVar2) {
-    bVar2 = 99;
+  else {
+    bVar2 = 1;
   }
   return bVar2;
 }
