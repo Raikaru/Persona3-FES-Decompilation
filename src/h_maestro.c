@@ -2523,6 +2523,10 @@ void func_00114e70(f32 depth,
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+/* Retail 0x115350-0x1158a0 builds a four-vertex strip with inline state setup,
+ * point staging, doubled-alpha channel conversion, and a final draw.  The
+ * corresponding logic is reconstructed below; remaining differences are
+ * compiler frame/register layout across the same retail ranges. */
 // FUN_00115350 NONMATCHING
 void func_00115350(f32 depth,
                    u32 color,
@@ -2536,51 +2540,107 @@ void func_00115350(f32 depth,
                    s32 alpha3)
 {
     RwIm2DVertex vertices[4];
-    const u64 points[4] = {point0, point1, point2, point3};
-    const s32 alphas[4] = {alpha0, alpha1, alpha2, alpha3};
+    f32 points[4][2];
     f32 recipZ;
+    f32 z;
+    f32 tmp;
+    f32 alpha0f;
+    f32 alpha1f;
+    f32 alpha2f;
+    f32 alpha3f;
+    void (**setState)(u32, u32);
     s32 r;
     s32 g;
     s32 b;
+    s32 r1;
+    s32 g1;
+    s32 b1;
     s32 i;
-    void (**setState)(u32, u32);
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (s32)((color >> 16) & 0xff);
-    g = (s32)((color >> 8) & 0xff);
-    b = (s32)(color & 0xff);
+    r = (s32)((color >> 24) & 0xff);
+    g = (s32)((color >> 16) & 0xff);
+    b = (s32)((color >> 8) & 0xff);
 
-    Maestro_SetPrimitiveStates(0x44, 0x717fb);
     setState = (void (**)(u32, u32))D_00960090_abs;
-    (*setState)(1, 0);
+    (*setState)(6, 1);
+    (*setState)(7, 2);
+    (*setState)(8, 1);
+    (*setState)(9, 1);
+    (*setState)(0xc, 1);
+    (*setState)(0xb, 6);
+    (*setState)(0xa, 5);
+    (*setState)(2, 4);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+
+    points[0][0] = ((const f32*)&point0)[0];
+    points[0][1] = ((const f32*)&point0)[1];
+    points[1][0] = ((const f32*)&point1)[0];
+    points[1][1] = ((const f32*)&point1)[1];
+    points[2][0] = ((const f32*)&point2)[0];
+    points[2][1] = ((const f32*)&point2)[1];
+    points[3][0] = ((const f32*)&point3)[0];
+    points[3][1] = ((const f32*)&point3)[1];
+
+    r1 = r & 1;
+    g1 = g & 1;
+    b1 = b & 1;
+    z = D_00960088 - depth;
+    alpha3f = (f32)alpha3;
+    alpha2f = (f32)alpha2;
+    alpha1f = (f32)alpha1;
+    alpha0f = (f32)alpha0;
 
     for (i = 0; i < 4; i++)
     {
-        f32 x = ((const f32*)&points[i])[0];
-        f32 y = ((const f32*)&points[i])[1];
-        f32 z = D_00960088 - depth;
-        f32 a = (f32)alphas[i];
-        f32 cr = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
-        f32 cg = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
-        f32 cb = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
+        RwIm2DVertex* v = &vertices[i];
 
+        v->u.els.scrVertex.z = z;
+        v->u.els.recipZ = recipZ;
+        if (r >= 0)
+            v->u.els.color.r = (f32)r;
+        else
         {
-            RwIm2DVertex* v = &vertices[i];
-            v->u.els.scrVertex.x = x;
-            v->u.els.scrVertex.y = y;
-            v->u.els.scrVertex.z = z;
-            v->u.els.camVertex_z = 0.0f;
-            v->u.els.u = 0.0f;
-            v->u.els.v = 0.0f;
-            v->u.els.recipZ = recipZ;
-            v->u.els.color.r = cr;
-            v->u.els.color.g = cg;
-            v->u.els.color.b = cb;
-            v->u.els.color.a = a;
+            tmp = (f32)(s32)(((u32)r >> 1) | r1);
+            v->u.els.color.r = tmp + tmp;
         }
+        if (g >= 0)
+            v->u.els.color.g = (f32)g;
+        else
+        {
+            tmp = (f32)(s32)(((u32)g >> 1) | g1);
+            v->u.els.color.g = tmp + tmp;
+        }
+        if (b >= 0)
+            v->u.els.color.b = (f32)b;
+        else
+        {
+            tmp = (f32)(s32)(((u32)b >> 1) | b1);
+            v->u.els.color.b = tmp + tmp;
+        }
+        switch (i)
+        {
+        case 0:
+            v->u.els.color.a = alpha0f;
+            break;
+        case 1:
+            v->u.els.color.a = alpha1f;
+            break;
+        case 2:
+            v->u.els.color.a = alpha2f;
+            break;
+        case 3:
+            v->u.els.color.a = alpha3f;
+            break;
+        }
+
+        v->u.els.scrVertex.x = points[i][0];
+        v->u.els.scrVertex.y = points[i][1];
     }
 
+    (*setState)(1, 0);
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 /* ------------------------------------------------------------------------- */
