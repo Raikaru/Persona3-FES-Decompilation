@@ -1831,7 +1831,6 @@ void func_0020cd50(void* work, void* resource)
 }
 
 #pragma opt_loop_invariants on
-#pragma schedule off
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {
@@ -1859,8 +1858,8 @@ void func_0020cda0(u8* work)
     row = 0;
     widthEven = 7;
     widthOdd = 8;
-    rowStep = fGpffff8338;
-    yOffset = fGpffff8318;
+    rowStep = *(volatile f32*)&fGpffff8338;
+    yOffset = *(volatile f32*)&fGpffff8318;
     six = 6.0f;
     zero = 0.0f;
     three = 3.0f;
@@ -1896,7 +1895,6 @@ void func_0020cda0(u8* work)
     }
     K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
-#pragma schedule on
 #pragma opt_loop_invariants off
 // FUN_0020cf20 NONMATCHING
 void func_0020cf20(void* destination, void* source)
