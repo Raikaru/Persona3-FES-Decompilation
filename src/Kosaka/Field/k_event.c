@@ -587,6 +587,8 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
 {
     RwMatrix* viewerMat;
     u8* cell;
+    u8* objectTable;
+    u8* resultTable;
     void* object;
     RwV3d delta;
     s32 i;
@@ -618,9 +620,11 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
         }
     }
     cell = DAT_0086b180_abs + z * 0x310 + x * 0xc4;
+    objectTable = cell + 0x60;
+    resultTable = cell + 0x1e0;
     for (i = 0; i < 0x31; i++)
     {
-        object = *(void**)(cell + 0x60 + i * sizeof(void*));
+        object = *(void**)(objectTable + i * sizeof(void*));
         if (object == NULL)
         {
             return NULL;
@@ -637,7 +641,7 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
                   mdlGetMatrix(unit->mdl)->pos.z;
         if (func_004c6ac0(&delta) < maxDist)
         {
-            return *(void**)(cell + 0x1e0 + i * sizeof(void*));
+            return *(void**)(resultTable + i * sizeof(void*));
         }
     }
     return NULL;
@@ -696,16 +700,17 @@ void func_001c7830(void* output, void* script)
         {
             distance = 0.0f;
         }
-        if (distance < 2000.0f)
+        if (distance >= 2000.0f && hidden < 3)
         {
-            *(u16*)((u8*)unit->genusBase + 10) |= 1;
-            out[count++] = (u32)unit->genusBase;
-        }
-        else if (hidden < 3)
-        {
+            *(u16*)((u8*)unit->genusBase + 10) &= (u16)~1;
             *(void**)((u8*)out + 0x1c + hidden * 8) = unit->genusBase;
             *(f32*)((u8*)out + 0x20 + hidden * 8) = distance;
             hidden++;
+        }
+        if (distance < 2000.0f || hidden >= 3)
+        {
+            *(u16*)((u8*)unit->genusBase + 10) |= 1;
+            out[count++] = (u32)unit->genusBase;
         }
     }
 }
@@ -800,7 +805,8 @@ void func_001c8120(void* work)
 {
     RwV3d candidates[5];
     RwV3d center;
-    RwV3d delta;
+    RwV3d deltaPc;
+    RwV3d deltaEc;
     s32 target;
     s32 slot;
     s32 i;
@@ -871,10 +877,10 @@ void func_001c8120(void* work)
                 {
                     continue;
                 }
-                delta.x = candidates[i].x - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.x;
-                delta.y = candidates[i].y - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.y;
-                delta.z = candidates[i].z - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.z;
-                if (RwV3dLength(&delta) < 70.0f)
+                deltaPc.x = candidates[i].x - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.x;
+                deltaPc.y = candidates[i].y - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.y;
+                deltaPc.z = candidates[i].z - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.z;
+                if (RwV3dLength(&deltaPc) < 70.0f)
                 {
                     occupied = true;
                     break;
@@ -888,10 +894,10 @@ void func_001c8120(void* work)
                     {
                         continue;
                     }
-                    delta.x = candidates[i].x - gFldUnitsEc[j].spawnPos.x;
-                    delta.y = candidates[i].y - gFldUnitsEc[j].spawnPos.y;
-                    delta.z = candidates[i].z - gFldUnitsEc[j].spawnPos.z;
-                    if (RwV3dLength(&delta) < 70.0f)
+                    deltaEc.x = candidates[i].x - gFldUnitsEc[j].spawnPos.x;
+                    deltaEc.y = candidates[i].y - gFldUnitsEc[j].spawnPos.y;
+                    deltaEc.z = candidates[i].z - gFldUnitsEc[j].spawnPos.z;
+                    if (RwV3dLength(&deltaEc) < 70.0f)
                     {
                         occupied = true;
                         break;

@@ -458,6 +458,7 @@ extern u32 FUN_00360ed0_evt(u32 param_1);
 extern void FUN_003b9550_evt(u32 param_1,u32 param_2);
 #pragma alias FUN_00388df0_evt FUN_00388df0
 extern u32 FUN_00388df0_evt(u32 param_1,u32 *param_2);
+u64 FUN_003952d0(u64 param_1,int param_2,s16 param_3);
 long FUN_0038ab00(int param_1,u64 param_2);
 short FUN_0036f640(int param_1);
 #pragma alias FUN_0036f640_evt FUN_0036f640
@@ -3612,6 +3613,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
 
           uVar8 = FUN_00386e10((int)param_4);
+          FUN_003952d0(uVar8,param_2[8],3);
 
         }
 
@@ -3625,6 +3627,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
 
           uVar8 = FUN_00386e10((int)param_4);
+          FUN_003952d0(uVar8,param_2[8],3);
 
           FUN_005225a8(0x69d660,param_2[8]);
 
@@ -4526,9 +4529,9 @@ u16 * FUN_00364470(u32 param_1,int param_2)
 
   long lVar3;
 
-  u32 uVar4;
-
   u16 *puVar5;
+
+  u32 uVar4;
 
   u32 uStack_10;
 
@@ -4600,9 +4603,9 @@ u16 * FUN_003645c0(u32 param_1,int param_2)
 
   long lVar3;
 
-  u32 uVar4;
-
   u16 *puVar5;
+
+  u32 uVar4;
 
   u32 uStack_10;
 

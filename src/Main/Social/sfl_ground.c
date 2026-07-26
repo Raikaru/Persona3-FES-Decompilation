@@ -981,12 +981,13 @@ void func_0023b990(void)
     s32 state;
     s32 i;
     s32 j;
-    register const volatile u32* stateTable;
-    register const volatile u32* drawTable;
+    const volatile u32* stateTable;
+    const volatile u32* drawTable;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     stateTable = (const u32*)D_00960090_abs;
+    drawTable = (const u32*)D_0096009C_abs;
     
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
@@ -994,18 +995,22 @@ void func_0023b990(void)
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
 
     state = work[3];
-    if (state >= 1 && state <= 5) {
+    switch (state) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflRes0020e590(0));
-        drawTable = (const u32*)D_0096009C_abs;
-        
         for (i = 0; i < 6; i++) {
             void* vertices = GROUND_PTR(work, 0x110 + i * 0x200);
             ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 1, 2);
             ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 2, 3);
         }
+        break;
     }
 
     if (state == 1) {
@@ -1045,14 +1050,15 @@ void func_0023b990(void)
         }
     }
 
-    if (state == 3 || state == 4) {
+    switch (state) {
+    case 3:
+    case 4:
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflRes0020e690(4));
         for (i = 0; i < 7; i++) {
             for (j = 0; j < 4; j++) {
-                
                 ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
                     GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100 + 0x10),
                     4, 0, 1, 2);
@@ -1061,21 +1067,20 @@ void func_0023b990(void)
                     4, 0, 2, 3);
             }
         }
+        break;
     }
 
-    func_0024a180(GROUND_PTR(work, 0x8780));
-
-    if (state == 3 || state == 4) {
+    switch (state) {
+    case 3:
+    case 4:
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflRes0020e510(3));
-        
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x4610), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x4610), 4, 0, 2, 3);
-
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
@@ -1084,31 +1089,42 @@ void func_0023b990(void)
             GROUND_PTR(work, 0x4710), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x4710), 4, 0, 2, 3);
+        break;
     }
 
     
+    drawTable = (const u32*)D_0096009C_abs;
     if ((work[0] & 8) == 0) {
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x65f0), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x65f0), 4, 0, 2, 3);
+        if ((work[0] & 0x10) == 0) {
+            ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+                GROUND_PTR(work, 0x66f0), 4, 0, 1, 2);
+            ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+                GROUND_PTR(work, 0x66f0), 4, 0, 2, 3);
+        }
     }
-    if ((work[0] & 0x10) == 0) {
+    if ((work[0] & 8) != 0 && (work[0] & 0x10) == 0) {
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x66f0), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x66f0), 4, 0, 2, 3);
     }
+    drawTable = (const u32*)D_0096009C_abs;
     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
         GROUND_PTR(work, 0x67f0), 4, 0, 1, 2);
     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
         GROUND_PTR(work, 0x67f0), 4, 0, 2, 3);
+    drawTable = (const u32*)D_0096009C_abs;
     if ((work[0] & 8) == 0) {
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x68f0), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x68f0), 4, 0, 2, 3);
     }
+    drawTable = (const u32*)D_0096009C_abs;
     if ((work[0] & 0x10) == 0) {
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x69f0), 4, 0, 1, 2);

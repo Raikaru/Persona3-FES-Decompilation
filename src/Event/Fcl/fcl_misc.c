@@ -4,6 +4,21 @@ extern int *piGpffffb98c;
 typedef int (*code)(...);
 /* FUSION_EXACT_PROTOS */
 u32 FUN_003c8b50();
+extern void FUN_003c9240(int *);
+extern u64 FUN_003c9290(int *,u64,u64);
+extern s8 FUN_003c9340(int *);
+extern void FUN_003c9390(int *);
+extern u32 FUN_003c9460(int *);
+#pragma alias fclMisc9240Call FUN_003c9240
+extern void fclMisc9240Call(int *);
+#pragma alias fclMisc9290Call FUN_003c9290
+extern u64 fclMisc9290Call(int *,u64,u64);
+#pragma alias fclMisc9340Call FUN_003c9340
+extern s8 fclMisc9340Call(int *);
+#pragma alias fclMisc9390Call FUN_003c9390
+extern void fclMisc9390Call(int *);
+#pragma alias fclMisc9460DirectCall FUN_003c9460
+extern u32 fclMisc9460DirectCall(int *);
 #include "Kosaka/k_assert.h"
 typedef u32 undefined3;
 typedef u32 int3;
@@ -534,11 +549,9 @@ u32 FUN_003c8b50(u32 param_1,int param_2)
 
   u32 uVar1;
 
-  int iVar2;
 
   u32 uVar3;
 
-  u32 lVar4;
 
   int iVar5;
 
@@ -551,6 +564,7 @@ u32 FUN_003c8b50(u32 param_1,int param_2)
     uVar3 = FUN_003a3da0(*(u32 *)(param_2 + 0x10));
 
     if ((uVar3 & 0x3300) == 0) {
+      fclMisc9240Call((int *)(param_2 + 0x10));
 
 
       if ((*(u32 *)(iVar5 + 0x14) & 1) == 0) {
@@ -609,7 +623,7 @@ u32 FUN_003c8b50(u32 param_1,int param_2)
 
     }
 
-    iVar2 = *(int *)(param_2 + 0x2c);
+    uVar1 = *(int *)(param_2 + 0x2c);
 
     if (param_1 == 0) {
 
@@ -617,26 +631,26 @@ u32 FUN_003c8b50(u32 param_1,int param_2)
 
     }
 
-    if ((*(u32 *)(iVar5 + iVar2 * 0xc + 0x1c) & 2) == 0) {
+    if ((*(u32 *)(iVar5 + uVar1 * 0xc + 0x1c) & 2) == 0) {
 
       return 0;
 
     }
 
     *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) & 0xfffffffe;
+    fclMisc9290Call((int *)(param_2 + 0x10),*(u32 *)(param_2 + 0x2c),
+                    *(u32 *)(param_2 + 0x20));
+    fclMisc9390Call((int *)(param_2 + 0x10));
+    if (fclMisc9340Call((int *)(param_2 + 0x10)) == 0) {
+      fclMisc9460DirectCall((int *)(param_2 + 0x10));
+    }
 
 
   }
 
 
 
-  if (lVar4 == 0) {
-
-
-    *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) | 4;
-
-  }
-
+  *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) | 4;
   return 0;
 
 }
@@ -2520,6 +2534,7 @@ void FUN_003cb1f0(u64 param_1)
     FUN_003ca780(0,0,1.0f,1.0f,0xc1,8,*(u16 *)((int)piVar8 + 0x12) | 0xff00,0x14,0,0,
 
                  piVar8[0x34]);
+    FUN_003cacc0((int)piVar8 + 0x12);
 
     if ((*(u16 *)((int)piVar8 + 0x22) != 0) && (piVar8[0x1b] != 0)) {
 
@@ -3049,6 +3064,8 @@ void FUN_003ccc40(int *param_1)
   }
 
   if (*(int *)(context + 0xd4) != 0) {
+    FUN_003ca780(0,0,1.0f,1.0f,0xaa,8,*(s16 *)(context + 0x12) | 0xff00,0,0,0,
+                 *(int *)(context + 0xd4));
     FUN_003ca780(0,0,1.0f,1.0f,0x178,8,*(s16 *)(context + 0x12) | 0xff00,1,0,0,
                  *(int *)(context + 0xd4));
   }
@@ -3125,6 +3142,8 @@ void FUN_003cd0b0(int *param_1)
   }
 
   if (*(int *)(context + 0xd4) != 0) {
+    FUN_003ca780(0,0,1.0f,1.0f,0xaa,8,*(s16 *)(context + 0x12) | 0xff00,0,0,0,
+                 *(int *)(context + 0xd4));
     FUN_003ca780(0,0,1.0f,1.0f,0x178,8,*(s16 *)(context + 0x12) | 0xff00,1,0,0,
                  *(int *)(context + 0xd4));
   }
@@ -3212,6 +3231,8 @@ void FUN_003cd5a0(int *param_1)
   }
 
   if (*(int *)(context + 0xd4) != 0) {
+    FUN_003ca780(0,0,1.0f,1.0f,0xaa,8,*(s16 *)(context + 0x12) | 0xff00,0,0,0,
+                 *(int *)(context + 0xd4));
     FUN_003ca780(0,0,1.0f,1.0f,0x178,8,*(s16 *)(context + 0x12) | 0xff00,1,0,0,
                  *(int *)(context + 0xd4));
   }

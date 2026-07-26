@@ -503,7 +503,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
             {
                 mainCamera = kwlnGetMainCamera();
                 mainFrame = mainCamera->object.object.parent;
-                if (mainFrame->object.parent == work->parentFrame)
+                if (((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent == work->parentFrame)
                 {
                     func_004cb590(mainFrame);
                     func_004cb420(work->parentFrame, work->frame);
@@ -514,7 +514,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
             {
                 mainCamera = kwlnGetMainCamera();
                 mainFrame = mainCamera->object.object.parent;
-                if (mainFrame->object.parent != NULL)
+                if (((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent != NULL)
                 {
                     func_004cb590(mainFrame);
                 }
@@ -563,7 +563,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
             if (moved != 0 && work->type == 2)
             {
                 mainCamera = kwlnGetMainCamera();
-                FUN_001a1210(mainCamera, &mainCamera->viewMatrix.at,
+                FUN_001a1210(kwlnGetMainCamera(), &mainCamera->viewMatrix.at,
                              K_FldCamera_GetPos(cameraTask), NULL);
             }
             break;
@@ -572,7 +572,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
             K_FldFrame_CtlCopyPos(&target, work->playerResrc->collisCtlTask);
             nearest = FUN_001d5140(cameraTask);
             curve = *(void**)((u8*)K_Field_Get() + 0x116c);
-            if (curve != NULL && *(void**)((u8*)curve + 0xa1c) != NULL)
+            if (curve != NULL && *(void**)((u8*)K_Field_Get() + 0x116c) != NULL)
             {
                 previous = nearest - 1;
                 if (previous < 0)
