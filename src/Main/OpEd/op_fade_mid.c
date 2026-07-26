@@ -567,8 +567,8 @@ void func_002760f0(void)
     f32 rect[4];
     u8 color[4];
     f32 alpha;
-    f32 alphaScaled;
     f32 offset;
+    f32 alphaScaled;
     u32 resource;
     u32 baseResource;
     K_ASSERT(gOpWorkC8 != NULL, 0x3b);
