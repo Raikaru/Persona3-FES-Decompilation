@@ -16694,6 +16694,7 @@ u64 FUN_00454620(char param_1)
 #define fStack_8c afStack_90[1]
 #define fStack_88 afStack_90[2]
   u8 auStack_80 [16];
+  u8 auStack_70 [16];
   float afStack_70 [4];
   
 #define fStack_78 afStack_70[0]
