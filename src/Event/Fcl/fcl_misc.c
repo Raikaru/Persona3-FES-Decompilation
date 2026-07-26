@@ -414,7 +414,8 @@ u64 FUN_003c8810(int *param_1)
   while (item != 0) {
     node = *(int **)((u8 *)item + 0x14);
     if (*(int *)((u8 *)node + 8) == 0) {
-      item = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
+      next = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
+      item = next;
     }
     else {
       item = *(int **)((u8 *)item + 0x10);
@@ -424,7 +425,8 @@ u64 FUN_003c8810(int *param_1)
   while (item != 0) {
     node = *(int **)((u8 *)item + 0x14);
     if ((*(u32 *)((u8 *)node + 4) & 2) == 0) {
-      item = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
+      next = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
+      item = next;
     }
     else {
       item = *(int **)((u8 *)item + 0x10);

@@ -183,11 +183,7 @@ float cosf(float x)
 // FUN_0052e788 NONMATCHING
 float fabsf(float x)
 {
-    if (x < 0.0f)
-    {
-        return -x;
-    }
-    return x;
+    return __builtin_fabsf(x);
 }
 #pragma optimization_level 2
 
