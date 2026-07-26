@@ -9942,7 +9942,7 @@ void func_002eec60(void)
 {
   typedef struct {
     u32 data[6];
-    u16 ids[4];
+    s16 ids[4];
     RwV3d position;
   } VoicePositionWork;
   typedef struct {
