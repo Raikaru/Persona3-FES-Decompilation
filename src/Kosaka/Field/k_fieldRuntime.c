@@ -76,6 +76,7 @@ extern u8 DAT_007e0960[];
 extern u8 D_00684370[];
 extern char D_00684330[];
 extern char D_00684380[];
+extern void* func_001a4cd0(s32 parent);
 struct RuntimeListNode
 {
     u32 flags;
@@ -174,6 +175,7 @@ extern void* func_001021c0(const char* path, u32* size);
 typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
 typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
 typedef struct FieldArchiveRequest FieldArchiveRequest;
+extern FieldRuntimeTaskNode* func_001e29e0(u32 resourceId);
 
 struct FieldRuntimeResourceNode
 {

@@ -3649,51 +3649,37 @@ u64 FUN_0041b810(int param_1)
 
 
 u64 FUN_0041b950(int param_1)
-
-
-
 {
-
   char cVar1;
-
   s16 *puVar2;
-
   int iVar3;
-
   int iVar4;
 
-  
-
   for (iVar4 = *(int *)(**(int **)(param_1 + 0x3c) + 0xc); iVar4 != 0;
-
       iVar4 = *(int *)(iVar4 + 0x10)) {
-
     puVar2 = *(s16 **)(iVar4 + 0x14);
-
     if (((*puVar2 & 4) != 0) && ((*puVar2 & 1) != 0)) {
-
       cVar1 = (char)puVar2[1];
-
-      if (cVar1 == '\x02') {
-
-        FUN_0041bf80(*(u32 **)(puVar2 + 4));
-      }
-      else if (cVar1 == '\x03') {
+      switch (cVar1) {
+      case 1:
+        FUN_0034fdb0(*(u32 *)(puVar2 + 4));
+        if (*(int *)(puVar2 + 2) != 0) {
+          iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4));
+          if (*(int *)(puVar2 + 2) <= iVar3) {
+            *puVar2 = *puVar2 & 0xfffe;
+          }
+        }
+        break;
+      case 3:
         FUN_00317a20(*(u32 *)(puVar2 + 4));
+        break;
+      case 2:
+        FUN_0041bf80(*(u32 **)(puVar2 + 4));
+        break;
       }
-      else if (((cVar1 == '\x01') &&
-               (FUN_0034fdb0(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) != 0)) &&
-              (iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) <= iVar3)) {
-        *puVar2 = *puVar2 & 0xfffe;
-      }
-
-
     }
-
   }
-
   return 0;
-
 }
 
 // FUN_0041BA60 MATCHING

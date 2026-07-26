@@ -6878,7 +6878,13 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
 
   
 
-  if (*(int *)(param_1 + 0x3f0) == 0) {
+  if (*(int *)(param_1 + 0x3f0) != 0) {
+
+    lVar4 = func_00315090((RwMatrix*)auStack_40,(u16 *)*(int *)(param_1 + 0x3f0),param_2 & 0xffff,
+                         *(int *)(param_1 + 0xdc));
+
+  }
+  else {
 
     lVar4 = func_001a69a0(*(u32 *)(param_1 + 0xdc),0x69abb8,param_2);
 
@@ -6887,7 +6893,6 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
       lVar4 = 0;
 
     }
-
     else {
 
       puVar3 = (u32 *)func_004cb2f0(lVar4);
@@ -6917,13 +6922,6 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
       lVar4 = 1;
 
     }
-
-  }
-
-  else {
-
-    lVar4 = func_00315090((RwMatrix*)auStack_40,(u16 *)*(int *)(param_1 + 0x3f0),param_2 & 0xffff,
-                         *(int *)(param_1 + 0xdc));
 
   }
 
