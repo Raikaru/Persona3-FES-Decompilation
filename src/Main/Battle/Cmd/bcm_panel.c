@@ -420,12 +420,12 @@ static void bcm_panel_refresh_records(void)
 // FUN_002230e0 NONMATCHING
 void FUN_002230e0(void)
 {
-    s32 j;
-    s32 i;
-    u32 table0;
-    u8* record;
-    u8* records;
     u8* work;
+    u8* records;
+    u32 table0;
+    s32 i;
+    u8* record;
+    s32 j;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;

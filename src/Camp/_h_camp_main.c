@@ -1720,8 +1720,8 @@ void FUN_001365b0(KwlnTask* task)
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
-    CampCommuRootWork* work;
     KwlnTask* task;
+    CampCommuRootWork* work;
 
     work = (CampCommuRootWork*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
     if (work == NULL) {
