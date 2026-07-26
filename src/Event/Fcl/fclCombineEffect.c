@@ -1160,6 +1160,8 @@ u8 FUN_00418390(int param_1,int *param_2)
 
   int iVar6;
   int iVar7;
+  long lVar8;
+  int iVar9;
 
   
 
@@ -1174,7 +1176,7 @@ u8 FUN_00418390(int param_1,int *param_2)
     FUN_0034fd10(*(u32 *)(puVar4 + 4));
     break;
   case '\x02':
-    if ((piVar5[3] & 1U) != 0) {
+    if ((piVar5[3] & 0x200U) != 0) {
       iVar7 = param_2[3];
       iVar7 = (iVar7 << 8) - iVar7;
       iVar7 = iVar7 / piVar5[2];
@@ -1184,13 +1186,13 @@ u8 FUN_00418390(int param_1,int *param_2)
     break;
   case '@':
     if (*(char *)((int)piVar5 + 5) == '\x03') {
-      if ((piVar5[3] & 1U) == 0) {
+      if ((piVar5[3] & 1U) != 0) {
+        FUN_003cde00(*(u32 *)(param_1 + 0x18),1);
+      }
+      else {
         if ((piVar5[4] & 1U) != 0) {
           FUN_003cde70(*(u32 *)(param_1 + 0x18),1);
         }
-      }
-      else {
-        FUN_003cde00(*(u32 *)(param_1 + 0x18),1);
       }
     }
     break;
@@ -1200,9 +1202,11 @@ u8 FUN_00418390(int param_1,int *param_2)
 
   uVar3 = *puVar4;
 
-  *puVar4 = uVar3 | uVar2;
-
-  *puVar4 = (uVar3 | uVar2) & ~(u16)piVar5[4];
+  iVar9 = uVar3 | uVar2;
+  *puVar4 = iVar9;
+  lVar8 = (long)(~piVar5[4]);
+  lVar8 = lVar8 & (long)iVar9;
+  *puVar4 = lVar8;
 
   iVar6 = *(int *)(*(int *)(param_1 + 0x3c) + 8) - *piVar5;
 

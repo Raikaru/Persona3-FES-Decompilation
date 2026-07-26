@@ -1828,73 +1828,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0xb1;
-
-        }
-
-        return 0xb2;
+        uVar3 = uVar3 >= 0x32 ? 0xb1 : 0xb2;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x10f;
-
-        }
-
-        return 0x110;
+        uVar3 = uVar3 >= 0x32 ? 0x10f : 0x110;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x167;
-
-        }
-
-        return 0x168;
+        uVar3 = uVar3 >= 0x32 ? 0x167 : 0x168;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x1b0;
-
-        }
-
-        return 0x1b1;
+        uVar3 = uVar3 >= 0x32 ? 0x1b0 : 0x1b1;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x1f9;
-
-        }
-
-        return 0x1fa;
+        uVar3 = uVar3 >= 0x32 ? 0x1f9 : 0x1fa;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x242;
-
-        }
-
-        return 0x243;
+        uVar3 = uVar3 >= 0x32 ? 0x242 : 0x243;
+        return uVar3;
 
       case 9:
 
@@ -1904,25 +1874,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (0x31 < uVar3) {
-
-            return 0x47e;
-
-          }
-
-          return 0x47f;
+          uVar3 = uVar3 >= 0x32 ? 0x47e : 0x47f;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x283;
-
-        }
-
-        return 0x284;
+        uVar3 = uVar3 >= 0x32 ? 0x283 : 0x284;
+        return uVar3;
 
       case 10:
 
@@ -1940,73 +1900,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0xb4;
-
-        }
-
-        return 0xb3;
+        uVar3 = uVar3 >= 0x32 ? 0xb3 : 0xb4;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x112;
-
-        }
-
-        return 0x111;
+        uVar3 = uVar3 >= 0x32 ? 0x111 : 0x112;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x16a;
-
-        }
-
-        return 0x169;
+        uVar3 = uVar3 >= 0x32 ? 0x169 : 0x16a;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1b3;
-
-        }
-
-        return 0x1b2;
+        uVar3 = uVar3 >= 0x32 ? 0x1b2 : 0x1b3;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1fc;
-
-        }
-
-        return 0x1fb;
+        uVar3 = uVar3 >= 0x32 ? 0x1fb : 0x1fc;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x245;
-
-        }
-
-        return 0x244;
+        uVar3 = uVar3 >= 0x32 ? 0x244 : 0x245;
+        return uVar3;
 
       case 9:
 
@@ -2016,25 +1946,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x481;
-
-          }
-
-          return 0x480;
+          uVar3 = uVar3 >= 0x32 ? 0x480 : 0x481;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x286;
-
-        }
-
-        return 0x285;
+        uVar3 = uVar3 >= 0x32 ? 0x285 : 0x286;
+        return uVar3;
 
       case 10:
 
@@ -2052,73 +1972,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0xb6;
-
-        }
-
-        return 0xb5;
+        uVar3 = uVar3 >= 0x32 ? 0xb5 : 0xb6;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x114;
-
-        }
-
-        return 0x113;
+        uVar3 = uVar3 >= 0x32 ? 0x113 : 0x114;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x16c;
-
-        }
-
-        return 0x16b;
+        uVar3 = uVar3 >= 0x32 ? 0x16b : 0x16c;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1b5;
-
-        }
-
-        return 0x1b4;
+        uVar3 = uVar3 >= 0x32 ? 0x1b4 : 0x1b5;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1fe;
-
-        }
-
-        return 0x1fd;
+        uVar3 = uVar3 >= 0x32 ? 0x1fd : 0x1fe;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x247;
-
-        }
-
-        return 0x246;
+        uVar3 = uVar3 >= 0x32 ? 0x246 : 0x247;
+        return uVar3;
 
       case 9:
 
@@ -2128,25 +2018,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x483;
-
-          }
-
-          return 0x482;
+          uVar3 = uVar3 >= 0x32 ? 0x482 : 0x483;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x288;
-
-        }
-
-        return 0x287;
+        uVar3 = uVar3 >= 0x32 ? 0x287 : 0x288;
+        return uVar3;
 
       case 10:
 
@@ -2164,73 +2044,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0xb8;
-
-        }
-
-        return 0xb7;
+        uVar3 = uVar3 >= 0x32 ? 0xb7 : 0xb8;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x116;
-
-        }
-
-        return 0x115;
+        uVar3 = uVar3 >= 0x32 ? 0x115 : 0x116;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x16e;
-
-        }
-
-        return 0x16d;
+        uVar3 = uVar3 >= 0x32 ? 0x16d : 0x16e;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1b7;
-
-        }
-
-        return 0x1b6;
+        uVar3 = uVar3 >= 0x32 ? 0x1b6 : 0x1b7;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x200;
-
-        }
-
-        return 0x1ff;
+        uVar3 = uVar3 >= 0x32 ? 0x1ff : 0x200;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x249;
-
-        }
-
-        return 0x248;
+        uVar3 = uVar3 >= 0x32 ? 0x248 : 0x249;
+        return uVar3;
 
       case 9:
 
@@ -2240,25 +2090,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x485;
-
-          }
-
-          return 0x484;
+          uVar3 = uVar3 >= 0x32 ? 0x484 : 0x485;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x28a;
-
-        }
-
-        return 0x289;
+        uVar3 = uVar3 >= 0x32 ? 0x289 : 0x28a;
+        return uVar3;
 
       case 10:
 
@@ -2276,73 +2116,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0xba;
-
-        }
-
-        return 0xb9;
+        uVar3 = uVar3 >= 0x32 ? 0xb9 : 0xba;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x118;
-
-        }
-
-        return 0x117;
+        uVar3 = uVar3 >= 0x32 ? 0x117 : 0x118;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x170;
-
-        }
-
-        return 0x16f;
+        uVar3 = uVar3 >= 0x32 ? 0x16f : 0x170;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1b9;
-
-        }
-
-        return 0x1b8;
+        uVar3 = uVar3 >= 0x32 ? 0x1b8 : 0x1b9;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x202;
-
-        }
-
-        return 0x201;
+        uVar3 = uVar3 >= 0x32 ? 0x201 : 0x202;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x24b;
-
-        }
-
-        return 0x24a;
+        uVar3 = uVar3 >= 0x32 ? 0x24a : 0x24b;
+        return uVar3;
 
       case 9:
 
@@ -2352,25 +2162,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x487;
-
-          }
-
-          return 0x486;
+          uVar3 = uVar3 >= 0x32 ? 0x486 : 0x487;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x28c;
-
-        }
-
-        return 0x28b;
+        uVar3 = uVar3 >= 0x32 ? 0x28b : 0x28c;
+        return uVar3;
 
       case 10:
 
@@ -2388,73 +2188,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0xbc;
-
-        }
-
-        return 0xbb;
+        uVar3 = uVar3 >= 0x32 ? 0xbb : 0xbc;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x11a;
-
-        }
-
-        return 0x119;
+        uVar3 = uVar3 >= 0x32 ? 0x119 : 0x11a;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x172;
-
-        }
-
-        return 0x171;
+        uVar3 = uVar3 >= 0x32 ? 0x171 : 0x172;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1bb;
-
-        }
-
-        return 0x1ba;
+        uVar3 = uVar3 >= 0x32 ? 0x1ba : 0x1bb;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x204;
-
-        }
-
-        return 0x203;
+        uVar3 = uVar3 >= 0x32 ? 0x203 : 0x204;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x24d;
-
-        }
-
-        return 0x24c;
+        uVar3 = uVar3 >= 0x32 ? 0x24c : 0x24d;
+        return uVar3;
 
       case 9:
 
@@ -2464,25 +2234,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x489;
-
-          }
-
-          return 0x488;
+          uVar3 = uVar3 >= 0x32 ? 0x488 : 0x489;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x28e;
-
-        }
-
-        return 0x28d;
+        uVar3 = uVar3 >= 0x32 ? 0x28d : 0x28e;
+        return uVar3;
 
       case 10:
 
@@ -2500,73 +2260,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0xbe;
-
-        }
-
-        return 0xbd;
+        uVar3 = uVar3 >= 0x32 ? 0xbd : 0xbe;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x11c;
-
-        }
-
-        return 0x11b;
+        uVar3 = uVar3 >= 0x32 ? 0x11b : 0x11c;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x174;
-
-        }
-
-        return 0x173;
+        uVar3 = uVar3 >= 0x32 ? 0x173 : 0x174;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x1bd;
-
-        }
-
-        return 0x1bc;
+        uVar3 = uVar3 >= 0x32 ? 0x1bc : 0x1bd;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x206;
-
-        }
-
-        return 0x205;
+        uVar3 = uVar3 >= 0x32 ? 0x205 : 0x206;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x24f;
-
-        }
-
-        return 0x24e;
+        uVar3 = uVar3 >= 0x32 ? 0x24e : 0x24f;
+        return uVar3;
 
       case 9:
 
@@ -2576,25 +2306,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x489;
-
-          }
-
-          return 0x488;
+          uVar3 = uVar3 >= 0x32 ? 0x488 : 0x489;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (uVar3 < 0x32) {
-
-          return 0x290;
-
-        }
-
-        return 0x28f;
+        uVar3 = uVar3 >= 0x32 ? 0x28f : 0x290;
+        return uVar3;
 
       case 10:
 
@@ -2616,73 +2336,43 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0xc0;
-
-          }
-
-          return 0xbf;
+          uVar3 = uVar3 >= 0x32 ? 0xbf : 0xc0;
+          return uVar3;
 
         case 3:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x11e;
-
-          }
-
-          return 0x11d;
+          uVar3 = uVar3 >= 0x32 ? 0x11d : 0x11e;
+          return uVar3;
 
         case 4:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x176;
-
-          }
-
-          return 0x175;
+          uVar3 = uVar3 >= 0x32 ? 0x175 : 0x176;
+          return uVar3;
 
         case 5:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x1bf;
-
-          }
-
-          return 0x1be;
+          uVar3 = uVar3 >= 0x32 ? 0x1be : 0x1bf;
+          return uVar3;
 
         case 7:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x208;
-
-          }
-
-          return 0x207;
+          uVar3 = uVar3 >= 0x32 ? 0x207 : 0x208;
+          return uVar3;
 
         case 8:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x251;
-
-          }
-
-          return 0x250;
+          uVar3 = uVar3 >= 0x32 ? 0x250 : 0x251;
+          return uVar3;
 
         case 9:
 
@@ -2692,25 +2382,15 @@ u32 FUN_002defe0(int param_1)
 
             uVar3 = FUN_002ffbc0(100);
 
-            if (uVar3 < 0x32) {
-
-              return 0x48b;
-
-            }
-
-            return 0x48a;
+            uVar3 = uVar3 >= 0x32 ? 0x48a : 0x48b;
+            return uVar3;
 
           }
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x292;
-
-          }
-
-          return 0x291;
+          uVar3 = uVar3 >= 0x32 ? 0x291 : 0x292;
+          return uVar3;
 
         case 10:
 
@@ -2728,73 +2408,43 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0xc4;
-
-          }
-
-          return 0xc3;
+          uVar3 = uVar3 >= 0x32 ? 0xc3 : 0xc4;
+          return uVar3;
 
         case 3:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x122;
-
-          }
-
-          return 0x121;
+          uVar3 = uVar3 >= 0x32 ? 0x121 : 0x122;
+          return uVar3;
 
         case 4:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x17a;
-
-          }
-
-          return 0x179;
+          uVar3 = uVar3 >= 0x32 ? 0x179 : 0x17a;
+          return uVar3;
 
         case 5:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x1c3;
-
-          }
-
-          return 0x1c2;
+          uVar3 = uVar3 >= 0x32 ? 0x1c2 : 0x1c3;
+          return uVar3;
 
         case 7:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x20c;
-
-          }
-
-          return 0x20b;
+          uVar3 = uVar3 >= 0x32 ? 0x20b : 0x20c;
+          return uVar3;
 
         case 8:
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x255;
-
-          }
-
-          return 0x254;
+          uVar3 = uVar3 >= 0x32 ? 0x254 : 0x255;
+          return uVar3;
 
         case 9:
 
@@ -2804,25 +2454,15 @@ u32 FUN_002defe0(int param_1)
 
             uVar3 = FUN_002ffbc0(100);
 
-            if (uVar3 < 0x32) {
-
-              return 0x481;
-
-            }
-
-            return 0x480;
+            uVar3 = uVar3 >= 0x32 ? 0x480 : 0x481;
+            return uVar3;
 
           }
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (uVar3 < 0x32) {
-
-            return 0x296;
-
-          }
-
-          return 0x295;
+          uVar3 = uVar3 >= 0x32 ? 0x295 : 0x296;
+          return uVar3;
 
         case 10:
 
@@ -2842,73 +2482,43 @@ u32 FUN_002defe0(int param_1)
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0xc1;
-
-        }
-
-        return 0xc2;
+        uVar3 = uVar3 >= 0x32 ? 0xc1 : 0xc2;
+        return uVar3;
 
       case 3:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x11f;
-
-        }
-
-        return 0x120;
+        uVar3 = uVar3 >= 0x32 ? 0x11f : 0x120;
+        return uVar3;
 
       case 4:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x177;
-
-        }
-
-        return 0x178;
+        uVar3 = uVar3 >= 0x32 ? 0x177 : 0x178;
+        return uVar3;
 
       case 5:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x1c0;
-
-        }
-
-        return 0x1c1;
+        uVar3 = uVar3 >= 0x32 ? 0x1c0 : 0x1c1;
+        return uVar3;
 
       case 7:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x209;
-
-        }
-
-        return 0x20a;
+        uVar3 = uVar3 >= 0x32 ? 0x209 : 0x20a;
+        return uVar3;
 
       case 8:
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x252;
-
-        }
-
-        return 0x253;
+        uVar3 = uVar3 >= 0x32 ? 0x252 : 0x253;
+        return uVar3;
 
       case 9:
 
@@ -2918,25 +2528,15 @@ u32 FUN_002defe0(int param_1)
 
           uVar3 = FUN_002ffbc0(100);
 
-          if (0x31 < uVar3) {
-
-            return 0x48c;
-
-          }
-
-          return 0x48d;
+          uVar3 = uVar3 >= 0x32 ? 0x48c : 0x48d;
+          return uVar3;
 
         }
 
         uVar3 = FUN_002ffbc0(100);
 
-        if (0x31 < uVar3) {
-
-          return 0x293;
-
-        }
-
-        return 0x294;
+        uVar3 = uVar3 >= 0x32 ? 0x293 : 0x294;
+        return uVar3;
 
       case 10:
 
