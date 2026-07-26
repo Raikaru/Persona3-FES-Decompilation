@@ -15451,7 +15451,8 @@ void FUN_00381110(int param_1,int param_2,int param_3,int param_4)
   }
 
   if (param_3 == 1) goto FUN_00381110_case1;
-  if (param_3 != 0) goto FUN_00381110_done;
+  if (param_3 == 0) goto FUN_00381110_case0;
+  goto FUN_00381110_done;
 
 FUN_00381110_case0:
   iVar2 = param_2 * 0xc;

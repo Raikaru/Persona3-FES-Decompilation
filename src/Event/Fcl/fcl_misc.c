@@ -1064,10 +1064,12 @@ void FUN_003c9390(int *param_1)
   if (mode == 2) {
     goto mode2;
   }
-  if (mode == 1) {
+  switch (mode) {
+  case 1:
     goto mode1;
+  default:
+    goto done;
   }
-  goto done;
 mode1:
   if (fclMiscA2580Call(state) < 0) {
     *(u8 *)(param_1 + 1) = 2;
