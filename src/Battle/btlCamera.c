@@ -8780,9 +8780,9 @@ void func_002ac6e0(BtlCamera* camera)
     }
 }
 
-/* Retail 0x2AC920 recovery: the frame carries the camera pose, target pose,
- * six world-space vectors, four 2-D helper pairs, and the scalar intermediates
- * consumed by the draw setup at offsets 0x4c0-0x61c. */
+/* Retail 0x2AC920 recovery: frame slots 0x20-0x158 hold the camera/target
+ * poses, six world vectors, four 2-D helper pairs, and scalar intermediates.
+ * Restored retail calls are at 0x4d8, 0x514, 0x52c, 0x604, 0x61c, and 0x62c. */
 typedef struct BtlCameraC920Pose
 {
     RwV3d pos;
