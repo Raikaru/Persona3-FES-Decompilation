@@ -1118,10 +1118,15 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         record = itemRecord;
         if (record == NULL) {
             for (i = 0; i < 5; i++) {
-                frame = i + 1 > 0 ? 0xa1 : 0xa2;
-                campMenuDrawSprite(parent, *labels, frame, item->alpha,
-                    item->x + 499.0f - 119.0f + (f32)(i * 0x17),
-                    item->y + 340.0f - 333.0f, item->scale);
+                if (i + 1 > 0) {
+                    campMenuDrawSprite(parent, *labels, 0xa1, item->alpha,
+                        item->x + 499.0f - 119.0f + (f32)(i * 0x17),
+                        item->y + 340.0f - 333.0f, item->scale);
+                } else {
+                    campMenuDrawSprite(parent, *labels, 0xa2, item->alpha,
+                        item->x + 499.0f - 119.0f + (f32)(i * 0x17),
+                        item->y + 340.0f - 333.0f, item->scale);
+                }
             }
         }
         dataId = *(u16*)record;
