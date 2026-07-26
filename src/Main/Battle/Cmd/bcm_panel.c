@@ -602,10 +602,13 @@ alpha_done:
         ;
     }
     if (*(u32*)base & 4) {
+        handle = (u32)*(void**)(selRecord + 8);
+        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         frame = (void*)FUN_0021cca0(table0, 0x2f);
         FUN_0021d3b0(records + 0x18f0, frame);
-        layout[0] = 178.0f + *(f32*)(pos + 0);
-        layout[1] = 55.0f + *(f32*)(pos + 4);
+        layout[0] = 112.0f + *(f32*)(pos + 0) - ((f32)halfWidth - 70.5f);
+        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
         layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
         layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
         FUN_0021d8e0(records + 0x18f0, layout);

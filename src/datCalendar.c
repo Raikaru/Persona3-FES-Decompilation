@@ -940,7 +940,8 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
     else
     {
         H_Dbprt_FmtLog("calendar: siteibi event %d", event->scrPrcdIdx);
-        actionTask = func_001ba5f0(clndTask, 0, 0, 0, 0, 0, 0, 0);
+        actionTask = func_001ba5f0(clndTask, 0, 0, 0, 0, 0, 0, 0,
+                                   0, 0, 0, 0, 0, 0);
         if (datGetTime() == CALENDAR_TIME_NULL)
         {
             func_00184c80(work->confirmationTask, true);
@@ -960,17 +961,42 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
 // FUN_0017DB40 NONMATCHING
 u32 func_0017db40(s16 daysSinceApr5)
 {
-    s32 month;
-    s32 day;
-    s32 i;
+    s16 month;
+    s16 day;
+    s16 days;
+    s16 i;
 
-    if (clndGetWeekDay(daysSinceApr5) == CALENDAR_DAY_SUNDAY)
+    if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX ==
+        CALENDAR_DAY_SUNDAY)
     {
         return true;
     }
 
-    month = clndGetMonthFromDaysSinceApr5(daysSinceApr5);
-    day = clndGetDayOfMonthFromDaysSinceApr5(daysSinceApr5);
+    month = CALENDAR_MONTH_APRIL;
+    days = daysSinceApr5 + 4;
+    while (days >= ((const s16*)gNumOfDaysInMonths_abs)[month - 1])
+    {
+        days -= ((const s16*)gNumOfDaysInMonths_abs)[month - 1];
+        month++;
+        if (month > CALENDAR_MONTH_DECEMBER)
+        {
+            month = CALENDAR_MONTH_JANUARY;
+        }
+    }
+
+    day = daysSinceApr5 + 4;
+    i = CALENDAR_MONTH_APRIL;
+    while (day >= gNumOfDaysInMonths[i - 1])
+    {
+        day -= gNumOfDaysInMonths[i - 1];
+        i++;
+        if (i > CALENDAR_MONTH_DECEMBER)
+        {
+            i = CALENDAR_MONTH_JANUARY;
+        }
+    }
+    day++;
+
     for (i = 0; sHolidays[i].month != -1; i++)
     {
         if (sHolidays[i].month == month && sHolidays[i].day == day)
@@ -978,7 +1004,6 @@ u32 func_0017db40(s16 daysSinceApr5)
             return true;
         }
     }
-
     return false;
 }
 
@@ -3193,71 +3218,52 @@ void func_00183f60(void* resource,
                    f32 baseY)
 {
     s32 days;
-    s32 frame;
-    f32 x;
-    f32 y;
 
     days = clndGetDaysSinceStartFromDate(month, day);
-    x = baseX;
-    y = baseY;
     if (func_0017db40(days) == 1 && time >= 2 && time <= 5)
     {
         func_001159f0(NULL, resource, 0x36, alpha & 0xff,
-                      x + 525.0f, y + 29.0f, 50.0f);
+                      baseX + 525.0f, baseY + 29.0f, 50.0f);
         return;
     }
 
-    frame = -1;
     switch (time)
     {
         case 0:
         case 7:
-            frame = 0x35;
-            x += 491.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x35, alpha & 0xff,
+                          baseX + 491.0f, baseY + 29.0f, 50.0f);
+            return;
         case 1:
-            frame = 0x2f;
-            x += 452.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x2f, alpha & 0xff,
+                          baseX + 452.0f, baseY + 29.0f, 50.0f);
+            return;
         case 2:
-            frame = 0x30;
-            x += 524.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x30, alpha & 0xff,
+                          baseX + 524.0f, baseY + 29.0f, 50.0f);
+            return;
         case 3:
-            frame = 0x31;
-            x += 495.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x31, alpha & 0xff,
+                          baseX + 495.0f, baseY + 29.0f, 50.0f);
+            return;
         case 4:
-            frame = 0x32;
-            x += 499.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x32, alpha & 0xff,
+                          baseX + 499.0f, baseY + 29.0f, 50.0f);
+            return;
         case 5:
-            frame = 0x33;
-            x += 467.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x33, alpha & 0xff,
+                          baseX + 467.0f, baseY + 29.0f, 50.0f);
+            return;
         case 6:
-            frame = 0x34;
-            x += 528.0f;
-            y += 29.0f;
-            break;
+            func_001159f0(NULL, resource, 0x34, alpha & 0xff,
+                          baseX + 528.0f, baseY + 29.0f, 50.0f);
+            return;
         case 8:
-            frame = 0x37;
-            x += 500.0f;
-            y += 26.0f;
-            break;
+            func_001159f0(NULL, resource, 0x37, alpha & 0xff,
+                          baseX + 500.0f, baseY + 26.0f, 50.0f);
+            return;
         default:
-            break;
-    }
-    if (frame >= 0)
-    {
-        func_001159f0(NULL, resource, frame, alpha & 0xff,
-                      x, y, 50.0f);
+            return;
     }
 }
 
@@ -3350,6 +3356,9 @@ void func_001842c0(KwlnTask* task,
         func_00115cd0(NULL, resource, moonOffset / 10 + 0x23, 0,
                       red, green, blue,
                       x + 554.0f, 67.0f, 50.0f);
+        func_00115cd0(NULL, resource, moonOffset % 10 + 0x23, 0,
+                      red, green, blue,
+                      x + 571.0f, 67.0f, 50.0f);
     }
     else
     {
@@ -3366,10 +3375,10 @@ void func_001842c0(KwlnTask* task,
         D_00960090(0xe, 0);
         RpSkyRenderStateSet(2, (void*)0x48);
         RpSkyRenderStateSet(3, (void*)0x71801);
+        func_00115cd0(NULL, resource, moonOffset % 10 + 0x23, 0,
+                      red, green, blue,
+                      x + 571.0f, 67.0f, 50.0f);
     }
-    func_00115cd0(NULL, resource, moonOffset % 10 + 0x23, 0,
-                  red, green, blue,
-                  x + 571.0f, 67.0f, 50.0f);
 }
 
 extern void* DAT_007cdff0;

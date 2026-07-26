@@ -7940,7 +7940,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   float fStack_78;
   GhidraPair uStack_70;
   float fStack_68;
-  float mid[3];
+  float mid[4];
   float centerB[3];
   float target[3];
   float centerA[3];
@@ -8160,46 +8160,48 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       uVar16 = 0x40700000;
     }
     else {
-      sVar1 = *(short *)(*(int *)(iVar9 + 0xe0) + 0x6e);
-      if (sVar1 == 0x38) {
-        mid[1] = 1000.0f;
-        fStack_cc = 500.0f;
-        uVar16 = 0x3fc00000;
-        bVar5 = 1;
-        *(undefined4 *)(iVar9 + 0xdc) = 4;
-      }
-      else if (sVar1 == 0x2c) {
-        mid[1] = 800.0f;
-        fStack_cc = 500.0f;
-        uVar16 = 0x40000000;
-        bVar5 = 1;
-        *(undefined4 *)(iVar9 + 0xdc) = 0xc;
-      }
-      else if (sVar1 == 0x27) {
-        mid[1] = 600.0f;
-        fStack_cc = 200.0f;
-        bVar5 = 0;
-        *(undefined4 *)(iVar9 + 0xdc) = 8;
-        uVar16 = uGpffff80ac;
-      }
-      else if (sVar1 == 0x26) {
+      switch (sVar1) {
+      case 0x26:
         mid[1] = 500.0f;
         fStack_cc = 200.0f;
         uVar16 = 0x3fa00000;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
-      }
-      else {
+        break;
+      case 0x27:
+        mid[1] = 600.0f;
+        fStack_cc = 200.0f;
+        bVar5 = 0;
+        *(undefined4 *)(iVar9 + 0xdc) = 8;
+        uVar16 = uGpffff80ac;
+        break;
+      case 0x2c:
+        mid[1] = 800.0f;
+        fStack_cc = 500.0f;
+        uVar16 = 0x40000000;
+        bVar5 = 1;
+        *(undefined4 *)(iVar9 + 0xdc) = 0xc;
+        break;
+      case 0x38:
+        mid[1] = 1000.0f;
+        fStack_cc = 500.0f;
+        uVar16 = 0x3fc00000;
+        bVar5 = 1;
+        *(undefined4 *)(iVar9 + 0xdc) = 4;
+        break;
+      default:
         mid[1] = 500.0f;
         fStack_cc = 200.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0;
         uVar16 = uGpffff809c;
+        break;
       }
       param_2 = 0;
       fStack_d0 = fStack_b4;
       fStack_c8 = fStack_ac;
-      FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,(const void*)mid,(const void*)&D_00697880);
+      FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,
+                          (const void*)mid,(const void*)&D_00697880);
     }
   }
   if ((param_3 == 0) && (lVar7 == 0)) {

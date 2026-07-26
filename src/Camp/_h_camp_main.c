@@ -526,31 +526,48 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
                   const s16* personaIds, s16 personaIndex,
                   s16 alternatePersonaIndex)
 {
+    DatPersonaWork* persona;
+    CampMainPackedPosition packed;
 
     switch (mode) {
     case 0:
-        campMainDrawPersonaCard(item, personaIds, personaIndex, 0.0f, 0.0f);
+        persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
+        packed.coordinates.x = item->x;
+        packed.coordinates.y = item->y;
+        FUN_0012b860(packed.value, 0, persona, (u8)item->alpha,
+                     item->spriteScale);
+        packed.coordinates.x = item->x + 12.0f;
+        packed.coordinates.y = item->y + 96.0f;
+        FUN_00125b40(packed.value, packed.value, persona,
+                     (u8)item->alpha, item->spriteScale);
         break;
     case 1:
-        campMainDrawPersonaCard(item, personaIds, alternatePersonaIndex,
-                                0.0f, 0.0f);
+        persona = datPersonaGetHeroPersona(personaIds[alternatePersonaIndex]);
+        packed.coordinates.x = item->x;
+        packed.coordinates.y = item->y;
+        FUN_0012b860(packed.value, 0, persona, (u8)item->alpha,
+                     item->spriteScale);
+        packed.coordinates.x = item->x + 12.0f;
+        packed.coordinates.y = item->y + 96.0f;
+        FUN_00125b40(packed.value, packed.value, persona,
+                     (u8)item->alpha, item->spriteScale);
         break;
     case 2:
-        FUN_001159f0(NULL, campMainResource(resources, 0), 2,
+        FUN_001159f0(NULL, ((void* const*)resources)[0], 2,
                      item->alpha, item->x, item->y, item->spriteScale);
         break;
     case 3:
-        FUN_001159f0(NULL, campMainResource(resources, 0), 3,
+        FUN_001159f0(NULL, ((void* const*)resources)[0], 3,
                      item->alpha, item->x, item->y, item->spriteScale);
         break;
     case 4:
-        FUN_001159f0(NULL, campMainResource(resources, 0), 1,
+        FUN_001159f0(NULL, ((void* const*)resources)[0], 1,
                      item->alpha, item->x, item->y, item->spriteScale);
         break;
     case 5:
-        FUN_001159f0(NULL, campMainResource(resources, 0), 0,
+        FUN_001159f0(NULL, ((void* const*)resources)[0], 0,
                      item->alpha, item->x, item->y, item->spriteScale);
-        FUN_001159f0(NULL, campMainResource(resources, 2), 2,
+        FUN_001159f0(NULL, ((void* const*)resources)[2], 2,
                      item->alpha, item->x + 76.0f - 60.0f,
                      item->y, item->spriteScale);
         FUN_001159f0(NULL, D_00833BA4, 2,
@@ -1076,7 +1093,6 @@ void FUN_00135460(KwlnTask* task)
             work[0x5c] = 0;
         }
     }
-
     selected = (s16)work[work[1] + work[2] + 8];
     cardType = (s8)func_0016df30(selected);
     work[0x57] = (u32)H_Cdvd_Request(D_005DB998[(s32)cardType], 0);
@@ -1094,6 +1110,8 @@ void* FUN_001355c0(KwlnTask* task)
     s32 resourceSize;
     s32 index;
     s32 key;
+    u16 cardId;
+    void* knownText;
     void* resource;
     char path[256];
 
@@ -1275,7 +1293,20 @@ void* FUN_001355c0(KwlnTask* task)
             if (work[0x59] == 0) {
                 if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x56])) {
                     current = (s32)work[work[1] + work[2] + 8];
-                    h_campBuildCardPath(path, current, work[5]);
+                    if (current == 0 || current == 0x1d) {
+                        cardId = (u16)DAT_00833A60[work[5]];
+                    } else {
+                        cardId = D_005DBB00[current * 3 + work[5]];
+                    }
+                    knownText = FUN_00172160(current);
+                    if (knownText == NULL) {
+                        knownText = FUN_001717c0(current);
+                    }
+                    if (knownText != NULL) {
+                        sprintf(path, D_005DBBC0, cardId);
+                    } else {
+                        sprintf(path, D_005DBBF0, cardId);
+                    }
                     work[0x59] = (u32)FUN_0010c1a0(
                         NULL, path, 0, 0, 0, 0, 0, 0,
                         0, 0, D_005DBA38, 0x313);
@@ -2073,6 +2104,9 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     CampMainPackedPosition input;
     register f32 inputX;
     register f32 inputY;
+    CampMainQuadPosition header;
+    CampMainQuadPosition row;
+    CampMainQuadPosition footer;
     CampMainQuadPosition copied;
     CampMainQuadPosition local;
     CampMainPackedPosition packed;
@@ -2093,16 +2127,21 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     local.z = 0.0f;
     local.w = 0.0f;
     copied = local;
+    header = copied;
     FUN_001159f0(NULL, DAT_00833B48, 0, 0,
                  55.0f + copied.x, 36.0f + copied.y, alpha);
     for (i = 0; i < 5; i++) {
         local.y = inputY + (f32)i * 64.0f + 49.0f;
+        header.x = local.x;
+        header.y = local.y;
+        header.z = alpha;
+        header.w = (f32)frame;
         sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
-        sprite->spriteScale = alpha;
-        sprite->x = local.x;
-        sprite->y = local.y + 24.0f;
+        sprite->spriteScale = header.z;
+        sprite->x = header.x;
+        sprite->y = header.y + 24.0f;
         sprite->rotation = 0x1000;
-        sprite->alpha = (u8)frame;
+        sprite->alpha = (u8)header.w;
         FUN_001127D0(sprite, 1);
         FUN_00115980(sprite);
     }
@@ -2120,17 +2159,21 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     for (i = 0; i < visibleCount; i++) {
         id = entries[offset + i];
         local.y = inputY + (f32)(i + start) * 64.0f + 49.0f;
-        packed.coordinates.x = local.x;
-        packed.coordinates.y = local.y;
+        row.x = local.x;
+        row.y = local.y;
+        row.z = alpha;
+        row.w = 0.0f;
+        packed.coordinates.x = row.x;
+        packed.coordinates.y = row.y;
         x = packed.coordinates.x;
         y = packed.coordinates.y + 24.0f;
         if (i == selected) {
-            FUN_001159f0(NULL, DAT_00833B48, 0xe, 0, x, y, alpha);
-            FUN_00136a10(alpha, packed.value, id, 1, 0);
-            FUN_00137300(alpha, packed.value, id, 1, 0, 0);
+            FUN_001159f0(NULL, DAT_00833B48, 0xe, 0, x, y, row.z);
+            FUN_00136a10(row.z, packed.value, id, 1, 0);
+            FUN_00137300(row.z, packed.value, id, 1, 0, (s32)row.w);
         } else {
-            FUN_00136a10(alpha, packed.value, id, 0, 0);
-            FUN_00137300(alpha, packed.value, id, 0, 0, 0);
+            FUN_00136a10(row.z, packed.value, id, 0, 0);
+            FUN_00137300(row.z, packed.value, id, 0, 0, (s32)row.w);
         }
     }
 

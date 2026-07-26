@@ -1745,10 +1745,16 @@ void FUN_00203410(void)
     func_003c7d60(5);
     for (i = 0; i < count && i < 4; i++)
     {
-        name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
-        handle = func_003b0970((u32)name, 2,
-                               i == panelWork32(0x7698) - panelWork32(0x7690) ? 6 : 0,
-                               0, 0);
+        if (i == panelWork32(0x7698) - panelWork32(0x7690))
+        {
+            name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
+            handle = func_003b0970((u32)name, 2, 6, 0, 0);
+        }
+        else
+        {
+            name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
+            handle = func_003b0970((u32)name, 2, 0, 0, 0);
+        }
         *(u32*)(panelWork() + 0x8c + i * 4) = handle;
     }
     panelSetWork32(0x25c, count < 4 ? count : 4);
@@ -2399,22 +2405,25 @@ void FUN_00204CC0(void)
         color = (i == panelWork32(0x7700) ? 0xffffffff : 0x8080ffff);
         row->flags = type;
         row->handle = handle;
-        if (type == 1)
+        switch (type)
         {
+        case 0:
+            row->type = 1;
             func_003b0d70(handle, 0x730, i * 0x48);
             func_003b0e20(handle, color);
-        }
-        else if (type == 0)
-        {
+            break;
+        case 1:
             row->type = 0;
             func_003b0d70(handle, 0x730, i * 0x48);
             func_003b0e20(handle, color);
-        }
-        else
-        {
+            break;
+        case 2:
             row->type = 2;
             func_003b0d70(handle, 0x730, i * 0x48);
             func_003b0e20(handle, color);
+            break;
+        default:
+            break;
         }
         row->icon = *(u32*)(panelWork() + 0x374 + (start + i) * 8);
     }
@@ -2992,28 +3001,31 @@ void FUN_002063F0(void)
 // FUN_002065A0 NONMATCHING
 void FUN_002065A0(void)
 {
+    u8* work;
     u32 i;
     u32 index;
     u32 id;
     u32 type;
 
-    index = panelWork32(0x7734);
-    for (i = 0; i < panelWork32(0x404); i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    index = *(u32*)(work + 0x7734);
+    for (i = 0; i < *(u32*)(work + 0x404); i++)
     {
-        id = panelWork32(0x3b0 + i * 4);
+        id = *(u32*)(work + 0x3b0 + i * 4);
         type = panelDataType((u16)id);
         if (type == 0)
         {
-            panelSetWork32(0x3b0 + i * 4, id);
-            panelSetWork32(0x414 + i * 4, panelWork32(0x428));
-            func_00208790();
+            *(u32*)(work + 0x3b0 + i * 4) = id;
+            *(u32*)(work + 0x414 + i * 4) = *(u32*)(work + 0x428);
+            FUN_00208790();
         }
         else if (type == 1)
         {
-            func_00208860((u16)id);
+            FUN_00208860((u16)id);
         }
     }
-    panelSetWork32(0x7734, index);
+    *(u32*)(work + 0x7734) = index;
     FUN_00205D60();
 }
 // FUN_00206740 NONMATCHING
@@ -3225,15 +3237,13 @@ void FUN_00207010(void)
 {
     u8* work;
     u32 i;
-    u32 count;
     u32 type;
     u32 alpha;
     u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
-    count = *(u32*)(work + 0x424);
-    for (i = 0; i < count; i++)
+    for (i = 0; i < *(u32*)(work + 0x424); i++)
     {
         handle = *(u32*)(work + 0x414 + i * 4);
         func_003b0170(handle);
@@ -3257,23 +3267,30 @@ void FUN_00207010(void)
     func_002082c0(handle);
     func_003b0e70(1);
     func_003b0e90(2);
-    for (i = 0; i < count; i++)
+    for (i = 0; i < *(u32*)(work + 0x424); i++)
     {
-        u32 selected = *(u32*)(work + 0x7768) -
-                       *(u32*)(work + 0x7760);
-        u32* typePtr = (u32*)(work + 0x408 +
-                              (i + *(u32*)(work + 0x7760)) * 4);
-        alpha = i == selected ? 6 : 0;
-        type = *typePtr;
+        alpha = i == *(u32*)(work + 0x7768) -
+                       *(u32*)(work + 0x7760) ? 6 : 0;
+        type = *(u32*)(work + 0x408 +
+                       (i + *(u32*)(work + 0x7760)) * 4);
         if (type == 0)
-            handle = func_003b0970(func_0030bb40(0x144),
-                                    2, alpha, 0, 0);
+        {
+            if (*(u32*)(work + 0x20) == 1)
+                handle = func_003b0970(func_0030bb40(0x146),
+                                        2, alpha, 0, 0);
+            else if (*(u32*)(work + 0x20) == 0)
+                handle = func_003b0970(func_0030bb40(0x144),
+                                        2, alpha, 0, 0);
+        }
         else if (type == 1)
+        {
             handle = func_003b0970(*(u32*)0x007cc418,
                                     2, alpha, 0, 0);
+        }
         else
         {
-            K_ASSERT(*(u32*)(work + 0x20) == 1, 0x1209);
+            if (*(u32*)(work + 0x20) != 1)
+                K_ASSERT(0, 0x1209);
             handle = func_003b0970(func_0030bb40(0x145),
                                     2, alpha, 0, 0);
         }
@@ -4231,7 +4248,6 @@ void FUN_001FFC60(void)
     u32* work;
     u8* record;
     u32 i;
-    u32 flags;
 
     work = (u32*)panelWork();
     for (i = 0; i < work[0x3a8 / 4]; i++)
@@ -4248,10 +4264,9 @@ void FUN_001FFC60(void)
             }
         }
     }
-    flags = work[0];
-    if (flags & 0x20000)
+    if (*(u32*)work & 0x20000)
     {
-        if (!(flags & 0x4000))
+        if (!(*(u32*)work & 0x4000))
         {
             func_002db420(2);
         }
@@ -4261,23 +4276,23 @@ void FUN_001FFC60(void)
             func_002db2a0(2);
         }
     }
-    if (flags & 0x40000)
+    if (*(u32*)work & 0x40000)
     {
-        if (!(flags & 0x8000)) func_002db420(1);
+        if (!(*(u32*)work & 0x8000)) func_002db420(1);
         else func_002db2a0(1);
     }
-    if (flags & 0x80000)
+    if (*(u32*)work & 0x80000)
     {
-        if (!(flags & 0x100000)) func_002db420(0);
+        if (!(*(u32*)work & 0x100000)) func_002db420(0);
         else func_002db2a0(0);
     }
-    if (flags & 0x800000) func_002083d0();
-    if (flags & 0x2000) FUN_00206EB0();
-    if (flags & 0x1000) FUN_00206310();
-    if (flags & 2) FUN_00202BC0();
-    if (flags & 4) bcm00203360();
-    if (flags & 8) FUN_00203B70();
-    if (flags & 0x10) FUN_00204BE0();
+    if (*(u32*)work & 0x800000) func_002083d0();
+    if (*(u32*)work & 0x2000) FUN_00206EB0();
+    if (*(u32*)work & 0x1000) FUN_00206310();
+    if (*(u32*)work & 2) FUN_00202BC0();
+    if (*(u32*)work & 4) bcm00203360();
+    if (*(u32*)work & 8) FUN_00203B70();
+    if (*(u32*)work & 0x10) FUN_00204BE0();
     itfMesMngDestroyHandle(work[0x7790 / 4]);
     itfMesMngDestroyHandle(work[0x7794 / 4]);
     itfMesMngDestroyHandle(work[0x7798 / 4]);

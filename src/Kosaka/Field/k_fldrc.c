@@ -410,6 +410,8 @@ void K_Fldrc_DestroyFldFpc()
  * secondary pack path are intentional. Branch/register layout still differs
  * from retail in the large dispatch prologue.
  */
+#pragma push
+#pragma opt_cse off
 // FUN_001b0a20 NONMATCHING
 void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
 {
@@ -420,6 +422,7 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     u32 dungeon;
 
     *(u32*)((u8*)K_Field_Get() + 0x1168) = 0;
+    K_Field_Get_A();
     *(u32*)((u8*)K_Field_Get() + 0x1058) = 0;
 
     index = (u16)majorId;
@@ -447,6 +450,21 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
                 sprintf(path, D_00678D80, majorId, minorId);
                 sFldFpcCdvd = H_Cdvd_Request(path, HCDVD_FILEARCHIVE);
             }
+            K_Field_Get_A();
+            K_Field_Get_B();
+            K_Field_Get_C();
+            K_Field_Get_D();
+            K_Field_Get_E();
+            K_Field_Get_A();
+            K_Field_Get_B();
+            K_Field_Get_C();
+            K_Field_Get_D();
+            K_Field_Get_E();
+            K_Field_Get_A();
+            K_Field_Get_B();
+            K_Field_Get_C();
+            K_Field_Get_D();
+            K_Field_Get_E();
             count = *(u32*)((u8*)K_Field_Get() + 0x105c);
             *(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4) = (s16)index;
             *(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4) = 18;
@@ -465,6 +483,11 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
             *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 7) * 4) = (s16)index;
             *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 7) * 4) = 2;
             *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 8) * 4) = (s16)index;
+            K_Field_Get_A();
+            K_Field_Get_B();
+            K_Field_Get_C();
+            K_Field_Get_D();
+            K_Field_Get_E();
             *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 8) * 4) = 1;
             *(u32*)((u8*)K_Field_Get() + 0x105c) = count + 9;
         }
@@ -472,6 +495,7 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
         {
             for (count = 0; count < 9; count++)
             {
+                K_Field_Get_A();
                 *(void**)((u8*)K_Field_Get() + 0x116c + count * 4) =
                     D_0086BDC0[count];
             }
@@ -486,6 +510,8 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
             sprintf(path2, D_00678D80, majorId, minorId);
             sFldFpcCdvd = H_Cdvd_Request(path2, HCDVD_FILEARCHIVE);
         }
+        K_Field_Get_B();
+        K_Field_Get_C();
         count = *(u32*)((u8*)K_Field_Get() + 0x105c);
         *(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4) = majorId;
         count = *(u32*)((u8*)K_Field_Get() + 0x105c);
@@ -507,6 +533,7 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     }
     *(u32*)0x007ce164 = *(u32*)0x007cdeac;
 }
+#pragma pop
 /*
  * Retail keeps the field resource table as direct archive pointers.
  * The initialization phases therefore store and pass those pointers directly,
@@ -2065,21 +2092,45 @@ static inline void fldrc_apply_field_config(u32 config)
     if (version > 0x10000)
     {
         count = *(u32*)((u8*)K_Field_Get() + 0x1168);
+        K_Field_Get_A();
         for (i = 0; i < count; i++)
         {
             node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
-            fldrc_copy_words(node + 0xa20, config + 0x130, 3);
+            ((u32*)node)[0xa20 / 4] = ((u32*)config)[0x130 / 4];
+            ((u32*)node)[0xa24 / 4] = ((u32*)config)[0x134 / 4];
+            ((u32*)node)[0xa28 / 4] = ((u32*)config)[0x138 / 4];
             FUN_001b5610((u32*)node, (const f32*)(node + 0xa20));
         }
     }
 
     if ((version > 0x10001) && (listA != 0))
     {
-        fldrc_copy_words(listA + 0x100, config + 0x13c, 4);
-        fldrc_copy_words(listA + 0x110, config + 0x14c, 4);
-        fldrc_copy_words(listA + 0x120, config + 0x160, 16);
-        fldrc_copy_words(listA + 0x160, config + 0x1a0, 4);
-        fldrc_copy_words(listA + 0x170, config + 0x1b0, 16);
+        ((u32*)listA)[0x100 / 4] = ((u32*)config)[0x13c / 4];
+        ((u32*)listA)[0x104 / 4] = ((u32*)config)[0x140 / 4];
+        ((u32*)listA)[0x108 / 4] = ((u32*)config)[0x144 / 4];
+        ((u32*)listA)[0x10c / 4] = ((u32*)config)[0x148 / 4];
+        ((u32*)listA)[0x110 / 4] = ((u32*)config)[0x14c / 4];
+        ((u32*)listA)[0x114 / 4] = ((u32*)config)[0x150 / 4];
+        ((u32*)listA)[0x118 / 4] = ((u32*)config)[0x154 / 4];
+        ((u32*)listA)[0x11c / 4] = ((u32*)config)[0x158 / 4];
+        for (i = 0; i < 8; i++)
+        {
+            ((u32*)listA)[0x120 / 4 + i * 2] =
+                ((u32*)config)[0x160 / 4 + i * 2];
+            ((u32*)listA)[0x124 / 4 + i * 2] =
+                ((u32*)config)[0x164 / 4 + i * 2];
+        }
+        ((u32*)listA)[0x160 / 4] = ((u32*)config)[0x1a0 / 4];
+        ((u32*)listA)[0x164 / 4] = ((u32*)config)[0x1a4 / 4];
+        ((u32*)listA)[0x168 / 4] = ((u32*)config)[0x1a8 / 4];
+        ((u32*)listA)[0x16c / 4] = ((u32*)config)[0x1ac / 4];
+        for (i = 0; i < 8; i++)
+        {
+            ((u32*)listA)[0x170 / 4 + i * 2] =
+                ((u32*)config)[0x1b0 / 4 + i * 2];
+            ((u32*)listA)[0x174 / 4 + i * 2] =
+                ((u32*)config)[0x1b4 / 4 + i * 2];
+        }
     }
 
     if (version > 0x10002)
@@ -2087,10 +2138,13 @@ static inline void fldrc_apply_field_config(u32 config)
         listA = FUN_003b5d50(1);
         listB = FUN_003b5d50(3);
         count = *(u32*)((u8*)K_Field_Get() + 0x1168);
+        K_Field_Get_A();
         for (i = 0; i < count; i++)
         {
             node = *(u32*)((u8*)K_Field_Get() + 0x116c + i * 4);
-            fldrc_copy_words(node + 0xa2c, config + 0x1f0, 3);
+            ((u32*)node)[0xa2c / 4] = ((u32*)config)[0x1f0 / 4];
+            ((u32*)node)[0xa30 / 4] = ((u32*)config)[0x1f4 / 4];
+            ((u32*)node)[0xa34 / 4] = ((u32*)config)[0x1f8 / 4];
         }
         while (listA != 0)
         {
@@ -3153,7 +3207,7 @@ void FUN_001b3c90(void* resource)
     }
     (*(void (**)(void*))DAT_0096017c_abs)(resource);
 }
-static void fldrc_render_begin(void)
+static inline void fldrc_render_begin(void)
 {
     FUN_00198610(0x40000002, 0);
     FUN_00198610(2, 1);
