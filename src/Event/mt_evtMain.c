@@ -5811,6 +5811,7 @@ type1:
             FUN_003b8ff0_evt(fVar6,lVar3,0,(char)puVar1[10],puVar1[0xb],
                          *(char *)((int)puVar1 + 0x15) == '\0',puVar1[0xc]);
 type_done:
+            ;
 
           }
 

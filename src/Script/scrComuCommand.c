@@ -960,9 +960,9 @@ u32 scrComu00360ed0(int param_1)
         result = 1;
     } else {
         cVar1 = *(char*)(param_1 + 0xc);
+        result = 1;
         switch (cVar1) {
         case 0:
-            result = lVar5;
             break;
         case 1:
             value = FUN_0038d6f0(*(short*)(param_1 + 8));

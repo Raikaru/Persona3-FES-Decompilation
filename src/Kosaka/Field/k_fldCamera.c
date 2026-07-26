@@ -575,8 +575,8 @@ void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
 HCdvd* func_001d6b10(void)
 {
     char path[128];
-    volatile u32 fieldId0;
-    volatile u32 fieldId1;
+    u32 fieldId0;
+    u32 fieldId1;
 
     if (PTR_DAT_007cd540[0] == 0xffffffff)
     {
