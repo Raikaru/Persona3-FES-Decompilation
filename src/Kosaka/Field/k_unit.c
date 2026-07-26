@@ -1952,7 +1952,7 @@ void func_001d17f0(s32 destroyModel)
     }
 }
 
-// FUN_001d1860 NONMATCHING
+// FUN_001d1860
 void func_001d1860(u32 value)
 {
     s32 i;
