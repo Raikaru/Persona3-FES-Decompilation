@@ -110,7 +110,7 @@ u32 FUN_003bf720(void)
   int *piVar3;
   int lVar5;
   u32 uVar4;
-  u32 bVar2;
+  u8 bVar2;
   u8 auStack_30[0x1c];
 
   piVar3 = (int *)FUN_00195540();
