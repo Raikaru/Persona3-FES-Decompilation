@@ -296,8 +296,7 @@ void brPanel002350f0(void)
 
     K_ASSERT(sBrPanel != NULL, 0x99);
     work = (u8*)sBrPanel;
-    workFlags = *(u32*)work;
-    if ((workFlags & 1) == 0) {
+    if ((~(*(u32*)work) & 1) != 0) {
         return;
     }
     
@@ -353,10 +352,14 @@ void brPanel002350f0(void)
     entryCount = *(s32*)(work + 0x1d50);
     entryBase = work + 0xe20;
 
+    /* Retail +0x474/+0x49c rematerialize the callback-table slots per entry. */
     for (i = 0; i < entryCount; i++) {
         entry = entryBase + i * 0x510;
-        frame = func_0021cce0(func_0021cca0(texture, 4));
+        frame = (u32)(uintptr_t)func_0021cca0(texture, 4);
+        brPanelSetState = (void (**)(u32, u32))D_00960090_abs;
+        frame = func_0021cce0((void*)(uintptr_t)frame);
         D_00960090(1, frame);
+        brPanelSetQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
         D_0096009C((u32*)(entry + 0x10), 4, 0, 1, 2);
         D_0096009C((u32*)(entry + 0x10), 4, 0, 2, 3);
         func_003b0e70(0x40);
@@ -442,6 +445,7 @@ void brPanel002350f0(void)
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0x1e60), 4, 0, 2, 3);
+    workFlags = *(u32*)work;
     if (workFlags & 8) {
         frame = (u32)(uintptr_t)func_0021cca0(texture, 0xa);
     } else {
@@ -450,6 +454,7 @@ void brPanel002350f0(void)
     frame = func_0021cce0((void*)(uintptr_t)frame);
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1f60), 4, 0, 1, 2);
+    workFlags = *(u32*)work;
     if (workFlags & 4) {
         frame = func_0021cce0(func_0021cca0(texture, 7));
         D_00960090(1, frame);
