@@ -2133,7 +2133,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
     return result;
 }
 
-// Reconstructed point/triangle collision callback.
+// Reconstructed point/triangle callback using the retail collector layout.
 // Remaining differences are MWCCPS2 stack-slot and register scheduling residuals.
 // FUN_001ab640 NONMATCHING
 void* func_001ab640(const RwV3d* point, const void* triangle,
