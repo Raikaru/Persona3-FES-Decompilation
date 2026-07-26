@@ -65,8 +65,6 @@ int * FUN_003b49a0(int *param_1);
 void FUN_003b4a20(int *param_1,u32 *param_2);
 void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,int *param_6,  int param_7);
 void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4);
-#pragma alias FUN_003b4b40_typed FUN_003b4b40
-extern void FUN_003b4b40_typed(int param_1,int param_2,u8 *param_3,u8 *param_4,u64 param_5,u64 param_6);
 void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5  );
 void FUN_003b4e90(void);
 void FUN_003b4ea0(void);
@@ -912,7 +910,7 @@ void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
 // FUN_003B4D10 NONMATCHING
 
 
-void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5)
+void FUN_003b4d10(int *param_1,u32 *param_2,u32 param_3,int param_4,u32 param_5)
 {
     int iVar1;
     u32 stack[16];

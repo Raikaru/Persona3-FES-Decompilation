@@ -1833,7 +1833,10 @@ void btlMain0029e4b0(void)
     u32 green;
     u32 blue;
     u32 alpha;
-    u32 i;
+    f32 redf;
+    f32 greenf;
+    f32 bluef;
+    f32 alphaf;
 
     if (*(f32*)((u8*)gBtl + 0x240) <= 0.0f)
     {
@@ -1853,6 +1856,10 @@ void btlMain0029e4b0(void)
     green = ((u32)(*(f32*)((u8*)gBtl + 0x238) * 255.0f + 0.5f)) & 0xff;
     blue = ((u32)(*(f32*)((u8*)gBtl + 0x23c) * 255.0f + 0.5f)) & 0xff;
     alpha = ((u32)(*(f32*)((u8*)gBtl + 0x240) * 255.0f + 0.5f)) & 0xff;
+    redf = (f32)red;
+    greenf = (f32)green;
+    bluef = (f32)blue;
+    alphaf = (f32)alpha;
 
     memset(vertices, 0, sizeof(vertices));
     vertices[0].u.els.scrVertex.x = 0.0f;
@@ -1863,13 +1870,22 @@ void btlMain0029e4b0(void)
     vertices[2].u.els.scrVertex.y = 0.0f;
     vertices[3].u.els.scrVertex.x = 640.0f;
     vertices[3].u.els.scrVertex.y = 448.0f;
-    for (i = 0; i < 4; i++)
-    {
-        vertices[i].u.els.color.r = (f32)red;
-        vertices[i].u.els.color.g = (f32)green;
-        vertices[i].u.els.color.b = (f32)blue;
-        vertices[i].u.els.color.a = (f32)alpha;
-    }
+    vertices[0].u.els.color.r = redf;
+    vertices[0].u.els.color.g = greenf;
+    vertices[0].u.els.color.b = bluef;
+    vertices[0].u.els.color.a = alphaf;
+    vertices[1].u.els.color.r = redf;
+    vertices[1].u.els.color.g = greenf;
+    vertices[1].u.els.color.b = bluef;
+    vertices[1].u.els.color.a = alphaf;
+    vertices[2].u.els.color.r = redf;
+    vertices[2].u.els.color.g = greenf;
+    vertices[2].u.els.color.b = bluef;
+    vertices[2].u.els.color.a = alphaf;
+    vertices[3].u.els.color.r = redf;
+    vertices[3].u.els.color.g = greenf;
+    vertices[3].u.els.color.b = bluef;
+    vertices[3].u.els.color.a = alphaf;
 
     DAT_009600A0(4, vertices, 4);
 }

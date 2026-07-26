@@ -48,8 +48,6 @@ extern void FUN_0039ea20_e820(u64,u32);
 extern void FUN_003196f0_ea20(int,u32);
 #pragma alias FUN_005225a8_eaa0 FUN_005225a8
 extern void FUN_005225a8_eaa0(const char *,...);
-#pragma alias FUN_00388000_d1c0 FUN_00388000
-extern void FUN_00388000_d1c0(f32, u32, void *, void *, void *, void *, u32, void *, long);
 
 extern char DAT_006a1820[];
 #pragma alias FUN_003b5d10_eb90 FUN_003b5d10
@@ -4457,17 +4455,18 @@ void FUN_0039d1c0(int param_1)
 
   u32 uStack_c;
 
-  undefined3 uStack_4;
-
-  u8 uStack_1;
+  union {
+    u32 value;
+    u8 bytes[4];
+  } uStack_4;
 
   
 
   if (0 < *(int *)(param_1 + 0x18)) {
 
-    uStack_1 = (u8)*(int *)(param_1 + 0x18);
+    uStack_4.bytes[3] = (u8)*(int *)(param_1 + 0x18);
 
-    uStack_4 = (undefined3)DAT_007cd488;
+    uStack_4.value = (undefined3)DAT_007cd488;
 
     uStack_10 = 127.0f;
 
@@ -4491,9 +4490,9 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.65625f;
 
-    FUN_00388000_d1c0(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4,0);
+    FUN_00388000(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+ 
+                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     uStack_10 = 137.0f;
 
@@ -4509,9 +4508,9 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.65625f;
 
-    FUN_00388000_d1c0(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4,0);
+    FUN_00388000(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+ 
+                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     uStack_10 = 504.0f;
 
@@ -4527,19 +4526,19 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.65625f;
 
-    FUN_00388000_d1c0(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4,0);
+    FUN_00388000(5.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+ 
+                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     if (*(int *)(param_1 + 0x1c) == 0) {
 
-      uStack_4 = 0;
+      uStack_4.value = 0;
 
     }
 
     else {
 
-      uStack_4 = 0xffdeb6;
+      uStack_4.value = 0xffdeb6;
 
     }
 
@@ -4559,19 +4558,19 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0.2109375f;
 
-    FUN_00388000_d1c0(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4,0);
+    FUN_00388000(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+ 
+                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     if (*(int *)(param_1 + 0x1c) == 1) {
 
-      uStack_4 = 0;
+      uStack_4.value = 0;
 
     }
 
     else {
 
-      uStack_4 = 0xffdeb6;
+      uStack_4.value = 0xffdeb6;
 
     }
 
@@ -4591,9 +4590,9 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0x3ed80000;
 
-    FUN_00388000_d1c0(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4,0);
+    FUN_00388000(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+ 
+                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
     uStack_10 = 0x43aa8000;
 
@@ -4611,9 +4610,9 @@ void FUN_0039d1c0(int param_1)
 
     uStack_24 = 0x3f220000;
 
-    FUN_00388000_d1c0(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4,0);
+    FUN_00388000(4.0f,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
+ 
+                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
 
   }
 

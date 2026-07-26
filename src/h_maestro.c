@@ -2610,6 +2610,7 @@ void func_00115350(f32 depth,
     f32 tmpR;
     f32 tmpG;
     f32 tmpB;
+    f32 blue;
     f32 alpha0f;
     f32 alpha1f;
     f32 alpha2f;
@@ -2621,7 +2622,7 @@ void func_00115350(f32 depth,
     s32 r1;
     s32 g1;
     s32 b1;
-    s32 i;
+    u32 i;
     RwIm2DVertex* v;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
@@ -2658,6 +2659,13 @@ void func_00115350(f32 depth,
     alpha2f = (f32)alpha2;
     alpha1f = (f32)alpha1;
     alpha0f = (f32)alpha0;
+    if (b >= 0)
+        blue = (f32)b;
+    else
+    {
+        tmpB = (f32)(s32)(((u32)b >> 1) | b1);
+        blue = tmpB + tmpB;
+    }
 
     for (i = 0; i < 4; i++)
     {
@@ -2681,14 +2689,10 @@ void func_00115350(f32 depth,
                 tmpG = (f32)(s32)(((u32)g >> 1) | g1);
                 v->u.els.color.g = tmpG + tmpG;
             }
-            if (b >= 0)
-                v->u.els.color.b = (f32)b;
-            else
-            {
-                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
-                v->u.els.color.b = tmpB + tmpB;
-            }
+            v->u.els.color.b = blue;
             v->u.els.color.a = alpha0f;
+            v->u.els.scrVertex.x = points[0][0];
+            v->u.els.scrVertex.y = points[0][1];
             break;
         case 1:
             v->u.els.scrVertex.z = z;
@@ -2707,14 +2711,10 @@ void func_00115350(f32 depth,
                 tmpG = (f32)(s32)(((u32)g >> 1) | g1);
                 v->u.els.color.g = tmpG + tmpG;
             }
-            if (b >= 0)
-                v->u.els.color.b = (f32)b;
-            else
-            {
-                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
-                v->u.els.color.b = tmpB + tmpB;
-            }
+            v->u.els.color.b = blue;
             v->u.els.color.a = alpha1f;
+            v->u.els.scrVertex.x = points[1][0];
+            v->u.els.scrVertex.y = points[1][1];
             break;
         case 2:
             v->u.els.scrVertex.z = z;
@@ -2733,14 +2733,10 @@ void func_00115350(f32 depth,
                 tmpG = (f32)(s32)(((u32)g >> 1) | g1);
                 v->u.els.color.g = tmpG + tmpG;
             }
-            if (b >= 0)
-                v->u.els.color.b = (f32)b;
-            else
-            {
-                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
-                v->u.els.color.b = tmpB + tmpB;
-            }
+            v->u.els.color.b = blue;
             v->u.els.color.a = alpha2f;
+            v->u.els.scrVertex.x = points[2][0];
+            v->u.els.scrVertex.y = points[2][1];
             break;
         case 3:
             v->u.els.scrVertex.z = z;
@@ -2759,18 +2755,12 @@ void func_00115350(f32 depth,
                 tmpG = (f32)(s32)(((u32)g >> 1) | g1);
                 v->u.els.color.g = tmpG + tmpG;
             }
-            if (b >= 0)
-                v->u.els.color.b = (f32)b;
-            else
-            {
-                tmpB = (f32)(s32)(((u32)b >> 1) | b1);
-                v->u.els.color.b = tmpB + tmpB;
-            }
+            v->u.els.color.b = blue;
             v->u.els.color.a = alpha3f;
+            v->u.els.scrVertex.x = points[3][0];
+            v->u.els.scrVertex.y = points[3][1];
             break;
-        }
-        v->u.els.scrVertex.x = points[i][0];
-        v->u.els.scrVertex.y = points[i][1];
+    }
     }
 
     (*setState)(1, 0);

@@ -565,61 +565,52 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
     s32 i;
     u32 parent = 0;
     u8 text[0x100];
-
     switch (mode) {
-    case 99:
-        campMenuDrawSprite(parent, *labels, 0, item->alpha, item->x, item->y, item->scale);
-        campMenuDrawSprite(parent, *labels, 0, item->alpha, 16.0f + item->x, item->y, item->scale);
-        campMenuDrawSprite(parent, *labels, 0, item->alpha, 530.0f + item->x, 30.0f + item->y, item->scale);
+    case 0:
+        campMenuDrawSprite(parent, *labels, 0x1b, item->alpha, item->x, item->y, item->scale);
         break;
-    case 6:
-        for (i = 0; i < 8; i++) {
-            s32 rowOffset = i * 0x23;
-            if (FUN_0016f190(personaBase + i + 0x13d0) != NULL) {
-                if (selected == i) {
-                    campMenuDrawSpriteAlt(parent, DAT_00833B70, 0x1f,
-                        item->alpha, 0xff, 0xbe, 0x5f, item->x,
-                        1.0f + item->y + (f32)rowOffset, item->scale);
-                } else {
-                    campMenuDrawSpriteAlt(parent, DAT_00833B70, 0x1e,
-                        item->alpha, 0x20, 0x43, 0x78, item->x,
-                        1.0f + item->y + (f32)rowOffset, item->scale);
-                }
-                {
-                    u32 col = (0xff - item->alpha) | 0xffffff00U;
-                    FUN_00523ac8(text, 0x7cb66c,
-                        DAT_007ce4ec + (personaBase + i + 0x110) * 0x13);
-                    FUN_003b2cb0(item->scale,
-                        (s32)(35.0f + item->x),
-                        (s32)((8.0f + (9.0f + item->y +
-                                      (f32)rowOffset)) - 3.0f - 2.0f),
-                        col, selected == i ? 6 : 10, 1, (const char*)text,
-                        0x10, 0);
-                }
-            } else if (selected == i) {
-                campMenuDrawSprite(parent, *labels, 0x15, item->alpha,
-                    99.0f + item->x, 15.0f + item->y + (f32)rowOffset,
-                    item->scale);
-            } else {
-                campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
-                    99.0f + item->x, 15.0f + item->y + (f32)rowOffset,
-                    item->scale);
+    case 1:
+        for (i = 0; i < 2; i++) {
+            campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
+                23.0f + item->x - 33.0f,
+                117.0f + item->y + (f32)(i * 0x23) - 87.0f, item->scale);
+        }
+        campMenuDrawSprite(parent, *labels, 0x28, item->alpha,
+            272.0f + item->x - 33.0f, item->y, item->scale);
+        if (FUN_0016f190(personaBase + selected + 0x13d0) != NULL) {
+            u32 col = (0xff - item->alpha) | 0xffffff00U;
+            campMenuDrawSprite(parent, DAT_00833B70, 0x1f, item->alpha,
+                               item->x, item->y, item->scale);
+            FUN_00523ac8(text, 0x7cb66c,
+                         DAT_007ce4ec + (personaBase + selected + 0x110) * 0x13);
+            FUN_003b2cb0(item->scale, (s32)(68.0f + item->x - 33.0f),
+                (s32)(96.0f + item->y - 87.0f + 2.0f), col, 6, 1,
+                (const char*)text, 0x10, 0);
+            {
+                u32 dataEntry = (u32)FUN_0030c220((u32)(personaBase + selected + 0x110) & 0xffff);
+                s32 val = FUN_00173220(*(u16*)((u8*)dataEntry + 2));
+                FUN_00523ac8(text, 0x7cb66c, val);
+                FUN_003b2cb0(item->scale, (s32)(68.0f + item->x - 33.0f),
+                    (s32)(122.0f + item->y - 87.0f + 3.0f),
+                    col, 10, 1, (const char*)text, 0x10, 0);
+                val = FUN_00173220(*(u16*)((u8*)dataEntry + 4));
+                FUN_00523ac8(text, 0x7cb66c, val);
+                FUN_003b2cb0(item->scale, (s32)(68.0f + item->x - 33.0f),
+                    (s32)(122.0f + item->y - 87.0f + 29.0f + 3.0f),
+                    col, 10, 1, (const char*)text, 0x10, 0);
             }
+        } else {
+            campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
+                127.0f + item->x - 33.0f, 127.0f + item->y - 87.0f, item->scale);
+            campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
+                127.0f + item->x - 33.0f,
+                28.0f + (127.0f + item->y - 87.0f), item->scale);
         }
         break;
-    case 5:
-        campMenuDrawSprite(parent, *labels, 0x20, item->alpha, item->x,
-            23.0f + item->y - 33.0f + (f32)(selected * 0x23), item->scale);
-        break;
-    case 4:
-        for (i = 0; i < 8; i++) {
-            campMenuDrawSprite(parent, *labels, 0x29, item->alpha, item->x,
-                item->y + (f32)(i * 0x23), item->scale);
-        }
-        campMenuDrawSprite(parent, *labels, 0x29, item->alpha,
-            271.0f + item->x, 175.0f + item->y, item->scale);
-        campMenuDrawSprite(parent, *labels, 0x29, item->alpha,
-            271.0f + item->x, 179.0f + item->y + (f32)((personaBase << 6) / 10), item->scale);
+    case 2:
+        if (FUN_0016f190(personaBase + selected + 0x13d0) != NULL)
+            FUN_003c7e20(item->texture, (s32)item->x, (s32)item->y,
+                         campDrawAlpha(item), 1, 10, 8, personaBase + selected);
         break;
     case 3:
         {
@@ -630,76 +621,57 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
             *(f32*)(work + 0x14) = item->y;
             work[0x18] = (u8)item->alpha;
             *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
-            parent = id;
-            id = (u32)FUN_001158b0(0, *labels, 0xa8);
-            work = (u8*)id;
+            FUN_001127d0(id, 1); FUN_00115980(id); parent = id;
+            id = (u32)FUN_001158b0(0, *labels, 0xa8); work = (u8*)id;
             *(u32*)(work + 0x2c) = item->texture;
-            *(f32*)(work + 0x10) = item->x;
-            *(f32*)(work + 0x14) = item->y - 235.0f;
-            work[0x18] = (u8)item->alpha;
-            *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
+            *(f32*)(work + 0x10) = item->x; *(f32*)(work + 0x14) = item->y - 235.0f;
+            work[0x18] = (u8)item->alpha; *(f32*)(work + 0x20) = -90.0f;
+            FUN_001127d0(id, 1); FUN_00115980(id);
         }
         break;
-    case 2:
-        if (FUN_0016f190(personaBase + selected + 0x13d0) != NULL) {
-            FUN_003c7e20(item->texture, (s32)item->x, (s32)item->y,
-                         campDrawAlpha(item), 1, 10, 8, personaBase + selected);
-        }
+    case 4:
+        for (i = 0; i < 8; i++)
+            campMenuDrawSprite(parent, *labels, 0x29, item->alpha, item->x,
+                item->y + (f32)(i * 0x23), item->scale);
+        campMenuDrawSprite(parent, *labels, 0x29, item->alpha,
+            271.0f + item->x, 175.0f + item->y, item->scale);
+        campMenuDrawSprite(parent, *labels, 0x29, item->alpha,
+            271.0f + item->x, 179.0f + item->y + (f32)((personaBase << 6) / 10), item->scale);
         break;
-    case 1:
-        for (i = 0; i < 2; i++) {
-            campMenuDrawSprite(parent, *labels, 0x2a, item->alpha,
-                23.0f + item->x - 33.0f,
-                117.0f + item->y + (f32)(i * 0x23) - 87.0f,
-                item->scale);
-        }
-        campMenuDrawSprite(parent, *labels, 0x28, item->alpha,
-            272.0f + item->x - 33.0f, item->y, item->scale);
-        if (FUN_0016f190(personaBase + selected + 0x13d0) != NULL) {
-            u32 col = (0xff - item->alpha) | 0xffffff00U;
-            campMenuDrawSprite(parent, DAT_00833B70, 0x1f, item->alpha, item->x, item->y, item->scale);
-            {
-                u32 personaName = DAT_007ce4ec + (personaBase + selected + 0x110) * 0x13;
-                FUN_00523ac8(text, 0x7cb66c, personaName);
-            }
-            FUN_003b2cb0(item->scale,
-                (s32)(68.0f + item->x - 33.0f),
-                (s32)(96.0f + item->y - 87.0f + 2.0f),
-                col, 6, 1, (const char*)text, 0x10, 0);
-            {
-                u32 dataEntry = (u32)FUN_0030c220((u32)(personaBase + selected + 0x110) & 0xffff);
+    case 5:
+        campMenuDrawSprite(parent, *labels, 0x20, item->alpha, item->x,
+            23.0f + item->y - 33.0f + (f32)(selected * 0x23), item->scale);
+        break;
+    case 6:
+        for (i = 0; i < 8; i++) {
+            s32 rowOffset = i * 0x23;
+            if (FUN_0016f190(personaBase + i + 0x13d0) != NULL) {
+                if (selected == i)
+                    campMenuDrawSpriteAlt(parent, DAT_00833B70, 0x1f, item->alpha,
+                        0xff, 0xbe, 0x5f, item->x, 1.0f + item->y + (f32)rowOffset, item->scale);
+                else
+                    campMenuDrawSpriteAlt(parent, DAT_00833B70, 0x1e, item->alpha,
+                        0x20, 0x43, 0x78, item->x, 1.0f + item->y + (f32)rowOffset, item->scale);
                 {
-                    s32 val = FUN_00173220(*(u16*)((u8*)dataEntry + 2));
-                    FUN_00523ac8(text, 0x7cb66c, val);
+                    u32 col = (0xff - item->alpha) | 0xffffff00U;
+                    FUN_00523ac8(text, 0x7cb66c,
+                        DAT_007ce4ec + (personaBase + i + 0x110) * 0x13);
+                    FUN_003b2cb0(item->scale, (s32)(35.0f + item->x),
+                        (s32)((8.0f + (9.0f + item->y + (f32)rowOffset)) - 3.0f - 2.0f),
+                        col, selected == i ? 6 : 10, 1, (const char*)text, 0x10, 0);
                 }
-                FUN_003b2cb0(item->scale,
-                    (s32)(68.0f + item->x - 33.0f),
-                    (s32)(122.0f + item->y - 87.0f + 3.0f),
-                    col, 10, 1, (const char*)text, 0x10, 0);
-                {
-                    s32 val = FUN_00173220(*(u16*)((u8*)dataEntry + 4));
-                    FUN_00523ac8(text, 0x7cb66c, val);
-                }
-                FUN_003b2cb0(item->scale,
-                    (s32)(68.0f + item->x - 33.0f),
-                    (s32)(122.0f + item->y - 87.0f + 29.0f + 3.0f),
-                    col, 10, 1, (const char*)text, 0x10, 0);
-            }
-        } else {
-            campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
-                127.0f + item->x - 33.0f, 127.0f + item->y - 87.0f,
-                item->scale);
-            campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
-                127.0f + item->x - 33.0f,
-                28.0f + (127.0f + item->y - 87.0f), item->scale);
+            } else if (selected == i)
+                campMenuDrawSprite(parent, *labels, 0x15, item->alpha,
+                    99.0f + item->x, 15.0f + item->y + (f32)rowOffset, item->scale);
+            else
+                campMenuDrawSprite(parent, *labels, 0x1c, item->alpha,
+                    99.0f + item->x, 15.0f + item->y + (f32)rowOffset, item->scale);
         }
         break;
-    case 0:
-        campMenuDrawSprite(parent, *labels, 0x1b, item->alpha, item->x, item->y, item->scale);
+    case 99:
+        campMenuDrawSprite(parent, *labels, 0, item->alpha, item->x, item->y, item->scale);
+        campMenuDrawSprite(parent, *labels, 0, item->alpha, 16.0f + item->x, item->y, item->scale);
+        campMenuDrawSprite(parent, *labels, 0, item->alpha, 530.0f + item->x, 30.0f + item->y, item->scale);
         break;
     default:
         break;

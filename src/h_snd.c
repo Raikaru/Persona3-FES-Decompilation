@@ -599,6 +599,24 @@ void H_Snd_00109180(s32 channelIndex)
 
     switch (channel->requestType)
     {
+        case HSND_START_NAMED_STREAM:
+            *controlData20 = 0;
+            control->pending = 1;
+            *handle = func_0054d030(control, sChannelData0[channelIndex],
+                                             sChannelData1[channelIndex]);
+            func_0054d238(*handle, 0);
+            if (channelIndex == 4)
+            {
+                func_0054d220(*handle, 0x5A);
+            }
+            else
+            {
+                func_0054d220(*handle, 0);
+            }
+            func_0054d0a0(*handle, channel->name);
+            func_0054d208(*handle, 1);
+            break;
+
         case HSND_START_BGM:
         case HSND_START_SE:
         case HSND_START_CDVD:
@@ -696,24 +714,6 @@ void H_Snd_00109180(s32 channelIndex)
             }
             func_0054d0e8(*handle, channel->modeData,
                           channel->modeArg.parameter);
-            break;
-
-        case HSND_START_NAMED_STREAM:
-            *controlData20 = 0;
-            control->pending = 1;
-            *handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            func_0054d238(*handle, 0);
-            if (channelIndex == 4)
-            {
-                func_0054d220(*handle, 0x5A);
-            }
-            else
-            {
-                func_0054d220(*handle, 0);
-            }
-            func_0054d0a0(*handle, channel->name);
-            func_0054d208(*handle, 1);
             break;
 
         default:

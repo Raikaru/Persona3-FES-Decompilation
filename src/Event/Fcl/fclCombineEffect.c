@@ -25,6 +25,8 @@ extern f32 func_0020c500(const f32 *value,f32 scale);
 extern void func_0020c320(s32 unused,const f32 *source,f32 scale,void *viewport);
 extern void FUN_003c7070_typed(f32 t, void *out, const void *a, const void *b);
 #pragma alias FUN_003c7070_typed FUN_003c7070
+extern f32 FUN_004c69f0_typed(RwV3d *out, const RwV3d *in);
+#pragma alias FUN_004c69f0_typed FUN_004c69f0
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -3374,6 +3376,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
       fStack_30 = fStack_20 * -1.0f;
       fStack_2c = fStack_1c * -1.0f;
       fStack_28 = fStack_18 * -1.0f;
+      FUN_004c69f0_typed((RwV3d *)&fStack_40,(const RwV3d *)&fStack_40);
+      FUN_004c69f0_typed((RwV3d *)&fStack_20,(const RwV3d *)&fStack_20);
       FUN_004cb750_typed(iVar1,&fStack_30,2);
       FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&uStack_10,2);
       FUN_004cb750_typed(iVar1,&fStack_40,2);
