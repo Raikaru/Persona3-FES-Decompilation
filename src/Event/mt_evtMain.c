@@ -709,6 +709,8 @@ void FUN_00386b70(u64 param_1,long param_2,int param_3);
 extern void FUN_00386b70_evt_main(int param_1,int param_2,int param_3);
 #pragma alias FUN_005225a8_evt_main FUN_005225a8
 extern void FUN_005225a8_evt_main(void *param_1);
+#pragma alias FUN_00195020_evt_main FUN_00195020
+extern void FUN_00195020_evt_main(u32 param_1);
 void FUN_00386c40(int param_1,int param_2);
 void FUN_00386d50(int param_1);
 void FUN_00386e20(int param_1,u32 param_2);
@@ -15478,7 +15480,7 @@ void FUN_0036f260(void)
 
   if (((puVar3[1] & 8) == 0) && (puVar3[0x24d] != 0)) {
 
-    FUN_00195020();
+    FUN_00195020_evt_main(puVar3[0x24d]);
 
     puVar3[0x24d] = 0;
 

@@ -8379,7 +8379,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
     }
     uVar2 = FUN_003082f0(DAT_00957190,DAT_0095719c);
     uVar3 = FUN_00306e80(DAT_00957190,(short)uVar2);
-    unaff_f20 = (float)uVar3 / 100.0;
+    unaff_f20 = (float)uVar3 / 100.0f;
     break;
   case 0xc:
     if (DAT_00957190 == 0) {
@@ -8390,7 +8390,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
     }
     uVar2 = FUN_003082f0(DAT_00957190,DAT_0095719c);
     uVar3 = FUN_00306e80(DAT_00957194,(short)uVar2);
-    unaff_f20 = (float)uVar3 / 100.0;
+    unaff_f20 = (float)uVar3 / 100.0f;
     break;
   case 0xd:
     if (4 < (s32)param_2) {
@@ -8438,7 +8438,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
     else {
       uVar3 = FUN_00306e80(iVar1,(short)sVar5);
     }
-    unaff_f20 = (float)uVar3 / 100.0;
+    unaff_f20 = (float)uVar3 / 100.0f;
     break;
   case 0x11:
     if (0x1cf < DAT_0095719c) {
@@ -8512,7 +8512,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
                                 0x26);
     break;
   case 0x16:
-    unaff_f20 = 31000.0;
+    unaff_f20 = 31000.0f;
     break;
   case 0x17:
     if (DAT_00957190 == 0) {

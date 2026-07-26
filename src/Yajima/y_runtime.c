@@ -1529,6 +1529,8 @@ void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,u64 pa
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,void *param_2);
+#pragma alias FUN_0045bcb0_u64 FUN_0045bcb0
+extern void FUN_0045bcb0_u64(int param_1,u64 param_2);
 void FUN_0045bd90(u64 param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
@@ -20457,7 +20459,7 @@ LAB_0045bfe0:
     }
     else {
       FUN_00521250_typed((void *)(auStack_4),(const void *)(((u8 *)PTR_DAT_006b4de0)[*(int *)(iVar1 + 0x20)] + *(int *)(iVar1 + 0x1c) * 2),2);
-      FUN_0045bcb0(param_1,*(u64 *)(auStack_4));
+      FUN_0045bcb0_u64(param_1,*(u64 *)(auStack_4));
       FUN_0010a4e0(0,0,0,1);
     }
   }
