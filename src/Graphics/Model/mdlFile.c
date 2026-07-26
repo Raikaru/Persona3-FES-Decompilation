@@ -2381,7 +2381,7 @@ u64 FUN_0031e420(short param_1,u32 param_2)
 
   
 
-  if ((u16)param_1 == 1) {
+  if (param_1 == 1) {
 
     if ((param_2 & 0xffff) < 2) {
 
@@ -22808,7 +22808,7 @@ u32 *FUN_00332880(int *arg0)
   result[1] = -1;
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
-  FUN_00332a30((int *)result,(u16)(**(u16 **)((int)arg0 + 0x30)),(int *)((u8 *)arg0 + 0xc));
+  FUN_00332a30((int *)result,*(u16 *)(*(int *)((u8 *)arg0 + 0x30)),(int *)((u8 *)arg0 + 0xc));
   FUN_00332ac0(result,(u16)(**(u16 **)((int)arg0 + 0x30)),model);
   FUN_00332990(result,(int)arg0);
   return result;

@@ -1452,7 +1452,7 @@ u32 clndGetCurrentWeekDay()
 }
 
 // FUN_0017dcf0 NONMATCHING
-u32 clndIsHolidayOrSunday()
+u8 clndIsHolidayOrSunday()
 {
     s16 daysSinceApr5;
     s16 currDayOfMonth;
@@ -1461,7 +1461,7 @@ u32 clndIsHolidayOrSunday()
     s32 month;
     const Holiday* holidays;
     s32 day;
-    const s32 sentinel = -1;
+    s16 sentinel;
 
     daysSinceApr5 = datGetDaysSinceApr5();
     if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
@@ -1475,6 +1475,7 @@ u32 clndIsHolidayOrSunday()
     month = currMonth;
     day = currDayOfMonth;
     holidays = sHolidays;
+    sentinel = -1;
     for (; i < 0x164; i++)
     {
         if (holidays[i].month == sentinel)

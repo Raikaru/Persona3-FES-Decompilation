@@ -14729,7 +14729,6 @@ void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
   int iVar2;
   int iVar3;
   f32 fVar1;
-  iVar2 = 0;
 
   iVar3 = 0;
   if (*(int *)(param_4 + 0x190) == (int)param_3) {
