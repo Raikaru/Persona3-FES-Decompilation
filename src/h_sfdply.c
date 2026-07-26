@@ -1917,27 +1917,28 @@ void func_0010dd10(HSfdImage* image, const u8* source)
 // FUN_0010DDC0 NONMATCHING
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
+    u8 opaque;
     s32 x;
     s32 y;
     u8* dst;
-    u8* pixel;
     s32 width;
     s32 height;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    opaque = 0xFF;
+    asm volatile("" : "+r"(opaque));
     y = 0;
     while (y < height)
     {
         x = 0;
         while (x < width)
         {
-            pixel = dst + (x * 4);
-            pixel[0] = source[0];
-            pixel[1] = source[1];
-            pixel[2] = source[2];
-            pixel[3] = 0xFF;
+            dst[(x * 4) + 0] = source[0];
+            dst[(x * 4) + 1] = source[1];
+            dst[(x * 4) + 2] = source[2];
+            dst[(x * 4) + 3] = opaque;
             source += 3;
             x++;
         }

@@ -708,15 +708,15 @@ void* func_001a7370(void* material, u32* state)
         }
         state[2] = 1;
     }
-    for (candidate = 0; candidate < 10 && state[0] != kclump_word((void*)0x00678c00, candidate * 4); candidate++)
+    for (candidate = 0; candidate < 10 && state[0] != D_00678C00[candidate]; candidate++)
     {
     }
-    for (current = 0; current < 10 && value != kclump_word((void*)0x00678c00, current * 4); current++)
+    for (current = 0; current < 10 && value != D_00678C00[current]; current++)
     {
     }
     if (candidate < current)
     {
-        state[0] = kclump_word((void*)0x00678c00, current * 4);
+        state[0] = D_00678C00[current];
     }
     selected = K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C48);
     if (selected == 1)

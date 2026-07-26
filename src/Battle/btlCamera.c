@@ -403,7 +403,7 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
     const BtlCameraStateEntry* bossEntry;
     s32 temp_3;
     s32 temp_6;
-    long var_7;
+    u64 var_7;
 
     bossEntry = btlBossGetCameraStateEntry(state);
     if (bossEntry == NULL)

@@ -419,7 +419,7 @@ extern void FUN_00113a30_va(f32 first, ...);
 extern void FUN_001140d0(u32 param_1, u32 param_2, u32 param_3, u64 param_4, u32 param_5, u32 param_6, u32 param_7);
 extern u32 FUN_001158b0(int param_1, u32 param_2, u32 param_3);
 #pragma alias FUN_00115980_arg FUN_00115980
-extern code FUN_00115980;
+extern void FUN_00115980(u32 param_1);
 extern void FUN_00115980_arg(u32 param_1);
 #pragma alias FUN_001159f0_va FUN_001159f0
 extern void FUN_001159f0_va(f32 first, ...);
@@ -12670,7 +12670,7 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
   *(float *)(iVar1 + 0x10) = param_1;
   *(float *)(iVar1 + 0x14) = param_2;
   FUN_001127d0(uVar2,1);
-  FUN_00115980_arg(uVar2);
+  FUN_00115980(uVar2);
   return;
 }
 
@@ -12697,7 +12697,7 @@ void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int pa
   *(float *)(iVar1 + 0x10) = param_1;
   *(float *)(iVar1 + 0x14) = param_2;
   FUN_001127d0(uVar2,1);
-  FUN_00115980_arg(uVar2);
+  FUN_00115980(uVar2);
   return;
 }
 
