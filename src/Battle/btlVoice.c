@@ -7330,7 +7330,6 @@ void func_002e92c0(void)
   f32 uStack_10;
   f32 uStack_c;
   f32 uStack_8;
-  
   uStack_c = 0.0f;
   for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
     sVar1 = *(short *)(iVar2 + 0xa4);

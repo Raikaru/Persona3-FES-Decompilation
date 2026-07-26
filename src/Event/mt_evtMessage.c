@@ -3038,7 +3038,7 @@ void FUN_003a1f30(int param_1)
   }
 
 
-  if (*(int *)(iVar1 + 0x14) != 0) {
+    if (*(int *)(iVar1 + 0x14) != 0) {
 
     if (*(int *)(iVar1 + 0x60) != 0) {
 

@@ -834,7 +834,7 @@ u32 func_001114b0(KwlnTask* task)
 void func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
-    register s32 value;
+    s32 value;
 
     work = (MaestroStreamWork*)task->workData;
     value = 1;
@@ -4166,7 +4166,7 @@ u32 func_001167f0(u64 param_1)
 void func_00116cf0(int param_1)
 {
     u8* work;
-    register s32 i;
+    s32 i;
     s32 j;
 
     work = *(u8**)(param_1 + 0x3c);
