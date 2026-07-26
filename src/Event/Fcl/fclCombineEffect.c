@@ -558,17 +558,21 @@ u32 FUN_004176f0(int param_1,u16 param_2,int param_3)
 
 u64 FUN_004177e0(int param_1)
 {
-  u32 uVar1;
-  u32 uVar2;
+  #pragma alias DAT_006b2cf0_abs DAT_006b2cf0
+  extern u32 DAT_006b2cf0_abs[];
+  #pragma alias FUN_004176f0_s16 FUN_004176f0
+  u32 FUN_004176f0_s16(int,s16,int);
   int iVar3;
   u32 *puVar4;
   u32 *puVar5;
+  u32 uVar1;
+  u32 uVar2;
   u32 uVar6;
   u32 auStack_80[32];
 
-  puVar5 = &DAT_006b2cf0;
-  puVar4 = auStack_80;
   iVar3 = 0x10;
+  puVar5 = DAT_006b2cf0_abs;
+  puVar4 = auStack_80;
   do {
     uVar1 = *puVar5;
     uVar2 = puVar5[1];
@@ -586,9 +590,9 @@ u64 FUN_004177e0(int param_1)
   *(u32 **)((int)param_1 + 0x34) = puVar4;
 
   for (uVar6 = 0; uVar6 < 0x10; uVar6 = uVar6 + 1) {
-    FUN_004176f0(param_1,
-                 *(u16 *)((int)auStack_80 + uVar6 * 8),
-                 *(int *)((int)auStack_80 + uVar6 * 8 + 4));
+    FUN_004176f0_s16(param_1,
+                     *(s16 *)((int)auStack_80 + uVar6 * 8),
+                     *(int *)((int)auStack_80 + uVar6 * 8 + 4));
   }
   FUN_004180e0(*(u32 **)(param_1 + 0x3c),0x40);
   return 0;

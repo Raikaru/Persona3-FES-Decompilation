@@ -1909,7 +1909,7 @@ void func_001d1360(void)
     func_001d2a10();
 }
 #pragma opt_loop_invariants off
-// FUN_001d1640 NONMATCHING
+// FUN_001d1640
 void func_001d1640(FldUnit* unit, s32 destroyModel)
 {
     u32 valid;

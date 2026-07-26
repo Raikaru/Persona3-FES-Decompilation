@@ -401,6 +401,11 @@ void func_00358410(void)
 // Remaining residual is MWCC's fixed argument-register order for getRenderState/
 // setRenderState calls (simple-load arg vs computed-address arg); 2 independent
 // reorder attempts (temp var, syntactic variant) had zero effect on emitted code.
+static inline void effMiscGetRenderState(void* value, u32 renderState)
+{
+    (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState, value);
+}
+
 // FUN_00358460 NONMATCHING
 void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
