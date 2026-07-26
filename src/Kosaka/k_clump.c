@@ -87,6 +87,7 @@ extern u32 D_00960184[];
 extern char D_00678C78[];
 #pragma alias D_00678C78_abs D_00678C78
 extern char D_00678C78_abs[];
+extern u32 D_00678C00[];
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
 extern const char D_00678C88[];
@@ -1330,24 +1331,28 @@ void func_001a8140(void* state, u32 mode)
 // FUN_001a8820 NONMATCHING
 void* func_001a8820(void* item)
 {
-    if ((*(u8*)((u8*)item + 2) & 4) != 0)
+    if ((*(u8*)((u8*)item + 2) & 4) == 0)
     {
-        if (*(void**)((u8*)item + 0x18) != NULL)
+        return item;
+    }
+    if (*(void**)((u8*)item + 0x18) == NULL)
+    {
+        return item;
+    }
+    {
+        RwSphere* sphere = func_004912b0(item);
+        if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
         {
-            RwSphere* sphere = func_004912b0(item);
-            if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+            (*(void (**)(void))((u8*)item + 0x48))();
+            if (*(u32*)0x007ce154 == 1)
             {
-                (*(void (**)(void))((u8*)item + 0x48))();
-                if (*(u32*)0x007ce154 == 1)
-                {
-                    RwV3d line;
-                    RwV3d* position;
-                    position = (RwV3d*)((u8*)func_004912b0(item) + 0x0c);
-                    line.x = position->x;
-                    line.y = position->y;
-                    line.z = position->z;
-                    primSphereLine3D(position, *(f32*)0x007ce154, NULL, 0);
-                }
+                RwV3d line;
+                RwV3d* position;
+                position = (RwV3d*)((u8*)func_004912b0(item) + 0x0c);
+                line.x = position->x;
+                line.y = position->y;
+                line.z = position->z;
+                primSphereLine3D(position, *(f32*)0x007ce154, NULL, 0);
             }
         }
     }
