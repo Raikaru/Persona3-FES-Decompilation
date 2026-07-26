@@ -1977,7 +1977,7 @@ void func_001d1860(u32 value)
 }
 
 
-// FUN_001d1910 NONMATCHING
+// FUN_001d1910
 void func_001d1910(void)
 {
     s32 i;

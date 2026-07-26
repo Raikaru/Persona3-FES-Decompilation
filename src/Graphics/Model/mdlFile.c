@@ -33456,8 +33456,8 @@ u32 FUN_0033ce10(int param_1)
 {
   int iVar1;
   int iVar3;
+  u64 uVar4;
   u8 *puVar2;
-  u32 uVar4;
 
   iVar3 = *(int *)(param_1 + 0x3c);
   iVar1 = *(int *)(param_1 + 0x40);
