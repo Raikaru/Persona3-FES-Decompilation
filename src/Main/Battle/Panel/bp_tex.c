@@ -869,6 +869,7 @@ void func_0021e170(void* destination,
                    const f32* size)
 {
     f32 points[8];
+    f32 sourcePoints[8];
     f32 length;
     f32 angle;
     f32 sine;
@@ -881,18 +882,18 @@ void func_0021e170(void* destination,
                    direction[1] * direction[1]);
     angle = func_0052ea18(direction[0] / length,
                           -(direction[1] / length));
-    points[0] = -size[0] / 2.0f;
-    points[1] = -size[1] / 2.0f;
-    points[2] = size[0] / 2.0f;
-    points[3] = points[1];
-    points[4] = points[2];
-    points[5] = size[1] / 2.0f;
-    points[6] = points[0];
-    points[7] = points[5];
+    sourcePoints[0] = -size[0] / 2.0f;
+    sourcePoints[1] = -size[1] / 2.0f;
+    sourcePoints[2] = size[0] / 2.0f;
+    sourcePoints[3] = sourcePoints[1];
+    sourcePoints[4] = sourcePoints[2];
+    sourcePoints[5] = size[1] / 2.0f;
+    sourcePoints[6] = sourcePoints[0];
+    sourcePoints[7] = sourcePoints[5];
     for (i = 0; i < 4; i++)
     {
-        x = points[i * 2];
-        y = points[i * 2 + 1];
+        x = sourcePoints[i * 2];
+        y = sourcePoints[i * 2 + 1];
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
         points[i * 2] = x * cosine - y * sine;
