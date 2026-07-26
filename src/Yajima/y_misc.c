@@ -4857,7 +4857,7 @@ u32 FUN_004281f0(u32 param_1)
 
 }
 
-// FUN_00429C60 NONMATCHING
+// FUN_00429C60
 
 
 void FUN_00429c60(int param_1)
@@ -4898,7 +4898,7 @@ void FUN_00429c60(int param_1)
 
   }
 
-  (*DAT_0096017c)(*(u32 *)(param_1 + 0x3c));
+  DAT_0096017c_abs[0](*(u32 *)(param_1 + 0x3c));
 
   return;
 
