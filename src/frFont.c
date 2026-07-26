@@ -31,6 +31,7 @@ typedef struct FrFontState {
 
 extern u32 DAT_006a2370;
 extern const char DAT_006a2730[];
+extern u8 DAT_006a2830[];
 extern u32 DAT_007cd4f8;
 extern s16 DAT_007cd500;
 extern u32 DAT_007ce638;
@@ -895,7 +896,7 @@ void FUN_003b01d0(int param_1,int param_2)
 }
 #define FUN_003b01d0(...) ((void (*)(...))FUN_003b01d0)(__VA_ARGS__)
 #undef FUN_003b03a0
-// FUN_003B03A0 NONMATCHING
+// FUN_003B03A0
 
 
 int FUN_003b03a0(void)
@@ -905,8 +906,7 @@ int FUN_003b03a0(void)
 {
 
   int iVar1;
-
-  long lVar2;
+  int lVar2;
 
   
 
@@ -914,7 +914,7 @@ int FUN_003b03a0(void)
 
   if (lVar2 == 0) {
 
-    FUN_0019d400(0x6a2830,0x6a2730,0x63f);
+    FUN_0019d400(DAT_006a2830, DAT_006a2730, 0x63f);
 
   }
 

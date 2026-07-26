@@ -7,6 +7,7 @@ typedef u8 bool;
 #endif
 
 extern u8 D_0069DFF0[];
+extern u8 D_0069E088[];
 extern u8 DAT_006a0000[];
 extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
@@ -696,12 +697,18 @@ void FUN_003858c0(void);
 void FUN_00385990(u32 param_1,int param_2,int param_3,int param_4,u32 param_5, u32 param_6);
 void FUN_00385b20(int param_1);
 void FUN_00385b90(void);
+#pragma alias FUN_00385b90_evt_main FUN_00385b90
+extern void FUN_00385b90_evt_main(u32 param_1);
 void FUN_00385ba0(void);
 void FUN_00386110(u32 *param_1,u32 *param_2);
 void FUN_00386210(u32 *param_1,u32 *param_2);
 void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
 void FUN_00386aa0(void);
 void FUN_00386b70(u64 param_1,long param_2,int param_3);
+#pragma alias FUN_00386b70_evt_main FUN_00386b70
+extern void FUN_00386b70_evt_main(int param_1,int param_2,int param_3);
+#pragma alias FUN_005225a8_evt_main FUN_005225a8
+extern void FUN_005225a8_evt_main(void *param_1);
 void FUN_00386c40(int param_1,int param_2);
 void FUN_00386d50(int param_1);
 void FUN_00386e20(int param_1,u32 param_2);
@@ -15479,17 +15486,17 @@ void FUN_0036f260(void)
 
   FUN_001a0420(0);
 
-  FUN_00385b90();
+  FUN_00385b90_evt_main((u32)puVar3);
 
   FUN_003951a0(0x1419);
 
   FUN_003cf440();
 
-  FUN_00386b70(*puVar3,0,0x990);
+  FUN_00386b70_evt_main(*puVar3,0,0x990);
 
   FUN_00386cd0();
 
-  FUN_005225a8(0x69e088);
+  FUN_005225a8_evt_main(&D_0069E088);
 
   return;
 

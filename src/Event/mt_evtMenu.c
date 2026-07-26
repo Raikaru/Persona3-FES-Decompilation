@@ -686,6 +686,8 @@ extern u32 iGpffffb904;
 extern u32 iGpffffb920;
 extern u32 iGpffffb924;
 extern char *s_1234567890A_0069f7c0;
+#pragma alias s_1234567890A_0069f7c0_abs s_1234567890A_0069f7c0
+extern u8 s_1234567890A_0069f7c0_abs[];
 extern char *s_ADX_SE_MODE_0069db88;
 extern char *s_BATTLE_BLUR_USE__0069ddf0;
 extern char *s_BISTA_MODE_0069dca8;
@@ -1053,7 +1055,7 @@ void FUN_0038a180(int param_1,int param_2);
 void FUN_0038a260();
 #pragma alias FUN_0038a260_f FUN_0038a260
 extern void FUN_0038a260_f(f32 param_1,int param_2,int param_3,int param_4,
-                            void *param_5);
+                            u32 param_5);
 #pragma alias FUN_00530da0_evt FUN_00530da0
 extern u32 FUN_00530da0_evt(f32 param_1);
 #pragma alias FUN_0038a260_evt FUN_0038a260
@@ -9537,7 +9539,7 @@ void FUN_0037a1e0(int param_1,int param_2,int param_3,int param_4)
 
     uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
 
-    FUN_0038a260_f(uVar2,param_1 * 0xc,param_2 * 0xc,0,s_1234567890A_0069f7c0[iVar1 + param_3 * 0xc]);
+    FUN_0038a260_f(uVar2,param_1 * 0xc,param_2 * 0xc,0,s_1234567890A_0069f7c0_abs[iVar1 + param_3 * 0xc]);
 
     param_1 = param_1 + 0xc0;
 
