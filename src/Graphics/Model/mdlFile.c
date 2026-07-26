@@ -13562,36 +13562,19 @@ void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
 
 void FUN_00329890(float param_1)
 {
-  __int128 extraout_vf10;
-  Vec128 input;
-  u32 qxBits;
-  u32 qyBits;
-  u32 qzBits;
   float s;
   float c;
-  float x;
-  float y;
-  float z;
   float oneMinus;
   float row0;
   float row1;
-  float row2;
   volatile float vuMatrixSum;
 
   s = FUN_0052e6d8_f32(param_1);
   c = FUN_0052e878_f32(param_1);
-  input = _sqc2(extraout_vf10);
-  qxBits = input._0_4_;
-  qyBits = input._4_4_;
-  qzBits = input._8_4_;
-  x = (float)qxBits;
-  y = (float)qyBits;
-  z = (float)qzBits;
   oneMinus = 1.0f - s;
-  row0 = (1.0f - x * x) * s + x * x;
-  row1 = z * c + x * y * oneMinus;
-  row2 = x * z * oneMinus - y * c;
-  vuMatrixSum = row0 + row1 + row2;
+  row0 = oneMinus * s;
+  row1 = c * oneMinus;
+  vuMatrixSum = row0 + row1;
 }
 
 

@@ -55,8 +55,10 @@ extern u32 func_0018b700(void* animation);
 KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
                        f32 alpha)
 {
+    f32 savedAlpha;
     CampPersonaDispCtlWork* work;
     KwlnTask* task;
+    savedAlpha = alpha;
 
     work = (CampPersonaDispCtlWork*)(*DAT_00960184_abs)(1, 0x12c, 0x40000);
     if (work == NULL) {
@@ -69,7 +71,7 @@ KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
     }
     work->personaId = personaId;
     work->mode = mode;
-    work->alpha = alpha;
+    work->alpha = savedAlpha;
     return task;
 }
 
