@@ -3665,9 +3665,6 @@ void func_001f7210(void)
                     kind = 26;
                     value = (s32)*(s8 *)(effect_table + 25);
                     break;
-                default:
-                    K_ASSERT(0, 0x59d);
-                    break;
                 }
             }
         }
@@ -4158,12 +4155,16 @@ animation_tail:
         if (slot_count == BR_U32(work, 0x3418) - 1) {
             BR_U32(work, 0) |= 0x40;
         }
-        if ((BR_U32(work, 0) & 0x800) == 0) {
-            K_ASSERT(work != NULL, 0x770);
-            BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
-        } else {
+        if ((BR_U32(work, 0) & 0x800) != 0) {
             func_001f9c60();
-            BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
+        }
+        if (kind == 9) {
+            if ((BR_U32(work, 0) & 0x800) == 0) {
+                K_ASSERT(work != NULL, 0x770);
+            }
+            BR_U32(work, 0x34e4) = 1;
+        } else {
+            BR_U32(work, 0x34e4) = 0;
         }
     }
 }
