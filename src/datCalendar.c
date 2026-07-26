@@ -4285,9 +4285,10 @@ void func_00186050(void* resource, u64 position, u32 alpha)
     packed.value = position;
     y = packed.coords.y;
     asm volatile("" : "+m"(y));
+    x = packed.coords.x;
     func_001159f0(unused, resource, 0x2b, alpha & 0xff,
-                  packed.coords.x, y, 48.0f);
-    x = packed.coords.x + 449.0f;
+                  x, y, 48.0f);
+    x = x + 449.0f;
     asm volatile("" : "+m"(x));
     func_001159f0(unused, resource, 0x2c, alpha & 0xff,
                   x, y, 48.0f);

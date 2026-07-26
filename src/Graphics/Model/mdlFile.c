@@ -47169,7 +47169,7 @@ void FUN_0034ac70(int param_1)
 // _abs vtable caching, and address-before-flag-check ordering (98% match).
 // Residual: retail materializes 0x69cb80 via lui+addiu(-0x3480), MWCC here
 // chooses lui+ori(0xcb80) for the identical value -- literal-encoding floor.
-// FUN_0034ADA0 NONMATCHING
+// FUN_0034ADA0
 
 
 void FUN_0034ada0(int param_1)
@@ -47178,7 +47178,7 @@ void FUN_0034ada0(int param_1)
   u8 *puVar2;
   u8 auStack_100 [256];
   void (**setState)(int, int);
-  void (**setBuffer)(int, void*, int, int, int);
+  void (**setBuffer)(int, void*, int, void*, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
   puVar2 = (u8 *)(iVar1 + 0xc0);
@@ -47192,8 +47192,8 @@ void FUN_0034ada0(int param_1)
 
     RpSkyRenderStateSet(3,0x31001);
 
-    setBuffer = (void (**)(int, void*, int, int, int))DAT_009600a4_abs;
-    (*setBuffer)(3,auStack_100,4,0x69cb80,6);
+    setBuffer = (void (**)(int, void*, int, void*, int))DAT_009600a4_abs;
+    (*setBuffer)(3,auStack_100,4,DAT_0069cb80_abs,6);
 
   }
 

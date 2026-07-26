@@ -606,7 +606,6 @@ u64 FUN_003aed10(u64 param_1,int param_2)
 {
   int offset;
   int base;
-  int key;
   u8 low;
   u8 high;
   short sVar2;
@@ -623,7 +622,7 @@ u64 FUN_003aed10(u64 param_1,int param_2)
   } else {
     high = high - 1;
   }
-  if (((key = (low & 0xff) | (high << 8))) != 0) goto normal_path;
+  if (((high << 8) | (low & 0xff)) != 0) goto normal_path;
   sVar2 = FUN_0016dd40();
   if (sVar2 == 0) {
     FUN_0019d3f0("frTagTable.c",0x38c);
