@@ -53,6 +53,8 @@ extern u64 FUN_003a4360_typed(u64 param_1,long param_2);
 extern void FUN_003a27c0_typed(int param_1,s16 param_2);
 #pragma alias FUN_003a2830_nm_typed FUN_003a2830
 extern u32 FUN_003a2830_nm_typed(int param_1);
+#pragma alias FUN_003a2750_nm_typed FUN_003a2750
+extern s16 FUN_003a2750_nm_typed(int param_1);
 extern u8 DAT_0095be90_abs[];
 #pragma alias FUN_003c7d50_ptr FUN_003c7d50
 extern u8 *FUN_003c7d50_ptr(void);
@@ -2112,7 +2114,7 @@ u32 FUN_003c78d0(void)
 
   else {
 
-    lVar4 = FUN_003a2750();
+    lVar4 = FUN_003a2750_nm_typed(*(int *)lVar3);
 
     if (lVar4 < 0) {
 
@@ -2138,7 +2140,7 @@ u32 FUN_003c78d0(void)
 
       else {
 
-        uVar1 = FUN_003a2830();
+        uVar1 = FUN_003a2830_nm_typed(*(int *)p);
 
       }
 
