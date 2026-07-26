@@ -5982,8 +5982,8 @@ void FUN_003a8350(int param_1)
 {
 
   float fVar1;
-  volatile float fVar3;
   volatile float fVar2;
+  volatile float fVar3;
   int iVar2;
   int iVar3;
 
