@@ -30,7 +30,7 @@ extern int FUN_00195540(int);
 extern void FUN_00396f50_int(int);
 #pragma alias FUN_00397030_int FUN_00397030
 extern void FUN_00397030_int(int);
-extern void FUN_00195020(u32 param_1);
+extern void FUN_00195020(void *param_1);
 extern void FUN_0019d3f0(const char *,u32);
 extern int FUN_0035ed20(int);
 extern int FUN_0035f130(void);
@@ -181,7 +181,7 @@ void FUN_00397030(int param_1)
     offset = param_1 * 0xc;
     state_ptr = (u32 *)(base + offset + 8);
     if (*state_ptr != 0) {
-        FUN_00195020(*state_ptr);
+        FUN_00195020((void *)*state_ptr);
         *state_ptr = 0;
         *(u32 *)(base + offset) = 0;
     }
@@ -223,7 +223,7 @@ void FUN_003970d0(void)
         iVar2 = *puVar5;
         if (iVar2 != 0) {
 
-          FUN_00195020(iVar2);
+          FUN_00195020((void *)iVar2);
 
           *puVar5 = 0;
           *puVar4 = 0;

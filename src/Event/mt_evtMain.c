@@ -458,6 +458,10 @@ extern u32 FUN_00360ed0_evt(u32 param_1);
 extern void FUN_003b9550_evt(u32 param_1,u32 param_2);
 #pragma alias FUN_00388df0_evt FUN_00388df0
 extern u32 FUN_00388df0_evt(u32 param_1,u32 *param_2);
+#pragma alias FUN_003b8ff0_evt FUN_003b8ff0
+extern u32 FUN_003b8ff0_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
+#pragma alias FUN_003b8e10_evt FUN_003b8e10
+extern u64 FUN_003b8e10_evt(u16 param_1,u8 param_2,short param_3,u32 param_4);
 u64 FUN_003952d0(u64 param_1,int param_2,s16 param_3);
 u64 FUN_003952b0(u64 param_1,int param_2);
 u64 FUN_003952a0(u64 param_1,int param_2);
@@ -5479,7 +5483,7 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
           uVar5 = 1;
         }
         sVar6 = *(short *)((int)puVar1 + 0x14);
-        uVar7 = *(u16 *)(param_3 + 0xc);
+        FUN_003b8e10_evt(uVar7,uVar8,sVar6,uVar5);
         uVar8 = (u8)puVar1[0xc];
         FUN_003b8e10(uVar7,uVar8,sVar6,uVar5);
 
@@ -5789,7 +5793,7 @@ void FUN_003658b0(u32 param_1,int param_2)
 
               }
 
-              FUN_003b8ff0(fVar6,lVar3,0,(char)puVar1[10],puVar1[0xb],
+              FUN_003b8ff0_evt(fVar6,lVar3,0,(char)puVar1[10],puVar1[0xb],
 
                            *(char *)((int)puVar1 + 0x15) == '\0',puVar1[0xc]);
 
