@@ -907,6 +907,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
     case 8:
         alpha = (0xffU - item->alpha) | 0xffffff00U;
         for (i = 0; i < 3; i++) {
+            f32 cx = item->x + 120.0f - 60.0f;
+            f32 cy = item->y + 102.0f - 108.0f + (f32)i * 35.0f - 3.0f;
             record = FUN_0017c670(i);
             if (record == NULL) {
                 frame = i == selected ? 0xa4 : 0x1d;
@@ -983,7 +985,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         valueA + 0xb, item->alpha, 0xff, 0xbe, 0x5f,
                         item->x + 14.0f, item->y + (f32)(i * 0x23), item->scale);
                 }
-                FUN_0017c6c0((s32)item->x + 60, (s32)(item->y + (f32)(i * 0x23) - 2.0f),
+                FUN_0017c6c0((s32)cx, (s32)(cy - 2.0f),
                              item->texture, alpha, 1, 6, *(u16*)record);
             } else {
                 if (FUN_00403380(*(u16*)record) == 2) {
@@ -1085,7 +1087,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         valueA + 0xb, fadeAlpha,
                         item->x + 14.0f, item->y + (f32)(i * 0x23), item->scale);
                 }
-                FUN_0017c6c0((s32)item->x + 60, (s32)(item->y + (f32)(i * 0x23) - 2.0f),
+                FUN_0017c6c0((s32)cx, (s32)(cy - 2.0f),
                              item->texture, alpha, 1, 10, *(u16*)record);
             }
         }
