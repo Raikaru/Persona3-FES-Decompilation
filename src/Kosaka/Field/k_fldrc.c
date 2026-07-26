@@ -411,7 +411,6 @@ void K_Fldrc_DestroyFldFpc()
  * from retail in the large dispatch prologue.
  */
 #pragma push
-#pragma opt_cse off
 // FUN_001b0a20 NONMATCHING
 void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
 {
