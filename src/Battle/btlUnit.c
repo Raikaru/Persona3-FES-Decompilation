@@ -1599,14 +1599,15 @@ u32 btlUnitUpdateMovePacket(void* work)
             }
             else if (unit->unk_4f0 == 3)
             {
-                unit->unk_ec.x = unit->pos.x;
-                unit->unk_ec.y = unit->pos.z;
-                unit->unk_ec.z = packet->targetPos.x;
-                unit->unk_f8 = packet->targetPos.z;
-                unit->unk_4ec = 3;
-                unit->movementFlags &= ~0x20;
-                unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_MOVE;
-                unit->movementFlags |= 0x10;
+                direction.x = unit->pos.x - packet->targetPos.x;
+                direction.y = 0.0f;
+                direction.z = unit->pos.z - packet->targetPos.z;
+                RwV3dNormalize(&direction, &direction);
+                target = packet->targetPos;
+                target.x += direction.x * packet->unk_1c;
+                target.y += direction.y * packet->unk_1c;
+                target.z += direction.z * packet->unk_1c;
+                unit->unk_dc = target;
                 packet->state++;
             }
             break;

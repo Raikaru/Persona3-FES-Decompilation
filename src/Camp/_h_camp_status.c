@@ -2481,10 +2481,14 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     void* glyph;
     CampVec2 bottomPos;
     CampVec2 drawPos;
+    CampVec2 bottomSpritePos;
+    CampVec2 bottomTextPos;
     char text[0x100];
     bottomPos = position;
     bottomPos.x += 12.0f;
     bottomPos.y += 96.0f;
+    bottomSpritePos = bottomPos;
+    bottomTextPos = bottomPos;
 
     if (frame >= 0) {
     if (frame < 5) {
@@ -2606,12 +2610,17 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         }
     }
     h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    bottomSpritePos.x += 21.0f;
+    bottomSpritePos.y += 86.0f;
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11,
-                             (u8)alpha, bottomPos.x + 21.0f,
-                             bottomPos.y + 86.0f, scale);
+                             (u8)alpha, bottomSpritePos.x,
+                             bottomSpritePos.y, scale);
+    bottomTextPos.x += 275.0f;
+    bottomTextPos.y += 86.0f;
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x22,
-                             (u8)alpha, bottomPos.x + 275.0f,
-                             bottomPos.y + 86.0f, scale);
+                             (u8)alpha, bottomTextPos.x,
+                             bottomTextPos.y, scale);
+    bottomTextPos.y += 2.0f;
     if (*((u8*)persona + 4) == 0x63) {
         FUN_00523ac8(text, gp0xffff8980);
     }
@@ -2619,8 +2628,8 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         rank = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, rank);
     }
-    FUN_0040eb50(0x42c80000, (s32)(bottomPos.x + 275.0f),
-                 (s32)(bottomPos.y + 88.0f), 0xff - alpha,
+    FUN_0040eb50(0x42c80000, (s32)bottomTextPos.x,
+                 (s32)bottomTextPos.y, 0xff - alpha,
                  4, text, 1);
 }
 
@@ -2887,6 +2896,14 @@ typedef KwlnTask* (*CampStatusPersonaChildCreateFn)(KwlnTask* parent,
                   (alphaMode), *(u64*)&(start), *(u64*)&(end), \
                   0, 0, (startFrame), (endFrame))
 
+#define campStatusSetListPosition(position, row, selected, alternate) \
+    do { \
+        (position).x = (alternate) != 0 ? -11.0f : 119.0f; \
+        (position).y = (alternate) != 0 ? 63.0f : 73.0f; \
+        (position).y += (f32)((row) * 29); \
+        if ((selected) != 0) (position).x += 21.0f; \
+    } while (0)
+
 static inline CampVec2 campStatusListPosition(s32 row, s32 selected, s32 alternate)
 {
     CampVec2 position;
@@ -2912,11 +2929,11 @@ static inline void campStatusInitializePersonaList(void* records, s32 selected,
     zero.y = 0.0f;
     campStatusAnimateRecord(records, 0, 1, zero, zero, 5, 5);
     for (i = 0; i < count; i++) {
-        position = campStatusListPosition(i, i == selected, 0);
+        campStatusSetListPosition(position, i, i == selected, 0);
         start = position;
         start.x -= 600.0f;
         campStatusAnimateRecord(records, i + 1, 1, start, position, 0, 10);
-        position = campStatusListPosition(i, i == selected, 1);
+        campStatusSetListPosition(position, i, i == selected, 1);
         start = position;
         start.x -= 600.0f;
         campStatusAnimateRecord(records, i + 14, 1, start, position, 0, 6);
@@ -2942,10 +2959,10 @@ static inline void campStatusClosePersonaList(void* records, s32 selected, s32 c
     position.y = *((f32*)((u8*)records + 0x3c));
     campStatusAnimateRecord(records, 0, 2, position, position, 5, 5);
     for (i = 0; i < count; i++) {
-        position = campStatusListPosition(i, i == selected, 0);
+        campStatusSetListPosition(position, i, i == selected, 0);
         campStatusAnimateRecord(records, i + 1, 2, position, position, 0,
                                 10);
-        position = campStatusListPosition(i, i == selected, 1);
+        campStatusSetListPosition(position, i, i == selected, 1);
         campStatusAnimateRecord(records, i + 14, 2, position, position, 0,
                                 6);
     }
@@ -2963,17 +2980,17 @@ static inline void campStatusAnimateSelection(void* records, s32 oldSelected,
     CampVec2 start;
     CampVec2 end;
 
-    start = campStatusListPosition(oldSelected, 1, 0);
-    end = campStatusListPosition(oldSelected, 0, 0);
+    campStatusSetListPosition(start, oldSelected, 1, 0);
+    campStatusSetListPosition(end, oldSelected, 0, 0);
     campStatusAnimateRecord(records, oldSelected + 1, 0, start, end, 0, 2);
-    start = campStatusListPosition(oldSelected, 1, 1);
-    end = campStatusListPosition(oldSelected, 0, 1);
+    campStatusSetListPosition(start, oldSelected, 1, 1);
+    campStatusSetListPosition(end, oldSelected, 0, 1);
     campStatusAnimateRecord(records, oldSelected + 14, 0, start, end, 0, 2);
-    start = campStatusListPosition(selected, 0, 0);
-    end = campStatusListPosition(selected, 1, 0);
+    campStatusSetListPosition(start, selected, 0, 0);
+    campStatusSetListPosition(end, selected, 1, 0);
     campStatusAnimateRecord(records, selected + 1, 0, start, end, 0, 2);
-    start = campStatusListPosition(selected, 0, 1);
-    end = campStatusListPosition(selected, 1, 1);
+    campStatusSetListPosition(start, selected, 0, 1);
+    campStatusSetListPosition(end, selected, 1, 1);
     campStatusAnimateRecord(records, selected + 14, 0, start, end, 0, 2);
 }
 

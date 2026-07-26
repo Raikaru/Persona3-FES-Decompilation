@@ -16640,15 +16640,15 @@ u8 FUN_00454520(float *param_1,char param_2)
   float *pfVar2;
   float fVar3;
   struct {
-    float fStack_20[4];
-    float fStack_10[4];
+    float v20[4];
+    float v10[4];
   } stack;
-#define fStack_20 stack.fStack_20[0]
-#define fStack_1c stack.fStack_20[1]
-#define fStack_18 stack.fStack_20[2]
-#define fStack_10 stack.fStack_10[0]
-#define fStack_c stack.fStack_10[1]
-#define fStack_8 stack.fStack_10[2]
+#define fStack_20 stack.v20[0]
+#define fStack_1c stack.v20[1]
+#define fStack_18 stack.v20[2]
+#define fStack_10 stack.v10[0]
+#define fStack_c stack.v10[1]
+#define fStack_8 stack.v10[2]
   
   fStack_10 = *param_1;
   fStack_c = param_1[1];
@@ -16662,6 +16662,12 @@ u8 FUN_00454520(float *param_1,char param_2)
   fVar3 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_20));
   return fVar3 < *pfVar2;
 }
+#undef fStack_20
+#undef fStack_1c
+#undef fStack_18
+#undef fStack_10
+#undef fStack_c
+#undef fStack_8
 
 // FUN_00454620 NONMATCHING
 
