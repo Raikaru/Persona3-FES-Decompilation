@@ -1878,7 +1878,7 @@ int FUN_00361ca0(int param_1,int param_2)
   int lVar1;
 
   int *piVar2;
-  int iVar3;
+  u32 iVar3;
   
 
   lVar1 = FUN_00386ae0_evt(0x9c,7);
@@ -1892,17 +1892,15 @@ int FUN_00361ca0(int param_1,int param_2)
   piVar2 = (int *)lVar1;
 
   *piVar2 = param_1;
-  iVar3 = -1;
 
-  piVar2[2] = iVar3;
+  piVar2[2] = -1;
 
   *(u16 *)(piVar2 + 3) = 0;
 
   piVar2[0x19] = 0;
-
   switch (param_1) {
   case 0x30:
-    *(u8 *)((int)piVar2 + 0x22) = iVar3;
+    *(u8 *)((int)piVar2 + 0x22) = (u8)-1;
     break;
   }
   FUN_00361b60((int *)lVar1,param_2);

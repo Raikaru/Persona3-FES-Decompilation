@@ -923,7 +923,7 @@ u32 func_001ae480(KwlnTask* task)
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
-            s32 j;
+            u32 j;
             u8* pointBase;
             u32* source;
             u32* destination;
