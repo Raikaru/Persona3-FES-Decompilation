@@ -50994,9 +50994,9 @@ u64 FUN_0034e690(int param_1)
 
 {
 
-  u32 uVar2;
-
   int iVar1;
+
+  u32 uVar2;
 
   int iVar3;
 

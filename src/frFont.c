@@ -3052,13 +3052,13 @@ void FUN_003b22a0(u32 *param_1)
 
     iVar6 = param_1[5];
 
-    lVar7 = (FUN_003b0970)(&gp0xffffa838,0,*(u8 *)((int)param_1 + 0xd),
+    lVar7 = FUN_003b0970(&gp0xffffa838,0,*(u8 *)((int)param_1 + 0xd),
 
                          *(u8 *)((int)param_1 + 0xe),0);
 
     if (lVar7 != 0) {
 
-      iVar6 = (FUN_003b1920)(iVar6,lVar7,1);
+      iVar6 = FUN_003b1920(iVar6,lVar7,1);
 
     }
 
