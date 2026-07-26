@@ -593,10 +593,9 @@ u64 FUN_004177e0(int param_1)
   *(u32 **)((int)param_1 + 0x34) = puVar4;
 
   for (uVar6 = 0; uVar6 < 0x10; uVar6 = uVar6 + 1) {
-    uVar8 = uVar6 * 8;
     FUN_004176f0_s16(param_1,
-                     *(s16 *)((int)auStack_80 + uVar8),
-                     *(int *)((int)auStack_80 + uVar8 + 4));
+                     ((struct { s16 a; s16 pad; int b; } *)auStack_80)[uVar6].a,
+                     ((struct { s16 a; s16 pad; int b; } *)auStack_80)[uVar6].b);
   }
   FUN_004180e0(*(u32 **)(param_1 + 0x3c),0x40);
   return 0;

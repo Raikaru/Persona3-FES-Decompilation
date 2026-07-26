@@ -2753,7 +2753,7 @@ journey_true:
     
         if (0x31 < uVar4) {
     
-          if (DAT_00697be0 == -1) {
+          if (*(s32 *)DAT_00697BE0_abs == -1) {
     
             lVar3 = 0;
     
@@ -2761,7 +2761,7 @@ journey_true:
     
           else {
     
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BE0_abs);
     
           }
     
@@ -2799,7 +2799,7 @@ journey_true:
       
         if (0x31 < uVar4) {
       
-          if (DAT_00697be4 == -1) {
+          if (*(s32 *)DAT_00697be4_abs == -1) {
       
             lVar3 = 0;
       
@@ -2807,7 +2807,7 @@ journey_true:
       
           else {
       
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697be4_abs);
       
           }
       
@@ -2845,7 +2845,7 @@ journey_true:
       
         if (0x31 < uVar4) {
       
-          if (DAT_00697be8 == -1) {
+          if (*(s32 *)DAT_00697BE8_abs == -1) {
       
             lVar3 = 0;
       
@@ -2853,7 +2853,7 @@ journey_true:
       
           else {
       
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BE8_abs);
       
           }
       
@@ -2891,7 +2891,7 @@ journey_true:
       
         if (0x31 < uVar4) {
       
-          if (DAT_00697bec == -1) {
+          if (*(s32 *)DAT_00697BEC_abs == -1) {
       
             lVar3 = 0;
       
@@ -2899,7 +2899,7 @@ journey_true:
       
           else {
       
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BEC_abs);
       
           }
       
@@ -2937,7 +2937,7 @@ journey_true:
       
         if (0x31 < uVar4) {
       
-          if (DAT_00697bf4 == -1) {
+          if (*(s32 *)DAT_00697BF4_abs == -1) {
       
             lVar3 = 0;
       
@@ -2945,7 +2945,7 @@ journey_true:
       
           else {
       
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BF4_abs);
       
           }
       
@@ -2983,7 +2983,7 @@ journey_true:
       
         if (0x31 < uVar4) {
       
-          if (DAT_00697bf8 == -1) {
+          if (*(s32 *)DAT_00697BF8_abs == -1) {
       
             lVar3 = 0;
       
@@ -2991,7 +2991,7 @@ journey_true:
       
           else {
       
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697BF8_abs);
       
           }
       
@@ -3053,9 +3053,9 @@ journey_true:
       
         if (lVar3 == 0) {
       
-          if (DAT_00697bfc != -1) {
+          if (*(s32 *)DAT_00697BFC_abs != -1) {
       
-            FUN_0016f190();
+            FUN_0016f190(*(s32 *)DAT_00697BFC_abs);
       
           }
       
@@ -3063,9 +3063,9 @@ journey_true:
       
         }
       
-        if (DAT_00697bfc != -1) {
+        if (*(s32 *)DAT_00697BFC_abs != -1) {
       
-          FUN_0016f190();
+          FUN_0016f190(*(s32 *)DAT_00697BFC_abs);
       
         }
       
@@ -3087,7 +3087,7 @@ journey_true:
       
         if (0x31 < uVar4) {
       
-          if (DAT_00697c00 == -1) {
+          if (*(s32 *)DAT_00697c00_abs == -1) {
       
             lVar3 = 0;
       
@@ -3095,7 +3095,7 @@ journey_true:
       
           else {
       
-            lVar3 = FUN_0016f190();
+            lVar3 = FUN_0016f190(*(s32 *)DAT_00697c00_abs);
       
           }
       

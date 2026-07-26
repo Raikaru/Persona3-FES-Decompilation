@@ -6,6 +6,9 @@ typedef u32 int3;
 
 extern u32 DAT_006a28d0;
 extern u8 DAT_006a28b0[];
+extern u8 DAT_006a2130[];
+#pragma alias DAT_006a2130_abs DAT_006a2130
+extern u8 DAT_006a2130_abs[];
 extern u8 DAT_006a29f0[];
 #pragma alias DAT_006a28d0_abs DAT_006a28d0
 extern u32 DAT_006a28d0_abs[];
@@ -639,7 +642,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
 
     }
 
-    FUN_00521250(lVar3,param_3 * 0x40 + 0x6a2130,0x40);
+    FUN_00521250(lVar3,(u32)DAT_006a2130_abs + param_3 * 0x40,0x40);
 
     FUN_004cde40(*(u32 *)(param_1 + 0x14));
 

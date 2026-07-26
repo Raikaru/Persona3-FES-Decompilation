@@ -30024,7 +30024,7 @@ u32 FUN_003398c0(int param_1)
   *(u32 *)(uVar4 + 8) = uVar4;
   piVar2 = (int *)uVar4;
 
-  iVar3 = FUN_003233a0(uVar1 & 0xffff,3,5,0x69bd60,0x48);
+  iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,3,5,DAT_0069bd60_abs,0x48);
 
   piVar2[1] = iVar3;
 
@@ -57957,7 +57957,7 @@ u32 FUN_003570b0(int param_1)
   if (*piVar1 != 0) {
     uVar3 = FUN_0034bf10(*piVar1);
     *puVar2 = uVar3;
-    uVar3 = (u32)FUN_00318fc0(uVar3);
+    uVar3 = FUN_00318fc0_u32(uVar3);
     if (uVar3 >> 1 != 0) {
       iVar4 = FUN_00357fd0(0);
       *(short *)(puVar2 + 1) = (short)(iVar4 % (int)(uVar3 >> 1) << 1);

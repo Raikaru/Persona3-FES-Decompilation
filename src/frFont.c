@@ -2530,7 +2530,7 @@ frFont_b1b00_child_check:
 // FUN_003B1BC0 NONMATCHING
 
 
-void FUN_003b1bc0(u32 *param_1,int param_2,u8 *param_3)
+void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 
 
 
