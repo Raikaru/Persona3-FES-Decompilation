@@ -389,104 +389,290 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
 }
 
 
+/* Reconstructed dispatch/copy bodies from retail byte window 0x179360..0x17a430; no unjustified bytes. */
 // FUN_00179360 NONMATCHING
 void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
 {
-    u8* destination = NULL;
-    u32 index;
     (void)saveType;
-    
-    /* Retail tests every id explicitly, in this exact order: 0x1001, 0x1000,
-     * then the twelve sub-field groups from low byte 0x0b down to 0x00 (each
-     * comparing high byte 0x0a down to 0x01), then single ids 0x24 down to 1. */
-    if (id == 0x1001 && size == 600) destination = PTR8(0x00833c20);
-    else if (id == 0x1000 && size == 400) destination = PTR8(0x00833e80);
-    else if (id == 0x0a0b || id == 0x090b || id == 0x080b || id == 0x070b || id == 0x060b || id == 0x050b || id == 0x040b || id == 0x030b || id == 0x020b || id == 0x010b)
+
+    /* Scalar records: retail bodies 0x179ad8..0x17a01c. */
+    switch (id)
     {
-        if (size == 4) destination = PTR8(0x00834370 + ((id >> 8) - 1) * 0x364);
+        case 1:
+            if (size == 0x24) FUN_00521250(DAT_00836200, data, 0x24);
+            break;
+        case 2:
+            if (size == 0x50) FUN_00521250(PTR8(0x00836224), data, 0x50);
+            break;
+        case 3:
+            if (size == 0x508) FUN_00521250(PTR8(0x00836274), data, 0x508);
+            break;
+        case 4:
+            if (size == 0x10) FUN_00521250(PTR8(0x0083677c), data, 0x10);
+            break;
+        case 5:
+            if (size == 8) FUN_00521250(PTR8(0x0083678c), data, 8);
+            break;
+        case 6:
+            if (size == 6000) FUN_00521250(PTRP(0x00836794), data, size);
+            break;
+        case 7:
+            if (size == 600) FUN_00521250(PTRP(0x00836798), data, size);
+            break;
+        case 8:
+            if (size == 2) FUN_00521250(PTR8(0x0083679c), data, size);
+            break;
+        case 9:
+            if (size == 1) FUN_00521250(PTR8(0x0083679e), data, size);
+            break;
+        case 10:
+            if (size == 4) FUN_00521250(PTR8(0x008367a0), data, size);
+            break;
+        case 11:
+            if (size == 2) FUN_00521250(PTR8(0x008367a4), data, size);
+            break;
+        case 12:
+            if (size == 1) FUN_00521250(PTR8(0x008367a6), data, size);
+            break;
+        case 13:
+            if (size == 0x400) FUN_00521250(PTR8(0x008367a7), data, size);
+            break;
+        case 14:
+            if (size == 2) FUN_00521250(PTR8(0x00836ba8), data, size);
+            break;
+        case 15:
+            if (size == 0x270) FUN_00521250(PTR8(0x00836bac), data, size);
+            break;
+        case 16:
+            if (size == 0x3400) FUN_00521250(DAT_00836e1c, data, size);
+            break;
+        case 17:
+            if (size == 0x2c0) FUN_00521250(D_0083a21c, data, size);
+            break;
+        case 18:
+            if (size == 4) FUN_00521250(PTR8(0x0083a6dc), data, size);
+            break;
+        case 19:
+            if (size == 8) FUN_00521250(PTR8(0x0083a6e0), data, size);
+            break;
+        case 20:
+            if (size == 4) FUN_00521250(PTR8(0x0083a6e8), data, size);
+            break;
+        case 21:
+            if (size == 4) FUN_00521250(PTR8(0x0083a6ec), data, size);
+            break;
+        case 22:
+            if (size == 4) FUN_00521250(PTR8(0x0083a6f0), data, size);
+            break;
+        case 23:
+            if (size == 4) FUN_00521250(PTR8(0x0083a6f4), data, size);
+            break;
+        case 24:
+            if (size == 0x2c) FUN_00521250(PTR8(0x0083a8c4), data, size);
+            break;
+        case 25:
+            if (size == 0x200) FUN_00521250(PTR8(0x0083a4dc), data, size);
+            break;
+        case 26:
+            if (size == 0x1c) FUN_00521250(D_0083A6FC, data, size);
+            break;
+        case 27:
+            if (size == 0x10) FUN_00521250(DAT_0083a718, data, size);
+            break;
+        case 28:
+            if (size == 8) FUN_00521250(PTR8(0x0083a728), data, size);
+            break;
+        case 29:
+            if (size == 4) FUN_00521250(PTR8(0x0083a730), data, size);
+            break;
+        case 30:
+            if (size == 0x100) FUN_00521250(PTR8(0x0083a734), data, size);
+            break;
+        case 31:
+            if (size == 0x90) FUN_00521250(PTR8(0x0083a834), data, size);
+            break;
+        case 32:
+            break;
+        case 33:
+            if (size == 0x1a8) FUN_00521250(PTR8(0x0083a8f0), data, size);
+            break;
+        case 34:
+            if (size == 1) FUN_00521250(PTR8(0x0083679e), data, size);
+            break;
+        case 35:
+            if (size == 4) FUN_00521250(PTR8(0x0083aa98), data, size);
+            break;
+        case 36:
+            if (size == 4) FUN_00521250(PTR8(0x0083a6f8), data, size);
+            break;
+
+        /* Group bodies: retail 0x17a044..0x17a3b8. */
+        case 0x100:
+        case 0x200:
+        case 0x300:
+        case 0x400:
+        case 0x500:
+        case 0x600:
+        case 0x700:
+        case 0x800:
+        case 0x900:
+        case 0xa00:
+            if (size == 4)
+                FUN_00521250(D_00834010 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x101:
+        case 0x201:
+        case 0x301:
+        case 0x401:
+        case 0x501:
+        case 0x601:
+        case 0x701:
+        case 0x801:
+        case 0x901:
+        case 0xa01:
+            if (size == 0x50)
+                FUN_00521250(D_00834010 + 4 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x102:
+        case 0x202:
+        case 0x302:
+        case 0x402:
+        case 0x502:
+        case 0x602:
+        case 0x702:
+        case 0x802:
+        case 0x902:
+        case 0xa02:
+            if (size == 8)
+                FUN_00521250(D_00834010 + 0x54 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x103:
+        case 0x203:
+        case 0x303:
+        case 0x403:
+        case 0x503:
+        case 0x603:
+        case 0x703:
+        case 0x803:
+        case 0x903:
+        case 0xa03:
+            if (size == 0x50)
+                FUN_00521250(D_00834010 + 0x5c + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x104:
+        case 0x204:
+        case 0x304:
+        case 0x404:
+        case 0x504:
+        case 0x604:
+        case 0x704:
+        case 0x804:
+        case 0x904:
+        case 0xa04:
+            if (size == 0x30)
+                FUN_00521250(D_00834010 + 0xac + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x105:
+        case 0x205:
+        case 0x305:
+        case 0x405:
+        case 0x505:
+        case 0x605:
+        case 0x705:
+        case 0x805:
+        case 0x905:
+        case 0xa05:
+            if (size == 0x34)
+                FUN_00521250(D_00834010 + 0xdc + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x106:
+        case 0x206:
+        case 0x306:
+        case 0x406:
+        case 0x506:
+        case 0x606:
+        case 0x706:
+        case 0x806:
+        case 0x906:
+        case 0xa06:
+            if (size == 0x10)
+                FUN_00521250(D_00834010 + 0x110 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x107:
+        case 0x207:
+        case 0x307:
+        case 0x407:
+        case 0x507:
+        case 0x607:
+        case 0x707:
+        case 0x807:
+        case 0x907:
+        case 0xa07:
+            if (size == 0x10)
+                FUN_00521250(D_00834010 + 0x120 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x108:
+        case 0x208:
+        case 0x308:
+        case 0x408:
+        case 0x508:
+        case 0x608:
+        case 0x708:
+        case 0x808:
+        case 0x908:
+        case 0xa08:
+            if (size == 0x50)
+                FUN_00521250(D_00834010 + 0x130 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x109:
+        case 0x209:
+        case 0x309:
+        case 0x409:
+        case 0x509:
+        case 0x609:
+        case 0x709:
+        case 0x809:
+        case 0x909:
+        case 0xa09:
+            if (size == 0x190)
+                FUN_00521250(D_00834010 + 0x180 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x10a:
+        case 0x20a:
+        case 0x30a:
+        case 0x40a:
+        case 0x50a:
+        case 0x60a:
+        case 0x70a:
+        case 0x80a:
+        case 0x90a:
+        case 0xa0a:
+            if (size == 0x50)
+                FUN_00521250(D_00834010 + 0x310 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+        case 0x10b:
+        case 0x20b:
+        case 0x30b:
+        case 0x40b:
+        case 0x50b:
+        case 0x60b:
+        case 0x70b:
+        case 0x80b:
+        case 0x90b:
+        case 0xa0b:
+            if (size == 4)
+                FUN_00521250(D_00834010 + 0x360 + ((id >> 8) - 1) * 0x364, data, size);
+            break;
+
+        case 0x1000:
+            if (size == 400) FUN_00521250(PTR8(0x00833e80), data, size);
+            break;
+        case 0x1001:
+            if (size == 600) FUN_00521250(PTR8(0x00833c20), data, size);
+            break;
+        default:
+            break;
     }
-    else if (id == 0x0a0a || id == 0x090a || id == 0x080a || id == 0x070a || id == 0x060a || id == 0x050a || id == 0x040a || id == 0x030a || id == 0x020a || id == 0x010a)
-    {
-        if (size == 0x50) destination = PTR8(0x00834320 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a09 || id == 0x0909 || id == 0x0809 || id == 0x0709 || id == 0x0609 || id == 0x0509 || id == 0x0409 || id == 0x0309 || id == 0x0209 || id == 0x0109)
-    {
-        if (size == 0x190) destination = PTR8(0x00834190 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a08 || id == 0x0908 || id == 0x0808 || id == 0x0708 || id == 0x0608 || id == 0x0508 || id == 0x0408 || id == 0x0308 || id == 0x0208 || id == 0x0108)
-    {
-        if (size == 0x50) destination = PTR8(0x00834140 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a07 || id == 0x0907 || id == 0x0807 || id == 0x0707 || id == 0x0607 || id == 0x0507 || id == 0x0407 || id == 0x0307 || id == 0x0207 || id == 0x0107)
-    {
-        if (size == 0x10) destination = PTR8(0x00834130 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a06 || id == 0x0906 || id == 0x0806 || id == 0x0706 || id == 0x0606 || id == 0x0506 || id == 0x0406 || id == 0x0306 || id == 0x0206 || id == 0x0106)
-    {
-        if (size == 0x10) destination = PTR8(0x00834120 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a05 || id == 0x0905 || id == 0x0805 || id == 0x0705 || id == 0x0605 || id == 0x0505 || id == 0x0405 || id == 0x0305 || id == 0x0205 || id == 0x0105)
-    {
-        if (size == 0x34) destination = PTR8(0x008340ec + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a04 || id == 0x0904 || id == 0x0804 || id == 0x0704 || id == 0x0604 || id == 0x0504 || id == 0x0404 || id == 0x0304 || id == 0x0204 || id == 0x0104)
-    {
-        if (size == 0x30) destination = PTR8(0x008340bc + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a03 || id == 0x0903 || id == 0x0803 || id == 0x0703 || id == 0x0603 || id == 0x0503 || id == 0x0403 || id == 0x0303 || id == 0x0203 || id == 0x0103)
-    {
-        if (size == 0x50) destination = PTR8(0x0083406c + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a02 || id == 0x0902 || id == 0x0802 || id == 0x0702 || id == 0x0602 || id == 0x0502 || id == 0x0402 || id == 0x0302 || id == 0x0202 || id == 0x0102)
-    {
-        if (size == 8) destination = PTR8(0x00834064 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a01 || id == 0x0901 || id == 0x0801 || id == 0x0701 || id == 0x0601 || id == 0x0501 || id == 0x0401 || id == 0x0301 || id == 0x0201 || id == 0x0101)
-    {
-        if (size == 0x50) destination = PTR8(0x00834014 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 0x0a00 || id == 0x0900 || id == 0x0800 || id == 0x0700 || id == 0x0600 || id == 0x0500 || id == 0x0400 || id == 0x0300 || id == 0x0200 || id == 0x0100)
-    {
-        if (size == 4) destination = PTR8(0x00834010 + ((id >> 8) - 1) * 0x364);
-    }
-    else if (id == 36 && size == 4) destination = PTR8(0x0083a6f8);
-    else if (id == 35 && size == 4) destination = PTR8(0x0083aa98);
-    else if (id == 34 && size == 1) destination = PTR8(0x0083679e);
-    else if (id == 33 && size == 0x1a8) destination = PTR8(0x0083a8f0);
-    else if (id == 32 && size == 0) destination = PTR8(0);
-    else if (id == 31 && size == 0x90) destination = PTR8(0x0083a834);
-    else if (id == 30 && size == 0x100) destination = PTR8(0x0083a734);
-    else if (id == 29 && size == 4) destination = PTR8(0x0083a730);
-    else if (id == 28 && size == 8) destination = PTR8(0x0083a728);
-    else if (id == 27 && size == 0x10) destination = PTR8(0x0083a718);
-    else if (id == 26 && size == 0x1c) destination = PTR8(0x0083a6fc);
-    else if (id == 25 && size == 0x200) destination = PTR8(0x0083a4dc);
-    else if (id == 24 && size == 0x2c) destination = PTR8(0x0083a8c4);
-    else if (id == 23 && size == 4) destination = PTR8(0x0083a6f4);
-    else if (id == 22 && size == 4) destination = PTR8(0x0083a6f0);
-    else if (id == 21 && size == 4) destination = PTR8(0x0083a6ec);
-    else if (id == 20 && size == 4) destination = PTR8(0x0083a6e8);
-    else if (id == 19 && size == 8) destination = PTR8(0x0083a6e0);
-    else if (id == 18 && size == 4) destination = PTR8(0x0083a6dc);
-    else if (id == 17 && size == 0x2c0) destination = PTR8(0x0083a21c);
-    else if (id == 16 && size == 0x3400) destination = PTR8(0x00836e1c);
-    else if (id == 15 && size == 0x270) destination = PTR8(0x00836bac);
-    else if (id == 14 && size == 2) destination = PTR8(0x00836ba8);
-    else if (id == 13 && size == 0x400) destination = PTR8(0x008367a7);
-    else if (id == 12 && size == 1) destination = PTR8(0x008367a6);
-    else if (id == 11 && size == 2) destination = PTR8(0x008367a4);
-    else if (id == 10 && size == 4) destination = PTR8(0x008367a0);
-    else if (id == 9 && size == 1) destination = PTR8(0x0083679e);
-    else if (id == 8 && size == 2) destination = PTR8(0x0083679c);
-    else if (id == 7 && size == 600) destination = PTRP(0x00836798);
-    else if (id == 6 && size == 6000) destination = PTRP(0x00836794);
-    else if (id == 5 && size == 8) destination = PTR8(0x0083678c);
-    else if (id == 4 && size == 0x10) destination = PTR8(0x0083677c);
-    else if (id == 3 && size == 0x508) destination = PTR8(0x00836274);
-    else if (id == 2 && size == 0x50) destination = PTR8(0x00836224);
-    else if (id == 1 && size == 0x24) destination = PTR8(0x00836200);
-    
-    if (destination != NULL) FUN_00521250(destination, data, size);
 }
 
 // FUN_0017a430
