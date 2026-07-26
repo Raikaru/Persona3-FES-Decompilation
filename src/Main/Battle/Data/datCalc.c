@@ -4449,7 +4449,7 @@ int FUN_003080c0(short param_1)
 
 
 
-// FUN_00308120 NONMATCHING
+// FUN_00308120
 short FUN_00308120(short param_1,int param_2)
 
 {
@@ -4484,7 +4484,11 @@ short FUN_00308120(short param_1,int param_2)
     unaff_s0_lo = 0xb;
     break;
   case 0x100:
+    unaff_s0_lo = 7;
+    break;
   case 0x200:
+    unaff_s0_lo = 7;
+    break;
   case 0x400:
     unaff_s0_lo = 7;
     break;
