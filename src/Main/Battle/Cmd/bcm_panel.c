@@ -2186,10 +2186,11 @@ void FUN_002289B0(void)
     u8* work;
     u8* base;
     u32 table0;
+    s32 i;
     u8* target;
+    u8* target2;
     u32 resource;
     u32 texture;
-    s32 i;
     s32 j;
     void (**setState)(u32, u32);
     void (**setState2)(u32, u32);
@@ -2251,14 +2252,14 @@ void FUN_002289B0(void)
 
     for (j = 0; j < 4; ++j) {
         base = work + j * 0x200;
-        target = base + 0x3830;
+        target2 = base + 0x3830;
         setQuadB = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-        (*setQuadB)((u32*)target, 4, 0, 1, 2);
-        (*setQuadB)((u32*)target, 4, 0, 2, 3);
+        (*setQuadB)((u32*)target2, 4, 0, 1, 2);
+        (*setQuadB)((u32*)target2, 4, 0, 2, 3);
 
-        target = base + 0x3930;
-        (*setQuadB)((u32*)target, 4, 0, 1, 2);
-        (*setQuadB)((u32*)target, 4, 0, 2, 3);
+        target2 = base + 0x3930;
+        (*setQuadB)((u32*)target2, 4, 0, 1, 2);
+        (*setQuadB)((u32*)target2, 4, 0, 2, 3);
     }
 
     resource = FUN_0021cca0(table0, 0x23);

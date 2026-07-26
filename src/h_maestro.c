@@ -831,7 +831,7 @@ u32 func_001114b0(KwlnTask* task)
 
 
 // FUN_00111500 NONMATCHING
-void func_00111500(KwlnTask* task, u32 unused)
+void func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
     KwlnTask* taskCopy;
