@@ -2308,23 +2308,19 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
   s32 offset;
   s32 flags;
   s32 kind;
-  f32 zero;
-  f32 one;
 
-  zero = 0.0f;
-  one = 1.0f;
   if (param_4 == 0) {
     offset = param_2 - param_6 * 4;
     kind = param_5 + 2;
     flags = *(s16 *)(param_8 + 0x12) | -0x100;
-    fclMiscCa780Call(zero,zero,one,one,param_1,offset,
+    fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,param_1,offset,
                      flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
   else {
     offset = param_2 + (param_7 - param_6) * 4;
     kind = param_5 + 2;
     flags = *(s16 *)(param_8 + 0x12) | -0x100;
-    fclMiscCa780Call(zero,zero,one,one,param_1,offset,
+    fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,param_1,offset,
                      flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
 }

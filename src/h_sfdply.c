@@ -275,8 +275,8 @@ extern u64 FUN_0051da48(void);
 extern u64 FUN_0051da50(u64 size);
 extern void FUN_0051db00(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4);
 extern u32 FUN_0051d6f8(s32 size);
-extern void FUN_0051deb0(u32 channel, u32 handle);
-extern void FUN_0051dd48(u32 channel, u32 handle);
+extern void FUN_0051deb0(u32 channel, void* handle);
+extern void FUN_0051dd48(u32 channel, void* handle);
 extern s32 FUN_0050d3f0(void);
 extern s32 func_00502f60(void* threadParam);
 extern s32 func_005042a0(s32 threadId, void* arg);
@@ -1808,12 +1808,10 @@ u32 func_0010d910(s16 index)
     return sSfdDecodeSlots[index].state == 1;
 }
 
-// FUN_0010D950 NONMATCHING
+// FUN_0010D950
 void func_0010d950(s16 index)
 {
     u32* slot;
-    u32 channel;
-    u32 handle;
 
     if (sSfdDecodeSlots_abs[index].state != 1)
     {
@@ -1822,18 +1820,10 @@ void func_0010d950(s16 index)
     slot = (u32*)((u8*)sSfdDecodeSlots_abs + 0x18) + index * 17;
     if (*slot != 0)
     {
-        channel = 5;
-        handle = (u32)sSfdDecodeSlots_abs[index].completion;
-        FUN_0051deb0(channel, handle);
-        channel = 0;
-        handle = (u32)sSfdDecodeSlots_abs[index].decodeHandle;
-        FUN_0051deb0(channel, handle);
-        channel = 5;
-        handle = (u32)sSfdDecodeSlots_abs[index].outputHandle;
-        FUN_0051dd48(channel, handle);
-        channel = 3;
-        handle = (u32)sSfdDecodeSlots_abs[index].queueHandle;
-        FUN_0051dd48(channel, handle);
+        FUN_0051deb0(5, (void*)sSfdDecodeSlots_abs[index].completion);
+        FUN_0051deb0(0, (void*)sSfdDecodeSlots_abs[index].decodeHandle);
+        FUN_0051dd48(5, (void*)sSfdDecodeSlots_abs[index].outputHandle);
+        FUN_0051dd48(3, (void*)sSfdDecodeSlots_abs[index].queueHandle);
         *slot = 0;
         func_0050B710(sSfdDecodeSlots_abs[index].output);
         func_0050B710(sSfdDecodeSlots_abs[index].sourceData);
@@ -2331,11 +2321,11 @@ void* func_0010e880(const u8* stream)
     s32 bits;
     s32 flags = 0;
     s32 paletteFormat = 0;
-    void* pixels;
     const u8* source;
     const u8* pixelSource;
     s32 pixelsPerPalette;
     void* raster;
+    void* pixels;
     void* palette;
 
     if (stream == NULL)

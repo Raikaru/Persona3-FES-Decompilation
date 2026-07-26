@@ -573,7 +573,7 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
 }
 #define FUN_003b47b0(...) ((int (*)(...))FUN_003b47b0)(__VA_ARGS__)
 #undef FUN_003b4920
-// FUN_003B4920 NONMATCHING
+// FUN_003B4920
 
 
 void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)

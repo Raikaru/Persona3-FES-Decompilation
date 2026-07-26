@@ -1860,6 +1860,7 @@ void func_0020cda0(u8* work)
     widthOdd = 8;
     rowStep = fGpffff8338;
     yOffset = fGpffff8318;
+    six = 6.0f;
     zero = 0.0f;
     three = 3.0f;
     while (row < 9) {
