@@ -972,8 +972,9 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
       FUN_0019d3f0((u32)D_0069aa80, 0x2e8);
     }
     base = iGpffffb720;
-    bVar2 = *(u8 *)(base + (u32)uVar1 * 0x3e +
-                    ((u32)param_2 & 0xffff) + 8);
+    base = (u32)uVar1 * 0x3e + base;
+    base = ((u32)param_2 & 0xffff) + base;
+    bVar2 = *(u8 *)(base + 8);
   }
   else {
     check = uVar1;

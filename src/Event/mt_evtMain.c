@@ -5833,7 +5833,7 @@ type_done:
 
 }
 
-// FUN_00365A40 NONMATCHING
+// FUN_00365A40
 
 void FUN_00365a40(u32 param_1,int param_2)
 {
@@ -5857,11 +5857,15 @@ void FUN_00365a40(u32 param_1,int param_2)
           }
           uVar1 = puVar2[9];
           lVar4 = FUN_003b5d10_evt(uVar1);
-          if (((lVar4 != 0) && (*puVar2 == param_1)) && ((char)puVar2[8] == '\0')) {
-            if ((char)puVar2[10] == '\0') {
-              FUN_003b9550_evt(uVar1,1);
-            } else {
-              FUN_003b9550_evt(uVar1,0);
+          if ((lVar4 != 0) && (*puVar2 == param_1)) {
+            switch ((char)puVar2[8]) {
+            case 0:
+              if ((char)puVar2[10] == '\0') {
+                FUN_003b9550_evt(uVar1,1);
+              } else {
+                FUN_003b9550_evt(uVar1,0);
+              }
+              break;
             }
           }
         }

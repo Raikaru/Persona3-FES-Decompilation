@@ -561,7 +561,7 @@ float * FUN_003385d0(u64 param_1);
 void FUN_00338770(int param_1);
 void FUN_003387c0(int param_1);
 void FUN_00338ac0(u64 param_1);
-u32 FUN_00338d60(int param_1);
+u64 FUN_00338d60(int param_1);
 void FUN_00338e50(int param_1);
 void FUN_00338ea0(int param_1);
 void FUN_00339200(u64 param_1);
@@ -29250,7 +29250,7 @@ void FUN_00338ac0(u64 param_1)
 // FUN_00338D60 NONMATCHING
 
 
-u32 FUN_00338d60(int param_1)
+u64 FUN_00338d60(int param_1)
 
 
 
@@ -29264,7 +29264,7 @@ u32 FUN_00338d60(int param_1)
 
   int iVar4;
 
-  u32 uVar5;
+  u64 uVar5;
 
   int iVar6;
 
@@ -29274,9 +29274,9 @@ u32 FUN_00338d60(int param_1)
 
   
 
-  uVar5 = (*DAT_00960178_abs)(4,0x40000);
+  uVar5 = (*DAT_00960178)(4,0x40000);
 
-  if (*(volatile u32 *)(param_1 + 0x38) < 3) {
+  if (*(u32 *)(param_1 + 0x38) < 3) {
 
     *(u32 *)(param_1 + 0x38) = 3;
 
@@ -29288,7 +29288,7 @@ u32 FUN_00338d60(int param_1)
 
   iVar6 = (int)*(short *)(iVar4 + 8);
 
-  if (iVar6 < 0) {
+  if (*(short *)(iVar4 + 8) < 0) {
 
     iVar6 = iVar6 + 3;
 
