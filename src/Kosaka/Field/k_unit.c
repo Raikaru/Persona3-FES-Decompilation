@@ -2012,8 +2012,8 @@ void func_001d19d0(void)
     s32 offset;
     FldUnit* unit;
     FldUnit* unit2;
-    u32 valid;
     u32 predicate;
+    u32 valid;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
@@ -2023,8 +2023,7 @@ void func_001d19d0(void)
         {
             valid = 1;
         }
-        predicate = valid > 0;
-        if (predicate == 1)
+        if ((predicate = valid > 0) == 1)
         {
             offset = i * sizeof(FldUnit);
             unit2 = (FldUnit*)((int)gFldUnitsPc + offset);

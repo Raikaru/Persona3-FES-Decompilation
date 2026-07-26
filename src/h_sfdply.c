@@ -2403,7 +2403,6 @@ void* func_0010e880(const u8* stream)
 
     pixels = func_004ce200(raster, NULL, 1);
     if (pixels == NULL)
-    {
         K_Assert(&gp0xffff8840, 0x490);
     }
 

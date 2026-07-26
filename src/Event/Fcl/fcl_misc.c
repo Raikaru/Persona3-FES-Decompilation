@@ -3353,6 +3353,7 @@ u32 FUN_003cdba0(u64 param_1,u16 param_2)
     fclMiscAssertCall((u32)DAT_006a3e18,0x9e2);
   }
   if (*(s16 *)(context + 0xc) == (param_2 & 0xffff)) {
+    *(u16 *)(context + 0xe) = 0;
     result = 0;
   }
   else {

@@ -3203,8 +3203,9 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
     u32 duration;
     u16* durationParts;
     RuntimeWork* target;
-    s32 stop = 0;
+    s32 stop;
 
+    cursor = work->cursor;
     stop = 0;
     do
     {
