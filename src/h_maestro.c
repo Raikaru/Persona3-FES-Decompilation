@@ -3728,7 +3728,6 @@ void func_001165c0(int param_1)
 
   int iVar1;
 
-  int *p;
 
   
 
@@ -3760,9 +3759,8 @@ void func_001165c0(int param_1)
 
   }
 
-  p = (int *)iVar1;
   for (iVar2 = 0; iVar2 < 2; iVar2 = iVar2 + 1) {
-    slot = p + iVar2 + 0x2ab;
+    slot = (int *)(iVar1 + (iVar2 + 0x2ab) * 4);
     if (*slot != 0) {
       FUN_0034fcf0();
       *slot = 0;

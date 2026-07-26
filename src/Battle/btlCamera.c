@@ -4773,8 +4773,6 @@ void FUN_002b2940(void *arg0)
     f32 radius;
     f32 distance;
     f32 facing;
-    f32 tx;
-    f32 sx;
     camera = (BtlCamera*)arg0;
     action = camera->action;
     unit = action->unit;
@@ -4806,9 +4804,7 @@ void FUN_002b2940(void *arg0)
         scratch.targetCenter.y = 65.0f;
     }
 
-    tx = scratch.targetCenter.x;
-    sx = scratch.sourceCenter.x;
-    scratch.direction.x = sx - tx;
+    scratch.direction.x = scratch.sourceCenter.x - scratch.targetCenter.x;
     scratch.direction.y = scratch.sourceCenter.y - scratch.targetCenter.y;
     scratch.direction.z = scratch.sourceCenter.z - scratch.targetCenter.z;
     scratch.direction.x = scratch.direction.x * fGpffff8088;
