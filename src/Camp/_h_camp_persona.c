@@ -754,7 +754,15 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
                           position.x + 22.0f,
                           position.y + 117.0f, (u8)bright, alpha);
     if (localFrame > 0) {
-        iconPosition = originalPosition;
+        if (localFrame < 5) {
+            bright = 0xff - ((localFrame - 1) * 0xff) / 4;
+            slide = (f32)(((5 - localFrame) * 0x3c) / 4);
+            iconPosition = originalPosition;
+            iconPosition.x -= slide;
+        } else {
+            bright = 0;
+            iconPosition = originalPosition;
+        }
         campPersonaDrawSprite(parent, DAT_00833B88,
                               FUN_00173280(*(u16*)((u8*)persona + 2)) - 1,
                               iconPosition.x + 105.0f, iconPosition.y + 142.0f,
