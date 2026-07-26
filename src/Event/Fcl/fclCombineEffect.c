@@ -2513,58 +2513,41 @@ done:
 // FUN_00419C10 NONMATCHING
 u32 FUN_00419c10(int param_1,int *param_2)
 {
-  int iVar1;
+  int *piVar1;
   u32 uVar2;
-  int iVar3;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
+  u32 uVar3;
+  int iVar4;
+  float fStack_10;
   float fStack_14;
-  u8 uStack_4;
-  u8 uStack_3;
-  u8 uStack_2;
-  u8 uStack_1;
+  float fStack_18;
+  float fStack_1c;
+  u8 auStack_2c[4];
 
-  iVar1 = *param_2;
-  uVar2 = *(u32 *)(iVar1 + 0xc);
-  iVar3 = *(int *)(iVar1 + 0x10);
-  fStack_20 = (float)(uVar2 >> 0x18);
-  fStack_1c = (float)(uVar2 >> 0x10 & 0xff);
-  fStack_18 = (float)(uVar2 >> 8 & 0xff);
-  fStack_14 = (float)(uVar2 & 0xff);
-  if ((*(char *)(iVar1 + 4) == '@') && (*(char *)(iVar1 + 5) == '\x03')) {
-    if (iVar3 == 2) {
-      FUN_003ce180(*(u32 *)(param_1 + 0x18),&fStack_20,*(u32 *)(iVar1 + 0x14));
-    }
-    else if (iVar3 == 1) {
-      FUN_003ce060(*(u32 *)(param_1 + 0x18),&fStack_20);
-    }
-    else if (iVar3 == 0) {
-      if (fStack_20 < 2.1474836e+09f) {
-        uStack_4 = (u8)(int)fStack_20;
-      }
-      else {
-        uStack_4 = (u8)(int)(fStack_20 - 2.1474836e+09f);
-      }
-      if (fStack_1c < 2.1474836e+09f) {
-        uStack_3 = (u8)(int)fStack_1c;
-      }
-      else {
-        uStack_3 = (u8)(int)(fStack_1c - 2.1474836e+09f);
-      }
-      if (fStack_18 < 2.1474836e+09f) {
-        uStack_2 = (u8)(int)fStack_18;
-      }
-      else {
-        uStack_2 = (u8)(int)(fStack_18 - 2.1474836e+09f);
-      }
-      if (fStack_14 < 2.1474836e+09f) {
-        uStack_1 = (u8)(int)fStack_14;
-      }
-      else {
-        uStack_1 = (u8)(int)(fStack_14 - 2.1474836e+09f);
-      }
-      FUN_003cdf40(*(u32 *)(param_1 + 0x18),&uStack_4);
+  piVar1 = (int *)*param_2;
+  uVar2 = *(u32 *)((int)piVar1 + 0xc);
+  uVar3 = *(u32 *)((int)piVar1 + 0x14);
+  iVar4 = *(int *)((int)piVar1 + 0x10);
+  fStack_10 = (float)((uVar2 >> 0x18) & 0xff);
+  fStack_14 = (float)((uVar2 >> 0x10) & 0xff);
+  fStack_18 = (float)((uVar2 >> 8) & 0xff);
+  fStack_1c = (float)(uVar2 & 0xff);
+
+  if ((*(char *)((int)piVar1 + 4) == '@') &&
+      (*(char *)((int)piVar1 + 5) == '\x03')) {
+    switch (iVar4) {
+    case 0:
+      auStack_2c[0] = (u8)fStack_10;
+      auStack_2c[1] = (u8)fStack_14;
+      auStack_2c[2] = (u8)fStack_18;
+      auStack_2c[3] = (u8)fStack_1c;
+      FUN_003cdf40(*(u32 *)(param_1 + 0x18),auStack_2c);
+      break;
+    case 1:
+      FUN_003ce060(*(u32 *)(param_1 + 0x18),&fStack_10);
+      break;
+    case 2:
+      FUN_003ce180(*(u32 *)(param_1 + 0x18),&fStack_10,uVar3);
+      break;
     }
   }
   return 1;

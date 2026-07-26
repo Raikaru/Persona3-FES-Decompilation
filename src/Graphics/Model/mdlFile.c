@@ -407,6 +407,8 @@ extern void FUN_00325e40_passthru(void);
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
+#pragma alias FUN_00325d60_i FUN_00325d60
+extern void FUN_00325d60_i(int param_1,u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
@@ -460,7 +462,7 @@ u32 FUN_00329a60(void);
 float FUN_00329ba0(float param_1);
 void FUN_00329d60(float param_1,u8 (*param_2) [16]);
 void FUN_00329ed0(float *param_1);
-u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,long param_4);
+u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 #pragma alias FUN_0032a120_2arg FUN_0032a120
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
 float FUN_0032a540(char *param_1,int param_2,long param_3);
@@ -14021,6 +14023,9 @@ void FUN_00329ed0(float *param_1)
   u32 axis;
   u32 next;
   u32 other;
+  float *rowAxis;
+  float *rowNext;
+  float *rowOther;
   float trace;
   volatile float result[4];
 
@@ -14048,13 +14053,13 @@ void FUN_00329ed0(float *param_1)
       result[3] = 0.0f;
     }
     else {
+      rowAxis = param_1 + axis * 4;
+      rowNext = param_1 + next * 4;
+      rowOther = param_1 + other * 4;
       result[axis] = trace / 4.0f;
-      result[next] = (param_1[axis * 4 + next] +
-                      param_1[next * 4 + axis]) / trace;
-      result[other] = (param_1[axis * 4 + other] +
-                       param_1[other * 4 + axis]) / trace;
-      result[3] = -((param_1[next * 4 + other] -
-                     param_1[other * 4 + next]) / trace);
+      result[next] = (rowAxis[next] + rowNext[axis]) / trace;
+      result[other] = (rowAxis[other] + rowOther[axis]) / trace;
+      result[3] = -((rowNext[other] - rowOther[next]) / trace);
     }
   }
 }
@@ -14065,220 +14070,116 @@ void FUN_00329ed0(float *param_1)
 // FUN_0032A120 NONMATCHING
 
 
-u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,long param_4)
-
-
-
+u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 {
-
-  char cVar1;
-
-  __int128 in_zero_qw;
-
-  u32 uVar2;
-
-  __int128 auVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  int iVar8;
-
-  float fVar9;
-
-  float fVar10;
-
-  float fVar11;
-
-  __int128 auVar12;
-
-  __int128 auVar13;
-
-  
-
-  iVar5 = (int)param_4;
+  u8 mode;
+  int start;
+  int end;
+  int span;
+  float frame;
+  float blend;
+  float alpha;
+  float scale;
+  float invBlend;
+  float r0;
+  float g0;
+  float b0;
+  float r1;
+  float g1;
+  float b1;
+  float red;
+  float green;
+  float blue;
+  int alphaInt;
+  u32 color;
+  u32 first;
+  u32 second;
+  union {
+    u32 bits;
+    float value;
+  } normalizer;
 
   if (param_4 == 0) {
-
-    uVar2 = *(u32 *)(param_1 + 4) & 0xffffff | *param_2 << 0x18;
-
+    return (*(u32 *)(param_1 + 4) & 0xffffff) | (*param_2 << 0x18);
   }
 
-  else {
-
-    fVar9 = (float)iVar5;
-
-    cVar1 = *param_1;
-
-    if (cVar1 == '\x02') {
-
-      iVar7 = (int)(*(float *)(param_1 + 0x10) * fVar9);
-
-      if (param_3 < iVar7) {
-
-        iVar6 = *(int *)(param_1 + 4);
-
-        iVar4 = *(int *)(param_1 + 0xc);
-
-        fVar10 = (float)param_3 / (float)iVar7;
-
-      }
-
-      else {
-
-        iVar8 = (int)(*(float *)(param_1 + 0x18) * fVar9);
-
-        if (param_3 < iVar8) {
-
-          iVar6 = *(int *)(param_1 + 0xc);
-
-          iVar4 = *(int *)(param_1 + 0x14);
-
-          fVar10 = (float)(param_3 - iVar7) / (float)(iVar8 - iVar7);
-
-        }
-
-        else {
-
-          iVar6 = *(int *)(param_1 + 0x14);
-
-          iVar4 = *(int *)(param_1 + 8);
-
-          fVar10 = (float)(param_3 - iVar8) / (float)(iVar5 - iVar8);
-
-        }
-
-      }
-
+  frame = (float)param_4;
+  mode = *(u8 *)param_1;
+  if (mode == 2) {
+    start = (int)(*(float *)(param_1 + 0x10) * frame);
+    if (param_3 < start) {
+      first = *(u32 *)(param_1 + 4);
+      second = *(u32 *)(param_1 + 0xc);
+      blend = (float)param_3 / (float)start;
     }
-
-    else if (cVar1 == '\x01') {
-
-      iVar7 = (int)(*(float *)(param_1 + 0x10) * fVar9);
-
-      if (param_3 < iVar7) {
-
-        iVar6 = *(int *)(param_1 + 4);
-
-        iVar4 = *(int *)(param_1 + 0xc);
-
-        fVar10 = (float)param_3 / (float)iVar7;
-
-      }
-
-      else {
-
-        iVar6 = *(int *)(param_1 + 0xc);
-
-        iVar4 = *(int *)(param_1 + 8);
-
-        fVar10 = (float)(param_3 - iVar7) / (float)(iVar5 - iVar7);
-
-      }
-
-    }
-
-    else if (cVar1 == '\0') {
-
-      iVar6 = *(int *)(param_1 + 4);
-
-      iVar4 = *(int *)(param_1 + 8);
-
-      fVar10 = (float)param_3 / fVar9;
-
-    }
-
     else {
-
-      iVar6 = *(int *)(param_1 + 4);
-
-      iVar4 = *(int *)(param_1 + 8);
-
-      fVar10 = 0.0f;
-
+      end = (int)(*(float *)(param_1 + 0x18) * frame);
+      if (param_3 < end) {
+        first = *(u32 *)(param_1 + 0xc);
+        second = *(u32 *)(param_1 + 0x14);
+        blend = (float)(param_3 - start) / (float)(end - start);
+      }
+      else {
+        first = *(u32 *)(param_1 + 0x14);
+        second = *(u32 *)(param_1 + 8);
+        blend = (float)(param_3 - end) / (float)(param_4 - end);
+      }
     }
-
-    auVar3 = _pextlb(0,(long)iVar4);
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar12 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(uGpffff815c);
-
-    auVar3 = _vmulbc(auVar12,auVar3);
-
-    auVar13 = _vmove(auVar3);
-
-    auVar3 = _pextlb(0,(long)iVar6);
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar12 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(uGpffff815c);
-
-    auVar12 = _vmulbc(auVar12,auVar3);
-
-    fVar11 = 1.0f;
-
-    auVar3 = _qmtc2(1.0f - fVar10);
-
-    auVar12 = _vmulbc(auVar12,auVar3);
-
-    auVar3 = _qmtc2(fVar10);
-
-    auVar3 = _vmulbc(auVar13,auVar3);
-
-    auVar12 = _vadd(auVar12,auVar3);
-
-    auVar3 = _qmtc2(0x437f0000);
-
-    auVar3 = _vmulbc(auVar12,auVar3);
-
-    auVar3 = _vftoi0(auVar3);
-
-    auVar3 = _qmfc2(auVar3._0_4_);
-
-    auVar3 = _ppach(in_zero_qw,auVar3);
-
-    auVar3 = _ppacb(in_zero_qw,auVar3);
-
-    if (param_3 < (int)((float)param_2[2] * fVar9)) {
-
-      fVar11 = (float)param_3 / (float)(int)((float)param_2[2] * fVar9);
-
+  }
+  else if (mode == 1) {
+    start = (int)(*(float *)(param_1 + 0x10) * frame);
+    if (param_3 < start) {
+      first = *(u32 *)(param_1 + 4);
+      second = *(u32 *)(param_1 + 0xc);
+      blend = (float)param_3 / (float)start;
     }
-
-    else if ((int)((float)param_2[3] * fVar9) < param_3) {
-
-      fVar11 = (float)(iVar5 - param_3) / (float)(iVar5 - (int)((float)param_2[3] * fVar9));
-
+    else {
+      first = *(u32 *)(param_1 + 0xc);
+      second = *(u32 *)(param_1 + 8);
+      blend = (float)(param_3 - start) / (float)(param_4 - start);
     }
-
-    fVar11 = (float)*param_2 * fVar11;
-
-    if (2.1474836e+09f <= fVar11) {
-
-      fVar11 = fVar11 - 2.1474836e+09f;
-
-    }
-
-    uVar2 = auVar3._0_4_ & 0xffffff | (int)fVar11 << 0x18;
-
+  }
+  else if (mode == 0) {
+    first = *(u32 *)(param_1 + 4);
+    second = *(u32 *)(param_1 + 8);
+    blend = (float)param_3 / frame;
+  }
+  else {
+    first = *(u32 *)(param_1 + 4);
+    second = *(u32 *)(param_1 + 8);
+    blend = 0.0f;
   }
 
-  return uVar2;
+  normalizer.bits = uGpffff815c;
+  scale = normalizer.value;
+  invBlend = 1.0f - blend;
+  r0 = (float)(first & 0xff) * scale;
+  g0 = (float)((first >> 8) & 0xff) * scale;
+  b0 = (float)((first >> 16) & 0xff) * scale;
+  r1 = (float)(second & 0xff) * scale;
+  g1 = (float)((second >> 8) & 0xff) * scale;
+  b1 = (float)((second >> 16) & 0xff) * scale;
+  red = (r0 * invBlend + r1 * blend) * 255.0f;
+  green = (g0 * invBlend + g1 * blend) * 255.0f;
+  blue = (b0 * invBlend + b1 * blend) * 255.0f;
+  color = ((u32)(int)red & 0xff) |
+          (((u32)(int)green & 0xff) << 8) |
+          (((u32)(int)blue & 0xff) << 16);
 
+  alpha = 1.0f;
+  if (param_3 < (int)((float)param_2[2] * frame)) {
+    alpha = (float)param_3 / (float)(int)((float)param_2[2] * frame);
+  }
+  else if ((int)((float)param_2[3] * frame) < param_3) {
+    alpha = (float)(param_4 - param_3) /
+            (float)(param_4 - (int)((float)param_2[3] * frame));
+  }
+  alpha = (float)*param_2 * alpha;
+  if (2147483648.0f <= alpha) {
+    alpha -= 2147483648.0f;
+  }
+  alphaInt = (int)alpha;
+  return color | ((u32)alphaInt << 24);
 }
 
 
@@ -52280,9 +52181,11 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2)
 void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4)
 {
   __int128 extraout_vf10;
+  __int128 auStack_20;
 
   FUN_00357ea0(DAT_007caf14 * param_2,DAT_007caf14 * param_3,DAT_007caf14 * param_4);
-  FUN_00325d60(param_1,(u8 (*)[16])&extraout_vf10);
+  auStack_20 = _sqc2(extraout_vf10);
+  ((void (*)(int,u8 (*)[16]))FUN_00325d60)(param_1,(u8 (*)[16])&auStack_20);
 }
 
 

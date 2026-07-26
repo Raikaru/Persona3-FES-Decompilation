@@ -255,6 +255,8 @@ extern s32 func_0051df58(s32 outputHandle, s32 channel, s32 count, s32 value, ..
 extern void func_0051e028_t(s32 outputHandle, s32 channel, s32 count, s32 value);
 #pragma alias func_0051df58_t func_0051df58
 extern s32 func_0051df58_t(s32 outputHandle, s32 channel, s32 count, s32 value, ...);
+extern void FUN_0051deb0(u32 channel, u32 handle);
+extern void FUN_0051dd48(u32 channel, u32 handle);
 extern s32 FUN_0050d3f0(void);
 extern s32 FUN_0050d3a0(void);
 extern void func_005030f0();
@@ -1674,30 +1676,25 @@ void func_0010d6f0(s32 index, s16 fileIndex)
 }
 
 // FUN_0010D7B0 NONMATCHING
-void func_0010d7b0(s32 index, s16 fileIndex, void* input, void* output,
-                   s32 inputSize, s32 outputSize, void* resource, void* callback)
+void func_0010d7b0(s32 index, s16 fileIndex, void* data0, u32 data0Size,
+                   void* data1, u32 data1Size, void* data2, u32 data2Size)
 {
     HSfdDecodeSlot* slot;
 
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-    {
-        return;
-    }
-
     slot = &sSfdDecodeSlots[index];
-    if (slot->state != 1)
+    if (slot->status != 0)
     {
-        return;
+        func_0010d950((s16)index);
     }
 
     slot->fileIndex = fileIndex;
-    slot->input = input;
-    slot->output = output;
-    slot->inputSize = inputSize;
-    slot->outputSize = outputSize;
-    slot->resource = resource;
-    slot->decodeHandle = (s32)callback;
     slot->state = 8;
+    slot->resource = data0;
+    slot->aux = data1;
+    slot->sourceData = data2;
+    slot->inputSize = data0Size;
+    slot->intermediateSize = data1Size;
+    slot->outputSize = data2Size;
 }
 
 // FUN_0010D910
@@ -1712,15 +1709,22 @@ void func_0010d950(s16 index)
     HSfdDecodeSlot* slot;
 
     slot = &sSfdDecodeSlots[index];
-    if (slot->request != NULL)
+    if (slot->state != 1)
     {
-        H_Cdvd_Destroy(slot->request);
-        slot->request = NULL;
+        return;
     }
-    slot->input = NULL;
-    slot->intermediate = NULL;
-    slot->output = NULL;
-    slot->resource = NULL;
+    if (slot->status == 0)
+    {
+        return;
+    }
+
+    FUN_0051deb0(5, (u32)slot->completion);
+    FUN_0051deb0(0, (u32)slot->decodeHandle);
+    FUN_0051dd48(5, (u32)slot->outputHandle);
+    FUN_0051dd48(3, (u32)slot->queueHandle);
+    slot->state = 0;
+    func_0050B710(slot->output);
+    func_0050B710(slot->sourceData);
     slot->state = 0;
 }
 

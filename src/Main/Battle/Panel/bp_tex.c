@@ -1586,8 +1586,8 @@ void bpTexShuffleNodes(void)
 {
     u32* work;
     u32* node;
-    u32* positions[8];
-    u32 order[16];
+    u32* scan;
+    u32* positions[4];
     s32 count;
     s32 nodeCount;
     s32 leafCount;
@@ -1595,11 +1595,29 @@ void bpTexShuffleNodes(void)
     s32 j;
     u32 tmp;
     s32 selected;
+    u32 orderValue;
     f32 position[3];
 
-    work = bpTexWork();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
     count = (s32)BP_TEX_U32(work, 0x1267c);
-    nodeCount = bpTexNodeCount();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    nodeCount = 0;
+    for (scan = BP_TEX_PTR(work, 0x1265c);
+         scan != NULL;
+         scan = (u32*)scan[0x3f1])
+    {
+        if ((scan[0] & 2) == 0)
+        {
+            nodeCount++;
+        }
+    }
     func_005225a8(0x68ea40, BP_TEX_U32(work, 0x126b0));
     BP_TEX_U32(work, 0x4a22 * 4) =
         (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 10.0f + 3.0f);
@@ -1607,7 +1625,6 @@ void bpTexShuffleNodes(void)
         (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 3.0f + 5.0f);
     for (i = 0; i < count; i++)
     {
-        order[i] = (u32)i;
         BP_TEX_U32(work, (0x49ef + i) * 4) = (u32)i;
     }
     for (i = 0; i < 0x100 + (s32)(func_00488f30() & 1); i++)
@@ -1625,14 +1642,26 @@ void bpTexShuffleNodes(void)
     }
     for (i = 0; i < count; i++)
     {
-        order[i] = BP_TEX_U32(work, (0x49ef + i) * 4);
-        if (order[i] == 0)
+        orderValue = BP_TEX_U32(work, (0x49ef + i) * 4);
+        if (orderValue == 0)
         {
             break;
         }
     }
-    K_ASSERT(i < count, 0x47a);
-    node = bpTexFindNode((u32)i);
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    node = BP_TEX_PTR(work, 0x1265c);
+    while (node != NULL)
+    {
+        if ((node[0] & 2) == 0 && node[4] == (u32)i)
+        {
+            break;
+        }
+        node = (u32*)node[0x3f1];
+    }
+    K_ASSERT(node != NULL, 0x47a);
     bpTexCollectLeafPos(node, positions, &leafCount);
     bpTexBuildPosition(position,
                        (u32)i,

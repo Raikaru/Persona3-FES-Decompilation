@@ -44,8 +44,8 @@ typedef struct FldFrameAtomicQuery
     u8 intersection[0x2c];
     void* atomic;
 } FldFrameAtomicQuery;
-extern void func_001ab390(void* collision, const RwV3d* pos, RwV3d* translation,
-                          f32 sphereCollisRadius);
+extern s32 func_001ab390(void* collision, const RwV3d* pos, RwV3d* translation,
+                         f32 sphereCollisRadius);
 extern s32 func_001abd20(void* collisionWorld, const RwV3d* pos, RwV3d* translation,
                           f32 sphereCollisRadius, u16 resTypeId);
 extern void* func_001ac950(const RwV3d* line, void* unused,
@@ -2047,12 +2047,19 @@ void* func_001aaf30(const RwV3d* point, void* unused,
 }
 
 // FUN_001ab390 NONMATCHING
-void func_001ab390(void* collision, const RwV3d* pos,
-                   RwV3d* translation, f32 sphereCollisRadius)
+s32 func_001ab390(void* collision, const RwV3d* pos,
+                  RwV3d* translation, f32 sphereCollisRadius)
 {
     FldFrameCollisionCollector collector;
     FldFrameCollisionQuery query;
+    RwV3d diff;
+    f32 correction;
+    f32 adjustX;
+    f32 adjustY;
+    f32 adjustZ;
+    f32 dot;
     s32 i;
+    s32 result;
 
     query.center.x = pos->x + translation->x;
     query.center.y = pos->y + translation->y;
@@ -2066,11 +2073,47 @@ void func_001ab390(void* collision, const RwV3d* pos,
         collector.distances[i] = 1.0e30f;
     }
     collector.count = 0;
-    if (collision != NULL)
+    result = 0;
+    if (collision == NULL)
     {
-        func_00464020(collision, &query, func_001aaf30, &collector);
-        FldFrame_ApplyCollisions(&collector, translation, sphereCollisRadius);
+        return result;
     }
+
+    func_00464020(collision, &query, func_001aaf30, &collector);
+    for (i = 0; i < (s32)collector.count; i++)
+    {
+        if (collector.distances[i] < 1.0e30f)
+        {
+            diff.x = query.center.x - collector.points[i].x;
+            diff.y = query.center.y - collector.points[i].y;
+            diff.z = query.center.z - collector.points[i].z;
+            func_004c69f0(&diff, &diff);
+            correction = query.radius - collector.distances[i];
+            adjustX = diff.x * correction;
+            adjustY = diff.y * correction;
+            adjustZ = diff.z * correction;
+            dot = translation->y * diff.y +
+                  translation->x * diff.x +
+                  translation->z * diff.z;
+            if (dot < 0.0f)
+            {
+                translation->x -= diff.x * dot;
+                translation->y -= diff.y * dot;
+                translation->z -= diff.z * dot;
+            }
+            result = 1;
+            if (translation->x == 0.0f &&
+                translation->y == 0.0f &&
+                translation->z == 0.0f)
+            {
+                translation->x += adjustX;
+                translation->y += adjustY;
+                translation->z += adjustZ;
+                result = 1;
+            }
+        }
+    }
+    return result;
 }
 
 // Reconstructed point/triangle collision callback.
