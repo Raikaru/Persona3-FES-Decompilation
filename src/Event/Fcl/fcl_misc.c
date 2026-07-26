@@ -114,8 +114,6 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #pragma alias fclMiscA2580Call FUN_003a2580
 extern s32 fclMiscA2580Call(s32);
 #pragma alias fclMiscC49e0Call FUN_003c49e0
-#pragma alias fclMiscC49e0PtrCall FUN_003c49e0
-extern int *fclMiscC49e0PtrCall(int *, int *);
 extern s32 fclMiscC49e0Call(s32, s32);
 #pragma alias fclMiscContextCall FUN_00195540
 extern s32 fclMiscContextCall(void);
@@ -407,6 +405,8 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
  
  
 // FUN_003C8810 NONMATCHING
+u64 FUN_003c8810(int *param_1)
+{
   int *item;
   int *node;
 
@@ -429,9 +429,6 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
     else {
       item = *(int **)((u8 *)item + 0x10);
     }
-  }
-  return 0;
-}
   }
   return 0;
 }
