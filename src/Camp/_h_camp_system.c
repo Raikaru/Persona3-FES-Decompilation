@@ -554,7 +554,10 @@ void *FUN_0015B430(KwlnTask *task)
     u32 selected;
     u32 allReady;
     bool inputHeld;
-    CampMenuScratch scratch;
+    u32 requestSize;
+    u32 fileSize;
+    CampMenuAnimPair pair;
+    CampMenuAnimPair shifted;
     void *fileData;
 
     /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
@@ -594,10 +597,10 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 1:
         if (work->requestResult == 0) {
-            scratch.words[0] = 0;
+            requestSize = 0;
             work->requestResult = (u32)FUN_0010c3a0(
-                CAMP_MENU_PTR32(work->request), &scratch.words[0], 0);
-            if (scratch.words[0] == 0) {
+                CAMP_MENU_PTR32(work->request), &requestSize, 0);
+            if (requestSize == 0) {
                 work->requestResult = 0;
                 return 0;
             }
@@ -610,10 +613,10 @@ void *FUN_0015B430(KwlnTask *task)
             FUN_003c7d80(0x08,
                 *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
             fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 0,
-                                    &scratch.tail[0]);
+                                    &fileSize);
             work->archiveBlob0 = camp_menu_address(FUN_00112420(fileData));
             fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 1,
-                                    &scratch.tail[0]);
+                                    &fileSize);
             work->archiveBlob1 = camp_menu_address(FUN_00112420(fileData));
             work->state = 2;
         }
@@ -628,47 +631,47 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 6:
         work->selectedPanel = 0;
-        scratch.pair.f[0] = 21.0f;
-        scratch.pair.f[1] = 215.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+        pair.f[0] = 21.0f;
+        pair.f[1] = 215.0f;
+        shifted = pair;
+        shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 50.0f;
-        scratch.pair.f[1] = 263.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+                     0, 2, 1, shifted.q, pair.q, 0, 0);
+        pair.f[0] = 50.0f;
+        pair.f[1] = 263.0f;
+        shifted = pair;
+        shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 87.0f;
-        scratch.pair.f[1] = 92.0f;
+                     0, 2, 1, shifted.q, pair.q, 0, 0);
+        pair.f[0] = 87.0f;
+        pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+                     0, 2, 1, pair.q, pair.q, 0, 0);
+        shifted = pair;
+        shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 388.0f;
-        scratch.pair.f[1] = 92.0f;
+                     0, 2, 1, shifted.q, pair.q, 0, 0);
+        pair.f[0] = 388.0f;
+        pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+                     0, 2, 1, pair.q, pair.q, 0, 0);
+        shifted = pair;
+        shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 95.0f;
-        scratch.pair.f[1] = 93.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 200.0f;
+                     0, 2, 1, shifted.q, pair.q, 0, 0);
+        pair.f[0] = 95.0f;
+        pair.f[1] = 93.0f;
+        shifted = pair;
+        shifted.f[1] += 200.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+                     0, 2, 1, shifted.q, pair.q, 0, 0);
         for (index = 0; index < 7; index++) {
             work->panelFlags[index] = FUN_0016f190(index + 0x183);
         }
-        scratch.pair.f[0] = 392.0f;
-        scratch.pair.f[1] = 385.0f;
+        pair.f[0] = 392.0f;
+        pair.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+                     0, 2, 1, pair.q, pair.q, 0, 0);
         work->entriesReady = 0;
         work->state = 7;
         break;
@@ -789,43 +792,43 @@ void *FUN_0015B430(KwlnTask *task)
                               work->panelFlags);
             }
         }
-        scratch.pair.f[0] = 21.0f;
-        scratch.pair.f[1] = 215.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
+        pair.f[0] = 21.0f;
+        pair.f[1] = 215.0f;
+        shifted = pair;
+        shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 50.0f;
-        scratch.pair.f[1] = 263.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
+                     0, 2, 2, pair.q, shifted.q, 0, 0);
+        pair.f[0] = 50.0f;
+        pair.f[1] = 263.0f;
+        shifted = pair;
+        shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 87.0f;
-        scratch.pair.f[1] = 92.0f;
+                     0, 2, 2, pair.q, shifted.q, 0, 0);
+        pair.f[0] = 87.0f;
+        pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
+                     0, 2, 2, pair.q, pair.q, 0, 0);
+        shifted = pair;
+        shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 388.0f;
-        scratch.pair.f[1] = 92.0f;
+                     0, 2, 2, pair.q, shifted.q, 0, 0);
+        pair.f[0] = 388.0f;
+        pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 600.0f;
+                     0, 2, 2, pair.q, pair.q, 0, 0);
+        shifted = pair;
+        shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
-        scratch.pair.f[0] = 95.0f;
-        scratch.pair.f[1] = 93.0f;
+                     0, 2, 2, pair.q, shifted.q, 0, 0);
+        pair.f[0] = 95.0f;
+        pair.f[1] = 93.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+                     0, 2, 2, pair.q, pair.q, 0, 0);
         work->state = 10;
-        scratch.pair.f[0] = 392.0f;
-        scratch.pair.f[1] = 385.0f;
+        pair.f[0] = 392.0f;
+        pair.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+                     0, 2, 2, pair.q, pair.q, 0, 0);
         break;
 
     case 10:

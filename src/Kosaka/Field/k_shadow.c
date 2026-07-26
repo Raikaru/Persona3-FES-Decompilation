@@ -476,18 +476,23 @@ void* func_0019a420(void* ignored,
                     const FldShadowTriangle* triangle,
                     FldShadowAtomicContext* context)
 {
-    RwV3d normal;
+    RwV4d normal;
     RwV3d vertices[3];
+    RwV3d projected[3];
     s32 i;
 
     (void)ignored;
-    normal = triangle->normal;
+    normal.x = triangle->normal.x;
+    normal.y = triangle->normal.y;
+    normal.z = triangle->normal.z;
+    normal.w = 0.0f;
     for (i = 0; i < 3; i++)
     {
         func_004c6c20(&vertices[i], triangle->vertices[i], 1,
                       func_004cb2f0(*(void**)((u8*)context->atomic + 4)));
     }
-    if (!(RwV3dDotProductMacro(&normal, &context->work->projectionNormal) > 0.0f))
+    if (!(RwV3dDotProductMacro((const RwV3d*)&normal,
+                               &context->work->projectionNormal) > 0.0f))
     {
         vertices[0].x += normal.x * 1.5f;
         vertices[0].y += normal.y * 1.5f;
@@ -498,7 +503,10 @@ void* func_0019a420(void* ignored,
         vertices[2].x += normal.x * 1.5f;
         vertices[2].y += normal.y * 1.5f;
         vertices[2].z += normal.z * 1.5f;
-        K_FldShadow_EmitTriangle(context->work, &normal, vertices);
+        func_004c6c20(projected, vertices, 3,
+                      &context->work->projectionMatrix);
+        K_FldShadow_EmitTriangle(context->work, (const RwV3d*)&normal,
+                                 projected);
     }
     return (void*)triangle;
 }
