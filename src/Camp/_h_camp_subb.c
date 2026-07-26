@@ -1966,8 +1966,13 @@ void FUN_00141fb0(CampEquipmentPanelWork* work)
   int row;
   float slotX;
   float slotY;
-  
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, 0x4140000042200000, 0x4140000042dc0000, 0, 0, 0, 0);
+  CampBits pair0;
+  CampBits pair1;
+  pair0.f[0] = 40.0f;
+  pair0.f[1] = 12.0f;
+  pair1.f[0] = 110.0f;
+  pair1.f[1] = 12.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, pair0.u, pair1.u, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 2, 0x41d80000435b0000, 0x41d80000435b0000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 1, 0x41d80000435b0000, 0x41d800004404c000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 2, 0x41d80000439f0000, 0x41d80000439f0000, 0, 0, 0, 0);

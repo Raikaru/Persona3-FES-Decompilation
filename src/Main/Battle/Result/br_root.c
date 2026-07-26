@@ -3321,7 +3321,7 @@ void func_001f7210(void)
     u32 total_weight;
     u32 weightTable[13];
     s32 *weight_slot;
-    u16 scan_arr[6];
+    s16 scan_arr[6];
     s32 member_count;
     u16 cur_hp, max_hp;
     u16 cur_sp, max_sp;
@@ -3333,7 +3333,7 @@ void func_001f7210(void)
     u32 effect_scan10;
     u32 effect_scan12;
     u32 apply_idx;
-    u16 apply_mbr;
+    s16 *apply_ptr;
     u32 amount;
     u32 new_val;
     K_ASSERT(work != NULL, 0x8c);
@@ -3847,13 +3847,13 @@ void func_001f7210(void)
         case 15:
             /* F85AC: HP recover scan */
             for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                cur_hp = (u16)func_0016c4f0(apply_mbr);
-                max_hp = (u16)func_0016c5f0(apply_mbr);
+                apply_ptr = &scan_arr[apply_idx];
+                cur_hp = (u16)func_0016c4f0(*apply_ptr);
+                max_hp = (u16)func_0016c5f0(*apply_ptr);
                 amount = (u32)((s32)max_hp * value / 100);
                 new_val = cur_hp + amount;
                 if (new_val > max_hp) new_val = max_hp;
-                func_0016cf40(apply_mbr, (u32)(s16)new_val);
+                func_0016cf40(*apply_ptr, (u32)(s16)new_val);
             }
             break;
         case 16:
@@ -3868,13 +3868,13 @@ void func_001f7210(void)
         case 17:
             /* F8698: SP recover scan */
             for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                cur_sp = (u16)func_0016c570(apply_mbr);
-                max_sp = (u16)func_0016c670(apply_mbr);
+                apply_ptr = &scan_arr[apply_idx];
+                cur_sp = (u16)func_0016c570(*apply_ptr);
+                max_sp = (u16)func_0016c670(*apply_ptr);
                 amount = (u32)((s32)max_sp * value / 100);
                 new_val = cur_sp + amount;
                 if (new_val > max_sp) new_val = max_sp;
-                func_0016cf90(apply_mbr, (u32)(s16)new_val);
+                func_0016cf90(*apply_ptr, (u32)(s16)new_val);
             }
             break;
         case 18:
@@ -3885,9 +3885,9 @@ void func_001f7210(void)
         case 19:
             /* F874C: bad-status clear scan */
             for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c970(apply_mbr);
-                func_0016d8b0(apply_mbr, st_val & ~0x80);
+                apply_ptr = &scan_arr[apply_idx];
+                st_val = func_0016c970(*apply_ptr);
+                func_0016d8b0(*apply_ptr, st_val & ~0x80);
             }
             break;
         case 21:
@@ -3898,9 +3898,9 @@ void func_001f7210(void)
         case 22:
             /* F87C4: physicalCondition set 0 scan */
             for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c920(apply_mbr);
-                func_0016d6b0(apply_mbr, 0);
+                apply_ptr = &scan_arr[apply_idx];
+                st_val = func_0016c920(*apply_ptr);
+                func_0016d6b0(*apply_ptr, 0);
             }
             break;
         case 23:
@@ -3911,9 +3911,9 @@ void func_001f7210(void)
         case 24:
             /* F8838: physicalCondition set 1 scan */
             for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c920(apply_mbr);
-                func_0016d6b0(apply_mbr, 1);
+                apply_ptr = &scan_arr[apply_idx];
+                st_val = func_0016c920(*apply_ptr);
+                func_0016d6b0(*apply_ptr, 1);
             }
             break;
         case 25:
@@ -3924,9 +3924,9 @@ void func_001f7210(void)
         case 26:
             /* F88AC: physicalCondition set 2 scan */
             for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c920(apply_mbr);
-                func_0016d6b0(apply_mbr, 2);
+                apply_ptr = &scan_arr[apply_idx];
+                st_val = func_0016c920(*apply_ptr);
+                func_0016d6b0(*apply_ptr, 2);
             }
             break;
         default:
