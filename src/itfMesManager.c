@@ -57,6 +57,8 @@ extern s8 DAT_00959eb0[];
 extern code DAT_00960178;
 
 extern void thunk_FUN_003a6334();
+#pragma alias thunk_FUN_003a6334_typed thunk_FUN_003a6334
+extern void thunk_FUN_003a6334_typed(int param_1,int param_2,int param_3);
 extern void thunk_FUN_003a6360();
 #define ITFMES_HANDLE_STRIDE            0x34
 #define ITFMES_HANDLE_ACTIVE_MES_OFFSET 0x2c
@@ -1905,7 +1907,7 @@ void FUN_003a3c10(int param_1,int param_2)
 }
 #define FUN_003a3c10(...) ((void (*)(...))FUN_003a3c10)(__VA_ARGS__)
 #undef FUN_003a3ce0
-// FUN_003A3CE0 NONMATCHING
+// FUN_003A3CE0
 
 
 void FUN_003a3ce0(int param_1,int param_2,int param_3)
@@ -1915,6 +1917,9 @@ void FUN_003a3ce0(int param_1,int param_2,int param_3)
 {
 
   int iVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
 
   
 
@@ -1925,14 +1930,17 @@ void FUN_003a3ce0(int param_1,int param_2,int param_3)
     FUN_0019d3f0("itfMesManager.c",0x9d0);
 
   }
+  iVar2 = iVar1 + 0x24;
+  iVar3 = param_2 - *(int *)iVar2;
+  iVar4 = param_3 - *(int *)(iVar2 + 4);
 
-  if ((param_2 != *(int *)(iVar1 + 0x24)) || (param_3 != *(int *)(iVar1 + 0x28))) {
+  if ((iVar3 != 0) || (iVar4 != 0)) {
 
-    thunk_FUN_003a6334(*(u32 *)(iVar1 + 0x30));
+    thunk_FUN_003a6334_typed(*(u32 *)(iVar2 + 0xc),iVar3,iVar4);
 
-    *(int *)(iVar1 + 0x24) = param_2;
+    *(int *)iVar2 = param_2;
 
-    *(int *)(iVar1 + 0x28) = param_3;
+    *(int *)(iVar2 + 4) = param_3;
 
   }
 

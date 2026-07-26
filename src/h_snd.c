@@ -27,6 +27,8 @@ typedef struct HsndBackendControl
 
 static HsndChannel sChannels[HSND_CHANNEL_COUNT];
 static HsndSlotWork sSlotWork[HSND_SLOT_COUNT];
+#pragma alias sSlotWork_alt sSlotWork
+extern u8 sSlotWork_alt[];
 static HsndBackendControl sBackendControls[HSND_CHANNEL_COUNT];
 static s16 sBgmRestartCountdown;
 static void* sChannelData0[HSND_CHANNEL_COUNT];
@@ -798,7 +800,7 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
     sSlotWork[slotIndex].completed = false;
     sSlotWork[slotIndex].param1 = slotIndex;
     sSlotWork[slotIndex].param2 = 0x3E7;
-    sSlotWork[slotIndex].state = 2;
+    ((HsndSlotWork *)sSlotWork_alt)[slotIndex].state = 2;
     sSlotWork[slotIndex].data0 = data0;
     sSlotWork[slotIndex].data3 = data0Size;
     sSlotWork[slotIndex].data1 = data1;
