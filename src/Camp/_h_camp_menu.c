@@ -986,7 +986,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         item->x + 14.0f, item->y + (f32)(i * 0x23), item->scale);
                 }
                 FUN_0017c6c0((s32)cx, (s32)(cy - 2.0f),
-                             item->texture, alpha, 1, 6, *(u16*)record);
+                             (s32)item->scale, alpha, 1, 6, *(u16*)record);
             } else {
                 if (FUN_00403380(*(u16*)record) == 2) {
                     campMenuDrawSprite(parent, *labels, 0xa3, item->alpha,
@@ -1088,7 +1088,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         item->x + 14.0f, item->y + (f32)(i * 0x23), item->scale);
                 }
                 FUN_0017c6c0((s32)cx, (s32)(cy - 2.0f),
-                             item->texture, alpha, 1, 10, *(u16*)record);
+                             (s32)item->scale, alpha, 1, 10, *(u16*)record);
             }
         }
         break;
