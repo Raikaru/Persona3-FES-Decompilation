@@ -1472,6 +1472,8 @@ s32 FUN_003d6e60(s32 param_1,s32 param_2)
   u16 temp_3;
   u8 *temp_4;
   void *dest;
+  u32 skill;
+  s32 persona;
 
   dest = sp50;
   asm volatile("" : "+r"(dest));
@@ -1485,8 +1487,10 @@ outer_body:
     if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
       return 0;
     }
+    skill = temp_19;
+    persona = param_1 + 4;
     if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_19) == -1) {
-      datPersonaSetSkill_003d6e60(param_1 + 4,temp_19);
+      datPersonaSetSkill_003d6e60(persona,skill);
     }
   }
 outer_increment:
