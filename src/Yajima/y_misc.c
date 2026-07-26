@@ -3667,7 +3667,7 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
 
     afStack_100[iVar1 * 0x10 + 2] = DAT_00960088 - param_1;
 
-    afStack_100[iVar1 * 0x10 + 6] = 1.0 / fVar2;
+    afStack_100[iVar1 * 0x10 + 6] = 1.0f / fVar2;
 
     afStack_100[iVar1 * 0x10 + 8] = (float)(param_4 >> 0x18);
 
@@ -5108,9 +5108,9 @@ float FUN_0042a0d0(float param_1,float *param_2)
 
   iVar1 = FUN_0044f120(&fStack_10);
 
-  return (float)(int)((param_1 / 2.0 + 0.0) -
+  return (float)(int)((param_1 / 2.0f + 0.0f) -
 
-                     (fStack_10 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0));
+                     (fStack_10 - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f));
 
 }
 
@@ -5228,7 +5228,7 @@ float FUN_0042a3f0(float param_1,float *param_2)
 
   iVar1 = FUN_0044f120(&fStack_10);
 
-  return (param_1 / 2.0 + 0.0) - (fStack_10 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0);
+  return (param_1 / 2.0f + 0.0f) - (fStack_10 - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f);
 
 }
 
@@ -5810,11 +5810,11 @@ void FUN_0042adb0(int param_1)
 
     fStack_8 = *(float *)(iVar4 + 0xb2c) +
 
-               ((63.0 - (((fVar6 - afStack_48[0]) - fVar8) * 2.25) / 100.0) - fVar9);
+               ((63.0f - (((fVar6 - afStack_48[0]) - fVar8) * 2.25f) / 100.0f) - fVar9);
 
     fStack_4 = *(float *)(iVar4 + 0xb30) +
 
-               ((63.0 - (((fVar7 - fStack_40) - fVar10) * 2.25) / 100.0) - fVar11);
+               ((63.0f - (((fVar7 - fStack_40) - fVar10) * 2.25f) / 100.0f) - fVar11);
 
     iVar4 = *(int *)(*(int *)(iVar4 + 0x5c) + 0x3c);
 
