@@ -1723,7 +1723,7 @@ u64 FUN_0031d900(int *param_1,int *param_2,u16 param_3)
 
   
 
-  uVar1 = (*DAT_00960178)(0x14,0x40000);
+  uVar1 = (*DAT_00960178_abs)(0x14,0x40000);
 
   FUN_00521408(uVar1,0,0x14);
 
