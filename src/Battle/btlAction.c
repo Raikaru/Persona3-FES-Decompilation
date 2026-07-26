@@ -5915,6 +5915,7 @@ void btlActionUpdateStateError(BtlAction* action)
     s16 animation;
     s16 duration;
     u32 table;
+    f32 one = 1.0f;
 
     unit = action->unit;
     btlAction0028a780(action);
@@ -5926,15 +5927,15 @@ void btlActionUpdateStateError(BtlAction* action)
     {
         animation = action->target.commandId == 3 ? 0x15 : 0xc;
         table = action->target.commandId == 3 ? 0x38 : 0x1c;
-        duration = FUN_002838d0(1.0f, unit, animation);
+        duration = FUN_002838d0(one, unit, animation);
     }
     else
     {
         animation = FUN_002d6370(action->target.specificId) == 0 ? 7 : 4;
         table = 0x21;
-        duration = FUN_002835e0(1.0f, unit, animation);
+        duration = FUN_002835e0(one, unit, animation);
     }
-    animPacket = btlUnitCreateAnimPacket(unit, animation, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+    animPacket = btlUnitCreateAnimPacket(unit, animation, 6, one, BTLUNIT_ANIM_MODE_ONCE);
     ACTION_U16(animPacket, 0x4a) = duration + 6;
     animPacket->actionUID = action->uid;
     btlPacketRegister(animPacket, BTLPACKET_TYPE_1);

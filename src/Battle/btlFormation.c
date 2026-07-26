@@ -4585,7 +4585,7 @@ u64 func_002bef20(u64 param_1)
     target = *(int *)(packet + 6);
     if (target != 0) {
       if (*(code **)(target + 0x14) != NULL) {
-        resultCode = (int)(*(code **)(target + 0x14))(target, *(u32 *)(packet + 2));
+        resultCode = (int)(**(code **)(target + 0x14))(target, *(u32 *)(packet + 2));
         switch (resultCode) {
         case 1:
           target = *(int *)(target + 0x20);
