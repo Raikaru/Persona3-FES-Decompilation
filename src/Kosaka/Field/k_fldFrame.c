@@ -2663,12 +2663,13 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
     {
         f32 trLen;
-        trLen = func_004c69f0(&diff, translation);
+        finalDiff = diff;
+        trLen = func_004c69f0(&finalDiff, translation);
         if (trLen > 9.0f)
         {
-            translation->x = 8.5f * diff.x;
-            translation->y = 8.5f * diff.y;
-            translation->z = 8.5f * diff.z;
+            translation->x = 8.5f * finalDiff.x;
+            translation->y = 8.5f * finalDiff.y;
+            translation->z = 8.5f * finalDiff.z;
         }
     }
 
