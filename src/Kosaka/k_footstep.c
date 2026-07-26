@@ -937,6 +937,8 @@ void* func_001dcb60(KwlnTask* task)
     (*drawPrim)(4, (void*)((u8*)0x00960120 + 0x20), 4);
     (*renderState)(9, 2);
     (*renderState)(1, *(u32*)D_00875A60[*(u32*)((u8*)0x00960120 + 8) + 1]);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
     (*drawPrim)(4, (void*)((u8*)0x00960120 + 0x120), 4);
     (*renderState)(6, 1);
     if (*(s32*)(work + 4) != 0)

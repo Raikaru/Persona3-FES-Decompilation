@@ -351,8 +351,9 @@ static void H_Snd_ApplyChannelFade(HsndChannel* channel, s32 frames)
 void func_00108bc0(void)
 {
     s32 i;
-    HsndChannel* bgm;
     HsndChannel* channel;
+    void** handle;
+    s16* state;
     s32 status;
 
     func_00540ec0();
@@ -363,41 +364,42 @@ void func_00108bc0(void)
         func_00108e80(&sSlotWork[i]);
     }
 
-    bgm = &sChannels[0];
-    if (bgm->active != false)
+    if (sChannels[0].active != false)
     {
-        if (bgm->gate != false && sBgmRestartCountdown != 0)
+        if (sChannels[0].gate != false && sBgmRestartCountdown != 0)
         {
             sBgmRestartCountdown--;
             if (sBgmRestartCountdown == 0)
             {
-                func_0054d118(bgm->handle, true);
+                func_0054d118(sChannels[0].handle, true);
             }
         }
 
-        func_0054d3a8(bgm->handle, false);
-        status = func_0054d148(bgm->handle);
+        func_0054d3a8(sChannels[0].handle, false);
+        status = func_0054d148(sChannels[0].handle);
         if (status == 3)
         {
-            bgm->active = false;
+            sChannels[0].active = false;
         }
         else if (status == 4)
         {
             func_00109070(0);
             H_Snd_00109180(0);
-            func_0054d208(bgm->handle, true);
+            func_0054d208(sChannels[0].handle, true);
         }
     }
 
     for (i = 2; i < HSND_CHANNEL_COUNT; i++)
     {
         channel = &sChannels[i];
+        handle = &channel->handle;
+        state = &channel->state;
         if (channel->active == false)
         {
             continue;
         }
 
-        status = func_0054d148(channel->handle);
+        status = func_0054d148(*handle);
         if (status == 3)
         {
             channel->active = false;
@@ -406,17 +408,17 @@ void func_00108bc0(void)
         {
             func_00109070(i);
             H_Snd_00109180(i);
-            func_0054d208(channel->handle, true);
+            func_0054d208(*handle, true);
         }
-        else if (channel->state == HSND_CHANNEL_STARTING)
+        else if (*state == HSND_CHANNEL_STARTING)
         {
-            func_0054d100(channel->handle);
-            channel->state = HSND_CHANNEL_PLAYING;
+            func_0054d100(*handle);
+            *state = HSND_CHANNEL_PLAYING;
         }
-        else if (channel->state == HSND_CHANNEL_PLAYING)
+        else if (*state == HSND_CHANNEL_PLAYING)
         {
             H_Snd_00109180(i);
-            channel->state = HSND_CHANNEL_PLAYING;
+            *state = HSND_CHANNEL_PLAYING;
         }
     }
 }
