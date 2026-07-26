@@ -536,12 +536,15 @@ u8 func_00109170(void)
     return false;
 }
 
+/* Retail 0x1091A4-0x109994: reconstructed BGM and backend dispatch logic from retail instructions. */
 // FUN_00109180 NONMATCHING
 void H_Snd_00109180(s32 channelIndex)
 {
     char name[0x100];
     HsndChannel* channel;
     HsndBackendControl* control;
+    u32* controlData20;
+    void** handle;
 
     if (channelIndex == 0)
     {
@@ -553,7 +556,7 @@ void H_Snd_00109180(s32 channelIndex)
         {
             func_0054d1a8(sChannels[0].handle, -0x1E);
         }
-        sprintf(name, "%s", sBgmAdxStrings[sChannels[0].id][0]);
+        sprintf(name, "%s", sBgmAdxStrings[sChannels[channelIndex].id][0]);
         if (func_0054d130(sChannels[0].handle) != 0)
         {
             func_0054d118(sChannels[0].handle, 0);
@@ -572,140 +575,153 @@ void H_Snd_00109180(s32 channelIndex)
         }
         func_0054d0a0(sChannels[0].handle, name);
         func_0054d208(sChannels[0].handle, 1);
-        sChannels[0].active = 1;
-        sChannels[0].state = HSND_CHANNEL_STARTING;
+        sChannels[channelIndex].active = 1;
+        sChannels[channelIndex].state = HSND_CHANNEL_STARTING;
         return;
     }
 
     channel = &sChannels[channelIndex];
-    if (channel->handle != NULL)
+    handle = &channel->handle;
+    if (*handle != NULL)
     {
-        func_0054d060(channel->handle);
-        channel->handle = NULL;
+        func_0054d060(*handle);
+        *handle = NULL;
     }
 
     control = &sBackendControls[channelIndex];
-    control->flags = 0;
-    control->voiceCount = 0;
-    control->timeout = 0;
-    control->padC = 0;
-    control->pending = 0;
-    control->class = 0;
+    controlData20 = &control->data20;
     control->data18 = 0;
+    *controlData20 = 0;
     control->data1C = 0;
-    control->data20 = 0;
-    control->data24 = 0;
     control->flags = 2;
     control->voiceCount = 2;
     control->timeout = 0x5DC0;
-    control->class = channelIndex == 2 ? 2 : 3;
-    if (channelIndex == 2)
-    {
-        control->flags = 3;
-        control->voiceCount = 1;
-    }
 
     switch (channel->requestType)
     {
         case HSND_START_BGM:
         case HSND_START_SE:
         case HSND_START_CDVD:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            if (sChannelData3[channelIndex] != NULL)
+            if (channelIndex >= 2)
             {
-                func_0054d328(channel->handle);
-            }
-            func_0054d238(channel->handle, 0);
-            if (channelIndex == 4)
-            {
-                func_0054d220(channel->handle, 0x5A);
-            }
-            else
-            {
-                func_0054d220(channel->handle, 0);
+                if (channel->requestType == HSND_START_BGM ||
+                    channel->requestType == HSND_START_CDVD)
+                {
+                    *controlData20 = 0;
+                }
+                control->pending = 1;
+                *handle = func_0054d030(control, sChannelData0[channelIndex],
+                                                 sChannelData1[channelIndex]);
+                if (*controlData20 != 0)
+                {
+                    func_0054d328(*handle);
+                }
+                func_0054d238(*handle, 0);
+                if (channelIndex == 4)
+                {
+                    func_0054d220(*handle, 0x5A);
+                }
+                else
+                {
+                    func_0054d220(*handle, 0);
+                }
             }
             if (channel->requestType == HSND_START_CDVD)
             {
-                func_0054d0b8(channel->handle, channel->modeArg.data, channel->id);
+                func_0054d0b8(*handle, channel->modeArg.data, channel->id);
             }
             else if (channelIndex == 0)
             {
-                func_00102530(channel->handle, channel->name);
+                func_00102530(*handle, channel->name);
             }
             else
             {
-                func_001025c0(channel->handle, channel->name);
+                func_001025c0(*handle, channel->name);
             }
+            func_0054d208(*handle, 1);
             break;
 
         case HSND_START_SE_WITH_PARAM:
         case HSND_START_STREAM_FADE:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            if (sChannelData3[channelIndex] != NULL)
+            if (channelIndex >= 2)
             {
-                func_0054d328(channel->handle);
+                control->class = channelIndex == 2 ? 2 : 3;
+                control->pending = 1;
+                if (channel->requestType == HSND_START_STREAM_FADE)
+                {
+                    *controlData20 = 0;
+                    control->pending = 2;
+                }
+                *handle = func_0054d030(control, sChannelData0[channelIndex],
+                                                 sChannelData1[channelIndex]);
+                if (*controlData20 != 0)
+                {
+                    func_0054d328(*handle);
+                }
+                func_0054d238(*handle, 0);
+                if (channelIndex == 4)
+                {
+                    func_0054d220(*handle, 0x5A);
+                }
+                else
+                {
+                    func_0054d220(*handle, 0);
+                }
             }
-            func_0054d238(channel->handle, 0);
-            if (channelIndex == 4)
-            {
-                func_0054d220(channel->handle, 0x5A);
-            }
-            else
-            {
-                func_0054d220(channel->handle, 0);
-            }
-            func_0054d0d0(channel->handle, sChannelData0[channelIndex],
+            func_0054d0d0(*handle, sChannelData0[channelIndex],
                           sChannelData1[channelIndex]);
-            func_0054d208(channel->handle, 1);
             break;
 
         case HSND_START_STREAM:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            if (sChannelData3[channelIndex] != NULL)
+            if (channelIndex >= 2)
             {
-                func_0054d328(channel->handle);
+                control->class = 3;
+                control->pending = 2;
+                *controlData20 = 0;
+                *handle = func_0054d030(control, sChannelData0[channelIndex],
+                                                 sChannelData1[channelIndex]);
+                if (*controlData20 != 0)
+                {
+                    func_0054d328(*handle);
+                }
+                func_0054d238(*handle, 0);
+                if (channelIndex == 4)
+                {
+                    func_0054d220(*handle, 0x5A);
+                }
+                else
+                {
+                    func_0054d220(*handle, 0);
+                }
             }
-            func_0054d238(channel->handle, 0);
-            if (channelIndex == 4)
-            {
-                func_0054d220(channel->handle, 0x5A);
-            }
-            else
-            {
-                func_0054d220(channel->handle, 0);
-            }
-            func_0054d0e8(channel->handle, channel->modeData,
+            func_0054d0e8(*handle, channel->modeData,
                           channel->modeArg.parameter);
             break;
 
         case HSND_START_NAMED_STREAM:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
+            *controlData20 = 0;
+            control->pending = 1;
+            *handle = func_0054d030(control, sChannelData0[channelIndex],
                                              sChannelData1[channelIndex]);
-            func_0054d238(channel->handle, 0);
+            func_0054d238(*handle, 0);
             if (channelIndex == 4)
             {
-                func_0054d220(channel->handle, 0x5A);
+                func_0054d220(*handle, 0x5A);
             }
             else
             {
-                func_0054d220(channel->handle, 0);
+                func_0054d220(*handle, 0);
             }
-            func_0054d0a0(channel->handle, channel->name);
+            func_0054d0a0(*handle, channel->name);
+            func_0054d208(*handle, 1);
             break;
 
         default:
             break;
     }
-    if (channel->requestType != HSND_START_STREAM &&
-        channel->requestType != HSND_START_STREAM_FADE)
-    {
-        func_0054d208(channel->handle, 1);
-    }
-    channel->active = 1;
-    channel->state = HSND_CHANNEL_STARTING;
+
+    sChannels[channelIndex].active = 1;
+    sChannels[channelIndex].state = HSND_CHANNEL_STARTING;
 }
 
 // FUN_001099A0
