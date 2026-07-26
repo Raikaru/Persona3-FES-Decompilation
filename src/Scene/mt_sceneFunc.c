@@ -5410,7 +5410,7 @@ u16 FUN_003bd9a0(u32 param_1,u32 param_2)
     iVar2 = iVar2 + 1;
   }
   iVar1 = FUN_003951d0_i32(0xa88);
-  if (lVar1 == 1) {
+  if (iVar1 == 1) {
     return *(u16 *)((u8 *)DAT_0095b724_abs + iVar3 + 4);
   }
   return *(u16 *)((u8 *)DAT_0095b724_abs + iVar3 + 6);
