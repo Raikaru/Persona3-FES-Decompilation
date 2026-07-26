@@ -99,7 +99,7 @@ extern void *FUN_003b5cf0_typed(void);
 #pragma alias FUN_003b5d10_typed FUN_003b5d10
 extern void *FUN_003b5d10_typed(u16);
 #pragma alias FUN_003b7090_typed FUN_003b7090
-extern void FUN_003b7090_typed(s16);
+extern void FUN_003b7090_typed(u16);
 #pragma alias FUN_003b64c0_typed FUN_003b64c0
 extern u16 FUN_003b64c0_typed(u32, int, u64);
 #pragma alias FUN_003b9550_typed FUN_003b9550
@@ -1920,15 +1920,16 @@ void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
       }
       *puVar5 = 0;
     }
-    if (param_3 < *(int *)(param_1 + 4)) {
-      iVar4 = *(int *)(param_3 * 0x2c + param_1 + 0x34);
-    }
-    else {
-      iVar4 = 0;
-    }
+    if (param_3 < *(int *)(param_1 + 4)) goto load_event_value;
+    iVar4 = 0;
+    goto have_event_value;
+load_event_value:
+    iVar4 = *(int *)(param_3 * 0x2c + param_1 + 0x34);
+have_event_value:
     if (iVar4 != 0) {
       uVar2 = FUN_003b64c0_typed((int)param_2 + 200U & 0xffff,iVar4,param_4);
       FUN_005225a8_typed(DAT_006a0fe0,uVar2);
+      FUN_003b9550_typed(uVar2,1);
       *puVar5 = uVar2;
     }
   }

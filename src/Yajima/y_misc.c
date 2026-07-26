@@ -244,6 +244,10 @@ extern code DAT_0096017c;
 extern code DAT_0096017c_abs[];
 #pragma alias FUN_004264d0_u32 FUN_004264d0
 extern u32 FUN_004264d0_u32(u32 param_1,s8 param_2);
+#pragma alias FUN_004d0f00_arg FUN_004d0f00
+extern void FUN_004d0f00_arg(u32 param_1);
+#pragma alias FUN_00115980_arg FUN_00115980
+extern void FUN_00115980_arg(u32 param_1);
 code DAT_00960184;
 extern char DAT_006b4400[];
 #pragma alias DAT_00960184_abs DAT_00960184
@@ -4876,7 +4880,7 @@ void FUN_00429c60(int param_1)
 
     iVar2 = iVar1 + iVar3 * 4 + 0x28;
     if (*(int *)iVar2 != 0) {
-      FUN_004d0f00();
+      FUN_004d0f00_arg(*(u32 *)iVar2);
       *(u32 *)iVar2 = 0;
     }
 
@@ -4887,7 +4891,7 @@ void FUN_00429c60(int param_1)
 
     iVar2 = iVar1 + iVar3 * 4 + 0x4c;
     if (*(int *)iVar2 != 0) {
-      FUN_00115980();
+      FUN_00115980_arg(*(u32 *)iVar2);
       *(u32 *)iVar2 = 0;
     }
 
