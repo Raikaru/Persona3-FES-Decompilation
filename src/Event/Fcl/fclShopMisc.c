@@ -7384,7 +7384,6 @@ void FUN_003f86a0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
       }
 
 
-      }
       FUN_003f55b0_i((int)param_1,(int)param_2,(int)param_3,(int)param_4,param_5,1);
     }
     else {
