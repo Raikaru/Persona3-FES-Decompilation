@@ -3068,7 +3068,6 @@ int FUN_002e0620(int param_1,int param_2)
   u32 lVar3;
 
   u32 uVar4;
-  u32 defaultResult;
 
   
 
@@ -3137,6 +3136,10 @@ journey_true:
     }
       
       switch(*(u16 *)(iVar2 + 0xa4)) {
+      
+      default:
+      
+        return -1;
       
       
       case 2:
@@ -3512,10 +3515,7 @@ journey_true:
         }
       
         return 0x2c4;
-      }
-      defaultResult = 0xffffffff;
-      return defaultResult;
-    }
+      } }
 }
 
 // FUN_002E0F70
