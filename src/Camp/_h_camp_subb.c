@@ -1408,9 +1408,9 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     s32 frame;
     s32 hadHundreds;
     char category;
-    f32 originX;
-    f32 originY;
-    f32 digitY;
+    volatile f32 originX;
+    volatile f32 originY;
+    volatile f32 digitY;
     char textBuffer[256];
 
     selectedEquipment = &work->entries[work->firstVisibleEntry + work->selectedEntry];

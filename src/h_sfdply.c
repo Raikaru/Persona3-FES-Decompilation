@@ -72,7 +72,6 @@ extern void* func_00490050(const char* path);
 extern void* func_004b7760(const char* message);
 extern void* func_004920a0(const char* path);
 extern void* func_004b69b0(const char* path);
-extern void* func_004c5250(const void* source, u32 size, u32 mode);
 extern void* func_00464540(const char* path);
 extern void* func_0048d960(const char* path);
 extern void* func_004b79d0(u32 size, const void* source);
@@ -1405,9 +1404,9 @@ void func_0010c7d0(HSfdQueueSlot* slot)
             entry->resultE = func_004b69b0(entry->name + 0x24);
             break;
         case 4:
-            entry->result1 = func_004c5250(entry->source,
-                                          (u32)entry->buffer,
-                                          (u32)entry->byteCount);
+            entry->result1 = (void*)func_004c5250(entry->source,
+                                                 (void*)entry->buffer,
+                                                 entry->byteCount);
             entry->resultF = func_00464540(entry->source);
             break;
         case 5:

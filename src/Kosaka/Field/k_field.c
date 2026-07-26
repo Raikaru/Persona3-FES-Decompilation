@@ -2230,16 +2230,14 @@ generate:
     }
 
 check:
-    field = (u8*)K_Field_Get();
-    targetCell = field +
+    targetCell = (u8*)K_Field_Get() +
                  (*(u8*)((u8*)K_Field_Get() + 0x3d) * 0x100) +
                  (*(u8*)((u8*)K_Field_Get() + 0x3c) * 0x10);
     if (targetCell[0x48] != 1)
     {
         goto generate;
     }
-    field = (u8*)K_Field_Get();
-    targetCell = field +
+    targetCell = (u8*)K_Field_Get() +
                  (*(u8*)((u8*)K_Field_Get() + 0x3d) * 0x100) +
                  (*(u8*)((u8*)K_Field_Get() + 0x3c) * 0x10);
     if (targetCell[0x4a] != 4)
