@@ -385,7 +385,6 @@ u32 func_001b81f0(HCdvd* request)
     void* source;
     void* data;
     u32 cachedSize;
-
     if (request == NULL)
     {
         return true;

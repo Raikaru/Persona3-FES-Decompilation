@@ -314,7 +314,7 @@ LAB_003c84bc:
 }
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #undef FUN_003c8550
-// FUN_003C8550 NONMATCHING
+// FUN_003C8550
 
 
 u64 FUN_003c8550(u8 *param_1)
@@ -340,13 +340,13 @@ u64 FUN_003c8550(u8 *param_1)
       } else {
         lVar2 = FUN_0017d800();
         if (lVar2 != 0) {
-          if (puVar3[1] == 1) {
-            FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xe8);
-          } else if (puVar3[1] == 9) {
-            FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x108);
-          } else {
-            FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128);
-          }
+        if (puVar3[1] == 1) {
+          FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xe8,puVar3[1]);
+        } else if (puVar3[1] == 9) {
+          FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x108,puVar3[1]);
+        } else {
+          FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,puVar3[1]);
+        }
         } else {
           FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,puVar3[1]);
         }

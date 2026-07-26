@@ -9948,10 +9948,10 @@ void func_002eec60(void)
   VoicePositionWork work;
   u32 uVar1;
   u32 uVar2;
-  int iVar3;
   int iVar4;
   u32 *puVar5;
   u32 *puVar6;
+  int iVar3;
   s16 sVar7;
   puVar6 = (u32*)DAT_0069a000_abs;
 
