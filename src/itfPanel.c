@@ -4877,7 +4877,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   } while (0 < iVar8);
 
-  FUN_0016f1f0(uVar6 + aiStack_20[uVar5],1);
+  FUN_0016f1f0(aiStack_20[uVar5] + uVar6,1);
 
   return 0;
 
@@ -4904,7 +4904,6 @@ u64 FUN_003ae260(u64 param_1,int param_2)
   int iVar8;
 
   u32 uVar5;
-
   u32 uVar6;
   u32 firstLow;
   u32 secondLow;
@@ -4985,8 +4984,7 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   } while (0 < iVar8);
 
-  FUN_0016f1f0(uVar6 + aiStack_20[uVar5],0);
-
+  FUN_0016f1f0(aiStack_20[uVar5] + uVar6,0);
   return 0;
 
 }

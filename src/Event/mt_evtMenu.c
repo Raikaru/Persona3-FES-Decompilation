@@ -1082,9 +1082,15 @@ extern void FUN_0038a260_evt5(u32 param_1,int param_2,int param_3,u32 param_4,f3
 #pragma alias FUN_0038a260_f32_5 FUN_0038a260
 extern void FUN_0038a260_f32_5(f32 param_1,int param_2,int param_3,int param_4,
                                void *param_5);
+#pragma alias FUN_0038a260_i4f FUN_0038a260
+extern void FUN_0038a260_i4f(int param_1,int param_2,int param_3,void *param_4,
+                              f32 param_5);
 #pragma alias FUN_0038a260_f32_6 FUN_0038a260
 extern void FUN_0038a260_f32_6(f32 param_1,int param_2,int param_3,u32 param_4,
                                void *param_5,u32 param_6);
+#pragma alias FUN_0038a260_i4f6 FUN_0038a260
+extern void FUN_0038a260_i4f6(int param_1,int param_2,int param_3,u32 param_4,
+                               void *param_5,f32 param_6);
 #pragma alias FUN_0038a260_f32_p6 FUN_0038a260
 extern void FUN_0038a260_f32_p6(f32 param_1,int param_2,int param_3,u32 param_4,
                                 void *param_5,void *param_6);
