@@ -183,7 +183,7 @@ extern u8 DAT_00684d60[];
 #pragma alias FUN_00182c50_typed FUN_00182c50
 extern void FUN_00182c50_typed(s16 skill, u8* dst);
 extern void FUN_001831e0_typed(s16 slot, u32 index, u8* dst);
-extern void FUN_001831e0_typed(s16 slot, u32 index, int arg);
+
 #pragma alias FUN_0016da50_typed FUN_0016da50
 extern void FUN_0016da50_typed(s16 slot, s16 type, s16 index);
 

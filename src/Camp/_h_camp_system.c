@@ -627,51 +627,55 @@ void *FUN_0015B430(KwlnTask *task)
         break;
 
     case 6:
+        {
+            CampMenuAnimPair state6Pair;
+            CampMenuAnimPair state6Shifted;
         work->selectedPanel = 0;
-        scratch.pair.f[0] = 21.0f;
-        scratch.pair.f[1] = 215.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+        state6Pair.f[0] = 21.0f;
+        state6Pair.f[1] = 215.0f;
+        state6Shifted = state6Pair;
+        state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 50.0f;
-        scratch.pair.f[1] = 263.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
+        state6Pair.f[0] = 50.0f;
+        state6Pair.f[1] = 263.0f;
+        state6Shifted = state6Pair;
+        state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 87.0f;
-        scratch.pair.f[1] = 92.0f;
+                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
+        state6Pair.f[0] = 87.0f;
+        state6Pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+                     0, 2, 1, state6Pair.q, state6Pair.q, 0, 0);
+        state6Shifted = state6Pair;
+        state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 388.0f;
-        scratch.pair.f[1] = 92.0f;
+                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
+        state6Pair.f[0] = 388.0f;
+        state6Pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] -= 600.0f;
+                     0, 2, 1, state6Pair.q, state6Pair.q, 0, 0);
+        state6Shifted = state6Pair;
+        state6Shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
-        scratch.pair.f[0] = 95.0f;
-        scratch.pair.f[1] = 93.0f;
-        scratch.shifted = scratch.pair;
-        scratch.shifted.f[1] += 200.0f;
+                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
+        state6Pair.f[0] = 95.0f;
+        state6Pair.f[1] = 93.0f;
+        state6Shifted = state6Pair;
+        state6Shifted.f[1] += 200.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+                     0, 2, 1, state6Shifted.q, state6Pair.q, 0, 0);
         for (index = 0; index < 7; index++) {
             work->panelFlags[index] = FUN_0016f190(index + 0x183);
         }
-        scratch.pair.f[0] = 392.0f;
-        scratch.pair.f[1] = 385.0f;
+        state6Pair.f[0] = 392.0f;
+        state6Pair.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+                     0, 2, 1, state6Pair.q, state6Pair.q, 0, 0);
         work->entriesReady = 0;
         work->state = 7;
         break;
+        }
 
     case 7:
         work->state = 8;

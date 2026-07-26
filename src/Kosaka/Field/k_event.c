@@ -700,17 +700,25 @@ void func_001c7830(void* output, void* script)
         {
             distance = 0.0f;
         }
-        if (distance >= 2000.0f && hidden < 3)
-        {
-            *(u16*)((u8*)unit->genusBase + 10) &= (u16)~1;
-            *(void**)((u8*)out + 0x1c + hidden * 8) = unit->genusBase;
-            *(f32*)((u8*)out + 0x20 + hidden * 8) = distance;
-            hidden++;
-        }
-        if (distance < 2000.0f || hidden >= 3)
+        if (distance < 2000.0f)
         {
             *(u16*)((u8*)unit->genusBase + 10) |= 1;
             out[count++] = (u32)unit->genusBase;
+        }
+        else
+        {
+            if (hidden < 3)
+            {
+                *(u16*)((u8*)unit->genusBase + 10) &= (u16)~1;
+                *(void**)((u8*)out + 0x1c + hidden * 8) = unit->genusBase;
+                *(f32*)((u8*)out + 0x20 + hidden * 8) = distance;
+                hidden++;
+            }
+            else
+            {
+                *(u16*)((u8*)unit->genusBase + 10) |= 1;
+                out[count++] = (u32)unit->genusBase;
+            }
         }
     }
 }
