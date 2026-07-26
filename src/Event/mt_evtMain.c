@@ -3777,7 +3777,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
       if (cVar1 == '\x02') {
 
-        FUN_00396f50(fVar18,param_1[1]);
+        FUN_00396f50(param_1[1]);
 
       }
 
