@@ -1557,10 +1557,6 @@ void func_001f30f0(KwlnTask *task)
 // FUN_001f3270 NONMATCHING
 void func_001f3270(KwlnTask *task)
 {
-    typedef union {
-        u32 p;
-        u32 q[4];
-    } BrResultQ;
     typedef struct {
         s16 id;
         s16 weight;
@@ -1571,25 +1567,19 @@ void func_001f3270(KwlnTask *task)
         u32 low;
     } BrResultEntry;
     typedef struct {
-        BrResultQ table0;
-        BrResultQ table1;
-        BrResultQ table2;
-        BrResultQ table3;
-        BrResultQ table4;
-        BrResultQ table5;
-        BrResultQ random;
-        u32 total;
-        u32 outer;
-        u32 pointer;
+        u32 table0;
+        u32 table1;
+        u32 table2;
+        u32 table3;
         u32 limit;
-        u32 reserved;
+        u32 total;
         u32 next;
         u32 action;
         s16 candidates[256];
-        BrResultSlot slots[8];
-        u32 flags[8];
+        BrResultSlot slots[6];
+        u32 flags[5];
         BrResultEntry entries[8];
-        s16 cardIds[8];
+        s16 cardIds[5];
         u32 check;
         u16 checkId;
     } BrResultScratch;
@@ -1637,15 +1627,15 @@ void func_001f3270(KwlnTask *task)
     s16 card;
 
     /* Retail 0x1f32a0-0x1f32d4: data-table setup. */
-    local.table0.p = (u32)func_00209e10();
-    local.table1.p = (u32)func_00209e20();
-    local.table2.p = (u32)func_00209e60();
-    local.table3.p = (u32)func_00209e70();
+    local.table0 = (u32)func_00209e10();
+    local.table1 = (u32)func_00209e20();
+    local.table2 = (u32)func_00209e60();
+    local.table3 = (u32)func_00209e70();
     func_00209dd0();
-    table0 = (u8 *)local.table0.p;
-    table1 = (u8 *)local.table1.p;
-    table2 = (u8 *)local.table2.p;
-    table3 = (u8 *)local.table3.p;
+    table0 = (u8 *)local.table0;
+    table1 = (u8 *)local.table1;
+    table2 = (u8 *)local.table2;
+    table3 = (u8 *)local.table3;
 
     /* Retail 0x1f32d8-0x1f33b0: level-to-card threshold. */
     candidateCount = 0;
@@ -2275,6 +2265,8 @@ void func_001f4a00(void)
     f32 ratio1;
     f32 ratio2;
     u32 random;
+    u32 actStart;
+    u32 actEnd;
 
     if (work == NULL) {
         K_Assert("sfl_root.c", 0xfe);
@@ -2297,6 +2289,8 @@ void func_001f4a00(void)
 
     valueTable += BR_U32(work, 0x1fd54) * 6;
     actTable += BR_U32(work, 0x1fd58) * 3;
+    actStart = (u32)actTable[0];
+    actEnd = (u32)actTable[1];
     ratio0 = (f32)(u32)valueTable[0];
     ratio1 = (f32)(u32)valueTable[1];
     ratio2 = (f32)(u32)valueTable[2];
@@ -2320,11 +2314,11 @@ void func_001f4a00(void)
 
     maxProgress = (f32)(u32)actTable[2] +
                   (f32)(RpRandom() % 1);
-    weightTable[0] = actTable[0];
+    weightTable[0] = actStart;
     weightTable[1] = actTable[2];
     weightTable[2] = actTable[2];
-    weightTable[3] = actTable[1];
-    if (actTable[0] == 0 && actTable[2] != 0) {
+    weightTable[3] = actEnd;
+    if (actStart == 0 && actTable[2] != 0) {
         weightTable[0] = 1;
     }
     weightTable[7] = 0;
@@ -2340,9 +2334,9 @@ void func_001f4a00(void)
         u32 totalWeight;
         u32 choiceWeight;
 
-        sflScript00259c60((u16)((f32)(s32)actTable[0] +
-                                progress * ((f32)(s32)actTable[1] -
-                                            (f32)(s32)actTable[0]) / maxProgress));
+        sflScript00259c60((u16)((f32)(s32)actStart +
+                                progress * ((f32)(s32)actEnd -
+                                            (f32)(s32)actStart) / maxProgress));
         for (i = 0; i < 4; i++) {
             enabled[i] = 0;
         }

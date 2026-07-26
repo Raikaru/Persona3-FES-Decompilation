@@ -2485,7 +2485,8 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
 
     if (frame >= 0) {
     if (frame < 5) {
-        drawX = position.x + 300.0f - (f32)((frame * 300) / 5);
+        drawX = position.x + 300.0f -
+                ((f32)frame * 300.0f / 5.0f);
         alpha = 0xff - (frame * 0xff) / 5;
     }
     else {
@@ -2872,23 +2873,11 @@ typedef KwlnTask* (*CampStatusPersonaChildCreateFn)(KwlnTask* parent,
                                                     u32 personaId, u32 mode,
                                                     f32 alpha);
 
-static inline u64 campStatusPackPosition(CampVec2 position)
-{
-    CampStatusPackedPosition packed;
-
-    packed.coordinates.x = position.x;
-    packed.coordinates.y = position.y;
-    return packed.value;
-}
-
-static inline void campStatusAnimateRecord(void* records, s32 index, s32 alphaMode,
-                                    CampVec2 start, CampVec2 end,
-                                    s32 startFrame, s32 endFrame)
-{
-    func_0018bc10(100.0f, (u8*)records + index * 0x44, 0, 2, alphaMode,
-                  campStatusPackPosition(start), campStatusPackPosition(end),
-                  0, 0, startFrame, endFrame);
-}
+#define campStatusAnimateRecord(records, index, alphaMode, start, end, \
+                                startFrame, endFrame) \
+    func_0018bc10(100.0f, (u8*)(records) + (index) * 0x44, 0, 2, \
+                  (alphaMode), *(u64*)&(start), *(u64*)&(end), \
+                  0, 0, (startFrame), (endFrame))
 
 static inline CampVec2 campStatusListPosition(s32 row, s32 selected, s32 alternate)
 {

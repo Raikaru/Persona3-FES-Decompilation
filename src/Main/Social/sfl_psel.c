@@ -15,6 +15,10 @@ extern void FUN_0021d8e0(void*, const void*);
 extern void FUN_0021d950(void*, const void*);
 extern void (*D_00960090)(u32, u32);
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 extern void RpSkyRenderStateSet(u32, void*);
 extern void func_004d7f60(s32 state, u32 value);
 extern float fGpffff8300;
@@ -292,10 +296,10 @@ void sflPsel00260e00(void)
 {
     u32* work;
     u32 texture;
-    SflPselStateCallback state;
-    void (**draw)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
-    void (**drawCase0)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
-    void (**drawCase1)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    SflPselStateCallback* state;
+    SflPselDrawCallback* draw;
+    SflPselDrawCallback* drawCase0;
+    SflPselDrawCallback* drawCase1;
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
@@ -303,81 +307,81 @@ void sflPsel00260e00(void)
         return;
 
     texture = sflRes0020ec50();
-    state = D_00960090;
-    D_00960090(9, 2);
-    D_00960090(0x14, 2);
-    D_00960090(8, 1);
-    D_00960090(6, 0);
+    state = (SflPselStateCallback*)D_00960090_abs;
+    (*state)(9, 2);
+    (*state)(0x14, 2);
+    (*state)(8, 1);
+    (*state)(6, 0);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    D_00960090(1, 0);
-    draw = &D_0096009C;
+    (*state)(1, 0);
+    draw = (SflPselDrawCallback*)D_0096009C_abs;
     (*draw)((u32*)((u8*)work + 0x310), 4, 0, 1, 2);
     (*draw)(&work[0xc4], 4, 0, 2, 3);
 
-    D_00960090(0x14, 2);
-    D_00960090(8, 1);
-    D_00960090(6, 0);
+    (*state)(0x14, 2);
+    (*state)(8, 1);
+    (*state)(6, 0);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    D_00960090(1, 0);
+    (*state)(1, 0);
     (*draw)((u32*)((u8*)work + 0x10), 4, 0, 1, 2);
     (*draw)(&work[4], 4, 0, 2, 3);
 
-    D_00960090(8, 0);
-    D_00960090(6, 1);
+    (*state)(8, 0);
+    (*state)(6, 1);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x3a));
-    D_00960090(1, texture);
+    (*state)(1, texture);
     (*draw)((u32*)((u8*)work + 0x710), 4, 0, 1, 2);
     (*draw)(&work[0x1c4], 4, 0, 2, 3);
-    D_00960090(1, 0);
+    (*state)(1, 0);
     (*draw)((u32*)((u8*)work + 0x810), 4, 0, 1, 2);
     (*draw)(&work[0x204], 4, 0, 2, 3);
 
-    D_00960090(8, 1);
-    D_00960090(6, 1);
+    (*state)(8, 1);
+    (*state)(6, 1);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    D_00960090(6, 1);
-    D_00960090(6, 1);
-    D_00960090(8, 1);
-    D_00960090(1, 0);
+    (*state)(6, 1);
+    (*state)(6, 1);
+    (*state)(8, 1);
+    (*state)(1, 0);
     (*draw)((u32*)((u8*)work + 0x210), 4, 0, 1, 2);
     (*draw)(&work[0x84], 4, 0, 2, 3);
 
     switch (work[1])
     {
     case 0:
-        ((void (*)(u32))state)(6);
-        drawCase0 = &D_0096009C;
-        D_00960090(8, 1);
-        D_00960090(1, 0);
+        ((void (*)(u32))(void*)*state)(6);
+        drawCase0 = (SflPselDrawCallback*)D_0096009C_abs;
+        (*state)(8, 1);
+        (*state)(1, 0);
         (*drawCase0)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
         (*drawCase0)(&work[0x44], 4, 0, 2, 3);
         break;
     case 1:
-        D_00960090(6, 0);
-        drawCase1 = &D_0096009C;
-        D_00960090(8, 1);
-        D_00960090(1, 0);
+        (*state)(6, 0);
+        drawCase1 = (SflPselDrawCallback*)D_0096009C_abs;
+        (*state)(8, 1);
+        (*state)(1, 0);
         (*drawCase1)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
         (*drawCase1)(&work[0x44], 4, 0, 2, 3);
         break;
     }
 
-    D_00960090(6, 1);
-    D_00960090(6, 1);
-    D_00960090(8, 0);
+    (*state)(6, 1);
+    (*state)(6, 1);
+    (*state)(8, 0);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x34));
-    D_00960090(1, texture);
+    (*state)(1, texture);
     (*draw)((u32*)((u8*)work + 0x410), 4, 0, 1, 2);
     (*draw)(&work[0x104], 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x35));
-    D_00960090(1, texture);
+    (*state)(1, texture);
     (*draw)((u32*)((u8*)work + 0x510), 4, 0, 1, 2);
     (*draw)(&work[0x144], 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x36));
-    D_00960090(1, texture);
+    (*state)(1, texture);
     (*draw)((u32*)((u8*)work + 0x610), 4, 0, 1, 2);
     (*draw)(&work[0x184], 4, 0, 2, 3);
 }
@@ -1327,8 +1331,11 @@ void func_002168f0(void)
     u8* work;
     u32 texture;
     s32 i;
-    void (**state)(u32 state, u32 value);
-    void (**draw)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    SflPselStateCallback* state;
+    SflPselStateCallback* stateTexture;
+    SflPselDrawCallback* draw;
+    SflPselDrawCallback* drawLoop1;
+    SflPselDrawCallback* drawLoop2;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
@@ -1338,7 +1345,7 @@ void func_002168f0(void)
         return;
     }
     texture = sflRes0020ec50();
-    state = &D_00960090;
+    state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(6, 1);
     (*state)(8, 0);
     (*state)(1, 0);
@@ -1354,39 +1361,42 @@ void func_002168f0(void)
     }
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x31)));
-    draw = &D_0096009C;
+    stateTexture = (SflPselStateCallback*)D_00960090_abs;
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x31)));
+    draw = (SflPselDrawCallback*)D_0096009C_abs;
     (*draw)((u32*)(work + 0x5340), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5340), 4, 0, 2, 3);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x32)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x32)));
     (*draw)((u32*)(work + 0x5440), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5440), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x38)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x38)));
     (*draw)((u32*)(work + 0x5540), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5540), 4, 0, 2, 3);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x39)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x39)));
     (*draw)((u32*)(work + 0x5640), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5640), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x33)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x33)));
     (*draw)((u32*)(work + 0x5740), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5740), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    drawLoop1 = (SflPselDrawCallback*)D_0096009C_abs;
     for (i = 0; i < 2; i++)
     {
-        (*draw)((u32*)(work + 0x5840 + i * 0x40), 4, 0, 1, 2);
-        (*draw)((u32*)(work + 0x5840 + i * 0x40), 4, 0, 2, 3);
+        (*drawLoop1)((u32*)(work + 0x5840 + i * 0x40), 4, 0, 1, 2);
+        (*drawLoop1)((u32*)(work + 0x5840 + i * 0x40), 4, 0, 2, 3);
     }
-    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    drawLoop2 = (SflPselDrawCallback*)D_0096009C_abs;
     for (i = 0; i < 2; i++)
     {
-        (*draw)((u32*)(work + 0x5a40 + i * 0x40), 4, 0, 1, 2);
-        (*draw)((u32*)(work + 0x5a40 + i * 0x40), 4, 0, 2, 3);
+        (*drawLoop2)((u32*)(work + 0x5a40 + i * 0x40), 4, 0, 1, 2);
+        (*drawLoop2)((u32*)(work + 0x5a40 + i * 0x40), 4, 0, 2, 3);
     }
     if ((*(u32*)work & 8) != 0)
     {
@@ -1394,14 +1404,14 @@ void func_002168f0(void)
         func_00219370(work + 0x49d0,
                       (u32*)(work + 0x10 + entryIndex * 0x10), 0);
     }
-    state = &D_00960090;
+    state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(6, 1);
     (*state)(8, 0);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
     texture = func_0021cce0(func_0021cca0(texture, 0x1e));
     (*state)(1, texture);
-    draw = &D_0096009C;
+    draw = (SflPselDrawCallback*)D_0096009C_abs;
     (*draw)((u32*)(work + 0x5c90), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5c90), 4, 0, 2, 3);
     (*draw)((u32*)(work + 0x5d90), 4, 0, 1, 2);
@@ -1416,7 +1426,7 @@ void func_002168f0(void)
     {
         texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1d));
         (*state)(1, texture);
-        draw = &D_0096009C;
+        draw = (SflPselDrawCallback*)D_0096009C_abs;
         (*draw)((u32*)(work + 0x5f90), 4, 0, 1, 2);
         (*draw)((u32*)(work + 0x5f90), 4, 0, 2, 3);
     }
@@ -2132,12 +2142,12 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     u32 frame;
     u32 value;
     s32 i;
-    void (**state)(u32 state, u32 value);
-    void (**draw)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    SflPselStateCallback* state;
+    SflPselDrawCallback* draw;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     texture = sflRes0020ec50();
-    state = &D_00960090;
+    state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(6, 1);
     (*state)(8, 0);
     (*state)(1, 0);
@@ -2165,7 +2175,7 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
         value = 0x22;
     }
     (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
-    draw = &D_0096009C;
+    draw = (SflPselDrawCallback*)D_0096009C_abs;
     (*draw)((u32*)panel, 4, 0, 1, 2);
     (*draw)((u32*)panel, 4, 0, 2, 3);
     (*draw)((u32*)((u8*)panel + 0x100), 4, 0, 1, 2);

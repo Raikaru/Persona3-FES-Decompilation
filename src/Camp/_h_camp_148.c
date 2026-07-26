@@ -793,127 +793,131 @@ void h_campDrawPersonaEquipment(int param_1)
 void h_campDrawPersonaList(int param_1)
 {
     CampPair pair;
-    CampBits temp;
+    CampBits t0, t1, t2, t3, t4, t5, tl;
+    CampBits t6, t7, t8, t9;
+    CampBits u0, u1, u2, u3, u4, u5, ul;
+    CampBits u6, u7, u8, u9;
     s32 i;
 
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 1,
-                          379.0f, 12.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 1,
-                          13.0f, 27.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x88), 1,
-                          112.0f, 27.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0xcc), 1,
-                          135.0f, 27.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x110), 1,
-                          278.0f, 27.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x154), 1,
-                          301.0f, 27.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 1,
+                             379.0f, 12.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t1, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 1,
+                             13.0f, 27.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t2, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x88), 1,
+                             112.0f, 27.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t3, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0xcc), 1,
+                             135.0f, 27.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t4, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x110), 1,
+                             278.0f, 27.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t5, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x154), 1,
+                             301.0f, 27.0f, -100.0f);
     for (i = 0; i < 4; i++) {
         if (*(s32*)(param_1 + 0x1c) - 1 < i)
             *(u32*)(*(u32*)(param_1 + 0xc0) + i * 0x44 + 0x2ac) = 0;
         else
-            CAMP_DRAW_CALC_SECOND(100.0f,
-                                  (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
-                                  1, 30.0f, 64.0f + (f32)(i * 0x55), -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(tl, 100.0f,
+                                      (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
+                                      1, 30.0f, 64.0f + (f32)(i * 0x55), -100.0f);
     }
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 1,
-                          104.0f, 61.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 1,
-                          124.0f, 219.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x83c), 1,
-                          226.0f, 415.0f, -100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 1,
-                          439.0f, 415.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t6, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 1,
+                             104.0f, 61.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t7, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 1,
+                             124.0f, 219.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t8, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x83c), 1,
+                             226.0f, 415.0f, -100.0f);
+CAMP_DRAW_CALC_FIRST_AT(t9, 100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 1,
+                             439.0f, 415.0f, -100.0f);
 
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4)), 2,
-                          381.0f, 12.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x44), 2,
-                          13.0f, 27.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x88), 2,
-                          112.0f, 27.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0xcc), 2,
-                          135.0f, 27.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x110), 2,
-                          273.0f, 27.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x154), 2,
-                          301.0f, 27.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u0, 100.0f, (void*)(*(u32*)(param_1 + 0xc4)), 2,
+                             381.0f, 12.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u1, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x44), 2,
+                             13.0f, 27.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u2, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x88), 2,
+                             112.0f, 27.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u3, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0xcc), 2,
+                             135.0f, 27.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u4, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x110), 2,
+                             273.0f, 27.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u5, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x154), 2,
+                             301.0f, 27.0f, 100.0f);
     for (i = 0; i < 4; i++) {
         if (*(s32*)(param_1 + 0x1c) - 1 < i)
             *(u32*)(*(u32*)(param_1 + 0xc4) + i * 0x44 + 0x2ac) = 0;
         else
-            CAMP_DRAW_CALC_SECOND(100.0f,
-                                  (void*)(*(u32*)(param_1 + 0xc4) + (i + 10) * 0x44),
-                                  2, 610.0f, 64.0f + (f32)(i * 0x55), 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(ul, 100.0f,
+                                      (void*)(*(u32*)(param_1 + 0xc4) + (i + 10) * 0x44),
+                                      2, 610.0f, 64.0f + (f32)(i * 0x55), 100.0f);
     }
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x550), 2,
-                          47.0f, 61.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x594), 2,
-                          67.0f, 263.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x7f8), 2,
-                          226.0f, 415.0f, 100.0f);
-    CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x83c), 2,
-                          561.0f, 415.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u6, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x550), 2,
+                             47.0f, 61.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u7, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x594), 2,
+                             67.0f, 263.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u8, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x7f8), 2,
+                             226.0f, 415.0f, 100.0f);
+CAMP_DRAW_CALC_FIRST_AT(u9, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x83c), 2,
+                             561.0f, 415.0f, 100.0f);
 }
 
 // FUN_0014BCE0 NONMATCHING
 void h_campDrawSocialList(int param_1)
 {
     CampPair pair;
-    CampBits tmp[12];
+    CampBits t0, t1, t2, t3, t4, t5;
+    CampBits t6, t7, t8, t9, t10, t11;
     s32 i;
     f32 y;
 
     pair.x = 13.0f;
     pair.y = 27.0f;
-    tmp[0].u = *(u64*)&pair;
-    tmp[1].u = tmp[0].u;
-    tmp[1].f[0] += 0.0f;
+    t0.u = *(u64*)&pair;
+    t1.u = t0.u;
+    t1.f[0] += 0.0f;
     pair.x = 112.0f;
-    tmp[2].u = *(u64*)&pair;
-    tmp[3].u = tmp[2].u;
-    tmp[3].f[0] += 0.0f;
+    t2.u = *(u64*)&pair;
+    t3.u = t2.u;
+    t3.f[0] += 0.0f;
     pair.x = 135.0f;
-    tmp[4].u = *(u64*)&pair;
-    tmp[5].u = tmp[4].u;
-    tmp[5].f[0] += 0.0f;
+    t4.u = *(u64*)&pair;
+    t5.u = t4.u;
+    t5.f[0] += 0.0f;
     pair.x = 272.0f;
-    tmp[6].u = *(u64*)&pair;
-    tmp[7].u = tmp[6].u;
-    tmp[7].f[0] += 0.0f;
+    t6.u = *(u64*)&pair;
+    t7.u = t6.u;
+    t7.f[0] += 0.0f;
     pair.x = 301.0f;
-    tmp[8].u = *(u64*)&pair;
-    tmp[9].u = tmp[8].u;
-    tmp[9].f[0] += 0.0f;
+    t8.u = *(u64*)&pair;
+    t9.u = t8.u;
+    t9.f[0] += 0.0f;
     pair.x = 381.0f;
     pair.y = 12.0f;
-    tmp[10].u = *(u64*)&pair;
-    tmp[11].u = tmp[10].u;
-    tmp[11].f[0] += 0.0f;
+    t10.u = *(u64*)&pair;
+    t11.u = t10.u;
+    t11.f[0] += 0.0f;
 
     pair.x = 381.0f;
     pair.y = 12.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 2,
-                  tmp[11].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t11.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 13.0f;
     pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x44), 0, 2, 2,
-                  tmp[1].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t1.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 112.0f;
     pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x88), 0, 2, 2,
-                  tmp[3].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t3.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 135.0f;
     pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0xcc), 0, 2, 2,
-                  tmp[5].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t5.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 272.0f;
     pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x110), 0, 2, 2,
-                  tmp[7].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t7.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 301.0f;
     pair.y = 27.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x154), 0, 2, 2,
-                  tmp[9].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t9.u, *(u64*)&pair, 0, 0, 0, 10);
     for (i = 0; i < 4; i++) {
         if (*(s32*)(param_1 + 0x1c) - 1 < i) {
             *(u32*)(*(u32 *)(param_1 + 0xc4) + i * 0x44 + 0x2ac) = 0;
@@ -921,50 +925,50 @@ void h_campDrawSocialList(int param_1)
             y = (f32)(i * 0x55) + 64.0f;
             pair.x = 610.0f;
             pair.y = y;
-            tmp[10].u = *(u64*)&pair;
-            tmp[11].u = tmp[10].u;
-            tmp[11].f[0] += 0.0f;
+            t10.u = *(u64*)&pair;
+            t11.u = t10.u;
+            t11.f[0] += 0.0f;
             func_0018bc10(100.0f,
                           (void*)(*(u32 *)(param_1 + 0xc4) + (i + 10) * 0x44),
-                          0, 2, 2, tmp[11].u, tmp[10].u, 0, 0, 0, 10);
+                          0, 2, 2, t11.u, t10.u, 0, 0, 0, 10);
         }
     }
     pair.x = 47.0f;
     pair.y = 61.0f;
-    tmp[0].u = *(u64*)&pair;
-    tmp[1].u = tmp[0].u;
-    tmp[1].f[0] += 0.0f;
+    t0.u = *(u64*)&pair;
+    t1.u = t0.u;
+    t1.f[0] += 0.0f;
     pair.x = 47.0f;
     pair.y = 61.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x550), 0, 2, 2,
-                  tmp[1].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t1.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 272.0f;
     pair.y = 219.0f;
-    tmp[2].u = *(u64*)&pair;
-    tmp[3].u = tmp[2].u;
-    tmp[3].f[0] += 0.0f;
+    t2.u = *(u64*)&pair;
+    t3.u = t2.u;
+    t3.f[0] += 0.0f;
     pair.x = 272.0f;
     pair.y = 219.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x594), 0, 2, 2,
-                  tmp[3].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t3.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 226.0f;
     pair.y = 415.0f;
-    tmp[4].u = *(u64*)&pair;
-    tmp[5].u = tmp[4].u;
-    tmp[5].f[0] += 0.0f;
+    t4.u = *(u64*)&pair;
+    t5.u = t4.u;
+    t5.f[0] += 0.0f;
     pair.x = 226.0f;
     pair.y = 415.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x7f8), 0, 2, 2,
-                  tmp[5].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t5.u, *(u64*)&pair, 0, 0, 0, 10);
     pair.x = 561.0f;
     pair.y = 415.0f;
-    tmp[6].u = *(u64*)&pair;
-    tmp[7].u = tmp[6].u;
-    tmp[7].f[0] += 0.0f;
+    t6.u = *(u64*)&pair;
+    t7.u = t6.u;
+    t7.f[0] += 0.0f;
     pair.x = 561.0f;
     pair.y = 415.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4) + 0x83c), 0, 2, 2,
-                  tmp[7].u, *(u64*)&pair, 0, 0, 0, 10);
+                  t7.u, *(u64*)&pair, 0, 0, 0, 10);
 }
 
 // FUN_0014C290

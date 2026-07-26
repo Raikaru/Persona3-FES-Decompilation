@@ -8,6 +8,8 @@
 #include "h_maestro.h"
 
 extern u32 DAT_00833a50[];
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
 
 // workData[0xc] holds the "camp/camp_skil.pak" cdvd handle.
 // FUN_001616d0. Destroy callback of the "H_NewCampSkillDraw" (skill screen) task
@@ -102,7 +104,7 @@ typedef struct CampSkillSelectorWork
     u8 reserved0c[4];
     u32 frame;            /* 0x10 */
     KwlnTask* child;      /* 0x14 */
-    u8 reserved1c[8];
+    u8 reserved1c[0x0c];
     s16 characterIds[9];    /* 0x24 */
     s16 reserved36;         /* 0x36 */
     s16 count;              /* 0x38 */
@@ -132,7 +134,9 @@ extern void* FUN_00122940(KwlnTask* task);
 extern void h_campPersonaDestroyKaniControlTask(KwlnTask* task);
 extern void* FUN_00167f10(KwlnTask* task);
 extern s32 FUN_00167f30(KwlnTask* task);
-extern KwlnTask* FUN_00167f40(u32 first, ...);
+extern KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority,
+                              unsigned long packedValue, u16 param4, u16 param5,
+                              u16 param6);
 extern void FUN_00167ef0(KwlnTask* task);
 extern s32 FUN_001685b0(KwlnTask* task);
 extern s32 FUN_001685d0(KwlnTask* task);
@@ -1472,19 +1476,24 @@ void* FUN_001618a0(KwlnTask* task)
     {
         CampPanelTransitionWork* panelWork;
         u32* personaWork;
+        void* (**callocFunc)(u32, u32, u32);
+        s16 panelPcId;
 
-        panelWork = (CampPanelTransitionWork*)RwCalloc(1, 0x18, 0x40000);
+        panelPcId = work->pcId;
+        callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
+        panelWork = (CampPanelTransitionWork*)(*callocFunc)(
+            1, 0x18, 0x40000);
         if (panelWork != NULL) {
             DAT_007cdf54 = kwlnTaskCreate(task, "H_CampSkillPanel",
                                           0x18c1, h_campUpdatePanelTransition,
                                           FUN_00122630, panelWork);
             if (DAT_007cdf54 != NULL) {
-                panelWork->drawId = work->pcId;
+                panelWork->drawId = panelPcId;
             } else {
                 RwFree(panelWork);
             }
         }
-        personaWork = (u32*)RwCalloc(1, 0x1c, 0x40000);
+        personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
         if (personaWork != NULL) {
             DAT_007cdf58 = kwlnTaskCreate(task, "H_CampSkillPersona",
                                           0x18c1, FUN_00122940,
@@ -1538,7 +1547,7 @@ void* FUN_001618a0(KwlnTask* task)
         } else {
             FUN_00166c50(work->child);
             work->displayMode = 1;
-            work->child = FUN_00167f40(0, task, 0x18be, 0,
+            work->child = FUN_00167f40(task, 0x18be, 0,
                                        work->pcId, 0, 0);
         }
         work->state = 2;
@@ -2056,22 +2065,27 @@ void* FUN_00166c70(KwlnTask* task)
             work->characterIds[work->count++] = 6;
         }
         if (work->count > 0) {
-            selectedId = work->characterIds[0];
+            s16 panelSelectedId;
+            void* (**callocFunc)(u32, u32, u32);
+
+            panelSelectedId = work->characterIds[0];
+            callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
             {
-                panelWork = (CampPanelTransitionWork*)RwCalloc(1, 0x18,
-                                                                0x40000);
+                panelWork = (CampPanelTransitionWork*)(*callocFunc)(
+                    1, 0x18, 0x40000);
 
                 if (panelWork != NULL) {
                     DAT_007cdf54 = kwlnTaskCreate(
                         task, "H_CampSkillPanel", 0x18c1,
                         h_campUpdatePanelTransition, FUN_00122630, panelWork);
                     if (DAT_007cdf54 != NULL) {
-                        panelWork->drawId = selectedId;
+                        panelWork->drawId = panelSelectedId;
                     } else {
                         RwFree(panelWork);
                     }
                 }
-                personaWork = (u32*)RwCalloc(1, 0x1c, 0x40000);
+                selectedId = work->characterIds[0];
+                personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
                 if (personaWork != NULL) {
                     DAT_007cdf58 = kwlnTaskCreate(
                         task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
@@ -2150,7 +2164,7 @@ void* FUN_00166c70(KwlnTask* task)
         } else {
             ((CampSkillInnerWork*)work->child->workData)->state = 6;
             work->displayMode = 1;
-            work->child = FUN_00167f40(0, task, 0x18be, 0, selectedId,
+            work->child = FUN_00167f40(task, 0x18be, 0, selectedId,
                                        0, 0);
         }
         work->state = 2;
@@ -2164,22 +2178,27 @@ void* FUN_00166c70(KwlnTask* task)
         if (work->child != NULL && kwlnTaskGetState(work->child) == 3) {
             kwlnTaskDestroyWithHierarchy(DAT_007cdf54);
             kwlnTaskDestroyWithHierarchy(DAT_007cdf58);
-            selectedId = work->characterIds[work->selected];
             {
-                panelWork = (CampPanelTransitionWork*)RwCalloc(1, 0x18,
-                                                                0x40000);
+                s16 panelSelectedId;
+                void* (**callocFunc)(u32, u32, u32);
+
+                panelSelectedId = work->characterIds[work->selected];
+                callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
+                panelWork = (CampPanelTransitionWork*)(*callocFunc)(
+                    1, 0x18, 0x40000);
 
                 if (panelWork != NULL) {
                     DAT_007cdf54 = kwlnTaskCreate(
                         task, "H_CampSkillPanel", 0x18c1,
                         h_campUpdatePanelTransition, FUN_00122630, panelWork);
                     if (DAT_007cdf54 != NULL) {
-                        panelWork->drawId = selectedId;
+                        panelWork->drawId = panelSelectedId;
                     } else {
                         RwFree(panelWork);
                     }
                 }
-                personaWork = (u32*)RwCalloc(1, 0x1c, 0x40000);
+                selectedId = work->characterIds[work->selected];
+                personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
                 if (personaWork != NULL) {
                     DAT_007cdf58 = kwlnTaskCreate(
                         task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
