@@ -1893,6 +1893,9 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 }
 #pragma optimization_level 3
 
+/*
+ * Retail offsets 0x9ec-0xbc4 count unowned roots, locate each by index, and redraw leaves.
+ */
 // FUN_00257130 NONMATCHING
 void bpTexApplyActions(void)
 {
@@ -1918,6 +1921,7 @@ void bpTexApplyActions(void)
     s32 directCount;
     u32 rootCount;
     u8 quad[16];
+    unsigned __int128 childValue;
     f32 position[3];
     f32 offsets[3];
     f32 offsetsA[3];
@@ -2008,9 +2012,7 @@ void bpTexApplyActions(void)
         else if (action[0] == 1)
         {
             first = (u32*)action[2];
-            K_ASSERT(first != NULL, 0x780);
             node = bpTexFindFreeNode();
-            K_ASSERT(node != NULL, 0x780);
             node[0x3f1] = 0;
             node[0x3f0] = 0;
             tail = BP_TEX_PTR(work, 0x12660);
@@ -2057,6 +2059,7 @@ void bpTexApplyActions(void)
             for (j = 0; j < (s32)action[8]; j++)
             {
                 child = (u32*)action[2 + j];
+                childValue = (unsigned __int128)(u32)child;
                 bpTexCollect(child, leavesB, &leafCounts[2]);
                 for (idx = 0; idx < leafCounts[2]; idx++)
                 {
@@ -2066,6 +2069,7 @@ void bpTexApplyActions(void)
                                     node[4],
                                     leafPos[0],
                                     frame);
+                child = (u32*)(u32)childValue;
                 func_002508c0((u8*)child + 0x1094,
                               position,
                               action[1]);
@@ -2155,16 +2159,41 @@ void bpTexApplyActions(void)
         }
     }
 
-    for (node = BP_TEX_PTR(work, 0x1265c);
-         node != NULL;
-         node = (u32*)node[0x3f1])
+    if (BP_TEX_GLOBAL == NULL)
     {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    rootCount = 0;
+    for (tail = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+         tail != NULL;
+         tail = (u32*)tail[0x3f1])
+    {
+        if ((tail[0] & 2) == 0)
+        {
+            rootCount++;
+        }
+    }
+    for (i = 0; i < (s32)rootCount; i++)
+    {
+        if (BP_TEX_GLOBAL == NULL)
+        {
+            func_0019d3f0((const char*)0x0068ea00, 0xbc);
+        }
+        node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+        while (node != NULL)
+        {
+            if ((node[0] & 2) == 0 && node[4] == (u32)i)
+            {
+                break;
+            }
+            node = (u32*)node[0x3f1];
+        }
+        if (node == NULL)
+        {
+            func_0019d3f0((const char*)0x0068ea00, 0x47a);
+        }
         if ((*node & 0x20) == 0)
         {
-            if (BP_TEX_GLOBAL == NULL)
-            {
-                func_0019d3f0((const char*)0x0068ea00, 0xbc);
-            }
             bpTexCollect(node, leavesE, &leafCounts[5]);
             for (idx = 0; idx < leafCounts[5]; idx++)
             {
@@ -2173,14 +2202,14 @@ void bpTexApplyActions(void)
             bpTexBuildPosition(position,
                                 node[4],
                                 leafPos[0],
-                                frame);
+                                rootCount);
             func_002508c0((u8*)node + 0x1094,
                           position,
-                          BP_TEX_U32(work, 0x127b0));
+                          BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
         }
     }
-    BP_TEX_U32(work, 0x127a8) = 0;
-    func_005225a8(0x68ea80, BP_TEX_U32(work, 0x127b0));
+    BP_TEX_U32(BP_TEX_GLOBAL, 0x127a8) = 0;
+    func_005225a8(0x68ea80, BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
 }
 #pragma optimization_level 2
 
