@@ -52,6 +52,37 @@ s32 FUN_002d63b0(BtlUnit* unit, s32 commandId, s32 param_3);
 extern f32 FUN_0052e6d8(f32 x);
 extern f32 FUN_0052e878(f32 x);
 extern f32 sqrtf(f32 value);
+/* Retail DATA table loads span 0x002fb8e4-0x002fc3ec; keep each table as a
+   separate symbol so every lookup retains its retail HI/LO address pair. */
+/* Retail keeps each animation-byte table as a distinct external DATA object. */
+extern u8 DAT_00699BF0[];
+extern u8 DAT_00699C20[];
+extern u8 DAT_00699C3A[];
+extern u8 DAT_00699C90[];
+extern u8 DAT_00699CE0[];
+extern u8 DAT_00699D30[];
+extern u8 DAT_00699D4A[];
+extern u8 DAT_00699D64[];
+extern u8 DAT_00699DD0[];
+extern u8 DAT_00699E20[];
+extern u8 DAT_00699E3A[];
+extern u8 DAT_0069A020[];
+extern u8 DAT_0069A03A[];
+extern u8 DAT_0069A080[];
+extern u8 DAT_0069A09A[];
+extern u8 DAT_0069A0B4[];
+extern u8 DAT_0069A0CE[];
+extern u8 DAT_0069A130[];
+extern u8 DAT_0069A170[];
+extern u8 DAT_0069A1B0[];
+extern u8 DAT_0069A230[];
+extern u8 DAT_0069A380[];
+extern u8 DAT_0069A490[];
+extern u8 DAT_0069A4D0[];
+extern u8 DAT_0069A510[];
+extern u8 DAT_0069A530[];
+extern u8 DAT_0069A570[];
+extern u8 DAT_0069A58A[];
 
 /* Absolute vtable aliases preserve the retail address materialization. */
 #pragma alias DAT_00960090_abs DAT_00960090
@@ -1851,34 +1882,34 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
         case 0x1a0:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x100) return ((u8*)0x00699bf0)[index];
+            if (unit->charId == 0x100) return DAT_00699BF0[index];
             return 0xffff;
         }
         case 0x1a1:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x102) return ((u8*)0x00699c3a)[index];
-            if (unit->charId == 0x101) return ((u8*)0x00699c20)[index];
+            if (unit->charId == 0x102) return DAT_00699C3A[index];
+            if (unit->charId == 0x101) return DAT_00699C20[index];
             return 0xffff;
         }
         case 0x1a2:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x103) return ((u8*)0x00699c90)[index];
+            if (unit->charId == 0x103) return DAT_00699C90[index];
             return 0xffff;
         }
         case 0x1a3:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x104) return ((u8*)0x00699ce0)[index];
+            if (unit->charId == 0x104) return DAT_00699CE0[index];
             return 0xffff;
         }
         case 0x1a4:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x105) return ((u8*)0x00699d30)[index];
-            if (unit->charId == 0x106) return ((u8*)0x00699d4a)[index];
-            if (unit->charId == 0x115) return ((u8*)0x00699d64)[index];
+            if (unit->charId == 0x105) return DAT_00699D30[index];
+            if (unit->charId == 0x106) return DAT_00699D4A[index];
+            if (unit->charId == 0x115) return DAT_00699D64[index];
             return 0xffff;
         }
         case 0x1a5:
@@ -1896,14 +1927,14 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                 {
                     *(u32*)((u8*)gBtl + 0xb4c) = 0;
                 }
-                return ((u8*)0x00699dd0)[index];
+                return DAT_00699DD0[index];
             }
             return 0xffff;
         }
         case 0x1a6:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x10a) return ((u8*)0x00699e3a)[index];
+            if (unit->charId == 0x10a) return DAT_00699E3A[index];
             if (unit->charId == 0x109)
             {
                 if ((index == 9 || index == 0x11 || index == 3 || index == 0) &&
@@ -1911,7 +1942,7 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                 {
                     return 6;
                 }
-                return ((u8*)0x00699e20)[index];
+                return DAT_00699E20[index];
             }
             if (unit->charId == 0xe8 || unit->charId == 0xe7 || unit->charId == 0xe6 ||
                 unit->charId == 0xe5 || unit->charId == 0xe4 || unit->charId == 0xe3 ||
@@ -1924,8 +1955,8 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
         case 0x1a7:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x10c) return ((u8*)0x0069a03a)[index];
-            if (unit->charId == 0x10b) return ((u8*)0x0069a020)[index];
+            if (unit->charId == 0x10c) return DAT_0069A03A[index];
+            if (unit->charId == 0x10b) return DAT_0069A020[index];
             return 0xffff;
         }
         case 0x1a8:
@@ -1937,38 +1968,38 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                 {
                     return 0xf;
                 }
-                return ((u8*)0x0069a0ce)[index];
+                return DAT_0069A0CE[index];
             }
             if (unit->charId == 0x118 || unit->charId == 0x117 || unit->charId == 0x116)
             {
-                return ((u8*)0x0069a0b4)[index];
+                return DAT_0069A0B4[index];
             }
             if (unit->charId == 0x10d)
             {
                 if (*(u32*)((u8*)gBtl + 0xb54) == 0)
                 {
-                    return ((u8*)0x0069a080)[index];
+                    return DAT_0069A080[index];
+                return DAT_0069A09A[index];
                 }
-                return ((u8*)0x0069a09a)[index];
             }
             return 0xffff;
         }
         case 0x1a9:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x108) return ((u8*)0x0069a130)[index];
+            if (unit->charId == 0x108) return DAT_0069A130[index];
             return 0xffff;
         }
         case 0x1aa:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x10f) return ((u8*)0x0069a170)[index];
+            if (unit->charId == 0x10f) return DAT_0069A170[index];
             return 0xffff;
         }
         case 0x1ab:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x110) return ((u8*)0x0069a1b0)[index];
+            if (unit->charId == 0x110) return DAT_0069A1B0[index];
             return 0xffff;
         }
         case 0x1ac:
@@ -1985,31 +2016,31 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                 {
                     *(u32*)((u8*)gBtl + 0xb50) = 0;
                 }
-                return ((u8*)0x0069a230)[index];
+                return DAT_0069A230[index];
             }
         }
         case 0x1ad:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x112) return ((u8*)0x0069a380)[index];
+            if (unit->charId == 0x112) return DAT_0069A380[index];
             return 0xffff;
         }
         case 0x1ae:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x126) return ((u8*)0x0069a490)[index];
+            if (unit->charId == 0x126) return DAT_0069A490[index];
             return 0xffff;
         }
         case 0x1af:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0xe9) return ((u8*)0x0069a4d0)[index];
+            if (unit->charId == 0xe9) return DAT_0069A4D0[index];
             return 0xffff;
         }
         case 0x1b0:
         {
             if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0xea) return ((u8*)0x0069a510)[index];
+            if (unit->charId == 0xea) return DAT_0069A510[index];
             return 0xffff;
         }
         case 0x1b1:
@@ -2018,7 +2049,7 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
         {
             if (unit->genus != 1) return 0xffff;
             if (unit->charId >= 0xeb && unit->charId <= 0xf0)
-                return ((u8*)0x0069a530)[index];
+                return DAT_0069A530[index];
             return 0xffff;
         }
         case 0x1b4:
@@ -2032,11 +2063,11 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
                     {
                         return 6;
                     }
-                    return ((u8*)0x0069a570)[index];
+                    return DAT_0069A570[index];
                 }
                 else
                 {
-                    return ((u8*)0x0069a58a)[index];
+                    return DAT_0069A58A[index];
                 }
             }
             return 0xffff;
