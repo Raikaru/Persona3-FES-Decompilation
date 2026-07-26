@@ -3338,7 +3338,6 @@ void FUN_0022c850(u32* object)
 
 // The retail routine keeps separate color paths for each animation flag.
 // Preserve the bounded-index fixed colors before the interpolated paths.
-// The fixed colors still pass through the source's float conversion idiom.
 // This restores the missing flag-0x100 interpolation and color snapshots.
 // MWCCPS2 retains a different branch layout, so the function stays pending.
 // FUN_0022C8A0 NONMATCHING
@@ -3427,18 +3426,25 @@ void FUN_0022c8a0(u32* object_param)
     pos2Y = 0.0f;
     pos3X = 0.0f;
     pos3Y = 0.0f;
+    /* Retail 0x22cba0-0x22ccb0 keeps the second corner's trig sequence in
+     * both index branches; do not sink it into a shared tail. */
     if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
             f32 magA = D_0068E380[*(s32*)(object + 0x844)];
             pos2X = magA * cosf(D_007CB0D4);
             pos2Y = -magA * sinf(D_007CB0D4);
+            {
+                f32 magB = D_0068E3BC[*(s32*)(object + 0x844)];
+                pos3X = magB * cosf(D_007CB0D4);
+                pos3Y = -magB * sinf(D_007CB0D4);
+            }
         } else {
             K_ASSERT((*(s32*)(object + 0x844) - 1) < 0x10, 0x233);
-        }
-        {
-            f32 magB = D_0068E3BC[*(s32*)(object + 0x844)];
-            pos3X = magB * cosf(D_007CB0D4);
-            pos3Y = -magB * sinf(D_007CB0D4);
+            {
+                f32 magB = D_0068E3BC[*(s32*)(object + 0x844)];
+                pos3X = magB * cosf(D_007CB0D4);
+                pos3Y = -magB * sinf(D_007CB0D4);
+            }
         }
     }
     pos2X += pos1X;
@@ -3453,9 +3459,9 @@ void FUN_0022c8a0(u32* object_param)
         color[3] = 0xff;
     } else if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
-            color[0] = (u8)(u32)50.0f;
-            color[1] = (u8)(u32)0.0f;
-            color[2] = (u8)(u32)0.0f;
+            color[0] = 0x32;
+            color[1] = 0;
+            color[2] = 0;
             color[3] = 0xff;
         } else {
             f32 t2 = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
@@ -3524,27 +3530,9 @@ void FUN_0022c8a0(u32* object_param)
         /* reuse color[] as computed for color1 */
     } else if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
-            colorF = 50.0f;
-            if (2147483648.0f <= colorF) {
-                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
-            } else {
-                colorI = (s32)colorF;
-            }
-            color[0] = (u8)colorI;
-            colorF = 0.0f;
-            if (2147483648.0f <= colorF) {
-                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
-            } else {
-                colorI = (s32)colorF;
-            }
-            color[1] = (u8)colorI;
-            colorF = 0.0f;
-            if (2147483648.0f <= colorF) {
-                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
-            } else {
-                colorI = (s32)colorF;
-            }
-            color[2] = (u8)colorI;
+            color[0] = 0x32;
+            color[1] = 0;
+            color[2] = 0;
             color[3] = 0xff;
         } else {
             color[0] = 0x32;
@@ -3586,27 +3574,9 @@ void FUN_0022c8a0(u32* object_param)
     color2 = *(u32*)color;
     if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
-            colorF = 200.0f;
-            if (2147483648.0f <= colorF) {
-                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
-            } else {
-                colorI = (s32)colorF;
-            }
-            color[0] = (u8)colorI;
-            colorF = 0.0f;
-            if (2147483648.0f <= colorF) {
-                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
-            } else {
-                colorI = (s32)colorF;
-            }
-            color[1] = (u8)colorI;
-            colorF = 0.0f;
-            if (2147483648.0f <= colorF) {
-                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
-            } else {
-                colorI = (s32)colorF;
-            }
-            color[2] = (u8)colorI;
+            color[0] = 0xc8;
+            color[1] = 0;
+            color[2] = 0;
             color[3] = 0xff;
         } else {
             f32 t = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
