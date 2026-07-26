@@ -1017,6 +1017,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                              0xff, 0xff, 0xff, *(u8*)(record + 0x40),
                              valueA, 3);
                 position.x = 544.0f + *(f32*)(record + 0x38);
+                position.y = 15.0f + *(f32*)(record + 0x3c);
                 FUN_0012e170(H_Maestro_001120a0(1), 0xb, position,
                              (s32)*(f32*)(record + 0x24),
                              0xff, 0xff, 0xff, *(u8*)(record + 0x40),
@@ -1057,6 +1058,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                          0xff, 0xff, 0xff, *(u8*)(record + 0x40),
                          valueA, 3);
             position.x = 544.0f + *(f32*)(record + 0x38);
+            position.y = 15.0f + *(f32*)(record + 0x3c);
             FUN_0012e170(H_Maestro_001120a0(2), 0xb, position,
                          (s32)*(f32*)(record + 0x24),
                          0xff, 0xff, 0xff, *(u8*)(record + 0x40),
