@@ -20797,7 +20797,6 @@ void FUN_0045d990(int param_1,long param_2)
             FUN_0045b420((iVar6 + 0x1180),(float*)(auStack_8));
             FUN_00115bc0_3fv((float)iVar7,(float)(iVar8 * 0x19 + 0xe5 + (int)fStack_4),0,uStack_c,
                          DAT_007ce718,sVar2 + 0x20,0xff - iVar1 & 0xff,0x2e,0x3c,0x44);
-                      );
           }
         }
       }
