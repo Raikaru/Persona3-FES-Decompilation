@@ -2009,11 +2009,11 @@ void func_001d1910(void)
 void func_001d19d0(void)
 {
     s32 i;
-    s32 predicate;
-    u32 valid;
     s32 offset;
     FldUnit* unit;
     FldUnit* unit2;
+    u32 valid;
+    u16 predicate;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
@@ -2023,13 +2023,11 @@ void func_001d19d0(void)
         {
             valid = 1;
         }
-        if ((predicate = valid > 0) != 1)
+        predicate = valid > 0;
+        if (predicate == 1)
         {
-            continue;
-        }
-        offset = i * sizeof(FldUnit);
-        unit2 = (FldUnit*)((int)gFldUnitsPc + offset);
-        {
+            offset = i * sizeof(FldUnit);
+            unit2 = (FldUnit*)((int)gFldUnitsPc + offset);
             unit2->unk_17c = 0;
             func_001a60d0(0, unit2->mdl, 0xff);
         }

@@ -4338,7 +4338,7 @@ u64 FUN_003ada00(u64 param_1,int param_2)
 
   u8 bVar1;
 
-  u32 bVar7;
+  int bVar7;
 
   u64 uVar3;
 
@@ -4797,7 +4797,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   u32 uVar5;
   u32 uVar6;
-  int iVar8;
+  u32 iVar8;
   u32 firstLow;
   u32 secondLow;
   int first2;
@@ -4905,7 +4905,7 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   u32 uVar6;
 
-  int iVar8;
+  u32 iVar8;
   u32 firstLow;
   u32 secondLow;
   int first2;

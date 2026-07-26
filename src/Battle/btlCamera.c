@@ -1209,10 +1209,10 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     f32 distance;
     f32 fovDistance;
     f32 nearDistance;
-    f32 radius;
+    f32 nearAngle;
     f32 half;
     f32 angle;
-    f32 nearAngle;
+    f32 radius;
     f32 ratio;
     f32 firstWeight;
     f32 x;
@@ -4160,7 +4160,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     f32 halfDistance;
     f32 angle;
     f32 half;
-    u64 index;
+    u32 index;
     f32 tempHalf;
     f32 sourceProduct;
     unit = camera->action->unit;
@@ -4239,7 +4239,7 @@ rotate_done:
         FUN_002a4690(&work.frames[(u16)index].rot, &work.frames[(u16)index].pos,
                      &work.scaled, &D_00697880);
         halfDistance = halfDistance + angle;
-        index = (index & 0xffffffff) + 1;
+        index = (index + 1) & 0xffff;
     }
     FUN_002a2660(camera, &work.frames[0], &work.frames[1],
                  &work.frames[2], &work.frames[3], 1);

@@ -2318,8 +2318,8 @@ void func_0010e630(void* destination, const void* source, u32 size)
 void* func_0010e880(const u8* stream)
 {
     s32 bits;
-    s32 paletteFormat = 0;
     s32 flags = 0;
+    s32 paletteFormat = 0;
     const u8* source;
     const u8* pixelSource;
     s32 pixelsPerPalette;

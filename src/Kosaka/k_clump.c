@@ -965,9 +965,14 @@ void func_001a7b50(void* state, u32 mode)
         sphere = func_004912b0(object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                u32 enabled;
+
+                enabled = item->enabled;
+                if (enabled == 1)
+                {
+                    (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                }
             }
             if (D_007CC1C0 == 1)
             {

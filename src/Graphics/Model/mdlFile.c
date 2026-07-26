@@ -33455,22 +33455,27 @@ u32 FUN_0033cd20(int param_1,int param_2)
 u32 FUN_0033ce10(int param_1)
 {
   int iVar1;
-  int *piVar2;
-  u32 uVar4;
   int iVar3;
+  u32 uVar4;
 
   iVar3 = *(int *)(param_1 + 0x3c);
   iVar1 = *(int *)(param_1 + 0x40);
-  piVar2 = (int *)(*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
-  uVar4 = (u32)piVar2;
-  *piVar2 = (int)(piVar2 + 4);
-  piVar2[2] = (int)piVar2;
+  {
+    u8 *puVar2;
+
+    puVar2 = (u8 *)(*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
+    *(u32 *)puVar2 = (u32)(puVar2 + 0x10);
+    *(u32 *)(puVar2 + 8) = (u32)puVar2;
+    uVar4 = (u32)puVar2;
+  }
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
-  piVar2[1] = iVar3;
+  *(u32 *)(uVar4 + 4) = iVar3;
   FUN_0033cc10(uVar4,iVar1);
   return uVar4;
 
 
+
+}
 
 // FUN_0033CEB0
 
