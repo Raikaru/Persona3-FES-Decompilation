@@ -9800,12 +9800,13 @@ void FUN_00326030(int param_1,int param_2)
   u32 g;
   u32 b;
   u32 a;
-  code callback;
+  volatile u32 baseSlot;
 
   *(int *)(param_1 + 100) = param_2;
+  baseSlot = (u32)param_2;
   node = *(int *)(param_1 + 0x8c);
   while (node != 0) {
-    baseColor = *(u32 *)(param_1 + 100);
+    baseColor = baseSlot;
     nodeColor = *(u32 *)(node + 100);
     r = ((baseColor & 0xff) * (nodeColor & 0xff)) / 255;
     g = (((baseColor >> 8) & 0xff) * ((nodeColor >> 8) & 0xff)) / 255;
@@ -9814,13 +9815,13 @@ void FUN_00326030(int param_1,int param_2)
     color = (r & 0xff) | ((g & 0xff) << 8) |
             ((b & 0xff) << 16) | ((a & 0xff) << 24);
     type = *(u16 *)(*(int *)(node + 0x90) + 4);
-    callback = PTR_LAB_0069be50[(u32)type * 0xc + (u32)type];
-    if (callback != NULL) {
-      callback(*(u32 *)(*(int *)(node + 0x90) + 8), color);
+    if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
+      PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
+                (*(u32 *)(*(int *)(node + 0x90) + 8), color);
     }
-    callback = PTR_LAB_0069be50[(u32)type * 0xc + (u32)type];
-    if (callback != NULL) {
-      callback(*(u32 *)(*(int *)(node + 0x90) + 8));
+    if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
+      PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
+                (*(u32 *)(*(int *)(node + 0x90) + 8));
     }
     node = *(int *)(node + 0xac);
   }
