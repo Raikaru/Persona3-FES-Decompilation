@@ -617,6 +617,19 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
     FUN_003d8850((s32)work, 0xd, 0);
     FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 5, 0);
     return work;
+}
+
+// FUN_003da2a0 NONMATCHING
+void fclCombineList003da2a0(FclList* param_1)
+{
+    FclTaskLink* node;
+    s32 i;
+    s32 j;
+    FclTaskLink* selected;
+
+    node = param_1->list->links;
+    i = 0;
+    selected = 0;
     while (node != 0) {
         FclNodeData* data = node->payload->data.node_data;
         if (data->selection_detail != 0 &&
