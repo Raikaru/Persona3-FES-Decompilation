@@ -920,15 +920,10 @@ static void hmallocApplyInputTable(void)
         dst[1] = value2;
         dst += 2;
     } while (copyCount > 0);
-    i = 1;
-    __asm__ volatile ("" : "+r"(i) : : "memory");
-    func_0016cfe0(i, *(s16*)((u8*)resourceA + 0x3c));
-    i = 1;
-    __asm__ volatile ("" : "+r"(i) : : "memory");
-    func_0016d090(i, *(s16*)((u8*)resourceA + 0x3e));
-    i = 1;
-    __asm__ volatile ("" : "+r"(i) : : "memory");
-    func_0016d160(i, *(s16*)((u8*)resourceA + 0x40));
+    resourceA = sHmallocResourceA;
+    func_0016cfe0(1, *(s16*)((u8*)resourceA + 0x3c));
+    func_0016d090(1, *(s16*)((u8*)resourceA + 0x3e));
+    func_0016d160(1, *(s16*)((u8*)resourceA + 0x40));
 
     for (i = 0; i < 0x100; i++)
     {

@@ -593,12 +593,20 @@ void* func_001a70a0(void* object, void* data)
     if (state == 2)
     {
         goto state2;
-    }
     if (state == 1)
     {
         goto normal;
     }
-    goto default_state;
+default_state:
+    func_0048a3f0(object);
+    goto normal;
+normal:
+    func_0048a2a0(object, data);
+    goto done;
+fail:
+    func_00466640(data);
+done:
+    return object;
 state2:
     func_0048a3f0(object);
     goto normal;
