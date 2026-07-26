@@ -778,7 +778,7 @@ loop:
     i++;
 
 tail:
-    if (i != bVar1 + 2) {
+    if (i < bVar1 + 2) {
         goto loop;
     }
     scrSetIntReturnVal();

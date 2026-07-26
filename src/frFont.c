@@ -1224,19 +1224,21 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
 
   uVar2 = 0;
 
-  if (-1 < (char)param_2) {
-
-    bGpffffb950 = param_2;
-
+  if ((char)param_2 < 0) {
+    goto skipCachedFont;
   }
 
-  if ((&DAT_0095ad0c)[(u32)bGpffffb950 * 8] == 0) {
+  bGpffffb950 = param_2;
 
-    param_5 = 0;
+skipCachedFont:
 
+  if ((&DAT_0095ad0c)[(u32)bGpffffb950 * 8] != 0) {
+    goto processFont;
   }
 
-  else {
+  return 0;
+
+processFont:
 
     if (param_1 != 0) {
 
@@ -1336,7 +1338,6 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5)
 
     }
 
-  }
 
   return param_5;
 

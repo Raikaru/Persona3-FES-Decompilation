@@ -41,6 +41,12 @@ extern u8 PTR_DAT_007be9c8[];
 extern u32* PTR_DAT_007cd540;
 extern void* DAT_007ce0cc;
 extern u64 DAT_00678f58;
+ #pragma alias DAT_00678f68_abs DAT_00678f68
+ extern u64 DAT_00678f68_abs[];
+ #pragma alias DAT_00678f70_abs DAT_00678f70
+ extern f32 DAT_00678f70_abs[];
+ #pragma alias FUN_004cb890_typed FUN_004cb890
+ extern u32 FUN_004cb890_typed(u32 model, void* color, f32 angle);
 extern u32 DAT_00678f60;
 extern u64 DAT_00678f68;
 extern u32 DAT_00678f70;
@@ -1552,26 +1558,25 @@ void FUN_001b4e00(u32 unused, u32* resource, const f32* offset)
 #pragma pop
 
 // FUN_001b5200 NONMATCHING
-void FUN_001b5200(u32 unused, u32* resource)
+void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
+    u32 unused = (u32)angle;
     u32 count;
     s16 type;
-    u32 color[3];
+    f32 color[3];
 
-    (void)unused;
-    color[0] = DAT_00678f68;
-    color[1] = DAT_00678f70;
-    color[2] = 0;
+    *(u64*)color = DAT_00678f68_abs[0];
+    color[2] = DAT_00678f70_abs[0];
     if ((*resource & 1) == 0)
     {
         if (resource[2] != 0)
         {
-            FUN_004cb890(*(u32*)(resource[2] + 4), color, 2);
+            FUN_004cb890_typed(*(u32*)(resource[2] + 4), color, angle);
         }
         if (resource[4] != 0)
         {
-            FUN_004cb890(*(u32*)(resource[4] + 4), color, 2);
+            FUN_004cb890_typed(*(u32*)(resource[4] + 4), color, angle);
         }
     }
     count = resource[5];
@@ -1579,7 +1584,7 @@ void FUN_001b5200(u32 unused, u32* resource)
     {
         if (resource[i + 6] != 0)
         {
-            FUN_004cb890(*(u32*)(resource[i + 6] + 4), color, 2);
+            FUN_004cb890_typed(*(u32*)(resource[i + 6] + 4), color, angle);
         }
     }
     count = resource[0x46];
@@ -1659,7 +1664,7 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
     copy[0x288] = resource[0x288];
     copy[0x289] = resource[0x289];
     copy[0x28a] = resource[0x28a];
-    FUN_001b5200((u32)((f32)direction * 90.0f), copy);
+    FUN_001b5200(copy, (f32)direction * 90.0f);
     FUN_001b4e00((u32)((f32)direction * 90.0f), copy, (const f32*)position);
     return copy;
 }

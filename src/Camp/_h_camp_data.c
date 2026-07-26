@@ -68,6 +68,8 @@ extern u32 DAT_0083bb30[];
 extern u8 DAT_0083bb40;
 extern u32 DAT_0083aaa0[0x23];
 extern const char* PTR_s_help_datWeaponHelp_bmd_005e31d0[8];
+extern char DAT_005dc020[];
+extern char DAT_005dbc60[];
 extern const void* gp0xffff897c;
 extern const void* gp0xffff8998;
 
@@ -1314,8 +1316,8 @@ void FUN_001691F0(undefined8 param_1, undefined8 param_2,
 // FUN_00169330 NONMATCHING
 undefined4 FUN_00169330(void)
 {
-    void* allocation;
     void* task;
+    void* allocation;
     s16 language;
 
     language = (s16)FUN_0035ed20(0);
@@ -1323,13 +1325,13 @@ undefined4 FUN_00169330(void)
     if (allocation == NULL) {
         task = NULL;
     } else {
-        task = (void*)FUN_00194b20(0, 0x5dc020, 0x18bf,
+        task = (void*)FUN_00194b20(0, DAT_005dc020, 0x18bf,
                                    FUN_00168810, FUN_00169040, allocation);
         if (task == NULL) {
             task = NULL;
         } else {
             *(s32*)((u8*)allocation + 0x0c) = language;
-            *(u32*)((u8*)allocation + 0x10) = FUN_00100d80(0x5dbc60, 1);
+            *(u32*)((u8*)allocation + 0x10) = FUN_00100d80(DAT_005dbc60, 1);
         }
     }
     uGpffffb290 = (s32)(uintptr_t)task;
