@@ -6704,13 +6704,13 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 
   int iVar2;
 
-  short *psVar3;
-
-  int iVar4;
-
   int iVar5;
 
   int iVar6;
+
+  short *psVar3;
+
+  int iVar4;
   f32 uVar6;
 
   
