@@ -1677,24 +1677,6 @@ void func_0010cdd0(void)
                 void* outputData;
                 void* outputBuf;
                 void* sourceData;
-                s32* inputSizeField;
-                s32* intermediateSizeField;
-                s32* outputSizeField;
-                void** inputField;
-                void** intermediateField;
-                void** outputField;
-                void* input;
-                void* intermediate;
-                void* output;
-                s32 inputSize;
-                s32 intermediateSize;
-                s32 outputSize;
-                void* resourceData;
-                void* inputBuf;
-                void* auxBuf;
-                void* outputData;
-                void* outputBuf;
-                void* sourceData;
                 s32 chunkSize;
                 s32 remaining;
                 s32 queueHandle;
@@ -1758,6 +1740,7 @@ void func_0010cdd0(void)
                     5, slot->decodeHandle, (s32)slot->aux);
                 slot->status = 1;
                 slot->state = 1;
+                break;
     if (slot->state == 1)
     {
         slot->fileIndex = fileIndex;
