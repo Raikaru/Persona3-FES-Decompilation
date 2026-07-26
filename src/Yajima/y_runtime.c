@@ -12654,7 +12654,6 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
 
 {
   u8 uVar3;
-  u32 uVar4;
   u32 uVar2;
   int iVar1;
   
@@ -12664,8 +12663,7 @@ void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int pa
     uVar3 = (u8)(int)param_3;
   }
   else {
-    uVar4 = 0x80000000;
-    uVar3 = (u8)(uVar4 | (int)(param_3 - 2.1474836e+09f));
+    uVar3 = (u8)(0x80000000 | (int)(param_3 - 2.1474836e+09f));
   }
   *(u8 *)(uVar2 + 0x18) = uVar3;
   *(float *)(uVar2 + 0x10) = param_1;
