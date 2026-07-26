@@ -1286,12 +1286,12 @@ void bpTexBeginRender(void)
 {
     u32* work;
     u32* node;
-    u32 origin[3];
+    f32 origin[3];
 
     work = bpTexWork();
-    origin[0] = *(u32*)0x0068ea30;
-    origin[1] = *(u32*)0x0068ea34;
-    origin[2] = *(u32*)0x0068ea38;
+    origin[0] = *(f32*)0x0068ea30;
+    origin[1] = *(f32*)0x0068ea34;
+    origin[2] = *(f32*)0x0068ea38;
     for (node = BP_TEX_PTR(work, 0x1265c);
          node != NULL;
          node = bpTexNodeNext(node))

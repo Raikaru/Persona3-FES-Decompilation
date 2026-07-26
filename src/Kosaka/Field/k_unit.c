@@ -2638,14 +2638,18 @@ void* func_001d32a0(KwlnTask* task)
         }
         if (work[3] != 0 && work[3] < work[4] / 0x1e && work[5] == 0)
         {
-            K_FldUnit_CreateReaper(1, &spawnPosCopy);
-            datSetFlag(0x1423, 1);
-            work[5]++;
             work[0] = 1;
         }
         else
         {
             work[4]++;
+        }
+        if (work[3] != 0 && work[3] < work[4] / 0x1e && work[5] == 0)
+        {
+            K_FldUnit_CreateReaper(1, &spawnPosCopy);
+            datSetFlag(0x1423, 1);
+            work[5]++;
+            work[0] = 1;
         }
         break;
     }

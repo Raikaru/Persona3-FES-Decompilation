@@ -4166,19 +4166,22 @@ void FUN_0022e9a0(u32* object, s32 value)
 // FUN_0022EA40 NONMATCHING
 void FUN_0022ea40(u32* object, u32 value)
 {
-    u8* bytes;
-    u32 i;
+    char text[0x100];
     u32 table;
+    s32 i;
+    s32 length;
 
-    if (object == NULL) {
-        return;
-    }
-    bytes = (u8*)object;
     table = FUN_0021c3f0(3);
-    for (i = 0; i < 3; ++i) {
-        u8* dst = bytes + 0x50 + i * 0x10;
-        *(u32*)dst = value + i;
-        FUN_0021d3b0(dst, FUN_0021cca0(table, 0x42 + i));
+    sprintf(text, "%d", value);
+    length = strlen(text);
+    if (length > 3) {
+        K_Assert("bpp_panel.c", 0x45a);
+    }
+    for (i = 0; i < length; ++i) {
+        u32 resource;
+
+        resource = FUN_0021cca0(table, text[length - 1 - i] - '0');
+        FUN_0021d3b0((u8*)object + i * 0x100, resource);
     }
 }
 

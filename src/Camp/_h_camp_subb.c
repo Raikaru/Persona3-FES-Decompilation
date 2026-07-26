@@ -661,8 +661,6 @@ void FUN_0013cc90(CampEquipmentWork* work)
     s32 category;
     s16 candidate;
     u32 mask;
-    CampEquipmentEntry* entry;
-    u16* candidatePtr;
 
     while (scan < 300) {
         if (datGetEquipmentId(1, scan) != 0) {
@@ -677,34 +675,40 @@ void FUN_0013cc90(CampEquipmentWork* work)
 
     index = 0;
     while (index < count) {
-        candidatePtr = &indices[index];
-        candidate = (s16)*candidatePtr;
+        candidate = (s16)indices[index];
         if (datGetEquipmentId(1, candidate) != 0) {
-            entry = &work->entries[recordCount];
-            entry->itemId = datGetEquipmentId(1, candidate);
+            work->entries[recordCount].itemId =
+                datGetEquipmentId(1, candidate);
             category = 0;
             mask = func_0016f720(1, candidate);
             while (category < 0x15) {
                 if ((mask & (1u << category)) != 0) {
-                    entry->categoryMask = category;
+                    work->entries[recordCount].categoryMask = category;
                     break;
                 }
                 category++;
             }
-            entry->equipmentClass = (u8)func_00171250((s16)entry->itemId);
-            entry->effect = datGetEquipmentEffect(1, candidate);
-            entry->slotType = func_0016f810(1, candidate);
-            entry->sourceIndex = candidate;
-            switch (entry->equipmentClass) {
+            work->entries[recordCount].equipmentClass =
+                (u8)func_00171250((s16)work->entries[recordCount].itemId);
+            work->entries[recordCount].effect =
+                datGetEquipmentEffect(1, candidate);
+            work->entries[recordCount].slotType =
+                func_0016f810(1, candidate);
+            work->entries[recordCount].sourceIndex = candidate;
+            switch (work->entries[recordCount].equipmentClass) {
             case 0:
-                entry->valueA = func_0016f9f0(1, candidate);
-                entry->valueB = func_0016fae0(1, candidate);
+                work->entries[recordCount].valueA =
+                    func_0016f9f0(1, candidate);
+                work->entries[recordCount].valueB =
+                    func_0016fae0(1, candidate);
                 break;
             case 1:
-                entry->valueC = func_0016fbd0(1, candidate);
+                work->entries[recordCount].valueC =
+                    func_0016fbd0(1, candidate);
                 break;
             case 2:
-                entry->valueD = func_0016fcc0(1, candidate);
+                work->entries[recordCount].valueD =
+                    func_0016fcc0(1, candidate);
                 break;
             default:
                 break;
