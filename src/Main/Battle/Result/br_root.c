@@ -3358,6 +3358,7 @@ void func_001f7210(void)
     u16 apply_mbr;
     u32 amount;
     u32 new_val;
+    u8 card_buf[20];
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
@@ -3667,18 +3668,18 @@ void func_001f7210(void)
             printf("rank %d\n", value);
             printf("type : get item\n");
             if (BR_S16(entry, 2) < 0) {
-                func_001828d0((s16)BR_U16(entry, 0), (void *)(work + 0x210), (void *)0);
-                BR_U16(work, 0x218) = (u16)BR_U32(entry, 8);
+                func_001828d0((s16)BR_U16(entry, 0), (void *)card_buf, (void *)0);
+                value = (s32)*(u8 *)(card_buf + 8);
             } else {
                 func_00182d90((s16)BR_U16(entry, 0), (u8)BR_U16(entry, 4),
-                             BR_U32(entry, 8), (void *)(work + 0x210));
+                             BR_U32(entry, 8), (void *)card_buf);
             }
             if (BR_U32(work, 0x34c0) >= 8) {
                 K_ASSERT(work != NULL, 0x5b9);
             }
             {
                 u32 off = BR_U32(work, 0x34c0) * 5 * 4;
-                func_00521250(work + 0x3420 + off, work + 0x210, 20);
+                func_00521250(work + 0x3420 + off, card_buf, 20);
             }
             BR_U32(work, 0x34c0)++;
             break;
