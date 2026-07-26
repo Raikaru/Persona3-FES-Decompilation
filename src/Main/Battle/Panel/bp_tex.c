@@ -1586,7 +1586,6 @@ void bpTexShuffleNodes(void)
 {
     u32* work;
     u32* node;
-    u32* scan;
     u32* positions[4];
     s32 count;
     s32 nodeCount;
@@ -1595,7 +1594,6 @@ void bpTexShuffleNodes(void)
     s32 j;
     u32 tmp;
     s32 selected;
-    u32 orderValue;
     f32 position[3];
 
     if (BP_TEX_GLOBAL == NULL)
@@ -1609,11 +1607,11 @@ void bpTexShuffleNodes(void)
         func_0019d3f0((const char*)0x0068ea00, 0xbc);
     }
     nodeCount = 0;
-    for (scan = BP_TEX_PTR(work, 0x1265c);
-         scan != NULL;
-         scan = (u32*)scan[0x3f1])
+    for (node = BP_TEX_PTR(work, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
     {
-        if ((scan[0] & 2) == 0)
+        if ((node[0] & 2) == 0)
         {
             nodeCount++;
         }
@@ -1642,8 +1640,7 @@ void bpTexShuffleNodes(void)
     }
     for (i = 0; i < count; i++)
     {
-        orderValue = BP_TEX_U32(work, (0x49ef + i) * 4);
-        if (orderValue == 0)
+        if (BP_TEX_U32(work, (0x49ef + i) * 4) == 0)
         {
             break;
         }
@@ -1853,7 +1850,7 @@ void bpTexUpdateNode(void* nodeData)
     f32 position[3];
     f32 direction[3];
     f32 alpha;
-    f32 leafAlpha;
+    volatile f32 leafAlpha;
     u8 color[4];
     u32 mode;
     u32 flags;

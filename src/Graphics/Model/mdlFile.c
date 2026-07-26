@@ -407,8 +407,6 @@ extern void FUN_00325e40_passthru(void);
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
-#pragma alias FUN_00325d60_i FUN_00325d60
-extern void FUN_00325d60_i(int param_1,u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
@@ -9792,93 +9790,39 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
 
 
 void FUN_00326030(int param_1,int param_2)
-
-
-
 {
-
-  u16 uVar1;
-
-  u32 uVar2;
-
-  __int128 in_zero_qw;
-
-  __int128 auVar3;
-
-  int iVar4;
-
-  __int128 auVar5;
-
-  __int128 auVar6;
-
-  
+  int node;
+  u16 type;
+  u32 baseColor;
+  u32 nodeColor;
+  u32 color;
+  u32 r;
+  u32 g;
+  u32 b;
+  u32 a;
+  code callback;
 
   *(int *)(param_1 + 100) = param_2;
-
-  uVar2 = DAT_007cae4c;
-
-  auVar3 = _pextlb(0,(long)param_2);
-
-  auVar3 = _pextlh(0,auVar3._0_8_);
-
-  auVar3 = _qmtc2(auVar3._0_4_);
-
-  auVar5 = _vitof0(auVar3);
-
-  auVar3 = _qmtc2(DAT_007cae4c);
-
-  auVar3 = _vmulbc(auVar5,auVar3);
-
-  auVar3 = _sqc2(auVar3);
-
-  iVar4 = *(int *)(param_1 + 0x8c);
-
-  if (iVar4 != 0) {
-
-    for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xac)) {
-
-      auVar5 = _pextlb(0,(long)*(int *)(iVar4 + 100));
-
-      auVar5 = _pextlh(0,auVar5._0_8_);
-
-      auVar5 = _qmtc2(auVar5._0_4_);
-
-      auVar6 = _vitof0(auVar5);
-
-      auVar5 = _qmtc2(uVar2);
-
-      auVar5 = _vmulbc(auVar6,auVar5);
-
-      auVar6 = _lqc2(auVar3);
-
-      auVar6 = _vmul(auVar5,auVar6);
-
-      auVar5 = _qmtc2(0x437f0000);
-
-      auVar5 = _vmulbc(auVar6,auVar5);
-
-      auVar5 = _vftoi0(auVar5);
-
-      auVar5 = _qmfc2(auVar5._0_4_);
-
-      auVar5 = _ppach(in_zero_qw,auVar5);
-
-      auVar5 = _ppacb(in_zero_qw,auVar5);
-
-      uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
-
-      if (PTR_LAB_0069be50[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
-        PTR_LAB_0069be50[(u32)uVar1 * 0xc + (u32)uVar1]
-                  (*(u32 *)(*(int *)(iVar4 + 0x90) + 8),auVar5._0_4_);
-
-      }
-
+  baseColor = (u32)param_2;
+  node = *(int *)(param_1 + 0x8c);
+  while (node != 0) {
+    nodeColor = *(u32 *)(node + 100);
+    r = ((baseColor & 0xff) * (nodeColor & 0xff)) / 255;
+    g = (((baseColor >> 8) & 0xff) * ((nodeColor >> 8) & 0xff)) / 255;
+    b = (((baseColor >> 16) & 0xff) * ((nodeColor >> 16) & 0xff)) / 255;
+    a = (((baseColor >> 24) & 0xff) * ((nodeColor >> 24) & 0xff)) / 255;
+    color = (r & 0xff) | ((g & 0xff) << 8) |
+            ((b & 0xff) << 16) | ((a & 0xff) << 24);
+    type = *(u16 *)(*(int *)(node + 0x90) + 4);
+    callback = PTR_LAB_0069be50[(u32)type * 0xc + (u32)type];
+    if (callback != NULL) {
+      callback(*(u32 *)(*(int *)(node + 0x90) + 8), color);
     }
-
+    if (callback != NULL) {
+      callback(*(u32 *)(*(int *)(node + 0x90) + 8));
+    }
+    node = *(int *)(node + 0xac);
   }
-
-  return;
-
 }
 
 
@@ -14075,29 +14019,18 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
   u8 mode;
   int start;
   int end;
-  int span;
+  int weight;
+  int invWeight;
+  int alphaInt;
+  int redInt;
+  int greenInt;
+  int blueInt;
   float frame;
   float blend;
   float alpha;
-  float scale;
-  float invBlend;
-  float r0;
-  float g0;
-  float b0;
-  float r1;
-  float g1;
-  float b1;
-  float red;
-  float green;
-  float blue;
-  int alphaInt;
   u32 color;
   u32 first;
   u32 second;
-  union {
-    u32 bits;
-    float value;
-  } normalizer;
 
   if (param_4 == 0) {
     return (*(u32 *)(param_1 + 4) & 0xffffff) | (*param_2 << 0x18);
@@ -14150,21 +14083,17 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
     blend = 0.0f;
   }
 
-  normalizer.bits = uGpffff815c;
-  scale = normalizer.value;
-  invBlend = 1.0f - blend;
-  r0 = (float)(first & 0xff) * scale;
-  g0 = (float)((first >> 8) & 0xff) * scale;
-  b0 = (float)((first >> 16) & 0xff) * scale;
-  r1 = (float)(second & 0xff) * scale;
-  g1 = (float)((second >> 8) & 0xff) * scale;
-  b1 = (float)((second >> 16) & 0xff) * scale;
-  red = (r0 * invBlend + r1 * blend) * 255.0f;
-  green = (g0 * invBlend + g1 * blend) * 255.0f;
-  blue = (b0 * invBlend + b1 * blend) * 255.0f;
-  color = ((u32)(int)red & 0xff) |
-          (((u32)(int)green & 0xff) << 8) |
-          (((u32)(int)blue & 0xff) << 16);
+  weight = (int)(blend * 256.0f);
+  invWeight = 256 - weight;
+  redInt = (((first & 0xff) * invWeight) +
+            ((second & 0xff) * weight)) >> 8;
+  greenInt = ((((first >> 8) & 0xff) * invWeight) +
+              (((second >> 8) & 0xff) * weight)) >> 8;
+  blueInt = ((((first >> 16) & 0xff) * invWeight) +
+             (((second >> 16) & 0xff) * weight)) >> 8;
+  color = (u32)(redInt & 0xff) |
+          ((u32)(greenInt & 0xff) << 8) |
+          ((u32)(blueInt & 0xff) << 16);
 
   alpha = 1.0f;
   if (param_3 < (int)((float)param_2[2] * frame)) {
@@ -14175,9 +14104,6 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
             (float)(param_4 - (int)((float)param_2[3] * frame));
   }
   alpha = (float)*param_2 * alpha;
-  if (2147483648.0f <= alpha) {
-    alpha -= 2147483648.0f;
-  }
   alphaInt = (int)alpha;
   return color | ((u32)alphaInt << 24);
 }
@@ -33307,16 +33233,14 @@ u32 FUN_0033ce10(int param_1)
 {
   int iVar1;
   int iVar3;
-  volatile int *piVar2;
   u32 uVar4;
-  u32 uVar5;
+  int *piVar2;
 
   iVar3 = *(int *)(param_1 + 0x3c);
   iVar1 = *(int *)(param_1 + 0x40);
   uVar4 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
-  uVar5 = uVar4;
-  *(u32 *)uVar5 = uVar5 + 0x10;
-  *(u32 *)(uVar5 + 8) = uVar5;
+  *(u32 *)uVar4 = uVar4 + 0x10;
+  *(u32 *)(uVar4 + 8) = uVar4;
   piVar2 = (int *)uVar4;
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
   piVar2[1] = iVar3;
@@ -46956,7 +46880,7 @@ void FUN_0034ada0(int param_1)
   u8 *puVar2;
   u8 auStack_100 [256];
   void (**setState)(int, int);
-  void (**setBuffer)(int, void*, int, short*, int);
+  void (**setBuffer)(int, void*, int, int, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
   puVar2 = (u8 *)(iVar1 + 0xc0);
@@ -46970,8 +46894,8 @@ void FUN_0034ada0(int param_1)
 
     RpSkyRenderStateSet(3,0x31001);
 
-    setBuffer = (void (**)(int, void*, int, short*, int))DAT_009600a4_abs;
-    (*setBuffer)(3,auStack_100,4,(short *)((u8 *)0x6a0000 - 0x3480),6);
+    setBuffer = (void (**)(int, void*, int, int, int))DAT_009600a4_abs;
+    (*setBuffer)(3,auStack_100,4,0x69cb80,6);
 
   }
 

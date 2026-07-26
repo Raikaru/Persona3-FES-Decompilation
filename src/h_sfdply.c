@@ -258,6 +258,8 @@ extern s32 func_0051df58_t(s32 outputHandle, s32 channel, s32 count, s32 value, 
 extern void FUN_0051deb0(u32 channel, u32 handle);
 extern void FUN_0051dd48(u32 channel, u32 handle);
 extern s32 FUN_0050d3f0(void);
+extern s32 func_00502f60(void* threadParam);
+extern s32 func_005042a0(s32 threadId, void* arg);
 extern s32 FUN_0050d3a0(void);
 extern void func_005030f0();
 
@@ -295,6 +297,7 @@ extern void* func_004c58a0(s32 source, s32 mode, void* stream);
 extern s32 func_004c5250(void* stream, void* dst, u32 bytes);
 extern void func_004c5780(void* stream, s32 mode);
 extern HSfdImage* func_004cbe00(u32 width, u32 height, u32 bits);
+extern void func_0010c7d0(HSfdQueueSlot* slot);
 extern void func_004cbf20(HSfdImage* image);
 extern void FlushCache(s32 mode);
 
@@ -1137,13 +1140,24 @@ void func_0010bff0(void)
 void func_0010c050(void)
 {
     s32 i;
+    s32 threadId;
+    s32 threadParam[6];
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
-        sSfdQueue[i].state = 0;
-        sSfdQueue[i].entry = NULL;
-        memset(&sSfdEntries[i], 0, sizeof(HSfdAsyncEntry));
+        sSfdEntries[i].next = NULL;
     }
+
+    sSfdQueue[0].state = 0;
+    sSfdQueue[0].entry = NULL;
+    threadParam[1] = (s32)func_0010c7d0;
+    threadParam[2] = 0x803640;
+    threadParam[3] = 0x20000;
+    threadParam[4] = 0;
+    threadParam[5] = 0x1C;
+    threadId = func_00502f60(threadParam);
+    func_005042a0(threadId, &sSfdQueue[0]);
+    uGpffffb230 = 1;
 }
 
 // FUN_0010C1A0 NONMATCHING

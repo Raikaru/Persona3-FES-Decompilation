@@ -2121,10 +2121,6 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
                                 func_001bcac0(patternId, spF0, temp21,
                                               temp20_3, temp21);
                                 break;
-                            case 2:
-                                func_001bcac0(patternId, temp20_3,
-                                              sp100, temp20_3, temp21);
-                                break;
                             case 3:
                                 func_001bcac0(patternId, spE0, temp21,
                                               temp20_3, temp21);

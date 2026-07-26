@@ -4407,12 +4407,9 @@ u32 FUN_002e2680(int param_1)
     case 2:
         rand = FUN_002ffbc0(100);
         if (rand < 0x32)
-            goto c2_high;
-        result = 0x443;
-        goto c2_done;
-c2_high:
-        result = 0x444;
-c2_done:
+            result = 0x444;
+        else
+            result = 0x443;
         break;
     case 3:
         if (*(s32*)DAT_00697be4_abs == -1)
@@ -4444,42 +4441,30 @@ c3_done:
     case 4:
         rand = FUN_002ffbc0(100);
         if (rand < 0x32)
-            goto c4_high;
-        result = 0x44d;
-        goto c4_done;
-c4_high:
-        result = 0x44e;
-c4_done:
+            result = 0x44e;
+        else
+            result = 0x44d;
         break;
     case 5:
         rand = FUN_002ffbc0(100);
         if (rand < 0x32)
-            goto c5_high;
-        result = 0x451;
-        goto c5_done;
-c5_high:
-        result = 0x452;
-c5_done:
+            result = 0x452;
+        else
+            result = 0x451;
         break;
     case 7:
         rand = FUN_002ffbc0(100);
         if (rand < 0x32)
-            goto c7_high;
-        result = 0x453;
-        goto c7_done;
-c7_high:
-        result = 0x454;
-c7_done:
+            result = 0x454;
+        else
+            result = 0x453;
         break;
     case 8:
         rand = FUN_002ffbc0(100);
         if (rand < 0x32)
-            goto c8_high;
-        result = 0x459;
-        goto c8_done;
-c8_high:
-        result = 0x45a;
-c8_done:
+            result = 0x45a;
+        else
+            result = 0x459;
         break;
     case 9:
         if (FUN_0017d800() != 0)

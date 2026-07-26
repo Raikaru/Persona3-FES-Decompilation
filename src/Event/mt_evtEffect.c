@@ -1606,14 +1606,14 @@ u64 FUN_003962c0(int param_1)
 
     iVar4 = (int)lVar1;
 
-    if (1 == *(int *)(iVar4 + 0x67c)) {
+    if (*(int *)(iVar4 + 0x67c) == 1) {
 
       FUN_00386e50();
 
       *(u32 *)(iVar4 + 0x67c) = 0;
 
     }
-    if (1U == *(u32 *)(iVar4 + 0x680)) {
+    if (*(int *)(iVar4 + 0x680) == 1) {
 
       auStack_4[0] = 0x14;
 
