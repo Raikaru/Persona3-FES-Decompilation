@@ -77,10 +77,6 @@ extern u8 D_00684370[];
 extern char D_00684330[];
 extern char D_00684380[];
 extern void* func_001a4cd0(s32 parent);
-}
-
-// FUN_001E4B10
-void func_001e4b10(RuntimeTask* task, u32 request)
 struct RuntimeListNode
 {
     u32 flags;
@@ -331,15 +327,6 @@ extern void* func_001e5850(void* task);
 extern void func_003b7090(u16 resourceId);
 extern void func_00195020(void* task);
 extern void* func_001e6030(void* task);
-extern void func_001a4dc0(void* task, const void* color);
-extern void func_001e2a70(FieldRuntimeTaskNode* node, s32 releaseResource);
-extern RuntimeVec3 D_006843B0;
-extern char D_006843C0[];
-extern char D_006843D0[];
-extern char D_006843E0[];
-extern f32 D_007CB118[];
-extern u8 D_007CC338[];
-extern u8 D_007CC33C[];
 extern void* func_001e6a70(void* task);
 extern void func_001e2930(s32 value);
 extern void func_001e2b10(s32 value);
@@ -1681,273 +1668,17 @@ void* func_001e6030(void* parent)
 }
 
 // FUN_001E60B0 NONMATCHING
-s32 func_001e60b0(RuntimeTask* task)
+s32 func_001e60b0(RuntimeWork* work)
 {
-    typedef struct RuntimeAuxWork
+    if (work == NULL)
     {
-        u32 state;
-        void* windowTask;
-        void* auxiliaryTask;
-        u32 count;
-        u16 resourceId;
-        u8 reserved12[2];
-        void* positionTask;
-    } RuntimeAuxWork;
-
-    RuntimeAuxWork* work;
-    void* resourceManager;
-    u8* node;
-    u8* selected;
-    u8* nodeAddress;
-    void* camera;
-    void* frame;
-    void* positionMatrix;
-    FieldRuntimeTaskNode* taskNode;
-    RuntimeVec3 axis;
-    RuntimeVec3 firstAxis;
-    RuntimeVec3 direction;
-    RuntimeVec3 center;
-    RuntimeVec3 adjusted;
-    RuntimeMatrix rotation;
-    RuntimeTransitionAngles angles;
-    char text[112];
-    u32 input;
-    u32 index;
-    u32 matrixFlags;
-    s32 result;
-    f32 distance;
-    f32 angle;
-    f32 x;
-    f32 y;
-
-    work = (RuntimeAuxWork*)task->workData;
-    switch (work->state)
-    {
-        case 0:
-            resourceManager = func_001e1840();
-            node = *(u8**)((u8*)resourceManager + 4);
-            work->count = 0;
-            work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
-            while (node != NULL)
-            {
-                FUN_00523ac8(
-                    text, D_006843C0,
-                    (u32)(*(u16*)(node + 0x50) & 0x3ff));
-                index = func_001a3f20(work->windowTask, text);
-                nodeAddress = (u8*)func_001a41b0(work->windowTask, index);
-                *(u8**)nodeAddress = node;
-                work->count++;
-                node = *(u8**)(node + 0x58);
-            }
-            if (work->count != 0)
-            {
-                func_001a3bf0(work->windowTask, 1);
-                work->state = work->state + 1;
-            }
-            else
-            {
-                func_00195020(work->windowTask);
-                work->state = 6;
-            }
-            break;
-
-        case 1:
-            index = 0;
-            while (index < work->count)
-            {
-                nodeAddress = (u8*)func_001a41b0(work->windowTask, index);
-                node = *(u8**)nodeAddress;
-                func_003b5d10(*(u16*)(node + 0x50));
-                func_001a4dc0(*(void**)node, D_007CC338);
-                index++;
-            }
-            selected = *(u8**)func_001a41b0(
-                work->windowTask, func_001a4510(work->windowTask));
-            func_003b5d10(*(u16*)(selected + 0x50));
-            func_001a4dc0(*(void**)selected, D_007CC33C);
-            if ((DAT_007e094e & 0x40) != 0)
-            {
-                work->positionTask = *(void**)selected;
-                work->resourceId = *(u16*)(selected + 0x50);
-                func_003b5d10(work->resourceId);
-                work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
-                func_001a3f20(work->windowTask, D_006843D0);
-                func_001a3f20(work->windowTask, D_006843E0);
-                func_001a3bf0(work->windowTask, 1);
-                work->state = work->state + 1;
-            }
-            else if ((DAT_007e094e & 0x20) != 0)
-            {
-                func_00195020(work->windowTask);
-                work->state = 6;
-            }
-            break;
-
-        case 2:
-            work->state = work->state + 1;
-            break;
-
-        case 3:
-            if ((DAT_007e094e & 0x40) != 0)
-            {
-                result = func_001a4510(work->windowTask);
-                if (result == 1)
-                {
-                    work->auxiliaryTask =
-                        func_001a3b10(task, 0x12c, 0xdc, 2);
-                    func_001a3f20(work->auxiliaryTask, D_006843D0);
-                    func_001a3f20(work->auxiliaryTask, D_006843E0);
-                    func_001a3bf0(work->auxiliaryTask, 1);
-                    func_001a3bf0(work->windowTask, 0);
-                    work->state = 5;
-                }
-                else if (result == 0)
-                {
-                    func_001a3bf0(work->windowTask, 0);
-                    work->state = work->state + 1;
-                }
-                else if ((DAT_007e094e & 0x20) != 0)
-                {
-                    func_00195020(work->windowTask);
-                    work->state = 0;
-                }
-            }
-            break;
-
-        case 4:
-            axis = D_006843B0;
-            firstAxis.x = 0.0f;
-            firstAxis.y = 0.0f;
-            firstAxis.z = 0.0f;
-            input = *(u8*)(&DAT_007e095e[1]);
-            x = (f32)input * 2.0f - 128.0f;
-            input = *(u8*)(&DAT_007e095e[0]);
-            y = (f32)input * 2.0f - 128.0f;
-            if ((DAT_007e094c & 0x1000) != 0)
-            {
-                x = -128.0f;
-            }
-            if ((DAT_007e094c & 0x4000) != 0)
-            {
-                x = 128.0f;
-            }
-            if ((DAT_007e094c & 0x8000) != 0)
-            {
-                y = -128.0f;
-            }
-            if ((DAT_007e094c & 0x2000) != 0)
-            {
-                y = 128.0f;
-            }
-            firstAxis.x = y;
-            firstAxis.z = x;
-
-            camera = func_00198590();
-            frame = *(void**)((u8*)camera + 4);
-            angle = func_001a5aa0(func_004cb2f0(frame));
-            if (x < -48.0f || x > 48.0f ||
-                y < -48.0f || y > 48.0f)
-            {
-                matrixFlags = *(u32*)&rotation.values[3];
-                rotation.values[0] = 1.0f;
-                rotation.values[5] = 1.0f;
-                rotation.values[10] = 1.0f;
-                rotation.values[1] = 0.0f;
-                rotation.values[2] = 0.0f;
-                rotation.values[4] = 0.0f;
-                rotation.values[6] = 0.0f;
-                rotation.values[8] = 0.0f;
-                rotation.values[9] = 0.0f;
-                rotation.values[12] = 0.0f;
-                rotation.values[13] = 0.0f;
-                rotation.values[14] = 0.0f;
-                matrixFlags |= 0x20003;
-                *(u32*)&rotation.values[3] = matrixFlags;
-                func_004c31b0(&rotation, &axis, angle, 1);
-                direction = firstAxis;
-                func_004c69f0(&direction, &firstAxis);
-                direction.x = -direction.x;
-                direction.y = -direction.y;
-                direction.z = -direction.z;
-                distance = (x + y) * D_007CB118[0] / 2.0f;
-                K_Draw_MovePositionInDir(
-                    distance, work->positionTask, &direction);
-            }
-            if (x < -48.0f || x > 48.0f)
-            {
-                K_Draw_RotatePosition(work->positionTask, &axis,
-                                       y * D_007CB118[1]);
-            }
-            input = DAT_007e094c;
-            if ((input & 6) != 0)
-            {
-                K_Draw_CopyPositionCenter(&center, work->positionTask);
-                adjusted = center;
-                adjusted.y -= 10.0f;
-                K_Draw_SetPositionPos(work->positionTask, &adjusted);
-            }
-            if ((input & 9) != 0)
-            {
-                K_Draw_CopyPositionCenter(&center, work->positionTask);
-                adjusted = center;
-                adjusted.y += 10.0f;
-                K_Draw_SetPositionPos(work->positionTask, &adjusted);
-            }
-            if ((input & 0x80) != 0)
-            {
-                func_001a5000(work->positionTask);
-            }
-            if ((input & 0x20) != 0)
-            {
-                func_003b7090(work->resourceId);
-                func_00195020(work->positionTask);
-                work->state = 0;
-            }
-            if ((input & 0x40) != 0)
-            {
-                func_001a3bf0(work->windowTask, 1);
-                taskNode = func_001e2a20();
-                taskNode->resourceId = work->resourceId;
-                taskNode->task = work->positionTask;
-                positionMatrix = K_Draw_GetPositionMatrix(
-                    work->positionTask);
-                taskNode->matrix = *(RuntimeMatrix*)positionMatrix;
-                angles.value.x = func_001a5b30(&taskNode->matrix);
-                angles.value.y = func_001a5aa0(&taskNode->matrix);
-                angles.value.z = func_001a5bc0(&taskNode->matrix);
-                func_003b78b0(taskNode->resourceId,
-                             (u8*)taskNode + 0x40, &angles.value);
-                work->state = 0;
-            }
-            break;
-
-        case 5:
-            if ((DAT_007e094e & 0x40) != 0)
-            {
-                result = func_001a4510(work->auxiliaryTask);
-                if (result == 1)
-                {
-                    work->state = 3;
-                    func_001a3bf0(work->windowTask, 1);
-                }
-                else if (result == 0)
-                {
-                    work->state = 0;
-                }
-                else
-                {
-                    taskNode = func_001e29e0(work->resourceId);
-                    func_001e2a70(taskNode, 1);
-                    func_00195020(work->windowTask);
-                    func_00195020(work->auxiliaryTask);
-                }
-            }
-            break;
-
-        case 6:
-            return -1;
+        return 0;
     }
-    return 0;
+    if ((work->requestFlags & 0x20) != 0)
+    {
+        work->completedFlags |= 1;
+    }
+    return work->completedFlags != 0;
 }
 
 // FUN_001E6A40
