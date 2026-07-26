@@ -543,6 +543,7 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
     int index;
     int length;
     int base;
+    int scaled;
     u32 bVar2;
 
     iVar1 = *(int *)(param_1 + 8);
@@ -571,7 +572,8 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
     index = *(volatile int *)(param_1 + 0x970);
     iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
     base = *(volatile int *)(iVar2 + 4);
-    *param_3 = (u32)*(u8 *)(base + index * 0x8c + param_2 + 0x16);
+    scaled = index * 0x8c;
+    *param_3 = (u32)*(u8 *)((scaled + base) + param_2 + 0x16);
     return 1;
 }
 #define FUN_00397630(...) ((u32 (*)(...))FUN_00397630)(__VA_ARGS__)
@@ -624,7 +626,7 @@ u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4)
 }
 #define FUN_003976f0(...) ((u32 (*)(...))FUN_003976f0)(__VA_ARGS__)
 #undef FUN_003977c0
-// FUN_003977C0 NONMATCHING
+// FUN_003977C0
 
 
 u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)

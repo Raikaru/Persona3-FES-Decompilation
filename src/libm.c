@@ -179,11 +179,15 @@ float cosf(float x)
 }
 #pragma optimization_level 2
 
-#pragma optimization_level 3
+#pragma optimization_level 1
 // FUN_0052e788 NONMATCHING
 float fabsf(float x)
 {
-    return __builtin_fabsf(x);
+    if (x < 0.0f)
+    {
+        return -x;
+    }
+    return x;
 }
 #pragma optimization_level 2
 
