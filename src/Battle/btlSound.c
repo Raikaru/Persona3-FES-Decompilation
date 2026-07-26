@@ -3135,17 +3135,13 @@ journey_true:
       
           }
       
-          uVar4 = 0x2c2;
+          if (lVar3 != 0) {
       
-          switch (lVar3 == 0) {
-          case 0:
-            return;
-          case 1:
-            uVar4 = 0x2c1;
-            break;
+            return 0x2c2;
+      
           }
       
-          return uVar4;
+          return 0x2c1;
       
         }
       
