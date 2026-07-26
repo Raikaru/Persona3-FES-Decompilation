@@ -1281,7 +1281,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
                         r = fGpffff8050 + xSquared * r;
                         r = fGpffff8054 + xSquared * r;
                         r2 = fGpffff8058 + xSquared * r;
-                        firstWeight = x + xSquared * x * r2;
+                        firstWeight = xSquared * x * r2 + x;
                         x = radius * blend.scalar;
                         xSquared = x * x;
                         r = fGpffff8048 + fGpffff8130 * xSquared;
@@ -1289,7 +1289,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
                         r = fGpffff8050 + xSquared * r;
                         r = fGpffff8054 + xSquared * r;
                         r2 = fGpffff8058 + xSquared * r;
-                        radius = x + xSquared * x * r2;
+                        radius = xSquared * x * r2 + x;
                     }
                     blendedRot.imag.x = blend.first.imag.x * firstWeight;
                     blendedRot.imag.y = blend.first.imag.y * firstWeight;

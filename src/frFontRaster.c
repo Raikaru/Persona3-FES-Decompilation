@@ -606,6 +606,8 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
       while ((int)uVar7 < 0x20) {
         inner16 = uVar7 & 0xffff;
 
+        pixelOffset = (u32)puVar6[inner16 & 0xf] +
+                      (base + ((int)inner16 >> 4) * 0x20 & 0xffffU);
         uVar9 = pixelOffset & 0xffff;
         pbVar11 = (u8 *)(iVar4 + ((int)uVar9 >> 1));
         uVar10 = *src >> ((uVar7 & 1) << 2);
