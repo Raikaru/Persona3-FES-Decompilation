@@ -300,11 +300,14 @@ void FUN_0029a690(u16 genus)
             {
                 firstGenus = first->unit->genus;
                 secondGenus = second->unit->genus;
-                if (firstGenus != secondGenus && firstGenus != genus)
+                if (firstGenus != secondGenus)
                 {
-                    *actions = second;
-                    actions[1] = first;
-                    swapped = 1;
+                    if (firstGenus != genus)
+                    {
+                        *actions = second;
+                        actions[1] = first;
+                        swapped = 1;
+                    }
                 }
             }
             i++;

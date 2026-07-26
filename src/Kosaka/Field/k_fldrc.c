@@ -48,13 +48,22 @@ extern u32 DAT_00678f70;
 extern u64 DAT_00678f68_abs[];
 #pragma alias DAT_00678f70_abs DAT_00678f70
 extern f32 DAT_00678f70_abs[];
+typedef struct FldrcFloat
+{
+    f32 value;
+} FldrcFloat;
 typedef struct FldrcColor
 {
     u64 word;
-    f32 tail;
+    FldrcFloat tail;
 } __attribute__((packed)) FldrcColor;
 #pragma alias DAT_00678f68_color DAT_00678f68
-extern FldrcColor DAT_00678f68_color[];
+static inline void FldrcColorSet(FldrcColor* dst, u64 word, f32 tail)
+{
+    dst->word = word;
+    dst->tail.value = tail;
+}
+extern volatile FldrcColor DAT_00678f68_color[];
 #pragma alias FUN_004cb890_typed FUN_004cb890
 extern u32 FUN_004cb890_typed(u32 model, void* color, f32 angle, u32 mode);
 extern u32 DAT_007ce0d4;
@@ -1573,7 +1582,13 @@ void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
     u16 type;
-    FldrcColor color = { DAT_00678f68_color[0].word, DAT_00678f68_color[0].tail };
+    u64 word;
+    f32 tail;
+    FldrcColor color;
+    word = DAT_00678f68_color[0].word;
+    tail = DAT_00678f68_color[0].tail.value;
+    *(volatile u64*)&color = word;
+    *(volatile f32*)((u8*)&color + 8) = tail;
 
     if ((*resource & 1) == 0)
     {
