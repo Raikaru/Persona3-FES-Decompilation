@@ -424,32 +424,33 @@ state5_done:
         {
             s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == -1)
+            switch (status)
             {
-                FUN_005136f8(sSocketNo, D_00846EA0);
-            }
-            else if ((status == 1) && (cardError == 0))
-            {
-                if (cardCode == 0x2f)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x9001)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x13)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x6f)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x9003)
-                {
-                    return -3;
-                }
+                case 1:
+                    if (cardError == 0)
+                    {
+                        switch (cardCode)
+                        {
+                            case 0x9003:
+                                return -3;
+                            case 0x6f:
+                                return -3;
+                            case 0x13:
+                                return -3;
+                            case 0x9001:
+                                return -3;
+                            case 0x2f:
+                                return -3;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case -1:
+                    FUN_005136f8(sSocketNo, D_00846EA0);
+                    break;
+                default:
+                    break;
             }
             return 1;
 
@@ -458,33 +459,31 @@ state5_done:
         {
             s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status != -1)
+            switch (status)
             {
-                if (status == 1)
-                {
+                case 1:
                     if (cardError != 0)
                     {
                         sMemcardSeqMode = 6;
+                        break;
                     }
-                    else
+                    switch (cardCode)
                     {
-                        switch (cardCode)
-                        {
-                            case 0x2f:
-                            case 0x9001:
-                            case 0x13:
-                            case 0x6f:
-                            case 0x9003:
-                                return -3;
-                            default:
-                                break;
-                        }
+                        case 0x9003:
+                        case 0x6f:
+                        case 0x13:
+                        case 0x9001:
+                        case 0x2f:
+                            return -3;
+                        default:
+                            break;
                     }
-                }
-            }
-            else
-            {
-                sMemcardSeqMode = 6;
+                    break;
+                case -1:
+                    sMemcardSeqMode = 6;
+                    break;
+                default:
+                    break;
             }
             break;
 
