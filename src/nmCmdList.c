@@ -796,7 +796,7 @@ void FUN_003c6900(int param_1)
 
 {
   u32 *puVar1;
-  u32 uVar2;
+  int uVar2;
 
   puVar1 = *(u32 **)(param_1 + 0x24);
   uVar2 = *puVar1;
@@ -817,10 +817,12 @@ void FUN_003c6900(int param_1)
       *(u16 *)((int)puVar1 + 10) = 3;
     }
     uVar2 = *puVar1;
-    if ((uVar2 & 0x400000) != 0) {
-      *puVar1 = uVar2 & 0xfffffffb;
-      *puVar1 = uVar2 & 0xffbfffff;
-      *puVar1 = uVar2 & 0xffbfffff | 1;
+      uVar2 = uVar2 & 0xfffffffb;
+      *puVar1 = uVar2;
+      uVar2 = uVar2 & 0xffbfffff;
+      *puVar1 = uVar2;
+      uVar2 = uVar2 & 0xffbfffff | 1;
+      *puVar1 = uVar2;
     }
   }
 }

@@ -1244,7 +1244,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         }
         else
         {
-            half = unit->scale * unit->unk_8c;
+            half = unit->unk_8c * (*(volatile f32*)&unit->scale);
             if (half > scaled.y)
             {
                 scaled.y = half;

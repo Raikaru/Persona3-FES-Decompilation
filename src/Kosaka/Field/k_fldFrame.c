@@ -923,7 +923,7 @@ u32 func_001ae480(KwlnTask* task)
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
-            u32 j;
+            s32 j;
             u8* pointBase;
             u32* source;
             u32* destination;
@@ -931,18 +931,16 @@ u32 func_001ae480(KwlnTask* task)
             source = (u32*)(pointBase + 0x38);
             destination = (u32*)(pointBase + 0x20);
 
-            j = 3;
-            do
+            for (j = 3; j > 0; j--)
             {
                 u32 value0 = source[0];
                 u32 value1 = source[1];
 
                 source += 2;
-                j--;
                 destination[0] = value0;
                 destination[1] = value1;
                 destination += 2;
-            } while (j > 0);
+            }
             *(u32*)(pointBase + 0x4c) = 0;
         }
         return true;
