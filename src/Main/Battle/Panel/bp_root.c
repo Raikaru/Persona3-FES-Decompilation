@@ -1440,13 +1440,15 @@ void FUN_002025E0(void)
     u32* rec;
     PanelSkillRow* row;
     u16 id;
+    u8* misc;
 
     K_ASSERT((panelWork32(0) & 2) != 0, 0x87c);
+    misc = (u8*)bpMisc001ff500(1);
     start = panelWork32(0x765c);
     for (i = 0; i < panelWork32(0x70); i++)
     {
         rec = (u32*)(panelWork() + (start + i) * 8);
-        row = panelSkillRow(i);
+        row = (PanelSkillRow*)(misc + i * 0x2d0);
         row->flags = 0;
         row->handle = rec[0x78 / 4];
         row->flags |= rec[0x28 / 4] & 3;
