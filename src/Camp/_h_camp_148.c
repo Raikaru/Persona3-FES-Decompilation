@@ -862,26 +862,27 @@ CAMP_DRAW_CALC_FIRST_AT(u9, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x83c), 2,
 void h_campDrawSocialList(int param_1)
 {
     CampPair pair;
-    CampBits t0;
+    CampBits t0, t1, t2, t3, t4, t5;
+    CampBits t6, t7, t8, t9, t10;
     s32 i;
     f32 y;
 
     CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4)), 2,
                             381.0f, 12.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t1, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x44), 2,
                             13.0f, 27.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t2, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x88), 2,
                             112.0f, 27.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t3, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0xcc), 2,
                             135.0f, 27.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t4, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x110), 2,
                             272.0f, 27.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t5, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x154), 2,
                             301.0f, 27.0f, 0.0f);
     for (i = 0; i < 4; i++) {
@@ -889,22 +890,22 @@ void h_campDrawSocialList(int param_1)
             *(u32*)(*(u32 *)(param_1 + 0xc4) + i * 0x44 + 0x2ac) = 0;
         } else {
             y = (f32)(i * 0x55) + 64.0f;
-            CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+            CAMP_DRAW_CALC_FIRST_AT(t6, 100.0f,
                                     (void*)(*(u32 *)(param_1 + 0xc4) +
                                             (i + 10) * 0x44), 2,
                                     610.0f, y, 0.0f);
         }
     }
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t7, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x550), 2,
                             47.0f, 61.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t8, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x594), 2,
                             272.0f, 219.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t9, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x7f8), 2,
                             226.0f, 415.0f, 0.0f);
-    CAMP_DRAW_CALC_FIRST_AT(t0, 100.0f,
+    CAMP_DRAW_CALC_FIRST_AT(t10, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x83c), 2,
                             561.0f, 415.0f, 0.0f);
 }
