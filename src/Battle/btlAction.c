@@ -6095,6 +6095,11 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
         btlActionSetState(action, BTLACTION_STATE_PACKET);
     }
 }
+// FUN_00297a50
+u32 FUN_00297a50(BtlAction* action)
+{
+    return ACTION_U32(action, 0x48c);
+}
 
 // FUN_002964f0
 void btlActionInitStateEscapeMes(BtlAction* action)
