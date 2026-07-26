@@ -1076,7 +1076,11 @@ void func_001a7fc0(void* state, u32 mode)
 void func_001a8140(void* state, u32 mode)
 {
     KClumpMaterialNode* item;
+    RwSphere* sphere;
+    void* resources;
     u32 found;
+    void* object;
+    void (**resourceCall)(void*);
 
     if (state == NULL)
     {
@@ -1084,12 +1088,34 @@ void func_001a8140(void* state, u32 mode)
     }
     if (mode == 1)
     {
-        D_00960090(6);
+        D_00960090(6, 1);
         D_00960090(8, 1);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x715fb);
-    kclump_render_list((void*)((u8*)state + 0x0c), 0x007cc1e8);
+    item = *(KClumpMaterialNode**)((u8*)state + 0x0c);
+    while (item != NULL)
+    {
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        {
+            if (item->enabled == 1)
+            {
+                D_00960090(0xe, 0);
+            }
+            if (D_007CC1F8 == 1)
+            {
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
+            }
+            if (item->enabled == 1)
+            {
+                D_00960090(0xe, 1);
+            }
+        }
+        item = item->next;
+    }
 
     if (*(u32*)0x007ce158 == 1)
     {
@@ -1101,11 +1127,33 @@ void func_001a8140(void* state, u32 mode)
         RpSkyRenderStateSet(2, (void*)0x44);
         RpSkyRenderStateSet(3, (void*)0x735fb);
     }
-    kclump_render_list((void*)((u8*)state + 0x10), 0x007cc1ec);
+    item = *(KClumpMaterialNode**)((u8*)state + 0x10);
+    while (item != NULL)
+    {
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+        {
+            if (item->enabled == 1)
+            {
+                D_00960090(0xe, 0);
+            }
+            if (*(u32*)((u8*)&D_007CC1F8 + 4) == 1)
+            {
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
+            }
+            if (item->enabled == 1)
+            {
+                D_00960090(0xe, 1);
+            }
+        }
+        item = item->next;
+    }
 
     if (mode == 1)
     {
-        D_00960090(6);
+        D_00960090(6, 1);
         D_00960090(8, 0);
     }
     RpSkyRenderStateSet(2, (void*)0x42);
@@ -1114,12 +1162,34 @@ void func_001a8140(void* state, u32 mode)
     while (item != NULL)
     {
         found = 0;
-        if (item->object != NULL)
+        object = item->object;
+        if (object != NULL)
         {
-            func_004932c0((void*)kclump_word(item->object, 0x18), (KClumpCallback)kclump_alpha_callback, &found);
-            if ((item->flags == 0 || item->colorScale[0] == 1.0f) && found != 0)
+            resources = *(void**)((u8*)object + 0x18);
+            if (resources != NULL)
             {
-                kclump_render_item(item, 0x007cc1f0);
+                func_004932c0(resources, (KClumpCallback)kclump_alpha_callback, &found);
+                if (found == 0)
+                {
+                    sphere = func_004912b0(object);
+                    if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+                    {
+                        if (item->enabled == 1)
+                        {
+                            D_00960090(0xe, 0);
+                        }
+                        if ((item->flags == 0 || item->colorScale[0] == 1.0f) &&
+                            *(u32*)((u8*)&D_007CC1F8 + 8) == 1)
+                        {
+                            resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                            (*resourceCall)(object);
+                        }
+                        if (item->enabled == 1)
+                        {
+                            D_00960090(0xe, 1);
+                        }
+                    }
+                }
             }
         }
         item = item->next;
@@ -1130,34 +1200,63 @@ void func_001a8140(void* state, u32 mode)
     item = *(KClumpMaterialNode**)((u8*)state + 0x28);
     while (item != NULL)
     {
-        if (item->object != NULL)
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->flags != 1 || item->colorScale[0] >= 1.0f || item->colorScale[0] <= 0.0f)
+            if (item->enabled == 1)
             {
-                kclump_render_item(item, 0x007cc204);
+                D_00960090(0xe, 0);
             }
-            else if (*(u32*)0x007cc204 == 1)
+            if (item->flags == 1 && item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
             {
-                func_001a8920((u32*)0x008668f0, (const u32*)item);
+                if (*(u32*)((u8*)&D_007CC1F8 + 0x1c) == 1)
+                {
+                    func_001a8920((u32*)0x008668f0, (const u32*)item);
+                }
+            }
+            else if (*(u32*)((u8*)&D_007CC1F8 + 0x1c) == 1)
+            {
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
+            }
+            if (item->enabled == 1)
+            {
+                D_00960090(0xe, 1);
             }
         }
         item = item->next;
     }
+
 
     RpSkyRenderStateSet(2, (void*)0x48);
     RpSkyRenderStateSet(3, (void*)0x71801);
     item = *(KClumpMaterialNode**)((u8*)state + 0x24);
     while (item != NULL)
     {
-        if (item->object != NULL)
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
         {
-            if (item->flags != 1 || item->colorScale[0] >= 1.0f || item->colorScale[0] <= 0.0f)
+            if (item->enabled == 1)
             {
-                kclump_render_item(item, 0x007cc200);
+                D_00960090(0xe, 0);
             }
-            else if (*(u32*)0x007cc200 == 1)
+            if (item->flags == 1 && item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
             {
-                func_001a8920((u32*)0x008668f0, (const u32*)item);
+                if (*(u32*)((u8*)&D_007CC1F8 + 0x18) == 1)
+                {
+                    func_001a8920((u32*)0x008668f0, (const u32*)item);
+                }
+            }
+            else if (*(u32*)((u8*)&D_007CC1F8 + 0x18) == 1)
+            {
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
+            }
+            if (item->enabled == 1)
+            {
+                D_00960090(0xe, 1);
             }
         }
         item = item->next;
@@ -1166,10 +1265,12 @@ void func_001a8140(void* state, u32 mode)
     item = *(KClumpMaterialNode**)((u8*)state + 0x14);
     while (item != NULL)
     {
-        if (item->flags == 1 && item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f &&
-            *(u32*)0x007cc1f0 == 1)
+        if (item->flags == 1 && *(u32*)((u8*)&D_007CC1F8 + 8) == 1)
         {
-            func_001a8920((u32*)0x008668f0, (const u32*)item);
+            if (item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
+            {
+                func_001a8920((u32*)0x008668f0, (const u32*)item);
+            }
         }
         item = item->next;
     }
