@@ -2737,21 +2737,22 @@ s32 func_001d3830(KwlnTask* task)
     s32 result;
 
     result = -1;
-    switch (((s32*)task->workData)[3])
+    if (((s32*)task->workData)[3] != 0)
     {
-    case 0:
-        break;
-    default:
-        remaining = func_001d38a0(task);
-        if (remaining == 0)
+        switch (1)
         {
-            result = 2;
+        case 1:
+            remaining = func_001d38a0(task);
+            if (remaining == 0)
+            {
+                result = 2;
+            }
+            else if (remaining < 0x3c)
+            {
+                result = 1;
+            }
+            break;
         }
-        else if (remaining < 0x3c)
-        {
-            result = 1;
-        }
-        break;
     }
     return result;
 }
