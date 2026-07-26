@@ -235,6 +235,8 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,
 u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5);
  #pragma alias FUN_003a8710_typed FUN_003a8710
 extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,int param_5);
+#pragma alias FUN_003a8710_u8arg FUN_003a8710
+extern u64 FUN_003a8710_u8arg(float param_1,int param_2,int param_3,u8 param_4,int param_5);
 
 /* Region call-cast macros */
 #define FUN_003a2150(...) ((u32 (*)(...))FUN_003a2150)(__VA_ARGS__)
@@ -6007,8 +6009,7 @@ LAB_003a8400:
   iVar1 = (int)(fVar1 - 2.1474836e+09f);
   iVar1 = iVar1 | 0x80000000;
 LAB_003a8418:
-  iVar1 = iVar1 & 0xff;
-  FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
+  FUN_003a8710_u8arg(0,iVar2,iVar3,iVar1,0x10);
 
   return;
 }

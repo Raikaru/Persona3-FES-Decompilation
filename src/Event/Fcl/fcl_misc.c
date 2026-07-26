@@ -332,7 +332,7 @@ u64 FUN_003c8550(u8 *param_1)
   iVar5 = *(int *)(*(int *)(context + 0x18) + 4);
   if (iVar5 != 0) {
     puVar3 = *(u32 **)(iVar5 + 0x14);
-    if (puVar3[2] == 0) {
+    if ((void *)puVar3[2] == NULL) {
       if (puVar3[1] == 0) {
         FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xc8);
       } else {
@@ -363,12 +363,12 @@ u64 FUN_003c8550(u8 *param_1)
   for (iVar6 = 0; iVar6 < 0xb; iVar6 = iVar6 + 1) {
     uVar1 = *puVar3;
     if ((uVar1 & 4) != 0) {
-      if (puVar3[2] != 0) {
+      if ((void *)puVar3[2] != NULL) {
         lVar2 = FUN_00111f30();
         if (lVar2 != 0) {
           *puVar3 &= 0xfffffffb;
           *puVar3 &= 0xfffffffd;
-          FUN_001124b0(puVar3[2]);
+          FUN_001124b0((void *)puVar3[2]);
           puVar3[2] = 0;
         }
       } else {
