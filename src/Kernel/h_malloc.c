@@ -921,15 +921,14 @@ static void hmallocApplyInputTable(void)
         dst += 2;
     } while (copyCount > 0);
     i = 1;
-    resourceA = sHmallocResourceA;
-    word = *(s16*)((u8*)resourceA + 0x3c);
-    func_0016cfe0(i, word);
+    __asm__ volatile ("" : "+r"(i) : : "memory");
+    func_0016cfe0(i, *(s16*)((u8*)resourceA + 0x3c));
     i = 1;
-    word = *(s16*)((u8*)resourceA + 0x3e);
-    func_0016d090(i, word);
+    __asm__ volatile ("" : "+r"(i) : : "memory");
+    func_0016d090(i, *(s16*)((u8*)resourceA + 0x3e));
     i = 1;
-    word = *(s16*)((u8*)resourceA + 0x40);
-    func_0016d160(i, word);
+    __asm__ volatile ("" : "+r"(i) : : "memory");
+    func_0016d160(i, *(s16*)((u8*)resourceA + 0x40));
 
     for (i = 0; i < 0x100; i++)
     {

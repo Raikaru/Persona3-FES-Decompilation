@@ -577,29 +577,40 @@ void* func_001a70a0(void* object, void* data)
 {
     s32 state;
 
-    if (func_0048a2c0(*(void**)((u8*)object + 0x18)) != 0)
+    if (func_0048a2c0(*(void**)((u8*)object + 0x18)) == 0)
     {
-        state = func_0048a480(object);
-        if (state != 0 && state != 3)
-        {
-            if (state != 2)
-            {
-                if (state != 1)
-                {
-                    func_0048a3f0(object);
-                }
-            }
-            else
-            {
-                func_0048a3f0(object);
-            }
-        }
-        func_0048a2a0(object, data);
+        goto fail;
     }
-    else
+    state = func_0048a480(object);
+    if (state == 0)
     {
-        func_00466640(data);
+        goto normal;
     }
+    if (state == 3)
+    {
+        goto normal;
+    }
+    if (state == 2)
+    {
+        goto state2;
+    }
+    if (state == 1)
+    {
+        goto normal;
+    }
+    goto default_state;
+state2:
+    func_0048a3f0(object);
+    goto normal;
+default_state:
+    func_0048a3f0(object);
+    goto normal;
+normal:
+    func_0048a2a0(object, data);
+    goto done;
+fail:
+    func_00466640(data);
+done:
     return object;
 }
 
