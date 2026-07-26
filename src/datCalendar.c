@@ -927,11 +927,13 @@ KwlnTask* func_00181580(KwlnTask* clndTask, u32* specialAction)
 KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
 {
     CalendarTaskWork* work;
+    SiteibiEventTable* eventTable;
     SiteibiEvent* event;
     KwlnTask* actionTask;
 
     work = clndTask->workData;
-    event = &Comu_GetSiteibiEvtTable()->events[eventIndex];
+    eventTable = Comu_GetSiteibiEvtTable();
+    event = &eventTable->events[eventIndex];
     if (event->unk_07 == 0xff)
     {
         H_Dbprt_FmtLog("calendar: siteibi procedure %d", event->scrPrcdIdx);
@@ -952,8 +954,10 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
         }
     }
 
-    datSetDaysSkipTarget(clndGetDaysSinceStartFromDate(event->endMonth, event->endDay));
-    datSetTimeSkipTarget(event->endTime);
+    datSetDaysSkipTarget(clndGetDaysSinceStartFromDate(
+        eventTable->events[eventIndex].endMonth,
+        eventTable->events[eventIndex].endDay));
+    datSetTimeSkipTarget(eventTable->events[eventIndex].endTime);
     datSetSkipToTarget(true);
     return actionTask;
 }

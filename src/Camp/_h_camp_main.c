@@ -2221,6 +2221,9 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     register f32 inputY;
     volatile u64 copied;
     volatile CampMainPackedPosition local;
+    CampMainQuadPosition header;
+    CampMainQuadPosition row;
+    CampMainQuadPosition footer;
     CampMainSpriteNode* sprite;
     s32 i;
     s32 start;
@@ -2240,12 +2243,16 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
                  36.0f + *(((volatile f32*)&copied) + 1), alpha);
     for (i = 0; i < 5; i++) {
         local.coordinates.y = inputY + (f32)i * 64.0f + 49.0f;
+        header.x = local.coordinates.x;
+        header.y = local.coordinates.y;
+        header.z = alpha;
+        header.w = (f32)frame;
         sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
-        sprite->spriteScale = alpha;
-        sprite->x = local.coordinates.x;
-        sprite->y = local.coordinates.y + 24.0f;
+        sprite->spriteScale = header.z;
+        sprite->x = header.x;
+        sprite->y = header.y + 24.0f;
         sprite->rotation = 0x1000;
-        sprite->alpha = (u8)frame;
+        sprite->alpha = (u8)header.w;
         FUN_001127D0(sprite, 1);
         FUN_00115980(sprite);
     }
