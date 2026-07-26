@@ -4984,7 +4984,6 @@ void FUN_002db2a0(u32 param_1)
     index = param_1 & 0xffff;
     *(u16*)(iGpffffb6fc + 0xa04) |=
         (u16)(1u << index);
-
     if (index == 2)
     {
         if (datGetFlag(0x140) != 0)

@@ -4221,7 +4221,7 @@ distance_done:
     work.difference.z = work.frames[0].pos.z - work.scaled.z;
     halfDistance = param_1 / 3.0f;
     angle = halfDistance;
-    index = (u64)1;
+    index = (long)1;
     while ((s32)(index & 0xffff) < 4)
     {
         if (dot < 0.0f)

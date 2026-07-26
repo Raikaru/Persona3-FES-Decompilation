@@ -834,9 +834,10 @@ u32 func_001114b0(KwlnTask* task)
 void func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
-    register s32 value = 1;
+    register s32 value;
 
     work = (MaestroStreamWork*)task->workData;
+    value = 1;
     work->stopAtFrame = value;
     work->complete = 0;
 }
@@ -4165,7 +4166,7 @@ u32 func_001167f0(u64 param_1)
 void func_00116cf0(int param_1)
 {
     u8* work;
-    s32 i;
+    register s32 i;
     s32 j;
 
     work = *(u8**)(param_1 + 0x3c);
@@ -5548,12 +5549,11 @@ void* func_00117540(KwlnTask* task)
 // D_00833B70 pointer register-bank floor in the state-3-promote loop.
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_00119AA0 NONMATCHING
+// FUN_00119AA0
 void* func_00119aa0(KwlnTask* task)
 {
     MaestroCampSpriteSetupWork* work;
     u32 size;
-    void** table;
     s32 i;
     u32 ready;
 
@@ -5596,12 +5596,10 @@ void* func_00119aa0(KwlnTask* task)
         {
             {
                 s32 j = 0;
-                table = D_00833B70;
 
                 for (; j < 14; j++)
                 {
-                    *(void**)((u8*)table + j * 4) =
-                        *(void**)((u8*)work->resources + j * 4);
+                    D_00833B70[j] = work->resources[j];
                 }
             }
             work->state = 3;

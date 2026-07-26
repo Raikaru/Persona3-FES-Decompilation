@@ -54,11 +54,6 @@ extern u32 gp0xffffb7f8;
 extern u32 gp0xffffb7fc;
 extern u32 gp0xffffb800;
 extern u64 gp0xffffa7c8;
-typedef struct ItfMesFloatPair
-{
-  f32 x;
-  f32 y;
-} ItfMesFloatPair;
 extern s8 DAT_00959eb0[];
 extern code DAT_00960178;
 
