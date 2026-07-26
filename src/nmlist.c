@@ -651,8 +651,8 @@ u32 FUN_003c4e60(u64 param_1, int param_2)
 
 int *FUN_003c4e70(int *param_1)
 {
-  int *next;
   int *node;
+  int *next;
   int result;
 
   node = (int *)param_1[1];
