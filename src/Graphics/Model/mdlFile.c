@@ -9792,7 +9792,7 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
 void FUN_00326030(int param_1,int param_2)
 {
   int node;
-  u16 type;
+  volatile u16 type;
   u32 baseColor;
   u32 nodeColor;
   u32 color;
@@ -9819,10 +9819,8 @@ void FUN_00326030(int param_1,int param_2)
       PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
                 (*(u32 *)(*(int *)(node + 0x90) + 8), color);
     }
-    if (*(code *)((u8 *)PTR_LAB_0069be20_abs +
-                  ((u32)type * 0xc + (u32)type) * 4 + 0x30) != NULL) {
-      (*(code *)((u8 *)PTR_LAB_0069be20_abs +
-                 ((u32)type * 0xc + (u32)type) * 4 + 0x30))
+    if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
+      PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]
                 (*(u32 *)(*(int *)(node + 0x90) + 8));
     }
     node = *(int *)(node + 0xac);

@@ -797,13 +797,13 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   volatile float xMarker;
   volatile float yBase;
   volatile float xValue;
-  float yValue;
-  float xIcon;
-  float xRow;
-  float yValue2;
-  float yValue3;
-  float originX;
-  float originY;
+  volatile float yValue;
+  volatile float xIcon;
+  volatile float xRow;
+  volatile float yValue2;
+  volatile float yValue3;
+  volatile float originX;
+  volatile float originY;
   char textBuffer[256];
   
   originX = campPackedX(position);
