@@ -227,6 +227,8 @@ u64 FUN_003f1470(int param_1);
 void FUN_003f1520(int param_1);
 int FUN_003f15d0(int param_1,int param_2);
 int FUN_003f1690(u64 param_1);
+#pragma alias FUN_003f1690_i FUN_003f1690
+int FUN_003f1690_i(int param_1);
 int clndIsDateInRangeFromStart(s8 month, s8 day, u32 range);
 #pragma alias clndIsDateInRangeFromStart_long clndIsDateInRangeFromStart
 int clndIsDateInRangeFromStart_long(long month,long day,u32 range);
@@ -2143,6 +2145,7 @@ u16 FUN_003f1720(u32 param_1,u16 param_2)
   else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
 
     func_001828d0(param_1,auStack_20);
+    unaff_s0_lo = (u16)FUN_003f1690_i((int)auStack_20);
 
 
   }
