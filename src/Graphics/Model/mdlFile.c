@@ -2381,7 +2381,7 @@ u64 FUN_0031e420(short param_1,u32 param_2)
 
   
 
-  if (param_1 == 1) {
+  if ((u16)param_1 == 1) {
 
     if ((param_2 & 0xffff) < 2) {
 
@@ -4312,8 +4312,9 @@ void FUN_00320810(int *param_1)
   fVar5 = 0.0f;
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
-      if (*(int *)(iVar3 + uVar2 * 0x10 + 0xc) != 0) {
-        fVar4 = *(float *)(iVar3 + uVar2 * 0x10 + 4);
+      iVar1 = (u8 *)(iVar3 + uVar2 * 0x10);
+      if (*(int *)(iVar1 + 0xc) != 0) {
+        fVar4 = *(float *)(iVar1 + 4);
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
         }
