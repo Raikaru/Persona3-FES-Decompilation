@@ -2244,7 +2244,7 @@ void FUN_0016c2f0(void)
     s32* piVar1;
     u32 uVar2;
     u32 count;
-    s32 n;
+    u32 n;
     s32 scaled;
     u8* p;
     u32* output;
