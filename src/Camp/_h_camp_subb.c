@@ -1060,6 +1060,7 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
 
 {
   register void* parent;
+  CampPair origin;
   char textBuffer[256];
   char category;
   u16 value;
@@ -1089,7 +1090,6 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
   float yValue3;
   float originX;
   float originY;
-  CampPair origin;
   origin = position;
   originX = origin.x;
   originY = origin.y;
