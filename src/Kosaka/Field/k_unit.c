@@ -273,6 +273,8 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
     return model;
 }
 
+// Retail offsets 0x21c-0x464 expand the scenario dispatch; offsets 0x684-0xedc re-fetch each PC model cache field per case.
+// The remaining register coloring/layout differences are intentionally NONMATCHING.
 // FUN_001cd9a0 NONMATCHING
 void* func_001cd9a0(u32 charId)
 {
