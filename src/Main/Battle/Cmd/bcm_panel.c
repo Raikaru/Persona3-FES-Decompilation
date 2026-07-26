@@ -1778,7 +1778,12 @@ void FUN_002265D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(255.0f * stateAlpha * panelAlpha);
+    ratio = 255.0f * stateAlpha * panelAlpha;
+    if (ratio < 2147483648.0f) {
+        color[3] = (u8)((s32)ratio & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     for (i = 0; i < 3; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1e30, color);
     }
@@ -1822,15 +1827,25 @@ void FUN_002265D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)((f32)((s32)(30.0f + 225.0f * transAlpha) & 0xff) * 2.0f *
-                          stateAlpha * panelAlpha);
+    ratio = (f32)((s32)(30.0f + 225.0f * transAlpha) & 0xff) * 2.0f *
+            stateAlpha * panelAlpha;
+    if (ratio < 2147483648.0f) {
+        color[3] = (u8)((s32)ratio & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     for (j = 0; j < 2; ++j) {
         u8* slot = work + j * 0x200;
         FUN_0021d950(slot + 0x2230, color);
         FUN_0021d950(slot + 0x2330, color);
     }
 
-    color[3] = (u8)(u32)(255.0f * transAlpha);
+    ratio = 255.0f * transAlpha;
+    if (ratio < 2147483648.0f) {
+        color[3] = (u8)((s32)ratio & 0xff);
+    } else {
+        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
+    }
     for (j = 2; j < 6; ++j) {
         u8* slot = work + j * 0x200;
         FUN_0021d950(slot + 0x2230, color);
