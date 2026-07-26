@@ -92,6 +92,16 @@ extern const char D_00678BE8[];
 extern const char D_00678C88[];
 extern const char D_00678CA0[];
 extern const char D_00678CB8[];
+extern u8 D_0067F080[];
+extern u8 D_0067F100[];
+extern u8 D_0067F140[];
+extern u8 D_0067F180[];
+extern u8 D_0067F200[];
+extern u8 D_0067F240[];
+extern u8 D_0067F2C0[];
+extern u8 D_0067F300[];
+extern u8 D_0067F340[];
+extern u8 D_0067F380[];
 
 extern void* func_001a65c0(void* geometry, const char** name);
 extern void* func_001a6860(void* object, u32* context);
@@ -1944,71 +1954,114 @@ void func_001a9850(void)
     }
 }
 
-// FUN_001aa1b0 NONMATCHING
+// Retail offsets 0x000-0x730: scene/time/date dispatch and 13 audio-table branches; 0x734-0x73f is tail padding.
+// FUN_001aa1b0
 void func_001aa1b0(void)
 {
-    s32 major = gMtScene->fldMajorId;
-    s32 minor = gMtScene->fldMinorId;
-    u32 time = FUN_0016ef30();
+    if (((gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 1) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 3) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 4) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 7) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0xb) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0x14)) &&
+        (FUN_0016ef30() == 1 || FUN_0016ef30() == 3 || FUN_0016ef30() == 5))
+    {
+        func_0010a410(4, (const char*)D_0067F080);
+        return;
+    }
 
-    if (major == 6 && (minor == 1 || minor == 3 || minor == 4 || minor == 7 || minor == 0xb || minor == 0x14) &&
-        (time == 1 || time == 3 || time == 5))
+    if (((gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 2) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 5) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0x10)) &&
+        (FUN_0016ef30() == 5 || FUN_0016ef30() == 3) &&
+        FUN_0017e480(7, 0x12, 9, 0x14) == 1)
     {
-        func_0010a410(4, (const void*)0x67f080);
+        func_0010a410(4, (const char*)D_0067F100);
+        return;
     }
-    else if (major == 6 && (minor == 2 || minor == 5 || minor == 0x10) &&
-             (time == 5 || time == 3) && FUN_0017e480(7, 0x12, 9, 0x14) == 1)
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 &&
+        (FUN_0016ef30() == 4 || FUN_0016ef30() == 5 || FUN_0016ef30() == 6 || FUN_0016ef30() == 7) &&
+        FUN_0017e480(9, 0x12, 9, 0x12) == 1)
     {
-        func_0010a410(4, (const void*)0x67f100);
+        func_0010a410(4, (const char*)D_0067F200);
+        return;
     }
-    else if (major == 7 && minor == 1 && time >= 4 && time <= 7 && FUN_0017e480(9, 0x12, 9, 0x12) == 1)
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 &&
+        FUN_0016ef30() == 4 &&
+        FUN_0017e480(7, 0x12, 9, 0x14) == 1)
     {
-        func_0010a410(4, (const void*)0x67f200);
+        func_0010a410(4, (const char*)D_0067F100);
+        return;
     }
-    else if (major == 7 && minor == 1 && time == 7)
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 && FUN_0016ef30() == 7)
     {
-        func_0010a410(4, (const void*)0x67f240);
+        func_0010a410(4, (const char*)D_0067F240);
+        return;
     }
-    else if (major == 7 && minor == 1 && time == 1)
+
+    if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1 && FUN_0016ef30() == 1)
     {
-        func_0010a410(4, (const void*)0x67f180);
+        func_0010a410(4, (const char*)D_0067F180);
+        return;
     }
-    else if (((major == 7 && minor == 9) || (major == 9 && (minor == 1 || minor == 2 || minor == 7)) ||
-              (major == 0xc && minor == 1)) &&
-             (time == 5 || time == 4) && FUN_0017e480(7, 0x12, 9, 0x14) == 1)
+
+    if (((gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9) ||
+         (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 1) ||
+         (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 2) ||
+         (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 7) ||
+         (gMtScene->fldMajorId == 0xc && gMtScene->fldMinorId == 1)) &&
+        (FUN_0016ef30() == 5 || FUN_0016ef30() == 4) &&
+        FUN_0017e480(7, 0x12, 9, 0x14) == 1)
     {
-        func_0010a410(4, (const void*)0x67f100);
+        func_0010a410(4, (const char*)D_0067F100);
+        return;
     }
-    else if (((major == 6 && (minor == 2 || minor == 0x10)) || (major == 7 && minor == 9) ||
-              (major == 0xc && minor == 1)) &&
-             (time == 5 || time == 4 || time == 6 || time == 7) && FUN_0017e480(10, 0x10, 0xb, 0x19) == 1)
+
+    if (((gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 2) ||
+         (gMtScene->fldMajorId == 6 && gMtScene->fldMinorId == 0x10) ||
+         (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9) ||
+         (gMtScene->fldMajorId == 0xc && gMtScene->fldMinorId == 1)) &&
+        (FUN_0016ef30() == 5 || FUN_0016ef30() == 4 || FUN_0016ef30() == 6 || FUN_0016ef30() == 7) &&
+        FUN_0017e480(0xa, 0x10, 0xb, 0x19) == 1)
     {
-        func_0010a410(4, (const void*)0x67f140);
+        func_0010a410(4, (const char*)D_0067F140);
+        return;
     }
-    else if (major == 6 && FUN_0016f190(0xe60) == 1)
+
+    if (gMtScene->fldMajorId == 6 && FUN_0016f190(0xe60) == 1)
     {
-        func_0010a410(4, (const void*)0x67f240);
+        func_0010a410(4, (const char*)D_0067F240);
+        return;
     }
-    else if (major == 0x0e && minor == 1)
+
+    if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 1)
     {
-        func_0010a410(4, (const void*)0x67f340);
+        func_0010a410(4, (const char*)D_0067F340);
+        return;
     }
-    else if (major == 0x0e && minor == 5)
+
+    if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 5)
     {
-        func_0010a410(4, (const void*)0x67f300);
+        func_0010a410(4, (const char*)D_0067F300);
+        return;
     }
-    else if (major == 0x21 && minor == 1)
+
+    if (gMtScene->fldMajorId == 0x21 && gMtScene->fldMinorId == 1)
     {
-        func_0010a410(4, (const void*)0x67f2c0);
+        func_0010a410(4, (const char*)D_0067F2C0);
+        return;
     }
-    else if (major == 0x21)
+
+    if (gMtScene->fldMajorId == 0x21)
     {
-        func_0010a410(4, (const void*)0x67f380);
+        func_0010a410(4, (const char*)D_0067F380);
+        return;
     }
-    else
-    {
-        func_00109f60(4, 0);
-    }
+
+    func_00109f60(4, 0);
 }
 
 // FUN_001aa8f0 NONMATCHING
