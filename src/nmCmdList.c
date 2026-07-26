@@ -817,14 +817,15 @@ void FUN_003c6900(int param_1)
       *(u16 *)((int)puVar1 + 10) = 3;
     }
     uVar2 = *puVar1;
+    if ((uVar2 & 0x400000) != 0) {
       uVar2 = uVar2 & 0xfffffffb;
       *puVar1 = uVar2;
       uVar2 = uVar2 & 0xffbfffff;
       *puVar1 = uVar2;
       uVar2 = uVar2 & 0xffbfffff | 1;
       *puVar1 = uVar2;
-    }
   }
+}
 }
 #define FUN_003c6900(...) ((void (*)(...))FUN_003c6900)(__VA_ARGS__)
 #undef FUN_003c69d0
