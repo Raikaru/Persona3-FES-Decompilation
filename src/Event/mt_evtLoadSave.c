@@ -3441,6 +3441,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
   int iVar24;
 
   u8 auStack_2 [2];
+  MtEvtHalf4 half4;
 
   
 
@@ -3576,13 +3577,8 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
       uVar2 = *(u16 *)(iVar21 + 0x12);
 
-      *(u16 *)(iVar20 + 8) = *(u16 *)(iVar21 + 0xc);
-
-      *(u16 *)(iVar20 + 10) = uVar6;
-
-      *(u16 *)(iVar20 + 0xc) = uVar1;
-
-      *(u16 *)(iVar20 + 0xe) = uVar2;
+      half4 = *(MtEvtHalf4 *)(iVar21 + 0xc);
+      *(MtEvtHalf4 *)(iVar20 + 8) = half4;
 
       if (*(int *)(*(int *)(iVar24 + 0x84) + 0x14) == 4) {
 

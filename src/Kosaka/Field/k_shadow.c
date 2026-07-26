@@ -748,6 +748,16 @@ u32 func_0019ab80(f32 alpha,
         RwMatrixScale(projectionMatrix, &scale, rwCOMBINEPOSTCONCAT);
 
         translation.x = 0.5f;
+        translation.y = 0.5f;
+        translation.z = 0.0f;
+        RwMatrixTranslate(projectionMatrix, &translation, rwCOMBINEPOSTCONCAT);
+    }
+
+    work->depthAlpha = (s32)depthAlpha;
+    alpha *= 255.0f;
+    work->alpha = (u8)alpha;
+    work->flushedTriangles = 0;
+    work->vertexCount = 0;
     if (drawField == 0)
     {
         collisionData = (u8*)field->unk_160;
