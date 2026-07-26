@@ -125,13 +125,11 @@ void bsaMain0020fe20(BsaWork* work)
 }
 
 #pragma optimization_level 2
-#pragma optimization_level 3
 // FUN_0020FE30 NONMATCHING
 void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
 {
     u32* p;
     void* unit;
-    u32 calc;
     u32 table6;
     u32 table1;
     u32 table2;
@@ -142,6 +140,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     s32 i;
     s32 count;
     u32 flags;
+    s32 category;
     p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
@@ -157,8 +156,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     p[2] = unitId;
 
     unit = func_001ff430(unitId);
-    calc = *(u32*)((u8*)unit + 0xa2c);
-    enemyId = *(u16*)((u8*)calc + 2);
+    enemyId = *(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2);
     *(u16*)(p + 3) = enemyId;
     p[1] &= ~BSA_FLAG_BOSS;
     if (enemyId == 0x126)
@@ -207,20 +205,20 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         default: slotId = 0; K_ASSERT(0, 0xd9); break;
         }
         /* Retail 0x03dc-0x0478: reload calc flags and classify high-bit masks. */
-        flags = func_00306e80(
-            *(u32*)((u8*)unit + 0xa2c), slotId);
+        flags = func_00306e80(*(u32*)((u8*)unit + 0xa2c), slotId);
         if ((flags & 0x100000) != 0)
-            p[0x159c + i] = 1;
+            category = 1;
         else if ((flags & 0x200000) != 0)
-            p[0x159c + i] = 4;
+            category = 4;
         else if ((flags & 0x400000) != 0)
-            p[0x159c + i] = 3;
+            category = 3;
         else if ((flags & 0x800000) != 0)
-            p[0x159c + i] = 0;
+            category = 0;
         else if ((flags & 0x1000000) != 0)
-            p[0x159c + i] = 2;
+            category = 2;
         else
-            p[0x159c + i] = 5;
+            category = 5;
+        p[0x159c + i] = category;
     }
     /* Retail 0x0498-0x04b8: reload calc for the result and slot list. */
     p[0x17e8] = (u32)(s32)func_003082f0(
@@ -235,48 +233,37 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     }
     p[0xd] = count;
 
-    p[0x10] = func_0021cca0(table2, 0x1f);
-    func_0021d3b0(p + 0x10, p[0x10]);
-    p[0x510] = func_0021cca0(table2, 0x28);
-    func_0021d3b0(p + 0x510, p[0x510]);
-    p[0x550] = func_0021cca0(table2, 0x27);
-    func_0021d3b0(p + 0x550, p[0x550]);
-    p[0x12d0] = func_0021cca0(table2, 0x20);
-    func_0021d3b0(p + 0x12d0, p[0x12d0]);
-    p[0x1250] = func_0021cca0(table2, 0x31);
-    func_0021d3b0(p + 0x1250, p[0x1250]);
+    /* Retail 0x0504-0x0918: pass each image directly to its draw setup. */
+    func_0021d3b0(p + 0x10, func_0021cca0(table2, 0x1f));
+    func_0021d3b0(p + 0x510, func_0021cca0(table2, 0x28));
+    func_0021d3b0(p + 0x550, func_0021cca0(table2, 0x27));
+    func_0021d3b0(p + 0x12d0, func_0021cca0(table2, 0x20));
+    func_0021d3b0(p + 0x1250, func_0021cca0(table2, 0x31));
     if ((p[1] & BSA_FLAG_BOSS) == 0 && p[0x17e8] != 7)
-        p[0x17ec] = func_0021cca0(table2, p[0x17e8] + 0x16);
+        image = func_0021cca0(table2, p[0x17e8] + 0x16);
     else
-        p[0x17ec] = func_0021cca0(table2, 0x3c);
-    func_0021d3b0(p + 0x17ec, p[0x17ec]);
-    p[0x50] = func_0021cca0(table1, 0x47);
-    func_0021d3b0(p + 0x50, p[0x50]);
-    p[0x90] = func_0021cca0(table2, 0x30);
-    func_0021d3b0(p + 0x90, p[0x90]);
-    p[0xd0] = func_0021cca0(table1, 0x48);
-    func_0021d3b0(p + 0xd0, p[0xd0]);
-    p[0x110] = func_0021cca0(table2, 0x30);
-    func_0021d3b0(p + 0x110, p[0x110]);
-    p[0x150] = func_0021cca0(table2, 0x21);
-    func_0021d3b0(p + 0x150, p[0x150]);
-    p[0x190] = p[0x150];
-    func_0021e380(p + 0x190, p[0x190], 0);
-    p[0x1d0] = func_0021cca0(table2, 0x24);
-    func_0021d3b0(p + 0x1d0, p[0x1d0]);
-    p[0x210] = p[0x1d0];
-    func_0021e380(p + 0x210, p[0x1d0], 1);
-    p[0x250] = func_0021cca0(table2, 0x22);
-    func_0021d3b0(p + 0x250, p[0x250]);
-    p[0x290] = p[0x250];
-    func_0021e380(p + 0x290, p[0x250], 0);
+        image = func_0021cca0(table2, 0x3c);
+    func_0021d3b0(p + 0x17ec, image);
+    func_0021d3b0(p + 0x50, func_0021cca0(table1, 0x47));
+    func_0021d3b0(p + 0x90, func_0021cca0(table2, 0x30));
+    func_0021d3b0(p + 0xd0, func_0021cca0(table1, 0x48));
+    func_0021d3b0(p + 0x110, func_0021cca0(table2, 0x30));
+    image = func_0021cca0(table2, 0x21);
+    func_0021d3b0(p + 0x150, image);
+    func_0021e380(p + 0x190, image, 0);
+    image = func_0021cca0(table2, 0x24);
+    func_0021d3b0(p + 0x1d0, image);
+    func_0021e380(p + 0x210, image, 1);
+    image = func_0021cca0(table2, 0x22);
+    func_0021d3b0(p + 0x250, image);
+    func_0021e380(p + 0x290, image, 0);
     for (i = 0; i < 9; i++) {
-        image = func_0021cca0(table2, 0x26);
-        func_0021d3b0(p + i * 0x40 + 0x2d0, image);
+        func_0021d3b0(p + i * 0x40 + 0x2d0,
+                      func_0021cca0(table2, 0x26));
     }
     for (i = 0; i < 9; i++) {
-        image = func_0021cca0(table2, i + 0x16);
-        func_0021d3b0(p + i * 0x40 + 0x610, image);
+        func_0021d3b0(p + i * 0x40 + 0x610,
+                      func_0021cca0(table2, i + 0x16));
     }
     for (i = 0; i < 8; i++) {
         image = func_0021cca0(table2, 0x23);
@@ -293,64 +280,58 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = 0x2b;
         else
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = func_0017d2e0() + 0x20;
-        image = func_0021cca0(table6,
-                              *(s16*)((u8*)p + i * 2 + 0xa6b8));
-        func_0021d3b0(p + i * 0x40 + 0x1050, image);
+        func_0021d3b0(
+            p + i * 0x40 + 0x1050,
+            func_0021cca0(table6,
+                          *(s16*)((u8*)p + i * 2 + 0xa6b8)));
     }
-    p[0x590] = bsaMain00215830(
-        DAT_007ce410[enemyId * 0x3e + 2]);
-    func_0021d3b0(p + 0x590, p[0x590]);
-    p[0x5d0] = func_0021cca0(table2, 0x2f);
-    func_0021d3b0(p + 0x5d0, p[0x5d0]);
+    func_0021d3b0(
+        p + 0x590,
+        bsaMain00215830(DAT_007ce410[enemyId * 0x3e + 2]));
+    func_0021d3b0(p + 0x5d0, func_0021cca0(table2, 0x2f));
 
+    /* Retail 0x096c-0x0c30: image handles feed draw setup directly. */
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
         func_00238980(p + 0x1314, 2, p[0x1310], 1);
     } else {
-        p[0x182c] = func_0021cca0(table2, 0x32);
-        func_0021d3b0(p + 0x182c, p[0x182c]);
-        p[0x186c] = func_0021cca0(table2, 0x33);
-        func_0021d3b0(p + 0x186c, p[0x186c]);
-        func_0021e380(p + 0x18ac, p[0x186c], 1);
-        p[0x18ec] = func_0021cca0(table2, 0x36);
-        func_0021d3b0(p + 0x18ec, p[0x18ec]);
+        func_0021d3b0(p + 0x182c, func_0021cca0(table2, 0x32));
+        image = func_0021cca0(table2, 0x33);
+        func_0021d3b0(p + 0x186c, image);
+        func_0021e380(p + 0x18ac, image, 1);
+        func_0021d3b0(p + 0x18ec, func_0021cca0(table2, 0x36));
     }
     if ((p[1] & BSA_FLAG_STATUS) == 0) {
         func_00238980(p + 0x1398, 4, p[0x1394], 1);
     } else {
-        p[0x192c] = func_0021cca0(table2, 0x32);
-        func_0021d3b0(p + 0x192c, p[0x192c]);
-        p[0x196c] = func_0021cca0(table2, 0x34);
-        func_0021d3b0(p + 0x196c, p[0x196c]);
-        func_0021e380(p + 0x19ac, p[0x196c], 1);
-        p[0x19ec] = func_0021cca0(table2, 0x36);
-        func_0021d3b0(p + 0x19ec, p[0x19ec]);
+        func_0021d3b0(p + 0x192c, func_0021cca0(table2, 0x32));
+        image = func_0021cca0(table2, 0x34);
+        func_0021d3b0(p + 0x196c, image);
+        func_0021e380(p + 0x19ac, image, 1);
+        func_0021d3b0(p + 0x19ec, func_0021cca0(table2, 0x36));
     }
     if ((p[1] & BSA_FLAG_PERSONA) == 0) {
         func_00238980(p + 0x149c, 4, p[0x1498], 1);
     } else {
-        p[0x1a2c] = func_0021cca0(table2, 0x32);
-        func_0021d3b0(p + 0x1a2c, p[0x1a2c]);
-        p[0x1a6c] = func_0021cca0(table2, 0x34);
-        func_0021d3b0(p + 0x1a6c, p[0x1a6c]);
-        func_0021e380(p + 0x1aac, p[0x1a6c], 1);
-        p[0x1aec] = func_0021cca0(table2, 0x36);
-        func_0021d3b0(p + 0x1aec, p[0x1aec]);
+        func_0021d3b0(p + 0x1a2c, func_0021cca0(table2, 0x32));
+        image = func_0021cca0(table2, 0x34);
+        func_0021d3b0(p + 0x1a6c, image);
+        func_0021e380(p + 0x1aac, image, 1);
+        func_0021d3b0(p + 0x1aec, func_0021cca0(table2, 0x36));
     }
     if ((p[1] & BSA_FLAG_AILMENT) == 0) {
         for (i = 0; i < 9; i++) {
             if (p[0x159c + i] < 5) {
-                image = func_0021cca0(table2, p[0x159c + i] + 0x29);
-                func_0021d3b0(p + i * 0x40 + 0x15a8, image);
+                func_0021d3b0(
+                    p + i * 0x40 + 0x15a8,
+                    func_0021cca0(table2, p[0x159c + i] + 0x29));
             }
         }
     } else {
-        p[0x1b2c] = func_0021cca0(table2, 0x32);
-        func_0021d3b0(p + 0x1b2c, p[0x1b2c]);
-        p[0x1b6c] = func_0021cca0(table2, 0x35);
-        func_0021d3b0(p + 0x1b6c, p[0x1b6c]);
-        func_0021e380(p + 0x1bac, p[0x1b6c], 1);
-        p[0x1bec] = func_0021cca0(table2, 0x36);
-        func_0021d3b0(p + 0x1bec, p[0x1bec]);
+        func_0021d3b0(p + 0x1b2c, func_0021cca0(table2, 0x32));
+        image = func_0021cca0(table2, 0x35);
+        func_0021d3b0(p + 0x1b6c, image);
+        func_0021e380(p + 0x1bac, image, 1);
+        func_0021d3b0(p + 0x1bec, func_0021cca0(table2, 0x36));
     }
     if (p[0] == 1) {
         if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
