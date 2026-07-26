@@ -2027,7 +2027,7 @@ int FUN_002d8f70(int param_1)
 }
 
 // Retail VA range: 0x002d9aa0-0x002d9b1f (128 bytes)
-// FUN_002d9aa0 NONMATCHING
+// FUN_002d9aa0
 s32 FUN_002d9aa0(BtlAction* action, u32 flags)
 {
     if (action->unit->genus != 0)
@@ -2050,7 +2050,7 @@ s32 FUN_002d9aa0(BtlAction* action, u32 flags)
 }
 
 // Retail VA range: 0x002d9b20-0x002d9bdf (192 bytes)
-// FUN_002d9b20 NONMATCHING
+// FUN_002d9b20
 s32 FUN_002d9b20(BtlAction* action)
 {
     if (action->unit->genus != 0)
@@ -2085,7 +2085,7 @@ s32 FUN_002d9b20(BtlAction* action)
 }
 
 // Retail VA range: 0x002d9be0-0x002d9c9f (192 bytes)
-// FUN_002d9be0 NONMATCHING
+// FUN_002d9be0
 s32 FUN_002d9be0(BtlAction* action)
 {
     if (action->unit->genus != 0)
@@ -2120,7 +2120,7 @@ s32 FUN_002d9be0(BtlAction* action)
 }
 
 // Retail VA range: 0x002d9ca0-0x002d9d5f (192 bytes)
-// FUN_002d9ca0 NONMATCHING
+// FUN_002d9ca0
 s32 FUN_002d9ca0(BtlAction* action)
 {
     if (action->unit->genus != 0)
@@ -2155,7 +2155,7 @@ s32 FUN_002d9ca0(BtlAction* action)
 }
 
 // Retail VA range: 0x002d9d60-0x002d9d6f (16 bytes)
-// FUN_002d9d60 NONMATCHING
+// FUN_002d9d60
 s32 FUN_002d9d60(BtlAction* action)
 {
     return -1;
