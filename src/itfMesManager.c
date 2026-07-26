@@ -5986,9 +5986,9 @@ void FUN_003a8350(int param_1)
   float fVar1;
   float fVar2;
   float fVar3;
-  int iVar1;
   int iVar2;
   int iVar3;
+  int iVar1;
 
   uStack_18 = gp0xffffa7c8;
   fVar2 = (float)(int)*(short *)(param_1 + 0x1e0);
