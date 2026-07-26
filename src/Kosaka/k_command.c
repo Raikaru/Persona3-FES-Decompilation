@@ -1350,14 +1350,10 @@ u32 FUN_001C4080()
 
     index = scrGetIntPara(0);
     result = 0;
-    valid = 0;
     offset = ((index << 3) - index) << 6;
-    if (*(volatile u32*)(D_008717E8 + offset) != 0 &&
-        *(volatile u32*)(D_008717F4 + offset) != 0)
-    {
-        valid = 1;
-    }
-    if (valid > 0)
+    valid = (*(volatile u32*)(D_008717E8 + offset) != 0 &&
+             *(volatile u32*)(D_008717F4 + offset) != 0);
+    if (valid != 0)
     {
         result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
     }

@@ -109,7 +109,7 @@ extern u32 uGpffffb940;
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003afa40(void);
-void FUN_003afad0(u32 param_1,long param_2,long param_3);
+void FUN_003afad0(u32 param_1,int param_2,int param_3);
 #pragma alias FUN_003afad0_typed FUN_003afad0
 extern void FUN_003afad0_typed(u32 param_1,u64 param_2,u32 param_3);
 void FUN_003afc30(u32 param_1);
@@ -252,7 +252,7 @@ void FUN_003afa40(void)
 // FUN_003AFAD0 NONMATCHING
 
 
-void FUN_003afad0(u32 param_1,long param_2,long param_3)
+void FUN_003afad0(u32 param_1,int param_2,int param_3)
 
 
 
@@ -2858,7 +2858,7 @@ void FUN_003b2020(long param_1,int param_2)
 
   u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
   u8 *pbVar8;
 

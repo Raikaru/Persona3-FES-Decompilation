@@ -1056,6 +1056,9 @@ void FUN_0038a260();
 #pragma alias FUN_0038a260_f FUN_0038a260
 extern void FUN_0038a260_f(int param_1,int param_2,f32 param_3,int param_4,
                             u32 param_5);
+#pragma alias FUN_0038a260_f6 FUN_0038a260
+extern void FUN_0038a260_f6(int param_1,int param_2,f32 param_3,int param_4,
+                            void *param_5,u32 param_6);
 #pragma alias FUN_00530da0_evt FUN_00530da0
 extern u32 FUN_00530da0_evt(f32 param_1);
 #pragma alias FUN_0038a260_evt FUN_0038a260
@@ -15438,6 +15441,7 @@ void FUN_00381110(int param_1,int param_2,int param_3,int param_4)
 {
 
   int iVar1;
+  int iVar2;
   f32 uVar2;
 
 
@@ -15450,21 +15454,23 @@ void FUN_00381110(int param_1,int param_2,int param_3,int param_4)
   if (param_3 != 0) goto FUN_00381110_done;
 
 FUN_00381110_case0:
+  iVar2 = param_2 * 0xc;
   uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-  FUN_0038a260_f32_5(uVar2,param_1 * 0xc,param_2 * 0xc,0,(void *)0x69fe10);
+  FUN_0038a260_f(param_1 * 0xc,iVar2,uVar2,0,(u32)0x69fe10);
 
   uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-  FUN_0038a260_f32_6(uVar2,(param_1 + 0x18) * 0xc,param_2 * 0xc,iVar1,
-                     &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
+  FUN_0038a260_f6((param_1 + 0x18) * 0xc,iVar2,uVar2,iVar1,
+                  &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
   goto FUN_00381110_done;
 
 FUN_00381110_case1:
+  iVar2 = param_2 * 0xc;
   uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-  FUN_0038a260_f32_5(uVar2,param_1 * 0xc,param_2 * 0xc,0,&gp0xffffa648);
+  FUN_0038a260_f(param_1 * 0xc,iVar2,uVar2,0,(u32)&gp0xffffa648);
 
   uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-  FUN_0038a260_f32_6(uVar2,(param_1 + 0x18) * 0xc,param_2 * 0xc,iVar1,
-                     &gp0xffffa3b8,*(u32 *)(param_4 + 0x19c));
+  FUN_0038a260_f6((param_1 + 0x18) * 0xc,iVar2,uVar2,iVar1,
+                  &gp0xffffa3b8,*(u32 *)(param_4 + 0x19c));
 
 FUN_00381110_done:
 
