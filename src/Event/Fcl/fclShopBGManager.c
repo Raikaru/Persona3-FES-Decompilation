@@ -4806,14 +4806,14 @@ void FUN_004154e0(u64 param_1,u64 param_2,int param_3,int param_4,
 
   fVar2 = (float)param_6 * 0.5f;
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,param_4,
-                    ((fVar2 < 2147483648.0f)
-                     ? (s32)fVar2
-                     : ((s32)(fVar2 - 2147483648.0f) | 0x80000000)) & 0xff,
+                    ((2147483648.0f <= fVar2)
+                     ? ((s32)(fVar2 - 2147483648.0f) | 0x80000000)
+                     : (s32)fVar2) & 0xff,
                     0x5a,0,0,0);
   FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0xd8,
-                    ((fVar2 < 2147483648.0f)
-                     ? (s32)fVar2
-                     : ((s32)(fVar2 - 2147483648.0f) | 0x80000000)) & 0xff,
+                    ((2147483648.0f <= fVar2)
+                     ? ((s32)(fVar2 - 2147483648.0f) | 0x80000000)
+                     : (s32)fVar2) & 0xff,
                     0x5b,0,0,0);
 }
 // FUN_00415650 NONMATCHING

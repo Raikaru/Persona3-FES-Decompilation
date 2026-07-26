@@ -480,6 +480,12 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     f32 denominator;
     f32 fraction;
     f32 dot;
+    f32 debugDeltaX;
+    f32 debugDeltaY;
+    f32 debugDeltaZ;
+    f32 debugProjectionX;
+    f32 debugProjectionY;
+    f32 debugProjectionZ;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
     if (work->playerResrc == NULL)
@@ -592,24 +598,37 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 projection.x = target.x - point0.x;
                 projection.y = target.y - point0.y;
                 projection.z = target.z - point0.z;
-                denominator = delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
+                debugDeltaX = delta.x;
+                debugDeltaY = delta.y;
+                debugDeltaZ = delta.z;
+                debugProjectionX = projection.x;
+                debugProjectionY = projection.y;
+                debugProjectionZ = projection.z;
+                denominator = debugDeltaX * debugDeltaX + debugDeltaY * debugDeltaY + debugDeltaZ * debugDeltaZ;
                 if (denominator != 0.0f)
                 {
-                    fraction = (projection.x * delta.x + projection.y * delta.y + projection.z * delta.z) /
-                               denominator;
-                    projection.x = point0.x + delta.x * fraction - point0.x;
-                    projection.y = point0.y + delta.y * fraction - point0.y;
-                    projection.z = point0.z + delta.z * fraction - point0.z;
-                    amount = sqrtf(projection.x * projection.x + projection.y * projection.y + projection.z * projection.z);
+                    fraction = (debugProjectionX * debugDeltaX + debugProjectionY * debugDeltaY +
+                                debugProjectionZ * debugDeltaZ) / denominator;
+                    debugProjectionX = point0.x + debugDeltaX * fraction - point0.x;
+                    debugProjectionY = point0.y + debugDeltaY * fraction - point0.y;
+                    debugProjectionZ = point0.z + debugDeltaZ * fraction - point0.z;
+                    projection.x = debugProjectionX;
+                    projection.y = debugProjectionY;
+                    projection.z = debugProjectionZ;
+                    amount = sqrtf(debugProjectionX * debugProjectionX +
+                                   debugProjectionY * debugProjectionY +
+                                   debugProjectionZ * debugProjectionZ);
                     fraction = amount / sqrtf(denominator);
-                    dot = delta.x * projection.x + delta.y * projection.y + delta.z * projection.z;
+                    dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
+                          debugDeltaZ * debugProjectionZ;
                     printf(D_00683A48,
                            func_00530da0(amount),
                            func_00530da0(amount),
                            func_00530da0(fraction),
                            func_00530da0(dot));
                     asm volatile("" : "+m"(dot));
-                    dot = delta.x * projection.x + delta.y * projection.y + delta.z * projection.z;
+                    dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
+                          debugDeltaZ * debugProjectionZ;
                     if (dot < 0.0f)
                     {
                         fraction = 0.0f;

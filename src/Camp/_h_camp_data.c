@@ -968,23 +968,15 @@ void FUN_001685e0(KwlnTask* task, s32 command)
 
     work = (u32*)task->workData;
     state = (s32)work[2];
-    if (state == 4) {
-        work[1] = 10;
-        work[0] = 7;
-        work[2] = (u32)command;
-    }
-    else if (state == 2) {
-        if (command == 3) {
-            work[1] = 10;
-            work[0] = 6;
-        }
-        else if ((command != 2) && (command == 1)) {
-            work[3] = 2;
+    switch (state) {
+    case 0:
+        if (command == 1) {
+            work[3] = 0;
             work[0] = 3;
+            work[2] = 1;
         }
-        work[2] = (u32)command;
-    }
-    else if (state == 1) {
+        break;
+    case 1:
         if (command == 4) {
             work[3] = 3;
             work[0] = 3;
@@ -998,11 +990,25 @@ void FUN_001685e0(KwlnTask* task, s32 command)
             work[0] = 3;
         }
         work[2] = (u32)command;
-    }
-    else if ((state == 0) && (command == 1)) {
-        work[3] = 0;
-        work[0] = 3;
-        work[2] = 1;
+        break;
+    case 2:
+        if (command == 3) {
+            work[1] = 10;
+            work[0] = 6;
+        }
+        else if ((command != 2) && (command == 1)) {
+            work[3] = 2;
+            work[0] = 3;
+        }
+        work[2] = (u32)command;
+        break;
+    case 4:
+        work[1] = 10;
+        work[0] = 7;
+        work[2] = (u32)command;
+        break;
+    default:
+        break;
     }
 }
 
