@@ -22861,7 +22861,7 @@ void FUN_00332990(u32 *param_1,int param_2)
 
 
 
-// FUN_00332A30 NONMATCHING
+// FUN_00332A30
 
 
 void FUN_00332a30(int *param_1,u16 param_2,int *param_3)
@@ -57942,13 +57942,13 @@ u32 FUN_00356fd0(float ignored,u64 param_1,u16 param_2,u32 param_3,u32 param_4)
 #pragma opt_rebuildconditionals off
 u32 FUN_003570b0(int param_1)
 {
-  int *piVar1;
-
   u32 *puVar2;
 
   u32 uVar3;
 
   u32 iVar4;
+
+  int *piVar1;
 
   piVar1 = *(int **)(param_1 + 0x30);
   puVar2 = (u32 *)(*DAT_00960178_abs)(8,0x40000);
@@ -57957,7 +57957,7 @@ u32 FUN_003570b0(int param_1)
   if (*piVar1 != 0) {
     uVar3 = FUN_0034bf10(*piVar1);
     *puVar2 = uVar3;
-    uVar3 = FUN_00318fc0_u32(uVar3);
+    uVar3 = (u32)FUN_00318fc0(uVar3);
     if (uVar3 >> 1 != 0) {
       iVar4 = FUN_00357fd0(0);
       *(short *)(puVar2 + 1) = (short)(iVar4 % (int)(uVar3 >> 1) << 1);
