@@ -5754,7 +5754,7 @@ void FUN_003658b0(u32 param_1,int param_2)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u32 uVar4;
 

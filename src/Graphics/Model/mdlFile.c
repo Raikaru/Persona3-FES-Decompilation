@@ -49841,8 +49841,8 @@ void FUN_0034d670(u64 param_1)
 
 u64 FUN_0034d6f0(int param_1)
 {
-  u32 uVar2;
   int iVar1;
+  u32 uVar2;
   int iVar3;
   u32 *puVar4;
   u32 uVar5;

@@ -31,6 +31,8 @@ typedef struct FrFontState {
 
 extern u32 DAT_006a2370;
 extern const char DAT_006a2730[];
+extern const char DAT_006a27a0[];
+extern const char DAT_006a27d0[];
 extern u8 DAT_006a2830[];
 extern u32 DAT_007cd4f8;
 #pragma alias DAT_007cd4f8_abs DAT_007cd4f8
@@ -285,7 +287,7 @@ void FUN_003afad0(u32 param_1,int param_2,int param_3)
 
   if (8 < param_1) {
 
-    FUN_0035ac50(0x6a27a0);
+    FUN_0035ac50(DAT_006a27a0);
 
   }
 
@@ -327,7 +329,7 @@ void FUN_003afad0(u32 param_1,int param_2,int param_3)
 
   *(int *)(&DAT_0095ad08 + iVar1) = (int)piVar3 + iVar2;
 
-  FUN_005225a8(0x6a27d0,(int)piVar3 + iVar2,iVar2,
+  FUN_005225a8(DAT_006a27d0,(int)piVar3 + iVar2,iVar2,
 
                *(u16 *)((&DAT_0095acf4)[param_1 * 8] + 0xe));
 
