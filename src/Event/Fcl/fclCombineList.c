@@ -1920,7 +1920,7 @@ FclList* fclCombineList003de290(void* input, s32 state)
     return work;
 }
 
-// FUN_003de470 NONMATCHING
+// FUN_003de470
 s32 fclCombineList003de470(FclList* work)
 {
     s32 selection_state;

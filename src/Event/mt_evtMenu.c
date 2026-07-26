@@ -6752,7 +6752,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
       uVar6 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
       FUN_0038a260_f6(param_1 * 0xc,iVar6,uVar6,0xe,
-                      &gp0xffffa068,*(volatile u32 *)(PTR_s_START_0069e100_abs + cVar1));
+                      &gp0xffffa068,*(u32 *)(PTR_s_START_0069e100_abs + cVar1));
 
       iVar2 = (int)DAT_0069e180_char[*(char *)((int)psVar3 + iVar4 + 2)];
       param_1 = param_1 + iVar2;
