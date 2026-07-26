@@ -3226,7 +3226,7 @@ void* FUN_001311d0(KwlnTask* task)
         selected = *(s32*)(work + 0x4);
         count = *(s16*)(work + 0x4a);
         if (h_campRequestRootMenuTransition(DAT_007cdf50, 5) != 0) {
-            campStatusInitializePersonaList(primaryRecords, selected, count);
+            campStatusClosePersonaList(primaryRecords, selected, count);
             campStatusInitializeDetail(detailRecords, 1);
             *(u32*)(work + 0x8) = 0;
             *(u32*)(work + 0x4c) = 0;
@@ -3241,6 +3241,7 @@ void* FUN_001311d0(KwlnTask* task)
         s32 selected;
         s32 previous;
         s32 count;
+        s32 changed;
         u32 input;
 
         detailRecords = *(void**)(work + 0x68);
@@ -3251,46 +3252,42 @@ void* FUN_001311d0(KwlnTask* task)
             *(s32*)(work + 0xc) = selected;
             previous = selected;
             input = (u32)DAT_007e094e;
+            changed = 0;
             if ((input & 0x40) != 0) {
                 FUN_0010a4e0(0, 0, 0, 1);
                 *(u32*)work = 14;
             } else if ((input & 0x20) != 0) {
                 FUN_0010a4e0(0, 0, 0, 2);
                 *(u32*)work = 9;
-            } else if ((input & 0x4) != 0) {
-                s32 oldSelection;
-
-                oldSelection = selected;
-                if (selected != 0) {
-                    FUN_0010a4e0(0, 0, 0, 0);
-                    selected--;
-                } else if (count != 1) {
-                    FUN_0010a4e0(0, 0, 0, 0);
-                    selected = count - 1;
-                }
-                if (selected != oldSelection) {
-                    *(s32*)(work + 0x4) = selected;
-                    if (selected != *(s32*)(work + 0xc)) {
-                        campStatusAnimateDetailSelection(detailRecords);
+            } else {
+                if ((input & 0x4) != 0) {
+                    if (selected != 0) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        selected--;
+                        changed = 1;
+                    } else if (count != 1) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        selected = count - 1;
+                        changed = 1;
+                    }
+                } else if ((input & 0x8) != 0) {
+                    if (selected != count - 1) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        selected++;
+                        changed = 1;
+                    } else if (count != 1) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        selected = 0;
+                        changed = 1;
                     }
                 }
-            } else if ((input & 0x8) != 0) {
-                s32 oldSelection;
-
-                oldSelection = selected;
-                if (selected != count - 1) {
-                    FUN_0010a4e0(0, 0, 0, 0);
-                    selected++;
-                } else if (count != 1) {
-                    FUN_0010a4e0(0, 0, 0, 0);
-                    selected = 0;
-                }
-                if (selected != oldSelection) {
-                    *(s32*)(work + 0x4) = selected;
-                    if (selected != *(s32*)(work + 0xc)) {
-                        campStatusAnimateDetailSelection(detailRecords);
-                    }
-                }
+            }
+            if (changed != 0) {
+                *(s32*)(work + 0x4) = selected;
+            }
+            *(u32*)(work + 0x4c) = 0;
+            if (selected != *(s32*)(work + 0xc)) {
+                campStatusAnimateDetailSelection(detailRecords);
             }
         }
         campStatusDrawDetail(work, selected, previous);
@@ -3316,7 +3313,9 @@ void* FUN_001311d0(KwlnTask* task)
             *(u32*)(work + 0x4c) = 0;
             *(u32*)work = 10;
         }
-        campStatusDrawDetailDiscardResult(work, selected, previous);
+        campStatusUpdatePersonaChild(work, selected);
+        FUN_00134900(*(void**)(work + 0x68), work + 0x58, work + 0x32,
+                     (s16)selected, (s16)previous);
         break;
     }
     case 10:
@@ -3421,15 +3420,9 @@ void* FUN_001311d0(KwlnTask* task)
                 campStatusAnimateRecord(primaryRecords, i + 14, 1, start,
                                         position, 0, 6);
             }
-            FUN_003c7700();
-            *(u32*)work = 4;
-        } else if (result == 1) {
-            FUN_003c7700();
-            *(u32*)work = 4;
-        } else {
-            FUN_003c7700();
-            *(u32*)work = 4;
         }
+        FUN_003c7700();
+        *(u32*)work = 4;
         break;
     }
     case 13:
