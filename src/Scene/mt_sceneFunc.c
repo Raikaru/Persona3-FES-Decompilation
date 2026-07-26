@@ -539,7 +539,8 @@ void FUN_003bbb90(u64 param_1,u32 *param_2);
 void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
 void FUN_003bbd40(float param_1,char *param_2,float *param_3);
 float FUN_003bbed0(float param_1,float param_2,u32 param_3);
-void FUN_003bbfd0(u32 param_1,u32 param_2,u64 param_3,u64 param_4,  u64 param_5,float *param_6,float *param_7);
+void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
+                  float *param_5,float *param_6,float *param_7);
 float FUN_003bc0e0(char *param_1);
 float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 *param_5);
 /* Retail call: FUN_003b8ff0 + 0x160. */

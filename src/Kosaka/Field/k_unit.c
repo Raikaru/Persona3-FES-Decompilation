@@ -1912,7 +1912,14 @@ void func_001d1360(void)
 // FUN_001d1640 NONMATCHING
 void func_001d1640(FldUnit* unit, s32 destroyModel)
 {
-    if (unit->genusBase != NULL && unit->resrc != NULL)
+    u32 valid;
+
+    valid = unit->genusBase != NULL;
+    if (valid != 0)
+    {
+        valid = unit->resrc != NULL;
+    }
+    if (valid != 0)
     {
         unit->matBeforeBtl = *mdlGetMatrix(unit->mdl);
         func_003b7090(unit->resrc->base.resTypeId);

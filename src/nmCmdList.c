@@ -2389,7 +2389,7 @@ void FUN_003c7c90(int param_1)
 
 {
 
-  long lVar1;
+  u8 *lVar1;
 
   u32 *puVar2;
 
@@ -2401,27 +2401,27 @@ void FUN_003c7c90(int param_1)
 
     puVar2 = (u32 *)lVar1;
 
-    if (param_1 == 0) {
-
-      FUN_003a3e10(*puVar2,0x800000);
-
-      FUN_003a3e10(*puVar2,0x100000);
-
-      *(u8 *)((int)puVar2 + 5) = 1;
-
-    }
-
-    else {
+    if (param_1 != 0) {
 
       FUN_003a3e90(*puVar2,0x800000);
 
-      FUN_003a3e90(*puVar2,0x100000);
+      FUN_003a3e10(*puVar2,0x100000);
 
       *(u8 *)((int)puVar2 + 5) = 0;
 
       FUN_003a25f0(*puVar2,1);
 
       *(u8 *)(puVar2 + 1) = 1;
+
+    }
+
+    else {
+
+      FUN_003a3e10(*puVar2,0x800000);
+
+      FUN_003a3e10(*puVar2,0x100000);
+
+      *(u8 *)((int)puVar2 + 5) = 1;
 
     }
 
