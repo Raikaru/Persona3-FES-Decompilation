@@ -974,7 +974,7 @@ LAB_003be5a0:
 }
 #define FUN_003be2a0(...) ((u32 (*)(...))FUN_003be2a0)(__VA_ARGS__)
 #undef FUN_003be8e0
-// FUN_003BE8E0 NONMATCHING
+// FUN_003BE8E0
 u32 FUN_003be8e0(long param_1,u64 param_2)
 {
   s32 var_7;
@@ -1003,9 +1003,11 @@ u32 FUN_003be8e0(long param_1,u64 param_2)
         lVar2 = FUN_00172660(param_1);
         if (lVar2 == 1) {
           lVar2 = FUN_003be1c0_typed(param_1,cVar1 + 1);
-          var_7 = 1;
           if (lVar2 == 1) {
             var_7 = 2;
+          }
+          else {
+            var_7 = 1;
           }
         }
         else {
