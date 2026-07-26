@@ -1520,8 +1520,8 @@ void func_0010cdd0(void)
     const char* path;
     u32 size[1];
     s32 copySize;
-    s32 i;
-    s32 pathIndex;
+    s16 i;
+    s16 pathIndex;
 
     for (i = 0; i < HSFD_DECODE_SLOTS; i++)
     {
@@ -1673,26 +1673,44 @@ void func_0010cdd0(void)
                 void* outputData;
                 void* outputBuf;
                 void* sourceData;
+                s32* inputSizeField;
+                s32* intermediateSizeField;
+                s32* outputSizeField;
+                void** inputField;
+                void** intermediateField;
+                void** outputField;
+                s32* queueHandleField;
+                s32* decodeHandleField;
+                void** auxField;
                 s32 chunkSize;
                 s32 remaining;
                 s32 queueHandle;
                 s32 decodeHandle;
                 s32 auxHandle;
 
-                input = slot->input;
-                inputSize = slot->inputSize;
-                intermediate = slot->intermediate;
-                intermediateSize = slot->intermediateSize;
-                output = slot->output;
-                outputSize = slot->outputSize;
+                inputField = &slot->input;
+                inputSizeField = (s32*)&slot->inputSize;
+                intermediateField = &slot->intermediate;
+                intermediateSizeField = (s32*)&slot->intermediateSize;
+                outputField = &slot->output;
+                outputSizeField = (s32*)&slot->outputSize;
+                queueHandleField = &slot->queueHandle;
+                decodeHandleField = &slot->decodeHandle;
+                auxField = &slot->aux;
+                input = *inputField;
+                inputSize = *inputSizeField;
+                intermediate = *intermediateField;
+                intermediateSize = *intermediateSizeField;
+                output = *outputField;
+                outputSize = *outputSizeField;
                 resourceData = slot->resource;
 
                 copySize = inputSize;
                 inputBuf = (void*)func_0050B690(0, copySize, 0);
                 if (inputBuf == NULL) { K_Assert("h_sndcom.c", 0x1C8); }
                 func_0010cce0(inputBuf, resourceData, copySize);
-                slot->input = inputBuf;
-                slot->inputSize = copySize;
+                *inputField = inputBuf;
+                *inputSizeField = copySize;
 
                 remaining = intermediateSize;
                 auxBuf = (void*)func_0050B690(0, 0x10000, 0);
@@ -1720,15 +1738,20 @@ void func_0010cdd0(void)
                 outputBuf = (void*)func_0050B690(0, copySize, 0);
                 if (outputBuf == NULL) { K_Assert("h_sndcom.c", 0x1FB); }
                 func_0010cce0(outputBuf, sourceData, copySize);
-                slot->output = outputBuf;
+                *outputField = outputBuf;
 
-                queueHandle = func_0051DC70(3, -1, (s32)slot->input, slot->inputSize, (s32)slot->intermediate, slot->intermediateSize);
-                slot->queueHandle = queueHandle;
+                queueHandle = func_0051DC70(3, -1, (s32)*inputField,
+                                            *inputSizeField,
+                                            (s32)*intermediateField,
+                                            *intermediateSizeField);
+                *queueHandleField = queueHandle;
                 decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
-                slot->decodeHandle = decodeHandle;
-                auxHandle = func_0051DDF0(0, -1, (s32)slot->output, slot->outputSize);
-                slot->aux = (void*)(s32)auxHandle;
-                slot->completion = (void*)(s32)func_0051DDF0(5, slot->decodeHandle, (s32)slot->aux);
+                *decodeHandleField = decodeHandle;
+                auxHandle = func_0051DDF0(0, -1, (s32)*outputField,
+                                          *outputSizeField);
+                *auxField = (void*)(s32)auxHandle;
+                slot->completion = (void*)(s32)func_0051DDF0(
+                    5, *decodeHandleField, (s32)*auxField);
                 slot->status = 1;
                 slot->state = 1;
                 break;

@@ -4918,6 +4918,18 @@ void FUN_002dae30(u64 param_1)
                 {
                     switch (bit)
                     {
+                    case 2:
+                    {
+                        BtlAction* action = *(BtlAction**)(btl + 0x148);
+                        if (FUN_0029adf0(action) == 0)
+                        {
+                            action->unk_16 = 0x13;
+                            FUN_0029a380(action);
+                            stop = 1;
+                            *(u16*)(btl + 0xa04) &= (u16)~2;
+                        }
+                        break;
+                    }
                     case 1:
                         if ((*(u16*)(btl + 0xa06) & 1) == 0 &&
                             FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
@@ -4941,18 +4953,6 @@ void FUN_002dae30(u64 param_1)
                             }
                         }
                         break;
-                    case 2:
-                    {
-                        BtlAction* action = *(BtlAction**)(btl + 0x148);
-                        if (FUN_0029adf0(action) == 0)
-                        {
-                            action->unk_16 = 0x13;
-                            FUN_0029a380(action);
-                            stop = 1;
-                            *(u16*)(btl + 0xa04) &= (u16)~2;
-                        }
-                        break;
-                    }
                     case 4:
                     {
                         BtlAction* action = *(BtlAction**)(btl + 0x148);

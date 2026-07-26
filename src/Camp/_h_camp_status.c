@@ -2749,38 +2749,44 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
     CampVec2 drawPosition;
     CampVec2 panelPosition;
     CampVec2 footerPosition;
+    CampVec2 labelsPosition;
+    CampVec2 valuesPosition;
+    CampVec2 equipmentPosition;
     char text[0x100];
     void* glyph;
 
     drawPosition = position;
-    panelPosition = drawPosition;
+    labelsPosition = drawPosition;
+    valuesPosition = drawPosition;
+    equipmentPosition = drawPosition;
+    panelPosition = labelsPosition;
     panelPosition.x += 30.0f;
     panelPosition.y += 100.0f;
-    footerPosition = drawPosition;
+    footerPosition = equipmentPosition;
     footerPosition.x += 287.0f;
     footerPosition.y += 280.0f;
     for (icon = 0; icon < 9; icon++) {
         h_campStatusRenderStatIcon(drawPosition, scale, icon, alpha);
     }
-    campStatusDrawSpriteCall(parentTop, DAT_00833B74, 0, (u8)alpha,
+    h_campStatusDrawStatLabels(labelsPosition, scale, persona, alpha);
                              34.0f, 415.0f, 100.0f);
     campStatusDrawSpriteCall(parentTop, DAT_00833B74, 10, (u8)alpha,
                              50.0f, 415.0f, 100.0f);
     campStatusDrawSpriteCall(parentTop, DAT_00833B74, 11, (u8)alpha,
                              212.0f, 415.0f, 100.0f);
-    campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 1, (u8)alpha,
+    h_campStatusDrawStatValues(valuesPosition, scale, NULL, persona, alpha);
                              561.0f, 415.0f, 100.0f);
     campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 5, (u8)alpha,
                              361.0f, 415.0f, 100.0f);
     h_campStatusDrawStatLabels(drawPosition, scale, persona, alpha);
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x12, (u8)alpha,
                              panelPosition.x, panelPosition.y, scale);
-    panelPosition.y += 59.0f;
+        rowBaseY = valuesPosition.y + 129.0f + (f32)rowOffset;
     campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x13, (u8)alpha,
                              panelPosition.x, panelPosition.y, scale);
-    h_campStatusDrawStatValues(drawPosition, scale, NULL, persona, alpha);
-    for (row = 0; row < 5; row++) {
-        rowOffset = row * 19;
+        rowLeftX = valuesPosition.x + 104.0f;
+        rowRightX = valuesPosition.x + 333.0f;
+        glyphX = valuesPosition.x + 108.0f;
         rowBaseY = drawPosition.y + 129.0f + (f32)rowOffset;
         rowY = rowBaseY - 25.0f;
         rowLeftX = drawPosition.x + 104.0f;
@@ -2809,7 +2815,7 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
         campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x15, (u8)alpha,
                                  rowRightX, rowY, scale);
         glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
-        *((f32*)glyph + 11) = scale;
+    h_campStatusDrawEquipment(equipmentPosition, scale, NULL, persona, alpha);
         *((f32*)glyph + 4) = glyphX;
         *((f32*)glyph + 5) = glyphY;
         *((u8*)glyph + 0x18) = (u8)alpha;

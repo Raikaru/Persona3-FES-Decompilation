@@ -4111,6 +4111,13 @@ extern void FUN_00352c50(u32 param_1, u32 param_2, u32 param_3);
 extern u64 FUN_00357fd0();
 extern u64 FUN_00395170();
 extern u64 FUN_004be1e0();
+#pragma alias FUN_004be1e0_btlVoice_typed FUN_004be1e0
+extern void FUN_004be1e0_btlVoice_typed(RwV3d* out, const RwV3d* basis,
+                                         s32 count, const RtQuat* source);
+#pragma alias FUN_004c6b20_btlVoice_typed FUN_004c6b20
+extern void FUN_004c6b20_btlVoice_typed(f32* out, const f32* in);
+#pragma alias FUN_00280050_btlVoice_typed FUN_00280050
+extern void FUN_00280050_btlVoice_typed(BtlUnit* unit, RwV3d* position);
 extern u64 FUN_004be310();
 extern u64 FUN_004c31b0(float param_1, void* param_2, u32 param_3, u32 param_4);
 extern float FUN_004c69f0(void* dst, const void* src);
@@ -5458,18 +5465,7 @@ LAB_002e4af0:
       fStack_60 = fVar6;
     }
     FUN_002a4690(auStack_74,&fStack_80,&fStack_64,D_00697880);
-    fVar6 = (float)FUN_002d1f30(auStack_74,auStack_58);
-    if ((fVar6 <= DAT_007cad58) || (!bVar3)) {
-      if (fStack_7c < 25.0f) {
-        fStack_7c = 25.0f;
-      }
-      if (fStack_60 < 25.0f) {
-        fStack_60 = 25.0f;
-      }
-      FUN_002a2290((BtlCamera *)param_1, &fStack_80, &fStack_64, 1);
-      FUN_002a3110((BtlCamera *)param_1, bVar3 ? 2.5f : 1.25f);
-    }
-    else {
+    if ((fVar6 > DAT_007cad58) && bVar3) {
       if ((*(char *)(iVar2 + 0xa2) == '\x01') &&
          (lVar4 = FUN_0030c3a0(*(u32 *)(iVar2 + 0xa2c)), lVar4 != 0)) {
         FUN_002b6070_btlVoice_typed((BtlCamera *)param_1,2.25f,2.0f);
@@ -5480,7 +5476,15 @@ LAB_002e4af0:
       FUN_002a3e80(0.0f,(u8 *)(uintptr_t)*(u32 *)(iVar5 + 0xe0),0,0,8);
       *(u32 *)(DAT_007ce3ec + 0xb80) = 1;
     }
-  }
+    if (fStack_7c < 25.0f) {
+      fStack_7c = 25.0f;
+    }
+    if (fStack_60 < 25.0f) {
+      fStack_60 = 25.0f;
+    }
+    FUN_002a2290((BtlCamera *)param_1, &fStack_80, &fStack_64, 1);
+    FUN_002a3110((BtlCamera *)param_1, bVar3 ? 2.5f : 1.25f);
+    }
   return;
 }
 
@@ -5598,7 +5602,7 @@ void func_002e5060(BtlCamera* camera)
   }
 
   unit = action->unit;
-  FUN_0027ffb0(unit, &position);
+  FUN_0027ffb0_btlVoice_typed(unit, (RwV3d *)&position);
   result = FUN_0030c3a0(unit->datUnit);
   if ((result != 0) && (usePreset != 0)) {
     charId = unit->charId;
@@ -5615,10 +5619,10 @@ void func_002e5060(BtlCamera* camera)
     result = FUN_002d6290(action);
     if (result == 0) {
       targetId = FUN_002d1600((u8 *)action + 0x38);
-      FUN_00280870(targetId, 1, &end, 0, 0, 1);
+      FUN_00280870_btlVoice_typed(targetId, 1, &end, 0, 0, 1);
     } else {
       targetUnit = action->target.targetedActions[0]->unit;
-      FUN_0027ffb0(targetUnit, &end);
+      FUN_0027ffb0_btlVoice_typed(targetUnit, (RwV3d *)&end);
     }
     FUN_002d1de0(&startRot, &position, &end);
     FUN_004be1e0(&direction, &D_006978A0, 1, &startRot);
@@ -5847,8 +5851,8 @@ LAB_002e59dc:
     return;
   }
   FUN_002a4470((f32 *)&camPos,(f32 *)&param_1->pos);
-  FUN_00280050(iVar8,&pos1);
-  FUN_00280050(iVar7,&pos2);
+  FUN_00280050_btlVoice_typed((BtlUnit *)iVar8,&pos1);
+  FUN_00280050_btlVoice_typed((BtlUnit *)iVar7,&pos2);
   fVar13 = *(float *)(iVar8 + 0x90) * *(float *)(iVar8 + 0x2c);
   fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5f + pos1.y + 0.0f;
   fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + pos2.y + 0.0f;
@@ -5862,7 +5866,7 @@ LAB_002e59dc:
   target.z = dir.z * fVar9 + pos2.z;
   fStack_d8 = param_1->pos.x - target.x;
   fStack_dc = param_1->pos.z - target.z;
-  FUN_004c6b20(&fStack_d8,&fStack_d8);
+  FUN_004c6b20_btlVoice_typed(&fStack_d8,&fStack_d8);
   fStack_b0 = dir.z;
   fStack_ac = -dir.x;
   fVar9 = dir.z * fStack_d8 + fStack_ac * fStack_dc;
@@ -5897,7 +5901,7 @@ LAB_002e59dc:
     fVar11 = 2.5f;
   }
   FUN_002a4690(&quat,&camOff,&target,D_00697880);
-  FUN_004be1e0(&dir,D_006978A0,1,&quat);
+  FUN_004be1e0_btlVoice_typed(&dir,D_006978A0,1,&quat);
   fStack_c0 = target.x;
   fStack_bc = target.z;
   fStack_b8 = camOff.x;
@@ -5915,7 +5919,7 @@ LAB_002e59dc:
     fVar9 = fVar10 * (float)FUN_0052e930(DAT_007cad60 * param_1->fovRad * 0.5f) * 0.21875f * 1.25f;
     normTmp[0] = dir.x;
     normTmp[1] = dir.z;
-    FUN_004c6b20(normTmp,normTmp);
+    FUN_004c6b20_btlVoice_typed(normTmp,normTmp);
     camOff.x = normTmp[1] * fVar9 + camOff.x + 0.0f;
     camOff.z = (camOff.z + 0.0f) - normTmp[0] * fVar9;
   }
@@ -5928,7 +5932,7 @@ LAB_002e59dc:
   fVar9 = (float)FUN_002d1f30(&quatCopy,&quat);
   if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
     quatCopy = quat;
-    FUN_004be1e0(&dir,D_006978A0,1,&quat);
+    FUN_004be1e0_btlVoice_typed(&dir,D_006978A0,1,&quat);
     fVar10 = fVar10 + 200.0f;
     dir.x = dir.x * fVar10;
     dir.y = dir.y * fVar10;
@@ -6794,8 +6798,8 @@ void func_002e7db0(BtlCamera* param_1)
 
   iVar1 = *(int *)(*(int *)((int)param_1 + 0xe0) + 0x30);
   iVar2 = *(int *)(*(int *)(*(int *)((int)param_1 + 0xe0) + 0x38) + 0x30);
-  FUN_0027ffb0(iVar1,&sphere1);
-  FUN_0027ffb0(iVar2,&sphere2);
+  FUN_0027ffb0_btlVoice_typed((BtlUnit *)iVar1,&sphere1);
+  FUN_0027ffb0_btlVoice_typed((BtlUnit *)iVar2,&sphere2);
   fVar5 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c);
   if (450.0f <= fVar5 * 0.5f + sphere1.y + 0.0f) {
     sphere1.y = (sphere1.y + 0.0f) - DAT_007cad20 * fVar5;
@@ -6806,7 +6810,7 @@ void func_002e7db0(BtlCamera* param_1)
   fVar5 = (float)FUN_004c69f0(&dir,&dir);
   fStack_98 = param_1->pos.x - sphere1.x;
   fStack_9c = param_1->pos.z - sphere1.z;
-  FUN_004c6b20(&fStack_98,&fStack_98);
+  FUN_004c6b20_btlVoice_typed(&fStack_98,&fStack_98);
   fVar5 = DAT_007cad88 * fVar5;
   target.x = dir.x * fVar5 + sphere2.x;
   target.y = dir.y * fVar5 + sphere2.y;
@@ -6833,7 +6837,7 @@ void func_002e7db0(BtlCamera* param_1)
   dirCopy.y = dir.y;
   dirCopy.z = dir.z;
   FUN_002a4690(&quat,&camOff,&target,D_00697880);
-  FUN_004be1e0(&dir,D_006978A0,1,&quat);
+  FUN_004be1e0_btlVoice_typed(&dir,D_006978A0,1,&quat);
   fStack_a0 = target.x;
   fStack_a4 = target.z;
   fStack_a8 = camOff.x;
