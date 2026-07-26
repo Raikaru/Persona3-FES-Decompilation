@@ -1741,6 +1741,20 @@ void func_0010cdd0(void)
                 slot->status = 1;
                 slot->state = 1;
                 break;
+            }
+        }
+    }
+}
+
+// FUN_0010D6F0 NONMATCHING
+void func_0010d6f0(s32 index, s16 fileIndex)
+{
+    HSfdDecodeSlot* slot;
+
+    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
+        return;
+
+    slot = &sSfdDecodeSlots[index];
     if (slot->state == 1)
     {
         slot->fileIndex = fileIndex;
