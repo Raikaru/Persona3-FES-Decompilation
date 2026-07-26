@@ -421,7 +421,7 @@ void FUN_00402800(int param_1);
 void FUN_00402c80(int param_1);
 s16 FUN_004030b0(u16 param_1);
 s16 FUN_004030f0(u16 param_1);
-void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,u16 param_7);
+void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,s16 param_7);
 void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,s16 param_7);
 void FUN_004032f0(u64 param_1);
 void FUN_00403340(u16 param_1);
@@ -16018,14 +16018,14 @@ s16 FUN_004030f0(u16 param_1)
 
 
 void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4,
-
-                 u64 param_5,u64 param_6,u16 param_7)
+                 u64 param_5,u64 param_6,s16 param_7)
 
 
 
 {
 
-  u16 uVar1;
+  s16 sVar1;
+  float fVar2;
 
   
 
@@ -16035,7 +16035,9 @@ void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4,
   datSetFlag(0x1424,0);
 
 
-  FUN_003c7e20((float)param_3,param_1,param_2,param_4,param_5,param_6,6,uVar1);
+  fVar2 = (float)param_3;
+  sVar1 = FUN_00403760(param_7);
+  FUN_003c7e20_f32_u64(fVar2,param_1,param_2,param_4,param_5,param_6,6,sVar1);
 
   return;
 
