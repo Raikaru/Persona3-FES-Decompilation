@@ -1627,7 +1627,6 @@ u64 FUN_003962c0(int param_1)
 
       *(u32 *)(iVar4 + 0x680) = 0;
 
-    }
 skip_680:
 
     FUN_00395950_typed(lVar1);
