@@ -628,10 +628,15 @@ alpha_done:
     for (i = 0; i < *(u32*)(base + 0x6070); i++) {
         u8* record = records + i * 0x420;
         kind = *(u32*)record;
-        if (kind == 1) goto loop_kind1;
-        if (kind == 2) goto loop_kind02;
-        if (kind == 0) goto loop_kind02;
-        goto loop_next;
+        switch (kind) {
+        case 0:
+        case 2:
+            goto loop_kind02;
+        case 1:
+            goto loop_kind1;
+        default:
+            goto loop_next;
+        }
     loop_kind02:
         handle = (u32)*(void**)(record + 8);
         layout[0] = 51.0f + *(f32*)(pos + 0);

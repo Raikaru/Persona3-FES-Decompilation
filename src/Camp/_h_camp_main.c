@@ -2177,22 +2177,27 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
         }
     }
 
-    x = inputX;
-    y = inputY;
+    footer.x = inputX;
+    footer.y = inputY;
+    footer.z = alpha - 1.0f;
+    footer.w = 0.0f;
     FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
-                 x + 600.0f, y + 308.0f, alpha - 1.0f);
+                 footer.x + 600.0f, footer.y + 308.0f, footer.z);
     FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
-                 x + 600.0f, y + 402.0f, alpha - 1.0f);
+                 footer.x + 600.0f, footer.y + 402.0f, footer.z);
     fade = 0;
     if (count > 5) {
         fade = offset * 59 / (count - 5);
     }
     FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
-                 x + 597.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
+                 footer.x + 597.0f, footer.y + 311.0f + (f32)fade,
+                 footer.z);
     FUN_001159f0(NULL, DAT_00833B48, 8, 0,
-                 x + 598.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
+                 footer.x + 598.0f, footer.y + 318.0f + (f32)fade,
+                 footer.z);
     FUN_001159f0(NULL, DAT_00833B48, 9, 0,
-                 x + 598.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
+                 footer.x + 598.0f, footer.y + 331.0f + (f32)fade,
+                 footer.z);
 
     sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
     sprite->spriteScale = alpha;
