@@ -29,6 +29,12 @@ extern f32 FUN_004c69f0_typed(RwV3d *out, const RwV3d *in);
 #pragma alias FUN_004c69f0_typed FUN_004c69f0
 extern void FUN_004c3760_typed(RwMatrix *out, const RwMatrix *in, u32 mode);
 #pragma alias FUN_004c3760_typed FUN_004c3760
+#pragma alias FUN_0034fe30_fcl FUN_0034fe30
+extern void FUN_0034fe30_fcl(s32, f32, f32, f32);
+#pragma alias RwMatrixRotate_fcl RwMatrixRotate
+extern void *RwMatrixRotate_fcl(void *, const void *, f32, s32);
+#pragma alias FUN_004bdde0_fcl FUN_004bdde0
+extern void FUN_004bdde0_fcl(f32, void *, const void *, s32);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -1334,7 +1340,7 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   if (cVar1 == '@') {
     if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
-      FUN_004cb750(uVar5,&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
+      FUN_004cb750_typed(uVar5,&fStack_10,(u32)auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
     }
   }
   else if (cVar1 == '\x06') {
@@ -1482,8 +1488,8 @@ u32 FUN_00418880(int param_1,int *param_2)
   else if (cVar1 == '\x02') {
   }
   else if (cVar1 == '\x01') {
-    FUN_0034fe30((float)(*(int *)(iVar3 + 0xc) / 0xffff),(float)(*(int *)(iVar3 + 0x10) / 0xffff),
-                 (float)(*(int *)(iVar3 + 0x14) / 0xffff),*(u32 *)(iVar2 + 8));
+    FUN_0034fe30_fcl((float)(*(int *)(iVar3 + 0xc) / 0xffff),(float)(*(int *)(iVar3 + 0x10) / 0xffff),
+                     (float)(*(int *)(iVar3 + 0x14) / 0xffff),*(u32 *)(iVar2 + 8));
   }
 
   return 1;
@@ -2083,7 +2089,7 @@ u32 FUN_00419790(int param_1,int param_2)
 
   fStack_8 = fStack_8 + fVar4;
 
-  RwMatrixRotate((void*)auStack_70,(void*)&uStack_20,*(float*)&(u32){0x43340000},0);
+  RwMatrixRotate_fcl((void*)auStack_70,(void*)&uStack_20,*(float*)&(u32){0x43340000},0);
 
   RwMatrixTranslate((void*)auStack_70,(void*)&uStack_10,2);
 
@@ -2540,7 +2546,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
         fStack_28 = fStack_28 + fVar9;
 
-        FUN_004bdde0(fGpffffad78,iVar2 + 0x10,&uStack_20,0);
+        FUN_004bdde0_fcl(fGpffffad78,iVar2 + 0x10,&uStack_20,0);
 
         sflRes0020d650(iVar2,&fStack_30);
 

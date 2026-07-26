@@ -4886,7 +4886,9 @@ void FUN_002b2940(void *arg0)
     radius = RwV3dLength(&scratch.direction);
     distance = radius +
                distance / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
-    distance = (distance <= 0.0f) ? 0.0f : distance;
+    if (distance <= 0.0f)
+        goto distance_clamp;
+distance_join:
     FUN_004be1e0(&scratch.direction, &D_006978A0, 1,
                  (u8*)&scratch.transform);
     scratch.direction.x = scratch.direction.x * distance;
@@ -4902,6 +4904,10 @@ void FUN_002b2940(void *arg0)
     FUN_002a3e80(400.0f, (u8*)camera->action, (u8*)&scratch.output,
                  (u8*)&scratch.center, 3);
     FUN_002a2170(camera, (f32*)&scratch.output);
+    return;
+distance_clamp:
+    distance = 0.0f;
+    goto distance_join;
 }
 
 // FUN_002b2ea0

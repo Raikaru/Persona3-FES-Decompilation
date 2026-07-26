@@ -4981,10 +4981,12 @@ u32 FUN_00309250(u16 *param_1,u8 param_2)
   if (param_2 == '\x01') {
     goto return_one;
   }
-  if (param_2 == '\0') {
+  switch (param_2) {
+  case '\0':
     goto return_zero;
+  default:
+    goto assert_113d;
   }
-  goto assert_113d;
 
 return_zero:
   return 10;
