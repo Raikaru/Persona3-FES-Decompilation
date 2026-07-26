@@ -46333,6 +46333,7 @@ void FUN_0034a280(int param_1)
   int iVar2;
 
   float *pfVar3;
+  int iVar4;
 
 
   
@@ -46341,8 +46342,6 @@ void FUN_0034a280(int param_1)
 
   iVar2 = (*DAT_00960178_abs)(iVar1 * 0x34,0x40000);
 
-  {
-    int iVar4;
   for (iVar4 = 0; iVar4 < iVar1; iVar4 = iVar4 + 1) {
 
     pfVar3 = (float *)(iVar2 + iVar4 * 0x34);
@@ -46357,7 +46356,6 @@ void FUN_0034a280(int param_1)
 
     *pfVar3 = -(*(float *)(param_1 + 200) * (float)iVar4);
 
-  }
   }
 
   return;
