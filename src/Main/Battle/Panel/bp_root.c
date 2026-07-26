@@ -4136,24 +4136,47 @@ void FUN_001ff890(void)
 {
     u32* work;
     u32 flags;
-    u32 panelFlags;
     void* message;
 
-    work = (u32*)panelWork();
-    panelFlags = work[0x77a0 / 4];
-    printf("battle panel request mask %08x\n", panelFlags);
-    flags = work[0];
-    if (flags & 0x20) printf(" battle panel cancel\n");
-    if (flags & 0x400) printf(" battle panel command\n");
-    if (flags & 0x800) printf(" battle panel item\n");
-    if (flags & 0x1000) printf(" battle panel skill\n");
-    if (flags & 0x2000) printf(" battle panel target\n");
-    if (flags & 0x4000) printf(" battle panel support\n");
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = (u32*)gBcmWork;
+    if (*(u32*)((u8*)work + 0x77a0) & 1)
+        FUN_005225a8((const char*)0x685058);
+    else
+        FUN_005225a8((const char*)0x685068);
+    if (*(u32*)((u8*)work + 0x77a0) & 2)
+        FUN_005225a8((const char*)0x685078);
+    else
+        FUN_005225a8((const char*)0x685088);
+    if (*(u32*)((u8*)work + 0x77a0) & 4)
+        FUN_005225a8((const char*)0x685098);
+    else
+        FUN_005225a8((const char*)0x6850a8);
+    if (*(u32*)((u8*)work + 0x77a0) & 8)
+        FUN_005225a8((const char*)0x6850b8);
+    else
+        FUN_005225a8((const char*)0x6850c8);
+    if (*(u32*)((u8*)work + 0x77a0) & 0x10)
+        FUN_005225a8((const char*)0x6850d8);
+    else
+        FUN_005225a8((const char*)0x6850e8);
+    if (*(u32*)((u8*)work + 0x77a0) & 0x20)
+        FUN_005225a8((const char*)0x6850f8);
+    else
+        FUN_005225a8((const char*)0x685108);
+    if (*(u32*)((u8*)work + 0x77a0) & 0x40)
+        FUN_005225a8((const char*)0x685120);
+    else
+        FUN_005225a8((const char*)0x685140);
     work[0] &= ~0x21u;
     work[0] &= ~2u;
     work[0] &= ~0x20000000u;
     work[0] &= ~0x02000000u;
     work[0] &= ~0x00040000u;
+    work[0] &= ~0x80u;
+    work[0] &= ~0x100u;
+    work[0] &= ~0x200u;
+    work[0] &= ~0x400u;
     work[1] = 0;
     work[3] = 0;
     if (datGetFlag(0x186))
