@@ -1180,15 +1180,15 @@ u32 FUN_003a2ef0(u32 param_1)
 
   FUN_003a6900_typed(puVar3 + 5,1);
 
-  FUN_003a6930(puVar3 + 9,1);
+  FUN_003a6930_typed(puVar3 + 9,1);
 
-  FUN_003a6980(puVar3 + 0x10);
+  FUN_003a6980_typed(puVar3 + 0x10);
 
-  FUN_003a69d0(puVar3 + 0x2a);
+  FUN_003a69d0_typed(puVar3 + 0x2a);
 
-  FUN_003a6a10(puVar3 + 0x35);
+  FUN_003a6a10_typed((int)(puVar3 + 0x35));
 
-  FUN_003a6a40(puVar3 + 0x75,0);
+  FUN_003a6a40_typed((u8 *)(puVar3 + 0x75),0);
 
   return uVar2;
 
