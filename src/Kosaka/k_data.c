@@ -398,8 +398,10 @@ u32 func_001b81f0(HCdvd* request)
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
             1, ((volatile HCdvd*)request)->fileSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) = memory;
-        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1158, void*),
-               request->fileMemory, request->fileSize);
+        data = K_Field_Get();
+        cachedSize = request->fileSize;
+        memcpy(FIELD_DATA_AT(data, 0x1158, void*),
+               request->fileMemory, cachedSize);
         data = FIELD_DATA_AT(K_Field_Get(), 0x1158, void*);
         FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) =
             *(u32*)data;

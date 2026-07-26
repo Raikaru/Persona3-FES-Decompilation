@@ -4199,13 +4199,13 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     dot = work.pair[0] * work.pair[2] + work.pair[1] * work.pair[3];
     if (dot < 0.0f)
         goto negative_distance;
-    distance = distance * fGpffff8094;
+    distance = fGpffff8094 * distance;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;
     goto distance_done;
 negative_distance:
-    distance = distance * 0.5f;
+    distance = 0.5f * distance;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;

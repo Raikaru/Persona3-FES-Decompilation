@@ -1458,7 +1458,7 @@ void FUN_00449d10(int param_1);
 void FUN_00449d60(u64 param_1);
 void FUN_00449ed0(void);
 void FUN_00449fa0(void);
-void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,u8 param_6);
+void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
 void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5 ,u8 param_6);
 void FUN_0044a630(int param_1);
 void FUN_0044a790(u32 *param_1);
@@ -2876,7 +2876,7 @@ void FUN_00449d10(int param_1);
 void FUN_00449d60(u64 param_1);
 void FUN_00449ed0(void);
 void FUN_00449fa0(void);
-void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,u8 param_6);
+void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
 void FUN_0044a330(float param_1,float param_2,float param_3,float param_4,int param_5 ,u8 param_6);
 void FUN_0044a630(int param_1);
 void FUN_0044a790(u32 *param_1);
@@ -12651,7 +12651,7 @@ FUN_0044a110(float param_1,float param_2,float param_3,float param_4,int param_5
 // FUN_0044A240 NONMATCHING
 
 void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5
-                 ,u8 param_6)
+                 ,char param_6)
 
 {
   int iVar1;
