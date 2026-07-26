@@ -2305,7 +2305,6 @@ void FUN_0016c2f0(void)
     scaled = n << 1;
     p += (scaled + n) << 2;
     piVar1 = (s32*)p;
-    uVar2 = 0;
     output = DAT_0083aaa0;
     for (; uVar2 < 0x23; uVar2++) {
         output[uVar2] = (u32)piVar1;
