@@ -4441,11 +4441,11 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
@@ -4537,11 +4537,11 @@ void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
