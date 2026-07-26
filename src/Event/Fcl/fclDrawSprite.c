@@ -7,6 +7,10 @@ void FUN_0040e390(void);
 void FUN_0040e3c0(u32 param_1,int param_2,int param_3,char param_4,int param_5,int param_6,int param_7);
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11);
+#pragma alias FUN_0040e3f0_i7f4 FUN_0040e3f0
+extern void FUN_0040e3f0_i2f1i3f3(int param_5,int param_6,float param_1,u8 param_7,int param_8,
+                                  int param_9,int param_10,float param_2,float param_3,
+                                  float param_4);
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11);
 u32 FUN_0040e450(int param_1);
@@ -1466,10 +1470,9 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 
   for (index = 0; index < 8; index = index + 1) {
     psVar4 = (short *)(iVar1 + aiStack_20[index] * 0xc);
-    FUN_0040e3f0(0.0f, 0.0f,
-                 *(float *)(psVar4 + 4), *(float *)(psVar4 + 4),
-                 *psVar4 + 0x10, psVar4[1] + 0xd, (char)psVar4[2],
-                 index + 0x5a, 0, 0, 0);
+    FUN_0040e3f0_i2f1i3f3(*psVar4 + 0x10, psVar4[1] + 0xd, 0.0f,
+                          (u8)psVar4[2], index + 0x5a, 0, 0, 0.0f,
+                          *(float *)(psVar4 + 4), *(float *)(psVar4 + 4));
 
   }
 

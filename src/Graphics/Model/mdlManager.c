@@ -6862,7 +6862,7 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
 
   u32 *puVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 
