@@ -50985,7 +50985,7 @@ void FUN_0034e610(int param_1)
 
 
 
-// FUN_0034E690 NONMATCHING
+// FUN_0034E690
 
 
 u32 FUN_0034e690(int param_1)
@@ -51044,7 +51044,7 @@ u32 FUN_0034e690(int param_1)
 
   puVar4[0x16] = 0;
 
-  FUN_00521250_mdl(puVar4 + 3,(const void *)(iVar3 + 0xc),0x48);
+  FUN_00521250(uVar2 + 0xc,iVar3 + 0xc,0x48);
 
   FUN_0034e820(uVar2,*(volatile u16 *)*(int *)(iVar3 + 0x5c),iVar1);
 

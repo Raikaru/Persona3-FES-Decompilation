@@ -20,6 +20,12 @@ extern u8 *FUN_003b5d10_evt_main(u16 param_1);
 extern u32 FUN_0039f710_evt_main(int *param_1);
 #pragma alias FUN_003bb390_evt FUN_003bb390
 extern void FUN_003bb390_evt(float param_1,u32 param_2);
+#pragma alias FUN_004c31b0_evt_main FUN_004c31b0
+extern void FUN_004c31b0_evt_main(void *matrix, void *axis, f32 angle, s32 mode);
+#pragma alias FUN_004c35d0_evt_main FUN_004c35d0
+extern void FUN_004c35d0_evt_main(void *matrix, void *vector, s32 mode);
+#pragma alias FUN_004c6c60_evt_main FUN_004c6c60
+extern void FUN_004c6c60_evt_main(void *out, void *in, void *matrix);
 extern u32 DAT_0069d590;
 extern u32 DAT_0069d5c8;
 extern u32 DAT_0069d5d0;
@@ -2655,13 +2661,13 @@ void FUN_003625e0(void)
 
     iVar2 = (int)lVar1;
 
-    FUN_004c31b0(*(u32 *)(iVar2 + 0x10),&uStack_80,&uStack_40,2);
+    FUN_004c31b0_evt_main(&uStack_80,&uStack_40,*(float *)(iVar2 + 0x10),2);
 
-    FUN_004c31b0(*(u32 *)(iVar2 + 0x14),&uStack_80,&uStack_30,2);
+    FUN_004c31b0_evt_main(&uStack_80,&uStack_30,*(float *)(iVar2 + 0x14),2);
 
-    FUN_004c35d0(&uStack_80,iVar2 + 4,2);
+    FUN_004c35d0_evt_main(&uStack_80,iVar2 + 4,2);
 
-    FUN_004c6c60(&fStack_10,&uStack_20,&uStack_80);
+    FUN_004c6c60_evt_main(&fStack_10,&uStack_20,&uStack_80);
 
     if (DAT_007e095f < 0x3c) {
 
@@ -2875,17 +2881,17 @@ void FUN_003628f0(void)
 
     uStack_b4 = uStack_b4 | 0x20003;
 
-    FUN_004c31b0(0,&uStack_c0,&uStack_60,2);
+    FUN_004c31b0_evt_main(&uStack_c0,&uStack_60,0.0f,2);
 
     iVar7 = (int)lVar4;
 
-    FUN_004c31b0(*(u32 *)(iVar7 + 0x14),&uStack_c0,&uStack_50,2);
+    FUN_004c31b0_evt_main(&uStack_c0,&uStack_50,*(float *)(iVar7 + 0x14),2);
 
-    FUN_004c35d0(&uStack_c0,iVar7 + 4,2);
+    FUN_004c35d0_evt_main(&uStack_c0,iVar7 + 4,2);
 
-    FUN_004c6c60(&fStack_10,&uStack_20,&uStack_c0);
+    FUN_004c6c60_evt_main(&fStack_10,&uStack_20,&uStack_c0);
 
-    FUN_004c6c60(&fStack_40,&uStack_30,&uStack_c0);
+    FUN_004c6c60_evt_main(&fStack_40,&uStack_30,&uStack_c0);
 
     if ((DAT_007e094c & 0x10) == 0) {
 
