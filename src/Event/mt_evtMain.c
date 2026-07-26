@@ -2064,28 +2064,31 @@ int FUN_00361f60(int param_1,int param_2)
 {
 
   int iVar1;
-  u32 *piVar2;
-  u32 item;
+  int *piVar2;
+  int item;
 
   iVar1 = 0;
-  piVar2 = *(u32 **)(param_2 + 0x84);
-  while (piVar2 != (u32 *)0x0) {
-    if (param_1 != 2) goto case3;
+  piVar2 = *(int **)(param_2 + 0x84);
+  goto loop_test;
+loop_body:
+  if (param_1 != 2) goto case3;
 case2:
-    item = *piVar2;
-    if (item == 5) goto next;
-    if (item == 0x13) goto next;
-    goto add;
+  item = *piVar2;
+  if (item == 5) goto next;
+  if (item == 0x13) goto next;
+  goto add;
 case3:
-    if (param_1 != 3) goto next;
-    item = *piVar2;
-    if ((item == 5) || (item == 0x13)) goto add;
-    goto next;
+  if (param_1 != 3) goto next;
+  item = *piVar2;
+  if (item == 5) goto add;
+  if (item != 0x13) goto next;
+  goto add;
 add:
-    iVar1 = iVar1 + piVar2[0x1a];
+  iVar1 = iVar1 + piVar2[0x1a];
 next:
-    piVar2 = (u32 *)piVar2[0x25];
-  }
+  piVar2 = (int *)piVar2[0x25];
+loop_test:
+  if (piVar2 != (int *)0x0) goto loop_body;
   return iVar1;
 
 }

@@ -910,13 +910,17 @@ static void hmallocApplyInputTable(void)
 
     config = D_005E4D80;
     dst = copied;
-    for (copyCount = 0x14; copyCount != 0; copyCount--)
+    copyCount = 0x14;
+    do
     {
-        dst[0] = config[0];
-        dst[1] = config[1];
+        first = config[0];
+        second = config[1];
         config += 2;
+        copyCount--;
+        dst[0] = first;
+        dst[1] = second;
         dst += 2;
-    }
+    } while (copyCount > 0);
     resourceA = sHmallocResourceA;
     i = 1;
     word = *(s16*)((u8*)resourceA + 0x3c);
