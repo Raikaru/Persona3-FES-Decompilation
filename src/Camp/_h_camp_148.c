@@ -355,59 +355,195 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
     }
 }
 
+/* Retail offsets 0x148c10-0x1496dc: comparison draws retain one packed
+ * start coordinate per call and recompute the -100.0f x shift in place. */
 // FUN_00148C10 NONMATCHING
 void h_campDrawStatusComparison(int param_1)
-
 {
     CampPair pair;
     CampBits start;
+    CampBits sp48;
+    CampBits sp50;
+    CampBits sp58;
+    CampBits sp60;
+    CampBits sp68;
+    CampBits sp70;
+    CampBits sp78;
+    CampBits sp80;
+    CampBits sp88;
+    CampBits sp90;
+    CampBits sp98;
+    CampBits spa0;
+    CampBits spa8;
+    CampBits spb0;
+    CampBits spb8;
+    CampBits spc0;
+    CampBits spc8;
+    CampBits spd0;
+    CampBits spd8;
+    CampBits spe0;
+    CampBits spe8;
     s32 iVar1;
     f32 fVar2;
-    u64 uStack_38;
+
     pair.x = 379.0f;
     pair.y = 12.0f;
     start.u = *(u64*)&pair;
     pair.x = pair.x + (-100.0f);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2, start.u, *(u64*)&pair, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x44), 0, 2, 2, 0x41d8000041500000, 0x41d80000c2ae0000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x88), 0, 2, 2, 0x41d8000042e00000, 0x41d8000041400000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0xcc), 0, 2, 2, 0x41d8000043070000, 0x41d80000420c0000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x110), 0, 2, 2, 0x41d80000438b0000, 0x41d8000043320000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x154), 0, 2, 2, 0x41d8000043968000, 0x41d8000043490000, 0, 0, 0, 10);
-  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-    if (*(int *)(param_1 + 0x1c) + -1 < iVar1) {
-      *(u32 *)(*(int *)(param_1 + 0xc0) + iVar1 * 0x44 + 0x2ac) = 0;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
+                       start.u, *(u64*)&pair, 0, 0, 0, 10);
+
+    pair.x = 13.0f;
+    pair.y = 27.0f;
+    sp48.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x44),
+                  0, 2, 2, sp48.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 112.0f;
+    pair.y = 27.0f;
+    sp50.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x88),
+                  0, 2, 2, sp50.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 135.0f;
+    pair.y = 27.0f;
+    sp58.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0xcc),
+                  0, 2, 2, sp58.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 278.0f;
+    pair.y = 27.0f;
+    sp60.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x110),
+                  0, 2, 2, sp60.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 301.0f;
+    pair.y = 27.0f;
+    sp68.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x154),
+                  0, 2, 2, sp68.u, *(u64*)&pair, 0, 0, 0, 10);
+
+    for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
+        if (*(int *)(param_1 + 0x1c) + -1 < iVar1) {
+            *(u32 *)(*(int *)(param_1 + 0xc0) + iVar1 * 0x44 + 0x2ac) = 0;
+        }
+        else {
+            fVar2 = (float)(iVar1 * 0x55) + 64.0f;
+            pair.x = 30.0f;
+            pair.y = fVar2;
+            sp70.u = *(u64*)&pair;
+            pair.x = pair.x + (-100.0f);
+            func_0018bc10(100.0f,
+                          (void*)(*(int *)(param_1 + 0xc0) +
+                                  (iVar1 + 10) * 0x44),
+                          0, 2, 2, sp70.u, *(u64*)&pair, 0, 0, 0, 10);
+        }
     }
-    else {
-      fVar2 = (float)(iVar1 * 0x55) + 64.0f;
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + (iVar1 + 10) * 0x44), 0, 2, 2, CAMP_PAIR_FLOAT_HIGH(fVar2,0x41f00000), CAMP_PAIR_FLOAT_HIGH(fVar2,0xc28c0000), 0, 0, 0, 10);
+
+    pair.x = 104.0f;
+    pair.y = 61.0f;
+    sp78.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x550),
+                  0, 2, 2, sp78.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 124.0f;
+    pair.y = 219.0f;
+    sp80.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x594),
+                  0, 2, 2, sp80.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 226.0f;
+    pair.y = 415.0f;
+    sp88.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x83c),
+                  0, 2, 2, sp88.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 339.0f;
+    pair.y = 415.0f;
+    sp90.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x880),
+                  0, 2, 2, sp90.u, *(u64*)&pair, 0, 0, 0, 10);
+
+    pair.x = 481.0f;
+    pair.y = 12.0f;
+    sp98.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4)),
+                  0, 2, 1, sp98.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 113.0f;
+    pair.y = 27.0f;
+    spa0.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44),
+                  0, 2, 1, spa0.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 212.0f;
+    pair.y = 27.0f;
+    spa8.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88),
+                  0, 2, 1, spa8.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 235.0f;
+    pair.y = 27.0f;
+    spb0.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc),
+                  0, 2, 1, spb0.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 373.0f;
+    pair.y = 27.0f;
+    spb8.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110),
+                  0, 2, 1, spb8.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 401.0f;
+    pair.y = 27.0f;
+    spc0.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154),
+                  0, 2, 1, spc0.u, *(u64*)&pair, 0, 0, 0, 10);
+
+    for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
+        if (*(int *)(param_1 + 0x1c) + -1 < iVar1) {
+            *(u32 *)(*(int *)(param_1 + 0xc4) + iVar1 * 0x44 + 0x2ac) = 0;
+        }
+        else {
+            fVar2 = (float)(iVar1 * 0x55) + 64.0f;
+            pair.x = 710.0f;
+            pair.y = fVar2;
+            spc8.u = *(u64*)&pair;
+            pair.x = pair.x + (-100.0f);
+            func_0018bc10(100.0f,
+                          (void*)(*(int *)(param_1 + 0xc4) +
+                                  (iVar1 + 10) * 0x44),
+                          0, 2, 1, spc8.u, *(u64*)&pair, 0, 0, 0, 10);
+        }
     }
-  }
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x550), 0, 2, 2, 0x4274000042d00000, 0x4274000040800000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x594), 0, 2, 2, 0x435b000042f80000, 0x435b000041c00000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x83c), 0, 2, 2, 0x43cf800043620000, 0x43cf800042fc0000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc0) + 0x880), 0, 2, 2, 0x43cf800043db8000, 0x43cf800043a98000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 1, 0x4140000043f08000, 0x4140000043be8000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 0, 2, 1, 0x41d8000042e20000, 0x41d8000041500000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 0, 2, 1, 0x41d8000043540000, 0x41d8000042e00000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 0, 2, 1, 0x41d80000436b0000, 0x41d8000043070000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 0, 2, 1, 0x41d8000043ba8000, 0x41d8000043888000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 0, 2, 1, 0x41d8000043c88000, 0x41d8000043968000, 0, 0, 0, 10);
-  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-    if (*(int *)(param_1 + 0x1c) + -1 < iVar1) {
-      *(u32 *)(*(int *)(param_1 + 0xc4) + iVar1 * 0x44 + 0x2ac) = 0;
-    }
-    else {
-      fVar2 = (float)(iVar1 * 0x55) + 64.0f;
-      uStack_38 = CAMP_PAIR_FLOAT_HIGH(fVar2,0x44318000);
-      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar1 + 10) * 0x44), 0, 2, 1, uStack_38, CAMP_PAIR_FLOAT_HIGH(fVar2,0x44188000), 0, 0, 0, 10);
-    }
-  }
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 0, 2, 1, 0x4274000043130000, 0x42740000423c0000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 0, 2, 1, 0x435b000043270000, 0x435b000042860000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 0, 2, 1, 0x43cf800043a30000, 0x43cf800043620000, 0, 0, 0, 10);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 0, 2, 1, 0x43cf800044254000, 0x43cf8000440c4000, 0, 0, 0, 10);
-  return;
+
+    pair.x = 147.0f;
+    pair.y = 61.0f;
+    spd0.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550),
+                  0, 2, 1, spd0.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 167.0f;
+    pair.y = 219.0f;
+    spd8.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x594),
+                  0, 2, 1, spd8.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 326.0f;
+    pair.y = 415.0f;
+    spe0.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8),
+                  0, 2, 1, spe0.u, *(u64*)&pair, 0, 0, 0, 10);
+    pair.x = 661.0f;
+    pair.y = 415.0f;
+    spe8.u = *(u64*)&pair;
+    pair.x = pair.x + (-100.0f);
+    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c),
+                  0, 2, 1, spe8.u, *(u64*)&pair, 0, 0, 0, 10);
 }
 
 /* Reconstructed retail aggregate temporaries and per-entry coordinate updates.
