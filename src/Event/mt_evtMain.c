@@ -3738,7 +3738,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
   if (uVar5 - uVar13 == 0) {
 
-    fVar18 = 0.0;
+    fVar18 = 0.0f;
 
   }
 
@@ -5774,13 +5774,13 @@ void FUN_003658b0(u32 param_1,int param_2)
 
               if ((short)puVar1[0xd] < 1) {
 
-                fVar6 = 1.0;
+                fVar6 = 1.0f;
 
               }
 
               else {
 
-                fVar6 = (float)(int)(short)puVar1[0xd] / 100.0;
+                fVar6 = (float)(int)(short)puVar1[0xd] / 100.0f;
 
               }
 
@@ -6637,13 +6637,13 @@ void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 
           if ((short)puVar5[0x14] < 1) {
 
-            fVar9 = 1.0;
+            fVar9 = 1.0f;
 
           }
 
           else {
 
-            fVar9 = (float)(int)(short)puVar5[0x14] / 100.0;
+            fVar9 = (float)(int)(short)puVar5[0x14] / 100.0f;
 
           }
 
@@ -6675,13 +6675,13 @@ void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 
             if ((short)puVar5[0x15] < 1) {
 
-              fVar9 = 1.0;
+              fVar9 = 1.0f;
 
             }
 
             else {
 
-              fVar9 = (float)(int)(short)puVar5[0x15] / 100.0;
+              fVar9 = (float)(int)(short)puVar5[0x15] / 100.0f;
 
             }
 
