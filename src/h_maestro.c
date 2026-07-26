@@ -835,11 +835,10 @@ void func_00111500(KwlnTask* task)
 {
     u32* work;
     KwlnTask* taskCopy;
-    s32 value;
+    const s32 value = 1;
 
     taskCopy = task;
     work = (u32*)taskCopy->workData;
-    value = 1;
     work[0x30] = value;
     work[0x2f] = 0;
 }

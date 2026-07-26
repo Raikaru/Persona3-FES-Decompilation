@@ -407,7 +407,7 @@ int FUN_00401600(u64 param_1,u64 param_2,int param_3);
 u32 FUN_004016d0(u32 param_1);
 int FUN_00401800(short param_1);
 u32 FUN_00401890(short param_1);
-u64 FUN_00401950(short param_1);
+u32 FUN_00401950(u16 param_1);
 u32 FUN_00401a00(u16 param_1,long param_2,short *param_3);
 u8 * FUN_00401c90(u32 *param_1,int param_2);
 u8 * FUN_00401cf0(int param_1);
@@ -14541,7 +14541,7 @@ LAB_00401910:
 // FUN_00401950 NONMATCHING
 
 
-u64 FUN_00401950(short param_1)
+u32 FUN_00401950(u16 param_1)
 
 
 

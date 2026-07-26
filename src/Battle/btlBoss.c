@@ -803,12 +803,12 @@ void* func_002f8810()
 
 #pragma opt_loop_invariants on
 // FUN_002f88c0 NONMATCHING
-s64 func_002f88c0()
+long func_002f88c0()
 {
     BtlUnit* unit;
     u16 encounterId;
     u16 charId;
-    s64 result;
+    long result;
 
     encounterId = btlBossGetEncounterId();
     switch (encounterId)
@@ -824,7 +824,7 @@ s64 func_002f88c0()
                         break;
                     case 0x113:
                     case 0x114:
-                        result = 1;
+                        result = 1L;
                         goto case_1a0_done;
                 }
                 unit = unit->next;
@@ -849,7 +849,7 @@ case_1a0_done:
                     case 0x106:
                         if (unit->flags3 & 8)
                         {
-                            result = 1;
+                            result = 1L;
                             goto case_1a4_done;
                         }
                         break;

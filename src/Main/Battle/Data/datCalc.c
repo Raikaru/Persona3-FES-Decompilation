@@ -4458,47 +4458,45 @@ short FUN_00308120(short param_1,int param_2)
   if ((param_1 != -1) && (unaff_s0_lo = FUN_003082f0_u16(0,param_1), unaff_s0_lo == 8)) {
     return 8;
   }
-  if (param_2 == 0x100000) {
-    unaff_s0_lo = 7;
-  }
-  else if (param_2 == 0x80000) {
-    unaff_s0_lo = 9;
-  }
-  else if (param_2 == 0x400) {
-    unaff_s0_lo = 7;
-  }
-  else if (param_2 == 0x200) {
-    unaff_s0_lo = 7;
-  }
-  else if (param_2 == 0x100) {
-    unaff_s0_lo = 7;
-  }
-  else if (param_2 == 0x80) {
-    unaff_s0_lo = 0xb;
-  }
-  else if (param_2 == 0x40) {
-    unaff_s0_lo = 5;
-  }
-  else if (param_2 == 0x20) {
-    unaff_s0_lo = 4;
-  }
-  else if (param_2 == 0x10) {
-    unaff_s0_lo = 0xf;
-  }
-  else if (param_2 == 8) {
-    unaff_s0_lo = 0xe;
-  }
-  else if (param_2 == 4) {
-    unaff_s0_lo = 0xd;
-  }
-  else if (param_2 == 2) {
-    unaff_s0_lo = 0xc;
-  }
-  else if (param_2 == 1) {
+  switch (param_2) {
+  case 1:
     unaff_s0_lo = 10;
-  }
-  else {
+    break;
+  case 2:
+    unaff_s0_lo = 0xc;
+    break;
+  case 4:
+    unaff_s0_lo = 0xd;
+    break;
+  case 8:
+    unaff_s0_lo = 0xe;
+    break;
+  case 0x10:
+    unaff_s0_lo = 0xf;
+    break;
+  case 0x20:
+    unaff_s0_lo = 4;
+    break;
+  case 0x40:
+    unaff_s0_lo = 5;
+    break;
+  case 0x80:
+    unaff_s0_lo = 0xb;
+    break;
+  case 0x100:
+  case 0x200:
+  case 0x400:
+    unaff_s0_lo = 7;
+    break;
+  case 0x80000:
+    unaff_s0_lo = 9;
+    break;
+  case 0x100000:
+    unaff_s0_lo = 7;
+    break;
+  default:
     FUN_0019d3f0((u32)D_0069aa80, 0xee9);
+    break;
   }
   return unaff_s0_lo;
 }
