@@ -5274,8 +5274,8 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
 void FUN_00434c90(char param_1)
 {
   long iVar1;
-  long iVar2;
-  long iVar3;
+  int iVar2;
+  int iVar3;
   u8 *base;
 
   base = (u8 *)&DAT_007ce6e8;
