@@ -406,7 +406,7 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
 #undef FUN_003c8810
  
  
-// FUN_003C8810 NONMATCHING
+// FUN_003C8810
 u64 FUN_003c8810(int *param_1)
 {
   int *item;

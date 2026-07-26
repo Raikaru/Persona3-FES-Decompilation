@@ -9958,7 +9958,7 @@ void func_002eec60(void)
   u32 *puVar6;
   int iVar3;
   s16 sVar7;
-  puVar6 = (u32*)DAT_0069a000_abs;
+  puVar6 = (u32*)((u8*)0x006a0000 - 0x6000);
 
   puVar5 = work.data;
   iVar4 = 3;
