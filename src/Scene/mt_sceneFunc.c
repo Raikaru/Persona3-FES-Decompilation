@@ -5388,7 +5388,7 @@ u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3)
 }
 #define FUN_003bd8b0(...) ((u32 (*)(...))FUN_003bd8b0)(__VA_ARGS__)
 #undef FUN_003bd9a0
-// FUN_003BD9A0 NONMATCHING
+// FUN_003BD9A0
 
 
 u16 FUN_003bd9a0(u32 param_1,u32 param_2)
@@ -5411,9 +5411,9 @@ LAB_003bd9b0:
     goto LAB_003bda30;
   }
   if (FUN_003951d0_i32(0xa88) == 1) {
-    return *(u16 *)((int)*(u32 *)DAT_0095b724_abs + iVar1 + 4);
+    return *(u16 *)(iVar1 + (int)*(u32 *)DAT_0095b724_abs + 4);
   }
-  return *(u16 *)((int)*(u32 *)DAT_0095b724_abs + iVar1 + 6);
+  return *(u16 *)(iVar1 + (int)*(u32 *)DAT_0095b724_abs + 6);
 LAB_003bda30:
   iVar2 = iVar2 + 1;
 LAB_003bd9f0:

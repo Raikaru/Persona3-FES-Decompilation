@@ -575,15 +575,13 @@ void func_001a7060(void)
 // FUN_001a70a0 NONMATCHING
 void* func_001a70a0(void* object, void* data)
 {
-    s32 state;
-    u32 state_two;
+    u32 state;
 
     if (func_0048a2c0(*(void**)((u8*)object + 0x18)) == 0)
     {
         goto fail;
     }
-    state = func_0048a480(object);
-    if (state == 0)
+    if ((state = func_0048a480(object)) == 0)
     {
         goto normal;
     }
@@ -592,18 +590,15 @@ void* func_001a70a0(void* object, void* data)
         goto normal;
     }
     state_two = 2;
-    if (state == state_two)
-    {
-        goto state2;
-    }
     switch (state)
     {
     case 1:
         goto normal;
+    case 2:
+        goto state2;
     default:
         goto default_state;
     }
-state2:
     func_0048a3f0(object);
     goto normal;
 default_state:
