@@ -298,8 +298,6 @@ void sflPsel00260e00(void)
     u32 texture;
     SflPselStateCallback* state;
     SflPselDrawCallback* draw;
-    SflPselDrawCallback* drawCase0;
-    SflPselDrawCallback* drawCase1;
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
@@ -352,20 +350,20 @@ void sflPsel00260e00(void)
     switch (work[1])
     {
     case 0:
-        ((void (*)(u32))(void*)*state)(6);
-        drawCase0 = (SflPselDrawCallback*)D_0096009C_abs;
+        (*state)(6, 0);
+        draw = (SflPselDrawCallback*)D_0096009C_abs;
         (*state)(8, 1);
         (*state)(1, 0);
-        (*drawCase0)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
-        (*drawCase0)(&work[0x44], 4, 0, 2, 3);
+        (*draw)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        (*draw)(&work[0x44], 4, 0, 2, 3);
         break;
     case 1:
         (*state)(6, 0);
-        drawCase1 = (SflPselDrawCallback*)D_0096009C_abs;
+        draw = (SflPselDrawCallback*)D_0096009C_abs;
         (*state)(8, 1);
         (*state)(1, 0);
-        (*drawCase1)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
-        (*drawCase1)(&work[0x44], 4, 0, 2, 3);
+        (*draw)((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        (*draw)(&work[0x44], 4, 0, 2, 3);
         break;
     }
 
@@ -1015,8 +1013,7 @@ void func_00215fc0(void)
 {
     u8* work;
     u32 flags;
-    u32 updateSelection;
-    u32 updateList;
+    u32 updateFlags;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
@@ -1073,8 +1070,7 @@ void func_00215fc0(void)
             *(f32*)(work + 0x5c4c) = 1.0f - (f32)(s32)frame / 3.0f;
         }
     }
-    updateSelection = 0;
-    updateList = 0;
+    updateFlags = 0;
     switch (*(u32*)(work + 0x5334))
     {
     case 0:
@@ -1129,8 +1125,7 @@ void func_00215fc0(void)
                         *(u32*)(work + 0x5c68) = 0;
                         *(u32*)(work + 0x5c60) = 0;
                     }
-                    updateSelection = 1;
-                    updateList = 1;
+                    updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
                     func_0027bd10((u16)*(u16*)(work + 0x10 +
                                                 *(u32*)(work + 0x52e0 +
@@ -1156,8 +1151,7 @@ void func_00215fc0(void)
                         *(u32*)(work + 0x5c68) = total - 1;
                         *(u32*)(work + 0x5c60) = total - *(u32*)(work + 0x5c64);
                     }
-                    updateSelection = 1;
-                    updateList = 1;
+                    updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
                     func_0027bd10((u16)*(u16*)(work + 0x10 +
                                                 *(u32*)(work + 0x52e0 +
@@ -1189,8 +1183,7 @@ void func_00215fc0(void)
             func_0024a260((u32*)(work + 0x5c5c));
             if ((*(u32*)(work + 0x5c5c) & 1) != 0)
             {
-                updateSelection = 1;
-                updateList = 1;
+                updateFlags |= 3;
             }
             break;
         case 4:
@@ -1240,8 +1233,7 @@ void func_00215fc0(void)
                 *(u32*)(work + 0x5c60) = 0;
                 *(u32*)(work + 0x5c64) = *(u32*)(work + 0xc);
                 *(u32*)(work + 0x5c6c) = *(u32*)(work + 0x5330);
-                updateSelection = 0;
-                updateList = 1;
+                updateFlags = 2;
                 *(u32*)(work + 0x10 + selected * 0x10) |= 1;
                 func_002170c0();
                 func_003c7bc0(0, func_00173220(*(u16*)(work + 0x10 + selected * 0x10 + 4)));
@@ -1289,11 +1281,11 @@ void func_00215fc0(void)
         }
         break;
     }
-    if (updateSelection != 0)
+    if ((updateFlags & 1) != 0)
     {
         func_00217350();
     }
-    if (updateList != 0)
+    if ((updateFlags & 2) != 0)
     {
         func_00217610();
     }
