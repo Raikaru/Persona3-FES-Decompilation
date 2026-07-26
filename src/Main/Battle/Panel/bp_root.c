@@ -1559,20 +1559,20 @@ void FUN_00202A10(void)
 void FUN_00202BC0(void)
 {
     u32 i;
+    u8* work;
 
-    K_ASSERT((panelWork32(0) & 2) != 0, 0x910);
-    for (i = 0; i < panelWork32(0x70); i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    K_ASSERT((*(u32*)work & 2) != 0, 0x910);
+    for (i = 0; i < *(u32*)(work + 0x70); i++)
     {
-        if (*(u32*)(panelWork() + 0x78 + i * 4) != 0)
-        {
-            func_003b0170(*(u32*)(panelWork() + 0x78 + i * 4));
-        }
+        func_003b0170(*(u32*)(work + 0x78 + i * 4));
     }
-    if (panelWork32(0) & 0x20)
+    if (*(u32*)work & 0x20)
     {
-        func_003b0170(panelWork32(0x88));
+        func_003b0170(*(u32*)(work + 0x88));
     }
-    panelSetWork32(0, panelWork32(0) & ~3u);
+    *(u32*)work &= ~3u;
 }
 static PanelSkillRow* panelItemRow(u32 index)
 {

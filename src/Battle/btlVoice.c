@@ -9950,9 +9950,8 @@ void func_002eec60(void)
   int iVar4;
   u32 *puVar5;
   u32 *puVar6;
-  u16 sVar7;
-
   puVar6 = (u32*)DAT_0069a000;
+
   puVar5 = work.data;
   iVar4 = 3;
   do {
@@ -9977,8 +9976,8 @@ void func_002eec60(void)
     }
     else {
       iVar3 = (int)sVar7;
-      work.position.x = *(f32*)&work.data[iVar3 * 2];
-      work.position.z = *(f32*)&work.data[iVar3 * 2 + 1];
+      work.position.x = *(f32*)((u8*)&work + iVar3 * 8 + 0x30);
+      work.position.z = *(f32*)((u8*)&work + iVar3 * 8 + 0x34);
       *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
       sVar7++;
     }
