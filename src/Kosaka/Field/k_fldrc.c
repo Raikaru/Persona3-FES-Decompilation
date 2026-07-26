@@ -1577,14 +1577,21 @@ void FUN_001b5200(u32* resource, f32 angle)
 {
     u32 i;
     u16 type;
+    u64 word;
+    f32 tail;
     FldrcColor color;
-    color = DAT_00678f68_color[0];
+    u8* dst;
+    dst = (u8*)&color;
+    word = DAT_00678f68_color[0].word;
+    tail = DAT_00678f68_color[0].tail.value;
+    *(volatile u64*)((u8*)&color + ((u32)dst - (u32)(u8*)&color)) = word;
+    *(volatile f32*)((u8*)&color + ((u32)dst - (u32)(u8*)&color) + 8) = tail;
 
     if ((*resource & 1) == 0)
     {
         if (resource[2] != 0)
         {
-            FUN_004cb890_typed(*(u32*)(resource[2] + 4), &color, angle, 2);
+            FUN_004cb890_typed(*(u32*)(resource[2] + 4), dst, angle, 2);
         }
         if (resource[4] != 0)
         {

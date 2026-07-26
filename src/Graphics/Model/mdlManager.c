@@ -3805,10 +3805,10 @@ void* func_003140c0(void* param_1,u16 *param_2)
 
 
 {
-  s16 rawIndex;
-  u16 count;
+  int rawIndex;
   s64 lVar2;
   int *piVar1;
+  u16 count;
   rawIndex = (s16)param_2[2];
   piVar1 = *(int **)(param_2 + 0xc);
   if (piVar1 != (int *)0x0) {
