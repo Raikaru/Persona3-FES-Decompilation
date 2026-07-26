@@ -1798,74 +1798,89 @@ void FUN_00141590(CampEquipmentWork* work)
 
 void FUN_00141660(CampEquipmentPanelWork* work)
 {
-  CampBits pairValue;
+  CampBits pairE8;
   CampPair pair;
+  CampBits pairD8;
+  CampBits pairD0;
+  CampBits pairC8;
+  CampBits pairC0;
+  CampBits pairB8;
+  CampBits pairB0;
+  CampBits pairA8;
+  CampBits pairA0;
+  CampBits pair98;
+  CampBits pair90;
+  CampBits pair88;
+  CampBits pair80;
+  CampBits pair78;
+  CampBits pair70;
+  CampBits pair68;
   s32 index;
   s32 row;
   f32 slotX;
 
   pair.x = 40.0f;
   pair.y = 12.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] += 50.0f;
+  pairE8.u = *(u64*)&pair;
+  pairE8.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)work->drawBuffer, 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                 pairE8.u, *(u64*)&pair, 0, 0, 6, 13);
 
   pair.x = 219.0f;
   pair.y = 27.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] += 50.0f;
+  pair68.u = *(u64*)&pair;
+  pair68.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                 pair68.u, *(u64*)&pair, 0, 0, 6, 13);
 
   pair.x = 318.0f;
   pair.y = 27.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] += 50.0f;
+  pair70.u = *(u64*)&pair;
+  pair70.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                 pair70.u, *(u64*)&pair, 0, 0, 6, 13);
 
   pair.x = 341.0f;
   pair.y = 27.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] += 50.0f;
+  pair78.u = *(u64*)&pair;
+  pair78.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                 pair78.u, *(u64*)&pair, 0, 0, 6, 13);
 
   pair.x = 484.0f;
   pair.y = 27.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] += 50.0f;
+  pair80.u = *(u64*)&pair;
+  pair80.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                 pair80.u, *(u64*)&pair, 0, 0, 6, 13);
 
   pair.x = 507.0f;
   pair.y = 27.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] += 50.0f;
+  pair88.u = *(u64*)&pair;
+  pair88.f[0] += 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                 pair88.u, *(u64*)&pair, 0, 0, 6, 13);
 
   pair.x = 227.0f;
   pair.y = 61.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] -= 50.0f;
+  pair90.u = *(u64*)&pair;
+  pair90.f[0] -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 8, 13);
+                 pair90.u, *(u64*)&pair, 0, 0, 8, 13);
 
   pair.x = 247.0f;
   pair.y = 219.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] -= 50.0f;
+  pair98.u = *(u64*)&pair;
+  pair98.f[0] -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 8, 13);
+                 pair98.u, *(u64*)&pair, 0, 0, 8, 13);
 
   pair.x = 558.0f;
   pair.y = 67.0f;
-  pairValue.u = *(u64*)&pair;
-  pairValue.f[0] -= 50.0f;
+  pairA0.u = *(u64*)&pair;
+  pairA0.f[0] -= 50.0f;
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 1,
-                 pairValue.u, *(u64*)&pair, 0, 0, 8, 13);
+                 pairA0.u, *(u64*)&pair, 0, 0, 8, 13);
 
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
@@ -1873,44 +1888,44 @@ void FUN_00141660(CampEquipmentPanelWork* work)
 
       pair.x = 65.0f;
       pair.y = slotX + 8.0f;
-      pairValue.u = *(u64*)&pair;
-      pairValue.f[0] -= 50.0f;
+      pairA8.u = *(u64*)&pair;
+      pairA8.f[0] -= 50.0f;
       index = row * 10;
       func_0018bc10(100.0f,
                     (void*)(work->drawBuffer + (index + 0x1e) * 0x44),
-                    0, 2, 1, pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                    0, 2, 1, pairA8.u, *(u64*)&pair, 0, 0, 6, 13);
 
       pair.x = 65.0f;
       pair.y = slotX + 31.0f;
-      pairValue.u = *(u64*)&pair;
-      pairValue.f[0] -= 50.0f;
+      pairB0.u = *(u64*)&pair;
+      pairB0.f[0] -= 50.0f;
       func_0018bc10(100.0f,
                     (void*)(work->drawBuffer + (index + 0x1f) * 0x44),
-                    0, 2, 1, pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                    0, 2, 1, pairB0.u, *(u64*)&pair, 0, 0, 6, 13);
 
       pair.x = 65.0f;
       pair.y = slotX + 45.0f;
-      pairValue.u = *(u64*)&pair;
-      pairValue.f[0] -= 50.0f;
+      pairB8.u = *(u64*)&pair;
+      pairB8.f[0] -= 50.0f;
       func_0018bc10(100.0f,
                     (void*)(work->drawBuffer + (index + 0x20) * 0x44),
-                    0, 2, 1, pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                    0, 2, 1, pairB8.u, *(u64*)&pair, 0, 0, 6, 13);
 
       pair.x = 65.0f;
       pair.y = slotX + 64.0f;
-      pairValue.u = *(u64*)&pair;
-      pairValue.f[0] -= 50.0f;
+      pairC0.u = *(u64*)&pair;
+      pairC0.f[0] -= 50.0f;
       func_0018bc10(100.0f,
                     (void*)(work->drawBuffer + (index + 0x21) * 0x44),
-                    0, 2, 1, pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                    0, 2, 1, pairC0.u, *(u64*)&pair, 0, 0, 6, 13);
 
       pair.x = 14.0f;
       pair.y = slotX + 2.0f;
-      pairValue.u = *(u64*)&pair;
-      pairValue.f[0] -= 50.0f;
+      pairC8.u = *(u64*)&pair;
+      pairC8.f[0] -= 50.0f;
       func_0018bc10(100.0f,
                     (void*)(work->drawBuffer + (index + 0x22) * 0x44),
-                    0, 2, 1, pairValue.u, *(u64*)&pair, 0, 0, 6, 13);
+                    0, 2, 1, pairC8.u, *(u64*)&pair, 0, 0, 6, 13);
       *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
       *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x994) = 0;
     } else {

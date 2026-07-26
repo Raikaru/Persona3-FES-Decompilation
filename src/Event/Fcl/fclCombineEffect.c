@@ -3290,15 +3290,25 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   f32 fVar7;
 
-  u64 axisXY;
+  struct {
 
-  f32 axisZ;
+    RwV3d vecA;
 
-  RwV3d vecA;
+    u32 padA;
 
-  RwV3d vecNeg;
+    RwV3d vecNeg;
 
-  RwV3d vecPos;
+    u32 padNeg;
+
+    RwV3d vecPos;
+
+    u32 padPos;
+
+    u64 axisXY;
+
+    f32 axisZ;
+
+  } work;
 
   u8 *pfVar2;
 
@@ -3312,15 +3322,14 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
   fVar7 = 0.0f;
 
-  axisXY = DAT_006b3090;
+  work.axisZ = DAT_006b3098;
 
-  axisZ = DAT_006b3098;
+  work.axisXY = DAT_006b3090;
 
-  bVar3 = 0;
 
   pfVar4 = (u8 *)0xc;
 
-  pfVar5 = (u8 *)&vecA;
+  pfVar5 = (u8 *)&work.vecA;
 
   pfVar2 = pfVar5;
 
@@ -3335,6 +3344,8 @@ u8 FUN_0041aff0(int param_1,int param_2)
     pfVar2 = pfVar4;
 
   }
+
+  bVar3 = 0;
 
   if (((DAT_007e094e & 0x80) != 0) || ((DAT_007e0958 & 0x80) != 0)) {
 
@@ -3372,9 +3383,9 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
-      axisXY = *(u64 *)(iVar1 + 0x10);
+      work.axisXY = *(u64 *)(iVar1 + 0x10);
 
-      axisZ = *(f32 *)(iVar1 + 0x18);
+      work.axisZ = *(f32 *)(iVar1 + 0x18);
 
       fVar7 = (fVar7 + 0.0f) - fGpffff82cc * fVar6;
 
@@ -3386,21 +3397,21 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
-      vecA.x = *(f32 *)(iVar1 + 0x30);
+      work.vecA.x = *(f32 *)(iVar1 + 0x30);
 
-      vecA.y = *(f32 *)(iVar1 + 0x34);
+      work.vecA.y = *(f32 *)(iVar1 + 0x34);
 
-      vecA.z = *(f32 *)(iVar1 + 0x38);
+      work.vecA.z = *(f32 *)(iVar1 + 0x38);
 
-      RwV3dNormalize(&vecA,&vecA);
+      RwV3dNormalize(&work.vecA,&work.vecA);
 
       fVar6 = fGpffff8328 * fVar6;
 
-      vecA.x = vecA.x * fVar6;
+      work.vecA.x = work.vecA.x * fVar6;
 
-      vecA.y = vecA.y * fVar6;
+      work.vecA.y = work.vecA.y * fVar6;
 
-      vecA.z = vecA.z * fVar6;
+      work.vecA.z = work.vecA.z * fVar6;
 
       bVar3 = 1;
 
@@ -3410,21 +3421,21 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
 
-      vecA.x = *(f32 *)(iVar1 + 0x10);
+      work.vecA.x = *(f32 *)(iVar1 + 0x10);
 
-      vecA.y = *(f32 *)(iVar1 + 0x14);
+      work.vecA.y = *(f32 *)(iVar1 + 0x14);
 
-      vecA.z = *(f32 *)(iVar1 + 0x18);
+      work.vecA.z = *(f32 *)(iVar1 + 0x18);
 
-      RwV3dNormalize(&vecA,&vecA);
+      RwV3dNormalize(&work.vecA,&work.vecA);
 
       fVar6 = fGpffff8328 * fVar6;
 
-      vecA.x = vecA.x * fVar6;
+      work.vecA.x = work.vecA.x * fVar6;
 
-      vecA.y = vecA.y * fVar6;
+      work.vecA.y = work.vecA.y * fVar6;
 
-      vecA.z = vecA.z * fVar6;
+      work.vecA.z = work.vecA.z * fVar6;
 
       bVar3 = 1;
 
@@ -3434,7 +3445,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
       if (((DAT_007e094c & 8) != 0) || ((DAT_007e0956 & 8) != 0)) {
 
-        vecA.y = vecA.y + 10.0f;
+        work.vecA.y = work.vecA.y + 10.0f;
 
         bVar3 = 1;
 
@@ -3444,7 +3455,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     else {
 
-      vecA.y = vecA.y - 10.0f;
+      work.vecA.y = work.vecA.y - 10.0f;
 
       bVar3 = 1;
 
@@ -3452,25 +3463,25 @@ u8 FUN_0041aff0(int param_1,int param_2)
 
     if (bVar3) {
 
-      vecPos.x = *(f32 *)(iVar1 + 0x40);
+      work.vecPos.x = *(f32 *)(iVar1 + 0x40);
 
-      vecPos.y = *(f32 *)(iVar1 + 0x44);
+      work.vecPos.y = *(f32 *)(iVar1 + 0x44);
 
-      vecPos.z = *(f32 *)(iVar1 + 0x48);
+      work.vecPos.z = *(f32 *)(iVar1 + 0x48);
 
-      vecNeg.x = vecPos.x * -1.0f;
+      work.vecNeg.x = work.vecPos.x * -1.0f;
 
-      vecNeg.y = vecPos.y * -1.0f;
+      work.vecNeg.y = work.vecPos.y * -1.0f;
 
-      vecNeg.z = vecPos.z * -1.0f;
+      work.vecNeg.z = work.vecPos.z * -1.0f;
 
-      FUN_004cb750_typed(iVar1,&vecNeg,2);
+      FUN_004cb750_typed(iVar1,&work.vecNeg,2);
 
-      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&axisXY,2);
+      FUN_004cb890_typed((RwFrame *)iVar1,fVar7,(RwV3d *)&work.axisXY,2);
 
-      FUN_004cb750_typed(iVar1,&vecA,2);
+      FUN_004cb750_typed(iVar1,&work.vecA,2);
 
-      FUN_004cb750_typed(iVar1,&vecPos,2);
+      FUN_004cb750_typed(iVar1,&work.vecPos,2);
 
     }
 
