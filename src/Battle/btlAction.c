@@ -6831,7 +6831,7 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
         func_002b9600(setup);
         packet = func_002bb2f0(ACTION_U32(gBtl, 0xd10), action->unit, 0,
                                callbackPacket->uid, 0xc000);
-        btlPacketRegister(packet, BTLPACKET_TYPE_2);
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
         action->unk_488 = 1;
     }
 

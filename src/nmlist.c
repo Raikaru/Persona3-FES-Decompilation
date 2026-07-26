@@ -259,8 +259,8 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
 {
     NmlistList *list;
     NmlistNode *node;
-    NmlistNode *next;
     NmlistNode *prev;
+    NmlistNode *next;
 
     if (param_1 == 0) {
         K_Assert((const char *)D_006A3DE8_abs, 0x149);

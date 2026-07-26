@@ -902,7 +902,14 @@ void func_0021e170(void* destination,
         points[i * 2] += center[0];
         points[i * 2 + 1] += center[1];
     }
-    func_0021d890(destination, points);
+    BP_TEX_F32(destination, 0x00) = points[0];
+    BP_TEX_F32(destination, 0x04) = points[1];
+    BP_TEX_F32(destination, 0x40) = points[2];
+    BP_TEX_F32(destination, 0x44) = points[3];
+    BP_TEX_F32(destination, 0x80) = points[4];
+    BP_TEX_F32(destination, 0x84) = points[5];
+    BP_TEX_F32(destination, 0xc0) = points[6];
+    BP_TEX_F32(destination, 0xc4) = points[7];
 }
 #pragma optimization_level 2
 

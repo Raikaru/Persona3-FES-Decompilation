@@ -2534,24 +2534,28 @@ u32 FUN_00419c10(int param_1,int *param_2)
   stack.colors[2] = (float)((uVar2 >> 8) & 0xff);
   stack.colors[3] = (float)(uVar2 & 0xff);
 
-  if (*(char *)((int)piVar1 + 4) == '@') {
-    if (*(char *)((int)piVar1 + 5) == '\x03') {
-    switch (iVar4) {
-    case 0:
-      stack.bytes[0] = (u8)stack.colors[0];
-      stack.bytes[1] = (u8)stack.colors[1];
-      stack.bytes[2] = (u8)stack.colors[2];
-      stack.bytes[3] = (u8)stack.colors[3];
-      FUN_003cdf40(*(u32 *)(param_1 + 0x18),stack.bytes);
-      break;
-    case 1:
-      FUN_003ce060(*(u32 *)(param_1 + 0x18),stack.colors);
-      break;
-    case 2:
-      FUN_003ce180(*(u32 *)(param_1 + 0x18),stack.colors,uVar3);
+  switch (*(char *)((int)piVar1 + 4)) {
+  case '@':
+    switch (*(char *)((int)piVar1 + 5)) {
+    case '\x03':
+      switch (iVar4) {
+      case 0:
+        stack.bytes[0] = (u8)stack.colors[0];
+        stack.bytes[1] = (u8)stack.colors[1];
+        stack.bytes[2] = (u8)stack.colors[2];
+        stack.bytes[3] = (u8)stack.colors[3];
+        FUN_003cdf40(*(u32 *)(param_1 + 0x18),stack.bytes);
+        break;
+      case 1:
+        FUN_003ce060(*(u32 *)(param_1 + 0x18),stack.colors);
+        break;
+      case 2:
+        FUN_003ce180(*(u32 *)(param_1 + 0x18),stack.colors,uVar3);
+        break;
+      }
       break;
     }
-  }
+    break;
   }
   return 1;
 }

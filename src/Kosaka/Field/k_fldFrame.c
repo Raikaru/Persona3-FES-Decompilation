@@ -2882,72 +2882,76 @@ void func_001ae0d0(KwlnTask* collisCtlTask)
     }
 }
 
-extern f32 func_0052ea18(f32 x, f32 y);
 
 // FUN_001b02c0 NONMATCHING
 f32 func_001b02c0(s32 inputIndex, s32 usePad)
 {
-    f32 horizontal;
-    f32 vertical;
+    RwV3d direction;
+    RwV3d normalized;
     u16 flags;
     s32 offset;
+    s32 i;
     f32 angle;
 
     offset = inputIndex * 0x36;
-    horizontal = 0.0f;
-    vertical = 0.0f;
+    for (i = 0; i < (s32)sizeof(direction); i++)
+    {
+        ((u8*)&direction)[i] = 0;
+    }
+
     flags = *(u16*)(D_007E094C + inputIndex * 0x1b);
     if (usePad == 0)
     {
-        vertical = (f32)D_007E095F[offset] - 128.0f;
+        direction.z = (f32)D_007E095F[offset] - 128.0f;
         if ((flags & 0x1000) != 0)
         {
-            vertical = -128.0f;
+            direction.z = -128.0f;
         }
         else if ((flags & 0x4000) != 0)
         {
-            vertical = 128.0f;
+            direction.z = 128.0f;
         }
         if ((flags & 0xa000) != 0 &&
-            vertical >= -48.0f && vertical <= 48.0f)
+            direction.z >= -48.0f && direction.z <= 48.0f)
         {
-            vertical = 0.0f;
+            direction.z = 0.0f;
         }
 
-        horizontal = (f32)D_007E095E[offset] - 128.0f;
+        direction.x = (f32)D_007E095E[offset] - 128.0f;
         if ((flags & 0x8000) != 0)
         {
-            horizontal = -128.0f;
+            direction.x = -128.0f;
         }
         else if ((flags & 0x2000) != 0)
         {
-            horizontal = 128.0f;
+            direction.x = 128.0f;
         }
         if ((flags & 0x5000) != 0 &&
-            horizontal >= -48.0f && horizontal <= 48.0f)
+            direction.x >= -48.0f && direction.x <= 48.0f)
         {
-            horizontal = 0.0f;
+            direction.x = 0.0f;
         }
     }
     else
     {
-        vertical = (f32)D_007E0961[offset] - 128.0f;
-        if (vertical >= -48.0f && vertical <= 48.0f)
+        direction.z = (f32)D_007E0961[offset] - 128.0f;
+        if (direction.z >= -48.0f && direction.z <= 48.0f)
         {
-            vertical = 0.0f;
+            direction.z = 0.0f;
         }
-        horizontal = (f32)D_007E0960[offset] - 128.0f;
-        if (horizontal >= -48.0f && horizontal <= 48.0f)
+        direction.x = (f32)D_007E0960[offset] - 128.0f;
+        if (direction.x >= -48.0f && direction.x <= 48.0f)
         {
-            horizontal = 0.0f;
+            direction.x = 0.0f;
         }
     }
 
-    if (vertical < -48.0f || vertical > 48.0f ||
-        horizontal < -48.0f || horizontal > 48.0f)
+    if (direction.z < -48.0f || direction.z > 48.0f ||
+        direction.x < -48.0f || direction.x > 48.0f)
     {
-        angle = func_0052ea18(horizontal, vertical) * 57.2957795f;
-        if (horizontal < 0.0f)
+        func_004c69f0(&normalized, &direction);
+        angle = func_0052e9e8(normalized.z / normalized.x) * 57.2957795f;
+        if (direction.x < 0.0f)
         {
             angle = 360.0f - angle;
         }

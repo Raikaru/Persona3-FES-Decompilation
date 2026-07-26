@@ -1776,11 +1776,11 @@ void FUN_00141660(CampEquipmentPanelWork* work)
   int index;
   int row;
   float slotX;
-  u64 spriteTopLeft;
-  u64 spriteTopLeft2;
-  u64 spriteTopLeft3;
-  u64 spriteTopLeft4;
-  u64 spriteTopLeft5;
+  volatile u64 spriteTopLeft;
+  volatile u64 spriteTopLeft2;
+  volatile u64 spriteTopLeft3;
+  volatile u64 spriteTopLeft4;
+  volatile u64 spriteTopLeft5;
   
   func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, 0x4140000042b40000, 0x4140000042200000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d8000043868000, 0x41d80000435b0000, 0, 0, 0, 0);

@@ -9803,9 +9803,9 @@ void FUN_00326030(int param_1,int param_2)
   code callback;
 
   *(int *)(param_1 + 100) = param_2;
-  baseColor = (u32)param_2;
   node = *(int *)(param_1 + 0x8c);
   while (node != 0) {
+    baseColor = *(u32 *)(param_1 + 100);
     nodeColor = *(u32 *)(node + 100);
     r = ((baseColor & 0xff) * (nodeColor & 0xff)) / 255;
     g = (((baseColor >> 8) & 0xff) * ((nodeColor >> 8) & 0xff)) / 255;
@@ -9818,6 +9818,7 @@ void FUN_00326030(int param_1,int param_2)
     if (callback != NULL) {
       callback(*(u32 *)(*(int *)(node + 0x90) + 8), color);
     }
+    callback = PTR_LAB_0069be50[(u32)type * 0xc + (u32)type];
     if (callback != NULL) {
       callback(*(u32 *)(*(int *)(node + 0x90) + 8));
     }
@@ -52105,11 +52106,9 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2)
 void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4)
 {
   __int128 extraout_vf10;
-  __int128 auStack_20;
 
   FUN_00357ea0(DAT_007caf14 * param_2,DAT_007caf14 * param_3,DAT_007caf14 * param_4);
-  auStack_20 = _sqc2(extraout_vf10);
-  ((void (*)(int,u8 (*)[16]))FUN_00325d60)(param_1,(u8 (*)[16])&auStack_20);
+  FUN_00325d60(param_1,(u8 (*)[16])&extraout_vf10);
 }
 
 

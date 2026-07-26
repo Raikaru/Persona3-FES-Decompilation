@@ -2138,7 +2138,6 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
 void func_001bd450(u32 patternId)
 {
     u8* field;
-    u8* fieldBase;
     u8* targetCell;
     s32 startX;
     s32 startY;
@@ -2149,11 +2148,10 @@ void func_001bd450(u32 patternId)
     u32 x;
     u32 y;
 
-    fieldBase = (u8*)K_Field_Get();
     for (;;)
     {
         field = (u8*)K_Field_Get();
-        targetCell = dungeonCell(field[0x3c], field[0x3d]);
+        targetCell = field + field[0x3c] * 0x100 + field[0x3d] * 0x10;
         if (targetCell[0x48] == 1 &&
             targetCell[0x4a] == 4 &&
             sDungeonGenerationFailed == 0)
@@ -2164,44 +2162,49 @@ void func_001bd450(u32 patternId)
         sDungeonGenerationFailed = 0;
         sDungeonGenerationAttempts = 0;
         sDungeonRoomCounter = 0;
-        memset(field + 0x48, 0, 0x1000);
+        memset((u8*)K_Field_Get() + 0x48, 0, 0x1000);
         for (x = 0; x < 0x10; x++)
         {
-            dungeonCell((s32)x, 0)[0x48] = 2;
-            dungeonCell((s32)x, 0x0f)[0x48] = 2;
+            *(u8*)((u8*)K_Field_Get() + x * 0x10 + 0x48) = 2;
+            *(u8*)((u8*)K_Field_Get() + x * 0x10 + 0xf48) = 2;
         }
         for (y = 0; y < 0x10; y++)
         {
-            dungeonCell(0, (s32)y)[0x48] = 2;
-            dungeonCell(0x0f, (s32)y)[0x48] = 2;
+            *(u8*)((u8*)K_Field_Get() + y * 0x100 + 0x48) = 2;
+            *(u8*)((u8*)K_Field_Get() + y * 0x100 + 0x138) = 2;
         }
 
-        field[0x3c] = 0;
-        field[0x3d] = 0;
-        field[0x3e] = 0;
-        field[0x3f] = 0;
+        *(u8*)((u8*)K_Field_Get() + 0x3c) = 0;
+        *(u8*)((u8*)K_Field_Get() + 0x3d) = 0;
+        *(u8*)((u8*)K_Field_Get() + 0x3e) = 0;
+        *(u8*)((u8*)K_Field_Get() + 0x3f) = 0;
         do
         {
             startX = (s32)(RpRandom() % 12) + 2;
+            *(u8*)((u8*)K_Field_Get() + 0x3c) = (u8)startX;
             startY = (s32)(RpRandom() % 12) + 2;
-            field[0x3c] = (u8)startX;
-            field[0x3d] = (u8)startY;
-        } while (dungeonCell(startX, startY)[0x48] != 0);
-        field[0x40] = (u8)(RpRandom() & 3);
+            *(u8*)((u8*)K_Field_Get() + 0x3d) = (u8)startY;
+        } while (*(u8*)((u8*)K_Field_Get() +
+                         startY * 0x100 + startX * 0x10 + 0x48) != 0);
+        *(u8*)((u8*)K_Field_Get() + 0x40) = (u8)(RpRandom() & 3);
         func_001bcac0(patternId, (u32)startX, (u32)startY, 0, 0);
 
         do
         {
             targetX = (s32)(RpRandom() % 11) + 2;
+            *(u8*)((u8*)K_Field_Get() + 0x3e) = (u8)targetX;
             targetY = (s32)(RpRandom() % 11) + 2;
-            field[0x3e] = (u8)targetX;
-            field[0x3f] = (u8)targetY;
-            field[0x41] = (u8)(RpRandom() & 3);
-            targetCell = dungeonCell(targetX, targetY);
+            *(u8*)((u8*)K_Field_Get() + 0x3f) = (u8)targetY;
+            *(u8*)((u8*)K_Field_Get() + 0x41) = (u8)(RpRandom() & 3);
+            targetCell = (u8*)K_Field_Get() +
+                         targetY * 0x100 + targetX * 0x10;
         } while (targetCell[0x48] != 0 ||
-                 dungeonCell(targetX + 1, targetY)[0x48] != 0 ||
-                 dungeonCell(targetX, targetY + 1)[0x48] != 0 ||
-                 dungeonCell(targetX + 1, targetY + 1)[0x48] != 0);
+                 *(u8*)((u8*)K_Field_Get() +
+                        targetY * 0x100 + (targetX + 1) * 0x10 + 0x48) != 0 ||
+                 *(u8*)((u8*)K_Field_Get() +
+                        (targetY + 1) * 0x100 + targetX * 0x10 + 0x48) != 0 ||
+                 *(u8*)((u8*)K_Field_Get() +
+                        (targetY + 1) * 0x100 + (targetX + 1) * 0x10 + 0x48) != 0);
         func_001bcac0(patternId, (u32)targetX, (u32)targetY, 0, 0);
 
         rooms = 0;
@@ -2210,7 +2213,7 @@ void func_001bd450(u32 patternId)
         {
             for (x = 0; x < 0x10; x++)
             {
-                field = dungeonCell((s32)x, (s32)y);
+                field = (u8*)K_Field_Get() + y * 0x100 + x * 0x10;
                 if (field[0x48] == 1)
                 {
                     rooms++;
@@ -2222,8 +2225,8 @@ void func_001bd450(u32 patternId)
             }
         }
 
-        if (rooms < (s32)fieldBase[0x42] ||
-            rooms > (s32)fieldBase[0x43])
+        if (rooms < (s32)*(u8*)((u8*)K_Field_Get() + 0x42) ||
+            rooms > (s32)*(u8*)((u8*)K_Field_Get() + 0x43))
         {
             sDungeonGenerationFailed = 1;
         }
