@@ -18303,7 +18303,7 @@ void FUN_004064e0(u64 param_1,u64 param_2,u32 param_3,int param_4)
 
     }
 
-    else if (puVar4[sVar2 * 0x40 + 0x26] == '\0') {
+    else {
 
 
       FUN_0040e3c0(0,iVar10 + 0x77,iVar6 + 0x178,param_3 & 0xff,0,(u32)bStack_3c * 2 + 1);

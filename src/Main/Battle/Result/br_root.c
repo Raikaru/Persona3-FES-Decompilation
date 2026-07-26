@@ -1122,7 +1122,6 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
 void *func_001f2300(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    u32 state;
     u32 temp;
     if ((BR_U32(work, 4) & 0x80) != 0 && sflRes0020e380() == 0) {
         BR_U32(work, 4) &= ~0x80u;
@@ -1134,8 +1133,7 @@ void *func_001f2300(KwlnTask *task)
     sflRes0020d820();
     func_00215fc0();
     func_001f5b20();
-    state = BR_U32(work, 8);
-    switch (state) {
+    switch (BR_U32(work, 8)) {
     case 1:
         if (sflRes0020dfe0() == 0 && func_00254f20() == 0 && BR_U32(work, 0x2a210) != 0) {
             func_00254f70();

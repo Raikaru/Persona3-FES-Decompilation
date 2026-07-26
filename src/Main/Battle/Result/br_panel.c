@@ -615,6 +615,8 @@ static void brPanel00236390(void)
     void* frame;
     u32 texture;
     u32 digitTexture;
+    s32 mode;
+    s32 timer;
     s32 value;
     s32 length;
     s32 i;
@@ -640,9 +642,9 @@ static void brPanel00236390(void)
     texture = brPanelResRaw(0);
     digitTexture = brPanelResRaw(1);
     frame = func_0021cca0(texture, 0);
+    mode = *(s32*)(work + 0x266c);
+    timer = *(s32*)(work + 0x2668);
 
-#define mode (*(s32*)(work + 0x266c))
-#define timer (*(s32*)(work + 0x2668))
     if (mode == 2) {
         shift = (f32)((*(s32*)((u8*)frame + 0xc) + 1) / 2);
         alpha = 0.0f;
@@ -1287,8 +1289,6 @@ static void brPanel00236390(void)
     color[3] = 0xff;
     func_0021d950(work + 0x2460, color);
 }
-#undef mode
-#undef timer
 #pragma opt_loop_invariants off
 #undef brRes00234570
 #undef BR_PANEL_SET_RECT

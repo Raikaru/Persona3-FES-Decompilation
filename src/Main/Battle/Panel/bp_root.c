@@ -2870,6 +2870,7 @@ void FUN_00205D60(void)
             color = -1;
         }
         type = *(u32*)(entry + 4);
+        if (type == 0)
         {
             handle = *(u32*)(entry + 0x90);
             func_003b0d70(handle, 0x730, 0x8c0 + i * 0x90);
@@ -3304,9 +3305,9 @@ void FUN_00206F70(void)
 void FUN_00207010(void)
 {
     u8* work;
-    u32 i;
+    s32 i;
     u32 type;
-    u32 alpha;
+    s8 alpha;
     u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
