@@ -3859,7 +3859,6 @@ count_check:
 
 set_start:
   param_2 = (u8)param_4;
-  param_1 = *(int *)(param_1 + 0x24);
   iVar1 = *(int *)(param_1 + 0x1c);
   goto set_check;
 
@@ -3872,7 +3871,8 @@ set_check:
     goto set_store;
   }
   param_1 = *(int *)(param_1 + 0x24);
-  if (param_1 == 0) {
+  switch (param_1) {
+  case 0:
     goto done;
   }
   iVar1 = *(int *)(param_1 + 8);

@@ -45783,7 +45783,6 @@ void FUN_00349a30(int param_1)
      (lVar1 = FUN_00348340(data,(float *)(auStack_100)), lVar1 != 0)) {
 
     (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
-    (*DAT_009600a4_abs)(3,auStack_100,4,0x69cb80,6);
     RpSkyRenderStateSet(3,0x31001);
 
     FUN_003295c0(0x6fc009fc00a);

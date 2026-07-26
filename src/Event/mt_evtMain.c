@@ -2056,40 +2056,22 @@ int FUN_00361f60(int param_1,int param_2)
 {
 
   int iVar1;
-
   int *piVar2;
 
-  
-
   iVar1 = 0;
-
   piVar2 = *(int **)(param_2 + 0x84);
-
-  do {
-
-    if (piVar2 == (int *)0x0) {
-
-      return iVar1;
-
-    }
-
+  while (piVar2 != (int *)0x0) {
     if (param_1 == 2) {
-
       if ((*piVar2 != 5) && (*piVar2 != 0x13)) {
-
-LAB_00361fc0:
-
         iVar1 = iVar1 + piVar2[0x1a];
-
       }
-
     }
-
-    else if ((param_1 == 3) && ((*piVar2 == 5 || (*piVar2 == 0x13)))) goto LAB_00361fc0;
-
+    else if ((param_1 == 3) && ((*piVar2 == 5 || (*piVar2 == 0x13)))) {
+      iVar1 = iVar1 + piVar2[0x1a];
+    }
     piVar2 = (int *)piVar2[0x25];
-
-  } while( true );
+  }
+  return iVar1;
 
 }
 
