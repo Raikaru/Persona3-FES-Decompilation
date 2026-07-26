@@ -24,7 +24,6 @@ extern u8 iRambc0003c0_abs[];
 extern u8 uRam80074700_abs[];
 extern u64 uRam80074700;
 extern u8 uRam800747b0[];
-extern u32 uRam80076710[];
 extern int iRam80076700;
 extern int iRam80074748;
 extern u64 uRam80076708;
@@ -332,24 +331,6 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
   return param_1;
 }
 #pragma pop
-// Retail sibling recovered from 0x007803A0-0x007803D0.
-// FUN_007803A0 NONMATCHING
-u32 FUN_007803a0(u32 param_1)
-{
-  u32 i;
-  u32 *table;
-
-  i = 0;
-  table = uRam80076710;
-  do {
-    if (param_1 == table[0]) {
-      return table[1];
-    }
-    i = i + 1;
-    table = table + 2;
-  } while (i < 6);
-  return 0;
-}
 
 // Retail sibling recovered from 0x007803D4-0x007803F4.
 // FUN_007803D4 NONMATCHING
@@ -597,7 +578,7 @@ void FUN_00780828(void)
     return;
 }
 // Retail kernel handler recovered from 0x00780A20-0x00780A84.
-// FUN_00780A20 NONMATCHING
+// FUN_00780A20
 asm void FUN_00780a20(void)
 {
   .set noreorder
