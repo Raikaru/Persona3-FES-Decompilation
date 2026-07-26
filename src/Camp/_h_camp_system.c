@@ -1011,23 +1011,23 @@ void FUN_0015C840(void *param_1)
 
                     if (!candidate_is_special) {
                         if (!saved_is_special &&
+                            candidate_entry.words[0] < saved_entry.words[0]) {
                             swap_entry = saved_entry;
                             *(CampC840Entry *)current = candidate_entry;
                             *(CampC840Entry *)candidate = swap_entry;
                             saved_entry = candidate_entry;
-                            saved_entry = candidate_entry;
                         }
                     }
+                    else if (!saved_is_special) {
                         swap_entry = saved_entry;
                         *(CampC840Entry *)current = candidate_entry;
                         *(CampC840Entry *)candidate = swap_entry;
-                        saved_entry = candidate_entry;
                         saved_entry = candidate_entry;
                     }
+                    else if (candidate_entry.words[0] < saved_entry.words[0]) {
                         swap_entry = saved_entry;
                         *(CampC840Entry *)current = candidate_entry;
                         *(CampC840Entry *)candidate = swap_entry;
-                        saved_entry = candidate_entry;
                         saved_entry = candidate_entry;
                     }
                 }
