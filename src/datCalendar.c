@@ -4212,7 +4212,7 @@ void func_00185b40(void* resource,
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
-    union
+    volatile union
     {
         u64 value;
         struct
