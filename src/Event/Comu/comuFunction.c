@@ -164,7 +164,7 @@ void FUN_003bdbd0(int param_1)
   extern s8 FUN_0016dba0(s16 param_1);
   u32 bVar2;
   s8 cVar3;
-  s16 sVar1;
+  s32 sVar1;
   u32 lVar4;
   int iVar5;
   lVar4 = FUN_0016dce0((s16)param_1);
@@ -194,7 +194,7 @@ void FUN_003bdbd0(int param_1)
 
         if (bVar2) {
           sVar1 = *(volatile s16 *)(*(u32 *)DAT_0095b2a0_abs);
-          FUN_00171960(iVar5 + 6,(s32)sVar1);
+          FUN_00171960(iVar5 + 6,sVar1);
         }
       }
     }

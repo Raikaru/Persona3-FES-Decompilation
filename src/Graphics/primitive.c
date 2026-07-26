@@ -586,7 +586,7 @@ extern float fGpffff8028;
 extern u8 gp0xffff9d68;
 extern void LAB_0035aa10(void);
 extern u32 LAB_0035a850(void* param_1);
-extern void FUN_004c33d0(u8* out, int src, int mode);
+extern void* FUN_004c33d0(void* matrix, const void* scale, int combineOp);
 extern void FUN_004c2f30(int dst, u8* a, float* b);
 extern long FUN_004c1750(u64 stream, void* buf, int size);
 extern long FUN_004c17f0(u64 stream, void* buf, int size);
@@ -625,7 +625,7 @@ typedef struct
     u32 pad4;
 } PrimMatrixData;
 
-// FUN_0035A290 NONMATCHING
+// FUN_0035A290
 
 
 void FUN_0035a290(int param_1, int param_2)
@@ -678,7 +678,7 @@ void FUN_0035a290(int param_1, int param_2)
     matrix.pad4 = 0;
     matrix.mode = 3;
 
-    FUN_004c33d0(buffer, param_2 + 0x24, 0);
+    FUN_004c33d0((void*)buffer, (const void*)((u8*)param_2 + 0x24), 0);
     FUN_004c2f30(param_1, buffer, (f32*)&matrix);
 
     value30 = *(volatile f32*)(param_2 + 0x18);
