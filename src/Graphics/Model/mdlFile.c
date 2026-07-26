@@ -1549,6 +1549,8 @@ extern code PTR_LAB_0069be2c[];
 extern void* PTR_LAB_0069be30;
 #pragma alias PTR_LAB_0069be30_abs PTR_LAB_0069be30
 extern u8 PTR_LAB_0069be30_abs[];
+#pragma alias PTR_LAB_0069be30_cb PTR_LAB_0069be30
+extern void (*PTR_LAB_0069be30_cb[])(u32);
 extern void* PTR_LAB_0069be34;
 #pragma alias PTR_LAB_0069be34_abs PTR_LAB_0069be34
 extern code PTR_LAB_0069be34_abs[];
@@ -8136,7 +8138,7 @@ u32 FUN_00324680(u32 param_1)
 
 
 
-// FUN_00324740 NONMATCHING
+// FUN_00324740
 
 
 void FUN_00324740(int param_1)
@@ -8153,7 +8155,7 @@ void FUN_00324740(int param_1)
 
     uVar1 = *(u16 *)((int)param_1 + 4);
 
-    (*(code *)(&PTR_LAB_0069be30)[(u32)uVar1 * 0xc + (u32)uVar1])();
+    PTR_LAB_0069be30_cb[(u32)uVar1 * 0xc + (u32)uVar1](*(u32 *)((int)param_1 + 8));
 
   }
 
@@ -22808,7 +22810,7 @@ u32 *FUN_00332880(int *arg0)
   result[1] = -1;
   result[2] = 0x3f800000;
   *(u16 *)(result + 0xd) = 1;
-  FUN_00332a30((int *)result,*(u16 *)(*(int *)((u8 *)arg0 + 0x30)),(int *)((u8 *)arg0 + 0xc));
+  FUN_00332a30((int *)result,(u16)(*( *(u16 * volatile *)((int)arg0 + 0x30))),(int *)((u8 *)arg0 + 0xc));
   FUN_00332ac0(result,(u16)(**(u16 **)((int)arg0 + 0x30)),model);
   FUN_00332990(result,(int)arg0);
   return result;
