@@ -4448,9 +4448,10 @@ void FUN_002b2060(int param_1)
         uVarMode = uVar2;
         if (*(int *)(iVar4 + 0x114) == 0) {
           if (FUN_0030b5a0(*(undefined4 *)(*(int *)(*(int *)(iVar4 + 0x100) + 0x30) + 0xa2c),0) == 0) {
-            pCenter = *(u8 **)(*(int *)(iVar4 + 0x100) + 0x30) + 4;
             FUN_002a3e80(50.0f,(u8*)(uintptr_t)*(undefined4 *)(iVar4 + 0xe0),
-                         (u8*)(uintptr_t)(iVar4 + 0x9c),pCenter,uVarMode);
+                         (u8*)(uintptr_t)(iVar4 + 0x9c),
+                         (u8*)(uintptr_t)(*(int *)(*(int *)(iVar4 + 0x100) + 0x30) + 4),
+                         uVarMode);
           }
         }
         else {
