@@ -482,8 +482,9 @@ u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
     u32* values = (u32*)func_00170ed0(equipmentId, &category);
-    s32 bit;
     u32 categoryMask;
+    s32 bit;
+    s32 one;
 
     if (category == 3) {
         goto category3;
@@ -516,8 +517,10 @@ category3:
 invalid:
     return 0;
 found:
-    for (bit = 0; bit < 32; bit++) {
-        if (((1 << bit) & categoryMask) != 0) {
+    one = 1;
+    bit = 0;
+    for (; bit < 32; bit++) {
+        if ((categoryMask & (one << bit)) != 0) {
             return bit;
         }
     }

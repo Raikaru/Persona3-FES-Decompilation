@@ -95,7 +95,7 @@ void FUN_003a05b0(int param_1,int param_2);
 void FUN_003a0960(int param_1,int param_2,u64 param_3);
 u32 FUN_003a0b50(int param_1);
 u32 FUN_003a0e90(int param_1);
-void FUN_003a1f30(int param_1,int param_2);
+void FUN_003a1f30(int param_1);
 void FUN_003a2090(u64 param_1,u16 param_2,u32 param_3,u16 param_4);
 
 /* Region call-cast macros */
@@ -2994,7 +2994,7 @@ u32 FUN_003a1c00(int param_1)
 // FUN_003A1F30 NONMATCHING
 
 
-void FUN_003a1f30(int param_1,int param_2)
+void FUN_003a1f30(int param_1)
 
 
 
@@ -3038,8 +3038,7 @@ void FUN_003a1f30(int param_1,int param_2)
   }
 
 
-  param_2 = *(int *)(iVar1 + 0x14);
-  if (param_2 != 0) {
+  if (*(int *)(iVar1 + 0x14) != 0) {
 
     if (*(int *)(iVar1 + 0x60) != 0) {
 
@@ -3053,8 +3052,7 @@ void FUN_003a1f30(int param_1,int param_2)
 
   }
 
-  param_2 = *(int *)(iVar1 + 0x18);
-  if (param_2 != 0) {
+  if (*(int *)(iVar1 + 0x18) != 0) {
 
     if (*(int *)(iVar1 + 100) != 0) {
       FUN_00133d30(*(int *)(iVar1 + 0x64));
@@ -3071,8 +3069,7 @@ void FUN_003a1f30(int param_1,int param_2)
 
   FUN_0039ee80_typed((int *)(iVar1 + 0x3c));
 
-  param_1 = *(int *)(iVar1 + 0xe8);
-  if (param_1 != 0) {
+  if (*(int *)(iVar1 + 0xe8) != 0) {
     (*(void (**)(...))0x0096017c)();
 
   }

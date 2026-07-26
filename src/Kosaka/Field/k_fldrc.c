@@ -57,10 +57,6 @@ typedef struct FldrcColor
     u64 word;
     FldrcFloat tail;
 } __attribute__((packed)) FldrcColor;
-typedef struct FldrcColorHead
-{
-    u64 word;
-} FldrcColorHead;
 #pragma alias DAT_00678f68_color DAT_00678f68
 extern FldrcColor DAT_00678f68_color[];
 #pragma alias FUN_004cb890_typed FUN_004cb890

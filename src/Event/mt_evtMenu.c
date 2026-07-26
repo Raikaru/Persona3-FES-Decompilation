@@ -1419,6 +1419,9 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5,
 }
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma opt_propagation off
 // FUN_0036F900 NONMATCHING
 
 
@@ -1440,14 +1443,13 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
   FUN_00385990_f32(param_7,(int)param_1 * 0xc,param_2 * 0xc,param_3 * 0xc,
                    param_4 * 0xc,(float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0)) + 1.0f);
 
-  do {
-    if (param_8 == 0) {
-      break;
-    }
+  if (param_8 != 0) {
+
     iVar2 = ((code)param_8)(param_1,param_2,param_7);
     param_2 = param_2 + iVar2;
     iVar1 = iVar1 + iVar2;
-  } while (0);
+
+  }
 
   for (; iVar1 < param_4; iVar1 = iVar1 + 1) {
 
@@ -1466,6 +1468,7 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
   return;
 
 }
+#pragma pop
 
 
 // FUN_0036FA40
