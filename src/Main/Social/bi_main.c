@@ -250,6 +250,7 @@ void func_0023f540(void)
             func_0021d950(slot + 0x10, color);
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
                 frame = func_0021cca0(renderContext, 0xa);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     alpha = 1.0f;
                 } else if (age < 12) {
@@ -283,6 +284,7 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x100, layout);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
                 } else if (age < 8) {
@@ -302,12 +304,16 @@ void func_0023f540(void)
             }
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
                 frame = func_0021cca0(renderContext, 0xa);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     alpha = 1.0f;
                 } else if (age < 8) {
                     alpha = 2.0f;
+                } else if (age < 8) {
+                    alpha = 2.0f;
+                /* Retail 0x23fd38-0x23fd58 preserves a second age<8 branch. */
                 } else if (age < 34) {
-                    alpha = 2.0f - (f32)(age - 8) / 26.0f;
+                    alpha = 1.0f + (1.0f - (f32)(age - 8) / 26.0f);
                 } else {
                     alpha = 1.0f;
                 }
@@ -336,10 +342,14 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x200, layout);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
                 } else if (age < 8) {
                     colorAlpha = 1.0f;
+                } else if (age < 8) {
+                    colorAlpha = 1.0f;
+                /* Retail 0x23fdc0-0x23fdd8 preserves a second age<8 branch. */
                 } else if (age < 34) {
                     colorAlpha = 1.0f - (f32)(age - 8) / 26.0f;
                 } else {
@@ -380,6 +390,7 @@ void func_0023f540(void)
             func_0021d950(slot + 0x10, color);
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
                 frame = func_0021cca0(renderContext, 0xa);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     alpha = 1.0f;
                 } else if (age < 12) {
@@ -413,6 +424,7 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x100, layout);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
                 } else if (age < 8) {
@@ -432,12 +444,16 @@ void func_0023f540(void)
             }
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
                 frame = func_0021cca0(renderContext, 0xa);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     alpha = 1.0f;
                 } else if (age < 8) {
                     alpha = 2.0f;
+                } else if (age < 8) {
+                    alpha = 2.0f;
+                /* Retail 0x2405d4-0x2405f4 preserves a second age<8 branch. */
                 } else if (age < 34) {
-                    alpha = 2.0f - (f32)(age - 8) / 26.0f;
+                    alpha = 1.0f + (1.0f - (f32)(age - 8) / 26.0f);
                 } else {
                     alpha = 1.0f;
                 }
@@ -466,10 +482,14 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x200, layout);
+                age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
                 } else if (age < 8) {
                     colorAlpha = 1.0f;
+                } else if (age < 8) {
+                    colorAlpha = 1.0f;
+                /* Retail 0x24065c-0x240674 preserves a second age<8 branch. */
                 } else if (age < 34) {
                     colorAlpha = 1.0f - (f32)(age - 8) / 26.0f;
                 } else {
@@ -501,6 +521,8 @@ void func_0023f540(void)
             layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
             layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
             func_0021d8e0(slot + 0x10, layout);
+            /* Retail 0x240a44-0x240a80 reloads slot age after the first mode 2 draw. */
+            age = (s32)BI_U32(slot, 0x310);
             if (age < 0) {
                 alpha = 0.0f;
             } else if (age < 3) {
@@ -575,6 +597,13 @@ void func_0023f540(void)
                     t = 50.0f * (1.0f - (f32)age / 6.0f);
                     digitOffset = -t * cosf(D_007CB0D4);
                     vertical = t * sinf(D_007CB0D4);
+                /* Retail 0x240df0-0x240e70 keeps the post-subtract timing branches separate. */
+                } else if (age < 0x16) {
+                    digitOffset = 0.0f;
+                    vertical = 0.0f;
+                } else if (age < 0x22) {
+                    digitOffset = 0.0f;
+                    vertical = 0.0f;
                 } else {
                     digitOffset = 0.0f;
                     vertical = 0.0f;
