@@ -2402,7 +2402,6 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     void* listThree;
     void* model;
     RwV3d diff;
-    RwV3d finalDiff;
     RwV3d rayOrigin;
     RwV3d hitPoint;
     u16 resTypeMask;
@@ -2663,13 +2662,12 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
     {
         f32 trLen;
-        finalDiff = diff;
-        trLen = func_004c69f0(&finalDiff, translation);
+        trLen = func_004c69f0(&diff, translation);
         if (trLen > 9.0f)
         {
-            translation->x = 8.5f * finalDiff.x;
-            translation->y = 8.5f * finalDiff.y;
-            translation->z = 8.5f * finalDiff.z;
+            translation->x = 8.5f * diff.x;
+            translation->y = 8.5f * diff.y;
+            translation->z = 8.5f * diff.z;
         }
     }
 

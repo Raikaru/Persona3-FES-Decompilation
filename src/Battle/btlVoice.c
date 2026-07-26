@@ -5484,7 +5484,7 @@ LAB_002e4af0:
       fStack_60 = fVar6;
     }
     FUN_002a4690(auStack_74,&fStack_80,&fStack_64,D_00697880);
-    fVar9 = (float)FUN_002d1f30((f32 *)auStack_74, (f32 *)&fStack_80);
+    fVar9 = FUN_002d1f30_btlVoice_typed((f32 *)auStack_74, (f32 *)&fStack_80);
     if ((fVar9 > DAT_007cad58) && bVar3) {
       if ((*(char *)(iVar2 + 0xa2) == '\x01') &&
          (lVar4 = FUN_0030c3a0(*(u32 *)(iVar2 + 0xa2c)), lVar4 != 0)) {
@@ -5684,7 +5684,7 @@ void func_002e5060(BtlCamera* camera)
     }
     FUN_004c31b0(angleB, &matrix, 0x697870, 0);
     FUN_004c31b0(angleA, &matrix, 0x697880, 2);
-    FUN_004c6c60(&transformed, &direction, &matrix);
+    FUN_004c6c60_btlVoice_typed(&transformed, &direction, &matrix);
     scale = (f32)FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f);
     scale = width / scale;
     transformed.x = transformed.x * scale;
@@ -5948,7 +5948,7 @@ LAB_002e59dc:
   if (finalPos.y < 25.0f) {
     finalPos.y = 25.0f;
   }
-  fVar9 = (float)FUN_002d1f30(&quatCopy,&quat);
+  fVar9 = FUN_002d1f30_btlVoice_typed((const f32 *)&quatCopy, (const f32 *)&quat);
   if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
     quatCopy = quat;
     FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
