@@ -1204,8 +1204,8 @@ u8 FUN_00418390(int param_1,int *param_2)
 
   iVar9 = uVar3 | uVar2;
   *puVar4 = iVar9;
-  lVar8 = (long)(~piVar5[4]);
-  lVar8 = lVar8 & (long)iVar9;
+  lVar8 = (long)(s16)(~piVar5[4]);
+  lVar8 = (long)iVar9 & lVar8;
   *puVar4 = lVar8;
 
   iVar6 = *(int *)(*(int *)(param_1 + 0x3c) + 8) - *piVar5;

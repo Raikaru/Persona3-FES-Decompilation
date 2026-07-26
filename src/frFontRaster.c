@@ -86,10 +86,8 @@ void FUN_003b35e0(int count)
   i = 0;
   limit = count - 1;
   for (; i < limit; i = i + 1) {
-    int next;
-    next = (int)(node[3] + 0x200);
-    node[6] = next;
-    node = (int *)next;
+    node[6] = (int)(node[3] + 0x200);
+    node = (int *)node[6];
     node[3] = (int)(node + 7);
   }
   piGpffffb954[5] = (int)node;
