@@ -431,9 +431,9 @@ void bsaMain00210d90(BsaWork* work)
     u32 table2;
     u32 image;
     u32 resource;
-    f32 alpha;
-    f32 slide;
     f32 iconAlpha;
+    f32 slide;
+    f32 alpha;
     f32 x;
     f32 y;
     f32 base;
