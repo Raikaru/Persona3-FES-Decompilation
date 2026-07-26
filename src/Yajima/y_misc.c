@@ -2239,7 +2239,7 @@ void FUN_004264a0(int param_1)
 
 }
 
-// FUN_004264D0 NONMATCHING
+// FUN_004264D0
 
 
 u32 FUN_004264d0(u64 param_1,s8 param_2)
@@ -2248,15 +2248,15 @@ u32 FUN_004264d0(u64 param_1,s8 param_2)
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
   u32 uVar2;
 
   
 
-  memset(0x7ce6b8,0,4);
+  memset(&DAT_007ce6b8,0,4);
 
-  lVar1 = (*DAT_00960184)(1,2,0x40000);
+  lVar1 = (*DAT_00960184_abs)(1,2,0x40000);
 
   if (lVar1 == 0) {
 
@@ -2266,7 +2266,7 @@ u32 FUN_004264d0(u64 param_1,s8 param_2)
 
   else {
 
-    uVar2 = kwlnTaskCreate(param_1,0x6b4420,0x831,0x4260a0,0x4264a0,lVar1);
+    uVar2 = kwlnTaskCreate(param_1,DAT_006b4400 + 0x20,0x831,FUN_004260a0,FUN_004264a0,lVar1);
 
     *(u8 *)lVar1 = 0;
 
