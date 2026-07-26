@@ -1904,9 +1904,7 @@ s32 func_001e4bc0(RuntimeTask* task)
         case 3:
             value = *(u32*)func_001a41b0(work->windowTask, 4);
             work->angle = (f32)(s32)value;
-            func_001ad8c0(
-                work->angle, *(void**)((u8*)func_003b5d10(
-                    work->resourceId) + 0x1e8));
+            func_001ad8c0(work->angle, work->controller);
             work->sourceType = (u8)*(u32*)func_001a41b0(
                 work->windowTask, 5);
             signedValue = *(s32*)func_001a41b0(
