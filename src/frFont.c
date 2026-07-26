@@ -150,6 +150,8 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
+#pragma alias FUN_003b1920_typed FUN_003b1920
+extern int FUN_003b1920_typed(int param_1,int param_2,int param_3);
 void FUN_003b19a0(u64 param_1);
 int FUN_003b19d0(FrFontNode *node);
 u16 FUN_003b1a10(u32 param_1);
@@ -3058,7 +3060,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (lVar7 != 0) {
 
-      iVar6 = FUN_003b1920(iVar6,lVar7,1);
+      iVar6 = FUN_003b1920_typed(iVar6,lVar7,1);
 
     }
 
