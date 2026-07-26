@@ -8780,194 +8780,247 @@ void func_002ac6e0(BtlCamera* camera)
     }
 }
 
+/* Retail 0x2AC920 recovery: the frame carries the camera pose, target pose,
+ * six world-space vectors, four 2-D helper pairs, and the scalar intermediates
+ * consumed by the draw setup at offsets 0x4c0-0x61c. */
+typedef struct BtlCameraC920Pose
+{
+    RwV3d pos;
+    RtQuat rot;
+} BtlCameraC920Pose;
+
+typedef struct BtlCameraC920Pair
+{
+    f32 first;
+    f32 second;
+} BtlCameraC920Pair;
+
+typedef struct BtlCameraC920Work
+{
+    BtlCameraC920Pose cameraPose;
+    BtlCameraC920Pose desiredPose;
+    RwV3d sourceCenter;
+    RwV3d targetCenter;
+    RwV3d direction;
+    RwV3d firstPoint;
+    RwV3d secondPoint;
+    RwV3d basePoint;
+    BtlCameraC920Pair cameraHorizontal;
+    BtlCameraC920Pair projectionFrom;
+    BtlCameraC920Pair projectionTo;
+    BtlCameraC920Pair projectionOutput;
+    f32 f2;
+    f32 f7;
+    f32 f8;
+    f32 f9;
+    f32 f11;
+    f32 f12;
+    f32 f13;
+    f32 projectionDistance;
+    f32 step;
+} BtlCameraC920Work;
+
+#pragma alias FUN_002a4470_c920 FUN_002a4470
+extern void FUN_002a4470_c920(BtlCameraC920Pose* dst,
+                               const BtlCameraC920Pose* src);
+#pragma alias FUN_002a44f0_c920 FUN_002a44f0
+extern void FUN_002a44f0_c920(BtlCameraC920Pose* dst,
+                               const BtlCameraC920Pose* src);
+#pragma alias FUN_002a2290_c920 FUN_002a2290
+extern void FUN_002a2290_c920(BtlCamera* camera, const RwV3d* start,
+                               const RwV3d* end, s32 mode);
+#pragma alias FUN_002a3110_c920 FUN_002a3110
+extern void FUN_002a3110_c920(BtlCamera* camera, f32 step);
+
 // FUN_002AC920 NONMATCHING
 
 void func_002ac920(BtlCamera* camera, long unused)
 {
-  int iVar1;
-  float fVar2;
-  int iVar3;
-  int iVar4;
-  undefined8 uVar5;
-  int iVar6;
-  float fVar7;
-  float fVar8;
-  float fVar9;
-  undefined4 uVar10;
-  float fVar11;
-  float fVar12;
-  float fVar13;
-  undefined1 auStack_e0 [4];
-  float fStack_dc;
-  undefined1 auStack_d4 [16];
-  float fStack_c4;
-  float fStack_c0;
-  float fStack_bc;
-  undefined1 auStack_b8 [24];
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
-  float fStack_94;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_84;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
-  float fStack_74;
-  GhidraPair uStack_70;
-  float fStack_68;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  RwV3d targetCenter;
-  RwV3d sourceCenter;
-  RtQuat quaternion;
-  BtlCameraKeyFrame frame;
-  RwV3d firstPoint;
-  RwV3d secondPoint;
-  
-  iVar3 = (int)camera;
-  iVar1 = *(int *)(*(int *)(iVar3 + 0xe0) + 0x30);
-  iVar6 = *(int *)(*(int *)(*(int *)(iVar3 + 0xe0) + 0x38) + 0x30);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), &sourceCenter);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar6), &targetCenter);
-  fStack_50 = sourceCenter.x - targetCenter.x;
-  fStack_4c = sourceCenter.y - targetCenter.y;
-  fStack_48 = sourceCenter.z - targetCenter.z;
-  fVar7 = (float)FUN_004c69f0(&fStack_50,&fStack_50);
-  fStack_98 = *(float *)(iVar3 + 0x9c) - sourceCenter.x;
-  fStack_94 = *(float *)(iVar3 + 0xa4) - sourceCenter.z;
-  FUN_004c6b20(&fStack_98,&fStack_98);
-  fVar7 = DAT_007cad88 * fVar7;
-  fStack_40 = fStack_50 * fVar7 + targetCenter.x;
-  fStack_3c = fStack_4c * fVar7 + targetCenter.y;
-  fStack_38 = fStack_48 * fVar7 + targetCenter.z;
-  fVar7 = 0.0f;
-  fVar13 = fStack_50 * fStack_98 + fStack_48 * fStack_94;
-  if (0.0f <= fVar13) {
-    fStack_30 = sourceCenter.x;
-    fStack_2c = sourceCenter.y;
-    fStack_28 = sourceCenter.z;
-    fVar8 = 1.5f;
-    fVar9 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.5f;
-    fVar11 = DAT_007cad84;
-    iVar4 = iVar1;
-    if (sourceCenter.y < 125.0f) {
-      fStack_2c = 125.0f;
-      fVar8 = 1.5f;
+    BtlCameraC920Work work;
+    BtlAction* action;
+    BtlUnit* source;
+    BtlUnit* target;
+    BtlUnit* chosen;
+    s32 mode;
+
+    (void)unused;
+    action = camera->action;
+    source = action->unit;
+    target = action->target.targetedActions[0]->unit;
+
+    btlUnitGetSphereWorldCenter(source, &work.sourceCenter);
+    btlUnitGetSphereWorldCenter(target, &work.targetCenter);
+
+    work.direction.x = work.sourceCenter.x - work.targetCenter.x;
+    work.direction.y = work.sourceCenter.y - work.targetCenter.y;
+    work.direction.z = work.sourceCenter.z - work.targetCenter.z;
+    work.f7 = DAT_007cad88 *
+              FUN_004c69f0(&work.direction, &work.direction);
+
+    work.cameraHorizontal.first = camera->pos.x - work.sourceCenter.x;
+    work.cameraHorizontal.second = camera->pos.z - work.sourceCenter.z;
+    FUN_004c6b20_typed(&work.cameraHorizontal.first,
+                       &work.cameraHorizontal.first);
+
+    work.secondPoint.x = work.direction.x * work.f7 + work.targetCenter.x;
+    work.secondPoint.y = work.direction.y * work.f7 + work.targetCenter.y;
+    work.secondPoint.z = work.direction.z * work.f7 + work.targetCenter.z;
+
+    work.f13 = work.direction.x * work.cameraHorizontal.first +
+               work.direction.z * work.cameraHorizontal.second;
+    work.f7 = 0.0f;
+
+    if (0.0f <= work.f13)
+    {
+        work.basePoint = work.sourceCenter;
+        work.f2 = work.basePoint.y;
+        work.f8 = 1.5f;
+        work.f9 = source->sphereRadius * source->scale * 1.5f;
+        work.f11 = DAT_007cad84;
+        chosen = source;
+        if (work.basePoint.y < 125.0f)
+        {
+            work.basePoint.y = 125.0f;
+            work.f2 = 125.0f;
+        }
     }
-  }
-  else {
-    fStack_30 = targetCenter.x;
-    fStack_2c = targetCenter.y;
-    fStack_28 = targetCenter.z;
-    if (*(char *)(iVar6 + 0xa2) == '\0') {
-      fVar9 = *(float *)(iVar6 + 0x90) * *(float *)(iVar6 + 0x2c) * 1.5f;
-      fVar8 = 3.5f;
+    else
+    {
+        work.basePoint = work.targetCenter;
+        work.f2 = work.basePoint.y;
+        if (target->genus == 0)
+        {
+            work.f9 = target->sphereRadius * target->scale * 1.5f;
+            work.f8 = 3.5f;
+        }
+        else
+        {
+            work.f9 = target->sphereRadius * target->scale * 1.25f;
+            work.f8 = 1.75f;
+        }
+        work.f7 = 0.25f;
+        work.f11 = 0.25f;
+        chosen = target;
     }
-    else {
-      fVar9 = *(float *)(iVar6 + 0x90) * *(float *)(iVar6 + 0x2c) * 1.25f;
-      fVar8 = 1.75f;
+
+    work.f12 = work.direction.z * work.cameraHorizontal.first +
+               (-work.direction.x) * work.cameraHorizontal.second;
+    work.firstPoint.y = work.f7 * chosen->unk_8c * chosen->scale +
+                        work.f2 + 0.0f;
+
+    if (0.0f <= work.f12)
+    {
+        work.firstPoint.x = work.direction.z * work.f9 +
+                            work.basePoint.x + 0.0f;
+        work.firstPoint.z = work.basePoint.z -
+                            work.direction.x * work.f9 + 0.0f;
     }
-    fVar7 = 0.25f;
-    fVar11 = fVar7;
-    iVar4 = iVar6;
-    iVar6 = iVar1;
-  }
-  fVar2 = fStack_2c;
-  fStack_a0 = fStack_48;
-  fStack_9c = -fStack_50;
-  fVar12 = fStack_48 * fStack_98 + fStack_9c * fStack_94;
-  fStack_5c = fVar7 * *(float *)(iVar4 + 0x8c) * *(float *)(iVar4 + 0x2c) + fStack_2c + 0.0f;
-  if (0.0f <= fVar12) {
-    fStack_60 = fStack_48 * fVar9 + fStack_30 + 0.0f;
-    fStack_58 = (fStack_28 + 0.0f) - fStack_50 * fVar9;
-  }
-  else {
-    fStack_60 = (fStack_30 + 0.0f) - fStack_48 * fVar9;
-    fStack_58 = fStack_50 * fVar9 + fStack_28 + 0.0f;
-  }
-  uStack_70 = PAIR44(fStack_4c,fStack_50);
-  fStack_68 = fStack_48;
-  fVar7 = fStack_28;
-  firstPoint.x = fStack_60;
-  firstPoint.y = fStack_5c;
-  firstPoint.z = fStack_58;
-  secondPoint.x = fStack_40;
-  secondPoint.y = fStack_3c;
-  secondPoint.z = fStack_38;
-  FUN_002a4690(&quaternion, &firstPoint, &secondPoint, &D_00697880);
-  RtQuatTransformVectors((RwV3d*)&fStack_50, &D_006978A0, 1, &quaternion);
-  fStack_90 = fStack_40;
-  fStack_8c = fStack_38;
-  fStack_88 = fStack_60;
-  fStack_84 = fStack_58;
-  fStack_78 = fStack_30;
-  fStack_74 = fVar7;
-  fVar7 = (float)FUN_002d1fd0((f32*)&fStack_90,(f32*)&fStack_88,(f32*)&fStack_78,(f32*)&fStack_80);
-  fVar9 = fVar8 * *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c) + fVar7 + 0.0f;
-  fStack_60 = fStack_80;
-  fStack_5c = fVar2;
-  fStack_58 = fStack_7c;
-  fVar8 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar3 + 0xb8) * 0.5f);
-  fVar7 = 500.0f;
-  if (500.0f <= fVar9 / fVar8) {
-    fVar7 = fVar9 / fVar8;
-  }
-  fStack_50 = fStack_50 * fVar7;
-  fStack_4c = fStack_4c * fVar7;
-  fStack_48 = fStack_48 * fVar7;
-  if (0.0f <= fVar13) {
-    if (fVar12 < 0.0f) {
-      fVar7 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-      fStack_60 = fStack_68 * fVar7 + fStack_60 + 0.0f;
-      fStack_58 = (fStack_58 + 0.0f) - uStack_70.f._0_4_ * fVar7;
+    else
+    {
+        work.firstPoint.x = work.basePoint.x -
+                            work.direction.z * work.f9 + 0.0f;
+        work.firstPoint.z = work.direction.x * work.f9 +
+                            work.basePoint.z + 0.0f;
     }
-  }
-  else if (0.0f <= fVar12) {
-    fVar7 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-    fStack_60 = (fStack_60 + 0.0f) - fStack_68 * fVar7;
-    fStack_58 = uStack_70.f._0_4_ * fVar7 + fStack_58 + 0.0f;
-  }
-  fStack_5c = fVar11 * *(float *)(iVar4 + 0x8c) * *(float *)(iVar4 + 0x2c) + fVar2 + 0.0f;
-  fStack_c4 = fStack_60 + fStack_50;
-  fStack_c0 = fStack_5c + fStack_4c;
-  fStack_bc = fStack_58 + fStack_48;
-  fVar7 = (float)FUN_002d1f30(auStack_d4,auStack_b8);
-  if (DAT_007cae24 < fVar7) {
-    FUN_004be1e0(&fStack_50,0x6978a0,1,auStack_d4);
-    fStack_50 = fStack_50 * 150.0f;
-    fStack_4c = fStack_4c * 150.0f;
-    fStack_48 = fStack_48 * 150.0f;
-    fStack_c4 = fStack_c4 + fStack_50;
-    fStack_c0 = fStack_c0 + fStack_4c;
-    fStack_bc = fStack_bc + fStack_48;
-    uVar5 = 3;
-    FUN_00351bb0(0xc);
-    uVar10 = 0x3fc00000;
-  }
-  else {
-    uVar5 = 0x33;
-    uVar10 = DAT_007cad98;
-  }
-  if (fStack_dc < 25.0f) {
-    fStack_dc = 25.0f;
-  }
-  if (fStack_c0 < 25.0f) {
-    fStack_c0 = 25.0f;
-  }
-  return;
+
+    FUN_002a4690(&work.desiredPose.rot, &work.firstPoint,
+                 &work.secondPoint, &D_00697880);
+    FUN_004be1e0_typed(&work.direction, &D_006978A0, 1,
+                      &work.desiredPose.rot);
+
+    work.projectionFrom.first = work.secondPoint.x;
+    work.projectionFrom.second = work.secondPoint.z;
+    work.projectionTo.first = work.firstPoint.x;
+    work.projectionTo.second = work.firstPoint.z;
+    work.cameraHorizontal.first = work.basePoint.x;
+    work.cameraHorizontal.second = work.basePoint.z;
+    work.projectionDistance =
+        FUN_002d1fd0((f32*)&work.projectionFrom,
+                     (f32*)&work.projectionTo,
+                     (f32*)&work.cameraHorizontal,
+                     (f32*)&work.projectionOutput);
+    work.firstPoint.x = work.projectionOutput.first;
+    work.firstPoint.z = work.projectionOutput.second;
+
+    work.f9 =
+        (work.f8 * chosen->sphereRadius * chosen->scale +
+         work.projectionDistance) /
+        tanf(DAT_007cad60 * camera->fovRad * 0.5f);
+    if (work.f9 < 500.0f)
+    {
+        work.f9 = 500.0f;
+    }
+    work.direction.x *= work.f9;
+    work.direction.y *= work.f9;
+    work.direction.z *= work.f9;
+
+    if (0.0f <= work.f13)
+    {
+        if (work.f12 < 0.0f)
+        {
+            work.firstPoint.x = work.direction.z *
+                                (chosen->sphereRadius * chosen->scale) +
+                                work.firstPoint.x + 0.0f;
+            work.firstPoint.z = work.firstPoint.z -
+                                work.direction.x *
+                                (chosen->sphereRadius * chosen->scale) + 0.0f;
+        }
+    }
+    else if (0.0f <= work.f12)
+    {
+        work.firstPoint.x = work.firstPoint.x -
+                            work.direction.z *
+                            (chosen->sphereRadius * chosen->scale) + 0.0f;
+        work.firstPoint.z = work.direction.x *
+                            (chosen->sphereRadius * chosen->scale) +
+                            work.firstPoint.z + 0.0f;
+    }
+    work.firstPoint.y = work.f11 * chosen->unk_8c * chosen->scale +
+                        work.f2 + 0.0f;
+    work.desiredPose.pos.x = work.firstPoint.x + work.direction.x;
+    work.desiredPose.pos.y = work.firstPoint.y + work.direction.y;
+    work.desiredPose.pos.z = work.firstPoint.z + work.direction.z;
+
+
+    FUN_002a4470_c920(&work.cameraPose,
+                      (const BtlCameraC920Pose*)&camera->pos);
+    work.projectionDistance = FUN_002d1f30_typed(
+        (const f32*)&work.cameraPose.rot,
+        (const f32*)&work.desiredPose.rot);
+    if (DAT_007cae24 < work.projectionDistance)
+    {
+        FUN_002a44f0_c920(&work.cameraPose, &work.desiredPose);
+        FUN_004be1e0_typed(&work.direction, &D_006978A0, 1,
+                          &work.cameraPose.rot);
+        work.direction.x *= 150.0f;
+        work.direction.y *= 150.0f;
+        work.direction.z *= 150.0f;
+        work.desiredPose.pos.x += work.direction.x;
+        work.desiredPose.pos.y += work.direction.y;
+        work.desiredPose.pos.z += work.direction.z;
+        mode = 3;
+        FUN_00351bb0(0xc);
+        work.step = 1.5f;
+    }
+    else
+    {
+        mode = 0x33;
+        work.step = DAT_007cad98;
+    }
+
+    if (work.cameraPose.pos.y < 25.0f)
+    {
+        work.cameraPose.pos.y = 25.0f;
+    }
+    if (work.desiredPose.pos.y < 25.0f)
+    {
+        work.desiredPose.pos.y = 25.0f;
+    }
+    FUN_002a3e80_ab330(action, &chosen->pos,
+                       (f32*)&work.desiredPose.pos, mode, 50.0f);
+    FUN_002a2290_c920(camera, &work.cameraPose.pos,
+                       &work.desiredPose.pos, 1);
+    FUN_002a3110_c920(camera, work.step);
 }
 
 // FUN_002ACF90 NONMATCHING
