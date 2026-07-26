@@ -1706,7 +1706,7 @@ s32 func_001e60b0(RuntimeTask* task)
     RuntimeVec3 adjusted;
     RuntimeMatrix rotation;
     RuntimeTransitionAngles angles;
-    char text[128];
+    char text[112];
     u32 input;
     u32 index;
     u32 matrixFlags;
@@ -1901,6 +1901,7 @@ s32 func_001e60b0(RuntimeTask* task)
             }
             if ((input & 0x40) != 0)
             {
+                func_001a3bf0(work->windowTask, 1);
                 taskNode = func_001e2a20();
                 taskNode->resourceId = work->resourceId;
                 taskNode->task = work->positionTask;
