@@ -3493,7 +3493,7 @@ void func_001f7210(void)
             }
             case 1:
             {
-                brRoot001f1df0(scan_arr, &member_count);
+                brRoot001f1df0((u16 *)scan_arr, &member_count);
                 for (effect_scan1 = 0; effect_scan1 < (u32)member_count; effect_scan1++) {
                     u16 mbr = scan_arr[effect_scan1];
                     u16 cur = (u16)func_0016c4f0(mbr);
@@ -3518,7 +3518,7 @@ void func_001f7210(void)
             }
             case 3:
             {
-                brRoot001f1df0(scan_arr, &member_count);
+                brRoot001f1df0((u16 *)scan_arr, &member_count);
                 for (effect_scan3 = 0; effect_scan3 < (u32)member_count; effect_scan3++) {
                     u16 mbr = scan_arr[effect_scan3];
                     u16 cur = (u16)func_0016c570(mbr);
@@ -3539,7 +3539,7 @@ void func_001f7210(void)
                 break;
             case 5:
             {
-                brRoot001f1df0(scan_arr, &member_count);
+                brRoot001f1df0((u16 *)scan_arr, &member_count);
                 for (effect_scan5 = 0; effect_scan5 < (u32)member_count; effect_scan5++) {
                     if ((func_0016c970(scan_arr[effect_scan5]) & 0x80) != 0) break;
                 }
@@ -3560,7 +3560,7 @@ void func_001f7210(void)
                 break;
             case 8:
             {
-                brRoot001f1df0(scan_arr, &member_count);
+                brRoot001f1df0((u16 *)scan_arr, &member_count);
                 for (effect_scan8 = 0; effect_scan8 < (u32)member_count; effect_scan8++) {
                     st_val = func_0016c920(scan_arr[effect_scan8]);
                     if (st_val >= 3 && st_val <= 5) break;
@@ -3580,7 +3580,7 @@ void func_001f7210(void)
                 break;
             case 10:
             {
-                brRoot001f1df0(scan_arr, &member_count);
+                brRoot001f1df0((u16 *)scan_arr, &member_count);
                 for (effect_scan10 = 0; effect_scan10 < (u32)member_count; effect_scan10++) {
                     st_val = func_0016c920(scan_arr[effect_scan10]);
                     if (st_val == 1 || st_val == 2) break;
@@ -3600,7 +3600,7 @@ void func_001f7210(void)
                 break;
             case 12:
             {
-                brRoot001f1df0(scan_arr, &member_count);
+                brRoot001f1df0((u16 *)scan_arr, &member_count);
                 for (effect_scan12 = 0; effect_scan12 < (u32)member_count; effect_scan12++) {
                     st_val = func_0016c920(scan_arr[effect_scan12]);
                     if (st_val != 2) break;

@@ -4503,73 +4503,73 @@ void func_002bedd0(int param_1)
 
 u64 func_002bef20(u64 param_1)
 {
-  short state = 0;
-  int resultCode = 0;
-  int target = 0;
-  u16 value = 0;
-  short *packet;
-  long unused = 0;
-  u32 flags = 0;
-  u16 value6 = 0;
-  u16 value7 = 0;
-  u16 value8 = 0;
-  u32 value10 = 0;
+  short sVar1 = 0;
+  int iVar2 = 0;
+  u16 uVar3 = 0;
+  short *psVar4;
+  long lVar5 = 0;
+  u32 uStack_20 = 0;
+  int iStack_1c = 0;
+  u16 uStack_18 = 0;
+  u16 uStack_16 = 0;
+  u16 uStack_14 = 0;
+  u32 uStack_10 = 0;
 
-  unused = btlFadeSuppressesFormationUpdates();
-  if ((unused != 0) || ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) != 0)) {
+  lVar5 = btlFadeSuppressesFormationUpdates();
+  if ((lVar5 != 0) || ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) != 0)) {
     return 0;
   }
-  packet = (short *)func_00195540_u32((u32)param_1);
-  state = *packet;
-  if ((state == 8) || (state == 7) || (state == 5) || (state == 3)) {
+  psVar4 = (short *)func_00195540_u32((u32)param_1);
+  sVar1 = *psVar4;
+  if ((sVar1 == 8) || (sVar1 == 7) || (sVar1 == 5) || (sVar1 == 3)) {
     return 0;
   }
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
     func_0016f1f0(0x140c, 0);
     func_0016f1f0(0x1409, 0);
-    target = *(int *)(packet + 2);
-    unused = func_001fddf0();
-    if (unused != 0) {
-      func_001fdf10(&flags);
-      *(short *)(target + 0x6c) = (short)resultCode;
-      switch (resultCode) {
+    iVar2 = *(int *)(psVar4 + 2);
+    lVar5 = func_001fddf0();
+    if (lVar5 != 0) {
+      func_001fdf10(&uStack_20);
+      *(short *)(iVar2 + 0x6c) = (short)iStack_1c;
+      switch (iStack_1c) {
       case 1:
-        value = (u16)func_00308930(*(u32 *)(*(int *)(target + 0x30) + 0xa2c));
-        *(u16 *)(target + 0x6e) = value;
-        *packet = 3;
+        uVar3 = (u16)func_00308930(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
+        *(u16 *)(iVar2 + 0x6e) = uVar3;
+        *psVar4 = 3;
         break;
       case 2:
-        *(u16 *)(target + 0x6e) = value7;
-        *packet = 3;
+        *(u16 *)(iVar2 + 0x6e) = uStack_16;
+        *psVar4 = 3;
         break;
       case 3:
-        *(u16 *)(target + 0x70) = value8;
-        value = (u16)func_0030bc20(value8);
-        *(u16 *)(target + 0x6e) = value;
-        *packet = 3;
+        *(u16 *)(iVar2 + 0x70) = uStack_18;
+        uVar3 = (u16)func_0030bc20(uStack_18);
+        *(u16 *)(iVar2 + 0x6e) = uVar3;
+        *psVar4 = 3;
         break;
       case 4:
-        if (((flags & 1) == 0) && ((flags & 2) == 0)) {
-          *packet = 5;
+        if (((uStack_20 & 1) == 0) && ((uStack_20 & 2) == 0)) {
+          *psVar4 = 5;
         } else {
-          *(u16 *)(target + 0x6e) = value7;
-          *packet = 3;
+          *(u16 *)(iVar2 + 0x6e) = uStack_16;
+          *psVar4 = 3;
         }
         break;
       case 5:
-        *(u16 *)(target + 0x74) = value6;
-        *packet = 5;
+        *(u16 *)(iVar2 + 0x74) = uStack_14;
+        *psVar4 = 5;
         break;
       case 10:
-        func_002db650(value10);
-        *packet = 7;
+        func_002db650(uStack_10);
+        *psVar4 = 7;
         break;
       case 6:
       case 7:
-        *packet = 5;
+        *psVar4 = 5;
         break;
       case 13:
-        *packet = 8;
+        *psVar4 = 8;
         break;
       default:
         break;
@@ -4578,38 +4578,38 @@ u64 func_002bef20(u64 param_1)
   } else {
     func_0016f1f0(0x140c, 1);
     func_0016f1f0(0x1409, 1);
-    if (*packet == 6) {
-      *packet = 2;
+    if (*psVar4 == 6) {
+      *psVar4 = 2;
       return 0;
     }
-    target = *(int *)(packet + 6);
-    if (target != 0) {
-      if (*(code **)(target + 0x14) != NULL) {
-        resultCode = (int)(**(code **)(target + 0x14))(target, *(u32 *)(packet + 2));
-        switch (resultCode) {
+    iVar2 = *(int *)(psVar4 + 6);
+    if (iVar2 != 0) {
+      if (*(code **)(iVar2 + 0x14) != NULL) {
+        iStack_1c = (int)(**(code **)(iVar2 + 0x14))(iVar2, *(u32 *)(psVar4 + 2));
+        switch (iStack_1c) {
         case 1:
-          target = *(int *)(target + 0x20);
-          if (target != 0) {
-            *(int *)(packet + 6) = target;
-            *(u32 *)(target + 0x24) = 0;
+          iVar2 = *(int *)(iVar2 + 0x20);
+          if (iVar2 != 0) {
+            *(int *)(psVar4 + 6) = iVar2;
+            *(u32 *)(iVar2 + 0x24) = 0;
           }
           break;
         case 2:
-          if (*(int *)(target + 0x24) != 0) {
-            *(int *)(packet + 6) = *(int *)(target + 0x24);
+          if (*(int *)(iVar2 + 0x24) != 0) {
+            *(int *)(psVar4 + 6) = *(int *)(iVar2 + 0x24);
           }
           break;
         case 4:
-          target = *(int *)(target + 0x20);
-          if (target != 0) {
-            *(int *)(packet + 6) = target;
-            *(u32 *)(target + 0x24) = 0;
+          iVar2 = *(int *)(iVar2 + 0x20);
+          if (iVar2 != 0) {
+            *(int *)(psVar4 + 6) = iVar2;
+            *(u32 *)(iVar2 + 0x24) = 0;
           }
         case 3:
-          *packet = 3;
+          *psVar4 = 3;
           break;
         case 6:
-          *packet = 5;
+          *psVar4 = 5;
           break;
         default:
           break;
