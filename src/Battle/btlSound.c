@@ -1761,7 +1761,7 @@ u32 FUN_002defe0(int param_1)
   int aiStack_30 [12];
   
   lVar2 = FUN_0010a500(4);
-  if (lVar2 == 1) {
+  if ((u16)lVar2 == 1) {
 
     return 0xffffffff;
 

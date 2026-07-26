@@ -719,7 +719,7 @@ void* func_001a7370(void* material, u32* state)
     }
     if (candidate < current)
     {
-        state[0] = D_00678C00[current];
+        state[0] = D_00678C00_abs[current];
     }
     selected = K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C48);
     if (selected == 1)

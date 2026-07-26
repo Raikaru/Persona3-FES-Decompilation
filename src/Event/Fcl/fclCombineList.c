@@ -694,10 +694,6 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
                 return param_2;
         }
         i++;
-        }
-        if (p == param_2)
-            return param_2;
-        i++;
     }
     return 0;
 }

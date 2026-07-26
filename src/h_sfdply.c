@@ -1932,7 +1932,6 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     width = image->width;
     height = image->height;
     opaque = 0xFF;
-    asm volatile("" : "+r"(opaque));
     y = 0;
     while (y < height)
     {
