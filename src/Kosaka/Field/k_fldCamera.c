@@ -58,8 +58,6 @@ extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern const char DAT_00683b10[];
 extern const char D_00683A8C[];
 extern const char D_00683AD0[];
-#pragma alias D_00683AD0_abs D_00683AD0
-extern const char D_00683AD0_abs[];
 extern const char D_00683A90[];
 extern void* DAT_00960184[];
 extern u32* PTR_DAT_007cd540;
@@ -585,7 +583,7 @@ HCdvd* func_001d6b10(void)
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        sprintf(path, D_00683AD0_abs,
+        sprintf(path, D_00683AD0,
                 (s32)PTR_DAT_007cd540[0], (s32)PTR_DAT_007cd540[1]);
         if (H_Cdvd_FileExists(path) != false)
         {

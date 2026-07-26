@@ -1281,7 +1281,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
                         r = fGpffff8050 + xSquared * r;
                         r = fGpffff8054 + xSquared * r;
                         r2 = fGpffff8058 + xSquared * r;
-                        firstWeight = x * xSquared * r2 + x;
+                        firstWeight = xSquared * x * r2 + x;
                         x = radius * blend.scalar;
                         xSquared = x * x;
                         r = fGpffff8048 + fGpffff8130 * xSquared;
@@ -1289,7 +1289,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
                         r = fGpffff8050 + xSquared * r;
                         r = fGpffff8054 + xSquared * r;
                         r2 = fGpffff8058 + xSquared * r;
-                        radius = x * xSquared * r2 + x;
+                        radius = xSquared * x * r2 + x;
                     }
                     blendedRot.imag.x = blend.first.imag.x * firstWeight;
                     blendedRot.imag.y = blend.first.imag.y * firstWeight;
@@ -4426,8 +4426,9 @@ void FUN_002b2060(int param_1)
      ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
-      FUN_002b64d0((BtlCamera*)iVar4,
-                   (struct B64CameraWork*)(iVar4 + 0xec));
+      BtlCamera* camera = (BtlCamera*)iVar4;
+      struct B64CameraWork* work = (struct B64CameraWork*)(iVar4 + 0xec);
+      FUN_002b64d0(camera, work);
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);
     if (pVar != 0) {

@@ -77,6 +77,48 @@ extern u8 D_00684370[];
 extern char D_00684330[];
 extern char D_00684380[];
 extern void* func_001a4cd0(s32 parent);
+extern u32 func_001a3f20(void* task, const char* name);
+extern s32 func_00316f70(void* object);
+extern void* func_00316e00(u16 majorId, u16 minorId, s32 mode);
+extern void* func_00316b40(s32 majorId, s32 minorId, const char* path,
+                           s32 mode);
+extern u16 func_003b6270(u16 resourceId, u8 type, void* model);
+extern void func_001a0dc0(u16 resourceId, s32 enabled);
+extern void func_001ad8c0(f32 value, void* controller);
+extern void func_001ad870(void* controller, u32 flags);
+extern void func_001ad890(void* controller, u32 flags);
+extern void func_001ad940(RuntimeVec3* output, void* controller);
+extern void func_001addf0(void* controller, const RuntimeVec3* direction);
+extern void func_001adff0(void* controller, const RuntimeVec3* direction);
+extern void func_001ae0d0(void* controller);
+extern void func_0019c320(f32 value, void* controller);
+extern void func_004c2f10(void* matrix);
+extern char D_00684120[];
+extern char D_00684128[];
+extern char D_00684220[];
+extern char D_00684270[];
+extern char D_00684290[];
+extern RuntimeVec3 D_00684260;
+typedef struct RuntimeControllerWork RuntimeControllerWork;
+struct RuntimeControllerWork
+{
+    u32 state;
+    void* windowTask;
+    u8 reserved08[8];
+    u16 majorId;
+    u16 minorId;
+    u16 resourceId;
+    u8 type;
+    u8 flags;
+    f32 angle;
+    u32 value;
+    u8 sourceType;
+    u8 sourceFlags;
+    u8 reserved22[2];
+    f32 scale;
+    void* model;
+    void* controller;
+};
 struct RuntimeListNode
 {
     u32 flags;

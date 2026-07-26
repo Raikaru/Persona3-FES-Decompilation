@@ -1916,28 +1916,31 @@ void func_0010dd10(HSfdImage* image, const u8* source)
 // FUN_0010DDC0 NONMATCHING
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
+    s32 x;
+    s32 y;
     u8* dst;
     u8* pixel;
     s32 width;
     s32 height;
-    s32 x;
-    s32 y;
-    s8 opaque = -1;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
-    for (y = 0; y < height; y++)
+    y = 0;
+    while (y < height)
     {
-        for (x = 0; x < width; x++)
+        x = 0;
+        while (x < width)
         {
             pixel = dst + (x * 4);
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
-            pixel[3] = (u8)opaque;
+            pixel[3] = 0xFF;
             source += 3;
+            x++;
         }
+        y++;
         dst += image->stride;
     }
 }
@@ -1950,8 +1953,8 @@ void func_0010de40(HSfdImage* image, const u8* source)
     s32 width;
     s32 height;
     const u16* pixels;
-    s32 y;
     s32 x;
+    s32 y;
     u32 opaque;
     dst = image->pixels;
     width = image->width;
