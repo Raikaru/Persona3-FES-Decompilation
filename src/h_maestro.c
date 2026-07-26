@@ -1485,14 +1485,14 @@ f32 func_00112740(void* param_1)
 #pragma push
 #pragma opt_common_subs off
  
-/* Retail keeps each extension direction as a distinct render path: the four
- * record extensions are followed by node extraHeight and extraWidth fallback
- * paths, each rebuilding the immediate-mode strip before returning.  The
- * explicit branches below preserve those state transitions and duplicated
- * draw calls instead of folding them into one common tail.  This restores
- * real retail behavior even though MWCC's remaining register scheduling
- * differences increase normalized_diff while bringing object_size toward the
- * retail window. */
+/* Retail's rotation path at 0x0508-0x0660 evaluates the sine/cosine
+ * polynomials inline before the matrix calls.  Its repeated output-record
+ * loads in UV, position, and color setup (0x0110-0x04d0) remain un-hoisted.
+ * The extension dispatch at 0x0c54-0x1224 keeps each record direction as a
+ * distinct render path: top, bottom, left, right, then node extraHeight and
+ * extraWidth, each rebuilding the immediate-mode strip before returning.
+ * The explicit branches below preserve those state transitions and duplicated
+ * draw calls instead of folding them into one common tail. */
 // FUN_001127D0 NONMATCHING
 void func_001127d0(void* param_1, u32 enabled)
 {
@@ -1512,6 +1512,10 @@ void func_001127d0(void* param_1, u32 enabled)
     s32 edge;
     f32 angle;
     f32 radians;
+    f32 angleSquared;
+    f32 polynomial;
+    f32 cosine;
+    f32 sine;
     f32 recipZ;
     u32 i;
     u32 packedColor;
@@ -1544,12 +1548,12 @@ void func_001127d0(void* param_1, u32 enabled)
     if (resource != NULL)
     {
         dimensions = (s32*)resource;
-        uv[0].x = (f32)record->left / (f32)dimensions[3];
-        uv[0].y = (f32)record->top / (f32)dimensions[4];
-        uv[1].x = (f32)(record->right - 1) / (f32)dimensions[3];
+        uv[0].x = (f32)((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->left / (f32)dimensions[3];
+        uv[0].y = (f32)((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->top / (f32)dimensions[4];
+        uv[1].x = (f32)(((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->right - 1) / (f32)dimensions[3];
         uv[1].y = uv[0].y;
         uv[2].x = uv[0].x;
-        uv[2].y = (f32)(record->bottom - 1) / (f32)dimensions[4];
+        uv[2].y = (f32)(((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->bottom - 1) / (f32)dimensions[4];
         uv[3].x = uv[1].x;
         uv[3].y = uv[2].y;
     }
@@ -1636,9 +1640,24 @@ void func_001127d0(void* param_1, u32 enabled)
         {
             angle += 360.0f;
         }
-        radians = angle * 0.017453292f;
+        radians = (angle * 3.1415927f) / 180.0f;
+        angleSquared = radians * radians;
         matrix = func_004c38c0();
-        func_004c2fc0(1.0f - cosf(radians), sinf(radians), matrix, &D_005D6C28, rwCOMBINEREPLACE);
+        polynomial = -1.1359648e-11f * angleSquared + 2.0875723e-9f;
+        polynomial = polynomial * angleSquared - 2.7557314e-7f;
+        polynomial = polynomial * angleSquared + 2.4801588e-5f;
+        polynomial = polynomial * angleSquared - 0.0013888889f;
+        polynomial = polynomial * angleSquared + 0.041666668f;
+        polynomial = angleSquared * polynomial;
+        cosine = 0.5f * angleSquared - angleSquared * polynomial;
+        cosine = 1.0f - cosine;
+        polynomial = 1.5896910e-10f * angleSquared - 2.5050760e-8f;
+        polynomial = polynomial * angleSquared + 2.7557314e-6f;
+        polynomial = polynomial * angleSquared - 0.0001984127f;
+        polynomial = polynomial * angleSquared + 0.0083333338f;
+        polynomial = polynomial * angleSquared - 0.16666667f;
+        sine = radians + (angleSquared * radians) * polynomial;
+        func_004c2fc0(1.0f - cosine, sine, matrix, &D_005D6C28, rwCOMBINEREPLACE);
         func_004c6c20(transformed, local, 4, matrix);
         func_004c3880(matrix);
     }
@@ -1652,8 +1671,8 @@ void func_001127d0(void* param_1, u32 enabled)
 
     for (i = 0; i < 4; i++)
     {
-        positions[i].x = (f32)node->pivotX + transformed[i].x + node->x + (f32)record->x;
-        positions[i].y = (f32)node->pivotY + transformed[i].y + node->y + (f32)record->y;
+        positions[i].x = (f32)node->pivotX + transformed[i].x + node->x + (f32)((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->x;
+        positions[i].y = (f32)node->pivotY + transformed[i].y + node->y + (f32)((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->y;
         positions[i].z = 0.0f;
     }
 
@@ -1669,12 +1688,12 @@ void func_001127d0(void* param_1, u32 enabled)
 
     for (i = 0; i < 4; i++)
     {
-        packedColor = record->colors[i == 2 ? 3 : (i == 3 ? 2 : i)];
+        packedColor = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->colors[i == 2 ? 3 : (i == 3 ? 2 : i)];
         red = ((packedColor >> 24) & 0xFF) * node->red / 255;
         green = ((packedColor >> 16) & 0xFF) * node->green / 255;
         blue = ((packedColor >> 8) & 0xFF) * node->blue / 255;
         alpha = packedColor & 0xFF;
-        if ((record->flags & 8) == 0)
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
         {
             red = red >= 0x81 ? 0xFF : red * 255 / 128;
             green = green >= 0x81 ? 0xFF : green * 255 / 128;
@@ -1697,13 +1716,13 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[i].u.els.color.a = (f32)alpha;
     }
 
-    D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+    D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
     D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
 
     edge = 0;
-    if (record->topExtension != 0)
+    if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->topExtension != 0)
     {
-        edge = record->topExtension;
+        edge = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->topExtension;
         vertices[0].u.els.scrVertex.x = positions[0].x;
         vertices[0].u.els.scrVertex.y = positions[0].y - edge;
         vertices[1].u.els.scrVertex.x = positions[1].x;
@@ -1716,12 +1735,12 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[0].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[1].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[1].y;
-        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
-    else if (record->bottomExtension != 0)
+    else if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->bottomExtension != 0)
     {
-        edge = record->bottomExtension;
+        edge = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->bottomExtension;
         vertices[0].u.els.scrVertex.x = positions[2].x;
         vertices[0].u.els.scrVertex.y = positions[2].y;
         vertices[1].u.els.scrVertex.x = positions[3].x;
@@ -1734,12 +1753,12 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[2].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
-    else if (record->leftExtension != 0)
+    else if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->leftExtension != 0)
     {
-        edge = record->leftExtension;
+        edge = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->leftExtension;
         vertices[0].u.els.scrVertex.x = positions[0].x - edge;
         vertices[0].u.els.scrVertex.y = positions[0].y;
         vertices[1].u.els.scrVertex.x = positions[0].x;
@@ -1752,12 +1771,12 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[1].u.els.v = uv[0].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[2].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[2].y;
-        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
-    else if (record->rightExtension != 0)
+    else if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->rightExtension != 0)
     {
-        edge = record->rightExtension;
+        edge = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->rightExtension;
         vertices[0].u.els.scrVertex.x = positions[1].x;
         vertices[0].u.els.scrVertex.y = positions[1].y;
         vertices[1].u.els.scrVertex.x = positions[1].x + edge;
@@ -1770,7 +1789,7 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[1].u.els.v = uv[1].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (node->extraHeight != 0)
@@ -1788,7 +1807,7 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[2].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (node->extraWidth != 0)
@@ -1806,7 +1825,7 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[1].u.els.v = uv[1].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
 }
