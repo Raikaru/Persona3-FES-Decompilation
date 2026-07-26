@@ -557,6 +557,8 @@ void FUN_0040e3c0_u32(float param_1,int param_2,int param_3,u32 param_4,int para
 void FUN_003c7e20_f32(f32 p1,s32 p2,s32 p3,u32 p4,s32 p5,s32 p6,s32 p7,u32 p8);
 #pragma alias FUN_003c7e20_f32_u64 FUN_003c7e20
 void FUN_003c7e20_f32_u64(f32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,s32 p7,u32 p8);
+#pragma alias FUN_003c7e20_mid FUN_003c7e20
+void FUN_003c7e20_mid(u64 p1,u64 p2,f32 p3,u64 p4,u64 p5,u64 p6,s32 p7,u32 p8);
 #pragma alias FUN_003c6270_u32 FUN_003c6270
 u32 FUN_003c6270_u32(u32 param_1);
 #pragma alias FUN_003c6ce0_u32 FUN_003c6ce0
@@ -16014,7 +16016,7 @@ s16 FUN_004030f0(u16 param_1)
   return FUN_004037c0(sVar1);
 }
 
-// FUN_00403130 NONMATCHING
+// FUN_00403130
 
 
 void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4,
@@ -16036,7 +16038,7 @@ void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4,
   datSetFlag(0x1424,0);
 
 
-  FUN_003c7e20_f32_u64(fVar2,param_1,param_2,param_4,param_5,param_6,6,FUN_00403760((long)param_7),);
+  FUN_003c7e20_mid(param_1,param_2,fVar2,param_4,param_5,param_6,6,FUN_00403760((long)param_7));
 
   return;
 
