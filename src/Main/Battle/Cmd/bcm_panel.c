@@ -2469,6 +2469,8 @@ void FUN_00228E40(void)
 }
 #pragma pop
 
+#define BCM_29_STATE(...) ((void (*)(u32, u32))D_00960090_fn)(__VA_ARGS__)
+#define BCM_29_QUAD(...) ((void (*)(u32*, u32, u32, u32, u32))D_0096009C_fn)(__VA_ARGS__)
 // FUN_00229B40 NONMATCHING
 void FUN_00229B40(void)
 {
@@ -2507,7 +2509,7 @@ void FUN_00229B40(void)
         } else if (state == 0) {
             resource = FUN_0021cca0(table0, 0x30);
         }
-        setState(1, FUN_0021cce0(resource));
+        BCM_29_STATE(1, FUN_0021cce0(resource));
         if (i == *(u32*)(base + 0x6068) - *(u32*)(base + 0x606c)) {
             RpSkyRenderStateSet(3, (void*)0x71801);
             RpSkyRenderStateSet(2, (void*)0x48);
@@ -2518,7 +2520,7 @@ void FUN_00229B40(void)
         setQuad((u32*)(record + 0x10), 4, 0, 1, 2);
         setQuad((u32*)(record + 0x10), 4, 0, 2, 3);
         setState = D_00960090_fn;
-        setState(1, FUN_00239140(1));
+        BCM_29_STATE(1, FUN_00239140(1));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         setQuad((u32*)(record + 0x110), 4, 0, 1, 2);
@@ -2528,7 +2530,7 @@ void FUN_00229B40(void)
         setQuad((u32*)(record + 0x310), 4, 0, 1, 2);
         setQuad((u32*)(record + 0x310), 4, 0, 2, 3);
         resource = FUN_0021cca0(table6, 0x2b);
-        setState(1, FUN_0021cce0(resource));
+        BCM_29_STATE(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         setQuad((u32*)(record + 0x410), 4, 0, 1, 2);
@@ -2546,13 +2548,13 @@ void FUN_00229B40(void)
             resource = FUN_0021cca0(table0, 0x30);
         }
         setState = D_00960090_fn;
-        setState(1, FUN_0021cce0(resource));
+        BCM_29_STATE(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
         setQuad = D_0096009C_fn;
         setQuad((u32*)(record + 0x10), 4, 0, 1, 2);
         setQuad((u32*)(record + 0x10), 4, 0, 2, 3);
-        setState(1, FUN_00239140(1));
+        BCM_29_STATE(1, FUN_00239140(1));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         setQuad((u32*)(record + 0x110), 4, 0, 1, 2);
@@ -2562,13 +2564,15 @@ void FUN_00229B40(void)
         setQuad((u32*)(record + 0x310), 4, 0, 1, 2);
         setQuad((u32*)(record + 0x310), 4, 0, 2, 3);
         resource = FUN_0021cca0(table6, 0x2b);
-        setState(1, FUN_0021cce0(resource));
+        BCM_29_STATE(1, FUN_0021cce0(resource));
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         setQuad((u32*)(record + 0x410), 4, 0, 1, 2);
         setQuad((u32*)(record + 0x410), 4, 0, 2, 3);
     }
 }
+#undef BCM_29_STATE
+#undef BCM_29_QUAD
 
 // FUN_0022A2B0 NONMATCHING
 void FUN_0022A2B0(void)
@@ -3957,8 +3961,8 @@ skip210:
 
     resource = FUN_0021cca0(table3, 0xa);
     BCM_PANEL_STATE(1, FUN_0021cce0(resource));
-    setQuad((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
+    BCM_PANEL_QUAD((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
+    BCM_PANEL_QUAD((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
 
     if ((object[0] & 0x20) == 0) {
         goto check730_flag8;

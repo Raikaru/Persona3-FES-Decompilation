@@ -761,15 +761,6 @@ static void brPanel00236390(void)
             alpha = 1.0f - scale;
         }
     }
-    if (datGetScenarioMode() != 0) {
-        func_003b0d70(*(u32*)(work + 0x310),
-                      (s32)((477.0f + shift) * 16.0f), 0xc28);
-    } else {
-        func_003b0d70(*(u32*)(work + 0x310),
-                      (s32)((427.0f + shift) * 16.0f), 0xc28);
-    }
-    packedColor = 0xffffff00 | (u8)(u32)(255.0f * alpha);
-    func_003b0e20(*(u32*)(work + 0x310), packedColor);
 
     if (value < 10) {
         rect[0] = 465.0f + shift;
@@ -781,6 +772,15 @@ static void brPanel00236390(void)
     rect[3] = 0.0f;
     bpIFont00238a50(work + 0x320, 2, value, 1, rect);
     BR_PANEL_SET_COLOR(work + 0x320, alpha);
+    if (datGetScenarioMode() != 0) {
+        func_003b0d70(*(u32*)(work + 0x310),
+                      (s32)((477.0f + shift) * 16.0f), 0xc28);
+    } else {
+        func_003b0d70(*(u32*)(work + 0x310),
+                      (s32)((427.0f + shift) * 16.0f), 0xc28);
+    }
+    packedColor = 0xffffff00 | (u8)(u32)(255.0f * alpha);
+    func_003b0e20(*(u32*)(work + 0x310), packedColor);
 
     if (mode == 0) {
         shift = 0.0f;
@@ -803,10 +803,10 @@ static void brPanel00236390(void)
             alpha = 1.0f - (f32)timer / 10.0f;
         }
     }
+    frame = func_0021cca0(brRes00234570(0), 2);
     sprintf(text2, "%d", *(s32*)(work + 0x2664));
     length = (s32)strlen(text2);
     textWidth = (f32)(length * 23);
-    frame = func_0021cca0(brRes00234570(0), 2);
     rect[0] = 350.0f - (textWidth + 40.0f +
                         (f32)*(s32*)((u8*)frame + 0xc)) / 2.0f + shift;
     rect[1] = 154.0f;

@@ -4297,7 +4297,7 @@ u32 FUN_003f3f00(u64 param_1)
 // FUN_003F3FC0 NONMATCHING
 
 
-void FUN_003f3fc0(int param_1,int param_2,u32 param_3,int param_4)
+void FUN_003f3fc0(int param_1,int param_2,u32 param_3,u64 param_4)
 
 
 
