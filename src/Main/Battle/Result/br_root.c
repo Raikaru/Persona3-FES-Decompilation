@@ -176,7 +176,7 @@ extern void sflCamera0024d9a0(void *, void *);
 extern void sflCamera0024d280(void *);
 extern void func_0024d4c0(s32);
 extern void func_0023c280(void);
-extern void func_00209e10(void);
+extern u8 *func_00209e10(void);
 extern u8 *func_00209e20(void);
 extern u8 *func_00209e60(void);
 extern u8 *func_00209e70(void);
@@ -191,7 +191,7 @@ extern char *func_00209e80(void);
 extern char *func_00209e90(void);
 extern u32 func_00255130(void);
 extern void func_00254e10(void);
-extern void sflCard002537f0(u16);
+extern void *sflCard002537f0(u16);
 extern u32 sflCard002536b0(u32, u32);
 extern void sflCard00255170(void *);
 extern void sflCard00255190(void *);
@@ -1489,725 +1489,572 @@ void func_001f30f0(KwlnTask *task)
     BR_U32(work, 0x2a210) = 1;
 }
 
+/* Retail 0x1f3270-0x1f4648: reconstructed result-card selection and reward dispatch. */
 // FUN_001f3270 NONMATCHING
 void func_001f3270(KwlnTask *task)
 {
+    typedef union {
+        u32 p;
+        u32 q[4];
+    } BrResultQ;
+    typedef struct {
+        s16 id;
+        s16 weight;
+    } BrResultSlot;
+    typedef struct {
+        u32 kind;
+        u32 high;
+        u32 low;
+    } BrResultEntry;
+    typedef struct {
+        BrResultQ table0;
+        BrResultQ table1;
+        BrResultQ table2;
+        BrResultQ table3;
+        BrResultQ table4;
+        BrResultQ table5;
+        BrResultQ random;
+        u32 total;
+        u32 outer;
+        u32 pointer;
+        u32 limit;
+        u32 reserved;
+        u32 next;
+        u32 action;
+        s16 candidates[256];
+        BrResultSlot slots[8];
+        u32 flags[8];
+        BrResultEntry entries[8];
+        s16 cardIds[8];
+        u32 check;
+        u16 checkId;
+    } BrResultScratch;
     u8 *work = BR_TASK_WORK(task);
-    u32 count;
+    BrResultScratch local;
+    u8 *table0;
+    u8 *table1;
+    u8 *table2;
+    u8 *table3;
+    u8 *cardTable;
+    u8 *rangeTable;
+    u8 *selected;
+    u8 *ranges;
+    u8 *entry;
+    u8 *reward;
+    u8 *cardRecord;
+    u32 candidateCount;
     u32 i;
-    u32 mode = BR_U32(work, 0x58) & 3;
-    u32 v0_val;
-    u32 s2_idx;
-    u32 s1_cnt;
-    u32 s4_type;
-    u32 s5_val;
-    u32 s6_idx;
-    u32 s3_cnt;
-    u32 s5_slots;
-    u32 base_ptr;
-    u16 cardId;
-    u32 flags;
-    u32 flag_a2;
-    u32 s2_flags;
-    u32 s1_slot_cnt;
-    u32 s2_card_cnt;
-    u32 fp_total;
-    u32 s7_valid;
-    u32 s6_selected;
-    u32 s5_slotlimit;
-    u32 a1_idx;
-    u32 a2_idx;
+    u32 j;
+    u32 mode;
+    u32 resultFlags;
+    u32 selectedCount;
+    u32 slotCount;
+    u32 slotLimit;
+    u32 entryCount;
+    u32 randomValue;
+    u32 value;
+    u32 value2;
+    s32 currentLevel;
+    s32 threshold;
+    s32 lower;
+    s32 upper;
+    s32 best;
     s32 level;
-    u32 s7_count;
-    u32 t0_max;
-    s32 a0_val;
-    s32 v1_val;
-    u32 s4_disp;
-    u32 t3_val;
-    u32 tmp_val;
-    u32 check_val;
-    u32 rnd_base;
-    u32 rnd_byte;
-s16 cardValue;
-u32 cflags;
-u32 slot_i;
-u32 local_i;
-u32 a0_i;
-u32 v1_i;
-u32 s5_i;
-u32 s6_i;
-u32 a0_sum;
-u32 s2_cnt;
-u32 slot_base;
-u32 s5_done;
-u32 s4_local;
-u32 ev;
-u32 val;
-u32 ret;
-u32 b;
-u32 v0;
-u32 v1;
-u32 val1;
-u32 v0_calc;
-u32 t1_idx;
-u32 t0_max_val;
-s16 s5_best;
-u32 t3;
-u32 t2;
-u32 t3b;
-u32 soff;
-u16 cid;
-u16 sel_id;
-u16 slot_card;
-    
-    /* Section 1: Setup calls */
-    func_00209e10();
-    func_00209e20();
-    func_00209e60();
-    func_00209e70();
+    s32 sum;
+    s32 selectedIndex;
+    s32 start;
+    s32 end;
+    s32 span;
+    s32 choice;
+    s32 numEntries;
+    s32 reservedEntries;
+    s32 maxSelected;
+    s16 card;
+
+    /* Retail 0x1f32a0-0x1f32d4: data-table setup. */
+    local.table0.p = (u32)func_00209e10();
+    local.table1.p = (u32)func_00209e20();
+    local.table2.p = (u32)func_00209e60();
+    local.table3.p = (u32)func_00209e70();
     func_00209dd0();
-    s7_count = 0;
-    count = BR_U32(work, 0xe4);
-    if (count > 5) {
-        count = 5;
-    }
-    s2_idx = 0;
-    s1_cnt = 0;
-    
-    /* Loop A: Card-ID table lookup with weighted computation */
-    for (i = 0; i < count; i++) {
-        u32 local_i = i;
-        cardId = (u16)(0x2e + local_i);
-        level = (s32)datGetLevel(1);
-        if (func_0017d800(1)) {
-            if (level >= 25 && level < 35) {
-                cardValue = ((s16 *)D_006846CE)[level];
-                s2_idx = (u16)(cardValue + 1);
-            } else {
-                s2_idx = (u16)(level - 5);
-            }
+    table0 = (u8 *)local.table0.p;
+    table1 = (u8 *)local.table1.p;
+    table2 = (u8 *)local.table2.p;
+    table3 = (u8 *)local.table3.p;
+
+    /* Retail 0x1f32d8-0x1f33b0: level-to-card threshold. */
+    candidateCount = 0;
+    currentLevel = (s32)(s8)(datGetLevel(1) & 0xff);
+    if (datGetScenarioMode() != 0) {
+        if (currentLevel >= 0x19 && currentLevel < 0x23) {
+            threshold = ((s16 *)D_006846CE)[currentLevel] + 1;
         } else {
-            if (level > 0 && level < 10) {
-                cardValue = ((s16 *)D_006846DE)[level];
-                s2_idx = (u16)(cardValue + 1);
-            } else {
-                s2_idx = (u16)(level - 5);
-            }
+            threshold = currentLevel - 5;
         }
-    }
-    
-    /* Section 2: 256-slot card scan */
-    {
-        s32 level16 = (s32)(s16)BR_U32(work, 0x58);
-        s32 v0_calc;
-        u32 t1_idx;
-        u32 t0_max_val;
-        s16 s5_best;
-        
-        s5_best = -1;
-        t0_max_val = 100;
-        flags = BR_U32(work, 4);
-        flag_a2 = flags & 0x200;
-        if (flag_a2) {
-            v0_calc = 20;
-        } else {
-            level16 = (s32)(s16)BR_U32(work, 0x58);
-            if (level16 < 50) {
-                v0_calc = 10;
-            } else {
-                v0_calc = 15;
-            }
-        }
-        level16 = (s32)(s16)BR_U32(work, 0x58);
-        a0_val = level16;
-        v1_val = level16;
-        v0_calc = level16 - v0_calc;
-        base_ptr = *(u32 *)&D_00696950;
-        
-        for (t1_idx = 0; t1_idx < 256; t1_idx++) {
-            u32 t3 = t1_idx * 7;
-            u32 val16 = *(u16 *)(base_ptr + t3);
-            if (val16 & 0xdb) continue;
-            {
-                u32 t3b = *(u8 *)(base_ptr + t3 + 3);
-                if (a0_val >= (s32)t3b) continue;
-                if ((s32)t3b >= v1_val) continue;
-                if ((s32)level16 >= (s32)t3b) continue;
-                if (t3b >= t0_max_val) continue;
-                s5_best = (s16)t1_idx;
-                t0_max_val = t3b;
-            }
-            if (t3 >= (u32)v0_calc) continue;
-            {
-                u32 t2 = s2_idx * 2;
-                *(u16 *)((u8 *)work + t2 + 0x180) = (u16)t1_idx;
-                s2_idx = (u16)(s2_idx + 1);
-            }
-        }
-        s5_val = (u32)(u16)s5_best;
-    }
-    
-    /* Section 3: Post-scan random insertion */
-    if ((s16)s5_val != -1 && !flag_a2) {
-        v0_val = RpRandom() % 100;
-        if (v0_val < 10) {
-            if (s2_idx < 256) {
-                *(u16 *)((u8 *)work + s2_idx * 2 + 0x180) = (u16)s5_val;
-                s2_idx = 1;
-            }
-        }
-    }
-    
-    /* Section 4: Slot setup - 5 card slots */
-    {
-        u32 s2_cnt = (u16)s2_idx;
-        if ((s32)s2_cnt > 0) {
-            u32 slot_i;
-            for (slot_i = 0; slot_i < 5; slot_i++) {
-                if (slot_i >= s2_cnt) break;
-                v0_val = RpRandom();
-                v0_val %= s2_cnt;
-                {
-                    u16 cid = *(u16 *)((u8 *)work + v0_val * 2 + 0x180);
-                    u32 soff = 0x380 + slot_i * 4;
-                    *(u16 *)((u8 *)work + soff) = cid;
-                    *(u16 *)((u8 *)work + soff + 2) = 0x14;
-                }
-            }
-        } else {
-            u32 slot_i;
-            for (slot_i = 0; slot_i < 5; slot_i++) {
-                u32 soff = 0x380 + slot_i * 4;
-                *(u16 *)((u8 *)work + soff) = (u16)-1;
-                *(u16 *)((u8 *)work + soff + 2) = 0;
-            }
-        }
-    }
-    
-    /* Write sentinel and more setup */
-    *(u16 *)((u8 *)work + 0x394) = (u16)-1;
-    *(u16 *)((u8 *)work + 0x396) = 0;
-    BR_U32(work, 0x18) = 0;
-    {
-        u32 val1 = BR_U32(work, 0xc0fc + 0x10000);
-        u32 tmp = val1 * 7;
-        s5_slots = *(u32 *)&D_00696948 + tmp * 4;
-    }
-    s6_idx = (u32)func_00209dc0();
-    func_00209dd0();
-    
-    /* Section 5: First s4 dispatch */
-    {
-        u32 val = BR_U32(work, 0);
-        u32 ev;
-        if (val == 2) {
-            s4_type = 2;
-        } else if (val == 1) {
-            ev = BR_U32(work, 0xe4);
-            if (ev) {
-                s4_type = 2;
-            } else {
-                s4_type = 0;
-            }
-        } else if (val == 0) {
-            ev = BR_U32(work, 0xe4);
-            if (ev) {
-                s4_type = 1;
-            } else {
-                s4_type = 0;
-            }
-        } else {
-            s4_type = 2;
-        }
-    }
-    
-    /* Section 6: Second s4 dispatch */
-    s2_flags = 0;
-    if (s4_type == 2) {
-        BR_U32(work, 0x3a0) = 0;
-        *(u16 *)((u8 *)work + 0x410) = 0x2e;
-        s1_cnt = 1;
-        s2_flags |= 1;
-    } else if (s4_type == 1) {
-        BR_U32(work, 0x3a0) = 0;
-        *(u16 *)((u8 *)work + 0x410) = 0x2e;
-        BR_U32(work, 0x3a4) = 0;
-        *(u16 *)((u8 *)work + 0x412) = 0x0e;
-        s1_cnt = 2;
-        s2_flags |= 3;
-    } else if (s4_type == 0) {
-        v0_val = RpRandom() % 100;
-        {
-            rnd_base = (u32)RpRandom();
-            rnd_byte = *(u8 *)(rnd_base + 1);
-            if ((u32)(v0_val % 100) < rnd_byte) {
-                s2_flags |= 1;
-            }
-        }
-        if (s2_flags & 1) {
-            v0_val = RpRandom() % 100;
-            {
-                rnd_base = (u32)RpRandom();
-                rnd_byte = *(u8 *)(rnd_base + 2);
-                if ((u32)(v0_val % 100) < rnd_byte) {
-                    s2_flags |= 2;
-                }
-            }
-        }
-    }
-    
-    /* Section 7: Primary card type checks */
-    {
-        check_val = func_0016f190(0xc60);
-        if (check_val) goto section_skip_b;
-        check_val = func_0016f190(0x1423);
-        if (check_val) goto section_skip_b;
-        v0_val = RpRandom() % 100;
-        s5_val = v0_val % 100;
-        rnd_base = (u32)RpRandom();
-        s1_cnt = *(u8 *)(rnd_base + 3);
-        check_val = func_0016f190(0x1319);
-        if (check_val) {
-            if ((s32)(s16)s1_cnt < 0) {
-                s1_cnt = (u16)(((s1_cnt >> 1) | (s1_cnt & 1)) & 0xffff);
-            }
-            if ((u16)s5_val >= (u16)s1_cnt) {
-                goto section_skip_b;
-            }
-            s2_flags |= 4;
-        }
-    }
-section_skip_b:
-    
-    /* Section 8: Slot count determination */
-    {
-        u32 ev = BR_U32(work, 0xe4);
-        if (ev) {
-            flags = BR_U32(work, 4);
-            if (flags & 0x2000) {
-                s5_slotlimit = 4;
-            } else {
-                s5_slotlimit = 5;
-            }
-        } else {
-            s5_slotlimit = 0;
-        }
-    }
-    if (s2_flags & 1) s5_slotlimit++;
-    if (s2_flags & 2) s5_slotlimit++;
-    
-    /* Section 9: Count valid slots */
-    {
-        u32 a0_i;
-        s7_valid = 0;
-        for (a0_i = 0; a0_i < 6; a0_i++) {
-            v0_val = *(s16 *)((u8 *)work + 0x380 + a0_i * 4);
-            if (v0_val == (u32)-1) break;
-            s7_valid++;
-        }
-    }
-    
-    /* Section 10: Sum slot values */
-    {
-        u32 v1_i;
-        fp_total = 0;
-        for (v1_i = 0; v1_i < s7_valid; v1_i++) {
-            fp_total += *(u16 *)((u8 *)work + 0x382 + v1_i * 4);
-        }
-    }
-    
-    BR_U32(work, 0x120) = 0;
-    s1_slot_cnt = 0;
-    
-    /* Section 11: Weighted card selection loop */
-    if ((s32)fp_total > 0) {
-        while (1) {
-            v0_val = RpRandom();
-            v0_val %= fp_total;
-            {
-                u32 a0_sum = 0;
-                u32 s6_i;
-                for (s6_i = 0; s6_i < s7_valid; s6_i++) {
-                    a0_sum += *(u16 *)((u8 *)work + 0x382 + s6_i * 4);
-                    if ((u32)(v0_val % fp_total) < a0_sum) break;
-                }
-                if (s6_i >= s7_valid) {
-                    ;
-                } else {
-                    s6_selected = s6_i;
-                }
-            }
-            {
-                s16 sel_id = *(s16 *)((u8 *)work + 0x380 + s6_selected * 4);
-                s6_selected = (u16)sel_id;
-            }
-            BR_U32(work, 0x420) = 0;
-            *(u16 *)((u8 *)work + 0x424) = (u16)s6_selected;
-            {
-                u32 ret = func_001f9680((s32 *)((u8 *)work + 0x420));
-                if (ret) break;
-            }
-            if (s1_slot_cnt >= 5) {
-                ;
-            }
-            BR_U32(work, 0x3a0 + s1_slot_cnt * 4) = 0;
-            *(u16 *)((u8 *)work + 0x410 + s1_slot_cnt * 2) = (u16)s6_selected;
-            s1_slot_cnt++;
-            BR_U32(work, 0x120)++;
-            if (BR_U32(work, 0x120) >= s5_slotlimit) break;
-        }
-    }
-    
-    /* Section 12: Alternative card selection */
-    flags = BR_U32(work, 4);
-    if (flags & 0x2000) {
-        s5_val = 0;
-        a0_val = BR_U32(work, 0x54);
-        for (a1_idx = 0; a1_idx < 5; a1_idx++) {
-            u32 p_entry = (u32)&work[0x54];
-            u8 v0_byte = *(u8 *)(p_entry + a1_idx * 4);
-            if ((u32)a0_val < (u32)v0_byte) continue;
-            v0_byte = *(u8 *)(p_entry + a1_idx * 4 + 1);
-            if ((u32)v0_byte < (u32)a0_val) continue;
-            s5_val++;
-        }
-        if (s5_val) {
-            v0_val = RpRandom();
-            v0_val %= s5_val;
-            s6_selected = 0;
-            for (a2_idx = 0; a2_idx < 5; a2_idx++) {
-                u32 p_entry2 = (u32)&work[0x54];
-                u8 v0b = *(u8 *)(p_entry2 + a2_idx * 4);
-                if ((u32)a0_val < (u32)v0b) continue;
-                v0b = *(u8 *)(p_entry2 + a2_idx * 4 + 1);
-                if ((u32)v0b < (u32)a0_val) continue;
-                if ((u32)(v0_val % s5_val) == s6_selected) break;
-                s6_selected++;
-            }
-            if (s6_selected < s5_val) {
-                u32 base = s6_selected * 4;
-                s5_val = (u32)&work[0x54];
-                BR_U32(work, 0x420) = 0;
-                *(u16 *)((u8 *)work + 0x424) = *(u16 *)(s5_val + base + 2);
-                if (func_001f9680((s32 *)((u8 *)work + 0x420))) goto after_alt;
-                if (s1_slot_cnt >= 5) {
-                    ;
-                }
-                BR_U32(work, 0x3a0 + s1_slot_cnt * 4) = 0;
-                *(u16 *)((u8 *)work + 0x410 + s1_slot_cnt * 2) = *(u16 *)(s5_val + base + 2);
-                BR_U32(work, 0x3a0 + s1_slot_cnt * 4) = 2;
-                s1_slot_cnt++;
-            }
-        }
-    }
-after_alt:
-    
-    /* Section 13: Process flags for each slot */
-    {
-        u32 s5_i;
-        for (s5_i = 0; s5_i < s1_slot_cnt; s5_i++) {
-            u16 slot_id = *(u16 *)((u8 *)work + 0x410 + s5_i * 2);
-            {
-                u32 slot_t3 = slot_id * 7;
-                u32 entry_base = *(u32 *)&D_00696950 + slot_t3;
-                u8 level_req = *(u8 *)(entry_base + 3);
-                level = (s32)datGetLevel(1);
-                if ((u32)level < (u32)level_req) {
-                    BR_U32(work, 0x3a0 + s5_i * 4) |= 1;
-                }
-            }
-        }
-    }
-    
-    /* Section 14: Find missing-flag cards */
-    {
-        u32 v1_i;
-        for (v1_i = 0; v1_i < s1_slot_cnt; v1_i++) {
-            u32 flg = BR_U32(work, 0x3a0 + v1_i * 4);
-            if ((~flg & 1) == 0) {
-                s2_flags |= 0x10;
-            }
-        }
-    }
-    
-    /* Section 15: Set slot limit based on flags */
-    if (s2_flags & 0x10) {
-        s5_slotlimit = 0;
-    } else if (s2_flags & 4) {
-        s5_slotlimit = 1;
-    } else if (BR_U32(work, 0xe4)) {
-        s5_slotlimit = 2;
+    } else if (currentLevel > 0 && currentLevel < 10) {
+        threshold = ((s16 *)D_006846DE)[currentLevel] + 1;
     } else {
-        s5_slotlimit = 3;
+        threshold = currentLevel - 5;
     }
-    
-    /* Section 16: Unused card pool processing */
-    {
-        s3_cnt = s2_idx;
-        BR_U32(work, 0x170) = 0;
-        for (s6_idx = 0; s6_idx < s3_cnt; s6_idx++) {
-            u32 slot_base = 0x3c0 + s6_idx * 12;
-            u32 s5_done = 0;
-            
-            if (s6_idx < BR_U32(work, 0x140)) {
-                BR_U32(work, slot_base) = 2;
-                s5_done = 1;
+
+    /* Retail 0x1f33b0-0x1f34d0: scan the 256-card table. */
+    best = -1;
+    upper = 100;
+    value = BR_U32(work, 4) & 0x200;
+    if (value != 0) {
+        local.limit = 20;
+    } else if ((s16)BR_U32(work, 0x58) < 50) {
+        local.limit = 10;
+    } else {
+        local.limit = 15;
+    }
+    currentLevel = (s32)(s16)BR_U32(work, 0x58);
+    lower = currentLevel - (s32)local.limit;
+    for (i = 0; i < 0x100; i++) {
+        cardRecord = (u8 *)(*(u32 *)&D_00696950) + i * 0xe;
+        if ((*(u16 *)cardRecord & 0xdb) != 0) {
+            continue;
+        }
+        level = (s32)(s8)BR_U8(cardRecord, 3);
+        if (currentLevel < level || level < lower) {
+            continue;
+        }
+        if (currentLevel < level && level < upper) {
+            best = (s32)i;
+            upper = level;
+        }
+        if (level < threshold) {
+            local.candidates[candidateCount] = (s16)i;
+            candidateCount++;
+        }
+    }
+
+    /* Retail 0x1f34d4-0x1f3538: rare insertion of the nearest card. */
+    if (best != -1 && value == 0 && RpRandom() % 100 < 10) {
+        if (candidateCount >= 0x100) {
+            K_Assert(D_00684620, 0x4af);
+        }
+        local.candidates[0] = (s16)best;
+        candidateCount = 1;
+    }
+
+    /* Retail 0x1f353c-0x1f35d0: initialize the five visible slots. */
+    if (candidateCount > 0) {
+        for (i = 0; i < 5; i++) {
+            local.slots[i].id =
+                local.candidates[RpRandom() % candidateCount];
+            local.slots[i].weight = 0x14;
+        }
+    } else {
+        for (i = 0; i < 5; i++) {
+            local.slots[i].id = -1;
+            local.slots[i].weight = 0;
+        }
+    }
+    BR_U32(work, 0x18) = 0;
+    cardTable = (u8 *)func_00209dc0();
+    rangeTable = (u8 *)func_00209dd0();
+    entry = (u8 *)(*(u32 *)&D_00696948) +
+            BR_U32(work, 0xc0fc) * 0x1c;
+    if (BR_U32(entry, 0x18) == 0) {
+        K_Assert(D_00684620, 0x4cf);
+    }
+    selected = cardTable + BR_U32(entry, 0x18) * 10;
+    ranges = table1 + BR_U16(selected, 8) * 8;
+
+    /* Retail 0x1f3668-0x1f36e0: select the result mode. */
+    value = BR_U32(work, 0);
+    if (value == 2) {
+        mode = 2;
+    } else if (value == 1) {
+        mode = BR_U32(work, 0xe4) != 0 ? 2 : 1;
+    } else if (value == 0) {
+        mode = BR_U32(work, 0xe4) != 0 ? 1 : 0;
+    } else {
+        mode = 2;
+    }
+
+    /* Retail 0x1f36e0-0x1f3bf0: choose cards and mark special flags. */
+    resultFlags = 0;
+    selectedCount = 0;
+    if (mode == 0) {
+        local.flags[0] = 0;
+        local.cardIds[0] = 0x2e;
+        selectedCount = 1;
+        resultFlags |= 1;
+    } else if (mode == 1) {
+        local.flags[0] = 0;
+        local.cardIds[0] = 0x2e;
+        local.flags[1] = 0;
+        local.cardIds[1] = 0xe;
+        selectedCount = 2;
+        resultFlags |= 3;
+    } else {
+        randomValue = RpRandom() % 100;
+        if (randomValue < BR_U8(selected, 1)) {
+            resultFlags |= 1;
+        }
+        if ((resultFlags & 1) != 0) {
+            randomValue = RpRandom() % 100;
+            if (randomValue < BR_U8(selected, 2)) {
+                resultFlags |= 2;
             }
-            
-            if (!s5_done) {
-                if (BR_U32(work, 0x170) < s1_slot_cnt) {
-                    u32 s4_local = BR_U32(work, 0x170);
-                    u16 slot_card = *(u16 *)((u8 *)work + 0x410 + s4_local * 2);
-                    BR_U32(work, 0x420) = 0;
-                    *(u16 *)((u8 *)work + 0x424) = slot_card;
-                    if (func_001f9680((s32 *)((u8 *)work + 0x420)) == 0) {
-                        BR_U32(work, slot_base) = 0;
-                        *(u16 *)((u8 *)work + slot_base + 4) = slot_card;
-                        BR_U32(work, 0x170)++;
-                        s5_done = 1;
+        }
+        if (func_0016f190(0xc60) == 0 &&
+            func_0016f190(0x1423) == 0) {
+            randomValue = RpRandom() % 100;
+            value = BR_U8(selected, 3);
+            if (func_0016f190(0x1319) != 0) {
+                f32 chance = (f32)(s32)(s8)value;
+                chance = chance + chance;
+                value = (u32)(s32)chance;
+            }
+            if (randomValue < (value & 0xffff)) {
+                resultFlags |= 4;
+            }
+        }
+        if (BR_U32(work, 0xe4) != 0) {
+            slotLimit = (BR_U32(work, 4) & 0x2000) != 0 ? 4 : 5;
+        } else {
+            slotLimit = 0;
+            if ((resultFlags & 1) != 0) {
+                slotLimit++;
+            }
+            if ((resultFlags & 2) != 0) {
+                slotLimit++;
+            }
+        }
+        slotCount = 0;
+        for (i = 0; i < 6; i++) {
+            if (local.slots[i].id == -1) {
+                break;
+            }
+            slotCount++;
+        }
+        sum = 0;
+        for (i = 0; i < slotCount; i++) {
+            sum += local.slots[i].weight;
+        }
+        local.total = 0;
+        if (sum > 0) {
+            while (local.total < slotLimit) {
+                randomValue = RpRandom() % (u32)sum;
+                value = 0;
+                selectedIndex = 0;
+                while (selectedIndex < (s32)slotCount) {
+                    value += local.slots[selectedIndex].weight;
+                    if (randomValue < value) {
+                        break;
                     }
+                    selectedIndex++;
+                }
+                if (selectedIndex >= (s32)slotCount) {
+                    K_Assert(D_00684620, 0x59d);
+                }
+                local.check = 0;
+                card = local.slots[selectedIndex].id;
+                local.checkId = (u16)card;
+                if (func_001f9680((s32 *)&local.check) == 0) {
+                    if (selectedCount >= 5) {
+                        K_Assert(D_00684620, 0x5ad);
+                    }
+                    local.flags[selectedCount] = 0;
+                    local.cardIds[selectedCount] = card;
+                    selectedCount++;
+                }
+                local.total++;
+            }
+        }
+        if ((BR_U32(work, 4) & 0x2000) != 0) {
+            value = 0;
+            for (i = 0; i < 5; i++) {
+                u8 *r = rangeTable + i * 4;
+                if (BR_U32(work, 0x54) >= r[0] &&
+                    BR_U32(work, 0x54) <= r[1]) {
+                    value++;
                 }
             }
-            
-            if (!s5_done) {
-                BR_U32(work, slot_base) = 1;
-                v0_val = RpRandom();
-                v0_val &= 3;
-                switch (v0_val) {
-                    case 0: {
-                        rnd_base = (u32)RpRandom();
-                        BR_U32(work, 0x160) = *(u8 *)rnd_base;
-                        BR_U32(work, 0x150) = *(u8 *)(rnd_base + 1);
-                        break;
-                    }
-                    case 1: {
-                        rnd_base = (u32)RpRandom();
-                        BR_U32(work, 0x160) = *(u8 *)(rnd_base + 6);
-                        BR_U32(work, 0x150) = *(u8 *)(rnd_base + 7);
-                        break;
-                    }
-                    case 2: {
-                        rnd_base = (u32)RpRandom();
-                        BR_U32(work, 0x160) = *(u8 *)(rnd_base + 2);
-                        BR_U32(work, 0x150) = *(u8 *)(rnd_base + 3);
-                        break;
-                    }
-                    case 3:
-                    default: {
-                        rnd_base = (u32)RpRandom();
-                        BR_U32(work, 0x160) = *(u8 *)(rnd_base + 4);
-                        BR_U32(work, 0x150) = *(u8 *)(rnd_base + 5);
-                        break;
-                    }
-                }
-                if (BR_U32(work, 0x160) != BR_U32(work, 0x150)) {
-                    v0_val = RpRandom() % 100;
-                    rnd_base = (u32)RpRandom();
-                    rnd_byte = *(u8 *)(rnd_base + 4);
-                    if (v0_val % 100 < rnd_byte) {
-                        v0_val = RpRandom() % 100;
-                        if ((v0_val % 100) >= 5) {
-                            ;
+            if (value != 0) {
+                randomValue = RpRandom() % value;
+                selectedIndex = 0;
+                for (i = 0; i < 5; i++) {
+                    u8 *r = rangeTable + i * 4;
+                    if (BR_U32(work, 0x54) >= r[0] &&
+                        BR_U32(work, 0x54) <= r[1]) {
+                        if (randomValue == (u32)selectedIndex) {
+                            break;
                         }
+                        selectedIndex++;
                     }
+                }
+                if ((u32)selectedIndex >= value) {
+                    K_Assert(D_00684620, 0x5d8);
+                }
+                local.check = 0;
+                local.checkId = BR_U16(rangeTable, selectedIndex * 4 + 2);
+                if (func_001f9680((s32 *)&local.check) == 0) {
+                    if (selectedCount >= 5) {
+                        K_Assert(D_00684620, 0x5e3);
+                    }
+                    local.flags[selectedCount] = 2;
+                    local.cardIds[selectedCount] = local.checkId;
+                    selectedCount++;
                 }
             }
         }
     }
-    
-    /* Section 17: Assign cards to slot array */
-    {
-        s4_type = BR_U32(work, 0x3c4);
-        a0_val = BR_U32(work, 0x3c8);
-        for (a1_idx = 0; a1_idx < s3_cnt; a1_idx++) {
-            u32 b = 0x3c0 + a1_idx * 12;
-            u32 v0 = BR_U32(work, b + 4);
-            u32 v1 = BR_U32(work, b + 8);
-            if (v0 == (u32)s4_type && v1 == (u32)a0_val) break;
-        }
-        if (a1_idx == s3_cnt) {
-            v0_val = RpRandom();
-            v0_val %= s3_cnt;
-            base_ptr = 0x3c0 + v0_val * 12;
-            s4_type = BR_U32(work, 0x3c4);
-            if (s4_type == 3) {
-                BR_U32(work, base_ptr + 4) = 1;
-            } else if (s4_type == 2) {
-                BR_U32(work, base_ptr + 4) = 1;
-            } else if (s4_type == 1) {
-                BR_U32(work, base_ptr + 4) = 0;
-            } else if (s4_type == 0) {
-                BR_U32(work, base_ptr + 4) = 2;
-            }
+
+    /* Retail 0x1f3c10-0x1f3d08: reject cards above the current level. */
+    for (i = 0; i < selectedCount; i++) {
+        cardRecord = (u8 *)(*(u32 *)&D_00696950) +
+                     (u32)local.cardIds[i] * 0xe;
+        if ((datGetLevel(1) & 0xff) < BR_U8(cardRecord, 3)) {
+            local.flags[i] |= 1;
         }
     }
-    
-    /* Section 18: Slot deduplication */
-    {
-        u32 a0_i;
-        for (a0_i = 0; a0_i < s3_cnt; a0_i++) {
-            u32 b = 0x3c0 + a0_i * 12;
-            u32 v0 = BR_U32(work, b);
-            if (v0 == 1) break;
+    for (i = 0; i < selectedCount; i++) {
+        if ((local.flags[i] & 1) == 0) {
+            resultFlags |= 0x10;
         }
-        if (a0_i < s3_cnt) {
-            u32 s4_val2 = BR_U32(work, 0x3c4);
-            u32 a0_val2 = BR_U32(work, 0x3c8);
-            for (a1_idx = 1; a1_idx < s3_cnt; a1_idx++) {
-                u32 b = 0x3c0 + a1_idx * 12;
-                u32 v0 = BR_U32(work, b + 4);
-                u32 v1 = BR_U32(work, b + 8);
-                if (v0 != s4_val2) continue;
-                if (v1 != a0_val2) continue;
-            }
-            if (a1_idx >= s3_cnt) {
-                v0_val = RpRandom();
-                v0_val %= s3_cnt;
-                {
-                    u32 sel_base = 0x3c0 + v0_val * 12;
-                    s4_type = BR_U32(work, 0x3c4);
-                    if (s4_type == 3) {
-                        BR_U32(work, sel_base + 4) = 1;
-                    } else if (s4_type == 2) {
-                        BR_U32(work, sel_base + 4) = 0;
-                    } else if (s4_type == 1) {
-                        BR_U32(work, sel_base + 4) = 1;
-                    } else if (s4_type == 0) {
-                        BR_U32(work, sel_base + 4) = 1;
-                    }
+    }
+    if ((resultFlags & 0x10) != 0) {
+        slotLimit = 0;
+    } else if ((resultFlags & 4) != 0) {
+        slotLimit = 1;
+    } else if (BR_U32(work, 0xe4) != 0) {
+        slotLimit = 2;
+    } else {
+        slotLimit = 3;
+    }
+
+    /* Retail 0x1f3d0c-0x1f3efc: weighted reward/action selection. */
+    value = BR_U16(selected, 6) - 1;
+    if ((s32)value < 0) {
+        K_Assert(D_00684620, 0x616);
+    }
+    local.action = *(u8 *)(table3 + slotLimit * 10 + value - 1);
+    BR_U32(work, 0x1fd50) = local.action;
+    reward = table0 + local.action * 0x14;
+    sum = 0;
+    for (i = 0; i < 6; i++) {
+        sum += *(u8 *)(reward + i * 2 + 3);
+    }
+    if (sum == 0) {
+        K_Assert(D_00684620, 0x627);
+    }
+    randomValue = RpRandom() % (u32)sum;
+    value = 0;
+    for (i = 0; i < 6; i++) {
+        value += *(u8 *)(reward + i * 2 + 3);
+        if (randomValue < value) {
+            break;
+        }
+    }
+    if (i >= 6) {
+        K_Assert(D_00684620, 0x631);
+    }
+    BR_U32(work, 0x1fd54) = *(u8 *)(reward + i * 2 + 2);
+    sum = 0;
+    for (i = 0; i < 3; i++) {
+        sum += *(u8 *)(reward + i * 2 + 0xf);
+    }
+    if (sum == 0) {
+        K_Assert(D_00684620, 0x63c);
+    }
+    randomValue = RpRandom() % (u32)sum;
+    value = 0;
+    for (i = 0; i < 3; i++) {
+        value += *(u8 *)(reward + i * 2 + 0xf);
+        if (randomValue < value) {
+            break;
+        }
+    }
+    if (i >= 3) {
+        K_Assert(D_00684620, 0x646);
+    }
+    BR_U32(work, 0x1fd58) = *(u8 *)(reward + i * 2 + 0xe);
+
+    /* Retail 0x1f3f08-0x1f3fe8: choose the number of result entries. */
+    if (mode == 0) {
+        numEntries = 4;
+    } else if (mode == 1) {
+        numEntries = 2;
+    } else {
+        start = BR_U8(reward, 0);
+        end = BR_U8(reward, 1);
+        if (start == end) {
+            numEntries = start;
+        } else {
+            numEntries = start + RpRandom() % (u32)(end - start + 1);
+        }
+    }
+    printf(D_00684718, numEntries);
+    if (numEntries >= 7) {
+        K_Assert(D_00684620, 0x66b);
+    }
+    reservedEntries = (s32)BR_U32(work, 0xe4);
+    if (numEntries - 1 < reservedEntries) {
+        reservedEntries = numEntries - 1;
+    }
+    maxSelected = numEntries - reservedEntries;
+    if (maxSelected < (s32)selectedCount) {
+        selectedCount = maxSelected;
+    }
+
+    /* Retail 0x1f3fec-0x1f4368: fill each result entry. */
+    local.next = 0;
+    for (i = 0; i < (u32)numEntries; i++) {
+        BrResultEntry *out = &local.entries[i];
+        u32 done = 0;
+        if ((s32)i < reservedEntries) {
+            printf(D_00684730);
+            out->kind = 2;
+            done = 1;
+        } else if (local.next < selectedCount) {
+            for (j = local.next; j < selectedCount; j++) {
+                local.check = 0;
+                local.checkId = (u16)local.cardIds[j];
+                if (func_001f9680((s32 *)&local.check) == 0) {
+                    printf(D_00684750);
+                    out->kind = 0;
+                    out->high = local.checkId;
+                    local.next = j + 1;
+                    done = 1;
+                    break;
                 }
             }
         }
-    }
-    
-    /* Section 19: Final card processing */
-    for (i = 0; i < s1_slot_cnt; i++) {
-        cid = *(u16 *)((u8 *)work + 0x410 + i * 2);
-        sflCard002537f0(cid);
-        cflags = BR_U32(work, 0x3a0 + i * 4);
-        if (cflags & 1) {
-            sflCard00255170((void *)(u32)cid);
-        } else if (cflags & 2) {
-            sflCard002551b0((void *)(u32)cid);
+        if (!done) {
+            printf(D_00684770);
+            out->kind = 1;
+            choice = RpRandom() & 3;
+            printf(D_00684788, choice);
+            switch (choice) {
+            case 0:
+                start = ranges[0];
+                end = ranges[1];
+                break;
+            case 1:
+                start = ranges[6];
+                end = ranges[7];
+                break;
+            case 2:
+                start = ranges[2];
+                end = ranges[3];
+                break;
+            default:
+                start = ranges[4];
+                end = ranges[5];
+                break;
+            }
+            if (start == end) {
+                value2 = (u32)start;
+            } else {
+                span = end + 1 - start;
+                printf((const char *)(*(u32 *)((u8 *)0 + 0x696ff0)), span);
+                if (span >= 5) {
+                    K_Assert(D_00684620, 0x6c4);
+                }
+                sum = 0;
+                for (j = 0; j < (u32)span; j++) {
+                    value = *(u8 *)(table2 + span * 4 - 8 + j);
+                    sum += (s8)value;
+                    printf((const char *)(*(u32 *)((u8 *)0 + 0x696ff8)),
+                           (s8)value);
+                }
+                printf((const char *)(*(u32 *)((u8 *)0 + 0x696ffc)));
+                randomValue = RpRandom() % (u32)sum;
+                printf((const char *)(*(u32 *)((u8 *)0 + 0x69700)),
+                       randomValue);
+                value = 0;
+                for (j = 0; j < (u32)span; j++) {
+                    value += (s8)*(u8 *)(table2 + span * 4 - 8 + j);
+                    if (randomValue < value) {
+                        break;
+                    }
+                }
+                printf((const char *)(*(u32 *)((u8 *)0 + 0x69708)), j);
+                if (j >= (u32)span) {
+                    K_Assert(D_00684620, 0x6da);
+                }
+                value2 = (u32)(start + j);
+            }
+            if (choice == 3 && func_001f9170((s32)value2) == 0) {
+                choice = RpRandom() % 3;
+                if (choice == 3) {
+                    choice++;
+                }
+                continue;
+            }
+            out->high = (u32)choice;
+            out->low = value2;
         }
     }
-    
-    /* Section 20: Post-processing */
+
+    /* Retail 0x1f436c-0x1f4494: ensure a non-random entry or repair it. */
+    for (i = 0; i < (u32)numEntries; i++) {
+        if (local.entries[i].kind == 1) {
+            break;
+        }
+    }
+    if (i == (u32)numEntries) {
+        value = local.entries[0].high;
+        value2 = local.entries[0].low;
+        for (j = 0; j < (u32)numEntries; j++) {
+            if (local.entries[j].high == value &&
+                local.entries[j].low == value2) {
+                break;
+            }
+        }
+        if (j == (u32)numEntries) {
+            BrResultEntry *out =
+                &local.entries[RpRandom() % (u32)numEntries];
+            switch (value) {
+            case 0:
+                out->high = 2;
+                break;
+            case 1:
+                out->high = 0;
+                break;
+            case 2:
+            case 3:
+                out->high = 1;
+                break;
+            }
+        }
+    }
+
+    /* Retail 0x1f4494-0x1f4508: apply selected card effects. */
+    for (i = 0; i < selectedCount; i++) {
+        void *cardPtr = sflCard002537f0((u16)local.cardIds[i]);
+        value = local.flags[i];
+        if ((value & 1) != 0) {
+            sflCard00255170(cardPtr);
+        } else if ((value & 2) != 0) {
+            func_002551b0(cardPtr);
+        }
+    }
     if (BR_U32(work, 0xe4) == 0) {
         func_0020e200();
     }
-    
-    /* Section 21: Card creation from pool entries */
-    for (i = 0; i < s3_cnt; i++) {
-        u32 base = 0x3c0 + i * 12;
-        u32 v0 = BR_U32(work, base);
-        if (v0 == 1) {
-            u32 a0 = BR_U32(work, base + 4);
-            u32 a1 = BR_U32(work, base + 8);
-            s1_cnt = sflCard002536b0(a0, a1);
-            if ((s2_flags & 4) && !(s2_flags & 8)) {
-                sflCard00255190((void *)(u32)s1_cnt);
-                s2_flags |= 8;
-            } else {
-                v0_val = RpRandom();
-                v0_val %= 100;
-                {
-                    rnd_base = (u32)RpRandom();
-                    rnd_byte = *(u8 *)(rnd_base + 4);
-                    if ((u32)(v0_val % 100) < rnd_byte) {
-                        sflCard00255190((void *)(u32)s1_cnt);
-                    }
+
+    /* Retail 0x1f4520-0x1f4604: create the generated result cards. */
+    for (i = 0; i < (u32)numEntries; i++) {
+        BrResultEntry *out = &local.entries[i];
+        if (out->kind == 1) {
+            value = sflCard002536b0(out->high, out->low);
+            if ((resultFlags & 4) != 0) {
+                if ((resultFlags & 8) == 0) {
+                    sflCard00255190((void *)value);
+                    resultFlags |= 8;
+                } else if (RpRandom() % 100 < BR_U8(selected, 4)) {
+                    sflCard00255190((void *)value);
                 }
             }
-        } else if (v0 == 2) {
+        } else if (out->kind == 2) {
             sflCard00253920();
         }
     }
-    
-    /* Section 22: Card creation verification loop */
-    {
-        u32 s4_idx;
-        for (s4_idx = 0; s4_idx < s3_cnt; s4_idx++) {
-            u32 base = s4_idx * 12;
-            u32 base_addr = 0x3c0 + base;
-            u32 entry_type = BR_U32(work, base_addr);
-            u32 entry_high = BR_U32(work, base_addr + 4);
-            u32 entry_low = BR_U32(work, base_addr + 8);
-            if (entry_type == 0) {
-                u16 card_check = (u16)entry_high;
-                sflCard002537f0(card_check);
-                if (entry_high == entry_low) {
-                    sflCard002551b0((void *)(u32)card_check);
-                } else {
-                    u32 chk_range = entry_high;
-                    sflCard00255170((void *)(u32)card_check);
-                }
-            } else if (entry_type == 1) {
-                sflCard00253920();
-            }
-        }
-    }
-    
-    /* Section 23: Additional shuffle card processing */
-    if (BR_U32(work, 0xe4) != 0) {
-        u32 entry_ptr = *(u32 *)&D_00696948;
-        u32 idx4;
-        for (idx4 = 0; idx4 < s1_slot_cnt; idx4++) {
-            u16 id_val = *(u16 *)((u8 *)work + 0x410 + idx4 * 2);
-            u32 base_reg = entry_ptr + id_val * 7;
-            u8 slot_attr = *(u8 *)(base_reg + 2);
-            u32 slot_flags = BR_U32(work, 0x3a0 + idx4 * 4);
-            s32 left_count = s1_cnt;
-            if ((slot_flags & 1) == 0) {
-                v0_val = RpRandom();
-                v0_val %= 100;
-                {
-                    rnd_base = (u32)RpRandom();
-                    rnd_byte = *(u8 *)(rnd_base + 2);
-                    if ((u32)(v0_val % 100) < rnd_byte) {
-                        BR_U32(work, 0x3a0 + idx4 * 4) |= 2;
-                    }
-                }
-            }
-        }
-    }
-    
-    /* Section 24: More card selection */
-    {
-        u32 check_e4 = BR_U32(work, 0xe4);
-        if (check_e4 != 0) {
-            u32 val_54 = BR_U32(work, 0x54);
-            s5_val = 0;
-            for (a1_idx = 0; a1_idx < 5; a1_idx++) {
-                u32 p_entry = (u32)&work[0x54];
-                u8 v0b = *(u8 *)(p_entry + a1_idx * 4);
-                if ((u32)val_54 < (u32)v0b) continue;
-                v0b = *(u8 *)(p_entry + a1_idx * 4 + 1);
-                if ((u32)v0b < (u32)val_54) continue;
-                s5_val++;
-            }
-            if (s5_val != 0) {
-                v0_val = RpRandom();
-                v0_val %= s5_val;
-                s6_selected = 0;
-                for (a2_idx = 0; a2_idx < 5; a2_idx++) {
-                    u32 p_entry2 = (u32)&work[0x54];
-                    u8 v0b = *(u8 *)(p_entry2 + a2_idx * 4);
-                    if ((u32)val_54 < (u32)v0b) continue;
-                    v0b = *(u8 *)(p_entry2 + a2_idx * 4 + 1);
-                    if ((u32)v0b < (u32)val_54) continue;
-                    if ((u32)(v0_val % s5_val) == s6_selected) break;
-                    s6_selected++;
-                }
-                if (s6_selected < s5_val) {
-                    u32 base_ofs = s6_selected * 4;
-                    u16 val2 = *(u16 *)((u32)&work[0x54] + base_ofs + 2);
-                    sflCard002537f0(val2);
-                }
-            }
-        }
-    }
-    
     func_00254e10();
     BR_U32(work, 8) = 1;
 }
@@ -3374,42 +3221,44 @@ void func_001f7210(void)
         u32 wt_idx;
         u32 sum_w;
         u32 search_idx;
-        s16 wt_ids[32];
-        s16 wt_wgts[32];
         /* case 0: weighted random via func_00209c40 */
-        printf("money : %d\n", value);
+        printf("rank %d\n", 0);
         func_0010a4e0(1, 0, 6, 6);
         wt_base = (u8 *)func_00209c40();
-        printf("type : get money\n", BR_U32(entry, 4));
+        printf("rnd %d/%d\n", BR_U32(entry, 4));
         wt_base += BR_U32(entry, 4) * 256;
+        /* Count valid entries */
         for (wt_idx = 0; wt_idx < 32; wt_idx++) {
-            wt_ids[wt_idx] = *(s16 *)(wt_base + wt_idx * 8);
-            wt_wgts[wt_idx] = *(s16 *)(wt_base + wt_idx * 8 + 6);
-            if (wt_ids[wt_idx] < 0) break;
+            if (*(s16 *)(wt_base + wt_idx * 8) < 0) break;
         }
+        /* Sum weights directly from table */
         sum_w = 0;
-        for (wt_idx = 0; wt_idx < 32; wt_idx++) {
-            s16 w = *(s16 *)(wt_base + wt_idx * 8);
-            if (w < 0) break;
-            if (wt_wgts[wt_idx] >= 0) {
-                sum_w += (u32)wt_wgts[wt_idx];
+        {
+            u32 j;
+            for (j = 0; j < wt_idx; j++) {
+                sum_w += (u32)*(s16 *)(wt_base + j * 8 + 6);
             }
         }
-        printf("rank %d\n", sum_w);
+        printf("item id %d\n", sum_w);
         if (sum_w > 0) {
             u32 rnd = func_00488f30() % sum_w;
             for (search_idx = 0; search_idx < wt_idx; search_idx++) {
-                s16 w = wt_wgts[search_idx];
-                if (w >= 0) {
-                    if (rnd < (u32)w) break;
-                    rnd -= (u32)w;
-                }
+                s16 w = *(s16 *)(wt_base + search_idx * 8 + 6);
+                if (rnd < (u32)w) break;
+                rnd -= (u32)w;
             }
             wt_base += search_idx * 8;
         }
-        printf("item id : 0x%03x\n", *(u16 *)wt_base);
-        kind = 1;
-        value = BR_S16(entry, 8);
+        printf("rnd %d/%d\n", search_idx, sum_w);
+        {
+            u16 sel_id = *(u16 *)wt_base;
+            s16 sel_val = *(s16 *)(wt_base + 2);
+            u16 sel_f4 = *(u16 *)(wt_base + 4);
+            printf("item id %d\n", sel_id);
+            kind = 1;
+            value = (s32)sel_val;
+        }
+        printf("type : get money\n");
         break;
     }
     case 1:
