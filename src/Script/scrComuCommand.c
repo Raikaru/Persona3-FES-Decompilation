@@ -765,22 +765,16 @@ u32 scrComu00360110(void)
     K_ASSERT(handle >= 0, 0x25e);
     bVar1 = *(u8*)(d4 + slPtr + 0x480);
     i = 0;
-    goto tail;
-
-loop:
-    idx = i * 2;
-    uVar3 = *(s16*)(data + idx + 4);
-    uVar2 = *(u8*)(data + i + 0xc);
-    func_00171110(uVar3, 2);
-    FUN_003a4270(handle, idx, (short)uVar3);
-    FUN_003a4010(handle, idx + 1, uVar2, 0);
-    FUN_003a4270(handle, i + 0xd, 2);
-    i++;
-
-tail:
-    if (i <= bVar1 + 1) {
-        goto loop;
-    }
+    do {
+        idx = i * 2;
+        uVar3 = *(s16*)(data + idx + 4);
+        uVar2 = *(u8*)(data + i + 0xc);
+        func_00171110(uVar3, 2);
+        FUN_003a4270(handle, idx, (short)uVar3);
+        FUN_003a4010(handle, idx + 1, uVar2, 0);
+        FUN_003a4270(handle, i + 0xd, 2);
+        i++;
+    } while (i < bVar1 + 2);
     scrSetIntReturnVal();
     return 1;
 }
