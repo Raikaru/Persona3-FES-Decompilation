@@ -1749,17 +1749,14 @@ void func_0010cdd0(void)
                 func_0010cce0(outputBuf, sourceData, copySize);
                 slot->output = outputBuf;
 
-                queueHandle = func_0051DC70(3, -1, (s32)slot->input,
-                                            slot->inputSize,
-                                            (s32)slot->intermediate,
-                                            *intermediateSizePtr);
+                queueHandle = func_0051DC70(3, -1, (s32)*inputPtr,
                                             *inputSizePtr,
                                             (s32)*intermediatePtr,
                                             *intermediateSizePtr);
                 slot->queueHandle = queueHandle;
                 decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
-                slot->decodeHandle = decodeHandle;
                 auxHandle = func_0051DDF0(0, -1, (s32)slot->output,
+                                          *outputSizePtr);
                                           slot->outputSize);
                 slot->aux = (void*)(s32)auxHandle;
                 slot->completion = (void*)(s32)func_0051DDF0(
