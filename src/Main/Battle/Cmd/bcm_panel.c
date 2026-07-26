@@ -2650,8 +2650,11 @@ void FUN_0022A2B0(void)
     FUN_0021d950(work + 0x4230, color);
     FUN_0021d950(work + 0x4330, color);
 
+    /* Retail offset 0x334: recompute alpha for the white/grey colour pair. */
+    scaled = 255.0f * blend * weight;
+    alphaByte = (u8)(u32)scaled;
     whiteColour = alphaByte | 0xffffff00u;
-    greyColour = alphaByte | 0xccccccu | 0xcc000000u;
+    greyColour = alphaByte | 0xcccccc00u;
 
     for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
         record = records + i * 0x410;
@@ -2676,6 +2679,9 @@ void FUN_0022A2B0(void)
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
+        /* Retail offset 0x518: recompute alpha for each record icon draw. */
+        scaled = 255.0f * blend * weight;
+        alphaByte = (u8)(u32)scaled;
         color[3] = alphaByte;
         FUN_0021d950(record + 0x10, color);
 
@@ -2693,6 +2699,9 @@ void FUN_0022A2B0(void)
             color[1] = 0x5a;
             color[2] = 0x5a;
         }
+        /* Retail offset 0x610: recompute alpha for the record text colour draws. */
+        scaled = 255.0f * blend * weight;
+        alphaByte = (u8)(u32)scaled;
         color[3] = alphaByte;
         FUN_0021d950(record + 0x110, color);
         FUN_0021d950(record + 0x210, color);
@@ -2715,6 +2724,9 @@ void FUN_0022A2B0(void)
             color[1] = 0x4e;
             color[2] = 0x50;
         }
+        /* Retail offset 0x74c: recompute alpha for the record detail draw. */
+        scaled = 255.0f * blend * weight;
+        alphaByte = (u8)(u32)scaled;
         color[3] = alphaByte;
         FUN_0021d950(record + 0x310, color);
     }
@@ -2730,6 +2742,7 @@ void FUN_0022A2B0(void)
     rect[0] = 65.0f + basePos[0];
     rect[1] = 19.0f + basePos[1] + 77.0f;
 
+    /* Retail offset 0x848: recompute alpha for the overlay icon draw. */
     scaled = 255.0f * blend * weight;
     alphaByte = (u8)(u32)scaled;
     colour = alphaByte | 0xffffff00u;
@@ -2746,6 +2759,9 @@ void FUN_0022A2B0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
+    /* Retail offset 0x960: recompute alpha for the overlay text icon draw. */
+    scaled = 255.0f * blend * weight;
+    alphaByte = (u8)(u32)scaled;
     color[3] = alphaByte;
     FUN_0021d950(overlay + 0x10, color);
 
@@ -2756,6 +2772,9 @@ void FUN_0022A2B0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
+    /* Retail offset 0xa20: recompute alpha for the overlay text colour draws. */
+    scaled = 255.0f * blend * weight;
+    alphaByte = (u8)(u32)scaled;
     color[3] = alphaByte;
     FUN_0021d950(overlay + 0x110, color);
     FUN_0021d950(overlay + 0x210, color);
@@ -2771,6 +2790,9 @@ void FUN_0022A2B0(void)
     color[0] = *((u8*)frame + 0x1c);
     color[1] = *((u8*)frame + 0x1d);
     color[2] = *((u8*)frame + 0x1e);
+    /* Retail offset 0xb2c: recompute alpha for the overlay detail draw. */
+    scaled = 255.0f * blend * weight;
+    alphaByte = (u8)(u32)scaled;
     color[3] = alphaByte;
     FUN_0021d950(overlay + 0x310, color);
 }
