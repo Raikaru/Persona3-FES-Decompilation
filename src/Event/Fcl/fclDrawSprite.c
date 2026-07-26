@@ -1426,12 +1426,13 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 
   short *psVar4;
 
-  int iVar5;
-  int index;
+  int *piVar7;
 
   int *piVar6;
 
-  int *piVar7;
+  int copyCount;
+
+  int index;
 
   int aiStack_20 [8];
 
@@ -1439,11 +1440,11 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 
   iVar1 = *(int *)(param_2 + 0xc);
 
-  iVar5 = 4;
+  piVar7 = (int *)&DAT_006afaf0;
 
   piVar6 = aiStack_20;
 
-  piVar7 = (int *)&DAT_006afaf0;
+  copyCount = 4;
 
   do {
 
@@ -1453,7 +1454,7 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 
     piVar7 = piVar7 + 2;
 
-    iVar5 = iVar5 + -1;
+    copyCount = copyCount + -1;
 
     *piVar6 = iVar2;
 
@@ -1461,7 +1462,7 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 
     piVar6 = piVar6 + 2;
 
-  } while (0 < iVar5);
+  } while (0 < copyCount);
 
   for (index = 0; index < 8; index = index + 1) {
     psVar4 = (short *)(iVar1 + aiStack_20[index] * 0xc);

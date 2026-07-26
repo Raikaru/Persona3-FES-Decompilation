@@ -1403,7 +1403,7 @@ void func_001a8920(u32* entries, const u32* source)
     entries[0]++;
 }
 
-// FUN_001a89c0 NONMATCHING
+// FUN_001a89c0
 s32 func_001a89c0(const u32* left, const u32* right)
 {
     RwCamera* camera;

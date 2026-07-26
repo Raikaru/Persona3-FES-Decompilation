@@ -3676,7 +3676,7 @@ u64 FUN_0041b950(int param_1)
 
       if (cVar1 == '\x02') {
 
-        FUN_0041bf80(*(u32 *)(puVar2 + 4));
+        FUN_0041bf80(*(u32 **)(puVar2 + 4));
       }
       else if (cVar1 == '\x03') {
         FUN_00317a20(*(u32 *)(puVar2 + 4));
