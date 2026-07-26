@@ -732,6 +732,8 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
     s32 bright;
     f32 slide;
     CampVec2 originalPosition;
+    CampVec2 iconPosition;
+    CampVec2 levelPosition;
     register void* parent;
     shortFrame = (s16)frame;
 
@@ -751,30 +753,32 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
                           position.x + 22.0f,
                           position.y + 117.0f, (u8)bright, alpha);
     if (localFrame > 0) {
+    iconPosition = originalPosition;
         campPersonaDrawSprite(parent, DAT_00833B88,
                               FUN_00173280(*(u16*)((u8*)persona + 2)) - 1,
-                              originalPosition.x + 105.0f, originalPosition.y + 142.0f,
+                              iconPosition.x + 105.0f, iconPosition.y + 142.0f,
                               (u8)bright, alpha);
     }
     if (localFrame > 4) {
         {
+        levelPosition = originalPosition;
             u8 level;
 
             level = *((u8*)persona + 4);
             if (level >= 10) {
                 campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
                                       level / 10 + 0xb,
-                                      originalPosition.x + 67.0f,
-                                      originalPosition.y + 127.0f, bright, alpha);
+                                      levelPosition.x + 67.0f,
+                                      levelPosition.y + 127.0f, bright, alpha);
                 campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
                                       level % 10 + 0xb,
-                                      originalPosition.x + 82.0f,
-                                      originalPosition.y + 127.0f, bright, alpha);
+                                      levelPosition.x + 82.0f,
+                                      levelPosition.y + 127.0f, bright, alpha);
             } else {
                 campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
                                       level % 10 + 0xb,
-                                      originalPosition.x + 75.0f,
-                                      originalPosition.y + 127.0f, bright, alpha);
+                                      levelPosition.x + 75.0f,
+                                      levelPosition.y + 127.0f, bright, alpha);
             }
         }
     }

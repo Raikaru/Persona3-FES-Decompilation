@@ -16687,6 +16687,7 @@ u64 FUN_00454620(char param_1)
   float fStack_ac;
   float fStack_a0;
   float fStack_9c;
+  float fStack_98;
   float afStack_90 [4];
   float afStack_88_unused;
   float afStack_8c_unused;
@@ -16777,6 +16778,9 @@ u64 FUN_00454620(char param_1)
   return 0;
 }
 #undef fStack_20
+#undef fStack_1c
+#undef fStack_18
+#undef fStack_10
 #undef fStack_c
 #undef fStack_8
 #undef fStack_90
