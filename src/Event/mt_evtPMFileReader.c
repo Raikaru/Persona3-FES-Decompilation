@@ -69,6 +69,8 @@ extern u16 FUN_003bd9a0_pm2(u32 param_1,u32 param_2);
 #pragma alias FUN_005225a8_pm2 FUN_005225a8
 extern void FUN_005225a8_pm2(u32 param_1);
 extern u8 DAT_006a10b0[];
+#pragma alias DAT_006a10b0_abs DAT_006a10b0
+extern u8 DAT_006a10b0_abs[];
 extern u8 DAT_006a10d0[];
 extern u8 DAT_006a10f0[];
 extern u8 DAT_006a1120[];
@@ -252,11 +254,11 @@ u64 FUN_00397950(void)
     case 6:
       uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
       *(u16 *)(piVar2 + 6) = uVar1;
-      if (uVar1 > 0) {
+      if (*(u16 *)(piVar2 + 6) > 0) {
         FUN_00395170();
       }
       *piVar2 = 7;
-      FUN_005225a8((u32)(uintptr_t)DAT_006a10b0);
+      FUN_005225a8((u32)(uintptr_t)DAT_006a10b0_abs);
       break;
     case 7:
       break;

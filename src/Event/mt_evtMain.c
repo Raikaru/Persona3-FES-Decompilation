@@ -2665,9 +2665,9 @@ void FUN_003625e0(void)
 
     if (DAT_007e095f < 0x3c) {
 
-      *(float *)(iVar2 + 4) = fStack_10 * 13.0 + *(float *)(iVar2 + 4) + 0.0;
-
-      *(float *)(iVar2 + 8) = fStack_c * 13.0 + *(float *)(iVar2 + 8) + 0.0;
+      *(float *)(iVar2 + 4) = fStack_10 * 13.0f + *(float *)(iVar2 + 4) + 0.0f;
+      *(float *)(iVar2 + 8) = fStack_c * 13.0f + *(float *)(iVar2 + 8) + 0.0f;
+      *(float *)(iVar2 + 0xc) = fStack_8 * 13.0f + *(float *)(iVar2 + 0xc) + 0.0f;
 
       *(float *)(iVar2 + 0xc) = fStack_8 * 13.0 + *(float *)(iVar2 + 0xc) + 0.0;
 
@@ -2675,9 +2675,9 @@ void FUN_003625e0(void)
 
     else if (0xbb < DAT_007e095f) {
 
-      *(float *)(iVar2 + 4) = (*(float *)(iVar2 + 4) + 0.0) - fStack_10 * 13.0;
-
-      *(float *)(iVar2 + 8) = (*(float *)(iVar2 + 8) + 0.0) - fStack_c * 13.0;
+      *(float *)(iVar2 + 4) = (*(float *)(iVar2 + 4) + 0.0f) - fStack_10 * 13.0f;
+      *(float *)(iVar2 + 8) = (*(float *)(iVar2 + 8) + 0.0f) - fStack_c * 13.0f;
+      *(float *)(iVar2 + 0xc) = (*(float *)(iVar2 + 0xc) + 0.0f) - fStack_8 * 13.0f;
 
       *(float *)(iVar2 + 0xc) = (*(float *)(iVar2 + 0xc) + 0.0) - fStack_8 * 13.0;
 
@@ -2685,7 +2685,7 @@ void FUN_003625e0(void)
 
     if (DAT_007e095e < 0x3c) {
 
-      *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) + 2.5;
+      *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) + 2.5f;
 
     }
 
@@ -2693,7 +2693,7 @@ void FUN_003625e0(void)
 
       if (DAT_007e0960 < 0x3c) {
 
-        *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) + 2.5;
+        *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) + 2.5f;
 
       }
 
@@ -2701,13 +2701,13 @@ void FUN_003625e0(void)
 
         if (DAT_007e0961 < 0x3c) {
 
-          *(float *)(iVar2 + 0x10) = *(float *)(iVar2 + 0x10) + 2.5;
+          *(float *)(iVar2 + 0x10) = *(float *)(iVar2 + 0x10) + 2.5f;
 
         }
 
         else if (0xbb < DAT_007e0961) {
 
-          *(float *)(iVar2 + 0x10) = *(float *)(iVar2 + 0x10) - 2.5;
+          *(float *)(iVar2 + 0x10) = *(float *)(iVar2 + 0x10) - 2.5f;
 
         }
 
@@ -2715,7 +2715,7 @@ void FUN_003625e0(void)
 
       else {
 
-        *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) - 2.5;
+        *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) - 2.5f;
 
       }
 
@@ -2723,7 +2723,7 @@ void FUN_003625e0(void)
 
     else {
 
-      *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) - 2.5;
+      *(float *)(iVar2 + 0x14) = *(float *)(iVar2 + 0x14) - 2.5f;
 
     }
 
@@ -2895,9 +2895,9 @@ void FUN_003628f0(void)
 
       if (DAT_007e095f < 0x3c) {
 
-        *(float *)(iVar7 + 4) = fStack_10 * 10.0 + *(float *)(iVar7 + 4) + 0.0;
-
-        *(float *)(iVar7 + 8) = fStack_c * 10.0 + *(float *)(iVar7 + 8) + 0.0;
+        *(float *)(iVar7 + 4) = fStack_10 * 10.0f + *(float *)(iVar7 + 4) + 0.0f;
+        *(float *)(iVar7 + 8) = fStack_c * 10.0f + *(float *)(iVar7 + 8) + 0.0f;
+        *(float *)(iVar7 + 0xc) = fStack_8 * 10.0f + *(float *)(iVar7 + 0xc) + 0.0f;
 
         *(float *)(iVar7 + 0xc) = fStack_8 * 10.0 + *(float *)(iVar7 + 0xc) + 0.0;
 
@@ -2905,9 +2905,9 @@ void FUN_003628f0(void)
 
       else if (0xbb < DAT_007e095f) {
 
-        *(float *)(iVar7 + 4) = (*(float *)(iVar7 + 4) + 0.0) - fStack_10 * 10.0;
-
-        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0) - fStack_c * 10.0;
+        *(float *)(iVar7 + 4) = (*(float *)(iVar7 + 4) + 0.0f) - fStack_10 * 10.0f;
+        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0f) - fStack_c * 10.0f;
+        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0f) - fStack_8 * 10.0f;
 
         *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0) - fStack_8 * 10.0;
 
@@ -2915,9 +2915,9 @@ void FUN_003628f0(void)
 
       if (DAT_007e095e < 0x3c) {
 
-        *(float *)(iVar7 + 4) = fStack_40 * 10.0 + *(float *)(iVar7 + 4) + 0.0;
-
-        *(float *)(iVar7 + 8) = fStack_3c * 10.0 + *(float *)(iVar7 + 8) + 0.0;
+        *(float *)(iVar7 + 4) = fStack_40 * 10.0f + *(float *)(iVar7 + 4) + 0.0f;
+        *(float *)(iVar7 + 8) = fStack_3c * 10.0f + *(float *)(iVar7 + 8) + 0.0f;
+        *(float *)(iVar7 + 0xc) = fStack_38 * 10.0f + *(float *)(iVar7 + 0xc) + 0.0f;
 
         *(float *)(iVar7 + 0xc) = fStack_38 * 10.0 + *(float *)(iVar7 + 0xc) + 0.0;
 
@@ -2925,9 +2925,9 @@ void FUN_003628f0(void)
 
       else if (0xbb < DAT_007e095e) {
 
-        *(float *)(iVar7 + 4) = (*(float *)(iVar7 + 4) + 0.0) - fStack_40 * 10.0;
-
-        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0) - fStack_3c * 10.0;
+        *(float *)(iVar7 + 4) = (*(float *)(iVar7 + 4) + 0.0f) - fStack_40 * 10.0f;
+        *(float *)(iVar7 + 8) = (*(float *)(iVar7 + 8) + 0.0f) - fStack_3c * 10.0f;
+        *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0f) - fStack_38 * 10.0f;
 
         *(float *)(iVar7 + 0xc) = (*(float *)(iVar7 + 0xc) + 0.0) - fStack_38 * 10.0;
 
@@ -2935,13 +2935,13 @@ void FUN_003628f0(void)
 
       if (DAT_007e0960 < 0x3c) {
 
-        *(float *)(iVar7 + 0x14) = *(float *)(iVar7 + 0x14) + 1.0;
+        *(float *)(iVar7 + 0x14) = *(float *)(iVar7 + 0x14) + 1.0f;
 
       }
 
       else if (0xbb < DAT_007e0960) {
 
-        *(float *)(iVar7 + 0x14) = *(float *)(iVar7 + 0x14) - 1.0;
+        *(float *)(iVar7 + 0x14) = *(float *)(iVar7 + 0x14) - 1.0f;
 
       }
 
@@ -2951,13 +2951,13 @@ void FUN_003628f0(void)
 
           if (DAT_007e0961 < 0x3c) {
 
-            *(float *)(iVar7 + 0x10) = *(float *)(iVar7 + 0x10) + 1.0;
+            *(float *)(iVar7 + 0x10) = *(float *)(iVar7 + 0x10) + 1.0f;
 
           }
 
           else if (0xbb < DAT_007e0961) {
 
-            *(float *)(iVar7 + 0x10) = *(float *)(iVar7 + 0x10) - 1.0;
+            *(float *)(iVar7 + 0x10) = *(float *)(iVar7 + 0x10) - 1.0f;
 
           }
 
@@ -2965,7 +2965,7 @@ void FUN_003628f0(void)
 
         else {
 
-          *(float *)(iVar7 + 8) = *(float *)(iVar7 + 8) - 10.0;
+          *(float *)(iVar7 + 8) = *(float *)(iVar7 + 8) - 10.0f;
 
         }
 
@@ -2973,7 +2973,7 @@ void FUN_003628f0(void)
 
       else {
 
-        *(float *)(iVar7 + 8) = *(float *)(iVar7 + 8) + 10.0;
+        *(float *)(iVar7 + 8) = *(float *)(iVar7 + 8) + 10.0f;
 
       }
 
@@ -2981,7 +2981,7 @@ void FUN_003628f0(void)
 
         if ((DAT_007e0952 & 2) != 0) {
 
-          *(float *)(iVar7 + 0x100) = *(float *)(iVar7 + 0x100) - 1.0;
+          *(float *)(iVar7 + 0x100) = *(float *)(iVar7 + 0x100) - 1.0f;
 
         }
 
@@ -2989,7 +2989,7 @@ void FUN_003628f0(void)
 
       else {
 
-        *(float *)(iVar7 + 0x100) = *(float *)(iVar7 + 0x100) + 1.0;
+        *(float *)(iVar7 + 0x100) = *(float *)(iVar7 + 0x100) + 1.0f;
 
       }
 

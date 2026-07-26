@@ -170,26 +170,27 @@ state_done:
 void FUN_00397030(int param_1)
 {
     int manager;
-    u8 *base;
-    int offset;
-    u32 *entry;
+    u32* base;
+    int index;
 
     manager = FUN_00195340("koma_Manager");
-    if (manager == 0) {
+    if (manager == 0)
+    {
         goto done;
     }
-    if (param_1 >= 3) {
+    if (param_1 >= 3)
+    {
         goto done;
     }
-    base = (u8 *)FUN_00195540(manager);
-    offset = param_1 * 0xc;
-    entry = (u32 *)(base + offset);
-    if (entry[2] == 0) {
+    base = (u32*)FUN_00195540(manager);
+    index = param_1 * 3;
+    if (base[index + 2] == 0)
+    {
         goto done;
     }
-    FUN_00195020(entry[2]);
-    entry[2] = 0;
-    *(u32 *)(base + offset) = 0;
+    FUN_00195020(base[index + 2]);
+    base[index + 2] = 0;
+    base[index] = 0;
 done:
     ;
 }
