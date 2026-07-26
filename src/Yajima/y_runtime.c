@@ -1529,7 +1529,7 @@ void FUN_0045bd90(u64 param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
-void FUN_0045ce90(u64 param_1);
+void FUN_0045ce90(int param_1);
 void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
 void FUN_0045e7e0(void);
@@ -2941,7 +2941,7 @@ void FUN_0045bd90(u64 param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
-void FUN_0045ce90(u64 param_1);
+void FUN_0045ce90(int param_1);
 void FUN_0045d990(int param_1,long param_2);
 void FUN_0045e7b0(int param_1);
 void FUN_0045e7e0(void);
@@ -20567,7 +20567,7 @@ void FUN_0045cdd0(int param_1,long param_2)
 
 // FUN_0045CE90 NONMATCHING
 
-void FUN_0045ce90(u64 param_1)
+void FUN_0045ce90(int param_1)
 
 {
   int iVar1;
