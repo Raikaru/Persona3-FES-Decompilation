@@ -1870,7 +1870,9 @@ s32 func_001e4bc0(RuntimeTask* task)
             {
                 work->model = selected->resource;
                 work->resourceId = selected->resourceId;
-                func_003b5d10(work->resourceId);
+                object = func_003b5d10(work->resourceId);
+                func_001ad870(
+                    *(void**)((u8*)object + 0x1e8), 0x80000000);
                 work->windowTask = func_001a3b10(
                     task, 0x20, 0x20, 2);
                 func_001a3dc0(work->windowTask, D_00684120, 8);
