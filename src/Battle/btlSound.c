@@ -1066,7 +1066,7 @@ u32 FUN_002de4e0(int param_1)
 
     uVar2 = ((uVar2 & 0xffff) * 100) / (uVar3 & 0xffff);
 
-    if ((0x47 <= uVar2) && (*(int *)(param_1 + 0x20) < 3)) {
+    if ((uVar2 > 0x46) && (*(int *)(param_1 + 0x20) < 3)) {
       switch(*(u16 *)(*(int *)(param_1 + 0x30) + 0xa4)) {
 
       case 2:
@@ -1245,7 +1245,7 @@ u32 FUN_002de4e0(int param_1)
     }
     else {
 
-      if (0x1f <= uVar2) {
+      if (uVar2 > 0x1e) {
         switch(*(u16 *)(*(int *)(param_1 + 0x30) + 0xa4)) {
 
         case 2:
