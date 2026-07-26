@@ -6847,7 +6847,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
 
 
-// FUN_00318ED0 NONMATCHING
+// FUN_00318ED0
 
 
 bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3)
