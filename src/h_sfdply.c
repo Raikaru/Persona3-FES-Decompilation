@@ -1925,10 +1925,12 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     u8* pixel;
     s32 width;
     s32 height;
+    u32 alpha;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    alpha = 0xFF;
     y = 0;
     while (y < height)
     {
@@ -1939,7 +1941,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
-            pixel[3] = 0xFF;
+            pixel[3] = alpha;
             source += 3;
             x++;
         }

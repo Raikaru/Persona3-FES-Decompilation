@@ -8948,7 +8948,7 @@ void FUN_003797b0(int param_1,int param_2,int param_3,int param_4)
 
   int iVar2;
 
-  long lVar3;
+  int lVar3;
 
   f32 uVar4;
 

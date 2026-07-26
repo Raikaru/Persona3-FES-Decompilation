@@ -524,8 +524,6 @@ extern u32 FUN_00170e90();
 extern u32 FUN_00173380();
 extern u32 FUN_00173460();
 extern u32 FUN_00173510();
-#pragma alias FUN_00173510_s32 FUN_00173510
-extern u8 FUN_00173510_s32(s32, u32);
 extern u32 FUN_001738d0();
 extern u32 FUN_00174960();
 extern u32 FUN_00174a90();
@@ -960,6 +958,7 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
 {
   u16 uVar1;
   u8 bVar2;
+  s32 callArg;
   u32 base;
 
   if ((s32)(param_2 & 0xffff) < 0 || (s32)(param_2 & 0xffff) >= 5) {
@@ -981,7 +980,8 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2)
         FUN_0019d3f0((u32)D_0069aa80, 0x2eb);
       }
     }
-    bVar2 = FUN_00173510_s32((s32)uVar1, param_2);
+    callArg = (s32)(u32)uVar1;
+    bVar2 = FUN_00173510(callArg, param_2);
   }
   if ((s32)bVar2 > 0) {
     goto clamp_bvar2;
