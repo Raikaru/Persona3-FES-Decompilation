@@ -3700,13 +3700,13 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
   float fVar18;
 
-  int iStack_10;
+  u32 iStack_10;
 
-  int iStack_c;
+  u32 iStack_c;
 
-  int iStack_8;
+  u32 iStack_8;
 
-  int iStack_4;
+  u32 iStack_4;
 
   
 
