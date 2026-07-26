@@ -386,36 +386,33 @@ void bsaMain00210d60(BsaWork* work)
     p[1] |= BSA_FLAG_TRANSITION;
 }
  
-static inline void bsaTransition(BsaWork* work, f32* alpha, f32* slide, f32* iconAlpha)
+static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
 {
     s32 timer;
-    timer = (s32)work->words[0x29ac];
+    timer = ((s32*)p)[0x29ac];
     *slide = 0.0f;
     *iconAlpha = 1.0f;
-    if ((work->words[1] & BSA_FLAG_TRANSITION) == 0)
+    if ((p[1] & BSA_FLAG_TRANSITION) == 0)
         return;
-    switch (work->words[0x29ad]) {
-    case 0:
-        if (timer < 10) work->words[0x29ac] = ++timer;
-        else work->words[1] &= ~BSA_FLAG_TRANSITION;
-        *alpha = (f32)(s32)work->words[0x29ac] / 10.0f;
-        break;
-    case 1:
-        if (timer < 10) work->words[0x29ac] = ++timer;
+    if (((s32*)p)[0x29ad] == 1) {
+        if (timer < 10) ((s32*)p)[0x29ac] = ++timer;
         else {
-            work->words[1] &= ~BSA_FLAG_TRANSITION;
-            bsaMain00215770(work);
-            work->words[1] &= ~BSA_FLAG_ACTIVE;
+            p[1] &= ~BSA_FLAG_TRANSITION;
+            bsaMain00215770((BsaWork*)p);
+            p[1] &= ~BSA_FLAG_ACTIVE;
         }
-        *alpha = 1.0f - (f32)(s32)work->words[0x29ac] / 10.0f;
-        break;
+        *alpha = 1.0f - (f32)((s32*)p)[0x29ac] / 10.0f;
+    } else {
+        if (timer < 10) ((s32*)p)[0x29ac] = ++timer;
+        else p[1] &= ~BSA_FLAG_TRANSITION;
+        *alpha = (f32)((s32*)p)[0x29ac] / 10.0f;
     }
-    if ((work->words[1] & BSA_FLAG_TRANSITION) == 0) {
-        *alpha = work->words[0x29ad] == 1 ? 0.0f : 1.0f;
+    if ((p[1] & BSA_FLAG_TRANSITION) == 0) {
+        *alpha = ((s32*)p)[0x29ad] == 1 ? 0.0f : 1.0f;
         return;
     }
-    if (work->words[0x29ad] == 1) {
-        *iconAlpha = 1.0f - (f32)work->words[0x29ac] / 10.0f;
+    if (((s32*)p)[0x29ad] == 1) {
+        *iconAlpha = 1.0f - (f32)((s32*)p)[0x29ac] / 10.0f;
     } else if (timer < 4) {
         *iconAlpha = 0.0f;
     } else if (timer < 8) {
@@ -455,7 +452,7 @@ void bsaMain00210d90(BsaWork* work)
     alpha = 1.0f;
     slide = 0.0f;
     iconAlpha = 1.0f;
-    bsaTransition(work, &alpha, &slide, &iconAlpha);
+    bsaTransition(p, &alpha, &slide, &iconAlpha);
     base = (p[0] == 0) ? 180.0f : 0.0f;
 
     image = func_0021cca0(table2, 0x1f);
