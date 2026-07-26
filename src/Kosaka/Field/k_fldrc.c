@@ -1574,14 +1574,7 @@ void FUN_001b5200(u32* resource, f32 angle)
     u32 i;
     u16 type;
     FldrcColor color;
-    u64 colorWord;
-    f32 colorTail;
-    u8* colorBytes;
-    colorBytes = (u8*)&color;
-    colorWord = DAT_00678f68_color[0].word;
-    colorTail = DAT_00678f68_color[0].tail;
-    *(u64*)colorBytes = colorWord;
-    *(f32*)(colorBytes + 8) = colorTail;
+    color = DAT_00678f68_color[0];
 
     if ((*resource & 1) == 0)
     {

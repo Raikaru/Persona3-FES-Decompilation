@@ -1830,7 +1830,7 @@ void func_0020cd50(void* work, void* resource)
     *(u32*)work |= 8;
 }
 
-#pragma opt_loop_invariants on
+#pragma opt_loop_invariants off
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {

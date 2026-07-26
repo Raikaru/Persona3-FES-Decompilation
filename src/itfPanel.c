@@ -363,6 +363,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
   u32 uVar1;
 
   u32 uVar2;
+  u32 result;
 
   int iVar3;
 
@@ -386,7 +387,8 @@ u32 FUN_003a8b00(int param_1,int param_2)
   *(int *)iVar3 = iVar3;
 
   *(char *)(iVar3 + 0x3c) = (char)param_1;
-  if (DAT_006a1d10_abs[param_1] != 0) {
+  result = DAT_006a1d10_abs[param_1];
+  if (result != 0) {
 
 
     uVar2 = FUN_00191af0();
