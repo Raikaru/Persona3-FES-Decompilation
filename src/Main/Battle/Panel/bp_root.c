@@ -2858,10 +2858,10 @@ void FUN_00205D60(void)
     {
         index = i + *(u32*)(work + 0x76f8);
         entry = work + index * 0x18 + 0x2e0;
-        if (*(u32*)(work + 0x7700) != index)
+        if (*(u32*)(work + 0x7700) == index)
         {
             if ((*work & 1) != 0 || (*work & 0x20000000) != 0)
-                color = -1;
+                color = 0xffff;
             else
                 color = (s32)0x8080ffff;
         }
@@ -2869,7 +2869,7 @@ void FUN_00205D60(void)
         {
             color = -1;
         }
-        if (type == 0)
+        type = *(u32*)(entry + 4);
         {
             handle = *(u32*)(entry + 0x90);
             func_003b0d70(handle, 0x730, 0x8c0 + i * 0x90);

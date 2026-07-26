@@ -1136,6 +1136,7 @@ void *func_001f2300(KwlnTask *task)
     func_001f5b20();
     state = BR_U32(work, 8);
     switch (state) {
+    case 1:
         if (sflRes0020dfe0() == 0 && func_00254f20() == 0 && BR_U32(work, 0x2a210) != 0) {
             func_00254f70();
             if (BR_U32(work, 0xe4) == 0) {
@@ -3318,8 +3319,8 @@ void func_001f7210(void)
     u32 kind;
     s32 value = 0;
     u16 selected_id;
-    s32 selected_value;
-    u32 selected_aux;
+    s16 selected_value;
+    u16 selected_aux;
     u32 stat_cnt[5];
     u8 card_buf[20];
     u32 item_substate;

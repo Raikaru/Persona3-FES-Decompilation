@@ -123,6 +123,11 @@ extern const char D_005DB080[];
 extern const char D_005DB0A0[];
 extern const char D_005DB030[];
 extern void* FUN_00125d70(KwlnTask* task);
+/* Persona-data actions use the exact narrow types from datPersona.c. */
+#pragma alias campStatusSetHeroPersona FUN_00174c10
+extern u32 campStatusSetHeroPersona(s16 heroPersonaIdx);
+#pragma alias campStatusGetHeroPersona FUN_00175200
+extern u8 campStatusGetHeroPersona(s16 heroPersonaIdx);
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha);
 extern const char D_005DB158[];
 extern const char D_005DACB0[];

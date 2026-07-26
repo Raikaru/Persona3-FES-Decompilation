@@ -15659,6 +15659,7 @@ void FUN_00402800(int param_1)
 
   int iVar4;
 
+  u32 uVar5;
   u64 uVar6;
 
 
