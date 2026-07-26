@@ -152,8 +152,12 @@ extern void FUN_003a4dd0_typed(int param_1);
 void FUN_003a4ef0(long param_1);
 void FUN_0035ac90(int output, int source, int end, u32 length);
 void FUN_003a5030(int param_1);
+#pragma alias FUN_003a5030_typed FUN_003a5030
+extern void FUN_003a5030_typed(int param_1);
 int FUN_003a50e0(int param_1,int param_2);
 int FUN_003a5100(int param_1);
+#pragma alias FUN_003a5100_typed FUN_003a5100
+extern int FUN_003a5100_typed(int param_1);
 u32 FUN_003a5120(int param_1,int param_2);
 u32 FUN_003a51a0(int param_1);
 void FUN_003a5210(int param_1,u64 param_2,u8 param_3,u8 param_4,  s16 param_5);
@@ -2129,9 +2133,9 @@ u32 FUN_003a42c0(int param_1,u32 param_2)
 
   *(int *)(iVar4 + 4) = (int)param_2;
 
-  FUN_003a5030(param_2);
+  FUN_003a5030_typed(param_2);
 
-  iVar2 = FUN_003a5100(param_2);
+  iVar2 = FUN_003a5100_typed(param_2);
 
   if (*(u32 *)((int)param_2 + 8) == BMD_HEADER_MAGIC1) {
 

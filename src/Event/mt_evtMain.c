@@ -9151,16 +9151,18 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
   int iVar2;
 
+  int iVar3;
   int iVar4;
 
   int context;
 
   
 
-  context = (int)param_3;
+  context = iVar3;
+  iVar3 = (int)param_3;
 
 
-  if (*(int *)(context + 0x164) == 0) {
+  if (*(int *)(iVar3 + 0x164) == 0) {
 
     iVar2 = 0;
 
@@ -9168,7 +9170,7 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
   else {
 
-    iVar2 = *(int *)(*(int *)(context + 0x164) + 0x6c);
+    iVar2 = *(int *)(*(int *)(iVar3 + 0x164) + 0x6c);
 
     iVar1 = 0;
     iVar4 = *(int *)(context + 0x160) + *(int *)(context + 0x15c);
