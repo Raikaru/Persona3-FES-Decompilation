@@ -3261,42 +3261,45 @@ void func_00115cd0(int unused0, int unused1, int unused2,
 
 
 void func_00115de0(int unused0, int unused1, int unused2,
-                   f32 param_1, f32 param_2, s16 param_4, u8 param_5,
+                   f32 param_1, f32 param_2, u16 param_4, u8 param_5,
                    u8 param_6, u8 param_7, u8 param_8, f32 param_3)
 
 
 {
   int *piVar1;
 
+  void* uVar3;
+
   int *piVar2;
 
 
 
-  piVar1 = (int *)func_001158b0(0);
-  ((f32 *)piVar1)[0xb] = param_3;
+  uVar3 = func_001158b0(0);
+  piVar2 = (int *)uVar3;
+  ((f32 *)piVar2)[0xb] = param_3;
 
-  ((f32 *)piVar1)[4] = param_1;
+  ((f32 *)piVar2)[4] = param_1;
 
-  ((f32 *)piVar1)[5] = param_2;
+  ((f32 *)piVar2)[5] = param_2;
 
-  *(u8 *)(piVar1 + 6) = param_5;
+  *(u8 *)(piVar2 + 6) = param_5;
 
-  *(u8 *)(piVar1 + 0xc) = param_6;
+  *(u8 *)(piVar2 + 0xc) = param_6;
 
-  *(u8 *)((int)piVar1 + 0x31) = param_7;
+  *(u8 *)((int)piVar2 + 0x31) = param_7;
 
-  *(u8 *)((int)piVar1 + 0x32) = param_8;
+  *(u8 *)((int)piVar2 + 0x32) = param_8;
 
-  ((u16 *)piVar1)[0x14] = param_4;
-  ((u16 *)piVar1)[0x15] = param_4;
+  ((u16 *)piVar2)[0x14] = param_4;
+  ((u16 *)piVar2)[0x15] = param_4;
 
-  FUN_001127d0(piVar1,1);
+  FUN_001127d0(piVar2,1);
 
-  piVar2 = (int *)piVar1[1];
+  piVar1 = (int *)piVar2[1];
 
-  if (piVar2 == (int *)0x0) {
+  if (piVar1 == (int *)0x0) {
 
-    DAT_007cdf3c = (int*)*piVar1;
+    DAT_007cdf3c = (int*)*piVar2;
 
     if (DAT_007cdf3c != 0) {
       DAT_007cdf3c[1] = 0;
@@ -3306,15 +3309,15 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
   else {
 
-    *piVar2 = *piVar1;
+    *piVar1 = *piVar2;
 
-    if (*piVar1 != 0) {
-      *(int **)(*piVar1 + 4) = piVar2;
+    if (*piVar2 != 0) {
+      *(int **)(*piVar2 + 4) = piVar1;
     }
 
   }
 
-  MAESTRO_FREE((void*)piVar1);
+  MAESTRO_FREE((void*)piVar2);
   return;
 
 }
