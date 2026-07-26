@@ -2416,9 +2416,9 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
   float afStack_c8 [10];
 
-  u8 auStack_a0 [48];
+  RwMatrix matrix;
 
-  float afStack_70 [4];
+  float afStack_70 [14];
 
   float afStack_60 [12];
 
@@ -2528,9 +2528,9 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
         fStack_28 = 0.0f;
 
-        RwMatrixRotate((void*)auStack_a0,(void*)&uStack_20,fGpffffad78,0);
+        RwMatrixRotate((void*)&matrix,(void*)&uStack_20,fGpffffad78,0);
 
-        FUN_004c6c60(&fStack_30,&fStack_30,auStack_a0);
+        FUN_004c6c60(&fStack_30,&fStack_30,&matrix);
 
         fStack_30 = fStack_30 + (float)uStack_10;
 
@@ -2558,7 +2558,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
       fStack_28 = 550.0f;
 
-      RwMatrixRotate((void*)auStack_a0,(void*)&uStack_20,fGpffffad78,0);
+      RwMatrixRotate((void*)&matrix,(void*)&uStack_20,fGpffffad78,0);
       FUN_0041bee0(*(u32 *)(iVar5 + 8));
       FUN_0041beb0(*(u32 *)(iVar5 + 8));
 

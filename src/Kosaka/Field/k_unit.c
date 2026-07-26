@@ -1863,8 +1863,8 @@ void func_001d1360(void)
             resource = (ResrcModelChar*)func_003b5d10(resourceId);
             gFldUnitsEc[i].resrc = resource;
             func_00318a90(gFldUnitsEc[i].mdl, &DAT_00683780[gFldUnitsEc[i].scaleIdx], 2);
-            memcpy(func_00318b60(gFldUnitsEc[i].mdl), &gFldUnitsEc[i].matBeforeBtl,
-                   sizeof(RwMatrix));
+            *(RwMatrix*)func_00318b60(gFldUnitsEc[i].mdl) =
+                gFldUnitsEc[i].matBeforeBtl;
             modelData = func_00318b70(gFldUnitsEc[i].mdl);
             func_004c2f10(modelData);
             func_001a0dc0(resourceId, 1);
@@ -2126,6 +2126,10 @@ void func_001d1fa0(void)
     u8* record;
     u32 count;
     u16 spawnId;
+    typedef struct
+    {
+        u8 data[0x110];
+    } SpawnCopy;
 
     area = func_001bff20();
     memset(DAT_0086be80, 0, 0x2700);
@@ -2158,7 +2162,7 @@ void func_001d1fa0(void)
         }
         *(u32*)record = 1;
         *(u32*)(record + 0x11c) = (u32)func_001d78c0(*puGpffffa850, puGpffffa850[2], area);
-        memcpy(record + 0x0c, spawn, 0x110);
+        *(SpawnCopy*)(record + 0x0c) = *(SpawnCopy*)spawn;
         func_001d1db0(record, spawn, (u16)(0x3fe - index));
         spawnId = *(u16*)(*(u32*)(record + 0x11c) + 2);
         if (spawnId < 5000)

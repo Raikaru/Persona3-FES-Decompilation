@@ -1195,8 +1195,10 @@ HSfdAsyncEntry* func_0010c1a0(s32 kind, const char* name, const char* path,
 {
     HSfdAsyncEntry* entry;
     s32 i;
+    s32 enabled;
 
     entry = NULL;
+    enabled = FUN_0050d3a0();
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
         if (sSfdQueue[i].entry == NULL)
@@ -1236,6 +1238,8 @@ HSfdAsyncEntry* func_0010c1a0(s32 kind, const char* name, const char* path,
     {
         strcpy(entry->cacheName, cacheName);
     }
+    if (enabled == 0)
+        FUN_0050d3f0();
     return entry;
 }
 
@@ -1340,9 +1344,9 @@ void func_0010c5f0(void)
         {
             if (entry->state == 0)
             {
-                    enabled = FUN_0050d3f0();
                 if (entry->path[0] == '\0')
                 {
+                    enabled = FUN_0050d3f0();
                     sSfdQueue[i].state = 1;
                     entry->state = 2;
                     if (enabled != 0)
@@ -1355,9 +1359,9 @@ void func_0010c5f0(void)
                     entry->state = 1;
                 }
             }
-                enabled = FUN_0050d3f0();
             else if ((entry->state == 1) && H_Cdvd_IsFileLoaded(entry->request))
             {
+                enabled = FUN_0050d3f0();
                 sSfdQueue[i].state = 1;
                 entry->state = 2;
                 if (enabled != 0)

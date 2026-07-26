@@ -2202,11 +2202,11 @@ void func_00114450(f32 depth,
     f32 z;
     f32 tmp;
     void (**setState)(u32, u32);
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
-    s32 a2;
+    s8 r;
+    s8 g;
+    s8 b;
+    s8 a;
+    s8 a2;
     s32 r1;
     s32 g1;
     s32 b1;
@@ -2215,11 +2215,11 @@ void func_00114450(f32 depth,
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (s32)((color & 0xff000000) >> 24);
-    g = (s32)((color & 0xff0000) >> 16);
-    b = (s32)((color & 0xff00) >> 8);
-    a = (s32)(color & 0xff);
-    a2 = (s32)(colorAlpha & 0xff);
+    r = (s8)(color >> 24);
+    g = (s8)(color >> 16);
+    b = (s8)(color >> 8);
+    a = (s8)color;
+    a2 = (s8)colorAlpha;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
