@@ -600,7 +600,7 @@ void FUN_0035a290(int param_1, int param_2);
 void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1);
 void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1);
 u32 FUN_0035a6a0(int param_1,u64 param_2);
-u64 FUN_0035a770(u64 param_1,u64 param_2);
+void* FUN_0035a770(void* param_1, void* param_2);
 void FUN_0035a870(void* param_1, void* param_2);
 typedef struct
 {
@@ -785,7 +785,7 @@ u32 FUN_0035a6a0(int param_1, u64 param_2)
 // FUN_0035A770 NONMATCHING
 
 
-u64 FUN_0035a770(u64 param_1,u64 param_2)
+void* FUN_0035a770(void* param_1, void* param_2)
 
 
 

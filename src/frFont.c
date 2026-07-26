@@ -2537,7 +2537,7 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 {
 
 
-  int iVar1;
+  register int iVar1;
   int iVar3;
   int iVar2;
 

@@ -1875,8 +1875,8 @@ int FUN_00361ca0(int param_1,int param_2)
 
   int lVar1;
 
+  u32 iVar3;
   int *piVar2;
-  int iVar3;
   
 
   lVar1 = FUN_00386ae0_evt(0x9c,7);

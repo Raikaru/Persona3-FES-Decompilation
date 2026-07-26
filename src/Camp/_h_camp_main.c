@@ -669,6 +669,8 @@ extern const u16 D_005DBB00[];
 
 extern s16 DAT_00833A60[9];
 extern void* DAT_00833A80[0x17];
+#pragma alias DAT_00833A80_abs DAT_00833A80
+extern u8 DAT_00833A80_abs[];
 extern void* DAT_00833B40[0x0b];
 #pragma alias DAT_00833B40_abs DAT_00833B40
 extern u8 DAT_00833B40_abs[];
@@ -832,10 +834,10 @@ void* FUN_00134a10(KwlnTask* task)
                     if (resourceSize == 0) {
                         ready = 0;
                         work[0x19 + index] = 0;
-                        DAT_00833A80[index] = NULL;
+                        ((void**)DAT_00833A80_abs)[index] = NULL;
                     } else {
                         work[2 + index] = 0;
-                        DAT_00833A80[index] = resource;
+                        ((void**)DAT_00833A80_abs)[index] = resource;
                         FUN_005225a8(D_005DBA50, index);
                     }
                 }

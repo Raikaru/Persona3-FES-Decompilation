@@ -873,7 +873,6 @@ u32 FUN_003c5c50(u32 param_1)
   iVar2 = *(int *)(iVar1 + 0x20);
 
   iVar6 = *(int *)(iVar1 + 0x2c);
-  iVar5 = 0;
   iVar7 = FUN_003c6f80() - 1;
   iVar5 = 0;
   while (iVar5 < iVar7) {
