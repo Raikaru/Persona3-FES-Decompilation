@@ -874,7 +874,8 @@ u32 FUN_003c5c50(u32 param_1)
 
   iVar6 = *(int *)(iVar1 + 0x2c);
 
-  iVar7 = FUN_003c6f80() - (iVar5 = 0) - 1;
+  iVar7 = FUN_003c6f80() - 1;
+  iVar5 = 0;
   while (iVar5 < iVar7) {
     if (iVar6 == 0) {
       return 0;
@@ -890,8 +891,7 @@ u32 FUN_003c5c50(u32 param_1)
     }
     iVar6 = *(int *)(iVar6 + 0x10);
     *(u32 *)(iVar1 + 0x2c) = *(u32 *)(*(int *)(iVar1 + 0x2c) + 0x10);
-    uVar7 = FUN_003c4c80_nm(param_1,iVar4 + 4);
-    iVar3 = iVar3 + 1;
+    uVar7 = FUN_003c4c80_nm(iVar4,iVar4 + 4);
   }
 
   return uVar7;

@@ -1995,7 +1995,7 @@ void func_002f3a80(BtlAction* param_1)
   *(u64 *)((int)uVar7 + 0x60) = *puVar13;
   FUN_0027ed20(uVar7,0);
   iVar8 = iVar12 * 0xc;
-  uVar7 = FUN_002a3d70_packet_voice(*(float *)(iVar12 * 4 + 0x69a458) / 30.0f,*(u32 *)(iGpffffb6fc + 0x148)
+  uVar7 = (u32)FUN_002a3d70_packet_voice(*(float *)(iVar12 * 4 + 0x69a458) / 30.0f,*(u32 *)(iGpffffb6fc + 0x148)
                        ,iVar8 + 0x69a3a0,iVar8 + 0x69a3d0,iVar8 + 0x69a400,iVar8 + 0x69a430);
   *(u16 *)((int)uVar7 + 0x48) = 0;
   *(u64 *)((int)uVar7 + 0x60) = *puVar13;

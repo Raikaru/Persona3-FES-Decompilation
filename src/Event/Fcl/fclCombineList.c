@@ -1959,7 +1959,8 @@ s32 fclCombineList003de470(FclList* work)
             FUN_003c6f10((s32)task);
             memcpy(&work->fusion, resource_data->input, sizeof(work->fusion));
             fclCombineList003deb20(work);
-            FUN_003d6ae0((s32)&work->fusion, work->mode, (s32)work->values);
+            FUN_003d6ae0((s32)&work->fusion, *(volatile s32 *)&work->mode,
+                         (s32)work->values);
             FUN_003d8850((s32)work, 7, 1);
             FUN_003d8850((s32)work, 8, 1);
             FUN_003d8850((s32)work, 9, 1);
