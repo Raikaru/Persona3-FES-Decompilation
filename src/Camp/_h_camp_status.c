@@ -12,6 +12,8 @@ void* FUN_001311d0(KwlnTask*);
 void FUN_001124b0();
 extern void (*jtbl_0096017C)(void* memory);
 extern void (*jtbl_007B5AF0[6])();
+extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize,
+                             u32 heapFlags);
 extern s32 FUN_001159f0();
 #pragma alias campStatusDrawSpriteCall FUN_001159f0
 extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
@@ -102,6 +104,12 @@ extern void FUN_00124e60(CampVec2 position, f32 alpha, void* persona,
 extern void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona,
                          s32 fade);
 extern const char D_005DB140[];
+extern const char D_005DB050[];
+extern const char D_005DB080[];
+extern const char D_005DB0A0[];
+extern const char D_005DB030[];
+extern void* FUN_00125d70(KwlnTask* task);
+void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha);
 extern const char D_005DB158[];
 extern const char D_005DACB0[];
 extern const char D_005DB170[];
@@ -1459,31 +1467,33 @@ static void h_campStatusResetInput(CampStatusPartsWork* work, s32 mask)
 void* h_campStatusUpdatePartsTask(KwlnTask* task)
 {
     CampStatusPartsWork* work;
-    KwlnTask* root;
     CampVec2 position;
+    void* childWork;
+    KwlnTask* child;
+    s16 screen;
     s32 done;
     s32 alpha;
     s32 frame;
 
     work = (CampStatusPartsWork*)task->workData;
-    root = DAT_007cdf50;
-    position.x = 188.0f;
-    position.y = work->scrollY;
     switch (work->state) {
     case 0:
         work->scrollY = -20.0f;
-        if (FUN_0017d800() == 0) {
-            work->archive = (void*)FUN_0010c1a0(0, 0x5db0a0, 0, 0, 0, 0, 0,
-                                                0);
+        if (FUN_0017d800() != 0) {
+            work->archive = (void*)FUN_0010c1a0(
+                0, D_005DB050, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DB080, 0x6ef);
         }
         else {
-            work->archive = (void*)FUN_0010c1a0(0, 0x5db050, 0, 0, 0, 0, 0,
-                                                0);
+            work->archive = (void*)FUN_0010c1a0(
+                0, D_005DB0A0, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DB080, 0x6f1);
         }
         work->state = 1;
         break;
     case 1:
-        work->parsedResource = (void*)FUN_0010c3a0(work->archive, &done, 0);
+        work->parsedResource = (void*)FUN_0010c3a0(
+            work->archive, &done, 0);
         if (done != 0) {
             work->state = 2;
         }
@@ -1494,93 +1504,97 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         }
         break;
     case 3:
-        if (root != NULL && root->workData != NULL &&
-            *((s32*)((u8*)root->workData + 0x10)) != 0) {
+        if (*((s32*)((u8*)DAT_007cdf50->workData + 0x10)) != 0) {
             if (work->screen == 0) {
                 work->detailFrame = 0;
-                if (DAT_007cdf5c != NULL &&
-                    DAT_007cdf5c->workData != NULL) {
-                    h_campDrawRootMenuEntriesClosing(
-                        (CampRootDrawWork*)DAT_007cdf5c->workData, 100.0f);
-                    *((u32*)DAT_007cdf5c->workData) = 8;
-                    *((u32*)DAT_007cdf5c->workData + 1) = 0x16;
-                }
+                h_campDrawRootMenuEntriesClosing(
+                    (CampRootDrawWork*)DAT_007cdf5c->workData, 100.0f);
+                *((u32*)DAT_007cdf5c->workData) = 8;
+                *((u32*)DAT_007cdf5c->workData + 1) = 0x16;
             }
             else if (work->screen == 1) {
                 work->detailFrame = 0;
             }
-            work->ownedResource = (void*)FUN_00194b20(
-                task, 0x5db030, 0x18be, h_campStatusUpdatePartsTask,
-                h_campStatusDestroyPcStatusPartsTask, 0);
-            if (work->ownedResource != NULL &&
-                ((KwlnTask*)work->ownedResource)->workData != NULL) {
-                *((s16*)((u8*)((KwlnTask*)work->ownedResource)->workData + 4)) =
-                    work->mode;
+            screen = work->screen;
+            childWork = (*DAT_00960184)(1, 0xc, 0x40000);
+            child = NULL;
+            if (childWork != NULL) {
+                child = (KwlnTask*)FUN_00194b20(
+                    task, D_005DB030, 0x18be, FUN_00125d70,
+                    h_campStatusDestroyPcStatusPartsTask, childWork);
+                if (child != NULL) {
+                    *((s16*)((u8*)childWork + 4)) = screen;
+                }
             }
-            if (DAT_007cdf54 != NULL) {
-                FUN_00121de0(DAT_007cdf54, 2);
-            }
-            if (DAT_007cdf58 != NULL) {
-                FUN_00122710(DAT_007cdf58, 2);
-            }
-            if (work->ownedResource != NULL &&
-                ((KwlnTask*)work->ownedResource)->workData != NULL) {
-                *((s32*)((u8*)((KwlnTask*)work->ownedResource)->workData + 8)) =
-                    work->alpha;
-            }
+            *((KwlnTask**)((u8*)work + 0x24)) = child;
+            FUN_00121de0(DAT_007cdf54, 2);
+            FUN_00122710(DAT_007cdf58, 2);
+            child = *((KwlnTask**)((u8*)work + 0x24));
+            *((s32*)((u8*)child->workData + 8)) = work->alpha;
             work->state = 4;
         }
         break;
     case 4:
         if (work->alpha != 0xff) {
             work->alpha += 10;
-            if (work->alpha > 0xff) {
+            if (work->alpha >= 0x100) {
                 work->alpha = 0xff;
             }
         }
-        if (work->ownedResource != NULL &&
-            ((KwlnTask*)work->ownedResource)->workData != NULL &&
-            work->screen != 0) {
-            *((s32*)((u8*)((KwlnTask*)work->ownedResource)->workData + 8)) =
-                work->alpha;
+        if (work->screen != 0) {
+            child = *((KwlnTask**)((u8*)work + 0x24));
+            *((s32*)((u8*)child->workData + 8)) = work->alpha;
         }
         position.x = 188.0f;
         position.y = work->scrollY;
         if (work->screen == 1) {
             frame = work->detailFrame;
             if (frame == 8) {
-                h_campStatusDrawViewport(105.0f, work->parsedResource,
-                                         position, 0xff);
-                h_campStatusDrawPanel(work, 0, 0.0f, work->parsedResource,
-                                      NULL);
+                h_campStatusDrawViewport(
+                    105.0f, work->parsedResource, position, 0xff);
+                work->scrollY -= 1.0f;
+                if (work->scrollY < -1104.0f) {
+                    work->scrollY = 0.0f;
+                }
+                position.x = 0.0f;
+                position.y = 0.0f;
+                alpha = 0;
                 h_campStatusResetInput(work, 0x2000);
             }
             else {
-                position.x = 188.0f - (f32)((8 - frame) * 25) / 8.0f;
-                h_campStatusDrawViewport(105.0f, work->parsedResource,
-                                         position, 0xff);
-                h_campStatusDrawPanel(work, 0,
-                                      -(f32)((8 - frame) * 500) / 8.0f,
-                                      work->parsedResource, NULL);
+                position.x = 188.0f -
+                    (f32)(((8 - frame) * 25) / 8);
+                h_campStatusDrawViewport(
+                    105.0f, work->parsedResource, position, 0xff);
+                work->scrollY -= 1.0f;
+                if (work->scrollY < -1104.0f) {
+                    work->scrollY = 0.0f;
+                }
+                position.x = -(f32)(((8 - frame) * 500) / 8);
+                position.y = 0.0f;
+                alpha = 0xff - (frame * 255) / 8;
                 work->detailFrame++;
             }
-            h_campStatusDrawLabelRow(0x42c80000, position,
-                                     work->parsedResource, NULL,
-                                     0xff - frame * 31, 0);
+            h_campStatusDrawPanelFrame(1, position, alpha);
         }
         else {
-            if (work->detailFrame == 8) {
-                h_campStatusDrawViewport(105.0f, work->parsedResource,
-                                         position, 0xff);
-                h_campStatusDrawPanel(work, 0, 0.0f, work->parsedResource,
-                                      NULL);
-                h_campStatusResetInput(work, 0x2000);
+            frame = work->detailFrame;
+            if (frame == 8) {
+                h_campStatusDrawViewport(
+                    105.0f, work->parsedResource, position, 0xff);
+                work->scrollY -= 1.0f;
+                if (work->scrollY < -1104.0f) {
+                    work->scrollY = 0.0f;
+                }
             }
             else {
-                h_campStatusDrawViewport(105.0f, work->parsedResource,
-                                         position, 0xff);
                 work->detailFrame++;
             }
+            position.x = 0.0f;
+            position.y = 0.0f;
+            alpha = 0xff - work->alpha;
+            h_campStatusDrawPanelFrame(1, position, alpha);
+            h_campStatusResetInput(work, 0x2000);
         }
         break;
     case 5:
@@ -1589,11 +1603,15 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         }
         position.x = 188.0f;
         position.y = work->scrollY;
-        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
-                                 0xff);
-        if (work->scrollY > -1064.0f) {
-            work->scrollY -= 1.0f;
+        h_campStatusDrawViewport(
+            105.0f, work->parsedResource, position, 0xff);
+        work->scrollY -= 1.0f;
+        if (work->scrollY < -1064.0f) {
+            work->scrollY = 0.0f;
         }
+        position.x = 0.0f;
+        position.y = 0.0f;
+        h_campStatusDrawPanelFrame(1, position, 0);
         break;
     case 6:
         work->alpha -= 25;
@@ -1602,23 +1620,34 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         }
         position.x = 188.0f;
         position.y = work->scrollY;
-        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
-                                 0xff);
+        h_campStatusDrawViewport(
+            105.0f, work->parsedResource, position, 0xff);
+        work->scrollY -= 1.0f;
+        if (work->scrollY < -1104.0f) {
+            work->scrollY = 0.0f;
+        }
+        position.x = 0.0f;
+        position.y = 0.0f;
+        h_campStatusDrawPanelFrame(1, position, 0xff - work->alpha);
         break;
     case 7:
         position.x = 188.0f;
         position.y = work->scrollY;
-        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
-                                 0xff);
+        h_campStatusDrawViewport(
+            105.0f, work->parsedResource, position, 0xff);
+        work->scrollY -= 1.0f;
+        if (work->scrollY < -1104.0f) {
+            work->scrollY = 0.0f;
+        }
+        position.x = 0.0f;
+        position.y = 0.0f;
+        h_campStatusDrawPanelFrame(1, position, 0);
         if (FUN_0011e380(DAT_007cdf50, 0) != 0) {
             work->detailFrame = 0;
-            if (work->ownedResource != NULL &&
-                ((KwlnTask*)work->ownedResource)->workData != NULL) {
-                *((s16*)((u8*)((KwlnTask*)work->ownedResource)->workData + 4)) =
-                    2;
-                *((s16*)((u8*)((KwlnTask*)work->ownedResource)->workData + 6)) =
-                    0;
-            }
+            child = *((KwlnTask**)((u8*)work + 0x24));
+            childWork = child->workData;
+            *((s16*)((u8*)childWork + 4)) = 2;
+            *((s16*)((u8*)childWork + 6)) = 0;
             work->state = 8;
         }
         break;
@@ -1627,11 +1656,19 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         if (work->detailFrame == 8) {
             return KWLNTASK_STOP;
         }
-        position.x = 188.0f;
-        position.y = work->scrollY - (f32)(work->detailFrame * 125) / 2.0f;
-        alpha = work->detailFrame * 255 / 8;
-        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
-                                 alpha);
+        frame = work->detailFrame;
+        position.x = 188.0f - (f32)((frame * 500) / 8);
+        position.y = work->scrollY;
+        h_campStatusDrawViewport(
+            105.0f, work->parsedResource, position, 0xff);
+        work->scrollY -= 1.0f;
+        if (work->scrollY < -1104.0f) {
+            work->scrollY = 0.0f;
+        }
+        position.x = -(f32)((frame * 500) / 8);
+        position.y = 0.0f;
+        alpha = (frame * 255) / 8;
+        h_campStatusDrawPanelFrame(1, position, alpha);
         break;
     }
     return KWLNTASK_CONTINUE;
