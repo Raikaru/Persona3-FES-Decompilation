@@ -3309,7 +3309,7 @@ void func_001f7210(void)
     u32 entry_idx;
     u8 *entry;
     u32 entry_type;
-    u32 kind = 0;
+    u32 kind;
     s32 value = 0;
     u16 selected_id;
     s16 selected_value;
@@ -3337,12 +3337,13 @@ void func_001f7210(void)
     u32 amount;
     u32 new_val;
     K_ASSERT(work != NULL, 0x8c);
+    debug_val = 0;
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
     BR_U32(work, 0x34e8) = entry_idx + slot;
     entry = work + entry_idx * 0x670 + 0x60;
+    kind = 0;
     entry_type = BR_U32(entry, 0);
-    debug_val = 0;
     BR_U32(work, 0x34e0) = entry_idx * 0x670;
     switch (entry_type) {
     case 0:
