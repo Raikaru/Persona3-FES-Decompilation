@@ -2651,7 +2651,7 @@ u32 FUN_002e0540(int param_1)
   return result;
 }
 
-// FUN_002E0620 NONMATCHING
+// FUN_002E0620
 
 
 int FUN_002e0620(int param_1,int param_2)
@@ -3137,11 +3137,17 @@ journey_true:
       
           if (lVar3 != 0) {
       
-            return 0x2c2;
+            lVar3 = 0x2c2;
       
           }
       
-          return 0x2c1;
+          else {
+      
+            lVar3 = 0x2c1;
+      
+          }
+      
+          return lVar3;
       
         }
       
