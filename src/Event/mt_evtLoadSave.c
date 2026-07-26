@@ -3441,7 +3441,6 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
   int iVar24;
 
   u8 auStack_2 [2];
-  MtEvtHalf4 half4;
 
   
 

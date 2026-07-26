@@ -5592,22 +5592,21 @@ void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
   fVar3 = DAT_007caef0 * (float)(int)param_6;
 
   fVar2 = fVar3;
-
-  if (2.1474836e+09f <= fVar3) {
-
-    fVar2 = fVar3 - 2.1474836e+09f;
-
+  if (2147483648.0f <= fVar3) {
+    fVar2 = fVar3;
+  } else {
+    fVar2 = fVar3 - 2147483648.0f;
   }
-
-  FUN_0040e3c0((float)param_5,param_3 + 0x126,param_4 + 0xf5,(int)fVar2 & 0xff,0xf8,0);
-
-  if (2.1474836e+09f <= fVar3) {
-
-    fVar3 = fVar3 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3c0((float)param_5,param_3 + 0x126,param_4 + 0xf5,(int)fVar3 & 0xff,0xf9,0);
+  FUN_0040e3c0((float)param_5,param_3 + 0x126,param_4 + 0xf5,
+               ((2147483648.0f <= fVar3)
+                ? (s32)fVar3
+                : ((s32)(fVar3 - 2147483648.0f) | 0x80000000)) & 0xff,
+               0xf8,0);
+  FUN_0040e3c0((float)param_5,param_3 + 0x126,param_4 + 0xf5,
+               ((2147483648.0f <= fVar3)
+                ? (s32)fVar3
+                : ((s32)(fVar3 - 2147483648.0f) | 0x80000000)) & 0xff,
+               0xf9,0);
 
   FUN_003c7e20(0,param_3 + 0x148,param_4 + 0xf9,param_6 | 0xffffffffffffff00,1,5,1,
 

@@ -1056,16 +1056,19 @@ void FUN_0015C840(void *param_1)
                             uintptr_t entry = list + (size_t)j * 0x14;
                             if (camp_list_load_u32(entry, 0x0c) == (u32)item_id) {
                                 uintptr_t old_data;
+                                u32 *entryItemIndex;
                                 u8 new_quality;
                                 u8 old_quality;
 
-                                old_data = (uintptr_t)FUN_00174A90(camp_list_load_u16(entry, 0x14));
+                                entryItemIndex = (u32 *)(entry + 0x14);
+                                old_data = (uintptr_t)FUN_00174A90(
+                                    *(u16 *)entryItemIndex);
                                 new_quality = FUN_00173660(item_data, 1);
                                 old_quality = FUN_00173660(old_data, 1);
                                 if (old_quality < new_quality) {
                                     s16 kind;
                                     camp_list_store_u32(entry, 0x0c, (u32)item_id);
-                                    camp_list_store_u32(entry, 0x14, (u32)item_index);
+                                    *entryItemIndex = (u32)item_index;
                                     camp_list_store_u32(entry, 0x10,
                                                    (u32)camp_list_load_u16(item_data, 2));
 
