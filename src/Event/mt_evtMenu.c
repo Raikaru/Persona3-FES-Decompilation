@@ -9,6 +9,19 @@ typedef struct {
   u32 _pad_dc;
   u32 menuArg;
 } EvtMenuState;
+typedef struct {
+  f32 x;
+  f32 y;
+  f32 z;
+} EvtVec3;
+typedef struct {
+  f32 x;
+  f32 y;
+  f32 z;
+  f32 dx;
+  f32 dy;
+  f32 dz;
+} EvtRay;
 #ifndef CONCAT11
 #define CONCAT11(a,b) ((((u16)(u8)(a)) << 8) | (u8)(b))
 #endif
@@ -1073,6 +1086,14 @@ void FUN_0038a620(int param_1,long param_2);
 void FUN_0038a6c0(int param_1);
 void FUN_0038a730(int param_1);
 void FUN_0038a7c0(u32 *param_1,u32 *param_2);
+#pragma alias FUN_0038a7c0_vec FUN_0038a7c0
+void FUN_0038a7c0_vec(EvtVec3 *param_1,EvtVec3 *param_2);
+#pragma alias FUN_001acc30_vec FUN_001acc30
+u32 FUN_001acc30_vec(EvtRay *param_1,EvtVec3 *param_2);
+#pragma alias FUN_003bb9b0_vec FUN_003bb9b0
+void FUN_003bb9b0_vec(EvtVec3 *param_1);
+#pragma alias FUN_003b79a0_vec FUN_003b79a0
+void FUN_003b79a0_vec(u8 *param_1,EvtVec3 *param_2,EvtVec3 *param_3);
 void FUN_0038a920(int param_1,u16 *param_2,int param_3);
 void FUN_0038af70(u16 *param_1);
 void FUN_0038b140(long param_1);
@@ -4678,17 +4699,7 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
   u8 auStack_180 [64];
 
-  float fStack_140;
-
-  float fStack_13c;
-
-  float fStack_138;
-
-  float fStack_134;
-
-  float fStack_130;
-
-  float fStack_12c;
+  EvtRay rayIn;
 
   u8 auStack_120 [64];
 
@@ -4708,35 +4719,15 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
   u32 uStack_c4;
 
-  float fStack_b8;
+  EvtVec3 vecB8;
 
-  float fStack_b4;
+  EvtVec3 vecA8;
 
-  float fStack_b0;
+  EvtVec3 vec98;
 
-  float fStack_a8;
+  EvtVec3 vec88;
 
-  float fStack_a4;
-
-  float fStack_a0;
-
-  float fStack_98;
-
-  float fStack_94;
-
-  float fStack_90;
-
-  float fStack_88;
-
-  float fStack_84;
-
-  float fStack_80;
-
-  float fStack_78;
-
-  float fStack_74;
-
-  float fStack_70;
+  EvtVec3 rayOut;
 
   float fStack_68;
 
@@ -4752,17 +4743,11 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
   u32 uStack_40;
 
-  float fStack_38;
 
-  float fStack_34;
+  EvtVec3 vecA;
 
-  float fStack_30;
+  EvtVec3 vecB;
 
-  float fStack_28;
-
-  float fStack_24;
-
-  float fStack_20;
 
   u8 auStack_18 [4];
 
@@ -5022,7 +5007,7 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
     FUN_003625e0(param_3);
 
-    FUN_0038a7c0((u32 *)&fStack_28,(u32 *)&fStack_38);
+    FUN_0038a7c0_vec(&vecA,&vecB);
 
     FUN_00386110((u32 *)&pfStack_4,(u32 *)&pfStack_8);
 
@@ -5030,9 +5015,9 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
       if (((*(u16 *)DAT_007e094c_abs) & 0x4000) != 0) {
 
-        *pfStack_4 = (*pfStack_4 + 0.0f) - fStack_28 * fVar13;
-        pfStack_4[1] = (pfStack_4[1] + 0.0f) - fStack_24 * fVar13;
-        pfStack_4[2] = (pfStack_4[2] + 0.0f) - fStack_20 * fVar13;
+        *pfStack_4 = (*pfStack_4 + 0.0f) - vecA.x * fVar13;
+        pfStack_4[1] = (pfStack_4[1] + 0.0f) - vecA.y * fVar13;
+        pfStack_4[2] = (pfStack_4[2] + 0.0f) - vecA.z * fVar13;
 
       }
 
@@ -5040,9 +5025,9 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
     else {
 
-      *pfStack_4 = fStack_28 * fVar13 + *pfStack_4 + 0.0f;
-      pfStack_4[1] = fStack_24 * fVar13 + pfStack_4[1] + 0.0f;
-      pfStack_4[2] = fStack_20 * fVar13 + pfStack_4[2] + 0.0f;
+      *pfStack_4 = vecA.x * fVar13 + *pfStack_4 + 0.0f;
+      pfStack_4[1] = vecA.y * fVar13 + pfStack_4[1] + 0.0f;
+      pfStack_4[2] = vecA.z * fVar13 + pfStack_4[2] + 0.0f;
 
     }
 
@@ -5050,9 +5035,9 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
       if (((*(u16 *)DAT_007e094c_abs) & 0x8000) != 0) {
 
-        *pfStack_4 = fStack_38 * fVar13 + *pfStack_4 + 0.0f;
-        pfStack_4[1] = fStack_34 * fVar13 + pfStack_4[1] + 0.0f;
-        pfStack_4[2] = fStack_30 * fVar13 + pfStack_4[2] + 0.0f;
+        *pfStack_4 = vecB.x * fVar13 + *pfStack_4 + 0.0f;
+        pfStack_4[1] = vecB.y * fVar13 + pfStack_4[1] + 0.0f;
+        pfStack_4[2] = vecB.z * fVar13 + pfStack_4[2] + 0.0f;
 
       }
 
@@ -5060,9 +5045,9 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
     else {
 
-      *pfStack_4 = (*pfStack_4 + 0.0f) - fStack_38 * fVar13;
-      pfStack_4[1] = (pfStack_4[1] + 0.0f) - fStack_34 * fVar13;
-      pfStack_4[2] = (pfStack_4[2] + 0.0f) - fStack_30 * fVar13;
+      *pfStack_4 = (*pfStack_4 + 0.0f) - vecB.x * fVar13;
+      pfStack_4[1] = (pfStack_4[1] + 0.0f) - vecB.y * fVar13;
+      pfStack_4[2] = (pfStack_4[2] + 0.0f) - vecB.z * fVar13;
 
     }
 
@@ -5153,54 +5138,40 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
     }
 
     if (((*(u16 *)DAT_007e094c_abs) & 0x80) != 0) {
+      rayIn.x = *pfStack_4;
+      rayIn.y = pfStack_4[1];
+      rayIn.z = pfStack_4[2];
+      rayIn.dx = *pfStack_4;
+      rayIn.dy = pfStack_4[2];
+      rayIn.dz = pfStack_4[1] - 1000.0f;
 
-      fStack_140 = *pfStack_4;
-
-      fStack_13c = pfStack_4[1];
-
-      fStack_138 = pfStack_4[2];
-
-      fStack_134 = *pfStack_4;
-
-      fStack_12c = pfStack_4[2];
-
-      fStack_130 = pfStack_4[1] - 1000.0f;
-
-      lVar10 = FUN_001acc30(&fStack_140,&fStack_78);
+      lVar10 = FUN_001acc30_vec(&rayIn,&rayOut);
 
       if (lVar10 == 1) {
 
-        *pfStack_4 = fStack_78;
-
-        pfStack_4[1] = fStack_74;
-
-        pfStack_4[2] = fStack_70;
+        *pfStack_4 = rayOut.x;
+        pfStack_4[1] = rayOut.y;
+        pfStack_4[2] = rayOut.z;
 
       }
 
     }
 
-    fStack_88 = *pfStack_4;
+    vec88.x = *pfStack_4;
+    vec88.y = pfStack_4[1];
+    vec88.z = pfStack_4[2];
 
-    fStack_84 = pfStack_4[1];
+    vec98.x = *pfStack_8;
+    vec98.y = pfStack_8[1];
+    vec98.z = pfStack_8[2];
 
-    fStack_80 = pfStack_4[2];
+    FUN_003bb9b0_vec(&vec98);
 
-    fStack_98 = *pfStack_8;
+    *pfStack_8 = vec98.x;
+    pfStack_8[1] = vec98.y;
+    pfStack_8[2] = vec98.z;
 
-    fStack_94 = pfStack_8[1];
-
-    fStack_90 = pfStack_8[2];
-
-    FUN_003bb9b0(&fStack_98);
-
-    *pfStack_8 = fStack_98;
-
-    pfStack_8[1] = fStack_94;
-
-    pfStack_8[2] = fStack_90;
-
-    FUN_003b79a0(auStack_180,&fStack_88,&fStack_98);
+    FUN_003b79a0_vec(auStack_180,&vec88,&vec98);
 
     FUN_003957d0(100.0f, param_3, (u32*)auStack_180);
 
@@ -5354,27 +5325,21 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
     }
 
-    fStack_a8 = *pfStack_4;
+    vecA8.x = *pfStack_4;
+    vecA8.y = pfStack_4[1];
+    vecA8.z = pfStack_4[2];
 
-    fStack_a4 = pfStack_4[1];
+    vecB8.x = *pfStack_8;
+    vecB8.y = pfStack_8[1];
+    vecB8.z = pfStack_8[2];
 
-    fStack_a0 = pfStack_4[2];
+    FUN_003bb9b0_vec(&vecB8);
 
-    fStack_b8 = *pfStack_8;
+    *pfStack_8 = vecB8.x;
+    pfStack_8[1] = vecB8.y;
+    pfStack_8[2] = vecB8.z;
 
-    fStack_b4 = pfStack_8[1];
-
-    fStack_b0 = pfStack_8[2];
-
-    FUN_003bb9b0(&fStack_b8);
-
-    *pfStack_8 = fStack_b8;
-
-    pfStack_8[1] = fStack_b4;
-
-    pfStack_8[2] = fStack_b0;
-
-    FUN_003b79a0(auStack_1c0,&fStack_a8,&fStack_b8);
+    FUN_003b79a0_vec(auStack_1c0,&vecA8,&vecB8);
 
     FUN_003957d0(100.0f, param_3, (u32*)auStack_1c0);
 
@@ -5952,7 +5917,7 @@ int FUN_00375000(int param_1,int param_2,int param_3)
 
   
 
-  FUN_0036f900(param_1,param_2,0x12,0xb,0,8,param_3,0x374c90,0);
+  FUN_0036f900(param_1,param_2,0x12,0xb,0,8,param_3,0x374d30,0x374d30);
 
   iVar1 = (int)param_3;
 

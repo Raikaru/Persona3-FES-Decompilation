@@ -1268,7 +1268,26 @@ void* func_001ae580(KwlnTask* task)
         {
             mdlGetMatrix(model)->pos = work->points[0].position;
             func_001ae480(task);
-            work->state = (mode == 1 || mode == 4) ? 1 : 2;
+            {
+                u8* ctl = *(u8**)((u8*)work + 0x4cc);
+                *(u32*)(ctl + 0x28) = 0x3f800000;
+                *(u32*)(ctl + 0x14) = 0x3f800000;
+                *(u32*)(ctl + 0x00) = 0x3f800000;
+                *(u32*)(ctl + 0x10) = 0;
+                *(u32*)(ctl + 0x08) = 0;
+                *(u32*)(ctl + 0x04) = 0;
+                *(u32*)(ctl + 0x24) = 0;
+                *(u32*)(ctl + 0x20) = 0;
+                *(u32*)(ctl + 0x18) = 0;
+                *(u32*)(ctl + 0x38) = 0;
+                *(u32*)(ctl + 0x34) = 0;
+                *(u32*)(ctl + 0x30) = 0;
+                *(u32*)(ctl + 0x0c) |= 0x200003;
+            }
+            func_004c31b0((RwMatrix*)work->drawMatrix, &localDir,
+                          localAngleStep, 2);
+            func_001ad9e0(fldFrameMoveCtl(work), work->drawMatrix);
+            work->state = 4;
         }
         return KWLNTASK_CONTINUE;
     }
@@ -1414,6 +1433,22 @@ void* func_001ae580(KwlnTask* task)
             }
             work->frame++;
             return KWLNTASK_CONTINUE;
+        }
+        {
+            u8* ctl = *(u8**)((u8*)work + 0x4cc);
+            *(u32*)(ctl + 0x28) = 0x3f800000;
+            *(u32*)(ctl + 0x14) = 0x3f800000;
+            *(u32*)(ctl + 0x00) = 0x3f800000;
+            *(u32*)(ctl + 0x10) = 0;
+            *(u32*)(ctl + 0x08) = 0;
+            *(u32*)(ctl + 0x04) = 0;
+            *(u32*)(ctl + 0x24) = 0;
+            *(u32*)(ctl + 0x20) = 0;
+            *(u32*)(ctl + 0x18) = 0;
+            *(u32*)(ctl + 0x38) = 0;
+            *(u32*)(ctl + 0x34) = 0;
+            *(u32*)(ctl + 0x30) = 0;
+            *(u32*)(ctl + 0x0c) |= 0x200003;
         }
         ((RwMatrix*)work->drawMatrix)->at.z = 1.0f;
         ((RwMatrix*)work->drawMatrix)->up.y = 1.0f;
@@ -2006,7 +2041,6 @@ void* func_001aaf30(const RwV3d* point, void* unused,
                     const FldFrameCollisionTriangle* triangle,
                     FldFrameCollisionCollector* collector)
 {
-    const RwV3d* vertices[3];
     RwV3d projected;
     RwV3d closest;
     RwV3d delta;
@@ -2017,14 +2051,11 @@ void* func_001aaf30(const RwV3d* point, void* unused,
     s32 index;
 
     (void)unused;
-    vertices[0] = triangle->vertices[0];
-    vertices[1] = triangle->vertices[1];
-    vertices[2] = triangle->vertices[2];
 
     signedDistance =
-        vertices[0]->x * triangle->normal.x +
-        vertices[0]->y * triangle->normal.y +
-        vertices[0]->z * triangle->normal.z -
+        triangle->vertices[0]->x * triangle->normal.x +
+        triangle->vertices[0]->y * triangle->normal.y +
+        triangle->vertices[0]->z * triangle->normal.z -
         (point->x * triangle->normal.x +
          point->y * triangle->normal.y +
          point->z * triangle->normal.z);
@@ -2032,7 +2063,8 @@ void* func_001aaf30(const RwV3d* point, void* unused,
     projected.y = point->y + triangle->normal.y * signedDistance;
     projected.z = point->z + triangle->normal.z * signedDistance;
 
-    if (K_FldFrame_IsPointInTriangle(&projected, vertices,
+    if (K_FldFrame_IsPointInTriangle(&projected,
+                                      (const RwV3d**)triangle->vertices,
                                       &triangle->normal))
     {
         distance = fabsf(signedDistance);
@@ -2070,8 +2102,8 @@ void* func_001aaf30(const RwV3d* point, void* unused,
         distance = 1.0e30f;
         for (i = 0; i < 3; i++)
         {
-            func_001aae10(&closest, &projected, vertices[i],
-                          vertices[(i + 1) % 3]);
+            func_001aae10(&closest, &projected, triangle->vertices[i],
+                          triangle->vertices[(i + 1) % 3]);
             delta.x = point->x - closest.x;
             delta.y = point->y - closest.y;
             delta.z = point->z - closest.z;
@@ -2195,12 +2227,12 @@ void* func_001ab640(const RwV3d* point, const void* triangle,
                     FldFrameCollisionCollector* collector)
 {
     const FldFrameCollisionTriangle* candidate;
-    const RwV3d* vertexPointers[3];
-    RwV3d vertices[3];
     RwV3d projected;
     RwV3d normal;
+    RwV3d vertices[3];
     RwV3d closest;
     RwV3d delta;
+    const RwV3d* vertexPointers[3];
     RwMatrix* matrix;
     f32 distance;
     f32 planeDistance;

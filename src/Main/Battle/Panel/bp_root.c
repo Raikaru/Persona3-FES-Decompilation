@@ -2414,50 +2414,71 @@ void FUN_00204BE0(void)
 // FUN_00204CC0 NONMATCHING
 void FUN_00204CC0(void)
 {
+    u8* work;
+    u8* rowBase;
+    u8* entry;
+    u8* row;
     u32 i;
-    u32 start;
     u32 type;
     u32 handle;
     s32 color;
-    PanelSkillRow* row;
 
-    K_ASSERT((panelWork32(0) & 0x10) != 0, 0xd47);
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    K_ASSERT((*(u32*)work & 0x10) != 0, 0xd47);
     FUN_00205000();
-    start = panelWork32(0x76f8);
-    for (i = 0; i < panelWork32(0x3ac); i++)
+    rowBase = work + 0x4a90;
+    for (i = 0; i < *(u32*)(work + 0x3ac); i++)
     {
-        row = panelItemRow(i);
-        type = panelWork32(0x2e4 + (start + i) * 0x18);
-        handle = *(u32*)(panelWork() + 0x370 + (start + i) * 8);
-        color = (i == panelWork32(0x7700) ? 0xffffffff : 0x8080ffff);
-        row->flags = type;
-        row->handle = handle;
-        switch (type)
+        entry = work + (*(u32*)(work + 0x76f8) + i) * 0x18 + 0x2e0;
+        type = *(u32*)(entry + 4);
+        color = (i == *(u32*)(work + 0x7700)) ? (s32)0xffffffff : (s32)0x8080ffff;
+        if (type == 0)
         {
-        case 0:
-            row->type = 1;
+            handle = *(u32*)(work + 0x370 + i * 8);
             func_003b0d70(handle, 0x730, i * 0x48);
             func_003b0e20(handle, color);
-            break;
-        case 1:
-            row->type = 0;
-            func_003b0d70(handle, 0x730, i * 0x48);
-            func_003b0e20(handle, color);
-            break;
-        case 2:
-            row->type = 2;
-            func_003b0d70(handle, 0x730, i * 0x48);
-            func_003b0e20(handle, color);
-            break;
-        default:
-            break;
         }
-        row->icon = *(u32*)(panelWork() + 0x374 + (start + i) * 8);
+        else if (type == 1 || type == 2)
+        {
+            handle = *(u32*)(work + 0x370 + i * 8);
+            func_003b0d70(handle, 0x730, i * 0x48);
+            func_003b0e20(handle, color);
+            handle = *(u32*)(work + 0x374 + i * 8);
+            func_003b0d70(handle, 0xf50, i * 0x48);
+            func_003b0e20(handle, color);
+        }
     }
-    panelSetWork32(0x64a0, panelWork32(0x3ac));
-    panelSetWork32(0x6498, panelWork32(0x7700));
-    panelSetWork32(0x649c, panelWork32(0x76f8));
-    panelSetWork32(0x64a4, panelWork32(0x3a8));
+    for (i = 0; i < *(u32*)(work + 0x3ac); i++)
+    {
+        row = rowBase + i * 0x420;
+        entry = work + i * 0x18 + 0x2e0;
+        *(u32*)(row + 0x410) = 0;
+        type = *(u32*)(entry + 4);
+        if (type == 0)
+        {
+            *(u32*)row = 1;
+            *(u32*)(row + 8) = *(u32*)(entry + 0x90);
+        }
+        else if (type == 1)
+        {
+            *(u32*)row = 0;
+            *(u32*)(row + 8) = *(u32*)(entry + 0x90);
+            *(u32*)(row + 0xc) = *(u32*)(entry + 0x94);
+        }
+        else if (type == 2)
+        {
+            *(u32*)row = 2;
+            *(u32*)(row + 8) = *(u32*)(entry + 0x90);
+            *(u32*)(row + 0xc) = *(u32*)(entry + 0x94);
+        }
+        if ((*(u32*)entry & 2) != 0)
+            *(u32*)(row + 0x410) = 1;
+    }
+    *(u32*)(work + 0x64a0) = *(u32*)(work + 0x3ac);
+    *(u32*)(work + 0x6498) = *(u32*)(work + 0x7700);
+    *(u32*)(work + 0x649c) = *(u32*)(work + 0x76f8);
+    *(u32*)(work + 0x64a4) = *(u32*)(work + 0x3a8);
     func_002230e0();
 }
 
@@ -2823,10 +2844,10 @@ void FUN_002057C0(void)
 void FUN_00205D60(void)
 {
     u8* work;
+    u8* rowBase;
     u8* entry;
     u8* row;
     u32 i;
-    u32 index;
     u32 count;
     u32 type;
     u32 handle;
@@ -2834,11 +2855,11 @@ void FUN_00205D60(void)
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
+    rowBase = work + 0x4a90;
     for (i = 0; i < *(u32*)(work + 0x3ac); i++)
     {
-        index = i + *(u32*)(work + 0x76f8);
-        entry = work + index * 0x18 + 0x2e0;
-        if (*(u32*)(work + 0x7700) == index)
+        entry = work + (i + *(u32*)(work + 0x76f8)) * 0x18 + 0x2e0;
+        if (*(u32*)(work + 0x7700) == i + *(u32*)(work + 0x76f8))
         {
             if ((*work & 1) != 0 || (*work & 0x20000000) != 0)
                 color = 0xffff;
@@ -2869,7 +2890,7 @@ void FUN_00205D60(void)
     count = *(u32*)(work + 0x3ac);
     for (i = 0; i < count; i++)
     {
-        row = work + 0x4a90 + i * 0x420;
+        row = rowBase + i * 0x420;
         entry = work + i * 0x18 + 0x2e0;
         *(u32*)(row + 0x410) = 0;
         type = *(u32*)(entry + 4);
@@ -2884,7 +2905,7 @@ void FUN_00205D60(void)
             *(u32*)(row + 8) = *(u32*)(entry + 0x90);
             *(u32*)(row + 0xc) = *(u32*)(entry + 0x94);
             if (i + *(u32*)(work + 0x76f8) == 0)
-                *(u32*)(work + 0x4a90 + 0x18e0) = *(u32*)(entry + 0x94);
+                *(u32*)(rowBase + 0x18e0) = *(u32*)(entry + 0x94);
         }
         else
         {
@@ -3077,9 +3098,9 @@ void FUN_002065A0(void)
 // FUN_00206740 NONMATCHING
 void FUN_00206740(void)
 {
-    u8* work;
     DatPersonaWork* persona;
     u16* skills;
+    u8* work;
     s32 i;
     s32 count;
     s32 mode;

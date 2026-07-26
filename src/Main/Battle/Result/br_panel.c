@@ -286,12 +286,12 @@ void brPanel002350f0(void)
     u32 digitFrame;
     s32 i;
     s32 mode;
-    s32 entryCount;
     void (**brPanelSetState)(u32 state, u32 value);
     void (**brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
     u32 workFlags;
+    s32 j;
+    void (**entrySetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
     s32 entryType;
-    u8* entryBase;
     u8* digitRowBase;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
@@ -347,14 +347,8 @@ void brPanel002350f0(void)
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0xc20), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0xc20), 4, 0, 2, 3);
-    RpSkyRenderStateSet(3, 0x717fb);
-    RpSkyRenderStateSet(2, 0x44);
-    entryCount = *(s32*)(work + 0x1d50);
-    entryBase = work + 0xe20;
-
-    /* Retail +0x474/+0x49c rematerialize the callback-table slots per entry. */
-    for (i = 0; i < entryCount; i++) {
-        entry = entryBase + i * 0x510;
+    for (i = 0; i < *(s32*)(work + 0x1d50); i++) {
+        entry = work + 0xe20 + i * 0x510;
         frame = (u32)(uintptr_t)func_0021cca0(texture, 4);
         brPanelSetState = (void (**)(u32, u32))D_00960090_abs;
         frame = func_0021cce0((void*)(uintptr_t)frame);
@@ -381,6 +375,11 @@ void brPanel002350f0(void)
         D_0096009C((u32*)(entry + 0x210), 4, 0, 2, 3);
         D_0096009C((u32*)(entry + 0x310), 4, 0, 1, 2);
         D_0096009C((u32*)(entry + 0x310), 4, 0, 2, 3);
+        for (j = 0; j < 2; j++) {
+            entrySetQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+            (*entrySetQuad)((u32*)(entry + 0x210 + j * 0x100), 4, 0, 1, 2);
+            (*entrySetQuad)((u32*)(entry + 0x210 + j * 0x100), 4, 0, 2, 3);
+        }
         entryType = *(s32*)entry;
         if (entryType == 0) {
             digitFrame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xa);
