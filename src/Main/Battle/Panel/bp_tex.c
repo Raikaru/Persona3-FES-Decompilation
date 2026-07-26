@@ -90,7 +90,7 @@ extern RwRaster* func_004ce0f0(u32 width, u32 height, u32 depth, u32 flags);
 extern void* func_004cdf30(RwRaster* raster, u32 palette);
 extern void* func_004ce200(RwRaster* raster, void* mipData, u32 level);
 extern void func_004cde40(RwRaster* raster);
-extern RwRaster* func_004cde00(RwRaster* raster);
+extern void func_004cde00(RwRaster* raster);
 extern void* memcpy(void* destination, const void* source, u32 size);
 typedef struct BpTexFrameData
 {
@@ -241,95 +241,201 @@ color_check:
 #pragma pop
 #pragma optimization_level 2
 
+/* Retail 0x0021ec40-0x0021f080: TMX format selection, palette upload, and
+ * format-specific row-major pixel copies. */
 // FUN_0021ec40 NONMATCHING
 RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
 {
-    u8* source;
-    u8 format;
-    u32 depth;
-    u32 flags;
-    u32 width;
-    u32 height;
-    u32 paletteBytes;
-    u32 pixelBytes;
-    u8* palette;
-    u8* pixels;
     RwRaster* raster;
-    void* locked;
+    u8* source;
+    u8* pixelSource;
+    u8* paletteSource;
+    u8* destination;
+    u32 depth;
+    u32 paletteFlag;
+    u32 flags;
+    s32 paletteRow;
+    s32 paletteRow4;
+    s32 pixelRow32;
+    s32 pixelColumn32;
+    s32 pixelRow24;
+    s32 pixelColumn24;
+    s32 pixelRow8;
+    s32 pixelColumn8;
+    s32 pixelRow4;
+    s32 pixelColumn4;
+    u8 format;
 
     source = (u8*)tmxMemory;
-    format = source[0x16];
+    pixelSource = source;
+    paletteSource = 0;
     depth = 0;
-    flags = 4;
-    paletteBytes = 0;
+    paletteFlag = 0;
+    format = source[0x16];
     switch (format)
     {
     case 0:
         depth = 0x20;
-        flags |= 0x500;
         break;
     case 1:
-        depth = 1;
-        flags |= 0x4500;
-        paletteBytes = 0x100;
+        depth = 0x18;
         break;
     case 2:
     case 0x0a:
         depth = 0x10;
-        flags |= 0x1000;
         break;
     case 0x13:
     case 0x1b:
         depth = 8;
-        flags |= 0x2500;
-        paletteBytes = 0x400;
         break;
     case 0x14:
     case 0x24:
     case 0x2c:
         depth = 4;
-        flags |= 0x4500;
-        paletteBytes = 0x100;
         break;
-    default:
+    }
+
+    if (depth == 0)
+    {
         K_ASSERT(false, 0x65);
-        depth = 0x20;
+    }
+
+    pixelSource = (u8*)tmxMemory + 0x40;
+    if (depth == 8)
+    {
+        paletteSource = pixelSource;
+        pixelSource += (u32)source[0x10] << 10;
+        paletteFlag = 1;
+    }
+    else if (depth == 4)
+    {
+        paletteSource = pixelSource;
+        pixelSource += (u32)source[0x10] << 6;
+        paletteFlag = 1;
+    }
+
+    flags = 4;
+    switch (depth)
+    {
+    case 0x20:
         flags |= 0x500;
         break;
+    case 0x18:
+        flags |= 0x600;
+        break;
+    case 8:
+        flags |= 0x2500;
+        break;
+    case 4:
+        flags |= 0x4500;
+        break;
+    default:
+        K_ASSERT(false, 0x8d);
+        break;
     }
 
-    source += 0x40;
-    width = *(u16*)(source - 0x2e);
-    height = *(u16*)(source - 0x2c);
-    raster = func_004ce0f0(width, height, depth, flags);
-    if (paletteBytes != 0)
+    raster = func_004ce0f0(*(u16*)(source + 0x12),
+                           *(u16*)(source + 0x14),
+                           depth,
+                           flags);
+    if ((paletteFlag & 1) != 0)
     {
-        palette = source;
-        pixels = source + paletteBytes;
-        locked = func_004cdf30(raster, 1);
-        memcpy(locked, palette, paletteBytes);
-    }
-    else
-    {
-        pixels = source;
+        destination = (u8*)func_004cdf30(raster, 1);
+        switch (depth)
+        {
+        case 8:
+            paletteRow = 0;
+            while (paletteRow < 0x100)
+            {
+                *(u32*)destination = *(u32*)paletteSource;
+                paletteSource += 4;
+                destination += 4;
+                paletteRow++;
+            }
+            break;
+        case 4:
+            paletteRow4 = 0;
+            while (paletteRow4 < 0x10)
+            {
+                *(u32*)destination = *(u32*)paletteSource;
+                paletteSource += 4;
+                destination += 4;
+                paletteRow4++;
+            }
+            break;
+        }
+        func_004cde40(raster);
     }
 
-    if (depth == 4)
+    destination = (u8*)func_004ce200(raster, NULL, 1);
+    switch (depth)
     {
-        pixelBytes = (width * height) >> 1;
+    case 0x20:
+        pixelRow32 = 0;
+        while (pixelRow32 < (s32)*(u16*)(source + 0x14))
+        {
+            pixelColumn32 = 0;
+            while (pixelColumn32 < (s32)*(u16*)(source + 0x12))
+            {
+                *(u32*)destination = *(u32*)pixelSource;
+                pixelSource += 4;
+                destination += 4;
+                pixelColumn32++;
+            }
+            pixelRow32++;
+        }
+        break;
+    case 0x18:
+        pixelRow24 = 0;
+        while (pixelRow24 < (s32)*(u16*)(source + 0x14))
+        {
+            pixelColumn24 = 0;
+            while (pixelColumn24 < (s32)*(u16*)(source + 0x12) * 3)
+            {
+                *destination = *pixelSource;
+                pixelSource++;
+                destination++;
+                pixelColumn24++;
+            }
+            pixelRow24++;
+        }
+        break;
+    case 8:
+        pixelRow8 = 0;
+        while (pixelRow8 < (s32)*(u16*)(source + 0x14))
+        {
+            pixelColumn8 = 0;
+            while (pixelColumn8 < (s32)*(u16*)(source + 0x12))
+            {
+                *destination = *pixelSource;
+                pixelSource++;
+                destination++;
+                pixelColumn8++;
+            }
+            pixelRow8++;
+        }
+        break;
+    case 4:
+        pixelRow4 = 0;
+        while (pixelRow4 < ((s32)*(u16*)(source + 0x12) >> 3))
+        {
+            pixelColumn4 = 0;
+            while (pixelColumn4 < (s32)*(u16*)(source + 0x14))
+            {
+                *(u32*)destination = *(u32*)pixelSource;
+                pixelSource += 4;
+                destination += 4;
+                pixelColumn4++;
+            }
+            pixelRow4++;
+        }
+        break;
+    default:
+        break;
     }
-    else if (depth == 1)
-    {
-        pixelBytes = (width * height) >> 3;
-    }
-    else
-    {
-        pixelBytes = width * height * ((depth + 7) >> 3);
-    }
-    locked = func_004ce200(raster, NULL, 1);
-    memcpy(locked, pixels, pixelBytes);
-    func_004cde40(raster);
-    return func_004cde00(raster);
+
+    func_004cde00(raster);
+    return raster;
 }
 
 
