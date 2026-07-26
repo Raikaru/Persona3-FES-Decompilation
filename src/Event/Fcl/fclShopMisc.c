@@ -6622,7 +6622,7 @@ void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5)
 void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 {
   int iVar1;
-  u16 uVar2;
+  u32 uVar2;
 
   iVar1 = *(int *)(*(int *)(param_5 + 0x14) + 0x1c);
   if ((*(short *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 6) == -1) &&

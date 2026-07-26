@@ -429,7 +429,7 @@ DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
             {
                 if (flatIndex == active)
                 {
-                    return &work->ec[i]->genusBase->unit[j];
+                    return work->ec[i]->genusBase->unit + j;
                 }
                 active += 1;
             }

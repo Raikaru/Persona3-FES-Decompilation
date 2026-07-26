@@ -576,7 +576,7 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
 }
 #define FUN_00397630(...) ((u32 (*)(...))FUN_00397630)(__VA_ARGS__)
 #undef FUN_003976f0
-// FUN_003976F0 NONMATCHING
+// FUN_003976F0
 
 
 u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4)
@@ -618,7 +618,7 @@ u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4)
     base = *(volatile int *)(iVar2 + 4);
     offset = param_2 * 2;
     scaled = index * 0x8c;
-    *param_3 = (u32)*(u8 *)(scaled + base + offset + 0x20);
+    *param_3 = (u32)*(u8 *)((scaled + base) + offset + 0x20);
     *param_4 = (u32)*(u8 *)(scaled + base + offset + 0x21);
     return 1;
 }
