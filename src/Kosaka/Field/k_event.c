@@ -741,7 +741,6 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
             return false;
         }
         func_00100d80(path, 0);
-        return true;
     }
     return true;
 

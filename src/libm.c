@@ -421,9 +421,8 @@ long FUN_0052ec28(u64 param_1)
   if (-1 < lVar1) {
     uVar2 = FUN_00531230_u64(param_1,0x3df0000000000000);
     uVar3 = FUN_005318f8_u32(uVar2);
-    lVar4 = (long)(u64)uVar3 << 0x20;
-    if (lVar4 < 0) {
     lVar4 = uVar3 << 0x20;
+    if (lVar4 < 0) {
       uVar2 = FUN_00531170_u64(uVar2,uVar2);
     }
     else {
@@ -482,9 +481,8 @@ long FUN_0052eda0(void)
   if (-1 < lVar2) {
     uVar3 = FUN_00531230_u64(uVar1,0x3df0000000000000);
     uVar4 = FUN_005318f8_u32(uVar3);
-    lVar5 = (long)(u64)uVar4 << 0x20;
-    if (lVar5 < 0) {
     lVar5 = uVar4 << 0x20;
+    if (lVar5 < 0) {
       uVar3 = FUN_00531170_u64(uVar3,uVar3);
     }
     else {

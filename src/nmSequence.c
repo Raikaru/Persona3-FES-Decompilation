@@ -841,7 +841,7 @@ u32 FUN_003c5c50(u32 param_1)
 
   int iVar2;
 
-  int iVar3;
+  u32 uVar7;
 
   int iVar4;
 
@@ -850,7 +850,7 @@ u32 FUN_003c5c50(u32 param_1)
   int iVar6;
   int iVar7;
 
-  u32 uVar7;
+  int iVar3;
 
   
 

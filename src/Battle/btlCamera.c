@@ -3654,7 +3654,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     fVar10 = fStack_18;
     FUN_002a4690((RtQuat*)&uStack_b8,(const RwV3d*)&fStack_60,
                  (const RwV3d*)&fStack_40,(const RwV3d*)&D_00697880);
-    FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)(uintptr_t)0x6978a0,1,
+    FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
                  (const RtQuat*)&uStack_b8);
     fStack_90 = fStack_40;
     fStack_8c = fStack_38;
@@ -3729,7 +3729,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     fVar10 = fStack_28;
     FUN_002a4690((RtQuat*)&uStack_b8,(const RwV3d*)&fStack_60,
                  (const RwV3d*)&fStack_40,(const RwV3d*)&D_00697880);
-    FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)(uintptr_t)0x6978a0,1,
+    FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
                  (const RtQuat*)&uStack_b8);
     fStack_90 = fStack_40;
     fStack_8c = fStack_38;
@@ -3763,7 +3763,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
   if ((param_1 <= 0.0f) || (param_1 = DAT_007cadf4 * param_1, param_1 < fVar16)) {
     if (fVar12 < 0.0f) {
       FUN_002a2170((BtlCamera*)param_2,(RwV3d*)&fStack_c4);
-      FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)(uintptr_t)0x6978a0,1,
+      FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
                    (const RtQuat*)&uStack_b8);
       fStack_50 = fStack_50 * 200.0f;
       fStack_4c = fStack_4c * 200.0f;
@@ -3802,7 +3802,7 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       }
       FUN_002a4690((RtQuat*)&uStack_d4,(const RwV3d*)&fStack_60,
                    (const RwV3d*)&fStack_40,(const RwV3d*)&D_00697880);
-      FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)(uintptr_t)0x6978a0,1,
+      FUN_004be1e0((RwV3d*)&fStack_50,(const RwV3d*)&D_006978A0,1,
                    (const RtQuat*)&uStack_d4);
       fStack_90 = fStack_40;
       fStack_8c = fStack_38;
@@ -7976,7 +7976,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fVar15 = 275.0f;
   }
   fVar10 = (float)func_00280870(2,0,target,&fStack_4,0,1);
-  FUN_004be1e0_b6070((RwV3d*)axis,(const RwV3d*)0x697870,1,(const void*)(iVar2 + 0x1c));
+  FUN_004be1e0_b6070((RwV3d*)axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
   target[1] = fStack_4 * 0.5f;
   delta[0] = centerA[0] - target[0];
   delta[1] = centerA[1] - target[1];
@@ -8048,7 +8048,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)centerA);
     centerA[1] = fGpffff8094 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) + centerA[1] + 0.0f;
     fVar15 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 2.5f;
-    FUN_004be1e0_b6070((RwV3d*)axis,(const RwV3d*)0x697870,1,(const void*)(iVar2 + 0x1c));
+    FUN_004be1e0_b6070((RwV3d*)axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
     if (0.0f <= fVar14) {
       fVar15 = -fVar15;
     }
@@ -8064,7 +8064,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     axis[2] = fStack_88 - mid[2];
     fVar13 = (float)FUN_0052e930(fVar17);
     fVar15 = fVar15 + fVar14 / fVar13;
-    FUN_004be1e0_b6070((RwV3d*)axis,(const RwV3d*)0x6978a0,1,(const void*)&uStack_c4);
+    FUN_004be1e0_b6070((RwV3d*)axis,&D_006978A0,1,(const void*)&uStack_c4);
     fVar13 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
     fVar13 = fVar15 * fVar13 * 0.21875f;
     fStack_98 = axis[0];
@@ -8130,10 +8130,10 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fStack_ac = mid[2] + axis[2] * fVar13;
     if (lVar7 == 0) {
       if (0.0f <= fVar14) {
-        FUN_004c31b0(0xc1dc0000,auStack_110,0x697880,0);
+        FUN_004c31b0(0xc1dc0000,auStack_110,&D_00697880,0);
       }
       else {
-        FUN_004c31b0(0x41dc0000,auStack_110,0x697880,0);
+        FUN_004c31b0(0x41dc0000,auStack_110,&D_00697880,0);
       }
       FUN_004c6c60(delta,(RwV3d*)axis,auStack_110);
       fVar13 = fVar13 * fGpffff807c;
@@ -8207,7 +8207,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     uStack_c0 = uStack_a4;
     uStack_bc = uStack_a0;
     uStack_b8 = uStack_9c;
-    FUN_004be1e0(axis,0x697890,1,&uStack_c4);
+    FUN_004be1e0(axis,&D_00697890,1,&uStack_c4);
     axis[0] = axis[0] * 100.0f;
     axis[1] = axis[1] * 100.0f;
     axis[2] = axis[2] * 100.0f;
@@ -8403,7 +8403,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       cam[1] = fVar13 * 0.25f + sphere2[1] + 0.0f;
     }
     FUN_002a4690(work2, dir, pos, &D_00697880);
-    FUN_004be1e0(dir,0x6978a0,1,work2);
+    FUN_004be1e0(dir,&D_006978A0,1,work2);
     posPair[0] = pos[0];
     posPair[1] = pos[2];
     camPair[0] = cam[0];
@@ -8482,7 +8482,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     }
     pos[1] = fGpffff8030 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) + pos[1] + 0.0f;
     FUN_002a4690(work1, dir, pos, &D_00697880);
-    FUN_004be1e0(dir,0x6978a0,1,work1);
+    FUN_004be1e0(dir,&D_006978A0,1,work1);
     posPair[0] = pos[0];
     posPair[1] = pos[2];
     camPair[0] = cam[0];
@@ -8553,7 +8553,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
                   pos[1] + 0.0f;
     }
     FUN_002a4690(work1, dir, pos, &D_00697880);
-    FUN_004be1e0(dir,0x6978a0,1,work1);
+    FUN_004be1e0(dir,&D_006978A0,1,work1);
     posPair[0] = pos[0];
     posPair[1] = pos[2];
     camPair[0] = cam[0];
@@ -10069,7 +10069,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fVar6 = (DAT_007cadf0 * fVar5) / fVar6;
   /* Retail 0x2AF1F0: derive the first framing quaternion before applying its transform. */
   FUN_002a4690((void*)&auStack_104,&fStack_48,&fStack_18,&D_00697880);
-  FUN_004be1e0(&fStack_38,0x6978a0,1,auStack_104);
+  FUN_004be1e0(&fStack_38,&D_006978A0,1,auStack_104);
   if (fVar4 <= fVar6) {
     fVar4 = fVar6;
   }
@@ -10108,7 +10108,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fVar7 = (DAT_007cadb0 * fVar5) / fVar7;
   /* Retail 0x2AF438: derive the second framing quaternion before applying its transform. */
   FUN_002a4690((void*)&auStack_e8,&fStack_48,&fStack_68,&D_00697880);
-  FUN_004be1e0(&fStack_38,0x6978a0,1,auStack_e8);
+  FUN_004be1e0(&fStack_38,&D_006978A0,1,auStack_e8);
   if (fVar4 <= fVar7) {
     fVar4 = fVar7;
   }
