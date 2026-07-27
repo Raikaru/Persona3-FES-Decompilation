@@ -792,7 +792,7 @@ extern code FUN_0052ea18;
 
 char FUN_00435440(char param_1);
 char FUN_0043bc20(char param_1);
-float FUN_0045b4e0(int param_1);
+float FUN_0045b4e0(long param_1);
 float FUN_004693a0(int param_1);
 float FUN_0047cfd0(u32 *param_1,u8 (*param_2) [12],u8 (*param_3) [12], int param_4,int param_5);
 float FUN_004a9560(float param_1,int param_2,u8 *param_3);
@@ -20027,7 +20027,7 @@ int FUN_0045b4b0(int param_1)
 
 // FUN_0045B4E0 NONMATCHING
 
-float FUN_0045b4e0(int param_1)
+float FUN_0045b4e0(long param_1)
 
 {
   char cVar1;

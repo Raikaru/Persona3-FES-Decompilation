@@ -18,6 +18,7 @@ extern u8 PTR_FUN_006a4620_abs[];
 extern u8 **PTR_FUN_006a46e0;
 #pragma alias PTR_FUN_006a46e0_abs PTR_FUN_006a46e0
 extern u8 PTR_FUN_006a46e0_abs[];
+extern u8 **PTR_FUN_006a4870;
 extern u8 *PTR_FUN_006a48a0[];
 extern char gp0xffffaa60[];
 extern char gp0xffffaa68;
