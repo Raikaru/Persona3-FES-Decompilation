@@ -3582,6 +3582,7 @@ void FUN_003bb9b0(float *param_1)
 
   afStack_10[0] = *param_1;
   afStack_10[1] = param_1[1];
+  afStack_10[2] = param_1[2];
   for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
     while (360.0f <= afStack_10[iVar2]) {
       afStack_10[iVar2] = afStack_10[iVar2] - 360.0f;
