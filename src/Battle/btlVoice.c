@@ -345,6 +345,8 @@ void* func_002f87e0(u16 index);
  extern void FUN_002b90d0_voice(u32 object, u32 file);
  #pragma alias FUN_0027ed20_voice FUN_0027ed20
  extern void FUN_0027ed20_voice(u32 packet, u32 mode);
+ #pragma alias FUN_002bc950_u32_voice FUN_002bc950
+ extern u32 FUN_002bc950_u32_voice(u32, u32, u32);
  #pragma alias FUN_00284200_packet_voice FUN_00284200
  extern BtlPacket* FUN_00284200_packet_voice(f32, BtlUnit*, u16, u16, u16);
  #pragma alias FUN_002b8d60_packet_voice FUN_002b8d60
@@ -7438,14 +7440,14 @@ void func_002e9450(void)
     }
     iVar6 = iVar8;
   }
-  uVar4 = FUN_002bc950(iVar7,iVar9,iVar10);
-  FUN_0027ed20(uVar4,1);
-  uVar4 = FUN_002baf90(uVar3,iVar12,iVar6,0,0x200);
-  FUN_0027ed20(uVar4,2);
-  uVar5 = FUN_002bc950(0,0,0);
+  uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
+  FUN_0027ed20_voice(uVar4,1);
+  uVar4 = FUN_002baf90_u32_voice(uVar3,iVar12,iVar6,0,0x200);
+  FUN_0027ed20_voice(uVar4,2);
+  uVar5 = FUN_002bc950_u32_voice(0,0,0);
   *(u8 *)uVar5 = 4;
   *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
-  FUN_0027ed20(uVar5,1);
+  FUN_0027ed20_voice(uVar5,1);
   FUN_002b9030(uVar3);
   return;
 }

@@ -482,6 +482,7 @@ u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
     u32* values = (u32*)func_00170ed0(equipmentId, &category);
+    one = 1;
     s32 one;
     u32 categoryMask;
     s32 bit;

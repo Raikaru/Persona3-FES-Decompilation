@@ -5338,7 +5338,7 @@ void FUN_00434e60(void)
   int iVar3;
   
   for (iVar3 = 1; iVar3 < 4; iVar3 = iVar3 + 1) {
-    if (*(int *)((u8 *)DAT_0087190c + iVar3 * 0x1c0) != 0) {
+    if (*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) != 0) {
       uVar2 = iVar3;
       cVar1 = FUN_0043c7f0(uVar2);
       if (cVar1 != '\x06') {
