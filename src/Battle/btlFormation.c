@@ -7476,13 +7476,13 @@ void func_002c3f00(int param_1)
       uVar3 = uVar3 + 1 & 0xffff;
     }
   }
-  if (uVar3 == 0) {
-    *(int *)(param_1 + 0x38) = param_1;
+  if (uVar3 != 0) {
+    iVar1 = func_002ffbc0();
+    *(int *)(param_1 + 0x38) = aiStack_30[iVar1];
     *(u16 *)(param_1 + 0x6a) = 1;
   }
   else {
-    iVar1 = func_002ffbc0();
-    *(int *)(param_1 + 0x38) = aiStack_30[iVar1];
+    *(int *)(param_1 + 0x38) = param_1;
     *(u16 *)(param_1 + 0x6a) = 1;
   }
   return;
@@ -13768,12 +13768,12 @@ u32 func_002cf070(void)
         uVar6 = uVar6 + 1 & 0xffff;
       }
     }
-    if (uVar6 == 0) {
-      func_0035f060(0xffffffffffffffff);
-    }
-    else {
+    if (uVar6 != 0) {
       iVar1 = func_002ffbc0();
       func_0035f060(*(u32 *)(aiStack_30[iVar1] + 8) | 0x80000000);
+    }
+    else {
+      func_0035f060(0xffffffffffffffff);
     }
   }
   else {

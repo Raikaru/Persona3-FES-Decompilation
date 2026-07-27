@@ -1299,13 +1299,7 @@ LAB_0052ffa8:
   }
   uVar1 = (u32)uVar2;
   uVar19 = 0x20 - ((u32)(u8)(&DAT_007c0388)[uVar1 >> iVar11] + iVar11);
-  if (uVar19 == 0) {
-    iVar14 = uVar10 - uVar1;
-    uVar4 = 1;
-    uVar3 = uVar1 >> 0x10;
-    uVar1 = uVar1 & 0xffff;
-  }
-  else {
+  if (uVar19 != 0) {
     uVar6 = uVar1 << (uVar19 & 0x1f);
     uVar2 = (u32)(int)uVar6;
     uVar3 = uVar6 >> 0x10;
@@ -1358,6 +1352,12 @@ LAB_00530250:
 LAB_005302b0:
     iVar14 = (int)uVar12 - iVar14;
     uVar4 = uVar4 | uVar5;
+  }
+  else {
+    iVar14 = uVar10 - uVar1;
+    uVar4 = 1;
+    uVar3 = uVar1 >> 0x10;
+    uVar1 = uVar1 & 0xffff;
   }
   iVar11 = iVar14 / (int)uVar3;
   if (uVar3 == 0) {

@@ -2372,14 +2372,7 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
             if (item == 0) {
                 continue;
             }
-            if (bonusPtr == NULL || *(s16*)((u8*)bonusPtr + i * 2) == 0) {
-                FUN_00523ac8(text, gp0xffff897c,
-                             iGpffffb7fc + item * 0x13);
-                FUN_003b32d0_typed(scale, (s32)textX + row * 190,
-                             (s32)textY + col * 24,
-                             disabledColor, 6, 1, text, 0x10, 0x78);
-            }
-            else {
+            if (bonusPtr == NULL || *(s16*)((u8*)bonusPtr + i * 2) != 0) {
                 campStatusDrawSpriteCall(parent, DAT_00833B90, 0x19,
                                          (u8)alpha,
                                          bonusX + (f32)(row * 190),
@@ -2389,6 +2382,13 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
                 FUN_003b32d0_typed(scale, (s32)textX + row * 190,
                              (s32)textY + col * 24,
                              enabledColor, 6, 1, text, 0x10, 0x78);
+            }
+            else {
+                FUN_00523ac8(text, gp0xffff897c,
+                             iGpffffb7fc + item * 0x13);
+                FUN_003b32d0_typed(scale, (s32)textX + row * 190,
+                             (s32)textY + col * 24,
+                             disabledColor, 6, 1, text, 0x10, 0x78);
             }
         }
     }

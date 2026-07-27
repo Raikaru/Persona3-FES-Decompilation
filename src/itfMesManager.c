@@ -2666,17 +2666,17 @@ void FUN_003a4dd0(int param_1)
 
     iVar1 = *(int *)(puVar3 + iVar2 * 8 + 0x14);
 
-    if (iVar1 == 0) {
+    if (iVar1 != 0) {
 
-      iVar1 = 0;
+      *(u32 *)(puVar3 + iVar2 * 8 + 0x18) = 0;
+
+      *(u32 *)(puVar3 + iVar2 * 8 + 0x14) = 0;
 
     }
 
     else {
 
-      *(u32 *)(puVar3 + iVar2 * 8 + 0x18) = 0;
-
-      *(u32 *)(puVar3 + iVar2 * 8 + 0x14) = 0;
+      iVar1 = 0;
 
     }
 

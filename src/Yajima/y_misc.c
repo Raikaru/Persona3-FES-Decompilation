@@ -6874,27 +6874,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
             uVar8 = datGetBadStatusNoDown(*(u16 *)(&DAT_00871948 + iVar7 * 0x1c0));
 
-            if ((uVar8 & 0x80000) == 0) {
-
-              uVar9 = FUN_001158b0(0,DAT_007ce6e4,7);
-
-              iVar10 = (int)uVar9;
-
-              *(u32 *)(iVar10 + 0x2c) = uVar18;
-
-              *(float *)(iVar10 + 0x10) = *pfVar15;
-
-              *(float *)(iVar10 + 0x14) = *pfVar13;
-
-              *(u8 *)(iVar10 + 0x18) = 0;
-
-              func_001127d0(uVar9,1);
-
-              FUN_00115980(uVar9);
-
-            }
-
-            else {
+            if ((uVar8 & 0x80000) != 0) {
 
               iVar7 = param_2 * 2 + iVar10;
 
@@ -6955,6 +6935,26 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
               *(u32 *)(iVar7 + 0x14) = *(u32 *)(iVar10 + 0x8bc);
 
               *(u8 *)(iVar7 + 0x18) = 0;
+
+              func_001127d0(uVar9,1);
+
+              FUN_00115980(uVar9);
+
+            }
+
+            else {
+
+              uVar9 = FUN_001158b0(0,DAT_007ce6e4,7);
+
+              iVar10 = (int)uVar9;
+
+              *(u32 *)(iVar10 + 0x2c) = uVar18;
+
+              *(float *)(iVar10 + 0x10) = *pfVar15;
+
+              *(float *)(iVar10 + 0x14) = *pfVar13;
+
+              *(u8 *)(iVar10 + 0x18) = 0;
 
               func_001127d0(uVar9,1);
 

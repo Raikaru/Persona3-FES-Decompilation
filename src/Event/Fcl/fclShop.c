@@ -1458,15 +1458,7 @@ LAB_003e7330:
 
     lVar8 = FUN_00404120(*(u16 *)((int)piVar10 + 0x8a),0);
 
-    if (lVar8 == 0) {
-
-      piVar10[1] = 0x17;
-
-      FUN_003c7430(0xc);
-
-    }
-
-    else {
+    if (lVar8 != 0) {
 
       lVar8 = FUN_00403f20(*(u16 *)((int)piVar10 + 0x8a),0);
 
@@ -1497,6 +1489,14 @@ LAB_003e7330:
       piVar10[1] = 0x19;
 
       FUN_003c7430(9);
+
+    }
+
+    else {
+
+      piVar10[1] = 0x17;
+
+      FUN_003c7430(0xc);
 
     }
 
@@ -1612,17 +1612,17 @@ LAB_003e7330:
 
     lVar8 = FUN_004038a0(*(u16 *)((int)piVar10 + 0x8a));
 
-    if (lVar8 == 0) {
+    if (lVar8 != 0) {
 
-      func_0010a4e0(0,0,0,6);
+      uVar6 = FUN_003c5460(DAT_007ce688);
+
+      FUN_003e0c20(uVar6,2,1);
 
     }
 
     else {
 
-      uVar6 = FUN_003c5460(DAT_007ce688);
-
-      FUN_003e0c20(uVar6,2,1);
+      func_0010a4e0(0,0,0,6);
 
     }
 

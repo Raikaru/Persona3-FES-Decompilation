@@ -2540,13 +2540,7 @@ u32 FUN_003baa70(char *param_1)
 
   }
 
-  if (*(int *)(&DAT_0067ef00 + uVar4 * 4) == 0) {
-
-    uVar4 = 0;
-
-  }
-
-  else {
+  if (*(int *)(&DAT_0067ef00 + uVar4 * 4) != 0) {
 
     uVar4 = (u32)*(u8 *)(*(int *)(&DAT_0067ef00 + uVar4 * 4) + uVar3);
 
@@ -2601,6 +2595,12 @@ u32 FUN_003baa70(char *param_1)
       }
 
     }
+
+  }
+
+  else {
+
+    uVar4 = 0;
 
   }
 

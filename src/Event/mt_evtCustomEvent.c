@@ -537,17 +537,17 @@ u32 FUN_00398530(int param_1)
 
   case 9:
 
-    if (puVar3[0x1f] == 0) {
+    if (puVar3[0x1f] != 0) {
 
-      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 8),0xffffffffffffffff,0xffffffffffffffff);
+      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 10),0xffffffffffffffff,0xffffffffffffffff)
+
+      ;
 
     }
 
     else {
 
-      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 10),0xffffffffffffffff,0xffffffffffffffff)
-
-      ;
+      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 8),0xffffffffffffffff,0xffffffffffffffff);
 
     }
 
@@ -861,17 +861,17 @@ LAB_00398d80:
 
   case 0x1a:
 
-    if (puVar3[0x1f] == 0) {
+    if (puVar3[0x1f] != 0) {
 
-      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 8),0xffffffffffffffff,0xffffffffffffffff);
+      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 10),0xffffffffffffffff,0xffffffffffffffff)
+
+      ;
 
     }
 
     else {
 
-      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 10),0xffffffffffffffff,0xffffffffffffffff)
-
-      ;
+      FUN_0039f210(puVar15,*(u16 *)(puVar3[0x21] + 8),0xffffffffffffffff,0xffffffffffffffff);
 
     }
 
@@ -2005,13 +2005,7 @@ u32 FUN_0039a5c0(int param_1)
 
   case 0:
 
-    if ((*(u32 *)(iVar3 + 4) & 8) == 0) {
-
-      *(u16 *)(puVar2 + 0xd) = 0;
-
-    }
-
-    else {
+    if ((*(u32 *)(iVar3 + 4) & 8) != 0) {
 
       lVar6 = FUN_00172c50(puVar2 + 0xd);
 
@@ -2032,6 +2026,12 @@ u32 FUN_0039a5c0(int param_1)
         break;
 
       }
+
+    }
+
+    else {
+
+      *(u16 *)(puVar2 + 0xd) = 0;
 
     }
 
@@ -4950,15 +4950,7 @@ u32 FUN_0039d8e0(int param_1)
 
     else if (iVar4 == 0) {
 
-      if ((*(u32 *)(piVar1[1] + 4) & 8) == 0) {
-
-        piVar1[3] = 0;
-
-        piVar1[0xd] = 1;
-
-      }
-
-      else {
+      if ((*(u32 *)(piVar1[1] + 4) & 8) != 0) {
 
         sVar3 = FUN_0016dd40();
 
@@ -4979,6 +4971,14 @@ u32 FUN_0039d8e0(int param_1)
           return 0xffffffff;
 
         }
+
+      }
+
+      else {
+
+        piVar1[3] = 0;
+
+        piVar1[0xd] = 1;
 
       }
 
@@ -5854,13 +5854,7 @@ u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       lVar3 = FUN_00318d10(param_2,param_5,auStack_40);
 
-      if (lVar3 == 0) {
-
-        uVar2 = 0;
-
-      }
-
-      else {
+      if (lVar3 != 0) {
 
         iVar4 = param_4 * 2 + param_1;
 
@@ -5887,6 +5881,12 @@ u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
         FUN_003196d0(param_2,param_3 & 0xffff,param_5);
 
         uVar2 = 1;
+
+      }
+
+      else {
+
+        uVar2 = 0;
 
       }
 
