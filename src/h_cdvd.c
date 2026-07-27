@@ -1749,7 +1749,6 @@ void* func_00102e50(s32 count, void* source, s32 stride,
 {
     HCdvdFileContext* context;
     s32 i;
-    u8* slot;
 
     if (func_004bfd50(key) != NULL)
     {
@@ -1775,8 +1774,9 @@ void* func_00102e50(s32 count, void* source, s32 stride,
     {
         return context;
     }
-    for (i = 0, slot = context->slots; i < count; i++, slot += 0x90)
+    for (i = 0; i < count; i++)
     {
+        u8* slot = context->slots + i * 0x90;
         *(void**)(slot + 0x50) = context;
         *(u8**)(slot + 0x68) = (u8*)source + i * stride;
         *(u32*)(slot + 0x6c) = stride;
