@@ -898,6 +898,8 @@ void FUN_003c8fa0(void)
 #define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_003C9000 NONMATCHING
 
 
@@ -913,10 +915,11 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
   int iVar2;
 
   u16 uVar3;
+  u32 converted;
 
   
 
-  iVar2 = param_7 * 0xc + iGpffffb98c;
+  iVar2 = iGpffffb98c + param_7 * 0xc;
 
   if ((*(u32 *)(iVar2 + 0x1c) & 2) != 0) {
 
@@ -932,23 +935,31 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
     param_2 = 4096.0f * param_2;
-    if (param_2 < 2.1474836e+09f) {
-      uVar3 = (u16)(int)param_2;
+    if (2.1474836e+09f <= param_2) {
+      goto param2_large;
     }
-    else {
-      uVar3 =
-          (u16)((int)(param_2 - 2.1474836e+09f) | 0x80000000);
-    }
+    converted = (u32)(int)param_2;
+    uVar3 = (u16)converted;
+    goto param2_done;
+param2_large:
+    converted = (u32)(int)(param_2 - 2.1474836e+09f);
+    converted |= 0x80000000;
+    uVar3 = (u16)converted;
+param2_done:
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
     param_3 = 4096.0f * param_3;
-    if (param_3 < 2.1474836e+09f) {
-      uVar3 = (u16)(int)param_3;
+    if (2.1474836e+09f <= param_3) {
+      goto param3_large;
     }
-    else {
-      uVar3 =
-          (u16)((int)(param_3 - 2.1474836e+09f) | 0x80000000);
-    }
+    converted = (u32)(int)param_3;
+    uVar3 = (u16)converted;
+    goto param3_done;
+param3_large:
+    converted = (u32)(int)(param_3 - 2.1474836e+09f);
+    converted |= 0x80000000;
+    uVar3 = (u16)converted;
+param3_done:
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 
     FUN_001127d0(uVar1,1);
@@ -960,6 +971,7 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
   return;
 
 }
+#pragma pop
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #undef FUN_003c91b0
 // FUN_003C91B0

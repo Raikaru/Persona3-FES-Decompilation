@@ -145,7 +145,7 @@ u32 FUN_003b8540(float *param_1,float *param_2,float *param_3,float *param_4);
 u32 FUN_003b8690(float *param_1,float *param_2,float *param_3);
 u8 FUN_003b86c0(float param_1,Resrc* param_2,RwV3d* param_3);
 u32 FUN_003b8730(u16 param_1,RwV3d* param_2,float param_3);
-u8 FUN_003b87f0(u64 param_1,RwV3d *param_2,u32 param_3,u8 param_4);
+u32 FUN_003b87f0(u64 param_1,RwV3d *param_2,u32 param_3,u8 param_4);
 #pragma alias FUN_003b5d10_typed FUN_003b5d10
 extern Resrc* FUN_003b5d10_typed(void);
 
@@ -189,7 +189,7 @@ extern Resrc* FUN_003b5d10_typed(void);
 #define FUN_003b8690(...) ((u32 (*)(...))FUN_003b8690)(__VA_ARGS__)
 #define FUN_003b86c0(...) ((u8 (*)(...))FUN_003b86c0)(__VA_ARGS__)
 #define FUN_003b8730(...) ((u32 (*)(...))FUN_003b8730)(__VA_ARGS__)
-#define FUN_003b87f0(...) ((u8 (*)(...))FUN_003b87f0)(__VA_ARGS__)
+#define FUN_003b87f0(...) ((u32 (*)(...))FUN_003b87f0)(__VA_ARGS__)
 
 // FUN_003b5760
 void MT_Scene_Load(s32 fldMajorId, s32 fldMinorId)
@@ -2662,22 +2662,22 @@ u32 FUN_003b8730(u16 param_1,RwV3d* param_2,float param_3)
 }
 #define FUN_003b8730(...) ((u32 (*)(...))FUN_003b8730)(__VA_ARGS__)
 #undef FUN_003b87f0
-// FUN_003B87F0 NONMATCHING
+// FUN_003B87F0
 
 
-u8 FUN_003b87f0(u64 param_1,RwV3d *param_2,u32 param_3,u8 param_4)
+u32 FUN_003b87f0(u64 param_1,RwV3d *param_2,u32 param_3,u8 param_4)
 {
     Resrc* res;
     RwV3d* base;
     RwV3d* dest;
-    u8 result;
+    u32 result;
 
     res = FUN_003b5d10_typed();
     if (res == NULL)
     {
-        result = 0;
+        return 0;
     }
-    else if (res == NULL)
+    if (res == NULL)
     {
         result = 0;
     }
@@ -2701,4 +2701,4 @@ u8 FUN_003b87f0(u64 param_1,RwV3d *param_2,u32 param_3,u8 param_4)
 
     return result;
 }
-#define FUN_003b87f0(...) ((u8 (*)(...))FUN_003b87f0)(__VA_ARGS__)
+#define FUN_003b87f0(...) ((u32 (*)(...))FUN_003b87f0)(__VA_ARGS__)
