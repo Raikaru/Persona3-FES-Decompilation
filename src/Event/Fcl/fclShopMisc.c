@@ -489,7 +489,7 @@ void FUN_00409f20(u64 param_1,int param_2);
 u32 FUN_00409f50(u32 param_1,int param_2);
 void FUN_0040a200(int param_1);
 void FUN_0040a260(int param_1);
-u8 FUN_0040a2b0(u32 param_1);
+u32 FUN_0040a2b0(u32 param_1);
 u32 FUN_0040a490(u32 param_1);
 void FUN_0040a6d0(u64 param_1,long param_2);
  #pragma alias FUN_0040a6d0_i FUN_0040a6d0
@@ -18991,10 +18991,10 @@ void FUN_0040a260(int param_1)
 
 }
 
-// FUN_0040A2B0 NONMATCHING
+// FUN_0040A2B0
 
 
-u8 FUN_0040a2b0(u32 param_1)
+u32 FUN_0040a2b0(u32 param_1)
 {
   u32 uVar1;
   u32 uVar2;
@@ -19021,7 +19021,7 @@ u8 FUN_0040a2b0(u32 param_1)
     func_0010a4e0(0,0,0,5);
   }
   FUN_004072d0_i(param_1,2,1);
-  if (uVar1 == 1) {
+  if (uVar1 != 0) {
     if (*(int *)(iVar1 + 4) == -8) {
       FUN_004072d0_i(param_1,0xe,1);
       FUN_004072d0_i(param_1,0xf,1);
