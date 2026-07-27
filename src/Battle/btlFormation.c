@@ -14274,7 +14274,7 @@ u32 func_002cffc0(void)
       uVar1 = *(u16 *)(iVar6 + uVar8 * 2);
       if ((uVar1 != 0) && (uVar1 < 0x1d0)) {
         uVar2 = func_003082f0(*(u32 *)(iVar3 + 0xa2c));
-        uVar7 = func_0030b4b0(*(u32 *)(*(int *)(iVar4 + 0x30) + 0xa2c),uVar2);
+        uVar7 = func_0030b4b0_u32(*(u32 *)(*(int *)(iVar4 + 0x30) + 0xa2c),uVar2);
         if ((uVar7 & 0x8000000) != 0) {
           func_0035f060_u32(uVar2);
           return 1;

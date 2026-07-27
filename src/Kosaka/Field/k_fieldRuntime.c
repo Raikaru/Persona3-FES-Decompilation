@@ -4527,6 +4527,117 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 vertices[0] = blended;
             }
         }
+        {
+            RuntimeVec3* surface;
+            RuntimeVec3 scratch[12];
+            RuntimeVec3 first;
+            RuntimeVec3 second;
+            RuntimeVec3 third;
+            RuntimeVec3 fourth;
+            RuntimeVec3 delta0;
+            RuntimeVec3 delta1;
+            RuntimeVec3 blended0;
+            RuntimeVec3 blended1;
+            f32 weight;
+            f32 inverseWeight;
+            f32 scale;
+            u32 limit;
+            u32 scratchIndex;
+
+            surface = *(RuntimeVec3**)((u8*)renderObject + 0x70);
+            limit = count;
+            scale = 0.5f;
+            inverseWeight = 1.0f;
+            if (surface != NULL && vertices != NULL &&
+                vector0 != NULL && vector1 != NULL)
+            {
+                if (limit > 12)
+                {
+                    limit = 12;
+                }
+                for (index = 0; index < limit; index++)
+                {
+                    first = vector0[index];
+                    second = vector1[index];
+                    weight = (f32)index / (f32)(count + 1);
+                    inverseWeight = 1.0f - weight;
+                    blended0.x = first.x * inverseWeight +
+                                 second.x * weight;
+                    blended0.y = first.y * inverseWeight +
+                                 second.y * weight;
+                    blended0.z = first.z * inverseWeight +
+                                 second.z * weight;
+                    scratch[index] = blended0;
+                    surface[index] = blended0;
+                }
+            }
+            if (surface != NULL && vector2 != NULL && vector3 != NULL)
+            {
+                if (limit > 12)
+                {
+                    limit = 12;
+                }
+                for (index = 0; index < limit; index++)
+                {
+                    third = vector2[index];
+                    fourth = vector3[index];
+                    delta0.x = fourth.x - third.x;
+                    delta0.y = fourth.y - third.y;
+                    delta0.z = fourth.z - third.z;
+                    if (index < count)
+                    {
+                        scratchIndex = index;
+                    }
+                    else
+                    {
+                        scratchIndex = 0;
+                    }
+                    blended1.x = third.x + delta0.x * scale +
+                                 scratch[scratchIndex].x * inverseWeight;
+                    blended1.y = third.y + delta0.y * scale +
+                                 scratch[scratchIndex].y * inverseWeight;
+                    blended1.z = third.z + delta0.z * scale +
+                                 scratch[scratchIndex].z * inverseWeight;
+                    surface[index] = blended1;
+                }
+            }
+            if (surface != NULL && vertices != NULL)
+            {
+                for (index = 0; index < limit; index++)
+                {
+                    scratchIndex = index;
+                    if (scratchIndex >= 12)
+                    {
+                        scratchIndex = 0;
+                    }
+                    first = scratch[scratchIndex];
+                    second = surface[index];
+                    delta1.x = second.x - first.x;
+                    delta1.y = second.y - first.y;
+                    delta1.z = second.z - first.z;
+                    blended0.x = first.x + delta1.x * amount;
+                    blended0.y = first.y + delta1.y * amount;
+                    blended0.z = first.z + delta1.z * amount;
+                    vertices[index] = blended0;
+                }
+            }
+            for (index = 0; index < 12; index++)
+            {
+                scratchIndex = index == 0 ? 0 : index - 1;
+                first = scratch[scratchIndex];
+                second = scratch[index];
+                third = scratch[index == 11 ? 11 : index + 1];
+                scratch[index].x = (first.x + second.x + third.x) *
+                                   0.33333334f;
+                scratch[index].y = (first.y + second.y + third.y) *
+                                   0.33333334f;
+                scratch[index].z = (first.z + second.z + third.z) *
+                                   0.33333334f;
+            }
+            (void)scratch;
+            (void)scale;
+            (void)inverseWeight;
+        }
         if (work->state == 2 && vertices != NULL &&
             vector2 != NULL && vector3 != NULL)
         {

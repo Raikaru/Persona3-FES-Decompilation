@@ -38,7 +38,7 @@ void FUN_003c4710(int *param_1, int *param_2, int *param_3);
 int *FUN_003c4820(int *param_1, int *param_2);
 int FUN_003dffc0(int *param_1,int param_2,s32 param_3);
 void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4);
-int FUN_003e0260(u64 param_1,u64 param_2);
+int FUN_003e0260(u32 param_1,u32 param_2);
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4);
 int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4);
 u64 FUN_003e0650(u32 *param_1);
@@ -2946,7 +2946,7 @@ void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4)
 // FUN_003E0260 NONMATCHING
 
 
-int FUN_003e0260(u64 param_1,u64 param_2)
+int FUN_003e0260(u32 param_1,u32 param_2)
 
 
 
