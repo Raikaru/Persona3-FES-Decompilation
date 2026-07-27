@@ -9407,7 +9407,7 @@ u64 FUN_00379f30(int param_1,int param_2,int param_3)
 
   int iVar2;
 
-  long lVar3;
+  int lVar3;
 
   u64 uVar4;
 
