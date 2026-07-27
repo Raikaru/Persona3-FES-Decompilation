@@ -4385,6 +4385,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             cursor3 += 8;
             amount3 += step3;
         }
+        func_001ed0f0(0.0f, (RuntimeWork*)work, 0, color3 + 8);
     }
     default:
         break;
