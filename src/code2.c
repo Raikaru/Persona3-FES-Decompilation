@@ -77,7 +77,7 @@ extern int func_0x00076680();
 // that non-function payload, so normalized_diff is zero but the status remains
 // NONMATCHING. This accepted boundary-data floor is intentional.
 // COP0/TLB instructions below are genuine kernel hardware operations.
-// FUN_0077F710 NONMATCHING
+// FUN_0077F710
 asm int FUN_0077f710(u32 param_1)
 {
   .set noreorder

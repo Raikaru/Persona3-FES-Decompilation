@@ -998,7 +998,7 @@ void FUN_0035ac80(void)
 
 }
 
-// FUN_0035AC90 NONMATCHING
+// FUN_0035AC90
 
 
 void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
@@ -1007,6 +1007,7 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
   u8 *pbVar3;
   int iVar4;
   int iVar5;
+  int updateOffset;
 
   pbVar3 = param_3;
   goto check;
@@ -1014,16 +1015,16 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
     bVar1 = *pbVar3;
     pbVar3 = pbVar3 + 1;
     if ((bVar1 & 1) == 0) {
-      iVar4 = (int)(u32)bVar1 >> 1;
+      updateOffset = (int)(u32)bVar1 >> 1;
       goto update;
     }
     if ((bVar1 & 2) == 0) {
-      iVar4 = (((int)*pbVar3 << 8) | bVar1) >> 2;
+      updateOffset = (bVar1 | ((int)*pbVar3 << 8)) >> 2;
       pbVar3 = pbVar3 + 1;
       goto update;
     }
     if ((bVar1 & 4) == 0) {
-      iVar4 = (((int)pbVar3[1] << 16) | ((int)*pbVar3 << 8) | bVar1) >> 3;
+      updateOffset = ((bVar1 | ((int)*pbVar3 << 8)) | ((int)pbVar3[1] << 16)) >> 3;
       pbVar3 = pbVar3 + 2;
       goto update;
     }
@@ -1034,10 +1035,11 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
     }
     goto check;
 update:
-    param_1 = param_1 + iVar4;
+    param_1 = param_1 + updateOffset;
     *param_1 = *param_1 + param_2;
 check:
-    if (param_4 <= (int)pbVar3 - (int)param_3) {
+    updateOffset = ((int)pbVar3 - (int)param_3 < param_4);
+    if (updateOffset == 0) {
       return;
     }
   } while (true);

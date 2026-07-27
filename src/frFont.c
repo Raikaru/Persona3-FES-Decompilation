@@ -2505,7 +2505,8 @@ frFont_b1b00_child_check:
 }
 #define FUN_003b1b00(...) ((int (*)(...))FUN_003b1b00)(__VA_ARGS__)
 #undef FUN_003b1bc0
-// FUN_003B1BC0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_003B1BC0
 
 
 void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
@@ -2515,7 +2516,6 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 {
 
 
-  int iVar1;
   int iVar3;
   int iVar2;
 
@@ -2529,10 +2529,12 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
   param_3 = *(int *)(param_3 + 0x2c);
   for (; param_3 != 0;
        param_3 = *(int *)(param_3 + 0x28)) {
+    int iVar1;
     iVar3 = param_3;
     *param_1 = *(u32 *)(param_3 + 4);
     param_1[1] = *(u32 *)(param_3 + 8);
-    iVar1 = *(int *)(param_3 + 8) + 100;
+    iVar1 = *(int *)(param_3 + 8);
+    iVar1 = iVar1 + 100;
     while (iVar3 != 0) {
       if (*(int *)(iVar3 + 8) >= iVar1) {
         break;
@@ -2553,6 +2555,7 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 
 }
 #define FUN_003b1bc0(...) ((void (*)(...))FUN_003b1bc0)(__VA_ARGS__)
+#pragma opt_loop_invariants off
 #undef FUN_003b1c40
 // FUN_003B1C40
 

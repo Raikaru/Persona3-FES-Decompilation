@@ -6015,7 +6015,8 @@ void FUN_003a8350(int param_1)
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
   if (2.1474836e+09f <= fVar1) goto LAB_003a8400;
-  iVar1 = (int)fVar1 & 0xff;
+  iVar1 = (int)fVar1;
+  iVar1 = iVar1 & 0xff;
   goto LAB_003a8418;
 LAB_003a8400:
   iVar1 = (int)(fVar1 - 2.1474836e+09f);

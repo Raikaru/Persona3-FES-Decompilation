@@ -1762,9 +1762,7 @@ u32 FUN_002defe0(int param_1)
   
   lVar2 = FUN_0010a500(4);
   if (lVar2 == 1) {
-
     return 0xffffffff;
-
   }
 
   if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0) {
@@ -1800,9 +1798,7 @@ u32 FUN_002defe0(int param_1)
   }
 
   if ((uVar4 & 0xffff) == 0) {
-
     return -1;
-
   }
 
 
