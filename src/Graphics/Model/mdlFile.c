@@ -13214,7 +13214,7 @@ void FUN_00329550(void)
 
   __int128 auVar1;
 
-  u32 in_v1_udw;
+  u64 in_v1_udw;
 
   __int128 auVar2;
 
@@ -13222,9 +13222,9 @@ void FUN_00329550(void)
 
   __int128 auVar4;
 
-  u32 in_a0_udw;
+  u64 in_a0_udw;
 
-  u32 in_a1_udw;
+  u64 in_a1_udw;
 
   
 
