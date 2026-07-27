@@ -3,6 +3,11 @@ typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
+typedef struct {
+  f32 x;
+  f32 y;
+  f32 z;
+} ItfFloat3;
 
 extern void FUN_0019d3f0(const char *file,s32 line);
 extern u32 FUN_00171250(s16 id);
@@ -45,6 +50,10 @@ extern u32 DAT_006a2648;
 extern u32 DAT_006a2650;
 extern u32 DAT_006a2654;
 extern u32 DAT_006a2658;
+#pragma alias DAT_006a2640_vec_abs DAT_006a2640
+extern ItfFloat3 DAT_006a2640_vec_abs[];
+#pragma alias DAT_006a2650_vec_abs DAT_006a2650
+extern ItfFloat3 DAT_006a2650_vec_abs[];
 extern s32 DAT_006a2680[];
 extern u32 DAT_007cd4e8;
 extern s16 DAT_007cd500;
@@ -4651,7 +4660,7 @@ u64 FUN_003adf70(u64 param_1,int param_2)
 }
 #define FUN_003adf70(...) ((u64 (*)(...))FUN_003adf70)(__VA_ARGS__)
 #undef FUN_003ae000
-// FUN_003AE000 NONMATCHING
+// FUN_003AE000
 
 
 u64 FUN_003ae000(u64 param_1,int param_2)
@@ -4664,31 +4673,27 @@ u64 FUN_003ae000(u64 param_1,int param_2)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u8 *pbVar4;
 
   u32 uVar5;
 
-  u32 auStack_20 [4];
+  ItfFloat3 aiStack_10;
 
-  int aiStack_10 [4];
+  ItfFloat3 auStack_20;
 
   
 
-  aiStack_10[0] = DAT_006a2640;
+  aiStack_10 = DAT_006a2640_vec_abs[0];
 
-  aiStack_10[1] = DAT_006a2644;
+  auStack_20 = DAT_006a2650_vec_abs[0];
 
-  aiStack_10[2] = DAT_006a2648;
+  uVar3 = *(u32 *)(param_2 + 0x18);
 
-  auStack_20[0] = DAT_006a2650;
+  pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + uVar3);
 
-  auStack_20[1] = DAT_006a2654;
-
-  auStack_20[2] = DAT_006a2658;
-
-  pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  uVar5 = *pbVar4 - 1 & 0xff;
 
   bVar1 = pbVar4[1];
 
@@ -4704,7 +4709,7 @@ u64 FUN_003ae000(u64 param_1,int param_2)
 
   }
 
-  uVar2 = uVar2 << 8 | *pbVar4 - 1 & 0xff;
+  uVar2 = (uVar2 & 0xff) << 8 | uVar5 & 0xff;
 
   FUN_0017db00();
 
@@ -4712,15 +4717,19 @@ u64 FUN_003ae000(u64 param_1,int param_2)
 
   FUN_0016e2b0(uVar3,uVar2);
 
-  if (uVar2 != 0) {
-
-    for (uVar5 = 0; (uVar5 < 3 && (aiStack_10[uVar5] < (int)uVar2)); uVar5 = uVar5 + 1) {
-
-    }
-
-    FUN_0010a4e0(0,0,4,*(u16 *)(auStack_20 + uVar5));
-
+  if (uVar2 == 0) {
+    return 0;
   }
+
+  uVar5 = 0;
+  while (uVar5 < 3) {
+    if (((s32 *)&aiStack_10)[uVar5] >= (int)uVar2) {
+      break;
+    }
+    uVar5 = uVar5 + 1;
+  }
+
+  FUN_0010a4e0(0,0,4,*(s16 *)((u8 *)&auStack_20 + uVar5 * 4));
 
   return 0;
 

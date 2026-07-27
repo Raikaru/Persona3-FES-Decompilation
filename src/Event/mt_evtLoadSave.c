@@ -14,11 +14,26 @@ typedef struct {
   short f3;
 } MtEvtHalf4;
 
+typedef struct {
+  f32 x;
+  f32 y;
+  f32 z;
+} MtEvtVec3;
+
+typedef struct {
+  f32 x;
+  f32 y;
+  f32 z;
+  f32 w;
+} MtEvtVec4;
+
 extern u32 LAB_00391290;
 extern u32 DAT_007cca68;
 extern u32 DAT_007cca6c;
 extern u32 DAT_006a0bf8;
 extern u32 DAT_006a0c00;
+#pragma alias DAT_006a0bf8_vec_abs DAT_006a0bf8
+extern MtEvtVec3 DAT_006a0bf8_vec_abs[];
 extern u32 LAB_00392bb0;
 
 
@@ -40,6 +55,8 @@ extern void FUN_005225a8_evt(const char *format,...);
 extern void FUN_004c0420_evt(void *data,int size,int count,int arg);
 #pragma alias FUN_00361ca0_evt FUN_00361ca0
 extern u32 FUN_00361ca0_evt(int param_1,u64 param_2);
+#pragma alias FUN_00530da0_evt FUN_00530da0
+extern u32 FUN_00530da0_evt(f32 param_1);
 void FUN_0038fa10(int param_1,u32 param_2);
 void FUN_0038ffb0(int param_1,int param_2);
 void FUN_003902c0(int param_1,int param_2);
@@ -1420,31 +1437,11 @@ void FUN_0038f0f0(u32 param_1)
 
       iVar15 = (int)lVar9;
 
-      uVar16 = *(u32 *)(iVar15 + 8);
-
-      uVar17 = *(u32 *)(iVar15 + 0xc);
-
-      *(u32 *)(iVar5 + 0x3c) = *(u32 *)(iVar15 + 4);
-
-      *(u32 *)(iVar5 + 0x40) = uVar16;
-
-      *(u32 *)(iVar5 + 0x44) = uVar17;
-
-      uVar16 = *(u32 *)(iVar15 + 0x14);
-
-      uVar17 = *(u32 *)(iVar15 + 0x18);
-
-      *(u32 *)(iVar5 + 0x48) = *(u32 *)(iVar15 + 0x10);
-
-      *(u32 *)(iVar5 + 0x4c) = uVar16;
-
-      *(u32 *)(iVar5 + 0x50) = uVar17;
-
-      uVar10 = FUN_00530da0(*(u32 *)(iVar15 + 4));
-
-      uVar11 = FUN_00530da0(*(u32 *)(iVar15 + 8));
-
-      uVar12 = FUN_00530da0(*(u32 *)(iVar15 + 0xc));
+      *(MtEvtVec3 *)(iVar5 + 0x3c) = *(MtEvtVec3 *)(iVar15 + 4);
+      *(MtEvtVec3 *)(iVar5 + 0x48) = *(MtEvtVec3 *)(iVar15 + 0x10);
+      uVar10 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->x);
+      uVar11 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->y);
+      uVar12 = FUN_00530da0_evt(((MtEvtVec3 *)(iVar15 + 4))->z);
 
       FUN_005225a8(0x6a0bd0,uVar10,uVar11,uVar12);
 
@@ -1490,31 +1487,11 @@ void FUN_0038f0f0(u32 param_1)
 
       *(u32 *)(iVar7 + 0x14) = 0;
 
-      uVar16 = *(u32 *)(puVar6 + 4);
-
-      uVar17 = *(u32 *)(puVar6 + 6);
-
-      *(u32 *)(iVar7 + 0x3c) = *(u32 *)(puVar6 + 2);
-
-      *(u32 *)(iVar7 + 0x40) = uVar16;
-
-      *(u32 *)(iVar7 + 0x44) = uVar17;
-
-      uVar16 = *(u32 *)(puVar6 + 10);
-
-      uVar17 = *(u32 *)(puVar6 + 0xc);
-
-      *(u32 *)(iVar7 + 0x48) = *(u32 *)(puVar6 + 8);
-
-      *(u32 *)(iVar7 + 0x4c) = uVar16;
-
-      *(u32 *)(iVar7 + 0x50) = uVar17;
-
-      uVar10 = FUN_00530da0(*(u32 *)(puVar6 + 2));
-
-      uVar11 = FUN_00530da0(*(u32 *)(puVar6 + 4));
-
-      uVar12 = FUN_00530da0(*(u32 *)(puVar6 + 6));
+      *(MtEvtVec3 *)(iVar7 + 0x3c) = *(MtEvtVec3 *)(puVar6 + 2);
+      *(MtEvtVec3 *)(iVar7 + 0x48) = *(MtEvtVec3 *)(puVar6 + 8);
+      uVar10 = FUN_00530da0_evt(((MtEvtVec3 *)(puVar6 + 2))->x);
+      uVar11 = FUN_00530da0_evt(((MtEvtVec3 *)(puVar6 + 2))->y);
+      uVar12 = FUN_00530da0_evt(((MtEvtVec3 *)(puVar6 + 2))->z);
 
       FUN_005225a8(0x6a0bd0,uVar10,uVar11,uVar12);
 
@@ -1544,35 +1521,8 @@ void FUN_0038f0f0(u32 param_1)
 
       iVar5 = (int)lVar8;
 
-      uVar18 = *(u32 *)(iVar5 + 0x104);
-
-      uVar16 = *(u32 *)(iVar5 + 0x108);
-
-      uVar17 = *(u32 *)(iVar5 + 0x10c);
-
-      iVar15 = (int)param_1;
-
-      *(u32 *)(iVar15 + 0x870) = *(u32 *)(iVar5 + 0x100);
-
-      *(u32 *)(iVar15 + 0x874) = uVar18;
-
-      *(u32 *)(iVar15 + 0x878) = uVar16;
-
-      *(u32 *)(iVar15 + 0x87c) = uVar17;
-
-      uVar18 = *(u32 *)(iVar5 + 0x114);
-
-      uVar16 = *(u32 *)(iVar5 + 0x118);
-
-      uVar17 = *(u32 *)(iVar5 + 0x11c);
-
-      *(u32 *)(iVar15 + 0x880) = *(u32 *)(iVar5 + 0x110);
-
-      *(u32 *)(iVar15 + 0x884) = uVar18;
-
-      *(u32 *)(iVar15 + 0x888) = uVar16;
-
-      *(u32 *)(iVar15 + 0x88c) = uVar17;
+      *(MtEvtVec4 *)(iVar15 + 0x870) = *(MtEvtVec4 *)(iVar5 + 0x100);
+      *(MtEvtVec4 *)(iVar15 + 0x880) = *(MtEvtVec4 *)(iVar5 + 0x110);
 
       puVar14 = (u32 *)(iVar5 + 0x120);
 
@@ -1967,17 +1917,11 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
   int iVar16;
 
-  u64 uStack_30;
-
-  u32 uStack_28;
+  MtEvtVec3 uStack_30;
 
   u8 auStack_20 [16];
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  MtEvtVec3 uStack_10;
 
   
 
@@ -1999,9 +1943,7 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
   }
 
-  uStack_30 = DAT_006a0bf8;
-
-  uStack_28 = DAT_006a0c00;
+  uStack_30 = DAT_006a0bf8_vec_abs[0];
 
   lVar11 = FUN_003b5d00();
 
@@ -2071,17 +2013,9 @@ void FUN_0038fa10(int param_1,u32 param_2)
 
       *(u32 *)(iVar9 + 0x14) = 0;
 
-      *(u32 *)(iVar9 + 0x3c) = uStack_10;
+      *(MtEvtVec3 *)(iVar9 + 0x3c) = uStack_10;
 
-      *(u32 *)(iVar9 + 0x40) = uStack_c;
-
-      *(u32 *)(iVar9 + 0x44) = uStack_8;
-
-      *(u32 *)(iVar9 + 0x48) = (u32)uStack_30;
-
-      *(u32 *)(iVar9 + 0x4c) = ((u32 *)&uStack_30)[1];
-
-      *(u32 *)(iVar9 + 0x50) = uStack_28;
+      *(MtEvtVec3 *)(iVar9 + 0x48) = uStack_30;
 
       for (iVar9 = 0; iVar9 < *(int *)(param_1 + 0xb0); iVar9 = iVar9 + 1) {
 

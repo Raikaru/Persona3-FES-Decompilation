@@ -3989,11 +3989,11 @@ float FUN_003bc0e0(char *param_1)
 
   float fVar6;
 
-  u32 auStack_50 [4];
+  float auStack_50 [4];
 
-  u32 auStack_40 [4];
+  float auStack_40 [4];
 
-  u32 auStack_30 [4];
+  float auStack_30 [4];
 
   u8 auStack_20 [16];
 
@@ -4009,11 +4009,11 @@ float FUN_003bc0e0(char *param_1)
 
       iVar1 = iVar3 * 0xc + lVar2 * 0x24;
 
-      auStack_30[iVar3] = *(u32 *)(param_1 + iVar1 + 4);
+      auStack_30[iVar3] = *(float *)(param_1 + iVar1 + 4);
 
-      auStack_40[iVar3] = *(u32 *)(param_1 + iVar1 + 8);
+      auStack_40[iVar3] = *(float *)(param_1 + iVar1 + 8);
 
-      auStack_50[iVar3] = *(u32 *)(param_1 + iVar1 + 0xc);
+      auStack_50[iVar3] = *(float *)(param_1 + iVar1 + 0xc);
 
     }
 
@@ -4326,11 +4326,11 @@ float FUN_003bc730(char *param_1,int param_2)
 
   float fVar6;
 
-  u32 auStack_60 [4];
+  float auStack_60 [4];
 
-  u32 auStack_50 [4];
+  float auStack_50 [4];
 
-  u32 auStack_40 [6];
+  float auStack_40 [6];
 
   float fStack_28;
 
@@ -4372,11 +4372,11 @@ float FUN_003bc730(char *param_1,int param_2)
 
       iVar1 = iVar2 + (int)lVar4 * 3;
 
-      auStack_40[iVar2] = *(u32 *)(param_1 + iVar1 * 0xc + 4);
+      auStack_40[iVar2] = *(float *)(param_1 + iVar1 * 0xc + 4);
 
-      auStack_50[iVar2] = *(u32 *)(param_1 + iVar1 * 0xc + 8);
+      auStack_50[iVar2] = *(float *)(param_1 + iVar1 * 0xc + 8);
 
-      auStack_60[iVar2] = *(u32 *)(param_1 + iVar1 * 0xc + 0xc);
+      auStack_60[iVar2] = *(float *)(param_1 + iVar1 * 0xc + 0xc);
 
     }
 

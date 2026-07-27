@@ -901,9 +901,8 @@ void FUN_003c8fa0(void)
 // FUN_003C9000 NONMATCHING
 
 
-void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_5,
-
-                 char param_6,int param_7,u32 param_8)
+void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
+                  int param_5, u32 param_6, int param_7, u32 param_8)
 
 
 
@@ -913,7 +912,7 @@ void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_
 
   int iVar2;
 
-  u16 uVar3;
+  u32 uVar3;
 
   
 
@@ -929,40 +928,17 @@ void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_
 
     *(float *)(iVar2 + 0x14) = (float)param_5;
 
-    *(u32 *)(iVar2 + 0x2c) = param_1;
+    *(f32 *)(iVar2 + 0x2c) = param_1;
+    *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    *(char *)(iVar2 + 0x19) = -1 - param_6;
-
-    param_2 = param_2 * 4096.0f;
-
-    if (param_2 < 2.1474836e+09f) {
-
-      uVar3 = (u16)(int)param_2;
-
-    }
-
-    else {
-
-      uVar3 = (u16)(int)(param_2 - 2.1474836e+09f);
-
-    }
-
+    param_2 = 4096.0f * param_2;
+    uVar3 = (u32)param_2;
+    uVar3 &= 0xffff;
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    param_3 = param_3 * 4096.0f;
-
-    if (param_3 < 2.1474836e+09f) {
-
-      uVar3 = (u16)(int)param_3;
-
-    }
-
-    else {
-
-      uVar3 = (u16)(int)(param_3 - 2.1474836e+09f);
-
-    }
-
+    param_3 = 4096.0f * param_3;
+    uVar3 = (u32)param_3;
+    uVar3 &= 0xffff;
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 
     FUN_001127d0(uVar1,1);
