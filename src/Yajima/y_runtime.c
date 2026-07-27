@@ -20048,7 +20048,7 @@ float FUN_0045b4e0(int param_1)
         }
         else {
           iVar3 = (int)*(char *)(*(int *)(iVar3 + 0x84) * 0x20 + iVar3 + -3);
-          if ((long)iVar4 < (long)(iVar2 - iVar3)) {
+          if (iVar4 < iVar2 - iVar3) {
             iVar4 = iVar4 - cVar1;
             iVar3 = (iVar2 - cVar1) - iVar3;
             if ((iVar4 < 1) || (iVar3 < 1)) {
