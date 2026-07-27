@@ -12894,9 +12894,7 @@ u64 FUN_0044ad20(u64 param_1,char param_2)
   int *piVar4;
   int iVar5;
   u8 *puVar6;
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
+  YVec3f vec;
   
   lVar2 = (*DAT_00960184)(1,0x1098,0x40000);
   if (lVar2 != 0) {
@@ -12935,10 +12933,8 @@ u64 FUN_0044ad20(u64 param_1,char param_2)
       puVar6[0x40] = 1;
     }
     if (*piVar4 == 4) {
-      FUN_00452f70(&uStack_10,uVar3);
-      *(u32 *)(puVar6 + 0x28) = uStack_10;
-      *(u32 *)(puVar6 + 0x2c) = uStack_c;
-      *(u32 *)(puVar6 + 0x30) = uStack_8;
+      FUN_00452f70((u32 *)&vec,uVar3);
+      *(YVec3f *)(puVar6 + 0x28) = vec;
     }
   }
   else {
