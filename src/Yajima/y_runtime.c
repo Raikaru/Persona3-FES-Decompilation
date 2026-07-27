@@ -142,8 +142,8 @@ extern u32 DAT_007bc730;
 extern u32 DAT_007caf94;
 extern float DAT_007cafa8;
 extern float DAT_007cafc0;
-extern u32 DAT_007cb134;
-extern u32 DAT_007cb138;
+extern float DAT_007cb134;
+extern float DAT_007cb138;
 extern u32 DAT_007cdb10;
 extern u32 DAT_007ce290;
 extern u32 DAT_007ce6ac;
@@ -1816,8 +1816,8 @@ extern u32 DAT_007bc730;
 extern u32 DAT_007caf94;
 extern float DAT_007cafa8;
 extern float DAT_007cafc0;
-extern u32 DAT_007cb134;
-extern u32 DAT_007cb138;
+extern float DAT_007cb134;
+extern float DAT_007cb138;
 extern u32 DAT_007cdb10;
 extern u32 DAT_007ce290;
 extern u32 DAT_007ce6ac;
@@ -6764,11 +6764,11 @@ void FUN_00437e80(u32 *param_1,char param_2)
   fStack_28 = 0.0f;
   uStack_30 = 0;
   iVar2 = (int)param_2;
-  for (uVar4 = 0; (int)uVar4 < 0x10; uVar4 = uVar4 + 1) {
-    for (uVar3 = 0; (int)uVar3 < 0x10; uVar3 = uVar3 + 1) {
+  for (uVar3 = 0; (int)uVar3 < 0x10; uVar3 = uVar3 + 1) {
+    for (uVar4 = 0; (int)uVar4 < 0x10; uVar4 = uVar4 + 1) {
       iVar1 = FUN_001b9120_u32();
-      if (*(char *)(uVar4 * 0x10 + iVar1 + uVar3 * 0x100 + 0x4a) == '\b') {
-        FUN_001bf220(&fStack_10,uVar4 & 0xffff,uVar3 & 0xffff);
+      if (*(char *)(uVar3 * 0x10 + iVar1 + uVar4 * 0x100 + 0x4a) == '\b') {
+        FUN_001bf220(&fStack_10,uVar3 & 0xffff,uVar4 & 0xffff);
         iVar1 = FUN_00318b60(((u8 *)DAT_008717f0)[iVar2 * 0x70]);
         fStack_20 = fStack_10 - *(float *)(iVar1 + 0x30);
         iVar1 = FUN_00318b60(((u8 *)DAT_008717f0)[iVar2 * 0x70]);

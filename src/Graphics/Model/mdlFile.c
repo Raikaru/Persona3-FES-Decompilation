@@ -12,6 +12,7 @@ extern f32 sqrtf(f32 value);
 void func_0031c820(u16 type, u16 id, char* dst);
 u32 func_0031e420(u16 type, u16 id);
 extern const char D_0069BA08[];
+extern unsigned char DAT_006a6b20[];
 
 
 // FUN_0031d4f0
@@ -39109,25 +39110,27 @@ void FUN_00342550(int param_1,int param_2)
 
 
 
-// FUN_00342890 NONMATCHING
+// FUN_00342890
 
 u32 FUN_00342890(u32 *param_1,int param_2)
 {
   int *piVar4;
+  int *piVarTmp;
   int iVar1;
   u32 uVar2;
   u32 uVar3;
 
-  uVar2 = (*DAT_00960178_abs)(param_1[0xe] * 0x30 + 0xc,0x40000);
+  uVar2 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(param_1[0xe] * 0x30 + 0xc,0x40000));
   piVar4 = (int *)uVar2;
-  *piVar4 = (int)(piVar4 + 3);
-  piVar4[2] = (int)piVar4;
+  *piVarTmp = (int)(piVar4 + 3);
+  piVarTmp[2] = (int)piVar4;
 
   if (param_1[0x23] < 3) {
     param_1[0x23] = 3;
   }
 
-  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],0x69bcf0,4,0x4c);
+  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],
+                       (int)((const char *)DAT_006a6b20 - 0x248),4,0x4c);
   piVar4[1] = iVar1;
 
   if (param_2 == 0) {
@@ -40184,26 +40187,27 @@ void FUN_00343860(int param_1,int param_2)
 
 
 
-// FUN_00343B60 NONMATCHING
+// FUN_00343B60
 
 u32 FUN_00343b60(u32 *param_1,int param_2)
 {
+  int *piVar4;
+  int *piVarTmp;
   int iVar1;
   u32 uVar2;
   u32 uVar3;
-  int *piVar4;
 
-  uVar2 = (*DAT_00960178_abs)(param_1[0xe] * 0x30 + 0xc,0x40000);
-
+  uVar2 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(param_1[0xe] * 0x30 + 0xc,0x40000));
   piVar4 = (int *)uVar2;
-  *piVar4 = (int)(piVar4 + 3);
-  piVar4[2] = (int)piVar4;
+  *piVarTmp = (int)(piVar4 + 3);
+  piVarTmp[2] = (int)piVar4;
 
   if (param_1[0x23] < 3) {
     param_1[0x23] = 3;
   }
 
-  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],0x69bcf0,4,0x4c);
+  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],
+                       (int)((const char *)DAT_006a6b20 - 0x248),4,0x4c);
   piVar4[1] = iVar1;
 
   if (param_2 == 0) {
@@ -51757,7 +51761,7 @@ void FUN_0034f6b0(int param_1)
 
   
 
-  FUN_00332210((u64)(*(u32 *)(param_1 + 0x5c)));
+  FUN_00332210(*(u32 *)(param_1 + 0x5c));
 
   iVar4 = *(int *)(param_1 + 0x5c);
 
