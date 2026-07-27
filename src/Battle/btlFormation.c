@@ -7470,7 +7470,7 @@ void func_002c3f00(int param_1)
     if ((((param_1 != iVar1) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)) &&
         ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
        ((*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == *(char *)(*(int *)(iVar1 + 0x30) + 0xa2) &&
-        (lVar2 = func_00300580_u32(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0x80000), lVar2 == 0))
+        (lVar2 = func_00300580(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0x80000), lVar2 == 0))
        )) {
       aiStack_30[uVar3] = iVar1;
       uVar3 = uVar3 + 1 & 0xffff;

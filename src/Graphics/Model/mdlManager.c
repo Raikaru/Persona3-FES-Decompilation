@@ -9236,7 +9236,7 @@ void func_0031c000(char* param_1,u16 param_2)
 
   u32 uVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   u64 uVar5;
 
