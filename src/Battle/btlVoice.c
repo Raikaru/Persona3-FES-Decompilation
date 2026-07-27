@@ -7599,7 +7599,7 @@ void func_002e9950(void)
 void func_002e9ac0(void)
 
 {
-  short sVar1;
+  u16 sVar1;
   int iVar2;
   u32 uVar3;
   u32 uVar4;
@@ -10111,19 +10111,17 @@ void func_002ef000(u64 *param_1)
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfdffffff;
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x80000;
   iVar1 = *(int *)(param_1 + 6);
-  switch (*(u16 *)(iVar1 + 0xa4)) {
-  case 0x10c:
+  if (*(u16 *)(iVar1 + 0xa4) == 0x10c) {
     unaff_s0_lo = 3;
     uVar4 = func_002e2cb0(0x312);
     *(u16 *)((int)uVar4 + 0x48) = 3;
     FUN_0027ed20_voice(uVar4,1);
-    break;
-  case 0x10b:
+  }
+  else if (*(u16 *)(iVar1 + 0xa4) == 0x10b) {
     unaff_s0_lo = 2;
     uVar4 = func_002e2cb0(0x2ff);
     *(u16 *)((int)uVar4 + 0x48) = 3;
     FUN_0027ed20_voice(uVar4,1);
-    break;
   }
   uVar4 = FUN_002b8f90(0);
   uVar5 = FUN_002f87e0(unaff_s0_lo);
