@@ -49962,7 +49962,7 @@ void FUN_0034d990(int param_1,u32 param_2,u32 param_3)
 
   }
 
-  *(int *)(param_1 + 0x54) = (int)lVar4;
+  *(int *)(param_1 + 0x54) = lVar4;
 
   FUN_004916d0(lVar4,0x34d130,0);
 
