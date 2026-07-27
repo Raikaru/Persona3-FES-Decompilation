@@ -434,8 +434,8 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     s32 index;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
-    bestDistance = 3.402823466e+38f;
     K_FldFrame_CtlCopyPos(&playerPos, work->playerResrc->collisCtlTask);
+    bestDistance = 3.402823466e+38f;
     bestIndex = 0;
     for (index = 0; index < 9; index++)
     {

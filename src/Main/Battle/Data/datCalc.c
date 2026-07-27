@@ -123,11 +123,10 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
 // FUN_002ffdf0 NONMATCHING
 u16 datCalcGetMaxHp(DatUnit* unit)
 {
+    u16 pcId;
     s32 hp;
     s32 bonus;
     u16 baseHp;
-    u16 pcId;
-
     pcId = unit->id;
     bonus = 0;
 

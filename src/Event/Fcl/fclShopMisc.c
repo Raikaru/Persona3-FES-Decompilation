@@ -16106,7 +16106,7 @@ u8 FUN_00403410(short param_1)
     unaff_s2 = (long)sVar2;
     iVar4 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 4) << 0x34) >> 0x3a,
                          ((long)*(char *)(iVar3 + 4) << 0x3a) >> 0x3a);
-    unaff_s1 = (long)((int)(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x34) + iVar4);
+    unaff_s1 = (int)(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x34) + iVar4;
     break;
   }
   if (unaff_s2 == unaff_s1) {
