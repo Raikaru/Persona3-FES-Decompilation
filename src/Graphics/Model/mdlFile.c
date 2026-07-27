@@ -376,7 +376,7 @@ void FUN_003243f0(int param_1,u64 param_2);
 extern void FUN_00324510_i(int param_1,int param_2);
 void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
 void FUN_003244c0(int param_1);
-void FUN_00324510(int param_1,int param_2);
+void FUN_00324510(int param_1,u64 param_2);
 int FUN_003245b0(int param_1);
  #pragma alias FUN_003245b0_passthru FUN_003245b0
  extern int FUN_003245b0_passthru(void);
@@ -4223,7 +4223,7 @@ void FUN_00320640(u32 param_1,u32 param_2,int *param_3)
 
   int *piVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -8009,13 +8009,13 @@ void FUN_003244c0(int param_1)
 // FUN_00324510 NONMATCHING
 
 
-void FUN_00324510(int param_1,int param_2)
+void FUN_00324510(int param_1,u64 param_2)
 
 
 
 {
 
-  u32 uVar1;
+  u64 uVar1;
 
   u32 uVar2;
 
@@ -33433,17 +33433,15 @@ void FUN_0033cc10(int param_1,int param_2)
 
 u32 FUN_0033cd20(int param_1,int param_2)
 {
-  u32 block;
-  u32 uVar3;
+  int *piVarTmp;
   int *piVar1;
+  u32 uVar3;
   int iVar2;
   u32 uVar4;
 
-  uVar3 = (u32)(block = (*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x18 + 0x10,0x40000));
-
-  *(u32 *)block = block + 0x10;
-  *(u32 *)(block + 8) = block;
-  uVar3 = block;
+  uVar3 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x18 + 0x10,0x40000));
+  *(u32 *)piVarTmp = uVar3 + 0x10;
+  *(u32 *)((u8 *)piVarTmp + 8) = uVar3;
   piVar1 = (int *)uVar3;
 
   iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),2,4,DAT_0069bdc8_abs,0x4c);
@@ -33465,7 +33463,7 @@ u32 FUN_0033cd20(int param_1,int param_2)
 
 
 
-// FUN_0033CE10 NONMATCHING
+// FUN_0033CE10
 
 
 u32 FUN_0033ce10(int param_1)
@@ -33481,7 +33479,7 @@ u32 FUN_0033ce10(int param_1)
   *piVar2 = (int)(piVar2 + 4);
   piVar2[2] = (int)piVar2;
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
-  piVar2[1] = iVar3;
+  *(int *)(uVar4 + 4) = iVar3;
   FUN_0033cc10(uVar4,iVar1);
   return uVar4;
 
@@ -34264,19 +34262,21 @@ void FUN_0033d980(int param_1,int param_2)
 
 
 
-// FUN_0033DA90 NONMATCHING
+// FUN_0033DA90
 
 
 u32 FUN_0033da90(int param_1,int param_2)
 {
+  int *piVarTmp;
   int *piVar1;
   int iVar2;
   u32 uVar3;
   u32 uVar4;
 
-  uVar3 = (u32)(piVar1 = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x28 + 0x10,0x40000));
-  *piVar1 = (int)(piVar1 + 4);
-  piVar1[2] = (int)piVar1;
+  uVar3 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x28 + 0x10,0x40000));
+  *piVarTmp = (int)(piVarTmp + 4);
+  piVarTmp[2] = (int)piVarTmp;
+  piVar1 = (int *)uVar3;
 
   iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),2,4,DAT_0069bdc8_abs,0x4c);
   piVar1[1] = iVar2;
@@ -34294,7 +34294,7 @@ u32 FUN_0033da90(int param_1,int param_2)
 
 
 
-// FUN_0033DB80 NONMATCHING
+// FUN_0033DB80
 
 
 u32 FUN_0033db80(int param_1)
@@ -34310,7 +34310,7 @@ u32 FUN_0033db80(int param_1)
   *piVar2 = (int)(piVar2 + 4);
   piVar2[2] = (int)piVar2;
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
-  piVar2[1] = iVar3;
+  *(int *)(uVar4 + 4) = iVar3;
   FUN_0033d980(uVar4,iVar1);
   return uVar4;
 }
@@ -37106,19 +37106,21 @@ void FUN_003403b0(int param_1,int param_2)
 
 
 
-// FUN_00340600 NONMATCHING
+// FUN_00340600
 
 
 u32 FUN_00340600(int param_1,int param_2)
 {
+  int *piVarTmp;
   int *piVar1;
   int iVar2;
   u32 uVar3;
   u32 uVar4;
 
-  uVar3 = (u32)(piVar1 = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x28 + 0x10,0x40000));
-  *piVar1 = (int)(piVar1 + 4);
-  piVar1[2] = (int)piVar1;
+  uVar3 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x28 + 0x10,0x40000));
+  *piVarTmp = (int)(piVarTmp + 4);
+  piVarTmp[2] = (int)piVarTmp;
+  piVar1 = (int *)uVar3;
 
   iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),6,8,DAT_0069c730_abs,0x4c);
   piVar1[1] = iVar2;
@@ -37136,7 +37138,7 @@ u32 FUN_00340600(int param_1,int param_2)
 
 
 
-// FUN_003406F0 NONMATCHING
+// FUN_003406F0
 
 
 u32 FUN_003406f0(int param_1)
@@ -37152,7 +37154,7 @@ u32 FUN_003406f0(int param_1)
   *piVar2 = (int)(piVar2 + 4);
   piVar2[2] = (int)piVar2;
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
-  piVar2[1] = iVar3;
+  *(int *)(uVar4 + 4) = iVar3;
   FUN_003403b0(uVar4,iVar1);
   return uVar4;
 }
