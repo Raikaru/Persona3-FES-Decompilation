@@ -424,7 +424,7 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
         wrappedDelta -= 360.0f;
     }
 
-    if (fabs((f64)directDelta) < fabs((f64)wrappedDelta))
+    if (fabsf(directDelta) < fabsf(wrappedDelta))
     {
         work->angleDelta = directDelta;
     }
@@ -504,7 +504,7 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
         wrappedDelta -= 360.0f;
     }
 
-    if (fabs((f64)directDelta) < fabs((f64)wrappedDelta))
+    if (fabsf(directDelta) < fabsf(wrappedDelta))
     {
         work->angleDelta = directDelta;
     }

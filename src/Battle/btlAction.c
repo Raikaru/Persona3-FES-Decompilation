@@ -2140,7 +2140,16 @@ void btlActionUpdateStateReady(BtlAction* action)
             else btlActionSetState(action, BTLACTION_STATE_ERROR);
             break;
         case 5: btlActionSetState(action, BTLACTION_STATE_PERSONA); break;
-        case 6: btlActionSetState(action, action->unit->genus == UNIT_GENUS_PC && action->unit->charId != 1 ? BTLACTION_STATE_ESCAPEMES : BTLACTION_STATE_ESCAPE); break;
+        case 6:
+            if (action->unit->genus == UNIT_GENUS_PC && action->unit->charId != 1)
+            {
+                btlActionSetState(action, BTLACTION_STATE_ESCAPEMES);
+            }
+            else
+            {
+                btlActionSetState(action, BTLACTION_STATE_ESCAPE);
+            }
+            break;
         case 7: case 8: case 11: btlActionSetState(action, BTLACTION_STATE_WAIT); break;
         case 10: btlActionSetState(action, BTLACTION_STATE_ANALYZE); break;
         case 12: btlActionSetState(action, BTLACTION_STATE_ESCAPE); break;

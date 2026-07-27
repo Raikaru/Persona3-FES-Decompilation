@@ -6,6 +6,10 @@ typedef u8 bool;
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 extern u32 FUN_00530da0(float);
+#pragma alias FUN_00394040_evt_misc FUN_00394040
+extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,long param_4);
+#pragma alias FUN_00394070_evt_misc FUN_00394070
+extern void FUN_00394070_evt_misc(f32 param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
 #pragma alias FUN_001050e0_typed FUN_001050e0
 extern void FUN_001050e0_typed(u64 param_1,float param_2,u32 param_3,u8 *param_4);
 extern void FUN_00523ac8(u8 *,const char *,u32);
@@ -5862,15 +5866,13 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
       else {
 
-        FUN_00394070(fVar10,iVar6,iVar1,*(int *)(puStack_8 + 0x24),param_4);
+        FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_8 + 0x24),param_4);
 
-        uVar8 = FUN_00394040(fVar10,uVar13,uVar11,iVar6);
+        *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,*(f32 *)(puStack_4 + 8),
+                                                *(f32 *)(puStack_4 + 10),iVar6);
 
-        *param_5 = uVar8;
-
-        uVar8 = FUN_00394040(fVar10,uVar12,uVar9,iVar6);
-
-        *param_6 = uVar8;
+        *(f32 *)param_6 = FUN_00394040_evt_misc(fVar10,*(f32 *)(puStack_8 + 8),
+                                                *(f32 *)(puStack_8 + 10),iVar6);
 
       }
 

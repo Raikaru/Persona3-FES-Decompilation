@@ -32,6 +32,7 @@ extern float fGpffff830c;
 extern float fGpffff8224;
 extern f32 cosf(f32);
 extern f32 sinf(f32);
+extern void FUN_0040e3f0(f32, f32, f32, f32, s32, s32, u8, s32, s32, s32, s32);
 extern int iGpffffb730;
 extern int iGpffffb7f4;
 extern int iGpffffb800;
@@ -5149,23 +5150,23 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
   if (*(int *)(param_2 + 0x10) == 0) {
 
-    fVar9 = fGpffff830c + ((float)(0xff - (short)uVar5) * 0.5) / 255.0;
+    fVar9 = fGpffff830c + ((float)(0xff - (short)uVar5) * 0.5f) / 255.0f;
 
     iVar6 = *(short *)(param_3 + 0x20) + -0x5a;
 
     if (*(int *)(param_3 + 0x10) == 6) {
 
-      fVar10 = 36.0 - fVar9 * 68.0;
+      fVar10 = 36.0f - fVar9 * 68.0f;
 
-      fVar13 = -2.0 - fVar9;
+      fVar13 = -2.0f - fVar9;
 
     }
 
     else {
 
-      fVar10 = fVar9 * -34.0;
+      fVar10 = fVar9 * -34.0f;
 
-      fVar13 = 42.0 - fVar9 * 41.0;
+      fVar13 = 42.0f - fVar9 * 41.0f;
 
     }
 
@@ -6101,7 +6102,7 @@ u32 FUN_003d4de0(s32 param_1)
     *dst = temp;
     dst = dst + 1;
   } while (0 < iVar5);
-  *(u32 *)dst = *(u32 *)src;
+  *(float *)dst = *(float *)src;
   uVar8 = FUN_003c5240(DAT_007ce684,4,auStack_30,0,2);
   if (param_1 != 0) {
     *(int *)((int)param_1 + 0x20) = (int)uVar8;

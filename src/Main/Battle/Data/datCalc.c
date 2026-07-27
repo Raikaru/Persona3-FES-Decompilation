@@ -6482,8 +6482,8 @@ short FUN_0030bde0(u16 *param_1,s32 param_2)
     lVar6 = FUN_0016f190(0xbd8);
     if (lVar6 == 1) {
       fVar2 = fGpffff8278;
-      if (2.1474836e+09 <= fGpffff8278) {
-        fVar2 = fGpffff8278 - 2.1474836e+09;
+      if (2.1474836e+09f <= fGpffff8278) {
+        fVar2 = fGpffff8278 - 2.1474836e+09f;
       }
       uVar10 = (int)fVar2 & 0xffff;
       if (uVar10 == 0) {
