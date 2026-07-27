@@ -1497,9 +1497,9 @@ void func_001af8e0(KwlnTask* task)
 // FUN_001af930 NONMATCHING
 KwlnTask* func_001af930(KwlnTask* parent, void* resource)
 {
+    u32 animation;
     FldFrameMoveWork* work;
     KwlnTask* task;
-    u32 animation;
 
     work = (FldFrameMoveWork*)RwCalloc(1, 0x5a0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -1518,9 +1518,12 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
         animation = *(u16*)((u8*)*(Model**)((u8*)resource + 0x128) + 0xd6);
         if (animation >= 0x100)
         {
-            animation >>= 8;
+            work->animation = animation >> 8;
         }
-        work->animation = animation;
+        else
+        {
+            work->animation = animation;
+        }
         work->turnMode = 0;
     }
     else

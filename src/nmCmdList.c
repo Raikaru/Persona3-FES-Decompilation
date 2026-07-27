@@ -1,4 +1,11 @@
 #include "temporary.h"
+#ifndef SQRT
+#define SQRT(x) sqrtf(x)
+#endif
+#pragma alias FUN_0052e878_f32 FUN_0052e878
+extern f32 FUN_0052e878_f32(f32 value);
+#pragma alias FUN_0052e9e8_f32 FUN_0052e9e8
+extern f32 FUN_0052e9e8_f32(void);
 typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
@@ -1455,13 +1462,13 @@ void FUN_003c7070(float param_1,float *param_2,float *param_3,float *param_4)
 
   else {
 
-    fVar3 = (float)FUN_0052e9e8();
+    fVar3 = (float)FUN_0052e9e8_f32();
 
-    fVar2 = (float)FUN_0052e878(fVar3 * (1.0f - param_1));
+    fVar2 = (float)FUN_0052e878_f32(fVar3 * (1.0f - param_1));
 
-    fVar1 = (float)FUN_0052e878(fVar3 * param_1);
+    fVar1 = (float)FUN_0052e878_f32(fVar3 * param_1);
 
-    fVar3 = (float)FUN_0052e878(fVar3);
+    fVar3 = (float)FUN_0052e878_f32(fVar3);
 
     *param_2 = (*param_3 * fVar2 + *param_4 * fVar1) / fVar3;
 

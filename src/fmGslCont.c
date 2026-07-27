@@ -877,7 +877,7 @@ void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
 
     *(float *)(&DAT_0095aeec + iVar3) = (float)piVar4[3];
 
-    *(float *)(&DAT_0095aed8 + iVar3) = 1.0 / fVar6;
+    *(float *)(&DAT_0095aed8 + iVar3) = 1.0f / fVar6;
 
     param_3 = param_3 + 1;
 

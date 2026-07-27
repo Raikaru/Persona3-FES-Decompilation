@@ -82,7 +82,7 @@ extern int FUN_003b0c20();
 extern int FUN_003b0ce0();
 extern int thunk_FUN_003b0e04();
 #pragma alias thunk_FUN_003b0e54_f32 thunk_FUN_003b0e54
-extern void thunk_FUN_003b0e54_f32(u64 param_1, u32 param_2);
+extern void thunk_FUN_003b0e54_f32(u64 param_1, f32 param_2);
 extern s32 FUN_0035ed20(s32 index);
 extern char D_006A1A80[];
 extern char D_006A1AC0[];
@@ -166,10 +166,10 @@ u32 FUN_003a51a0(int param_1);
 void FUN_003a5210(int param_1,u64 param_2,u8 param_3,u8 param_4,  s16 param_5);
 u64  FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
                   s32 param_5,s32 param_6,s32 param_7,s32 param_8);
-u64  FUN_003a53b0(int param_1,int param_2,u32 param_3,int param_4,int param_5,  u32 param_6,int param_7,int param_8,int param_9);
+u64  FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,  u32 param_6,int param_7,int param_8,int param_9);
 #pragma alias FUN_003a53b0_8 FUN_003a53b0
 #pragma alias FUN_003a53b0_typed FUN_003a53b0
-extern u64 FUN_003a53b0_typed(int param_1,int param_2,u32 param_3,int param_4,int param_5,
+extern u64 FUN_003a53b0_typed(int param_1,int param_2,f32 param_3,int param_4,int param_5,
                               u32 param_6,int param_7,int param_8,int param_9);
 extern u64 FUN_003a53b0_8(int param_1,int param_2,u64 param_3,int param_4,int param_5,
                           u32 param_6,int param_7,int param_8);
@@ -2946,7 +2946,7 @@ FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 // FUN_003A53B0 NONMATCHING
 u64
 
-FUN_003a53b0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
+FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,
 
             u32 param_6,int param_7,int param_8,int param_9)
 
@@ -3116,13 +3116,13 @@ FUN_003a56f0(u32 param_1,u64 param_2,f32 param_3,u32 param_4,
 
   FUN_003a5fd0(iVar1 + 0xd4);
 
-  uVar2 = FUN_003a53b0(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
+  uVar2 = FUN_003a53b0_typed(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
 
   if (param_11 != 0) {
 
     if (*(int *)((int)uVar2 + 0x24) == 0) {
 
-      uVar3 = FUN_003a53b0(param_1,param_2 + 0x19,param_3,param_4,param_5,param_6,param_7,
+      uVar3 = FUN_003a53b0_typed(param_1,param_2 + 0x19,param_3,param_4,param_5,param_6,param_7,
 
                            param_10);
 
@@ -3130,7 +3130,7 @@ FUN_003a56f0(u32 param_1,u64 param_2,f32 param_3,u32 param_4,
 
     else {
 
-      uVar3 = FUN_003a53b0(param_1,param_2 + 0x32,param_3,param_4,param_5,param_6,param_7,
+      uVar3 = FUN_003a53b0_typed(param_1,param_2 + 0x32,param_3,param_4,param_5,param_6,param_7,
 
                            param_10);
 

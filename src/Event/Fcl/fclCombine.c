@@ -6080,7 +6080,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 }
 
 
-// FUN_003D4DE0 NONMATCHING
+// FUN_003D4DE0
 u32 FUN_003d4de0(s32 param_1)
 {
   typedef unsigned int FusionU128 __attribute__((mode(TI)));
@@ -6106,9 +6106,9 @@ u32 FUN_003d4de0(s32 param_1)
   uVar8 = FUN_003c5240(DAT_007ce684,4,auStack_30,0,2);
   if (param_1 != 0) {
     *(int *)((int)param_1 + 0x20) = (int)uVar8;
-    uVar2 = FUN_003c5460(DAT_007ce684);
-    FUN_003d06d0(uVar2,7,0);
   }
+  uVar2 = FUN_003c5460(DAT_007ce684);
+  FUN_003d06d0(uVar2,7,0);
   return uVar8;
 }
 
