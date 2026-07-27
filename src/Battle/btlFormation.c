@@ -7855,7 +7855,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
     if ((((uVar3 != 0) && (uVar3 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + uVar3 * 0x2c + 8), param_5 != 0 || (cVar1 == '\x01'))))
        && ((param_5 != 1 || (cVar1 == '\0')))) {
-      iVar4 = func_00303130(uVar3,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
+      iVar4 = func_00303130_s32(uVar3,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
                            *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,1,1);
       iVar4 = (uVar2 & 0xffff) + iVar4;
       if ((iVar4 < 1) || (iVar8 < 1)) {

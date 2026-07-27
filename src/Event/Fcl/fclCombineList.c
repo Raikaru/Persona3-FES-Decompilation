@@ -3240,7 +3240,7 @@ void FUN_003e0780(void)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   
 
