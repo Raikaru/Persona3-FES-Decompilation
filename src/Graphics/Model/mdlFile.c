@@ -10283,7 +10283,7 @@ u64 FUN_00326510(u32 param_1)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   u32 *puVar5;
 

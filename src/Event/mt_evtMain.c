@@ -545,7 +545,7 @@ u32 FUN_00386cd0(void);
 u32 FUN_00386e10(int param_1);
 u32 FUN_00386e30(int param_1);
 u32 FUN_0038a0b0(int param_1);
-u32 FUN_0038a4b0(u64 param_1,int param_2,u32 *param_3,u32 *param_4);
+u32 FUN_0038a4b0(u32 param_1,int param_2,u32 *param_3,u32 *param_4);
 u32 FUN_0038d6f0(long param_1);
 u32 FUN_0038d980(void);
 u32 FUN_0038e860(long param_1,u64 param_2);
