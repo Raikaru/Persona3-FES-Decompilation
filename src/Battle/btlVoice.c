@@ -7511,7 +7511,7 @@ int func_002e97e0(void)
   extern s32 FUN_0030b5a0();
   int iVar1;
   s32 lVar2;
-  u32 uVar3;
+  u64 uVar3;
   int iVar4;
   int iVar5;
   u32 auStack_20 [8];
@@ -7531,7 +7531,7 @@ LAB_002e9848:
                (lVar2 = FUN_0030b5a0(*(u32 *)(iVar1 + 0xa2c),0), lVar2 == 0)) {
               uVar3 = FUN_002d7e20(iVar4,iVar4,auStack_20,1,1);
               FUN_0027ed20(uVar3,1);
-              uVar3 = FUN_00284200(1.0f,iVar1,2,0,0);
+              uVar3 = FUN_00284200_u32_voice(1.0f,iVar1,2,0,0);
               FUN_0027ed20(uVar3,1);
             }
           }

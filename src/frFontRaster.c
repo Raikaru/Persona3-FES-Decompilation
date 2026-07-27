@@ -86,7 +86,9 @@ void FUN_003b35e0(int count)
   node = (int *)piGpffffb954[1];
   node[3] = (int)(node + 7);
   piGpffffb954[4] = (int)node;
-  for (i = 0, limit = count - 1; i < limit; i = i + 1) {
+  i = 0;
+  limit = count - 1;
+  for (; i < limit; i = i + 1) {
     node[6] = (int)(node[3] + 0x200);
     node = (int *)node[6];
     node[3] = (int)(node + 7);
