@@ -135,6 +135,8 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_5);
 void FUN_0042fd80(u32 *param_1,int param_2);
+#pragma alias FUN_004560d0_typed FUN_004560d0
+extern u64 FUN_004560d0_typed(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
 void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
