@@ -6445,7 +6445,7 @@ u16 * FUN_00366540(u64 param_1,int param_2,long param_3,long param_4)
 
   u16 *puVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   u32 uVar3;
 

@@ -4097,7 +4097,7 @@ static u32 func_002bdfb0(int state)
   s16 index;
   s16 firstEntry;
   s16 selectedEntry;
-  long selected;
+  int selected;
   u32 result;
 
   menu = (FormationMenuState*)state;
