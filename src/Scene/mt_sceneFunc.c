@@ -3838,11 +3838,11 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
   float fVar5;
 
-  u32 auStack_30 [4];
+  float auStack_30 [4];
 
-  u32 auStack_20 [4];
+  float auStack_20 [4];
 
-  u32 auStack_10 [4];
+  float auStack_10 [4];
 
   
 

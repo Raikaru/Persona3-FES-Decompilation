@@ -13549,7 +13549,7 @@ void FUN_00400740(u64 param_1,u64 param_2,u8 param_3,int param_4)
 // FUN_004008F0 NONMATCHING
 
 
-void FUN_004008f0(u64 param_1,u64 param_2,int param_3,int param_4)
+void FUN_004008f0(u64 param_1,u64 param_2,u8 param_3,int param_4)
 
 
 
