@@ -9628,7 +9628,7 @@ u64 FUN_003fbc00(u32 *param_1)
 
   int iVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   int iVar8;
 
