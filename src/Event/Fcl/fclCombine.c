@@ -20,8 +20,6 @@ extern u8 **PTR_FUN_006a46e0;
 extern u8 PTR_FUN_006a46e0_abs[];
 extern u8 **PTR_FUN_006a4870;
 extern u8 *PTR_FUN_006a48a0[];
-#pragma alias PTR_FUN_006a48a0_abs PTR_FUN_006a48a0
-extern u8 PTR_FUN_006a48a0_abs[];
 extern char gp0xffffaa60[];
 extern char gp0xffffaa68;
 extern char gp0xffffaa70[];
@@ -6228,7 +6226,7 @@ u32 FUN_003d4de0(s32 param_1)
 
   
 
-  ppuVar7 = (u8 **)PTR_FUN_006a48a0_abs;
+  ppuVar7 = PTR_FUN_006a48a0;
 
   puVar6 = auStack_30;
 

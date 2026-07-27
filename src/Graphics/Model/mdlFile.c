@@ -48252,7 +48252,7 @@ u64 FUN_0034bfc0(u32 param_1)
 
   __int128 auVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u32 uVar4;
 
@@ -52555,10 +52555,10 @@ void FUN_00350190(void)
 
   uVar2 = FUN_0035ed20_i(1);
 
-  *(volatile u32 *)DAT_00957bc0_abs = uVar1;
-  *(volatile u16 *)DAT_00957bc4_abs = uVar2;
-  *(volatile u32 *)DAT_00957bc8_abs = 0;
-  *(volatile u32 *)DAT_00957bcc_abs = 0;
+  *(u32 *)DAT_00957bc0_abs = uVar1;
+  *(u16 *)DAT_00957bc4_abs = uVar2;
+  *(u32 *)DAT_00957bc8_abs = 0;
+  *(u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   DAT_007ce578 = 1;
   return;

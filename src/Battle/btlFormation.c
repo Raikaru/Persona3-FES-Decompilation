@@ -7927,8 +7927,8 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   u32 uVar3 = 0;
   u32 uVar4 = 0;
   int iVar5 = 0;
-  long lVar6 = 0;
-  u16 uVar7 = 0;
+  int lVar6 = 0;
+  u32 uVar7 = 0;
   u32 uVar8 = 0;
   long lVar9 = 0;
   u16 *puVar10;
@@ -7939,7 +7939,7 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   lVar9 = 0xffffff;
   for (uVar7 = 0; uVar7 < (param_4 & 0xffff); uVar7 = uVar7 + 1 & 0xffff) {
     puVar10 = (u16 *)(param_3 + uVar7 * 2);
-    uVar4 = func_0030bc20(*puVar10);
+    uVar4 = func_0030bc20_u32(*puVar10);
     uVar4 = uVar4 & 0xffff;
     if ((((uVar4 != 0) && (uVar4 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + uVar4 * 0x2c + 8), param_5 != 0 || (cVar1 == '\x01'))))
