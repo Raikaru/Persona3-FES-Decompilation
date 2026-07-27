@@ -700,7 +700,7 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   case 6:
   case 7:
     uVar7 = FUN_001738d0(1, (uVar6 - 3) & 0xffff);
-    if ((uVar7 & 0xff) < uVar14) bVar4 = 1;
+    if ((s32)(uVar7 & 0xff) < (s32)uVar14) bVar4 = 1;
     break;
   case 8:
     uVar7 = FUN_0016c920(1);
