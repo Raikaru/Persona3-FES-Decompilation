@@ -141,7 +141,7 @@ u32 FUN_00289f40(BtlAction* action);
 u16 FUN_0028a0f0(BtlAction* action);
 u32 FUN_0028a200(BtlAction* action);
 u32 FUN_0028a3e0(BtlAction* action);
-void FUN_0028a540(BtlAction* action, u32 id, u16* out1, u16* out2, u16* out3, u16* out4);
+void FUN_0028a540(BtlAction* action, u64 id, u16* out1, u16* out2, u16* out3, u16* out4);
 
 
 void btlActionInitStateNon(BtlAction* action);

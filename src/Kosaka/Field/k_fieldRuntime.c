@@ -4312,6 +4312,20 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         count2 = *(u32*)((u8*)work->config + 0xc);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 0, color2);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color2 + 4);
+        for (index2 = 0; index2 < count2; index2++)
+        {
+            u8* sample;
+
+            sample = color2 + index2 * 12 + 8;
+            sample[0] = (u8)((sample[-8] + sample[-4] +
+                              sample[4] + sample[8]) >> 2);
+            sample[1] = (u8)((sample[-7] + sample[-3] +
+                              sample[5] + sample[9]) >> 2);
+            sample[2] = (u8)((sample[-6] + sample[-2] +
+                              sample[6] + sample[10]) >> 2);
+            sample[3] = (u8)((sample[-5] + sample[-1] +
+                              sample[7] + sample[11]) >> 2);
+        }
     }
     case 2:
         break;
