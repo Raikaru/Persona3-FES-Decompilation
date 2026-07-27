@@ -3024,6 +3024,8 @@ LAB_002f5d34:
 void func_002f5d80(u32 param_1)
 
 {
+  extern u32 FUN_0027f930();
+  extern s32 FUN_00287580();
   u32 bVar1;
   int iVar2;
   s32 lVar3;

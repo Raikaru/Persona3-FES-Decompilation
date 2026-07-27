@@ -6753,7 +6753,17 @@ void FUN_0030c930(void)
   float fVar3;
   
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
+    fVar2 = (float)FUN_0030fdf0(0xe,2);
+    fVar2 += (float)FUN_0030fdf0(0xe,2);
+    fVar3 = (float)FUN_0030fdf0(0x13,0);
+    fVar2 = sqrtf(((fVar3 * 30.0f) / (fVar2 * 5.0f)) *
+                   ((float)FUN_0030fdf0(0xd,1) / 5.0f)) * 10.0f;
+    fVar2 *= (float)FUN_0030fdf0(0xc,0);
+    fVar3 = (float)FUN_0030fdf0(0x17,0);
+    fVar2 = fVar2 * fVar3 + (float)FUN_0030fdf0(0x19,0) + 0.0f;
+  }
+  else {
     fVar2 = (float)FUN_0030fdf0(0x20,0);
     fVar3 = (float)FUN_0030fdf0(0xe,2);
     fVar2 = DAT_007cad74 * (fVar3 * 2.0f + (fVar2 / 2.0f) / 2.0f + 0.0f);
@@ -6764,16 +6774,6 @@ void FUN_0030c930(void)
     fVar2 = (fVar2 * fVar3 + (float)FUN_0030fdf0(0x19,0) + 0.0f) * DAT_007caf8c;
     fVar3 = (float)FUN_0030fdf0(0xc,0);
     fVar2 = (fVar2 - 10.0f) * fVar3;
-  }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0xe,2);
-    fVar2 += (float)FUN_0030fdf0(0xe,2);
-    fVar3 = (float)FUN_0030fdf0(0x13,0);
-    fVar2 = sqrtf(((fVar3 * 30.0f) / (fVar2 * 5.0f)) *
-                   ((float)FUN_0030fdf0(0xd,1) / 5.0f)) * 10.0f;
-    fVar2 *= (float)FUN_0030fdf0(0xc,0);
-    fVar3 = (float)FUN_0030fdf0(0x17,0);
-    fVar2 = fVar2 * fVar3 + (float)FUN_0030fdf0(0x19,0) + 0.0f;
   }
   FUN_00311190((int)fVar2);
   return;
