@@ -39,6 +39,9 @@ extern void campStatusDrawGaugeCall(f32 scale, f32 x, f32 y, u32 color,
 extern void campStatusDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
                                    s32 font, s32 alignment, const char* text,
                                    s32 maxWidth, s32 shadow);
+#pragma alias campStatusDrawFooterText FUN_0040eb50
+extern s32 campStatusDrawFooterText(f32 scale, s32 x, s32 y, u8 color,
+                                    s16 font, const char* text, s32 maxWidth);
 
 extern s32 FUN_001120a0();
 #pragma alias campStatusGetFont FUN_001120a0
@@ -104,6 +107,7 @@ extern void FUN_00128010(KwlnTask* task);
 extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern void* DAT_00833B90;
+extern void* DAT_00833B94;
 extern void* DAT_00833B98;
 #pragma alias DAT_00833B90_abs DAT_00833B90
 extern u8 DAT_00833B90_abs[];
@@ -1713,52 +1717,91 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
+/* Retail panel frame: seventeen status sprites, two footer sprites, and the
+ * formatted footer text, with resource and frame selections from retail. */
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
 {
+    u32 drawParent;
+    u32 drawAlpha;
+    s16 footerAlpha;
+    s16 count;
+    s32 inverseAlpha;
     f32 left;
     f32 right;
-    f32 y;
-    s32 count;
+    f32 top;
+    CampVec2 bottomPosition;
+    char text[264];
 
+    drawParent = 0x42c80000;
+    drawAlpha = (u8)alpha;
     left = position.x + 21.0f;
     right = position.x + 127.0f;
-    y = position.y + 49.0f;
-    campStatusDrawSprite3Call(left, y, 0x42c80000);
-    campStatusDrawSprite3Call(right, y, 0x42c80000);
-    campStatusDrawSprite3Call(left, y, 0x42c80000);
-    campStatusDrawSprite3Call(right, y, 0x42c80000);
-    count = FUN_00177280(FUN_0016c6f0(parent));
-    campStatusDrawSprite3Call(position.x + 129.0f, position.y + 72.0f,
-                              0x42c80000);
-    campStatusDrawSprite3Call(right, position.y + 63.0f, 0x42c80000);
-    campStatusDrawSprite3Call(position.x + 128.0f + (f32)((count - 1) * 20),
-                              position.y + 63.0f, 0x42c80000);
-    campStatusDrawSprite3Call(left, position.y + 97.0f, 0x42c80000);
-    campStatusDrawSprite3Call(right, position.y + 97.0f, 0x42c80000);
-    count = FUN_001772F0(FUN_0016c740(parent));
-    campStatusDrawSprite3Call(position.x + 129.0f, position.y + 120.0f,
-                              0x42c80000);
-    campStatusDrawSprite3Call(right, position.y + 111.0f, 0x42c80000);
-    campStatusDrawSprite3Call(position.x + 128.0f + (f32)((count - 1) * 20),
-                              position.y + 111.0f, 0x42c80000);
-    campStatusDrawSprite3Call(left, position.y + 145.0f, 0x42c80000);
-    campStatusDrawSprite3Call(right, position.y + 145.0f, 0x42c80000);
-    count = FUN_00177360(FUN_0016c790(parent));
-    campStatusDrawSprite3Call(position.x + 129.0f, position.y + 168.0f,
-                              0x42c80000);
-    campStatusDrawSprite3Call(right, position.y + 159.0f, 0x42c80000);
-    campStatusDrawSprite3Call(position.x + 128.0f + (f32)((count - 1) * 20),
-                              position.y + 159.0f, 0x42c80000);
-    y = position.y + 320.0f;
-    campStatusDrawSprite3Call(position.x + 51.0f, y, 0x42c80000);
-    campStatusDrawSprite3Call(position.x + 305.0f, y, 0x42c80000);
-    {
-        char text[264];
-        FUN_00523ac8(text, gp0xffff8980, FUN_0016d2f0(parent));
-        FUN_0040eb50(0x42c80000, (s32)position.x + 559,
-                     (s32)position.y + 341, -1 - alpha, 4, text, 1);
-    }
+    top = position.y + 49.0f;
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
+                             left, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+                             right, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x16, drawAlpha,
+                             left, top, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x19, drawAlpha,
+                             right, top, 100.0f);
+
+    count = (s16)FUN_00177280(FUN_0016c6f0(parent));
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count - 1, drawAlpha,
+                             position.x + 129.0f, position.y + 72.0f,
+                             100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+                             right, position.y + 63.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+                             position.x + 128.0f +
+                                 (f32)((count - 1) * 20),
+                             position.y + 63.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x17, drawAlpha,
+                             left, position.y + 97.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1a, drawAlpha,
+                             right, position.y + 97.0f, 100.0f);
+
+    count = (s16)FUN_001772F0(FUN_0016c740(parent));
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 6, drawAlpha,
+                             position.x + 129.0f, position.y + 120.0f,
+                             100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+                             right, position.y + 111.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+                             position.x + 128.0f +
+                                 (f32)((count - 1) * 20),
+                             position.y + 111.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x18, drawAlpha,
+                             left, position.y + 147.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1b, drawAlpha,
+                             right, position.y + 147.0f, 100.0f);
+
+    count = (s16)FUN_00177360(FUN_0016c790(parent));
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, count + 13, drawAlpha,
+                             position.x + 129.0f, position.y + 170.0f,
+                             100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1c, drawAlpha,
+                             right, position.y + 161.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1d, drawAlpha,
+                             position.x + 128.0f +
+                                 (f32)((count - 1) * 20),
+                             position.y + 161.0f, 100.0f);
+
+    bottomPosition = position;
+    footerAlpha = (s16)alpha;
+    inverseAlpha = 0xff - footerAlpha;
+    campStatusDrawSpriteCall(drawParent, DAT_00833B90, 0x11,
+                             (u8)footerAlpha, bottomPosition.x + 51.0f,
+                             bottomPosition.y + 339.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B90, 0x22,
+                             (u8)footerAlpha, bottomPosition.x + 305.0f,
+                             bottomPosition.y + 339.0f, 100.0f);
+    FUN_00523ac8(text, gp0xffff8980, FUN_0016d2f0(parent));
+    campStatusDrawFooterText(100.0f,
+                             (s32)(bottomPosition.x + 305.0f),
+                             (s32)(bottomPosition.x + 341.0f),
+                             (u8)inverseAlpha, 4, text, 1);
 }
 
 // FUN_00127A40

@@ -7559,8 +7559,8 @@ RuntimeTask* func_001ef500(RuntimeTask* parent)
     return task;
 }
 
-/* Retail request completion and top-level runtime states 0 through 7 are
- * reconstructed. The large nested flows in states 8, 9, and 12 remain. */
+/* Retail request completion and all thirteen top-level runtime states are
+ * reconstructed, including the nested result and persona resource flows. */
 // FUN_001EF7F0 NONMATCHING
 s32 func_001ef7f0(RuntimeTask* task)
 {
