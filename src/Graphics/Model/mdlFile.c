@@ -130,6 +130,7 @@ extern float ABS_f32(float param_1);
 /* Ghidra's VU pseudo-registers are 128-bit values.  MWCC's vector extension is
  * disabled for this TU, so keep the register shape as a plain union and use
  * scalar compatibility shims for the generated intrinsics. */
+typedef union Qword128 { u_long128 q; struct { u64 lo; u64 hi; }; } Qword128;
 typedef union Vec128 {
     struct { u32 _0_4_; u32 _4_4_; u32 _8_4_; u32 _12_4_; };
     struct { u64 _0_8_; u64 _8_8_; };
@@ -13176,294 +13177,68 @@ void FUN_003294a0(f32 param_1, int param_2)
 
 
 // FUN_003294D0 NONMATCHING
-
-
 void FUN_003294d0(void)
-
-
-
 {
-
-  __int128 auVar1;
-
-  u64 in_v1_udw;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  __int128 auVar4;
-
-  u64 in_a1_udw;
-
-  
+  Qword128 q;
 
   FUN_004d59d0(0xffffffff80000000,2);
-
-  auVar2._8_8_ = in_v1_udw;
-
-  auVar2._0_8_ = 0x1000000000008001;
-
-  auVar3._8_8_ = in_a1_udw;
-
-  auVar3._0_8_ = 0xe;
-
-  auVar3 = _pcpyld(auVar3,auVar2);
-
-  *puGpffffbd04 = auVar3._0_4_;
-
-  puGpffffbd04[1] = auVar3._4_4_;
-
-  puGpffffbd04[2] = auVar3._8_4_;
-
-  puGpffffbd04[3] = auVar3._12_4_;
-
-  auVar4._8_8_ = auVar3._8_8_;
-
-  auVar4._0_8_ = uGpffffbd48 | 0xffffff00000000;
-
-  auVar1._8_8_ = in_a1_udw;
-
-  auVar1._0_8_ = 0x4c;
-
-  auVar3 = _pcpyld(auVar1,auVar4);
-
-  puGpffffbd04[4] = auVar3._0_4_;
-
-  puGpffffbd04[5] = auVar3._4_4_;
-
-  puGpffffbd04[6] = auVar3._8_4_;
-
-  puGpffffbd04[7] = auVar3._12_4_;
-
-  puGpffffbd04 = puGpffffbd04 + 8;
-
+  q.lo = 0x1000000000008001;
+  q.hi = 0xe;
+  *(u_long128 *)puGpffffbd04 = q.q;
+  q.lo = uGpffffbd48 | 0xffffff00000000;
+  q.hi = 0x4c;
+  *(u_long128 *)(puGpffffbd04 + 0x10) = q.q;
+  puGpffffbd04 = puGpffffbd04 + 0x20;
   return;
-
 }
-
-
-
 
 // FUN_00329550 NONMATCHING
-
-
 void FUN_00329550(void)
-
-
-
 {
-
-  __int128 auVar1;
-
-  u64 in_v1_udw;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  __int128 auVar4;
-
-  u64 in_a0_udw;
-
-  u64 in_a1_udw;
-
-  
+  Qword128 q;
 
   FUN_004d59d0(0x80000000,2);
-
-  auVar2._8_8_ = in_v1_udw;
-
-  auVar2._0_8_ = 0x1000000000008001;
-
-  auVar1._8_8_ = in_a1_udw;
-
-  auVar1._0_8_ = 0xe;
-
-  auVar3 = _pcpyld(auVar1,auVar2);
-
-  *puGpffffbd04 = auVar3._0_4_;
-
-  puGpffffbd04[1] = auVar3._4_4_;
-
-  puGpffffbd04[2] = auVar3._8_4_;
-
-  puGpffffbd04[3] = auVar3._12_4_;
-
-  auVar4._8_8_ = auVar3._8_8_;
-
-  auVar4._0_8_ = uGpffffbd48;
-
-  auVar3._8_8_ = in_a0_udw;
-
-  auVar3._0_8_ = 0x4c;
-
-  auVar3 = _pcpyld(auVar3,auVar4);
-
-  puGpffffbd04[4] = auVar3._0_4_;
-
-  puGpffffbd04[5] = auVar3._4_4_;
-
-  puGpffffbd04[6] = auVar3._8_4_;
-
-  puGpffffbd04[7] = auVar3._12_4_;
-
-  puGpffffbd04 = puGpffffbd04 + 8;
-
+  q.lo = 0x1000000000008001;
+  q.hi = 0xe;
+  *(u_long128 *)puGpffffbd04 = q.q;
+  q.lo = uGpffffbd48;
+  q.hi = 0x4c;
+  *(u_long128 *)(puGpffffbd04 + 0x10) = q.q;
+  puGpffffbd04 = puGpffffbd04 + 0x20;
   return;
-
 }
-
-
-
 
 // FUN_003295C0 NONMATCHING
-
-
 void FUN_003295c0(u64 param_1)
-
-
-
 {
-
-  __int128 auVar1;
-
-  u64 in_v1_udw;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  __int128 auVar4;
-
-  u64 in_a1_udw;
-
-  u32 in_s0_udw;
-
-  u32 in_register_0000010c;
-
-  
+  Qword128 q;
 
   FUN_004d59d0(0xffffffff80000000,2);
-
-  auVar2._8_8_ = in_v1_udw;
-
-  auVar2._0_8_ = 0x1000000000008001;
-
-  auVar3._8_8_ = in_a1_udw;
-
-  auVar3._0_8_ = 0xe;
-
-  auVar3 = _pcpyld(auVar3,auVar2);
-
-  *puGpffffbd04 = auVar3._0_4_;
-
-  puGpffffbd04[1] = auVar3._4_4_;
-
-  puGpffffbd04[2] = auVar3._8_4_;
-
-  puGpffffbd04[3] = auVar3._12_4_;
-
-  auVar4._8_8_ = auVar3._8_8_;
-
-  auVar4._0_8_ = 8;
-
-  auVar1._8_4_ = in_s0_udw;
-
-  auVar1._0_8_ = param_1;
-
-  auVar1._12_4_ = in_register_0000010c;
-
-  auVar3 = _pcpyld(auVar4,auVar1);
-
-  puGpffffbd04[4] = auVar3._0_4_;
-
-  puGpffffbd04[5] = auVar3._4_4_;
-
-  puGpffffbd04[6] = auVar3._8_4_;
-
-  puGpffffbd04[7] = auVar3._12_4_;
-
-  puGpffffbd04 = puGpffffbd04 + 8;
-
+  q.lo = 0x1000000000008001;
+  q.hi = 0xe;
+  *(u_long128 *)puGpffffbd04 = q.q;
+  q.lo = param_1;
+  q.hi = 8;
+  *(u_long128 *)(puGpffffbd04 + 0x10) = q.q;
+  puGpffffbd04 = puGpffffbd04 + 0x20;
   return;
-
 }
-
-
-
 
 // FUN_00329630 NONMATCHING
-
-
 void FUN_00329630(void)
-
-
-
 {
-
-  __int128 auVar1;
-
-  u64 in_v1_udw;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  __int128 auVar4;
-
-  u64 in_a0_udw;
-
-  u64 in_a1_udw;
-
-  
+  Qword128 q;
 
   FUN_004d59d0(0x80000000,2);
-
-  auVar2._8_8_ = in_v1_udw;
-
-  auVar2._0_8_ = 0x1000000000008001;
-
-  auVar1._8_8_ = in_a1_udw;
-
-  auVar1._0_8_ = 0xe;
-
-  auVar3 = _pcpyld(auVar1,auVar2);
-
-  *puGpffffbd04 = auVar3._0_4_;
-
-  puGpffffbd04[1] = auVar3._4_4_;
-
-  puGpffffbd04[2] = auVar3._8_4_;
-
-  puGpffffbd04[3] = auVar3._12_4_;
-
-  auVar4._8_8_ = auVar3._8_8_;
-
-  auVar4._0_8_ = uGpffffbd68;
-
-  auVar3._8_8_ = in_a0_udw;
-
-  auVar3._0_8_ = 8;
-
-  auVar3 = _pcpyld(auVar3,auVar4);
-
-  puGpffffbd04[4] = auVar3._0_4_;
-
-  puGpffffbd04[5] = auVar3._4_4_;
-
-  puGpffffbd04[6] = auVar3._8_4_;
-
-  puGpffffbd04[7] = auVar3._12_4_;
-
-  puGpffffbd04 = puGpffffbd04 + 8;
-
+  q.lo = 0x1000000000008001;
+  q.hi = 0xe;
+  *(u_long128 *)puGpffffbd04 = q.q;
+  q.lo = uGpffffbd68;
+  q.hi = 8;
+  *(u_long128 *)(puGpffffbd04 + 0x10) = q.q;
+  puGpffffbd04 = puGpffffbd04 + 0x20;
   return;
-
 }
-
-
-
 
 // FUN_003296A0 NONMATCHING
 
