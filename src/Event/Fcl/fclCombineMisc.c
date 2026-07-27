@@ -1529,7 +1529,7 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
   u8 bVar2;
 
-  short sVar3;
+  u32 sVar3;
 
   int iVar4;
 
