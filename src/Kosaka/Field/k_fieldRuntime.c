@@ -4490,6 +4490,10 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             func_0019d3f0(D_006844F8, 0x483);
         }
+        if (work->state == 2 && count < 2)
+        {
+            func_0019d3f0(D_006844F8, 0x4a0);
+        }
         (void)vector2;
         (void)vector3;
         (void)section;
