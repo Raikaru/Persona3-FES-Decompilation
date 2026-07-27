@@ -3495,8 +3495,8 @@ u32 FUN_002fdfe0(int param_1)
 
 
 // FUN_002FE0B0 NONMATCHING
-void FUN_002fe0b0(float param_1, u8* param_2, u32 param_3, u32 param_4,
-                  u32 param_5)
+void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
+                  u64 param_5)
 {
     u8* camera;
     void* viewport;

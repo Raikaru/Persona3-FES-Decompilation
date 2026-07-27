@@ -4836,7 +4836,7 @@ updateFlag:
 #pragma pop
 
 // FUN_002dae30 NONMATCHING
-void FUN_002dae30(u64 param_1)
+void FUN_002dae30(u32 param_1)
 {
     u8* btl;
     u32 stop;
