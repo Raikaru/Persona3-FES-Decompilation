@@ -4443,6 +4443,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         amount = denominator > 0.0f ? 0.5f / denominator : 0.0f;
         func_001e7f90((const RuntimeDistanceWork*)work, amount,
                       &section, &fraction);
+        amount = denominator > 0.0f ? 1.0f / denominator : 1.0f;
+        func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                      &section, &fraction);
             index = 0;
             while (index < count)
             {
