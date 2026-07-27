@@ -951,7 +951,7 @@ u32 FUN_0045afd0(float param_1,long param_2,int param_3,int param_4,int param_5,
 u32 FUN_0045b190(long param_1);
 u32 FUN_0045b420(int param_1,float *param_2);
 u32 FUN_0045df00(int param_1);
-u32 FUN_0045e3e0(u64 param_1);
+u32 FUN_0045e3e0(int param_1);
 u32 FUN_0045e8c0(u64 param_1);
 u32 FUN_0045eaf0(void);
 u32 FUN_0045eba0(void);
@@ -2369,7 +2369,7 @@ u32 FUN_0045afd0(float param_1,long param_2,int param_3,int param_4,int param_5,
 u32 FUN_0045b190(long param_1);
 u32 FUN_0045b420(int param_1,float *param_2);
 u32 FUN_0045df00(int param_1);
-u32 FUN_0045e3e0(u64 param_1);
+u32 FUN_0045e3e0(int param_1);
 u32 FUN_0045e8c0(u64 param_1);
 u32 FUN_0045eaf0(void);
 u32 FUN_0045eba0(void);
@@ -21137,7 +21137,7 @@ u8 FUN_0045e170(int param_1)
 #pragma opt_loop_invariants on
 // FUN_0045E3E0 NONMATCHING
 
-u32 FUN_0045e3e0(u64 param_1)
+u32 FUN_0045e3e0(int param_1)
 
 {
   u32 *puVar1;
