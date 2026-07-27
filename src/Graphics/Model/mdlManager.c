@@ -9104,9 +9104,9 @@ u32 func_0031be80(u32 param_1)
 
   
 
-  iStack_4 = 0;
-
   iStack_8 = 0;
+
+  iStack_4 = 0;
 
   iVar8 = (int)param_1;
 
