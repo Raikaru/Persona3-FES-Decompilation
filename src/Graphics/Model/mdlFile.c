@@ -4327,7 +4327,7 @@ void FUN_00320810(int *param_1)
 
 
 {
-  int *iVar1;
+  u8 *iVar1;
   int iVar3;
   u32 uVar2;
   float fVar4;
@@ -9669,6 +9669,7 @@ void FUN_00325d60(u64 param_1,u8 (*param_2) [16])
   pauVar4 = (u8 (*) [16])param_1;
 
   auVar2 = _sqc2(auVar5);
+  memcpy(pauVar4[5], &auVar2, 16);
 
 
   auVar2 = _sqc2(auVar5);
@@ -47238,13 +47239,13 @@ void FUN_0034ae30(u8 (*param_1) [16])
 
       *(u32 *)(iVar1 + 200) = 0x43600000;
 
-      *(float *)(iVar1 + 0xd4) = 320.0 - fVar5;
+      *(float *)(iVar1 + 0xd4) = 320.0f - fVar5;
 
-      *(float *)(iVar1 + 0xd8) = 224.0 - fVar5;
+      *(float *)(iVar1 + 0xd8) = 224.0f - fVar5;
 
-      *(float *)(iVar1 + 0xdc) = fVar5 + 320.0;
+      *(float *)(iVar1 + 0xdc) = fVar5 + 320.0f;
 
-      *(float *)(iVar1 + 0xe0) = fVar5 + 224.0;
+      *(float *)(iVar1 + 0xe0) = fVar5 + 224.0f;
 
     }
 

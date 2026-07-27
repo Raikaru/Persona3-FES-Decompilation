@@ -9749,91 +9749,40 @@ void FUN_003fbf10(u16 *param_1)
 
 
 u64 FUN_003fbf20(short *param_1)
-
-
-
 {
-
-  short sVar1;
-
   int iVar2;
 
-  
-
-  sVar1 = *param_1;
-
-  if (sVar1 != 5) {
-
-    if (sVar1 != 4) {
-
-      if (sVar1 != 3) {
-
-        if (sVar1 != 2) {
-
-          if (sVar1 != 1) {
-
-            return 0;
-
-          }
-
-          *param_1 = 2;
-
-          param_1[4] = 0;
-
-          param_1[5] = 0;
-
-        }
-
-        iVar2 = *(int *)(param_1 + 4);
-
-        *(int *)(param_1 + 4) = iVar2 + 1;
-
-        param_1[0x4a] = (short)(int)((float)((iVar2 + 1) * 0xff) / 10.0f);
-
-        if (*(int *)(param_1 + 4) < 10) {
-
-          return 0;
-
-        }
-
-        *param_1 = 5;
-
-        param_1[4] = 0;
-
-        param_1[5] = 0;
-
-        return 0;
-
-      }
-
-      *param_1 = 4;
-
-      param_1[4] = 0;
-
-      param_1[5] = 0;
-
-    }
-
+  switch (*param_1) {
+  case 1:
+    *param_1 = 2;
+    *(u32 *)(param_1 + 4) = 0;
+  case 2:
     iVar2 = *(int *)(param_1 + 4);
-
     *(int *)(param_1 + 4) = iVar2 + 1;
-
-    param_1[0x4a] = (short)(int)((float)((iVar2 + 1) * -0xff) / 10.0f + 255.0f);
-
-    if (9 < *(int *)(param_1 + 4)) {
-
-      *(u32 *)(param_1 + 2) = *(u32 *)(param_1 + 2) & 0xfffffffe;
-
-      param_1[4] = 0;
-
-      param_1[5] = 0;
-
+    param_1[0x4a] = (short)(int)((float)((iVar2 + 1) * 0xff) / 10.0f);
+    if (*(int *)(param_1 + 4) < 10) {
+      break;
     }
-
+    *param_1 = 5;
+    *(u32 *)(param_1 + 4) = 0;
+    break;
+  case 3:
+    *param_1 = 4;
+    *(u32 *)(param_1 + 4) = 0;
+  case 4:
+    iVar2 = *(int *)(param_1 + 4);
+    *(int *)(param_1 + 4) = iVar2 + 1;
+    param_1[0x4a] = (short)(int)((float)((iVar2 + 1) * -0xff) / 10.0f + 255.0f);
+    if (9 < *(int *)(param_1 + 4)) {
+      *(u32 *)(param_1 + 2) = *(u32 *)(param_1 + 2) & 0xfffffffe;
+      *(u32 *)(param_1 + 4) = 0;
+    }
+    break;
+  case 5:
+  default:
+    break;
   }
-
   return 0;
-
 }
 
 // FUN_003FC060 NONMATCHING
