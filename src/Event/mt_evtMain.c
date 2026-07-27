@@ -13615,7 +13615,7 @@ code * FUN_0036d5f0(void)
 
   code *pcVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   long lVar7;
 

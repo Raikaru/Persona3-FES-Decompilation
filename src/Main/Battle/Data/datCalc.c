@@ -7902,7 +7902,6 @@ void FUN_0030f290(void)
     fVar4 = fVar4 * fVar2;
   }
   else {
-    float fVar5;
     fVar2 = (float)FUN_0030fdf0(0xd,4) + 50.0f;
     fVar3 = (float)FUN_0030fdf0(0xe,4) + 50.0f;
     fVar2 = fVar2 / fVar3;
