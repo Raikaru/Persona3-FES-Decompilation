@@ -31628,11 +31628,12 @@ u32 FUN_0033b1c0(int param_1)
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   uVar4 = (*DAT_00960178_abs)(uVar1 * 0x2c + 0x10,0x40000);
-  *(int *)uVar4 = (int)((int *)uVar4 + 4);
-  *(int *)(uVar4 + 8) = uVar4;
+  piVar2 = (int *)uVar4;
+  *piVar2 = (int)(piVar2 + 4);
+  piVar2[2] = (int)piVar2;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,0xc,0xd,DAT_0069bd80_abs,0x48);
-  *(int *)(uVar4 + 4) = iVar3;
-  return uVar4;
+  piVar2[1] = iVar3;
+  return (u32)piVar2;
 }
 
 
@@ -52552,10 +52553,10 @@ void FUN_00350190(void)
 
   uVar2 = FUN_0035ed20_i(1);
 
-  *(u32 *)DAT_00957bc0_abs = uVar1;
-  *(u16 *)DAT_00957bc4_abs = uVar2;
-  *(u32 *)DAT_00957bc8_abs = 0;
-  *(u32 *)DAT_00957bcc_abs = 0;
+  *(volatile u32 *)DAT_00957bc0_abs = uVar1;
+  *(volatile u16 *)DAT_00957bc4_abs = uVar2;
+  *(volatile u32 *)DAT_00957bc8_abs = 0;
+  *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   DAT_007ce578 = 1;
   return;
@@ -54793,7 +54794,7 @@ u64 FUN_00352980(int param_1)
 
   iVar2 = DAT_0069ccc0[(u32)uVar1].allocationSize;
 
-  uVar5 = (*DAT_00960178)(iVar2 + 0x30,0x40000);
+  uVar5 = (*DAT_00960178_u32)(iVar2 + 0x30,0x40000);
 
   pauVar6 = (u8 (*) [16])uVar5;
 
@@ -54809,7 +54810,7 @@ u64 FUN_00352980(int param_1)
 
   memcpy(*pauVar6, &auVar3, 16);
 
-  FUN_00521250_mdl(*(u32 *)pauVar6[2],uVar4,iVar2);
+  FUN_00521250(*(u32 *)pauVar6[2],uVar4,iVar2);
 
   uVar4 = DAT_0069ccc0[(u32)uVar1].create(uVar4);
 
