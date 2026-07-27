@@ -300,7 +300,7 @@ static u64 campMainPackPosition(f32 x, f32 y)
     return position.value;
 }
 
-static void* campMainResource(const void* resources, s32 index)
+static inline void* campMainResource(const void* resources, s32 index)
 {
     return ((void* const*)resources)[index];
 }
@@ -2636,21 +2636,21 @@ typedef struct CampSpriteRecord
     f32 spriteScale;
 } CampSpriteRecord;
 
-static f32 campPackedX(u64 value)
+static inline f32 campPackedX(u64 value)
 {
     CampPackedPosition position;
     *(u64*)&position = value;
     return position.x;
 }
 
-static f32 campPackedY(u64 value)
+static inline f32 campPackedY(u64 value)
 {
     CampPackedPosition position;
     *(u64*)&position = value;
     return position.y;
 }
 
-static u64 campPackPosition(f32 x, f32 y)
+static inline u64 campPackPosition(f32 x, f32 y)
 {
     CampPackedPosition position;
     position.x = x;

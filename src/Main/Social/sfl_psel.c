@@ -78,7 +78,7 @@ typedef void (*SflPselDrawCallback)(void* quad, u32 layer, u32 group, u32 pass, 
 
 extern u32 FUN_0021cce0(u32 frame);
 
-static u8* sflPselBytes(u32* work, u32 offset)
+static inline u8* sflPselBytes(u32* work, u32 offset)
 {
     return (u8*)work + offset;
 }
@@ -88,7 +88,7 @@ static u32 sflPselReadU32(const void* object, u32 offset)
     return *(const u32*)((const u8*)object + offset);
 }
 
-static s32 sflPselReadS32(const void* object, u32 offset)
+static inline s32 sflPselReadS32(const void* object, u32 offset)
 {
     return *(const s32*)((const u8*)object + offset);
 }

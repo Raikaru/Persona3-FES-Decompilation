@@ -1197,7 +1197,7 @@ void func_00313ca0(int *param_1,u32 param_2);
 int func_00313f40(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 void* func_003140c0(void* param_1,u16 *param_2);
-u64 func_00314170(u64 param_1,long param_2);
+u64 func_00314170(u64 param_1,u32 param_2);
 u32 func_003142b0(void* param_1);
 void* func_00314510(void* param_1);
 u32 func_00314650(u32 param_1);
@@ -3826,7 +3826,7 @@ void* func_003140c0(void* param_1,u16 *param_2)
 // FUN_00314170 NONMATCHING
 
 
-u64 func_00314170(u64 param_1,long param_2)
+u64 func_00314170(u64 param_1,u32 param_2)
 
 
 
@@ -4113,7 +4113,7 @@ void func_00314730(f32 param_1,u8* param_2)
 
   u32 *puVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   
 
@@ -8816,7 +8816,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   short sVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   long lVar6;
 

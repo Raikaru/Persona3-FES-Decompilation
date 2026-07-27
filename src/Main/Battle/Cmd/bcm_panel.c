@@ -350,7 +350,7 @@ void FUN_00222d60(void)
  * in these small helpers makes the state-machine routines below considerably
  * easier to audit than a collection of magic pointer casts.
  */
-static u8* bcm_panel_bytes(void)
+static inline u8* bcm_panel_bytes(void)
 {
     return (u8*)sBcmPanel;
 }
@@ -375,7 +375,7 @@ static u8* bcm_panel_overlay(u32 index)
     return bcm_panel_bytes() + 0x6080 + index * 0x110;
 }
 
-static void bcm_panel_set_resource(u8* dst, u32 resource, u32 id)
+static inline void bcm_panel_set_resource(u8* dst, u32 resource, u32 id)
 {
     u32 table;
     table = FUN_0021c3f0(resource);

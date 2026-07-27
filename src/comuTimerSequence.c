@@ -39,6 +39,7 @@ u32 FUN_003bfae0(void);
 u32 FUN_003bffa0(u32 *param_1,u32 *param_2,u32 *param_3);
 code * FUN_003bfdb0(void);
 code * FUN_003bff40(void);
+code * FUN_003bf610(void);
 u32 FUN_003c03f0(void);
 code * FUN_003c0570(void);
 code * FUN_003c07c0(void);
@@ -1953,13 +1954,13 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar4 == 1) {
 
-      lVar4 = 0x3bff40;
+      lVar4 = (s32)(code *)&FUN_003bff40;
 
     }
 
     else {
 
-      lVar4 = 0x3c0bd0;
+      lVar4 = (s32)(code *)&FUN_003c0bd0;
 
     }
 
@@ -1971,7 +1972,7 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar3 != 1) {
 
-      lVar4 = 0x3c0f20;
+      lVar4 = (s32)(code *)&FUN_003c0f20;
 
     }
 
@@ -1983,7 +1984,7 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar3 == 0) {
 
-      lVar4 = 0x3c1300;
+      lVar4 = (s32)(code *)&FUN_003c1300;
 
     }
 
@@ -1997,7 +1998,7 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
       FUN_003bec50();
 
-      lVar4 = 0x3c0d20;
+      lVar4 = (s32)(code *)&FUN_003c0d20;
 
     }
 
@@ -2007,7 +2008,7 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
       if ((lVar3 != 6) && (lVar3 = FUN_0017e050(100,uVar1,uVar2), lVar3 == 0)) {
 
-        lVar4 = 0x3c0f20;
+        lVar4 = (s32)(code *)&FUN_003c0f20;
 
       }
 
@@ -2021,7 +2022,7 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     if (lVar3 == 0) {
 
-      lVar4 = 0x3c1810;
+      lVar4 = (s32)(code *)&FUN_003c1810;
 
     }
 
@@ -2029,14 +2030,16 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
   case 6:
 
-    lVar4 = 0x3c18c0;
+    lVar4 = (s32)(code *)&FUN_003c18c0;
 
     break;
 
   case 7:
 
-    lVar4 = 0x3bf610;
+    lVar4 = (s32)(code *)&FUN_003bf610;
 
+  case 8:
+    break;
   }
 
   if (lVar4 == 0) {
@@ -2047,11 +2050,11 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
   else {
 
-    lVar3 = (*DAT_00960178)(0x58,0x40000);
+    lVar3 = (*(u32 (**)(u32, u32))DAT_00960178_abs)(0x58, 0x40000);
 
     if (lVar3 == 0) {
 
-      FUN_0019d3f0("comuTimerSequence.c",0x836);
+      FUN_0019d3f0((const char *)(DAT_006a3308 - 0x78),0x836);
 
     }
 
