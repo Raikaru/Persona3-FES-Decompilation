@@ -45140,7 +45140,7 @@ void FUN_00348f30(int param_1,int *param_2)
 
   
 
-  iVar1 = FUN_00357fd0(0);
+  iVar1 = FUN_00357fd0_u32(0);
 
   *param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
 
@@ -52546,8 +52546,8 @@ void FUN_00350190(void)
 
 {
 
-  u32 uVar2;
   u32 uVar1;
+  u32 uVar2;
   
 
   uVar1 = FUN_0035ed20_i(0);

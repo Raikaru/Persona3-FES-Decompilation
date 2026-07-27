@@ -5227,78 +5227,34 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 }
 
 // FUN_003D3B70 NONMATCHING
-
-
 u32 FUN_003d3b70(u32 param_1,u32 param_2)
-
-
-
 {
-
-  u32 uVar1;
-
+  typedef unsigned int FusionU128 __attribute__((mode(TI)));
+  FusionU128 *src;
+  FusionU128 *dst;
+  FusionU128 temp;
   u32 uVar7;
-
-  u8 *puVar2;
-
-  u8 *puVar3;
-
   int iVar4;
+  u32 auStack_30[12];
 
-  u32 *puVar5;
-
-  u8 **ppuVar6;
-
-  u32 auStack_30 [12];
-
-  
-
-  ppuVar6 = PTR_FUN_006a4870;
-
-  puVar5 = auStack_30;
-
+  src = (FusionU128 *)PTR_FUN_006a4870;
+  dst = (FusionU128 *)auStack_30;
   iVar4 = 2;
-
   do {
-
-    uVar1 = *(u64 *)ppuVar6;
-
-    puVar2 = ppuVar6[2];
-
-    puVar3 = ppuVar6[3];
-
-    ppuVar6 = ppuVar6 + 4;
-
+    temp = *src;
+    src = src + 1;
     iVar4 = iVar4 + -1;
-
-    *puVar5 = (int)uVar1;
-
-    puVar5[1] = (int)((u32)uVar1 >> 0x20);
-
-    puVar5[2] = (u32)puVar2;
-
-    puVar5[3] = (u32)puVar3;
-
-    puVar5 = puVar5 + 4;
-
+    *dst = temp;
+    dst = dst + 1;
   } while (0 < iVar4);
-
-  *puVar5 = (u32)*ppuVar6;
-
+  *(u32 *)dst = *(u32 *)src;
   uVar7 = FUN_003c5240(uGpffffb994,2,auStack_30,0,2);
-
   iVar4 = FUN_003c5470(uVar7);
-
   if (param_1 != 0) {
-
     *(int *)((int)param_1 + 0x18) = (int)uVar7;
-
   }
-
   *(u32 *)(iVar4 + 8) = param_2;
-
   return uVar7;
-
 }
 
 // FUN_003D3D20 NONMATCHING
