@@ -20,7 +20,7 @@ void FUN_00287ea0(BtlUnit* unit);
 void FUN_00288110(BtlUnit* unit);
 int FUN_00288da0(int param_1,short param_2);
 void FUN_002891e0(void);
-u64 FUN_00289650(short param_1,u32 param_2,long param_3);
+u64 FUN_00289650(short param_1,u16 param_2,void* param_3);
 extern f32 DAT_007cad78;
 extern f32 fGpffff8218;
 extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
@@ -5919,7 +5919,7 @@ void FUN_002891e0(void)
 // FUN_00289650 NONMATCHING
 
 
-u64 FUN_00289650(short param_1,u32 param_2,long param_3)
+u64 FUN_00289650(short param_1,u16 param_2,void* param_3)
 
 
 
