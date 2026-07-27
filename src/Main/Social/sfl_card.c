@@ -1103,9 +1103,13 @@ void FUN_00258630(u32 *param_1)
 #define transformed local.transformed
 #define origin local.origin
     f32 frame;
+    u64 origin_pair;
+    f32 origin_z;
 
-    *(u64 *)origin = *(u64 *)DAT_0068eab0_abs;
-    origin[2] = *(f32 *)DAT_0068eab8_abs;
+    origin_pair = *(volatile u64 *)DAT_0068eab0_abs;
+    origin_z = *(volatile f32 *)DAT_0068eab8_abs;
+    *(u64 *)origin = origin_pair;
+    origin[2] = origin_z;
     flags = *param_1;
     *param_1 = flags | 0x100;
     if ((~(flags | 0x100) & 8) != 0) {
