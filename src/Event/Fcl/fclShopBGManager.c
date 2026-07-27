@@ -5432,7 +5432,7 @@ void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
 
 }
 
-// FUN_004166D0 NONMATCHING
+// FUN_004166D0
 
 
 void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
@@ -5446,20 +5446,33 @@ void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
   f32 zero;
   u32 uVar2;
   u8 *puVar1;
+  s32 call_a0;
+  s32 call_a1;
 
   
 
   zero = 0.0f;
   puVar1 = (u8 *)(*(int *)(param_2 + 0xc) + 0xa0);
-  FUN_0040e3c0(zero,param_3 + 0x7b,param_4 + 100,param_6,0xaf,0);
+  call_a0 = param_3 + 0x7b;
+  call_a1 = param_4 + 100;
+  asm volatile("" : "+r" (call_a0), "+r" (call_a1));
+  FUN_0040e3c0(zero,call_a0,call_a1,param_6,0xaf,0);
+  call_a0 = param_3 + 0x7b;
+  call_a1 = param_4 + 100;
+  asm volatile("" : "+r" (call_a0), "+r" (call_a1));
+  FUN_0040e3c0(zero,call_a0,call_a1,param_6,0xb0,0);
 
-  FUN_0040e3c0(zero,param_3 + 0x7b,param_4 + 100,param_6,0xb0,0);
-
-  FUN_0040e3c0(zero,param_3 + 0xcb,param_4 + 0x76,param_6,4,
+  call_a0 = param_3 + 0xcb;
+  call_a1 = param_4 + 0x76;
+  asm volatile("" : "+r" (call_a0), "+r" (call_a1));
+  FUN_0040e3c0(zero,call_a0,call_a1,param_6,4,
                (u32)puVar1[4] * 2 + 1);
 
   uVar2 = func_00171110(*(s16 *)puVar1,2);
-  FUN_003b2cb0_typed(zero,param_3 + 0xed,param_4 + 0x79,param_6 | 0xffffff00,6,1,uVar2,0,0);
+  call_a0 = param_3 + 0xed;
+  call_a1 = param_4 + 0x79;
+  asm volatile("" : "+r" (call_a0), "+r" (call_a1));
+  FUN_003b2cb0_typed(zero,call_a0,call_a1,param_6 | 0xffffff00,6,1,uVar2,0,0);
 
   return;
 
