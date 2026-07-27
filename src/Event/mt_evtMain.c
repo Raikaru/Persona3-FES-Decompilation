@@ -4820,11 +4820,7 @@ void FUN_003648e0(int param_1,u32 param_2,int param_3)
 
   if (puVar5 == (u16 *)0x0) {
 
-    if ((*(u32 *)(param_1 + 4) & 8) != 0) {
-
-    }
-
-    else {
+    if ((*(u32 *)(param_1 + 4) & 8) == 0) {
 
       if ((*(u32 *)(param_3 + 0x58) & 2) != 0) {
 
@@ -5297,7 +5293,7 @@ void FUN_003650c0(u32 param_1,u64 param_2,int param_3)
 
   u16 *puVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   int iVar3;
 
