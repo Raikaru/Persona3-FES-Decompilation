@@ -87,6 +87,8 @@ u8 FUN_0041b530(int param_1);
 u32 FUN_0041b530_u32(int param_1);
 void FUN_0041b550(int param_1);
 u8 FUN_0041b5c0(int param_1,u32 *param_2);
+#pragma alias FUN_0041b5c0_u32 FUN_0041b5c0
+extern u32 FUN_0041b5c0_u32(int param_1,u32 *param_2);
 u64 FUN_0041b810(int param_1);
 u64 FUN_0041b950(int param_1);
 u64 FUN_0041ba60(int param_1);
