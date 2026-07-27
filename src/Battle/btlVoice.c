@@ -6982,7 +6982,6 @@ void func_002e82b0(BtlCamera* camera)
 
       randomIndex = FUN_002ffbc0(2);
       randomIndex &= 0xffff;
-      asm volatile("" : "+r"(randomIndex));
       voiceData = (u8*)DAT_007ce3ec;
       randomIndex *= 0x34;
       voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)voiceData + 0xb18)) +
