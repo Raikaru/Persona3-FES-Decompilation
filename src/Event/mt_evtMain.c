@@ -15188,9 +15188,9 @@ code * FUN_0036ee30(void)
 
   u32 uVar3;
 
-  u32 uVar5;
-
   u32 uVar4;
+
+  u32 uVar5;
 
   int iVar6;
 
