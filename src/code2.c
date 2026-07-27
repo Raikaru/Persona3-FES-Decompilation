@@ -231,12 +231,12 @@ void FUN_0077ff28(u8 *param_1,u32 param_2,u32 param_3)
   start = param_2;
   param_2 = start + param_3;
   if (0x80 < param_2) {
-    if (param_3 < 0x80) {
-      start = 0x80 - param_3;
-    }
-    else {
+    if (param_3 >= 0x80) {
       param_3 = 0x80;
       start = 0;
+    }
+    else {
+      start = 0x80 - param_3;
     }
   }
   param_2 = start + param_3;

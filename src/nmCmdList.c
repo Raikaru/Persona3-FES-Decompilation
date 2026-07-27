@@ -2576,61 +2576,11 @@ FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar11);
 
-  if (param_8 == 2) {
-
-    uVar7 = FUN_0016f630(1,param_9);
-
-    iVar11 = FUN_00171250(uVar7);
-
-    uVar3 = DAT_006a3e50_abs[aiStack_20[iVar11]];
-
-    uVar5 = FUN_00171060(uVar7);
-
-    uVar6 = FUN_003a51a0(uVar3);
-
-    if (uVar5 <= uVar6) {
-
-      uVar10 = FUN_003a51a0(DAT_006a3e60);
-
-      uVar9 = FUN_0016f900(1,param_9);
-
-      if ((uVar9 & 0xff) <= uVar10) {
-
-        FUN_0016f900(1,param_9);
-
-        FUN_003a56f0(param_1,param_2,param_3,param_4,param_5,param_6,1,uVar3,uVar5);
-
-      }
-
-    }
-
-  }
-
-  else {
+  if (param_8 != 2) {
 
     uVar7 = (u16)param_9;
 
-    if (param_8 == 1) {
-
-      iVar11 = FUN_00171250(uVar7);
-
-      uVar3 = DAT_006a3e50_abs[aiStack_20[iVar11]];
-
-      uVar5 = FUN_00171060(uVar7);
-
-      uVar6 = FUN_003a51a0(uVar3);
-
-      if ((uVar5 <= uVar6) &&
-
-         (uVar8 = FUN_003a51a0(DAT_006a3e60), (u32)((int)param_9 >> 0x10) <= uVar8)) {
-
-        FUN_003a56f0(param_1,param_2,param_3,param_4,param_5,param_6,1,uVar3,uVar5);
-
-      }
-
-    }
-
-    else {
+    if (param_8 != 1) {
 
       if (param_8 == 0) {
 
@@ -2667,6 +2617,56 @@ FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
       if (param_9 <= uVar10) {
 
         FUN_003a5570(param_1,param_2,param_3,param_4,param_5,param_6,param_7,uVar3,param_9);
+
+      }
+
+    }
+
+    else {
+
+      iVar11 = FUN_00171250(uVar7);
+
+      uVar3 = DAT_006a3e50_abs[aiStack_20[iVar11]];
+
+      uVar5 = FUN_00171060(uVar7);
+
+      uVar6 = FUN_003a51a0(uVar3);
+
+      if ((uVar5 <= uVar6) &&
+
+         (uVar8 = FUN_003a51a0(DAT_006a3e60), (u32)((int)param_9 >> 0x10) <= uVar8)) {
+
+        FUN_003a56f0(param_1,param_2,param_3,param_4,param_5,param_6,1,uVar3,uVar5);
+
+      }
+
+    }
+
+  }
+
+  else {
+
+    uVar7 = FUN_0016f630(1,param_9);
+
+    iVar11 = FUN_00171250(uVar7);
+
+    uVar3 = DAT_006a3e50_abs[aiStack_20[iVar11]];
+
+    uVar5 = FUN_00171060(uVar7);
+
+    uVar6 = FUN_003a51a0(uVar3);
+
+    if (uVar5 <= uVar6) {
+
+      uVar10 = FUN_003a51a0(DAT_006a3e60);
+
+      uVar9 = FUN_0016f900(1,param_9);
+
+      if ((uVar9 & 0xff) <= uVar10) {
+
+        FUN_0016f900(1,param_9);
+
+        FUN_003a56f0(param_1,param_2,param_3,param_4,param_5,param_6,1,uVar3,uVar5);
 
       }
 

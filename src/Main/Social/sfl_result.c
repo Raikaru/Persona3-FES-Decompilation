@@ -2390,10 +2390,7 @@ u32 func_001fc720(u8* param_1)
   int iStack_8;
   int iStack_4;
 
-  if (in_v1_lo / 3 < in_v1_lo) {
-    uVar1 = 0;
-  }
-  else {
+  if (in_v1_lo / 3 >= in_v1_lo) {
     if ((~*(u16*)param_1 & 4) == 0)
       FUN_0019d3f0(0x684d60, 0xaa);
 
@@ -2420,6 +2417,9 @@ u32 func_001fc720(u8* param_1)
       func_001fd350(param_1, (u32*)auStack_50, 1);
       uVar1 = 1;
     }
+  }
+  else {
+    uVar1 = 0;
   }
   return uVar1;
 }

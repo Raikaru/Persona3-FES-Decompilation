@@ -1740,21 +1740,21 @@ void FUN_003a37c0(int param_1,u64 param_2)
 
   if (*(short *)((int)puVar2 + 0x12) == 4) {
 
-    if (lVar6 == 4) {
-
-      uVar8 = 0x788;
-
-      iVar10 = 200;
-
-    }
-
-    else {
+    if (lVar6 != 4) {
 
       iVar10 = (int)(75.0f / (float)(int)lVar6);
 
       uVar8 = (iVar10 >> 1) * 8 + 0x788;
 
       iVar10 = iVar10 << 3;
+
+    }
+
+    else {
+
+      uVar8 = 0x788;
+
+      iVar10 = 200;
 
     }
 

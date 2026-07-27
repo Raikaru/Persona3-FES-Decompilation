@@ -676,16 +676,16 @@ void h_campDrawPersonaOverview(int param_1)
   CAMP_DRAW_CALC_FIRST_AT(spa0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 2,
                        201.0f, 27.0f, 100.0f);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-    if (*(int *)(param_1 + 0x1c) + -1 < iVar3) {
-      *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2ac) = 0;
-    }
-    else {
+    if (*(int *)(param_1 + 0x1c) + -1 >= iVar3) {
       fVar5 = (float)(iVar3 * 0x55) + 64.0f;
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2e8) = 0;
       pair.x = 610.0f;
       pair.y = fVar5;
       func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
       func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 11) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+    }
+    else {
+      *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2ac) = 0;
     }
   }
   CAMP_DRAW_CALC_FIRST_AT(spd8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 2,

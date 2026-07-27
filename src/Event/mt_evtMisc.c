@@ -5721,41 +5721,7 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
   puVar7 = (u32 *)param_4;
 
-  if (puStack_4 == (u16 *)0x0) {
-
-    *puVar7 = DAT_007cadd0;
-
-    puVar7[1] = uVar8;
-
-    puVar7[2] = uVar8;
-
-    puVar7[3] = 0;
-
-    puVar7[4] = 0;
-
-    puVar7[5] = 0;
-
-    puVar7[6] = 0;
-
-    puVar7[7] = 0;
-
-    uVar8 = DAT_007cafec;
-
-    puVar7[8] = DAT_007cafec;
-
-    puVar7[9] = uVar8;
-
-    puVar7[10] = uVar8;
-
-    puVar7[0xb] = 0;
-
-    *param_5 = 0x40e00000;
-
-    *param_6 = 0;
-
-  }
-
-  else {
+  if (puStack_4 != (u16 *)0x0) {
 
     iVar1 = *(int *)(puStack_4 + 0x24);
 
@@ -5765,29 +5731,7 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
     iVar6 = *(int *)(puStack_4 + 2);
 
-    if (puStack_8 == (u16 *)0x0) {
-
-      for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
-
-        puVar4 = (u32 *)(iVar1 + iVar6 * 4);
-
-        puVar3 = puVar7 + iVar6;
-
-        *puVar3 = *puVar4;
-
-        puVar3[4] = puVar4[4];
-
-        puVar3[8] = puVar4[8];
-
-      }
-
-      *param_5 = uVar13;
-
-      *param_6 = uVar12;
-
-    }
-
-    else {
+    if (puStack_8 != (u16 *)0x0) {
 
       uVar11 = *(u32 *)(puStack_8 + 8);
 
@@ -5862,6 +5806,62 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
       }
 
     }
+
+    else {
+
+      for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
+
+        puVar4 = (u32 *)(iVar1 + iVar6 * 4);
+
+        puVar3 = puVar7 + iVar6;
+
+        *puVar3 = *puVar4;
+
+        puVar3[4] = puVar4[4];
+
+        puVar3[8] = puVar4[8];
+
+      }
+
+      *param_5 = uVar13;
+
+      *param_6 = uVar12;
+
+    }
+
+  }
+
+  else {
+
+    *puVar7 = DAT_007cadd0;
+
+    puVar7[1] = uVar8;
+
+    puVar7[2] = uVar8;
+
+    puVar7[3] = 0;
+
+    puVar7[4] = 0;
+
+    puVar7[5] = 0;
+
+    puVar7[6] = 0;
+
+    puVar7[7] = 0;
+
+    uVar8 = DAT_007cafec;
+
+    puVar7[8] = DAT_007cafec;
+
+    puVar7[9] = uVar8;
+
+    puVar7[10] = uVar8;
+
+    puVar7[0xb] = 0;
+
+    *param_5 = 0x40e00000;
+
+    *param_6 = 0;
 
   }
 

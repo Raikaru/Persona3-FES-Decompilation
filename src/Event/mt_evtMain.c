@@ -6621,15 +6621,7 @@ void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
           if (*(char *)((int)puVar5 + 0x23) == '\x01') {
 
-            if (cVar2 == '\0') {
-
-              lVar3 = (long)(char)puVar5[0x12];
-
-              uVar6 = uVar7;
-
-            }
-
-            else {
+            if (cVar2 != '\0') {
 
               if ((cVar2 != '\x01') ||
 
@@ -6640,6 +6632,14 @@ void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
               lVar3 = (long)iStack_10;
 
               uVar6 = uStack_c;
+
+            }
+
+            else {
+
+              lVar3 = (long)(char)puVar5[0x12];
+
+              uVar6 = uVar7;
 
             }
 
@@ -7270,13 +7270,7 @@ u64 FUN_00367230(u64 param_1,u64 param_2,int param_3)
 
   piVar1 = *(int **)(iVar2 + 0x164);
 
-  if (piVar1 == (int *)0x0) {
-
-    iVar4 = 0;
-
-  }
-
-  else {
+  if (piVar1 != (int *)0x0) {
 
     iVar3 = 0;
 
@@ -7289,6 +7283,12 @@ u64 FUN_00367230(u64 param_1,u64 param_2,int param_3)
       iVar3 = iVar3 + 1;
 
     }
+
+  }
+
+  else {
+
+    iVar4 = 0;
 
   }
 

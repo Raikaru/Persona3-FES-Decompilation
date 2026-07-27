@@ -2302,17 +2302,17 @@ LAB_00303918:
     fVar16 = fVar16 * 1.5f;
   }
   if (param_6 == 2) {
-    if ((*puVar10 & 4) == 0) {
-      FUN_0016f190(0x1319);
-      fVar18 = fVar18 * fGpffff82a4;
-    }
-    else {
+    if ((*puVar10 & 4) != 0) {
       lVar8 = FUN_0016f190(0x1319);
       fVar13 = fGpffff82a8;
       if (lVar8 == 0) {
         fVar13 = fGpffff82a4;
       }
       fVar18 = fVar18 * fVar13;
+    }
+    else {
+      FUN_0016f190(0x1319);
+      fVar18 = fVar18 * fGpffff82a4;
     }
   }
   if (param_6 == 8) {
@@ -2362,15 +2362,7 @@ LAB_00303918:
   else {
     sVar5 = 0;
   }
-  if (sVar5 == 3) {
-    lVar8 = FUN_0016f190(0x1319);
-    fVar13 = fGpffff80e0;
-    if (lVar8 == 0) {
-      fVar13 = fGpffff8084;
-    }
-    fVar16 = fVar16 * fVar13;
-  }
-  else {
+  if (sVar5 != 3) {
     if ((*puVar10 & 4) == 0) {
       sVar5 = FUN_0016c920(puVar10[1]);
     }
@@ -2386,21 +2378,21 @@ LAB_00303918:
       fVar16 = fVar16 * fVar13;
     }
   }
+  else {
+    lVar8 = FUN_0016f190(0x1319);
+    fVar13 = fGpffff80e0;
+    if (lVar8 == 0) {
+      fVar13 = fGpffff8084;
+    }
+    fVar16 = fVar16 * fVar13;
+  }
   if ((*puVar9 & 4) == 0) {
     sVar5 = FUN_0016c920(puVar9[1]);
   }
   else {
     sVar5 = 0;
   }
-  if (sVar5 == 3) {
-    lVar8 = FUN_0016f190(0x1319);
-    fVar13 = fGpffff82a4;
-    if (lVar8 == 0) {
-      fVar13 = 1.5f;
-    }
-    fVar16 = fVar16 * fVar13;
-  }
-  else {
+  if (sVar5 != 3) {
     if ((*puVar9 & 4) == 0) {
       sVar5 = FUN_0016c920(puVar9[1]);
     }
@@ -2417,6 +2409,14 @@ LAB_00303918:
       }
       fVar16 = fVar16 * fVar13;
     }
+  }
+  else {
+    lVar8 = FUN_0016f190(0x1319);
+    fVar13 = fGpffff82a4;
+    if (lVar8 == 0) {
+      fVar13 = 1.5f;
+    }
+    fVar16 = fVar16 * fVar13;
   }
   switch(*(u8 *)(iVar11 + iGpffffb708 + 0x24)) {
   case 2:
@@ -3123,10 +3123,7 @@ LAB_00303918:
     }
   }
   uVar14 = (u32)(fVar17 * fVar16 * fVar12 * (float)(int)uVar14 * fVar18);
-  if (param_6 == 0x10) {
-    uVar14 = 500;
-  }
-  else {
+  if (param_6 != 0x10) {
     if ((int)uVar14 < 0x7919) {
       uVar6 = (u32)*(u16 *)(iGpffffb708 + 0x28 + iVar11);
       if ((int)uVar14 < (int)uVar6) {
@@ -3138,6 +3135,9 @@ LAB_00303918:
     }
     iVar11 = FUN_002ffbc0(0xb);
     uVar14 = (int)(uVar14 * (iVar11 + 0x5f)) / 100;
+  }
+  else {
+    uVar14 = 500;
   }
   if ((int)uVar14 < 1) {
     uVar14 = 1;

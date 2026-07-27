@@ -1584,19 +1584,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         position.y = work->scrollY;
         if (work->screen == 1) {
             frame = work->detailFrame;
-            if (frame == 8) {
-                h_campStatusDrawViewport(
-                    105.0f, work->parsedResource, position, 0xff);
-                work->scrollY -= 1.0f;
-                if (work->scrollY < -1104.0f) {
-                    work->scrollY = 0.0f;
-                }
-                position.x = 0.0f;
-                position.y = 0.0f;
-                alpha = 0;
-                h_campStatusResetInput(work, 0x2000);
-            }
-            else {
+            if (frame != 8) {
                 position.x = 188.0f -
                     (f32)(((8 - frame) * 25) / 8);
                 h_campStatusDrawViewport(
@@ -1609,6 +1597,18 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
                 position.y = 0.0f;
                 alpha = 0xff - (frame * 255) / 8;
                 work->detailFrame++;
+            }
+            else {
+                h_campStatusDrawViewport(
+                    105.0f, work->parsedResource, position, 0xff);
+                work->scrollY -= 1.0f;
+                if (work->scrollY < -1104.0f) {
+                    work->scrollY = 0.0f;
+                }
+                position.x = 0.0f;
+                position.y = 0.0f;
+                alpha = 0;
+                h_campStatusResetInput(work, 0x2000);
             }
             h_campStatusDrawPanelFrame(1, position, alpha);
         }
@@ -2398,18 +2398,18 @@ void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
         campStatusDrawSpriteCall(parent, DAT_00833B90, 0x17, (u8)alpha,
                                  rankX + 146.0f, rankY, scale);
         count = FUN_001fc3c0(persona);
-        if (count < 10) {
-            campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
-                                     count % 10 + 0xb, (u8)alpha,
-                                     rankCountX, rankCountY, scale);
-        }
-        else {
+        if (count >= 10) {
             campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
                                      count / 10 + 0xb, (u8)alpha,
                                      rankCountX - 8.0f, rankCountY, scale);
             campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
                                      count % 10 + 0xb, (u8)alpha,
                                      rankCountX + 7.0f, rankCountY, scale);
+        }
+        else {
+            campStatusDrawSpriteCall(parent, (void*)H_Maestro_001120a0(2),
+                                     count % 10 + 0xb, (u8)alpha,
+                                     rankCountX, rankCountY, scale);
         }
     }
     count = 0;
@@ -2455,12 +2455,12 @@ static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
     labelPos.y = position.y + 96.0f;
     FUN_001159f0(labelPos.x + 21.0f, labelPos.y + 182.0f, parent);
     FUN_001159f0(labelPos.x + 296.0f, labelPos.y + 182.0f, parent);
-    if (*((char*)persona + 4) == 'c') {
-        FUN_00523ac8(text, gp0xffff8980);
-    }
-    else {
+    if (*((char*)persona + 4) != 'c') {
         value = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, value);
+    }
+    else {
+        FUN_00523ac8(text, gp0xffff8980);
     }
     FUN_0040eb50(parent, (s32)(labelPos.x + 275.0f),
                  (s32)(labelPos.y + 184.0f), 0xff - alpha, 4, text, 1);
@@ -2626,12 +2626,12 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                              (u8)alpha, bottomPos.x + 275.0f,
                              bottomPos.y + 86.0f, scale);
     bottomPos.y += 88.0f;
-    if (*((u8*)persona + 4) == 0x63) {
-        FUN_00523ac8(text, gp0xffff8980);
-    }
-    else {
+    if (*((u8*)persona + 4) != 0x63) {
         rank = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, rank);
+    }
+    else {
+        FUN_00523ac8(text, gp0xffff8980);
     }
     FUN_0040eb50(0x42c80000, (s32)bottomPos.x + 275,
                  (s32)bottomPos.y, 0xff - alpha,
@@ -2741,12 +2741,12 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22, alpha,
                              drawPosition.x + 287.0f,
                              drawPosition.y + 278.0f, scale);
-    if (*((u8*)persona + 4) == 0x63) {
-        FUN_00523ac8(text, gp0xffff8980);
-    }
-    else {
+    if (*((u8*)persona + 4) != 0x63) {
         value = FUN_00173340(persona) - FUN_00173330(persona);
         FUN_00523ac8(text, gp0xffff8978, value);
+    }
+    else {
+        FUN_00523ac8(text, gp0xffff8980);
     }
     FUN_0040eb50(parentBottom, (s32)footerX, (s32)footerY,
                  0xff - alpha, 4, text, 1);

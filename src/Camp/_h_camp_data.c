@@ -613,7 +613,23 @@ void* FUN_00167930(KwlnTask* task)
         }
         screenMode = *(s16*)((u8*)work + 0x12);
         transitionKind = *(s16*)((u8*)work + 0x1c);
-        if (screenMode == 0) {
+        if (screenMode != 0) {
+            opacity = *(s16*)((u8*)work + 0x0c);
+            if (opacity != 0xff) {
+                opacity += 10;
+                *(s16*)((u8*)work + 0x0c) = opacity;
+                if (opacity > 0xff) {
+                    *(s16*)((u8*)work + 0x0c) = 0xff;
+                }
+            }
+            else {
+                complete = true;
+            }
+            opacity = *(s16*)((u8*)work + 0x0c);
+            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
+            FUN_0012ac60(100.0f, 0, persona, 0xff - opacity);
+        }
+        else {
             timer = *(s16*)((u8*)work + 0x04);
             complete = timer == 0x14;
             if (!complete) {
@@ -623,22 +639,6 @@ void* FUN_00167930(KwlnTask* task)
             value = *(s16*)((u8*)work + 0x04);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
             FUN_00129b30(100.0f, 0, persona, value);
-        }
-        else {
-            opacity = *(s16*)((u8*)work + 0x0c);
-            if (opacity == 0xff) {
-                complete = true;
-            }
-            else {
-                opacity += 10;
-                *(s16*)((u8*)work + 0x0c) = opacity;
-                if (opacity > 0xff) {
-                    *(s16*)((u8*)work + 0x0c) = 0xff;
-                }
-            }
-            opacity = *(s16*)((u8*)work + 0x0c);
-            persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_0012ac60(100.0f, 0, persona, 0xff - opacity);
         }
         if (complete) {
             if (transitionKind == 0) {
