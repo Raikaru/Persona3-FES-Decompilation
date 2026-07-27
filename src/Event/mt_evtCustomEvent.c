@@ -5700,6 +5700,7 @@ void FUN_0039e700(int param_1)
 
 
 {
+  extern u8 DAT_006a1800[];
 
   int iVar1;
 
@@ -5752,7 +5753,7 @@ void FUN_0039e700(int param_1)
 
   }
 
-  FUN_005225a8(0x6a1800,*(u32 *)(param_1 + 0x78c));
+  FUN_005225a8((u32)DAT_006a1800,*(u32 *)(param_1 + 0x78c));
 
   return;
 

@@ -911,6 +911,8 @@ extern u64 FUN_00100d80();
 extern u64 FUN_00100ec0();
 extern u64 FUN_001016b0();
 extern u64 FUN_00102100();
+#pragma alias FUN_00102100_mdl FUN_00102100
+extern u32 FUN_00102100_mdl(u32 param_1,u32 param_2,u32 *param_3);
 extern u64 FUN_001023a0();
 extern u64 FUN_00103c30();
 extern u64 FUN_00103cb0();
@@ -2911,11 +2913,11 @@ u32 FUN_0031ebe0(int *param_1)
 
           }
 
-          uVar8 = FUN_00102100(*(u32 *)(*param_1 + 0x10),0,&uStack_4);
+          uVar8 = FUN_00102100_mdl(*(u32 *)(*param_1 + 0x10),0,&uStack_4);
 
-          uVar9 = FUN_00102100(*(u32 *)(*param_1 + 0x10),1,&uStack_8);
+          uVar9 = FUN_00102100_mdl(*(u32 *)(*param_1 + 0x10),1,&uStack_8);
 
-          uVar10 = FUN_00102100(*(u32 *)(*param_1 + 0x10),2,&uStack_c);
+          uVar10 = FUN_00102100_mdl(*(u32 *)(*param_1 + 0x10),2,&uStack_c);
 
           FUN_00109ae0(*(u16 *)*param_1,uVar8,uStack_4,uVar9,uStack_8,uVar10,uStack_c);
 

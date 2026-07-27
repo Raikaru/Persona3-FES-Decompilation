@@ -5009,7 +5009,7 @@ void FUN_004343d0(int param_1)
 
 {
   u8 bVar1;
-  short uVar2;
+  u16 uVar2;
   u16 uVar3;
   int iVar4;
   int bVar5;
