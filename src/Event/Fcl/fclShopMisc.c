@@ -16099,7 +16099,7 @@ u8 FUN_00403410(short param_1)
     sVar2 = datGetDaysSinceApr5();
     unaff_s2 = (long)sVar2;
     unaff_s1 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x3a,
-                            (int)(((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a));
+                            ((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
     break;
   case 2:
     sVar2 = datGetDaysSinceApr5();

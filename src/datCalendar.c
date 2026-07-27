@@ -1464,6 +1464,7 @@ u8 clndIsHolidayOrSunday()
     s16 sentinel;
 
     daysSinceApr5 = datGetDaysSinceApr5();
+    sentinel = -1;
     if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
     {
         return true;
@@ -1475,7 +1476,6 @@ u8 clndIsHolidayOrSunday()
     month = currMonth;
     day = currDayOfMonth;
     holidays = sHolidays;
-    sentinel = -1;
     for (; i < 0x164; i++)
     {
         if (holidays[i].month == sentinel)
@@ -4280,14 +4280,12 @@ void func_00186050(void* resource, u64 position, u32 alpha)
     } packed;
     f32 y;
     f32 x;
-    u32 drawAlpha;
     void* unused;
 
     packed.value = position;
     y = packed.coords.y;
     asm volatile("" : "+m"(y));
-    drawAlpha = alpha & 0xff;
-    func_001159f0(unused, resource, 0x2b, drawAlpha,
+    func_001159f0(unused, resource, 0x2b, alpha & 0xff,
                   packed.coords.x, y, 48.0f);
     x = packed.coords.x + 449.0f;
     asm volatile("" : "+m"(x));
