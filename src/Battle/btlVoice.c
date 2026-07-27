@@ -812,7 +812,7 @@ void func_002f0ea0(u64 *param_1)
 }
 
 // FUN_002f14a0 NONMATCHING
-u32 func_002f14a0(BtlAction* param_1)
+u32 func_002f14a0(u64 *param_1)
 
 {
   u16 uVar1;
