@@ -13491,102 +13491,47 @@ void FUN_003299b0(void)
 }
 
 // FUN_00329A60 NONMATCHING
-
-
-
-
-
-
 u32 FUN_00329a60(void)
-
-
-
 {
-
-  __int128 auVar1;
-
-  int iVar2;
-
+  u32 iVar2;
   u32 uVar3;
-
   float fVar4;
-
   float fVar5;
+  float fVar6;
+  f32 quad[4];
+  f32 dst[3];
+  f32 src[3];
 
-  __int128 in_vf10;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  _DAT_0069c4d0 = _sqc2(in_vf10);
-
-  uStack_20 = DAT_0069c4d0;
-
-  uStack_1c = DAT_0069c4d4;
-
-  uStack_18 = DAT_0069c4d8;
-
-  iVar2 = FUN_00198590();
-
-  RwV3dTransformPoint(&fStack_10,&uStack_20,iVar2 + 0x20);
-
-  iVar2 = FUN_00198590();
-
+  __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(DAT_0069c4d0_abs) : "memory");
+  src[0] = *(f32 *)DAT_0069c4d0_abs;
+  src[1] = *(f32 *)(DAT_0069c4d0_abs + 4);
+  src[2] = *(f32 *)(DAT_0069c4d0_abs + 8);
+  iVar2 = FUN_00198590_u32();
+  RwV3dTransformPoint(dst,src,iVar2 + 0x20);
+  iVar2 = FUN_00198590_u32();
   fVar5 = *(float *)(iVar2 + 0x80);
-
-  iVar2 = FUN_00198590();
-
-  if ((fStack_8 <= fVar5) || (*(float *)(iVar2 + 0x84) <= fStack_8)) {
-
+  iVar2 = FUN_00198590_u32();
+  fVar6 = *(float *)(iVar2 + 0x84);
+  if ((dst[2] <= fVar5) || !(dst[2] < fVar6)) {
     uVar3 = 0;
-
   }
-
   else {
-
-    fVar4 = (fStack_10 / fStack_8) * 640.0f;
-
-    fVar5 = (fStack_c / fStack_8) * 448.0f;
-
-    if ((fVar4 < 0.0f) || (((fVar5 < 0.0f || (640.0f < fVar4)) || (448.0f < fVar5)))) {
-
+    fVar4 = 640.0f * (dst[0] / dst[2]);
+    fVar5 = 448.0f * (dst[1] / dst[2]);
+    if ((fVar4 < 0.0f) || (((fVar5 < 0.0f || !(fVar4 <= 640.0f)) || !(fVar5 <= 448.0f)))) {
       uVar3 = 0;
-
     }
-
     else {
-
-      auVar1._4_4_ = fVar5;
-
-      auVar1._0_4_ = fVar4;
-
-      auVar1._8_8_ = 0;
-
-      _lqc2(auVar1);
-
+      quad[0] = fVar4;
+      quad[1] = fVar5;
+      quad[2] = 0.0f;
+      quad[3] = 0.0f;
+      __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(quad) : "memory");
       uVar3 = 1;
-
     }
-
   }
-
   return uVar3;
-
 }
-
-
-
 
 // FUN_00329BA0 NONMATCHING
 
