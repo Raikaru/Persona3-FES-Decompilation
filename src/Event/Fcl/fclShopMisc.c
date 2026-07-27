@@ -13866,6 +13866,7 @@ void FUN_00400e90(u32 param_1)
           else if (*(short *)((int)puVar9 + 6) == 2) {
 
 
+            *puVar1 = uVar2 & 0xfffffffe;
             *puVar1 = uVar2 & 0xfffffffc;
 
           }

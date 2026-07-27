@@ -4579,8 +4579,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                           &section, &fraction);
             if (vertices != NULL && vector2 != NULL && vector3 != NULL)
             {
-                RuntimeVec3 sample0;
-                RuntimeVec3 sample1;
                 sample0 = vector2[section < count ? section : 0];
                 sample1 = vector3[section < count ? section : 0];
                 blended.x = sample0.x +
