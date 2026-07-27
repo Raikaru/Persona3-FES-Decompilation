@@ -31625,11 +31625,13 @@ u32 FUN_0033b1c0(int param_1)
   int *piVar2;
   int iVar3;
   u32 uVar4;
+  u32 raw;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   uVar4 = (*DAT_00960178_abs)(uVar1 * 0x2c + 0x10,0x40000);
-  *(int *)uVar4 = (int)((int *)uVar4 + 4);
-  *(int *)(uVar4 + 8) = uVar4;
+  raw = uVar4;
+  *(int *)raw = (int)((int *)raw + 4);
+  *(int *)(raw + 8) = raw;
   piVar2 = (int *)uVar4;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,0xc,0xd,DAT_0069bd80_abs,0x48);
   piVar2[1] = iVar3;
@@ -41262,9 +41264,9 @@ u64 FUN_00344eb0(u32 param_1,int param_2)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int *piVar4;
 
@@ -47774,7 +47776,7 @@ u64 FUN_0034b6b0(u32 param_1)
 
   if ((lVar7 != 0) && ((&DAT_0069cc60)[*(int *)(pauVar9[1] + 8) * 0x18] != '\0')) {
 
-    uVar4 = FUN_0034bbc0(lVar7,*(u16 *)((int)param_1 + 0x1c));
+    uVar4 = FUN_0034bbc0_u32(lVar7,*(u16 *)((int)param_1 + 0x1c));
 
     *(u32 *)(pauVar9[2] + 8) = uVar4;
 
