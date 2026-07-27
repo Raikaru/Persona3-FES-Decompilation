@@ -6254,14 +6254,13 @@ u8 FUN_0042ba30(void)
 // FUN_0042BA50 NONMATCHING
 
 
-void FUN_0042ba50(u32 param_1)
+void FUN_0042ba50(u64 param_1)
 
 
 
 {
 
   int iVar1;
-void FUN_0042ba50(u64 param_1)
   int *piVar2;
 
   u32 uVar3;
@@ -6334,16 +6333,16 @@ void FUN_0042ba50(u64 param_1)
 
     fVar9 = *(float *)(iVar5 + -0x74b0);
 
-    uVar3 = FUN_00427bf0(5.0f,fVar9,fVar10,fVar9 / (float)iStack_18,fVar10 / (float)iStack_14,
+    uVar3 = FUN_00427bf0(0x40a00000,fVar9,fVar10,fVar9 / (float)iStack_18,fVar10 / (float)iStack_14,
 
-                         param_1,(u32)piVar2,*(u64 *)(iVar6 + 0xb2c),0xffffffff,(float *)auStack_20);
+                         param_1,(u32)piVar2,*(u64 *)(iVar6 + 0xb2c),0xffffffff,(u32 *)auStack_20);
 
     *(u32 *)(iVar6 + 0x5c) = uVar3;
 
     lVar8 = (long)(iVar7 + 1);
-    uVar3 = FUN_00427bf0(0x40a00000,fVar9,fVar10,fVar9 / (float)iStack_18,fVar10 / (float)iStack_14,
 
-                         param_1,(u32)piVar2,*(u64 *)(iVar6 + 0xb2c),0xffffffff,(u32 *)auStack_20);
+  }
+
   return;
 
 }

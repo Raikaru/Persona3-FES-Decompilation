@@ -5611,7 +5611,7 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
 
     while ((puVar2 = (u16 *)*param_4, puVar2 != (u16 *)0x0 &&
 
-           ((int)((u32)*puVar2 + sVar1) <= param_2))) {
+           ((int)((u32)*puVar2 + (int)sVar1) <= param_2))) {
 
       *param_4 = *(u32 *)(puVar2 + 0x26);
 
@@ -6005,7 +6005,6 @@ void FUN_0038ca80(int param_1)
   int iVar5;
 
   int aiStack_d0 [52];
-  int *piStack;
 
   
 
@@ -6015,23 +6014,23 @@ void FUN_0038ca80(int param_1)
 
   iVar2 = FUN_003b5df0(1);
 
-  iVar3 = iVar1 + iVar2 + FUN_003b5df0(0xc);
+  iVar3 = FUN_003b5df0(0xc);
+  iVar3 = iVar1 + iVar2 + iVar3;
 
   if (iVar3 < 0x33) {
-    piStack = aiStack_d0;
     for (iVar1 = FUN_003b5d50(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-      *piStack = iVar1;
-      piStack = piStack + 1;
+      aiStack_d0[iVar5] = iVar1;
+      iVar5 = iVar5 + 1;
     }
 
     for (iVar1 = FUN_003b5d50(1); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-      *piStack = iVar1;
-      piStack = piStack + 1;
+      aiStack_d0[iVar5] = iVar1;
+      iVar5 = iVar5 + 1;
     }
 
     for (iVar1 = FUN_003b5d50(0xc); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-      *piStack = iVar1;
-      piStack = piStack + 1;
+      aiStack_d0[iVar5] = iVar1;
+      iVar5 = iVar5 + 1;
     }
 
     for (iVar1 = 0; iVar1 < iVar3; iVar1 = iVar1 + 1) {

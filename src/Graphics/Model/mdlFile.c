@@ -439,6 +439,14 @@ u64 FUN_003268c0(u32 param_1);
 void FUN_003269e0(int param_1,int param_2);
 void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
+#pragma alias FUN_00326cf0_2 FUN_00326cf0
+extern void FUN_00326cf0_2(int param_1,u16 param_2);
+#pragma alias FUN_00326e50_u32 FUN_00326e50
+extern void FUN_00326e50_u32(int param_1,u32 param_2);
+#pragma alias FUN_00326f60_u32 FUN_00326f60
+extern void FUN_00326f60_u32(u32 *param_1,u32 param_2);
+#pragma alias FUN_00327090_u32 FUN_00327090
+extern void FUN_00327090_u32(u32 *param_1,u32 param_2);
 void FUN_00326db0(int param_1,u16 param_2);
 void FUN_00326e50(int param_1,u64 param_2);
 void FUN_00326f00(int param_1,u32 param_2);
