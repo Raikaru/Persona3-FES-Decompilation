@@ -3552,10 +3552,10 @@ void FUN_004310e0(int param_1)
 u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
 
 {
+  u32 uVar2;
   int uVar3;
   u8 *puVar4;
   u32 lVar1;
-  u32 uVar2;
   
   lVar1 = (*DAT_00960184_abs)(1,0x80,0x40000);
   if (lVar1 == 0) {

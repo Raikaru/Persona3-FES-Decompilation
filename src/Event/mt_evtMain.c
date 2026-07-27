@@ -4885,7 +4885,7 @@ void FUN_00364a30(u32 param_1,int param_2)
 
   u16 *puVar1;
 
-  long lVar2;
+  int lVar2;
 
   u32 uVar3;
 
