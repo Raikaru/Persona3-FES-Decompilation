@@ -4987,8 +4987,8 @@ void FUN_004343d0(int param_1)
 
 {
   u8 bVar1;
-  short sVar2;
-  short sVar3;
+  u16 uVar2;
+  u16 uVar3;
   int iVar4;
   int bVar5;
   int iVar6;
@@ -5004,20 +5004,20 @@ void FUN_004343d0(int param_1)
     *(u16 *)(iVar7 + 0xe10) = 0;
     *(u16 *)(iVar7 + 0xe12) = 0;
   }
-  bVar1 = *(u8 *)(iVar4 + 0x103);
-  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe10) = (u16)bVar1;
-  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe12) = *(u8 *)(iVar4 + 0x104);
+  bVar1 = *(u8 *)(iVar4 + 0x104);
+  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe10) = (u16)*(u8 *)(iVar4 + 0x103);
+  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe12) = (u16)bVar1;
   do {
     iVar8 = iVar4 + *(int *)(iVar4 + 0x20c) * 4;
     iVar8 = iVar4 + ((int)*(short *)(iVar8 + 0xe10) + *(short *)(iVar8 + 0xe12) * 0x10) * 8;
-    sVar2 = *(short *)(iVar8 + 0x214);
-    sVar3 = *(short *)(iVar8 + 0x216);
+    uVar2 = *(u16 *)(iVar8 + 0x214);
+    uVar3 = *(u16 *)(iVar8 + 0x216);
     *(int *)(iVar4 + 0x20c) = *(int *)(iVar4 + 0x20c) + 1;
-    if ((sVar2 == *(u8 *)(iVar4 + 0x105)) && (sVar3 == *(u8 *)(iVar4 + 0x106))) {
+    if ((uVar2 == *(u8 *)(iVar4 + 0x105)) && (uVar3 == *(u8 *)(iVar4 + 0x106))) {
       bVar5 = 1;
     }
     else {
-      iVar8 = iVar4 + ((int)sVar2 + sVar3 * 0x10) * 8;
+      iVar8 = iVar4 + ((int)(short)uVar2 + (short)uVar3 * 0x10) * 8;
       *(u16 *)(iVar4 + *(int *)(iVar4 + 0x20c) * 4 + 0xe10) = *(u16 *)(iVar8 + 0x210);
       *(u16 *)(iVar4 + *(int *)(iVar4 + 0x20c) * 4 + 0xe12) = *(u16 *)(iVar8 + 0x212);
     }
@@ -18509,7 +18509,7 @@ void FUN_00458600(int param_1)
 u64 FUN_00458630(u64 param_1,char param_2,u8 param_3)
 
 {
-  u32 uVar1;
+  long lVar1;
   u64 uVar2;
   u64 uVar3;
   int iVar4;
@@ -18529,13 +18529,13 @@ u64 FUN_00458630(u64 param_1,char param_2,u8 param_3)
   
   iVar4 = param_2 * 0x1c0;
   iVar5 = param_2 * 0x1c;
-  uVar1 = (*DAT_00960184)(1,0x4b4,0x40000);
-  if (uVar1 == 0) {
+  lVar1 = (*DAT_00960184)(1,0x4b4,0x40000);
+  if (lVar1 == 0) {
     uVar2 = 0;
   }
   else {
-    uVar2 = FUN_00194b80_u32(param_1,10,DAT_006b4b50,(u32 (*)(int))FUN_00457a40,FUN_00458600,uVar1);
-    puVar6 = (u8 *)uVar1;
+    uVar2 = FUN_00194b80_u32(param_1,10,DAT_006b4b50,(u32 (*)(int))FUN_00457a40,FUN_00458600,lVar1);
+    puVar6 = (u8 *)lVar1;
     *puVar6 = 0;
     puVar6[1] = param_3;
     puVar6[2] = param_2;

@@ -1999,11 +1999,11 @@ void FUN_003ca960(int param_1)
 
 {
 
-  float *pfVar1;
+  float *pfVar3;
 
   float *pfVar2;
 
-  float *pfVar3;
+  float *pfVar1;
 
   int iVar4;
 
@@ -2051,26 +2051,7 @@ void FUN_003ca960(int param_1)
 
   }
 
-  if ((*(u32 *)(param_1 + 8) & 0x40) == 0) {
-
-    if ((*(u32 *)(param_1 + 8) & 2) == 0) {
-
-      fclMiscDrawStatusCall(*(FclMiscVec2 *)&fStack_8,0.0f,(void *)iVar4,
-                            (void *)(iVar4 + 4),*(u16 *)(param_1 + 0x12));
-
-    }
-
-    else {
-
-      fclMiscDrawStatusNoPersonaCall(*(FclMiscVec2 *)&fStack_8,0.0f,
-                                     (void *)iVar4,(void *)(iVar4 + 4),
-                                     *(u16 *)(param_1 + 0x12));
-
-    }
-
-  }
-
-  else {
+  if ((*(u32 *)(param_1 + 8) & 0x40) != 0) {
 
     lVar5 = (long)*(short *)(param_1 + 0x16);
 
@@ -2165,6 +2146,25 @@ void FUN_003ca960(int param_1)
                                         (void *)iVar6,(void *)(iVar6 + 4),0);
 
       }
+
+    }
+
+  }
+
+  else {
+
+    if ((*(u32 *)(param_1 + 8) & 2) == 0) {
+
+      fclMiscDrawStatusCall(*(FclMiscVec2 *)&fStack_8,0.0f,(void *)iVar4,
+                            (void *)(iVar4 + 4),*(u16 *)(param_1 + 0x12));
+
+    }
+
+    else {
+
+      fclMiscDrawStatusNoPersonaCall(*(FclMiscVec2 *)&fStack_8,0.0f,
+                                     (void *)iVar4,(void *)(iVar4 + 4),
+                                     *(u16 *)(param_1 + 0x12));
 
     }
 

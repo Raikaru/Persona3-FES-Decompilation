@@ -28818,9 +28818,9 @@ float * FUN_003385d0(u32 param_1)
 
   FUN_00521250(iVar6 + 0x5c,param_1,0x5c);
 
-  fVar5 = (float)FUN_003393d0(1,iVar6 + 0x5c);
+  uVar4 = (u32)FUN_003393d0(1,iVar6 + 0x5c);
 
-  pfVar9[1] = fVar5;
+  pfVar9[1] = *(float *)&uVar4;
 
   uVar4 = FUN_003233a0(uVar1 & 0xffff,2,4,0x69bd50,0x48);
 
