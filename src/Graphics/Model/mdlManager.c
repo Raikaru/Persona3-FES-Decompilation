@@ -555,7 +555,7 @@ void mdlDestroy(Model* mdl)
     if (data != NULL)
     {
         func_00313e60(data);
-        *(void**)((u8*)mdl + 0x37c) = NULL;
+        *(u32*)&mdl->unkData2[0x1c] = 0;
     }
 
     data = mdl->runtimeData.refCountedData;
@@ -592,13 +592,13 @@ void mdlDestroy(Model* mdl)
     {
         mdl->prev->next = mdl->next;
     }
-    if (mdl->next == NULL)
+    if (mdl->next != NULL)
     {
-        sMdlListTails[mdl->type] = mdl->prev;
+        mdl->next->prev = mdl->prev;
     }
     else
     {
-        mdl->next->prev = mdl->prev;
+        sMdlListTails[mdl->type] = mdl->prev;
     }
 
     RwFree(mdl);
@@ -1154,7 +1154,7 @@ extern u8 LAB_00314060;
 extern u8 LAB_0031494c;
 extern u8 LAB_003140a0;
 extern u8 LAB_003140b0;
-extern u32 DAT_007cadd4;
+extern f32 DAT_007cadd4;
 extern f32 DAT_007caf0c;
 extern f32 DAT_007caf10;
 extern f32 DAT_007cad38;
@@ -2937,7 +2937,6 @@ u32 func_00313090(u32 param_1,u32 param_2)
         if ((lVar5 < (long)(u32)*(u16 *)(piVar1 + 1)) && (-1 < lVar5)) {
 
           func_004b74c0(*(u32 *)(puVar2 + 0xc),*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20)
-
                       );
 
           *(u8 *)(puVar4 + 1) = 1;
@@ -4473,13 +4472,13 @@ void func_00314d30(void* param_1)
 
              (*(u8 **)(iVar6 + 0x44) == &LAB_00314060)) {
 
-            func_004b7240(DAT_007cadd4,lVar4);
+            func_004b7240_frame(DAT_007cadd4, lVar4);
 
           }
 
           else {
 
-            func_004b74c0(*(u32 *)(iVar5 + 0xc),lVar4);
+            func_004b74c0_frame(*(f32*)(iVar5 + 0xc), lVar4);
 
           }
 
@@ -4537,7 +4536,7 @@ void func_00314d30(void* param_1)
 
                  (*(u8 **)(iVar6 + 0x44) != &LAB_003140b0)) {
 
-                func_004b74c0(*(u32 *)(iVar5 + 0x10),lVar4);
+                func_004b74c0_frame(*(f32*)(iVar5 + 0x10), lVar4);
 
               }
 
@@ -7214,27 +7213,37 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 
 
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_003197C0 NONMATCHING
 
 
-void func_003197c0(Model* param_1,RwMatrix* param_2)
+void func_003197c0(Model* param_1, RwMatrix* param_2)
 {
-    u32 uVar6;
-    u32 uVar7;
-    u32 uVar8;
-    u32 *puVar4;
-    u32 *puVar5;
+    register s32 uVar7;
+    u16 uVar6;
+    s32 uVar8;
+    u32* puVar4;
+    u32* puVar5;
     u32 uVar1;
     u32 uVar2;
     int iVar3;
+
     uVar6 = 0;
     uVar7 = 8;
     __asm__ volatile ("" : "+r"(uVar7));
-    for (; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-        iVar3 = *(int *)((u8 *)param_1 + (u16)uVar6 * 0xc + 0x3b8);
-        if (iVar3 != 0) {
-            puVar4 = (u32 *)(iVar3 + 0x90);
-            for (uVar8 = uVar7, puVar5 = (u32*)param_2; uVar8 > 0; ) {
+    for (; uVar6 < 5; uVar6++)
+    {
+        __asm__ volatile ("" : "+r"(uVar6));
+        iVar3 = *(int*)((u8*)param_1 + (u16)uVar6 * 0xc + 0x3b8);
+        if (iVar3 != 0)
+        {
+            puVar4 = (u32*)(iVar3 + 0x90);
+            uVar8 = uVar7;
+            puVar5 = (u32*)param_2;
+            do
+            {
                 uVar1 = *puVar5;
                 uVar2 = puVar5[1];
                 puVar5 = puVar5 + 2;
@@ -7242,11 +7251,11 @@ void func_003197c0(Model* param_1,RwMatrix* param_2)
                 *puVar4 = uVar1;
                 puVar4[1] = uVar2;
                 puVar4 = puVar4 + 2;
-            }
+            } while (uVar8 > 0);
         }
     }
-    return;
 }
+#pragma pop
     
 
 
