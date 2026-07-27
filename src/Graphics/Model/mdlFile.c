@@ -370,7 +370,7 @@ void FUN_003243f0(int param_1,u64 param_2);
 extern void FUN_00324510_i(int param_1,int param_2);
 void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
 void FUN_003244c0(int param_1);
-void FUN_00324510(int param_1,u64 param_2);
+void FUN_00324510(int param_1,int param_2);
 int FUN_003245b0(int param_1);
  #pragma alias FUN_003245b0_passthru FUN_003245b0
  extern int FUN_003245b0_passthru(void);
@@ -1758,7 +1758,7 @@ u64 FUN_0031d900(int *param_1,int *param_2,u16 param_3)
 
   
 
-  uVar1 = (*DAT_00960178)(0x14,0x40000);
+  uVar1 = (*DAT_00960178_u32)(0x14,0x40000);
 
   FUN_00521408(uVar1,0,0x14);
 
@@ -7971,7 +7971,7 @@ void FUN_003244c0(int param_1)
 // FUN_00324510 NONMATCHING
 
 
-void FUN_00324510(int param_1,u64 param_2)
+void FUN_00324510(int param_1,int param_2)
 
 
 

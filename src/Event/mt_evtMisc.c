@@ -4242,9 +4242,9 @@ void FUN_0038b140(int param_1)
 
   int *piVar1;
 
-  long lVar2;
+  int lVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 
