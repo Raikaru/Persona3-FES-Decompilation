@@ -698,8 +698,8 @@ KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {
     FldFilterCameraWork* work;
     KwlnTask* task;
-    RwFrame** slot1;
     RwFrame** slot0;
+    RwFrame** slot1;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)

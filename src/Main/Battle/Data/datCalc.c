@@ -126,7 +126,7 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     s32 hp;
     s32 bonus;
     u16 baseHp;
-    s32 pcId;
+    u16 pcId;
     pcId = unit->id;
     bonus = 0;
 
