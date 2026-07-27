@@ -3697,7 +3697,7 @@ long FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u64 param_4,int param_5,
 
   int iVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   int iVar3;
 
