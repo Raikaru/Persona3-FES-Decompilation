@@ -658,13 +658,13 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   u32 uVar7;
   u32 uVar14;
   int lVar8;
-  int iVar11;
   int bVar4;
   u32 stack_50[5];
   u32 stack_30[5];
   u8 auStack_6c[4];
   u32 *puVar12;
   u32 *puVar13;
+  int iVar11;
   iVar11 = *(int *)(param_2 + 0x18);
   lVar8 = *(int *)(param_2 + 0x10);
   pbVar9 = (u8 *)(lVar8 + iVar11);
