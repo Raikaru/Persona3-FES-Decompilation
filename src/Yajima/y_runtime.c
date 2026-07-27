@@ -225,6 +225,10 @@ extern u32 FUN_0045afd0_call3(int param_2,int param_3,int param_4,int param_5,in
                                float param_1,u8 param_7,u8 param_8,short param_9);
 #pragma alias FUN_0045b190_arg FUN_0045b190
 extern u32 FUN_0045b190_arg(int param_1);
+#pragma alias FUN_00439520_arg FUN_00439520
+extern void FUN_00439520_arg(int param_1);
+#pragma alias FUN_0045bd90_arg FUN_0045bd90
+extern void FUN_0045bd90_arg(int param_1);
 extern u32 DAT_008717e8_rows[];
 #pragma alias DAT_008717f4_rows DAT_008717f4
 extern u32 DAT_008717f4_rows[];
@@ -1447,7 +1451,7 @@ void FUN_00437e00(void);
 void FUN_00437e80(u32 *param_1,char param_2);
 void FUN_00438010(int param_1);
 void FUN_00439400(char param_1);
-void FUN_00439520(int param_1);
+void FUN_00439520(u64 param_1);
 void FUN_0043a1a0(char param_1,u8 param_2);
 void FUN_0043a2f0(int param_1);
 void FUN_0043a960(int param_1);
@@ -1535,7 +1539,7 @@ void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,u64 pa
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,u64 param_2);
-void FUN_0045bd90(int param_1);
+void FUN_0045bd90(u64 param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
@@ -2865,7 +2869,7 @@ void FUN_00437e00(void);
 void FUN_00437e80(u32 *param_1,char param_2);
 void FUN_00438010(int param_1);
 void FUN_00439400(char param_1);
-void FUN_00439520(int param_1);
+void FUN_00439520(u64 param_1);
 void FUN_0043a1a0(char param_1,u8 param_2);
 void FUN_0043a2f0(int param_1);
 void FUN_0043a960(int param_1);
@@ -2951,7 +2955,7 @@ void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,u64 pa
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,u64 param_2);
-void FUN_0045bd90(int param_1);
+void FUN_0045bd90(u64 param_1);
 void FUN_0045c530(int param_1);
 void FUN_0045c8c0(int param_1,int param_2);
 void FUN_0045cdd0(int param_1,long param_2);
@@ -3659,7 +3663,7 @@ u64 FUN_004312b0(int param_1)
         }
       }
       else if (cVar1 == '\x05') {
-        FUN_00439520(param_1);
+        FUN_00439520_arg(param_1);
       }
       else if (cVar1 == '\x02') {
         FUN_00438010(param_1);
@@ -7333,7 +7337,7 @@ void FUN_00439400(char param_1)
 
 // FUN_00439520 NONMATCHING
 
-void FUN_00439520(int param_1)
+void FUN_00439520(u64 param_1)
 
 {
   int iVar1;
@@ -20289,7 +20293,7 @@ LAB_0045bd70:
 
 // FUN_0045BD90 NONMATCHING
 
-void FUN_0045bd90(int param_1)
+void FUN_0045bd90(u64 param_1)
 
 {
   int iVar1;
@@ -21155,7 +21159,7 @@ u32 FUN_0045e3e0(int param_1)
   }
   if (iVar3 == 2) {
     if (puVar1[5] == 1) {
-      FUN_0045bd90(param_1);
+      FUN_0045bd90_arg(param_1);
       if ((puVar1[5] != 2) && (puVar1[5] == 3)) {
         puVar1[2] = 0;
         puVar1[4] = 0;
