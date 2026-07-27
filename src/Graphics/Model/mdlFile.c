@@ -1076,6 +1076,8 @@ extern u64 FUN_00491ea0();
 #pragma alias FUN_00491ea0_u32 FUN_00491ea0
 extern void FUN_00491ea0_u32(u32 param_1);
 extern u64 FUN_004920a0();
+#pragma alias FUN_004920a0_u32 FUN_004920a0
+extern u32 FUN_004920a0_u32(u32 param_1);
 extern u64 FUN_00492d10();
 extern u64 FUN_00493210();
 extern u64 FUN_00493230();
@@ -49944,7 +49946,7 @@ void FUN_0034d990(int param_1,u32 param_2,u32 param_3)
 
       if (lVar4 == 0) {
 
-        lVar4 = FUN_004920a0(uVar1);
+        lVar4 = FUN_004920a0_u32(uVar1);
 
       }
 

@@ -7884,7 +7884,7 @@ void FUN_0030f120(void)
 
 
 
-// FUN_0030f290 NONMATCHING
+// FUN_0030f290
 void FUN_0030f290(void)
 {
   s32 lVar1;
@@ -7900,6 +7900,7 @@ void FUN_0030f290(void)
     fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x14,0);
     fVar4 = fVar4 * fVar2;
+    fVar5 = fVar4;
   }
   else {
     fVar2 = (float)FUN_0030fdf0(0xd,4) + 50.0f;
@@ -7909,7 +7910,7 @@ void FUN_0030f290(void)
     fVar4 = fVar4 * fVar2;
     fVar5 = DAT_007cad74 * fVar4;
   }
-  FUN_00311190((int)fVar4);
+  FUN_00311190((int)fVar5);
   return;
 }
 
