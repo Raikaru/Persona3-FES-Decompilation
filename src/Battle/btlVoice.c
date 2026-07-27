@@ -7405,6 +7405,8 @@ void func_002e9450(void)
   u32 uVar3;
   u32 uVar4;
   u32 uVar5;
+  u8 *packet1;
+  u8 *packet2;
   int iVar6;
   int iVar7;
   int iVar8;
