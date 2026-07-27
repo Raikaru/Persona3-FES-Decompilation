@@ -52546,9 +52546,8 @@ void FUN_00350190(void)
 
 {
 
-  u32 uVar1;
-
   u32 uVar2;
+  u32 uVar1;
   
 
   uVar1 = FUN_0035ed20_i(0);
