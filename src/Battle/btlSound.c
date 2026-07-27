@@ -23,7 +23,7 @@ u32 FUN_002de2a0(int param_1);
 u32 FUN_002de3c0(int param_1);
 u32 FUN_002de4e0(int param_1);
 u32 FUN_002ded60(int param_1);
-u32 FUN_002defe0();
+u32 FUN_002defe0(int param_1);
 u32 FUN_002e0350(int param_1);
 u32 FUN_002e0540(int param_1);
 int FUN_002e0620(int param_1,int param_2);
@@ -1760,7 +1760,9 @@ u32 FUN_002defe0(int param_1,u32 param_2)
 
   int aiStack_30 [12];
   
-  if (FUN_0010a500(4) == (param_2 = 1)) {
+  param_2 = 1;
+  asm volatile("" : "+r"(param_2));
+  if (FUN_0010a500(4) == param_2) {
 
     return 0xffffffff;
 

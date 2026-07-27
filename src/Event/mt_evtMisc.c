@@ -5591,7 +5591,7 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
 
   u16 *puVar2;
 
-  long lVar3;
+  int lVar3;
 
   u32 *puVar4;
 
