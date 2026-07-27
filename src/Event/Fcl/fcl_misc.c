@@ -903,8 +903,8 @@ void FUN_003c8fa0(void)
 // FUN_003C9000 NONMATCHING
 
 
-void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
-                  int param_5, u32 param_6, int param_7, u32 param_8)
+void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
+                  f32 param_2, f32 param_3, int param_7, u32 param_8)
 
 
 
@@ -915,11 +915,13 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
   int iVar2;
 
   u16 uVar3;
-  u32 converted;
+  u32 offset;
 
   
 
-  iVar2 = iGpffffb98c + param_7 * 0xc;
+  iVar2 = iGpffffb98c;
+  offset = param_7 * 0xc;
+  iVar2 = offset + iVar2;
 
   if ((*(u32 *)(iVar2 + 0x1c) & 2) != 0) {
 
@@ -934,31 +936,25 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    param_2 = 4096.0f * param_2;
+    param_2 *= 4096.0f;
     if (2.1474836e+09f <= param_2) {
       goto param2_large;
     }
-    converted = (u32)(int)param_2;
-    uVar3 = (u16)converted;
+    uVar3 = (u16)(int)param_2;
     goto param2_done;
 param2_large:
-    converted = (u32)(int)(param_2 - 2.1474836e+09f);
-    converted |= 0x80000000;
-    uVar3 = (u16)converted;
+    uVar3 = (u16)((u32)(int)(param_2 - 2.1474836e+09f) | 0x80000000);
 param2_done:
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    param_3 = 4096.0f * param_3;
+    param_3 *= 4096.0f;
     if (2.1474836e+09f <= param_3) {
       goto param3_large;
     }
-    converted = (u32)(int)param_3;
-    uVar3 = (u16)converted;
+    uVar3 = (u16)(int)param_3;
     goto param3_done;
 param3_large:
-    converted = (u32)(int)(param_3 - 2.1474836e+09f);
-    converted |= 0x80000000;
-    uVar3 = (u16)converted;
+    uVar3 = (u16)((u32)(int)(param_3 - 2.1474836e+09f) | 0x80000000);
 param3_done:
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 
