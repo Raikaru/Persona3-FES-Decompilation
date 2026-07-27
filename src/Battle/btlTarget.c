@@ -4980,12 +4980,27 @@ void FUN_002db2a0(u32 param_1)
 {
     s16 threshold;
     u32 index;
+    u32 bit;
+    u8* btl;
 
     index = param_1 & 0xffff;
-    *(u16*)(iGpffffb6fc + 0xa04) |=
-        (u16)(1u << index);
-    if (index == 2)
+    bit = 1u << index;
+    btl = iGpffffb6fc;
+    *(u16*)(btl + 0xa04) |= (u16)bit;
+    switch (index)
     {
+    case 0:
+        threshold = (s16)(datCalcRand(0) + 2);
+        *(u16*)(btl + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(btl + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u32*)(btl + 0xa10) = 0;
+        break;
+    case 1:
+        threshold = (s16)(datCalcRand(1) + 2);
+        *(u16*)(btl + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(btl + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        break;
+    case 2:
         if (datGetFlag(0x140) != 0)
         {
             threshold = (s16)(datCalcRand(2) + 2);
@@ -4994,21 +5009,11 @@ void FUN_002db2a0(u32 param_1)
         {
             threshold = (s16)(datCalcRand(2) + 3);
         }
-        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
-    }
-    else if (index == 1)
-    {
-        threshold = (s16)(datCalcRand(1) + 2);
-        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
-    }
-    else if (index == 0)
-    {
-        threshold = (s16)(datCalcRand(0) + 2);
-        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
-        *(u32*)(iGpffffb6fc + 0xa10) = 0;
+        *(u16*)(btl + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(btl + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        break;
+    default:
+        break;
     }
 }
 typedef struct BtlTargetActionWork

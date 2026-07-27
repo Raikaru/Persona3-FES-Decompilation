@@ -1998,7 +1998,7 @@ void btlActionUpdateStateBad(BtlAction* action)
             }
             packet = FUN_002bd850(unit, messageId);
             packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
             packet = FUN_002db740(action, 0x15, 0, 0, 0);
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);

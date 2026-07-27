@@ -2044,27 +2044,40 @@ void func_001d19d0(void)
 u32 func_001d1a90(void)
 {
     s32 i;
+    FldUnit* unit;
+    u32* marker;
+    u32 valid;
+    u32 predicate;
     u32 result;
 
     result = 1;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        if (gFldUnitsPc[i].genusBase != NULL && gFldUnitsPc[i].resrc != NULL &&
-            gFldUnitsPc[i].unk_17c != 0)
+        valid = 0;
+        unit = &gFldUnitsPc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            if (func_00195460() == 1)
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
+        {
+            marker = &unit->unk_17c;
+            if (*marker != 0)
             {
-                result = 0;
-            }
-            else
-            {
-                gFldUnitsPc[i].unk_17c = 0;
+                if (func_00195460() == 1)
+                {
+                    result = 0;
+                }
+                else
+                {
+                    *marker = 0;
+                }
             }
         }
     }
     return result;
 }
-
 // FUN_001d1b60 NONMATCHING
 void func_001d1b60(void)
 {
