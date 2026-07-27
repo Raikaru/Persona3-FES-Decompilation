@@ -298,9 +298,13 @@ void FUN_003f7890(int param_1,int param_2,u8 param_3,int param_4,int param_5,int
 void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7d50(int param_1,int param_2,u64 param_3,int param_4, int param_5);
+#pragma alias FUN_003f7d50_i FUN_003f7d50
+void FUN_003f7d50_i(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7fe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5 );
+#pragma alias FUN_003f7fe0_i FUN_003f7fe0
+void FUN_003f7fe0_i(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
-void FUN_003f85a0(int param_1,int param_2,u64 param_3,int param_4, int param_5);
+void FUN_003f85a0(int param_1,int param_2,u32 param_3,int param_4, int param_5);
 void FUN_003f86a0(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
 void FUN_003f8a00(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
 void FUN_003f8e10(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
@@ -6984,10 +6988,10 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 // (int coords/index, not u64); case 0xc/1 now byte-identical to retail.
 // Residual: case 0x14's two adds route through a scratch reg instead of
 // landing directly in $a0/$a1 - compiler scheduling floor.
-// FUN_003F85A0 NONMATCHING
+// FUN_003F85A0
 
 
-void FUN_003f85a0(int param_1,int param_2,u64 param_3,int param_4,
+void FUN_003f85a0(int param_1,int param_2,u32 param_3,int param_4,
 
                  int param_5)
 
@@ -7005,12 +7009,12 @@ void FUN_003f85a0(int param_1,int param_2,u64 param_3,int param_4,
 
   switch (lVar2) {
   case 0xc:
-    FUN_003f7d50(param_1,param_2,param_3,param_4,param_5);
+    FUN_003f7d50_i(param_1,param_2,param_3,param_4,param_5);
     break;
   case 0x14:
     iVar1 = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
-    FUN_003f7fe0(param_1 + *(short *)(iVar1 + 0x28),
-                 param_2 + *(short *)(iVar1 + 0x2a),param_3,param_4,param_5);
+    FUN_003f7fe0_i(param_1 + *(short *)(iVar1 + 0x28),
+                   param_2 + *(short *)(iVar1 + 0x2a),param_3,param_4,param_5);
     break;
   case 1:
     FUN_003f8180(param_1,param_2,param_3,param_4,param_5);

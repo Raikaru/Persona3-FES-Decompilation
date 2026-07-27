@@ -117,7 +117,7 @@ float FUN_0042a3f0(float param_1,float *param_2);
 float FUN_0042a4a0(float param_1,u32 *param_2);
 void FUN_0042a550(int param_1,u64 param_2,u64 param_3,u64 param_4);
 u8 FUN_0042aa40(int param_1,u32 param_2,u32 param_3);
-void FUN_0042ac60(int param_1,char param_2);
+void FUN_0042ac60(int param_1,int param_2);
 void FUN_0042adb0(int param_1);
 void FUN_0042b050(int param_1);
 void FUN_0042b540(int param_1);
@@ -134,7 +134,7 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_5);
-void FUN_0042fd80(u32 *param_1,int param_2);
+void FUN_0042fd80(float *param_1,int param_2);
 #pragma alias FUN_004560d0_typed FUN_004560d0
 extern u64 FUN_004560d0_typed(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
 void FUN_004563b0(f32 value, int object);
@@ -771,17 +771,17 @@ u32 FUN_00424b60(void)
 
   short unaff_s5_lo;
 
-  u32 uStack_20;
+  float uStack_20;
 
-  u32 uStack_1c;
+  float uStack_1c;
 
-  u32 uStack_18;
+  float uStack_18;
 
-  u32 uStack_10;
+  float uStack_10;
 
-  u32 uStack_c;
+  float uStack_c;
 
-  u32 uStack_8;
+  float uStack_8;
 
   char acStack_4 [4];
 
@@ -4343,7 +4343,7 @@ u32 FUN_004281f0(u32 param_1)
       pcVar1[0xb09] = cVar6;
     }
 
-    FUN_0042fd80((u32 *)&vec,param_1);
+    FUN_0042fd80((float *)&vec,param_1);
     vec2 = vec;
 
     cVar6 = FUN_0044f120(&vec2);
@@ -5599,7 +5599,7 @@ u8 FUN_0042aa40(int param_1,u32 param_2,u32 param_3)
 // FUN_0042AC60 NONMATCHING
 
 
-void FUN_0042ac60(int param_1,char param_2)
+void FUN_0042ac60(int param_1,int param_2)
 
 
 
@@ -5607,7 +5607,7 @@ void FUN_0042ac60(int param_1,char param_2)
 
   int iVar1;
 
-  char cVar2;
+  int cVar2;
 
   u32 uVar3;
 
@@ -9023,7 +9023,7 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 // FUN_0042FD80 NONMATCHING
 
 
-void FUN_0042fd80(u32 *param_1,int param_2)
+void FUN_0042fd80(float *param_1,int param_2)
 
 
 
@@ -9043,11 +9043,11 @@ void FUN_0042fd80(u32 *param_1,int param_2)
 
   u32 unaff_s5_lo;
 
-  u32 uStack_10;
+  float uStack_10;
 
-  u32 uStack_c;
+  float uStack_c;
 
-  u32 uStack_8;
+  float uStack_8;
 
   
 
