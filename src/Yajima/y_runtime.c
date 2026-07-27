@@ -8356,11 +8356,10 @@ char FUN_0043bc20(char param_1)
   else {
     uVar1 = *(u16 *)((u8 *)DAT_00871948 + param_1 * 0x1c0);
   }
+  cVar3 = 0;
   uVar2 = FUN_0016c970(uVar1);
-  cVar3 = (uVar2 & 1) != 0;
-  uVar2 = FUN_0016c970(uVar1);
-  if ((uVar2 & 2) != 0) {
-    cVar3 = cVar3 + '\x01';
+  if ((uVar2 & 1) != 0) {
+    cVar3 = cVar3 + 1;
   }
   uVar2 = FUN_0016c970(uVar1);
   if ((uVar2 & 4) != 0) {

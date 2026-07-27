@@ -10245,7 +10245,7 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
   u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   int iVar5;
 

@@ -40,7 +40,7 @@ extern void FUN_005225a8_evt(const char *format,...);
 extern void FUN_004c0420_evt(void *data,int size,int count,int arg);
 #pragma alias FUN_00361ca0_evt FUN_00361ca0
 extern u32 FUN_00361ca0_evt(int param_1,u64 param_2);
-void FUN_0038fa10(int param_1,u64 param_2);
+void FUN_0038fa10(int param_1,u32 param_2);
 void FUN_0038ffb0(int param_1,int param_2);
 void FUN_003902c0(int param_1,int param_2);
 void FUN_003905f0(int param_1,int param_2);
@@ -1929,7 +1929,7 @@ start:
 // FUN_0038FA10 NONMATCHING
 
 
-void FUN_0038fa10(int param_1,u64 param_2)
+void FUN_0038fa10(int param_1,u32 param_2)
 
 
 
@@ -1955,7 +1955,7 @@ void FUN_0038fa10(int param_1,u64 param_2)
 
   int iVar10;
 
-  long lVar11;
+  int lVar11;
 
   u32 uVar12;
 
