@@ -3241,6 +3241,7 @@ special_done:
         l.f158 = l.unitCenter.z - l.d4;
         distance = RwV3dNormalize((RwV3d*)&l.f150,
                                   (RwV3d*)&l.f150);
+        btlUnitGetSphereWorldCenter(unit, &l.unitCenter);
         l.pair170.pair = *(s64*)&l.unitCenter;
         l.f178 = l.unitCenter.z;
         l.pair170.xy.y = l.pair170.xy.y +

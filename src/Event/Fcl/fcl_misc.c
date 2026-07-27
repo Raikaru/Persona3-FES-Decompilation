@@ -2025,17 +2025,17 @@ void FUN_003ca960(int param_1)
 
   pfVar3 = &fStack_8;
 
-  pfVar1 = pfVar3;
+  if (pfVar3 != (float *)0x0) {
 
-  while (pfVar1 != (float *)0x0) {
+    do {
 
-    *(u8 *)pfVar3 = 0;
+      *(u8 *)pfVar3 = 0;
 
-    pfVar3 = (float *)((int)pfVar3 + 1);
+      pfVar3 = (float *)((int)pfVar3 + 1);
 
-    pfVar2 = (float *)((int)pfVar2 + -1);
+      pfVar2 = (float *)((int)pfVar2 + -1);
 
-    pfVar1 = pfVar2;
+    } while (pfVar2 != (float *)0x0);
 
   }
 

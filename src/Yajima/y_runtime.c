@@ -18509,7 +18509,7 @@ void FUN_00458600(int param_1)
 u64 FUN_00458630(u64 param_1,char param_2,u8 param_3)
 
 {
-  long lVar1;
+  u32 uVar1;
   u64 uVar2;
   u64 uVar3;
   int iVar4;
@@ -18529,13 +18529,13 @@ u64 FUN_00458630(u64 param_1,char param_2,u8 param_3)
   
   iVar4 = param_2 * 0x1c0;
   iVar5 = param_2 * 0x1c;
-  lVar1 = (*DAT_00960184)(1,0x4b4,0x40000);
-  if (lVar1 == 0) {
+  uVar1 = (*DAT_00960184)(1,0x4b4,0x40000);
+  if (uVar1 == 0) {
     uVar2 = 0;
   }
   else {
-    uVar2 = FUN_00194b80_u32(param_1,10,DAT_006b4b50,(u32 (*)(int))FUN_00457a40,FUN_00458600,lVar1);
-    puVar6 = (u8 *)lVar1;
+    uVar2 = FUN_00194b80_u32(param_1,10,DAT_006b4b50,(u32 (*)(int))FUN_00457a40,FUN_00458600,uVar1);
+    puVar6 = (u8 *)uVar1;
     *puVar6 = 0;
     puVar6[1] = param_3;
     puVar6[2] = param_2;

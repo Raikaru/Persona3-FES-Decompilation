@@ -17166,9 +17166,9 @@ void FUN_0032ce10(int param_1)
 
     uStack_34 = *(u32 *)((int)puVar4 + 0xc);
 
-    fStack_40 = (float)*puVar4;
+    fStack_40 = *(float *)puVar4;
 
-    fStack_3c = (float)((u32)*puVar4 >> 0x20);
+    fStack_3c = *((float *)puVar4 + 1);
 
     if ((iVar6 == 0) || (*(int *)(iVar15 + 0x10) < iVar6)) {
 
@@ -28780,6 +28780,7 @@ float * FUN_003385d0(u32 param_1)
   u32 uVar2;
 
   u32 uVar3;
+  u32 uVar4;
 
   float *pfVar4;
 
@@ -28821,11 +28822,11 @@ float * FUN_003385d0(u32 param_1)
 
   pfVar9[1] = fVar5;
 
-  fVar5 = (float)FUN_003233a0(uVar1 & 0xffff,2,4,0x69bd50,0x48);
+  uVar4 = FUN_003233a0(uVar1 & 0xffff,2,4,0x69bd50,0x48);
 
-  pfVar9[2] = fVar5;
+  fVar5 = *(float *)&uVar4;
 
-  puVar7 = *(u32 **)(*(int *)(*(int *)((int)fVar5 + 0x10) + 0x18) + 0x30);
+  puVar7 = *(u32 **)(*(int *)(*(int *)(uVar4 + 0x10) + 0x18) + 0x30);
 
   uVar2 = *(u32 *)(iVar6 + 0x44);
 
