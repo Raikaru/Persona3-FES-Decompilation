@@ -2917,7 +2917,7 @@ void FUN_003b2020(int param_1,int param_2)
 
           else {
 
-            uVar6 = FUN_003b1920(0,lVar7,1);
+            uVar6 = FUN_003b1920_typed(0,lVar7,1);
 
           }
 

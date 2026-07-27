@@ -10111,13 +10111,13 @@ void func_002ef000(u64 *param_1)
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfdffffff;
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x80000;
   iVar1 = *(int *)(param_1 + 6);
-  if (*(short *)(iVar1 + 0xa4) == 0x10c) {
+  if (*(u16 *)(iVar1 + 0xa4) == 0x10c) {
     unaff_s0_lo = 3;
     uVar4 = func_002e2cb0(0x312);
     *(u16 *)((int)uVar4 + 0x48) = 3;
     FUN_0027ed20_voice(uVar4,1);
   }
-  else if (*(short *)(iVar1 + 0xa4) == 0x10b) {
+  else if (*(u16 *)(iVar1 + 0xa4) == 0x10b) {
     unaff_s0_lo = 2;
     uVar4 = func_002e2cb0(0x2ff);
     *(u16 *)((int)uVar4 + 0x48) = 3;
