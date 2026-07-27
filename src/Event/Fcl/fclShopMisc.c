@@ -400,7 +400,7 @@ void FUN_00401170(int param_1);
 u64 FUN_004012c0(int param_1);
 u64 FUN_00401370(int param_1);
 void FUN_00401420(int param_1,int param_2);
-u32 FUN_004014e0(u64 param_1);
+u32 FUN_004014e0(u32 param_1);
 void FUN_004015a0(u32 *param_1,u32 param_2);
 u8 FUN_004015e0(u32 *param_1);
 int FUN_00401600(u64 param_1,u64 param_2,int param_3);
@@ -7840,11 +7840,14 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      lVar5 = sVar1;
-      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
-        uVar4 = datGetEquipmentId(1,iVar6);
-        if (lVar5 == (uVar4 & 0xffff)) {
-          sVar3 = sVar3 + 1;
+      {
+        int iVar8 = 0;
+        lVar5 = sVar1;
+        for (; iVar8 < 300; iVar8 = iVar8 + 1) {
+          uVar4 = datGetEquipmentId(1,iVar8);
+          if (lVar5 == (uVar4 & 0xffff)) {
+            sVar3 = sVar3 + 1;
+          }
         }
       }
       break;
@@ -14188,7 +14191,7 @@ void FUN_00401420(int param_1,int param_2)
 // FUN_004014E0 NONMATCHING
 
 
-u32 FUN_004014e0(u64 param_1)
+u32 FUN_004014e0(u32 param_1)
 
 
 
@@ -14198,7 +14201,7 @@ u32 FUN_004014e0(u64 param_1)
 
   u32 uVar2;
 
-  long lVar3;
+  int lVar3;
 
   u32 *puVar4;
 

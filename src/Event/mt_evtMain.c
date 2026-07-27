@@ -1074,11 +1074,8 @@ void FUN_00361270(int param_1)
 
           *(int *)(iVar2 + 0x68) = *(int *)(iVar2 + 0x68) + -1;
 
-          FUN_00361140(0,0);
-
-          iVar2 = extraout_a0_lo;
-
-          puVar3 = extraout_a1_lo;
+          FUN_00361140(iVar2,puVar1);
+          puVar3 = puVar1;
 
           break;
 
