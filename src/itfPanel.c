@@ -116,7 +116,7 @@ extern u32 uGpffffb964;
 
 extern void FUN_003bb060(u16 param_1,u16 param_2);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-void FUN_003a87d0(float param_1,int param_2,int param_3,int param_4,u32 param_5,u32 param_6,  u32 param_7);
+void FUN_003a87d0(float param_1,int param_2,int param_3,int *param_4,u32 param_5,u32 param_6,  u32 param_7);
 void FUN_003a8dc0(int param_1,int param_2,int param_3,int param_4,  int param_5,int param_6);
 void FUN_003a8d60(int param_1);
 void FUN_003a8ea0(long param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
