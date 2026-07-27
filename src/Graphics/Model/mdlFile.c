@@ -392,6 +392,8 @@ void FUN_00324b50(u64 param_1);
 #pragma alias FUN_00324bd0_passthru FUN_00324bd0
 extern u64 FUN_00324bd0_passthru(void);
 u64 FUN_00324bd0(u64 param_1);
+#pragma alias FUN_00324bd0_u32 FUN_00324bd0
+extern u32 FUN_00324bd0_u32(u64 param_1);
 void FUN_003252a0(u64 param_1);
 void FUN_00325500(u64 param_1);
 void FUN_003257a0(u64 param_1);
@@ -11035,7 +11037,7 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 
     param_1[0xf] = uVar1;
 
-    uVar2 = FUN_00324bd0((u64)(param_2));
+    uVar2 = FUN_00324bd0_u32((u64)(param_2));
 
     *(u32 *)param_1[0xf] = uVar2;
 
