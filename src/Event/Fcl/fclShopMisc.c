@@ -7746,8 +7746,8 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
   for (uVar7 = 0; (long)uVar7 < 300; uVar7 = (u32)((int)uVar7 + 1)) {
 
-    uVar5 = func_0016f720(1,uVar7);
 
+    uVar5 = func_0016f720(1,uVar7);
     if ((((param_2 & uVar5) != 0) && (lVar6 = FUN_003f1dc0_u32(1,auStack_20,uVar7), lVar6 != 0)) &&
 
        (lVar6 = FUN_003f98f0(uVar7 & 0xffff), lVar6 != 0)) {

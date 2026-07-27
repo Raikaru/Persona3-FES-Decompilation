@@ -2824,7 +2824,7 @@ u32 FUN_003d8630(int param_1,int param_2)
 
   u8 bVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 
