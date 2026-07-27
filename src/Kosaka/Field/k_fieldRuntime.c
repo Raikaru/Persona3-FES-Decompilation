@@ -4371,6 +4371,18 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             1.0f, (RuntimeWork*)work, 1, color3 + (tail3 - 3) * 4);
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 1, color3 + (tail3 - 2) * 4);
+        denominator3 = (f32)count3 + 0.5f;
+        step3 = 1.0f / denominator3;
+        amount3 = 0.5f / denominator3;
+        cursor3 = color3 + 12;
+        for (index3 = 0; index3 < count3; index3++)
+        {
+            func_001ed0f0(
+                amount3, (RuntimeWork*)work, 1, cursor3);
+            cursor3 += 4;
+            cursor3 += 8;
+            amount3 += step3;
+        }
     }
     default:
         break;
