@@ -376,15 +376,14 @@ scale_y_done:
 // FUN_0040E930 NONMATCHING
 
 
-u64
-
-
-FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
 u32
+
+
 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
 
+            int param_6,int param_7,int param_8,int param_9,int param_10,int param_11,
 
-
+            int param_12)
 {
 
   int iVar1;
