@@ -558,15 +558,15 @@ void FUN_003a8ea0(int param_1,int param_2,int param_3,int param_4,int param_5,in
 
   *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + param_6;
 
-  if ((code *)(&PTR_FUN_006a1c10)[*(u8 *)(iVar1 + 0x3c)] != (code *)0x0) {
+  if ((code *)(&PTR_FUN_006a1c10)[*(u8 *)(param_1 + 0x3c)] != (code *)0x0) {
 
-    (*(code *)(&PTR_FUN_006a1c10)[*(u8 *)(iVar1 + 0x3c)])
+    (*(code *)(&PTR_FUN_006a1c10)[*(u8 *)(param_1 + 0x3c)])
 
-              (*(u32 *)(iVar1 + 8),*(u32 *)(iVar1 + 0x10),
+              (*(u32 *)(param_1 + 8),*(u32 *)(param_1 + 0x10),
 
-               *(u32 *)(iVar1 + 0x14),*(u32 *)(iVar1 + 0x18),
+               *(u32 *)(param_1 + 0x14),*(u32 *)(param_1 + 0x18),
 
-               *(u32 *)(iVar1 + 0x1c));
+               *(u32 *)(param_1 + 0x1c));
 
   }
 
