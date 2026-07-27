@@ -6318,7 +6318,7 @@ u32 FUN_00322880(int param_1)
 
   u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int *piVar6;
 
@@ -7066,7 +7066,7 @@ int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5)
 
   short sVar5;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 
