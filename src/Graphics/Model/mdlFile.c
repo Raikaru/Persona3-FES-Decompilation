@@ -2835,11 +2835,11 @@ u32 FUN_0031ebe0(int *param_1)
 
   long lVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
-  u64 uVar10;
+  u32 uVar10;
 
   u32 uStack_c;
 
@@ -7210,7 +7210,7 @@ u64 FUN_00323640(u16 *param_1)
 
   u16 *puVar6;
 
-  long lVar7;
+  int lVar7;
 
   
 
