@@ -4557,6 +4557,10 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             blended.z = vector2[geometryIndex].z + normal0.z;
             vertices[geometryIndex] = blended;
         }
+        if (work->state == 2)
+        {
+            func_004933d0(*(void**)((u8*)renderObject + 0x5c));
+        }
         (void)vector2;
         (void)vector3;
         (void)section;

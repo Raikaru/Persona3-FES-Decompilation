@@ -574,7 +574,7 @@ u64 FUN_00368830(u64 param_1,u64 param_2,int param_3);
 u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4);
 u32 FUN_003689c0(int param_1,int param_2,int param_3);
 u64 FUN_00368a30(u64 param_1,u64 param_2,int param_3,int param_4);
-u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3);
+u64 FUN_00368b00(u64 param_1,int param_2,int param_3);
 u64 FUN_00368c10(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00368cb0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3);
@@ -9332,7 +9332,7 @@ u64 FUN_00368a30(u64 param_1,u64 param_2,int param_3,int param_4)
 // FUN_00368B00 NONMATCHING
 
 
-u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
+u64 FUN_00368b00(u64 param_1,int param_2,int param_3)
 
 
 
@@ -9340,7 +9340,7 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
 
   int *piVar1;
 
-  int iVar2;
+  int iVar5;
 
   int iVar3;
 
@@ -9363,9 +9363,9 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
   else {
     iVar4 = piVar1[0x1b];
     iVar1 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
-    iVar2 = 0;
-    for (; (iVar2 < iVar1 && (iVar4 != 0));
-        iVar4 = *(int *)(iVar4 + 0x4c), iVar2 = iVar2 + 1) {
+    iVar5 = 0;
+    for (; (iVar5 < iVar1 && (iVar4 != 0));
+        iVar4 = *(int *)(iVar4 + 0x4c), iVar5 = iVar5 + 1) {
     }
 
 

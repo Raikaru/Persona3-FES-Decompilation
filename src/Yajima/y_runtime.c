@@ -343,8 +343,6 @@ extern code DAT_0096017c_abs[];
 extern code DAT_00960184;
 #pragma alias DAT_00960184_abs DAT_00960184
 extern code DAT_00960184_abs[];
-#pragma alias DAT_00960184_u32 DAT_00960184
-extern void *(*DAT_00960184_u32)(u32,u32,u32);
 #pragma alias FUN_00194b80_u32 FUN_00194b80
 extern u32 FUN_00194b80_u32(u64, u32, u8 *, u32 (*)(int), void (*)(int), u32);
 extern u32 PTR_DAT_006b46f0;
@@ -17444,7 +17442,7 @@ FUN_004560d0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
   u64 uVar2;
   u8 *puVar3;
   
-  lVar1 = (*DAT_00960184_u32)(1,0x150,0x40000);
+  lVar1 = (*DAT_00960184)(1,0x150,0x40000);
   if (lVar1 == 0) {
     uVar2 = 0;
   }

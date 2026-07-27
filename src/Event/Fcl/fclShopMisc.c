@@ -16092,21 +16092,22 @@ u8 FUN_00403410(short param_1)
 
   iVar3 = FUN_004037e0(param_1);
   lVar5 = ((long)*(char *)(iVar3 + 7) << 0x38) >> 0x3c;
-  if (lVar5 == 2) {
+  switch (lVar5) {
+  case 0:
+    return 3;
+  case 1:
+    sVar2 = datGetDaysSinceApr5();
+    unaff_s2 = (long)sVar2;
+    unaff_s1 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x3a,
+                            ((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
+    break;
+  case 2:
     sVar2 = datGetDaysSinceApr5();
     unaff_s2 = (long)sVar2;
     iVar4 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 4) << 0x34) >> 0x3a,
                          ((long)*(char *)(iVar3 + 4) << 0x3a) >> 0x3a);
     unaff_s1 = (long)((int)(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x34) + iVar4);
-  }
-  else if (lVar5 == 1) {
-    sVar2 = datGetDaysSinceApr5();
-    unaff_s2 = (long)sVar2;
-    unaff_s1 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x3a,
-                            ((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
-  }
-  else if (lVar5 == 0) {
-    return 3;
+    break;
   }
   if (unaff_s2 == unaff_s1) {
     uVar1 = 2;

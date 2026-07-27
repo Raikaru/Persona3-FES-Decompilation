@@ -3468,6 +3468,7 @@ u32 FUN_0039c0f0(int param_1)
   int iVar9;
 
   short sVar10;
+  int iVar11;
 
   int aiStack_30 [8];
 
@@ -3557,9 +3558,9 @@ u32 FUN_0039c0f0(int param_1)
 
   case 2:
 
-    lVar5 = FUN_001016b0(puVar1[3]);
+    iVar11 = FUN_001016b0(puVar1[3]);
 
-    if (lVar5 == 1) {
+    if (iVar11 == 1) {
 
       uVar4 = FUN_001021c0(0x6a14a0,auStack_4);
 
