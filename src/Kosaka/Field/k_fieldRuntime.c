@@ -4859,9 +4859,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 *(f32*)(recordBase + 0x1c) =
                     (*(f32*)(recordBase + 4) +
                      *(f32*)(recordBase + 0x10)) * 0.5f;
-                *(f32*)(recordBase + 0x20) =
-                    (*(f32*)(recordBase + 8) +
-                     *(f32*)(recordBase + 0x14)) * 0.5f;
                 recordBase += 0x24;
             }
         }
