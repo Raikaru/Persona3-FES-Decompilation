@@ -7457,7 +7457,6 @@ void func_002e9450(void)
   *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
   FUN_0027ed20((u32)uVar5,1);
   FUN_002b9030(uVar3);
-  return;
 }
 #pragma opt_loop_invariants on
 // FUN_002e95f0
