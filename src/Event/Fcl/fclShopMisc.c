@@ -3955,10 +3955,9 @@ void FUN_003f3dc0(int param_1,u32 param_2)
 {
 
   u32 *puVar1;
+  int iVar3;
 
   int lVar2;
-
-  int iVar3;
 
   
 
