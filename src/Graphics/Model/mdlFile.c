@@ -174,6 +174,7 @@ static Vec128 mdlVecLoadN(const void *p, u32 n) {
 }
 static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; return v; }
 
+extern f32 DAT_007cae4c;
 /* Retail's VU0 colour-modulate kernel (COP2 macro mode + MMI pack).
    Unpacks two packed RGBA u32s to floats, scales each by DAT_007cae4c
    (1/255), multiplies, rescales by 255.0f, converts back and packs.
@@ -44170,8 +44171,8 @@ void FUN_00349fd0(u8 (*param_1) [16])
   int iVar3;
   int iVar4;
   float fVar7;
-  f32 vuPos[4];
   u32 colourStack[4];
+  f32 vuPos[4];
 
   uVar1 = *(u32 *)param_1[2];
   iVar2 = *(int *)(param_1[2] + 4);

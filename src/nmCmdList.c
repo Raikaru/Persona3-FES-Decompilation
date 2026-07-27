@@ -931,7 +931,7 @@ u64 FUN_003c6b70(int param_1)
 
 {
 
-  u16 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
@@ -952,7 +952,8 @@ u64 FUN_003c6b70(int param_1)
 
     *piVar5 = 0;
 
-    *(u32 *)(iVar2 + 0x28) = 0;
+    piVar5[1] = 0;
+    return 0;
 
   }
 
@@ -960,7 +961,7 @@ u64 FUN_003c6b70(int param_1)
 
     iVar4 = *(int *)(*(int *)(*(int *)(param_1 + 0xc) + 0x14) + 0xc) - 1;
     iVar6 = *(u16 *)(param_1 + 0x10) - 1;
-    iVar3 = *(int *)(*(int *)(*(int *)(iVar2 + 0x2c) + 0x14) + 0xc);
+    iVar3 = *(int *)(*(int *)(piVar5[2] + 0x14) + 0xc) - 1;
     if (iVar6 >= 1) {
 
       *piVar5 = (iVar4 * 0xffff) / iVar6;
@@ -981,13 +982,13 @@ u64 FUN_003c6b70(int param_1)
 
     if (iVar6 >= 1) {
 
-      *(int *)(iVar2 + 0x28) = ((iVar3 + -1) * 0xffff) / iVar6;
+      piVar5[1] = (iVar3 * 0xffff) / iVar6;
 
     }
 
     else {
 
-      *(u32 *)(iVar2 + 0x28) = 0;
+      piVar5[1] = 0;
 
     }
 
