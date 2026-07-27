@@ -39,7 +39,7 @@ u32 FUN_002fdcf0(int param_1,int param_2);
 code FUN_002fded0(s16 param_1);
 u8 FUN_002fdfa0(void);
 u32 FUN_002fdfe0(int param_1);
-void FUN_002fe0b0(float param_1,u8 *param_2,u64 param_3,u64 param_4,  u64 param_5);
+void FUN_002fe0b0(float param_1,u8 *param_2,u32 param_3,u32 param_4,  u32 param_5);
 void FUN_002fe780(float param_1,u8 *param_2,u8 *param_3,u64 param_4,u64 param_5);
 u32 FUN_002fed10(int param_1);
 u8 FUN_00301750(int datUnit, u32 flag);
