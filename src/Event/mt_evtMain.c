@@ -919,9 +919,7 @@ void FUN_00361140(int param_1,u16 *param_2)
 
           *(u16 **)(puVar1 + 0x28) = param_2;
 
-          param_2[0x28] = 0;
-
-          param_2[0x29] = 0;
+          *(u32 *)((int)param_2 + 0x50) = 0;
 
           *(u16 **)(param_2 + 0x26) = puVar1;
 
