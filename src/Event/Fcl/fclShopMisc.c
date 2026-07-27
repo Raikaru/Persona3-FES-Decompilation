@@ -491,7 +491,7 @@ void FUN_0040a200(int param_1);
 void FUN_0040a260(int param_1);
 u32 FUN_0040a2b0(u32 param_1);
 u32 FUN_0040a490(u32 param_1);
-void FUN_0040a6d0(u64 param_1,long param_2);
+void FUN_0040a6d0(u32 param_1,int param_2);
  #pragma alias FUN_0040a6d0_i FUN_0040a6d0
  void FUN_0040a6d0_i(u32 param_1,int param_2);
  #pragma alias FUN_00174a90_fcl FUN_00174a90
@@ -19155,7 +19155,7 @@ ret:
 // FUN_0040A6D0 NONMATCHING
 
 
-void FUN_0040a6d0(u64 param_1,long param_2)
+void FUN_0040a6d0(u32 param_1,int param_2)
 
 
 

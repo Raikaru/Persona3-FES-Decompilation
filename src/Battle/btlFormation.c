@@ -7232,7 +7232,7 @@ u32 func_002c3770(u64 param_1,u64 param_2)
   float afStack_60 [24] = {0};
   
   iVar11 = (int)param_1;
-  sVar4 = func_002bff60(param_1,iVar11 + 0x88,*(u16 *)(iVar11 + 0x6e),0);
+  sVar4 = func_002bff60_u16((u32)param_1,iVar11 + 0x88,*(u16 *)(iVar11 + 0x6e),0);
   if (sVar4 == 0) {
     uVar2 = *(u16 *)(iVar11 + 0xc0);
     uVar12 = (u32)uVar2;

@@ -4443,14 +4443,14 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             index = 0;
             while (index < count)
             {
-                sample0 = vector0[index];
-                sample1 = vector1[index];
-                blended.x = sample0.x + sample1.x;
-                blended.y = sample0.y + sample1.y;
-                blended.z = sample0.z + sample1.z;
-                blended.x *= 0.5f;
-                blended.y *= 0.5f;
-                blended.z *= 0.5f;
+                sample0 = vector0[section < count ? section : index];
+                sample1 = vector1[section < count ? section : index];
+                blended.x = sample0.x +
+                            (sample1.x - sample0.x) * fraction;
+                blended.y = sample0.y +
+                            (sample1.y - sample0.y) * fraction;
+                blended.z = sample0.z +
+                            (sample1.z - sample0.z) * fraction;
                 vertices[index] = blended;
                 index++;
             }
