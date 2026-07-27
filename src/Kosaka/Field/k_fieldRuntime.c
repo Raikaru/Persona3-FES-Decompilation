@@ -4406,6 +4406,67 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         break;
     }
     {
+        u32 clearCount;
+        u32 clearIndex;
+        u8* clearBase;
+        u8* clearCursor;
+        u8* clearEnd;
+
+        clearCount = *(u32*)((u8*)work->config + 0xc);
+        if (work->firstIndex < 2)
+        {
+            switch (work->state)
+            {
+            case 0:
+                clearBase = *(u8**)((u8*)renderObject + 0x70);
+                clearEnd = clearBase +
+                           *(u32*)((u8*)renderObject + 0x14) * 0xc;
+                clearCursor = clearBase;
+                for (clearIndex = 0; clearIndex < clearCount + 1;
+                     clearIndex++)
+                {
+                    if (clearCursor == clearEnd)
+                    {
+                        clearCursor = clearEnd;
+                    }
+                    *(f32*)(clearCursor + 0) = 0.0f;
+                    *(f32*)(clearCursor + 4) = 0.0f;
+                    *(f32*)(clearCursor + 8) = 0.0f;
+                    clearCursor += 0x18;
+                }
+                clearCursor = clearBase + 0xc;
+                for (clearIndex = 0; clearIndex < clearCount;
+                     clearIndex++)
+                {
+                    if (clearCursor == clearEnd)
+                    {
+                        clearCursor = clearEnd;
+                    }
+                    *(f32*)(clearCursor + 0) = 0.0f;
+                    *(f32*)(clearCursor + 4) = 0.0f;
+                    *(f32*)(clearCursor + 8) = 0.0f;
+                    clearCursor += 0x18;
+                }
+                break;
+            case 1:
+            case 2:
+                clearCursor = *(u8**)((u8*)renderObject + 0x70);
+                for (clearIndex = 0;
+                     clearIndex < clearCount * 3 + 6;
+                     clearIndex++)
+                {
+                    *(f32*)(clearCursor + 0) = 0.0f;
+                    *(f32*)(clearCursor + 4) = 0.0f;
+                    *(f32*)(clearCursor + 8) = 0.0f;
+                    clearCursor += 0xc;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+    }
+    {
         RuntimeVec3* vertices;
         RuntimeVec3* vector0;
         RuntimeVec3* vector1;

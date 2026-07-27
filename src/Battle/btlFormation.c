@@ -3548,8 +3548,8 @@ u32 func_002bd080(int *work)
   int unit;
   s16 current;
   s16 maximum;
-  long value;
-  long adjusted;
+  int value;
+  int adjusted;
 
   unit = *work;
   switch (*(u8 *)((int)work + 4)) {
