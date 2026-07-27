@@ -4528,6 +4528,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             func_004c69f0(&normal0, &normal0);
             func_004c69f0(&edge0, &edge0);
             func_004c69f0(&edge1, &edge1);
+            func_004c69f0(&normal0, &normal0);
             blended.x = vector2[geometryIndex].x + normal0.x;
             blended.y = vector2[geometryIndex].y + normal0.y;
             blended.z = vector2[geometryIndex].z + normal0.z;
