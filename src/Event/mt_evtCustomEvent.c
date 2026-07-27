@@ -3495,7 +3495,9 @@ u32 FUN_0039c0f0(int param_1)
 
     iVar8 = 0;
 
-    for (iVar9 = 0; iVar7 = -1, sVar10 = 0, iVar9 < 5; iVar9 = iVar9 + 1) {
+    iVar7 = -1;
+    sVar10 = 0;
+    for (iVar9 = 0; iVar9 < 5; iVar9 = iVar9 + 1) {
 
       sVar10 = *(short *)(puVar1[0x10] + iVar9 * 2 + 0x14);
 

@@ -650,7 +650,7 @@ extern void func_002bedd0(int param_1);
 extern u64 func_002bef20(u64 param_1);
 extern u32 func_002bf2b0(u32 param_1);
 extern void func_002bf370(u64 param_1);
-extern u32 func_002bf3f0(u64 param_1);
+extern u32 func_002bf3f0(int param_1);
 extern void func_002bf650(void);
 extern void func_002bf690(short param_1);
 extern void func_002bf850(void);
@@ -4670,7 +4670,7 @@ void func_002bf370(u64 param_1)
 
 // FUN_002bf3f0 NONMATCHING
 
-u32 func_002bf3f0(u64 param_1)
+u32 func_002bf3f0(int param_1)
 
 {
   u32 uVar1 = 0;

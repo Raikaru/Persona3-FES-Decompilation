@@ -3663,7 +3663,7 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
 
   fStack_8 = param_2[2] - param_1[2];
 
-  FUN_003bb9b0(&fStack_10);
+  FUN_003bb9b0_scene_typed(&fStack_10);
 
   afStack_20[0] = fStack_10;
 

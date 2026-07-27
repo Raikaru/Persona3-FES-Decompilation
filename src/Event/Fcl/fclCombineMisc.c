@@ -137,7 +137,7 @@ extern FcmDispatchResult *FUN_003e0260();
 extern Fcm982Result *FUN_003e0330(void *param_1,int param_2,int param_3,int param_4);
 void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2);
 void FUN_003d9cc0(int param_1);
-void FUN_003d9ea0(u64 param_1);
+void FUN_003d9ea0(int param_1);
 typedef int (*code)(...);
 
 u32 FUN_003c3f80();
@@ -3604,7 +3604,7 @@ void FUN_003d9cc0(int param_1)
 // FUN_003D9EA0 NONMATCHING
 
 
-void FUN_003d9ea0(u64 param_1)
+void FUN_003d9ea0(int param_1)
 
 
 
