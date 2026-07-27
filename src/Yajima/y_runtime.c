@@ -3570,15 +3570,13 @@ u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
 void FUN_004311f0(void *param_1,int param_2,int param_3)
 
 {
-  float fStack_8;
-  u32 uStack_4;
-  float fStack_0;
+  YVec3f vec;
   float fVar1;
   float fVar2;
   float fVar3;
   
   fVar3 = 800.0f;
-  uStack_4 = 0;
+  vec.y = 0.0f;
   if (param_2 < 0) {
     fVar1 = (float)(int)(((u32)param_2 >> 1) | (param_2 & 1));
     fVar1 = fVar1 + fVar1;
@@ -3586,7 +3584,7 @@ void FUN_004311f0(void *param_1,int param_2,int param_3)
   else {
     fVar1 = (float)param_2;
   }
-  fStack_0 = 800.0f * fVar1;
+  vec.x = fVar3 * fVar1;
   if (param_3 < 0) {
     fVar2 = (float)(int)(((u32)param_3 >> 1) | (param_3 & 1));
     fVar2 = fVar2 + fVar2;
@@ -3594,11 +3592,8 @@ void FUN_004311f0(void *param_1,int param_2,int param_3)
   else {
     fVar2 = (float)param_3;
   }
-  fVar3 = 800.0f * fVar2;
-  fStack_8 = fVar3;
-  *(float *)((u8 *)param_1 + 0) = fStack_0;
-  *(u32 *)((u8 *)param_1 + 4) = uStack_4;
-  *(float *)((u8 *)param_1 + 8) = fVar3;
+  vec.z = fVar3 * fVar2;
+  *(YVec3f *)param_1 = vec;
 }
 
 // FUN_004312B0 NONMATCHING
