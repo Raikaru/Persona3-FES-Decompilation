@@ -88,7 +88,7 @@ typedef struct BtlUnitPacketBackstep
 
 void func_0027f530(BtlUnit* unit);
 void func_00280050(void* param_1, RwV3d* param_2);
-f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3, f32* param_4, f32* param_5, u32 param_6);
+f32 func_00280870(u16 param_1, u32 param_2, RwV3d* param_3, f32* param_4, f32* param_5, u16 param_6);
 u32 func_002f8ea0(BtlUnit* unit, RwV3d* param_2);
 void func_002d1de0(RwV3d* dst, const RwV3d* from, const RwV3d* to);
 void func_002d4800(RwV3d* param_1);
@@ -467,8 +467,8 @@ void func_002807a0(BtlUnit* unit, RwV3d* param_2)
 }
 
 // FUN_00280870 NONMATCHING
-f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
-                  f32* param_4, f32* param_5, u32 param_6)
+f32 func_00280870(u16 param_1, u32 param_2, RwV3d* param_3,
+                  f32* param_4, f32* param_5, u16 param_6)
 {
     u32 genus;
     u32 count;
