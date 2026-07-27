@@ -140,6 +140,7 @@ extern u8 DAT_0069a550[];
 extern u8 DAT_0069a5c8[];
 extern u32 DAT_0069a5cc;
 extern u32 DAT_0069a5d0;
+extern const char DAT_0069a5b8[];
 extern u8 DAT_0069a5d8[];
 extern u32 DAT_0069a5e0;
 extern u8 DAT_0069a608[];
@@ -167,6 +168,7 @@ extern u32 DAT_0069a6b8;
 extern u8 DAT_0069a6d0[];
 extern u8 DAT_0069a6f0[];
 extern u8 DAT_006a0000[];
+extern u8 DAT_007cc970;
 extern u32 DAT_007cc9e0;
 extern u32 DAT_007cc9e2;
 extern u32 DAT_007cc9e4;
@@ -814,52 +816,41 @@ void func_002f0ea0(u64 *param_1)
 }
 
 // FUN_002f14a0 NONMATCHING
-u32 func_002f14a0(u64 *param_1)
-
+u32 func_002f14a0(u64* actionUID)
 {
-  u16 uVar1;
-  int iVar2;
-  int iVar3;
-  u32 uVar4;
-  s32 lVar5;
-  u64 uVar6;
-  u32 uVar7;
-  
-  uVar1 = *(u16 *)(iGpffffb6fc + 0xb50);
-  uVar7 = 0;
-  do {
-    if (uVar1 <= uVar7) {
-      lVar5 = FUN_0027e390(*param_1,0x3fffffffffffffff);
-      if (lVar5 != 0) {
-        uVar4 = 1;
-      }
-      else {
-        *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfff7ffff;
-        for (uVar7 = 0; uVar7 < uVar1; uVar7 = uVar7 + 1 & 0xffff) {
-          uVar4 = *(u32 *)(iGpffffb6fc + uVar7 * 4 + 0xb44);
-          FUN_002d7890(uVar4,0);
-          FUN_0029a320(uVar4);
-        }
-        *(u16 *)(iGpffffb6fc + 0xb50) = 0;
-        *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x2000000;
-        FUN_0027ed20(uVar6,1);
-        FUN_0027ed20(uVar6,1);
-        FUN_0027ed20(uVar6,1);
-        uVar4 = 0;
-      }
-      return uVar4;
+  u16 count;
+  u16 index;
+  BtlAction* action;
+  BtlPacket* packet;
+
+  count = *(u16 *)(DAT_007ce3ec + 0xb50);
+  for (index = 0; index < count; index++) {
+    action = *(BtlAction **)(DAT_007ce3ec + index * 4 + 0xb44);
+    if (action == btlActionCurrent()) {
+      action->unit->flags3 &= ~0x10;
     }
-    iVar2 = *(int *)(iGpffffb6fc + uVar7 * 4 + 0xb44);
-    iVar3 = FUN_0029ad20();
-    if (iVar2 == iVar3) {
-      *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) =
-           *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) & 0xffffffef;
-    }
-    else if ((*(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) & 0x10) != 0) {
+    else if ((action->unit->flags3 & 0x10) != 0) {
       return 1;
     }
-    uVar7 = uVar7 + 1 & 0xffff;
-  } while( true );
+  }
+  if (btlPacketFindFirstByActionUID(*actionUID, BTL_UIDMAX) != NULL) {
+    return 1;
+  }
+  gBtl->flags &= ~0x80000;
+  for (index = 0; index < count; index++) {
+    action = *(BtlAction **)(DAT_007ce3ec + index * 4 + 0xb44);
+    FUN_002d7890(action, 0);
+    FUN_0029a320(action);
+  }
+  *(u16 *)(DAT_007ce3ec + 0xb50) = 0;
+  gBtl->flags |= 0x02000000;
+  packet = FUN_0029fa50(0x10);
+  btlPacketRegister(packet, 1);
+  packet = FUN_002a1080(0x10, 4);
+  btlPacketRegister(packet, 1);
+  packet = FUN_002a16c0(0x10);
+  btlPacketRegister(packet, 1);
+  return 0;
 }
 
 // FUN_002f1680
@@ -1039,7 +1030,7 @@ void func_002f19d0(void)
   return;
 }
 
-// FUN_002f1b60 NONMATCHING
+// FUN_002f1b60
 u32 func_002f1b60(BtlAction* action, f32* position)
 {
   BtlUnit* unit;
@@ -1047,7 +1038,7 @@ u32 func_002f1b60(BtlAction* action, f32* position)
   RwV3d sourcePosition;
   RwV3d targetPosition;
   RwV3d direction;
-  u32 moveId;
+  u16 moveId;
   f32 distance;
   u32 result;
 
@@ -1076,14 +1067,14 @@ u32 func_002f1b60(BtlAction* action, f32* position)
             FUN_00280050(unit, &sourcePosition);
             FUN_00280480(target, unit, &targetPosition);
             direction.x = sourcePosition.x - targetPosition.x;
-            direction.y = 0.0f;
             direction.z = sourcePosition.z - targetPosition.z;
+            direction.y = 0.0f;
             FUN_004c69f0(&direction, &direction);
-            if (FUN_002d5e10(action) == 0) {
-              moveId = 4;
+            if (FUN_002d5e10(action) != 0) {
+              moveId = 0xb;
             }
             else {
-              moveId = 0xb;
+              moveId = 4;
             }
             distance = FUN_002812d0(unit, target, moveId);
             direction.x *= distance;
@@ -2741,58 +2732,63 @@ void func_002f5330(int param_1)
 
 // FUN_002f5490 NONMATCHING
 void func_002f5490(void)
-
 {
-  int iVar1;
-  f32 uStack_10;
-  f32 uStack_c;
-  f32 uStack_8;
-  
-  uStack_c = 0.0f;
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
-    if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b2) {
-      if (*(short *)(iVar1 + 0xa4) == 9) {
-        uStack_10 = -150.0f;
-        uStack_8 = 300.0f;
-        *(u8 *)(iVar1 + 0x9f0) = 0;
+  BtlUnit* unit;
+  RwV3d position;
+
+  position.y = 0.0f;
+  for (unit = gBtl->unitLists[UNIT_GENUS_PC].head;
+       unit != NULL; unit = unit->next) {
+    if (*(u16 *)(*(u8 **)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b2) {
+      switch (unit->charId) {
+      case 1:
+        position.x = 150.0f;
+        position.z = 300.0f;
+        unit->unk_9f0 = 1;
+        break;
+      case 9:
+        position.x = -150.0f;
+        position.z = 300.0f;
+        unit->unk_9f0 = 0;
+        break;
       }
-      else if (*(short *)(iVar1 + 0xa4) == 1) {
-        uStack_10 = 150.0f;
-        uStack_8 = 300.0f;
-        *(u8 *)(iVar1 + 0x9f0) = 1;
+    }
+    else {
+      switch (unit->charId) {
+      case 1:
+        position.x = -150.0f;
+        position.z = 300.0f;
+        unit->unk_9f0 = 0;
+        break;
+      case 9:
+        position.x = 150.0f;
+        position.z = 300.0f;
+        unit->unk_9f0 = 1;
+        break;
       }
     }
-    else if (*(short *)(iVar1 + 0xa4) == 9) {
-      uStack_10 = 150.0f;
-      uStack_8 = 300.0f;
-      *(u8 *)(iVar1 + 0x9f0) = 1;
-    }
-    else if (*(short *)(iVar1 + 0xa4) == 1) {
-      uStack_10 = -150.0f;
-      uStack_8 = 300.0f;
-      *(u8 *)(iVar1 + 0x9f0) = 0;
-    }
-    FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&uStack_10);
-    FUN_0027f650(iVar1,&uStack_10);
+    FUN_002d2280(&unit->unk_94, &unit->unk_96, &position);
+    btlUnitSetPos(unit, &position);
   }
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x158); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
-    switch(*(u16 *)(iVar1 + 0xa4)) {
+  for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
+       unit != NULL; unit = unit->next) {
+    switch (unit->charId) {
     case 0xeb:
     case 0xee:
     case 0xef:
-      uStack_10 = -150.0f;
-      uStack_8 = -300.0f;
+      position.x = -150.0f;
+      position.z = -300.0f;
       break;
     case 0xec:
     case 0xed:
     case 0xf0:
-      uStack_10 = 150.0f;
-      uStack_8 = -300.0f;
+      position.x = 150.0f;
+      position.z = -300.0f;
+      break;
     }
-    FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&uStack_10);
-    FUN_0027f650(iVar1,&uStack_10);
+    FUN_002d2280(&unit->unk_94, &unit->unk_96, &position);
+    btlUnitSetPos(unit, &position);
   }
-  return;
 }
 
 // FUN_002f5660
@@ -3104,48 +3100,48 @@ void func_002f5d80(u32 param_1)
 
 // FUN_002f6120 NONMATCHING
 void func_002f6120(void)
-
 {
-  int iVar1;
-  u64 uVar2;
-  u64 uVar3;
+  BtlUnit* target;
+  void* object;
+  BtlPacket* parent;
+  BtlUnit* unit;
   BtlPacket* packet;
-  int iVar4;
-  int iVar5;
-  
-  *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfdffffff;
-  uVar2 = FUN_002b8f90(0);
-  uVar3 = FUN_002f87e0(4);
-  FUN_002b90d0(uVar2,uVar3);
-  iVar5 = 0;
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x158); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
-    iVar4 = iVar1;
-    if (*(short *)(iVar1 + 0xa4) != 0xf1) {
-      iVar4 = iVar5;
+
+  gBtl->flags &= ~0x02000000;
+  object = func_002b8f90(0);
+  func_002b90d0(object, func_002f87e0(4));
+  target = NULL;
+  for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
+       unit != NULL; unit = unit->next) {
+    switch (unit->charId) {
+    case 0xf1:
+      target = unit;
+      break;
     }
-    iVar5 = iVar4;
   }
-  uVar3 = FUN_002dd690(3,0x69a5b8);
-  FUN_0027ed20(uVar3,1);
-  packet = FUN_00284200_packet_voice(1.0f, (BtlUnit*)iVar5, 0x12, 0, 2);
-  packet->preUpdateDelay = 3;
-  FUN_0027ed20((u32)packet,1);
-  uVar3 = FUN_002b8d60(3,0xfff);
-  *(u8 *)uVar3 = 4;
-  *(u64 *)((u8 *)uVar3 + 8) = *(u64 *)((u8 *)packet + 0x58);
-  uVar3 = FUN_0027fe90(iVar5,0,0x6978b0,0);
-  *(u8 *)uVar3 = 4;
-  *(u64 *)((u8 *)uVar3 + 8) = *(u64 *)((u8 *)packet + 0x58);
-  uVar3 = FUN_002a3b40(0,1);
-  *(u8 *)uVar3 = 4;
-  *(u64 *)((u8 *)uVar3 + 8) = *(u64 *)((u8 *)packet + 0x58);
-  packet = FUN_002baf90_packet_voice((void*)uVar2, (BtlUnit*)iVar5, (BtlUnit*)iVar5, 0, 0x200);
-  FUN_0027ed20((u32)packet,2);
-  packet = (BtlPacket*)FUN_002bc890(0x7cc970,0x18);
+  packet = FUN_002dd690_packet_voice(3, DAT_0069a5b8);
+  btlPacketRegister(packet, 1);
+  parent = FUN_00284200_packet_voice(1.0f, target, 0x12, 0, 2);
+  parent->preUpdateDelay = 3;
+  btlPacketRegister(parent, 1);
+  packet = FUN_002b8d60_packet_voice(3, 0xfff);
+  packet->unk_00 = 4;
+  packet->parentUID = parent->uid;
+  btlPacketRegister(packet, 1);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
+  packet->unk_00 = 4;
+  packet->parentUID = parent->uid;
+  btlPacketRegister(packet, 1);
+  packet = FUN_002a3b40_packet_voice(NULL, 1);
+  packet->unk_00 = 4;
+  packet->parentUID = parent->uid;
+  btlPacketRegister(packet, 0);
+  packet = FUN_002baf90_packet_voice(object, target, target, 0, 0x200);
+  btlPacketRegister(packet, 2);
+  packet = func_002bc890(&DAT_007cc970, 0x18);
   packet->preUpdateDelay = 200;
-  FUN_0027ed20((u32)packet,1);
-  FUN_002b9030(uVar2);
-  return;
+  btlPacketRegister(packet, 1);
+  func_002b9030(object);
 }
 
 // FUN_002f6330
@@ -10034,74 +10030,66 @@ void func_002eec60(void)
   return;
 }
 
-// FUN_002eee20 NONMATCHING
-u32 func_002eee20(BtlAction* param_1,float *param_2)
-
+// FUN_002eee20
+u32 func_002eee20(BtlAction* action, f32* position)
 {
-  int iVar1;
-  u32 uVar2;
-  u32 uVar3;
-  s32 lVar4;
-  int iVar5;
-  float fVar6;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float afStack_10 [2];
-  float fStack_8;
-  
-  iVar5 = (int)param_1;
-  iVar1 = *(int *)(iVar5 + 0x30);
-  if (*(char *)(iVar1 + 0xa2) != '\x01') {
-    uVar3 = 0;
+  BtlUnit* unit;
+  BtlUnit* target;
+  RwV3d sourcePosition;
+  RwV3d targetPosition;
+  RwV3d direction;
+  u16 moveId;
+  f32 distance;
+  u32 result;
+
+  unit = action->unit;
+  if (unit->genus != UNIT_GENUS_EC) {
+    result = 0;
   }
   else {
-    if (*(short *)(iVar1 + 0xa4) != 0x10c) {
-      uVar3 = 0;
+    if (unit->charId != 0x10c) {
+      result = 0;
     }
     else {
-      if (*(short *)(iVar5 + 0x6a) != 1) {
-        uVar3 = 0;
+      if (action->target.targetedCount != 1) {
+        result = 0;
       }
       else {
-        if (*(short *)(iVar5 + 0x6c) != 2) {
-          uVar3 = 0;
+        if (action->target.commandId != 2) {
+          result = 0;
         }
         else {
-          if ((*(u8 *)(DAT_007ce3f8 +
-                        ((u32)*(u16 *)(iVar5 + 0x6e) * 10 + (u32)*(u16 *)(iVar5 + 0x6e)) * 4
-                        ) & 2) == 0) {
-            uVar3 = 0;
+          if ((*(u8 *)(DAT_007ce3f8 + action->target.specificId * 0x2c) & 2) == 0) {
+            result = 0;
           }
           else {
-            uVar3 = *(u32 *)(*(int *)(iVar5 + 0x38) + 0x30);
-            FUN_00280050(iVar1,afStack_10);
-            FUN_00280480(uVar3,iVar1,&fStack_20);
-            fStack_30 = afStack_10[0] - fStack_20;
-            fStack_28 = fStack_8 - fStack_18;
-            fStack_2c = 0.0f;
-            FUN_004c69f0(&fStack_30,&fStack_30);
-            lVar4 = FUN_002d5e10(param_1);
-            if (lVar4 == 0) {
-              uVar2 = 4;
+            target = action->target.targetedActions[0]->unit;
+            FUN_00280050(unit, &sourcePosition);
+            FUN_00280480(target, unit, &targetPosition);
+            direction.x = sourcePosition.x - targetPosition.x;
+            direction.z = sourcePosition.z - targetPosition.z;
+            direction.y = 0.0f;
+            FUN_004c69f0(&direction, &direction);
+            if (FUN_002d5e10(action) != 0) {
+              moveId = 0xb;
             }
             else {
-              uVar2 = 0xb;
+              moveId = 4;
             }
-            fVar6 = FUN_002812d0((BtlUnit *)iVar1,(BtlUnit *)uVar3,(s32)uVar2);
-            *param_2 = fStack_20 + fStack_30 * fVar6;
-            param_2[1] = fStack_1c + fStack_2c * fVar6;
-            param_2[2] = fStack_18 + fStack_28 * fVar6;
-            uVar3 = 1;
+            distance = FUN_002812d0(unit, target, moveId);
+            direction.x *= distance;
+            direction.y *= distance;
+            direction.z *= distance;
+            position[0] = targetPosition.x + direction.x;
+            position[1] = targetPosition.y + direction.y;
+            position[2] = targetPosition.z + direction.z;
+            result = 1;
           }
         }
       }
     }
   }
-  return uVar3;
+  return result;
 }
 
 // FUN_002ef000 NONMATCHING

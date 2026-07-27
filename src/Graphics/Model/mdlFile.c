@@ -263,16 +263,23 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
    sequence; the result is written to the caller's contiguous colour stack. */
 static __inline void mdlVuModulateStacked90(u32 c2)
 {
+    f32 inv255;
     __asm__ volatile (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x8c      \n"
-        "lwc1        $f0, DAT_007cae4c($gp)\n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
         "pextlb      $v0, $zero, $v0     \n"
         "pextlh      $v0, $zero, $v0     \n"
         "qmtc2       $v0, $vf10          \n"
         "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, $f0            \n"
+        "mfc1        $v0, %1             \n"
         "nop                                \n"
         "qmtc2       $v0, $vf2           \n"
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
@@ -284,7 +291,7 @@ static __inline void mdlVuModulateStacked90(u32 c2)
         "pextlh      $v0, $zero, $v0     \n"
         "qmtc2       $v0, $vf10          \n"
         "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        $v0, $f0            \n"
+        "mfc1        $v0, %1             \n"
         "nop                                \n"
         "qmtc2       $v0, $vf2           \n"
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
@@ -299,8 +306,106 @@ static __inline void mdlVuModulateStacked90(u32 c2)
         "sw          $v0, 0x84($sp)      \n"
         ".set reorder"
         :
-        : "r"(c2)
-        : "$v0", "$f0", "memory");
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+
+static __inline void mdlVuModulateStacked80V0(u32 c2)
+{
+    f32 inv255;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x7c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x78($sp)       \n"
+        "addiu       $v0, $sp, 0x78      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x74($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+
+static __inline void mdlVuModulateStacked80V1(u32 c2)
+{
+    f32 inv255;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x7c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x78($sp)       \n"
+        "addiu       $v0, $sp, 0x78      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v1, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v1, 0x437F         \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v1, $vf10          \n"
+        "ppach       $v1, $zero, $v1     \n"
+        "ppacb       $v1, $zero, $v1     \n"
+        "sw          $v1, 0x74($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
 }
 
 
@@ -43968,10 +44073,8 @@ void FUN_00349af0(u8 (*param_1) [16])
   int iVar3;
   u8 *state;
   float fVar6;
+  u32 colourStack[4];
   f32 vuPos[4];
-  u32 c1s;
-  u32 c2s;
-  u8 packed[4];
 
   iVar1 = *(int *)(param_1[2] + 4);
   state = (u8 *)(iVar1 + 0xc0);
@@ -43985,8 +44088,8 @@ void FUN_00349af0(u8 (*param_1) [16])
   if (iVar2 >= iVar5) {
     fVar6 = FUN_0032a540((char *)(iVar1 + 0x8c),iVar5,iVar2);
     if (*(u8 *)(iVar1 + 0xbc) != 0) {
-      *(u32 *)(state + 0x14) = 0x43a00000;
-      *(u32 *)(state + 0x18) = 0x43600000;
+      *(float *)(state + 0x14) = 320.0f;
+      *(float *)(state + 0x18) = 224.0f;
       *(float *)(state + 0x1c) = 320.0f - fVar6;
       *(float *)(state + 0x20) = 224.0f - fVar6;
       *(float *)(state + 0x24) = fVar6 + 320.0f;
@@ -44005,10 +44108,9 @@ void FUN_00349af0(u8 (*param_1) [16])
       *(float *)(state + 0x28) = vuPos[1] + fVar6;
     }
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar5,iVar2);
-    c2s = (u32)iVar3;
-    c1s = *(u32 *)param_1[1];
-    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
-    *(u32 *)(state + 4) = *(u32 *)packed;
+    colourStack[3] = *(u32 *)param_1[1];
+    mdlVuModulateStacked80V0((u32)iVar3);
+    *(u32 *)(state + 4) = colourStack[1];
     fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
     *(float *)(state + 0x10) = fGpffff80b0 * fVar6 + 1.0f;
     fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
@@ -44346,15 +44448,13 @@ void FUN_0034a370(u8 (*param_1) [16])
 {
   u32 uVar1;
   int iVar2;
+  u8 *state;
   int iVar6;
   int iVar3;
   int iVar4;
-  u8 *state;
   float fVar7;
+  u32 colourStack[4];
   f32 vuPos[4];
-  u32 c1s;
-  u32 c2s;
-  u8 packed[4];
 
   uVar1 = *(u32 *)param_1[2];
   iVar2 = *(int *)(param_1[2] + 4);
@@ -44383,10 +44483,9 @@ void FUN_0034a370(u8 (*param_1) [16])
       *(float *)(state + 0x24) = vuPos[1];
     }
     iVar4 = FUN_0032a120((char *)iVar2,(u32 *)(iVar2 + 0x24),iVar6,iVar3);
-    c2s = (u32)iVar4;
-    c1s = *(u32 *)param_1[1];
-    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
-    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    colourStack[3] = *(u32 *)param_1[1];
+    mdlVuModulateStacked90((u32)iVar4);
+    *(u32 *)(state + 0xc) = colourStack[1];
     fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
     *(float *)(state + 0x1c) = fGpffff80b0 * fVar7;
     fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
@@ -44654,15 +44753,13 @@ void FUN_0034a9c0(u8 (*param_1) [16])
 {
   u32 uVar1;
   int iVar2;
+  u8 *state;
   int iVar6;
   int iVar3;
   int iVar4;
-  u8 *state;
   float fVar7;
+  u32 colourStack[4];
   f32 vuPos[4];
-  u32 c1s;
-  u32 c2s;
-  u8 packed[4];
 
   uVar1 = *(u32 *)param_1[2];
   iVar2 = *(int *)(param_1[2] + 4);
@@ -44691,10 +44788,9 @@ void FUN_0034a9c0(u8 (*param_1) [16])
       *(float *)(state + 0x20) = vuPos[1];
     }
     iVar4 = FUN_0032a120((char *)iVar2,(u32 *)(iVar2 + 0x24),iVar6,iVar3);
-    c2s = (u32)iVar4;
-    c1s = *(u32 *)param_1[1];
-    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
-    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    colourStack[3] = *(u32 *)param_1[1];
+    mdlVuModulateStacked90((u32)iVar4);
+    *(u32 *)(state + 0xc) = colourStack[1];
     fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
     *(float *)(state + 0x18) = fGpffff80b0 * fVar7;
     fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
@@ -44890,12 +44986,11 @@ void FUN_0034ae30(u8 (*param_1) [16])
   int iVar1;
   int iVar4;
   int iVar2;
+  int iVar3;
   u8 *state;
   float fVar5;
+  u32 colourStack[4];
   f32 vuPos[4];
-  u32 c1s;
-  u32 c2s;
-  u8 packed[4];
 
   iVar1 = *(int *)(param_1[2] + 4);
   state = (u8 *)(iVar1 + 0xc0);
@@ -44909,8 +45004,8 @@ void FUN_0034ae30(u8 (*param_1) [16])
   if (iVar2 >= iVar4) {
     fVar5 = FUN_0032a540((char *)(iVar1 + 0x8c),iVar4,iVar2);
     if (*(u8 *)(iVar1 + 0xbc) != 0) {
-      *(u32 *)(state + 4) = 0x43a00000;
-      *(u32 *)(state + 8) = 0x43600000;
+      *(float *)(state + 4) = 320.0f;
+      *(float *)(state + 8) = 224.0f;
       *(float *)(state + 0x14) = 320.0f - fVar5;
       *(float *)(state + 0x18) = 224.0f - fVar5;
       *(float *)(state + 0x1c) = fVar5 + 320.0f;
@@ -44928,11 +45023,10 @@ void FUN_0034ae30(u8 (*param_1) [16])
       *(float *)(state + 0x1c) = vuPos[0] + fVar5;
       *(float *)(state + 0x20) = vuPos[1] + fVar5;
     }
-    iVar2 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar4,iVar2);
-    c2s = (u32)iVar2;
-    c1s = *(u32 *)param_1[1];
-    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
-    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar4,iVar2);
+    colourStack[3] = *(u32 *)param_1[1];
+    mdlVuModulateStacked80V1((u32)iVar3);
+    *(u32 *)(state + 0xc) = colourStack[1];
     *(u32 *)(state + 0x10) = *(u32 *)(iVar1 + 0x28);
   }
   else {

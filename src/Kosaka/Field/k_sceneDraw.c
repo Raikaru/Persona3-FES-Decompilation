@@ -1019,21 +1019,17 @@ void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
 // FUN_0019f8f0 NONMATCHING
 void func_0019f8f0(const RwRGBAReal* color)
 {
-    volatile u8 redByte;
-    volatile u8 greenByte;
-    volatile u8 blueByte;
-    volatile u8 alphaByte;
     ResrcFld* fld;
-    RwRGBA* clearColor;
+    RwRGBA clearColor;
     u32 fogColor;
-    f32 redf;
-    f32 greenf;
-    f32 bluef;
-    f32 alphaf;
-    s32 red;
-    s32 green;
-    s32 blue;
-    s32 alpha;
+    s32 clearRed;
+    s32 clearGreen;
+    s32 clearBlue;
+    s32 clearAlpha;
+    s32 fogRed;
+    s32 fogGreen;
+    s32 fogBlue;
+    s32 fogAlpha;
 
     fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     while (fld != NULL)
@@ -1051,84 +1047,36 @@ void func_0019f8f0(const RwRGBAReal* color)
         func_001a0040(1, 1);
     }
 
-    clearColor = kwlnGetClearColor();
-    redByte = clearColor->r;
-    greenByte = clearColor->g;
-    blueByte = clearColor->b;
-    alphaByte = clearColor->a;
-
-    if ((s8)redByte >= 0)
-        redf = (f32)redByte;
-    else
-        redf = (f32)(((u32)redByte >> 1) | (redByte & 1)) * 2.0f;
-    red = (s32)(redf * color->r);
-
-    if ((s8)greenByte >= 0)
-        greenf = (f32)greenByte;
-    else
-        greenf = (f32)(((u32)greenByte >> 1) | (greenByte & 1)) * 2.0f;
-    green = (s32)(greenf * color->g);
-
-    if ((s8)blueByte >= 0)
-        bluef = (f32)blueByte;
-    else
-        bluef = (f32)(((u32)blueByte >> 1) | (blueByte & 1)) * 2.0f;
-    blue = (s32)(bluef * color->b);
-
-    if ((s8)alphaByte >= 0)
-        alphaf = (f32)alphaByte;
-    else
-        alphaf = (f32)(((u32)alphaByte >> 1) | (alphaByte & 1)) * 2.0f;
-    alpha = (s32)(alphaf * color->a);
-
-    if ((u32)alpha >= 0x100) alpha = 0xff;
-    if ((u32)blue >= 0x100) blue = 0xff;
-    if ((u32)green >= 0x100) green = 0xff;
-    if ((u32)red >= 0x100) red = 0xff;
-    kwlnSetClearColor((u8)red, (u8)green, (u8)blue, (u8)alpha);
-
-    fogColor = (u32)DAT_007ce0f0 |
-               ((u32)DAT_007ce0ec << 8) |
+    clearColor = *kwlnGetClearColor();
+    fogColor = ((u32)DAT_007ce0f4 << 24) |
                ((u32)DAT_007ce0e8 << 16) |
-               ((u32)DAT_007ce0f4 << 24);
+               ((u32)DAT_007ce0ec << 8) |
+               (u32)DAT_007ce0f0;
 
-    redByte = (u8)(fogColor >> 16);
-    greenByte = (u8)(fogColor >> 8);
-    blueByte = (u8)fogColor;
-    alphaByte = (u8)(fogColor >> 24);
+    clearRed = (s32)((f32)clearColor.r * color->r);
+    clearGreen = (s32)((f32)clearColor.g * color->g);
+    clearBlue = (s32)((f32)clearColor.b * color->b);
+    clearAlpha = (s32)((f32)clearColor.a * color->a);
 
-    if ((s8)redByte >= 0)
-        redf = (f32)redByte;
-    else
-        redf = (f32)(((u32)redByte >> 1) | (redByte & 1)) * 2.0f;
-    red = (s32)(redf * color->r);
+    if ((u32)clearAlpha >= 0x100) clearAlpha = 0xff;
+    if ((u32)clearBlue >= 0x100) clearBlue = 0xff;
+    if ((u32)clearGreen >= 0x100) clearGreen = 0xff;
+    if ((u32)clearRed >= 0x100) clearRed = 0xff;
+    kwlnSetClearColor((u8)clearRed, (u8)clearGreen, (u8)clearBlue, (u8)clearAlpha);
 
-    if ((s8)greenByte >= 0)
-        greenf = (f32)greenByte;
-    else
-        greenf = (f32)(((u32)greenByte >> 1) | (greenByte & 1)) * 2.0f;
-    green = (s32)(greenf * color->g);
+    fogRed = (s32)((f32)((fogColor >> 16) & 0xff) * color->r);
+    fogGreen = (s32)((f32)((fogColor >> 8) & 0xff) * color->g);
+    fogBlue = (s32)((f32)(fogColor & 0xff) * color->b);
+    fogAlpha = (s32)((f32)((fogColor >> 24) & 0xff) * color->a);
 
-    if ((s8)blueByte >= 0)
-        bluef = (f32)blueByte;
-    else
-        bluef = (f32)(((u32)blueByte >> 1) | (blueByte & 1)) * 2.0f;
-    blue = (s32)(bluef * color->b);
-
-    if ((s8)alphaByte >= 0)
-        alphaf = (f32)alphaByte;
-    else
-        alphaf = (f32)(((u32)alphaByte >> 1) | (alphaByte & 1)) * 2.0f;
-    alpha = (s32)(alphaf * color->a);
-
-    if ((u32)red >= 0x100) red = 0xff;
-    gFogRed = (u8)red;
-    if ((u32)green >= 0x100) green = 0xff;
-    gFogGreen = (u8)green;
-    if ((u32)blue >= 0x100) blue = 0xff;
-    gFogBlue = (u8)blue;
-    if ((u32)alpha >= 0x100) alpha = 0xff;
-    gFogAlpha = (u8)alpha;
+    if ((u32)fogRed >= 0x100) fogRed = 0xff;
+    gFogRed = (u8)fogRed;
+    if ((u32)fogGreen >= 0x100) fogGreen = 0xff;
+    gFogGreen = (u8)fogGreen;
+    if ((u32)fogBlue >= 0x100) fogBlue = 0xff;
+    gFogBlue = (u8)fogBlue;
+    if ((u32)fogAlpha >= 0x100) fogAlpha = 0xff;
+    gFogAlpha = (u8)fogAlpha;
 }
 
 // FUN_0019fd70
@@ -1222,12 +1170,14 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
+    register u32 fieldHidden;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    fieldHidden = 1;
     while (fld != NULL)
     {
-        if (visible == 1)
+        if (visible == fieldHidden)
         {
             fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
@@ -1237,7 +1187,7 @@ void func_001a0040(u32 visible, u32 updateField)
         {
             fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
-            *(u32*)((u8*)field + 0x34) = 1;
+            *(u32*)((u8*)field + 0x34) = fieldHidden;
         }
         fld = fld->next;
     }
@@ -1850,14 +1800,13 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     RwV3d defaultUp;
     RwFrame* data;
     RwMatrix* right;
-    RwV3d* up;
+    const RwV3d* up;
 
     up = &defaultUp;
-    *(s64*)&defaultUp = *(s64*)0x00678ab8;
-    defaultUp.z = *(f32*)0x00678ac0;
+    defaultUp = *(const RwV3d*)0x00678ab8;
     if (upVector != NULL)
     {
-        up = (RwV3d*)upVector;
+        up = upVector;
     }
 
     data = camera->object.object.parent;
