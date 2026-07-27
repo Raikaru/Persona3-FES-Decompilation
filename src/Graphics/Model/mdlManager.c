@@ -65,7 +65,7 @@ extern void func_004b74c0_typed(f32 frame, void* interpolator);
 #pragma alias func_004b74c0_frame FUN_004b74c0
 extern void func_004b74c0_frame(f32 frame, u32 interpolator);
 #pragma alias func_004b7240_frame FUN_004b7240
-extern u32 func_004b7240_frame(f32 frame, u64 interpolator);
+extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 #pragma alias func_00320640_frame FUN_00320640
 extern void func_00320640_frame(u32 arg0, f32 frame, u32 interpolator);
 void func_00316970(Model* mdl);
@@ -4523,7 +4523,7 @@ void func_00314d30(void* param_1)
 
               func_004b7010(lVar4,0x314170,param_1);
 
-              func_004b7240(fVar7,lVar4);
+              func_004b7240_frame(fVar7,lVar4);
 
             }
 
@@ -8814,13 +8814,13 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   u16 uVar3;
 
-  short sVar4;
+  int sVar4;
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
-  short sVar7;
+  int sVar7;
 
   char auStack_100[256];
 
@@ -9370,17 +9370,17 @@ u32 func_0031c1d0(int param_1)
 
   u16 uVar2;
 
-  short sVar3;
+  int sVar3;
 
   u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 
-  short sVar8;
+  int sVar8;
 
   char auStack_100[256];
 
@@ -9655,9 +9655,9 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
   u8 cVar1;
 
-  short uVar2;
+  int uVar2;
 
-  short sVar3;
+  int sVar3;
 
   u32 lVar4;
 
