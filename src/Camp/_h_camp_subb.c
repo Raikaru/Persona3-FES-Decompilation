@@ -391,6 +391,7 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
     s16 selected;
     s16 candidate;
     u32 categoryBit;
+    s32 expectedType;
 
     while (scan < 300) {
         if (datGetEquipmentId(1, scan) != 0) {

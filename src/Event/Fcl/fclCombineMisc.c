@@ -1640,7 +1640,7 @@ u32 FUN_003d71d0(int param_1,int param_2,void *param_3)
 
   char cVar1;
 
-  short sVar2;
+  u32 sVar2;
 
   u32 uVar3;
 

@@ -3603,9 +3603,10 @@ u32 FUN_003acf80(u32 param_1,int param_2)
   }
   packed = (u32)(u8)uVar3 << 8 | (u32)(u8)low;
   lVar4 = FUN_0016f190(0x184);
-  if (lVar4 != 0) {
-    FUN_0010a2e0(2,2,packed);
+  if (lVar4 == 0) {
+    return 0;
   }
+  FUN_0010a2e0(2,2,packed);
   return 0;
 }
 #define FUN_003acf80(...) ((u64 (*)(...))FUN_003acf80)(__VA_ARGS__)
