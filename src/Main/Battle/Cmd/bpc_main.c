@@ -1097,7 +1097,7 @@ void FUN_00245420(uint *param_1,uint param_2)
   if (lVar10 == 0) {
     *param_1 = *param_1 | 0x40;
   }
-  param_1[0x28f] = (uint)((float)param_1[0x28f] + 20.0);
+  *(float *)&param_1[0x28f] = *(float *)&param_1[0x28f] + 20.0f;
   if (((*puVar1 & 2) != 0) && (param_1[2] == puVar1[4])) {
     *param_1 = *param_1 | 0x400;
   }

@@ -3678,7 +3678,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
     FUN_003c5a20(result);
   }
 
-  FUN_003c7000(task,0x3f3280,0);
+  FUN_003c7000(task,FUN_003f3280,0);
   FUN_003c6ee0(task);
 
   fn_src = (u8 **)&PTR_FUN_006aee00;
@@ -5677,7 +5677,7 @@ void FUN_003f61d0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
     if (acStack_20[iVar9 * 2] == -1) {
 
-      uVar12 = (u32)((float)(int)param_3 * 0.5);
+      uVar12 = param_3 >> 1;
 
     }
 
@@ -5687,7 +5687,7 @@ void FUN_003f61d0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
     if (acStack_20[iVar9 * 2 + 1] == -1) {
 
-      uVar12 = (u32)((float)(int)param_3 * 0.5);
+      uVar12 = param_3 >> 1;
 
     }
 
@@ -5944,7 +5944,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
     if (lVar9 == -1) {
 
-      uVar13 = (u32)((float)(int)param_3 * 0.5);
+      uVar13 = param_3 >> 1;
 
     }
 
@@ -5956,7 +5956,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
     if (lVar12 == -1) {
 
-      uVar13 = (u32)((float)(int)param_3 * 0.5);
+      uVar13 = param_3 >> 1;
 
     }
 
@@ -5972,7 +5972,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
     if (lVar9 == -1) {
 
-      uVar13 = (u32)((float)(int)param_3 * 0.5);
+      uVar13 = param_3 >> 1;
 
     }
 
@@ -5984,7 +5984,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
     if (lVar12 == -1) {
 
-      uVar13 = (u32)((float)(int)param_3 * 0.5);
+      uVar13 = param_3 >> 1;
 
     }
 
@@ -5998,7 +5998,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
   if (lVar9 == -1) {
 
-      uVar14 = (u32)((float)(int)param_3 * 0.5);
+    uVar14 = param_3 >> 1;
 
     FUN_0040e3c0(0,param_1,iVar10 + 0x1c,uVar14 & 0xff,0xce,0);
 
@@ -6044,7 +6044,7 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
   if (lVar12 == -1) {
 
-      uVar14 = (u32)((float)(int)param_3 * 0.5);
+    uVar14 = param_3 >> 1;
 
     FUN_0040e3c0(0,param_1,iVar10 + 0x38,uVar14 & 0xff,0xce,0);
 
@@ -8068,7 +8068,7 @@ u32 FUN_003f9e30(int param_1)
 
   }
 
-  FUN_003c7000(uVar7,0x3f9cb0,0);
+  FUN_003c7000(uVar7,FUN_003f9cb0,0);
 
   FUN_003c6ee0(uVar7);
 
@@ -18356,7 +18356,7 @@ void FUN_00406ca0(u64 param_1,u64 param_2,int *param_3)
 
         if (*(int *)(iVar4 + 0xc) != param_3[4]) {
 
-          uVar7 = (u32)((float)(int)uVar7 * 0.5);
+          uVar7 = uVar7 >> 1;
 
         }
 

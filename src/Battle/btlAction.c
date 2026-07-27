@@ -1880,28 +1880,35 @@ void btlActionUpdateStateSupport(BtlAction* action)
         case 15: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x5e : 0x5f; FUN_00301540(action->unit->datUnit, 15); break;
         case 16: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x60 : 0x61; FUN_00301540(action->unit->datUnit, 16); break;
     }
-    if (messageId == 0)
+    if (messageId != 0)
     {
-        btlActionSetState(action, FUN_002dc070(action) ? BTLACTION_STATE_BAD : BTLACTION_STATE_STARTHOME);
-        return;
-    }
-    btlAction0028a780(action);
-    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    packet = FUN_002bd850(action->unit, messageId);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-    if (special)
-    {
-        FUN_002d5dc0(work);
-        work[0] = -((FUN_002ffd70(action->unit->datUnit) & 0xffff) - 1);
-        if (work[0] >= 0) work[0] = 0;
-        work[1] = -((FUN_002ffd80(action->unit->datUnit) & 0xffff) - 1);
-        if (work[1] >= 0) work[1] = 0;
-        packet = FUN_002d7e20(action, action, work, 1, 1);
+        btlAction0028a780(action);
+        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
         packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
+        packet = FUN_002bd850(action->unit, messageId);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+        if (special)
+        {
+            FUN_002d5dc0(work);
+            work[0] = -((FUN_002ffd70(action->unit->datUnit) & 0xffff) - 1);
+            if (work[0] >= 0) work[0] = 0;
+            work[1] = -((FUN_002ffd80(action->unit->datUnit) & 0xffff) - 1);
+            if (work[1] >= 0) work[1] = 0;
+            packet = FUN_002d7e20(action, action, work, 1, 1);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            return;
+        }
+    }
+    if (FUN_002dc070(action))
+    {
+        btlActionSetState(action, BTLACTION_STATE_BAD);
+    }
+    else
+    {
+        btlActionSetState(action, BTLACTION_STATE_STARTHOME);
     }
 }
 
@@ -4417,14 +4424,14 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_44->preUpdateDelay = 0x17;
             temp_v0_44->actionUID = temp_s0;
             btlPacketRegister(temp_v0_44, 1U);
-            temp_v0_45 = func_002dd690(3, (s8 *)0x693328);
+            temp_v0_45 = func_002dd690(3, (s8 *)(D_00693318_abs + 0x10));
             temp_v0_45->unk_00 = 5;
             temp_v0_45->parentUID = temp_v0_44->uid;
             temp_v0_45->actionUID = temp_s0;
             btlPacketRegister(temp_v0_45, 1U);
             temp_a2 = action->target.originalSpecificId;
             if ((temp_a2 != 0x11D) && (temp_a2 != 0x11C) && (temp_a2 != 0x117) && (temp_a2 != 0x114) && (temp_a2 != 0x113)) {
-                sprintf((char*)&sp470, (char*)0x693338, temp_a2);
+                sprintf((char*)&sp470, (char *)(D_00693318_abs + 0x20), temp_a2);
                 temp_v0_46 = func_002dd690(3, &sp470);
                 temp_v0_46->unk_00 = 0xA;
                 temp_v0_46->parentUID = 0x400;
@@ -4687,7 +4694,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_81->parentUID = sp21C->uid;
             temp_v0_81->actionUID = temp_s0;
             btlPacketRegister(temp_v0_81, 1U);
-            temp_v0_82 = func_002dd690(3, (s8 *)0x693348);
+            temp_v0_82 = func_002dd690(3, (s8 *)(D_00693318_abs + 0x30));
             temp_v0_82->unk_00 = 5;
             temp_v0_82->parentUID = temp_v0_81->uid;
             temp_v0_82->actionUID = temp_s0;
@@ -6335,16 +6342,16 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
         btlPacketRegister(FUN_002dd100(10, 6, 0xb), BTLPACKET_TYPE_1);
         action->movedAwayFromHome = 1;
     }
-    if (action->movedAwayFromHome == 1 && ACTION_S16(action, 0x48c) >= 0)
+    if (action->movedAwayFromHome == 1 && *(s16*)action->unkData4 >= 0)
     {
-        if (ACTION_S16(action, 0x48c) == 0)
+        if (*(s16*)action->unkData4 == 0)
         {
             FUN_001ff160(action->unit->charId);
-            ACTION_S16(action, 0x48c) = -1;
+            *(s16*)action->unkData4 = -1;
         }
         else
         {
-            ACTION_S16(action, 0x48c)--;
+            *(s16*)action->unkData4 -= 1;
         }
         return;
     }

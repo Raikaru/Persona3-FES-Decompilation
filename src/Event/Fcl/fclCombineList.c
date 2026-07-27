@@ -1347,35 +1347,18 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     resource_node = source_link->payload->data.text_node;
     resource_data = resource_node->meta->data;
 
-    if (owner->container->work->capacity == 3) {
-        for (i = 0; i < 0xc; i++) {
-            if (i < available_count) {
-                if ((resource_data->selection_mask & (1 << i)) == 0) {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2b, selected_style);
-                } else {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2a, selected_style);
-                }
+    for (i = 0; i < 0xc; i++) {
+        if (i < available_count) {
+            if ((resource_data->selection_mask & (1 << i)) == 0) {
+                FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
+                              0x2b, selected_style);
             } else {
                 FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                              0x2d, 0);
+                              0x2a, selected_style);
             }
-        }
-    } else {
-        for (i = 0; i < 0xc; i++) {
-            if (i < available_count) {
-                if ((resource_data->selection_mask & (1 << i)) == 0) {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2b, selected_style);
-                } else {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2a, selected_style);
-                }
-            } else {
-                FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                              0x2d, 0);
-            }
+        } else {
+            FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
+                          0x2d, 0);
         }
     }
 }

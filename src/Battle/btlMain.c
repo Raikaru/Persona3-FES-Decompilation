@@ -52,7 +52,7 @@ extern void FUN_002a1e00_typed(f32* out, f32* first, f32* second, f32 weight);
 u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3);
 void FUN_002a2170(u16 *param_1,f32 *param_2);
 void FUN_002a2290(u16 *param_1,f32 *param_2,f32 *param_3,u16 param_4);
-void FUN_002a2660(u16 *param_1,long param_2,long param_3,long param_4,long param_5,u16 param_6  );
+void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u16 param_6  );
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1);
 void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1);
 void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1);
@@ -2581,7 +2581,7 @@ u32 FUN_0029f760(float *param_1)
 
       fVar15 = (float)(u32)param_1[9] / (float)(u32)param_1[8];
 
-      fVar16 = 1.0 - fVar15;
+      fVar16 = 1.0f - fVar15;
 
       fVar6 = *param_1;
 
@@ -3936,9 +3936,9 @@ u32 FUN_002a1b70(u32 *param_1)
      ((*(u16 *)(iGpffffb6fc + 0x18) & 0x10) == 0)) {
     uVar2 = 1;
     if (param_1[1] < *param_1) {
-      fVar5 = ((float)param_1[1] / (float)*param_1) * 255.0;
-      if (2.1474836e+09 <= fVar5) {
-        fVar5 = fVar5 - 2.1474836e+09;
+      fVar5 = ((float)param_1[1] / (float)*param_1) * 255.0f;
+      if (2.1474836e+09f <= fVar5) {
+        fVar5 = fVar5 - 2.1474836e+09f;
       }
       uVar3 = (int)fVar5 & 0xff;
       uVar2 = 0;
@@ -4409,9 +4409,7 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
 // FUN_002A2660 NONMATCHING
 
 
-void FUN_002a2660(u16 *param_1,long param_2,long param_3,long param_4,long param_5,u16 param_6
-
-                 )
+void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u16 param_6)
 
 
 

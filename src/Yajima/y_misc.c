@@ -7109,11 +7109,11 @@ void FUN_0042cd80(int param_1)
 
             uVar2 = RpRandom();
 
-            *(short *)(iVar5 + 0x8f6) = (short)(int)(8.0 - (float)(uVar2 & 0xf));
+            *(short *)(iVar5 + 0x8f6) = (short)(int)(8.0f - (float)(uVar2 & 0xf));
 
             uVar2 = RpRandom();
 
-            *(short *)(iVar5 + 0x914) = (short)(int)(8.0 - (float)(uVar2 & 0xf));
+            *(short *)(iVar5 + 0x914) = (short)(int)(8.0f - (float)(uVar2 & 0xf));
 
             *(u8 *)(iVar6 + 0x8d8) = 0;
 
@@ -9037,9 +9037,8 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   int iVar3;
 
-  u32 uVar4;
-
-  u32 uVar5;
+  int uVar4;
+  int uVar5;
 
   u32 unaff_s4_lo;
 
