@@ -7635,7 +7635,7 @@ void func_002e9ac0(void)
   }
   uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
   FUN_0027ed20_voice(uVar4,1);
-  uVar4 = FUN_002baf90_u32_voice(uVar3,iVar12,iVar12,0,0x200);
+  uVar4 = (u32)FUN_002baf90(uVar3,iVar12,iVar12,0,0x200);
   FUN_0027ed20_voice(uVar4,2);
   uVar5 = FUN_002bc950_u32_voice(0,0,0);
   *(u8 *)uVar5 = 4;

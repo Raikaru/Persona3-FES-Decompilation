@@ -2049,27 +2049,14 @@ int FUN_00361f60(int param_1,int param_2)
 {
   int iVar1;
   int *piVar2;
-  int item;
 
   iVar1 = 0;
   for (piVar2 = *(int **)(param_2 + 0x84); piVar2 != (int *)0x0;
        piVar2 = (int *)piVar2[0x25]) {
-    if (param_1 != 2) goto case3;
-case2:
-    item = *piVar2;
-    if (item == 5) goto next;
-    if (item == 0x13) goto next;
-    goto add;
-case3:
-    if (param_1 != 3) goto next;
-    item = *piVar2;
-    if (item == 5) goto add;
-    if (item != 0x13) goto next;
-    goto add;
-add:
-    iVar1 = iVar1 + piVar2[0x1a];
-next:
-    ;
+    if (((param_1 == 2) && (*piVar2 != 5 && *piVar2 != 0x13)) ||
+        ((param_1 == 3) && ((*piVar2 == 5) || (*piVar2 == 0x13)))) {
+      iVar1 = iVar1 + piVar2[0x1a];
+    }
   }
   return iVar1;
 }

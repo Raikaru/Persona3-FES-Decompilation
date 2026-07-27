@@ -1344,6 +1344,8 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
 
   iVar8 = 0;
 
+  pbVar7 = (u8 *)(*(int *)(iVar3 + 0x660));
+
   do {
 
     if (iVar1 <= iVar8) {
@@ -1351,10 +1353,6 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
       return 0;
 
     }
-
-    iVar4 = iVar8 * 0xc;
-
-    pbVar7 = (u8 *)(*(int *)(iVar3 + 0x660) + iVar4);
 
     if ((uVar5 == *pbVar7) && (uVar6 == pbVar7[1])) {
 
@@ -1364,9 +1362,9 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
 
           *param_1 = (u32)*(u16 *)(pbVar7 + 8);
 
-          *param_2 = (u32)*(u8 *)(iVar4 + *(int *)(iVar3 + 0x660) + 10);
+          *param_2 = (u32)pbVar7[10];
 
-          *param_3 = (u32)*(u8 *)(iVar4 + *(int *)(iVar3 + 0x660) + 0xb);
+          *param_3 = (u32)pbVar7[0xb];
 
           return 1;
 
@@ -1378,9 +1376,9 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
 
         *param_1 = (u32)*(u16 *)(pbVar7 + 8);
 
-        *param_2 = (u32)*(u8 *)(iVar4 + *(int *)(iVar3 + 0x660) + 10);
+        *param_2 = (u32)pbVar7[10];
 
-        *param_3 = (u32)*(u8 *)(iVar4 + *(int *)(iVar3 + 0x660) + 0xb);
+        *param_3 = (u32)pbVar7[0xb];
 
         return 1;
 
@@ -1389,7 +1387,7 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
     }
 
     iVar8 = iVar8 + 1;
-
+    pbVar7 += 0xc;
   } while( 1 );
 
 }
