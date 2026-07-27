@@ -838,7 +838,7 @@ extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
 extern char func_002c6ba0(int param_1);
 extern undefined * func_002c6e30(int param_1,u32 param_2);
-extern u32 func_002c6f50(u64 param_1,int param_2,u64 param_3,u64 param_4);
+extern u32 func_002c6f50(u32 param_1,int param_2,u64 param_3,u64 param_4);
 extern void func_002c70d0(int param_1,int param_2);
 extern bool func_002c7250(int param_1);
 extern u32 func_002c7280(int param_1);
@@ -7938,7 +7938,7 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   uVar8 = 0xffffffff;
   lVar9 = 0xffffff;
   for (uVar7 = 0; uVar7 < (param_4 & 0xffff); uVar7 = uVar7 + 1 & 0xffff) {
-    puVar10 = param_3 + uVar7;
+    puVar10 = (u16 *)(param_3 + uVar7 * 2);
     uVar4 = func_0030bc20_u32(*puVar10);
     uVar4 = uVar4 & 0xffff;
     if ((((uVar4 != 0) && (uVar4 < 0x1d0)) &&
@@ -8789,7 +8789,7 @@ undefined * func_002c6e30(int param_1,u32 param_2)
 
 // FUN_002c6f50 NONMATCHING
 
-u32 func_002c6f50(u64 param_1,int param_2,u64 param_3,u64 param_4)
+u32 func_002c6f50(u32 param_1,int param_2,u64 param_3,u64 param_4)
 
 {
   int iVar1 = 0;

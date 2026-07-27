@@ -830,7 +830,7 @@ u32 FUN_0040f030(int param_1,int param_2,int param_3)
 
         if ((sVar13 != 2) && (sVar13 == 1)) {
 
-          memset(puVar3,0,0x28);
+          FUN_00521408(puVar3,0,0x28);
 
           *(u16 *)(puVar3 + 2) = 0x140;
 

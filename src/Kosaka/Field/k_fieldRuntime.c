@@ -4520,18 +4520,18 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         if (work->state == 0 && vertices != NULL &&
             vector0 != NULL && vector1 != NULL)
         {
-            for (index = 0; index < count; index++)
-            {
-                sample0 = vector0[section < count ? section : index];
-                sample1 = vector1[section < count ? section : index];
-                blended.x = sample0.x +
-                            (sample1.x - sample0.x) * fraction;
-                blended.y = sample0.y +
-                            (sample1.y - sample0.y) * fraction;
-                blended.z = sample0.z +
-                            (sample1.z - sample0.z) * fraction;
+                RuntimeVec3* source0;
+                RuntimeVec3* source1;
+
+                source0 = &vector0[section < count ? section : index];
+                source1 = &vector1[section < count ? section : index];
+                blended.x = source0->x +
+                            (source1->x - source0->x) * fraction;
+                blended.y = source0->y +
+                            (source1->y - source0->y) * fraction;
+                blended.z = source0->z +
+                            (source1->z - source0->z) * fraction;
                 vertices[index] = blended;
-            }
         }
 
         if (work->state == 2 && count < 2)

@@ -1198,14 +1198,14 @@ loop_body:
   uVar1 = *(u16 *)(puVar4 + 4);
   if ((uVar1 == 0xffff || datGetFlag(uVar1) != 0) &&
       FUN_003f04f0((u32)(puVar4 + 0x10),param_2) != 0) {
-    uVar1 = *(u16 *)(puVar4 + 4);
     if (uVar1 == 0xffff) {
-      return (u32 *)puVar4;
+      goto found;
     }
     if ((*(u32 *)puVar4 & 2) == 0) {
-      return (u32 *)puVar4;
+      goto found;
     }
     datSetFlag(uVar1,0);
+found:
     return (u32 *)puVar4;
   }
 loop_continue:
