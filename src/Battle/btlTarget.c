@@ -4988,10 +4988,10 @@ void FUN_002db2a0(u32 param_1)
     switch (index)
     {
     case 0:
-        *(u16*)(iGpffffb6fc + index * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + index * 4 + 0x9fa) = threshold;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
-        *(u32*)(iGpffffb6fc + 0xa10) = 0;
+        threshold = (s16)(datCalcRand(0) + 2);
+        *(u16*)(btl + index * 4 + 0x9f8) = 0;
+        *(s16*)(btl + index * 4 + 0x9fa) = threshold;
+        *(u32*)(btl + 0xa10) = 0;
         break;
     case 1:
         threshold = (s16)(datCalcRand(1) + 2);
