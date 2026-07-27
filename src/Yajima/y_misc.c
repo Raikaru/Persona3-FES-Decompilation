@@ -5647,7 +5647,7 @@ void FUN_0042ac60(int param_1,u64 param_2)
 
       for (iVar5 = 0; iVar5 < 0xff; iVar5 = iVar5 + 1) {
 
-        (&DAT_0095bfe0)[iVar5] = 0;
+        DAT_0095bfe0_abs[iVar5] = 0;
 
       }
 
