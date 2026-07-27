@@ -14514,9 +14514,9 @@ void FUN_0032a890(int param_1,u64 param_2)
 
               memcpy(pauVar9[-2], &auVar18, 16);
 
-              *(float *)(pauVar9[-1] + 8) = (fVar12 - fVar15) * fVar17 + fVar15 + 0.0;
+              *(float *)(pauVar9[-1] + 8) = (fVar12 - fVar15) * fVar17 + fVar15 + 0.0f;
 
-              *(float *)(pauVar9[-1] + 0xc) = (fVar14 - fVar13) * fVar17 + fVar13 + 0.0;
+              *(float *)(pauVar9[-1] + 0xc) = (fVar14 - fVar13) * fVar17 + fVar13 + 0.0f;
 
               auVar18 = _lqc2(auStack_70);
 
@@ -14660,9 +14660,9 @@ void FUN_0032a890(int param_1,u64 param_2)
 
               memcpy(pauVar8[-2], &auVar18, 16);
 
-              *(float *)(pauVar8[-1] + 8) = (fVar12 - fVar13) * fVar14 + fVar13 + 0.0;
+              *(float *)(pauVar8[-1] + 8) = (fVar12 - fVar13) * fVar14 + fVar13 + 0.0f;
 
-              *(float *)(pauVar8[-1] + 0xc) = fVar17 * fVar14 + fVar16 + 0.0;
+              *(float *)(pauVar8[-1] + 0xc) = fVar17 * fVar14 + fVar16 + 0.0f;
 
               auVar18 = _lqc2(auStack_70);
 
@@ -28060,15 +28060,15 @@ void FUN_00337fd0(int param_1)
 
     fVar13 = fVar9;
 
-    if ((fVar10 < 0.0) &&
+    if ((fVar10 < 0.0f) &&
 
-       (fVar13 = (-ABS(*(float *)(iVar1 + 0x60)) / (fVar10 * 0.5)) * 0.5, fVar9 <= fVar13)) {
+       (fVar13 = (-ABS(*(float *)(iVar1 + 0x60)) / (fVar10 * 0.5f)) * 0.5f, fVar9 <= fVar13)) {
 
       fVar13 = fVar9;
 
     }
 
-    fVar13 = fVar13 * (fVar10 * fVar13 * 0.5 + ABS(*(float *)(iVar1 + 0x60)) + 0.0) +
+    fVar13 = fVar13 * (fVar10 * fVar13 * 0.5f + ABS(*(float *)(iVar1 + 0x60)) + 0.0f) +
 
              *(float *)(iVar1 + 0x40);
 
@@ -28084,7 +28084,7 @@ void FUN_00337fd0(int param_1)
 
     puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar2 + 8) + 0x18) + 0x5c) + 0x14);
 
-    fVar11 = 0.0;
+    fVar11 = 0.0f;
 
     fVar12 = DAT_007cae90 / (float)*(u32 *)(iVar1 + 0x38);
 
@@ -29111,15 +29111,15 @@ void FUN_00338ea0(int param_1)
 
     fVar11 = fVar9;
 
-    if ((fVar10 < 0.0) &&
+    if ((fVar10 < 0.0f) &&
 
-       (fVar11 = (-ABS(*(float *)(iVar1 + 0x5c)) / (fVar10 * 0.5)) * 0.5, fVar9 <= fVar11)) {
+       (fVar11 = (-ABS(*(float *)(iVar1 + 0x5c)) / (fVar10 * 0.5f)) * 0.5f, fVar9 <= fVar11)) {
 
       fVar11 = fVar9;
 
     }
 
-    fVar11 = fVar11 * (fVar10 * fVar11 * 0.5 + ABS(*(float *)(iVar1 + 0x5c)) + 0.0) +
+    fVar11 = fVar11 * (fVar10 * fVar11 * 0.5f + ABS(*(float *)(iVar1 + 0x5c)) + 0.0f) +
 
              *(float *)(iVar1 + 0x40);
 
@@ -29135,7 +29135,7 @@ void FUN_00338ea0(int param_1)
 
     puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar2 + 8) + 0x18) + 0x5c) + 0x14);
 
-    fVar12 = 0.0;
+    fVar12 = 0.0f;
 
     fVar10 = fGpffff81a0 / (float)*(u32 *)(iVar1 + 0x38);
 
