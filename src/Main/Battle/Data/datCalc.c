@@ -1093,7 +1093,7 @@ s8 FUN_00300f60(int param_1,u32 param_2)
 }
 
 // FUN_00301030 NONMATCHING
-void FUN_00301030(int param_1,u8 param_2,s8 param_3)
+void FUN_00301030(u8* param_1,u8 param_2,s8 param_3)
 {
   int iVar1;
   
@@ -1108,11 +1108,11 @@ void FUN_00301030(int param_1,u8 param_2,s8 param_3)
     param_3 = param_3 + 0xf;
   }
   if ((param_2 & 1) == 0) {
-    iVar1 = iVar1 + param_1;
+    iVar1 = iVar1 + (int)param_1;
     *(u8 *)(iVar1 + 0x1c) = *(u8 *)(iVar1 + 0x1c) & 0xf0 | param_3 & 0xf;
   }
   else {
-    iVar1 = iVar1 + param_1;
+    iVar1 = iVar1 + (int)param_1;
     *(u8 *)(iVar1 + 0x1c) = *(u8 *)(iVar1 + 0x1c) & 0xf | param_3 << 4;
   }
   return;
