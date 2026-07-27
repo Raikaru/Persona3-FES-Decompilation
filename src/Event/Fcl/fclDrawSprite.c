@@ -1114,14 +1114,13 @@ u32 FUN_0040f430(int param_1,int param_2)
 // FUN_0040F5D0 NONMATCHING
 
 
-u32 FUN_0040f5d0(u64 param_1,int param_2,long param_3)
+u32 FUN_0040f5d0(int param_1,int param_2,int param_3)
 
 
 
 {
 
   short sVar1;
-u32 FUN_0040f5d0(int param_1,int param_2,int param_3)
   int iVar2;
 
   u32 uVar3;

@@ -2864,7 +2864,7 @@ void FUN_003905f0(int param_1,int param_2)
 // FUN_00390920 NONMATCHING
 
 
-void FUN_00390920(int param_1,u64 param_2)
+void FUN_00390920(int param_1,int param_2)
 
 
 
