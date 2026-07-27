@@ -58209,7 +58209,7 @@ void FUN_00357730(int param_1)
 
 
 
-// FUN_00357770 NONMATCHING
+// FUN_00357770
 
 
 u32 FUN_00357770(u32 param_1,u32 param_2)
@@ -58218,9 +58218,9 @@ u32 FUN_00357770(u32 param_1,u32 param_2)
 
 {
 
-  int iVar1;
-
   u32 uVar3;
+
+  int iVar1;
 
   u8 (*pauVar4) [16];
 
@@ -58228,7 +58228,7 @@ u32 FUN_00357770(u32 param_1,u32 param_2)
 
   iVar1 = DAT_0069cd08[param_1 & 0xffff].value;
 
-  uVar3 = (*DAT_00960178)(iVar1 + 0x40,0x40000);
+  uVar3 = (*DAT_00960178_abs)(iVar1 + 0x40,0x40000);
 
   pauVar4 = (u8 (*) [16])uVar3;
 
