@@ -7924,8 +7924,7 @@ void FUN_0030f290(void)
     fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x14,0);
     fVar4 = fVar4 * fVar2;
-    fVar2 = DAT_007cad74;
-    fVar4 = fVar2 * fVar4;
+    fVar4 = DAT_007cad74 * fVar4;
   }
   FUN_00311190((int)fVar4);
   return;

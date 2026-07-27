@@ -3505,7 +3505,7 @@ u32 FUN_0039c0f0(int param_1)
 
         iVar7 = iVar9;
 
-        if (lVar5 != 1) break;
+        if ((int)lVar5 != 1) break;
 
         asStack_10[iVar8] = sVar10;
 

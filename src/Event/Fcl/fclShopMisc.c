@@ -16087,8 +16087,8 @@ u8 FUN_00403410(short param_1)
   int iVar3;
   int iVar4;
   long lVar5;
-  int unaff_s1;
   long unaff_s2;
+  int unaff_s1;
 
   iVar3 = FUN_004037e0(param_1);
   lVar5 = ((long)*(char *)(iVar3 + 7) << 0x38) >> 0x3c;

@@ -19130,9 +19130,8 @@ void FUN_003858c0(int param_1)
   ((u8 *)(auStack_20 + 7))[2] = 0x0a;
   ((u8 *)(auStack_20 + 7))[1] = 0x40;
 
-  puVar4 = (u32 *)(param_1 + 0x944);
-
   for (iVar3 = 0; iVar3 < 7; iVar3 = iVar3 + 1) {
+    puVar4 = (u32 *)(param_1 + 0x944 + iVar3 * 4);
     uVar2 = FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),
                              *(u64 *)(auStack_20 + 4),
                              &auStack_20[0],auStack_20[7]);

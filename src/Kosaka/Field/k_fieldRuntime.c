@@ -4350,6 +4350,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             cursor2 += 8;
             amount2 += step2;
         }
+        work->flags |= 2;
     }
     case 2:
         break;

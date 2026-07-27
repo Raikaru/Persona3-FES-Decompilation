@@ -662,8 +662,8 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   u32 stack_50[5];
   u32 stack_30[5];
   u8 auStack_6c[4];
-  u32 *puVar12;
   u32 *puVar13;
+  u32 *puVar12;
   int iVar11;
   iVar11 = *(int *)(param_2 + 0x18);
   lVar8 = *(int *)(param_2 + 0x10);
