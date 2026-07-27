@@ -4881,7 +4881,7 @@ void FUN_0038b960(int param_1,long param_2,short param_3)
 
   long lVar4;
 
-  long lVar5;
+  int lVar5;
 
   u16 *puVar6;
 
