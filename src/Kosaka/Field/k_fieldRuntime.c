@@ -4529,7 +4529,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         }
         {
             RuntimeVec3* surface;
-            RuntimeVec3 scratch[12];
+            RuntimeVec3 scratch[8];
             RuntimeVec3 first;
             RuntimeVec3 second;
             RuntimeVec3 third;

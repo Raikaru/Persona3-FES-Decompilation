@@ -13813,7 +13813,7 @@ void FUN_00400e90(u32 param_1)
 
   int iVar5;
 
-  long lVar6;
+  int lVar6;
 
   u32 uVar7;
 

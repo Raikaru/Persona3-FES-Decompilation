@@ -4778,7 +4778,7 @@ void func_002bf690(short param_1)
   
   iVar1 = func_00195540_u32(*(u32 *)(DAT_007ce3ec + 0xd1c));
   iVar1 = *(int *)(iVar1 + 4);
-  uVar2 = func_00300550(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
+  uVar2 = func_00300550_u32(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
   lVar4 = 0;
   if ((param_1 == 0xc) || (param_1 == 6)) {
     lVar3 = func_002c1ce0(iVar1,0);

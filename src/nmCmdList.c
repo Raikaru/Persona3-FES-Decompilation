@@ -448,10 +448,12 @@ u32 FUN_003c6120(int param_1,int param_2)
     puVar2[1] = uVar6 + iVar5;
   }
   if (puVar2[2] != 0) {
-    FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],puVar2[4] | 0xffffff00,
-                 (u32)(param_2 == *(int *)(param_1 + 0xc)),4,puVar2[2],0x10,0);
+    uVar9 = puVar2[4] | 0xffffff00;
+    uVar10 = (u32)(param_2 == *(int *)(param_1 + 0xc));
+    uVar7 = puVar2[0];
+    uVar8 = puVar2[1];
+    FUN_003b2cb0(0.0f,uVar7,uVar8,uVar9,uVar10,4,puVar2[2],0x10,0);
   }
-  ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;
 }
 #define FUN_003c6120(...) ((u32 (*)(...))FUN_003c6120)(__VA_ARGS__)
