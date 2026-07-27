@@ -1177,12 +1177,16 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
+    u32 hidden;
+    u32 modelVisible;
+    u32 clearMask;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
     while (fld != NULL)
     {
-        if (visible == 1)
+        hidden = (fld != NULL);
+        if (visible == hidden)
         {
             fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
@@ -1192,22 +1196,24 @@ void func_001a0040(u32 visible, u32 updateField)
         {
             fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
-            *(u32*)((u8*)field + 0x34) = 1;
+            *(u32*)((u8*)field + 0x34) = hidden;
         }
         fld = fld->next;
     }
 
-    if (updateField == 1)
+    modelVisible = 1;
+    if (updateField == modelVisible)
     {
+        clearMask = ~SCENEDRAW_RESRC_FLAG_VISIBLE;
         while (modelFld != NULL)
         {
-            if (visible == 1)
+            if (visible == modelVisible)
             {
                 modelFld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             }
             else
             {
-                modelFld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+                modelFld->flags &= clearMask;
             }
             modelFld = modelFld->next;
         }
@@ -1835,7 +1841,7 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     func_004cb270(data);
 }
 
-// FUN_001a13b0 NONMATCHING
+// FUN_001a13b0
 void* func_001a13b0(SceneDrawObject* object, void** listHead)
 {
     void* allocation;
