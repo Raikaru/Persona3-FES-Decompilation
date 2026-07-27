@@ -30029,7 +30029,8 @@ u32 FUN_003398c0(int param_1)
   piVar2 = (int *)(*(u32 (**)(...))DAT_00960178_abs)(uVar1 * 0x18 + 0x10,0x40000);
   *piVar2 = (int)(piVar2 + 4);
   piVar2[2] = (int)piVar2;
-  piVar2[1] = FUN_003233a0_ptr(uVar1 & 0xffff,3,5,DAT_0069bd60_abs,0x48);
+  iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,3,5,DAT_0069bd60_abs,0x48);
+  piVar2[1] = iVar3;
   return (u32)piVar2;
 }
 
