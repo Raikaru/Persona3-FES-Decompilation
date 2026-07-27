@@ -919,7 +919,7 @@ u32 FUN_00386060(int param_1);
 u32 FUN_00386130(int param_1,f32 *param_2,f32 *param_3);
 u32 FUN_00386230(int param_1,u32 *param_2,u32 *param_3);
 u32 FUN_00386310(int param_1);
-u32 FUN_00386430(int param_1,short param_2,u32 param_3);
+u32 FUN_00386430(int param_1,int param_2,u32 param_3);
 u32 FUN_003865f0(int param_1);
 u32 FUN_00386780(int param_1,u32 param_2,u32 param_3,u32 param_4);
 u32 FUN_00386860(int param_1,u32 param_2,u32 param_3,u32 param_4);
@@ -19764,15 +19764,15 @@ int FUN_003863c0(void)
       break;
     }
   }
-u32 FUN_00386430(int param_1,int param_2,u32 param_3)
+
+
+  return iVar1;
 
 }
-
-
 // FUN_00386430 NONMATCHING
 
 
-u32 FUN_00386430(int param_1,short param_2,u32 param_3)
+u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
 
 
