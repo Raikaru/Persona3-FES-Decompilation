@@ -10378,7 +10378,7 @@ int func_002ef9d0(void)
   extern s32 FUN_0030b5a0();
   int iVar1;
   s32 lVar2;
-  u64 uVar3;
+  u32 uVar3;
   int iVar4;
   int iVar5;
   u32 auStack_20 [8];
@@ -10396,7 +10396,7 @@ LAB_002efa38:
             iVar1 = *(int *)(iVar4 + 0x30);
             if (((*(char *)(iVar1 + 0xa2) == '\x01') && (*(short *)(iVar1 + 0xa4) != 0x10d)) &&
                (lVar2 = FUN_0030b5a0(*(u32 *)(iVar1 + 0xa2c),0), lVar2 == 0)) {
-              uVar3 = FUN_002d7e20(iVar4,iVar4,auStack_20,1,1);
+              uVar3 = (u32)FUN_002d7e20_packet_voice((BtlAction*)iVar4,(BtlAction*)iVar4,auStack_20,1,1);
               FUN_0027ed20(uVar3,1);
               uVar3 = FUN_00284200_u32_voice(1.0f,iVar1,2,0,0);
               FUN_0027ed20(uVar3,1);
