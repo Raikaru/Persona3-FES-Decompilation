@@ -3566,9 +3566,9 @@ u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
     puVar4 = (u8 *)lVar1;
     *puVar4 = 0;
     *(YajimaVec2 *)(puVar4 + 0x14) = param_2;
-    uVar3 = (u8)((int)param_3 >> 1);
+    uVar3 = (int)param_3 >> 1;
     if (param_3 < '\0') {
-      uVar3 = (u8)(param_3 + 1 >> 1);
+      uVar3 = (param_3 + 1) >> 1;
     }
     puVar4[0x7c] = uVar3;
     puVar4[0x7d] = param_4;

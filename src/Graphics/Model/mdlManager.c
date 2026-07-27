@@ -1213,7 +1213,7 @@ void func_003176c0(Model* param_1);
 void func_00317a20(u64 param_1);
 u32 func_003186e0(int param_1,u32 param_2,short param_3);
 void func_00318b10(u32 *param_1);
-u32 func_00318b90(u64 param_1);
+u32 func_00318b90(u32 param_1);
 u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3);
 bool func_00318ed0(u8* param_1,u32 param_2,RwV3d *param_3);
 u32 func_00318fc0(int param_1);
@@ -6620,7 +6620,7 @@ void func_00318b10(u32 *param_1)
 // FUN_00318B90 NONMATCHING
 
 
-u32 func_00318b90(u64 param_1)
+u32 func_00318b90(u32 param_1)
 
 
 
