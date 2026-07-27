@@ -166,6 +166,47 @@ static Vec128 mdlVecLoadN(const void *p, u32 n) {
     Vec128 v; v._0_8_ = 0; v._8_8_ = 0; memcpy(&v, p, n); return v;
 }
 static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; return v; }
+
+/* Retail's VU0 colour-modulate kernel (COP2 macro mode + MMI pack).
+   Unpacks two packed RGBA u32s to floats, scales each by DAT_007cae4c
+   (1/255), multiplies, rescales by 255.0f, converts back and packs.
+   VU macro-mode and MMI parallel ops cannot be expressed in C. */
+static __inline u32 mdlVuModulate(const u32 *pc1, const u32 *pc2, f32 inv255)
+{
+    u32 tmp;
+    u32 c1 = *pc1;
+    u32 c2 = *pc2;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "pextlb      %0, $zero, %1       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "pextlb      %0, $zero, %2       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437F          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(c1), "r"(c2), "f"(inv255)
+        : "memory");
+    return tmp;
+}
 #define _lqc2(x) mdlVecZero()
 #define _sqc2(x) mdlVecKeep(x)
 #define _qmtc2(x) mdlVecZero()
@@ -1346,6 +1387,8 @@ extern u32 DAT_007cae18;
 #pragma alias DAT_007cae18_f32 DAT_007cae18
 extern f32 DAT_007cae18_f32;
 extern u32 DAT_007cae4c;
+#pragma alias DAT_007cae4c_f32 DAT_007cae4c
+extern f32 DAT_007cae4c_f32;
 extern u32 DAT_007cae58;
 #pragma alias DAT_007cae58_f32 DAT_007cae58
 extern f32 DAT_007cae58_f32;
@@ -28220,17 +28263,13 @@ void FUN_00338360(u64 param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -28238,7 +28277,10 @@ void FUN_00338360(u64 param_1)
 
   u8 uStack_2;
 
-  char cStack_1;
+  u8 cStack_1;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   
 
@@ -28252,55 +28294,14 @@ void FUN_00338360(u64 param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
-
-    if (cStack_1 == -1) {
+    c1s = *(u32 *)(iVar5 + 0x30);
+    c2s = (u32)iVar3;
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    cStack_1 = packed[3];
+    uStack_4 = packed[0];
+    uStack_3 = packed[1];
+    uStack_2 = packed[2];
+    if (cStack_1 == 0xff) {
 
       iVar3 = *(int *)(puVar2 + 10);
 
@@ -28324,7 +28325,7 @@ void FUN_00338360(u64 param_1)
 
       *(u8 *)(iVar3 + 6) = uStack_2;
 
-      *(char *)(iVar3 + 7) = cStack_1;
+      *(u8 *)(iVar3 + 7) = cStack_1;
 
     }
 
@@ -29263,17 +29264,13 @@ void FUN_00339200(u64 param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -29281,7 +29278,10 @@ void FUN_00339200(u64 param_1)
 
   u8 uStack_2;
 
-  char cStack_1;
+  u8 cStack_1;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   
 
@@ -29295,55 +29295,14 @@ void FUN_00339200(u64 param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
-
-    if (cStack_1 == -1) {
+    c1s = *(u32 *)(iVar5 + 0x30);
+    c2s = (u32)iVar3;
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    cStack_1 = packed[3];
+    uStack_4 = packed[0];
+    uStack_3 = packed[1];
+    uStack_2 = packed[2];
+    if (cStack_1 == 0xff) {
 
       iVar3 = *(int *)(puVar2 + 10);
 
@@ -29367,7 +29326,7 @@ void FUN_00339200(u64 param_1)
 
       *(u8 *)(iVar3 + 6) = uStack_2;
 
-      *(char *)(iVar3 + 7) = cStack_1;
+      *(u8 *)(iVar3 + 7) = cStack_1;
 
     }
 
