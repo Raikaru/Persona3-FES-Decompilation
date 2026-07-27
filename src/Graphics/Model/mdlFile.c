@@ -3841,7 +3841,7 @@ void FUN_0031fde0(void)
 
        extraout_f13 * ((float)*extraout_t1_lo / 255.0f - *(float *)(iVar3 + 4)) +
 
-       *(float *)(iVar3 + 4) + 0.0;
+       *(float *)(iVar3 + 4) + 0.0f;
 
   *(float *)(iVar3 + 8) =
 
@@ -3851,7 +3851,7 @@ void FUN_0031fde0(void)
 
        extraout_f13 * ((float)bVar2 / 255.0f - *(float *)(iVar3 + 0xc)) +
 
-       *(float *)(iVar3 + 0xc) + 0.0;
+       *(float *)(iVar3 + 0xc) + 0.0f;
 
   return;
 }
@@ -45502,7 +45502,7 @@ void FUN_00349620(int *param_1,float *param_2)
 
     if (0.0f <= *param_2) {
 
-      fVar6 = FUN_0052e878_f32(param_2[1]);
+      fVar6 = (float)FUN_0052e878(param_2[1]);
 
       param_2[6] = (1.0f - *param_2) * (float)param_1[6] * fVar6 + 1.0f;
 
@@ -45554,7 +45554,7 @@ void FUN_00349620(int *param_1,float *param_2)
 
         param_2[1] = 0.0f;
 
-        *param_2 = 0.0f;
+        *param_2 = 0.0;
 
         param_2[4] = (float)param_1[4];
 

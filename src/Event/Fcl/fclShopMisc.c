@@ -13561,7 +13561,7 @@ void FUN_004008f0(u64 param_1,u64 param_2,u8 param_3,int param_4)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -13601,9 +13601,10 @@ void FUN_004008f0(u64 param_1,u64 param_2,u8 param_3,int param_4)
 
   while (iVar5 = iVar3, iVar5 != 0) {
 
-    lVar4 = FUN_003ffa20(*(u16 *)(*(int *)(iVar5 + 0x14) + 4),
+    lVar4 = FUN_003ffa20_3(*(u16 *)(*(int *)(iVar5 + 0x14) + 4),
 
-                         *(u16 *)(*(int *)(iVar5 + 0x14) + 6),0);
+                         *(u16 *)(*(int *)(iVar5 + 0x14) + 6),
+                         (short *)*(int *)(iVar5 + 0x14));
 
     iVar3 = *(int *)(iVar5 + 0x10);
 
