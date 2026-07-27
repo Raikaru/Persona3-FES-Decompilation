@@ -4268,7 +4268,25 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
     switch (work->state)
     {
     case 0:
-        break;
+    {
+        u8* color;
+        u32 count;
+        u32 index;
+        f32 amount;
+
+        color = *(u8**)((u8*)renderObject + 0x30);
+        count = *(u32*)((u8*)work->config + 0xc);
+        if (count <= 1)
+        {
+            func_0019d3f0(D_006844F8, 0x3d4);
+        }
+        for (index = 0; index < count; index++)
+        {
+            amount = (f32)index / (f32)(count - 1);
+            func_001ed0f0(amount, (RuntimeWork*)work, 0, color);
+            color += 8;
+        }
+    }
     case 1:
         break;
     case 2:
