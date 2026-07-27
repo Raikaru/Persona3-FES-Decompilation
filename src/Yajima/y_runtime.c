@@ -5287,20 +5287,20 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_00434C90 NONMATCHING
+// FUN_00434C90
 
 void FUN_00434c90(char param_1)
 {
   int iVar1;
   int iVar2;
+  int iVar4;
   char cVar3;
 
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
     cVar3 = 0;
     for (iVar1 = 0; iVar1 < 3; iVar1 = iVar1 + 1) {
-      if (((char *)&DAT_007ce6e8)[iVar1] != iVar2) {
-      }
-      else {
+      iVar4 = ((char *)&DAT_007ce6e8)[iVar1];
+      if (iVar4 == iVar2) {
         cVar3 = 1;
       }
     }
