@@ -2513,11 +2513,11 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     }
     if (frame >= 15) {
         fade = frame - 15;
-        if (fade < 5) {
-            alpha = 0xff - (fade * 0xff) / 5;
+        if (fade >= 5) {
+            alpha = 0;
         }
         else {
-            alpha = 0;
+            alpha = 0xff - (fade * 0xff) / 5;
         }
     }
     for (i = 0; i < 9; i++) {

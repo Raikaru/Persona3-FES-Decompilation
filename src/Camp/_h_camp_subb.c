@@ -1112,11 +1112,11 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
   xBase = originY + 6.0f;
   campEquipmentDrawFixed(texture, (u32)alpha, 0x1a, originX + 511.0f, xBase);
   rowIndex = work->entryCount + -5;
-  if (rowIndex < 1) {
-    rowIndex = 0;
+  if (rowIndex >= 1) {
+    rowIndex = (work->firstVisibleEntry * 0x59) / rowIndex;
   }
   else {
-    rowIndex = (work->firstVisibleEntry * 0x59) / rowIndex;
+    rowIndex = 0;
   }
   campEquipmentDrawFixed(texture, (u32)alpha, 0x20, originX + 511.0f,
                          xBase + (f32)rowIndex + 4.0f);

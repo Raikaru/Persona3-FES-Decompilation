@@ -419,15 +419,15 @@ FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5
 
   param_3 = 4096.0f * param_3;
 
-  if (2147483648.0f <= param_3) {
+  if (2147483648.0f > param_3) {
 
-    uVar4 = (u16)(int)(param_3 - 2147483648.0f);
+    uVar4 = (u16)(int)param_3;
 
   }
 
   else {
 
-    uVar4 = (u16)(int)param_3;
+    uVar4 = (u16)(int)(param_3 - 2147483648.0f);
 
   }
 
@@ -435,15 +435,15 @@ FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5
 
   param_4 = 4096.0f * param_4;
 
-  if (2147483648.0f <= param_4) {
+  if (2147483648.0f > param_4) {
 
-    uVar4 = (u16)(int)(param_4 - 2147483648.0f);
+    uVar4 = (u16)(int)param_4;
 
   }
 
   else {
 
-    uVar4 = (u16)(int)param_4;
+    uVar4 = (u16)(int)(param_4 - 2147483648.0f);
 
   }
 

@@ -3101,15 +3101,15 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
                        *(u16 *)(auStack_40 + *(short *)(param_1 + 0x20)));
 
-  if (lVar3 == 0) {
+  if (lVar3 != 0) {
 
-    puVar7 = (u16 *)0x0;
+    puVar7 = *(u16 **)((int)lVar3 + 0x14);
 
   }
 
   else {
 
-    puVar7 = *(u16 **)((int)lVar3 + 0x14);
+    puVar7 = (u16 *)0x0;
 
   }
 

@@ -733,15 +733,15 @@ LAB_00398d80:
 
     if (lVar10 == 1) {
 
-      if (puVar3[3] == 1) {
+      if (puVar3[3] != 1) {
 
-        *puVar3 = 0x11;
+        *puVar3 = 0x13;
 
       }
 
       else {
 
-        *puVar3 = 0x13;
+        *puVar3 = 0x11;
 
       }
 
@@ -819,15 +819,15 @@ LAB_00398d80:
 
   case 0x17:
 
-    if ((int)puVar3[0x22] < (int)puVar3[0x23]) {
+    if ((int)puVar3[0x22] >= (int)puVar3[0x23]) {
 
-      puVar3[0x22] = puVar3[0x22] + 1;
+      *puVar3 = 0x18;
 
     }
 
     else {
 
-      *puVar3 = 0x18;
+      puVar3[0x22] = puVar3[0x22] + 1;
 
     }
 
@@ -1069,15 +1069,15 @@ LAB_00399518:
 
     if (lVar10 == 1) {
 
-      if (puVar3[3] == 0) {
+      if (puVar3[3] != 0) {
 
-        *puVar3 = 0x27;
+        *puVar3 = 0x25;
 
       }
 
       else {
 
-        *puVar3 = 0x25;
+        *puVar3 = 0x27;
 
       }
 

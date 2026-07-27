@@ -1160,15 +1160,15 @@ u32 FUN_003a2ef0(u32 param_1)
 
   lVar1 = FUN_0016f190(0x1424);
 
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
 
-    uVar2 = FUN_00191af0(0x1e8);
+    uVar2 = (*DAT_00960178)(0x1e8,0x40000);
 
   }
 
   else {
 
-    uVar2 = (*DAT_00960178)(0x1e8,0x40000);
+    uVar2 = FUN_00191af0(0x1e8);
 
   }
 
@@ -3432,11 +3432,11 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
     lVar4 = FUN_0016f190(0x1424);
 
-    if (lVar4 == 0) {
+    if (lVar4 != 0) {
 
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
 
-      uVar3 = FUN_00191af0(uVar1);
+      uVar3 = (*DAT_00960178)(uVar1,0x40000);
 
       *puVar5 = uVar3;
 
@@ -3446,7 +3446,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
 
-      uVar3 = (*DAT_00960178)(uVar1,0x40000);
+      uVar3 = FUN_00191af0(uVar1);
 
       *puVar5 = uVar3;
 
@@ -3466,11 +3466,11 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
     lVar4 = FUN_0016f190(0x1424);
 
-    if (lVar4 == 0) {
+    if (lVar4 != 0) {
 
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
 
-      uVar3 = FUN_00191af0(uVar1);
+      uVar3 = (*DAT_00960178)(uVar1,0x40000);
 
       *puVar5 = uVar3;
 
@@ -3480,7 +3480,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
 
-      uVar3 = (*DAT_00960178)(uVar1,0x40000);
+      uVar3 = FUN_00191af0(uVar1);
 
       *puVar5 = uVar3;
 
@@ -3717,15 +3717,15 @@ long FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u64 param_4,int param_5,
 
       lVar2 = FUN_003b2940(param_4,param_5,param_8,0,0,0xff,*param_1,lVar2);
 
-      if (param_7 == 0) {
+      if (param_7 != 0) {
 
-        iVar1 = *(short *)((int)lVar2 + 0x12) * 8;
+        iVar1 = (int)param_7;
 
       }
 
       else {
 
-        iVar1 = (int)param_7;
+        iVar1 = *(short *)((int)lVar2 + 0x12) * 8;
 
       }
 
@@ -5577,13 +5577,13 @@ void FUN_003a7cb0(u64 param_1,u64 param_2)
   FUN_003a6380(*(u32 *)(iVar1 + 0xc),*(u16 *)(iVar1 + 0x16),
                *(u16 *)(iVar1 + 0x1a),0,param_2,param_1);
 
-  if (extraout_t0 < 0) {
+  if (extraout_t0 >= 0) {
 
-    lVar2 = (long)(iVar1 + -1);
+    lVar2 = (long)(iVar1 + 1);
 
-    if (lVar2 < 0) {
+    if (*(short *)(extraout_t1_lo + 0x1a) <= lVar2) {
 
-      lVar2 = (long)(*(short *)(extraout_t1_lo + 0x1a) + -1);
+      lVar2 = 0;
 
     }
 
@@ -5591,11 +5591,11 @@ void FUN_003a7cb0(u64 param_1,u64 param_2)
 
   else {
 
-    lVar2 = (long)(iVar1 + 1);
+    lVar2 = (long)(iVar1 + -1);
 
-    if (*(short *)(extraout_t1_lo + 0x1a) <= lVar2) {
+    if (lVar2 < 0) {
 
-      lVar2 = 0;
+      lVar2 = (long)(*(short *)(extraout_t1_lo + 0x1a) + -1);
 
     }
 

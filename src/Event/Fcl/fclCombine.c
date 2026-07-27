@@ -4563,15 +4563,15 @@ LAB_003d29c0:
 
         lVar9 = datGetScenarioMode();
 
-        if (lVar9 == 0) {
+        if (lVar9 != 0) {
 
-          sprintf(auStack_50,&gp0xffffaa60,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
+          sprintf(auStack_50,0x6a4660);
 
         }
 
         else {
 
-          sprintf(auStack_50,0x6a4660);
+          sprintf(auStack_50,&gp0xffffaa60,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
 
         }
 
@@ -4629,15 +4629,15 @@ LAB_003d29c0:
 
         lVar9 = datGetScenarioMode();
 
-        if (lVar9 == 0) {
+        if (lVar9 != 0) {
 
-          sprintf(auStack_50,0x6a46a0,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
+          sprintf(auStack_50,0x6a4690,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
 
         }
 
         else {
 
-          sprintf(auStack_50,0x6a4690,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
+          sprintf(auStack_50,0x6a46a0,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
 
         }
 
@@ -5143,19 +5143,19 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
     iVar6 = *(short *)(param_3 + 0x20) + -0x5a;
 
-    if (*(int *)(param_3 + 0x10) == 6) {
+    if (*(int *)(param_3 + 0x10) != 6) {
 
-      fVar10 = 36.0f - fVar9 * 68.0f;
+      fVar10 = fVar9 * -34.0f;
 
-      fVar13 = -2.0f - fVar9;
+      fVar13 = 42.0f - fVar9 * 41.0f;
 
     }
 
     else {
 
-      fVar10 = fVar9 * -34.0f;
+      fVar10 = 36.0f - fVar9 * 68.0f;
 
-      fVar13 = 42.0f - fVar9 * 41.0f;
+      fVar13 = -2.0f - fVar9;
 
     }
 

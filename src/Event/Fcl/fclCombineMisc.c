@@ -786,15 +786,15 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
   }
 
-  if (bVar4 < bVar5) {
+  if (bVar4 >= bVar5) {
 
-    bVar4 = *(u8 *)((u32)bVar5 + (u32)bVar4 * 0x16 + 0x6a58e9);
+    bVar4 = *(u8 *)((u32)bVar4 + (u32)bVar5 * 0x16 + 0x6a58e9);
 
   }
 
   else {
 
-    bVar4 = *(u8 *)((u32)bVar4 + (u32)bVar5 * 0x16 + 0x6a58e9);
+    bVar4 = *(u8 *)((u32)bVar5 + (u32)bVar4 * 0x16 + 0x6a58e9);
 
   }
 
@@ -806,15 +806,15 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
     }
 
-    if (bVar3 < bVar4) {
+    if (bVar3 >= bVar4) {
 
-      uVar7 = *(u8 *)((u32)bVar4 + (u32)bVar3 * 0x16 + 0x6a5ad9);
+      uVar7 = *(u8 *)((u32)bVar3 + (u32)bVar4 * 0x16 + 0x6a5ad9);
 
     }
 
     else {
 
-      uVar7 = *(u8 *)((u32)bVar3 + (u32)bVar4 * 0x16 + 0x6a5ad9);
+      uVar7 = *(u8 *)((u32)bVar4 + (u32)bVar3 * 0x16 + 0x6a5ad9);
 
     }
 
@@ -1886,27 +1886,27 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
 
           lVar10 = datGetScenarioMode();
 
-          if (lVar10 == 0) {
-
-            cVar1 = (DAT_006a4ba0)[uVar3];
-
-          }
-
-          else {
+          if (lVar10 != 0) {
 
             cVar1 = (DAT_006a4e10)[uVar3];
 
           }
 
-          if (cVar1 == '\0') {
+          else {
 
-            iVar16 = 0;
+            cVar1 = (DAT_006a4ba0)[uVar3];
+
+          }
+
+          if (cVar1 != '\0') {
+
+            iVar16 = (sVar2 * 10) / (int)cVar1;
 
           }
 
           else {
 
-            iVar16 = (sVar2 * 10) / (int)cVar1;
+            iVar16 = 0;
 
           }
 
@@ -2002,27 +2002,27 @@ LAB_003d79d4:
 
           lVar12 = datGetScenarioMode();
 
-          if (lVar12 == 0) {
-
-            cVar1 = (DAT_006a4ba0)[uVar3];
-
-          }
-
-          else {
+          if (lVar12 != 0) {
 
             cVar1 = (DAT_006a4e10)[uVar3];
 
           }
 
-          if (cVar1 == '\0') {
+          else {
 
-            iVar13 = 0;
+            cVar1 = (DAT_006a4ba0)[uVar3];
+
+          }
+
+          if (cVar1 != '\0') {
+
+            iVar13 = (sVar2 * 10) / (int)cVar1;
 
           }
 
           else {
 
-            iVar13 = (sVar2 * 10) / (int)cVar1;
+            iVar13 = 0;
 
           }
 
