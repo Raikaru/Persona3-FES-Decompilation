@@ -2741,7 +2741,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
           else {
 
-            uVar7 = FUN_003b1920(0,lVar8,1);
+            uVar7 = FUN_003b1920_typed(0,lVar8,1);
 
           }
 
@@ -2757,7 +2757,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
           if (lVar8 != 0) {
 
-            iVar6 = FUN_003b1920(iVar6,lVar8,1);
+            iVar6 = FUN_003b1920_typed(iVar6,lVar8,1);
 
           }
 
