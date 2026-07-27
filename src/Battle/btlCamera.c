@@ -101,7 +101,7 @@ void FUN_002a4530(float *param_1,float *param_2,float *param_3,float *param_4);
 void FUN_002a4690(void* out, const void* first, const void* second, const void* config);
 /* b6070 exact call signatures */
 #pragma alias FUN_00300580_b6070 FUN_00300580
-extern long FUN_00300580_b6070(void* unitData, u32 flags);
+extern u32 FUN_00300580_b6070(void* unitData, u32 flags);
 #pragma alias FUN_00280130_b6070 FUN_00280130
 extern void FUN_00280130_b6070(BtlUnit* unit, RwV3d* out);
 #pragma alias FUN_004be1e0_b6070 FUN_004be1e0
@@ -6403,7 +6403,7 @@ void FUN_002b5cd0(BtlCamera* camera)
 void FUN_002b6070(BtlCamera* camera, f32 param_1, f32 param_2)
 {
     BtlUnit* unit;
-    long random;
+    u32 random;
     f32 scale1;
     f32 scale2;
     f32 angle;
@@ -11050,7 +11050,6 @@ void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5)
         if ((*(u32 *)((u8 *)unit + 0x9c) & 8) != 0) {
           if (flag40 != 0) {
             FUN_0027f790(unit, 2);
-            FUN_0027f770(unit, 4);
             if (flag10 == 0) *(u8 *)((u8 *)unit + 0x37) = 0xff;
           }
           else if ((list == *(u8 **)(iGpffffb6fc + 0x148)) && (flag4 != 0)) {

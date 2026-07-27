@@ -4690,7 +4690,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
   u16 *puVar2;
 
-  short sVar3;
+  int sVar3;
 
   int iVar4;
 

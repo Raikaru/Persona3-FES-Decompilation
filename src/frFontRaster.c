@@ -67,8 +67,8 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 // FUN_003B35E0 NONMATCHING
 void FUN_003b35e0(int count)
 {
-  int i;
   register int limit;
+  int i;
   int size;
   u32 memory;
   int *node;

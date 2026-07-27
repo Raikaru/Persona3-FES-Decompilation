@@ -158,6 +158,12 @@ void FUN_003a5030(int param_1);
 #pragma alias FUN_003a5030_typed FUN_003a5030
 extern void FUN_003a5030_typed(int param_1);
 int FUN_003a50e0(int param_1,int param_2);
+#pragma alias FUN_003a50e0_typed FUN_003a50e0
+extern int FUN_003a50e0_typed(int param_1, int param_2);
+#pragma alias FUN_003a5940_typed FUN_003a5940
+extern int FUN_003a5940_typed(int param_1, int param_2);
+#pragma alias FUN_003a6460_typed FUN_003a6460
+extern int FUN_003a6460_typed(int param_1);
 int FUN_003a5100(int param_1);
 #pragma alias FUN_003a5100_typed FUN_003a5100
 extern int FUN_003a5100_typed(int param_1);
@@ -2532,7 +2538,7 @@ u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3)
 
   }
 
-  piVar3 = (int *)FUN_003a50e0(iVar1,param_2);
+  piVar3 = (int *)FUN_003a50e0_typed(iVar1,param_2);
 
   if (*piVar3 != 0) {
 
@@ -2558,7 +2564,7 @@ u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3)
 
     }
 
-    lVar5 = FUN_003a5940(iVar2,param_3);
+    lVar5 = FUN_003a5940_typed(iVar2,param_3);
 
     if (lVar5 == 0) {
 
@@ -2570,7 +2576,7 @@ u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3)
 
       uVar6 = FUN_003b2900(0,0,lVar5,0);
 
-      uVar4 = FUN_003a6460(uVar6);
+      uVar4 = FUN_003a6460_typed(uVar6);
 
       FUN_003b0170(uVar6);
 

@@ -7899,7 +7899,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   lVar9 = 0xffffff;
   puVar10 = param_3;
   param_4 &= 0xffff;
-  for (uVar7 = 0; uVar7 < param_4; uVar7++) {
+  for (uVar7 = 0; uVar7 < param_4; uVar7++, puVar10++) {
     uVar2 = *puVar10;
     if ((((uVar2 != 0) && (uVar2 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + ((u32)uVar2 * 10 + (u32)uVar2) * 4 + 8), param_5 != 0
@@ -7912,7 +7912,6 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
         lVar9 = lVar6;
       }
     }
-    puVar10++;
   }
   func_00301870(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));

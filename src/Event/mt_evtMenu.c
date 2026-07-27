@@ -829,7 +829,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3);
 u32 FUN_00375a40(int param_1,int param_2,int param_3);
 u32 FUN_00375d70(int param_1,int param_2,int param_3);
 u32 FUN_00375f30(int param_1,int param_2,int param_3);
-u64 FUN_003798f0(int param_1,int param_2,int param_3);
+u32 FUN_003798f0(int param_1,int param_2,int param_3);
 u32 FUN_0037a150(int param_1,int param_2,int param_3);
 u32 FUN_0037a2b0(int param_1,int param_2,int param_3);
 u32 FUN_0037a4d0(int param_1,int param_2,int param_3);
@@ -9043,7 +9043,7 @@ void FUN_003797b0(int param_1,int param_2,int param_3,int param_4)
 // FUN_003798F0 NONMATCHING
 
 
-u64 FUN_003798f0(int param_1,int param_2,int param_3)
+u32 FUN_003798f0(int param_1,int param_2,int param_3)
 
 
 
@@ -9053,10 +9053,10 @@ u64 FUN_003798f0(int param_1,int param_2,int param_3)
 
   u32 uVar2;
 
-  u64 uVar3;
-  u64 extraout_a2;
+  u32 uVar3;
+  u32 extraout_a2;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
