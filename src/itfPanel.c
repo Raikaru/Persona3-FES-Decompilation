@@ -548,17 +548,15 @@ void FUN_003a8ea0(int param_1,int param_2,int param_3,int param_4,int param_5,in
 
   FUN_005225a8(DAT_006a1db0);
 
-  iVar1 = (int)param_1;
+  *(int *)(param_1 + 0x10) = *(int *)(param_1 + 0x10) + param_2;
 
-  *(int *)(iVar1 + 0x10) = *(int *)(iVar1 + 0x10) + param_2;
+  *(int *)(param_1 + 0x14) = *(int *)(param_1 + 0x14) + param_3;
 
-  *(int *)(iVar1 + 0x14) = *(int *)(iVar1 + 0x14) + param_3;
+  *(int *)(param_1 + 0x18) = *(int *)(param_1 + 0x18) + param_4;
 
-  *(int *)(iVar1 + 0x18) = *(int *)(iVar1 + 0x18) + param_4;
+  *(int *)(param_1 + 0x1c) = *(int *)(param_1 + 0x1c) + param_5;
 
-  *(int *)(iVar1 + 0x1c) = *(int *)(iVar1 + 0x1c) + param_5;
-
-  *(int *)(iVar1 + 0xc) = *(int *)(iVar1 + 0xc) + param_6;
+  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + param_6;
 
   if ((code *)(&PTR_FUN_006a1c10)[*(u8 *)(iVar1 + 0x3c)] != (code *)0x0) {
 
