@@ -38,6 +38,7 @@ extern u16 DAT_009571a4;
 extern u32 DAT_00957198;
 extern void FUN_0035f060(u32 value);
 extern void FUN_0030c440(void);
+/* Removing this loses datScriptSetCalculationResult (MATCH nd0 -> MISMATCH nd16) - measured W161. */
 #pragma optimization_level 1
 // FUN_00311190
 void datScriptSetCalculationResult(u32 param_1)

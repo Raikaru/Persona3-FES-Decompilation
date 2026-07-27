@@ -119,6 +119,7 @@ static void biMainDrawSlot(u8* slot)
     }
 }
 
+/* Removing this loses func_0023f480 (MATCH nd0 -> MISMATCH nd15) - measured W161. */
 #pragma optimization_level 1
 // FUN_0023F480
 void func_0023f480(void* work)
@@ -890,6 +891,7 @@ void func_00241910(void)
 #undef BI_MAIN_DRAW_BASIC
 #undef BI_MAIN_DRAW_ALT
 
+/* Removing this loses func_00242260 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma optimization_level 1
 // FUN_00242260
 void* func_00242260(void)
@@ -967,6 +969,7 @@ void func_00242320(void* slot, s32 mode)
     BI_U32(slot, 0) |= BI_SLOT_READY;
 }
 
+/* Removing this loses func_00242540 (MATCH nd0 -> MISMATCH nd131), newly over-window 184/192 -> 200/192 - measured W161. */
 #pragma optimization_level 1
 // FUN_00242540
 void func_00242540(void* slot)
@@ -995,6 +998,7 @@ void func_00242540(void* slot)
 }
 #pragma optimization_level 2
 
+/* Removing this loses func_00242600 (MATCH nd0 -> MISMATCH nd208), newly over-window 284/288 -> 300/288; loses func_00242720 (MATCH nd0 -> MISMATCH nd208), newly over-window 284/288 -> 300/288 - measured W161. */
 #pragma optimization_level 1
 // FUN_00242600
 void func_00242600(void* slot, s32 value)
@@ -1115,6 +1119,7 @@ void func_00242a50(void* slot, u32 unitId)
     BI_U32(slot, 0x314) = unitId;
 }
 
+/* Removing this loses func_00242a60 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma optimization_level 1
 // FUN_00242A60
 s32 func_00242a60(void)
@@ -1136,6 +1141,7 @@ s32 func_00242a60(void)
 }
 #pragma optimization_level 2
 
+/* Removing this loses func_00242ae0 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma optimization_level 1
 // FUN_00242AE0
 s32 func_00242ae0(u32 unitId)

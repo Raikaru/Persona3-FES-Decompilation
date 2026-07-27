@@ -1979,8 +1979,6 @@ void FUN_00227D10(void)
     }
 }
 
-#pragma push
-#pragma opt_common_subs off
 // FUN_00227F30 NONMATCHING
 void FUN_00227F30(void)
 {
@@ -2170,7 +2168,6 @@ void FUN_00227F30(void)
         FUN_0021d950(record2 + 0x3930, color);
     }
 }
-#pragma pop
 
 // Previous body was a wrong-helper stub unrelated to retail (1168B window).
 // Rewritten from disasm: retail sets a fixed initial vtable state(9,2),

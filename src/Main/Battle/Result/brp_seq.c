@@ -1360,6 +1360,7 @@ done:
     return;
 }
 
+/* Removing this loses func_00274c00 (MATCH nd0 -> MISMATCH nd8) - measured W161. */
 // FUN_00274C00
 #pragma optimization_level 1
 void func_00274c00(void)

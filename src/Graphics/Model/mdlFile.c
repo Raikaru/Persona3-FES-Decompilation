@@ -4435,6 +4435,7 @@ void FUN_00320770(int *param_1)
 
 
 
+/* Removing this worsens FUN_00320810 (nd8 -> nd19) - measured W161. */
 // FUN_00320810 NONMATCHING
 #pragma optimization_level 1
 

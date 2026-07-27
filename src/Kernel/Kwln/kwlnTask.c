@@ -433,6 +433,7 @@ destroyTask:
         H_Free(task);
     }
 }
+/* Removing this loses kwlnTaskSetFlagsRecursive (MATCH nd0 -> MISMATCH nd110) - measured W161. */
 #pragma optimization_level 1
 // FUN_001943B0. Set task flags recursively through the child hierarchy.
 void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
@@ -636,6 +637,7 @@ void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
     }
 }
 
+/* Removing this loses kwlnTaskPrintTrees (MATCH nd0 -> MISMATCH nd166) - measured W161. */
 // FUN_001948b0
 #pragma optimization_level 1
 void kwlnTaskPrintTrees()

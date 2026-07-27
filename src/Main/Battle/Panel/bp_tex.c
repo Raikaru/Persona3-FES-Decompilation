@@ -525,7 +525,6 @@ static void bpTexSetUvAxis(f32 start,
 }
 
 #pragma optimization_level 3
-#pragma opt_common_subs off
 // FUN_0021cd00 NONMATCHING
 void func_0021cd00(void* frameData, f32* uv)
 {
@@ -571,10 +570,8 @@ void func_0021cd00(void* frameData, f32* uv)
         uv[3] = xRange[1] / (f32)rasterHeight;
     }
 }
-#pragma opt_common_subs on
 
 #pragma optimization_level 3
-#pragma opt_common_subs off
 /* Removing this loses FUN_00255390 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
 #pragma schedule on
 // Reconstructed full mode dispatch and duplicated axis calculations.

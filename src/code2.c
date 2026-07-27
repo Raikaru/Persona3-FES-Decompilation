@@ -503,6 +503,7 @@ void FUN_007807e0(u16 param_1)
 /* Removing this loses FUN_00780800 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
 #pragma schedule on
 #pragma opt_propagation off
+/* Removing this loses FUN_00780800 (MATCH nd0 -> MISMATCH nd13) - measured W161. */
 #pragma opt_common_subs off
 // FUN_00780800
 volatile u32* FUN_00780800(u32 value)

@@ -4367,6 +4367,7 @@ int FUN_003bc8f0(char *param_1)
 
 }
 #define FUN_003bc8f0(...) ((int (*)(...))FUN_003bc8f0)(__VA_ARGS__)
+/* Removing this loses FUN_003bc900 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma optimization_level 1
 #undef FUN_003bc900
 // FUN_003BC900

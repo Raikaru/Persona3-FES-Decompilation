@@ -103,6 +103,7 @@ void bppMain0020edc0(void)
     sBppMain = NULL;
 }
 
+/* Removing this worsens bppMain0020edf0 (nd135 -> nd794) - measured W161. */
 #pragma optimization_level 1
 // FUN_0020edf0 NONMATCHING
 void bppMain0020edf0(void)
@@ -379,6 +380,7 @@ static inline u8* bppMainLookupEntry(s16 pcId)
     return NULL;
 }
 
+/* Removing this loses bppMain0020f720 (MATCH nd0 -> MISMATCH nd23); loses bppMain0020f7d0 (MATCH nd0 -> MISMATCH nd28); loses bppMain0020f8b0 (MATCH nd0 -> MISMATCH nd28); loses bppMain0020f9a0 (MATCH nd0 -> MISMATCH nd24); loses bppMain0020fa80 (MATCH nd0 -> MISMATCH nd24); loses bppMain0020fb60 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
 // FUN_0020f720
 #pragma optimization_level 1
 u8* bppMain0020f720(s16 pcId)

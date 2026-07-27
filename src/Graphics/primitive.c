@@ -194,7 +194,6 @@ void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color,
     }
 }
 
-#pragma optimization_level 1
 // FUN_00359380
 void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderState)
 {
@@ -242,7 +241,6 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
         }
     }
 }
-#pragma optimization_level 2
 
 // FUN_00359560 NONMATCHING
 void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, const RwMatrix* mat, u32 saveAndRestoreRenderState)

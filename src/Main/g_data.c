@@ -731,6 +731,7 @@ u32 datAddMoney(s32 amount)
     return finalMoney;
 }
 
+/* Removing this loses datScrCmd_SAVE_PARTY (MATCH nd0 -> MISMATCH nd8) - measured W161. */
 // FUN_0016eb80
 #pragma optimization_level 1
 u32 datScrCmd_SAVE_PARTY()
@@ -755,6 +756,7 @@ u32 datScrCmd_SAVE_PARTY()
 }
 #pragma optimization_level 2
 
+/* Removing this loses datScrCmd_RESTORE_PARTY (MATCH nd0 -> MISMATCH nd8) - measured W161. */
 // FUN_0016ebe0
 #pragma optimization_level 1
 u32 datScrCmd_RESTORE_PARTY()

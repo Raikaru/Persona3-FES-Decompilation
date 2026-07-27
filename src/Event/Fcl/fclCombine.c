@@ -416,6 +416,7 @@ void fclCombine003d0310(void)
     FUN_00194b20(child, DAT_006a43d0, 0x106f, fclCombine003d0470, 0, 0);
 }
 
+/* Removing this loses fclCombine003d03c0 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
 #pragma optimization_level 0
 // FUN_003d03c0
 s32 fclCombine003d03c0(void)

@@ -272,10 +272,8 @@ void brPanel00235010(void)
 #define D_00960090 (*brPanelSetState)
 #define D_0096009C (*brPanelSetQuad)
 #pragma push
-#pragma opt_common_subs off
 #pragma optimization_level 3
 /* Removing this worsens FUN_002350f0 (nd2052 -> nd2063) - measured W161. */
-#pragma schedule on
 // FUN_002350f0 NONMATCHING
 void brPanel002350f0(void)
 {
@@ -469,9 +467,7 @@ void brPanel002350f0(void)
 #pragma opt_loop_invariants off
 #undef D_00960090
 #undef D_0096009C
-#pragma schedule off
 #pragma optimization_level 2
-#pragma opt_common_subs on
 #pragma pop
 
 // FUN_00235f30
