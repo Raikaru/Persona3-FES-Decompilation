@@ -256,6 +256,8 @@ extern u32 DAT_008717f4_rows[];
 #pragma alias DAT_0087190c_rows DAT_0087190c
 extern u32 DAT_0087190c_rows[];
 extern u32 DAT_008717f0;
+#pragma alias DAT_008717f0_abs DAT_008717f0
+extern u8 DAT_008717f0_abs[];
 extern u32 DAT_008717f4;
 extern u32 DAT_0087190c;
 extern u32 DAT_0087193a;
@@ -651,6 +653,8 @@ extern code FUN_001c65e0;
  extern u32 FUN_001c6720_u32(u32 param_1,u32 param_2);
 #pragma alias FUN_001c6720_f32 FUN_001c6720
 extern u32 FUN_001c6720_f32(u32 param_1,float param_2);
+#pragma alias FUN_001c6720_f32first FUN_001c6720
+extern u32 FUN_001c6720_f32first(float param_1,u32 param_2);
 extern u32 FUN_001c65e0_typed(void *param_1);
 extern long FUN_001c6720(u32 param_1, u32 param_2);
 extern code FUN_001c6d70;
@@ -5289,19 +5293,19 @@ void FUN_00434c90(char param_1)
 {
   int iVar1;
   int iVar2;
-  int iVar3;
-  u8 *base;
+  char cVar3;
 
-  base = (u8 *)&DAT_007ce6e8;
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
-    iVar3 = 0;
+    cVar3 = 0;
     for (iVar1 = 0; iVar1 < 3; iVar1 = iVar1 + 1) {
-      if (iVar2 == (char)base[iVar1]) {
-        iVar3 = 1;
+      if (((char *)&DAT_007ce6e8)[iVar1] != iVar2) {
+      }
+      else {
+        cVar3 = 1;
       }
     }
-    if (iVar3 == 0) {
-      base[(char)(param_1 - 1)] = (u8)iVar2;
+    if (cVar3 == 0) {
+      ((u8 *)&DAT_007ce6e8)[(char)(param_1 - 1)] = (u8)iVar2;
       return;
     }
   }
@@ -7645,18 +7649,19 @@ u64 FUN_00439f60(u64 param_1,char param_2)
 u64 FUN_0043a0b0(u64 param_1,char param_2)
 
 {
-  int iVar1;
   int iVar2;
+  u32 rowOffset;
+  int iVar1;
   u32 lVar3;
-  u32 uVar4;
-  
+
+  rowOffset = param_2 * 0x1c0;
+  iVar2 = *(int *)(*(int *)(DAT_0087190c_abs + rowOffset) + 0x3c);
   iVar1 = iGpffffb5a0;
-  iVar2 = *(int *)(*(int *)((u8 *)DAT_0087190c + param_2 * 0x1c0) + 0x3c);
-  lVar3 = FUN_001c6720_u32(*(u32 *)(iGpffffb5a0 + 0x14),(u32)(u8 *)DAT_008717a0);
+  lVar3 = FUN_001c6720_f32first(*(float *)(iVar1 + 0x14),(u32)DAT_008717a0_bytes);
   if ((*(char *)(iVar2 + 0x1216) == '\0') && (lVar3 != 0)) {
-    uVar4 = FUN_00318b60(((u8 *)DAT_008717f0)[param_2 * 0x70]);
+    rowOffset = FUN_00318b60(*(u32 *)(DAT_008717f0_abs + rowOffset));
     iVar2 = FUN_00318b60(*(u32 *)((int)lVar3 + 0x50));
-    lVar3 = FUN_001c6450_f32(uVar4,(void *)(iVar2 + 0x30),
+    lVar3 = FUN_001c6450_f32(rowOffset,(void *)(iVar2 + 0x30),
                              *(float *)(iVar1 + 0x10),*(float *)(iVar1 + 0x14));
     if (lVar3 == 1) {
       return 1;
@@ -20023,26 +20028,28 @@ void FUN_0045b620(u32 param_5,float param_1,float param_2,float param_3,float pa
                  u8 param_6,int param_7)
 
 {
-  u32 iVar1;
+  int iVar1;
+  u32 uVar2;
+  u32 uVar3;
   float fVar4;
   float fVar5;
   float fVar6;
   float fVar7;
-  u32 uVar3;
   
-  iVar1 = FUN_001158b0(0,uGpffffba28,param_5);
+  uVar2 = FUN_001158b0(0,uGpffffba28,param_5);
+  iVar1 = (int)uVar2;
   *(u32 *)(iVar1 + 0x2c) = 0;
   *(float *)(iVar1 + 0x10) = param_1;
   *(float *)(iVar1 + 0x14) = param_2;
-  fVar4 = (float)FUN_001126b0_typed((void*)iVar1);
-  fVar5 = (float)FUN_00112740_typed((void*)iVar1);
+  fVar4 = (float)FUN_001126b0_typed((void*)uVar2);
+  fVar5 = (float)FUN_00112740_typed((void*)uVar2);
   *(char *)(iVar1 + 0x18) = 0xff - param_6;
   fVar6 = 4096.0f * param_3;
   if (2.1474836e+09f <= fVar6) goto LAB_0045b620_high3;
   uVar3 = (u16)(int)fVar6;
   goto LAB_0045b620_done3;
 LAB_0045b620_high3:
-  uVar3 = (u16)(0x80000000 | (int)(fVar6 - 2.1474836e+09f));
+  uVar3 = (u16)((int)(fVar6 - 2.1474836e+09f) | 0x80000000);
 LAB_0045b620_done3:
   *(u16 *)(iVar1 + 0x28) = uVar3;
   fVar7 = 4096.0f * param_4;
@@ -20050,17 +20057,17 @@ LAB_0045b620_done3:
   uVar3 = (u16)(int)fVar7;
   goto LAB_0045b620_done4;
 LAB_0045b620_high4:
-  uVar3 = (u16)(0x80000000 | (int)(fVar7 - 2.1474836e+09f));
+  uVar3 = (u16)((int)(fVar7 - 2.1474836e+09f) | 0x80000000);
 LAB_0045b620_done4:
   *(u16 *)(iVar1 + 0x2a) = uVar3;
   if (param_7 == 1) {
-    fVar6 = (float)FUN_001126b0_typed((void*)iVar1);
-    fVar7 = (float)FUN_00112740_typed((void*)iVar1);
+    fVar6 = (float)FUN_001126b0_typed((void*)uVar2);
+    fVar7 = (float)FUN_00112740_typed((void*)uVar2);
     *(float *)(iVar1 + 0x10) = param_1 - ((fVar6 - fVar4) + 0.5f) / 2.0f;
     *(float *)(iVar1 + 0x14) = param_2 - ((fVar7 - fVar5) + 0.5f) / 2.0f;
   }
-  FUN_001127d0(iVar1,1);
-  FUN_00115980_arg(iVar1);
+  FUN_001127d0(uVar2,1);
+  FUN_00115980_arg(uVar2);
   return;
 }
 #pragma pop

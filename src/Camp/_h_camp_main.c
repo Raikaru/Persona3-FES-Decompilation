@@ -179,13 +179,13 @@ void FUN_00133d00(KwlnTask* task)
     (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
-// FUN_00133D30 NONMATCHING
+// FUN_00133D30
 KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd)
 {
-    CampTextureParserWork* work;
     KwlnTask* task;
+    CampTextureParserWork* work;
 
-    work = (CampTextureParserWork*)DAT_00960184(1, 8, 0x40000);
+    work = (CampTextureParserWork*)(*DAT_00960184_abs)(1, 8, 0x40000);
     if (work == NULL) {
         return NULL;
     }
@@ -750,7 +750,7 @@ static void h_campDestroyRequestAndResource(u32* work,
 
 #pragma opt_loop_invariants on
 //
-// FUN_00134a10 NONMATCHING
+// FUN_00134a10
 void* FUN_00134a10(KwlnTask* task)
 {
     u32* work;
@@ -827,7 +827,6 @@ void* FUN_00134a10(KwlnTask* task)
             ready = 1;
             for (index = 0; index < 0x17; index++) {
                 if (work[0x19 + index] == 0) {
-                    resourceSize = 0;
                     resource = FUN_0010c3a0((void*)work[2 + index],
                                             &resourceSize, 0);
                     work[0x19 + index] = (u32)resource;
@@ -837,7 +836,8 @@ void* FUN_00134a10(KwlnTask* task)
                         ((void**)DAT_00833A80_abs)[index] = NULL;
                     } else {
                         work[2 + index] = 0;
-                        ((void**)DAT_00833A80_abs)[index] = resource;
+                        ((void**)DAT_00833A80_abs)[index] =
+                            (void*)work[0x19 + index];
                         FUN_005225a8(D_005DBA50, index);
                     }
                 }
