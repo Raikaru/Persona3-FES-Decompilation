@@ -7569,10 +7569,8 @@ RuntimeTask* func_001ef500(RuntimeTask* parent)
 s32 func_001ef7f0(RuntimeTask* task)
 {
     RuntimeWork* work;
-    u32 phase;
     u16 input;
     u8* bytes;
-    s32 value;
     struct
     {
         u32 flags;
@@ -7656,7 +7654,7 @@ s32 func_001ef7f0(RuntimeTask* task)
         case 1:
             if ((work->flags & 2) != 0)
             {
-                if (func_001f4970(*(void**)((u8*)work + 0x94)) == 0)
+                if (func_001f4970(*(void**)((u8*)work + 0x94)) != 0)
                 {
                     break;
                 }
@@ -7718,13 +7716,12 @@ s32 func_001ef7f0(RuntimeTask* task)
             break;
 
         case 7:
-            phase = *(u32*)((u8*)work + 0x28);
-            switch (phase)
+            switch ((u32)work->renderData)
             {
                 case 0:
-                    input = DAT_007e094e;
+                    input = *(u16*)DAT_007e094e_abs;
                     if ((input & 0x40) != 0 ||
-                        (DAT_007e094c & 0x10) != 0 ||
+                        (*(u16*)DAT_007e094c_abs & 0x10) != 0 ||
                         (input & 0x20) != 0)
                     {
                         if (*(void**)((u8*)work + 0xa680) == NULL)
@@ -7734,7 +7731,7 @@ s32 func_001ef7f0(RuntimeTask* task)
                             func_001086a0(1);
                             func_002362e0();
                             work->flags &= ~0x200000;
-                            *(u32*)((u8*)work + 0x28) = 1;
+                            work->renderData = (void*)1;
                         }
                         else
                         {
@@ -7759,6 +7756,9 @@ s32 func_001ef7f0(RuntimeTask* task)
             switch (*(u32*)(bytes + 0x38))
             {
                 case 0:
+                {
+                    u16 id;
+                    s32 value;
                     if ((~work->completedFlags & 4) != 0)
                     {
                         break;
@@ -7770,12 +7770,12 @@ s32 func_001ef7f0(RuntimeTask* task)
                     func_003c72d0(func_002345d0(1));
                     *(u32*)(bytes + 0x3c) = 2;
                     *(s32*)(bytes + 0x154) = 0;
-                    value = *(u16*)(bytes + 0x140 +
-                                    *(s32*)(bytes + 0x154) * 2);
-                    func_003c7c20(0, value, 5);
+                    id = *(u16*)(bytes + 0x140 +
+                                 *(s32*)(bytes + 0x154) * 2);
+                    func_003c7c20(0, id, 5);
                     if (iGpffffb6fc != NULL)
                     {
-                        value = func_001fb1b0(6, (u16)value);
+                        value = func_001fb1b0(6, id);
                         if (func_0017d800() != 0)
                         {
                             if (value == 2)
@@ -7796,8 +7796,11 @@ s32 func_001ef7f0(RuntimeTask* task)
                     FUN_005225a8(D_00684588);
                     *(u32*)(bytes + 0x38) = 1;
                     break;
+                }
 
                 case 1:
+                {
+                    s32 value;
                     func_003c7990();
                     if (func_003c7850() != 0)
                     {
@@ -7810,8 +7813,12 @@ s32 func_001ef7f0(RuntimeTask* task)
                     func_003c7430(6);
                     *(u32*)(bytes + 0x38) = 2;
                     break;
+                }
 
                 case 2:
+                {
+                    u16 id;
+                    s32 value;
                     func_003c7990(1);
                     if (func_003c7850() != 0)
                     {
@@ -7821,11 +7828,11 @@ s32 func_001ef7f0(RuntimeTask* task)
                     value = ++*(s32*)(bytes + 0x154);
                     if (value < *(s32*)(bytes + 0x150))
                     {
-                        value = *(u16*)(bytes + 0x140 + value * 2);
-                        func_003c7c20(0, value, 5);
+                        id = *(u16*)(bytes + 0x140 + value * 2);
+                        func_003c7c20(0, id, 5);
                         if (iGpffffb6fc != NULL)
                         {
-                            value = func_001fb1b0(6, (u16)value);
+                            value = func_001fb1b0(6, id);
                             if (func_0017d800() != 0)
                             {
                                 if (value == 2)
@@ -7851,8 +7858,11 @@ s32 func_001ef7f0(RuntimeTask* task)
                         *(u32*)(bytes + 0x38) = 3;
                     }
                     break;
+                }
 
                 case 3:
+                {
+                    s32 value;
                     value = *(s32*)(bytes + 0xa790);
                     if (value < 12)
                     {
@@ -7881,6 +7891,7 @@ s32 func_001ef7f0(RuntimeTask* task)
                         func_001f0d70(task);
                     }
                     break;
+                }
 
                 case 4:
                     if (func_00236340() == 0)
@@ -8106,8 +8117,8 @@ s32 func_001ef7f0(RuntimeTask* task)
                     {
                         func_00108670(2);
                         func_001085c0();
-                        func_0010a370(3, D_006845A0);
                     }
+                    func_0010a370(3, D_006845A0);
                     work->selection = 5;
                     break;
 
@@ -8120,6 +8131,8 @@ s32 func_001ef7f0(RuntimeTask* task)
                     break;
 
                 case 6:
+                {
+                    s32 value;
                     if (func_002727c0() != 0)
                     {
                         break;
@@ -8154,6 +8167,7 @@ s32 func_001ef7f0(RuntimeTask* task)
                         }
                     }
                     break;
+                }
 
                 case 7:
                     if (H_Fade_IsFadeOutDone() != 0)

@@ -457,6 +457,104 @@ static __inline void mdlVuModulateStacked50(u32 c2)
         : "$v0", "memory");
 }
 
+static __inline void mdlVuModulateStacked50V1(u32 c2)
+{
+    f32 inv255;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x48      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x44($sp)       \n"
+        "addiu       $v0, $sp, 0x44      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v1, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v1, 0x437F         \n"
+        "qmtc2       $v1, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v1, $vf10          \n"
+        "ppach       $v1, $zero, $v1     \n"
+        "ppacb       $v1, $zero, $v1     \n"
+        "sw          $v1, 0x40($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+
+static __inline void mdlVuModulateStacked70(u32 c2)
+{
+    f32 inv255;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x6c      \n"
+        ".set reorder"
+        :
+        :
+        : "$v0", "memory");
+    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x68($sp)       \n"
+        "addiu       $v0, $sp, 0x68      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %1             \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x64($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2), "f"(inv255)
+        : "$v0", "memory");
+}
+
 
 /* ==========================================================================
  * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
@@ -910,7 +1008,7 @@ u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src);
 u64 FUN_00337e90(int param_1);
 void FUN_00337f80(int param_1);
 void FUN_00337fd0(int param_1);
-void FUN_00338360(u64 param_1);
+void FUN_00338360(int param_1);
 void FUN_00338530(int param_1);
 float * FUN_003385d0(u32 param_1);
 void FUN_00338770(int param_1);
@@ -919,7 +1017,7 @@ void FUN_00338ac0(u64 param_1);
 u64 FUN_00338d60(int param_1);
 void FUN_00338e50(int param_1);
 void FUN_00338ea0(int param_1);
-void FUN_00339200(u64 param_1);
+void FUN_00339200(int param_1);
 u64 FUN_003393d0(u32 param_1,u32 param_2);
 #pragma alias FUN_003393d0_u32 FUN_003393d0
 extern u32 FUN_003393d0_u32(u32 param_1,u32 param_2);
@@ -27801,106 +27899,81 @@ void FUN_00337fd0(int param_1)
 // FUN_00338360 NONMATCHING
 
 
-void FUN_00338360(u64 param_1)
-
-
-
+void FUN_00338360(int param_1)
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
-
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  u8 cStack_1;
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
-  
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
   iVar5 = (int)param_1;
-
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = (u16 *)**(u32 **)(iVar5 + 0x3c);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = *(u32 *)(iVar5 + 0x30);
-    c2s = (u32)iVar3;
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-    cStack_1 = packed[3];
-    uStack_4 = packed[0];
-    uStack_3 = packed[1];
-    uStack_2 = packed[2];
-    if (cStack_1 == 0xff) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)iVar3;
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50V1((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    if (*(char *)(*(int *)(puVar2 + 10) + 7) != '\0') {
-
-      FUN_003238d0(param_1);
-
-      if (*(char *)(iVar1 + 0x3c) == '\0') {
-
-        *puVar2 = *puVar2 & 0xfffe;
-
-      }
-
-      else {
-
+    if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
+      FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+      if (*(u8 *)(iVar1 + 0x3c) != 0) {
         *puVar2 = *puVar2 | 1;
-
       }
-
-      FUN_00323860();
-
+      else {
+        *puVar2 = *puVar2 & 0xfffe;
+      }
+      FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
     }
-
   }
-
-  return;
-
 }
 
 
@@ -28767,106 +28840,81 @@ void FUN_00338ea0(int param_1)
 // FUN_00339200 NONMATCHING
 
 
-void FUN_00339200(u64 param_1)
-
-
-
+void FUN_00339200(int param_1)
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
-
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  u8 cStack_1;
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
-  
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
   iVar5 = (int)param_1;
-
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = (u16 *)**(u32 **)(iVar5 + 0x3c);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = *(u32 *)(iVar5 + 0x30);
-    c2s = (u32)iVar3;
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-    cStack_1 = packed[3];
-    uStack_4 = packed[0];
-    uStack_3 = packed[1];
-    uStack_2 = packed[2];
-    if (cStack_1 == 0xff) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)iVar3;
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50V1((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    if (*(char *)(*(int *)(puVar2 + 10) + 7) != '\0') {
-
-      FUN_003238d0(param_1);
-
-      if (*(char *)(iVar1 + 0x3c) == '\0') {
-
-        *puVar2 = *puVar2 & 0xfffe;
-
-      }
-
-      else {
-
+    if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
+      FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+      if (*(u8 *)(iVar1 + 0x3c) != 0) {
         *puVar2 = *puVar2 | 1;
-
       }
-
-      FUN_00323860();
-
+      else {
+        *puVar2 = *puVar2 & 0xfffe;
+      }
+      FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
     }
-
   }
-
-  return;
-
 }
 
 
@@ -30477,108 +30525,78 @@ void FUN_0033a5b0(int param_1)
 
 
 void FUN_0033af10(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -31229,108 +31247,78 @@ void FUN_0033b2a0(int param_1)
 
 
 void FUN_0033bbe0(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -32106,108 +32094,78 @@ void FUN_0033c1a0(int param_1)
 
 
 void FUN_0033c960(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -32904,108 +32862,78 @@ void FUN_0033cf00(int param_1)
 
 
 void FUN_0033d6d0(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -33793,108 +33721,78 @@ void FUN_0033dc70(int param_1)
 
 
 void FUN_0033e540(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -34592,108 +34490,78 @@ void FUN_0033e8e0(int param_1)
 
 
 void FUN_0033f2e0(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -35535,108 +35403,78 @@ void FUN_0033f860(int param_1)
 
 
 void FUN_00340100(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u16 *puVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  struct {
+    u32 result;
+    u32 c2;
+    u32 c1;
+    union {
+      u32 word;
+      struct {
+        u8 red;
+        u8 green;
+        u8 blue;
+        volatile u8 alpha;
+      } bytes;
+    } packed;
+  } colourStack;
   int iVar3;
-
-
+  int iVar4;
   int iVar5;
+  int iVar6;
+  int dest;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
-
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
+  iVar5 = param_1;
+  iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    c1s = (u32)(*(int *)(iVar5 + 0x30));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    cStack_1 = packed[3];
-
-    uStack_4 = packed[0];
-
-    uStack_3 = packed[1];
-
-    uStack_2 = packed[2];
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+  puVar2 = *(u16 **)(iVar3 + 4);
+  iVar6 = *(int *)(iVar5 + 0x34);
+  iVar4 = *(int *)(iVar1 + 0x34);
+  if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
+    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    mdlVuModulateStacked50((u32)iVar3);
+    colourStack.packed.word = colourStack.result;
+    alpha = colourStack.packed.bytes.alpha;
+    if (alpha != 0xff) {
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
     }
-
     else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
+      colourStack.packed.bytes.alpha = 0xfe;
+      dest = *(int *)(puVar2 + 10);
+      red = colourStack.packed.bytes.red;
+      green = colourStack.packed.bytes.green;
+      blue = colourStack.packed.bytes.blue;
+      alpha = colourStack.packed.bytes.alpha;
+      *(u8 *)(dest + 4) = red;
+      *(u8 *)(dest + 5) = green;
+      *(u8 *)(dest + 6) = blue;
+      *(u8 *)(dest + 7) = alpha;
+      colourStack.packed.bytes.alpha = 0xff;
     }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
+    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
-
     }
-
-    FUN_00323860();
-
+    else {
+      *puVar2 = *puVar2 & 0xfffe;
+    }
+    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
   }
-
-  return;
-
 }
 
 
@@ -44003,94 +43841,46 @@ void FUN_00349620(int *param_1,float *param_2)
 
 
 void FUN_00349870(int param_1)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  u32 colourStack[4];
   int iVar3;
-
-
   int iVar5;
-
   float fVar6;
-
-
-
-  
+  int state;
 
   iVar1 = *(int *)(param_1 + 0x24);
-
+  state = iVar1 + 0xc0;
   iVar2 = *(int *)(iVar1 + 0xb8);
-
-  if (iVar2 != 0) {
-
-    iVar5 = *(int *)(param_1 + 0x1c);
-
-  }
-
-  else {
-
+  if (iVar2 == 0) {
     iVar5 = 0;
-
   }
-
-  if (iVar5 == 0) {
-
-    *(u32 *)(iVar1 + 0xd0) = 0x43a00000;
-
-    *(u32 *)(iVar1 + 0xd4) = 0x43600000;
-
-    *(u32 *)(iVar1 + 0xd8) = 0;
-
-    *(u32 *)(iVar1 + 0xdc) = 0;
-
-    *(u32 *)(iVar1 + 0xe0) = 0x44200000;
-
-    *(u32 *)(iVar1 + 0xe4) = 0x43e00000;
-
-    *(u32 *)(iVar1 + 0xc4) = *(u32 *)(iVar1 + 0x28);
-
-  }
-
-  if (iVar2 < iVar5) {
-
-    *(u8 *)(iVar1 + 0xc3) = 0;
-
-  }
-
   else {
-
-    iVar3 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),(int)(iVar5),(long)(iVar2));
-
-    c1s = (u32)(*(int *)(param_1 + 0x10));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
-
-    fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
-
-    *(float *)(iVar1 + 0xcc) = fGpffff80b0 * fVar6 + 1.0f;
-
-    fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
-
-    *(float *)(iVar1 + 200) = fGpffff80b0 * fVar6;
-
+    iVar5 = *(int *)(param_1 + 0x1c);
   }
-
-  return;
-
+  if (iVar5 == 0) {
+    *(u32 *)(state + 0x10) = 0x43a00000;
+    *(u32 *)(state + 0x14) = 0x43600000;
+    *(u32 *)(state + 0x18) = 0;
+    *(u32 *)(state + 0x1c) = 0;
+    *(u32 *)(state + 0x20) = 0x44200000;
+    *(u32 *)(state + 0x24) = 0x43e00000;
+    *(u32 *)(state + 4) = *(u32 *)(iVar1 + 0x28);
+  }
+  if (iVar2 >= iVar5) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar5,iVar2);
+    colourStack[3] = *(u32 *)(param_1 + 0x10);
+    mdlVuModulateStacked70((u32)iVar3);
+    *(u32 *)state = colourStack[1];
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
+    *(float *)(state + 0xc) = fGpffff80b0 * fVar6 + 1.0f;
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
+    *(float *)(state + 8) = fGpffff80b0 * fVar6;
+  }
+  else {
+    *(u8 *)(state + 3) = 0;
+  }
 }
 
 
@@ -44629,96 +44419,46 @@ void FUN_0034a590(int param_1)
 
 
 void FUN_0034a650(int param_1)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
-
+  u32 colourStack[4];
   int iVar3;
-
-
   int iVar5;
-
   float fVar6;
-
-  u32 uVar7;
-
-
-
-  
+  int state;
 
   iVar1 = *(int *)(param_1 + 0x24);
-
+  state = iVar1 + 0xc0;
   iVar2 = *(int *)(iVar1 + 0xb8);
-
-  if (iVar2 != 0) {
-
-    iVar5 = *(int *)(param_1 + 0x1c);
-
-  }
-
-  else {
-
+  if (iVar2 == 0) {
     iVar5 = 0;
-
   }
-
-  if (iVar5 == 0) {
-
-    *(u32 *)(iVar1 + 0xd0) = 0x43a00000;
-
-    *(u32 *)(iVar1 + 0xd4) = 0x43600000;
-
-    *(u32 *)(iVar1 + 0xd8) = 0;
-
-    *(u32 *)(iVar1 + 0xdc) = 0;
-
-    *(u32 *)(iVar1 + 0xe0) = 0x44200000;
-
-    *(u32 *)(iVar1 + 0xe4) = 0x43e00000;
-
-    *(u32 *)(iVar1 + 0xc4) = *(u32 *)(iVar1 + 0x28);
-
-  }
-
-  if (iVar2 < iVar5) {
-
-    *(u8 *)(iVar1 + 0xc3) = 0;
-
-  }
-
   else {
-
-    iVar3 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),(int)(iVar5),(long)(iVar2));
-
-    c1s = (u32)(*(int *)(param_1 + 0x10));
-
-    c2s = (u32)(iVar3);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-
-    *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
-
-    fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
-
-    *(float *)(iVar1 + 0xcc) = fVar6 + 1.0f;
-
-    uVar7 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
-
-    *(u32 *)(iVar1 + 200) = uVar7;
-
+    iVar5 = *(int *)(param_1 + 0x1c);
   }
-
-  return;
-
+  if (iVar5 == 0) {
+    *(u32 *)(state + 0x10) = 0x43a00000;
+    *(u32 *)(state + 0x14) = 0x43600000;
+    *(u32 *)(state + 0x18) = 0;
+    *(u32 *)(state + 0x1c) = 0;
+    *(u32 *)(state + 0x20) = 0x44200000;
+    *(u32 *)(state + 0x24) = 0x43e00000;
+    *(u32 *)(state + 4) = *(u32 *)(iVar1 + 0x28);
+  }
+  if (iVar2 >= iVar5) {
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar5,iVar2);
+    colourStack[3] = *(u32 *)(param_1 + 0x10);
+    mdlVuModulateStacked70((u32)iVar3);
+    *(u32 *)state = colourStack[1];
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
+    *(float *)(state + 0xc) = fVar6 + 1.0f;
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
+    *(float *)(state + 8) = fVar6;
+  }
+  else {
+    *(u8 *)(state + 3) = 0;
+  }
 }
 
 

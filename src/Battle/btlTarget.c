@@ -5626,10 +5626,10 @@ void FUN_002dc5e0(BtlAction* action)
 #pragma opt_loop_invariants off
 
 // FUN_002dc670 NONMATCHING
-s32 FUN_002dc670(BtlAction* action)
+s64 FUN_002dc670(BtlAction* action)
 {
     DatUnit* datUnit = action->unit->datUnit;
-    s32 result = 0;
+    s16 result = 0;
 
     switch (datCalcGetBadStatusNoDown(datUnit))
     {
@@ -5678,7 +5678,7 @@ s32 FUN_002dc670(BtlAction* action)
     {
         return (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
     }
-    return result;
+    return (s32)result;
 
 }
 // FUN_002dc830
