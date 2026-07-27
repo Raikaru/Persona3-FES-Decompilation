@@ -537,8 +537,8 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     s32 i;
     s32 j;
     s32 k;
-    u32 colorR;
-    u32 colorA;
+    register u32 colorR;
+    register u32 colorA;
     KwlnTask* task;
 
     colorValue = D_007CC1D8;

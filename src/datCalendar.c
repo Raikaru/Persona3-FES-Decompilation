@@ -1496,10 +1496,8 @@ u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
 {
     s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
     s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
-    u32 p;
 
-    p = datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate;
-    if (p == 1)
+    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
     {
         return true;
     }
