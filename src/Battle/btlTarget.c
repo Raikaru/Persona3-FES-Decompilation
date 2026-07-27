@@ -903,6 +903,8 @@ extern u64 FUN_002ffdf0();
 extern u64 FUN_00300410();
 extern u64 FUN_00300480();
 extern u64 FUN_00300580();
+#pragma alias FUN_00300580_u32 FUN_00300580
+extern u32 FUN_00300580_u32(u32 unit, u32 status);
 extern u64 FUN_003005e0();
 extern u64 FUN_00301ca0();
 extern void FUN_00302c50(u32 datUnit);
@@ -1119,7 +1121,7 @@ int FUN_002d8390(void)
     bVar5 = false;
     bVar4 = false;
     for (iVar10 = *(int *)(DAT_007ce3ec + 0x158); iVar10 != 0; iVar10 = *(int *)(iVar10 + 0xa34)) {
-      lVar11 = FUN_00300580(*(undefined4 *)(iVar10 + 0xa2c),2);
+      lVar11 = FUN_00300580_u32(*(undefined4 *)(iVar10 + 0xa2c),2);
       if (lVar11 != 0) {
         bVar6 = true;
       }
