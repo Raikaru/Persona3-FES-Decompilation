@@ -3889,7 +3889,7 @@ void FUN_00320080(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 
   int *piVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -42339,7 +42339,7 @@ void FUN_00345ea0(u32 param_1)
 
 
 
-// FUN_00345F00 NONMATCHING
+// FUN_00345F00
 
 
 u32 FUN_00345f00(int param_1)
