@@ -47,10 +47,10 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2);
 u32 FUN_003d2c10(s32 param_1);
 #pragma alias FUN_003d2f00_result FUN_003d2f00
 extern s32 FUN_003d2f00_result(void);
-u64 FUN_003d32e0(u32 param_1,u32 param_2);
+u64 FUN_003d32e0(u64 param_1,u32 param_2);
 void FUN_003d3760(int param_1,long param_2,int param_3);
 void FUN_003d38b0(u64 param_1,int param_2,int param_3);
-u32 FUN_003d3b70(long param_1,u32 param_2);
+u32 FUN_003d3b70(u32 param_1,u32 param_2);
 u8 * FUN_003d3d20(u64 param_1,u64 param_2);
 u32 FUN_003d4de0(s32 param_1);
 u8 * FUN_003d4ff0(u64 param_1,u32 param_2);
@@ -4838,7 +4838,7 @@ void FUN_003d2f00(void)
 // FUN_003D32E0 NONMATCHING
 
 
-u64 FUN_003d32e0(u32 param_1,u32 param_2)
+u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
 
 
@@ -5271,7 +5271,7 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 // FUN_003D3B70 NONMATCHING
 
 
-u32 FUN_003d3b70(long param_1,u32 param_2)
+u32 FUN_003d3b70(u32 param_1,u32 param_2)
 
 
 

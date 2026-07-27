@@ -4774,7 +4774,7 @@ void func_002bf690(short param_1)
   long lVar3 = 0;
   long lVar4 = 0;
   
-  iVar1 = func_00195540(*(u32 *)(DAT_007ce3ec + 0xd1c));
+  iVar1 = func_00195540_u32(*(u32 *)(DAT_007ce3ec + 0xd1c));
   iVar1 = *(int *)(iVar1 + 4);
   uVar2 = func_00300550(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
   lVar4 = 0;
