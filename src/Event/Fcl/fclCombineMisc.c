@@ -1717,7 +1717,7 @@ u64 FUN_003d72f0(u16 *param_1)
 
   int iVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   u32 uVar7;
 

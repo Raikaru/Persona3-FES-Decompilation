@@ -1500,6 +1500,8 @@ extern void (*DAT_009600a4)(...);
 #pragma alias DAT_009600a4_abs DAT_009600a4
 extern code DAT_009600a4_abs[];
 extern u64 (*DAT_00960178)(...);
+#pragma alias DAT_00960178_u32_abs DAT_00960178
+extern u32 (*DAT_00960178_u32_abs[])(...);
 #pragma alias DAT_00960178_u32 DAT_00960178
 extern u32 (*DAT_00960178_u32)(...);
 #pragma alias DAT_00960178_abs DAT_00960178
