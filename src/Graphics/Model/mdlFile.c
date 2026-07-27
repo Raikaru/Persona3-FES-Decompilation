@@ -7909,11 +7909,8 @@ void FUN_003243f0(int param_1,u64 param_2)
 
   
 
-  for (uVar1 = 0; (long)uVar1 < (long)*(short *)(param_1 + 0x1c);
-
-      uVar1 = (long)((int)uVar1 + 1) & 0xffff) {
-
-    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + (int)uVar1 * 4),param_2);
+  for (uVar1 = 0; uVar1 < *(u16 *)(param_1 + 0x1c); uVar1++) {
+    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + uVar1 * 4),param_2);
 
   }
 
@@ -30005,32 +30002,20 @@ void FUN_003397d0(int param_1)
 
 
 u32 FUN_003398c0(int param_1)
-
-
-
 {
-
   u32 uVar1;
-
-
+  u32 block;
+  int *piVar2;
   int iVar3;
 
-  int *piVar2;
-
-  
-
   uVar1 = *(u32 *)(param_1 + 0x38);
-
-  piVar2 = (int *)(*(u32 (**)(...))DAT_00960178_abs)(uVar1 * 0x18 + 0x10,0x40000);
-
-  *piVar2 = (int)(piVar2 + 4);
-  piVar2[2] = (int)piVar2;
-
+  block = (*DAT_00960178_abs)(uVar1 * 0x18 + 0x10,0x40000);
+  *(u32 *)block = block + 0x10;
+  *(u32 *)(block + 8) = block;
+  piVar2 = (int *)block;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,3,5,DAT_0069bd60_abs,0x48);
-
   piVar2[1] = iVar3;
-  return (u32)piVar2;
-
+  return block;
 }
 
 

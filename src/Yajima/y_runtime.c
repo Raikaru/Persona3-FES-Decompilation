@@ -5,11 +5,6 @@ typedef struct YajimaVec2 {
   f32 x;
   f32 y;
 } YajimaVec2;
-typedef struct YajimaVec3 {
-  f32 x;
-  f32 y;
-  f32 z;
-} YajimaVec3;
 typedef u8 bool;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -3592,7 +3587,6 @@ void FUN_004311f0(void *param_1,int param_2,int param_3)
   float fVar1;
   float fVar2;
   float fVar3;
-  YajimaVec3 out;
   
   fVar3 = 800.0f;
   uStack_4 = 0;
@@ -3612,10 +3606,10 @@ void FUN_004311f0(void *param_1,int param_2,int param_3)
     fVar2 = fVar2 + fVar2;
   }
   fVar3 = 800.0f * fVar2;
-  out.x = fStack_0;
-  out.y = 0.0f;
-  out.z = fVar3;
-  *(YajimaVec3 *)param_1 = out;
+  fStack_8 = fVar3;
+  *(float *)((u8 *)param_1 + 0) = fStack_0;
+  *(u32 *)((u8 *)param_1 + 4) = uStack_4;
+  *(float *)((u8 *)param_1 + 8) = fVar3;
 }
 
 // FUN_004312B0 NONMATCHING

@@ -1574,13 +1574,10 @@ u64 FUN_003962c0(int param_1)
 
 {
 
-  u32 lVar1;
-
-  u32 uVar2;
-
-  u32 lVar3;
-
   int iVar4;
+  u32 lVar3;
+  u32 uVar2;
+  u32 lVar1;
 
   u8 auStack_4[4];
 
