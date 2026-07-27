@@ -433,7 +433,8 @@ extern u32 FUN_0052e9a0_scene_typed(u32 value);
 #pragma alias FUN_005318a0_scene_typed FUN_005318a0
 extern float FUN_005318a0_scene_typed(u32 value);
 typedef struct SceneVecBits {
-  float value[3];
+  u64 xy;
+  float z;
 } __attribute__((packed)) SceneVecBits;
 #pragma alias DAT_006a2f48_abs DAT_006a2f48
 extern SceneVecBits DAT_006a2f48_abs[];
@@ -3710,9 +3711,9 @@ void FUN_003bbb90(const float *param_1,float *param_2)
   }
   else {
     afStack_20[1] = 0.0f;
-    uVar1 = FUN_00530da0_scene(afStack_20[2] * source.value[2] +
-                         afStack_20[0] * source.value[0] +
-                         afStack_20[1] * source.value[1]);
+    uVar1 = FUN_00530da0_scene(afStack_20[2] * source.z +
+                         afStack_20[0] * ((float *)&source.xy)[0] +
+                         afStack_20[1] * ((float *)&source.xy)[1]);
     uVar1 = FUN_0052e9a0_scene_typed(uVar1);
     fVar2 = FUN_005318a0_scene_typed(uVar1);
     fVar2 = fGpffff8228 * fVar2;
