@@ -1010,7 +1010,8 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
   int iVar4;
 
   pbVar3 = param_3;
-  while (true) {
+  goto check;
+  do {
     bVar1 = *pbVar3;
     pbVar3 = pbVar3 + 1;
     if ((bVar1 & 1) == 0) {
@@ -1018,12 +1019,12 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
       goto update;
     }
     if ((bVar1 & 2) == 0) {
-      iVar4 = CONCAT11(*pbVar3,bVar1) >> 2;
+      iVar4 = (int)CONCAT11(*pbVar3,bVar1) >> 2;
       pbVar3 = pbVar3 + 1;
       goto update;
     }
     if ((bVar1 & 4) == 0) {
-      iVar4 = CONCAT12(pbVar3[1],CONCAT11(*pbVar3,bVar1)) >> 3;
+      iVar4 = (int)CONCAT12(pbVar3[1],CONCAT11(*pbVar3,bVar1)) >> 3;
       pbVar3 = pbVar3 + 2;
       goto update;
     }
@@ -1039,5 +1040,5 @@ check:
     if (param_4 <= (int)pbVar3 - (int)param_3) {
       return;
     }
-  }
+  } while (true);
 }

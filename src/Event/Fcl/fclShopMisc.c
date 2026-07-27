@@ -215,6 +215,8 @@ int FUN_003f0350(int param_1,int *param_2);
 char FUN_003f03e0(int param_1);
 #pragma alias FUN_003f03e0_u64 FUN_003f03e0
 char FUN_003f03e0_u64(u64 param_1);
+#pragma alias FUN_003f03e0_u32 FUN_003f03e0
+u32 FUN_003f03e0_u32(u32 param_1);
 u32 FUN_003f04f0(u32 param_1,int param_2);
 u32 * FUN_003f06e0(int *param_1,u32 param_2);
 short FUN_003f0830(int param_1);
@@ -1182,7 +1184,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
   goto loop_test;
 loop_body:
   if ((*(u32 *)puVar4 & 4) != 0) {
-    if (((u32 (*)(int))FUN_003f03e0)(FUN_003e6dc0()) != 0) {
+    if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
       puVar4 += 0x18;
       goto loop_continue;
     }

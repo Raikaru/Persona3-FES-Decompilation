@@ -12580,7 +12580,7 @@ FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5
   float fVar1;
   float fVar2;
   int iVar3;
-  u64 uVar4;
+  u32 uVar4;
   u32 uVar5;
   float fStack_8;
   float fStack_4;
