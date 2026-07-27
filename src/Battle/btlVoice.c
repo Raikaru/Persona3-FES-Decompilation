@@ -7626,13 +7626,13 @@ void func_002e9ac0(void)
     iVar7 = iVar6;
   }
   uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
-  FUN_0027ed20((u32)uVar4,1);
+  FUN_0027ed20_voice(uVar4,1);
   uVar4 = FUN_002baf90(uVar3,iVar12,iVar12,0,0x200);
-  FUN_0027ed20((u32)uVar4,2);
+  FUN_0027ed20_voice(uVar4,2);
   uVar5 = FUN_002bc950_u32_voice(0,0,0);
   *(u8 *)uVar5 = 4;
   *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
-  FUN_0027ed20((u32)uVar5,1);
+  FUN_0027ed20_voice(uVar5,1);
   FUN_002b9030(uVar3);
   return;
 }
