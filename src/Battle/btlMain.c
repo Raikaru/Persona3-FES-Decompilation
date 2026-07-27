@@ -2188,9 +2188,9 @@ void FUN_0029ee20(u32 param_1)
 
       FUN_0027ffb0(param_1,&fStack_50);
 
-      fVar2 = fStack_4c + 5.0;
+      fVar2 = fStack_4c + 5.0f;
 
-      if (fStack_4c + 5.0 < fStack_3c) {
+      if (fStack_4c + 5.0f < fStack_3c) {
 
         fVar2 = fStack_3c;
 

@@ -378,7 +378,7 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int 
 
       afStack_100[iVar5 * 0x10 + 2] = *(float *)DAT_00960088_abs - param_1;
 
-      afStack_100[iVar5 * 0x10 + 6] = 1.0 / fVar10;
+      afStack_100[iVar5 * 0x10 + 6] = 1.0f / fVar10;
 
       afStack_100[iVar5 * 0x10 + 4] = afStack_120[iVar5 * 2];
 
