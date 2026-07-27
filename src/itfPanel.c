@@ -4832,7 +4832,8 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   piVar9 = aiStack_20;
 
   {
-    int counter = 5;
+    int counter;
+    iVar8 = counter = 5;
     do {
 
       iVar4 = *piVar10;
