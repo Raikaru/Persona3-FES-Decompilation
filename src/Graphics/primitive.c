@@ -1020,12 +1020,12 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
       goto update;
     }
     if ((bVar1 & 2) == 0) {
-      iVar4 = (int)CONCAT11(*pbVar3,bVar1) >> 2;
+      iVar4 = (((int)*pbVar3 << 8) | bVar1) >> 2;
       pbVar3 = pbVar3 + 1;
       goto update;
     }
     if ((bVar1 & 4) == 0) {
-      iVar4 = (int)CONCAT12(pbVar3[1],CONCAT11(*pbVar3,bVar1)) >> 3;
+      iVar4 = (((int)pbVar3[1] << 16) | ((int)*pbVar3 << 8) | bVar1) >> 3;
       pbVar3 = pbVar3 + 2;
       goto update;
     }

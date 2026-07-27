@@ -4912,7 +4912,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             u32 curveIndex2;
             u8* curveRecord2;
-            RuntimeVec3* curveA;
+            RuntimeVec3 curveA;
             RuntimeVec3* curveB;
             RuntimeVec3* curveC;
             RuntimeVec3* curveD;
@@ -4925,7 +4925,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
 
             for (curveIndex2 = 0; curveIndex2 < count; curveIndex2++)
             {
-                curveA = &vector2[curveIndex2];
+                curveA = vector2[curveIndex2];
                 curveB = &vector3[curveIndex2];
                 curveC = &work->vectors[4][curveIndex2];
                 curveD = &work->vectors[5][curveIndex2];
@@ -4936,21 +4936,21 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 curveT2c = curveT2b * curveT2a;
                 curveInverse2c = curveInverse2b * curveInverse2a;
                 blended.x =
-                    curveA->x * curveInverse2c +
+                    curveA.x * curveInverse2c +
                     3.0f * curveB->x * curveInverse2b *
                         curveT2a +
                     3.0f * curveC->x *
                         curveInverse2a * curveT2b +
                     curveD->x * curveT2c;
                 blended.y =
-                    curveA->y * curveInverse2c +
+                    curveA.y * curveInverse2c +
                     3.0f * curveB->y * curveInverse2b *
                         curveT2a +
                     3.0f * curveC->y *
                         curveInverse2a * curveT2b +
                     curveD->y * curveT2c;
                 blended.z =
-                    curveA->z * curveInverse2c +
+                    curveA.z * curveInverse2c +
                     3.0f * curveB->z * curveInverse2b *
                         curveT2a +
                     3.0f * curveC->z *
