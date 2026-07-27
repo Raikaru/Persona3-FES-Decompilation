@@ -2959,7 +2959,7 @@ void FUN_003b2020(int param_1,int param_2)
 
       }
 
-      lVar7 = FUN_003b0970(abStack_4,cVar1,*(u8 *)(param_2 + 0xd),
+      lVar7 = FUN_003b0970_typed(abStack_4,cVar1,*(u8 *)(param_2 + 0xd),
 
                            *(u8 *)(param_2 + 0xe),*(u32 *)(param_2 + 0x14));
 
