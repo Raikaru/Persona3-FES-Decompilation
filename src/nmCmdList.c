@@ -513,7 +513,7 @@ u32 FUN_003c6380(int param_1)
   (*(code *)puVar1[0xd])(puVar1[5],puVar1[6],puVar1[7],iVar2);
 
   if ((*puVar1 & 0x40) != 0) {
-    FUN_003c4e70(puVar1);
+    FUN_003c4e70(iVar2);
   }
 
   return 0;
