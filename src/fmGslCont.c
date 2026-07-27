@@ -23,7 +23,7 @@ extern u32 DAT_0095aee0;
 extern u32 DAT_0095aee4;
 extern u32 DAT_0095aee8;
 extern u32 DAT_0095aeec;
-extern u32 DAT_00960088;
+extern f32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
 extern code DAT_00960178;
@@ -835,7 +835,7 @@ void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
 
 {
 
-  u32 uVar1;
+  f32 fVar1;
 
   int iVar2;
 
@@ -851,7 +851,7 @@ void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
 
   iVar2 = FUN_00198590();
 
-  uVar1 = DAT_00960088;
+  fVar1 = DAT_00960088;
 
   fVar6 = *(float *)(iVar2 + 0x80);
 
@@ -867,7 +867,7 @@ void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
 
     *(float *)(&DAT_0095aec4 + iVar3) = (float)(piVar5[1] >> 3);
 
-    *(u32 *)(&DAT_0095aec8 + iVar3) = uVar1;
+    *(float *)(&DAT_0095aec8 + iVar3) = fVar1;
 
     *(float *)(&DAT_0095aee0 + iVar3) = (float)*piVar4;
 

@@ -13825,8 +13825,7 @@ void FUN_0044d600(int param_1)
   else if ((cVar3 != '\b') && (cVar3 != '\a')) {
     if (cVar3 == '\x05') {
       FUN_001ad940(auStack_e0,*(u32 *)(DAT_008717f4 + 0x1e0));
-      lVar6 = FUN_00454520((float *)auStack_e0,*(u8 *)(iVar1 + 1));
-      if (lVar6 == 1) {
+      if (FUN_00454520((float *)auStack_e0,*(u8 *)(iVar1 + 1)) == 1) {
         FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0));
         *(u8 *)(iVar1 + 3) = 2;
       }
@@ -13869,8 +13868,7 @@ void FUN_0044d600(int param_1)
         }
         else {
           FUN_001ad940(auStack_c0,*(u32 *)(DAT_008717f4 + 0x1e0));
-          lVar6 = FUN_00454520((float *)auStack_c0,*(u8 *)(iVar1 + 1));
-          if (lVar6 == 1) {
+          if (FUN_00454520((float *)auStack_c0,*(u8 *)(iVar1 + 1)) == 1) {
             FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0));
             *(u8 *)(iVar1 + 3) = 2;
           }
@@ -13927,8 +13925,7 @@ void FUN_0044d600(int param_1)
       uVar7 = FUN_0044f270_ret((float *)(auStack_40),(float *)(auStack_50));
       *(u32 *)(iVar1 + 0x44) = uVar7;
       FUN_001ad940(auStack_60,*(u32 *)(DAT_008717f4 + 0x1e0));
-      lVar6 = FUN_00454520((float *)auStack_60,*(u8 *)(iVar1 + 1));
-      if (lVar6 == 0) {
+      if (FUN_00454520((float *)auStack_60,*(u8 *)(iVar1 + 1)) == 0) {
         *(u8 *)(iVar1 + 3) = 4;
       }
       else {
@@ -15181,8 +15178,7 @@ void FUN_00450b30(char param_1)
     *(u32 *)(iVar2 + 0x44) = uVar7;
     FUN_001ad940(auStack_40,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
                 );
-    lVar4 = FUN_00454520((float *)auStack_40,*(u8 *)(iVar2 + 1));
-    if (lVar4 == 0) {
+    if (FUN_00454520((float *)auStack_40,*(u8 *)(iVar2 + 1)) == 0) {
       *(u8 *)(iVar2 + 3) = 9;
     }
     else {
@@ -15264,8 +15260,7 @@ void FUN_00450b30(char param_1)
       if (fVar9 < fVar8 * 3.0f) {
         FUN_001ad940(auStack_a0,
                      *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-        lVar4 = FUN_00454520((float *)auStack_a0,*(u8 *)(iVar2 + 1));
-        if (lVar4 == 1) {
+        if (FUN_00454520((float *)auStack_a0,*(u8 *)(iVar2 + 1)) == 1) {
           FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
           *(u8 *)(iVar2 + 3) = 7;
         }
@@ -15297,8 +15292,7 @@ void FUN_00450b30(char param_1)
   case '\n':
     FUN_001ad940(auStack_c0,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
                 );
-    lVar4 = FUN_00454520((float *)auStack_c0,cVar3);
-    if (lVar4 == 1) {
+    if (FUN_00454520((float *)auStack_c0,cVar3) == 1) {
       FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
       *(u8 *)(iVar2 + 3) = 7;
     }
@@ -16384,7 +16378,7 @@ void FUN_00453d90(char param_1)
   } while (!bVar5);
 }
 
-// FUN_00453ED0 NONMATCHING
+// FUN_00453ED0
 
 u32
 FUN_00453ed0(char param_1,char param_2,char param_3,u32 *param_4,char param_5,char param_6)
@@ -16399,6 +16393,7 @@ FUN_00453ed0(char param_1,char param_2,char param_3,u32 *param_4,char param_5,ch
   int iVar7;
   int iVar8;
   u32 uVar9;
+  long lVar10;
   YVec3f vec;
   
   vec = *(YVec3f *)param_4;
@@ -16448,13 +16443,17 @@ FUN_00453ed0(char param_1,char param_2,char param_3,u32 *param_4,char param_5,ch
         bVar3 = 1;
       }
     } while (cVar4 != '\x02');
-    if (bVar3) {
-      uVar9 = 0;
+    lVar10 = bVar3;
+    if ((char)lVar10) {
+      goto blocked;
     }
-    else {
-      FUN_00453d90(*(u8 *)(iVar1 + 1));
-      uVar9 = 1;
-    }
+    FUN_00453d90(*(u8 *)(iVar1 + 1));
+    uVar9 = 1;
+    goto path_done;
+blocked:
+    uVar9 = 0;
+path_done:
+    ;
   }
   return uVar9;
 }
@@ -16559,7 +16558,7 @@ void FUN_004543c0(char param_1,u8 param_2)
   return;
 }
 
-// FUN_00454400 NONMATCHING
+// FUN_00454400
 u32 FUN_00454400(f32 *param_1,char param_2)
 {
   u32 bVar1;
@@ -16578,9 +16577,11 @@ u32 FUN_00454400(f32 *param_1,char param_2)
     return 1;
   }
   lVar2 = FUN_001acc30_typed((void*)a,(void*)&v30);
-  if (lVar2 == 1) {
-    return v30.y <= 50.0f;
+  if (lVar2 != 1) {
+    goto no_hit;
   }
+  return v30.y <= 50.0f;
+no_hit:
   return 0;
 }
 

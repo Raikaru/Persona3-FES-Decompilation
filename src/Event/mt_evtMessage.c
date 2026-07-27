@@ -7,7 +7,7 @@ typedef u32 int3;
 extern u32 DAT_006a1850;
 extern u8 DAT_006a0000[];
 extern u32 DAT_006a1870;
-extern u32 DAT_007cae58;
+extern f32 DAT_007cae58;
 extern u32 DAT_007caf30;
 extern u32 DAT_007cd490;
 extern u32 DAT_007cd494;

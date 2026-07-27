@@ -1,4 +1,5 @@
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Battle/btlUnit.h"
 #include "Kosaka/k_assert.h"
 
 
@@ -29,13 +30,13 @@ s32 FUN_0021cce0();
 #pragma alias FUN_0021cca0_u64_u32 FUN_0021cca0
 extern u32 FUN_0021cca0_u64_u32(u64 param_1, u32 param_2);
 extern u32 FUN_0021cce0_u32(u32 param_1);
-extern void FUN_002807a0(u32 param_1, void *param_2);
-extern u32 FUN_002d20a0(const void *projected, void *screen);
+extern void FUN_002807a0(u32 param_1, RwV3d *position);
+extern u32 FUN_002d20a0(const RwV3d *projected, RwV2d *screen);
 extern u32 FUN_00300580(u32 param_1, u32 param_2);
 extern s32 FUN_0027f930(s32 param_1);
 extern f32 FUN_0052e878(f32 param_1);
-extern void FUN_0021d8e0(void *destination, const f32 *rect);
-extern void FUN_0021d950(void *destination, const u8 *color);
+extern void FUN_0021d8e0(void *destination, const RwV4d *rect);
+extern void FUN_0021d950(void *destination, const RwRGBA *color);
 
 // FUN_00252e60
 void bpd00252e60(u32* param_1)
@@ -101,7 +102,7 @@ void FUN_00252e80(void)
 
 void FUN_00252f30(void)
 {
-  u64 uVar5;
+  s32 uVar5;
   int iVar4;
   int iVar1;
   u32 *puVar2;
@@ -113,17 +114,10 @@ void FUN_00252f30(void)
   float fVar10;
   float fVar11;
   float fVar12;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_34;
-  u8 auStack_20 [16];
-  u32 uStack_10;
-  u32 uStack_c;
-  u8 uStack_4;
-  u8 uStack_3;
-  u8 uStack_2;
-  u8 uStack_1;
+  RwV4d rect;
+  RwV3d projected;
+  RwV2d screen;
+  RwRGBA color;
 
   K_ASSERT(sBpd660 != NULL, 0x25);
   puVar2 = sBpd660;
@@ -138,21 +132,20 @@ void FUN_00252f30(void)
       for (iVar1 = *(int *)(iVar8 + iVar4 * 8 + 0x150); iVar1 != 0;
            iVar1 = *(int *)(iVar1 + 0xa34)) {
         if ((~*(u32 *)(iVar1 + 0x9c) & 8) == 0) {
-          FUN_002807a0(iVar1,auStack_20);
-          lVar6 = FUN_002d20a0(auStack_20,&uStack_10);
+          FUN_002807a0(iVar1,&projected);
+          lVar6 = FUN_002d20a0(&projected,&screen);
           if ((lVar6 != 0) &&
               (lVar6 = FUN_00300580(*(u32 *)(iVar1 + 0xa2c),0x100000),
                lVar6 != 0)) {
             u32 *entry;
-            u32 *data;
+            f32 *data;
             entry = puVar2 + uVar7 * 0x48;
-            data = entry + 4;
+            data = (f32 *)(entry + 4);
             entry[5] = *(u32 *)(iVar1 + 0xa8);
-            data[0x44] = uStack_10;
-            data[0x45] = uStack_c;
+            data[0x44] = screen.x;
+            data[0x45] = screen.y;
             iVar3 = FUN_0027f930(iVar1);
-            data[0x46] =
-                (u32)((float)*(u8 *)(iVar3 + 3) / 255.0);
+            data[0x46] = (f32)*(u8 *)(iVar3 + 3) / 255.0f;
             uVar7 = uVar7 + 1;
           }
         }
@@ -160,28 +153,28 @@ void FUN_00252f30(void)
     }
     puVar2[0x2d4] = uVar7;
     for (iVar8 = 0; iVar8 < (int)puVar2[0x2d4]; iVar8 = iVar8 + 1) {
-      fVar10 = (float)puVar2[iVar8 * 0x48 + 0x48];
-      fVar11 = (float)puVar2[iVar8 * 0x48 + 0x49];
-      fVar12 = (float)puVar2[iVar8 * 0x48 + 0x4a];
+      fVar10 = ((f32 *)puVar2)[iVar8 * 0x48 + 0x48];
+      fVar11 = ((f32 *)puVar2)[iVar8 * 0x48 + 0x49];
+      fVar12 = ((f32 *)puVar2)[iVar8 * 0x48 + 0x4a];
       fVar9 = (float)FUN_0052e878(
           fGpffff8248 * ((float)(int)puVar2[0x2d5] / 15.0f) * 2.0f);
       fVar9 = fVar9 * 3.0f;
       iVar4 = FUN_0021cca0(uVar5,0x4c);
-      fStack_38 = (float)*(int *)(iVar4 + 0xc);
-      fStack_40 = fVar10 - fStack_38 / 2.0f;
-      fStack_34 = (float)*(int *)(iVar4 + 0x10);
-      fStack_3c = fVar9 + ((fVar11 - fStack_34 / 2.0f) - 10.0f);
-      FUN_0021d8e0(puVar2 + iVar8 * 0x48 + 8,&fStack_40);
-      uStack_4 = 0xff;
-      uStack_3 = 0xff;
-      uStack_2 = 0xff;
+      rect.z = (float)*(int *)(iVar4 + 0xc);
+      rect.x = fVar10 - rect.z / 2.0f;
+      rect.w = (float)*(int *)(iVar4 + 0x10);
+      rect.y = fVar9 + ((fVar11 - rect.w / 2.0f) - 10.0f);
+      FUN_0021d8e0(puVar2 + iVar8 * 0x48 + 8,&rect);
+      color.r = 0xff;
+      color.g = 0xff;
+      color.b = 0xff;
       fVar12 = fVar12 * 255.0f;
       if (fVar12 < 2.1474836e+09f) {
-        uStack_1 = (u8)(int)fVar12;
+        color.a = (u8)(int)fVar12;
       } else {
-        uStack_1 = (u8)(int)(fVar12 - 2.1474836e+09f);
+        color.a = (u8)(int)(fVar12 - 2.1474836e+09f);
       }
-      FUN_0021d950(puVar2 + iVar8 * 0x48 + 8,&uStack_4);
+      FUN_0021d950(puVar2 + iVar8 * 0x48 + 8,&color);
     }
   }
   return;
