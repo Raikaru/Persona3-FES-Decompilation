@@ -32,6 +32,8 @@ static inline uintptr_t Yajima_AddOffsetFirst(uintptr_t offset, uintptr_t base)
   return offset + base;
 }
 extern f32 sinf(f32 value);
+extern f32 FUN_001126b0(u32 param_1);
+extern f32 FUN_00112740(u32 param_1);
 
 /* FUSION_EXACT_PROTOS */
 u16 func_00170a40(s16 pcId, s16 index);
@@ -6040,9 +6042,9 @@ void FUN_0042b540(int param_1)
 
   u32 *puVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
