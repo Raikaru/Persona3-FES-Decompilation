@@ -359,6 +359,9 @@ extern u32 FUN_00323c20_u32(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
 int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 
                  u32 param_6);
+#pragma alias FUN_00323e10_ptr FUN_00323e10
+extern int FUN_00323e10_ptr(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
+                            u8 *param_5,u32 param_6);
 int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5);
 u32 FUN_00324160(int param_1);
 #pragma alias FUN_00324160_u32 FUN_00324160
@@ -43433,7 +43436,7 @@ u32 FUN_00347170(u64 param_1)
 
   FUN_00521250(pauVar7[1] + 8,param_1,0x40);
 
-  puVar3 = (u16 *)FUN_00323e10(0xd,4,2,4,0x69bdc8,0x4c);
+  puVar3 = (u16 *)FUN_00323e10_ptr(0xd,4,2,4,DAT_0069bdc8_abs,0x4c);
 
   *(u16 **)(pauVar7[5] + 8) = puVar3;
 
@@ -43474,7 +43477,6 @@ u32 FUN_00347170(u64 param_1)
   return uVar4;
 
 }
-
 
 // FUN_003472D0
 void FUN_003472d0(void)
