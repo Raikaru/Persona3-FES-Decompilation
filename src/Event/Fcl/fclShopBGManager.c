@@ -52,7 +52,7 @@ u32 FUN_00412bc0(u64 param_1,int param_2,u64 param_3);
 u32 FUN_00413010(u64 param_1,int param_2);
 u64 FUN_004131a0(u64 param_1,int param_2);
 u64 FUN_00413680(u64 param_1,int param_2);
-u64 FUN_004138e0(u32 param_1,int param_2,long param_3);
+u64 FUN_004138e0(u64 param_1,int param_2,long param_3);
 u64 FUN_00413b10(u64 param_1,int param_2);
 u32 FUN_00413b70(u64 param_1, int param_2, int param_3);
 void FUN_00414100(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);

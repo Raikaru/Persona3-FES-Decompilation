@@ -1316,8 +1316,6 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
 
   int iVar1;
 
-  u32 cVar2;
-
   int iVar3;
 
   int iVar4;
@@ -1329,6 +1327,8 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
   u8 *pbVar7;
 
   int iVar8;
+
+  u32 cVar2;
 
   
 

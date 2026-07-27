@@ -4733,7 +4733,7 @@ void FUN_003a6e30(u32 *param_1)
 
   u32 uVar2;
 
-  int lVar3;
+  long lVar3;
 
   int iVar4;
 
