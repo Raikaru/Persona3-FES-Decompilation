@@ -4307,6 +4307,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         u8* color2;
         u32 count2;
         u32 index2;
+        u32 tail2;
 
         color2 = *(u8**)((u8*)renderObject + 0x30);
         count2 = *(u32*)((u8*)work->config + 0xc);

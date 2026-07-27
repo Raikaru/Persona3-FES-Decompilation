@@ -150,7 +150,7 @@ void FUN_003a4ce0(void);
 void FUN_003a4dd0(int param_1);
 #pragma alias FUN_003a4dd0_typed FUN_003a4dd0
 extern void FUN_003a4dd0_typed(int param_1);
-void FUN_003a4ef0(long param_1);
+void FUN_003a4ef0(u32 *param_1);
 void FUN_0035ac90(int output, int source, int end, u32 length);
 void FUN_003a5030(int param_1);
 #pragma alias FUN_003a5030_typed FUN_003a5030
@@ -2693,7 +2693,7 @@ void FUN_003a4dd0(int param_1)
 // FUN_003A4EF0 NONMATCHING
 
 
-void FUN_003a4ef0(long param_1)
+void FUN_003a4ef0(u32 *param_1)
 
 
 
