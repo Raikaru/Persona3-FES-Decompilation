@@ -5462,6 +5462,7 @@ long *func_002c08c0(int param_1)
   return 0;
 }
 
+/* Removing this loses func_002c0970 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
 // FUN_002c0970
 /* Removing this loses FUN_002c09f0 (MATCH nd0 -> MISMATCH nd50) - measured W161. */
 #pragma opt_loop_invariants on

@@ -402,6 +402,7 @@ u32 btlScrCmd_CALL_BATTLE()
     return true;
 }
 
+/* Removing this loses btlScrCmd_CHK_HERO_DIED_TARTAROS (MATCH nd0 -> MISMATCH nd7) - measured W161. */
 // FUN_0027d730
 #pragma optimization_level 1
 u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
@@ -490,6 +491,7 @@ BtlPacket* btlCreateSetFlagsPacket(u32 flags)
     return packet;
 }
 
+/* Removing this loses btlUpdateRemoveFlagsPacket (MATCH nd0 -> MISMATCH nd13) - measured W161. */
 // FUN_0027dc50
 #pragma optimization_level 1
 u32 btlUpdateRemoveFlagsPacket(void* work)

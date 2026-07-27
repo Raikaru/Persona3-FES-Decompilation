@@ -416,6 +416,7 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
                         record->y);
 }
 
+/* Removing this worsens FUN_00161d90 (nd3376 -> nd3786) - measured W161. */
 // FUN_00161D90 NONMATCHING
 #pragma schedule on
 void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
@@ -1689,7 +1690,6 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
 }
 
 #pragma push
-#pragma schedule on
 #pragma optimization_level 2
 // FUN_00164920 NONMATCHING
 void* FUN_00164920(KwlnTask* task)
@@ -1894,7 +1894,6 @@ void* FUN_00164920(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-#pragma schedule off
 #pragma pop
 
 // FUN_001669B0

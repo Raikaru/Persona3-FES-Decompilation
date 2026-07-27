@@ -1304,6 +1304,7 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     }
 }
 
+/* Removing this loses func_0027fc80 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 // FUN_0027FC80
 #pragma optimization_level 1
 #pragma tailcall on

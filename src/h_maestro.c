@@ -826,6 +826,7 @@ u32 func_001114b0(KwlnTask* task)
 
     return false;
 }
+/* Removing this worsens func_00111500 (nd2 -> nd4); loses func_00111580 (MATCH nd0 -> MISMATCH nd4) - measured W161. */
 #pragma optimization_level 1
 
 
@@ -869,7 +870,6 @@ void func_00111570(KwlnTask* task, u32 value)
     ((MaestroStreamWork*)task->workData)->renderFlags = value;
 }
 
-#pragma optimization_level 1
 // FUN_00111580
 void func_00111580(KwlnTask* task, u64 packedCoordinates)
 {
@@ -1529,8 +1529,6 @@ f32 func_00112740(void* param_1)
     }
     return (f32)value;
 }
-#pragma push
-#pragma opt_common_subs off
  
 /* Retail's rotation path at 0x0508-0x0660 evaluates the sine/cosine
  * polynomials inline before the matrix calls.  Its repeated output-record
@@ -1876,7 +1874,6 @@ void func_001127d0(void* param_1, u32 enabled)
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
 }
-#pragma pop
 
 /* The following helpers are the pre-Camp Maestro immediate-mode renderer.  The
  * retail module keeps these entry points in this translation unit (the same
@@ -5292,8 +5289,6 @@ static inline void MaestroEffectSetReady(MaestroPerEffectWork* work)
     work->state = 4;
 }
 
-#pragma push
-#pragma opt_common_subs off
 // FUN_00117540 NONMATCHING
 void* func_00117540(KwlnTask* task)
 {
@@ -5542,7 +5537,6 @@ void* func_00117540(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-#pragma pop
 
 // Retail unrolls the state-0 resource-load loop (14 literal calls, not a
 // runtime loop) and dispatches via switch, not if/else-if. Rewritten from

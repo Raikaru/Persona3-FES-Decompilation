@@ -4457,8 +4457,6 @@ extern u8 D_006A2A60[];
 extern int FUN_004c31b0();
 extern void FUN_004c31b0_b600(void *matrix, void *axis, float angle, int mode);
 #pragma alias FUN_004c31b0_b600 FUN_004c31b0
-#pragma push
-#pragma schedule off
 // FUN_0038B600
 
 
@@ -4500,7 +4498,6 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
   } while (0 < iVar3);
   return;
 }
-#pragma pop
 
 
 // FUN_0038B6E0 NONMATCHING

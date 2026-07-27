@@ -2430,6 +2430,7 @@ void FUN_00144910(CampEquipmentPanelWork* work)
 
 
 
+/* Removing this worsens FUN_00145350 (nd291 -> nd292) - measured W161. */
 #pragma schedule on
 // FUN_00145350 NONMATCHING
 

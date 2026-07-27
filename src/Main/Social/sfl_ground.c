@@ -1300,6 +1300,7 @@ void func_0023c850(void* vertices, const SflGroundColor* color)
     }
 }
 
+/* Removing this loses func_0023c8c0 (MATCH nd0 -> MISMATCH nd228), newly over-window 336/336 -> 352/336 - measured W161. */
 #pragma optimization_level 1
 // FUN_0023C8C0
 void func_0023c8c0(void* vertices)

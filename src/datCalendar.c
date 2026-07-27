@@ -4263,6 +4263,7 @@ void func_00185b40(void* resource,
 }
 
 #pragma push
+/* Removing this worsens func_00186050 (nd29 -> nd37) - measured W161. */
 #pragma opt_common_subs off
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)

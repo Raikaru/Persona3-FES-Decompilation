@@ -164,6 +164,7 @@ u8 FUN_00173280(s32 personaId)
     return table[id * 0xE + 2];
 }
 
+/* Removing this loses FUN_001733b0 (MATCH nd0 -> MISMATCH nd37) - measured W161. */
 #pragma optimization_level 1
 // FUN_001733B0
 void FUN_001733b0(DatPersonaWork* persona, s32 skillIdx)

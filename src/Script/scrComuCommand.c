@@ -391,7 +391,6 @@ typedef struct
 
 static const s16 sReverseLinkIds[6] = { 6, 7, 8, 9, 10, 11 }; // DAT_0069d518
 
-#pragma optimization_level 1
 // FUN_0035f210
 u32 scrComu0035f210(void)
 {
@@ -421,8 +420,8 @@ u32 scrComu0035f210(void)
     }
     return 1;
 }
-#pragma optimization_level 2
 
+/* Removing this loses scrComu0035f360 (MATCH nd0 -> MISMATCH nd16) - measured W161. */
 #pragma optimization_level 1
 // FUN_0035f360
 u32 scrComu0035f360(void)
@@ -712,6 +711,7 @@ u32 scrComu0035fdb0(void)
     return 1;
 }
 
+/* Removing this loses scrComu0035ff80 (MATCH nd0 -> MISMATCH nd7); loses scrComu00360020 (MATCH nd0 -> MISMATCH nd7) - measured W161. */
 #pragma optimization_level 1
 // FUN_0035ff80
 u32 scrComu0035ff80(void)
@@ -793,7 +793,6 @@ u32 scrComu00360250(void)
     return 1;
 }
 
-#pragma optimization_level 1
 // FUN_003607a0
 u32 scrComu003607a0(void)
 {
@@ -818,7 +817,6 @@ u32 scrComu003607a0(void)
     FUN_003a4010(handle, 2, level, 0);
     return 1;
 }
-#pragma optimization_level 2
 
 // FUN_00360990
 u32 scrComu00360990(void)
@@ -943,6 +941,7 @@ u32 scrComu00360d40(void)
 }
 
 #pragma push
+/* Removing this worsens scrComu00360ed0 (nd67 -> nd113) - measured W161. */
 #pragma opt_common_subs off
 // FUN_00360ed0 NONMATCHING. Checks a comu event's availability condition ('objtype' 0..2)
 u32 scrComu00360ed0(int param_1)

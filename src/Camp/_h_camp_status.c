@@ -516,7 +516,6 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                             (u32)(u8)alpha, dx, dy, 0);
 }
 
-#pragma schedule off
 // FUN_00123F80
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)
@@ -540,7 +539,6 @@ void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                (position.y + 88.0f) - 12.0f,
                                (u8)bright, alpha);
 }
-#pragma schedule off
 
 // FUN_00124090 NONMATCHING
 void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
@@ -2315,7 +2313,6 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
 
 // FUN_001293B0 NONMATCHING
 #pragma optimization_level 3
-#pragma schedule on
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
                                void* bonus, void* persona, s32 alpha)
 {

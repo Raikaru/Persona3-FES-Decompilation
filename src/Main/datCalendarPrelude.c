@@ -899,6 +899,7 @@ void FUN_0017ac60(u32 code)
     }
 }
 
+/* Removing this loses FUN_0017ad90 (MATCH nd0 -> MISMATCH nd5) - measured W161. */
 #pragma optimization_level 1
 // FUN_0017ad90
 void FUN_0017ad90(void)
@@ -1465,6 +1466,7 @@ void FUN_0017c350(void)
     RELEASE(source);
 }
 
+/* Removing this loses FUN_0017c4e0 (MATCH nd0 -> MISMATCH nd22) - measured W161. */
 #pragma optimization_level 1
 // FUN_0017c4e0
 bool FUN_0017c4e0(s16 value)
@@ -2056,6 +2058,7 @@ u32 FUN_0017d7b0(void)
     return U32(0x0083aa98);
 }
 
+/* Removing this loses FUN_0017d7c0 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
 #pragma optimization_level 1
 // FUN_0017d7c0
 void FUN_0017d7c0(u32 value)

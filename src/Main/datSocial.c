@@ -668,6 +668,7 @@ void FUN_00172820(s16 pcId)
     datSetPhysicalCondition(1, pcId);
 }
 
+/* Removing this loses FUN_00172860 (MATCH nd0 -> MISMATCH nd10) - measured W161. */
 #pragma optimization_level 0
 // FUN_00172860
 u8 FUN_00172860(void)
