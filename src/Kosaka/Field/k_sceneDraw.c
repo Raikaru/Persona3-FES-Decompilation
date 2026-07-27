@@ -40,7 +40,7 @@ extern void* func_004d1170(void* manager, void* object);
 extern void* func_004d11f0(void);
 extern void func_00524270(void* texture, void* object);
 extern void* D_00960184[];
-extern void func_005225a8(const char* name, void* object, u8 type);
+extern void func_005225a8();
 extern void* D_0096017c[];
 void func_001a0040(u32 visible, u32 updateField);
 u32 func_001a02c0();
@@ -62,6 +62,13 @@ extern u8 DAT_007ce0e8;
 extern u8 DAT_007ce0ec;
 extern u8 DAT_007ce0f0;
 extern u8 DAT_007ce0f4;
+
+typedef struct SceneDrawObject
+{
+    u8 unk_00[0x10];
+    u8 data[0x40];
+    u8 type;
+} SceneDrawObject;
 
 #define SCENEDRAW_RESRC_PTR(resource, type, offset) (*(type**)((u8*)(resource) + (offset)))
 #define SCENEDRAW_RESRC_COLOR(resource, offset)     ((RwRGBAReal*)((u8*)(resource) + (offset)))
@@ -1829,35 +1836,34 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
 }
 
 // FUN_001a13b0 NONMATCHING
-void* func_001a13b0(void* object, void** listHead)
+void* func_001a13b0(SceneDrawObject* object, void** listHead)
 {
-    void* manager;
-    void* resource;
     void* allocation;
     void** tail;
+    u8 type;
 
-    func_005225a8("draw object", (u8*)object + 0x10, *((u8*)object + 0x50));
-    manager = func_004d11f0();
-    resource = func_004d1170(manager, (u8*)object + 0x10);
-    if (resource == NULL)
+    type = object->type;
+    func_005225a8("draw object", object->data, type);
+    if (func_004d1170(func_004d11f0(), object->data) != NULL)
     {
-        manager = func_004d11f0();
-        func_004d1110(manager, object);
-        allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
-        func_00524270(allocation, (u8*)object + 0x10);
-        if (*listHead == NULL)
+        return object;
+    }
+
+    func_004d1110(func_004d11f0(), object);
+    allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
+    func_00524270(allocation, object->data);
+    if (*listHead == NULL)
+    {
+        *listHead = allocation;
+    }
+    else
+    {
+        tail = (void**)((u8*)*listHead + 0x40);
+        while (*tail != NULL)
         {
-            *listHead = allocation;
+            tail = (void**)((u8*)*tail + 0x40);
         }
-        else
-        {
-            tail = (void**)((u8*)*listHead + 0x40);
-            while (*tail != NULL)
-            {
-                tail = (void**)((u8*)*tail + 0x40);
-            }
-            *tail = allocation;
-        }
+        *tail = allocation;
     }
 
     return object;
