@@ -10098,7 +10098,7 @@ void func_002ef000(u64 *param_1)
   int iVar1;
   int iVar2;
   u8 *puVar3;
-  u64 uVar4;
+  u32 uVar4;
   u64 uVar5;
   u16 unaff_s0_lo;
   
