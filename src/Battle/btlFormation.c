@@ -8027,10 +8027,7 @@ LAB_002c5168:
           lVar8 = func_00300580(*(u32 *)(iVar3 + 0xa2c),0x80274);
           if (lVar8 == 0) {
             lVar8 = func_003005e0(*(u32 *)(iVar3 + 0xa2c),uVar1);
-            if (lVar8 == 0) {
-              bVar4 = false;
-            }
-            else {
+            if (lVar8 != 0) {
               lVar8 = func_003086f0(*(u32 *)(iVar3 + 0xa2c),uVar1);
               if (lVar8 != 0) {
                 bVar4 = false;
@@ -8038,6 +8035,9 @@ LAB_002c5168:
               else {
                 bVar4 = true;
               }
+            }
+            else {
+              bVar4 = false;
             }
           }
           else {
