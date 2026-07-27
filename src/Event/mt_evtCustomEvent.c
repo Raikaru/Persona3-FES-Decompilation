@@ -5692,6 +5692,8 @@ u32 FUN_0039e6f0(void)
 }
 #define FUN_0039e6f0(...) ((u32 (*)(...))FUN_0039e6f0)(__VA_ARGS__)
 #undef FUN_0039e700
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0039E700 NONMATCHING
 
 
