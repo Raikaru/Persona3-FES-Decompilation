@@ -172,7 +172,6 @@ static Vec128 mdlVecLoadN(const void *p, u32 n) {
 }
 static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; return v; }
 
-extern f32 DAT_007cae4c;
 /* Retail's VU0 colour-modulate kernel (COP2 macro mode + MMI pack).
    Unpacks two packed RGBA u32s to floats, scales each by DAT_007cae4c
    (1/255), multiplies, rescales by 255.0f, converts back and packs.
@@ -214,64 +213,6 @@ static __inline u32 mdlVuModulate(const u32 *pc1, const u32 *pc2, f32 inv255)
     return tmp;
 }
 
-static __inline u32 mdlVuModulateStacked(u32 c2, u32 c1)
-{
-    u32 work;
-    u32 pointer;
-    f32 inv255;
-    volatile u32 first;
-    volatile u32 second;
-    volatile u32 result;
-
-    first = c1;
-    pointer = (u32)&first;
-    inv255 = DAT_007cae4c;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          %0, 0(%1)           \n"
-        "pextlb      %0, $zero, %0       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %3              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmove.xyzw  $vf11, $vf10        \n"
-        ".set reorder"
-        : "=r"(work)
-        : "r"(pointer), "r"(c2), "f"(inv255)
-        : "memory");
-
-    second = c2;
-    work = (u32)&second;
-    __asm__ volatile (
-        ".set noreorder                  \n"
-        "lw          %0, 0(%0)           \n"
-        "pextlb      %0, $zero, %0       \n"
-        "pextlh      %0, $zero, %0       \n"
-        "qmtc2       %0, $vf10           \n"
-        "vitof0.xyzw $vf10, $vf10        \n"
-        "mfc1        %0, %1              \n"
-        "nop                             \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
-        "lui         %0, 0x437F          \n"
-        "qmtc2       %0, $vf2            \n"
-        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
-        "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       %0, $vf10           \n"
-        "ppach       %0, $zero, %0       \n"
-        "ppacb       %0, $zero, %0       \n"
-        ".set reorder"
-        : "+r"(work)
-        : "f"(inv255)
-        : "memory");
-
-    result = work;
-    return result;
-}
 
 /* ==========================================================================
  * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
@@ -470,10 +411,6 @@ void FUN_00323860(void);
 void FUN_00323860_4arg(int param_1,int param_2,int param_3,int param_4);
 void FUN_00323880(int param_1,u16 *param_2,int param_3,int param_4);
 void FUN_003238d0(int param_1);
- #pragma alias FUN_003238d0_4arg FUN_003238d0
-void FUN_003238d0_4arg(int param_1,int param_2,int param_3,int param_4);
- #pragma alias FUN_00323860_2arg FUN_00323860
-void FUN_00323860_2arg(int param_1,u16 param_2);
  #pragma alias FUN_00323920_out FUN_00323920
  extern void FUN_00323920_out(u8 *param_1);
  #pragma alias FUN_00323a30_out FUN_00323a30
@@ -1473,6 +1410,7 @@ extern f32 DAT_007cae00;
 extern u32 DAT_007cae18;
 #pragma alias DAT_007cae18_f32 DAT_007cae18
 extern f32 DAT_007cae18_f32;
+extern f32 DAT_007cae4c;
 extern f32 DAT_007cae58;
 #pragma alias DAT_007cae58_f32 DAT_007cae58
 extern f32 DAT_007cae58_f32;
@@ -29587,60 +29525,51 @@ void FUN_0033a220(int param_1)
   int iVar1;
   u16 *puVar2;
   u8 packed[4];
-  int iVar3;
-  register u32 c2s;
   u32 c1s;
+  u32 c2s;
+  int iVar3;
   int iVar5;
-  u32 current;
-  u32 limit;
-  u8 color0;
-  u8 color1;
-  u8 color2;
-  u8 color3;
-  u32 alpha;
+  u8 uStack_4;
+  u8 uStack_3;
+  u8 uStack_2;
+  char cStack_1;
 
-  iVar5 = param_1;
-  iVar3 = *(int *)(iVar5 + 0x3c);
+  iVar5 = (int)param_1;
   iVar1 = *(int *)(iVar5 + 0x40);
-  puVar2 = *(u16 **)(iVar3 + 4);
-  current = *(u32 *)(iVar5 + 0x34);
-  limit = *(u32 *)(iVar1 + 0x34);
-  if ((current <= limit) || (limit == 0)) {
-    c2s = FUN_0032a120_2arg((char *)iVar1,(u32 *)(iVar1 + 0x24));
-    c1s = *(u32 *)(iVar5 + 0x30);
-    *(u32 *)packed = mdlVuModulateStacked(c2s,c1s);
-    alpha = *(volatile u8 *)&packed[3];
-    if (alpha != 0xff) {
+  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
+  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
+    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
+    c2s = (u32)(iVar3);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
+    cStack_1 = packed[3];
+    uStack_4 = packed[0];
+    uStack_3 = packed[1];
+    uStack_2 = packed[2];
+    if (cStack_1 == -1) {
       iVar3 = *(int *)(puVar2 + 10);
-      color0 = *(volatile u8 *)&packed[0];
-      color1 = *(volatile u8 *)&packed[1];
-      color2 = *(volatile u8 *)&packed[2];
-      color3 = *(volatile u8 *)&packed[3];
-      *(u8 *)(iVar3 + 4) = color0;
-      *(u8 *)(iVar3 + 5) = color1;
-      *(u8 *)(iVar3 + 6) = color2;
-      *(u8 *)(iVar3 + 7) = color3;
-    } else {
-      packed[3] = 0xfe;
-      iVar3 = *(int *)(puVar2 + 10);
-      color0 = *(volatile u8 *)&packed[0];
-      color1 = *(volatile u8 *)&packed[1];
-      color2 = *(volatile u8 *)&packed[2];
-      color3 = *(volatile u8 *)&packed[3];
-      *(u8 *)(iVar3 + 4) = color0;
-      *(u8 *)(iVar3 + 5) = color1;
-      *(u8 *)(iVar3 + 6) = color2;
-      *(u8 *)(iVar3 + 7) = color3;
-      packed[3] = 0xff;
+      *(u8 *)(iVar3 + 4) = uStack_4;
+      *(u8 *)(iVar3 + 5) = uStack_3;
+      *(u8 *)(iVar3 + 6) = uStack_2;
+      *(u8 *)(iVar3 + 7) = 0xfe;
     }
-    FUN_003238d0_4arg((int)puVar2,param_1,param_1 + 0x10,param_1 + 0x20);
-    if (*(u8 *)(iVar1 + 0x56) != 0) {
-      *puVar2 = *puVar2 | 1;
-    } else {
+    else {
+      iVar3 = *(int *)(puVar2 + 10);
+      *(u8 *)(iVar3 + 4) = uStack_4;
+      *(u8 *)(iVar3 + 5) = uStack_3;
+      *(u8 *)(iVar3 + 6) = uStack_2;
+      *(char *)(iVar3 + 7) = cStack_1;
+    }
+    FUN_003238d0(param_1);
+    if (*(char *)(iVar1 + 0x56) == '\0') {
       *puVar2 = *puVar2 & 0xfffe;
     }
-    FUN_00323860_2arg((int)puVar2,*(u16 *)(iVar1 + 0x28));
+    else {
+      *puVar2 = *puVar2 | 1;
+    }
+    FUN_00323860();
   }
+  return;
 }
 
 
