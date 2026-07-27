@@ -4636,13 +4636,11 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             (void)inverseWeight;
         }
         {
-            RuntimeVec3 path0;
-            RuntimeVec3 path1;
-            RuntimeVec3 path2;
-            RuntimeVec3 path3;
-            RuntimeVec3 midpoint;
             f32 blendAmount;
             f32 complement;
+            f32 x;
+            f32 y;
+            f32 z;
             u32 pointCount;
 
             pointCount = count;
@@ -4651,19 +4649,19 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             {
                 for (index = 0; index < pointCount; index++)
                 {
-                    path0 = vector0[index];
-                    path1 = vector1[index];
                     blendAmount = (f32)index / (f32)(pointCount - 1);
                     complement = 1.0f - blendAmount;
-                    midpoint.x = path0.x * complement +
-                                 path1.x * blendAmount;
-                    midpoint.y = path0.y * complement +
-                                 path1.y * blendAmount;
-                    midpoint.z = path0.z * complement +
-                                 path1.z * blendAmount;
+                    x = vector0[index].x * complement +
+                        vector1[index].x * blendAmount;
+                    y = vector0[index].y * complement +
+                        vector1[index].y * blendAmount;
+                    z = vector0[index].z * complement +
+                        vector1[index].z * blendAmount;
                     if (work->state == 0)
                     {
-                        vertices[index] = midpoint;
+                        vertices[index].x = x;
+                        vertices[index].y = y;
+                        vertices[index].z = z;
                     }
                 }
             }
@@ -4672,29 +4670,27 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             {
                 for (index = 0; index < pointCount; index++)
                 {
-                    path2 = vector2[index];
-                    path3 = vector3[index];
                     blendAmount = (f32)index / (f32)(pointCount - 1);
                     complement = 1.0f - blendAmount;
-                    midpoint.x = path2.x * complement +
-                                 path3.x * blendAmount;
-                    midpoint.y = path2.y * complement +
-                                 path3.y * blendAmount;
-                    midpoint.z = path2.z * complement +
-                                 path3.z * blendAmount;
+                    x = vector2[index].x * complement +
+                        vector3[index].x * blendAmount;
+                    y = vector2[index].y * complement +
+                        vector3[index].y * blendAmount;
+                    z = vector2[index].z * complement +
+                        vector3[index].z * blendAmount;
                     if (work->state == 1)
                     {
-                        vertices[index] = midpoint;
+                        vertices[index].x = x;
+                        vertices[index].y = y;
+                        vertices[index].z = z;
                     }
                 }
             }
-            (void)path0;
-            (void)path1;
-            (void)path2;
-            (void)path3;
-            (void)midpoint;
             (void)blendAmount;
             (void)complement;
+            (void)x;
+            (void)y;
+            (void)z;
         }
         if (work->state == 2 && vertices != NULL &&
             vector2 != NULL && vector3 != NULL)

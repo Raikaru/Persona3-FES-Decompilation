@@ -233,7 +233,7 @@ extern u64 FUN_0031e300_wide(u32 *param_1);
 int FUN_0031e310(short param_1,short param_2);
 u64 FUN_0031e420(short param_1,u32 param_2);
 void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3);
-void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5);
+void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u64 param_5);
 u32 FUN_0031ebe0(int *param_1);
 void FUN_0031ee80(int *param_1,int *param_2);
 void FUN_0031eeb0(u32 *param_1);
@@ -2647,7 +2647,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
 // FUN_0031E8D0 NONMATCHING
 
 
-void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5)
+void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u64 param_5)
 
 
 

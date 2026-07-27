@@ -7840,14 +7840,11 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      {
-        int iVar8 = 0;
-        lVar5 = sVar1;
-        for (; iVar8 < 300; iVar8 = iVar8 + 1) {
-          uVar4 = datGetEquipmentId(1,iVar8);
-          if (lVar5 == (uVar4 & 0xffff)) {
-            sVar3 = sVar3 + 1;
-          }
+      lVar5 = sVar1;
+      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
+        uVar4 = datGetEquipmentId(1,iVar6);
+        if (lVar5 == (uVar4 & 0xffff)) {
+          sVar3 = sVar3 + 1;
         }
       }
       break;
