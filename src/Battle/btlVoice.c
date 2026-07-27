@@ -3021,7 +3021,7 @@ LAB_002f5d34:
 }
 
 // FUN_002f5d80 NONMATCHING
-void func_002f5d80(u64 param_1)
+void func_002f5d80(u32 param_1)
 
 {
   u32 bVar1;

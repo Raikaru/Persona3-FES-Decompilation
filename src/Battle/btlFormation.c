@@ -569,6 +569,8 @@ extern void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16]);
 extern void func_002ba3a0(int param_1);
+#pragma alias func_002ba3a0_void func_002ba3a0
+extern void func_002ba3a0_void(void);
 extern void func_002ba900(int param_1);
 extern void func_002baa20(int *param_1);
 extern u32 func_002baad0(int *param_1);
@@ -2580,7 +2582,7 @@ void func_002bb3a0(void)
           func_003252a0();
         }
         if (*(int *)(puVar4 + 8) != 0) {
-          func_002ba3a0(0);
+          func_002ba3a0_void();
         }
       }
     }
