@@ -714,7 +714,7 @@ void FUN_00389d80(u64 param_1,u64 param_2);
 void FUN_00389f40(void);
 void FUN_0038a0c0(int param_1,int param_2);
 void FUN_0038a140(u32 param_1,u32 *param_2);
-void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5, u64 param_6,u64 param_7,u64 param_8,u64 param_9);
+void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5, u32 param_6,u32 param_7,u32 param_8,u32 param_9);
 void FUN_0038a590(int param_1,int param_2);
 void FUN_0038a620(int param_1,int param_2);
 void FUN_0038a6c0(int param_1);
