@@ -182,7 +182,6 @@ u8 * comuDataGetLinkPairEntry(int secondLink,int firstLink)
   }
   rowOffset = firstSocialLink * 0x18;
   relationshipTable = PTR_DAT_006a38e8_abs;
-  asm volatile("" : "+m"(relationshipTable));
   relationshipTable += rowOffset;
   return *(u8 **)(uintptr_t)ComuData_AddOffsetFirst((uintptr_t)(secondSocialLink * 4),
                                                      (uintptr_t)relationshipTable);

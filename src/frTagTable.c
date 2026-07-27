@@ -216,7 +216,6 @@ u64 FUN_003ae560(u64 param_1,int param_2)
   }
   FUN_003b22a0(param_2);
   offset = lVar1 << 2;
-  asm volatile("" : "+m"(offset));
   table = (u8 **)&PTR_s_Go_home_006a25c0_abs;
   table = (u8 **)((u8 *)table + offset);
   FUN_003b2020(*table,param_2);

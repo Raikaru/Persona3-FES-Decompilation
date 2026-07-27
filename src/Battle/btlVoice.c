@@ -3313,10 +3313,12 @@ apply:
   return result;
 }
 
-// FUN_002f6840 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f6840
 void func_002f6840(BtlAction* action)
 {
   BtlUnit* unit;
+  BtlUnit* iter;
   void* object;
   BtlPacket* packet;
   void* stream;
@@ -3326,10 +3328,10 @@ void func_002f6840(BtlAction* action)
   gBtl->flags &= ~0x02000000;
   gBtl->flags |= 0x80000;
   unit = action->unit;
-  if (*(s32*)(DAT_007ce3ec + 0xb4c) < 1) {
-    mode = 3;
-  } else {
+  if (*(s32*)(DAT_007ce3ec + 0xb4c) > 0) {
     mode = 2;
+  } else {
+    mode = 3;
   }
   object = func_002b8f90(0);
   func_002b90d0(object, func_002f87e0(mode));
@@ -3346,9 +3348,9 @@ void func_002f6840(BtlAction* action)
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 2);
   if (mode == 3) {
-    for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
-         unit != NULL; unit = unit->next) {
-      if (unit->charId == 0xf2) {
+    for (iter = gBtl->unitLists[UNIT_GENUS_EC].head;
+         iter != NULL; iter = iter->next) {
+      if (iter->charId == 0xf2) {
         *(u32*)(DAT_007ce3ec + 0xb50) = 0;
         *(u16*)(DAT_007ce3ec + 0xb54) = 0x1e;
         *(u16*)(DAT_007ce3ec + 0xb56) = 4;
@@ -3372,6 +3374,7 @@ void func_002f6840(BtlAction* action)
   }
   func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f6ab0
 u32 func_002f6ab0(BtlAction* action)
@@ -7600,56 +7603,53 @@ void func_002e9950(void)
   }
 }
 
-// FUN_002e9ac0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002e9ac0
 void func_002e9ac0(void)
-
 {
-  u16 sVar1;
-  int iVar2;
-  u32 uVar3;
-  u32 uVar4;
+  BtlUnit* target;
+  void* object;
   BtlPacket* packet;
-  u32 uVar5;
-  int iVar6;
-  int iVar7;
-  int iVar8;
-  int iVar9;
-  int iVar10;
-  int iVar11;
-  int iVar12;
-  
-  uVar3 = FUN_002b8f90_u32_voice(0);
-  uVar4 = FUN_002f87e0_u32_voice(1);
-  FUN_002b90d0(uVar3,uVar4);
-  iVar10 = 0;
-  iVar12 = 0;
-  iVar9 = 0;
-  iVar7 = 0;
-  for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-    sVar1 = *(u16 *)(iVar2 + 0xa4);
-    iVar6 = iVar7;
-    iVar8 = iVar2;
-    iVar11 = iVar12;
-    if (((sVar1 != 7) && (iVar6 = iVar2, iVar8 = iVar9, sVar1 != 5)) &&
-       (iVar6 = iVar7, iVar11 = iVar2, sVar1 != 1)) {
-      iVar10 = iVar2;
-      iVar11 = iVar12;
+  BtlUnit* unit;
+  BtlUnit* arg0;
+  BtlUnit* arg1;
+  BtlUnit* arg2;
+  u32 raw;
+
+  object = (void*)FUN_002b8f90_u32_voice(0);
+  func_002b90d0(object, (void*)FUN_002f87e0_u32_voice(1));
+  target = NULL;
+  arg0 = NULL;
+  arg1 = NULL;
+  arg2 = NULL;
+  for (unit = gBtl->unitLists[UNIT_GENUS_PC].head;
+       unit != NULL; unit = unit->next) {
+    switch (unit->charId) {
+    case 1:
+      target = unit;
+      break;
+    case 5:
+      arg0 = unit;
+      break;
+    case 7:
+      arg1 = unit;
+      break;
+    default:
+      arg2 = unit;
+      break;
     }
-    iVar12 = iVar11;
-    iVar9 = iVar8;
-    iVar7 = iVar6;
   }
-  uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
-  FUN_0027ed20_voice(uVar4,1);
-  packet = FUN_002baf90_packet_voice((void*)uVar3, (BtlUnit*)iVar12, (BtlUnit*)iVar12, 0, 0x200);
-  FUN_0027ed20_voice((u32)packet,2);
-  uVar5 = FUN_002bc950_u32_voice(0,0,0);
-  *(u8 *)uVar5 = 4;
-  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((u8 *)packet + 0x58);
-  FUN_0027ed20_voice(uVar5,1);
-  FUN_002b9030(uVar3);
-  return;
+  raw = FUN_002bc950_u32_voice(arg0, arg1, arg2);
+  FUN_0027ed20_voice(raw, 1);
+  packet = FUN_002baf90_packet_voice(object, target, target, 0, 0x200);
+  FUN_0027ed20_voice((u32)packet, 2);
+  raw = FUN_002bc950_u32_voice(0, 0, 0);
+  *(u8*)raw = 4;
+  *(u64*)((u8*)raw + 8) = *(u64*)((u8*)packet + 0x58);
+  FUN_0027ed20_voice(raw, 1);
+  func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002e9c20 NONMATCHING
 void func_002e9c20(BtlAction* action)

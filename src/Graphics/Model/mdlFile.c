@@ -160,7 +160,7 @@ static Vec128 auStack_10, auStack_30, auStack_40, auStack_50, auStack_80, auStac
 static Vec128 _DAT_0069c4d0;
 static u64 _DAT_0069c4a0;
 #pragma alias DAT_0069c4a0_abs _DAT_0069c4a0
-extern Qword128 DAT_0069c4a0_abs[];
+extern u8 DAT_0069c4a0_abs[];
 static float _fStack_50;
 static u32 *piGpffffa850;
 static u8 *puGpffffbd04;
@@ -525,7 +525,7 @@ void FUN_003257a0(u64 param_1);
 void FUN_003257e0(u32 param_1);
 #pragma alias FUN_003257e0_passthru FUN_003257e0
 extern void FUN_003257e0_passthru(void);
-u64 FUN_00325920(u64 *param_1);
+u32 FUN_00325920(u64 *param_1);
 #pragma alias FUN_00325920_u32 FUN_00325920
 extern u32 FUN_00325920_u32(u64 *param_1);
 void FUN_00325b80(int param_1);
@@ -920,7 +920,7 @@ u_long128 FUN_0034c630(u_long128 *dst, const u_long128 *src);
 u_long128 FUN_0034c640(u_long128 *dst, const u_long128 *src);
 void FUN_0034c650(int param_1, int param_2);
 void FUN_0034c660(int param_1, float param_2);
-u64 FUN_0034c670(long param_1);
+u32 FUN_0034c670(int param_1);
 #pragma alias FUN_0034c670_u32 FUN_0034c670
 extern u32 FUN_0034c670_u32(int param_1);
 void FUN_0034c890(int param_1);
@@ -8550,7 +8550,7 @@ void FUN_00324b50(u32 param_1)
   __asm__ volatile ("sqc2 vf0, 64(%0)" : : "r"(pauVar5) : "memory");
   *(u32 *)(pauVar5 + 0x44) = 0x40a00000;
   __asm__ volatile ("sqc2 vf0, 80(%0)" : : "r"(pauVar5) : "memory");
-  *(Qword128 *)(pauVar5 + 0x20) = DAT_0069c4a0_abs[0];
+  *(Qword128 *)(pauVar5 + 0x20) = *(Qword128 *)DAT_0069c4a0_abs;
   *(u32 *)(pauVar5 + 0x60) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x74) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x64) = 0xffffffff;
@@ -9407,7 +9407,7 @@ void FUN_003257e0(u32 param_1)
 // FUN_00325920 NONMATCHING
 
 
-u64 FUN_00325920(u64 *param_1)
+u32 FUN_00325920(u64 *param_1)
 
 
 
@@ -9419,11 +9419,11 @@ u64 FUN_00325920(u64 *param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   u32 uVar7;
 
@@ -9440,7 +9440,7 @@ u64 FUN_00325920(u64 *param_1)
 
   
 
-  uVar4 = (*DAT_00960178)(0x90,0x40000);
+  uVar4 = (*DAT_00960178_abs)(0x90,0x40000);
 
   FUN_00521408(uVar4,0,0x90);
 
@@ -9486,7 +9486,7 @@ u64 FUN_00325920(u64 *param_1)
 
   for (iVar2 = *(int *)((int)param_1 + 0x8c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xac)) {
 
-    uVar5 = (*DAT_00960178)(0xc0,0x40000);
+    uVar5 = (*DAT_00960178_abs)(0xc0,0x40000);
 
     FUN_00521408(uVar5,0,0xc0);
 
@@ -9508,7 +9508,7 @@ u64 FUN_00325920(u64 *param_1)
 
     uVar1 = *(u16 *)(iVar3 + 4);
 
-    uVar6 = (*DAT_00960178)(0x2c,0x40000);
+    uVar6 = (*DAT_00960178_abs)(0x2c,0x40000);
 
     FUN_00521408(uVar6,0,0x2c);
 
@@ -28684,13 +28684,9 @@ u64 FUN_003393d0(u32 param_1,u32 param_2)
 
   int iVar1;
 
-  u64 uVar3;
-
-  u32 uVar4;
-
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   u8 (*pauVar7) [16];
 
@@ -28700,7 +28696,7 @@ u64 FUN_003393d0(u32 param_1,u32 param_2)
 
   iVar1 = DAT_0069c650[param_1].allocationSize;
 
-  uVar6 = (*DAT_00960178)(iVar1 + 0x50,0x40000);
+  uVar6 = (*DAT_00960178_abs)(iVar1 + 0x50,0x40000);
 
   pauVar7 = (u8 (*) [16])uVar6;
 
@@ -28712,19 +28708,7 @@ u64 FUN_003393d0(u32 param_1,u32 param_2)
 
   *(u32 *)pauVar7[3] = 0xffffffff;
 
-  uVar4 = DAT_0069c4ac;
-
-  uVar5 = DAT_0069c4a8;
-
-  uVar3 = _DAT_0069c4a0;
-
-  *(int *)pauVar7[2] = (int)_DAT_0069c4a0;
-
-  *(int *)(pauVar7[2] + 4) = (int)((u32)uVar3 >> 0x20);
-
-  *(u32 *)(pauVar7[2] + 8) = uVar5;
-
-  *(u32 *)(pauVar7[2] + 0xc) = uVar4;
+  *(Qword128 *)pauVar7[2] = *(Qword128 *)DAT_0069c4a0_abs;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
@@ -37110,12 +37094,6 @@ u64 FUN_00341f10(u32 param_1,u32 param_2)
 
   int iVar1;
 
-  u64 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
   u32 uVar6;
 
   u8 (*pauVar7) [16];
@@ -37136,19 +37114,7 @@ u64 FUN_00341f10(u32 param_1,u32 param_2)
 
   *(u32 *)pauVar7[3] = 0xffffffff;
 
-  uVar5 = DAT_0069c4ac;
-
-  uVar4 = DAT_0069c4a8;
-
-  uVar3 = _DAT_0069c4a0;
-
-  *(int *)pauVar7[2] = (int)_DAT_0069c4a0;
-
-  *(int *)(pauVar7[2] + 4) = (int)((u32)uVar3 >> 0x20);
-
-  *(u32 *)(pauVar7[2] + 8) = uVar4;
-
-  *(u32 *)(pauVar7[2] + 0xc) = uVar5;
+  *(Qword128 *)pauVar7[2] = *(Qword128 *)DAT_0069c4a0_abs;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
@@ -40510,12 +40476,6 @@ u64 FUN_00345cf0(u32 param_1,u64 param_2)
 
   int iVar1;
 
-  u64 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
   u32 uVar6;
 
   u8 (*pauVar7) [16];
@@ -40536,19 +40496,7 @@ u64 FUN_00345cf0(u32 param_1,u64 param_2)
 
   *(u32 *)pauVar7[3] = 0xffffffff;
 
-  uVar5 = DAT_0069c4ac;
-
-  uVar4 = DAT_0069c4a8;
-
-  uVar3 = _DAT_0069c4a0;
-
-  *(int *)pauVar7[2] = (int)_DAT_0069c4a0;
-
-  *(int *)(pauVar7[2] + 4) = (int)((u32)uVar3 >> 0x20);
-
-  *(u32 *)(pauVar7[2] + 8) = uVar4;
-
-  *(u32 *)(pauVar7[2] + 0xc) = uVar5;
+  *(Qword128 *)pauVar7[2] = *(Qword128 *)DAT_0069c4a0_abs;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
@@ -46278,7 +46226,7 @@ void FUN_0034c660(int param_1, float param_2)
 // FUN_0034C670 NONMATCHING
 
 
-u64 FUN_0034c670(long param_1)
+u32 FUN_0034c670(int param_1)
 
 
 
@@ -46286,11 +46234,11 @@ u64 FUN_0034c670(long param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  long lVar5;
+  int lVar5;
 
   u32 uVar6;
 
@@ -46300,7 +46248,7 @@ u64 FUN_0034c670(long param_1)
 
   
 
-  uVar3 = (*DAT_00960178)(0xa4,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0xa4,0x40000);
 
   FUN_00521408(uVar3,0,0xa4);
 
@@ -46360,7 +46308,7 @@ u64 FUN_0034c670(long param_1)
 
     if ((lVar5 != 0) && (lVar5 = FUN_003245f0((int)(param_1)), lVar5 != 0)) {
 
-      uVar2 = (*DAT_00960178)(*(int *)(pauVar7[2] + 8) << 2,0x40000);
+      uVar2 = (*DAT_00960178_abs)(*(int *)(pauVar7[2] + 8) << 2,0x40000);
 
       *(u32 *)(pauVar7[9] + 0xc) = uVar2;
 

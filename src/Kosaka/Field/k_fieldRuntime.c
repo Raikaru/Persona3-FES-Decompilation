@@ -55,10 +55,24 @@ typedef struct RuntimeTransitionWork
     void* positionTask;
 } RuntimeTransitionWork;
 
+typedef struct RuntimeFieldEditorWork
+{
+    u32 state;
+    void* controllerTask;
+    void* noticeTask;
+    void* menuTask;
+    void* choiceTask;
+    s32 selection;
+} RuntimeFieldEditorWork;
+
 extern void* func_001a3b10(void* parent, u32 width, u32 height, u32 mode);
 extern void func_001a3dc0(void* task, const void* descriptors, u32 count);
 extern void func_001a3bf0(void* task, u32 request);
 extern s32 func_001a4510(void* task);
+extern void func_001a3be0(void* task, u32 request);
+extern void* func_001a4010(void* task, u32 index);
+extern s32 func_00195460(void* task);
+extern void FUN_00524270(void* destination, const char* source);
 extern s32* func_001a41b0(void* task, u32 id);
 extern void* func_004cb2f0(void* frame);
 extern void K_Draw_CopyPositionCenter(RuntimeVec3* destination, void* task);
@@ -73,6 +87,18 @@ extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
 extern u8 DAT_007e095e[];
 extern u8 DAT_007e0960[];
+extern u16 DAT_007e0952;
+extern u8 D_00683E10[];
+extern char D_00683F70[];
+extern char D_00683F88[];
+extern char D_00683F98[];
+extern char D_00683FB0[];
+extern char D_00683FD0[];
+extern char D_007CC2F8;
+extern char D_007CC2FC;
+extern char D_007CC300;
+extern char D_007CC304;
+extern char D_007CC308;
 extern u8 D_00684370[];
 extern char D_00684330[];
 extern char D_00684380[];
@@ -370,7 +396,7 @@ extern void H_Fade_SetType(s32 type);
 extern void H_Fade_SetDuration(s32 duration);
 extern void func_001e2430(void);
 extern void* kwlnGetMainCamera(void);
-extern void func_001e0510(void* task, void* camera);
+extern void* func_001e0510(void* task, void* camera);
 extern void* func_001e4b40(void* task);
 extern void* func_001e5850(void* task);
 extern void func_003b7090(u16 resourceId);
@@ -388,7 +414,7 @@ extern u8 D_007CC33C[];
 extern void* func_001e6a70(void* task);
 extern void func_001e2930(s32 value);
 extern void func_001e2b10(s32 value);
-extern s32 func_001e2bd0(void);
+extern s32 func_001e2bd0();
 extern void func_001e9a90(void* work);
 extern s32 func_001ed9e0(void* work);
 extern void func_001edbe0(void* work);
@@ -509,90 +535,308 @@ static u32 Runtime_RingIndex(const RuntimeWork* work, u32 index)
     return (u32)remaining;
 }
 
+/* Retail field-editor controller: menu dispatch, modal prompts, cursor updates,
+ * and editor task lifetime management are reconstructed for states 0 through 8. */
 // FUN_001E1850 NONMATCHING
 s32 func_001e1850(RuntimeTask* task)
 {
-    RuntimeWork* work;
-    void* controller;
+    RuntimeFieldEditorWork* work;
+    u16 input;
+    s32 result;
+    char path[128];
 
-    work = task->workData;
-    controller = NULL;
+    work = (RuntimeFieldEditorWork*)task->workData;
     switch (work->state)
     {
         case 0:
-            work->resource = RwCalloc(1, 0x20, 2);
-            work->selection = work->slots[5] & 0xff;
-            work->state = 1;
+            work->menuTask = func_001a3b10(task, 0x20, 0x20, 2);
+            func_001a3dc0(work->menuTask, D_00683E10, 11);
+            func_001a3bf0(work->menuTask, 1);
+            work->selection = ((s16*)PTR_DAT_007cd540)[10];
+            work->state++;
             break;
 
         case 1:
-            if ((work->requestFlags & 0x40) != 0)
-            {
-                switch (work->selection)
-                {
-                    case 0: controller = task; func_001e0510(task, kwlnGetMainCamera()); break;
-                    case 1: controller = func_001e4b40(task); break;
-                    case 2: controller = func_001e5850(task); break;
-                    case 3: controller = func_001e6030(task); break;
-                    case 4: controller = func_001e6a70(task); break;
-                    default: break;
-                }
-                if (controller != NULL)
-                {
-                    work->childTask = controller;
-                    work->state = 2;
-                }
-            }
+            work->state = 2;
             break;
 
         case 2:
-            if (work->childTask == NULL || kwlnTaskExists(work->childTask) == 0)
+            input = DAT_007e094e;
+            if ((input & 0x40) != 0)
             {
-                if (work->resource != NULL)
+                result = func_001a4510(work->menuTask);
+                switch (result)
                 {
-                    RwFree(work->resource);
-                    work->resource = NULL;
+                    case 0:
+                        work->controllerTask = func_001e0510(task, func_00198590());
+                        work->noticeTask = func_001a3b10(task, 0x1ba, 0x38, 2);
+                        func_001a3be0(work->noticeTask, 1);
+                        func_001a3f20(work->noticeTask, D_00683F70);
+                        func_001a3bf0(work->noticeTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 3;
+                        break;
+
+                    case 1:
+                        break;
+
+                    case 2:
+                        work->controllerTask = func_001e4b40(task);
+                        work->noticeTask = func_001a3b10(task, 0x256, 0x38, 2);
+                        func_001a3be0(work->noticeTask, 1);
+                        func_001a3f20(work->noticeTask, &D_007CC2F8);
+                        func_001a3bf0(work->noticeTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 3;
+                        break;
+
+                    case 3:
+                        work->controllerTask = func_001e5850(task);
+                        work->noticeTask = func_001a3b10(task, 0x21a, 0x38, 2);
+                        func_001a3be0(work->noticeTask, 1);
+                        func_001a3f20(work->noticeTask, D_00683F88);
+                        func_001a3bf0(work->noticeTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 3;
+                        break;
+
+                    case 4:
+                        work->controllerTask = func_001e6030(task);
+                        work->noticeTask = func_001a3b10(task, 0x256, 0x38, 2);
+                        func_001a3be0(work->noticeTask, 1);
+                        func_001a3f20(work->noticeTask, &D_007CC2FC);
+                        func_001a3bf0(work->noticeTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 3;
+                        break;
+
+                    case 5:
+                        work->controllerTask = func_001e6a70(task);
+                        work->noticeTask = func_001a3b10(task, 0x21a, 0x38, 2);
+                        func_001a3be0(work->noticeTask, 1);
+                        func_001a3f20(work->noticeTask, D_00683F98);
+                        func_001a3bf0(work->noticeTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 3;
+                        break;
+
+                    case 6:
+                        break;
+
+                    case 7:
+                        work->choiceTask = func_001a3b10(task, 0x12c, 0xdc, 2);
+                        func_001a3f20(work->choiceTask, &D_007CC300);
+                        func_001a3f20(work->choiceTask, &D_007CC304);
+                        func_001a3bf0(work->choiceTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 4;
+                        break;
+
+                    case 8:
+                        work->choiceTask = func_001a3b10(task, 0x40, 0x40, 2);
+                        FUN_00523ac8(path, D_00683FB0, PTR_DAT_007cd540[0],
+                                     PTR_DAT_007cd540[1], work->selection);
+                        func_001a3f20(work->choiceTask, path);
+                        func_001a3bf0(work->choiceTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 6;
+                        break;
+
+                    case 9:
+                        break;
+
+                    case 10:
+                        work->choiceTask = func_001a3b10(task, 0x12c, 0xdc, 2);
+                        func_001a3f20(work->choiceTask, &D_007CC300);
+                        func_001a3f20(work->choiceTask, &D_007CC304);
+                        func_001a3bf0(work->choiceTask, 1);
+                        func_001a3bf0(work->menuTask, 0);
+                        work->state = 5;
+                        break;
+
+                    default:
+                        break;
                 }
-                work->state = 3;
             }
-            break;
-
-        case 3:
-            if ((work->requestFlags & 0x20) != 0)
+            else if ((input & 0x20) != 0)
             {
-                func_001e2930(0);
-                func_001e2b10(1);
-                Runtime_Clear(work, 0, 2);
-                work->state = 4;
-            }
-            break;
-
-        case 4:
-            if ((work->requestFlags & 0x40) != 0)
-            {
-                work->selection = (work->selection + 1) & 0xff;
-            }
-            else if ((work->requestFlags & 0x20) != 0)
-            {
-                work->selection = (work->selection - 1) & 0xff;
-            }
-            else if ((work->requestFlags & 0x0a) != 0)
-            {
-                work->selection = (work->selection + 10) & 0xff;
-            }
-            else if ((work->requestFlags & 0x05) != 0)
-            {
-                work->selection = (work->selection - 10) & 0xff;
-            }
-            if ((work->requestFlags & 0x40) != 0 && func_001e2bd0() != 0)
-            {
-                work->completedFlags |= 1;
+                work->choiceTask = func_001a3b10(task, 0x12c, 0xdc, 2);
+                func_001a3f20(work->choiceTask, &D_007CC300);
+                func_001a3f20(work->choiceTask, &D_007CC304);
+                func_001a3bf0(work->choiceTask, 1);
+                func_001a3bf0(work->menuTask, 0);
                 work->state = 5;
             }
             break;
 
-        default:
+        case 3:
+            if (func_00195460(work->controllerTask) != 1)
+            {
+                func_001a3bf0(work->menuTask, 1);
+                if (work->noticeTask != NULL)
+                {
+                    func_00195020(work->noticeTask);
+                    work->noticeTask = NULL;
+                }
+                work->state = 2;
+            }
+            break;
+
+        case 4:
+            input = DAT_007e094e;
+            if ((input & 0x40) != 0)
+            {
+                result = func_001a4510(work->choiceTask);
+                switch (result)
+                {
+                    case 1:
+                        func_001e2930(0);
+                        func_001e2b10(1);
+                        FUN_00521408(&D_007CE2B8, 0, 8);
+                    case 0:
+                        func_001a3bf0(work->menuTask, 1);
+                        func_00195020(work->choiceTask);
+                        work->state = 2;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if ((input & 0x20) != 0)
+            {
+                func_001a3bf0(work->menuTask, 1);
+                func_00195020(work->choiceTask);
+                work->state = 2;
+            }
+            break;
+
+        case 5:
+            input = DAT_007e094e;
+            if ((input & 0x40) != 0)
+            {
+                result = func_001a4510(work->choiceTask);
+                if (result == 1)
+                {
+                    work->state = 8;
+                }
+                else if (result == 0)
+                {
+                    func_001a3bf0(work->menuTask, 1);
+                    func_00195020(work->choiceTask);
+                    work->state = 2;
+                }
+            }
+            else if ((input & 0x20) != 0)
+            {
+                func_001a3bf0(work->menuTask, 1);
+                func_00195020(work->choiceTask);
+                work->state = 2;
+            }
+            break;
+
+        case 6:
+            input = DAT_007e0952;
+            if ((input & 0x9000) != 0)
+            {
+                work->selection++;
+                if (work->selection >= 0x100)
+                {
+                    work->selection = 0;
+                }
+                FUN_00523ac8(path, D_00683FB0, PTR_DAT_007cd540[0],
+                             PTR_DAT_007cd540[1], work->selection);
+                FUN_00524270(func_001a4010(work->choiceTask, 0), path);
+            }
+            else if ((input & 0x6000) != 0)
+            {
+                work->selection--;
+                if (work->selection < 0)
+                {
+                    work->selection = 0xff;
+                }
+                FUN_00523ac8(path, D_00683FB0, PTR_DAT_007cd540[0],
+                             PTR_DAT_007cd540[1], work->selection);
+                FUN_00524270(func_001a4010(work->choiceTask, 0), path);
+            }
+            else if ((input & 0x0a) != 0)
+            {
+                work->selection += 10;
+                if (work->selection >= 0x100)
+                {
+                    work->selection = 0;
+                }
+                FUN_00523ac8(path, D_00683FB0, PTR_DAT_007cd540[0],
+                             PTR_DAT_007cd540[1], work->selection);
+                FUN_00524270(func_001a4010(work->choiceTask, 0), path);
+            }
+            else if ((input & 0x05) != 0)
+            {
+                work->selection -= 10;
+                if (work->selection < 0)
+                {
+                    work->selection = 0xff;
+                }
+                FUN_00523ac8(path, D_00683FB0, PTR_DAT_007cd540[0],
+                             PTR_DAT_007cd540[1], work->selection);
+                FUN_00524270(func_001a4010(work->choiceTask, 0), path);
+            }
+
+            input = DAT_007e094e;
+            if ((input & 0x40) != 0)
+            {
+                func_00195020(work->choiceTask);
+                work->choiceTask = func_001a3b10(task, 0x12c, 0xdc, 2);
+                func_001a3f20(work->choiceTask, &D_007CC300);
+                func_001a3f20(work->choiceTask, &D_007CC304);
+                func_001a3bf0(work->choiceTask, 1);
+                work->state = 7;
+            }
+            else if ((input & 0x20) != 0)
+            {
+                func_001a3bf0(work->menuTask, 1);
+                func_00195020(work->choiceTask);
+                work->state = 2;
+            }
+            break;
+
+        case 7:
+            input = DAT_007e094e;
+            if ((input & 0x40) != 0)
+            {
+                result = func_001a4510(work->choiceTask);
+                switch (result)
+                {
+                    case 1:
+                        if (func_001e2bd0((s16)work->selection) == 1)
+                        {
+                            func_001a1540((s32)task, 0, 0x190, &D_007CC308);
+                        }
+                        else
+                        {
+                            func_001a1540((s32)task, 0, 0x190, D_00683FD0);
+                        }
+                    case 0:
+                        func_001a3bf0(work->menuTask, 1);
+                        func_00195020(work->choiceTask);
+                        work->state = 2;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if ((input & 0x20) != 0)
+            {
+                func_001a3bf0(work->menuTask, 1);
+                func_00195020(work->choiceTask);
+                work->state = 2;
+            }
+            break;
+
+        case 8:
             return -1;
+
+        default:
+            break;
     }
     return 0;
 }
