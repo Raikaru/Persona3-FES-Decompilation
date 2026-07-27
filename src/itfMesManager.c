@@ -5989,10 +5989,10 @@ void FUN_003a8260(int param_1)
 void FUN_003a8350(int param_1)
 {
   volatile u64 uStack_18;
+  int iVar1;
   float fVar1;
   float fVar2;
   float fVar3;
-  int iVar1;
   int iVar2;
   int iVar3;
 
