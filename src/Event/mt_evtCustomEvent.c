@@ -1976,7 +1976,6 @@ u32 FUN_0039a5c0(int param_1)
 
 
 {
-  extern u64 FUN_003b91c0(float param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5,u32 param_6,u32 param_7);
 
   u16 uVar1;
 
