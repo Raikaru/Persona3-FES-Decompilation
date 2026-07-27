@@ -98,7 +98,7 @@ u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3);
 void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
 void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
 void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
-void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
+void FUN_004167d0(u32 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
 void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
 void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
 u64 FUN_00417030(int param_1, int param_2);
