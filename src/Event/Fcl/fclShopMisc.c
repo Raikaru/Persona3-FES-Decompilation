@@ -3958,14 +3958,15 @@ void FUN_003f3dc0(int param_1,u32 param_2)
   int lVar2;
 
   int iVar3;
+  int item;
 
   
 
   for (iVar3 = *(int *)(param_1 + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
 
     puVar1 = *(u32 **)(*(int *)(iVar3 + 0x14) + 0x1c);
-
-    lVar2 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
+    item = (short)puVar1[1];
+    lVar2 = FUN_003c4bf0(param_2,param_2 + 4,item);
 
     if (lVar2 != 0) {
 

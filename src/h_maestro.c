@@ -3267,9 +3267,9 @@ void func_00115de0(int unused0, int unused1, int unused2,
 {
   int *piVar1;
 
-  void* uVar3;
-
   int *piVar2;
+
+  void* uVar3;
 
 
 
@@ -4185,8 +4185,8 @@ void func_00116cf0(int param_1)
 
     for (j = 0; j < 3; j++)
     {
-        u8* entry;
         u32* slot;
+        u8* entry;
 
         entry = work + j * 4;
         slot = (u32*)(entry + 0x24);

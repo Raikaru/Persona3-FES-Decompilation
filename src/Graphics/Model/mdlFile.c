@@ -42676,7 +42676,7 @@ u64 FUN_003463c0(int param_1)
 
   int iVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   
 
@@ -58610,7 +58610,7 @@ void FUN_00357c80(int param_1)
 
 
 
-// FUN_00357CE0 NONMATCHING
+// FUN_00357CE0
 
 
 void FUN_00357ce0(int param_1)
@@ -58629,7 +58629,7 @@ void FUN_00357ce0(int param_1)
 
     if (DAT_0069ccf0[*(int *)(iVar1 + 0x2c)].callback4 != (code)0) {
 
-      DAT_0069ccf0[*(int *)(iVar1 + 0x2c)].callback4();
+    DAT_0069ccf0[*(int *)(iVar1 + 0x2c)].callback4(param_1);
 
     }
 
