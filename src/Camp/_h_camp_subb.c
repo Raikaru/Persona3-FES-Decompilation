@@ -516,7 +516,7 @@ category3:
 invalid:
     return 0;
 found:
-    for (one = 1, bit = 0; bit < 32; bit++) {
+    one = 1;
         if ((categoryMask & (one << bit)) != 0) {
             return bit;
         }
