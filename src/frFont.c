@@ -2905,7 +2905,7 @@ void FUN_003b2020(int param_1,int param_2)
 
         if (iVar5 == 0) {
 
-          lVar7 = FUN_003b0970(&gp0xffffa838,0,*(u8 *)(param_2 + 0xd),
+          lVar7 = FUN_003b0970_typed(&gp0xffffa838,0,*(u8 *)(param_2 + 0xd),
 
                                *(u8 *)(param_2 + 0xe),0);
 
