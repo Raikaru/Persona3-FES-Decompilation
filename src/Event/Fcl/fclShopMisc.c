@@ -20334,7 +20334,7 @@ void FUN_0040c1e0(int param_1,int param_2,int param_3)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 

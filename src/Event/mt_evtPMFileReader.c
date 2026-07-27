@@ -254,8 +254,7 @@ u64 FUN_00397950(void)
     case 6:
       uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
       *(u16 *)(piVar2 + 6) = uVar1;
-      lVar4 = *(u16 *)(piVar2 + 6);
-      if (lVar4 > 0) {
+      if (*(u16 *)(piVar2 + 6) > 0) {
         FUN_00395170();
       }
       *piVar2 = 7;
