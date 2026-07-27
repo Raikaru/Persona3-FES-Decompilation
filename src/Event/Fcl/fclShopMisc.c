@@ -343,11 +343,11 @@ u64 FUN_003fc540(int param_1);
 u32 FUN_003fc980(int param_1);
 void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3);
 void FUN_003fcad0(u64 param_1,u64 param_2,u32 param_3,int param_4);
-void FUN_003fcbe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
+void FUN_003fcbe0(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fd010(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fd030(u64 param_1,u64 param_2,u32 param_3,int param_4);
-void FUN_003fd140(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
+void FUN_003fd140(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 u64 FUN_003fd570(int param_1,u32 *param_2);
 u64 FUN_003fd730(u64 param_1,int param_2);
@@ -10111,7 +10111,7 @@ void FUN_003fcad0(u64 param_1,u64 param_2,u32 param_3,int param_4)
 // FUN_003FCBE0 NONMATCHING
 
 
-void FUN_003fcbe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5)
+void FUN_003fcbe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 
 
@@ -10314,8 +10314,7 @@ void FUN_003fd030(u64 param_1,u64 param_2,u32 param_3,int param_4)
 // FUN_003FD140 NONMATCHING
 
 
-void FUN_003fd140(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5)
-
+void FUN_003fd140(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 
 {

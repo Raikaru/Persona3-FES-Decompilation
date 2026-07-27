@@ -5625,7 +5625,7 @@ void FUN_0042ac60(int param_1,int param_2)
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  cVar2 = (char)param_2 + -0x1f;
+  cVar2 = param_2 - 0x1f;
 
   iVar6 = (cVar2 * 0xf0 + (int)cVar2) * 4;
 
@@ -9043,11 +9043,11 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   u32 unaff_s5_lo;
 
-  float uStack_10;
+  u32 uStack_10;
 
-  float uStack_c;
+  u32 uStack_c;
 
-  float uStack_8;
+  u32 uStack_8;
 
   
 
@@ -9137,11 +9137,11 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   }
 
-  *param_1 = uStack_10;
+  *(float *)param_1 = *(float *)&uStack_10;
 
-  param_1[1] = uStack_c;
+  *(float *)(param_1 + 1) = *(float *)&uStack_c;
 
-  param_1[2] = uStack_8;
+  *(float *)(param_1 + 2) = *(float *)&uStack_8;
 
   return;
 

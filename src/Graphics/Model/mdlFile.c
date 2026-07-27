@@ -17824,7 +17824,7 @@ void FUN_0032d840(int param_1)
 
                (DAT_007cadb0_f32 - *(float *)(pauVar4[2] + 8)) * fVar18 +
 
-               *(float *)(iVar11 + 0x14) + 0.0;
+               *(float *)(iVar11 + 0x14) + 0.0f;
 
         }
 
@@ -17834,7 +17834,7 @@ void FUN_0032d840(int param_1)
 
         }
 
-        iVar14 = (int)ABS(*(float *)(iVar11 + 0x14));
+        iVar14 = (int)ABS_f32(*(float *)(iVar11 + 0x14));
 
         *(float *)(iVar11 + 0x14) = *(float *)(iVar11 + 0x14) - (float)iVar14;
 
@@ -17958,7 +17958,7 @@ void FUN_0032d840(int param_1)
 
             fVar19 = (float)FUN_00358030(0);
 
-            pfVar15[3] = ABS(*(float *)(pauVar4[0xd] + 8) *
+            pfVar15[3] = ABS_f32(*(float *)(pauVar4[0xd] + 8) *
 
                              (fVar23 * fVar19 + (fVar21 - fVar23) + 0.0f));
 
@@ -55117,11 +55117,11 @@ u32 FUN_00352eb0(int param_1)
 
 {
 
+  u32 uVar3;
+
   int *piVar1;
 
   u32 uVar2;
-
-  u32 uVar3;
 
   
 
