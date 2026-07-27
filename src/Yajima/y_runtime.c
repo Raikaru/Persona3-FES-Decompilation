@@ -17793,7 +17793,7 @@ u32 uVar8;
 char cVar9;
 int iVar10;
 char cVar11;
-u32 uVar12;
+u64 uVar12;
 u16 *puVar13;
 u32 uStack_40;
 u32 uStack_3c;
