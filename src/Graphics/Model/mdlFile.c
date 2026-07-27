@@ -54801,7 +54801,7 @@ void FUN_00352910(u32 param_1)
 
 
 
-// FUN_00352980 NONMATCHING
+// FUN_00352980
 
 
 u32 FUN_00352980(int param_1)
@@ -54812,17 +54812,13 @@ u32 FUN_00352980(int param_1)
 
   u16 uVar1;
 
-  int iVar2;
-
-  __int128 auVar3;
-
   u32 uVar4;
 
   u32 uVar5;
 
-  u8 (*pauVar6) [16];
+  int iVar2;
 
-  __int128 in_vf0;
+  u8 (*pauVar6) [16];
 
   
 
@@ -54832,7 +54828,7 @@ u32 FUN_00352980(int param_1)
 
   iVar2 = DAT_0069ccc0[(u32)uVar1].allocationSize;
 
-  uVar5 = (*DAT_00960178_u32)(iVar2 + 0x30,0x40000);
+  uVar5 = (*DAT_00960178_abs)(iVar2 + 0x30,0x40000);
 
   pauVar6 = (u8 (*) [16])uVar5;
 
@@ -54844,9 +54840,7 @@ u32 FUN_00352980(int param_1)
 
   *(u32 *)pauVar6[1] = 0xffffffff;
 
-  auVar3 = _sqc2(in_vf0);
-
-  memcpy(*pauVar6, &auVar3, 16);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar6) : "memory");
 
   FUN_00521250(*(u32 *)pauVar6[2],uVar4,iVar2);
 
