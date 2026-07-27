@@ -619,6 +619,18 @@ extern u8 DAT_0069ff20[];
 extern u8 DAT_0069ff30[];
 extern u8 DAT_0069ff40[];
 extern u8 DAT_0069ff50[];
+#pragma alias DAT_0069ff20_abs DAT_0069ff20
+#pragma alias DAT_0069ff30_abs DAT_0069ff30
+#pragma alias DAT_0069ff40_abs DAT_0069ff40
+#pragma alias DAT_0069ff50_abs DAT_0069ff50
+extern u8 DAT_0069ff20_abs[];
+extern u8 DAT_0069ff30_abs[];
+extern u8 DAT_0069ff40_abs[];
+extern u8 DAT_0069ff50_abs[];
+#define DAT_0069ff20 DAT_0069ff20_abs
+#define DAT_0069ff30 DAT_0069ff30_abs
+#define DAT_0069ff40 DAT_0069ff40_abs
+#define DAT_0069ff50 DAT_0069ff50_abs
 #pragma alias DAT_0069ead8_f32 DAT_0069ead8
 extern f32 DAT_0069ead8_f32[];
 #pragma alias DAT_0069eadc_f32 DAT_0069eadc

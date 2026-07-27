@@ -8945,22 +8945,22 @@ void func_002ec790(void)
     packet = FUN_002dd830_packet_voice(iVar8, 10, 0, 6);
     packet->unk_00 = 5;
     packet->parentUID = parent->uid;
-    packet->postUpdateDelay = 0x40;
+    packet->preUpdateDelay = 0x40;
     btlPacketRegister(packet, 1);
     packet = FUN_002dd830_packet_voice(iVar8, 0xc, 0, 7);
     packet->unk_00 = 5;
     packet->parentUID = parent->uid;
-    packet->postUpdateDelay = 0x84;
+    packet->preUpdateDelay = 0x84;
     btlPacketRegister(packet, 1);
     packet = FUN_0027f410_packet_voice(0x2ecbe0, (u32)iVar6);
     packet->unk_00 = 5;
     packet->parentUID = parent->uid;
-    packet->postUpdateDelay = 0x8c;
+    packet->preUpdateDelay = 0x8c;
     btlPacketRegister(packet, 1);
     packet = FUN_00284200_packet_voice(1.0f, iVar6, 0, 0, 1);
     packet->unk_00 = 5;
     packet->parentUID = parent->uid;
-    packet->postUpdateDelay = 0x8c;
+    packet->preUpdateDelay = 0x8c;
     btlPacketRegister(packet, 1);
     func_002b9030(object);
 }

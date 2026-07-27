@@ -4308,6 +4308,10 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         u32 count2;
         u32 index2;
         u32 tail2;
+        f32 denominator2;
+        f32 step2;
+        f32 amount2;
+        u8* cursor2;
 
         color2 = *(u8**)((u8*)renderObject + 0x30);
         count2 = *(u32*)((u8*)work->config + 0xc);
@@ -4327,6 +4331,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             sample[3] = (u8)((sample[-5] + sample[-1] +
                               sample[7] + sample[11]) >> 2);
         }
+        tail2 = count2 * 3 + 6;
+        func_001ed0f0(
+            1.0f, (RuntimeWork*)work, 0, color2 + (tail2 - 3) * 4);
     }
     case 2:
         break;

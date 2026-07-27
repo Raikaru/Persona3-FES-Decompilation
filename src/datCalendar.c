@@ -2353,10 +2353,10 @@ void* func_00181cc0(KwlnTask* task)
     KwlnTask* parent;
     CalendarScenarioEntry* scenarioTable;
     KwlnTask* displayTask;
-    s32 time;
-    u16 procedure;
     s32 month;
+    u16 procedure;
     s32 day;
+    s32 time;
     RwV2d position;
     struct
     {

@@ -5671,11 +5671,10 @@ s16 FUN_002dc670(BtlAction* action)
     }
 
     if (datCalcIsDead(datUnit, result) != 0)
-    {
-        result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
-    }
-
+        goto dead;
     return result;
+dead:
+    return (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
 
 }
 // FUN_002dc830

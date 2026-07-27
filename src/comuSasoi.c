@@ -683,7 +683,7 @@ u32 FUN_003c2df0(u32 param_1)
 // FUN_003C2EE0 NONMATCHING
 
 
-u32 * FUN_003c2ee0(u32 param_1)
+u32 * FUN_003c2ee0(int param_1)
 
 
 
