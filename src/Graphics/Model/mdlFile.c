@@ -1760,11 +1760,11 @@ u64 FUN_0031d900(int *param_1,int *param_2,u16 param_3)
 
   
 
-  piVar2 = (int *)(*DAT_00960178_abs)(0x14,0x40000);
+  uVar1 = (*DAT_00960178_u32)(0x14,0x40000);
 
-  uVar1 = (u64)piVar2;
+  FUN_00521408(uVar1,0,0x14);
 
-  FUN_00521408(piVar2,0,0x14);
+  piVar2 = (int *)uVar1;
 
   piVar2[3] = 0;
 
