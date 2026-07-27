@@ -1243,6 +1243,8 @@ extern f32 DAT_0069c4d0_f32;
 extern f32 DAT_0069c4d4_f32;
 #pragma alias DAT_0069c4d8_f32 DAT_0069c4d8
 extern f32 DAT_0069c4d8_f32;
+#pragma alias DAT_0069c4d0_abs DAT_0069c4d0
+extern u8 DAT_0069c4d0_abs[];
 extern u32 DAT_0069c4d4;
 extern u32 DAT_0069c4d8;
 extern u32 DAT_0069c4e0;
@@ -13752,47 +13754,26 @@ void FUN_00329890(u32 param_1)
 
 
 // FUN_003299B0 NONMATCHING
-
-
-
-
-
-
 void FUN_003299b0(void)
 {
-  __int128 auVar1;
-  int iVar2;
-  __int128 in_vf10;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u32 uStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  u32 iVar2;
+  f32 quad[4];
+  f32 dst[3];
+  f32 src[3];
 
-  _DAT_0069c4d0 = _sqc2(in_vf10);
-  uStack_20 = DAT_0069c4d0;
-  uStack_1c = DAT_0069c4d4;
-  uStack_18 = DAT_0069c4d8;
-
-  iVar2 = FUN_00198590();
-
-  RwV3dTransformPoint(&fStack_10,&uStack_20,iVar2 + 0x20);
-
-  auVar1._4_4_ = (fStack_c / fStack_8) * 448.0f;
-
-  auVar1._0_4_ = (fStack_10 / fStack_8) * 640.0f;
-
-  auVar1._8_8_ = 0;
-
-  _lqc2(auVar1);
-
+  __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(DAT_0069c4d0_abs) : "memory");
+  src[0] = *(f32 *)DAT_0069c4d0_abs;
+  src[1] = *(f32 *)(DAT_0069c4d0_abs + 4);
+  src[2] = *(f32 *)(DAT_0069c4d0_abs + 8);
+  iVar2 = FUN_00198590_u32();
+  RwV3dTransformPoint(dst,src,iVar2 + 0x20);
+  quad[0] = 640.0f * (dst[0] / dst[2]);
+  quad[1] = 448.0f * (dst[1] / dst[2]);
+  *(u32 *)&quad[2] = 0;
+  *(u32 *)&quad[3] = 0;
+  __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(quad) : "memory");
   return;
-
 }
-
-
-
 
 // FUN_00329A60 NONMATCHING
 
