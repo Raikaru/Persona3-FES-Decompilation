@@ -244,7 +244,7 @@ u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3);
 u8 FUN_003f2240(long param_1,u16 param_2);
 u64 FUN_003f2320(int param_1,int param_2);
 u32 FUN_003f2510(void);
-u32 FUN_003f25e0(u64 param_1,long param_2,u32 param_3);
+u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3);
 u32 FUN_003f2940(u64 param_1,short *param_2,int param_3,u32 param_4);
 u64 FUN_003f2d60(int param_1);
 u64 FUN_003f2dc0(int param_1,int param_2);
@@ -2901,7 +2901,7 @@ u32 FUN_003f2510(void)
 // FUN_003F25E0 NONMATCHING
 
 
-u32 FUN_003f25e0(u64 param_1,long param_2,u32 param_3)
+u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
 
 
 
@@ -3885,7 +3885,7 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
   }
 
   if (puVar6 != (u8 *)0x0) {
-    FUN_003f25e0(uVar4,(long)puVar6,uVar1 | 0x6000);
+    FUN_003f25e0(uVar4,(int *)puVar6,uVar1 | 0x6000);
   }
 
   iStack_4 = 0;

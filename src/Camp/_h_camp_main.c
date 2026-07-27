@@ -1765,7 +1765,7 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
     f32 x;
     f32 y;
 
-    p = campCarouselUnpackPosition(position);
+    p.packed = position;
     x = p.value.x + 218.0f;
     y = p.value.y + 20.0f + (f32)DAT_007cdf9c;
     sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40, 1);
