@@ -43467,8 +43467,6 @@ u32 FUN_00347170(u64 param_1)
 
   int iVar1;
 
-  __int128 auVar2;
-
   u16 *puVar3;
 
   u32 uVar4;
@@ -43479,8 +43477,6 @@ u32 FUN_00347170(u64 param_1)
 
   u8 (*pauVar7) [16];
 
-  __int128 in_vf0;
-
   
 
   uVar4 = (*DAT_00960178_u32)(0x5c,0x40000);
@@ -43489,9 +43485,7 @@ u32 FUN_00347170(u64 param_1)
 
   pauVar7 = (u8 (*) [16])uVar4;
 
-  auVar2 = _sqc2(in_vf0);
-
-  memcpy(*pauVar7, &auVar2, 16);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
   FUN_00521250(pauVar7[1] + 8,param_1,0x40);
 
@@ -47437,8 +47431,6 @@ u64 FUN_0034b1a0(u32 param_1)
 
   int iVar2;
 
-  __int128 auVar3;
-
   u32 uVar4;
 
   u32 uVar5;
@@ -47450,8 +47442,6 @@ u64 FUN_0034b1a0(u32 param_1)
   int iVar8;
 
   u8 (*pauVar9) [16];
-
-  __int128 in_vf0;
 
   
 
@@ -47479,9 +47469,7 @@ u64 FUN_0034b1a0(u32 param_1)
 
   *(u32 *)(pauVar9[2] + 0xc) = 0;
 
-  auVar3 = _sqc2(in_vf0);
-
-  memcpy(*pauVar9, &auVar3, 16);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar9) : "memory");
 
   *(u8 (**) [16])(pauVar9[2] + 4) = pauVar9 + 3;
 
@@ -47560,8 +47548,6 @@ u64 FUN_0034b3a0(int param_1)
 
   int iVar2;
 
-  __int128 auVar3;
-
   u32 uVar4;
 
   u64 uVar5;
@@ -47569,8 +47555,6 @@ u64 FUN_0034b3a0(int param_1)
   int iVar6;
 
   u8 (*pauVar7) [16];
-
-  __int128 in_vf0;
 
   
 
@@ -47598,9 +47582,7 @@ u64 FUN_0034b3a0(int param_1)
 
   *(u32 *)(pauVar7[2] + 0xc) = 0;
 
-  auVar3 = _sqc2(in_vf0);
-
-  memcpy(*pauVar7, &auVar3, 16);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
   *(u8 (**) [16])(pauVar7[2] + 4) = pauVar7 + 3;
 
@@ -47739,8 +47721,6 @@ u64 FUN_0034b6b0(u32 param_1)
 
   int iVar2;
 
-  __int128 auVar3;
-
   u32 uVar4;
 
   u32 uVar5;
@@ -47752,8 +47732,6 @@ u64 FUN_0034b6b0(u32 param_1)
   int iVar8;
 
   u8 (*pauVar9) [16];
-
-  __int128 in_vf0;
 
   
 
@@ -47781,9 +47759,7 @@ u64 FUN_0034b6b0(u32 param_1)
 
   *(u32 *)(pauVar9[2] + 0xc) = 0;
 
-  auVar3 = _sqc2(in_vf0);
-
-  memcpy(*pauVar9, &auVar3, 16);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar9) : "memory");
 
   *(u8 (**) [16])(pauVar9[2] + 4) = pauVar9 + 3;
 
@@ -47862,8 +47838,6 @@ u64 FUN_0034b8b0(int param_1)
 
   int iVar2;
 
-  __int128 auVar3;
-
   u32 uVar4;
 
   u64 uVar5;
@@ -47871,8 +47845,6 @@ u64 FUN_0034b8b0(int param_1)
   int iVar6;
 
   u8 (*pauVar7) [16];
-
-  __int128 in_vf0;
 
   
 
@@ -47900,9 +47872,7 @@ u64 FUN_0034b8b0(int param_1)
 
   *(u32 *)(pauVar7[2] + 0xc) = 0;
 
-  auVar3 = _sqc2(in_vf0);
-
-  memcpy(*pauVar7, &auVar3, 16);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
   *(u8 (**) [16])(pauVar7[2] + 4) = pauVar7 + 3;
 
