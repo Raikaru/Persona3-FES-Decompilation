@@ -45422,7 +45422,7 @@ void FUN_00349450(u64 param_1,int *param_2)
 
       uVar3 = FUN_00531230(uGpffff8018,uVar3);
 
-      fVar7 = (float)FUN_005318a0(uVar3);
+      fVar7 = FUN_005318a0_f32((u32)uVar3);
 
       fVar7 = (float)(uVar2 >> 0x18) * fVar7;
 
