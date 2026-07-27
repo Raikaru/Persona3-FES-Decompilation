@@ -170,7 +170,7 @@ extern u32 FUN_001830c0();
 extern u32 FUN_00194b20();
 extern u32 FUN_00195290();
 extern void FUN_0019d3f0(const char*, s32);
-extern u32 FUN_0021ea00();
+extern f32 FUN_0021ea00(s32);
 extern u32 FUN_0025f370();
 extern u32 FUN_0025f570();
 extern u32 FUN_0035ed20();
