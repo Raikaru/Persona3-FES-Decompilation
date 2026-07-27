@@ -6981,8 +6981,9 @@ void func_002e82b0(BtlCamera* camera)
       BtlVoicePlayback playbackA;
 
       randomIndex = FUN_002ffbc0(2);
-      randomIndex = (randomIndex & 0xffff) * 0x34;
+      randomIndex &= 0xffff;
       voiceData = (u8*)DAT_007ce3ec;
+      randomIndex *= 0x34;
       voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)voiceData + 0xb18)) +
                   randomIndex + 0x1a4;
       btlVoicePlayCameraVoice(voiceData, playbackA.startTransform,
