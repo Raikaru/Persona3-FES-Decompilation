@@ -1218,7 +1218,7 @@ void FUN_00201E00(void)
     if (work[0] & 0x10) FUN_00204CC0();
 }
 
-// FUN_00201EF0 NONMATCHING
+// FUN_00201EF0
 void FUN_00201EF0(void)
 {
     DatPersonaWork* persona;
