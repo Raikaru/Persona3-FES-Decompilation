@@ -550,7 +550,7 @@ u32 FUN_0038d6f0(long param_1);
 u32 FUN_0038d980(void);
 u32 FUN_0038e860(long param_1,u64 param_2);
 u32 FUN_003670f0(int param_1,int param_2,int param_3);
-u64 FUN_00366f90(u64 param_1,u64 param_2,u64 param_3);
+u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3);
 u32 FUN_00367190(int param_1,int param_2,int param_3);
 u32 FUN_00367440(int param_1,int param_2,int param_3);
 u64 FUN_00367230(u64 param_1,u64 param_2,int param_3);
@@ -650,7 +650,7 @@ void FUN_00366210(u32 param_1,int param_2);
 void FUN_00366330(u32 param_1,int param_2);
 void FUN_003663f0(u32 param_1,int param_2);
 void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
-void FUN_00366970(u32 param_1,u32 param_2);
+void FUN_00366970(u64 param_1,u32 param_2);
 void FUN_00366ac0(u32 param_1,u64 param_2);
 void FUN_0036d030(int param_1);
 void FUN_0036efb0(void);
@@ -6700,7 +6700,7 @@ LAB_00366928:;
 // FUN_00366970 NONMATCHING
 
 
-void FUN_00366970(u32 param_1,u32 param_2)
+void FUN_00366970(u64 param_1,u32 param_2)
 
 
 
@@ -7058,7 +7058,7 @@ int FUN_00366eb0(int param_1,int param_2,int param_3)
 // FUN_00366F90 NONMATCHING
 
 
-u64 FUN_00366f90(u64 param_1,u64 param_2,u64 param_3)
+u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
 
 
 
@@ -13570,6 +13570,7 @@ code * FUN_0036d500(void)
   u32 uVar4;
 
   u32 uVar5;
+  int iVar6;
 
   
 
