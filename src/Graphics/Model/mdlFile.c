@@ -31635,7 +31635,7 @@ u32 FUN_0033b1c0(int param_1)
   piVar2[2] = (int)piVar2;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,0xc,0xd,DAT_0069bd80_abs,0x48);
   piVar2[1] = iVar3;
-  return (u32)piVar2;
+  return uVar4;
 }
 
 

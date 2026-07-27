@@ -13703,7 +13703,7 @@ u32 func_002cef10(void)
   int iVar10 = 0;
   u8 bVar11 = 0;
   
-  uVar4 = func_0035f160();
+  uVar4 = func_0035f160_u32();
   uVar5 = func_0035ed20(0);
   lVar6 = func_002c3430(uVar4,uVar5,0,0x2c,0,(code *)&func_002c30f0);
   if (lVar6 == 1) {
