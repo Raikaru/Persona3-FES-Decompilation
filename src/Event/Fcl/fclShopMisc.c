@@ -6344,11 +6344,11 @@ void FUN_003f7730(int param_1,int param_2,u8 param_3,int param_4,int param_5)
 
   iVar2 = *(int *)(*(int *)(param_5 + 0x14) + 0x1c);
 
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3],0);
+  FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3],0);
 
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 1],0);
+  FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 1],0);
 
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 2],0);
+  FUN_0040e3c0(0,param_1,param_2,param_3,auStack_30[*(short *)(iVar3 + 4) * 3 + 2],0);
 
   sprintf((char *)auStack_10,0x7cd954,*(u16 *)(iVar2 + 0xe));
 
