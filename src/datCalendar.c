@@ -1464,7 +1464,6 @@ u8 clndIsHolidayOrSunday()
     s16 sentinel;
 
     daysSinceApr5 = datGetDaysSinceApr5();
-    sentinel = -1;
     if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
     {
         return true;
@@ -1476,6 +1475,7 @@ u8 clndIsHolidayOrSunday()
     month = currMonth;
     day = currDayOfMonth;
     holidays = sHolidays;
+    sentinel = -1;
     for (; i < 0x164; i++)
     {
         if (holidays[i].month == sentinel)

@@ -8936,6 +8936,8 @@ void func_002ec790(void)
         case 0x10a:
             iVar8 = unit;
             break;
+        default:
+            break;
         }
     }
     object = func_002b8f90(0);

@@ -3469,17 +3469,11 @@ u32 FUN_0039c0f0(int param_1)
 
   short sVar10;
 
-  struct {
-    int ai[8];
-    short as[6];
-    u8 au[4];
-  } stack;
+  int aiStack_30 [8];
 
-  int *aiStack_30 = stack.ai;
+  short asStack_10 [6];
 
-  short *asStack_10 = stack.as;
-
-  u8 *auStack_4 = stack.au;
+  u8 auStack_4 [4];
 
   
 
