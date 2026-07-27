@@ -912,7 +912,7 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
 
   int iVar2;
 
-  u32 uVar3;
+  u16 uVar3;
 
   
 
@@ -932,13 +932,23 @@ void FUN_003c9000(f32 param_1, f32 param_2, f32 param_3, int param_4,
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
     param_2 = 4096.0f * param_2;
-    uVar3 = (u32)param_2;
-    uVar3 &= 0xffff;
+    if (param_2 < 2.1474836e+09f) {
+      uVar3 = (u16)(int)param_2;
+    }
+    else {
+      uVar3 =
+          (u16)((int)(param_2 - 2.1474836e+09f) | 0x80000000);
+    }
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
     param_3 = 4096.0f * param_3;
-    uVar3 = (u32)param_3;
-    uVar3 &= 0xffff;
+    if (param_3 < 2.1474836e+09f) {
+      uVar3 = (u16)(int)param_3;
+    }
+    else {
+      uVar3 =
+          (u16)((int)(param_3 - 2.1474836e+09f) | 0x80000000);
+    }
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 
     FUN_001127d0(uVar1,1);

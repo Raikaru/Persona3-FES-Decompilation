@@ -6725,7 +6725,7 @@ outside:
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_00437E80 NONMATCHING
+// FUN_00437E80
 
 void FUN_00437e80(u32 *param_1,char param_2)
 
@@ -6751,7 +6751,7 @@ void FUN_00437e80(u32 *param_1,char param_2)
   for (; iVar3 < 0x10; iVar3 = iVar3 + 1) {
     for (iVar4 = 0; iVar4 < 0x10; iVar4 = iVar4 + 1) {
       iVar1 = FUN_001b9120_u32();
-      if (*(u8 *)(iVar1 + iVar3 * 0x10 + iVar4 * 0x100 + 0x4a) == 8) {
+      if (*((u8 *)(iVar3 * 0x10) + iVar1 + iVar4 * 0x100 + 0x4a) == 8) {
         FUN_001bf220(&position.x,iVar3,iVar4);
         iVar1 = FUN_00318b60(*(u32 *)(row + 0x50));
         delta.x = position.x - *(float *)(iVar1 + 0x30);
