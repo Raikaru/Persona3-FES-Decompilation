@@ -6073,7 +6073,7 @@ void btlActionInitStateWait(BtlAction* action)
 {
     (void)action;
 }
-// FUN_00296320 NONMATCHING
+// FUN_00296320
 void btlActionUpdateStateWait(BtlAction* action)
 {
     BtlPacket* packet;

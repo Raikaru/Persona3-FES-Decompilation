@@ -704,6 +704,8 @@ u32 FUN_0030fdc0(void);
 
 float FUN_0030fdf0(int param_1,u32 param_2);
 extern f32 DAT_007cad74;
+#pragma alias DAT_007cad74_abs DAT_007cad74
+extern f32 DAT_007cad74_abs;
 extern f32 DAT_007cad8c;
 extern f32 DAT_007cadb4;
 extern u32 DAT_007cae84;
@@ -7924,7 +7926,7 @@ void FUN_0030f290(void)
     fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x14,0);
     fVar4 = fVar4 * fVar2;
-    fVar4 = fVar4 * DAT_007cad74;
+    fVar4 = (*(volatile f32*)&DAT_007cad74_abs) * fVar4;
   }
   FUN_00311190((int)fVar4);
   return;

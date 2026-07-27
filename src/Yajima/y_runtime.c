@@ -19458,7 +19458,7 @@ u32 FUN_0045a280(int param_1,int param_2)
     uVar2 = 0;
   }
   else {
-    uVar2 = FUN_00194b80_u32(param_1,0x106f,DAT_006b4be0,FUN_0045a020,FUN_0045a220,lVar3);
+    uVar2 = FUN_00194b80_i32(param_1,0x106f,DAT_006b4be0,FUN_0045a020,FUN_0045a220,lVar3);
     iVar4 = (int)lVar3;
     *(u8 *)(iVar4 + 4) = 0;
     *(u8 *)(iVar4 + 5) = 0;
