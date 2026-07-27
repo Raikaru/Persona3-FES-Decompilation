@@ -1904,10 +1904,10 @@ done:
 
 void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
 {
+  int iVar4;
   u16 sVar1;
   u16 uVar2;
   u16 *puVar5;
-  int iVar4;
 
   if (((param_2 < 0x10) && (param_3 < *(int *)(param_1 + 4))) &&
       FUN_003b5cf0_typed() != 0) {
