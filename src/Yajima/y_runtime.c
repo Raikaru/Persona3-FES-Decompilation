@@ -1510,7 +1510,7 @@ void FUN_004565d0(char param_1);
 void FUN_00456620(char param_1);
 void FUN_00456670(u64 param_1,u64 param_2);
 void FUN_00456a90(u64 param_1,u64 param_2,u64 param_3);
-void FUN_00456ea0(int param_1,char param_2,char param_3);
+void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3);
 void FUN_00457340(char param_1,u8 param_2,char param_3);
 void FUN_00457980(int param_1);
 void FUN_00458600(int param_1);
@@ -2926,7 +2926,7 @@ void FUN_004565d0(char param_1);
 void FUN_00456620(char param_1);
 void FUN_00456670(u64 param_1,u64 param_2);
 void FUN_00456a90(u64 param_1,u64 param_2,u64 param_3);
-void FUN_00456ea0(int param_1,char param_2,char param_3);
+void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3);
 void FUN_00457340(char param_1,u8 param_2,char param_3);
 void FUN_00457980(int param_1);
 void FUN_00458600(int param_1);
@@ -17885,7 +17885,7 @@ void FUN_00456a90(u64 param_1,u64 param_2,u64 param_3)
 #pragma opt_loop_invariants on
 // FUN_00456EA0 NONMATCHING
 
-void FUN_00456ea0(int param_1,char param_2,char param_3)
+void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
 
 {
   int iVar1;

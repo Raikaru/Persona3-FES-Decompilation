@@ -4311,6 +4311,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         color2 = *(u8**)((u8*)renderObject + 0x30);
         count2 = *(u32*)((u8*)work->config + 0xc);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 0, color2);
+        func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color2 + 4);
     }
     case 2:
         break;
