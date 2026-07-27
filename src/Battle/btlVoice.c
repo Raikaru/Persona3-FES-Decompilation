@@ -7505,6 +7505,7 @@ void func_002e95f0(void)
 int func_002e97e0(void)
 
 {
+  extern s32 FUN_0030b5a0();
   int iVar1;
   s32 lVar2;
   u64 uVar3;
