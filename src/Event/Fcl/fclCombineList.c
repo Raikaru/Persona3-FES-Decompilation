@@ -3249,7 +3249,7 @@ void FUN_003e0780(void)
 
   
 
-  FUN_003e0950(0);
+  FUN_003e0950_narg();
 
   iVar1 = FUN_003c5460(DAT_007ce688);
 
