@@ -1008,6 +1008,7 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
   u8 bVar1;
   u8 *pbVar3;
   int iVar4;
+  int iVar5;
 
   pbVar3 = param_3;
   goto check;
@@ -1027,6 +1028,8 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
       iVar4 = (int)CONCAT12(pbVar3[1],CONCAT11(*pbVar3,bVar1)) >> 3;
       pbVar3 = pbVar3 + 2;
       goto update;
+    iVar5 = ((int)(u32)bVar1 >> 3) + 2;
+    for (iVar4 = 0; iVar4 < iVar5; iVar4 = iVar4 + 1) {
     }
     for (iVar4 = 0; iVar4 < ((int)(u32)bVar1 >> 3) + 2; iVar4 = iVar4 + 1) {
       param_1 = param_1 + 1;
