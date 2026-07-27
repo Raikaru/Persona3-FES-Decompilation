@@ -543,7 +543,7 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 #pragma alias FUN_0032a120_2arg FUN_0032a120
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
 float FUN_0032a540(char *param_1,int param_2,int param_3);
-void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
+void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
                  u8 (*param_4) [16]);
 #pragma alias FUN_0032a770_u32 FUN_0032a770
@@ -14219,7 +14219,7 @@ float FUN_0032a540(char *param_1,int param_2,int param_3)
 // FUN_0032A770 NONMATCHING
 
 
-void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
+void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
                  u8 (*param_4) [16])
 
@@ -14229,14 +14229,11 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
 
   u32 uVar1;
 
-  __int128 extraout_vf10;
 
-  __int128 extraout_vf10_00;
 
-  __int128 auVar2;
 
-  __int128 extraout_vf11;
 
+  f32 vtmp[4];
   float fStack_10;
 
   float fStack_c;
@@ -14253,24 +14250,15 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
 
   if (*(char *)(param_2 + 0x9c) == '\x02') {
 
-    _lqc2(*param_1);
-
+    __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "memory");
     FUN_003299b0();
-
-    _vmove(extraout_vf10);
-
-    _lqc2(*param_4);
-
+    __asm__ volatile ("vmove.xyzw $vf11, $vf10" : : : "memory");
+    __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_4) : "memory");
     FUN_003299b0();
-
-    auVar2 = _vsub(extraout_vf10_00,extraout_vf11);
-
-    auVar2 = _sqc2(auVar2);
-
-    fStack_10 = auVar2._0_4_;
-
-    fStack_c = auVar2._4_4_;
-
+    __asm__ volatile ("vsub.xyzw $vf10, $vf10, $vf11" : : : "memory");
+    __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vtmp) : "memory");
+    fStack_10 = vtmp[0];
+    fStack_c = vtmp[1];
     if ((fStack_10 == 0.0f) && (fStack_c == 0.0f)) {
 
       *(u32 *)(param_1[1] + 0xc) = 0;
