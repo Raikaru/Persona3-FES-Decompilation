@@ -1166,7 +1166,6 @@ void bpTexSortVisibleNodes(void)
     u32* groups[8];
     f32 distance[8];
     u32* leaves[8];
-    u32* positions[8];
     s32 nodeCount;
     s32 groupCount;
     s32 leafCount;
@@ -1185,7 +1184,7 @@ void bpTexSortVisibleNodes(void)
     groupCount = 0;
     for (i = 0; i < nodeCount && groupCount < 8; i++)
     {
-        nodes[groupCount] = bpTexFindNode(i);
+        nodes[groupCount] = bpTexFindNodeByIndex(i);
         bpTexCollect(nodes[groupCount], leaves, &leafCount);
         for (j = 0; j < leafCount && groupCount < 8; j++)
         {
@@ -1226,10 +1225,10 @@ void bpTexSortVisibleNodes(void)
 
     for (i = 0; i < groupCount; i++)
     {
-        bpTexCollectLeafPos(groups[i], positions, &leafCount);
+        bpTexCollectLeafPos(groups[i], (u32**)distance, &leafCount);
         for (j = 0; j < leafCount; j++)
         {
-            func_0020b250(positions[j]);
+            func_0020b250(((u32**)distance)[j]);
         }
     }
 }

@@ -1064,21 +1064,22 @@ void FUN_00201780(void)
 }
 
 #pragma opt_loop_invariants on
-// FUN_00201880 NONMATCHING
+// FUN_00201880
 void FUN_00201880(void)
 {
     s32 i;
-    s32 selector;
     u32 request;
-    u32* entry;
-    u32* flags;
     u8* work;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
     for (i = 0; i < 7; i++)
     {
-        request = 0;
+        u32 loopRequest;
+        u32* entry;
+        u32* flags;
+        s32 selector;
+        loopRequest = 0;
         entry = (u32*)work + i;
         flags = entry + 0x590;
         *flags &= ~1u;
@@ -1086,28 +1087,28 @@ void FUN_00201880(void)
         switch (selector)
         {
         case 0:
-            if (*(u32*)(work + 0xc) & 0x20) request = 1;
+            if (*(u32*)(work + 0xc) & 0x20) loopRequest = 1;
             break;
         case 1:
-            if (*(u32*)(work + 0xc) & 1) request = 1;
+            if (*(u32*)(work + 0xc) & 1) loopRequest = 1;
             break;
         case 2:
-            if (*(u32*)(work + 0xc) & 2) request = 1;
+            if (*(u32*)(work + 0xc) & 2) loopRequest = 1;
             break;
         case 3:
-            if (*(u32*)(work + 0xc) & 4) request = 1;
+            if (*(u32*)(work + 0xc) & 4) loopRequest = 1;
             break;
         case 4:
-            if (*(u32*)(work + 0xc) & 8) request = 1;
+            if (*(u32*)(work + 0xc) & 8) loopRequest = 1;
             break;
         case 5:
-            if (*(u32*)(work + 0xc) & 0x10) request = 1;
+            if (*(u32*)(work + 0xc) & 0x10) loopRequest = 1;
             break;
         case 6:
-            if (*(u32*)(work + 0xc) & 0x40) request = 1;
+            if (*(u32*)(work + 0xc) & 0x40) loopRequest = 1;
             break;
         }
-        if (request)
+        if (loopRequest)
         {
             *flags |= 1;
         }

@@ -286,12 +286,12 @@ void FUN_003b4580(int param_1)
   if (param_1 == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
-  iVar2 = *(int *)DAT_0095aebc_abs;
-  iVar1 = *(int *)(iVar2 + 0x1c);
-  *(int *)(param_1 + 0x18) = iVar2;
-  *(int *)(param_1 + 0x1c) = iVar1;
-  *(int *)(iVar2 + 0x1c) = param_1;
-  *(int *)(iVar1 + 0x18) = param_1;
+  iVar1 = *(int *)DAT_0095aebc_abs;
+  iVar2 = *(int *)(iVar1 + 0x1c);
+  *(int *)(param_1 + 0x18) = iVar1;
+  *(int *)(param_1 + 0x1c) = iVar2;
+  *(int *)(iVar1 + 0x1c) = param_1;
+  *(int *)(iVar2 + 0x18) = param_1;
   *(int *)DAT_0095aeb8_abs = *(int *)DAT_0095aeb8_abs + 1;
   return;
 }
