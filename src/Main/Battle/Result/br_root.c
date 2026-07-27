@@ -8,6 +8,9 @@
 #include "h_fade.h"
 #include "rw/rwcore.h"
 #include "rw/rprandom.h"
+#pragma alias sflResGetTutorialFileUnchecked FUN_0020ea00
+extern void* sflResGetTutorialFileUnchecked();
+
 
 /*
  * Battle-result tasks deliberately use byte offsets.  The retail work areas
@@ -39,8 +42,8 @@ extern void func_002350f0(void);
 extern void func_00278550(void);
 extern void func_00275cb0(void);
 extern void func_003c77a0(void);
-extern void brPersona00264dd0(void);
-extern void brPersona00264f90(void);
+extern void brPersonaShutdown(void);
+extern void brPersonaDestroy(void);
 extern void brHero00262730(void);
 extern void brHero002630e0(void);
 extern void func_00234960(void);
@@ -93,7 +96,7 @@ extern void sflCursor0025a110(void *);
 extern void func_00215a50(void *);
 extern void func_00260970(void *);
 extern void sflCount0025b4a0(void *);
-extern void func_0027bb50(void *);
+extern void sflPersonaInit(void *);
 extern u32 sflGround0023c350(void);
 extern void func_00219d90(void);
 extern void func_00215fc0(void);
@@ -142,7 +145,7 @@ extern void func_0024dc10(void);
 extern void sflCamera0024d1c0(void);
 extern void func_00253a40(void);
 extern void func_002392d0(void);
-extern void func_0027be50(void);
+extern void sflPersonaUpdate(void);
 
 extern void func_0023b990(void);
 extern void func_00254b90(void);
@@ -151,7 +154,7 @@ extern void func_0025a440(void);
 extern void func_001f64c0(void);
 extern void func_002168f0(void);
 extern void func_0023e970(void);
-extern void func_0027bba0(void *);
+extern void sflPersonaShutdown(void *);
 extern void sflCount0025b4b0(void);
 extern void func_00215aa0(void);
 extern void sflPsel00260a10(void);
@@ -218,11 +221,11 @@ extern f32 func_0020c500(void *, f32);
 extern void func_0020c400(void *, const float *, float, float *);
 extern void func_0020cc80(void *, const u8 *);
 extern void gcPose0024f960(void *, const float *);
-extern void func_0020d630(void *, const f32 *);
-extern void func_0020d690(void *, const f32 *);
+extern void sflResSetSpriteScale(void *, const f32 *);
+extern void sflResSetSpriteRotation(void *, const f32 *);
 extern void func_004bdde0(f32, f32 *, const f32 *, u32);
 extern void func_0020ac90(void *);
-extern void *func_0020e790(void);
+extern void *sflResGetBaseSpriteData(void);
 extern u32 func_0035c250(u32);
 extern u32 sflResult001f99f0(void);
 extern u32 func_001831e0(s16, s16, const void *);
@@ -264,7 +267,7 @@ extern void func_00259a60(u32, s32);
 extern void sflScript00259970(void);
 extern f32 func_00530da0(f32);
 extern u32 datGetScenarioMode(void);
-extern void func_0020e200(void);
+extern void sflResRequestBaseArchive(void);
 extern u32 func_001f9170(s32);
 extern void func_00173660(DatPersonaWork *, s32);
 extern u32 func_0021a120(void);
@@ -272,7 +275,7 @@ extern void func_00258300(void);
 extern void func_002550b0(void);
 extern void *func_0034fcd0(void *);
 extern u16 datGetMaxHp(s16);
-extern void *func_0020e710(s32);
+extern void *sflResGetBaseDataFile(s32);
 extern u16 func_00170760(s16, s16);
 extern void func_00170860(s16, s16, u16);
 extern void datSetMoney(u32);
@@ -299,7 +302,7 @@ extern u32 sflCard002561c0(void *);
 extern u32 sflCard002561d0(void *);
 extern u32 sflCard00259380(void);
 extern void sflResult001f9100(void);
-extern void func_0020d650(void *, const float *);
+extern void sflResSetSpritePosition(void *, const float *);
 extern void func_0034fcf0(void *);
 extern u32 D_00684610[];
 extern u32 func_001775a0(u32, ...);
@@ -322,7 +325,7 @@ extern void func_0016cf90(u32, u32);
 extern void func_0016d8b0(u32, u32);
 extern void func_0016d6b0(u32, u32);
 extern u32 func_00488f30(void);
-extern void func_0020e8f0(void);
+extern void sflResRequestTutorialArchive(void);
 extern u32 func_0016f190(u32);
 extern void func_0023f430(void);
 extern u32 func_002561c0(void *);
@@ -450,7 +453,7 @@ void func_001f0990(KwlnTask *task)
     }
     func_003c77a0();
 br_cleanup_done:
-    brPersona00264dd0();
+    brPersonaShutdown();
     brHero00262730();
     func_00234960();
     brRes00233e70();
@@ -685,7 +688,7 @@ void func_001f1140(KwlnTask *task)
 // FUN_001f1210
 void *func_001f1210(void)
 {
-    brPersona00264f90();
+    brPersonaDestroy();
     return (void *)func_003c7650(1);
 }
 
@@ -1094,7 +1097,7 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     RwCameraSetViewWindow((RwCamera *)kwlnGetMainCamera(), &viewWindow);
     BR_U32(work, 4) |= 3;
     func_00219c90(work + 0x95c0);
-    sflRes0020d7d0(work + 0x60);
+    sflResInit(work + 0x60);
     func_00239170(work + 0xf0);
     func_0023d7a0(work + 0x8e90);
     func_0023d7f0();
@@ -1107,7 +1110,7 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     func_00215a50(work + 0x23280);
     func_00260970(work + 0x29320);
     sflCount0025b4a0(work + 0x29bf0);
-    func_0027bb50(work + 0x2a200);
+    sflPersonaInit(work + 0x2a200);
     BR_U32(work, 0xe4) = 0;
     func_001f4650(task, params);
     BR_U32(work, 8) = 0;
@@ -1123,25 +1126,25 @@ void *func_001f2300(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
     u32 temp;
-    if ((BR_U32(work, 4) & 0x80) != 0 && sflRes0020e380() == 0) {
+    if ((BR_U32(work, 4) & 0x80) != 0 && sflResIsGroundArchivePending() == 0) {
         BR_U32(work, 4) &= ~0x80u;
     }
     if ((BR_U32(work, 4) & 0x100) != 0 && sflGround0023c350() == 0) {
         BR_U32(work, 4) &= ~0x100u;
     }
     func_00219d90();
-    sflRes0020d820();
+    sflResUpdate();
     func_00215fc0();
     func_001f5b20();
     switch (BR_U32(work, 8)) {
     case 1:
-        if (sflRes0020dfe0() == 0 && func_00254f20() == 0 && BR_U32(work, 0x2a210) != 0) {
+        if (sflResIsBaseArchivePending() == 0 && func_00254f20() == 0 && BR_U32(work, 0x2a210) != 0) {
             func_00254f70();
             if (BR_U32(work, 0xe4) == 0) {
-                func_003c72d0((void *)sflRes0020e790());
+                func_003c72d0((void *)sflResGetBaseSpriteData());
                 func_0023d130();
-                sflRes0020e3d0();
-                sflRes0020eb40();
+                sflResRequestEffectArchive();
+                sflResRequestPersonaChangeSprite();
             }
             func_0023ee50();
             sflCard00259250();
@@ -1156,7 +1159,7 @@ void *func_001f2300(KwlnTask *task)
     case 3:
         if ((BR_U32(work, 4) & 2) == 0) {
             u16 v;
-            func_0020e8f0();
+            sflResRequestTutorialArchive();
             v = *(volatile u16*)0x007E094E;
             if ((v & 0x9ff) != 0 || (*(volatile u16*)0x007E094C & 0x10) != 0) {
                 func_001f4a00();
@@ -1269,7 +1272,7 @@ void *func_001f2300(KwlnTask *task)
         break;
     }
     case 13:
-        if (sflRes0020e4c0() == 0) {
+        if (sflResIsEffectArchivePending() == 0) {
             func_0010a4e0(1, 15, 6, 13);
             func_0023f1d0();
             func_0023cda0();
@@ -1327,7 +1330,7 @@ void *func_001f2300(KwlnTask *task)
         break;
     }
     case 18:
-        if (sflRes0020e4c0() == 0) {
+        if (sflResIsEffectArchivePending() == 0) {
             func_0023f010();
             func_0010a4e0(1, 2, 6, 13);
             if (BR_U32(work, 0xe4) == 0) {
@@ -1402,14 +1405,14 @@ void *func_001f2300(KwlnTask *task)
         }
         break;
     case 23:
-        if (sflRes0020e4c0() == 0) {
+        if (sflResIsEffectArchivePending() == 0) {
             func_001f5510();
         }
         break;
     case 4:
-        if (sflRes0020e9b0() == 0) {
+        if (sflResIsTutorialArchivePending() == 0) {
             func_003c77a0();
-            func_003c72d0((void *)func_0020ea00());
+            func_003c72d0((void *)sflResGetTutorialFileUnchecked());
             func_003c7430(0);
             BR_U32(work, 8) = 5;
         }
@@ -1419,7 +1422,7 @@ void *func_001f2300(KwlnTask *task)
         if (func_003c7850() == 0) {
             func_003c7650(1);
             func_003c77a0();
-            func_003c94e0((void *)func_0020ea00());
+            func_003c94e0((void *)sflResGetTutorialFileUnchecked());
             func_003c9790(0);
             BR_U32(work, 8) = 6;
         }
@@ -1429,8 +1432,8 @@ void *func_001f2300(KwlnTask *task)
         if (func_003c7850() == 0) {
             func_003c7650(1);
             func_003c77a0();
-            func_0020ea80();
-            func_003c72d0((void *)sflRes0020e790());
+            sflResDestroyTutorialFiles();
+            func_003c72d0((void *)sflResGetBaseSpriteData());
             BR_U32(work, 8) = 3;
         }
         break;
@@ -1454,7 +1457,7 @@ void *func_001f2300(KwlnTask *task)
     sflCamera0024d1c0();
     func_00253a40();
     func_002392d0();
-    func_0027be50();
+    sflPersonaUpdate();
     BR_U32(work, 4) &= ~3u;
     return KWLNTASK_CONTINUE;
 }
@@ -1489,7 +1492,7 @@ void func_001f2fd0(KwlnTask *task)
 // FUN_001f2ff0
 void func_001f2ff0(KwlnTask *task)
 {
-    func_0027bba0(task);
+    sflPersonaShutdown(task);
     sflCount0025b4b0();
     func_001f5950();
     func_00215aa0();
@@ -1503,7 +1506,7 @@ void func_001f2ff0(KwlnTask *task)
     func_0023d7b0();
     sflGround00239280();
     func_0021a1b0();
-    sflRes0020e030();
+    sflResShutdown();
     func_003c77a0();
     BR_FREE(task->workData);
     sBrCard = NULL;
@@ -2095,7 +2098,7 @@ void func_001f3270(KwlnTask *task)
         }
     }
     if (BR_U32(work, 0xe4) == 0) {
-        func_0020e200();
+        sflResRequestBaseArchive();
     }
 
     /* Retail 0x1f4520-0x1f4604: create the generated result cards. */
@@ -2208,7 +2211,7 @@ void func_001f4750(KwlnTask *task)
 void func_001f48d0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    sflRes0020e2c0();
+    sflResRequestGroundArchive();
     BR_U32(work, 4) |= 0x80;
 }
 
@@ -2559,10 +2562,10 @@ u32 func_001f5810(KwlnTask* task)
     } else if (BR_U32(card, 8) == 1) {
         result = 0;
     } else {
-        if (sflRes0020dfe0() != 0) goto resources_busy;
+        if (sflResIsBaseArchivePending() != 0) goto resources_busy;
         if (func_00254f20() != 0) goto resources_busy;
-        if (sflRes0020e4c0() != 0) goto resources_busy;
-        if (sflRes0020ec00() == 0) goto resources_ready;
+        if (sflResIsEffectArchivePending() != 0) goto resources_busy;
+        if (sflResIsPersonaChangeSpritePending() == 0) goto resources_ready;
 
 resources_busy:
         result = 0;
@@ -2930,7 +2933,7 @@ main_exit:
                 }
                 func_0020cc80(entry + 0xc, col);
                 gcPose0024f960(entry + 0x60c, &temp);
-                func_0020d650(entry + 0xc, &temp);
+                sflResSetSpritePosition(entry + 0xc, &temp);
                 func_0020ac90(entry + 0xc);
             }
             for (i = 0; i < BR_U32(work, 0x3418); i++) {
@@ -2948,7 +2951,7 @@ main_exit:
                 }
                 func_0020cc80(entry + 0xc, col);
                 gcPose0024f960(entry + 0x60c, &temp);
-                func_0020d650(entry + 0xc, &temp);
+                sflResSetSpritePosition(entry + 0xc, &temp);
                 func_0020ac90(entry + 0xc);
             }
         }
@@ -3050,9 +3053,9 @@ void func_001f6630(void)
                 static const f32 scale[3] = {10.0f, 10.0f, 10.0f};
                 static const f32 axis[3] = {0.0f, 1.0f, 0.0f};
                 f32 rotation[4];
-                func_0020d630(entry + 0xc, scale);
+                sflResSetSpriteScale(entry + 0xc, scale);
                 func_004bdde0(180.0f, rotation, axis, 0);
-                func_0020d690(entry + 0xc, rotation);
+                sflResSetSpriteRotation(entry + 0xc, rotation);
             }
             func_0024fd80(entry + 0x60c);
             func_0024da60(entry + 0x60c);
@@ -3164,7 +3167,7 @@ void func_001f6a60(void)
             K_ASSERT(0, 0x337);
             break;
         case 8:
-            func_003c72d0(func_0020e790());
+            func_003c72d0(sflResGetBaseSpriteData());
             if (sBrReward == NULL) {
                 K_ASSERT(sBrReward != NULL, 0x8c);
             }
@@ -3502,7 +3505,7 @@ void func_001f7210(void)
         printf("money : %d\n", BR_S32(entry, 4));
         effect_table = res_base + BR_U32(entry, 4) * 26;
         func_0010a4e0(1, 0, 6, 9);
-        res_base = (u8 *)func_0020e710(1);
+        res_base = (u8 *)sflResGetBaseDataFile(1);
         func_0034fcd0(res_base);
         BR_U32(work, 0x34e0) = (u32)res_base;
         BR_U32(work, 0) |= 0x800;

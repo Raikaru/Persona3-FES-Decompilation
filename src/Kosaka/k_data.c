@@ -495,6 +495,7 @@ u16* func_001b83f0(void)
 }
 
 #pragma push
+/* Removing this loses FUN_001b85a0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001b85a0
 u16* func_001b85a0(u32 index)
@@ -692,6 +693,7 @@ void func_001b8ae0(void)
 }
 
 #pragma push
+/* Removing this loses FUN_001b8b40 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001b8b40
 void func_001b8b40(void)
@@ -774,6 +776,7 @@ void func_001b8cf0(u8* work)
 }
 
 #pragma push
+/* Removing this loses FUN_001b8d60 (MATCH nd0 -> MISMATCH nd20) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001b8d60
 u16* func_001b8d60(u32 index)

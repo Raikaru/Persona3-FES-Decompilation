@@ -679,6 +679,7 @@ u32 func_001755c0(void)
     }
 }
 
+/* Removing this loses FUN_001756f0 (MATCH nd0 -> MISMATCH nd37) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001756f0
 u16 FUN_001756f0(void)
@@ -863,6 +864,7 @@ selected_idx_valid:
     return 1;
 }
 #pragma push
+/* Removing this worsens FUN_00175ce0 (nd675 -> nd724) - measured W161. */
 #pragma opt_loop_invariants on
 
 // FUN_00175CE0 NONMATCHING
@@ -1006,8 +1008,6 @@ u8 func_001761b0(DatPersonaWork* param_1)
 
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 
 u32 func_00176210(DatPersonaWork* persona, u16 level)
 {
@@ -1074,7 +1074,6 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
 
     return result;
 }
-#pragma pop
 // FUN_001764b0
 void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
 {
@@ -1083,6 +1082,7 @@ void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
     persona->nextExp += exp;
 }
 
+/* Removing this loses FUN_00176510 (MATCH nd0 -> MISMATCH nd76) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00176510
 void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
@@ -1155,6 +1155,7 @@ u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId)
     return false;
 }
 
+/* Removing this loses FUN_001768e0 (MATCH nd0 -> MISMATCH nd28) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001768e0
 u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId)
@@ -1179,6 +1180,7 @@ u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_00176990 (MATCH nd0 -> MISMATCH nd25) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00176990
 s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
@@ -1442,6 +1444,7 @@ void FUN_00176da0(DatPersonaWork* persona)
     }
 }
 
+/* Removing this loses FUN_00176fb0 (MATCH nd0 -> MISMATCH nd62) - measured W161. */
 #pragma opt_loop_invariants on
 static inline void datPersonaCollectValidSkills(u8* skillData, u16* skills,
                                                 s32* validSkills, s32 skillLimit)
@@ -1481,6 +1484,7 @@ void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_001770d0 (MATCH nd0 -> MISMATCH nd84) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001770D0 MATCHING
 s32 FUN_001770D0(u16 personaId, u16 skillId)

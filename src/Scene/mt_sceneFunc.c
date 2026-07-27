@@ -670,6 +670,7 @@ u16 FUN_003bdbb0(void);
 
 
 #pragma push
+/* Removing this loses FUN_003bccb0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003bccb0
 void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
@@ -1045,8 +1046,6 @@ u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 }
 #define FUN_003b8c30(...) ((u32 (*)(...))FUN_003b8c30)(__VA_ARGS__)
 #undef FUN_003b8ce0
-#pragma push
-#pragma opt_rebuildconditionals off
  
 // FUN_003B8CE0
 
@@ -1127,7 +1126,6 @@ finish:
 end:
     return uVar1;
 }
-#pragma pop
 #define FUN_003b8ce0(...) ((u32 (*)(...))FUN_003b8ce0)(__VA_ARGS__)
 #undef FUN_003b8e10
 // FUN_003B8E10
@@ -1454,6 +1452,7 @@ end:
 #define FUN_003b9260(...) ((u32 (*)(...))FUN_003b9260)(__VA_ARGS__)
 #undef FUN_003b9320
 #pragma push
+/* Removing this loses FUN_003b9320 (MATCH nd0 -> MISMATCH nd34) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_003B9320
 
@@ -3579,6 +3578,7 @@ void FUN_003bb7a0(Resrc* param_1)
 #define FUN_003bb7a0(...) ((void (*)(...))FUN_003bb7a0)(__VA_ARGS__)
 #undef FUN_003bb9b0
 #pragma push
+/* Removing this loses FUN_003bb9b0 (MATCH nd0 -> MISMATCH nd143) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003BB9B0
 

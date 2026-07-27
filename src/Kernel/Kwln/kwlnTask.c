@@ -221,6 +221,7 @@ void kwlnTaskAddToList(KwlnTask* task)
 }
 
 #pragma push
+/* Removing this loses FUN_00193ec0 (MATCH nd0 -> MISMATCH nd248) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00193ec0
 u8 kwlnTaskUpdate(KwlnTask* task)
@@ -477,6 +478,7 @@ void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
 #pragma optimization_level 2
 
 #pragma push
+/* Removing this loses FUN_001944c0 (MATCH nd0 -> MISMATCH nd286) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001944C0. Set task flags for one task, its hierarchy, or the task lists.
 void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
@@ -1089,6 +1091,7 @@ u32 kwlnTaskGetState(KwlnTask* task)
 }
 
 #pragma push
+/* Removing this worsens FUN_00195340 (nd68 -> nd106) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00195340 NONMATCHING
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
@@ -1158,6 +1161,7 @@ KwlnTask* kwlnTaskGetUpdating()
 }
 
 #pragma push
+/* Removing this loses FUN_00195460 (MATCH nd0 -> MISMATCH nd41) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00195460. Return true if 'task' is in a list
 u32 kwlnTaskExists(KwlnTask* task)

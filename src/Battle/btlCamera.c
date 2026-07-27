@@ -6969,6 +6969,7 @@ void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
 
 // FUN_002b7060
 
+/* Removing this loses FUN_002b7060 (MATCH nd0 -> MISMATCH nd81) - measured W161. */
 #pragma opt_loop_invariants on
 s16 FUN_002b7060(void)
 {

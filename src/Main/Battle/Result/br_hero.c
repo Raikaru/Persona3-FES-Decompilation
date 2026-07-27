@@ -58,8 +58,8 @@ extern void FUN_0021eb80(void*, float*);
 extern void FUN_00238980(void*, s32, s32, s32);
 extern void FUN_00238dc0(void*, s32, s32, s32, float*);
 extern void FUN_00238bf0(void*, s32, s32, s32, float*);
-extern void* brPersona00264ca0(s32);
-extern void* FUN_00264ca0(s32);
+extern void* brPersonaGetPortraitFrame(s32);
+extern void* brPersonaGetPortraitFrame(s32);
 extern void FUN_003b0e70(s32);
 extern void FUN_003b0e90(s32);
 extern void FUN_003b0d70(s32, s32, s32);
@@ -226,7 +226,7 @@ void brHero00262790(void)
     FUN_0021eb80(w + 0xa54, rect);
     FUN_0021eac0(w + 0xa54, 0);
     FUN_0021d950(w + 0xa54, color);
-    value = brPersona00264ca0(w[0x58d]);
+    value = brPersonaGetPortraitFrame(w[0x58d]);
     FUN_0021d3b0(w + 0xa94, value);
 
     if (w[0] & 2)
@@ -465,7 +465,7 @@ void brHero00263170(void)
     rect[2] = 353.0f;
     rect[3] = 42.0f;
     FUN_0021d8e0(w + 0xa54, rect);
-    resource = (BrHeroResource*)FUN_00264ca0(w[0x58d]);
+    resource = (BrHeroResource*)brPersonaGetPortraitFrame(w[0x58d]);
     rect[0] = 216.0f;
     rect[1] = 255.0f;
     rect[2] = (float)resource->width;
@@ -627,7 +627,7 @@ void brHero00263db0(void)
     setRenderState(1, FUN_0021cce0(FUN_0021cca0(text1, 5)));
     renderQuad(w + 0x954, 4, 0, 1, 2);
     renderQuad(w + 0x954, 4, 0, 2, 3);
-    setRenderState(1, FUN_0021cce0(brPersona00264ca0(w[0x58d])));
+    setRenderState(1, FUN_0021cce0(brPersonaGetPortraitFrame(w[0x58d])));
     renderQuad(w + 0xa94, 4, 0, 1, 2);
     renderQuad(w + 0xa94, 4, 0, 2, 3);
     FUN_003b1360(w[0xad4], 1, 0);

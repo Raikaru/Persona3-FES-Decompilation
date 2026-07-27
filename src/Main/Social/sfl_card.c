@@ -1015,6 +1015,7 @@ void FUN_00253a40(void)
 #undef fStack_c
 #undef auStack_4
 
+/* Removing this loses FUN_00258300 (MATCH nd0 -> MISMATCH nd16) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00258300
 
@@ -1087,8 +1088,6 @@ void FUN_00258540(u32 param_1,u64 param_2)
 // FUN_00258630 NONMATCHING
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_00258630(u32 *param_1)
 {
     u32 flags;
@@ -1204,7 +1203,6 @@ void FUN_00258630(u32 *param_1)
 #undef rotation
 #undef transformed
 #undef origin
-#pragma pop
 
 // FUN_00258B40 NONMATCHING
 

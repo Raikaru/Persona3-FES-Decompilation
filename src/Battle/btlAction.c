@@ -3710,6 +3710,7 @@ extern BtlPacket* func_002d7e20(BtlAction*, BtlAction*, void*, u32, ...);
 extern BtlPacket* func_002d8090(BtlAction*);
 extern BtlPacket* func_002d7fb0(BtlAction*, u32);
 extern BtlPacket* func_002db740(BtlAction*, u16, ...);
+/* Removing this worsens FUN_00290be0 (nd11796 -> nd11860) - measured W161. */
 #pragma opt_loop_invariants on
 /* Skill-state reconstruction is complete; remaining drift is MWCC local-layout codegen. */
 // FUN_00290be0 NONMATCHING

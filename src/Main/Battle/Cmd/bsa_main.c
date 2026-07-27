@@ -53,7 +53,7 @@ extern void func_003b0e70(s32 mode);
 extern void func_003b0e90(s32 mode);
 extern void func_003b1360(u32 resource, s32 mode, s32 value);
 extern void func_003b0170(u32 resource);
-extern void func_003b2c60(u32 resource, f32 value);
+extern void frFontSetTextScale(u32 resource, f32 value);
 extern void func_003b0e20(u32 resource, u32 value);
 extern void func_004d7f60(s32 state, u32 value);
 
@@ -174,7 +174,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_003b0e70(2);
     func_003b0e20(image, 0xffffffff);
     func_003b0d70(image, 0xa10, 0x268);
-    func_003b2c60(image, 0.0f);
+    frFontSetTextScale(image, 0.0f);
     p[4] = image;
 
     /* Retail 0x0134-0x031c: re-read the stored enemy id for each table access. */
@@ -343,7 +343,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
                 func_003b0e20(image, 0xffffffff);
                 func_003b0d70(image, ((i / 4) * 0x96 + 0x82) * 0x10,
                               ((i % 4) * 0x19 + 100) * 8);
-                func_003b2c60(image, 0.0f);
+                frFontSetTextScale(image, 0.0f);
                 p[i + 5] = image;
             }
             func_003b0e90(1);

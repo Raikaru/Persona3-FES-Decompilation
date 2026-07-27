@@ -120,8 +120,6 @@ void func_00219c90(void* work)
 }
 
 // FUN_00219D90
-#pragma push
-#pragma opt_rebuildconditionals off
 void func_00219d90(void)
 {
     GcResWork* work;
@@ -233,7 +231,6 @@ check_loop:
         goto body;
     }
 }
-#pragma pop
 
 // FUN_0021A120
 u32 func_0021a120(void)
@@ -739,6 +736,7 @@ void* func_0021b420(s32 index)
     return GC_PTR((u32)scaledIndex + (u32)work, 0x3c);
 }
 
+/* Removing this worsens FUN_0021b4a0 (nd114 -> nd116) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0021B4A0 NONMATCHING
 void func_0021b4a0(u8* resource)

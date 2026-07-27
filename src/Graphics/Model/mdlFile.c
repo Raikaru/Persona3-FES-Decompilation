@@ -6748,6 +6748,7 @@ void FUN_00322d10(int param_1,float *param_2)
 // FUN_00322D40
 
 
+/* Removing this loses FUN_00322d40 (MATCH nd0 -> MISMATCH nd45) - measured W161. */
 #pragma opt_loop_invariants on
 void FUN_00322d40(int param_1,u32 param_2)
 {
@@ -21434,6 +21435,7 @@ void FUN_00332200(int param_1)
 // from raw pointer arithmetic scaling by the old u32 element type.
 // Residual: retail hoists a loop-invariant 0xffffffff store constant and
 // uses a different loop-register mapping; not reproduced after 3 tries.
+/* Removing this loses FUN_00332210 (MATCH nd0 -> MISMATCH nd76) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00332210
 
@@ -28907,6 +28909,7 @@ void FUN_003397b0(int param_1,float *param_2)
 
 
 
+/* Removing this loses FUN_003397d0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003397D0
 void FUN_003397d0(int param_1)
@@ -29623,6 +29626,7 @@ void FUN_0033a220(int param_1)
 
 
 
+/* Removing this loses FUN_0033a3e0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033A3E0
 
@@ -30411,6 +30415,7 @@ void FUN_0033af10(int param_1)
 
 
 
+/* Removing this loses FUN_0033b0d0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033B0D0
 
@@ -31162,6 +31167,7 @@ void FUN_0033bbe0(int param_1)
 
 
 
+/* Removing this loses FUN_0033bda0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033BDA0
 
@@ -31220,6 +31226,7 @@ void FUN_0033bda0(int param_1)
 
 
 
+/* Removing this loses FUN_0033be90 (MATCH nd0 -> MISMATCH nd142) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033BE90
 
@@ -32036,6 +32043,7 @@ void FUN_0033c960(int param_1)
 }
 
 
+/* Removing this loses FUN_0033cb20 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 
 // FUN_0033CB20
@@ -32095,6 +32103,7 @@ void FUN_0033cb20(int param_1)
 
 
 
+/* Removing this loses FUN_0033cc10 (MATCH nd0 -> MISMATCH nd142) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033CC10
 
@@ -32835,6 +32844,7 @@ void FUN_0033d6d0(int param_1)
 
 
 
+/* Removing this loses FUN_0033d890 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033D890
 
@@ -32893,6 +32903,7 @@ void FUN_0033d890(int param_1)
 
 
 
+/* Removing this loses FUN_0033d980 (MATCH nd0 -> MISMATCH nd142) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033D980
 
@@ -33723,6 +33734,7 @@ void FUN_0033e540(int param_1)
 
 
 
+/* Removing this loses FUN_0033e700 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033E700
 
@@ -34521,6 +34533,7 @@ void FUN_0033f2e0(int param_1)
 
 
 
+/* Removing this loses FUN_0033f4a0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033F4A0
 
@@ -34578,6 +34591,7 @@ void FUN_0033f4a0(int param_1)
 
 
 
+/* Removing this loses FUN_0033f590 (MATCH nd0 -> MISMATCH nd142) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0033F590
 
@@ -35463,6 +35477,7 @@ void FUN_00340100(int param_1)
 
 
 
+/* Removing this loses FUN_003402c0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003402C0
 
@@ -37444,6 +37459,7 @@ void FUN_00342460(int param_1,float *param_2)
   *(float *)(param_1 + 0x24) = param_2[1];
   *(float *)(param_1 + 0x28) = param_2[2];
 }
+/* Removing this worsens FUN_00342480 (nd128 -> nd132) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00342480 NONMATCHING
 void FUN_00342480(int param_1)

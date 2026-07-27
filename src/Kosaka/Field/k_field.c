@@ -2277,6 +2277,7 @@ void func_001bd8c0(void)
 
 // FUN_001bd950 NONMATCHING
 #pragma optimization_level 3
+/* Removing this loses FUN_001bf220 (MATCH nd0 -> MISMATCH nd159) and 1 more - measured W161. */
 #pragma schedule on
 void func_001bd950(void)
 {

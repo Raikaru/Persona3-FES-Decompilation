@@ -293,6 +293,7 @@ u32 sflResult001f9170(u32 player)
 }
 
 // FUN_001f9680
+/* Removing this loses FUN_001f9680 (MATCH nd0 -> MISMATCH nd57) - measured W161. */
 #pragma opt_loop_invariants on
 u32 sflResult001f9680(const s32* request)
 {
@@ -1507,6 +1508,7 @@ void func_001fb1f0(u32 param_1,int param_2,int *param_3)
 }
 // FUN_001FB3F0
 #pragma optimization_level 2
+/* Removing this loses FUN_001fb3f0 (MATCH nd0 -> MISMATCH nd137) - measured W161. */
 #pragma opt_loop_invariants on
 void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5)
 {
@@ -1551,6 +1553,7 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
 #pragma opt_loop_invariants off
 #pragma optimization_level 2
 // FUN_001FB4B0
+/* Removing this loses FUN_001fb4b0 (MATCH nd0 -> MISMATCH nd118) - measured W161. */
 #pragma opt_loop_invariants on
 
 
@@ -2235,8 +2238,8 @@ void func_001fc1f0(void)
     persona = datPersonaGetByPcId(1);
     datPersonaAddExp(persona, 0x18);
 }
-#pragma schedule on
 #pragma optimization_level 2
+/* Removing this loses FUN_001fc230 (MATCH nd0 -> MISMATCH nd78) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001FC230
 
@@ -2288,7 +2291,6 @@ u8 func_001fc230(DatPersonaWork* persona)
     return i < indexCount;
 }
 #pragma opt_loop_invariants off
-#pragma schedule off
 // FUN_001FC3C0 NONMATCHING
 u32 func_001fc3c0(DatPersonaWork* persona)
 {
@@ -2339,8 +2341,6 @@ u32 func_001fc3c0(DatPersonaWork* persona)
 }
 
 // FUN_001FC590
-#pragma push
-#pragma opt_rebuildconditionals off
 u32 func_001fc590(u8* event, void* target)
 {
     u32 result = 0;
@@ -2374,7 +2374,6 @@ after_branch:
     }
     return result;
 }
-#pragma pop
 // FUN_001FC720 NONMATCHING
 
 

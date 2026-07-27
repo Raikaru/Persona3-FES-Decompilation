@@ -5,6 +5,6 @@
 
 typedef struct ScrData ScrData;
 
-u8 datScript003112c0(ScrData* scr); 
+u8 datScriptIsCurrent(ScrData* scr); 
 
 #endif

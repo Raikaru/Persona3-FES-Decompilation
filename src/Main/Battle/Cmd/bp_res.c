@@ -157,6 +157,7 @@ u64 func_0021bb50(void)
     return 0;
 }
 
+/* Removing this loses FUN_0021bcb0 (MATCH nd0 -> MISMATCH nd17) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0021bcb0
 void func_0021bcb0(void)

@@ -114,6 +114,7 @@ extern u8 DAT_0095aea8_abs[];
 #pragma alias DAT_0095aeac_abs DAT_0095aeac
 extern u8 DAT_0095aeac_abs[];
 #undef FUN_003b44a0
+/* Removing this loses FUN_003b41a0 (MATCH nd0 -> MISMATCH nd182) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003B41A0 MATCHING
 

@@ -900,6 +900,7 @@ static void fldFrameMoveAppend(FldFrameMoveWork* work,
 }
 
 
+/* Removing this worsens FUN_001ae480 (nd16 -> nd101) - measured W161. */
 #pragma opt_loop_invariants on
 
 // FUN_001ae480 NONMATCHING

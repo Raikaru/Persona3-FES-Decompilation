@@ -27,7 +27,7 @@ void opTitle002673f0(void);
 void opWait0026dd60(void);
 void opMenu0026a280(void);
 void FUN_00271d70();
-void FUN_00266690();
+void opResShutdown();
 void H_Free();
 void opLogo0026a0f0(void);
 u32 opLogo0026a1e0(void);
@@ -150,7 +150,7 @@ void opRoot00265ef0(int param_1)
     opMenu0026a280();
     FUN_00271d70();
     opResDestroyTitle();
-    FUN_00266690();
+    opResShutdown();
     sOpRoot = NULL;
     H_Free(*(u32*)(param_1 + 0x3c));
 }

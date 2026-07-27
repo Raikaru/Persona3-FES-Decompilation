@@ -4,6 +4,10 @@
 #include "Kosaka/k_assert.h"
 #include "Kosaka/k_sequence.h"
 #include "Battle/battle.h"
+#pragma alias adminiSeqCallFacility FUN_0027CB10
+#pragma alias adminiSeqExitFacility FUN_0027CB40
+#pragma alias adminiSeqCheckFacility FUN_0027CB50
+
 
 typedef struct
 {
@@ -409,18 +413,18 @@ u8 adminiSeqCheckBtl()
     return btlGetTask() == NULL;
 }
 // FUN_0027CB10
-void func_0027cb10(void* unused, u32* param_2)
+void adminiSeqCallFacility(void* unused, u32* param_2)
 {
     FUN_003e0780(*param_2);
 }
 // FUN_0027CB40
-u32 func_0027cb40(void)
+u32 adminiSeqExitFacility(void)
 {
     return 0;
 }
 
 // FUN_0027CB50
-u32 func_0027cb50(void)
+u32 adminiSeqCheckFacility(void)
 {
     return FUN_003e0920() == 0;
 }

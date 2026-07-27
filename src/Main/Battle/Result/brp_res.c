@@ -67,7 +67,7 @@ void func_0024bb30(void)
                 switch (i)
                 {
                     case 0:
-                        sflRes0020e800(H_Cdvd_ArchiveGetFile(
+                        sflResLoadGroundRasters(H_Cdvd_ArchiveGetFile(
                             (HCdvd*)(uintptr_t)work[2], i, &fileSize));
                         break;
                     case 1:

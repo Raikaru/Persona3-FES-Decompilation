@@ -1,5 +1,14 @@
 #include "Kosaka/k_assert.h"
 #include "Utils.h"
+#pragma alias bseInit FUN_0021b650
+#pragma alias bseShutdown FUN_0021b660
+#pragma alias bseRequestSelection FUN_0021b670
+#pragma alias bseIsSelectionPending FUN_0021b6f0
+#pragma alias bseWasSelectionCancelled FUN_0021b740
+#pragma alias bseGetSelectionResult FUN_0021b7c0
+#pragma alias bseCancelSelection FUN_0021b830
+#pragma alias bseCompleteSelection FUN_0021b8b0
+
 
 static u32* sBseWork; // DAT_007ce300
 
@@ -8,20 +17,20 @@ extern void FUN_0010a4e0(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
 extern int printf(const char* format, ...);
 
 // FUN_0021b650
-void bseMain0021b650(u32* param_1)
+void bseInit(u32* param_1)
 {
     *param_1 = 0;
     sBseWork = param_1;
 }
 
 // FUN_0021b660
-void bseMain0021b660(void)
+void bseShutdown(void)
 {
     sBseWork = NULL;
 }
 
 // FUN_0021b670
-void bseMain0021b670(u32 request)
+void bseRequestSelection(u32 request)
 {
     u32* work;
     K_ASSERT(sBseWork != NULL, 0x1e);
@@ -33,14 +42,14 @@ void bseMain0021b670(u32 request)
 }
 
 // FUN_0021b6f0
-u32 bseMain0021b6f0(void)
+u32 bseIsSelectionPending(void)
 {
     K_ASSERT(sBseWork != NULL, 0x1e);
     return *sBseWork & 1;
 }
 
 // FUN_0021b740
-u32 bseMain0021b740(void)
+u32 bseWasSelectionCancelled(void)
 {
     u32* work;
 
@@ -51,7 +60,7 @@ u32 bseMain0021b740(void)
 }
 
 // FUN_0021b7c0
-u32 bseMain0021b7c0(void)
+u32 bseGetSelectionResult(void)
 {
     u32* work;
 
@@ -62,7 +71,7 @@ u32 bseMain0021b7c0(void)
 }
 
 // FUN_0021b830
-void bseMain0021b830(void)
+void bseCancelSelection(void)
 {
     u32* work;
 
@@ -74,7 +83,7 @@ void bseMain0021b830(void)
 }
 
 // FUN_0021b8b0
-void bseMain0021b8b0(void* result)
+void bseCompleteSelection(void* result)
 {
     u32* work;
     K_ASSERT(sBseWork != NULL, 0x1e);

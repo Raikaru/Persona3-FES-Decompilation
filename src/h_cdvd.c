@@ -202,6 +202,7 @@ u32 H_Cdvd_FileExists(const char* path)
 }
 
 #pragma push
+/* Removing this worsens FUN_00100980 (nd95 -> nd143) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00100980 NONMATCHING
 void H_Cdvd_Read()
@@ -440,6 +441,7 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 
 
 #pragma push
+/* Removing this loses FUN_00100ec0 (MATCH nd0 -> MISMATCH nd121) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00100ec0
 u32 H_Cdvd_Destroy(HCdvd* cdvd)
@@ -740,6 +742,7 @@ void H_Cdvd_ReadSync(HCdvd* cdvd)
 }
 
 #pragma push
+/* Removing this loses FUN_00102650 (MATCH nd0 -> MISMATCH nd32) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00102650
 void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const char* path)
@@ -1326,6 +1329,7 @@ void func_00101e30(void* requestData)
 }
 
 #pragma push
+/* Removing this loses FUN_00102030 (MATCH nd0 -> MISMATCH nd32) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00102030
 void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
@@ -1444,6 +1448,7 @@ void func_001025c0(void* handle, const char* path)
 }
 
 #pragma push
+/* Removing this loses FUN_00102720 (MATCH nd0 -> MISMATCH nd67) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00102720
 void func_00102720(const char* path, const void* archive)

@@ -1,10 +1,15 @@
 #include "Main/Battle/Data/datScript.h"
 #include "Kosaka/k_assert.h"
+#pragma alias datScriptIsCurrent FUN_003112c0
+#pragma alias datScriptSetCalculationResult FUN_00311190
+#pragma alias datScriptReturnTrueCommand FUN_003111C0
+#pragma alias datScriptRestorePartyCommand FUN_003112E0
+
 
 static ScrData* sUnk_007ce514; // doesn't looks like it's used
 
 // FUN_003112c0
-u8 datScript003112c0(ScrData* scr)
+u8 datScriptIsCurrent(ScrData* scr)
 {
     return sUnk_007ce514 == scr;
 }
@@ -35,7 +40,7 @@ extern void FUN_0035f060(u32 value);
 extern void FUN_0030c440(void);
 #pragma optimization_level 1
 // FUN_00311190
-void FUN_00311190(u32 param_1)
+void datScriptSetCalculationResult(u32 param_1)
 
 {
   *(u16*)0x009571a4 = *(u16*)0x009571a4 | 1;
@@ -45,7 +50,7 @@ void FUN_00311190(u32 param_1)
 #pragma optimization_level 2
 
 // FUN_003111C0
-u32 FUN_003111c0(void)
+u32 datScriptReturnTrueCommand(void)
 
 {
   FUN_0035f060(1);
@@ -53,7 +58,7 @@ u32 FUN_003111c0(void)
 }
 
 // FUN_003112E0
-u32 FUN_003112e0(void)
+u32 datScriptRestorePartyCommand(void)
 
 {
   FUN_0030c440();

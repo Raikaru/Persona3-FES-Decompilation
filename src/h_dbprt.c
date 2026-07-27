@@ -95,6 +95,7 @@ void H_Dbprt_Flush()
 }
 
 #pragma opt_lifetimes on
+/* Removing this worsens FUN_00104420 (nd244 -> nd268) - measured W161. */
 #pragma opt_loop_invariants on
 // Reconstructed inline four-vertex glyph batching and render-state setup.
 // Residual 28-byte overrun / normalized diff reflects MWCC scheduling and

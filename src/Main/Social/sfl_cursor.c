@@ -127,6 +127,7 @@ void FUN_0025a120(void)
  * The remaining differences are MWCC register allocation and floating-point
  * spill placement; object size now exactly matches the retail function window.
  */
+/* Removing this worsens FUN_0025a130 (nd185 -> nd295) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0025A130 NONMATCHING
 

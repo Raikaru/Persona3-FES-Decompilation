@@ -112,6 +112,7 @@ void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u3
 #define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
 #undef FUN_00393f30
 #pragma push
+/* Removing this loses FUN_00393f30 (MATCH nd0 -> MISMATCH nd25) - measured W161. */
 #pragma opt_loop_invariants on
  
 // FUN_00393F30
@@ -169,6 +170,7 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 }
 #define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
 #pragma push
+/* Removing this worsens FUN_00394070 (nd25 -> nd245) - measured W161. */
 #pragma opt_loop_invariants on
 #undef FUN_00394070
 // FUN_00394070 NONMATCHING

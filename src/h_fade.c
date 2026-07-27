@@ -123,6 +123,7 @@ void H_Fade_Clear()
     }
 }
 
+/* Removing this loses FUN_001071f0 (MATCH nd0 -> MISMATCH nd144) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001071f0 MATCHING
 static void H_Fade_Anim()
@@ -268,6 +269,7 @@ anim_render:
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_001075b0 (MATCH nd0 -> MISMATCH nd176) and 2 more - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001075b0
 static void H_Fade_Transition()
@@ -372,7 +374,6 @@ static void H_Fade_Transition()
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
-#pragma opt_loop_invariants on
 
 // FUN_001078a0
 static void H_Fade_White()
@@ -453,7 +454,6 @@ static void H_Fade_White()
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-#pragma opt_loop_invariants on
 // FUN_00107b20 NONMATCHING
 static void H_Fade_Day()
 {

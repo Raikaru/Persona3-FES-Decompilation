@@ -37,6 +37,7 @@ DatUnitPc* datUnitCreatePc(u16 pcId)
     return pc;
 }
 
+/* Removing this worsens FUN_002ff3e0 (nd12 -> nd169) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002ff3e0 NONMATCHING
 DatUnitEc* datUnitCreateEc(u16 encountId)
@@ -170,6 +171,7 @@ u32 func_002ff790(DatUnitGenusBase* genusBase)
 }
 
 
+/* Removing this loses FUN_002ff890 (MATCH nd0 -> MISMATCH nd56) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002ff890
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id)

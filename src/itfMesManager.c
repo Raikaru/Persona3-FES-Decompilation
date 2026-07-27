@@ -3921,6 +3921,7 @@ done:
 #define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #undef FUN_003a6410
 #pragma push
+/* Removing this loses FUN_003a6410 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003A6410
 
@@ -4533,6 +4534,7 @@ void FUN_003a6b90(int param_1)
 #define FUN_003a6b90(...) ((void (*)(...))FUN_003a6b90)(__VA_ARGS__)
 #undef FUN_003a6c10
 #pragma push
+/* Removing this loses FUN_003a6c10 (MATCH nd0 -> MISMATCH nd1) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003A6C10
 
@@ -5617,6 +5619,7 @@ void FUN_003a7cb0(u64 param_1,u64 param_2)
 #define FUN_003a7cb0(...) ((void (*)(...))FUN_003a7cb0)(__VA_ARGS__)
 #undef FUN_003a7d60
 #pragma push
+/* Removing this loses FUN_003a7d60 (MATCH nd0 -> MISMATCH nd21) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003A7D60 MATCHING
 

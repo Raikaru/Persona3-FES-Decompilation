@@ -271,6 +271,7 @@ void FUN_0077ffa0(void)
   return;
 }
 #pragma push
+/* Removing this worsens FUN_00780070 (nd342 -> nd358) - measured W161. */
 #pragma schedule on
 #pragma optimization_level 3
  
@@ -487,6 +488,7 @@ int FUN_00780640(int param_1)
 }
 
 #pragma push
+/* Removing this loses FUN_007807e0 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
 #pragma schedule on
 // FUN_007807E0
 void FUN_007807e0(u16 param_1)
@@ -498,6 +500,7 @@ void FUN_007807e0(u16 param_1)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_00780800 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
 #pragma schedule on
 #pragma opt_propagation off
 #pragma opt_common_subs off

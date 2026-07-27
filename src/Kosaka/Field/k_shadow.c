@@ -698,6 +698,7 @@ static void K_FldShadow_SubmitFieldGeometry(const RwV3d* position,
     }
 }
 
+/* Removing this worsens FUN_0019ab80 (nd1126 -> nd1129) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0019ab80 NONMATCHING
 u32 func_0019ab80(f32 alpha,

@@ -1143,8 +1143,6 @@ long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
 #undef FUN_003b0840
 // FUN_003B0840 NONMATCHING
 
-#pragma push
-#pragma opt_rebuildconditionals off
 int FUN_003b0840(short *param_1)
 {
   u16 *puVar3;
@@ -1203,7 +1201,6 @@ LAB_003b095c:
   return iVar2;
 }
 #define FUN_003b0840(...) ((int (*)(...))FUN_003b0840)(__VA_ARGS__)
-#pragma pop
 #undef FUN_003b0970
 // FUN_003B0970 NONMATCHING
 
@@ -2412,6 +2409,7 @@ void FUN_003b1a80(u32 param_1)
 }
 #define FUN_003b1a80(...) ((void (*)(...))FUN_003b1a80)(__VA_ARGS__)
 #undef FUN_003b1a90
+/* Removing this loses FUN_003b1a90 (MATCH nd0 -> MISMATCH nd45) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003B1A90
 
@@ -2505,6 +2503,7 @@ frFont_b1b00_child_check:
 }
 #define FUN_003b1b00(...) ((int (*)(...))FUN_003b1b00)(__VA_ARGS__)
 #undef FUN_003b1bc0
+/* Removing this loses FUN_003b1bc0 (MATCH nd0 -> MISMATCH nd57) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003B1BC0
 

@@ -301,6 +301,7 @@ FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int pa
 }
 
 #pragma push
+/* Removing this worsens FUN_0040e710 (nd14 -> nd76) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_0040E710 NONMATCHING
 

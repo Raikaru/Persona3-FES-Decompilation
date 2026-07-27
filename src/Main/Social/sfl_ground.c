@@ -269,14 +269,14 @@ static void sflGroundInitFxLayout(u32 flag, s32 state)
     work = sSflGround;
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
 
-    viewport = sflRes0020e690(5);
+    viewport = sflResGetEffectRaster(5);
     rect[0] = 0.0f;
     rect[1] = 0.0f;
     rect[2] = 1.0f;
     rect[3] = 1.0f;
     func_0021eb80(GROUND_PTR(work, 0x4710), rect);
 
-    viewport = sflRes0020e690(4);
+    viewport = sflResGetEffectRaster(4);
     rect[0] = 1.0f / (f32)viewport->width;
     rect[1] = 0.0f;
     rect[2] = 51.0f / (f32)viewport->width;
@@ -290,7 +290,7 @@ static void sflGroundInitFxLayout(u32 flag, s32 state)
         GROUND_U32(work, 0x4c28 + i * 0x420) = RpRandom();
     }
 
-    viewport = sflRes0020e690(3);
+    viewport = sflResGetEffectRaster(3);
     rect[0] = 1.0f / (f32)viewport->width;
     rect[1] = 0.0f;
     rect[2] = (flag == 0x20 ? 511.0f : 503.0f) / (f32)viewport->width;
@@ -355,7 +355,6 @@ void sflGround00239280(void)
 }
 
 // FUN_002392D0 NONMATCHING
-#pragma schedule off
 void func_002392d0(void)
 {
     u32* work;
@@ -1009,7 +1008,7 @@ void func_0023b990(void)
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
-            1, (u32)sflRes0020e590(0));
+            1, (u32)sflResGetGroundRaster(0));
         for (i = 0; i < 6; i++) {
             void* vertices = GROUND_PTR(work, 0x110 + i * 0x200);
             drawTable = (const u32*)D_0096009C_abs;
@@ -1033,7 +1032,7 @@ void func_0023b990(void)
 
     if (state >= 1 && state <= 5) {
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
-            1, (u32)sflRes0020e590(2));
+            1, (u32)sflResGetGroundRaster(2));
         for (i = 0; i < 48; i++) {
             u8* particle = (u8*)work + 0xd10 + i * 0x1300;
             if ((GROUND_U32(particle, 0) & 1) != 0) {
@@ -1064,7 +1063,7 @@ void func_0023b990(void)
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
-            1, (u32)sflRes0020e690(4));
+            1, (u32)sflResGetEffectRaster(4));
         for (i = 0; i < 7; i++) {
             for (j = 0; j < 4; j++) {
                 drawTable = (const u32*)D_0096009C_abs;
@@ -1086,7 +1085,7 @@ void func_0023b990(void)
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
-            1, (u32)sflRes0020e510(3));
+            1, (u32)sflResGetBaseRaster(3));
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x4610), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
@@ -1094,7 +1093,7 @@ void func_0023b990(void)
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
-            1, (u32)sflRes0020e690(5));
+            1, (u32)sflResGetEffectRaster(5));
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
             GROUND_PTR(work, 0x4710), 4, 0, 1, 2);
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
@@ -1170,6 +1169,7 @@ u32 sflGround0023c350(void)
     return *sSflGround & 1;
 }
 
+/* Removing this loses FUN_0023c3a0 (MATCH nd0 -> MISMATCH nd34) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0023C3A0
 void func_0023c3a0(void* destination)
@@ -1185,7 +1185,7 @@ void func_0023c3a0(void* destination)
     register s32 j;
 
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
-    viewport = sflRes0020e590(1);
+    viewport = sflResGetGroundRaster(1);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     invWidth = 1.0f / width;
@@ -1317,7 +1317,7 @@ void func_0023c8c0(void* vertices)
     RpSkyRenderStateSet(3, 0x71801);
     RpSkyRenderStateSet(2, 0x48);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(
-        1, (u32)sflRes0020e590(1));
+        1, (u32)sflResGetGroundRaster(1));
 
     drawTable = D_0096009C;
     ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices_p, 4, 0, 1, 2);
@@ -1345,7 +1345,7 @@ void func_0023ca10(void)
     work = sSflGround;
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
 
-    viewport = sflRes0020e690(5);
+    viewport = sflResGetEffectRaster(5);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 0.0f / width;
@@ -1354,7 +1354,7 @@ void func_0023ca10(void)
     rect[3] = height / height;
     func_0021eb80(GROUND_PTR(work, 0x4710), rect);
 
-    viewport = sflRes0020e690(4);
+    viewport = sflResGetEffectRaster(4);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 1.0f / width;
@@ -1374,7 +1374,7 @@ void func_0023ca10(void)
         GROUND_U32(tile, 0x414) = 0;
     }
 
-    viewport = sflRes0020e690(3);
+    viewport = sflResGetEffectRaster(3);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 1.0f / width;
@@ -1420,7 +1420,7 @@ void func_0023cda0(void)
     work = sSflGround;
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
 
-    viewport = sflRes0020e690(5);
+    viewport = sflResGetEffectRaster(5);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 0.0f / width;
@@ -1429,7 +1429,7 @@ void func_0023cda0(void)
     rect[3] = height / height;
     func_0021eb80(GROUND_PTR(work, 0x4710), rect);
 
-    viewport = sflRes0020e690(4);
+    viewport = sflResGetEffectRaster(4);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 1.0f / width;
@@ -1449,7 +1449,7 @@ void func_0023cda0(void)
         GROUND_U32(tile, 0x414) = 0;
     }
 
-    viewport = sflRes0020e690(3);
+    viewport = sflResGetEffectRaster(3);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 1.0f / width;
@@ -1489,7 +1489,7 @@ void func_0023d130(void)
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
-    viewport = sflRes0020e510(3);
+    viewport = sflResGetBaseRaster(3);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 0.0f / width;
@@ -1523,7 +1523,6 @@ void sflGround0023d240(void)
     *(u32*)(base + 0xc) = 5;
 }
 
-#pragma opt_loop_invariants on
 // FUN_0023D2A0 NONMATCHING
 void func_0023d2a0(void)
 {
@@ -1542,7 +1541,7 @@ void func_0023d2a0(void)
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
-    viewport = sflRes0020e590(2);
+    viewport = sflResGetGroundRaster(2);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     i = 0;
@@ -1572,8 +1571,8 @@ void func_0023d2a0(void)
         GROUND_U32(particle, 0x110) = RpRandom() % lifetime;
     }
 }
-#pragma opt_loop_invariants off
 
+/* Removing this loses FUN_0023d650 (MATCH nd0 -> MISMATCH nd60) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0023D650
 void func_0023d650(void)
@@ -1591,7 +1590,7 @@ void func_0023d650(void)
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
-    viewport = sflRes0020e590(0);
+    viewport = sflResGetGroundRaster(0);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
     rect[0] = 1.0f / width;

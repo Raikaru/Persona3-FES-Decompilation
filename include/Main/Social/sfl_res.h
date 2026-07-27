@@ -3,37 +3,37 @@
 
 #include "Utils.h"
 
-void sflRes0020d500(u32* work, const f32* vertices);
-void sflRes0020d630(void* work, const f32* value);
-void sflRes0020d650(void* work, const f32* value);
-void sflRes0020d670(const void* work, f32* value);
-void sflRes0020d690(void* work, const f32* value);
+void sflResDrawIndexedMesh(u32* work, const f32* vertices);
+void sflResSetSpriteScale(void* work, const f32* value);
+void sflResSetSpritePosition(void* work, const f32* value);
+void sflResGetSpritePosition(const void* work, f32* value);
+void sflResSetSpriteRotation(void* work, const f32* value);
 void sflRes0020d6c0(void* work);
 void sflRes0020d710(u32* work);
 void sflRes0020d770(void* work, f32 value);
-void sflRes0020d7d0(void* work);
-void sflRes0020d820(void);
-u32 sflRes0020dfe0(void);
-void sflRes0020e030(void);
-void sflRes0020e200(void);
-void sflRes0020e2c0(void);
-u32 sflRes0020e380(void);
-void sflRes0020e3d0(void);
-u32 sflRes0020e4c0(void);
-void* sflRes0020e510(s32 index);
-void* sflRes0020e590(s32 index);
-void* sflRes0020e610(s32 index);
-void* sflRes0020e690(s32 index);
-void* sflRes0020e710(s32 index);
-void* sflRes0020e790(void);
-void sflRes0020e800(void* resource);
-void sflRes0020e8f0(void);
-u32 sflRes0020e9b0(void);
-void* sflRes0020ea00(s32 index);
-void sflRes0020ea80(void);
-void sflRes0020eb40(void);
-u32 sflRes0020ec00(void);
-u32 sflRes0020ec50(void);
-void sflRes0020ecc0(void);
+void sflResInit(void* work);
+void sflResUpdate(void);
+u32 sflResIsBaseArchivePending(void);
+void sflResShutdown(void);
+void sflResRequestBaseArchive(void);
+void sflResRequestGroundArchive(void);
+u32 sflResIsGroundArchivePending(void);
+void sflResRequestEffectArchive(void);
+u32 sflResIsEffectArchivePending(void);
+void* sflResGetBaseRaster(s32 index);
+void* sflResGetGroundRaster(s32 index);
+void* sflResGetBaseSecondaryRaster(s32 index);
+void* sflResGetEffectRaster(s32 index);
+void* sflResGetBaseDataFile(s32 index);
+void* sflResGetBaseSpriteData(void);
+void sflResLoadGroundRasters(void* resource);
+void sflResRequestTutorialArchive(void);
+u32 sflResIsTutorialArchivePending(void);
+void* sflResGetTutorialFile(s32 index);
+void sflResDestroyTutorialFiles(void);
+void sflResRequestPersonaChangeSprite(void);
+u32 sflResIsPersonaChangeSpritePending(void);
+u32 sflResGetPersonaChangeSprite(void);
+void sflResDestroyPersonaChangeSprite(void);
 
 #endif

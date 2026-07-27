@@ -274,6 +274,7 @@ void brPanel00235010(void)
 #pragma push
 #pragma opt_common_subs off
 #pragma optimization_level 3
+/* Removing this worsens FUN_002350f0 (nd2052 -> nd2063) - measured W161. */
 #pragma schedule on
 // FUN_002350f0 NONMATCHING
 void brPanel002350f0(void)
@@ -582,7 +583,6 @@ u32 brPanel00236340(void)
 }
 
 #pragma optimization_level 3
-#pragma schedule on
 #define brRes00234570(x) ((x) == 0 ? texture : digitTexture)
 #define BR_PANEL_SET_RECT(dst, x, y, w, h) \
     do { \
@@ -605,7 +605,6 @@ u32 brPanel00236340(void)
         color[3] = (u8)(u32)(255.0f * (alpha)); \
         func_0021d950((dst), color); \
     } while (0)
-#pragma opt_loop_invariants on
 // FUN_00236390 NONMATCHING
 static void brPanel00236390(void)
 {
@@ -1286,11 +1285,9 @@ static void brPanel00236390(void)
     color[3] = 0xff;
     func_0021d950(work + 0x2460, color);
 }
-#pragma opt_loop_invariants off
 #undef brRes00234570
 #undef BR_PANEL_SET_RECT
 #undef BR_PANEL_SET_VERTICES
 #undef BR_PANEL_ANIMATE
 #undef BR_PANEL_SET_COLOR
-#pragma schedule off
 #pragma optimization_level 2

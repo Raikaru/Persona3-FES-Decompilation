@@ -77,6 +77,7 @@ extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
 extern void func_004916d0_typed(u64 object, void* callback, void* data);
 void func_0031f5c0(void* data);
 
+/* Removing this loses FUN_00311310 (MATCH nd0 -> MISMATCH nd178) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00311310
 MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
@@ -218,6 +219,7 @@ Model* mdlInit(u16 type, u16 id)
 }
 
 #pragma push
+/* Removing this loses FUN_00316910 (MATCH nd0 -> MISMATCH nd26) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
 Model* mdlSearch(u16 type, u16 id, u16 flags)
@@ -5676,6 +5678,7 @@ void func_003164f0(int param_1,int param_2)
 
 
 #pragma push
+/* Removing this loses FUN_003165e0 (MATCH nd0 -> MISMATCH nd51) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003165E0
 
