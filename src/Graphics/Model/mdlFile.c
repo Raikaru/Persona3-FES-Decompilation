@@ -469,7 +469,7 @@ void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 #pragma alias FUN_0032a120_2arg FUN_0032a120
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
-float FUN_0032a540(char *param_1,int param_2,long param_3);
+float FUN_0032a540(char *param_1,int param_2,int param_3);
 void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
 
                  u8 (*param_4) [16]);

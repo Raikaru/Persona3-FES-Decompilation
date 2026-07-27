@@ -3499,7 +3499,7 @@ u32 FUN_0039c0f0(int param_1)
 
       sVar10 = *(short *)(puVar1[0x10] + iVar9 * 2 + 0x14);
 
-      if ((sVar10 != 0) && (lVar5 = FUN_0017afd0(sVar10), lVar5 != 0)) {
+      if ((sVar10 != 0) && (lVar5 = FUN_0017afd0(sVar10), (int)lVar5 != 0)) {
 
         lVar5 = FUN_0017ae50(sVar10);
 
