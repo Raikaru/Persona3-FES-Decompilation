@@ -10094,14 +10094,6 @@ u32 func_002eee20(BtlAction* param_1,float *param_2)
 void func_002ef000(u64 *param_1)
 
 {
-  extern u32 func_002e2cb0();
-  extern u32 FUN_002b8f90();
-  extern u32 FUN_002f87e0();
-  extern u32 FUN_00284200();
-  extern u32 FUN_002b8d60();
-  extern u32 FUN_0027fe90();
-  extern u32 FUN_002a3b40();
-  extern u32 FUN_002baf90();
   int iVar1;
   int iVar2;
   u8 *puVar3;
