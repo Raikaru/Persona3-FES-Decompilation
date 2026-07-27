@@ -21180,7 +21180,7 @@ u32 FUN_0040d490(void)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 

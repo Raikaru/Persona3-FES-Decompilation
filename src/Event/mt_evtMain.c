@@ -9362,8 +9362,8 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
 
   else {
     iVar4 = piVar1[0x1b];
-    iVar1 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
     iVar2 = 0;
+    iVar1 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
     for (; (iVar2 < iVar1 && (iVar4 != 0));
         iVar4 = *(int *)(iVar4 + 0x4c), iVar2 = iVar2 + 1) {
     }
