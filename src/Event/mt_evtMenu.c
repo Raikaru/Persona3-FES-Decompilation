@@ -6807,7 +6807,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
   u32 uVar5;
 
-  u32 uVar6;
+  u64 uVar6;
 
   short *psVar7;
 
@@ -7761,9 +7761,9 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
       uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-      uVar5 = FUN_00530da0_evt(*(f32 *)(param_4 + 8));
+      uVar5 = FUN_00530da0(*(u32 *)(param_4 + 8));
 
-      uVar6 = FUN_00530da0_evt(*(f32 *)(param_4 + 10));
+      uVar6 = FUN_00530da0(*(u32 *)(param_4 + 10));
 
       FUN_0038a260(uVar18,param_1 * 0xc,param_2,uVar12,0x69eef0,uVar5,uVar6);
 
@@ -8119,7 +8119,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        uVar5 = FUN_00530da0_evt(*(f32 *)(param_4 + 10));
+        uVar5 = FUN_00530da0(*(u32 *)(param_4 + 10));
 
         FUN_0038a260(uVar18,param_1 * 0xc,param_2,uVar12,0x7cd108,uVar5);
 
@@ -8251,7 +8251,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        uVar5 = FUN_00530da0_evt(*(f32 *)(param_4 + 0xc));
+        uVar5 = FUN_00530da0(*(u32 *)(param_4 + 0xc));
 
         FUN_0038a260(uVar18,param_1 * 0xc,param_2,uVar12,0x69efe8,param_4[10],uVar5);
 

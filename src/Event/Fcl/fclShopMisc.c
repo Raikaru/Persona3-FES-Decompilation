@@ -13776,7 +13776,6 @@ void FUN_00400e90(u32 param_1)
 
           if ((uVar2 & 1) == 0) {
 
-            *puVar1 = uVar2 | 1;
 
             *puVar1 = uVar2 | 3;
 
@@ -13785,7 +13784,6 @@ void FUN_00400e90(u32 param_1)
           else if (*(short *)((int)puVar9 + 6) == 2) {
 
 
-            *puVar1 = uVar2 & 0xfffffffe;
             *puVar1 = uVar2 & 0xfffffffc;
 
           }

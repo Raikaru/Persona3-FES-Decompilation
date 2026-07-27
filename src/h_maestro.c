@@ -833,10 +833,12 @@ u32 func_001114b0(KwlnTask* task)
 void func_00111500(KwlnTask* task)
 {
     u32* work;
-    s32 value;
     work = (u32*)task->workData;
-    value = 1;
-    work[0x30] = value;
+    {
+        s32 value;
+        value = 1;
+        work[0x30] = value;
+    }
     work[0x2f] = 0;
 }
 
