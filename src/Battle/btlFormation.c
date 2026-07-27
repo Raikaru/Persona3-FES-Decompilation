@@ -203,6 +203,8 @@ extern u64 func_00289030();
 extern u64 func_0028a780();
 extern u64 func_0029a1d0();
 extern u64 func_0029a210();
+#pragma alias func_0029a210_u32 func_0029a210
+extern u32 func_0029a210_u32(u32 param_1);
 extern u64 func_0029ad20();
 #pragma alias func_0029ad20_u32 func_0029ad20
 extern u32 func_0029ad20_u32(void);
