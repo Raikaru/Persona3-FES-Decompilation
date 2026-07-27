@@ -8918,11 +8918,11 @@ void func_002ec5c0(void)
 // FUN_002ec790 NONMATCHING
 void func_002ec790(void)
 {
-    BtlUnit* iVar6;
-    BtlUnit* iVar8;
-    BtlUnit* unit;
     void* object;
     BtlPacket* parent;
+    BtlUnit* iVar8;
+    BtlUnit* iVar6;
+    BtlUnit* unit;
     BtlPacket* packet;
 
     iVar8 = NULL;

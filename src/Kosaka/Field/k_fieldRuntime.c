@@ -4369,6 +4369,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         tail3 = count3 * 3 + 6;
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 1, color3 + (tail3 - 3) * 4);
+        func_001ed0f0(
+            1.0f, (RuntimeWork*)work, 1, color3 + (tail3 - 2) * 4);
     }
     default:
         break;
