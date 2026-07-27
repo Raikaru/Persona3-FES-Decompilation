@@ -489,7 +489,7 @@ void FUN_0032f910(u64 param_1);
 void FUN_00330190(u64 param_1);
 void FUN_00330c40(u64 param_1);
 void FUN_00331650(u64 param_1);
-u64 FUN_00332070(u16 param_1,int param_2,u64 param_3);
+u64 FUN_00332070(u16 param_1,int param_2,int param_3);
 #pragma alias FUN_00332070_u32 FUN_00332070
 extern u32 FUN_00332070_u32(u16 param_1,int param_2,int param_3);
 #pragma alias FUN_00332070_u32_ptr FUN_00332070
@@ -22238,7 +22238,7 @@ void FUN_00331650(u64 param_1)
 // FUN_00332070 NONMATCHING
 
 
-u64 FUN_00332070(u16 param_1,int param_2,u64 param_3)
+u64 FUN_00332070(u16 param_1,int param_2,int param_3)
 
 
 
@@ -58337,7 +58337,7 @@ u64 FUN_00357830(int param_1)
 
   u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   u32 uVar6;
 

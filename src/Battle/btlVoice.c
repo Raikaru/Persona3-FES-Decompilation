@@ -3105,7 +3105,7 @@ void func_002f6120(void)
 
 {
   int iVar1;
-  u32 uVar2;
+  u64 uVar2;
   u64 uVar3;
   int iVar4;
   int iVar5;
