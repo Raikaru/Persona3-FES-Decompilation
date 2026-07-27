@@ -5295,7 +5295,7 @@ void FUN_003a7490(u32 *param_1)
 
         thunk_FUN_003b0e54(puVar11[7],-0x80);
 
-        thunk_FUN_003b0e54(puVar11[0xc],0xffffffffffffff80);
+        thunk_FUN_003b0e54(puVar11[0xc],-0x80);
 
       }
 
