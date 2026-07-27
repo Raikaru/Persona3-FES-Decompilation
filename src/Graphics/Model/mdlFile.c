@@ -666,7 +666,7 @@ void FUN_003450d0(int param_1);
 void FUN_00345970(u64 param_1);
 u64 FUN_00345cf0(u32 param_1,u64 param_2);
 void FUN_00345ea0(u32 param_1);
-u64 FUN_00345f00(u64 param_1);
+u64 FUN_00345f00(int param_1);
 void FUN_00345fa0(int param_1);
 void FUN_00345ff0(int param_1);
 void FUN_00346050(int param_1);
@@ -42341,7 +42341,7 @@ void FUN_00345ea0(u32 param_1)
 // FUN_00345F00 NONMATCHING
 
 
-u64 FUN_00345f00(u64 param_1)
+u64 FUN_00345f00(int param_1)
 
 
 
@@ -54720,7 +54720,7 @@ u64 FUN_00352800(int param_1)
 
   iVar2 = DAT_0069ccc0[(u32)uVar1].allocationSize;
 
-  uVar6 = (*DAT_00960178)(iVar2 + 0x30,0x40000);
+  uVar6 = (*DAT_00960178_u32)(iVar2 + 0x30,0x40000);
 
   pauVar7 = (u8 (*) [16])uVar6;
 

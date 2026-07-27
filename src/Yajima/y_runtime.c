@@ -3552,11 +3552,10 @@ void FUN_004310e0(int param_1)
 u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
 
 {
+  int uVar3;
   u8 *puVar4;
   u32 lVar1;
   u32 uVar2;
-  int uVar3;
-  int iVar5;
   
   lVar1 = (*DAT_00960184_abs)(1,0x80,0x40000);
   if (lVar1 == 0) {
@@ -3567,12 +3566,11 @@ u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
     puVar4 = (u8 *)lVar1;
     *puVar4 = 0;
     *(YajimaVec2 *)(puVar4 + 0x14) = param_2;
-    uVar3 = (int)param_3;
-    iVar5 = uVar3 >> 1;
-    if (uVar3 < 0) {
-      iVar5 = (uVar3 + 1) >> 1;
+    uVar3 = (int)param_3 >> 1;
+    if (param_3 < '\0') {
+      uVar3 = (param_3 + 1) >> 1;
     }
-    puVar4[0x7c] = iVar5;
+    puVar4[0x7c] = uVar3;
     puVar4[0x7d] = param_4;
   }
   return uVar2;

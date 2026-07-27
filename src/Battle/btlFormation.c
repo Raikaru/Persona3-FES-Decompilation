@@ -263,6 +263,8 @@ extern u64 func_00301750();
 extern u64 func_00301870();
 extern u64 func_00301ca0();
 extern u64 func_00303130();
+#pragma alias func_00303130_s32 func_00303130
+extern s32 func_00303130_s32(s32,s32,s32,s32,s32,s32,s32,s32);
 extern u32 func_00306e80();
 extern u64 func_003080c0();
 extern u64 func_003082f0();

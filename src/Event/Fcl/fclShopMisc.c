@@ -14436,7 +14436,7 @@ u32 FUN_00401890(short param_1)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
