@@ -21043,7 +21043,7 @@ u8 FUN_0045e170(int param_1)
 
 {
   int iVar1;
-  long lVar2;
+  int iVar2;
   int iVar3;
   int iVar4;
   int iVar5;
@@ -21065,19 +21065,19 @@ u8 FUN_0045e170(int param_1)
   }
   for (iVar3 = 0; iVar3 < 0x18; iVar3 = iVar3 + 1) {
     iVar4 = iVar1 + iVar3 * 0x98 + 0x340;
-    lVar2 = FUN_0045b4b0(iVar4);
-    if (lVar2 == 0) {
+    iVar2 = FUN_0045b4b0(iVar4);
+    if (iVar2 == 0) {
       FUN_0045b190(iVar4);
     }
   }
   iVar4 = 0;
   for (iVar3 = 0; iVar3 < 6; iVar3 = iVar3 + 1) {
-    lVar2 = FUN_0045b4b0(iVar1 + iVar3 * 0x98 + 0x1180);
-    if (lVar2 == 0) {
+    iVar2 = FUN_0045b4b0(iVar1 + iVar3 * 0x98 + 0x1180);
+    if (iVar2 == 0) {
       iVar5 = iVar1 + iVar3 * 0x98 + 0x1180;
       FUN_0045b190(iVar5);
-      lVar2 = FUN_0045b480(iVar5);
-      if (lVar2 == 0) {
+      iVar2 = FUN_0045b480(iVar5);
+      if (iVar2 == 0) {
         iVar4 = iVar4 + 1;
       }
     }
