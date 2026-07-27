@@ -3589,43 +3589,9 @@ void func_00313ca0(int *param_1,u32 param_2)
 
       iVar3 = *(int *)(iVar2 + sVar1 * 8);
 
-      if (*(float *)(iVar7 + 0x1c) < 1.0f) {
+      if (*(float *)(iVar7 + 0x1c) >= 1.0f) {
 
-        iVar2 = *(int *)(iVar2 + *(short *)(iVar7 + 0x10) * 8);
-
-        if (iVar2 == 0) {
-
-          if (iVar3 != 0) {
-
-            func_00320640_frame(0,1.0f - *(float *)(iVar7 + 0x1c),iVar3);
-
-          }
-
-        }
-
-        else {
-
-          func_003204a0(*(u32 *)(iVar7 + 0x14),0,iVar2,iVar3);
-
-        }
-
-        param_1[1] = iVar3;
-
-      }
-
-      else {
-
-        if (iVar3 == 0) {
-
-          if (param_1[1] != 0) {
-
-            func_00320770();
-
-          }
-
-        }
-
-        else {
+        if (iVar3 != 0) {
 
           piVar4 = *(int **)(iVar7 + 0x2c);
 
@@ -3664,6 +3630,40 @@ void func_00313ca0(int *param_1,u32 param_2)
             func_00320380(uVar9,iVar3);
 
           }
+
+        }
+
+        else {
+
+          if (param_1[1] != 0) {
+
+            func_00320770();
+
+          }
+
+        }
+
+        param_1[1] = iVar3;
+
+      }
+
+      else {
+
+        iVar2 = *(int *)(iVar2 + *(short *)(iVar7 + 0x10) * 8);
+
+        if (iVar2 == 0) {
+
+          if (iVar3 != 0) {
+
+            func_00320640_frame(0,1.0f - *(float *)(iVar7 + 0x1c),iVar3);
+
+          }
+
+        }
+
+        else {
+
+          func_003204a0(*(u32 *)(iVar7 + 0x14),0,iVar2,iVar3);
 
         }
 
@@ -4618,13 +4618,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
   }
 
-  if (uVar5 == *param_2) {
-
-    uVar3 = 0;
-
-  }
-
-  else {
+  if (uVar5 != *param_2) {
 
     iVar7 = *(int *)(param_2 + 2) + uVar5 * 0x50;
 
@@ -4646,13 +4640,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
     }
 
-    if (iVar6 == 0) {
-
-      uVar3 = 0;
-
-    }
-
-    else {
+    if (iVar6 != 0) {
 
       uVar4 = func_004cb2f0(iVar6);
 
@@ -4661,6 +4649,18 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
       uVar3 = 1;
 
     }
+
+    else {
+
+      uVar3 = 0;
+
+    }
+
+  }
+
+  else {
+
+    uVar3 = 0;
 
   }
 

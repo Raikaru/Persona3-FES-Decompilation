@@ -5232,15 +5232,9 @@ u32 func_002e4520(int param_1,u32 param_2,u64 param_3)
   u32 uVar6;
   u32 uVar7;
   
-  if ((s32)param_2 < 1) {
-    uVar1 = 0;
-  }
-  else {
+  if ((s32)param_2 >= 1) {
     pbVar3 = (u8 *)(DAT_007ce3f8 + (int)param_2 * 0x2c);
-    if ((*pbVar3 & 8) == 0) {
-      uVar1 = 0;
-    }
-    else {
+    if ((*pbVar3 & 8) != 0) {
       uVar4 = *(u32 *)(pbVar3 + 0x20);
       if (((uVar4 & 0x3ffffff) != 0) && ((uVar4 & 0xfc000000) == 0)) {
         for (uVar7 = 0; uVar7 < 0x20; uVar7 = uVar7 + 1) {
@@ -5279,6 +5273,12 @@ u32 func_002e4520(int param_1,u32 param_2,u64 param_3)
         uVar1 = 0;
       }
     }
+    else {
+      uVar1 = 0;
+    }
+  }
+  else {
+    uVar1 = 0;
   }
   return uVar1;
 }
@@ -5831,10 +5831,7 @@ void func_002e58a0(BtlCamera* param_1)
       }
     }
   }
-  if (iVar4 == 0) {
-    bVar3 = true;
-  }
-  else {
+  if (iVar4 != 0) {
     if (*(char *)(*(int *)(iVar4 + 0x30) + 0xa2) == '\0') {
       if ((*(short *)(DAT_007ce3ec + 0x104) == 0x1d) || (*(short *)(DAT_007ce3ec + 0x104) == 0x1c))
       {
@@ -5847,6 +5844,9 @@ void func_002e58a0(BtlCamera* param_1)
       bVar3 = false;
       goto LAB_002e59dc;
     }
+    bVar3 = true;
+  }
+  else {
     bVar3 = true;
   }
 LAB_002e59dc:
@@ -5925,12 +5925,12 @@ LAB_002e59dc:
     fVar11 = 3.5f;
   }
   else {
-    if (fVar11 < fVar12) {
-      target.y = (target.y + 0.0f) - DAT_007cad84 * fVar12;
-    }
-    else {
+    if (fVar11 >= fVar12) {
       target.y = DAT_007cad20 * fVar12 + target.y + 0.0f;
       camOff.y = (pos1.y + 0.0f) - DAT_007cad20 * fVar11;
+    }
+    else {
+      target.y = (target.y + 0.0f) - DAT_007cad84 * fVar12;
     }
     fVar11 = 2.5f;
   }
@@ -8893,17 +8893,17 @@ void func_002ec5c0(void)
   sVar7 = 0;
   uStack_c = 0.0f;
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 1) {
-      uStack_10 = 150.0f;
-      uStack_8 = 550.0f;
-      *(u8 *)(iVar4 + 0x9f0) = 2;
-    }
-    else {
+    if (*(short *)(iVar4 + 0xa4) != 1) {
       iVar3 = (int)sVar7;
       uStack_10 = *(f32*)&auStack_30[iVar3 * 2];
       uStack_8 = *(f32*)&auStack_30[iVar3 * 2 + 1];
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
       sVar7 = sVar7 + 1;
+    }
+    else {
+      uStack_10 = 150.0f;
+      uStack_8 = 550.0f;
+      *(u8 *)(iVar4 + 0x9f0) = 2;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);

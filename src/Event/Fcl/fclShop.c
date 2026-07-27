@@ -1988,19 +1988,7 @@ LAB_003e789c:
 
       lVar8 = FUN_00402480(0);
 
-      if (lVar8 == -1) {
-
-        piVar10[1] = 0x41;
-        FUN_003efde0(0,1);
-
-
-        uVar6 = FUN_003c5460(DAT_007ce688);
-
-        FUN_003e0c20(uVar6,0,1);
-
-      }
-
-      else {
+      if (lVar8 != -1) {
 
         lVar8 = FUN_003fe2b0();
 
@@ -2023,6 +2011,18 @@ LAB_003e789c:
 
 
         }
+
+      }
+
+      else {
+
+        piVar10[1] = 0x41;
+        FUN_003efde0(0,1);
+
+
+        uVar6 = FUN_003c5460(DAT_007ce688);
+
+        FUN_003e0c20(uVar6,0,1);
 
       }
 

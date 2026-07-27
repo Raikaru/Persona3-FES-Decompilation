@@ -249,10 +249,7 @@ code * FUN_003bf950(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
       FUN_00521408(auStack_20,0,0x1c);
@@ -261,6 +258,9 @@ code * FUN_003bf950(void)
       uStack_c = 0;
       FUN_0027c080(3,auStack_20,0x1c,0);
       *piVar3 = 2;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
     }
     break;
   case 2:
@@ -314,10 +314,7 @@ u32 FUN_003bfae0(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
       FUN_00521408(auStack_20,0,0x1c);
@@ -326,6 +323,9 @@ u32 FUN_003bfae0(void)
       uStack_c = 0;
       FUN_0027c080(3,auStack_20,0x1c,0);
       *piVar3 = 2;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
     }
     break;
   case 2:
@@ -839,10 +839,7 @@ u32 FUN_003c03f0(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
       FUN_00521408(auStack_20,0,0x1c);
@@ -851,6 +848,9 @@ u32 FUN_003c03f0(void)
       uStack_c = 0;
       FUN_0027c080(3,auStack_20,0x1c,0);
       *piVar3 = 2;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
     }
     break;
   case 2:
@@ -1061,10 +1061,7 @@ code * FUN_003c09a0(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
       uGpffffb980 = 0;
@@ -1074,6 +1071,9 @@ code * FUN_003c09a0(void)
       uStack_c = 0;
       FUN_0027c080(3,auStack_20,0x1c,0);
       *piVar3 = 2;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
     }
     break;
   case 2:
@@ -1429,10 +1429,7 @@ u32 FUN_003c0f20(void)
     *piVar4 = 1;
     break;
   case 1:
-    if (piVar4[1] < piVar4[2]) {
-      piVar4[1] = piVar4[1] + 1;
-    }
-    else {
+    if (piVar4[1] >= piVar4[2]) {
       piVar4[1] = 0;
       piVar4[2] = 0;
       lVar6 = FUN_003c0db0(&uStack_4,&uStack_8,&uStack_c);
@@ -1445,6 +1442,9 @@ u32 FUN_003c0f20(void)
       uStack_1c = uStack_c;
       FUN_0027c080(3,auStack_30,0x1c,0);
       *piVar4 = 2;
+    }
+    else {
+      piVar4[1] = piVar4[1] + 1;
     }
     break;
   case 2:
@@ -1732,10 +1732,7 @@ code * FUN_003c15d0(void)
     *piVar5 = 3;
     break;
   case 1:
-    if (piVar5[1] < piVar5[2]) {
-      piVar5[1] = piVar5[1] + 1;
-    }
-    else {
+    if (piVar5[1] >= piVar5[2]) {
       piVar5[1] = 0;
       piVar5[2] = 0;
       lVar8 = FUN_003c40f0(bVar1);
@@ -1754,6 +1751,9 @@ code * FUN_003c15d0(void)
         FUN_0027c080(3,auStack_20,0x1c,0);
       }
       *piVar5 = 2;
+    }
+    else {
+      piVar5[1] = piVar5[1] + 1;
     }
     break;
   case 2:
@@ -1859,10 +1859,7 @@ u32 FUN_003c18c0(void)
     *piVar3 = 1;
   }
   else if (iVar1 == 1) {
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
       lVar4 = FUN_003951d0(0xbd4);
@@ -1883,6 +1880,9 @@ u32 FUN_003c18c0(void)
         FUN_0027c080(2,&uStack_40,0x1c,0);
       }
       *piVar3 = 2;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
     }
   }
   else if (iVar1 == 2) {

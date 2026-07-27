@@ -2568,12 +2568,12 @@ void func_002bb3a0(void)
       if ((uVar1 & 0x100) == 0) {
         if ((uVar1 & 0x80) != 0) {
           uVar2 = (u32)(u8)puVar4[4] * 0x1000000;
-          if (uVar2 < -(uVar3 & 0xff000000) - 0x1000000) {
-            uVar3 = uVar3 + uVar2;
-          }
-          else {
+          if (uVar2 >= -(uVar3 & 0xff000000) - 0x1000000) {
             uVar3 = uVar3 & 0xffffff | 0xff000000;
             *puVar4 = uVar1 & 0xfe7f;
+          }
+          else {
+            uVar3 = uVar3 + uVar2;
           }
         }
       }
@@ -8575,10 +8575,7 @@ u32 func_002c65d0(int param_1)
   int iVar13 = 0;
   short asStack_20 [16] = {0};
   
-  if (*(short *)(param_1 + 0xc0) == 1) {
-    uVar7 = *(u32 *)(param_1 + 0x88);
-  }
-  else {
+  if (*(short *)(param_1 + 0xc0) != 1) {
     iVar13 = 0;
     for (uVar6 = 0; uVar6 < *(u16 *)(param_1 + 0xc0); uVar6 = uVar6 + 1) {
       iVar13 = iVar13 + *(int *)(&DAT_00696fb0 + uVar6 * 4);
@@ -8633,6 +8630,9 @@ u32 func_002c65d0(int param_1)
       }
     }
     uVar7 = 0;
+  }
+  else {
+    uVar7 = *(u32 *)(param_1 + 0x88);
   }
   return uVar7;
 }
@@ -8842,16 +8842,16 @@ void func_002c70d0(int param_1,int param_2)
   uVar6 = *(u16 *)(*(int *)((int)param_1 + 0x30) + 0xa4);
   func_002d15a0(param_2);
   cVar1 = *(char *)(*(int *)((int)param_1 + 0x30) + 0xa2);
-  if (cVar1 == '\x01') {
-    uVar6 = *(u16 *)(((u32)uVar6 * 0x28 + (u32)uVar6) * 4 + DAT_007ce41c + 2);
-    uVar5 = (u32)DAT_007ce4d0;
-  }
-  else {
+  if (cVar1 != '\x01') {
     uVar5 = (u32)DAT_007ce4cc;
     if (cVar1 != '\0') {
       uVar5 = unaff_s1_lo;
       uVar6 = unaff_s2_lo;
     }
+  }
+  else {
+    uVar6 = *(u16 *)(((u32)uVar6 * 0x28 + (u32)uVar6) * 4 + DAT_007ce41c + 2);
+    uVar5 = (u32)DAT_007ce4d0;
   }
   if (uVar6 == 0) {
     uVar2 = func_002c6ba0(param_1);
@@ -13713,10 +13713,7 @@ u32 func_002cef10(void)
   lVar6 = func_002c3430(uVar4,uVar5,0,0x2c,0,(code *)&func_002c30f0);
   if (lVar6 == 1) {
     iVar10 = (int)uVar4;
-    if (*(short *)(iVar10 + 0x6a) == 1) {
-      iVar9 = *(int *)(iVar10 + 0x38);
-    }
-    else {
+    if (*(short *)(iVar10 + 0x6a) != 1) {
       iVar9 = 0;
       bVar11 = 0;
       uVar7 = 0;
@@ -13732,6 +13729,9 @@ u32 func_002cef10(void)
           }
         }
       }
+    }
+    else {
+      iVar9 = *(int *)(iVar10 + 0x38);
     }
     func_0035f060(*(u32 *)(iVar9 + 8) | 0x80000000);
   }
