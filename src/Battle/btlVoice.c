@@ -10366,6 +10366,7 @@ void func_002ef7e0(void)
 int func_002ef9d0(void)
 
 {
+  extern s32 FUN_0030b5a0();
   int iVar1;
   s32 lVar2;
   u64 uVar3;
