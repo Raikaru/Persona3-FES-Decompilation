@@ -17433,29 +17433,32 @@ void FUN_00456050(int param_1)
 
 // FUN_004560D0 NONMATCHING
 
-u64 FUN_004560d0(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6) { long lVar1;
-u64 uVar2;
-u8 *puVar3;
+u64 FUN_004560d0(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6)
+{
+  int lVar1;
+  u32 uVar2;
+  u8 *puVar3;
 
-lVar1 = (*DAT_00960184)(1,0x150,0x40000);
-if (lVar1 == 0) {
-  uVar2 = 0;
+  lVar1 = (*DAT_00960184)(1,0x150,0x40000);
+  if (lVar1 == 0) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = FUN_00194b20_u32(param_1,DAT_006b4a60,0x18a6,(u32 (*)(int))FUN_00455e00,FUN_00456050,lVar1);
+    puVar3 = (u8 *)lVar1;
+    *puVar3 = 0;
+    *(float *)(puVar3 + 0x120) = param_2;
+    *(float *)(puVar3 + 0x124) = param_3;
+    *(u32 *)(puVar3 + 0x118) = param_5;
+    *(u32 *)(puVar3 + 0x11c) = param_6;
+    *(u32 *)(puVar3 + 0x138) = 0;
+    puVar3[0x148] = 0;
+    *(float *)(puVar3 + 0x128) = param_4;
+    *(float *)(puVar3 + 0x13c) = 0.8125f;
+    *(float *)(puVar3 + 0x140) = 0.8125f;
+  }
+  return uVar2;
 }
-else {
-  uVar2 = FUN_00194b20_u32(param_4,DAT_006b4a60,0x18a6,(u32 (*)(int))FUN_00455e00,FUN_00456050,lVar1);
-  puVar3 = (u8 *)lVar1;
-  *puVar3 = 0;
-  *(u32 *)(puVar3 + 0x120) = param_1;
-  *(u32 *)(puVar3 + 0x124) = param_2;
-  *(u32 *)(puVar3 + 0x118) = param_5;
-  *(u32 *)(puVar3 + 0x11c) = param_6;
-  *(u32 *)(puVar3 + 0x138) = 0;
-  puVar3[0x148] = 0;
-  *(u32 *)(puVar3 + 0x128) = param_3;
-  *(float *)(puVar3 + 0x13c) = 0.8125f;
-  *(float *)(puVar3 + 0x140) = 0.8125f;
-}
-return uVar2; }
 
 // FUN_004561D0
 

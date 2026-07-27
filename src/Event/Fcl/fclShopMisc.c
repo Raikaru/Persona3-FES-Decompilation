@@ -281,7 +281,7 @@ void FUN_003f55b0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5, u
 #pragma alias FUN_003f55b0_i FUN_003f55b0
 void FUN_003f55b0_i(int,int,int,int,int,int);
 void FUN_003f5830(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5, u32 param_6);
-void FUN_003f5ab0(u64 param_1,u64 param_2,u8 param_3,u64 param_4, int param_5);
+void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5d10(u64 param_1,u64 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5f50(u64 param_1,u64 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f61d0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5);
@@ -5144,7 +5144,7 @@ void FUN_003f5830(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5,
 // FUN_003F5AB0 NONMATCHING
 
 
-void FUN_003f5ab0(u64 param_1,u64 param_2,u8 param_3,u64 param_4,
+void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
                  int param_5)
 

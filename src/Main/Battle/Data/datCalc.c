@@ -7632,23 +7632,17 @@ void FUN_0030e760(void)
 {
   float fVar1;
   float fVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  float fVar6;
-  float fVar7;
-  float fVar8;
   
   fVar1 = (float)FUN_0030fdf0(0xe,2);
-  fVar2 = (float)FUN_0030fdf0(0xe,2);
-  fVar3 = (float)FUN_0030fdf0(0x13,0);
-  fVar4 = (float)FUN_0030fdf0(0xd,0);
-  fVar5 = (float)FUN_0030fdf0(0xc,0);
-  fVar6 = (float)FUN_0030fdf0(0x17,0);
-  fVar7 = (float)FUN_0030fdf0(0x1b,0);
-  fVar8 = (float)FUN_0030fdf0(0x21,0);
-  FUN_00311190((int)(sqrtf((((fVar3 - 30.0f) * 30.0f) / ((fVar1 + fVar2) * 5.0f)) * (fVar4 / 5.0f)) *
-                     10.0f * fVar5 * fVar6 * 2.0f * fVar7 * fVar8 * DAT_007cad74));
+  fVar1 += (float)FUN_0030fdf0(0xe,2);
+  fVar2 = (float)FUN_0030fdf0(0x13,0);
+  fVar2 = sqrtf((((fVar2 - 30.0f) * 30.0f) / (fVar1 * 5.0f)) *
+                ((float)FUN_0030fdf0(0xd,0) / 5.0f)) * 10.0f;
+  fVar2 *= (float)FUN_0030fdf0(0xc,0);
+  fVar2 *= 2.0f;
+  fVar2 *= (float)FUN_0030fdf0(0x1b,0);
+  fVar2 *= (float)FUN_0030fdf0(0x21,0);
+  FUN_00311190((int)(fVar2 * DAT_007cad74));
   return;
 }
 

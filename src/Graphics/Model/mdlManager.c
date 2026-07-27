@@ -9110,9 +9110,9 @@ u32 func_0031be80(u32 param_1)
 
   iVar8 = (int)param_1;
 
-  lVar6 = func_0031b680(*(u16 *)(iVar8 + 0xd4),*(u16 *)(iVar8 + 0xd6),&iStack_4,
+  lVar6 = func_0031b680(*(u16 *)(iVar8 + 0xd4),*(u16 *)(iVar8 + 0xd6),&iStack_8,
 
-                       &iStack_8);
+                       &iStack_4);
 
   if (lVar6 == 1) {
 

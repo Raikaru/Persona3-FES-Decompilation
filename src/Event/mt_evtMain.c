@@ -1734,8 +1734,9 @@ void FUN_00361b60(int *param_1,int param_2)
 
 {
 
-  int *piVar1 = *(int **)(param_2 + 0x84);
-
+  int *piVar1;
++
+  piVar1 = *(int **)(param_2 + 0x84);
   if (piVar1 == (int *)0x0) {
 
     *(int **)(param_2 + 0x84) = param_1;
