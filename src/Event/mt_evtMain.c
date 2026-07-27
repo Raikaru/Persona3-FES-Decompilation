@@ -15532,7 +15532,7 @@ void FUN_0036f3b0(int param_1,u32 param_2)
 
   
 
-  lVar3 = FUN_00386ae0_evt(0x990,0);
+  lVar3 = FUN_00386ae0(0x990,0);
 
   iVar1 = (int)lVar3;
 
