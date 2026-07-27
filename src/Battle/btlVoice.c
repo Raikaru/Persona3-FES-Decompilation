@@ -7511,7 +7511,7 @@ int func_002e97e0(void)
   extern s32 FUN_0030b5a0();
   int iVar1;
   s32 lVar2;
-  u64 uVar3;
+  u32 uVar3;
   int iVar4;
   int iVar5;
   u32 auStack_20 [8];

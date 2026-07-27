@@ -307,7 +307,7 @@ extern u64 func_0030bc20();
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
 extern u64 func_003176c0();
-extern u64 func_00317730();
+extern void func_00317730(void *param_1);
 extern u64 func_00317a20();
 extern u64 func_00318ad0();
 extern u64 func_00318b90();
@@ -2586,7 +2586,7 @@ void func_002bb3a0(void)
       }
       if ((*puVar4 & 0x220) == 0x220) {
         if (*(int *)(puVar4 + 0xc) != 0) {
-          func_00317730();
+          func_00317730((void *)*(u32 *)(puVar4 + 0xc));
         }
         if (*(int *)(puVar4 + 10) != 0) {
           func_003252a0();
