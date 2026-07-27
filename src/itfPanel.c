@@ -362,7 +362,7 @@ void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5
 #undef FUN_003a8b00
 
 
-// FUN_003A8B00 NONMATCHING
+// FUN_003A8B00
 u32 FUN_003a8b00(int param_1,int param_2)
 
 
@@ -404,7 +404,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
     *(int *)(iVar3 + 4) = (int)uVar2;
 
     *(int *)(iVar3 + 8) = (int)uVar2;
-    FUN_00521408(uVar2,0,DAT_006a1d10_abs[param_1]);
+    FUN_00521408(uVar2,0,*(volatile u32 *)&DAT_006a1d10_abs[param_1]);
 
 
   }
