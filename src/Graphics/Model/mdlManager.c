@@ -3963,7 +3963,7 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
   u32 *puVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   code pcStack_8;
 
