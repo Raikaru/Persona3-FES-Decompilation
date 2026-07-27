@@ -10398,7 +10398,7 @@ LAB_002efa38:
                (lVar2 = FUN_0030b5a0(*(u32 *)(iVar1 + 0xa2c),0), lVar2 == 0)) {
               uVar3 = FUN_002d7e20(iVar4,iVar4,auStack_20,1,1);
               FUN_0027ed20(uVar3,1);
-              uVar3 = FUN_00284200(1.0f,iVar1,2,0,0);
+              uVar3 = FUN_00284200_u32_voice(1.0f,iVar1,2,0,0);
               FUN_0027ed20(uVar3,1);
             }
           }

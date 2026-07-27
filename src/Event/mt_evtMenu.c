@@ -1495,8 +1495,8 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
   int *piVar3;
   int iVar6;
   int iVar11;
-  s32 lVar8;
   int iVar9;
+  s32 lVar8;
   f32 uVar10;
 
   
