@@ -23,7 +23,6 @@ u32 FUN_002de2a0(int param_1);
 u32 FUN_002de3c0(int param_1);
 u32 FUN_002de4e0(int param_1);
 u32 FUN_002ded60(int param_1);
-u32 FUN_002defe0(int param_1);
 u32 FUN_002e0350(int param_1);
 u32 FUN_002e0540(int param_1);
 int FUN_002e0620(int param_1,int param_2);
@@ -1744,7 +1743,7 @@ u32 FUN_002ded60(int param_1)
 // FUN_002DEFE0 NONMATCHING
 
 
-u32 FUN_002defe0(int param_1)
+u32 FUN_002defe0(int param_1, int param_2)
 
 
 
@@ -1754,9 +1753,9 @@ u32 FUN_002defe0(int param_1)
 
   s32 lVar2;
 
-  u32 uVar4;
-
   u32 uVar3;
+
+  u32 uVar4;
 
   int aiStack_30 [12];
   

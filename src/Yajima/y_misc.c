@@ -117,7 +117,7 @@ float FUN_0042a3f0(float param_1,float *param_2);
 float FUN_0042a4a0(float param_1,u32 *param_2);
 void FUN_0042a550(int param_1,u64 param_2,u64 param_3,u64 param_4);
 u8 FUN_0042aa40(int param_1,u32 param_2,u32 param_3);
-void FUN_0042ac60(int param_1,u64 param_2);
+void FUN_0042ac60(int param_1,char param_2);
 void FUN_0042adb0(int param_1);
 void FUN_0042b050(int param_1);
 void FUN_0042b540(int param_1);
@@ -5609,7 +5609,7 @@ u8 FUN_0042aa40(int param_1,u32 param_2,u32 param_3)
 // FUN_0042AC60 NONMATCHING
 
 
-void FUN_0042ac60(int param_1,u64 param_2)
+void FUN_0042ac60(int param_1,char param_2)
 
 
 

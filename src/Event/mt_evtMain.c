@@ -13581,8 +13581,8 @@ code * FUN_0036d500(void)
   lVar3 = FUN_00195460(*(u32 *)(iVar1 + 0x930));
 
   if (lVar3 == 0) {
-
-    if (4 < DAT_007ce5e4) {
+    iVar6 = DAT_007ce5e4;
+    if (iVar6 >= 5) {
 
       uVar4 = FUN_00386e10(uVar2);
 
@@ -13600,7 +13600,7 @@ code * FUN_0036d500(void)
 
     }
 
-    DAT_007ce5e4 = DAT_007ce5e4 + 1;
+    DAT_007ce5e4 = iVar6 + 1;
 
   }
 

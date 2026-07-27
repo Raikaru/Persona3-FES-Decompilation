@@ -1006,41 +1006,38 @@ void FUN_0035ac80(void)
 void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
 {
   u8 bVar1;
-  u8 *pbVar2;
   u8 *pbVar3;
   int iVar4;
 
   pbVar3 = param_3;
-  do {
-    while (true) {
-      if (param_4 <= (int)pbVar3 - (int)param_3) {
-        return;
-      }
-      bVar1 = *pbVar3;
-      pbVar2 = pbVar3 + 1;
-      if ((bVar1 & 1) != 0) {
-        break;
-      }
+  while (true) {
+    bVar1 = *pbVar3;
+    pbVar3 = pbVar3 + 1;
+    if ((bVar1 & 1) == 0) {
       iVar4 = (int)(u32)bVar1 >> 1;
-LAB_0035ad54:
-      param_1 = param_1 + iVar4;
-      *param_1 = *param_1 + param_2;
-      pbVar3 = pbVar2;
+      goto update;
     }
     if ((bVar1 & 2) == 0) {
-      iVar4 = (int)(u32)CONCAT11(*pbVar2,bVar1) >> 2;
-      pbVar2 = pbVar3 + 2;
-      goto LAB_0035ad54;
+      iVar4 = CONCAT11(*pbVar3,bVar1) >> 2;
+      pbVar3 = pbVar3 + 1;
+      goto update;
     }
     if ((bVar1 & 4) == 0) {
-      iVar4 = (int)(u32)CONCAT12(pbVar3[2],CONCAT11(*pbVar2,bVar1)) >> 3;
-      pbVar2 = pbVar3 + 3;
-      goto LAB_0035ad54;
+      iVar4 = CONCAT12(pbVar3[1],CONCAT11(*pbVar3,bVar1)) >> 3;
+      pbVar3 = pbVar3 + 2;
+      goto update;
     }
-    for (iVar4 = 0; pbVar3 = pbVar2, iVar4 < ((int)(u32)bVar1 >> 3) + 2;
-         iVar4 = iVar4 + 1) {
+    for (iVar4 = 0; iVar4 < ((int)(u32)bVar1 >> 3) + 2; iVar4 = iVar4 + 1) {
       param_1 = param_1 + 1;
       *param_1 = *param_1 + param_2;
     }
-  } while (true);
+    goto check;
+update:
+    param_1 = param_1 + iVar4;
+    *param_1 = *param_1 + param_2;
+check:
+    if (param_4 <= (int)pbVar3 - (int)param_3) {
+      return;
+    }
+  }
 }

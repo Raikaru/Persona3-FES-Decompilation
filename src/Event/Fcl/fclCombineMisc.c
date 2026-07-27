@@ -462,11 +462,11 @@ u32 FUN_003d5a40(u16 *param_1,u16 param_2,u16 *param_3,short param_4,void *param
 
   u32 uVar5;
 
-  short sVar6;
+  s32 sVar6;
 
-  short sVar7;
+  s32 sVar7;
 
-  short sVar8;
+  s32 sVar8;
 
   u32 uVar9;
 
