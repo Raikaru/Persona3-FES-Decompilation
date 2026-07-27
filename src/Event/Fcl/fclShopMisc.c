@@ -6553,7 +6553,7 @@ void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5)
 
      ((*(u32 *)(iVar1 + 8) & 0x1000) != 0)) {
 
-    FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00U,1,5,2,*(u16 *)(iVar1 + 6));
+    FUN_003c7e20_f32_u64(0.0f,param_1,param_2,param_3 | 0xffffff00U,1,5,2,*(u16 *)(iVar1 + 6));
 
   }
 
