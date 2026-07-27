@@ -380,7 +380,6 @@ static inline u8* bppMainLookupEntry(s16 pcId)
 }
 
 // FUN_0020f720
-#pragma schedule on
 #pragma optimization_level 1
 u8* bppMain0020f720(s16 pcId)
 {
@@ -430,7 +429,6 @@ void bppMain0020fb60(s16 pcId)
     bppPanelDisableActionOverlay((BppPanelWork*)(bppMainLookupEntry(pcId) + 0x20));
 }
 #pragma optimization_level 2
-#pragma schedule off
 
 
 // FUN_0020fc40

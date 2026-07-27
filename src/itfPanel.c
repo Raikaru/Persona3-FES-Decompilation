@@ -4664,73 +4664,73 @@ u64 FUN_003adf70(u64 param_1,int param_2)
 // FUN_003AE000
 
 
-u64 itfPanelSelectThresholdTableValue(u64 param_1,int param_2)
+u64 itfPanelSelectThresholdTableValue(u64 unused,int context)
 
 
 
 {
 
-  u8 bVar1;
+  u8 encodedHigh;
 
-  u32 uVar2;
+  u32 packedValue;
 
   u32 uVar3;
 
-  u8 *pbVar4;
+  u8 *command;
 
   u32 uVar5;
 
-  ItfFloat3 aiStack_10;
+  ItfFloat3 thresholdTable;
 
-  ItfFloat3 auStack_20;
+  ItfFloat3 valueTable;
 
   
 
-  aiStack_10 = DAT_006a2640_vec_abs[0];
+  thresholdTable = DAT_006a2640_vec_abs[0];
 
-  auStack_20 = DAT_006a2650_vec_abs[0];
+  valueTable = DAT_006a2650_vec_abs[0];
 
-  uVar3 = *(u32 *)(param_2 + 0x18);
+  uVar3 = *(u32 *)(context + 0x18);
 
-  pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + uVar3);
+  command = (u8 *)(*(int *)(context + 0x10) + uVar3);
 
-  uVar5 = *pbVar4 - 1 & 0xff;
+  uVar5 = *command - 1 & 0xff;
 
-  bVar1 = pbVar4[1];
+  encodedHigh = command[1];
 
-  if (bVar1 == 0xff) {
+  if (encodedHigh == 0xff) {
 
-    uVar2 = 0;
+    packedValue = 0;
 
   }
 
   else {
 
-    uVar2 = (u32)(u8)(bVar1 - 1);
+    packedValue = (u32)(u8)(encodedHigh - 1);
 
   }
 
-  uVar2 = (uVar2 & 0xff) << 8 | uVar5 & 0xff;
+  packedValue = (packedValue & 0xff) << 8 | uVar5 & 0xff;
 
   FUN_0017db00();
 
   uVar3 = FUN_0016dd40();
 
-  FUN_0016e2b0(uVar3,uVar2);
+  FUN_0016e2b0(uVar3,packedValue);
 
-  if (uVar2 == 0) {
+  if (packedValue == 0) {
     return 0;
   }
 
   uVar5 = 0;
   while (uVar5 < 3) {
-    if (((s32 *)&aiStack_10)[uVar5] >= (int)uVar2) {
+    if (((s32 *)&thresholdTable)[uVar5] >= (int)packedValue) {
       break;
     }
     uVar5 = uVar5 + 1;
   }
 
-  FUN_0010a4e0(0,0,4,*(s16 *)((u8 *)&auStack_20 + uVar5 * 4));
+  FUN_0010a4e0(0,0,4,*(s16 *)((u8 *)&valueTable + uVar5 * 4));
 
   return 0;
 

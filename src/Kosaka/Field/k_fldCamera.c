@@ -73,7 +73,6 @@ u32 K_FldCamera_GetType(KwlnTask* fldCameraTask)
     return ((FldCamera*)fldCameraTask->workData)->type;
 }
 
-#pragma opt_loop_invariants on
 // FUN_001d5c10
 void func_001d5c10(KwlnTask* fldCameraTask, u32 type)
 {
@@ -148,7 +147,6 @@ cleanup:
         kwlnTaskDestroyWithHierarchy(fldCamera->pointTask2);
     }
 }
-#pragma opt_loop_invariants off
 
 // FUN_001d5e10
 RwV3d* K_FldCamera_GetPos(KwlnTask* fldCameraTask)

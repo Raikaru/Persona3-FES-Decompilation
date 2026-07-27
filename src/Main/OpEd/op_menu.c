@@ -231,7 +231,6 @@ void opMenu0026dbd0(void)
     *sOpMenu |= 0x20;
 }
 
-#pragma opt_loop_invariants on
 // FUN_0026A2C0 NONMATCHING
 void opMenu0026a2c0(void)
 {
@@ -523,7 +522,6 @@ void opMenu0026a2c0(void)
         ((f32*)((u8*)work + 0xac0))[3] = (f32)color[3];
     }
 }
-#pragma opt_loop_invariants off
 
 // FUN_0026C710
 void opMenu0026c710(void)
@@ -590,7 +588,6 @@ void opMenu0026c710(void)
     (*draw)(work + 0x204, 4, 0, 2, 3);
 }
 
-#pragma opt_loop_invariants on
 // FUN_0026CC90 NONMATCHING
 void opMenu0026cc90(void)
 {
@@ -842,4 +839,3 @@ void opMenu0026d430(void)
     opMenu0026dc70();
     work[0] |= 1;
 }
-#pragma opt_loop_invariants off

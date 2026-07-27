@@ -158,124 +158,129 @@ static inline uintptr_t ComuData_AddOffsetFirst(uintptr_t offset, uintptr_t base
 #undef FUN_003c4040
 #pragma push
 #pragma opt_propagation off
+#pragma alias comuDataGetLinkPairEntry FUN_003c4040
 // FUN_003C4040
 
 
-u8 * FUN_003c4040(int param_2,int param_1)
+u8 * comuDataGetLinkPairEntry(int secondLink,int firstLink)
 {
-  int lVar1;
-  int first;
-  int second;
-  u8 *base;
-  int offset;
+  int valid;
+  int firstSocialLink;
+  int secondSocialLink;
+  u8 *relationshipTable;
+  int rowOffset;
 
-  first = param_1;
-  second = param_2;
-  lVar1 = FUN_00172a50((short)second);
-  if (lVar1 == 0) {
+  firstSocialLink = firstLink;
+  secondSocialLink = secondLink;
+  valid = FUN_00172a50((short)secondSocialLink);
+  if (valid == 0) {
     FUN_0019d3f0("comuData.c",0x30);
   }
-  lVar1 = FUN_00172a50((short)first);
-  if (lVar1 == 0) {
+  valid = FUN_00172a50((short)firstSocialLink);
+  if (valid == 0) {
     FUN_0019d3f0("comuData.c",0x32);
   }
-  offset = first * 0x18;
-  base = PTR_DAT_006a38e8_abs;
-  asm volatile("" : "+m"(base));
-  base += offset;
-  return *(u8 **)(uintptr_t)ComuData_AddOffsetFirst((uintptr_t)(second * 4),
-                                                     (uintptr_t)base);
+  rowOffset = firstSocialLink * 0x18;
+  relationshipTable = PTR_DAT_006a38e8_abs;
+  asm volatile("" : "+m"(relationshipTable));
+  relationshipTable += rowOffset;
+  return *(u8 **)(uintptr_t)ComuData_AddOffsetFirst((uintptr_t)(secondSocialLink * 4),
+                                                     (uintptr_t)relationshipTable);
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
 #pragma pop
 #undef FUN_003c40f0
+#pragma alias comuDataGetLinkType FUN_003c40f0
 // FUN_003C40F0
 
 
-s8 FUN_003c40f0(int param_1)
+s8 comuDataGetLinkType(int socialLink)
 
 
 
 {
 
-  return *(s8 *)(DAT_006a3d70 + param_1 * 4);
+  return *(s8 *)(DAT_006a3d70 + socialLink * 4);
 
 }
 #define FUN_003c40f0(...) ((s8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
 #undef FUN_003c4110
+#pragma alias comuDataGetLinkResourceId FUN_003c4110
 // FUN_003C4110
 
 
-u16 FUN_003c4110(int param_1)
+u16 comuDataGetLinkResourceId(int socialLink)
 
 
 
 {
 
-  return DAT_006a3d72[param_1 * 2];
+  return DAT_006a3d72[socialLink * 2];
 
 }
 #define FUN_003c4110(...) ((u16 (*)(...))FUN_003c4110)(__VA_ARGS__)
 #undef FUN_003c4270
+#pragma alias comuDataGetNextMeetingDayString FUN_003c4270
 // FUN_003C4270
 
 
-u8 * FUN_003c4270(void)
+u8 * comuDataGetNextMeetingDayString(void)
 
 
 
 {
-  int iVar2;
-  short sVar1;
-  u8 *puVar3;
-  u32 uVar4;
+  int targetDay;
+  short currentDay;
+  u8 *dayString;
+  u32 weekday;
 
-  iVar2 = FUN_0017d8b0();
-  sVar1 = FUN_0016ef20();
-  if (iVar2 == sVar1 + 1) {
-    puVar3 = *(u8 **)PTR_s_tomorrow_006a3bfc_abs;
+  targetDay = FUN_0017d8b0();
+  currentDay = FUN_0016ef20();
+  if (targetDay == currentDay + 1) {
+    dayString = *(u8 **)PTR_s_tomorrow_006a3bfc_abs;
     goto ReturnResult;
   }
-  uVar4 = FUN_0017dae0(iVar2);
-  switch(uVar4) {
+  weekday = FUN_0017dae0(targetDay);
+  switch(weekday) {
   case 0:
-    puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
+    dayString = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
     break;
   case 1:
-    puVar3 = *(u8 **)PTR_s_next_Monday_006a3be4_abs;
+    dayString = *(u8 **)PTR_s_next_Monday_006a3be4_abs;
     break;
   case 2:
-    puVar3 = *(u8 **)PTR_s_next_Tuesday_006a3be8_abs;
+    dayString = *(u8 **)PTR_s_next_Tuesday_006a3be8_abs;
     break;
   case 3:
-    puVar3 = *(u8 **)PTR_s_next_Wednesday_006a3bec_abs;
+    dayString = *(u8 **)PTR_s_next_Wednesday_006a3bec_abs;
     break;
   case 4:
-    puVar3 = *(u8 **)PTR_s_next_Thursday_006a3bf0_abs;
+    dayString = *(u8 **)PTR_s_next_Thursday_006a3bf0_abs;
     break;
   case 5:
-    puVar3 = *(u8 **)PTR_s_next_Friday_006a3bf4_abs;
+    dayString = *(u8 **)PTR_s_next_Friday_006a3bf4_abs;
     break;
   case 6:
-    puVar3 = *(u8 **)PTR_s_next_Saturday_006a3bf8_abs;
+    dayString = *(u8 **)PTR_s_next_Saturday_006a3bf8_abs;
     break;
   default:
     FUN_0019d3f0("comuData.c",0xba);
-    puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
+    dayString = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
   }
 ReturnResult:
-  return puVar3;
+  return dayString;
 }
 #define FUN_003c4270(...) ((u8 * (*)(...))FUN_003c4270)(__VA_ARGS__)
 #undef FUN_003c4390
+#pragma alias comuDataGetUltimatePersonaName FUN_003c4390
 // FUN_003C4390
 
 
-u8 * FUN_003c4390(int param_1)
+u8 * comuDataGetUltimatePersonaName(int socialLink)
 {
   int index;
 
-  index = param_1 - 1;
+  index = socialLink - 1;
 
   if ((0x15 < index) || (index < 0)) {
 

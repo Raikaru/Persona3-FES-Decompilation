@@ -935,10 +935,11 @@ u64 FUN_003af110(u64 param_1,int param_2)
 }
 #define FUN_003af110(...) ((u64 (*)(...))FUN_003af110)(__VA_ARGS__)
 #undef FUN_003af360
+#pragma alias frTagTableGetArgument0 FUN_003af360
 // FUN_003AF360
 
 
-u32 FUN_003af360(void)
+u32 frTagTableGetArgument0(void)
 
 
 
@@ -948,10 +949,11 @@ u32 FUN_003af360(void)
 }
 #define FUN_003af360(...) ((u32 (*)(...))FUN_003af360)(__VA_ARGS__)
 #undef FUN_003af370
+#pragma alias frTagTableGetArgument1 FUN_003af370
 // FUN_003AF370
 
 
-u32 FUN_003af370(void)
+u32 frTagTableGetArgument1(void)
 
 
 
@@ -961,10 +963,11 @@ u32 FUN_003af370(void)
 }
 #define FUN_003af370(...) ((u32 (*)(...))FUN_003af370)(__VA_ARGS__)
 #undef FUN_003af380
+#pragma alias frTagTableGetArgument2 FUN_003af380
 // FUN_003AF380
 
 
-u32 FUN_003af380(void)
+u32 frTagTableGetArgument2(void)
 
 
 
@@ -974,10 +977,11 @@ u32 FUN_003af380(void)
 }
 #define FUN_003af380(...) ((u32 (*)(...))FUN_003af380)(__VA_ARGS__)
 #undef FUN_003af390
+#pragma alias frTagTableGetArgument3 FUN_003af390
 // FUN_003AF390
 
 
-u32 FUN_003af390(void)
+u32 frTagTableGetArgument3(void)
 
 
 
@@ -986,8 +990,9 @@ u32 FUN_003af390(void)
   return *(u32 *)0x0095abec;
 }
 #define FUN_003af390(...) ((u32 (*)(...))FUN_003af390)(__VA_ARGS__)
+#pragma alias frTagTableReadArguments01 FUN_003af3a0
 // FUN_003AF3A0
-u64 FUN_003af3a0(u64 unused, int context)
+u64 frTagTableReadArguments01(u64 unused, int context)
 {
   u8* data;
   u8 low;
@@ -1024,8 +1029,9 @@ u64 FUN_003af3a0(u64 unused, int context)
   D_0095ABE4[0] = (u32)high << 8 | low;
   return 0;
 }
+#pragma alias frTagTableReadArguments23 FUN_003af460
 // FUN_003AF460
-u64 FUN_003af460(u64 unused, int context)
+u64 frTagTableReadArguments23(u64 unused, int context)
 {
   u8* data;
   u8 low;

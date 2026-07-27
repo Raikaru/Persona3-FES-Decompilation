@@ -764,8 +764,6 @@ void FUN_0039f410(int *param_1)
 }
 #define FUN_0039f410(...) ((void (*)(...))FUN_0039f410)(__VA_ARGS__)
 #undef FUN_0039f6e0
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0039F6E0
 
 
@@ -788,11 +786,8 @@ nonzero:
   return param_1[3] == 0;
 
 }
-#pragma pop
 #define FUN_0039f6e0(...) ((u8 (*)(...))FUN_0039f6e0)(__VA_ARGS__)
 #undef FUN_0039f710
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0039F710
 
 
@@ -811,7 +806,6 @@ nonzero:
   return FUN_003a51a0(param_1[2]);
 
 }
-#pragma pop
 #define FUN_0039f710(...) ((u32 (*)(...))FUN_0039f710)(__VA_ARGS__)
 #undef FUN_0039f750
 // FUN_0039F750

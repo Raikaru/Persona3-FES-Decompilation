@@ -90,8 +90,9 @@ socialUnavailable:
     return false;
 }
 
+#pragma alias datIncrementSocialLinkCounter FUN_001718b0
 // FUN_001718B0
-void FUN_001718b0(s32 socialLink)
+void datIncrementSocialLinkCounter(s32 socialLink)
 {
     DatGlobal* globalWork = &gGlobalWork;
     s32 valid;
@@ -117,8 +118,9 @@ void FUN_001718b0(s32 socialLink)
     }
 }
 
+#pragma alias datDecreaseSocialLinkPoints FUN_00171960
 // FUN_00171960
-void FUN_00171960(s32 socialLink, s32 points)
+void datDecreaseSocialLinkPoints(s32 socialLink, s32 points)
 {
     struct SocialPointOwner
     {
@@ -176,8 +178,9 @@ void FUN_00171960(s32 socialLink, s32 points)
     }
 }
 
+#pragma alias datGetSocialLinkPoints FUN_00171ac0
 // FUN_00171AC0
-s16 FUN_00171ac0(s32 socialLink)
+s16 datGetSocialLinkPoints(s32 socialLink)
 {
     DatGlobal* globalWork = &gGlobalWork;
     s32 valid;
@@ -194,8 +197,9 @@ s16 FUN_00171ac0(s32 socialLink)
     return ((s16*)(globalWork->heroStatus.socialLinkData + 0x5E))[socialLink];
 }
 
+#pragma alias datResetSocialLinkPoints FUN_00171b50
 // FUN_00171B50
-void FUN_00171b50(s32 socialLink)
+void datResetSocialLinkPoints(s32 socialLink)
 {
     DatGlobal* globalWork;
     s32 valid;
@@ -313,8 +317,9 @@ void FUN_00171c40(s32 socialLink, s32 enabled)
     }
 }
 
+#pragma alias datSetSocialLinkCounter FUN_00171e90
 // FUN_00171E90
-void FUN_00171e90(s32 socialLink, u16 value)
+void datSetSocialLinkCounter(s32 socialLink, u16 value)
 {
     DatGlobal* globalWork = &gGlobalWork;
     s32 valid;
@@ -499,8 +504,9 @@ void FUN_00172200(s32 socialLink, s32 enabled)
     globalWork->pointValues[socialLink] = defaultPoints;
 }
 
+#pragma alias datSetSocialLinkRankUnlocked FUN_001723a0
 // FUN_001723A0
-void FUN_001723a0(s32 socialLink, s32 rank, s32 enabled)
+void datSetSocialLinkRankUnlocked(s32 socialLink, s32 rank, s32 enabled)
 {
     s32 resourceId = rank - 1 + (socialLink * 0x20 + 0x400);
     s32 valid;
@@ -530,8 +536,9 @@ void FUN_001723a0(s32 socialLink, s32 rank, s32 enabled)
     func_003951a0(resourceId);
 }
 
+#pragma alias datSetSocialLinkRankAcknowledged FUN_001724a0
 // FUN_001724A0
-void FUN_001724a0(s32 socialLink, s32 rank, s32 enabled)
+void datSetSocialLinkRankAcknowledged(s32 socialLink, s32 rank, s32 enabled)
 {
     s32 resourceId = rank - 1 + (socialLink * 0x20 + 0x410);
     s32 valid;
@@ -561,8 +568,9 @@ void FUN_001724a0(s32 socialLink, s32 rank, s32 enabled)
     func_003951a0(resourceId);
 }
 
+#pragma alias datApplyPendingSocialLinkRank FUN_001725a0
 // FUN_001725A0
-void FUN_001725a0(s32 socialLink)
+void datApplyPendingSocialLinkRank(s32 socialLink)
 {
     struct SocialLevelOwner
     {
@@ -589,8 +597,9 @@ void FUN_001725a0(s32 socialLink)
     }
 }
 
+#pragma alias datSocialLinkHasPendingRank FUN_00172660
 // FUN_00172660
-s32 FUN_00172660(s32 socialLink)
+s32 datSocialLinkHasPendingRank(s32 socialLink)
 {
     s32 valid;
     s32 rank;
@@ -627,8 +636,9 @@ s32 FUN_00172660(s32 socialLink)
     return false;
 }
 
+#pragma alias datSocialEventRecordHasData FUN_00172750
 // FUN_00172750
-u8 FUN_00172750(const u8* data)
+u8 datSocialEventRecordHasData(const u8* data)
 {
     if (data[0] == 0xFF && *(const u16*)(data + 2) == 0 && data[4] == 0 && data[5] == 0)
     {
@@ -709,20 +719,23 @@ void FUN_001728d0(const u32* values)
     K_Assert(__FILE__, 0xC9C);
 }
 
+#pragma alias datGetSocialEventData FUN_00172990
 // FUN_00172990
-u32* FUN_00172990(void)
+u32* datGetSocialEventData(void)
 {
     return (u32*)D_00836458;
 }
 
+#pragma alias datSocialEventDataIsLoaded FUN_001729a0
 // FUN_001729A0
-u8 FUN_001729a0(void)
+u8 datSocialEventDataIsLoaded(void)
 {
     return func_003951d0(0x980) == 1;
 }
 
+#pragma alias datTryGetSocialEventValue FUN_001729d0
 // FUN_001729D0
-u8 FUN_001729d0(u32* outValue)
+u8 datTryGetSocialEventValue(u32* outValue)
 {
     struct SocialEventData
     {
@@ -745,20 +758,23 @@ u8 FUN_00172a10(void)
     return D_00836458[8];
 }
 
+#pragma alias datSetSocialEventMode FUN_00172a20
 // FUN_00172A20
-void FUN_00172a20(u32 value)
+void datSetSocialEventMode(u32 value)
 {
     *(u32*)(D_00836458 + 0x10) = value;
 }
 
+#pragma alias datSocialEventModeIsActive FUN_00172a30
 // FUN_00172A30
-u8 FUN_00172a30(void)
+u8 datSocialEventModeIsActive(void)
 {
     return *(u32*)(D_00836458 + 0x10) == 1;
 }
 
+#pragma alias datSocialLinkUsesRelationshipTable FUN_00172a50
 // FUN_00172A50
-u8 FUN_00172a50(s16 value)
+u8 datSocialLinkUsesRelationshipTable(s16 value)
 {
     s16 i;
     s32 checkedValue;
@@ -848,8 +864,9 @@ u8* FUN_00172c50(s16* outValue)
     return NULL;
 }
 
+#pragma alias datRecordSocialLinkDate FUN_00172cc0
 // FUN_00172CC0
-void FUN_00172cc0(s32 socialLink)
+void datRecordSocialLinkDate(s32 socialLink)
 {
     s32 valid;
     u32 month;
@@ -870,8 +887,9 @@ void FUN_00172cc0(s32 socialLink)
     D_00836752[(s16)socialLink] = (u8)day;
 }
 
+#pragma alias datGetSocialLinksForToday FUN_00172d70
 // FUN_00172D70
-s32 FUN_00172d70(s32* outSocialLinks)
+s32 datGetSocialLinksForToday(s32* outSocialLinks)
 {
     s32 count = 0;
     u32 month = clndGetCurrentMonth();

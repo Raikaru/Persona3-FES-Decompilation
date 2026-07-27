@@ -87,8 +87,6 @@ void FUN_00251060(void)
 }
 
 // FUN_002510D0 NONMATCHING
-#pragma push
-#pragma opt_loop_invariants on
 void FUN_002510d0(void)
 {
     BpTutWork* work;
@@ -342,7 +340,6 @@ void FUN_002510d0(void)
         }
     }
 }
-#pragma pop
 
 // FUN_002518B0
 

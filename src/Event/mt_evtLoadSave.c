@@ -849,8 +849,6 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 // FUN_0038E660 NONMATCHING
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_0038e660(int param_1,int param_2,int param_3)
 {
   extern u8 DAT_006a0b50[];
@@ -941,7 +939,6 @@ next_node:
   }
   return;
 }
-#pragma pop
 
 
 #define FUN_0038e660(...) ((void (*)(...))FUN_0038e660)(__VA_ARGS__)
@@ -1372,8 +1369,6 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
 #define FUN_0038e860(...) ((u32 (*)(...))FUN_0038e860)(__VA_ARGS__)
 #undef FUN_0038f0f0
-#pragma push
-#pragma opt_loop_invariants on
 // FUN_0038F0F0 NONMATCHING
 
 
@@ -1557,7 +1552,6 @@ void FUN_0038f0f0(u32 param_1)
   return;
 
 }
-#pragma pop
 
 
 #define FUN_0038f0f0(...) ((void (*)(...))FUN_0038f0f0)(__VA_ARGS__)

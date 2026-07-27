@@ -291,7 +291,6 @@ u32 FUN_00154F70(CampMenuDrawItem* items, const char** labels, s32 count,
     return complete;
 }
 
-#pragma opt_loop_invariants on
 // FUN_00155070 NONMATCHING
 void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 first,
                   s32 count, s32 page, s32 selected)
@@ -357,7 +356,6 @@ void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
     (void)alpha;
     (void)first;
 }
-#pragma opt_loop_invariants off
 
 // FUN_00155710
 u32 FUN_00155710(CampMenuDrawItem* items, const char** labels, s32 count, s32 first,

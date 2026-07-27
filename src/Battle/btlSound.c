@@ -1625,8 +1625,6 @@ u32 FUN_002de4e0(int param_1)
 
 }
 
-#pragma push
-#pragma opt_rebuildconditionals on
 
 
 // FUN_002DED60
@@ -1739,7 +1737,6 @@ u32 FUN_002ded60(int param_1)
 
     return uVar1;
 }
-#pragma pop
 
 // FUN_002DEFE0 NONMATCHING
 

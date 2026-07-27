@@ -1226,7 +1226,6 @@ u8 FUN_00418390(int param_1,int *param_2)
 }
 
 #pragma optimization_level 3
-#pragma schedule off
  
 // FUN_00418510 NONMATCHING
 
@@ -1347,7 +1346,6 @@ u8 FUN_00418510(int param_1,int *param_2)
 
 }
 #pragma optimization_level 2
-#pragma schedule off
 
 #pragma optimization_level 3
 // FUN_00418880 NONMATCHING
