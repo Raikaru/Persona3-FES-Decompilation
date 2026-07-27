@@ -37,7 +37,7 @@ extern u32 DAT_007cad5c;
 extern u32 DAT_007cada0;
 extern u32 DAT_007caea4;
 extern u32 DAT_007caf1c;
-extern u32 DAT_007cb0b8;
+extern f32 DAT_007cb0b8;
 extern u32 DAT_007cd560;
 extern u32 DAT_007cd564;
 extern u32 DAT_007ce658;

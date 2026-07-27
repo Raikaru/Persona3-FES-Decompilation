@@ -599,8 +599,6 @@ extern void FUN_001adc20_typed(void *collisCtlTask, const void *position);
 extern code FUN_001adff0;
 #pragma alias FUN_001adff0_typed FUN_001adff0
 extern void FUN_001adff0_typed(void *collisCtlTask, const void *axis, f32 angle);
-#pragma alias FUN_001adff0_call2 FUN_001adff0
-extern void FUN_001adff0_call2(f32 angle, const void *axis);
 extern code FUN_001af930;
 #pragma alias FUN_001af930_typed FUN_001af930
 extern void *FUN_001af930_typed(void *parent, void *resource);
@@ -12894,7 +12892,7 @@ void FUN_0044acf0(int param_1)
   return;
 }
 
-// FUN_0044AD20 NONMATCHING
+// FUN_0044AD20
 
 
 
