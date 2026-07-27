@@ -750,11 +750,11 @@ extern void FUN_00423fe0_typed(float *param_1, char param_2, short param_3, shor
 extern code FUN_00427830;
 #pragma alias FUN_00427830_typed FUN_00427830
 extern u64 FUN_00427830_typed(float param_1,int param_2,u32 param_3,u64 param_4,u32 param_5,
-                               u8 *param_6,u8 *param_7,int param_8);
+                               char *param_6,char *param_7,int param_8);
 extern code FUN_00427a10;
 #pragma alias FUN_00427a10_typed FUN_00427a10
 extern u64 FUN_00427a10_typed(float param_1,int param_2,u32 param_3,u64 param_4,u32 param_5,
-                               u8 *param_6,u8 *param_7,int param_8);
+                               char *param_6,char *param_7,int param_8);
 extern code FUN_00427db0;
 #pragma alias FUN_00427db0_typed FUN_00427db0
 extern void FUN_00427db0_typed(int object, u64 value);
@@ -771,7 +771,7 @@ extern void FUN_00427e60_typed(int param_1, u8 param_2);
 extern code FUN_00427e70;
 #pragma alias FUN_00427e70_typed FUN_00427e70
 extern void FUN_00427e70_typed(float param_1,float param_2,float param_3,u32 param_4,int param_5,
-                               int param_6,u32 *param_7);
+                               int param_6,u32 param_7);
 extern code FUN_00429e80;
 #pragma alias FUN_00429e80_typed FUN_00429e80
 extern void FUN_00429e80_typed(int param_1, u8 param_2);

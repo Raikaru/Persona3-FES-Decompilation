@@ -19,6 +19,7 @@ typedef u32 int3;
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
+#define CONCAT44_F32(hi,lo) ((((u64)(*(u32 *)&(hi))) << 32) | *(u32 *)&(lo))
 extern u32 DAT_006a2af0[24];
 extern u32 DAT_006a2af4;
 extern u32 DAT_006a2af8;
@@ -1983,7 +1984,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = fStack_b0 * fStack_c - fStack_ac * fStack_10;
 
-  uStack_40 = CONCAT44(fStack_2c,fStack_30);
+  uStack_40 = CONCAT44_F32(fStack_2c,fStack_30);
 
   fStack_28 = fStack_38;
 
@@ -2001,7 +2002,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_58 = fStack_30 * fStack_ac - fStack_2c * fStack_b0;
 
-  uStack_40 = CONCAT44(fStack_5c,fStack_60);
+  uStack_40 = CONCAT44_F32(fStack_5c,fStack_60);
 
   fStack_38 = fStack_58;
 
@@ -2015,7 +2016,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fVar5 = fStack_58;
 
-  uStack_50 = CONCAT44(fStack_5c,fStack_60);
+  uStack_50 = CONCAT44_F32(fStack_5c,fStack_60);
 
   fStack_48 = fStack_58;
 
@@ -2036,10 +2037,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   }
 
   else {
+    fVar5 = FUN_0052e9e8_mt_scene(fStack_b8 * fVar5 + fStack_c0 * (*(float *)&uStack_50) +
+                               fStack_bc * fVar7);
 
-    fVar5 = FUN_0052e9e8_mt_scene(fStack_b8 * fVar5 + fStack_c0 * (float)uStack_50 +
-                               fStack_bc * fVar7
-                               );
 
     fVar5 = DAT_007caf34 * fVar5;
 

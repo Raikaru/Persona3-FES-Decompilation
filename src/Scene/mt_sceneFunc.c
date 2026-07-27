@@ -3839,11 +3839,11 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
   float fVar5;
 
-  u32 auStack_30 [4];
+  float auStack_30 [4];
 
-  u32 auStack_20 [4];
+  float auStack_20 [4];
 
-  u32 auStack_10 [4];
+  float auStack_10 [4];
 
   
 
@@ -3858,11 +3858,11 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
         iVar2 = iVar3 * 0xc + (cVar1 + -1) * 0x24;
 
-        auStack_10[iVar3] = *(u32 *)(param_2 + iVar2 + 4);
+        auStack_10[iVar3] = *(float *)(param_2 + iVar2 + 4);
 
-        auStack_20[iVar3] = *(u32 *)(param_2 + iVar2 + 8);
+        auStack_20[iVar3] = *(float *)(param_2 + iVar2 + 8);
 
-        auStack_30[iVar3] = *(u32 *)(param_2 + iVar2 + 0xc);
+        auStack_30[iVar3] = *(float *)(param_2 + iVar2 + 0xc);
 
       }
 
@@ -3878,15 +3878,17 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
         iVar2 = iVar3 * 0xc + (int)(param_1 / fVar5) * 0x24;
 
-        auStack_10[iVar3] = *(u32 *)(param_2 + iVar2 + 4);
+        auStack_10[iVar3] = *(float *)(param_2 + iVar2 + 4);
 
-        auStack_20[iVar3] = *(u32 *)(param_2 + iVar2 + 8);
+        auStack_20[iVar3] = *(float *)(param_2 + iVar2 + 8);
 
-        auStack_30[iVar3] = *(u32 *)(param_2 + iVar2 + 0xc);
+        auStack_30[iVar3] = *(float *)(param_2 + iVar2 + 0xc);
 
       }
 
-      for (; fVar5 < param_1; param_1 = param_1 - fVar5) {
+      while (param_1 >= fVar5) {
+
+        param_1 = param_1 - fVar5;
 
       }
 

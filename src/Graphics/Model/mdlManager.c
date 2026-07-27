@@ -3205,9 +3205,9 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
   fVar5 = fGpffff80e4 * *(float *)(puVar4 + 4);
 
-  if ((fVar5 <= 0.0) && ((*puVar4 & 6) == 0)) goto LAB_0031379c;
+  if ((fVar5 <= 0.0f) && ((*puVar4 & 6) == 0)) goto LAB_0031379c;
 
-  if (*(float *)(puVar4 + 0xe) < 1.0) {
+  if (*(float *)(puVar4 + 0xe) < 1.0f) {
 
     piVar2 = *(int **)(puVar4 + 0x16);
 
@@ -3229,11 +3229,11 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
                      *(u32 *)(puVar4 + 0x14));
 
-        fVar5 = *(float *)(puVar4 + 0xe) + 1.0 / (float)puVar4[0xc];
+        fVar5 = *(float *)(puVar4 + 0xe) + 1.0f / (float)puVar4[0xc];
 
         *(float *)(puVar4 + 0xe) = fVar5;
 
-        if (1.0 <= fVar5) {
+        if (1.0f <= fVar5) {
 
           func_004b6ec0(*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
 
@@ -3247,7 +3247,7 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
     }
 
-    *(float *)(puVar4 + 0xe) = *(float *)(puVar4 + 0xe) + 1.0 / (float)puVar4[0xc];
+    *(float *)(puVar4 + 0xe) = *(float *)(puVar4 + 0xe) + 1.0f / (float)puVar4[0xc];
 
   }
 
@@ -3273,7 +3273,7 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
     else {
 
-      func_004b7240(fVar5,*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20));
+      func_004b7240_frame(fVar5,*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20));
 
     }
 
@@ -4415,7 +4415,7 @@ void func_00314d30(void* param_1)
 
   u32 *puVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 

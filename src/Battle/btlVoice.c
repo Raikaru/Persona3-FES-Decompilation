@@ -1465,14 +1465,13 @@ u32 func_002f2840(BtlAction* action)
 
 }
 // FUN_002f2890 NONMATCHING
-void func_002f2890(BtlAction* param_1)
+void func_002f2890(BtlAction* action)
 {
-  BtlAction* action = (BtlAction*)param_1;
   BtlUnit* unit;
   void* object;
   BtlPacket* packet;
   BtlPacket* parent;
-  u16 waitUID;
+  u64 waitUID;
   u32 index;
   unit = gBtl->unitLists[UNIT_GENUS_EC].head;
   object = func_002b8f90(0);
@@ -3129,10 +3128,9 @@ void func_002f6120(void)
   }
   uVar3 = FUN_002dd690(3,0x69a5b8);
   FUN_0027ed20(uVar3,1);
-  uVar3 = FUN_00284200(1.0f,iVar5,0x12,0,2);
-  iVar1 = (int)uVar3;
-  *(u16 *)(iVar1 + 0x48) = 3;
-  FUN_0027ed20(uVar3,1);
+  packet = FUN_00284200_packet_voice(1.0f, (BtlUnit*)iVar5, 0x12, 0, 2);
+  packet->preUpdateDelay = 3;
+  FUN_0027ed20((u32)packet,1);
   uVar3 = FUN_002b8d60(3,0xfff);
   *(u8 *)uVar3 = 4;
   *(u64 *)((u8 *)uVar3 + 8) = *(u64 *)(iVar1 + 0x58);
