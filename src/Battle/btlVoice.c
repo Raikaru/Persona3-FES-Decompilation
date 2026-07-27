@@ -10298,45 +10298,48 @@ void func_002ef5a0(void)
     }
 }
 
-// FUN_002ef670 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ef670
 void func_002ef670(void)
-
 {
-  int iVar1;
-  int iVar7;
-  int iVar6;
-  u32 uVar2;
-  u32 uVar3;
-  u32 uVar4;
-  short sVar5;
-  int aiStack_10 [3];
-  
-  uVar2 = FUN_002b8f90_u32_voice(0);
-  FUN_002b90d0(uVar2,FUN_002f87e0_u32_voice(1));
-  sVar5 = 0;
-  iVar7 = 0;
-  aiStack_10[0] = 0;
-  aiStack_10[1] = 0;
-  aiStack_10[2] = 0;
-  for (iVar1 = *(int *)(iGpffffb6fc_ptr + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
-    iVar6 = iVar1;
-    if (*(short *)(iVar1 + 0xa4) != 1) {
-      aiStack_10[2 - sVar5] = iVar1;
-      sVar5++;
-      iVar6 = iVar7;
+  BtlUnit* target;
+  void* object;
+  BtlPacket* packet;
+  BtlUnit* unit;
+  BtlUnit* args[3];
+  s16 count;
+  u32 raw;
+
+  object = (void*)FUN_002b8f90_u32_voice(0);
+  FUN_002b90d0(object, (void*)FUN_002f87e0_u32_voice(1));
+  count = 0;
+  target = NULL;
+  args[0] = NULL;
+  args[1] = NULL;
+  args[2] = NULL;
+  for (unit = gBtl->unitLists[UNIT_GENUS_PC].head;
+       unit != NULL; unit = unit->next) {
+    switch (unit->charId) {
+    case 1:
+      target = unit;
+      break;
+    default:
+      args[2 - count] = unit;
+      count++;
+      break;
     }
-    iVar7 = iVar6;
   }
-  FUN_0027ed20(FUN_002bc950(aiStack_10[0],aiStack_10[1],aiStack_10[2]),1);
-  uVar3 = FUN_002baf90_u32_voice(uVar2,iVar7,iVar7,0,0x200);
-  FUN_0027ed20(uVar3,2);
-  uVar4 = FUN_002bc950(0,0,0);
-  *(u8 *)uVar4 = 4;
-  *(u64 *)((u8 *)uVar4 + 8) = *(u64 *)((int)uVar3 + 0x58);
-  FUN_0027ed20(uVar4,1);
-  FUN_002b9030(uVar2);
-  return;
+  raw = FUN_002bc950_u32_voice(args[0], args[1], args[2]);
+  FUN_0027ed20_voice(raw, 1);
+  packet = FUN_002baf90_packet_voice(object, target, target, 0, 0x200);
+  FUN_0027ed20_voice((u32)packet, 2);
+  raw = FUN_002bc950_u32_voice(NULL, NULL, NULL);
+  *(u8*)raw = 4;
+  *(u64*)((u8*)raw + 8) = *(u64*)((u8*)packet + 0x58);
+  FUN_0027ed20_voice(raw, 1);
+  FUN_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 /* Removing this loses FUN_002ef7e0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on

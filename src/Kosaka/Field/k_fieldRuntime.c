@@ -447,6 +447,23 @@ extern void func_00272810(void);
 extern void func_00275bc0(void);
 extern void func_00276930(void);
 extern void func_002770f0(void);
+extern s32 func_001f4910(void* controller);
+extern s32 func_00233ad0(void);
+extern s32 func_00233bb0(void);
+extern void func_001f4930(void* controller);
+extern void func_001f1c90(RuntimeTask* task);
+extern s32 func_001f4970(void* controller);
+extern s32 func_001f30b0(void* controller);
+extern void func_001f1aa0(RuntimeTask* task);
+extern s32 func_001b07d0(void);
+extern void func_001b0840(void);
+extern void func_00233c00(void);
+extern void func_001f0a60(RuntimeTask* task);
+extern void func_001f0ab0(RuntimeTask* task);
+extern void func_00108570(void);
+extern void func_00108670(s32 mode);
+extern void func_001086a0(s32 mode);
+extern void func_001f0d70(RuntimeTask* task);
 extern s32 func_001a0250(void);
 extern void func_001a1540(s32 a, s32 b, s32 line, const char* file);
 extern void func_003b6870(u16 resourceId, const RuntimeVec3* position,
@@ -7512,10 +7529,14 @@ RuntimeTask* func_001ef500(RuntimeTask* parent)
     return task;
 }
 
+/* Retail request completion and top-level runtime states 0 through 7 are
+ * reconstructed. The large nested flows in states 8, 9, and 12 remain. */
 // FUN_001EF7F0 NONMATCHING
 s32 func_001ef7f0(RuntimeTask* task)
 {
     RuntimeWork* work;
+    u32 phase;
+    u16 input;
 
     work = task->workData;
     func_00234070();
@@ -7525,102 +7546,172 @@ s32 func_001ef7f0(RuntimeTask* task)
     func_00275bc0();
     func_00276930();
     func_002770f0();
+
     if ((work->flags & 0x40) != 0)
     {
         work->flags &= ~0x40;
         return 0;
     }
-    if ((work->requestFlags & 7) != 0)
+
+    if ((work->requestFlags & 1) != 0 &&
+        func_001f4910(*(void**)((u8*)work + 0x94)) == 0)
     {
-        work->completedFlags |= work->requestFlags & 7;
-        work->requestFlags &= ~7;
+        work->completedFlags |= 1;
+        work->requestFlags &= ~1;
     }
+    if ((work->requestFlags & 2) != 0 && func_00233ad0() == 0)
+    {
+        work->completedFlags |= 2;
+        work->requestFlags &= ~2;
+    }
+    if ((work->requestFlags & 4) != 0 && func_00233bb0() == 0)
+    {
+        work->completedFlags |= 4;
+        work->requestFlags &= ~4;
+    }
+
     switch (work->state)
     {
         case 0:
+            if ((work->flags & 2) != 0)
+            {
+                if ((work->completedFlags & 1) == 0)
+                {
+                    break;
+                }
+            }
+            else if ((work->completedFlags & 2) == 0)
+            {
+                break;
+            }
             if ((work->flags & 0x2000) == 0)
             {
-                H_Snd_PlayBgm((work->flags & 2) != 0 ? 78 : 60, 1);
-                work->state = 1;
+                break;
             }
-            break;
 
-        case 1:
-            if (func_00236340() == 0)
+            if ((work->flags & 2) != 0)
             {
-                work->flags &= ~0x2000;
-                work->state = 2;
-            }
-            break;
-
-        case 2:
-            func_003c7650(1);
-            if ((work->flags & 0x2c) != 0)
-            {
-                work->phase = 4;
+                func_0010a4e0(1, 0, 6, 14);
+                func_001f4930(*(void**)((u8*)work + 0x94));
             }
             else
             {
-                work->phase = 6;
+                func_001f1c90(task);
             }
-            work->state = 3;
+            H_Snd_PlayBgm((work->flags & 2) != 0 ? 78 : 60, 1);
+            work->state = 1;
+            break;
+
+        case 1:
+            if ((work->flags & 2) != 0)
+            {
+                if (func_001f4970(*(void**)((u8*)work + 0x94)) == 0)
+                {
+                    break;
+                }
+            }
+            else if (func_00236340() != 0)
+            {
+                break;
+            }
+            work->flags &= ~0x2000;
+            work->state = 2;
+            break;
+
+        case 2:
             break;
 
         case 3:
-            if (func_00236340() == 0)
+            if (func_001f30b0(*(void**)((u8*)work + 0x94)) != 0)
             {
-                if ((work->flags & 0x200000) != 0)
-                {
-                    H_Fade_FadeOut();
-                    H_Fade_SetType(5);
-                    H_Fade_SetDuration(1);
-                    func_002362e0();
-                    work->flags &= ~0x200000;
-                }
+                break;
+            }
+            if (func_00233ad0() != 0)
+            {
+                break;
+            }
+            func_001f1aa0(task);
+            func_001f1c90(task);
+            if ((work->flags & 0x2c) != 0)
+            {
                 work->state = 4;
+            }
+            else
+            {
+                work->state = 6;
             }
             break;
 
         case 4:
-            if (H_Fade_IsFadeOutDone() != 0)
+            if (func_001b07d0() != 0)
             {
-                func_003c77a0();
+                func_001b0840();
                 work->state = 5;
             }
             break;
 
         case 5:
-            if ((work->flags & 0x200000) != 0)
+            if ((work->flags & 8) != 0)
             {
-                func_002362e0();
-                work->flags &= ~0x200000;
-            }
-            else
-            {
-                H_Fade_SetType(2);
-                H_Fade_FadeIn();
+                func_00233c00();
             }
             work->state = 6;
             break;
 
         case 6:
-            if (H_Fade_IsFadeOutDone() != 0)
+            if (func_00236340() == 0)
             {
-                work->state = 7;
+                func_001f0a60(task);
+                func_001f0ab0(task);
             }
             break;
 
         case 7:
-            func_003c7990(1);
-            if (func_003c7850() == 0)
+            phase = *(u32*)((u8*)work + 0x28);
+            switch (phase)
             {
-                func_003c7650(1);
-                work->state = 0;
+                case 0:
+                    input = DAT_007e094e;
+                    if ((input & 0x40) != 0 ||
+                        (DAT_007e094c & 0x10) != 0 ||
+                        (input & 0x20) != 0)
+                    {
+                        if (*(void**)((u8*)work + 0xa680) == NULL)
+                        {
+                            func_00108570();
+                            func_00108670(5);
+                            func_001086a0(1);
+                            func_002362e0();
+                            work->flags &= ~0x200000;
+                            *(u32*)((u8*)work + 0x28) = 1;
+                        }
+                        else
+                        {
+                            func_001f0d70(task);
+                        }
+                    }
+                    break;
+
+                case 1:
+                    if (func_00236340() == 0)
+                    {
+                        func_001f0d70(task);
+                    }
+                    break;
+
+                default:
+                    break;
             }
             break;
 
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            break;
+
         default:
-            work->state = 0;
             break;
     }
     return 0;

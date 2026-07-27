@@ -56,6 +56,20 @@ extern int (*pcRam80074758)();
 extern int (*pcRam8007475c)();
 extern int (*pcRam80074760)();
 extern int (*pcRam80074764)();
+#pragma alias pcRam8007474c_abs pcRam8007474c
+extern u8 pcRam8007474c_abs[];
+#pragma alias pcRam80074750_abs pcRam80074750
+extern u8 pcRam80074750_abs[];
+#pragma alias pcRam80074754_abs pcRam80074754
+extern u8 pcRam80074754_abs[];
+#pragma alias pcRam80074758_abs pcRam80074758
+extern u8 pcRam80074758_abs[];
+#pragma alias pcRam8007475c_abs pcRam8007475c
+extern u8 pcRam8007475c_abs[];
+#pragma alias pcRam80074760_abs pcRam80074760
+extern u8 pcRam80074760_abs[];
+#pragma alias pcRam80074764_abs pcRam80074764
+extern u8 pcRam80074764_abs[];
 extern int (*pcRam80074768)();
 extern int (*pcRam8007476c)();
 extern int (*pcRam80074770)();
@@ -251,24 +265,23 @@ void FUN_0077ff28(u8 *param_1,u32 param_2,u32 param_3)
 }
 
 
+// Retail polls the INTC status register at its uncached hardware address,
+// acknowledges interrupt bit 2, then dispatches the seven kernel callbacks
+// stored in the absolute 0x8007474c-0x80074764 vector slots.
 // FUN_0077FFA0 NONMATCHING
 void FUN_0077ffa0(void)
 {
-  u32 uVar1;
-  
-  REG_INTC_STAT = 4;
+  *(volatile u32 *)0x1000f000 = 4;
   do {
-    uVar1 = REG_INTC_STAT;
-  } while ((uVar1 & 4) == 0);
-  REG_INTC_STAT = 4;
-  pcRam80074760();
-  pcRam80074764(1,2,1);
-  pcRam8007474c(0xdffd);
-  pcRam80074750();
-  pcRam8007475c(0x7f);
-  pcRam80074754();
-  pcRam80074758();
-  return;
+  } while ((*(volatile u32 *)0x1000f000 & 4) == 0);
+  *(volatile u32 *)0x1000f000 = 4;
+  (*(void (**)(void))pcRam80074760_abs)();
+  (*(void (**)(s32, s32, s32))pcRam80074764_abs)(1, 2, 1);
+  (*(void (**)(s32))pcRam8007474c_abs)(0xdffd);
+  (*(void (**)(void))pcRam80074750_abs)();
+  (*(void (**)(s32))pcRam8007475c_abs)(0x7f);
+  (*(void (**)(void))pcRam80074754_abs)();
+  (*(void (**)(void))pcRam80074758_abs)();
 }
 #pragma push
 /* Removing this worsens FUN_00780070 (nd342 -> nd358) - measured W161. */
