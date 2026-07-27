@@ -12125,7 +12125,7 @@ void FUN_003ff460(int param_1,u32 param_2)
 
     puVar1 = *(u32 **)(*(int *)(iVar6 + 0x14) + 0x1c);
 
-    lVar5 = FUN_003c4bf0(param_2,(int)param_2 + 4,(short)puVar1[1]);
+    lVar5 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
 
     if (lVar5 == 0) {
 
