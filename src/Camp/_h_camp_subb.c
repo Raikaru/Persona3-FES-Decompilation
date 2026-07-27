@@ -485,7 +485,6 @@ u32 FUN_0013c6a0(s16 equipmentId)
     s32 one;
     u32 categoryMask;
     s32 bit;
-    one = 1;
     if (category == 3) {
         goto category3;
     }

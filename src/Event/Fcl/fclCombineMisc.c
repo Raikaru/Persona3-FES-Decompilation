@@ -2471,7 +2471,7 @@ u32 FUN_003d8080(int param_1,int param_2,int param_3)
 
 {
 
-  u16 uVar1;
+  u32 uVar1;
 
   u16 uVar2;
 

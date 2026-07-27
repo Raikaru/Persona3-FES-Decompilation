@@ -213,6 +213,8 @@ extern void FUN_00521250(void* destination, const void* source, u32 size);
 extern s32 D_007CE2C0;
 s32 func_001ef000(RuntimeListNode* node);
 s32 func_001e8330(const RuntimeWork* work, s32 index);
+void func_001e7f90(const RuntimeDistanceWork* data, f32 distance,
+                   u32* section, f32* fraction);
 extern void func_00493230();
 void func_001ed0b0(RuntimeWork* work);
 void func_001ed080(f32 value, RuntimeWork* work);
