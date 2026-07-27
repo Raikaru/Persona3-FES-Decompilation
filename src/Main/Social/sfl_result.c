@@ -123,7 +123,7 @@ void func_001fa4f0(u32 param_1);
 u32 func_001faea0(void);
 void func_001fb130(u64 param_1,u64 param_2);
 void func_001fb1b0(u64 param_1,u64 param_2);
-void func_001fb1f0(u64 param_1,int param_2,int *param_3);
+void func_001fb1f0(u32 param_1,int param_2,int *param_3);
 void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5);
 u16 func_001fb560(u32 param_1);
 u32 func_001fba70(short param_1);
@@ -1406,7 +1406,7 @@ void func_001fb1b0(u64 param_1,u64 param_2)
 // FUN_001FB1F0 NONMATCHING
 
 
-void func_001fb1f0(u64 param_1,int param_2,int *param_3)
+void func_001fb1f0(u32 param_1,int param_2,int *param_3)
 
 
 
