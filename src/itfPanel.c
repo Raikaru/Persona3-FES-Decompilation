@@ -3601,7 +3601,7 @@ u32 FUN_003acf80(u32 param_1,int param_2)
     uVar3 = (u32)(u8)(bVar2 - 1);
     uVar3 &= 0xff;
   }
-  packed = uVar3 << 8 | low;
+  packed = (u32)(u8)uVar3 << 8 | (u32)(u8)low;
   lVar4 = FUN_0016f190(0x184);
   if (lVar4 != 0) {
     FUN_0010a2e0(2,2,packed);
