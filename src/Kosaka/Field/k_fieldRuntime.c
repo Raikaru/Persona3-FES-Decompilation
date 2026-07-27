@@ -4239,19 +4239,43 @@ void func_001e9a90(void* workData)
 }
 
 // FUN_001E9AF0 NONMATCHING
-void func_001e9af0(RuntimeListNode* node, RuntimeListNode** head, RuntimeListNode** tail)
+void func_001e9af0(RuntimeWork* workData, u32* renderRef)
 {
-    if (node == NULL)
+    typedef struct RuntimePathEntryWork
+    {
+        void* config;
+        u32 flags;
+        u32 firstIndex;
+        u32 currentIndex;
+        RuntimeVec3* vectors[6];
+        u8 reserved28[0x20];
+        s16 state;
+    } RuntimePathEntryWork;
+    RuntimePathEntryWork* work;
+    void* renderObject;
+
+    work = (RuntimePathEntryWork*)workData;
+    renderObject = (void*)(uintptr_t)*renderRef;
+    if (renderObject == NULL)
     {
         return;
     }
-    Runtime_Unlink(head, tail, node);
-    if (node->work != NULL)
+    func_00493370(renderObject, 0x1a);
+    if ((work->flags & 2) != 0)
     {
-        func_001e9a90(node->work);
-        RwFree(node->work);
+        return;
     }
-    RwFree(node);
+    switch (work->state)
+    {
+    case 0:
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    default:
+        break;
+    }
 }
 
 // FUN_001EB920. Append a position-normal sample and refresh queue state.

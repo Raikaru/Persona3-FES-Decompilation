@@ -4477,7 +4477,7 @@ u64 FUN_003cea50(u16 *param_1)
 // FUN_003CF6C0 NONMATCHING
 
 
-short FUN_003cf6c0(u64 param_1)
+short FUN_003cf6c0(int param_1)
 
 
 

@@ -88,7 +88,7 @@ u32 FUN_003c60c0(int param_1,int param_2);
 u64 FUN_003c60f0(int param_1);
 u32 FUN_003c6120(int param_1,int param_2);
 u32 FUN_003c6270(int param_1);
-u64 FUN_003c6380(int param_1);
+u32 FUN_003c6380(int param_1);
 u64 FUN_003c63f0(int param_1);
 void FUN_003c6900(int param_1);
 void FUN_003c69d0(int param_1);
@@ -498,7 +498,6 @@ u32 FUN_003c6270(int param_1)
 u64 FUN_003c6380(int param_1)
 {
   int iVar2;
-  u32 *puVar1;
 
   iVar2 = param_1;
   puVar1 = *(u32 **)((int)param_1 + 0x24);
@@ -514,7 +513,6 @@ u64 FUN_003c6380(int param_1)
 #define FUN_003c6380(...) ((u64 (*)(...))FUN_003c6380)(__VA_ARGS__)
 #undef FUN_003c63f0
 // FUN_003C63F0 NONMATCHING
-
 
 u64 FUN_003c63f0(int param_1)
 
