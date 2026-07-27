@@ -131,12 +131,10 @@ u64 FUN_00397950(void)
   FUN_00395000(piVar2[3],piVar2[4],auStack_110,auStack_d0,auStack_90,auStack_50);
   if (piVar2[2] != 0) {
     iVar3 = *piVar2;
-    one = 1;
     if (iVar3 == 7) {
       goto done;
-    if (iVar3 == 1) {
     }
-    if (iVar3 == one) {
+    if (iVar3 == 1) {
       goto state1_nonzero;
     }
     switch (iVar3) {

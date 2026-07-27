@@ -3195,7 +3195,7 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
   }
 
-  if ((char)puVar4[1] == '\x01') {
+  if ((u8)puVar4[1] == '\x01') {
 
     func_00466ef0(*(u32 *)(puVar4 + 0x10));
 
