@@ -517,6 +517,8 @@ invalid:
     return 0;
 found:
     one = 1;
+    bit = 0;
+    for (; bit < 32; bit++) {
         if ((categoryMask & (one << bit)) != 0) {
             return bit;
         }
