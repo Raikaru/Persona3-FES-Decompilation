@@ -4498,6 +4498,27 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             func_0019d3f0(D_006844F8, 0x4b1);
         }
+        if (work->state == 2)
+        {
+            void* camera;
+            RuntimeMatrix* cameraMatrix;
+            RuntimeVec3 cameraAxis;
+            f32 cameraScale;
+
+            camera = func_00198590();
+            cameraMatrix = *(RuntimeMatrix**)((u8*)camera + 4);
+            cameraScale = 0.25f;
+            if (cameraMatrix != NULL)
+            {
+                cameraAxis.x = cameraMatrix->values[12];
+                cameraAxis.y = cameraMatrix->values[13];
+                cameraAxis.z = cameraMatrix->values[14];
+                cameraScale += cameraAxis.x * 0.001f;
+                cameraScale += cameraAxis.y * 0.001f;
+                cameraScale += cameraAxis.z * 0.001f;
+            }
+            amount = cameraScale;
+        }
         if (work->state == 2 && vertices != NULL &&
             vector2 != NULL && vector3 != NULL)
         {
