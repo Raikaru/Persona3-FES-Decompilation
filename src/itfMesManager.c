@@ -1858,10 +1858,9 @@ void FUN_003a3c10(int param_1,int param_2)
 
 
 {
-
   int iVar1;
 
-  short sVar2;
+  int sVar2;
 
   int iVar3;
 

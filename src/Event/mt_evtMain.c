@@ -72,7 +72,7 @@ extern u32 DAT_007ccf94;
 extern u32 DAT_007cd130;
 extern u32 DAT_007cdeac;
 extern u32 DAT_007ce5d8;
-extern u32 DAT_007ce5e4;
+extern int DAT_007ce5e4;
 extern u32 DAT_007ce5e8;
 extern u32 DAT_007ce5ec;
 extern u32 DAT_007ce5f0;
