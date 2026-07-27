@@ -18,7 +18,7 @@ u32 FUN_0040e4f0(int *param_1);
 void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5, int param_6, int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
-u32 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
+u64 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
 #pragma alias fclDrawSpriteCreate FUN_001158b0
 extern u32 fclDrawSpriteCreate();
 #pragma alias fclDrawSpriteEmit FUN_0040e3c0
@@ -33,7 +33,7 @@ void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
 u32 FUN_0040ec50();
 u32 FUN_0040f030(int param_1,int param_2,int param_3);
 u32 FUN_0040f430(int param_1,int param_2);
-u32 FUN_0040f5d0(u64 param_1,int param_2,long param_3);
+u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
 u64 FUN_0040fab0(u64 param_1,int param_2);
 u64 FUN_0040fb90(u64 param_1,int param_2,long param_3);
 extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
@@ -376,7 +376,7 @@ scale_y_done:
 // FUN_0040E930 NONMATCHING
 
 
-u32
+u64
 
 
 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
@@ -1121,7 +1121,7 @@ u32 FUN_0040f5d0(u64 param_1,int param_2,long param_3)
 {
 
   short sVar1;
-
+u32 FUN_0040f5d0(int param_1,int param_2,int param_3)
   int iVar2;
 
   u32 uVar3;

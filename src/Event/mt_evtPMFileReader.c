@@ -8,7 +8,7 @@ typedef u32 int3;
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-u32 FUN_00397950(void);
+u64 FUN_00397950(void);
 void FUN_00397d60(void);
 void FUN_00397ec0(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 u32 FUN_00397f80(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
@@ -115,7 +115,7 @@ extern void FUN_00100ec0_pm(u32 param_1);
 // FUN_00397950 NONMATCHING
 
 
-u32 FUN_00397950(void)
+u64 FUN_00397950(void)
 {
   u16 uVar1;
   int *piVar2;

@@ -42,8 +42,8 @@ extern void FUN_004c0420_evt(void *data,int size,int count,int arg);
 extern u32 FUN_00361ca0_evt(int param_1,u64 param_2);
 void FUN_0038fa10(int param_1,u64 param_2);
 void FUN_0038ffb0(int param_1,int param_2);
-void FUN_003902c0(int param_1,u64 param_2);
-void FUN_003905f0(int param_1,u64 param_2);
+void FUN_003902c0(int param_1,int param_2);
+void FUN_003905f0(int param_1,int param_2);
 void FUN_00390920(int param_1,u64 param_2);
 void FUN_00390c90(int param_1,u64 param_2);
 void FUN_00390ef0(int param_1,int param_2);
@@ -2667,7 +2667,7 @@ void FUN_003902c0(int param_1,int param_2)
 // FUN_003905F0 NONMATCHING
 
 
-void FUN_003905f0(int param_1,u64 param_2)
+void FUN_003905f0(int param_1,int param_2)
 
 
 
