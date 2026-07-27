@@ -17754,9 +17754,9 @@ u8 FUN_00405e30(u32 param_1)
 
 {
 
-  long lVar1;
+  int lVar1;
 
-  long lVar2;
+  int lVar2;
 
   int iVar3;
 
