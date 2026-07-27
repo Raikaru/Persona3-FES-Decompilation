@@ -173,7 +173,7 @@ void FUN_003b2940(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,
 void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,  u8 param_5,u8 param_6,u8 param_7,u32 param_8,  u32 param_9);
 u32 FUN_003b2a00(u32 param_1);
 void FUN_003b2a10(int param_1,u32 param_2);
-u64 FUN_003b2a30(u64 param_1,u32 param_2);
+u64 FUN_003b2a30(void *param_1,u32 param_2);
 s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 
 /* Region call-cast macros */
@@ -3527,7 +3527,7 @@ void FUN_003b2a10(int param_1,u32 param_2)
 // FUN_003B2A30 NONMATCHING
 
 
-u64 FUN_003b2a30(u64 param_1,u32 param_2)
+u64 FUN_003b2a30(void *param_1,u32 param_2)
 
 
 
