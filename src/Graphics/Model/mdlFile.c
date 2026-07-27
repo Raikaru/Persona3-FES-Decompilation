@@ -7734,7 +7734,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
   param_2 = param_2 & 0xffff;
 
-  iVar4 = FUN_00323c20(param_1,(param_2 + 1) * (u32)param_4 & 0xffff,param_2 * iVar3 * 2 & 0xffff,
+  iVar4 = FUN_00323c20_u32(param_1,(param_2 + 1) * (u32)param_4 & 0xffff,param_2 * iVar3 * 2 & 0xffff,
 
                        param_5);
 
@@ -7746,7 +7746,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
   sVar6 = 0;
 
-  for (lVar7 = 0; lVar7 < (long)(u32)((u32)param_1 & 0xffff); lVar7 = (long)((int)lVar7 + 1)) {
+  for (lVar7 = 0; lVar7 < ((u32)param_1 & 0xffff); lVar7 = lVar7 + 1) {
 
     for (iVar10 = 0; iVar10 < (int)param_2; iVar10 = iVar10 + 1) {
 
@@ -7756,7 +7756,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
         FUN_00493210(iVar1,iVar9,sVar6 + *psVar5,sVar6 + psVar5[1],sVar6 + psVar5[2]);
 
-        FUN_00493230(iVar1,iVar9,*(u32 *)(iVar2 + (int)lVar7 * 4));
+        FUN_00493230(iVar1,iVar9,*(u32 *)(iVar2 + lVar7 * 4));
 
         iVar9 = iVar9 + 8;
 
@@ -31628,9 +31628,10 @@ u32 FUN_0033b1c0(int param_1)
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   uVar4 = (*DAT_00960178_abs)(uVar1 * 0x2c + 0x10,0x40000);
-  piVar2 = (int *)uVar4;
+  asm volatile("" : "+r"(uVar4));
   *(int *)uVar4 = (int)((int *)uVar4 + 4);
   *(int *)(uVar4 + 8) = uVar4;
+  piVar2 = (int *)uVar4;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,0xc,0xd,DAT_0069bd80_abs,0x48);
   piVar2[1] = iVar3;
   return (u32)piVar2;

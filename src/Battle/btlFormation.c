@@ -303,6 +303,8 @@ extern u32 func_0030b4b0_u32(u32 param_1,u32 param_2);
 extern u32 func_0030b5a0_u32(u32,u32);
 extern u64 func_0030b5a0();
 extern u64 func_0030bc20();
+#pragma alias func_0030bc20_u32 func_0030bc20
+extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
 extern u64 func_003176c0();
 extern u64 func_00317730();
@@ -7840,7 +7842,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   char cVar1 = 0;
   u32 uVar2 = 0;
   u16 uVar3 = 0;
-  short iVar4 = 0;
+  int iVar4 = 0;
   u16 *puVar5;
   u32 uVar6 = 0;
   u32 uVar7 = 0;
@@ -7851,7 +7853,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   iVar8 = 0xffffff;
   for (uVar6 = 0; uVar6 < (param_4 & 0xffff); uVar6 = uVar6 + 1 & 0xffff) {
     puVar5 = param_3 + uVar6;
-    uVar3 = func_0030bc20(*puVar5);
+    uVar3 = func_0030bc20_u32(*puVar5);
     if ((((uVar3 != 0) && (uVar3 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + uVar3 * 0x2c + 8), param_5 != 0 || (cVar1 == '\x01'))))
        && ((param_5 != 1 || (cVar1 == '\0')))) {
