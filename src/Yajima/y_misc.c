@@ -6560,9 +6560,7 @@ void FUN_0042bfd0(int param_1)
     FUN_00423fe0(&fStack_8,0,0x7e,0x7e,0x20,0x20);
 
     *(float *)(iVar1 + 0x89c) = *(float *)(iVar1 + 0x85c) + fStack_8;
-
     *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + fStack_4;
-
     uVar2 = FUN_004560d0(*(u32 *)(iVar1 + 0x89c),*(u32 *)(iVar1 + 0x8a0),0x3f800000,
                          param_1,0x20,0x20);
     *(u32 *)(iVar1 + 0x898) = uVar2;
