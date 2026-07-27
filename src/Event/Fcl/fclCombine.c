@@ -5277,7 +5277,7 @@ u32 FUN_003d3b70(u32 param_1,u32 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   u32 uVar7;
 
