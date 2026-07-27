@@ -6691,7 +6691,7 @@ void FUN_00366970(u64 param_1,u32 param_2)
 
   int iVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 

@@ -485,7 +485,7 @@ void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
 #pragma alias FUN_0032a120_2arg FUN_0032a120
 extern u32 FUN_0032a120_2arg(char *param_1, u32 *param_2);
-float FUN_0032a540(char *param_1,int param_2,long param_3);
+float FUN_0032a540(char *param_1,int param_2,int param_3);
 void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
 
                  u8 (*param_4) [16]);
@@ -14351,7 +14351,7 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 // FUN_0032A540 NONMATCHING
 
 
-float FUN_0032a540(char *param_1,int param_2,long param_3)
+float FUN_0032a540(char *param_1,int param_2,int param_3)
 
 
 
@@ -25541,26 +25541,26 @@ void FUN_003353f0(int param_1)
 
 {
 
-  int *piVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
   int iVar7;
-
++
+  int *piVar1;
++
+  int iVar2;
++
+  int iVar3;
++
+  u32 uVar4;
++
+  u32 uVar5;
++
+  u32 uVar6;
++
   float fVar8;
-
++
   float fVar9;
-
++
   float fVar10;
-
++
   float fVar11;
 
   
@@ -31635,7 +31635,7 @@ u32 FUN_0033b1c0(int param_1)
   piVar2[2] = (int)piVar2;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,0xc,0xd,DAT_0069bd80_abs,0x48);
   piVar2[1] = iVar3;
-  return uVar4;
+  return (u32)piVar2;
 }
 
 
@@ -45140,7 +45140,7 @@ void FUN_00348f30(int param_1,int *param_2)
 
   
 
-  iVar1 = FUN_00357fd0_u32(0);
+  iVar1 = FUN_00357fd0(0);
 
   *param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
 
@@ -48484,14 +48484,15 @@ void FUN_0034c390(float *param_1)
 
 {
 
-  float fVar1;
+  u32 fVar1;
 
   __int128 in_zero_qw;
 
   __int128 auVar2;
 
-  float fVar3;
+  u32 fVar3;
 
+  float fVar4;
   __int128 auVar4;
 
   __int128 auVar5;
@@ -48514,13 +48515,13 @@ void FUN_0034c390(float *param_1)
 
   
 
-  fVar3 = param_1[0x26];
+  fVar3 = ((u32 *)param_1)[0x26];
 
-  fVar1 = param_1[0x23];
+  fVar1 = ((u32 *)param_1)[0x23];
 
-  if (((u32)fVar3 <= (u32)fVar1) || (fVar1 == 0.0f)) {
+  if ((fVar3 <= fVar1) || (fVar1 == 0)) {
 
-    iStack_c = FUN_0032a120((char *)(param_1 + 0xb),(u32 *)(param_1 + 0x14),(int)(fVar3),(long)(fVar1));
+    iStack_c = FUN_0032a120((char *)(param_1 + 0xb),(u32 *)(param_1 + 0x14),fVar3,fVar1);
 
     fStack_8 = param_1[10];
 
@@ -48570,13 +48571,13 @@ void FUN_0034c390(float *param_1)
 
     FUN_00318ad0(param_1[0x25],&uStack_4);
 
-    fVar3 = (float)FUN_0032a540((char *)(param_1 + 0x18),fVar3,fVar1);
+    fVar4 = (float)FUN_0032a540((char *)(param_1 + 0x18),fVar3,fVar1);
 
     FUN_003296a0((u32 *)(&auStack_60),(u8 (*) [16])(param_1 + 4));
 
     FUN_00318a70(param_1[0x25],auStack_60,0);
 
-    fStack_20 = param_1[8] * (fVar3 / 10.0f);
+    fStack_20 = param_1[8] * (fVar4 / 10.0f);
 
     fStack_1c = fStack_20;
 

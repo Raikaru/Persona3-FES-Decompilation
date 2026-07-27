@@ -3440,13 +3440,13 @@ FUN_00427bf0(float param_1,float param_2,float param_3,float param_4,
 
     for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
 
-      uStack_14 = (u8)uStack_18;
+      uStack_14 = (u8)param_9;
 
-      uStack_13 = (u8)(uStack_18 >> 8);
+      uStack_13 = (u8)((u32)param_9 >> 8);
 
-      uStack_12 = (u8)(uStack_18 >> 0x10);
+      uStack_12 = (u8)((u32)param_9 >> 0x10);
 
-      uStack_11 = (u8)(uStack_18 >> 0x18);
+      uStack_11 = (u8)((u32)param_9 >> 0x18);
 
       puVar4[iVar3 * 4 + 0x110] = uStack_14;
 
@@ -3462,9 +3462,6 @@ FUN_00427bf0(float param_1,float param_2,float param_3,float param_4,
 
     }
 
-    uStack_20 = (u32)param_8;
-
-    uStack_1c = (u32)((u32)param_8 >> 0x20);
 
     *(u32 *)(puVar4 + 0x134) = uStack_20;
 
