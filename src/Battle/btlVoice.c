@@ -7438,6 +7438,8 @@ void func_002e9450(void)
     if (*(short *)(iVar2 + 0xa4) != 0x100) {
       iVar8 = iVar6;
     }
+    iVar6 = iVar8;
+  }
   uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
   FUN_0027ed20((u32)uVar4,1);
   uVar4 = FUN_002baf90(uVar3,iVar12,iVar6,0,0x200);
