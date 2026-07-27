@@ -2787,7 +2787,7 @@ void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5)
 
       if (iVar8 == 0) {
 
-        uVar4 = (*DAT_00960178_u32)(0x20,0x40000);
+        uVar4 = (*DAT_00960178_abs)(0x20,0x40000);
 
         FUN_00521408(uVar4,0,0x20);
 
@@ -2845,7 +2845,7 @@ void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5)
 
       if (iVar8 == 0) {
 
-        uVar4 = (*DAT_00960178_u32)(0x20,0x40000);
+        uVar4 = (*DAT_00960178_abs)(0x20,0x40000);
 
         FUN_00521408(uVar4,0,0x20);
 
@@ -2865,7 +2865,7 @@ void FUN_0031e8d0(int *param_1,u32 param_2,u32 param_3,int param_4,u32 param_5)
 
       puVar1 = (u32 *)*param_1;
 
-      uVar4 = (*DAT_00960178)(param_5,0x40000);
+      uVar4 = (*DAT_00960178_abs)(param_5,0x40000);
 
       *puVar1 = (int)uVar4;
 
@@ -4475,7 +4475,7 @@ u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4)
 
   if (bVar5) {
 
-    puVar7 = (u8 *)(*DAT_00960178)(uStack_14 + 1,0x40000);
+    puVar7 = (u8 *)(*DAT_00960178_abs)(uStack_14 + 1,0x40000);
 
   }
 
@@ -4517,7 +4517,7 @@ LAB_003209a8:
 
   if (piVar8 == (int *)0x0) {
 
-    piVar8 = (int *)(*DAT_00960178)(0x58,0x40000);
+    piVar8 = (int *)(*DAT_00960178_abs)(0x58,0x40000);
 
     FUN_00521408(piVar8,0,0x58);
 
@@ -4621,7 +4621,7 @@ LAB_003209a8:
 
     piVar8[2] = iStack_18;
 
-    uVar11 = (*DAT_00960178)(iVar4,0x40000);
+    uVar11 = (*DAT_00960178_abs)(iVar4,0x40000);
 
     piVar8[3] = (int)uVar11;
 
@@ -6414,7 +6414,7 @@ u32 FUN_00322880(int param_1)
 
   iVar1 = *piVar2;
 
-  uVar5 = (*DAT_00960178)(*piVar6 + 0x1c + iVar1 * 4,0x40000);
+  uVar5 = (*DAT_00960178_abs)(*piVar6 + 0x1c + iVar1 * 4,0x40000);
 
   piVar3 = (int *)uVar5;
 
@@ -10378,7 +10378,7 @@ u64 FUN_00326510(u32 param_1)
 
   }
 
-  uVar3 = (*DAT_00960178)(0x60,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0x60,0x40000);
 
   FUN_00521408(uVar3,0,0x60);
 
@@ -10596,7 +10596,7 @@ u64 FUN_003268c0(u32 param_1)
 
   }
 
-  uVar3 = (*DAT_00960178)(0x60,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0x60,0x40000);
 
   FUN_00521408(uVar3,0,0x60);
 
@@ -10706,7 +10706,7 @@ void FUN_003269e0(int param_1,int param_2)
 
     }
 
-    uVar2 = (*DAT_00960178_u32)(uVar1 << 2,0x40000);
+    uVar2 = (*DAT_00960178_abs)(uVar1 << 2,0x40000);
 
     *(u32 *)(param_1 + 0x38) = uVar2;
 
@@ -10754,7 +10754,7 @@ void FUN_003269e0(int param_1,int param_2)
 
     }
 
-    uVar2 = (*DAT_00960178_u32)(uVar1 << 2,0x40000);
+    uVar2 = (*DAT_00960178_abs)(uVar1 << 2,0x40000);
 
     *(u32 *)(param_1 + 0x40) = uVar2;
 
@@ -11090,7 +11090,7 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 
   if (uVar3 << 2 != 0) {
 
-    uVar1 = (*DAT_00960178_u32)(uVar3 << 2,0x40000);
+    uVar1 = (*DAT_00960178_abs)(uVar3 << 2,0x40000);
 
     param_1[0x10] = uVar1;
 
@@ -22325,7 +22325,7 @@ u64 FUN_00332070(u16 param_1,int param_2,int param_3)
 
   iVar1 = *(int *)(&DAT_0069c51c + (u32)param_1 * 0x10);
 
-  uVar6 = (*DAT_00960178)(param_2 * *(int *)(&DAT_0069c518 + (u32)param_1 * 0x10) +
+  uVar6 = (*DAT_00960178_abs)(param_2 * *(int *)(&DAT_0069c518 + (u32)param_1 * 0x10) +
 
                           iVar3 * 0x20 + 0x30 + iVar1 * 2,0x40000);
 
@@ -22592,7 +22592,7 @@ u64 FUN_00332370(int param_1)
 
   }
 
-  uVar3 = (*DAT_00960178)(0x38,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0x38,0x40000);
 
   FUN_00521408(uVar3,0,0x38);
 
@@ -25709,7 +25709,7 @@ u32 FUN_00335540(int param_1)
 
   uVar2 = *(u32 *)(param_1 + 0x38);
 
-  uVar7 = (*DAT_00960178_u32)(uVar2 * 0x30 + 0x10,0x40000);
+  uVar7 = (*DAT_00960178_abs)(uVar2 * 0x30 + 0x10,0x40000);
 
   puVar12 = (u32 *)uVar7;
 
@@ -28816,7 +28816,7 @@ float * FUN_003385d0(u32 param_1)
 
   uVar1 = *(u32 *)(iVar6 + 0x38);
 
-  pfVar4 = (float *)(*DAT_00960178_u32)(uVar1 * 4 + 0x10,0x40000);
+  pfVar4 = (float *)(*DAT_00960178_abs)(uVar1 * 4 + 0x10,0x40000);
 
   pfVar9 = pfVar4 + uVar1;
 
@@ -38590,7 +38590,7 @@ u64 FUN_00341f10(u32 param_1,u32 param_2)
 
   iVar1 = (int)DAT_0069c850[param_1 & 0xffff].callback6;
 
-  uVar6 = (*DAT_00960178)(iVar1 + 0x50,0x40000);
+  uVar6 = (*DAT_00960178_abs)(iVar1 + 0x50,0x40000);
 
   pauVar7 = (u8 (*) [16])uVar6;
 
@@ -41237,7 +41237,7 @@ u64 FUN_00344eb0(u32 param_1,int param_2)
 
   iVar1 = (int)param_1;
 
-  uVar2 = (*DAT_00960178)(*(int *)(iVar1 + 0x38) * 0x2c + 0xc,0x40000);
+  uVar2 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x2c + 0xc,0x40000);
 
   piVar4 = (int *)uVar2;
 
@@ -42190,7 +42190,7 @@ u64 FUN_00345cf0(u32 param_1,u64 param_2)
 
   iVar1 = (int)DAT_0069c970[param_1 & 0xffff].callback6;
 
-  uVar6 = (*DAT_00960178)(iVar1 + 0x50,0x40000);
+  uVar6 = (*DAT_00960178_abs)(iVar1 + 0x50,0x40000);
 
   pauVar7 = (u8 (*) [16])uVar6;
 
@@ -43423,7 +43423,7 @@ u32 FUN_00347170(u64 param_1)
 
   
 
-  uVar4 = (*DAT_00960178_u32)(0x5c,0x40000);
+  uVar4 = (*DAT_00960178_abs)(0x5c,0x40000);
 
   FUN_00521408(uVar4,0,0x5c);
 
@@ -47397,7 +47397,7 @@ u64 FUN_0034b1a0(u32 param_1)
 
   iVar8 = iVar2 + 0x30;
 
-  uVar6 = (*DAT_00960178)(iVar8,0x40000);
+  uVar6 = (*DAT_00960178_abs)(iVar8,0x40000);
 
   FUN_00521408(uVar6,0,iVar8);
 
@@ -47510,7 +47510,7 @@ u64 FUN_0034b3a0(int param_1)
 
   iVar6 = iVar2 + 0x30;
 
-  uVar5 = (*DAT_00960178)(iVar6,0x40000);
+  uVar5 = (*DAT_00960178_abs)(iVar6,0x40000);
 
   FUN_00521408(uVar5,0,iVar6);
 
@@ -47687,7 +47687,7 @@ u64 FUN_0034b6b0(u32 param_1)
 
   iVar8 = iVar2 + 0x30;
 
-  uVar6 = (*DAT_00960178)(iVar8,0x40000);
+  uVar6 = (*DAT_00960178_abs)(iVar8,0x40000);
 
   FUN_00521408(uVar6,0,iVar8);
 
@@ -47800,7 +47800,7 @@ u64 FUN_0034b8b0(int param_1)
 
   iVar6 = iVar2 + 0x30;
 
-  uVar5 = (*DAT_00960178)(iVar6,0x40000);
+  uVar5 = (*DAT_00960178_abs)(iVar6,0x40000);
 
   FUN_00521408(uVar5,0,iVar6);
 
@@ -47976,7 +47976,7 @@ u64 FUN_0034bbc0(int param_1,u32 param_2)
 
   
 
-  uVar2 = (*DAT_00960178)(0xc,0x40000);
+  uVar2 = (*DAT_00960178_abs)(0xc,0x40000);
 
   FUN_00521408(uVar2,0,0xc);
 
@@ -48202,7 +48202,7 @@ u64 FUN_0034bfc0(u32 param_1)
 
   
 
-  uVar3 = (*DAT_00960178)(0xa0,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0xa0,0x40000);
 
   FUN_00521408(uVar3,0,0xa0);
 
@@ -48876,7 +48876,7 @@ void FUN_0034c9b0(int param_1,int param_2)
 
     }
 
-    uVar1 = (*DAT_00960178_u32)(*(int *)(param_1 + 0x28) << 2,0x40000);
+    uVar1 = (*DAT_00960178_abs)(*(int *)(param_1 + 0x28) << 2,0x40000);
 
     *(u32 *)(param_1 + 0x9c) = uVar1;
 
@@ -55044,7 +55044,7 @@ u32 FUN_00352eb0(int param_1)
 
   piVar1 = *(int **)(param_1 + 0x30);
 
-  uVar3 = (*DAT_00960178_u32)(4,0x40000);
+  uVar3 = (*DAT_00960178_abs)(4,0x40000);
 
   if (*piVar1 == 0) {
 
@@ -57574,7 +57574,7 @@ u64 FUN_00356ba0(int param_1)
 
   piVar1 = *(int **)(param_1 + 0x30);
 
-  uVar4 = (*DAT_00960178)(4,0x40000);
+  uVar4 = (*DAT_00960178_abs)(4,0x40000);
 
   puVar2 = (u32 *)uVar4;
 
@@ -58402,7 +58402,7 @@ u64 FUN_003579b0(u64 param_1)
 
     iVar2 = DAT_0069cd08[uVar1 & 0xffff].value;
 
-    uVar5 = (*DAT_00960178)(iVar2 + 0x40,0x40000);
+    uVar5 = (*DAT_00960178_abs)(iVar2 + 0x40,0x40000);
 
     pauVar6 = (u8 (*) [16])uVar5;
 
