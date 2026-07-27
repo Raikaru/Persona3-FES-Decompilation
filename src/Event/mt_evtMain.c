@@ -1584,7 +1584,7 @@ void FUN_00361890(int *param_1,int param_2)
 
     if (*param_1 != 0x12) {
 
-      FUN_00386b70(*(int *)(iVar1 + 0x48),9,0);
+      FUN_00386b70_evt_main(*(int *)(iVar1 + 0x48),9,0);
 
     }
 
