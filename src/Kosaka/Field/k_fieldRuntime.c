@@ -327,6 +327,9 @@ extern f32 D_007CADD4;
 extern char D_007CC348;
 extern char D_007CC350;
 extern u32 D_007CE2C4;
+extern u32 D_007CE200;
+extern u32 D_007CE244;
+extern u8* K_Field_Get(void);
 extern u32 D_007CDF38;
 extern void FUN_00523ac8(char* destination, const char* format, ...);
 extern void FUN_005225a8(const char* format, ...);
@@ -1280,107 +1283,312 @@ HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant)
     return result;
 }
 
+/* Retail field archive loader: both asynchronous and cached-file paths now
+ * build model arrays, resolve both supplemental descriptor tables, and place
+ * every field record. */
 // FUN_001E2E50 NONMATCHING
 u32 func_001e2e50(void* request, void** outFileMemory,
                   u16 majorId, u16 minorId, s16 variant)
 {
-    u8* field;
+    FieldArchiveRequest* archive;
     u8* fileMemory;
+    u8* record;
+    u8* table;
+    u8* source;
+    u8* tableHeader;
+    Model* model;
+    Model** models;
+    u32* metadata;
     u32 fileSize;
     u32 modelCount;
     u32 placementCount;
-    u32 i;
+    u32 recordIndex;
     u32 modelIndex;
-    u32* metadata;
-    Model** models;
+    u32 sourceIndex;
+    s32 tableFlag;
+    f32 angles[3];
+    char path[64];
 
-    if (outFileMemory != NULL)
-    {
-        *outFileMemory = NULL;
-    }
+    D_007CE2C0 = 0;
     if (request == NULL)
     {
         return true;
     }
+    *outFileMemory = NULL;
 
-    fileMemory = NULL;
-    fileSize = 0;
-    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        char path[128];
-
-        sprintf(path, D_00684060, majorId, minorId, (s32)variant);
-        fileMemory = (u8*)H_Cdvd_CacheFindFile(path, &fileSize);
-        if (fileMemory == NULL)
+        if (func_001016b0(request) == NULL)
         {
             return false;
+        }
+        archive = (FieldArchiveRequest*)request;
+        fileMemory = archive->data;
+        modelCount = *(u32*)(fileMemory + 8);
+        *(u32*)(K_Field_Get() + 0x10c0) = modelCount;
+
+        models = FIELD_RUNTIME_ALLOCATOR(1, modelCount * sizeof(Model*),
+                                         0x40000);
+        *(Model***)(K_Field_Get() + 0x10c4) = models;
+        metadata = FIELD_RUNTIME_ALLOCATOR(1, modelCount * 9 * sizeof(u32),
+                                           0x40000);
+        *(u32**)(K_Field_Get() + 0x10c8) = metadata;
+
+        record = fileMemory + 0x18;
+        modelIndex = 0;
+        for (recordIndex = 0; recordIndex < modelCount; recordIndex++)
+        {
+            if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
+                *(u16*)(record + 6) == 0xffff && D_007CE200 == 1)
+            {
+                model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
+                                          D_00684040, MDL_READASYNC);
+            }
+            else
+            {
+                model = mdlCreateAndResolvePath(*(u16*)(record + 4),
+                                                *(u16*)(record + 6),
+                                                MDL_READASYNC);
+            }
+            (*(Model***)(K_Field_Get() + 0x10c4))[modelIndex] = model;
+            (*(u32**)(K_Field_Get() + 0x10c8))[modelIndex * 9 + 2] =
+                recordIndex;
+            modelIndex++;
+            record += 0x70;
+        }
+
+        if (D_007CE200 == 0)
+        {
+            tableHeader = (u8*)func_001b83f0();
+            if (tableHeader != NULL)
+            {
+                table = (u8*)func_001b85a0(*(u32*)(tableHeader + 0x0c));
+                while (*(u16*)table != 0xffff)
+                {
+                    tableFlag = *(s32*)(table + 0x10);
+                    if (tableFlag == -1 || datGetFlag((u32)tableFlag) != 1)
+                    {
+                        record = fileMemory + 0x18;
+                        for (recordIndex = 0; recordIndex < modelCount;
+                             recordIndex++)
+                        {
+                            if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
+                                *(u16*)(record + 6) == 0xffff &&
+                                *(u16*)(record + 8) ==
+                                    (u16)((*(u16*)table & 0x3ff) | 0xc00) &&
+                                (*(u16*)(table + 2) != 0 ||
+                                 *(u16*)(table + 4) != 0))
+                            {
+                                D_007CE2C0 = 1;
+                                model = mdlCreateAndResolvePath(
+                                    *(u16*)(table + 2),
+                                    *(u16*)(table + 4), MDL_READASYNC);
+                                (*(Model***)(K_Field_Get() + 0x10c4))
+                                    [modelIndex] = model;
+                                metadata =
+                                    *(u32**)(K_Field_Get() + 0x10c8) +
+                                    modelIndex * 9;
+                                metadata[0] = 1;
+                                metadata[1] = (u32)table;
+                                metadata[2] = recordIndex;
+                                modelIndex++;
+                            }
+                            record += 0x70;
+                        }
+                    }
+                    table += 0x20;
+                }
+            }
+
+            for (sourceIndex = 0; sourceIndex < D_007CE244; sourceIndex++)
+            {
+                source = (u8*)func_001b8db0(func_001b8d60(sourceIndex));
+                if (source != NULL)
+                {
+                    record = fileMemory + 0x18;
+                    for (recordIndex = 0; recordIndex < modelCount;
+                         recordIndex++)
+                    {
+                        if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
+                            *(u16*)(record + 6) == 0xffff &&
+                            *(u16*)(record + 8) ==
+                                (u16)((*(u16*)source & 0x3ff) | 0xc00) &&
+                            (*(u16*)(source + 0x64) != 0 ||
+                             *(u16*)(source + 0x66) != 0))
+                        {
+                            D_007CE2C0 = 1;
+                            model = mdlCreateAndResolvePath(
+                                *(u16*)(source + 0x64),
+                                *(u16*)(source + 0x66), MDL_READASYNC);
+                            (*(Model***)(K_Field_Get() + 0x10c4))
+                                [modelIndex] = model;
+                            metadata = *(u32**)(K_Field_Get() + 0x10c8) +
+                                       modelIndex * 9;
+                            metadata[0] = 2;
+                            metadata[1] = (u32)source;
+                            metadata[2] = recordIndex;
+                            metadata[4] = sourceIndex;
+                            modelIndex++;
+                        }
+                        record += 0x70;
+                    }
+                }
+            }
+        }
+
+        *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
+        placementCount = *(u32*)(fileMemory + 0x10);
+        record = fileMemory + 0x18;
+        for (recordIndex = 0; recordIndex < placementCount; recordIndex++)
+        {
+            u16 resourceId;
+
+            resourceId =
+                func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
+            angles[0] = func_001a5b30(record + 0x10);
+            angles[1] = func_001a5aa0(record + 0x10);
+            angles[2] = func_001a5bc0(record + 0x10);
+            func_003b78b0(resourceId, record + 0x40, angles);
+            record += 0x60;
         }
     }
     else
     {
-        if (H_Cdvd_IsFileLoaded((HCdvd*)request) == 0)
+        FUN_00523ac8(path, D_00684060, majorId, minorId, (s32)variant);
+        fileMemory = (u8*)func_001021c0(path, &fileSize);
+        if (fileMemory == NULL)
         {
             return false;
         }
-        fileMemory = (u8*)((HCdvd*)request)->fileMemory;
-        fileSize = ((HCdvd*)request)->fileSize;
-    }
-    if (outFileMemory != NULL)
-    {
         *outFileMemory = fileMemory;
-    }
+        modelCount = *(u32*)(fileMemory + 8);
+        *(u32*)(K_Field_Get() + 0x10c0) = modelCount;
 
-    field = (u8*)K_Field_Get();
-    modelCount = *(u32*)(fileMemory + 0x08);
-    *(u32*)(field + 0x10c0) = modelCount;
-    models = (Model**)RwCalloc(1, modelCount * sizeof(Model*), 0x40000);
-    metadata = (u32*)RwCalloc(1, modelCount * 9 * sizeof(u32), 0x40000);
-    *(Model***)(field + 0x10c4) = models;
-    *(u32**)(field + 0x10c8) = metadata;
-    if (modelCount != 0 && (models == NULL || metadata == NULL))
-    {
-        return false;
-    }
+        models = FIELD_RUNTIME_ALLOCATOR(1, modelCount * sizeof(Model*),
+                                         0x40000);
+        *(Model***)(K_Field_Get() + 0x10c4) = models;
+        metadata = FIELD_RUNTIME_ALLOCATOR(1, modelCount * 9 * sizeof(u32),
+                                           0x40000);
+        *(u32**)(K_Field_Get() + 0x10c8) = metadata;
 
-    modelIndex = 0;
-    for (i = 0; i < modelCount; i++)
-    {
-        u8* record = fileMemory + 0x18 + i * 0x70;
-        u16 type = *(u16*)(record + 0x04);
-        u16 id = *(u16*)(record + 0x06);
-        Model* model;
-
-        if (type == MODEL_TYPE_FLD && id == 0xffff &&
-            (*(u32*)0x007ce200 == 1))
+        record = fileMemory + 0x18;
+        modelIndex = 0;
+        for (recordIndex = 0; recordIndex < modelCount; recordIndex++)
         {
-            model = mdlCreateFromPath(type, id, D_00684040, MDL_READASYNC);
-        }
-        else
-        {
-            model = mdlCreateAndResolvePath(type, id, MDL_READASYNC);
-        }
-        if (model != NULL)
-        {
-            models[modelIndex] = model;
-            metadata[modelIndex * 9 + 2] = i;
+            if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
+                *(u16*)(record + 6) == 0xffff && D_007CE200 == 1)
+            {
+                model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
+                                          D_00684040, MDL_READASYNC);
+            }
+            else
+            {
+                model = mdlCreateAndResolvePath(*(u16*)(record + 4),
+                                                *(u16*)(record + 6),
+                                                MDL_READASYNC);
+            }
+            (*(Model***)(K_Field_Get() + 0x10c4))[modelIndex] = model;
+            (*(u32**)(K_Field_Get() + 0x10c8))[modelIndex * 9 + 2] =
+                recordIndex;
             modelIndex++;
+            record += 0x70;
+        }
+
+        if (D_007CE200 == 0)
+        {
+            tableHeader = (u8*)func_001b83f0();
+            if (tableHeader != NULL)
+            {
+                table = (u8*)func_001b85a0(*(u32*)(tableHeader + 0x0c));
+                while (*(u16*)table != 0xffff)
+                {
+                    tableFlag = *(s32*)(table + 0x10);
+                    if (tableFlag == -1 || datGetFlag((u32)tableFlag) != 1)
+                    {
+                        record = fileMemory + 0x18;
+                        for (recordIndex = 0; recordIndex < modelCount;
+                             recordIndex++)
+                        {
+                            if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
+                                *(u16*)(record + 6) == 0xffff &&
+                                *(u16*)(record + 8) ==
+                                    (u16)((*(u16*)table & 0x3ff) | 0xc00) &&
+                                (*(u16*)(table + 2) != 0 ||
+                                 *(u16*)(table + 4) != 0))
+                            {
+                                D_007CE2C0 = 1;
+                                model = mdlCreateAndResolvePath(
+                                    *(u16*)(table + 2),
+                                    *(u16*)(table + 4), MDL_READASYNC);
+                                (*(Model***)(K_Field_Get() + 0x10c4))
+                                    [modelIndex] = model;
+                                metadata =
+                                    *(u32**)(K_Field_Get() + 0x10c8) +
+                                    modelIndex * 9;
+                                metadata[0] = 1;
+                                metadata[1] = (u32)table;
+                                metadata[2] = recordIndex;
+                                modelIndex++;
+                            }
+                            record += 0x70;
+                        }
+                    }
+                    table += 0x20;
+                }
+            }
+
+            for (sourceIndex = 0; sourceIndex < D_007CE244; sourceIndex++)
+            {
+                source = (u8*)func_001b8db0(func_001b8d60(sourceIndex));
+                if (source != NULL)
+                {
+                    record = fileMemory + 0x18;
+                    for (recordIndex = 0; recordIndex < modelCount;
+                         recordIndex++)
+                    {
+                        if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
+                            *(u16*)(record + 6) == 0xffff &&
+                            *(u16*)(record + 8) ==
+                                (u16)((*(u16*)source & 0x3ff) | 0xc00) &&
+                            (*(u16*)(source + 0x64) != 0 ||
+                             *(u16*)(source + 0x66) != 0))
+                        {
+                            D_007CE2C0 = 1;
+                            model = mdlCreateAndResolvePath(
+                                *(u16*)(source + 0x64),
+                                *(u16*)(source + 0x66), MDL_READASYNC);
+                            (*(Model***)(K_Field_Get() + 0x10c4))
+                                [modelIndex] = model;
+                            metadata = *(u32**)(K_Field_Get() + 0x10c8) +
+                                       modelIndex * 9;
+                            metadata[0] = 2;
+                            metadata[1] = (u32)source;
+                            metadata[2] = recordIndex;
+                            metadata[4] = sourceIndex;
+                            modelIndex++;
+                        }
+                        record += 0x70;
+                    }
+                }
+            }
+        }
+
+        *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
+        placementCount = *(u32*)(fileMemory + 0x10);
+        record = fileMemory + 0x18;
+        for (recordIndex = 0; recordIndex < placementCount; recordIndex++)
+        {
+            u16 resourceId;
+
+            resourceId =
+                func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
+            angles[0] = func_001a5b30(record + 0x10);
+            angles[1] = func_001a5aa0(record + 0x10);
+            angles[2] = func_001a5bc0(record + 0x10);
+            func_003b78b0(resourceId, record + 0x40, angles);
+            record += 0x60;
         }
     }
-
-    placementCount = *(u32*)(fileMemory + 0x10);
-    for (i = 0; i < placementCount; i++)
-    {
-        u8* record = fileMemory + 0x18 + i * 0x60;
-        u16 resourceId = (u16)(*(u16*)(record + 0x50) & 0x3ff);
-        f32 angles[3];
-
-        resourceId = func_003b5e90(resourceId);
-        angles[0] = func_001a5b30(record + 0x10);
-        angles[1] = func_001a5aa0(record + 0x10);
-        angles[2] = func_001a5bc0(record + 0x10);
-        func_003b78b0(resourceId, record + 0x40, angles);
-    }
-    (void)fileSize;
     return true;
 }
 

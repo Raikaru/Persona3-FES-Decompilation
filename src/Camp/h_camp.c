@@ -1015,7 +1015,6 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
     char text[0x100];
 
     root = work;
-    asm volatile("" : "+r"(reserve));
 
     for (i = 0; i < 7; i++) {
         if (func_0018b700((u8*)iGpffffb25c + i * 0x44) == 0) {

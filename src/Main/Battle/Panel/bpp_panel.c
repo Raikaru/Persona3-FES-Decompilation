@@ -40,10 +40,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
-            asm volatile("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 
@@ -57,10 +56,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * (BPP_PANEL_QUAD_SIZE * 2);
-            asm volatile("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * (BPP_PANEL_QUAD_SIZE * 2), 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * (BPP_PANEL_QUAD_SIZE * 2), 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 
@@ -74,10 +72,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
-            asm volatile("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 
@@ -107,10 +104,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         
         for (i = 0; i < 2; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
-            asm volatile("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 
@@ -129,9 +125,8 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         BPP_PANEL_RENDER_QUAD((u8*)work + BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE + BPP_PANEL_QUAD_SIZE * 2;
-            asm volatile("" : "+m"(quad));
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE + BPP_PANEL_QUAD_SIZE * 2, 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE + BPP_PANEL_QUAD_SIZE * 2, 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 
@@ -145,10 +140,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
-            asm volatile("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 
@@ -162,10 +156,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         
         for (i = 0; i < 4; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
-            asm volatile("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
-            BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
+            BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
         break;
 

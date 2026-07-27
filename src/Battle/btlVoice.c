@@ -7408,64 +7408,64 @@ void func_002e92c0(void)
   return;
 }
 
-// FUN_002e9450 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002e9450
 void func_002e9450(void)
-
 {
-  short sVar1;
-  int iVar2;
-  u32 uVar3;
-  u32 uVar4;
+  BtlUnit* source;
+  BtlUnit* target;
+  void* object;
   BtlPacket* packet;
-  u32 uVar5;
-  int iVar6;
-  int iVar7;
-  int iVar8;
-  int iVar9;
-  int iVar10;
-  int iVar11;
-  int iVar12;
-  
-  uVar3 = FUN_002b8f90_u32_voice(0);
-  uVar4 = FUN_002f87e0_u32_voice(1);
-  FUN_002b90d0(uVar3,uVar4);
-  iVar10 = 0;
-  iVar12 = 0;
-  iVar9 = 0;
-  iVar7 = 0;
-  for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-    sVar1 = *(short *)(iVar2 + 0xa4);
-    iVar6 = iVar7;
-    iVar8 = iVar2;
-    iVar11 = iVar12;
-    if (((sVar1 != 5) && (iVar6 = iVar2, iVar8 = iVar9, sVar1 != 2)) &&
-       (iVar6 = iVar7, iVar11 = iVar2, sVar1 != 1)) {
-      iVar10 = iVar2;
-      iVar11 = iVar12;
+  BtlUnit* unit;
+  BtlUnit* enemy;
+  BtlUnit* arg0;
+  BtlUnit* arg1;
+  BtlUnit* arg2;
+  u32 raw;
+
+  object = (void*)FUN_002b8f90_u32_voice(0);
+  func_002b90d0(object, (void*)FUN_002f87e0_u32_voice(1));
+  source = NULL;
+  arg0 = NULL;
+  arg1 = NULL;
+  arg2 = NULL;
+  target = NULL;
+  for (unit = gBtl->unitLists[UNIT_GENUS_PC].head;
+       unit != NULL; unit = unit->next) {
+    switch (unit->charId) {
+    case 1:
+      source = unit;
+      break;
+    case 2:
+      arg0 = unit;
+      break;
+    case 5:
+      arg1 = unit;
+      break;
+    default:
+      arg2 = unit;
+      break;
     }
-    iVar12 = iVar11;
-    iVar9 = iVar8;
-    iVar7 = iVar6;
   }
-  iVar6 = 0;
-  for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-    iVar8 = iVar2;
-    if (*(short *)(iVar2 + 0xa4) != 0x100) {
-      iVar8 = iVar6;
+  for (enemy = gBtl->unitLists[UNIT_GENUS_EC].head;
+       enemy != NULL; enemy = enemy->next) {
+    switch (enemy->charId) {
+    case 0x100:
+      target = enemy;
+      break;
     }
-    iVar6 = iVar8;
   }
-  uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
-  FUN_0027ed20((u32)uVar4,1);
-  packet = FUN_002baf90_packet_voice((void*)uVar3, (BtlUnit*)iVar12, (BtlUnit*)iVar6, 0, 0x200);
-  FUN_0027ed20((u32)packet,2);
-  uVar5 = FUN_002bc950_u32_voice(0,0,0);
-  *(u8 *)uVar5 = 4;
-  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((u8 *)packet + 0x58);
-  FUN_0027ed20((u32)uVar5,1);
-  FUN_002b9030(uVar3);
-  return;
+  raw = FUN_002bc950_u32_voice(arg0, arg1, arg2);
+  FUN_0027ed20_voice(raw, 1);
+  packet = FUN_002baf90_packet_voice(object, source, target, 0, 0x200);
+  FUN_0027ed20_voice((u32)packet, 2);
+  raw = FUN_002bc950_u32_voice(0, 0, 0);
+  *(u8*)raw = 4;
+  *(u64*)((u8*)raw + 8) = *(u64*)((u8*)packet + 0x58);
+  FUN_0027ed20_voice(raw, 1);
+  func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 /* Removing this loses FUN_002e95f0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002e95f0

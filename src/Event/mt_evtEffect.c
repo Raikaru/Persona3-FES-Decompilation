@@ -726,7 +726,6 @@ void FUN_00395570(int param_1)
     DAT_00958ae0 = (f32)(iVar1 + 0x200);
     DAT_00958ae4 = DAT_00958aa4;
     q1 = DAT_00960088_abs;
-    asm volatile("" : "+m"(q1));
     DAT_00958ae8 = *(f32 *)q1;
     DAT_00958b00 = 0x43480000;
     DAT_00958b04 = 0x42a00000;
@@ -736,7 +735,6 @@ void FUN_00395570(int param_1)
     DAT_00958b20 = DAT_00958ae0;
     DAT_00958b24 = (f32)(iVar2 + 0x200);
     q2 = DAT_00960088_abs;
-    asm volatile("" : "+m"(q2));
     DAT_00958b28 = *(f32 *)q2;
     DAT_00958b40 = 0x43480000;
     DAT_00958b44 = 0x42a00000;
@@ -746,7 +744,6 @@ void FUN_00395570(int param_1)
     DAT_00958b60 = DAT_00958aa0;
     DAT_00958b64 = DAT_00958b24;
     q3 = DAT_00960088_abs;
-    asm volatile("" : "+m"(q3));
     DAT_00958b68 = *(f32 *)q3;
     DAT_00958b80 = 0x43480000;
     DAT_00958b84 = 0x42a00000;
@@ -756,7 +753,6 @@ void FUN_00395570(int param_1)
     DAT_00958ba0 = DAT_00958aa0;
     DAT_00958ba4 = DAT_00958aa4;
     q4 = DAT_00960088_abs;
-    asm volatile("" : "+m"(q4));
     DAT_00958ba8 = *(f32 *)q4;
     DAT_00958bc0 = 0x43480000;
     DAT_00958bc4 = 0x42a00000;
@@ -764,7 +760,6 @@ void FUN_00395570(int param_1)
     DAT_00958bcc = 0x43750000;
 
     p = (code *)&DAT_00960090_abs;
-    asm volatile("" : "+m"(p));
     (*p)(1,0);
     (*p)(7,2);
     (*p)(0xc,1);

@@ -44124,10 +44124,10 @@ void FUN_00349fd0(u8 (*param_1) [16])
 {
   u32 uVar1;
   int iVar2;
+  u8 *state;
   int iVar6;
   int iVar3;
   int iVar4;
-  u8 *state;
   float fVar7;
   f32 vuPos[4];
   u32 c1s;
