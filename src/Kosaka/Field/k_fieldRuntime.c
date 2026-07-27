@@ -4461,6 +4461,24 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 index++;
             }
         }
+        if (work->state == 1)
+        {
+            amount = 0.0f;
+            func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                          &section, &fraction);
+            if (vertices != NULL && vector2 != NULL && vector3 != NULL)
+            {
+                sample0 = vector2[section < count ? section : 0];
+                sample1 = vector3[section < count ? section : 0];
+                blended.x = sample0.x +
+                            (sample1.x - sample0.x) * fraction;
+                blended.y = sample0.y +
+                            (sample1.y - sample0.y) * fraction;
+                blended.z = sample0.z +
+                            (sample1.z - sample0.z) * fraction;
+                vertices[0] = blended;
+            }
+        }
         (void)vector2;
         (void)vector3;
         (void)section;
