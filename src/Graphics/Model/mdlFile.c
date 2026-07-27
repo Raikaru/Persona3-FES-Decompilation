@@ -42342,7 +42342,7 @@ u64 FUN_00345f00(int param_1)
 
   u32 uVar1;
 
-  u32 uVar2;
+  u64 uVar2;
 
   int iVar3;
 
@@ -42354,7 +42354,7 @@ u64 FUN_00345f00(int param_1)
 
   uVar1 = DAT_0069c970[*(int *)(iVar3 + 0x38)].callback3(param_1);
 
-  *(u32 *)((int)uVar2 + 0x3c) = uVar1;
+  *(u32 *)(uVar2 + 0x3c) = uVar1;
 
   DAT_0069c970[*(int *)(iVar3 + 0x38)].callback0(uVar2);
 
