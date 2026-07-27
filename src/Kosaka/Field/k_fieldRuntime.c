@@ -4366,6 +4366,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         color3 = *(u8**)((u8*)renderObject + 0x30);
         count3 = *(u32*)((u8*)work->config + 0xc);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color3);
+        func_001ed0f0(1.0f, (RuntimeWork*)work, 1, color3 + 4);
         tail3 = count3 * 3 + 6;
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 1, color3 + (tail3 - 3) * 4);
