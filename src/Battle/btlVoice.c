@@ -7620,7 +7620,7 @@ void func_002e9ac0(void)
   iVar9 = 0;
   iVar7 = 0;
   for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-    sVar1 = *(short *)(iVar2 + 0xa4);
+    sVar1 = *(u16 *)(iVar2 + 0xa4);
     iVar6 = iVar7;
     iVar8 = iVar2;
     iVar11 = iVar12;

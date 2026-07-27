@@ -42352,11 +42352,11 @@ u64 FUN_00345f00(int param_1)
 
   uVar2 = FUN_00345cf0(*(u16 *)(iVar3 + 0x38),*(u32 *)(iVar3 + 0x40));
 
-  uVar1 = DAT_0069c970_abs[*(int *)(iVar3 + 0x38)].callback3(param_1);
+  uVar1 = DAT_0069c970[*(int *)(iVar3 + 0x38)].callback3(param_1);
 
   *(u32 *)((int)uVar2 + 0x3c) = uVar1;
 
-  DAT_0069c970_abs[*(int *)(iVar3 + 0x38)].callback0(uVar2);
+  DAT_0069c970[*(int *)(iVar3 + 0x38)].callback0(uVar2);
 
   return uVar2;
 
