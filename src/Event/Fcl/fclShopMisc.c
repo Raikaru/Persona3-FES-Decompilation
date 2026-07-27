@@ -7813,6 +7813,8 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
   int iVar2;
 
+  int sVar3;
+
   u32 uVar4;
 
   long lVar5;

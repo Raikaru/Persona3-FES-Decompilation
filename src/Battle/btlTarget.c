@@ -5677,6 +5677,9 @@ s16 FUN_002dc670(BtlAction* action)
 
     return result;
 }
+// FUN_002dc830
+s32 FUN_002dc830(BtlAction* action)
+{
     BtlUnit* unit;
     s32 result;
     u32 status;
