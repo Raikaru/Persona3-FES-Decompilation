@@ -9,7 +9,8 @@ extern u32 D_0095ABE0[];
 extern u32 D_0095ABE4[];
 extern u32 D_0095ABE8[];
 extern u32 D_0095ABEC[];
-extern u32 DAT_006a2660;
+#pragma alias DAT_006a2660_abs DAT_006a2660
+extern u32 DAT_006a2660_abs[];
 extern s32 DAT_006a2680[];
 extern u8 DAT_006a26b0[];
 extern char DAT_006a26f0[];
@@ -721,7 +722,7 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   case 0xd:
   case 0xe:
   case 0xf:
-  case 0x10:
+    puVar13 = DAT_006a2660_abs;
     puVar13 = &DAT_006a2660;
     puVar12 = stack_50;
     iVar11 = 5;
