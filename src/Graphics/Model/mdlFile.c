@@ -9731,87 +9731,55 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
 
 // FUN_00325D60 NONMATCHING
-
-
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16])
-
-
-
 {
-
   u16 uVar1;
-
-  __int128 auVar2;
-
   int iVar3;
-
   u8 (*pauVar4) [16];
+  float saved[4];
+  float transformed[4];
 
-  __int128 auVar5;
-
-  __int128 extraout_vf10;
-
-  __int128 extraout_vf28;
-
-  __int128 extraout_vf29;
-
-  __int128 extraout_vf30;
-
-  
-
-  auVar5 = _lqc2(*param_2);
-
-  pauVar4 = (u8 (*) [16])param_1;
-
-  auVar2 = _sqc2(auVar5);
-  memcpy(pauVar4[5], &auVar2, 16);
-
-
-  auVar2 = _sqc2(auVar5);
-
+  pauVar4 = (u8 (*) [16])(u32)param_1;
+  __asm__ volatile (
+      ".set noreorder                   \n"
+      "lqc2        $vf10, 0(%0)          \n"
+      "sqc2        $vf10, 0x50(%1)       \n"
+      "sqc2        $vf10, 0(%2)          \n"
+      ".set reorder"
+      :
+      : "r"(param_2), "r"(pauVar4), "r"(saved)
+      : "vf10", "memory");
   FUN_00357e30();
-
-  auVar5 = _lqc2(pauVar4[1]);
-
-  _vmulabc(extraout_vf28,auVar5);
-
-  _vmaddabc(extraout_vf29,auVar5);
-
-  auVar5 = _vmaddbc(extraout_vf30,auVar5);
-
-  auVar5 = _sqc2(auVar5);
-
-  memcpy(*pauVar4, &auVar5, 16);
-
+  __asm__ volatile (
+      ".set noreorder                        \n"
+      "lqc2         $vf10, 0x10(%0)           \n"
+      "vmulax.xyzw  $ACC, $vf28, $vf10x       \n"
+      "vmadday.xyzw $ACC, $vf29, $vf10y       \n"
+      "vmaddz.xyzw  $vf10, $vf30, $vf10z      \n"
+      "sqc2         $vf10, 0(%0)              \n"
+      ".set reorder"
+      :
+      : "r"(pauVar4)
+      : "vf10", "ACC", "memory");
   for (iVar3 = *(int *)(pauVar4[8] + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xac)) {
-
-    _lqc2(*(u8 (*) [16])(iVar3 + 0x50));
-
-    _lqc2(auVar2);
-
+    __asm__ volatile (
+        ".set noreorder                   \n"
+        "lqc2        $vf10, 0x50(%0)       \n"
+        "lqc2        $vf11, 0(%1)          \n"
+        ".set reorder"
+        :
+        : "r"(iVar3), "r"(saved)
+        : "vf10", "vf11", "memory");
     FUN_00357dd0();
-
-    _sqc2(extraout_vf10);
-
+    __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(transformed) : "memory");
     uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
-
     if ((code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
       (*(code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1])
-
                 (*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
-
     }
-
   }
-
-  FUN_00325c10((u8 (*) [16])(param_1),(u8 (*) [16])(pauVar4 + 4));
-
-  return;
-
+  FUN_00325c10(pauVar4,pauVar4 + 4);
 }
-
-
 
 
 // FUN_00325E40 NONMATCHING
@@ -13351,64 +13319,36 @@ void FUN_003297a0(u32 *param_1)
 
 
 
-// FUN_00329800 NONMATCHING
-
-
+// FUN_00329800
 void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
-
-
-
 {
-
   int iVar1;
-
-  __int128 in_vf0;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  u32 uVar4;
-
-  
+  float cameraPos[4];
 
   iVar1 = (int)FUN_00198590_camera();
-
   iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
-
-  auVar2 = _lqc2(*param_1);
-
-  auVar3._12_4_ = 0;
-
-  auVar3._0_12_ = *(u8 (*) [12])(iVar1 + 0x30);
-
-  auVar3 = _lqc2(auVar3);
-
-  auVar2 = _vsub(auVar2,auVar3);
-
-  auVar3 = _vmul(auVar2,auVar2);
-
-  _vmulabc(in_vf0,auVar3);
-
-  _vmaddabc(in_vf0,auVar3);
-
-  auVar3 = _vmaddbc(in_vf0,auVar3);
-
-  _vrsqrt(in_vf0,auVar3);
-
-  uVar4 = _vwaitq();
-
-  auVar3 = _vmulq(auVar2,uVar4);
-
-  auVar3 = _sqc2(auVar3);
-
-  memcpy(*param_2, &auVar3, 16);
-
-  return;
-
+  cameraPos[0] = *(float *)(iVar1 + 0x30);
+  cameraPos[1] = *(float *)(iVar1 + 0x34);
+  cameraPos[2] = *(float *)(iVar1 + 0x38);
+  cameraPos[3] = 0.0f;
+  __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "vf10", "memory");
+  __asm__ volatile (
+      ".set noreorder                   \n"
+      "lqc2        $vf11, 0(%0)          \n"
+      "vsub.xyzw   $vf10, $vf10, $vf11  \n"
+      "vmul.xyz    $vf2, $vf10, $vf10   \n"
+      "vmulax.w    $ACC, $vf0, $vf2x    \n"
+      "vmadday.w   $ACC, $vf0, $vf2y    \n"
+      "vmaddz.w    $vf2, $vf0, $vf2z    \n"
+      "vrsqrt      $Q, $vf0w, $vf2w     \n"
+      "vwaitq                              \n"
+      "vmulq.xyz   $vf10, $vf10, $Q      \n"
+      "sqc2        $vf10, 0(%1)          \n"
+      ".set reorder"
+      :
+      : "r"(cameraPos), "r"(param_2)
+      : "vf2", "vf10", "vf11", "ACC", "Q", "memory");
 }
-
-
 
 
 // FUN_00329890 NONMATCHING

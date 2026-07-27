@@ -126,6 +126,12 @@ u32 DAT_006b2e40;
 u32 DAT_006b2e48;
 u32 DAT_006b2e4c;
 u32 DAT_006b2e50;
+#pragma alias DAT_006b2e48_abs DAT_006b2e48
+extern f32 DAT_006b2e48_abs[];
+#pragma alias DAT_006b2e4c_abs DAT_006b2e4c
+extern f32 DAT_006b2e4c_abs[];
+#pragma alias DAT_006b2e50_abs DAT_006b2e50
+extern f32 DAT_006b2e50_abs[];
 u32 DAT_006b2e58;
 u32 DAT_006b2e5c;
 u32 DAT_006b2e60;
@@ -1380,7 +1386,7 @@ u32 FUN_00418880(int param_1,int *param_2)
 
   u8 auStack_60 [64];
 
-  u32 auStack_20 [4];
+  f32 auStack_20 [4];
 
   u32 uStack_10;
 
@@ -1396,9 +1402,9 @@ u32 FUN_00418880(int param_1,int *param_2)
 
   uVar4 = *(u32 *)(param_1 + 0x38);
 
-  auStack_20[0] = DAT_006b2e48;
-  auStack_20[1] = DAT_006b2e4c;
-  auStack_20[2] = DAT_006b2e50;
+  auStack_20[0] = *DAT_006b2e48_abs;
+  auStack_20[1] = *DAT_006b2e4c_abs;
+  auStack_20[2] = *DAT_006b2e50_abs;
 
   uStack_10 = 0x3f800000;
 
@@ -1427,7 +1433,7 @@ u32 FUN_00418880(int param_1,int *param_2)
   cVar1 = *(char *)(iVar3 + 4);
   if (cVar1 == '@') {
     if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
-      FUN_004cb7f0(uVar4,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
+      FUN_004cb7f0(uVar4,auStack_60,*(u32 *)&auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
     }
   }
   else if (cVar1 == '\x06') {
@@ -1453,11 +1459,11 @@ u32 FUN_00418880(int param_1,int *param_2)
     matrix.pos.y = 0.0f;
     matrix.pos.z = 0.0f;
     matrix.flags = 3;
-    FUN_004c3760(&matrix,auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
+    FUN_004c3760(&matrix,auStack_60,*(u32 *)&auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
     FUN_004bdcb0((void *)(iVar5 + 0x10),&matrix);
   }
   else if (cVar1 == '\x03') {
-    mdl00318a70(*(u32 *)(iVar2 + 8),auStack_60,auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
+    mdl00318a70(*(u32 *)(iVar2 + 8),auStack_60,*(u32 *)&auStack_20[*(u32 *)(iVar3 + 0x18) & 3]);
   }
   else if (cVar1 == '\x02') {
   }

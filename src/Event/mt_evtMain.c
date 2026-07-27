@@ -5685,7 +5685,7 @@ void FUN_003657e0(int param_1,int param_2)
 
         if (lVar2 != 0) {
 
-          *(u32 *)((int)lVar2 + 0x100) = *(u32 *)(iVar3 + 0x8d0);
+          *(f32 *)((int)lVar2 + 0x100) = *(f32 *)(iVar3 + 0x8d0);
 
         }
 
@@ -8197,7 +8197,7 @@ u64 FUN_00367e00(u64 param_1,u64 param_2,int param_3)
 }
 
 
-// FUN_00367EC0 NONMATCHING
+// FUN_00367EC0
 
 
 u64 FUN_00367ec0(u64 param_1,u64 param_2,int param_3)
@@ -8210,7 +8210,7 @@ u64 FUN_00367ec0(u64 param_1,u64 param_2,int param_3)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   int iVar4;
 
@@ -8218,17 +8218,11 @@ u64 FUN_00367ec0(u64 param_1,u64 param_2,int param_3)
 
   int iVar6;
 
-  u32 uStack_20;
+  int limit;
 
-  u32 uStack_1c;
+  f32 source[3];
 
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  f32 target[3];
 
   
 
@@ -8244,16 +8238,12 @@ u64 FUN_00367ec0(u64 param_1,u64 param_2,int param_3)
 
   else {
 
+    iVar6 = *(int *)(iVar1 + 0x6c);
     iVar4 = 0;
-
-    for (iVar6 = *(int *)(iVar1 + 0x6c);
-
-        (iVar4 < *(int *)(iVar5 + 0x160) + *(int *)(iVar5 + 0x15c) && (iVar6 != 0));
-
-        iVar6 = *(int *)(iVar6 + 0x4c)) {
-
+    limit = *(int *)(iVar5 + 0x160) + *(int *)(iVar5 + 0x15c);
+    while ((iVar4 < limit) && (iVar6 != 0)) {
+      iVar6 = *(int *)(iVar6 + 0x4c);
       iVar4 = iVar4 + 1;
-
     }
 
   }
@@ -8280,19 +8270,19 @@ u64 FUN_00367ec0(u64 param_1,u64 param_2,int param_3)
 
       iVar1 = (int)lVar3;
 
-      uStack_10 = *(u32 *)(iVar1 + 4);
+      source[0] = *(f32 *)(iVar1 + 4);
 
-      uStack_c = *(u32 *)(iVar1 + 8);
+      source[1] = *(f32 *)(iVar1 + 8);
 
-      uStack_8 = *(u32 *)(iVar1 + 0xc);
+      source[2] = *(f32 *)(iVar1 + 0xc);
 
-      uStack_20 = *(u32 *)(iVar6 + 0x18);
+      target[0] = *(f32 *)(iVar6 + 0x18);
 
-      uStack_1c = *(u32 *)(iVar6 + 0x1c);
+      target[1] = *(f32 *)(iVar6 + 0x1c);
 
-      uStack_18 = 0;
+      target[2] = 0.0f;
 
-      uVar2 = FUN_00386230(param_3,&uStack_10,&uStack_20);
+      uVar2 = FUN_00386230(param_3,(u32 *)source,(u32 *)target);
 
       *(u32 *)(iVar5 + 0xe8) = uVar2;
 

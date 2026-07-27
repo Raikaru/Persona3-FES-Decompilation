@@ -978,9 +978,8 @@ void FUN_0039f950(int param_1)
 
       *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3 + 8) = uVar2;
 
-      *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3) =
-
-           *(u32 *)(*(int *)(iVar1 + 0x128) + 0xf4);
+      *(f32 *)(*(int *)(param_1 + 0xe8) + iVar3) =
+           *(f32 *)(*(int *)(iVar1 + 0x128) + 0xf4);
 
       *(int *)(*(int *)(param_1 + 0xe8) + iVar3 + 0xc) = iVar1;
 
@@ -998,9 +997,8 @@ void FUN_0039f950(int param_1)
 
       *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3 + 8) = uVar2;
 
-      *(u32 *)(*(int *)(param_1 + 0xe8) + iVar3) =
-
-           *(u32 *)(*(int *)(iVar1 + 0x128) + 0xf4);
+      *(f32 *)(*(int *)(param_1 + 0xe8) + iVar3) =
+           *(f32 *)(*(int *)(iVar1 + 0x128) + 0xf4);
 
       *(int *)(*(int *)(param_1 + 0xe8) + iVar3 + 0xc) = iVar1;
 
