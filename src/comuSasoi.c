@@ -537,7 +537,6 @@ u8 FUN_003c2c50(u32 param_1)
   if ((lVar4 == 0) || (param_1 != sStack_2)) {
 
     lVar4 = FUN_0016e100((u16)param_1);
-    lVar4 = FUN_0016e100((u16)param_1);
 
     if (lVar4 == 0) {
 
