@@ -7704,7 +7704,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
   short sVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
