@@ -1429,23 +1429,29 @@ void func_002f2550(BtlAction* action)
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 2);
-  packet = FUN_0027f410_packet_voice((u32)func_002f23d0,
-                                     (u32)unit);
-  packet->unk_00 = 5;
-  packet->parentUID = packet->uid;
-  packet->actionUID = action->uid;
-  btlPacketRegister(packet, 1);
+  {
+    BtlPacket* waitPacket;
+    waitPacket = FUN_0027f410_packet_voice((u32)func_002f23d0,
+                                           (u32)unit);
+    waitPacket->unk_00 = 5;
+    waitPacket->parentUID = packet->uid;
+    waitPacket->actionUID = action->uid;
+    btlPacketRegister(waitPacket, 1);
+  }
   packet = FUN_002baf90_packet_voice(object, unit, unit, 1, 0x200);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 2);
-  packet = FUN_0027f410_packet_voice((u32)func_002f2410,
-                                     (u32)unit);
-  packet->unk_00 = 5;
-  packet->parentUID = packet->uid;
-  packet->actionUID = action->uid;
-  btlPacketRegister(packet, 1);
+  {
+    BtlPacket* waitPacket;
+    waitPacket = FUN_0027f410_packet_voice((u32)func_002f2410,
+                                           (u32)unit);
+    waitPacket->unk_00 = 5;
+    waitPacket->parentUID = packet->uid;
+    waitPacket->actionUID = action->uid;
+    btlPacketRegister(waitPacket, 1);
+  }
   func_002b9030(object);
 }
 

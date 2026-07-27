@@ -5069,7 +5069,7 @@ void FUN_003a7490(u32 *param_1)
 
   u32 uVar2;
 
-  long lVar3;
+  int lVar3;
 
   short sVar4;
 
