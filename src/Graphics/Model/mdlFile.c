@@ -7718,7 +7718,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
   short *psVar5;
 
-  short sVar6;
+  int sVar6;
 
   int lVar7;
 
@@ -31625,17 +31625,14 @@ u32 FUN_0033b1c0(int param_1)
   int *piVar2;
   int iVar3;
   u32 uVar4;
-  u32 raw;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   uVar4 = (*DAT_00960178_abs)(uVar1 * 0x2c + 0x10,0x40000);
-  raw = uVar4;
-  *(int *)raw = (int)((int *)raw + 4);
-  *(int *)(raw + 8) = raw;
-  piVar2 = (int *)uVar4;
+  *(int *)uVar4 = (int)((int *)uVar4 + 4);
+  *(int *)(uVar4 + 8) = uVar4;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,0xc,0xd,DAT_0069bd80_abs,0x48);
-  piVar2[1] = iVar3;
-  return (u32)piVar2;
+  *(int *)(uVar4 + 4) = iVar3;
+  return uVar4;
 }
 
 
@@ -36014,7 +36011,7 @@ u64 FUN_0033f6a0(u32 param_1,int param_2)
 
   int iVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u32 uVar4;
 
@@ -54812,7 +54809,7 @@ u64 FUN_00352980(int param_1)
 
   memcpy(*pauVar6, &auVar3, 16);
 
-  FUN_00521250(*(u32 *)pauVar6[2],uVar4,iVar2);
+  FUN_00521250_mdl(*(u32 *)pauVar6[2],uVar4,iVar2);
 
   uVar4 = DAT_0069ccc0[(u32)uVar1].create(uVar4);
 
