@@ -399,6 +399,8 @@ void FUN_003257e0(u32 param_1);
 #pragma alias FUN_003257e0_passthru FUN_003257e0
 extern void FUN_003257e0_passthru(void);
 u64 FUN_00325920(u64 *param_1);
+#pragma alias FUN_00325920_u32 FUN_00325920
+extern u32 FUN_00325920_u32(u64 *param_1);
 void FUN_00325b80(int param_1);
 #pragma alias FUN_00325b80_passthru FUN_00325b80
 extern void FUN_00325b80_passthru(void);
@@ -11039,7 +11041,7 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 
     for (uVar1 = 1; uVar1 < uVar3; uVar1 = uVar1 + 1) {
 
-      uVar2 = FUN_00325920((u64 *)(*(u32 *)param_1[0xf]));
+      uVar2 = FUN_00325920_u32((u64 *)(*(u32 *)param_1[0xf]));
 
       *(u32 *)(param_1[0xf] + uVar1 * 4) = uVar2;
 

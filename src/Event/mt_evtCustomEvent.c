@@ -4213,15 +4213,15 @@ u32 FUN_0039cdc0(int param_1)
 
   u32 uVar4;
 
-  u64 uVar5;
-
-  u64 uVar6;
-
-  u64 uVar7;
-
-  u64 uVar8;
-
-  long lVar9;
+  u32 uVar5;
+ 
+  u32 uVar6;
+ 
+  u32 uVar7;
+ 
+  u32 uVar8;
+ 
+  int lVar9;
 
   int *piVar10;
 
