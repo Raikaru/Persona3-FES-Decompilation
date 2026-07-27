@@ -4287,11 +4287,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             amount = (f32)index / (f32)(count - 1);
             func_001ed0f0(amount, (RuntimeWork*)work, 0, color);
-        color1 = *(u8**)((u8*)renderObject + 0x30) + 4;
-        if (count <= 1)
-        {
-            func_0019d3f0(D_006844F8, 0x3df);
-        }
             color += 8;
         }
         func_001ed0f0(1.0f, (RuntimeWork*)work, 0, color);
