@@ -1535,7 +1535,7 @@ void FUN_0045a430(char param_1);
 void FUN_0045a490(void);
 void FUN_0045ace0(void);
 void FUN_0045af70(u8 param_1);
-void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,int param_5, char param_6,int param_7);
+void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,u64 param_5, char param_6,int param_7);
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,u64 param_2);
@@ -2951,7 +2951,7 @@ void FUN_0045a430(char param_1);
 void FUN_0045a490(void);
 void FUN_0045ace0(void);
 void FUN_0045af70(u8 param_1);
-void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,int param_5, char param_6,int param_7);
+void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,u64 param_5, char param_6,int param_7);
 void FUN_0045b830(int param_1,long param_2);
 void FUN_0045b8f0(int param_1);
 void FUN_0045bcb0(int param_1,u64 param_2);
@@ -20086,7 +20086,7 @@ float FUN_0045b4e0(int param_1)
 
 // FUN_0045B620 NONMATCHING
 
-void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,int param_5,
+void FUN_0045b620(float param_1,float param_2,float param_3,float param_4,u64 param_5,
                  char param_6,int param_7)
 
 {
