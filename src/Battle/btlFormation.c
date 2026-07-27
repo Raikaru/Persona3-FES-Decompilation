@@ -7844,7 +7844,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   u16 *puVar5;
   u32 uVar6 = 0;
   u32 uVar7 = 0;
-  short iVar8 = 0;
+  int iVar8 = 0;
   
   uVar2 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar7 = 0xffffffff;
