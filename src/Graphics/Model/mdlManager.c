@@ -43,6 +43,8 @@ void func_00313e60(void* data);
 void func_003143c0(u8* state, RpClump* clump);
 void func_00314d30(void* state);
 void func_00314730(f32 frame, u8* state);
+#pragma alias func_00314730_ptrfirst func_00314730
+void func_00314730_ptrfirst(u8* state, f32 frame);
 void func_00314850(RpClump* clump, void* state, s16 id, u16 blendFrameCount, u16 flags);
 void func_003138e0(MdlAnim* anim, s16 id, u16 blendFrameCount, u16 flags);
 void* func_00313490(MdlAnimSlot* slot, void* hierarchy);
@@ -529,7 +531,7 @@ Model* mdlClone(const Model* mdl)
     return clone;
 }
 
-// FUN_003174e0 NONMATCHING
+// FUN_003174e0
 void mdlDestroy(Model* mdl)
 {
     void* data;
@@ -574,7 +576,8 @@ void mdlDestroy(Model* mdl)
 
     for (i = 0; i < 5; i++)
     {
-        if ((mdl->attachedWpns[i].flags & 1) != 0 && mdl->attachedWpns[i].wpnMdl != NULL)
+        if ((*(u8*)((u8*)mdl + i * sizeof(MdlAttachedWpn) + 0x3b4) & 1) != 0 &&
+            *(Model**)((u8*)mdl + i * sizeof(MdlAttachedWpn) + 0x3b8) != NULL)
         {
             func_003196f0(mdl, i);
         }
@@ -779,8 +782,7 @@ void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
     if (slotIdx == 0)
     {
         state = (u8*)mdl + 0x364;
-        asm volatile("" : "+r"(state));
-        func_00314730(scaledFrame, state);
+        func_00314730_ptrfirst(state, scaledFrame);
     }
 }
 
@@ -1168,7 +1170,7 @@ extern void (*DAT_00960090[])(...);
  extern u8 DAT_00960090_abs[];
 extern void (*DAT_00960094[])(...);
 extern u32 DAT_00960070;
-extern u32 DAT_007caf08;
+extern f32 DAT_007caf08;
 extern void* (*DAT_00960178[])(...);
 extern u32 DAT_0069aee0;
 extern u32 DAT_0069aee2;
@@ -7221,26 +7223,22 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 void func_003197c0(Model* param_1, RwMatrix* param_2)
 {
-    register s32 uVar7;
     u16 uVar6;
-    s32 uVar8;
-    u32* puVar4;
     u32* puVar5;
+    u32* puVar4;
+    s32 uVar8;
     u32 uVar1;
     u32 uVar2;
     int iVar3;
 
     uVar6 = 0;
-    uVar7 = 8;
-    __asm__ volatile ("" : "+r"(uVar7));
     for (; uVar6 < 5; uVar6++)
     {
-        __asm__ volatile ("" : "+r"(uVar6));
-        iVar3 = *(int*)((u8*)param_1 + (u16)uVar6 * 0xc + 0x3b8);
+        iVar3 = (int)param_1->attachedWpns[uVar6].wpnMdl;
         if (iVar3 != 0)
         {
             puVar4 = (u32*)(iVar3 + 0x90);
-            uVar8 = uVar7;
+            uVar8 = 8;
             puVar5 = (u32*)param_2;
             do
             {

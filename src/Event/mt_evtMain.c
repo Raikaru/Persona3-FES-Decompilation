@@ -953,9 +953,7 @@ void FUN_00361140(int param_1,u16 *param_2)
 
       *(u32 *)(param_2 + 0x28) = *(u32 *)(param_1 + 0x70);
 
-      param_2[0x26] = 0;
-
-      param_2[0x27] = 0;
+      *(u32 *)(param_2 + 0x26) = 0;
 
       *(u16 **)(param_1 + 0x70) = param_2;
 
