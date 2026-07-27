@@ -9086,7 +9086,7 @@ u32 func_0031be80(u32 param_1)
 
   u32 uVar5;
 
-  long lVar6;
+  u32 lVar6;
 
   int iVar7;
 

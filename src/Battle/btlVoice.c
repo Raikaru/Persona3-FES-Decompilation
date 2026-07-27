@@ -10099,7 +10099,7 @@ void func_002ef000(u64 *param_1)
   int iVar2;
   u8 *puVar3;
   u32 uVar4;
-  u64 uVar5;
+  u32 uVar5;
   u16 unaff_s0_lo;
   
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfdffffff;
