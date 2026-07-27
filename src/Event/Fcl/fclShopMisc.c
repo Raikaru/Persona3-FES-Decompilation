@@ -12115,7 +12115,7 @@ void FUN_003ff460(int param_1,u32 param_2)
 
   u8 bVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 
