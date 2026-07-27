@@ -108,7 +108,7 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
         for (x = 0; x < FLDFILTER_GRID_WIDTH; x++)
         {
             rowOffset = x * FLDFILTER_QUAD_XPIXELS;
-            vertex = (f32*)&sFilterGrid[y][x];
+            vertex = (f32*)((u8*)sFilterGrid_abs + (y * 0x2000) + (x * 0x100));
             vertex[0] = (f32)rowOffset;
             vertex[1] = top;
             vertex[2] = z;

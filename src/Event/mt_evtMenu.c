@@ -14732,7 +14732,7 @@ u32 FUN_00380310(int param_1,int param_2,int param_3)
 // FUN_00380380 NONMATCHING
 
 
-void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
+void FUN_00380380(u32 param_1,u32 param_2,u32 param_3,u8 *param_4)
 
 
 

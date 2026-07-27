@@ -3461,11 +3461,11 @@ u32 FUN_0039c0f0(int param_1)
 
   u32 *puVar6;
 
-  int iVar7;
+  int iVar9;
 
   int iVar8;
 
-  int iVar9;
+  int iVar7;
 
   short sVar10;
 

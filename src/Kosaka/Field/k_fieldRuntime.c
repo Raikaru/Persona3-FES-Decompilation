@@ -4380,6 +4380,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             func_001ed0f0(
                 amount3, (RuntimeWork*)work, 1, cursor3);
             cursor3 += 4;
+            func_001ed0f0(
+                amount3, (RuntimeWork*)work, 1, cursor3);
             cursor3 += 8;
             amount3 += step3;
         }
