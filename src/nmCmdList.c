@@ -86,7 +86,7 @@ void FUN_003c5f40(int param_1,u32 param_2);
 void FUN_003c5fa0(int param_1,int param_2);
 u32 FUN_003c60c0(int param_1,int param_2);
 u64 FUN_003c60f0(int param_1);
-u64 FUN_003c6120(int param_1,int param_2);
+u32 FUN_003c6120(int param_1,int param_2);
 u32 FUN_003c6270(int param_1);
 u64 FUN_003c6380(int param_1);
 u64 FUN_003c63f0(int param_1);
@@ -410,7 +410,7 @@ u64 FUN_003c60f0(int param_1)
 #undef FUN_003c6120
 // FUN_003C6120 NONMATCHING
 
-u64 FUN_003c6120(int param_1,int param_2)
+u32 FUN_003c6120(int param_1,int param_2)
 {
   u32 *puVar1;
   u32 *puVar2;
@@ -457,7 +457,7 @@ u64 FUN_003c6120(int param_1,int param_2)
   ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;
 }
-#define FUN_003c6120(...) ((u64 (*)(...))FUN_003c6120)(__VA_ARGS__)
+#define FUN_003c6120(...) ((u32 (*)(...))FUN_003c6120)(__VA_ARGS__)
 #undef FUN_003c6270
 // FUN_003C6270
 
