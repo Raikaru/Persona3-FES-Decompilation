@@ -427,6 +427,8 @@ extern void FUN_00325e40_passthru(void);
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
+#pragma alias FUN_00325d60_ptr FUN_00325d60
+extern void FUN_00325d60_ptr(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
@@ -52327,12 +52329,7 @@ void FUN_0034fe30(u64 param_1,float param_2,float param_3,float param_4)
 
 
 
-// Fixed raw-decompiler dead-store elim (buf16/buf64 arrays), float-typed
-// param_2 reads, param_1 retyped to u8(*)[16] to drop a spurious truncate.
-// obj 248B/240B window. Residual: FUN_00325d60's 2nd-arg SQC2 addressing
-// (retail reuses a register the preceding _sqc2 store leaves loaded; a
-// few equivalent call shapes tried, floor accepted).
-// FUN_0034FE80 NONMATCHING
+// FUN_0034FE80
 
 
 void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2)
@@ -52341,9 +52338,8 @@ void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2)
 
 {
 
-  __int128 extraout_vf10;
   f32 buf64[16];
-  __int128 auStack_50;
+  u8 auStack_50[16];
   f32 buf16[4];
   f32* fParam2 = (f32*)param_2;
 
@@ -52373,9 +52369,13 @@ void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2)
 
   FUN_00329ed0(buf64);
 
-  auStack_50 = _sqc2(extraout_vf10);
+  __asm__ volatile (
+      "sqc2 vf10, 0(%0)"
+      :
+      : "r"(auStack_50)
+      : "memory");
 
-  FUN_00325d60((u64)param_1, (u8 (*)[16])&auStack_50);
+  FUN_00325d60_ptr(param_1, (u8 (*)[16])auStack_50);
   return;
 
 }
