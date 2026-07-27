@@ -30730,7 +30730,7 @@ void FUN_0033a220(int param_1)
 
     }
 
-    FUN_00323860_4arg((int)puVar2,param_1,param_1 + 0x10,param_1 + 0x20);
+    FUN_00323860();
 
   }
 

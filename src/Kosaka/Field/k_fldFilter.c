@@ -696,8 +696,8 @@ void FUN_001d59e0(KwlnTask* cameraTask)
 // FUN_001d5a90 NONMATCHING
 KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {
-    KwlnTask* task;
     FldFilterCameraWork* work;
+    KwlnTask* task;
     RwFrame** slot1;
     RwFrame** slot0;
 

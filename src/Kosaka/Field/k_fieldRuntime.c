@@ -4334,6 +4334,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         tail2 = count2 * 3 + 6;
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 0, color2 + (tail2 - 3) * 4);
+        func_001ed0f0(
+            1.0f, (RuntimeWork*)work, 1, color2 + (tail2 - 2) * 4);
     }
     case 2:
         break;
