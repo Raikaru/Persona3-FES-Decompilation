@@ -2923,6 +2923,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
     lVar5 = (long)(short)puVar4[2];
 
+
     if (((lVar5 < (long)(u32)*(u16 *)(piVar1 + 1)) &&
 
         (puVar2 = *(u8 **)(*piVar1 + 0x40 + (short)puVar4[2] * 0x50),

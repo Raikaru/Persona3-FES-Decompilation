@@ -24,24 +24,24 @@ static u8* panelWork(void)
     return gBcmWork;
 }
 
-static u32 panelWork32(u32 offset)
+static inline u32 panelWork32(u32 offset)
 {
-    return *(u32*)(panelWork() + offset);
+    return *(u32*)(gBcmWork + offset);
 }
 
-static void panelSetWork32(u32 offset, u32 value)
+static inline void panelSetWork32(u32 offset, u32 value)
 {
-    *(u32*)(panelWork() + offset) = value;
+    *(u32*)(gBcmWork + offset) = value;
 }
 
-static u16 panelWork16(u32 offset)
+static inline u16 panelWork16(u32 offset)
 {
-    return *(u16*)(panelWork() + offset);
+    return *(u16*)(gBcmWork + offset);
 }
 
-static void panelSetWork16(u32 offset, u16 value)
+static inline void panelSetWork16(u32 offset, u16 value)
 {
-    *(u16*)(panelWork() + offset) = value;
+    *(u16*)(gBcmWork + offset) = value;
 }
 
 void FUN_00201880(void);
