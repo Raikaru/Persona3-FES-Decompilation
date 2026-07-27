@@ -39171,7 +39171,7 @@ u64 FUN_00342990(int param_1)
 
   iVar1 = *(int *)(param_1 + 0x40);
 
-  uVar3 = (*DAT_00960178)(*(int *)(iVar1 + 0x38) * 0x30 + 0xc,0x40000);
+  uVar3 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x30 + 0xc,0x40000);
 
   piVar4 = (int *)uVar3;
 

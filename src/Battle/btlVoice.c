@@ -347,6 +347,8 @@ void* func_002f87e0(u16 index);
  extern void FUN_0027ed20_voice(u32 packet, u32 mode);
  #pragma alias FUN_002bc950_u32_voice FUN_002bc950
  extern u32 FUN_002bc950_u32_voice();
+#pragma alias FUN_002bc950_ptr_voice FUN_002bc950
+extern u8* FUN_002bc950_ptr_voice();
  #pragma alias FUN_00284200_packet_voice FUN_00284200
  extern BtlPacket* FUN_00284200_packet_voice(f32, BtlUnit*, u16, u16, u16);
  #pragma alias FUN_002b8d60_packet_voice FUN_002b8d60

@@ -5161,7 +5161,7 @@ void FUN_00364e40(u32 param_1,int param_2,int param_3)
 
   u8 *puVar3;
 
-  long lVar4;
+  int lVar4;
 
   u8 *puVar5;
 
