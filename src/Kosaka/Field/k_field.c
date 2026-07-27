@@ -953,7 +953,6 @@ void func_001ba8d0(void)
 {
     Resrc* resource;
     Resrc* other;
-    u32 clearMask = ~2u;
     KwlnTask* rootTask;
 
     resource = MT_Scene_GetResListHead(3);
@@ -971,7 +970,7 @@ void func_001ba8d0(void)
     }
     while (other != NULL)
     {
-        other->flags &= clearMask;
+        other->flags &= ~2u;
         other = other->next;
     }
     func_0019fec0(NULL);
