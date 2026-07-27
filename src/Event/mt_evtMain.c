@@ -6135,7 +6135,7 @@ void FUN_00365f80(u32 param_1,long param_2)
 
   short sVar5;
 
-  long lVar6;
+  u32 lVar6;
 
   int iVar7;
 
@@ -6297,7 +6297,7 @@ void FUN_00366210(u32 param_1,int param_2)
 
   int *piVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   u32 uStack_8;
 
@@ -9315,7 +9315,7 @@ u64 FUN_00368a30(u64 param_1,u64 param_2,int param_3,int param_4)
 }
 
 
-// FUN_00368B00 NONMATCHING
+// FUN_00368B00
 
 
 u64 FUN_00368b00(u64 param_1,int param_2,int param_3)
@@ -9326,13 +9326,15 @@ u64 FUN_00368b00(u64 param_1,int param_2,int param_3)
 
   int *piVar1;
 
-  int iVar5;
-
   int iVar3;
 
   int iVar4;
 
+  int iVar5;
+
   int iVar1;
+
+  int iVar6;
 
   
 
@@ -9348,10 +9350,13 @@ u64 FUN_00368b00(u64 param_1,int param_2,int param_3)
 
   else {
     iVar4 = piVar1[0x1b];
-    iVar1 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
-    iVar5 = 0;
-    for (; (iVar5 < iVar1 && (iVar4 != 0));
-        iVar4 = *(int *)(iVar4 + 0x4c), iVar5 = iVar5 + 1) {
+    {
+      int iVar6 = 0;
+
+      iVar1 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
+      for (; (iVar6 < iVar1 && (iVar4 != 0));
+          iVar4 = *(int *)(iVar4 + 0x4c), iVar6 = iVar6 + 1) {
+      }
     }
 
 
@@ -13570,7 +13575,7 @@ code * FUN_0036d500(void)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u32 uVar4;
 
@@ -14358,7 +14363,7 @@ code * FUN_0036e140(int param_1)
 
   code *pcVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   
 
@@ -15286,7 +15291,7 @@ void FUN_0036f000(int param_1)
 
   int iVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   int iVar3;
 
@@ -15514,7 +15519,7 @@ void FUN_0036f3b0(u64 param_1,u32 param_2)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   
 

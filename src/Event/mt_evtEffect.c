@@ -1574,11 +1574,13 @@ u64 FUN_003962c0(int param_1)
 
 {
 
-  int iVar4;
-  u32 predicate;
-  u32 lVar3;
-  u32 uVar2;
   u32 lVar1;
+
+  u32 uVar2;
+
+  u32 lVar3;
+
+  int iVar4;
 
   u8 auStack_4[4];
 
@@ -1611,8 +1613,7 @@ u64 FUN_003962c0(int param_1)
       *(u32 *)(iVar4 + 0x67c) = 0;
 
     }
-    predicate = *(int *)(iVar4 + 0x680) == 1;
-    if (predicate == 1) {
+    if (*(int *)(iVar4 + 0x680) == 1) {
 
       auStack_4[0] = 0x14;
 
@@ -1902,9 +1903,9 @@ done:
 
 
 void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
-{
   u16 sVar1;
   u16 uVar2;
+  u16 *puVar5;
   int iVar4;
   u16 *puVar5;
 

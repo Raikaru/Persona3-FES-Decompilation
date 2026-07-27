@@ -3002,8 +3002,8 @@ void FUN_003a1f30(int param_1)
 
 {
 
-  int iVar1;
   int iVar2;
+  int iVar1;
 
 
   

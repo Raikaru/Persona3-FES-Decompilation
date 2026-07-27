@@ -158,7 +158,6 @@ state_default:
 state_done:
     ;
   }
-  return;
 
 }
 #pragma pop

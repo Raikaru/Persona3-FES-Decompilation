@@ -4759,8 +4759,8 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   int counter;
   u32 uVar6;
   u32 uVar5;
-  u32 firstIndex;
-  u32 secondIndex;
+  int firstIndex;
+  int secondIndex;
   u32 firstLow;
   u32 secondLow;
   int first2;
@@ -4799,7 +4799,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   }
 
 
-  uVar5 = (u8)uVar5 << 8 | (u8)firstLow;
+  firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
   first2 = *(volatile int *)(param_2 + 0x18);
   second2 = *(volatile int *)(param_2 + 0x10);
   iVar8 = first2 + second2;
@@ -4820,7 +4820,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   }
 
-  uVar6 = (u8)uVar6 << 8 | (u8)secondLow;
+  secondIndex = (u8)uVar6 << 8 | (u8)secondLow;
   piVar10 = (int *)DAT_006a2680;
   piVar9 = aiStack_20;
 
@@ -4840,7 +4840,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   } while (0 < counter);
 
-  FUN_0016f1f0(uVar6 + aiStack_20[uVar5],1);
+  FUN_0016f1f0(secondIndex + aiStack_20[firstIndex],1);
 
   return 0;
 
