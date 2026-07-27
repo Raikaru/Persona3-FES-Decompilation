@@ -3098,7 +3098,6 @@ void func_002f5d80(u32 param_1)
       }
     }
   }
-  return;
 }
 
 // FUN_002f6120 NONMATCHING
