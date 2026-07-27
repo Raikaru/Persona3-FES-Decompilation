@@ -7018,7 +7018,7 @@ void FUN_003f85a0(int param_1,int param_2,u64 param_3,int param_4,
                  param_2 + *(short *)(iVar1 + 0x2a),param_3,param_4,param_5);
     break;
   case 1:
-    FUN_003f8180(param_1,param_2,param_3,param_4,param_5);
+    ((void (*)(int,int,u64,int,int))FUN_003f8180)(param_1,param_2,param_3,param_4,param_5);
     break;
   }
 

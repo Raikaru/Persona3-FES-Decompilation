@@ -27,7 +27,7 @@ extern unsigned char DAT_006a6b20_second[];
 #pragma alias DAT_006a6b20_log DAT_006a6b20
 extern unsigned char DAT_006a6b20_log[];
 /* FUSION_PROTOS */
-u64 FUN_003df4a0(u64 param_1,int param_2);
+u64 FUN_003df4a0(u32 param_1,int param_2);
 u32 FUN_003dfac0(int *param_1);
 void FUN_003dfae0(int *param_1,int *param_2);
 int * FUN_003dfeb0(int param_1);
@@ -2331,7 +2331,7 @@ void fclCombineList003df220(FclAnimationNode* node, s32 value, s32 preset,
 
 
 // FUN_003DF4A0 NONMATCHING
-u64 FUN_003df4a0(u64 param_1,int param_2)
+u64 FUN_003df4a0(u32 param_1,int param_2)
 
 
 
