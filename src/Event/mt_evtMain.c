@@ -623,7 +623,7 @@ void FUN_00362120(int param_1,int param_2,int param_3);
 #pragma alias FUN_00362120_evt FUN_00362120
 extern void FUN_00362120_evt(int param_1,int param_2,int param_3);
 void FUN_00362240(int param_1);
-void FUN_00362390(u64 param_1);
+void FUN_00362390(int param_1);
 void FUN_003625e0(void);
 void FUN_003628f0(void);
 void FUN_00362f20(int param_1);
@@ -2377,7 +2377,7 @@ u16* FUN_00362310(int param_1)
 // FUN_00362390 NONMATCHING
 
 
-void FUN_00362390(u64 param_1)
+void FUN_00362390(int param_1)
 
 
 
