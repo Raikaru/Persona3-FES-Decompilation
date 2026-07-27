@@ -937,19 +937,19 @@ camp_blend_mode_done:
     case 7:
         frame = (s32)work->timer - 1;
         work->timer = (u32)frame;
-        if (frame == 0) {
+        if (frame != 0) {
+            H_Maestro_SetAlphaMult((KwlnTask*)work->targetTask,
+                         (f32)frame / 10.0f);
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         1.0f - (f32)frame / 10.0f);
+        }
+        else {
             if (work->targetTask != 0) {
                 kwlnTaskDestroyWithHierarchy((KwlnTask*)work->targetTask);
             }
             H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 1.0f);
             work->targetTask = 0;
             work->state = 2;
-        }
-        else {
-            H_Maestro_SetAlphaMult((KwlnTask*)work->targetTask,
-                         (f32)frame / 10.0f);
-            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
-                         1.0f - (f32)frame / 10.0f);
         }
         break;
     }

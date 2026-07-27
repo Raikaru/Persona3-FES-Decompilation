@@ -1710,7 +1710,13 @@ void FUN_003a37c0(int param_1,u64 param_2)
 
   for (lVar6 = 0; lVar6 < sVar1; lVar6 = (long)(int)((u32)lVar6 + 1)) {
 
-    if ((uVar8 & 1) == 0) {
+    if ((uVar8 & 1) != 0) {
+
+      uVar8 = uVar8 >> 1;
+
+    }
+
+    else {
 
       FUN_003b2bf0(*puVar7,0,0xf340);
 
@@ -1724,12 +1730,6 @@ void FUN_003a37c0(int param_1,u64 param_2)
 
     }
 
-    else {
-
-      uVar8 = uVar8 >> 1;
-
-    }
-
     puVar7 = puVar7 + 1;
 
   }
@@ -1738,9 +1738,25 @@ void FUN_003a37c0(int param_1,u64 param_2)
 
   lVar6 = FUN_003a6100(*(u16 *)(iVar3 + 0x1a));
 
-  if (*(short *)((int)puVar2 + 0x12) == 4) {
+  if (*(short *)((int)puVar2 + 0x12) != 4) {
 
-    if (lVar6 != 4) {
+    uVar8 = puVar2[0x11] + ((int)lVar6 + -1) * -200;
+
+    iVar10 = 0;
+
+  }
+
+  else {
+
+    if (lVar6 == 4) {
+
+      uVar8 = 0x788;
+
+      iVar10 = 200;
+
+    }
+
+    else {
 
       iVar10 = (int)(75.0f / (float)(int)lVar6);
 
@@ -1750,25 +1766,9 @@ void FUN_003a37c0(int param_1,u64 param_2)
 
     }
 
-    else {
-
-      uVar8 = 0x788;
-
-      iVar10 = 200;
-
-    }
-
     puVar2[0x10] = 0xef0;
 
     puVar2[0x11] = uVar8;
-
-  }
-
-  else {
-
-    uVar8 = puVar2[0x11] + ((int)lVar6 + -1) * -200;
-
-    iVar10 = 0;
 
   }
 

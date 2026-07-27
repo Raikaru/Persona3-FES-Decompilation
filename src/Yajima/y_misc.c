@@ -3873,7 +3873,21 @@ u32 FUN_004281f0(u32 param_1)
 
   pcVar1[0x93a] = '\0';
 
-  if (pcVar1[0x864] == '\0') {
+  if (pcVar1[0x864] != '\0') {
+
+    for (iVar15 = 0; iVar15 < 4; iVar15 = iVar15 + 1) {
+
+      if (*(int *)(pcVar1 + iVar15 * 4 + 0x4c) != 0) {
+
+        *(u8 *)(*(int *)(pcVar1 + iVar15 * 4 + 0x4c) + 0x18) = 0;
+
+      }
+
+    }
+
+  }
+
+  else {
 
     if ((*pcVar1 == '\x0e') || (*pcVar1 == '\x12')) {
 
@@ -3916,20 +3930,6 @@ u32 FUN_004281f0(u32 param_1)
       }
 
       return 0;
-
-    }
-
-  }
-
-  else {
-
-    for (iVar15 = 0; iVar15 < 4; iVar15 = iVar15 + 1) {
-
-      if (*(int *)(pcVar1 + iVar15 * 4 + 0x4c) != 0) {
-
-        *(u8 *)(*(int *)(pcVar1 + iVar15 * 4 + 0x4c) + 0x18) = 0;
-
-      }
 
     }
 
@@ -8369,7 +8369,115 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
         uVar7 = FUN_001158b0(0,DAT_007ce6e4,0xc);
 
-        if (*(char *)(iVar2 + 0x865) == '\0') {
+        if (*(char *)(iVar2 + 0x865) != '\0') {
+
+          cVar3 = *(char *)(iVar2 + 0xb29);
+
+          iVar8 = iVar9 * 0x138;
+
+          fStack_80 = *(float *)(&DAT_0086bf8c + iVar8);
+
+          uStack_7c = *(u32 *)(&DAT_0086bf90 + iVar8);
+
+          uStack_78 = *(u32 *)(&DAT_0086bf94 + iVar8);
+
+          iVar4 = FUN_0044f120(&fStack_80);
+
+          fVar14 = fStack_80 - ((float)iVar4 * 800.0f - 400.0f);
+
+          fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
+
+          fStack_70 = *(float *)(iVar2 + 0x868);
+
+          uStack_6c = *(u32 *)(iVar2 + 0x86c);
+
+          uStack_68 = *(u32 *)(iVar2 + 0x870);
+
+          iVar4 = FUN_0044f120(&fStack_70);
+
+          fVar15 = fStack_70 - ((float)iVar4 * 800.0f - 400.0f);
+
+          cVar1 = *(char *)(iVar2 + 0xb29);
+
+          iVar11 = iVar2 + iVar9 * 8;
+
+          fVar12 = *(float *)(iVar2 + 0x85c);
+
+          iVar4 = (int)cVar1;
+
+          if (cVar1 < '\0') {
+
+            iVar4 = iVar4 + 1;
+
+          }
+
+          fVar13 = (float)func_001126b0(uVar7);
+
+          *(float *)(iVar11 + 0xa00) =
+
+               ((float)(iVar4 >> 1) +
+
+               (((fVar12 + (float)(cVar1 * param_4) +
+
+                 (float)(int)((fVar16 / 2.0f + 0.0f) - fVar15 * (fVar16 / 800.0f))) -
+
+                (((float)(int)cVar3 / 2.0f + 0.0f) - fVar14 * ((float)(int)cVar3 / 800.0f))) -
+
+               (float)((int)cVar1 << 1))) - fVar13 / 2.0f;
+
+          cVar3 = *(char *)(iVar2 + 0xb29);
+
+          uStack_a0 = *(u32 *)(&DAT_0086bf8c + iVar8);
+
+          uStack_9c = *(u32 *)(&DAT_0086bf90 + iVar8);
+
+          fStack_98 = *(float *)(&DAT_0086bf94 + iVar8);
+
+          iVar4 = FUN_0044f170(&uStack_a0);
+
+          fVar14 = fStack_98 - ((float)iVar4 * 800.0f - 400.0f);
+
+          fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
+
+          uStack_90 = *(u32 *)(iVar2 + 0x868);
+
+          uStack_8c = *(u32 *)(iVar2 + 0x86c);
+
+          fStack_88 = *(float *)(iVar2 + 0x870);
+
+          iVar4 = FUN_0044f170(&uStack_90);
+
+          fVar15 = fStack_88 - ((float)iVar4 * 800.0f - 400.0f);
+
+          cVar1 = *(char *)(iVar2 + 0xb29);
+
+          pfVar10 = (float *)(iVar11 + 0xa04);
+
+          fVar12 = *(float *)(iVar2 + 0x860);
+
+          iVar4 = (int)cVar1;
+
+          if (cVar1 < '\0') {
+
+            iVar4 = iVar4 + 1;
+
+          }
+
+          fVar13 = (float)func_00112740(uVar7);
+
+          *pfVar10 = ((float)(iVar4 >> 1) +
+
+                     (((fVar12 + (float)(cVar1 * param_5) +
+
+                       (float)(int)((fVar16 / 2.0f + 0.0f) - fVar15 * (fVar16 / 800.0f))) -
+
+                      (((float)(int)cVar3 / 2.0f + 0.0f) - fVar14 * ((float)(int)cVar3 / 800.0f))) -
+
+                     (float)((int)cVar1 << 1))) - fVar13 / 2.0f;
+
+        }
+
+        else {
 
           cVar3 = *(char *)(iVar2 + 0xb29);
 
@@ -8452,114 +8560,6 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
           iVar4 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
           fVar15 = fStack_38 - ((float)iVar4 * 800.0f - 400.0f);
-
-          cVar1 = *(char *)(iVar2 + 0xb29);
-
-          pfVar10 = (float *)(iVar11 + 0xa04);
-
-          fVar12 = *(float *)(iVar2 + 0x860);
-
-          iVar4 = (int)cVar1;
-
-          if (cVar1 < '\0') {
-
-            iVar4 = iVar4 + 1;
-
-          }
-
-          fVar13 = (float)func_00112740(uVar7);
-
-          *pfVar10 = ((float)(iVar4 >> 1) +
-
-                     (((fVar12 + (float)(cVar1 * param_5) +
-
-                       (float)(int)((fVar16 / 2.0f + 0.0f) - fVar15 * (fVar16 / 800.0f))) -
-
-                      (((float)(int)cVar3 / 2.0f + 0.0f) - fVar14 * ((float)(int)cVar3 / 800.0f))) -
-
-                     (float)((int)cVar1 << 1))) - fVar13 / 2.0f;
-
-        }
-
-        else {
-
-          cVar3 = *(char *)(iVar2 + 0xb29);
-
-          iVar8 = iVar9 * 0x138;
-
-          fStack_80 = *(float *)(&DAT_0086bf8c + iVar8);
-
-          uStack_7c = *(u32 *)(&DAT_0086bf90 + iVar8);
-
-          uStack_78 = *(u32 *)(&DAT_0086bf94 + iVar8);
-
-          iVar4 = FUN_0044f120(&fStack_80);
-
-          fVar14 = fStack_80 - ((float)iVar4 * 800.0f - 400.0f);
-
-          fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
-
-          fStack_70 = *(float *)(iVar2 + 0x868);
-
-          uStack_6c = *(u32 *)(iVar2 + 0x86c);
-
-          uStack_68 = *(u32 *)(iVar2 + 0x870);
-
-          iVar4 = FUN_0044f120(&fStack_70);
-
-          fVar15 = fStack_70 - ((float)iVar4 * 800.0f - 400.0f);
-
-          cVar1 = *(char *)(iVar2 + 0xb29);
-
-          iVar11 = iVar2 + iVar9 * 8;
-
-          fVar12 = *(float *)(iVar2 + 0x85c);
-
-          iVar4 = (int)cVar1;
-
-          if (cVar1 < '\0') {
-
-            iVar4 = iVar4 + 1;
-
-          }
-
-          fVar13 = (float)func_001126b0(uVar7);
-
-          *(float *)(iVar11 + 0xa00) =
-
-               ((float)(iVar4 >> 1) +
-
-               (((fVar12 + (float)(cVar1 * param_4) +
-
-                 (float)(int)((fVar16 / 2.0f + 0.0f) - fVar15 * (fVar16 / 800.0f))) -
-
-                (((float)(int)cVar3 / 2.0f + 0.0f) - fVar14 * ((float)(int)cVar3 / 800.0f))) -
-
-               (float)((int)cVar1 << 1))) - fVar13 / 2.0f;
-
-          cVar3 = *(char *)(iVar2 + 0xb29);
-
-          uStack_a0 = *(u32 *)(&DAT_0086bf8c + iVar8);
-
-          uStack_9c = *(u32 *)(&DAT_0086bf90 + iVar8);
-
-          fStack_98 = *(float *)(&DAT_0086bf94 + iVar8);
-
-          iVar4 = FUN_0044f170(&uStack_a0);
-
-          fVar14 = fStack_98 - ((float)iVar4 * 800.0f - 400.0f);
-
-          fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
-
-          uStack_90 = *(u32 *)(iVar2 + 0x868);
-
-          uStack_8c = *(u32 *)(iVar2 + 0x86c);
-
-          fStack_88 = *(float *)(iVar2 + 0x870);
-
-          iVar4 = FUN_0044f170(&uStack_90);
-
-          fVar15 = fStack_88 - ((float)iVar4 * 800.0f - 400.0f);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -8753,7 +8753,111 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
     uVar7 = FUN_001158b0(0,DAT_007ce6e4,5);
 
-    if (*(char *)(iVar2 + 0x865) == '\0') {
+    if (*(char *)(iVar2 + 0x865) != '\0') {
+
+      cVar3 = *(char *)(iVar2 + 0xb29);
+
+      fStack_80 = DAT_0086e684;
+
+      uStack_7c = DAT_0086e688;
+
+      fStack_78 = DAT_0086e68c;
+
+      iVar5 = FUN_0044f120(&fStack_80);
+
+      fVar10 = fStack_80 - ((float)iVar5 * 800.0f - 400.0f);
+
+      fVar12 = (float)(int)*(char *)(iVar2 + 0xb29);
+
+      fStack_70 = *(float *)(iVar2 + 0x868);
+
+      uStack_6c = *(u32 *)(iVar2 + 0x86c);
+
+      uStack_68 = *(u32 *)(iVar2 + 0x870);
+
+      iVar5 = FUN_0044f120(&fStack_70);
+
+      fVar11 = fStack_70 - ((float)iVar5 * 800.0f - 400.0f);
+
+      cVar1 = *(char *)(iVar2 + 0xb29);
+
+      fVar8 = *(float *)(iVar2 + 0x85c);
+
+      iVar5 = (int)cVar1;
+
+      if (cVar1 < '\0') {
+
+        iVar5 = iVar5 + 1;
+
+      }
+
+      fVar9 = (float)func_001126b0(uVar7);
+
+      *(float *)(iVar2 + 0xb00) =
+
+           ((float)(iVar5 >> 1) +
+
+           (((fVar8 + (float)(cVar1 * param_4) +
+
+             (float)(int)((fVar12 / 2.0f + 0.0f) - fVar11 * (fVar12 / 800.0f))) -
+
+            (((float)(int)cVar3 / 2.0f + 0.0f) - fVar10 * ((float)(int)cVar3 / 800.0f))) -
+
+           (float)((int)cVar1 << 1))) - fVar9 / 2.0f;
+
+      cVar3 = *(char *)(iVar2 + 0xb29);
+
+      fStack_a0 = DAT_0086e684;
+
+      uStack_9c = DAT_0086e688;
+
+      fStack_98 = DAT_0086e68c;
+
+      iVar5 = FUN_0044f170(&fStack_a0);
+
+      fVar10 = fStack_98 - ((float)iVar5 * 800.0f - 400.0f);
+
+      fVar12 = (float)(int)*(char *)(iVar2 + 0xb29);
+
+      uStack_90 = *(u32 *)(iVar2 + 0x868);
+
+      uStack_8c = *(u32 *)(iVar2 + 0x86c);
+
+      fStack_88 = *(float *)(iVar2 + 0x870);
+
+      iVar5 = FUN_0044f170(&uStack_90);
+
+      fVar11 = fStack_88 - ((float)iVar5 * 800.0f - 400.0f);
+
+      cVar1 = *(char *)(iVar2 + 0xb29);
+
+      fVar8 = *(float *)(iVar2 + 0x860);
+
+      iVar5 = (int)cVar1;
+
+      if (cVar1 < '\0') {
+
+        iVar5 = iVar5 + 1;
+
+      }
+
+      fVar9 = (float)func_00112740(uVar7);
+
+      *(float *)(iVar2 + 0xb04) =
+
+           ((float)(iVar5 >> 1) +
+
+           (((fVar8 + (float)(cVar1 * param_5) +
+
+             (float)(int)((fVar12 / 2.0f + 0.0f) - fVar11 * (fVar12 / 800.0f))) -
+
+            (((float)(int)cVar3 / 2.0f + 0.0f) - fVar10 * ((float)(int)cVar3 / 800.0f))) -
+
+           (float)((int)cVar1 << 1))) - fVar9 / 2.0f;
+
+    }
+
+    else {
 
       cVar3 = *(char *)(iVar2 + 0xb29);
 
@@ -8832,110 +8936,6 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
       iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
       fVar11 = fStack_38 - ((float)iVar5 * 800.0f - 400.0f);
-
-      cVar1 = *(char *)(iVar2 + 0xb29);
-
-      fVar8 = *(float *)(iVar2 + 0x860);
-
-      iVar5 = (int)cVar1;
-
-      if (cVar1 < '\0') {
-
-        iVar5 = iVar5 + 1;
-
-      }
-
-      fVar9 = (float)func_00112740(uVar7);
-
-      *(float *)(iVar2 + 0xb04) =
-
-           ((float)(iVar5 >> 1) +
-
-           (((fVar8 + (float)(cVar1 * param_5) +
-
-             (float)(int)((fVar12 / 2.0f + 0.0f) - fVar11 * (fVar12 / 800.0f))) -
-
-            (((float)(int)cVar3 / 2.0f + 0.0f) - fVar10 * ((float)(int)cVar3 / 800.0f))) -
-
-           (float)((int)cVar1 << 1))) - fVar9 / 2.0f;
-
-    }
-
-    else {
-
-      cVar3 = *(char *)(iVar2 + 0xb29);
-
-      fStack_80 = DAT_0086e684;
-
-      uStack_7c = DAT_0086e688;
-
-      fStack_78 = DAT_0086e68c;
-
-      iVar5 = FUN_0044f120(&fStack_80);
-
-      fVar10 = fStack_80 - ((float)iVar5 * 800.0f - 400.0f);
-
-      fVar12 = (float)(int)*(char *)(iVar2 + 0xb29);
-
-      fStack_70 = *(float *)(iVar2 + 0x868);
-
-      uStack_6c = *(u32 *)(iVar2 + 0x86c);
-
-      uStack_68 = *(u32 *)(iVar2 + 0x870);
-
-      iVar5 = FUN_0044f120(&fStack_70);
-
-      fVar11 = fStack_70 - ((float)iVar5 * 800.0f - 400.0f);
-
-      cVar1 = *(char *)(iVar2 + 0xb29);
-
-      fVar8 = *(float *)(iVar2 + 0x85c);
-
-      iVar5 = (int)cVar1;
-
-      if (cVar1 < '\0') {
-
-        iVar5 = iVar5 + 1;
-
-      }
-
-      fVar9 = (float)func_001126b0(uVar7);
-
-      *(float *)(iVar2 + 0xb00) =
-
-           ((float)(iVar5 >> 1) +
-
-           (((fVar8 + (float)(cVar1 * param_4) +
-
-             (float)(int)((fVar12 / 2.0f + 0.0f) - fVar11 * (fVar12 / 800.0f))) -
-
-            (((float)(int)cVar3 / 2.0f + 0.0f) - fVar10 * ((float)(int)cVar3 / 800.0f))) -
-
-           (float)((int)cVar1 << 1))) - fVar9 / 2.0f;
-
-      cVar3 = *(char *)(iVar2 + 0xb29);
-
-      fStack_a0 = DAT_0086e684;
-
-      uStack_9c = DAT_0086e688;
-
-      fStack_98 = DAT_0086e68c;
-
-      iVar5 = FUN_0044f170(&fStack_a0);
-
-      fVar10 = fStack_98 - ((float)iVar5 * 800.0f - 400.0f);
-
-      fVar12 = (float)(int)*(char *)(iVar2 + 0xb29);
-
-      uStack_90 = *(u32 *)(iVar2 + 0x868);
-
-      uStack_8c = *(u32 *)(iVar2 + 0x86c);
-
-      fStack_88 = *(float *)(iVar2 + 0x870);
-
-      iVar5 = FUN_0044f170(&uStack_90);
-
-      fVar11 = fStack_88 - ((float)iVar5 * 800.0f - 400.0f);
 
       cVar1 = *(char *)(iVar2 + 0xb29);
 

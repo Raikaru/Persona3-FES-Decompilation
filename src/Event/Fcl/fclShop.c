@@ -4647,7 +4647,22 @@ u8 * FUN_003eaf90(u32 param_1,u32 param_2)
 
       lVar8 = FUN_003c6c50(uVar6);
 
-      if (lVar8 == 0) {
+      if (lVar8 != 0) {
+
+        func_0010a4e0(0,0,0,1);
+
+        *(int *)(iVar5 + 0x14) = (int)lVar8;
+
+        *(u32 *)(iVar5 + 8) = 5;
+
+        FUN_003c6ea0(uVar6);
+
+        FUN_003c6f10(uVar6);
+
+
+      }
+
+      else {
 
         lVar8 = FUN_003c6c80(uVar6);
 
@@ -4662,21 +4677,6 @@ u8 * FUN_003eaf90(u32 param_1,u32 param_2)
           *(u32 *)(iVar5 + 4) = *(u32 *)(iVar5 + 4) | 1;
 
         }
-
-      }
-
-      else {
-
-        func_0010a4e0(0,0,0,1);
-
-        *(int *)(iVar5 + 0x14) = (int)lVar8;
-
-        *(u32 *)(iVar5 + 8) = 5;
-
-        FUN_003c6ea0(uVar6);
-
-        FUN_003c6f10(uVar6);
-
 
       }
 
@@ -4730,7 +4730,36 @@ u8 * FUN_003eaf90(u32 param_1,u32 param_2)
 
       lVar8 = FUN_003c6c50(uVar6);
 
-      if (lVar8 == 0) {
+      if (lVar8 != 0) {
+
+        puVar2 = *(u32 **)(*(int *)((int)lVar8 + 0x14) + 0x1c);
+
+        *(int *)(iVar5 + 0x14) = (int)lVar8;
+
+        if ((*puVar2 & 0x10) == 0) {
+
+          func_0010a4e0(0,0,0,1);
+
+          *(u32 *)(iVar5 + 8) = 0xb;
+
+          FUN_003c6ea0(uVar6);
+
+          FUN_003c6f10(uVar6);
+
+          FUN_00401de0(iVar5 + 0x18,
+
+                       *(int *)(*(int *)(*(int *)(*(int *)(iVar5 + 0xc) + 0xc) + 0x14) + 0x1c) + 4,
+
+                       puVar2[5]);
+
+          FUN_00402400(iVar5 + 0x18,iVar5 + 0x34);
+
+
+        }
+
+      }
+
+      else {
 
         lVar8 = FUN_003c6c80(uVar6);
 
@@ -4773,35 +4802,6 @@ u8 * FUN_003eaf90(u32 param_1,u32 param_2)
           uVar9 = FUN_003c5460(uGpffffb998);
 
           FUN_003e0c20(uVar9,9,1);
-
-        }
-
-      }
-
-      else {
-
-        puVar2 = *(u32 **)(*(int *)((int)lVar8 + 0x14) + 0x1c);
-
-        *(int *)(iVar5 + 0x14) = (int)lVar8;
-
-        if ((*puVar2 & 0x10) == 0) {
-
-          func_0010a4e0(0,0,0,1);
-
-          *(u32 *)(iVar5 + 8) = 0xb;
-
-          FUN_003c6ea0(uVar6);
-
-          FUN_003c6f10(uVar6);
-
-          FUN_00401de0(iVar5 + 0x18,
-
-                       *(int *)(*(int *)(*(int *)(*(int *)(iVar5 + 0xc) + 0xc) + 0x14) + 0x1c) + 4,
-
-                       puVar2[5]);
-
-          FUN_00402400(iVar5 + 0x18,iVar5 + 0x34);
-
 
         }
 

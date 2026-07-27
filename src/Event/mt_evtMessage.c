@@ -1450,7 +1450,13 @@ u64 FUN_003a0220(int param_1)
 
     uStack_4 = CONCAT13((char)*(u32 *)(iVar1 + 0x9c),*(undefined3 *)(iVar1 + 0xb0));
 
-    if ((float)*(int *)(iVar1 + 0xbc) == 0.0f) {
+    if ((float)*(int *)(iVar1 + 0xbc) != 0.0f) {
+
+      FUN_0039fbd0(iVar1);
+
+    }
+
+    else {
 
       uStack_20 = 0;
 
@@ -1547,12 +1553,6 @@ u64 FUN_003a0220(int param_1)
         }
 
       }
-
-    }
-
-    else {
-
-      FUN_0039fbd0(iVar1);
 
     }
 
