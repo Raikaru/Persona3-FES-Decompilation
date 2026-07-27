@@ -1800,13 +1800,14 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     RwV3d defaultUp;
     RwFrame* data;
     RwMatrix* right;
-    const RwV3d* up;
+    RwV3d* up;
 
     up = &defaultUp;
-    defaultUp = *(const RwV3d*)0x00678ab8;
+    *(s64*)&defaultUp = *(s64*)0x00678ab8;
+    defaultUp.z = *(f32*)0x00678ac0;
     if (upVector != NULL)
     {
-        up = upVector;
+        up = (RwV3d*)upVector;
     }
 
     data = camera->object.object.parent;
@@ -1840,25 +1841,27 @@ void* func_001a13b0(void* object, void** listHead)
     func_005225a8("draw object", (u8*)object + 0x10, *((u8*)object + 0x50));
     manager = func_004d11f0();
     resource = func_004d1170(manager, (u8*)object + 0x10);
-    if (resource == NULL)
+    if (resource != NULL)
     {
-        manager = func_004d11f0();
-        func_004d1110(manager, object);
-        allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
-        func_00524270(allocation, (u8*)object + 0x10);
-        if (*listHead == NULL)
+        return object;
+    }
+
+    manager = func_004d11f0();
+    func_004d1110(manager, object);
+    allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
+    func_00524270(allocation, (u8*)object + 0x10);
+    if (*listHead == NULL)
+    {
+        *listHead = allocation;
+    }
+    else
+    {
+        tail = (void**)((u8*)*listHead + 0x40);
+        while (*tail != NULL)
         {
-            *listHead = allocation;
+            tail = (void**)((u8*)*tail + 0x40);
         }
-        else
-        {
-            tail = (void**)*listHead;
-            while (tail[0x10] != NULL)
-            {
-                tail = (void**)tail[0x10];
-            }
-            tail[0x10] = allocation;
-        }
+        *tail = allocation;
     }
 
     return object;
