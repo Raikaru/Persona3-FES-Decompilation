@@ -22617,23 +22617,23 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   case 1:
 
-    ((code)FUN_00326cf0)(param_1[0xb],*param_1);
+    FUN_00326cf0_2(param_1[0xb],*param_1);
 
-    FUN_00326e50(param_1[0xb],(u64)param_3);
+    FUN_00326e50_u32(param_1[0xb],(u32)param_3);
 
     break;
 
   case 2:
 
-    ((code)FUN_00326cf0)(param_1[0xb],*param_1);
+    FUN_00326cf0_2(param_1[0xb],*param_1);
 
-    FUN_00326f00(param_1[0xb],(u64)param_3);
+    FUN_00326f00(param_1[0xb],(u32)param_3);
 
     break;
 
   case 4:
 
-    ((code)FUN_00326cf0)(param_1[0xb],*param_1);
+    FUN_00326cf0_2(param_1[0xb],*param_1);
 
     FUN_00326db0(param_1[0xb],*(u32 *)param_3);
 
@@ -22641,21 +22641,21 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   case 5:
 
-    FUN_00326f60((u32 *)(param_1[0xb]),(u64)((u64)param_3));
+    FUN_00326f60_u32((u32 *)(param_1[0xb]),(u32)param_3);
 
     break;
 
   case 6:
 
-    FUN_00327090((u32 *)(param_1[0xb]),(u64)((u64)param_3));
+    FUN_00327090_u32((u32 *)(param_1[0xb]),(u32)param_3);
 
     break;
 
   case 7:
 
-    ((code)FUN_00326cf0)(param_1[0xb],*param_1);
+    FUN_00326cf0_2(param_1[0xb],*param_1);
 
-    FUN_003271c0(param_1[0xb],(u64)param_3);
+    FUN_003271c0(param_1[0xb],(u32)param_3);
 
   }
 

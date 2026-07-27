@@ -13338,7 +13338,7 @@ void FUN_0036d030(int param_1)
 
   u32 uVar1;
 
-  long lVar2;
+  int lVar2;
 
   int iVar3;
 
