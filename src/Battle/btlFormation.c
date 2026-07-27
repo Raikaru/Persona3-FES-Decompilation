@@ -4928,7 +4928,6 @@ void func_002bf9b0(void)
   float firstZero;
   float zero;
   u32 callColor;
-  float *dest;
 
   if ((((*(int *)(DAT_007ce3ec + 0x2b4) != 0x12) &&
         (fadeSuppressed = btlFadeSuppressesFormationUpdates(), fadeSuppressed == 0)) &&
@@ -4946,7 +4945,6 @@ void func_002bf9b0(void)
             alpha = 0;
           }
           callColor = alpha | 0xb4736400;
-          dest = (float *)(entry + 0xa04);
           firstZero = zero;
           func_002bce10(firstZero, zero, (u8*)entry, callColor,
                         (float *)(entry + 0xa04));

@@ -3614,7 +3614,7 @@ u32 FUN_003acf80(u32 param_1,int param_2)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   u8 *pbVar5;
 
