@@ -150,9 +150,6 @@ void K_FldFilter_Init()
 }
 
 // FUN_001d4610 NONMATCHING
-#pragma push
-#pragma optimization_level 3
-#pragma schedule on
 void K_FldFilter_Main()
 {
     s32 current;
@@ -387,7 +384,6 @@ void K_FldFilter_Main()
     func_004d7f60(2, 0x44);
     func_004d7f60(3, 0x717fb);
 }
-#pragma pop
 
 // FUN_001d50c0
 void FUN_001d50c0(s32 index, u32 type, s32 duration)
@@ -415,9 +411,6 @@ void FUN_001d5130(u32 alpha)
 }
 
 /* Return the closest camera point to the controlled character. */
-#pragma push
-#pragma optimization_level 3
-#pragma schedule on
 // FUN_001d5140 NONMATCHING
 s32 FUN_001d5140(KwlnTask* cameraTask)
 {
@@ -453,7 +446,6 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     }
     return bestIndex;
 }
-#pragma pop
 // FUN_001d5220 NONMATCHING
 #pragma push
 #pragma optimization_level 3

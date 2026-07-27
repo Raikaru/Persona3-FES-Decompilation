@@ -188,8 +188,6 @@ typedef struct CampUiRecord
 // Reconstructed the retail Camp task state machine and all screen transition paths.
 // Remaining differences are compiler control-flow/register scheduling and relocation layout;
 // the implementation covers states 0-20, task readiness, menu commands, and teardown.
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0011a050 NONMATCHING
 void* h_campUpdateTask(KwlnTask* task)
 {
@@ -388,7 +386,6 @@ void* h_campUpdateTask(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-#pragma pop
 
 // FUN_0011a710
 void h_campDestroyTask(KwlnTask* task)
@@ -440,8 +437,6 @@ const char* h_camp_getCourageLevelString(s16 idx)
     return sCourageLevels[idx];
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0011a8a0 NONMATCHING
 void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
@@ -494,7 +489,6 @@ wait_resources:
 done:
     return KWLNTASK_CONTINUE;
 }
-#pragma pop
 
 #pragma push
 #pragma opt_loop_invariants on

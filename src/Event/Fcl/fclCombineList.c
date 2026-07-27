@@ -1018,7 +1018,6 @@ void fclCombineList003db5e0(FclOwner* param_1)
 }
 
 
-#pragma opt_loop_invariants on
 // FUN_003db650 NONMATCHING
 void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                              FclOwner* owner)
@@ -1175,7 +1174,6 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
     }
 }
-#pragma opt_loop_invariants off
 
 // FUN_003dc210
 void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* owner)
@@ -1198,7 +1196,6 @@ void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* own
     work->flags &= 0xfffeffff;
 }
 
-#pragma opt_loop_invariants on
 // FUN_003dc2d0 NONMATCHING
 void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected_style,
@@ -1279,7 +1276,6 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
 
     (void)owner;
 }
-#pragma opt_loop_invariants off
 
 // FUN_003dc700 NONMATCHING
 void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
@@ -1368,7 +1364,6 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     }
 }
 
-#pragma opt_loop_invariants on
 // FUN_003dcc90 NONMATCHING
 void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected)
@@ -1434,7 +1429,6 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
 
     (void)owner;
 }
-#pragma opt_loop_invariants off
 
 // FUN_003dcfb0 NONMATCHING
 void fclCombineList003dcfb0(FclResultStream* callback_target, FclDrawResult* result,
@@ -2714,8 +2708,6 @@ check:
 }
 
 // FUN_003DFF80
-#pragma push
-#pragma opt_rebuildconditionals off
 int FUN_003dff80(int* param_1, int param_2)
 {
   int node;
@@ -2731,7 +2723,6 @@ int FUN_003dff80(int* param_1, int param_2)
   }
   return 0;
 }
-#pragma pop
 
 // FUN_003DFFC0 NONMATCHING
 
@@ -3160,8 +3151,6 @@ void FUN_003e0680(u32 param_1,code* param_2,u32 param_3)
 
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_003E0700
 
 
@@ -3197,7 +3186,6 @@ done:
   return;
 
 }
-#pragma pop
 
 // FUN_003E0780
 

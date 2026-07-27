@@ -2085,7 +2085,6 @@ void h_campDrawItemFrameSelected(int param_1)
 }
 
 
-#pragma opt_loop_invariants on
 // FUN_0014F680
 u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 {
@@ -2127,9 +2126,7 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
     }
     return 0;
 }
-#pragma opt_loop_invariants off
 
-#pragma opt_loop_invariants on
 // FUN_0014F7D0 NONMATCHING
 u32 h_campUpdateSystemMenuTask(int param_1)
 
@@ -3217,4 +3214,3 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   }
   return 0;
 }
-#pragma opt_loop_invariants off

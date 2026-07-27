@@ -7436,14 +7436,11 @@ void FUN_003237c0(int param_1)
 }
 
 // FUN_00323860
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_00323860(void)
 {
   FUN_00321140_passthru();
   return;
 }
-#pragma pop
 
 
 
@@ -8024,14 +8021,11 @@ void FUN_00324310(int param_1)
 
 
 // FUN_003243D0
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_003243d0(void)
 {
   FUN_00321140_passthru();
   return;
 }
-#pragma pop
 
 
 
@@ -8140,8 +8134,6 @@ void FUN_00324510(int param_1,u64 param_2)
 
 
 // FUN_003245B0
-#pragma push
-#pragma opt_rebuildconditionals off
 int FUN_003245b0(int param_1)
 {
   int value;
@@ -8191,12 +8183,9 @@ void FUN_00324660(void)
 void FUN_00324670(void)
 {
 }
-#pragma pop
 
 
 // FUN_003245F0
-#pragma push
-#pragma opt_rebuildconditionals off
 int FUN_003245f0(int param_1)
 {
   int value;
@@ -8220,7 +8209,6 @@ zero:
 done:
   return value;
 }
-#pragma pop
 
 
 
@@ -10036,8 +10024,6 @@ int FUN_003261c0(int param_1,int param_2)
 
 
 // FUN_00326200
-#pragma push
-#pragma opt_rebuildconditionals off
 int FUN_00326200(int param_1, int param_2)
 {
   int node;
@@ -10051,13 +10037,10 @@ int FUN_00326200(int param_1, int param_2)
   }
   return 0;
 }
-#pragma pop
 
 // FUN_00326240
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 int FUN_00326240(int param_1,int param_2)
 {
   int iVar1;
@@ -10075,7 +10058,6 @@ int FUN_00326240(int param_1,int param_2)
 
   return 0;
 }
-#pragma pop
 
 
 
@@ -53052,7 +53034,6 @@ extern u32 DAT_00957bd8_abs[];
 extern u32 DAT_00957bdc_abs[];
 extern u32 DAT_00957be0_abs[];
 
-#pragma schedule off
 // FUN_00352C30
 void FUN_00352c30(u32 param_1,u32 param_2)
 {
@@ -56036,8 +56017,6 @@ u32 FUN_00356fd0(float ignored,u64 param_1,u16 param_2,u32 param_3,u32 param_4)
 // FUN_003570B0 NONMATCHING
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 u32 FUN_003570b0(int param_1)
 {
   u32 *puVar2;
@@ -56065,7 +56044,6 @@ u32 FUN_003570b0(int param_1)
   }
   return (u32)puVar2;
 }
-#pragma pop
 
 
 

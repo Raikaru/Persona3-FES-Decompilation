@@ -1929,8 +1929,6 @@ void FUN_001b60d0(u32 value, const void* scale)
 {
     FUN_0049a7c0(value, (void (*)())FUN_001b5e90, (u32)scale);
 }
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001b6100
 u32 FUN_001b6100(u32 id)
 {
@@ -1970,7 +1968,6 @@ have_pac:
 done:
     return value;
 }
-#pragma pop
 
 static void fldrc_copy_words(u32 dst, u32 src, u32 count)
 {
@@ -2186,8 +2183,6 @@ static inline void fldrc_apply_field_config(u32 config)
     }
 }
 
-#pragma push
-#pragma opt_loop_invariants on
 // FUN_001b61f0 NONMATCHING
 u32 FUN_001b61f0(void* resource, u32 archiveEntry)
 {
@@ -2225,8 +2220,6 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
     }
     return 1;
 }
-#pragma opt_loop_invariants off
-#pragma pop
 static u32 fldrc_event_override(u16 group, u32 id)
 {
     if (((group == 6) && ((id == 4) || (id == 5) || (id == 7) || (id == 8) ||
@@ -2910,8 +2903,6 @@ outer_check:
 done:
     return result;
 }
-#pragma push
-#pragma opt_loop_invariants on
 // FUN_001b3480 NONMATCHING
 void FUN_001b3480(u32 resource)
 {
@@ -3035,8 +3026,6 @@ void FUN_001b3480(u32 resource)
         }
     }
 }
-#pragma opt_loop_invariants off
-#pragma pop
 // FUN_001b39e0 NONMATCHING
 u32 FUN_001b39e0(u32 resource)
 {

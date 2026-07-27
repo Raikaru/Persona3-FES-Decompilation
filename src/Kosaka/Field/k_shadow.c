@@ -1855,7 +1855,6 @@ static inline void K_FldShadow_UpdateModelNpc(ResrcModelNpc* res)
 #undef K_FldShadow_PositionCamera
 #undef K_FldShadow_UsesCharRenderGuard
 #undef K_FldShadow_SetAttachedShadowEnabled
-#pragma opt_loop_invariants on
 // FUN_0019c4b0 NONMATCHING
 void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 {
@@ -1913,7 +1912,6 @@ void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 
     return KWLNTASK_CONTINUE;
 }
-#pragma opt_loop_invariants off
 
 // FUN_0019d270
 void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)

@@ -11400,6 +11400,8 @@ u32 func_002cb030(void)
 }
 #pragma pop
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_002cb0e0
 
 u32 func_002cb0e0(void)
@@ -11432,6 +11434,7 @@ u32 func_002cb0e0(void)
   func_0035f060_u32(result != 0);
   return 1;
 }
+#pragma pop
 
 // FUN_002cb190
 

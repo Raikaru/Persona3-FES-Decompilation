@@ -2378,7 +2378,6 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
 }
 #pragma opt_loop_invariants off
 
-#pragma opt_loop_invariants on
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {
@@ -2480,7 +2479,6 @@ void func_001d2610(void)
         func_001a0150(resourceId, 1);
     }
 }
-#pragma opt_loop_invariants off
 
 static inline s32 FldUnit_GridCoord(f32 value)
 {
@@ -2494,7 +2492,6 @@ static inline s32 FldUnit_GridCoord(f32 value)
     return cell >> 2;
 }
 
-#pragma opt_loop_invariants on
 // FUN_001d2a10 NONMATCHING
 void func_001d2a10(void)
 {
@@ -2631,7 +2628,6 @@ void func_001d2a10(void)
     }
     (void)reaper;
 }
-#pragma opt_loop_invariants off
 
 #pragma opt_loop_invariants on
 // FUN_001d32a0 NONMATCHING

@@ -2557,8 +2557,6 @@ void func_001bd950(void)
     }
 }
 #pragma schedule off
-#pragma push
-#pragma opt_rebuildconditionals off
 
 // FUN_001bf220
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
@@ -2590,7 +2588,6 @@ void func_001bf220(RwV3d* dst, u32 x, u32 y)
     }
     *dst = result;
 }
-#pragma pop
 
 // FUN_001bf340 NONMATCHING
 u32 func_001bf340(const FldDungeonFloorData* floorData)
