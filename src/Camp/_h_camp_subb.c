@@ -222,7 +222,6 @@ extern void campDrawSprite(void* parent, void* resource, s32 frame,
                            u32 alpha, f32 x, f32 y, f32 scale);
 #pragma alias campDrawSpriteDirect FUN_001159f0
 extern void campDrawSpriteDirect(f32 x, f32 y, f32 scale);
-extern void FUN_001159f0(f32 x, f32 y, f32 scale);
 #pragma alias campDrawSpriteDigit FUN_00115ad0
 extern void campDrawSpriteDigit(void* parent, void* resource, s32 frame,
                                 u32 alpha, f32 x, f32 y, f32 scale);
