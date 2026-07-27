@@ -736,7 +736,7 @@ void FUN_003897f0(int param_1);
 void FUN_00389b50(int *param_1);
 void FUN_00389d80(u64 param_1,u64 param_2);
 void FUN_00389f40(void);
-void FUN_0038a0c0(int param_1,long param_2);
+void FUN_0038a0c0(int param_1,int param_2);
 extern void FUN_001a4580(int param_1,float param_2);
 void FUN_0038a140(u32 param_1,u32 *param_2);
 void FUN_0038a180(int param_1,int param_2);
@@ -13601,9 +13601,7 @@ code * FUN_0036d500(void)
 
       *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) & 0xfffffeff;
 
-      uVar4 = FUN_0038a0b0(uVar2);
-
-      FUN_0038a0c0(uVar2,uVar4);
+      FUN_0038a0c0(uVar2,FUN_0038a0b0(uVar2));
 
       DAT_007ce5e4 = 0;
 
