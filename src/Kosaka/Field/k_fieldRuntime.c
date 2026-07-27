@@ -4353,7 +4353,20 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         work->flags |= 2;
     }
     case 2:
-        break;
+    {
+        u8* color3;
+        u32 count3;
+        u32 index3;
+        u32 tail3;
+        f32 denominator3;
+        f32 step3;
+        f32 amount3;
+        u8* cursor3;
+
+        color3 = *(u8**)((u8*)renderObject + 0x30);
+        count3 = *(u32*)((u8*)work->config + 0xc);
+        func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color3);
+    }
     default:
         break;
     }

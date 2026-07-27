@@ -35,6 +35,10 @@ extern u32 DAT_00959ed0;
 extern u8 DAT_00959ed0_abs[];
 extern u32 DAT_00959ed8;
 extern u32 DAT_00959ee0;
+#pragma alias DAT_00959ee0_abs DAT_00959ee0
+extern u8 DAT_00959ee0_abs[];
+#pragma alias DAT_00959eec_abs2 DAT_00959eec
+extern u8 DAT_00959eec_abs2[];
 extern u32 DAT_00959eec;
 #pragma alias itfMesEntries DAT_00959eec
 extern u32 itfMesEntries[];
