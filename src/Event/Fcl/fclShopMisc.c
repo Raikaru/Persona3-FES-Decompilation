@@ -7844,10 +7844,9 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      iVar7 = 0;
       lVar5 = sVar1;
-      for (; iVar7 < 300; iVar7 = iVar7 + 1) {
-        uVar4 = datGetEquipmentId(1,iVar7);
+      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
+        uVar4 = datGetEquipmentId(1,iVar6);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
@@ -16090,36 +16089,27 @@ u8 FUN_00403410(short param_1)
   short sVar2;
   int iVar3;
   int iVar4;
-  u32 iVar5;
   long lVar5;
+  long unaff_s1;
   long unaff_s2;
-  int unaff_s1;
 
-  iVar3 = FUN_004037e0(param_1);
   lVar5 = ((long)*(char *)(iVar3 + 7) << 0x38) >> 0x3c;
-  switch (lVar5) {
-  case 0:
-    return 3;
-  case 1:
+  if (lVar5 == 2) {
     sVar2 = datGetDaysSinceApr5();
     unaff_s2 = (long)sVar2;
-    unaff_s1 = clndGetDaysSinceStartFromDate(
-        ((long)*(short *)(iVar3 + 6) << 0x34) >> 0x3a,
-        ((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
-    break;
-  case 2:
-    sVar2 = datGetDaysSinceApr5();
-    unaff_s2 = (long)sVar2;
-    iVar4 = clndGetDaysSinceStartFromDate(
-        ((long)*(short *)(iVar3 + 4) << 0x34) >> 0x3a,
-        ((long)*(char *)(iVar3 + 4) << 0x3a) >> 0x3a);
-    iVar5 = ((long)*(short *)(iVar3 + 6) << 0x34) >> 0x34;
-    unaff_s1 = iVar5 + iVar4;
-    break;
-  default:
-    break;
+    iVar4 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 4) << 0x34) >> 0x3a,
+                         ((long)*(char *)(iVar3 + 4) << 0x3a) >> 0x3a);
+    unaff_s1 = (long)((int)(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x34) + iVar4);
   }
-
+  else if (lVar5 == 1) {
+    sVar2 = datGetDaysSinceApr5();
+    unaff_s2 = (long)sVar2;
+    unaff_s1 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x3a,
+                            ((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
+  }
+  else if (lVar5 == 0) {
+    return 3;
+  }
   if (unaff_s2 == unaff_s1) {
     uVar1 = 2;
   }

@@ -4269,6 +4269,9 @@ void func_00185b40(void* resource,
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
+    f32 x;
+    f32 y;
+    void* unused;
     volatile union
     {
         u64 value;
@@ -4278,9 +4281,6 @@ void func_00186050(void* resource, u64 position, u32 alpha)
             f32 y;
         } coords;
     } packed;
-    f32 y;
-    f32 x;
-    void* unused;
 
     packed.value = position;
     y = packed.coords.y;
