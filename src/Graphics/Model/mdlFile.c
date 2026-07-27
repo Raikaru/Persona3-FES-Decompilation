@@ -7100,7 +7100,7 @@ int FUN_003233a0(u32 param_1,u32 param_2,u16 param_3,int param_4,u32 param_5)
 
   for (iVar7 = 0; iVar7 < (int)param_1; iVar7 = iVar7 + 1) {
 
-    for (lVar6 = 0; lVar6 < (long)(u32)((param_2 & 0xffff) * 3); lVar6 = (long)((int)lVar6 + 3)) {
+    for (lVar6 = 0; lVar6 < (int)((param_2 & 0xffff) * 3); lVar6 = lVar6 + 3) {
 
       psVar4 = (short *)(param_4 + (int)lVar6 * 2);
 
