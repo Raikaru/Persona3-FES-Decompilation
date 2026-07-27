@@ -3397,7 +3397,6 @@ FUN_00427bf0(float param_1,float param_2,float param_3,float param_4,
   u32 uStack_20;
 
   u32 uStack_1c;
-  u32 uStack_18;
 
   u8 uStack_14;
 
@@ -3457,6 +3456,10 @@ FUN_00427bf0(float param_1,float param_2,float param_3,float param_4,
 
     }
 
+
+    uStack_20 = (u32)param_8;
+
+    uStack_1c = (u32)((u32)param_8 >> 0x20);
 
     *(u32 *)(puVar4 + 0x134) = uStack_20;
 

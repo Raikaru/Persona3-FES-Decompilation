@@ -121,7 +121,6 @@ u64 FUN_00397950(void)
   int *piVar2;
   int iVar3;
   s32 lVar4;
-  int stateOne = 1;
   u8 auStack_110 [64];
   u8 auStack_d0 [64];
   u8 auStack_90 [64];
@@ -135,7 +134,7 @@ u64 FUN_00397950(void)
     if (iVar3 == 7) {
       goto done;
     }
-    if (iVar3 == stateOne) {
+    if (iVar3 == 1) {
       goto state1_nonzero;
     }
     switch (iVar3) {
