@@ -25879,7 +25879,7 @@ LAB_003365a0:
 
             auVar44 = _vmaddbc(extraout_vf30_00,auVar43);
 
-            auVar43 = _sqc2(auVar44);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auVar43) : "memory");
 
             memcpy(auStack_a0, &auVar44, 8);
 
@@ -25897,7 +25897,7 @@ LAB_003365a0:
 
             auVar41 = _vmulq(auVar44,uVar36);
 
-            auStack_60 = _sqc2(auVar41);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auStack_60) : "memory");
 
             (*((u32 *)((u8 *)&auStack_50 + 4))) = (float)(*((u32 *)((u8 *)&auStack_a0 + 4))) - *(float *)(puVar20 + 2);
 
@@ -25933,7 +25933,7 @@ LAB_003365a0:
 
             auVar42 = _vopmsub(auVar41,auVar42);
 
-            auStack_70 = _sqc2(auVar42);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auStack_70) : "memory");
 
             auVar41 = _lqc2(auStack_80);
 
@@ -26103,7 +26103,7 @@ LAB_003365a0:
 
               auVar43 = _vmaddbc(extraout_vf30_01,auVar43);
 
-              auVar43 = _sqc2(auVar43);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(&auVar43) : "memory");
 
               FUN_00358340_vec(fStack_dc, &auStack_70);
 
