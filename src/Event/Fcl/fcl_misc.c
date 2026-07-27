@@ -1938,9 +1938,9 @@ FUN_003ca780(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   *(u32 *)(iVar1 + 0x20) = param_2;
 
-  param_3 = param_3 * 4096.0;
+  param_3 = param_3 * 4096.0f;
 
-  if (param_3 < 2.1474836e+09) {
+  if (param_3 < 2.1474836e+09f) {
 
     uVar3 = (u16)(int)param_3;
 
@@ -1948,15 +1948,15 @@ FUN_003ca780(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   else {
 
-    uVar3 = (u16)(int)(param_3 - 2.1474836e+09);
+    uVar3 = (u16)(int)(param_3 - 2.1474836e+09f);
 
   }
 
   *(u16 *)(iVar1 + 0x28) = uVar3;
 
-  param_4 = param_4 * 4096.0;
+  param_4 = param_4 * 4096.0f;
 
-  if (param_4 < 2.1474836e+09) {
+  if (param_4 < 2.1474836e+09f) {
 
     uVar3 = (u16)(int)param_4;
 
@@ -1964,7 +1964,7 @@ FUN_003ca780(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   else {
 
-    uVar3 = (u16)(int)(param_4 - 2.1474836e+09);
+    uVar3 = (u16)(int)(param_4 - 2.1474836e+09f);
 
   }
 

@@ -2246,9 +2246,8 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
     uVar7 = FUN_00110f80(lVar6,CONCAT26(param_7,CONCAT24(param_6,CONCAT22(param_5,param_4))));
 
-    puVar4[2] = (int)uVar7;
+    FUN_00111580(uVar7,*(u64 *)&fStack_10);
 
-    FUN_00111580(uVar7,CONCAT44(fStack_c,fStack_10));
 
     *(u32 *)(iVar9 + iVar3 + 4) = 0;
 
