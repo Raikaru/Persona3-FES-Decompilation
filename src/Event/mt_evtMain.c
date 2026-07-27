@@ -1600,7 +1600,7 @@ void FUN_00361890(int *param_1,int param_2)
 
   }
 
-  FUN_00386b70(param_2,8,0x54);
+  FUN_00386b70_evt_main(param_2,8,0x54);
 
   return;
 

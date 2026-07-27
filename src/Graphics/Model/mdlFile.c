@@ -674,7 +674,7 @@ void FUN_003460a0(int param_1);
 u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
 u64 FUN_003461a0(long param_1);
 void FUN_00346350(int param_1);
-u64 FUN_003463c0(u64 param_1);
+u64 FUN_003463c0(int param_1);
 #pragma alias FUN_00347170_ptr FUN_00347170
 extern u64 FUN_00347170_ptr(int param_1);
 void FUN_00346460(int param_1,int param_2);
@@ -6662,7 +6662,7 @@ u32 FUN_00322dc0(u32 *param_1)
 
   uVar3 = param_1[1];
 
-  uVar2 = (*DAT_00960178)(uVar3 * 0x14 + 0x28,0x40000);
+  uVar2 = (*DAT_00960178_u32)(uVar3 * 0x14 + 0x28,0x40000);
 
   iVar7 = (int)uVar2;
 
@@ -42666,7 +42666,7 @@ void FUN_00346350(int param_1)
 // FUN_003463C0 NONMATCHING
 
 
-u64 FUN_003463c0(u64 param_1)
+u64 FUN_003463c0(int param_1)
 
 
 
