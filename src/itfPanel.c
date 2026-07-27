@@ -4914,7 +4914,7 @@ u64 FUN_003ae260(u64 param_1,int param_2)
   }
 
 
-  uVar5 = (u8)uVar5 << 8 | (u8)firstLow;
+  uVar5 = (u32)(u8)uVar5 << 8 | (u32)(u8)firstLow;
   first2 = *(volatile int *)(param_2 + 0x18);
   second2 = *(volatile int *)(param_2 + 0x10);
   iVar8 = first2 + second2;

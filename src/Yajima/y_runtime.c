@@ -5035,9 +5035,9 @@ void FUN_004343d0(int param_1)
     *(u16 *)(iVar7 + 0xe10) = 0;
     *(u16 *)(iVar7 + 0xe12) = 0;
   }
-  bVar1 = *(u8 *)(iVar4 + 0x103);
-  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe10) = (u16)bVar1;
-  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe12) = *(u8 *)(iVar4 + 0x104);
+  bVar1 = *(u8 *)(iVar4 + 0x104);
+  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe10) = (u16)*(u8 *)(iVar4 + 0x103);
+  *(u16 *)(*(int *)(iVar4 + 0x20c) * 4 + iVar4 + 0xe12) = (u16)bVar1;
   do {
     iVar8 = iVar4 + *(int *)(iVar4 + 0x20c) * 4;
     iVar8 = iVar4 + ((int)*(short *)(iVar8 + 0xe10) + *(short *)(iVar8 + 0xe12) * 0x10) * 8;
@@ -5639,7 +5639,7 @@ u16 FUN_00435660(char param_1)
   int iVar5;
   char cVar6;
   int iVar7;
-  long lVar8;
+  int lVar8;
   
   lVar8 = 0;
   do {
