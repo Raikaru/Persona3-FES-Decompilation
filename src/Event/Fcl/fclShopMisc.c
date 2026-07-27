@@ -7744,7 +7744,7 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
   
 
-  for (uVar7 = 0; (long)uVar7 < 300; uVar7 = (u32)((int)uVar7 + 1)) {
+  for (uVar7 = 0; uVar7 < 300; uVar7 = (u32)((int)uVar7 + 1)) {
 
 
     uVar5 = func_0016f720(1,uVar7);

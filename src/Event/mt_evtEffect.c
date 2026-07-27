@@ -1921,7 +1921,7 @@ void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
       }
       *puVar5 = 0;
     }
-    if (!(param_3 < *(int *)(param_1 + 4))) {
+    if (param_3 >= *(int *)(param_1 + 4)) {
       iVar4 = 0;
     }
     else {

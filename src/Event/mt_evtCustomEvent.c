@@ -5758,6 +5758,7 @@ void FUN_0039e700(int param_1)
   FUN_005225a8((u32)DAT_006a1800,*(u32 *)(param_1 + 0x78c));
 
   return;
+#pragma pop
 
 }
 #define FUN_0039e700(...) ((void (*)(...))FUN_0039e700)(__VA_ARGS__)
