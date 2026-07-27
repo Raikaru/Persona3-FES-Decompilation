@@ -7626,9 +7626,9 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
@@ -58335,7 +58335,7 @@ u64 FUN_00357830(int param_1)
 
   u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   u64 uVar5;
 

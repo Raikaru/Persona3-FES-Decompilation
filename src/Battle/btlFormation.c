@@ -3478,7 +3478,7 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
 
 {
   short sVar1 = 0;
-  long lVar2 = 0;
+  int lVar2 = 0;
   u64 uVar3 = 0;
   u64 uVar4 = 0;
   int iVar5 = 0;
