@@ -373,10 +373,10 @@ done:
     return 0;
 }
 
+/* Removing the schedule pragma below loses FUN_00208790 (MATCH nd0 -> MISMATCH nd117) - measured W161. */
 // FUN_00208790
-#pragma optimization_level 3
 #pragma push
-/* Removing this loses FUN_00208790 (MATCH nd0 -> MISMATCH nd117) - measured W161. */
+#pragma optimization_level 3
 #pragma schedule off
 void bcmPlayRandomPartyVoice(void)
 {
@@ -403,6 +403,7 @@ void bcmPlayRandomPartyVoice(void)
     }
     func_00208860((u16)ids[RpRandom() % count]);
 }
+#pragma pop
 
 // FUN_00208860
 void func_00208860(u32 unitId)
