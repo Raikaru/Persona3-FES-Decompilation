@@ -1472,7 +1472,7 @@ void func_002f2890(BtlAction* param_1)
   void* object;
   BtlPacket* packet;
   BtlPacket* parent;
-  BtlPacket* waitPacket;
+  u16 waitUID;
   u32 index;
   unit = gBtl->unitLists[UNIT_GENUS_EC].head;
   object = func_002b8f90(0);
@@ -1504,22 +1504,29 @@ void func_002f2890(BtlAction* param_1)
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 2);
-  waitPacket = FUN_002dd5e0_packet_voice(0);
-  waitPacket->unk_00 = 5;
-  waitPacket->parentUID = packet->uid;
-  btlPacketRegister(waitPacket, 1);
+  {
+    BtlPacket* waitPacket;
+    waitPacket = FUN_002dd5e0_packet_voice(0);
+    waitPacket->unk_00 = 5;
+    waitPacket->parentUID = packet->uid;
+    waitUID = waitPacket->uid;
+    btlPacketRegister(waitPacket, 1);
+  }
   packet = FUN_002bd850_packet_voice(unit, 0x47);
   packet->postUpdateWaits[0].type = 5;
-  packet->postUpdateWaits[0].value = waitPacket->uid;
+  packet->postUpdateWaits[0].value = waitUID;
   packet->actionUID = action->uid;
   packet->preUpdateDelay = 0x28;
   btlPacketRegister(packet, 3);
-  waitPacket = FUN_0027f410_packet_voice((u32)func_002f2410,
-                                         (u32)unit);
-  waitPacket->unk_00 = 5;
-  waitPacket->parentUID = packet->uid;
-  waitPacket->actionUID = action->uid;
-  btlPacketRegister(waitPacket, 1);
+  {
+    BtlPacket* waitPacket;
+    waitPacket = FUN_0027f410_packet_voice((u32)func_002f2410,
+                                           (u32)unit);
+    waitPacket->unk_00 = 5;
+    waitPacket->parentUID = packet->uid;
+    waitPacket->actionUID = action->uid;
+    btlPacketRegister(waitPacket, 1);
+  }
   func_002b9030(object);
 }
 #pragma schedule on

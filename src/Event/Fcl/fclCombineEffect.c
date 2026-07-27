@@ -2,6 +2,7 @@
 extern f32 sinf(f32);
 extern f32 cosf(f32);
 extern f32 FUN_0016bc00(u32 param_1,u32 param_2);
+extern int kwlnTaskGetWorkData(void);
 typedef int (*code)();
 float fGpffff8110;
 float fGpffff81fc;

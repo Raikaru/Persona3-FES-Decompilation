@@ -4277,7 +4277,7 @@ u64 func_002be620(int param_1,int param_2)
 
 {
   u16 uVar1 = 0;
-  u16 sVar2 = 0;
+  short sVar2 = 0;
   u64 uVar3 = 0;
   int iVar4 = 0;
   int iVar5 = 0;

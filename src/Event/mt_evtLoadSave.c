@@ -3229,9 +3229,9 @@ void FUN_00391080(u64 param_1,u64 param_2)
 
   u32 *puVar5;
 
-  u64 uVar6;
-
-  u64 uVar7;
+  u32 uVar6;
+ 
+  u32 uVar7;
 
   int iVar8;
 
