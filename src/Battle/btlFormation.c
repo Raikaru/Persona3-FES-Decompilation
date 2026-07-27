@@ -2542,10 +2542,10 @@ void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
 void func_002bb3a0(void)
 
 {
+  u16 *puVar4;
   u16 uVar1 = 0;
   u32 uVar2 = 0;
   u32 uVar3 = 0;
-  u16 *puVar4;
   u32 uStack_4 = 0;
   
   for (puVar4 = *(u16 **)(iGpffffb6fc + 400); puVar4 != (u16 *)0x0;
