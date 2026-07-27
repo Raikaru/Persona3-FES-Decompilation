@@ -638,6 +638,8 @@ extern code FUN_001c65e0;
 #pragma alias FUN_001c65e0_typed FUN_001c65e0
  #pragma alias FUN_001c6720_u32 FUN_001c6720
  extern u32 FUN_001c6720_u32(u32 param_1,u32 param_2);
+#pragma alias FUN_001c6720_f32 FUN_001c6720
+extern u32 FUN_001c6720_f32(u32 param_1,float param_2);
 extern u32 FUN_001c65e0_typed(void *param_1);
 extern long FUN_001c6720(u32 param_1, u32 param_2);
 extern code FUN_001c6d70;
@@ -1435,7 +1437,7 @@ u32 FUN_0044f1c0(float param_1,float *param_2,float *param_3);
 u8 FUN_0044fab0(int param_1);
 char FUN_00453480(void);
 u32 FUN_00454400(f32 *param_1,char param_2);
-u8 FUN_00454520(float *param_1,char param_2);
+u32 FUN_00454520(float *param_1,char param_2);
 u8 FUN_00454a70(char param_1,float *param_2);
 u8 FUN_00454d00(float *param_1);
 char FUN_00457390(char param_1);
@@ -2853,7 +2855,7 @@ u32 FUN_0044f1c0(float param_1,float *param_2,float *param_3);
 u8 FUN_0044fab0(int param_1);
 char FUN_00453480(void);
 u32 FUN_00454400(f32 *param_1,char param_2);
-u8 FUN_00454520(float *param_1,char param_2);
+u32 FUN_00454520(float *param_1,char param_2);
 u8 FUN_00454a70(char param_1,float *param_2);
 u8 FUN_00454d00(float *param_1);
 char FUN_00457390(char param_1);
@@ -7594,17 +7596,17 @@ u64 FUN_00439f60(u64 param_1,char param_2)
   int iVar2;
   u32 lVar3;
   u32 uVar4;
-  long lVar5;
-  
+  u32 lVar5;
+
+  iVar2 = *(int *)(*(int *)(DAT_0087190c_abs + param_2 * 0x1c0) + 0x3c);
   iVar1 = iGpffffb5a0;
-  iVar2 = *(int *)(*(int *)((u8 *)DAT_0087190c + param_2 * 0x1c0) + 0x3c);
-  lVar3 = FUN_001c6720(*(u32 *)(iGpffffb5a0 + 0x14),*(u32 *)(iVar2 + 0x24));
+  lVar3 = FUN_001c6720_f32(*(u32 *)(iVar2 + 0x24),*(float *)(iVar1 + 0x14));
   if (*(char *)(iVar2 + 0x1216) == '\0') {
     if (lVar3 != 0) {
       uVar4 = FUN_00318b60(*(u32 *)(*(int *)(iVar2 + 0x24) + 0x50));
       iVar2 = FUN_00318b60(*(u32 *)((int)lVar3 + 0x50));
-      lVar3 = FUN_001c6450(*(u32 *)(iVar1 + 0x10),*(u32 *)(iVar1 + 0x14),uVar4,
-                           (void *)(iVar2 + 0x30));
+      lVar3 = FUN_001c6450_f32(uVar4,(void *)(iVar2 + 0x30),
+                               *(float *)(iVar1 + 0x10),*(float *)(iVar1 + 0x14));
       if (lVar3 == 1) {
         return 1;
       }
@@ -7613,9 +7615,9 @@ u64 FUN_00439f60(u64 param_1,char param_2)
   else if (lVar3 != 0) {
     uVar4 = FUN_00318b60(*(u32 *)(*(int *)(iVar2 + 0x24) + 0x50));
     iVar2 = FUN_00318b60(*(u32 *)((int)lVar3 + 0x50));
-    lVar5 = FUN_001c6450(*(u32 *)(iVar1 + 0x10),*(u32 *)(iVar1 + 0x14),uVar4,
-                         (void *)(iVar2 + 0x30));
-    if ((lVar5 == 1) && (lVar3 = FUN_001d8d80(lVar3), lVar3 != 0)) {
+    lVar5 = FUN_001c6450_f32(uVar4,(void *)(iVar2 + 0x30),
+                             *(float *)(iVar1 + 0x10),*(float *)(iVar1 + 0x14));
+    if ((lVar5 == 1) && (FUN_001d8d80(lVar3) != 0)) {
       return 1;
     }
   }
@@ -16576,36 +16578,31 @@ u32 FUN_00454400(f32 *param_1,char param_2)
 
 // FUN_00454520 NONMATCHING
 
-u8 FUN_00454520(float *param_1,char param_2)
+u32 FUN_00454520(float *param_1,char param_2)
 
 {
-  int iVar1;
-  float *pfVar2;
-  float fVar3;
-  struct {
-    float v20[4];
-    float v10[4];
-  } stack;
-#define fStack_20 stack.v20[0]
-#define fStack_1c stack.v20[1]
-#define fStack_18 stack.v20[2]
-#define fStack_10 stack.v10[0]
-#define fStack_c stack.v10[1]
-#define fStack_8 stack.v10[2]
-  
-  fStack_10 = *param_1;
-  fStack_c = param_1[1];
-  fStack_8 = param_1[2];
-  stack.v10[3] = 0.0f;
-  stack.v20[3] = 0.0f;
-  iVar1 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + param_2 * 0x1c0) + 0x3c) + 1) * 0x1c0;
-  pfVar2 = (float *)(DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + iVar1) * 0x40);
-  iVar1 = *(int *)((u8 *)DAT_0086ef08 + iVar1);
-  fStack_20 = *(float *)(iVar1 + 0x100) - fStack_10;
-  fStack_1c = *(float *)(iVar1 + 0x104) - fStack_c;
-  fStack_18 = *(float *)(iVar1 + 0x108) - fStack_8;
-  fVar3 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_20));
-  return fVar3 < *pfVar2;
+  u32 bVar1;
+  int iVar2;
+  int iVar3;
+  float *pfVar4;
+  float fVar5;
+  YVec3f input;
+  YVec3f delta;
+
+  input = *(YVec3f *)param_1;
+  iVar3 = *(int *)(*(int *)(DAT_0086ef0c_abs + param_2 * 0x1c0) + 0x3c);
+  bVar1 = 0;
+  iVar2 = *(char *)(iVar3 + 1) * 0x1c0;
+  pfVar4 = (float *)(DAT_007ce290 + *(int *)(DAT_0086ef2c_abs + iVar2) * 0x40);
+  iVar3 = *(int *)(DAT_0086ef08_abs + iVar2);
+  delta.x = *(float *)(iVar3 + 0x100) - input.x;
+  delta.y = *(float *)(iVar3 + 0x104) - input.y;
+  delta.z = *(float *)(iVar3 + 0x108) - input.z;
+  fVar5 = FUN_004c6ac0_vec((const RwV3d *)&delta);
+  if (fVar5 < *pfVar4) {
+    bVar1 = 1;
+  }
+  return bVar1;
 }
 #undef fStack_20
 #undef fStack_1c

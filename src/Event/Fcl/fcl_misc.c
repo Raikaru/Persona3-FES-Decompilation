@@ -914,8 +914,8 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
 
   int iVar2;
 
-  u16 uVar3;
   u32 offset;
+  u16 uVar3;
 
   
 
@@ -2316,6 +2316,7 @@ void FUN_003cacc0(int param_1)
 }
 #define FUN_003cacc0(...) ((void (*)(...))FUN_003cacc0)(__VA_ARGS__)
 #undef FUN_003cb050
+#pragma push
 // FUN_003CB050 NONMATCHING
 void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
                   s32 param_6,s32 param_7,s32 param_8)
@@ -2339,6 +2340,7 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
                      flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
 }
+#pragma pop
 #define FUN_003cb050(...) ((void (*)(...))FUN_003cb050)(__VA_ARGS__)
 #undef FUN_003cb100
 // FUN_003CB100 NONMATCHING
