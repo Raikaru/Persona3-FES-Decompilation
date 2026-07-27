@@ -127,6 +127,11 @@ typedef struct MdlFileResource {
 static const u32 sMdlNanBits = 0x7fffffff;
 #pragma alias ABS_f32 ABS
 extern float ABS_f32(float param_1);
+#pragma alias SQRT_f32 SQRT
+extern float SQRT_f32(float param_1);
+#pragma alias RwMatrixRotate_f32_first RwMatrixRotate
+extern RwMatrix *RwMatrixRotate_f32_first(float angle, RwMatrix *matrix,
+                                          const RwV3d *axis, RwOpCombineType combineOp);
 /* Ghidra's VU pseudo-registers are 128-bit values.  MWCC's vector extension is
  * disabled for this TU, so keep the register shape as a plain union and use
  * scalar compatibility shims for the generated intrinsics. */
@@ -149,7 +154,7 @@ typedef union Vec128 {
 #define RwMatrixScale(m,v,f) RwMatrixScale((RwMatrix *)(m),(RwV3d *)(v),(f))
 #define RwMatrixTranslate(m,v,f) RwMatrixTranslate((RwMatrix *)(m),(RwV3d *)(v),(f))
 #define RwMatrixMultiply(o,a,b) RwMatrixMultiply((RwMatrix *)(o),(RwMatrix *)(a),(RwMatrix *)(b))
-#define RwMatrixRotate(a,m,v,f) ((code)RwMatrixRotate)((a),(RwMatrix *)(m),(RwV3d *)(v),(f))
+#define RwMatrixRotate(a,m,v,f) RwMatrixRotate_f32_first((a),(RwMatrix *)(m),(RwV3d *)(v),(f))
 /* Ghidra stack/global temporaries that are referenced before a matching local declaration. */
 static Vec128 auStack_10, auStack_30, auStack_40, auStack_50, auStack_80, auStack_90, auStack_a0;
 static Vec128 _DAT_0069c4d0;
@@ -1200,9 +1205,7 @@ extern u64 FUN_004ca030();
 extern u64 FUN_004ca090();
 #pragma alias FUN_004ca090_u32 FUN_004ca090
 extern u32 FUN_004ca090_u32(void);
-extern u64 FUN_004caf10();
-#pragma alias FUN_004caf10_u32 FUN_004caf10
-extern u32 FUN_004caf10_u32(void);
+extern u32 FUN_004caf10(void);
 extern u64 FUN_004caf80();
 extern u64 FUN_004cb2f0();
 #pragma alias FUN_004cb2f0_u32 FUN_004cb2f0
@@ -7056,7 +7059,7 @@ u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3)
 
   uVar3 = (*DAT_00960178_abs)(0x1c,0x40000);
 
-  uVar4 = FUN_004caf10_u32();
+  uVar4 = FUN_004caf10();
 
   uVar5 = FUN_00491880_u32();
 
@@ -7293,7 +7296,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   *(u32 *)(puVar1 + 8) = uVar2;
 
-  uVar4 = FUN_004caf10_u32();
+  uVar4 = FUN_004caf10();
 
   *(int *)(puVar1 + 6) = (int)uVar4;
 
@@ -13852,7 +13855,7 @@ void FUN_00329ed0(float *param_1)
 
   if (1.0f <= fVar5) {
 
-    fVar5 = SQRT(fVar5) * 2.0f;
+    fVar5 = SQRT_f32(fVar5) * 2.0f;
 
     afStack_10[3] = -(fVar5 / 4.0f);
 
@@ -13878,7 +13881,7 @@ void FUN_00329ed0(float *param_1)
 
     uVar2 = (uVar1 + 1) % 3;
 
-    fVar5 = SQRT(((param_1[uVar4 * 5] - param_1[uVar1 * 5]) - param_1[uVar2 * 5]) + 1.0f) * 2.0f;
+    fVar5 = SQRT_f32(((param_1[uVar4 * 5] - param_1[uVar1 * 5]) - param_1[uVar2 * 5]) + 1.0f) * 2.0f;
 
     if (fVar5 == 0.0f) {
 
@@ -14845,7 +14848,7 @@ void FUN_0032af30(int param_1)
 
         }
 
-        iVar13 = (int)ABS(*(float *)(iVar10 + 0x14));
+        iVar13 = (int)ABS_f32(*(float *)(iVar10 + 0x14));
 
         *(float *)(iVar10 + 0x14) = *(float *)(iVar10 + 0x14) - (float)iVar13;
 
@@ -20308,7 +20311,7 @@ void FUN_00330c40(u64 param_1)
 
         }
 
-        iVar18 = (int)ABS(*(float *)(iVar15 + 0x14));
+        iVar18 = (int)ABS_f32(*(float *)(iVar15 + 0x14));
 
         *(float *)(iVar15 + 0x14) = *(float *)(iVar15 + 0x14) - (float)iVar18;
 
@@ -26287,13 +26290,13 @@ void FUN_00336e80(int param_1)
 
     auStack_40 = _sqc2(auVar25);
 
-    fVar18 = 2.0;
+    fVar18 = 2.0f;
 
-    fVar24 = ((float)uVar7 * 2.0) / (float)*(u32 *)(iVar12 + 0x3c);
+    fVar24 = ((float)uVar7 * 2.0f) / (float)*(u32 *)(iVar12 + 0x3c);
 
     fVar21 = *(float *)(iVar12 + 0x44);
 
-    fVar19 = 4.0;
+    fVar19 = 4.0f;
 
     fVar20 = DAT_007cae90;
 
@@ -26345,7 +26348,7 @@ void FUN_00336e80(int param_1)
 
           fVar22 = fVar14 - fVar20;
 
-          fVar15 = (float)FUN_0052e878(fVar14);
+          fVar15 = (float)FUN_0052e878_f32(fVar14);
 
           fVar15 = fVar17 * fVar15;
 
@@ -26357,7 +26360,7 @@ void FUN_00336e80(int param_1)
 
           auStack_80 = _sqc2(auVar25);
 
-          fVar16 = (float)FUN_0052e878(fVar14);
+          fVar16 = (float)FUN_0052e878_f32(fVar14);
 
           auVar26 = _lqc2(auStack_40);
 
@@ -26609,11 +26612,11 @@ void FUN_00336e80(int param_1)
 
               fVar17 = (float)FUN_00358030(0);
 
-              fVar17 = fVar21 * (1.0 - fVar4 * fVar17);
+              fVar17 = fVar21 * (1.0f - fVar4 * fVar17);
 
             }
 
-            fVar16 = (float)FUN_0052e878(fVar14);
+            fVar16 = (float)FUN_0052e878_f32(fVar14);
 
             fVar16 = fVar17 * fVar16;
 
@@ -26637,7 +26640,7 @@ void FUN_00336e80(int param_1)
 
             fVar15 = (float)FUN_00358030(0);
 
-            FUN_00358340(fVar6 * fVar18 * (fVar15 - 0.5),auStack_a0);
+            FUN_00358340_vec(fVar6 * fVar18 * (fVar15 - 0.5f),(void *)&auStack_a0);
 
             auVar25 = _lqc2(auVar25);
 
@@ -26711,7 +26714,7 @@ void FUN_00336e80(int param_1)
 
             auVar25 = _qmfc2(auVar25._0_4_);
 
-            if (auVar25._0_4_ < 0.0) {
+            if (*(float *)&auVar25._0_4_ < 0.0f) {
 
               pauVar8 = (u8 (*) [12])(puVar11 + 0x1b);
 
@@ -27455,13 +27458,13 @@ void FUN_00337fd0(int param_1)
 
     if ((fVar10 < 0.0f) &&
 
-       (fVar13 = (-ABS(*(float *)(iVar1 + 0x60)) / (fVar10 * 0.5f)) * 0.5f, fVar9 <= fVar13)) {
+       (fVar13 = (-ABS_f32(*(float *)(iVar1 + 0x60)) / (fVar10 * 0.5f)) * 0.5f, fVar9 <= fVar13)) {
 
       fVar13 = fVar9;
 
     }
 
-    fVar13 = fVar13 * (fVar10 * fVar13 * 0.5f + ABS(*(float *)(iVar1 + 0x60)) + 0.0f) +
+    fVar13 = fVar13 * (fVar10 * fVar13 * 0.5f + ABS_f32(*(float *)(iVar1 + 0x60)) + 0.0f) +
 
              *(float *)(iVar1 + 0x40);
 
@@ -27511,9 +27514,9 @@ void FUN_00337fd0(int param_1)
 
     for (uVar5 = 0; uVar5 < (u32)(iVar4 >> 2); uVar5 = uVar5 + 1) {
 
-      uVar7 = FUN_0052e6d8(fVar11);
+      uVar7 = FUN_0052e6d8_f32(fVar11);
 
-      uVar8 = FUN_0052e878(fVar11);
+      uVar8 = FUN_0052e878_f32(fVar11);
 
       auVar18._4_4_ = 0;
 
@@ -28429,13 +28432,13 @@ void FUN_00338ea0(int param_1)
 
     if ((fVar10 < 0.0f) &&
 
-       (fVar11 = (-ABS(*(float *)(iVar1 + 0x5c)) / (fVar10 * 0.5f)) * 0.5f, fVar9 <= fVar11)) {
+       (fVar11 = (-ABS_f32(*(float *)(iVar1 + 0x5c)) / (fVar10 * 0.5f)) * 0.5f, fVar9 <= fVar11)) {
 
       fVar11 = fVar9;
 
     }
 
-    fVar11 = fVar11 * (fVar10 * fVar11 * 0.5f + ABS(*(float *)(iVar1 + 0x5c)) + 0.0f) +
+    fVar11 = fVar11 * (fVar10 * fVar11 * 0.5f + ABS_f32(*(float *)(iVar1 + 0x5c)) + 0.0f) +
 
              *(float *)(iVar1 + 0x40);
 
@@ -28485,9 +28488,9 @@ void FUN_00338ea0(int param_1)
 
     for (uVar5 = 0; uVar5 < (u32)(iVar4 >> 2); uVar5 = uVar5 + 1) {
 
-      uVar7 = FUN_0052e6d8(fVar12);
+      uVar7 = FUN_0052e6d8_f32(fVar12);
 
-      uVar8 = FUN_0052e878(fVar12);
+      uVar8 = FUN_0052e878_f32(fVar12);
 
       *puVar6 = 0;
 
@@ -29262,9 +29265,9 @@ void FUN_003399a0(int param_1)
 
             auVar30 = _sqc2(auVar32);
 
-            uVar22 = FUN_0052e6d8(fVar21);
+            uVar22 = FUN_0052e6d8_f32(fVar21);
 
-            uVar23 = FUN_0052e878(fVar21);
+            uVar23 = FUN_0052e878_f32(fVar21);
 
             auVar32._4_4_ = 0;
 
@@ -30817,9 +30820,9 @@ void FUN_0033b2a0(int param_1)
 
             auVar32 = _sqc2(auVar32);
 
-            uVar20 = FUN_0052e6d8(fVar28);
+            uVar20 = FUN_0052e6d8_f32(fVar28);
 
-            uVar21 = FUN_0052e878(fVar28);
+            uVar21 = FUN_0052e878_f32(fVar28);
 
             auVar33._4_4_ = 0;
 
@@ -31721,9 +31724,9 @@ void FUN_0033c1a0(int param_1)
 
             auVar29 = _sqc2(auVar29);
 
-            uVar22 = FUN_0052e6d8(fVar21);
+            uVar22 = FUN_0052e6d8_f32(fVar21);
 
-            uVar23 = FUN_0052e878(fVar21);
+            uVar23 = FUN_0052e878_f32(fVar21);
 
             auVar31._4_4_ = 0;
 
@@ -33368,9 +33371,9 @@ void FUN_0033dc70(int param_1)
 
             fVar19 = (float)piVar13[5];
 
-            fVar20 = (float)FUN_0052e6d8(fVar18);
+            fVar20 = (float)FUN_0052e6d8_f32(fVar18);
 
-            fVar24 = (float)FUN_0052e878(fVar18);
+            fVar24 = (float)FUN_0052e878_f32(fVar18);
 
             fVar18 = fVar20 * fVar19;
 
@@ -34122,9 +34125,9 @@ void FUN_0033e8e0(int param_1)
 
             fVar24 = (float)piVar16[5];
 
-            fVar21 = (float)FUN_0052e6d8(fVar22);
+            fVar21 = (float)FUN_0052e6d8_f32(fVar22);
 
-            fVar22 = (float)FUN_0052e878(fVar22);
+            fVar22 = (float)FUN_0052e878_f32(fVar22);
 
             auVar27._4_4_ = fVar8 - fVar23;
 
@@ -36240,9 +36243,9 @@ void FUN_003407e0(int param_1)
 
             fVar38 = (float)piVar26[5];
 
-            fVar33 = (float)FUN_0052e6d8(fVar29);
+            fVar33 = (float)FUN_0052e6d8_f32(fVar29);
 
-            fVar35 = (float)FUN_0052e878(fVar29);
+            fVar35 = (float)FUN_0052e878_f32(fVar29);
 
             fVar30 = fVar33 * fVar38;
 
@@ -39101,9 +39104,9 @@ void FUN_00343d60(int param_1)
 
           fVar19 = fVar24 * fVar19 * fVar19 + *(float *)(puVar13 + 2) + 0.0f;
 
-          fVar22 = (float)FUN_0052e6d8(fVar27);
+          fVar22 = (float)FUN_0052e6d8_f32(fVar27);
 
-          fVar27 = (float)FUN_0052e878(fVar27);
+          fVar27 = (float)FUN_0052e878_f32(fVar27);
 
           auVar31._4_4_ = fVar28;
 
@@ -41568,9 +41571,9 @@ void FUN_00346530(int param_1)
 
     fStack_a8 = fStack_a8 * fVar13;
 
-    fVar15 = (float)FUN_0052e6d8(fVar14);
+    fVar15 = (float)FUN_0052e6d8_f32(fVar14);
 
-    fVar14 = (float)FUN_0052e878(fVar14);
+    fVar14 = (float)FUN_0052e878_f32(fVar14);
 
     fVar19 = fStack_b0 + fStack_a8;
 
@@ -42459,7 +42462,7 @@ void FUN_00347d00(void)
 
   DAT_007ce56c = 0;
 
-  DAT_007ce560 = FUN_004caf10_u32();
+  DAT_007ce560 = FUN_004caf10();
 
   iVar1 = FUN_00198590_u32();
 
@@ -49534,11 +49537,11 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
     fVar8 = *(float *)(param_3 + 0x18);
 
-    fVar7 = (float)FUN_0052e6d8(*param_2);
+    fVar7 = (float)FUN_0052e6d8_f32(*param_2);
 
     fVar10 = (float)param_2[2] * fVar7 + fVar8 + 0.0f;
 
-    fVar7 = (float)FUN_0052e6d8(param_2[3]);
+    fVar7 = (float)FUN_0052e6d8_f32(param_2[3]);
 
     fVar7 = (float)param_2[5] * fVar7 + fVar8 + 0.0f;
 
@@ -49704,9 +49707,9 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
       fVar9 = 1.0f / fStack_128;
 
-      fVar7 = (float)FUN_0052e6d8(DAT_007cae58 + *(float *)(param_3 + 0x1c));
+      fVar7 = (float)FUN_0052e6d8_f32(DAT_007cae58 + *(float *)(param_3 + 0x1c));
 
-      fVar8 = (float)FUN_0052e878(DAT_007cae58 + *(float *)(param_3 + 0x1c));
+      fVar8 = (float)FUN_0052e878_f32(DAT_007cae58 + *(float *)(param_3 + 0x1c));
 
       fVar10 = in_f23 * fVar7;
 
@@ -51381,9 +51384,9 @@ void FUN_003505d0(int *param_1)
 
     fStack_a8 = fStack_a8 * fVar13;
 
-    fVar15 = (float)FUN_0052e6d8(fVar14);
+    fVar15 = (float)FUN_0052e6d8_f32(fVar14);
 
-    fVar14 = (float)FUN_0052e878(fVar14);
+    fVar14 = (float)FUN_0052e878_f32(fVar14);
 
     fVar20 = fStack_b0 + fStack_a8;
 
