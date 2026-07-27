@@ -9047,7 +9047,7 @@ u64 FUN_003798f0(int param_1,int param_2,int param_3)
 
   int *piVar1;
 
-  u32 uVar2;
+  u64 uVar2;
 
   u64 uVar3;
   u64 extraout_a2;
