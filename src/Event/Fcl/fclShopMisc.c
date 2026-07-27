@@ -184,15 +184,18 @@ u32 uGpffffabd4;
 u32 uGpffffabe4;
 extern u32 uGpffffabec;
 u32 uGpffffabf4;
-float fGpffffacf0;
-float fGpffffacf4;
-float fGpffffacf8;
-float fGpffffacfc;
-float fGpffffad00;
-float fGpffffad04;
+u32 fGpffffacf0;
+u32 fGpffffacf4;
+u32 fGpffffacf8;
+u32 fGpffffacfc;
+u32 fGpffffad00;
+u32 fGpffffad04;
 u32 uGpffffb9a8;
 /* FUSION_EXACT_PROTOS */
 extern float sinf(float);
+extern float cosf(float);
+#pragma alias FUN_0040e3f0_f32 FUN_0040e3f0
+extern void FUN_0040e3f0_f32(float,float,float,float,int,int,int,int,int,int,int);
 void FUN_003c45f0(int param_1);
 u32 datGetScenarioMode(void);
 u16 FUN_001752b0(void);
@@ -4143,8 +4146,8 @@ void FUN_003f3fc0(int param_1,int param_2,u32 param_3,u64 param_4)
 
     iVar7 = *(int *)(*(int *)(iVar7 + 0x24) + 0x28);
 
-    FUN_0040e3f0(0,0,1.0f,fVar10,iVar9 + -0x15,iVar5 + -1,uVar1 & 0xff,0x26,0,0,0);
-    FUN_0040e3f0(0,0,1.0f,fVar10,iVar9 + -0x13,iVar5 + 3 + (iVar7 * 0x68) / 0xffff,
+    FUN_0040e3f0_f32(0,0,1.0f,fVar10,iVar9 + -0x15,iVar5 + -1,uVar1 & 0xff,0x26,0,0,0);
+    FUN_0040e3f0_f32(0,0,1.0f,fVar10,iVar9 + -0x13,iVar5 + 3 + (iVar7 * 0x68) / 0xffff,
                  uVar1 & 0xff,0x27,0,0,0);
 
 
@@ -19115,11 +19118,6 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 
 }
 
-// Retail preserves this table as single-precision values across the callbacks.
-// Keep the table and globals float-typed so MWCC emits the EE FPU path.
-// The values are still consumed as raw bytes/words by the rendering helpers.
-// Initialization order mirrors retail's table-index and alpha setup sequence.
-// This reconstruction is semantically complete despite a small code-size floor.
 // FUN_0040A7F0 NONMATCHING
 
 
@@ -19153,7 +19151,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   u8 auStack_60[32];
   u8 auStack_40[16];
   u8 auStack_30[24];
-  float auStack_18[6];
+  u32 auStack_18[6];
 
 
   

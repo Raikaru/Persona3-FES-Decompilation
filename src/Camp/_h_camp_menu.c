@@ -63,6 +63,10 @@ extern s32 FUN_0030c220();
 extern s32 FUN_003b2cb0_typed(f32 scale, s32 x, s32 y, s32 color,
                               s32 font, s32 alignment, const char* text,
                               s32 maxWidth, s32 shadow);
+#pragma alias FUN_003b32d0_typed FUN_003b32d0
+extern s32 FUN_003b32d0_typed(f32 scale, s32 x, s32 y, s32 color,
+                              s32 font, s32 alignment, const char* text,
+                              s32 maxWidth, s32 shadow);
 #pragma alias FUN_0040eb50_typed FUN_0040eb50
 extern s32 FUN_0040eb50_typed(f32 scale, s32 x, s32 y, u8 color, s16 font,
                               const char* text, s32 maxWidth);
@@ -121,7 +125,7 @@ static inline void campSpriteAlt(const CampMenuDrawItem* item, f32 x, f32 y)
 static inline void campText(const CampMenuDrawItem* item, f32 x, f32 y,
                             const char* text, s32 font, s32 width)
 {
-    FUN_003b32d0(item->scale, (s32)x, (s32)y, campDrawAlpha(item), font, 1,
+    FUN_003b32d0_typed(item->scale, (s32)x, (s32)y, campDrawAlpha(item), font, 1,
                  text, 0x10, width);
 }
 
