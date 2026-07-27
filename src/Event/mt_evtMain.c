@@ -1680,7 +1680,7 @@ void FUN_00361980(int param_1)
 
     if (*piVar1 != 0x12) {
 
-      FUN_00386b70(*(int *)(iVar4 + 0x48),9,0);
+      FUN_00386b70_evt_main(*(int *)(iVar4 + 0x48),9,0);
 
     }
 
