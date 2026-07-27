@@ -1209,6 +1209,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     f32 distance;
     f32 fovDistance;
     f32 nearDistance;
+    f32 scaleFactor;
     f32 radius;
     f32 half;
     f32 angle;
@@ -1253,7 +1254,8 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         FUN_002a4690(&frames[1].rot, &scaled, &candidate, &D_00697880);
         angle = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&frames[1].rot);
         nearDistance = (f32)nearScale;
-        nearDistance = (*(volatile f32*)&fGpffff80e8) * nearDistance;
+        scaleFactor = fGpffff80e8;
+        nearDistance = scaleFactor * nearDistance;
         if (angle > nearDistance)
         {
             if (angle <= fGpffff80e8 * (f32)farScale)

@@ -5980,7 +5980,6 @@ void FUN_0039eaa0(int param_1)
 
   iVar1 = *(int *)(param_1 + 8);
   iVar7 = 2;
-  __asm__ volatile("" : "+r"(iVar7));
 
   for (iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
 
