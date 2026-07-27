@@ -13585,7 +13585,7 @@ code * FUN_0036d500(void)
 
       uVar5 = FUN_00386e30(uVar2);
 
-      FUN_00393e30(uVar2,uVar4,uVar5,0,0,0x36e690);
+      FUN_00393e30(uVar2,uVar4,uVar5,0,0,FUN_0036e690);
 
       *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) & 0xfffffeff;
 
