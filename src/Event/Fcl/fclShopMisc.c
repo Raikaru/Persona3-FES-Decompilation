@@ -20151,11 +20151,13 @@ void FUN_0040c1e0(int param_1,int param_2,int param_3)
 
   piVar6 = (int *)*(u32 *)param_2;
 
-  for (iVar5 = 0; iVar5 < (int)((u32 *)param_2)[1]; iVar5 = iVar5 + 1) {
+  for (iVar5 = 0; iVar5 < (int)((u32 *)param_2)[1];
+       iVar5 = iVar5 + 1, piVar6 = piVar6 + 4) {
 
-    if (((*piVar6 == 0) || (lVar4 = datGetFlag(), lVar4 != 0)) &&
-
-       ((piVar6[1] == 0 || (lVar4 = datGetFlag(), lVar4 != 0)))) {
+    if ((((lVar4 = *piVar6), lVar4 == 0) ||
+         (lVar4 = datGetFlag(), lVar4 != 0)) &&
+        (((lVar4 = piVar6[1]), lVar4 == 0) ||
+         (lVar4 = datGetFlag(), lVar4 != 0))) {
 
       if (param_3 != 0) {
 
@@ -20181,7 +20183,6 @@ void FUN_0040c1e0(int param_1,int param_2,int param_3)
 
     }
 
-    piVar6 = piVar6 + 4;
 
   }
 
