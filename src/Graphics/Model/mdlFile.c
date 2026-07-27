@@ -4326,21 +4326,17 @@ void FUN_00320810(int *param_1)
 
 
 {
-  u8 *iVar1;
   int iVar3;
   u32 uVar2;
   float fVar4;
   float fVar5;
 
-  
-
 
   fVar5 = 0.0f;
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
-      iVar1 = (u8 *)(iVar3 + uVar2 * 0x10);
-      if (*(int *)(iVar1 + 0xc) != 0) {
-        fVar4 = *(float *)(iVar1 + 4);
+      if (*(int *)(iVar3 + uVar2 * 0x10 + 0xc) != 0) {
+        fVar4 = *(float *)(iVar3 + uVar2 * 0x10 + 4);
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
         }
@@ -45556,7 +45552,7 @@ void FUN_00349620(int *param_1,float *param_2)
 
         param_2[1] = 0.0f;
 
-        *param_2 = 0.0;
+        *param_2 = 0.0f;
 
         param_2[4] = (float)param_1[4];
 
@@ -54138,7 +54134,7 @@ void FUN_00351e70(int param_1)
 
         fVar7 = (float)FUN_00358030(0);
 
-        *(float *)(puVar4 + 2) = fVar9 * (1.0 - (fVar11 * fVar7 + fVar8 + 0.0)) + fVar10 + 0.0;
+        *(float *)(puVar4 + 2) = fVar9 * (1.0f - (fVar11 * fVar7 + fVar8 + 0.0f)) + fVar10 + 0.0f;
 
         puVar4 = puVar4 + 4;
 

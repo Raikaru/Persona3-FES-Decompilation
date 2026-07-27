@@ -906,7 +906,6 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     EncounterWork* work;
     s32 i;
     KwlnTask** tasks;
-    void* genusBase;
 
     work = (EncounterWork*)RwCalloc(1, sizeof(EncounterWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -916,18 +915,12 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     task = kwlnTaskCreateWithAutoPriority(parent, 10, "field encounter",
                                           func_001d7d40, func_001d89b0, work);
     work->pc[0] = pc;
-    work->pcCount = 1;
+    work->pcCount = pc != NULL ? 1 : 0;
     work->ec[0] = ec;
-    work->ecCount = 1;
+    work->ecCount = ec != NULL ? 1 : 0;
     tasks = D_00875A40;
-    i = 0;
-    while (tasks[i] != NULL)
+    for (i = 0; i < 3 && tasks[i] != NULL; ++i)
     {
-        ++i;
-        if (i >= 3)
-        {
-            break;
-        }
     }
     if (i >= 3)
     {
@@ -937,8 +930,8 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     work->taskSlot = i;
     D_00875A40[i] = task;
     work->duration = 0x78;
-    genusBase = ec != NULL ? ec->genusBase : NULL;
-    if (genusBase != NULL && *(u16*)((u8*)genusBase + 8) == 0x1FA)
+    if (ec != NULL && ec->genusBase != NULL &&
+        *(u16*)((u8*)ec->genusBase + 8) == 0x1FA)
     {
         work->reaperFlag = 1;
     }

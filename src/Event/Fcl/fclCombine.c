@@ -55,9 +55,13 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2);
 u32 FUN_003d4de0(s32 param_1);
 u8 * FUN_003d4ff0(u64 param_1,u32 param_2);
 typedef int (*code)(...);
-
 int FUN_003c5470(int task);
-int FUN_003c5460();
+s32 FUN_003c5460(...);
+u32 FUN_003c58f0(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+u32 FUN_003d84c0(void *param_1, s32 param_2);
+s32 FUN_003f0830(s32 param_1);
+s32 FUN_003f0ac0(s32 param_1);
+s32 FUN_003c7850(void);
 extern s32 DAT_007ce684;
 extern char DAT_006b1fa0[];
 void FUN_003db580(int param_1);
@@ -4027,11 +4031,11 @@ u32 FUN_003d2200(void)
 
   s32 uVar3;
 
-  long lVar4;
+s32 lVar4;
 
-  int iVar5;
+int iVar5;
 
-  long lVar6;
+s32 lVar6;
 
   u8 auStack_90 [144];
 
