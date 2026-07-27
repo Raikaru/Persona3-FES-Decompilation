@@ -6371,7 +6371,7 @@ void FUN_0042bc10(u64 param_1)
 
   iVar1 = *(int *)((int)param_1 + 0x3c);
 
-  if (DAT_008717e8 != 0) {
+  if (*(u32 *)DAT_008717e8_abs != 0) {
 
     if (*(int *)(iVar1 + 0x898) != 0) {
 
