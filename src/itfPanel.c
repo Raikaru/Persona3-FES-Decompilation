@@ -173,7 +173,7 @@ u64 FUN_003acbc0(u64 param_1,int param_2);
 u64 FUN_003acb10(int param_1,int param_2);
 u64 FUN_003acda0(u64 param_1,int param_2);
 u64 FUN_003ace60(u64 param_1,int param_2);
-u64 FUN_003acf80(u64 param_1,int param_2);
+u32 FUN_003acf80(u32 param_1,int param_2);
 u64 FUN_003ad030(u64 param_1,int param_2);
 u64 FUN_003ad1b0(u32 param_1,int param_2);
 u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4);
