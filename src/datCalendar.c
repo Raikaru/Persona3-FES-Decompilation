@@ -1287,6 +1287,7 @@ extern u32 DAT_007cdffc;
 
  
 #pragma push
+/* Removing this loses FUN_0017d830 (MATCH nd0 -> MISMATCH nd93) and 4 more - measured W161. */
 #pragma opt_loop_invariants on
  
 // FUN_0017d830 MATCHING
@@ -4126,8 +4127,6 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
                   alpha & 0xff, x + 251.0f, y + 163.0f, 72.0f);
 }
 
-#pragma push
-#pragma schedule off
 // FUN_00185AE0
 void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
 {
@@ -4149,7 +4148,6 @@ void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
     cellAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x4e, cellAlpha, x, y, 50.0f);
 }
-#pragma pop
 
 // FUN_00185B40 NONMATCHING
 void func_00185b40(void* resource,

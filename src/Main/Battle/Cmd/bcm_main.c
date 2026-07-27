@@ -1,13 +1,17 @@
 #include "Main/Battle/Cmd/bcm_main.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#pragma alias bcmIsItemUsable FUN_00207930
+#pragma alias bcmDestroyOwnedResourceCallback FUN_00201ad0
+#pragma alias bcmDestroyCommandResources FUN_00203360
+
 
 u8* gBcmWork; // 007ce2e8
 
 s32 FUN_0017d2e0();
 
 // FUN_00207930
-u32 bcm00207930(u16 param_1)
+u32 bcmIsItemUsable(u16 param_1)
 {
     return FUN_0017d2e0(param_1) != 0xc;
 }
@@ -26,18 +30,18 @@ void bcm00207bf0(void)
     *(u32*)(gBcmWork + 0x77a0) &= ~1;
 }
 
-void FUN_00208360();
+void bcmDestroyOwnedResource();
 
 // FUN_00201ad0
-void bcm00201ad0(void)
+void bcmDestroyOwnedResourceCallback(void)
 {
-    FUN_00208360();
+    bcmDestroyOwnedResource();
 }
 
 void FUN_003b0170();
 
 // FUN_00203360
-void bcm00203360(void)
+void bcmDestroyCommandResources(void)
 {
     u32* puVar1;
     int iVar2;

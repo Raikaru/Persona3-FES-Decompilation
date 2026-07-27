@@ -175,6 +175,7 @@ void FUN_002d15e0(BtlTarget* target)
     target->oldSpecificId = target->specificId;
 }
 
+/* Removing this loses FUN_002d1600 (MATCH nd0 -> MISMATCH nd28) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d1600
 u16 FUN_002d1600(BtlTarget* target)
@@ -3690,6 +3691,7 @@ void FUN_002d5e00(void* param_1)
     *(u16*)((u8*)param_1 + 0x14) = 0;
 }
 
+/* Removing this loses FUN_002d5e10 (MATCH nd0 -> MISMATCH nd1) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d5e10
 u32 FUN_002d5e10(BtlAction* action)
@@ -3722,6 +3724,7 @@ u32 FUN_002d5e10(BtlAction* action)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002d5eb0 (MATCH nd0 -> MISMATCH nd66) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d5eb0
 u32 FUN_002d5eb0(BtlAction* action)
@@ -3756,6 +3759,7 @@ u32 FUN_002d5eb0(BtlAction* action)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002d5f50 (MATCH nd0 -> MISMATCH nd1) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d5f50
 u32 FUN_002d5f50(BtlAction* action)
@@ -3776,6 +3780,7 @@ u32 FUN_002d5f50(BtlAction* action)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002d5fb0 (MATCH nd0 -> MISMATCH nd156) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d5fb0
 s32 FUN_002d5fb0(BtlAction* action)
@@ -3822,6 +3827,7 @@ s32 FUN_002d5fb0(BtlAction* action)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002d6090 (MATCH nd0 -> MISMATCH nd66) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d6090
 u32 FUN_002d6090(BtlAction* action)
@@ -3856,6 +3862,7 @@ u32 FUN_002d6090(BtlAction* action)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002d6130 (MATCH nd0 -> MISMATCH nd159) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002d6130
 s32 FUN_002d6130(BtlAction* action)
@@ -5568,6 +5575,7 @@ u32 FUN_002dc180(BtlAction* action)
  *   normal retail call paths select one of those flags.
  */
 
+/* Removing this loses FUN_002dc550 (MATCH nd0 -> MISMATCH nd52) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002dc550
 void FUN_002dc550(BtlAction* action, u32 flags)
@@ -5592,6 +5600,7 @@ void FUN_002dc550(BtlAction* action, u32 flags)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002dc5e0 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002dc5e0
 void FUN_002dc5e0(BtlAction* action)
@@ -5805,6 +5814,7 @@ s32 FUN_002dca60(BtlAction* action)
     return result;
 }
 
+/* Removing this loses FUN_002dcbc0 (MATCH nd0 -> MISMATCH nd64) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002dcbc0
 void FUN_002dcbc0(void)
@@ -5828,6 +5838,7 @@ void FUN_002dcbc0(void)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002dcc40 (MATCH nd0 -> MISMATCH nd72) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002dcc40
 void FUN_002dcc40(void)

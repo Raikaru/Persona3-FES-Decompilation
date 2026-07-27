@@ -417,8 +417,6 @@ u32 FUN_003c2ab0(u32 param_1,u32 param_2)
 }
 #undef FUN_003c2ab0
 #undef FUN_003c2b40
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_003C2B40
 
 
@@ -505,7 +503,6 @@ LAB_003c2c00:
   return uVar5;
 
 }
-#pragma pop
 #define FUN_003c2b40(...) ((u32 (*)(...))FUN_003c2b40)(__VA_ARGS__)
 #undef FUN_003c2c50
 // FUN_003C2C50 NONMATCHING
@@ -646,6 +643,7 @@ LAB_003c2db0:
 
 
 // FUN_003C2DF0
+/* Removing this loses FUN_003c2df0 (MATCH nd0 -> MISMATCH nd82) - measured W161. */
 #pragma opt_loop_invariants on
 u32 FUN_003c2df0(u32 param_1)
 {
@@ -869,6 +867,7 @@ work:
 #define FUN_003c3120(...) ((u8 (*)(...))FUN_003c3120)(__VA_ARGS__)
 #undef FUN_003c3190
 // FUN_003C3190 NONMATCHING
+/* Removing this worsens FUN_003c3190 (nd306 -> nd307) - measured W161. */
 #pragma opt_loop_invariants on
 
 

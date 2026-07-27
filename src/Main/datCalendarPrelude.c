@@ -1566,6 +1566,7 @@ s16* FUN_0017c670(s32 index)
     return NULL;
 }
 
+/* Removing this loses FUN_0017c700 (MATCH nd0 -> MISMATCH nd21) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0017c700
 s32 FUN_0017c700(void)

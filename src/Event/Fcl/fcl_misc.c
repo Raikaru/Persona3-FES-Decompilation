@@ -899,6 +899,7 @@ void FUN_003c8fa0(void)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
 #pragma push
+/* Removing this worsens FUN_003c9000 (nd10 -> nd72) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_003C9000 NONMATCHING
 

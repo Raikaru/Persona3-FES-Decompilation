@@ -1,9 +1,17 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#pragma alias bpPersonaInit FUN_00266eb0
+#pragma alias bpPersonaShutdown FUN_00266f00
+#pragma alias bpPersonaLoad FUN_00266F60
+#pragma alias bpPersonaDestroy FUN_00267120
+#pragma alias bpPersonaUpdate FUN_00267180
+#pragma alias bpPersonaIsLoading FUN_00267210
+#pragma alias bpPersonaSetPersona FUN_00267070
+
 
 static u32* sBpPersona; // DAT_007ce398
 
-void FUN_00267120();
+void bpPersonaDestroy();
 long FUN_003c9ab0();
 u32 FUN_001749a0(u32 param_1);
 u32 FUN_003c9850(u32 param_1, u32 param_2, u32 param_3, u32 param_4);
@@ -15,7 +23,7 @@ void FUN_003c9e00(u32 param_1, u32 param_2);
 
 
 // FUN_00266eb0
-void bpPersona00266eb0(u32* param_1)
+void bpPersonaInit(u32* param_1)
 {
     K_ASSERT(sBpPersona == NULL, 0x2b);
     *param_1 = 0;
@@ -23,16 +31,16 @@ void bpPersona00266eb0(u32* param_1)
 }
 
 // FUN_00266f00
-void bpPersona00266f00(void)
+void bpPersonaShutdown(void)
 {
     K_ASSERT(sBpPersona != NULL, 0x24);
     if (*sBpPersona & 1) {
-        FUN_00267120();
+        bpPersonaDestroy();
     }
     sBpPersona = NULL;
 }
 // FUN_00266F60
-void bpPersona00266f60(u32 param_1)
+void bpPersonaLoad(u32 param_1)
 {
     u32* work;
     u32 persona;
@@ -58,7 +66,7 @@ void bpPersona00266f60(u32 param_1)
 }
 
 // FUN_00267120
-void bpPersona00267120(void)
+void bpPersonaDestroy(void)
 {
     u32* work;
 
@@ -69,7 +77,7 @@ void bpPersona00267120(void)
 }
 
 // FUN_00267180
-void bpPersona00267180(void)
+void bpPersonaUpdate(void)
 {
     u32* work;
 
@@ -81,7 +89,7 @@ void bpPersona00267180(void)
 }
 
 // FUN_00267210
-u32 bpPersona00267210(void)
+u32 bpPersonaIsLoading(void)
 {
     K_ASSERT(sBpPersona != NULL, 0x24);
     return *sBpPersona & 2;
@@ -91,7 +99,7 @@ u32 FUN_001749a0();
 void FUN_003c9b00();
 
 // FUN_00267070
-void bpPersona00267070(u32 param_1)
+void bpPersonaSetPersona(u32 param_1)
 {
     u32* work;
     u32 uVar2;

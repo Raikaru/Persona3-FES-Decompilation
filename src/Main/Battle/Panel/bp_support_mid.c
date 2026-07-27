@@ -1830,6 +1830,8 @@ void func_0020cd50(void* work, void* resource)
     *(u32*)work |= 8;
 }
 
+#pragma push
+/* Removing this worsens FUN_0020cda0 (nd12 -> nd259) and 1 more - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
@@ -2060,3 +2062,4 @@ void func_0020cf20(void* destination, void* source)
     }
     func_004c3880(matrix);
 }
+#pragma pop

@@ -28,6 +28,7 @@ extern short FUN_003cf6c0_ptr(int *param_1);
 #define FUN_003cfe50(...) ((u64 (*)(...))FUN_003cfe50)(__VA_ARGS__)
 
 #undef FUN_003cfe50
+/* Removing this loses FUN_003cfe50 (MATCH nd0 -> MISMATCH nd56) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_003CFE50
 

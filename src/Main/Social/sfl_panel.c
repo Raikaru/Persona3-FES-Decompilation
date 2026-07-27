@@ -413,11 +413,11 @@ void func_0023e970(void)
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
         state = render;
-        (*state)(1, sflRes0020e510(0));
+        (*state)(1, sflResGetBaseRaster(0));
         quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x110, 4, 0, 1, 2);
         (*quad)(base + 0x110, 4, 0, 2, 3);
-        texture = sflRes0020e610(*(s32*)(base + 0xc) - 1);
+        texture = sflResGetBaseSecondaryRaster(*(s32*)(base + 0xc) - 1);
         (*state)(1, texture);
         quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x10, 4, 0, 1, 2);
@@ -429,7 +429,7 @@ void func_0023e970(void)
         RpSkyRenderStateSet(2, (void*)0x48);
         state = (code *)&DAT_00960090_abs;
         (*state)(6, 1);
-        texture = sflRes0020e690(0);
+        texture = sflResGetEffectRaster(0);
         (*state)(1, texture);
         for (i = 0; i < 2; i++) {
             quad = (code *)&DAT_0096009c_abs;
@@ -438,7 +438,7 @@ void func_0023e970(void)
         }
         (*state)(6, 0);
 
-        texture = sflRes0020e690(mode);
+        texture = sflResGetEffectRaster(mode);
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
         render = (code *)&DAT_00960090_abs;
@@ -485,7 +485,7 @@ void func_0023ee50(void)
     K_ASSERT(selection != 0, 0x2fd);
     K_ASSERT(selection <= 6, 0x2fe);
 
-    image = sflRes0020e610(selection - 1);
+    image = sflResGetBaseSecondaryRaster(selection - 1);
     width = (float)image[3];
     height = (float)image[4];
     uv[0] = 0.0f / width;
@@ -494,7 +494,7 @@ void func_0023ee50(void)
     uv[3] = height / height;
     func_0021eb80(work + 4, uv);
 
-    image = sflRes0020e510(0);
+    image = sflResGetBaseRaster(0);
     width = (float)image[3];
     height = (float)image[4];
     uv[0] = 1.0f / width;
@@ -530,7 +530,7 @@ void func_0023f010(void)
         float u1;
         float v1;
 
-        image = sflRes0020e690(0);
+        image = sflResGetEffectRaster(0);
         width = (float)image[3];
         height = (float)image[4];
         i = 0;
@@ -554,7 +554,7 @@ void func_0023f010(void)
         float u1;
         float v1;
 
-        image = sflRes0020e690(1);
+        image = sflResGetEffectRaster(1);
         width = (float)image[3];
         height = (float)image[4];
         i = 0;
@@ -595,7 +595,7 @@ void func_0023f1d0(void)
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
 
-    image = sflRes0020e690(0);
+    image = sflResGetEffectRaster(0);
     width = (float)image[3];
     height = (float)image[4];
     i = 0;
@@ -612,7 +612,7 @@ void func_0023f1d0(void)
         i++;
     }
 
-    image = sflRes0020e690(2);
+    image = sflResGetEffectRaster(2);
     width = (float)image[3];
     height = (float)image[4];
     i = 0;

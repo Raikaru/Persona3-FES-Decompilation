@@ -117,6 +117,7 @@ void btlPacket0027e4d0()
         }
     }
 }
+/* Removing this loses FUN_0027e530 (MATCH nd0 -> MISMATCH nd860) - measured W161. */
 #pragma opt_loop_invariants on
 static inline BtlPacket* btlPacketFindWaitTarget(u64 value, u32 useActionUid)
 {
@@ -309,6 +310,7 @@ u32 btlPacketCheckWaitCondition(BtlPacketWaitCondition* condition, s32 frameCoun
     return result;
 }
 #pragma opt_loop_invariants off
+/* Removing this loses FUN_0027ec10 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0027ec10
 BtlPacket* btlPacketCreate(u32 id, s32 workDataSize)
@@ -615,6 +617,7 @@ u32 btlPacket0027f2e0()
 {
     return 1;
 }
+/* Removing this loses FUN_0027f2f0 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0027f2f0
 BtlPacket* btlPacketCreatePostUpdatePacket()
@@ -661,6 +664,7 @@ static void btlPacketInvokeCallback(void* work)
     callbackWork->callback(callbackWork->data);
 }
 
+/* Removing this loses FUN_0027f410 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0027f410
 BtlPacket* btlPacketCreateCallbackPacket(void (*callback)(void*), void* data)

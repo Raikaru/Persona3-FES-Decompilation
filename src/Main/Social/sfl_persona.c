@@ -1,5 +1,15 @@
 #include "Utils.h"
 #include "Kosaka/k_assert.h"
+#pragma alias sflPersonaInit FUN_0027BB50
+#pragma alias sflPersonaShutdown FUN_0027BBA0
+#pragma alias sflPersonaLoad FUN_0027BC00
+#pragma alias sflPersonaSetPersona FUN_0027BD10
+#pragma alias sflPersonaDestroy FUN_0027BDF0
+#pragma alias sflPersonaUpdate FUN_0027BE50
+#pragma alias sflPersonaIsLoading FUN_0027BF60
+#pragma alias sflPersonaStartExitTransition FUN_0027BFB0
+#pragma alias sflPersonaIsTransitioning FUN_0027C020
+
 
 typedef struct SflPersonaWork
 {
@@ -23,10 +33,10 @@ extern void func_003c9d00(u32 resource, s32 value);
 extern void func_003c9e00(u32 resource, s32 value);
 extern s32 func_003c9ab0(u32 resource);
 extern void func_00195020(u32 resource);
-void func_0027bdf0(void);
+void sflPersonaDestroy(void);
 
 // FUN_0027BB50
-void func_0027bb50(u32* work)
+void sflPersonaInit(u32* work)
 {
     K_ASSERT(sSflPersona == NULL, 0x30);
     work[0] = 0;
@@ -34,17 +44,17 @@ void func_0027bb50(u32* work)
 }
 
 // FUN_0027BBA0
-void func_0027bba0(void)
+void sflPersonaShutdown(void)
 {
     K_ASSERT(sSflPersona != NULL, 0x29);
     if ((sSflPersona->flags & 1u) != 0) {
-        func_0027bdf0();
+        sflPersonaDestroy();
     }
     sSflPersona = NULL;
 }
 
 // FUN_0027BC00
-void func_0027bc00(u32 id)
+void sflPersonaLoad(u32 id)
 {
     u32* work;
     void* data;
@@ -69,7 +79,7 @@ void func_0027bc00(u32 id)
 }
 
 // FUN_0027BD10
-void func_0027bd10(u32 id)
+void sflPersonaSetPersona(u32 id)
 {
     SflPersonaWork* work;
     void* data;
@@ -92,7 +102,7 @@ void func_0027bd10(u32 id)
 }
 
 // FUN_0027BDF0
-void func_0027bdf0(void)
+void sflPersonaDestroy(void)
 {
     SflPersonaWork* work;
 
@@ -103,7 +113,7 @@ void func_0027bdf0(void)
 }
 
 // FUN_0027BE50
-void func_0027be50(void)
+void sflPersonaUpdate(void)
 {
     u32* work;
 
@@ -133,14 +143,14 @@ void func_0027be50(void)
 }
 
 // FUN_0027BF60
-u32 func_0027bf60(void)
+u32 sflPersonaIsLoading(void)
 {
     K_ASSERT(sSflPersona != NULL, 0x29);
     return sSflPersona->flags & 2;
 }
 
 // FUN_0027BFB0
-void func_0027bfb0(void)
+void sflPersonaStartExitTransition(void)
 {
     SflPersonaWork* work;
 
@@ -152,7 +162,7 @@ void func_0027bfb0(void)
 }
 
 // FUN_0027C020
-u32 FUN_0027C020(void)
+u32 sflPersonaIsTransitioning(void)
 {
     u32 flags;
 

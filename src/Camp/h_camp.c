@@ -491,6 +491,7 @@ done:
 }
 
 #pragma push
+/* Removing this loses FUN_0011aae0 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0011aae0
 void h_campDestroySpriteSetupTask(KwlnTask* task)

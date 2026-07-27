@@ -1,4 +1,7 @@
 #include "temporary.h"
+#pragma alias frFontSetTextScale FUN_003B2C60
+#pragma alias frFontGetHeight FUN_003B35C0
+
 typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
@@ -17,25 +20,25 @@ extern u32 uGpffffb948;
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-void FUN_003b2c60(void *param_1,f32 param_2);
+void frFontSetTextScale(void *param_1,f32 param_2);
 int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
 int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
 int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
-s8 FUN_003b35c0(char param_1);
-#pragma alias FUN_003b35c0_raw FUN_003b35c0
-int FUN_003b35c0_raw();
+s8 frFontGetHeight(char param_1);
+#pragma alias frFontGetHeightRaw FUN_003b35c0
+int frFontGetHeightRaw();
 
 /* Region call-cast macros */
-#define FUN_003b2c60(...) ((void (*)(...))FUN_003b2c60)(__VA_ARGS__)
+#define frFontSetTextScale(...) ((void (*)(...))frFontSetTextScale)(__VA_ARGS__)
 #define FUN_003b2cb0(...) ((int (*)(...))FUN_003b2cb0)(__VA_ARGS__)
 #define FUN_003b2f90(...) ((int (*)(...))FUN_003b2f90)(__VA_ARGS__)
 #define FUN_003b32d0(...) ((int (*)(...))FUN_003b32d0)(__VA_ARGS__)
 
-#undef FUN_003b2c60
+#undef frFontSetTextScale
 // FUN_003B2C60
 
 
-void FUN_003b2c60(void *param_1,f32 param_2)
+void frFontSetTextScale(void *param_1,f32 param_2)
 {
     if (param_1 == 0) {
         FUN_0019d3f0(DAT_006a2888,0x13);
@@ -43,7 +46,7 @@ void FUN_003b2c60(void *param_1,f32 param_2)
     *(f32*)((u8*)param_1 + 0x14) = param_2;
 }
 
-#define FUN_003b2c60(...) ((void (*)(...))FUN_003b2c60)(__VA_ARGS__)
+#define frFontSetTextScale(...) ((void (*)(...))frFontSetTextScale)(__VA_ARGS__)
 #undef FUN_003b2cb0
 // FUN_003B2CB0 MATCHING
 
@@ -118,7 +121,7 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   if ((param_8 & 4) != 0) {
 
-    iVar3 = FUN_003b35c0_raw(param_6);
+    iVar3 = frFontGetHeightRaw(param_6);
 
     param_3 = param_3 - iVar3;
 
@@ -127,7 +130,7 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   else {
     if ((param_8 & 0x10) != 0) {
 
-      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)FUN_003b35c0_raw(param_6));
+      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)frFontGetHeightRaw(param_6));
 
     }
 
@@ -267,7 +270,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   if ((param_8 & 4) != 0) {
 
-    iVar3 = FUN_003b35c0_raw(param_6);
+    iVar3 = frFontGetHeightRaw(param_6);
 
     param_3 = param_3 - iVar3;
 
@@ -276,7 +279,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
     if ((param_8 & 0x10) != 0) {
 
-      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)FUN_003b35c0_raw(param_6));
+      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)frFontGetHeightRaw(param_6));
 
     }
 
@@ -401,7 +404,7 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   if ((param_8 & 4) != 0) {
 
-    iVar3 = FUN_003b35c0_raw(param_6);
+    iVar3 = frFontGetHeightRaw(param_6);
 
     param_3 = param_3 - iVar3;
 
@@ -409,7 +412,7 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   else {
 
     if ((param_8 & 0x10) != 0) {
-      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)FUN_003b35c0_raw(param_6));
+      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)frFontGetHeightRaw(param_6));
 
     }
 
@@ -457,11 +460,11 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
 }
 #define FUN_003b32d0(...) ((int (*)(...))FUN_003b32d0)(__VA_ARGS__)
-#undef FUN_003b35c0
+#undef frFontGetHeight
 // FUN_003B35C0
 
 
-s8 FUN_003b35c0(char param_1)
+s8 frFontGetHeight(char param_1)
 
 
 
@@ -470,4 +473,4 @@ s8 FUN_003b35c0(char param_1)
   return (&gp0xffffa808)[param_1];
 
 }
-#define FUN_003b35c0(...) ((s8 (*)(...))FUN_003b35c0)(__VA_ARGS__)
+#define frFontGetHeight(...) ((s8 (*)(...))frFontGetHeight)(__VA_ARGS__)

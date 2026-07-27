@@ -53,7 +53,7 @@ extern void func_003b0e70(s32 mode);
 extern void func_003b0e90(s32 mode);
 extern void func_003b1360(u32 resource, s32 mode, s32 value);
 extern void func_003b0170(u32 resource);
-extern void func_003b2c60(u32 resource, f32 value);
+extern void frFontSetTextScale(u32 resource, f32 value);
 extern u32 func_003c7610(void);
 extern void func_003c7650(s32 mode);
 extern u32 func_003c7850(void);
@@ -61,12 +61,12 @@ extern u32 func_003c78d0(void);
 extern void func_003c7990(s32 mode);
 extern void func_003c7bc0(s32 mode, u32 value);
 extern void func_003c7430(u32 value);
-extern void func_0027bc00(u16 id);
-extern void func_0027bd10(u16 id);
-extern void func_0027bdf0(void);
-extern u32 func_0027bf60(void);
-extern void func_0027bfb0(void);
-extern u32 func_0027c020(void);
+extern void sflPersonaLoad(u16 id);
+extern void sflPersonaSetPersona(u16 id);
+extern void sflPersonaDestroy(void);
+extern u32 sflPersonaIsLoading(void);
+extern void sflPersonaStartExitTransition(void);
+extern u32 sflPersonaIsTransitioning(void);
 extern void func_00523ac8(char* destination, const char* format, ...);
 extern s32 func_00524388(const char* text);
 extern void func_0019d3f0(const char* file, s32 line);
@@ -304,7 +304,7 @@ void sflPsel00260e00(void)
     if ((*work & 1) == 0)
         return;
 
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(9, 2);
     (*state)(0x14, 2);
@@ -410,7 +410,7 @@ void sflPsel00261480(void)
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x34);
     frame = (s32)work[2];
     mode = (s32)work[1];
@@ -835,7 +835,7 @@ void sflPsel00260a50(void)
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     puVar1 = sSflPsel;
-    uVar2 = sflRes0020ec50();
+    uVar2 = sflResGetPersonaChangeSprite();
     uVar3 = FUN_0021cca0(uVar2, 0x34);
     FUN_0021d3b0(puVar1 + 0x104, uVar3);
     fVar4 = FUN_0021ea00(0x1e);
@@ -896,7 +896,7 @@ void func_00215b00(void)
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     hero = datPersonaGetByPcId(1);
     heroCount = func_001756f0() & 0xffff;
     totalCount = func_00175410() & 0xffff;
@@ -998,7 +998,7 @@ void func_00215b00(void)
     func_0021eac0(work + 0x5c90, func_0021ea00(0x28));
     func_0021e380(work + 0x5d90, texture, 2);
     func_0021eac0(work + 0x5d90, func_0021ea00(0x28));
-    texture = func_0021cca0(sflRes0020ec50(), 0x1f);
+    texture = func_0021cca0(sflResGetPersonaChangeSprite(), 0x1f);
     func_0021d3b0(work + 0x5e90, texture);
     func_0021eac0(work + 0x5e90, func_0021ea00(0x28));
     *(u32*)(work + 0x5334) = 0;
@@ -1077,9 +1077,9 @@ void func_00215fc0(void)
         switch (*(u32*)(work + 0x5338))
         {
         case 2:
-            if (func_0027c020() == 0)
+            if (sflPersonaIsTransitioning() == 0)
             {
-                func_0027bdf0();
+                sflPersonaDestroy();
                 if (*(u32*)(work + 0x6090) == 1)
                 {
                     *(u32*)(work + 0x5338) = 3;
@@ -1091,19 +1091,19 @@ void func_00215fc0(void)
             }
             break;
         case 1:
-            if (func_0027bf60() == 0 && func_0027c020() == 0)
+            if (sflPersonaIsLoading() == 0 && sflPersonaIsTransitioning() == 0)
             {
                 if ((DAT_007e0952 & 0x40) != 0)
                 {
                     *(u32*)(work + 0x6090) = 0;
-                    func_0027bfb0();
+                    sflPersonaStartExitTransition();
                     *(u32*)(work + 0x5338) = 2;
                 }
                 else if ((DAT_007e0952 & 0x20) != 0)
                 {
                     func_0010a4e0(0, 0, 0, 2);
                     *(u32*)(work + 0x6090) = 1;
-                    func_0027bfb0();
+                    sflPersonaStartExitTransition();
                     *(u32*)(work + 0x5338) = 2;
                 }
                 else if ((DAT_007e0952 & 8) != 0)
@@ -1127,7 +1127,7 @@ void func_00215fc0(void)
                     }
                     updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
-                    func_0027bd10((u16)*(u16*)(work + 0x10 +
+                    sflPersonaSetPersona((u16)*(u16*)(work + 0x10 +
                                                 *(u32*)(work + 0x52e0 +
                                                         *(u32*)(work + 0x5c68) * 4) *
                                                     0x10 + 4));
@@ -1153,7 +1153,7 @@ void func_00215fc0(void)
                     }
                     updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
-                    func_0027bd10((u16)*(u16*)(work + 0x10 +
+                    sflPersonaSetPersona((u16)*(u16*)(work + 0x10 +
                                                 *(u32*)(work + 0x52e0 +
                                                         *(u32*)(work + 0x5c68) * 4) *
                                                     0x10 + 4));
@@ -1171,7 +1171,7 @@ void func_00215fc0(void)
                 if ((DAT_007e0952 & 0x80) != 0)
                 {
                     func_0010a4e0(0, 0, 0, 0);
-                    func_0027bc00((u16)*(u16*)(work + 0x10 +
+                    sflPersonaLoad((u16)*(u16*)(work + 0x10 +
                                                 *(u32*)(work + 0x52e0 +
                                                         *(u32*)(work + 0x5c68) * 4) *
                                                     0x10 + 4));
@@ -1336,7 +1336,7 @@ void func_002168f0(void)
     {
         return;
     }
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(6, 1);
     (*state)(8, 0);
@@ -1408,7 +1408,7 @@ void func_002168f0(void)
     (*draw)((u32*)(work + 0x5c90), 4, 0, 2, 3);
     (*draw)((u32*)(work + 0x5d90), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5d90), 4, 0, 2, 3);
-    texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1f));
+    texture = func_0021cce0(func_0021cca0(sflResGetPersonaChangeSprite(), 0x1f));
     (*state)(1, texture);
     (*draw)((u32*)(work + 0x5e90), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5e90), 4, 0, 2, 3);
@@ -1416,7 +1416,7 @@ void func_002168f0(void)
     func_004d7f60(2, 0x44);
     if (*(u32*)(work + 0x5330) > 8)
     {
-        texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1d));
+        texture = func_0021cce0(func_0021cca0(sflResGetPersonaChangeSprite(), 0x1d));
         (*state)(1, texture);
         draw = (SflPselDrawCallback*)D_0096009C_abs;
         (*draw)((u32*)(work + 0x5f90), 4, 0, 1, 2);
@@ -1452,7 +1452,7 @@ void func_002170c0(void)
         handle = func_003b0970(func_00173220(*(u16*)(entry + 4)), 1,
                                group, 0, 0);
         uGpffffb948 = 0;
-        func_003b2c60(handle, *(f32*)D_00960088 - func_0021ea00(0x28));
+        frFontSetTextScale(handle, *(f32*)D_00960088 - func_0021ea00(0x28));
         *(u32*)(panel + 0x900) = handle;
     }
     func_003b0e90(1);
@@ -1566,7 +1566,7 @@ void func_00217610(void)
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
-    (void)sflRes0020ec50();
+    (void)sflResGetPersonaChangeSprite();
     for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
         u32 listIndex = i + *(u32*)(work + 0x5c60);
@@ -1603,7 +1603,7 @@ void func_00217780(void)
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
         panelOrigin[0] = 198.0f;
@@ -1750,7 +1750,7 @@ u32 func_002180b0(u32 value)
     u32 texture;
     u32 frame;
 
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     switch (value)
     {
     case 1: frame = 10; break;
@@ -1804,7 +1804,7 @@ void func_00218250(void* glyphs, s32 capacity, u32 value)
 // FUN_00218310
 void func_00218310(void* glyph, s32 digit)
 {
-    func_0021d3b0(glyph, func_0021cca0(sflRes0020ec50(), digit + 0x27));
+    func_0021d3b0(glyph, func_0021cca0(sflResGetPersonaChangeSprite(), digit + 0x27));
 }
 
 // FUN_00218370
@@ -1818,7 +1818,7 @@ void func_00218370(void* glyphs, s32 capacity, u32 value, const f32* origin)
     char text[256];
     u32 texture;
 
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     func_00523ac8(text, (const char*)((u8*)&DAT_007ce420 - 0x1ffc), value);
     length = func_00524388(text);
     if (capacity < length)
@@ -1860,7 +1860,7 @@ void func_00218570(void* glyphs, s32 capacity, u32 value, const f32* origin)
     u8* frame;
     u32 texture;
 
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     func_00523ac8(text, (const char*)((u8*)&DAT_007ce420 - 0x1ffc), value);
     length = func_00524388(text);
     if (capacity < length)
@@ -1913,7 +1913,7 @@ void func_00218810(void* panel, const u32* entry, s32 selected)
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     destination = (u8*)panel;
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     if (selected != 0)
     {
         frameIndex = 0x1b;
@@ -1987,7 +1987,7 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     s32 mode;
     K_ASSERT(sSflPsel != NULL, 0xcb);
     destination = (u8*)panel;
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     x = origin[0] - 198.0f;
     y = origin[1] - 90.0f;
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x21);
@@ -2138,7 +2138,7 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     SflPselDrawCallback* draw;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    texture = sflRes0020ec50();
+    texture = sflResGetPersonaChangeSprite();
     state = (SflPselStateCallback*)D_00960090_abs;
     (*state)(6, 1);
     (*state)(8, 0);
@@ -2231,7 +2231,7 @@ void func_00219970(void)
     uGpffffb948 = 0;
     func_003b0e90(1);
     func_003b0e70(2);
-    func_003b2c60(handle, *(f32*)D_00960088 - func_0021ea00(0x28));
+    frFontSetTextScale(handle, *(f32*)D_00960088 - func_0021ea00(0x28));
     *(u32*)(work + 0x52d0) = handle;
     func_00218810(work + 0x49d0,
                   (u32*)(work + 0x10 + *(u32*)(work + 0x5c58) * 0x10), 0);

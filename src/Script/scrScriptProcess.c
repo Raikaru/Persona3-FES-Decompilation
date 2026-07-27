@@ -154,6 +154,7 @@ ScrData* scrStartScript(ScrHeader* header,
     return scr;
 }
 
+/* Removing this loses FUN_0035b930 (MATCH nd0 -> MISMATCH nd59) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0035b930
 ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)

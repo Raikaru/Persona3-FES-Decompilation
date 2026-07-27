@@ -4,14 +4,50 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
+#pragma alias sflResDrawIndexedMesh FUN_0020d500
+#pragma alias sflResSetSpriteScale FUN_0020D630
+#pragma alias sflResSetSpritePosition FUN_0020D650
+#pragma alias sflResGetSpritePosition FUN_0020D670
+#pragma alias sflResSetSpriteRotation FUN_0020d690
+#pragma alias sflResInit FUN_0020d7d0
+#pragma alias sflResUpdate FUN_0020d820
+#pragma alias sflResIsBaseArchivePending FUN_0020dfe0
+#pragma alias sflResShutdown FUN_0020e030
+#pragma alias sflResRequestBaseArchive FUN_0020e200
+#pragma alias sflResRequestGroundArchive FUN_0020e2c0
+#pragma alias sflResIsGroundArchivePending FUN_0020e380
+#pragma alias sflResRequestEffectArchive FUN_0020e3d0
+#pragma alias sflResIsEffectArchivePending FUN_0020e4c0
+#pragma alias sflResGetBaseRaster FUN_0020e510
+#pragma alias sflResGetGroundRaster FUN_0020e590
+#pragma alias sflResGetBaseSecondaryRaster FUN_0020e610
+#pragma alias sflResGetEffectRaster FUN_0020e690
+#pragma alias sflResGetBaseDataFile FUN_0020e710
+#pragma alias sflResGetBaseSpriteData FUN_0020e790
+#pragma alias sflResLoadGroundRasters FUN_0020e800
+#pragma alias sflResGetTutorialFile FUN_0020ea00
+#pragma alias sflResIsTutorialArchivePending FUN_0020e9b0
+#pragma alias sflResDestroyTutorialFiles FUN_0020ea80
+#pragma alias sflResIsPersonaChangeSpritePending FUN_0020ec00
+#pragma alias sflResGetPersonaChangeSprite FUN_0020ec50
+#pragma alias sflResDestroyPersonaChangeSprite FUN_0020ecc0
+#pragma alias sflResRequestTutorialArchive FUN_0020e8f0
+#pragma alias sflResRequestPersonaChangeSprite FUN_0020eb40
+#pragma alias sSflBaseArchivePath DAT_0068e130
+#pragma alias sSflGroundArchivePath DAT_0068e150
+#pragma alias sSflEpisodeAigisEffectArchivePath DAT_0068e170
+#pragma alias sSflEffectArchivePath DAT_0068e1a0
+#pragma alias sSflTutorialArchivePath DAT_0068e1c0
+#pragma alias sSflPersonaChangeSpritePath DAT_0068e1e0
+
 
 static u32* sSflRes; // DAT_007ce2f0
-extern char DAT_0068e1c0[];
-extern char DAT_0068e1e0[];
-extern char DAT_0068e130[];
-extern char DAT_0068e150[];
-extern char DAT_0068e170[];
-extern char DAT_0068e1a0[];
+extern char sSflTutorialArchivePath[];
+extern char sSflPersonaChangeSpritePath[];
+extern char sSflBaseArchivePath[];
+extern char sSflGroundArchivePath[];
+extern char sSflEpisodeAigisEffectArchivePath[];
+extern char sSflEffectArchivePath[];
 
 extern const RwV3d DAT_0068e108;
 extern void* (*DAT_00960178[])(u32 size, u32 heap);
@@ -29,9 +65,9 @@ extern void func_0021b4a0(void* resource);
 extern void* bpTexCreateTmxRaster(void* tmxMemory);
 extern void* func_0021c9f0(void* tmxMemory);
 extern void* memcpy(void* destination, const void* source, u32 size);
-void sflRes0020e800(void* resource);
-void sflRes0020ea80(void);
-void sflRes0020ecc0(void);
+void sflResLoadGroundRasters(void* resource);
+void sflResDestroyTutorialFiles(void);
+void sflResDestroyPersonaChangeSprite(void);
 
 
 
@@ -64,7 +100,7 @@ static void sflResCopyFile(u32* work, s32 requestIndex, s32 fileIndex, s32 desti
 }
 
 // FUN_0020d500
-void sflRes0020d500(u32* work, const f32* vertices)
+void sflResDrawIndexedMesh(u32* work, const f32* vertices)
 {
     RwV3d axis;
     RwMatrix* matrix;
@@ -103,25 +139,25 @@ void sflRes0020d500(u32* work, const f32* vertices)
 }
 
 // FUN_0020D630
-void sflRes0020d630(void* work, const f32* value)
+void sflResSetSpriteScale(void* work, const f32* value)
 {
     *(RwV3d*)((u8*)work + 0x2c) = *(const RwV3d*)value;
 }
 
 // FUN_0020D650
-void sflRes0020d650(void* work, const f32* value)
+void sflResSetSpritePosition(void* work, const f32* value)
 {
     *(RwV3d*)((u8*)work + 0x20) = *(const RwV3d*)value;
 }
 
 // FUN_0020D670
-void sflRes0020d670(const void* work, f32* value)
+void sflResGetSpritePosition(const void* work, f32* value)
 {
     *(RwV3d*)value = *(const RwV3d*)((const u8*)work + 0x20);
 }
 
 // FUN_0020d690
-void sflRes0020d690(void* work, const f32* value)
+void sflResSetSpriteRotation(void* work, const f32* value)
 {
     *(RwV4d*)((u8*)work + 0x10) = *(const RwV4d*)value;
 }
@@ -149,7 +185,7 @@ void sflRes0020d770(void* work, f32 value)
 }
 
 // FUN_0020d7d0
-void sflRes0020d7d0(void* value)
+void sflResInit(void* value)
 {
     u32* work;
 
@@ -160,9 +196,10 @@ void sflRes0020d7d0(void* value)
     sSflRes = work;
 }
 
+/* Removing this loses FUN_0020d820 (MATCH nd0 -> MISMATCH nd2) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0020d820 MATCHING
-void sflRes0020d820(void)
+void sflResUpdate(void)
 {
     u32* work;
     void* file;
@@ -262,7 +299,7 @@ void sflRes0020d820(void)
     if ((*work & 2) != 0) {
         if (H_Cdvd_IsFileLoaded((void*)work[0x19]) != 0) {
             K_ASSERT(((~work[1]) & 1) != 0, 0xd2);
-            sflRes0020e800(*(void**)((u8*)work[0x19] + 0x110));
+            sflResLoadGroundRasters(*(void**)((u8*)work[0x19] + 0x110));
             H_Cdvd_Destroy((void*)work[0x19]);
             work[1] |= 1;
             *work &= ~2u;
@@ -348,14 +385,14 @@ void sflRes0020d820(void)
 #pragma opt_loop_invariants off
 
 // FUN_0020dfe0
-u32 sflRes0020dfe0(void)
+u32 sflResIsBaseArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);;
     return *sSflRes & 1;
 }
 
 // FUN_0020e030
-void sflRes0020e030(void)
+void sflResShutdown(void)
 {
     u32* work;
     s32 i18_1;
@@ -369,7 +406,7 @@ void sflRes0020e030(void)
     if ((work[1] & 8) == 0) {
         goto skip_8;
     }
-    sflRes0020ea80();
+    sflResDestroyTutorialFiles();
 skip_8:
     if ((work[1] & 2) == 0) {
         goto skip_2;
@@ -404,13 +441,13 @@ skip_1:
     }
 skip_4:
     if ((work[1] & 0x10) != 0) {
-        sflRes0020ecc0();
+        sflResDestroyPersonaChangeSprite();
     }
     sSflRes = NULL;
 }
 
 // FUN_0020e200
-void sflRes0020e200(void)
+void sflResRequestBaseArchive(void)
 {
     u32* work;
 
@@ -418,12 +455,12 @@ void sflRes0020e200(void)
     work = sSflRes;
     K_ASSERT((~work[1] & 2) != 0, 0x180);
     K_ASSERT((~*work & 1) != 0, 0x181);
-    work[0x1a] = (u32)H_Cdvd_Request(DAT_0068e130, 1);
+    work[0x1a] = (u32)H_Cdvd_Request(sSflBaseArchivePath, 1);
     *work |= 1;
 }
 
 // FUN_0020e2c0
-void sflRes0020e2c0(void)
+void sflResRequestGroundArchive(void)
 {
     u32* work;
 
@@ -431,19 +468,19 @@ void sflRes0020e2c0(void)
     work = sSflRes;
     K_ASSERT((~work[1] & 1) != 0, 0x18a);
     K_ASSERT((~*work & 2) != 0, 0x18b);
-    work[0x19] = (u32)H_Cdvd_Request(DAT_0068e150, 0);
+    work[0x19] = (u32)H_Cdvd_Request(sSflGroundArchivePath, 0);
     *work |= 2;
 }
 
 // FUN_0020e380
-u32 sflRes0020e380(void)
+u32 sflResIsGroundArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);;
     return *sSflRes & 2;
 }
 
 // FUN_0020e3d0
-void sflRes0020e3d0(void)
+void sflResRequestEffectArchive(void)
 {
     u32* work;
 
@@ -452,22 +489,22 @@ void sflRes0020e3d0(void)
     K_ASSERT((~work[1] & 4) != 0, 0x19b);
     K_ASSERT((~*work & 4) != 0, 0x19c);
     if (datGetScenarioMode() != 0) {
-        work[0x1b] = (u32)H_Cdvd_Request(DAT_0068e170, 1);
+        work[0x1b] = (u32)H_Cdvd_Request(sSflEpisodeAigisEffectArchivePath, 1);
     } else {
-        work[0x1b] = (u32)H_Cdvd_Request(DAT_0068e1a0, 1);
+        work[0x1b] = (u32)H_Cdvd_Request(sSflEffectArchivePath, 1);
     }
     *work |= 4;
 }
 
 // FUN_0020e4c0
-u32 sflRes0020e4c0(void)
+u32 sflResIsEffectArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);;
     return *sSflRes & 4;
 }
 
 // FUN_0020e510
-void* sflRes0020e510(s32 index)
+void* sflResGetBaseRaster(s32 index)
 {
     u32* work;
 
@@ -478,7 +515,7 @@ void* sflRes0020e510(s32 index)
 }
 
 // FUN_0020e590
-void* sflRes0020e590(s32 index)
+void* sflResGetGroundRaster(s32 index)
 {
     u32* work;
 
@@ -489,7 +526,7 @@ void* sflRes0020e590(s32 index)
 }
 
 // FUN_0020e610
-void* sflRes0020e610(s32 index)
+void* sflResGetBaseSecondaryRaster(s32 index)
 {
     u32* work;
 
@@ -500,7 +537,7 @@ void* sflRes0020e610(s32 index)
 }
 
 // FUN_0020e690
-void* sflRes0020e690(s32 index)
+void* sflResGetEffectRaster(s32 index)
 {
     u32* work;
 
@@ -511,7 +548,7 @@ void* sflRes0020e690(s32 index)
 }
 
 // FUN_0020e710
-void* sflRes0020e710(s32 index)
+void* sflResGetBaseDataFile(s32 index)
 {
     u32* work;
 
@@ -522,7 +559,7 @@ void* sflRes0020e710(s32 index)
 }
 
 // FUN_0020e790
-void* sflRes0020e790(void)
+void* sflResGetBaseSpriteData(void)
 {
     u32* work;
 
@@ -533,7 +570,7 @@ void* sflRes0020e790(void)
 }
 
 // FUN_0020e800
-void sflRes0020e800(void* resource)
+void sflResLoadGroundRasters(void* resource)
 {
     u32* work;
     u8* data;
@@ -553,7 +590,7 @@ void sflRes0020e800(void* resource)
 }
 
 // FUN_0020ea00
-void* sflRes0020ea00(s32 index)
+void* sflResGetTutorialFile(s32 index)
 {
     u32* work;
 
@@ -564,14 +601,14 @@ void* sflRes0020ea00(s32 index)
 }
 
 // FUN_0020e9b0
-u32 sflRes0020e9b0(void)
+u32 sflResIsTutorialArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);
     return *sSflRes & 8;
 }
 
 // FUN_0020ea80
-void sflRes0020ea80(void)
+void sflResDestroyTutorialFiles(void)
 {
     int base;
     int i;
@@ -586,7 +623,7 @@ void sflRes0020ea80(void)
 }
 
 // FUN_0020ec00
-u32 sflRes0020ec00(void)
+u32 sflResIsPersonaChangeSpritePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);
     return *sSflRes & 0x10;
@@ -595,7 +632,7 @@ u32 sflRes0020ec00(void)
 void FUN_0021cc20();
 
 // FUN_0020ec50
-u32 sflRes0020ec50(void)
+u32 sflResGetPersonaChangeSprite(void)
 {
     int base;
 
@@ -606,7 +643,7 @@ u32 sflRes0020ec50(void)
 }
 
 // FUN_0020ecc0
-void sflRes0020ecc0(void)
+void sflResDestroyPersonaChangeSprite(void)
 {
     int base;
 
@@ -618,7 +655,7 @@ void sflRes0020ecc0(void)
 }
 
 // FUN_0020e8f0
-void sflRes0020e8f0(void)
+void sflResRequestTutorialArchive(void)
 {
     u32* puVar1;
 
@@ -626,12 +663,12 @@ void sflRes0020e8f0(void)
     puVar1 = sSflRes;
     K_ASSERT((~puVar1[1] & 8) != 0, 0x1f2);
     K_ASSERT((~*puVar1 & 8) != 0, 0x1f3);
-    puVar1[0x1c] = (u32)(uintptr_t)H_Cdvd_Request(DAT_0068e1c0, 1);
+    puVar1[0x1c] = (u32)(uintptr_t)H_Cdvd_Request(sSflTutorialArchivePath, 1);
     *puVar1 |= 8;
 }
 
 // FUN_0020eb40
-void sflRes0020eb40(void)
+void sflResRequestPersonaChangeSprite(void)
 {
     u32* puVar1;
 
@@ -639,6 +676,6 @@ void sflRes0020eb40(void)
     puVar1 = sSflRes;
     K_ASSERT((~*puVar1 & 0x10) != 0, 0x218);
     K_ASSERT((~puVar1[1] & 0x10) != 0, 0x219);
-    puVar1[0x1d] = (u32)(uintptr_t)H_Cdvd_Request(DAT_0068e1e0, 0);
+    puVar1[0x1d] = (u32)(uintptr_t)H_Cdvd_Request(sSflPersonaChangeSpritePath, 0);
     *puVar1 |= 0x10;
 }

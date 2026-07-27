@@ -452,7 +452,7 @@ extern void func_001f0ad0(void* task, void* parent);
 extern void func_00233970(void* work);
 extern void func_00234820(void* work);
 extern void func_002626e0(void* work);
-extern void func_00264d80(void* work);
+extern void brPersonaInit(void* work);
 extern void func_00272330(void* work);
 extern void func_00275a70(void* work);
 extern void func_00276910(void* work);
@@ -7026,7 +7026,7 @@ RuntimeTask* func_001ef500(RuntimeTask* parent)
     func_00233970(bytes + 0x390);
     func_00234820(bytes + 0x3e0);
     func_002626e0(bytes + 0x2a60);
-    func_00264d80(bytes + 0x63d0);
+    brPersonaInit(bytes + 0x63d0);
     func_00272330(bytes + 0x180);
     func_00275a70(bytes + 0x63e0);
     func_00276910(bytes + 0x6a00);

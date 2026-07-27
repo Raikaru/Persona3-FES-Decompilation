@@ -86,6 +86,7 @@ void FUN_00249690(void* work)
 }
 
 // FUN_002496E0 NONMATCHING
+/* Removing this worsens FUN_002496e0 (nd110 -> nd136) - measured W161. */
 #pragma opt_loop_invariants on
 void func_002496e0(void* work)
 {

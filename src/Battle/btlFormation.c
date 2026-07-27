@@ -3368,6 +3368,7 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
+/* Removing this worsens FUN_002bc9c0 (nd562 -> nd618) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_002bc9c0 NONMATCHING
 
@@ -4041,6 +4042,7 @@ void func_002bddd0(void)
   return;
 }
 
+/* Removing this loses FUN_002bde10 (MATCH nd0 -> MISMATCH nd119) - measured W161. */
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
 // FUN_002bde10
@@ -5461,6 +5463,7 @@ long *func_002c08c0(int param_1)
 }
 
 // FUN_002c0970
+/* Removing this loses FUN_002c09f0 (MATCH nd0 -> MISMATCH nd50) - measured W161. */
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
 
@@ -5784,6 +5787,7 @@ void func_002c1440(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c1490 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c1490
 void func_002c1490(int param_1, u32 param_2)
@@ -5802,6 +5806,7 @@ done:
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002c14f0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c14f0
 
@@ -5843,6 +5848,7 @@ bool func_002c1590(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c15e0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c15e0
 
@@ -5878,6 +5884,7 @@ bool func_002c1650(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c16a0 (MATCH nd0 -> MISMATCH nd49) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c16a0
 
@@ -5930,6 +5937,7 @@ void func_002c1740(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c17b0 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c17b0
 
@@ -5962,6 +5970,7 @@ void func_002c17b0(int param_1,u32 param_2)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002c1850 (MATCH nd0 -> MISMATCH nd153) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c1850
 
@@ -6033,6 +6042,7 @@ u32 func_002c1960(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c1a30 (MATCH nd0 -> MISMATCH nd124) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c1a30
 
@@ -6112,6 +6122,7 @@ u32 func_002c1b10(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c1bf0 (MATCH nd0 -> MISMATCH nd135) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c1bf0
 
@@ -6259,6 +6270,7 @@ void func_002c1f10(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c1f60 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c1f60
 
@@ -6290,6 +6302,7 @@ void func_002c1fc0(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2010 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2010
 
@@ -6321,6 +6334,7 @@ void func_002c2070(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c20c0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c20c0
 
@@ -6352,6 +6366,7 @@ void func_002c2120(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2170 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2170
 
@@ -6397,6 +6412,7 @@ void func_002c2220(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2270 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2270
 
@@ -6446,6 +6462,7 @@ void func_002c2310(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2360 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2360
 
@@ -6493,6 +6510,7 @@ void func_002c2420(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2470 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2470
 
@@ -6568,6 +6586,7 @@ void func_002c25e0(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2630 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2630
 
@@ -6599,6 +6618,7 @@ void func_002c2690(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c26e0 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c26e0
 
@@ -6630,6 +6650,7 @@ void func_002c2740(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2790 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2790
 
@@ -6661,6 +6682,7 @@ void func_002c27f0(int param_1,u32 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c2840 (MATCH nd0 -> MISMATCH nd44) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2840
 
@@ -6720,6 +6742,7 @@ bool func_002c28c0(int param_1,int param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c29e0 (MATCH nd0 -> MISMATCH nd175) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c29e0
 bool func_002c29e0(int param_1,int param_2)
@@ -6780,6 +6803,7 @@ bool func_002c2b20(int param_1,u16 param_2)
   return func_003086f0(*(u32 *)(iVar1 + 0xa2c),param_2) == 0;
 }
 #pragma push
+/* Removing this loses FUN_002c2be0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2be0
 void func_002c2be0(int param_1,u32 param_2)
@@ -6803,6 +6827,7 @@ void func_002c2be0(int param_1,u32 param_2)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002c2c40 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2c40
 
@@ -6827,6 +6852,7 @@ void func_002c2c40(int param_1,u32 param_2)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002c2ca0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c2ca0
 
@@ -6984,6 +7010,7 @@ void func_002c3120(int param_1,u16 param_2)
 }
 
 #pragma push
+/* Removing this loses FUN_002c3150 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c3150
 
@@ -7008,6 +7035,7 @@ void func_002c3150(int param_1,u32 param_2)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002c31b0 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c31b0
 
@@ -7032,6 +7060,7 @@ void func_002c31b0(int param_1,u32 param_2)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002c3210 (MATCH nd0 -> MISMATCH nd43) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c3210
 
@@ -7084,6 +7113,7 @@ u32 func_002c32e0(int param_1)
 }
 
 #pragma push
+/* Removing this loses FUN_002c3300 (MATCH nd0 -> MISMATCH nd148) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002c3300
 
@@ -10824,6 +10854,7 @@ u32 func_002ca3e0(void)
 }
 
 #pragma push
+/* Removing this loses FUN_002ca480 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca480
 
@@ -10874,6 +10905,7 @@ u32 func_002ca480(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002ca590 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca590
 
@@ -10924,6 +10956,7 @@ u32 func_002ca590(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002ca6a0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca6a0
 
@@ -10974,6 +11007,7 @@ u32 func_002ca6a0(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002ca7b0 (MATCH nd0 -> MISMATCH nd202) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca7b0
 u32 func_002ca7b0(void)
@@ -11027,6 +11061,7 @@ done:
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002ca900 (MATCH nd0 -> MISMATCH nd113) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca900
 u32 func_002ca900(void)
@@ -11065,6 +11100,7 @@ done:
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002ca9d0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002ca9d0
 
@@ -11115,6 +11151,7 @@ u32 func_002ca9d0(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002caae0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002caae0
 
@@ -11165,6 +11202,7 @@ u32 func_002caae0(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002cabf0 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cabf0
 
@@ -11215,6 +11253,7 @@ u32 func_002cabf0(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002cad00 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cad00
 
@@ -11265,6 +11304,7 @@ u32 func_002cad00(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002cae10 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cae10
 
@@ -11315,6 +11355,7 @@ u32 func_002cae10(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002caf20 (MATCH nd0 -> MISMATCH nd158) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002caf20
 
@@ -11365,6 +11406,7 @@ u32 func_002caf20(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002cb030 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cb030
 
@@ -11401,6 +11443,7 @@ u32 func_002cb030(void)
 #pragma pop
 
 #pragma push
+/* Removing this loses FUN_002cb0e0 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cb0e0
 
@@ -12940,6 +12983,7 @@ u32 func_002cda50(void)
 }
 
 #pragma push
+/* Removing this loses FUN_002cdad0 (MATCH nd0 -> MISMATCH nd74) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cdad0
 
@@ -13086,6 +13130,7 @@ u32 func_002cde10(void)
 }
 
 #pragma push
+/* Removing this loses FUN_002cde60 (MATCH nd0 -> MISMATCH nd42) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_002cde60
 
@@ -13619,6 +13664,7 @@ u32 func_002cec30(void)
 }
 
 #pragma push
+/* Removing this loses FUN_002ced60 (MATCH nd0 -> MISMATCH nd263) - measured W161. */
 #pragma opt_rebuildconditionals off
 static inline u16 btlFormationGetOpposingGenus(u32 unit)
 {

@@ -100,7 +100,7 @@ void func_0024a7f0(void)
 
     work = (u32*)BRP_BIRTH_ALLOC(0xC570, 0x40000);
     func_00219c90((u8*)work + 0xFD4);
-    sflRes0020d7d0((u8*)work + 0x3730);
+    sflResInit((u8*)work + 0x3730);
     brpRes0024ba30((u32*)((u8*)work + 0x3704));
     func_00239170((u8*)work + 0x37C0);
     work[1] = 0;
@@ -241,7 +241,7 @@ void func_0024ac90(void)
     work = sBrpBirthWork;
     K_ASSERT((~work[1] & 2) != 0, 0x103);
     func_00239280();
-    sflRes0020e030();
+    sflResShutdown();
     func_0024ba50();
     func_0021a1b0();
     if ((work[1] & 0x10) != 0)
@@ -310,7 +310,7 @@ void func_0024adf0(void)
     work = (s32*)sBrpBirthWork;
     rotation = sBrpBirthRotation;
     func_0024bb30();
-    sflRes0020d820();
+    sflResUpdate();
     func_00219d90();
     flags = work[1];
     if ((flags & 2) != 0)

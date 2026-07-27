@@ -1063,6 +1063,7 @@ void FUN_00201780(void)
     gBcmWork = NULL;
 }
 
+/* Removing this loses FUN_00201880 (MATCH nd0 -> MISMATCH nd307) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00201880
 void FUN_00201880(void)
@@ -3906,8 +3907,6 @@ u32 FUN_001FE220(void)
     return result;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
  
 // FUN_001FE650
 void FUN_001FE650(void* descriptor)
@@ -3937,7 +3936,6 @@ void FUN_001FE650(void* descriptor)
     }
     func_00242540(resource);
 }
-#pragma pop
 
 // FUN_001FE810
 void FUN_001FE810(s32 id)
@@ -4004,8 +4002,6 @@ u32 FUN_001FEEC0(void)
     return result;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001FEF90
 void FUN_001FEF90(u32 id)
 {
@@ -4057,10 +4053,7 @@ void FUN_001FEF90(u32 id)
     }
     func_0025be60(first, second, third);
 }
-#pragma pop
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001FF160
 void FUN_001FF160(u32 id)
 {
@@ -4105,7 +4098,6 @@ void FUN_001FF160(u32 id)
     }
     func_0025be60(first, second, third);
 }
-#pragma pop
 
 // FUN_001FF370
 void FUN_001FF370(void)

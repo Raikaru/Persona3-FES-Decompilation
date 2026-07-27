@@ -2,6 +2,8 @@
 #include "Main/Battle/Panel/bp_tex.h"
 #include "Kosaka/k_assert.h"
 #include "h_cdvd.h"
+#pragma alias opResShutdown FUN_00266690
+
 
 static OpResWork* sWork; // 007ce394
 
@@ -218,7 +220,7 @@ void opResDestroyLogo(void)
 }
 
 // FUN_00266690
-void opRes00266690(void)
+void opResShutdown(void)
 {
     OpResWork* work;
 

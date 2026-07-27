@@ -192,6 +192,7 @@ void func_001cd7a0(void)
     memset(DAT_0086b180, 0, 0xc40);
 }
 
+/* Removing this loses FUN_001cd8e0 (MATCH nd0 -> MISMATCH nd82) - measured W161. */
 #pragma opt_loop_invariants on
 
 // FUN_001CD8E0
@@ -638,6 +639,7 @@ void func_001ce880(void)
     }
 }
 
+/* Removing this worsens FUN_001ce960 (nd2894 -> nd3129) - measured W161. */
 #pragma opt_loop_invariants on
 // Retail offsets 0x000-0x2f0 re-fetch gFldUnitsPc fields; 0x478-0x4b0 and 0x8d8-0x930 copy matrices inline; 0x52c-0x79c and 0x9d8-0xe44 expand formation/dungeon dispatches.
 // FUN_001CE960 NONMATCHING
@@ -1392,6 +1394,7 @@ static void FldUnit_InitPcUnit(FldUnit* unit, u16 charId, u8* modelNode)
     }
 }
 
+/* Removing this worsens FUN_001d03f0 (nd506 -> nd517) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001d03f0 NONMATCHING
 void func_001d03f0(u16 charId)
@@ -1576,6 +1579,7 @@ done:
     return spawned;
 }
 
+/* Removing this worsens FUN_001d0880 (nd485 -> nd512) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001d0880 NONMATCHING
 u8* func_001d0880(s32 ordinal, s32 targetCount)
@@ -1860,6 +1864,7 @@ u32 func_001d12d0(void)
     return 1;
 }
 
+/* Removing this worsens FUN_001d1360 (nd448 -> nd516) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001d1360 NONMATCHING
 void func_001d1360(void)
@@ -2300,6 +2305,7 @@ void func_001d22a0(void* work)
     func_001d2a10();
 }
 
+/* Removing this worsens FUN_001d2300 (nd502 -> nd511) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001d2300 NONMATCHING
 u8* func_001d2300(s32 ordinal, s32 maxCount)
@@ -2629,6 +2635,7 @@ void func_001d2a10(void)
     (void)reaper;
 }
 
+/* Removing this worsens FUN_001d32a0 (nd588 -> nd637) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001d32a0 NONMATCHING
 void* func_001d32a0(KwlnTask* task)

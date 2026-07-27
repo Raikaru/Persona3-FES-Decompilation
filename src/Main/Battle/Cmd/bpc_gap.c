@@ -31,7 +31,7 @@ extern void func_003b0e20(u32 resource, u32 color);
 extern void func_003b0e70(s32 mode);
 extern void func_003b0e90(s32 mode);
 extern s32 func_003b19d0(u32 resource);
-extern void func_003b2c60(u32 resource, f32 angle);
+extern void frFontSetTextScale(u32 resource, f32 angle);
 extern void func_003c72d0(void* resource);
 extern void func_003c7430(s32 mode);
 extern void func_003c7650(s32 mode);
@@ -315,7 +315,7 @@ void FUN_00248fc0(void* destination)
     work = (u8*)sBpc324;
     texture = func_0021c3f0(1);
     func_003b0d70((u32)destination, 0x640, 0x320);
-    func_003b2c60((u32)destination, 0.0f);
+    frFontSetTextScale((u32)destination, 0.0f);
     func_003b0e20((u32)destination, (u32)-1);
     *(void**)(work + 4) = destination;
     frame = func_0021cca0(texture, 0x43);

@@ -343,7 +343,6 @@ static inline void gsDrawAnimatedSprite(void* object, s32 atlasOffset,
     (void)maxTimer;
 }
 
-#pragma opt_loop_invariants on
 
 // FUN_0018A9F0 NONMATCHING
 void* func_0018a9f0(KwlnTask* task)
@@ -614,7 +613,6 @@ void* func_0018a9f0(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-#pragma opt_loop_invariants off
 
 // FUN_0018B270
 void func_0018b270(KwlnTask* task)
@@ -990,6 +988,7 @@ void func_0018bc80(void)
 }
 
 // FUN_0018BD90
+/* Removing this loses FUN_0018bd90 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
 #pragma opt_loop_invariants on
 void* func_0018bd90(KwlnTask* task)
 {

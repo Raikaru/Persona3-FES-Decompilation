@@ -7577,6 +7577,7 @@ u64 FUN_003eee50(u64 param_1,u64 param_2)
 
 
 #pragma push
+/* Removing this loses FUN_003eee80 (MATCH nd0 -> MISMATCH nd364) - measured W161. */
 #pragma opt_loop_invariants on
 u64 FUN_003eee80(u64 unused, u64 handle)
 {

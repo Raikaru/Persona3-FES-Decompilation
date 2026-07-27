@@ -36,7 +36,7 @@ extern void func_003b0170(u32 resource);
 extern u32 func_003b0970(const char* text, s32 mode, s32 group, s32 a, s32 b);
 extern void func_003b0d70(u32 resource, s32 x, s32 y);
 extern void func_003b0e54(u32 resource, u32 color);
-extern void func_003b2c60(u32 resource, f32 angle);
+extern void frFontSetTextScale(u32 resource, f32 angle);
 extern void func_003b0e70(s32 mode);
 extern void* (*DAT_00960178[])(u32 size, u32 heap);
 extern void (*DAT_0096017c[])(void* memory);
@@ -107,7 +107,7 @@ void func_0027ace0(void);
 u32 func_0027b310(void);
 void func_0027b3f0(s32 param);
 void func_0027b6c0(void);
-void func_0027bdf0(void);
+void sflPersonaDestroy(void);
 void func_0027ac60(u32* work);
 void func_0027ac80(void);
 void func_0027ace0(void);
@@ -159,7 +159,7 @@ void func_002791b0(u32 id)
     handle = func_003b0970(
         (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
     func_003b0d70(handle, 0x640, 0x320);
-    func_003b2c60(handle, 0.0f);
+    frFontSetTextScale(handle, 0.0f);
     work[0x100 / 4] = handle;
     func_003b0e90(1);
     func_003b0e70(2);
@@ -195,7 +195,7 @@ void func_00279330(u32 id)
     handle = func_003b0970(
         (const char*)(DAT_007ce4ec + (id & 0xffff) * 0x13), 1, 6, 0, 0);
     func_003b0d70(handle, 0x640, 0x320);
-    func_003b2c60(handle, 0.0f);
+    frFontSetTextScale(handle, 0.0f);
     work[0xe54] = handle;
     func_003b0e90(1);
     func_003b0e70(2);
@@ -730,7 +730,7 @@ void func_0027a6a0(u32* work, char* text, s32 align)
                 }
                 {
                     u32 handle = func_003b0970(token, style, (s8)mode, 0, 0);
-                    func_003b2c60(handle, 0.0f);
+                    frFontSetTextScale(handle, 0.0f);
                     func_003b0e54(handle, 0xffffffff);
                     *(u32*)((u8*)work + count * 8 + 8) = handle;
                     *(f32*)((u8*)work + 4 + count * 8) = width;
@@ -785,7 +785,7 @@ void func_0027a930(u32* work, const f32* pos)
         f32* entry = (f32*)((u8*)work + i * 8 + 4);
         func_003b0d70(*(u32*)(entry + 1), (s32)((pos[0] + entry[0]) * 16.0f),
                       (s32)(pos[1] * 8.0f));
-        func_003b2c60(*(u32*)(entry + 1), 0.0f);
+        frFontSetTextScale(*(u32*)(entry + 1), 0.0f);
     }
 }
 

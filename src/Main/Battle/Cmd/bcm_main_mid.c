@@ -1,5 +1,18 @@
 #include "Battle/battle.h"
 #include "Kosaka/k_assert.h"
+#pragma alias bcmStartTacticsTutorial FUN_00207e20
+#pragma alias bcmStartBasicTutorial FUN_00207f10
+#pragma alias bcmIsCurrentUnitTutorialPending FUN_00208010
+#pragma alias bcmIsTacticsTutorialPending FUN_00208050
+#pragma alias bcmCanStartBasicTutorial FUN_00208130
+#pragma alias bcmStoreOwnedResource FUN_002082c0
+#pragma alias bcmDestroyOwnedResource FUN_00208360
+#pragma alias bcmDestroyOwnedResourceImpl FUN_002083d0
+#pragma alias bcmFinishPanelTransition FUN_00208460
+#pragma alias bcmInitCommandPanelEntries FUN_00208570
+#pragma alias bcmIsCommandInputReady FUN_00208720
+#pragma alias bcmPlayRandomPartyVoice FUN_00208790
+
 
 /* Shared command work is owned by bcm_main.c. */
 extern u8* gBcmWork;
@@ -22,7 +35,7 @@ extern u32 func_002ddc10(u32 unitId);
 extern void func_002ddba0(u32 id);
 extern u32 RpRandom(void);
 
-static void func_002083d0(void);
+static void bcmDestroyOwnedResourceImpl(void);
 static void func_00208860(u32 unitId);
 
 #define BCM_WORD(off) (*(u32*)((u8*)gBcmWork + (off)))
@@ -77,7 +90,7 @@ void func_00207dd0(void)
 }
 
 // FUN_00207e20
-void func_00207e20(void)
+void bcmStartTacticsTutorial(void)
 {
     u8* work;
     s32 mode;
@@ -109,7 +122,7 @@ void func_00207e20(void)
 }
 
 // FUN_00207f10
-void func_00207f10(void)
+void bcmStartBasicTutorial(void)
 {
     u8* work;
 
@@ -135,7 +148,7 @@ u32 func_00207fc0(void)
 }
 
 // FUN_00208010
-u32 func_00208010(void)
+u32 bcmIsCurrentUnitTutorialPending(void)
 {
     void* unit;
 
@@ -147,7 +160,7 @@ u32 func_00208010(void)
 }
 
 // FUN_00208050
-u32 func_00208050(void)
+u32 bcmIsTacticsTutorialPending(void)
 {
     u32 mode;
 
@@ -191,7 +204,7 @@ done:
 }
 
 // FUN_00208130
-u32 func_00208130(void)
+u32 bcmCanStartBasicTutorial(void)
 {
     u64 status;
 
@@ -227,7 +240,7 @@ u32 func_00208130(void)
 }
 
 // FUN_002082c0
-void func_002082c0(u32 value)
+void bcmStoreOwnedResource(u32 value)
 {
     u8* work;
 
@@ -240,15 +253,15 @@ void func_002082c0(u32 value)
 }
 
 // FUN_00208360
-void func_00208360(void)
+void bcmDestroyOwnedResource(void)
 {
     K_ASSERT(gBcmWork != NULL, 0x164);
     K_ASSERT((BCM_WORD(0) & 0x00800000) != 0, 0x13f1);
-    func_002083d0();
+    bcmDestroyOwnedResourceImpl();
 }
 
 // FUN_002083d0
-void func_002083d0(void)
+void bcmDestroyOwnedResourceImpl(void)
 {
     u8* work;
 
@@ -260,7 +273,7 @@ void func_002083d0(void)
 }
 
 // FUN_00208460
-void func_00208460(void)
+void bcmFinishPanelTransition(void)
 {
     u8* work;
     s32 state;
@@ -292,7 +305,7 @@ void func_00208460(void)
 }
 
 // FUN_00208570
-void func_00208570(u32* panel)
+void bcmInitCommandPanelEntries(u32* panel)
 {
     s32 i;
     u8* entry;
@@ -343,7 +356,7 @@ void func_002086d0(void)
 }
 
 // FUN_00208720
-u32 func_00208720(void)
+u32 bcmIsCommandInputReady(void)
 {
     u8* work;
 
@@ -362,8 +375,10 @@ done:
 
 // FUN_00208790
 #pragma optimization_level 3
+#pragma push
+/* Removing this loses FUN_00208790 (MATCH nd0 -> MISMATCH nd117) - measured W161. */
 #pragma schedule off
-void func_00208790(void)
+void bcmPlayRandomPartyVoice(void)
 {
     u32 ids[4];
     s32 count;
@@ -388,8 +403,6 @@ void func_00208790(void)
     }
     func_00208860((u16)ids[RpRandom() % count]);
 }
-#pragma optimization_level 2
-#pragma schedule off
 
 // FUN_00208860
 void func_00208860(u32 unitId)

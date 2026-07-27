@@ -2185,6 +2185,7 @@ void func_001140d0(f32 depth,
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+/* Removing this worsens FUN_00114450 (nd988 -> nd1385) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00114450 NONMATCHING
 void func_00114450(f32 depth,
@@ -3321,6 +3322,7 @@ void func_00115de0(int unused0, int unused1, int unused2,
   return;
 
 }
+/* Removing this worsens FUN_00115f00 (nd1065 -> nd1085) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00115F00 NONMATCHING
 
@@ -3860,6 +3862,7 @@ u32 func_001167c0(int param_1,u32 param_2)
   return *(u32 *)(idx + 0x68);
 
 }
+/* Removing this worsens FUN_001167f0 (nd846 -> nd822) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001167F0 NONMATCHING
 
@@ -5546,6 +5549,7 @@ void* func_00117540(KwlnTask* task)
 // disasm; nd 261->10. Residual: 1 addu operand-order floor + 1 hoisted
 // D_00833B70 pointer register-bank floor in the state-3-promote loop.
 #pragma push
+/* Removing this loses FUN_00119aa0 (MATCH nd0 -> MISMATCH nd30) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00119AA0
 void* func_00119aa0(KwlnTask* task)

@@ -66,6 +66,7 @@ static u32 sRwReallocCount;
 static u32 sRwAllocationHint;
 static RwMemoryFunctions sRwMemoryFunctions;
 
+/* Removing this loses FUN_00103000 (MATCH nd0 -> MISMATCH nd48) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00103000 MATCHING
 void H_Pad_Init(void)

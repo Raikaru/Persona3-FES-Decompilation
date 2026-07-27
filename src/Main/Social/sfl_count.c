@@ -102,8 +102,10 @@ void FUN_0025b4f0(void)
     *work |= 1;
 }
 
+/* Removing this worsens FUN_0025b690 (nd14 -> nd133) - measured W161. */
 #pragma opt_loop_invariants on
 #pragma push
+/* Removing this worsens FUN_0025b690 (nd14 -> nd74) - measured W161. */
 #pragma opt_rebuildconditionals off
 // FUN_0025B690 NONMATCHING
 void FUN_0025b690(void)

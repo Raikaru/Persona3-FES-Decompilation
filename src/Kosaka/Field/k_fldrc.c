@@ -1454,6 +1454,7 @@ void FUN_001b4720(void* camera, u32* resource)
 }
 
 #pragma push
+/* Removing this worsens FUN_001b4e00 (nd650 -> nd651) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001b4e00 NONMATCHING
 void FUN_001b4e00(u32 unused, u32* resource, const f32* offset)

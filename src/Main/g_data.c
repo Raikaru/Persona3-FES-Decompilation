@@ -1775,6 +1775,7 @@ u16 func_0016ccb0(s16 pcId)
 
 
 // FUN_0016d280
+/* Removing this loses FUN_0016d280 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
 #pragma opt_loop_invariants on
 u8 func_0016d280(s32 exp)
 {
@@ -1795,6 +1796,7 @@ u8 func_0016d280(s32 exp)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_0016dbc0 (MATCH nd0 -> MISMATCH nd108) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0016dbc0
 u8 func_0016dbc0(s16 socialLink, u32* personaId)
@@ -1881,6 +1883,7 @@ u8 func_0016de50(s32 index)
 }
 
 // FUN_0016deb0
+/* Removing this loses FUN_0016deb0 (MATCH nd0 -> MISMATCH nd47) - measured W161. */
 #pragma opt_loop_invariants on
 s16 func_0016deb0(s16 arcana)
 {
@@ -2273,6 +2276,7 @@ s32 func_0016ea40(s32 amount)
     return -(total < 0);
 }
 
+/* Removing this loses FUN_0016ea80 (MATCH nd0 -> MISMATCH nd18) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0016ea80
 u32 func_0016ea80(void)
@@ -2314,6 +2318,7 @@ u32 func_0016ea80(void)
 
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_0016ecd0 (MATCH nd0 -> MISMATCH nd105) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_0016ecd0
 u32 func_0016ecd0(void)
@@ -2449,7 +2454,6 @@ invalid:
     return 0;
 }
 
-#pragma opt_loop_invariants on
 
 // FUN_00170860 NONMATCHING
 void func_00170860(s16 pcId, s16 index, u16 value)
@@ -2509,7 +2513,6 @@ void func_00170860(s16 pcId, s16 index, u16 value)
 done:
     return;
 }
-#pragma opt_loop_invariants off
 
 // FUN_00170a40
 u16 func_00170a40(s16 pcId, s16 index)
@@ -2994,6 +2997,7 @@ void datInitSocialLink()
     memset(&gGlobalWork.heroStatus.activeSocialLink, 0, 0x508);
 }
 
+/* Removing this loses FUN_00177280 (MATCH nd0 -> MISMATCH nd26) and 2 more - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00177280
 s16 datGetAcademicLevel(s16 academicPoint)
@@ -3046,6 +3050,7 @@ void func_001773d0(void)
     DAT_00830000_c[0x3bf0] = 0;
     func_00177410(&D_007CBFA0, &D_007CBFA0);
 }
+/* Removing this loses FUN_00177410 (MATCH nd0 -> MISMATCH nd89) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00177410
 void func_00177410(u8* param_1,u8* param_2)
@@ -3291,6 +3296,7 @@ u8* func_001778b0(s16 param_1)
 // FUN_001779A0 NONMATCHING
 
 
+/* Removing this worsens FUN_001779a0 (nd14 -> nd121) - measured W161. */
 #pragma opt_loop_invariants on
 void func_001779a0(void)
 {

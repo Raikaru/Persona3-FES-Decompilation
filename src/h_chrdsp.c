@@ -301,6 +301,7 @@ static void H_Chrdsp_ParseLayer(HChrdspWork* work)
     work->state = HCHRDP_STATE_LOAD_ARCHIVE;
 }
 
+/* Removing this loses FUN_00105800 (MATCH nd0 -> MISMATCH nd42) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_00105800
 void H_Chrdsp_Init(void)
@@ -347,6 +348,7 @@ void H_Chrdsp_Main(void)
     }
 }
 
+/* Removing this worsens FUN_001059b0 (nd2207 -> nd2247) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001059B0 NONMATCHING
 void H_Chrdsp_UpdateWork(HChrdspWork* work)

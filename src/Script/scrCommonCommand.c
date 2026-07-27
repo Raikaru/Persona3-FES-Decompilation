@@ -9,6 +9,11 @@
 #include "datCalendar.h"
 #include "temporary.h"
 #include "dds3Process.h"
+#pragma alias scrCommand_GET_TRIGGERED_BUTTONS FUN_0035B1B0
+#pragma alias scrCommand_GET_HELD_BUTTONS FUN_0035B1F0
+#pragma alias scrCommand_NOOP3 FUN_0035B230
+#pragma alias scrCommand_NOOP FUN_0035B270
+
 
 u32 scrCommand_RAND();
 u32 scrCommand_SYNC();
@@ -238,7 +243,7 @@ u32 scrCommand_SQRT()
 
 
 // FUN_0035B1B0
-u32 FUN_0035b1b0(void)
+u32 scrCommand_GET_TRIGGERED_BUTTONS(void)
 {
     scrSetIntReturnVal(*(u16*)0x007e094e & scrGetIntPara(0));
 
@@ -246,7 +251,7 @@ u32 FUN_0035b1b0(void)
 }
 
 // FUN_0035B1F0
-u32 FUN_0035b1f0(void)
+u32 scrCommand_GET_HELD_BUTTONS(void)
 {
     scrSetIntReturnVal(*(u16*)0x007e094c & scrGetIntPara(0));
 
@@ -256,7 +261,7 @@ u32 FUN_0035b1f0(void)
 // FUN_0035B230
 
 
-u32 FUN_0035b230(void)
+u32 scrCommand_NOOP3(void)
 
 
 
@@ -273,7 +278,7 @@ u32 FUN_0035b230(void)
 }
 
 // FUN_0035B270
-u32 FUN_0035b270(void)
+u32 scrCommand_NOOP(void)
 {
   return 1;
 }

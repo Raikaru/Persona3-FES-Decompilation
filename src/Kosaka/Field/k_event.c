@@ -226,6 +226,7 @@ done:
 }
 
 #pragma push
+/* Removing this loses FUN_001c65e0 (MATCH nd0 -> MISMATCH nd169) - measured W161. */
 #pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
 // FUN_001c65e0 MATCHING

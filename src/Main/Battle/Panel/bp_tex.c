@@ -154,6 +154,7 @@ static void bpTexWriteVertex(void* destination,
 } while (0)
 #pragma optimization_level 3
 #pragma push
+/* Removing this worsens FUN_0021c9f0 (nd22 -> nd361) - measured W161. */
 #pragma opt_rebuildconditionals off
 #pragma schedule off
 /*
@@ -574,6 +575,7 @@ void func_0021cd00(void* frameData, f32* uv)
 
 #pragma optimization_level 3
 #pragma opt_common_subs off
+/* Removing this loses FUN_00255390 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
 #pragma schedule on
 // Reconstructed full mode dispatch and duplicated axis calculations.
 // Remaining differences are MWCC register allocation and branch scheduling.
@@ -721,7 +723,6 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
     }
     }
 }
-#pragma schedule on
 #pragma optimization_level 2
 
 // FUN_0021d3b0
@@ -1839,7 +1840,6 @@ u32 bpTexHasPendingNode(void)
     return false;
 }
 
-#pragma schedule off
 #pragma optimization_level 3
 // FUN_002564C0 NONMATCHING
 void bpTexUpdateNode(void* nodeData)
@@ -2064,7 +2064,6 @@ void bpTexUpdateNode(void* nodeData)
 }
 #pragma optimization_level 2
 
-#pragma schedule off
 // FUN_00256F20
 void bpTexCollectLeafPos(void* node, void* values, s32* count)
 {

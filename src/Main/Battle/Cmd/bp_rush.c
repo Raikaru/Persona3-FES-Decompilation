@@ -1,5 +1,15 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#pragma alias bpRushRequestHide FUN_0025d6c0
+#pragma alias bpRushClearHideRequest FUN_0025d710
+#pragma alias bpRushRequestSecondaryHide FUN_0025d760
+#pragma alias bpRushClearSecondaryHideRequest FUN_0025d7b0
+#pragma alias bpRushShowSpinner FUN_0025d800
+#pragma alias bpRushHideSpinner FUN_0025d850
+#pragma alias bpRushUpdate FUN_0025d020
+#pragma alias bpRushDraw FUN_0025D470
+#pragma alias bpRushUpdateGeometry FUN_0025D130
+
 
 
 /* Recovered battle-misc support prelude */
@@ -9,7 +19,7 @@ extern u32* DAT_007ce36c;
 extern code DAT_00960090[];
 extern code DAT_0096009c[];
 extern const char DAT_0068ebe8[];
-extern void FUN_0025d130(void);
+extern void bpRushUpdateGeometry(void);
 extern f32 FUN_0052e6d8(f32 angle);
 extern f32 FUN_0052e878(f32 angle);
 extern void* FUN_0021cca0_ptr(void* texture, s32 frame);
@@ -19,49 +29,49 @@ static u32* sBpRush; // DAT_007ce36c
 
 
 // FUN_0025d6c0
-void bpRush0025d6c0(void)
+void bpRushRequestHide(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
     *sBpRush |= 0x10;
 }
 
 // FUN_0025d710
-void bpRush0025d710(void)
+void bpRushClearHideRequest(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
     *sBpRush &= 0xffffffef;
 }
 
 // FUN_0025d760
-void bpRush0025d760(void)
+void bpRushRequestSecondaryHide(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
     *sBpRush |= 0x20;
 }
 
 // FUN_0025d7b0
-void bpRush0025d7b0(void)
+void bpRushClearSecondaryHideRequest(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
     *sBpRush &= 0xffffffdf;
 }
 
 // FUN_0025d800
-void bpRush0025d800(void)
+void bpRushShowSpinner(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
     *sBpRush |= 0x40;
 }
 
 // FUN_0025d850
-void bpRush0025d850(void)
+void bpRushHideSpinner(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
     *sBpRush &= 0xffffffbf;
 }
 
 // FUN_0025d020
-void bpRush0025d020(void)
+void bpRushUpdate(void)
 {
     u32* work;
     u32 v;
@@ -86,13 +96,13 @@ void bpRush0025d020(void)
         } else if (0 < (int)work[0x205]) {
             work[0x205] = work[0x205] - 1;
         }
-        FUN_0025d130();
+        bpRushUpdateGeometry();
     }
 }
 
 /* Recovered battle-misc harvest: 0x0025D470-0x0025D470 */
 // FUN_0025D470
-void FUN_0025d470(void)
+void bpRushDraw(void)
 {
     extern void* FUN_00267390(void);
     extern void* FUN_0021cca0(void* texture, s32 frame);
@@ -143,7 +153,7 @@ void FUN_0025d470(void)
 
 /* Recovered battle-misc harvest: 0x0025D130-0x0025D130 */
 // FUN_0025D130
-void FUN_0025d130(void)
+void bpRushUpdateGeometry(void)
 {
     u8* work;
     void* texture;
