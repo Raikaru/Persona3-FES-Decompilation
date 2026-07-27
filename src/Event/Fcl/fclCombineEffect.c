@@ -112,8 +112,6 @@ typedef struct {
   f32 x;
   f32 y;
 } FclEffectVec2;
-#pragma alias DAT_006b2e68_abs DAT_006b2e68
-extern FclEffectVec2 DAT_006b2e68_abs[];
 /* FUSION_GLOBALS */
 u32 DAT_006b2cf0;
 u32 DAT_006b2d70;
@@ -2021,11 +2019,11 @@ u32 FUN_00419790(int param_1,int param_2)
 
   u32 uStack_28;
 
-  u64 uStack_20;
+  FclEffectVec2 uStack_20;
 
   float uStack_18;
 
-  u64 uStack_10;
+  FclEffectVec2 uStack_10;
 
   float fStack_8;
 
@@ -2034,14 +2032,13 @@ u32 FUN_00419790(int param_1,int param_2)
   iVar2 = *(int *)(param_2 + 4);
 
   uVar1 = *(u16 *)(param_1 + 0x22);
+  uStack_10 = DAT_006b2e68;
 
-  uStack_10 = *(u64 *)(DAT_006b2e68_abs + 0);
+  fStack_8 = DAT_006b2e70;
 
-  fStack_8 = *(f32 *)(DAT_006b2e68_abs + 8);
+  uStack_20 = DAT_006b2e78;
 
-  uStack_20 = *(u64 *)(DAT_006b2e68_abs + 0x10);
-
-  uStack_18 = *(f32 *)(DAT_006b2e68_abs + 0x18);
+  uStack_18 = DAT_006b2e80;
 
   iVar3 = kwlnGetMainCamera();
 
@@ -2055,11 +2052,11 @@ u32 FUN_00419790(int param_1,int param_2)
 
   fVar4 = (float)FUN_0016ba80(0,uVar1);
 
-  ((FclEffectVec2 *)&uStack_10)->x = ((FclEffectVec2 *)&uStack_10)->x + fVar4;
+  uStack_10.x = uStack_10.x + fVar4;
 
   fVar4 = (float)FUN_0016bb00(0,uVar1);
 
-  ((FclEffectVec2 *)&uStack_10)->y = ((FclEffectVec2 *)&uStack_10)->y + fVar4;
+  uStack_10.y = uStack_10.y + fVar4;
 
   fVar4 = (float)FUN_0016bb80(0,uVar1);
 
