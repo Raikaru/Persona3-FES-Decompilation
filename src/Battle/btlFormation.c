@@ -307,7 +307,7 @@ extern u64 func_0030bc20();
 extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
 extern u64 func_003176c0();
-extern void func_00317730(void *param_1);
+extern u64 func_00317730();
 extern u64 func_00317a20();
 extern u64 func_00318ad0();
 extern u64 func_00318b90();
@@ -2586,7 +2586,7 @@ void func_002bb3a0(void)
       }
       if ((*puVar4 & 0x220) == 0x220) {
         if (*(int *)(puVar4 + 0xc) != 0) {
-          func_00317730((void *)*(u32 *)(puVar4 + 0xc));
+          func_00317730();
         }
         if (*(int *)(puVar4 + 10) != 0) {
           func_003252a0();
@@ -4940,7 +4940,6 @@ void func_002bf9b0(void)
   float firstZero;
   float zero;
   u32 callColor;
-  float *dest;
 
   if ((((*(int *)(DAT_007ce3ec + 0x2b4) != 0x12) &&
         (fadeSuppressed = btlFadeSuppressesFormationUpdates(), fadeSuppressed == 0)) &&
@@ -4958,9 +4957,8 @@ void func_002bf9b0(void)
             alpha = 0;
           }
           callColor = alpha | 0xb4736400;
-          dest = (float *)(entry + 0xa04);
           firstZero = zero;
-          func_002bce10(firstZero, zero, (u8*)entry, callColor, dest);
+          func_002bce10(firstZero, zero, (u8*)entry, callColor, (float *)(entry + 0xa04));
         }
       }
     }
