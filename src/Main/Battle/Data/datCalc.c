@@ -577,7 +577,7 @@ u8 FUN_00300b60(u16 *param_1,u32 param_2);
 u8 FUN_00300c90(u32 param_1,u32 param_2);
 u32 FUN_00300e90(u32 param_1);
 s8 FUN_00300f60(int param_1,u32 param_2);
-void FUN_00301030(int param_1,u8 param_2,s8 param_3);
+void FUN_00301030(u8* param_1,u8 param_2,s8 param_3);
 void FUN_00301150(int param_1,u8 param_2,s8 param_3);
 u8 FUN_00301230(int param_1,u32 param_2,char param_3);
 void FUN_00301540(int param_1,u32 param_2);
