@@ -574,7 +574,7 @@ u64 FUN_00368830(u64 param_1,u64 param_2,int param_3);
 u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4);
 u32 FUN_003689c0(int param_1,int param_2,int param_3);
 u64 FUN_00368a30(u64 param_1,u64 param_2,int param_3,int param_4);
-u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3);
+/* FUN_00368b00 prototype omitted */
 u64 FUN_00368c10(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00368cb0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3);

@@ -448,8 +448,15 @@ u32 FUN_003c6120(int param_1,int param_2)
     puVar2[1] = uVar6 + iVar5;
   }
   if (puVar2[2] != 0) {
-    FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],puVar2[4] | 0xffffff00,
-                 (u32)(param_2 == *(int *)(param_1 + 0xc)),4,puVar2[2],0x10,0);
+    u32 uVar12;
+    u32 uVar13;
+    u32 uVar14;
+    u32 uVar15;
+    uVar12 = *(volatile u32 *)&puVar2[4] | 0xffffff00;
+    uVar13 = (u32)(param_2 == *(volatile int *)(param_1 + 0xc));
+    uVar14 = *(volatile u32 *)&puVar2[0];
+    uVar15 = *(volatile u32 *)&puVar2[1];
+    FUN_003b2cb0(0.0f,uVar14,uVar15,uVar12,uVar13,4,puVar2[2],0x10,0);
   }
   ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;
