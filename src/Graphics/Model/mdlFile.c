@@ -22520,7 +22520,7 @@ u64 FUN_00332370(int param_1)
 
   
 
-  uVar2 = FUN_003245b0((int)(param_1));
+  uVar2 = ((u64 (*)(int))FUN_003245b0)(param_1);
 
   iVar1 = (int)uVar2;
 

@@ -6403,7 +6403,7 @@ void FUN_002b5cd0(BtlCamera* camera)
 void FUN_002b6070(BtlCamera* camera, f32 param_1, f32 param_2)
 {
     BtlUnit* unit;
-    long random;
+    u32 random;
     f32 scale1;
     f32 scale2;
     f32 angle;

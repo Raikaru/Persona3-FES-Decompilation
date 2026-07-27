@@ -5206,7 +5206,7 @@ u32 FUN_0039dd90(int param_1)
 
   u32 uVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   int lVar8;
 
