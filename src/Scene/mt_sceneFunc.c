@@ -561,7 +561,7 @@ extern void FUN_003bbd40_scene_typed(float param_1,...);
 extern float FUN_003bbed0_scene_typed(float param_1,float param_2,...);
 /* Retail call: FUN_003bc0e0 + 0x0d8. */
 #pragma alias FUN_003bbfd0_scene_typed FUN_003bbfd0
-extern void FUN_003bbfd0_scene_typed(float param_1,float param_2,...);
+extern float FUN_003bbfd0_scene_typed(float param_1,float param_2,...);
 /* Retail call: FUN_003b9610 + 0x604. */
 #pragma alias FUN_003bc220_scene_typed FUN_003bc220
 extern float FUN_003bc220_scene_typed(char *param_1,float param_2,float param_3,...);
@@ -3989,15 +3989,15 @@ float FUN_003bc0e0(char *param_1)
 
   float fVar6;
 
-  float auStack_50 [4];
+  float auStack_10 [4];
 
-  float auStack_40 [4];
+  float auStack_20 [4];
 
   float auStack_30 [4];
 
-  u8 auStack_20 [16];
+  float auStack_40 [4];
 
-  u8 auStack_10 [16];
+  float auStack_50 [4];
 
   
 
@@ -4005,25 +4005,32 @@ float FUN_003bc0e0(char *param_1)
 
   for (lVar2 = 0; lVar2 < *param_1; lVar2 = lVar2 + 1) {
 
-    for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+    {
+      char *curve;
+      int copyIndex;
 
-      iVar1 = iVar3 * 0xc + lVar2 * 0x24;
+      copyIndex = 0;
+      curve = param_1 + lVar2 * 0x24;
+      for (; copyIndex < 4; copyIndex = copyIndex + 1) {
 
-      auStack_30[iVar3] = *(float *)(param_1 + iVar1 + 4);
+        iVar1 = copyIndex * 0xc;
 
-      auStack_40[iVar3] = *(float *)(param_1 + iVar1 + 8);
+        auStack_30[copyIndex] = *(float *)(curve + iVar1 + 4);
 
-      auStack_50[iVar3] = *(float *)(param_1 + iVar1 + 0xc);
+        auStack_40[copyIndex] = *(float *)(curve + iVar1 + 8);
 
+        auStack_50[copyIndex] = *(float *)(curve + iVar1 + 0xc);
+
+      }
     }
 
     fVar6 = 0.0f;
 
     for (iVar3 = 0; iVar3 < 0x14; iVar3 = iVar3 + 1) {
 
-      FUN_003bbfd0_scene_typed((float)iVar3 * DAT_007cb0b8,(float)(iVar3 + 1) * DAT_007cb0b8,
+      fVar4 = (float)iVar3 * DAT_007cb0b8;
+      fVar4 = FUN_003bbfd0_scene_typed(fVar4,(float)(iVar3 + 1) * DAT_007cb0b8,
                    auStack_30,auStack_40,auStack_50,auStack_10,auStack_20);
-      fVar4 = 0.0f;
 
       fVar6 = fVar6 + fVar4;
 
@@ -4309,107 +4316,59 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
 
 float FUN_003bc730(char *param_1,int param_2)
-
-
-
 {
-
   int iVar1;
-
-  int iVar2;
-
+  int lVar4;
   int iVar3;
-
-  long lVar4;
-
+  int iVar2;
   float fVar5;
-
   float fVar6;
-
-  float auStack_60 [4];
-
+  float auStack_40 [4];
   float auStack_50 [4];
-
-  float auStack_40 [6];
-
-  float fStack_28;
-
-  float fStack_24;
-
-  float fStack_20;
-
+  float auStack_60 [4];
+  RwV3d delta;
+  float fStack_4;
+  float fStack_8;
+  float fStack_c;
+  float fStack_10;
+  float fStack_14;
   float fStack_18;
 
-  float fStack_14;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  float fStack_4;
-
-  
-
   fVar6 = 0.0f;
-
   iVar3 = 0;
-
   lVar4 = 0;
-
-  while( 1 ) {
-
-    if (*param_1 <= lVar4) {
-
-      return 0.0f;
-
+  while (lVar4 < *param_1) {
+    if (iVar3 == param_2) {
+      return fVar6;
     }
+    {
+      int pointBase;
+      int copyIndex;
 
-    if (iVar3 == param_2) break;
-
-    for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
-
-      iVar1 = iVar2 + (int)lVar4 * 3;
-
-      auStack_40[iVar2] = *(float *)(param_1 + iVar1 * 0xc + 4);
-
-      auStack_50[iVar2] = *(float *)(param_1 + iVar1 * 0xc + 8);
-
-      auStack_60[iVar2] = *(float *)(param_1 + iVar1 * 0xc + 0xc);
-
+      copyIndex = 0;
+      pointBase = lVar4 * 3;
+      for (; copyIndex < 4; copyIndex = copyIndex + 1) {
+        iVar1 = copyIndex + pointBase;
+        auStack_40[copyIndex] = *(float *)(param_1 + iVar1 * 0xc + 4);
+        auStack_50[copyIndex] = *(float *)(param_1 + iVar1 * 0xc + 8);
+        auStack_60[copyIndex] = *(float *)(param_1 + iVar1 * 0xc + 0xc);
+      }
     }
-
     for (iVar2 = 0; iVar2 < 0x14; iVar2 = iVar2 + 1) {
-
       FUN_003bbc90_scene_typed((float)iVar2 * DAT_007cb0b8,auStack_40,auStack_50,auStack_60,&fStack_4,&fStack_c,
-
                    &fStack_14);
-
       FUN_003bbc90_scene_typed((float)(iVar2 + 1) * DAT_007cb0b8,auStack_40,auStack_50,auStack_60,&fStack_8,
-
                    &fStack_10,&fStack_18);
-
-      fStack_28 = fStack_8 - fStack_4;
-
-      fStack_24 = fStack_10 - fStack_c;
-
-      fStack_20 = fStack_18 - fStack_14;
-
-      fVar5 = (float)FUN_004c6ac0(&fStack_28);
-
+      delta.x = fStack_8 - fStack_4;
+      delta.y = fStack_10 - fStack_c;
+      delta.z = fStack_18 - fStack_14;
+      fVar5 = FUN_004c6ac0_scene_vec(&delta);
       fVar6 = fVar6 + fVar5;
-
     }
-
     iVar3 = iVar3 + 1;
-
-    lVar4 = (long)((int)lVar4 + 1);
-
+    lVar4 = lVar4 + 1;
   }
-
-  return fVar6;
-
+  return 0.0f;
 }
 #define FUN_003bc730(...) ((float (*)(...))FUN_003bc730)(__VA_ARGS__)
 #undef FUN_003bc8f0
