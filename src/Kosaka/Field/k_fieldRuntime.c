@@ -4520,8 +4520,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         if (work->state == 0 && vertices != NULL &&
             vector0 != NULL && vector1 != NULL)
         {
-            RuntimeVec3 sample0;
-            RuntimeVec3 sample1;
             for (index = 0; index < count; index++)
             {
                 sample0 = vector0[section < count ? section : index];
