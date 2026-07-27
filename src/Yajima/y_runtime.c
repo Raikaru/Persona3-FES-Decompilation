@@ -3118,7 +3118,7 @@ u64 FUN_00430060(int param_1)
 
 {
   short *psVar1;
-  u64 uVar2;
+  u32 uVar2;
   int iVar3;
   float fVar4;
   
