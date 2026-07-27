@@ -2648,7 +2648,7 @@ void FUN_003a4dd0(int param_1)
   puVar3 = DAT_00959ee0_abs + param_1;
 
 
-  if (*(int *)(&DAT_00959eec + param_1) != 0) {
+  if (*(int *)(puVar3 + 0x20) != 0) {
     FUN_003a6b00_0();
 
   }

@@ -8952,7 +8952,7 @@ void func_002ec790(void)
     packet->parentUID = parent->uid;
     packet->preUpdateDelay = 0x84;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027f410_packet_voice(0x2ecbe0, (u32)iVar6);
+    packet = FUN_0027f410_packet_voice((u32)func_002ecbe0, (u32)iVar6);
     packet->unk_00 = 5;
     packet->parentUID = parent->uid;
     packet->preUpdateDelay = 0x8c;
