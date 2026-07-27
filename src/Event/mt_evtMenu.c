@@ -91,7 +91,7 @@ extern code DAT_006a0270[];
 extern u32 DAT_006a0bf8;
 extern u32 DAT_006a0c00;
 extern char DAT_006a0330[];
-extern u32 DAT_007cadc0;
+extern f32 DAT_007cadc0;
 extern u32 DAT_007cadd0;
 extern u32 DAT_007cae18;
 extern u32 DAT_007cafec;
