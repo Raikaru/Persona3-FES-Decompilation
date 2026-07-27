@@ -1167,6 +1167,8 @@ extern u64 FUN_00530da0();
 extern u64 FUN_005311c8();
 extern u64 FUN_00531230();
 extern u64 FUN_005318a0();
+#pragma alias FUN_005318a0_f32 FUN_005318a0
+extern f32 FUN_005318a0_f32(u32 value);
 extern u32 DAT_0069ba18;
 extern u32 DAT_0069bd60;
 #pragma alias DAT_0069bd60_abs DAT_0069bd60
@@ -45240,7 +45242,7 @@ void FUN_00349090(u64 param_1,int *param_2)
 
       uVar3 = FUN_00531230(uGpffff8018,uVar3);
 
-      fVar7 = (float)FUN_005318a0(uVar3);
+      fVar7 = FUN_005318a0_f32((u32)uVar3);
 
       fVar7 = (float)(uVar2 >> 0x18) * fVar7;
 
