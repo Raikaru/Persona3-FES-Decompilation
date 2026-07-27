@@ -30,6 +30,8 @@ extern u32 DAT_006a4810[];
 extern u32 DAT_006a4830[];
 extern float fGpffff830c;
 extern float fGpffff8224;
+extern f32 cosf(f32);
+extern f32 sinf(f32);
 extern int iGpffffb730;
 extern int iGpffffb7f4;
 extern int iGpffffb800;
@@ -4318,7 +4320,7 @@ void FUN_003d25c0(u32 param_1)
     *dst = temp;
     dst = dst + 1;
   } while (0 < iVar6);
-  *(u32 *)dst = *(u32 *)src;
+  *(float *)dst = *(float *)src;
   uVar2 = FUN_003c5240(uGpffffb994,6,auStack_30,0,2);
   if (param_1 != 0) {
     *(u32 *)((int)param_1 + 0x28) = uVar2;
@@ -4685,7 +4687,7 @@ u32 FUN_003d2c10(s32 param_1)
     *dst = temp;
     dst = dst + 1;
   } while (0 < iVar5);
-  *(u32 *)dst = *(u32 *)src;
+  *(float *)dst = *(float *)src;
   uVar1 = FUN_003c5240(uGpffffb994,1,auStack_30,0,2);
   if (param_1 != 0) {
     *(int *)((int)param_1 + 0x14) = (int)uVar1;

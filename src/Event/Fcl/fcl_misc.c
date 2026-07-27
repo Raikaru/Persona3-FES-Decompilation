@@ -109,6 +109,8 @@ int kwlnTaskGetWorkData(void);
 u32 fclMisc003c9ab0(void);
 void fclMisc003c9b00(u32 param_1, void* param_2, void* param_3);
 extern u64 fclMiscCa780Call(float, float, float, float, s32, s32, s32, s32, s32, s32, s32);
+#pragma alias fclMisc52e878Call FUN_0052e878
+extern f32 fclMisc52e878Call(f32);
 u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #pragma alias fclMiscCa780Call FUN_003ca780
 #pragma alias fclMiscA2580Call FUN_003a2580
@@ -2080,7 +2082,7 @@ void FUN_003ca960(int param_1)
 
     if (lVar5 <= iVar8) {
 
-      fVar7 = (float)FUN_0052e878((fGpffff81f0 + 0.0f) -
+      fVar7 = fclMisc52e878Call((fGpffff81f0 + 0.0f) -
 
                                   fGpffff8110 * ((float)(int)lVar5 / (float)iVar8));
 
@@ -2088,7 +2090,7 @@ void FUN_003ca960(int param_1)
 
       if (*(char *)(param_1 + 0xe8) == '\0') {
 
-        fStack_8 = fStack_8 * -1.0;
+        fStack_8 = fStack_8 * -1.0f;
 
       }
 
@@ -2122,7 +2124,7 @@ void FUN_003ca960(int param_1)
 
     if (iVar4 <= lVar5) {
 
-      fVar7 = (float)FUN_0052e878((fGpffff81f0 + 0.0f) -
+      fVar7 = fclMisc52e878Call((fGpffff81f0 + 0.0f) -
 
                                   fGpffff8110 * ((float)((int)lVar5 - iVar4) / (float)iVar8));
 
@@ -2130,7 +2132,7 @@ void FUN_003ca960(int param_1)
 
       if (*(char *)(param_1 + 0xe8) == '\0') {
 
-        fStack_8 = fStack_8 * -1.0;
+        fStack_8 = fStack_8 * -1.0f;
 
       }
 

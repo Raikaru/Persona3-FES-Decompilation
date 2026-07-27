@@ -794,7 +794,7 @@ void FUN_0028a540(BtlAction* action, u64 id, u16* out1, u16* out2, u16* out3, u1
     }
 }
 
-// FUN_0028a780 NONMATCHING
+// FUN_0028a780
 void btlAction0028a780(BtlAction* action)
 {
     BtlAction* current;
@@ -830,6 +830,7 @@ void btlAction0028a780(BtlAction* action)
     }
     if (BATTLE_U16(0x18) & 0x10)
     {
+        packet = FUN_002a1db0(0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
