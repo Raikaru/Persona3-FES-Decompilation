@@ -495,10 +495,9 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     (*(void (**)(void*))((u8*)&rwGlobals + 0x17c))(cdvd);
     return true;
 }
-#pragma pop
 
 
-// FUN_00101010 NONMATCHING
+// FUN_00101010
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
     char currChar;
@@ -584,7 +583,7 @@ void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
     fileNameDst[strlen(fileNameDst) + fileNameLength] = '\0';
 }
 
-// FUN_001013f0 NONMATCHING
+// FUN_001013f0
 void H_Cdvd_NormalizePath(const char* src, char* dst)
 {
     s32 scanIndex;
@@ -592,15 +591,9 @@ void H_Cdvd_NormalizePath(const char* src, char* dst)
     s32 writeIndex;
     const char* sourcePtr;
     s32 currChar;
-    s32 dot;
-    s32 backslash;
-    s32 slash;
 
     writeIndex = 0;
     readIndex = 0;
-    backslash = 0x5c;
-    slash = 0x2f;
-    dot = 0x2e;
     while (readIndex < 0xfd)
     {
         sourcePtr = src + readIndex;
@@ -611,24 +604,24 @@ void H_Cdvd_NormalizePath(const char* src, char* dst)
             return;
         }
 
-        if (currChar == dot && sourcePtr[1] == dot &&
-            sourcePtr[2] == backslash)
+        if (currChar == '.' && sourcePtr[1] == '.' &&
+            sourcePtr[2] == '\\')
         {
             goto removeParent;
         }
-        if (currChar != dot || sourcePtr[1] != dot ||
-            sourcePtr[2] != slash)
+        if (currChar != '.' || sourcePtr[1] != '.' ||
+            sourcePtr[2] != '/')
         {
             goto checkSingle;
         }
 
 removeParent:
         readIndex += 2;
-        if (writeIndex >= 3)
+        if (writeIndex > 2)
         {
             for (scanIndex = writeIndex - 2; scanIndex >= 0; scanIndex--)
             {
-                if (dst[scanIndex] == backslash || dst[scanIndex] == slash)
+                if (dst[scanIndex] == '\\' || dst[scanIndex] == '/')
                 {
                     writeIndex = scanIndex + 1;
                     break;
@@ -638,11 +631,11 @@ removeParent:
         goto advance;
 
 checkSingle:
-        if (currChar == dot && sourcePtr[1] == backslash)
+        if (currChar == '.' && sourcePtr[1] == '\\')
         {
             goto incrementRead;
         }
-        if (currChar != dot || sourcePtr[1] != slash)
+        if (currChar != '.' || sourcePtr[1] != '/')
         {
             goto writeCharacter;
         }
@@ -658,6 +651,7 @@ advance:
         readIndex++;
     }
 }
+#pragma pop
 
 // FUN_001016b0
 u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
