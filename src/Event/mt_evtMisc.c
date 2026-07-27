@@ -710,7 +710,7 @@ void FUN_00388ff0(int param_1);
 void FUN_003890e0(int param_1);
 void FUN_003897f0(int param_1);
 void FUN_00389b50(int *param_1);
-void FUN_00389d80(u64 param_1,u64 param_2);
+void FUN_00389d80(int param_1,int param_2);
 void FUN_00389f40(void);
 void FUN_0038a0c0(int param_1,int param_2);
 void FUN_0038a140(u32 param_1,u32 *param_2);

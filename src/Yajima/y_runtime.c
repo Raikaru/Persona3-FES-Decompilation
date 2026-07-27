@@ -3705,6 +3705,8 @@ u64 FUN_004312b0(int param_1)
   }
   return 0;
 }
+#undef Y_RUNTIME_717E8
+#undef Y_RUNTIME_717F4
 
 // FUN_00431630
 

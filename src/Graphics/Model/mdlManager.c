@@ -8708,7 +8708,7 @@ LAB_0031b594:
 // FUN_0031B680 NONMATCHING
 
 
-u32 func_0031b680(int param_1,long param_2,int *param_3,int *param_4)
+u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4)
 
 
 
