@@ -2446,7 +2446,6 @@ void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
     CampCarouselPackedPosition p;
     u32 color;
 
-    p.packed = position;
     iGpffffb2a8++;
     if (iGpffffb2a8 > 0x13) {
         iGpffffb2a8 = 0;
@@ -2454,12 +2453,12 @@ void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
     if (iGpffffb284 != 0) {
         color = (0xffU - (u32)textAlpha) | 0xffffff00U;
         if (FUN_00172160((s32)resource) == NULL && FUN_001717C0((s32)resource) == NULL) {
-            hCampMainDrawTexQuad(alpha, p.value.x + 28.0f,
-                         p.value.y + 43.0f,
+            hCampMainDrawTexQuad(alpha, campCarouselUnpackPosition(position).value.x + 28.0f,
+                         campCarouselUnpackPosition(position).value.y + 43.0f,
                          1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
         } else {
+            p = campCarouselUnpackPosition(position);
             hCampMainDrawTexQuad(alpha, 88.0f + p.value.x - 60.0f, 68.0f + p.value.y - 25.0f,
-                         1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
             hCampMainDrawSprite3(75.0f + p.value.x - 60.0f, 58.0f + p.value.y - 25.0f, alpha);
             hCampMainDrawSprite3(86.0f + p.value.x - 60.0f, 173.0f + p.value.y - 25.0f, alpha);
         }
