@@ -288,7 +288,7 @@ extern u64 FUN_002dd5e0();
 extern u64 FUN_002dd690();
 extern u64 FUN_002dd760();
 extern u64 FUN_002e4220();
-extern u64 FUN_002e4250();
+extern u32 FUN_002e4250();
 extern u64 FUN_002f87e0();
 extern u64 FUN_002f8810();
 extern void FUN_002fddb0(BtlUnit* unit, RwV3d* position);
