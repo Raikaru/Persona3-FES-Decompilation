@@ -1663,9 +1663,7 @@ void FUN_003890e0(int param_1)
 
 {
 
-  u64 uVar1;
 
-  u64 uVar2;
 
   int bVar3;
 
@@ -1804,24 +1802,9 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                uVar1 = *(u64 *)puVar14;
-
-                uVar7 = *(u32 *)(puVar14 + 4);
-
-                uVar8 = *(u32 *)(puVar14 + 6);
-
+                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
                 puVar14 = puVar14 + 8;
-
                 iVar10 = iVar10 + -1;
-
-                *puVar13 = (int)uVar1;
-
-                puVar13[1] = (int)((u32)uVar1 >> 0x20);
-
-                puVar13[2] = uVar7;
-
-                puVar13[3] = uVar8;
-
                 puVar13 = puVar13 + 4;
 
               } while (0 < iVar10);
@@ -1848,38 +1831,10 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                uVar1 = *(u64 *)puVar14;
-
-                uVar11 = *(u32 *)(puVar14 + 4);
-
-                uVar12 = *(u32 *)(puVar14 + 6);
-
-                uVar2 = *(u64 *)(puVar14 + 8);
-
-                uVar7 = *(u32 *)(puVar14 + 0xc);
-
-                uVar8 = *(u32 *)(puVar14 + 0xe);
-
+                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
+                *(unsigned __int128 *)(puVar13 + 4) = *(unsigned __int128 *)(puVar14 + 8);
                 puVar14 = puVar14 + 0x10;
-
                 iVar10 = iVar10 + -1;
-
-                *puVar13 = (int)uVar1;
-
-                puVar13[1] = (int)((u32)uVar1 >> 0x20);
-
-                puVar13[2] = uVar11;
-
-                puVar13[3] = uVar12;
-
-                puVar13[4] = (int)uVar2;
-
-                puVar13[5] = (int)((u32)uVar2 >> 0x20);
-
-                puVar13[6] = uVar7;
-
-                puVar13[7] = uVar8;
-
                 puVar13 = puVar13 + 8;
 
               } while (0 < iVar10);
@@ -1906,24 +1861,9 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                uVar1 = *(u64 *)puVar14;
-
-                uVar7 = *(u32 *)(puVar14 + 4);
-
-                uVar8 = *(u32 *)(puVar14 + 6);
-
+                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
                 puVar14 = puVar14 + 8;
-
                 iVar10 = iVar10 + -1;
-
-                *puVar13 = (int)uVar1;
-
-                puVar13[1] = (int)((u32)uVar1 >> 0x20);
-
-                puVar13[2] = uVar7;
-
-                puVar13[3] = uVar8;
-
                 puVar13 = puVar13 + 4;
 
               } while (0 < iVar10);
@@ -2140,24 +2080,9 @@ void FUN_003890e0(int param_1)
 
               do {
 
-                uVar1 = *(u64 *)puVar14;
-
-                uVar7 = *(u32 *)(puVar14 + 4);
-
-                uVar8 = *(u32 *)(puVar14 + 6);
-
+                *(unsigned __int128 *)puVar13 = *(unsigned __int128 *)puVar14;
                 puVar14 = puVar14 + 8;
-
                 iVar10 = iVar10 + -1;
-
-                *puVar13 = (int)uVar1;
-
-                puVar13[1] = (int)((u32)uVar1 >> 0x20);
-
-                puVar13[2] = uVar7;
-
-                puVar13[3] = uVar8;
-
                 puVar13 = puVar13 + 4;
 
               } while (0 < iVar10);
@@ -2196,17 +2121,17 @@ void FUN_003897f0(int param_1)
 
   u32 *puVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
   u32 uVar9;
 
@@ -2230,7 +2155,7 @@ void FUN_003897f0(int param_1)
 
   iVar1 = *(int *)(param_1 + 0x97c);
 
-  FUN_005225a8(0x6a0a50,iVar1);
+  FUN_005225a8(DAT_006a0a20_abs + 0x30,iVar1);
 
   iVar17 = 0;
 
@@ -2264,24 +2189,9 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          uVar3 = *(u64 *)puVar16;
-
-          uVar9 = *(u32 *)(puVar16 + 4);
-
-          uVar10 = *(u32 *)(puVar16 + 6);
-
+          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar16;
           puVar16 = puVar16 + 8;
-
           iVar11 = iVar11 + -1;
-
-          *puVar14 = (int)uVar3;
-
-          puVar14[1] = (int)((u32)uVar3 >> 0x20);
-
-          puVar14[2] = uVar9;
-
-          puVar14[3] = uVar10;
-
           puVar14 = puVar14 + 4;
 
         } while (0 < iVar11);
@@ -2298,55 +2208,27 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          uVar3 = *(u64 *)puVar15;
-
-          uVar12 = *(u32 *)(puVar15 + 4);
-
-          uVar13 = *(u32 *)(puVar15 + 6);
-
-          uVar4 = *(u64 *)(puVar15 + 8);
-
-          uVar9 = *(u32 *)(puVar15 + 0xc);
-
-          uVar10 = *(u32 *)(puVar15 + 0xe);
-
+          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar15;
+          *(unsigned __int128 *)(puVar14 + 4) = *(unsigned __int128 *)(puVar15 + 8);
           puVar15 = puVar15 + 0x10;
-
           iVar11 = iVar11 + -1;
-
-          *puVar14 = (int)uVar3;
-
-          puVar14[1] = (int)((u32)uVar3 >> 0x20);
-
-          puVar14[2] = uVar12;
-
-          puVar14[3] = uVar13;
-
-          puVar14[4] = (int)uVar4;
-
-          puVar14[5] = (int)((u32)uVar4 >> 0x20);
-
-          puVar14[6] = uVar9;
-
-          puVar14[7] = uVar10;
-
           puVar14 = puVar14 + 8;
 
         } while (0 < iVar11);
 
-        uVar3 = FUN_00530da0(*(u32 *)(puVar16 + 2));
+        uVar3 = FUN_00530da0(*(f32 *)(puVar16 + 2));
 
-        uVar4 = FUN_00530da0(*(u32 *)(puVar16 + 4));
+        uVar4 = FUN_00530da0(*(f32 *)(puVar16 + 4));
 
-        uVar5 = FUN_00530da0(*(u32 *)(puVar16 + 6));
+        uVar5 = FUN_00530da0(*(f32 *)(puVar16 + 6));
 
-        uVar6 = FUN_00530da0(puVar2[1]);
+        uVar6 = FUN_00530da0(*(f32 *)(puVar2 + 1));
 
-        uVar7 = FUN_00530da0(puVar2[2]);
+        uVar7 = FUN_00530da0(*(f32 *)(puVar2 + 2));
 
-        uVar8 = FUN_00530da0(puVar2[3]);
+        uVar8 = FUN_00530da0(*(f32 *)(puVar2 + 3));
 
-        FUN_005225a8(0x6a0a70,uVar3,uVar4,uVar5,uVar6,uVar7,uVar8);
+        FUN_005225a8(DAT_006a0a20_abs + 0x50,uVar3,uVar4,uVar5,uVar6,uVar7,uVar8);
 
         break;
 
@@ -2358,24 +2240,9 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          uVar3 = *(u64 *)puVar16;
-
-          uVar9 = *(u32 *)(puVar16 + 4);
-
-          uVar10 = *(u32 *)(puVar16 + 6);
-
+          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar16;
           puVar16 = puVar16 + 8;
-
           iVar11 = iVar11 + -1;
-
-          *puVar14 = (int)uVar3;
-
-          puVar14[1] = (int)((u32)uVar3 >> 0x20);
-
-          puVar14[2] = uVar9;
-
-          puVar14[3] = uVar10;
-
           puVar14 = puVar14 + 4;
 
         } while (0 < iVar11);
@@ -2520,24 +2387,9 @@ void FUN_003897f0(int param_1)
 
         do {
 
-          uVar3 = *(u64 *)puVar16;
-
-          uVar9 = *(u32 *)(puVar16 + 4);
-
-          uVar10 = *(u32 *)(puVar16 + 6);
-
+          *(unsigned __int128 *)puVar14 = *(unsigned __int128 *)puVar16;
           puVar16 = puVar16 + 8;
-
           iVar11 = iVar11 + -1;
-
-          *puVar14 = (int)uVar3;
-
-          puVar14[1] = (int)((u32)uVar3 >> 0x20);
-
-          puVar14[2] = uVar9;
-
-          puVar14[3] = uVar10;
-
           puVar14 = puVar14 + 4;
 
         } while (0 < iVar11);
@@ -5050,7 +4902,7 @@ void FUN_0038bc70(int param_1,int param_2,int param_3)
 
   u32 *puVar3;
 
-  short sVar4;
+  int sVar4;
 
   
 
