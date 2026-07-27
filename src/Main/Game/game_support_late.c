@@ -40,7 +40,7 @@ extern void* kwlnGetMainCamera(void);
 extern u32 RpRandom(void);
 extern f32 DAT_007caf38;
 extern u16 func_0016c670(s16 pcId);
-extern f32 func_00530da0(f32 value);
+extern s32 func_00530da0(f32 value);
 extern s32 sprintf(char* buffer, const char* format, ...);
 extern char* strcpy(char* destination, const char* source);
 
@@ -1505,7 +1505,7 @@ void* func_0018de60(KwlnTask* task)
                 {
                     y = 324.0f;
                 }
-                printf(D_005E4500, GS_S32(work, 8), (f64)func_00530da0(y));
+                printf(D_005E4500, GS_S32(work, 8), func_00530da0(y));
                 transition = GS_TASK(work, 0x70)->workData;
                 start.valueF[0] = GS_F32(transition, 0x38);
                 start.valueF[1] = GS_F32(transition, 0x3c);
@@ -1548,7 +1548,7 @@ void* func_0018de60(KwlnTask* task)
                 {
                     y = 324.0f;
                 }
-                printf(D_005E4500, GS_S32(work, 8), (f64)func_00530da0(y));
+                printf(D_005E4500, GS_S32(work, 8), func_00530da0(y));
                 GS_S32(work, 4) = 1;
                 transition = GS_TASK(work, 0x70)->workData;
                 start.valueF[0] = 834.0f;
