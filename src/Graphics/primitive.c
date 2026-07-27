@@ -349,7 +349,6 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
     }
 }
 
-#pragma optimization_level 1
 // FUN_00359b40 NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
@@ -435,7 +434,6 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         }
     }
 }
-#pragma optimization_level 2
 
 // FUN_00359e50 NONMATCHING
 void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGBA* color, u32 saveAndRestoreRenderState)

@@ -1105,7 +1105,7 @@ int FUN_002d8390(void)
   bool bVar4;
   bool bVar5;
   bool bVar6;
-  uint uVar7;
+  int uVar7;
   uint uVar8;
   uint uVar9;
   int iVar10;
@@ -1113,83 +1113,82 @@ int FUN_002d8390(void)
   
   uVar7 = FUN_002d4e10(2,0x80000);
   uVar7 = uVar7 & 0xffff;
-  if (uVar7 < 6) {
-    uVar8 = FUN_002d4cf0(2,0x80000);
-    uVar9 = FUN_002ffcc0(*(undefined4 *)(*(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
-    bVar3 = (int)((uVar8 & 0xffff) - (uVar9 & 0xff)) >= 4;
-    bVar6 = false;
-    bVar5 = false;
-    bVar4 = false;
-    for (iVar10 = *(int *)(DAT_007ce3ec + 0x158); iVar10 != 0; iVar10 = *(int *)(iVar10 + 0xa34)) {
-      lVar11 = FUN_00300580(*(undefined4 *)(iVar10 + 0xa2c),2);
-      if (lVar11 != 0) {
-        bVar6 = true;
-      }
-      uVar1 = *(ushort *)(DAT_007ce410 + (uint)*(ushort *)(iVar10 + 0xa4) * 0x3e);
-      if ((uVar1 & 0x40) != 0) {
-        bVar5 = true;
-      }
-      if ((uVar1 & 0x80) != 0) {
-        bVar4 = true;
-      }
+  if (uVar7 >= 6) {
+    return -1;
+  }
+  uVar8 = FUN_002d4cf0(2,0x80000);
+  uVar8 = uVar8 & 0xffff;
+  uVar9 = FUN_002ffcc0_u32(*(undefined4 *)(*(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
+  bVar3 = (int)(uVar8 - (uVar9 & 0xff)) >= 4;
+  bVar6 = false;
+  bVar5 = false;
+  bVar4 = false;
+  for (iVar10 = *(int *)(DAT_007ce3ec + 0x158); iVar10 != 0; iVar10 = *(int *)(iVar10 + 0xa34)) {
+    lVar11 = FUN_00300580(*(undefined4 *)(iVar10 + 0xa2c),2);
+    if (lVar11 != 0) {
+      bVar6 = true;
     }
-    sVar2 = *(short *)(DAT_007ce3ec + 0x1a);
-    if (sVar2 == 2) {
-      if (bVar4) {
-        iVar10 = 0x5c;
-      }
-      else if (bVar5) {
-        iVar10 = 0x5d;
-      }
-      else if (bVar3) {
-        iVar10 = uVar7 + 0x51;
-      }
-      else {
-        iVar10 = uVar7 + 0x56;
-      }
+    uVar1 = *(ushort *)(DAT_007ce410 + (uint)*(ushort *)(iVar10 + 0xa4) * 0x3e);
+    if ((uVar1 & 0x40) != 0) {
+      bVar5 = true;
     }
-    else if (sVar2 == 1) {
-      if (bVar4) {
-        iVar10 = 0x50;
-      }
-      else if (bVar5) {
-        iVar10 = 0x51;
-      }
-      else if (bVar3) {
-        if (bVar6) {
-          iVar10 = 5;
-        }
-        else {
-          iVar10 = 0;
-        }
-        iVar10 = uVar7 + 0x3b + iVar10;
-      }
-      else {
-        if (bVar6) {
-          iVar10 = 5;
-        }
-        else {
-          iVar10 = 0;
-        }
-        iVar10 = uVar7 + 0x45 + iVar10;
-      }
+    if ((uVar1 & 0x80) != 0) {
+      bVar4 = true;
     }
-    else if (sVar2 == 0) {
-      if (bVar4) {
-        iVar10 = 10;
-      }
-      else if (bVar5) {
-        iVar10 = 0xb;
-      }
-      else if (bVar3) {
-        iVar10 = uVar7 - 1;
-      }
-      else {
-        iVar10 = uVar7 + 4;
-      }
+  }
+  sVar2 = *(short *)(DAT_007ce3ec + 0x1a);
+  if (sVar2 == 2) {
+    if (bVar4) {
+      iVar10 = 0x5c;
+    }
+    else if (bVar5) {
+      iVar10 = 0x5d;
+    }
+    else if (bVar3) {
+      iVar10 = uVar7 + 0x51;
     }
     else {
-      iVar10 = -1;
+      iVar10 = uVar7 + 0x56;
+    }
+  }
+  else if (sVar2 == 1) {
+    if (bVar4) {
+      iVar10 = 0x50;
+    }
+    else if (bVar5) {
+      iVar10 = 0x51;
+    }
+    else if (bVar3) {
+      if (bVar6) {
+        iVar10 = 5;
+      }
+      else {
+        iVar10 = 0;
+      }
+      iVar10 = uVar7 + 0x3b + iVar10;
+    }
+    else {
+      if (bVar6) {
+        iVar10 = 5;
+      }
+      else {
+        iVar10 = 0;
+      }
+      iVar10 = uVar7 + 0x45 + iVar10;
+    }
+  }
+  else if (sVar2 == 0) {
+    if (bVar4) {
+      iVar10 = 10;
+    }
+    else if (bVar5) {
+      iVar10 = 0xb;
+    }
+    else if (bVar3) {
+      iVar10 = uVar7 - 1;
+    }
+    else {
+      iVar10 = uVar7 + 4;
     }
   }
   else {
@@ -2185,7 +2184,9 @@ short FUN_002d9d70(int param_1)
   short *psVar13;
   short asStack_100 [128];
   
-  if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') {
+  if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0) {
+    return -1;
+  }
     uVar7 = 0;
     uVar4 = 0;
     for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
@@ -2445,10 +2446,6 @@ short FUN_002d9d70(int param_1)
         }
       }
     }
-  }
-  else {
-    sVar11 = -1;
-  }
   return sVar11;
 }
 

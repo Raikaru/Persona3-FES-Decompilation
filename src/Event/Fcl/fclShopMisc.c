@@ -192,6 +192,7 @@ float fGpffffad00;
 float fGpffffad04;
 u32 uGpffffb9a8;
 /* FUSION_EXACT_PROTOS */
+extern float sinf(float);
 void FUN_003c45f0(int param_1);
 u32 datGetScenarioMode(void);
 u16 FUN_001752b0(void);
@@ -389,6 +390,8 @@ u64 FUN_003ff150(u64 param_1,long param_2);
 void FUN_003ff460(int param_1,u32 param_2);
 u32 FUN_003ff570(u64 param_1);
 void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4, u8 param_5,short param_6,short param_7,u32 param_8);
+#pragma alias FUN_003ff630_f32 FUN_003ff630
+void FUN_003ff630_f32(float param_1,int param_2,int param_3,int param_4,int param_5,short param_6,short param_7,u32 param_8);
 u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3);
 #pragma alias FUN_003ffa20_3 FUN_003ffa20
 int FUN_003ffa20_3(u64 param_1,u64 param_2,short *param_3);
@@ -12512,7 +12515,7 @@ u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3)
 
   }
 
-  FUN_003ff630(fVar3 + 1.0f,param_1,param_2,0,iVar2,*(u16 *)(param_3 + 0x10),
+  FUN_003ff630_f32(fVar3 + 1.0f,param_1,param_2,0,iVar2,*(u16 *)(param_3 + 0x10),
 
                *(short *)(param_3 + 8) + -1,1);
 

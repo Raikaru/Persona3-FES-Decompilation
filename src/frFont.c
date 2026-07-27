@@ -2534,7 +2534,7 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
     param_1[1] = *(u32 *)(param_3 + 8);
     iVar1 = *(int *)(param_3 + 8) + 100;
     while (iVar3 != 0) {
-      if (*(int *)(iVar3 + 8) >= iVar1) {
+      if (iVar1 <= *(int *)(iVar3 + 8)) {
         break;
       }
       iVar3 = *(int *)(iVar3 + 0x28);

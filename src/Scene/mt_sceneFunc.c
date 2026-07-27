@@ -3810,11 +3810,11 @@ void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,flo
 
   fVar7 = param_4[3];
 
-  *param_5 = param_2[3] * param_1 + param_2[2] * fVar10 + param_2[1] * fVar9 + *param_2 * fVar11;
+  *param_5 = *param_2 * fVar11 + param_2[1] * fVar9 + param_2[2] * fVar10 + param_2[3] * param_1;
 
-  *param_6 = fVar3 * param_1 + fVar2 * fVar10 + fVar1 * fVar9 + fVar8 * fVar11;
+  *param_6 = fVar8 * fVar11 + fVar1 * fVar9 + fVar2 * fVar10 + fVar3 * param_1;
 
-  *param_7 = fVar7 * param_1 + fVar6 * fVar10 + fVar5 * fVar9 + fVar4 * fVar11;
+  *param_7 = fVar4 * fVar11 + fVar5 * fVar9 + fVar6 * fVar10 + fVar7 * param_1;
 
   return;
 
