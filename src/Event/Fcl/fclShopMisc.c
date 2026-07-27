@@ -9849,7 +9849,7 @@ u64 FUN_003fc060(int param_1)
 
   u16 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u16 *puVar3;
 
