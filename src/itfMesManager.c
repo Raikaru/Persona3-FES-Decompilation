@@ -176,7 +176,7 @@ void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 #pragma alias FUN_003b0ce0_typed FUN_003b0ce0
 extern void FUN_003b0ce0_typed(u64 param_1,u64 param_2);
 void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
-u64  FUN_003a5570(u32 param_1,u64 param_2,u64 param_3,u32 param_4,  u64 param_5,long param_6,u64 param_7,u64 param_8,u64 param_9  );
+u64  FUN_003a5570(u32 param_1,u64 param_2,u64 param_3,u32 param_4,  u64 param_5,long param_6,u64 param_7,u32 param_8,u64 param_9  );
 u64  FUN_003a56f0(u32 param_1,u64 param_2,f32 param_3,u32 param_4,  u64 param_5,long param_6,u64 param_7,s32 param_8,u64 param_9,  int param_10,int param_11);
 u32 FUN_003a5940(int param_1,int param_2);
 void FUN_003a5980(u64 param_1);
@@ -3028,8 +3028,7 @@ void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7)
 u64
 
 FUN_003a5570(u32 param_1,u64 param_2,u64 param_3,u32 param_4,
-
-            u64 param_5,long param_6,u64 param_7,u64 param_8,u64 param_9
+            u64 param_5,long param_6,u64 param_7,u32 param_8,u64 param_9
 
             )
 

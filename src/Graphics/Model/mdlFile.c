@@ -4583,11 +4583,11 @@ u64 FUN_00320ba0(u32 param_1,u32 *param_2)
 
   int iVar2;
 
-  u32 uVar3;
+  u64 uVar3;
 
-  u32 uVar4;
+  u64 uVar4;
 
-  int lVar5;
+  long lVar5;
 
   int iVar6;
 
