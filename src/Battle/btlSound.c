@@ -1744,7 +1744,7 @@ u32 FUN_002ded60(int param_1)
 // FUN_002DEFE0 NONMATCHING
 
 
-u32 FUN_002defe0(int param_1,u32 param_2)
+u32 FUN_002defe0(int param_1)
 
 
 
@@ -1760,9 +1760,8 @@ u32 FUN_002defe0(int param_1,u32 param_2)
 
   int aiStack_30 [12];
   
-  param_2 = 1;
-  asm volatile("" : "+r"(param_2));
-  if (FUN_0010a500(4) == param_2) {
+  lVar2 = FUN_0010a500(4);
+  if (lVar2 == 1) {
 
     return 0xffffffff;
 
