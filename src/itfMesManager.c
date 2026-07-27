@@ -1582,11 +1582,11 @@ void FUN_003a3680(u32 *param_1)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
-  long lVar5;
+  int lVar5;
 
-  long lVar6;
+  int lVar6;
 
   
 
