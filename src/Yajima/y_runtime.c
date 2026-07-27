@@ -5334,7 +5334,7 @@ void FUN_00434e60(void)
 
 {
   char cVar1;
-  u8 uVar2;
+  int uVar2;
   int iVar3;
   
   for (iVar3 = 1; iVar3 < 4; iVar3 = iVar3 + 1) {
