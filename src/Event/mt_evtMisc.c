@@ -3060,7 +3060,7 @@ float FUN_0038a220(int param_1)
 
 
 void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5,
-                  u64 param_6,u64 param_7,u64 param_8,u64 param_9)
+                  u32 param_6,u32 param_7,u32 param_8,u32 param_9)
 
 
 {
