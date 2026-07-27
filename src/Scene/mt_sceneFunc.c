@@ -4053,7 +4053,7 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   float fVar5;
 

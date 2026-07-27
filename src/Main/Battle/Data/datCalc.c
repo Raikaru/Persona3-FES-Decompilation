@@ -7255,7 +7255,6 @@ void FUN_0030db80(void)
   float fVar2;
   float fVar3;
   float fVar4;
-  float fVar5;
   
   lVar1 = FUN_003111f0();
   if (lVar1 == 0) {
@@ -7275,8 +7274,8 @@ void FUN_0030db80(void)
     fVar2 = (float)FUN_0030fdf0(0xe,2);
     fVar3 = (float)FUN_0030fdf0(0xe,2);
     fVar4 = (float)FUN_0030fdf0(0x13,0);
-    fVar5 = (float)FUN_0030fdf0(0xd,1);
-    fVar4 = sqrtf(((fVar4 * 30.0f) / ((fVar2 + fVar3) * 5.0f)) * (fVar5 / 5.0f)) * 10.0f;
+    fVar4 = sqrtf(((fVar4 * 30.0f) / ((fVar2 + fVar3) * 5.0f)) *
+                  ((float)FUN_0030fdf0(0xd,1) / 5.0f)) * 10.0f;
     fVar2 = (float)FUN_0030fdf0(0xc,0);
     fVar4 = fVar4 * fVar2;
     fVar2 = (float)FUN_0030fdf0(0x17,0);

@@ -825,23 +825,23 @@ u32 FUN_0040f030(int param_1,int param_2,int param_3)
     if (param_3 != 0) {
       sVar13 = *(short *)((int)param_3 + 6);
       if (sVar13 != 4) {
-        if ((sVar13 != 2) && (sVar13 == 1)) {
+        if (sVar13 == 1) {
           FUN_00521408(puVar3,0,0x28);
           *(u16 *)(puVar3 + 2) = 0x140;
           *(u16 *)(puVar3 + 1) = 0x140;
           *(u16 *)((int)puVar3 + 6) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
           *(u16 *)((int)puVar3 + 0xe) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
-          uVar4 = *puVar3;
-          *puVar3 = uVar4 | 1;
-          *puVar3 = uVar4 & 0xfffffff7 | 1;
+          uVar4 = *puVar3 | 1;
+          *puVar3 = uVar4;
+          *puVar3 = uVar4 & 0xfffffff7;
           *(u16 *)(puVar3 + 7) = 0x280;
           *(u16 *)(puVar3 + 6) = 0x280;
           *(u16 *)((int)puVar3 + 0x1a) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
           *(u16 *)(puVar3 + 9) = 0x30;
           *(u16 *)((int)puVar3 + 0x22) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
-          uVar4 = puVar3[5];
-          puVar3[5] = uVar4 | 4;
-          puVar3[5] = uVar4 & 0xfffffff7 | 4;
+          uVar4 = puVar3[5] | 4;
+          puVar3[5] = uVar4;
+          puVar3[5] = uVar4 & 0xfffffff7;
           puVar3[10] = 0;
         }
       }

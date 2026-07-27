@@ -712,7 +712,6 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
 {
     MaestroStreamWork* work;
     KwlnTask* task;
-    s32 i;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
     if (work == NULL)
@@ -726,10 +725,10 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
         return NULL;
     }
 
-    for (i = 0; i < 4; i++)
-    {
-        work->dimensions[i] = Maestro_Dimension(dimensions, i);
-    }
+    work->dimensions[0] = ((volatile s16*)&dimensions)[0];
+    work->dimensions[1] = ((volatile s16*)&dimensions)[1];
+    work->dimensions[2] = ((volatile s16*)&dimensions)[2];
+    work->dimensions[3] = ((volatile s16*)&dimensions)[3];
     sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
     work->useCdvd = true;
@@ -1340,6 +1339,8 @@ void func_00112110(void* param_1)
             node->state = 5;
             break;
         }
+        case 5:
+            break;
     }
 }
 
@@ -3863,7 +3864,7 @@ u32 func_001167c0(int param_1,u32 param_2)
 // FUN_001167F0 NONMATCHING
 
 
-u32 func_001167f0(u64 param_1)
+u32 func_001167f0(u32 param_1)
 
 
 
@@ -3873,7 +3874,7 @@ u32 func_001167f0(u64 param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int lVar4;
 
