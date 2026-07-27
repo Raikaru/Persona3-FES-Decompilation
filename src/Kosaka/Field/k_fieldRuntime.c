@@ -4831,6 +4831,40 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             blended.z = vector2[geometryIndex].z + normal0.z;
             vertices[geometryIndex] = blended;
         }
+        if (work->state == 2 && vertices != NULL && count != 0 &&
+            vector0 != NULL && vector1 != NULL &&
+            vector2 != NULL && vector3 != NULL)
+        {
+            u32 recordIndex;
+            u8* recordBase;
+            RuntimeVec3 record0;
+            RuntimeVec3 record1;
+
+            recordBase = (u8*)vertices;
+            for (recordIndex = 0; recordIndex < count; recordIndex++)
+            {
+                record0 = vector0[recordIndex];
+                record1 = vector1[recordIndex];
+                *(f32*)(recordBase + 0) = record0.x + record1.x;
+                *(f32*)(recordBase + 4) = record0.y + record1.y;
+                *(f32*)(recordBase + 8) = record0.z + record1.z;
+                record0 = vector2[recordIndex];
+                record1 = vector3[recordIndex];
+                *(f32*)(recordBase + 0xc) = record0.x + record1.x;
+                *(f32*)(recordBase + 0x10) = record0.y + record1.y;
+                *(f32*)(recordBase + 0x14) = record0.z + record1.z;
+                *(f32*)(recordBase + 0x18) =
+                    (*(f32*)(recordBase + 0) +
+                     *(f32*)(recordBase + 0xc)) * 0.5f;
+                *(f32*)(recordBase + 0x1c) =
+                    (*(f32*)(recordBase + 4) +
+                     *(f32*)(recordBase + 0x10)) * 0.5f;
+                *(f32*)(recordBase + 0x20) =
+                    (*(f32*)(recordBase + 8) +
+                     *(f32*)(recordBase + 0x14)) * 0.5f;
+                recordBase += 0x24;
+            }
+        }
         if (vertices != NULL && count != 0 &&
             vector0 != NULL && vector1 != NULL &&
             vector2 != NULL && vector3 != NULL)
