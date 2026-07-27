@@ -85,6 +85,10 @@ extern void K_Draw_RotatePosition(void* task, const RuntimeVec3* axis,
 extern void* func_001a5000(void* task);
 extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
+#pragma alias DAT_007e094c_abs DAT_007e094c
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u8 DAT_007e094c_abs[];
+extern u8 DAT_007e094e_abs[];
 extern u8 DAT_007e095e[];
 extern u8 DAT_007e0960[];
 extern u16 DAT_007e0952;
@@ -7615,16 +7619,16 @@ s32 func_001ef7f0(RuntimeTask* task)
         case 0:
             if ((work->flags & 2) != 0)
             {
-                if ((work->completedFlags & 1) == 0)
+                if ((~work->completedFlags & 1) != 0)
                 {
                     break;
                 }
             }
-            else if ((work->completedFlags & 2) == 0)
+            else if ((~work->completedFlags & 2) != 0)
             {
                 break;
             }
-            if ((work->flags & 0x2000) == 0)
+            if ((~work->flags & 0x2000) != 0)
             {
                 break;
             }
@@ -7638,7 +7642,14 @@ s32 func_001ef7f0(RuntimeTask* task)
             {
                 func_001f1c90(task);
             }
-            H_Snd_PlayBgm((work->flags & 2) != 0 ? 78 : 60, 1);
+            if ((work->flags & 2) != 0)
+            {
+                H_Snd_PlayBgm(78, 1);
+            }
+            else
+            {
+                H_Snd_PlayBgm(60, 1);
+            }
             work->state = 1;
             break;
 
@@ -7744,120 +7755,11 @@ s32 func_001ef7f0(RuntimeTask* task)
             }
             break;
 
-        case 8:
-            switch (*(u32*)(bytes + 0x10))
-            {
-                case 0:
-                    if ((work->completedFlags & 4) == 0 ||
-                        func_00233d20() != 0)
-                    {
-                        break;
-                    }
-                    if (*(u32*)(bytes + 0x3c) != 0)
-                    {
-                        func_0019d3f0(D_00684578, 0x34c);
-                    }
-                    func_003c72d0(func_002345d0(0));
-                    *(u32*)(bytes + 0x3c) = 1;
-                    func_001f0ff0();
-                    break;
-
-                case 1:
-                    if (func_00236340() != 0)
-                    {
-                        break;
-                    }
-                    if ((work->flags & 0x80000) == 0)
-                    {
-                        func_002767e0();
-                        work->flags |= 0x80000;
-                    }
-                    if ((work->flags & 0x40000) != 0)
-                    {
-                        func_003c7990(0);
-                        if (func_003c7850() != 0)
-                        {
-                            break;
-                        }
-                        func_003c7650(0);
-                        func_001f10b0();
-                    }
-                    else if (*(u32*)(bytes + 0xa680) == 2)
-                    {
-                        func_003c7990(1);
-                        if (func_003c7850() != 0)
-                        {
-                            break;
-                        }
-                        func_003c7650(1);
-                        func_001f10f0();
-                    }
-                    else
-                    {
-                        func_003c7990(1);
-                        if (func_003c7850() != 0)
-                        {
-                            break;
-                        }
-                        func_003c7650(1);
-                        func_001f0d70(task);
-                    }
-                    break;
-
-                case 2:
-                    func_003c7990(0);
-                    if (func_003c7850() != 0)
-                    {
-                        break;
-                    }
-                    func_003c7650(0);
-                    func_003c7c20(0, func_00175410() & 0xffff, 0);
-                    func_003c7430(4);
-                    func_0010a4e0(1, 0, 8, 0);
-                    *(u32*)(bytes + 0x10) = 3;
-                    break;
-
-                case 3:
-                    if (*(u32*)(bytes + 0xa680) == 2)
-                    {
-                        func_003c7990(1);
-                        if (func_003c7850() != 0)
-                        {
-                            break;
-                        }
-                        func_003c7650(1);
-                        func_001f10f0();
-                    }
-                    else
-                    {
-                        func_003c7990(1);
-                        if (func_003c7850() != 0)
-                        {
-                            break;
-                        }
-                        func_003c7650(1);
-                        func_001f0d70(task);
-                    }
-                    break;
-
-                case 4:
-                    if (H_Fade_IsFadeOutDone() != 0)
-                    {
-                        func_001f0fd0(task);
-                        func_001f0d70(task);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-
         case 9:
             switch (*(u32*)(bytes + 0x38))
             {
                 case 0:
-                    if ((work->completedFlags & 4) == 0)
+                    if ((~work->completedFlags & 4) != 0)
                     {
                         break;
                     }
@@ -7868,7 +7770,8 @@ s32 func_001ef7f0(RuntimeTask* task)
                     func_003c72d0(func_002345d0(1));
                     *(u32*)(bytes + 0x3c) = 2;
                     *(s32*)(bytes + 0x154) = 0;
-                    value = *(u16*)(bytes + 0x140);
+                    value = *(u16*)(bytes + 0x140 +
+                                    *(s32*)(bytes + 0x154) * 2);
                     func_003c7c20(0, value, 5);
                     if (iGpffffb6fc != NULL)
                     {
@@ -7966,17 +7869,133 @@ s32 func_001ef7f0(RuntimeTask* task)
                         work->flags &= ~0x200000;
                         *(u32*)(bytes + 0x38) = 4;
                     }
+                    else
+                    {
+                        if (*(u32*)(bytes + 0x3c) != 2)
+                        {
+                            func_0019d3f0(D_00684578, 0x32a);
+                        }
+                        func_003c77a0();
+                        func_003c72d0(func_002345d0(0));
+                        *(u32*)(bytes + 0x3c) = 1;
+                        func_001f0d70(task);
+                    }
                     break;
 
                 case 4:
-                    if (*(u32*)(bytes + 0x3c) != 2)
+                    if (func_00236340() == 0)
                     {
-                        func_0019d3f0(D_00684578, 0x32a);
+                        func_001f0d70(task);
                     }
-                    func_003c77a0();
+                    break;
+
+                default:
+                    break;
+            }
+            break;
+
+        case 8:
+            switch (*(u32*)(bytes + 0x10))
+            {
+                case 0:
+                    if ((~work->completedFlags & 4) != 0 ||
+                        func_00233d20() != 0)
+                    {
+                        break;
+                    }
+                    if (*(u32*)(bytes + 0x3c) != 0)
+                    {
+                        func_0019d3f0(D_00684578, 0x34c);
+                    }
                     func_003c72d0(func_002345d0(0));
                     *(u32*)(bytes + 0x3c) = 1;
-                    func_001f0d70(task);
+                    func_001f0ff0();
+                    break;
+
+                case 1:
+                    if (func_00236340() != 0)
+                    {
+                        break;
+                    }
+                    if ((~work->flags & 0x80000) != 0)
+                    {
+                        func_002767e0();
+                        work->flags |= 0x80000;
+                    }
+                    if ((work->flags & 0x40000) != 0)
+                    {
+                        func_003c7990(0);
+                        if (func_003c7850() != 0)
+                        {
+                            break;
+                        }
+                        func_003c7650(0);
+                        func_001f10b0();
+                    }
+                    else if (*(u32*)(bytes + 0xa680) == 2)
+                    {
+                        func_003c7990(1);
+                        if (func_003c7850() != 0)
+                        {
+                            break;
+                        }
+                        func_003c7650(1);
+                        func_001f10f0();
+                    }
+                    else
+                    {
+                        func_003c7990(1);
+                        if (func_003c7850() != 0)
+                        {
+                            break;
+                        }
+                        func_003c7650(1);
+                        func_001f0d70(task);
+                    }
+                    break;
+
+                case 2:
+                    func_003c7990(0);
+                    if (func_003c7850() != 0)
+                    {
+                        break;
+                    }
+                    func_003c7650(0);
+                    func_003c7c20(0, func_00175410() & 0xffff, 0);
+                    func_003c7430(4);
+                    func_0010a4e0(1, 0, 8, 0);
+                    *(u32*)(bytes + 0x10) = 3;
+                    break;
+
+                case 3:
+                    if (*(u32*)(bytes + 0xa680) == 2)
+                    {
+                        func_003c7990(1);
+                        if (func_003c7850() != 0)
+                        {
+                            break;
+                        }
+                        func_003c7650(1);
+                        func_001f10f0();
+                    }
+                    else
+                    {
+                        func_003c7990(1);
+                        if (func_003c7850() != 0)
+                        {
+                            break;
+                        }
+                        func_003c7650(1);
+                        func_001f0d70(task);
+                    }
+                    break;
+
+                case 4:
+                    if (H_Fade_IsFadeOutDone() != 0)
+                    {
+                        func_001f0fd0(task);
+                        func_001f0d70(task);
+                    }
                     break;
 
                 default:
@@ -7992,7 +8011,7 @@ s32 func_001ef7f0(RuntimeTask* task)
             switch (work->selection)
             {
                 case 0:
-                    if ((work->completedFlags & 4) == 0)
+                    if ((~work->completedFlags & 4) != 0)
                     {
                         break;
                     }
@@ -8003,8 +8022,10 @@ s32 func_001ef7f0(RuntimeTask* task)
                     func_003c72d0(func_002345d0(0));
                     *(u32*)(bytes + 0x3c) = 1;
                     *(s32*)(bytes + 0xc4) = 0;
-                    value = func_00173220(*(u16*)(bytes + 0xd4));
-                    func_003c7bc0(0, value);
+                    func_003c7bc0(
+                        0, func_00173220(
+                               *(u16*)(bytes + 0xd4 +
+                                       *(s32*)(bytes + 0xc4) * 2)));
                     func_003c7430(1);
                     work->selection = 1;
                     break;
@@ -8020,7 +8041,7 @@ s32 func_001ef7f0(RuntimeTask* task)
                         break;
                     }
                     func_003c7650(1);
-                    if ((work->flags & 0x200000) == 0)
+                    if ((~work->flags & 0x200000) != 0)
                     {
                         func_00108570();
                         func_00108670(5);
@@ -8042,7 +8063,7 @@ s32 func_001ef7f0(RuntimeTask* task)
                 case 3:
                     func_003c77a0();
                     *(u32*)(bytes + 0x3c) = 0;
-                    if ((work->flags & 0x100000) == 0)
+                    if ((~work->flags & 0x100000) != 0)
                     {
                         func_00275a90();
                         work->flags |= 0x100000;
@@ -8051,11 +8072,13 @@ s32 func_001ef7f0(RuntimeTask* task)
                     {
                         func_0019d3f0(D_00684578, 0x3f3);
                     }
-                    entry.id = *(u16*)(bytes + 0xd4 +
-                                       *(s32*)(bytes + 0xc4) * 2);
-                    func_00264e30(entry.id);
+                    func_00264e30(
+                        *(u16*)(bytes + 0xd4 +
+                                *(s32*)(bytes + 0xc4) * 2));
                     *(u32*)(bytes + 0x3c) = 3;
                     entry.flags = 0;
+                    entry.id = *(u16*)(bytes + 0xd4 +
+                                       *(s32*)(bytes + 0xc4) * 2);
                     entry.resource = func_00264ff0();
                     func_00272400(&entry);
                     func_002769c0(entry.resource, entry.id);
@@ -8106,10 +8129,13 @@ s32 func_001ef7f0(RuntimeTask* task)
                     {
                         func_00277070();
                         entry.flags = 0;
-                        entry.id = *(u16*)(bytes + 0xd4 + value * 2);
+                        entry.id = *(u16*)(bytes + 0xd4 +
+                                           *(s32*)(bytes + 0xc4) * 2);
                         entry.resource = func_00264ff0();
                         func_00272400(&entry);
-                        func_00264ef0(entry.id);
+                        func_00264ef0(
+                            *(u16*)(bytes + 0xd4 +
+                                    *(s32*)(bytes + 0xc4) * 2));
                         work->selection = 4;
                     }
                     else

@@ -773,6 +773,7 @@ s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
 void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 {
     ResrcModelNpc* npcRes;
+    ResrcModelNpc** npcEntry;
     ResrcLightNpc* npcLight;
     RwRGBAReal ambientColor;
     RwRGBAReal directionalColor;
@@ -781,7 +782,6 @@ void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
     RwMatrix secondaryDirectionalMatrix;
     RwV3d position;
     s32 npcCount;
-    s32 i;
     s32 slot;
     u32 flags;
     ResrcModelNpc* npcList[SCENEDRAW_MAX_SORTED_MODELS];
@@ -812,22 +812,22 @@ void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
         qsort(npcList, npcCount, sizeof(npcList[0]), K_SceneDraw_CompareNpcDistToCamera);
     }
 
-    for (i = npcCount - 1; i >= 0; i--)
+    for (npcCount--; npcCount >= 0; npcCount--)
     {
-        npcRes = npcList[i];
-        flags = npcRes->base.flags;
+        npcEntry = &npcList[npcCount];
+        flags = (*npcEntry)->base.flags;
         if (flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
         {
             if (flags & SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT)
             {
-                func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(npcRes, 0x12c));
-                func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(npcRes, 0x13c));
-                func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(npcRes, 0x190));
+                func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(*npcEntry, 0x12c));
+                func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(*npcEntry, 0x13c));
+                func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(*npcEntry, 0x190));
                 RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
-                                 SCENEDRAW_RESRC_MATRIX(npcRes, 0x150),
+                                 SCENEDRAW_RESRC_MATRIX(*npcEntry, 0x150),
                                  rwCOMBINEREPLACE);
                 RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
-                                 SCENEDRAW_RESRC_MATRIX(npcRes, 0x1a0),
+                                 SCENEDRAW_RESRC_MATRIX(*npcEntry, 0x1a0),
                                  rwCOMBINEREPLACE);
             }
             else
@@ -845,19 +845,19 @@ void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 
             if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
             {
-                func_00317a20(npcRes->mdl);
+                func_00317a20((*npcEntry)->mdl);
                 for (slot = 0; slot < 3; slot++)
                 {
-                    if (SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
+                    if (SCENEDRAW_RESRC_PTR(*npcEntry, Model, 0x100 + slot * sizeof(Model*)) != NULL)
                     {
-                        if (func_00318ed0(npcRes->mdl, 2, &position) == 0)
+                        if (func_00318ed0((*npcEntry)->mdl, 2, &position) == 0)
                         {
-                            position = mdlGetMatrix(npcRes->mdl)->pos;
+                            position = mdlGetMatrix((*npcEntry)->mdl)->pos;
                             position.y += 175.0f;
                         }
 
-                        func_0034fdf0(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), &position);
-                        func_0034fd70(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), 5);
+                        func_0034fdf0(SCENEDRAW_RESRC_PTR(*npcEntry, Model, 0x100 + slot * sizeof(Model*)), &position);
+                        func_0034fd70(SCENEDRAW_RESRC_PTR(*npcEntry, Model, 0x100 + slot * sizeof(Model*)), 5);
                     }
                 }
 
@@ -1170,14 +1170,12 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
-    register u32 fieldHidden;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
-    fieldHidden = 1;
     while (fld != NULL)
     {
-        if (visible == fieldHidden)
+        if (visible == 1)
         {
             fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
@@ -1187,7 +1185,7 @@ void func_001a0040(u32 visible, u32 updateField)
         {
             fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
-            *(u32*)((u8*)field + 0x34) = fieldHidden;
+            *(u32*)((u8*)field + 0x34) = 1;
         }
         fld = fld->next;
     }
@@ -1841,27 +1839,25 @@ void* func_001a13b0(void* object, void** listHead)
     func_005225a8("draw object", (u8*)object + 0x10, *((u8*)object + 0x50));
     manager = func_004d11f0();
     resource = func_004d1170(manager, (u8*)object + 0x10);
-    if (resource != NULL)
+    if (resource == NULL)
     {
-        return object;
-    }
-
-    manager = func_004d11f0();
-    func_004d1110(manager, object);
-    allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
-    func_00524270(allocation, (u8*)object + 0x10);
-    if (*listHead == NULL)
-    {
-        *listHead = allocation;
-    }
-    else
-    {
-        tail = (void**)((u8*)*listHead + 0x40);
-        while (*tail != NULL)
+        manager = func_004d11f0();
+        func_004d1110(manager, object);
+        allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
+        func_00524270(allocation, (u8*)object + 0x10);
+        if (*listHead == NULL)
         {
-            tail = (void**)((u8*)*tail + 0x40);
+            *listHead = allocation;
         }
-        *tail = allocation;
+        else
+        {
+            tail = (void**)((u8*)*listHead + 0x40);
+            while (*tail != NULL)
+            {
+                tail = (void**)((u8*)*tail + 0x40);
+            }
+            *tail = allocation;
+        }
     }
 
     return object;
