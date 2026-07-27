@@ -1473,7 +1473,7 @@ void FUN_00395e20(int param_1)
 
       if (0 < iVar6) {
 
-        fStack_48 = (float)uStack_40 * 220.0f + 210.0f;
+        fStack_48 = ((float *)&uStack_40)[0] * 220.0f + 210.0f;
 
         fStack_44 = (1.0f - ((float *)&uStack_40)[1]) * 220.0f + 70.0f;
 

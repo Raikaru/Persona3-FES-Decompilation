@@ -4347,7 +4347,7 @@ void FUN_00320810(int *param_1)
 
 
 {
-  u8 *iVar1;
+  u32 *iVar1;
   int iVar3;
   u32 uVar2;
   float fVar4;
@@ -4360,10 +4360,10 @@ void FUN_00320810(int *param_1)
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
       uVar6 = uVar2 * 0x10;
       asm volatile("" : "+r"(uVar6));
-      iVar1 = (u8 *)(iVar3 + uVar6);
+      iVar1 = (u32 *)(iVar3 + uVar6);
       asm volatile("" : "+r"(iVar1));
-      if (*(int *)(iVar1 + 0xc) != 0) {
-        fVar4 = *(float *)(iVar1 + 4);
+      if (*(int *)((u8 *)iVar1 + 0xc) != 0) {
+        fVar4 = *(float *)((u8 *)iVar1 + 4);
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
         }
@@ -36934,7 +36934,7 @@ void FUN_003403b0(int param_1,int param_2)
 
   int iVar3;
 
-  u32 *puVar4;
+  float *pfVar4;
 
   u32 uVar5;
 
@@ -36946,7 +36946,7 @@ void FUN_003403b0(int param_1,int param_2)
 
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
-    puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
+    pfVar4 = (float *)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
     for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
 
@@ -36954,73 +36954,43 @@ void FUN_003403b0(int param_1,int param_2)
 
         if (*(char *)(param_2 + 0xc4) == '\0') {
 
-          *puVar4 = 0;
-
-          puVar4[1] = *(u32 *)(param_2 + 0xa8);
-
-          puVar4[2] = 0x3f000000;
-
-          puVar4[3] = *(u32 *)(param_2 + 0xa8);
-
-          puVar4[4] = 0;
-
-          puVar4[5] = 0x3f800000;
-
-          puVar4[6] = 0x3f000000;
-
-          puVar4[7] = 0x3f800000;
-
-          puVar4[8] = 0;
-
-          puVar4[9] = *(u32 *)(param_2 + 0xa4);
-
-          puVar4[10] = 0x3f000000;
-
-          puVar4[0xb] = *(u32 *)(param_2 + 0xa4);
-
-          puVar4[0xc] = 0;
-
-          puVar4[0xd] = 0;
-
-          puVar4[0xe] = 0x3f000000;
-
-          puVar4[0xf] = 0;
+          pfVar4[0] = 0.0f;
+          pfVar4[1] = *(float *)(param_2 + 0xa8);
+          pfVar4[2] = 0.5f;
+          pfVar4[3] = *(float *)(param_2 + 0xa8);
+          pfVar4[4] = 0.0f;
+          pfVar4[5] = 1.0f;
+          pfVar4[6] = 0.5f;
+          pfVar4[7] = 1.0f;
+          pfVar4[8] = 0.0f;
+          pfVar4[9] = *(float *)(param_2 + 0xa4);
+          pfVar4[10] = 0.5f;
+          pfVar4[0xb] = *(float *)(param_2 + 0xa4);
+          pfVar4[0xc] = 0.0f;
+          pfVar4[0xd] = 0.0f;
+          pfVar4[0xe] = 0.5f;
+          pfVar4[0xf] = 0.0f;
 
         }
 
         else {
 
-          *puVar4 = 0;
-
-          puVar4[1] = *(u32 *)(param_2 + 0xa8);
-
-          puVar4[2] = 0x3f800000;
-
-          puVar4[3] = *(u32 *)(param_2 + 0xa8);
-
-          puVar4[4] = 0;
-
-          puVar4[5] = 0x3f800000;
-
-          puVar4[6] = 0x3f800000;
-
-          puVar4[7] = 0x3f800000;
-
-          puVar4[8] = 0;
-
-          puVar4[9] = *(u32 *)(param_2 + 0xa4);
-
-          puVar4[10] = 0x3f800000;
-
-          puVar4[0xb] = *(u32 *)(param_2 + 0xa4);
-
-          puVar4[0xc] = 0;
-
-          puVar4[0xd] = 0;
-
-          puVar4[0xe] = 0x3f800000;
-
-          puVar4[0xf] = 0;
+          pfVar4[0] = 0.0f;
+          pfVar4[1] = *(float *)(param_2 + 0xa8);
+          pfVar4[2] = 1.0f;
+          pfVar4[3] = *(float *)(param_2 + 0xa8);
+          pfVar4[4] = 0.0f;
+          pfVar4[5] = 1.0f;
+          pfVar4[6] = 1.0f;
+          pfVar4[7] = 1.0f;
+          pfVar4[8] = 0.0f;
+          pfVar4[9] = *(float *)(param_2 + 0xa4);
+          pfVar4[10] = 1.0f;
+          pfVar4[0xb] = *(float *)(param_2 + 0xa4);
+          pfVar4[0xc] = 0.0f;
+          pfVar4[0xd] = 0.0f;
+          pfVar4[0xe] = 1.0f;
+          pfVar4[0xf] = 0.0f;
 
         }
 
@@ -37028,77 +36998,47 @@ void FUN_003403b0(int param_1,int param_2)
 
       else if (*(char *)(param_2 + 0xc4) == '\0') {
 
-        *puVar4 = 0x3f000000;
-
-        puVar4[1] = *(u32 *)(param_2 + 0xa8);
-
-        puVar4[2] = 0x3f800000;
-
-        puVar4[3] = *(u32 *)(param_2 + 0xa8);
-
-        puVar4[4] = 0x3f000000;
-
-        puVar4[5] = 0x3f800000;
-
-        puVar4[6] = 0x3f800000;
-
-        puVar4[7] = 0x3f800000;
-
-        puVar4[8] = 0x3f000000;
-
-        puVar4[9] = *(u32 *)(param_2 + 0xa4);
-
-        puVar4[10] = 0x3f800000;
-
-        puVar4[0xb] = *(u32 *)(param_2 + 0xa4);
-
-        puVar4[0xc] = 0x3f000000;
-
-        puVar4[0xd] = 0;
-
-        puVar4[0xe] = 0x3f800000;
-
-        puVar4[0xf] = 0;
+        pfVar4[0] = 0.5f;
+        pfVar4[1] = *(float *)(param_2 + 0xa8);
+        pfVar4[2] = 1.0f;
+        pfVar4[3] = *(float *)(param_2 + 0xa8);
+        pfVar4[4] = 0.5f;
+        pfVar4[5] = 1.0f;
+        pfVar4[6] = 1.0f;
+        pfVar4[7] = 1.0f;
+        pfVar4[8] = 0.5f;
+        pfVar4[9] = *(float *)(param_2 + 0xa4);
+        pfVar4[10] = 1.0f;
+        pfVar4[0xb] = *(float *)(param_2 + 0xa4);
+        pfVar4[0xc] = 0.5f;
+        pfVar4[0xd] = 0.0f;
+        pfVar4[0xe] = 1.0f;
+        pfVar4[0xf] = 0.0f;
 
       }
 
       else {
 
-        *puVar4 = 0;
-
-        puVar4[1] = *(u32 *)(param_2 + 0xa8);
-
-        puVar4[2] = 0x3f800000;
-
-        puVar4[3] = *(u32 *)(param_2 + 0xa8);
-
-        puVar4[4] = 0;
-
-        puVar4[5] = 0x3f800000;
-
-        puVar4[6] = 0x3f800000;
-
-        puVar4[7] = 0x3f800000;
-
-        puVar4[8] = 0;
-
-        puVar4[9] = *(u32 *)(param_2 + 0xa4);
-
-        puVar4[10] = 0x3f800000;
-
-        puVar4[0xb] = *(u32 *)(param_2 + 0xa4);
-
-        puVar4[0xc] = 0;
-
-        puVar4[0xd] = 0;
-
-        puVar4[0xe] = 0x3f800000;
-
-        puVar4[0xf] = 0;
+        pfVar4[0] = 0.0f;
+        pfVar4[1] = *(float *)(param_2 + 0xa8);
+        pfVar4[2] = 1.0f;
+        pfVar4[3] = *(float *)(param_2 + 0xa8);
+        pfVar4[4] = 0.0f;
+        pfVar4[5] = 1.0f;
+        pfVar4[6] = 1.0f;
+        pfVar4[7] = 1.0f;
+        pfVar4[8] = 0.0f;
+        pfVar4[9] = *(float *)(param_2 + 0xa4);
+        pfVar4[10] = 1.0f;
+        pfVar4[0xb] = *(float *)(param_2 + 0xa4);
+        pfVar4[0xc] = 0.0f;
+        pfVar4[0xd] = 0.0f;
+        pfVar4[0xe] = 1.0f;
+        pfVar4[0xf] = 0.0f;
 
       }
 
-      puVar4 = puVar4 + 0x10;
+      pfVar4 = pfVar4 + 0x10;
 
     }
 
@@ -52582,6 +52522,7 @@ void FUN_00350190(void)
 {
 
   u32 uVar1;
+  u32 uVar3;
   
 
   uVar1 = FUN_0035ed20_i(0);
@@ -52597,7 +52538,9 @@ void FUN_00350190(void)
   *(volatile u32 *)DAT_00957bc8_abs = 0;
   *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
-  DAT_007ce578 = 1;
+  uVar3 = 1;
+  asm volatile("" : "+r"(uVar3));
+  DAT_007ce578 = uVar3;
   return;
 
 
