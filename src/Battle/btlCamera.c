@@ -3028,14 +3028,12 @@ special_done:
     modeScale = 1.0f;
     if (special != 0 || mode != 0)
     {
-        btlUnit002880e0(persona, 1);
         *(BtlUnit**)((u8*)camera + 0x120) = persona;
         *(u16*)((u8*)camera + 0x124) = 0;
         modeScale = 3.0f;
     }
     else
     {
-        btlUnit002880e0(persona, 0);
         *(BtlUnit**)((u8*)camera + 0x120) = persona;
         *(u16*)((u8*)camera + 0x124) = 1;
         if ((*(u16*)(iGpffffb73c + (persona->charId * 0x58)) & 1) != 0)

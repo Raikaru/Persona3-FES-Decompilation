@@ -20,6 +20,17 @@ extern void fclMisc9390Call(int *);
 #pragma alias fclMisc9460DirectCall FUN_003c9460
 extern u32 fclMisc9460DirectCall(int *);
 #include "Kosaka/k_assert.h"
+typedef struct FclMiscVec2
+{
+    f32 x;
+    f32 y;
+} FclMiscVec2;
+#pragma alias fclMiscDrawStatusCall FUN_00133180
+extern void fclMiscDrawStatusCall(FclMiscVec2 position, f32 alpha,
+                                   void *persona, void *currentStats, s32 fade);
+#pragma alias fclMiscDrawStatusNoPersonaCall FUN_001332f0
+extern void fclMiscDrawStatusNoPersonaCall(FclMiscVec2 position, f32 alpha,
+                                            void *unused, void *persona, s32 fade);
 typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
@@ -2044,13 +2055,16 @@ void FUN_003ca960(int param_1)
 
     if ((*(u32 *)(param_1 + 8) & 2) == 0) {
 
-      FUN_00133180(0,CONCAT44(uStack_4,fStack_8),iVar4,iVar4 + 4,*(u16 *)(param_1 + 0x12));
+      fclMiscDrawStatusCall(*(FclMiscVec2 *)&fStack_8,0.0f,(void *)iVar4,
+                            (void *)(iVar4 + 4),*(u16 *)(param_1 + 0x12));
 
     }
 
     else {
 
-      FUN_001332f0(0,CONCAT44(uStack_4,fStack_8),iVar4,iVar4 + 4,*(u16 *)(param_1 + 0x12));
+      fclMiscDrawStatusNoPersonaCall(*(FclMiscVec2 *)&fStack_8,0.0f,
+                                     (void *)iVar4,(void *)(iVar4 + 4),
+                                     *(u16 *)(param_1 + 0x12));
 
     }
 
@@ -2096,15 +2110,16 @@ void FUN_003ca960(int param_1)
 
       if ((*(u32 *)(param_1 + 8) & 2) == 0) {
 
-        FUN_00133180(0,CONCAT44(uStack_4,fStack_8),iVar6,iVar6 + 4,
-
-                     (int)((float)(int)*(short *)(param_1 + 0x12) * (1.0f - (fVar7 + 1.0f))));
+        fclMiscDrawStatusCall(*(FclMiscVec2 *)&fStack_8,0.0f,(void *)iVar6,
+                              (void *)(iVar6 + 4),
+                              (int)((float)(int)*(short *)(param_1 + 0x12) * (1.0f - (fVar7 + 1.0f))));
 
       }
 
       else {
 
-        FUN_001332f0(0,CONCAT44(uStack_4,fStack_8),iVar6,iVar6 + 4);
+        fclMiscDrawStatusNoPersonaCall(*(FclMiscVec2 *)&fStack_8,0.0f,
+                                        (void *)iVar6,(void *)(iVar6 + 4),0);
 
       }
 
@@ -2138,15 +2153,16 @@ void FUN_003ca960(int param_1)
 
       if ((*(u32 *)(param_1 + 8) & 2) == 0) {
 
-        FUN_00133180(0,CONCAT44(uStack_4,fStack_8),iVar6,iVar6 + 4,
-
-                     (int)((float)(int)*(short *)(param_1 + 0x12) * (fVar7 + 1.0f)));
+        fclMiscDrawStatusCall(*(FclMiscVec2 *)&fStack_8,0.0f,(void *)iVar6,
+                              (void *)(iVar6 + 4),
+                              (int)((float)(int)*(short *)(param_1 + 0x12) * (fVar7 + 1.0f)));
 
       }
 
       else {
 
-        FUN_001332f0(0,CONCAT44(uStack_4,fStack_8),iVar6,iVar6 + 4);
+        fclMiscDrawStatusNoPersonaCall(*(FclMiscVec2 *)&fStack_8,0.0f,
+                                        (void *)iVar6,(void *)(iVar6 + 4),0);
 
       }
 

@@ -19764,7 +19764,7 @@ int FUN_003863c0(void)
       break;
     }
   }
-  return iVar1;
+u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
 }
 
@@ -19812,7 +19812,7 @@ u32 FUN_00386430(int param_1,short param_2,u32 param_3)
 
   for (; (puVar3 != (u16 *)0x0 && (DAT_007ce60c < 0x1e)); DAT_007ce60c = DAT_007ce60c + 1) {
 
-    *(u16 *)(DAT_00958850_abs + DAT_007ce60c * 2) = *puVar3;
+    *(u16 *)(&DAT_00958850 + DAT_007ce60c * 2) = *puVar3;
 
     puVar3 = *(u16 **)(puVar3 + 0x7c);
 
@@ -19822,7 +19822,7 @@ u32 FUN_00386430(int param_1,short param_2,u32 param_3)
 
   for (; (puVar3 != (u16 *)0x0 && (DAT_007ce60c < 0x1e)); DAT_007ce60c = DAT_007ce60c + 1) {
 
-    *(u16 *)(DAT_00958850_abs + DAT_007ce60c * 2) = *puVar3;
+    *(u16 *)(&DAT_00958850 + DAT_007ce60c * 2) = *puVar3;
 
     puVar3 = *(u16 **)(puVar3 + 0x7c);
 
@@ -19834,7 +19834,7 @@ u32 FUN_00386430(int param_1,short param_2,u32 param_3)
 
   while ((iVar1 = DAT_007ce608, iVar5 < DAT_007ce60c &&
 
-         ((param_2 != *(short *)(DAT_00958850_abs + iVar5 * 2) || (iVar1 = iVar5, param_2 == 0)))))
+         ((param_2 != *(short *)(&DAT_00958850 + iVar5 * 2) || (iVar1 = iVar5, param_2 == 0))))) {
 
     iVar5 = iVar5 + 1;
 
