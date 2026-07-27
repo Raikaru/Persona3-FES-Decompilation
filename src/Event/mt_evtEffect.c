@@ -1623,7 +1623,7 @@ u64 FUN_003962c0(int param_1)
 
       auStack_4[3] = 0xff;
 
-      FUN_00359b40(*(f32 *)(iVar4 + 0x690),(void *)(iVar4 + 0x684),auStack_4);
+      FUN_00359b40(*(f32 *)(iVar4 + 0x690),(void *)(iVar4 + 0x684),auStack_4,1);
 
       *(u32 *)(iVar4 + 0x680) = 0;
 

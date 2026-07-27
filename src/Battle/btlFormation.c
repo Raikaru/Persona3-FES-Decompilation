@@ -831,7 +831,7 @@ extern long func_002c5030(u64 param_1,u64 param_2,long param_3,int param_4);
 extern u32 func_002c5380(int param_1,int param_2,u16 *param_3,int param_4);
 extern u32 func_002c59d0(int param_1,int param_2,int param_3,long param_4);
 extern long func_002c5fc0(u64 param_1,u64 param_2,short param_3,int param_4);
-extern long func_002c6300(u64 param_1,u64 param_2,u16 param_3,long param_4);
+extern long func_002c6300(u64 param_1,u32 param_2,u16 param_3,long param_4);
 #pragma alias func_002c6300_s32 func_002c6300
 extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
@@ -8481,7 +8481,7 @@ long func_002c5fc0(u64 param_1,u64 param_2,short param_3,int param_4)
 
 // FUN_002c6300 NONMATCHING
 
-long func_002c6300(u64 param_1,u64 param_2,u16 param_3,long param_4)
+long func_002c6300(u64 param_1,u32 param_2,u16 param_3,long param_4)
 
 {
   u16 uVar1 = 0;
