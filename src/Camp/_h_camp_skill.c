@@ -671,6 +671,7 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
     }
 }
 
+#pragma schedule off
 static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 {
     return work->detailData + index * 0x24;
@@ -679,6 +680,7 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 // Retail row-coordinate recomputation is preserved at 0x163E34-0x1646D4.
 #pragma push
 // FUN_00163330 NONMATCHING
+#pragma schedule on
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
 {
     CampSkillRecord* record;

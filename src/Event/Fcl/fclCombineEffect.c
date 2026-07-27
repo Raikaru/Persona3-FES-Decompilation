@@ -108,6 +108,10 @@ void FUN_0040e3c0(u32 param_1,u32 param_2,u8 param_3,u32 param_4);
 extern code FUN_00418130_abs[];
 #pragma alias FUN_00418230_abs FUN_00418230
 extern code FUN_00418230_abs[];
+typedef struct {
+  f32 x;
+  f32 y;
+} FclEffectVec2;
 /* FUSION_GLOBALS */
 u32 DAT_006b2cf0;
 u32 DAT_006b2d70;
@@ -125,9 +129,9 @@ u32 DAT_006b2e50;
 u32 DAT_006b2e58;
 u32 DAT_006b2e5c;
 u32 DAT_006b2e60;
-u32 DAT_006b2e68;
+FclEffectVec2 DAT_006b2e68;
 u32 DAT_006b2e70;
-u32 DAT_006b2e78;
+FclEffectVec2 DAT_006b2e78;
 u32 DAT_006b2e80;
 u32 DAT_006b2e90;
 u32 DAT_006b2eb0;
@@ -2015,11 +2019,11 @@ u32 FUN_00419790(int param_1,int param_2)
 
   u32 uStack_28;
 
-  u64 uStack_20;
+  FclEffectVec2 uStack_20;
 
-  u32 uStack_18;
+  float uStack_18;
 
-  u64 uStack_10;
+  FclEffectVec2 uStack_10;
 
   float fStack_8;
 
@@ -2049,11 +2053,11 @@ u32 FUN_00419790(int param_1,int param_2)
 
   fVar4 = (float)FUN_0016ba80(0,uVar1);
 
-  (*(u32*)((u8*)&uStack_10 + 0)) = (float)uStack_10 + fVar4;
+  uStack_10.x = uStack_10.x + fVar4;
 
   fVar4 = (float)FUN_0016bb00(0,uVar1);
 
-  uStack_10 = CONCAT44((*(u32*)((u8*)&uStack_10 + 4)) + fVar4,(float)uStack_10);
+  uStack_10.y = uStack_10.y + fVar4;
 
   fVar4 = (float)FUN_0016bb80(0,uVar1);
 
@@ -3430,7 +3434,7 @@ u8 FUN_0041b5c0(int param_1,u32 *param_2)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 

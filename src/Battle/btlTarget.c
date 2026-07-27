@@ -1604,7 +1604,7 @@ int FUN_002d8f70(int param_1)
 {
   byte bVar1;
   ushort uVar2;
-  uint uVar3;
+  int uVar3;
   int iVar4;
   
   if (*(u8 *)(*(u32 *)(param_1 + 0x30) + 0xa2) == 0) {

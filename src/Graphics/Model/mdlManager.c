@@ -557,11 +557,14 @@ void mdlDestroy(Model* mdl)
     }
 
     data = mdl->runtimeData.refCountedData;
-    if (data != NULL && --(*(s16*)((u8*)data + 2)) == 0)
+    if (data != NULL)
     {
-        RwFree(*(void**)((u8*)data + 4));
+        *(u16*)((u8*)data + 2) = *(u16*)((u8*)data + 2) - 1;
+        if (*(u16*)((u8*)data + 2) == 0)
+        {
+            RwFree(*(void**)((u8*)data + 4));
+        }
     }
-
     if (mdl->unk_e0 != NULL)
     {
         FUN_001a7710(mdl->unk_e0);
