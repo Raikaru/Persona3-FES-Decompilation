@@ -880,52 +880,36 @@ void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 a
                    textBuffer,0x10,0);
       category = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass;
       if (category != '\x03') {
-        if (category == '\x02') {
-          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
-          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013dd14;
-          }
-          else {
-            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
-                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
-LAB_0013dd14:
-            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
-                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
-          }
-          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
-                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
-        }
-        else {
+        if (category != '\x02') {
           if (category != '\x01') {
             if (category != '\0') goto LAB_0013ddc4;
             yValue3 = yValue + (float)textureIndex;
             campEquipmentDrawFixed(texture, (u32)alpha, 0x2f, xIcon, yValue3);
             value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueA;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013d8a8;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
                                      xValue, (yBase + (f32)textureIndex) - 3.0f);
 LAB_0013d8a8:
               campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
                                      xBase, (yBase + (f32)textureIndex) - 3.0f);
             }
+            else {
+              if (9 < value) goto LAB_0013d8a8;
+            }
             yValue2 = (yBase + (float)(rowIndex * 0x1a)) - 3.0f;
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                    xMarker, yValue2);
             campEquipmentDrawFixed(texture, (u32)alpha, 0x35, xSecondaryIcon, yValue3);
             value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueB;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013da24;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
                                      xSecondaryHundreds, yValue2);
 LAB_0013da24:
               campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
                                      xSecondaryTens, yValue2);
+            }
+            else {
+              if (9 < value) goto LAB_0013da24;
             }
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                    xSecondaryOnes, yValue2);
@@ -934,15 +918,31 @@ LAB_0013da24:
           campEquipmentDrawFixed(texture, (u32)alpha, 0x31, xIcon,
                                  yValue + (f32)textureIndex);
           value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueC;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013db80;
-          }
-          else {
+          if (value >= 100) {
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
                                    xValue, (yBase + (f32)textureIndex) - 3.0f);
 LAB_0013db80:
             campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
                                    xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013db80;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
+          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013dd14:
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013dd14;
           }
           campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                  xMarker, (yBase + (f32)textureIndex) - 3.0f);
@@ -967,52 +967,36 @@ LAB_0013ddc4:
                    0x10,0);
       category = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass;
       if (category != '\x03') {
-        if (category == '\x02') {
-          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
-          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013e5e4;
-          }
-          else {
-            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
-                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
-LAB_0013e5e4:
-            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
-                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
-          }
-          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
-                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
-        }
-        else {
+        if (category != '\x02') {
           if (category != '\x01') {
             if (category != '\0') goto LAB_0013e694;
             yValue3 = yValue + (float)textureIndex;
             campEquipmentDrawFixed(texture, (u32)alpha, 0x2e, xIcon, yValue3);
             value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueA;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013e178;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
                                      xValue, (yBase + (f32)textureIndex) - 3.0f);
 LAB_0013e178:
               campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
                                      xBase, (yBase + (f32)textureIndex) - 3.0f);
             }
+            else {
+              if (9 < value) goto LAB_0013e178;
+            }
             yValue2 = (yBase + (float)(rowIndex * 0x1a)) - 3.0f;
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                    xMarker, yValue2);
             campEquipmentDrawFixed(texture, (u32)alpha, 0x34, xSecondaryIcon, yValue3);
             value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueB;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013e2f4;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
                                      xSecondaryHundreds, yValue2);
 LAB_0013e2f4:
               campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
                                      xSecondaryTens, yValue2);
+            }
+            else {
+              if (9 < value) goto LAB_0013e2f4;
             }
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                    xSecondaryOnes, yValue2);
@@ -1021,15 +1005,31 @@ LAB_0013e2f4:
           campEquipmentDrawFixed(texture, (u32)alpha, 0x30, xIcon,
                                  yValue + (f32)textureIndex);
           value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueC;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013e450;
-          }
-          else {
+          if (value >= 100) {
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
                                    xValue, (yBase + (f32)textureIndex) - 3.0f);
 LAB_0013e450:
             campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
                                    xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013e450;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
+          value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013e5e4:
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013e5e4;
           }
           campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                  xMarker, (yBase + (f32)textureIndex) - 3.0f);
@@ -1205,53 +1205,36 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
                    textBuffer,0x10,0x78);
       category = work->entries[work->firstVisibleEntry + rowIndex].equipmentClass;
       if (category != '\x03') {
-        if (category == '\x02') {
-          campEquipmentDrawFixed(texture, (u32)alpha, 0x33, xIcon,
-                                 yValue + (f32)textureIndex);
-          value = work->entries[work->firstVisibleEntry + rowIndex].valueD;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013f2a0;
-          }
-          else {
-            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
-                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
-LAB_0013f2a0:
-            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
-                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
-          }
-          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
-                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
-        }
-        else {
+        if (category != '\x02') {
           if (category != '\x01') {
             if (category != '\0') goto LAB_0013f350;
             yValue3 = yValue + (float)textureIndex;
             campEquipmentDrawFixed(texture, (u32)alpha, 0x2f, xIcon, yValue3);
             digitY = (yBase + (f32)textureIndex) - 3.0f;
             value = work->entries[work->firstVisibleEntry + rowIndex].valueA;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013ee34;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
                                      xValue, digitY);
 LAB_0013ee34:
               campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
                                      xBase, digitY);
             }
+            else {
+              if (9 < value) goto LAB_0013ee34;
+            }
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                    xMarker, digitY);
             campEquipmentDrawFixed(texture, (u32)alpha, 0x35, xSecondaryIcon, yValue3);
             value = work->entries[work->firstVisibleEntry + rowIndex].valueB;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013efb0;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
                                      xSecondaryHundreds, digitY);
 LAB_0013efb0:
               campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
                                      xSecondaryTens, digitY);
+            }
+            else {
+              if (9 < value) goto LAB_0013efb0;
             }
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                    xSecondaryOnes, digitY);
@@ -1260,15 +1243,32 @@ LAB_0013efb0:
           campEquipmentDrawFixed(texture, (u32)alpha, 0x31, xIcon,
                                  yValue + (f32)textureIndex);
           value = work->entries[work->firstVisibleEntry + rowIndex].valueC;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013f10c;
-          }
-          else {
+          if (value >= 100) {
             campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
                                    xValue, (yBase + (f32)textureIndex) - 3.0f);
 LAB_0013f10c:
             campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
                                    xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013f10c;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x33, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = work->entries[work->firstVisibleEntry + rowIndex].valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013f2a0:
+            campEquipmentDrawDigit(texture, (u32)alpha, 1, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013f2a0;
           }
           campEquipmentDrawDigit(texture, (u32)alpha, 1, value % 10 + 0xb,
                                  xMarker, (yBase + (f32)textureIndex) - 3.0f);
@@ -1344,53 +1344,36 @@ LAB_0013f350:
                    0x10,0x78);
       category = work->entries[work->firstVisibleEntry + rowIndex].equipmentClass;
       if (category != '\x03') {
-        if (category == '\x02') {
-          campEquipmentDrawFixed(texture, (u32)alpha, 0x32, xIcon,
-                                 yValue + (f32)textureIndex);
-          value = work->entries[work->firstVisibleEntry + rowIndex].valueD;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013fb70;
-          }
-          else {
-            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
-                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
-LAB_0013fb70:
-            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
-                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
-          }
-          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
-                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
-        }
-        else {
+        if (category != '\x02') {
           if (category != '\x01') {
             if (category != '\0') goto LAB_0013fc20;
             yValue3 = yValue + (float)textureIndex;
             campEquipmentDrawFixed(texture, (u32)alpha, 0x2e, xIcon, yValue3);
             digitY = (yBase + (f32)textureIndex) - 3.0f;
             value = work->entries[work->firstVisibleEntry + rowIndex].valueA;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013f704;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
                                      xValue, digitY);
 LAB_0013f704:
               campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
                                      xBase, digitY);
             }
+            else {
+              if (9 < value) goto LAB_0013f704;
+            }
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                    xMarker, digitY);
             campEquipmentDrawFixed(texture, (u32)alpha, 0x34, xSecondaryIcon, yValue3);
             value = work->entries[work->firstVisibleEntry + rowIndex].valueB;
-            if (value < 100) {
-              if (9 < value) goto LAB_0013f880;
-            }
-            else {
+            if (value >= 100) {
               campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
                                      xSecondaryHundreds, digitY);
 LAB_0013f880:
               campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
                                      xSecondaryTens, digitY);
+            }
+            else {
+              if (9 < value) goto LAB_0013f880;
             }
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                    xSecondaryOnes, digitY);
@@ -1399,15 +1382,32 @@ LAB_0013f880:
           campEquipmentDrawFixed(texture, (u32)alpha, 0x30, xIcon,
                                  yValue + (f32)textureIndex);
           value = work->entries[work->firstVisibleEntry + rowIndex].valueC;
-          if (value < 100) {
-            if (9 < value) goto LAB_0013f9dc;
-          }
-          else {
+          if (value >= 100) {
             campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
                                    xValue, (yBase + (f32)textureIndex) - 3.0f);
 LAB_0013f9dc:
             campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
                                    xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013f9dc;
+          }
+          campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
+                                 xMarker, (yBase + (f32)textureIndex) - 3.0f);
+        }
+        else {
+          campEquipmentDrawFixed(texture, (u32)alpha, 0x32, xIcon,
+                                 yValue + (f32)textureIndex);
+          value = work->entries[work->firstVisibleEntry + rowIndex].valueD;
+          if (value >= 100) {
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, value / 100 + 0xb,
+                                   xValue, (yBase + (f32)textureIndex) - 3.0f);
+LAB_0013fb70:
+            campEquipmentDrawDigit(texture, (u32)alpha, 2, (value % 100) / 10 + 0xb,
+                                   xBase, (yBase + (f32)textureIndex) - 3.0f);
+          }
+          else {
+            if (9 < value) goto LAB_0013fb70;
           }
           campEquipmentDrawDigit(texture, (u32)alpha, 2, value % 10 + 0xb,
                                  xMarker, (yBase + (f32)textureIndex) - 3.0f);
