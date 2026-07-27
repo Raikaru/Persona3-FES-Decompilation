@@ -7734,7 +7734,7 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
   u32 uVar7;
 

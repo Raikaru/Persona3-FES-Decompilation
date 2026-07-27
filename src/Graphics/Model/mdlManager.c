@@ -3561,7 +3561,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
   u8 *puVar5;
 
-  int lVar6;
+  long lVar6;
 
   int iVar7;
 

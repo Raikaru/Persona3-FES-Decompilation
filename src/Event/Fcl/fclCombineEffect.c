@@ -2085,7 +2085,7 @@ u32 FUN_004198f0(int param_1,int param_2)
 
   short sVar1;
 
-  short sVar2;
+  u16 sVar2;
 
   u32 uVar3;
 
