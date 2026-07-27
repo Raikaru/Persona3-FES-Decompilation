@@ -621,7 +621,6 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                            func_00530da0(amount),
                            func_00530da0(fraction),
                            func_00530da0(dot));
-                    asm volatile("" : "+m"(dot));
                     dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
                           debugDeltaZ * debugProjectionZ;
                     if (dot < 0.0f)

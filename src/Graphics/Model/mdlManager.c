@@ -5720,7 +5720,6 @@ loop:
   values[1] = *(f32 *)(iVar3 + 8);
   values[2] = *(f32 *)(iVar3 + 0xc);
   values[3] = two * *(f32 *)(iVar3 + 0x10);
-  asm volatile("" : "+m"(values));
   x = values[0];
   y = values[1];
   z = values[2];
