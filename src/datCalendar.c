@@ -4346,14 +4346,13 @@ void func_00186140(void* resource, u64 position, u32 alpha)
 // FUN_00186190 NONMATCHING
 void* func_00186190(KwlnTask* task)
 {
-    CalendarMoonWork* work;
     u32 archiveEntry;
     void* source;
     s32 alpha;
     s32 timer;
     f32 x;
     f32 y;
-
+    CalendarMoonWork* work;
     work = (CalendarMoonWork*)task->workData;
     switch (work->state)
     {
