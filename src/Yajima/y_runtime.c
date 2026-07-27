@@ -709,6 +709,8 @@ extern code FUN_003b2cb0;
 #pragma alias FUN_003b2cb0_va FUN_003b2cb0
 extern void FUN_003b2cb0_va(f32 first, ...);
 extern code FUN_003b5d10;
+#pragma alias FUN_003b5d10_eb90 FUN_003b5d10
+extern u32 FUN_003b5d10_eb90(u32 param_1);
 extern code FUN_003b5d50;
 #pragma alias FUN_003b5d50_typed FUN_003b5d50
 extern void *FUN_003b5d50_typed(u32 resType);

@@ -357,6 +357,8 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
                  u32 param_6);
 int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5);
 u64 FUN_00324160(int param_1);
+#pragma alias FUN_00324160_u32 FUN_00324160
+extern u32 FUN_00324160_u32(int param_1);
 void FUN_00324310(int param_1);
  #pragma alias FUN_00324310_i FUN_00324310
  extern void FUN_00324310_i(int param_1);
@@ -39184,7 +39186,7 @@ u64 FUN_00342990(int param_1)
 
   }
 
-  iVar2 = FUN_00324160(*(u32 *)(iVar2 + 4));
+  iVar2 = FUN_00324160_u32(*(u32 *)(iVar2 + 4));
 
   piVar4[1] = iVar2;
 
