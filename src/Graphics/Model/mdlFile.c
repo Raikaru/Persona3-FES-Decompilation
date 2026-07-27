@@ -10644,7 +10644,7 @@ void FUN_003269e0(int param_1,int param_2)
 
     }
 
-    uVar2 = (*DAT_00960178)(uVar1 << 2,0x40000);
+    uVar2 = (*DAT_00960178_u32)(uVar1 << 2,0x40000);
 
     *(u32 *)(param_1 + 0x38) = uVar2;
 
