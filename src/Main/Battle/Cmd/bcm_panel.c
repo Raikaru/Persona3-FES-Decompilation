@@ -421,11 +421,11 @@ static void bcm_panel_refresh_records(void)
 void FUN_002230e0(void)
 {
     s32 j;
-    u8* record;
-    u8* records;
-    u8* work;
-    u32 table0;
     s32 i;
+    u32 table0;
+    u8* work;
+    u8* records;
+    u8* record;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;

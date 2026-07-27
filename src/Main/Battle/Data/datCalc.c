@@ -7908,6 +7908,7 @@ void FUN_0030f290(void)
   float fVar2;
   float fVar3;
   float fVar4;
+  float scale;
   
   lVar1 = FUN_003111f0();
   if (lVar1 != 0) {

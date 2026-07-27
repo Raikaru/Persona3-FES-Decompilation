@@ -6560,7 +6560,7 @@ void FUN_0042bfd0(int param_1)
 
   iVar1 = *(int *)((int)param_1 + 0x3c);
 
-  if (DAT_008717e8 != 0 && DAT_008717f4 != 0) {
+  if (*(u32 *)DAT_008717e8_abs != 0 && *(int *)DAT_008717f4_abs != 0) {
 
     if (*(int *)(iVar1 + 0x898) != 0) {
 
