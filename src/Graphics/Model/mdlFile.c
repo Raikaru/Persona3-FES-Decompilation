@@ -28743,17 +28743,16 @@ void FUN_00338ac0(u64 param_1)
 
   u32 uVar7;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar8;
 
-  __int128 auVar9;
 
   u32 *puVar10;
 
-  __int128 auVar11;
 
-  __int128 auVar12;
 
   u8 uStack_4;
 
@@ -28777,53 +28776,19 @@ void FUN_00338ac0(u64 param_1)
 
     iVar8 = FUN_0032a120_2arg((char *)(iVar2),(u32 *)(iVar2 + 0x24));
 
-    auVar9 = _pextlb(0,(long)(int)puVar10[0xc]);
+    c1s = (u32)((int)puVar10[0xc]);
 
-    auVar9 = _pextlh(0,auVar9._0_8_);
+    c2s = (u32)(iVar8);
 
-    auVar9 = _qmtc2(auVar9._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar11 = _vitof0(auVar9);
+    cStack_1 = packed[3];
 
-    auVar9 = _qmtc2(uGpffff815c);
+    uStack_4 = packed[0];
 
-    auVar9 = _vmulbc(auVar11,auVar9);
+    uStack_3 = packed[1];
 
-    auVar12 = _vmove(auVar9);
-
-    auVar9 = _pextlb(0,(long)iVar8);
-
-    auVar9 = _pextlh(0,auVar9._0_8_);
-
-    auVar9 = _qmtc2(auVar9._0_4_);
-
-    auVar11 = _vitof0(auVar9);
-
-    auVar9 = _qmtc2(uGpffff815c);
-
-    auVar9 = _vmulbc(auVar11,auVar9);
-
-    auVar11 = _vmul(auVar9,auVar12);
-
-    auVar9 = _qmtc2(0x437f0000);
-
-    auVar9 = _vmulbc(auVar11,auVar9);
-
-    auVar9 = _vftoi0(auVar9);
-
-    auVar9 = _qmfc2(auVar9._0_4_);
-
-    auVar9 = _ppach(in_zero_qw,auVar9);
-
-    auVar9 = _ppacb(in_zero_qw,auVar9);
-
-    cStack_1 = (*((u8 *)&auVar9 + 3));
-
-    uStack_4 = (*((u8 *)&auVar9 + 0));
-
-    uStack_3 = (*((u8 *)&auVar9 + 1));
-
-    uStack_2 = (*((u8 *)&auVar9 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -30210,17 +30175,16 @@ void FUN_0033a220(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -30242,53 +30206,19 @@ void FUN_0033a220(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(uGpffff815c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -31033,17 +30963,16 @@ void FUN_0033af10(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -31065,53 +30994,19 @@ void FUN_0033af10(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(uGpffff815c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -31819,17 +31714,16 @@ void FUN_0033bbe0(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -31851,53 +31745,19 @@ void FUN_0033bbe0(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(uGpffff815c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -32730,17 +32590,16 @@ void FUN_0033c960(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -32762,53 +32621,19 @@ void FUN_0033c960(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(DAT_007cae4c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -33562,17 +33387,16 @@ void FUN_0033d6d0(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -33594,53 +33418,19 @@ void FUN_0033d6d0(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(DAT_007cae4c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -34485,17 +34275,16 @@ void FUN_0033e540(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -34517,53 +34306,19 @@ void FUN_0033e540(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(DAT_007cae4c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -35318,17 +35073,16 @@ void FUN_0033f2e0(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -35350,53 +35104,19 @@ void FUN_0033f2e0(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(DAT_007cae4c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -36310,17 +36030,16 @@ void FUN_00340100(int param_1)
 
   u16 *puVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
-  __int128 auVar6;
 
-  __int128 auVar7;
 
   u8 uStack_4;
 
@@ -36342,53 +36061,19 @@ void FUN_00340100(int param_1)
 
     iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
+    c1s = (u32)(*(int *)(iVar5 + 0x30));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar6 = _vitof0(auVar4);
+    cStack_1 = packed[3];
 
-    auVar4 = _qmtc2(DAT_007cae4c);
+    uStack_4 = packed[0];
 
-    auVar4 = _vmulbc(auVar6,auVar4);
+    uStack_3 = packed[1];
 
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(DAT_007cae4c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
+    uStack_2 = packed[2];
 
     if (cStack_1 == -1) {
 
@@ -42304,7 +41989,9 @@ void FUN_00346530(int param_1)
 
   u8 uVar9;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   __int128 auVar10;
 
@@ -42325,9 +42012,7 @@ void FUN_00346530(int param_1)
 
   float fVar19;
 
-  __int128 auVar20;
 
-  __int128 auVar21;
 
   float fStack_b0;
 
@@ -42434,59 +42119,25 @@ void FUN_00346530(int param_1)
 
     iStack_8 = *(int *)(param_1 + 0x24);
 
-    auVar10 = _pextlb(0,(long)iStack_8);
+    c1s = (u32)(iStack_8);
 
-    auVar10 = _pextlh(0,auVar10._0_8_);
+    c2s = (u32)(iStack_c);
 
-    auVar10 = _qmtc2(auVar10._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar20 = _vitof0(auVar10);
+    uStack_10 = *(u32 *)packed;
 
-    auVar10 = _qmtc2(DAT_007cae4c);
+    (*((u8 *)((u8 *)&uStack_4 + 3))) = packed[3];
 
-    auVar10 = _vmulbc(auVar20,auVar10);
-
-    auVar21 = _vmove(auVar10);
-
-    auVar10 = _pextlb(0,(long)iStack_c);
-
-    auVar10 = _pextlh(0,auVar10._0_8_);
-
-    auVar10 = _qmtc2(auVar10._0_4_);
-
-    auVar20 = _vitof0(auVar10);
-
-    auVar10 = _qmtc2(DAT_007cae4c);
-
-    auVar10 = _vmulbc(auVar20,auVar10);
-
-    auVar20 = _vmul(auVar10,auVar21);
-
-    auVar10 = _qmtc2(0x437f0000);
-
-    auVar10 = _vmulbc(auVar20,auVar10);
-
-    auVar10 = _vftoi0(auVar10);
-
-    auVar10 = _qmfc2(auVar10._0_4_);
-
-    auVar10 = _ppach(in_zero_qw,auVar10);
-
-    auVar10 = _ppacb(in_zero_qw,auVar10);
-
-    uStack_10 = auVar10._0_4_;
-
-    (*((u8 *)((u8 *)&uStack_4 + 3))) = (*((u8 *)&auVar10 + 3));
-
-    (*((u8 *)((u8 *)&uStack_4 + 0))) = (*((u8 *)&auVar10 + 0));
+    (*((u8 *)((u8 *)&uStack_4 + 0))) = packed[0];
 
     uVar7 = (u8)uStack_4;
 
-    (*((u8 *)((u8 *)&uStack_4 + 1))) = (*((u8 *)&auVar10 + 1));
+    (*((u8 *)((u8 *)&uStack_4 + 1))) = packed[1];
 
     uVar8 = (*((u8 *)((u8 *)&uStack_4 + 1)));
 
-    (*((u8 *)((u8 *)&uStack_4 + 2))) = (*((u8 *)&auVar10 + 2));
+    (*((u8 *)((u8 *)&uStack_4 + 2))) = packed[2];
 
     uVar9 = (*((u8 *)((u8 *)&uStack_4 + 2)));
 
@@ -45095,19 +44746,18 @@ void FUN_00349870(int param_1)
 
   int iVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
   float fVar6;
 
-  __int128 auVar7;
 
-  __int128 auVar8;
 
   
 
@@ -45155,47 +44805,13 @@ void FUN_00349870(int param_1)
 
     iVar3 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),(int)(iVar5),(long)(iVar2));
 
-    auVar4 = _pextlb(0,(long)*(int *)(param_1 + 0x10));
+    c1s = (u32)(*(int *)(param_1 + 0x10));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar7 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar7,auVar4);
-
-    auVar8 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar7 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar7,auVar4);
-
-    auVar7 = _vmul(auVar4,auVar8);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar7,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    *(int *)(iVar1 + 0xc0) = auVar4._0_4_;
+    *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
 
     fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
 
@@ -46061,11 +45677,12 @@ void FUN_0034a650(int param_1)
 
   int iVar2;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar3;
 
-  __int128 auVar4;
 
   int iVar5;
 
@@ -46073,9 +45690,7 @@ void FUN_0034a650(int param_1)
 
   u32 uVar7;
 
-  __int128 auVar8;
 
-  __int128 auVar9;
 
   
 
@@ -46123,47 +45738,13 @@ void FUN_0034a650(int param_1)
 
     iVar3 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),(int)(iVar5),(long)(iVar2));
 
-    auVar4 = _pextlb(0,(long)*(int *)(param_1 + 0x10));
+    c1s = (u32)(*(int *)(param_1 + 0x10));
 
-    auVar4 = _pextlh(0,auVar4._0_8_);
+    c2s = (u32)(iVar3);
 
-    auVar4 = _qmtc2(auVar4._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar8 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar8,auVar4);
-
-    auVar9 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar8 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar8,auVar4);
-
-    auVar8 = _vmul(auVar4,auVar9);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar8,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    *(int *)(iVar1 + 0xc0) = auVar4._0_4_;
+    *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
 
     fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
 
@@ -46509,15 +46090,14 @@ void FUN_0034ac70(int param_1)
 
   int iVar1;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   int iVar2;
 
-  __int128 auVar3;
 
-  __int128 auVar4;
 
-  __int128 auVar5;
 
   
 
@@ -46559,47 +46139,13 @@ void FUN_0034ac70(int param_1)
 
     iVar2 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    auVar3 = _pextlb(0,(long)*(int *)(param_1 + 0x10));
+    c1s = (u32)(*(int *)(param_1 + 0x10));
 
-    auVar3 = _pextlh(0,auVar3._0_8_);
+    c2s = (u32)(iVar2);
 
-    auVar3 = _qmtc2(auVar3._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar4 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(uGpffff815c);
-
-    auVar3 = _vmulbc(auVar4,auVar3);
-
-    auVar5 = _vmove(auVar3);
-
-    auVar3 = _pextlb(0,(long)iVar2);
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar4 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(uGpffff815c);
-
-    auVar3 = _vmulbc(auVar4,auVar3);
-
-    auVar4 = _vmul(auVar3,auVar5);
-
-    auVar3 = _qmtc2(0x437f0000);
-
-    auVar3 = _vmulbc(auVar4,auVar3);
-
-    auVar3 = _vftoi0(auVar3);
-
-    auVar3 = _qmfc2(auVar3._0_4_);
-
-    auVar3 = _ppach(in_zero_qw,auVar3);
-
-    auVar3 = _ppacb(in_zero_qw,auVar3);
-
-    *(int *)(iVar1 + 0xc0) = auVar3._0_4_;
+    *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
 
   }
 
@@ -47955,16 +47501,15 @@ void FUN_0034c390(float *param_1)
 
   u32 fVar1;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
-  __int128 auVar2;
 
   u32 fVar3;
 
   float fVar4;
-  __int128 auVar4;
 
-  __int128 auVar5;
 
   u8 auStack_60 [64];
 
@@ -47994,47 +47539,13 @@ void FUN_0034c390(float *param_1)
 
     fStack_8 = param_1[10];
 
-    auVar2 = _pextlb(0,(long)(int)fStack_8);
+    c1s = (u32)((int)fStack_8);
 
-    auVar2 = _pextlh(0,auVar2._0_8_);
+    c2s = (u32)(iStack_c);
 
-    auVar2 = _qmtc2(auVar2._0_4_);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
 
-    auVar4 = _vitof0(auVar2);
-
-    auVar2 = _qmtc2(DAT_007caf08);
-
-    auVar2 = _vmulbc(auVar4,auVar2);
-
-    auVar5 = _vmove(auVar2);
-
-    auVar2 = _pextlb(0,(long)iStack_c);
-
-    auVar2 = _pextlh(0,auVar2._0_8_);
-
-    auVar2 = _qmtc2(auVar2._0_4_);
-
-    auVar4 = _vitof0(auVar2);
-
-    auVar2 = _qmtc2(DAT_007caf08);
-
-    auVar2 = _vmulbc(auVar4,auVar2);
-
-    auVar4 = _vmul(auVar2,auVar5);
-
-    auVar2 = _qmtc2(0x437f0000);
-
-    auVar2 = _vmulbc(auVar4,auVar2);
-
-    auVar2 = _vftoi0(auVar2);
-
-    auVar2 = _qmfc2(auVar2._0_4_);
-
-    auVar2 = _ppach(in_zero_qw,auVar2);
-
-    auVar2 = _ppacb(in_zero_qw,auVar2);
-
-    uStack_10 = auVar2._0_4_;
+    uStack_10 = *(u32 *)packed;
 
     uStack_4 = uStack_10;
 
@@ -52353,7 +51864,9 @@ void FUN_003505d0(int *param_1)
 
   u8 uVar6;
 
-  __int128 in_zero_qw;
+  u8 packed[4];
+  u32 c1s;
+  u32 c2s;
 
   u16 uVar7;
 
@@ -52382,9 +51895,7 @@ void FUN_003505d0(int *param_1)
 
   float fVar20;
 
-  __int128 auVar21;
   
-  __int128 auVar22;
 
   float fStack_b0;
 
@@ -52474,33 +51985,18 @@ void FUN_003505d0(int *param_1)
 
     iStack_8 = *param_1;
 
-    auVar10 = _pextlb(0,(long)iStack_8);
-    auVar10 = _pextlh(0,auVar10._0_8_);
-    auVar10 = _qmtc2(auVar10._0_4_);
-    auVar21 = _vitof0(auVar10);
-    auVar10 = _qmtc2(DAT_007cae4c);
-    auVar10 = _vmulbc(auVar21,auVar10);
-    auVar22 = _vmove(auVar10);
-    auVar10 = _pextlb(0,(long)iStack_c);
-    auVar10 = _pextlh(0,auVar10._0_8_);
-    auVar10 = _qmtc2(auVar10._0_4_);
-    auVar21 = _vitof0(auVar10);
-    auVar10 = _qmtc2(DAT_007cae4c);
-    auVar10 = _vmulbc(auVar21,auVar10);
-    auVar21 = _vmul(auVar10,auVar22);
-    auVar10 = _qmtc2(0x437f0000);
-    auVar10 = _vmulbc(auVar21,auVar10);
-    auVar10 = _vftoi0(auVar10);
-    auVar10 = _qmfc2(auVar10._0_4_);
-    auVar10 = _ppach(in_zero_qw,auVar10);
-    auVar10 = _ppacb(in_zero_qw,auVar10);
-    uStack_10 = auVar10._0_4_;
-    (*((u8 *)((u8 *)&uStack_4 + 3))) = (*((u8 *)&auVar10 + 3));
-    (*((u8 *)((u8 *)&uStack_4 + 0))) = (*((u8 *)&auVar10 + 0));
+    c1s = (u32)(iStack_8);
+
+    c2s = (u32)(iStack_c);
+
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    uStack_10 = *(u32 *)packed;
+    (*((u8 *)((u8 *)&uStack_4 + 3))) = packed[3];
+    (*((u8 *)((u8 *)&uStack_4 + 0))) = packed[0];
     uVar4 = (u8)uStack_4;
-    (*((u8 *)((u8 *)&uStack_4 + 1))) = (*((u8 *)&auVar10 + 1));
+    (*((u8 *)((u8 *)&uStack_4 + 1))) = packed[1];
     uVar5 = (*((u8 *)((u8 *)&uStack_4 + 1)));
-    (*((u8 *)((u8 *)&uStack_4 + 2))) = (*((u8 *)&auVar10 + 2));
+    (*((u8 *)((u8 *)&uStack_4 + 2))) = packed[2];
     uVar6 = (*((u8 *)((u8 *)&uStack_4 + 2)));
     if ((*((u8 *)((u8 *)&uStack_4 + 3))) == -1) {
       iVar16 = *(int *)(puVar1 + 10);
