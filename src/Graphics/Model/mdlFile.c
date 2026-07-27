@@ -1234,6 +1234,8 @@ extern f32 FUN_0052ea00();
 extern u64 FUN_0052ea18();
 #pragma alias FUN_0052ea18_f32 FUN_0052ea18
 extern f32 FUN_0052ea18_f32(f32 value);
+#pragma alias FUN_0052ea18_2f FUN_0052ea18
+extern f32 FUN_0052ea18_2f(f32 a,f32 b);
 extern u64 FUN_00530da0();
 extern u64 FUN_005311c8();
 extern u64 FUN_00531230();
@@ -10265,17 +10267,14 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   float fVar4;
 
-  __int128 extraout_vf10;
+  float fVar6;
 
-  __int128 extraout_vf10_00;
 
-  __int128 auVar5;
 
-  u32 uStack_10;
 
-  float fStack_c;
+  f32 v[3];
 
-  u32 uStack_8;
+
 
   
 
@@ -10299,11 +10298,11 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   else {
 
-    FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(&uStack_10));
+    FUN_00329800((u8 (*) [16])(param_2),(u8 (*) [16])(v));
 
     if ((*(u32 *)(param_1 + 0x68) & 0x40) == 0) {
 
-      fVar4 = (float)FUN_0052e9e8_f32(-fStack_c);
+      fVar4 = FUN_0052e9e8_f32(-v[1]);
 
       fVar4 = -fVar4;
 
@@ -10315,27 +10314,21 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
     }
 
-    uVar1 = FUN_0052ea18(uStack_10,uStack_8);
+    fVar6 = FUN_0052ea18_2f(v[0],v[2]);
 
-    FUN_00357ea0(fVar4,uVar1,0);
-
-    auVar5 = extraout_vf10;
+    FUN_00357ea0(fVar4,fVar6,0.0f);
 
     if ((*(u32 *)(param_1 + 0x68) & 0x40) != 0) {
 
-      _vmove(extraout_vf10);
+      __asm__ volatile ("vmove.xyzw $vf11, $vf10" : : : "memory");
 
-      _lqc2(*(u8 (*) [16])(param_1 + 0x50));
+      __asm__ volatile ("lqc2 $vf10, 0x50(%0)" : : "r"(param_1) : "memory");
 
       FUN_00357dd0();
 
-      auVar5 = extraout_vf10_00;
-
     }
 
-    auVar5 = _sqc2(auVar5);
-
-    memcpy(*param_3, &auVar5, 16);
+    __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(param_3) : "memory");
 
   }
 
