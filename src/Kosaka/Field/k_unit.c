@@ -116,6 +116,8 @@ extern void func_00195020(void* task);
 extern void func_0019c2f0(void* task, u32 value);
 extern void func_001a60d0();
 extern u32 func_00195460(void);
+#pragma alias func_00195460_marker func_00195460
+extern u32 func_00195460_marker(u32 marker);
 extern void func_001ad870(void* task, u32 flags);
 extern void func_001add40(void* task);
 extern void func_001ad8c0(f32 value, void* task);
@@ -2040,7 +2042,7 @@ void func_001d19d0(void)
     }
 }
 
-// FUN_001d1a90 NONMATCHING
+// FUN_001d1a90
 u32 func_001d1a90(void)
 {
     s32 i;
@@ -2069,7 +2071,7 @@ u32 func_001d1a90(void)
             {
                 continue;
             }
-            if (func_00195460() == 1)
+            if (func_00195460_marker(markerValue) == 1)
             {
                 result = 0;
             }
@@ -2111,7 +2113,7 @@ void func_001d1c20(void)
     }
 }
 
-// FUN_001d1ce0 NONMATCHING
+// FUN_001d1ce0
 u32 func_001d1ce0(void)
 {
     s32 i;
@@ -2138,7 +2140,7 @@ u32 func_001d1ce0(void)
             markerValue = *marker;
             if (markerValue != 0)
             {
-                if (func_00195460() == 1)
+                if (func_00195460_marker(markerValue) == 1)
                 {
                     result = 0;
                 }

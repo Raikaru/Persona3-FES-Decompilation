@@ -412,8 +412,6 @@ void FUN_002d2280(s16* outX, s16* outZ, f32* position)
 
 #pragma alias FUN_002d2340_s16 FUN_002d2340
 extern void FUN_002d2340_s16(f32 distance, u8* work, s16 start, s16 end);
-#pragma alias datCalcGetHp_s32 datCalcGetHp
-extern s32 datCalcGetHp_s32(DatUnit*);
 #pragma push
 #pragma opt_propagation off
 // FUN_002d2340
@@ -4982,25 +4980,22 @@ void FUN_002db2a0(u32 param_1)
 {
     s16 threshold;
     u32 index;
-    u32 bit;
-    u8* btl;
 
     index = param_1 & 0xffff;
-    bit = 1u << index;
-    btl = iGpffffb6fc;
-    *(u16*)(btl + 0xa04) |= (u16)bit;
+    *(u16*)(iGpffffb6fc + 0xa04) |=
+        (u16)(1u << index);
     switch (index)
     {
     case 0:
         threshold = (s16)(datCalcRand(0) + 2);
-        *(u16*)(btl + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(btl + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
-        *(u32*)(btl + 0xa10) = 0;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u32*)(iGpffffb6fc + 0xa10) = 0;
         break;
     case 1:
         threshold = (s16)(datCalcRand(1) + 2);
-        *(u16*)(btl + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(btl + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         break;
     case 2:
         if (datGetFlag(0x140) != 0)
@@ -5011,8 +5006,8 @@ void FUN_002db2a0(u32 param_1)
         {
             threshold = (s16)(datCalcRand(2) + 3);
         }
-        *(u16*)(btl + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(btl + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         break;
     default:
         break;
@@ -5677,15 +5672,11 @@ s16 FUN_002dc670(BtlAction* action)
 
     if (datCalcIsDead(datUnit, result) != 0)
     {
-        return (s16)(-(datCalcGetHp_s32(datUnit) - 1));
+        result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
     }
 
     return result;
 }
-
-// FUN_002dc830
-s32 FUN_002dc830(BtlAction* action)
-{
     BtlUnit* unit;
     s32 result;
     u32 status;

@@ -19114,12 +19114,16 @@ void FUN_003858c0(int param_1)
 
   auStack_20[5] = 0;
 
-  auStack_20[7] = 0xb40a400a;
+  ((u8 *)(auStack_20 + 7))[3] = 0xb4;
+  ((u8 *)(auStack_20 + 7))[0] = 0x0a;
+  ((u8 *)(auStack_20 + 7))[2] = 0x0a;
+  ((u8 *)(auStack_20 + 7))[1] = 0x40;
 
   puVar4 = (u32 *)(param_1 + 0x944);
 
   for (iVar3 = 0; iVar3 < 7; iVar3 = iVar3 + 1) {
-    uVar2 = FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),0,
+    uVar2 = FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),
+                             *(u64 *)(auStack_20 + 4),
                              &auStack_20[0],auStack_20[7]);
 
     puVar4[iVar3] = (int)uVar2;
