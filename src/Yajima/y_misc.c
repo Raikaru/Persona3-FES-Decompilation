@@ -90,7 +90,7 @@ void FUN_004264a0(int param_1);
 u32 FUN_004264d0(u64 param_1,s8 param_2);
 u32 FUN_00426590(int param_1);
 void FUN_00427640(int param_1);
-u32 FUN_00427670(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
+u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
 #pragma alias FUN_00427670_typed FUN_00427670
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
 u64 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
@@ -2978,7 +2978,7 @@ void FUN_00427640(int param_1)
 
 
 u32
-FUN_00427670(float param_1,float param_2,int param_3,u32 param_4,
+FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4,
             char param_5,u8 param_6)
 
 
