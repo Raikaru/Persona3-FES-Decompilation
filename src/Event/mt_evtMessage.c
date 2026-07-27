@@ -53,7 +53,7 @@ extern u32 FUN_003a5120(int param_1, int param_2);
 extern void FUN_004d0f00(int param_1);
 extern void FUN_003b7090(u16 param_1);
 extern void FUN_00100ec0(int param_1);
-extern void FUN_00133d30(int param_1);
+extern void FUN_00133d30(int param_1,int param_2);
 extern u32 FUN_001021c0();
 extern long FUN_00195460();
 extern int FUN_00194b20();
@@ -2993,7 +2993,7 @@ u32 FUN_003a1c00(int param_1)
 }
 #define FUN_003a1c00(...) ((u32 (*)(...))FUN_003a1c00)(__VA_ARGS__)
 #undef FUN_003a1f30
-// FUN_003A1F30 NONMATCHING
+// FUN_003A1F30
 
 
 void FUN_003a1f30(int param_1)
@@ -3042,7 +3042,7 @@ void FUN_003a1f30(int param_1)
   if (*(int *)(iVar1 + 0x14) != 0) {
     if (*(int *)(iVar1 + 0x60) != 0) {
 
-      FUN_00133d30(*(int *)(iVar1 + 0x60));
+      FUN_00133d30(*(int *)(iVar1 + 0x60),*(int *)(iVar1 + 0x14));
 
     }
 
@@ -3055,7 +3055,7 @@ void FUN_003a1f30(int param_1)
   if (*(int *)(iVar1 + 0x18) != 0) {
 
     if (*(int *)(iVar1 + 100) != 0) {
-      FUN_00133d30(*(int *)(iVar1 + 0x64));
+      FUN_00133d30(*(int *)(iVar1 + 0x64),*(int *)(iVar1 + 0x18));
 
     }
 
@@ -3070,7 +3070,7 @@ void FUN_003a1f30(int param_1)
   FUN_0039ee80_typed((int *)(iVar1 + 0x3c));
 
   if (*(int *)(iVar1 + 0xe8) != 0) {
-    (*(void (**)(...))0x0096017c)();
+    (*(void (**)(...))0x0096017c)(*(int *)(iVar1 + 0xe8));
 
   }
 
