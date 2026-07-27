@@ -4728,9 +4728,149 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             blended.z = vector2[geometryIndex].z + normal0.z;
             vertices[geometryIndex] = blended;
         }
-        if (work->state == 2)
+        if (vertices != NULL && count != 0 &&
+            vector0 != NULL && vector1 != NULL &&
+            vector2 != NULL && vector3 != NULL)
         {
-            func_004933d0(*(void**)((u8*)renderObject + 0x5c));
+            u32 curveIndex;
+            u8* curveRecord;
+            RuntimeVec3 curve0;
+            RuntimeVec3 curve1;
+            RuntimeVec3 curve2;
+            RuntimeVec3 curve3;
+            f32 curveT;
+            f32 curveInverse;
+            f32 curveT2;
+            f32 curveInverse2;
+            f32 curveT3;
+            f32 curveInverse3;
+
+            for (curveIndex = 0; curveIndex < count; curveIndex++)
+            {
+                curve0 = vector0[curveIndex];
+                curve1 = vector1[curveIndex];
+                curve2 = vector2[curveIndex];
+                curve3 = vector3[curveIndex];
+                curveT = (f32)curveIndex / (f32)count;
+                curveInverse = 1.0f - curveT;
+                curveT2 = curveT * curveT;
+                curveInverse2 = curveInverse * curveInverse;
+                curveT3 = curveT2 * curveT;
+                curveInverse3 = curveInverse2 * curveInverse;
+                blended.x = curve0.x * curveInverse3 +
+                            3.0f * curve1.x * curveInverse2 * curveT +
+                            3.0f * curve2.x * curveInverse * curveT2 +
+                            curve3.x * curveT3;
+                blended.y = curve0.y * curveInverse3 +
+                            3.0f * curve1.y * curveInverse2 * curveT +
+                            3.0f * curve2.y * curveInverse * curveT2 +
+                            curve3.y * curveT3;
+                blended.z = curve0.z * curveInverse3 +
+                            3.0f * curve1.z * curveInverse2 * curveT +
+                            3.0f * curve2.z * curveInverse * curveT2 +
+                            curve3.z * curveT3;
+                curveRecord = (u8*)vertices + curveIndex * 0x24 + 0x30;
+                *(f32*)(curveRecord + 0) = blended.x;
+                *(f32*)(curveRecord + 4) = blended.y;
+                *(f32*)(curveRecord + 8) = blended.z;
+            }
+        }
+        if (vertices != NULL && count != 0 &&
+            work->vectors[4] != NULL && work->vectors[5] != NULL &&
+            vector2 != NULL && vector3 != NULL)
+        {
+            u32 curveIndex2;
+            u8* curveRecord2;
+            RuntimeVec3 curveA;
+            RuntimeVec3 curveB;
+            RuntimeVec3 curveC;
+            RuntimeVec3 curveD;
+            f32 curveT2a;
+            f32 curveInverse2a;
+            f32 curveT2b;
+            f32 curveInverse2b;
+            f32 curveT2c;
+            f32 curveInverse2c;
+
+            for (curveIndex2 = 0; curveIndex2 < count; curveIndex2++)
+            {
+                curveA = vector2[curveIndex2];
+                curveB = vector3[curveIndex2];
+                curveC = work->vectors[4][curveIndex2];
+                curveD = work->vectors[5][curveIndex2];
+                curveT2a = (f32)curveIndex2 / (f32)count;
+                curveInverse2a = 1.0f - curveT2a;
+                curveT2b = curveT2a * curveT2a;
+                curveInverse2b = curveInverse2a * curveInverse2a;
+                curveT2c = curveT2b * curveT2a;
+                curveInverse2c = curveInverse2b * curveInverse2a;
+                blended.x = curveA.x * curveInverse2c +
+                            3.0f * curveB.x * curveInverse2b * curveT2a +
+                            3.0f * curveC.x * curveInverse2a * curveT2b +
+                            curveD.x * curveT2c;
+                blended.y = curveA.y * curveInverse2c +
+                            3.0f * curveB.y * curveInverse2b * curveT2a +
+                            3.0f * curveC.y * curveInverse2a * curveT2b +
+                            curveD.y * curveT2c;
+                blended.z = curveA.z * curveInverse2c +
+                            3.0f * curveB.z * curveInverse2b * curveT2a +
+                            3.0f * curveC.z * curveInverse2a * curveT2b +
+                            curveD.z * curveT2c;
+                curveRecord2 = (u8*)vertices + curveIndex2 * 0x24 + 0x24;
+                *(f32*)(curveRecord2 + 0) = blended.x;
+                *(f32*)(curveRecord2 + 4) = blended.y;
+                *(f32*)(curveRecord2 + 8) = blended.z;
+            }
+        }
+        if (vertices != NULL && count != 0)
+        {
+            u8* geometry;
+            u8* cursor;
+            u32 geometryIndex;
+
+            geometry = (u8*)vertices;
+            cursor = geometry + 0x3c;
+            for (geometryIndex = 0; geometryIndex < count; geometryIndex++)
+            {
+                f32 x;
+                f32 y;
+                f32 z;
+
+                x = *(f32*)(cursor - 0x18) + *(f32*)(cursor - 0xc);
+                y = *(f32*)(cursor - 0x14) + *(f32*)(cursor - 8);
+                z = *(f32*)(cursor - 0x10) + *(f32*)(cursor - 4);
+                *(f32*)(cursor + 0) = x;
+                *(f32*)(cursor + 4) = y;
+                *(f32*)(cursor + 8) = z;
+                x += *(f32*)(cursor + 0xc);
+                y += *(f32*)(cursor + 0x10);
+                z += *(f32*)(cursor + 0x14);
+                *(f32*)(cursor + 0) = x;
+                *(f32*)(cursor + 4) = y;
+                *(f32*)(cursor + 8) = z;
+                x += *(f32*)(cursor + 0x18);
+                y += *(f32*)(cursor + 0x1c);
+                z += *(f32*)(cursor + 0x20);
+                *(f32*)(cursor + 0) = x * 0.25f;
+                *(f32*)(cursor + 4) = y * 0.25f;
+                *(f32*)(cursor + 8) = z * 0.25f;
+                cursor += 0x24;
+            }
+        }
+        func_004933d0(*(void**)((u8*)renderObject + 0x5c));
+        {
+            void* geometryObject;
+            u16 geometryFlags;
+            u8* bounds;
+
+            geometryObject = *(void**)((u8*)renderObject + 0x5c);
+            geometryFlags = *(u16*)((u8*)geometryObject + 0xc);
+            *(u16*)((u8*)geometryObject + 0xc) = geometryFlags | 1;
+            bounds = (u8*)geometryObject;
+            *(f32*)(bounds + 4) = 0.0f;
+            *(f32*)(bounds + 8) = 0.0f;
+            *(f32*)(bounds + 0xc) = 0.0f;
+            *(f32*)(bounds + 0x10) = 1000000000.0f;
         }
         (void)vector2;
         (void)vector3;
