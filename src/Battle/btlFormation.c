@@ -650,7 +650,7 @@ extern u32 func_002be580(u64 param_1,int param_2);
 extern u32 func_002BE5D0(u64 param_1,int param_2);
 extern u32 func_002BE5F0(u64 param_1,int param_2);
 extern void func_002BE610(int param_1);
-extern u64 func_002be620(u64 param_1,u64 param_2);
+extern u64 func_002be620(int param_1,int param_2);
 extern void func_002be720(short *param_1,short param_2,short param_3,u64 param_4);
 extern u64 func_002be9e0(int param_1,int param_2);
 extern void func_002bea80(short *param_1,short param_2,short param_3);
@@ -4273,7 +4273,7 @@ void func_002BE610(int param_1)
 
 // FUN_002be620 NONMATCHING
 
-u64 func_002be620(u64 param_1,u64 param_2)
+u64 func_002be620(int param_1,int param_2)
 
 {
   u16 uVar1 = 0;

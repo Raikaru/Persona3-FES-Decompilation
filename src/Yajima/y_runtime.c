@@ -7651,8 +7651,8 @@ u64 FUN_0043a0b0(u64 param_1,char param_2)
 {
   int iVar1;
   int iVar2;
-  long lVar3;
-  u64 uVar4;
+  u32 lVar3;
+  u32 uVar4;
   
   iVar1 = iGpffffb5a0;
   iVar2 = *(int *)(*(int *)((u8 *)DAT_0087190c + param_2 * 0x1c0) + 0x3c);
