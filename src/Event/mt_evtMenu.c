@@ -3043,13 +3043,7 @@ u64 FUN_003715b0(int param_1,int param_2,int param_3)
 
   FUN_0036f900(param_1,param_2,0x14,iVar4,*(u32 *)(iVar2 + 0x108),iVar1 + 3,param_3,0,0);
 
-  if (*(int *)(iVar2 + 0xd4) != 0x11) {
-
-    uVar3 = 0;
-
-  }
-
-  else {
+  if (*(int *)(iVar2 + 0xd4) == 0x11) {
 
     iVar4 = 0xf;
 
@@ -3080,6 +3074,12 @@ u64 FUN_003715b0(int param_1,int param_2,int param_3)
       }
 
     }
+
+  }
+
+  else {
+
+    uVar3 = 0;
 
   }
 
