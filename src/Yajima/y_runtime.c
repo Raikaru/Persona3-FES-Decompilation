@@ -1503,7 +1503,7 @@ void FUN_00447f90(float *param_1,int param_2,char param_3);
 void FUN_00448060(int param_1,u8 param_2,u64 param_3,char param_4,short param_5, char param_6);
 void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5, char param_6,int param_7);
 void FUN_00449d10(int param_1);
-void FUN_00449d60(u64 param_1);
+void FUN_00449d60(int param_1);
 void FUN_00449ed0(void);
 void FUN_00449fa0(void);
 void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
@@ -2921,7 +2921,7 @@ void FUN_00447f90(float *param_1,int param_2,char param_3);
 void FUN_00448060(int param_1,u8 param_2,u64 param_3,char param_4,short param_5, char param_6);
 void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5, char param_6,int param_7);
 void FUN_00449d10(int param_1);
-void FUN_00449d60(u64 param_1);
+void FUN_00449d60(int param_1);
 void FUN_00449ed0(void);
 void FUN_00449fa0(void);
 void FUN_0044a240(float param_1,float param_2,float param_3,float param_4,int param_5 ,char param_6);
@@ -4995,8 +4995,8 @@ void FUN_004343d0(int param_1)
 
 {
   u8 bVar1;
-  short uVar2;
-  short uVar3;
+  u16 uVar2;
+  u16 uVar3;
   int iVar4;
   int bVar5;
   int iVar6;
@@ -12463,7 +12463,7 @@ void FUN_00449d10(int param_1)
 
 // FUN_00449D60 NONMATCHING
 
-void FUN_00449d60(u64 param_1)
+void FUN_00449d60(int param_1)
 
 {
   char cVar1;
@@ -12477,7 +12477,7 @@ void FUN_00449d60(u64 param_1)
   bVar4 = 0;
   do {
     if (*(char *)(iVar3 + 0x940) < '\a') {
-      if ((long)*(char *)(iVar3 + 0x93e) < (long)(*(char *)(iVar3 + 0x93f) + -1)) {
+      if (*(char *)(iVar3 + 0x93e) < *(char *)(iVar3 + 0x93f) + -1) {
         *(char *)(iVar3 + 0x93e) = *(char *)(iVar3 + 0x93e) + '\x01';
       }
       else {
@@ -12487,14 +12487,13 @@ void FUN_00449d60(u64 param_1)
     else {
       cVar1 = *(char *)(iVar3 + 0x93e);
       cVar2 = *(char *)(iVar3 + 0x93f);
-      if ((long)cVar1 < (long)(cVar2 + -2)) {
+      if (cVar1 < cVar2 + -2) {
         *(char *)(iVar3 + 0x93e) = cVar1 + '\x01';
       }
-      else if ((long)*(char *)(iVar3 + 0x941) < (long)((int)*(char *)(iVar3 + 0x940) - (int)cVar2))
-      {
+      else if (*(char *)(iVar3 + 0x941) < *(char *)(iVar3 + 0x940) - cVar2) {
         *(char *)(iVar3 + 0x941) = *(char *)(iVar3 + 0x941) + '\x01';
       }
-      else if ((long)cVar1 < (long)(cVar2 + -1)) {
+      else if (cVar1 < cVar2 + -1) {
         *(char *)(iVar3 + 0x93e) = cVar1 + '\x01';
       }
       else {

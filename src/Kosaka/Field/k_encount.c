@@ -362,7 +362,7 @@ static u32 K_Encount_Now(KwlnTask* task)
     return task != NULL ? kwlnTaskGetTimer(task) : 0;
 }
 
-static inline void* K_Encount_FieldWord(u32 offset)
+static void* K_Encount_FieldWord(u32 offset)
 {
     Field* field = K_Field_Get();
     return field != NULL ? *(void**)((u8*)field + offset) : NULL;

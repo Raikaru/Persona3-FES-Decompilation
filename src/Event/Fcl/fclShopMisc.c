@@ -290,7 +290,7 @@ void FUN_003f5830(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5, u
 void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
-void FUN_003f61d0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5);
+void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5);
 void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5, int param_6);
 void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5);
 void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5);
@@ -298,7 +298,7 @@ void FUN_003f7730(int param_1,int param_2,u8 param_3,int param_4,int param_5);
 void FUN_003f7890(int param_1,int param_2,u8 param_3,int param_4,int param_5,int param_6);
 void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
-void FUN_003f7d50(int param_1,int param_2,u64 param_3,int param_4, int param_5);
+void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4, int param_5);
 #pragma alias FUN_003f7d50_i FUN_003f7d50
 void FUN_003f7d50_i(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
@@ -331,7 +331,7 @@ void FUN_003fb0c0(long param_1,long param_2);
 int FUN_003fb2f0(u32 *param_1);
 int FUN_003fb530(u32 *param_1);
 int FUN_003fb6b0(u64 param_1);
-u64 FUN_003fbc00(u32 *param_1);
+u32 FUN_003fbc00(u32 *param_1);
 void FUN_003fbe70(u8 *param_1,u8 *param_2);
 void FUN_003fbf10(u16 *param_1);
 u64 FUN_003fbf20(short *param_1);
@@ -5551,7 +5551,7 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 // FUN_003F61D0 NONMATCHING
 
 
-void FUN_003f61d0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
+void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
 
 
 
@@ -6630,7 +6630,7 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 // (not touched by this fix) diff/count prefix logic above.
 
 
-void FUN_003f7d50(int param_1,int param_2,u64 param_3,int param_4,
+void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
                  int param_5)
 
@@ -9608,7 +9608,7 @@ int FUN_003fb6b0(u64 param_1)
 // FUN_003FBC00 NONMATCHING
 
 
-u64 FUN_003fbc00(u32 *param_1)
+u32 FUN_003fbc00(u32 *param_1)
 
 
 

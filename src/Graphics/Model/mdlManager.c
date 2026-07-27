@@ -7275,7 +7275,7 @@ u32 func_00319970(Model* param_1)
 
   void* uVar9;
 
-  long lVar10;
+  u32 lVar10;
 
   int iVar11;
 
@@ -8003,7 +8003,7 @@ int func_0031aad0(Model* param_1)
 
   u32 uVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
   void* uVar9;
 

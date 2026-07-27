@@ -59,7 +59,7 @@ code * FUN_003c15d0(void);
 code * FUN_003c1810(void);
 u32 FUN_003c18c0(void);
 void FUN_003c1a70(void);
-u64 FUN_003c1ab0(u32 param_1,u32 param_2);
+u32 FUN_003c1ab0(u32 param_1,u32 param_2);
 u32 FUN_003c1d20(u8 *param_1);
 void FUN_003c22f0(int param_1);
 void FUN_003c2350(u64 param_1,u16 param_2);
@@ -93,7 +93,7 @@ u32 FUN_003c23f0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003c1810(...) ((code * (*)(...))FUN_003c1810)(__VA_ARGS__)
 #define FUN_003c18c0(...) ((u32 (*)(...))FUN_003c18c0)(__VA_ARGS__)
 #define FUN_003c1a70(...) ((void (*)(...))FUN_003c1a70)(__VA_ARGS__)
-#define FUN_003c1ab0(...) ((u64 (*)(...))FUN_003c1ab0)(__VA_ARGS__)
+#define FUN_003c1ab0(...) ((u32 (*)(...))FUN_003c1ab0)(__VA_ARGS__)
 #define FUN_003c1d20(...) ((u32 (*)(...))FUN_003c1d20)(__VA_ARGS__)
 #define FUN_003c22f0(...) ((void (*)(...))FUN_003c22f0)(__VA_ARGS__)
 #define FUN_003c2350(...) ((void (*)(...))FUN_003c2350)(__VA_ARGS__)
@@ -1924,7 +1924,7 @@ void FUN_003c1a70(void)
 // FUN_003C1AB0 NONMATCHING
 
 
-u64 FUN_003c1ab0(u32 param_1,u32 param_2)
+u32 FUN_003c1ab0(u32 param_1,u32 param_2)
 
 
 
@@ -2060,16 +2060,14 @@ u64 FUN_003c1ab0(u32 param_1,u32 param_2)
 
     FUN_00521408(lVar3,0,0x58);
 
-    uVar1 = FUN_00194b20(param_1,0x6a32b0,0xe,lVar4,0x3c1a70,lVar3);
-
-    *(int *)((int)lVar3 + 0x18) = (int)uVar1;
+    return *(u32 *)((u8 *)lVar3 + 0x18) = FUN_00194b20(param_1,(const char *)(DAT_006a3308 - 0x58),0xe,lVar4,(code *)&FUN_003c1a70,lVar3);
 
   }
 
   return uVar1;
 
 }
-#define FUN_003c1ab0(...) ((u64 (*)(...))FUN_003c1ab0)(__VA_ARGS__)
+#define FUN_003c1ab0(...) ((u32 (*)(...))FUN_003c1ab0)(__VA_ARGS__)
 #undef FUN_003c1d20
 // FUN_003C1D20 NONMATCHING
 

@@ -7,6 +7,7 @@
 #include "Battle/btlVoice.h"
 #include "temporary.h"
 
+extern f32 sqrtf(f32 value);
 #define MODEL_PATH "model/"
 void func_0031c820(u16 type, u16 id, char* dst);
 u32 func_0031e420(u16 type, u16 id);
@@ -36066,8 +36067,8 @@ u32 FUN_0033f6a0(u32 param_1,int param_2)
   int *piVarTmp;
 
   int *piVar1;
-
   u32 uVar3;
+
 
   int iVar2;
 
@@ -36080,8 +36081,8 @@ u32 FUN_0033f6a0(u32 param_1,int param_2)
   *piVarTmp = (int)(piVarTmp + 4);
 
   piVarTmp[2] = (int)piVarTmp;
-
   piVar1 = (int *)uVar3;
+
 
   iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),2,4,DAT_0069bdc8_abs,0x4c);
 
@@ -44082,7 +44083,7 @@ void FUN_003473b0(u8 (*param_1) [16])
 
       for (uVar11 = 0; uVar11 < 0xd0; uVar11 = uVar11 + 1) {
 
-        *pfVar16 = (-*pfVar16 / 640.0 + 0.5) * fVar22 * fVar19 * 2.0;
+        *pfVar16 = (-*pfVar16 / 640.0f + 0.5f) * fVar22 * fVar19 * 2.0f;
 
         pfVar16[1] = (-pfVar16[1] / 448.0f + 0.5f) * fVar25 * fVar19 * 2.0f;
 
