@@ -6573,9 +6573,8 @@ void FUN_0042bfd0(int param_1)
 
     *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + fStack_4;
 
-    uVar2 = FUN_004560d0_typed(param_1,*(float *)(iVar1 + 0x89c),
-                               *(float *)(iVar1 + 0x8a0),1.0f,0x20,0x20);
-
+    uVar2 = FUN_004560d0(*(u32 *)(iVar1 + 0x89c),*(u32 *)(iVar1 + 0x8a0),0x3f800000,
+                         param_1,0x20,0x20);
     *(u32 *)(iVar1 + 0x898) = uVar2;
 
   }

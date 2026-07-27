@@ -4172,7 +4172,7 @@ void func_00314850(RpClump* param_1,void* param_2,s16 param_3,u16 param_4,u16 pa
 
   u32 *puVar5;
 
-  long lVar6;
+  u32 lVar6;
 
   long lVar7;
 

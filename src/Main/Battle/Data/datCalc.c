@@ -7264,7 +7264,7 @@ void FUN_0030db80(void)
   
   lVar1 = FUN_003111f0();
   if (lVar1 == 0) {
-    fVar2 = (float)FUN_0030fdf0(0x20,0);
+    fVar2 = (float)FUN_0030fdf0(0xe,2);
     fVar3 = (float)FUN_0030fdf0(0xe,2);
     fVar4 = DAT_007cad74 * (fVar3 * 2.0f + (fVar2 / 2.0f) / 2.0f + 0.0f);
     fVar2 = (float)FUN_0030fdf0(0x13,0);

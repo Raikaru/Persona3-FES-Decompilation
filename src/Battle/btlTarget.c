@@ -896,6 +896,8 @@ extern u64 FUN_002ddc10();
 extern u32 func_002ddc10(u32 unitId);
 extern u64 FUN_002ffbc0();
 extern u64 FUN_002ffcc0();
+#pragma alias FUN_002ffcc0_u32 FUN_002ffcc0
+extern u32 FUN_002ffcc0_u32(u32 unit);
 extern u64 FUN_002ffd70();
 extern u64 FUN_002ffdf0();
 extern u64 FUN_00300410();
