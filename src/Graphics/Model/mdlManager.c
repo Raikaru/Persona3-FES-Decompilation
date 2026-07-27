@@ -8410,7 +8410,7 @@ u32 func_0031b220(Model* param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   u32 lVar5;
 
