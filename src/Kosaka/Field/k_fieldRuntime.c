@@ -1363,20 +1363,19 @@ u32 func_001e2e50(void* request, void** outFileMemory,
     } RuntimeSupplementalEntry;
 
     u8* fileMemory;
-    u8* record;
     u8* source;
     u8* tableHeader;
     RuntimeSupplementalEntry* table;
-    void* (**allocator)(...);
+    void* (**allocator)(u32, u32, u32);
     Model* model;
     Model** models;
     u32* metadata;
     u32 fileSize;
     u32 modelCount;
     u32 modelIndex;
+    u8* record;
     u32 recordIndex;
     u32 sourceIndex;
-    u32 tableIndex;
     s32 tableFlag;
     f32 asyncAngles[3];
     f32 cachedAngles[3];
@@ -1398,7 +1397,7 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         fileMemory = ((FieldArchiveRequest*)request)->data;
         modelCount = *(u32*)(fileMemory + 8);
         *(u32*)(K_Field_Get() + 0x10c0) = modelCount;
-        allocator = DAT_00960184_abs;
+        allocator = (void* (**)(u32, u32, u32))DAT_00960184_abs;
 
         models = (*allocator)(1, *(u32*)(fileMemory + 8) * sizeof(Model*),
                                      0x40000);
@@ -1445,12 +1444,14 @@ u32 func_001e2e50(void* request, void** outFileMemory,
             {
                 table = (RuntimeSupplementalEntry*)func_001b85a0(
                     *(u32*)(tableHeader + 0x0c));
-                for (tableIndex = 0; table->fieldId != 0xffff;
-                     tableIndex++, table++)
+                for (sourceIndex = 0; table->fieldId != 0xffff;
+                     sourceIndex++, table++)
                 {
                     u8* tableRecord;
                     u32 tableRecordIndex;
                     u32 tableRecordCount;
+                    u32 invalidModelId;
+                    u32 fieldModelType;
 
                     tableFlag = table->flag;
                     if (tableFlag == -1 ||
@@ -1459,10 +1460,12 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                         tableRecord = fileMemory + 0x18;
                         tableRecordIndex = 0;
                         tableRecordCount = *(u32*)(fileMemory + 8);
+                        invalidModelId = 0xffff;
+                        fieldModelType = MODEL_TYPE_FLD;
                         while (tableRecordIndex < tableRecordCount)
                         {
-                            if (*(u16*)(tableRecord + 4) == MODEL_TYPE_FLD &&
-                                *(u16*)(tableRecord + 6) == 0xffff &&
+                            if (*(u16*)(tableRecord + 4) == fieldModelType &&
+                                *(u16*)(tableRecord + 6) == invalidModelId &&
                                 *(u16*)(tableRecord + 8) ==
                                     (u16)((table->fieldId & 0x3ff) | 0xc00) &&
                                 (table->majorId != 0 ||
@@ -1505,14 +1508,18 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                     u8* sourceRecord;
                     u32 sourceRecordIndex;
                     u32 sourceRecordCount;
+                    u32 invalidModelId;
+                    u32 fieldModelType;
 
                     sourceRecord = fileMemory + 0x18;
                     sourceRecordIndex = 0;
                     sourceRecordCount = *(u32*)(fileMemory + 8);
+                    invalidModelId = 0xffff;
+                    fieldModelType = MODEL_TYPE_FLD;
                     while (sourceRecordIndex < sourceRecordCount)
                     {
-                        if (*(u16*)(sourceRecord + 4) == MODEL_TYPE_FLD &&
-                            *(u16*)(sourceRecord + 6) == 0xffff &&
+                        if (*(u16*)(sourceRecord + 4) == fieldModelType &&
+                            *(u16*)(sourceRecord + 6) == invalidModelId &&
                             *(u16*)(sourceRecord + 8) ==
                                 (u16)((*(u16*)source & 0x3ff) | 0xc00) &&
                             (*(u16*)(source + 0x64) != 0 ||
@@ -1575,7 +1582,7 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         *outFileMemory = fileMemory;
         modelCount = *(u32*)(fileMemory + 8);
         *(u32*)(K_Field_Get() + 0x10c0) = modelCount;
-        allocator = DAT_00960184_abs;
+        allocator = (void* (**)(u32, u32, u32))DAT_00960184_abs;
 
         models = (*allocator)(1, *(u32*)(fileMemory + 8) * sizeof(Model*),
                                      0x40000);
@@ -1622,12 +1629,14 @@ u32 func_001e2e50(void* request, void** outFileMemory,
             {
                 table = (RuntimeSupplementalEntry*)func_001b85a0(
                     *(u32*)(tableHeader + 0x0c));
-                for (tableIndex = 0; table->fieldId != 0xffff;
-                     tableIndex++, table++)
+                for (sourceIndex = 0; table->fieldId != 0xffff;
+                     sourceIndex++, table++)
                 {
                     u8* tableRecord;
                     u32 tableRecordIndex;
                     u32 tableRecordCount;
+                    u32 invalidModelId;
+                    u32 fieldModelType;
 
                     tableFlag = table->flag;
                     if (tableFlag == -1 ||
@@ -1636,10 +1645,12 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                         tableRecord = fileMemory + 0x18;
                         tableRecordIndex = 0;
                         tableRecordCount = *(u32*)(fileMemory + 8);
+                        invalidModelId = 0xffff;
+                        fieldModelType = MODEL_TYPE_FLD;
                         while (tableRecordIndex < tableRecordCount)
                         {
-                            if (*(u16*)(tableRecord + 4) == MODEL_TYPE_FLD &&
-                                *(u16*)(tableRecord + 6) == 0xffff &&
+                            if (*(u16*)(tableRecord + 4) == fieldModelType &&
+                                *(u16*)(tableRecord + 6) == invalidModelId &&
                                 *(u16*)(tableRecord + 8) ==
                                     (u16)((table->fieldId & 0x3ff) | 0xc00) &&
                                 (table->majorId != 0 ||
@@ -1682,14 +1693,18 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                     u8* sourceRecord;
                     u32 sourceRecordIndex;
                     u32 sourceRecordCount;
+                    u32 invalidModelId;
+                    u32 fieldModelType;
 
                     sourceRecord = fileMemory + 0x18;
                     sourceRecordIndex = 0;
                     sourceRecordCount = *(u32*)(fileMemory + 8);
+                    invalidModelId = 0xffff;
+                    fieldModelType = MODEL_TYPE_FLD;
                     while (sourceRecordIndex < sourceRecordCount)
                     {
-                        if (*(u16*)(sourceRecord + 4) == MODEL_TYPE_FLD &&
-                            *(u16*)(sourceRecord + 6) == 0xffff &&
+                        if (*(u16*)(sourceRecord + 4) == fieldModelType &&
+                            *(u16*)(sourceRecord + 6) == invalidModelId &&
                             *(u16*)(sourceRecord + 8) ==
                                 (u16)((*(u16*)source & 0x3ff) | 0xc00) &&
                             (*(u16*)(source + 0x64) != 0 ||
