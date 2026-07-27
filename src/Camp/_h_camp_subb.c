@@ -1497,8 +1497,9 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
         break;
     }
 
-    originX = (f32)(u32)position;
-    originY = (f32)(u32)(position >> 32);
+    packedPosition.u = position;
+    originX = packedPosition.f[0];
+    originY = packedPosition.f[1];
     spritePair.f[0] = originX + 15.0f;
     spritePair.f[1] = originY + 1.0f;
     textPair.f[0] = originX + 55.0f;

@@ -4286,6 +4286,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             func_001ed0f0(amount, (RuntimeWork*)work, 0, color);
             color += 8;
         }
+        func_001ed0f0(1.0f, (RuntimeWork*)work, 0, color);
     }
     case 1:
         break;
