@@ -4836,7 +4836,7 @@ updateFlag:
 #pragma pop
 
 // FUN_002dae30 NONMATCHING
-void FUN_002dae30(u32 param_1)
+void FUN_002dae30(u64 param_1)
 {
     u8* btl;
     u32 stop;
@@ -5670,12 +5670,11 @@ s16 FUN_002dc670(BtlAction* action)
         }
     }
 
-    if (datCalcIsDead(datUnit, result) == 0)
+    if (datCalcIsDead(datUnit, result) != 0)
     {
-        goto return_result;
+        result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
     }
-    result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
-return_result:
+
     return result;
 
 }
