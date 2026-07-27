@@ -593,7 +593,7 @@ static u32 Runtime_RingIndex(const RuntimeWork* work, u32 index)
 
 /* Retail field-editor controller: menu dispatch, modal prompts, cursor updates,
  * and editor task lifetime management are reconstructed for states 0 through 8. */
-// FUN_001E1850 NONMATCHING
+// FUN_001E1850
 s32 func_001e1850(RuntimeTask* task)
 {
     RuntimeFieldEditorWork* work;
@@ -745,17 +745,19 @@ s32 func_001e1850(RuntimeTask* task)
                 result = func_001a4510(work->choiceTask);
                 switch (result)
                 {
+                    case 0:
+                        goto state4_cleanup;
                     case 1:
                         func_001e2930(1);
                         func_001e2b10(1);
                         FUN_00521408(&D_007CE2B8, 0, 8);
-                    case 0:
+state4_cleanup:
                         func_001a3bf0(work->menuTask, 1);
                         func_00195020(work->choiceTask);
                         work->state = 2;
                         break;
                     default:
-                        break;
+                        goto state4_cleanup;
                 }
             }
             else if ((input & 0x20) != 0)
@@ -798,7 +800,7 @@ s32 func_001e1850(RuntimeTask* task)
             if ((input & 0x9000) != 0)
             {
                 work->selection++;
-                if (work->selection >= 0x100)
+                if (work->selection > 0xff)
                 {
                     work->selection = 0;
                 }
@@ -820,7 +822,7 @@ s32 func_001e1850(RuntimeTask* task)
             else if ((input & 0x0a) != 0)
             {
                 work->selection += 10;
-                if (work->selection >= 0x100)
+                if (work->selection > 0xff)
                 {
                     work->selection = 0;
                 }
@@ -865,6 +867,8 @@ s32 func_001e1850(RuntimeTask* task)
                 result = func_001a4510(work->choiceTask);
                 switch (result)
                 {
+                    case 0:
+                        goto state7_cleanup;
                     case 1:
                         if (func_001e2bd0((s16)work->selection) == 1)
                         {
@@ -874,13 +878,13 @@ s32 func_001e1850(RuntimeTask* task)
                         {
                             func_001a1540((s32)task, 0, 0x190, D_00683FD0);
                         }
-                    case 0:
+state7_cleanup:
                         func_001a3bf0(work->menuTask, 1);
                         func_00195020(work->choiceTask);
                         work->state = 2;
                         break;
                     default:
-                        break;
+                        goto state7_cleanup;
                 }
             }
             else if ((input & 0x20) != 0)

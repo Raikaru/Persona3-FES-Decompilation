@@ -33,6 +33,7 @@ extern void func_002bbdc0(void* value, s16 id);
 extern void func_002bbf80(void* value, u32 color);
 extern void func_002bbe00(void* value);
 extern f32 DAT_007cadb4;
+extern f32 DAT_007cadc0;
 extern f32 DAT_007caea4;
 extern f32 DAT_007cada4;
 extern f32 DAT_007cb0cc;
@@ -1903,7 +1904,7 @@ void btlUnitInitRotateTowardUnitPacket(void* work)
     packet->targetUnit->packetCount++;
 }
 
-// FUN_002823b0 NONMATCHING
+// FUN_002823b0
 u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
 {
     BtlUnitPacketRotateTowardUnit* packet;
@@ -1922,12 +1923,11 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
 
     if (packet->timer == 0)
     {
-        targetUnit = packet->targetUnit;
-
         if (packet->flags & 2)
         {
             if (packet->flags & 0x20)
             {
+                targetUnit = packet->targetUnit;
                 scaledCenter.x = targetUnit->sphereCenter.x * targetUnit->scale;
                 scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
                 scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
@@ -1937,13 +1937,13 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
             }
             else
             {
-                x = targetUnit->pos.x - unit->pos.x;
-                z = targetUnit->pos.z - unit->pos.z;
+                x = packet->targetUnit->pos.x - unit->pos.x;
+                z = packet->targetUnit->pos.z - unit->pos.z;
             }
 
             if (x != 0.0f || z != 0.0f)
             {
-                angle = func_0052ea18(x, z) * 57.295776f;
+                angle = func_0052ea18(x, z) * DAT_007cadc0;
                 func_004bdde0(&rot, &D_00697880, 0, angle);
                 if (!(unit->flags3 & BTLUNIT_FLAG3_NOROT))
                 {
@@ -1959,11 +1959,11 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
         {
             if (packet->flags & 0x20)
             {
-                btlUnit0027f7c0(targetUnit, &unit->targetRot, NULL, NULL);
+                btlUnit0027f7c0(packet->targetUnit, &unit->targetRot, NULL, NULL);
             }
             else
             {
-                unit->targetRot = targetUnit->pos;
+                unit->targetRot = packet->targetUnit->pos;
             }
 
             unit->unk_c4 |= packet->flags;
@@ -1971,7 +1971,7 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
         }
     }
 
-    if (!(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE))
+    if (!(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE ? 1 : 0))
     {
         return 1;
     }
@@ -3958,6 +3958,7 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
                     curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
                     curr->lookAtTargetId = targetUnit->id;
+                    FUN_00287b20((int)curr, 3);
                 }
 
                 curr = curr->prev;
@@ -3998,6 +3999,7 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
                     curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
                     curr->lookAtTargetId = targetUnit->id;
+                    FUN_00287b20((int)curr, 3);
                 }
 
                 curr = curr->prev;
@@ -4033,6 +4035,7 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
         unit->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
         unit->lookAtTargetId = targetUnit->id;
+        FUN_00287b20((int)unit, 3);
     }
 
     return 1;
