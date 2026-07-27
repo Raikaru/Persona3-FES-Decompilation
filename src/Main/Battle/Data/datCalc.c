@@ -6761,7 +6761,7 @@ void FUN_0030c930(void)
                    ((float)FUN_0030fdf0(0xd,1) / 5.0f)) * 10.0f;
     fVar2 *= (float)FUN_0030fdf0(0xc,0);
     fVar3 = (float)FUN_0030fdf0(0x17,0);
-    fVar2 = fVar2 * fVar3 + (float)FUN_0030fdf0(0x19,0) + 0.0f;
+    fVar2 = fVar2 * fVar3 + (float)FUN_0030fdf0(0x19,0);
   }
   else {
     fVar2 = (float)FUN_0030fdf0(0x20,0);
