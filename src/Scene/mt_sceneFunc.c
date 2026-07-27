@@ -3880,7 +3880,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
       }
 
-      FUN_003bbc90(0x3f800000,auStack_10,auStack_20,auStack_30,param_3,param_3 + 1,param_3 + 2);
+      FUN_003bbc90_scene_typed(1.0f,auStack_10,auStack_20,auStack_30,param_3,param_3 + 1,param_3 + 2);
 
     }
 
