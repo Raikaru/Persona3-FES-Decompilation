@@ -50,8 +50,6 @@ extern void FUN_003196f0_ea20(int,u32);
 extern void FUN_005225a8_eaa0(const char *,...);
 #pragma alias FUN_00388000_d1c0 FUN_00388000
 extern void FUN_00388000_d1c0(f64, u32, void *, void *, void *, void *, u32, void *, long);
-#pragma alias FUN_003b91c0_c440 FUN_003b91c0
-extern u64 FUN_003b91c0_c440(float,u16,u32,u32,u32,u32,u32);
 
 extern char DAT_006a1820[];
 #pragma alias FUN_003b5d10_eb90 FUN_003b5d10
@@ -4101,7 +4099,7 @@ u32 FUN_0039c440(int param_1)
 
     }
 
-    FUN_003b91c0_c440(1.0f,*(u16 *)(puVar1 + 0x1a),0,*(u16 *)(iVar4 + 0x1e),0,0,0);
+    FUN_003b91c0(1.0f,*(u16 *)(puVar1 + 0x1a),0,*(u16 *)(iVar4 + 0x1e),0,0,0);
 
     FUN_003b9320(1.0f,*(u16 *)(puVar1 + 0x1a),0,*(u16 *)(iVar4 + 0x20),0,1,0);
 
