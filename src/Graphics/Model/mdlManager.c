@@ -4440,7 +4440,7 @@ void func_00314d30(void* param_1)
 
     else {
 
-      fVar7 = 0.0f;
+      fVar7 = 0.0;
 
       *(short *)(iVar5 + 0x14) = *(short *)(iVar5 + 0x14) + -1;
 

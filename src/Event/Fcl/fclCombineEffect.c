@@ -337,32 +337,31 @@ u64 FUN_00417410(void)
   int *piVar3;
   piVar3 = (int *)kwlnTaskGetWorkData();
   iVar1 = *piVar3;
-  switch (iVar1) {
-  case 0:
-    *piVar3 = 1;
-    FUN_004177e0((int)piVar3);
-  case 1:
-    if (FUN_004178c0((int)piVar3) == 0)
-      return 0;
-    *piVar3 = 2;
-    piVar3[1] = piVar3[1] & 0xfffffffd;
-  case 2:
-    if (FUN_0041b530_u32((int)piVar3) == 0)
-      return 0;
-    *piVar3 = 3;
-    FUN_0041b550((int)piVar3);
-  case 3:
+  if (iVar1 != 4) {
+    if (iVar1 != 3) {
+      if (iVar1 != 2) {
+        if (iVar1 != 1) {
+          if (iVar1 != 0)
+            return 0;
+          *piVar3 = 1;
+          FUN_004177e0((int)piVar3);
+        }
+        if (FUN_004178c0((int)piVar3) == 0)
+          return 0;
+        *piVar3 = 2;
+        piVar3[1] = piVar3[1] & 0xfffffffd;
+      }
+      if (FUN_0041b530_u32((int)piVar3) == 0)
+        return 0;
+      *piVar3 = 3;
+      FUN_0041b550((int)piVar3);
+    }
     *piVar3 = 4;
     uVar2 = piVar3[1];
     uVar2 = uVar2 | 4;
     piVar3[1] = uVar2;
     uVar2 = uVar2 | 1;
     piVar3[1] = uVar2;
-    break;
-  case 4:
-    break;
-  default:
-    return 0;
   }
   if (FUN_0041b5c0_u32((int)piVar3,(u32 *)piVar3[17]) != 0) {
     *piVar3 = 2;

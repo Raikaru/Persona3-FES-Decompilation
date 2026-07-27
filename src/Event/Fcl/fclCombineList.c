@@ -677,7 +677,7 @@ s32 fclCombineList003da3e0(FclList* param_1, s32 param_2)
     if (p != 0) return p;
     return 0;
 }
-// FUN_003da470 NONMATCHING
+// FUN_003da470
 s32 fclCombineList003da470(FclList* param_1, s32 param_2)
 {
     s32 i;
@@ -687,8 +687,10 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
     i = 0;
     while (i < param_1->used) {
         K_ASSERT(param_1 != 0, 0x411);
-        if (param_1->capacity <= i)
+        if (param_1->capacity <= i) {
             p = 0;
+            goto da470_compare;
+        }
         else {
             p = (s32)(void *)param_1->values;
             p += i << 2;
@@ -700,6 +702,7 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
         default:
             break;
         }
+da470_compare:
         if (p == param_2)
             return param_2;
         i++;
