@@ -307,7 +307,7 @@ extern void FUN_00352c50(u32 param_1, u32 param_2, u32 param_3);
 extern u64 FUN_00357fd0();
 extern u32 FUN_0035c090();
 extern u64 FUN_00395170();
-extern u64 FUN_003951d0();
+extern u32 FUN_003951d0();
 extern float FUN_004c69f0(void* dst, const void* src);
 extern u64 FUN_00521408();
 extern u64 FUN_00523ac8();
