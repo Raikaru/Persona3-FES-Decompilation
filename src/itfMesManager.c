@@ -180,7 +180,7 @@ u64  FUN_003a5570(u32 param_1,u64 param_2,u64 param_3,u32 param_4,  u64 param_5,
 u64  FUN_003a56f0(u32 param_1,u64 param_2,f32 param_3,u32 param_4,  u64 param_5,long param_6,u64 param_7,s32 param_8,u64 param_9,  int param_10,int param_11);
 u32 FUN_003a5940(int param_1,int param_2);
 void FUN_003a5980(u64 param_1);
-void FUN_003a5ca0(long param_1,long param_2,u64 param_3,long param_4);
+void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4);
 #pragma alias FUN_003a5ca0_typed FUN_003a5ca0
 extern void FUN_003a5ca0_typed(u32 param_1,long param_2,u64 param_3,long param_4);
 void FUN_003a5ea0(long param_1,long param_2,u32 param_3);
@@ -3362,7 +3362,7 @@ void FUN_003a5980(u64 param_1)
 // FUN_003A5CA0 NONMATCHING
 
 
-void FUN_003a5ca0(long param_1,long param_2,u64 param_3,long param_4)
+void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
 
 

@@ -1621,7 +1621,6 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 void FUN_001406d0(void* texture,u64 position,CampEquipmentDetailWork* detail,s32 alpha)
 
 {
-  extern void FUN_001159f0(f32 x, f32 y, f32 scale);
   u32 packedValue;
   const char* textValue;
   int entryIndex;
