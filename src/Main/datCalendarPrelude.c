@@ -858,20 +858,45 @@ void FUN_0017a430(u32 saveType, u32 id, u32 size, const void* data)
 // FUN_0017ac60 NONMATCHING
 void FUN_0017ac60(u32 code)
 {
-    u8* list = code_list();
     u8 bytes[4];
+    u8* list;
     u32 i;
-    memcpy(bytes, &code, 4);
+    u32 j;
+    u8 b0;
+    u8 b1;
+    u8 b2;
+
+    *(u32*)bytes = code;
+    b0 = bytes[0];
+    b1 = bytes[1];
+    b2 = bytes[2];
+    list = DAT_00836200 + 0x5a7;
     for (i = 0; i < 0x100; i++)
     {
-        if (list[i * 4] != 0 && memcmp(list + i * 4, bytes, 3) == 0)
+        if (list[i * 4] != 0 && list[i * 4] == b0 && list[i * 4 + 1] == b1 &&
+            list[i * 4 + 2] == b2)
         {
-            for (; i < 0xff; i++) memcpy(list + i * 4, list + (i + 1) * 4, 4);
+            for (j = i; j < 0xff; j++)
+            {
+                list[j * 4 + 0] = list[(j + 1) * 4 + 0];
+                list[j * 4 + 1] = list[(j + 1) * 4 + 1];
+                list[j * 4 + 2] = list[(j + 1) * 4 + 2];
+                list[j * 4 + 3] = list[(j + 1) * 4 + 3];
+            }
             U8(0x00836ba3) = 0;
         }
     }
-    for (i = 0; i < 0x100 && list[i * 4] != 0; i++) { }
-    if (i < 0x100) memcpy(list + i * 4, bytes, 4);
+    for (i = 0; i < 0x100; i++)
+    {
+        if (list[i * 4] == 0)
+        {
+            list[i * 4 + 0] = bytes[0];
+            list[i * 4 + 1] = bytes[1];
+            list[i * 4 + 2] = bytes[2];
+            list[i * 4 + 3] = bytes[3];
+            break;
+        }
+    }
 }
 
 #pragma optimization_level 1
