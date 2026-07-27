@@ -30814,7 +30814,7 @@ u64 FUN_0033a4d0(int param_1)
 
   uVar1 = *(u32 *)(param_1 + 0x38);
 
-  uVar4 = (*DAT_00960178_u32_abs)(uVar1 * 0x1c + 0x10,0x40000);
+  uVar4 = (*DAT_00960178_abs)(uVar1 * 0x1c + 0x10,0x40000);
 
   piVar2 = (int *)uVar4;
 
