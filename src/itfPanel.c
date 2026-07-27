@@ -4807,6 +4807,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
 
   firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
+  first2 = *(volatile int *)(param_2 + 0x18);
   second2 = *(volatile int *)(param_2 + 0x10);
   iVar8 = first2 + second2;
   bVar2 = *(u8 *)(iVar8 + 2);
@@ -4827,6 +4828,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   }
 
   secondIndex = (u8)uVar6 << 8 | (u8)secondLow;
+  piVar10 = (int *)DAT_006a2680;
   piVar9 = aiStack_20;
 
   iVar8 = counter = 5;
