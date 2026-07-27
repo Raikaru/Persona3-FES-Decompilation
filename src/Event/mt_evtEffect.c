@@ -1565,7 +1565,7 @@ void FUN_00396270(float param_1,int param_2,float *param_3)
 }
 #define FUN_00396270(...) ((void (*)(...))FUN_00396270)(__VA_ARGS__)
 #undef FUN_003962c0
-// FUN_003962C0 NONMATCHING
+// FUN_003962C0
 
 
 u64 FUN_003962c0(int param_1)
