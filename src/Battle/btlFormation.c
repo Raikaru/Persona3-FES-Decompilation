@@ -13696,7 +13696,7 @@ u32 func_002cef10(void)
   u16 uVar3 = 0;
   u64 uVar4 = 0;
   u64 uVar5 = 0;
-  int lVar6 = 0;
+  long lVar6 = 0;
   u16 uVar7 = 0;
   u32 uVar8 = 0;
   int iVar9 = 0;
