@@ -1400,7 +1400,6 @@ void func_002f2550(BtlAction* action)
   void* object;
   BtlPacket* packet;
   BtlPacket* parent;
-  BtlPacket* waitPacket;
 
   unit = gBtl->unitLists[UNIT_GENUS_EC].head;
   object = func_002b8f90(0);
@@ -1430,31 +1429,23 @@ void func_002f2550(BtlAction* action)
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 2);
-  waitPacket = FUN_002dd5e0_packet_voice(0);
-  waitPacket->unk_00 = 5;
-  waitPacket->parentUID = packet->uid;
-  btlPacketRegister(waitPacket, 1);
+  packet = FUN_0027f410_packet_voice((u32)func_002f23d0,
+                                     (u32)unit);
+  packet->unk_00 = 5;
+  packet->parentUID = packet->uid;
+  packet->actionUID = action->uid;
+  btlPacketRegister(packet, 1);
   packet = FUN_002baf90_packet_voice(object, unit, unit, 1, 0x200);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 2);
-  waitPacket = FUN_002dd5e0_packet_voice(1);
-  waitPacket->unk_00 = 5;
-  waitPacket->parentUID = packet->uid;
-  btlPacketRegister(waitPacket, 1);
-  packet = FUN_002bd850_packet_voice(unit, 0x45);
-  packet->postUpdateWaits[0].type = 5;
-  packet->postUpdateWaits[0].value = waitPacket->uid;
-  packet->preUpdateDelay = 0x9b;
+  packet = FUN_0027f410_packet_voice((u32)func_002f2410,
+                                     (u32)unit);
+  packet->unk_00 = 5;
+  packet->parentUID = packet->uid;
   packet->actionUID = action->uid;
-  btlPacketRegister(packet, 3);
-  waitPacket = FUN_0027f410_packet_voice((u32)func_002f23d0,
-                                         (u32)unit);
-  waitPacket->unk_00 = 5;
-  waitPacket->parentUID = packet->uid;
-  waitPacket->actionUID = action->uid;
-  btlPacketRegister(waitPacket, 1);
+  btlPacketRegister(packet, 1);
   func_002b9030(object);
 }
 

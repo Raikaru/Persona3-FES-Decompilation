@@ -2727,7 +2727,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
         iVar6 = *(int *)(param_2 + 0x14);
 
-        if (iVar6 == 0) {
+          lVar8 = FUN_003b0970_typed(&gp0xffffa838,0,*(u8 *)(param_2 + 0xd),
 
           lVar8 = FUN_003b0970(&gp0xffffa838,0,*(u8 *)(param_2 + 0xd),
 
