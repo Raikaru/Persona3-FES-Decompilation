@@ -363,7 +363,7 @@ u64 FUN_00417410(void)
     uVar2 = uVar2 | 1;
     piVar3[1] = uVar2;
   }
-  if (FUN_0041b5c0((int)piVar3,(u32 *)piVar3[17]) != 0) {
+  if (FUN_0041b5c0_u32((int)piVar3,(u32 *)piVar3[17]) != 0) {
     *piVar3 = 2;
     piVar3[1] = piVar3[1] & 0xfffffffb;
   }

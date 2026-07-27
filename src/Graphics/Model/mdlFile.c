@@ -261,7 +261,7 @@ u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
 u64 FUN_00320ba0(u32 param_1,u32 *param_2);
 u32 FUN_00320cf0(u32 param_1,u32 param_2);
 u64 FUN_00320da0(u64 param_1,u64 param_2);
-u64 FUN_00320de0(u64 param_1,u32 *param_2);
+u64 FUN_00320de0(u32 param_1,u32 *param_2);
 u16 FUN_00320f70(u64 param_1,u32 param_2);
 u32 FUN_00320fb0(u16 param_1);
 void FUN_00321010(int param_1);
@@ -4709,7 +4709,7 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 // FUN_00320DE0 NONMATCHING
 
 
-u64 FUN_00320de0(u64 param_1,u32 *param_2)
+u64 FUN_00320de0(u32 param_1,u32 *param_2)
 
 
 
@@ -4822,7 +4822,7 @@ u16 FUN_00320f70(u64 param_1,u32 param_2)
 
   stack.input = param_2;
   stack.output = 0;
-  FUN_004916d0_typed(param_1,(void *)&FUN_00320de0,&stack);
+  FUN_004916d0_u32(param_1,(void *)&FUN_00320de0,&stack);
   return stack.output;
 }
 
