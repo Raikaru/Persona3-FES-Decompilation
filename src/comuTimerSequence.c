@@ -2276,7 +2276,13 @@ u32 FUN_003c1d20(u8 *param_1)
 
       sVar3 = FUN_00171ac0(uVar4);
 
-      if (sVar3 < 1) {
+      if (sVar3 >= 1) {
+
+        *puVar1 = 0x13;
+
+      }
+
+      else {
 
         lVar6 = FUN_001717c0(uVar4);
 
@@ -2291,12 +2297,6 @@ u32 FUN_003c1d20(u8 *param_1)
           *puVar1 = 0xd;
 
         }
-
-      }
-
-      else {
-
-        *puVar1 = 0x13;
 
       }
 

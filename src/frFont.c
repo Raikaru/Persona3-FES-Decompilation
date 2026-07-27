@@ -2047,7 +2047,13 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
           lVar7 = FUN_0010a500(2);
 
-          if (lVar7 == 0) {
+          if (lVar7 != 0) {
+
+            bVar5 = 0;
+
+          }
+
+          else {
 
             iVar8 = *(int *)(puVar2 + 0x3c);
 
@@ -2058,12 +2064,6 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
               bVar5 = 0;
 
             }
-
-          }
-
-          else {
-
-            bVar5 = 0;
 
           }
 
@@ -2087,7 +2087,13 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
           lVar7 = FUN_0010a500(2);
 
-          if (lVar7 == 0) {
+          if (lVar7 != 0) {
+
+            bVar5 = 0;
+
+          }
+
+          else {
 
             iVar8 = *(int *)(puVar2 + 0x3c);
 
@@ -2098,12 +2104,6 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
               bVar5 = 0;
 
             }
-
-          }
-
-          else {
-
-            bVar5 = 0;
 
           }
 
@@ -2123,21 +2123,21 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 
     }
 
-    if (iGpffffb944 < 1) {
+    if (iGpffffb944 >= 1) {
+
+      iGpffffb944 = iGpffffb944 + -1;
+
+      iVar9 = 0;
+
+    }
+
+    else {
 
       if (!bVar5) {
 
         iVar9 = 0;
 
       }
-
-    }
-
-    else {
-
-      iGpffffb944 = iGpffffb944 + -1;
-
-      iVar9 = 0;
 
     }
 
@@ -2191,19 +2191,19 @@ int FUN_003b1710(long param_1)
 
           lVar3 = FUN_0010a500(2);
 
-          if (lVar3 == 0) {
+          if (lVar3 != 0) {
+
+            bVar2 = 0;
+
+          }
+
+          else {
 
             if ((*(int *)(iVar5 + 0x3c) != -1) && (0 < *(int *)(iVar5 + 0x3c))) {
 
               bVar2 = 0;
 
             }
-
-          }
-
-          else {
-
-            bVar2 = 0;
 
           }
 
@@ -2227,19 +2227,19 @@ int FUN_003b1710(long param_1)
 
           lVar3 = FUN_0010a500(2);
 
-          if (lVar3 == 0) {
+          if (lVar3 != 0) {
+
+            bVar2 = 0;
+
+          }
+
+          else {
 
             if ((*(int *)(iVar5 + 0x3c) != -1) && (0 < *(int *)(iVar5 + 0x3c))) {
 
               bVar2 = 0;
 
             }
-
-          }
-
-          else {
-
-            bVar2 = 0;
 
           }
 

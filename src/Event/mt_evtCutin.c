@@ -311,7 +311,39 @@ u32 FUN_003971a0(void)
 
     lVar10 = FUN_0035f130();
 
-    if (lVar10 == 1) {
+    if (lVar10 != 1) {
+
+      lVar10 = FUN_00195340("koma_Manager");
+
+      if (lVar10 == 0) {
+
+        iVar2 = 0;
+
+      }
+
+      else if (lVar3 < 3) {
+
+        iVar2 = FUN_00195540(lVar10);
+
+        iVar2 = *(int *)(iVar2 + (int)lVar3 * 0xc);
+
+      }
+
+      else {
+
+        iVar2 = 0;
+
+      }
+
+      if (iVar2 == 3) {
+
+        return 1;
+
+      }
+
+    }
+
+    else {
 
       lVar10 = FUN_00195340("koma_Manager");
 
@@ -352,38 +384,6 @@ u32 FUN_003971a0(void)
       if (!bVar1) {
 
         FUN_0019d3f0("mt_evtCutin.c",0x120);
-
-      }
-
-    }
-
-    else {
-
-      lVar10 = FUN_00195340("koma_Manager");
-
-      if (lVar10 == 0) {
-
-        iVar2 = 0;
-
-      }
-
-      else if (lVar3 < 3) {
-
-        iVar2 = FUN_00195540(lVar10);
-
-        iVar2 = *(int *)(iVar2 + (int)lVar3 * 0xc);
-
-      }
-
-      else {
-
-        iVar2 = 0;
-
-      }
-
-      if (iVar2 == 3) {
-
-        return 1;
 
       }
 
@@ -724,7 +724,13 @@ FUN_00397870(int param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 
 
   if (bVar1) {
 
-    if (param_2 < 10) {
+    if (param_2 >= 10) {
+
+      uVar2 = 0;
+
+    }
+
+    else {
 
       iVar3 = (int)param_2 * 8 +
 
@@ -739,12 +745,6 @@ FUN_00397870(int param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 
       *param_6 = (u32)*(u16 *)(iVar3 + 0x3a);
 
       uVar2 = 1;
-
-    }
-
-    else {
-
-      uVar2 = 0;
 
     }
 

@@ -10134,7 +10134,10 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fStack_f4 = fStack_68 + fStack_38;
   fStack_f0 = fStack_64 + fStack_34;
   fStack_ec = fStack_60 + fStack_30;
-  if (*(short *)(iVar3 + 0x106) == 0) {
+  if (*(short *)(iVar3 + 0x106) != 0) {
+    FUN_002a44f0(&fStack_b4,&fStack_110);
+  }
+  else {
     FUN_004be310(auStack_104,auStack_e8,&fStack_140);
     fVar4 = DAT_007cae10;
     fVar7 = DAT_007cae14;
@@ -10165,9 +10168,6 @@ void func_002aef80(BtlCamera* camera, int param_2)
     fStack_b4 = fStack_110 + fStack_f4;
     fStack_b0 = fStack_10c + fStack_f0;
     fStack_ac = fStack_108 + fStack_ec;
-  }
-  else {
-    FUN_002a44f0(&fStack_b4,&fStack_110);
   }
   if (param_2 != 0) {
     FUN_002a2170(camera,&fStack_b4);

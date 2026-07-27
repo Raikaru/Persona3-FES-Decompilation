@@ -360,15 +360,15 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
     }
 
-    if (sVar9 < param_3) {
-
-      *puVar13 = *puVar13 | 1;
+    if (sVar9 >= param_3) {
 
       uVar4 = 1;
 
     }
 
     else {
+
+      *puVar13 = *puVar13 | 1;
 
       uVar4 = 1;
 
@@ -912,7 +912,21 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
         if ((u32)uVar1 == (long)*(short *)(DAT_006a5414 + iVar5)) {
 
-          if ((*(u16 *)(DAT_006a5416 + iVar5) & 1) == 0) {
+          if ((*(u16 *)(DAT_006a5416 + iVar5) & 1) != 0) {
+
+            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
+
+            if (lVar4 == 0) {
+
+              bVar2 = 0;
+
+              break;
+
+            }
+
+          }
+
+          else {
 
             if ((*(u16 *)(DAT_006a5416 + iVar5) & 2) != 0) {
 
@@ -923,20 +937,6 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
               bVar3 = 0;
 
               if (lVar4 == 1) break;
-
-            }
-
-          }
-
-          else {
-
-            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
-
-            if (lVar4 == 0) {
-
-              bVar2 = 0;
-
-              break;
 
             }
 
@@ -1023,7 +1023,13 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
   cVar3 = FUN_003d6200(param_1,0,uStack_4,2);
 
-  if (cVar3 == '\0') {
+  if (cVar3 != '\0') {
+
+    uVar5 = 2;
+
+  }
+
+  else {
 
     iVar7 = (u32)param_3 * 0xe;
 
@@ -1100,12 +1106,6 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
       uVar5 = 1;
 
     }
-
-  }
-
-  else {
-
-    uVar5 = 2;
 
   }
 
@@ -2157,7 +2157,13 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
       uVar2 = *(u16 *)(DAT_007ce420 + iVar11);
 
-      if ((uVar2 & 1) == 0) {
+      if ((uVar2 & 1) != 0) {
+
+        bVar3 = 0;
+
+      }
+
+      else {
 
         if ((uVar2 & 2) == 0) {
 
@@ -2173,12 +2179,6 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
       }
 
-      else {
-
-        bVar3 = 0;
-
-      }
-
       if (bVar3) {
 
         bVar3 = 1;
@@ -2191,7 +2191,21 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
           if (uVar10 == (long)*(short *)(DAT_006a5414 + iVar6)) {
 
-            if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) == 0) {
+            if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) != 0) {
+
+              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+
+              if (lVar5 == 0) {
+
+                bVar3 = 0;
+
+                break;
+
+              }
+
+            }
+
+            else {
 
               if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
 
@@ -2202,20 +2216,6 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
                 bVar4 = 0;
 
                 if (lVar5 == 1) break;
-
-              }
-
-            }
-
-            else {
-
-              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
-
-              if (lVar5 == 0) {
-
-                bVar3 = 0;
-
-                break;
 
               }
 
@@ -2346,7 +2346,13 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
       uVar2 = *(u16 *)(DAT_007ce420 + iVar11);
 
-      if ((uVar2 & 1) == 0) {
+      if ((uVar2 & 1) != 0) {
+
+        bVar3 = 0;
+
+      }
+
+      else {
 
         if ((uVar2 & 2) == 0) {
 
@@ -2362,12 +2368,6 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
       }
 
-      else {
-
-        bVar3 = 0;
-
-      }
-
       if (bVar3) {
 
         bVar3 = 1;
@@ -2380,7 +2380,21 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
           if (uVar10 == (long)*(short *)(DAT_006a5414 + iVar6)) {
 
-            if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) == 0) {
+            if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) != 0) {
+
+              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+
+              if (lVar5 == 0) {
+
+                bVar3 = 0;
+
+                break;
+
+              }
+
+            }
+
+            else {
 
               if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
 
@@ -2391,20 +2405,6 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
                 bVar4 = 0;
 
                 if (lVar5 == 1) break;
-
-              }
-
-            }
-
-            else {
-
-              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
-
-              if (lVar5 == 0) {
-
-                bVar3 = 0;
-
-                break;
 
               }
 
@@ -2881,7 +2881,21 @@ u32 FUN_003d8630(int param_1,int param_2)
 
         if ((u32)uVar1 == (long)*(short *)(DAT_006a5414 + iVar5)) {
 
-          if ((*(u16 *)(DAT_006a5416 + iVar5) & 1) == 0) {
+          if ((*(u16 *)(DAT_006a5416 + iVar5) & 1) != 0) {
+
+            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
+
+            if (lVar4 == 0) {
+
+              bVar2 = 0;
+
+              break;
+
+            }
+
+          }
+
+          else {
 
             if ((*(u16 *)(DAT_006a5416 + iVar5) & 2) != 0) {
 
@@ -2892,20 +2906,6 @@ u32 FUN_003d8630(int param_1,int param_2)
               bVar3 = 0;
 
               if (lVar4 == 1) break;
-
-            }
-
-          }
-
-          else {
-
-            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
-
-            if (lVar4 == 0) {
-
-              bVar2 = 0;
-
-              break;
 
             }
 

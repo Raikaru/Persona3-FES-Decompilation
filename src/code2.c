@@ -406,7 +406,10 @@ int FUN_00780500(u32 param_1,u32 param_2,u32 param_3)
   entries = (Code2Entry *)&uRam80076740;
   iVar2 = iRamb0001800;
   iVar6 = (param_1 & 0xffff) + iRamb0001800;
-  if (iRam80076700 < 0x40) {
+  if (iRam80076700 >= 0x40) {
+    lVar4 = -1;
+  }
+  else {
     lVar4 = 0;
     uVar5 = uRam80076708;
     do {
@@ -431,9 +434,6 @@ LAB_007805a0:
       func_0x00076460(uRam80076740);
       lVar4 = entries[iVar3].value4;
     }
-  }
-  else {
-    lVar4 = -1;
   }
   return lVar4;
 }
