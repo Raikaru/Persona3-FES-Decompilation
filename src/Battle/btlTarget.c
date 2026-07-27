@@ -5670,11 +5670,12 @@ s16 FUN_002dc670(BtlAction* action)
         }
     }
 
-    if (datCalcIsDead(datUnit, result) != 0)
+    if (datCalcIsDead(datUnit, result) == 0)
     {
-        result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
+        goto return_result;
     }
-
+    result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
+return_result:
     return result;
 
 }
