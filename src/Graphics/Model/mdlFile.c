@@ -335,6 +335,8 @@ void FUN_003237c0(int param_1);
  #pragma alias FUN_003237c0_u32 FUN_003237c0
  extern void FUN_003237c0_u32(u32 param_1);
 void FUN_00323860(void);
+ #pragma alias FUN_00323860_4arg FUN_00323860
+void FUN_00323860_4arg(int param_1,int param_2,int param_3,int param_4);
 void FUN_00323880(int param_1,u16 *param_2,int param_3,int param_4);
 void FUN_003238d0(int param_1);
  #pragma alias FUN_00323920_out FUN_00323920
@@ -30728,7 +30730,7 @@ void FUN_0033a220(int param_1)
 
     }
 
-    FUN_00323860();
+    FUN_00323860_4arg((int)puVar2,param_1,param_1 + 0x10,param_1 + 0x20);
 
   }
 

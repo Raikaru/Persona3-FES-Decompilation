@@ -155,7 +155,7 @@ u8 FUN_003c83b0(void);
 #define FUN_003c5f40(...) ((void (*)(...))FUN_003c5f40)(__VA_ARGS__)
 #define FUN_003c5fa0(...) ((void (*)(...))FUN_003c5fa0)(__VA_ARGS__)
 #define FUN_003c60f0(...) ((u64 (*)(...))FUN_003c60f0)(__VA_ARGS__)
-#define FUN_003c6120(...) ((u64 (*)(...))FUN_003c6120)(__VA_ARGS__)
+#define FUN_003c6120(...) ((u32 (*)(...))FUN_003c6120)(__VA_ARGS__)
 #define FUN_003c6270(...) ((u32 (*)(...))FUN_003c6270)(__VA_ARGS__)
 #define FUN_003c6380(...) ((u64 (*)(...))FUN_003c6380)(__VA_ARGS__)
 #define FUN_003c63f0(...) ((u64 (*)(...))FUN_003c63f0)(__VA_ARGS__)
