@@ -1880,35 +1880,36 @@ void btlActionUpdateStateSupport(BtlAction* action)
         case 15: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x5e : 0x5f; FUN_00301540(action->unit->datUnit, 15); break;
         case 16: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x60 : 0x61; FUN_00301540(action->unit->datUnit, 16); break;
     }
-    if (messageId != 0)
+    if (messageId == 0)
     {
-        btlAction0028a780(action);
-        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_0);
-        packet = FUN_002bd850(action->unit, messageId);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-        if (special)
+        if (FUN_002dc070(action))
         {
-            FUN_002d5dc0(work);
-            work[0] = -((FUN_002ffd70(action->unit->datUnit) & 0xffff) - 1);
-            if (work[0] >= 0) work[0] = 0;
-            work[1] = -((FUN_002ffd80(action->unit->datUnit) & 0xffff) - 1);
-            if (work[1] >= 0) work[1] = 0;
-            packet = FUN_002d7e20(action, action, work, 1, 1);
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            return;
+            btlActionSetState(action, BTLACTION_STATE_BAD);
         }
+        else
+        {
+            btlActionSetState(action, BTLACTION_STATE_STARTHOME);
+        }
+        return;
     }
-    if (FUN_002dc070(action))
+    btlAction0028a780(action);
+    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    packet = FUN_002bd850(action->unit, messageId);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+    if (special)
     {
-        btlActionSetState(action, BTLACTION_STATE_BAD);
-    }
-    else
-    {
-        btlActionSetState(action, BTLACTION_STATE_STARTHOME);
+        FUN_002d5dc0(work);
+        work[0] = -((FUN_002ffd70(action->unit->datUnit) & 0xffff) - 1);
+        if (work[0] >= 0) work[0] = 0;
+        work[1] = -((FUN_002ffd80(action->unit->datUnit) & 0xffff) - 1);
+        if (work[1] >= 0) work[1] = 0;
+        packet = FUN_002d7e20(action, action, work, 1, 1);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        return;
     }
 }
 
@@ -5537,6 +5538,11 @@ block_394:
         btlPacketRegister(temp_v0_167, 1U);
     }
     func_002b9030(sp438);
+    if (func_002dc130(action) != 0) {
+        btlActionSetState(action, BTLACTION_STATE_BADDMG);
+    } else {
+        btlActionSetState(action, BTLACTION_STATE_PACKET);
+    }
 }
 #pragma opt_loop_invariants off
 /* Warning: struct Model is not defined (only forward-declared) */
@@ -6342,18 +6348,20 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
         btlPacketRegister(FUN_002dd100(10, 6, 0xb), BTLPACKET_TYPE_1);
         action->movedAwayFromHome = 1;
     }
-    if (action->movedAwayFromHome == 1 && *(s16*)action->unkData4 >= 0)
+    if (action->movedAwayFromHome == 1)
     {
-        if (*(s16*)action->unkData4 == 0)
+        if (*(s16*)action->unkData4 >= 0)
         {
-            FUN_001ff160(action->unit->charId);
-            *(s16*)action->unkData4 = -1;
+            if (*(s16*)action->unkData4 == 0)
+            {
+                FUN_001ff160(action->unit->charId);
+                *(s16*)action->unkData4 = -1;
+            }
+            else
+            {
+                *(s16*)action->unkData4 -= 1;
+            }
         }
-        else
-        {
-            *(s16*)action->unkData4 -= 1;
-        }
-        return;
     }
     if (action->unk_488 == 0 && FUN_001ff2b0())
     {

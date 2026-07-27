@@ -598,13 +598,13 @@ u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4,
 
       if (cVar1 < '\0') {
 
-        K_Assert((const char *)0x6af950,0x115);
+        K_Assert((const char *)DAT_006af960 - 0x10,0x115);
 
       }
 
       if ('\t' < acStack_20[iVar7]) {
 
-        K_Assert((const char *)0x6af950,0x116);
+        K_Assert((const char *)DAT_006af960 - 0x10,0x116);
 
       }
 

@@ -60,6 +60,7 @@ extern u8 DAT_007e094c_abs[];
 extern u8 DAT_007e0952_abs[];
 extern u8 DAT_007e0956_abs[];
 extern u8 DAT_007e095a_abs[];
+ extern u8 DAT_0068ea18_abs[];
 extern u32* FUN_00255440();
 extern void FUN_00256f20();
 extern void FUN_00257d00();
