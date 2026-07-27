@@ -17789,7 +17789,7 @@ u16 uVar4;
 short sVar5;
 int iVar6;
 long lVar7;
-u64 uVar8;
+u32 uVar8;
 char cVar9;
 int iVar10;
 char cVar11;
