@@ -3219,27 +3219,16 @@ void FUN_003e0780(void)
 
 
 {
-
   int iVar1;
-
   u32 uVar2;
 
-  
-
   FUN_003e0950_narg();
-
   iVar1 = FUN_003c5460(DAT_007ce688);
-
-  uVar2 = kwlnTaskCreate(0,DAT_007cd7b8,10,0x3e0830,0,0);
-
+  uVar2 = kwlnTaskCreate(0,(char *)&DAT_007cd7b8,10,FUN_003e0830,0,0);
   *(int *)(iVar1 + 0x80) = (int)uVar2;
-
-  uVar2 = kwlnTaskCreate(uVar2,0x6a6ad8,0x18b6,0x3e0870,0,0);
-
-  kwlnTaskCreate(uVar2,0x6a6ae8,0x106f,0x3e08e0,0,0);
-
+  uVar2 = kwlnTaskCreate(uVar2,0x6a6ad8,0x18b6,FUN_003e0870,0,0);
+  kwlnTaskCreate(uVar2,0x6a6ae8,0x106f,FUN_003e08e0,0,0);
   return;
-
 }
 
 // FUN_003E0830

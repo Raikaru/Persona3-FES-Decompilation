@@ -10126,12 +10126,12 @@ void func_002ef000(u64 *param_1)
   uVar4 = FUN_002b8f90(0);
   uVar5 = FUN_002f87e0(unaff_s0_lo);
   FUN_002b90d0_voice(uVar4,uVar5);
-  uVar5 = FUN_00284200(1.0f,iVar1,0x12,0,2);
+  uVar5 = FUN_00284200_u32_voice(1.0f,iVar1,0x12,0,2);
   iVar2 = (int)uVar5;
   *(u16 *)(iVar2 + 0x48) = 3;
   *(u64 *)(iVar2 + 0x60) = *param_1;
   FUN_0027ed20(uVar5,1);
-  uVar5 = FUN_002b8d60(1,0xfff);
+  uVar5 = FUN_002b8d60_u32_voice(1,0xfff);
   puVar3 = (u8 *)uVar5;
   *puVar3 = 4;
   *(u64 *)(puVar3 + 8) = *(u64 *)(iVar2 + 0x58);
