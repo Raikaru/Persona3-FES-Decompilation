@@ -180,7 +180,7 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4);
 #pragma alias FUN_003ad400_typed FUN_003ad400
 extern u64 FUN_003ad400_typed(u16 param_1,u16 param_2,u64 param_3,int param_4);
 u64 FUN_003ad640(u64 param_1,u64 param_2);
-u64 FUN_003ad740(u64 param_1,int param_2);
+u64 FUN_003ad740(int param_1,int param_2);
 u64 FUN_003ad860(u64 param_1,int param_2);
 u64 FUN_003ad930(u64 param_1,int param_2);
 u64 FUN_003ada00(u64 param_1,int param_2);
@@ -4096,7 +4096,7 @@ u64 FUN_003ad640(u64 param_1,u64 param_2)
 // FUN_003AD740 NONMATCHING
 
 
-u64 FUN_003ad740(u64 param_1,int param_2)
+u64 FUN_003ad740(int param_1,int param_2)
 
 
 
