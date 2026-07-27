@@ -6472,7 +6472,7 @@ void func_002e7320(void)
 
 
 // FUN_002e7330 NONMATCHING
-void func_002e7330(u64 param_1)
+void func_002e7330(BtlCamera* camera)
 
 {
   int iVar1;

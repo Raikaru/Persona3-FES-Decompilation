@@ -18,7 +18,7 @@ u32 FUN_0040e4f0(int *param_1);
 void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5, int param_6, int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
-u64 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
+u32 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
 #pragma alias fclDrawSpriteCreate FUN_001158b0
 extern u32 fclDrawSpriteCreate();
 #pragma alias fclDrawSpriteEmit FUN_0040e3c0
@@ -259,7 +259,6 @@ void FUN_0040e580(u32 param_1)
 
 
 u64
-
 FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int param_6,
 
             int param_7)
@@ -306,10 +305,7 @@ FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int pa
 
 
 u64
-
-
 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4)
-
 
 
 {
@@ -384,10 +380,8 @@ u64
 
 
 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
-
-            int param_6,int param_7,int param_8,int param_9,int param_10,int param_11,
-
-            int param_12)
+u32
+FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
 
 
 
