@@ -13240,91 +13240,31 @@ void FUN_00329630(void)
   return;
 }
 
-// FUN_003296A0 NONMATCHING
-
-
+// FUN_003296A0
 void FUN_003296a0(u32 *param_1,u8 (*param_2) [16])
-
-
-
 {
+  f32 tmp[4];
 
-  __int128 auVar1;
-
-  __int128 extraout_vf28;
-
-  __int128 extraout_vf29;
-
-  __int128 extraout_vf30;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  _lqc2(*param_2);
-
+  __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(param_2) : "memory");
   FUN_00357e00();
-
   FUN_00357e30();
-
-  auVar1 = _sqc2(extraout_vf28);
-
-  uStack_10 = auVar1._0_4_;
-
-  *param_1 = uStack_10;
-
-  uStack_c = auVar1._4_4_;
-
-  param_1[1] = uStack_c;
-
-  uStack_8 = auVar1._8_4_;
-
-  param_1[2] = uStack_8;
-
-  auVar1 = _sqc2(extraout_vf29);
-
-  uStack_10 = auVar1._0_4_;
-
-  param_1[4] = uStack_10;
-
-  uStack_c = auVar1._4_4_;
-
-  param_1[5] = uStack_c;
-
-  uStack_8 = auVar1._8_4_;
-
-  param_1[6] = uStack_8;
-
-  auVar1 = _sqc2(extraout_vf30);
-
-  uStack_10 = auVar1._0_4_;
-
-  param_1[8] = uStack_10;
-
-  uStack_c = auVar1._4_4_;
-
-  param_1[9] = uStack_c;
-
-  uStack_8 = auVar1._8_4_;
-
-  param_1[10] = uStack_8;
-
+  __asm__ volatile ("sqc2 vf28, 0(%0)" : : "r"(tmp) : "memory");
+  *(f32 *)param_1 = tmp[0];
+  *(f32 *)(param_1 + 1) = tmp[1];
+  *(f32 *)(param_1 + 2) = tmp[2];
+  __asm__ volatile ("sqc2 vf29, 0(%0)" : : "r"(tmp) : "memory");
+  *(f32 *)(param_1 + 4) = tmp[0];
+  *(f32 *)(param_1 + 5) = tmp[1];
+  *(f32 *)(param_1 + 6) = tmp[2];
+  __asm__ volatile ("sqc2 vf30, 0(%0)" : : "r"(tmp) : "memory");
+  *(f32 *)(param_1 + 8) = tmp[0];
+  *(f32 *)(param_1 + 9) = tmp[1];
+  *(f32 *)(param_1 + 10) = tmp[2];
   param_1[0xc] = 0;
-
   param_1[0xd] = 0;
-
   param_1[0xe] = 0;
-
   return;
-
 }
-
-
-
 
 // FUN_00329740
 
@@ -58109,8 +58049,6 @@ u64 FUN_003579b0(u64 param_1)
 
   int iVar2;
 
-  __int128 auVar3;
-
   u32 uVar4;
 
   u32 uVar5;
@@ -58118,8 +58056,6 @@ u64 FUN_003579b0(u64 param_1)
   u8 (*pauVar6) [16];
 
   int iVar7;
-
-  __int128 in_vf0;
 
   
 
@@ -58174,13 +58110,9 @@ u64 FUN_003579b0(u64 param_1)
 
     *(u32 *)pauVar6[2] = 0x3f800000;
 
-    auVar3 = _sqc2(in_vf0);
+    __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar6) : "memory");
 
-    memcpy(*pauVar6, &auVar3, 16);
-
-    auVar3 = _sqc2(in_vf0);
-
-    memcpy(pauVar6[1], &auVar3, 16);
+    __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar6) : "memory");
 
     FUN_00521250(*(u32 *)(pauVar6[3] + 8),uVar4,iVar2);
 
