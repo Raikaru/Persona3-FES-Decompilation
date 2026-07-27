@@ -3699,8 +3699,8 @@ void FUN_003bbb90(const float *param_1,float *param_2)
 {
   u32 uVar1;
   float fVar2;
-  float afStack_20 [4];
   SceneVecBits source;
+  float afStack_20 [4];
 
   source = DAT_006a2f48_abs[0];
   fVar2 = FUN_004c69f0_scene_typed(afStack_20,param_1);
