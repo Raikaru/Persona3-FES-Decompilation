@@ -31628,7 +31628,6 @@ u32 FUN_0033b1c0(int param_1)
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   uVar4 = (*DAT_00960178_abs)(uVar1 * 0x2c + 0x10,0x40000);
-  asm volatile("" : "+r"(uVar4));
   *(int *)uVar4 = (int)((int *)uVar4 + 4);
   *(int *)(uVar4 + 8) = uVar4;
   piVar2 = (int *)uVar4;
