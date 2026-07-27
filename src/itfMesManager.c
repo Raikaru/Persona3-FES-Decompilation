@@ -3122,7 +3122,7 @@ FUN_003a56f0(u32 param_1,u64 param_2,f32 param_3,u32 param_4,
 
     if (*(int *)((int)uVar2 + 0x24) == 0) {
 
-      uVar3 = FUN_003a53b0_typed(param_1,param_2 + 0x19,param_3,param_4,param_5,param_6,param_7,
+      uVar3 = FUN_003a53b0(param_1,param_2 + 0x19,param_3,param_4,param_5,param_6,param_7,
 
                            param_10);
 
@@ -3130,7 +3130,7 @@ FUN_003a56f0(u32 param_1,u64 param_2,f32 param_3,u32 param_4,
 
     else {
 
-      uVar3 = FUN_003a53b0_typed(param_1,param_2 + 0x32,param_3,param_4,param_5,param_6,param_7,
+      uVar3 = FUN_003a53b0(param_1,param_2 + 0x32,param_3,param_4,param_5,param_6,param_7,
 
                            param_10);
 

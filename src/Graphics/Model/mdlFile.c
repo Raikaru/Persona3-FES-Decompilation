@@ -1047,8 +1047,6 @@ extern void FUN_00357ea0_4arg(int param_1,float angleX,float angleY,float angleZ
 #pragma alias FUN_00357fd0_u32 FUN_00357fd0
 extern u32 FUN_00357fd0_u32(u32 seed);
 extern f32 FUN_00358030();
-#pragma alias ABS_f32 ABS
-extern f32 ABS_f32(f32 value);
 // Typed aliases preserve the floating-point ABI used by the particle update routine.
 #pragma alias FUN_00358160_f32 FUN_00358160
 extern void FUN_00358160_f32(f32 value);
@@ -1177,6 +1175,8 @@ extern f32 FUN_0052e878();
 extern f32 FUN_0052e9e8_f32(f32 value);
 extern f32 FUN_0052ea00();
 extern u64 FUN_0052ea18();
+#pragma alias FUN_0052ea18_f32 FUN_0052ea18
+extern f32 FUN_0052ea18_f32(f32 value);
 extern u64 FUN_00530da0();
 extern u64 FUN_005311c8();
 extern u64 FUN_00531230();
@@ -14567,9 +14567,7 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,u64 param_3,
 
     else {
 
-      uVar1 = FUN_0052ea18(fStack_c);
-
-      *(u32 *)(param_1[1] + 0xc) = uVar1;
+      *(float *)(param_1[1] + 0xc) = FUN_0052ea18_f32(fStack_c);
 
     }
 
@@ -55471,7 +55469,7 @@ void FUN_00352f70(float *param_1)
 
             RwV3dNormalize(&fStack_30,&fStack_30);
 
-            uStack_a0 = CONCAT44(fStack_2c,fStack_30);
+            uStack_a0 = CONCAT44(*(u32 *)&fStack_2c,*(u32 *)&fStack_30);
 
             fStack_98 = fStack_28;
 
