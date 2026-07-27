@@ -5346,7 +5346,7 @@ void FUN_00434e60(void)
         if (cVar1 == '\x05') {
           *(u8 *)(*(int *)(*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) + 0x3c) + 0x1214) = 0;
         }
-        else if (*(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar3 * 0x1c0) + 0x3c) + 0x1222) ==
+        else if (*(char *)(*(int *)(*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) + 0x3c) + 0x1222) ==
                  '\0') {
           FUN_0043c7a0(uVar2,1);
         }

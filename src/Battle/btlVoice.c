@@ -7436,6 +7436,8 @@ void func_002e9450(void)
     if (*(short *)(iVar2 + 0xa4) != 0x100) {
       iVar8 = iVar6;
     }
+    iVar6 = iVar8;
+  }
   uVar4 = FUN_002bc950(iVar7,iVar9,iVar10);
   FUN_0027ed20(uVar4,1);
   uVar4 = FUN_002baf90(uVar3,iVar12,iVar6,0,0x200);
@@ -7444,8 +7446,6 @@ void func_002e9450(void)
   *(u8 *)uVar5 = 4;
   *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
   FUN_0027ed20(uVar5,1);
-  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
-  FUN_0027ed20_voice(uVar5,1);
   FUN_002b9030(uVar3);
   return;
 }

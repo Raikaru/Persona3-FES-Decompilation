@@ -3751,7 +3751,7 @@ u32 FUN_0039c440(int param_1)
 
           *(u16 *)((int)puVar1 + iVar17 * 2 + 0x3c) = *puVar14;
 
-          puVar1[iVar17 + 0x11] = iVar15 + iVar6 * 4;
+          puVar1[iVar17 + 0x11] = iVar15 + iVar18;
 
           iVar17 = iVar17 + 1;
 
