@@ -413,6 +413,8 @@ extern void FUN_00325e40_passthru(void);
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
+#pragma alias FUN_00325d60_i FUN_00325d60
+extern void FUN_00325d60_i(int param_1,u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 void FUN_00326030(int param_1,int param_2);
 u_long128 FUN_00326160(int param_1,u32 *param_2);
