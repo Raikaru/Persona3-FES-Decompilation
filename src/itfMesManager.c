@@ -2462,7 +2462,7 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
     u32 *object;
     s16 *table;
     s16 *found;
-    s16 count;
+    int count;
     s32 i;
 
     object = *(u32**)(DAT_00959eec_abs + param_1 * 0xd);
