@@ -16832,7 +16832,7 @@ u32 FUN_00403e40(int param_1,int param_2)
 
   u8 bVar1;
 
-  long lVar2;
+  int lVar2;
 
   int iVar3;
 
