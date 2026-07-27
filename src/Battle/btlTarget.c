@@ -220,8 +220,6 @@ s32 FUN_002d1a70(void)
     return FUN_002FD7C0() != 0;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_002d1ac0
 void FUN_002d1ac0(void)
 {
@@ -281,7 +279,6 @@ enable:
 done:
     ;
 }
-#pragma pop
 
 // FUN_002d1de0
 void FUN_002d1de0(u64 task, const RwV3d* from, const RwV3d* to)
@@ -4784,8 +4781,6 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
     return FUN_002db9f0(param_2, (u64)result);
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_002dad00
 void FUN_002dad00(void)
 {
@@ -4834,7 +4829,6 @@ updateFlag:
     if (FUN_003c8ea0() == 0)
         *(u16*)(iGpffffb6fc + 0xa16) &= (u16)~1;
 }
-#pragma pop
 
 // FUN_002dae30 NONMATCHING
 void FUN_002dae30(u64 param_1)

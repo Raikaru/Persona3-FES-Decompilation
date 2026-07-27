@@ -62,7 +62,6 @@ extern f32 fGpffff8078;
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 
-#pragma opt_loop_invariants on
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
@@ -164,7 +163,6 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
 
     return inside;
 }
-#pragma opt_loop_invariants off
 
 // FUN_001ac750
 void K_FldFrame_HandleCollis(const RwV3d* pos, RwV3d* translation, f32 sphereCollisRadius,

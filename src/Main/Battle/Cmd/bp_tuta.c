@@ -1,13 +1,20 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
+#pragma alias bpTutaInit FUN_00251a70
+#pragma alias bpTutaUpdate FUN_00251A80
+#pragma alias bpTutaStart FUN_00251E10
+#pragma alias bpTutaIsActive FUN_00251E80
+#pragma alias bpTutaClose FUN_00251ED0
+#pragma alias datSetFlag FUN_0016f1f0
+
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void FUN_00251a80(void);
-void FUN_00251e10(void);
-u32 FUN_00251e80(void);
-void FUN_00251ed0(void);
+void bpTutaUpdate(void);
+void bpTutaStart(void);
+u32 bpTutaIsActive(void);
+void bpTutaClose(void);
 u32 FUN_003c7610(void);
 void FUN_003c7990(s32 mode);
 u32 FUN_003c7650(s32 close);
@@ -25,7 +32,7 @@ typedef struct BpTutaWork
 static BpTutaWork* sBpTutaWork;
 
 // FUN_00251a70
-void bpTuta00251a70(BpTutaWork* work)
+void bpTutaInit(BpTutaWork* work)
 {
     work->flags = 0;
     sBpTutaWork = work;
@@ -35,7 +42,7 @@ void bpTuta00251a70(BpTutaWork* work)
 // FUN_00251A80
 
 
-void FUN_00251a80(void)
+void bpTutaUpdate(void)
 {
     u32 state;
     BpTutaWork* work;
@@ -139,7 +146,7 @@ void FUN_00251a80(void)
                 if (FUN_003c7850() == 0) {
                     FUN_003c7650(1);
                     if (FUN_0017d800() == 0) {
-                        FUN_00251ed0();
+                        bpTutaClose();
                         work->flags &= ~1;
                     } else {
                         FUN_003c94e0(FUN_0021c8b0(2));
@@ -154,7 +161,7 @@ void FUN_00251a80(void)
                 if (FUN_003c7850() == 0) {
                     FUN_003c7650(1);
                     FUN_003c77a0();
-                    FUN_00251ed0();
+                    bpTutaClose();
                     work->flags &= ~1;
                 }
                 break;
@@ -167,7 +174,7 @@ void FUN_00251a80(void)
 // FUN_00251E10
 
 
-void FUN_00251e10(void)
+void bpTutaStart(void)
 {
     BpTutaWork* work;
 
@@ -175,7 +182,7 @@ void FUN_00251e10(void)
         FUN_0019d3f0(DAT_0068e9d0, 0x31);
     }
     work = sBpTutaWork;
-    FUN_0016f1f0(0x1306, 1);
+    datSetFlag(0x1306, 1);
     FUN_0021c7f0();
     work->phase = 0;
     work->flags |= 1;
@@ -184,7 +191,7 @@ void FUN_00251e10(void)
 // FUN_00251E80
 
 
-u32 FUN_00251e80(void)
+u32 bpTutaIsActive(void)
 {
     if (sBpTutaWork == NULL) {
         FUN_0019d3f0(DAT_0068e9d0, 0x31);
@@ -195,7 +202,7 @@ u32 FUN_00251e80(void)
 // FUN_00251ED0
 
 
-void FUN_00251ed0(void)
+void bpTutaClose(void)
 {
     if (sBpTutaWork == NULL) {
         FUN_0019d3f0(DAT_0068e9d0, 0x31);

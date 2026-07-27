@@ -460,8 +460,6 @@ void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
     }
     return result;
 }
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001c6d70
 FldUnit* func_001c6d70(const FldUnit* unit, f32 maxDist)
 {
@@ -476,7 +474,6 @@ FldUnit* func_001c6d70(const FldUnit* unit, f32 maxDist)
     }
     return result;
 }
-#pragma pop
 
 // FUN_001c6dd0
 s32 func_001c6dd0(const FldUnit* unit, f32 maxDist)

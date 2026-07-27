@@ -6,19 +6,28 @@
 #include "rw/rwplcore.h"
 #include "rw/rtquat.h"
 
+#pragma alias gcPoseStartDirectedTranslation FUN_002505B0
+#pragma alias gcPoseStartEaseOutTranslation FUN_002508C0
+#pragma alias gcPoseStartEaseInTranslation FUN_00250A30
+#pragma alias gcPoseSetRotationVectorElement FUN_00250BE0
+#pragma alias gcPoseStartRotation FUN_00250CF0
+#pragma alias gcPoseProjectToScreen FUN_00250F80
+#pragma alias RwV3dNormalize FUN_004c69f0
+#pragma alias RwV3dLength FUN_004c6ac0
+
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void FUN_002505b0(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction);
-void FUN_002508c0(int param_1,u32 *param_2,int param_3);
-void FUN_00250a30(int param_1,u32 *param_2,int param_3);
-void FUN_00250be0(int param_1,int param_2,u32 param_3);
-void FUN_00250cf0(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames);
-void FUN_00250f80(float* output, const RwV3d* input);
+void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction);
+void gcPoseStartEaseOutTranslation(int param_1,u32 *param_2,int param_3);
+void gcPoseStartEaseInTranslation(int param_1,u32 *param_2,int param_3);
+void gcPoseSetRotationVectorElement(int param_1,int param_2,u32 param_3);
+void gcPoseStartRotation(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames);
+void gcPoseProjectToScreen(float* output, const RwV3d* input);
 
 extern f32 fGpffff81f8;
 extern void FUN_004bdde0(f32 angle, void *output, void *target, s32 mode);
-extern f32 FUN_004c69f0(RwV3d *out, const RwV3d *in);
-extern f32 FUN_004c6ac0(const RwV3d *in);
+extern f32 RwV3dNormalize(RwV3d *out, const RwV3d *in);
+extern f32 RwV3dLength(const RwV3d *in);
 
 // FUN_00250480
 void gcPose00250480(int param_1)
@@ -278,8 +287,8 @@ static void gcPose0024f7f0(void* state, const RwV3d* offset)
     toOrigin.x = pose[9] - pose[0];
     toOrigin.y = pose[10] - pose[1];
     toOrigin.z = pose[11] - pose[2];
-    FUN_004c69f0(&fromOrigin, &fromOrigin);
-    FUN_004c69f0(&toOrigin, &toOrigin);
+    RwV3dNormalize(&fromOrigin, &fromOrigin);
+    RwV3dNormalize(&toOrigin, &toOrigin);
     crossX = toOrigin.y * fromOrigin.z - toOrigin.z * fromOrigin.y;
     crossY = toOrigin.z * fromOrigin.x - toOrigin.x * fromOrigin.z;
     crossZ = toOrigin.x * fromOrigin.y - toOrigin.y * fromOrigin.x;
@@ -482,8 +491,8 @@ static void gcPose00250280(void* state, const RwV3d* offset)
     toOrigin.x = pose[9] - pose[0];
     toOrigin.y = pose[10] - pose[1];
     toOrigin.z = pose[11] - pose[2];
-    FUN_004c69f0(&fromOrigin, &fromOrigin);
-    FUN_004c69f0(&toOrigin, &toOrigin);
+    RwV3dNormalize(&fromOrigin, &fromOrigin);
+    RwV3dNormalize(&toOrigin, &toOrigin);
     crossX = toOrigin.y * fromOrigin.z - toOrigin.z * fromOrigin.y;
     crossY = toOrigin.z * fromOrigin.x - toOrigin.x * fromOrigin.z;
     crossZ = toOrigin.x * fromOrigin.y - toOrigin.y * fromOrigin.x;
@@ -515,7 +524,7 @@ void gcPose002503f0(void* state, s32 index, u32 value)
 // FUN_002505B0
 
 
-void FUN_002505b0(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction)
+void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction)
 {
     u32 *state;
     RwV3d *acceleration;
@@ -549,17 +558,17 @@ void FUN_002505b0(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direct
     delta.x = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
     delta.y = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
     delta.z = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
-    FUN_004c69f0(&normalizedDelta, &delta);
-    FUN_004c69f0(&normalizedDirection, acceleration + 1);
+    RwV3dNormalize(&normalizedDelta, &delta);
+    RwV3dNormalize(&normalizedDirection, acceleration + 1);
 
     dot = normalizedDelta.x * normalizedDirection.x +
           normalizedDelta.y * normalizedDirection.y +
           normalizedDelta.z * normalizedDirection.z;
-    directionLength = FUN_004c6ac0(acceleration + 1);
+    directionLength = RwV3dLength(acceleration + 1);
     projectedX = normalizedDelta.x * (dot * directionLength);
-    directionLength = FUN_004c6ac0(acceleration + 1);
+    directionLength = RwV3dLength(acceleration + 1);
     projectedY = normalizedDelta.y * (dot * directionLength);
-    directionLength = FUN_004c6ac0(acceleration + 1);
+    directionLength = RwV3dLength(acceleration + 1);
     {
         f32 projectedZ;
 
@@ -605,7 +614,7 @@ void FUN_002505b0(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direct
 // FUN_002508C0
 
 
-void FUN_002508c0(int param_1, u32 *param_2, int param_3)
+void gcPoseStartEaseOutTranslation(int param_1, u32 *param_2, int param_3)
 {
     u8 *work;
     f32 *target;
@@ -649,7 +658,7 @@ void FUN_002508c0(int param_1, u32 *param_2, int param_3)
 // FUN_00250A30
 
 
-void FUN_00250a30(int param_1, u32 *param_2, int param_3)
+void gcPoseStartEaseInTranslation(int param_1, u32 *param_2, int param_3)
 {
     u8 *work;
     f32 *target;
@@ -688,7 +697,7 @@ void FUN_00250a30(int param_1, u32 *param_2, int param_3)
 // FUN_00250BE0
 
 
-void FUN_00250be0(int param_1, int param_2, u32 param_3)
+void gcPoseSetRotationVectorElement(int param_1, int param_2, u32 param_3)
 {
     K_ASSERT(*(s32*)(param_1 + 0xc) == 2, 0x52f);
     K_ASSERT(*(s32*)(param_1 + 0x24) == 2, 0x530);
@@ -701,7 +710,7 @@ void FUN_00250be0(int param_1, int param_2, u32 param_3)
 // FUN_00250CF0
 
 
-void FUN_00250cf0(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames)
+void gcPoseStartRotation(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames)
 {
     u32 *state;
     u8 *motion;
@@ -734,7 +743,7 @@ void FUN_00250cf0(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 fra
 // FUN_00250F80
 
 
-void FUN_00250f80(float* output, const RwV3d* input)
+void gcPoseProjectToScreen(float* output, const RwV3d* input)
 {
     RwV3d projected;
 

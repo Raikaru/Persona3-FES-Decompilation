@@ -1,5 +1,12 @@
 #include "dds3Process.h"
 
+#pragma alias scrCommand_RESOURCE_LOADED FUN_0035AEB0
+#pragma alias scrCommand_LOAD_RESOURCE FUN_0035AEF0
+#pragma alias scrCommand_UNLOAD_RESOURCE FUN_0035AF50
+#pragma alias scrGetResourceFlag FUN_003951d0
+#pragma alias scrSetResourceFlag FUN_00395170
+#pragma alias scrClearResourceFlag FUN_003951a0
+
 // FUN_0035ad80.
 // 'unused1' and 'unused2' were probably 'runningDelay' and 'destroyDelay',
 // but instead of using 'kwlnTaskInitEx' they used the normal one for some reason
@@ -49,9 +56,9 @@ void dds3SetProcessWorkData(KwlnTask* task, void* workData)
 #include "Script/scrTraceCode.h"
 #include "Kosaka/k_assert.h"
 extern void scrSetIntReturnVal(s32 value);
-extern s32 FUN_003951d0(s32 value);
-extern void FUN_00395170(u32 value);
-extern void FUN_003951a0(u32 value);
+extern s32 scrGetResourceFlag(s32 value);
+extern void scrSetResourceFlag(u32 value);
+extern void scrClearResourceFlag(u32 value);
 
 // FUN_0035AE50
 
@@ -134,7 +141,7 @@ u64 FUN_0035aea0(void)
 // FUN_0035AEB0
 
 
-u32 FUN_0035aeb0(void)
+u32 scrCommand_RESOURCE_LOADED(void)
 
 
 
@@ -146,7 +153,7 @@ u32 FUN_0035aeb0(void)
 
   uVar1 = scrGetIntPara(0);
 
-  uVar1 = FUN_003951d0(uVar1);
+  uVar1 = scrGetResourceFlag(uVar1);
 
   scrSetIntReturnVal(uVar1);
 
@@ -157,7 +164,7 @@ u32 FUN_0035aeb0(void)
 // FUN_0035AEF0
 
 
-u32 FUN_0035aef0(void)
+u32 scrCommand_LOAD_RESOURCE(void)
 
 
 
@@ -171,7 +178,7 @@ u32 FUN_0035aef0(void)
 
   K_ASSERT(uVar1 < 0x1600, 0x75);
 
-  FUN_00395170(uVar1);
+  scrSetResourceFlag(uVar1);
 
   return 1;
 
@@ -180,7 +187,7 @@ u32 FUN_0035aef0(void)
 // FUN_0035AF50
 
 
-u32 FUN_0035af50(void)
+u32 scrCommand_UNLOAD_RESOURCE(void)
 
 
 
@@ -194,7 +201,7 @@ u32 FUN_0035af50(void)
 
   K_ASSERT(uVar1 < 0x1600, 0x84);
 
-  FUN_003951a0(uVar1);
+  scrClearResourceFlag(uVar1);
 
   return 1;
 

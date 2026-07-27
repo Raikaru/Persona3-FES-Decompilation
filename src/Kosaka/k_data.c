@@ -375,8 +375,6 @@ void* func_001b8160(void)
     return result;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001b81f0
 u32 func_001b81f0(HCdvd* request)
 {
@@ -438,7 +436,6 @@ u32 func_001b81f0(HCdvd* request)
 failed:
     return false;
 }
-#pragma pop
 
 // FUN_001b83f0 NONMATCHING
 u16* func_001b83f0(void)
@@ -563,8 +560,6 @@ void* func_001b8680(void)
     return result;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001b8710 NONMATCHING
 u32 func_001b8710(HCdvd* request)
 {
@@ -605,7 +600,6 @@ u32 func_001b8710(HCdvd* request)
     }
     return true;
 }
-#pragma pop
 
 // FUN_001b8870
 void func_001b8870(void)
@@ -643,8 +637,6 @@ void* func_001b88d0(void)
     return result;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001b8960 NONMATCHING
 u32 func_001b8960(HCdvd* request)
 {
@@ -688,7 +680,6 @@ u32 func_001b8960(HCdvd* request)
     return true;
 }
  
-#pragma pop
 
 // FUN_001b8ae0
 void func_001b8ae0(void)

@@ -14,6 +14,16 @@
 #include "rw/rprandom.h"
 #include "sce/eeregs.h"
 
+#pragma alias kwlnRootUpdateEtcDrawBeginTask FUN_00198e90
+#pragma alias kwlnRootUpdateEtcDrawEndTask FUN_00198fd0
+#pragma alias kwlnRootCreateEtcDrawBeginTask FUN_00199080
+#pragma alias kwlnRootCreateEtcDrawEndTask FUN_00199100
+#pragma alias kwlnRootCreateShowRasterTask FUN_00199360
+#pragma alias kwlnRootUpdateDrawBustupTask FUN_001993a0
+#pragma alias kwlnRootCreateDrawBustupTask FUN_001993d0
+#pragma alias kwlnRootDestroy3DDrawTask FUN_00199410
+#pragma alias kwlnRootCreate3DDrawTask FUN_00199440
+
 KwlnTask* kwlnRootCreate2DDrawBeginTask();
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
 KwlnTask* kwlnRootCreate2DDrawEndTask();
@@ -23,11 +33,11 @@ KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
 KwlnTask* kwlnRootCreateEtcDrawTask();
 void H_Pad_Update();
 u32 H_Snd_FUN_00109df0(s32 param);
-KwlnTask* FUN_00199440(KwlnTask* rootTask);
-KwlnTask* FUN_001993d0();
-KwlnTask* FUN_00199080();
-KwlnTask* FUN_00199100();
-KwlnTask* FUN_00199360();
+KwlnTask* kwlnRootCreate3DDrawTask(KwlnTask* rootTask);
+KwlnTask* kwlnRootCreateDrawBustupTask();
+KwlnTask* kwlnRootCreateEtcDrawBeginTask();
+KwlnTask* kwlnRootCreateEtcDrawEndTask();
+KwlnTask* kwlnRootCreateShowRasterTask();
 KwlnTask* func_00192de0();
 void kwlnInitGameData();
 extern u32 DAT_007ce12c;
@@ -104,7 +114,7 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
             if (H_Snd_FUN_00109df0(0) != 0)
             {
                 K_SceneDraw_CreateTasks(rootTask);
-                FUN_00199440(rootTask);
+                kwlnRootCreate3DDrawTask(rootTask);
                 task = kwlnRootCreate2DDrawBeginTask();
                 kwlnTaskAddChild(rootTask, task);
                 task = kwlnRootCreate2DDrawBeginPreEndTask();
@@ -117,15 +127,15 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
                 kwlnTaskAddChild(rootTask, task);
                 task = kwlnRootCreate3DOn2DDrawEndTask();
                 kwlnTaskAddChild(rootTask, task);
-                task = FUN_001993d0();
+                task = kwlnRootCreateDrawBustupTask();
                 kwlnTaskAddChild(rootTask, task);
-                task = FUN_00199080();
+                task = kwlnRootCreateEtcDrawBeginTask();
                 kwlnTaskAddChild(rootTask, task);
                 task = kwlnRootCreateEtcDrawTask();
                 kwlnTaskAddChild(rootTask, task);
-                task = FUN_00199100();
+                task = kwlnRootCreateEtcDrawEndTask();
                 kwlnTaskAddChild(rootTask, task);
-                task = FUN_00199360();
+                task = kwlnRootCreateShowRasterTask();
                 kwlnTaskAddChild(rootTask, task);
                 work->state++;
             }
@@ -332,7 +342,7 @@ KwlnTask* kwlnRootCreate3DOn2DDrawEndTask()
 }
 
 // FUN_00198e90
-void* FUN_00198e90(KwlnTask* etcDrawBeginTask)
+void* kwlnRootUpdateEtcDrawBeginTask(KwlnTask* etcDrawBeginTask)
 {
     RwRenderStateSetFunc* setRenderState;
     RwCamera* camera;
@@ -371,7 +381,7 @@ void* kwlnRootUpdateEtcDrawTask(KwlnTask* etcDrawTask)
 }
 
 // FUN_00198fd0
-void* FUN_00198fd0(KwlnTask* etcDrawEndTask)
+void* kwlnRootUpdateEtcDrawEndTask(KwlnTask* etcDrawEndTask)
 {
     RwRenderStateSetFunc* setRenderState;
 
@@ -390,9 +400,9 @@ void* FUN_00198fd0(KwlnTask* etcDrawEndTask)
 }
 
 // FUN_00199080
-KwlnTask* FUN_00199080()
+KwlnTask* kwlnRootCreateEtcDrawBeginTask()
 {
-    return kwlnTaskInit(D_00678868, 6323, FUN_00198e90, NULL, NULL);
+    return kwlnTaskInit(D_00678868, 6323, kwlnRootUpdateEtcDrawBeginTask, NULL, NULL);
 }
 
 // FUN_001990c0
@@ -402,9 +412,9 @@ KwlnTask* kwlnRootCreateEtcDrawTask()
 }
 
 // FUN_00199100
-KwlnTask* FUN_00199100()
+KwlnTask* kwlnRootCreateEtcDrawEndTask()
 {
-    return kwlnTaskInit(D_00678888, 7379, FUN_00198fd0, NULL, NULL);
+    return kwlnTaskInit(D_00678888, 7379, kwlnRootUpdateEtcDrawEndTask, NULL, NULL);
 }
 
 // FUN_00199140
@@ -465,13 +475,13 @@ void* kwlnRootUpdateShowRasterTask(KwlnTask* showRasterTask)
 }
 
 // FUN_00199360
-KwlnTask* FUN_00199360()
+KwlnTask* kwlnRootCreateShowRasterTask()
 {
     return kwlnTaskInit(D_006788A0, 7396, kwlnRootUpdateShowRasterTask, NULL, NULL);
 }
 
 // FUN_001993a0
-void* FUN_001993a0(KwlnTask* drawBustupTask)
+void* kwlnRootUpdateDrawBustupTask(KwlnTask* drawBustupTask)
 {
     H_Chrdsp_Main();
 
@@ -479,13 +489,13 @@ void* FUN_001993a0(KwlnTask* drawBustupTask)
 }
 
 // FUN_001993d0
-KwlnTask* FUN_001993d0()
+KwlnTask* kwlnRootCreateDrawBustupTask()
 {
-    return kwlnTaskInit(D_006788B8, 5276, FUN_001993a0, NULL, NULL);
+    return kwlnTaskInit(D_006788B8, 5276, kwlnRootUpdateDrawBustupTask, NULL, NULL);
 }
 
 // FUN_00199410
-void FUN_00199410(KwlnTask* draw3DTask)
+void kwlnRootDestroy3DDrawTask(KwlnTask* draw3DTask)
 {
     KWLN_FREE(draw3DTask->workData);
     sDraw3DTask = NULL;
@@ -498,7 +508,7 @@ typedef struct KwlnDraw3DWork
 } KwlnDraw3DWork;
 
 // FUN_00199440
-KwlnTask* FUN_00199440(KwlnTask* rootTask)
+KwlnTask* kwlnRootCreate3DDrawTask(KwlnTask* rootTask)
 {
     KwlnDraw3DWork* work;
 
@@ -513,7 +523,7 @@ KwlnTask* FUN_00199440(KwlnTask* rootTask)
         return NULL;
     }
 
-    sDraw3DTask = kwlnTaskCreate(rootTask, "3D Draw", 5, NULL, FUN_00199410, work);
+    sDraw3DTask = kwlnTaskCreate(rootTask, "3D Draw", 5, NULL, kwlnRootDestroy3DDrawTask, work);
     work->rasterA = sShowRasterRasterB;
     work->rasterB = sShowRasterRasterA;
     K_SPipe_CreateShadowNodeTask(sDraw3DTask);

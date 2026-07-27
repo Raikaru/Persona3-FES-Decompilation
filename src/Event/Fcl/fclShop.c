@@ -5549,8 +5549,6 @@ u64 FUN_003ec280(u64 param_1,u64 param_2)
 }
 
 // FUN_003EC2C0
-#pragma push
-#pragma opt_rebuildconditionals off
 u8 * FUN_003ec2c0(u64 unused, u64 handle)
 {
     u8* work;
@@ -5698,7 +5696,6 @@ u8 * FUN_003ec2c0(u64 unused, u64 handle)
 
     return NULL;
 }
-#pragma pop
 
 // FUN_003EC6A0
 

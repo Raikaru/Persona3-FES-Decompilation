@@ -180,8 +180,6 @@ int FUN_00131000(const void* left, const void* right)
     return 1;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_00131090
 s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
 {
@@ -221,7 +219,6 @@ s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
     }
     return count;
 }
-#pragma pop
 
 static inline CampEquipSprite* campEquipMakeSprite(void* atlas, s32 tile)
 {
@@ -657,7 +654,6 @@ static inline void campEquipAnimateList(u32* work, s32 mode)
     }
 }
 
-#pragma opt_loop_invariants on
 // FUN_0012C430 NONMATCHING
 void* FUN_0012c430(KwlnTask* task)
 {
@@ -820,7 +816,6 @@ void* FUN_0012c430(KwlnTask* task)
     }
     return NULL;
 }
-#pragma opt_loop_invariants off
 
 static inline CampVec2 campEquipRecordPosition(const u8* record)
 {
@@ -938,7 +933,6 @@ static void campEquipDrawCategory(void* work, u8* record, s16 category,
  * branch. Keep explicit aliases so the source preserves those load modes,
  * even though the remaining function-wide register/scheduling residual is
  * larger than the direct GP-relative form. */
-#pragma opt_loop_invariants on
 #pragma optimization_level 3
 // FUN_0012E3B0 NONMATCHING
 void FUN_0012e3b0(void* work, s32 index, u8* record)
@@ -1317,7 +1311,6 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
     }
 }
 #pragma optimization_level 2
-#pragma opt_loop_invariants off
 
 static void campEquipDrawEquipmentEffect(void* work, u8* record,
                                          s32 tile, f32 xOffset, f32 yOffset)
