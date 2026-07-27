@@ -6313,6 +6313,7 @@ void btlActionInitStateEscapeMes(BtlAction* action)
 // FUN_00296660 NONMATCHING
 void btlActionUpdateStateEscapeMes(BtlAction* action)
 {
+    BtlPacket* packet;
 
     if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) != NULL)
     {
@@ -6341,7 +6342,8 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
     if (action->unk_488 == 0 && FUN_001ff2b0())
     {
         FUN_001ff2f0();
-        btlPacketRegister(FUN_002e41d0(), BTLPACKET_TYPE_1);
+        packet = FUN_002e41d0();
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
         if (FUN_002d1a70() == 1)
         {
             gBtl->flags |= 0x4000;

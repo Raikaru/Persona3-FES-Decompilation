@@ -637,7 +637,7 @@ void FUN_00364e40(u32 param_1,int param_2,int param_3);
 void FUN_003650c0(u32 param_1,u64 param_2,int param_3);
 void FUN_00365250(u32 param_1,u64 param_2,int param_3);
 void FUN_00365360(u32 param_1,u64 param_2,int param_3);
-void FUN_00365430(int param_1,u64 param_2);
+void FUN_00365430(int param_1,int param_2);
 void FUN_003657e0(int param_1,u64 param_2);
 void FUN_003658b0(u32 param_1,int param_2);
 void FUN_00365a40(u32 param_1,int param_2);

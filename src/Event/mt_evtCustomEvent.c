@@ -3728,7 +3728,6 @@ u32 FUN_0039c440(int param_1)
     for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
 
       iVar18 = iVar6 * 4;
-    for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
 
       iVar17 = 0;
 
