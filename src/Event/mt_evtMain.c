@@ -3659,7 +3659,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 // FUN_003638E0 NONMATCHING
 
 
-void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
+void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
 
 

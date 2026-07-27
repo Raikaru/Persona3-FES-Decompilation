@@ -1437,6 +1437,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     f32 originY;
     f32 digitY;
     char textBuffer[256];
+    CampBits packedPosition;
     CampBits spritePair;
     CampBits textPair;
     CampBits iconPair;
