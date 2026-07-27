@@ -5573,7 +5573,7 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 
   int iVar10;
 
-  u64 uVar11;
+  u32 uVar11;
 
   f32 uVar12;
 
@@ -5603,7 +5603,7 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 
     uVar12 = FUN_0038a220(*(u32 *)(iVar8 + 0xe0));
 
-    FUN_0038a260(uVar12,param_1 * 0xc,param_2 * 0xc,uVar11,0x7cce50);
+    FUN_0038a260_f32_5(uVar12,param_1 * 0xc,param_2 * 0xc,uVar11,(void *)0x7cce50);
 
   }
 

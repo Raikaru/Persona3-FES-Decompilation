@@ -6013,7 +6013,7 @@ LAB_003a8400:
   iVar1 = (int)(fVar1 - 2.1474836e+09f);
   iVar1 = (iVar1 | 0x80000000) & 0xff;
 LAB_003a8418:
-  FUN_003a8710(0,iVar2,iVar3,iVar1,0x10);
+  FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
 }
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)
 #undef FUN_003a8440
