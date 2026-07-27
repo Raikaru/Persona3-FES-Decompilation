@@ -6005,6 +6005,7 @@ void FUN_0038ca80(int param_1)
   int iVar5;
 
   int aiStack_d0 [52];
+  int *piStack;
 
   
 
@@ -6014,34 +6015,23 @@ void FUN_0038ca80(int param_1)
 
   iVar2 = FUN_003b5df0(1);
 
-  iVar3 = FUN_003b5df0(0xc);
-
-  iVar3 = iVar1 + iVar2 + iVar3;
+  iVar3 = iVar1 + iVar2 + FUN_003b5df0(0xc);
 
   if (iVar3 < 0x33) {
-
+    piStack = aiStack_d0;
     for (iVar1 = FUN_003b5d50(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-
-      aiStack_d0[iVar5] = iVar1;
-
-      iVar5 = iVar5 + 1;
-
+      *piStack = iVar1;
+      piStack = piStack + 1;
     }
 
     for (iVar1 = FUN_003b5d50(1); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-
-      aiStack_d0[iVar5] = iVar1;
-
-      iVar5 = iVar5 + 1;
-
+      *piStack = iVar1;
+      piStack = piStack + 1;
     }
 
     for (iVar1 = FUN_003b5d50(0xc); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-
-      aiStack_d0[iVar5] = iVar1;
-
-      iVar5 = iVar5 + 1;
-
+      *piStack = iVar1;
+      piStack = piStack + 1;
     }
 
     for (iVar1 = 0; iVar1 < iVar3; iVar1 = iVar1 + 1) {

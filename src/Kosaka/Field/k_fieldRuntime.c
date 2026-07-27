@@ -4520,9 +4520,11 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         if (work->state == 0 && vertices != NULL &&
             vector0 != NULL && vector1 != NULL)
         {
-                RuntimeVec3* source0;
-                RuntimeVec3* source1;
+            RuntimeVec3* source0;
+            RuntimeVec3* source1;
 
+            for (index = 0; index < count; index++)
+            {
                 source0 = &vector0[section < count ? section : index];
                 source1 = &vector1[section < count ? section : index];
                 blended.x = source0->x +
@@ -4532,6 +4534,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 blended.z = source0->z +
                             (source1->z - source0->z) * fraction;
                 vertices[index] = blended;
+            }
         }
 
         if (work->state == 2 && count < 2)

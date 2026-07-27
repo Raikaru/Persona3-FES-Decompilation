@@ -95,7 +95,7 @@ u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
 u64 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
-u64 FUN_00427bf0(float param_1,float param_2,float param_3,float param_4, float param_5,u32 param_6,u32 param_7,u64 param_8, u32 param_9,float *param_10);
+u64 FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4, u32 param_5,u64 param_6,u32 param_7,u64 param_8, u32 param_9,u32 *param_10);
 void FUN_00427db0(int object, YajimaVec2 value);
 void FUN_00427de0(int param_1,u8 param_2,u8 param_3,u8 param_4, u8 param_5);
 void FUN_00427e20(float param_1,float param_2,int param_3);
@@ -122,7 +122,7 @@ void FUN_0042adb0(int param_1);
 void FUN_0042b050(int param_1);
 void FUN_0042b540(int param_1);
 u8 FUN_0042ba30(void);
-void FUN_0042ba50(u32 param_1);
+void FUN_0042ba50(u64 param_1);
 void FUN_0042bc10(int param_1);
 void FUN_0042bd80();
 #pragma alias FUN_0042bd80_typed FUN_0042bd80
@@ -3370,9 +3370,9 @@ FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
 
 u64
 
-FUN_00427bf0(float param_1,float param_2,float param_3,float param_4,
-            float param_5,u32 param_6,u32 param_7,u64 param_8,
-            u32 param_9,float *param_10)
+FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
+            u32 param_5,u64 param_6,u32 param_7,u64 param_8,
+            u32 param_9,u32 *param_10)
 
 
 
@@ -6261,7 +6261,7 @@ void FUN_0042ba50(u32 param_1)
 {
 
   int iVar1;
-
+void FUN_0042ba50(u64 param_1)
   int *piVar2;
 
   u32 uVar3;
@@ -6341,9 +6341,9 @@ void FUN_0042ba50(u32 param_1)
     *(u32 *)(iVar6 + 0x5c) = uVar3;
 
     lVar8 = (long)(iVar7 + 1);
+    uVar3 = FUN_00427bf0(0x40a00000,fVar9,fVar10,fVar9 / (float)iStack_18,fVar10 / (float)iStack_14,
 
-  }
-
+                         param_1,(u32)piVar2,*(u64 *)(iVar6 + 0xb2c),0xffffffff,(u32 *)auStack_20);
   return;
 
 }
