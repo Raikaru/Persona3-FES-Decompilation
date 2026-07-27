@@ -489,7 +489,7 @@ u16 * FUN_003645c0(u32 param_1,int param_2);
 u16 * FUN_003646d0(u32 param_1,int param_2);
 u16 * FUN_00364b10(u32 param_1,int param_2);
 u16 * FUN_003655f0(u32 param_1,int param_2);
-u16 * FUN_00366540(u64 param_1,int param_2,long param_3,long param_4);
+u16 * FUN_00366540(u32 param_1,int param_2,int param_3,int param_4);
 u32 FUN_00368d70(u64 param_1,u64 param_2,u64 param_3);
 u32 FUN_0036d470(int param_1);
 u32 FUN_0036da10(int param_1);
@@ -6437,7 +6437,7 @@ outer_check:
 // FUN_00366540 NONMATCHING
 
 
-u16 * FUN_00366540(u64 param_1,int param_2,long param_3,long param_4)
+u16 * FUN_00366540(u32 param_1,int param_2,int param_3,int param_4)
 
 
 

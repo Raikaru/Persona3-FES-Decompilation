@@ -8562,7 +8562,7 @@ u32 func_002c65d0(int param_1)
   u16 uVar5 = 0;
   u32 uVar6 = 0;
   u32 uVar7 = 0;
-  long lVar8 = 0;
+  int lVar8 = 0;
   int iVar9 = 0;
   u32 uVar10 = 0;
   u32 uVar11 = 0;
