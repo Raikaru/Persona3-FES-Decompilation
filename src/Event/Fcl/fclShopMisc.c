@@ -1190,7 +1190,7 @@ loop_body:
     }
   }
   if ((*(u32 *)puVar4 & 1) != 0) {
-    if (FUN_003f03e0(FUN_003e6dc0()) != 0) {
+    if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
       puVar4 += 0x18;
       goto loop_continue;
     }

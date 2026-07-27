@@ -7666,11 +7666,11 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 
   uVar5 = 0;
 
-  for (lVar6 = 0; lVar6 < (long)(u32)((u32)param_1 & 0xffff); lVar6 = (long)((int)lVar6 + 1)) {
+  for (lVar6 = 0; lVar6 < ((u32)param_1 & 0xffff); lVar6 = lVar6 + 1) {
 
     for (iVar8 = 0; iVar8 < (int)param_2; iVar8 = iVar8 + 1) {
 
-      for (lVar7 = 0; lVar7 < (long)(u32)((param_3 & 0xffff) * 3); lVar7 = (long)((int)lVar7 + 3))
+      for (lVar7 = 0; lVar7 < ((param_3 & 0xffff) * 3); lVar7 = lVar7 + 3)
 
       {
 

@@ -2825,9 +2825,9 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
   int iVar6;
 
-  long lVar7;
+  s32 lVar7;
 
-  long lVar8;
+  s32 lVar8;
 
   int iVar9;
 
