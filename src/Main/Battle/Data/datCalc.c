@@ -7908,7 +7908,6 @@ void FUN_0030f290(void)
   float fVar2;
   float fVar3;
   float fVar4;
-  float scale;
   
   lVar1 = FUN_003111f0();
   if (lVar1 != 0) {
@@ -7923,8 +7922,7 @@ void FUN_0030f290(void)
     fVar3 = (float)FUN_0030fdf0(0xe,4) + 50.0f;
     fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x14,0);
-    scale = DAT_007cad74;
-    fVar4 = scale * fVar4;
+    fVar4 = DAT_007cad74 * fVar4;
   }
   FUN_00311190((int)fVar4);
   return;

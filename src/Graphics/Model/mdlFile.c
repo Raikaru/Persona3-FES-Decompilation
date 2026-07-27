@@ -30005,17 +30005,17 @@ u32 FUN_003398c0(int param_1)
 {
   u32 uVar1;
   u32 block;
-  int *piVar2;
+  u32 result;
   int iVar3;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   block = (*DAT_00960178_abs)(uVar1 * 0x18 + 0x10,0x40000);
   *(u32 *)block = block + 0x10;
   *(u32 *)(block + 8) = block;
-  piVar2 = (int *)block;
+  result = block;
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,3,5,DAT_0069bd60_abs,0x48);
-  piVar2[1] = iVar3;
-  return block;
+  *(u32 *)(result + 4) = iVar3;
+  return result;
 }
 
 
