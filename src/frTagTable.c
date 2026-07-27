@@ -739,7 +739,7 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   case 0x13:
   case 0x14:
   case 0x15:
-    puVar13 = &DAT_006a2660;
+    puVar13 = DAT_006a2660_abs;
     puVar12 = stack_30;
     iVar11 = 5;
     do {
