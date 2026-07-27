@@ -570,6 +570,7 @@ extern s16 DAT_007cd7ac;
 extern s16 DAT_007cd7ae;
 extern s16 DAT_007cd7b0;
 extern s16 DAT_007cd7b2;
+extern char DAT_007cd7b8[];
 extern float DAT_007cadd0;
 extern float DAT_007cad74;
 extern s16 FUN_0016deb0(s16);

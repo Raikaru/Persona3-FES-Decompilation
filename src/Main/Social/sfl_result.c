@@ -660,7 +660,7 @@ void func_001fa4f0(u32 param_1)
 
   int iVar6;
 
-  long lVar7;
+  s32 lVar7;
 
   u32 uVar8;
 
