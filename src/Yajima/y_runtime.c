@@ -7614,8 +7614,8 @@ u64 FUN_00439f60(u64 param_1,char param_2)
 {
   int iVar1;
   int iVar2;
-  long lVar3;
-  u64 uVar4;
+  u32 lVar3;
+  u32 uVar4;
   long lVar5;
   
   iVar1 = iGpffffb5a0;
