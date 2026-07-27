@@ -7839,8 +7839,8 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
 {
   char cVar1 = 0;
   u32 uVar2 = 0;
-  u32 uVar3 = 0;
-  int iVar4 = 0;
+  u16 uVar3 = 0;
+  short iVar4 = 0;
   u16 *puVar5;
   u32 uVar6 = 0;
   u32 uVar7 = 0;

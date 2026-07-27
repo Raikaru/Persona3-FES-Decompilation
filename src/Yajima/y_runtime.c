@@ -12611,29 +12611,23 @@ u32
 FUN_0044a110(float param_1,float param_2,float param_3,float param_4,int param_5,short param_6)
 
 {
-  float fVar1;
-  float fVar2;
   int iVar3;
-  u64 uVar4;
+  u32 uVar4;
   u32 uVar5;
   float fStack_8;
   float fStack_4;
   
   iVar3 = *(int *)(param_5 + 0x3c);
   uVar5 = 0;
-  fVar1 = param_2;
-  fVar2 = param_4;
+  fStack_8 = param_2;
+  fStack_4 = param_4;
   if (param_6 != 0) {
     FUN_004222d0_typed((float*)(&fStack_8),(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)(*(u16 *)(iVar3 + 0xf4)),(short)(param_6));
-    fVar1 = fStack_8;
-    fVar2 = fStack_4;
     if (*(short *)(iVar3 + 0xf4) < param_6) {
       *(short *)(iVar3 + 0xf4) = *(short *)(iVar3 + 0xf4) + 1;
       uVar5 = 1;
     }
   }
-  fStack_4 = fVar2;
-  fStack_8 = fVar1;
   uVar4 = FUN_001158b0(0,*(u32 *)(iVar3 + 4),1);
   iVar3 = (int)uVar4;
   *(u8 *)(iVar3 + 0x18) = 0;

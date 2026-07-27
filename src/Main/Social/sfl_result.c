@@ -142,6 +142,9 @@ void func_001fcb30(u8* event, u32* result, s32* count);
 void func_001fccc0(u8* src, u8* dst, u32 skill);
 void func_001fce20(u8* persona, u16* skills, s32 count);
 void func_001fd350(u8* persona, u32* skills, s32 count);
+#pragma alias FUN_0017be10_sfl FUN_0017be10
+extern void FUN_0017be10_sfl(int player, int sourcePlayer, u16 skill, int mode,
+                             void* hp, void* sp, void* status);
 extern s16 FUN_001706c0(s16 pcId, s16 index);
 extern u8* pbGpffffb758;
 extern u16* puGpffffb74c;
