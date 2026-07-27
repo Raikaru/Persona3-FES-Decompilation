@@ -3319,7 +3319,7 @@ u32 FUN_003b2430(void *param_1)
 
             uStack_2 = 0;
 
-            uVar8 = FUN_003b0970(&bStack_4,8,*(u8 *)((int)puVar12 + 0xd),
+            uVar8 = FUN_003b0970_typed(&bStack_4,8,*(u8 *)((int)puVar12 + 0xd),
 
                                  *(u8 *)((int)puVar12 + 0xe),puVar12[5]);
 
