@@ -4880,7 +4880,7 @@ u32 FUN_0039d8e0(int param_1)
 
   long lVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   int *piVar8;
 

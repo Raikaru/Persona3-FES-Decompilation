@@ -7398,7 +7398,7 @@ void func_002e92c0(void)
 void func_002e9450(void)
 
 {
-  u16 sVar1;
+  short sVar1;
   int iVar2;
   u32 uVar3;
   u32 uVar4;

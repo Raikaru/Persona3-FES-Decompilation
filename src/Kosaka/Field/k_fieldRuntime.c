@@ -4263,7 +4263,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         return;
     }
     func_00493370(renderObject, 0x1a);
-    if ((work->flags & 2) != 0)
+    if ((work->flags & 1) != 0)
     {
         return;
     }

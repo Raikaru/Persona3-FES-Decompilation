@@ -339,7 +339,9 @@ typedef struct PeriodicWork
     EncounterRecord records[16];
 } PeriodicWork;
 
-extern KwlnTask* D_00875A40[3];
+#pragma alias D_00875A40_abs D_00875A40
+extern u8 D_00875A40_abs[];
+#define D_00875A40 (*(KwlnTask** (*)[3])D_00875A40_abs)
 extern void* func_001a9180(KwlnTask* task);
 extern void* func_001a91b0(KwlnTask* task, const RwV3d* position);
 extern void func_001a9390(KwlnTask* task, void* handle, u32 value);
