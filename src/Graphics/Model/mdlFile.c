@@ -1408,9 +1408,7 @@ extern f32 DAT_007cae00;
 extern u32 DAT_007cae18;
 #pragma alias DAT_007cae18_f32 DAT_007cae18
 extern f32 DAT_007cae18_f32;
-extern u32 DAT_007cae4c;
-#pragma alias DAT_007cae4c_f32 DAT_007cae4c
-extern f32 DAT_007cae4c_f32;
+extern f32 DAT_007cae4c;
 extern f32 DAT_007cae58;
 #pragma alias DAT_007cae58_f32 DAT_007cae58
 extern f32 DAT_007cae58_f32;
@@ -11614,7 +11612,7 @@ void FUN_003275d0(float param_1,int param_2)
 
   
 
-  uVar4 = DAT_007cae4c;
+  uVar4 = *(u32 *)&DAT_007cae4c;
 
   iVar10 = (int)param_2;
 
@@ -24460,7 +24458,7 @@ void FUN_00335180(int param_1)
 
     iStack_c = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    uVar5 = DAT_007cae4c;
+    uVar5 = *(u32 *)&DAT_007cae4c;
 
     iStack_8 = *(int *)(iVar10 + 0x24);
 
@@ -25714,7 +25712,7 @@ void FUN_00336630(int param_1)
 
     iStack_c = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    uVar5 = DAT_007cae4c;
+    uVar5 = *(u32 *)&DAT_007cae4c;
 
     iStack_8 = *(int *)(iVar10 + 0x24);
 
@@ -26889,7 +26887,7 @@ void FUN_003377f0(u32 param_1)
 
     iStack_c = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
-    uVar5 = DAT_007cae4c;
+    uVar5 = *(u32 *)&DAT_007cae4c;
 
     iStack_8 = *(int *)(iVar10 + 0x24);
 
@@ -27654,7 +27652,7 @@ void FUN_00338360(u64 param_1)
 
     c1s = *(u32 *)(iVar5 + 0x30);
     c2s = (u32)iVar3;
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
     cStack_1 = packed[3];
     uStack_4 = packed[0];
     uStack_3 = packed[1];
@@ -28157,7 +28155,7 @@ void FUN_00338ac0(u64 param_1)
 
     c2s = (u32)(iVar8);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -28620,7 +28618,7 @@ void FUN_00339200(u64 param_1)
 
     c1s = *(u32 *)(iVar5 + 0x30);
     c2s = (u32)iVar3;
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
     cStack_1 = packed[3];
     uStack_4 = packed[0];
     uStack_3 = packed[1];
@@ -29587,7 +29585,7 @@ void FUN_0033a220(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -30375,7 +30373,7 @@ void FUN_0033af10(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -31126,7 +31124,7 @@ void FUN_0033bbe0(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -32002,7 +32000,7 @@ void FUN_0033c960(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -32799,7 +32797,7 @@ void FUN_0033d6d0(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -33687,7 +33685,7 @@ void FUN_0033e540(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -34485,7 +34483,7 @@ void FUN_0033f2e0(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -35004,7 +35002,7 @@ void FUN_0033f860(int param_1)
           "sqc2        $vf10, 0(%3)        \n"
           ".set reorder"
           : "=&r"(vuTmp)
-          : "r"(packedColor), "f"(DAT_007cae4c_f32), "r"(vuColor0)
+          : "r"(packedColor), "f"(DAT_007cae4c), "r"(vuColor0)
           : "vf2", "vf10", "memory");
 
       packedColor = *(u32 *)(iVar2 + 0x5c);
@@ -35021,7 +35019,7 @@ void FUN_0033f860(int param_1)
           "sqc2        $vf10, 0(%3)        \n"
           ".set reorder"
           : "=&r"(vuTmp)
-          : "r"(packedColor), "f"(DAT_007cae4c_f32), "r"(vuColor1)
+          : "r"(packedColor), "f"(DAT_007cae4c), "r"(vuColor1)
           : "vf2", "vf10", "memory");
 
       fVar24 = *(float *)(iVar2 + 0x90);
@@ -35427,7 +35425,7 @@ void FUN_00340100(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     cStack_1 = packed[3];
 
@@ -36019,7 +36017,7 @@ void FUN_003407e0(int param_1)
 
       *(int *)(iVar5 + 0x58) = iStack_4;
 
-      uVar45 = DAT_007cae4c;
+      uVar45 = *(u32 *)&DAT_007cae4c;
 
       auVar20 = _pextlb(0,(long)iStack_4);
 
@@ -37040,7 +37038,7 @@ void FUN_00341ba0(int param_1)
 
     c1s = *(u32 *)(iVar7 + 0x30);
     c2s = (u32)iVar3;
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
     cStack_1 = packed[3];
     uStack_4 = packed[0];
     uStack_3 = packed[1];
@@ -38378,7 +38376,7 @@ void FUN_00343410(u64 param_1)
 
     c2s1 = (u32)(iVar5);
 
-    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c_f32);
+    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -38394,7 +38392,7 @@ void FUN_00343410(u64 param_1)
 
         c2s2 = (u32)(*(u32 *)packed1);
 
-        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c_f32);
+        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
 
         cStack_1 = packed2[3];
 
@@ -39364,7 +39362,7 @@ void FUN_00344720(u64 param_1)
 
     c2s1 = (u32)(iVar8);
 
-    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c_f32);
+    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -39382,7 +39380,7 @@ void FUN_00344720(u64 param_1)
 
         c2s2 = (u32)(*(u32 *)packed1);
 
-        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c_f32);
+        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
 
         cStack_1 = packed2[3];
 
@@ -40430,7 +40428,7 @@ void FUN_00345970(u64 param_1)
 
     c2s1 = (u32)(iVar8);
 
-    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c_f32);
+    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -40448,7 +40446,7 @@ void FUN_00345970(u64 param_1)
 
         c2s2 = (u32)(*(u32 *)packed1);
 
-        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c_f32);
+        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
 
         cStack_1 = packed2[3];
 
@@ -41284,7 +41282,7 @@ void FUN_00346530(int param_1)
 
     c2s = (u32)(iStack_c);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     uStack_10 = *(u32 *)packed;
 
@@ -42006,7 +42004,7 @@ void FUN_003473b0(u8 (*param_1) [16])
           "sqc2        $vf10, 0(%4)         \n"
           ".set reorder"
           : "=&r"(vuTmp)
-          : "r"(vuColor1), "r"(vuColor2), "f"(DAT_007cae4c_f32), "r"(vuScale)
+          : "r"(vuColor1), "r"(vuColor2), "f"(DAT_007cae4c), "r"(vuScale)
           : "vf2", "vf10", "vf11", "memory");
 
       FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),0xff2);
@@ -42079,7 +42077,7 @@ void FUN_003473b0(u8 (*param_1) [16])
               "ppacb       %0, $zero, %0       \n"
               ".set reorder"
               : "=&r"(vuTmp)
-              : "r"(vuColor1), "r"(vuColor2), "f"(DAT_007cae4c_f32), "r"(vuScale)
+              : "r"(vuColor1), "r"(vuColor2), "f"(DAT_007cae4c), "r"(vuScale)
               : "vf2", "vf10", "vf11", "memory");
 
           cStack_1 = ((u8 *)&vuTmp)[3];
@@ -43956,7 +43954,7 @@ void FUN_00349870(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
 
@@ -44889,7 +44887,7 @@ void FUN_0034a650(int param_1)
 
     c2s = (u32)(iVar3);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
 
@@ -45290,7 +45288,7 @@ void FUN_0034ac70(int param_1)
 
     c2s = (u32)(iVar2);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     *(int *)(iVar1 + 0xc0) = *(u32 *)packed;
 
@@ -46690,7 +46688,7 @@ void FUN_0034c390(float *param_1)
 
     c2s = (u32)(iStack_c);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
 
     uStack_10 = *(u32 *)packed;
 
@@ -51136,7 +51134,7 @@ void FUN_003505d0(int *param_1)
 
     c2s = (u32)(iStack_c);
 
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c_f32);
+    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
     uStack_10 = *(u32 *)packed;
     (*((u8 *)((u8 *)&uStack_4 + 3))) = packed[3];
     (*((u8 *)((u8 *)&uStack_4 + 0))) = packed[0];
