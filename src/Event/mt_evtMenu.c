@@ -9546,6 +9546,10 @@ u32 FUN_0037a150(int param_1,int param_2,int param_3)
 {
 
   f32 uVar1;
+  u8 *p0;
+  void *p1;
+  int p2;
+  int p3;
 
   u8 auStack_10 [16];
   FUN_00523ac8_evt4(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
@@ -19130,9 +19134,9 @@ void FUN_003858c0(int param_1)
   ((u8 *)(auStack_20 + 7))[2] = 0x0a;
   ((u8 *)(auStack_20 + 7))[1] = 0x40;
 
+  puVar4 = (u32 *)(param_1 + 0x944);
+
   for (iVar3 = 0; iVar3 < 7; iVar3 = iVar3 + 1) {
-    puVar4 = (u32 *)(param_1 + 0x944 + iVar3 * 4);
-    asm volatile("" : "+r"(puVar4));
     uVar2 = FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),
                              *(u64 *)(auStack_20 + 4),
                              &auStack_20[0],auStack_20[7]);

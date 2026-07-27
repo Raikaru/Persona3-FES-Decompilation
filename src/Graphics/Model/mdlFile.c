@@ -30012,7 +30012,6 @@ u32 FUN_003398c0(int param_1)
 
   u32 uVar1;
 
-  int *piVar2;
 
   int iVar3;
 
@@ -30026,11 +30025,10 @@ u32 FUN_003398c0(int param_1)
 
   *(u32 *)uVar4 = uVar4 + 0x10;
   *(u32 *)(uVar4 + 8) = uVar4;
-  piVar2 = (int *)uVar4;
 
   iVar3 = FUN_003233a0_ptr(uVar1 & 0xffff,3,5,DAT_0069bd60_abs,0x48);
 
-  piVar2[1] = iVar3;
+  *(u32 *)(uVar4 + 4) = iVar3;
 
   return uVar4;
 

@@ -7841,9 +7841,10 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
+      lVar5 = sVar1;
       for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
         uVar4 = datGetEquipmentId(1,iVar6);
-        if ((long)sVar1 == (uVar4 & 0xffff)) {
+        if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
       }
@@ -16097,8 +16098,9 @@ u8 FUN_00403410(short param_1)
   case 1:
     sVar2 = datGetDaysSinceApr5();
     unaff_s2 = (long)sVar2;
+    iVar4 = (int)(((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
     unaff_s1 = clndGetDaysSinceStartFromDate(((long)*(short *)(iVar3 + 6) << 0x34) >> 0x3a,
-                            ((long)*(char *)(iVar3 + 6) << 0x3a) >> 0x3a);
+                            iVar4);
     break;
   case 2:
     sVar2 = datGetDaysSinceApr5();

@@ -3611,7 +3611,8 @@ u32 FUN_003acf80(u32 param_1,int param_2)
   u32 packed;
   u8 *pbVar5;
 
-  pbVar5 = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
+  pbVar5 = (u8 *)*(int *)(param_2 + 0x18);
+  pbVar5 = (u8 *)((int)pbVar5 + *(int *)(param_2 + 0x10));
   bVar1 = *pbVar5;
   bVar2 = pbVar5[1];
   if (bVar2 == 0xff) {
