@@ -583,7 +583,7 @@ short ** FUN_003bd870(void);
 u32 * FUN_003bd880(void);
 u32 * FUN_003bd890(void);
 u32 * FUN_003bd8a0(void);
-u32 FUN_003bd8b0(int param_1,u32 param_2,u32 param_3);
+u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3);
 u16 FUN_003bd9a0(u32 param_1,u32 param_2);
 u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 float FUN_003bdb80(void);
@@ -5276,7 +5276,7 @@ u32 * FUN_003bd8a0(void)
 // FUN_003BD8B0 NONMATCHING
 
 
-u32 FUN_003bd8b0(int param_1,u32 param_2,u32 param_3)
+u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3)
 
 
 

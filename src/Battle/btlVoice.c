@@ -7593,7 +7593,7 @@ void func_002e9ac0(void)
   int iVar2;
   u32 uVar3;
   u32 uVar4;
-  u8 *uVar5;
+  u64 uVar5;
   int iVar6;
   int iVar7;
   int iVar8;
