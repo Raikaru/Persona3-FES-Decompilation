@@ -88,7 +88,7 @@ u32 FUN_003c60c0(int param_1,int param_2);
 u64 FUN_003c60f0(int param_1);
 u32 FUN_003c6120(int param_1,int param_2);
 u32 FUN_003c6270(int param_1);
-u32 FUN_003c6380(int param_1);
+u64 FUN_003c6380(int param_1);
 u64 FUN_003c63f0(int param_1);
 void FUN_003c6900(int param_1);
 void FUN_003c69d0(int param_1);
