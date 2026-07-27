@@ -523,7 +523,7 @@ void FUN_00333020(int param_1);
 void FUN_00333050(int param_1);
 void FUN_00333080(int param_1,u32 param_2);
 void FUN_003330b0(f32 param_1, int param_2);
-u64 FUN_003330e0(u32 param_1,u16 param_2);
+u64 FUN_003330e0(u16 param_1,u16 param_2);
 #pragma alias FUN_003330e0_u32 FUN_003330e0
 extern u32 FUN_003330e0_u32(u32 param_1,u16 param_2);
 void FUN_00333300(int param_1,u32 param_2,u8 *param_3);
@@ -23322,7 +23322,7 @@ void FUN_003330b0(f32 param_1, int param_2)
 // FUN_003330E0 NONMATCHING
 
 
-u64 FUN_003330e0(u32 param_1,u16 param_2)
+u64 FUN_003330e0(u16 param_1,u16 param_2)
 
 
 

@@ -5296,9 +5296,8 @@ u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3)
 
     if (DAT_0095b720 <= iVar3) {
 
-      if (((long)param_1 < 0) || (499 < (long)param_1)) {
-
-        if (((long)param_1 < 0x3de) || (999 < (long)param_1)) {
+      if (((int)param_1 < 0) || (499 < (int)param_1)) {
+        if (((int)param_1 < 0x3de) || (999 < (int)param_1)) {
 
           uVar1 = 0xffffffff;
 

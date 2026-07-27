@@ -5821,7 +5821,7 @@ u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
   u32 uVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 
@@ -5833,7 +5833,7 @@ u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
   if (param_4 < *(int *)(param_1 + 0x78c)) {
 
-    if ((long)param_3 < 3) {
+    if (param_3 < 3) {
 
       bVar1 = 0;
 

@@ -7840,9 +7840,9 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
+      iVar6 = 0;
       lVar5 = sVar1;
-      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
-        uVar4 = datGetEquipmentId(1,iVar6);
+      for (; iVar6 < 300; iVar6 = iVar6 + 1) {
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
@@ -16121,7 +16121,7 @@ u8 FUN_00403410(short param_1)
 u32 FUN_00403520(void)
 {
   short sVar1;
-  long lVar2;
+  int lVar2;
   u64 uVar3;
   int iVar4;
   int iVar5;

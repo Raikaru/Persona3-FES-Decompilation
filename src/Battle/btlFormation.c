@@ -293,6 +293,8 @@ extern u32 func_002b8d60_u32(s32 param_1,u32 param_2);
 #pragma alias func_0035ee60_f32 func_0035ee60
 extern float func_0035ee60_f32(u32 param_1);
 extern u64 func_0030b4b0();
+#pragma alias func_0030b4b0_u32 func_0030b4b0
+extern u32 func_0030b4b0_u32(u32 param_1,u32 param_2);
 #pragma alias func_0030b5a0_u32 func_0030b5a0
 extern u32 func_0030b5a0_u32(u32,u32);
 extern u64 func_0030b5a0();
@@ -14264,7 +14266,7 @@ u32 func_002cffc0(void)
   iVar4 = func_0029a210_u32(uVar7 & 0xfffffff);
   iVar3 = *(int *)(iVar3 + 0x30);
   uVar2 = func_003082f0(*(u32 *)(iVar3 + 0xa2c),0);
-  uVar7 = func_0030b4b0(*(u32 *)(*(int *)(iVar4 + 0x30) + 0xa2c),uVar2);
+  uVar7 = func_0030b4b0_u32(*(u32 *)(*(int *)(iVar4 + 0x30) + 0xa2c),uVar2);
   if ((uVar7 & 0x8000000) == 0) {
     uVar5 = func_00308ba0(*(u32 *)(iVar3 + 0xa2c));
     iVar6 = func_00308bb0(*(u32 *)(iVar3 + 0xa2c));
