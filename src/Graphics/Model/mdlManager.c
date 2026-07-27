@@ -3094,9 +3094,7 @@ void func_003132c0(u8* param_1)
 
     (*DAT_0096017c)(puVar1);
 
-    param_1[0x18] = 0;
-
-    param_1[0x19] = 0;
+    *(u32 *)(param_1 + 0x18) = 0;
 
   }
 
