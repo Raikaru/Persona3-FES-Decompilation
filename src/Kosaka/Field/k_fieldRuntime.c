@@ -4776,13 +4776,55 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             normal0.y = edge0.z * edge1.x - edge0.x * edge1.z;
             normal0.z = edge0.x * edge1.y - edge0.y * edge1.x;
             func_004c69f0(&normal0, &normal0);
+            edge0.x = vector0[geometryIndex].x -
+                      vector1[geometryIndex].x;
+            edge0.y = vector0[geometryIndex].y -
+                      vector1[geometryIndex].y;
+            edge0.z = vector0[geometryIndex].z -
+                      vector1[geometryIndex].z;
             func_004c69f0(&edge0, &edge0);
+            edge1.x = vector2[geometryIndex].x -
+                      vector3[geometryIndex].x;
+            edge1.y = vector2[geometryIndex].y -
+                      vector3[geometryIndex].y;
+            edge1.z = vector2[geometryIndex].z -
+                      vector3[geometryIndex].z;
             func_004c69f0(&edge1, &edge1);
+            normal0.x = edge0.y * edge1.z - edge0.z * edge1.y;
+            normal0.y = edge0.z * edge1.x - edge0.x * edge1.z;
+            normal0.z = edge0.x * edge1.y - edge0.y * edge1.x;
             func_004c69f0(&normal0, &normal0);
+            edge0.x = vector1[geometryIndex].x -
+                      vector0[geometryIndex].x;
+            edge0.y = vector1[geometryIndex].y -
+                      vector0[geometryIndex].y;
+            edge0.z = vector1[geometryIndex].z -
+                      vector0[geometryIndex].z;
             func_004c69f0(&edge0, &edge0);
+            edge1.x = vector3[geometryIndex].x -
+                      vector2[geometryIndex].x;
+            edge1.y = vector3[geometryIndex].y -
+                      vector2[geometryIndex].y;
+            edge1.z = vector3[geometryIndex].z -
+                      vector2[geometryIndex].z;
             func_004c69f0(&edge1, &edge1);
+            normal0.x = edge1.y * edge0.z - edge1.z * edge0.y;
+            normal0.y = edge1.z * edge0.x - edge1.x * edge0.z;
+            normal0.z = edge1.x * edge0.y - edge1.y * edge0.x;
             func_004c69f0(&normal0, &normal0);
+            edge0.x = vector0[geometryIndex].x -
+                      vector3[geometryIndex].x;
+            edge0.y = vector0[geometryIndex].y -
+                      vector3[geometryIndex].y;
+            edge0.z = vector0[geometryIndex].z -
+                      vector3[geometryIndex].z;
             func_004c69f0(&edge0, &edge0);
+            edge1.x = vector2[geometryIndex].x -
+                      vector1[geometryIndex].x;
+            edge1.y = vector2[geometryIndex].y -
+                      vector1[geometryIndex].y;
+            edge1.z = vector2[geometryIndex].z -
+                      vector1[geometryIndex].z;
             func_004c69f0(&edge1, &edge1);
             blended.x = vector2[geometryIndex].x + normal0.x;
             blended.y = vector2[geometryIndex].y + normal0.y;

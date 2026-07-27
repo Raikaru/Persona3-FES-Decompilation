@@ -131,7 +131,7 @@ extern void FUN_003b0430_typed(int param_1,u32 param_2);
 #pragma alias FUN_003b01d0_typed FUN_003b01d0
 u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
 #pragma alias FUN_003b0970_typed FUN_003b0970
-extern long FUN_003b0970_typed(void *param_1,u8 param_2,u8 param_3,u8 param_4,void *param_5);
+extern long FUN_003b0970_typed(void *param_1,u8 param_2,u8 param_3,u8 param_4,u32 param_5);
 void FUN_003b05c0(u16 *param_1);
 long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 int FUN_003b0840(short *param_1);
@@ -2783,7 +2783,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
       }
 
-      lVar8 = FUN_003b0970(abStack_4,cVar1,*(u8 *)(param_2 + 0xd),
+      lVar8 = FUN_003b0970_typed(abStack_4,cVar1,*(u8 *)(param_2 + 0xd),
 
                            *(u8 *)(param_2 + 0xe),*(u32 *)(param_2 + 0x14));
 
