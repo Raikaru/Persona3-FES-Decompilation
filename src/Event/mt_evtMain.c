@@ -714,7 +714,7 @@ void FUN_00386110(u32 *param_1,u32 *param_2);
 void FUN_00386210(u32 *param_1,u32 *param_2);
 void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
 void FUN_00386aa0(void);
-void FUN_00386b70(u64 param_1,long param_2,int param_3);
+void FUN_00386b70(int param_1,int param_2,int param_3);
 #pragma alias FUN_00386b70_evt_main FUN_00386b70
 extern void FUN_00386b70_evt_main(int param_1,int param_2,int param_3);
 #pragma alias FUN_005225a8_evt_main FUN_005225a8
