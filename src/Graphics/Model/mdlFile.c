@@ -8546,9 +8546,8 @@ u64 FUN_00324bd0(u64 param_1)
 
   int iVar17;
 
-  __int128 in_vf0;
 
-  __int128 auStack_10;
+  u8 auStack_10_buf[16];
 
   
 
@@ -8916,11 +8915,11 @@ u64 FUN_00324bd0(u64 param_1)
 
   }
 
-  auStack_10 = _sqc2(in_vf0);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(auStack_10_buf) : "memory");
 
   ((code)FUN_00325c10)(uVar4);
 
-  FUN_00325d60((u64)(uVar4),(u8 (*) [16])(&auStack_10));
+  FUN_00325d60((u64)(uVar4),(u8 (*) [16])auStack_10_buf);
 
   FUN_00325e40((float)(0x3f800000),(u8 (*) [16])(uVar4));
 
@@ -9379,9 +9378,8 @@ u64 FUN_00325920(u64 *param_1)
 
   u32 *puVar11;
 
-  __int128 in_vf0;
 
-  __int128 auStack_10;
+  u8 auStack_10_buf[16];
 
   
 
@@ -9503,11 +9501,11 @@ u64 FUN_00325920(u64 *param_1)
 
   }
 
-  auStack_10 = _sqc2(in_vf0);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(auStack_10_buf) : "memory");
 
   ((code)FUN_00325c10)(uVar4);
 
-  FUN_00325d60((u64)(uVar4),(u8 (*) [16])(&auStack_10));
+  FUN_00325d60((u64)(uVar4),(u8 (*) [16])auStack_10_buf);
 
   FUN_00325e40((float)(0x3f800000),(u8 (*) [16])(uVar4));
 
