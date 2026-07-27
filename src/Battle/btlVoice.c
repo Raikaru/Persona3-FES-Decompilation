@@ -10288,7 +10288,6 @@ void func_002ef670(void)
   
   uVar2 = FUN_002b8f90_u32_voice(0);
   FUN_002b90d0(uVar2,FUN_002f87e0_u32_voice(1));
-  iVar7 = 0;
   aiStack_10[0] = 0;
   aiStack_10[1] = 0;
   aiStack_10[2] = 0;
