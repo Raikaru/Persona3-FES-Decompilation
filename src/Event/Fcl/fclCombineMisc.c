@@ -988,9 +988,9 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
   u8 bVar2;
 
-  char cVar3;
+  u32 cVar3;
 
-  short sVar4;
+  u32 sVar4;
 
   u32 uVar5;
 

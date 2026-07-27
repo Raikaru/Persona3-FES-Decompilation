@@ -825,7 +825,7 @@ extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
 extern char func_002c6ba0(int param_1);
-extern undefined * func_002c6e30(int param_1,u16 param_2);
+extern undefined * func_002c6e30(int param_1,u32 param_2);
 extern u32 func_002c6f50(u64 param_1,int param_2,u64 param_3,u64 param_4);
 extern void func_002c70d0(u64 param_1,u64 param_2);
 extern bool func_002c7250(int param_1);
@@ -8738,7 +8738,7 @@ char func_002c6ba0(int param_1)
 
 // FUN_002c6e30 NONMATCHING
 
-undefined * func_002c6e30(int param_1,u16 param_2)
+undefined * func_002c6e30(int param_1,u32 param_2)
 
 {
   u8 bVar1 = 0;
