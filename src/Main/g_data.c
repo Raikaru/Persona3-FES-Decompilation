@@ -3294,9 +3294,9 @@ u8* func_001778b0(s16 param_1)
 #pragma opt_loop_invariants on
 void func_001779a0(void)
 {
-    s32 pcIndex;
-    s32 slot;
     s32 valueSlot;
+    s32 slot;
+    s32 pcIndex;
 
     for (pcIndex = 0; pcIndex < 10; pcIndex++)
     {

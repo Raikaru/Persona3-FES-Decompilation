@@ -4822,7 +4822,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   piVar10 = (int *)DAT_006a2680;
   piVar9 = aiStack_20;
 
-  iVar8 = 5;
+  counter = 5;
 
   do {
 
@@ -4830,13 +4830,13 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
     piVar10 = piVar10 + 1;
 
-    iVar8 = iVar8 + -1;
+    counter = counter + -1;
 
     *piVar9 = iVar4;
 
     piVar9 = piVar9 + 1;
 
-  } while (0 < iVar8);
+  } while (0 < counter);
 
   FUN_0016f1f0(uVar6 + aiStack_20[uVar5],1);
 

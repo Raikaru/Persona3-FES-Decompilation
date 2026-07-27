@@ -4822,15 +4822,15 @@ void FUN_003648e0(int param_1,u32 param_2,int param_3)
 
     if ((*(u32 *)(param_1 + 4) & 8) == 0) {
 
-      if ((*(u32 *)(param_3 + 0x58) & 2) == 0) {
+      if ((*(u32 *)(param_3 + 0x58) & 2) != 0) {
 
-        FUN_003b9550(*(u16 *)(param_3 + 0xc),0);
+        FUN_003b9550(*(u16 *)(param_3 + 0xc),1);
 
       }
 
       else {
 
-        FUN_003b9550(*(u16 *)(param_3 + 0xc),1);
+        FUN_003b9550(*(u16 *)(param_3 + 0xc),0);
 
       }
 
