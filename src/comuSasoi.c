@@ -525,7 +525,7 @@ u8 FUN_003c2c50(u32 param_1)
 
   int lVar4;
 
-  u16 uVar5;
+  short uVar5;
 
   int iVar6;
 

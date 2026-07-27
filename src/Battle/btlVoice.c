@@ -7400,7 +7400,7 @@ void func_002e9450(void)
   int iVar2;
   u32 uVar3;
   u32 uVar4;
-  u64 uVar5;
+  u32 uVar5;
   int iVar6;
   int iVar7;
   int iVar8;
