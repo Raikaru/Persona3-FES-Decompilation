@@ -4826,6 +4826,8 @@ void FUN_003648e0(int param_1,u32 param_2,int param_3)
         FUN_003b9550(*(u16 *)(param_3 + 0xc),0);
       }
     }
+    else {
+    }
   }
 
   else if (*puVar5 == param_2) {

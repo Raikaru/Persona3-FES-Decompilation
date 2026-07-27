@@ -1030,8 +1030,6 @@ void FUN_0035ac90(int *param_1,int param_2,u8 *param_3,int param_4)
       goto update;
     iVar5 = ((int)(u32)bVar1 >> 3) + 2;
     for (iVar4 = 0; iVar4 < iVar5; iVar4 = iVar4 + 1) {
-    }
-    for (iVar4 = 0; iVar4 < ((int)(u32)bVar1 >> 3) + 2; iVar4 = iVar4 + 1) {
       param_1 = param_1 + 1;
       *param_1 = *param_1 + param_2;
     }
