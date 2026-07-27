@@ -5933,7 +5933,7 @@ u64 FUN_00289650(short param_1,u16 param_2,void* param_3)
 
   int iVar4;
 
-  u64 unaff_s1;
+u32 unaff_s1;
 
   u64 uVar5;
 

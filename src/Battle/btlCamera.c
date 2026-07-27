@@ -9734,7 +9734,7 @@ void func_002ae740(BtlCamera* camera, int param_2)
 
     action = camera->action;
     unit = action->unit;
-    other = FUN_002c0880_ae740((u8*)action->unkData3);
+    other = (void*)FUN_002c0880((u8*)action->unkData3);
     FUN_002a4470(buf + 28, (f32*)&camera->pos);
     f20 = func_00280870_ae740(3, !FUN_002a3850_ae740(camera),
                               buf + 56, buf + 67, buf + 66, 1);

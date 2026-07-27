@@ -7901,7 +7901,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
     if ((((uVar2 != 0) && (uVar2 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + ((u32)uVar2 * 10 + (u32)uVar2) * 4 + 8), param_5 != 0
          || (cVar1 == '\x01')))) && ((param_5 != 1 || (cVar1 == '\0')))) {
-      iVar5 = func_00303130(uVar2,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
+      iVar5 = func_00303130_s32(uVar2,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
                            *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,0,1);
       lVar6 = func_0051e0e0((uVar4 & 0xffff) - ((uVar3 & 0xffff) + iVar5));
       if (lVar6 < lVar9) {
