@@ -581,7 +581,7 @@ void FUN_00337f80(int param_1);
 void FUN_00337fd0(int param_1);
 void FUN_00338360(u64 param_1);
 void FUN_00338530(int param_1);
-float * FUN_003385d0(u64 param_1);
+float * FUN_003385d0(u32 param_1);
 void FUN_00338770(int param_1);
 void FUN_003387c0(int param_1);
 void FUN_00338ac0(u64 param_1);
@@ -4327,7 +4327,7 @@ void FUN_00320810(int *param_1)
 
 
 {
-  u8 *iVar1;
+  int *iVar1;
   int iVar3;
   u32 uVar2;
   float fVar4;
@@ -9670,7 +9670,6 @@ void FUN_00325d60(u64 param_1,u8 (*param_2) [16])
 
   auVar2 = _sqc2(auVar5);
 
-  memcpy(pauVar4[5], &auVar2, 16);
 
   auVar2 = _sqc2(auVar5);
 
@@ -28749,7 +28748,7 @@ void FUN_00338530(int param_1)
 // FUN_003385D0 NONMATCHING
 
 
-float * FUN_003385d0(u64 param_1)
+float * FUN_003385d0(u32 param_1)
 
 
 
@@ -28825,7 +28824,7 @@ float * FUN_003385d0(u64 param_1)
 
     fVar5 = (float)FUN_00358030(0);
 
-    *pfVar4 = *(float *)(iVar6 + 200) * (fVar10 * fVar5 + (1.0 - fVar10) + 0.0);
+    *pfVar4 = *(float *)(iVar6 + 200) * (fVar10 * fVar5 + (1.0f - fVar10) + 0.0f);
 
     puVar7 = puVar7 + 4;
 
