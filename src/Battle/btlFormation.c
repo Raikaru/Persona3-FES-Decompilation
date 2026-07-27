@@ -3547,7 +3547,7 @@ u32 func_002bd080(int *work)
 {
   int unit;
   s16 current;
-  s16 maximum;
+  u16 maximum;
   int value;
   int adjusted;
 
