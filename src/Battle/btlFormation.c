@@ -7928,7 +7928,7 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   u32 uVar4 = 0;
   int iVar5 = 0;
   long lVar6 = 0;
-  u32 uVar7 = 0;
+  u16 uVar7 = 0;
   u32 uVar8 = 0;
   long lVar9 = 0;
   u16 *puVar10;
