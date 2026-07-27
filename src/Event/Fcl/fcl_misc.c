@@ -916,6 +916,7 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
 
   u32 offset;
   u16 uVar3;
+  f32 scaled;
 
   
 
@@ -927,8 +928,8 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
 
     uVar1 = FUN_001158b0(0,*(u32 *)(iVar2 + 0x24),param_8);
 
-    iVar2 = (int)uVar1;
 
+    iVar2 = (int)uVar1;
     *(float *)(iVar2 + 0x10) = (float)param_4;
 
     *(float *)(iVar2 + 0x14) = (float)param_5;
@@ -936,25 +937,25 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    param_2 *= 4096.0f;
-    if (2.1474836e+09f <= param_2) {
+    scaled = 4096.0f * param_2;
+    if (2.1474836e+09f <= scaled) {
       goto param2_large;
     }
-    uVar3 = (u16)(int)param_2;
+    uVar3 = (u16)(int)scaled;
     goto param2_done;
 param2_large:
-    uVar3 = (u16)((u32)(int)(param_2 - 2.1474836e+09f) | 0x80000000);
+    uVar3 = (u16)((u32)(int)(scaled - 2.1474836e+09f) | 0x80000000);
 param2_done:
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    param_3 *= 4096.0f;
-    if (2.1474836e+09f <= param_3) {
+    scaled = 4096.0f * param_3;
+    if (2.1474836e+09f <= scaled) {
       goto param3_large;
     }
-    uVar3 = (u16)(int)param_3;
+    uVar3 = (u16)(int)scaled;
     goto param3_done;
 param3_large:
-    uVar3 = (u16)((u32)(int)(param_3 - 2.1474836e+09f) | 0x80000000);
+    uVar3 = (u16)((u32)(int)(scaled - 2.1474836e+09f) | 0x80000000);
 param3_done:
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 

@@ -426,6 +426,17 @@ extern int FUN_003951d0_i32(int param_1);
 extern float FUN_004c6ac0();
 #pragma alias FUN_004c6ac0_scene_vec FUN_004c6ac0
 extern float FUN_004c6ac0_scene_vec(const RwV3d *param_1);
+#pragma alias FUN_004c69f0_scene_typed FUN_004c69f0
+extern float FUN_004c69f0_scene_typed(float *dst,const float *src);
+#pragma alias FUN_0052e9a0_scene_typed FUN_0052e9a0
+extern u32 FUN_0052e9a0_scene_typed(u32 value);
+#pragma alias FUN_005318a0_scene_typed FUN_005318a0
+extern float FUN_005318a0_scene_typed(u32 value);
+typedef struct SceneVecBits {
+  float value[3];
+} __attribute__((packed)) SceneVecBits;
+#pragma alias DAT_006a2f48_abs DAT_006a2f48
+extern SceneVecBits DAT_006a2f48_abs[];
 void FUN_003bcc80();
 void FUN_003bceb0(int param);
 void FUN_0034fd70(Model* mdl, s32 type);
@@ -539,7 +550,7 @@ void FUN_003bb9b0(float *param_1);
 extern void FUN_003bb9b0_scene_typed(float *param_1);
 void FUN_003bba70(int param_1);
 void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
-void FUN_003bbb90(u64 param_1,u32 *param_2);
+void FUN_003bbb90(const float *param_1,float *param_2);
 void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
 void FUN_003bbd40(float param_1,char *param_2,float *param_3);
 float FUN_003bbed0(float param_1,float param_2,u32 param_3);
@@ -3683,69 +3694,35 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
 // FUN_003BBB90 NONMATCHING
 
 
-void FUN_003bbb90(u64 param_1,u32 *param_2)
-
-
-
+void FUN_003bbb90(const float *param_1,float *param_2)
 {
-
-  u64 uVar1;
-
+  u32 uVar1;
   float fVar2;
-
   float afStack_20 [4];
+  SceneVecBits source;
 
-  u64 uStack_10;
-
-  float fStack_8;
-
-  
-
-  uStack_10 = DAT_006a2f48;
-
-  fStack_8 = DAT_006a2f50;
-
-  fVar2 = (float)FUN_004c69f0(afStack_20,param_1);
-
+  source = DAT_006a2f48_abs[0];
+  fVar2 = FUN_004c69f0_scene_typed(afStack_20,param_1);
   if (fVar2 == 0.0f) {
-
-    *param_2 = 0;
-
-    param_2[1] = 0;
-
-    param_2[2] = 0;
-
+    param_2[0] = 0.0f;
+    param_2[1] = 0.0f;
+    param_2[2] = 0.0f;
   }
-
   else {
-
     afStack_20[1] = 0.0f;
-
-    uVar1 = FUN_00530da0_scene(afStack_20[2] * fStack_8 +
-                         afStack_20[0] * (float)uStack_10 + 0.0f + 0.0f);
-
-    uVar1 = FUN_0052e9a0(uVar1);
-
-    fVar2 = (float)FUN_005318a0(uVar1);
-
+    uVar1 = FUN_00530da0_scene(afStack_20[2] * source.value[2] +
+                         afStack_20[0] * source.value[0] +
+                         afStack_20[1] * source.value[1]);
+    uVar1 = FUN_0052e9a0_scene_typed(uVar1);
+    fVar2 = FUN_005318a0_scene_typed(uVar1);
     fVar2 = fGpffff8228 * fVar2;
-
     if (afStack_20[0] < 0.0f) {
-
       fVar2 = fVar2 * -1.0f;
-
     }
-
     param_2[1] = fVar2;
-
-    *param_2 = 0;
-
-    param_2[2] = 0;
-
+    param_2[0] = 0.0f;
+    param_2[2] = 0.0f;
   }
-
-  return;
-
 }
 #define FUN_003bbb90(...) ((void (*)(...))FUN_003bbb90)(__VA_ARGS__)
 #undef FUN_003bbc90
@@ -3968,7 +3945,7 @@ void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
 }
 #define FUN_003bbfd0(...) ((void (*)(...))FUN_003bbfd0)(__VA_ARGS__)
 #undef FUN_003bc0e0
-// FUN_003BC0E0 NONMATCHING
+// FUN_003BC0E0
 
 
 float FUN_003bc0e0(char *param_1)
@@ -3988,6 +3965,8 @@ float FUN_003bc0e0(char *param_1)
   float fVar5;
 
   float fVar6;
+
+  float scale;
 
   float auStack_10 [4];
 
@@ -4028,8 +4007,10 @@ float FUN_003bc0e0(char *param_1)
 
     for (iVar3 = 0; iVar3 < 0x14; iVar3 = iVar3 + 1) {
 
-      fVar4 = (float)iVar3 * DAT_007cb0b8;
-      fVar4 = FUN_003bbfd0_scene_typed(fVar4,(float)(iVar3 + 1) * DAT_007cb0b8,
+      fVar4 = (float)iVar3;
+      scale = DAT_007cb0b8;
+      fVar4 = fVar4 * scale;
+      fVar4 = FUN_003bbfd0_scene_typed(fVar4,(float)(iVar3 + 1) * scale,
                    auStack_30,auStack_40,auStack_50,auStack_10,auStack_20);
 
       fVar6 = fVar6 + fVar4;
@@ -4312,7 +4293,7 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 }
 #define FUN_003bc220(...) ((float (*)(...))FUN_003bc220)(__VA_ARGS__)
 #undef FUN_003bc730
-// FUN_003BC730 NONMATCHING
+// FUN_003BC730
 
 
 float FUN_003bc730(char *param_1,int param_2)
