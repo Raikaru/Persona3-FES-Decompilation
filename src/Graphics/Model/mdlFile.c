@@ -10841,7 +10841,7 @@ void FUN_00326db0(int param_1,u16 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
@@ -10851,9 +10851,8 @@ void FUN_00326db0(int param_1,u16 param_2)
 
   iVar2 = *(int *)(*(int *)uVar1 + 0x10);
 
-  *(float *)(param_1 + 0x54) = ((float)*(int *)(*(int *)uVar1 + 0xc) / 2.0) / 16.0;
-
-  *(float *)(param_1 + 0x58) = ((float)iVar2 / 2.0) / 16.0;
+  *(float *)(param_1 + 0x54) = ((float)*(int *)(*(int *)uVar1 + 0xc) / 2.0f) / 16.0f;
+  *(float *)(param_1 + 0x58) = ((float)iVar2 / 2.0f) / 16.0f;
 
   FUN_00494d50(**(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 0x50) + 0x10) + 0x18) + 0x20),
 
@@ -10875,7 +10874,7 @@ void FUN_00326e50(int param_1,u64 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
@@ -10885,9 +10884,8 @@ void FUN_00326e50(int param_1,u64 param_2)
 
   iVar2 = *(int *)(*(int *)uVar1 + 0x10);
 
-  *(float *)(param_1 + 0x54) = ((float)*(int *)(*(int *)uVar1 + 0xc) / 2.0) / 16.0;
-
-  *(float *)(param_1 + 0x58) = ((float)iVar2 / 2.0) / 16.0;
+  *(float *)(param_1 + 0x54) = ((float)*(int *)(*(int *)uVar1 + 0xc) / 2.0f) / 16.0f;
+  *(float *)(param_1 + 0x58) = ((float)iVar2 / 2.0f) / 16.0f;
 
   FUN_00494d50(**(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 0x50) + 0x10) + 0x18) + 0x20),
 
