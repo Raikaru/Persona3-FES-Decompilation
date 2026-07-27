@@ -42,7 +42,7 @@ extern u8 DAT_007e0958;
 void FUN_003d06d0(s32 param_1,s32 param_2,s32 param_3);
 void FUN_003d1df0(s32 param_1,int param_2);
 u32 FUN_003d2200(void);
-void FUN_003d25c0(long param_1);
+void FUN_003d25c0(u32 param_1);
 u8 * FUN_003d2740(s32 param_1,u32 param_2);
 u32 FUN_003d2c10(s32 param_1);
 #pragma alias FUN_003d2f00_result FUN_003d2f00
@@ -4296,7 +4296,7 @@ u32 FUN_003d2200(void)
 // FUN_003D25C0 NONMATCHING
 
 
-void FUN_003d25c0(long param_1)
+void FUN_003d25c0(u32 param_1)
 
 
 
