@@ -290,7 +290,7 @@ void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 #pragma opt_loop_invariants on
 // FUN_003A87D0 NONMATCHING
 void FUN_003a87d0(float param_1,int param_2,int param_3,int param_4,u32 param_5,u32 param_6,
-                  int param_7)
+                  u32 param_7)
 {
   u32 uVar1;
   float *pfVar3;
