@@ -577,7 +577,7 @@ void FUN_002441b0(u32 param_1)
   uint uVar5;
   int iVar6;
   u32 uVar9;
-  long lVar8;
+  u32 lVar8;
   register u32 uVar7;
   uint *puVar2;
   int iVar10;
@@ -918,7 +918,7 @@ void FUN_00244e80(void)
   int iVar3;
   u32 uVar4;
   u32 uVar5;
-  long lVar6;
+  int lVar6;
   u32 uVar7;
   
   if (sBpcWork == (uint *)0x0) {
@@ -1072,8 +1072,8 @@ void FUN_00245420(uint *param_1,uint param_2)
   u32 uVar7;
   u32 uVar8;
   u32 uVar9;
-  long lVar10;
-  ulong uVar11;
+  int lVar10;
+  u32 uVar11;
   u8 auStack_10 [16];
   
   if (sBpcWork == (uint *)0x0) {

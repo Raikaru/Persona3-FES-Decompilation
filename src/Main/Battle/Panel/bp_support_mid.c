@@ -1895,7 +1895,6 @@ void func_0020cda0(u8* work)
     }
     K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
-#pragma opt_loop_invariants off
 // FUN_0020cf20 NONMATCHING
 void func_0020cf20(void* destination, void* source)
 {

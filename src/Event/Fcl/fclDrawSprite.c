@@ -35,7 +35,7 @@ u32 FUN_0040f030(int param_1,int param_2,int param_3);
 u32 FUN_0040f430(int param_1,int param_2);
 u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
 u64 FUN_0040fab0(u64 param_1,int param_2);
-u64 FUN_0040fb90(u64 param_1,int param_2,long param_3);
+u64 FUN_0040fb90(u64 param_1,int param_2,int param_3);
 void FUN_00521408(void *destination,s32 value,u32 size);
 extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
 extern u32 DAT_006af960[];
@@ -823,73 +823,39 @@ u32 FUN_0040f030(int param_1,int param_2,int param_3)
   else {
 
     if (param_3 != 0) {
-
       sVar13 = *(short *)((int)param_3 + 6);
-
       if (sVar13 != 4) {
-
         if ((sVar13 != 2) && (sVar13 == 1)) {
-
           FUN_00521408(puVar3,0,0x28);
-
           *(u16 *)(puVar3 + 2) = 0x140;
-
           *(u16 *)(puVar3 + 1) = 0x140;
-
           *(u16 *)((int)puVar3 + 6) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
-
           *(u16 *)((int)puVar3 + 0xe) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
-
           uVar4 = *puVar3;
-
           *puVar3 = uVar4 | 1;
-
           *puVar3 = uVar4 & 0xfffffff7 | 1;
-
           *(u16 *)(puVar3 + 7) = 0x280;
-
           *(u16 *)(puVar3 + 6) = 0x280;
-
           *(u16 *)((int)puVar3 + 0x1a) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
-
           *(u16 *)(puVar3 + 9) = 0x30;
-
           *(u16 *)((int)puVar3 + 0x22) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
-
           uVar4 = puVar3[5];
-
           puVar3[5] = uVar4 | 4;
-
           puVar3[5] = uVar4 & 0xfffffff7 | 4;
-
           puVar3[10] = 0;
-
         }
-
       }
-
       else {
-
         uVar4 = *puVar3;
-
         uVar4 = uVar4 | 2;
-
         *puVar3 = uVar4;
-
         uVar4 = uVar4 | 8;
-
         *puVar3 = uVar4;
-
         uVar4 = puVar3[5];
-
         uVar4 = uVar4 | 2;
-
         puVar3[5] = uVar4;
-
         uVar4 = uVar4 | 8;
-
         puVar3[5] = uVar4;
-
       }
     }
 
@@ -1474,11 +1440,10 @@ u64 FUN_0040fab0(u64 param_1,int param_2)
 }
 
 #pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0040FB90 NONMATCHING
 
 
-u64 FUN_0040fb90(u64 param_1,int param_2,long param_3)
+u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
 
 
 

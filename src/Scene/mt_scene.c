@@ -43,9 +43,9 @@ extern u32 DAT_006a2d40;
 extern u32 DAT_006a2d48;
 extern u64 DAT_006a2dc8;
 extern u32 DAT_006a2dd0;
-extern u32 DAT_007caf18;
-extern u32 DAT_007caf24;
-extern u32 DAT_007caf34;
+extern f32 DAT_007caf18;
+extern f32 DAT_007caf24;
+extern f32 DAT_007caf34;
 extern code DAT_0096017c;
 extern u8 * PTR_DAT_007cd540;
 extern code DAT_0096017c;
@@ -79,6 +79,14 @@ extern void FUN_004c35d0_mtScene(RwMatrix* matrix, u64 param_2, s32 mode);
 extern u32 FUN_00530da0_mt_scene(f32 param_1);
 #pragma alias FUN_005318a0_mt_scene FUN_005318a0
 extern f32 FUN_005318a0_mt_scene(u32 param_1);
+#pragma alias FUN_004c69f0_mt_scene FUN_004c69f0
+extern f32 FUN_004c69f0_mt_scene(float *dst, const float *src);
+#pragma alias FUN_004c6ac0_mt_scene FUN_004c6ac0
+extern f32 FUN_004c6ac0_mt_scene(const float *src);
+#pragma alias FUN_0052e9e8_mt_scene FUN_0052e9e8
+extern f32 FUN_0052e9e8_mt_scene(f32 param_1);
+#pragma alias FUN_004c31b0_mt_scene_f32 FUN_004c31b0
+extern void FUN_004c31b0_mt_scene_f32(f32 value, void *matrix, u32 resource, s32 mode);
 
 
 
@@ -1961,9 +1969,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = 0.0;
 
-  fVar5 = (float)FUN_004c69f0(&fStack_10,&uStack_40);
+  fVar5 = FUN_004c69f0_mt_scene(&fStack_10,(const float *)&uStack_40);
 
-  if (fVar5 == 0.0) {
+  if (fVar5 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x5f5);
 
@@ -1979,9 +1987,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_28 = fStack_38;
 
-  fVar5 = (float)FUN_004c69f0(&fStack_30,&uStack_40);
+  fVar5 = FUN_004c69f0_mt_scene(&fStack_30,(const float *)&uStack_40);
 
-  if (fVar5 == 0.0) {
+  if (fVar5 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x5f9);
 
@@ -1997,9 +2005,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = fStack_58;
 
-  fVar5 = (float)FUN_004c69f0(&fStack_60,&uStack_40);
+  fVar5 = FUN_004c69f0_mt_scene(&fStack_60,(const float *)&uStack_40);
 
-  if (fVar5 == 0.0) {
+  if (fVar5 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x5fd);
 
@@ -2019,7 +2027,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fVar7 = fStack_5c;
 
-  fVar6 = (float)FUN_004c6ac0(&fStack_70);
+  fVar6 = FUN_004c6ac0_mt_scene(&fStack_70);
 
   if (fVar6 <= DAT_007caf24) {
 
@@ -2029,17 +2037,17 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   else {
 
-    fVar5 = (float)FUN_0052e9e8(fStack_b8 * fVar5 + fStack_c0 * (float)uStack_50 + fStack_bc * fVar7
-
+    fVar5 = FUN_0052e9e8_mt_scene(fStack_b8 * fVar5 + fStack_c0 * (float)uStack_50 +
+                               fStack_bc * fVar7
                                );
 
     fVar5 = DAT_007caf34 * fVar5;
 
   }
 
-  if (fStack_cc < 0.0) {
+  if (fStack_cc < 0.0f) {
 
-    fVar5 = fVar5 * -1.0;
+    fVar5 = fVar5 * -1.0f;
 
   }
 
@@ -2069,7 +2077,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   uStack_104 = uStack_104 | 0x20003;
 
-  FUN_004c31b0(fVar5,&uStack_110,0x6a2a80,1);
+  FUN_004c31b0_mt_scene_f32(fVar5,&uStack_110,0x6a2a80,1);
 
   FUN_004c32a0(auStack_150,&uStack_110);
 
@@ -2085,9 +2093,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = fStack_168;
 
-  fVar7 = (float)FUN_004c69f0(&fStack_10,&uStack_40);
+  fVar7 = FUN_004c69f0_mt_scene(&fStack_10,(const float *)&uStack_40);
 
-  if (fVar7 == 0.0) {
+  if (fVar7 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x633);
 
@@ -2101,9 +2109,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = fStack_168;
 
-  fVar7 = (float)FUN_004c69f0(&fStack_20,&uStack_40);
+  fVar7 = FUN_004c69f0_mt_scene(&fStack_20,(const float *)&uStack_40);
 
-  if (fVar7 == 0.0) {
+  if (fVar7 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x637);
 
@@ -2115,7 +2123,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_78 = fStack_18 - fStack_8;
 
-  fVar7 = (float)FUN_004c6ac0(&fStack_80);
+  fVar7 = FUN_004c6ac0_mt_scene(&fStack_80);
 
   if (fVar7 <= DAT_007caf24) {
 
@@ -2125,17 +2133,17 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   else {
 
-    fVar7 = (float)FUN_0052e9e8(fStack_18 * fStack_8 + fStack_20 * fStack_10 + fStack_1c * fStack_c)
-
+    fVar7 = FUN_0052e9e8_mt_scene(fStack_18 * fStack_8 + fStack_20 * fStack_10 +
+                               fStack_1c * fStack_c)
     ;
 
     fVar7 = DAT_007caf34 * fVar7;
 
   }
 
-  if (0.0 < fStack_16c) {
+  if (0.0f < fStack_16c) {
 
-    fVar7 = fVar7 * -1.0;
+    fVar7 = fVar7 * -1.0f;
 
   }
 
@@ -2165,7 +2173,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   uStack_1c4 = uStack_1c4 | 0x20003;
 
-  FUN_004c31b0(fVar5,&uStack_1d0,0x6a2a80,1);
+  FUN_004c31b0_mt_scene_f32(fVar5,&uStack_1d0,0x6a2a80,1);
 
   FUN_004c32a0(auStack_210,&uStack_1d0);
 
@@ -2197,7 +2205,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   uStack_1c4 = uStack_1c4 | 0x20003;
 
-  FUN_004c31b0(fVar7,&uStack_1d0,0x6a2a60,1);
+  FUN_004c31b0_mt_scene_f32(fVar7,&uStack_1d0,0x6a2a60,1);
 
   FUN_004c32a0(auStack_210,&uStack_1d0);
 
@@ -2213,9 +2221,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = 1.0;
 
-  fVar6 = (float)FUN_004c69f0(&fStack_10,&uStack_40);
+  fVar6 = FUN_004c69f0_mt_scene(&fStack_10,(const float *)&uStack_40);
 
-  if (fVar6 == 0.0) {
+  if (fVar6 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x669);
 
@@ -2229,9 +2237,9 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_38 = fStack_268;
 
-  fVar6 = (float)FUN_004c69f0(&fStack_20,&uStack_40);
+  fVar6 = FUN_004c69f0_mt_scene(&fStack_20,(const float *)&uStack_40);
 
-  if (fVar6 == 0.0) {
+  if (fVar6 == 0.0f) {
 
     FUN_0019d3f0("mt_scene.c",0x66d);
 
@@ -2243,7 +2251,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   fStack_88 = fStack_18 - fStack_8;
 
-  fVar6 = (float)FUN_004c6ac0(&fStack_90);
+  fVar6 = FUN_004c6ac0_mt_scene(&fStack_90);
 
   if (fVar6 <= DAT_007caf24) {
 
@@ -2253,17 +2261,17 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   else {
 
-    fVar6 = (float)FUN_0052e9e8(fStack_18 * fStack_8 + fStack_20 * fStack_10 + fStack_1c * fStack_c)
-
+    fVar6 = FUN_0052e9e8_mt_scene(fStack_18 * fStack_8 + fStack_20 * fStack_10 +
+                               fStack_1c * fStack_c)
     ;
 
     fVar6 = DAT_007caf34 * fVar6;
 
   }
 
-  if (fStack_20 < 0.0) {
+  if (fStack_20 < 0.0f) {
 
-    fVar6 = 360.0 - fVar6;
+    fVar6 = 360.0f - fVar6;
 
   }
 

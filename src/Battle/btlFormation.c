@@ -7849,8 +7849,9 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   uVar2 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar7 = 0xffffffff;
   iVar8 = 0xffffff;
-  for (uVar6 = 0; uVar6 < (param_4 & 0xffff); uVar6 = uVar6 + 1 & 0xffff) {
-    puVar5 = param_3 + uVar6;
+  param_4 &= 0xffff;
+  puVar5 = param_3;
+  for (uVar6 = 0; uVar6 < param_4; uVar6++) {
     uVar3 = func_0030bc20_u32(*puVar5);
     if ((((uVar3 != 0) && (uVar3 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + uVar3 * 0x2c + 8), param_5 != 0 || (cVar1 == '\x01'))))
@@ -7869,6 +7870,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
         iVar8 = iVar4;
       }
     }
+    puVar5++;
   }
   func_00301870(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
@@ -7895,8 +7897,8 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   uVar4 = func_002ffdf0(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar8 = 0xffffffff;
   lVar9 = 0xffffff;
+  puVar10 = param_3;
   for (uVar7 = 0; uVar7 < (param_4 & 0xffff); uVar7 = uVar7 + 1 & 0xffff) {
-    puVar10 = (u16 *)(param_3 + uVar7 * 2);
     uVar2 = *puVar10;
     if ((((uVar2 != 0) && (uVar2 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + ((u32)uVar2 * 10 + (u32)uVar2) * 4 + 8), param_5 != 0
@@ -7909,6 +7911,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
         lVar9 = lVar6;
       }
     }
+    puVar10++;
   }
   func_00301870(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
   func_00301870(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
@@ -7935,8 +7938,8 @@ u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   uVar3 = func_002ffdf0(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar8 = 0xffffffff;
   lVar9 = 0xffffff;
-  for (uVar7 = 0; uVar7 < (param_4 & 0xffff); uVar7 = uVar7 + 1 & 0xffff) {
-    puVar10 = (u16 *)(param_3 + uVar7 * 2);
+  puVar10 = param_3;
+  for (; puVar10 < param_3 + (param_4 & 0xffff); puVar10++) {
     uVar4 = func_0030bc20_u32(*puVar10);
     uVar4 = uVar4 & 0xffff;
     if ((((uVar4 != 0) && (uVar4 < 0x1d0)) &&

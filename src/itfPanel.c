@@ -4765,7 +4765,6 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   u32 uVar5;
 
   int firstIndex;
-
   int secondIndex;
   u32 firstLow;
   u32 secondLow;

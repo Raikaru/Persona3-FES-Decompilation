@@ -670,6 +670,7 @@ void func_002f0ea0(u64 *param_1)
   u64 uVar6;
   u64 uVar7;
   u64 uVar8;
+  BtlPacket* packet;
   u64 uVar9;
   s32 lVar10;
   u32 uVar11;
@@ -753,10 +754,9 @@ void func_002f0ea0(u64 *param_1)
   *(u64 *)(puVar3 + 8) = *(u64 *)(iVar13 + 0x58);
   *(u64 *)(puVar3 + 0x60) = *param_1;
   FUN_0027ed20(uVar8,0);
-  uVar8 = FUN_002baf90(uVar6,*(u32 *)(iVar4 + 0x30),*(u32 *)(iVar4 + 0x30),0,0x200);
-  iVar4 = (int)uVar8;
-  *(u64 *)(iVar4 + 0x60) = *param_1;
-  FUN_0027ed20(uVar8,2);
+  packet = FUN_002baf90_packet_voice((void*)uVar6, (BtlUnit*)*(u32 *)(iVar4 + 0x30), (BtlUnit*)*(u32 *)(iVar4 + 0x30), 0, 0x200);
+  *(u64 *)((u8 *)packet + 0x60) = *param_1;
+  FUN_0027ed20((u32)packet,2);
   for (uVar12 = 0; uVar12 < uVar11; uVar12 = uVar12 + 1 & 0xffff) {
     iVar13 = *(int *)(iGpffffb6fc + uVar12 * 4 + 0xb44);
     uVar8 = FUN_002baf90(uVar6,*(u32 *)(iVar13 + 0x30),*(u32 *)(iVar13 + 0x30),1,0x200
@@ -3111,6 +3111,7 @@ void func_002f6120(void)
   int iVar1;
   u64 uVar2;
   u64 uVar3;
+  BtlPacket* packet;
   int iVar4;
   int iVar5;
   
@@ -3144,11 +3145,11 @@ void func_002f6120(void)
   *(u8 *)uVar3 = 4;
   *(u64 *)((u8 *)uVar3 + 8) = *(u64 *)(iVar1 + 0x58);
   FUN_0027ed20(uVar3,0);
-  uVar3 = FUN_002baf90(uVar2,iVar5,iVar5,0,0x200);
-  FUN_0027ed20(uVar3,2);
-  uVar3 = FUN_002bc890(0x7cc970,0x18);
-  *(u16 *)((int)uVar3 + 0x48) = 200;
-  FUN_0027ed20(uVar3,1);
+  packet = FUN_002baf90_packet_voice((void*)uVar2, (BtlUnit*)iVar5, (BtlUnit*)iVar5, 0, 0x200);
+  FUN_0027ed20((u32)packet,2);
+  packet = (BtlPacket*)FUN_002bc890(0x7cc970,0x18);
+  packet->preUpdateDelay = 200;
+  FUN_0027ed20((u32)packet,1);
   FUN_002b9030(uVar2);
   return;
 }
@@ -7410,6 +7411,7 @@ void func_002e9450(void)
   int iVar2;
   u32 uVar3;
   u32 uVar4;
+  BtlPacket* packet;
   u32 uVar5;
   int iVar6;
   int iVar7;
@@ -7450,11 +7452,11 @@ void func_002e9450(void)
   }
   uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
   FUN_0027ed20((u32)uVar4,1);
-  uVar4 = FUN_002baf90(uVar3,iVar12,iVar6,0,0x200);
-  FUN_0027ed20((u32)uVar4,2);
+  packet = FUN_002baf90_packet_voice((void*)uVar3, (BtlUnit*)iVar12, (BtlUnit*)iVar6, 0, 0x200);
+  FUN_0027ed20((u32)packet,2);
   uVar5 = FUN_002bc950_u32_voice(0,0,0);
   *(u8 *)uVar5 = 4;
-  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
+  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((u8 *)packet + 0x58);
   FUN_0027ed20((u32)uVar5,1);
   FUN_002b9030(uVar3);
   return;
@@ -7603,6 +7605,7 @@ void func_002e9ac0(void)
   int iVar2;
   u32 uVar3;
   u32 uVar4;
+  BtlPacket* packet;
   u32 uVar5;
   int iVar6;
   int iVar7;
@@ -7635,11 +7638,11 @@ void func_002e9ac0(void)
   }
   uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
   FUN_0027ed20_voice(uVar4,1);
-  uVar4 = (u32)FUN_002baf90(uVar3,iVar12,iVar12,0,0x200);
-  FUN_0027ed20_voice(uVar4,2);
+  packet = FUN_002baf90_packet_voice((void*)uVar3, (BtlUnit*)iVar12, (BtlUnit*)iVar12, 0, 0x200);
+  FUN_0027ed20_voice((u32)packet,2);
   uVar5 = FUN_002bc950_u32_voice(0,0,0);
   *(u8 *)uVar5 = 4;
-  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
+  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((u8 *)packet + 0x58);
   FUN_0027ed20_voice(uVar5,1);
   FUN_002b9030(uVar3);
   return;
