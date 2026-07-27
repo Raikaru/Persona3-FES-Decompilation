@@ -3251,7 +3251,7 @@ void FUN_003e0780(void)
 
   iVar1 = FUN_003c5460(DAT_007ce688);
 
-  uVar2 = kwlnTaskCreate(0,0x7cd7b8,10,0x3e0830,0,0);
+  uVar2 = kwlnTaskCreate(0,DAT_007cd7b8,10,0x3e0830,0,0);
 
   *(int *)(iVar1 + 0x80) = (int)uVar2;
 
