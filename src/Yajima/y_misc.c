@@ -4918,7 +4918,7 @@ u64 FUN_00429d40(u64 param_1,u64 param_2)
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
   u64 uVar2;
 
@@ -4926,9 +4926,6 @@ u64 FUN_00429d40(u64 param_1,u64 param_2)
 
   u8 *puVar4;
 
-  u32 uStack_8;
-
-  u32 uStack_4;
 
   
 
@@ -4942,7 +4939,7 @@ u64 FUN_00429d40(u64 param_1,u64 param_2)
 
   else {
 
-    lVar1 = (*DAT_00960184)(1,0xbb4,0x40000);
+    lVar1 = (*DAT_00960184_abs)(1,0xbb4,0x40000);
 
     if (lVar1 == 0) {
 
@@ -4953,17 +4950,11 @@ u64 FUN_00429d40(u64 param_1,u64 param_2)
     else {
 
       uVar2 = kwlnTaskCreateWithAutoPriority(param_1,0x106f,0x6b4470,0x4281f0,0x429c60,lVar1);
-
-      uStack_8 = (u32)param_2;
-
-      uStack_4 = (u32)((u32)param_2 >> 0x20);
-
       puVar4 = (u8 *)lVar1;
 
-      *(u32 *)(puVar4 + 0x85c) = uStack_8;
+      *(float *)(puVar4 + 0x85c) = *(float *)&param_2;
 
-      *(u32 *)(puVar4 + 0x860) = uStack_4;
-
+      *(float *)(puVar4 + 0x860) = *((float *)&param_2 + 1);
       *puVar4 = 0;
 
       puVar4[0x9fe] = 0;

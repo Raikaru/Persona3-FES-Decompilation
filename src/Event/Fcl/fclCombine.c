@@ -4337,6 +4337,7 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
 
 {
+  typedef unsigned int FusionU128 __attribute__((mode(TI)));
 
   u32 uVar1;
 
@@ -4348,7 +4349,7 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
   u32 uVar5;
 
-  u32 *puVar6;
+  FusionU128 *puVar6;
 
   int iVar7;
 
@@ -4358,8 +4359,9 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
   int iVar10;
 
-  u32 *puVar11;
+  FusionU128 *puVar11;
 
+  FusionU128 uVar1;
   u32 auStack_90 [16];
 
   u8 auStack_50 [76];
@@ -4432,27 +4434,23 @@ LAB_003d29c0:
 
         if (lVar9 != 0) {
 
-          puVar6 = (u32 *)func_001a1150();
+          puVar6 = (FusionU128 *)func_001a1150();
 
-          puVar11 = auStack_90;
+          puVar11 = (FusionU128 *)auStack_90;
 
-          iVar7 = 8;
+          iVar7 = 4;
 
           do {
 
-            uVar5 = *puVar6;
+            uVar1 = *puVar6;
 
-            uVar1 = puVar6[1];
-
-            puVar6 = puVar6 + 2;
+            puVar6 = puVar6 + 1;
 
             iVar7 = iVar7 + -1;
 
-            *puVar11 = uVar5;
+            *puVar11 = uVar1;
 
-            puVar11[1] = uVar1;
-
-            puVar11 = puVar11 + 2;
+            puVar11 = puVar11 + 1;
 
           } while (0 < iVar7);
 
@@ -5110,13 +5108,9 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
 {
 
-  short sVar1;
+  int sVar1;
 
-  short sVar2;
-
-  short sVar3;
-
-  short sVar4;
+  int sVar2;
 
   u16 uVar5;
 
@@ -5138,13 +5132,9 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
   
 
-  sVar1 = *(short *)(param_2 + 0x14);
+  sVar1 = (int)*(short *)(param_2 + 0x14) + (int)*(short *)(param_3 + 0x14);
 
-  sVar2 = *(short *)(param_3 + 0x14);
-
-  sVar3 = *(short *)(param_2 + 0x16);
-
-  sVar4 = *(short *)(param_3 + 0x16);
+  sVar2 = (int)*(short *)(param_2 + 0x16) + (int)*(short *)(param_3 + 0x16);
 
   uVar5 = *(u16 *)(param_2 + 0x26);
 
@@ -5182,11 +5172,13 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
     fVar8 = (float)cosf(fVar12);
 
-    FUN_0040e3f0(0,(float)-iVar6,fVar9,fVar9,(int)((float)((int)sVar1 + (int)sVar2) + fVar11),
+      FUN_0040e3f0(0,(float)-iVar6,fVar9,fVar9,
 
-                 (int)((float)((int)sVar3 + (int)sVar4) + -fVar10 * fVar7 + fVar13 * fVar8),
+                   (int)((float)sVar1 + fVar11),
 
-                 uVar5 & 0xff,4,((short)*(u32 *)(param_3 + 0x10) + -1) * 2,0,0);
+                   (int)((float)sVar2 + -fVar10 * fVar7 + fVar13 * fVar8),
+
+                   uVar5 & 0xff,4,((short)*(u32 *)(param_3 + 0x10) + -1) * 2,0,0);
 
   }
 

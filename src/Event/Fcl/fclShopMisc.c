@@ -156,6 +156,9 @@ extern u32 fclCombineList003df100();
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 u64 FUN_00172660(s32 socialLink);
 extern u8 DAT_006aede8[];
+extern char DAT_006af340[];
+extern char DAT_006af360[];
+extern char DAT_006af380[];
 extern u32 gp0xffffac10;
 extern u32 gp0xfffface0;
 typedef int (*code)();
@@ -1180,40 +1183,30 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
   u16 uVar1;
 
   puVar4 = (u8 *)param_1[1];
-  iVar3 = 0;
-  goto loop_test;
-loop_body:
-  if ((*(u32 *)puVar4 & 4) != 0) {
-    if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
-      puVar4 += 0x18;
-      goto loop_continue;
+  for (iVar3 = 0; iVar3 < *param_1; puVar4 += 0x18, iVar3 = iVar3 + 1) {
+    if ((*(u32 *)puVar4 & 4) != 0) {
+      if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
+        continue;
+      }
     }
-  }
-  if ((*(u32 *)puVar4 & 1) != 0) {
-    if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
-      puVar4 += 0x18;
-      goto loop_continue;
+    if ((*(u32 *)puVar4 & 1) != 0) {
+      if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
+        continue;
+      }
     }
-  }
-  uVar1 = *(u16 *)(puVar4 + 4);
-  if ((uVar1 == 0xffff || datGetFlag(uVar1) != 0) &&
-      FUN_003f04f0((u32)(puVar4 + 0x10),param_2) != 0) {
     uVar1 = *(u16 *)(puVar4 + 4);
-    if (uVar1 == 0xffff) {
+    if ((uVar1 == 0xffff || datGetFlag(uVar1) != 0) &&
+        FUN_003f04f0((u32)(puVar4 + 0x10),param_2) != 0) {
+      uVar1 = *(u16 *)(puVar4 + 4);
+      if (uVar1 == 0xffff) {
+        return (u32 *)puVar4;
+      }
+      if ((*(u32 *)puVar4 & 2) == 0) {
+        return (u32 *)puVar4;
+      }
+      datSetFlag(uVar1,0);
       return (u32 *)puVar4;
     }
-    if ((*(u32 *)puVar4 & 2) == 0) {
-      return (u32 *)puVar4;
-    }
-    datSetFlag(uVar1,0);
-    return (u32 *)puVar4;
-  }
-loop_continue:
-  puVar4 += 0x18;
-  iVar3 += 1;
-loop_test:
-  if (iVar3 < *param_1) {
-    goto loop_body;
   }
   return (u32 *)0;
 }
@@ -9637,7 +9630,6 @@ u64 FUN_003fbc00(u32 *param_1)
   u32 *puVar10;
 
   u32 auStack_a0 [36];
-
   u8 auStack_10[16];
 
   
@@ -13656,7 +13648,7 @@ void FUN_00400b90(u64 param_1,u64 param_2,int param_3,u64 param_4,
 
 }
 
-// FUN_00400D60 NONMATCHING
+// FUN_00400D60
 
 
 int FUN_00400d60(void)
@@ -13669,7 +13661,7 @@ int FUN_00400d60(void)
 
   int iVar2;
 
-  u64 uVar3;
+  KwlnTask *task;
 
   
 
@@ -13679,13 +13671,10 @@ int FUN_00400d60(void)
 
   *(int *)(iVar1 + 8) = iVar2;
 
-  uVar3 = (u64)kwlnTaskCreate(0,(const char *)0x6af340,0x18b3,(KwlnTaskUpdateFunc)0x401210,0,(void *)iVar1);
-
-  *(int *)(iVar1 + 0xc) = (int)uVar3;
-
-  uVar3 = (u64)kwlnTaskCreate((KwlnTask *)uVar3,(const char *)0x6af360,0x18b5,(KwlnTaskUpdateFunc)0x4012c0,0,(void *)iVar1);
-
-  kwlnTaskCreate((KwlnTask *)uVar3,(const char *)0x6af380,0x18b7,(KwlnTaskUpdateFunc)0x401370,0,(void *)iVar1);
+  task = kwlnTaskCreate(0,DAT_006af340,0x18b3,(KwlnTaskUpdateFunc)FUN_00401210,0,(void *)iVar1);
+  *(int *)(iVar1 + 0xc) = (int)task;
+  task = kwlnTaskCreate(task,DAT_006af360,0x18b5,(KwlnTaskUpdateFunc)FUN_004012c0,0,(void *)iVar1);
+  kwlnTaskCreate(task,DAT_006af380,0x18b7,(KwlnTaskUpdateFunc)FUN_00401370,0,(void *)iVar1);
 
   *(u32 *)(iVar1 + 0x18) = 0xffffffff;
 

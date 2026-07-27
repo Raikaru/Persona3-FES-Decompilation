@@ -4649,7 +4649,7 @@ static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
 // FUN_00283C70 NONMATCHING
 s16 func_00283c70(BtlUnit* unit, u16 id)
 {
-    s16 category;
+    s32 category;
     u16 charId;
     u8 genus = unit->genus;
 

@@ -652,7 +652,7 @@ void FUN_00366210(u32 param_1,int param_2);
 void FUN_00366330(u32 param_1,int param_2);
 void FUN_003663f0(u32 param_1,int param_2);
 void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
-void FUN_00366970(u64 param_1,u32 param_2);
+void FUN_00366970(u32 param_1,u32 param_2);
 void FUN_00366ac0(u32 param_1,u64 param_2);
 void FUN_0036d030(int param_1);
 void FUN_0036efb0(void);
@@ -6104,7 +6104,6 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 
   bool bVar3;
 
-  int iVar4;
 
   short sVar5;
 
@@ -6160,7 +6159,6 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 
             lVar6 = FUN_0039f750(iVar9 + 0x82c,iStack_4);
 
-            iVar4 = iStack_4;
 
             if (lVar6 == 0) {
 
@@ -6204,7 +6202,7 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 
               FUN_005225a8(0x69d760,iStack_4,param_1,sVar5 + -200);
 
-              iVar10 = iVar4;
+              iVar10 = iStack_4;
 
             }
 
@@ -6683,7 +6681,7 @@ LAB_00366928:;
 // FUN_00366970 NONMATCHING
 
 
-void FUN_00366970(u64 param_1,u32 param_2)
+void FUN_00366970(u32 param_1,u32 param_2)
 
 
 
@@ -15181,7 +15179,7 @@ code * FUN_0036ee30(void)
 
   if (*(int *)(iVar6 + 0x934) == 0) {
 
-    FUN_0019d3f0(0x69d580,0x306f);
+    FUN_0019d3f0((const char *)(DAT_006a0000 - 0x2a80),0x306f);
 
   }
 

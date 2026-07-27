@@ -3389,7 +3389,7 @@ u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4)
 
 {
   u16 uVar1;
-  char cVar2;
+  u8 cVar2;
   u16 uVar3;
   u32 uVar4;
   s32 lVar5;
@@ -3398,7 +3398,7 @@ u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4)
     FUN_0019d3f0((u32)D_0069aa80, 0xb95);
   }
   if (param_4 == 1) {
-    cVar2 = *(char *)(((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8 + 0x18);
+    cVar2 = *(u8 *)(((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8 + 0x18);
     if ((cVar2 == '\x01') || (cVar2 == '\x03')) {
       uVar4 = FUN_00305970(param_1,param_2,param_3);
       if (((*(u32 *)((int)param_3 + 0xc) & 0xfffff) != 0) && ((uVar4 & 0x180000) == 0)) {
@@ -6076,7 +6076,7 @@ u32 FUN_0030b210(u32 param_1,int param_2,u16 param_3,short param_4)
 
 {
   u16 uVar1;
-  char cVar2;
+  u8 cVar2;
   int iVar3;
   int iVar4;
   u32 uVar5;

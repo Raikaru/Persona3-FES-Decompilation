@@ -3723,9 +3723,7 @@ u32 FUN_002fed10(int param_1)
     } local;
     u32 i;
     u32 result;
-    u16* timer;
-    u16* counter;
-    char* state;
+    u8* state;
     float progress;
     float value;
     float fade;
@@ -3736,7 +3734,7 @@ u32 FUN_002fed10(int param_1)
         (*DAT_00960094)(DAT_0069aa50[i], &local.saved[i]);
     }
 
-    state = *(char**)((u8*)param_1 + 0x3c);
+    state = *(u8**)((u8*)param_1 + 0x3c);
     if (*state == 3)
     {
         if (FUN_00108710() != 0)
@@ -3750,12 +3748,10 @@ u32 FUN_002fed10(int param_1)
 
     if (*state == 1)
     {
-        timer = (u16*)&DAT_007ce50c;
-        counter = (u16*)&DAT_007ce50a;
-        if (*timer == 0)
+        if (*(u16*)&DAT_007ce50c == 0)
         {
-            *counter = *counter + 1;
-            progress = (float)(s32)*counter / 20.0f;
+            *(u16*)&DAT_007ce50a = *(u16*)&DAT_007ce50a + 1;
+            progress = (float)(s32)*(u16*)&DAT_007ce50a / 20.0f;
 
             (*DAT_00960090)(7, 2);
             (*DAT_00960090)(0x14, 1);
@@ -3794,11 +3790,11 @@ u32 FUN_002fed10(int param_1)
             local.colors[11] = local.colors[3];
             FUN_00329550();
 
-            if (*counter > 0x13)
+            if (*(u16*)&DAT_007ce50a > 0x13)
                 *state = 3;
             goto fd10_restore;
         }
-        *timer = *timer - 1;
+        *(u16*)&DAT_007ce50c = *(u16*)&DAT_007ce50c - 1;
     }
 
     local.colors[0] = 0xff;

@@ -2274,7 +2274,6 @@ void FUN_002289B0(void)
 }
 
 #pragma push
-#pragma opt_common_subs off
 // FUN_00228E40 NONMATCHING
 void FUN_00228E40(void)
 {
