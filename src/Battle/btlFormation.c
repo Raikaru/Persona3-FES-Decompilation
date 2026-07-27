@@ -252,6 +252,8 @@ extern u16 func_002ffdf0(u32 unit);
 extern u16 func_00300100(u32 unit);
 extern u64 func_00300530();
 extern u64 func_00300550();
+#pragma alias func_00300550_u32 func_00300550
+extern u32 func_00300550_u32(u32 param_1);
 extern u64 func_00300580();
 #pragma alias func_00300580_u32 func_00300580
 extern u32 func_00300580_u32(u32 param_1,u32 param_2);

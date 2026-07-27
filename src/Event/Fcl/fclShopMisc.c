@@ -7842,6 +7842,7 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 3:
       lVar5 = sVar1;
       for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
+        uVar4 = datGetEquipmentId(1,iVar6);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
@@ -13796,7 +13797,7 @@ void FUN_00400e30(int param_1)
 // FUN_00400E90 NONMATCHING
 
 
-void FUN_00400e90(u64 param_1)
+void FUN_00400e90(u32 param_1)
 
 
 

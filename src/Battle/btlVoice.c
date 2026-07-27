@@ -7442,17 +7442,15 @@ void func_002e9450(void)
     if (*(short *)(iVar2 + 0xa4) != 0x100) {
       iVar8 = iVar6;
     }
-  packet1 = FUN_002bc950_ptr_voice(iVar7,iVar9,iVar10);
-  FUN_0027ed20((u32)packet1,1);
+  uVar4 = FUN_002bc950_u32_voice(iVar7,iVar9,iVar10);
+  FUN_0027ed20((u32)uVar4,1);
   uVar4 = FUN_002baf90(uVar3,iVar12,iVar6,0,0x200);
   FUN_0027ed20((u32)uVar4,2);
-  packet2 = FUN_002bc950_ptr_voice(0,0,0);
-  *(u8 *)packet2 = 4;
-  *(u64 *)(packet2 + 8) = *(u64 *)((u8 *)uVar4 + 0x58);
-  FUN_0027ed20((u32)packet2,1);
+  uVar5 = FUN_002bc950_u32_voice(0,0,0);
+  *(u8 *)uVar5 = 4;
+  *(u64 *)((u8 *)uVar5 + 8) = *(u64 *)((int)uVar4 + 0x58);
+  FUN_0027ed20((u32)uVar5,1);
   FUN_002b9030(uVar3);
-}
-
 #pragma opt_loop_invariants on
 // FUN_002e95f0
 void func_002e95f0(void)
