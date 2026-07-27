@@ -159,6 +159,8 @@ typedef union Vec128 {
 static Vec128 auStack_10, auStack_30, auStack_40, auStack_50, auStack_80, auStack_90, auStack_a0;
 static Vec128 _DAT_0069c4d0;
 static u64 _DAT_0069c4a0;
+#pragma alias DAT_0069c4a0_abs _DAT_0069c4a0
+extern Qword128 DAT_0069c4a0_abs[];
 static float _fStack_50;
 static u32 *piGpffffa850;
 static u8 *puGpffffbd04;
@@ -511,7 +513,7 @@ void FUN_00324a90(int param_1);
 #pragma alias FUN_00324a90_f32 FUN_00324a90
 extern void FUN_00324a90_f32(float param_1,u32 param_2);
 void FUN_00324af0(int param_1, u32 param_2);
-void FUN_00324b50(u64 param_1);
+void FUN_00324b50(u32 param_1);
 #pragma alias FUN_00324bd0_passthru FUN_00324bd0
 extern u64 FUN_00324bd0_passthru(void);
 u64 FUN_00324bd0(u64 param_1);
@@ -8537,60 +8539,22 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 
 
-void FUN_00324b50(u64 param_1)
-
-
-
+void FUN_00324b50(u32 param_1)
 {
-
-  u64 uVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u8 (*pauVar5) [16];
-
-  
+  u8 *pauVar5;
 
   FUN_00521408(param_1,0,0x80);
-
-  pauVar5 = (u8 (*) [16])param_1;
-
+  pauVar5 = (u8 *)param_1;
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar5) : "memory");
-
   __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar5) : "memory");
-
   __asm__ volatile ("sqc2 vf0, 64(%0)" : : "r"(pauVar5) : "memory");
-
-  *(u32 *)(pauVar5[4] + 4) = 0x40a00000;
-
+  *(u32 *)(pauVar5 + 0x44) = 0x40a00000;
   __asm__ volatile ("sqc2 vf0, 80(%0)" : : "r"(pauVar5) : "memory");
-
-  uVar4 = DAT_0069c4ac;
-
-  uVar3 = DAT_0069c4a8;
-
-  uVar2 = _DAT_0069c4a0;
-
-  *(int *)pauVar5[2] = (int)_DAT_0069c4a0;
-
-  *(int *)(pauVar5[2] + 4) = (int)((u32)uVar2 >> 0x20);
-
-  *(u32 *)(pauVar5[2] + 8) = uVar3;
-
-  *(u32 *)(pauVar5[2] + 0xc) = uVar4;
-
-  *(u32 *)pauVar5[6] = 0x3f800000;
-
-  *(u32 *)(pauVar5[7] + 4) = 0x3f800000;
-
-  *(u32 *)(pauVar5[6] + 4) = 0xffffffff;
-
-  *(u32 *)(pauVar5[6] + 8) = 0x80;
-
-  return;
-
+  *(Qword128 *)(pauVar5 + 0x20) = DAT_0069c4a0_abs[0];
+  *(u32 *)(pauVar5 + 0x60) = 0x3f800000;
+  *(u32 *)(pauVar5 + 0x74) = 0x3f800000;
+  *(u32 *)(pauVar5 + 0x64) = 0xffffffff;
+  *(u32 *)(pauVar5 + 0x68) = 0x80;
 }
 
 
