@@ -1177,16 +1177,12 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
-    u32 hidden;
-    u32 modelVisible;
-    u32 clearMask;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
     while (fld != NULL)
     {
-        hidden = (fld != NULL);
-        if (visible == hidden)
+        if (visible == 1)
         {
             fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
@@ -1196,24 +1192,22 @@ void func_001a0040(u32 visible, u32 updateField)
         {
             fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
-            *(u32*)((u8*)field + 0x34) = hidden;
+            *(u32*)((u8*)field + 0x34) = 1;
         }
         fld = fld->next;
     }
 
-    modelVisible = 1;
-    if (updateField == modelVisible)
+    if (updateField == 1)
     {
-        clearMask = ~SCENEDRAW_RESRC_FLAG_VISIBLE;
         while (modelFld != NULL)
         {
-            if (visible == modelVisible)
+            if (visible == 1)
             {
                 modelFld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             }
             else
             {
-                modelFld->flags &= clearMask;
+                modelFld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             }
             modelFld = modelFld->next;
         }

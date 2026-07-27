@@ -1932,8 +1932,8 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
                 scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
                 scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
                 RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &targetUnit->rot);
-                x = rotatedCenter.x + targetUnit->unk_94 * 25 - 0x6d6 - unit->pos.x;
-                z = rotatedCenter.z + targetUnit->unk_96 * 25 - 0x6d6 - unit->pos.z;
+                x = rotatedCenter.x + (targetUnit->unk_94 * 25 - 0x6d6) - unit->pos.x;
+                z = rotatedCenter.z + (targetUnit->unk_96 * 25 - 0x6d6) - unit->pos.z;
             }
             else
             {
