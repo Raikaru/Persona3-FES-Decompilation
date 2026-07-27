@@ -117,10 +117,10 @@ extern void FUN_00100ec0_pm(u32 param_1);
 
 u64 FUN_00397950(void)
 {
-  u16 uVar1;
   int *piVar2;
   int iVar3;
   s32 lVar4;
+  u16 uVar1;
   u8 auStack_110 [64];
   u8 auStack_d0 [64];
   u8 auStack_90 [64];

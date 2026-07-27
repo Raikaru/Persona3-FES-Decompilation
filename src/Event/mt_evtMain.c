@@ -5688,7 +5688,7 @@ void FUN_003657e0(int param_1,int param_2)
 
   int *piVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   int iVar3;
 
