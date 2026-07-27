@@ -3102,9 +3102,7 @@ void func_003132c0(u8* param_1)
 
     func_004b6eb0();
 
-    param_1[0x12] = 0;
-
-    param_1[0x13] = 0;
+    *(u16 *)(param_1 + 0x12) = 0;
 
   }
 
@@ -3112,9 +3110,7 @@ void func_003132c0(u8* param_1)
 
     func_004b6eb0();
 
-    param_1[0x14] = 0;
-
-    param_1[0x15] = 0;
+    *(u16 *)(param_1 + 0x14) = 0;
 
   }
 

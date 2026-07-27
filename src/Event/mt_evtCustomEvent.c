@@ -106,7 +106,7 @@ u32 FUN_0039e6f0(void);
 void FUN_0039e700(int param_1);
 void FUN_0039e7c0(void);
 void FUN_0039e820(u64 param_1);
-u32 FUN_0039e880(int param_1,u64 param_2,u32 param_3,int param_4,u64 param_5);
+u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_0039ea20(int param_1,int param_2);
 void FUN_0039eaa0(int param_1);
 void FUN_0039eb90(void);
@@ -5811,7 +5811,7 @@ void FUN_0039e820(u64 param_1)
 // FUN_0039E880 NONMATCHING
 
 
-u32 FUN_0039e880(int param_1,u64 param_2,u32 param_3,int param_4,u64 param_5)
+u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 
 

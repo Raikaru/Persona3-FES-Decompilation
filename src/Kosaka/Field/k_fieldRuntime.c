@@ -4431,13 +4431,22 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         fraction = 0.0f;
         amount = 0.0f;
         denominator = (f32)(count - 1);
+
         if (work->state == 0 && vertices != NULL &&
-            vector0 != NULL && vector1 != NULL)
-            if (count < 2)
-            {
-                func_0019d3f0(D_006844F8, 0x43f);
-            }
+            vector0 != NULL && vector1 != NULL && count < 2)
         {
+            func_0019d3f0(D_006844F8, 0x43f);
+        }
+        if (work->state == 1 && count < 2)
+        {
+            func_0019d3f0(D_006844F8, 0x449);
+        }
+        if (work->state == 2 && count < 2)
+        {
+            func_0019d3f0(D_006844F8, 0x483);
+        }
+
+        amount = 0.0f;
         func_001e7f90((const RuntimeDistanceWork*)work, amount,
                       &section, &fraction);
         amount = denominator > 0.0f ? 0.5f / denominator : 0.0f;
@@ -4446,8 +4455,11 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         amount = denominator > 0.0f ? 1.0f / denominator : 1.0f;
         func_001e7f90((const RuntimeDistanceWork*)work, amount,
                       &section, &fraction);
-            index = 0;
-            while (index < count)
+
+        if (work->state == 0 && vertices != NULL &&
+            vector0 != NULL && vector1 != NULL)
+        {
+            for (index = 0; index < count; index++)
             {
                 sample0 = vector0[section < count ? section : index];
                 sample1 = vector1[section < count ? section : index];
@@ -4458,38 +4470,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 blended.z = sample0.z +
                             (sample1.z - sample0.z) * fraction;
                 vertices[index] = blended;
-                index++;
             }
         }
-        if (work->state == 1)
-        {
-            if (count < 2)
-            {
-                func_0019d3f0(D_006844F8, 0x449);
-            }
-            amount = 0.0f;
-            func_001e7f90((const RuntimeDistanceWork*)work, amount,
-                          &section, &fraction);
-            amount = 1.0f;
-            func_001e7f90((const RuntimeDistanceWork*)work, amount,
-                          &section, &fraction);
-            if (vertices != NULL && vector2 != NULL && vector3 != NULL)
-            {
-                sample0 = vector2[section < count ? section : 0];
-                sample1 = vector3[section < count ? section : 0];
-                blended.x = sample0.x +
-                            (sample1.x - sample0.x) * fraction;
-                blended.y = sample0.y +
-                            (sample1.y - sample0.y) * fraction;
-                blended.z = sample0.z +
-                            (sample1.z - sample0.z) * fraction;
-                vertices[0] = blended;
-            }
-        }
-        if (work->state == 2 && count < 2)
-        {
-            func_0019d3f0(D_006844F8, 0x483);
-        }
+
         if (work->state == 2 && count < 2)
         {
             func_0019d3f0(D_006844F8, 0x4a0);
@@ -4497,6 +4480,13 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         if (work->state == 2 && count < 2)
         {
             func_0019d3f0(D_006844F8, 0x4b1);
+        }
+
+        if (work->state == 1)
+        {
+            amount = 0.0f;
+            func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                          &section, &fraction);
         }
         if (work->state == 2)
         {
@@ -4518,6 +4508,24 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 cameraScale += cameraAxis.z * 0.001f;
             }
             amount = cameraScale;
+        }
+        if (work->state == 1)
+        {
+            amount = 1.0f;
+            func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                          &section, &fraction);
+            if (vertices != NULL && vector2 != NULL && vector3 != NULL)
+            {
+                sample0 = vector2[section < count ? section : 0];
+                sample1 = vector3[section < count ? section : 0];
+                blended.x = sample0.x +
+                            (sample1.x - sample0.x) * fraction;
+                blended.y = sample0.y +
+                            (sample1.y - sample0.y) * fraction;
+                blended.z = sample0.z +
+                            (sample1.z - sample0.z) * fraction;
+                vertices[0] = blended;
+            }
         }
         if (work->state == 2 && vertices != NULL &&
             vector2 != NULL && vector3 != NULL)
