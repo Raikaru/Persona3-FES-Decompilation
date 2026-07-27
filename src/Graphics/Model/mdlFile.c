@@ -271,6 +271,8 @@ u32 FUN_003210a0(u32 param_1);
 void FUN_003210c0(void);
 #pragma alias FUN_003210c0_ret FUN_003210c0
 extern u32 FUN_003210c0_ret(u64 param_1);
+#pragma alias FUN_003210c0_wide FUN_003210c0
+extern u64 FUN_003210c0_wide(u64 param_1);
 void FUN_00321120(u16 param_1);
 u16 FUN_00321130(void);
 void FUN_00321140(int param_1,u32 param_2);
