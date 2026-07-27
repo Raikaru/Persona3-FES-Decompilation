@@ -734,7 +734,7 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4, u32 *param_
 void FUN_0038c830(int param_1,long param_2);
 void FUN_0038ca00(void);
 void FUN_0038ca80(int param_1);
-void FUN_0038cc10(int param_1,u16 *param_2,long param_3);
+void FUN_0038cc10(int param_1,u16 *param_2,int param_3);
 void FUN_0038d560(long param_1,long param_2,u32 param_3,u32 *param_4, u32 *param_5,u32 *param_6);
 void FUN_0038d6b0(int param_1,u32 param_2);
 void FUN_0038d720(int param_1);
@@ -6100,7 +6100,7 @@ LAB_0038cbd8:
 // FUN_0038CC10 NONMATCHING
 
 
-void FUN_0038cc10(int param_1,u16 *param_2,long param_3)
+void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
 
 
