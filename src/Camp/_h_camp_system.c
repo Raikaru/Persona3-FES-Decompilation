@@ -1073,11 +1073,7 @@ void FUN_0015C840(void *param_1)
                                                    (u32)camp_list_load_u16(item_data, 2));
 
                                     kind = FUN_0017B480(item_id);
-                                    if (kind == 2) {
-                                        camp_list_store_u32(entry, 0x18, 0);
-                                        camp_list_store_u32(entry, 0x1c, 0);
-                                    }
-                                    else {
+                                    if (kind != 2) {
                                         kind = FUN_0017B500(1, item_id);
                                         if (kind == 2) {
                                             camp_list_store_u32(entry, 0x18,
@@ -1089,6 +1085,10 @@ void FUN_0015C840(void *param_1)
                                             camp_list_store_u32(entry, 0x1c,
                                                      FUN_0017B5B0(1, item_id));
                                         }
+                                    }
+                                    else {
+                                        camp_list_store_u32(entry, 0x18, 0);
+                                        camp_list_store_u32(entry, 0x1c, 0);
                                     }
                                 }
                                 found = true;
@@ -1105,11 +1105,7 @@ void FUN_0015C840(void *param_1)
                             camp_list_store_u32(entry, 0x10,
                                            (u32)camp_list_load_u16(item_data, 2));
                             kind = FUN_0017B480(item_id);
-                            if (kind == 2) {
-                                camp_list_store_u32(entry, 0x18, 0);
-                                camp_list_store_u32(entry, 0x1c, 0);
-                            }
-                            else {
+                            if (kind != 2) {
                                 kind = FUN_0017B500(1, item_id);
                                 if (kind == 2) {
                                     camp_list_store_u32(entry, 0x18,
@@ -1121,6 +1117,10 @@ void FUN_0015C840(void *param_1)
                                     camp_list_store_u32(entry, 0x1c,
                                                      FUN_0017B5B0(1, item_id));
                                 }
+                            }
+                            else {
+                                camp_list_store_u32(entry, 0x18, 0);
+                                camp_list_store_u32(entry, 0x1c, 0);
                             }
                             ++entry_count;
                         }

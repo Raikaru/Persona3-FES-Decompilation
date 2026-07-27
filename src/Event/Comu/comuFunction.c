@@ -626,13 +626,7 @@ u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u8 *param_5)
   cVar4 = FUN_0016dba0((s16)param_3);
 
 
-  if (cVar4 < '\x01') {
-
-    uVar13 = 0;
-
-  }
-
-  else {
+  if (cVar4 >= '\x01') {
 
     if (param_4 < 8) {
 
@@ -911,13 +905,7 @@ LAB_003be5a0:
 
         }
 
-        if (param_1 == 1) {
-
-          uVar3 = auStack_44[*param_2];
-
-        }
-
-        else {
+        if (param_1 != 1) {
 
           if ((cVar4 < '\x02') || ('\t' < cVar4)) {
 
@@ -926,6 +914,12 @@ LAB_003be5a0:
           }
 
           uVar3 = auStack_44[iVar11 - 2];
+
+        }
+
+        else {
+
+          uVar3 = auStack_44[*param_2];
 
         }
 
@@ -966,6 +960,12 @@ LAB_003be5a0:
     *(u32 *)(puVar14 + 4) = uVar13;
 
     uVar13 = 1;
+
+  }
+
+  else {
+
+    uVar13 = 0;
 
   }
 
