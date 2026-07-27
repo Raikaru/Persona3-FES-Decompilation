@@ -694,9 +694,11 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
             p += i << 2;
             p = *(s32 *)p;
         }
-        if (p == 0) {
-            i++;
-            continue;
+        switch (p) {
+        case 0:
+            p = 0;
+        default:
+            break;
         }
         if (p == param_2)
             return param_2;
