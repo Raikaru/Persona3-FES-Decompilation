@@ -27952,31 +27952,19 @@ void FUN_00338360(int param_1)
 {
   int iVar1;
   u16 *puVar2;
-  struct {
-    u32 result;
-    u32 c2;
-    u32 c1;
-    union {
-      u32 word;
-      struct {
-        u8 red;
-        u8 green;
-        u8 blue;
-        volatile u8 alpha;
-      } bytes;
-    } packed;
-  } colourStack;
+  u32 colourStack[4];
   int iVar3;
   int iVar4;
   int iVar5;
   int iVar6;
   int dest;
+  u8 *packed;
   u8 red;
   u8 green;
   u8 blue;
   u8 alpha;
 
-  iVar5 = (int)param_1;
+  iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
   puVar2 = *(u16 **)iVar3;
@@ -27984,33 +27972,34 @@ void FUN_00338360(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    colourStack[2] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50V1((u32)iVar3);
-    colourStack.packed.word = colourStack.result;
-    alpha = colourStack.packed.bytes.alpha;
+    colourStack[3] = colourStack[0];
+    packed = (u8 *)&colourStack[3];
+    alpha = packed[3];
     if (alpha != 0xff) {
       dest = *(int *)(puVar2 + 10);
-      red = colourStack.packed.bytes.red;
-      green = colourStack.packed.bytes.green;
-      blue = colourStack.packed.bytes.blue;
-      alpha = colourStack.packed.bytes.alpha;
+      red = packed[0];
+      green = packed[1];
+      blue = packed[2];
+      alpha = packed[3];
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
     }
     else {
-      colourStack.packed.bytes.alpha = 0xfe;
+      packed[3] = 0xfe;
       dest = *(int *)(puVar2 + 10);
-      red = colourStack.packed.bytes.red;
-      green = colourStack.packed.bytes.green;
-      blue = colourStack.packed.bytes.blue;
-      alpha = colourStack.packed.bytes.alpha;
+      red = packed[0];
+      green = packed[1];
+      blue = packed[2];
+      alpha = packed[3];
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
-      colourStack.packed.bytes.alpha = 0xff;
+      packed[3] = 0xff;
     }
     if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
       FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
@@ -28893,31 +28882,19 @@ void FUN_00339200(int param_1)
 {
   int iVar1;
   u16 *puVar2;
-  struct {
-    u32 result;
-    u32 c2;
-    u32 c1;
-    union {
-      u32 word;
-      struct {
-        u8 red;
-        u8 green;
-        u8 blue;
-        volatile u8 alpha;
-      } bytes;
-    } packed;
-  } colourStack;
+  u32 colourStack[4];
   int iVar3;
   int iVar4;
   int iVar5;
   int iVar6;
   int dest;
+  u8 *packed;
   u8 red;
   u8 green;
   u8 blue;
   u8 alpha;
 
-  iVar5 = (int)param_1;
+  iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(int *)(iVar5 + 0x40);
   puVar2 = *(u16 **)iVar3;
@@ -28925,33 +28902,34 @@ void FUN_00339200(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack.c1 = *(u32 *)(iVar5 + 0x30);
+    colourStack[2] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50V1((u32)iVar3);
-    colourStack.packed.word = colourStack.result;
-    alpha = colourStack.packed.bytes.alpha;
+    colourStack[3] = colourStack[0];
+    packed = (u8 *)&colourStack[3];
+    alpha = packed[3];
     if (alpha != 0xff) {
       dest = *(int *)(puVar2 + 10);
-      red = colourStack.packed.bytes.red;
-      green = colourStack.packed.bytes.green;
-      blue = colourStack.packed.bytes.blue;
-      alpha = colourStack.packed.bytes.alpha;
+      red = packed[0];
+      green = packed[1];
+      blue = packed[2];
+      alpha = packed[3];
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
     }
     else {
-      colourStack.packed.bytes.alpha = 0xfe;
+      packed[3] = 0xfe;
       dest = *(int *)(puVar2 + 10);
-      red = colourStack.packed.bytes.red;
-      green = colourStack.packed.bytes.green;
-      blue = colourStack.packed.bytes.blue;
-      alpha = colourStack.packed.bytes.alpha;
+      red = packed[0];
+      green = packed[1];
+      blue = packed[2];
+      alpha = packed[3];
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
-      colourStack.packed.bytes.alpha = 0xff;
+      packed[3] = 0xff;
     }
     if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
       FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);

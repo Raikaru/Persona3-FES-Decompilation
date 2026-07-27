@@ -92,6 +92,8 @@ extern u8 DAT_007e094e_abs[];
 extern u8 DAT_007e095e[];
 extern u8 DAT_007e0960[];
 extern u16 DAT_007e0952;
+#pragma alias DAT_007e0952_abs DAT_007e0952
+extern u8 DAT_007e0952_abs[];
 extern u8 D_00683E10[];
 extern char D_00683F70[];
 extern char D_00683F88[];
@@ -611,11 +613,11 @@ s32 func_001e1850(RuntimeTask* task)
             break;
 
         case 1:
-            work->state = 2;
+            work->state++;
             break;
 
         case 2:
-            input = DAT_007e094e;
+            input = *(u16*)DAT_007e094e_abs;
             if ((input & 0x40) != 0)
             {
                 result = func_001a4510(work->menuTask);
@@ -737,14 +739,14 @@ s32 func_001e1850(RuntimeTask* task)
             break;
 
         case 4:
-            input = DAT_007e094e;
+            input = *(u16*)DAT_007e094e_abs;
             if ((input & 0x40) != 0)
             {
                 result = func_001a4510(work->choiceTask);
                 switch (result)
                 {
                     case 1:
-                        func_001e2930(0);
+                        func_001e2930(1);
                         func_001e2b10(1);
                         FUN_00521408(&D_007CE2B8, 0, 8);
                     case 0:
@@ -765,19 +767,22 @@ s32 func_001e1850(RuntimeTask* task)
             break;
 
         case 5:
-            input = DAT_007e094e;
+            input = *(u16*)DAT_007e094e_abs;
             if ((input & 0x40) != 0)
             {
                 result = func_001a4510(work->choiceTask);
-                if (result == 1)
+                switch (result)
                 {
-                    work->state = 8;
-                }
-                else if (result == 0)
-                {
-                    func_001a3bf0(work->menuTask, 1);
-                    func_00195020(work->choiceTask);
-                    work->state = 2;
+                    case 0:
+                        func_001a3bf0(work->menuTask, 1);
+                        func_00195020(work->choiceTask);
+                        work->state = 2;
+                        break;
+                    case 1:
+                        work->state = 8;
+                        break;
+                    default:
+                        break;
                 }
             }
             else if ((input & 0x20) != 0)
@@ -789,7 +794,7 @@ s32 func_001e1850(RuntimeTask* task)
             break;
 
         case 6:
-            input = DAT_007e0952;
+            input = *(u16*)DAT_007e0952_abs;
             if ((input & 0x9000) != 0)
             {
                 work->selection++;
@@ -835,7 +840,7 @@ s32 func_001e1850(RuntimeTask* task)
                 FUN_00524270(func_001a4010(work->choiceTask, 0), path);
             }
 
-            input = DAT_007e094e;
+            input = *(u16*)DAT_007e094e_abs;
             if ((input & 0x40) != 0)
             {
                 func_00195020(work->choiceTask);
@@ -854,7 +859,7 @@ s32 func_001e1850(RuntimeTask* task)
             break;
 
         case 7:
-            input = DAT_007e094e;
+            input = *(u16*)DAT_007e094e_abs;
             if ((input & 0x40) != 0)
             {
                 result = func_001a4510(work->choiceTask);
