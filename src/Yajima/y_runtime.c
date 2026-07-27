@@ -603,6 +603,8 @@ extern void FUN_001b0260(u32 param_1, int param_2);
 extern code FUN_001b9120;
 extern void FUN_001bf220(void *param_1, u16 param_2, u16 param_3);
 extern long FUN_001c6450(u32 param_1, u32 param_2, u32 param_3, void *param_4);
+ #pragma alias FUN_001c6450_typed FUN_001c6450
+ extern u32 FUN_001c6450_typed(u32 param_1,void *param_2,float param_3,float param_4);
 extern code FUN_001c65e0;
 #pragma alias FUN_001c65e0_typed FUN_001c65e0
 extern u32 FUN_001c65e0_typed(void *param_1);
@@ -617,7 +619,8 @@ extern long FUN_001c7130(u32 param_1, u32 param_2);
 #pragma alias FUN_001c7160_f32 FUN_001c7160
 extern long FUN_001c7160_f32(f32 param_1, void *param_2, void *param_3);
 extern long FUN_001c7160(u32 param_1, void *param_2, void *param_3);
-extern code FUN_001c7270;
+ #pragma alias FUN_001c7270_u32 FUN_001c7270
+ extern u32 FUN_001c7270_u32(u32 param_1,u32 param_2);
 extern code FUN_001c7b10;
 #pragma alias FUN_001c7b10_typed FUN_001c7b10
 extern u32 FUN_001c7b10_typed(const void *fldUnit);
@@ -7308,24 +7311,24 @@ void FUN_00439400(char param_1)
   int iVar1;
   u8 bVar2;
   int iVar3;
-  long lVar4;
-  u64 uVar5;
+  u32 lVar4;
+  u32 uVar5;
   int iVar6;
   
   iVar3 = iGpffffb5a0;
   iVar6 = (int)param_1;
   iVar1 = *(int *)(*(int *)((u8 *)DAT_0087190c + iVar6 * 0x1c0) + 0x3c);
   if (((*(char *)(iVar1 + 0x1222) != '\x01') &&
-      (lVar4 = ((code)FUN_001c7270)(*(u32 *)(iGpffffb5a0 + 0x14),*(u32 *)(iVar1 + 0x24)),
-      lVar4 != 0)) && (*(int *)((int)lVar4 + 4) != 1)) {
+      (lVar4 = FUN_001c7270_u32(*(u32 *)(iGpffffb5a0 + 0x14),*(u32 *)(iVar1 + 0x24)),
+       lVar4 != 0)) && (*(int *)((int)lVar4 + 4) != 1)) {
     bVar2 = 0;
     if (((u8 *)DAT_008717e8)[iVar6 * 0x70] != 0) {
       bVar2 = ((u8 *)DAT_008717f4)[iVar6 * 0x70] != 0;
     }
     if (bVar2) {
       uVar5 = FUN_00318b60(*(u32 *)(*(int *)(iVar1 + 0x24) + 0x50));
-      lVar4 = FUN_001c6450(*(u32 *)(iVar3 + 0x10),*(u32 *)(iVar3 + 0x14),uVar5,
-                           (void *)((int)lVar4 + 0x10c));
+      lVar4 = FUN_001c6450_typed(uVar5,(void *)(lVar4 + 0x10c),
+                                 *(float *)(iVar3 + 0x10),*(float *)(iVar3 + 0x14));
       if (lVar4 == 1) {
         *(u8 *)(iVar1 + 0x1222) = 1;
         *(u8 *)(iVar1 + 0x1220) = 6;
