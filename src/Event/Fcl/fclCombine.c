@@ -4745,8 +4745,6 @@ u32 FUN_003d2c10(s32 param_1)
     puVar4 = ppuVar7[3];
     ppuVar7 = ppuVar7 + 4;
     iVar5 = iVar5 + -1;
-    *puVar6 = (int)uVar1;
-    puVar6[1] = (int)((u32)uVar1 >> 0x20);
     puVar6[2] = (u32)puVar3;
     puVar6[3] = (u32)puVar4;
     puVar6 = puVar6 + 4;

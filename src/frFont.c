@@ -134,6 +134,8 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
 extern long FUN_003b0970_typed(void *param_1,u8 param_2,u8 param_3,u8 param_4,u32 param_5);
 void FUN_003b05c0(u16 *param_1);
 long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
+#pragma alias FUN_003b0620_typed FUN_003b0620
+extern int FUN_003b0620_typed(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 int FUN_003b0840(short *param_1);
 void FUN_003b0bb0(int param_1,u8 param_2);
 void FUN_003b0c20(u32 param_1,u16 param_2);
@@ -1289,7 +1291,7 @@ processFont:
 
       }
 
-      iVar3 = FUN_003b0620(uVar5,bGpffffb950,param_3,param_4);
+      iVar3 = FUN_003b0620_typed(uVar5,bGpffffb950,param_3,param_4);
 
       if (iVar6 == 0) {
 
