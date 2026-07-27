@@ -5952,65 +5952,36 @@ switchD_0038c8e0_caseD_0:
 
 
 void FUN_0038ca00(void)
-
-
-
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
-  int iVar3;
-
   int iVar4;
-
-  
+  u32 *puVar3;
 
   uVar2 = DAT_007cafec;
-
   uVar1 = DAT_007cadd0;
+  puVar3 = &DAT_009588b0;
 
   for (iVar4 = 0; iVar4 < 3; iVar4 = iVar4 + 1) {
-
-    iVar3 = iVar4 * 0x40;
-
-    *(u32 *)(&DAT_009588b8 + iVar3) = uVar1;
-
-    *(u32 *)(&DAT_009588bc + iVar3) = uVar1;
-
-    *(u32 *)(&DAT_009588c0 + iVar3) = uVar1;
-
-    *(u32 *)(&DAT_009588c4 + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588c8 + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588cc + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588d0 + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588d4 + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588d8 + iVar3) = uVar2;
-
-    *(u32 *)(&DAT_009588dc + iVar3) = uVar2;
-
-    *(u32 *)(&DAT_009588e0 + iVar3) = uVar2;
-
-    *(u32 *)(&DAT_009588e4 + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588e8 + iVar3) = 0x40e00000;
-
-    *(u32 *)(&DAT_009588ec + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588b0 + iVar3) = 0;
-
-    *(u32 *)(&DAT_009588b4 + iVar3) = 0;
-
+    puVar3[2] = uVar1;
+    puVar3[3] = uVar1;
+    puVar3[4] = uVar1;
+    puVar3[5] = 0;
+    puVar3[6] = 0;
+    puVar3[7] = 0;
+    puVar3[8] = 0;
+    puVar3[9] = 0;
+    puVar3[10] = uVar2;
+    puVar3[11] = uVar2;
+    puVar3[12] = uVar2;
+    puVar3[13] = 0;
+    puVar3[14] = 0x40e00000;
+    puVar3[15] = 0;
+    puVar3[0] = 0;
+    puVar3[1] = 0;
+    puVar3 += 0x10;
   }
-
   return;
-
 }
 
 

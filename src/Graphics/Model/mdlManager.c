@@ -8814,7 +8814,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   u64 uVar5;
 
-  long lVar6;
+  u32 lVar6;
 
   short sVar7;
 
