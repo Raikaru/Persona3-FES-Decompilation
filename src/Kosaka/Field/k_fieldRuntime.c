@@ -4522,18 +4522,15 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         {
             for (index = 0; index < count; index++)
             {
-                vertices[index].x =
-                    vector0[section < count ? section : index].x +
-                    (vector1[section < count ? section : index].x -
-                     vector0[section < count ? section : index].x) * fraction;
-                vertices[index].y =
-                    vector0[section < count ? section : index].y +
-                    (vector1[section < count ? section : index].y -
-                     vector0[section < count ? section : index].y) * fraction;
-                vertices[index].z =
-                    vector0[section < count ? section : index].z +
-                    (vector1[section < count ? section : index].z -
-                     vector0[section < count ? section : index].z) * fraction;
+                sample0 = vector0[section < count ? section : index];
+                sample1 = vector1[section < count ? section : index];
+                blended.x = sample0.x +
+                            (sample1.x - sample0.x) * fraction;
+                blended.y = sample0.y +
+                            (sample1.y - sample0.y) * fraction;
+                blended.z = sample0.z +
+                            (sample1.z - sample0.z) * fraction;
+                vertices[index] = blended;
             }
         }
 

@@ -4756,15 +4756,16 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   int iVar4;
   int iVar8;
+
   int counter;
 
   u32 uVar6;
 
   u32 uVar5;
 
-  u32 firstIndex;
+  int firstIndex;
 
-  u32 secondIndex;
+  int secondIndex;
   u32 firstLow;
   u32 secondLow;
   int first2;
@@ -4781,7 +4782,9 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   
 
   first2 = *(volatile int *)(param_2 + 0x18);
+
   second2 = *(volatile int *)(param_2 + 0x10);
+
   iVar8 = second2 + first2;
   pbVar7 = (u8 *)iVar8;
 
