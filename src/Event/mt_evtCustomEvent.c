@@ -3692,6 +3692,7 @@ u32 FUN_0039c440(int param_1)
   int iVar16;
 
   int iVar17;
+  int iVar18;
 
   u8 auStack_4 [4];
 
