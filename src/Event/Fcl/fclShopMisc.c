@@ -3965,7 +3965,7 @@ void FUN_003f3dc0(int param_1,u32 param_2)
 
     puVar1 = *(u32 **)(*(int *)(iVar3 + 0x14) + 0x1c);
 
-    lVar2 = FUN_003c4bf0(param_2,(int)param_2 + 4,(short)puVar1[1]);
+    lVar2 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
 
     if (lVar2 != 0) {
 
