@@ -3568,7 +3568,7 @@ void FUN_003bb7a0(Resrc* param_1)
 #undef FUN_003bb9b0
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_003BB9B0 NONMATCHING
+// FUN_003BB9B0
 
 
 void FUN_003bb9b0(float *param_1)
@@ -3695,7 +3695,7 @@ void FUN_003bbb90(u64 param_1,u32 *param_2)
 
   float afStack_20 [4];
 
-  u32 uStack_10;
+  u64 uStack_10;
 
   float fStack_8;
 

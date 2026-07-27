@@ -363,6 +363,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
   u32 uVar1;
 
   u32 uVar2;
+  u32 uVar3;
 
   int iVar3;
 

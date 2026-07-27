@@ -292,7 +292,7 @@ extern u32 DAT_0095c241;
 extern u32 DAT_0095c258;
 extern u32 DAT_0095c25c;
 extern u32 DAT_0095c260;
-extern u32 DAT_00960088;
+extern f32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
 extern code DAT_0096017c;
@@ -1882,7 +1882,7 @@ extern u32 DAT_0095c240;
 #pragma alias DAT_0095c240_abs DAT_0095c240
 extern u8 DAT_0095c240_abs[];
 extern u32 DAT_0095c241;
-extern u32 DAT_00960088;
+extern f32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
 extern code DAT_0096017c;
@@ -12824,14 +12824,14 @@ void FUN_0044a790(u32 *param_1)
   iVar3 = param_1[3];
   iVar1 = FUN_00198590_typed();
   fVar10 = 1.0f / *(float *)(iVar1 + 0x80);
-  iVar3 = *(int *)(iVar3 + 0x480);
-  pfVar2 = (float *)(*(int *)*param_1 + param_1[4] * 0x40);
+  fVar9 = (float)*(int *)(iVar3 + 0x480) / 180.0f;
+  pfVar2 = (float *)(param_1[4] * 0x40 + *(int *)*param_1);
   fVar4 = *(float *)(param_1 + 1);
   fVar8 = *(float *)(param_1 + 2) * 448.0f;
   fVar6 = fVar4 * 640.0f - 320.0f;
   fVar7 = SQRT(fVar6 * fVar6 + (fVar8 - 224.0f) * (fVar8 - 224.0f));
   fVar5 = FUN_0052ea18_f32(fVar8 - 224.0f, fVar6);
-  fVar6 = (float)FUN_0052e878_typed(fGpffff8248 * (fVar7 / 200.0f - (float)iVar3 / 180.0f) * 2.0f);
+  fVar6 = (float)FUN_0052e878_typed(fGpffff8248 * (fVar7 / 200.0f - fVar9) * 2.0f);
   fVar9 = fVar6 * 20.0f + fVar7 + 0.0f;
   fVar6 = FUN_00269c80_f32(fVar5);
   fVar7 = fVar9 * fVar6 + 320.0f;
@@ -17366,7 +17366,7 @@ u64 FUN_00455e00(u64 param_1)
     fVar7 = *(float *)(iVar5 + 0x80);
     for (iVar5 = 0; iVar5 < 4; iVar5 = iVar5 + 1) {
       *(float *)(pcVar3 + iVar5 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar3 + 0x128);
-      *(float *)(pcVar3 + iVar5 * 0x40 + 0x28) = 1.0 / fVar7;
+      *(float *)(pcVar3 + iVar5 * 0x40 + 0x28) = 1.0f / fVar7;
       pcVar1 = pcVar3 + iVar5 * 0x40 + 0x30;
       pcVar1[0] = '\0';
       pcVar1[1] = '\0';

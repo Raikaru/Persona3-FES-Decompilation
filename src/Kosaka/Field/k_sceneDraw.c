@@ -170,14 +170,14 @@ void* K_SceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
 void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
 {
     ResrcModelFld* modelFld;
-    Resrc* modelFld2;
+    ResrcModelFld* modelFld2;
     ResrcFld* fld;
     RwRGBAReal ambientColor;
     RwRGBAReal directionalColor;
     RwMatrix directionalMatrix;
 
     modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
-    modelFld2 = MT_Scene_GetResListHead(SCENEDRAW_RESRC_TYPE_MODELFLD2);
+    modelFld2 = (ResrcModelFld*)MT_Scene_GetResListHead(SCENEDRAW_RESRC_TYPE_MODELFLD2);
     fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
 
     ambientColor = kwlnGetAmbientLight()->color;
@@ -232,13 +232,13 @@ void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
 
     while (modelFld2 != NULL)
     {
-        if (modelFld2->flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        if (modelFld2->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
         {
-            func_0034fd30(SCENEDRAW_RESRC_PTR(modelFld2, Model, 0x104));
-            func_0034fd70(SCENEDRAW_RESRC_PTR(modelFld2, Model, 0x104), 3);
+            func_0034fd30(modelFld2->mdl);
+            func_0034fd70(modelFld2->mdl, 3);
         }
 
-        modelFld2 = modelFld2->next;
+        modelFld2 = (ResrcModelFld*)modelFld2->base.next;
     }
 
     if (gMtScene->fldMajorId < 200)

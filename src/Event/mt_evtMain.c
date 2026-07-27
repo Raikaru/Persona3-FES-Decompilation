@@ -471,6 +471,8 @@ extern void FUN_003b9550_evt(u32 param_1,u32 param_2);
 extern u32 FUN_00388df0_evt(u32 param_1,u32 *param_2);
 #pragma alias FUN_003b8ff0_evt FUN_003b8ff0
 extern u32 FUN_003b8ff0_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
+#pragma alias FUN_003b9260_evt FUN_003b9260
+extern u32 FUN_003b9260_evt(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
 #pragma alias FUN_003b8e10_evt FUN_003b8e10
 extern u64 FUN_003b8e10_evt(u16 param_1,u8 param_2,short param_3,u32 param_4);
 u64 FUN_003952d0(u64 param_1,int param_2,s16 param_3);
@@ -649,7 +651,7 @@ void FUN_00365f80(u32 param_1,u32 param_2);
 void FUN_00366210(u32 param_1,int param_2);
 void FUN_00366330(u32 param_1,int param_2);
 void FUN_003663f0(u32 param_1,int param_2);
-void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
+void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_00366970(u64 param_1,u32 param_2);
 void FUN_00366ac0(u32 param_1,u64 param_2);
 void FUN_0036d030(int param_1);
@@ -6495,7 +6497,7 @@ LAB_003665e0:
 // FUN_00366660 NONMATCHING
 
 
-void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
+void FUN_00366660(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
 
 
@@ -6617,7 +6619,7 @@ void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 
           }
 
-          FUN_003b8ff0(fVar9,param_2,uVar7,unaff_s8,uStack_20,!bVar1,iVar4);
+          FUN_003b8ff0_evt(fVar9,param_2,uVar7,unaff_s8,uStack_20,!bVar1,iVar4);
 
           if (*(char *)((int)puVar5 + 0x23) == '\x01') {
 
@@ -6655,7 +6657,7 @@ void FUN_00366660(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 
             }
 
-            FUN_003b9260(fVar9,param_2,uVar6,lVar3,puVar5[0x13],
+            FUN_003b9260_evt(fVar9,(u32)param_2,uVar6,(u32)lVar3,puVar5[0x13],
 
                          *(char *)((int)puVar5 + 0x25) == '\0',0);
 

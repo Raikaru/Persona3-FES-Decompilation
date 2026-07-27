@@ -41,7 +41,7 @@ extern u32 DAT_006a2d30;
 extern u32 DAT_006a2d38;
 extern u32 DAT_006a2d40;
 extern u32 DAT_006a2d48;
-extern u32 DAT_006a2dc8;
+extern u64 DAT_006a2dc8;
 extern u32 DAT_006a2dd0;
 extern u32 DAT_007caf18;
 extern u32 DAT_007caf24;
@@ -75,6 +75,10 @@ extern void FUN_0034ff70_typed(f32 param_1, u8 (*param_2)[16]);
 extern void FUN_004c31b0_mtScene(RwMatrix* matrix, const RwV3d* axis, f32 angle, s32 mode);
 #pragma alias FUN_004c35d0_mtScene FUN_004c35d0
 extern void FUN_004c35d0_mtScene(RwMatrix* matrix, u64 param_2, s32 mode);
+#pragma alias FUN_00530da0_mt_scene FUN_00530da0
+extern u32 FUN_00530da0_mt_scene(f32 param_1);
+#pragma alias FUN_005318a0_mt_scene FUN_005318a0
+extern f32 FUN_005318a0_mt_scene(u32 param_1);
 
 
 
@@ -2529,7 +2533,7 @@ u32 FUN_003b8540(float *param_1,float *param_2,float *param_3,float *param_4)
 
   fVar3 = (float)FUN_004c69f0(afStack_20,&fStack_10);
 
-  if (fVar3 == 0.0) {
+  if (fVar3 == 0.0f) {
 
     uVar1 = 0;
 
@@ -2539,23 +2543,23 @@ u32 FUN_003b8540(float *param_1,float *param_2,float *param_3,float *param_4)
 
     afStack_20[1] = 0.0;
 
-    fStack_30 = (float)uVar2;
+    fStack_30 = *(float *)&uVar2;
 
-    fStack_2c = (float)((u32)uVar2 >> 0x20);
+    fStack_2c = *(((float *)&uVar2) + 1);
 
-    uVar2 = FUN_00530da0(afStack_20[2] * fVar4 +
+    uVar2 = FUN_00530da0_mt_scene(afStack_20[2] * fVar4 +
 
-                         afStack_20[0] * fStack_30 + fStack_2c * 0.0 + 0.0 + 0.0);
+                         afStack_20[0] * fStack_30 + fStack_2c * 0.0f + 0.0f + 0.0f);
 
     uVar2 = FUN_0052e9a0(uVar2);
 
-    fVar4 = (float)FUN_005318a0(uVar2);
+    fVar4 = FUN_005318a0_mt_scene((u32)uVar2);
 
     fVar4 = DAT_007caf18 * fVar4;
 
-    if (afStack_20[0] < 0.0) {
+    if (afStack_20[0] < 0.0f) {
 
-      fVar4 = fVar4 * -1.0;
+      fVar4 = fVar4 * -1.0f;
 
     }
 
