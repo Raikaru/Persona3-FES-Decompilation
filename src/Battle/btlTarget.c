@@ -412,6 +412,8 @@ void FUN_002d2280(s16* outX, s16* outZ, f32* position)
 
 #pragma alias FUN_002d2340_s16 FUN_002d2340
 extern void FUN_002d2340_s16(f32 distance, u8* work, s16 start, s16 end);
+#pragma alias datCalcGetHp_s32 datCalcGetHp
+extern s32 datCalcGetHp_s32(DatUnit*);
 #pragma push
 #pragma opt_propagation off
 // FUN_002d2340
@@ -5630,48 +5632,52 @@ s16 FUN_002dc670(BtlAction* action)
     DatUnit* datUnit = action->unit->datUnit;
     s16 result = 0;
 
-    if (datCalcGetBadStatusNoDown(datUnit) == 0x80)
+    switch (datCalcGetBadStatusNoDown(datUnit))
     {
-        u16 maxHp = datCalcGetMaxHp(datUnit);
+    case 0x80:
+        {
+            u16 maxHp = datCalcGetMaxHp(datUnit);
 
-        if ((datUnit->flags & UNIT_FLAG_ENEMY) == 0)
-        {
-            result = (s16)(((s32)maxHp * -100) / 500);
-        }
-        else
-        {
-            u16 tableFlags = *(u16*)(DAT_007ce410 + (u32)datUnit->id * 0x3e);
-            if ((tableFlags & 0x400) != 0)
+            if ((datUnit->flags & UNIT_FLAG_ENEMY) == 0)
             {
-                result = -0x32;
-            }
-            else if ((tableFlags & 0x800) != 0)
-            {
-                result = -100;
-            }
-            else if ((tableFlags & 0x1000) != 0)
-            {
-                result = -0x96;
-            }
-            else if ((tableFlags & 0x2000) != 0)
-            {
-                result = -0xc8;
+                result = (s16)(-((s32)maxHp * 100) / 500);
             }
             else
             {
-                result = (s16)(((s32)maxHp * -100) / 0x14d);
-            }
+                u16 tableFlags = *(u16*)(DAT_007ce410 + (u32)datUnit->id * 0x3e);
+                if ((tableFlags & 0x400) != 0)
+                {
+                    result = -0x32;
+                }
+                else if ((tableFlags & 0x800) != 0)
+                {
+                    result = -100;
+                }
+                else if ((tableFlags & 0x1000) != 0)
+                {
+                    result = -0x96;
+                }
+                else if ((tableFlags & 0x2000) != 0)
+                {
+                    result = -0xc8;
+                }
+                else
+                {
+                    result = (s16)(-((s32)maxHp * 100) / 0x14d);
+                }
 
-            if (result > 999)
-            {
-                result = 999;
+                if (result > 999)
+                {
+                    result = 999;
+                }
             }
+            break;
         }
     }
 
     if (datCalcIsDead(datUnit, result) != 0)
     {
-        result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
+        return (s16)(-(datCalcGetHp_s32(datUnit) - 1));
     }
 
     return result;

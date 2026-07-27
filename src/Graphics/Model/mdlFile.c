@@ -6980,7 +6980,7 @@ u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00323240 NONMATCHING
 
 
-int FUN_00323240(u16 param_1,int param_2,u16 param_3,int param_4)
+int FUN_00323240(u32 param_1,int param_2,u16 param_3,int param_4)
 
 
 
@@ -26827,7 +26827,7 @@ u64 FUN_00336920(int param_1)
 
   uVar2 = *(u32 *)(param_1 + 0x38);
 
-  uVar7 = (*DAT_00960178)(uVar2 * 0xc + 4,0x40000);
+  uVar7 = (*DAT_00960178_abs)(uVar2 * 0xc + 4,0x40000);
 
   puVar12 = (u32 *)uVar7;
 

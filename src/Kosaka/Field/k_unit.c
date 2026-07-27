@@ -2045,6 +2045,7 @@ u32 func_001d1a90(void)
 {
     s32 i;
     FldUnit* unit;
+    u32 markerValue;
     u32* marker;
     u32 valid;
     u32 predicate;
@@ -2063,16 +2064,18 @@ u32 func_001d1a90(void)
         if (predicate == 1)
         {
             marker = &unit->unk_17c;
-            if (*marker != 0)
+            markerValue = *marker;
+            if (markerValue == 0)
             {
-                if (func_00195460() == 1)
-                {
-                    result = 0;
-                }
-                else
-                {
-                    *marker = 0;
-                }
+                continue;
+            }
+            if (func_00195460() == 1)
+            {
+                result = 0;
+            }
+            else
+            {
+                *marker = 0;
             }
         }
     }
@@ -2112,21 +2115,37 @@ void func_001d1c20(void)
 u32 func_001d1ce0(void)
 {
     s32 i;
+    FldUnit* unit;
+    u32 markerValue;
+    u32* marker;
+    u32 valid;
+    u32 predicate;
     u32 result;
 
     result = 1;
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {
-        if (gFldUnitsEc[i].genusBase != NULL && gFldUnitsEc[i].resrc != NULL &&
-            gFldUnitsEc[i].unk_17c != 0)
+        valid = 0;
+        unit = &gFldUnitsEc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            if (func_00195460() == 1)
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
+        {
+            marker = &unit->unk_17c;
+            markerValue = *marker;
+            if (markerValue != 0)
             {
-                result = 0;
-            }
-            else
-            {
-                gFldUnitsEc[i].unk_17c = 0;
+                if (func_00195460() == 1)
+                {
+                    result = 0;
+                }
+                else
+                {
+                    *marker = 0;
+                }
             }
         }
     }
@@ -2830,7 +2849,10 @@ void func_001d38d0(KwlnTask* task, s32 multiplier)
         {
             for (j = 0; j < 0x10; j++)
             {
-                if (func_001b9120()[i * 0x100 + j * 0x10 + 0x48] == 1) count++;
+                if (func_001b9120()[i * 0x100 + j * 0x10 + 0x48] == 1)
+                {
+                    count++;
+                }
             }
         }
         if ((u32)(count * multiplier) < (u32)work[3])

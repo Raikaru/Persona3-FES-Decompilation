@@ -3216,7 +3216,7 @@ void func_001f6d20(const f32 *entry)
 // FUN_001f6e80 NONMATCHING
 void func_001f6e80(void)
 {
-    u8 *work = sBrReward;
+    u8 *work;
     s32 i;
     u32 count;
     u32 idx;

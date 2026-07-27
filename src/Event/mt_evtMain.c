@@ -9372,32 +9372,22 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
 
   }
 
-  if ((*piVar1 == 0x30) || (*piVar1 == 1)) {
-
+  switch (*piVar1) {
+  case 1:
+  case 0x30:
     if (*(char *)(iVar4 + 0x10) == '\x04') {
-
       *(char *)(iVar4 + 0x28) = (char)*(u32 *)(iVar3 + 0x1b8);
-
       *(char *)(iVar4 + 0x29) = (char)*(u32 *)(iVar3 + 0x1bc);
-
       *(char *)(iVar4 + 0x2a) = (char)*(u32 *)(iVar3 + 0x1c0);
-
       *(char *)(iVar4 + 0x2b) = (char)*(u32 *)(iVar3 + 0x1c4);
-
     }
-
     else if (*(char *)(iVar4 + 0x10) == '\x01') {
-
       *(char *)(iVar4 + 0x34) = (char)*(u32 *)(iVar3 + 0x1b8);
-
       *(char *)(iVar4 + 0x35) = (char)*(u32 *)(iVar3 + 0x1bc);
-
       *(char *)(iVar4 + 0x36) = (char)*(u32 *)(iVar3 + 0x1c0);
-
       *(char *)(iVar4 + 0x37) = (char)*(u32 *)(iVar3 + 0x1c4);
-
     }
-
+    break;
   }
 
   FUN_0036f640(param_3);

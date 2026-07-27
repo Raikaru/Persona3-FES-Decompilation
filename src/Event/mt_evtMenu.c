@@ -19080,7 +19080,7 @@ u32 FUN_00385860(int param_1,u32 param_2,u32 param_3,u32 param_4,EvtMenuState *p
 
 
 #pragma alias FUN_001005b0_evt FUN_001005b0
-extern u64 FUN_001005b0_evt(f32 scale,u32 resource,u32 flags,void *params,u32 color);
+extern u64 FUN_001005b0_evt(f32 scale,u32 resource,u64 flags,void *params,u32 color);
 // FUN_003858C0 NONMATCHING
 
 
@@ -19098,7 +19098,7 @@ void FUN_003858c0(int param_1)
 
   u32 *puVar4;
 
-  u32 auStack_20[7];
+  u32 auStack_20[8];
 
   
 
@@ -19114,13 +19114,13 @@ void FUN_003858c0(int param_1)
 
   auStack_20[5] = 0;
 
-  auStack_20[6] = 0xb40a400a;
+  auStack_20[7] = 0xb40a400a;
 
   puVar4 = (u32 *)(param_1 + 0x944);
 
   for (iVar3 = 0; iVar3 < 7; iVar3 = iVar3 + 1) {
     uVar2 = FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),0,
-                             &auStack_20[0],auStack_20[6]);
+                             &auStack_20[0],auStack_20[7]);
 
     puVar4[iVar3] = (int)uVar2;
 
