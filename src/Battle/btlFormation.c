@@ -8750,7 +8750,7 @@ undefined * func_002c6e30(int param_1,u32 param_2)
 
 {
   u8 bVar1 = 0;
-  short sVar2 = 0;
+  u16 sVar2 = 0;
   u16 uVar3 = 0;
   undefined *puVar4;
   int iVar5 = 0;
