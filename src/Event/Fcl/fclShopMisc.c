@@ -11802,52 +11802,32 @@ LAB_003fee10:
 
 
 u64 FUN_003fee40(int param_1)
-
-
-
 {
-
   u32 *puVar1;
+  u32 *puVar2;
 
-  short sVar2;
-
-  int iVar3;
-
-  
-
-  for (iVar3 = *(int *)(param_1 + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
-
-    puVar1 = *(u32 **)(*(int *)(iVar3 + 0x14) + 0x1c);
-
-
-    *(short *)((int)puVar1 + 0xe) = sVar2;
-
-    if (0x62 < sVar2) {
-
-      *puVar1 = *puVar1 | 0x10;
-
+  for (puVar2 = *(u32 **)(param_1 + 4); puVar2 != 0; puVar2 = (u32 *)puVar2[4]) {
+    puVar1 = *(u32 **)(puVar2[5] + 0x1c);
+    {
+      int sVar2 = FUN_003f1910(*(short *)((int)puVar1 + 4));
+      *(short *)((int)puVar1 + 0xe) = sVar2;
+      if (0x62 < sVar2) {
+        *puVar1 = *puVar1 | 0x10;
+      }
     }
-
-    if (*(short *)((int)puVar1 + 0x16) == 0) {
-
+    if (puVar1[5] == 0) {
       K_Assert((const char *)(u32)0x6aede8,0x15b8);
-
     }
-
-    if ((((short)puVar1[5] != 0) && (sVar2 = FUN_003f1910(0), sVar2 < *(short *)((int)puVar1 + 0x16))
-
-        ) || (((short)puVar1[6] != 0 &&
-
-              (sVar2 = FUN_003f1910(0), sVar2 < *(short *)((int)puVar1 + 0x1a))))) {
-
+    if (((puVar1[4] != 0) &&
+         (FUN_003f1910(*(short *)((int)puVar1 + 0x14)) <
+          *(short *)((int)puVar1 + 0x16))) ||
+        ((puVar1[6] != 0) &&
+         (FUN_003f1910(*(short *)((int)puVar1 + 0x18)) <
+          *(short *)((int)puVar1 + 0x1a)))) {
       *puVar1 = *puVar1 | 0x10;
-
     }
-
   }
-
   return 0;
-
 }
 
 // FUN_003FEF30 NONMATCHING
