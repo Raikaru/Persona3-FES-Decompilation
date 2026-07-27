@@ -286,29 +286,29 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 *param_4,int param_5,int 
 
   }
 
-  if (param_6 < 0) {
-
-    afStack_140[2] = (float)(param_6 & 0xffffffff);
-
-  }
-
-  else {
+  if (param_6 >= 0) {
 
     afStack_140[2] = (float)(int)param_6;
 
   }
 
+  else {
+
+    afStack_140[2] = (float)(param_6 & 0xffffffff);
+
+  }
+
   afStack_140[2] = fVar12 + afStack_140[2];
 
-  if (param_7 < 0) {
+  if (param_7 >= 0) {
 
-    fStack_12c = (float)(param_7 & 0xffffffff);
+    fStack_12c = (float)(int)param_7;
 
   }
 
   else {
 
-    fStack_12c = (float)(int)param_7;
+    fStack_12c = (float)(param_7 & 0xffffffff);
 
   }
 

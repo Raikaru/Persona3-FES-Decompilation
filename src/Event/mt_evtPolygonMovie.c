@@ -507,15 +507,15 @@ mt_evtPolygonMovie_case_done:
 
     *(int *)(iVar6 + 0x84) = iVar7;
 
-    if (param_4 == 0) {
+    if (param_4 != 0) {
 
-      *(u32 *)(iVar6 + 0x88) = 0;
+      *(int *)(iVar6 + 0x88) = iVar7 + 0x20;
 
     }
 
     else {
 
-      *(int *)(iVar6 + 0x88) = iVar7 + 0x20;
+      *(u32 *)(iVar6 + 0x88) = 0;
 
     }
 
@@ -633,19 +633,19 @@ mt_evtPolygonMovie2_case_0:
         goto mt_evtPolygonMovie2_case_done;
 
 mt_evtPolygonMovie2_case_4:
-        if (*(int *)(*(int *)(iVar6 + 0x84) + 0x14) == 4) {
+        if (*(int *)(*(int *)(iVar6 + 0x84) + 0x14) != 4) {
 
-          *(int *)(iVar6 + 0x98) = iVar7 + piVar4[3];
+          *(int *)(iVar6 + 0x9c) = iVar7 + piVar4[3];
 
-          *(u32 *)(iVar6 + 0x9c) = 0;
+          *(u32 *)(iVar6 + 0x98) = 0;
 
         }
 
         else {
 
-          *(int *)(iVar6 + 0x9c) = iVar7 + piVar4[3];
+          *(int *)(iVar6 + 0x98) = iVar7 + piVar4[3];
 
-          *(u32 *)(iVar6 + 0x98) = 0;
+          *(u32 *)(iVar6 + 0x9c) = 0;
 
         }
 
@@ -767,9 +767,9 @@ mt_evtPolygonMovie2_case_done:
 
          (0 < *(int *)(iVar6 + 0x50))) {
 
-        if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 2) == 0) {
+        if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 2) != 0) {
 
-          FUN_0039ec70(param_1);
+          FUN_0039edd0(param_1);
 
           if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 8) != 0) {
 
@@ -781,7 +781,7 @@ mt_evtPolygonMovie2_case_done:
 
         else {
 
-          FUN_0039edd0(param_1);
+          FUN_0039ec70(param_1);
 
           if ((*(u8 *)(*(int *)(iVar6 + 0x94) + 0x20) & 8) != 0) {
 
@@ -797,15 +797,15 @@ mt_evtPolygonMovie2_case_done:
 
       *(int *)(iVar6 + 0xa0) = iVar7;
 
-      if (param_5 == 0) {
+      if (param_5 != 0) {
 
-        *(u32 *)(iVar6 + 0xa4) = 0;
+        *(int *)(iVar6 + 0xa4) = iVar7 + 0x20;
 
       }
 
       else {
 
-        *(int *)(iVar6 + 0xa4) = iVar7 + 0x20;
+        *(u32 *)(iVar6 + 0xa4) = 0;
 
       }
 

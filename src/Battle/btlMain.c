@@ -2940,19 +2940,19 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
                    *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x388) | 0x10;
 
-              if ((colorWork->unk_68 & 1) == 0) {
+              if ((colorWork->unk_68 & 1) != 0) {
 
-                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3a9) = 0x50;
+                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3a9) = 0;
 
-                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3aa) = 4;
+                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3aa) = 6;
 
               }
 
               else {
 
-                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3a9) = 0;
+                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3a9) = 0x50;
 
-                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3aa) = 6;
+                *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3aa) = 4;
 
               }
 

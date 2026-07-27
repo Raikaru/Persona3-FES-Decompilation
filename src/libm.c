@@ -808,16 +808,16 @@ u32 FUN_0052f7d0(long param_1,long param_2,long param_3)
     uVar9 = 0;
     uVar14 = uVar19;
     if (uVar6 <= uVar7) {
-      if (uVar6 < 0x10000) {
-        iVar13 = 8;
-        if (uVar6 < 0x100) {
-          iVar13 = 0;
-        }
-      }
-      else {
+      if (uVar6 >= 0x10000) {
         iVar13 = 0x10;
         if (0xffffff < uVar6) {
           iVar13 = 0x18;
+        }
+      }
+      else {
+        iVar13 = 8;
+        if (uVar6 < 0x100) {
+          iVar13 = 0;
         }
       }
       uVar11 = 0x20 - ((u32)(u8)(&DAT_007c0388)[uVar20 >> iVar13] + iVar13);
@@ -903,16 +903,16 @@ LAB_0052fd40:
   }
   else {
     if (uVar7 < uVar3) {
-      if (uVar3 < 0x10000) {
-        iVar13 = 8;
-        if (uVar3 < 0x100) {
-          iVar13 = 0;
-        }
-      }
-      else {
+      if (uVar3 >= 0x10000) {
         iVar13 = 0x10;
         if (0xffffff < uVar3) {
           iVar13 = 0x18;
+        }
+      }
+      else {
+        iVar13 = 8;
+        if (uVar3 < 0x100) {
+          iVar13 = 0;
         }
       }
       uVar20 = 0x20 - ((u32)(u8)(&DAT_007c0388)[uVar2 >> iVar13] + iVar13);
@@ -972,16 +972,16 @@ LAB_0052f8c8:
         uVar3 = (u32)(1 / (int)uVar20);
         trap(7);
       }
-      if (uVar3 < 0x10000) {
-        iVar13 = 8;
-        if (uVar3 < 0x100) {
-          iVar13 = 0;
-        }
-      }
-      else {
+      if (uVar3 >= 0x10000) {
         iVar13 = 0x10;
         if (0xffffff < uVar3) {
           iVar13 = 0x18;
+        }
+      }
+      else {
+        iVar13 = 8;
+        if (uVar3 < 0x100) {
+          iVar13 = 0;
         }
       }
       uVar2 = (u32)uVar3;

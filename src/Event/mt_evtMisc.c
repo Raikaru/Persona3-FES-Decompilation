@@ -5683,39 +5683,39 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
   uVar8 = DAT_007cadd0;
 
-  if (puStack_4 == (u16 *)0x0) {
-
-    uVar5 = *(u32 *)(param_1 + 0x10);
-
-  }
-
-  else {
+  if (puStack_4 != (u16 *)0x0) {
 
     uVar5 = (u32)*puStack_4;
 
   }
 
-  if (puStack_8 == (u16 *)0x0) {
+  else {
 
-    uVar2 = *(u32 *)(param_1 + 0x14);
+    uVar5 = *(u32 *)(param_1 + 0x10);
 
   }
 
-  else {
+  if (puStack_8 != (u16 *)0x0) {
 
     uVar2 = (u32)*puStack_8;
 
   }
 
-  if (uVar2 - uVar5 == 0) {
+  else {
 
-    fVar10 = 0.0f;
+    uVar2 = *(u32 *)(param_1 + 0x14);
+
+  }
+
+  if (uVar2 - uVar5 != 0) {
+
+    fVar10 = (float)(int)((int)param_3 - uVar5) / (float)(int)(uVar2 - uVar5);
 
   }
 
   else {
 
-    fVar10 = (float)(int)((int)param_3 - uVar5) / (float)(int)(uVar2 - uVar5);
+    fVar10 = 0.0f;
 
   }
 

@@ -2768,19 +2768,19 @@ void func_00312d40(u8* param_1,u8* param_2)
     DAT_009571c0 = *(u32 *)(iVar3 + 0x44);
     DAT_009571c4 = *(u32 *)(iVar3 + 0x48);
 
-    if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) == 0) {
+    if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) != 0) {
 
-      func_00466ef0(param_1);
+      func_00311730((u32*)param_1,(u16*)param_2,(u16*)(iVar3 + 0x4c),0);
 
-      *(u16 *)(iVar3 + 0x4c) = *(u16 *)(iVar3 + 0x4c) & 0xbfff;
+      *(u16 *)(iVar3 + 0x4c) = *(u16 *)(iVar3 + 0x4c) | 0x4000;
 
     }
 
     else {
 
-      func_00311730((u32*)param_1,(u16*)param_2,(u16*)(iVar3 + 0x4c),0);
+      func_00466ef0(param_1);
 
-      *(u16 *)(iVar3 + 0x4c) = *(u16 *)(iVar3 + 0x4c) | 0x4000;
+      *(u16 *)(iVar3 + 0x4c) = *(u16 *)(iVar3 + 0x4c) & 0xbfff;
 
     }
 
@@ -8850,15 +8850,15 @@ void func_0031b820(u32 param_1,u32 param_2)
 
       if (lVar6 == 0) {
 
-        if (cVar2 == '\a') {
+        if (cVar2 != '\a') {
 
-          sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar4);
+          sprintf(auStack_100, (const char*)0x69b0f0, &gp0xffff9d20,sVar4);
 
         }
 
         else {
 
-          sprintf(auStack_100, (const char*)0x69b0f0, &gp0xffff9d20,sVar4);
+          sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar4);
 
         }
 
@@ -8878,15 +8878,15 @@ void func_0031b820(u32 param_1,u32 param_2)
 
       if (lVar6 == 0) {
 
-        if (cVar2 == '\a') {
+        if (cVar2 != '\a') {
 
-          sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar4);
+          sprintf(auStack_100, (const char*)0x69b130, &gp0xffff9d20,sVar4);
 
         }
 
         else {
 
-          sprintf(auStack_100, (const char*)0x69b130, &gp0xffff9d20,sVar4);
+          sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar4);
 
         }
 
@@ -9318,15 +9318,15 @@ void func_0031c000(char* param_1,u16 param_2)
 
       lVar4 = datGetScenarioMode();
 
-      if (lVar4 == 0) {
+      if (lVar4 != 0) {
 
-        param_2 = auStack_20[uVar3 & 0xff];
+        param_2 = 0x91;
 
       }
 
       else {
 
-        param_2 = 0x91;
+        param_2 = auStack_20[uVar3 & 0xff];
 
       }
 
@@ -9691,11 +9691,11 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
           break;
         default:
           lVar4 = datGetFlag(0x2f0);
-          if (lVar4 == 1) {
-            sprintf(param_3, (char*)0x69b290);
+          if (lVar4 != 1) {
+            sprintf(param_3, (char*)0x69b2b0);
           }
           else {
-            sprintf(param_3, (char*)0x69b2b0);
+            sprintf(param_3, (char*)0x69b290);
           }
           break;
         }
@@ -9781,15 +9781,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           lVar4 = datGetScenarioMode();
 
-          if (lVar4 == 0) {
+          if (lVar4 != 0) {
 
-            sprintf(param_3, (const char*)0x69b490, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b470, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b470, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b490, 0x7cca10);
 
           }
 
@@ -9821,15 +9821,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           lVar4 = datGetScenarioMode();
 
-          if (lVar4 == 0) {
+          if (lVar4 != 0) {
 
-            sprintf(param_3, (const char*)0x69b530, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b510, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b510, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b530, 0x7cca10);
 
           }
 
@@ -9879,15 +9879,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           lVar4 = datGetScenarioMode();
 
-          if (lVar4 == 0) {
+          if (lVar4 != 0) {
 
-            sprintf(param_3, (const char*)0x69b630, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b610, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b610, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b630, 0x7cca10);
 
           }
 
@@ -9931,15 +9931,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           lVar4 = datGetScenarioMode();
 
-          if (lVar4 == 0) {
+          if (lVar4 != 0) {
 
-            sprintf(param_3, (const char*)0x69b710, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b6f0, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b6f0, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b710, 0x7cca10);
 
           }
 
@@ -9983,15 +9983,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           lVar4 = datGetScenarioMode();
 
-          if (lVar4 == 0) {
+          if (lVar4 != 0) {
 
-            sprintf(param_3, (const char*)0x69b7f0, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b7d0, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b7d0, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b7f0, 0x7cca10);
 
           }
 
@@ -10029,15 +10029,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
           lVar4 = datGetScenarioMode();
 
-          if (lVar4 == 0) {
+          if (lVar4 != 0) {
 
-            sprintf(param_3, (const char*)0x69b8b0, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b890, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b890, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b8b0, 0x7cca10);
 
           }
 
@@ -10051,15 +10051,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
         if (lVar4 == 0) {
 
-          if (sVar3 == 0x40e) {
+          if (sVar3 != 0x40e) {
 
-            sprintf(param_3, (const char*)0x69b8f0, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b910, 0x7cca10);
 
           }
 
           else {
 
-            sprintf(param_3, (const char*)0x69b910, 0x7cca10);
+            sprintf(param_3, (const char*)0x69b8f0, 0x7cca10);
 
           }
 

@@ -1338,15 +1338,15 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
 
   fVar4 = (1.0f - fVar4) * 128.0f;
 
-  if (fVar4 < 2.1474836e+09f) {
+  if (fVar4 >= 2.1474836e+09f) {
 
-    uVar3 = (u8)(int)fVar4;
+    uVar3 = (u8)(int)(fVar4 - 2.1474836e+09f);
 
   }
 
   else {
 
-    uVar3 = (u8)(int)(fVar4 - 2.1474836e+09f);
+    uVar3 = (u8)(int)fVar4;
 
   }
 

@@ -4957,15 +4957,15 @@ void FUN_003bd280(void)
 
     for (iVar2 = 0; iVar2 < 0x90; iVar2 = iVar2 + 1) {
 
-      if (*piVar3 == 0) {
+      if (*piVar3 != 0) {
 
-        *(u32 *)(&DAT_0095b078 + iVar2 * 4) = 0;
+        *(int *)(&DAT_0095b078 + iVar2 * 4) = (int)DAT_0095b070 + *piVar3;
 
       }
 
       else {
 
-        *(int *)(&DAT_0095b078 + iVar2 * 4) = (int)DAT_0095b070 + *piVar3;
+        *(u32 *)(&DAT_0095b078 + iVar2 * 4) = 0;
 
       }
 

@@ -683,17 +683,17 @@ u64 FUN_003c63f0(int param_1)
 
             if (((DAT_007e094e & 0x20) == 0) && ((DAT_007e0958 & 0x20) == 0)) {
 
-              if ((uVar7 & 0x800) == 0) {
+              if ((uVar7 & 0x800) != 0) {
 
                 bVar3 = 1;
 
-                if (((DAT_007e094c & 0x1000) == 0) && ((DAT_007e0956 & 0x1000) == 0)) {
+                if (((DAT_007e094c & 0x8000) == 0) && ((DAT_007e0956 & 0x8000) == 0)) {
 
                   bVar3 = 0;
 
                 }
 
-                if ((!bVar3) && ((DAT_007e094c & 0x4000) == 0 && (DAT_007e0956 & 0x4000) == 0)) {
+                if ((!bVar3) && ((DAT_007e094c & 0x2000) == 0 && (DAT_007e0956 & 0x2000) == 0)) {
 
                   FUN_003c4dc0(param_1,param_1 + 4);
 
@@ -705,13 +705,13 @@ u64 FUN_003c63f0(int param_1)
 
                 bVar3 = 1;
 
-                if (((DAT_007e094c & 0x8000) == 0) && ((DAT_007e0956 & 0x8000) == 0)) {
+                if (((DAT_007e094c & 0x1000) == 0) && ((DAT_007e0956 & 0x1000) == 0)) {
 
                   bVar3 = 0;
 
                 }
 
-                if ((!bVar3) && ((DAT_007e094c & 0x2000) == 0 && (DAT_007e0956 & 0x2000) == 0)) {
+                if ((!bVar3) && ((DAT_007e094c & 0x4000) == 0 && (DAT_007e0956 & 0x4000) == 0)) {
 
                   FUN_003c4dc0(param_1,param_1 + 4);
 
@@ -961,15 +961,15 @@ u64 FUN_003c6b70(int param_1)
     iVar4 = *(int *)(*(int *)(*(int *)(param_1 + 0xc) + 0x14) + 0xc) - 1;
     iVar6 = *(u16 *)(param_1 + 0x10) - 1;
     iVar3 = *(int *)(*(int *)(*(int *)(iVar2 + 0x2c) + 0x14) + 0xc);
-    if (iVar6 < 1) {
+    if (iVar6 >= 1) {
 
-      *piVar5 = 0;
+      *piVar5 = (iVar4 * 0xffff) / iVar6;
 
     }
 
     else {
 
-      *piVar5 = (iVar4 * 0xffff) / iVar6;
+      *piVar5 = 0;
 
     }
 
@@ -979,15 +979,15 @@ u64 FUN_003c6b70(int param_1)
 
     iVar6 = (u32)uVar1 - iVar6;
 
-    if (iVar6 < 1) {
+    if (iVar6 >= 1) {
 
-      *(u32 *)(iVar2 + 0x28) = 0;
+      *(int *)(iVar2 + 0x28) = ((iVar3 + -1) * 0xffff) / iVar6;
 
     }
 
     else {
 
-      *(int *)(iVar2 + 0x28) = ((iVar3 + -1) * 0xffff) / iVar6;
+      *(u32 *)(iVar2 + 0x28) = 0;
 
     }
 
@@ -2584,15 +2584,15 @@ FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
       if (param_8 == 0) {
 
-        if ((long)param_9 < 5000) {
+        if ((long)param_9 >= 5000) {
 
-          iVar11 = FUN_00171250(uVar7);
+          iVar11 = 5;
 
         }
 
         else {
 
-          iVar11 = 5;
+          iVar11 = FUN_00171250(uVar7);
 
         }
 
