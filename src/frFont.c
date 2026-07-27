@@ -1615,55 +1615,35 @@ u16 FUN_003b0e90(u16 param_1)
 
 
 u32 FUN_003b0ec0(int param_1)
-
-
-
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
+  u32 uVar3;
+  u32 uVar4;
+  u32 uVar5;
   int iVar3;
 
-  
-
+  uVar3 = 1;
+  uVar4 = 2;
+  uVar5 = 0xffffff00;
   uVar1 = 0;
-
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
     for (iVar3 = *(int *)(param_1 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
-
-      if (*(char *)(iVar3 + 0x16) == '\x02') {
-
+      if (*(char *)(iVar3 + 0x16) == uVar4) {
         uVar2 = *(u32 *)(iVar3 + 0x10) & 0xff;
-
         if (uVar2 != 0) {
-
           uVar2 = uVar2 - 8;
-
           if ((int)uVar2 < 0) {
-
             uVar2 = 0;
-
           }
-
-          *(u32 *)(iVar3 + 0x10) = *(u32 *)(iVar3 + 0x10) & 0xffffff00 | uVar2;
-
+          *(u32 *)(iVar3 + 0x10) = *(u32 *)(iVar3 + 0x10) & uVar5 | uVar2;
           *(int *)(iVar3 + 8) = *(int *)(iVar3 + 8) + 0x10;
-
-          uVar1 = 1;
-
+          uVar1 = uVar3;
         }
-
       }
-
     }
-
   }
-
   return uVar1;
-
 }
 #define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
 #undef FUN_003b0f50

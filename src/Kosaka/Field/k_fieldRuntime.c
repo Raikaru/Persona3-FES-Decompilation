@@ -4336,6 +4336,18 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             1.0f, (RuntimeWork*)work, 0, color2 + (tail2 - 3) * 4);
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 1, color2 + (tail2 - 2) * 4);
+        denominator2 = (f32)count2 + 0.5f;
+        step2 = 1.0f / denominator2;
+        amount2 = 0.5f / denominator2;
+        cursor2 = color2 + 12;
+        for (index2 = 0; index2 < count2; index2++)
+        {
+            func_001ed0f0(
+                amount2, (RuntimeWork*)work, 1, cursor2);
+            cursor2 += 4;
+            cursor2 += 8;
+            amount2 += step2;
+        }
     }
     case 2:
         break;

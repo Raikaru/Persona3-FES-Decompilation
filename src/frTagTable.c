@@ -665,7 +665,9 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   u8 auStack_6c[4];
   u32 *puVar12;
   u32 *puVar13;
-  pbVar9 = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
+  iVar11 = *(int *)(param_2 + 0x18);
+  lVar8 = *(int *)(param_2 + 0x10);
+  pbVar9 = (u8 *)(lVar8 + iVar11);
   bVar1 = pbVar9[0] - 1;
   if (pbVar9[1] == 0xff) {
     bVar2 = 0;

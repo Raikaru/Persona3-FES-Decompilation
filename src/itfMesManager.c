@@ -208,6 +208,8 @@ void FUN_003a6a10(int param_1);
 void FUN_003a6a40(u8 *param_1,long param_2);
 void FUN_003a6a80(int param_1,u16 param_2,u16 param_3);
 void FUN_003a6b00(u32 *param_1);
+#pragma alias FUN_003a6b00_0 FUN_003a6b00
+extern void FUN_003a6b00_0(void);
 void FUN_003a6b90(int param_1);
 short * FUN_003a6c10(int param_1,short *param_2);
 void FUN_003a6ca0(int param_1,int param_2,int param_3);
