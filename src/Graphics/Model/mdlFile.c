@@ -33429,19 +33429,19 @@ void FUN_0033cc10(int param_1,int param_2)
 
 
 
-// FUN_0033CD20 NONMATCHING
+// FUN_0033CD20
 
 u32 FUN_0033cd20(int param_1,int param_2)
 {
-  int *piVarTmp;
+  u8 *piVarTmp;
   int *piVar1;
   u32 uVar3;
   int iVar2;
   u32 uVar4;
 
-  uVar3 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x18 + 0x10,0x40000));
-  *(u32 *)piVarTmp = uVar3 + 0x10;
-  *(u32 *)((u8 *)piVarTmp + 8) = uVar3;
+  uVar3 = (u32)(piVarTmp = (u8 *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x18 + 0x10,0x40000));
+  *(u32 *)piVarTmp = (u32)(piVarTmp + 0x10);
+  *(u32 *)(piVarTmp + 8) = (u32)piVarTmp;
   piVar1 = (int *)uVar3;
 
   iVar2 = FUN_003233a0_ptr(*(u16 *)((int)param_1 + 0x38),2,4,DAT_0069bdc8_abs,0x4c);

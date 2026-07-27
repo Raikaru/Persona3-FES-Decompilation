@@ -4085,6 +4085,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   u32 *puVar11;
 
+
   int iVar12;
 
   float fVar13;
@@ -4301,7 +4302,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   FUN_0016bee0(0,param_1[6],&fStack_100);
 
-  fVar15 = 2.0 / (fStack_f4 * fStack_f4 +
+  fVar15 = 2.0f / (fStack_f4 * fStack_f4 +
 
                  fStack_f8 * fStack_f8 + fStack_100 * fStack_100 + fStack_fc * fStack_fc);
 
@@ -4311,7 +4312,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   fVar15 = fStack_f8 * fVar15;
 
-  fStack_f0 = 1.0 - (fStack_fc * fVar13 + fStack_f8 * fVar15);
+  fStack_f0 = 1.0f - (fStack_fc * fVar13 + fStack_f8 * fVar15);
 
   fStack_ec = fStack_100 * fVar13 + fVar15 * fStack_f4;
 
@@ -4319,7 +4320,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   fStack_e0 = fStack_100 * fVar13 - fVar15 * fStack_f4;
 
-  fStack_dc = 1.0 - (fStack_f8 * fVar15 + fStack_100 * fVar16);
+  fStack_dc = 1.0f - (fStack_f8 * fVar15 + fStack_100 * fVar16);
 
   fStack_d8 = fStack_fc * fVar15 + fVar16 * fStack_f4;
 
@@ -4327,7 +4328,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   fStack_cc = fStack_fc * fVar15 - fVar16 * fStack_f4;
 
-  fStack_c8 = 1.0 - (fStack_100 * fVar16 + fStack_fc * fVar13);
+  fStack_c8 = 1.0f - (fStack_100 * fVar16 + fStack_fc * fVar13);
 
   uStack_c0 = 0;
 
@@ -4357,9 +4358,9 @@ u64 FUN_003cea50(u16 *param_1)
 
   FUN_0016bf80(*param_1,param_1[6],&sStack_160);
 
-  fStack_18 = (float)(int)sStack_144 / 640.0;
+  fStack_18 = (float)(int)sStack_144 / 640.0f;
 
-  fStack_14 = (float)(int)sStack_142 / 448.0;
+  fStack_14 = (float)(int)sStack_142 / 448.0f;
 
   fStack_38 = (float)((int)(short)param_1[0xe] + (int)sStack_160);
 
@@ -4369,7 +4370,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   fStack_40 = *(float *)(param_1 + 0x12) + fStack_158;
 
-  uStack_48 = CONCAT44(fStack_40,fStack_40);
+  uStack_48 = ((u64)*(u32 *)&fStack_40 << 32) | *(u32 *)&fStack_40;
 
   FUN_00521250(auStack_4,param_1 + 0x40,4);
 
