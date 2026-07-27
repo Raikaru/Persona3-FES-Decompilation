@@ -166,7 +166,7 @@ void* K_SceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019d780 NONMATCHING
+// FUN_0019d780
 void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
 {
     ResrcModelFld* modelFld;
@@ -241,24 +241,22 @@ void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
         modelFld2 = (ResrcModelFld*)modelFld2->base.next;
     }
 
-    if (gMtScene->fldMajorId < 200)
+    if (gMtScene->fldMajorId >= 200)
     {
-        return KWLNTASK_CONTINUE;
-    }
-
-    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-    while (fld != NULL)
-    {
-        if (fld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+        while (fld != NULL)
         {
-            func_001b4720(kwlnGetMainCamera(), fld->unk_160);
+            if (fld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+            {
+                func_001b4720(kwlnGetMainCamera(), fld->unk_160);
+            }
+
+            fld = (ResrcFld*)fld->base.next;
         }
 
-        fld = (ResrcFld*)fld->base.next;
+        func_0019de80(drwOpcFldObjTask);
+        func_0019db10(drwOpcFldObjTask);
     }
-
-    func_0019de80(drwOpcFldObjTask);
-    func_0019db10(drwOpcFldObjTask);
 
     return KWLNTASK_CONTINUE;
 }
@@ -1196,7 +1194,7 @@ void func_0019ff10()
     res = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     directionalMatrix = (RwMatrix*)((u8*)res + 0x120);
     ambientValue = fGpffff80e0;
-    directionalValue = fGpffff8084;
+    directionalValue = 0.5f;
 
     ambientColor->r = ambientValue;
     ambientColor->g = ambientValue;
@@ -1212,11 +1210,11 @@ void func_0019ff10()
     axis.x = 0.0f;
     axis.y = 1.0f;
     axis.z = 0.0f;
-    RwMatrixRotate(directionalMatrix, &axis, -180.0f, rwCOMBINEPOSTCONCAT);
+    func_004c31b0(-180.0f, directionalMatrix, &axis, rwCOMBINEPOSTCONCAT);
     axis.x = 1.0f;
     axis.y = 0.0f;
     axis.z = 0.0f;
-    RwMatrixRotate(directionalMatrix, &axis, -45.0f, rwCOMBINEPOSTCONCAT);
+    func_004c31b0(-45.0f, directionalMatrix, &axis, rwCOMBINEPOSTCONCAT);
 }
 
 // FUN_001a0040 NONMATCHING
