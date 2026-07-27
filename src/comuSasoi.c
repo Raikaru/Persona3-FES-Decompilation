@@ -695,9 +695,9 @@ u32 * FUN_003c2ee0(u32 param_1)
 
   int lVar3;
 
-  int iVar4;
-
   int iVar5;
+
+  int iVar4;
 
   short sStack_4;
 

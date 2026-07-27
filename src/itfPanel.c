@@ -3604,16 +3604,16 @@ u64 FUN_003ace60(u64 param_1,int param_2)
 
 u32 FUN_003acf80(u32 param_1,int param_2)
 {
-  u8 bVar1;
   u8 bVar2;
   u32 uVar3;
   int lVar4;
   u32 packed;
   u8 *pbVar5;
+  u32 low;
 
   pbVar5 = (u8 *)*(int *)(param_2 + 0x18);
   pbVar5 = (u8 *)((int)pbVar5 + *(int *)(param_2 + 0x10));
-  bVar1 = *pbVar5;
+  low = (u32)(u8)(*pbVar5 - 1);
   bVar2 = pbVar5[1];
   if (bVar2 == 0xff) {
     uVar3 = 0;
@@ -3621,7 +3621,7 @@ u32 FUN_003acf80(u32 param_1,int param_2)
   else {
     uVar3 = (u32)(u8)(bVar2 - 1);
   }
-  packed = uVar3 << 8 | bVar1 - 1 & 0xff;
+  packed = uVar3 << 8 | low;
   lVar4 = FUN_0016f190(0x184);
   if (lVar4 != 0) {
     FUN_0010a2e0(2,2,packed);
