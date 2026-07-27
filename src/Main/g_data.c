@@ -45,6 +45,8 @@ DatPc gPcs[PC_MAX];    // 00833948
 
 void func_00177410(u8*, u8*);
 void func_001774e0(void);
+#pragma alias func_0016dbc0_u32 func_0016dbc0
+extern u32 func_0016dbc0_u32(s16 socialLink, u32* personaId);
 extern const char D_005E3098[];
 extern const char D_005E3260[];
 extern u32 gSpecialStatusMessage;
@@ -2013,6 +2015,7 @@ void func_0016e2b0(s16 socialLink, s32 amount)
     u32* progress;
     u32* table;
     u32 personaId;
+    f32 scaledAmount;
 
     socialLinkBase = gGlobalWork.heroStatus.socialLinkStat + socialLink;
     level = socialLinkBase[0];
@@ -2025,9 +2028,11 @@ void func_0016e2b0(s16 socialLink, s32 amount)
     {
         return;
     }
-    if (func_0016dbc0(socialLink, &personaId) == true)
+    if (func_0016dbc0_u32(socialLink, &personaId) == true)
     {
-        amount = (s32)((f32)amount * FUN_003BDB80());
+        scaledAmount = (f32)amount;
+        scaledAmount *= FUN_003BDB80();
+        amount = (s32)scaledAmount;
     }
     progress = (u32*)((u8*)&gGlobalWork + 0x94 + socialLink * 4);
     *progress += amount;

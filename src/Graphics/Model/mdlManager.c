@@ -1199,7 +1199,7 @@ u32 func_003142b0(void* param_1);
 void* func_00314510(void* param_1);
 u32 func_00314650(u32 param_1);
 void* func_00315010(void* object, void* data);
-u32 func_00315090(RwMatrix* param_1,u16 *param_2,u32 param_3,int param_4);
+u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
 Model* func_00315ed0(Model* param_1);
@@ -4588,7 +4588,7 @@ void* func_00315010(void* object, void* data)
 // FUN_00315090 NONMATCHING
 
 
-u32 func_00315090(RwMatrix* param_1,u16 *param_2,u32 param_3,int param_4)
+u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
 
 

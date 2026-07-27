@@ -6091,13 +6091,15 @@ void btlActionUpdateStateWait(BtlAction* action)
                 if (ACTION_S16(action, 0xdc) != 0)
                 {
                     packet = FUN_002bd850(action->unit, ACTION_S16(action, 0xdc));
+                    packet->actionUID = action->uid;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
                 }
                 else
                 {
                     packet = func_002bd780(action->unit, action->target.commandId);
+                    packet->actionUID = action->uid;
+                    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
                 }
-                packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_2D);
                 packet = btlVoice002e2be0(action, 0x1a, 0, 0, 0);
                 packet->actionUID = action->uid;
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
@@ -7607,9 +7609,11 @@ void btlActionInitStateExit(BtlAction* action)
 void btlActionUpdateStateExit(BtlAction* action)
 {
     BtlUnit* unit;
-    DatUnitPc* found;
     u16 i;
+    DatUnitPc* found;
     DatUnitGenusBase* group;
+    u8* battleBase;
+    DatUnitPc* current;
 
     if (action->unk_1a & 1)
     {
@@ -7627,17 +7631,11 @@ void btlActionUpdateStateExit(BtlAction* action)
                     found = NULL;
                     for (i = 0; i < 4; i++)
                     {
-                        if (*(DatUnitPc**)((u8*)gBtl +
-                                           (u32)(u16)i * 4 +
-                                           0xbac) != NULL &&
-                            (*(DatUnitPc**)((u8*)gBtl +
-                                            (u32)(u16)i * 4 +
-                                            0xbac))->base.unit ==
-                                unit->datUnit)
+                        battleBase = (u8*)gBtl;
+                        current = *(DatUnitPc**)(battleBase + (u32)(u16)i * 4 + 0xbac);
+                        if (current != NULL && current->base.unit == unit->datUnit)
                         {
-                            found = *(DatUnitPc**)((u8*)gBtl +
-                                                   (u32)(u16)i * 4 +
-                                                   0xbac);
+                            found = current;
                             break;
                         }
                     }

@@ -1700,11 +1700,11 @@ u32 func_002f3190(BtlAction* action)
     FUN_002889c0(action->unit,uVar1);
     *(u16 *)(iVar2 + 2) = uVar1;
     *(u16 *)(iVar2 + 4) = uVar1;
-    FUN_002ffdf0(iVar2,uVar1);
-    uVar4 = FUN_002ffd90(iVar2,uVar1);
-    uVar4 = FUN_00300100(iVar2,uVar4);
-    uVar4 = FUN_002ffdc0(iVar2,uVar4);
-    FUN_00300560(iVar2,uVar4 | 0xffff);
+    uVar4 = FUN_002ffdf0(iVar2);
+    FUN_002ffd90(iVar2,uVar4);
+    uVar4 = FUN_00300100(iVar2);
+    FUN_002ffdc0(iVar2,uVar4);
+    FUN_00300560(iVar2,0xffffff);
     FUN_0017b220(uVar1);
     FUN_0027ce50();
     FUN_00301540(iVar2,0xd);
@@ -3886,9 +3886,12 @@ extern u32 DAT_007cc9b4;
  extern s16 DAT_007cc9b2_s16;
  #pragma alias DAT_007cc9b4_s16 DAT_007cc9b4
  extern s16 DAT_007cc9b4_s16;
-extern u32 DAT_007cc9b8;
-extern u32 DAT_007cc9ba;
-extern u32 DAT_007cc9bc;
+#pragma alias DAT_007cc9b8_s16 DAT_007cc9b8
+extern s16 DAT_007cc9b8_s16;
+#pragma alias DAT_007cc9ba_s16 DAT_007cc9ba
+extern s16 DAT_007cc9ba_s16;
+#pragma alias DAT_007cc9bc_s16 DAT_007cc9bc
+extern s16 DAT_007cc9bc_s16;
 extern u32 DAT_007ce3ec;
 extern u32 DAT_007ce3f8;
 extern u32 DAT_007ce418;
@@ -8915,9 +8918,7 @@ void func_002ec5c0(void)
 // FUN_002ec790 NONMATCHING
 void func_002ec790(void)
 {
-    BtlUnit* iVar5;
     BtlUnit* iVar6;
-    BtlUnit* iVar7;
     BtlUnit* iVar8;
     BtlUnit* unit;
     void* object;
@@ -8928,14 +8929,14 @@ void func_002ec790(void)
     iVar6 = NULL;
     for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
          unit != NULL; unit = unit->next) {
-        iVar5 = iVar6;
-        iVar7 = unit;
-        if ((unit->charId != 0x10a) &&
-            (iVar5 = unit, iVar7 = iVar8, unit->charId != 0x109)) {
-            iVar5 = iVar6;
+        switch (unit->charId) {
+        case 0x109:
+            iVar6 = unit;
+            break;
+        case 0x10a:
+            iVar8 = unit;
+            break;
         }
-        iVar8 = iVar7;
-        iVar6 = iVar5;
     }
     object = func_002b8f90(0);
     func_002b90d0(object, func_002f87e0(1));
@@ -10171,29 +10172,28 @@ void func_002ef360(void)
 {
   u32 uVar1;
   u32 uVar2;
+  int copyCount;
   int iVar3;
   int iVar4;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
-  u32 auStack_40030 [49158];
-  u16 auStack_10018 [32748];
   u32 auStack_30 [6];
   u16 auStack_18 [4];
   RwV3d position;
   
   puVar6 = (u32*)DAT_0069a060;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  copyCount = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    copyCount = copyCount + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
+  } while (0 < copyCount);
   auStack_18[0] = DAT_007cc9b8;
   auStack_18[1] = DAT_007cc9ba;
   auStack_18[2] = DAT_007cc9bc;
