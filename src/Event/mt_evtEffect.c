@@ -85,6 +85,8 @@ extern u8 DAT_00960090_abs[];
 extern code DAT_009600a0;
 extern f32 _DAT_006a0f1c;
 extern void FUN_00194b20(u64, const char *, u32, u64 (*)(int), void *, void *);
+#pragma alias FUN_00195020_evt_effect FUN_00195020
+extern void FUN_00195020_evt_effect(u32 param_1);
 #pragma alias FUN_00198590_typed FUN_00198590
 extern int FUN_00198590_typed(void);
 #pragma alias FUN_00100d80_typed FUN_00100d80
@@ -2218,7 +2220,7 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
     if (*(int *)((int)param_1 * 0xc + iVar3 + 8) != 0) {
 
-      FUN_00195020();
+      FUN_00195020_evt_effect(*(u32 *)((int)param_1 * 0xc + iVar3 + 8));
 
     }
 

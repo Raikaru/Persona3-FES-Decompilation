@@ -139,9 +139,11 @@ extern u32 FUN_0013cf80();
 extern u32 FUN_0013d1a0();
 extern u32 FUN_0013fca0();
 #pragma alias campDataDrawEquipment FUN_0013d1a0
-extern void campDataDrawEquipment(f32 depth, u64 position, void* work, s32 alpha);
+extern void campDataDrawEquipment(f32 depth, CampFloatPair position,
+                                  void* work, s32 alpha);
 #pragma alias campDataDrawEquipmentAlt FUN_0013fca0
-extern void campDataDrawEquipmentAlt(f32 depth, u64 position, void* work, s32 alpha);
+extern void campDataDrawEquipmentAlt(f32 depth, CampFloatPair position,
+                                     void* work, s32 alpha);
 extern u32 FUN_0016f630();
 extern u32 FUN_0016f720();
 extern u32 FUN_0016f810();
@@ -250,8 +252,8 @@ void FUN_00168720(KwlnTask*);
 KwlnTask* FUN_00168770(KwlnTask*, u32);
 u32 FUN_00168810(undefined8);
 void FUN_00169040(int);
-void FUN_00169110(undefined8, undefined8, undefined8, undefined8);
-void FUN_001691F0(undefined8, undefined8, undefined8, undefined8, undefined8);
+void FUN_00169110(u16, CampFloatPair, void*, s32);
+void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
 undefined4 FUN_00169330(void);
 bool FUN_00169420(void);
 undefined4 FUN_00169470(KwlnTask*);
@@ -1128,9 +1130,9 @@ undefined4 FUN_00168810(undefined8 param_1)
         if (nextFrame > 9) {
             work->state = 3;
         }
-        FUN_00169110((undefined8)(u16)work->drawIdWord, 0,
-                     CAMP_PTR64(work->listA),
-                     (undefined8)(0xff - (work->frame * 0xff) / 10));
+        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+                     work->listA,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
         break;
 
     case 3:
@@ -1153,8 +1155,8 @@ undefined4 FUN_00168810(undefined8 param_1)
             FUN_0010a4e0(0, 0, 0, 2);
             work->state = 6;
         }
-        FUN_00169110((undefined8)(u16)work->drawIdWord, 0,
-                     CAMP_PTR64(work->listA), 0);
+        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+                     work->listA, 0);
         break;
 
     case 4:
@@ -1220,8 +1222,8 @@ undefined4 FUN_00168810(undefined8 param_1)
             FUN_0010a4e0(0, 0, 0, 2);
             work->state = 3;
         }
-        FUN_001691F0((undefined8)(u16)work->drawIdWord, 0,
-                     CAMP_PTR64(work->listA), CAMP_PTR64(work->listB), 0);
+        FUN_001691F0((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+                     work->listA, work->listB, 0);
         break;
 
     case 5:
@@ -1229,8 +1231,8 @@ undefined4 FUN_00168810(undefined8 param_1)
             FUN_003c7700();
             work->state = 3;
         }
-        FUN_00169110((undefined8)(u16)work->drawIdWord, 0,
-                     CAMP_PTR64(work->listA), 0);
+        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+                     work->listA, 0);
         break;
 
     case 6:
@@ -1239,9 +1241,9 @@ undefined4 FUN_00168810(undefined8 param_1)
         if (nextFrame < 1) {
             work->state = 7;
         }
-        FUN_00169110((undefined8)(u16)work->drawIdWord, 0,
-                     CAMP_PTR64(work->listA),
-                     (undefined8)(0xff - (work->frame * 0xff) / 10));
+        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+                     work->listA,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
         break;
 
     case 7:
@@ -1275,46 +1277,50 @@ void FUN_00169040(int param_1)
 }
 
 // FUN_00169110 NONMATCHING
-void FUN_00169110(undefined8 param_1, undefined8 param_2,
-                  undefined8 param_3, undefined8 param_4)
+void FUN_00169110(u16 param_1, CampFloatPair param_2,
+                  void* param_3, s32 param_4)
 {
     f32 x;
     f32 y;
     f32 depth;
-    y = (f32)((undefined8)param_2 >> 0x20);
-    x = (f32)param_2;
+    CampFloatPair drawPosition;
+
+    y = param_2.y;
+    x = param_2.x;
     depth = (f32)FUN_0021ea00(0x29);
     FUN_00113a30(DAT_00960088 - depth, 0, 0,
                  0xffU - (u32)param_4 | 0x20808000, 0x280, 0x1c0);
     depth = (f32)FUN_0021ea00(0x28);
+    drawPosition.x = x + 40.0f;
+    drawPosition.y = y + 50.0f;
     campDataDrawEquipment(DAT_00960088 - depth,
-                          (((undefined8)(u32)(y + 50.0f)) << 32) | (u32)(x + 40.0f),
-                          (void*)(uintptr_t)param_3, (s32)param_4);
+                          drawPosition, param_3, param_4);
 }
 
 // FUN_001691F0 NONMATCHING
-void FUN_001691F0(undefined8 param_1, undefined8 param_2,
-                  undefined8 param_3, undefined8 param_4,
-                  undefined8 param_5)
+void FUN_001691F0(u16 param_1, CampFloatPair param_2,
+                  void* param_3, void* param_4, s32 param_5)
 {
     f32 x;
     f32 y;
     f32 depth;
-    y = (f32)((undefined8)param_2 >> 0x20);
+    CampFloatPair drawPosition;
 
+    y = param_2.y;
     depth = (f32)FUN_0021ea00(0x29);
     FUN_00113a30(DAT_00960088 - depth, 0, 0,
                  0xffU - (u32)param_5 | 0x20808000, 0x280, 0x1c0);
-    x = (f32)param_2;
+    x = param_2.x;
     depth = y + 50.0f;
     depth = (f32)FUN_0021ea00(0x28);
+    drawPosition.x = x + 40.0f;
+    drawPosition.y = y + 50.0f;
     campDataDrawEquipmentAlt(DAT_00960088 - depth,
-                             (((undefined8)(u32)(y + 50.0f)) << 32) | (u32)(x + 40.0f),
-                             (void*)(uintptr_t)param_3, (s32)param_5);
+                             drawPosition, param_3, param_5);
     depth = (f32)FUN_0021ea00(0x28);
+    drawPosition.y = y + 80.0f;
     campDataDrawEquipment(DAT_00960088 - depth,
-                          (((undefined8)(u32)(y + 80.0f)) << 32) | (u32)(x + 40.0f),
-                          (void*)(uintptr_t)param_4, (s32)param_5);
+                          drawPosition, param_4, param_5);
 }
 
 // FUN_00169330

@@ -81,6 +81,8 @@ extern int FUN_003b0bb0();
 extern int FUN_003b0c20();
 extern int FUN_003b0ce0();
 extern int thunk_FUN_003b0e04();
+#pragma alias thunk_FUN_003b0e54_f32 thunk_FUN_003b0e54
+extern void thunk_FUN_003b0e54_f32(u32 param_1, f32 param_2);
 extern s32 FUN_0035ed20(s32 index);
 extern char D_006A1A80[];
 extern char D_006A1AC0[];
@@ -3000,7 +3002,7 @@ FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,
 
   }
 
-  thunk_FUN_003b0e54(uVar3,param_3);
+  thunk_FUN_003b0e54_f32(uVar3,param_3);
 
   return uVar3;
 

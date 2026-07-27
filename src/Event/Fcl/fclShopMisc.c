@@ -9773,7 +9773,7 @@ u64 FUN_003fbf20(short *param_1)
     iVar2 = *(int *)(param_1 + 4);
     *(int *)(param_1 + 4) = iVar2 + 1;
     param_1[0x4a] = (short)(int)((float)((iVar2 + 1) * -0xff) / 10.0f + 255.0f);
-    if (9 < *(int *)(param_1 + 4)) {
+    if (*(int *)(param_1 + 4) >= 10) {
       *(u32 *)(param_1 + 2) = *(u32 *)(param_1 + 2) & 0xfffffffe;
       *(u32 *)(param_1 + 4) = 0;
     }

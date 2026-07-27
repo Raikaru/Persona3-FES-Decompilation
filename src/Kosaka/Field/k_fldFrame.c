@@ -1707,7 +1707,11 @@ void func_001b00c0(KwlnTask* task)
     Model* model;
 
     work = (FldFrameMoveWork*)task->workData;
-    if (work->mode == 3 || work->mode == 4)
+    if (work->points[0].kind == 3)
+    {
+        return;
+    }
+    if (work->points[0].kind == 4)
     {
         return;
     }
@@ -1718,19 +1722,17 @@ void func_001b00c0(KwlnTask* task)
             if (work->points[i].drawTask != NULL)
             {
                 kwlnTaskDestroyWithHierarchy(work->points[i].drawTask);
-                work->points[i].drawTask = NULL;
             }
+            work->points[i].drawTask = NULL;
         }
     }
-    model = NULL;
-    if (work->resource != NULL)
+    if (work->pointCount == 0)
     {
-        model = *(Model**)((u8*)work->resource + 0x128);
+        goto reset;
     }
-    if (work->pointCount > 0 && model != NULL)
-    {
-        mdlLookAtDisableTarget(model);
-    }
+    model = *(Model**)((u8*)work->resource + 0x128);
+    mdlLookAtDisableTarget(model);
+reset:
     memset(work->points, 0, sizeof(work->points));
     work->pointCount = 0;
     work->pendingPointCount = 0;

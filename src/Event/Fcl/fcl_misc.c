@@ -915,9 +915,9 @@ void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_
 
     *(char *)(iVar2 + 0x19) = -1 - param_6;
 
-    param_2 = param_2 * 4096.0;
+    param_2 = param_2 * 4096.0f;
 
-    if (param_2 < 2.1474836e+09) {
+    if (param_2 < 2.1474836e+09f) {
 
       uVar3 = (u16)(int)param_2;
 
@@ -925,15 +925,15 @@ void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_
 
     else {
 
-      uVar3 = (u16)(int)(param_2 - 2.1474836e+09);
+      uVar3 = (u16)(int)(param_2 - 2.1474836e+09f);
 
     }
 
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    param_3 = param_3 * 4096.0;
+    param_3 = param_3 * 4096.0f;
 
-    if (param_3 < 2.1474836e+09) {
+    if (param_3 < 2.1474836e+09f) {
 
       uVar3 = (u16)(int)param_3;
 
@@ -941,7 +941,7 @@ void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_
 
     else {
 
-      uVar3 = (u16)(int)(param_3 - 2.1474836e+09);
+      uVar3 = (u16)(int)(param_3 - 2.1474836e+09f);
 
     }
 
@@ -3777,7 +3777,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
                  (float)(int)*(short *)(iVar9 + 0xae);
 
-        if (fVar10 < 2.1474836e+09) {
+        if (fVar10 < 2.1474836e+09f) {
 
           uVar11 = (u8)(int)fVar10;
 
@@ -3785,7 +3785,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
         else {
 
-          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09);
+          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09f);
 
         }
 
@@ -3799,7 +3799,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
                  (float)(int)*(short *)(iVar9 + 0xae);
 
-        if (fVar10 < 2.1474836e+09) {
+        if (fVar10 < 2.1474836e+09f) {
 
           uVar11 = (u8)(int)fVar10;
 
@@ -3807,7 +3807,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
         else {
 
-          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09);
+          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09f);
 
         }
 
@@ -3821,7 +3821,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
                  (float)(int)*(short *)(iVar9 + 0xae);
 
-        if (fVar10 < 2.1474836e+09) {
+        if (fVar10 < 2.1474836e+09f) {
 
           uVar11 = (u8)(int)fVar10;
 
@@ -3829,7 +3829,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
         else {
 
-          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09);
+          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09f);
 
         }
 
@@ -3843,7 +3843,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
                  (float)(int)*(short *)(iVar9 + 0xae);
 
-        if (fVar10 < 2.1474836e+09) {
+        if (fVar10 < 2.1474836e+09f) {
 
           uVar11 = (u8)(int)fVar10;
 
@@ -3851,7 +3851,7 @@ u64 FUN_003ce2a0(u64 param_1)
 
         else {
 
-          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09);
+          uVar11 = (u8)(int)(fVar10 - 2.1474836e+09f);
 
         }
 
