@@ -4466,6 +4466,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             amount = 0.0f;
             func_001e7f90((const RuntimeDistanceWork*)work, amount,
                           &section, &fraction);
+            amount = 1.0f;
+            func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                          &section, &fraction);
             if (vertices != NULL && vector2 != NULL && vector3 != NULL)
             {
                 sample0 = vector2[section < count ? section : 0];
