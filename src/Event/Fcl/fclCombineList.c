@@ -38,6 +38,8 @@ void FUN_003c4710(int *param_1, int *param_2, int *param_3);
 int *FUN_003c4820(int *param_1, int *param_2);
 int FUN_003dffc0(int *param_1,int param_2,s32 param_3);
 void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4);
+#pragma alias FUN_003e0080_p FUN_003e0080
+extern void FUN_003e0080_p(void *param_1,int param_2,int param_3,u16 param_4);
 int FUN_003e0260(u32 param_1,u32 param_2);
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4);
 int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4);
@@ -2962,7 +2964,7 @@ int FUN_003e0260(u32 param_1,u32 param_2)
 
   
 
-  FUN_003e0080((u64)auStack_20,0,0,0);
+  FUN_003e0080_p((void *)auStack_20,0,0,0);
 
   iVar1 = FUN_003dff80((int *)param_1,param_2);
 

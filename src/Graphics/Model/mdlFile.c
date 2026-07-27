@@ -53713,7 +53713,7 @@ u64 FUN_00351a10(int param_1)
 
   char *pcVar3;
 
-  long lVar4;
+  int lVar4;
 
   u64 uVar5;
 
