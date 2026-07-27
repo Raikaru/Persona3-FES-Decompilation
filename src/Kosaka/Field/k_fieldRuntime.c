@@ -325,6 +325,7 @@ extern void* func_00494be0(void);
 extern void func_00494d50(void* material, void* texture);
 extern void* func_004caf10(void);
 extern void func_004933d0(void* geometry);
+extern void func_00493370(void* renderObject, u32 state);
 extern void func_004cb930(void* geometry);
 extern void func_004cb7f0(void* geometry, void* matrix, s32 mode);
 extern void* func_00318b60(void* owner);
