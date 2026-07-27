@@ -607,7 +607,7 @@ void* FUN_00167930(KwlnTask* task)
                     personaWork->slidePosition = 60.0f;
                 }
             }
-            FUN_00114450(personaWork->alpha, personaWork->slidePosition,
+            campDataDrawPersonaSprite(personaWork->alpha, personaWork->slidePosition,
                          personaWork->depth, personaWork->mode,
                          0x4fa4ff19, 0x280, 0x280, personaWork->resource);
         }

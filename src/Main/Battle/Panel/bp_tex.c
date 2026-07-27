@@ -105,7 +105,7 @@ typedef struct BpTexFrameData
 } BpTexFrameData;
 
 
-static u32 bpTexByteToFloatBits(u8 value)
+static inline u32 bpTexByteToFloatBits(u8 value)
 {
     f32 converted;
 
@@ -1086,7 +1086,7 @@ static u32* bpTexWork(void)
     return work;
 }
 
-static u32* bpTexNodeNext(u32* node)
+static inline u32* bpTexNodeNext(u32* node)
 {
     return (u32*)node[0x3f1];
 }
@@ -1127,7 +1127,7 @@ static s32 bpTexNodeCount(void)
     return count;
 }
 
-static void bpTexCollect(void* node, u32** values, s32* count)
+static inline void bpTexCollect(void* node, u32** values, s32* count)
 {
     func_00256fa0(node, values, count);
 }
@@ -1166,6 +1166,7 @@ void bpTexSortVisibleNodes(void)
     u32* groups[8];
     f32 distance[8];
     u32* leaves[8];
+    u32* positions[8];
     s32 nodeCount;
     s32 groupCount;
     s32 leafCount;
@@ -1225,10 +1226,10 @@ void bpTexSortVisibleNodes(void)
 
     for (i = 0; i < groupCount; i++)
     {
-        bpTexCollect(groups[i], leaves, &leafCount);
+        bpTexCollectLeafPos(groups[i], positions, &leafCount);
         for (j = 0; j < leafCount; j++)
         {
-            func_0020b250(leaves[j]);
+            func_0020b250(positions[j]);
         }
     }
 }

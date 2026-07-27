@@ -288,53 +288,19 @@ void func_001b9140(u16 majorId, u16 minorId)
 
     if (majorId == 0x0e && minorId == 5)
     {
-        goto setSpecialA;
+        fGpffffb544 = fGpffff844c;
+        fGpffffb540 = fGpffff8450;
     }
-    else if (majorId == 6 && minorId == 1)
+    else if (((majorId == 6) &&
+              (minorId == 1 || minorId == 2 || minorId == 4 || minorId == 7 ||
+               minorId == 0x0b || minorId == 0x10 || minorId == 0x14)) ||
+             ((majorId == 7) &&
+              (minorId == 2 || minorId == 3 || minorId == 4 || minorId == 5)))
     {
-        goto setSpecialB;
+        fGpffffb544 = fGpffff82fc;
+        fGpffffb540 = fGpffff82b8;
     }
-    else if (majorId == 6 && minorId == 2)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 6 && minorId == 4)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 6 && minorId == 7)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 6 && minorId == 0x0b)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 6 && minorId == 0x10)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 6 && minorId == 0x14)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 7 && minorId == 2)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 7 && minorId == 3)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 7 && minorId == 4)
-    {
-        goto setSpecialB;
-    }
-    else if (majorId == 7 && minorId == 5)
-    {
-        goto setSpecialB;
-    }
-    if (scale > 0.0f)
+    else if (scale > 0.0f)
     {
         fGpffffb540 = scale * 128.0f;
         fGpffffb544 = scale;
@@ -344,15 +310,6 @@ void func_001b9140(u16 majorId, u16 minorId)
         fGpffffb544 = fGpffff82fc;
         fGpffffb540 = fGpffff82b8;
     }
-    goto dispatchDone;
-setSpecialA:
-    fGpffffb544 = fGpffff844c;
-    fGpffffb540 = fGpffff8450;
-    goto dispatchDone;
-setSpecialB:
-    fGpffffb544 = fGpffff82fc;
-    fGpffffb540 = fGpffff82b8;
-dispatchDone:
     uGpffffb53c = 0x40800000;
 
 }
@@ -1110,7 +1067,7 @@ static u8* dungeonCell(s32 x, s32 y)
     return (u8*)K_Field_Get() + y * 0x100 + x * 0x10;
 }
 
-static u8* dungeonPatternCell(DungeonPattern* pattern, u32 x, u32 y)
+static inline u8* dungeonPatternCell(DungeonPattern* pattern, u32 x, u32 y)
 {
     return pattern->raw + y * 0x18 + x * 8;
 }

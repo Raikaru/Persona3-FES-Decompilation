@@ -1104,8 +1104,6 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
             break;
         case 5:
             glyph = 0x20;
-            if (func_0017dcf0() != 0)
-                glyph = 0x23;
             break;
         case 6:
             glyph = 0x21;
@@ -1687,7 +1685,6 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
                       color, colorAlpha, 0x280, 0x280,
                       (const u32*)textureState);
     }
-    h_campNoopRootDrawCallback();
 
     particle = func_001158b0(0, DAT_00833B78, 0);
     *(f32*)((u8*)particle + 0x2c) = 1.0f + alpha;

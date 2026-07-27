@@ -1223,50 +1223,70 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
     f32 cosine;
     f32 x;
     f32 y;
-    s32 i;
-    s32 j;
 
-    for (i = 0; i < 8; i++) {
-        transformed[i] = D_0068E7C0[i];
+    {
+        s32 copy;
+        for (copy = 0; copy < 8; copy++) {
+            transformed[copy] = D_0068E7C0[copy];
+        }
     }
 
     length = sqrtf(direction->x * direction->x + direction->y * direction->y);
     angle = func_0052ea18(direction->x / length, -(direction->y / length)) - gPI;
 
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 4; j++) {
-            transformed[i * 4 + j].x -= 126.5f;
-            transformed[i * 4 + j].y -= 25.5f;
+    {
+        s32 row;
+        s32 col;
+        for (row = 0; row < 2; row++) {
+            for (col = 0; col < 4; col++) {
+                transformed[row * 4 + col].x -= 126.5f;
+                transformed[row * 4 + col].y -= 25.5f;
+            }
         }
     }
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 4; j++) {
-            transformed[i * 4 + j].x *= scale->x;
-            transformed[i * 4 + j].y *= scale->y;
+    {
+        s32 row;
+        s32 col;
+        for (row = 0; row < 2; row++) {
+            for (col = 0; col < 4; col++) {
+                transformed[row * 4 + col].x *= scale->x;
+                transformed[row * 4 + col].y *= scale->y;
+            }
         }
     }
 
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 4; j++) {
-            sine = sinf(angle);
-            y = transformed[i * 4 + j].y;
-            cosine = cosf(angle);
-            x = transformed[i * 4 + j].x;
-            transformed[i * 4 + j].x = x * cosine - y * sine;
-            sine = sinf(angle);
-            cosine = cosf(angle);
-            y = transformed[i * 4 + j].y;
-            transformed[i * 4 + j].y = x * sine + y * cosine;
+    {
+        s32 row;
+        s32 col;
+        for (row = 0; row < 2; row++) {
+            for (col = 0; col < 4; col++) {
+                sine = sinf(angle);
+                y = transformed[row * 4 + col].y;
+                cosine = cosf(angle);
+                x = transformed[row * 4 + col].x;
+                transformed[row * 4 + col].x = x * cosine - y * sine;
+                sine = sinf(angle);
+                cosine = cosf(angle);
+                y = transformed[row * 4 + col].y;
+                transformed[row * 4 + col].y = x * sine + y * cosine;
+            }
         }
     }
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 4; j++) {
-            transformed[i * 4 + j].x += center->x;
-            transformed[i * 4 + j].y += center->y;
+    {
+        s32 row;
+        s32 col;
+        for (row = 0; row < 2; row++) {
+            for (col = 0; col < 4; col++) {
+                transformed[row * 4 + col].x += center->x;
+                transformed[row * 4 + col].y += center->y;
+            }
         }
     }
-    for (i = 0; i < 2; i++) {
-        func_0021d890((u8*)destination + i * 0x100, &transformed[i * 4]);
+    {
+        s32 row;
+        for (row = 0; row < 2; row++) {
+            func_0021d890((u8*)destination + row * 0x100, &transformed[row * 4]);
+        }
     }
 }
 

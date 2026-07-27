@@ -119,7 +119,7 @@ typedef struct CampEquipmentMenuWork
     CampEquipmentWork* equipmentListAlt; /* +0xac */
 } CampEquipmentMenuWork;
 
-static CampEquipmentDetailEntry* campDetailEntry(CampEquipmentDetailWork* work, s32 index)
+static inline CampEquipmentDetailEntry* campDetailEntry(CampEquipmentDetailWork* work, s32 index)
 {
     return &work->entries[index];
 }
@@ -138,7 +138,7 @@ typedef struct CampEquipmentDrawItem
     u32 alpha;                    /* +0x40 */
 } CampEquipmentDrawItem;
 
-static CampEquipmentEntry* campEquipmentEntry(CampEquipmentWork* work, s32 index)
+static inline CampEquipmentEntry* campEquipmentEntry(CampEquipmentWork* work, s32 index)
 {
     return &work->entries[index];
 }

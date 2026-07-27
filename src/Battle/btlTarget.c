@@ -147,7 +147,7 @@ extern s32 (*PTR_FUN_006973cc)(void*, s32);
 extern s32 (*PTR_FUN_006975e0[])(void*, u32);
 extern u8* DAT_007ce484;
 extern u8* DAT_007ce488;
-static f32 btlTargetV2dLength(const RwV2d* v)
+static inline f32 btlTargetV2dLength(const RwV2d* v)
 {
     return sqrtf(v->x * v->x + v->y * v->y);
 }

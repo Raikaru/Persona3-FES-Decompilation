@@ -1094,9 +1094,11 @@ void FUN_00258630(u32 *param_1)
     u32 flags;
     u32 *node;
     s32 count;
+    u32* model;
     SflCardDrawFrame local;
 #define scale local.scale
 #define frame_offset local.frame_offset
+#define frame_const local.frame_const
 #define rect local.rect
 #define rotation local.rotation
 #define transformed local.transformed
@@ -1114,8 +1116,9 @@ void FUN_00258630(u32 *param_1)
             FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
             break;
         case 0:
-            FUN_00209f00(param_1 + 6);
-            FUN_0020c590(param_1 + 6, (u16)param_1[2]);
+            model = param_1 + 6;
+            FUN_00209f00(model);
+            FUN_0020c590(model, (u16)param_1[2]);
             if ((*param_1 & 1) != 0) {
                 FUN_0020d6c0(param_1 + 6);
             }
@@ -1147,6 +1150,7 @@ void FUN_00258630(u32 *param_1)
         }
 
         frame_offset = FUN_0020c660(param_1[4], count);
+        frame_const = 184.0f;
         frame = FUN_0020c500(param_1 + 6, 90.0f);
         FUN_0020c400(param_1 + 6, &frame_offset, frame, rect);
         rect[1] += 100.0f;

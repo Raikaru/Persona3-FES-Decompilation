@@ -3852,7 +3852,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
   if ('\0' < cVar1) {
 
 
-    if (1.0f <= param_1) {
+    if (!(param_1 < 1.0f)) {
 
       for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
 

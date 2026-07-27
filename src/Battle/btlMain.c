@@ -1913,45 +1913,45 @@ void* FUN_0029ea50(void)
     return (u8*)gBtl + 0x224;
 }
 
-// FUN_0029ea60 NONMATCHING
+// FUN_0029ea60
 void FUN_0029ea60(u32 index, u32* colorA, u32* colorB)
 {
+    u32 offset;
     u8* entry;
     u32 value;
-    u32 red;
-    u32 green;
-    u32 blue;
-    u32 alpha;
+    u8 rgba[4];
 
-    entry = iGpffffb710 + (index & 0xffff) * 0x1c;
-    value = *(u32*)(entry + 8);
+    offset = (index & 0xffff) * 0x1c;
+    entry = iGpffffb710 + 8;
+    entry += offset;
+    value = *(u32*)entry;
     if ((value & 0xff000000) != 0)
     {
         *colorA = value;
     }
     else
     {
-        red = (u32)(*(f32*)((u8*)gBtl + 0x194) * 255.0f + 0.5f);
-        green = (u32)(*(f32*)((u8*)gBtl + 0x198) * 255.0f + 0.5f);
-        blue = (u32)(*(f32*)((u8*)gBtl + 0x19c) * 255.0f + 0.5f);
-        alpha = (u32)(*(f32*)((u8*)gBtl + 0x1a0) * 255.0f + 0.5f);
-        *colorA = (red & 0xff) | ((green & 0xff) << 8) |
-                  ((blue & 0xff) << 16) | ((alpha & 0xff) << 24);
+        rgba[0] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x194) * 255.0f + 0.5f);
+        rgba[1] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x198) * 255.0f + 0.5f);
+        rgba[2] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x19c) * 255.0f + 0.5f);
+        rgba[3] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1a0) * 255.0f + 0.5f);
+        *colorA = *(u32*)rgba;
     }
 
-    value = *(u32*)(entry + 0xc);
+    entry = iGpffffb710 + 0xc;
+    entry += offset;
+    value = *(u32*)entry;
     if ((value & 0xff000000) != 0)
     {
         *colorB = value;
     }
     else
     {
-        red = (u32)(*(f32*)((u8*)gBtl + 0x1a4) * 255.0f + 0.5f);
-        green = (u32)(*(f32*)((u8*)gBtl + 0x1a8) * 255.0f + 0.5f);
-        blue = (u32)(*(f32*)((u8*)gBtl + 0x1ac) * 255.0f + 0.5f);
-        alpha = (u32)(*(f32*)((u8*)gBtl + 0x1b0) * 255.0f + 0.5f);
-        *colorB = (red & 0xff) | ((green & 0xff) << 8) |
-                  ((blue & 0xff) << 16) | ((alpha & 0xff) << 24);
+        rgba[0] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1a4) * 255.0f + 0.5f);
+        rgba[1] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1a8) * 255.0f + 0.5f);
+        rgba[2] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1ac) * 255.0f + 0.5f);
+        rgba[3] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1b0) * 255.0f + 0.5f);
+        *colorB = *(u32*)rgba;
     }
 }
 
@@ -1984,45 +1984,45 @@ s32 FUN_0029ec50(s32 index)
     return *(s32 *)(entry + 0x18);
 }
 
-// FUN_0029ec80 NONMATCHING
+// FUN_0029ec80
 void FUN_0029ec80(u32 index, u32* colorA, u32* colorB)
 {
+    u32 offset;
     u8* entry;
     u32 value;
-    u32 red;
-    u32 green;
-    u32 blue;
-    u32 alpha;
+    u8 rgba[4];
 
-    entry = iGpffffb710 + (index & 0xffff) * 0x1c;
-    value = *(u32*)(entry + 0x10);
+    offset = (index & 0xffff) * 0x1c;
+    entry = iGpffffb710 + 0x10;
+    entry += offset;
+    value = *(u32*)entry;
     if ((value & 0xff000000) != 0)
     {
         *colorA = value;
     }
     else
     {
-        red = (u32)(*(f32*)((u8*)gBtl + 0x1f4) * 255.0f + 0.5f);
-        green = (u32)(*(f32*)((u8*)gBtl + 0x1f8) * 255.0f + 0.5f);
-        blue = (u32)(*(f32*)((u8*)gBtl + 0x1fc) * 255.0f + 0.5f);
-        alpha = (u32)(*(f32*)((u8*)gBtl + 0x200) * 255.0f + 0.5f);
-        *colorA = (red & 0xff) | ((green & 0xff) << 8) |
-                  ((blue & 0xff) << 16) | ((alpha & 0xff) << 24);
+        rgba[0] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1f4) * 255.0f + 0.5f);
+        rgba[1] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1f8) * 255.0f + 0.5f);
+        rgba[2] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x1fc) * 255.0f + 0.5f);
+        rgba[3] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x200) * 255.0f + 0.5f);
+        *colorA = *(u32*)rgba;
     }
 
-    value = *(u32*)(entry + 0x14);
+    entry = iGpffffb710 + 0x14;
+    entry += offset;
+    value = *(u32*)entry;
     if ((value & 0xff000000) != 0)
     {
         *colorB = value;
     }
     else
     {
-        red = (u32)(*(f32*)((u8*)gBtl + 0x204) * 255.0f + 0.5f);
-        green = (u32)(*(f32*)((u8*)gBtl + 0x208) * 255.0f + 0.5f);
-        blue = (u32)(*(f32*)((u8*)gBtl + 0x20c) * 255.0f + 0.5f);
-        alpha = (u32)(*(f32*)((u8*)gBtl + 0x210) * 255.0f + 0.5f);
-        *colorB = (red & 0xff) | ((green & 0xff) << 8) |
-                  ((blue & 0xff) << 16) | ((alpha & 0xff) << 24);
+        rgba[0] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x204) * 255.0f + 0.5f);
+        rgba[1] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x208) * 255.0f + 0.5f);
+        rgba[2] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x20c) * 255.0f + 0.5f);
+        rgba[3] = (u8)(s32)(*(f32*)((u8*)gBtl + 0x210) * 255.0f + 0.5f);
+        *colorB = *(u32*)rgba;
     }
 }
 

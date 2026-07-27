@@ -4995,8 +4995,8 @@ void FUN_004343d0(int param_1)
 
 {
   u8 bVar1;
-  u16 uVar2;
-  u16 uVar3;
+  short uVar2;
+  short uVar3;
   int iVar4;
   int bVar5;
   int iVar6;
@@ -5426,18 +5426,15 @@ void FUN_004350e0(char param_1,char param_2)
 
 {
   int iVar1;
-  u8 bVar2;
   short sVar3;
   short sVar4;
   u16 uVar5;
   int iVar6;
   
-  for (iVar6 = 1; (long)iVar6 < 4; iVar6 = iVar6 + 1) {
-    bVar2 = 0;
-    if ((((u8 *)DAT_008717e8)[iVar6 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar6 * 0x70] != 0)) {
-      bVar2 = 1;
-    }
-    if ((bVar2) && ((long)param_1 != (long)iVar6)) {
+  for (iVar6 = 1; iVar6 < 4; iVar6 = iVar6 + 1) {
+    if ((DAT_008717e8_rows[iVar6 * 0x70 + 0x12] != 0) &&
+        (DAT_008717e8_rows[iVar6 * 0x70 + 0x15] != 0) &&
+        (param_1 != iVar6)) {
       iVar1 = *(int *)(*(int *)((u8 *)DAT_0087190c + iVar6 * 0x1c0) + 0x3c);
       *(char *)(iVar1 + 0x1215) = param_2;
       if (param_2 == '\x01') {
@@ -5616,7 +5613,7 @@ u16 FUN_00435660(char param_1)
   int iVar5;
   char cVar6;
   int iVar7;
-  int lVar8;
+  long lVar8;
   
   lVar8 = 0;
   do {
