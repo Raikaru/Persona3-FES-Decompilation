@@ -2643,7 +2643,7 @@ void FUN_003a4dd0(int param_1)
 
   
 
-  param_1 = param_1 * 0x34;
+  param_1 = param_1;
 
   puVar3 = DAT_00959ee0_abs + param_1;
 

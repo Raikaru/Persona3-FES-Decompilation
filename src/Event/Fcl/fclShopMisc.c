@@ -7841,10 +7841,8 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      iVar6 = 0;
-      __asm__ volatile("" : "+r"(iVar6));
       lVar5 = sVar1;
-      for (; iVar6 < 300; iVar6 = iVar6 + 1) {
+      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
         uVar4 = datGetEquipmentId(1,iVar6);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;

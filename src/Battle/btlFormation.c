@@ -4946,7 +4946,6 @@ void func_002bf9b0(void)
           }
           callColor = alpha | 0xb4736400;
           firstZero = zero;
-          asm volatile("" : "+r"(entry));
           func_002bce10(firstZero, zero, (u8*)entry, callColor,
                         (float *)(entry + 0xa04));
         }
