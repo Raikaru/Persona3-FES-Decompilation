@@ -129,9 +129,9 @@ u32 FUN_003c7700(void);
 u32 FUN_003c77a0(void);
 s8 FUN_003c7850(void);
 u32 FUN_003c78d0(void);
-void FUN_003c7990(int param_1);
+void FUN_003c7990(long param_1);
 #pragma alias FUN_003c7990_typed FUN_003c7990
-extern void FUN_003c7990_typed(int param_1);
+extern void FUN_003c7990_typed(long param_1);
 void FUN_003c7b90(void);
 void FUN_003c7bc0(u64 param_1,u64 param_2);
 void FUN_003c7c20(u64 param_1,u64 param_2,u64 param_3);
@@ -2140,7 +2140,7 @@ u32 FUN_003c78d0(void)
 // FUN_003C7990 NONMATCHING
 
 
-void FUN_003c7990(int param_1)
+void FUN_003c7990(long param_1)
 
 
 

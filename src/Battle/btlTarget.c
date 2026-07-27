@@ -5670,9 +5670,12 @@ s16 FUN_002dc670(BtlAction* action)
         }
     }
 
-    return (datCalcIsDead(datUnit, result) != 0) ?
-        (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1)) :
-        result;
+    if (datCalcIsDead(datUnit, result) != 0)
+    {
+        result = (s16)(-((s32)(u16)datCalcGetHp(datUnit) - 1));
+    }
+
+    return result;
 
 }
 // FUN_002dc830

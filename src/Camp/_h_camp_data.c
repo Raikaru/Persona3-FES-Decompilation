@@ -254,7 +254,7 @@ void FUN_00169110(undefined8, undefined8, undefined8, undefined8);
 void FUN_001691F0(undefined8, undefined8, undefined8, undefined8, undefined8);
 undefined4 FUN_00169330(void);
 bool FUN_00169420(void);
-undefined4 FUN_00169470(undefined8);
+KwlnTask* FUN_00169470(KwlnTask*);
 void FUN_00169AE0(int);
 void FUN_00169B90(void* resources, undefined8 coordinates,
                   void* list, s32 alpha, undefined8 stackArg);
@@ -1356,7 +1356,7 @@ bool FUN_00169420(void)
 }
 
 // FUN_00169470 NONMATCHING
-undefined4 FUN_00169470(undefined8 param_1)
+KwlnTask* FUN_00169470(KwlnTask* param_1)
 {
     KwlnTask* task;
     CampTargetMenuWork* work;

@@ -8930,11 +8930,11 @@ void func_002ec790(void)
     for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
          unit != NULL; unit = unit->next) {
         switch (unit->charId) {
-        case 0x109:
-            iVar6 = unit;
-            break;
         case 0x10a:
             iVar8 = unit;
+            break;
+        case 0x109:
+            iVar6 = unit;
             break;
         }
     }
