@@ -59,6 +59,10 @@ extern u32 DAT_007cadc0;
 extern u32 DAT_007cadd0;
 extern u32 DAT_007cae18;
 extern u32 DAT_007cafec;
+#pragma alias DAT_007cadd0_f32 DAT_007cadd0
+extern f32 DAT_007cadd0_f32;
+#pragma alias DAT_007cafec_f32 DAT_007cafec
+extern f32 DAT_007cafec_f32;
 extern u32 DAT_007cb0cc;
 extern u32 DAT_007cb110;
 extern u32 DAT_007cb120;
@@ -143,6 +147,8 @@ extern u32 DAT_009588a0;
 extern u32 DAT_009588a4;
 extern u32 DAT_009588a8;
 extern u32 DAT_009588b0;
+#pragma alias DAT_009588b0_f32 DAT_009588b0
+extern f32 DAT_009588b0_f32[];
 extern u32 DAT_009588b4;
 extern u32 DAT_009588b8;
 extern u32 DAT_009588bc;
@@ -748,7 +754,7 @@ void FUN_0038d560(int param_1,int param_2,u32 param_3,u32 *param_4, u32 *param_5
 void FUN_0038d6b0(int param_1,u32 param_2);
 void FUN_0038d720(int param_1);
 void FUN_0038d790(int param_1);
-void FUN_0038d840(char *param_1,u8 *param_2,int param_3);
+void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3);
 void FUN_0038d910(int param_1);
 void FUN_0038dad0(u32 param_1,long param_2,u64 param_3);
 void FUN_0038e660(u64 param_1,int param_2,int param_3);
@@ -5760,33 +5766,36 @@ switchD_0038c8e0_caseD_0:
 
 void FUN_0038ca00(void)
 {
-  u32 uVar1;
-  u32 uVar2;
-  int iVar4;
-  u32 *puVar3;
+  f32 fVar1;
+  f32 fVar2;
+  s32 iVar3;
+  f32 *pfVar4;
+  f32 *pfVar5;
+  u32 uVar6;
 
-  uVar2 = DAT_007cafec;
-  uVar1 = DAT_007cadd0;
-  puVar3 = &DAT_009588b0;
-
-  for (iVar4 = 0; iVar4 < 3; iVar4 = iVar4 + 1) {
-    puVar3[2] = uVar1;
-    puVar3[3] = uVar1;
-    puVar3[4] = uVar1;
-    puVar3[5] = 0;
-    puVar3[6] = 0;
-    puVar3[7] = 0;
-    puVar3[8] = 0;
-    puVar3[9] = 0;
-    puVar3[10] = uVar2;
-    puVar3[11] = uVar2;
-    puVar3[12] = uVar2;
-    puVar3[13] = 0;
-    puVar3[14] = 0x40e00000;
-    puVar3[15] = 0;
-    puVar3[0] = 0;
-    puVar3[1] = 0;
-    puVar3 += 0x10;
+  iVar3 = 0;
+  pfVar5 = DAT_009588b0_f32;
+  fVar1 = DAT_007cadd0_f32;
+  fVar2 = DAT_007cafec_f32;
+  uVar6 = 0x40e00000;
+  for (; iVar3 < 3; iVar3 = iVar3 + 1) {
+    pfVar4 = &pfVar5[iVar3 * 0x10];
+    pfVar4[2] = fVar1;
+    pfVar4[3] = fVar1;
+    pfVar4[4] = fVar1;
+    pfVar4[5] = 0.0f;
+    pfVar4[6] = 0.0f;
+    pfVar4[7] = 0.0f;
+    pfVar4[8] = 0.0f;
+    pfVar4[9] = 0.0f;
+    pfVar4[10] = fVar2;
+    pfVar4[11] = fVar2;
+    pfVar4[12] = fVar2;
+    pfVar4[13] = 0.0f;
+    ((u32 *)pfVar4)[14] = uVar6;
+    pfVar4[15] = 0.0f;
+    pfVar4[0] = 0.0f;
+    pfVar4[1] = 0.0f;
   }
   return;
 }
@@ -6779,66 +6788,47 @@ void FUN_0038d790(int param_1)
 // FUN_0038D840 NONMATCHING
 
 
-void FUN_0038d840(char *param_1,u8 *param_2,int param_3)
-
-
-
+void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
 {
-
   int iVar1;
   int iVar2;
   int iVar3;
-  float *pfVar7;
-  float *pfVar8;
-  float fVar4;
-  float fVar5;
-  float fVar6;
+  int iVar4;
+  float *pfVar5;
+  float *pfVar6;
+  float fVar7;
+  float fVar8;
+  float fVar9;
 
-  
-
-  if (*param_1 == '\0') {
-    iVar1 = (u32)(u8)param_1[1] * 3;
-
+  if (*param_1 == 0) {
+    iVar1 = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-
-    for (iVar3 = 0; iVar3 < iVar1 + 1; iVar3 = iVar3 + 1) {
-
-
-      if (param_3 == 1) {
-        iVar2 = iVar1 - iVar3;
-
-        pfVar7 = (float *)(param_1 + iVar2 * 0xc);
-        pfVar8 = (float *)(param_2 + iVar3 * 0xc);
-        fVar4 = pfVar7[1];
-        fVar5 = pfVar7[2];
-        fVar6 = pfVar7[3];
-        pfVar8[1] = fVar4;
-        pfVar8[2] = fVar5;
-        pfVar8[3] = fVar6;
-
+    iVar3 = 0;
+    iVar4 = 1;
+    iVar2 = iVar1 - 1;
+    for (; iVar3 < iVar1; iVar3 = iVar3 + 1) {
+      if (param_3 == iVar4) {
+        pfVar5 = (float *)(param_1 + (iVar2 - iVar3) * 0xc);
+        pfVar6 = (float *)(param_2 + iVar3 * 0xc);
+        fVar7 = pfVar5[1];
+        fVar8 = pfVar5[2];
+        fVar9 = pfVar5[3];
+        pfVar6[1] = fVar7;
+        pfVar6[2] = fVar8;
+        pfVar6[3] = fVar9;
+      } else {
+        pfVar5 = (float *)(param_1 + iVar3 * 0xc);
+        pfVar6 = (float *)(param_2 + iVar3 * 0xc);
+        fVar7 = pfVar5[1];
+        fVar8 = pfVar5[2];
+        fVar9 = pfVar5[3];
+        pfVar6[1] = fVar7;
+        pfVar6[2] = fVar8;
+        pfVar6[3] = fVar9;
       }
-
-      else {
-
-        iVar2 = iVar3 * 0xc;
-
-        pfVar7 = (float *)(param_1 + iVar2);
-        pfVar8 = (float *)(param_2 + iVar2);
-        fVar4 = pfVar7[1];
-        fVar5 = pfVar7[2];
-        fVar6 = pfVar7[3];
-        pfVar8[1] = fVar4;
-        pfVar8[2] = fVar5;
-        pfVar8[3] = fVar6;
-
-      }
-
     }
-
   }
-
   return;
-
 }
 // FUN_0038D910
 

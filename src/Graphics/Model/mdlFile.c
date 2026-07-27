@@ -213,6 +213,48 @@ static __inline u32 mdlVuModulate(const u32 *pc1, const u32 *pc2, f32 inv255)
     return tmp;
 }
 
+/* The animation kernels spill both packed colours before entering the VU
+   sequence.  Keep the loads inside the asm so those addressable spills are
+   preserved instead of being folded back into integer registers. */
+static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          %0, 0(%1)           \n"
+        "pextlb      %0, $zero, %0       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "nop                                \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "lw          %0, 0(%2)           \n"
+        "pextlb      %0, $zero, %0       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        %0, %3              \n"
+        "nop                                \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437F          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(pc1), "r"(pc2), "f"(inv255)
+        : "memory");
+    return tmp;
+}
+
 
 /* ==========================================================================
  * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
@@ -808,8 +850,12 @@ void FUN_00348bd0(u8 *param_1,float *param_2);
 void FUN_00348da0(int param_1,u32 *param_2);
 void FUN_00348f30(int param_1,int *param_2);
 void FUN_00349090(u64 param_1,int *param_2);
+#pragma alias FUN_00349090_ptr FUN_00349090
+extern void FUN_00349090_ptr(int *param_1,int *param_2);
 void FUN_00349260(int param_1,int *param_2);
 void FUN_00349450(u64 param_1,int *param_2);
+#pragma alias FUN_00349450_ptr FUN_00349450
+extern void FUN_00349450_ptr(int *param_1,int *param_2);
 void FUN_00349620(int *param_1,float *param_2);
 void FUN_00349870(int param_1);
 void FUN_00349a30(int param_1);
@@ -43961,163 +44007,63 @@ void FUN_00349a30(int param_1)
 
 
 void FUN_00349af0(u8 (*param_1) [16])
-
-
-
 {
-
   int iVar1;
-
-  int iVar2;
-
-  __int128 in_zero_qw;
-
-  int iVar3;
-
-  __int128 auVar4;
-
   int iVar5;
-
+  int iVar2;
+  int iVar3;
+  u8 *state;
   float fVar6;
-
-  __int128 extraout_vf10;
-
-  __int128 auVar7;
-
-  __int128 auVar8;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  
+  f32 vuPos[4];
+  u32 c1s;
+  u32 c2s;
+  u8 packed[4];
 
   iVar1 = *(int *)(param_1[2] + 4);
-
+  state = (u8 *)(iVar1 + 0xc0);
   iVar2 = *(int *)(iVar1 + 0xb8);
-
-  if (iVar2 != 0) {
-
-    iVar5 = *(int *)(param_1[1] + 0xc);
-
-  }
-
-  else {
-
+  if (iVar2 == 0) {
     iVar5 = 0;
-
   }
-
-  if (iVar2 < iVar5) {
-
-    *(u8 *)(iVar1 + 199) = 0;
-
-  }
-
   else {
-
-    fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x8c),iVar5,iVar2);
-
-    if (*(char *)(iVar1 + 0xbc) != '\0') {
-
-      *(u32 *)(iVar1 + 0xd4) = 0x43a00000;
-
-      *(u32 *)(iVar1 + 0xd8) = 0x43600000;
-
-      *(float *)(iVar1 + 0xdc) = 320.0f - fVar6;
-
-      *(float *)(iVar1 + 0xe0) = 224.0f - fVar6;
-
-      *(float *)(iVar1 + 0xe4) = fVar6 + 320.0f;
-
-      *(float *)(iVar1 + 0xe8) = fVar6 + 224.0f;
-
-    }
-
-    else {
-
-      _lqc2(*param_1);
-
-      fVar6 = (float)FUN_00329ba0(fVar6 * *(float *)(param_1[1] + 4));
-
-      auVar4 = _sqc2(extraout_vf10);
-
-      fStack_20 = auVar4._0_4_;
-
-      *(float *)(iVar1 + 0xd4) = fStack_20;
-
-      fStack_1c = auVar4._4_4_;
-
-      *(float *)(iVar1 + 0xd8) = fStack_1c;
-
-      *(float *)(iVar1 + 0xdc) = fStack_20 - fVar6;
-
-      *(float *)(iVar1 + 0xe0) = fStack_1c - fVar6;
-
-      *(float *)(iVar1 + 0xe4) = fStack_20 + fVar6;
-
-      *(float *)(iVar1 + 0xe8) = fStack_1c + fVar6;
-
-    }
-
-    iVar3 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),(int)(iVar5),(long)(iVar2));
-
-    auVar4 = _pextlb(0,(long)*(int *)param_1[1]);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar7 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar7,auVar4);
-
-    auVar8 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar7 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar7,auVar4);
-
-    auVar7 = _vmul(auVar4,auVar8);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar7,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    *(int *)(iVar1 + 0xc4) = auVar4._0_4_;
-
-    fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
-
-    *(float *)(iVar1 + 0xd0) = fGpffff80b0 * fVar6 + 1.0f;
-
-    fVar6 = (float)FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
-
-    *(float *)(iVar1 + 0xcc) = fGpffff80b0 * fVar6;
-
-    *(u32 *)(iVar1 + 200) = *(u32 *)(iVar1 + 0x28);
-
+    iVar5 = *(int *)(param_1[1] + 0xc);
   }
-
-  return;
-
+  if (iVar2 >= iVar5) {
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x8c),iVar5,iVar2);
+    if (*(u8 *)(iVar1 + 0xbc) != 0) {
+      *(u32 *)(state + 0x14) = 0x43a00000;
+      *(u32 *)(state + 0x18) = 0x43600000;
+      *(float *)(state + 0x1c) = 320.0f - fVar6;
+      *(float *)(state + 0x20) = 224.0f - fVar6;
+      *(float *)(state + 0x24) = fVar6 + 320.0f;
+      *(float *)(state + 0x28) = fVar6 + 224.0f;
+    }
+    else {
+      fVar6 = fVar6 * *(float *)(param_1[1] + 4);
+      __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "memory");
+      fVar6 = FUN_00329ba0(fVar6);
+      __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vuPos) : "memory");
+      *(float *)(state + 0x14) = vuPos[0];
+      *(float *)(state + 0x18) = vuPos[1];
+      *(float *)(state + 0x1c) = vuPos[0] - fVar6;
+      *(float *)(state + 0x20) = vuPos[1] - fVar6;
+      *(float *)(state + 0x24) = vuPos[0] + fVar6;
+      *(float *)(state + 0x28) = vuPos[1] + fVar6;
+    }
+    iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar5,iVar2);
+    c2s = (u32)iVar3;
+    c1s = *(u32 *)param_1[1];
+    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
+    *(u32 *)(state + 4) = *(u32 *)packed;
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x34),iVar5,iVar2);
+    *(float *)(state + 0x10) = fGpffff80b0 * fVar6 + 1.0f;
+    fVar6 = FUN_0032a540((char *)(iVar1 + 0x60),iVar5,iVar2);
+    *(float *)(state + 0xc) = fGpffff80b0 * fVar6;
+    *(u32 *)(state + 8) = *(u32 *)(iVar1 + 0x28);
+  }
+  else {
+    state[7] = 0;
+  }
 }
 
 
@@ -44263,159 +44209,60 @@ void FUN_00349fa0(void)
 
 
 void FUN_00349fd0(u8 (*param_1) [16])
-
-
-
 {
-
   u32 uVar1;
-
   int iVar2;
-
-  int iVar3;
-
-  __int128 in_zero_qw;
-
-  int iVar4;
-
-  __int128 auVar5;
-
   int iVar6;
-
+  int iVar3;
+  int iVar4;
+  u8 *state;
   float fVar7;
-
-  u32 uVar8;
-
-  __int128 extraout_vf10;
-
-  __int128 auVar9;
-
-  __int128 auVar10;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  
+  f32 vuPos[4];
+  u32 c1s;
+  u32 c2s;
+  u8 packed[4];
 
   uVar1 = *(u32 *)param_1[2];
-
   iVar2 = *(int *)(param_1[2] + 4);
-
+  state = (u8 *)(iVar2 + 0xc0);
   iVar3 = *(int *)(iVar2 + 0xb8);
-
   if (iVar3 == 0) {
-
     iVar6 = 0;
-
   }
-
   else {
-
     iVar6 = *(int *)(param_1[1] + 0xc);
-
   }
-
   if (iVar3 >= iVar6) {
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
-
-    if (*(char *)(iVar2 + 0xbc) == '\0') {
-
-      _lqc2(*param_1);
-
-      uVar8 = FUN_00329ba0(fVar7 * *(float *)(param_1[1] + 4));
-
-      *(u32 *)(iVar2 + 0xe4) = uVar8;
-
-      auVar5 = _sqc2(extraout_vf10);
-
-      uStack_20 = auVar5._0_4_;
-
-      *(u32 *)(iVar2 + 0xdc) = uStack_20;
-
-      uStack_1c = auVar5._4_4_;
-
-      *(u32 *)(iVar2 + 0xe0) = uStack_1c;
-
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
+    if (*(u8 *)(iVar2 + 0xbc) != 0) {
+      *(u32 *)(state + 0x1c) = 0x43a00000;
+      *(u32 *)(state + 0x20) = 0x43600000;
+      *(float *)(state + 0x24) = fVar7;
     }
-
     else {
-
-      *(u32 *)(iVar2 + 0xdc) = 0x43a00000;
-
-      *(u32 *)(iVar2 + 0xe0) = 0x43600000;
-
-      *(float *)(iVar2 + 0xe4) = fVar7;
-
+      fVar7 = fVar7 * *(float *)(param_1[1] + 4);
+      __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "memory");
+      fVar7 = FUN_00329ba0(fVar7);
+      *(float *)(state + 0x24) = fVar7;
+      __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vuPos) : "memory");
+      *(float *)(state + 0x1c) = vuPos[0];
+      *(float *)(state + 0x20) = vuPos[1];
     }
-
-    iVar4 = FUN_0032a120((char *)(iVar2),(u32 *)(iVar2 + 0x24),(int)(iVar6),(long)(iVar3));
-
-    auVar5 = _pextlb(0,(long)*(int *)param_1[1]);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar9 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(uGpffff815c);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auVar10 = _vmove(auVar5);
-
-    auVar5 = _pextlb(0,(long)iVar4);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar9 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(uGpffff815c);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auVar9 = _vmul(auVar5,auVar10);
-
-    auVar5 = _qmtc2(0x437f0000);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auVar5 = _vftoi0(auVar5);
-
-    auVar5 = _qmfc2(auVar5._0_4_);
-
-    auVar5 = _ppach(in_zero_qw,auVar5);
-
-    auVar5 = _ppacb(in_zero_qw,auVar5);
-
-    *(int *)(iVar2 + 0xcc) = auVar5._0_4_;
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
-
-    *(float *)(iVar2 + 0xd8) = fGpffff80b0 * fVar7;
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
-
-    *(float *)(iVar2 + 0xd4) = fGpffff80b0 * fVar7;
-
-    *(u32 *)(iVar2 + 0xd0) = *(u32 *)(iVar2 + 0x28);
-
-    FUN_00349090((u64)(iVar2 + 0xc0),(int *)(uVar1));
-
+    iVar4 = FUN_0032a120((char *)iVar2,(u32 *)(iVar2 + 0x24),iVar6,iVar3);
+    c2s = (u32)iVar4;
+    c1s = *(u32 *)param_1[1];
+    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
+    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
+    *(float *)(state + 0x18) = fGpffff80b0 * fVar7;
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
+    *(float *)(state + 0x14) = fGpffff80b0 * fVar7;
+    *(u32 *)(state + 0x10) = *(u32 *)(iVar2 + 0x28);
+    FUN_00349090_ptr((int *)state,(int *)uVar1);
   }
-
   else {
-
-    *(u32 *)(iVar2 + 0xcc) = 0;
-
+    *(u32 *)(state + 0xc) = 0;
   }
-
-  return;
-
 }
 
 
@@ -44545,157 +44392,60 @@ void FUN_0034a340(void)
 
 
 void FUN_0034a370(u8 (*param_1) [16])
-
-
-
 {
-
   u32 uVar1;
-
   int iVar2;
-
-  int iVar3;
-
-  __int128 in_zero_qw;
-
-  int iVar4;
-
-  __int128 auVar5;
-
   int iVar6;
-
+  int iVar3;
+  int iVar4;
+  u8 *state;
   float fVar7;
-
-  __int128 extraout_vf10;
-
-  __int128 auVar8;
-
-  __int128 auVar9;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  
+  f32 vuPos[4];
+  u32 c1s;
+  u32 c2s;
+  u8 packed[4];
 
   uVar1 = *(u32 *)param_1[2];
-
   iVar2 = *(int *)(param_1[2] + 4);
-
+  state = (u8 *)(iVar2 + 0xc0);
   iVar3 = *(int *)(iVar2 + 0xb8);
-
   if (iVar3 == 0) {
-
     iVar6 = 0;
-
   }
-
   else {
-
     iVar6 = *(int *)(param_1[1] + 0xc);
-
   }
-
-  if (iVar3 < iVar6) {
-
-    *(u32 *)(iVar2 + 0xcc) = 0;
-
-  }
-
-  else {
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
-
-    if (*(char *)(iVar2 + 0xbc) != '\0') {
-
-      *(u32 *)(iVar2 + 0xe0) = 0x43a00000;
-
-      *(u32 *)(iVar2 + 0xe4) = 0x43600000;
-
-      *(int *)(iVar2 + 0xe8) = (int)fVar7;
-
+  if (iVar3 >= iVar6) {
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
+    if (*(u8 *)(iVar2 + 0xbc) != 0) {
+      *(u32 *)(state + 0x20) = 0x43a00000;
+      *(u32 *)(state + 0x24) = 0x43600000;
+      *(int *)(state + 0x28) = (int)fVar7;
     }
-
     else {
-
-      _lqc2(*param_1);
-
-      fVar7 = (float)FUN_00329ba0(fVar7 * *(float *)(param_1[1] + 4));
-
-      *(int *)(iVar2 + 0xe8) = (int)fVar7;
-
-      auVar5 = _sqc2(extraout_vf10);
-
-      uStack_20 = auVar5._0_4_;
-
-      *(u32 *)(iVar2 + 0xe0) = uStack_20;
-
-      uStack_1c = auVar5._4_4_;
-
-      *(u32 *)(iVar2 + 0xe4) = uStack_1c;
-
+      fVar7 = fVar7 * *(float *)(param_1[1] + 4);
+      __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "memory");
+      fVar7 = FUN_00329ba0(fVar7);
+      *(int *)(state + 0x28) = (int)fVar7;
+      __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vuPos) : "memory");
+      *(float *)(state + 0x20) = vuPos[0];
+      *(float *)(state + 0x24) = vuPos[1];
     }
-
-    iVar4 = FUN_0032a120((char *)(iVar2),(u32 *)(iVar2 + 0x24),(int)(iVar6),(long)(iVar3));
-
-    auVar5 = _pextlb(0,(long)*(int *)param_1[1]);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar8 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(uGpffff815c);
-
-    auVar5 = _vmulbc(auVar8,auVar5);
-
-    auVar9 = _vmove(auVar5);
-
-    auVar5 = _pextlb(0,(long)iVar4);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar8 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(uGpffff815c);
-
-    auVar5 = _vmulbc(auVar8,auVar5);
-
-    auVar8 = _vmul(auVar5,auVar9);
-
-    auVar5 = _qmtc2(0x437f0000);
-
-    auVar5 = _vmulbc(auVar8,auVar5);
-
-    auVar5 = _vftoi0(auVar5);
-
-    auVar5 = _qmfc2(auVar5._0_4_);
-
-    auVar5 = _ppach(in_zero_qw,auVar5);
-
-    auVar5 = _ppacb(in_zero_qw,auVar5);
-
-    *(int *)(iVar2 + 0xcc) = auVar5._0_4_;
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
-
-    *(float *)(iVar2 + 0xdc) = fGpffff80b0 * fVar7;
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
-
-    *(float *)(iVar2 + 0xd4) = fGpffff80b0 * fVar7;
-
-    *(u32 *)(iVar2 + 0xd0) = *(u32 *)(iVar2 + 0x28);
-
-    FUN_00349620((int *)(iVar2 + 0xc0),(float *)(uVar1));
-
+    iVar4 = FUN_0032a120((char *)iVar2,(u32 *)(iVar2 + 0x24),iVar6,iVar3);
+    c2s = (u32)iVar4;
+    c1s = *(u32 *)param_1[1];
+    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
+    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
+    *(float *)(state + 0x1c) = fGpffff80b0 * fVar7;
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
+    *(float *)(state + 0x14) = fGpffff80b0 * fVar7;
+    *(u32 *)(state + 0x10) = *(u32 *)(iVar2 + 0x28);
+    FUN_00349620((int *)state,(float *)uVar1);
   }
-
-  return;
-
+  else {
+    *(u32 *)(state + 0xc) = 0;
+  }
 }
 
 
@@ -44950,159 +44700,60 @@ void FUN_0034a990(void)
 
 
 void FUN_0034a9c0(u8 (*param_1) [16])
-
-
-
 {
-
   u32 uVar1;
-
   int iVar2;
-
-  int iVar3;
-
-  __int128 in_zero_qw;
-
-  int iVar4;
-
-  __int128 auVar5;
-
   int iVar6;
-
+  int iVar3;
+  int iVar4;
+  u8 *state;
   float fVar7;
-
-  u32 uVar8;
-
-  __int128 extraout_vf10;
-
-  __int128 auVar9;
-
-  __int128 auVar10;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  
+  f32 vuPos[4];
+  u32 c1s;
+  u32 c2s;
+  u8 packed[4];
 
   uVar1 = *(u32 *)param_1[2];
-
   iVar2 = *(int *)(param_1[2] + 4);
-
+  state = (u8 *)(iVar2 + 0xc0);
   iVar3 = *(int *)(iVar2 + 0xb8);
-
   if (iVar3 == 0) {
-
     iVar6 = 0;
-
   }
-
   else {
-
     iVar6 = *(int *)(param_1[1] + 0xc);
-
   }
-
   if (iVar3 >= iVar6) {
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
-
-    if (*(char *)(iVar2 + 0xbc) == '\0') {
-
-      _lqc2(*param_1);
-
-      uVar8 = FUN_00329ba0(fVar7 * *(float *)(param_1[1] + 4));
-
-      *(u32 *)(iVar2 + 0xe4) = uVar8;
-
-      auVar5 = _sqc2(extraout_vf10);
-
-      uStack_20 = auVar5._0_4_;
-
-      *(u32 *)(iVar2 + 0xdc) = uStack_20;
-
-      uStack_1c = auVar5._4_4_;
-
-      *(u32 *)(iVar2 + 0xe0) = uStack_1c;
-
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x8c),iVar6,iVar3);
+    if (*(u8 *)(iVar2 + 0xbc) != 0) {
+      *(u32 *)(state + 0x1c) = 0x43a00000;
+      *(u32 *)(state + 0x20) = 0x43600000;
+      *(float *)(state + 0x24) = fVar7;
     }
-
     else {
-
-      *(u32 *)(iVar2 + 0xdc) = 0x43a00000;
-
-      *(u32 *)(iVar2 + 0xe0) = 0x43600000;
-
-      *(float *)(iVar2 + 0xe4) = fVar7;
-
+      fVar7 = fVar7 * *(float *)(param_1[1] + 4);
+      __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "memory");
+      fVar7 = FUN_00329ba0(fVar7);
+      *(float *)(state + 0x24) = fVar7;
+      __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vuPos) : "memory");
+      *(float *)(state + 0x1c) = vuPos[0];
+      *(float *)(state + 0x20) = vuPos[1];
     }
-
-    iVar4 = FUN_0032a120((char *)(iVar2),(u32 *)(iVar2 + 0x24),(int)(iVar6),(long)(iVar3));
-
-    auVar5 = _pextlb(0,(long)*(int *)param_1[1]);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar9 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(uGpffff815c);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auVar10 = _vmove(auVar5);
-
-    auVar5 = _pextlb(0,(long)iVar4);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar9 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(uGpffff815c);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auVar9 = _vmul(auVar5,auVar10);
-
-    auVar5 = _qmtc2(0x437f0000);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auVar5 = _vftoi0(auVar5);
-
-    auVar5 = _qmfc2(auVar5._0_4_);
-
-    auVar5 = _ppach(in_zero_qw,auVar5);
-
-    auVar5 = _ppacb(in_zero_qw,auVar5);
-
-    *(int *)(iVar2 + 0xcc) = auVar5._0_4_;
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
-
-    *(float *)(iVar2 + 0xd8) = fGpffff80b0 * fVar7;
-
-    fVar7 = (float)FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
-
-    *(float *)(iVar2 + 0xd4) = fGpffff80b0 * fVar7;
-
-    *(u32 *)(iVar2 + 0xd0) = *(u32 *)(iVar2 + 0x28);
-
-    FUN_00349450((u64)(iVar2 + 0xc0),(int *)(uVar1));
-
+    iVar4 = FUN_0032a120((char *)iVar2,(u32 *)(iVar2 + 0x24),iVar6,iVar3);
+    c2s = (u32)iVar4;
+    c1s = *(u32 *)param_1[1];
+    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
+    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
+    *(float *)(state + 0x18) = fGpffff80b0 * fVar7;
+    fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
+    *(float *)(state + 0x14) = fGpffff80b0 * fVar7;
+    *(u32 *)(state + 0x10) = *(u32 *)(iVar2 + 0x28);
+    FUN_00349450_ptr((int *)state,(int *)uVar1);
   }
-
   else {
-
-    *(u32 *)(iVar2 + 0xcc) = 0;
-
+    *(u32 *)(state + 0xc) = 0;
   }
-
-  return;
-
 }
 
 
@@ -45284,153 +44935,58 @@ void FUN_0034ada0(int param_1)
 
 
 void FUN_0034ae30(u8 (*param_1) [16])
-
-
-
 {
-
   int iVar1;
-
-  __int128 in_zero_qw;
-
-  int iVar2;
-
-  __int128 auVar3;
-
   int iVar4;
-
+  int iVar2;
+  u8 *state;
   float fVar5;
-
-  __int128 extraout_vf10;
-
-  __int128 auVar6;
-
-  __int128 auVar7;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  
+  f32 vuPos[4];
+  u32 c1s;
+  u32 c2s;
+  u8 packed[4];
 
   iVar1 = *(int *)(param_1[2] + 4);
-
+  state = (u8 *)(iVar1 + 0xc0);
   iVar2 = *(int *)(iVar1 + 0xb8);
-
-  if (iVar2 != 0) {
-
-    iVar4 = *(int *)(param_1[1] + 0xc);
-
-  }
-
-  else {
-
+  if (iVar2 == 0) {
     iVar4 = 0;
-
   }
-
-  if (iVar2 < iVar4) {
-
-    *(u8 *)(iVar1 + 0xcf) = 0;
-
-  }
-
   else {
-
-    fVar5 = (float)FUN_0032a540((char *)(iVar1 + 0x8c),iVar4,iVar2);
-
-    if (*(char *)(iVar1 + 0xbc) != '\0') {
-
-      *(u32 *)(iVar1 + 0xc4) = 0x43a00000;
-
-      *(u32 *)(iVar1 + 200) = 0x43600000;
-
-      *(float *)(iVar1 + 0xd4) = 320.0f - fVar5;
-
-      *(float *)(iVar1 + 0xd8) = 224.0f - fVar5;
-
-      *(float *)(iVar1 + 0xdc) = fVar5 + 320.0f;
-
-      *(float *)(iVar1 + 0xe0) = fVar5 + 224.0f;
-
-    }
-
-    else {
-
-      _lqc2(*param_1);
-
-      fVar5 = (float)FUN_00329ba0(fVar5 * *(float *)(param_1[1] + 4));
-
-      auVar3 = _sqc2(extraout_vf10);
-
-      fStack_20 = auVar3._0_4_;
-
-      *(float *)(iVar1 + 0xc4) = fStack_20;
-
-      fStack_1c = auVar3._4_4_;
-
-      *(float *)(iVar1 + 200) = fStack_1c;
-
-      *(float *)(iVar1 + 0xd4) = fStack_20 - fVar5;
-
-      *(float *)(iVar1 + 0xd8) = fStack_1c - fVar5;
-
-      *(float *)(iVar1 + 0xdc) = fStack_20 + fVar5;
-
-      *(float *)(iVar1 + 0xe0) = fStack_1c + fVar5;
-
-    }
-
-    iVar2 = FUN_0032a120((char *)(iVar1),(u32 *)(iVar1 + 0x24),(int)(iVar4),(long)(iVar2));
-
-    auVar3 = _pextlb(0,(long)*(int *)param_1[1]);
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar6 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(uGpffff815c);
-
-    auVar3 = _vmulbc(auVar6,auVar3);
-
-    auVar7 = _vmove(auVar3);
-
-    auVar3 = _pextlb(0,(long)iVar2);
-
-    auVar3 = _pextlh(0,auVar3._0_8_);
-
-    auVar3 = _qmtc2(auVar3._0_4_);
-
-    auVar6 = _vitof0(auVar3);
-
-    auVar3 = _qmtc2(uGpffff815c);
-
-    auVar3 = _vmulbc(auVar6,auVar3);
-
-    auVar6 = _vmul(auVar3,auVar7);
-
-    auVar3 = _qmtc2(0x437f0000);
-
-    auVar3 = _vmulbc(auVar6,auVar3);
-
-    auVar3 = _vftoi0(auVar3);
-
-    auVar3 = _qmfc2(auVar3._0_4_);
-
-    auVar3 = _ppach(in_zero_qw,auVar3);
-
-    auVar3 = _ppacb(in_zero_qw,auVar3);
-
-    *(int *)(iVar1 + 0xcc) = auVar3._0_4_;
-
-    *(u32 *)(iVar1 + 0xd0) = *(u32 *)(iVar1 + 0x28);
-
+    iVar4 = *(int *)(param_1[1] + 0xc);
   }
-
-  return;
-
+  if (iVar2 >= iVar4) {
+    fVar5 = FUN_0032a540((char *)(iVar1 + 0x8c),iVar4,iVar2);
+    if (*(u8 *)(iVar1 + 0xbc) != 0) {
+      *(u32 *)(state + 4) = 0x43a00000;
+      *(u32 *)(state + 8) = 0x43600000;
+      *(float *)(state + 0x14) = 320.0f - fVar5;
+      *(float *)(state + 0x18) = 224.0f - fVar5;
+      *(float *)(state + 0x1c) = fVar5 + 320.0f;
+      *(float *)(state + 0x20) = fVar5 + 224.0f;
+    }
+    else {
+      fVar5 = fVar5 * *(float *)(param_1[1] + 4);
+      __asm__ volatile ("lqc2 $vf10, 0(%0)" : : "r"(param_1) : "memory");
+      fVar5 = FUN_00329ba0(fVar5);
+      __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(vuPos) : "memory");
+      *(float *)(state + 4) = vuPos[0];
+      *(float *)(state + 8) = vuPos[1];
+      *(float *)(state + 0x14) = vuPos[0] - fVar5;
+      *(float *)(state + 0x18) = vuPos[1] - fVar5;
+      *(float *)(state + 0x1c) = vuPos[0] + fVar5;
+      *(float *)(state + 0x20) = vuPos[1] + fVar5;
+    }
+    iVar2 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar4,iVar2);
+    c2s = (u32)iVar2;
+    c1s = *(u32 *)param_1[1];
+    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
+    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    *(u32 *)(state + 0x10) = *(u32 *)(iVar1 + 0x28);
+  }
+  else {
+    state[0xf] = 0;
+  }
 }
 
 
