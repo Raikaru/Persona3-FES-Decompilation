@@ -3226,8 +3226,8 @@ void FUN_003e0780(void)
   iVar1 = FUN_003c5460(DAT_007ce688);
   uVar2 = kwlnTaskCreate(0,(char *)&DAT_007cd7b8,10,FUN_003e0830,0,0);
   *(int *)(iVar1 + 0x80) = (int)uVar2;
-  uVar2 = kwlnTaskCreate((KwlnTask *)uVar2,(const char *)0x6a6ad8,0x18b6,FUN_003e0870,0,0);
-  kwlnTaskCreate((KwlnTask *)uVar2,(const char *)0x6a6ae8,0x106f,FUN_003e08e0,0,0);
+  uVar2 = kwlnTaskCreate(uVar2,(const char *)0x6a6ad8,0x18b6,FUN_003e0870,0,0);
+  kwlnTaskCreate(uVar2,(const char *)0x6a6ae8,0x106f,FUN_003e08e0,0,0);
   return;
 }
 

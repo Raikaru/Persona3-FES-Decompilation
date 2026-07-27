@@ -4326,9 +4326,9 @@ void FUN_00320810(int *param_1)
 
 
 {
+  u8 *iVar1;
   int iVar3;
   u32 uVar2;
-  u8 *iVar1;
   float fVar4;
   float fVar5;
 

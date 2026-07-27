@@ -3566,6 +3566,8 @@ void FUN_003bb7a0(Resrc* param_1)
 }
 #define FUN_003bb7a0(...) ((void (*)(...))FUN_003bb7a0)(__VA_ARGS__)
 #undef FUN_003bb9b0
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_003BB9B0 NONMATCHING
 
 
@@ -3599,6 +3601,7 @@ void FUN_003bb9b0(float *param_1)
   return;
 
 }
+#pragma pop
 #define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
 #undef FUN_003bba70
 // FUN_003BBA70
