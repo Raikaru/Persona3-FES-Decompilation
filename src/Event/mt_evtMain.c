@@ -1069,13 +1069,8 @@ void FUN_00361270(int param_1)
 
           }
 
-          puVar1[0x28] = 0;
-
-          puVar1[0x29] = 0;
-
-          puVar1[0x26] = 0;
-
-          puVar1[0x27] = 0;
+          *(u32 *)((int)puVar1 + 0x50) = 0;
+          *(u32 *)((int)puVar1 + 0x4c) = 0;
 
           *(int *)(iVar2 + 0x68) = *(int *)(iVar2 + 0x68) + -1;
 
