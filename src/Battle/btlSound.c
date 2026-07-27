@@ -1754,9 +1754,9 @@ u32 FUN_002defe0(int param_1)
 
   s32 lVar2;
 
-  u32 uVar3;
-
   u32 uVar4;
+
+  u32 uVar3;
 
   int aiStack_30 [12];
   

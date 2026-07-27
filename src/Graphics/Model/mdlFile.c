@@ -7208,7 +7208,7 @@ u64 FUN_00323640(u16 *param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   u16 *puVar5;
 
@@ -7240,7 +7240,7 @@ u64 FUN_00323640(u16 *param_1)
 
     puVar5 = *(u16 **)(iVar3 + 0x2c);
 
-    for (lVar7 = 0; lVar7 < (short)param_1[5]; lVar7 = (long)((int)lVar7 + 1)) {
+    for (lVar7 = 0; lVar7 < (short)param_1[5]; lVar7 = lVar7 + 1) {
 
       *puVar5 = *puVar6;
 
@@ -7262,7 +7262,7 @@ u64 FUN_00323640(u16 *param_1)
 
   else {
 
-    uVar4 = FUN_003234f0(param_1[5],*(u32 *)(param_1 + 2));
+    uVar4 = FUN_003234f0_u32(param_1[5],*(u32 *)(param_1 + 2));
 
     if (*(int *)**(u32 **)(*(int *)(*(int *)(param_1 + 8) + 0x18) + 0x20) != 0) {
 
