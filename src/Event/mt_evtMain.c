@@ -6197,7 +6197,7 @@ void FUN_00365f80(u32 param_1,u32 param_2)
 
             }
 
-            else if (lVar6 != 0) {
+            else {
 
               if ((iStack_8 == 0) || (10 < iStack_8)) {
 
@@ -13552,7 +13552,7 @@ u32 FUN_0036d470(int param_1)
 }
 
 
-// FUN_0036D500 NONMATCHING
+// FUN_0036D500
 
 
 code * FUN_0036d500(void)
