@@ -2933,7 +2933,7 @@ void FUN_003b2020(int param_1,int param_2)
 
           if (lVar7 != 0) {
 
-            iVar5 = FUN_003b1920(iVar5,lVar7,1);
+            iVar5 = FUN_003b1920_typed(iVar5,lVar7,1);
 
           }
 

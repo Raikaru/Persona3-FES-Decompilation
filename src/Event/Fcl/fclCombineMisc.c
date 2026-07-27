@@ -1575,7 +1575,8 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
     }
 
-    sVar3 = FUN_003d7ac0(((iVar4 % 0xffff) * 0x13) / 0xffff + 2U & 0xff,uVar6 & 0xff,param_3);
+    sVar3 = FUN_003d7ac0_u8((u8)(((iVar4 % 0xffff) * 0x13) / 0xffff + 2U & 0xff),
+                            (u8)(uVar6 & 0xff),param_3);
 
     lVar8 = FUN_001749a0(sVar3);
 

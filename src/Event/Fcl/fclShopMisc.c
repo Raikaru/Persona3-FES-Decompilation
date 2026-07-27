@@ -620,7 +620,7 @@ extern u8 DAT_006acc60_abs[];
 u32 DAT_006acc60;
 extern u8 DAT_006acc70[];
 extern u8 DAT_006acc72[];
-u32 DAT_006acca0;
+u16 DAT_006acca0[];
 u32 DAT_006aedc0[];
 u32 DAT_006aedc4[];
 u32 DAT_006aee60;
