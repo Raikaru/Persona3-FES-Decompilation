@@ -4300,7 +4300,7 @@ u32 func_002ecf80(int param_1);
 void func_002ed350(void);
 u32 func_002ed360(u64 *param_1);
 void func_002ee640(u64 *param_1);
-u32 func_002eea10(s32 param_1);
+u32 func_002eea10(BtlAction* action);
 void func_002eeb70(BtlAction* action);
 void func_002eec60(void);
 u32 func_002eee20(BtlAction* param_1,float *param_2);
@@ -7512,48 +7512,45 @@ void func_002e95f0(void)
 }
 #pragma opt_loop_invariants off
 
-// FUN_002e97e0 NONMATCHING
+// FUN_002e97e0
 int func_002e97e0(void)
-
 {
   extern s32 FUN_0030b5a0();
-  int iVar1;
-  s32 lVar2;
-  u32 uVar3;
-  int iVar4;
-  int iVar5;
-  u32 auStack_20 [8];
-  
-  iVar5 = 0;
-  iVar4 = *(int *)(iGpffffb6fc + 0x158);
-  do {
-    if (iVar4 == 0) {
-LAB_002e9848:
-      if (iVar5 != 0) {
-        FUN_002d5dc0(auStack_20);
-        auStack_20[0] = 0xfff00001;
-        for (iVar4 = *(int *)(iGpffffb6fc + 0x14c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x4a8)) {
-          if ((*(u16 *)(iVar4 + 0x1a) & 1) != 0) {
-            iVar1 = *(int *)(iVar4 + 0x30);
-            if (((*(char *)(iVar1 + 0xa2) == '\x01') && (*(short *)(iVar1 + 0xa4) != 0x100)) &&
-               (lVar2 = FUN_0030b5a0(*(u32 *)(iVar1 + 0xa2c),0), lVar2 == 0)) {
-              uVar3 = (u32)FUN_002d7e20_packet_voice((BtlAction*)iVar4,(BtlAction*)iVar4,auStack_20,1,1);
-              FUN_0027ed20(uVar3,1);
-              uVar3 = FUN_00284200_u32_voice(1.0f,iVar1,2,0,0);
-              FUN_0027ed20(uVar3,1);
-            }
-          }
+  BtlUnit* enemy;
+  BtlAction* action;
+  s32 found;
+  BtlUnit* unit;
+  BtlPacket* packet;
+  u32 data[8];
+
+  found = 0;
+  for (enemy = gBtl->unitLists[UNIT_GENUS_EC].head;
+       enemy != NULL; enemy = enemy->next) {
+    if (enemy->charId == 0x100 &&
+        FUN_0030b5a0(enemy->datUnit, 0) != 0) {
+      found = 1;
+      break;
+    }
+  }
+  if (found != 0) {
+    FUN_002d5dc0(data);
+    data[0] = 0xfff00001;
+    for (action = gBtl->actionList.tail;
+         action != NULL; action = action->prev) {
+      if ((action->unk_1a & 1) != 0) {
+        unit = action->unit;
+        if (unit->genus == UNIT_GENUS_EC &&
+            unit->charId != 0x100 &&
+            FUN_0030b5a0(unit->datUnit, 0) == 0) {
+          packet = FUN_002d7e20_packet_voice(action, action, data, 1, 1);
+          FUN_0027ed20_voice((u32)packet, 1);
+          packet = FUN_00284200_packet_voice(1.0f, unit, 2, 0, 0);
+          FUN_0027ed20_voice((u32)packet, 1);
         }
       }
-      return iVar5;
     }
-    if ((*(short *)(iVar4 + 0xa4) == 0x100) &&
-       (lVar2 = FUN_0030b5a0(*(u32 *)(iVar4 + 0xa2c),0), lVar2 != 0)) {
-      iVar5 = 1;
-      goto LAB_002e9848;
-    }
-    iVar4 = *(int *)(iVar4 + 0xa34);
-  } while( true );
+  }
+  return found;
 }
 
 // FUN_002e9950
@@ -9900,34 +9897,41 @@ void func_002ee640(u64 *param_1)
   return;
 }
 
-// FUN_002eea10 NONMATCHING
-u32 func_002eea10(s32 param_1)
-
+// FUN_002eea10
+u32 func_002eea10(BtlAction* action)
 {
-  s32 lVar1;
-  u64 uVar2;
-  u64 *puVar3;
-  
-  lVar1 = FUN_0029ad20();
-  puVar3 = (u64 *)param_1;
-  if (param_1 == lVar1) {
-    *(u32 *)(*(int *)(puVar3 + 6) + 0x9c) = *(u32 *)(*(int *)(puVar3 + 6) + 0x9c) & 0xffffffef;
-  }
-  else if ((*(u32 *)(*(int *)(puVar3 + 6) + 0x9c) & 0x10) != 0) {
-    return true;
-  }
-  lVar1 = FUN_0027e390(*puVar3,0x3fffffffffffffff);
-  if (lVar1 == 0) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfff7ffff;
-    FUN_002d7890(param_1,0);
-    FUN_0029a320(param_1);
-    *(short *)(*(int *)(puVar3 + 6) + 0xa0) = *(short *)(*(int *)(puVar3 + 6) + 0xa0) + -1;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x2000000;
-    FUN_0027ed20(uVar2,1);
-    FUN_0027ed20(uVar2,1);
-    FUN_0027ed20(uVar2,1);
-  }
-  return lVar1 != 0;
+    BtlPacket* packet;
+
+    if (action != btlActionCurrent())
+    {
+        if ((action->unit->flags3 & BTLUNIT_FLAG3_ENDURE) != 0)
+        {
+            return 1;
+        }
+    }
+    else
+    {
+        action->unit->flags3 &= ~BTLUNIT_FLAG3_ENDURE;
+    }
+
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        gBtl->flags &= ~0x80000;
+        FUN_002d7890(action, 0);
+        FUN_0029a320(action);
+        action->unit->packetCount--;
+        gBtl->flags |= 0x2000000;
+
+        packet = FUN_0029fa50(0x10);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002a1080(0x10, 4);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002a16c0(0x10);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        return 0;
+    }
+
+    return 1;
 }
 
 // FUN_002eeb70
@@ -10387,48 +10391,45 @@ void func_002ef7e0(void)
 }
 #pragma opt_loop_invariants off
 
-// FUN_002ef9d0 NONMATCHING
+// FUN_002ef9d0
 int func_002ef9d0(void)
-
 {
   extern s32 FUN_0030b5a0();
-  int iVar1;
-  s32 lVar2;
-  u32 uVar3;
-  int iVar4;
-  int iVar5;
-  u32 auStack_20 [8];
-  
-  iVar5 = 0;
-  iVar4 = *(int *)(DAT_007ce3ec + 0x158);
-  do {
-    if (iVar4 == 0) {
-LAB_002efa38:
-      if (iVar5 != 0) {
-        FUN_002d5dc0(auStack_20);
-        auStack_20[0] = 0xfff00001;
-        for (iVar4 = *(int *)(DAT_007ce3ec + 0x14c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x4a8)) {
-          if ((*(u16 *)(iVar4 + 0x1a) & 1) != 0) {
-            iVar1 = *(int *)(iVar4 + 0x30);
-            if (((*(char *)(iVar1 + 0xa2) == '\x01') && (*(short *)(iVar1 + 0xa4) != 0x10d)) &&
-               (lVar2 = FUN_0030b5a0(*(u32 *)(iVar1 + 0xa2c),0), lVar2 == 0)) {
-              uVar3 = (u32)FUN_002d7e20_packet_voice((BtlAction*)iVar4,(BtlAction*)iVar4,auStack_20,1,1);
-              FUN_0027ed20(uVar3,1);
-              uVar3 = FUN_00284200_u32_voice(1.0f,iVar1,2,0,0);
-              FUN_0027ed20(uVar3,1);
-            }
-          }
+  BtlUnit* enemy;
+  BtlAction* action;
+  s32 found;
+  BtlUnit* unit;
+  BtlPacket* packet;
+  u32 data[8];
+
+  found = 0;
+  for (enemy = gBtl->unitLists[UNIT_GENUS_EC].head;
+       enemy != NULL; enemy = enemy->next) {
+    if (enemy->charId == 0x10d &&
+        FUN_0030b5a0(enemy->datUnit, 0) != 0) {
+      found = 1;
+      break;
+    }
+  }
+  if (found != 0) {
+    FUN_002d5dc0(data);
+    data[0] = 0xfff00001;
+    for (action = gBtl->actionList.tail;
+         action != NULL; action = action->prev) {
+      if ((action->unk_1a & 1) != 0) {
+        unit = action->unit;
+        if (unit->genus == UNIT_GENUS_EC &&
+            unit->charId != 0x10d &&
+            FUN_0030b5a0(unit->datUnit, 0) == 0) {
+          packet = FUN_002d7e20_packet_voice(action, action, data, 1, 1);
+          FUN_0027ed20_voice((u32)packet, 1);
+          packet = FUN_00284200_packet_voice(1.0f, unit, 2, 0, 0);
+          FUN_0027ed20_voice((u32)packet, 1);
         }
       }
-      return iVar5;
     }
-    if ((*(short *)(iVar4 + 0xa4) == 0x10d) &&
-       (lVar2 = FUN_0030b5a0(*(u32 *)(iVar4 + 0xa2c),0), lVar2 != 0)) {
-      iVar5 = 1;
-      goto LAB_002efa38;
-    }
-    iVar4 = *(int *)(iVar4 + 0xa34);
-  } while( true );
+  }
+  return found;
 }
 
 // FUN_002efb40

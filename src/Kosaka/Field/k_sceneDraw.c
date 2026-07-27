@@ -1177,7 +1177,7 @@ void func_0019fec0(const void* position)
     func_001b5a00(gMtScene->fldFilterTask, position);
 }
 
-// FUN_0019ff10 NONMATCHING
+// FUN_0019ff10
 void func_0019ff10()
 {
     Resrc* res;
@@ -1205,7 +1205,6 @@ void func_0019ff10()
     directionalColor->b = directionalValue;
     directionalColor->a = 0.0f;
     RwMatrixSetIdentity(directionalMatrix);
-    *(u32*)((u8*)res + 0x12c) |= 0x20003;
 
     axis.x = 0.0f;
     axis.y = 1.0f;
@@ -1220,40 +1219,42 @@ void func_0019ff10()
 // FUN_001a0040 NONMATCHING
 void func_001a0040(u32 visible, u32 updateField)
 {
-    Resrc* res;
+    Resrc* fld;
+    Resrc* modelFld;
     Field* field;
 
-    field = K_Field_Get();
-    res = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-    while (res != NULL)
+    fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    while (fld != NULL)
     {
         if (visible == 1)
         {
-            res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+            fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+            field = K_Field_Get();
             *(u32*)((u8*)field + 0x34) = 0;
         }
         else
         {
-            res->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+            fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+            field = K_Field_Get();
             *(u32*)((u8*)field + 0x34) = 1;
         }
-        res = res->next;
+        fld = fld->next;
     }
 
     if (updateField == 1)
     {
-        res = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
-        while (res != NULL)
+        while (modelFld != NULL)
         {
             if (visible == 1)
             {
-                res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+                modelFld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             }
             else
             {
-                res->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+                modelFld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             }
-            res = res->next;
+            modelFld = modelFld->next;
         }
     }
 }

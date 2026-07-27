@@ -4688,6 +4688,7 @@ void FUN_003bd130(void)
     if (PTR_s_icon_ICON1_EPL_006a3130[iVar2] != (u8 *)0x0) {
 
       ppVar2 = (void **)(DAT_0095b000_abs + iVar2 * 4);
+      /* Removing this barrier loses FUN_003bd130 (MATCH nd0 -> MISMATCH nd18) - measured W164. */
       asm volatile("" : "+m"(*ppVar2));
 
       pVar1 = FUN_00100d80_typed_scene((const char *)PTR_s_icon_ICON1_EPL_006a3130[iVar2],0);

@@ -1523,6 +1523,7 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
   upperBound = param_2 + param_3_p;
   i = 0;
   foundStart = 0;
+  /* Removing this barrier loses func_001fb3f0 (MATCH nd0 -> MISMATCH nd2) - measured W164. */
   asm volatile("" : "+r"(i));
   while (1) {
     entry = (u8 *)(param_1 + i * 10);

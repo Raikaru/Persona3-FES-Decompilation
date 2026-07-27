@@ -1250,6 +1250,7 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
     pos.startX = -19.0f;
 
     selectedEntry = work->selectedEntry;
+    /* Removing this barrier loses h_campDrawRootMenuEntries (MATCH nd0 -> MISMATCH nd463) - measured W164. */
     asm volatile("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;
@@ -1589,6 +1590,7 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
 
     pos.startX = -19.0f;
     selectedEntry = work->selectedEntry;
+    /* Removing this barrier loses h_campDrawRootMenuEntriesClosing (MATCH nd0 -> MISMATCH nd455) - measured W164. */
     asm volatile("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;
@@ -1742,6 +1744,7 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
 
     pos.startX = -19.0f;
     selectedEntry = work->selectedEntry;
+    /* Removing this barrier loses h_campDrawRootMenuEntriesFadeOut (MATCH nd0 -> MISMATCH nd455) - measured W164. */
     asm volatile("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;

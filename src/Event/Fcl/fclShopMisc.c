@@ -17529,6 +17529,7 @@ int FUN_00405db0(u32* param_1, u32* param_2)
 
   base = (s16*)((u8*)iGpffffac00 + 0x3a);
   a = base[*(s16*)(*(u32*)(*(u32*)(*param_1 + 0x14) + 0x1c) + 4) * 0x20];
+  /* Removing this barrier loses FUN_00405db0 (MATCH nd0 -> MISMATCH nd3) - measured W164. */
   asm volatile("" : "+m"(a));
   b = base[*(s16*)(*(u32*)(*(u32*)(*param_2 + 0x14) + 0x1c) + 4) * 0x20];
   return b - a;
