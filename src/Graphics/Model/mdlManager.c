@@ -1190,7 +1190,7 @@ void func_00312d40(u8* param_1,u8* param_2);
 void func_00312e80(int param_1);
 u32 func_00312f90(u32 param_1);
 u64 func_00313090(u64 param_1,u32 param_2);
-void func_00313ca0(int *param_1,u64 param_2);
+void func_00313ca0(int *param_1,u32 param_2);
 int func_00313f40(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 void* func_003140c0(void* param_1,u16 *param_2);
@@ -3555,7 +3555,7 @@ void func_00313be0(MdlAnimEntryTable* table)
 // FUN_00313CA0 NONMATCHING
 
 
-void func_00313ca0(int *param_1,u64 param_2)
+void func_00313ca0(int *param_1,u32 param_2)
 
 
 

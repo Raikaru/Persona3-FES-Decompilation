@@ -1482,7 +1482,7 @@ void FUN_0038f0f0(u32 param_1)
 
     for (iVar15 = 0; iVar15 < iVar5; iVar15 = iVar15 + 1) {
 
-      FUN_0038d910((u64)puVar6);
+      FUN_0038d910(puVar6);
 
       iVar7 = FUN_00361dd0(1,param_1,*puVar6,(u32)puVar6);
 

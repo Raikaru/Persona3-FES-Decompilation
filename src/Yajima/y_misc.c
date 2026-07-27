@@ -233,6 +233,8 @@ u32 DAT_0095bed0;
 u32 DAT_0095bed4;
 u32 DAT_0095bee0;
 u32 DAT_0095bfe0;
+#pragma alias DAT_0095bfe0_abs DAT_0095bfe0
+extern u8 DAT_0095bfe0_abs[];
 u8 DAT_0095c100[];
 u8 DAT_0095c110[];
 u8 DAT_0095c210[];
