@@ -3575,36 +3575,19 @@ void FUN_003bb9b0(float *param_1)
 
 {
 
-  float *pfVar1;
-
   int iVar2;
-
   float afStack_10 [4];
 
-  
-
   afStack_10[0] = *param_1;
-
   afStack_10[1] = param_1[1];
-
   afStack_10[2] = param_1[2];
-
   for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
-
-    pfVar1 = afStack_10 + iVar2;
-
-    while (360.0f <= *pfVar1) {
-
-      *pfVar1 = *pfVar1 - 360.0f;
-
+    while (360.0f <= afStack_10[iVar2]) {
+      afStack_10[iVar2] = afStack_10[iVar2] - 360.0f;
     }
-
-    while (*pfVar1 < 0.0f) {
-
-      *pfVar1 = *pfVar1 + 360.0f;
-
+    while (afStack_10[iVar2] < 0.0f) {
+      afStack_10[iVar2] = afStack_10[iVar2] + 360.0f;
     }
-
   }
 
   *param_1 = afStack_10[0];
