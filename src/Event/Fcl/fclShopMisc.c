@@ -220,7 +220,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2);
 short FUN_003f0830(int param_1);
 short FUN_003f0ac0(int param_1);
 long FUN_003f0d60(int param_1,u64 param_2);
-u32 FUN_003f0ec0(u64 param_1);
+u32 FUN_003f0ec0(u16 param_1);
 u16 FUN_003f10b0(int param_1,u16 param_2);
 u16 FUN_003f12a0(int param_1,int param_2);
 u64 FUN_003f1470(int param_1);
@@ -1571,7 +1571,7 @@ long FUN_003f0d60(int param_1,u64 param_2)
 // FUN_003F0EC0 NONMATCHING
 
 
-u32 FUN_003f0ec0(u64 param_1)
+u32 FUN_003f0ec0(u16 param_1)
 
 
 
