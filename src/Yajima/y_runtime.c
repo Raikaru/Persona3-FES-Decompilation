@@ -5012,7 +5012,7 @@ void FUN_004343d0(int param_1)
   u16 uVar2;
   u16 uVar3;
   int iVar4;
-  u8 bVar5;
+  int bVar5;
   int iVar6;
   int iVar7;
   int iVar8;
