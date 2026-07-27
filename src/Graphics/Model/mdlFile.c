@@ -1091,6 +1091,8 @@ extern u64 FUN_004c58a0();
 extern u64 FUN_004c8680();
 extern u64 FUN_004ca030();
 extern u64 FUN_004ca090();
+#pragma alias FUN_004ca090_u32 FUN_004ca090
+extern u32 FUN_004ca090_u32(void);
 extern u64 FUN_004caf10();
 #pragma alias FUN_004caf10_u32 FUN_004caf10
 extern u32 FUN_004caf10_u32(void);
@@ -1105,6 +1107,8 @@ extern u64 FUN_004cb7f0();
 extern u64 FUN_004cb7f0_typed(u32 param_1, void *param_2, u32 param_3);
 extern u64 FUN_004cde90();
 extern u64 FUN_004ce0f0();
+#pragma alias FUN_004ce0f0_u32 FUN_004ce0f0
+extern u32 FUN_004ce0f0_u32(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 extern u64 FUN_004d0d10();
 extern u64 FUN_004d0dc0();
 extern u64 FUN_004d0e40();
@@ -53743,7 +53747,7 @@ u64 FUN_00351a10(int param_1)
 
       }
 
-      lVar4 = FUN_004ca090();
+      lVar4 = FUN_004ca090_u32();
 
       *(int *)(pcVar3 + 0xc) = (int)lVar4;
 
@@ -53763,7 +53767,7 @@ u64 FUN_00351a10(int param_1)
 
       }
 
-      lVar4 = FUN_004ce0f0(0x200,0x100,0x10,0x185);
+      lVar4 = FUN_004ce0f0_u32(0x200,0x100,0x10,0x185);
 
       *(int *)(pcVar3 + 8) = (int)lVar4;
 
