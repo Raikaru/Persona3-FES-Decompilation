@@ -552,7 +552,7 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 extern void FUN_00318770_scene_typed(float param_1,u32 param_2,u32 param_3,u32 param_4);
 /* Retail calls: FUN_003bbd40 + 0x0ac, + 0x178; FUN_003bc220 + 0x110, + 0x138, + 0x2a0, + 0x2d8, + 0x3e0, + 0x408; FUN_003bc730 + 0x0e0, + 0x118. */
 #pragma alias FUN_003bbc90_scene_typed FUN_003bbc90
-extern void FUN_003bbc90_scene_typed(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,float *param_6,float *param_7);
+extern void FUN_003bbc90_scene_typed(float param_1,...);
 /* Retail call: FUN_003bbed0 + 0x0d4. */
 #pragma alias FUN_003bbd40_scene_typed FUN_003bbd40
 extern void FUN_003bbd40_scene_typed(float param_1,...);

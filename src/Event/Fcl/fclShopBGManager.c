@@ -5461,9 +5461,9 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   sStack_2 = DAT_007cda5e;
 
-  FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0x97, param_6 & 0xff, 0xb1, 0);
+  FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0x97, param_6, 0xb1, 0);
 
-  FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0x97, param_6 & 0xff, 0xb2, 0);
+  FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0x97, param_6, 0xb2, 0);
 
   FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0x97, param_6 & 0xff, 0xb5, 0);
 
