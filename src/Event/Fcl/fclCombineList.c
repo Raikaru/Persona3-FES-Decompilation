@@ -2476,7 +2476,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
     sVar2 = (short)(int)((float)((int)*(short *)(iVar1 + 0x24) - (int)sVar2) * fVar3 +
 
-                        (float)(int)sVar2 + 0.0);
+                        (float)(int)sVar2 + 0.0f);
 
     *(short *)(iVar1 + 0x20) = sVar2;
 

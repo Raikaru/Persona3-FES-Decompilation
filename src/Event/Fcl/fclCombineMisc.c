@@ -1720,7 +1720,7 @@ u64 FUN_003d72f0(u16 *param_1)
 
   int iVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   u32 uVar7;
 
@@ -1774,7 +1774,7 @@ LAB_003d7430:
 
       iVar5 = RpRandom();
 
-      if (uVar7 <= (u32)(long)(((iVar5 % 0xffff) * 1000) / 0xffff)) {
+      if (uVar7 <= (u32)(((iVar5 % 0xffff) * 1000) / 0xffff)) {
 
         *param_1 = *param_1 | 8;
 
