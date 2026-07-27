@@ -535,6 +535,8 @@ void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,  float *par
 void FUN_003bb620(u32 param_1,u32 *param_2,int param_3);
 void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
+#pragma alias FUN_003bb9b0_scene_typed FUN_003bb9b0
+extern void FUN_003bb9b0_scene_typed(float *param_1);
 void FUN_003bba70(int param_1);
 void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
 void FUN_003bbb90(u64 param_1,u32 *param_2);
