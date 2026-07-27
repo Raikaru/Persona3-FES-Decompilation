@@ -2761,7 +2761,7 @@ u64 FUN_003f2320(int param_1,int param_2)
 
   u32 *puVar1;
 
-  long lVar2;
+  int lVar2;
 
   short *psVar3;
 

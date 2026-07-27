@@ -353,6 +353,8 @@ extern void func_004be1e0(void *out, const void *in, s32 count, const void *matr
 extern u64 func_004c69f0();
 extern u64 func_004c6b20();
 extern u64 func_0051e0e0();
+#pragma alias func_0051e0e0_s32 func_0051e0e0
+extern s32 func_0051e0e0_s32(s32 value);
 extern u64 func_00521250();
 extern u64 func_00521408();
 extern u64 func_00523ac8();
@@ -7905,7 +7907,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
          || (cVar1 == '\x01')))) && ((param_5 != 1 || (cVar1 == '\0')))) {
       iVar5 = func_00303130_s32(uVar2,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
                            *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,0,1);
-      lVar6 = func_0051e0e0((uVar4 & 0xffff) - ((uVar3 & 0xffff) + iVar5));
+      lVar6 = func_0051e0e0_s32((uVar4 & 0xffff) - ((uVar3 & 0xffff) + iVar5));
       if (lVar6 < lVar9) {
         uVar8 = (u32)*puVar10;
         lVar9 = lVar6;

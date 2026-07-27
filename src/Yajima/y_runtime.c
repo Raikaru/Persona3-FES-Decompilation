@@ -709,6 +709,8 @@ extern code FUN_003b2cb0;
 #pragma alias FUN_003b2cb0_va FUN_003b2cb0
 extern void FUN_003b2cb0_va(f32 first, ...);
 extern code FUN_003b5d10;
+ #pragma alias FUN_003b5d10_eb90 FUN_003b5d10
+ extern u32 FUN_003b5d10_eb90(u32 param_1);
 extern code FUN_003b5d50;
 #pragma alias FUN_003b5d50_typed FUN_003b5d50
 extern void *FUN_003b5d50_typed(u32 resType);
@@ -8619,12 +8621,20 @@ u32 FUN_0043c500(int param_1)
   char cVar1;
   char *pcVar2;
   int iVar3;
-  long lVar4;
+  u32 lVar4;
   
   pcVar2 = *(char **)(param_1 + 0x3c);
   cVar1 = *pcVar2;
-  switch (cVar1) {
-  case '\0':
+  if (cVar1 == '\x03') {
+    return 0;
+  }
+  if (cVar1 == '\x02') {
+    return 0xffffffff;
+  }
+  if (cVar1 != '\x01') {
+    if (cVar1 != '\0') {
+      return 0;
+    }
     lVar4 = FUN_003b5d10_eb90(*(u16 *)(*(int *)(pcVar2 + 8) + 8));
     *(int *)(pcVar2 + 4) = (int)lVar4;
     if (lVar4 == 0) {
@@ -8638,14 +8648,6 @@ u32 FUN_0043c500(int param_1)
     }
     FUN_003182d0(iVar3,0,1,0,0);
     *pcVar2 = '\x01';
-    break;
-  case '\x01':
-    break;
-  case '\x02':
-    return 0xffffffff;
-  case '\x03':
-  default:
-    return 0;
   }
   iVar3 = *(int *)(*(int *)(pcVar2 + 4) + 0x104);
   if (iVar3 == 0) {
