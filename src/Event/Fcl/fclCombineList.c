@@ -2952,53 +2952,31 @@ void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4)
 
 
 int FUN_003e0260(u32 param_1,u32 param_2)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
+  FclAnimationResultRecord result;
+  s32 result_word;
 
-  u8 auStack_20 [4];
-
-  int iStack_1c;
-
-  
-
-  FUN_003e0080_p((void *)auStack_20,0,0,0);
-
+  FUN_003e0080_p((void *)&result,0,0,0);
   iVar1 = FUN_003dff80((int *)param_1,param_2);
-
   if (iVar1 == 0) {
-
-    iVar2 = (s32)FUN_003c4910((FclNodeList *)*(int *)param_1,*(u16 *)(*(int *)param_1 + 0x10) + 1,(FclNodeValueStorage *)(iStack_1c + 0x38));
-
+    result_word = *(s32 *)((byte *)&result + 4);
+    iVar2 = (s32)FUN_003c4910((FclNodeList *)*(int *)param_1,
+                              *(u16 *)(*(int *)param_1 + 0x10) + 1,
+                              (FclNodeValueStorage *)(result_word + 0x38));
     iVar1 = *(int *)(iVar2 + 0x14);
-
     *(int *)(iVar1 + 4) = iVar2;
-
-    if (iStack_1c != 0) {
-
+    if (result_word != 0)
       *(int *)(iVar1 + 0x34) = iVar1 + 0x38;
-
-    }
-
     *(u32 *)(iVar1 + 0xc) = 0;
-
     *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) | 4;
-
   }
-
   *(u32 *)(iVar1 + 0xc) = 1;
-
   *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) & 0xfffffffb;
-
-  fclCombineList003df100((FclAnimationNode *)iVar1,(FclAnimationResultRecord *)auStack_20);
-
+  fclCombineList003df100((FclAnimationNode *)iVar1,
+                         (FclAnimationResultRecord *)&result);
   return iVar1;
-
 }
 
 // FUN_003E0330
