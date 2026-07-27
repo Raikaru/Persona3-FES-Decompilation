@@ -122,8 +122,6 @@ u32 FUN_00396ed0(int param_1)
 // FUN_00396F50 NONMATCHING
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_00396f50(int param_1)
 
 
@@ -160,7 +158,6 @@ state_done:
   }
 
 }
-#pragma pop
 #define FUN_00396f50(...) ((void (*)(...))FUN_00396f50)(__VA_ARGS__)
 #undef FUN_00397030
 // FUN_00397030

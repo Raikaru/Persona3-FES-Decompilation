@@ -1398,8 +1398,6 @@ u32 FUN_001c20b0(void)
     return true;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001C2160
 u32 FUN_001c2160(void)
 {
@@ -1484,7 +1482,6 @@ common_false:
 done:
     return result;
 }
-#pragma pop
 // FUN_001C2340
 u32 FUN_001c2340(void)
 {

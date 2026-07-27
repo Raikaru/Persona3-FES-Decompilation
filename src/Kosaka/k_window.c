@@ -1310,8 +1310,6 @@ void func_001a3c30(KwlnTask* task)
     }
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_001A3DC0
 void func_001a3dc0(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
                    u32 count)
@@ -1351,7 +1349,6 @@ void func_001a3dc0(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
         descriptors++;
     }
 }
-#pragma pop
 
 // FUN_001A3F20
 u32 func_001a3f20(KwlnTask* task, const char* name)

@@ -199,8 +199,6 @@ void FUN_0025be60(u32 param_1, u32 param_2, u32 param_3)
 }
 
 // FUN_0025C220 NONMATCHING
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_0025c220(void)
 {
     u32* puVar1;
@@ -388,7 +386,6 @@ void FUN_0025c220(void)
         }
     }
 }
-#pragma pop
 
 // FUN_0025C9C0
 

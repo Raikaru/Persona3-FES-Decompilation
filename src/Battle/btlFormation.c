@@ -6445,8 +6445,6 @@ void func_002c2310(int param_1,u32 param_2)
   return;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_002c2360
 
 void func_002c2360(int param_1, u32 param_2)
@@ -6465,7 +6463,6 @@ void func_002c2360(int param_1, u32 param_2)
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c22d0);
     return;
 }
-#pragma pop
 
 // FUN_002c23c0
 

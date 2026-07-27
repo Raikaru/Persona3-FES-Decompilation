@@ -1886,7 +1886,6 @@ encounter_default:
     return 0;
 }
 
-#pragma opt_loop_invariants off
 // FUN_002fb860 NONMATCHING
 s64 func_002fb860(BtlUnit* unit, u16 index)
 {

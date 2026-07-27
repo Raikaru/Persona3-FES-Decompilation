@@ -263,8 +263,6 @@ void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
     return KWLNTASK_CONTINUE;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0019db10
 s32 func_0019db10(KwlnTask* task)
 {
@@ -337,7 +335,6 @@ s32 func_0019db10(KwlnTask* task)
                          rwCOMBINEREPLACE);
     return 0;
 }
-#pragma pop
 
 // FUN_0019de40
 void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
@@ -349,8 +346,6 @@ void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 
     return KWLNTASK_CONTINUE;
 }
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0019de80
 s32 func_0019de80(KwlnTask* task)
 {
@@ -423,7 +418,6 @@ s32 func_0019de80(KwlnTask* task)
 
     return 0;
 }
-#pragma pop
 // FUN_0019e1b0
 void* K_SceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 {

@@ -5,6 +5,11 @@ typedef u8 bool;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
+typedef char *va_list;
+#define va_start(ap,last) (ap = ((va_list)__builtin_next_arg(last) - (__builtin_args_info(2) >= 8 ? 0 : (8 - __builtin_args_info(2)) * 8)))
+#define va_end(ap) ((void)0)
+#pragma alias evtMenuVFormatText FUN_005288c8
+extern void evtMenuVFormatText(u8 *text,const char *format,va_list args);
 extern u32 FUN_00530da0(float);
 #pragma alias FUN_00394040_evt_misc FUN_00394040
 extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,long param_4);
@@ -718,7 +723,7 @@ void FUN_00389d80(int param_1,int param_2);
 void FUN_00389f40(void);
 void FUN_0038a0c0(int param_1,int param_2);
 void FUN_0038a140(u32 param_1,u32 *param_2);
-void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5, u64 param_6,u64 param_7,u64 param_8,u64 param_9);
+void evtMenuDrawText(s32 x,s32 y,f32 depth,s32 color,const char *format,...);
 void FUN_0038a590(int param_1,int param_2);
 void FUN_0038a620(int param_1,int param_2);
 void FUN_0038a6c0(int param_1);
@@ -2909,105 +2914,71 @@ float FUN_0038a220(int param_1)
 }
 
 
+#pragma alias evtMenuDrawText FUN_0038a260
 // FUN_0038A260 NONMATCHING
 
 
 
 
 
-void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5,
-                  u64 param_6,u64 param_7,u64 param_8,u64 param_9)
-
-
+void evtMenuDrawText(s32 x,s32 y,f32 depth,s32 style,const char *format,...)
 {
+  va_list args;
+  u8 text[256];
+  RwRGBA color;
+  RwV2d position;
 
-  u8 auStack_180 [256];
+  va_start(args,format);
+  evtMenuVFormatText(text,format,args);
 
-  float fStack_80;
-
-  float fStack_7c;
-
-  u32 uStack_74;
-
-  u32 uStack_30;
-  u64 uStack_28;
-
-  u64 uStack_20;
-
-  u64 uStack_18;
-
-  u64 uStack_10;
-
-  u64 uStack_8;
-
-  
-  uStack_30 = param_5;
-
-  uStack_20 = param_6;
-
-  uStack_18 = param_7;
-
-  uStack_10 = param_8;
-
-  uStack_8 = param_9;
-
-  FUN_005288c8(auStack_180,uStack_30,&uStack_20);
-
-  if (param_4 == 0xe) {
-
-    uStack_74 = 0xffc8c880;
-
+  if (style == 0xe) {
+    color.r = 0x80;
+    color.g = 0xc8;
+    color.b = 0xc8;
+    color.a = 0xff;
   }
-
-  else if (param_4 == 6) {
-
-    uStack_74 = 0xff64f0f0;
-
+  else if (style == 6) {
+    color.r = 0xf0;
+    color.g = 0xf0;
+    color.b = 0x64;
+    color.a = 0xff;
   }
-
-  else if (param_4 == 5) {
-
-    uStack_74 = 0xffff8080;
-
+  else if (style == 5) {
+    color.r = 0x80;
+    color.g = 0x80;
+    color.b = 0xff;
+    color.a = 0xff;
   }
-
-  else if (param_4 == 4) {
-
-    uStack_74 = 0xffff8080;
-
+  else if (style == 4) {
+    color.r = 0x80;
+    color.g = 0x80;
+    color.b = 0xff;
+    color.a = 0xff;
   }
-
-  else if ((param_4 != 3) && (param_4 != 2)) {
-
-    if (param_4 == 1) {
-
-      uStack_74 = 0xffff8080;
-
+  else if ((style != 3) && (style != 2)) {
+    if (style == 1) {
+      color.r = 0x80;
+      color.g = 0x80;
+      color.b = 0xff;
+      color.a = 0xff;
     }
-
-    else if (param_4 == 0) {
-
-      uStack_74 = 0xffe6e6e6;
-
+    else if (style == 0) {
+      color.r = 0xe6;
+      color.g = 0xe6;
+      color.b = 0xe6;
+      color.a = 0xff;
     }
-
     else {
-
-      uStack_74 = 0xff808080;
-
+      color.r = 0x80;
+      color.g = 0x80;
+      color.b = 0x80;
+      color.a = 0xff;
     }
-
   }
-  fStack_80 = (float)param_1;
 
-  fStack_7c = (float)param_2;
-
-  *(float *)((u8 *)&uStack_28 + 4) = (float)param_2;
-  *(float *)&uStack_28 = (float)param_1;
-  FUN_001050e0_typed(uStack_28,param_3,uStack_74,auStack_180);
-
-  return;
-
+  position.x = (f32)x;
+  position.y = (f32)y;
+  FUN_001050e0_typed(*(u64 *)&position,depth,*(u32 *)&color,text);
 }
 
 

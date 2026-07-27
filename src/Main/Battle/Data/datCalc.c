@@ -6935,7 +6935,6 @@ void FUN_0030cf00(void)
 
 
 // FUN_0030d000
-#pragma schedule off
 void FUN_0030d000(void)
 
 {
@@ -6947,8 +6946,6 @@ void FUN_0030d000(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-  #pragma push
-  #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -6957,7 +6954,6 @@ void FUN_0030d000(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-  #pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -6966,7 +6962,6 @@ done:
 
 
 // FUN_0030d0e0
-#pragma schedule off
 void FUN_0030d0e0(void)
 {
   float fVar1;
@@ -6977,8 +6972,6 @@ void FUN_0030d0e0(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -6987,7 +6980,6 @@ void FUN_0030d0e0(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -6997,7 +6989,6 @@ done:
 
 
 // FUN_0030d1c0
-#pragma schedule off
 void FUN_0030d1c0(void)
 
 {
@@ -7009,8 +7000,6 @@ void FUN_0030d1c0(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7019,7 +7008,6 @@ void FUN_0030d1c0(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7029,7 +7017,6 @@ done:
 
 
 // FUN_0030d2a0
-#pragma schedule off
 void FUN_0030d2a0(void)
 
 {
@@ -7041,8 +7028,6 @@ void FUN_0030d2a0(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7051,7 +7036,6 @@ void FUN_0030d2a0(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7061,7 +7045,6 @@ done:
 
 
 // FUN_0030d380
-#pragma schedule off
 void FUN_0030d380(void)
 
 {
@@ -7073,8 +7056,6 @@ void FUN_0030d380(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7083,7 +7064,6 @@ void FUN_0030d380(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7437,7 +7417,6 @@ void FUN_0030e180(void)
 
 
 // FUN_0030e280
-#pragma schedule off
 void FUN_0030e280(void)
 
 {
@@ -7449,8 +7428,6 @@ void FUN_0030e280(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7459,7 +7436,6 @@ void FUN_0030e280(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7469,7 +7445,6 @@ done:
 
 
 // FUN_0030e360
-#pragma schedule off
 void FUN_0030e360(void)
 
 {
@@ -7481,8 +7456,6 @@ void FUN_0030e360(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7491,7 +7464,6 @@ void FUN_0030e360(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7501,7 +7473,6 @@ done:
 
 
 // FUN_0030e440
-#pragma schedule off
 void FUN_0030e440(void)
 
 {
@@ -7513,8 +7484,6 @@ void FUN_0030e440(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7523,7 +7492,6 @@ void FUN_0030e440(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7533,7 +7501,6 @@ done:
 
 
 // FUN_0030e520
-#pragma schedule off
 void FUN_0030e520(void)
 
 {
@@ -7545,8 +7512,6 @@ void FUN_0030e520(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7555,7 +7520,6 @@ void FUN_0030e520(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7565,7 +7529,6 @@ done:
 
 
 // FUN_0030e600
-#pragma schedule off
 void FUN_0030e600(void)
 
 {
@@ -7577,8 +7540,6 @@ void FUN_0030e600(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7587,7 +7548,6 @@ void FUN_0030e600(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7958,7 +7918,6 @@ void FUN_0030f3e0(void)
 
 
 // FUN_0030f4e0
-#pragma schedule off
 void FUN_0030f4e0(void)
 
 {
@@ -7970,8 +7929,6 @@ void FUN_0030f4e0(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -7980,7 +7937,6 @@ void FUN_0030f4e0(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -7990,7 +7946,6 @@ done:
 
 
 // FUN_0030f5c0
-#pragma schedule off
 void FUN_0030f5c0(void)
 
 {
@@ -8002,8 +7957,6 @@ void FUN_0030f5c0(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -8012,7 +7965,6 @@ void FUN_0030f5c0(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -8022,7 +7974,6 @@ done:
 
 
 // FUN_0030f6a0
-#pragma schedule off
 void FUN_0030f6a0(void)
 
 {
@@ -8034,8 +7985,6 @@ void FUN_0030f6a0(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -8044,7 +7993,6 @@ void FUN_0030f6a0(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -8054,7 +8002,6 @@ done:
 
 
 // FUN_0030f780
-#pragma schedule off
 void FUN_0030f780(void)
 
 {
@@ -8066,8 +8013,6 @@ void FUN_0030f780(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -8076,7 +8021,6 @@ void FUN_0030f780(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }
@@ -8086,7 +8030,6 @@ done:
 
 
 // FUN_0030f860
-#pragma schedule off
 void FUN_0030f860(void)
 
 {
@@ -8098,8 +8041,6 @@ void FUN_0030f860(void)
   fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
-#pragma push
-#pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
     goto nonpositive;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
@@ -8108,7 +8049,6 @@ void FUN_0030f860(void)
 nonpositive:
   fVar2 = 1.0f;
 done:
-#pragma pop
   FUN_00311190_typed((int)fVar2);
   return;
 }

@@ -172,7 +172,6 @@ void FUN_003c45f0(int param_1)
     FUN_00521408(param_1, 0, *(u32 *)((int)param_1 + 0x20));
     DAT_0096017c_abs[0](param_1);
 }
-#pragma schedule off
 #define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
 #define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
 #undef FUN_003c4650

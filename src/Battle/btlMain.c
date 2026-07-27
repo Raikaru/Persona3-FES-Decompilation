@@ -3100,10 +3100,8 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
   return uVar3;
 
 }
-#pragma schedule on
 #pragma optimization_level 3
 #pragma opt_common_subs on
-#pragma opt_rebuildconditionals off
  
 // FUN_002A0440 NONMATCHING
 u32 FUN_002a0440(float *param_1)
@@ -3641,10 +3639,8 @@ u32 FUN_002a0440(float *param_1)
   return uVar9;
 
 }
-#pragma opt_rebuildconditionals on
 #pragma opt_common_subs on
 #pragma optimization_level 2
-#pragma schedule off
 // FUN_002A10E0 NONMATCHING
 
 

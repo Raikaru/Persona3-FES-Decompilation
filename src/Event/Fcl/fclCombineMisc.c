@@ -3347,8 +3347,6 @@ void FUN_003d8850(FcmDispatchWork *work,u32 command,u32 mode)
   }
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_003D9820
 void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
 {
@@ -3487,7 +3485,6 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
 done:
   ;
 }
-#pragma pop
 // FUN_003D9CC0 NONMATCHING
 
 

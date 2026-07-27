@@ -175,7 +175,6 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 }
 #define FUN_003b2cb0(...) ((int (*)(...))FUN_003b2cb0)(__VA_ARGS__)
 #undef FUN_003b2f90
-#pragma opt_loop_invariants on
 // FUN_003B2F90 MATCHING
 
 
@@ -325,9 +324,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
 }
 #define FUN_003b2f90(...) ((int (*)(...))FUN_003b2f90)(__VA_ARGS__)
-#pragma opt_loop_invariants off
 #undef FUN_003b32d0
-#pragma opt_loop_invariants on
 // FUN_003B32D0 MATCHING
 
 
@@ -460,7 +457,6 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
 }
 #define FUN_003b32d0(...) ((int (*)(...))FUN_003b32d0)(__VA_ARGS__)
-#pragma opt_loop_invariants off
 #undef FUN_003b35c0
 // FUN_003B35C0
 

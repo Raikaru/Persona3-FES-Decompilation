@@ -1328,8 +1328,6 @@ u32 FUN_003c6f80(int param_1)
 }
 #define FUN_003c6f80(...) ((u32 (*)(...))FUN_003c6f80)(__VA_ARGS__)
 #undef FUN_003c6fb0
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_003C6FB0
 
 
@@ -1365,7 +1363,6 @@ check:
 done:
     return count;
 }
-#pragma pop
 
 #define FUN_003c6fb0(...) ((int (*)(...))FUN_003c6fb0)(__VA_ARGS__)
 #undef FUN_003c7000
