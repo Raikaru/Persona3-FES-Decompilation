@@ -214,7 +214,7 @@ extern u64 FUN_0027f930();
 extern u64 FUN_0027fe90();
 extern u64 FUN_00280050();
 extern u64 FUN_00280480();
-extern f32 FUN_002812d0();
+extern f32 FUN_002812d0(BtlUnit* unit, BtlUnit* target, s32 id);
 extern u64 FUN_002822b0();
 extern u64 FUN_002831c0();
 extern s16 FUN_002835e0(f32 param_1, u32 param_2, u16 param_3);
@@ -1083,7 +1083,7 @@ u32 func_002f1b60(BtlAction* param_1,float *param_2)
             else {
               uVar2 = 0xb;
             }
-            fVar6 = (float)FUN_002812d0(iVar1,uVar3,uVar2);
+            fVar6 = FUN_002812d0((BtlUnit *)iVar1,(BtlUnit *)uVar3,(s32)uVar2);
             *param_2 = fStack_20 + fStack_30 * fVar6;
             param_2[1] = fStack_1c + fStack_2c * fVar6;
             param_2[2] = fStack_18 + fStack_28 * fVar6;
@@ -3984,7 +3984,7 @@ extern void FUN_002b6070_btlVoice_typed(BtlCamera* camera, f32 param1,
                                          f32 param2);
 #pragma alias FUN_002b6460_btlVoice_typed FUN_002b6460
 extern void FUN_002b6460_btlVoice_typed(BtlCamera* camera);
-extern f32 FUN_002812d0();
+extern f32 FUN_002812d0(BtlUnit* unit, BtlUnit* target, s32 id);
 extern u64 FUN_002822b0();
 extern u64 FUN_00282bc0();
 extern u64 FUN_00282c30();
@@ -10069,7 +10069,7 @@ u32 func_002eee20(BtlAction* param_1,float *param_2)
             else {
               uVar2 = 0xb;
             }
-            fVar6 = (float)FUN_002812d0(iVar1,uVar3,uVar2);
+            fVar6 = FUN_002812d0((BtlUnit *)iVar1,(BtlUnit *)uVar3,(s32)uVar2);
             *param_2 = fStack_20 + fStack_30 * fVar6;
             param_2[1] = fStack_1c + fStack_2c * fVar6;
             param_2[2] = fStack_18 + fStack_28 * fVar6;

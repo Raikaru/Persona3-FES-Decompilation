@@ -7409,8 +7409,7 @@ void FUN_00439520(u64 param_1)
         fStack_60 = fStack_50 * 200.0f + fStack_40;
         fStack_5c = fStack_4c * 200.0f + fVar10;
         fStack_58 = fStack_48 * 200.0f + fVar11;
-        *(float *)((u8 *)&uStack_10 + 0) = fStack_60;
-        *(float *)((u8 *)&uStack_10 + 4) = fStack_5c;
+        uStack_10 = CONCAT44(fStack_5c,fStack_60);
         fStack_8 = fStack_58;
         FUN_001afa20_typed((uGpffff82b8),(void*)(*(u32 *)(*(int *)(iVar1 + 0x24) + 0x170)),(void*)(&uStack_10));
         *(u8 *)(iVar1 + 0x1218) = 1;

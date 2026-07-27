@@ -3099,14 +3099,13 @@ FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4,
 u64
 
 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
-
             u32 param_5,int param_6,u32 *param_7,u8 param_8)
 
 
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
   u64 uVar2;
 
@@ -5629,7 +5628,7 @@ void FUN_0042ac60(int param_1,int param_2)
 
   cVar2 = param_2 - 0x1f;
 
-  iVar6 = (cVar2 * 0xf0 + (int)cVar2) * 4;
+  iVar6 = (cVar2 * 0xf0 + cVar2) * 4;
 
   cVar2 = *(char *)(*(short *)(iVar1 + 0xb90) * 0x28 + iVar6 + iGpffffb5c0 + 4);
 
@@ -5637,7 +5636,7 @@ void FUN_0042ac60(int param_1,int param_2)
 
   for (iVar8 = 0; piVar4 = (int *)(iVar6 + iGpffffb5c0), iVar8 < *piVar4; iVar8 = iVar8 + 1) {
 
-    if ((long)cVar2 == (long)piVar4[iVar8 * 10 + 1]) {
+    if (cVar2 == piVar4[iVar8 * 10 + 1]) {
 
       for (iVar5 = 0; iVar5 < 0xff; iVar5 = iVar5 + 1) {
 
@@ -7063,7 +7062,7 @@ void FUN_0042cd80(int param_1)
 
   int iVar1;
 
-  u32 uVar2;
+  int uVar2;
 
   long lVar3;
 

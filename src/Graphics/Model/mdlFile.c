@@ -849,7 +849,7 @@ void FUN_0034fd10();
 void FUN_0034fd30();
 u32 FUN_0034fd50();
 void FUN_0034fd70(u64 param_1,u16 param_2);
-void FUN_0034fe30(u64 param_1,float param_2,float param_3,float param_4);
+void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4);
 void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034ff70(float param_1,u8 (*param_2) [16]);
@@ -1100,6 +1100,8 @@ extern u64 FUN_00491ea0();
 #pragma alias FUN_00491ea0_u32 FUN_00491ea0
 extern void FUN_00491ea0_u32(u32 param_1);
 extern u64 FUN_004920a0();
+#pragma alias FUN_004920a0_u32 FUN_004920a0
+extern u32 FUN_004920a0_u32(u32 param_1);
 extern u64 FUN_00492d10();
 extern u64 FUN_00493210();
 extern u64 FUN_00493230();
@@ -25741,7 +25743,7 @@ u32 FUN_00335540(int param_1)
 
   for (uVar10 = 0; uVar10 < uVar2; uVar10 = uVar10 + 1) {
 
-    iVar6 = FUN_00323240(*(u16 *)(param_1 + 0x3c),0x69bd20,5,0x48);
+    iVar6 = FUN_00323240(*(u16 *)(param_1 + 0x3c),(int)(DAT_0069bdc8_abs - 0xa8),5,0x48);
 
     *piVar11 = iVar6;
 
@@ -36067,7 +36069,7 @@ u32 FUN_0033f6a0(u32 param_1,int param_2)
 
   
 
-  uVar3 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(*(int *)((int)param_1 + 0x38) * 0x20 + 0x10,0x40000));
+  uVar3 = (u32)(piVarTmp = (int *)(*DAT_00960178_u32)(*(int *)((int)param_1 + 0x38) * 0x20 + 0x10,0x40000));
 
   *piVarTmp = (int)(piVarTmp + 4);
 
@@ -49959,7 +49961,7 @@ void FUN_0034d990(int param_1,u32 param_2,u32 param_3)
 
       if (lVar4 == 0) {
 
-        lVar4 = FUN_004920a0(uVar1);
+        lVar4 = FUN_004920a0_u32(uVar1);
 
       }
 
@@ -52299,12 +52301,11 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2)
 
 // FUN_0034FE30 NONMATCHING
 
-void FUN_0034fe30(u64 param_1,float param_2,float param_3,float param_4)
+void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4)
 {
   __int128 extraout_vf10;
 
   FUN_00357ea0(DAT_007caf14 * param_2,DAT_007caf14 * param_3,DAT_007caf14 * param_4);
-  extraout_vf10 = _sqc2(extraout_vf10);
   FUN_00325d60(param_1,(u8 (*)[16])&extraout_vf10);
 }
 
