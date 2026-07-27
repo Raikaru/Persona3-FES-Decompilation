@@ -1076,7 +1076,7 @@ void FUN_00361270(int param_1)
 
           *(int *)(iVar2 + 0x68) = *(int *)(iVar2 + 0x68) + -1;
 
-          FUN_00361140(0,0);
+          FUN_00361140_raw();
           iVar2 = extraout_a0_lo;
           puVar3 = extraout_a1_lo;
 
