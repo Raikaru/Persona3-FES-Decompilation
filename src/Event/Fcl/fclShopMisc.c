@@ -4251,7 +4251,6 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
     FUN_0040e3f0(0,0,1.0f,uVar9,iVar8 + -0x15,iVar4 + -0xb,uVar1 & 0xff,0x24,0,0,0);
 
     FUN_0040e3f0(0,0,1.0f,uVar9,iVar8 + -0x13,iVar4 + 4 + (iVar6 * 0x68) / 0xffff,uVar1 & 0xff
-
                  ,0x25,0,0,0);
 
   }
