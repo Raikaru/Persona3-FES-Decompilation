@@ -1095,7 +1095,7 @@ char FUN_003f03e0(int param_1)
 
       else if ((cVar1 < '\x01') || ('\n' < cVar1)) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x15c);
+        K_Assert((const char *)DAT_006aede8,0x15c);
 
       }
 
@@ -1259,7 +1259,7 @@ short FUN_003f0830(int param_1)
 
   if ((param_1 < 0) || (8 < param_1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
+    K_Assert((const char *)DAT_006aede8,0xb9);
 
   }
 
@@ -1280,7 +1280,7 @@ short FUN_003f0830(int param_1)
 
       if (*(int *)(puVar1 + 8) == 0) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x19c);
+        K_Assert((const char *)DAT_006aede8,0x19c);
 
       }
 
@@ -1314,7 +1314,7 @@ short FUN_003f0830(int param_1)
 
             if ((cVar2 < '\x01') || ('\n' < cVar2)) {
 
-              K_Assert((const char *)(u32)0x6aede8,0x1a2);
+              K_Assert((const char *)DAT_006aede8,0x1a2);
 
             }
 
@@ -1408,7 +1408,7 @@ short FUN_003f0ac0(int param_1)
 
   if ((param_1 < 0) || (8 < param_1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
+    K_Assert((const char *)DAT_006aede8,0xb9);
 
   }
 
@@ -1429,7 +1429,7 @@ short FUN_003f0ac0(int param_1)
 
       if (*(int *)(puVar1 + 8) == 0) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x19c);
+        K_Assert((const char *)DAT_006aede8,0x19c);
 
       }
 
@@ -1463,7 +1463,7 @@ short FUN_003f0ac0(int param_1)
 
             if ((cVar2 < '\x01') || ('\n' < cVar2)) {
 
-              K_Assert((const char *)(u32)0x6aede8,0x1a2);
+              K_Assert((const char *)DAT_006aede8,0x1a2);
 
             }
 
@@ -1800,7 +1800,7 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
 
   if ((param_1 < 0) || (8 < param_1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
+    K_Assert((const char *)DAT_006aede8,0xb9);
 
   }
 
@@ -1816,7 +1816,7 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
 
   if (*(int *)(puVar1 + 8) == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x19c);
+    K_Assert((const char *)DAT_006aede8,0x19c);
 
   }
 
@@ -1850,7 +1850,7 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
 
         if ((cVar2 < '\x01') || ('\n' < cVar2)) {
 
-          K_Assert((const char *)(u32)0x6aede8,0x1a2);
+          K_Assert((const char *)DAT_006aede8,0x1a2);
 
         }
 
@@ -1921,7 +1921,7 @@ u16 FUN_003f12a0(int param_1,int param_2)
 
   if ((param_1 < 0) || (8 < param_1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
+    K_Assert((const char *)DAT_006aede8,0xb9);
 
   }
 
@@ -1937,7 +1937,7 @@ u16 FUN_003f12a0(int param_1,int param_2)
 
   if (*(int *)(puVar1 + 8) == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x19c);
+    K_Assert((const char *)DAT_006aede8,0x19c);
 
   }
 
@@ -1971,7 +1971,7 @@ u16 FUN_003f12a0(int param_1,int param_2)
 
         if ((cVar2 < '\x01') || ('\n' < cVar2)) {
 
-          K_Assert((const char *)(u32)0x6aede8,0x1a2);
+          K_Assert((const char *)DAT_006aede8,0x1a2);
 
         }
 
@@ -2400,7 +2400,7 @@ void FUN_003f1ba0(long param_1,u32 param_2)
 
   if (param_1 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x3cc);
+    K_Assert((const char *)DAT_006aede8,0x3cc);
 
   }
 
@@ -2541,13 +2541,13 @@ u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3)
 
   if ((param_3 < 0) || (299 < param_3)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x40f);
+    K_Assert((const char *)DAT_006aede8,0x40f);
 
   }
 
   if (param_2 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x410);
+    K_Assert((const char *)DAT_006aede8,0x410);
 
   }
 
@@ -2577,7 +2577,7 @@ u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3)
 
     if (iStack_4 == 4) {
 
-      K_Assert((const char *)(u32)0x6aede8,0x442);
+      K_Assert((const char *)DAT_006aede8,0x442);
 
       *(u8 *)(psVar6 + 4) = 2;
 
@@ -2721,7 +2721,7 @@ u8 FUN_003f2240(int param_1,u16 param_2)
 
   if (param_1 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x450);
+    K_Assert((const char *)DAT_006aede8,0x450);
 
   }
 
@@ -3047,7 +3047,7 @@ u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
 
         if (((puVar2 == (u32 *)0xfffffffc) || (param_2 == 0)) || (psVar11 == (short *)0x0)) {
 
-          K_Assert((const char *)(u32)0x6aede8,0x45e);
+          K_Assert((const char *)DAT_006aede8,0x45e);
 
         }
 
@@ -3430,7 +3430,7 @@ u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3)
     option_flags |= 0x800;
   }
   if ((param_2 < 0) || (param_2 > 8)) {
-    FUN_0019d3f0_fcl((const char *)(u32)0x6aede8,0xb9);
+    FUN_0019d3f0_fcl((const char *)DAT_006aede8,0xb9);
   }
 
   mode = datGetScenarioMode();
@@ -3598,7 +3598,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
     option_flags |= 0x800;
   }
   if ((param_1 < 0) || (param_1 > 8)) {
-    FUN_0019d3f0_fcl((const char *)(u32)0x6aede8,0xb9);
+    FUN_0019d3f0_fcl((const char *)DAT_006aede8,0xb9);
   }
 
   mode = datGetScenarioMode();
@@ -3858,7 +3858,7 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
 
   if ((param_1 < 0) || (8 < param_1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
+    K_Assert((const char *)DAT_006aede8,0xb9);
 
   }
 
@@ -7687,7 +7687,7 @@ u32 FUN_003f98f0(int param_1)
 
     if ((*puVar2 == 0) && (puVar2[1] != 0)) {
 
-      K_Assert((const char *)(u32)0x6aede8,0xe12);
+      K_Assert((const char *)DAT_006aede8,0xe12);
 
     }
 
@@ -8876,7 +8876,7 @@ void FUN_003fb0c0(long param_1,long param_2)
 
   if (param_1 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xffa);
+    K_Assert((const char *)DAT_006aede8,0xffa);
 
   }
 
@@ -11083,7 +11083,7 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
   if ((param_1 != 0) && (param_1 != 1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x148a);
+    K_Assert((const char *)DAT_006aede8,0x148a);
 
   }
 
@@ -11645,7 +11645,7 @@ u64 FUN_003feb30(u64 param_1,int param_2)
 
   if (*(short *)((int)puVar2 + 0x16) == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x15b8);
+    K_Assert((const char *)DAT_006aede8,0x15b8);
 
   }
 
@@ -11757,7 +11757,7 @@ u64 FUN_003fee40(int param_1)
       }
     }
     if (puVar1[5] == 0) {
-      K_Assert((const char *)(u32)0x6aede8,0x15b8);
+      K_Assert((const char *)DAT_006aede8,0x15b8);
     }
     if (((puVar1[4] != 0) &&
          (FUN_003f1910(*(short *)((int)puVar1 + 0x14)) <
@@ -11820,7 +11820,7 @@ u32 FUN_003fef30(int param_1,int param_2)
 
   if (ppuVar5 == (u8 **)0x0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x15ea);
+    K_Assert((const char *)DAT_006aede8,0x15ea);
 
   }
   FUN_003fea10_3((int)uVar3,(u32 *)ppuVar5,0);
@@ -11830,7 +11830,7 @@ u32 FUN_003fef30(int param_1,int param_2)
     iVar2 = FUN_003f03e0(4);
     for (iVar6 = 1; iVar6 <= iVar2; iVar6 = iVar6 + 1) {
       if ((iVar6 < 0) || (DAT_006ad4b4 < iVar6)) {
-        K_Assert((const char *)(u32)0x6aede8,0x1df);
+        K_Assert((const char *)DAT_006aede8,0x1df);
       }
       if ((u8 *)PTR_DAT_006ad4b0 + iVar6 * 8 != (u8 *)0x0) {
         FUN_003fea10_3((int)uVar3,(u32 *)((u8 *)PTR_DAT_006ad4b0 + iVar6 * 8),0);
@@ -11969,7 +11969,7 @@ u64 FUN_003ff150(u64 param_1,long param_2)
 
   if (ppuVar5 == (u8 **)0x0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x162f);
+    K_Assert((const char *)DAT_006aede8,0x162f);
 
   }
 
@@ -11980,7 +11980,7 @@ u64 FUN_003ff150(u64 param_1,long param_2)
 
       if ((iVar6 < 0) || (DAT_006ad4b4 < iVar6)) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x1df);
+        K_Assert((const char *)DAT_006aede8,0x1df);
 
       }
 
@@ -13790,7 +13790,7 @@ void FUN_00400e90(u32 param_1)
 
           if (*(int *)puVar1[2] == 0) {
 
-            K_Assert((const char *)(u32)0x6aede8,0x192a);
+            K_Assert((const char *)DAT_006aede8,0x192a);
 
           }
 
@@ -14553,7 +14553,7 @@ u32 FUN_00401a00(u16 param_1,long param_2,short *param_3)
 
   if (param_2 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x1aa8);
+    K_Assert((const char *)DAT_006aede8,0x1aa8);
 
   }
 
@@ -14681,7 +14681,7 @@ LAB_00401bc4:
 
         if (puVar12 == (u32 *)0x0) {
 
-          K_Assert((const char *)(u32)0x6aede8,0x1a47);
+          K_Assert((const char *)DAT_006aede8,0x1a47);
 
         }
 
@@ -14916,13 +14916,13 @@ u32 FUN_00401de0(u64 param_1,long param_2,long param_3)
 
   if (param_2 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x1b5d);
+    K_Assert((const char *)DAT_006aede8,0x1b5d);
 
   }
 
   if (param_3 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x1b5e);
+    K_Assert((const char *)DAT_006aede8,0x1b5e);
 
   }
 
@@ -15086,7 +15086,7 @@ LAB_0040203c:
 
         if (puVar17 == (u32 *)0x0) {
 
-          K_Assert((const char *)(u32)0x6aede8,0x1a47);
+          K_Assert((const char *)DAT_006aede8,0x1a47);
 
         }
 
@@ -15111,7 +15111,7 @@ LAB_00402100:
 
     if (puVar17 == (u32 *)0x0) {
 
-      K_Assert((const char *)(u32)0x6aede8,0x1b37);
+      K_Assert((const char *)DAT_006aede8,0x1b37);
 
     }
 
@@ -15129,7 +15129,7 @@ LAB_00402100:
 
     if (lVar9 == 0) {
 
-      K_Assert((const char *)(u32)0x6aede8,0x1afa);
+      K_Assert((const char *)DAT_006aede8,0x1afa);
 
     }
 
@@ -15140,7 +15140,7 @@ LAB_00402100:
 
     if (lVar9 == 0) {
 
-      K_Assert((const char *)(u32)0x6aede8,0x1b05);
+      K_Assert((const char *)DAT_006aede8,0x1b05);
 
     }
 
@@ -15157,13 +15157,13 @@ LAB_00402100:
 
       if (lVar9 == 0) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x1b51);
+        K_Assert((const char *)DAT_006aede8,0x1b51);
 
       }
 
       if (puVar10 == (u16 *)0xfffffffc) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x1b52);
+        K_Assert((const char *)DAT_006aede8,0x1b52);
 
       }
 
@@ -15185,7 +15185,7 @@ LAB_00402100:
 
     if (puVar10 == (u16 *)0xfffffffc) {
 
-      K_Assert((const char *)(u32)0x6aede8,0x1b2f);
+      K_Assert((const char *)DAT_006aede8,0x1b2f);
 
     }
 
@@ -16450,7 +16450,7 @@ u32 FUN_00403970(short param_1)
 
       if (*(short *)(iVar6 + 0x1c) == 0) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x1db3);
+        K_Assert((const char *)DAT_006aede8,0x1db3);
 
       }
 
@@ -16969,7 +16969,7 @@ u32 FUN_00404120(short param_1,long param_2)
 
       if (uVar6 < *(u32 *)(puVar4 + param_1 * 0x40 + 0x1c)) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x1e72);
+        K_Assert((const char *)DAT_006aede8,0x1e72);
 
       }
 
@@ -16991,7 +16991,7 @@ u32 FUN_00404120(short param_1,long param_2)
 
       if ((long)sVar2 == (uVar9 & 0xffff)) {
 
-        K_Assert((const char *)(u32)0x6aede8,0x1e6d);
+        K_Assert((const char *)DAT_006aede8,0x1e6d);
 
       }
 
@@ -17101,7 +17101,7 @@ u32 FUN_00404120(short param_1,long param_2)
 
           }
 
-          K_Assert((const char *)(u32)0x6aede8,0x1e65);
+          K_Assert((const char *)DAT_006aede8,0x1e65);
 
         }
 
@@ -17149,7 +17149,7 @@ void FUN_004044c0(short param_1)
 
   if (lVar2 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x1e90);
+    K_Assert((const char *)DAT_006aede8,0x1e90);
 
   }
 
@@ -20241,7 +20241,7 @@ void FUN_0040c1e0(int param_1,int param_2,int param_3)
 
   if ((param_1 == 0) || (param_2 == 0)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x273b);
+    K_Assert((const char *)DAT_006aede8,0x273b);
 
   }
 
@@ -20489,7 +20489,7 @@ int FUN_0040c6f0(int param_1)
 
   if ((param_1 < 0) || (2 < param_1)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x27ad);
+    K_Assert((const char *)DAT_006aede8,0x27ad);
 
   }
 
