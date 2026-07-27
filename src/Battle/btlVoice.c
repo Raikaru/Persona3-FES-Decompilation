@@ -5222,6 +5222,7 @@ u32 func_002e4520(int param_1,u32 param_2,u64 param_3)
 
 {
   extern u32 FUN_00301ca0();
+  extern u32 FUN_003068d0();
   u32 uVar1;
   s32 lVar2;
   u8 *pbVar3;
