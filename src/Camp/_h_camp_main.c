@@ -2459,6 +2459,7 @@ void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
         } else {
             p = campCarouselUnpackPosition(position);
             hCampMainDrawTexQuad(alpha, 88.0f + p.value.x - 60.0f, 68.0f + p.value.y - 25.0f,
+                         1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
             hCampMainDrawSprite3(75.0f + p.value.x - 60.0f, 58.0f + p.value.y - 25.0f, alpha);
             hCampMainDrawSprite3(86.0f + p.value.x - 60.0f, 173.0f + p.value.y - 25.0f, alpha);
         }

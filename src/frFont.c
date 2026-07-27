@@ -147,7 +147,7 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4);
 void FUN_003b1300(void *param_1);
 void FUN_003b1330(void *param_1,u32 param_2);
 int FUN_003b1360(void *param_1,u32 param_2,u32 param_3);
-int FUN_003b1710(long param_1);
+int FUN_003b1710(int param_1);
 u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
 #pragma alias FUN_003b1920_typed FUN_003b1920
@@ -2173,7 +2173,7 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
 // FUN_003B1710 NONMATCHING
 
 
-int FUN_003b1710(long param_1)
+int FUN_003b1710(int param_1)
 
 
 
