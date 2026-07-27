@@ -36,6 +36,7 @@ u32 FUN_0040f430(int param_1,int param_2);
 u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
 u64 FUN_0040fab0(u64 param_1,int param_2);
 u64 FUN_0040fb90(u64 param_1,int param_2,long param_3);
+void FUN_00521408(void *destination,s32 value,u32 size);
 extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
 extern u32 DAT_006af960[];
 extern u32 DAT_006af980[];
