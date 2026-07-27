@@ -2209,7 +2209,8 @@ void FUN_0029ee20(u32 param_1)
       fStack_1c = DAT_00697888 * fStack_10 - DAT_00697880 * fStack_8;
       fStack_18 = DAT_00697880 * fStack_c - DAT_00697884 * fStack_10;
       FUN_004c69f0((RwV3d*)&fStack_20,(RwV3d*)&fStack_20);
-      uStack_90 = CONCAT44(fStack_1c,fStack_20);
+      ((float *)&uStack_90)[0] = fStack_20;
+      ((float *)&uStack_90)[1] = fStack_1c;
 
       fStack_88 = fStack_18;
 

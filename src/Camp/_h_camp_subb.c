@@ -1622,7 +1622,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 
 // FUN_001406d0 NONMATCHING
 
-void FUN_001406d0(void* texture,u64 position,CampEquipmentDetailWork* detail,s32 alpha)
+void FUN_001406d0(f32 texture,u64 position,CampEquipmentDetailWork* detail,s32 alpha)
 
 {
   u32 packedValue;
@@ -1700,7 +1700,7 @@ void FUN_001406d0(void* texture,u64 position,CampEquipmentDetailWork* detail,s32
 
 // FUN_00140e30 NONMATCHING
 
-void FUN_00140e30(void* texture,u64 position,CampEquipmentDetailWork* detail,s32 alpha)
+void FUN_00140e30(f32 texture,u64 position,CampEquipmentDetailWork* detail,s32 alpha)
 
 {
   u32 packedValue;
@@ -2528,8 +2528,8 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                        item->x, item->y, campTextureAsFloat(item));
         break;
     case 7:
-        FUN_001406d0(item->texture, *(u64*)&item->x, menu->detailList,
-                     item->alpha);
+        FUN_001406d0(campTextureAsFloat(item), *(u64*)&item->x,
+                     menu->detailList, item->alpha);
         break;
     case 10:
     case 0xb:
