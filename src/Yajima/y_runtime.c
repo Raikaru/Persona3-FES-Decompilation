@@ -3608,6 +3608,8 @@ void FUN_004311f0(void *param_1,int param_2,int param_3)
   *(float *)((u8 *)param_1 + 8) = fVar3;
 }
 
+#define Y_RUNTIME_717E8 ((u8 *)DAT_008717e8_rows)
+#define Y_RUNTIME_717F4 ((u8 *)DAT_008717f4_rows)
 // FUN_004312B0 NONMATCHING
 
 u64 FUN_004312b0(int param_1)
@@ -3628,7 +3630,7 @@ u64 FUN_004312b0(int param_1)
   iVar2 = *(int *)((int)param_1 + 0x3c);
   bVar8 = 0;
   iVar3 = *(int *)(iVar2 + 4);
-  if ((((u8 *)DAT_008717e8)[iVar3 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar3 * 0x70] != 0)) {
+  if ((Y_RUNTIME_717E8[iVar3 * 0x70] != 0) && (Y_RUNTIME_717F4[iVar3 * 0x70] != 0)) {
     bVar8 = 1;
   }
   if ((bVar8) && (*(char *)(iVar2 + 0x1215) != '\x01')) {
@@ -3648,7 +3650,7 @@ u64 FUN_004312b0(int param_1)
     else {
       cVar1 = *(char *)(iVar2 + 1);
       if (cVar1 == '\x06') {
-        lVar7 = FUN_002ff790_typed((void *)(((u8 *)DAT_008717e8)[*(int *)(iVar2 + 4) * 0x70]));
+        lVar7 = FUN_002ff790_typed((void *)(Y_RUNTIME_717E8[*(int *)(iVar2 + 4) * 0x70]));
         if (lVar7 == 0) {
           if (cGpffffb9cc == '\0') {
             FUN_0043c7a0(*(u8 *)(iVar2 + 4),1);
@@ -3670,8 +3672,8 @@ u64 FUN_004312b0(int param_1)
         *(u8 *)(iVar2 + 0x1214) = 0;
       }
       else if (cVar1 == '\0') {
-        uVar4 = FUN_001ad910(*(u32 *)(DAT_008717f4 + 0x1e0));
-        uVar5 = FUN_001ad920(*(u32 *)(DAT_008717f4 + 0x1e0));
+        uVar4 = FUN_001ad910(*(u32 *)(Y_RUNTIME_717F4 + 0x1e0));
+        uVar5 = FUN_001ad920(*(u32 *)(Y_RUNTIME_717F4 + 0x1e0));
         FUN_004311f0(&uStack_10,uVar4,uVar5);
         *(u32 *)(iVar2 + 0xd0) = uStack_10;
         *(u32 *)(iVar2 + 0xd4) = uStack_c;
@@ -3694,7 +3696,7 @@ u64 FUN_004312b0(int param_1)
           FUN_0043c7a0(*(u8 *)(iVar2 + 4),3);
           *(u8 *)(iVar2 + 0x1214) = 0;
         }
-        lVar7 = FUN_002ff790_typed((void *)(((u8 *)DAT_008717e8)[*(int *)(iVar2 + 4) * 0x70]));
+        lVar7 = FUN_002ff790_typed((void *)(Y_RUNTIME_717E8[*(int *)(iVar2 + 4) * 0x70]));
         if (lVar7 == 1) {
           FUN_0043c7a0(*(u8 *)(iVar2 + 4),6);
         }
