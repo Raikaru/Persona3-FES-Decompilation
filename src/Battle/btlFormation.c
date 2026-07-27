@@ -7853,7 +7853,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   iVar8 = 0xffffff;
   for (uVar6 = 0; uVar6 < (param_4 & 0xffff); uVar6 = uVar6 + 1 & 0xffff) {
     puVar5 = param_3 + uVar6;
-    uVar3 = func_0030bc20_u32(*puVar5);
+    uVar3 = func_0030bc20(*puVar5);
     if ((((uVar3 != 0) && (uVar3 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + uVar3 * 0x2c + 8), param_5 != 0 || (cVar1 == '\x01'))))
        && ((param_5 != 1 || (cVar1 == '\0')))) {
