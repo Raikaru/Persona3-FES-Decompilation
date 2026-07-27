@@ -7740,9 +7740,7 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
   u32 uVar7;
 
-  u8 auStack_20 [4];
-
-  u32 uStack_1c;
+  u8 auStack_20 [0x20];
 
   
 
@@ -7760,9 +7758,9 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
       memcpy(puVar1 + 1,auStack_20,0x1c);
 
-      if (((uStack_1c & 0x1000) != 0) &&
-
-         (sVar3 = datGetEquipmentIdx(1,(u16)(uStack_1c >> 8) & 0xf), uVar7 == (long)sVar3)) {
+      if (((*(u32 *)(auStack_20 + 0x1c) & 0x1000) != 0) &&
+         (sVar3 = datGetEquipmentIdx(1,(u16)(*(u32 *)(auStack_20 + 0x1c) >> 8) & 0xf),
+          uVar7 == (long)sVar3)) {
 
         uVar2 = *puVar1;
 
