@@ -3723,7 +3723,7 @@ int FUN_00372790(int param_1,int param_2,int param_3)
 
   sVar6 = 0;
 
-  iVar5 = (int)param_3;
+  iVar5 = param_3;
 
   if ((*(char *)(iVar5 + 0x788) < '\0') || ('\x02' < *(char *)(iVar5 + 0x788))) {
 
