@@ -10109,7 +10109,7 @@ void func_002ef000(u64 *param_1)
     unaff_s0_lo = 3;
     uVar4 = func_002e2cb0(0x312);
     *(u16 *)((int)uVar4 + 0x48) = 3;
-    FUN_0027ed20(uVar4,1);
+    FUN_0027ed20_voice(uVar4,1);
   }
   else if (*(short *)(iVar1 + 0xa4) == 0x10b) {
     unaff_s0_lo = 2;
@@ -10119,7 +10119,7 @@ void func_002ef000(u64 *param_1)
   }
   uVar4 = FUN_002b8f90(0);
   uVar5 = FUN_002f87e0(unaff_s0_lo);
-  FUN_002b90d0(uVar4,uVar5);
+  FUN_002b90d0_voice(uVar4,uVar5);
   uVar5 = FUN_00284200(1.0f,iVar1,0x12,0,2);
   iVar2 = (int)uVar5;
   *(u16 *)(iVar2 + 0x48) = 3;

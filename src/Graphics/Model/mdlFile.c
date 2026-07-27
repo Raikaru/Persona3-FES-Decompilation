@@ -11027,7 +11027,7 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 
   if (uVar3 << 2 != 0) {
 
-    uVar1 = (*DAT_00960178)(uVar3 << 2,0x40000);
+    uVar1 = (*DAT_00960178_u32)(uVar3 << 2,0x40000);
 
     param_1[0x10] = uVar1;
 
@@ -42665,7 +42665,7 @@ u64 FUN_003463c0(int param_1)
 
   uVar3 = FUN_003461a0(0);
 
-  iVar2 = FUN_00323640((u16 *)(*(u32 *)((int)param_1 + 200)));
+  iVar2 = FUN_00323640_u32((u16 *)(*(u32 *)((int)param_1 + 200)));
 
   *(int *)((int)uVar3 + 200) = iVar2;
 

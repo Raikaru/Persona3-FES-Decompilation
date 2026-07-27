@@ -6577,9 +6577,9 @@ void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5)
 
     else if (uVar2 == 0xff) {
 
-      FUN_003c7e20(0,param_1,param_2,param_3 | 0xffffffffffffff00,1,5,1,
+      FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00U,1,5,1,
 
-                   (u32)CONCAT12(*(u8 *)(iVar1 + 0xd),*(u16 *)(iVar1 + 4)));
+                       (u32)CONCAT12(*(u8 *)(iVar1 + 0xd),*(u16 *)(iVar1 + 4)));
 
     }
 
