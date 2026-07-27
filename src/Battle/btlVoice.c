@@ -5421,10 +5421,7 @@ void func_002e4a40(u64 param_1)
   
   iVar5 = (int)param_1;
   iVar1 = *(int *)(iVar5 + 0xe0);
-  if (iVar1 == 0) {
-    bVar3 = true;
-  }
-  else {
+  if (iVar1 != 0) {
     if (*(char *)(*(int *)(iVar1 + 0x30) + 0xa2) == '\0') {
       if ((*(short *)(DAT_007ce3ec + 0x104) == 0x1d) || (*(short *)(DAT_007ce3ec + 0x104) == 0x1c))
       {
@@ -5437,6 +5434,9 @@ void func_002e4a40(u64 param_1)
       bVar3 = false;
       goto LAB_002e4af0;
     }
+    bVar3 = true;
+  }
+  else {
     bVar3 = true;
   }
 LAB_002e4af0:

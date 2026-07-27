@@ -2397,10 +2397,7 @@ short FUN_002d9d70(int param_1)
         lVar8 == 0)))) {
       FUN_00175ca0(uVar9);
     }
-    if (uVar7 == 0) {
-      sVar11 = -1;
-    }
-    else {
+    if (uVar7 != 0) {
       uVar7 = FUN_002ffbc0(uVar7);
       sVar11 = asStack_100[(uVar7 & 0xffff) * 2];
       if ((long)*(int *)(iGpffffb6fc + 0xa30) == (long)sVar11) {
@@ -2445,6 +2442,9 @@ short FUN_002d9d70(int param_1)
           }
         }
       }
+    }
+    else {
+      sVar11 = -1;
     }
   return sVar11;
 }

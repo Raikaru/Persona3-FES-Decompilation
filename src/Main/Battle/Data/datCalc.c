@@ -1457,11 +1457,7 @@ u8 FUN_00301ca0(u32 param_1,u32 param_2)
                                                 if ((param_2 & 0x2000000) == 0) {
                                                   if ((param_2 & 0x4000000) == 0) {
                                                     if ((param_2 & 0x1000) == 0) {
-                                                      if ((param_2 & 0x2000) == 0) {
-                                                        FUN_0019d3f0((u32)D_0069aa80, 0x5a2);
-                                                        bVar2 = false;
-                                                      }
-                                                      else {
+                                                      if ((param_2 & 0x2000) != 0) {
                                                         cVar1 = FUN_00300f60(param_1,0);
                                                         if ((((cVar1 < '\0') ||
                                                              (cVar1 = FUN_00300f60(param_1,1),
@@ -1485,6 +1481,10 @@ u8 FUN_00301ca0(u32 param_1,u32 param_2)
                                                         else {
                                                           bVar2 = true;
                                                         }
+                                                      }
+                                                      else {
+                                                        FUN_0019d3f0((u32)D_0069aa80, 0x5a2);
+                                                        bVar2 = false;
                                                       }
                                                     }
                                                     else {
@@ -1877,12 +1877,12 @@ void FUN_00302d40(u32 param_1)
       if (0x14 < uVar4) {
         FUN_0019d3f0((u32)D_0069aa80, 0x455);
       }
-      if ((uVar5 & 1) == 0) {
-        *(u8 *)(iVar6 + iVar3 + 0x29) = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf0 | bVar2 + 1 & 0xf;
-      }
-      else {
+      if ((uVar5 & 1) != 0) {
         *(u8 *)(iVar6 + iVar3 + 0x29) =
              *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf | (bVar2 + 1) * '\x10';
+      }
+      else {
+        *(u8 *)(iVar6 + iVar3 + 0x29) = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf0 | bVar2 + 1 & 0xf;
       }
     }
   }
@@ -4943,23 +4943,7 @@ u32 FUN_00309080(u16 *param_1,char param_2)
   u32 uVar3;
   int iVar4;
   
-  if ((*param_1 & 4) == 0) {
-    uVar1 = param_1[1];
-    if (10 < uVar1) {
-      FUN_0019d3f0((u32)D_0069aa80, 0x1116);
-    }
-    uVar2 = FUN_0016cb80(uVar1,0);
-    if (param_2 == '\x01') {
-      uVar3 = FUN_0016fae0(uVar1,uVar2);
-      return uVar3;
-    }
-    if (param_2 == '\0') {
-      uVar3 = FUN_0016f9f0(uVar1);
-      return uVar3;
-    }
-    FUN_0019d3f0((u32)D_0069aa80, 0x111f);
-  }
-  else {
+  if ((*param_1 & 4) != 0) {
     uVar1 = param_1[1];
     if (0x14f < uVar1) {
       FUN_0019d3f0((u32)D_0069aa80, 0x1106);
@@ -4976,6 +4960,22 @@ u32 FUN_00309080(u16 *param_1,char param_2)
       return (u32)*(u16 *)(iVar4 + iGpffffb720 + 0x3a);
     }
     FUN_0019d3f0((u32)D_0069aa80, 0x1112);
+  }
+  else {
+    uVar1 = param_1[1];
+    if (10 < uVar1) {
+      FUN_0019d3f0((u32)D_0069aa80, 0x1116);
+    }
+    uVar2 = FUN_0016cb80(uVar1,0);
+    if (param_2 == '\x01') {
+      uVar3 = FUN_0016fae0(uVar1,uVar2);
+      return uVar3;
+    }
+    if (param_2 == '\0') {
+      uVar3 = FUN_0016f9f0(uVar1);
+      return uVar3;
+    }
+    FUN_0019d3f0((u32)D_0069aa80, 0x111f);
   }
   return 0;
 }
@@ -8464,10 +8464,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
       FUN_0019d3f0((u32)D_0069aa80_abs, 0x11f);
     }
     pbVar7 = (u8 *)(DAT_007ce3f8 + ((u32)DAT_0095719c * 10 + (u32)DAT_0095719c) * 4);
-    if ((*pbVar7 & 2) == 0) {
-      unaff_f20 = (float)pbVar7[0xe];
-    }
-    else {
+    if ((*pbVar7 & 2) != 0) {
       if (DAT_00957190 == 0) {
         FUN_0019d3f0((u32)D_0069aa80_abs, 0x122);
       }
@@ -8478,6 +8475,9 @@ float FUN_0030fdf0(int param_1,u32 param_2)
       else {
         unaff_f20 = (float)(int)uVar6;
       }
+    }
+    else {
+      unaff_f20 = (float)pbVar7[0xe];
     }
     break;
   case 0x12:

@@ -1857,17 +1857,7 @@ active:
 
       else if (param_1[iVar1 * 0xb + 4] == 1) {
 
-        if (param_1[3] == 0) {
-
-          iVar3 = (int)FUN_00100d80((const char *)(param_1 + iVar1 * 0xb + 5),0);
-
-          param_1[iVar1 * 0xb + 0xe] = iVar3;
-
-          param_1[3] = iVar3;
-
-        }
-
-        else {
+        if (param_1[3] != 0) {
 
           lVar4 = FUN_001016b0((void *)param_1[3]);
 
@@ -1884,6 +1874,16 @@ active:
             param_1[2] = param_1[2] + 1;
 
           }
+
+        }
+
+        else {
+
+          iVar3 = (int)FUN_00100d80((const char *)(param_1 + iVar1 * 0xb + 5),0);
+
+          param_1[iVar1 * 0xb + 0xe] = iVar3;
+
+          param_1[3] = iVar3;
 
         }
 

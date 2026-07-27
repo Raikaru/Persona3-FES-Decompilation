@@ -1127,10 +1127,7 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
   uVar2 = clndGetCurrentWeekDay();
   psVar5 = (short *)param_1;
   bVar1 = 1;
-  if (((u32)*psVar5 & (1u << (uVar2 & 0x1f))) == 0) {
-    uVar3 = 0;
-  }
-  else {
+  if (((u32)*psVar5 & (1u << (uVar2 & 0x1f))) != 0) {
     if ((psVar5[1] != 0) && (datGetFlag() == 0)) {
       bVar1 = 0;
     }
@@ -1176,6 +1173,9 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
     else {
       uVar3 = 0;
     }
+  }
+  else {
+    uVar3 = 0;
   }
   return uVar3;
 }
@@ -1443,13 +1443,7 @@ short FUN_003f0ac0(int param_1)
 
         lVar4 = datSocialLinkLevelIsNotZero(sVar5);
 
-        if (lVar4 == 0) {
-
-          iVar3 = *(int *)(puVar1 + 8);
-
-        }
-
-        else {
+        if (lVar4 != 0) {
 
           cVar2 = datGetSocialLinkLevel(sVar5);
 
@@ -1470,6 +1464,12 @@ short FUN_003f0ac0(int param_1)
             iVar3 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
 
           }
+
+        }
+
+        else {
+
+          iVar3 = *(int *)(puVar1 + 8);
 
         }
 
@@ -1830,13 +1830,7 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
 
     lVar4 = datSocialLinkLevelIsNotZero(sVar6);
 
-    if (lVar4 == 0) {
-
-      iVar5 = *(int *)(puVar1 + 8);
-
-    }
-
-    else {
+    if (lVar4 != 0) {
 
       cVar2 = datGetSocialLinkLevel(sVar6);
 
@@ -1857,6 +1851,12 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
         iVar5 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
 
       }
+
+    }
+
+    else {
+
+      iVar5 = *(int *)(puVar1 + 8);
 
     }
 
@@ -1951,13 +1951,7 @@ u16 FUN_003f12a0(int param_1,int param_2)
 
     lVar4 = datSocialLinkLevelIsNotZero(sVar6);
 
-    if (lVar4 == 0) {
-
-      iVar5 = *(int *)(puVar1 + 8);
-
-    }
-
-    else {
+    if (lVar4 != 0) {
 
       cVar2 = datGetSocialLinkLevel(sVar6);
 
@@ -1978,6 +1972,12 @@ u16 FUN_003f12a0(int param_1,int param_2)
         iVar5 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
 
       }
+
+    }
+
+    else {
+
+      iVar5 = *(int *)(puVar1 + 8);
 
     }
 
@@ -2555,13 +2555,7 @@ u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3)
 
   sVar2 = datGetEquipmentId(param_1,param_3);
 
-  if (sVar2 == 0) {
-
-    uVar5 = 0;
-
-  }
-
-  else {
+  if (sVar2 != 0) {
 
     psVar6 = (short *)param_2;
 
@@ -2693,6 +2687,12 @@ u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3)
     }
 
     uVar5 = 1;
+
+  }
+
+  else {
+
+    uVar5 = 0;
 
   }
 
@@ -8908,27 +8908,7 @@ void FUN_003fb0c0(long param_1,long param_2)
 
   uVar1 = *puVar5;
 
-  if ((uVar1 & 2) == 0) {
-
-    if ((uVar1 & 4) != 0) {
-
-      if ((long)(int)puVar5[2] < (long)*(short *)((int)puVar5 + 0x16)) {
-
-        *puVar5 = uVar1 & 0xfffffff7;
-
-      }
-
-      else {
-
-        *puVar5 = uVar1 | 8;
-
-      }
-
-    }
-
-  }
-
-  else {
+  if ((uVar1 & 2) != 0) {
 
     iVar3 = 99;
 
@@ -8965,6 +8945,26 @@ void FUN_003fb0c0(long param_1,long param_2)
     else {
 
       *puVar5 = *puVar5 | 8;
+
+    }
+
+  }
+
+  else {
+
+    if ((uVar1 & 4) != 0) {
+
+      if ((long)(int)puVar5[2] < (long)*(short *)((int)puVar5 + 0x16)) {
+
+        *puVar5 = uVar1 & 0xfffffff7;
+
+      }
+
+      else {
+
+        *puVar5 = uVar1 | 8;
+
+      }
 
     }
 
@@ -11804,17 +11804,17 @@ u32 FUN_003fef30(int param_1,int param_2)
 
   ppuVar5 = (u8 **)&PTR_DAT_006ad4a0;
 
-  if (param_2 == 0) {
+  if (param_2 != 0) {
 
-    *(u16 *)(iVar2 + 6) = 0xfffe;
+    *(u16 *)(iVar2 + 6) = 0xfffd;
+
+    ppuVar5 = (u8 **)0x6ad4a8;
 
   }
 
   else {
 
-    *(u16 *)(iVar2 + 6) = 0xfffd;
-
-    ppuVar5 = (u8 **)0x6ad4a8;
+    *(u16 *)(iVar2 + 6) = 0xfffe;
 
   }
 
@@ -12048,13 +12048,7 @@ void FUN_003ff460(int param_1,u32 param_2)
 
     lVar5 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1]);
 
-    if (lVar5 == 0) {
-
-      *puVar1 = *puVar1 | 0x80;
-
-    }
-
-    else {
+    if (lVar5 != 0) {
 
       iVar2 = *(int *)(*(int *)((int)lVar5 + 0x14) + 0x1c);
 
@@ -12089,6 +12083,12 @@ void FUN_003ff460(int param_1,u32 param_2)
       }
 
       FUN_003c49e0(param_2,(int)param_2 + 4);
+
+    }
+
+    else {
+
+      *puVar1 = *puVar1 | 0x80;
 
     }
 
@@ -16108,13 +16108,7 @@ LAB_0040370c:
 
 
 
-        if (lVar3 == 0) {
-
-          iVar5 = 2;
-
-        }
-
-        else {
+        if (lVar3 != 0) {
 
           lVar3 = FUN_0017c610(sVar1);
 
@@ -16129,6 +16123,12 @@ LAB_0040370c:
             iVar5 = 1;
 
           }
+
+        }
+
+        else {
+
+          iVar5 = 2;
 
         }
 

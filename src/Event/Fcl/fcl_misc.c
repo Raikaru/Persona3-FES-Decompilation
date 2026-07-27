@@ -1826,12 +1826,7 @@ u64 FUN_003ca230(void)
     }
 
     (*(code *)(context + 0xdc))(context);
-    if ((*(u32 *)(context + 8) & 1) == 0) {
-      color = FUN_00133b70(*(u32 *)(context + 0xc4));
-      FUN_00133b80(*(u32 *)(context + 0xc4),0,
-                   (*(u32 *)(context + 0x18) & 0xffffff00) | (color & 0xff));
-    }
-    else {
+    if ((*(u32 *)(context + 8) & 1) != 0) {
       if ((*(u32 *)(context + 8) & 4) != 0) {
         color = FUN_00133b70(*(u32 *)(context + 0xc4));
         FUN_00133b80(*(u32 *)(context + 0xc4),0,
@@ -1842,6 +1837,11 @@ u64 FUN_003ca230(void)
       FUN_00133b80(*(u32 *)(context + 0xc4),*(u16 *)(context + 0x22),
                    (*(u32 *)(context + 0x18) & 0xffffff00) | (color & 0xff));
       FUN_00133b40(*(u32 *)(context + 0xc4),*(u8 *)(context + 0x12));
+    }
+    else {
+      color = FUN_00133b70(*(u32 *)(context + 0xc4));
+      FUN_00133b80(*(u32 *)(context + 0xc4),0,
+                   (*(u32 *)(context + 0x18) & 0xffffff00) | (color & 0xff));
     }
   }
 

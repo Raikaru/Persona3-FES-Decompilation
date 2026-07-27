@@ -1406,15 +1406,7 @@ void FUN_0038f0f0(u32 param_1)
 
     lVar9 = FUN_003b5d10(0x400);
 
-    if (lVar9 == 0) {
-
-      uVar10 = FUN_00361ca0(1,param_1);
-
-      FUN_00361d60(uVar10,0x400,0);
-
-    }
-
-    else {
+    if (lVar9 != 0) {
 
       uVar10 = FUN_00361ca0(1,param_1);
 
@@ -1471,6 +1463,14 @@ void FUN_0038f0f0(u32 param_1)
       *(u8 *)(iVar5 + 0x56) = uVar2;
 
       *(u8 *)(iVar5 + 0x57) = uVar3;
+
+    }
+
+    else {
+
+      uVar10 = FUN_00361ca0(1,param_1);
+
+      FUN_00361d60(uVar10,0x400,0);
 
     }
 

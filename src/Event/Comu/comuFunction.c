@@ -1249,13 +1249,7 @@ int FUN_003beca0(int param_1)
 
   lVar9 = FUN_003c2b40(&uStack_4,&uStack_8);
 
-  if (lVar9 == 0) {
-
-    iVar11 = 0;
-
-  }
-
-  else {
+  if (lVar9 != 0) {
 
     for (iVar12 = 0; iVar12 < iVar5; iVar12 = iVar12 + 1) {
 
@@ -1300,6 +1294,12 @@ int FUN_003beca0(int param_1)
       }
 
     }
+
+  }
+
+  else {
+
+    iVar11 = 0;
 
   }
 

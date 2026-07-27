@@ -4284,29 +4284,7 @@ LAB_0031494c:
 
         lVar7 = func_004b77f0(*(u32 *)((short)param_3 * 8 + **(int **)(puVar9 + 0xc)),lVar6);
 
-        if (lVar7 == 0) {
-
-          lVar6 = func_004b97b0(*puVar3,1);
-
-          if (lVar6 != 0) {
-
-            piVar10 = (int *)lVar6;
-
-            if (*piVar10 != 0) {
-
-              func_004b74c0(0,lVar6);
-
-            }
-
-            piVar10[0x10] = (int)&LAB_003140a0;
-
-            piVar10[0x11] = (int)&LAB_003140b0;
-
-          }
-
-        }
-
-        else {
+        if (lVar7 != 0) {
 
           lVar6 = func_00524670(lVar6,0x7cca00,5);
 
@@ -4383,6 +4361,28 @@ LAB_0031494c:
             *(u32 *)(iVar11 + 0x40) = *(u32 *)(*piVar10 + 0x10);
 
             *(u32 *)(iVar11 + 0x44) = *(u32 *)(*piVar10 + 0x14);
+
+          }
+
+        }
+
+        else {
+
+          lVar6 = func_004b97b0(*puVar3,1);
+
+          if (lVar6 != 0) {
+
+            piVar10 = (int *)lVar6;
+
+            if (*piVar10 != 0) {
+
+              func_004b74c0(0,lVar6);
+
+            }
+
+            piVar10[0x10] = (int)&LAB_003140a0;
+
+            piVar10[0x11] = (int)&LAB_003140b0;
 
           }
 
@@ -7079,23 +7079,7 @@ void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5)
 
   lVar1 = (long)(void*)mdlSearch(param_3,param_4,0);
 
-  if (lVar1 == 0) {
-
-    mdlFileResolvePackPath(param_3,param_4,auStack_100);
-
-    uVar2 = mdlCreateFromPath(param_3,param_4,auStack_100,param_5);
-
-    lVar1 = mdlFileIsTypePac(param_3);
-
-    if (lVar1 != 0) {
-
-      mdl00319900(uVar2,1);
-
-    }
-
-  }
-
-  else {
+  if (lVar1 != 0) {
 
     uVar2 = mdlInit(param_3,param_4);
 
@@ -7110,6 +7094,22 @@ void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5)
     *(u16 *)(iVar3 + 0xd8) = *(u16 *)(iVar3 + 0xd8) | 0x2000;
 
     mdlStreamRead(uVar2);
+
+  }
+
+  else {
+
+    mdlFileResolvePackPath(param_3,param_4,auStack_100);
+
+    uVar2 = mdlCreateFromPath(param_3,param_4,auStack_100,param_5);
+
+    lVar1 = mdlFileIsTypePac(param_3);
+
+    if (lVar1 != 0) {
+
+      mdl00319900(uVar2,1);
+
+    }
 
   }
 
@@ -8223,13 +8223,7 @@ int func_0031aad0(Model* param_1)
 
   if (puVar17 != (u32 *)0x0) {
 
-    if (*(int *)(param_1 + 0xdc) == 0) {
-
-      iVar16 = 0;
-
-    }
-
-    else {
+    if (*(int *)(param_1 + 0xdc) != 0) {
 
       while (puVar17 != (u32 *)0x0) {
 
@@ -8282,6 +8276,12 @@ int func_0031aad0(Model* param_1)
       }
 
       *(u32 *)(iVar2 + 0x18) = 0;
+
+    }
+
+    else {
+
+      iVar16 = 0;
 
     }
 
@@ -9022,13 +9022,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
     lVar6 = datGetScenarioMode();
 
-    if (lVar6 == 0) {
-
-      func_00319490(param_1,3,7,sVar4,0);
-
-    }
-
-    else {
+    if (lVar6 != 0) {
 
       lVar6 = (long)(void*)mdlSearch(7,sVar4,0);
 
@@ -9045,6 +9039,12 @@ void func_0031b820(u32 param_1,u32 param_2)
         func_00319490(param_1,3,7,sVar4,0);
 
       }
+
+    }
+
+    else {
+
+      func_00319490(param_1,3,7,sVar4,0);
 
     }
 
