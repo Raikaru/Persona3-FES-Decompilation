@@ -9801,7 +9801,7 @@ void func_002ee640(u64 *param_1)
   int iVar1;
   u8 *puVar2;
   int iVar3;
-  u64 uVar4;
+  u32 uVar4;
   u64 uVar5;
   int iVar6;
   
