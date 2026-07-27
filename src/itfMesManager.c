@@ -35,10 +35,6 @@ extern u32 DAT_00959ed0;
 extern u8 DAT_00959ed0_abs[];
 extern u32 DAT_00959ed8;
 extern u32 DAT_00959ee0;
-#pragma alias DAT_00959ee0_abs DAT_00959ee0
-extern u8 DAT_00959ee0_abs[];
-#pragma alias DAT_00959eec_abs2 DAT_00959eec
-extern u8 DAT_00959eec_abs2[];
 extern u32 DAT_00959eec;
 #pragma alias itfMesEntries DAT_00959eec
 extern u32 itfMesEntries[];
@@ -212,8 +208,6 @@ void FUN_003a6a10(int param_1);
 void FUN_003a6a40(u8 *param_1,long param_2);
 void FUN_003a6a80(int param_1,u16 param_2,u16 param_3);
 void FUN_003a6b00(u32 *param_1);
-#pragma alias FUN_003a6b00_0 FUN_003a6b00
-extern void FUN_003a6b00_0(void);
 void FUN_003a6b90(int param_1);
 short * FUN_003a6c10(int param_1,short *param_2);
 void FUN_003a6ca0(int param_1,int param_2,int param_3);
@@ -2645,11 +2639,11 @@ void FUN_003a4dd0(int param_1)
 
   param_1 = param_1 * 0x34;
 
-  puVar3 = DAT_00959ee0_abs + param_1;
+  puVar3 = (u8 *)&DAT_00959ee0 + param_1;
 
+  if (*(int *)(&DAT_00959eec + param_1) != 0) {
 
-  if (*(int *)(puVar3 + 0x20) != 0) {
-    FUN_003a6b00_0();
+    FUN_003a6b00();
 
   }
 

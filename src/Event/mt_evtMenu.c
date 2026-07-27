@@ -619,18 +619,6 @@ extern u8 DAT_0069ff20[];
 extern u8 DAT_0069ff30[];
 extern u8 DAT_0069ff40[];
 extern u8 DAT_0069ff50[];
-#pragma alias DAT_0069ff20_abs DAT_0069ff20
-#pragma alias DAT_0069ff30_abs DAT_0069ff30
-#pragma alias DAT_0069ff40_abs DAT_0069ff40
-#pragma alias DAT_0069ff50_abs DAT_0069ff50
-extern u8 DAT_0069ff20_abs[];
-extern u8 DAT_0069ff30_abs[];
-extern u8 DAT_0069ff40_abs[];
-extern u8 DAT_0069ff50_abs[];
-#define DAT_0069ff20 DAT_0069ff20_abs
-#define DAT_0069ff30 DAT_0069ff30_abs
-#define DAT_0069ff40 DAT_0069ff40_abs
-#define DAT_0069ff50 DAT_0069ff50_abs
 #pragma alias DAT_0069ead8_f32 DAT_0069ead8
 extern f32 DAT_0069ead8_f32[];
 #pragma alias DAT_0069eadc_f32 DAT_0069eadc
@@ -9546,17 +9534,9 @@ u32 FUN_0037a150(int param_1,int param_2,int param_3)
 {
 
   f32 uVar1;
-  u8 *p0;
-  void *p1;
-  int p2;
-  int p3;
 
   u8 auStack_10 [16];
-  p0 = auStack_10;
-  p1 = &gp0xffffa4b0;
-  p2 = param_3 + 0x130;
-  p3 = param_3 + 0x13c;
-  FUN_00523ac8_evt4(p0,p1,p2,p3);
+  FUN_00523ac8_evt4(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
