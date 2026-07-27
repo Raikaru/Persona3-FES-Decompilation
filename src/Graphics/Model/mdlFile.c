@@ -14336,7 +14336,7 @@ u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4)
 // FUN_0032A540 NONMATCHING
 
 
-float FUN_0032a540(char *param_1,int param_2,long param_3)
+float FUN_0032a540(char *param_1,int param_2,int param_3)
 
 
 
