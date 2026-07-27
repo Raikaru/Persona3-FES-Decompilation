@@ -20821,7 +20821,7 @@ void FUN_0040cad0(int param_1)
 
       stack.iStack_10 = iVar5;
 
-      FUN_003e0680(*(u32 *)(iVar3 + 8),0x40cc30,&stack);
+      FUN_003e0680_typed(*(u32 *)(iVar3 + 8),(code)FUN_0040cc30,&stack);
 
     }
 
@@ -20847,7 +20847,7 @@ void FUN_0040cad0(int param_1)
 
   stack.iStack_10 = iVar2;
 
-  FUN_003e0680(*(u32 *)(iVar5 + 8),0x40cc30,&stack);
+  FUN_003e0680_typed(*(u32 *)(iVar5 + 8),(code)FUN_0040cc30,&stack);
 
   return;
 

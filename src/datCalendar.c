@@ -3147,12 +3147,12 @@ void func_00183840(void* resource,
 }
 
 // FUN_00183BE0 NONMATCHING
-void func_00183be0(register void* resource,
-                   register s32 alpha,
-                   register s32 month,
-                   register s32 day,
-                   register f32 baseX,
-                   register f32 baseY)
+void func_00183be0(void* resource,
+                   s32 alpha,
+                   s32 month,
+                   s32 day,
+                   f32 baseX,
+                   f32 baseY)
 {
     s32 days;
     s32 weekday;

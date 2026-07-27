@@ -10288,10 +10288,11 @@ void func_002ef670(void)
   
   uVar2 = FUN_002b8f90_u32_voice(0);
   FUN_002b90d0(uVar2,FUN_002f87e0_u32_voice(1));
+  sVar5 = 0;
+  iVar7 = 0;
   aiStack_10[0] = 0;
   aiStack_10[1] = 0;
   aiStack_10[2] = 0;
-  sVar5 = 0;
   for (iVar1 = *(int *)(iGpffffb6fc_ptr + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
     iVar6 = iVar1;
     if (*(short *)(iVar1 + 0xa4) != 1) {
