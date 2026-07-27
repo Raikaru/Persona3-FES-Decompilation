@@ -1481,6 +1481,7 @@ s32 FUN_003d6e60(s32 param_1,s32 param_2)
   void *dest;
 
   dest = sp50;
+  /* Removing this barrier worsens FUN_003d6e60 (nd16 -> nd22) - measured W164. */
   asm volatile("" : "+r"(dest));
   memcpy_003d6e60(dest,(void *)(param_1 + 4),0x34);
   var_16 = 0;

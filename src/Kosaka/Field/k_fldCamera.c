@@ -107,6 +107,7 @@ setup_dead_zone:
         field = K_Field_Get();
         fieldSub = (void*)*(volatile void**)((u8*)field + 0x116c);
         amount = (f32)i * 0.125f;
+        /* Removing this barrier loses func_001d5c10 (MATCH nd0 -> MISMATCH nd21) - measured W164. */
         asm volatile("" : "+m"(amount));
         destination = &fldCamera->deadZonePath[i];
         FUN_0048d480(amount,

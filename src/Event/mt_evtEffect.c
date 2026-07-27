@@ -716,6 +716,7 @@ void FUN_00395570(int param_1)
     DAT_00958aa0 = (f32)iVar1;
     DAT_00958aa4 = (f32)iVar2;
     q0 = DAT_00960088_abs;
+    /* Removing this barrier worsens FUN_00395570 (nd103 -> nd117) - measured W164. */
     asm volatile("" : "+m"(q0));
     DAT_00958aa8 = *(f32 *)q0;
     DAT_00958ac0 = 0x43480000;

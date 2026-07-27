@@ -5056,8 +5056,9 @@ float FUN_00429ef0(float param_1,char param_2)
   saved = *(YajimaVec3 *)&pos;
   iVar1 = K_FldFrame_CtlGetXGrid(
       *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
-  base = (float)iVar1 * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = saved.x - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5086,10 +5087,9 @@ float FUN_00429fe0(float param_1,char param_2)
   saved = *(YajimaVec3 *)&pos;
   iVar1 = K_FldFrame_CtlGetZGrid(
       *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = saved.z - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5110,10 +5110,9 @@ float FUN_0042a0d0(float param_1,float *param_2)
   float half;
 
   iVar1 = FUN_0044f120(&pos);
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = pos.x - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5134,10 +5133,9 @@ float FUN_0042a180(float param_1,u32 *param_2)
   float half;
 
   iVar1 = FUN_0044f170(&pos);
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = pos.z - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5165,10 +5163,9 @@ float FUN_0042a230(float param_1,char param_2)
   saved = *(YajimaVec3 *)&pos;
   iVar1 = K_FldFrame_CtlGetXGrid(
       *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = saved.x - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5197,10 +5194,9 @@ float FUN_0042a310(float param_1,char param_2)
   saved = *(YajimaVec3 *)&pos;
   iVar1 = K_FldFrame_CtlGetZGrid(
       *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = saved.z - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5221,10 +5217,9 @@ float FUN_0042a3f0(float param_1,float *param_2)
   float half;
 
   iVar1 = FUN_0044f120(&pos);
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = pos.x - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
@@ -5245,10 +5240,9 @@ float FUN_0042a4a0(float param_1,u32 *param_2)
   float half;
 
   iVar1 = FUN_0044f170(&pos);
-  grid = (float)iVar1;
-  asm volatile("" : "+f"(grid));
-  base = grid * 800.0f;
-  base = base - 400.0f;
+  base = (float)iVar1;
+  grid = base * 800.0f;
+  base = grid - 400.0f;
   delta = pos.z - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;

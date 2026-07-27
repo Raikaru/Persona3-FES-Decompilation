@@ -257,6 +257,51 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
     return tmp;
 }
 
+/* The 0x90-byte animation frames interleave their second colour spill with
+   the VU kernel.  Fixed VU/GPR registers are part of the retail macro-mode
+   sequence; the result is written to the caller's contiguous colour stack. */
+static __inline void mdlVuModulateStacked90(u32 c2)
+{
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "addiu       $v0, $sp, 0x8c      \n"
+        "lwc1        $f0, DAT_007cae4c($gp)\n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, $f0            \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "sw          %0, 0x88($sp)       \n"
+        "addiu       $v0, $sp, 0x88      \n"
+        "lw          $v0, 0($v0)         \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, $f0            \n"
+        "nop                                \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F         \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0x84($sp)      \n"
+        ".set reorder"
+        :
+        : "r"(c2)
+        : "$v0", "$f0", "memory");
+}
+
 
 /* ==========================================================================
  * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
@@ -4506,9 +4551,7 @@ void FUN_00320810(int *param_1)
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
       uVar6 = uVar2 * 0x10;
-      asm volatile("" : "+r"(uVar6));
       iVar1 = (u32 *)(iVar3 + uVar6);
-      asm volatile("" : "+r"(iVar1));
       if (*(int *)((u8 *)iVar1 + 0xc) != 0) {
         fVar4 = *(float *)((u8 *)iVar1 + 4);
         if (fVar4 > fVar5) {
@@ -22251,12 +22294,12 @@ void FUN_00332e10(int *param_1)
       }
 
       puVar5 = (u32 *)param_1;
-      asm volatile("" : "+r"(puVar5));
       if ((u8 *)puVar5[0xb] != (u8 *)0) {
         FUN_003275d0_evt2(*(float *)(param_1 + 9) / 10.0f,(int)puVar5[0xb]);
 
       }
       uVar4 = *(u16 *)(iVar3 + 0x54);
+      /* Removing this barrier loses FUN_00332e10 (MATCH nd0 -> MISMATCH nd8) - measured W164. */
       asm volatile("" : "+r"(uVar4));
       FUN_003342c0(iVar2,uVar4);
     }
@@ -22324,6 +22367,7 @@ void FUN_00332f10(int *param_1)
       }
 
       uVar4 = *(u16 *)(iVar3 + 0x54);
+      /* Removing this barrier loses FUN_00332f10 (MATCH nd0 -> MISMATCH nd8) - measured W164. */
       asm volatile("" : "+r"(uVar4));
       FUN_003342c0(iVar2,uVar4);
 
@@ -31199,7 +31243,6 @@ void FUN_0033be90(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
-    asm volatile("" : "+r"(puVar4));
 
     for (uVar5 = 0; uVar5 < uVar1;) {
 
@@ -32076,7 +32119,6 @@ void FUN_0033cc10(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
-    asm volatile("" : "+r"(puVar4));
 
     for (uVar5 = 0; uVar5 < uVar1;) {
 
@@ -32876,7 +32918,6 @@ void FUN_0033d980(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
-    asm volatile("" : "+r"(puVar4));
 
     for (uVar5 = 0; uVar5 < uVar1;) {
 
@@ -34564,7 +34605,6 @@ void FUN_0033f590(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
-    asm volatile("" : "+r"(puVar4));
 
     for (uVar5 = 0; uVar5 < uVar1;) {
 
@@ -42586,6 +42626,7 @@ u32 FUN_00348090(int param_1)
   *(u32 *)uVar1 = 0;
 
   destination = (void *)((u32 *)uVar1 + 1);
+  /* Removing this barrier loses FUN_00348090 (MATCH nd0 -> MISMATCH nd2) - measured W164. */
   asm volatile("" : "+m"(destination));
   source = (const void *)(param_1 + 4);
   FUN_00521250_mdl(destination,source,0x10);
@@ -44130,9 +44171,7 @@ void FUN_00349fd0(u8 (*param_1) [16])
   int iVar4;
   float fVar7;
   f32 vuPos[4];
-  u32 c1s;
-  u32 c2s;
-  u8 packed[4];
+  u32 colourStack[4];
 
   uVar1 = *(u32 *)param_1[2];
   iVar2 = *(int *)(param_1[2] + 4);
@@ -44161,10 +44200,9 @@ void FUN_00349fd0(u8 (*param_1) [16])
       *(float *)(state + 0x20) = vuPos[1];
     }
     iVar4 = FUN_0032a120((char *)iVar2,(u32 *)(iVar2 + 0x24),iVar6,iVar3);
-    c2s = (u32)iVar4;
-    c1s = *(u32 *)param_1[1];
-    *(u32 *)packed = mdlVuModulateStacked(&c1s,&c2s,DAT_007cae4c);
-    *(u32 *)(state + 0xc) = *(u32 *)packed;
+    colourStack[3] = *(u32 *)param_1[1];
+    mdlVuModulateStacked90((u32)iVar4);
+    *(u32 *)(state + 0xc) = colourStack[1];
     fVar7 = FUN_0032a540((char *)(iVar2 + 0x34),iVar6,iVar3);
     *(float *)(state + 0x18) = fGpffff80b0 * fVar7;
     fVar7 = FUN_0032a540((char *)(iVar2 + 0x60),iVar6,iVar3);
@@ -46365,6 +46403,7 @@ void FUN_0034c890(int param_1)
     for (uVar2 = 0; uVar2 < *(u32 *)(iVar1 + 0x28); uVar2 = uVar2 + 1) {
 
       uVar3 = uVar2 * 4;
+      /* Removing this barrier loses FUN_0034c890 (MATCH nd0 -> MISMATCH nd9) - measured W164. */
       asm volatile("" : "+r"(uVar3));
       iVar4 = *(volatile int *)(iVar1 + 0x98);
       FUN_003257e0(*(u32 *)(iVar4 + uVar3));
@@ -50094,12 +50133,10 @@ void FUN_00350190(void)
   *(volatile u16 *)DAT_00957bc4_abs = uVar2;
   uVar2 = 0;
   uVar3 = 0;
-  asm volatile("" : "+r"(uVar3));
   *(volatile u32 *)DAT_00957bc8_abs = 0;
   *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   uVar3 = 1;
-  asm volatile("" : "+r"(uVar3));
   DAT_007ce578 = uVar3;
   return;
 

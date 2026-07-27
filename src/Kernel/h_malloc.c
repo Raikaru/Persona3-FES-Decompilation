@@ -383,6 +383,7 @@ static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
                           0, 0, 0, 2);
 
     rowCount = ((a6 + 0x3f) / 0x40) * 0x40;
+    /* Removing this barrier worsens hmallocEmitCommands (nd319 -> nd340) - measured W164. */
     asm volatile("" : "+m"(rowCount));
     output = (u32*)(uintptr_t)(packet + 0x20);
     hmallocWriteImage(output, texture, (u32)(rowCount / 0x40), 0);

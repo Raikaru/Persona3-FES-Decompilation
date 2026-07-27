@@ -354,16 +354,17 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
 
         fVar4 = (f32)*(s8 *)(param_2 + 0xc);
         fVar4 /= 5.0f;
-        fVar4 = fVar4 + 1.0f;
-        fVar4 = (f32)*(s16 *)(param_2 + 0xe) + fVar4;
+        fVar4 = 1.0f + fVar4;
+        fVar4 = fVar4 + (f32)*(s16 *)(param_2 + 0xe);
         *(s16 *)(param_2 + 0xe) = (s16)(int)fVar4;
         if (*(s16 *)(param_2 + 0xe) < 0)
         {
             *(s16 *)(param_2 + 0xe) = *(s16 *)(param_2 + 0xe) + 0x168;
         }
-        if (*(s16 *)(param_2 + 0xe) >= 0x169)
+        iVar1 = *(s16 *)(param_2 + 0xe);
+        if (iVar1 >= 0x169)
         {
-            *(s16 *)(param_2 + 0xe) = *(s16 *)(param_2 + 0xe) - 0x168;
+            *(s16 *)(param_2 + 0xe) = iVar1 - 0x168;
         }
 
         if (*(u16 *)(param_2 + 10) < 0x19)
@@ -380,7 +381,8 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
         {
             fVar4 = DAT_007cad84 * (f32)*(u8 *)(param_2 + 8);
             alpha = (u8)fVar4;
-            FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
+            fVar4 = (f32)(int)*(s16 *)(param_2 + 0xe);
+            FUN_0040e3f0(0.0f, fVar4,
                          1.0f, 1.0f, *(s16 *)(param_2 + 4),
                          *(s16 *)(param_2 + 6),
                          alpha,

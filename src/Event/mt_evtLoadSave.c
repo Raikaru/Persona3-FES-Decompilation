@@ -2868,6 +2868,7 @@ void FUN_00390920(int param_1,int param_2)
       iVar5 = (int)uVar7;
 
       half4 = *(MtEvtHalf4 *)(iVar10 + 0xc);
+      /* Removing this barrier worsens FUN_00390920 (nd373 -> nd515) - measured W164. */
       asm volatile("" : "+m"(half4));
       *(MtEvtHalf4 *)(iVar5 + 8) = half4;
 

@@ -2853,6 +2853,7 @@ u32 FUN_003a5120(int param_1,int param_2)
   }
 
   base = *(int *)(iVar1 + 4);
+  /* Removing this barrier loses FUN_003a5120 (MATCH nd0 -> MISMATCH nd9) - measured W164. */
   asm volatile("" : "+m"(base));
   offset = param_2 * 8;
   return *(u32 *)(offset + base + 0x20);

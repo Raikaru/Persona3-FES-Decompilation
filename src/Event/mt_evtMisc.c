@@ -2884,8 +2884,10 @@ void FUN_0038a180(int param_1,int param_2)
   pfVar5 = (float *)DAT_00958970_abs;
   for (; iVar4 < 10; iVar4 = iVar4 + 1) {
     pfIn = (float *)((u8 *)pfVar5 + iVar4 * 4);
+    /* Removing this barrier loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd6) - measured W164. */
     asm volatile("" : "+r"(pfIn));
     pfOut = (float *)(param_2 + iVar4 * 4);
+    /* Removing this barrier loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd11) - measured W164. */
     asm volatile("" : "+r"(pfOut));
     pfOut[4] = pfIn[4];
     uVar4 = *(volatile s16 *)DAT_00958978_abs;
