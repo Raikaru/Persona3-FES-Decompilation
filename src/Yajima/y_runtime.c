@@ -5613,7 +5613,7 @@ u16 FUN_00435660(char param_1)
   int iVar5;
   char cVar6;
   int iVar7;
-  long lVar8;
+  int lVar8;
   
   lVar8 = 0;
   do {
