@@ -605,8 +605,12 @@ extern void FUN_001bf220(void *param_1, u16 param_2, u16 param_3);
 extern long FUN_001c6450(u32 param_1, u32 param_2, u32 param_3, void *param_4);
  #pragma alias FUN_001c6450_typed FUN_001c6450
  extern u32 FUN_001c6450_typed(u32 param_1,void *param_2,float param_3,float param_4);
+ #pragma alias FUN_001c6450_f32 FUN_001c6450
+ extern u32 FUN_001c6450_f32(u32 param_1,void *param_2,float param_3,float param_4);
 extern code FUN_001c65e0;
 #pragma alias FUN_001c65e0_typed FUN_001c65e0
+ #pragma alias FUN_001c6720_u32 FUN_001c6720
+ extern u32 FUN_001c6720_u32(u32 param_1,u32 param_2);
 extern u32 FUN_001c65e0_typed(void *param_1);
 extern long FUN_001c6720(u32 param_1, u32 param_2);
 extern code FUN_001c6d70;
@@ -7659,12 +7663,12 @@ u64 FUN_0043a0b0(u64 param_1,char param_2)
   
   iVar1 = iGpffffb5a0;
   iVar2 = *(int *)(*(int *)((u8 *)DAT_0087190c + param_2 * 0x1c0) + 0x3c);
-  lVar3 = FUN_001c6720(*(u32 *)(iGpffffb5a0 + 0x14),(u32)(u8 *)DAT_008717a0);
+  lVar3 = FUN_001c6720_u32(*(u32 *)(iGpffffb5a0 + 0x14),(u32)(u8 *)DAT_008717a0);
   if ((*(char *)(iVar2 + 0x1216) == '\0') && (lVar3 != 0)) {
     uVar4 = FUN_00318b60(((u8 *)DAT_008717f0)[param_2 * 0x70]);
     iVar2 = FUN_00318b60(*(u32 *)((int)lVar3 + 0x50));
-    lVar3 = FUN_001c6450(*(u32 *)(iVar1 + 0x10),*(u32 *)(iVar1 + 0x14),uVar4,
-                         (void *)(iVar2 + 0x30));
+    lVar3 = FUN_001c6450_f32(uVar4,(void *)(iVar2 + 0x30),
+                             *(float *)(iVar1 + 0x10),*(float *)(iVar1 + 0x14));
     if (lVar3 == 1) {
       return 1;
     }
@@ -8619,16 +8623,8 @@ u32 FUN_0043c500(int param_1)
   
   pcVar2 = *(char **)(param_1 + 0x3c);
   cVar1 = *pcVar2;
-  if (cVar1 == '\x03') {
-    return 0;
-  }
-  if (cVar1 == '\x02') {
-    return 0xffffffff;
-  }
-  if (cVar1 != '\x01') {
-    if (cVar1 != '\0') {
-      return 0;
-    }
+  switch (cVar1) {
+  case '\0':
     lVar4 = FUN_003b5d10_eb90(*(u16 *)(*(int *)(pcVar2 + 8) + 8));
     *(int *)(pcVar2 + 4) = (int)lVar4;
     if (lVar4 == 0) {
@@ -8642,6 +8638,14 @@ u32 FUN_0043c500(int param_1)
     }
     FUN_003182d0(iVar3,0,1,0,0);
     *pcVar2 = '\x01';
+    break;
+  case '\x01':
+    break;
+  case '\x02':
+    return 0xffffffff;
+  case '\x03':
+  default:
+    return 0;
   }
   iVar3 = *(int *)(*(int *)(pcVar2 + 4) + 0x104);
   if (iVar3 == 0) {
