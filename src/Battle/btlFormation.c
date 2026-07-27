@@ -14257,7 +14257,7 @@ u32 func_002cffc0(void)
   u32 uVar7 = 0;
   u32 uVar8 = 0;
   
-  iVar3 = func_0035f160();
+  iVar3 = func_0035f160_u32();
   uVar7 = func_0035ed20_u32(0);
   iVar4 = func_0029a210(uVar7 & 0xfffffff);
   iVar3 = *(int *)(iVar3 + 0x30);
