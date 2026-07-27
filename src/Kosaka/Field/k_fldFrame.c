@@ -1706,7 +1706,7 @@ void func_001b00c0(KwlnTask* task)
     s32 i;
     Model* model;
 
-    work = fldFrameMoveWork(task);
+    work = (FldFrameMoveWork*)task->workData;
     if (work->mode == 3 || work->mode == 4)
     {
         return;
@@ -1722,7 +1722,11 @@ void func_001b00c0(KwlnTask* task)
             }
         }
     }
-    model = fldFrameMoveModel(work);
+    model = NULL;
+    if (work->resource != NULL)
+    {
+        model = *(Model**)((u8*)work->resource + 0x128);
+    }
     if (work->pointCount > 0 && model != NULL)
     {
         mdlLookAtDisableTarget(model);

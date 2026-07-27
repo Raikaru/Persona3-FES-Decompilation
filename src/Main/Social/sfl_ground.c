@@ -139,6 +139,7 @@ u32 func_00488f30(void);
 f32 func_0052e878(f32 angle);
 f32 func_0052e6d8(f32 angle);
 f32 cosf(f32 angle);
+f32 sinf(f32 angle);
 void func_002392d0();
 void func_0023b990();
 void func_0023c280();

@@ -3214,9 +3214,9 @@ FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
 
     *(float *)(puVar4 + 0x14c) = 1.0f;
 
-    *(float *)(puVar4 + 0x144) = (1.0 / (float)iVar5) * (float)iVar6;
+    *(float *)(puVar4 + 0x144) = (1.0f / (float)iVar5) * (float)iVar6;
 
-    *(float *)(puVar4 + 0x148) = (1.0 / (float)iVar7) * (float)iVar8;
+    *(float *)(puVar4 + 0x148) = (1.0f / (float)iVar7) * (float)iVar8;
 
     puVar4[0x150] = 0;
 
@@ -3351,9 +3351,9 @@ FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
 
     *(float *)(puVar4 + 0x14c) = 1.0f;
 
-    *(float *)(puVar4 + 0x144) = (1.0 / (float)iVar5) * (float)iVar6;
+    *(float *)(puVar4 + 0x144) = (1.0f / (float)iVar5) * (float)iVar6;
 
-    *(float *)(puVar4 + 0x148) = (1.0 / (float)iVar7) * (float)iVar8;
+    *(float *)(puVar4 + 0x148) = (1.0f / (float)iVar7) * (float)iVar8;
 
     puVar4[0x150] = 0;
 
@@ -9090,9 +9090,9 @@ void FUN_0042fd80(u32 *param_1,int param_2)
 
   *(char *)(iVar3 + 0xbb1) = (char)unaff_s4_lo;
 
-  *(float *)(iVar3 + 0xb10) = (float)(int)unaff_s5_lo * 800.0;
+  *(float *)(iVar3 + 0xb10) = (float)(int)unaff_s5_lo * 800.0f;
 
-  *(float *)(iVar3 + 0xb14) = (float)(int)unaff_s4_lo * 800.0;
+  *(float *)(iVar3 + 0xb14) = (float)(int)unaff_s4_lo * 800.0f;
 
   for (uVar5 = unaff_s5_lo; (int)uVar5 < (int)(unaff_s5_lo + 2); uVar5 = uVar5 + 1) {
 
