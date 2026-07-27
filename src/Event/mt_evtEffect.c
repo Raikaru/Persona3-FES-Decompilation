@@ -97,6 +97,8 @@ extern int FUN_001016b0_typed(void *);
 extern void *FUN_001021c0_typed(const char *, u8 *);
 #pragma alias FUN_005225a8_typed FUN_005225a8
 extern void FUN_005225a8_typed(...);
+#pragma alias FUN_00530da0_evt FUN_00530da0
+extern u32 FUN_00530da0_evt(f32 param_1);
 extern void *FUN_003b5cf0_typed(void);
 #pragma alias FUN_003b5d10_typed FUN_003b5d10
 extern void *FUN_003b5d10_typed(u16);
@@ -1295,9 +1297,9 @@ void FUN_00395e20(int param_1)
 
   float *pfVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
@@ -1441,15 +1443,15 @@ void FUN_00395e20(int param_1)
 
     FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_8);
 
-    uVar4 = FUN_00530da0(fStack_5c);
+    uVar4 = FUN_00530da0_evt(fStack_5c);
 
-    uVar5 = FUN_00530da0(fStack_6c);
+    uVar5 = FUN_00530da0_evt(fStack_6c);
 
     FUN_0038a260(0x40e00000,0x24,0x48,0,0x6a0f20,uVar4,uVar5);
 
-    uVar4 = FUN_00530da0(fStack_58);
+    uVar4 = FUN_00530da0_evt(fStack_58);
 
-    uVar5 = FUN_00530da0(fStack_68);
+    uVar5 = FUN_00530da0_evt(fStack_68);
 
     FUN_0038a260(0x40e00000,0x24,0x54,0,0x6a0f30,uVar4,uVar5);
 
@@ -1485,7 +1487,8 @@ void FUN_00395e20(int param_1)
 
       }
 
-      uStack_40 = CONCAT44(fStack_2c,fStack_30);
+      ((float *)&uStack_40)[0] = fStack_30;
+      ((float *)&uStack_40)[1] = fStack_2c;
 
       uStack_38 = auStack_28[0];
 
