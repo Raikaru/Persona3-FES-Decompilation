@@ -119,7 +119,7 @@ extern void FUN_003bb060(u16 param_1,u16 param_2);
 void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,  long param_7);
 void FUN_003a8dc0(int param_1,int param_2,int param_3,int param_4,  int param_5,int param_6);
 void FUN_003a8d60(int param_1);
-void FUN_003a8ea0(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
+void FUN_003a8ea0(u8 *param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
 void FUN_003a8fb0(int param_1,int param_2,int param_3,int param_4,  int param_5);
 void FUN_003a9080(u64 param_1);
 void FUN_003a90c0(int param_1,u64 param_2);
@@ -530,7 +530,7 @@ void FUN_003a8dc0(int param_1,int param_2,int param_3,int param_4,
 // FUN_003A8EA0 NONMATCHING
 
 
-void FUN_003a8ea0(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6)
+void FUN_003a8ea0(u8 *param_1,int param_2,int param_3,int param_4,int param_5,int param_6)
 
 
 

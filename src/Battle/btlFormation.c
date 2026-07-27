@@ -14258,7 +14258,7 @@ u32 func_002cffc0(void)
   u32 uVar8 = 0;
   
   iVar3 = func_0035f160();
-  uVar7 = func_0035ed20(0);
+  uVar7 = func_0035ed20_u32(0);
   iVar4 = func_0029a210(uVar7 & 0xfffffff);
   iVar3 = *(int *)(iVar3 + 0x30);
   uVar2 = func_003082f0(*(u32 *)(iVar3 + 0xa2c),0);
@@ -14272,12 +14272,12 @@ u32 func_002cffc0(void)
         uVar2 = func_003082f0(*(u32 *)(iVar3 + 0xa2c));
         uVar7 = func_0030b4b0(*(u32 *)(*(int *)(iVar4 + 0x30) + 0xa2c),uVar2);
         if ((uVar7 & 0x8000000) != 0) {
-          func_0035f060(uVar2);
+          func_0035f060_u32(uVar2);
           return 1;
         }
       }
     }
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060_u32(0xffffffff);
   }
   else {
     func_0035f060(uVar2);
