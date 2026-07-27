@@ -3032,7 +3032,7 @@ void func_002f5d80(u32 param_1)
   int iVar4;
   float fVar5;
   u8 uVar6;
-  u8 cVar7;
+  char cVar7;
   u32 uStack_4;
   
   iVar4 = (int)param_1;

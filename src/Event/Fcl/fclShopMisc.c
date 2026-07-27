@@ -12554,6 +12554,7 @@ u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3)
 
 
 {
+  extern float cosf(float);
 
   short sVar1;
 
