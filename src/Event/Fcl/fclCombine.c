@@ -54,7 +54,7 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2);
 void FUN_003d3760(int param_1,long param_2,int param_3);
 void FUN_003d38b0(u64 param_1,int param_2,int param_3);
 u32 FUN_003d3b70(u32 param_1,u32 param_2);
-u8 * FUN_003d3d20(u32 param_1,u32 param_2);
+u8 * FUN_003d3d20(u64 param_1,u64 param_2);
 u32 FUN_003d4de0(s32 param_1);
 u8 * FUN_003d4ff0(u64 param_1,u32 param_2);
 typedef int (*code)(...);
@@ -5219,7 +5219,7 @@ u32 FUN_003d3b70(u32 param_1,u32 param_2)
 // FUN_003D3D20 NONMATCHING
 
 
-u8 * FUN_003d3d20(u32 param_1,u32 param_2)
+u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
 
 
