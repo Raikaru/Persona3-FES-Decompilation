@@ -423,9 +423,9 @@ void FUN_002230e0(void)
     s32 j;
     s32 i;
     u32 table0;
-    u8* work;
-    u8* records;
     u8* record;
+    u8* records;
+    u8* work;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -749,7 +749,6 @@ void FUN_00224150(void)
 {
     u8* work;
     u8* records;
-    void (**setQuad)(u32*, u32, u32, u32, u32);
     u8* slot0;
     u8* record;
     u8* quadTarget;
@@ -762,6 +761,7 @@ void FUN_00224150(void)
     s32 i;
     s32 j;
     void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
     void (**setQuad2)(u32*, u32, u32, u32, u32);
     void (**setQuad3)(u32*, u32, u32, u32, u32);
 

@@ -6553,7 +6553,6 @@ void FUN_0042bfd0(int param_1)
   u32 uVar2;
 
   float fStack_8;
-
   float fStack_4;
 
   

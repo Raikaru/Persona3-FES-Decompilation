@@ -3966,7 +3966,8 @@ void FUN_003f3dc0(int param_1,u32 param_2)
   for (iVar3 = *(int *)(param_1 + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
 
     puVar1 = *(u32 **)(*(int *)(iVar3 + 0x14) + 0x1c);
-    if ((lVar2 = FUN_003c4bf0_i(param_2,param_2 + 4,(short)puVar1[1])) != 0) {
+    if ((lVar2 = FUN_003c4bf0_i(param_2,param_2 + 4,
+                                *(volatile s16 *)((u8 *)puVar1 + 4))) != 0) {
 
       FUN_003c49e0(param_2,param_2 + 4,lVar2);
 
