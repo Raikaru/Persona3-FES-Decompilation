@@ -7813,15 +7813,13 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
   int iVar2;
 
-  int sVar3;
-
   u32 uVar4;
 
   long lVar5;
 
-  int iVar6;
-
   int iVar7;
+
+  int iVar6;
 
   int iStack_4;
 
@@ -7844,10 +7842,10 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      iVar6 = 0;
+      iVar7 = 0;
       lVar5 = sVar1;
-      for (; iVar6 < 300; iVar6 = iVar6 + 1) {
-        uVar4 = datGetEquipmentId(1,iVar6);
+      for (; iVar7 < 300; iVar7 = iVar7 + 1) {
+        uVar4 = datGetEquipmentId(1,iVar7);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
@@ -16090,7 +16088,7 @@ u8 FUN_00403410(short param_1)
   short sVar2;
   int iVar3;
   int iVar4;
-  int iVar5;
+  u32 iVar5;
   long lVar5;
   long unaff_s2;
   int unaff_s1;

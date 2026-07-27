@@ -9340,11 +9340,13 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
 
   int *piVar1;
 
-  int iVar4;
+  int iVar2;
 
   int iVar3;
 
-  int iVar2;
+  int iVar4;
+
+  int iVar1;
 
   
 
@@ -9361,11 +9363,9 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
   else {
     iVar4 = piVar1[0x1b];
 
+    iVar1 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
     iVar2 = 0;
-
-    for (;
-        (iVar2 < *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c) && (iVar4 != 0));
-
+    for (; (iVar2 < iVar1 && (iVar4 != 0));
         iVar4 = *(int *)(iVar4 + 0x4c), iVar2 = iVar2 + 1) {
     }
 
@@ -9375,17 +9375,19 @@ u64 FUN_00368b00(u64 param_1,u64 param_2,int param_3)
   switch (*piVar1) {
   case 1:
   case 0x30:
-    if (*(char *)(iVar4 + 0x10) == '\x04') {
-      *(char *)(iVar4 + 0x28) = (char)*(u32 *)(iVar3 + 0x1b8);
-      *(char *)(iVar4 + 0x29) = (char)*(u32 *)(iVar3 + 0x1bc);
-      *(char *)(iVar4 + 0x2a) = (char)*(u32 *)(iVar3 + 0x1c0);
-      *(char *)(iVar4 + 0x2b) = (char)*(u32 *)(iVar3 + 0x1c4);
-    }
-    else if (*(char *)(iVar4 + 0x10) == '\x01') {
+    switch (*(char *)(iVar4 + 0x10)) {
+    case 1:
       *(char *)(iVar4 + 0x34) = (char)*(u32 *)(iVar3 + 0x1b8);
       *(char *)(iVar4 + 0x35) = (char)*(u32 *)(iVar3 + 0x1bc);
       *(char *)(iVar4 + 0x36) = (char)*(u32 *)(iVar3 + 0x1c0);
       *(char *)(iVar4 + 0x37) = (char)*(u32 *)(iVar3 + 0x1c4);
+      break;
+    case 4:
+      *(char *)(iVar4 + 0x28) = (char)*(u32 *)(iVar3 + 0x1b8);
+      *(char *)(iVar4 + 0x29) = (char)*(u32 *)(iVar3 + 0x1bc);
+      *(char *)(iVar4 + 0x2a) = (char)*(u32 *)(iVar3 + 0x1c0);
+      *(char *)(iVar4 + 0x2b) = (char)*(u32 *)(iVar3 + 0x1c4);
+      break;
     }
     break;
   }

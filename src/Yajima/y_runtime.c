@@ -19448,10 +19448,10 @@ u32 FUN_0045a280(int param_1,int param_2)
 {
   char cVar1;
   u32 uVar2;
-  long lVar3;
+  int lVar3;
   int iVar4;
   
-  lVar3 = (*DAT_00960184)(1,0x60,0x40000);
+  lVar3 = (*DAT_00960184_abs)(1,0x60,0x40000);
   if (lVar3 == 0) {
     uVar2 = 0;
   }

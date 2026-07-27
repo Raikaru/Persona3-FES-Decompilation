@@ -10194,9 +10194,9 @@ void func_002ef360(void)
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
   } while (0 < copyCount);
-  auStack_18[0] = DAT_007cc9b8;
-  auStack_18[1] = DAT_007cc9ba;
-  auStack_18[2] = DAT_007cc9bc;
+  auStack_18[0] = DAT_007cc9b8_s16;
+  auStack_18[1] = DAT_007cc9ba_s16;
+  auStack_18[2] = DAT_007cc9bc_s16;
   sVar7 = 0;
   position.y = 0.0f;
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {

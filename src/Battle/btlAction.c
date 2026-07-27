@@ -14,6 +14,9 @@
 #include "temporary.h"
 extern u32 func_002e4430();
 f32 FUN_002d1ed0(const RwV3d* a, const RwV3d* b);
+extern const char D_00693318[];
+#pragma alias D_00693318_abs D_00693318
+extern const char D_00693318_abs[];
 
 typedef struct BtlEnemyRecord
 {
@@ -6075,40 +6078,38 @@ void btlActionUpdateStateWait(BtlAction* action)
 {
     BtlPacket* packet;
 
-    if (action->target.commandId != 11)
+    switch (action->target.commandId)
     {
-        if (action->target.commandId != 8)
-        {
-            if (action->target.commandId == 7)
+        case 7:
+            btlAction0028a780(action);
+            packet = btlUnitCreateLookAtDeactivatePacket(NULL, 3);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+            packet = btlCameraCreateSetStatePacket(action, 9);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+            if (ACTION_S16(action, 0xdc) != 0)
             {
-                btlAction0028a780(action);
-                packet = btlUnitCreateLookAtDeactivatePacket(NULL, 3);
+                packet = FUN_002bd850(action->unit, ACTION_S16(action, 0xdc));
                 packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_0);
-                packet = btlCameraCreateSetStatePacket(action, 9);
-                packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_0);
-                if (ACTION_S16(action, 0xdc) != 0)
-                {
-                    packet = FUN_002bd850(action->unit, ACTION_S16(action, 0xdc));
-                    packet->actionUID = action->uid;
-                    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-                }
-                else
-                {
-                    packet = func_002bd780(action->unit, action->target.commandId);
-                    packet->actionUID = action->uid;
-                    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-                }
-                packet = btlVoice002e2be0(action, 0x1a, 0, 0, 0);
-                packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+                btlPacketRegister(packet, BTLPACKET_TYPE_2D);
             }
             else
             {
-                K_Assert((const char*)0x00693318, 0x1bae);
+                packet = func_002bd780(action->unit, action->target.commandId);
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_2D);
             }
-        }
+            packet = btlVoice002e2be0(action, 0x1a, 0, 0, 0);
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            break;
+        case 8:
+        case 11:
+            break;
+        default:
+            K_Assert(D_00693318_abs, 0x1bae);
+            break;
     }
     btlPacketRegister(FUN_002d7fb0(action, 0), BTLPACKET_TYPE_1);
     if (FUN_002dc130(action) != 0 && action->target.commandId != 8)
