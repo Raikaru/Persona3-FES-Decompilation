@@ -14001,7 +14001,7 @@ void FUN_00401170(int param_1)
 
   uVar2 = *(u32 *)param_1 & 1;
 
-  if ((uVar2 != 0) && (uVar2 != 0)) {
+  if (uVar2 != 0) {
 
     for (iVar3 = *(int *)(((u32 *)param_1)[2] + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
 

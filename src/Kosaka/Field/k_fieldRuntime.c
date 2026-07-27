@@ -4433,6 +4433,10 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         denominator = (f32)(count - 1);
         if (work->state == 0 && vertices != NULL &&
             vector0 != NULL && vector1 != NULL)
+            if (count < 2)
+            {
+                func_0019d3f0(D_006844F8, 0x43f);
+            }
         {
             index = 0;
             while (index < count)
