@@ -5275,7 +5275,7 @@ void FUN_003a7490(u32 *param_1)
 
       else {
 
-        FUN_003a7940(param_1,0xffffffffffffffc0);
+        FUN_003a7940(param_1,-0x40);
 
       }
 

@@ -4100,7 +4100,7 @@ void FUN_003204a0(u32 param_1,u32 param_2,u32 param_3,int *param_4)
 
   int *piVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   int iVar5;
 

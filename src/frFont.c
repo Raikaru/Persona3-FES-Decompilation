@@ -3205,7 +3205,7 @@ u32 FUN_003b2430(void *param_1)
 
           uVar8 = puVar12[5];
 
-          lVar9 = FUN_003b0970(&gp0xffffa838,0,*(u8 *)((int)puVar12 + 0xd),
+          lVar9 = FUN_003b0970_typed(&gp0xffffa838,0,*(u8 *)((int)puVar12 + 0xd),
 
                                *(u8 *)((int)puVar12 + 0xe),0);
 
