@@ -5059,7 +5059,7 @@ void func_002bfc90(void)
 
 // FUN_002bfcb0 NONMATCHING
 
-void func_002bfcb0(int param_1,void *param_2,u32 param_3,u32 param_4,long param_5)
+void func_002bfcb0(int param_1,u64 param_2,u32 param_3,u32 param_4,long param_5)
 
 {
   char cVar1 = 0;
@@ -7162,7 +7162,7 @@ func_002c3430(u64 param_1,u64 param_2,u32 param_3,u16 param_4,int param_5,
     }
   }
   else {
-    func_002bfcb0(param_1,(void *)(iVar8 + 0x88),2,0,0);
+    func_002bfcb0(param_1,iVar8 + 0x88,2,0,0);
   }
   uVar7 = 0;
   for (uVar3 = 0; uVar3 < *(u16 *)(iVar8 + 0xc0); uVar3 = uVar3 + 1 & 0xffff) {
