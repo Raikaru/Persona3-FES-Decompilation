@@ -3078,6 +3078,7 @@ void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5,
   u32 uStack_74;
 
   u32 uStack_30;
+  u64 uStack_28;
 
   u64 uStack_20;
 
@@ -3149,7 +3150,9 @@ void FUN_0038a260(u32 param_1,int param_2,float param_3,int param_4,u32 param_5,
 
   fStack_7c = (float)param_2;
 
-  FUN_001050e0_typed(CONCAT44(fStack_7c,fStack_80),param_3,uStack_74,auStack_180);
+  *(float *)((u8 *)&uStack_28 + 4) = (float)param_2;
+  *(float *)&uStack_28 = (float)param_1;
+  FUN_001050e0_typed(uStack_28,param_3,uStack_74,auStack_180);
 
   return;
 

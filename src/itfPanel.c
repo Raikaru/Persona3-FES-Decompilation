@@ -4939,19 +4939,12 @@ u64 FUN_003ae260(u64 param_1,int param_2)
   piVar9 = aiStack_20;
 
   iVar8 = 5;
-
   do {
-
     iVar4 = *piVar10;
-
     piVar10 = piVar10 + 1;
-
     iVar8 = iVar8 + -1;
-
     *piVar9 = iVar4;
-
     piVar9 = piVar9 + 1;
-
   } while (0 < iVar8);
 
   FUN_0016f1f0(uVar6 + aiStack_20[uVar5],0);

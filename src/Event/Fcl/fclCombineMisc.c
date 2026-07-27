@@ -141,6 +141,11 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2);
 void FUN_003d9cc0(int param_1);
 void FUN_003d9ea0(int param_1);
 typedef int (*code)(...);
+extern void fclCombineList003db5e0(void);
+extern void fclCombineList003dc210(void);
+extern void fclCombineList003dd800(void);
+extern void fclCombineList003deb80(void);
+extern void fclCombineList003dec00(void);
 
 u32 FUN_003c3f80();
 u32 FUN_0017d800();
@@ -281,7 +286,7 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
   if (((param_1 == 0) || (param_2 == 0)) || (param_4 == 0)) {
 
-    K_Assert((const char *)(u32)0x6a5f70,0x28);
+    K_Assert(DAT_006a5f70,0x28);
 
   }
 
@@ -2731,18 +2736,7 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
 
   puVar9 = (u16 *)(PTR_DAT_006a5f40)[param_2 * 2];
-
-  iVar5 = *(int *)(DAT_006a5f44 + param_2 * 8);
-
-  iVar7 = 0;
-
-  do {
-
-    if (iVar5 <= iVar7) {
-
-      return 0;
-
-    }
+  for (iVar7 = 0; iVar7 < iVar5; iVar7 = iVar7 + 1) {
 
     uVar1 = *puVar9;
 
@@ -2800,9 +2794,7 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
     puVar9 = puVar9 + 0x10;
 
-    iVar7 = iVar7 + 1;
-
-  } while( 1 );
+  }
 
 }
 
@@ -3583,13 +3575,13 @@ void FUN_003d9cc0(int param_1)
 
   }
 
-  FUN_003c5e80(iVar1,0x3db5e0);
+  FUN_003c5e80(iVar1,fclCombineList003db5e0);
 
-  FUN_003c5e20(iVar1,0x3dc210);
+  FUN_003c5e20(iVar1,fclCombineList003dc210);
 
-  FUN_003c5ee0(iVar1,0x3dd800);
+  FUN_003c5ee0(iVar1,fclCombineList003dd800);
 
-  FUN_003c5f40(iVar1,0x3d9c90);
+  FUN_003c5f40(iVar1,fclCombineMisc003d9c90);
 
   FUN_003c6d40(iVar1,0,0);
 
@@ -3692,13 +3684,13 @@ void FUN_003d9ea0(int param_1)
 
   }
 
-  FUN_003c5e80(iVar1,0x3db5e0);
+  FUN_003c5e80(iVar1,fclCombineList003db5e0);
 
-  FUN_003c5e20(iVar1,0x3deb80);
+  FUN_003c5e20(iVar1,fclCombineList003deb80);
 
-  FUN_003c5ee0(iVar1,0x3dec00);
+  FUN_003c5ee0(iVar1,fclCombineList003dec00);
 
-  FUN_003c5f40(iVar1,0x3d9c90);
+  FUN_003c5f40(iVar1,fclCombineMisc003d9c90);
 
   FUN_003c6d40(iVar1,0,0);
 

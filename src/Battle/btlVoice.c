@@ -214,7 +214,7 @@ extern u64 FUN_0027f930();
 extern u64 FUN_0027fe90();
 extern u64 FUN_00280050();
 extern u64 FUN_00280480();
-extern u64 FUN_002812d0();
+extern f32 FUN_002812d0();
 extern u64 FUN_002822b0();
 extern u64 FUN_002831c0();
 extern s16 FUN_002835e0(f32 param_1, u32 param_2, u16 param_3);
@@ -3984,7 +3984,7 @@ extern void FUN_002b6070_btlVoice_typed(BtlCamera* camera, f32 param1,
                                          f32 param2);
 #pragma alias FUN_002b6460_btlVoice_typed FUN_002b6460
 extern void FUN_002b6460_btlVoice_typed(BtlCamera* camera);
-extern u64 FUN_002812d0();
+extern f32 FUN_002812d0();
 extern u64 FUN_002822b0();
 extern u64 FUN_00282bc0();
 extern u64 FUN_00282c30();
