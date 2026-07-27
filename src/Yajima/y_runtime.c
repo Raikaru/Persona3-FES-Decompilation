@@ -241,6 +241,9 @@ extern u32 FUN_0045afd0_call2(int param_2,int param_3,int param_4,int param_5,in
 #pragma alias FUN_0045afd0_call3 FUN_0045afd0
 extern u32 FUN_0045afd0_call3(int param_2,int param_3,int param_4,int param_5,int param_6,
                                float param_1,u8 param_7,u8 param_8,short param_9);
+#pragma alias FUN_0045b620_call FUN_0045b620
+extern void FUN_0045b620_call(float param_1,float param_2,float param_3,float param_4,
+                              u32 param_5,u8 param_6,int param_7);
 #pragma alias FUN_0045b190_arg FUN_0045b190
 extern u32 FUN_0045b190_arg(int param_1);
 #pragma alias FUN_00439520_arg FUN_00439520
@@ -20041,7 +20044,7 @@ void FUN_0045b620(u32 param_5,float param_1,float param_2,float param_3,float pa
   uVar3 = (u16)(int)fVar6;
   goto LAB_0045b620_done3;
 LAB_0045b620_high3:
-  uVar3 = (u16)(0x80000000 | (int)(fVar6 - 2.1474836e+09f));
+  uVar3 = (u16)((int)(fVar6 - 2.1474836e+09f) | 0x80000000);
 LAB_0045b620_done3:
   *(u16 *)(iVar1 + 0x28) = uVar3;
   fVar7 = 4096.0f * param_4;
@@ -20049,7 +20052,7 @@ LAB_0045b620_done3:
   uVar3 = (u16)(int)fVar7;
   goto LAB_0045b620_done4;
 LAB_0045b620_high4:
-  uVar3 = (u16)(0x80000000 | (int)(fVar7 - 2.1474836e+09f));
+  uVar3 = (u16)((int)(fVar7 - 2.1474836e+09f) | 0x80000000);
 LAB_0045b620_done4:
   *(u16 *)(iVar1 + 0x2a) = uVar3;
   if (param_7 == 1) {
@@ -20492,8 +20495,8 @@ void FUN_0045c530(int param_1)
           fVar6 = fVar6 - 2.1474836e+09f;
         }
       }
-      FUN_0045b620(0xf,(float)(iVar5 + -0xc),(float)(iVar4 * 0x19 + 0xd9),fVar7 + 1.0f,fVar7 + 1.0f,
-                   (int)fVar6 & 0xff,1);
+      FUN_0045b620_call((float)(iVar5 + -0xc),(float)(iVar4 * 0x19 + 0xd9),fVar7 + 1.0f,
+                        fVar7 + 1.0f,0xf,(int)fVar6 & 0xff,1);
     }
   }
   return;
@@ -20572,8 +20575,8 @@ void FUN_0045c8c0(int param_1,int param_2)
       }
       FUN_0045b420((iVar3),(float*)(&fStack_8));
       fVar11 = fVar11 / 3.0f + 1.0f;
-      FUN_0045b620(aiStack_70[param_2 * 4],(float)(int)fStack_8,(float)(int)fStack_4,fVar11,fVar11,
-                   iVar1,1);
+      FUN_0045b620_call((float)(int)fStack_8,(float)(int)fStack_4,fVar11,fVar11,
+                        aiStack_70[param_2 * 4],iVar1,1);
     }
     if (*psVar8 != *psVar7) {
       if (*psVar8 == 0) {

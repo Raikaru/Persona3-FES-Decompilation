@@ -141,9 +141,9 @@ FclEffectVec2 DAT_006b2e78;
 u32 DAT_006b2e80;
 u32 DAT_006b2e90;
 u32 DAT_006b2eb0;
-u32 DAT_006b2ed8;
-u32 DAT_006b2ee0;
-u32 DAT_006b2ee8;
+u64 DAT_006b2ed8;
+f32 DAT_006b2ee0;
+u64 DAT_006b2ee8;
 u32 DAT_006b2ef0;
 u32 DAT_006b2f00;
 u32 DAT_006b2f18;
@@ -151,23 +151,23 @@ u32 DAT_006b2f20;
 u32 DAT_006b2f28;
 u32 DAT_006b2f30;
 u32 DAT_006b2f40;
-u32 DAT_006b2f68;
+u64 DAT_006b2f68;
 u32 DAT_006b2f70;
-u32 DAT_006b2f78;
+u64 DAT_006b2f78;
 u32 DAT_006b2f80;
-u32 DAT_006b2f88;
-u32 DAT_006b2f90;
+u64 DAT_006b2f88;
+f32 DAT_006b2f90;
 u32 DAT_006b2fa0;
 u32 DAT_006b2fb8;
 u32 DAT_006b2fc0;
 u32 DAT_006b2fd0;
-u32 DAT_006b2ff8;
+u64 DAT_006b2ff8;
 u32 DAT_006b3000;
-u32 DAT_006b3008;
-u32 DAT_006b3010;
+u64 DAT_006b3008;
+f32 DAT_006b3010;
 u32 DAT_006b3020;
-u32 DAT_006b3038;
-u32 DAT_006b3040;
+u64 DAT_006b3038;
+f32 DAT_006b3040;
 u32 DAT_006b3050;
 u64 DAT_006b3090;
 float DAT_006b3098;
@@ -1254,7 +1254,7 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   float fStack_34;
 
-  float auStack_30 [4];
+  u32 auStack_30 [4];
 
   float fStack_20;
 
@@ -1276,9 +1276,9 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   uVar5 = *(u32 *)(param_1 + 0x38);
 
-  auStack_30[0] = *(float *)&DAT_006b2e38;
-  auStack_30[1] = *(float *)&DAT_006b2e3c;
-  auStack_30[2] = *(float *)&DAT_006b2e40;
+  auStack_30[0] = DAT_006b2e38;
+  auStack_30[1] = DAT_006b2e3c;
+  auStack_30[2] = DAT_006b2e40;
 
   fStack_10 = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
 
@@ -1320,7 +1320,7 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   if (cVar1 == '@') {
     if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
-      FUN_004cb750_typed(uVar5,&fStack_10,(u32)auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
+      FUN_004cb750_typed(uVar5,&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
     }
   }
   else if (cVar1 == '\x06') {
@@ -2493,7 +2493,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
       iVar5 = *(int *)(*(int *)((int)lVar4 + 0x14) + 8);
 
-      fVar11 = (*(u32*)((u8*)&uStack_10 + 4));
+      fVar11 = *((float *)&uStack_10 + 1);
 
       for (iVar8 = 0; iVar8 < *(int *)(iVar5 + 4); iVar8 = iVar8 + 1) {
 
@@ -2519,7 +2519,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
         FUN_004c6c60(&fStack_30,&fStack_30,&matrix);
 
-        fStack_30 = fStack_30 + (float)uStack_10;
+        fStack_30 = fStack_30 + *(float *)&uStack_10;
 
         fStack_2c = fStack_2c + fVar11;
 
@@ -2747,7 +2747,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
   fVar2 = fStack_28;
 
-  fVar10 = (*(u32*)((u8*)&uStack_30 + 4));
+  fVar10 = *((float *)&uStack_30 + 1);
 
   for (uVar8 = 0; (int)uVar8 < (int)puVar1[1]; uVar8 = uVar8 + 1) {
 
@@ -2785,7 +2785,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
       FUN_004c6c60(&fStack_40,&fStack_40,auStack_b0);
 
-      fStack_40 = fStack_40 + (float)uStack_30;
+      fStack_40 = fStack_40 + *(float *)&uStack_30;
 
       fStack_3c = fStack_3c + fVar10;
 
@@ -2996,7 +2996,7 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
   fVar10 = -fVar9;
 
-  fVar7 = (*(u32*)((u8*)&uStack_20 + 4));
+  fVar7 = *((float *)&uStack_20 + 1);
 
   for (iVar4 = 0; iVar4 < *(int *)(iVar1 + 4); iVar4 = iVar4 + 1) {
 
@@ -3020,7 +3020,7 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
     FUN_004c6c60(&fStack_30,&fStack_30,auStack_a0);
 
-    fStack_30 = fStack_30 + (float)uStack_20;
+    fStack_30 = fStack_30 + *(float *)&uStack_20;
 
     fStack_2c = fStack_2c + fVar7;
 
@@ -3121,9 +3121,9 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
   iVar4 = kwlnGetMainCamera();
 
-  fStack_10 = (-((float)uStack_20 - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
+  fStack_10 = (-(*(float *)&uStack_20 - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
 
-  fStack_c = (-((*(u32*)((u8*)&uStack_20 + 4)) - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
+  fStack_c = (-(*((float *)&uStack_20 + 1) - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
 
   fStack_8 = 1.0f;
 
@@ -3141,7 +3141,8 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
   fStack_8 = fStack_8 * fStack_18;
 
-  uStack_20 = CONCAT44(*(float *)(iVar4 + 0x44) + fStack_c,*(float *)(iVar4 + 0x40) + fStack_10);
+  *(float *)&uStack_20 = *(float *)(iVar4 + 0x40) + fStack_10;
+  *((float *)&uStack_20 + 1) = *(float *)(iVar4 + 0x44) + fStack_c;
 
   fStack_18 = *(float *)(iVar4 + 0x48) + fStack_8;
 
