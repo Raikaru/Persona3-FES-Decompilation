@@ -27975,7 +27975,7 @@ u64 FUN_00337e90(int param_1)
 
   }
 
-  iVar4 = FUN_00323240(*(u16 *)(param_1 + 0x38),0x69bcf0,4,0x48);
+  iVar4 = FUN_00323240(*(u16 *)(param_1 + 0x38),(int)((const char *)DAT_006a6b20 - 0x248),4,0x48);
 
   *(int *)uVar5 = iVar4;
 
@@ -28988,7 +28988,7 @@ u64 FUN_00338d60(int param_1)
 
   }
 
-  iVar4 = FUN_00323240(*(u16 *)(param_1 + 0x38),0x69bcf0,4,0x48);
+  iVar4 = FUN_00323240(*(u16 *)(param_1 + 0x38),(int)((const char *)DAT_006a6b20 - 0x248),4,0x48);
 
   *(int *)uVar5 = iVar4;
 
