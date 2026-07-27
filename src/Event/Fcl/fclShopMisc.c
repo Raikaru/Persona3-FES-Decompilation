@@ -9745,7 +9745,7 @@ void FUN_003fbf10(u16 *param_1)
 
 }
 
-// FUN_003FBF20 NONMATCHING
+// FUN_003FBF20
 
 
 u64 FUN_003fbf20(short *param_1)

@@ -4300,7 +4300,7 @@ s32 lVar6;
 
 }
 
-// FUN_003D25C0 NONMATCHING
+// FUN_003D25C0
 void FUN_003d25c0(u32 param_1)
 {
   typedef unsigned int FusionU128 __attribute__((mode(TI)));
@@ -4666,7 +4666,7 @@ LAB_003d29c0:
 
 }
 
-// FUN_003D2C10 NONMATCHING
+// FUN_003D2C10
 u32 FUN_003d2c10(s32 param_1)
 {
   typedef unsigned int FusionU128 __attribute__((mode(TI)));

@@ -47,6 +47,10 @@ static Vec128 rwVecKeep(Vec128 v) { return v; }
 #define _vmulbc(...) rwVecZero()
 #define _vmuli(...) rwVecZero()
 #define _vsub(...) rwVecZero()
+#ifndef SQRT
+#define SQRT(x) sqrtf(x)
+#endif
+extern f32 sqrtf(f32 value);
 extern u32 DAT_006b4608;
 extern u32 DAT_006b4610;
 extern u32 DAT_006b4618;
@@ -798,6 +802,12 @@ extern void FUN_00524828(void *param_1, void *param_2, int param_3);
 extern void FUN_00524828_u64(void *param_1,u64 param_2,int param_3);
 extern code FUN_0052e878;
 extern code FUN_0052ea18;
+#pragma alias FUN_00269c80_f32 FUN_00269c80
+extern f32 FUN_00269c80_f32(f32 value);
+#pragma alias FUN_00269ca0_f32 FUN_00269ca0
+extern f32 FUN_00269ca0_f32(f32 value);
+#pragma alias FUN_0052ea18_f32 FUN_0052ea18
+extern f32 FUN_0052ea18_f32(f32 x, f32 y);
 
 char FUN_00435440(char param_1);
 char FUN_0043bc20(char param_1);
@@ -12804,7 +12814,7 @@ void FUN_0044a790(u32 *param_1)
   float *pfVar2;
   int iVar3;
   float fVar4;
-  u32 uVar5;
+  f32 fVar5;
   float fVar6;
   float fVar7;
   float fVar8;
@@ -12816,16 +12826,16 @@ void FUN_0044a790(u32 *param_1)
   fVar10 = 1.0f / *(float *)(iVar1 + 0x80);
   iVar3 = *(int *)(iVar3 + 0x480);
   pfVar2 = (float *)(*(int *)*param_1 + param_1[4] * 0x40);
-  fVar4 = (float)param_1[1];
-  fVar8 = (float)param_1[2] * 448.0f;
+  fVar4 = *(float *)(param_1 + 1);
+  fVar8 = *(float *)(param_1 + 2) * 448.0f;
   fVar6 = fVar4 * 640.0f - 320.0f;
   fVar7 = SQRT(fVar6 * fVar6 + (fVar8 - 224.0f) * (fVar8 - 224.0f));
-  uVar5 = ((code)FUN_0052ea18)();
+  fVar5 = FUN_0052ea18_f32(fVar8 - 224.0f, fVar6);
   fVar6 = (float)FUN_0052e878_typed(fGpffff8248 * (fVar7 / 200.0f - (float)iVar3 / 180.0f) * 2.0f);
   fVar9 = fVar6 * 20.0f + fVar7 + 0.0f;
-  fVar6 = (float)((code)FUN_00269c80)(uVar5);
+  fVar6 = FUN_00269c80_f32(fVar5);
   fVar7 = fVar9 * fVar6 + 320.0f;
-  fVar6 = (float)((code)FUN_00269ca0)(uVar5);
+  fVar6 = FUN_00269ca0_f32(fVar5);
   *pfVar2 = fVar4 * 640.0f;
   pfVar2[1] = fVar8;
   pfVar2[4] = fVar7 / 640.0f;

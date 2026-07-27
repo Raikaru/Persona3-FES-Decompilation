@@ -3695,7 +3695,7 @@ void FUN_003bbb90(u64 param_1,u32 *param_2)
 
   float afStack_20 [4];
 
-  u64 uStack_10;
+  u32 uStack_10;
 
   float fStack_8;
 

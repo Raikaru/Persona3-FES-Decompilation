@@ -1499,7 +1499,7 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
 {
     FldFrameMoveWork* work;
     KwlnTask* task;
-    Model* model;
+    u32 animation;
 
     work = (FldFrameMoveWork*)RwCalloc(1, 0x5a0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -1512,16 +1512,15 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
                                           func_001ae580,
                                           func_001af8e0,
                                           work);
-    if (task == NULL)
-    {
-        RwFree(work);
-        return NULL;
-    }
     work->resource = resource;
-    model = fldFrameMoveModel(work);
-    if (model != NULL && model->id < 100)
+    if ((*(u16*)resource & 0x3ff) < 100)
     {
-        work->targetAnimation = (u16)*(u16*)((u8*)resource + 0xd6);
+        animation = *(u16*)((u8*)*(Model**)((u8*)resource + 0x128) + 0xd6);
+        if (animation >= 0x100)
+        {
+            animation >>= 8;
+        }
+        work->animation = animation;
         work->turnMode = 0;
     }
     else
@@ -1699,7 +1698,7 @@ u32 func_001b0020(KwlnTask* task, const RwV3d* position, s32 duration)
     return false;
 }
 
-// FUN_001b00c0 NONMATCHING
+// FUN_001b00c0
 void func_001b00c0(KwlnTask* task)
 {
     FldFrameMoveWork* work;
@@ -1719,11 +1718,12 @@ void func_001b00c0(KwlnTask* task)
     {
         for (i = 0; i < work->pointCount; i++)
         {
-            if (work->points[i].drawTask != NULL)
+            if (*(KwlnTask**)((u8*)work + 0x20 + i * 0x18 + 0x14) != NULL)
             {
-                kwlnTaskDestroyWithHierarchy(work->points[i].drawTask);
+                kwlnTaskDestroyWithHierarchy(
+                    *(KwlnTask**)((u8*)work + 0x20 + i * 0x18 + 0x14));
             }
-            work->points[i].drawTask = NULL;
+            *(KwlnTask**)((u8*)work + 0x20 + i * 0x18 + 0x14) = NULL;
         }
     }
     if (work->pointCount == 0)
