@@ -54,8 +54,8 @@ extern RwV3d D_00957180;
 #pragma alias D_00957180_abs D_00957180
 extern RwV3d D_00957180_abs;
 extern u8* DAT_007ce42c;
-extern const u8 iGpffffb718[];
-extern const u8 iGpffffb71c[];
+extern const u8* iGpffffb718;
+extern const u8* iGpffffb71c;
 extern const u8 iGpffffb73c[];
 extern void func_002ff890(DatUnit* unit, u32 param_2, u16 id);
 extern void* func_00308c60(DatUnit* unit);
@@ -4305,8 +4305,8 @@ BtlUnit* btlUnitFindFromId(u16 id)
 /* Data tables used by the retail animation and character helpers. */
 extern const u8 DAT_00693290[];
 extern const u8 DAT_006932e0[];
-extern const u8 iGpffffb718[];
-extern const u8 iGpffffb71c[];
+extern const u8* iGpffffb718;
+extern const u8* iGpffffb71c;
 extern const u8* iGpffffb728;
 extern const u8 iGpffffb73c[];
 extern const u16 gp0xffff9828[];
