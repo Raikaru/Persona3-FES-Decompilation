@@ -1224,7 +1224,7 @@ u32 func_00319970(Model* param_1);
 int func_0031aad0(Model* param_1);
 void func_0031b470(void);
 void func_0031b4a0(char* param_1,u16 param_2);
-u32 func_0031b680(int param_1,long param_2,int *param_3,int *param_4);
+u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
 void func_0031b820(u64 param_1,u64 param_2);
 u32 func_0031be80(u64 param_1);
 void func_0031c000(char* param_1,u16 param_2);

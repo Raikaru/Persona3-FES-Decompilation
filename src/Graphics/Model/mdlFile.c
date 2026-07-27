@@ -567,7 +567,7 @@ float * FUN_003385d0(u64 param_1);
 void FUN_00338770(int param_1);
 void FUN_003387c0(int param_1);
 void FUN_00338ac0(u64 param_1);
-u32 FUN_00338d60(int param_1);
+u64 FUN_00338d60(int param_1);
 void FUN_00338e50(int param_1);
 void FUN_00338ea0(int param_1);
 void FUN_00339200(u64 param_1);
@@ -29269,7 +29269,7 @@ void FUN_00338ac0(u64 param_1)
 // FUN_00338D60 NONMATCHING
 
 
-u32 FUN_00338d60(int param_1)
+u64 FUN_00338d60(int param_1)
 
 
 
@@ -29283,7 +29283,7 @@ u32 FUN_00338d60(int param_1)
 
   int iVar4;
 
-  u32 uVar5;
+  u64 uVar5;
 
   int iVar6;
 
