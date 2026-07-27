@@ -4438,6 +4438,8 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 func_0019d3f0(D_006844F8, 0x43f);
             }
         {
+        func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                      &section, &fraction);
             index = 0;
             while (index < count)
             {

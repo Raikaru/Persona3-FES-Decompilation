@@ -14378,9 +14378,9 @@ u32 func_002d03e0(void)
   u32 uVar9 = 0;
   int iVar10 = 0;
   
-  uVar5 = func_0035ed20(0);
-  iVar3 = func_0035ed20(1);
-  uVar6 = func_0035ed20(2);
+  uVar5 = func_0035ed20_u32(0);
+  iVar3 = func_0035ed20_u32(1);
+  uVar6 = func_0035ed20_u32(2);
   iVar10 = 0;
   uVar9 = 0xfffffff;
   for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
