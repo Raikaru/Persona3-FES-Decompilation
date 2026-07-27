@@ -57,6 +57,8 @@ u64 FUN_003e08e0(void);
 void FUN_003e0920(void);
 u32 FUN_003e0940(void);
 void FUN_003e0950(s32);
+#pragma alias FUN_003e0950_narg FUN_003e0950
+extern void FUN_003e0950_narg();
 void FUN_003e0a10(s32);
 void FUN_003e0b70(void);
 u8 FUN_003e0bb0(void);
