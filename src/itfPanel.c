@@ -4845,7 +4845,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
     piVar9 = piVar9 + 1;
 
-  } while (0 < counter);
+    } while (0 < counter);
 
   FUN_0016f1f0(secondIndex + aiStack_20[firstIndex],1);
 
