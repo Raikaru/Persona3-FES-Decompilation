@@ -922,7 +922,7 @@ void FUN_003c69d0(int param_1)
 }
 #define FUN_003c69d0(...) ((void (*)(...))FUN_003c69d0)(__VA_ARGS__)
 #undef FUN_003c6b70
-// FUN_003C6B70 NONMATCHING
+// FUN_003C6B70
 
 
 u64 FUN_003c6b70(int param_1)
@@ -960,8 +960,8 @@ u64 FUN_003c6b70(int param_1)
   else {
 
     iVar4 = *(int *)(*(int *)(*(int *)(param_1 + 0xc) + 0x14) + 0xc) - 1;
+    iVar3 = *(int *)(*(int *)(*(int *)(iVar2 + 0x2c) + 0x14) + 0xc) - 1;
     iVar6 = *(u16 *)(param_1 + 0x10) - 1;
-    iVar3 = *(int *)(*(int *)(piVar5[2] + 0x14) + 0xc) - 1;
     if (iVar6 >= 1) {
 
       *piVar5 = (iVar4 * 0xffff) / iVar6;

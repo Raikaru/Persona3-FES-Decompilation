@@ -1040,73 +1040,65 @@ void func_002f19d0(void)
 }
 
 // FUN_002f1b60 NONMATCHING
-u32 func_002f1b60(BtlAction* param_1,float *param_2)
-
+u32 func_002f1b60(BtlAction* action, f32* position)
 {
-  int iVar1;
-  u32 uVar2;
-  u32 uVar3;
-  s32 lVar4;
-  int iVar5;
-  float fVar6;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float afStack_10 [2];
-  float fStack_8;
-  
-  iVar5 = (int)param_1;
-  iVar1 = *(int *)(iVar5 + 0x30);
-  if (*(char *)(iVar1 + 0xa2) != '\x01') {
-    uVar3 = 0;
+  BtlUnit* unit;
+  BtlUnit* target;
+  RwV3d sourcePosition;
+  RwV3d targetPosition;
+  RwV3d direction;
+  u32 moveId;
+  f32 distance;
+  u32 result;
+
+  unit = action->unit;
+  if (unit->genus != UNIT_GENUS_EC) {
+    result = 0;
   }
   else {
-    if (*(short *)(iVar1 + 0xa4) != 0x10f) {
-      uVar3 = 0;
+    if (unit->charId != 0x10f) {
+      result = 0;
     }
     else {
-      if (*(short *)(iVar5 + 0x6a) != 1) {
-        uVar3 = 0;
+      if (action->target.targetedCount != 1) {
+        result = 0;
       }
       else {
-        if (*(short *)(iVar5 + 0x6c) != 2) {
-          uVar3 = 0;
+        if (action->target.commandId != 2) {
+          result = 0;
         }
         else {
-          if ((*(u8 *)(iGpffffb708 +
-                        ((u32)*(u16 *)(iVar5 + 0x6e) * 10 + (u32)*(u16 *)(iVar5 + 0x6e)) * 4
-                        ) & 2) == 0) {
-            uVar3 = 0;
+          if ((*(u8 *)(iGpffffb708 + action->target.specificId * 0x2c) & 2) == 0) {
+            result = 0;
           }
           else {
-            uVar3 = *(u32 *)(*(int *)(iVar5 + 0x38) + 0x30);
-            FUN_00280050(iVar1,afStack_10);
-            FUN_00280480(uVar3,iVar1,&fStack_20);
-            fStack_30 = afStack_10[0] - fStack_20;
-            fStack_28 = fStack_8 - fStack_18;
-            fStack_2c = 0.0f;
-            FUN_004c69f0(&fStack_30,&fStack_30);
-            lVar4 = FUN_002d5e10(param_1);
-            if (lVar4 == 0) {
-              uVar2 = 4;
+            target = action->target.targetedActions[0]->unit;
+            FUN_00280050(unit, &sourcePosition);
+            FUN_00280480(target, unit, &targetPosition);
+            direction.x = sourcePosition.x - targetPosition.x;
+            direction.y = 0.0f;
+            direction.z = sourcePosition.z - targetPosition.z;
+            FUN_004c69f0(&direction, &direction);
+            if (FUN_002d5e10(action) == 0) {
+              moveId = 4;
             }
             else {
-              uVar2 = 0xb;
+              moveId = 0xb;
             }
-            fVar6 = FUN_002812d0((BtlUnit *)iVar1,(BtlUnit *)uVar3,(s32)uVar2);
-            *param_2 = fStack_20 + fStack_30 * fVar6;
-            param_2[1] = fStack_1c + fStack_2c * fVar6;
-            param_2[2] = fStack_18 + fStack_28 * fVar6;
-            uVar3 = 1;
+            distance = FUN_002812d0(unit, target, moveId);
+            direction.x *= distance;
+            direction.y *= distance;
+            direction.z *= distance;
+            position[0] = targetPosition.x + direction.x;
+            position[1] = targetPosition.y + direction.y;
+            position[2] = targetPosition.z + direction.z;
+            result = 1;
           }
         }
       }
     }
   }
-  return uVar3;
+  return result;
 }
 
 /* Removing this loses FUN_002f1d40 (MATCH nd0 -> MISMATCH nd14) - measured W161. */
