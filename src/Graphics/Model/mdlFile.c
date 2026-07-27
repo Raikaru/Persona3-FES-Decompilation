@@ -15204,9 +15204,7 @@ void FUN_0032af30(int param_1)
 
             }
 
-            auVar26 = _sqc2(auVar26);
-
-            memcpy(*pauVar15, &auVar26, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar15) : "memory");
 
             fVar20 = *(float *)(pauVar4[6] + 0xc);
 
@@ -15686,9 +15684,7 @@ void FUN_0032ba30(int param_1)
 
           auVar25 = _vadd(auVar25,auVar26);
 
-          auVar25 = _sqc2(auVar25);
-
-          memcpy(*pauVar16, &auVar25, 16);
+          __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
           FUN_0032a770(pauVar16,(int)(pauVar4),iVar9,(u8 (*)[16])(&uStack_30));
 
@@ -15800,9 +15796,7 @@ void FUN_0032ba30(int param_1)
 
             }
 
-            auVar25 = _sqc2(auVar25);
-
-            memcpy(*pauVar16, &auVar25, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
             fVar24 = *(float *)(pauVar4[6] + 0xc);
 
@@ -15896,9 +15890,7 @@ void FUN_0032ba30(int param_1)
 
               auVar25 = _vadd(auVar25,auVar26);
 
-              auVar25 = _sqc2(auVar25);
-
-              memcpy(*pauVar16, &auVar25, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
               *(int *)pauVar16[1] = (int)fVar24;
 
@@ -16502,9 +16494,7 @@ void FUN_0032c340(u64 param_1)
 
             }
 
-            auVar31 = _sqc2(auVar31);
-
-            memcpy(*pauVar20, &auVar31, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
             fVar25 = *(float *)((int)puVar4 + 0x6c);
 
@@ -16626,9 +16616,7 @@ void FUN_0032c340(u64 param_1)
 
               }
 
-              auVar31 = _sqc2(auVar31);
-
-              memcpy(*pauVar20, &auVar31, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
               *(int *)pauVar20[1] = (int)fVar25;
 
@@ -17073,9 +17061,7 @@ void FUN_0032ce10(int param_1)
 
             }
 
-            auVar33 = _sqc2(auVar33);
-
-            memcpy(*pauVar20, &auVar33, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
             fVar31 = *(float *)((int)puVar4 + 0x6c);
 
@@ -17189,9 +17175,7 @@ void FUN_0032ce10(int param_1)
 
               }
 
-              auVar33 = _sqc2(auVar33);
-
-              memcpy(*pauVar20, &auVar33, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
               *(float *)(*pauVar20 + 4) = *(float *)(*pauVar20 + 4) + pfVar19[9];
 
@@ -17621,9 +17605,7 @@ void FUN_0032d840(int param_1)
 
           auVar25 = _vadd(auVar25,auVar26);
 
-          auVar25 = _sqc2(auVar25);
-
-          memcpy(*pauVar16, &auVar25, 16);
+          __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
           FUN_0032a770(pauVar16,(int)(pauVar4),iVar9,(u8 (*)[16])(&uStack_30));
 
@@ -17751,9 +17733,7 @@ void FUN_0032d840(int param_1)
 
             }
 
-            auVar25 = _sqc2(auVar25);
-
-            memcpy(*pauVar16, &auVar25, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
             fVar23 = *(float *)(pauVar4[6] + 0xc);
 
@@ -17847,9 +17827,7 @@ void FUN_0032d840(int param_1)
 
               auVar25 = _vadd(auVar25,auVar26);
 
-              auVar25 = _sqc2(auVar25);
-
-              memcpy(*pauVar16, &auVar25, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
               *(int *)pauVar16[1] = (int)fVar23;
 
@@ -18277,9 +18255,7 @@ void FUN_0032e1a0(int param_1)
 
             }
 
-            auVar28 = _sqc2(auVar28);
-
-            memcpy(*pauVar16, &auVar28, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
             fVar26 = *(float *)(pauVar4[6] + 0xc);
 
@@ -18373,9 +18349,7 @@ void FUN_0032e1a0(int param_1)
 
               auVar28 = _vadd(auVar28,auVar29);
 
-              auVar28 = _sqc2(auVar28);
-
-              memcpy(*pauVar16, &auVar28, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
               *(int *)pauVar16[1] = (int)fVar26;
 
@@ -18453,9 +18427,7 @@ void FUN_0032e1a0(int param_1)
 
           auVar28 = _vadd(auVar28,auVar29);
 
-          auVar28 = _sqc2(auVar28);
-
-          memcpy(*pauVar16, &auVar28, 16);
+          __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar16) : "memory");
 
           FUN_0032a770(pauVar16,(int)(pauVar4),iVar9,(u8 (*)[16])(&uStack_30));
 
@@ -19191,9 +19163,7 @@ void FUN_0032eb40(int param_1)
 
               }
 
-              auVar41 = _sqc2(auVar41);
-
-              memcpy(*pauVar19, &auVar41, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar19) : "memory");
 
               *(int *)pauVar19[1] = (int)fVar39;
 
@@ -19377,9 +19347,7 @@ void FUN_0032eb40(int param_1)
 
           }
 
-          auVar41 = _sqc2(auVar41);
-
-          memcpy(*pauVar19, &auVar41, 16);
+          __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar19) : "memory");
 
           FUN_0032a770(pauVar19,(int)(iVar4),iVar11,(u8 (*)[16])(&uStack_30));
 
@@ -19685,9 +19653,7 @@ void FUN_0032f910(u64 param_1)
 
           auVar27 = _vadd(auVar26,auVar27);
 
-          auVar26 = _sqc2(auVar27);
-
-          memcpy(*pauVar15, &auVar26, 16);
+          __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar15) : "memory");
 
           auVar26 = _qmfc2(auVar27._0_4_);
 
@@ -19839,9 +19805,7 @@ void FUN_0032f910(u64 param_1)
 
             }
 
-            auVar26 = _sqc2(auVar26);
-
-            memcpy(*pauVar15, &auVar26, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar15) : "memory");
 
             fVar25 = *(float *)(pauVar4[6] + 0xc);
 
@@ -21005,9 +20969,7 @@ void FUN_00330c40(u64 param_1)
 
             }
 
-            auVar32 = _sqc2(auVar32);
-
-            memcpy(*pauVar20, &auVar32, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
             fVar29 = *(float *)((int)puVar4 + 0x6c);
 
@@ -21119,9 +21081,7 @@ void FUN_00330c40(u64 param_1)
 
               }
 
-              auVar32 = _sqc2(auVar32);
-
-              memcpy(*pauVar20, &auVar32, 16);
+              __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
               *(int *)pauVar20[1] = (int)fVar23;
 
@@ -21241,9 +21201,7 @@ void FUN_00330c40(u64 param_1)
 
           }
 
-          auVar32 = _sqc2(auVar32);
-
-          memcpy(*pauVar20, &auVar32, 16);
+          __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar20) : "memory");
 
           FUN_0032a770(pauVar20,(int)(puVar4),iVar12,(u8 (*)[16])(&uStack_50));
 
@@ -21827,9 +21785,7 @@ void FUN_00331650(u64 param_1)
 
             }
 
-            auVar28 = _sqc2(auVar28);
-
-            memcpy(*pauVar14, &auVar28, 16);
+            __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(pauVar14) : "memory");
 
             fVar20 = *(float *)(pauVar4[6] + 0xc);
 
