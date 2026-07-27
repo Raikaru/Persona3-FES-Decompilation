@@ -7756,7 +7756,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
         FUN_00493210(iVar1,iVar9,sVar6 + *psVar5,sVar6 + psVar5[1],sVar6 + psVar5[2]);
 
-        FUN_00493230(iVar1,iVar9,*(u32 *)(iVar2 + lVar7 * 4));
+        FUN_00493230(iVar1,iVar9,*(u32 *)(iVar2 + (int)lVar7 * 4));
 
         iVar9 = iVar9 + 8;
 
