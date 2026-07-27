@@ -13740,7 +13740,7 @@ int FUN_00400d60(void)
 
   int iVar2;
 
-  u32 uVar3;
+  u64 uVar3;
 
   
 
