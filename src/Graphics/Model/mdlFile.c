@@ -49894,7 +49894,7 @@ void FUN_0034d990(int param_1,u32 param_2,u32 param_3)
 
   long lVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iStack_30;
 

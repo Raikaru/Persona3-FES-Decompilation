@@ -7461,7 +7461,7 @@ void func_002c3f00(int param_1)
 
 {
   int iVar1 = 0;
-  int lVar2 = 0;
+  long lVar2 = 0;
   u32 uVar3 = 0;
   int aiStack_30 [12] = {0};
   
