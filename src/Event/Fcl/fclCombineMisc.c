@@ -2715,7 +2715,7 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
   u8 bVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -2729,9 +2729,6 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
   
 
-  for (iVar5 = 0; iVar5 < 0xc; iVar5 = iVar5 + 1) {
-
-  }
 
   puVar9 = (u16 *)(PTR_DAT_006a5f40)[param_2 * 2];
 
@@ -2757,7 +2754,7 @@ u32 FUN_003d84c0(u64 param_1,int param_2)
 
       bVar3 = bVar2;
 
-      if ((u32)uVar1 == (long)*(short *)(DAT_006a5414 + iVar6)) {
+      if ((u32)uVar1 == *(short *)(DAT_006a5414 + iVar6)) {
 
         if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) == 0) {
 

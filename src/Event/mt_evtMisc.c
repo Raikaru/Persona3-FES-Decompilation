@@ -738,7 +738,7 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4, u32 *param_
 void FUN_0038c830(int param_1,long param_2);
 void FUN_0038ca00(void);
 void FUN_0038ca80(int param_1);
-void FUN_0038cc10(int param_1,u16 *param_2,long param_3);
+void FUN_0038cc10(int param_1,u16 *param_2,int param_3);
 void FUN_0038d560(int param_1,int param_2,u32 param_3,u32 *param_4, u32 *param_5,u32 *param_6);
 void FUN_0038d6b0(int param_1,u32 param_2);
 void FUN_0038d720(int param_1);
@@ -5606,45 +5606,27 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
   *param_4 = 0;
 
   if (param_1 != 0) {
-
     puVar4 = (u32 *)param_1;
-
     sVar1 = *(short *)(puVar4 + 8);
-
     *param_4 = puVar4[0x1b];
-
     while ((puVar2 = (u16 *)*param_4, puVar2 != (u16 *)0x0 &&
-
            ((int)((u32)*puVar2 + (int)sVar1) <= param_2))) {
-
       *param_4 = *(u32 *)(puVar2 + 0x26);
-
     }
 
     if (puVar2 == (u16 *)0x0) {
-
       *param_3 = puVar4[0x1c];
-
     }
-
     else {
-
       *param_3 = *(int *)(puVar2 + 0x28);
-
     }
 
     lVar3 = FUN_0036f500(*puVar4);
-
     if (lVar3 == 1) {
-
       while ((*param_3 != 0 && (lVar3 = FUN_00360ed0(), lVar3 != 1))) {
-
         *param_3 = *(int *)(*param_3 + 0x50);
-
       }
-
     }
-
   }
 
   return;
@@ -6049,7 +6031,7 @@ void FUN_0038ca80(int param_1)
 
 LAB_0038cbd8:
 
-      FUN_0038cc10(param_1,(u16 *)aiStack_d0[iVar1],(long)psVar4);
+      FUN_0038cc10(param_1,(u16 *)aiStack_d0[iVar1],(int)psVar4);
 
     }
 
@@ -6063,7 +6045,7 @@ LAB_0038cbd8:
 // FUN_0038CC10 NONMATCHING
 
 
-void FUN_0038cc10(int param_1,u16 *param_2,long param_3)
+void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 
 
 

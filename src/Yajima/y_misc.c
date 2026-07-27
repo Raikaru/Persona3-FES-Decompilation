@@ -763,7 +763,7 @@ u32 FUN_00424b60(void)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 

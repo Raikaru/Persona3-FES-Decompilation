@@ -1190,7 +1190,7 @@ static void btlCameraRangeActionFrame(BtlCamera* camera, f32 margin,
 }
 
 
-// FUN_002a54f0 NONMATCHING
+// FUN_002a54f0
 void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 farScale)
 {
     f32 maxY;
@@ -1219,6 +1219,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     f32 xSquared;
     f32 r;
     f32 r2;
+    f32 factor;
     BtlUnit* unit;
     BtlAction* targetAction;
     unit = camera->action->unit;
@@ -1281,7 +1282,8 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
                         r = fGpffff8050 + xSquared * r;
                         r = fGpffff8054 + xSquared * r;
                         r2 = fGpffff8058 + xSquared * r;
-                        firstWeight = xSquared * x * r2 + x;
+                        r = xSquared * x;
+                        firstWeight = r * r2 + x;
                         x = radius * blend.scalar;
                         xSquared = x * x;
                         r = fGpffff8048 + fGpffff8130 * xSquared;
@@ -1289,7 +1291,8 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
                         r = fGpffff8050 + xSquared * r;
                         r = fGpffff8054 + xSquared * r;
                         r2 = fGpffff8058 + xSquared * r;
-                        radius = xSquared * x * r2 + x;
+                        r = xSquared * x;
+                        radius = r * r2 + x;
                     }
                     blendedRot.imag.x = blend.first.imag.x * firstWeight;
                     blendedRot.imag.y = blend.first.imag.y * firstWeight;
@@ -1353,9 +1356,11 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         {
             ratio = nearDistance / angle;
             radius = 1.0f;
-            if (ratio > radius)
+            factor = ratio;
+            if (factor > radius)
             {
-                radius = ratio * radius;
+                factor = ratio * radius;
+                radius = factor;
             }
             ratio = 2.0f;
             if (radius <= ratio)

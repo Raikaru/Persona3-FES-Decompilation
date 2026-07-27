@@ -1500,7 +1500,6 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
     u32 animation;
     FldFrameMoveWork* work;
     KwlnTask* task;
-
     work = (FldFrameMoveWork*)RwCalloc(1, 0x5a0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {

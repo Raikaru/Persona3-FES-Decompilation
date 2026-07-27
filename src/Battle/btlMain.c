@@ -2539,7 +2539,7 @@ u32 FUN_0029f760(float *param_1)
 
   else {
 
-    if (param_1[9] == 0.0) {
+    if (param_1[9] == 0.0f) {
 
       pfVar2 = (float *)FUN_0019fd40();
 
