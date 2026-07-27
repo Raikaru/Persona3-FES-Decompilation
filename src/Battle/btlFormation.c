@@ -13729,7 +13729,7 @@ u32 func_002cef10(void)
     func_0035f060(*(u32 *)(iVar9 + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060_u32(0xffffffff);
   }
   return 0xffffffff;
 }
