@@ -208,6 +208,25 @@ static __inline u32 mdlVuModulate(const u32 *pc1, const u32 *pc2, f32 inv255)
     return tmp;
 }
 
+/* ==========================================================================
+ * WARNING: EVERY MACRO BELOW IS A FAKE PLACEHOLDER, NOT A VU INSTRUCTION.
+ *
+ * They expand to mdlVecZero() (a zeroed Vec128) or mdlVecKeep() (identity),
+ * so any function still using them compiles cleanly while emitting scalar
+ * GARBAGE instead of the COP2/MMI instructions retail executes. That garbage
+ * is why such functions sit 20-40% over their windows.
+ *
+ * To fix a site you must rewrite its DATAFLOW, not just swap the macro: a
+ * real lqc2/sqc2 targets a fixed VU register ($vf10 etc.), so the Ghidra
+ * form `auVarN = _lqc2(x);` has no C value to assign and every consumer of
+ * auVarN has to be traced out. Decode the retail window first with
+ *   python build/wip/W147_dis.py <VADDR_HEX> <SIZE>
+ * then emit the real instruction as __asm__ volatile with a "memory" clobber
+ * (see mdlVuModulate above, and src/Graphics/Effect/effMisc.c).
+ *
+ * DELETE THIS BLOCK once the last user is converted, so a stray _lqc2 can
+ * never silently reintroduce zeroes.
+ * ========================================================================== */
 #define _lqc2(x) mdlVecZero()
 #define _sqc2(x) mdlVecKeep(x)
 #define _qmtc2(x) mdlVecZero()

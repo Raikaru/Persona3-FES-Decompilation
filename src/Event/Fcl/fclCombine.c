@@ -19,6 +19,8 @@ extern u8 **PTR_FUN_006a46e0;
 #pragma alias PTR_FUN_006a46e0_abs PTR_FUN_006a46e0
 extern u8 PTR_FUN_006a46e0_abs[];
 extern u8 **PTR_FUN_006a4870;
+#pragma alias PTR_FUN_006a4870_abs PTR_FUN_006a4870
+extern u8 PTR_FUN_006a4870_abs[];
 extern u8 *PTR_FUN_006a48a0[];
 extern char gp0xffffaa60[];
 extern char gp0xffffaa68;
@@ -5185,7 +5187,7 @@ void FUN_003d38b0(u64 param_1,int param_2,int param_3)
 
 }
 
-// FUN_003D3B70 NONMATCHING
+// FUN_003D3B70
 u32 FUN_003d3b70(u32 param_1,u32 param_2)
 {
   typedef unsigned int FusionU128 __attribute__((mode(TI)));
@@ -5196,7 +5198,7 @@ u32 FUN_003d3b70(u32 param_1,u32 param_2)
   int iVar4;
   u32 auStack_30[12];
 
-  src = (FusionU128 *)PTR_FUN_006a4870;
+  src = (FusionU128 *)PTR_FUN_006a4870_abs;
   dst = (FusionU128 *)auStack_30;
   iVar4 = 2;
   do {
@@ -5206,7 +5208,7 @@ u32 FUN_003d3b70(u32 param_1,u32 param_2)
     *dst = temp;
     dst = dst + 1;
   } while (0 < iVar4);
-  *(u32 *)dst = *(u32 *)src;
+  *(f32 *)dst = *(f32 *)src;
   uVar7 = FUN_003c5240(uGpffffb994,2,auStack_30,0,2);
   iVar4 = FUN_003c5470(uVar7);
   if (param_1 != 0) {
