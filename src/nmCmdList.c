@@ -155,7 +155,7 @@ u8 FUN_003c83b0(void);
 #define FUN_003c5f40(...) ((void (*)(...))FUN_003c5f40)(__VA_ARGS__)
 #define FUN_003c5fa0(...) ((void (*)(...))FUN_003c5fa0)(__VA_ARGS__)
 #define FUN_003c60f0(...) ((u64 (*)(...))FUN_003c60f0)(__VA_ARGS__)
-#define FUN_003c6120(...) ((u32 (*)(...))FUN_003c6120)(__VA_ARGS__)
+#define FUN_003c6120(...) ((u64 (*)(...))FUN_003c6120)(__VA_ARGS__)
 #define FUN_003c6270(...) ((u32 (*)(...))FUN_003c6270)(__VA_ARGS__)
 #define FUN_003c6380(...) ((u64 (*)(...))FUN_003c6380)(__VA_ARGS__)
 #define FUN_003c63f0(...) ((u64 (*)(...))FUN_003c63f0)(__VA_ARGS__)
@@ -448,15 +448,8 @@ u32 FUN_003c6120(int param_1,int param_2)
     puVar2[1] = uVar6 + iVar5;
   }
   if (puVar2[2] != 0) {
-    u32 uVar12;
-    u32 uVar13;
-    u32 uVar14;
-    u32 uVar15;
-    uVar12 = *(volatile u32 *)&puVar2[4] | 0xffffff00;
-    uVar13 = (u32)(param_2 == *(volatile int *)(param_1 + 0xc));
-    uVar14 = *(volatile u32 *)&puVar2[0];
-    uVar15 = *(volatile u32 *)&puVar2[1];
-    FUN_003b2cb0(0.0f,uVar14,uVar15,uVar12,uVar13,4,puVar2[2],0x10,0);
+    FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],puVar2[4] | 0xffffff00,
+                 (u32)(param_2 == *(int *)(param_1 + 0xc)),4,puVar2[2],0x10,0);
   }
   ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;

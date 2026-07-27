@@ -8915,7 +8915,8 @@ void func_002ec5c0(void)
   return;
 }
 
-// FUN_002ec790 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ec790
 void func_002ec790(void)
 {
     void* object;
@@ -8964,6 +8965,7 @@ void func_002ec790(void)
     btlPacketRegister(packet, 1);
     func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ec990
 void func_002ec990(BtlUnit* unit)
