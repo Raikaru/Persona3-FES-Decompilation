@@ -794,7 +794,7 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
  
 // FUN_0013d1a0 NONMATCHING
 
-void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
+void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 alpha)
 
 {
   char category;
@@ -823,7 +823,7 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   float originY;
   CampBits packedPosition;
   char textBuffer[256];
-  packedPosition.u = position;
+  packedPosition = position;
   originX = packedPosition.f[0];
   originY = packedPosition.f[1];
   if (work->entryCount != 0) {
