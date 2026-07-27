@@ -1046,7 +1046,6 @@ void FUN_00386f70(float param_1,float *param_2,float *param_3,u8 *param_4)
   top = (s32)param_2[1];
   bottom = (s32)(param_2[1] + param_3[1]);
   color = *(RwRGBA *)param_4;
-  asm volatile("" : "+m"(color));
 
   camera = FUN_00198590();
   recipZ = 1.0f / *(float *)(camera + 0x80);
@@ -1146,7 +1145,6 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
   }
 
   color = *(RwRGBA *)param_6;
-  asm volatile("" : "+m"(color));
 
   camera = FUN_00198590();
   recipZ = 1.0f / *(float *)(camera + 0x80);
@@ -1272,7 +1270,6 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
   fVar2 = param_2[1];
   fVar3 = param_3[1];
   color = *(RwRGBA *)param_7;
-  asm volatile("" : "+m"(color));
 
   left = (s32)fVar4;
   right = (s32)(fVar4 + fVar5);
@@ -1457,7 +1454,6 @@ void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
   top = (s32)param_2[1];
   bottom = (s32)param_3[1];
   color = *(RwRGBA *)param_4;
-  asm volatile("" : "+m"(color));
 
   camera = FUN_00198590();
   recipZ = 1.0f / *(float *)(camera + 0x80);

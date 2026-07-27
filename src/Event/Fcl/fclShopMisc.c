@@ -817,7 +817,6 @@ void FUN_003eff00(u64 param_1,u8 *param_2)
   int iVar1;
   int iStack_4;
 
-  asm volatile("" : "+m"(uStack_20));
   puVar1 = FUN_003efff0_u64(param_1);
   iStack_4 = 0;
   while ((puVar2 = (u8 *)FUN_003f0350((int)puVar1,&iStack_4)) != 0) {

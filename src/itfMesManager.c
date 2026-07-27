@@ -6019,12 +6019,10 @@ void FUN_003a8350(int param_1)
 
   if (2.1474836e+09f <= fVar1) goto LAB_003a8400;
   iVar1 = (int)fVar1;
-  asm volatile("" : "+r"(iVar1));
   iVar1 = iVar1 & 0xff;
   goto LAB_003a8418;
 LAB_003a8400:
   iVar1 = (int)(fVar1 - 2.1474836e+09f);
-  asm volatile("" : "+r"(iVar1));
   iVar1 = (iVar1 | 0x80000000) & 0xff;
 LAB_003a8418:
   FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
