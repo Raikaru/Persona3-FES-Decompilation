@@ -1113,7 +1113,7 @@ int FUN_002d8390(void)
   uVar7 = uVar7 & 0xffff;
   if (uVar7 < 6) {
     uVar8 = FUN_002d4cf0(2,0x80000);
-    uVar9 = FUN_002ffcc0(*(undefined4 *)(*(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
+    uVar9 = FUN_002ffcc0_u32(*(undefined4 *)(*(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
     bVar3 = (int)((uVar8 & 0xffff) - (uVar9 & 0xff)) >= 4;
     bVar6 = false;
     bVar5 = false;
