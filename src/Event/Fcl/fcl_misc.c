@@ -2354,7 +2354,7 @@ void FUN_003cb100(int param_1)
 // FUN_003CB1F0 NONMATCHING
 
 
-void FUN_003cb1f0(int param_1)
+void FUN_003cb1f0(u64 param_1)
 
 
 
