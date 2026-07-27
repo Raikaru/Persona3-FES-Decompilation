@@ -3794,9 +3794,11 @@ u8 * FUN_0031fd00(void)
 
   iVar1 = (int)FUN_0031fbd0((float)(extraout_f13),(int *)(extraout_t1));
 
-  DAT_00957254 = extraout_f14 * (*(float *)(iVar1 + 4) - fVar4) + fVar4 + 0.0f;
-  DAT_00957258 = extraout_f14 * (*(float *)(iVar1 + 8) - fVar2) + fVar2 + 0.0f;
-  DAT_0095725c = extraout_f14 * (*(float *)(iVar1 + 0xc) - fVar3) + fVar3 + 0.0f;
+  DAT_00957254 = extraout_f14 * (*(float *)(iVar1 + 4) - fVar4) + fVar4 + 0.0;
+
+  DAT_00957258 = extraout_f14 * (*(float *)(iVar1 + 8) - fVar2) + fVar2 + 0.0;
+
+  DAT_0095725c = extraout_f14 * (*(float *)(iVar1 + 0xc) - fVar3) + fVar3 + 0.0;
 
   return (u8 *)&DAT_00957250;
 
