@@ -145,7 +145,7 @@ void FUN_003a4270(int param_1);
 u32 FUN_003a42c0(int param_1,u32 param_2);
 u64 FUN_003a4360(u64 param_1,long param_2);
 u32 FUN_003a4a70(int param_1, int param_2, int param_3);
-u64 FUN_003a4b90(int param_1,int param_2,int param_3);
+u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3);
 void FUN_003a4ce0(void);
 void FUN_003a4dd0(int param_1);
 #pragma alias FUN_003a4dd0_typed FUN_003a4dd0
@@ -2502,7 +2502,7 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
 // FUN_003A4B90 NONMATCHING
 
 
-u64 FUN_003a4b90(int param_1,int param_2,int param_3)
+u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3)
 
 
 
@@ -5399,7 +5399,7 @@ u32 FUN_003a7a40(int param_1)
 
 {
 
-  short sVar1;
+  int sVar1;
 
   u32 uVar2;
 
@@ -5417,7 +5417,7 @@ u32 FUN_003a7a40(int param_1)
 
     if (((DAT_007e0952 & 0x4000) != 0) || ((DAT_007e095a & 0x4000) != 0)) {
 
-      if ((long)*(short *)(param_1 + 0x56) == (long)(*(short *)(param_1 + 0x5a) + -1)) {
+      if (*(short *)(param_1 + 0x56) == *(short *)(param_1 + 0x5a) + -1) {
 
         if (((DAT_007e094e & 0x4000) != 0) || ((DAT_007e0958 & 0x4000) != 0)) {
 

@@ -16,6 +16,7 @@ extern u32 LAB_003c2530;
 extern u32 _DAT_007ce678;
 extern u32 uGpffffb980;
 extern u32 FUN_003bf370(void);
+extern u8 FUN_0016ef30(void);
 extern u32 FUN_003bf510(void);
 extern u64 FUN_003b91c0(float param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5,u32 param_6,u32 param_7);
 extern u64 FUN_003b9320(float param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5,u32 param_6,u32 param_7);
@@ -1315,7 +1316,7 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
 
   int iVar1;
 
-  char cVar2;
+  u32 cVar2;
 
   int iVar3;
 
@@ -1339,7 +1340,7 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
 
   uVar6 = FUN_0017da40();
 
-  cVar2 = FUN_0016ef30();
+  cVar2 = (u8)FUN_0016ef30();
 
   iVar8 = 0;
 

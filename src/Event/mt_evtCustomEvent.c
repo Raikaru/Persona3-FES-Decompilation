@@ -1433,9 +1433,9 @@ u32 FUN_00399c40(int param_1)
 
   u32 uVar6;
 
-  u64 uVar7;
-
-  long lVar8;
+  u32 uVar7;
+ 
+  int lVar8;
 
   u8 uVar9;
 
