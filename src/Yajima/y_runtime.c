@@ -627,6 +627,8 @@ extern long FUN_001c7130(u32 param_1, u32 param_2);
 #pragma alias FUN_001c7160_f32 FUN_001c7160
 extern long FUN_001c7160_f32(f32 param_1, void *param_2, void *param_3);
 extern long FUN_001c7160(u32 param_1, void *param_2, void *param_3);
+#pragma alias FUN_001c7160_i32 FUN_001c7160
+extern int FUN_001c7160_i32(u32 param_1, void *param_2, void *param_3);
  #pragma alias FUN_001c7270_u32 FUN_001c7270
  extern u32 FUN_001c7270_u32(u32 param_1,u32 param_2);
 extern code FUN_001c7b10;
@@ -5602,7 +5604,7 @@ u16 FUN_00435660(char param_1)
   short sVar1;
   u8 bVar2;
   u32 uVar3;
-  long lVar4;
+  int iVar4;
   int iVar5;
   char cVar6;
   int iVar7;
@@ -5625,9 +5627,9 @@ u16 FUN_00435660(char param_1)
         if (lVar8 == 0) {
           uVar3 = FUN_0016c970(*(u16 *)((u8 *)DAT_00871948 + iVar5));
           if ((uVar3 & 0x80) != 0) {
-            lVar4 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0);
+            iVar4 = FUN_001c7160_i32(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0);
 joined_r0x004357c4:
-            if (lVar4 == 1) {
+            if (iVar4 == 1) {
               return (short)lVar8;
             }
           }
@@ -5643,7 +5645,7 @@ joined_r0x004357c4:
           }
           if ((cVar6 == '\x01') &&
              (uVar3 = FUN_0016c970(*(u16 *)((u8 *)DAT_00871948 + iVar5)), (uVar3 & 0x80) != 0)) {
-            lVar4 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0 + iVar5);
+            iVar4 = FUN_001c7160_i32(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0 + iVar5);
             goto joined_r0x004357c4;
           }
         }

@@ -38511,43 +38511,43 @@ void FUN_00341ba0(int param_1)
 
       FUN_00104d10(uVar5,0x69c780,uVar4);
 
-      (*((u32 *)((u8 *)&uStack_18 + 4))) = (float)((u32)uVar5 >> 0x20);
+      (*((float *)((u8 *)&uStack_18 + 4))) = (float)((u32)uVar5 >> 0x20);
 
-      (*((u32 *)((u8 *)&uStack_18 + 4))) = (*((u32 *)((u8 *)&uStack_18 + 4))) + 2.0;
+      (*((float *)((u8 *)&uStack_18 + 4))) = (*((float *)((u8 *)&uStack_18 + 4))) + 2.0f;
 
-      (*((u32 *)((u8 *)&uStack_18 + 0))) = (float)uVar5;
+      (*((float *)((u8 *)&uStack_18 + 0))) = (float)uVar5;
 
       uVar5 = FUN_00530da0(*(u32 *)(iVar1 + 0xa8));
 
       FUN_00104d10(uStack_18,0x69c7a0,uVar5);
 
-      (*((u32 *)((u8 *)&uStack_18 + 4))) = (*((u32 *)((u8 *)&uStack_18 + 4))) + 2.0;
+      (*((float *)((u8 *)&uStack_18 + 4))) = (*((float *)((u8 *)&uStack_18 + 4))) + 2.0f;
 
-      (*((u32 *)((u8 *)&uStack_18 + 0))) = (float)uStack_18 - 4.0;
+      (*((float *)((u8 *)&uStack_18 + 0))) = (*((float *)((u8 *)&uStack_18 + 0))) - 4.0f;
 
       FUN_00104d10(uStack_18,0x69c7c0,*(u8 *)(iVar1 + 0xac),*(u8 *)(iVar1 + 0xad),
 
                    *(u8 *)(iVar1 + 0xae),*(u8 *)(iVar1 + 0xaf));
 
-      (*((u32 *)((u8 *)&uStack_18 + 4))) = (*((u32 *)((u8 *)&uStack_18 + 4))) + 2.0;
+      (*((float *)((u8 *)&uStack_18 + 4))) = (*((float *)((u8 *)&uStack_18 + 4))) + 2.0f;
 
       FUN_00104d10(uStack_18,0x69c7e0,*(u8 *)(iVar1 + 0xb0),*(u8 *)(iVar1 + 0xb1),
 
                    *(u8 *)(iVar1 + 0xb2),*(u8 *)(iVar1 + 0xb3));
 
-      (*((u32 *)((u8 *)&uStack_18 + 4))) = (*((u32 *)((u8 *)&uStack_18 + 4))) + 2.0;
+      (*((float *)((u8 *)&uStack_18 + 4))) = (*((float *)((u8 *)&uStack_18 + 4))) + 2.0f;
 
       FUN_00104d10(uStack_18,0x69c800,*(u8 *)(iVar1 + 0xb4),*(u8 *)(iVar1 + 0xb5),
 
                    *(u8 *)(iVar1 + 0xb6),*(u8 *)(iVar1 + 0xb7));
 
-      (*((u32 *)((u8 *)&uStack_18 + 4))) = (*((u32 *)((u8 *)&uStack_18 + 4))) + 2.0;
+      (*((float *)((u8 *)&uStack_18 + 4))) = (*((float *)((u8 *)&uStack_18 + 4))) + 2.0f;
 
       FUN_00104d10(uStack_18,0x69c820,*(u8 *)(iVar1 + 0xb8),*(u8 *)(iVar1 + 0xb9),
 
                    *(u8 *)(iVar1 + 0xba),*(u8 *)(iVar1 + 0xbb));
 
-      uStack_18 = CONCAT44((*((u32 *)((u8 *)&uStack_18 + 4))) + 2.0,(float)uStack_18);
+      (*((float *)((u8 *)&uStack_18 + 4))) = (*((float *)((u8 *)&uStack_18 + 4))) + 2.0f;
 
       FUN_00104d10(uStack_18,0x69c838,*(u8 *)(iVar1 + 0xc4));
 
@@ -52522,19 +52522,20 @@ void FUN_00350190(void)
 {
 
   u32 uVar1;
+  u32 uVar2;
   u32 uVar3;
   
 
   uVar1 = FUN_0035ed20_i(0);
 
-  {
-    u32 uVar2;
     
   uVar2 = FUN_0035ed20_i(1);
 
   *(volatile u32 *)DAT_00957bc0_abs = uVar1;
   *(volatile u16 *)DAT_00957bc4_abs = uVar2;
-  }
+  uVar2 = 0;
+  uVar3 = 0;
+  asm volatile("" : "+r"(uVar3));
   *(volatile u32 *)DAT_00957bc8_abs = 0;
   *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
@@ -55409,7 +55410,6 @@ void FUN_00352f70(float *param_1)
 
             fStack_6c = fStack_4c + 10000.0f;
 
-            _fStack_50 = CONCAT44(fStack_6c,fStack_50);
 
             fStack_70 = fStack_50;
 
