@@ -14280,7 +14280,7 @@ u32 func_002cffc0(void)
     func_0035f060_u32(0xffffffff);
   }
   else {
-    func_0035f060(uVar2);
+    func_0035f060_u32(uVar2);
   }
   return 1;
 }

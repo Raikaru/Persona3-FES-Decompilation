@@ -6457,7 +6457,7 @@ void FUN_002b6070(BtlCamera* camera, f32 param_1, f32 param_2)
     scale2 = angle * param_2;
 
     random = FUN_002ffbc0(2);
-    if ((random == 1) || (random != 0))
+    if (((u32)random == 1) || ((u32)random != 0))
     {
         angle = -30.0f;
     }
