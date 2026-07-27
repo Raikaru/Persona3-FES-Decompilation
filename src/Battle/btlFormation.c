@@ -7812,7 +7812,7 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
       cVar2 = *(char *)(DAT_007ce3f8 + ((u32)uVar1 * 10 + (u32)uVar1) * 4 + 8);
     }
     if (((param_5 != 0) || (cVar2 == '\x01')) && ((param_5 != 1 || (cVar2 == '\0')))) {
-      iVar4 = func_00303130(uVar1,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
+      iVar4 = func_00303130_s32(uVar1,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
                            *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,0,1);
       iVar4 = (uVar3 & 0xffff) + iVar4;
       if ((iVar4 < 1) || (iVar8 < 1)) {

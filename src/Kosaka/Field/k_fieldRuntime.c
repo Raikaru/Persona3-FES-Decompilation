@@ -4532,8 +4532,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             RuntimeVec3 scratch[8];
             RuntimeVec3 first;
             RuntimeVec3 second;
-            RuntimeVec3 third;
-            RuntimeVec3 delta0;
             RuntimeVec3 blended0;
             f32 weight;
             f32 inverseWeight;
@@ -4576,11 +4574,11 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 }
                 for (index = 0; index < limit; index++)
                 {
-                    third = vector2[index];
+                    second = vector2[index];
                     first = vector3[index];
-                    delta0.x = first.x - third.x;
-                    delta0.y = first.y - third.y;
-                    delta0.z = first.z - third.z;
+                    first.x -= second.x;
+                    first.y -= second.y;
+                    first.z -= second.z;
                     if (index < count)
                     {
                         scratchIndex = index;
@@ -4589,11 +4587,11 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                     {
                         scratchIndex = 0;
                     }
-                    blended0.x = third.x + delta0.x * scale +
+                    blended0.x = second.x + first.x * scale +
                                  scratch[scratchIndex].x * inverseWeight;
-                    blended0.y = third.y + delta0.y * scale +
+                    blended0.y = second.y + first.y * scale +
                                  scratch[scratchIndex].y * inverseWeight;
-                    blended0.z = third.z + delta0.z * scale +
+                    blended0.z = second.z + first.z * scale +
                                  scratch[scratchIndex].z * inverseWeight;
                     surface[index] = blended0;
                 }
@@ -4609,12 +4607,12 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                     }
                     first = scratch[scratchIndex];
                     second = surface[index];
-                    delta0.x = second.x - first.x;
-                    delta0.y = second.y - first.y;
-                    delta0.z = second.z - first.z;
-                    blended0.x = first.x + delta0.x * amount;
-                    blended0.y = first.y + delta0.y * amount;
-                    blended0.z = first.z + delta0.z * amount;
+                    second.x -= first.x;
+                    second.y -= first.y;
+                    second.z -= first.z;
+                    blended0.x = first.x + second.x * amount;
+                    blended0.y = first.y + second.y * amount;
+                    blended0.z = first.z + second.z * amount;
                     vertices[index] = blended0;
                 }
             }
@@ -4623,12 +4621,12 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 scratchIndex = index == 0 ? 0 : index - 1;
                 first = scratch[scratchIndex];
                 second = scratch[index];
-                third = scratch[index == 7 ? 7 : index + 1];
-                scratch[index].x = (first.x + second.x + third.x) *
+                blended0 = scratch[index == 7 ? 7 : index + 1];
+                scratch[index].x = (first.x + second.x + blended0.x) *
                                    0.33333334f;
-                scratch[index].y = (first.y + second.y + third.y) *
+                scratch[index].y = (first.y + second.y + blended0.y) *
                                    0.33333334f;
-                scratch[index].z = (first.z + second.z + third.z) *
+                scratch[index].z = (first.z + second.z + blended0.z) *
                                    0.33333334f;
             }
             (void)scratch;
