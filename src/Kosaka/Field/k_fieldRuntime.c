@@ -4529,15 +4529,12 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         }
         {
             RuntimeVec3* surface;
-            RuntimeVec3 scratch[12];
+            RuntimeVec3 scratch[8];
             RuntimeVec3 first;
             RuntimeVec3 second;
             RuntimeVec3 third;
-            RuntimeVec3 fourth;
             RuntimeVec3 delta0;
-            RuntimeVec3 delta1;
             RuntimeVec3 blended0;
-            RuntimeVec3 blended1;
             f32 weight;
             f32 inverseWeight;
             f32 scale;
@@ -4551,9 +4548,9 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             if (surface != NULL && vertices != NULL &&
                 vector0 != NULL && vector1 != NULL)
             {
-                if (limit > 12)
+                if (limit > 8)
                 {
-                    limit = 12;
+                    limit = 8;
                 }
                 for (index = 0; index < limit; index++)
                 {
@@ -4573,17 +4570,17 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             }
             if (surface != NULL && vector2 != NULL && vector3 != NULL)
             {
-                if (limit > 12)
+                if (limit > 8)
                 {
-                    limit = 12;
+                    limit = 8;
                 }
                 for (index = 0; index < limit; index++)
                 {
                     third = vector2[index];
-                    fourth = vector3[index];
-                    delta0.x = fourth.x - third.x;
-                    delta0.y = fourth.y - third.y;
-                    delta0.z = fourth.z - third.z;
+                    first = vector3[index];
+                    delta0.x = first.x - third.x;
+                    delta0.y = first.y - third.y;
+                    delta0.z = first.z - third.z;
                     if (index < count)
                     {
                         scratchIndex = index;
@@ -4592,13 +4589,13 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                     {
                         scratchIndex = 0;
                     }
-                    blended1.x = third.x + delta0.x * scale +
+                    blended0.x = third.x + delta0.x * scale +
                                  scratch[scratchIndex].x * inverseWeight;
-                    blended1.y = third.y + delta0.y * scale +
+                    blended0.y = third.y + delta0.y * scale +
                                  scratch[scratchIndex].y * inverseWeight;
-                    blended1.z = third.z + delta0.z * scale +
+                    blended0.z = third.z + delta0.z * scale +
                                  scratch[scratchIndex].z * inverseWeight;
-                    surface[index] = blended1;
+                    surface[index] = blended0;
                 }
             }
             if (surface != NULL && vertices != NULL)
@@ -4606,27 +4603,27 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 for (index = 0; index < limit; index++)
                 {
                     scratchIndex = index;
-                    if (scratchIndex >= 12)
+                    if (scratchIndex >= 8)
                     {
                         scratchIndex = 0;
                     }
                     first = scratch[scratchIndex];
                     second = surface[index];
-                    delta1.x = second.x - first.x;
-                    delta1.y = second.y - first.y;
-                    delta1.z = second.z - first.z;
-                    blended0.x = first.x + delta1.x * amount;
-                    blended0.y = first.y + delta1.y * amount;
-                    blended0.z = first.z + delta1.z * amount;
+                    delta0.x = second.x - first.x;
+                    delta0.y = second.y - first.y;
+                    delta0.z = second.z - first.z;
+                    blended0.x = first.x + delta0.x * amount;
+                    blended0.y = first.y + delta0.y * amount;
+                    blended0.z = first.z + delta0.z * amount;
                     vertices[index] = blended0;
                 }
             }
-            for (index = 0; index < 12; index++)
+            for (index = 0; index < 8; index++)
             {
                 scratchIndex = index == 0 ? 0 : index - 1;
                 first = scratch[scratchIndex];
                 second = scratch[index];
-                third = scratch[index == 11 ? 11 : index + 1];
+                third = scratch[index == 7 ? 7 : index + 1];
                 scratch[index].x = (first.x + second.x + third.x) *
                                    0.33333334f;
                 scratch[index].y = (first.y + second.y + third.y) *

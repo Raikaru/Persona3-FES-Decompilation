@@ -451,6 +451,7 @@ u32 FUN_003c6120(int param_1,int param_2)
     FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],puVar2[4] | 0xffffff00,
                  (u32)(param_2 == *(int *)(param_1 + 0xc)),4,puVar2[2],0x10,0);
   }
+  ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;
 }
 #define FUN_003c6120(...) ((u32 (*)(...))FUN_003c6120)(__VA_ARGS__)
