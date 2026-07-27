@@ -426,7 +426,7 @@ void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u
 void FUN_004032f0(u64 param_1);
 void FUN_00403340(u16 param_1);
 u8 FUN_00403380(u64 param_1);
-u8 FUN_00403410(void);
+u8 FUN_00403410(short param_1);
 u32 FUN_00403520(void);
 int FUN_00403610(void);
 s16 FUN_00403740(short param_1);
@@ -7844,7 +7844,6 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      sVar3 = 0;
       lVar5 = sVar1;
       for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
         uVar4 = datGetEquipmentId(1,iVar6);
@@ -16084,7 +16083,7 @@ u8 FUN_00403380(u64 param_1)
 // FUN_00403410 NONMATCHING
 
 
-u8 FUN_00403410(void)
+u8 FUN_00403410(short param_1)
 
 
 
@@ -16107,6 +16106,7 @@ u8 FUN_00403410(void)
   
 
 
+  iVar3 = FUN_004037e0(param_1);
   lVar5 = ((long)*(char *)(iVar3 + 7) << 0x38) >> 0x3c;
 
   if (lVar5 == 2) {

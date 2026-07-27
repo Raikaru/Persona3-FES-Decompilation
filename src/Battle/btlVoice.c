@@ -1685,34 +1685,33 @@ void func_002f2b90(u64 param_1)
 }
 
 // FUN_002f3190 NONMATCHING
-u32 func_002f3190(u64 *param_1)
-
+u32 func_002f3190(BtlAction* action)
 {
   u16 uVar1;
   int iVar2;
   s32 lVar3;
   u64 uVar4;
-  
-  lVar3 = FUN_0027e390(*param_1,0x3fffffffffffffff);
+
+  lVar3 = FUN_0027e390(action->uid,0x3fffffffffffffff);
   if (lVar3 == 0) {
     *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfff7ffff;
-    iVar2 = *(int *)(*(int *)(param_1 + 6) + 0xa2c);
+    iVar2 = *(int *)((u8 *)action->unit + 0xa2c);
     uVar1 = *(u16 *)(DAT_0069a1d0 + (u32)*(u16 *)(iGpffffb6fc + 0xb48) * 4);
-    FUN_002889c0(*(int *)(param_1 + 6),uVar1);
+    FUN_002889c0(action->unit,uVar1);
     *(u16 *)(iVar2 + 2) = uVar1;
     *(u16 *)(iVar2 + 4) = uVar1;
-    uVar4 = FUN_002ffdf0(iVar2);
-    FUN_002ffd90(iVar2,uVar4);
-    uVar4 = FUN_00300100(iVar2);
-    FUN_002ffdc0(iVar2,uVar4);
-    FUN_00300560(iVar2,0xffffff);
+    FUN_002ffdf0(iVar2,uVar1);
+    uVar4 = FUN_002ffd90(iVar2,uVar1);
+    uVar4 = FUN_00300100(iVar2,uVar4);
+    uVar4 = FUN_002ffdc0(iVar2,uVar4);
+    FUN_00300560(iVar2,uVar4 | 0xffff);
     FUN_0017b220(uVar1);
     FUN_0027ce50();
     FUN_00301540(iVar2,0xd);
     FUN_00301540(iVar2,0xe);
     FUN_00301540(iVar2,0xf);
     FUN_00301540(iVar2,0x10);
-    FUN_002831c0(*(u32 *)(param_1 + 6),6);
+    FUN_002831c0(action->unit,6);
     *(short *)(iGpffffb6fc + 0xb48) = *(short *)(iGpffffb6fc + 0xb48) + 1;
     FUN_001fdd40();
   }

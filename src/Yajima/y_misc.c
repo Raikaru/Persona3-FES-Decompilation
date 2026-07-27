@@ -91,6 +91,8 @@ u32 FUN_004264d0(u64 param_1,s8 param_2);
 u32 FUN_00426590(int param_1);
 void FUN_00427640(int param_1);
 u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
+#pragma alias FUN_00427670_typed FUN_00427670
+extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
 u64 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4, u32 param_5,u64 param_6,u32 param_7,u64 param_8, u32 param_9,u32 *param_10);
@@ -122,7 +124,7 @@ void FUN_0042b540(int param_1);
 u8 FUN_0042ba30(void);
 void FUN_0042ba50(u64 param_1);
 void FUN_0042bc10(u64 param_1);
-void FUN_0042bd80(u64 param_1);
+void FUN_0042bd80();
 #pragma alias FUN_0042bd80_typed FUN_0042bd80
 extern void FUN_0042bd80_typed(u64 param_1);
 void FUN_0042bfd0(u64 param_1);
@@ -609,9 +611,9 @@ u32 FUN_00424880(void)
 
   u8 uVar2;
 
-  long lVar3;
+  int lVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -6417,7 +6419,7 @@ void FUN_0042bc10(u64 param_1)
 // FUN_0042BD80 NONMATCHING
 
 
-void FUN_0042bd80(u64 param_1)
+void FUN_0042bd80(int param_1)
 
 
 
@@ -6491,7 +6493,7 @@ void FUN_0042bd80(u64 param_1)
 
             iVar4 = K_Field_Get();
 
-            iVar4 = FUN_00427670(0.625f,0.625f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
+            iVar4 = FUN_00427670_typed(0.625f,0.625f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
 
                                  *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4e));
 
@@ -6511,7 +6513,7 @@ void FUN_0042bd80(u64 param_1)
 
             iVar4 = K_Field_Get();
 
-            iVar4 = FUN_00427670(0.59375f,0.59375f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
+            iVar4 = FUN_00427670_typed(0.59375f,0.59375f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
 
                                  *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4e));
 
