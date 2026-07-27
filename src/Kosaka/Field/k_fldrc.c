@@ -50,7 +50,7 @@ extern u64 DAT_00678f68_abs[];
 extern f32 DAT_00678f70_abs[];
 typedef struct FldrcColor
 {
-    u64 word;
+    u32 word[2];
     f32 tail;
 } __attribute__((packed)) FldrcColor;
 #pragma alias DAT_00678f68_color DAT_00678f68
