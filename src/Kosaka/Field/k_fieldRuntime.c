@@ -4405,6 +4405,57 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
     default:
         break;
     }
+    {
+        RuntimeVec3* vertices;
+        RuntimeVec3* vector0;
+        RuntimeVec3* vector1;
+        RuntimeVec3* vector2;
+        RuntimeVec3* vector3;
+        RuntimeVec3 sample0;
+        RuntimeVec3 sample1;
+        RuntimeVec3 blended;
+        u32 count;
+        u32 index;
+        u32 section;
+        f32 fraction;
+        f32 amount;
+        f32 denominator;
+
+        vertices = *(RuntimeVec3**)((u8*)renderObject + 0x5c + 0x14);
+        vector0 = work->vectors[0];
+        vector1 = work->vectors[1];
+        vector2 = work->vectors[2];
+        vector3 = work->vectors[3];
+        count = *(u32*)((u8*)work->config + 0xc);
+        section = 0;
+        fraction = 0.0f;
+        amount = 0.0f;
+        denominator = (f32)(count - 1);
+        if (work->state == 0 && vertices != NULL &&
+            vector0 != NULL && vector1 != NULL)
+        {
+            index = 0;
+            while (index < count)
+            {
+                sample0 = vector0[index];
+                sample1 = vector1[index];
+                blended.x = sample0.x + sample1.x;
+                blended.y = sample0.y + sample1.y;
+                blended.z = sample0.z + sample1.z;
+                blended.x *= 0.5f;
+                blended.y *= 0.5f;
+                blended.z *= 0.5f;
+                vertices[index] = blended;
+                index++;
+            }
+        }
+        (void)vector2;
+        (void)vector3;
+        (void)section;
+        (void)fraction;
+        (void)amount;
+        (void)denominator;
+    }
 }
 
 // FUN_001EB920. Append a position-normal sample and refresh queue state.
