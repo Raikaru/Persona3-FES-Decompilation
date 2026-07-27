@@ -821,9 +821,11 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
   s32 valueY;
   float originX;
   float originY;
+  CampBits packedPosition;
   char textBuffer[256];
-  originX = (f32)(u32)position;
-  originY = (f32)(u32)(position >> 32);
+  packedPosition.u = position;
+  originX = packedPosition.f[0];
+  originY = packedPosition.f[1];
   if (work->entryCount != 0) {
     campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,
                            originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
