@@ -1368,30 +1368,21 @@ void FUN_003a9c90(int param_1,u32 param_2,u32 param_3,u32 param_4,
 
 #define FUN_003a9c90(...) ((void (*)(...))FUN_003a9c90)(__VA_ARGS__)
 #undef FUN_003a9cf0
-// FUN_003A9CF0 NONMATCHING
+// FUN_003A9CF0
 
 
 void FUN_003a9cf0(int param_1,int param_2,int param_3,int param_4,
-
                  u32 param_5)
-
-
-
 {
+  u32 *puVar1;
 
-  *(int *)(param_1 + 0x20) = (int)param_2;
-
-  *(int *)(param_1 + 0x24) = (int)param_3;
-
-  *(int *)(param_1 + 0x28) = (int)param_4;
-
-  *(u32 *)(param_1 + 0x2c) = param_5;
-
-  FUN_003b4a90((int *)(param_1 + 0x30),(int)param_2,(int)param_3,(int)param_4,param_5,(int *)FUN_006a1ea0,1);
-  FUN_003b4a90((int *)(param_1 + 0x40),(int)param_2,(int)param_3,(int)param_4,0x80,(int *)FUN_006a1eb0,2);
-
-  return;
-
+  puVar1 = (u32 *)(param_1 + 0x20);
+  puVar1[0] = param_2;
+  puVar1[1] = param_3;
+  puVar1[2] = param_4;
+  puVar1[3] = param_5;
+  FUN_003b4a90((int *)(puVar1 + 4),param_2,param_3,param_4,param_5,(int *)FUN_006a1ea0,1);
+  FUN_003b4a90((int *)(puVar1 + 8),param_2,param_3,param_4,0x80,(int *)FUN_006a1eb0,2);
 }
 #define FUN_003a9cf0(...) ((void (*)(...))FUN_003a9cf0)(__VA_ARGS__)
 // Retail 0x003a9d90-0x003a9da4

@@ -564,6 +564,8 @@ extern u32 func_002b9350_u32(int param_1);
 extern u32 func_002b9370(int param_1,u16 param_2);
 extern u32 func_002b93c0(int param_1,u16 param_2);
 extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
+#pragma alias func_002b93e0_4arg func_002b93e0
+extern u32 func_002b93e0_4arg(u32 param_1,u16 param_2,u32 param_3,u32 param_4);
 extern void func_002b94f0(BtlFormationWork *param_1);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
                           u32 param_6);
@@ -2366,15 +2368,17 @@ u32 func_002bad60(u32 *param_1)
         }
         if ((param_1[6] == 0) && ((param_1[7] & 0xc00) != 0xc00)) {
           sVar1 = *(short *)(param_1 + 3);
-          if (sVar1 == 1) {
-            unaff_s2_lo = param_1[2];
-            unaff_s1_lo = param_1[1];
-          }
-          else if (sVar1 == 0) {
+          switch (sVar1) {
+          case 0:
             unaff_s2_lo = param_1[1];
             unaff_s1_lo = param_1[2];
+            break;
+          case 1:
+            unaff_s2_lo = param_1[2];
+            unaff_s1_lo = param_1[1];
+            break;
           }
-          uVar4 = func_002b93e0(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo,0);
+          uVar4 = func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
           *(u32 *)(puVar2 + 8) = uVar4;
           *puVar2 = *puVar2 | 0x30;
         }

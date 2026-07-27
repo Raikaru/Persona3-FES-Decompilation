@@ -499,7 +499,7 @@ u32 FUN_003c6270(int param_1)
 }
 #define FUN_003c6270(...) ((u32 (*)(...))FUN_003c6270)(__VA_ARGS__)
 #undef FUN_003c6380
-// FUN_003C6380 NONMATCHING
+// FUN_003C6380
 
 
 u32 FUN_003c6380(int param_1)
@@ -510,7 +510,7 @@ u32 FUN_003c6380(int param_1)
   iVar2 = param_1;
   puVar1 = *(u32 **)((int)param_1 + 0x24);
 
-  (*(code *)puVar1[0xd])(puVar1[5],puVar1[6],puVar1[7],iVar2);
+  ((code)puVar1[0xd])(puVar1[5],puVar1[6],puVar1[7],iVar2);
 
   if ((*puVar1 & 0x40) != 0) {
     FUN_003c4e70(iVar2);

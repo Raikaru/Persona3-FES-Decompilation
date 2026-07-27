@@ -3,6 +3,7 @@
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "libm.h"
 typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
@@ -49,6 +50,8 @@ extern f32 DAT_0095aff0;
 extern f32 DAT_0095aff4;
 extern f32 DAT_0095aff8;
 extern f32 DAT_0095affc;
+#pragma alias DAT_0095aff0_abs DAT_0095aff0
+extern u8 DAT_0095aff0_abs[];
 extern u32 DAT_0095b000;
 extern short * DAT_0095b070;
 #pragma alias DAT_0095b070_ptr DAT_0095b070
@@ -4427,13 +4430,13 @@ void FUN_003bc940(void)
 
   if (DAT_007ce658 == 0) {
 
-    DAT_0095aff0 = 0;
+    ((f32*)DAT_0095aff0_abs)[0] = 0;
 
-    DAT_0095aff4 = 0;
+    ((f32*)DAT_0095aff0_abs)[1] = 0;
 
-    DAT_0095aff8 = 0;
+    ((f32*)DAT_0095aff0_abs)[2] = 0;
 
-    DAT_0095affc = 0;
+    ((f32*)DAT_0095aff0_abs)[3] = 0;
 
   }
 
@@ -4461,11 +4464,11 @@ void FUN_003bc940(void)
 
         fVar5 = fVar4 * 0.5f + fVar4 * fVar3 * 0.5f;
 
-        pfVar2 = (float *)(&DAT_0095aff0 + iVar1);
+        pfVar2 = (f32*)DAT_0095aff0_abs + iVar1;
 
         fVar3 = *pfVar2;
 
-        if (fVar4 * afStack_10[iVar1] <= ABS(fVar3)) {
+        if (fVar4 * afStack_10[iVar1] <= fabsf(fVar3)) {
 
           if (fVar3 <= 0.0f) {
 
@@ -4507,9 +4510,9 @@ void FUN_003bc940(void)
 
     if (0 < DAT_007ce65c) {
 
-      DAT_007ce660 = DAT_007ce660 - (short)((int)(u32)DAT_007ce660 / (DAT_007ce65c + 5));
+      DAT_007ce660 = DAT_007ce660 - (u16)((u32)DAT_007ce660 / (DAT_007ce65c + 5));
 
-      DAT_007ce664 = DAT_007ce664 - (short)((int)(u32)DAT_007ce664 / (DAT_007ce65c + 5));
+      DAT_007ce664 = DAT_007ce664 - (u16)((u32)DAT_007ce664 / (DAT_007ce65c + 5));
 
       DAT_007ce65c = DAT_007ce65c + -1;
 
