@@ -75,7 +75,7 @@ u8 * FUN_003c2780(u32 param_1);
 u32  FUN_003c28a0(u32 param_1,u32 param_2,int param_3,int param_4,int param_5,int *param_6);
 u32 FUN_003c2ab0(u32 param_1,u32 param_2);
 u32 FUN_003c2b40(int *param_1,int *param_2);
-u8 FUN_003c2c50(u32 param_1);
+u8 FUN_003c2c50(u8 param_1);
 u32 FUN_003c2df0(u32 param_1);
 u32 * FUN_003c2ee0(u32 param_1);
 u32 * FUN_003c3050(u32 param_1);
@@ -511,7 +511,7 @@ LAB_003c2c00:
 // FUN_003C2C50 NONMATCHING
 
 
-u8 FUN_003c2c50(u32 param_1)
+u8 FUN_003c2c50(u8 param_1)
 
 
 
