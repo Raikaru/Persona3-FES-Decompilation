@@ -1121,7 +1121,7 @@ int FUN_002d8390(void)
     bVar5 = false;
     bVar4 = false;
     for (iVar10 = *(int *)(DAT_007ce3ec + 0x158); iVar10 != 0; iVar10 = *(int *)(iVar10 + 0xa34)) {
-      lVar11 = FUN_00300580_u32(*(undefined4 *)(iVar10 + 0xa2c),2);
+      lVar11 = FUN_00300580(*(undefined4 *)(iVar10 + 0xa2c),2);
       if (lVar11 != 0) {
         bVar6 = true;
       }
