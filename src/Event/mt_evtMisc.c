@@ -4703,6 +4703,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
   
 
   piVar8 = (int *)param_1;
+  iVar5 = param_1;
 
   if (0 < piVar8[0x20]) {
 
