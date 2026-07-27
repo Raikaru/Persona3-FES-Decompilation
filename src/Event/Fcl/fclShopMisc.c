@@ -263,8 +263,6 @@ u32 FUN_003f2f70_i(int param_1,int param_2,int param_3);
  void FUN_003f3dc0_i(int param_1,u32 param_2);
  #pragma alias FUN_003c58f0_i FUN_003c58f0
  u32 FUN_003c58f0_i(u32 param_1,int param_2,u32 param_3,u32 param_4);
-#pragma alias FUN_003c4bf0_i FUN_003c4bf0
-int FUN_003c4bf0_i(u32 param_1,u32 param_2,int param_3);
  #pragma alias FUN_0019d3f0_fcl FUN_0019d3f0
  void FUN_0019d3f0_fcl(const char *param_1,int param_2);
 u64 FUN_003f33d0(int param_1,u32 param_2);
@@ -3966,8 +3964,7 @@ void FUN_003f3dc0(int param_1,u32 param_2)
   for (iVar3 = *(int *)(param_1 + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
 
     puVar1 = *(u32 **)(*(int *)(iVar3 + 0x14) + 0x1c);
-    if ((lVar2 = FUN_003c4bf0_i(param_2,param_2 + 4,
-                                *(volatile s16 *)((u8 *)puVar1 + 4))) != 0) {
+    if ((lVar2 = FUN_003c4bf0(param_2,param_2 + 4,(short)puVar1[1])) != 0) {
 
       FUN_003c49e0(param_2,param_2 + 4,lVar2);
 
@@ -7840,9 +7837,8 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      iVar6 = sVar3;
       lVar5 = sVar1;
-      for (; iVar6 < 300; iVar6 = iVar6 + 1) {
+      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
         uVar4 = datGetEquipmentId(1,iVar6);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
