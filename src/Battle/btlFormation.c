@@ -8757,22 +8757,19 @@ undefined * func_002c6e30(int param_1,u32 param_2)
     sVar2 = sVar2 + (u16)*(u8 *)(iVar8 + uVar6 * 8 + 0x2c);
   }
   if (sVar2 == 0) {
-    puVar4 = &DAT_007cc740;
+    return &DAT_007cc740;
   }
-  else {
-    uVar3 = func_002ffbc0();
-    uVar7 = 0;
-    for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-      iVar5 = iVar8 + uVar6 * 8;
-      bVar1 = *(u8 *)(iVar5 + 0x2c);
-      uVar7 = uVar7 + bVar1;
-      if ((uVar3 <= uVar7) && (bVar1 != 0)) {
-        return (undefined *)(iVar5 + 0x2c);
-      }
+  uVar3 = func_002ffbc0();
+  uVar7 = 0;
+  for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
+    iVar5 = iVar8 + uVar6 * 8;
+    bVar1 = *(u8 *)(iVar5 + 0x2c);
+    uVar7 = uVar7 + bVar1;
+    if ((uVar3 <= uVar7) && (bVar1 != 0)) {
+      return (undefined *)(iVar5 + 0x2c);
     }
-    puVar4 = (undefined *)0x0;
   }
-  return puVar4;
+  return (undefined *)0x0;
 }
 
 // FUN_002c6f50 NONMATCHING
