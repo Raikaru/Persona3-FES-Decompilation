@@ -59,7 +59,7 @@ extern u32 FUN_00394d60_pm(int *param_1);
 #pragma alias FUN_00394df0_pm FUN_00394df0
 extern u32 FUN_00394df0_pm(int *param_1);
 #pragma alias FUN_00395170_pm FUN_00395170
-extern void FUN_00395170_pm(void);
+extern void FUN_00395170_pm(u64 param_1);
 #pragma alias FUN_003951a0_pm FUN_003951a0
 extern void FUN_003951a0_pm(u32 param_1);
 #pragma alias FUN_00395000_pm2 FUN_00395000
@@ -255,7 +255,7 @@ u64 FUN_00397950(void)
       uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
       *(u16 *)(piVar2 + 6) = uVar1;
       if (*(u16 *)(piVar2 + 6) > 0) {
-        FUN_00395170();
+        FUN_00395170(*(u16 *)(piVar2 + 6));
       }
       *piVar2 = 7;
       FUN_005225a8((u32)(uintptr_t)DAT_006a10b0_abs);

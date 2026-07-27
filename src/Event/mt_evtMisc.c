@@ -5611,7 +5611,7 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
 
     while ((puVar2 = (u16 *)*param_4, puVar2 != (u16 *)0x0 &&
 
-           ((int)((u32)*puVar2 + (int)sVar1) <= param_2))) {
+           ((int)((u32)*puVar2 + sVar1) <= param_2))) {
 
       *param_4 = *(u32 *)(puVar2 + 0x26);
 
