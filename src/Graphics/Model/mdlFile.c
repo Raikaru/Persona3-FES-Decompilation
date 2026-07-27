@@ -669,6 +669,8 @@ void FUN_00345080(int param_1);
 void FUN_003450d0(int param_1);
 void FUN_00345970(u64 param_1);
 u64 FUN_00345cf0(u32 param_1,u64 param_2);
+#pragma alias FUN_00345cf0_u32 FUN_00345cf0
+extern u32 FUN_00345cf0_u32(u32 param_1,u32 param_2);
 void FUN_00345ea0(u32 param_1);
 u64 FUN_00345f00(int param_1);
 void FUN_00345fa0(int param_1);
@@ -759,7 +761,7 @@ void FUN_0034bd60(u32 param_1);
 u32 FUN_0034bdf0(u32 param_1,u32 param_2);
 void FUN_0034bef0();
 u32 FUN_0034bf10(int param_1);
-u64 FUN_0034bfc0(long param_1);
+u64 FUN_0034bfc0(u32 param_1);
 void FUN_0034c160(u32 param_1);
 u32 FUN_0034c1b0(int param_1);
 void FUN_0034c250(int param_1,int param_2);
@@ -42342,7 +42344,7 @@ u64 FUN_00345f00(int param_1)
 
   u32 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
 
@@ -42350,11 +42352,11 @@ u64 FUN_00345f00(int param_1)
 
   iVar3 = (int)param_1;
 
-  uVar2 = FUN_00345cf0(*(u16 *)(iVar3 + 0x38),*(u32 *)(iVar3 + 0x40));
+  uVar2 = FUN_00345cf0_u32(*(u16 *)(iVar3 + 0x38),*(u32 *)(iVar3 + 0x40));
 
   uVar1 = DAT_0069c970[*(int *)(iVar3 + 0x38)].callback3(param_1);
 
-  *(u32 *)(uVar2 + 0x3c) = uVar1;
+  *(u32 *)((int)uVar2 + 0x3c) = uVar1;
 
   DAT_0069c970[*(int *)(iVar3 + 0x38)].callback0(uVar2);
 
@@ -48234,7 +48236,7 @@ u32 FUN_0034bf10(int param_1)
 // FUN_0034BFC0 NONMATCHING
 
 
-u64 FUN_0034bfc0(long param_1)
+u64 FUN_0034bfc0(u32 param_1)
 
 
 
@@ -48248,9 +48250,9 @@ u64 FUN_0034bfc0(long param_1)
 
   u32 uVar4;
 
-  long lVar5;
+  int lVar5;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 

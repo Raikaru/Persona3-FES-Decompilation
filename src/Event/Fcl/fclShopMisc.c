@@ -1182,7 +1182,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
   goto loop_test;
 loop_body:
   if ((*(u32 *)puVar4 & 4) != 0) {
-    if (FUN_003f03e0(FUN_003e6dc0()) != 0) {
+    if (((u32 (*)(int))FUN_003f03e0)(FUN_003e6dc0()) != 0) {
       puVar4 += 0x18;
       goto loop_continue;
     }
@@ -7748,7 +7748,7 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
     uVar5 = func_0016f720(1,uVar7);
 
-    if ((((param_2 & uVar5) != 0) && (lVar6 = FUN_003f1dc0(1,(long)auStack_20,uVar7), lVar6 != 0)) &&
+    if ((((param_2 & uVar5) != 0) && (lVar6 = FUN_003f1dc0_u32(1,auStack_20,uVar7), lVar6 != 0)) &&
 
        (lVar6 = FUN_003f98f0(uVar7 & 0xffff), lVar6 != 0)) {
 
