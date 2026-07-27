@@ -1037,11 +1037,7 @@ extern u64 FUN_00198560();
 extern u64 FUN_00198580();
 #pragma alias FUN_00198580_u32 FUN_00198580
 extern u32 FUN_00198580_u32(void);
-extern u64 FUN_00198590();
-#pragma alias FUN_00198590_u32 FUN_00198590
-extern u32 FUN_00198590_u32(void);
- #pragma alias FUN_00198590_camera FUN_00198590
- extern RwCamera *FUN_00198590_camera(void);
+extern u32 FUN_00198590(void);
 extern u64 FUN_0019f8f0();
 extern u64 FUN_0019fd40();
 extern u64 FUN_0019fd70();
@@ -1205,7 +1201,9 @@ extern u64 FUN_004ca030();
 extern u64 FUN_004ca090();
 #pragma alias FUN_004ca090_u32 FUN_004ca090
 extern u32 FUN_004ca090_u32(void);
-extern u32 FUN_004caf10(void);
+extern u64 FUN_004caf10();
+#pragma alias FUN_004caf10_u32 FUN_004caf10
+extern u32 FUN_004caf10_u32(void);
 extern u64 FUN_004caf80();
 extern u64 FUN_004cb2f0();
 #pragma alias FUN_004cb2f0_u32 FUN_004cb2f0
@@ -1420,8 +1418,6 @@ extern u32 DAT_007cae98;
 extern f32 DAT_007cae98_f32;
 #pragma alias DAT_007cada0_f32 DAT_007cada0
 extern f32 DAT_007cada0_f32;
-#pragma alias DAT_007cae90_f32 DAT_007cae90
-extern f32 DAT_007cae90_f32;
 #pragma alias DAT_007caea4_f32 DAT_007caea4
 extern f32 DAT_007caea4_f32;
 extern f32 DAT_007cae50;
@@ -1438,7 +1434,7 @@ extern f32 DAT_007cae74;
 extern f32 DAT_007cae78;
 extern f32 DAT_007cae7c;
 extern f32 DAT_007cae80;
-extern u32 DAT_007cae90;
+extern f32 DAT_007cae90;
 extern u32 DAT_007cae94;
 extern u32 DAT_007cae98;
 extern u32 DAT_007cae9c;
@@ -5672,7 +5668,7 @@ u64 FUN_00321b00(void)
   void (**renderStateSet)(...);
   s8 color[4];
 
-  camera = FUN_00198590_camera();
+  camera = (RwCamera *)FUN_00198590();
   if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(0);
     if (PTR_DAT_007cd540[0] >= 0xc8) {
@@ -5693,7 +5689,7 @@ u64 FUN_00321b00(void)
       FUN_00358460(color,0);
       FUN_00329550();
     }
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     RwCameraEndUpdate(camera);
   }
   return 0;
@@ -5709,10 +5705,10 @@ u64 FUN_00321c50(void)
 {
   RwCamera *camera;
 
-  camera = FUN_00198590_camera();
+  camera = (RwCamera *)FUN_00198590();
   if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(1);
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     RwCameraEndUpdate(camera);
   }
 
@@ -5746,10 +5742,10 @@ u64 FUN_00321ce0(void)
 {
   RwCamera *camera;
 
-  camera = FUN_00198590_camera();
+  camera = (RwCamera *)FUN_00198590();
   if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(3);
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     RwCameraEndUpdate(camera);
   }
 
@@ -5775,7 +5771,7 @@ u64 FUN_00321d40(void)
   u32 value1;
 
   if (iGpffffb850 != 0) {
-    model = FUN_00198590_u32();
+    model = FUN_00198590();
     src = (u32 *)(*(u32 *)(model + 4) + 0x10);
     dst = auStack_40;
     count = 8;
@@ -5788,15 +5784,15 @@ u64 FUN_00321d40(void)
       dst[1] = value0;
       dst += 2;
     } while (count > 0);
-    model = FUN_00198590_u32();
+    model = FUN_00198590();
     FUN_004cb7f0_typed(*(u32 *)(model + 4), DAT_009572e0_abs, 0);
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     if (RwCameraBeginUpdate(camera) != 0) {
       FUN_00321360(4);
-      camera = FUN_00198590_camera();
+      camera = (RwCamera *)FUN_00198590();
       RwCameraEndUpdate(camera);
     }
-    model = FUN_00198590_u32();
+    model = FUN_00198590();
     FUN_004cb7f0_typed(*(u32 *)(model + 4), auStack_40, 0);
     iGpffffb850 = 0;
   }
@@ -5829,10 +5825,10 @@ u64 FUN_00321e50(void)
 {
   RwCamera *camera;
 
-  camera = FUN_00198590_camera();
+  camera = (RwCamera *)FUN_00198590();
   if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(6);
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     RwCameraEndUpdate(camera);
   }
 
@@ -5848,10 +5844,10 @@ u64 FUN_00321eb0(void)
 {
   RwCamera *camera;
 
-  camera = FUN_00198590_camera();
+  camera = (RwCamera *)FUN_00198590();
   if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(7);
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     RwCameraEndUpdate(camera);
   }
 
@@ -7059,7 +7055,7 @@ u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3)
 
   uVar3 = (*DAT_00960178_abs)(0x1c,0x40000);
 
-  uVar4 = FUN_004caf10();
+  uVar4 = FUN_004caf10_u32();
 
   uVar5 = FUN_00491880_u32();
 
@@ -7296,7 +7292,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   *(u32 *)(puVar1 + 8) = uVar2;
 
-  uVar4 = FUN_004caf10();
+  uVar4 = FUN_004caf10_u32();
 
   *(int *)(puVar1 + 6) = (int)uVar4;
 
@@ -13290,7 +13286,7 @@ void FUN_00329740(u32 *param_1)
 {
   int iVar1;
 
-  iVar1 = (int)FUN_00198590_camera();
+  iVar1 = (int)FUN_00198590();
 
   iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
 
@@ -13314,7 +13310,7 @@ void FUN_003297a0(u32 *param_1)
 {
   int iVar1;
 
-  iVar1 = (int)FUN_00198590_camera();
+  iVar1 = (int)FUN_00198590();
 
   iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
 
@@ -13339,7 +13335,7 @@ void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
   int iVar1;
   float cameraPos[4];
 
-  iVar1 = (int)FUN_00198590_camera();
+  iVar1 = (int)FUN_00198590();
   iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
   cameraPos[0] = *(float *)(iVar1 + 0x30);
   cameraPos[1] = *(float *)(iVar1 + 0x34);
@@ -13469,7 +13465,7 @@ void FUN_003299b0(void)
   src[0] = *(f32 *)DAT_0069c4d0_abs;
   src[1] = *(f32 *)(DAT_0069c4d0_abs + 4);
   src[2] = *(f32 *)(DAT_0069c4d0_abs + 8);
-  iVar2 = FUN_00198590_u32();
+  iVar2 = (int)FUN_00198590();
   RwV3dTransformPoint(dst,src,iVar2 + 0x20);
   quad[0] = 640.0f * (dst[0] / dst[2]);
   quad[1] = 448.0f * (dst[1] / dst[2]);
@@ -13495,11 +13491,11 @@ u32 FUN_00329a60(void)
   src[0] = *(f32 *)DAT_0069c4d0_abs;
   src[1] = *(f32 *)(DAT_0069c4d0_abs + 4);
   src[2] = *(f32 *)(DAT_0069c4d0_abs + 8);
-  iVar2 = FUN_00198590_u32();
+  iVar2 = (int)FUN_00198590();
   RwV3dTransformPoint(dst,src,iVar2 + 0x20);
-  iVar2 = FUN_00198590_u32();
+  iVar2 = (int)FUN_00198590();
   fVar5 = *(float *)(iVar2 + 0x80);
-  iVar2 = FUN_00198590_u32();
+  iVar2 = (int)FUN_00198590();
   fVar6 = *(float *)(iVar2 + 0x84);
   if ((dst[2] <= fVar5) || !(dst[2] < fVar6)) {
     uVar3 = 0;
@@ -36069,7 +36065,7 @@ void FUN_003407e0(int param_1)
       iStack_10 = *(int *)(iVar5 + 0xb4);
 
       *(int *)(iVar5 + 0xc0) = iStack_10;
-      fVar10 = DAT_007cae90_f32;
+      fVar10 = DAT_007cae90;
 
       auVar41 = _pextlb(0,(long)iStack_10);
 
@@ -42462,9 +42458,9 @@ void FUN_00347d00(void)
 
   DAT_007ce56c = 0;
 
-  DAT_007ce560 = FUN_004caf10();
+  DAT_007ce560 = FUN_004caf10_u32();
 
-  iVar1 = FUN_00198590_u32();
+  iVar1 = (int)FUN_00198590();
 
   FUN_004cb420(DAT_007ce560,*(u32 *)(iVar1 + 4));
 
@@ -42881,7 +42877,7 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
     bVar4 = param_1[3];
 
-    iVar5 = FUN_00198590_u32();
+    iVar5 = (int)FUN_00198590();
 
     fVar11 = *(float *)DAT_00960088_abs;
 
@@ -43045,7 +43041,7 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
   bVar4 = param_1[3];
 
-  iVar6 = FUN_00198590_u32();
+  iVar6 = (int)FUN_00198590();
 
   fVar8 = 1.0f / *(float *)(iVar6 + 0x80);
 
@@ -43178,7 +43174,7 @@ void FUN_00348950(u8 *param_1,float *param_2)
 
   fVar11 = fVar11 * fVar12;
 
-  iVar6 = FUN_00198590_u32();
+  iVar6 = (int)FUN_00198590();
 
   fVar12 = 1.0f / *(float *)(iVar6 + 0x80);
 
@@ -43300,7 +43296,7 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
 
   bVar4 = param_1[3];
 
-  iVar6 = FUN_00198590_u32();
+  iVar6 = (int)FUN_00198590();
 
   fVar8 = 1.0f / *(float *)(iVar6 + 0x80);
 
@@ -51693,7 +51689,7 @@ void FUN_00351510(int param_1)
   void (**setState)(int, int);
   void (**setBuffer)(int, void*, int);
 
-  camera = FUN_00198590_camera();
+  camera = (RwCamera *)FUN_00198590();
   if (RwCameraBeginUpdate(camera) != 0) {
     heightF = (f32)(u32)(*(u16 *)(param_1 + 4));
     widthF = (f32)(u32)(*(u16 *)(param_1 + 2));
@@ -51723,7 +51719,7 @@ void FUN_00351510(int param_1)
     (*setState)(4, 3);
 
     zScale = *(f32 *)DAT_0096008c_abs;
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     recipFov = 1.0f / *(float *)((u8*)camera + 0x84);
 
     buf[0] = 0.0f;
@@ -51775,7 +51771,7 @@ void FUN_00351510(int param_1)
 
     (*setState)(1, 0);
 
-    camera = FUN_00198590_camera();
+    camera = (RwCamera *)FUN_00198590();
     RwCameraEndUpdate(camera);
   }
   return;
