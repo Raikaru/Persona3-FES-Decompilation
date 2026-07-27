@@ -647,7 +647,7 @@ extern void func_002bea80(short *param_1,short param_2,short param_3);
 extern u16 func_002becc0(void);
 extern void func_002bed10(void);
 extern void func_002bedd0(int param_1);
-extern u64 func_002bef20(u64 param_1);
+extern u32 func_002bef20(u32 param_1);
 extern u32 func_002bf2b0(u32 param_1);
 extern void func_002bf370(u64 param_1);
 extern u32 func_002bf3f0(u64 param_1);
@@ -4514,7 +4514,7 @@ void func_002bedd0(int param_1)
 
 // FUN_002bef20 NONMATCHING
 
-u64 func_002bef20(u64 param_1)
+u32 func_002bef20(u32 param_1)
 {
   short state;
   int work;
@@ -4525,7 +4525,7 @@ u64 func_002bef20(u64 param_1)
 
   result = btlFadeSuppressesFormationUpdates();
   if ((result == 0) && ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) {
-    menu = (short *)func_00195540(param_1);
+    menu = (short *)func_00195540_u32(param_1);
     state = *menu;
     if ((state != 8) && (state != 7) && (state != 5) && (state != 3)) {
       if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {

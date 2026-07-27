@@ -80,7 +80,7 @@ void FUN_00415880(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,i
 void FUN_00415a70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
 void FUN_00415b30(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u8 param_6);
 void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
-u64 FUN_00415c30(u64 param_1,u64 param_2);
+u64 FUN_00415c30(int param_1, int param_2);
 u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3);
 void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
 void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
@@ -4946,127 +4946,119 @@ void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 // FUN_00415C30 NONMATCHING
 
 
-u64 FUN_00415c30(u64 param_1,u64 param_2)
+u64 FUN_00415c30(int param_1, int param_2) { int iVar1;
+
+u8 **ppuVar2;
+
+u8 **ppuVar3;
+
+u16 *puVar4;
+
+int iVar5;
+
+u8 ***pppuVar6;
+
+u32 *puVar7;
+
+u8 **appuStack_50 [6];
+
+u8 **ppuStack_38;
+
+u8 **ppuStack_30;
+
+u8 *puStack_28;
+
+u8 *puStack_24;
+
+u8 *puStack_20;
+
+u8 *puStack_1c;
+
+u8 *puStack_18;
+
+u8 *puStack_10;
+
+u8 *puStack_c;
+
+u8 *puStack_8;
+
+u8 *puStack_4;
 
 
 
-{
+iVar1 = *(int *)((int)param_2 + 0xc);
 
-  int iVar1;
+puStack_4 = (u8 *)(PTR_FUN_007cda28);
 
-  u8 **ppuVar2;
+puStack_10 = (u8 *)(PTR_FUN_007cda30);
 
-  u8 **ppuVar3;
+puStack_c = (u8 *)(PTR_FUN_007cda34);
 
-  u16 *puVar4;
+puStack_20 = (u8 *)(PTR_FUN_006b16c8);
 
-  int iVar5;
+puStack_1c = (u8 *)(PTR_FUN_006b16cc);
 
-  u8 ***pppuVar6;
+puStack_18 = (u8 *)(PTR_FUN_006b16d0);
 
-  u32 *puVar7;
+puStack_8 = (u8 *)(PTR_FUN_007cda38);
 
-  u8 **appuStack_50 [6];
+puStack_28 = (u8 *)(PTR_FUN_007cda40);
 
-  u8 **ppuStack_38;
+puStack_24 = (u8 *)(PTR_FUN_007cda44);
 
-  u8 **ppuStack_30;
+puVar7 = &DAT_006b16e0;
 
-  u8 *puStack_28;
+pppuVar6 = appuStack_50;
 
-  u8 *puStack_24;
+iVar5 = 5;
 
-  u8 *puStack_20;
+do {
 
-  u8 *puStack_1c;
+  ppuVar2 = (u8 **)*puVar7;
 
-  u8 *puStack_18;
+  ppuVar3 = (u8 **)puVar7[1];
 
-  u8 *puStack_10;
+  puVar7 = puVar7 + 2;
 
-  u8 *puStack_c;
+  iVar5 = iVar5 + -1;
 
-  u8 *puStack_8;
+  *pppuVar6 = ppuVar2;
 
-  u8 *puStack_4;
+  pppuVar6[1] = ppuVar3;
 
-  
+  pppuVar6 = pppuVar6 + 2;
 
-  iVar1 = *(int *)((int)param_2 + 0xc);
+} while (0 < iVar5);
 
-  puStack_4 = (u8 *)(PTR_FUN_007cda28);
+appuStack_50[0] = &puStack_4;
 
-  puStack_10 = (u8 *)(PTR_FUN_007cda30);
+appuStack_50[2] = &puStack_10;
 
-  puStack_c = (u8 *)(PTR_FUN_007cda34);
+appuStack_50[4] = &puStack_20;
 
-  puStack_20 = (u8 *)(PTR_FUN_006b16c8);
+ppuStack_38 = &puStack_8;
 
-  puStack_1c = (u8 *)(PTR_FUN_006b16cc);
+ppuStack_30 = &puStack_28;
 
-  puStack_18 = (u8 *)(PTR_FUN_006b16d0);
+iVar5 = *(int *)(iVar1 + 0x98) >> 1;
 
-  puStack_8 = (u8 *)(PTR_FUN_007cda38);
+ppuVar2 = appuStack_50[iVar5 * 2];
 
-  puStack_28 = (u8 *)(PTR_FUN_007cda40);
+ppuVar3 = appuStack_50[iVar5 * 2 + 1];
 
-  puStack_24 = (u8 *)(PTR_FUN_007cda44);
+for (iVar5 = 0; iVar5 < (int)ppuVar3; iVar5 = iVar5 + 1) {
 
-  puVar7 = &DAT_006b16e0;
+  puVar4 = (u16 *)(iVar1 + iVar5 * 0xc);
 
-  pppuVar6 = appuStack_50;
+  (*(code *)ppuVar2[iVar5])
 
-  iVar5 = 5;
+            (0,*(u32 *)(puVar4 + 4),*(u32 *)(puVar4 + 4),param_1,param_2,*puVar4,
 
-  do {
-
-    ppuVar2 = (u8 **)*puVar7;
-
-    ppuVar3 = (u8 **)puVar7[1];
-
-    puVar7 = puVar7 + 2;
-
-    iVar5 = iVar5 + -1;
-
-    *pppuVar6 = ppuVar2;
-
-    pppuVar6[1] = ppuVar3;
-
-    pppuVar6 = pppuVar6 + 2;
-
-  } while (0 < iVar5);
-
-  appuStack_50[0] = &puStack_4;
-
-  appuStack_50[2] = &puStack_10;
-
-  appuStack_50[4] = &puStack_20;
-
-  ppuStack_38 = &puStack_8;
-
-  ppuStack_30 = &puStack_28;
-
-  iVar5 = *(int *)(iVar1 + 0x98) >> 1;
-
-  ppuVar2 = appuStack_50[iVar5 * 2];
-
-  ppuVar3 = appuStack_50[iVar5 * 2 + 1];
-
-  for (iVar5 = 0; iVar5 < (int)ppuVar3; iVar5 = iVar5 + 1) {
-
-    puVar4 = (u16 *)(iVar1 + iVar5 * 0xc);
-
-    (*(code *)ppuVar2[iVar5])
-
-              (0,*(u32 *)(puVar4 + 4),*(u32 *)(puVar4 + 4),param_1,param_2,*puVar4,
-
-               puVar4[1],0,puVar4[2],0,0);
-
-  }
-
-  return 0;
+             puVar4[1],0,puVar4[2],0,0);
 
 }
+
+return 0; }
 
 // FUN_00415DC0 NONMATCHING
 
