@@ -440,7 +440,7 @@ void FUN_0029a750(void)
         {
             u32 randomValue;
             u16 threshold;
-            u16 tmp;
+            s16 tmp;
 
             tmp = (i == 0) ? 0x32 : (((i & 1) != 0) ? 0x50 : 0x14);
             threshold = tmp;

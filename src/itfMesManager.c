@@ -2560,7 +2560,7 @@ u32 FUN_003a4b90(int param_1,int param_2,int param_3)
 
 {
 
-  register u32 *object;
+  u32 *object;
 
 
   int iVar2;
