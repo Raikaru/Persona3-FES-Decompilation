@@ -52,6 +52,14 @@ extern char DAT_0069e180_char[];
 extern char DAT_0069e1a0[];
 extern char DAT_0069e1a2[];
 extern char DAT_0069e1aa[];
+#pragma alias s_evtMenu_0069ea10 DAT_0069ea10
+extern char s_evtMenu_0069ea10[];
+#pragma alias s_evtMenu_0069ea00 DAT_0069ea00
+extern char s_evtMenu_0069ea00[];
+#pragma alias s_evtMenu_0069e9e0 DAT_0069e9e0
+extern char s_evtMenu_0069e9e0[];
+#pragma alias s_evtMenuTextFormat_007ccd58 DAT_007ccd58
+extern char s_evtMenuTextFormat_007ccd58[];
 #pragma alias DAT_0069e888_abs DAT_0069e888
 extern u8 DAT_0069e888_abs[];
 #pragma alias DAT_0069fdf0_abs DAT_0069fdf0
@@ -3141,17 +3149,17 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
           fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
           evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)&gp0xffffa108, (u32)uStack_2);
           fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText((param_1 + 9) * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)(void *)0x69ea10, (u32)uStack_2);
+          evtMenuDrawText((param_1 + 9) * 0xc, param_2 * 0xc, fVar5, iVar4, s_evtMenu_0069ea10, (u32)uStack_2);
           if (FUN_0039f750(param_4 + 0x82c,(u32)uStack_2) == 0) {
             fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-            evtMenuDrawText((param_1 + 0x12) * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)(void *)0x69e9e0);
+            evtMenuDrawText((param_1 + 0x12) * 0xc, param_2 * 0xc, fVar5, iVar4, s_evtMenu_0069e9e0);
           }
         }
         else {
           fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
           evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)&gp0xffffa108, (u32)uStack_2);
           fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText((param_1 + 9) * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)(void *)0x69ea00, (u32)uStack_2);
+          evtMenuDrawText((param_1 + 9) * 0xc, param_2 * 0xc, fVar5, iVar4, s_evtMenu_0069ea00, (u32)uStack_2);
         }
       }
     }
@@ -3160,7 +3168,7 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
       evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)&gp0xffffa108, uVar3);
       if (FUN_0039f750(param_4 + 0x82c,uVar3) == 0) {
         fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-        evtMenuDrawText((param_1 + 0x12) * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)(void *)0x69e9e0);
+        evtMenuDrawText((param_1 + 0x12) * 0xc, param_2 * 0xc, fVar5, iVar4, s_evtMenu_0069e9e0);
       }
       else {
         fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
@@ -7175,7 +7183,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_68[(char)param_4[10] + 2]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_68[(char)param_4[10] + 2]);
 
       }
 
@@ -7183,7 +7191,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_68[(char)param_4[8] + 4])
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_68[(char)param_4[8] + 4])
 
         ;
 
@@ -7273,7 +7281,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_30[(short)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_30[(short)param_4[8]]);
 
       }
 
@@ -7359,7 +7367,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_30[(char)param_4[8] + 4])
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_30[(char)param_4[8] + 4])
 
         ;
 
@@ -7369,7 +7377,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_DAT_007cca88)[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_DAT_007cca88)[(char)param_4[8]]);
 
       }
 
@@ -7377,7 +7385,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, auStack_b0[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, auStack_b0[(char)param_4[8]]);
 
       }
 
@@ -7385,7 +7393,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_s_HIRU_SASO_0069d880)[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_s_HIRU_SASO_0069d880)[(char)param_4[8]]);
 
       }
 
@@ -7397,7 +7405,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
           uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-          evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_68[(char)uVar3]);
+          evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_68[(char)uVar3]);
 
         }
 
@@ -7407,7 +7415,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_90[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_90[(char)param_4[8]]);
 
       }
 
@@ -7415,7 +7423,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_30[(char)param_4[8] + 6])
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_30[(char)param_4[8] + 6])
 
         ;
 
@@ -7425,7 +7433,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_80[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_80[(char)param_4[8]]);
 
       }
 
@@ -7433,7 +7441,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_s_DISPONOFF_007ccaa8)[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_s_DISPONOFF_007ccaa8)[(char)param_4[8]]);
 
       }
 
@@ -7441,7 +7449,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_8[(char)param_4[9]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_8[(char)param_4[9]]);
 
       }
 
@@ -7449,7 +7457,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_DAT_0069ede0)[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_DAT_0069ede0)[(char)param_4[8]]);
 
       }
 
@@ -7457,7 +7465,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_DAT_0069ede0)[(char)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_DAT_0069ede0)[(char)param_4[8]]);
 
       }
 
@@ -7465,7 +7473,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_DAT_0069ed90)[(short)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_DAT_0069ed90)[(short)param_4[8]]);
 
       }
 
@@ -7473,7 +7481,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, (&PTR_s_FADE_IN_007cce88)[(short)param_4[8]]);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, (&PTR_s_FADE_IN_007cce88)[(short)param_4[8]]);
 
       }
 
@@ -7865,7 +7873,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
             uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-            evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_40[(char)uVar3]);
+            evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_40[(char)uVar3]);
 
           }
 
@@ -7875,7 +7883,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
             uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-            evtMenuDrawText((param_1 + 2) * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, apuStack_68[cVar2 + 6]);
+            evtMenuDrawText((param_1 + 2) * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, apuStack_68[cVar2 + 6]);
 
           }
 
@@ -8081,7 +8089,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
         uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, param_5 + iVar17 * 0x20 + 0x54);
+        evtMenuDrawText(param_1 * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, param_5 + iVar17 * 0x20 + 0x54);
 
       }
 
@@ -8345,7 +8353,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
           uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
-          evtMenuDrawText((param_1 + 2) * 0xc, param_2, uVar18, uVar12, (const char *)0x7ccd58, auStack_d0[*(char *)((int)param_4 + 0x15)]);
+          evtMenuDrawText((param_1 + 2) * 0xc, param_2, uVar18, uVar12, s_evtMenuTextFormat_007ccd58, auStack_d0[*(char *)((int)param_4 + 0x15)]);
 
           uVar18 = FUN_0038a220(*(u32 *)(param_5 + 0xe0));
 
@@ -12596,9 +12604,9 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
   else {
 
-    if ((DAT_007e0952 & 0x1000) == 0) {
+    if ((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) {
 
-      if ((DAT_007e0952 & 0x4000) != 0) {
+      if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
 
         if (*(int *)(iVar2 + 400) == 7) {
 
@@ -12632,7 +12640,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
     case 0:
 
-      if ((DAT_007e0952 & 0x2000) != 0) {
+      if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
 
         iVar1 = 1;
 
@@ -12640,7 +12648,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
       else {
 
-        if ((DAT_007e0952 & 0x8000) != 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
 
           iVar1 = -1;
 
@@ -12648,7 +12656,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
         else {
 
-          if ((DAT_007e0952 & 4) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 4) != 0) {
 
             iVar1 = -10;
 
@@ -12656,7 +12664,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
           else {
 
-            if ((DAT_007e0952 & 8) != 0) {
+            if ((*(u16 *)DAT_007e0952_abs & 8) != 0) {
 
               iVar1 = 10;
 
@@ -12692,7 +12700,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
     case 1:
 
-      if ((DAT_007e0952 & 0x2000) != 0) {
+      if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
 
         iVar1 = 1;
 
@@ -12700,7 +12708,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
       else {
 
-        if ((DAT_007e0952 & 0x8000) != 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
 
           iVar1 = -1;
 
@@ -12708,7 +12716,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
         else {
 
-          if ((DAT_007e0952 & 4) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 4) != 0) {
 
             iVar1 = -10;
 
@@ -12716,7 +12724,7 @@ int FUN_0037ead0(int param_1,int param_2,int param_3)
 
           else {
 
-            if ((DAT_007e0952 & 8) != 0) {
+            if ((*(u16 *)DAT_007e0952_abs & 8) != 0) {
 
               iVar1 = 10;
 

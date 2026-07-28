@@ -48,6 +48,7 @@ extern u32 DAT_00678f70;
 extern u64 DAT_00678f68_abs[];
 #pragma alias DAT_00678f70_abs DAT_00678f70
 extern f32 DAT_00678f70_abs[];
+extern char D_00678E30[];
 typedef struct FldrcColor
 {
     f32 value[3];
@@ -1368,7 +1369,7 @@ void FUN_001b4720(void* camera, u32* resource)
     world = FUN_004c9d10((u32)camera);
     if (world == 0)
     {
-        FUN_0019d3f0(0x678df8, 0x82d);
+        FUN_0019d3f0(D_00678DF8, 0x82d);
     }
     FUN_00198610(2, 0);
     FUN_00198610(2, 1);
@@ -2622,11 +2623,11 @@ void FUN_001b2b90(u32 resource)
         if (payload != 0)
         {
             FUN_00100ec0(*(u32*)(payload + 0x80));
-            (*DAT_0096017c)((void*)payload);
+            (*(void (**)(void*))DAT_0096017c_abs)((void*)payload);
         }
         if (resource != 0)
         {
-            (*DAT_0096017c)((void*)resource);
+            (*(void (**)(void*))DAT_0096017c_abs)((void*)resource);
         }
         return;
     }
@@ -2707,7 +2708,7 @@ u32 FUN_001b2f00(u32* resource)
     {
         if (*(u32*)(payload + 0x120) != 0)
         {
-            FUN_0019d3f0(0x678df8, 0x534);
+            FUN_0019d3f0(D_00678DF8, 0x534);
         }
         state = 0;
         kind = 0;
@@ -2741,9 +2742,9 @@ u32 FUN_001b2f00(u32* resource)
         {
             if (loaded == 0)
             {
-                FUN_0019d3f0(0x678df8, 0x550);
+                FUN_0019d3f0(D_00678DF8, 0x550);
             }
-            tagged = FUN_001a6740(loaded, 0x678e30);
+            tagged = FUN_001a6740(loaded, D_00678E30);
             if (tagged == 0)
             {
                 if (resource[3] == 0)
@@ -2786,9 +2787,9 @@ u32 FUN_001b2f00(u32* resource)
         {
             if (loaded == 0)
             {
-                FUN_0019d3f0(0x678df8, 0x571);
+                FUN_0019d3f0(D_00678DF8, 0x571);
             }
-            tagged = FUN_001a66f0(loaded, 0x678e30);
+            tagged = FUN_001a66f0(loaded, D_00678E30);
             if (tagged == 0)
             {
                 if (((resource[0] & 1) == 0) && (resource[2] == 0))
@@ -2942,7 +2943,7 @@ void FUN_001b3480(u32 resource)
             id = query[1];
             if (id == 0)
             {
-                FUN_0019d3f0(0x678df8, 0x60a);
+                FUN_0019d3f0(D_00678DF8, 0x60a);
             }
             record = resource + *(u32*)(resource + 0x118) * 0x18;
             *(u16*)(record + 0x20) = (u16)id;
@@ -2994,7 +2995,7 @@ void FUN_001b3480(u32 resource)
                     *(u32*)(record + 0x30) = FUN_00100d80(path, 0);
                     if (*(u32*)(record + 0x30) == 0)
                     {
-                        FUN_0019d3f0(0x678df8, 0x650);
+                        FUN_0019d3f0(D_00678DF8, 0x650);
                     }
                 }
                 else
@@ -3344,7 +3345,7 @@ void FUN_001b3e50(void* camera, u32* resource)
         world = FUN_004c9d10((u32)camera);
         if (world == 0)
         {
-            FUN_0019d3f0(0x678df8, 0x7a4);
+            FUN_0019d3f0(D_00678DF8, 0x7a4);
         }
         else
         {
@@ -3374,7 +3375,7 @@ void FUN_001b3e50(void* camera, u32* resource)
         world = FUN_004c9d10((u32)camera);
         if (world == 0)
         {
-            FUN_0019d3f0(0x678df8, 0x783);
+            FUN_0019d3f0(D_00678DF8, 0x783);
         }
         else
         {

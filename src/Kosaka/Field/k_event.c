@@ -54,6 +54,22 @@ extern void (*DAT_0096017c[])(void*);
 extern u32 DAT_0096017c_abs[];
 extern u8 D_0086B180[];
 extern RwV3d D_008717D0;
+extern u32 gTraceCode;
+extern u32 gFldScrMemory;
+extern u32 gFldScrSize;
+extern u32 DAT_007ce294;
+extern u32 D_007CE284;
+extern u32 D_007CE274;
+#pragma alias D_008717E8_abs D_008717E8
+extern u8 D_008717E8_abs[];
+#pragma alias D_008717F0_abs D_008717F0
+extern u8 D_008717F0_abs[];
+#pragma alias D_008717F4_abs D_008717F4
+extern u8 D_008717F4_abs[];
+#pragma alias D_00871914_abs D_00871914
+extern u8 D_00871914_abs[];
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u8 DAT_007e094e_abs[];
 static void FldEvent_ClearBytes(void* dst, u32 size)
 {
     u8* bytes;
@@ -1372,7 +1388,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     eventWords = (u32*)fldEvent;
 
     /* Keep the draw-command work in sync even while an interaction owns input. */
-    K_FldEvent_001cd650((KwlnTask*)FIELD_WORD(0x08), DATA_U32(0x007ce20c));
+    K_FldEvent_001cd650((KwlnTask*)FIELD_WORD(0x08), (&gTraceCode)[1]);
 
     if (fldEvent->eventType > FLDEVENT_TYPE_INIT && EVENT_WORD(0x19) == 0 &&
         FUN_0045af40() == 0 && EVENT_WORD(4) == 0)
@@ -1435,7 +1451,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     if (PTR_S16((void*)PTR_U32(EVENT_WORD(9), 0x4c), 0x12) == 0 &&
                         PTR_S16((void*)PTR_U32(EVENT_WORD(9), 0x4c), 0x14) == 0)
                     {
-                        EVENT_S16(0x40) = (s16)DATA_S32(0x007cd540) + 200;
+                        EVENT_S16(0x40) = (s16)gMtScene->fldMajorId + 200;
                         EVENT_U16(0x42) = 1;
                     }
                     else
@@ -1454,10 +1470,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 break;
             }
 
-            if ((DATA_U16(0x007e094e) & 0x80) != 0 && func_001c6080() == true)
+            if ((*(u16*)DAT_007e094e_abs & 0x80) != 0 && func_001c6080() == true)
             {
                 FUN_0010a4e0(0, 0, 0, 0);
-                EVENT_WORD(0x18) = FUN_0035bb40(10, DATA_U32(0x007ce228), 2);
+                EVENT_WORD(0x18) = FUN_0035bb40(10, gFldScrMemory, 2);
                 FUN_0035c1a0(EVENT_WORD(0x18), false);
                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                 FUN_001d8c60(true);
@@ -1472,7 +1488,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 break;
             }
 
-            if (FUN_0016f190(0x171) == false && (DATA_U16(0x007e094e) & 0x10) != 0)
+            if (FUN_0016f190(0x171) == false && (*(u16*)DAT_007e094e_abs & 0x10) != 0)
             {
                 if (FIELD_WORD(0x0c) != 0) { FUN_00195020(FIELD_WORD(0x0c)); FIELD_WORD(0x0c) = 0; }
                 if (FIELD_WORD(0x18) != 0) { FUN_00195020(FIELD_WORD(0x18)); FIELD_WORD(0x18) = 0; }
@@ -1514,9 +1530,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 break;
             }
 
-            currentArea = FUN_00308c60(PTR_U32((void*)DATA_U32(0x008717e8), 4)) & 0xff;
+            currentArea = FUN_00308c60(PTR_U32((void*)*(u32*)D_008717E8_abs, 4)) & 0xff;
             EVENT_WORD(0x3b) = currentArea;
-            EVENT_WORD(0x40) = DATA_U32(0x007ce294) + currentArea * 0x18;
+            EVENT_WORD(0x40) = DAT_007ce294 + currentArea * 0x18;
             EVENT_WORD(9) = (u32)func_001c6a20(
                 &gFldUnitsPc[FLDUNIT_PC_HERO],
                 *(f32*)((u8*)EVENT_WORD(0x40) + 0x14),
@@ -1526,7 +1542,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (EVENT_WORD(9) == 0 && K_FldEvent_IsUnitNearFldHit(&gFldUnitsPc[FLDUNIT_PC_HERO]) == true)
             {
                 if (EVENT_WORD(9) == 0) EVENT_WORD(0x38) = true;
-                if ((DATA_U16(0x007e094e) & 0x40) != 0)
+                if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
                 {
                     EVENT_WORD(0x18) = FUN_0035bc00(10, FUN_001bffe0(), FUN_001c0010(), 0);
                     FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
@@ -1545,17 +1561,17 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             }
 
             active = false;
-            if (FUN_001a0250() != false && DATA_U32(0x008717e8) != 0 && (model = FUN_003b5d10(0x2bff)) != 0)
+            if (FUN_001a0250() != false && *(u32*)D_008717E8_abs != 0 && (model = FUN_003b5d10(0x2bff)) != 0)
             {
-                offset.x = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.x - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
-                offset.y = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.y - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
-                offset.z = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.z - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
+                offset.x = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.x - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.x;
+                offset.y = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.y - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.y;
+                offset.z = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)model, 0x104)))->pos.z - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.z;
                 active = RwV3dLength(&offset) < 200.0f;
             }
             if (active != false)
             {
                 if (EVENT_WORD(9) == 0) EVENT_WORD(0x38) = true;
-                if ((DATA_U16(0x007e094e) & 0x40) != 0)
+                if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
                 {
                     EVENT_WORD(0x18) = FUN_0035bc00(10, FUN_001bffe0(), FUN_001c0010(), true);
                     FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
@@ -1573,9 +1589,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 break;
             }
 
-            heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+            heroMat = (RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
             currentActor = FUN_001a0250() != false ? (s32)(heroMat->pos.x + 400.0f) : 0;
-            currentArea = FUN_001a0250() != false ? (u32)(s32)(((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z + 400.0f) : 0;
+            currentArea = FUN_001a0250() != false ? (u32)(s32)(((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.z + 400.0f) : 0;
             currentActor /= 800;
             currentArea = (u32)((s32)currentArea / 800);
             if (currentActor < 0) currentActor = (currentActor + 3) >> 2; else currentActor >>= 2;
@@ -1587,9 +1603,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 if (npc == 0) break;
                 if (PTR_U32((void*)npc, 0) != 0)
                 {
-                    offset.x = *(f32*)((u8*)npc + 0x10c) - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
-                    offset.y = *(f32*)((u8*)npc + 0x110) - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
-                    offset.z = *(f32*)((u8*)npc + 0x114) - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
+                    offset.x = *(f32*)((u8*)npc + 0x10c) - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.x;
+                    offset.y = *(f32*)((u8*)npc + 0x110) - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.y;
+                    offset.z = *(f32*)((u8*)npc + 0x114) - ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.z;
                     if (RwV3dLength(&offset) < 200.0f)
                     {
                         model = *(u32*)(0x0086b1e0 + i * 4 + currentActor * 0xc4 + currentArea * 0x310);
@@ -1597,14 +1613,14 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     }
                 }
             }
-            DATA_U32(0x007ce284) = model;
+            D_007CE284 = model;
             if (model != 0 && PTR_U32((void*)model, 4) == 0)
             {
                 if (EVENT_WORD(9) == 0) EVENT_WORD(0x38) = true;
-                if ((DATA_U16(0x007e094e) & 0x40) != 0)
+                if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
                 {
                     PTR_U32((void*)model, 4) = true;
-                    EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce228), DATA_U32(0x007ce224), false);
+                    EVENT_WORD(0x18) = FUN_0035bc00(10, gFldScrMemory, gFldScrSize, false);
                     FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                     FUN_001d8c60(true);
                     FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
@@ -1626,7 +1642,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (npc != 0 && PTR_U32((void*)npc, 500) != 0)
             {
                 EVENT_WORD(0x38) = true;
-                if ((DATA_U16(0x007e094e) & 0x40) != 0 && EVENT_WORD(0x3f) == 0)
+                if ((*(u16*)DAT_007e094e_abs & 0x40) != 0 && EVENT_WORD(0x3f) == 0)
                 {
                     EVENT_WORD(0x38) = false;
                     active = PTR_U32((void*)npc, 500);
@@ -1641,7 +1657,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                             FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                             FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
                             EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
-                            currentActor = DATA_S32(0x007cd540);
+                            currentActor = gMtScene->fldMajorId;
                             if ((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) > 3)
                             {
                                 FUN_003191f0(PTR_U32((void*)npc, 0x128), FUN_00319200(PTR_U32((void*)npc, 0x128)) & ~0x800);
@@ -1668,7 +1684,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
                                 EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
-                                currentActor = DATA_S32(0x007cd540);
+                                currentActor = gMtScene->fldMajorId;
                                 if ((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) > 3)
                                 {
                                     FUN_003191f0(PTR_U32((void*)npc, 0x128), FUN_00319200(PTR_U32((void*)npc, 0x128)) & ~0x800);
@@ -1698,7 +1714,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                             FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                             FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
                             EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
-                            currentActor = DATA_S32(0x007cd540);
+                            currentActor = gMtScene->fldMajorId;
                             if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
                             else if (EVENT_WORD(8) == 0) currentActor = 3;
                             else currentActor = EVENT_WORD(8) + 1;
@@ -1719,7 +1735,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
                                 EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
-                                currentActor = DATA_S32(0x007cd540);
+                                currentActor = gMtScene->fldMajorId;
                                 if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
                                 else if (EVENT_WORD(8) == 0) currentActor = 3;
                                 else currentActor = EVENT_WORD(8) + 1;
@@ -1736,7 +1752,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 break;
             }
 
-            heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+            heroMat = (RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
             hit = K_FldEvent_FindFldHitAt(&heroMat->pos, (ResrcFldHit**)&model);
             if ((u16)hit != 0xffff)
             {
@@ -1794,7 +1810,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 {
                 if (PTR_U8(HIT_DATA_PTR(0), 0x0d) != 0) EVENT_WORD(0x38) = true;
                 if (PTR_S16(HIT_DATA_PTR(0), 0x10) == -1 &&
-                    (PTR_U8(HIT_DATA_PTR(0), 0x0d) == 0 || (DATA_U16(0x007e094e) & 0x40) != 0))
+                    (PTR_U8(HIT_DATA_PTR(0), 0x0d) == 0 || (*(u16*)DAT_007e094e_abs & 0x40) != 0))
                 {
                     EVENT_WORD(6) = 0;
                     if (PTR_S16(HIT_DATA_PTR(0), 0x18) != 0)
@@ -1818,7 +1834,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     break;
                 }
                 if (PTR_S16(HIT_DATA_PTR(0), 0x10) != -1 &&
-                    (PTR_U8(HIT_DATA_PTR(0), 0x0d) == 0 || (DATA_U16(0x007e094e) & 0x40) != 0))
+                    (PTR_U8(HIT_DATA_PTR(0), 0x0d) == 0 || (*(u16*)DAT_007e094e_abs & 0x40) != 0))
                 {
                     EVENT_WORD(0x18) = FUN_0035bc00(10, FIELD_WORD(0x1048), FIELD_WORD(0x104c), PTR_U16(HIT_DATA_PTR(0), 0x10));
                     FUN_001d8c60(true);
@@ -1847,7 +1863,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (hit != 0 && FUN_004353f0(hit) == 1)
             {
                 if (EVENT_WORD(9) == 0) EVENT_WORD(0x38) = true;
-                if ((DATA_U16(0x007e094e) & 0x40) != 0)
+                if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
                 {
                     EVENT_WORD(0x18) = FUN_0035bb40(10, PTR_U32((void*)hit, 0x1b4), 9);
                     FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
@@ -1865,21 +1881,21 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 }
             }
             if (FUN_001a01c0() != false &&
-                !((DATA_S32(0x007cd540) == 0x20 && DATA_S32(0x007cd544) == 2) ||
-                  (DATA_S32(0x007cd540) == 0x23 && DATA_S32(0x007cd544) == 1) ||
-                  (DATA_S32(0x007cd540) == 0x25 && DATA_S32(0x007cd544) == 1) ||
-                   DATA_S32(0x007cd540) == 0x21))
+                !((gMtScene->fldMajorId == 0x20 && gMtScene->fldMinorId == 2) ||
+                  (gMtScene->fldMajorId == 0x23 && gMtScene->fldMinorId == 1) ||
+                  (gMtScene->fldMajorId == 0x25 && gMtScene->fldMinorId == 1) ||
+                   gMtScene->fldMajorId == 0x21))
             {
                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                 if (FUN_0017d800() == true)
                 {
-                    FUN_003189f0(2.0f, DATA_U32(0x008717f0), 0);
+                    FUN_003189f0(2.0f, *(u32*)D_008717F0_abs, 0);
                     EVENT_WORD(0x3a) = false;
                 }
-                FUN_003182d0(DATA_U32(0x008717f0), 0, 4, 0, 0x20);
-                EVENT_WORD(0x3b) = FUN_00308c60(PTR_U32((void*)DATA_U32(0x008717e8), 4)) & 0xff;
-                EVENT_WORD(0x40) = DATA_U32(0x007ce294) + EVENT_WORD(0x3b) * 0x18;
-                FUN_00318770((f32)PTR_S16((void*)EVENT_WORD(0x40), 0), DATA_U32(0x008717f0), 0);
+                FUN_003182d0(*(u32*)D_008717F0_abs, 0, 4, 0, 0x20);
+                EVENT_WORD(0x3b) = FUN_00308c60(PTR_U32((void*)*(u32*)D_008717E8_abs, 4)) & 0xff;
+                EVENT_WORD(0x40) = DAT_007ce294 + EVENT_WORD(0x3b) * 0x18;
+                FUN_00318770((f32)PTR_S16((void*)EVENT_WORD(0x40), 0), *(u32*)D_008717F0_abs, 0);
                 switch (EVENT_WORD(0x3b))
                 {
                     case 0: FUN_0010a4e0(1, 8, 1, 0x44); break;
@@ -1897,11 +1913,11 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 EVENT_WORD(0x42) = PTR_S16((void*)EVENT_WORD(0x40), 2) - PTR_S16((void*)EVENT_WORD(0x40), 6);
                 EVENT_WORD(0x44) = EVENT_WORD(0x42) == 0 ? 0 :
                                     (s32)(*(f32*)((u8*)EVENT_WORD(0x40) + 8) / (f32)EVENT_WORD(0x42));
-                heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+                heroMat = (RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
                 /* Retail re-fetches the matrix for every field, not caching. */
-                *(f32*)((u8*)fldEvent + 0x114) = ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
-                *(f32*)((u8*)fldEvent + 0x118) = ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
-                *(f32*)((u8*)fldEvent + 0x11c) = ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
+                *(f32*)((u8*)fldEvent + 0x114) = ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.x;
+                *(f32*)((u8*)fldEvent + 0x118) = ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.y;
+                *(f32*)((u8*)fldEvent + 0x11c) = ((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs))->pos.z;
                 FUN_001d8c60(true);
                 EVENT_WORD(0x3d) = FUN_001d5c00((KwlnTask*)FIELD_WORD(4));
                 FUN_001d5c10((KwlnTask*)FIELD_WORD(4), true);
@@ -1966,14 +1982,14 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             FUN_004532d0(true);
             FUN_004350e0(false, true);
             FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
-            FUN_003189f0(0.0f, DATA_U32(0x008717f0), 0);
+            FUN_003189f0(0.0f, *(u32*)D_008717F0_abs, 0);
             case6Marker = ((RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50)))->pos;
             case6Marker.y += 50.0f;
             if (FUN_0017d800() == true)
             {
                 case6UpVec = *(RwV3d*)0x00683740;
                 taskResult = FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1214), &case6Marker);
-                case6MatBuf = *(RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+                case6MatBuf = *(RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
                 case6MatBuf.pos.x = 0.0f;
                 case6MatBuf.pos.y = 0.0f;
                 case6MatBuf.pos.z = 0.0f;
@@ -1997,7 +2013,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if ((FUN_0017d800() == true && FUN_001a93d0((KwlnTask*)FIELD_WORD(0x1214), -1) >= 4) ||
                 (FUN_0017d800() != true && FUN_001a93d0((KwlnTask*)FIELD_WORD(0x11f4), -1) >= 5))
             {
-                FUN_003189f0(1.0f, DATA_U32(0x008717f0), 0);
+                FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
                 FUN_002ff260(false);
                 fldEvent->eventType = 9;
             }
@@ -2008,27 +2024,27 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             RwMatrix case8FldHitMat;
             RwV3d case8FldHitLine[2];
 
-            currentActor = (s32)FUN_00318990(DATA_U32(0x008717f0), 0);
-            heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+            currentActor = (s32)FUN_00318990(*(u32*)D_008717F0_abs, 0);
+            heroMat = (RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
             case8Offset = heroMat->at;
             if (currentActor < PTR_S16((void*)EVENT_WORD(0x40), 4))
             {
                 offset.x = -case8Offset.x; offset.y = -case8Offset.y; offset.z = -case8Offset.z;
                 RwV3dNormalize(&offset, &offset);
                 RwV3dScale(&offset, &offset, (f32)EVENT_WORD(0x43));
-                FUN_00318a30(DATA_U32(0x008717f0), &offset, 2);
+                FUN_00318a30(*(u32*)D_008717F0_abs, &offset, 2);
             }
             if (currentActor > PTR_S16((void*)EVENT_WORD(0x40), 6))
             {
                 RwV3dNormalize(&case8Offset, &case8Offset);
                 RwV3dScale(&case8Offset, &case8Offset, (f32)EVENT_WORD(0x44));
-                FUN_00318a30(DATA_U32(0x008717f0), &case8Offset, 2);
+                FUN_00318a30(*(u32*)D_008717F0_abs, &case8Offset, 2);
             }
             if (FUN_0017d800() == true && EVENT_WORD(0x3a) == 0 && currentActor > 20)
             {
                 FUN_0010a4e0(1, 9, 2, 0xc);
                 EVENT_WORD(0x3a) = true;
-                if (FUN_00318d10(PTR_U32((void*)DATA_U32(0x008717f0), 0x3b8), 300, &markerPos) != 0)
+                if (FUN_00318d10(PTR_U32((void*)*(u32*)D_008717F0_abs, 0x3b8), 300, &markerPos) != 0)
                 {
                     FUN_001a9330((KwlnTask*)FIELD_WORD(0x1210), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1210), &markerPos), &markerPos);
                 }
@@ -2036,7 +2052,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (FUN_0017d800() == true &&
                 currentActor == PTR_S32((void*)EVENT_WORD(0x100), 0x0c) + 5)
             {
-                case8FldHitMat = *(RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+                case8FldHitMat = *(RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
                 offset = case8FldHitMat.pos;
                 case8Offset = case8FldHitMat.at;
                 RwV3dNormalize(&case8Offset, &case8Offset);
@@ -2085,7 +2101,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                         if (FUN_001d8d80(EVENT_WORD(9)) != 0) EVENT_U16(0x28) |= 4;
                         if (func_001c65e0((const FldUnit*)EVENT_WORD(9)) == 0) EVENT_U16(0x28) |= 8;
                         FUN_001d5c10((KwlnTask*)FIELD_WORD(0x04), EVENT_WORD(0x3d));
-                        if (FUN_0017d800() == true) FUN_003189f0(1.0f, DATA_U32(0x008717f0), 0);
+                        if (FUN_0017d800() == true) FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
                         fldEvent->eventType = 6;
                     }
                     else
@@ -2096,7 +2112,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                         FUN_0010a4e0(1, 8, 2, 8);
                         FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1204), &markerPos);
                         FUN_001d0110(EVENT_WORD(9));
-                        FUN_003182d0(DATA_U32(0x008717f0), 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
+                        FUN_003182d0(*(u32*)D_008717F0_abs, 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
                         FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);
                         FUN_001d8c60(false);
                         FUN_001d5c10((KwlnTask*)FIELD_WORD(0x04), EVENT_WORD(0x3d));
@@ -2112,7 +2128,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 heroMat->pos.x = *(f32*)((u8*)fldEvent + 0x114);
                 heroMat->pos.y = *(f32*)((u8*)fldEvent + 0x118);
                 heroMat->pos.z = *(f32*)((u8*)fldEvent + 0x11c);
-                FUN_003182d0(DATA_U32(0x008717f0), 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
+                FUN_003182d0(*(u32*)D_008717F0_abs, 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);
                 FUN_001d8c60(false);
                 FUN_001d5c10((KwlnTask*)FIELD_WORD(0x04), EVENT_WORD(0x3d));
@@ -2129,7 +2145,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     if (PTR_S16((void*)PTR_U32(EVENT_WORD(9), 0x4c), 0x12) == 0 &&
                         PTR_S16((void*)PTR_U32(EVENT_WORD(9), 0x4c), 0x14) == 0)
                     {
-                        EVENT_S16(0x40) = (s16)DATA_S32(0x007cd540) + 200;
+                        EVENT_S16(0x40) = (s16)gMtScene->fldMajorId + 200;
                         EVENT_U16(0x42) = 1;
                     }
                     else
@@ -2144,7 +2160,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
                     FUN_003182d0(PTR_U32(EVENT_WORD(9), 0x50), 0, 3, 0, 0);
                     FUN_001d5c10((KwlnTask*)FIELD_WORD(0x04), EVENT_WORD(0x3d));
-                    if (FUN_0017d800() == true) FUN_003189f0(1.0f, DATA_U32(0x008717f0), 0);
+                    if (FUN_0017d800() == true) FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
                     fldEvent->eventType = 4;
                 }
             }
@@ -2251,7 +2267,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     FUN_001b09f0();
                     FUN_00109f60(3, 0);
                     FUN_003952d0(0, 0x87, 3);
-                    DATA_U32(0x007ce27c) = 0;
+                    (&D_007CE274)[2] = 0;
                     if (EVENT_WORD(0x18) != 0) FUN_00195020(EVENT_WORD(0x18));
                     FUN_0016f1f0(0x141d, true);
                     fldEvent->eventType = 0x1e;
@@ -2260,12 +2276,12 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 {
                     if (FUN_0045af40() > 0) { FUN_0045a430(false); FUN_0045af70(false); }
                     if (PTR_S16((void*)EVENT_WORD(0x0f), 8) != 0x1fa) { FUN_001d0110(EVENT_WORD(9)); EVENT_WORD(9) = 0; }
-                    if (FUN_002ff790(DATA_U32(0x008717e8)) == true)
+                    if (FUN_002ff790(*(u32*)D_008717E8_abs) == true)
                     {
                         FUN_0045a400();
                         FUN_001b0920();
                         FUN_001b09f0();
-                        EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce228), DATA_U32(0x007ce224), 1);
+                        EVENT_WORD(0x18) = FUN_0035bc00(10, gFldScrMemory, gFldScrSize, 1);
                         FUN_0016f1f0(0x141d, true);
                         fldEvent->eventType = 0x1f;
                     }
@@ -2348,7 +2364,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), true);
             FIELD_WORD(4) = FUN_001d5a90((KwlnTask*)FIELD_WORD(0));
             FUN_001d69e0((KwlnTask*)FIELD_WORD(4), &EVENT_WORD(0x20));
-            FUN_001d5f30((KwlnTask*)FIELD_WORD(4), DATA_U32(0x008717f4));
+            FUN_001d5f30((KwlnTask*)FIELD_WORD(4), *(u32*)D_008717F4_abs);
             if (FUN_001a01c0() == true) FIELD_WORD(0x18) = FUN_00429d40(fldEventTask);
             FIELD_WORD(0x1054) = func_0010a770(fldEventTask, 2, 0, 2, 0x1ea, 1);
             fldEvent->eventType = 0x13;
@@ -2362,13 +2378,13 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     if (FUN_0010a720(FIELD_WORD(0x1054)) == false) break;
                     FIELD_WORD(0x1054) = 0;
                 }
-                FUN_001d5f30((KwlnTask*)FIELD_WORD(4), DATA_U32(0x008717f4));
+                FUN_001d5f30((KwlnTask*)FIELD_WORD(4), *(u32*)D_008717F4_abs);
                 if (FUN_001a01c0() == true && FIELD_WORD(0x14) == 0) FUN_00429e80((void*)FIELD_WORD(0x18), true);
-                FIELD_WORD(0x0c) = FUN_001e1230((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)DATA_U32(0x008717f4), 0xf0), DATA_U32(0x008717f0));
-                FIELD_WORD(0x1c) = FUN_001c1f30((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)DATA_U32(0x008717f4), 0xf0));
+                FIELD_WORD(0x0c) = FUN_001e1230((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0), *(u32*)D_008717F0_abs);
+                FIELD_WORD(0x1c) = FUN_001c1f30((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0));
                 EVENT_WORD(5) = FUN_003b5d10(0x400);
                 FUN_001a9850();
-                if (DATA_S32(0x007cd540) == 0x1f) FUN_003952d0(0, FUN_0016f190(0xe39) == false ? 0x2d0 : 0x2cf, 3);
+                if (gMtScene->fldMajorId == 0x1f) FUN_003952d0(0, FUN_0016f190(0xe39) == false ? 0x2d0 : 0x2cf, 3);
                 FUN_001c0110();
                 FUN_004533e0(true);
                 FUN_001085c0();
@@ -2382,7 +2398,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 
         case 0x15:
             FUN_003c7b90();
-            currentActor = DATA_S32(0x007cd540);
+            currentActor = gMtScene->fldMajorId;
             active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
             if (active != false && EVENT_WORD(7) != 0 && PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) == 1 &&
                 EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
@@ -2394,7 +2410,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             {
                 FUN_003c7700();
                 FUN_003c77a0();
-                currentActor = DATA_S32(0x007cd540);
+                currentActor = gMtScene->fldMajorId;
                 active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
                 if (active != false && EVENT_WORD(7) != 0 && EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
                 {
@@ -2412,7 +2428,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             break;
 
         case 0x16:
-            currentActor = DATA_S32(0x007cd540);
+            currentActor = gMtScene->fldMajorId;
             active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
             if (active != false && EVENT_WORD(7) != 0 && PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) == 1 &&
                 EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
@@ -2421,7 +2437,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             }
             if (FUN_00195460(EVENT_WORD(0x18)) != true)
             {
-                currentActor = DATA_S32(0x007cd540);
+                currentActor = gMtScene->fldMajorId;
                 active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
                 if (active != false && EVENT_WORD(7) != 0 && EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
                 {
@@ -2447,7 +2463,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FUN_00455b50();
                 FUN_001d1780(true);
                 FUN_001d17f0(false);
-                EVENT_WORD(0x3b) = FUN_00308c60(PTR_U32((void*)DATA_U32(0x008717e8), 4)) & 0xff;
+                EVENT_WORD(0x3b) = FUN_00308c60(PTR_U32((void*)*(u32*)D_008717E8_abs, 4)) & 0xff;
                 EVENT_WORD(0x3c) = FUN_0016f630(true, FUN_0016cb80(true, true)) & 0xffff;
                 EVENT_WORD(0x1a) = FUN_0011a770(fldEventTask);
                 fldEvent->eventType = 0x18;
@@ -2460,12 +2476,12 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 if (FUN_0016f190(0x1417) == true)
                 {
                     FUN_0016f1f0(0x1417, false);
-                    EVENT_WORD(0x18) = FUN_0035bb40(10, DATA_U32(0x007ce228), 3);
+                    EVENT_WORD(0x18) = FUN_0035bb40(10, gFldScrMemory, 3);
                     fldEvent->eventType = 0x1c;
                 }
                 else
                 {
-                    currentArea = FUN_00308c60(PTR_U32((void*)DATA_U32(0x008717e8), 4)) & 0xff;
+                    currentArea = FUN_00308c60(PTR_U32((void*)*(u32*)D_008717E8_abs, 4)) & 0xff;
                     currentActor = FUN_0016f630(true, FUN_0016cb80(true, true));
                     active = EVENT_WORD(0x3b) != currentArea;
                     if (active == false)
@@ -2480,15 +2496,15 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     }
                     if (active == false)
                     {
-                        for (i = 0; i < 5; i++) FUN_003196f0(DATA_U32(0x008717f0), i);
+                        for (i = 0; i < 5; i++) FUN_003196f0(*(u32*)D_008717F0_abs, i);
                         FUN_004c43b0();
-                        FUN_0031c1d0(DATA_U32(0x008717f0));
+                        FUN_0031c1d0(*(u32*)D_008717F0_abs);
                     }
                     else
                     {
                         FUN_001cd870(false);
                         FUN_004c43b0();
-                        DATA_U32(0x008717f0) = FUN_001cd9a0(true);
+                        *(u32*)D_008717F0_abs = FUN_001cd9a0(true);
                     }
                     fldEvent->eventType = 0x19;
                 }
@@ -2496,16 +2512,16 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             break;
 
         case 0x19:
-            allLoaded = FUN_00316f70(DATA_U32(0x008717f0));
+            allLoaded = FUN_00316f70(*(u32*)D_008717F0_abs);
             if (allLoaded != 0)
             {
-                for (i = 0; i < 5 && allLoaded != 0; i++) allLoaded = FUN_00319770(DATA_U32(0x008717f0), i);
+                for (i = 0; i < 5 && allLoaded != 0; i++) allLoaded = FUN_00319770(*(u32*)D_008717F0_abs, i);
                 if (allLoaded != 0)
                 {
                     if (FUN_001dd600() == true) FIELD_WORD(0x28) = (u32)func_0018bff0(fldEventTask);
                     if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), true);
-                    if ((DATA_S32(0x007cd540) == 0x20 && DATA_S32(0x007cd544) == 2) ||
-                        (DATA_S32(0x007cd540) == 0x27 && (DATA_S32(0x007cd544) == 1 || DATA_S32(0x007cd544) == 3))) FUN_0030c440();
+                    if ((gMtScene->fldMajorId == 0x20 && gMtScene->fldMinorId == 2) ||
+                        (gMtScene->fldMajorId == 0x27 && (gMtScene->fldMinorId == 1 || gMtScene->fldMinorId == 3))) FUN_0030c440();
                     fldEvent->eventType = 0x1a;
                 }
             }
@@ -2528,15 +2544,15 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 (FIELD_WORD(0x18) == 0 || FUN_0042ba30() != false))
             {
                 EVENT_WORD(5) = FUN_003b5d10(0x400);
-                FUN_001c2000((void*)FIELD_WORD(0x1c), PTR_U32((void*)DATA_U32(0x008717f4), 0xf0));
+                FUN_001c2000((void*)FIELD_WORD(0x1c), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0));
                 FUN_00195710((void*)FIELD_WORD(0x1c), 0x20, 2);
-                FUN_001d5f30((KwlnTask*)FIELD_WORD(4), DATA_U32(0x008717f4));
+                FUN_001d5f30((KwlnTask*)FIELD_WORD(4), *(u32*)D_008717F4_abs);
                 FUN_00195710((void*)FIELD_WORD(4), 0x20, 2);
                 FUN_001d1860(false);
                 if (FIELD_WORD(0x18) != 0 && FIELD_WORD(0x14) == 0) FUN_00429e80((void*)FIELD_WORD(0x18), true);
                 FUN_0045a430(false);
                 FUN_0045af70(false);
-                FIELD_WORD(0x0c) = FUN_001e1230((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)DATA_U32(0x008717f4), 0xf0), DATA_U32(0x008717f0));
+                FIELD_WORD(0x0c) = FUN_001e1230((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0), *(u32*)D_008717F0_abs);
                 K_FldEvent_001cd650((KwlnTask*)FIELD_WORD(0x08), false);
                 FUN_004532d0(false);
                 FUN_004350e0(false, false);
@@ -2553,20 +2569,20 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (FUN_00108710() != false)
             {
                 FUN_0045a400();
-                EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce228), DATA_U32(0x007ce224), true);
+                EVENT_WORD(0x18) = FUN_0035bc00(10, gFldScrMemory, gFldScrSize, true);
                 fldEvent->eventType = 0x1f;
             }
             break;
 
         case 0x1e:
-            if (DATA_U32(0x007ce27c) < 0x5a)
+            if ((&D_007CE274)[2] < 0x5a)
             {
                 FUN_0045a400();
-                DATA_U32(0x007ce27c)++;
+                (&D_007CE274)[2]++;
             }
             else
             {
-                EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce228), DATA_U32(0x007ce224), true);
+                EVENT_WORD(0x18) = FUN_0035bc00(10, gFldScrMemory, gFldScrSize, true);
                 fldEvent->eventType = 0x1f;
             }
             break;
@@ -2580,18 +2596,18 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     /* Retail offsets 0x4e6c-0x4f0c use the completion flag at event offset 0xe0. */
     if (EVENT_WORD(0xe0) == 1)
     {
-        heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+        heroMat = (RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs);
         markerPos = heroMat->pos;
         markerPos.y += 200.0f;
-        if (DATA_U32(0x00871914) != 0)
+        if (*(u32*)D_00871914_abs != 0)
         {
-            FUN_001dd530((void*)DATA_U32(0x00871914), &markerPos);
-            FUN_001dd5e0((void*)DATA_U32(0x00871914), true);
+            FUN_001dd530((void*)*(u32*)D_00871914_abs, &markerPos);
+            FUN_001dd5e0((void*)*(u32*)D_00871914_abs, true);
         }
     }
-    else if (DATA_U32(0x00871914) != 0)
+    else if (*(u32*)D_00871914_abs != 0)
     {
-        FUN_001dd5e0((void*)DATA_U32(0x00871914), false);
+        FUN_001dd5e0((void*)*(u32*)D_00871914_abs, false);
     }
 
 #undef EVENT_WORD

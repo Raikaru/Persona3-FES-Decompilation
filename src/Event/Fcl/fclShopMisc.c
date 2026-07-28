@@ -416,6 +416,7 @@ void FUN_004006c0(int param_1,int param_2,int param_3,int param_4);
 void FUN_00400740(u64 param_1,u64 param_2,u8 param_3,int param_4);
 void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4);
 void FUN_00400a90(int param_1,int param_2,int param_3,int param_4,u32 *param_5);
+void FUN_00400b90(u64 param_1,u64 param_2,int param_3,u64 param_4,u32 *param_5);
 void FUN_00400e30(int param_1);
 int FUN_00400d60(void);
 u32 FUN_00401210(int param_1);
@@ -717,9 +718,29 @@ u32 DAT_006af2b0;
 u32 DAT_006af2d0;
 u32 DAT_006af300;
 u32 DAT_006af320;
+#pragma alias fclShopEquipmentPairTable DAT_006af190
+extern u16 fclShopEquipmentPairTable[];
+#pragma alias fclShopEquipmentIndexTable DAT_006af1c0
+extern u8 fclShopEquipmentIndexTable[];
+#pragma alias fclShopEquipmentValues0 DAT_006af240
+extern u16 fclShopEquipmentValues0[];
+#pragma alias fclShopEquipmentValues1 DAT_006af270
+extern u16 fclShopEquipmentValues1[];
+#pragma alias fclShopEquipmentValues2 DAT_006af290
+extern u16 fclShopEquipmentValues2[];
+#pragma alias fclShopEquipmentValues3 DAT_006af2b0
+extern u16 fclShopEquipmentValues3[];
+#pragma alias fclShopEquipmentValues4 DAT_006af2d0
+extern u16 fclShopEquipmentValues4[];
+#pragma alias fclShopEquipmentValues5 DAT_006af300
+extern u16 fclShopEquipmentValues5[];
+#pragma alias fclShopEquipmentValues6 DAT_006af320
+extern u16 fclShopEquipmentValues6[];
 extern u32 DAT_006af3a0;
 extern u8 DAT_006af3a0_abs[];
 #pragma alias DAT_006af3a0_abs DAT_006af3a0
+#pragma alias fclShopEmptyFormat DAT_006af3d0
+extern char fclShopEmptyFormat[];
 u32 DAT_006af5e0;
 u32 DAT_006af600;
 u32 DAT_006af620;
@@ -11348,7 +11369,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   
 
-  puVar12 = (u16 *)(&DAT_006af190);
+  puVar12 = fclShopEquipmentPairTable;
 
   puVar10 = auStack_30;
 
@@ -11372,7 +11393,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  pbVar13 = (u8 *)(&DAT_006af1c0);
+  pbVar13 = fclShopEquipmentIndexTable;
 
   pbVar11 = abStack_b0;
 
@@ -11396,7 +11417,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af240);
+  puVar12 = fclShopEquipmentValues0;
 
   puVar10 = auStack_e0;
 
@@ -11420,7 +11441,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af270);
+  puVar12 = fclShopEquipmentValues1;
 
   puVar10 = auStack_100;
 
@@ -11444,7 +11465,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af290);
+  puVar12 = fclShopEquipmentValues2;
 
   puVar10 = auStack_120;
 
@@ -11468,7 +11489,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af2b0);
+  puVar12 = fclShopEquipmentValues3;
 
   puVar10 = auStack_140;
 
@@ -11492,7 +11513,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af2d0);
+  puVar12 = fclShopEquipmentValues4;
 
   puVar10 = auStack_170;
 
@@ -11516,7 +11537,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af300);
+  puVar12 = fclShopEquipmentValues5;
 
   puVar10 = auStack_190;
 
@@ -11540,7 +11561,7 @@ void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  puVar12 = (u16 *)(&DAT_006af320);
+  puVar12 = fclShopEquipmentValues6;
 
   puVar10 = auStack_1b0;
 
@@ -11824,7 +11845,7 @@ int * FUN_003ffe60(u64 param_1)
 
   
 
-  uVar12 = 0x4006c0;
+  uVar12 = (u64)FUN_004006c0;
 
   switch(param_1) {
 
@@ -11940,7 +11961,7 @@ int * FUN_003ffe60(u64 param_1)
 
     uStack_8 = uStack_18;
 
-    uVar12 = 0x400740;
+    uVar12 = (u64)FUN_00400740;
 
     break;
 
@@ -12140,7 +12161,7 @@ int * FUN_003ffe60(u64 param_1)
 
     }
 
-    uVar12 = 0x4008f0;
+    uVar12 = (u64)FUN_004008f0;
 
     break;
 
@@ -12257,7 +12278,7 @@ int * FUN_003ffe60(u64 param_1)
 
   FUN_003c5e20(uVar7,uVar12);
 
-  FUN_003c5ee0(uVar7,0x400b90);
+  FUN_003c5ee0(uVar7,(u64)FUN_00400b90);
 
   *(u16 *)(*(int *)(iVar9 + 0x24) + 6) = 10;
 
@@ -14555,7 +14576,7 @@ void FUN_00402800(int param_1)
 
   if (cVar1 == '\x04') {
 
-    sprintf((char *)auStack_20,0x6af3d0);
+    sprintf((char *)auStack_20,fclShopEmptyFormat);
 
   }
 
@@ -14619,7 +14640,7 @@ void FUN_00402800(int param_1)
 
   if (cVar1 == '\x04') {
 
-    sprintf((char *)auStack_20,0x6af3d0);
+    sprintf((char *)auStack_20,fclShopEmptyFormat);
 
   }
 
@@ -14715,7 +14736,7 @@ void FUN_00402c80(int param_1)
 
   if (cVar1 == '\x04') {
 
-    sprintf((char *)auStack_20,0x6af3d0);
+    sprintf((char *)auStack_20,fclShopEmptyFormat);
 
   }
 
@@ -14779,7 +14800,7 @@ void FUN_00402c80(int param_1)
 
   if (cVar1 == '\x04') {
 
-    sprintf((char *)auStack_20,0x6af3d0);
+    sprintf((char *)auStack_20,fclShopEmptyFormat);
 
   }
 

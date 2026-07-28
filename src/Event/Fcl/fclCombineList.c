@@ -3491,8 +3491,8 @@ u32 FUN_003e0bc0(void)
 void FUN_003e0c20(void *param_1, u32 param_2, u32 param_3)
 {
     struct {
-        u32 pad;
         FclAnimationResultRecord record;
+        u32 pad;
     } result_storage[38];
 
     switch (param_2) {

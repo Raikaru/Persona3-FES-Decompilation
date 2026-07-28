@@ -2714,6 +2714,16 @@ extern void* D_00833B60;
 extern void* D_00833B64;
 extern void* D_00833B68;
 extern void* D_00833BA4;
+#pragma alias D_00833B44_abs D_00833B44
+extern u8 D_00833B44_abs[];
+#pragma alias D_00833B58_abs D_00833B58
+extern u8 D_00833B58_abs[];
+#pragma alias D_00833B60_abs D_00833B60
+extern u8 D_00833B60_abs[];
+#pragma alias D_00833B64_abs D_00833B64
+extern u8 D_00833B64_abs[];
+#pragma alias D_00833B68_abs D_00833B68
+extern u8 D_00833B68_abs[];
 extern char gp0xffff897c[];
 extern s32 iGpffffb280;
 extern s32 iGpffffb27c;
@@ -3061,6 +3071,12 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                    x, position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
 }
 
+#define D_00833B44 (*(void**)D_00833B44_abs)
+#define D_00833B58 (*(void**)D_00833B58_abs)
+#define D_00833B60 (*(void**)D_00833B60_abs)
+#define D_00833B64 (*(void**)D_00833B64_abs)
+#define D_00833B68 (*(void**)D_00833B68_abs)
+#define D_00833BA4 (*(void**)D_00833BA4_abs)
 // FUN_0013AFD0 NONMATCHING
 void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                   s32 param_5, s32 param_6, s32 param_7, s32 param_8)
@@ -3226,6 +3242,12 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     campDrawSprite(D_00833B60, 1, (u8)param_7, x,
                    position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
 }
+#undef D_00833B44
+#undef D_00833B58
+#undef D_00833B60
+#undef D_00833B64
+#undef D_00833B68
+#undef D_00833BA4
 
 // FUN_0013BCB0
 const char* FUN_0013BCB0(s32 param_1, s32 param_2)

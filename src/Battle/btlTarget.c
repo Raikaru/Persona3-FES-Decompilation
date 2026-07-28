@@ -145,6 +145,12 @@ extern s32 (*PTR_FUN_0069721c)(void*, s32);
 extern s32 (*PTR_FUN_00697294)(void*, s32);
 extern s32 (*PTR_FUN_006973cc)(void*, s32);
 extern s32 (*PTR_FUN_006975e0[])(void*, u32);
+#pragma alias PTR_FUN_0069721c_abs PTR_FUN_0069721c
+#pragma alias PTR_FUN_00697294_abs PTR_FUN_00697294
+#pragma alias PTR_FUN_006973cc_abs PTR_FUN_006973cc
+extern s32 (*PTR_FUN_0069721c_abs[])(void*, s32);
+extern s32 (*PTR_FUN_00697294_abs[])(void*, s32);
+extern s32 (*PTR_FUN_006973cc_abs[])(void*, s32);
 extern u8* DAT_007ce484;
 extern u8* DAT_007ce488;
 static inline f32 btlTargetV2dLength(const RwV2d* v)
@@ -515,8 +521,8 @@ void FUN_002d1660(void* source, BtlTarget* target, u64 mask)
     switch (mask) {
     case 1:
     {
-        s32 first = PTR_FUN_006973cc(source, 0);
-        s32 second = PTR_FUN_0069721c(source, 1);
+        s32 first = PTR_FUN_006973cc_abs[0](source, 0);
+        s32 second = PTR_FUN_0069721c_abs[0](source, 1);
         if (first == 1) {
             if (second == 0) {
                 state = 0;
@@ -539,7 +545,7 @@ void FUN_002d1660(void* source, BtlTarget* target, u64 mask)
         if (work[0xA2] == 0 && *(u16*)(work + 0xA4) == 1) {
             state = 1;
         } else {
-            state = PTR_FUN_00697294(source, 0) == 0;
+            state = PTR_FUN_00697294_abs[0](source, 0) == 0;
         }
         selected = DAT_006977D0;
         break;

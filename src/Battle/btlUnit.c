@@ -5757,7 +5757,7 @@ void FUN_002891e0(void)
 
     } while (0 < iVar6);
 
-    FUN_005225f8(aiStack_40,iVar12,4,0x2890a0);
+    FUN_005225f8(aiStack_40,iVar12,4,(u32)FUN_002890a0);
 
     iVar6 = FUN_003b5d50(4);
 

@@ -141,6 +141,24 @@ extern u32 LAB_003cf7a4;
 extern u32 LAB_003cf9d8;
 extern u8 * PTR_LAB_006a4060;
 extern u8 * PTR_s_facility_pss_battle_pak_006a4040;
+#pragma alias fclMiscFacilityPssBattlePakTable PTR_s_facility_pss_battle_pak_006a4040
+extern u8 *fclMiscFacilityPssBattlePakTable[];
+#pragma alias fclMiscTaskDescriptor0 DAT_006a40a0
+extern u8 fclMiscTaskDescriptor0[];
+#pragma alias fclMiscTaskDescriptor1 DAT_006a40b0
+extern u8 fclMiscTaskDescriptor1[];
+#pragma alias fclMiscTaskDescriptor2 DAT_006a40c0
+extern u8 fclMiscTaskDescriptor2[];
+#pragma alias fclMiscTaskWork DAT_006a40d8
+extern u8 fclMiscTaskWork[];
+#pragma alias fclMiscTaskUpdateCallback FUN_003ca230
+extern code fclMiscTaskUpdateCallback[];
+#pragma alias fclMiscTaskLoadCallback FUN_003ca610
+extern code fclMiscTaskLoadCallback[];
+#pragma alias fclMiscTaskDrawCallback FUN_003ca660
+extern code fclMiscTaskDrawCallback[];
+#pragma alias fclMiscTaskDestroyCallback FUN_003ca6b0
+extern code fclMiscTaskDestroyCallback[];
 extern f32 fGpffff808c;
 extern f32 fGpffff80e0;
 extern f32 fGpffff8110;
@@ -1322,7 +1340,7 @@ u64 FUN_003c9850(u64 param_1,long param_2,u16 param_3,u16 param_4)
 
   }
 
-  ppuVar6 = &PTR_s_facility_pss_battle_pak_006a4040;
+  ppuVar6 = fclMiscFacilityPssBattlePakTable;
 
   piVar7 = aiStack_20;
 
@@ -1396,21 +1414,21 @@ u64 FUN_003c9850(u64 param_1,long param_2,u16 param_3,u16 param_4)
 
   piVar7[6] = -1;
 
-  uVar3 = FUN_00194b20(param_1,0x6a40a0,10,0x3ca230,0x3ca6b0,uVar2);
+  uVar3 = FUN_00194b20(param_1,fclMiscTaskDescriptor0,10,fclMiscTaskUpdateCallback,fclMiscTaskDestroyCallback,uVar2);
 
-  FUN_00194b20(uVar3,0x6a40b0,0x1070,0x3ca610,0,uVar2);
+  FUN_00194b20(uVar3,fclMiscTaskDescriptor1,0x1070,fclMiscTaskLoadCallback,0,uVar2);
 
-  FUN_00194b20(uVar3,0x6a40c0,0x18aa,0x3ca660,0,uVar2);
+  FUN_00194b20(uVar3,fclMiscTaskDescriptor2,0x18aa,fclMiscTaskDrawCallback,0,uVar2);
 
   iVar4 = FUN_001339a0(0,uVar3,0x1488,0,0xffffffffffffffff);
 
   piVar7[0x31] = iVar4;
 
-  FUN_005225a8(&gp0xffffaa08,0x6a3e18,0x67c);
+  FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x67c);
 
-  FUN_005225a8(0x6a40d8);
+  FUN_005225a8(fclMiscTaskWork);
 
-  FUN_001052b0(0x6a40d8);
+  FUN_001052b0(fclMiscTaskWork);
 
   return uVar3;
 

@@ -724,6 +724,16 @@ extern u32 DAT_00957194;
 extern u32 DAT_00957198;
 extern u32 DAT_0095719c;
 extern u32 DAT_009571a0;
+#pragma alias DAT_00957190_abs DAT_00957190
+extern u8 DAT_00957190_abs[];
+#pragma alias DAT_00957194_abs DAT_00957194
+extern u8 DAT_00957194_abs[];
+#pragma alias DAT_00957198_abs DAT_00957198
+extern u8 DAT_00957198_abs[];
+#pragma alias DAT_0095719c_abs DAT_0095719c
+extern u8 DAT_0095719c_abs[];
+#pragma alias DAT_009571a0_abs DAT_009571a0
+extern u8 DAT_009571a0_abs[];
 
 extern u32 DAT_009571a4;
 extern void (*PTR_LAB_0069aa90[])(void);
@@ -8076,6 +8086,11 @@ u32 FUN_0030fdc0(void)
 
 
  
+#define DAT_00957190 (*(u32*)DAT_00957190_abs)
+#define DAT_00957194 (*(u32*)DAT_00957194_abs)
+#define DAT_00957198 (*(u32*)DAT_00957198_abs)
+#define DAT_0095719c (*(u32*)DAT_0095719c_abs)
+#define DAT_009571a0 (*(u32*)DAT_009571a0_abs)
 // FUN_0030fdf0 NONMATCHING
 
 float FUN_0030fdf0(int param_1,u32 param_2)
@@ -8412,6 +8427,11 @@ float FUN_0030fdf0(int param_1,u32 param_2)
   }
   return unaff_f20;
 }
+#undef DAT_00957190
+#undef DAT_00957194
+#undef DAT_00957198
+#undef DAT_0095719c
+#undef DAT_009571a0
 
 // Recovered sibling: FUN_0030fdf0's Ghidra window ran to 0x00311190, but its own
 // `jr $ra` is at 0x0031116c followed by four padding nops. A separate 16-byte
