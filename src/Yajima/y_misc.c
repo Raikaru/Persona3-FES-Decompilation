@@ -95,7 +95,8 @@ void FUN_00427640(int param_1);
 u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
 #pragma alias FUN_00427670_typed FUN_00427670
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
-u64 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
+u32 FUN_00427830(float param_1, int param_2, u32 param_3, YajimaVec2 param_4,
+                  u32 param_5, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
 u64 FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427bf0(float param_1,float param_2,float param_3,float param_4, float param_5,u32 param_6,u32 param_7,u64 param_8, u32 param_9,u32 *param_10);
 void FUN_00427db0(int object, YajimaVec2 value);
@@ -3112,9 +3113,8 @@ FUN_00427830(float param_1, int param_2, u32 param_3, YajimaVec2 param_4,
   if (puVar3 == 0) {
     return 0;
   }
-  uVar2 = (u32)kwlnTaskCreateWithAutoPriority((KwlnTask *)param_2, 0x106f,
-      (char *)0x6b4440, (KwlnTaskUpdateFunc)0x426590,
-      (KwlnTaskDestroyFunc)0x427640, puVar3);
+  uVar2 = kwlnTaskCreateWithAutoPriority(param_2, 0x106f, 0x6b4440, 0x426590,
+                                         0x427640, puVar3);
   *puVar3 = 0;
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
     puVar3[iVar1 * 4 + 0x110] = ((u8 *)&param_5)[0];

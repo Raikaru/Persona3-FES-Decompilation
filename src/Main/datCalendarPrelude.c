@@ -1445,6 +1445,7 @@ void FUN_0017c350(void)
     u8** sorted;
     s32 count;
     s32 i;
+    s16 empty = -1;
 
     count = 0;
     allocator = (void* (**)(u32, u32))D_00960178;
@@ -1454,9 +1455,8 @@ void FUN_0017c350(void)
     FUN_00521408(sorted, 0, 0x10);
     for (i = 0; i < 4; i++)
     {
-        if (source[i * 2] == -1)
-            continue;
-        sorted[count++] = (u8*)(source + i * 2);
+        if (source[i * 2] != empty)
+            sorted[count++] = (u8*)(source + i * 2);
     }
     if (count != 0)
     {

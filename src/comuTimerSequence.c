@@ -356,7 +356,7 @@ u32 FUN_003bfae0(void)
 }
 #define FUN_003bfae0(...) ((u32 (*)(...))FUN_003bfae0)(__VA_ARGS__)
 #undef FUN_003bfc50
-// FUN_003BFC50 NONMATCHING
+// FUN_003BFC50
 
 
 code * FUN_003bfc50(void)
@@ -370,7 +370,6 @@ code * FUN_003bfc50(void)
   u8 auStack_20[0x1c];
 
   piVar4 = (int *)FUN_00195540();
-  uVar3 = DAT_007ce674;
   iVar1 = *piVar4;
   switch (iVar1) {
   case 0:
@@ -379,6 +378,7 @@ code * FUN_003bfc50(void)
     *piVar4 = 1;
     break;
   case 1:
+    uVar3 = DAT_007ce674;
     FUN_00521408(auStack_20,0,0x1c);
     ((u32 *)auStack_20)[3] = 0x32a;
     ((u32 *)auStack_20)[4] = 1;

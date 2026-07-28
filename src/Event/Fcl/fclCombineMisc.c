@@ -2108,19 +2108,18 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
   u8 bVar3;
 
-  u8 bVar4;
 
   int lVar5;
 
   int iVar6;
 
-  u16 uVar7;
+  u32 uVar7;
 
-  u16 uVar8;
+  u32 uVar8;
 
-  u16 uVar9;
+  u32 uVar9;
 
-  u16 uVar10;
+  u32 uVar10;
 
   int iVar11;
 
@@ -2188,8 +2187,6 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
           iVar6 = uVar7 * 8;
 
-          bVar4 = bVar3;
-
           if (uVar10 == (long)*(short *)(DAT_006a5414 + iVar6)) {
 
             if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) != 0) {
@@ -2206,25 +2203,23 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
             }
 
-            else {
+            else if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
 
-              if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
+              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
 
-                lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+              if (lVar5 == 1) {
 
                 bVar3 = 1;
 
-                bVar4 = 0;
-
-                if (lVar5 == 1) break;
+                break;
 
               }
+
+              bVar3 = 0;
 
             }
 
           }
-
-          bVar3 = bVar4;
 
         }
 
@@ -2297,19 +2292,18 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
   u8 bVar3;
 
-  u8 bVar4;
 
   int lVar5;
 
   int iVar6;
 
-  u16 uVar7;
+  u32 uVar7;
 
-  u16 uVar8;
+  u32 uVar8;
 
-  u16 uVar9;
+  u32 uVar9;
 
-  u16 uVar10;
+  u32 uVar10;
 
   int iVar11;
 
@@ -2377,8 +2371,6 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
           iVar6 = uVar7 * 8;
 
-          bVar4 = bVar3;
-
           if (uVar10 == (long)*(short *)(DAT_006a5414 + iVar6)) {
 
             if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) != 0) {
@@ -2395,25 +2387,23 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
             }
 
-            else {
+            else if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
 
-              if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
+              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
 
-                lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+              if (lVar5 == 1) {
 
                 bVar3 = 1;
 
-                bVar4 = 0;
-
-                if (lVar5 == 1) break;
+                break;
 
               }
+
+              bVar3 = 0;
 
             }
 
           }
-
-          bVar3 = bVar4;
 
         }
 

@@ -57,9 +57,6 @@ extern void func_004cb750(void* frame, const void* translation, s32 mode);
 extern f32 sqrtf(f32 value);
 extern void func_004c3880(void* matrix);
 extern void func_004c3760(void* matrix, void* source, s32 mode);
-extern void RwMatrixScale(void* matrix, const void* scale, s32 combine);
-extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine);
-extern void RwV3dTransformPoint(void* out, const void* in, const void* matrix);
 
 
 // FUN_00249650
@@ -315,7 +312,7 @@ void func_00249c10(void* work)
             position[0] = local.transformed.x + *(f32*)(base + i * 0xc);
             position[1] = local.transformed.y + *(f32*)(base + i * 0xc + 4);
             position[2] = local.transformed.z + *(f32*)(base + i * 0xc + 8);
-            RwV3dTransformPoint(&local.point, position, matrix);
+            RwV3dTransformPoint(&local.point, (RwV3d*)position, (RwMatrix*)matrix);
 
             if (local.point.z < 100.0f) {
                 if (local.point.z < 40.0f) {

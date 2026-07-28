@@ -564,7 +564,15 @@ float FUN_003bc0e0(char *param_1);
 float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 *param_5);
 /* Retail call: FUN_003b8ff0 + 0x160. */
 #pragma alias FUN_00318770_scene_typed FUN_00318770
-extern void FUN_00318770_scene_typed(float param_1,u32 param_2,u32 param_3,u32 param_4);
+extern void FUN_00318770_scene_typed(u32 param_1, u16 param_2, float param_3);
+// Retail animation helpers use the model/slot/id widths directly.
+#pragma alias FUN_003186e0_scene_typed FUN_003186e0
+extern u32 FUN_003186e0_scene_typed(u32 param_1, u16 param_2, s16 param_3);
+#pragma alias FUN_003182d0_scene_typed FUN_003182d0
+extern u32 FUN_003182d0_scene_typed(u32 param_1, u16 param_2, s16 param_3,
+                                    u16 param_4, u16 param_5);
+#pragma alias FUN_003189f0_scene_typed FUN_003189f0
+extern void FUN_003189f0_scene_typed(u32 param_1, u16 param_2, float param_3);
 /* Retail calls: FUN_003bbd40 + 0x0ac, + 0x178; FUN_003bc220 + 0x110, + 0x138, + 0x2a0, + 0x2d8, + 0x3e0, + 0x408; FUN_003bc730 + 0x0e0, + 0x118. */
 #pragma alias FUN_003bbc90_scene_typed FUN_003bbc90
 extern void FUN_003bbc90_scene_typed(float param_1,...);
@@ -1332,18 +1340,18 @@ selected:
   if (param_5 == 1) {
     uVar3 |= 1;
   }
-  lVar2 = FUN_003186e0(uVar1,param_2 & 0xffff,(short)param_3);
+  lVar2 = FUN_003186e0_scene_typed(uVar1,param_2,param_3);
   if (lVar2 != 0) {
     goto complete;
   }
-  FUN_003189f0(uVar1,param_2 & 0xffff,param_3);
-  FUN_003182d0(uVar1,param_2 & 0xffff,(short)param_3,param_4,uVar3);
+  FUN_003189f0_scene_typed(uVar1,param_2,param_7);
+  FUN_003182d0_scene_typed(uVar1,param_2,param_3,param_4,uVar3);
   if (0 < param_6) {
-    FUN_00318770_scene_typed((float)(int)param_6,uVar1,param_2 & 0xffff,param_3);
+    FUN_00318770_scene_typed(uVar1,param_2,(float)(int)param_6);
   }
   FUN_005225a8(0x6a2e10,uVar1,param_2,param_3);
 complete:
-  *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & 0xffffdfff;
+  *(u32 *)(param_1 + 0x28) = *(u32 *)(param_1 + 0x28) & 0xffffdfff;
   return 1;
 }
 #define FUN_003b8ff0(...) ((u32 (*)(...))FUN_003b8ff0)(__VA_ARGS__)

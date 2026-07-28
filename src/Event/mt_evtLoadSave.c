@@ -909,9 +909,8 @@ process_node:
       FUN_005225a8_evt((const char *)DAT_006a0b50,*(u16 *)((u8 *)piVar3 + 0xc),stack.uStack_36);
       for (iVar1 = 0; iVar1 < 10; iVar1 = iVar1 + 1) {
         iVar2 = iVar1 * 4;
-        iVar4 = (int)psVar2;
-        iVar4 += iVar2;
-        *(f32 *)((int)&stack + iVar2 + 0x14) = *(f32 *)(iVar4 + 0x10);
+        *(f32 *)((int)&stack + iVar2 + 0x14) =
+          *(f32 *)((int)psVar2 + iVar2 + 0x10);
       }
       switch (*piVar3) {
       case 8:

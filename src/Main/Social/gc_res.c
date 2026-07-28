@@ -7,12 +7,6 @@ extern int sprintf(char* buffer, const char* format, ...);
 extern char* strcpy(char* destination, const char* source);
 extern void func_004cde90(void* raster);
 
-typedef struct GcResArchiveEntry
-{
-    s32 offset;
-    s32 size;
-} GcResArchiveEntry;
-
 /* The GC resource task owns this private work area (DAT_007ce2fc). */
 typedef struct GcResPair
 {
@@ -761,7 +755,7 @@ void func_0021b4a0(u8* resource)
 
     for (i = 0; i < 7; i++) {
         work->cardResources[i] =
-            bpTexCreateTmxRaster(resource + *(s32*)(i * 8 + (u32)resource + 8));
+            bpTexCreateTmxRaster(resource + *(s32*)(resource + i * 8 + 8));
     }
     data = resource + 8;
     work->cardRaster =

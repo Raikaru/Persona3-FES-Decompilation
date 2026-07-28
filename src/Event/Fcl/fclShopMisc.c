@@ -10077,53 +10077,48 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 {
 
-  u8 bVar1;
 
   int iVar2;
 
   u32 uVar3;
 
-  u64 uVar4;
+  const char *pcVar4;
 
   int iVar5;
 
   u32 uVar6;
 
-  u8 uVar7;
+  int uVar7;
 
   u8 auStack_20 [24];
 
-  u32 auStack_8 [2];
+  FclShopFloatPair auStack_8;
 
   
 
   uVar7 = 5;
+  uVar6 = 0;
 
-  auStack_8[0] = DAT_007cd958;
-
-  auStack_8[1] = DAT_007cd95c;
+  auStack_8 = *(FclShopFloatPair *)&DAT_007cd958;
 
   if (param_3 != 0) {
 
     iVar2 = *(int *)(*(int *)(param_5 + 0x14) + 0x1c);
 
-    bVar1 = param_5 == *(int *)(param_4 + 0xc);
-
-    if (bVar1) {
+    if (param_5 == *(int *)(param_4 + 0xc)) {
 
       uVar7 = 6;
+      uVar6 = 1;
 
     }
 
-    uVar6 = (u32)bVar1;
+    FUN_0040e3c0_u32(0.0f,param_1 + 0x71,param_2 + -3,param_3 & 0xff,0,
 
-    FUN_0040e3c0(0,param_1 + 0x71,param_2 + -3,param_3 & 0xff,0,
+                     (u32)*(u8 *)(iVar2 + 8) * 2 + uVar6);
 
-                 (u32)*(u8 *)(iVar2 + 8) * 2 + uVar6);
+    pcVar4 = func_00171110_ptr(*(u16 *)(iVar2 + 4),*(u8 *)(iVar2 + 0xc));
 
-    uVar4 = func_00171110(*(u16 *)(iVar2 + 4),*(u8 *)(iVar2 + 0xc));
-
-    FUN_003b2cb0(0,param_1 + 0x91,param_2 + -1,param_3 | 0xffffffffffffff00,uVar7,1,uVar4,0,0);
+    FUN_003b2cb0_f32(0.0f,param_1 + 0x91,param_2 + -1,param_3 | 0xffffff00,(s8)uVar7,1,pcVar4,0,0);
 
     iVar5 = (int)(*(u32 *)(iVar2 + 8) & 0xf00) >> 8;
 
@@ -10131,31 +10126,31 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       if (iVar5 == 2) {
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x1a));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x1a));
 
-        FUN_0040eb50(0,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8[uVar6],auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8.u[uVar6],auStack_20,1);
 
       }
 
       else if (iVar5 == 1) {
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x18));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x18));
 
-        FUN_0040eb50(0,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8[uVar6],auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8.u[uVar6],auStack_20,1);
 
       }
 
       else if (iVar5 == 0) {
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x14));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x14));
 
-        uVar3 = auStack_8[uVar6];
+        uVar3 = auStack_8.u[uVar6];
 
-        FUN_0040eb50(0,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x16));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x16));
 
-        FUN_0040eb50(0,param_1 + 0x236,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x236,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
 
       }
 
@@ -10281,53 +10276,48 @@ void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 {
 
-  u8 bVar1;
 
   int iVar2;
 
   u32 uVar3;
 
-  u64 uVar4;
+  const char *pcVar4;
 
   int iVar5;
 
   u32 uVar6;
 
-  u8 uVar7;
+  int uVar7;
 
   u8 auStack_20 [24];
 
-  u32 auStack_8 [2];
+  FclShopFloatPair auStack_8;
 
   
 
   uVar7 = 5;
+  uVar6 = 0;
 
-  auStack_8[0] = DAT_007cd960;
-
-  auStack_8[1] = DAT_007cd964;
+  auStack_8 = *(FclShopFloatPair *)&DAT_007cd960;
 
   if (param_3 != 0) {
 
     iVar2 = *(int *)(*(int *)(param_5 + 0x14) + 0x1c);
 
-    bVar1 = param_5 == *(int *)(param_4 + 0xc);
-
-    if (bVar1) {
+    if (param_5 == *(int *)(param_4 + 0xc)) {
 
       uVar7 = 6;
+      uVar6 = 1;
 
     }
 
-    uVar6 = (u32)bVar1;
+    FUN_0040e3c0_u32(0.0f,param_1 + 0x71,param_2 + -3,param_3 & 0xff,0,
 
-    FUN_0040e3c0(0,param_1 + 0x71,param_2 + -3,param_3 & 0xff,0,
+                     (u32)*(u8 *)(iVar2 + 8) * 2 + uVar6);
 
-                 (u32)*(u8 *)(iVar2 + 8) * 2 + uVar6);
+    pcVar4 = func_00171110_ptr(*(u16 *)(iVar2 + 4),*(u8 *)(iVar2 + 0xc));
 
-    uVar4 = func_00171110(*(u16 *)(iVar2 + 4),*(u8 *)(iVar2 + 0xc));
-
-    FUN_003b2cb0(0,param_1 + 0x91,param_2 + -1,param_3 | 0xffffffffffffff00,uVar7,1,uVar4,0,0);
+    FUN_003b2cb0_f32(0.0f,param_1 + 0x91,param_2 + -1,param_3 | 0xffffff00,(s8)uVar7,1,pcVar4,0,0);
 
     iVar5 = (int)(*(u32 *)(iVar2 + 8) & 0xf00) >> 8;
 
@@ -10335,31 +10325,31 @@ void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       if (iVar5 == 2) {
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x1a));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x1a));
 
-        FUN_0040eb50(0,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8[uVar6],auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8.u[uVar6],auStack_20,1);
 
       }
 
       else if (iVar5 == 1) {
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x18));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x18));
 
-        FUN_0040eb50(0,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8[uVar6],auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,auStack_8.u[uVar6],auStack_20,1);
 
       }
 
       else if (iVar5 == 0) {
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x14));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x14));
 
-        uVar3 = auStack_8[uVar6];
+        uVar3 = auStack_8.u[uVar6];
 
-        FUN_0040eb50(0,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x1d1,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
 
-        sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar2 + 0x16));
+        sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u16 *)(iVar2 + 0x16));
 
-        FUN_0040eb50(0,param_1 + 0x236,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
+        FUN_0040eb50_f32(0.0f,param_1 + 0x236,param_2 + 7,param_3 & 0xff,uVar3,auStack_20,1);
 
       }
 

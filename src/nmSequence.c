@@ -802,27 +802,27 @@ void FUN_003c5bb0(u32 param_1)
 
   
 
-  iVar1 = *(int *)((int)param_1 + 0x24);
   iVar3 = (int)param_1;
+  iVar1 = *(int *)(iVar3 + 0x24);
   iVar2 = FUN_003c4c80(param_1,iVar3 + 4);
 
   if (iVar2 != 0) {
 
-    uVar4 = (*(int *)(iVar1 + 0x20) + *(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc)) - 1;
+    uVar4 = (*(int *)(*(int *)(*(int *)(iVar1 + 0x2c) + 0x14) + 0xc) + *(int *)(iVar1 + 0x20)) - 1;
 
-    if (*(u32 *)(*(int *)(iVar2 + 0x14) + 0xc) < uVar4) {
+    if (*(u32 *)(*(int *)(iVar2 + 0x14) + 0xc) >= uVar4) {
 
-      if (iVar2 == *(int *)(iVar3 + 4)) {
+      if (uVar4 != *(u16 *)(iVar3 + 0x10)) {
 
-        *(int *)(iVar1 + 0x2c) = iVar2;
+        *(u32 *)(iVar1 + 0x2c) = *(u32 *)(*(int *)(iVar1 + 0x2c) + 0x10);
 
       }
 
     }
 
-    else if (uVar4 != *(u16 *)(iVar3 + 0x10)) {
+    else if (iVar2 == *(int *)(iVar3 + 4)) {
 
-      *(u32 *)(iVar1 + 0x2c) = *(u32 *)(*(int *)(iVar1 + 0x2c) + 0x10);
+      *(int *)(iVar1 + 0x2c) = iVar2;
 
     }
 

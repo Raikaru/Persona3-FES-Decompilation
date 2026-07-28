@@ -1246,15 +1246,15 @@ void btlActionInitStateStartHome(BtlAction* action)
     {
         speedIndex = 2;
         allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
-        unitId = action->unit->datUnit->id;
         switch (action->unit->genus)
         {
-        case UNIT_GENUS_PC:
-            break;
         case UNIT_GENUS_EC:
+            unitId = action->unit->datUnit->id;
             enemyRecords = iGpffffb728;
             speedIndex = *(u16*)((u8*)enemyRecords +
                                  unitId * 0xe8 + (u32)allowMove * 4 + 0x24);
+            break;
+        case UNIT_GENUS_PC:
             break;
         default:
             break;
