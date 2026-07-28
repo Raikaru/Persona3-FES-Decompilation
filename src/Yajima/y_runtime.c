@@ -12025,18 +12025,18 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
 
 {
   RwV2d position;
-  u8 *coordinateBase;
   float y;
   char cVar1;
   char cVar2;
   int index;
   int iVar3;
   int iVar4;
+  u8 *coordinateBase;
   
   index = (int)param_3 * 4;
   cVar1 = *(char *)(index + DAT_007ce6ec + 4);
-  iVar3 = *(s16 *)(DAT_006b4796_abs + 4) - (cVar1 - 1) * 0x40;
   coordinateBase = DAT_006b4796_abs;
+  iVar3 = *(s16 *)(coordinateBase + 4) - (cVar1 - 1) * 0x40;
   cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
