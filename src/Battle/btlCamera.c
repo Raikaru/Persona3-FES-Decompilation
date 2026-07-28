@@ -3026,16 +3026,8 @@ special_done:
     targetRadius = target->sphereRadius * target->scale;
     mode = FUN_002a3420((int)camera);
     modeScale = 1.0f;
-    if (special != 0 || mode != 0)
+    if (special == 0 && mode == 0)
     {
-        *(BtlUnit**)((u8*)camera + 0x120) = persona;
-        *(u16*)((u8*)camera + 0x124) = 0;
-        modeScale = 3.0f;
-    }
-    else
-    {
-        *(BtlUnit**)((u8*)camera + 0x120) = persona;
-        *(u16*)((u8*)camera + 0x124) = 1;
         if ((*(u16*)(iGpffffb73c + (persona->charId * 0x58)) & 1) != 0)
         {
             if (personaHeight < 750.0f)
@@ -9096,12 +9088,8 @@ void func_002acf90(BtlCamera* camera, long unused)
     FUN_00280870(mode, 1, (void*)&scratch.v130, 0, 0, 1);
     sideDistance = 0.0f;
     i = 0;
-    while (1) {
-        actionBase = camera->action;
-        if (i >= actionBase->target.targetedCount) {
-            break;
-        }
-        action = actionBase->target.targetedActions[i & 0xffff];
+    while ((i & 0xffff) < camera->action->target.targetedCount) {
+        action = camera->action->target.targetedActions[i & 0xffff];
         if ((action->unk_1a & 1) != 0) {
             FUN_00280050(action->unit, &scratch.vf0);
             scratch.v120.x = scratch.v130.x - scratch.vf0.x;

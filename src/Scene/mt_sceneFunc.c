@@ -3842,8 +3842,8 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
     if (!(param_1 < 1.0f)) {
 
-      iVar3 = 0;
       segmentIndex = cVar1 - 1;
+      iVar3 = 0;
       param_2 += segmentIndex * 0x24;
 
       for (; iVar3 < 4; iVar3 = iVar3 + 1) {
@@ -3866,8 +3866,8 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
       fVar5 = 1.0f / (float)(int)cVar1;
 
-      iVar3 = 0;
       segmentIndex = (int)(param_1 / fVar5);
+      iVar3 = 0;
       param_2 += segmentIndex * 0x24;
 
       for (; iVar3 < 4; iVar3 = iVar3 + 1) {

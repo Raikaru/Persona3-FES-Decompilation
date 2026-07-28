@@ -132,6 +132,7 @@ typedef struct GsAnimationWork
     u32 transitionInitialized;
     u32 visible;
     void* transitions;
+    void* atlas;
 } GsAnimationWork;
 typedef struct GsB270Entry
 {
@@ -1749,40 +1750,51 @@ KwlnTask* func_0018e820(KwlnTask* parent)
 // FUN_0018E8E0 NONMATCHING
 void func_0018e8e0(void* workData)
 {
-    u8* work = (u8*)workData;
+    GsAnimationWork* work = (GsAnimationWork*)workData;
     s32 i;
-    void* transition;
-    u32 active;
-    u32 alpha;
-    const char* text;
+    void* unused;
+    s32 transitionOffset;
+    GsTransition* transition;
 
     for (i = 0; i < 3; i++)
     {
-        transition = (u8*)GS_PTR(work, 0x210) + i * 0x44;
-        active = func_0018b700(transition);
-        if (active != 0 && GS_U32(work, 0x20c) != 0)
+        transitionOffset = i * sizeof(GsTransition);
+        if (func_0018b700((u8*)work->transitions + transitionOffset) != 0)
         {
-            alpha = 0xff - GS_U32(transition, 0x40) | 0xffffff00;
-            if (i == 2)
+            transition = (GsTransition*)((u8*)work->transitions + transitionOffset);
+            if (work->visible != 0)
             {
-                text = (const char*)(work + 0x108);
-                func_003b2cb0(GS_F32(transition, 0x24),
-                              (s32)GS_F32(transition, 0x38) - 10,
-                              (s32)GS_F32(transition, 0x3c) + 5,
-                              alpha, 5, 1, text, 0x10, 0);
-            }
-            else if (i == 1)
-            {
-                text = (const char*)(work + 8);
-                func_003b2cb0(GS_F32(transition, 0x24),
-                              (s32)GS_F32(transition, 0x38) - 10,
-                              (s32)GS_F32(transition, 0x3c) + 5,
-                              alpha, 5, 1, text, 0x10, 0);
-            }
-            else
-            {
-                gsDrawSprite(GS_PTR(transition, 0), 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38), GS_F32(transition, 0x3c), GS_F32(transition, 0x24));
-                gsDrawSprite(GS_PTR(transition, 0), 2, GS_U8(transition, 0x40), GS_F32(transition, 0x38) - 180.0f, GS_F32(transition, 0x3c) + 16.0f, GS_F32(transition, 0x24));
+                switch (i)
+                {
+                case 0:
+                    func_001159f0(unused, work->atlas, 0,
+                                  *(u8*)&transition->alpha,
+                                  transition->position.valueF[0],
+                                  transition->position.valueF[1],
+                                  transition->depth);
+                    func_001159f0(
+                        unused, work->atlas, 2, *(u8*)&transition->alpha,
+                        21.0f + transition->position.valueF[0] - 174.0f - 27.0f,
+                        3.0f + (412.0f + transition->position.valueF[1] - 399.0f),
+                        transition->depth);
+                    break;
+                case 1:
+                    func_003b2cb0(
+                        transition->depth,
+                        (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
+                        (s32)transition->position.valueF[1] + 5,
+                        (0xff - transition->alpha) | 0xffffff00,
+                        5, 1, (u8*)work + 8, 0x10, 0);
+                    break;
+                case 2:
+                    func_003b2cb0(
+                        transition->depth,
+                        (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
+                        (s32)transition->position.valueF[1] + 5,
+                        (0xff - transition->alpha) | 0xffffff00,
+                        5, 1, (u8*)work + 0x108, 0x10, 0);
+                    break;
+                }
             }
         }
     }

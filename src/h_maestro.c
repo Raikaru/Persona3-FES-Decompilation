@@ -727,9 +727,9 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
     dim1 = ((s16*)&dimensions)[1];
     dim2 = ((s16*)&dimensions)[2];
     dim3 = ((s16*)&dimensions)[3];
-    work->dimensions[2] = dim2;
     work->dimensions[0] = dim0;
     work->dimensions[1] = dim1;
+    work->dimensions[2] = dim2;
     work->dimensions[3] = dim3;
     sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
@@ -3261,17 +3261,20 @@ void func_00115cd0(int unused0, int unused1, int unused2,
 
 
 void func_00115de0(int unused0, int unused1, int unused2,
-                   f32 param_1, f32 param_2, u32 param_4, u8 param_5,
+                   f32 param_1, f32 param_2, u16 param_4, u8 param_5,
                    u8 param_6, u8 param_7, u8 param_8, f32 param_3)
 
 
 {
-  int *piVar2;
-
   int *piVar1;
 
+  void* uVar3;
 
-  piVar2 = (int *)func_001158b0(0);
+  int *piVar2;
+
+
+  uVar3 = func_001158b0(0);
+  piVar2 = (int *)uVar3;
   ((f32 *)piVar2)[0xb] = param_3;
 
   ((f32 *)piVar2)[4] = param_1;
@@ -3708,7 +3711,7 @@ u32 func_00115f00(KwlnTask* param_1)
 
 }
 #pragma opt_loop_invariants off
-// FUN_001165C0 NONMATCHING
+// FUN_001165C0
 
 
 void func_001165c0(int param_1)
