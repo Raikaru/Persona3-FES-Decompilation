@@ -40782,7 +40782,9 @@ u32 FUN_003461a0(long param_1)
 
   *(u32 *)pauVar9[2] = 0x3f800000;
 
-  if (param_1 != 0) {
+  if (param_1 == 0) {
+    return uVar6;
+  }
 
     iVar4 = FUN_003233a0(1,2,4,0x69bdc8,0x4c);
 
@@ -40842,7 +40844,6 @@ u32 FUN_003461a0(long param_1)
 
     }
 
-  }
 
   return uVar6;
 
