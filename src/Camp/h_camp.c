@@ -442,7 +442,6 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
     CampSpriteSetupWork* work;
     s32 i;
-    s32 copyIndex;
     u32 ready;
     u32 size;
 
@@ -481,8 +480,12 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
         if (!ready) {
             break;
         }
-        for (copyIndex = 0; copyIndex < 14; copyIndex++) {
-            D_00833B70[copyIndex] = work->maestroResources[copyIndex];
+        {
+            s32 j = 0;
+            void** table = D_00833B70;
+            for (; j < 14; j++) {
+                table[j] = work->maestroResources[j];
+            }
         }
         work->state = 3;
         break;

@@ -5720,21 +5720,24 @@ void FUN_0039e700(u8 *param_1)
 
   int iVar7;
 
+
   
 
   *(u32 *)(param_1 + 0x78c) = 0;
 
   iVar1 = *(int *)(param_1 + 8);
 
+
   for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0x38); iVar7 = iVar7 + 1) {
 
     iVar6 = *(int *)(iVar1 + 0x34) + iVar7 * 0x20;
 
-    if (*(int *)(iVar6 + 0x18) == 1) {
+    switch (*(int *)(iVar6 + 0x18)) {
+    case 1:
 
       iVar2 = *(int *)(param_1 + 0x78c);
 
-      if (9 < iVar2) break;
+      if (9 < iVar2) goto done;
 
       iVar3 = *(int *)(iVar1 + 0x10);
 
@@ -5757,6 +5760,7 @@ void FUN_0039e700(u8 *param_1)
 
   }
 
+done:
   FUN_005225a8((u32)DAT_006a1800,*(u32 *)(param_1 + 0x78c));
 
   return;
@@ -5965,15 +5969,17 @@ void FUN_0039eaa0(int param_1)
   int combinedValue;
   int extraValue;
   int index;
+  int entryType;
   u8 *entry;
   int *output;
 
   output = (int *)(param_1 + 0x7f4);
   FUN_00521408_b8b0(output,0,0x38);
   base = *(int *)(param_1 + 8);
+  entryType = 2;
   for (index = 0; index < *(int *)(base + 0x38); index = index + 1) {
     entry = (u8 *)(*(int *)(base + 0x34) + index * 0x20);
-    if (*(int *)(entry + 0x18) == 2) {
+    if (*(int *)(entry + 0x18) == entryType) {
       count = *output;
       if (4 < count) {
         break;

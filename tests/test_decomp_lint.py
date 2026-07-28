@@ -88,6 +88,44 @@ void f(void)
             "// FUN_00320810 NONMATCHING\n"
             "#pragma optimization_level 1\nvoid f(void){}"))
 
+    def test_annotation_above_a_marker_waives_the_whole_function(self):
+        # One measurement covers every occurrence in the annotated function.
+        found = check(
+            "/* Retail contains this; deleting it costs nd11 -> nd566 - measured W176. */\n"
+            "// FUN_00351510 NONMATCHING\n"
+            "void f(f32 a, f32 b)\n{\n"
+            "    if (a >= 2147483648.0f) { a -= 2147483648.0f; }\n"
+            "    if (b >= 2147483648.0f) { b -= 2147483648.0f; }\n"
+            "}\n")
+        self.assertNotIn("H005", found)
+
+    def test_multiline_block_comment_annotation_is_honoured(self):
+        # The `measured` word lands on a CONTINUATION line that carries
+        # neither `/*` nor `//`; the waiver must still see it.
+        found = check(
+            "/* Retail contains this expansion: deleting it leaves the function\n"
+            "   UNDERSIZED and nd11 -> nd566, so it is real code, not\n"
+            "   fabrication. Retained until the honest form is found - measured W176. */\n"
+            "// FUN_00351510 NONMATCHING\n"
+            "void f(f32 a)\n{\n"
+            "    if (a >= 2147483648.0f) { a -= 2147483648.0f; }\n"
+            "}\n")
+        self.assertNotIn("H005", found)
+
+    def test_function_scope_does_not_leak_to_the_next_function(self):
+        found = check(
+            "/* measured W176. */\n"
+            "// FUN_00351510 NONMATCHING\n"
+            "void f(f32 a)\n{\n"
+            "    if (a >= 2147483648.0f) { a -= 2147483648.0f; }\n"
+            "}\n"
+            "// FUN_00351600 NONMATCHING\n"
+            "void g(f32 b)\n{\n"
+            "    if (b >= 2147483648.0f) { b -= 2147483648.0f; }\n"
+            "}\n")
+        self.assertIn("H005", found)
+        self.assertTrue(all(x.line > 6 for x in found["H005"]))
+
     def test_explicit_allow_waives_only_its_own_code(self):
         self.assertNotIn("H008", codes(
             "void f(void){\n/* lint: allow H008 */\nregister int i;\n}"))
