@@ -206,7 +206,7 @@ u64 FUN_003ad1b0(u32 param_1,int param_2);
 u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4);
 #pragma alias FUN_003ad400_typed FUN_003ad400
 extern u64 FUN_003ad400_typed(u16 param_1,u16 param_2,u64 param_3,int param_4);
-u64 FUN_003ad640(u64 param_1,u64 param_2);
+u64 FUN_003ad640(u64 param_1,int param_2);
 u64 FUN_003ad740(int param_1,int param_2);
 u64 FUN_003ad860(u64 param_1,int param_2);
 u64 FUN_003ad930(u64 param_1,int param_2);
@@ -3945,7 +3945,7 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 // FUN_003AD640 NONMATCHING
 
 
-u64 FUN_003ad640(u64 param_1,u64 param_2)
+u64 FUN_003ad640(u64 param_1,int param_2)
 
 
 
@@ -3959,57 +3959,55 @@ u64 FUN_003ad640(u64 param_1,u64 param_2)
 
   u8 *pbVar4;
 
-  u32 uVar5;
+  u8 uVar5;
 
   int iVar6;
 
-  u8 uStack_8;
-
-  u8 uStack_7;
-
-  u8 uStack_6;
+  char msg[8];
+  u16 index;
+  int offset;
+  int base;
 
   
 
   iVar6 = (int)param_2;
-
-  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x10) + *(int *)(iVar6 + 0x18));
+  offset = *(int *)(iVar6 + 0x18);
+  base = *(int *)(iVar6 + 0x10);
+  pbVar4 = (u8 *)(base + offset);
 
   uVar5 = *pbVar4 - 1 & 0xff;
 
   bVar1 = pbVar4[1];
-
-  if (bVar1 != 0xff) {
-
-    uVar3 = (u32)(u8)(bVar1 - 1);
-
-  }
-
-  else {
+  if (bVar1 == 0xff) {
 
     uVar3 = 0;
 
   }
 
-  if (*(int *)(&DAT_0095ac70 + (uVar3 << 8 | uVar5) * 4) != 0) {
+  else {
+
+    uVar3 = (u32)(u8)(bVar1 - 1);
+
+  }
+  index = (u8)uVar3 << 8 | (u8)uVar5;
+
+  if (DAT_0095ac70_abs[index] != 0) {
 
     uVar2 = *(u8 *)(iVar6 + 0xd);
 
     *(u8 *)(iVar6 + 0xd) = 3;
 
-    uStack_8 = 0x83;
-
-    uStack_7 = 0xd5;
-
-    uStack_6 = 0;
+    msg[0] = 0x83;
+    msg[1] = 0xd5;
+    msg[2] = 0;
 
     FUN_003b22a0(param_2);
 
-    FUN_003b2020(&uStack_8,param_2);
+    FUN_003b2020(msg,param_2);
 
     FUN_003b22a0(param_2);
 
-    FUN_003b1d90(uVar5,param_2);
+    FUN_003b1d90(index & 0xff,param_2);
 
     *(u8 *)(iVar6 + 0xd) = uVar2;
 
