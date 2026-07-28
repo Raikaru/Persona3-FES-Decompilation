@@ -4377,6 +4377,11 @@ void FUN_002d7560(BtlAction *action)
     extern f32 FUN_001c0070(void);
     extern u32 FUN_0030bc50(DatUnit *);
     extern u16 FUN_0030bde0(DatUnit *, s32 *);
+    struct BtlRewardPersona {
+        u16 personaId;
+        u16 pad;
+        u32 count;
+    };
     BtlUnit *unit;
     u16 i;
 
@@ -4405,29 +4410,32 @@ void FUN_002d7560(BtlAction *action)
                 BTLT_B32(0xbfc) += amount;
 
                 personaId = FUN_0030bde0(unit->datUnit, &outFlag);
-                if ((outFlag != 1) && (BTLT_A16(action, 0x80) != 0) &&
-                    ((u8)FUN_002ffbc0(100) < BTLT_A8(action, 0x82)))
-                    personaId = BTLT_A16(action, 0x80);
+                if ((outFlag != 1) && (action->target.rewardPersonaId != 0) &&
+                    ((u8)FUN_002ffbc0(100) < action->target.rewardPersonaChance))
+                    personaId = action->target.rewardPersonaId;
                 if (personaId != 0)
                 {
+                    struct BtlRewardPersona *rewards;
                     found = 0;
+                    rewards = (struct BtlRewardPersona *)(DAT_007ce3ec + 0xbe0);
                     for (i = 0; i < 3; i++)
                     {
-                        if (BTLT_A16(DAT_007ce3ec, 0xbe0 + i * 8) == personaId)
+                        if (rewards[i].personaId == personaId)
                         {
-                            BTLT_B32(0xbe4 + i * 8)++;
+                            rewards[i].count++;
                             found = 1;
                             break;
                         }
                     }
                     if (found == 0)
                     {
+                        rewards = (struct BtlRewardPersona *)(DAT_007ce3ec + 0xbe0);
                         for (i = 0; i < 3; i++)
                         {
-                            if (BTLT_A16(DAT_007ce3ec, 0xbe0 + i * 8) == 0)
+                            if (rewards[i].personaId == 0)
                             {
-                                BTLT_A16(DAT_007ce3ec, 0xbe0 + i * 8) = personaId;
-                                BTLT_B32(0xbe4 + i * 8) = 1;
+                                rewards[i].personaId = personaId;
+                                rewards[i].count = 1;
                                 BTLT_B32(0xbf8) = i + 1;
                                 break;
                             }

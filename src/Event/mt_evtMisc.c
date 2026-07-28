@@ -5455,7 +5455,7 @@ void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4)
     lVar3 = FUN_0036f500(*puVar4);
     if (lVar3 == 1) {
       while (*param_3 != 0) {
-        lVar3 = FUN_00360ed0();
+        lVar3 = FUN_00360ed0(*param_3);
         if (lVar3 == 1) {
           break;
         }

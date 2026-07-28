@@ -86,7 +86,7 @@ extern u32 D_007D4780;
 extern u32 D_007D4784;
 #pragma alias D_007D4780_abs D_007D4780
 extern u32 D_007D4780_abs[];
-extern u32 D_007D1F80[];
+extern u8 D_007D1F80[];
 extern u32 D_007CF780[];
 extern u32 D_007CDF38;
 

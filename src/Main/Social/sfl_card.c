@@ -1092,6 +1092,7 @@ void FUN_00258630(u32 *param_1)
 {
     u32 flags;
     u32 *node;
+    u32 *card;
     s32 count;
     SflCardDrawFrame local;
 #define scale local.scale
@@ -1118,8 +1119,9 @@ void FUN_00258630(u32 *param_1)
             FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
             break;
         case 0:
-            FUN_00209f00(param_1 + 6);
-            FUN_0020c590(param_1 + 6, (u16)param_1[2]);
+            card = param_1 + 6;
+            FUN_00209f00(card);
+            FUN_0020c590(card, (u16)param_1[2]);
             if ((*param_1 & 1) != 0) {
                 FUN_0020d6c0(param_1 + 6);
             }
