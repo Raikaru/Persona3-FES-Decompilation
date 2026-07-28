@@ -980,11 +980,11 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    uVar3 = (u16)(u32)(4096.0f * param_2);
-    *(u16 *)(iVar2 + 0x28) = uVar3;
+    uVar3 = (u32)(f32)(4096.0f * param_2);
+    *(u16 *)(iVar2 + 0x28) = (u16)uVar3;
 
-    uVar3 = (u16)(u32)(4096.0f * param_3);
-    *(u16 *)(iVar2 + 0x2a) = uVar3;
+    uVar3 = (u32)(f32)(4096.0f * param_3);
+    *(u16 *)(iVar2 + 0x2a) = (u16)uVar3;
 
     FUN_001127d0(uVar1,1);
 

@@ -17783,6 +17783,8 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   int iVar5;
   int drawX;
   int drawY;
+  int finalX;
+  int finalY;
   int weekDay;
 
   float fVar6;
@@ -17851,9 +17853,9 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   weekDay = (int)clndGetCurrentWeekDay();
 
-  drawX = iVar5 + 0x60;
-  drawY = iVar4 + 1;
-  FUN_0040e3c0_f32(0.0f,drawX,drawY,param_3,0xf,weekDay);
+  finalX = iVar5 + 0x60;
+  finalY = iVar4 + 1;
+  FUN_0040e3c0_f32(0.0f,finalX,finalY,param_3,0xf,weekDay);
 
   return;
 

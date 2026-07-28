@@ -179,6 +179,10 @@ extern f32 DAT_009572B0[8];
 extern u32 DAT_009572D0;
 extern void (*DAT_00960090)(u32 state, u32 value);
 extern void (*DAT_009600A0)(u32 primitive, void* vertices, u32 count);
+#pragma alias DAT_00960090_abs DAT_00960090
+extern void (*DAT_00960090_abs[])(u32 state, u32 value);
+#pragma alias DAT_009600A0_abs DAT_009600A0
+extern void (*DAT_009600A0_abs[])(u32 primitive, void* vertices, u32 count);
 
 RwRGBAReal* func_0019fd70(void);
 RwMatrix* func_0019fda0(void);
@@ -1825,18 +1829,15 @@ void btlMain0029e420(void)
     }
 }
 
-// FUN_0029e4b0 NONMATCHING
-void btlMain0029e4b0(void)
+#pragma alias btlMainDrawColorOverlay btlMain0029e4b0
+// FUN_0029e4b0
+void btlMainDrawColorOverlay(void)
 {
-    RwSky2DVertex vertices[4];
+    RwSky2DVertex vertices[5];
     u32 red;
     u32 green;
     u32 blue;
     u32 alpha;
-    f32 redf;
-    f32 greenf;
-    f32 bluef;
-    f32 alphaf;
 
     if (*(f32*)((u8*)gBtl + 0x240) <= 0.0f)
     {
@@ -1845,23 +1846,22 @@ void btlMain0029e4b0(void)
 
     RpSkyRenderStateSet(2, (void*)0x48);
     RpSkyRenderStateSet(3, (void*)0x71801);
-    DAT_00960090(0xc, 1);
-    DAT_00960090(0xe, 0);
-    DAT_00960090(1, 0);
-    DAT_00960090(6, 0);
-    DAT_00960090(8, 0);
-    DAT_00960090(7, 2);
+    {
+        void (**setRenderState)(u32 state, u32 value) =
+            (void (**)(u32 state, u32 value))DAT_00960090_abs;
+        (*setRenderState)(0xc, 1);
+        (*setRenderState)(0xe, 0);
+        (*setRenderState)(1, 0);
+        (*setRenderState)(6, 0);
+        (*setRenderState)(8, 0);
+        (*setRenderState)(7, 2);
+    }
 
-    red = ((u32)(*(f32*)((u8*)gBtl + 0x234) * 255.0f + 0.5f)) & 0xff;
-    green = ((u32)(*(f32*)((u8*)gBtl + 0x238) * 255.0f + 0.5f)) & 0xff;
-    blue = ((u32)(*(f32*)((u8*)gBtl + 0x23c) * 255.0f + 0.5f)) & 0xff;
-    alpha = ((u32)(*(f32*)((u8*)gBtl + 0x240) * 255.0f + 0.5f)) & 0xff;
-    redf = (f32)red;
-    greenf = (f32)green;
-    bluef = (f32)blue;
-    alphaf = (f32)alpha;
+    red = ((s32)(*(f32*)((u8*)gBtl + 0x234) * 255.0f + 0.5f)) & 0xff;
+    green = ((s32)(*(f32*)((u8*)gBtl + 0x238) * 255.0f + 0.5f)) & 0xff;
+    blue = ((s32)(*(f32*)((u8*)gBtl + 0x23c) * 255.0f + 0.5f)) & 0xff;
+    alpha = ((s32)(*(f32*)((u8*)gBtl + 0x240) * 255.0f + 0.5f)) & 0xff;
 
-    memset(vertices, 0, sizeof(vertices));
     vertices[0].u.els.scrVertex.x = 0.0f;
     vertices[0].u.els.scrVertex.y = 0.0f;
     vertices[1].u.els.scrVertex.x = 0.0f;
@@ -1874,20 +1874,20 @@ void btlMain0029e4b0(void)
     vertices[0].u.els.color.g = (f32)green;
     vertices[0].u.els.color.b = (f32)blue;
     vertices[0].u.els.color.a = (f32)alpha;
-    vertices[1].u.els.color.r = redf;
-    vertices[1].u.els.color.g = greenf;
-    vertices[1].u.els.color.b = bluef;
-    vertices[1].u.els.color.a = alphaf;
-    vertices[2].u.els.color.r = redf;
-    vertices[2].u.els.color.g = greenf;
-    vertices[2].u.els.color.b = bluef;
-    vertices[2].u.els.color.a = alphaf;
-    vertices[3].u.els.color.r = redf;
-    vertices[3].u.els.color.g = greenf;
-    vertices[3].u.els.color.b = bluef;
-    vertices[3].u.els.color.a = alphaf;
+    vertices[1].u.els.color.r = (f32)red;
+    vertices[1].u.els.color.g = (f32)green;
+    vertices[1].u.els.color.b = (f32)blue;
+    vertices[1].u.els.color.a = (f32)alpha;
+    vertices[2].u.els.color.r = (f32)red;
+    vertices[2].u.els.color.g = (f32)green;
+    vertices[2].u.els.color.b = (f32)blue;
+    vertices[2].u.els.color.a = (f32)alpha;
+    vertices[3].u.els.color.r = (f32)red;
+    vertices[3].u.els.color.g = (f32)green;
+    vertices[3].u.els.color.b = (f32)blue;
+    vertices[3].u.els.color.a = (f32)alpha;
 
-    DAT_009600A0(4, vertices, 4);
+    (*DAT_009600A0_abs)(4, vertices, 4);
 }
 // FUN_0029ea20
 void* FUN_0029ea20(void)
