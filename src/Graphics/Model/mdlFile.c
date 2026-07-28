@@ -2856,46 +2856,43 @@ int FUN_0031e300(u32 *param_1)
 
 int FUN_0031e310(short param_1,short param_2)
 {
-  u32 scanIndex;
-  u16 key1;
-  u16 key2;
-  u8 *table;
-  s32 bestIndex;
-  u32 bestValue;
-  u32 candidateIndex;
+  u32 uVar1;
+  int iVar2;
+  u32 uVar3;
+  u32 uVar4;
+  u8 *puVar5;
+  u16 uVar6;
+  u16 uVar5;
   u8 *candidateTable;
-  u32 currentValue;
-  u32 offset;
 
-  scanIndex = 0;
-  key1 = param_1;
-  key2 = param_2;
-  table = DAT_00957220_abs;
-  for (; scanIndex < 3; scanIndex = (scanIndex + 1) & 0xffff) {
-    if (key1 == *(u16 *)(table + (u16)scanIndex * 8 + 4) &&
-        key2 == *(u16 *)(table + (u16)scanIndex * 8 + 6)) {
-      return (u16)scanIndex + 3;
+  uVar4 = 0;
+  uVar5 = (u16)param_1;
+  uVar6 = (u16)param_2;
+  puVar5 = DAT_00957220_abs;
+  for (; uVar4 < 3; uVar4 = (uVar4 + 1) & 0xffff) {
+    if (uVar5 == *(u16 *)(puVar5 + (u16)uVar4 * 8 + 4) &&
+        uVar6 == *(u16 *)(puVar5 + (u16)uVar4 * 8 + 6)) {
+      return (u16)uVar4 + 3;
     }
   }
 
-  bestIndex = -1;
-  bestValue = bestIndex;
-  candidateIndex = 0;
+  uVar4 = -1;
+  uVar3 = uVar4;
+  uVar1 = 0;
   candidateTable = DAT_00957220_abs;
-  for (; candidateIndex < 3; candidateIndex = (candidateIndex + 1) & 0xffff) {
-    currentValue = *(u32 *)(candidateTable + (u16)candidateIndex * 8);
-    if (currentValue < bestValue) {
-      bestValue = currentValue;
-      bestIndex = (u16)candidateIndex;
+  for (; uVar1 < 3; uVar1 = (uVar1 + 1) & 0xffff) {
+    if (*(u32 *)(candidateTable + (u16)uVar1 * 8) < uVar3) {
+      uVar3 = *(u32 *)(candidateTable + (u16)uVar1 * 8);
+      uVar4 = (u16)uVar1;
     }
   }
 
-  offset = bestIndex * 8;
+  iVar2 = uVar4 * 8;
   DAT_007ce528++;
-  *(u32 *)(DAT_00957220_abs + offset) = DAT_007ce528;
-  *(u16 *)(DAT_00957224_abs + offset) = param_1;
-  *(u16 *)(DAT_00957226_abs + offset) = param_2;
-  return bestIndex + 3;
+  *(u32 *)(DAT_00957220_abs + iVar2) = DAT_007ce528;
+  *(u16 *)(DAT_00957224_abs + iVar2) = param_1;
+  *(u16 *)(DAT_00957226_abs + iVar2) = param_2;
+  return uVar4 + 3;
 }
 
 
@@ -30555,7 +30552,7 @@ void FUN_0033af10(int param_1)
 {
   int iVar1;
   u16 *puVar2;
-  union { u32 words[4]; u8 bytes[16]; } colourStack;
+  u32 colourStack[4];
   int iVar3;
   int iVar4;
   int iVar5;
@@ -30574,32 +30571,32 @@ void FUN_0033af10(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack.words[2] = *(u32 *)(iVar5 + 0x30);
+    colourStack[2] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50((u32)iVar3);
-    colourStack.words[3] = colourStack.words[0];
-    if (colourStack.bytes[15] != 0xff) {
+    colourStack[3] = colourStack[0];
+    if (((u8 *)colourStack)[15] != 0xff) {
       dest = *(int *)(puVar2 + 10);
-      red = colourStack.bytes[12];
-      green = colourStack.bytes[13];
-      blue = colourStack.bytes[14];
-      alpha = colourStack.bytes[15];
+      red = ((u8 *)colourStack)[12];
+      green = ((u8 *)colourStack)[13];
+      blue = ((u8 *)colourStack)[14];
+      alpha = ((u8 *)colourStack)[15];
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
     }
     else {
-      colourStack.bytes[15] = 0xfe;
+      ((u8 *)colourStack)[15] = 0xfe;
       dest = *(int *)(puVar2 + 10);
-      red = colourStack.bytes[12];
-      green = colourStack.bytes[13];
-      blue = colourStack.bytes[14];
-      alpha = colourStack.bytes[15];
+      red = ((u8 *)colourStack)[12];
+      green = ((u8 *)colourStack)[13];
+      blue = ((u8 *)colourStack)[14];
+      alpha = ((u8 *)colourStack)[15];
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
-      colourStack.bytes[15] = 0xff;
+      ((u8 *)colourStack)[15] = 0xff;
     }
     FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
@@ -42839,9 +42836,9 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
       if (*(float *)(param_1 + 8) != 0.0f) {
 
-        fVar9 = (float)FUN_0052e6d8();
+        fVar9 = FUN_0052e6d8_f32(*(float *)(param_1 + 8));
 
-        fVar10 = (float)FUN_0052e878(*(u32 *)(param_1 + 8));
+        fVar10 = FUN_0052e878_f32(*(float *)(param_1 + 8));
 
         param_2[4] = fVar15 + (fVar14 * fVar9 - fVar8 * fVar10);
 

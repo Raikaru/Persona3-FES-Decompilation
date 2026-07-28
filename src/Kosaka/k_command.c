@@ -2045,9 +2045,15 @@ u32 func_001c5980()
     {
     case 0:
     {
-        if (func_001d1a90() == false ||
-            func_001d1ce0() == false ||
-            func_001d00b0() == false)
+        if (func_001d1a90() == false)
+        {
+            return false;
+        }
+        if (func_001d1ce0() == false)
+        {
+            return false;
+        }
+        if (func_001d00b0() == false)
         {
             return false;
         }
@@ -2056,10 +2062,14 @@ u32 func_001c5980()
         slot = 1;
         while (slot < 4)
         {
-            unit = &gFldUnitsPc[slot];
-            if (unit->genusBase != NULL &&
-                unit->resrc != NULL &&
-                unit->charId == (u16)requestedId)
+            valid = false;
+            if (gFldUnitsPc[slot].genusBase != NULL &&
+                gFldUnitsPc[slot].resrc != NULL)
+            {
+                valid = true;
+            }
+            if (valid > 0 &&
+                gFldUnitsPc[slot].charId == (u16)requestedId)
             {
                 break;
             }
@@ -2072,7 +2082,7 @@ u32 func_001c5980()
         {
             K_FldUnit_DestroyPcMdl(slot);
             func_004c43b0();
-            unit->mdl = (Model*)func_001cd9a0(requestedId);
+            gFldUnitsPc[slot].mdl = (Model*)func_001cd9a0(requestedId);
         }
         K_CMD_GLOBAL_STATE++;
         return false;
@@ -2083,9 +2093,8 @@ u32 func_001c5980()
         slot = 1;
         while (slot < 4)
         {
-            unit = &gFldUnitsPc[slot];
-            if (unit->genusBase != NULL &&
-                unit->charId == (u16)requestedId)
+            if (gFldUnitsPc[slot].genusBase != NULL &&
+                gFldUnitsPc[slot].charId == (u16)requestedId)
             {
                 break;
             }
@@ -2094,6 +2103,7 @@ u32 func_001c5980()
 
         if (slot < 4)
         {
+            unit = &gFldUnitsPc[slot];
             model = unit->mdl;
             if (mdlStreamRead(model) == false)
             {
@@ -2126,8 +2136,11 @@ u32 func_001c5980()
 
     case 2:
     {
-        if (func_001d1a90() == false ||
-            func_001d1ce0() == false)
+        if (func_001d1a90() == false)
+        {
+            return false;
+        }
+        if (func_001d1ce0() == false)
         {
             return false;
         }
