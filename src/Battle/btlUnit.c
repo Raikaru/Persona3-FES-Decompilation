@@ -1259,7 +1259,27 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     table = DAT_007ce42c;
     charId = unit->charId;
 
-    if (mode == 2)
+    if (mode != 2)
+    {
+        if (rotationOut != NULL)
+        {
+            *(RtQuat*)rotationOut = source->rot;
+        }
+        if (position != NULL)
+        {
+            btlUnitGetSphereWorldCenter(source, &center);
+            center.y -= source->unk_8c * source->scale * 0.5f;
+            entry = table + ((charId * 11) * 8) + mode * 6;
+            secondOffset.x = (f32)*(s16*)(entry + 0x0c) * unit->scale;
+            secondOffset.y = (f32)*(s16*)(entry + 0x0e) * unit->scale;
+            secondOffset.z = (f32)*(s16*)(entry + 0x10) * unit->scale;
+            RtQuatTransformVectors(&transformed, &secondOffset, 1, &source->rot);
+            position->x = transformed.x + center.x;
+            position->y = transformed.y + center.y;
+            position->z = transformed.z + center.z;
+        }
+    }
+    else
     {
         func_002802d0(target, source, &origin);
         distance = func_002812d0(unit, target, tableIndex);
@@ -1281,26 +1301,6 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
         if (rotationOut != NULL)
         {
             func_002d1de0((RwV3d*)rotationOut, &positionValue, &origin);
-        }
-    }
-    else
-    {
-        if (rotationOut != NULL)
-        {
-            *(RtQuat*)rotationOut = source->rot;
-        }
-        if (position != NULL)
-        {
-            btlUnitGetSphereWorldCenter(source, &center);
-            center.y -= source->unk_8c * source->scale * 0.5f;
-            entry = table + ((charId * 11) * 8) + mode * 6;
-            secondOffset.x = (f32)*(s16*)(entry + 0x0c) * unit->scale;
-            secondOffset.y = (f32)*(s16*)(entry + 0x0e) * unit->scale;
-            secondOffset.z = (f32)*(s16*)(entry + 0x10) * unit->scale;
-            RtQuatTransformVectors(&transformed, &secondOffset, 1, &source->rot);
-            position->x = transformed.x + center.x;
-            position->y = transformed.y + center.y;
-            position->z = transformed.z + center.z;
         }
     }
 }

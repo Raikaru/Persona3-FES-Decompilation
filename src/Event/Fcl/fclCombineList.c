@@ -1223,17 +1223,7 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     string_styles[0] = DAT_007cd7a0;
     string_styles[1] = DAT_007cd7a2;
 
-    if (record == 0) {
-        FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x26, 0);
-        for (i = 0; i < 8; i++) {
-            FUN_0040e3c0(0.0f, base_x + i * 0x15, base_y, (byte)alpha,
-                          0x27, selected_style);
-        }
-        for (i = 0; i < 2; i++) {
-            FUN_0040e3c0(0.0f, base_x + i * 0x15, base_y, (byte)alpha,
-                          0x28, selected_style);
-        }
-    } else {
+    if (record != 0) {
         definition = DAT_007ce420[record->text_id];
         sprintf(formatted_text, DAT_007cd798.format_string, record->format_value);
 
@@ -1266,6 +1256,16 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                 FUN_0040eb50(0.0f, base_x + 0x145, base_y + 0x7f, (byte)alpha,
                               (s16)string_styles[selected_style], formatted_text, 1);
             }
+        }
+    } else {
+        FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x26, 0);
+        for (i = 0; i < 8; i++) {
+            FUN_0040e3c0(0.0f, base_x + i * 0x15, base_y, (byte)alpha,
+                          0x27, selected_style);
+        }
+        for (i = 0; i < 2; i++) {
+            FUN_0040e3c0(0.0f, base_x + i * 0x15, base_y, (byte)alpha,
+                          0x28, selected_style);
         }
     }
 
@@ -1387,7 +1387,20 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
     text_palettes[1] = DAT_007cd7b2;
     data = source_link->payload->data.node_data;
 
-    if (data->fusion.detail.persona_id == 0) {
+    if (data->fusion.detail.persona_id != 0) {
+        text_id = data->fusion.detail.persona_id;
+        text_style = data->fusion.detail.level;
+        draw_variant = DAT_007ce420[text_id]->field_02.draw_variant;
+        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x39,
+                      (draw_variant - 1) * 2 + selected);
+        FUN_003b32d0(0.0f, x + 0x19c, y + 0x7e,
+                      (s32)((byte)alpha | 0xffffff00),
+                      (s8)text_shades[selected], 1,
+                      DAT_007ce4e4[text_id], 0x10, 0x6e);
+        FUN_00523ac8(&layout, &DAT_007cd798.layout_template, text_style);
+        FUN_0040eb50(0.0f, x + 0x260, y + 0x7f, (byte)alpha,
+                      text_palettes[selected], &layout, 1);
+    } else {
         if (data->sound_id != 0) {
             FUN_00176680(&lookup, *data->sound_id);
             text_id = lookup.text_id;
@@ -1415,19 +1428,6 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
                               text_palettes[selected], &layout, 1);
             }
         }
-    } else {
-        text_id = data->fusion.detail.persona_id;
-        text_style = data->fusion.detail.level;
-        draw_variant = DAT_007ce420[text_id]->field_02.draw_variant;
-        FUN_0040e3c0(0.0f, x, y, (byte)alpha, 0x39,
-                      (draw_variant - 1) * 2 + selected);
-        FUN_003b32d0(0.0f, x + 0x19c, y + 0x7e,
-                      (s32)((byte)alpha | 0xffffff00),
-                      (s8)text_shades[selected], 1,
-                      DAT_007ce4e4[text_id], 0x10, 0x6e);
-        FUN_00523ac8(&layout, &DAT_007cd798.layout_template, text_style);
-        FUN_0040eb50(0.0f, x + 0x260, y + 0x7f, (byte)alpha,
-                      text_palettes[selected], &layout, 1);
     }
 
     (void)owner;

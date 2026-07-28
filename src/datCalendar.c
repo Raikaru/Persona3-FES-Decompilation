@@ -3450,13 +3450,8 @@ void func_001848f0(KwlnTask* task, u32 confirmed)
 
     work = (CalendarConfirmWork*)task->workData;
     work->confirmed = confirmed;
-    if (confirmed == 0)
+    if (confirmed != 0)
     {
-        work->transitionPending = 1;
-        work->state = 2;
-        datSetFlag(0x1410, false);
-        return;
-    }
     if (datGetFlag(0x14f) != 0)
     {
         datSetFlag(0x1410, false);
@@ -3531,6 +3526,13 @@ void func_001848f0(KwlnTask* task, u32 confirmed)
             work->state = 6;
         }
         datSetFlag(0x1410, true);
+    }
+    }
+    else
+    {
+        work->transitionPending = 1;
+        work->state = 2;
+        datSetFlag(0x1410, false);
     }
 }
 

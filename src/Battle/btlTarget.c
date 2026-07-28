@@ -4857,7 +4857,39 @@ void FUN_002dae30(u64 param_1)
                 *(u16*)(slot + 0x9f8) = *(u16*)(slot + 0x9f8) + 1;
             }
 
-            if (bit == 4)
+            switch (bit)
+            {
+            case 1:
+                if (*(u32*)(btl + 0xa10) == 0 &&
+                    FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
+                {
+                    u8* candidates[3];
+                    u32 candidateCount = 0;
+                    u32 i;
+                    for (i = 0; i < 3; i++)
+                    {
+                        u8* candidate = *(u8**)(btl + 0xbc4 + i * 8);
+                        if (candidate != NULL &&
+                            (*(u16*)(candidate + 0xa) & 1) == 0 &&
+                            FUN_002ff790(candidate) == 0)
+                        {
+                            candidates[candidateCount] = candidate;
+                            candidateCount = (candidateCount + 1) & 0xffff;
+                        }
+                    }
+                    if (candidateCount == 0)
+                    {
+                        *(u16*)(btl + 0xa04) &= (u16)~1;
+                    }
+                    else
+                    {
+                        u8* selected = candidates[datCalcRand(candidateCount)];
+                        *(u8**)(btl + 0xa10) = selected;
+                        FUN_002daa20(0, 7, *(u16*)(*(u8**)(selected + 4) + 2), 0, 4);
+                    }
+                }
+                break;
+            case 4:
             {
                 u16 currentId = FUN_002db690();
                 u8* currentUnit = (u8*)btlUnitFindFromId(currentId);
@@ -4883,34 +4915,8 @@ void FUN_002dae30(u64 param_1)
                         FUN_002db650(*(u32*)((u8*)unit + 0xa8));
                     }
                 }
+                break;
             }
-            else if (bit == 1 && *(u32*)(btl + 0xa10) == 0 &&
-                     FUN_0029adf0(*(BtlAction**)(btl + 0x148)) == 0)
-            {
-                u8* candidates[3];
-                u32 candidateCount = 0;
-                u32 i;
-                for (i = 0; i < 3; i++)
-                {
-                    u8* candidate = *(u8**)(btl + 0xbc4 + i * 8);
-                    if (candidate != NULL &&
-                        (*(u16*)(candidate + 0xa) & 1) == 0 &&
-                        FUN_002ff790(candidate) == 0)
-                    {
-                        candidates[candidateCount] = candidate;
-                        candidateCount = (candidateCount + 1) & 0xffff;
-                    }
-                }
-                if (candidateCount == 0)
-                {
-                    *(u16*)(btl + 0xa04) &= (u16)~1;
-                }
-                else
-                {
-                    u8* selected = candidates[datCalcRand(candidateCount)];
-                    *(u8**)(btl + 0xa10) = selected;
-                    FUN_002daa20(0, 7, *(u16*)(*(u8**)(selected + 4) + 2), 0, 4);
-                }
             }
 
             {

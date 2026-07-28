@@ -7952,7 +7952,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     centerA[1] = fGpffff80a0;
     fVar15 = 275.0f;
   }
-  fVar10 = (float)func_00280870(2,0,target,&fStack_4,0,1);
+  fVar10 = func_00280870_ae740(2,0,target,&fStack_4,0,1);
   FUN_004be1e0_b6070((RwV3d*)axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
   target[1] = fStack_4 * 0.5f;
   delta[0] = centerA[0] - target[0];

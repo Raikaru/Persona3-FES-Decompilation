@@ -3110,18 +3110,9 @@ void FUN_002063F0(void)
     {
         row = work + *(u32*)(work + 0x7700) * 0x18 + 0x2e0;
         type = *(u32*)(row + 4);
-        if (type == 2)
+        switch (type)
         {
-            K_ASSERT(0, 0x104e);
-        }
-        else if (type == 1)
-        {
-            *(u32*)(row + 0x10) = id;
-            *(u32*)row |= 1;
-            FUN_00208860(*(u16*)(row + 0xc));
-        }
-        else if (type == 0)
-        {
+        case 0:
             for (i = 0; i < *(u32*)(work + 0x3a8); i++)
             {
                 row = work + i * 0x18 + 0x2e0;
@@ -3132,6 +3123,15 @@ void FUN_002063F0(void)
                 }
             }
             FUN_00208790();
+            break;
+        case 1:
+            *(u32*)(row + 0x10) = id;
+            *(u32*)row |= 1;
+            FUN_00208860(*(u16*)(row + 0xc));
+            break;
+        case 2:
+            K_ASSERT(0, 0x104e);
+            break;
         }
     }
     FUN_00205D60();

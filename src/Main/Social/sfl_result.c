@@ -472,8 +472,8 @@ void sflResult001f9e90(u16 owner, s32 exp)
     u8 ownerType;
 
     K_ASSERT(exp >= 0, 0x5e);
-    K_ASSERT(owner >= 2 && owner <= 10, 0x6f);
     FUN_005225a8(0x684bb8, owner);
+    K_ASSERT(owner >= 2 && owner <= 10, 0x6f);
     level = datGetLevel(owner);
     persona = datPersonaGetByPcId(owner);
     K_ASSERT(persona != NULL, 0x75);
@@ -2603,19 +2603,12 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
     sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),uVar1);
 
     if (sVar4 == 2) {
-
       sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-
       FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-
     }
-
     else if (sVar4 == 1) {
-
       sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
-
       FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-
     }
 
   }
@@ -2709,19 +2702,12 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
       sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),uVar1);
 
       if (sVar4 == 2) {
-
         sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-
         FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-
       }
-
       else if (sVar4 == 1) {
-
         sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
-
         FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-
       }
 
     }
@@ -2743,19 +2729,12 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
       sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),auStack_50[0]);
 
       if (sVar4 == 2) {
-
         sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-
         FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-
       }
-
       else if (sVar4 == 1) {
-
         sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
-
         FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-
       }
 
     }

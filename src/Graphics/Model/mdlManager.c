@@ -3832,6 +3832,10 @@ void* func_00314170(void* param_1, void* param_2)
   
 
   piVar4 = (int *)param_1;
+  func_004b6ec0(param_1,*piVar4);
+  piVar4[0x10] = (int)&LAB_00314020;
+  piVar4[0x11] = (int)&LAB_00314060;
+
 
   if (param_2 != 0) {
 
@@ -3860,12 +3864,6 @@ void* func_00314170(void* param_1, void* param_2)
     }
 
   }
-
-  func_004b6ec0(param_1,*piVar4);
-
-  piVar4[0x10] = (int)&LAB_00314020;
-
-  piVar4[0x11] = (int)&LAB_00314060;
 
   return param_1;
 

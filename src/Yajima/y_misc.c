@@ -627,37 +627,21 @@ u32 FUN_00424880(void)
   lVar4 = scrGetIntPara(1);
 
   if ((lVar3 < 1) || (0xb < lVar3)) {
-
     scrSetIntReturnVal(0);
-
   }
-
   else {
-
     sVar1 = (short)lVar3;
-
     lVar3 = func_0016f490(sVar1 + 0x100);
-
     if ((lVar4 < lVar3) && (0 < lVar3)) {
-
       uVar2 = func_0016f810(sVar1 + 0x100,lVar4);
-
       scrSetIntReturnVal(uVar2);
-
     }
-
     else {
-
       for (iVar5 = 0; iVar5 < 0x14; iVar5 = iVar5 + 1) {
-
         func_00170ab0(sVar1,(short)iVar5);
-
       }
-
       scrSetIntReturnVal(0);
-
     }
-
   }
 
   return 1;
@@ -6853,9 +6837,9 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
       lVar8 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(int *)(DAT_0086eda0_abs + iVar10 + 0x54) + 0x1e0));
 
-      if ((CONCAT44((int)((long)((u32)param_2 << 0x30) >> 0x3f),(int)(short)param_2) == lVar8) &&
+      if (((short)param_2 == lVar8) &&
          (lVar8 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(int *)(DAT_0086eda0_abs + iVar10 + 0x54) + 0x1e0)),
-         CONCAT44((int)((long)((u32)param_3 << 0x30) >> 0x3f),(int)(short)param_3) == lVar8)) {
+         (short)param_3 == lVar8)) {
 
         cVar3 = (char)iVar15;
 
@@ -7353,11 +7337,11 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
       lVar8 = FUN_0044f120(&DAT_0086be04 + iVar15 * 0x10);
 
-      if ((CONCAT44((int)((long)((u32)param_2 << 0x30) >> 0x3f),(int)(short)param_2) == lVar8) &&
+      if (((short)param_2 == lVar8) &&
 
          (lVar8 = FUN_0044f170(&DAT_0086be04 + iVar15 * 0x10),
 
-         CONCAT44((int)((long)((u32)param_3 << 0x30) >> 0x3f),(int)(short)param_3) == lVar8)) {
+         (short)param_3 == lVar8)) {
 
         if (*(char *)(iVar2 + 0x865) == '\0') {
           YajimaVec3 savedMain;
@@ -7852,11 +7836,11 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
       lVar6 = FUN_0044f120(&DAT_0086bf8c + iVar9 * 0x138);
 
-      if ((CONCAT44((int)((long)((u32)param_2 << 0x30) >> 0x3f),(int)(short)param_2) == lVar6) &&
+      if (((short)param_2 == lVar6) &&
 
          (lVar6 = FUN_0044f170(&DAT_0086bf8c + iVar9 * 0x138),
 
-         CONCAT44((int)((long)((u32)param_3 << 0x30) >> 0x3f),(int)(short)param_3) == lVar6)) {
+         (short)param_3 == lVar6)) {
 
         uVar7 = FUN_001158b0(0,DAT_007ce6e4,0xc);
 

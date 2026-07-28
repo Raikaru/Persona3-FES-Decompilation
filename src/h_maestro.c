@@ -3632,9 +3632,7 @@ u32 func_00115f00(KwlnTask* param_1)
 
       }
 
-      uVar2 = FUN_00111260(param_1,CONCAT26(uStack_a,CONCAT24(uStack_c,CONCAT22(uStack_e,uStack_10))
-
-                                           ),puVar1 + 0x1d2);
+      uVar2 = FUN_00111260(param_1, *(u64 *)&uStack_10, puVar1 + 0x1d2);
 
       puVar1[5] = uVar2;
 
@@ -4126,9 +4124,7 @@ u32 func_001167f0(u32 param_1)
 
       }
 
-      uVar2 = FUN_00111260(param_1,CONCAT26(uStack_a,CONCAT24(uStack_c,CONCAT22(uStack_e,uStack_10))
-
-                                           ),puVar1 + 0x1c);
+      uVar2 = FUN_00111260(param_1, *(u64 *)&uStack_10, puVar1 + 0x1c);
 
       puVar1[2] = uVar2;
 
@@ -4429,7 +4425,6 @@ void* func_00116f80(KwlnTask* task)
     }
 
   }
-
   else if (iVar2 == 3) {
 
     lVar3 = FUN_0018b700(piVar1 + 5);
@@ -4467,7 +4462,6 @@ void* func_00116f80(KwlnTask* task)
     }
 
   }
-
   else if (iVar2 == 2) {
 
     lVar3 = FUN_0018b700(piVar1 + 5);
@@ -4547,7 +4541,6 @@ void* func_00116f80(KwlnTask* task)
     }
 
   }
-
   else if (iVar2 == 1) {
 
     lVar3 = FUN_0018b700(piVar1 + 5);
@@ -4601,7 +4594,6 @@ void* func_00116f80(KwlnTask* task)
     }
 
   }
-
   else if (iVar2 == 0) {
 
     FUN_0018bc10(0x42c80000,piVar1 + 5,0,2,0,0x42f0000044268000,0x42f00000433b0000,0,0);

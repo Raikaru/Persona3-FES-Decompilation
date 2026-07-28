@@ -302,7 +302,7 @@ extern s32 FUN_0050d3f0(void);
 extern s32 func_00502f60(void* threadParam);
 extern s32 func_005042a0(s32 threadId, void* arg);
 extern s32 FUN_0050d3a0(void);
-extern void func_005030f0();
+extern void func_005030f0(s32 threadId);
 
 static s32 sSfdResumePending;
 static s32 sSfdResumeThreadId;
@@ -317,8 +317,8 @@ typedef struct EeThreadStatus
     u8 reserved4[0x2C];
 } EeThreadStatus;
 
-extern void func_00503060();
-extern void func_005030d0();
+extern void func_00503060(s32 threadId, EeThreadStatus* status);
+extern void func_005030d0(s32 threadId);
 
 extern void* func_0057c680(void* descriptor);
 extern void* func_0057d5d8(void* descriptor);
@@ -1312,80 +1312,80 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
     s32 i;
 
     wasEnabled = FUN_0050d3a0();
-    if ((entry == NULL) || (entry->state != 3) || (entry->queue == NULL))
+    if ((entry != NULL) && (entry->state == 3) && (entry->queue != NULL))
     {
+        queue = entry->queue;
+        next = entry->next;
+        queue->entry = next;
+        if (next != NULL)
+            next->queue = queue;
+        entry->queue = NULL;
+
+        switch (entry->kind)
+        {
+            case 0:
+                result = entry->result0;
+                break;
+            case 1:
+                result = entry->resultD;
+                if (byteCount != NULL)
+                    *byteCount = (s32)entry->source;
+                break;
+            case 2:
+                func_004cb270(entry->source);
+                result = entry->resultC;
+                break;
+            case 3:
+                result = entry->resultE;
+                break;
+            case 4:
+                result = entry->result1;
+                if (byteCount != NULL)
+                    *byteCount = (s32)entry->source;
+                break;
+            case 5:
+                result = entry->resultF;
+                if (byteCount != NULL)
+                    *byteCount = (s32)entry->source;
+                break;
+            case 6:
+                result = entry->resultG;
+                break;
+            case 7:
+                result = entry->result2;
+                if (byteCount != NULL)
+                    *byteCount = (s32)entry->source;
+                break;
+            case 8:
+                result = entry->result3;
+                if (byteCount != NULL)
+                    *byteCount = (s32)entry->source;
+                break;
+            default:
+                result = entry->result5;
+                break;
+        }
+
+        header = (u8*)sSfdEntries;
+        for (i = 0; i < HSFD_ENTRY_COUNT; i++)
+        {
+            if (*(void**)header != NULL &&
+                entry == (HSfdAsyncEntry*)(header + 4))
+                *(void**)header = NULL;
+            header += 0x1DC;
+        }
         if (wasReady != NULL)
-            *wasReady = false;
+            *wasReady = true;
         if (wasEnabled == 0)
             FUN_0050d3f0();
-        return NULL;
+        return result;
     }
 
-    queue = entry->queue;
-    next = entry->next;
-    queue->entry = next;
-    if (next != NULL)
-        next->queue = queue;
-    entry->queue = NULL;
-
-    switch (entry->kind)
-    {
-        case 0:
-            result = entry->result0;
-            break;
-        case 1:
-            result = entry->resultD;
-            if (byteCount != NULL)
-                *byteCount = (s32)entry->source;
-            break;
-        case 2:
-            func_004cb270(entry->source);
-            result = entry->resultC;
-            break;
-        case 3:
-            result = entry->resultE;
-            break;
-        case 4:
-            result = entry->result1;
-            if (byteCount != NULL)
-                *byteCount = (s32)entry->source;
-            break;
-        case 5:
-            result = entry->resultF;
-            if (byteCount != NULL)
-                *byteCount = (s32)entry->source;
-            break;
-        case 6:
-            result = entry->resultG;
-            break;
-        case 7:
-            result = entry->result2;
-            if (byteCount != NULL)
-                *byteCount = (s32)entry->source;
-            break;
-        case 8:
-            result = entry->result3;
-            if (byteCount != NULL)
-                *byteCount = (s32)entry->source;
-            break;
-        default:
-            result = entry->result5;
-            break;
-    }
-
-    header = (u8*)sSfdEntries;
-    for (i = 0; i < HSFD_ENTRY_COUNT; i++)
-    {
-        if (*(void**)header != NULL &&
-            entry == (HSfdAsyncEntry*)(header + 4))
-            *(void**)header = NULL;
-        header += 0x1DC;
-    }
     if (wasReady != NULL)
-        *wasReady = true;
+        *wasReady = false;
     if (wasEnabled == 0)
         FUN_0050d3f0();
-    return result;
+    return NULL;
 }
 
 // FUN_0010C5F0 NONMATCHING

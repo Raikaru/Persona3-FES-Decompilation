@@ -1787,16 +1787,13 @@ void FUN_003a37c0(int param_1,u32 param_2)
 
   *puVar2 = uVar8 & 0xffffffc7 | 0x10;
 
-  if (*(short *)((int)puVar2 + 0x12) == 4) {
-
-    FUN_003a3680_direct(puVar2);
-
-  }
-
-  else if (*(short *)((int)puVar2 + 0x12) == 3) {
-
+  switch (*(short *)((int)puVar2 + 0x12)) {
+  case 3:
     FUN_003a3530_direct(puVar2);
-
+    break;
+  case 4:
+    FUN_003a3680_direct(puVar2);
+    break;
   }
 
   *(u16 *)(puVar2 + 0x15) = 1;

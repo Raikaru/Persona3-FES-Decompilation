@@ -3467,9 +3467,7 @@ void FUN_003d9cc0(int param_1)
 
       }
 
-    }
-
-    else {
+    } else {
 
       lVar6 = FUN_003c5a40(iVar1,*(u16 *)(iVar1 + 0x10) + 1,0x8c,0);
 

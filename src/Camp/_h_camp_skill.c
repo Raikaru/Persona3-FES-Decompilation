@@ -1496,12 +1496,12 @@ void* FUN_001618a0(KwlnTask* task)
         }
         personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
         if (personaWork != NULL) {
+            personaWork[4] = FUN_00174800((u32)(u16)work->pcId);
             DAT_007cdf58 = kwlnTaskCreate(task, "H_CampSkillPersona",
                                           0x18c1, FUN_00122940,
                                           h_campPersonaDestroyKaniControlTask,
                                           personaWork);
             if (DAT_007cdf58 != NULL) {
-                personaWork[4] = FUN_00174800((u32)(u16)work->pcId);
                 *(s16*)((u8*)personaWork + 0x18) = work->pcId;
             } else {
                 RwFree(personaWork);

@@ -6187,22 +6187,7 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
   }
 
-  if (*(int *)(param_4 + 0xc) != param_5) {
-
-    sVar1 = *(short *)(iVar2 + 6);
-
-    if ((sVar1 == -2) || (sVar1 == -3)) {
-      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,2);
-    }
-    else if (sVar1 == -5) {
-      FUN_003f5830(param_1,param_2,param_3,param_4,param_5,2);
-    }
-    else {
-      FUN_003f55b0(iVar6,param_2,iVar5,param_4,param_5,0);
-    }
-  }
-
-  else {
+  if (*(int *)(param_4 + 0xc) == param_5) {
 
     FUN_0040e3c0(0,param_1,param_2,uVar4 & 0xff,0x23,0);
 
@@ -6216,6 +6201,19 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
     }
     else {
       FUN_003f55b0(iVar6,param_2,iVar5,param_4,param_5,1);
+    }
+  } else {
+
+    sVar1 = *(short *)(iVar2 + 6);
+
+    if ((sVar1 == -2) || (sVar1 == -3)) {
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,2);
+    }
+    else if (sVar1 == -5) {
+      FUN_003f5830(param_1,param_2,param_3,param_4,param_5,2);
+    }
+    else {
+      FUN_003f55b0(iVar6,param_2,iVar5,param_4,param_5,0);
     }
   }
 
@@ -11922,96 +11920,52 @@ u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3)
 
 }
 
-// FUN_003FFBB0 NONMATCHING
+// FUN_003FFBB0
 void FUN_003ffbb0(int param_1,int param_2)
-
-
-
 {
-
   u32 *puVar1;
-
   u32 uVar2;
-
   u32 uVar3;
-
   u32 uVar4;
-
   int lVar5;
 
-  
-
   for (; param_2 != 0; param_2 = *(int *)(param_2 + 0x10)) {
-
     puVar1 = *(u32 **)(*(int *)(param_2 + 0x14) + 0x1c);
-
     uVar2 = puVar1[1];
-
-    if (uVar2 == 0xb) {
-      lVar5 = FUN_0017c700();
-      if (lVar5 == 0) {
-        *puVar1 = *puVar1 | 1;
-      }
-      else {
-        *puVar1 = *puVar1 & 0xfffffffd;
-      }
-
-    }
-
-    else if (uVar2 == 0xd) {
-      lVar5 = FUN_00409e90();
-      if (lVar5 == 0) {
-        *puVar1 = *puVar1 | 1;
-      }
-      else {
-        *puVar1 = *puVar1 & 0xfffffffd;
-      }
-
-    }
-
-    else if (uVar2 == 6) {
+    switch (uVar2) {
+    case 1:
       uVar3 = FUN_003e6dc0();
       uVar4 = FUN_003c58f0(0,0x58,5,0x1a);
       lVar5 = FUN_003f2f70_i((int)uVar4,(int)uVar3,0);
-
       FUN_003c5a20(uVar4);
-
-      if (lVar5 == 0) {
-        *puVar1 = *puVar1 | 1;
-      }
-
-    }
-
-    else if (uVar2 == 5) {
+      if (lVar5 == 0) *puVar1 |= 1;
+      break;
+    case 5:
       uVar3 = FUN_003e6dc0();
       uVar4 = FUN_003c58f0(0,0x58,5,0x1a);
       lVar5 = FUN_003f2f70_i((int)uVar4,(int)uVar3,1);
-
       FUN_003c5a20(uVar4);
-
-      if (lVar5 == 0) {
-        *puVar1 = *puVar1 | 1;
-      }
-
-    }
-
-    else if (uVar2 == 1) {
+      if (lVar5 == 0) *puVar1 |= 1;
+      break;
+    case 6:
       uVar3 = FUN_003e6dc0();
       uVar4 = FUN_003c58f0(0,0x58,5,0x1a);
       lVar5 = FUN_003f2f70_i((int)uVar4,(int)uVar3,2);
-
       FUN_003c5a20(uVar4);
-
-      if (lVar5 == 0) {
-        *puVar1 = *puVar1 | 1;
-      }
-
+      if (lVar5 == 0) *puVar1 |= 1;
+      break;
+    case 0xd:
+      lVar5 = FUN_00409e90();
+      if (lVar5 == 0) *puVar1 |= 1;
+      else *puVar1 &= 0xfffffffe;
+      break;
+    case 0xb:
+      lVar5 = FUN_0017c700();
+      if (lVar5 == 0) *puVar1 |= 1;
+      else *puVar1 &= 0xfffffffe;
+      break;
     }
-
   }
-
-  return;
-
 }
 
 // FUN_003FFE00
@@ -15990,331 +15944,137 @@ search_done:
 
 
 u32 FUN_00403f20(short param_1,int param_2)
-
-
-
 {
-
   char cVar1;
-
   u16 uVar2;
-
   int iVar3;
-
   int iVar4;
-
   int lVar5;
-
   u8 bVar6;
 
-  
-
   iVar3 = iGpffffac00 + param_1 * 0x40;
-
   cVar1 = *(char *)(iVar3 + 0x26);
-
-  if (cVar1 == '\x03') {
-
-    if (param_2 == 0) {
-
-      lVar5 = func_0016ea40(*(u32 *)(iVar3 + 0x28));
-
-      if (0 < lVar5) {
-
-        return 2;
-
-      }
-
-    }
-
-    else {
-
-      datAddMoney(*(u32 *)(iVar3 + 0x28));
-
-    }
-
-  }
-
-  else if (cVar1 == '\x02') {
-
-    lVar5 = FUN_00174e70(*(u16 *)(iVar3 + 0x28));
-
-    if (lVar5 == 0) {
-
-      return 3;
-
-    }
-
-  }
-
-  else if (cVar1 == '\0') {
-
+  switch (cVar1) {
+  case 0:
     lVar5 = func_00171250(*(u16 *)(iVar3 + 0x28));
-
     if (lVar5 == 4) {
-
       if (param_2 != 0) {
-
         lVar5 = dat00171360(*(u16 *)(iVar3 + 0x28));
-
         if (lVar5 != 0) {
-
           func_00171390(*(u16 *)(iVar3 + 0x28));
-
-        }
-
-        else {
-
+        } else {
           func_00170c00(1,*(u16 *)(iVar3 + 0x28),*(u8 *)(iVar3 + 0x27));
-
         }
-
       }
-
-    }
-
-    else if (param_2 == 0) {
-
+    } else if (param_2 == 0) {
       iVar4 = func_0016f490(1);
-
-      if (300 - iVar4 < (int)(u32)*(u8 *)(iVar3 + 0x27)) {
-
-        return 1;
-
-      }
-
-    }
-
-    else {
-
+      if (300 - iVar4 < (int)(u32)*(u8 *)(iVar3 + 0x27)) return 1;
+    } else {
       uVar2 = *(u16 *)(iVar3 + 0x24);
-
       bVar6 = (uVar2 & 1) != 0;
-
-      if ((uVar2 & 2) != 0) {
-
-        bVar6 = bVar6 | 2;
-
-      }
-
-      if ((uVar2 & 4) != 0) {
-
-        bVar6 = bVar6 | 4;
-
-      }
-
+      if ((uVar2 & 2) != 0) bVar6 |= 2;
+      if ((uVar2 & 4) != 0) bVar6 |= 4;
       lVar5 = FUN_004026b0((u32)*(u16 *)(iVar3 + 0x28) |
-
                            ((u32)*(char *)(iVar3 + 0x2a) & 0xf) << 0x18 |
-
-                           (u32)(u8)(*(short *)(iVar3 + 0x2a) >> 4) <<
-
-                           0x10,*(u8 *)(iVar3 + 0x27),bVar6);
-
-      if (lVar5 == 0) {
-
-        return 1;
-
-      }
-
+                           (u32)(u8)(*(short *)(iVar3 + 0x2a) >> 4) << 0x10,
+                           *(u8 *)(iVar3 + 0x27),bVar6);
+      if (lVar5 == 0) return 1;
     }
-
+    break;
+  case 2:
+    lVar5 = FUN_00174e70(*(u16 *)(iVar3 + 0x28));
+    if (lVar5 == 0) return 3;
+    break;
+  case 3:
+    if (param_2 == 0) {
+      lVar5 = func_0016ea40(*(u32 *)(iVar3 + 0x28));
+      if (0 < lVar5) return 2;
+    } else {
+      datAddMoney(*(u32 *)(iVar3 + 0x28));
+    }
+    break;
   }
-
   return 0;
-
 }
 
 // FUN_00404120 NONMATCHING
 
 
 u32 FUN_00404120(short param_1,int param_2)
-
-
-
 {
-
   char cVar1;
-
   short sVar2;
-
   u16 uVar3;
-
   u8 *puVar4;
-
   short sVar5;
-
   u32 uVar6;
-
   int lVar7;
-
   int lVar8;
-
   u32 uVar9;
-
   u8 bVar10;
-
   int iVar11;
-
   int iVar12;
-
   int lVar13;
 
-  
-
   puVar4 = (u8 *)PTR_DAT_007cd8f0 + param_1 * 0x40 + 0x10;
-
   if ((*(u32 *)puVar4 & 1) != 0) {
-
     cVar1 = puVar4[0xa];
-
-    if (cVar1 == '\x03') {
-
-      uVar6 = datGetMoney();
-
-      if (uVar6 < *(u32 *)(puVar4 + 0xc)) {
-
-        K_Assert((const char *)DAT_006aede8,0x1e72);
-
-      }
-
-      if (param_2 == 0) {
-
-        return 1;
-
-      }
-
-      datAddMoney(-*(int *)(puVar4 + 0xc));
-
-    }
-
-    else if (cVar1 == '\x02') {
-
-      sVar2 = *(short *)(puVar4 + 0xc);
-
-      uVar9 = FUN_001752b0();
-
-      if (sVar2 == (uVar9 & 0xffff)) {
-
-        K_Assert((const char *)DAT_006aede8,0x1e6d);
-
-      }
-
-      if (param_2 == 0) {
-
-        return 1;
-
-      }
-
-      FUN_00174b40(*(u16 *)(puVar4 + 0xc));
-
-    }
-
-    else {
-
-      if (cVar1 == '\x01') {
-
-        return 1;
-
-      }
-
-      if (cVar1 == '\0') {
-
-        lVar7 = func_00171250(*(u16 *)(puVar4 + 0xc));
-
-        if (lVar7 == 4) {
-
-          if (param_2 == 0) {
-
-            return 1;
-
-          }
-
-          func_00170c00(1,*(u16 *)(puVar4 + 0xc),
-                       -(u16)(u8)puVar4[0xb]);
-
-        }
-
-        else {
-
-          iVar11 = 0;
-
-          uVar3 = *(u16 *)(puVar4 + 8);
-
-          bVar10 = (uVar3 & 1) != 0;
-
-          if ((uVar3 & 2) != 0) {
-
-            bVar10 = bVar10 | 2;
-
-          }
-
-          if ((uVar3 & 4) != 0) {
-
-            bVar10 = bVar10 | 4;
-
-          }
-
-          cVar1 = puVar4[0xe];
-          sVar2 = *(short *)(puVar4 + 0xe);
-          uVar3 = *(u16 *)(puVar4 + 0xc);
-
-          for (lVar13 = 0; lVar13 < 300; lVar13 = lVar13 + 1) {
-
-            lVar8 = FUN_00402510((u32)uVar3 |
-
-                                 ((u32)cVar1 & 0xf) << 0x18 |
-
-                                 (u32)(u8)(sVar2 >> 4) << 0x10,lVar7,
-
-                                 bVar10 | 8,lVar13);
-
-            if (lVar8 != 0) {
-
-              for (iVar12 = 0; iVar12 < 4; iVar12 = iVar12 + 1) {
-
-                sVar5 = datGetEquipmentIdx(1,(short)iVar12);
-
-                if (lVar13 == sVar5) {
-
-                  return 0;
-
-                }
-
-              }
-
-              if (param_2 == 0) {
-
-                return 1;
-
-              }
-
-              func_0016fea0(1,lVar13,0);
-
-              iVar11 = iVar11 + 1;
-
-              if ((int)(u32)(u8)puVar4[0xb] <= iVar11) {
-
-                return 1;
-
-              }
-
+    switch (cVar1) {
+    case 0:
+      lVar7 = func_00171250(*(u16 *)(puVar4 + 0xc));
+      if (lVar7 == 4) {
+        if (param_2 == 0) return 1;
+        func_00170c00(1,*(u16 *)(puVar4 + 0xc),-(u16)(u8)puVar4[0xb]);
+      } else {
+        iVar11 = 0;
+        uVar3 = *(u16 *)(puVar4 + 8);
+        bVar10 = (uVar3 & 1) != 0;
+        if ((uVar3 & 2) != 0) bVar10 |= 2;
+        if ((uVar3 & 4) != 0) bVar10 |= 4;
+        cVar1 = puVar4[0xe];
+        sVar2 = *(short *)(puVar4 + 0xe);
+        uVar3 = *(u16 *)(puVar4 + 0xc);
+        for (lVar13 = 0; lVar13 < 300; lVar13++) {
+          lVar8 = FUN_00402510((u32)uVar3 |
+                               ((u32)cVar1 & 0xf) << 0x18 |
+                               (u32)(u8)(sVar2 >> 4) << 0x10,
+                               lVar7,bVar10 | 8,lVar13);
+          if (lVar8 != 0) {
+            for (iVar12 = 0; iVar12 < 4; iVar12++) {
+              sVar5 = datGetEquipmentIdx(1,(short)iVar12);
+              if (lVar13 == sVar5) return 0;
             }
-
+            if (param_2 == 0) return 1;
+            func_0016fea0(1,lVar13,0);
+            iVar11++;
+            if ((int)(u32)(u8)puVar4[0xb] <= iVar11) return 1;
           }
-
-          K_Assert((const char *)DAT_006aede8,0x1e65);
-
         }
-
+        K_Assert((const char *)DAT_006aede8,0x1e65);
       }
-
+      break;
+    case 1:
+      return 1;
+    case 2:
+      sVar2 = *(short *)(puVar4 + 0xc);
+      uVar9 = FUN_001752b0();
+      if (sVar2 == (uVar9 & 0xffff)) {
+        K_Assert((const char *)DAT_006aede8,0x1e6d);
+      }
+      if (param_2 == 0) return 1;
+      FUN_00174b40(*(u16 *)(puVar4 + 0xc));
+      break;
+    case 3:
+      uVar6 = datGetMoney();
+      if (uVar6 < *(u32 *)(puVar4 + 0xc)) {
+        K_Assert((const char *)DAT_006aede8,0x1e72);
+      }
+      if (param_2 == 0) return 1;
+      datAddMoney(-*(int *)(puVar4 + 0xc));
+      break;
     }
-
   }
-
   return 1;
-
 }
 
 // FUN_00404470

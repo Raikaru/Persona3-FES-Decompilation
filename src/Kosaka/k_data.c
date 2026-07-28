@@ -21,7 +21,8 @@
 #define FIELD_DATA_AT(field, offset, type) (*(type*)((u8*)(field) + (offset)))
 
 extern u32 func_0010a720(u32 request);
-extern u32 func_0010a770();
+extern u32 func_0010a770(u32 arg0, u32 arg1, void* buffer,
+                         u32 arg3, u32 arg4, u32 arg5);
 extern u32 func_0016dba0(s16 value);
 extern u32 func_0016ef30(void);
 extern u32 func_0016f190(u32 id);
@@ -859,7 +860,6 @@ s16* func_001b8db0(s16* table)
     chosenMajor = 3;
     chosenMinor = 0x1f;
     chosenDay = 8;
-    day = func_0016ef30() & 0xff;
     record = table + count * 0x40;
     for (i = 0; i < count; i++)
     {
@@ -871,7 +871,7 @@ s16* func_001b8db0(s16* table)
         {
             if ((u16)previous[1] == func_0017d920() &&
                 (u16)previous[2] == func_0017da40() &&
-                day < chosenDay)
+                (day = func_0016ef30() & 0xff) < chosenDay)
             {
                 chosenMajor = previous[1];
                 chosenMinor = previous[2];
