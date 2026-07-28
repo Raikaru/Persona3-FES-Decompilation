@@ -1152,66 +1152,42 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
 // FUN_003AF660 NONMATCHING
 
 
-u64 FUN_003af660(u32 param_1,int param_2)
-
-
-
+u64 FUN_003af660(u32 param_1, int param_2)
 {
-
   u8 bVar1;
-
   u8 bVar2;
-
-  long lVar3;
-
+  short sVar3;
   u8 *pbVar4;
+  int base;
+  int offset;
+  long lVar5;
 
-  
-
-  pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
-  bVar1 = *pbVar4;
-
+  offset = *(int *)(param_2 + 0x18);
+  base = *(int *)(param_2 + 0x10);
+  pbVar4 = (u8 *)(base + offset);
+  bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];
-
-  if (bVar2 != 0xff) {
-
-    bVar2 = bVar2 - 1;
-
-  }
-
-  else {
-
+  if (bVar2 == 0xff) {
     bVar2 = 0;
-
   }
+  else {
+    bVar2 = (bVar2 - 1) & 0xff;
+  }
+  sVar3 = (short)(((u16)bVar2 << 8) | (bVar1 & 0xff));
 
-  lVar3 = FUN_0016f190(0x185);
-
-  if (lVar3 != 0) {
-
+  lVar5 = FUN_0016f190(0x185);
+  if (lVar5 != 0) {
     if (*(int *)(*(int *)(param_2 + 0x14) + 0x34) != 0) {
-
       *(u32 *)(*(int *)(param_2 + 0x14) + 0x38) = 1;
-
     }
-
     *(u32 *)(*(int *)(param_2 + 0x14) + 0x30) = param_1;
-
-    *(int *)(*(int *)(param_2 + 0x14) + 0x3c) = (int)(short)((u16)bVar2 << 8 | bVar1 - 1 & 0xff);
-
+    *(int *)(*(int *)(param_2 + 0x14) + 0x3c) = sVar3;
     if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {
-
       *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0;
-
     }
-
-    DAT_007cd4e8 = DAT_007cd4e8 | 0x40;
-
+    DAT_007cd4e8 |= 0x40;
   }
-
   return 0;
-
 }
 #define FUN_003af660(...) ((u64 (*)(...))FUN_003af660)(__VA_ARGS__)
 #undef FUN_003af770

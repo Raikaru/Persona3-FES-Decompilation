@@ -95,8 +95,8 @@ void FUN_00427640(int param_1);
 u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
 #pragma alias FUN_00427670_typed FUN_00427670
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
-u32 FUN_00427830(float param_1, int param_2, u32 param_3, YajimaVec2 param_4,
-                  u32 param_5, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
+u32 FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
+                  float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
 u64 FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427bf0(float param_1,float param_2,float param_3,float param_4, float param_5,u32 param_6,u32 param_7,u64 param_8, u32 param_9,u32 *param_10);
 void FUN_00427db0(int object, YajimaVec2 value);
@@ -257,6 +257,8 @@ extern u32 FUN_004264d0_u32(u32 param_1,s8 param_2);
 extern void FUN_004d0f00_arg(u32 param_1);
 #pragma alias FUN_00115980_arg FUN_00115980
 extern void FUN_00115980_arg(u32 param_1);
+#pragma alias FUN_00194b80_u32 FUN_00194b80
+extern u32 FUN_00194b80_u32(u64, u32, u8 *, u32 (*)(int), void (*)(int), u32);
 code DAT_00960184;
 extern char DAT_006b4400[];
 #pragma alias DAT_00960184_abs DAT_00960184
@@ -3098,8 +3100,8 @@ FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4,
 
 
 u32
-FUN_00427830(float param_1, int param_2, u32 param_3, YajimaVec2 param_4,
-             u32 param_5, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8)
+FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
+             float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8)
 {
   int iVar1;
   u32 uVar2;
@@ -3113,14 +3115,20 @@ FUN_00427830(float param_1, int param_2, u32 param_3, YajimaVec2 param_4,
   if (puVar3 == 0) {
     return 0;
   }
-  uVar2 = kwlnTaskCreateWithAutoPriority(param_2, 0x106f, 0x6b4440, 0x426590,
-                                         0x427640, puVar3);
+  uVar2 = FUN_00194b80_u32(param_2, 0x106f, DAT_006b4400 + 0x40,
+                           FUN_00426590, FUN_00427640, (u32)puVar3);
   *puVar3 = 0;
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-    puVar3[iVar1 * 4 + 0x110] = ((u8 *)&param_5)[0];
-    puVar3[iVar1 * 4 + 0x111] = ((u8 *)&param_5)[1];
-    puVar3[iVar1 * 4 + 0x112] = ((u8 *)&param_5)[2];
-    puVar3[iVar1 * 4 + 0x113] = ((u8 *)&param_5)[3];
+    u8 bVar1 = ((u8 *)&param_5)[0];
+    u8 bVar2 = ((u8 *)&param_5)[1];
+    u8 bVar3 = ((u8 *)&param_5)[2];
+    u8 bVar4 = ((u8 *)&param_5)[3];
+    u8 *entry = puVar3 + iVar1 * 4;
++
+    entry[0x110] = bVar1;
+    entry[0x111] = bVar2;
+    entry[0x112] = bVar3;
+    entry[0x113] = bVar4;
     *(u32 *)(puVar3 + iVar1 * 8 + 0x158) = 0;
     *(u32 *)(puVar3 + iVar1 * 8 + 0x154) = 0;
   }

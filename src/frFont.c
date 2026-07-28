@@ -1620,20 +1620,26 @@ u32 FUN_003b0ec0(int param_1)
   u32 uVar1;
   u32 uVar2;
   int iVar3;
+  u32 alpha_mask;
+  u32 changed_value;
+  u32 target_type;
 
   uVar1 = 0;
+  alpha_mask = 0xffffff00;
+  changed_value = 1;
+  target_type = 2;
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
     for (iVar3 = *(int *)(param_1 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
-      if (*(u8 *)(iVar3 + 0x16) == 2) {
+      if (*(u8 *)(iVar3 + 0x16) == target_type) {
         uVar2 = *(u32 *)(iVar3 + 0x10) & 0xff;
         if (uVar2 != 0) {
           uVar2 = uVar2 - 8;
           if ((int)uVar2 < 0) {
             uVar2 = 0;
           }
-          *(u32 *)(iVar3 + 0x10) = *(u32 *)(iVar3 + 0x10) & 0xffffff00 | uVar2;
+          *(u32 *)(iVar3 + 0x10) = (*(u32 *)(iVar3 + 0x10) & alpha_mask) | uVar2;
           *(int *)(iVar3 + 8) = *(int *)(iVar3 + 8) + 0x10;
-          uVar1 = 1;
+          uVar1 = changed_value;
         }
       }
     }

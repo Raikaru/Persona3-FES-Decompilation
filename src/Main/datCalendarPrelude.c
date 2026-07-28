@@ -859,43 +859,49 @@ void FUN_0017a430(u32 saveType, u32 id, u32 size, const void* data)
 void FUN_0017ac60(u32 code)
 {
     u8 bytes[4];
-    u8* list;
-    u32 i;
-    u32 j;
-    u8 b0;
-    u8 b1;
-    u8 b2;
+    u8* base;
+    s32 i;
+    s32 j;
+    s32 b0;
+    s32 b1;
+    s32 b2;
 
     *(u32*)bytes = code;
+    i = 0;
     b0 = bytes[0];
     b1 = bytes[1];
     b2 = bytes[2];
-    list = DAT_00836200 + 0x5a7;
-    for (i = 0; i < 0x100; i++)
+    base = DAT_00836200;
+    while (i < 0x100)
     {
-        if (list[i * 4] != 0 && list[i * 4] == b0 && list[i * 4 + 1] == b1 &&
-            list[i * 4 + 2] == b2)
+        if (base[i * 4 + 0x5a7] != 0 && base[i * 4 + 0x5a7] == b0 &&
+            base[i * 4 + 0x5a8] == b1 && base[i * 4 + 0x5a9] == b2)
         {
-            for (j = i; j < 0xff; j++)
+            j = i;
+            while (j < 0xff)
             {
-                list[j * 4 + 0] = list[(j + 1) * 4 + 0];
-                list[j * 4 + 1] = list[(j + 1) * 4 + 1];
-                list[j * 4 + 2] = list[(j + 1) * 4 + 2];
-                list[j * 4 + 3] = list[(j + 1) * 4 + 3];
+                base[j * 4 + 0x5a7] = base[j * 4 + 0x5ab];
+                base[j * 4 + 0x5a8] = base[j * 4 + 0x5ac];
+                base[j * 4 + 0x5a9] = base[j * 4 + 0x5ad];
+                base[j * 4 + 0x5aa] = base[j * 4 + 0x5ae];
+                j++;
             }
             U8(0x00836ba3) = 0;
         }
+        i++;
     }
-    for (i = 0; i < 0x100; i++)
+    i = 0;
+    while (i < 0x100)
     {
-        if (list[i * 4] == 0)
+        if (base[i * 4 + 0x5a7] == 0)
         {
-            list[i * 4 + 0] = bytes[0];
-            list[i * 4 + 1] = bytes[1];
-            list[i * 4 + 2] = bytes[2];
-            list[i * 4 + 3] = bytes[3];
+            base[i * 4 + 0x5a7] = bytes[0];
+            base[i * 4 + 0x5a8] = bytes[1];
+            base[i * 4 + 0x5a9] = bytes[2];
+            base[i * 4 + 0x5aa] = bytes[3];
             break;
         }
+        i++;
     }
 }
 

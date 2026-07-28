@@ -209,61 +209,61 @@ block_16:
 // FUN_002751e0 NONMATCHING
 s32 func_002751e0(void)
 {
-    s32 temp_21;
-    s32 var_19;
-    s32 var_20;
-    s32 var_5;
-    s8 temp_3;
-    u16 *temp_17;
-    s32 temp_16;
-    void *temp_18;
-    void *temp_2;
+    s32 remaining;
+    s32 unavailable;
+    s32 slot;
+    s32 i;
+    u16 *skills;
+    s32 skillCount;
+    u32 *work;
+    u8 *entry;
 
     if (gOpWorkC0 == NULL)
         K_Assert(D_0068ED88, 0xb0);
-    temp_18 = OP_WORK0;
-    temp_17 = datPersonaGetSkills(OP_PTR(temp_18, 0x30));
-    temp_16 = datPersonaCountValidSkills(OP_PTR(temp_18, 0x30));
-    var_20 = 0;
-    var_19 = 0;
-    temp_21 = (OP_U8(OP_PTR(temp_18, 0x30), 4) -
-        OP_U8(DAT_007ce420 + OP_U16(OP_PTR(temp_18, 0x30), 2) * 0xe + 3, 0)) -
-        OP_U8(temp_18, 0x38);
-loop_3:
-    temp_2 = (void *)(uintptr_t)(OP_S32(temp_18, 0x34) +
-        (OP_S32(temp_18, 0x78) + var_20) * 4);
-    temp_3 = OP_S8(temp_2, 7);
-    switch (temp_3)
+    work = gOpWorkC0;
+    skills = datPersonaGetSkills((void *)(uintptr_t)work[0x30 / 4]);
+    skillCount = (s32)datPersonaCountValidSkills(
+        (void *)(uintptr_t)work[0x30 / 4]);
+    slot = 0;
+    unavailable = 0;
+    remaining =
+        (OP_U8((void *)(uintptr_t)work[0x30 / 4], 4) -
+         OP_U8(DAT_007ce420 +
+                   OP_U16((void *)(uintptr_t)work[0x30 / 4], 2) * 0xe + 3,
+               0)) -
+        OP_U8(work, 0x38);
+
+loop:
+    entry = (u8 *)(uintptr_t)(
+                work[0x34 / 4] +
+                ((s32)work[0x78 / 4] + slot) * 4) +
+            6;
+    switch (OP_S8(entry, 1))
     {
-    case 0:
-        break;
     default:
         K_Assert(D_0068ED88, 0x686);
-    case 4:
-block_14:
-        var_20 += 1;
-        if (OP_S32(temp_18, 0x78) + var_20 != 0x10)
-            goto loop_3;
         break;
     case 1:
-        if (temp_21 < (s32)OP_U8(temp_2, 6))
+        if (remaining < (s32)OP_U8(entry, 0))
         {
-            var_5 = 0;
-loop_11:
-            if (var_5 < (s32)temp_16)
+            for (i = 0; i < skillCount; i++)
             {
-                if (OP_U16((u8 *)temp_2 + 8, 2) != temp_17[var_5])
-                {
-                    var_5 += 1;
-                    goto loop_11;
-                }
+                if (OP_U16(entry, 2) == skills[i])
+                    break;
             }
-            if (var_5 == (s32)temp_16)
-                var_19 += 1;
+            if (i == skillCount)
+                unavailable++;
         }
-        goto block_14;
+        break;
+    case 4:
+        break;
+    case 0:
+        return unavailable;
     }
-    return var_19;
+    slot++;
+    if ((s32)work[0x78 / 4] + slot != 0x10)
+        goto loop;
+    return unavailable;
 }
 
 // FUN_00275370

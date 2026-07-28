@@ -9817,7 +9817,7 @@ u64 FUN_003fc540(int param_1)
 
   u16 uVar1;
 
-  u64 uVar2;
+  const char *pcVar2;
 
   u16 *puVar3;
 
@@ -9851,9 +9851,9 @@ u64 FUN_003fc540(int param_1)
 
     FUN_0040e3c0_u32(0.0f,0x4e,0x44,uVar1 & 0xff,0,(u32)*(u8 *)(param_1 + 0x54) << 1);
 
-    uVar2 = func_00171110(*puVar3,*(u8 *)(param_1 + 0x58));
+    pcVar2 = func_00171110_ptr(*puVar3,*(u8 *)(param_1 + 0x58));
 
-    FUN_003b2cb0(0,0x6e,0x46,uVar1 | 0xff00,5,1,uVar2,0,0);
+    FUN_003b2cb0_f32(0.0f,0x6e,0x46,uVar1 | 0xffffff00,5,1,pcVar2,0,0);
 
     for (iVar5 = 0; iVar5 < 5; iVar5 = iVar5 + 1) {
 
@@ -9873,9 +9873,9 @@ u64 FUN_003fc540(int param_1)
 
         FUN_0040e3c0_u32(0.0f,iVar4,0x44,uVar1 & 0xff,0x46,iVar5);
 
-        sprintf((char *)auStack_8,0x7cd900,puVar3[iVar5 + 8]);
+        sprintf((char *)auStack_8,(char *)&gp0xffffac10,puVar3[iVar5 + 8]);
 
-        FUN_0040eb50(0,iVar4 + 0x1a,0x8c,uVar1 & 0xff,2,auStack_8,1);
+        FUN_0040eb50_f32(0.0f,iVar4 + 0x1a,0x8c,uVar1 & 0xff,2,auStack_8,1);
 
       }
 
@@ -9889,9 +9889,9 @@ u64 FUN_003fc540(int param_1)
 
     FUN_0040e3c0_u32(0.0f,0x4e,0xd8,uVar1 & 0xff,0,(u32)*(u8 *)(param_1 + 0x70) << 1);
 
-    uVar2 = func_00171110(*puVar3,*(u8 *)(param_1 + 0x74));
+    pcVar2 = func_00171110_ptr(*puVar3,*(u8 *)(param_1 + 0x74));
 
-    FUN_003b2cb0(0,0x6e,0xda,uVar1 | 0xff00,5,1,uVar2,0,0);
+    FUN_003b2cb0_f32(0.0f,0x6e,0xda,uVar1 | 0xffffff00,5,1,pcVar2,0,0);
 
     for (iVar5 = 0; iVar5 < 5; iVar5 = iVar5 + 1) {
 
@@ -9911,9 +9911,9 @@ u64 FUN_003fc540(int param_1)
 
         FUN_0040e3c0_u32(0.0f,iVar4,0xd8,uVar1 & 0xff,0x46,iVar5);
 
-        sprintf((char *)auStack_8,0x7cd900,puVar3[iVar5 + 8]);
+        sprintf((char *)auStack_8,(char *)&gp0xffffac10,puVar3[iVar5 + 8]);
 
-        FUN_0040eb50(0,iVar4 + 0x1a,0x120,uVar1 & 0xff,2,auStack_8,1);
+        FUN_0040eb50_f32(0.0f,iVar4 + 0x1a,0x120,uVar1 & 0xff,2,auStack_8,1);
 
       }
 

@@ -24957,7 +24957,7 @@ void FUN_003353f0(int param_1)
 
 {
 
-  int *piVar1;
+  float *pfVar1;
 
   int iVar2;
 
@@ -24981,11 +24981,11 @@ void FUN_003353f0(int param_1)
 
   
 
-  piVar1 = *(int **)(param_1 + 0x30);
+  pfVar1 = *(float **)(param_1 + 0x30);
 
   iVar2 = *(int *)(param_1 + 0x34);
 
-  iVar7 = *piVar1;
+  iVar7 = *(int *)pfVar1;
 
   iVar3 = *(int *)(iVar2 + 0x34);
 
@@ -25003,17 +25003,17 @@ void FUN_003353f0(int param_1)
 
     fVar9 = *(float *)(iVar2 + 0x94);
 
-    piVar1[1] = (int)fVar8;
+    pfVar1[1] = fVar8;
 
-    piVar1[2] = (int)((fVar9 * (fVar11 * fVar10 + (1.0f - fVar11) + 0.0f) - fVar8) / (float)iVar3);
+    pfVar1[2] = (fVar9 * (fVar11 * fVar10 + (1.0f - fVar11) + 0.0f) - fVar8) / (float)iVar3;
 
   }
 
   else {
 
-    piVar1[1] = (int)fVar8;
+    pfVar1[1] = fVar8;
 
-    piVar1[2] = 0;
+    pfVar1[2] = 0.0f;
 
   }
 
@@ -38430,11 +38430,11 @@ void FUN_00343860(int param_1,int param_2)
 
   u32 *puVar3;
 
-  u32 *puVar4;
+  float *puVar4;
 
   u32 uVar5;
 
-  u32 *puVar6;
+  float *puVar6;
 
   u32 *puVar7;
 
@@ -38460,7 +38460,7 @@ void FUN_00343860(int param_1,int param_2)
 
     puVar3 = *(u32 **)(iVar2 + 0x30);
 
-    puVar4 = *(u32 **)(iVar2 + 0x34);
+    puVar4 = *(float **)(iVar2 + 0x34);
 
     fVar12 = *(float *)(param_2 + 0x90) / 3.0f;
 
@@ -39418,13 +39418,13 @@ void FUN_00344b70(int param_1,int param_2)
 
   u32 *puVar3;
 
-  u32 *puVar4;
+  float *puVar4;
 
   u16 *puVar5;
 
   u32 uVar6;
 
-  u32 *puVar7;
+  float *puVar7;
 
   u32 *puVar8;
 
@@ -39450,7 +39450,7 @@ void FUN_00344b70(int param_1,int param_2)
 
     puVar3 = *(u32 **)(iVar2 + 0x30);
 
-    puVar4 = *(u32 **)(iVar2 + 0x34);
+    puVar4 = *(float **)(iVar2 + 0x34);
 
     fVar13 = *(float *)(param_2 + 0x90) / 3.0f;
 
@@ -47262,37 +47262,45 @@ void FUN_0034d8a0(int param_1,u16 param_2,int param_3)
 void FUN_0034d990(int param_1,u32 param_2,u32 param_3)
 {
   u32 handle;
-  u32 child;
   u32 resource;
+  u32 child;
   u32 input[2];
-  u32 output[2];
+  u32 output[8];
   int initialized;
 
-  child = 0;
   resource = 0;
+  child = 0;
   initialized = 0;
   input[0] = param_2;
   input[1] = param_3;
   handle = FUN_004c58a0(3,1,input);
-  while ((FUN_004c1970(handle,output) != 0) && (output[0] != 0)) {
-    switch (output[0]) {
-    case 0x16:
-      if (child == 0) {
-        child = FUN_004c8680(handle);
-        FUN_004d0dc0(child,0x1a13b0,&initialized);
-        FUN_004d0d10(child);
-      }
-      break;
-    case 0x10:
-      if (resource == 0) {
-        resource = FUN_004920a0_u32(handle);
-      }
-      break;
-    default:
-      FUN_004c5620(handle,output[1]);
-      break;
-    }
+  goto poll;
+process:
+  if (output[0] == 0) {
+    goto done;
   }
+  switch (output[0]) {
+  case 0x16:
+    if (child == 0) {
+      child = FUN_004c8680(handle);
+      FUN_004d0dc0(child,0x1a13b0,&initialized);
+      FUN_004d0d10(child);
+    }
+    break;
+  case 0x10:
+    if (resource == 0) {
+      resource = FUN_004920a0_u32(handle);
+    }
+    break;
+  default:
+    FUN_004c5620(handle,output[1]);
+    break;
+  }
+poll:
+  if (FUN_004c1970(handle,output) != 0) {
+    goto process;
+  }
+done:
   FUN_004c5780(handle,input);
   if (initialized != 0) {
     FUN_001a14c0();
