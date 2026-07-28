@@ -1693,13 +1693,11 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
                            (float)(int)*psVar9);
   
-          puVar1[4] = (u32)(afStack_7c[uVar4 * 4 + 1] +
-  
-                            ((float)iVar8 *
-  
-                            (afStack_40[uVar4 * 4 + 2] - afStack_7c[uVar4 * 4 + 1])) /
-  
-                            (float)(int)*psVar9);
+          *(float *)(puVar1 + 4) =
+              afStack_7c[uVar4 * 4 + 1] +
+              ((float)iVar8 *
+               (afStack_40[uVar4 * 4 + 2] - afStack_7c[uVar4 * 4 + 1])) /
+              (float)(int)*psVar9;
   
           bVar5 = 0;
   
@@ -1745,7 +1743,9 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
     *(short *)((int)puVar1 + 0x1a) = sVar6;
   
-    puVar1[4] = (u32)((float)puVar1[4] - ((float)puVar1[4] * (float)(int)sVar6) / 10.0f);
+    *(float *)(puVar1 + 4) =
+        *(float *)(puVar1 + 4) -
+        (*(float *)(puVar1 + 4) * (float)(int)sVar6) / 10.0f;
   
     *(short *)(puVar1 + 3) =
   

@@ -98,7 +98,7 @@ u64 FUN_0041b810(int param_1);
 u64 FUN_0041b950(int param_1);
 u64 FUN_0041ba60(int param_1);
 u64 FUN_0041baf0(int param_1);
-u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5);
+void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *param_5);
 u32 FUN_0041be50(int param_1);
 void FUN_0041beb0(int param_1);
 void FUN_0041bee0(int param_1);
@@ -106,6 +106,8 @@ void FUN_0041bf10(int param_1,u32 param_2);
 void FUN_0041bf80(u32 *param_1);
 void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4);
 s32 FUN_003c44d0(s32 param_1,code param_2,code param_3,s32 param_4);
+extern void *func_0010c3a0();
+extern void *mdlCreateFromRmdMemory();
 void FUN_0041c180(int param_1,int param_2,int param_3);
 void FUN_0040e3c0(u32 param_1,u32 param_2,u8 param_3,u32 param_4);
 #pragma alias FUN_00418130_abs FUN_00418130
@@ -180,7 +182,7 @@ u8 DAT_007e095f[];
 u8 DAT_007e0960[];
 u8 DAT_007e0961[];
 code DAT_00960090;
-extern u64 (*DAT_00960178)();
+extern void *(*DAT_00960178)();
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
 extern char DAT_006b2ae8[];
@@ -633,9 +635,10 @@ u32 FUN_004178c0(int param_1)
   u32 uVar10;
 
 
-  u64 uVar12;
+  void *uVar12;
 
-  long lVar13;
+  s32 lVar13;
+  void *model;
 
   int iVar14;
   u16 *puVar9;
@@ -829,7 +832,7 @@ LAB_00417a90:
       uVar12 = func_0010c3a0(piVar4[3],&iStack_8,0);
       if (iStack_8 != 0) {
         puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
-        puVar11 = (u32 *)FUN_0041bc90((long)auStack_80,(int)auStack_a0,(int)auStack_b0,4,uVar12);
+        puVar11 = (u32 *)FUN_0041bc90(auStack_80,auStack_a0,auStack_b0,4,uVar12);
         *(u32 **)(puVar9 + 4) = puVar11;
         *puVar11 = *puVar11 | 1;
         *puVar9 = *puVar9 | 0x10;
@@ -846,9 +849,9 @@ LAB_00417a90:
 
   case '\x03': {
     if (piVar4[4] == 0) {
-      lVar13 = mdlCreateFromRmdMemory(0xb,0x101,piVar4[2],piVar4[6],0);
-      piVar4[4] = (int)lVar13;
-      if (lVar13 == 0) goto LAB_00417fb0;
+      model = mdlCreateFromRmdMemory(0xb,0x101,piVar4[2],piVar4[6],0);
+      piVar4[4] = (int)model;
+      if (model == 0) goto LAB_00417fb0;
     }
 
     lVar13 = mdlStreamRead(piVar4[4]);
@@ -1010,7 +1013,7 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
   int iVar2;
 
-  u64 uVar3;
+  void *uVar3;
 
   
 
@@ -1022,9 +1025,8 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
     uVar3 = (*DAT_00960178)(0xfa8,0x40000);
 
-    *(int *)(iVar2 + 8) = (int)uVar3;
-
-    memset((void*)uVar3,0,0xfa8);
+    *(void **)(iVar2 + 8) = uVar3;
+    memset(uVar3,0,0xfa8);
 
   }
 
@@ -1032,9 +1034,8 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
     uVar3 = (*DAT_00960178)(0x2730,0x40000);
 
-    *(int *)(iVar2 + 8) = (int)uVar3;
-
-    memset((void*)uVar3,0,0x2730);
+    *(void **)(iVar2 + 8) = uVar3;
+    memset(uVar3,0,0x2730);
 
   }
 
@@ -1042,9 +1043,8 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
     uVar3 = (*DAT_00960178)(0x20,0x40000);
 
-    *(int *)(iVar2 + 8) = (int)uVar3;
-
-    memset((void*)uVar3,0,0x20);
+    *(void **)(iVar2 + 8) = uVar3;
+    memset(uVar3,0,0x20);
 
   }
 
@@ -3730,7 +3730,7 @@ u64 FUN_0041baf0(int param_1)
 // FUN_0041BC90 NONMATCHING
 
 
-u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
+void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *param_5)
 
 
 
@@ -3738,7 +3738,7 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
   u32 uVar1;
 
-  u64 uVar2;
+  u8 *uVar2;
 
   u32 *puVar3;
 
@@ -3766,11 +3766,9 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
   uVar2 = (*DAT_00960178)(iVar7,0x40000);
 
-  memset((void*)uVar2,0,iVar7);
-
+  memset(uVar2,0,iVar7);
   iVar8 = (int)uVar2;
-
-  *(int *)(iVar8 + 0xc) = (int)param_5;
+  *(void **)(iVar8 + 0xc) = param_5;
 
   *(int *)(iVar8 + 8) = param_4;
 
@@ -3778,7 +3776,7 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
   for (iVar7 = 0; iVar7 < param_4; iVar7 = iVar7 + 1) {
 
-    puVar3 = (u32 *)((int)param_1 + iVar7 * 0xc);
+    puVar3 = (u32 *)((u8 *)param_1 + iVar7 * 0xc);
 
     uVar1 = puVar3[1];
 
@@ -3794,7 +3792,7 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
     puVar4[2] = uVar9;
 
-    puVar3 = (u32 *)(param_2 + iVar7 * 8);
+    puVar3 = (u32 *)((u8 *)param_2 + iVar7 * 8);
 
     *(u32 *)(*(int *)(iVar8 + 4) + iVar6 + 0x1c) = *puVar3;
 
@@ -3802,7 +3800,7 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
     iVar6 = *(int *)(iVar8 + 4) + iVar6;
 
-    puVar5 = (u8 *)(param_3 + iVar7 * 4);
+    puVar5 = (u8 *)param_3 + iVar7 * 4;
 
     *(u8 *)(iVar6 + 0xc) = *puVar5;
 

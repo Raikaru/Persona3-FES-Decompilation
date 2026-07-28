@@ -4405,7 +4405,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
     }
 
-    if (puVar2 + 3 != (u32 *)0x0) {
 
       uVar5 = puVar2[4];
 
@@ -4421,7 +4420,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
       *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
 
-    }
 
     uVar1 = uVar1 + 1;
 
@@ -4463,7 +4461,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
     }
 
-    if (puVar2 + 3 != (u32 *)0x0) {
 
       uVar5 = puVar2[4];
 
@@ -4479,7 +4476,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
       *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
 
-    }
 
     uVar1 = uVar1 + 1;
 
@@ -4521,7 +4517,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
     }
 
-    if (puVar2 + 3 != (u32 *)0x0) {
 
       uVar5 = puVar2[4];
 
@@ -4537,7 +4532,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
       *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
 
-    }
 
     uVar1 = uVar1 + 1;
 
@@ -4579,7 +4573,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
     }
 
-    if (puVar2 + 3 != (u32 *)0x0) {
 
       uVar5 = puVar2[4];
 
@@ -4595,7 +4588,6 @@ void FUN_002a2660(u16 *param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,u
 
       *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
 
-    }
 
     uVar1 = uVar1 + 1;
 

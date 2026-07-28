@@ -3450,13 +3450,13 @@ u32 FUN_004281f0(u32 param_1)
 
   int iVar10;
 
-  long lVar11;
+  int lVar11;
 
-  u64 uVar12;
+  u32 uVar12;
 
   int iVar13;
 
-  long lVar14;
+  int lVar14;
 
   int iVar15;
 
@@ -3468,7 +3468,7 @@ u32 FUN_004281f0(u32 param_1)
 
   char *pcVar20;
 
-  long lVar21;
+  int lVar21;
 
   int iVar22;
 
@@ -4935,7 +4935,7 @@ void FUN_0042a550(int param_1,u64 param_2,u64 param_3,u64 param_4)
 
   int iVar6;
 
-  long lVar7;
+  int lVar7;
 
   char cVar8;
 
@@ -5494,7 +5494,7 @@ void FUN_0042b050(int param_1)
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int iVar7;
 
