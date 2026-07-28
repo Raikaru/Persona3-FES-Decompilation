@@ -8,6 +8,7 @@ extern u8 D_0069E088[];
 extern u8 DAT_006a0000[];
 extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
+extern u8 DAT_0069de20[];
 extern int FUN_003b5d10(...);
 #pragma alias FUN_003b55b0_evt_main FUN_003b55b0
 extern u8 *FUN_003b55b0_evt_main(int param_1);
@@ -13027,7 +13028,7 @@ void FUN_0036d030(int param_1)
 
     }
 
-    if (((*(u32 *)(iVar4 + 4) & 0x8000) != 0) && ((*(u8 *)(iVar4 + 0x4c) & 8) != 0)) {
+    if (((*(u32 *)(iVar4 + 4) & 0x8000) != 0) && ((*(s8 *)(iVar4 + 0x4c) & 8) != 0)) {
 
       lVar2 = FUN_003c7850();
 
@@ -13119,7 +13120,7 @@ void FUN_0036d030(int param_1)
 
       }
 
-      FUN_005225a8(0x69de20);
+      FUN_005225a8(DAT_0069de20);
 
     }
 

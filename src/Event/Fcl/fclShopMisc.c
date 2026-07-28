@@ -1419,6 +1419,8 @@ not_found:
   return -1;
 }
 
+// Confirmed b210 floor: only five branch immediates differ at +136/+148/+160/+172/+184;
+// our inner-switch exits target the final join, while retail targets the shared exit branch.
 // FUN_003F0D60 NONMATCHING
 
 
@@ -2423,6 +2425,8 @@ u32 FUN_003f1dc0(long param_1,int param_2,int param_3)
   return 1;
 }
 
+// Confirmed b210 floor: only +128/+132 differ, with the signed halfword extension
+// routed through $v0 here versus directly through $a0 in retail.
 // FUN_003F2240 NONMATCHING
 
 
@@ -7132,6 +7136,8 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 // Full logic rewritten from retail disasm: if/else order, switch-based
 // dispatch, and int/long typing all fixed. Residual: register-bank
 // choice for param_1/param_2 (s2/s1 in retail vs s5/s4 here).
+// Exact remaining words are the +164/+168/+172 ordering of the $s3 sign extension
+// and the independent initialization of $s5; their values and uses are identical.
 // FUN_003F9B20 NONMATCHING
 
 
@@ -10697,6 +10703,8 @@ u32 FUN_003fe950(u64 param_1)
   return uVar1;
 }
 
+// Confirmed pre-JAL setup-order floor: +160/+164/+168 contain the same address
+// computation and signed extension, with retail materializing $a1 before $a0.
 // FUN_003FEA10 NONMATCHING
 
 
@@ -13023,6 +13031,8 @@ void FUN_00400e90(u32 param_1)
 
 }
 
+// Confirmed cyclic register-coloring floor: +60 through +100 use $a2/$a1 here
+// where retail uses $a1/$a2; all five loads and their dataflow are otherwise identical.
 // FUN_00401170 NONMATCHING
 
 
@@ -16924,6 +16934,8 @@ void FUN_004064e0(int param_1,int param_2,u32 param_3,int param_4)
 
 }
 
+// Addressing-signal audit: retail really uses the same two $gp-relative format-string
+// addresses and the same $gp-relative float load. Only +440/+444/+448 call setup differs.
 // FUN_00406AA0 NONMATCHING
 
 
@@ -17345,6 +17357,8 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
 }
 }
 
+// Confirmed control-flow placement floor: +400 through +444 booleanizes the clamp
+// switch here; a direct if/else measured worse (nd16 -> nd19) and was reverted.
 // FUN_00409C80 NONMATCHING
 
 
@@ -17722,6 +17736,8 @@ ret:
 }
 #pragma pop
 
+// Confirmed pre-JAL setup-order floor: +72/+76/+80 and +104/+108/+112 contain
+// the same two callback addresses, but retail moves $a0 before materializing $a1.
 // FUN_0040A6D0 NONMATCHING
 
 

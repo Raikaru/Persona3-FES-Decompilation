@@ -3295,6 +3295,9 @@ u32 FUN_003cda00(void)
 }
 #define FUN_003cda00(...) ((u32 (*)(...))FUN_003cda00)(__VA_ARGS__)
 #undef FUN_003cda60
+// Addressing-signal audit: retail has the same $gp color load and $gp data address.
+// Residual +48..+60 is aggregate load/store scheduling; +216..+244 is JAL setup order.
+// Direct aggregate assignment measured nd20 -> nd200 and exceeded the window, so reverted.
 // FUN_003CDA60 NONMATCHING
 
 

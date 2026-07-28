@@ -3,6 +3,7 @@
 #include "Kernel/Kwln/kwln.h"
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
+extern f32 DAT_00960088;
 
 // FUN_00100230 NONMATCHING
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
@@ -13,7 +14,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
     RwIm2DVertex* vertex;
     f32 recipZ;
     s16 i;
-    u8* globals;
+    f32* globals;
 
     work = (HCursorWork*)hcursorTask->workData;
 
@@ -39,12 +40,12 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
-            globals = rwGlobals_abs;
+            globals = &DAT_00960088;
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];
 
-                vertex->u.els.scrVertex.z = *(RwReal*)(globals + 0x88) - work->zOffset;
+                vertex->u.els.scrVertex.z = *globals - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
                 indexedWork = (HCursorWork*)((RwRGBA*)work + i);
                 vertex->u.els.color.r = (f32)indexedWork->colors[0].r;

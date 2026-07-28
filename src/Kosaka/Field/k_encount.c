@@ -437,8 +437,8 @@ ec_body:
     goto unit_check;
 unit_body:
     temp_3 = var_11 * 0x3c;
-    if (((*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) + 0x48))->unit +
-         var_11)->id != 0)
+    if (((DatUnit*)((u8*)(*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) +
+                                                      0x48))->unit + temp_3))->id != 0)
     {
         if (flatIndex == var_10)
         {
