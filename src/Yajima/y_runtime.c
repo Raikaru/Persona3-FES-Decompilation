@@ -12018,7 +12018,7 @@ u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 }
 
 #pragma push
-#pragma opt_loop_invariants on
+#pragma opt_loop_invariants off
 // FUN_00447F90 NONMATCHING
 
 void FUN_00447f90(float *param_1,int param_2,char param_3)
@@ -12036,29 +12036,24 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   int index;
   int iVar3;
   int iVar4;
+  u8 *table;
+  struct CoordinateValues *coordinateBase;
   
   index = (int)param_3 * 4;
-  {
-    u8 *table;
-    s8 *row;
-    struct CoordinateValues *coordinateBase;
-
-    table = iGpffffb9fc_ptr;
-    row = index + (s8 *)table;
-    cVar1 = row[4];
-    coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
-    iVar3 = coordinateBase->y;
-    iVar3 = iVar3 - (cVar1 - 1) * 0x40;
-    cVar2 = *(s8 *)(*(int *)(param_2 + 0x3c) + 0x253);
-    iVar3 = iVar3 - (6 - cVar2) * 0x20;
-    iVar3 = iVar3 + 0x20;
-    y = (float)iVar3;
-    for (iVar4 = 0; iVar4 < *(char *)(table + 0xa0); iVar4 = iVar4 + 1) {
-    }
-    position.y = y - 32.0f;
-    position.x = (float)coordinateBase->x;
-    *(RwV2d *)param_1 = position;
+  table = iGpffffb9fc_ptr;
+  cVar1 = *(s8 *)(table + index + 4);
+  coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
+  iVar3 = coordinateBase->y;
+  iVar3 = iVar3 - (cVar1 - 1) * 0x40;
+  cVar2 = *(s8 *)(*(int *)(param_2 + 0x3c) + 0x253);
+  iVar3 = iVar3 - (6 - cVar2) * 0x20;
+  iVar3 = iVar3 + 0x20;
+  y = (float)iVar3;
+  for (iVar4 = 0; iVar4 < *(char *)(table + 0xa0); iVar4 = iVar4 + 1) {
   }
+  position.y = y - 32.0f;
+  position.x = (float)coordinateBase->x;
+  *(RwV2d *)param_1 = position;
   return;
 }
 

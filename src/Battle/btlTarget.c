@@ -1117,10 +1117,7 @@ int FUN_002d8390(void)
   u32 comparison;
   u32 level;
   u32 unit;
-  struct BtlTargetEnemyData {
-    u16 flags;
-    u8 data[0x3c];
-  } *enemyData;
+  u32 enemyData;
   u16 enemyFlags;
   u16 state;
   int difference;
@@ -1143,8 +1140,8 @@ int FUN_002d8390(void)
     if (FUN_00300580_u32(*(u32 *)(unit + 0xa2c), 2) != 0) {
       hasStatus = 1;
     }
-    enemyData = DAT_007ce410;
-    enemyFlags = enemyData[*(u16 *)(unit + 0xa4)].flags;
+    enemyData = (u32)DAT_007ce410;
+    enemyFlags = *(u16 *)(enemyData + (u32)*(u16 *)(unit + 0xa4) * 0x3e);
     if ((enemyFlags & 0x40) != 0) {
       hasFlag40 = 1;
     }

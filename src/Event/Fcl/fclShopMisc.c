@@ -16534,17 +16534,17 @@ u32 FUN_00404120(short param_1,int param_2)
 
   
 
-  puVar4 = (u8 *)(PTR_DAT_007cd8f0);
+  puVar4 = (u8 *)PTR_DAT_007cd8f0 + param_1 * 0x40 + 0x10;
 
-  if ((*(u32 *)(PTR_DAT_007cd8f0 + param_1 * 0x40 + 0x10) & 1) != 0) {
+  if ((*(u32 *)puVar4 & 1) != 0) {
 
-    cVar1 = PTR_DAT_007cd8f0[param_1 * 0x40 + 0x1a];
+    cVar1 = puVar4[0xa];
 
     if (cVar1 == '\x03') {
 
       uVar6 = datGetMoney();
 
-      if (uVar6 < *(u32 *)(puVar4 + param_1 * 0x40 + 0x1c)) {
+      if (uVar6 < *(u32 *)(puVar4 + 0xc)) {
 
         K_Assert((const char *)DAT_006aede8,0x1e72);
 
@@ -16556,13 +16556,13 @@ u32 FUN_00404120(short param_1,int param_2)
 
       }
 
-      datAddMoney(-*(int *)(puVar4 + param_1 * 0x40 + 0x1c));
+      datAddMoney(-*(int *)(puVar4 + 0xc));
 
     }
 
     else if (cVar1 == '\x02') {
 
-      sVar2 = *(short *)(PTR_DAT_007cd8f0 + param_1 * 0x40 + 0x1c);
+      sVar2 = *(short *)(puVar4 + 0xc);
 
       uVar9 = FUN_001752b0();
 
@@ -16578,7 +16578,7 @@ u32 FUN_00404120(short param_1,int param_2)
 
       }
 
-      FUN_00174b40(*(u16 *)(puVar4 + param_1 * 0x40 + 0x1c));
+      FUN_00174b40(*(u16 *)(puVar4 + 0xc));
 
     }
 
@@ -16592,7 +16592,7 @@ u32 FUN_00404120(short param_1,int param_2)
 
       if (cVar1 == '\0') {
 
-        lVar7 = func_00171250(*(u16 *)(PTR_DAT_007cd8f0 + param_1 * 0x40 + 0x1c));
+        lVar7 = func_00171250(*(u16 *)(puVar4 + 0xc));
 
         if (lVar7 == 4) {
 
@@ -16602,9 +16602,8 @@ u32 FUN_00404120(short param_1,int param_2)
 
           }
 
-          func_00170c00(1,*(u16 *)(puVar4 + param_1 * 0x40 + 0x1c),
-
-                       -(u16)(u8)puVar4[param_1 * 0x40 + 0x1b]);
+          func_00170c00(1,*(u16 *)(puVar4 + 0xc),
+                       -(u16)(u8)puVar4[0xb]);
 
         }
 
@@ -16612,7 +16611,7 @@ u32 FUN_00404120(short param_1,int param_2)
 
           iVar11 = 0;
 
-          uVar3 = *(u16 *)(puVar4 + param_1 * 0x40 + 0x18);
+          uVar3 = *(u16 *)(puVar4 + 8);
 
           bVar10 = (uVar3 & 1) != 0;
 
@@ -16628,11 +16627,9 @@ u32 FUN_00404120(short param_1,int param_2)
 
           }
 
-          cVar1 = puVar4[param_1 * 0x40 + 0x1e];
-
-          sVar2 = *(short *)(puVar4 + param_1 * 0x40 + 0x1e);
-
-          uVar3 = *(u16 *)(puVar4 + param_1 * 0x40 + 0x1c);
+          cVar1 = puVar4[0xe];
+          sVar2 = *(short *)(puVar4 + 0xe);
+          uVar3 = *(u16 *)(puVar4 + 0xc);
 
           for (lVar13 = 0; lVar13 < 300; lVar13 = lVar13 + 1) {
 
@@ -16668,7 +16665,7 @@ u32 FUN_00404120(short param_1,int param_2)
 
               iVar11 = iVar11 + 1;
 
-              if ((int)(u32)(u8)puVar4[param_1 * 0x40 + 0x1b] <= iVar11) {
+              if ((int)(u32)(u8)puVar4[0xb] <= iVar11) {
 
                 return 1;
 
