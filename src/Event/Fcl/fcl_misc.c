@@ -4620,42 +4620,86 @@ LAB_003cf7a4:
 // FUN_003CF960 NONMATCHING
 
 
-u32 FUN_003cf960(int param_1, s16 param_2)
+u32 FUN_003cf960(int param_1,u16 param_2)
+
+
+
 {
-  s16 value;
-  s16 index;
-  u32 result;
-  s16 *entry;
-  int i;
 
-  entry = (s16 *)(*(int *)(DAT_007ce680 + 0x24) + 4);
-  index = -1;
-  for (i = 0; i < 3; i++) {
-    if (((*entry & 1) != 0) && (*(int *)(entry + 2) == param_1)) {
-      index = (s16)i;
-      break;
+  u8 bVar1;
+
+  short sVar2;
+
+  u32 uVar3;
+
+  u16 *puVar4;
+
+  int iVar5;
+
+  
+
+  puVar4 = (u16 *)(*(int *)(DAT_007ce680 + 0x24) + 4);
+
+  iVar5 = 0;
+
+  do {
+
+    if (2 < iVar5) {
+
+      sVar2 = -1;
+
+LAB_003cf9d8:
+
+      if (sVar2 == -1) {
+
+        uVar3 = FUN_003c4910(DAT_007ce680,0,0x14);
+
+        puVar4 = *(u16 **)((int)uVar3 + 0x14);
+
+        *(int *)(puVar4 + 2) = param_1;
+
+        *puVar4 = param_2 & 0xff00 | 3;
+
+      }
+
+      else {
+
+        iVar5 = sVar2 * 0x14 + *(int *)(DAT_007ce680 + 0x24);
+
+        bVar1 = *(u8 *)(iVar5 + 4);
+
+        *(u16 *)(iVar5 + 4) = (u16)bVar1;
+
+        *(u16 *)(iVar5 + 4) = (u16)bVar1 | param_2 & 0xff00;
+
+        FUN_005225a8(0x7cd728,0x6a4270,0x1b6);
+
+        FUN_005225a8(0x6a42f0,sVar2);
+
+        FUN_001052b0(0x6a42f0,sVar2);
+
+        uVar3 = 0;
+
+      }
+
+      return uVar3;
+
     }
-    entry += 10;
-  }
 
-  if (index == -1) {
-    result = FUN_003c4910(DAT_007ce680, 0, 0x14);
-    entry = *(s16 **)((int)result + 0x14);
-    *(int *)(entry + 2) = param_1;
-    *entry = (s16)(param_2 & 0xff00) | 3;
-  }
-  else {
-    i = index * 0x14 + *(int *)(DAT_007ce680 + 0x24);
-    value = *(u8 *)(i + 4);
-    *(s16 *)(i + 4) = value;
-    *(s16 *)(i + 4) = value | (s16)(param_2 & 0xff00);
-    FUN_005225a8(0x7cd728, 0x6a4270, 0x1b6);
-    FUN_005225a8(0x6a42f0, index);
-    FUN_001052b0(0x6a42f0, index);
-    result = 0;
-  }
+    if (((*puVar4 & 1) != 0) && (*(int *)(puVar4 + 2) == param_1)) {
 
-  return result;
+      sVar2 = (short)iVar5;
+
+      goto LAB_003cf9d8;
+
+    }
+
+    puVar4 = puVar4 + 10;
+
+    iVar5 = iVar5 + 1;
+
+  } while( 1 );
+
 }
 #define FUN_003cf960(...) ((u32 (*)(...))FUN_003cf960)(__VA_ARGS__)
 #undef FUN_003cfb50

@@ -5423,7 +5423,6 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
 
   int sVar1;
 
-  u16 *puVar2;
 
   int lVar3;
 
@@ -5440,11 +5439,10 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
     sVar1 = *(short *)(puVar4 + 8);
     *param_4 = puVar4[0x1b];
     while (*param_4 != 0) {
-      puVar2 = (u16 *)*param_4;
-      if (param_2 < (int)((u32)*puVar2 + sVar1)) {
+      if (param_2 < (int)((u32)*(u16 *)*param_4 + sVar1)) {
         break;
       }
-      *param_4 = *(u32 *)(puVar2 + 0x26);
+      *param_4 = *(u32 *)((u16 *)*param_4 + 0x26);
     }
 
     if (*param_4 != 0) {

@@ -1132,7 +1132,7 @@ void FUN_00245420(uint *param_1,uint param_2)
     }
     if (((*puVar1 & 8) != 0) &&
        (((**(ushort **)(iVar3 + 0xa2c) & 4) == 0 ||
-        ((*(ushort *)(DAT_007ce410 + (uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e + 0x1e) & 0x20)
+        ((*(ushort *)((uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e + (uint)DAT_007ce410 + 0x1e) & 0x20)
          == 0)))) {
       uVar2 = func_003082f0(0,(u16)puVar1[0x1cb4]);
       uVar11 = func_00306e80(*(u32 *)(iVar3 + 0xa2c),uVar2);
@@ -1152,7 +1152,8 @@ void FUN_00245420(uint *param_1,uint param_2)
       *param_1 = *param_1 | 0x80;
     }
     for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
-      (param_1 + iVar5)[0x289] = 0;
+      uint* zeroSlot = param_1 + iVar5;
+      zeroSlot[0x289] = 0;
     }
     if ((*param_1 & 0x80) != 0) {
       iVar5 = func_001ff430(puVar1[4]);

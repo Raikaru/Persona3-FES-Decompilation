@@ -1556,10 +1556,10 @@ void FUN_00202830(void)
 // FUN_00202A10 NONMATCHING
 void FUN_00202A10(void)
 {
+    u8* entry;
     u8* work;
     s32 i;
     u32 handle;
-    u8* entry;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;

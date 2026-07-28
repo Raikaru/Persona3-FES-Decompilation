@@ -1469,7 +1469,7 @@ extern u64 FUN_0027f7c0();
 extern u64 FUN_0027ffb0();
 extern u64 FUN_00282d40();
 #pragma alias FUN_00282d40_f32 FUN_00282d40
-extern void FUN_00282d40_f32(float param_1,void *param_2,int param_3,int param_4,int param_5);
+extern void FUN_00282d40_f32(float param_1,u32 param_2,int param_3,int param_4,int param_5);
 extern u64 FUN_002831c0();
 extern u64 FUN_00287b20();
 extern u64 FUN_00287cf0();

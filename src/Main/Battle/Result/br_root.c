@@ -367,9 +367,9 @@ void *func_001f5b20(void);
 void func_001f64c0(void);
 u32 func_001f65e0(void);
 void func_001f6630(void);
-void func_001f6a60(void);
-void func_001f6e80(void);
-void func_001f6d20(const f32 *);
+void brRewardAdvanceState(void);
+void brRewardAnimateCurrentEntry(void);
+void brRewardRegisterEntry(const f32 *);
 void func_001f7030(void);
 void func_001f70d0(void);
 void func_001f7170(void);
@@ -1307,11 +1307,11 @@ void *func_001f2300(KwlnTask *task)
                 case 0:
                     if (func_002561c0(card) == 0 &&
                         func_001f5760(*(u16 *)(card + 8)) == 0) {
-                        func_001f6d20((const f32 *)&card[4]);
+                        brRewardRegisterEntry((const f32 *)&card[4]);
                     }
                     break;
                 case 1:
-                    func_001f6d20((const f32 *)&card[4]);
+                    brRewardRegisterEntry((const f32 *)&card[4]);
                     break;
                 case 2:
                     func_001f9630();
@@ -2781,9 +2781,9 @@ void *func_001f5b20(void)
         cnt = BR_S32(work, 0x340c) + 1;
         BR_S32(work, 0x340c) = cnt;
         if (cnt == BR_S32(work, 0x341c)) {
-            func_001f6a60();
+            brRewardAdvanceState();
         } else {
-            func_001f6e80();
+            brRewardAnimateCurrentEntry();
         }
         break;
     case 3:
@@ -2797,7 +2797,7 @@ void *func_001f5b20(void)
             break;
         }
         sflResult001f9100();
-        func_001f6a60();
+        brRewardAdvanceState();
         break;
     case 5:
         func_003c7990(0);
@@ -2808,7 +2808,7 @@ void *func_001f5b20(void)
         cnt = BR_S32(work, 0x3410) + 1;
         BR_S32(work, 0x3410) = cnt;
         if (cnt == BR_S32(work, 0x3400)) {
-            func_001f6a60();
+            brRewardAdvanceState();
         } else {
             func_001f7030();
         }
@@ -2822,7 +2822,7 @@ void *func_001f5b20(void)
         cnt = BR_S32(work, 0x3414) + 1;
         BR_S32(work, 0x3414) = cnt;
         if (cnt == BR_S32(work, 0x3404)) {
-            func_001f6a60();
+            brRewardAdvanceState();
         } else {
             func_001f70d0();
         }
@@ -2851,7 +2851,7 @@ void *func_001f5b20(void)
             cnt = BR_S32(work, 0x3408) + 1;
             BR_S32(work, 0x3408) = cnt;
             if (cnt == BR_S32(work, 0x3418)) {
-                func_001f6a60();
+                brRewardAdvanceState();
             } else {
                 func_001f7210();
             }
@@ -2876,7 +2876,7 @@ void *func_001f5b20(void)
                 func_003c7430(0x17);
             } else {
                 if (cnt == BR_S32(work, 0x3418)) {
-                    func_001f6a60();
+                    brRewardAdvanceState();
                 } else {
                     func_001f7210();
                 }
@@ -2896,7 +2896,7 @@ void *func_001f5b20(void)
             cnt = BR_S32(work, 0x3408) + 1;
             BR_S32(work, 0x3408) = cnt;
             if (cnt == BR_S32(work, 0x3418)) {
-                func_001f6a60();
+                brRewardAdvanceState();
             } else {
                 func_001f7210();
             }
@@ -2908,7 +2908,7 @@ void *func_001f5b20(void)
         if (result == 0) {
             K_ASSERT(0, 0x1da);
         } else if (result == 2) {
-            func_001f6a60();
+            brRewardAdvanceState();
         }
         break;
     }
@@ -3101,11 +3101,12 @@ void func_001f6630(void)
     }
     work[0] |= 0x400;
     work[1] = 1;
-    func_001f6a60();
+    brRewardAdvanceState();
 }
 
+#pragma alias brRewardAdvanceState func_001f6a60
 // FUN_001f6a60
-void func_001f6a60(void)
+void brRewardAdvanceState(void)
 {
     u8 *work;
     s32 i;
@@ -3191,8 +3192,9 @@ void func_001f6a60(void)
     }
 }
 
+#pragma alias brRewardRegisterEntry func_001f6d20
 // FUN_001f6d20
-void func_001f6d20(const f32 *entry)
+void brRewardRegisterEntry(const f32 *entry)
 {
     u8 *work;
     u32 *words;
@@ -3224,8 +3226,9 @@ void func_001f6d20(const f32 *entry)
     words[0xcf7]++;
 }
 
+#pragma alias brRewardAnimateCurrentEntry func_001f6e80
 // FUN_001f6e80
-void func_001f6e80(void)
+void brRewardAnimateCurrentEntry(void)
 {
     u8 *work;
     u32 *words;
