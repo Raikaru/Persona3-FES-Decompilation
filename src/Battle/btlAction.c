@@ -1217,9 +1217,21 @@ BtlPacket* result;
             return;
         }
     }
-    btlActionSetState(action, (s8)FUN_00302f50(action->unit->datUnit) < 0 ?
-                              (FUN_002dc070(action) ? BTLACTION_STATE_BAD : BTLACTION_STATE_STARTHOME) :
-                              BTLACTION_STATE_SUPPORT);
+    if ((s8)FUN_00302f50(action->unit->datUnit) < 0)
+    {
+        if (FUN_002dc070(action))
+        {
+            btlActionSetState(action, BTLACTION_STATE_BAD);
+        }
+        else
+        {
+            btlActionSetState(action, BTLACTION_STATE_STARTHOME);
+        }
+    }
+    else
+    {
+        btlActionSetState(action, BTLACTION_STATE_SUPPORT);
+    }
     }
 }
 
@@ -5956,10 +5968,18 @@ void btlActionUpdateStateError(BtlAction* action)
 
     unit = action->unit;
     btlAction0028a780(action);
-    packet = action->target.commandId == 3 ? FUN_002bd690(unit, action->target.unk_38) :
-                                             FUN_002bd590(unit, action->target.specificId);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+    if (action->target.commandId != 3)
+    {
+        packet = FUN_002bd590(unit, action->target.specificId);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+    }
+    else
+    {
+        packet = FUN_002bd690(unit, action->target.unk_38);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+    }
     if (unit->genus == UNIT_GENUS_PC)
     {
         animation = action->target.commandId == 3 ? 0x15 : 0xc;

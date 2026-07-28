@@ -417,8 +417,8 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
             circleRadius = radius * sinf(angle);
 
             finalCenter.x = center->x;
-            finalCenter.z = center->z;
-            finalCenter.y = center->y + yOffset;
+            finalCenter.y = center->y;
+            finalCenter.z = center->z + yOffset;
 
             primCircleLine3D(&finalCenter, circleRadius, color, &mat, false);
         }

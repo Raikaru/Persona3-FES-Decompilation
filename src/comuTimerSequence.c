@@ -860,15 +860,18 @@ u32 FUN_003c03f0(void)
     }
     break;
   case 2:
-    lVar5 = FUN_0027c2b0();
-    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-      bVar2 = 1;
-    }
-    else {
-      bVar2 = 0;
-    }
-    if (bVar2) {
-      *piVar3 = 3;
+    {
+      int bVar3;
+      lVar5 = FUN_0027c2b0();
+      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+        bVar3 = 1;
+      }
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        *piVar3 = 3;
+      }
     }
     break;
   case 3:

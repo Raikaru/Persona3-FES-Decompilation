@@ -5980,9 +5980,8 @@ void FUN_0039eaa0(int param_1)
   FUN_00521408_b8b0(piVar7,0,0x38);
 
   iVar1 = *(int *)(param_1 + 8);
-  iVar7 = 2;
 
-  for (iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
+  for (iVar7 = 2, iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
 
     iVar5 = *(int *)(iVar1 + 0x34) + iVar6 * 0x20;
 
@@ -5997,7 +5996,7 @@ void FUN_0039eaa0(int param_1)
 
       iVar5 = *(int *)(iVar5 + 0x14);
 
-      *(short *)((int)piVar7 + iVar2 * 2 + 0x18) = (short)iVar2 + 31000;
+      *(short *)((int)piVar7 + iVar2 * 2 + 0x18) = iVar2 + 31000;
 
       piVar7[iVar2 + 1] = iVar3 + iVar4;
 

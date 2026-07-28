@@ -211,6 +211,8 @@ extern u8 DAT_008717a0_bytes[];
 extern u8 DAT_008717a0_abs[];
 #pragma alias DAT_008717a0_rows_abs DAT_008717a0
 extern u8 DAT_008717a0_rows_abs[][0x1c0];
+#pragma alias DAT_008717a0_rows_check DAT_008717a0
+extern u8 DAT_008717a0_rows_check[][0x1c0];
 #pragma alias DAT_0086eda0_bytes DAT_0086eda0
 extern u8 DAT_0086eda0_bytes[];
 #pragma alias DAT_006b4650_bytes DAT_006b4650
@@ -8536,6 +8538,7 @@ short FUN_0043c180(char param_1)
   u16 uVar8;
   short sVar9;
   int player;
+  int rowIndex;
   int iVar10;
   int iVar11;
 
@@ -8547,14 +8550,15 @@ short FUN_0043c180(char param_1)
   for (; iVar11 < 4; iVar11 = iVar11 + 1) {
     if (player != iVar11) {
       bVar2 = 0;
-      checkRow = DAT_008717a0_bytes + iVar11 * 0x1c0;
+      checkRow = DAT_008717a0_rows_check[iVar11];
       if ((*(int *)(checkRow + 0x48) != 0) && (*(int *)(checkRow + 0x54) != 0)) {
         bVar2 = 1;
       }
       bVar2 = bVar2 != 0;
       if ((bVar2 == 1) &&
           (FUN_001c7160_f32_u32(500.0f,sourceRow,checkRow) == 1)) {
-        row = DAT_008717a0_rows_abs[iVar11];
+        rowIndex = iVar11;
+        row = DAT_008717a0_rows_abs[rowIndex];
         puVar4 = FUN_00173380_typed(*(u16 *)(row + 0x1a8));
         for (iVar10 = 0; iVar10 < 8; iVar10 = iVar10 + 1) {
           uVar1 = puVar4[iVar10];
@@ -8591,6 +8595,7 @@ short FUN_0043c340(char param_1)
   u16 uVar8;
   short sVar9;
   int player;
+  int rowIndex;
   int iVar10;
   int iVar11;
 
@@ -8602,14 +8607,15 @@ short FUN_0043c340(char param_1)
   for (; iVar11 < 4; iVar11 = iVar11 + 1) {
     if (player != iVar11) {
       bVar2 = 0;
-      checkRow = DAT_008717a0_bytes + iVar11 * 0x1c0;
+      checkRow = DAT_008717a0_rows_check[iVar11];
       if ((*(int *)(checkRow + 0x48) != 0) && (*(int *)(checkRow + 0x54) != 0)) {
         bVar2 = 1;
       }
       bVar2 = bVar2 != 0;
       if ((bVar2 == 1) &&
           (FUN_001c7160_f32_u32(500.0f,sourceRow,checkRow) == 1)) {
-        row = DAT_008717a0_rows_abs[iVar11];
+        rowIndex = iVar11;
+        row = DAT_008717a0_rows_abs[rowIndex];
         puVar4 = FUN_00173380_typed(*(u16 *)(row + 0x1a8));
         for (iVar10 = 0; iVar10 < 8; iVar10 = iVar10 + 1) {
           uVar1 = puVar4[iVar10];
@@ -17298,7 +17304,6 @@ void FUN_00455cf0(void)
 u32 FUN_00455e00(u32 param_1)
 
 {
-  char *pcVar1;
   char cVar2;
   char *pcVar3;
   u32 uVar4;
@@ -17334,44 +17339,16 @@ u32 FUN_00455e00(u32 param_1)
     for (iVar5 = 0; iVar5 < 4; iVar5 = iVar5 + 1) {
       *(float *)(pcVar3 + iVar5 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar3 + 0x128);
       *(float *)(pcVar3 + iVar5 * 0x40 + 0x28) = 1.0f / fVar7;
-      pcVar1 = pcVar3 + iVar5 * 0x40 + 0x30;
-      pcVar1[0] = '\0';
-      pcVar1[1] = '\0';
-      pcVar1[2] = '\x7f';
-      pcVar1[3] = 'C';
-      pcVar1 = pcVar3 + iVar5 * 0x40 + 0x34;
-      pcVar1[0] = '\0';
-      pcVar1[1] = '\0';
-      pcVar1[2] = '\x7f';
-      pcVar1[3] = 'C';
-      pcVar1 = pcVar3 + iVar5 * 0x40 + 0x38;
-      pcVar1[0] = '\0';
-      pcVar1[1] = '\0';
-      pcVar1[2] = '\x7f';
-      pcVar1[3] = 'C';
-      pcVar1 = pcVar3 + iVar5 * 0x40 + 0x3c;
-      pcVar1[0] = '\0';
-      pcVar1[1] = '\0';
-      pcVar1[2] = '\x7f';
-      pcVar1[3] = 'C';
+      *(u32 *)(pcVar3 + iVar5 * 0x40 + 0x30) = 0x437f0000;
+      *(u32 *)(pcVar3 + iVar5 * 0x40 + 0x34) = 0x437f0000;
+      *(u32 *)(pcVar3 + iVar5 * 0x40 + 0x38) = 0x437f0000;
+      *(u32 *)(pcVar3 + iVar5 * 0x40 + 0x3c) = 0x437f0000;
     }
-    pcVar3[0x20] = '\0';
-    pcVar3[0x21] = '\0';
-    pcVar3[0x22] = '\0';
-    pcVar3[0x23] = '\0';
-    pcVar3[0x24] = '\0';
-    pcVar3[0x25] = '\0';
-    pcVar3[0x26] = '\0';
-    pcVar3[0x27] = '\0';
+    *(u32 *)(pcVar3 + 0x20) = 0;
+    *(u32 *)(pcVar3 + 0x24) = 0;
     *(u32 *)(pcVar3 + 0x60) = *(u32 *)(pcVar3 + 0x13c);
-    pcVar3[100] = '\0';
-    pcVar3[0x65] = '\0';
-    pcVar3[0x66] = '\0';
-    pcVar3[0x67] = '\0';
-    pcVar3[0xa0] = '\0';
-    pcVar3[0xa1] = '\0';
-    pcVar3[0xa2] = '\0';
-    pcVar3[0xa3] = '\0';
+    *(u32 *)(pcVar3 + 0x64) = 0;
+    *(u32 *)(pcVar3 + 0xa0) = 0;
     *(u32 *)(pcVar3 + 0xa4) = *(u32 *)(pcVar3 + 0x140);
     *(u32 *)(pcVar3 + 0xe0) = *(u32 *)(pcVar3 + 0x13c);
     *(u32 *)(pcVar3 + 0xe4) = *(u32 *)(pcVar3 + 0x140);

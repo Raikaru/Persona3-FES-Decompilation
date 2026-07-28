@@ -2460,7 +2460,6 @@ invalid:
 // FUN_00170860 NONMATCHING
 void func_00170860(s16 pcId, s16 index, u16 value)
 {
-    s32 pcIdValue;
     u8* idBase;
     u8* heroEquip;
     s32 address;
@@ -2468,8 +2467,7 @@ void func_00170860(s16 pcId, s16 index, u16 value)
     s32 j;
 
     K_ASSERT(value <= 99, 2341);
-    pcIdValue = pcId;
-    if (pcIdValue == PC_HERO)
+    if (pcId == PC_HERO)
     {
         heroEquip = *(u8* volatile /* Removing this qualifier worsens func_00170860 (NONMATCHING nd68 -> NONMATCHING nd83, size 476 -> 476) - measured W170. */*)&gGlobalWork.heroEquip.unkPtr;
         address = index * 2;
@@ -2477,25 +2475,25 @@ void func_00170860(s16 pcId, s16 index, u16 value)
         *(u16*)(address - 8000) = value;
         goto done;
     }
-    if (pcIdValue == -1)
+    if (pcId == -1)
     {
         *(u16*)(D_00831CE0 + index * 2) = value;
         goto done;
     }
-    if (pcIdValue < 0x100)
+    if (pcId < 0x100)
     {
         goto done;
     }
     i = 0;
-    idBase = (u8*)gPcs + pcIdValue * 0x364;
+    idBase = (u8*)gPcs + pcId * 0x364;
     for (; i < 20; i++)
     {
-        if (*(u16*)(idBase + i * 4 - 0x367b8) == pcIdValue)
+        if (*(u16*)(idBase + i * 4 - 0x367b8) == pcId)
         {
-            *(u16*)(D_007FD85A + pcIdValue * 0x364 + i * 4) = value;
+            *(u16*)(D_007FD85A + pcId * 0x364 + i * 4) = value;
             if (value == 0)
             {
-                *(u16*)(D_007FD858 + pcIdValue * 0x364 + i * 4) = 0;
+                *(u16*)(D_007FD858 + pcId * 0x364 + i * 4) = 0;
             }
             goto done;
         }
@@ -2506,10 +2504,10 @@ void func_00170860(s16 pcId, s16 index, u16 value)
     {
         if (*(u16*)(idBase + j * 4 - 0x367b8) == 0)
         {
-            *(u16*)(D_007FD85A + pcIdValue * 0x364 + j * 4) = value;
+            *(u16*)(D_007FD85A + pcId * 0x364 + j * 4) = value;
             if (value == 0)
             {
-                *(u16*)(D_007FD858 + pcIdValue * 0x364 + j * 4) = 0;
+                *(u16*)(D_007FD858 + pcId * 0x364 + j * 4) = 0;
             }
             goto done;
         }

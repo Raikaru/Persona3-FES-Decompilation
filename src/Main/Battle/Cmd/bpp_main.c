@@ -115,6 +115,7 @@ void bppMain0020edf0(void)
     u32* work;
     u8* entry;
     u32 value;
+    u32 badStatus;
     s32 masked;
     u32 actionId;
     u32 flags;
@@ -227,11 +228,11 @@ void bppMain0020edf0(void)
             *(u32*)(entry + 0x14) = value;
             func_0022e9a0(entry + 0x20, value);
         }
-        value = datGetBadStatusNoDown(*(s16*)(entry + 4));
-        masked = value & 0xfffff;
+        badStatus = datGetBadStatusNoDown(*(s16*)(entry + 4));
+        masked = badStatus & 0xfffff;
         if (*(u32*)(entry + 0x18) != masked) {
             *(u32*)(entry + 0x18) = masked;
-            func_0022f1c0(entry + 0x20, value);
+            func_0022f1c0(entry + 0x20, badStatus);
         }
         value = datGetPhysicalCondition(*(s16*)(entry + 4));
         if (*(u32*)(entry + 0x1c) != value) {

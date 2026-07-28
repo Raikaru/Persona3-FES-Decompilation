@@ -812,9 +812,9 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
     s32 personaId;
     u8 level;
     CampVec2 originalPosition;
-    CampVec2 drawPosition;
     CampVec2 iconPosition;
     CampVec2 levelPosition;
+    CampVec2 drawPosition;
 
     originalPosition = position;
     drawPosition = position;
@@ -836,7 +836,7 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
                               levelPosition.x + 67.0f,
                               levelPosition.y + 127.0f, fade, alpha);
         campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                              *((u8*)persona + 4) % 10 + 0xb,
+                              level % 10 + 0xb,
                               levelPosition.x + 82.0f,
                               levelPosition.y + 127.0f, fade, alpha);
     }
