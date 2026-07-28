@@ -7547,14 +7547,15 @@ void btlActionUpdateStateEnd(BtlAction* action)
 void btlActionInitStateEndHome(BtlAction* action)
 {
     BtlPacket* packet;
+    BtlUnit* unit = action->unit;
     RwV3d homePos;
     u16 speedIndex;
     u16 allowMove;
 
     action->movedAwayFromHome = 0;
-    if (datCalcIsDead(action->unit->datUnit, 0) != 0)
+    if (datCalcIsDead(unit->datUnit, 0) != 0)
     {
-        if ((action->unit->flags3 & BTLUNIT_FLAG3_UNK40) != 0)
+        if ((unit->flags3 & BTLUNIT_FLAG3_UNK40) != 0)
         {
             gBtl->flags |= 0x400000;
             BATTLE_U16(0x18) |= 6;
@@ -7571,25 +7572,31 @@ void btlActionInitStateEndHome(BtlAction* action)
     {
         return;
     }
-    if (datCalcChkBadStatus(action->unit->datUnit, 0x180000) != 0)
+    if (datCalcChkBadStatus(unit->datUnit, 0x180000) != 0)
     {
         return;
     }
-    btlUnit0027f7c0(action->unit, &homePos, NULL, NULL);
-    if (FUN_002d1ed0(&action->unit->pos, &homePos) > 75.0f)
+    btlUnit0027f7c0(unit, &homePos, NULL, NULL);
+    if (unit->genus == UNIT_GENUS_PC)
     {
-        if (action->unit->genus == UNIT_GENUS_PC)
-        {
-            action->movedAwayFromHome = 1;
-        }
+        action->movedAwayFromHome = 1;
+    }
+    if (FUN_002d1ed0(&unit->pos, &homePos) > 75.0f)
+    {
         speedIndex = 2;
-        if (action->unit->genus == UNIT_GENUS_EC)
+        allowMove = (iGpffffb708[(u32)action->target.specificId * 0x2c] & 2) == 0;
+        switch (unit->genus)
         {
-            allowMove = (iGpffffb708[(u32)action->target.specificId * 0x2c] & 2) == 0;
-            speedIndex = *(u16*)((u8*)iGpffffb728 + action->unit->datUnit->id * 0xe8 +
+        case UNIT_GENUS_PC:
+            break;
+        case UNIT_GENUS_EC:
+            speedIndex = *(u16*)((u8*)iGpffffb728 + unit->datUnit->id * 0xe8 +
                                  (u32)allowMove * 4 + 0x24);
+            break;
+        default:
+            break;
         }
-        packet = btlUnitCreateMovePacket(action->unit, &homePos, D_00693300[speedIndex], 0);
+        packet = btlUnitCreateMovePacket(unit, &homePos, D_00693300[speedIndex], 0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         action->movedAwayFromHome = 1;

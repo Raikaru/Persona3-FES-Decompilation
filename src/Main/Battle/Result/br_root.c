@@ -3229,21 +3229,22 @@ void func_001f6d20(const f32 *entry)
 // FUN_001f6e80 NONMATCHING
 void func_001f6e80(void)
 {
-    u8 *work = sBrReward;
+    u8 *work;
+    u32 *words;
     s32 i;
-    u32 count;
     u32 idx;
     u8 *entry;
     f32 output[2];
     f32 position[2];
     f32 scale;
-    K_ASSERT(work != NULL, 0x8c);
-    count = BR_U32(work, 0x340c);
-    if (count != 0) {
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
+    words = (u32 *)work;
+    if (BR_U32(work, 0x340c) != 0) {
         for (i = 0; i < BR_S32(work, 0x341c); i++) {
-            idx = BR_U32(work, 0x3c + i * 4);
+            idx = BR_U32(work + i * 4, 0x3c);
             entry = work + idx * 0x670 + 0x5c;
-            position[0] = (f32)(i - (s32)count) * 220.0f + 320.0f;
+            position[0] = (f32)(i - BR_S32(work, 0x340c)) * 220.0f + 320.0f;
             position[1] = 184.0f;
             scale = func_0020c500(entry + 0xc, 200.0f);
             func_0020c400(entry + 0xc, position, scale, output);
@@ -3251,11 +3252,11 @@ void func_001f6e80(void)
             func_002508c0(entry + 0x60c, output, 0x14);
         }
     }
-    idx = BR_U32(work, 0x3c + count * 4);
-    entry = work + idx * 0x670 + 0x5c;
+    idx = BR_U32((u8 *)(words[0xd03] * 4 + (u32)work), 0x3c);
+    entry = (u8 *)(idx * 0x670 + (u32)work);
     func_003c7bc0(0, func_00173220(BR_U16(entry, 0x60)));
     func_003c7430(9);
-    if (count == BR_U32(work, 0x341c) - 1) {
+    if (BR_U32(work, 0x340c) == BR_U32(work, 0x341c) - 1) {
         BR_U32(work, 0) |= 0x40;
     }
     func_0010a4e0(1, 0, 6, 10);

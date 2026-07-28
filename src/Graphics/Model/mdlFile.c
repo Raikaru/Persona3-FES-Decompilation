@@ -1052,7 +1052,7 @@ u64 FUN_00336920(int param_1);
 void FUN_00336df0(int param_1);
 void FUN_00336e80(int param_1);
 void FUN_003377f0(u32 param_1);
-u32 FUN_00337a60(u32 param_1,u32 param_2);
+u64 FUN_00337a60(u32 param_1,u32 param_2);
 void FUN_00337b70(int param_1);
 void FUN_00337bb0(u32 param_1);
 void FUN_00337c10(int param_1);
@@ -27312,7 +27312,7 @@ void FUN_003377f0(u32 param_1)
 // FUN_00337A60 NONMATCHING
 
 
-u32 FUN_00337a60(u32 param_1,u32 param_2)
+u64 FUN_00337a60(u32 param_1,u32 param_2)
 
 
 
@@ -27320,21 +27320,19 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   int iVar1;
 
-  u32 index;
-
   u32 uVar3;
 
-  u32 uVar4;
+  u64 uVar4;
 
   u8 (*pauVar5) [16];
 
   
 
-  index = param_1 & 0xffff;
+  param_1 = param_1 & 0xffff;
 
-  iVar1 = DAT_0069c5d0[index].allocationSize;
+  iVar1 = DAT_0069c5d0[param_1].allocationSize;
 
-  uVar4 = (*DAT_00960178_abs)(iVar1 + 0x40,0x40000);
+  uVar4 = (*DAT_00960178)(iVar1 + 0x40,0x40000);
 
   pauVar5 = (u8 (*) [16])uVar4;
 
@@ -27342,7 +27340,7 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   *(u32 *)(pauVar5[2] + 8) = 0;
 
-  *(u32 *)(pauVar5[2] + 0xc) = index;
+  *(u32 *)(pauVar5[2] + 0xc) = param_1;
 
   *(u32 *)(pauVar5[2] + 4) = 0xffffffff;
 
@@ -27355,11 +27353,11 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   FUN_00521250(*(u32 *)(pauVar5[3] + 4),param_2,iVar1);
 
-  uVar3 = DAT_0069c5d0[index].create(param_2);
+  uVar3 = DAT_0069c5d0[param_1].create(param_2);
 
   *(u32 *)pauVar5[3] = uVar3;
 
-  DAT_0069c5d0[index].destroy(uVar4);
+  DAT_0069c5d0[param_1].destroy(uVar4);
 
   return uVar4;
 
@@ -49659,7 +49657,6 @@ void FUN_00350190(void)
 
   u32 uVar1;
   u32 uVar2;
-  u32 uVar3;
   
 
   uVar1 = FUN_0035ed20_i(0);
@@ -49669,13 +49666,10 @@ void FUN_00350190(void)
 
   *(u32 *)DAT_00957bc0_abs = uVar1;
   *(u16 *)DAT_00957bc4_abs = uVar2;
-  uVar2 = 0;
-  uVar3 = 0;
   *(u32 *)DAT_00957bc8_abs = 0;
   *(u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
-  uVar3 = 1;
-  DAT_007ce578 = uVar3;
+  DAT_007ce578 = 1;
   return;
 
 

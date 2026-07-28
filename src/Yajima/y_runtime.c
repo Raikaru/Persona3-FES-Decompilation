@@ -391,7 +391,7 @@ extern u8 DAT_0086e6a0_rows[][0x1c0];
 #pragma alias DAT_006b4b20_abs DAT_006b4b20
 extern u8 DAT_006b4b20_abs[];
 #pragma alias DAT_006b4796_abs DAT_006b4796
-extern s16 DAT_006b4796_abs[];
+extern u8 DAT_006b4796_abs[];
 extern void FUN_004d0f00_arg(u32 param_1);
 extern void FUN_00456410_noarg(void);
 #pragma alias DAT_0096017c_abs DAT_0096017c
@@ -12025,16 +12025,18 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
 
 {
   RwV2d position;
-  register s16 *coordinateBase;
+  u8 *coordinateBase;
   float y;
   char cVar1;
   char cVar2;
+  int index;
   int iVar3;
   int iVar4;
   
-  cVar1 = *(char *)(param_3 * 4 + DAT_007ce6ec + 4);
+  index = (int)param_3 * 4;
+  cVar1 = *(char *)(index + DAT_007ce6ec + 4);
+  iVar3 = *(s16 *)(DAT_006b4796_abs + 4) - (cVar1 - 1) * 0x40;
   coordinateBase = DAT_006b4796_abs;
-  iVar3 = coordinateBase[2] - (cVar1 - 1) * 0x40;
   cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
@@ -12042,7 +12044,7 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   for (iVar4 = 0; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
   }
   position.y = y - 32.0f;
-  position.x = (float)coordinateBase[1];
+  position.x = (float)*(s16 *)(coordinateBase + 2);
   *(RwV2d *)param_1 = position;
   return;
 }
