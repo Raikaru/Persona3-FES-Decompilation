@@ -1254,13 +1254,15 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
   return (u32 *)0;
 }
 
-// FUN_003F0830 NONMATCHING
+#pragma alias fclShopSelectStockItemId FUN_003f0830
+// FUN_003F0830
 
 
 short FUN_003f0830(int param_1)
 {
   u8 *shopData;
   u8 *shopList;
+  u8 *shopEntry;
   char socialLevel;
   u32 randomValue;
   int entry;
@@ -1282,27 +1284,35 @@ short FUN_003f0830(int param_1)
     K_Assert((const char *)DAT_006aede8,0xb9);
   }
   if (datGetScenarioMode() == 0) {
-    shopData = *(u8 **)(DAT_006ac9d0 + param_1 * 0x24 + 0x20);
+    shopEntry = DAT_006ac9d0 + param_1 * 0x24;
   }
   else {
-    shopData = *(u8 **)(DAT_006ac9d0 + (param_1 + 9) * 0x24 + 0x20);
+    shopEntry = DAT_006ac9d0 + (param_1 + 9) * 0x24;
   }
+  shopData = *(u8 **)(shopEntry + 0x20);
 
   shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0x14),1);
   if (shopList != NULL) {
     randomValue = RpRandom();
-    choice = *(short *)(((randomValue % 0xffff) / 0xffff) * 2 + (int)shopList + 8);
-    if (choice != -1) {
-      return *(short *)(shopList + 8);
+    choice = ((short *)(shopList + 8))[(randomValue % 0xffff) / 0xffff];
+    if (choice == -1) {
+      goto not_found;
     }
+    return *(short *)(shopList + 8);
   }
 
   if (socialLink != 0xff) {
     if (*(int *)(shopData + 8) == 0) {
       K_Assert((const char *)DAT_006aede8,0x19c);
     }
-    if (socialLink != 0xff) {
-      if (datSocialLinkLevelIsNotZero((s16)socialLink) != 0) {
+    if (socialLink == 0xff) {
+      entry = *(int *)(shopData + 8);
+    }
+    else {
+      if (datSocialLinkLevelIsNotZero((s16)socialLink) == 0) {
+        entry = *(int *)(shopData + 8);
+      }
+      else {
         socialLevel = datGetSocialLinkLevel((s16)socialLink);
         if (socialLevel == '\0') {
           entry = *(int *)(shopData + 8);
@@ -1314,12 +1324,6 @@ short FUN_003f0830(int param_1)
           entry = *(int *)(shopData + 8) + socialLevel * 0x20;
         }
       }
-      else {
-        entry = *(int *)(shopData + 8);
-      }
-    }
-    else {
-      entry = *(int *)(shopData + 8);
     }
     if ((entry != 0) && (*(short *)(entry + 0xc) != -1)) {
       return *(short *)(entry + 0xc);
@@ -1329,11 +1333,12 @@ short FUN_003f0830(int param_1)
   shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0x14),0);
   if (shopList != NULL) {
     randomValue = RpRandom();
-    choice = *(short *)(((randomValue % 0xffff) / 0xffff) * 2 + (int)shopList + 8);
+    choice = ((short *)(shopList + 8))[(randomValue % 0xffff) / 0xffff];
     if (choice != -1) {
       return choice;
     }
   }
+not_found:
   return -1;
 }
 
@@ -2345,6 +2350,7 @@ u32 FUN_003f1a10(u32 param_1)
 
 }
 
+#pragma alias fclShopPopulateEquipmentEntry FUN_003f1ba0
 // FUN_003F1BA0
 
 
@@ -7610,6 +7616,7 @@ ret:
 #pragma pop
 
 
+#pragma alias fclShopCreateEquipmentItemList FUN_003f9e30
 // FUN_003F9E30
 
 

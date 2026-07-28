@@ -159,7 +159,9 @@ extern u32 FUN_00122710();
 extern u32 FUN_0013bce0();
 extern u32 FUN_0013be50();
 extern void FUN_0013e710(CampPair position, f32 alpha, void* work, s32 fade);
-extern void FUN_00140e30(CampPair position, f32 alpha, void* work, s32 fade);
+#pragma alias campDrawEquipmentDetailListAlt FUN_00140e30
+extern void campDrawEquipmentDetailListAlt(CampPair position, f32 alpha,
+                                           void* work, s32 fade);
 extern u32 FUN_00141590();
 extern u32 FUN_00141660();
 extern u32 FUN_00141fb0();
@@ -962,9 +964,10 @@ void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
                        *(f32*)(param_1 + 0x24));
         break;
     case 0x14:
-        FUN_00140e30(*(CampPair*)((u8*)param_1 + 0x38),
-                     *(f32*)(param_1 + 0x24),
-                     (void*)*(u32*)(param_3 + 0xac), *(s32*)(param_1 + 0x40));
+        campDrawEquipmentDetailListAlt(*(CampPair*)((u8*)param_1 + 0x38),
+                                       *(f32*)(param_1 + 0x24),
+                                       (void*)*(u32*)(param_3 + 0xac),
+                                       *(s32*)(param_1 + 0x40));
         break;
     case 0x15:
         break;

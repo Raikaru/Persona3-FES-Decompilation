@@ -710,8 +710,8 @@ void FUN_00244770(void)
   uint *puVar2;
   u16 sVar3;
   s32 iVar4;
-  int iVar5;
-  u32 uVar6;
+  int action;
+  int count;
   s32 iVar7;
 
   if (sBpcWork == (uint *)0x0) {
@@ -722,22 +722,22 @@ void FUN_00244770(void)
     func_003b0170(sBpcWork[0x1b30]);
   }
   for (iVar4 = 0; (int)iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-    iVar5 = func_001ff430(puVar2[iVar4 + 4]);
-    switch (*(u8 *)(iVar5 + 0xa2)) {
+    action = func_001ff430(puVar2[iVar4 + 4]);
+    switch (*(u8 *)(action + 0xa2)) {
     case 0:
-      bppMain0020f8b0_u16(*(u16 *)(*(int *)(iVar5 + 0xa2c) + 2));
+      bppMain0020f8b0_u16(*(u16 *)(*(int *)(action + 0xa2c) + 2));
       break;
     }
   }
   if ((*puVar2 & 2) != 0) {
-    iVar4 = func_001ff430(puVar2[4]);
-    switch (*(u8 *)(iVar4 + 0xa2)) {
+    action = func_001ff430(puVar2[4]);
+    switch (*(u8 *)(action + 0xa2)) {
     case 0:
-      iVar5 = bpMisc001ff5b0();
-      for (iVar7 = 0; (int)iVar7 < iVar5; iVar7 = iVar7 + 1) {
+      count = bpMisc001ff5b0();
+      for (iVar7 = 0; (int)iVar7 < count; iVar7 = iVar7 + 1) {
         sVar3 = (u16)func_001ff630(iVar7);
-        if (sVar3 != *(u16 *)(*(int *)(iVar4 + 0xa2c) + 2)) {
-          bppMain0020fb60_u16(0);
+        if (sVar3 != *(u16 *)(*(int *)(action + 0xa2c) + 2)) {
+          bppMain0020fb60_u16(sVar3);
         }
       }
       break;
@@ -761,11 +761,8 @@ void FUN_00244770(void)
     }
     break;
   }
-  uVar1 = *puVar2;
-  uVar1 = uVar1 & 0xfffffffe;
-  *puVar2 = uVar1;
-  uVar1 = uVar1 & 0xfffffffd;
-  *puVar2 = uVar1;
+  *puVar2 &= 0xfffffffe;
+  *puVar2 &= 0xfffffffd;
   puVar2[2] = 0;
   *puVar2 = *puVar2 | 0x20;
   return;
