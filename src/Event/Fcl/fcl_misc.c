@@ -610,7 +610,7 @@ LAB_003c8ac8:
 }
 #define FUN_003c89a0(...) ((u64 (*)(...))FUN_003c89a0)(__VA_ARGS__)
 #undef FUN_003c8b50
-// FUN_003C8B50 NONMATCHING
+// FUN_003C8B50
 
 
 u32 FUN_003c8b50(u32 param_1,int param_2)
@@ -712,17 +712,17 @@ u32 FUN_003c8b50(u32 param_1,int param_2)
     *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) & 0xfffffffe;
     fclMisc9290Call((int *)(param_2 + 0x10),*(u32 *)(param_2 + 0x2c),
                     *(u32 *)(param_2 + 0x20));
-    fclMisc9390Call((int *)(param_2 + 0x10));
-    if (fclMisc9340Call((int *)(param_2 + 0x10)) == 0) {
-      fclMisc9460DirectCall((int *)(param_2 + 0x10));
-    }
-
-
+  }
+  fclMisc9390Call((int *)(param_2 + 0x10));
+  if (fclMisc9340Call((int *)(param_2 + 0x10)) == 0) {
+    fclMisc9460DirectCall((int *)(param_2 + 0x10));
+    *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) | 4;
   }
 
 
 
-  *(u32 *)(param_2 + 4) = *(u32 *)(param_2 + 4) | 4;
+
+
   return 0;
 
 }

@@ -1112,7 +1112,7 @@ void FUN_002d8330(BtlAction* action)
 }
 
 
-// FUN_002d8390 NONMATCHING
+// FUN_002d8390
 
 int FUN_002d8390(void)
 {
@@ -1129,7 +1129,7 @@ int FUN_002d8390(void)
   int hasFlag80;
 
   selector = FUN_002d4e10(2, 0x80000);
-  if (selector >= 6) {
+  if (selector > 5) {
     return -1;
   }
   comparison = FUN_002d4cf0(2, 0x80000);
