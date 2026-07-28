@@ -1966,54 +1966,31 @@ void FUN_00396910(int param_1,int param_2)
 }
 #define FUN_00396910(...) ((void (*)(...))FUN_00396910)(__VA_ARGS__)
 #undef FUN_003969b0
-// FUN_003969B0 NONMATCHING
+// FUN_003969B0
 
 
 void FUN_003969b0(int param_1)
-
-
 {
-
+  u16 *puVar5;
   u16 sVar1;
-
-  int lVar2;
-
   int iVar3;
-
   int iVar4;
 
-  
-
   for (iVar4 = 0; iVar4 < 0x10; iVar4 = iVar4 + 1) {
-
-    if ((iVar4 < 0x10) && (lVar2 = FUN_003b5cf0(), lVar2 != 0)) {
-
+    if ((iVar4 < 0x10) && (FUN_003b5cf0() != 0)) {
       iVar3 = param_1 + iVar4 * 2;
-
-      sVar1 = *(short *)(iVar3 + 0x170);
-
+      puVar5 = (u16 *)(iVar3 + 0x170);
+      sVar1 = *(u16 *)(iVar3 + 0x170);
       if (sVar1 != 0) {
-
-        lVar2 = FUN_003b5d10(sVar1);
-
-        if (lVar2 != 0) {
-
+        if (FUN_003b5d10(sVar1) != 0) {
           FUN_003b7090(sVar1);
-
           FUN_005225a8_typed(DAT_006a1000);
-
         }
-
-        *(u16 *)(iVar3 + 0x170) = 0;
-
+        *puVar5 = 0;
       }
-
     }
-
   }
-
   return;
-
 }
 #define FUN_003969b0(...) ((void (*)(...))FUN_003969b0)(__VA_ARGS__)
 #undef FUN_00396a70

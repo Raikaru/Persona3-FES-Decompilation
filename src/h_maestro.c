@@ -4198,60 +4198,55 @@ u32 func_001167f0(u32 param_1)
 
 }
 #pragma opt_loop_invariants off
-// FUN_00116CF0 NONMATCHING
+// FUN_00116CF0
 
 
 void func_00116cf0(int param_1)
 {
     u8* work;
-    s32 i;
-    s32 j;
+    void** entry;
 
     work = *(u8**)(param_1 + 0x3c);
     func_001124b0(*(void**)(work + 0x738));
-
-    for (i = 0; i < 2; i++)
     {
-        u8* entry;
-        u32* slot;
+        s32 i;
 
-        entry = work + i * 0x364;
-        slot = (u32*)(entry + 0x180);
-        if (*(void**)(entry + 0x180) != NULL)
+        for (i = 0; i < 2; i++)
         {
-            H_Cdvd_CacheRemove(*(void**)(entry + 0x180));
-            *slot = 0;
+            entry = (void**)(work + i * 0x364 + 0x180);
+            if (*entry != NULL)
+            {
+                H_Cdvd_CacheRemove(*entry);
+                *entry = NULL;
+            }
         }
     }
-
-    for (j = 0; j < 3; j++)
     {
-        u8* entry;
-        u32* slot;
+        s32 i;
 
-        entry = work + j * 4;
-        slot = (u32*)(entry + 0x24);
-        if (*(void**)(entry + 0x24) != NULL)
+        for (i = 0; i < 3; i++)
         {
-            FUN_00100ec0(*(void**)(entry + 0x24));
-            *slot = 0;
+            entry = (void**)(work + i * 4 + 0x24);
+            if (*entry != NULL)
+            {
+                FUN_00100ec0(*entry);
+                *entry = NULL;
+            }
         }
     }
-
-    for (j = 0; j < 2; j++)
     {
-        u8* entry;
-        u32* slot;
+        s32 i;
 
-        entry = work + j * 4;
-        slot = (u32*)(entry + 0x1c);
-        if (*(void**)(entry + 0x1c) != NULL)
+        for (i = 0; i < 2; i++)
         {
-            func_004d0f00(*(void**)(entry + 0x1c));
-            *slot = 0;
+            entry = (void**)(work + i * 4 + 0x1c);
+            if (*entry != NULL)
+            {
+                func_004d0f00(*entry);
+                *entry = NULL;
+            }
         }
     }
-
     MAESTRO_FREE(work);
 }
 

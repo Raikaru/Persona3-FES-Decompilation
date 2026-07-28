@@ -784,6 +784,8 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
     f32 scale;
     f32 x;
     f32 xSquared;
+    f32 r;
+    f32 r2;
     f32 nearAngle;
     f32 radius;
 
@@ -883,57 +885,45 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
         else
         {
             f32 firstWeight;
-            f32 secondWeight;
 
             firstWeight = 1.0f - ratio;
-            secondWeight = ratio;
             if (work.blend.flag == 0)
             {
                 x = firstWeight * work.blend.scalar;
                 xSquared = x * x;
-                firstWeight =
-                    xSquared * x *
-                    (xSquared *
-                     (xSquared *
-                      (xSquared *
-                       (xSquared *
-                        (fGpffff8130 * xSquared +
-                         fGpffff8048) +
-                        fGpffff8118) +
-                       fGpffff8050) +
-                      fGpffff8054) +
-                     fGpffff8058) +
-                    x;
-
-                x = secondWeight * work.blend.scalar;
+                r = fGpffff8048 + fGpffff8130 * xSquared;
+                r = fGpffff8118 + xSquared * r;
+                r = fGpffff8050 + xSquared * r;
+                r = fGpffff8054 + xSquared * r;
+                r2 = fGpffff8058 + xSquared * r;
+                r = xSquared * x;
+                firstWeight = x + r * r2;
+                x = ratio * work.blend.scalar;
                 xSquared = x * x;
-                secondWeight =
-                    xSquared * x *
-                    (xSquared *
-                     (xSquared *
-                      (xSquared *
-                       (xSquared *
-                        (fGpffff8130 * xSquared +
-                         fGpffff8048) +
-                        fGpffff8118) +
-                       fGpffff8050) +
-                      fGpffff8054) +
-                     fGpffff8058) +
-                    x;
+                r = fGpffff8048 + fGpffff8130 * xSquared;
+                r = fGpffff8118 + xSquared * r;
+                r = fGpffff8050 + xSquared * r;
+                r = fGpffff8054 + xSquared * r;
+                r2 = fGpffff8058 + xSquared * r;
+                r = xSquared * x;
+                ratio = x + r * r2;
             }
 
             work.blendedRot.imag.x =
-                work.blend.first.imag.x * firstWeight +
-                work.blend.second.imag.x * secondWeight;
+                work.blend.first.imag.x * firstWeight;
             work.blendedRot.imag.y =
-                work.blend.first.imag.y * firstWeight +
-                work.blend.second.imag.y * secondWeight;
+                work.blend.first.imag.y * firstWeight;
             work.blendedRot.imag.z =
-                work.blend.first.imag.z * firstWeight +
-                work.blend.second.imag.z * secondWeight;
+                work.blend.first.imag.z * firstWeight;
+            work.blendedRot.imag.x +=
+                work.blend.second.imag.x * ratio;
+            work.blendedRot.imag.y +=
+                work.blend.second.imag.y * ratio;
+            work.blendedRot.imag.z +=
+                work.blend.second.imag.z * ratio;
             work.blendedRot.real =
                 work.blend.first.real * firstWeight +
-                work.blend.second.real * secondWeight;
+                work.blend.second.real * ratio;
         }
 
         RtQuatTransformVectors(&work.delta, &D_006978A0, 1,

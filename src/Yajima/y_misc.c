@@ -605,47 +605,29 @@ u32 FUN_00424730(void)
 
 
 u32 FUN_00424880(void)
-
-
-
 {
+  s32 result = 0;
+  s32 type = scrGetIntPara(0);
+  s32 index = scrGetIntPara(1);
+  s32 count;
 
-  short sVar1;
-
-  u8 uVar2;
-
-  int lVar3;
-
-  int lVar4;
-
-  int iVar5;
-
-  
-
-  lVar3 = scrGetIntPara(0);
-
-  lVar4 = scrGetIntPara(1);
-
-  if ((lVar3 < 1) || (0xb < lVar3)) {
+  if ((type > 0) && (type < 12)) {
+    count = func_0016f490((s16)(type + 0x100));
+    if ((index < count) && (count > 0)) {
+      result = func_0016f810((s16)(type + 0x100), index);
+      scrSetIntReturnVal((u8)result);
+      return 1;
+    }
+    for (index = 0; index < 20; index++) {
+      if (func_00170ab0((s16)type, (s16)index) > 0) {
+        result = 0;
+      }
+    }
+    scrSetIntReturnVal(result);
+  } else {
     scrSetIntReturnVal(0);
   }
-  else {
-    sVar1 = (short)lVar3;
-    lVar3 = func_0016f490(sVar1 + 0x100);
-    if ((lVar4 < lVar3) && (0 < lVar3)) {
-      uVar2 = func_0016f810(sVar1 + 0x100,lVar4);
-      scrSetIntReturnVal(uVar2);
-    }
-    else {
-      for (iVar5 = 0; iVar5 < 0x14; iVar5 = iVar5 + 1) {
-        func_00170ab0(sVar1,(short)iVar5);
-      }
-      scrSetIntReturnVal(0);
-    }
-  }
-
   return 1;
-
 }
 
 // FUN_004249B0 NONMATCHING

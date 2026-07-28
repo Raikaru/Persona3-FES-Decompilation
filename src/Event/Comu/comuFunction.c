@@ -424,7 +424,7 @@ u32 FUN_003be020(u64 param_1,int param_2,u32 param_3)
 
   u16 *puVar9;
 
-  long lVar10;
+  int lVar10;
 
   u32 uVar11;
 

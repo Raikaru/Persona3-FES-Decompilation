@@ -908,11 +908,13 @@ void func_002771f0(void)
 {
     s32 i;
     u8 *work;
+    OpFadeWork *fadeWork;
     u32 tex8;
     u32 tex10;
     u32 tex1;
     u32 frame;
-    u8 *entry;
+    u8 *listEntry;
+    OpFadeEntry *entry;
     f32 layout[4];
     f32 alpha;
     f32 alpha2;
@@ -921,6 +923,7 @@ void func_002771f0(void)
     if (gOpWorkD0 == NULL)
         K_Assert(D_0068ED88, 0x61);
     work = OP_WORKD;
+    fadeWork = (OpFadeWork*)gOpWorkD0;
     tex8 = func_00119a60(8);
     tex10 = func_00119a60(10);
     tex1 = brRes00234630(1);
@@ -929,35 +932,35 @@ void func_002771f0(void)
     layout[1] = 326.0f;
     layout[2] = (f32)opTexW(tex8, 0x15);
     layout[3] = (f32)opTexH(tex8, 0x15);
-    func_0021d8e0(work + 0x2d30, layout);
+    func_0021d8e0(fadeWork->panel15, layout);
     layout[0] = (f32)opTexW(tex8, 0x15) + 411.0f;
     layout[1] = 326.0f;
     layout[2] = 31.0f;
     layout[3] = (f32)opTexH(tex8, 0x15);
-    func_0021d8e0(work + 0x2e30, layout);
+    func_0021d8e0(fadeWork->panel15Alt, layout);
     layout[0] = 557.0f;
     layout[1] = 326.0f;
     layout[2] = (f32)opTexW(tex8, 0x17);
     layout[3] = (f32)opTexH(tex8, 0x17);
-    func_0021d8e0(work + 0x2f30, layout);
+    func_0021d8e0(fadeWork->panel17, layout);
 
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
     color[3] = 0xff;
-    func_0021d950(work + 0x2d30, color);
-    func_0021d950(work + 0x2e30, color);
-    func_0021d950(work + 0x2f30, color);
+    func_0021d950(fadeWork->panel15, color);
+    func_0021d950(fadeWork->panel15Alt, color);
+    func_0021d950(fadeWork->panel17, color);
 
     for (i = 0; i < 8; i++)
     {
-        entry = work + i * 0x110 + 0x10;
+        listEntry = fadeWork->list12[i];
         layout[0] = (f32)(i / 4) * 190.0f + 34.0f;
         layout[1] = (f32)(i % 4) * 24.0f + 316.0f;
         layout[2] = (f32)opTexW(tex8, 0x12);
         layout[3] = (f32)opTexH(tex8, 0x12);
-        func_0021d8e0(entry, layout);
-        func_0021d950(entry, color);
+        func_0021d8e0(listEntry, layout);
+        func_0021d950(listEntry, color);
     }
 
     for (i = 0; i < OP_S32(work, 0x3738); i++)
@@ -1003,12 +1006,12 @@ void func_002771f0(void)
         layout[1] = 343.0f;
         layout[2] = (f32)opTexW(tex8, 0x13);
         layout[3] = (f32)opTexH(tex8, 0x13);
-        func_0021d8e0(work + 0x2c30, layout);
+        func_0021d8e0(fadeWork->panel13, layout);
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
         color[3] = 0xff;
-        func_0021d950(work + 0x2c30, color);
+        func_0021d950(fadeWork->panel13, color);
 
         if ((OP_U32(work, 0) & 0x10) == 0)
             alpha2 = 0.0f;
@@ -1028,24 +1031,24 @@ void func_002771f0(void)
         layout[1] = 319.0f;
         layout[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
         layout[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
-        func_0021d8e0(work + 0x3960, layout);
+        func_0021d8e0(fadeWork->texture1, layout);
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
         color[3] = (u8)(255.0f * alpha2);
-        func_0021d950(work + 0x3960, color);
+        func_0021d950(fadeWork->texture1, color);
 
         frame = func_0021cca0(tex1, 0);
         layout[0] = 405.0f;
         layout[1] = 333.0f;
         layout[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
         layout[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
-        func_0021d8e0(work + 0x3a60, layout);
+        func_0021d8e0(fadeWork->texture0, layout);
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
         color[3] = (u8)(255.0f * alpha2);
-        func_0021d950(work + 0x3a60, color);
+        func_0021d950(fadeWork->texture0, color);
     }
     else
     {
@@ -1055,57 +1058,57 @@ void func_002771f0(void)
 
     for (i = 0; i < OP_S32(work, 0x3730); i++)
     {
-        entry = work + i * 0x100 + 0x3030;
+        listEntry = fadeWork->list14[i];
         layout[0] = (f32)(i / 2) * 62.0f + 414.0f;
         layout[1] = (f32)(i % 2) * 24.0f + 366.0f;
         layout[2] = (f32)opTexW(tex10, 0x14);
         layout[3] = (f32)opTexH(tex10, 0x14);
-        func_0021d8e0(entry, layout);
-        func_0021d950(entry, color);
+        func_0021d8e0(listEntry, layout);
+        func_0021d950(listEntry, color);
     }
 
     layout[0] = 526.0f;
     layout[1] = 328.0f;
-    func_00238dc0(work + 0x3750, 2, OP_U32(work, 0x3734), 2, layout);
+    func_00238dc0(fadeWork->draw, 2, fadeWork->drawHandle, 2, layout);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
     color[3] = 0xff;
     for (i = 0; i < 2; i++)
-        func_0021d950(work + i * 0x100 + 0x3750, color);
+        func_0021d950(fadeWork->draw + i * 0x100, color);
 
     for (i = 0; i < 5; i++)
     {
-        entry = work + i * 0x1c8 + 0x890;
+        entry = &fadeWork->entries[i];
 
         layout[0] = 104.0f;
         layout[1] = 129.0f + (f32)i * 19.0f - 25.0f;
         layout[2] = (f32)opTexW(tex10, 0x14);
         layout[3] = DAT_007caf8c + (f32)opTexH(tex10, 0x14);
-        func_0021d8e0(entry + 0x420, layout);
+        func_0021d8e0(entry->panel14, layout);
 
         layout[0] = (f32)opTexW(tex10, 0x14) + 104.0f;
         layout[2] = 220.0f;
         layout[3] = DAT_007caf8c + (f32)opTexH(tex10, 0x14);
-        func_0021d8e0(entry + 0x520, layout);
+        func_0021d8e0(entry->panel14Alt, layout);
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
         color[3] = 0xff;
-        func_0021d950(entry + 0x420, color);
-        func_0021d950(entry + 0x520, color);
+        func_0021d950(entry->panel14, color);
+        func_0021d950(entry->panel14Alt, color);
 
         layout[0] = DAT_007cb04c;
         layout[1] = 129.0f + (f32)i * 19.0f - 25.0f;
         layout[2] = (f32)opTexW(tex10, 0x15);
         layout[3] = DAT_007caf8c + (f32)opTexH(tex10, 0x15);
-        func_0021d8e0(entry + 0x620, layout);
-        func_0021d950(entry + 0x620, color);
+        func_0021d8e0(entry->panel15, layout);
+        func_0021d950(entry->panel15, color);
 
         layout[0] = 69.0f;
         layout[1] = 131.0f + (f32)i * 19.0f - 25.0f;
-        func_00238dc0(entry + 0x10, 2, OP_U32(entry, 0), 2, layout);
-        func_0021d950(entry + 0x10, color);
+        func_00238dc0(entry->draw, 2, entry->drawHandle, 2, layout);
+        func_0021d950(entry->draw, color);
 
         {
             s32 mode;
@@ -1113,7 +1116,7 @@ void func_002771f0(void)
             f32 barEnd;
             f32 pulse;
 
-            mode = OP_S32(entry, 0x210);
+            mode = OP_S32(entry->draw, 0x200);
             if (mode == 0)
                 barStart = 0.0f;
             else if (mode == 0x63)
@@ -1125,11 +1128,11 @@ void func_002771f0(void)
             layout[1] = 130.0f + (f32)i * 19.0f - 25.0f;
             layout[2] = barStart;
             layout[3] = (f32)opTexH(tex10, 0x18);
-            func_0021d8e0(entry + 0x220, layout);
-            func_0021eac0(entry + 0x220, (f32)0xFFFF);
-            func_0021d950(entry + 0x220, color);
+            func_0021d8e0(entry->panel18, layout);
+            func_0021eac0(entry->panel18, (f32)0xFFFF);
+            func_0021d950(entry->panel18, color);
 
-            if ((OP_U32(entry, 0) & 4) != 0)
+            if ((entry->drawHandle & 4) != 0)
             {
                 mode = OP_S32(work, 0x373c);
                 if (mode < 10)
@@ -1149,7 +1152,7 @@ void func_002771f0(void)
             pulse = sinf(DAT_007caf38 * pulse);
             pulse = DAT_007cafec * pulse + DAT_007cad74;
 
-            mode = OP_S32(entry, 0x210);
+            mode = OP_S32(entry->draw, 0x200);
             if (mode == 0)
                 barStart = 0.0f;
             else if (mode == 0x63)
@@ -1157,7 +1160,7 @@ void func_002771f0(void)
             else
                 barStart = 225.0f * (f32)mode / 98.0f + 2.0f;
 
-            mode = OP_S32(entry, 0x214);
+            mode = OP_S32(entry->draw, 0x204);
             if (mode == 0)
                 barEnd = 0.0f;
             else if (mode == 1)
@@ -1169,12 +1172,12 @@ void func_002771f0(void)
             layout[1] = 129.0f + (f32)i * 19.0f - 25.0f;
             layout[2] = barEnd;
             layout[3] = (f32)opTexH(tex10, 0x1b);
-            func_0021d8e0(entry + 0x320, layout);
+            func_0021d8e0(entry->panel1b, layout);
             color[0] = 0xff;
             color[1] = 0xff;
             color[2] = 0xff;
             color[3] = (u8)(255.0f * alpha2 * pulse);
-            func_0021d950(entry + 0x320, color);
+            func_0021d950(entry->panel1b, color);
         }
     }
 
@@ -1183,12 +1186,12 @@ void func_002771f0(void)
     frame = func_0021cca0(tex1, 0);
     layout[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
     layout[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
-    func_0021d8e0(work + 0x3b70, layout);
+    func_0021d8e0(fadeWork->texture0Alt, layout);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
     color[3] = 0xff;
-    func_0021d950(work + 0x3b70, color);
+    func_0021d950(fadeWork->texture0Alt, color);
 }
 
 #define D_00960090 (*state)

@@ -1604,85 +1604,246 @@ s32 func_001de630(s32 charId)
     switch (charId)
     {
     case 1:
-        if (datGetScenarioMode() == 1 &&
-            (gMtScene->fldMajorId == 4 || gMtScene->fldMajorId == 5))
+        if (datGetScenarioMode() == 1)
         {
-            result = 3;
-            if (datGetFlag(0xC35) != 0)
-            {
-                result = 2;
-            }
-        }
-        else if (func_001a0310() == 1)
-        {
-            result = 3;
-            if (datGetFlag(0xC35) != 0)
-            {
-                result = 2;
-            }
-        }
-        else if ((gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 6 &&
-                  datGetTime() == 8) ||
-                 (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 1 &&
-                  datGetTime() == 8) ||
-                 (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 1 &&
-                  datGetTime() == 8))
-        {
-            result = 3;
-            if (datGetFlag(0xC35) != 0)
-            {
-                result = 2;
-            }
-        }
-        else
-        {
-            major = gMtScene->fldMajorId;
-            minor = gMtScene->fldMinorId;
-            if (major == 14 && minor == 5)
-            {
-                result = 1;
-            }
-            else if (major == 33)
+            if (gMtScene->fldMajorId == 4 || gMtScene->fldMajorId == 5)
             {
                 result = 3;
                 if (datGetFlag(0xC35) != 0)
                 {
-                    result = 2;
+                    result -= 1;
                 }
+                break;
             }
-            else if (major == 7 && datGetFlag(0xE00) == 1)
+        }
+        if (func_001a0310() == 1)
+        {
+            result = 3;
+            if (datGetFlag(0xC35) != 0)
             {
-                result = 1;
+                result -= 1;
             }
-            else if (major == 6 && datGetFlag(0xE60) == 1)
+            break;
+        }
+        if (gMtScene->fldMajorId == 7)
+        {
+            if (gMtScene->fldMinorId == 6)
             {
-                result = 3;
-                if (datGetFlag(0xC35) != 0)
+                if (datGetTime() == 8)
                 {
-                    result = 2;
-                }
-            }
-            else if (func_001a01c0() == 1 ||
-                     ((major == 21 || major == 22 || major == 23 || major == 24 ||
-                       major == 25 || major == 26 || major == 27 || major == 41 ||
-                       major == 42 || major == 43 || major == 44 || major == 45 ||
-                       major == 46 || major == 47) && minor == 50) ||
-                     (major == 22 && minor == 51) ||
-                     (major == 23 && minor == 51) ||
-                     (major == 24 && minor == 51) ||
-                     (major == 39 && (minor == 1 || minor == 2 || minor == 3)))
-            {
-                result = 3;
-            }
-            else
-            {
-                result = 3;
-                if (datGetFlag(0xC35) != 0)
-                {
-                    result = 2;
+                    goto footstep_case1_time;
                 }
             }
         }
+        if (gMtScene->fldMajorId == 8)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_case1_time;
+                }
+            }
+        }
+        if (gMtScene->fldMajorId == 9)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_case1_time;
+                }
+            }
+        }
+        goto footstep_case1_after_time;
+
+footstep_case1_time:
+        result = 3;
+        if (datGetFlag(0xC35) != 0)
+        {
+            result -= 1;
+        }
+        break;
+
+footstep_case1_after_time:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+            break;
+        }
+        if (gMtScene->fldMajorId == 0x21)
+        {
+            result = 3;
+            if (datGetFlag(0xC35) != 0)
+            {
+                result -= 1;
+            }
+            break;
+        }
+        if (gMtScene->fldMajorId == 7 && datGetFlag(0xE00) == 1)
+        {
+            result = 1;
+            break;
+        }
+        if (gMtScene->fldMajorId == 6 && datGetFlag(0xE60) == 1)
+        {
+            result = 3;
+            if (datGetFlag(0xC35) != 0)
+            {
+                result -= 1;
+            }
+            break;
+        }
+        if (func_001a01c0() == 1)
+        {
+            goto footstep_case1_status;
+        }
+        if (gMtScene->fldMajorId == 0x15)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x16)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x16)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x17)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x17)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x18)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x18)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x19)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x1A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x1B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x29)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2C)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2D)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2E)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2F)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 2)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 3)
+        {
+            goto footstep_case1_status;
+        }
+        result = 3;
+        if (datGetFlag(0xC35) != 0)
+        {
+            result -= 1;
+        }
+        break;
+
+footstep_case1_status:
+        result = 3;
         break;
 
     case 2:
@@ -1829,13 +1990,12 @@ special_result:
     }
     goto done;
 after_special_result:
-    major = gMtScene->fldMajorId;
-    if (major == 14 && gMtScene->fldMinorId == 5)
+    if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
     {
         result = 1;
         goto done;
     }
-    if (major == 33)
+    if (gMtScene->fldMajorId == 33)
     {
         result = 3;
         if (datGetFlag(0xc35))
@@ -1844,15 +2004,12 @@ after_special_result:
         }
         goto done;
     }
-    if (major == 7)
+    if (gMtScene->fldMajorId == 7 && datGetFlag(0xe00) == 1)
     {
-        if (datGetFlag(0xe00) == 1)
-        {
-            goto done;
-        }
+        result = 1;
+        goto done;
     }
-    major = gMtScene->fldMajorId;
-    if (major == 6 && datGetFlag(0xe60) == 1)
+    if (gMtScene->fldMajorId == 6 && datGetFlag(0xe60) == 1)
     {
         result = 5;
         if (datGetFlag(0xc35))
@@ -1861,36 +2018,57 @@ after_special_result:
         }
         goto done;
     }
-    if (func_001a01c0() == 1 ||
-        (major == 21 && gMtScene->fldMinorId == 50) ||
-        (major == 22 && gMtScene->fldMinorId == 50) ||
-        (major == 22 && gMtScene->fldMinorId == 51) ||
-        (major == 23 && gMtScene->fldMinorId == 50) ||
-        (major == 23 && gMtScene->fldMinorId == 51) ||
-        (major == 24 && gMtScene->fldMinorId == 50) ||
-        (major == 24 && gMtScene->fldMinorId == 51) ||
-        (major == 25 && gMtScene->fldMinorId == 50) ||
-        (major == 26 && gMtScene->fldMinorId == 50) ||
-        (major == 27 && gMtScene->fldMinorId == 50) ||
-        (major == 41 && gMtScene->fldMinorId == 50) ||
-        (major == 42 && gMtScene->fldMinorId == 50) ||
-        (major == 43 && gMtScene->fldMinorId == 50) ||
-        (major == 44 && gMtScene->fldMinorId == 50) ||
-        (major == 45 && gMtScene->fldMinorId == 50) ||
-        (major == 46 && gMtScene->fldMinorId == 50) ||
-        (major == 47 && gMtScene->fldMinorId == 50) ||
-        (major == 39 && gMtScene->fldMinorId == 1) ||
-        (major == 39 && gMtScene->fldMinorId == 2) ||
-        (major == 39 && gMtScene->fldMinorId == 3))
-    {
-        result = 3;
-        goto done;
-    }
+    if (func_001a01c0() == 1)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x15 && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x16 && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x16 && gMtScene->fldMinorId == 0x33)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x17 && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x17 && gMtScene->fldMinorId == 0x33)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x18 && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x18 && gMtScene->fldMinorId == 0x33)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x19 && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x1a && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x1b && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x29 && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x2a && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x2b && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x2c && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x2d && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x2e && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x2f && gMtScene->fldMinorId == 0x32)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 1)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 2)
+        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 3)
+        goto footstep_case1_status_ded40;
     result = 5;
     if (datGetFlag(0xc35))
     {
         result -= 1;
     }
+    goto done;
+
+footstep_case1_status_ded40:
+    result = 3;
     goto done;
 
 handler_2:

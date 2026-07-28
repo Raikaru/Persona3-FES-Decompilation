@@ -1056,15 +1056,15 @@ extern void FUN_0032a770_u32(u8 (*param_1) [16], int param_2, u32 param_3,
 extern void FUN_0032a890_u32(int param_1, u32 param_2);
 void FUN_0032af30(int param_1);
 void FUN_0032ba30(int param_1);
-void FUN_0032c340(u64 param_1);
+void FUN_0032c340(int param_1);
 void FUN_0032ce10(int param_1);
 void FUN_0032d840(int param_1);
 void FUN_0032e1a0(int param_1);
 void FUN_0032eb40(int param_1);
-void FUN_0032f910(u64 param_1);
+void FUN_0032f910(int param_1);
 void FUN_00330190(u64 param_1);
 void FUN_00330c40(u64 param_1);
-void FUN_00331650(u64 param_1);
+void FUN_00331650(int param_1);
 u64 FUN_00332070(u16 param_1,int param_2,int param_3);
 #pragma alias FUN_00332070_u32 FUN_00332070
 extern u32 FUN_00332070_u32(u16 param_1,int param_2,int param_3);
@@ -14588,7 +14588,7 @@ void FUN_0032af30(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -15176,7 +15176,7 @@ void FUN_0032ba30(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -15676,13 +15676,13 @@ void FUN_0032ba30(int param_1)
 // FUN_0032C340 NONMATCHING
 
 
-void FUN_0032c340(u64 param_1)
+void FUN_0032c340(int param_1)
 
 
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -16813,7 +16813,7 @@ void FUN_0032d840(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -17895,7 +17895,7 @@ void FUN_0032eb40(int param_1)
 
   u8 (*pauVar1) [12];
 
-  char cVar2;
+  u8 cVar2;
 
   u32 uVar3;
 
@@ -18803,13 +18803,13 @@ void FUN_0032eb40(int param_1)
 // FUN_0032F910 NONMATCHING
 
 
-void FUN_0032f910(u64 param_1)
+void FUN_0032f910(int param_1)
 
 
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -19292,7 +19292,7 @@ void FUN_00330190(u64 param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -19985,7 +19985,7 @@ void FUN_00330c40(u64 param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -20635,13 +20635,13 @@ void FUN_00330c40(u64 param_1)
 
 
 
-void FUN_00331650(u64 param_1)
+void FUN_00331650(int param_1)
 
 
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -43135,7 +43135,7 @@ void FUN_0034a650(int param_1)
 
 
 
-// FUN_0034A800 NONMATCHING
+// FUN_0034A800
 
 
 void FUN_0034a800(int param_1)
@@ -43145,20 +43145,23 @@ void FUN_0034a800(int param_1)
 {
 
   u8 auStack_100 [256];
+  u8 *model;
+  u8 *data;
 
   
 
-  if (*(char *)(*(int *)(param_1 + 0x24) + 0xc3) != '\0') {
+  model = *(u8 **)(param_1 + 0x24);
+  data = model + 0xc0;
+  if (*(u8 *)(model + 0xc3) > 0) {
+    FUN_00348950(data,(float *)(auStack_100));
 
-    FUN_00348950((u8 *)(*(int *)(param_1 + 0x24) + 0xc0),(float *)(auStack_100));
-
-    (*DAT_00960090)(1,DAT_00957ba8);
+    (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
 
     RpSkyRenderStateSet(3,0x31001);
 
     FUN_003295c0(0x6fc009fc00a);
 
-    (*DAT_009600a4)(3,auStack_100,4,0x69cb80,6);
+    (*DAT_009600a4_abs)(3,auStack_100,4,DAT_0069cb80_abs,6);
 
     FUN_00329630();
 
