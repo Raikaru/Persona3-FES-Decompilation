@@ -5439,21 +5439,28 @@ void FUN_0038c460(int param_1,int param_2,int *param_3,u32 *param_4)
     puVar4 = (u32 *)param_1;
     sVar1 = *(short *)(puVar4 + 8);
     *param_4 = puVar4[0x1b];
-    while ((puVar2 = (u16 *)*param_4, puVar2 != (u16 *)0x0 &&
-           ((int)((u32)*puVar2 + (int)sVar1) <= param_2))) {
+    while (*param_4 != 0) {
+      puVar2 = (u16 *)*param_4;
+      if (param_2 < (int)((u32)*puVar2 + sVar1)) {
+        break;
+      }
       *param_4 = *(u32 *)(puVar2 + 0x26);
     }
 
-    if (puVar2 == (u16 *)0x0) {
-      *param_3 = puVar4[0x1c];
+    if (*param_4 != 0) {
+      *param_3 = *(int *)(*param_4 + 0x50);
     }
     else {
-      *param_3 = *(int *)(puVar2 + 0x28);
+      *param_3 = puVar4[0x1c];
     }
 
     lVar3 = FUN_0036f500(*puVar4);
     if (lVar3 == 1) {
-      while ((*param_3 != 0 && (lVar3 = FUN_00360ed0(), lVar3 != 1))) {
+      while (*param_3 != 0) {
+        lVar3 = FUN_00360ed0();
+        if (lVar3 == 1) {
+          break;
+        }
         *param_3 = *(int *)(*param_3 + 0x50);
       }
     }

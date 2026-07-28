@@ -6013,7 +6013,6 @@ void btlActionUpdateStateError(BtlAction* action)
 
     if (action->unit->genus == UNIT_GENUS_PC)
     {
-        cameraState = BTLCAMERA_STATE_SKILLRECITE_P;
         if (!isCommand3)
         {
             animation = 0xc;
@@ -6024,13 +6023,14 @@ void btlActionUpdateStateError(BtlAction* action)
             animation = 0x15;
             table = 0x38;
         }
+        cameraState = BTLCAMERA_STATE_SKILLRECITE_P;
         duration = FUN_002838d0_btlAction(one, action->unit, animation);
     }
     else
     {
-        cameraState = BTLCAMERA_STATE_SKILLRECITE_E;
         animation = FUN_002d6370(action->target.specificId) != 0 ? 4 : 7;
         table = 0x21;
+        cameraState = BTLCAMERA_STATE_SKILLRECITE_E;
         duration = FUN_002835e0_btlAction(one, action->unit, animation);
     }
 

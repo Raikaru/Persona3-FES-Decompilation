@@ -1556,32 +1556,42 @@ void FUN_00202830(void)
 // FUN_00202A10 NONMATCHING
 void FUN_00202A10(void)
 {
-    u32 i;
-    u32 count;
+    u8* work;
+    s32 i;
     u32 handle;
-    u16 id;
+    u8* entry;
+    s32 start;
+    s8 alpha;
 
-    count = panelWork32(0x70);
-    for (i = 0; i < count; i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    for (i = 0; i < *(s32*)(work + 0x70); i++)
     {
-        handle = *(u32*)(panelWork() + 0x78 + i * 4);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x78 + i * 4) = 0;
+        func_003b0170(*(u32*)(work + 0x78 + i * 4));
     }
-    if (panelWork32(0) & 0x800000)
+    if (*(u32*)work & 0x800000)
     {
         func_00208360();
     }
-    func_003c7d60(7);
-    for (i = 0; i < count; i++)
+    handle = bpRoot_003a5540_typed(
+        100, 100, -1, 0.0f, 2, 6, (void*)func_003c7d60(7),
+        *(u16*)((u8*)(uintptr_t)(*(s32*)(work + 0x7664) * 8) +
+                 (uintptr_t)work + 0x2c));
+    func_002082c0(handle);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < *(s32*)(work + 0x70); i++)
     {
-        id = panelWork16(0x2c + i * 8);
-        handle = func_003b0970(func_0030bb40(id), 2,
-                               i == panelWork32(0x7664) - panelWork32(0x765c) ? 6 : 0,
-                               0, 0);
-        *(u32*)(panelWork() + 0x78 + i * 4) = handle;
+        start = *(s32*)(work + 0x765c);
+        entry = (u8*)(uintptr_t)((i + start) * 8) +
+                (uintptr_t)work + 0x28;
+        alpha = i == *(s32*)(work + 0x7664) - start ? 6 : 0;
+        handle = func_003b0970(
+            func_0030bb40(*(u16*)(entry + 4)), 2, alpha, 0, 0);
+        *(u32*)(work + 0x78 + i * 4) = handle;
     }
-    panelSetWork32(0, panelWork32(0) | 2);
+    func_003b0e90(1);
+    func_003b0e70(2);
 }
 
 // FUN_00202BC0
@@ -1693,7 +1703,7 @@ void FUN_00202D70(void)
     panelSetWork32(0x10, 2);
 }
 
-// FUN_00203030 NONMATCHING
+// FUN_00203030
 void FUN_00203030(void)
 {
     u8* work;

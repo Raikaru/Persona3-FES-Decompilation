@@ -12018,7 +12018,7 @@ u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 }
 
 #pragma push
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
 // FUN_00447F90 NONMATCHING
 
 void FUN_00447f90(float *param_1,int param_2,char param_3)

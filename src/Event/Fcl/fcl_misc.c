@@ -2357,7 +2357,7 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
 // FUN_003CB100 NONMATCHING
 
 
-void FUN_003cb100(u8 *param_1)
+void FUN_003cb100(int param_1)
 
 
 

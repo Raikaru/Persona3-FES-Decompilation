@@ -5597,8 +5597,8 @@ void FUN_003a7cb0(int param_1,int param_2)
   int direction = param_2;
   int object = param_1;
 
-  FUN_003a6380(*(u32 *)(object + 0xc),*(short *)(object + 0x16),
-               *(short *)(object + 0x1a),0,direction,object);
+  FUN_003a6380_direct(*(u32 *)(object + 0xc),*(short *)(object + 0x16),
+                      *(short *)(object + 0x1a),0);
   if (direction < 0) {
     direction = *(short *)(object + 0x16) - 1;
     if (direction < 0) {
@@ -5611,8 +5611,8 @@ void FUN_003a7cb0(int param_1,int param_2)
       direction = 0;
     }
   }
-  FUN_003a6380(*(u32 *)(object + 0xc),direction,
-               *(short *)(object + 0x1a),6,direction,object);
+  FUN_003a6380_direct(*(u32 *)(object + 0xc),direction,
+                      *(short *)(object + 0x1a),6);
   *(short *)(object + 0x16) = direction;
   *(short *)(object + 0x18) = direction;
   FUN_0010a4e0(0,0,0,0);
