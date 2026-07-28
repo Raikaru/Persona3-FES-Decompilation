@@ -158,6 +158,8 @@ extern u8 DAT_0069a638[];
 extern u8 DAT_0069a648[];
 extern f32 D_00697880[];
 extern const u8 D_006978B0[];
+extern const u8 D_00699FE0[];
+extern const u8 D_00699FF0[];
 extern const u8 D_0069A368[];
 extern const u8 D_0069A2D0[];
 extern const u8 D_0069A2F0[];
@@ -4330,7 +4332,7 @@ void func_002ecc60(s16 *param_1, s16 *param_2);
 u32 func_002ecf80(int param_1);
 void func_002ed350(void);
 u32 func_002ed360(u64 *param_1);
-void func_002ee640(u64 *param_1);
+void func_002ee640(BtlAction* action);
 u32 func_002eea10(BtlAction* action);
 void func_002eeb70(BtlAction* action);
 void func_002eec60(void);
@@ -9871,16 +9873,14 @@ u32 func_002ed360(u64 *param_1)
 }
 
 // FUN_002ee640 NONMATCHING
-void func_002ee640(u64 *param_1)
+void func_002ee640(BtlAction* action)
 {
-  BtlAction* action;
   BtlUnit* unit;
   BtlUnit* other;
   void* object;
   BtlPacket* parent;
   BtlPacket* packet;
 
-  action = (BtlAction*)param_1;
   gBtl->flags &= ~0x02000000;
   gBtl->flags |= 0x00080000;
   unit = action->unit;
@@ -9888,14 +9888,14 @@ void func_002ee640(u64 *param_1)
   unit->packetCount++;
   object = func_002b8f90(0);
   switch (unit->charId) {
-  case 0x109:
-    func_002b90d0(object, func_002f87e0(8));
-    packet = FUN_002dd690_packet_voice(3, (const char*)0x699ff0);
-    btlPacketRegister(packet, 1);
-    break;
   case 0x10a:
     func_002b90d0(object, func_002f87e0(7));
-    packet = FUN_002dd690_packet_voice(3, (const char*)0x699fe0);
+    packet = FUN_002dd690_packet_voice(3, (const char*)D_00699FE0);
+    btlPacketRegister(packet, 1);
+    break;
+  case 0x109:
+    func_002b90d0(object, func_002f87e0(8));
+    packet = FUN_002dd690_packet_voice(3, (const char*)D_00699FF0);
     btlPacketRegister(packet, 1);
     break;
   }

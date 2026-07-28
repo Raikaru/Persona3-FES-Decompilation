@@ -5871,6 +5871,9 @@ void FUN_002891e0(void)
 
 }
 
+// Confirmed compiler floor (W200): the only residual is the order of the adjacent
+// `move $a0, $s1` and `lhu $a1, 2($v0)` argument-setup instructions before a JAL.
+// MWCCPS2 b210 does not expose source control over independent call-argument setup order.
 // FUN_00289650 NONMATCHING
 
 
