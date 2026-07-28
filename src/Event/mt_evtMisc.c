@@ -5727,29 +5727,16 @@ void FUN_0038ca00(void)
 
 
 void FUN_0038ca80(int param_1)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
-
   int node;
-
   short *psVar4;
-
   int iVar5;
-
   int aiStack_d0 [52];
 
-  
-
   iVar3 = 0;
-
   iVar5 = 0;
   iVar3 = iVar3 + FUN_003b5df0(3);
   iVar3 = iVar3 + FUN_003b5df0(1);
@@ -5760,39 +5747,25 @@ void FUN_0038ca80(int param_1)
       aiStack_d0[iVar5] = node;
       iVar5 = iVar5 + 1;
     }
-
     for (node = FUN_003b5d50(1); node != 0; node = *(int *)(node + 0xf8)) {
       aiStack_d0[iVar5] = node;
       iVar5 = iVar5 + 1;
     }
-
     for (node = FUN_003b5d50(0xc); node != 0; node = *(int *)(node + 0xf8)) {
       aiStack_d0[iVar5] = node;
       iVar5 = iVar5 + 1;
     }
-
     for (iVar1 = 0; iVar1 < iVar3; iVar1 = iVar1 + 1) {
-
       for (iVar2 = 0; iVar2 < *(int *)((int)param_1 + 0x97c); iVar2 = iVar2 + 1) {
-
         psVar4 = *(short **)(*(int *)((int)param_1 + 0x980) + iVar2 * 4);
-
         if (*psVar4 == *(short *)aiStack_d0[iVar1]) goto LAB_0038cbd8;
-
       }
-
       psVar4 = (short *)0x0;
-
 LAB_0038cbd8:
-
       FUN_0038cc10(param_1,(u16 *)aiStack_d0[iVar1],(int)psVar4);
-
     }
-
   }
-
   return;
-
 }
 
 

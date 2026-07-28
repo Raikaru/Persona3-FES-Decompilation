@@ -25,7 +25,7 @@ void func_00218370(void* glyphs, s32 capacity, u32 value, const f32* origin);
 void func_00218570(void* glyphs, s32 capacity, u32 value, const f32* origin);
 void func_002187b0(void);
 void func_00218810(void* panel, const u32* entry, s32 selected);
-void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected, const f32* origin);
+void func_00218b20(void* panel, const u32* entry, s32 selected, const f32* origin, f32 alpha);
 void func_00219370(void* panel, const u32* entry, s32 selected);
 void func_00219970(void);
 void func_00219ab0(void);

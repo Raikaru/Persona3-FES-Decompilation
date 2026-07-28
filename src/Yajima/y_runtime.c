@@ -5604,26 +5604,23 @@ s8 FUN_004353f0(int param_1)
 char FUN_00435440(char param_1)
 
 {
-  u8 bVar1;
   u32 uVar2;
   u32 uVar3;
   long lVar4;
   char cVar5;
   int iVar6;
-  
+  u8 *target;
+  u8 *entry;
   cVar5 = '\0';
+  target = (u8 *)DAT_008717a0 + param_1 * 0x1c0;
   for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
-    bVar1 = 0;
-    if ((((u8 *)DAT_008717e8)[iVar6 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar6 * 0x70] != 0)) {
-      bVar1 = 1;
-    }
-    if (bVar1) {
+    entry = (u8 *)DAT_008717a0 + iVar6 * 0x1c0;
+    if ((*(u32 *)(entry + 0x48) != 0) && (*(u32 *)(entry + 0x54) != 0)) {
       if (iVar6 != 0) {
         uVar2 = FUN_0016c5f0_typed(*(u16 *)((u8 *)DAT_00871948 + (char)iVar6 * 0x1c0));
         uVar3 = FUN_0043c910((char)iVar6);
         if (((long)(uVar3 & 0xffff) < (long)(short)(((uVar2 & 0xffff) * 100) / 100)) &&
-           (lVar4 = FUN_001c7160_f32(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,
-                                 (u8 *)DAT_008717a0 + iVar6 * 0x1c0), lVar4 == 1)) {
+           (lVar4 = FUN_001c7160_f32(500.0f,target,entry), lVar4 == 1)) {
           cVar5 = cVar5 + '\x01';
         }
       }
@@ -5631,7 +5628,7 @@ char FUN_00435440(char param_1)
         uVar2 = FUN_0016c5f0_typed(1);
         uVar3 = FUN_0016c4f0(1);
         if (((long)(uVar3 & 0xffff) < (long)(short)(((uVar2 & 0xffff) * 100) / 100)) &&
-           (lVar4 = FUN_001c7160_f32(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0), lVar4 == 1))
+           (lVar4 = FUN_001c7160_f32(500.0f,target,entry), lVar4 == 1))
         {
           cVar5 = cVar5 + '\x01';
         }

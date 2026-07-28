@@ -975,9 +975,12 @@ code * FUN_003c07c0(void)
   code *pcVar4;
   long lVar5;
   u8 auStack_30 [28];
-  u32 uStack_c;
-  u32 uStack_8;
   u32 uStack_4;
+  u32 uStack_8;
+  u32 uStack_c;
+  u32 result0;
+  u32 result1;
+  u32 result2;
 
   piVar3 = (int *)FUN_00195540();
   uStack_4 = 0;
@@ -998,15 +1001,18 @@ code * FUN_003c07c0(void)
       piVar3[1] = 0;
       piVar3[2] = 0;
       lVar5 = FUN_003bffa0(&uStack_4,&uStack_8,&uStack_c);
-      ((u32 *)auStack_30)[3] = uStack_4;
-      ((u32 *)auStack_30)[4] = uStack_8;
-      ((u32 *)auStack_30)[5] = uStack_c;
       if (lVar5 == 0) {
         *piVar3 = 3;
       }
       else {
         DAT_007ce670 = 0;
+        result2 = uStack_c;
+        result1 = uStack_8;
+        result0 = uStack_4;
         FUN_00521408(auStack_30,0,0x1c);
+        ((u32 *)auStack_30)[3] = result0;
+        ((u32 *)auStack_30)[4] = result1;
+        ((u32 *)auStack_30)[5] = result2;
         FUN_0027c080(3,auStack_30,0x1c,0);
         *piVar3 = 2;
       }

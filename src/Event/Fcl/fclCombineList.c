@@ -3307,7 +3307,7 @@ void FUN_003e0950(s32 arg)
     H_Dbprt_FmtLog((char*)DAT_006a6b20_log - 0x18, param_1);
 }
 
-// FUN_003E0A10 NONMATCHING
+// FUN_003E0A10
 
 
 void FUN_003e0a10(s32 param_1)
@@ -3321,6 +3321,10 @@ void FUN_003e0a10(s32 param_1)
   int lVar2;
 
   int iVar3;
+
+  int *slot;
+
+  int *request;
 
   
 
@@ -3338,46 +3342,35 @@ void FUN_003e0a10(s32 param_1)
 
   iVar3 = *piVar1;
 
-  if (iVar3 == 8) {
-
-    FUN_003c7dd0();
-
-    FUN_003c7dd0(9);
-
-  }
-
-  else if ((((iVar3 == 4) || (iVar3 == 2)) || (iVar3 == 1)) || (iVar3 == 0)) {
-
+  switch (iVar3) {
+  case 0:
+  case 1:
+  case 2:
+  case 4:
     MT_Scene_Destroy();
-
+    break;
+  case 8:
+    FUN_003c7dd0(8);
+    FUN_003c7dd0(9);
+    break;
   }
 
   FUN_003c77a0();
 
-  if (piVar1[0x16] == 0) {
-
-    for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
-
-      if (piVar1[iVar3 * 2 + 0x18] != 0) {
-
-        H_Cdvd_Destroy();
-
-        piVar1[iVar3 * 2 + 0x18] = 0;
-
-        piVar1[iVar3 * 2 + 0x19] = 0;
-
-      }
-
-    }
-
-  }
-
-  else {
-
-    H_Cdvd_Destroy();
-
+  if (piVar1[0x16] != 0) {
+    H_Cdvd_Destroy(piVar1[0x16]);
     piVar1[0x16] = 0;
-
+  }
+  else {
+    for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
+      slot = piVar1 + iVar3 * 2;
+      request = slot + 0x18;
+      if (*request != 0) {
+        H_Cdvd_Destroy(*request);
+        *request = 0;
+        slot[0x19] = 0;
+      }
+    }
   }
 
   FUN_003dff00(piVar1[0x26]);

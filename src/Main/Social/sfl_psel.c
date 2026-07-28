@@ -1608,13 +1608,13 @@ void func_00217780(void)
     {
         panelOrigin[0] = 198.0f;
         panelOrigin[1] = (f32)(i * 0x21) + 90.0f;
-        func_00218b20(*(f32*)(work + 0x5c40), work + 0x150 + i * 0x910,
+        func_00218b20(work + 0x150 + i * 0x910,
                       (u32*)(work + 0x10 +
                              *(u32*)(work + 0x52e0 +
                                      (i + *(u32*)(work + 0x5c60)) * 4) *
                                  0x10),
                       *(u32*)(work + 0x5c68) == (u32)(i + *(u32*)(work + 0x5c60)),
-                      panelOrigin);
+                      panelOrigin, *(f32*)(work + 0x5c40));
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x31);
     origin[0] = 240.0f;
@@ -1693,9 +1693,9 @@ void func_00217780(void)
     {
         panelOrigin[0] = 198.0f;
         panelOrigin[1] = 123.0f;
-        func_00218b20(*(f32*)(work + 0x5c4c), work + 0x49d0,
+        func_00218b20(work + 0x49d0,
                       (u32*)(work + 0x10 + *(u32*)(work + 0x5c58) * 0x10),
-                      0, panelOrigin);
+                      0, panelOrigin, *(f32*)(work + 0x5c4c));
     }
     if (*(u32*)(work + 0x5330) < 9)
     {
@@ -1965,9 +1965,9 @@ void func_00218810(void* panel, const u32* entry, s32 selected)
 }
 
 #pragma optimization_level 2
-// FUN_00218B20 NONMATCHING
-void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
-                   const f32* origin)
+// FUN_00218B20
+void func_00218b20(void* panel, const u32* entry, s32 selected,
+                   const f32* origin, f32 alpha)
 {
     u8* destination;
     u32 texture;

@@ -23,6 +23,8 @@ extern void (*DAT_0096017c)();
 extern int func_0016deb0(int);
 extern int func_0016dba0(int);
 extern s8 datGetSocialLinkLevel(int);
+#pragma alias datGetSocialLinkLevel_s16 datGetSocialLinkLevel
+extern s8 datGetSocialLinkLevel_s16(s16);
 extern u8 (*gp0xffffb730)[1];
 extern int datSocialLinkLevelIsNotZero(int);
 /* FUSION_PROTOS */
@@ -38,7 +40,7 @@ extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 s16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4);
 #pragma alias FUN_003d5730_i FUN_003d5730
 extern int FUN_003d5730_i(void *param_1,int param_2,int param_3,u32 *param_4);
-int FUN_003d58c0(u16 param_1,int param_2);
+int FUN_003d58c0(int param_1,int param_2);
 s16 FUN_003d5dc0(u32 param_1);
 u64 FUN_003d5bb0(u32 param_1);
 short FUN_003d5cd0(u32 *param_1);
@@ -51,7 +53,7 @@ char FUN_003d6ae0(void *param_1,int param_2,int *param_3);
 u32 FUN_003d6c90(int param_1);
 s32 FUN_003d6e60(int param_1,int param_2);
 u32 FUN_003d6f80(int param_1,int param_2,void *param_3);
-u32 FUN_003d71d0(int param_1,int param_2,void *param_3);
+u32 FUN_003d71d0(int param_1,int param_2,u16 *param_3);
 u64 FUN_003d72f0(u16 *param_1);
 void FUN_003d74f0(int param_1,int param_2,int param_3);
 #pragma alias FUN_003d74f0_i FUN_003d74f0
@@ -413,41 +415,18 @@ valid_index:
     return uVar1;
 }
 
-// FUN_003D58C0 NONMATCHING
+// FUN_003D58C0
 
 
-int FUN_003d58c0(u16 param_1,int param_2)
-
-
-
+int FUN_003d58c0(int param_1,int param_2)
 {
-
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar1 = datGetSocialLinkLevel(param_1);
-
-  iVar2 = datGetSocialLinkLevel(param_1);
-
-  iVar3 = datGetSocialLinkLevel(param_1);
-
-  return (int)(((DAT_007cb004 + 0.0f) - DAT_007cb000 * (float)param_2) *
-
+  return (int)((((float)param_2 + ((float)datGetSocialLinkLevel_s16(param_1) / 2.5f + 1.0f)) *
+                ((float)param_2 + ((float)datGetSocialLinkLevel_s16(param_1) / 2.5f + 1.0f)) *
+                ((float)param_2 + ((float)datGetSocialLinkLevel_s16(param_1) / 2.5f + 1.0f)) -
+                (float)(param_2 * param_2 * param_2)) *
                DAT_007caf9c *
-
-               (((float)param_2 + (float)iVar3 / 2.5f + 1.0f) *
-
-                ((float)param_2 + (float)iVar1 / 2.5f + 1.0f) *
-
-                ((float)param_2 + (float)iVar2 / 2.5f + 1.0f) - (float)(param_2 * param_2 * param_2))
-
-              + 15.0f);
-
+               ((DAT_007cb004 + 0.0f) - DAT_007cb000 * (float)param_2) +
+               15.0f);
 }
 
 // FUN_003D5A40 NONMATCHING
@@ -1637,10 +1616,10 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 // FUN_003D71D0 NONMATCHING
 
 
-u32 FUN_003d71d0(int param_1,int param_2,void *param_3)
+u32 FUN_003d71d0(int param_1,int param_2,u16 *param_3)
 {
-  u32 cVar1;
   u16 sVar2;
+  u32 cVar1;
   u32 uVar3;
   s32 lVar4;
 
@@ -3536,7 +3515,7 @@ void FUN_003d9cc0(int param_1)
 
 }
 
-// FUN_003D9EA0 NONMATCHING
+// FUN_003D9EA0
 
 
 void FUN_003d9ea0(int param_1)
@@ -3611,9 +3590,9 @@ void FUN_003d9ea0(int param_1)
 
         for (iVar6 = 0; iVar6 < 8; iVar6 = iVar6 + 1) {
 
-          if (scratch.personas[iVar6] != 0) {
+          if (((int *)&scratch)[iVar6 + 2] != 0) {
 
-            aiStack_20[iVar8] = scratch.personas[iVar6];
+            aiStack_20[iVar8] = ((int *)&scratch)[iVar6 + 2];
 
             iVar8 = iVar8 + 1;
 
