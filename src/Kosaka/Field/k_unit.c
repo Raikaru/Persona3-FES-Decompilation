@@ -2873,6 +2873,7 @@ void func_001d38d0(KwlnTask* task, s32 multiplier)
     s32 count;
     s32 i;
     s32 j;
+    s32 rowOffset;
 
     work = (s32*)task->workData;
     if (K_Scene_001a0250() == 1)
@@ -2880,9 +2881,10 @@ void func_001d38d0(KwlnTask* task, s32 multiplier)
         count = 0;
         for (i = 0; i < 0x10; i++)
         {
+            rowOffset = i * 0x100;
             for (j = 0; j < 0x10; j++)
             {
-                if (func_001b9120()[i * 0x100 + j * 0x10 + 0x48] == 1)
+                if (func_001b9120()[rowOffset + j * 0x10 + 0x48] == 1)
                 {
                     count++;
                 }

@@ -36,6 +36,8 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 #pragma alias FUN_003d5510_i FUN_003d5510
 extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 s16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4);
+#pragma alias FUN_003d5730_i FUN_003d5730
+extern int FUN_003d5730_i(void *param_1,int param_2,int param_3,u32 *param_4);
 int FUN_003d58c0(u16 param_1,int param_2);
 s16 FUN_003d5dc0(u32 param_1);
 u64 FUN_003d5bb0(u32 param_1);
@@ -1636,65 +1638,32 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 
 
 u32 FUN_003d71d0(int param_1,int param_2,void *param_3)
-
-
-
 {
-
   u32 cVar1;
-
   u32 sVar2;
-
   u32 uVar3;
-
   s32 lVar4;
 
-  
-
   if ((param_2 == 0) || (param_1 == 0)) {
-
     K_Assert(DAT_006a5f70,0x2e5);
-
   }
-
   memset(param_1,0,0x54);
-
   cVar1 = datGetLevel(1);
-
-  sVar2 = FUN_003d7da0(1,cVar1 + '\x03',param_3);
-
+  sVar2 = FUN_003d7da0(1,cVar1 + 3,param_3);
   if (sVar2 == 0) {
-
     uVar3 = 0;
-
-  }
-
-  else {
-
+  } else {
     lVar4 = FUN_001749a0(sVar2);
-
-    if ((lVar4 == 0) && (*(short *)((int)param_2 + 6) != sVar2)) {
-
+    if ((lVar4 == 0) && (*(u16 *)((int)param_2 + 6) != sVar2)) {
       FUN_00176680((int)param_1 + 4,sVar2);
-
       FUN_003d6e60(param_1,param_2);
-
       FUN_00176c80((int)param_1 + 4,(int)param_2 + 4);
-
       uVar3 = 1;
-
-    }
-
-    else {
-
+    } else {
       uVar3 = 0;
-
     }
-
   }
-
   return uVar3;
-
 }
 
 // FUN_003D72F0 NONMATCHING
@@ -3588,33 +3557,41 @@ void FUN_003d9ea0(int param_1)
 
   int iVar6;
 
+  int iVar0;
+
   int iVar7;
 
   int iVar8;
 
   int iVar9;
 
-  u32 auStack_50 [2];
-
-  int aiStack_48 [10];
+  int iVar10;
 
   int aiStack_20 [8];
+
+  struct {
+    u32 flags;
+    u16 *entry;
+    int personas[8];
+  } scratch;
 
   
 
   iVar9 = (int)param_1;
 
+  iVar10 = iVar9 + 0x11c;
+
   iVar1 = *(int *)(iVar9 + 0x14);
 
   uVar2 = *(u32 *)(iVar9 + 4);
 
-  for (iVar7 = 0; iVar7 < 0xc; iVar7 = iVar7 + 1) {
+  for (iVar0 = 0; iVar0 < 0xc; iVar0 = iVar0 + 1) {
 
   }
 
   for (iVar7 = 0; iVar4 = fclCombineMisc003d8830(uVar2), iVar7 <= iVar4; iVar7 = iVar7 + 1) {
 
-    lVar5 = FUN_003d5730(auStack_50,uVar2,iVar7,(u32 *)(iVar9 + 0x11c));
+    lVar5 = FUN_003d5730_i(&scratch,uVar2,iVar7,(u32 *)iVar10);
 
     if (lVar5 != 0) {
 
@@ -3624,19 +3601,19 @@ void FUN_003d9ea0(int param_1)
 
       *(u32 *)(iVar4 + 4) = 0;
 
-      memcpy(iVar4 + 100,auStack_50,0x28);
+      memcpy(iVar4 + 100,&scratch,0x28);
 
       iVar8 = 0;
 
-      if ((auStack_50[0] & 1) != 0) {
+      if ((scratch.flags & 1) != 0) {
 
         memset(aiStack_20,0,4);
 
         for (iVar6 = 0; iVar6 < 8; iVar6 = iVar6 + 1) {
 
-          if (aiStack_48[iVar6] != 0) {
+          if (scratch.personas[iVar6] != 0) {
 
-            aiStack_20[iVar8] = aiStack_48[iVar6];
+            aiStack_20[iVar8] = scratch.personas[iVar6];
 
             iVar8 = iVar8 + 1;
 

@@ -38,6 +38,7 @@ extern u8 sFilterGrid_abs[];
 
 /* This word belongs to the neighbouring field-resource work block. */
 extern u32 gp0xffff95d8;
+extern f32 fGpffff8248;
 #define FLDFILTER_ALPHA gp0xffff95d8
 
 extern const char D_00683A60[];
@@ -429,9 +430,14 @@ void FUN_001d5130(u32 alpha)
 s32 FUN_001d5140(KwlnTask* cameraTask)
 {
     FldFilterCameraWork* work;
-    RwV3d playerPos;
-    RwV3d point;
-    RwV3d pointCopy;
+    struct
+    {
+        RwV3d playerPos;
+        u32 alignment;
+        RwV3d pointCopy;
+    } scratch;
+#define playerPos scratch.playerPos
+#define pointCopy scratch.pointCopy
     f32 bestDistance;
     f32 dx;
     f32 dy;
@@ -442,15 +448,16 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
 
     work = (FldFilterCameraWork*)cameraTask->workData;
     K_FldFrame_CtlCopyPos(&playerPos, work->playerResrc->collisCtlTask);
-    bestDistance = 3.402823466e+38f;
+    pointCopy.x = playerPos.x;
+    pointCopy.y = playerPos.y;
+    pointCopy.z = playerPos.z;
+    bestDistance = fGpffff8248;
     bestIndex = 0;
     for (index = 0; index < 9; index++)
     {
-        point = work->cameraPoints[index];
-        pointCopy = point;
-        dx = pointCopy.x - playerPos.x;
-        dy = pointCopy.y - playerPos.y;
-        dz = pointCopy.z - playerPos.z;
+        dx = work->cameraPoints[index].x - pointCopy.x;
+        dy = work->cameraPoints[index].y - pointCopy.y;
+        dz = work->cameraPoints[index].z - pointCopy.z;
         distance = sqrtf(dx * dx + dy * dy + dz * dz);
         if (bestDistance > distance)
         {
@@ -459,6 +466,8 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
         }
     }
     return bestIndex;
+#undef pointCopy
+#undef playerPos
 }
 // FUN_001d5220 NONMATCHING
 #pragma push

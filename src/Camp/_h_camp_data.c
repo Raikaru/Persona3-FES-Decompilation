@@ -1296,15 +1296,16 @@ void FUN_00169110(u16 param_1, CampFloatPair param_2,
 {
     f32 depth;
     f32* depthBase;
-    s32 inverseAlpha;
+    u32 color;
     CampFloatPair drawPosition;
 
-    inverseAlpha = 0xff - param_4;
+    color = 0xff - param_4;
+    color |= 0x20808000U;
     drawPosition.x = param_2.x + 40.0f;
     drawPosition.y = param_2.y + 50.0f;
     depthBase = (f32*)DAT_00960088_abs;
-    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f,
-                 (u32)inverseAlpha | 0x20808000U, 0x280, 0x1c0);
+    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f, color,
+                 0x280, 0x1c0);
     depth = FUN_0021ea00(0x28);
     campDataDrawEquipment(*depthBase - depth,
                           drawPosition, param_3, param_4);
@@ -1317,14 +1318,15 @@ void FUN_001691F0(u16 param_1, CampFloatPair param_2,
     f32 y;
     f32 depth;
     f32* depthBase;
-    s32 inverseAlpha;
+    u32 color;
     CampFloatPair drawPosition;
 
     y = param_2.y;
-    inverseAlpha = 0xff - param_5;
+    color = 0xff - param_5;
+    color |= 0x20808000U;
     depthBase = (f32*)DAT_00960088_abs;
-    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f,
-                 (u32)inverseAlpha | 0x20808000U, 0x280, 0x1c0);
+    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f, color,
+                 0x280, 0x1c0);
     drawPosition.x = param_2.x + 40.0f;
     drawPosition.y = y + 50.0f;
     depth = FUN_0021ea00(0x28);

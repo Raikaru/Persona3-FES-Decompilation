@@ -338,7 +338,7 @@ void FUN_003fa520(int param_1);
 void FUN_003fa800(int param_1);
 void FUN_003faae0(int param_1);
 void FUN_003fadc0(int param_1);
-void FUN_003fb0c0(long param_1,long param_2);
+void FUN_003fb0c0(u32 param_1,u32 param_2);
 int FUN_003fb2f0(u32 *param_1);
 int FUN_003fb530(u32 *param_1);
 int FUN_003fb6b0(u64 param_1);
@@ -391,8 +391,8 @@ u32 FUN_003fe850(u16 param_1,u64 param_2);
 #pragma alias FUN_003fea10_3 FUN_003fea10
 u64 FUN_003fea10_3(int param_1,u32 *param_2,int param_3);
 u32 FUN_003fe950(u64 param_1);
-u64 FUN_003fea10(u64 param_1,u32 *param_2);
-u64 FUN_003feb30(u64 param_1,int param_2);
+u64 FUN_003fea10(u32 param_1,u32 *param_2);
+u64 FUN_003feb30(u32 param_1,int param_2);
 u64 FUN_003fee40(int param_1);
 #pragma alias FUN_003ff150_i FUN_003ff150
 u64 FUN_003ff150_i(int param_1,int param_2);
@@ -439,7 +439,7 @@ u32 FUN_00401de0(u64 param_1,long param_2,long param_3);
 void FUN_00402400(int param_1,u16 *param_2);
 u32 FUN_00402480(u16 *param_1);
 u32 FUN_00402510(u32 param_1,long param_2,u32 param_3,short param_4);
-u32 FUN_004026b0(int param_1,int param_2,u32 param_3);
+u32 FUN_004026b0(u32 param_1,int param_2,u32 param_3);
 void FUN_00402800(int param_1);
 void FUN_00402c80(int param_1);
 s16 FUN_004030b0(u16 param_1);
@@ -8500,10 +8500,10 @@ void FUN_003fadc0(int param_1)
 
 }
 
-// FUN_003FB0C0 NONMATCHING
+// FUN_003FB0C0
 
 
-void FUN_003fb0c0(long param_1,long param_2)
+void FUN_003fb0c0(u32 param_1,u32 param_2)
 
 
 
@@ -8511,7 +8511,10 @@ void FUN_003fb0c0(long param_1,long param_2)
 
   u32 uVar1;
 
-  u16 uVar2;
+  struct {
+    u16 key;
+    u16 pad;
+  } lookup;
 
   int iVar3;
 
@@ -8563,7 +8566,7 @@ void FUN_003fb0c0(long param_1,long param_2)
 
       iVar3 = datGetMoney();
 
-      iVar3 = iVar3 / (int)puVar5[6];
+      iVar3 = (u32)iVar3 / puVar5[6];
 
     }
 
@@ -8573,9 +8576,10 @@ void FUN_003fb0c0(long param_1,long param_2)
 
     }
 
-    uVar2 = FUN_003e6dc0();
+    lookup.key = FUN_003e6dc0();
+    lookup.pad = 0;
 
-    iVar4 = FUN_0017d250(uVar2,(short)puVar5[3]);
+    iVar4 = FUN_0017d250(*(u32 *)&lookup,(u16)puVar5[3]);
 
     if ((iVar4 != -1) && (iVar4 < iVar3)) {
 
@@ -8617,15 +8621,15 @@ void FUN_003fb0c0(long param_1,long param_2)
 
   }
 
-  if (puVar5[2] != 1) {
+  if (puVar5[2] == 1) {
 
-    *puVar5 = *puVar5 & 0xffffffef;
+    *puVar5 = *puVar5 | 0x10;
 
   }
 
   else {
 
-    *puVar5 = *puVar5 | 0x10;
+    *puVar5 = *puVar5 & 0xffffffef;
 
   }
 
@@ -11139,7 +11143,7 @@ u32 FUN_003fe950(u64 param_1)
 // FUN_003FEA10 NONMATCHING
 
 
-u64 FUN_003fea10(u64 param_1,u32 *param_2)
+u64 FUN_003fea10(u32 param_1,u32 *param_2)
 
 
 
@@ -11149,7 +11153,7 @@ u64 FUN_003fea10(u64 param_1,u32 *param_2)
 
   int iVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u32 uVar4;
 
@@ -11163,7 +11167,7 @@ u64 FUN_003fea10(u64 param_1,u32 *param_2)
 
   for (iVar5 = 0; iVar5 < (int)param_2[1]; iVar5 = iVar5 + 1) {
 
-    if ((((psVar6[2] == 0) || (lVar3 = datGetFlag(), lVar3 == 1)) && (sVar1 = *psVar6, sVar1 != 0)
+    if ((((psVar6[2] == 0) || (lVar3 = datGetFlag_u32_arg(psVar6[2]), lVar3 == 1)) && (sVar1 = *psVar6, sVar1 != 0)
 
         ) && (psVar6[4] != 0)) {
 
@@ -11173,8 +11177,12 @@ u64 FUN_003fea10(u64 param_1,u32 *param_2)
 
       iVar2 = *(int *)(*(int *)((int)uVar4 + 0x14) + 0x1c);
 
+      FUN_003f1ba0(iVar2 + 4,sVar1);
+
 
       memcpy(iVar2 + 0x14,psVar6 + 3,0xe);
+
+      FUN_003feb30(param_1,uVar4);
 
 
     }
@@ -11190,7 +11198,7 @@ u64 FUN_003fea10(u64 param_1,u32 *param_2)
 // FUN_003FEB30 NONMATCHING
 
 
-u64 FUN_003feb30(u64 param_1,int param_2)
+u64 FUN_003feb30(u32 param_1,int param_2)
 
 
 
@@ -14983,68 +14991,58 @@ u32 FUN_00402510(u32 param_1,long param_2,u32 param_3,short param_4)
 // FUN_004026B0 NONMATCHING
 
 
-u32 FUN_004026b0(int param_1,int param_2,u32 param_3)
-
-
-
+u32 FUN_004026b0(u32 param_1,int param_2,u32 param_3)
 {
+  int available;
+  int count;
+  u32 category;
+  u32 iterationCategory;
+  u32 forceCategory;
+  u32 randomize;
+  u32 preserveEffect;
+  u8 effect;
+  struct {
+    u16 id;
+    u16 unk_02;
+    u32 type;
+    u8 unk_08;
+    u8 effect;
+    u16 firstStat;
+    u16 secondStat;
+    u16 unk_0e;
+    u16 unk_10;
+    u8 unk_12[2];
+  } scratch;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  int lVar3;
-
-  u8 auStack_20 [9];
-
-  u8 uStack_17;
-
-  
-
-  lVar3 = func_00171250((short)param_1);
-
-  if (lVar3 != 4) {
-
-    iVar1 = func_0016f490(1);
-
-    if (300 - iVar1 < param_2) {
-
+  if (func_00171250((s16)(param_1 & 0xffff)) != 4) {
+    available = func_0016f490(1);
+    if (300 - available < param_2) {
       return 0;
-
     }
 
-    for (iVar1 = 0; iVar1 < param_2; iVar1 = iVar1 + 1) {
+    forceCategory = param_3 & 2;
+    category = (param_1 >> 24) & 0xf;
+    randomize = param_3 & 1;
+    preserveEffect = param_3 & 4;
+    effect = (u8)(param_1 >> 16);
 
-      uVar2 = param_1 >> 0x18 & 0xf;
-
-      if ((param_3 & 2) != 0) {
-
-        uVar2 = 2;
-
+    for (count = 0; count < param_2; count = count + 1) {
+      if (forceCategory != 0) {
+        iterationCategory = 2;
+      } else {
+        iterationCategory = category;
       }
-
-      if ((uVar2 != 0) && ((param_3 & 1) != 0)) {
-
+      if ((iterationCategory != 0) && (randomize != 0)) {
         RpRandom();
-
       }
-
-      func_001828d0((short)param_1,auStack_20);
-
-      if ((param_3 & 4) == 0) {
-
-        uStack_17 = (char)((u32)param_1 >> 0x10);
-
+      func_001828d0((short)param_1,&scratch);
+      if (preserveEffect == 0) {
+        scratch.effect = effect;
       }
-
-      func_001830c0(auStack_20);
-
+      func_001830c0(&scratch);
     }
-
   }
-
   return 1;
-
 }
 
 // FUN_00402800 NONMATCHING

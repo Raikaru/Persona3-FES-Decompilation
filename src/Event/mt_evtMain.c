@@ -1061,7 +1061,7 @@ void FUN_00361270(int param_1)
 
           puVar1 = *(u16 **)(puVar1 + 0x26)) {
 
-        if (*puVar1 < *puVar3) {
+        if (*puVar3 > *puVar1) {
 
           if (*(int *)(puVar1 + 0x28) == 0) {
 
@@ -1092,7 +1092,7 @@ void FUN_00361270(int param_1)
 
           *(int *)(iVar2 + 0x68) = *(int *)(iVar2 + 0x68) + -1;
 
-          FUN_00361140_raw();
+          FUN_00361140_raw(iVar2, puVar1);
           iVar2 = extraout_a0_lo;
           puVar3 = extraout_a1_lo;
 

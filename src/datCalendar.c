@@ -3788,8 +3788,10 @@ KwlnTask* func_00184db0(KwlnTask* parent)
     KwlnTask* task;
     KwlnTask* child;
     u8* childWork;
+    void* (**allocator)(u32, u32, u32);
 
-    work = CLND_ALLOC(1, 0x1a0, 0x40000);
+    allocator = (void* (**)(u32, u32, u32))D_00960184;
+    work = (*allocator)(1, 0x1a0, 0x40000);
     if (work == NULL)
     {
         return NULL;
@@ -3810,7 +3812,7 @@ KwlnTask* func_00184db0(KwlnTask* parent)
     *(s32*)(work + 0x1c) = clndGetCurrentDay();
     *(s32*)(work + 0x20) = datGetTime() & 0xff;
 
-    childWork = CLND_ALLOC(1, 0x24, 0x40000);
+    childWork = (*allocator)(1, 0x24, 0x40000);
     if (childWork != NULL)
     {
         child = kwlnTaskCreate(task,
@@ -3821,9 +3823,9 @@ KwlnTask* func_00184db0(KwlnTask* parent)
                                childWork);
         if (child != NULL)
         {
-            *(f32*)(childWork + 0x08) = 400.0f;
-            *(f32*)(childWork + 0x10) = 400.0f;
             CLND_CALENDAR_X = 400.0f;
+            *(f32*)(childWork + 0x10) = 400.0f;
+            *(f32*)(childWork + 0x08) = 400.0f;
         }
     }
 

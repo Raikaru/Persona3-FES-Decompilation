@@ -2670,53 +2670,67 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 void* func_001ac950(const RwV3d* line, void* unused,
                     const void* triangle, FldFrameRaycast* raycast)
 {
+    typedef struct FldFrameLine
+    {
+        RwV3d point[2];
+    } FldFrameLine;
     const FldFrameCollisionTriangle* candidate;
+    FldFrameLine lineCopy;
     RwV3d segment;
-    RwV3d fromVertex;
     f32 denominator;
+    f32 vertexDot;
+    f32 lineDot;
     f32 fraction;
 
-    (void)unused;
+    lineCopy = *(const FldFrameLine*)line;
     candidate = (const FldFrameCollisionTriangle*)triangle;
-    segment.x = line[0].x - line[1].x;
-    segment.y = line[0].y - line[1].y;
-    segment.z = line[0].z - line[1].z;
+    segment.x = lineCopy.point[0].x - lineCopy.point[1].x;
+    segment.y = lineCopy.point[0].y - lineCopy.point[1].y;
+    segment.z = lineCopy.point[0].z - lineCopy.point[1].z;
     denominator = candidate->normal.x * segment.x
                 + candidate->normal.y * segment.y
                 + candidate->normal.z * segment.z;
-    fromVertex.x = candidate->vertices[0]->x - line[1].x;
-    fromVertex.y = candidate->vertices[0]->y - line[1].y;
-    fromVertex.z = candidate->vertices[0]->z - line[1].z;
-    fraction = (candidate->normal.x * fromVertex.x
-              + candidate->normal.y * fromVertex.y
-              + candidate->normal.z * fromVertex.z) / denominator;
-    raycast->hitPointDst->x = line[1].x + segment.x * fraction;
-    raycast->hitPointDst->y = line[1].y + segment.y * fraction;
-    raycast->hitPointDst->z = line[1].z + segment.z * fraction;
+    vertexDot = candidate->normal.x * candidate->vertices[0]->x
+              + candidate->normal.y * candidate->vertices[0]->y
+              + candidate->normal.z * candidate->vertices[0]->z;
+    lineDot = candidate->normal.x * lineCopy.point[0].x
+            + candidate->normal.y * lineCopy.point[0].y
+            + candidate->normal.z * lineCopy.point[0].z;
+    fraction = -(-vertexDot + lineDot) / denominator;
+    raycast->hitPointDst->x = lineCopy.point[0].x + segment.x * fraction;
+    raycast->hitPointDst->y = lineCopy.point[0].y + segment.y * fraction;
+    raycast->hitPointDst->z = lineCopy.point[0].z + segment.z * fraction;
     raycast->didHit = true;
     return NULL;
 }
 
-// FUN_001aca40 NONMATCHING
+// FUN_001aca40
 void* func_001aca40(f32 fraction, const RwV3d* line,
                     void* unused, FldFrameRaycast* raycast)
 {
+    typedef struct FldFrameLine
+    {
+        RwV3d point[2];
+    } FldFrameLine;
+    FldFrameLine lineCopy;
     RwV3d segment;
 
-    (void)unused;
-    if (line == NULL || raycast == NULL || fraction >= raycast->nearestFraction)
+    lineCopy = *(const FldFrameLine*)line;
+    if (raycast->nearestFraction > fraction)
     {
-        return unused;
+        segment.x = lineCopy.point[1].x - lineCopy.point[0].x;
+        segment.y = lineCopy.point[1].y - lineCopy.point[0].y;
+        segment.z = lineCopy.point[1].z - lineCopy.point[0].z;
+        segment.x *= fraction;
+        segment.y *= fraction;
+        segment.z *= fraction;
+        segment.x += lineCopy.point[0].x;
+        segment.y += lineCopy.point[0].y;
+        segment.z += lineCopy.point[0].z;
+        *raycast->hitPointDst = segment;
+        raycast->didHit = true;
+        raycast->nearestFraction = fraction;
     }
-
-    segment.x = line[1].x - line[0].x;
-    segment.y = line[1].y - line[0].y;
-    segment.z = line[1].z - line[0].z;
-    raycast->hitPointDst->x = line[0].x + segment.x * fraction;
-    raycast->hitPointDst->y = line[0].y + segment.y * fraction;
-    raycast->hitPointDst->z = line[0].z + segment.z * fraction;
-    raycast->nearestFraction = fraction;
-    raycast->didHit = true;
     return unused;
 }
 
@@ -2733,15 +2747,26 @@ void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast)
 u32 func_001acb70(void* collisionWorld, const RwV3d* line,
                   RwV3d* hitPointDst)
 {
+    typedef struct FldFrameLine
+    {
+        RwV3d point[2];
+    } FldFrameLine;
+    typedef struct FldFrameIntersection
+    {
+        FldFrameLine line;
+        u32 type;
+    } FldFrameIntersection;
     FldFrameRaycast raycast;
+    FldFrameIntersection intersection __attribute__((aligned(16)));
+    FldFrameLine lineCopy __attribute__((aligned(16)));
 
+    lineCopy = *(const FldFrameLine*)line;
+    intersection.line = lineCopy;
+    intersection.type = 1;
     raycast.hitPointDst = hitPointDst;
     raycast.didHit = false;
-    raycast.line[0] = line[0];
-    raycast.line[1] = line[1];
-    raycast.intersectionType = 1;
+    *(FldFrameIntersection*)&raycast.line[0] = intersection;
     raycast.nearestFraction = 1.0f;
-    raycast.hitObject = NULL;
 
     if (collisionWorld != NULL)
     {

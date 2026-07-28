@@ -671,7 +671,7 @@ u32 FUN_0031d6b0(void);
 u32 FUN_0031d700(int *param_1);
 void FUN_0031d790(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
-u64 FUN_0031d7e0(int *param_1,u64 param_2,u64 param_3,u16 param_4,
+u32 FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
 
             u32 param_5);
 u32 FUN_0031d900(int *param_1,int *param_2,u16 param_3);
@@ -917,7 +917,7 @@ void FUN_00326190(u64 param_1,u64 param_2);
 int FUN_003261c0(int param_1,int param_2);
 int FUN_00326200(int param_1,int param_2);
 int FUN_00326240(int param_1,int param_2);
-void FUN_00326280(int param_1,u64 param_2,u8 (*param_3) [16]);
+void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16]);
 void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16]);
 u32 FUN_00326490(u32 param_1);
 u64 FUN_00326510(u32 param_1);
@@ -2083,6 +2083,7 @@ extern code DAT_00960178_abs[];
 extern void (*DAT_0096017c)(...);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
+extern void FUN_004c6be0(float *out,float *in,int matrix);
 extern float fGpffff80a4;
 extern float fGpffff80b0;
 extern float fGpffff80c0;
@@ -2254,9 +2255,9 @@ void FUN_0031d7d0(u32 *param_1)
 // FUN_0031D7E0 NONMATCHING
 
 
-u64
+u32
 
-FUN_0031d7e0(int *param_1,u64 param_2,u64 param_3,u16 param_4,
+FUN_0031d7e0(int *param_1,u32 param_2,u32 param_3,u16 param_4,
 
             u32 param_5)
 
@@ -2266,13 +2267,15 @@ FUN_0031d7e0(int *param_1,u64 param_2,u64 param_3,u16 param_4,
 
   u32 *puVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u32 *puVar3;
+  u32 (**allocator)(...);
 
   
 
-  puVar1 = (u32 *)(*DAT_00960178)((int)param_3 + 0x10,0x40000);
+  allocator = (u32 (**)(...))DAT_00960178_abs;
+  puVar1 = (u32 *)(*allocator)(param_3 + 0x10,0x40000);
 
   *puVar1 = (u32)(puVar1 + 4);
 
@@ -2284,7 +2287,7 @@ FUN_0031d7e0(int *param_1,u64 param_2,u64 param_3,u16 param_4,
 
   FUN_00521250(*puVar1,param_2,param_3);
 
-  uVar2 = (*DAT_00960178)(0x14,0x40000);
+  uVar2 = (*allocator)(0x14,0x40000);
 
   FUN_00521408(uVar2,0,0x14);
 
@@ -2292,17 +2295,17 @@ FUN_0031d7e0(int *param_1,u64 param_2,u64 param_3,u16 param_4,
 
   puVar3[3] = 0;
 
-  if (*param_1 == 0) {
+  if (*param_1 != 0) {
 
-    puVar3[4] = 0;
+    *(u32 **)(*param_1 + 0xc) = puVar3;
+
+    puVar3[4] = *param_1;
 
   }
 
   else {
 
-    *(u32 **)(*param_1 + 0xc) = puVar3;
-
-    puVar3[4] = *param_1;
+    puVar3[4] = 0;
 
   }
 
@@ -6168,13 +6171,7 @@ u64 FUN_00321eb0(void)
 
 
 
-// Fixed a genuine correctness bug: &DAT_xxx (u32*) + byte-offset scaled by
-// 4 in standard C pointer arithmetic (writing to wrong addresses at
-// runtime); switched to the array-typed _abs alias for byte-level scale
-// and absolute addressing. Residual: retail caches all 7 base addresses
-// before the loop and uses a structurally different loop shape (nd
-// unchanged by this fix alone -- a separate, larger restructuring floor).
-// FUN_00321F10 NONMATCHING
+// FUN_00321F10
 
 
 void FUN_00321f10(u32 param_1)
@@ -6183,34 +6180,33 @@ void FUN_00321f10(u32 param_1)
 
 {
 
-  u32 uVar1;
+  u16 index;
+  u32 *slots57920;
+  u32 *slots57320;
+  u32 *slots57620;
+  u32 *slots57520;
+  u32 *slots57420;
+  u32 *slots57820;
+  u32 *slots57720;
 
-  int iVar2;
+  index = 0;
+  slots57920 = (u32 *)(DAT_00957920_abs + (param_1 & 0xffff) * 0x1c);
+  slots57320 = (u32 *)(DAT_00957320_abs + (param_1 & 0xffff) * 0x1c);
+  slots57620 = (u32 *)(DAT_00957620_abs + (param_1 & 0xffff) * 0x1c);
+  slots57520 = (u32 *)(DAT_00957520_abs + (param_1 & 0xffff) * 0x1c);
+  slots57420 = (u32 *)(DAT_00957420_abs + (param_1 & 0xffff) * 0x1c);
+  slots57820 = (u32 *)(DAT_00957820_abs + (param_1 & 0xffff) * 0x1c);
+  slots57720 = (u32 *)(DAT_00957720_abs + (param_1 & 0xffff) * 0x1c);
 
-  int iVar3;
-
-  
-
-  iVar2 = (param_1 & 0xffff) * 0x1c;
-
-  for (uVar1 = 0; uVar1 < 7; uVar1 = uVar1 + 1 & 0xffff) {
-
-    iVar3 = uVar1 * 4;
-
-    *(u32 *)(DAT_00957920_abs + iVar3 + iVar2) = 0;
-
-    *(u32 *)(DAT_00957320_abs + iVar3 + iVar2) = 0;
-
-    *(u32 *)(DAT_00957620_abs + iVar3 + iVar2) = 0;
-
-    *(u32 *)(DAT_00957520_abs + iVar3 + iVar2) = 0;
-
-    *(u32 *)(DAT_00957420_abs + iVar3 + iVar2) = 0;
-
-    *(u32 *)(DAT_00957820_abs + iVar3 + iVar2) = 0;
-
-    *(u32 *)(DAT_00957720_abs + iVar3 + iVar2) = 0;
-
+  while (index < 7) {
+    slots57920[index] = 0;
+    slots57320[index] = 0;
+    slots57620[index] = 0;
+    slots57520[index] = 0;
+    slots57420[index] = 0;
+    slots57820[index] = 0;
+    slots57720[index] = 0;
+    index++;
   }
 
   return;
@@ -9311,7 +9307,7 @@ void FUN_003252a0(u64 param_1)
 
       if ((*(u32 *)(iVar3 + 0x68) & 0x18) != 0) {
 
-        FUN_00326280((int)(iVar3),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_20));
+        FUN_00326280((int)(iVar3),(*(u32 *)(&auStack_10)),(u8 (*) [16])(&auStack_20));
 
         __asm__ volatile (
             ".set noreorder             \n"
@@ -9491,7 +9487,7 @@ void FUN_00325500(u64 param_1)
 
           if ((*(u32 *)(iVar4 + 0x68) & 0x18) != 0) {
 
-            FUN_00326280((int)(iVar4),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_20));
+            FUN_00326280((int)(iVar4),(*(u32 *)(&auStack_10)),(u8 (*) [16])(&auStack_20));
 
             __asm__ volatile (
                 ".set noreorder             \n"
@@ -10364,7 +10360,7 @@ int FUN_00326240(int param_1,int param_2)
 // FUN_00326280 NONMATCHING
 
 
-void FUN_00326280(int param_1,u64 param_2,u8 (*param_3) [16])
+void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 
@@ -13546,109 +13542,74 @@ float FUN_00329ba0(float param_1)
 
 {
 
-  int iVar1;
+  int camera;
+  int matrix;
+  float nearPlane;
+  float farPlane;
+  float depth;
+  float length;
+  float result;
+  struct {
+    float projected[4];
+    float inputVf10[4];
+    float projectedVf10[4];
+    float source[4];
+    float transformed[4];
+  } scratch;
 
-  u64 uVar2;
+  __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(scratch.inputVf10) : "memory");
+  __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(DAT_0069c4d0_abs) : "memory");
+  scratch.source[0] = *(float *)(DAT_0069c4d0_abs + 0);
+  scratch.source[1] = *(float *)(DAT_0069c4d0_abs + 4);
+  scratch.source[2] = *(float *)(DAT_0069c4d0_abs + 8);
 
-  float fVar3;
+  camera = FUN_00198590();
+  FUN_004c6be0(scratch.transformed,scratch.source,camera + 0x20);
+  depth = scratch.transformed[2];
+  scratch.projected[0] = 640.0f * (scratch.transformed[0] / depth);
+  scratch.projected[1] = 448.0f * (scratch.transformed[1] / depth);
+  scratch.projected[2] = 0.0f;
+  scratch.projected[3] = 0.0f;
+  __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(scratch.projected) : "memory");
+  __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(scratch.projectedVf10) : "memory");
 
-  float fVar4;
-
-  u32 in_vc6;
-
-  __int128 in_vf10;
-
-  __int128 auVar5;
-
-  __int128 auVar6;
-
-  __int128 auVar7;
-
-  f32 src [3];
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  auVar6 = _sqc2(in_vf10);
-
-  _DAT_0069c4d0 = _sqc2(in_vf10);
-
-  src[0] = DAT_0069c4d0_f32;
-
-  src[1] = DAT_0069c4d4_f32;
-
-  src[2] = DAT_0069c4d8_f32;
-
-  iVar1 = FUN_00198590();
-
-  RwV3dTransformPoint(&fStack_10,src,iVar1 + 0x20);
-
-  auVar5._4_4_ = (fStack_c / fStack_8) * 448.0f;
-
-  auVar5._0_4_ = (fStack_10 / fStack_8) * 640.0f;
-
-  auVar5._8_8_ = 0;
-
-  auVar5 = _lqc2(auVar5);
-
-  auVar5 = _sqc2(auVar5);
-
-  iVar1 = FUN_00198590();
-
-  fVar4 = *(float *)(iVar1 + 0x80);
-
-  iVar1 = FUN_00198590();
-
-  if ((fStack_8 <= fVar4) || (*(float *)(iVar1 + 0x84) <= fStack_8)) {
-
-    fVar4 = 0.0f;
-
+  camera = FUN_00198590();
+  nearPlane = *(float *)(camera + 0x80);
+  camera = FUN_00198590();
+  farPlane = *(float *)(camera + 0x84);
+  if ((depth <= nearPlane) || !(depth < farPlane)) {
+    result = 0.0f;
   }
-
   else {
-
-    iVar1 = FUN_00198590();
-
-    auVar6 = _lqc2(auVar6);
-
-    memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(*(int *)(iVar1 + 4) + 0x40), 12);
-
-    auVar7 = _lqc2(_DAT_0069c4d0);
-
-    auVar6 = _vsub(auVar6,auVar7);
-
-    auVar6 = _vmul(auVar6,auVar6);
-
-    auVar6 = _vaddbc(auVar6,auVar6);
-
-    auVar6 = _vaddbc(auVar6,auVar6);
-
-    _vsqrt(auVar6);
-
-    _vwaitq();
-
-    uVar2 = _cfc2(in_vc6);
-
-    _lqc2(auVar5);
-
-    fVar3 = (param_1 * 650.0f) / (float)uVar2;
-
-    fVar4 = 1500.0f;
-
-    if (fVar3 <= 1500.0f) {
-
-      fVar4 = fVar3;
-
+    camera = FUN_00198590();
+    matrix = *(int *)(camera + 4);
+    __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(scratch.inputVf10) : "memory");
+    *(float *)(DAT_0069c4d0_abs + 0) = *(float *)(matrix + 0x40);
+    *(float *)(DAT_0069c4d0_abs + 4) = *(float *)(matrix + 0x44);
+    *(float *)(DAT_0069c4d0_abs + 8) = *(float *)(matrix + 0x48);
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lqc2 vf11, 0(%1)               \n"
+        "vsub.xyzw vf10, vf10, vf11     \n"
+        "vmul.xyz vf2, vf10, vf10       \n"
+        "vaddy.x vf2, vf2, vf2y         \n"
+        "vaddz.x vf2, vf2, vf2z         \n"
+        "vsqrt Q, vf2x                  \n"
+        "vwaitq                         \n"
+        "cfc2.ni $v0, vi22              \n"
+        "mtc1 $v0, %0                   \n"
+        ".set reorder"
+        : "=f"(length)
+        : "r"(DAT_0069c4d0_abs)
+        : "v0", "vf2", "vf10", "vf11", "memory");
+    __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(scratch.projectedVf10) : "memory");
+    result = (param_1 * 650.0f) / length;
+    if (!(result <= 1500.0f)) {
+      result = 1500.0f;
     }
-
   }
 
-  return fVar4;
+  return result;
 
 }
 
@@ -48404,7 +48365,7 @@ void FUN_0034ff90(int param_1,u32 *param_2)
 
 
 
-// FUN_0034FFC0 NONMATCHING
+// FUN_0034FFC0
 
 
 void FUN_0034ffc0(int param_1,int param_2)
@@ -48413,31 +48374,21 @@ void FUN_0034ffc0(int param_1,int param_2)
 
 {
 
-  int iVar1;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  __int128 auStack_10;
+  struct {
+    float projected[3];
+    u32 alignment;
+    u8 vector[16];
+  } scratch;
 
   
 
-  FUN_00326170((int)(param_1),(u32 *)(&auStack_10));
+  FUN_00326170(param_1,(u32 *)scratch.vector);
+  FUN_003296a0((u32 *)param_2,(u8 (*) [16])scratch.vector);
+  FUN_00326160(param_1,(u32 *)scratch.projected);
 
-  FUN_003296a0((u32 *)(param_2),(u8 (*) [16])(&auStack_10));
-
-  FUN_00326160(param_1,&uStack_20);
-
-  iVar1 = (int)param_2;
-
-  *(u32 *)(iVar1 + 0x30) = uStack_20;
-
-  *(u32 *)(iVar1 + 0x34) = uStack_1c;
-
-  *(u32 *)(iVar1 + 0x38) = uStack_18;
+  *(float *)(param_2 + 0x30) = scratch.projected[0];
+  *(float *)(param_2 + 0x34) = scratch.projected[1];
+  *(float *)(param_2 + 0x38) = scratch.projected[2];
 
   return;
 

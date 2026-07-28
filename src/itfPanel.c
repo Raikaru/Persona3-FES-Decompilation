@@ -2751,63 +2751,31 @@ void FUN_003abb10(int param_1)
 
 
 void FUN_003ac240(int param_1,u64 param_2)
-
-
-
 {
+  int upper;
+  int lower;
+  u32 bounds[4];
 
-  int iVar1;
-
-  int iVar2;
-
-  int iStack_10;
-
-  u32 uStack_c;
-
-  int iStack_8;
-
-  u32 uStack_4;
-
-  
-
-  iStack_10 = *(int *)(param_1 + 0x10);
-
-  iVar2 = iStack_10 + 0x3e0;
-
-  iVar1 = *(int *)(param_1 + 0x18) + -0x3e0;
-
-  uStack_c = *(u32 *)(param_1 + 0x14);
-
-  uStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  iStack_8 = iVar2;
-
-  FUN_003b4e90(&iStack_10,0x6a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
-
+  upper = *(int *)(param_1 + 0x10) + 0x3e0;
+  lower = *(int *)(param_1 + 0x18) - 0x3e0;
+  bounds[0] = *(u32 *)(param_1 + 0x10);
+  bounds[1] = *(u32 *)(param_1 + 0x14);
+  bounds[2] = upper;
+  bounds[3] = *(u32 *)(param_1 + 0x1c);
+  FUN_003b4e90(bounds,0x6a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
                **(u32 **)(param_1 + 8),0,param_2);
 
-  uStack_c = *(u32 *)(param_1 + 0x14);
+  bounds[0] = upper;
+  bounds[1] = *(u32 *)(param_1 + 0x14);
+  bounds[2] = lower;
+  bounds[3] = *(u32 *)(param_1 + 0x1c);
+  FUN_003b4ea0(bounds,0x6a20f0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
 
-  uStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  iStack_10 = iVar2;
-
-  iStack_8 = iVar1;
-
-  FUN_003b4ea0(&iStack_10,0x6a20f0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
-
-  iStack_10 = *(int *)(param_1 + 0x18);
-
-  uStack_c = *(u32 *)(param_1 + 0x14);
-
-  uStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  iStack_8 = iVar1;
-
-  FUN_003b4ea0(&iStack_10,0x6a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
-
-  return;
-
+  bounds[0] = *(u32 *)(param_1 + 0x18);
+  bounds[1] = *(u32 *)(param_1 + 0x14);
+  bounds[2] = lower;
+  bounds[3] = *(u32 *)(param_1 + 0x1c);
+  FUN_003b4ea0(bounds,0x6a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
 }
 #define FUN_003ac240(...) ((void (*)(...))FUN_003ac240)(__VA_ARGS__)
 #undef FUN_003ac350
@@ -3525,75 +3493,41 @@ u32 FUN_003acf80(u32 param_1,int param_2)
 
 
 u64 FUN_003ad030(u64 param_1,int param_2)
-
-
-
 {
+  u8 low;
+  u8 high;
+  u8 value;
+  u32 packed1;
+  u32 packed2;
+  u8 *data;
 
-  u8 bVar1;
-
-  u8 bVar2;
-
-  char cVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  long lVar6;
-
-  u8 *pbVar7;
-
-  int iVar8;
-
-  
-
-  pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
-  bVar1 = *pbVar7;
-
-  bVar2 = pbVar7[1];
-
-  if (bVar2 == 0xff) {
-
-    uVar4 = 0;
-
+  data = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    value = 0;
+  } else {
+    value = (u8)(high - 1);
+    value &= 0xff;
   }
+  packed1 = value << 8 | low;
 
-  else {
-
-    uVar4 = (u32)(u8)(bVar2 - 1);
-
+  data = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  low = data[2] - 1;
+  high = data[3];
+  if (high == 0xff) {
+    value = 0;
+  } else {
+    value = (u8)(high - 1);
+    value &= 0xff;
   }
+  packed2 = value << 8 | low;
 
-  iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
-  bVar2 = *(u8 *)(iVar8 + 2);
-
-  cVar3 = *(char *)(iVar8 + 3);
-
-  if (cVar3 == -1) {
-
-    uVar5 = 0;
-
+  if (FUN_0016f190(0x184) == 0) {
+    return 0;
   }
-
-  else {
-
-    uVar5 = (u32)(u8)(cVar3 - 1);
-
-  }
-
-  lVar6 = FUN_0016f190(0x184);
-
-  if (lVar6 != 0) {
-
-    FUN_0010a2e0(uVar4 << 8 | bVar1 - 1 & 0xff,2,uVar5 << 8 | bVar2 - 1 & 0xff);
-
-  }
-
+  FUN_0010a2e0(packed1,2,packed2);
   return 0;
-
 }
 #define FUN_003ad030(...) ((u64 (*)(...))FUN_003ad030)(__VA_ARGS__)
 // Retail 0x003ad130-0x003ad1ac

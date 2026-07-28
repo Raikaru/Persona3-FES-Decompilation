@@ -3093,25 +3093,36 @@ static inline void campStatusResetPersonaAnimations(void* records)
     }
 }
 
-// FUN_00133180 NONMATCHING
-void FUN_00133180(CampVec2 position, f32 alpha, void* persona,
+// FUN_00133180
+void FUN_00133180(CampStatusPackedPosition position, f32 alpha, void* unused,
                   void* currentStats, s32 fade)
 {
+    CampStatusPackedPosition firstSpritePosition;
+    CampStatusPackedPosition secondSpritePosition;
+    u32 parent;
+    void* secondResource;
     s32 drawAlpha;
+    s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012b860_s32(position, alpha, persona, currentStats, drawAlpha);
-    position.x += 12.0f;
-    position.y += 96.0f;
-    campStatusDrawSpriteCall((u32)persona, DAT_00833B90, 1,
-                             drawAlpha, position.x + 22.0f,
-                             position.y + 117.0f, alpha);
-    campStatusDrawSpriteCall(
-        (u32)persona, DAT_00833B88,
-        (FUN_00173280(*(u16*)((u8*)currentStats + 2)) & 0xff) - 1,
-        drawAlpha, position.x + 105.0f, position.y + 142.0f, alpha);
-    FUN_00124e60(position, alpha, currentStats, drawAlpha);
-    FUN_00124fd0(position, alpha, currentStats, drawAlpha);
+    campStatusDrawStatsPacked(position, alpha, unused, currentStats, drawAlpha);
+    position.coordinates.x += 12.0f;
+    position.coordinates.y += 96.0f;
+    firstSpritePosition = position;
+    campStatusDrawSpritePackedCall(
+        firstSpritePosition.coordinates.x + 22.0f,
+        firstSpritePosition.coordinates.y + 117.0f, parent,
+        *(void**)DAT_00833B90_abs, 1, (u8)drawAlpha, alpha);
+    secondSpritePosition = position;
+    secondResource = *(void**)DAT_00833B88_abs;
+    arcanaFrame =
+        (FUN_00173280(*(u16*)((u8*)currentStats + 2)) & 0xff) - 1;
+    campStatusDrawSpritePackedCall(
+        secondSpritePosition.coordinates.x + 105.0f,
+        secondSpritePosition.coordinates.y + 142.0f, parent,
+        secondResource, arcanaFrame, (u8)drawAlpha, alpha);
+    campStatusDrawPersonaTopPacked(position, alpha, currentStats, drawAlpha);
+    campStatusDrawPersonaBottomPacked(position, alpha, currentStats, drawAlpha);
 }
 
 // FUN_001332F0
@@ -3146,30 +3157,35 @@ void FUN_001332f0(CampStatusPackedPosition position, f32 alpha, void* unused,
     campStatusDrawPersonaBottomPacked(position, alpha, persona, drawAlpha);
 }
 
-// FUN_00133460 NONMATCHING
-void FUN_00133460(CampVec2 position, f32 alpha, void* currentStats,
+// FUN_00133460
+void FUN_00133460(CampStatusPackedPosition position, f32 alpha, void* unused,
                   void* persona, s32 fade)
 {
-    CampVec2 drawPosition;
+    CampStatusPackedPosition firstSpritePosition;
+    CampStatusPackedPosition secondSpritePosition;
+    u32 parent;
+    void* secondResource;
     s32 drawAlpha;
     s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012bfb0_s32(position, alpha, currentStats, persona,
-                     (u8)drawAlpha);
-    drawPosition = position;
-    drawPosition.x += 12.0f;
-    drawPosition.y += 96.0f;
-    campStatusDrawSpriteCall((u32)0, DAT_00833B90, 1, (u32)drawAlpha,
-                             drawPosition.x + 22.0f,
-                             drawPosition.y + 117.0f, alpha);
-    arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
-    campStatusDrawSpriteCall((u32)0, DAT_00833B88, arcanaFrame,
-                             (u32)drawAlpha,
-                             drawPosition.x + 105.0f,
-                             drawPosition.y + 142.0f, alpha);
-    FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
-    FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
+    campStatusDrawRanksPacked(position, alpha, unused, persona, drawAlpha);
+    position.coordinates.x += 12.0f;
+    position.coordinates.y += 96.0f;
+    firstSpritePosition = position;
+    campStatusDrawSpritePackedCall(
+        firstSpritePosition.coordinates.x + 22.0f,
+        firstSpritePosition.coordinates.y + 117.0f, parent,
+        *(void**)DAT_00833B90_abs, 1, (u8)drawAlpha, alpha);
+    secondSpritePosition = position;
+    secondResource = *(void**)DAT_00833B88_abs;
+    arcanaFrame = (FUN_00173280(*(u16*)((u8*)persona + 2)) & 0xff) - 1;
+    campStatusDrawSpritePackedCall(
+        secondSpritePosition.coordinates.x + 105.0f,
+        secondSpritePosition.coordinates.y + 142.0f, parent,
+        secondResource, arcanaFrame, (u8)drawAlpha, alpha);
+    campStatusDrawPersonaTopPacked(position, alpha, persona, drawAlpha);
+    campStatusDrawPersonaBottomPacked(position, alpha, persona, drawAlpha);
 }
 
 /* Retail 0x1313e0 uses the direct child-create call; case 1 reloads archive

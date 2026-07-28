@@ -3561,59 +3561,29 @@ void FUN_003bba70(int param_1)
 
 
 void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
-
-
-
 {
-
   int iVar1;
+  float delta[4];
+  float adjusted[4];
+  const float wrap = 360.0f;
+  const float limit = 180.0f;
 
-  float fVar2;
-
-  float afStack_20 [4];
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  fStack_10 = *param_2 - *param_1;
-
-  fStack_c = param_2[1] - param_1[1];
-
-  fStack_8 = param_2[2] - param_1[2];
-
-  FUN_003bb9b0_scene_typed(&fStack_10);
-
-  afStack_20[0] = fStack_10;
-
-  afStack_20[1] = fStack_c;
-
-  afStack_20[2] = fStack_8;
-
+  delta[0] = param_2[0] - param_1[0];
+  delta[1] = param_2[1] - param_1[1];
+  delta[2] = param_2[2] - param_1[2];
+  FUN_003bb9b0_scene_typed(delta);
+  adjusted[0] = delta[0];
+  adjusted[1] = delta[1];
+  adjusted[2] = delta[2];
   for (iVar1 = 0; iVar1 < 3; iVar1 = iVar1 + 1) {
-
-    fVar2 = afStack_20[iVar1];
-
-    if (180.0f < fVar2) {
-
-      afStack_20[iVar1] = -(360.0f - fVar2);
-
+    if (adjusted[iVar1] <= limit) {
+      continue;
     }
-
+    adjusted[iVar1] = -(wrap - adjusted[iVar1]);
   }
-
-  *param_3 = afStack_20[0];
-
-  param_3[1] = afStack_20[1];
-
-  param_3[2] = afStack_20[2];
-
-  return;
-
+  param_3[0] = adjusted[0];
+  param_3[1] = adjusted[1];
+  param_3[2] = adjusted[2];
 }
 #define FUN_003bbaa0(...) ((void (*)(...))FUN_003bbaa0)(__VA_ARGS__)
 #undef FUN_003bbb90

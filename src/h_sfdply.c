@@ -1769,20 +1769,14 @@ void func_0010cdd0(void)
 // FUN_0010D6F0 NONMATCHING
 void func_0010d6f0(s32 index, s16 fileIndex)
 {
-    HSfdDecodeSlot* slot;
-
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-        return;
-
-    slot = &sSfdDecodeSlots[index];
-    if (slot->status != 0)
+    if (sSfdDecodeSlots[(s16)index].state == 1)
     {
-        func_0010d950((s16)index);
-    }
-    if (slot->state == 1)
-    {
-        slot->fileIndex = fileIndex;
-        slot->state = 2;
+        if (sSfdDecodeSlots[(s16)index].status != 0)
+        {
+            func_0010d950((s16)index);
+        }
+        sSfdDecodeSlots[(s16)index].fileIndex = fileIndex;
+        sSfdDecodeSlots[(s16)index].state = 2;
     }
 }
 
@@ -2025,21 +2019,29 @@ void func_0010dee0(HSfdImage* image, const u8* source)
 void func_0010df60(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    u32 i;
-    u32 count;
-    u8 alpha;
+    s32 i;
+    s32 count;
+    s32 alpha;
+    s32 opaque;
 
-    count = 1 << image->depth;
     dst = image->palette;
+    count = 1 << image->depth;
+    opaque = 0xff;
     for (i = 0; i < count; i++)
     {
-        dst[0] = source[0];
-        dst[1] = source[1];
-        dst[2] = source[2];
-        alpha = source[3];
-        dst[3] = (alpha >= 0x7F) ? 0xFF : (u8)(((alpha * 0xFF) - alpha) >> 7);
-        dst += 4;
-        source += 4;
+        dst[i * 4] = source[i * 4];
+        dst[i * 4 + 1] = source[i * 4 + 1];
+        dst[i * 4 + 2] = source[i * 4 + 2];
+        dst[i * 4 + 3] = source[i * 4 + 3];
+        alpha = dst[i * 4 + 3];
+        if (alpha >= 0x7f)
+        {
+            dst[i * 4 + 3] = opaque;
+        }
+        else
+        {
+            dst[i * 4 + 3] = (u16)((alpha * 0x100 - alpha) / 0x80);
+        }
     }
 }
 
