@@ -695,10 +695,14 @@ u32 DAT_006af010;
 extern u8 DAT_006af010_abs[];
 u32 DAT_006af0b0;
 u32 DAT_006af140;
-u32 DAT_006af170;
-u32 DAT_006af174;
-u32 DAT_006af178;
-u32 DAT_006af17c;
+typedef struct {
+  f32 x, y, z, w;
+} FclShopFloatQuad;
+typedef union {
+  FclShopFloatQuad vector;
+  u8 *value[4];
+} FclShopDataSet;
+FclShopDataSet DAT_006af170;
 u32 DAT_006af180;
 extern u16 DAT_006af180_abs[];
 #pragma alias DAT_006af180_abs DAT_006af180
@@ -822,10 +826,19 @@ extern u8 PTR_FUN_006af050_abs[];
 extern u8 PTR_FUN_006af070_abs[];
 #pragma alias PTR_FUN_006af090_abs PTR_FUN_006af090
 extern u8 PTR_FUN_006af090_abs[];
-u32 PTR_FUN_007cd970[];
-u32 PTR_FUN_007cd974[];
-u32 PTR_FUN_007cd978[];
-u32 PTR_FUN_007cd97c[];
+typedef struct {
+  f32 x, y;
+} FclShopFloatVector2;
+typedef union {
+  FclShopFloatVector2 vector;
+  u8 *value[2];
+} FclShopCallbackPair;
+FclShopCallbackPair PTR_FUN_007cd970;
+FclShopCallbackPair PTR_FUN_007cd978;
+typedef struct {
+  FclShopDataSet data;
+  FclShopCallbackPair callbacks[2];
+} FclShopCallbackData;
 u32 PTR_LAB_007bbde0[];
 u32 PTR_PTR_006ac9d4[];
 u32 _DAT_006af180;
@@ -10148,13 +10161,9 @@ void FUN_003fdcc0(int param_1,int param_2,int *param_3)
 
   int iVar8;
 
-  u32 auStack_8 [2];
+  FclShopFloatPair auStack_8;
 
-  
-
-  auStack_8[0] = DAT_007cd968;
-
-  auStack_8[1] = DAT_007cd96c;
+  auStack_8 = *(FclShopFloatPair *)&DAT_007cd968;
 
   uVar1 = *(u16 *)(param_2 + 0x26);
 
@@ -10169,7 +10178,7 @@ void FUN_003fdcc0(int param_1,int param_2,int *param_3)
     switch (iVar2) {
     case 0:
       FUN_0040e3c0_f32(0.0f,*(short *)(param_2 + 0x14),*(short *)(param_2 + 0x16),uVar1,
-                   auStack_8[param_3[1]],0);
+                   auStack_8.u[param_3[1]],0);
       break;
     case 1:
       uVar4 = FUN_00177790(**(u16 **)(param_1 + 4));
@@ -10299,17 +10308,8 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
   int iVar5;
 
+  FclShopCallbackData callbackData;
   u8 auStack_40 [32];
-
-  u8 *apuStack_20 [8];
-
-  u8 *puStack_10;
-
-  u8 *puStack_c;
-
-  u8 *puStack_8;
-
-  u8 *puStack_4;
 
   
 
@@ -10340,31 +10340,15 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
   }
 
-  puStack_8 = (u8 *)(PTR_FUN_007cd970);
+  callbackData.callbacks[1].vector = PTR_FUN_007cd970.vector;
+  callbackData.callbacks[0].vector = PTR_FUN_007cd978.vector;
+  callbackData.data.vector = DAT_006af170.vector;
 
-  puStack_4 = (u8 *)(PTR_FUN_007cd974);
+  FUN_003c5e20(uVar4,callbackData.callbacks[1].value[param_1]);
+  FUN_003c5ee0(uVar4,callbackData.callbacks[0].value[param_1]);
 
-  puStack_10 = (u8 *)(PTR_FUN_007cd978);
-
-  puStack_c = (u8 *)(PTR_FUN_007cd97c);
-
-  apuStack_20[0] = (u8 *)(DAT_006af170);
-
-  apuStack_20[1] = (u8 *)DAT_006af174;
-
-  apuStack_20[2] = (u8 *)DAT_006af178;
-
-  apuStack_20[3] = (u8 *)DAT_006af17c;
-  apuStack_20[4] = (u8 *)(DAT_006af170);
-  apuStack_20[5] = (u8 *)DAT_006af174;
-  apuStack_20[6] = (u8 *)DAT_006af178;
-  apuStack_20[7] = (u8 *)DAT_006af17c;
-
-  FUN_003c5e20(uVar4,apuStack_20[param_1 + 6]);
-
-  FUN_003c5ee0(uVar4,apuStack_20[param_1 + 4]);
-
-  FUN_003c6d40(uVar4,apuStack_20[param_1 * 2],apuStack_20[param_1 * 2 + 1]);
+  FUN_003c6d40(uVar4,callbackData.data.value[param_1 * 2],
+               callbackData.data.value[param_1 * 2 + 1]);
 
   *(u16 *)(*(int *)(iVar2 + 0x24) + 6) = 10;
 
@@ -17816,6 +17800,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
   int uVar11;
   union {
+    FclShopFloatPair pairs[3];
     struct {
       u32 words[6];
       u8 text[24];
@@ -17887,10 +17872,8 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
           iVar2 = *(int *)(*(int *)(iVar7 + 0x14) + 0x1c);
           uVar9 = (u32)bVar4;
-          scratch.detailed.words[4] = fGpffffacf0;
-          scratch.detailed.words[5] = fGpffffacf4;
-          scratch.detailed.words[2] = fGpffffacf8;
-          scratch.detailed.words[3] = fGpffffacfc;
+          scratch.pairs[2] = *(FclShopFloatPair *)&fGpffffacf0;
+          scratch.pairs[1] = *(FclShopFloatPair *)&fGpffffacf8;
  
 
           FUN_0040e3c0_u32(0.0f,iVar6,iVar10,uVar11 & 0xff,0x8e,
@@ -17951,8 +17934,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
         else {
 
 
-          scratch.simple.words[0] = fGpffffad00;
-          scratch.simple.words[1] = fGpffffad04;
+          scratch.pairs[0] = *(FclShopFloatPair *)&fGpffffad00;
 
           sprintf((char *)scratch.simple.text,&gp0xffffac10,
 

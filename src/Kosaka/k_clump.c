@@ -1836,58 +1836,67 @@ void func_001a9470(KwlnTask* task)
 // FUN_001a9500 NONMATCHING
 s32 func_001a9500(KwlnTask* task)
 {
-    u32* work;
+    typedef struct KClumpSoundUpdateWork
+    {
+        s32 state;
+        s32 delay;
+        s32 timer;
+        s32 count;
+        u32 values[8];
+        RwV3d positions[8];
+        u32 sounds[8];
+        u32 flags[8];
+    } KClumpSoundUpdateWork;
+    KClumpSoundUpdateWork* work;
     s32 i;
     s32 fieldIndex;
     KwlnTask** fieldTasks;
 
-    work = (u32*)task->workData;
-    if (work[0] == 3)
+    work = (KClumpSoundUpdateWork*)task->workData;
+    if (work->state == 3)
     {
         return -1;
     }
-    if (work[0] == 2)
+    if (work->state == 2)
     {
-        if (work[2] < work[1])
+        if (work->timer < work->delay)
         {
-            work[2]++;
+            work->timer++;
         }
         else
         {
-            work[0] = 1;
+            work->state = 1;
         }
     }
     else
     {
-        if (work[0] != 0 && work[0] != 1)
+        if (work->state != 0 && work->state != 1)
         {
             return 0;
         }
-        if (work[0] == 0)
+        if (work->state == 0)
         {
-            work[0] = 1;
+            work->state = 1;
         }
-        if (work[3] > 0)
+        if (work->count > 0)
         {
             fieldTasks = (KwlnTask**)((u8*)K_Field_Get() + 0x11f4);
-            fieldIndex = (s32)work[4];
-            func_001a91b0(fieldTasks[fieldIndex], &work[0x0c]);
-            if ((s32)work[0x24] >= 0)
+            fieldIndex = (s32)work->values[0];
+            func_001a91b0(fieldTasks[fieldIndex], &work->positions[0]);
+            if ((s32)work->sounds[0] >= 0)
             {
-                func_0010a4e0(1, 8, (u16)work[0x24], (u16)work[0x2c]);
+                func_0010a4e0(1, 8, (u16)work->sounds[0], (u16)work->flags[0]);
             }
-            work[3]--;
+            work->count--;
             for (i = 1; i < 8; i++)
             {
-                work[i + 3] = work[i + 4];
-                work[i * 3 + 9] = work[i * 3 + 12];
-                work[i * 3 + 10] = work[i * 3 + 13];
-                work[i * 3 + 11] = work[i * 3 + 14];
-                work[i + 0x23] = work[i + 0x24];
-                work[i + 0x2b] = work[i + 0x2c];
+                work->values[i - 1] = work->values[i];
+                work->positions[i - 1] = work->positions[i];
+                work->sounds[i - 1] = work->sounds[i];
+                work->flags[i - 1] = work->flags[i];
             }
-            work[2] = 0;
-            work[0]++;
+            work->timer = 0;
+            work->state++;
         }
     }
     return 0;

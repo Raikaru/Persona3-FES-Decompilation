@@ -19,6 +19,7 @@ typedef union CampBits
 {
     u64 u;
     f32 f[2];
+    CampPair pair;
 } CampBits;
 
 /* CONCAT44 packs IEEE-754 words, not numeric float casts. */
@@ -2041,8 +2042,7 @@ void h_campDrawItemFrameSelected(int param_1)
         CampBits position;
     } local;
 
-    local.position.f[0] = *(f32 *)(*(int *)(param_1 + 0xc) + 0x30);
-    local.position.f[1] = *(f32 *)(*(int *)(param_1 + 0xc) + 0x34);
+    local.position.pair = *(CampPair *)(*(int *)(param_1 + 0xc) + 0x30);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc)), 0, 2, 2,
                   local.position.u, local.position.u, 0, 0, 0, 10);
 

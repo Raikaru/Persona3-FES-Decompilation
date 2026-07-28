@@ -1484,15 +1484,9 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
       param_2 = param_1;
     }
     scale = -param_2;
+    *(RwV4d*)origin = *(RwV4d*)param_3;
     if (bVar1 != 9) {
-      origin[0] = *param_3;
       origin[1] = fVar3;
-      origin[2] = param_3[2];
-    }
-    else {
-      origin[0] = *param_3;
-      origin[1] = param_3[1];
-      origin[2] = param_3[2];
     }
     __asm__ volatile (
         ".set noreorder          \n"
@@ -2086,35 +2080,17 @@ void func_002ba3a0(int param_1)
       else {
         iVar14 = *(int *)(iVar3 + 0x84);
         iVar15 = *(int *)(iVar3 + 0x88);
-        piVar10[8] = *(int *)(iVar3 + 0x80);
-        piVar10[9] = iVar14;
-        piVar10[10] = iVar15;
+        *(RwV3d*)(piVar10 + 8) = *(RwV3d*)(iVar3 + 0x80);
         piVar10[0xb] = *(int *)(iVar3 + 0x8c);
         piVar10[0xc] = *(int *)(iVar3 + 0x90);
       }
-      iVar14 = *(int *)(iVar3 + 8);
-      iVar15 = *(int *)(iVar3 + 0xc);
-      piVar10[0xd] = *(int *)(iVar3 + 4);
-      piVar10[0xe] = iVar14;
-      piVar10[0xf] = iVar15;
+      *(RwV3d*)(piVar10 + 0xd) = *(RwV3d*)(iVar3 + 4);
       if (iVar3 == piVar10[7]) {
-        iVar16 = *(int *)(iVar3 + 0x20);
-        iVar14 = *(int *)(iVar3 + 0x24);
-        iVar15 = *(int *)(iVar3 + 0x28);
-        piVar10[0x10] = *(int *)(iVar3 + 0x1c);
-        piVar10[0x11] = iVar16;
-        piVar10[0x12] = iVar14;
-        piVar10[0x13] = iVar15;
+        *(RwV4d*)(piVar10 + 0x10) = *(RwV4d*)(iVar3 + 0x1c);
       }
       else if ((*(char *)(iVar3 + 0xa2) == *(char *)(piVar10[7] + 0xa2)) &&
               (*(char *)(iVar3 + 0xa2) == '\x01')) {
-        iVar16 = *(int *)(iVar3 + 0x20);
-        iVar14 = *(int *)(iVar3 + 0x24);
-        iVar15 = *(int *)(iVar3 + 0x28);
-        piVar10[0x10] = *(int *)(iVar3 + 0x1c);
-        piVar10[0x11] = iVar16;
-        piVar10[0x12] = iVar14;
-        piVar10[0x13] = iVar15;
+        *(RwV4d*)(piVar10 + 0x10) = *(RwV4d*)(iVar3 + 0x1c);
       }
       else {
         func_0027ffb0(iVar3,auStack_10);

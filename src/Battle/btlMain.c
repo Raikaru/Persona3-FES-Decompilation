@@ -3628,17 +3628,11 @@ u8 FUN_002a1400(float *param_1)
   if (counter == 0) {
 
     fVar6 = *(float *)(iGpffffb6fc + 0x238);
-
     fVar1 = *(float *)(iGpffffb6fc + 0x23c);
-
     fVar4 = *(float *)(iGpffffb6fc + 0x240);
-
     *param_1 = *(float *)(iGpffffb6fc + 0x234);
-
     param_1[1] = fVar6;
-
     param_1[2] = fVar1;
-
     param_1[3] = fVar4;
 
   }
@@ -3897,37 +3891,13 @@ void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4)
 
   if (param_1 <= 0.0f) {
 
-    fVar3 = param_3[4];
-
-    fVar1 = param_3[5];
-
-    fVar2 = param_3[6];
-
-    param_2[3] = param_3[3];
-
-    param_2[4] = fVar3;
-
-    param_2[5] = fVar1;
-
-    param_2[6] = fVar2;
+    *(RwV4d*)(param_2 + 3) = *(RwV4d*)(param_3 + 3);
 
   }
 
   else if (1.0f <= param_1) {
 
-    fVar3 = param_4[4];
-
-    fVar1 = param_4[5];
-
-    fVar2 = param_4[6];
-
-    param_2[3] = param_4[3];
-
-    param_2[4] = fVar3;
-
-    param_2[5] = fVar1;
-
-    param_2[6] = fVar2;
+    *(RwV4d*)(param_2 + 3) = *(RwV4d*)(param_4 + 3);
 
   }
 
@@ -4669,22 +4639,10 @@ void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1)
   param_2 = param_2 + uVar3 * 0x1c;
   FUN_004be310((float *)(param_2 + 0x10),(float *)(iVar1 + 0x10),&fStack_30);
   if (param_1 <= 0.0f) {
-    fVar6 = *(float *)(param_2 + 0x14);
-    fVar4 = *(float *)(param_2 + 0x18);
-    fVar5 = *(float *)(param_2 + 0x1c);
-    *param_3 = *(float *)(param_2 + 0x10);
-    param_3[1] = fVar6;
-    param_3[2] = fVar4;
-    param_3[3] = fVar5;
+    *(RwV4d*)param_3 = *(RwV4d*)(param_2 + 0x10);
   }
   else if (1.0f <= param_1) {
-    fVar6 = *(float *)(iVar1 + 0x14);
-    fVar4 = *(float *)(iVar1 + 0x18);
-    fVar5 = *(float *)(iVar1 + 0x1c);
-    *param_3 = *(float *)(iVar1 + 0x10);
-    param_3[1] = fVar6;
-    param_3[2] = fVar4;
-    param_3[3] = fVar5;
+    *(RwV4d*)param_3 = *(RwV4d*)(iVar1 + 0x10);
   }
   else {
     fVar4 = 1.0f - param_1;

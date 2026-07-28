@@ -1674,9 +1674,7 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
             copyRecord->words[4] = FUN_0034fd50(sourceRecord->words[4]);
         }
     }
-    copy[0x288] = resource[0x288];
-    copy[0x289] = resource[0x289];
-    copy[0x28a] = resource[0x28a];
+    *(RwV3d*)&copy[0x288] = *(const RwV3d*)&resource[0x288];
     FUN_001b5200(copy, angle);
     FUN_001b4e00(copy, (const f32*)position, angle);
     return copy;
