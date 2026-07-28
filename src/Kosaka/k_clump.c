@@ -91,6 +91,7 @@ extern u32 D_00678C00[];
 extern const char D_00678C28[];
 extern const char D_00678C38[];
 extern const char D_00678C48[];
+extern const char D_00678C60[];
 extern f32 D_007CE154;
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
@@ -803,6 +804,8 @@ u32 func_001a76e0(const u32* state)
     return state[8] != 0;
 }
 
+// The retail entry uses the opposite null-state branch layout; MWCC keeps the equivalent beqz form.
+// The nine volatile list traversals and final state release are otherwise instruction-identical.
 // FUN_001a7710 NONMATCHING
 void func_001a7710(u32* state)
 {
@@ -825,7 +828,7 @@ void func_001a7710(u32* state)
 
     if (state != NULL)
         goto state_valid;
-    goto done;
+    return;
 state_valid:
     work = (KClumpFreeState*)(void*)state;
 
@@ -903,8 +906,6 @@ state_valid:
     }
 
     (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
-done:
-    ;
 }
 
 // FUN_001a7910 NONMATCHING
@@ -918,37 +919,39 @@ void func_001a7910(void* object, f32* scale)
     s32 blue;
     s32 alpha;
     void* material;
+    RwRGBA materialColor;
 
     resources = (KClumpResourceList*)((KClumpContainer*)object)->resources;
     for (i = 0; i < (s32)resources->count; i++)
     {
         material = resources->materials[i];
         func_001b5a30(material);
-        color = (u32)K_Clump_MatUsrDataGetInt((RpMaterial*)material, (const char*)0x00678c60);
+        color = (u32)K_Clump_MatUsrDataGetInt((RpMaterial*)material, D_00678C60);
         red = (s32)((f32)((color >> 16) & 0xff) * scale[0]);
         green = (s32)((f32)((color >> 8) & 0xff) * scale[1]);
         blue = (s32)((f32)(color & 0xff) * scale[2]);
         alpha = (s32)((f32)((color >> 24) & 0xff) * scale[3]);
-        if ((u32)red >= 0x100)
+        if ((u32)red > 0xff)
         {
             red = 0xff;
         }
-        if ((u32)green >= 0x100)
+        if ((u32)green > 0xff)
         {
             green = 0xff;
         }
-        if ((u32)blue >= 0x100)
+        if ((u32)blue > 0xff)
         {
             blue = 0xff;
         }
-        if ((u32)alpha >= 0x100)
+        if ((u32)alpha > 0xff)
         {
             alpha = 0xff;
         }
-        *(u8*)((u8*)material + 4) = (u8)red;
-        *(u8*)((u8*)material + 5) = (u8)green;
-        *(u8*)((u8*)material + 6) = (u8)blue;
-        *(u8*)((u8*)material + 7) = (u8)alpha;
+        materialColor.r = (u8)red;
+        materialColor.g = (u8)green;
+        materialColor.b = (u8)blue;
+        materialColor.a = (u8)alpha;
+        *(RwRGBA*)((u8*)material + 4) = materialColor;
     }
 }
 

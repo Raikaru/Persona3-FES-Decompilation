@@ -27,9 +27,10 @@ typedef struct FclMiscVec2
 } FclMiscVec2;
 typedef struct FclMiscVec3
 {
-    u64 xy;
+    f32 x;
+    f32 y;
     f32 z;
-} __attribute__((packed)) FclMiscVec3;
+} FclMiscVec3;
 typedef struct FclMiscVec4
 {
     f32 x;
@@ -94,6 +95,7 @@ extern u64 fclMiscDefaultPosition[];
 #pragma alias fclMiscDefaultPositionZ DAT_006a4268
 extern f32 fclMiscDefaultPositionZ[];
 extern f32 DAT_007cd718;
+extern u8 DAT_007cd720;
 extern u32 DAT_007ce0cc;
 extern u32 DAT_007ce680;
 extern u32 DAT_0095be80;
@@ -154,6 +156,14 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #pragma alias fclMiscCa780Call FUN_003ca780
 #pragma alias fclMiscC31b0Call FUN_004c31b0
 extern void fclMiscC31b0Call(f32, void *, void *, s32);
+#pragma alias fclMisc6bc80Call FUN_0016bc80
+extern void fclMisc6bc80Call(s32, u16, void *);
+#pragma alias fclMisc6bdb0Call FUN_0016bdb0
+extern void fclMisc6bdb0Call(s32, u16, void *);
+#pragma alias fclMiscE2a0Callback FUN_003ce2a0
+extern u64 fclMiscE2a0Callback(u64);
+#pragma alias fclMiscF080Callback FUN_003cf080
+extern void fclMiscF080Callback(void);
 #pragma alias fclMiscA2580Call FUN_003a2580
 extern s32 fclMiscA2580Call(s32);
 #pragma alias fclMiscC49e0Call FUN_003c49e0
@@ -3334,6 +3344,8 @@ void FUN_003cda60(u32 param_1)
   u32 uVar1;
 
   int iVar2;
+  u64 xy;
+  f32 z;
 
   FclMiscVec3 rotation;
 
@@ -3347,9 +3359,15 @@ void FUN_003cda60(u32 param_1)
 
   
 
-  rotation = fclMiscInitialRotation[0];
+  xy = *(u64 *)&fclMiscInitialRotation[0];
+  z = fclMiscInitialRotation[0].z;
+  *(u64 *)&rotation = xy;
+  rotation.z = z;
 
-  translation = fclMiscInitialTranslation[0];
+  xy = *(u64 *)&fclMiscInitialTranslation[0];
+  z = fclMiscInitialTranslation[0].z;
+  *(u64 *)&translation = xy;
+  translation.z = z;
 
   color.packed = DAT_007cd718;
 
@@ -3376,11 +3394,12 @@ void FUN_003cda60(u32 param_1)
   *(u8 *)(iVar2 + 0x82) = blue;
   *(u8 *)(iVar2 + 0x83) = alpha;
 
-  FUN_0016bc80(0,*(u16 *)(iVar2 + 0xc),iVar2 + 0x84);
+  fclMisc6bc80Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x84));
 
-  FUN_0016bdb0(0,*(u16 *)(iVar2 + 0xc),iVar2 + 0x94);
+  fclMisc6bdb0Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x94));
 
-  FUN_00194b20(param_1,0x7cd720,0x147c,0x3ce2a0,0x3cf080,uVar1);
+  FUN_00194b20(param_1,&DAT_007cd720,0x147c,
+                fclMiscE2a0Callback,fclMiscF080Callback,uVar1);
 
   return;
 
