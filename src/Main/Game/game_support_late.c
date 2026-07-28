@@ -1751,7 +1751,7 @@ KwlnTask* func_0018e820(KwlnTask* parent)
     return task;
 }
 
-// FUN_0018E8E0 NONMATCHING
+// FUN_0018E8E0
 void func_0018e8e0(void* workData)
 {
     GsAnimationWork* work = (GsAnimationWork*)workData;
@@ -1791,7 +1791,8 @@ void func_0018e8e0(void* workData)
                 {
                     u32 alpha;
 
-                    alpha = 0xff - transition->alpha;
+                    alpha = transition->alpha;
+                    alpha = 0xff - alpha;
                     func_003b2cb0(
                         transition->depth,
                         (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
@@ -1803,7 +1804,8 @@ void func_0018e8e0(void* workData)
                 {
                     u32 alpha;
 
-                    alpha = 0xff - transition->alpha;
+                    alpha = transition->alpha;
+                    alpha = 0xff - alpha;
                     func_003b2cb0(
                         transition->depth,
                         (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),

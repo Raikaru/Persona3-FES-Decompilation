@@ -10,7 +10,7 @@ typedef u32 int3;
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 extern u16 DAT_006a1bd0[];
-extern u32 DAT_007cad94;
+extern f32 DAT_007cad94;
 extern u32 DAT_007ce620;
 extern u32 DAT_007ce63c;
 extern u32 DAT_007ce654;
@@ -179,6 +179,9 @@ extern u64 FUN_003a53b0_typed(int param_1,int param_2,f32 param_3,int param_4,in
                               u32 param_6,int param_7,int param_8,int param_9);
 extern u64 FUN_003a53b0_8(int param_1,int param_2,u64 param_3,int param_4,int param_5,
                           u32 param_6,int param_7,int param_8);
+#pragma alias FUN_003a53b0_8f FUN_003a53b0
+extern u64 FUN_003a53b0_8f(int param_1,int param_2,f32 param_3,int param_4,int param_5,
+                           u32 param_6,int param_7,int param_8);
 #pragma alias FUN_003a5fd0_typed FUN_003a5fd0
 void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 #pragma alias FUN_003b0ce0_typed FUN_003b0ce0
@@ -2555,7 +2558,7 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
   FUN_003a5fd0(iVar1 + 0xd4);
 
   if (*(int *)(iVar1 + 8) != 0) {
-    FUN_003b19a0();
+    FUN_003b19a0(*(int *)(iVar1 + 8));
   }
 
   lVar5 = FUN_003a5940_typed(iVar2,param_3);

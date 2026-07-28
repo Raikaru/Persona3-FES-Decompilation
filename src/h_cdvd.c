@@ -209,13 +209,13 @@ u32 H_Cdvd_FileExists(const char* path)
 #pragma push
 /* Removing this worsens FUN_00100980 (nd95 -> nd143) - measured W161. */
 #pragma opt_loop_invariants on
-// FUN_00100980 NONMATCHING
+// FUN_00100980
 void H_Cdvd_Read()
 {
     HCdvd* cdvd;
     HCdvd* prev;
     HCdvd* next;
-    s32 i;
+    s16 i;
     u32 readResult;
 
     cdvd = sCdvdListHead.next;
@@ -303,7 +303,7 @@ opened:
             }
 
             cdvd->readState = HCDVD_READ_QUEUED;
-            return;
+            goto complete;
         }
 
         cdvd->readState = HCDVD_READ_IN_PROGRESS;
