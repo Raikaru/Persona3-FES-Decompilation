@@ -349,6 +349,7 @@ static void btlMainRegisterDependentPacket(BtlPacket* packet, u8 type, u64 paren
     btlPacketRegister(packet, type);
 }
 
+
 static void btlMainSetPacketAction(BtlPacket* packet, const BtlAction* action)
 {
     packet->actionUID = action->uid;

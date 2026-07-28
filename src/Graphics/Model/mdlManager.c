@@ -21,6 +21,8 @@ extern u8 DAT_009571d0_abs[];
 extern u8 DAT_0069abb8[];
 extern void* jtbl_00960178[];
 
+extern RwMatrix* FUN_004c2f30(RwMatrix* dst, const RwMatrix* left, const RwMatrix* right);
+extern RwV3d* FUN_004c6be0(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
 extern s32 func_001a6c00(void* object, const char* name);
 extern char DAT_007cca08[1];
 #pragma alias DAT_007cca08_abs DAT_007cca08
@@ -619,7 +621,7 @@ void mdl00317730(Model* mdl)
 
     if (mdl->flags & MDL_FLAG_STREAMDONE)
     {
-        RwMatrixMultiply(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
+        FUN_004c2f30(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
         FUN_004cb7f0(*(RwFrame**)((u8*)mdl->clump + 4), &matrix, 0);
         func_003197c0(mdl, &matrix);
 
@@ -1733,7 +1735,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
           } while (0 < iVar15);
 
-          RwMatrixMultiply((RwMatrix*)afStack_90,(RwMatrix*)afStack_1d0,(RwMatrix*)(iVar11 + 0x10));
+          FUN_004c2f30((RwMatrix*)afStack_90,(RwMatrix*)afStack_1d0,(RwMatrix*)(iVar11 + 0x10));
 
         }
 
@@ -1823,7 +1825,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
     if (*(int *)(param_1[4] + iVar19 * 0x10) != 0x1389) {
 
-      RwMatrixMultiply((RwMatrix*)pfVar5,(RwMatrix*)&fStack_210,(RwMatrix*)pfVar16);
+      FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)&fStack_210,(RwMatrix*)pfVar16);
 
     }
 
@@ -1881,7 +1883,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       RwMatrixScale((RwMatrix*)afStack_190,(const RwV3d*)&fStack_30,1);
 
-      RwMatrixMultiply((RwMatrix*)&fStack_310,(RwMatrix*)&fStack_210,(RwMatrix*)afStack_190);
+      FUN_004c2f30((RwMatrix*)&fStack_310,(RwMatrix*)&fStack_210,(RwMatrix*)afStack_190);
 
       fStack_20 = fStack_2e0;
 
@@ -1909,7 +1911,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)&uStack_10,-90.0f,2);
 
-        RwMatrixMultiply((RwMatrix*)auStack_250,(RwMatrix*)auStack_290,(RwMatrix*)afStack_90);
+        FUN_004c2f30((RwMatrix*)auStack_250,(RwMatrix*)auStack_290,(RwMatrix*)afStack_90);
 
         uVar1 = *param_3;
 
@@ -1981,7 +1983,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             fStack_48 = -100.0f;
 
-            RwV3dTransformPoint((RwV3d*)&fStack_50,(const RwV3d*)&fStack_50,(const RwMatrix*)afStack_190);
+            FUN_004c6be0((RwV3d*)&fStack_50,(const RwV3d*)&fStack_50,(const RwMatrix*)afStack_190);
 
             fStack_40 = fStack_20 - fStack_50;
 
@@ -2063,7 +2065,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
           }
 
-          RwMatrixMultiply((RwMatrix*)pfVar5,(RwMatrix*)auStack_250,(RwMatrix*)auStack_290);
+          FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)auStack_250,(RwMatrix*)auStack_290);
 
           RtQuatConvertFromMatrix((RtQuat*)&fStack_320,(const RwMatrix*)pfVar5);
 
@@ -2513,7 +2515,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fStack_2d8 = fStack_18;
 
-        RwMatrixMultiply((RwMatrix*)pfVar5,(RwMatrix*)&fStack_310,(RwMatrix*)param_4);
+        FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)&fStack_310,(RwMatrix*)param_4);
 
       }
 
@@ -2571,7 +2573,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         if ((uVar2 & 0x4000) != 0) {
 
-          RwMatrixMultiply((RwMatrix*)(iVar9 + 0x50),(RwMatrix*)pfVar5,(RwMatrix*)afStack_90);
+          FUN_004c2f30((RwMatrix*)(iVar9 + 0x50),(RwMatrix*)pfVar5,(RwMatrix*)afStack_90);
 
         }
 
@@ -4597,7 +4599,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
       uVar4 = func_004cb2f0(iVar6);
 
-      RwMatrixMultiply(param_1,(const RwMatrix*)iVar7,(const RwMatrix*)uVar4);
+      FUN_004c2f30(param_1,(const RwMatrix*)iVar7,(const RwMatrix*)uVar4);
 
       uVar3 = 1;
 
@@ -5032,9 +5034,9 @@ void func_003151d0(Model* param_1)
 
     uVar3 = *(u32 *)(*(int *)(iVar11 + 0xdc) + 4);
 
-    RwMatrixMultiply((RwMatrix*)auStack_a0,(const RwMatrix*)(iVar11 + 0x40),(RwMatrix*)param_1);
+    FUN_004c2f30((RwMatrix*)auStack_a0,(const RwMatrix*)(iVar11 + 0x40),(RwMatrix*)param_1);
 
-    RwMatrixMultiply((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,&lightMatrix);
+    FUN_004c2f30((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,&lightMatrix);
 
     func_004cb7f0(uVar3,auStack_60,0);
 
@@ -5102,9 +5104,9 @@ void func_003151d0(Model* param_1)
 
         uVar3 = *(u32 *)(iVar4 + 4);
 
-        RwMatrixMultiply((RwMatrix*)auStack_a0,(const RwMatrix*)(iVar9 + 0x40),(RwMatrix*)iVar9);
+        FUN_004c2f30((RwMatrix*)auStack_a0,(const RwMatrix*)(iVar9 + 0x40),(RwMatrix*)iVar9);
 
-        RwMatrixMultiply((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,&lightMatrix);
+        FUN_004c2f30((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,&lightMatrix);
 
         func_004cb7f0(uVar3,auStack_60,0);
 
@@ -6705,7 +6707,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
         uVar6 = func_004cb2f0(iVar10);
 
-        RwMatrixMultiply((RwMatrix*)param_3,(const RwMatrix*)iVar11,(const RwMatrix*)uVar6);
+        FUN_004c2f30((RwMatrix*)param_3,(const RwMatrix*)iVar11,(const RwMatrix*)uVar6);
 
         uVar4 = 1;
 

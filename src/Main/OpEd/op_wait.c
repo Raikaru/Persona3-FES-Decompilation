@@ -13,7 +13,6 @@ extern void func_0021eb80(void* destination, const f32* layout);
 extern void func_0021d8e0(void* destination, const f32* layout);
 extern void func_0021d890(void* destination, const f32* layout);
 extern void func_0021d950(void* destination, const u8* color);
-extern void* opRes00266c50(u32 id);
 extern void* func_0021cca0(void* resource, u32 index);
 extern void* func_0021cce0(void* frame);
 extern void func_002699d0(void* value);
@@ -566,7 +565,7 @@ void opWait0026eed0(void)
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (u8*)sOpWait;
-    atlas = opRes00266c50(0);
+    atlas = opResGetTitleSprite(0);
     mode = *(s32*)(work + 4);
     timer = *(s32*)(work + 8);
 

@@ -22,6 +22,7 @@ void FUN_00288110(BtlUnit* unit);
 int FUN_00288da0(BtlUnit* unit, u16 mode);
 void FUN_002891e0(void);
 BtlAction* FUN_00289650(u16 param_1, u16 param_2, void* param_3);
+void btlAction00299e30(BtlAction* action);
 extern f32 DAT_007cad78;
 extern f32 fGpffff8218;
 extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
@@ -5885,7 +5886,7 @@ BtlAction* FUN_00289650(u16 mode, u16 charId, void* data)
     action = btlActionCreate();
     btlActionSetUnit(action, unit);
     FUN_0029a2c0(action);
-    btlAction0028a780(action);
+    btlAction00299e30(action);
     FUN_00299d60(action, 1);
     if (charId == 1) {
       action->unk_14 = 5;
@@ -5899,7 +5900,7 @@ BtlAction* FUN_00289650(u16 mode, u16 charId, void* data)
     action = btlActionCreate();
     btlActionSetUnit(action, unit);
     FUN_0029a2c0(action);
-    btlAction0028a780(action);
+    btlAction00299e30(action);
     FUN_00299d60(action, 1);
     break;
   }

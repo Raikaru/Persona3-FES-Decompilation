@@ -6047,11 +6047,11 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
 
                 delta.x = *(f32*)(cell + 0x10) - *(const f32*)(param_1 + 8);
                 delta.y = *(f32*)(cell + 0x14) - *(const f32*)(param_1 + 0xc);
-                if (!(RwV2dLength(&delta) < 1.0f))
+                if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
                 {
                     delta.x = *(f32*)(cell + 0x10) - *(const f32*)(param_2 + 8);
                     delta.y = *(f32*)(cell + 0x14) - *(const f32*)(param_2 + 0xc);
-                    if (!(RwV2dLength(&delta) < 1.0f))
+                    if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
                     {
                         otherPoint = *(const f32**)(cell + 0x18);
                         side1 = FUN_002d2990(cellPoint, otherPoint,

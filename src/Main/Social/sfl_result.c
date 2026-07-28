@@ -387,13 +387,13 @@ void sflResult001f9a80(void)
             float quad[3] = {0.0f, 1.0f, 0.0f};
             u32 frame;
 
-            sflRes0020d630(entry, scale);
+            sflResSetSpriteScale(entry, scale);
             frame = func_0020c500(200.0f, entry);
             func_0020c400(frame, entry, origin, rect);
             rect[1] += 100.0f;
-            sflRes0020d650(entry, rect);
+            sflResSetSpritePosition(entry, rect);
             func_004bdde0(180.0f, quad, quad, 0);
-            sflRes0020d690(entry, quad);
+            sflResSetSpriteRotation(entry, quad);
         }
         *(u32*)(base + 0x36d8) = 0;
         *(u32*)(base + 0x36dc) = 0;

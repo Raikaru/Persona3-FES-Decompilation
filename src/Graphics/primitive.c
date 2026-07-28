@@ -2,6 +2,7 @@
 #include "Kernel/Kwln/kwln.h"
 #include "sce/eestruct.h"
 #include "libm.h"
+extern void FUN_004c6be0(RwV3d* out, const RwV3d* in, const RwMatrix* matrix);
 
 #define PRIM_RENDERSTATE_COUNT 6
 
@@ -314,8 +315,8 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
         circlePoint.x = radius * cosf(angle);
         circlePoint.y = 0.0f;
         circlePoint.z = radius * sinf(angle);
-        RwV3dTransformPoint(&worldPoint, &circlePoint, &localMat);
-        RwV3dTransformPoint(&cameraPoint, &worldPoint, cameraMat);
+        FUN_004c6be0(&worldPoint, &circlePoint, &localMat);
+        FUN_004c6be0(&cameraPoint, &worldPoint, cameraMat);
 
         vertices[i].u.els.scrVertex.x = 640.0f * (cameraPoint.x / cameraPoint.z);
         vertices[i].u.els.scrVertex.y = 448.0f * (cameraPoint.y / cameraPoint.z);

@@ -1652,6 +1652,7 @@ undefined4 FUN_0016A030(void)
             slot = (u16)i;
             itemIndex = (u16)FUN_00170a40(item, slot);
             if (itemIndex != 0 && FUN_00170ab0(item, slot) != 0) {
+                itemIndex = (u16)FUN_00170a40(item, slot);
                 category = (s16)FUN_00170ab0(item, slot);
                 amount = func_00170760(1, itemIndex);
                 amount = (u32)category + (amount & 0xffff);

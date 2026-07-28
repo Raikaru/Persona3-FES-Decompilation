@@ -771,6 +771,8 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u64 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
+#pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
+extern u32 *FUN_0031fbd0_noargs(void);
 u8 * FUN_0031fd00(void);
 void FUN_0031fde0(void);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
@@ -837,6 +839,8 @@ void FUN_00322a20(int param_1);
 void FUN_00322ab0(int *param_1,int param_2,float *param_3);
 void FUN_00322d10(int param_1,float *param_2);
 void FUN_00322d40(int param_1,u32 param_2);
+#pragma alias FUN_00322d40_onearg FUN_00322d40
+extern void FUN_00322d40_onearg(u32 resource);
 u32 FUN_00322da0(int *param_1,int param_2);
 u32 FUN_00322dc0(u32 *param_1);
 #pragma alias FUN_00322dc0_u32 FUN_00322dc0
@@ -909,6 +913,8 @@ void FUN_003243f0(int param_1,u32 param_2);
 extern void FUN_00324510_i(int param_1,int param_2);
 void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
 void FUN_003244c0(int param_1);
+#pragma alias FUN_003244c0_4arg FUN_003244c0
+extern void FUN_003244c0_4arg(u16 *mesh,u64 resource,int position,int scale);
 void FUN_00324510(int param_1,u64 param_2);
 int FUN_003245b0(int param_1);
  #pragma alias FUN_003245b0_passthru FUN_003245b0
@@ -957,6 +963,8 @@ extern void FUN_00325e40_passthru(void);
 #pragma alias FUN_003505d0_passthru FUN_003505d0
 extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
+#pragma alias FUN_00325c10_onearg FUN_00325c10
+extern void FUN_00325c10_onearg(u32 resource);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
 #pragma alias FUN_00325d60_ptr FUN_00325d60
 extern void FUN_00325d60_ptr(u8 (*param_1) [16],u8 (*param_2) [16]);
@@ -2136,6 +2144,7 @@ extern void (*DAT_0096017c)(...);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
 extern void FUN_004c6be0(float *out,float *in,int matrix);
+extern void FUN_004c2f30(void *out,void *left,void *right);
 extern float fGpffff80a4;
 extern float fGpffff80b0;
 extern float fGpffff80c0;
@@ -4275,7 +4284,7 @@ u8 * FUN_0031fd00(void)
   u32 extraout_f13;
   float extraout_f14;
 
-  iVar1 = ((code)FUN_0031fbd0)();
+  iVar1 = (int)FUN_0031fbd0_noargs();
   fVar4 = *(float *)(iVar1 + 4);
   fVar2 = *(float *)(iVar1 + 8);
   fVar3 = *(float *)(iVar1 + 0xc);
@@ -4318,7 +4327,7 @@ void FUN_0031fde0(void)
 
   
 
-  iVar3 = ((code)FUN_0031fbd0)();
+  iVar3 = (int)FUN_0031fbd0_noargs();
 
   bVar1 = extraout_t1_lo[1];
 
@@ -9220,7 +9229,7 @@ u64 FUN_00324bd0(u64 param_1)
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(auStack_10_buf) : "memory");
 
-  ((code)FUN_00325c10)(uVar4);
+  FUN_00325c10_onearg(uVar4);
 
   FUN_00325d60((u64)(uVar4),(u8 (*) [16])auStack_10_buf);
 
@@ -9828,7 +9837,7 @@ u32 FUN_00325920(u64 *param_1)
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(auStack_10_buf) : "memory");
 
-  ((code)FUN_00325c10)(uVar4);
+  FUN_00325c10_onearg(uVar4);
 
   FUN_00325d60((u64)(uVar4),(u8 (*) [16])auStack_10_buf);
 
@@ -12164,7 +12173,7 @@ void FUN_003275d0(float param_1,int param_2)
 
           if (-1 < *(int *)pauVar12[1]) {
 
-            ((code)FUN_00322d40)(uVar5);
+            FUN_00322d40_onearg(uVar5);
 
             FUN_00322d10((int)(uVar5),(float *)(auStack_120));
 
@@ -12300,7 +12309,7 @@ void FUN_003275d0(float param_1,int param_2)
 
           if (-1 < *(int *)pauVar12[1]) {
 
-            ((code)FUN_00322d40)(uVar5);
+            FUN_00322d40_onearg(uVar5);
 
             FUN_00322d10((int)(uVar5),(float *)(auStack_120));
 
@@ -12869,7 +12878,7 @@ void FUN_003282e0(int param_1)
 
             iVar4 = FUN_00198590();
 
-            RwV3dTransformPoint(&fStack_38,&uStack_28,iVar4 + 0x20);
+            FUN_004c6be0(&fStack_38,(float*)&uStack_28,iVar4 + 0x20);
 
             if ((((fStack_38 / fStack_30 < -2.0f) || (2.0f < fStack_38 / fStack_30)) ||
                 (fStack_34 / fStack_30 < -2.0f)) || (2.0f < fStack_34 / fStack_30)) {
@@ -12999,7 +13008,7 @@ void FUN_003282e0(int param_1)
 
             iVar4 = FUN_00198590();
 
-            RwV3dTransformPoint(&fStack_38,&uStack_28,iVar4 + 0x20);
+            FUN_004c6be0(&fStack_38,(float*)&uStack_28,iVar4 + 0x20);
 
             if (((fStack_38 / fStack_30 < -2.0f) || (2.0f < fStack_38 / fStack_30)) ||
                ((fStack_34 / fStack_30 < -2.0f || (2.0f < fStack_34 / fStack_30)))) {
@@ -37253,7 +37262,7 @@ void FUN_00343410(u64 param_1)
 
     }
 
-    ((code)FUN_003244c0)(puVar2,param_1,iVar7 + 0x10,iVar7 + 0x20);
+    FUN_003244c0_4arg(puVar2,param_1,iVar7 + 0x10,iVar7 + 0x20);
 
     if (*(char *)(iVar1 + 0xb9) != '\0') {
 
@@ -38240,7 +38249,7 @@ void FUN_00344720(u64 param_1)
 
     }
 
-    ((code)FUN_003244c0)(puVar2,param_1,iVar10 + 0x10,iVar10 + 0x20);
+    FUN_003244c0_4arg(puVar2,param_1,iVar10 + 0x10,iVar10 + 0x20);
 
     if (*(char *)(iVar1 + 0xb9) != '\0') {
 
@@ -39306,7 +39315,7 @@ void FUN_00345970(u64 param_1)
 
     }
 
-    ((code)FUN_003244c0)(puVar2,param_1,iVar10 + 0x10,iVar10 + 0x20);
+    FUN_003244c0_4arg(puVar2,param_1,iVar10 + 0x10,iVar10 + 0x20);
 
     if (*(char *)(iVar1 + 0xb9) != '\0') {
 
@@ -46515,7 +46524,7 @@ void FUN_0034dc00(u64 param_1)
 
             }
 
-            RwMatrixMultiply(&uStack_110,&uStack_190,&uStack_150);
+            FUN_004c2f30(&uStack_110,&uStack_190,&uStack_150);
 
             if (*(short *)(iVar4 + 0x30) != 0) {
 
@@ -47420,7 +47429,7 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
     iVar2 = FUN_00198590();
 
-    RwV3dTransformPoint(&fStack_30,positionStack,iVar2 + 0x20);
+    FUN_004c6be0(&fStack_30,(float*)positionStack,iVar2 + 0x20);
 
     fVar8 = DAT_0096008c;
 
@@ -53361,7 +53370,7 @@ void FUN_00356c70(u8 *param_1)
 
               RwMatrixScale(auStack_a0,&fStack_10,0);
 
-              RwMatrixMultiply(auStack_e0,auStack_60,auStack_a0);
+              FUN_004c2f30(auStack_e0,auStack_60,auStack_a0);
 
               FUN_0027f6d0(iVar3,auStack_e0);
 

@@ -1292,16 +1292,7 @@ void* func_001ae580(KwlnTask* task)
         targetDir.x = work->points[0].position.x - localPosition.x;
         targetDir.y = work->points[0].position.y - localPosition.y;
         targetDir.z = work->points[0].position.z - localPosition.z;
-        targetLen = sqrtf(targetDir.x * targetDir.x +
-                          targetDir.y * targetDir.y +
-                          targetDir.z * targetDir.z);
-        work->directionLength = targetLen;
-        if (targetLen > 0.0f)
-        {
-            work->direction.x = targetDir.x / targetLen;
-            work->direction.y = targetDir.y / targetLen;
-            work->direction.z = targetDir.z / targetLen;
-        }
+        targetLen = RwV3dNormalize(&targetDir, &targetDir);
         amount = targetLen / (f32)work->frameCount;
         translation.x = work->direction.x * amount;
         translation.y = work->direction.y * amount;

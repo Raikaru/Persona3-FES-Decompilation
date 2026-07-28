@@ -1234,7 +1234,7 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
       textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + rowIndex].itemId,
                                  (s16)work->entries[work->firstVisibleEntry + rowIndex].slotType);
       sprintf(textBuffer,DAT_007cb66c,textValue);
-      campDrawText(texture,(int)((float)(int)originX + 55.0f),
+      campDrawTextAltScale(texture,(int)((float)(int)originX + 55.0f),
                    (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f + 1.0f),color,6,1,
                    textBuffer,0x10,0x78);
       category = work->entries[work->firstVisibleEntry + rowIndex].equipmentClass;
@@ -1373,7 +1373,7 @@ LAB_0013f350:
       textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + rowIndex].itemId,
                                 (s16)work->entries[work->firstVisibleEntry + rowIndex].slotType);
       sprintf(textBuffer,DAT_007cb66c,textValue);
-      campDrawText(texture,(int)((float)(int)originX + 55.0f),
+      campDrawTextAltScale(texture,(int)((float)(int)originX + 55.0f),
                    (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f),color,10,1,textBuffer,
                    0x10,0x78);
       category = work->entries[work->firstVisibleEntry + rowIndex].equipmentClass;

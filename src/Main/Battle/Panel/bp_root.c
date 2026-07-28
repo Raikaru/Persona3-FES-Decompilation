@@ -988,6 +988,7 @@ void bcmPanel00222b90(void);
 void bcmPanel00222930(void);
 void bcmPanel00222d60(void);
 void bcmPanel0022bf60(void);
+void FUN_00222d60(void);
 void func_0021f0c0(void*);
 
 // FUN_002016B0
@@ -1773,12 +1774,12 @@ void FUN_002031C0(void)
     panelSetWork32(0x6d28, 0);
     id = FUN_00205550();
     id = func_0030bc20(id);
-    if (bcm00207930(id))
+    if (bcmIsItemUsable(id))
     {
         panelSetWork32(0x6d28, 1);
         panelSetWork32(0x6d24, FUN_00207960(id));
     }
-    bcmPanel00222d60();
+    FUN_00222d60();
 }
 
 // FUN_00203410
@@ -2031,7 +2032,7 @@ void FUN_00203C30(void)
     panelSetWork32(0x6498, panelWork32(0x76cc));
     panelSetWork32(0x649c, panelWork32(0x76c4));
     panelSetWork32(0x64a4, panelWork32(0x2dc));
-    bcmPanel00224860();
+    FUN_00224860();
 }
 
 // FUN_00203DE0
@@ -3734,7 +3735,7 @@ void FUN_00207BA0(void)
 
 void func_0021bcb0(void);
 void func_0024c110(void);
-u32 bpRush0025d020(void);
+u32 bpRushUpdate(void);
 u32 bpRes0021bab0(void);
 void bpd00253410(void);
 void func_00210d90(void*);
@@ -3749,7 +3750,7 @@ u32 bpe00249600(void);
 void func_00248620(void);
 void func_00242cc0(void);
 void func_0025c220(void);
-void bpPersona00267180(void);
+void bpPersonaUpdate(void);
 void func_0027b610(void);
 u32 func_00249130(void);
 void func_00245e50(void);
@@ -3794,7 +3795,7 @@ void* FUN_001fd890(KwlnTask* task)
     work = (u32*)task->workData;
     func_0021bcb0();
     func_0024c110();
-    bpRush0025d020();
+    bpRushUpdate();
     flags = work[0];
     if (flags & 0x400)
     {
@@ -3838,7 +3839,7 @@ void* FUN_001fd890(KwlnTask* task)
     }
     func_00242cc0();
     func_0025c220();
-    bpPersona00267180();
+    bpPersonaUpdate();
     func_0027b610();
     flags = work[0];
     if ((flags & 0x1000000) && !func_00249130() &&
@@ -4323,8 +4324,8 @@ void func_002db420(s32);
 void func_002db650(u32);
 void func_002db2a0(s32);
 void func_0021f3c0(void);
-void bpRush0025d6c0(void);
-void bpRush0025d710(void);
+void bpRushRequestHide(void);
+void bpRushClearHideRequest(void);
 void func_002083d0(void);
 
 // W112BpRoot reconstruction: retail request-mask logging and state-transition paths recovered.
@@ -4418,7 +4419,7 @@ void FUN_001ff890(void)
     {
         FUN_00201A50();
     }
-    bpRush0025d6c0();
+    bpRushRequestHide();
 }
 
 // FUN_001FFC60 NONMATCHING
@@ -4469,14 +4470,14 @@ void FUN_001FFC60(void)
     if (*(u32*)work & 0x2000) FUN_00206EB0();
     if (*(u32*)work & 0x1000) FUN_00206310();
     if (*(u32*)work & 2) FUN_00202BC0();
-    if (*(u32*)work & 4) bcm00203360();
+    if (*(u32*)work & 4) bcmDestroyCommandResources();
     if (*(u32*)work & 8) FUN_00203B70();
     if (*(u32*)work & 0x10) FUN_00204BE0();
     itfMesMngDestroyHandle(work[0x7790 / 4]);
     itfMesMngDestroyHandle(work[0x7794 / 4]);
     itfMesMngDestroyHandle(work[0x7798 / 4]);
     func_0021f3c0();
-    bpRush0025d710();
+    bpRushClearHideRequest();
 }
 
 u32 func_002519d0(void);
@@ -4493,7 +4494,7 @@ void func_002bf910(void);
 void func_002bf880(void);
 void func_002bf940(void);
 u32 func_002d1a70(void);
-void bpPersona00266f60(u32);
+void bpPersonaLoad(u32);
 void func_00208630(void);
 u32 basRequestAnalyze(u32);
 u32 basIsAnalyzePending(void);
@@ -4512,9 +4513,9 @@ u32 func_003c74e0(u32);
 void func_0024a260(void*);
 u32 func_0024a6e0(u32);
 u32 func_0024a750(void);
-u32 bpPersona00267210(void);
-void bpPersona00267120(void);
-void bpPersona00267070(u32);
+u32 bpPersonaIsLoading(void);
+void bpPersonaDestroy(void);
+void bpPersonaSetPersona(u32);
 
 static inline u16 panelRootInputFlags(void)
 {
@@ -4578,7 +4579,7 @@ void FUN_001FFF40(void)
     }
     if ((panelFlags & 2) && !bcmPanel0022b4e0())
     {
-        bcm00203360();
+        bcmDestroyCommandResources();
         work[1] &= ~3u;
         panelFlags = work[1];
     }
@@ -4636,7 +4637,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 printf("battle panel command accepted\n");
                                 work[0] |= 0x20;
                             }
@@ -4652,7 +4653,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 FUN_00202010();
                                 renderFlags |= 3;
                             }
@@ -4668,7 +4669,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 FUN_00202D70();
                                 renderFlags |= 5;
                             }
@@ -4688,7 +4689,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 FUN_00204480();
                                 renderFlags |= 0x11;
                             }
@@ -4704,7 +4705,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 FUN_00203850();
                                 renderFlags |= 9;
                             }
@@ -4716,7 +4717,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 printf("battle panel command accepted\n");
                                 work[0] |= 0x20;
                             }
@@ -4728,7 +4729,7 @@ void FUN_001FFF40(void)
                             }
                             else
                             {
-                                bcm00201ad0();
+                                bcmDestroyOwnedResourceCallback();
                                 printf("battle panel command accepted\n");
                                 work[0] |= 0x20;
                             }
@@ -4870,7 +4871,7 @@ void FUN_001FFF40(void)
                 }
                 else if ((*(u16*)0x007E094E) & 0x80)
                 {
-                    bpPersona00266f60(
+                    bpPersonaLoad(
                         *(u16*)((u8*)work + 0x268 + work[0x76cc / 4] * 8));
                     FUN_002085E0();
                     FUN_0020FC40();
@@ -4903,11 +4904,11 @@ void FUN_001FFF40(void)
         }
         else if (substate == 1)
         {
-            if (!FUN_00201AF0() && !bpPersona00267210())
+            if (!FUN_00201AF0() && !bpPersonaIsLoading())
             {
                 if ((*(u16*)0x007E094E) & 0x20)
                 {
-                    bpPersona00267120();
+                    bpPersonaDestroy();
                     FUN_00208630();
                     bppMain0020fc90();
                     FUN_0010A4E0(0, 0, 0, 2);
@@ -4940,7 +4941,7 @@ void FUN_001FFF40(void)
                     entry = (u8*)work + 0x268 + work[0x76cc / 4] * 8;
                     if (*(u16*)entry != *(u16*)((u8*)persona + 2))
                     {
-                        bpPersona00267120();
+                        bpPersonaDestroy();
                         FUN_00208630();
                         bppMain0020fc90();
                         work[0] |= 0x20;
@@ -4960,7 +4961,7 @@ void FUN_001FFF40(void)
                             work[0x76cc / 4] = menu + 1;
                         else
                             work[0x76cc / 4] = 0;
-                        bpPersona00267070(
+                        bpPersonaSetPersona(
                             *(u16*)((u8*)work + 0x268 +
                                     work[0x76cc / 4] * 8));
                         FUN_0010A4E0(0, 0, 0, 8);
@@ -4972,7 +4973,7 @@ void FUN_001FFF40(void)
                             work[0x76cc / 4] = menu - 1;
                         else
                             work[0x76cc / 4] = value - 1;
-                        bpPersona00267070(
+                        bpPersonaSetPersona(
                             *(u16*)((u8*)work + 0x268 +
                                     work[0x76cc / 4] * 8));
                         FUN_0010A4E0(0, 0, 0, 8);

@@ -157,6 +157,8 @@ extern u32 FUN_004560d0_typed(u32 param_1,float param_2,float param_3,float para
 extern void FUN_00423fe0_vec2(YajimaVec2 *param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
 #pragma alias FUN_004c31b0_ymisc FUN_004c31b0
 extern void FUN_004c31b0_ymisc(void *matrix,const void *axis,f32 angle,s32 mode);
+#pragma alias FUN_004c6be0_ymisc FUN_004c6be0
+extern void FUN_004c6be0_ymisc(float *out,const float *in,u32 matrix);
 void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
@@ -5328,7 +5330,7 @@ void FUN_0042adb0(int param_1)
 
   delta.z = *(float *)(iVar1 + 0xbac) - posTarget.z;
 
-  RwV3dTransformPoint(&transformed,&delta,uVar3);
+  FUN_004c6be0_ymisc((float *)&transformed,(const float *)&delta,uVar3);
 
   fVar6 = *(float *)(iVar1 + 0xba4);
 
@@ -5510,7 +5512,7 @@ void FUN_0042b050(int param_1)
 
       afStack_40[1] = 0.0f;
 
-      RwV3dTransformPoint(afStack_40,afStack_40,uVar5);
+      FUN_004c6be0_ymisc(afStack_40,afStack_40,uVar5);
 
       uVar6 = FUN_001158b0(0,uGpffffb9f4,7);
 
@@ -5708,7 +5710,7 @@ void FUN_0042b540(int param_1)
 
       afStack_40[1] = 0.0f;
 
-      RwV3dTransformPoint(afStack_40,afStack_40,uVar4);
+      FUN_004c6be0_ymisc(afStack_40,afStack_40,uVar4);
 
       uVar5 = FUN_001158b0(0,uGpffffb9f4,0xb);
 

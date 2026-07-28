@@ -1,4 +1,5 @@
 #include "temporary.h"
+#include "Main/Social/sfl_res.h"
 extern f32 sinf(f32);
 extern f32 cosf(f32);
 extern f32 FUN_0016bc00(u32 param_1,u32 param_2);
@@ -38,6 +39,7 @@ extern void FUN_0034fe30_fcl(s32, f32, f32, f32);
 #pragma alias RwMatrixRotate_fcl RwMatrixRotate
 extern void *RwMatrixRotate_fcl(void *, const void *, f32, s32);
 #pragma alias FUN_004bdde0_fcl FUN_004bdde0
+extern void FUN_004c2f30(void *out,const void *left,const void *right);
 extern void FUN_004bdde0_fcl(f32, s32, const void *, s32);
 f32 FUN_0016ba00(u32 param_1, u32 param_2);
 f32 FUN_0016ba80(u32 param_1, u32 param_2);
@@ -59,6 +61,8 @@ u32 FUN_004178c0(int param_1);
 int * FUN_00418030(void);
 void FUN_004180a0(u32 *param_1);
 void FUN_004180e0(u32 *param_1,s16 param_2);
+#pragma alias FUN_004180e0_alloc FUN_004180e0
+extern u16 *FUN_004180e0_alloc(u32 param_1,s16 param_2);
 u64 FUN_00418130(u64 param_1,char *param_2);
 u64 FUN_00418230(u64 param_1,u8 *param_2);
 u8 FUN_00418390(int param_1,int *param_2);
@@ -723,7 +727,7 @@ LAB_00417918:
       break;
 
     case '\x05': {
-      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),*(s16 *)pcVar6);
+      puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),*(s16 *)pcVar6);
       func_00219c90(*(u32 *)(puVar9 + 4));
       iVar14 = H_Cdvd_CacheFindFile(0x6b2e20,&iStack_4);
       piVar4[2] = iVar14;
@@ -751,7 +755,7 @@ LAB_00417a90:
         piVar4[2] = *(int *)(piVar4[1] + 0x110);
       }
 
-      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
+      puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),4);
       uVar10 = FUN_0034fcd0(piVar4[2]);
       *(u32 *)(puVar9 + 4) = uVar10;
       *puVar9 = *puVar9 | 2;
@@ -831,7 +835,7 @@ LAB_00417a90:
 
       uVar12 = func_0010c3a0(piVar4[3],&iStack_8,0);
       if (iStack_8 != 0) {
-        puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
+        puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),4);
         puVar11 = (u32 *)FUN_0041bc90(auStack_80,auStack_a0,auStack_b0,4,uVar12);
         *(u32 **)(puVar9 + 4) = puVar11;
         *puVar11 = *puVar11 | 1;
@@ -856,7 +860,7 @@ LAB_00417a90:
 
     lVar13 = mdlStreamRead(piVar4[4]);
     if (lVar13 != 0) {
-      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),*(s16 *)pcVar6);
+      puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),*(s16 *)pcVar6);
       *(int *)(puVar9 + 4) = piVar4[4];
       *puVar9 = *puVar9 | 4;
       if (piVar4[1] != 0) {
@@ -895,19 +899,19 @@ LAB_00417a90:
     func_00219d90();
     lVar13 = func_0021a120();
     if (lVar13 == 0) {
-      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
+      puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),4);
       *(int *)(*(int *)(puVar9 + 4) + 4) = *(short *)(param_1 + 0x20) + 2;
       for (uVar19 = 0; (int)uVar19 < *(short *)(param_1 + 0x20) + 2; uVar19 = uVar19 + 1) {
         uStack_18 = DAT_006b2e10;
         uStack_10 = DAT_006b2e18;
         uStack_c = DAT_007cda6c;
-        puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),(u16)((uVar19 & 0xff) << 8) | 6);
+        puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),(u16)((uVar19 & 0xff) << 8) | 6);
         *puVar9 = *puVar9 | 0x10;
         *(u16 **)(*(int *)(puVar9 + 4) + uVar19 * 4 + 8) = puVar9;
         func_00209f00(*(u32 *)(puVar9 + 4));
         func_0020c590(*(u32 *)(puVar9 + 4),*(u16 *)(param_1 + uVar19 * 2 + 0x24));
         func_0020cc80(*(u32 *)(puVar9 + 4),&uStack_c);
-        sflRes0020d630(*(u32 *)(puVar9 + 4),&uStack_18);
+        sflResSetSpriteScale((void *)*(u32 *)(puVar9 + 4),(const f32 *)&uStack_18);
         func_0020c7a0(*(u32 *)(puVar9 + 4),*(u32 *)(param_1 + 0x38));
       }
       bVar8 = 1;
@@ -1321,7 +1325,8 @@ u8 FUN_00418510(int param_1,int *param_2)
     fStack_34 = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
     fVar18 = func_0020c500((const f32 *)(iVar2 + 8),fStack_8);
     func_0020c320(iVar2 + 8,&fStack_38,fVar18,&fStack_10);
-    sflRes0020d650(*(u32 *)(iVar2 + 8),&fStack_10);
+    sflResSetSpritePosition((void *)*(u32 *)(iVar2 + 8),&fStack_10);
+    FUN_0041beb0(*(u32 *)(iVar2 + 8));
   }
   else if (cVar1 == '\x03') {
     mdlTranslate(*(u32 *)(iVar2 + 8),&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
@@ -1525,7 +1530,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
       }
     }
     else if (*(char *)(iVar1 + 4) == '\x06') {
-      sflRes0020d670(*(u32 *)(iVar4 + 8),param_2 + 0x18);
+      sflResGetSpritePosition((const void *)*(u32 *)(iVar4 + 8),(f32 *)(param_2 + 0x18));
     }
   }
   fVar11 = (float)param_2[0x18];
@@ -1572,7 +1577,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
     fVar12 = (float)(*(int *)(iVar1 + 0x14) / 0xffff);
     fVar12 = func_0020c500((const f32 *)(iVar4 + 8),fVar12);
     func_0020c320(iVar4 + 8,afStack_a8,fVar12,afStack_b0);
-    sflRes0020d650(*(u32 *)(iVar4 + 8),afStack_b0);
+    sflResSetSpritePosition((void *)*(u32 *)(iVar4 + 8),afStack_b0);
     break;
   }
   iVar4 = param_2[3];
@@ -2490,7 +2495,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
         FUN_004bdde0_fcl(fGpffffad78,iVar2 + 0x10,&axis,0);
 
-        sflRes0020d650(iVar2,&fStack_30);
+        sflResSetSpritePosition((void *)iVar2,&fStack_30);
 
       }
 
@@ -2750,7 +2755,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
       FUN_004bdde0(0x43340000,iVar4 + 0x10,&uStack_20,2);
 
-      sflRes0020d650(iVar4,&fStack_40);
+      sflResSetSpritePosition((void *)iVar4,&fStack_40);
 
       *puVar1 = *puVar1 & ~uVar7;
 
@@ -2969,7 +2974,7 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
     fStack_28 = fStack_28 + fVar2;
 
-    sflRes0020d650(uVar3,&fStack_30);
+    sflResSetSpritePosition((void *)uVar3,&fStack_30);
 
   }
 
@@ -3964,7 +3969,7 @@ void FUN_0041bf80(u32 *param_1)
 
     iVar3 = kwlnGetMainCamera();
 
-    RwMatrixMultiply((void*)auStack_40,(void*)param_1[4],(void*)(*(int *)(iVar3 + 4) + 0x10));
+    FUN_004c2f30(auStack_40,(const void *)param_1[4],(const void *)(*(int *)(iVar3 + 4) + 0x10));
 
   }
 

@@ -78,6 +78,7 @@ extern void RwMatrixScale(void* matrix, const void* scale, s32 combine);
 extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine);
 extern void RwMatrixRotate(void* matrix, const void* axis, f32 angle, s32 combine);
 extern void RwV3dTransformPoint(void* out, const void* in, const void* matrix);
+extern void FUN_004c6be0(void* out, const void* in, const void* matrix);
 extern void RwV3dNormalize(void* out, const void* in);
 extern void RpSkyRenderStateSet(s32 state, void* value);
 extern void RwRenderStateSet(s32 state, void* value);
@@ -1936,8 +1937,8 @@ void func_0020cf20(void* destination, PanelTransform* transform)
         f32 facing;
 
         if (transform->model != NULL) {
-            RwV3dTransformPoint(&localPoint, &transform->translation,
-                                func_004cb2f0(transform->model));
+            FUN_004c6be0(&localPoint, &transform->translation,
+                         func_004cb2f0(transform->model));
         } else {
             localPoint = transform->translation;
         }
@@ -1958,7 +1959,7 @@ void func_0020cf20(void* destination, PanelTransform* transform)
         localPoint.x = 0.0f;
         localPoint.y = 0.0f;
         localPoint.z = 100.0f;
-        RwV3dTransformPoint(&transformedPoint, &localPoint, matrix);
+        FUN_004c6be0(&transformedPoint, &localPoint, matrix);
         func_004c6c60(&transformedAxis, &axisZ, matrix);
         RwV3dNormalize(&transformedAxis, &transformedAxis);
 
@@ -1995,7 +1996,7 @@ void func_0020cf20(void* destination, PanelTransform* transform)
                 localPoint.x -= 3.0f;
                 localPoint.y = fGpffff8338 * ((f32)row / 8.0f - 0.5f);
                 localPoint.z = 0.0f;
-                RwV3dTransformPoint(&transformedPoint, &localPoint, matrix);
+                FUN_004c6be0(&transformedPoint, &localPoint, matrix);
 
                 cameraDirection.x = transformedPoint.x - cameraPosition->x;
                 cameraDirection.y = transformedPoint.y - cameraPosition->y;

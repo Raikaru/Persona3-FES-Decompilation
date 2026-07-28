@@ -610,6 +610,7 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
     work->flags = 0;
     work->values = work->embedded_values;
     memcpy(work->input_copy, param_1, 0x90);
+    work->result = (FclResultStream*)FUN_003dfeb0((s32)work);
     FUN_003d9cc0((s32)work);
     FUN_003d8850((s32)work, 0xb, 0);
     FUN_003d8850((s32)work, 0, 0);
