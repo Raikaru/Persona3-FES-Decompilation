@@ -950,11 +950,7 @@ u32 func_00281f20(void* workData)
     BtlUnitPacketBackstep* work;
     BtlUnit* unit;
     RwV3d sp50;
-    f32 sp48;
-    f32 sp44;
-    f32 sp40;
-    f32 sp34;
-    f32 sp30;
+    RwV3d displacement;
     f32 temp_f0;
     f32 temp_f1;
     f32 var_f0;
@@ -987,25 +983,20 @@ u32 func_00281f20(void* workData)
     temp_f1 = 2.0f * (4.0f * temp_f0 - 2.0f * temp_f0 * temp_f0 - 0.5f);
     if (temp_f1 < DAT_007caea4)
     {
-        sp40 = work->displacement.x * temp_f1;
-        sp44 = work->displacement.y * temp_f1;
-        sp48 = work->displacement.z * temp_f1;
+        displacement.x = work->displacement.x * temp_f1;
+        displacement.y = work->displacement.y * temp_f1;
+        displacement.z = work->displacement.z * temp_f1;
         var_2 = 0;
     }
     else
     {
-        sp40 = work->displacement.x;
-        sp44 = work->displacement.y;
-        sp48 = work->displacement.z;
+        displacement = work->displacement;
         var_2 = 1;
     }
 
-    sp30 = work->origin.x + sp40;
-    sp34 = work->origin.y + sp44;
-    temp_f0 = work->origin.z + sp48;
-    unit->pos.x = sp30;
-    unit->pos.y = sp34;
-    unit->pos.z = temp_f0;
+    unit->pos.x = work->origin.x + displacement.x;
+    unit->pos.y = work->origin.y + displacement.y;
+    unit->pos.z = work->origin.z + displacement.z;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     work->counter++;
     return var_2;

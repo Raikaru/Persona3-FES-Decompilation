@@ -3274,6 +3274,9 @@ void FUN_0038a730(int param_1)
 }
 
 
+// A typed EvtMiscVectorSource pointer attempt holds nd14/size320. The residual
+// is cyclic saved-register coloring only: ours parameters/vectors s2/s1/s0,
+// retail s1/s0/s2, including their dependent loads and final aggregate stores.
 // FUN_0038A7C0 NONMATCHING
 
 
@@ -3284,7 +3287,7 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
     u8 pad_0c[0x14];
     RwV3d vector20;
   } EvtMiscVectorSource;
-  u32 *vectors;
+  EvtMiscVectorSource *vectors;
   u8 *camera;
   u8 *cursor;
   s32 remaining;
@@ -3315,13 +3318,13 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
   }
 
   if (camera != NULL && *(int *)(camera + 4) != 0) {
-    vectors = (u32 *)FUN_004cb2f0();
+    vectors = (EvtMiscVectorSource *)FUN_004cb2f0();
 
-    input = ((EvtMiscVectorSource *)vectors)->vector20;
+    input = vectors->vector20;
     input.y = 0;
     FUN_004c69f0(&output1,&input);
 
-    input = ((EvtMiscVectorSource *)vectors)->vector0;
+    input = vectors->vector0;
     input.y = 0;
     FUN_004c69f0(&output2,&input);
 
@@ -5546,6 +5549,9 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 }
 
 
+// A named target-type local intended to reproduce retail's preheader constant
+// was optimized back to identical nd235/size464 and was removed as unnecessary.
+// The first divergence remains loop-preheader constant/branch scheduling.
 // FUN_0038C830 NONMATCHING
 
 

@@ -1196,17 +1196,19 @@ u32 func_001d9310(EncounterRecord* out)
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
-        FldUnit* unit = &gFldUnitsPc[i];
+        FldUnit* unit;
         s32 maxHp;
         s32 hp;
         f32 maxValue;
         f32 hpValue;
 
-        if (unit->genusBase == NULL || unit->resrc == NULL ||
-            func_002ff790(unit->genusBase) == 1)
+        if (gFldUnitsPc[i].genusBase == NULL ||
+            gFldUnitsPc[i].resrc == NULL ||
+            func_002ff790(gFldUnitsPc[i].genusBase) == 1)
         {
             continue;
         }
+        unit = &gFldUnitsPc[i];
         maxHp = datGetMaxHp((s16)unit->charId);
         if (maxHp < 0)
         {
@@ -1281,16 +1283,17 @@ u32 func_001d96a0(EncounterRecord* out)
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
-        FldUnit* unit = &gFldUnitsPc[i];
+        FldUnit* unit;
         s32 maxHp;
         s32 hp;
         f32 maxValue;
         f32 hpValue;
 
-        if (unit->genusBase == NULL || unit->resrc == NULL)
+        if (gFldUnitsPc[i].genusBase == NULL || gFldUnitsPc[i].resrc == NULL)
         {
             continue;
         }
+        unit = &gFldUnitsPc[i];
         maxHp = datGetMaxHp((s16)unit->charId);
         if (maxHp < 0)
         {

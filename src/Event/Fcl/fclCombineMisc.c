@@ -1265,6 +1265,7 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   int iVar6;
   int iVar7;
+  int copyCount;
 
 
   u32 *puVar8;
@@ -1287,7 +1288,7 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   puVar8 = auStack_20;
 
-  iVar7 = 5;
+  copyCount = 5;
 
   do {
 
@@ -1295,13 +1296,13 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
     puVar9 = puVar9 + 1;
 
-    iVar7 = iVar7 + -1;
+    copyCount = copyCount + -1;
 
     *puVar8 = uVar2;
 
     puVar8 = puVar8 + 1;
 
-  } while (0 < iVar7);
+  } while (0 < copyCount);
 
   memset(param_1,0,0x54);
 
@@ -1441,6 +1442,8 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
+// b210 floor: at +0x78/+0x7c and +0x94/+0x98 candidate emits a0 then a1,
+// while retail emits the identical two call arguments in a1 then a0 order.
 // FUN_003D6E60 NONMATCHING
 s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {

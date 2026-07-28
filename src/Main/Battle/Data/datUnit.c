@@ -39,6 +39,8 @@ DatUnitPc* datUnitCreatePc(u16 pcId)
 
 /* Removing this worsens FUN_002ff3e0 (nd12 -> nd169) - measured W161. */
 #pragma opt_loop_invariants on
+// MWCC b210 register-colouring floor: the residual is a consistent $s0/$s1 swap across
+// the two u16 loop/index lifetimes; the loop-invariant setting above is the measured best form.
 // FUN_002ff3e0 NONMATCHING
 DatUnitEc* datUnitCreateEc(u16 encountId)
 {

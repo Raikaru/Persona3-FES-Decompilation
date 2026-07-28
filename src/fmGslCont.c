@@ -293,20 +293,25 @@ int * FUN_003b4520(void)
 
 void FUN_003b4580(int param_1)
 {
-  int* next;
-  int* head;
+  typedef struct GslListNode {
+    int data[6];
+    struct GslListNode *prev;
+    struct GslListNode *next;
+  } GslListNode;
+  GslListNode *node = (GslListNode *)param_1;
+  GslListNode *head;
+  GslListNode *next;
 
-  if (param_1 == 0) {
+  if (node == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
-  head = *(int **)DAT_0095aebc_abs;
-  next = (int*)head[7];
-  ((int*)param_1)[6] = (int)head;
-  ((int*)param_1)[7] = (int)next;
-  head[7] = param_1;
-  next[6] = param_1;
+  head = *(GslListNode **)DAT_0095aebc_abs;
+  next = head->next;
+  node->prev = head;
+  node->next = next;
+  head->next = node;
+  next->prev = node;
   ++*(int *)DAT_0095aeb8_abs;
-  return;
 }
 #define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
 #undef FUN_003b45f0

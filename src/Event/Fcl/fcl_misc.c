@@ -2273,6 +2273,8 @@ void FUN_003cacc0(int param_1)
 #define FUN_003cacc0(...) ((void (*)(...))FUN_003cacc0)(__VA_ARGS__)
 #undef FUN_003cb050
 #pragma push
+// b210 floor: both call sites differ only in independent argument setup order
+// (mtc1/addiu and lw/move/move/mov.s/mov.s); the calls and values are identical.
 // FUN_003CB050 NONMATCHING
 void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
                   s32 param_6,s32 param_7,s32 param_8)

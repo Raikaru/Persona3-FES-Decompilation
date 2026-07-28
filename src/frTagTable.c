@@ -1142,6 +1142,8 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
 }
 #define FUN_003af560(...) ((u64 (*)(...))FUN_003af560)(__VA_ARGS__)
 #undef FUN_003af660
+// b210 floor: only remaining word is commutative addu orientation:
+// ours 21186200 addu $v1,$v1,$v0; retail 21184300 addu $v1,$v0,$v1.
 // FUN_003AF660 NONMATCHING
 
 

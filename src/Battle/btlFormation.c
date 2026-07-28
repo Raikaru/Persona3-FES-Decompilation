@@ -2331,7 +2331,6 @@ u32 func_002bad60(u32 *param_1)
   short sVar1;
   u16 *puVar2;
   int iVar3;
-  u32 uVar4;
   u32 unaff_s2_lo;
   u32 unaff_s1_lo;
   
@@ -2339,7 +2338,7 @@ u32 func_002bad60(u32 *param_1)
     return 0;
   puVar2 = (u16 *)param_1[4];
     if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
-      uVar4 = 1;
+      return 1;
     }
     else {
       iVar3 = func_002b9370(*param_1,*(u16 *)(param_1 + 3));
@@ -2360,15 +2359,14 @@ u32 func_002bad60(u32 *param_1)
             unaff_s1_lo = param_1[1];
             break;
           }
-          uVar4 = func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
-          *(u32 *)(puVar2 + 8) = uVar4;
+          *(u32 *)(puVar2 + 8) =
+              func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
           *puVar2 = *puVar2 | 0x30;
         }
         param_1[6] = param_1[6] + 2;
       }
-      uVar4 = 0;
     }
-  return uVar4;
+  return 0;
 }
 
 // FUN_002baec0
@@ -4910,7 +4908,6 @@ void func_002bf9b0(void)
 
 {
   int entry = 0;
-  long fadeSuppressed = 0;
   u32 alpha = 0;
   u32 listIndex = 0;
   float firstZero;
@@ -4918,7 +4915,7 @@ void func_002bf9b0(void)
   u32 callColor;
 
   if ((((*(int *)(DAT_007ce3ec + 0x2b4) != 0x12) &&
-        (fadeSuppressed = btlFadeSuppressesFormationUpdates(), fadeSuppressed == 0)) &&
+        (btlFadeSuppressesFormationUpdates() == 0)) &&
        ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) &&
       ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x800) != 0)) {
     for (listIndex = 0; listIndex < 4; listIndex = listIndex + 1) {

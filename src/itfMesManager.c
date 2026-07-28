@@ -10,6 +10,8 @@ typedef u32 int3;
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 extern u16 DAT_006a1bd0[];
+#pragma alias DAT_006a1bd0_signed DAT_006a1bd0
+extern s16 DAT_006a1bd0_signed[];
 extern f32 DAT_007cad94;
 extern u32 DAT_007ce620;
 extern u32 DAT_007ce63c;
@@ -2482,6 +2484,8 @@ u64 FUN_003a4360(u64 param_1,long param_2)
 }
 #define FUN_003a4360(...) ((u64 (*)(...))FUN_003a4360)(__VA_ARGS__)
 #undef FUN_003a4a70
+// b210 floor: only remaining word is commutative addu orientation:
+// ours 21184700 addu $v1,$v0,$a3; retail 2118e200 addu $v1,$a3,$v0.
 // FUN_003A4A70 NONMATCHING
 
 
@@ -5433,7 +5437,7 @@ void FUN_003a7dd0(int object)
   int count;
 
   anim = (ItfMesAnim *)(object + 0x1d4);
-  source = (s16 *)DAT_006a1bd0;
+  source = DAT_006a1bd0_signed;
   dest = values;
   count = 3;
 

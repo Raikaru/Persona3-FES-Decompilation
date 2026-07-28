@@ -2686,23 +2686,23 @@ u32 FUN_002fd2e0(int param_1, u16 param_2)
     switch (param_2)
     {
     case 0:
-        if (*(s32*)((u8*)gBtl + 0xb1c) == -1)
+        if (*(s32*)((u8*)gBtl + 0xb1c) != -1)
         {
-            return 0;
+            break;
         }
-        break;
+        return 0;
     case 1:
-        if (*(s32*)((u8*)gBtl + 0xb20) == -1)
+        if (*(s32*)((u8*)gBtl + 0xb20) != -1)
         {
-            return 0;
+            break;
         }
-        break;
+        return 0;
     case 2:
-        if (*(s32*)((u8*)gBtl + 0xb24) == -1)
+        if (*(s32*)((u8*)gBtl + 0xb24) != -1)
         {
-            return 0;
+            break;
         }
-        break;
+        return 0;
     default:
         break;
     }

@@ -92,8 +92,17 @@ extern f32 DAT_007cadc0;
 extern u32 DAT_007cadd0;
 extern u32 DAT_007cae18;
 extern u32 DAT_007cafec;
+extern f32 DAT_007cb088;
 extern f32 DAT_007cb0cc;
 extern f32 DAT_007cb110;
+typedef struct EvtMenuClampWork {
+  u8 pad_000[0xd4];
+  s32 state;
+  u8 pad_0d8[0xac];
+  f32 value;
+  f32 minimum;
+  f32 maximum;
+} EvtMenuClampWork;
 extern u32 DAT_007cb120;
 #pragma alias DAT_007cb120_f32 DAT_007cb120
 extern f32 DAT_007cb120_f32;
@@ -3021,43 +3030,27 @@ int FUN_003715b0(int param_1,int param_2,int param_3)
   FUN_0036f900(param_1,param_2,0x14,iVar4,*(u32 *)(iVar2 + 0x108),iVar1 + 3,param_3,0,
                (code *)FUN_00371350);
 
-  if (*(int *)(iVar2 + 0xd4) == 0x11) {
-
-
+  switch (*(int *)(iVar2 + 0xd4)) {
+  case 0x11:
     if (iVar1 + 3 < 0xf) {
-
       iVar4 = iVar1 + 3;
-
     }
 
     FUN_0036f680(iVar2 + 0x108,iVar2 + 0x110,iVar1 + 3,iVar4,0,0x4000,0x1000);
-
     FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
 
     uVar3 = 1;
-
-    if ((DAT_007e094e & 0x40) == 0) {
-
-      if ((DAT_007e094e & 0x20) != 0) {
-
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
+      if ((*(u16 *)DAT_007e094e_abs & 0x20) != 0) {
         uVar3 = -1;
-
       }
-
       else {
-
         uVar3 = 0;
-
       }
-
     }
-
-  }
-
-  else {
-
-    uVar3 = 0;
-
+    break;
+  default:
+    return 0;
   }
 
   return uVar3;
@@ -6091,6 +6084,8 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 }
 
 
+// b210 floor: the remaining nd19 is callback argument setup ordering at +0x1c..+0x34;
+// the clamp/input body and its 332-byte object otherwise match retail instruction-for-instruction.
 // FUN_00375590 NONMATCHING
 
 
@@ -6102,7 +6097,7 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
 
   u32 uVar1;
 
-  int iVar2;
+  EvtMenuClampWork *work;
 
   float fVar3;
 
@@ -6111,9 +6106,9 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
   FUN_0036f900(param_1,param_2,0x16,9,0,1,param_3,(int)(code *)FUN_00375350,
                (code *)FUN_003753c0);
 
-  iVar2 = (int)param_3;
+  work = (EvtMenuClampWork *)param_3;
 
-  if (*(int *)(iVar2 + 0xd4) != 8) {
+  if (work->state != 8) {
 
     uVar1 = 0;
 
@@ -6121,7 +6116,7 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
 
   else {
 
-    if ((DAT_007e094e & 0x40) != 0) {
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
 
       uVar1 = 1;
 
@@ -6129,7 +6124,7 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
 
     else {
 
-      if ((DAT_007e094e & 0x20) != 0) {
+      if ((*(u16 *)DAT_007e094e_abs & 0x20) != 0) {
 
         uVar1 = 0xffffffff;
 
@@ -6138,11 +6133,14 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
       else {
 
         fVar3 = 0.0f;
-        if (((DAT_007e0952 & 0x8000) == 0) && ((DAT_007e0952 & 0x2000) != 0)) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
           fVar3 = DAT_007cb0cc;
         }
+        else if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
+          fVar3 = DAT_007cb088;
+        }
 
-        if ((DAT_007e0952 & 0x1000) != 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
 
           fVar3 = -1.0;
 
@@ -6150,25 +6148,24 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
 
         else {
 
-          if ((DAT_007e0952 & 0x4000) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
 
             fVar3 = 1.0;
 
           }
 
         }
+        work->value = work->value + fVar3;
 
-        *(float *)(iVar2 + 0x184) = *(float *)(iVar2 + 0x184) + fVar3;
+        if (work->value < work->minimum) {
 
-        if (*(float *)(iVar2 + 0x184) < *(float *)(iVar2 + 0x188)) {
-
-          *(float *)(iVar2 + 0x184) = *(float *)(iVar2 + 0x188);
+          work->value = work->minimum;
 
         }
 
-        if (*(float *)(iVar2 + 0x18c) <= *(float *)(iVar2 + 0x184)) {
+        if (!(work->value < work->maximum)) {
 
-          *(float *)(iVar2 + 0x184) = *(float *)(iVar2 + 0x18c);
+          work->value = work->maximum;
 
         }
 
