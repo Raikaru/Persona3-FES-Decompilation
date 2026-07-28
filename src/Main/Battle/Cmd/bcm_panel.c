@@ -1091,11 +1091,6 @@ void FUN_00225040(void)
     s32 j;
     void (**setState)(u32, u32);
     void (**setQuad)(u32*, u32, u32, u32, u32);
-    void (**setState2)(u32, u32);
-    void (**setQuad2)(u32*, u32, u32, u32, u32);
-    void (**setQuad3)(u32*, u32, u32, u32, u32);
-    void (**setState4)(u32, u32);
-    void (**setQuad4)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -1126,23 +1121,20 @@ void FUN_00225040(void)
 
         resource = FUN_0021cca0(table0, 0x44);
         texture = FUN_0021cce0(resource);
-        setState2 = (void (**)(u32, u32))D_00960090_abs;
-        (*setState2)(1, texture);
+        (*setState)(1, texture);
 
-        setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-        (*setQuad2)((u32*)record, 4, 0, 1, 2);
-        (*setQuad2)((u32*)record, 4, 0, 2, 3);
+        (*setQuad)((u32*)record, 4, 0, 1, 2);
+        (*setQuad)((u32*)record, 4, 0, 2, 3);
 
         texture = FUN_00239140(1);
-        (*setState2)(1, texture);
+        (*setState)(1, texture);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
 
         for (j = 0; j < 2; ++j) {
             quadTarget = record + j * 0x100 + 0x100;
-            setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-            (*setQuad3)((u32*)quadTarget, 4, 0, 1, 2);
-            (*setQuad3)((u32*)quadTarget, 4, 0, 2, 3);
+            (*setQuad)((u32*)quadTarget, 4, 0, 1, 2);
+            (*setQuad)((u32*)quadTarget, 4, 0, 2, 3);
         }
     }
 
@@ -1151,19 +1143,17 @@ void FUN_00225040(void)
 
     resource = FUN_0021cca0(table3, 0x13);
     texture = FUN_0021cce0(resource);
-    setState4 = (void (**)(u32, u32))D_00960090_abs;
-    (*setState4)(1, texture);
+    (*setState)(1, texture);
 
-    setQuad4 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-    (*setQuad4)((u32*)(records + 0xf50), 4, 0, 1, 2);
-    (*setQuad4)((u32*)(records + 0xf50), 4, 0, 2, 3);
+    (*setQuad)((u32*)(records + 0xf50), 4, 0, 1, 2);
+    (*setQuad)((u32*)(records + 0xf50), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table1, 0x4b);
     texture = FUN_0021cce0(resource);
-    (*setState4)(1, texture);
+    (*setState)(1, texture);
 
-    (*setQuad4)((u32*)(records + 0x1050), 4, 0, 1, 2);
-    (*setQuad4)((u32*)(records + 0x1050), 4, 0, 2, 3);
+    (*setQuad)((u32*)(records + 0x1050), 4, 0, 1, 2);
+    (*setQuad)((u32*)(records + 0x1050), 4, 0, 2, 3);
 }
 
 // FUN_002254A0

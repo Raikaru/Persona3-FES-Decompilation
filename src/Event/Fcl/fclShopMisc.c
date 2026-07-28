@@ -1065,81 +1065,37 @@ int FUN_003f0350(int param_1,int *param_2)
 
 
 char FUN_003f03e0(int param_1)
-
-
-
 {
+  char level;
+  short socialLink;
 
-  char cVar1;
-
-  int lVar2;
-
-  short sVar3;
-
-  
-
-  if (param_1 == 8) {
-
-    sVar3 = 2;
-
+  switch (param_1) {
+  case 0:
+    socialLink = 0xf;
+    break;
+  case 4:
+    socialLink = 3;
+    break;
+  case 8:
+    socialLink = 2;
+    break;
+  default:
+    return 0;
   }
-
-  else if (param_1 == 4) {
-
-    sVar3 = 3;
-
+  if (socialLink == 0xff) {
+    return 0;
   }
-
-  else {
-
-    if (param_1 != 0) {
-
-      return '\0';
-
-    }
-
-    sVar3 = 0xf;
-
+  if (datSocialLinkLevelIsNotZero(socialLink) == 0) {
+    return 0;
   }
-
-  if (sVar3 == 0xff) {
-
-    cVar1 = '\0';
-
+  level = datGetSocialLinkLevel(socialLink);
+  if (level == 0) {
+    return 0;
   }
-
-  else {
-
-    lVar2 = datSocialLinkLevelIsNotZero(sVar3);
-
-    if (lVar2 == 0) {
-
-      cVar1 = '\0';
-
-    }
-
-    else {
-
-      cVar1 = datGetSocialLinkLevel(sVar3);
-
-      if (cVar1 == '\0') {
-
-        cVar1 = '\0';
-
-      }
-
-      else if ((cVar1 < '\x01') || ('\n' < cVar1)) {
-
-        K_Assert((const char *)DAT_006aede8,0x15c);
-
-      }
-
-    }
-
+  if ((level < 1) || (level > 10)) {
+    K_Assert((const char *)DAT_006aede8,0x15c);
   }
-
-  return cVar1;
-
+  return level;
 }
 
 /* Reconstructed the packed shop-date availability gate and all date-mode paths. */
@@ -3922,91 +3878,50 @@ void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
 
 
 void FUN_003f4870(int param_1,int param_2,int param_3,int param_4)
-
-
-
 {
+  int drawAlpha = 0;
+  u32 drawState;
+  int config;
+  int itemValue;
+  int spriteX;
+  int spriteY;
+  int spriteAlpha;
+  float spriteScale;
 
-  u32 uVar1;
+  drawState = *(u32 *)(param_4 + 0xc);
+  config = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
+  param_1 += *(short *)(config + 0x28);
+  param_2 += *(short *)(config + 0x2a);
 
-  u32 uVar2;
-
-  int iVar3;
-
-  int lVar4;
-
-  int iVar5;
-
-  int lVar6;
-
-  int iVar7;
-
-  int iVar8;
-
-  u32 uVar9;
-
-  
-
-  iVar5 = (int)param_4;
-
-  uVar2 = *(u32 *)(iVar5 + 0xc);
-
-  iVar3 = *(int *)(*(int *)(iVar5 + 0x24) + 0x44);
-
-  param_1 = param_1 + *(short *)(iVar3 + 0x28);
-
-  param_2 = param_2 + *(short *)(iVar3 + 0x2a);
-
-  lVar4 = FUN_003c6e10(param_4);
-
-  if (lVar4 == 1) {
-
-    lVar6 = 0xff;
-
+  switch (FUN_003c6e10(param_4)) {
+  case 0xc:
+    drawAlpha = 0xff;
+    break;
+  case 0x14:
+    drawAlpha = param_3;
+    break;
+  case 1:
+    drawAlpha = 0xff;
+    break;
   }
 
-  else {
-
-    lVar6 = param_3;
-
-    if ((lVar4 != 0x14) && (lVar6 = 0, lVar4 == 0xc)) {
-
-      lVar6 = 0xff;
-
-    }
-
+  if (drawAlpha != 0) {
+    FUN_0040e3c0_f32(0.0f,param_1 + *(short *)(config + 0x38),
+                     param_2 + *(short *)(config + 0x3a),
+                     (drawAlpha * *(short *)(config + 0x44)) / 0xff & 0xff,0x16,0);
+    spriteX = param_1 + *(short *)(config + 0x48);
+    spriteY = param_2 + *(short *)(config + 0x4a);
+    spriteAlpha = (drawAlpha * *(short *)(config + 0x54)) / 0xff;
+    spriteScale = *(float *)(config + 0x50);
+    itemValue = *(int *)(*(int *)(param_4 + 0x24) + 0x28);
+    FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x15,spriteY - 1,
+                     spriteAlpha & 0xff,0x18,0,0,0);
+    FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x13,
+                     spriteY + (itemValue * 0x56) / 0xffff,
+                     spriteAlpha & 0xff,0x19,0,0,0);
+    FUN_003f7730_i(param_1 - 0x1a,param_2 + 0x7d,param_3,param_4,drawState);
+    FUN_003f7a80_i(param_1 - 0x16,param_2 + 0x9d,param_3,param_4,drawState);
   }
-
-  if (lVar6 != 0) {
-
-    FUN_0040e3c0(0,param_1 + *(short *)(iVar3 + 0x38),param_2 + *(short *)(iVar3 + 0x3a),
-
-                 ((int)lVar6 * (int)*(short *)(iVar3 + 0x44)) / 0xff & 0xff,0x16,0);
-
-    iVar7 = param_1 + *(short *)(iVar3 + 0x48);
-
-    iVar8 = param_2 + *(short *)(iVar3 + 0x4a);
-
-    uVar1 = ((int)lVar6 * (int)*(short *)(iVar3 + 0x54)) / 0xff;
-
-    uVar9 = *(u32 *)(iVar3 + 0x50);
-
-    iVar3 = *(int *)(*(int *)(iVar5 + 0x24) + 0x28);
-
-    FUN_0040e3f0(0,0,1.0f,uVar9,iVar7 + -0x15,iVar8 + -1,uVar1 & 0xff,0x18,0,0,0);
-
-    FUN_0040e3f0(0,0,1.0f,uVar9,iVar7 + -0x13,iVar8 + (iVar3 * 0x56) / 0xffff,uVar1 & 0xff,
-
-                 0x19,0,0,0);
-
-    FUN_003f7730_i(param_1 - 0x1a,param_2 + 0x7d,(int)param_3,param_4,uVar2);
-    FUN_003f7a80_i(param_1 - 0x16,param_2 + 0x9d,(int)param_3,param_4,uVar2);
-  }
-
-
-
-  return;
-
 }
 
 // FUN_003F4A90 NONMATCHING
@@ -4615,17 +4530,17 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   u32 uVar9;
 
-  short asStack_30 [8];
-
-  u8 auStack_20 [24];
-
-  char acStack_8 [8];
+  struct {
+    short positions[8];
+    u8 text[24];
+    char flags[8];
+  } scratch;
 
   
 
   pcVar6 = (char *)(&DAT_007cd910);
 
-  pcVar5 = acStack_8;
+  pcVar5 = scratch.flags;
 
   iVar4 = 5;
 
@@ -4645,7 +4560,7 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   psVar8 = (s16 *)(&DAT_006aef30);
 
-  psVar7 = asStack_30;
+  psVar7 = scratch.positions;
 
   iVar4 = 4;
 
@@ -4683,23 +4598,22 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   for (uVar9 = 0; (int)uVar9 < 4; uVar9 = uVar9 + 1) {
 
-    if (((long)acStack_8[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << (uVar9 & 0x1f))) ==
+    if (((long)scratch.flags[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << (uVar9 & 0x1f))) !=
 
         0) {
 
-      FUN_0040e3c0_f32(0.0f,(int)param_1 + (uVar9 & 1) * 0x7c,(int)param_2 + ((int)uVar9 >> 1 & 1U) * 0x15,
+      sprintf((char *)scratch.text,0x7cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
+      FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar9 * 2],
 
-                   param_3,0x3c,0);
+                   (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
 
     }
 
     else {
 
-      sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
+      FUN_0040e3c0_f32(0.0f,(int)param_1 + (uVar9 & 1) * 0x7c,(int)param_2 + ((int)uVar9 >> 1 & 1U) * 0x15,
 
-      FUN_0040eb50(0,(int)param_1 + (int)asStack_30[uVar9 * 2],
-
-                   (int)param_2 + (int)asStack_30[uVar9 * 2 + 1],param_3,1,auStack_20,2);
+                   param_3,0x3c,0);
 
     }
 
@@ -4738,17 +4652,17 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   u32 uVar9;
 
-  short asStack_30 [8];
-
-  u8 auStack_20 [24];
-
-  char acStack_8 [8];
+  struct {
+    short positions[8];
+    u8 text[24];
+    char flags[8];
+  } scratch;
 
   
 
   pcVar6 = (char *)(&DAT_007cd918);
 
-  pcVar5 = acStack_8;
+  pcVar5 = scratch.flags;
 
   iVar4 = 5;
 
@@ -4768,7 +4682,7 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   psVar8 = (s16 *)(&DAT_006aef40);
 
-  psVar7 = asStack_30;
+  psVar7 = scratch.positions;
 
   iVar4 = 4;
 
@@ -4804,23 +4718,22 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   for (uVar9 = 0; (int)uVar9 < 4; uVar9 = uVar9 + 1) {
 
-    if (((long)acStack_8[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << (uVar9 & 0x1f))) ==
+    if (((long)scratch.flags[(int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8] & (long)(1 << (uVar9 & 0x1f))) !=
 
         0) {
 
-      FUN_0040e3c0_f32(0.0f,(int)param_1 + (uVar9 & 1) * 0x7c,(int)param_2 + ((int)uVar9 >> 1 & 1U) * 0x15,
+      sprintf((char *)scratch.text,0x7cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
+      FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar9 * 2],
 
-                   param_3,0x39,0);
+                   (int)param_2 + (int)scratch.positions[uVar9 * 2 + 1],param_3,1,scratch.text,2);
 
     }
 
     else {
 
-      sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar4 + uVar9 * 2 + 0x14));
+      FUN_0040e3c0_f32(0.0f,(int)param_1 + (uVar9 & 1) * 0x7c,(int)param_2 + ((int)uVar9 >> 1 & 1U) * 0x15,
 
-      FUN_0040eb50(0,(int)param_1 + (int)asStack_30[uVar9 * 2],
-
-                   (int)param_2 + (int)asStack_30[uVar9 * 2 + 1],param_3,1,auStack_20,2);
+                   param_3,0x39,0);
 
     }
 
@@ -4871,19 +4784,19 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   int iVar15;
 
-  u32 auStack_70 [16];
-
-  short asStack_30 [8];
-
-  u8 auStack_20 [24];
-
-  char acStack_8 [8];
+  struct {
+    u32 mapping[14];
+    u8 pad[8];
+    short positions[8];
+    u8 text[24];
+    char flags[8];
+  } scratch;
 
   
 
   pcVar9 = (char *)(&DAT_007cd920);
 
-  pcVar7 = acStack_8;
+  pcVar7 = scratch.flags;
 
   iVar6 = 5;
 
@@ -4903,7 +4816,7 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   psVar12 = (s16 *)(&DAT_006aef50);
 
-  psVar10 = asStack_30;
+  psVar10 = scratch.positions;
 
   iVar6 = 4;
 
@@ -4933,7 +4846,7 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   puVar13 = &DAT_006aef60;
 
-  puVar11 = auStack_70;
+  puVar11 = scratch.mapping;
 
   iVar8 = 7;
 
@@ -4955,7 +4868,7 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   } while (0 < iVar8);
 
-  FUN_0040e3c0(0,param_1,iVar15 + 1,param_3,0x39,auStack_70[*(u8 *)(iVar6 + 8)]);
+  FUN_0040e3c0(0,param_1,iVar15 + 1,param_3,0x39,scratch.mapping[*(u8 *)(iVar6 + 8)]);
 
   FUN_0040e3c0(0,param_1,param_2,param_3,0x3a,0);
 
@@ -4965,23 +4878,23 @@ void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4,
 
   for (uVar14 = 0; (int)uVar14 < 4; uVar14 = uVar14 + 1) {
 
-    if (((long)acStack_8[(int)(*(u32 *)(iVar6 + 8) & 0xf00) >> 8] & (long)(1 << (uVar14 & 0x1f)))
+    if (((long)scratch.flags[(int)(*(u32 *)(iVar6 + 8) & 0xf00) >> 8] & (long)(1 << (uVar14 & 0x1f)))
 
-        == 0) {
+        != 0) {
 
-      FUN_0040e3c0(0,(int)param_1 + (uVar14 & 1) * 0x7c,iVar15 + ((int)uVar14 >> 1 & 1U) * 0x15,
+      sprintf((char *)scratch.text,0x7cd900,*(u16 *)(iVar6 + uVar14 * 2 + 0x14));
 
-                   param_3,0x3d,0);
+      FUN_0040eb50(0,(int)param_1 + (int)scratch.positions[uVar14 * 2],iVar15 + scratch.positions[uVar14 * 2 + 1],
+
+                   param_3,1,scratch.text,2);
 
     }
 
     else {
 
-      sprintf((char *)auStack_20,0x7cd900,*(u16 *)(iVar6 + uVar14 * 2 + 0x14));
+      FUN_0040e3c0(0,(int)param_1 + (uVar14 & 1) * 0x7c,iVar15 + ((int)uVar14 >> 1 & 1U) * 0x15,
 
-      FUN_0040eb50(0,(int)param_1 + (int)asStack_30[uVar14 * 2],iVar15 + asStack_30[uVar14 * 2 + 1],
-
-                   param_3,1,auStack_20,2);
+                   param_3,0x3d,0);
 
     }
 
@@ -7113,7 +7026,7 @@ u32 FUN_003f98f0(u16 param_1)
   return 1;
 }
 
-// FUN_003F99D0 NONMATCHING
+// FUN_003F99D0
 
 
 u64 FUN_003f99d0(u32 param_1,u32 param_2)
@@ -7154,15 +7067,12 @@ u64 FUN_003f99d0(u32 param_1,u32 param_2)
 
       memcpy(puVar1 + 1,auStack_20,0x1c);
 
-      if (((*(u32 *)(auStack_20 + 0x1c) & 0x1000) != 0) &&
-         (sVar3 = datGetEquipmentIdx(1,(u16)(*(u32 *)(auStack_20 + 0x1c) >> 8) & 0xf),
+      if (((*(u32 *)(auStack_20 + 4) & 0x1000) != 0) &&
+         (sVar3 = datGetEquipmentIdx(1,(short)((s32)(*(u32 *)(auStack_20 + 4) & 0xf00) >> 8)),
           uVar7 == sVar3)) {
 
-        uVar2 = *puVar1;
-
-        *puVar1 = uVar2 | 0x10;
-
-        *puVar1 = uVar2 | 0x50;
+        *puVar1 = *puVar1 | 0x10;
+        *puVar1 = *puVar1 | 0x40;
 
       }
 

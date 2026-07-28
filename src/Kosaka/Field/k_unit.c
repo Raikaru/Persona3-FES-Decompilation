@@ -114,7 +114,8 @@ extern u32 func_001016b0(void);
 extern u32 func_0017d800(void);
 extern void func_00195020(void* task);
 extern void func_0019c2f0(void* task, u32 value);
-extern void func_001a60d0();
+extern KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl,
+                               u32 targetAlpha, s32 frames);
 extern u32 func_00195460(void);
 #pragma alias func_00195460_marker func_00195460
 extern u32 func_00195460_marker(u32 marker);
@@ -132,7 +133,9 @@ extern void* func_001dd460(u32 parent, u32 mode, u32 id);
 extern void func_001dd5f0(void* task, void* model);
 extern void func_001dd5e0(void* task, u32 value);
 extern void* func_001af930(u32 parent, void* resource);
-extern void* func_00194b80();
+extern KwlnTask* func_00194b80(KwlnTask* parent, u32 priority,
+                               const char* name, void* update,
+                               void* destroy, void* work);
 extern void* func_001828d0(u16 id, void* dst);
 extern void* func_00182d90(u16 id, u32 mode, u8 value, void* dst);
 extern u32 func_00316f70(void* model);

@@ -2231,8 +2231,6 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
     f32 tanHalf;
     u64 fixedXY;
     f32 fixedZ;
-    f32 desiredZ;
-    u64 desiredXY;
 
     FUN_002a4470((f32*)&work.first.pos, (f32*)&camera->pos);
     unit = camera->action->unit;
@@ -2344,10 +2342,8 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
         work.sidePoint.y = work.sidePoint.y + work.generated.y;
         work.sidePoint.z = work.sidePoint.z + work.generated.z;
     }
-    desiredXY = *(s64*)&work.desired;
-    desiredZ = work.desired.z;
-    *(s64*)&work.targetPos.xy = desiredXY;
-    work.targetPos.z = desiredZ;
+    *(u64*)&work.targetPos = *(u64*)&work.desired;
+    work.targetPos.z = work.desired.z;
     work.targetPos.y = work.generated.y;
     work.diff.x = *(f32*)&work.targetPos.xy - work.generated.x;
     work.diff.y = work.targetPos.y - work.generated.y;
@@ -8998,7 +8994,6 @@ void func_002acf90(BtlCamera* camera, long unused)
     s32 mode;
     s32 temp;
     s32 i;
-    u32 rand;
     u16 targetId;
     BtlAction* action;
     f32 tempX;
@@ -9117,8 +9112,7 @@ void func_002acf90(BtlCamera* camera, long unused)
     FUN_004c6b20((f32*)&scratch.d8, (f32*)&scratch.d8);
     scratch.v100.x = scratch.dc * scale + scratch.v100.x;
     scratch.v100.z = (scratch.v100.z) - scratch.d8 * scale;
-    rand = FUN_00357fd0(0);
-    if ((rand & 1) != 0) {
+    if ((FUN_00357fd0(0) & 1) != 0) {
         angle = 7.5f;
     } else {
         angle = -7.5f;

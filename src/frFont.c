@@ -3260,7 +3260,6 @@ u32 FUN_003b2430(void *param_1)
           else {
 
             uStack_3 = 0;
-
           }
 
           uVar8 = FUN_003b0970_typed(&bStack_4,*(u8 *)(puVar12 + 3),

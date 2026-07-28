@@ -2295,38 +2295,34 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha)
 {
-    void* text;
+    CampStatusSprite* sprite;
     s32 length;
-    u32 parent;
 
     (void)scale;
-    parent = 0x42c80000;
     campStatusDrawSprite3Call(position.x + 104.0f,
                               position.y + 129.0f + (f32)(row * 19) - 25.0f,
-                              parent);
+                              0x42c80000);
     campStatusDrawSprite3Call(position.x + 333.0f,
                               position.y + 129.0f + (f32)(row * 19) - 25.0f,
-                              parent);
+                              0x42c80000);
     length = (value * 0xe3) / 99;
-    text = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
-    *((u32*)text + 11) = parent;
-    *((f32*)text + 4) = position.x + 108.0f;
-    *((f32*)text + 5) =
-        position.y + 130.0f + (f32)(row * 19) - 25.0f;
-    *((u8*)text + 0x18) = (u8)alpha;
-    *((s16*)text + 0x0e) = (s16)length;
-    FUN_001127d0(text, 1);
-    FUN_00115980(text);
+    sprite = (CampStatusSprite*)FUN_001158b0(0, DAT_00833B98, 0x18);
+    sprite->scale = 100.0f;
+    sprite->x = position.x + 108.0f;
+    sprite->y = position.y + 130.0f + (f32)(row * 19) - 25.0f;
+    sprite->alpha = (u8)alpha;
+    sprite->value = (s16)length;
+    FUN_001127d0(sprite, 1);
+    FUN_00115980(sprite);
     if (extra != 0) {
-        text = (void*)FUN_001158b0(0, DAT_00833B98, 0x10);
-        *((u32*)text + 11) = parent;
-        *((f32*)text + 4) = position.x + 108.0f + (f32)length + 2.0f;
-        *((f32*)text + 5) =
-            position.y + 130.0f + (f32)(row * 19) - 25.0f;
-        *((u8*)text + 0x18) = (u8)alpha;
-        *((s16*)text + 0x0e) = (s16)((extra * 0xe3) / 99);
-        FUN_001127d0(text, 1);
-        FUN_00115980(text);
+        sprite = (CampStatusSprite*)FUN_001158b0(0, DAT_00833B98, 0x10);
+        sprite->scale = 100.0f;
+        sprite->x = position.x + 108.0f + (f32)length + 2.0f;
+        sprite->y = position.y + 130.0f + (f32)(row * 19) - 25.0f;
+        sprite->alpha = (u8)alpha;
+        sprite->value = (s16)((extra * 0xe3) / 99);
+        FUN_001127d0(sprite, 1);
+        FUN_00115980(sprite);
     }
 }
 

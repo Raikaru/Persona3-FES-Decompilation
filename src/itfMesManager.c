@@ -3414,6 +3414,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 }
 #define FUN_003a5ca0(...) ((void (*)(...))FUN_003a5ca0)(__VA_ARGS__)
 #undef FUN_003a5ea0
+
 typedef struct ItfMesAllocationSlots {
   u32 objects[32];
   u32 allocations[32];

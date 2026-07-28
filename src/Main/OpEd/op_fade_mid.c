@@ -1200,7 +1200,7 @@ void func_002771f0(void)
 void func_00278550(void)
 {
     code *state;
-    u8 *work;
+    OpFadeWork* work;
     u32 tex8;
     u32 tex10;
     u32 tex1;
@@ -1209,12 +1209,13 @@ void func_00278550(void)
     s32 j;
     u8 vertices[0x100];
     f32 rect[4];
+
     OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);
-    work = OP_WORKD;
+    work = (OpFadeWork*)gOpWorkD0;
     tex8 = func_00119a60(8);
     tex10 = func_00119a60(10);
     tex1 = brRes00234630(1);
-    if ((OP_U32(work, 0) & 1) == 0 || (OP_U32(work, 0) & 0x40) != 0)
+    if ((work->flags & 1) == 0 || (work->flags & 0x40) != 0)
         return;
     state = (code *)&D_00960090_abs;
     D_00960090(0x14, 2);
@@ -1224,7 +1225,7 @@ void func_00278550(void)
     D_00960090(0xe, 0);
     D_00960090(7, 2);
     D_00960090(0xc, 1);
-    if ((OP_U32(work, 0) & 0x20) != 0)
+    if ((work->flags & 0x20) != 0)
     {
         code *quad;
         frame = func_0021cca0(tex1, 2);
@@ -1247,12 +1248,12 @@ void func_00278550(void)
         frame = opTexFrame(tex8, 0x12);
         D_00960090(1, frame);
         quad = (code *)&D_0096009C_abs;
-        D_0096009C(work + (7 - i) * 0x44 + 4, 4, 0, 1, 2);
-        D_0096009C(work + (7 - i) * 0x44 + 4, 4, 0, 2, 3);
+        D_0096009C(work->list12[7 - i], 4, 0, 1, 2);
+        D_0096009C(work->list12[7 - i], 4, 0, 2, 3);
     }
-    for (i = 0; i < OP_S32(work, 0x3738); i++)
-        func_003b1360(OP_U32(work, i * 0x44 + 0x110), 1, 0);
-    if ((OP_U32(work, 0) & 2) != 0)
+    for (i = 0; i < (s32)work->pad_3738; i++)
+        func_003b1360(OP_U32(work, i * 0x110 + 0x440), 1, 0);
+    if ((work->flags & 2) != 0)
     {
         code *quad;
         func_004d7f60(3, 0x717fb);
@@ -1260,84 +1261,85 @@ void func_00278550(void)
         frame = opTexFrame(tex8, 0x15);
         D_00960090(1, frame);
         quad = (code *)&D_0096009C_abs;
-        D_0096009C(work + 0xb4c, 4, 0, 1, 2);
-        D_0096009C(work + 0xb4c, 4, 0, 2, 3);
-        D_0096009C(work + 0xb8c, 4, 0, 1, 2);
-        D_0096009C(work + 0xb8c, 4, 0, 2, 3);
+        D_0096009C(work->panel15, 4, 0, 1, 2);
+        D_0096009C(work->panel15, 4, 0, 2, 3);
+        D_0096009C(work->panel15Alt, 4, 0, 1, 2);
+        D_0096009C(work->panel15Alt, 4, 0, 2, 3);
         frame = opTexFrame(tex8, 0x17);
         D_00960090(1, frame);
-        D_0096009C(work + 0xbcc, 4, 0, 1, 2);
-        D_0096009C(work + 0xbcc, 4, 0, 2, 3);
+        D_0096009C(work->panel17, 4, 0, 1, 2);
+        D_0096009C(work->panel17, 4, 0, 2, 3);
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = opTexFrame(tex8, 0x13);
         D_00960090(1, frame);
-        D_0096009C(work + 0xb0c, 4, 0, 1, 2);
-        D_0096009C(work + 0xb0c, 4, 0, 2, 3);
+        D_0096009C(work->panel13, 4, 0, 1, 2);
+        D_0096009C(work->panel13, 4, 0, 2, 3);
         D_00960090(1, func_0021cce0(func_0021cca0(tex1, 1)));
-        D_0096009C(work + 0xe58, 4, 0, 1, 2);
-        D_0096009C(work + 0xe58, 4, 0, 2, 3);
+        D_0096009C(work->texture1, 4, 0, 1, 2);
+        D_0096009C(work->texture1, 4, 0, 2, 3);
         D_00960090(1, func_0021cce0(func_0021cca0(tex1, 0)));
-        D_0096009C(work + 0xe98, 4, 0, 1, 2);
-        D_0096009C(work + 0xe98, 4, 0, 2, 3);
+        D_0096009C(work->texture0, 4, 0, 1, 2);
+        D_0096009C(work->texture0, 4, 0, 2, 3);
         func_003b1360(OP_U32(work, 0x3950), 1, 0);
-        for (i = 0; i < OP_S32(work, 0x3730); i++)
+        for (i = 0; i < (s32)work->pad_3730; i++)
         {
             func_004d7f60(3, 0x717fb);
             func_004d7f60(2, 0x44);
             frame = opTexFrame(tex8, 0x14);
             D_00960090(1, frame);
-            D_0096009C(work + i * 0x40 + 0xc0c, 4, 0, 1, 2);
-            D_0096009C(work + i * 0x40 + 0xc0c, 4, 0, 2, 3);
+            D_0096009C(work->list14[i], 4, 0, 1, 2);
+            D_0096009C(work->list14[i], 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         D_00960090(1, func_00239140(2));
         for (i = 0; i < 2; i++)
         {
-            D_0096009C(work + i * 0x40 + 0xdd4, 4, 0, 1, 2);
-            D_0096009C(work + i * 0x40 + 0xdd4, 4, 0, 2, 3);
+            D_0096009C(work->draw + i * 0x100, 4, 0, 1, 2);
+            D_0096009C(work->draw + i * 0x100, 4, 0, 2, 3);
         }
     }
     for (i = 0; i < 5; i++)
     {
         code *quad;
+        OpFadeEntry* entry = &work->entries[i];
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = opTexFrame(tex10, 0x14);
         D_00960090(1, frame);
         quad = (code *)&D_0096009C_abs;
-        D_0096009C(work + i * 0x1c8 + 0x32c, 4, 0, 1, 2);
-        D_0096009C(work + i * 0x1c8 + 0x32c, 4, 0, 2, 3);
-        D_0096009C(work + i * 0x1c8 + 0x36c, 4, 0, 1, 2);
-        D_0096009C(work + i * 0x1c8 + 0x36c, 4, 0, 2, 3);
+        D_0096009C(entry->panel14, 4, 0, 1, 2);
+        D_0096009C(entry->panel14, 4, 0, 2, 3);
+        D_0096009C(entry->panel14Alt, 4, 0, 1, 2);
+        D_0096009C(entry->panel14Alt, 4, 0, 2, 3);
         frame = opTexFrame(tex10, 0x15);
         D_00960090(1, frame);
-        D_0096009C(work + i * 0x1c8 + 0x3ac, 4, 0, 1, 2);
-        D_0096009C(work + i * 0x1c8 + 0x3ac, 4, 0, 2, 3);
+        D_0096009C(entry->panel15, 4, 0, 1, 2);
+        D_0096009C(entry->panel15, 4, 0, 2, 3);
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         D_00960090(1, func_00239140(2));
         for (j = 0; j < 2; j++)
         {
-            D_0096009C(work + i * 0x1c8 + j * 0x40 + 0x228, 4, 0, 1, 2);
-            D_0096009C(work + i * 0x1c8 + j * 0x40 + 0x228, 4, 0, 2, 3);
+            D_0096009C(entry->draw + j * 0x100, 4, 0, 1, 2);
+            D_0096009C(entry->draw + j * 0x100, 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         D_00960090(1, opTexFrame(tex10, 0x18));
-        D_0096009C(work + i * 0x1c8 + 0x2ac, 4, 0, 1, 2);
-        D_0096009C(work + i * 0x1c8 + 0x2ac, 4, 0, 2, 3);
-        if ((OP_U32(work, 0) & 8) != 0)
+        D_0096009C(entry->panel18, 4, 0, 1, 2);
+        D_0096009C(entry->panel18, 4, 0, 2, 3);
+        if ((work->flags & 8) != 0)
         {
             func_004d7f60(3, 0x717fb);
             func_004d7f60(2, 0x44);
             D_00960090(1, opTexFrame(tex10, 0x1b));
-            D_0096009C(work + i * 0x1c8 + 0x2ec, 4, 0, 1, 2);
-            D_0096009C(work + i * 0x1c8 + 0x2ec, 4, 0, 2, 3);
+            D_0096009C(entry->panel1b, 4, 0, 1, 2);
+            D_0096009C(entry->panel1b, 4, 0, 2, 3);
         }
     }
-    if ((OP_U32(work, 0) & 0x20) != 0)
+    if ((work->flags & 0x20) != 0)
     {
         code *quad;
         if (DAT_007cc4dc != -1)
@@ -1346,8 +1348,8 @@ void func_00278550(void)
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
         quad = (code *)&D_0096009C_abs;
-        D_0096009C(work + 0xedc, 4, 0, 1, 2);
-        D_0096009C(work + 0xedc, 4, 0, 2, 3);
+        D_0096009C(work->texture0Alt, 4, 0, 1, 2);
+        D_0096009C(work->texture0Alt, 4, 0, 2, 3);
     }
 }
 #undef D_00960090

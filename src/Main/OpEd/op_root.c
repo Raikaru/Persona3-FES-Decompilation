@@ -172,13 +172,13 @@ extern u8 DAT_007e094c_abs[];
 extern u8 DAT_007e0952_abs[];
 extern u8 DAT_007e0956_abs[];
 extern u8 DAT_007e095a_abs[];
-extern u32 FUN_00108710();
-extern u32 FUN_001938e0();
-extern u32 FUN_00195290();
-extern u32 FUN_00195460();
-extern u32 FUN_0010bc20();
-extern u32 FUN_001928d0();
-extern u32 FUN_00192aa0();
+extern u32 FUN_00108710(void);
+extern u32 FUN_001938e0(u32 mode);
+extern u32 FUN_00195290(u32 handle);
+extern u32 FUN_00195460(u32 handle);
+extern u32 FUN_0010bc20(u32 value, u32 mode);
+extern u32 FUN_001928d0(void);
+extern u32 FUN_00192aa0(void);
 
 #pragma push
 /* Removing this worsens opRoot00265030 (nd1289 -> nd1679) - measured W161. */
