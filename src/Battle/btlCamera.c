@@ -403,7 +403,7 @@ void btlCameraUpdate(BtlCamera* camera)
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
     const BtlCameraStateEntry* entry;
-    u16 temp_3;
+    s32 temp_3;
     s32 temp_6;
     u64 var_7;
 
@@ -415,10 +415,10 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
     if (gBtl->camera.state != temp_6 || entry->unk_08 != 0)
     {
         var_7 = 2;
-        while ((temp_3 = var_7) == 0)
+        while ((u16)var_7 == 0)
         {
             *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) =
-                *(u16*)(iGpffffb6fc + 0x102 + temp_3 * 2);
+                *(u16*)(iGpffffb6fc + 0x102 + (u16)var_7 * 2);
             var_7 = ((u16)var_7 - 1) & 0xffff;
         }
 
