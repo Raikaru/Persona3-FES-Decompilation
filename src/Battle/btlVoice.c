@@ -134,6 +134,11 @@ extern u8 DAT_0069a1d2[];
 extern u8 DAT_0069a210[];
 #pragma alias DAT_0069a210_abs DAT_0069a210
 extern u8 DAT_0069a210_abs[];
+extern s16 D_00699e60[];
+extern s16 D_00699eb0[];
+extern s16 D_00699f00[];
+extern s16 D_00699f50[];
+extern s16 D_00699f90[];
 extern u8 DAT_0069a470[];
 extern u8 DAT_0069a4f0[];
 extern u8 DAT_0069a550[];
@@ -4319,7 +4324,7 @@ u32 func_002ecac0(void);
 u32 func_002ecb30(BtlAction* action, s16 selection);
 u32 func_002ecbe0(void);
 u32 func_002ecc20(void);
-void func_002ecc60(s32 param_1,s32 param_2);
+void func_002ecc60(s16 *param_1, s16 *param_2);
 u32 func_002ecf80(int param_1);
 void func_002ed350(void);
 u32 func_002ed360(u64 *param_1);
@@ -9144,7 +9149,7 @@ u32 func_002ecc20(void)
 }
 
 // FUN_002ecc60 NONMATCHING
-void func_002ecc60(s32 param_1, s32 param_2)
+void func_002ecc60(s16 *param_1, s16 *param_2)
 {
   typedef struct VoiceRegionLocals {
     RwV2d center;
@@ -9164,24 +9169,25 @@ void func_002ecc60(s32 param_1, s32 param_2)
   s16 *entry;
   s16 *entryResult;
   u16 command;
-  f32 limit;
+  f32 originX = 0.0f;
+  f32 originZ = 0.0f;
 
   command = *(u16 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0xa4);
   switch (command) {
   case 0xe2:
-    table = (s16 *)0x699e60;
+    table = D_00699e60;
     break;
   case 0xe3:
-    table = (s16 *)0x699eb0;
+    table = D_00699eb0;
     break;
   case 0xe4:
-    table = (s16 *)0x699f00;
+    table = D_00699f00;
     break;
   case 0xe5:
-    table = (s16 *)0x699f50;
+    table = D_00699f50;
     break;
   case 0xe6:
-    table = (s16 *)0x699f90;
+    table = D_00699f90;
     break;
   }
 
@@ -9193,12 +9199,9 @@ void func_002ecc60(s32 param_1, s32 param_2)
     f32 listenerX = stack.listenerPoint.x;
     f32 listenerZ = stack.listenerPoint.z;
     index = 0;
-    while (1) {
-      entry = table + index * 4;
-      entryResult = entry + 2;
-      if (*entryResult == -1) {
-        break;
-      }
+    while ((entry = table + index * 4,
+            entryResult = entry + 2,
+            *entryResult != -1)) {
       if (FUN_00318ed0_btlVoice_typed(
               *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),
               entry[0], &stack.firstPoint.x) != 0 &&
@@ -9206,41 +9209,44 @@ void func_002ecc60(s32 param_1, s32 param_2)
               *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),
               entry[1], &stack.secondPoint.x) != 0) {
         stack.center.x =
-            (stack.secondPoint.x + stack.firstPoint.x + 0.0f) / 3.0f - 0.0f;
+            (originX + stack.firstPoint.x + stack.secondPoint.x) / 3.0f -
+            originX;
         stack.center.y =
-            (stack.secondPoint.z + stack.firstPoint.z + 0.0f) / 3.0f - 0.0f;
+            (originZ + stack.firstPoint.z + stack.secondPoint.z) / 3.0f -
+            originZ;
         FUN_004c6b20_btlVoice_typed(&stack.center.x, &stack.center.x);
-        stack.firstEdge.x = stack.firstPoint.x - 0.0f;
-        stack.firstEdge.y = stack.firstPoint.z - 0.0f;
+        stack.firstEdge.x = stack.firstPoint.x - originX;
+        stack.firstEdge.y = stack.firstPoint.z - originZ;
         FUN_004c6b20_btlVoice_typed(&stack.firstEdge.x, &stack.firstEdge.x);
-        stack.secondEdge.x = stack.secondPoint.x - 0.0f;
-        stack.secondEdge.y = stack.secondPoint.z - 0.0f;
+        stack.secondEdge.x = stack.secondPoint.x - originX;
+        stack.secondEdge.y = stack.secondPoint.z - originZ;
         FUN_004c6b20_btlVoice_typed(&stack.secondEdge.x, &stack.secondEdge.x);
-        stack.listenerEdge.x = listenerX - 0.0f;
-        stack.listenerEdge.y = listenerZ - 0.0f;
+        stack.listenerEdge.x = listenerX - originX;
+        stack.listenerEdge.y = listenerZ - originZ;
         FUN_004c6b20_btlVoice_typed(&stack.listenerEdge.x,
                                     &stack.listenerEdge.x);
-        limit = stack.center.x * stack.listenerEdge.x +
-                stack.center.y * stack.listenerEdge.y;
-        if (stack.center.x * stack.firstEdge.x +
-                    stack.center.y * stack.firstEdge.y <=
-                limit &&
-            stack.center.x * stack.secondEdge.x +
-                    stack.center.y * stack.secondEdge.y <=
-                limit) {
+        {
+          f32 secondDot = stack.center.x * stack.secondEdge.x +
+                          stack.center.y * stack.secondEdge.y;
+          f32 listenerDot = stack.center.x * stack.listenerEdge.x +
+                            stack.center.y * stack.listenerEdge.y;
+          f32 firstDot = stack.center.x * stack.firstEdge.x +
+                         stack.center.y * stack.firstEdge.y;
+          if (secondDot <= listenerDot && firstDot <= listenerDot) {
           firstResult = *entryResult;
           secondResult = entry[3];
           break;
+        }
         }
       }
       index = (index + 1) & 0xffff;
     }
   }
   if (param_1 != 0) {
-    *(s16 *)param_1 = firstResult;
+    *param_1 = firstResult;
   }
   if (param_2 != 0) {
-    *(s16 *)param_2 = secondResult;
+    *param_2 = secondResult;
   }
 }
 
@@ -9275,7 +9281,7 @@ u32 func_002ecf80(int param_1)
     FUN_002d1de0(stack.auStack_40,stack.afStack_50,stack.afStack_10);
     FUN_0027f680(*(u32 *)(param_1 + 0x30),stack.auStack_40);
   }
-  func_002ecc60((s32)&stack.sStack_2,(s32)&stack.sStack_4);
+  func_002ecc60(&stack.sStack_2, &stack.sStack_4);
   sVar1 = *(short *)(DAT_007ce3ec + 0xb56);
   switch (sVar1) {
   case 0:

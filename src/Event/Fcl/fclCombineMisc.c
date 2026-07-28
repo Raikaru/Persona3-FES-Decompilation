@@ -1266,8 +1266,8 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
   u8 bVar5;
 
   int iVar6;
-
   int iVar7;
+
 
   u32 *puVar8;
 

@@ -2539,7 +2539,7 @@ void FUN_00389b50(int *param_1)
 }
 
 
-// FUN_00389D80 NONMATCHING
+// FUN_00389D80
 
 
 void FUN_00389d80(int param_1,int param_2)
@@ -2556,18 +2556,17 @@ void FUN_00389d80(int param_1,int param_2)
 
   int iVar4;
 
+  int iVar10;
   u32 *puVar5;
-
-  int iVar6;
-
-  u32 *puVar7;
 
   u32 *puVar8;
 
-  u32 *puVar9;
-  u32 *member;
+  u32 *puVar7;
 
-  int iVar10;
+  int iVar6;
+
+  u32 *member;
+  u32 *puVar9;
 
   u32 stack[21];
 
@@ -2576,9 +2575,11 @@ void FUN_00389d80(int param_1,int param_2)
 
   iVar10 = *(int *)param_2;
 
-  if ((iVar10 == 0x30) || (iVar10 == 1)) {
-    iVar3 = DAT_009589c8;
-    iVar4 = DAT_009589cc;
+  switch (iVar10) {
+  case 1:
+  case 0x30:
+    iVar3 = *(int *)DAT_009589c8_abs;
+    iVar4 = *(int *)DAT_009589cc_abs;
     if (iVar3 != 0) {
 
     for (iVar10 = 0; iVar10 < iVar3; iVar10 = iVar10 + 1) {
@@ -2587,45 +2588,33 @@ void FUN_00389d80(int param_1,int param_2)
 
       puVar5 = (u32 *)FUN_00361350(param_2,*(u16 *)puVar9,param_1);
 
-      puVar7 = stack;
+      {
+        u32 *copySrc;
+        u32 *copyDst;
+        int copyWords;
 
-      iVar6 = 0x15;
+        copyDst = stack;
+        copyWords = 0x15;
+        copySrc = puVar5;
+        do {
+          uVar1 = *copySrc;
+          copySrc = copySrc + 1;
+          copyWords = copyWords + -1;
+          *copyDst = uVar1;
+          copyDst = copyDst + 1;
+        } while (0 < copyWords);
 
-      puVar8 = puVar5;
-
-      do {
-
-        uVar1 = *puVar8;
-
-        puVar8 = puVar8 + 1;
-
-        iVar6 = iVar6 + -1;
-
-        *puVar7 = uVar1;
-
-        puVar7 = puVar7 + 1;
-
-      } while (0 < iVar6);
-
-      iVar6 = 0x15;
-
-      puVar8 = puVar9;
-
-      puVar7 = puVar5;
-
-      do {
-
-        uVar1 = *puVar8;
-
-        puVar8 = puVar8 + 1;
-
-        iVar6 = iVar6 + -1;
-
-        *puVar7 = uVar1;
-
-        puVar7 = puVar7 + 1;
-
-      } while (0 < iVar6);
+        copyWords = 0x15;
+        copySrc = puVar9;
+        copyDst = puVar5;
+        do {
+          uVar1 = *copySrc;
+          copySrc = copySrc + 1;
+          copyWords = copyWords + -1;
+          *copyDst = uVar1;
+          copyDst = copyDst + 1;
+        } while (0 < copyWords);
+      }
 
       if (*(int *)param_2 == 0x30) {
 

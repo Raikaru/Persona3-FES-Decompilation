@@ -5771,6 +5771,7 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
   char cVar4;
   int iVar5;
   int iVar6;
+  char state;
   int iVar7;
   YVec3f position;
   
@@ -5798,26 +5799,33 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
   *(u8 *)(iVar1 + 0x103) = param_5;
   *(u8 *)(iVar1 + 0x104) = param_6;
   *(YVec3f *)(iVar1 + 0xe0) = position;
+  state = 0;
   do {
     cVar4 = FUN_00433de0(param_1);
+    iVar1 = ((u32 *)param_1)[15];
     iVar6 = *(int *)(iVar1 + 0xa10);
     *(u32 *)(iVar1 + 0x20c) = 0;
-    for (iVar7 = 0; iVar7 < 0xff; iVar7 = iVar7 + 1) {
-      iVar5 = iVar1 + iVar7 * 4;
-      iVar2 = *(int *)(iVar5 + 0xa14);
-      *(int *)(iVar5 + 0xa10) = iVar2;
-      if (iVar2 != 0) {
+    for (iVar2 = 0; iVar2 < 0xff; iVar2 = iVar2 + 1) {
+      iVar5 = iVar1 + iVar2 * 4;
+      iVar7 = *(int *)(iVar5 + 0xa14);
+      *(int *)(iVar5 + 0xa10) = iVar7;
+      if (iVar7 != 0) {
         *(int *)(iVar1 + 0x20c) = *(int *)(iVar1 + 0x20c) + 1;
       }
     }
     iVar6 = iVar1 + iVar6 * 8;
-    *(char *)(iVar1 + 0xf8) = (char)*(u16 *)(iVar6 + 0x210);
-    *(char *)(iVar1 + 0xf9) = (char)*(u16 *)(iVar6 + 0x212);
-  } while ((cVar4 != '\x01') && (cVar4 != '\x02'));
-  if (cVar4 != '\x01') {
+    *(char *)(iVar1 + 0xf8) = (char)*(s16 *)(iVar6 + 0x210);
+    *(char *)(iVar1 + 0xf9) = (char)*(s16 *)(iVar6 + 0x212);
+    if (cVar4 == 1) {
+      cVar4 = 2;
+      state = 1;
+    }
+  } while (cVar4 != 2);
+  if (state == 0) {
     FUN_004343d0(param_1);
+    return 1;
   }
-  return cVar4 == '\x01';
+  return 0;
 }
 
 #pragma push

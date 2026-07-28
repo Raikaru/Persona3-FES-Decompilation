@@ -577,6 +577,8 @@ s8 FUN_00300f60(int param_1,u32 param_2);
 void FUN_00301030(int param_1,u8 param_2,s8 param_3);
 void FUN_00301150(int param_1,u8 param_2,s8 param_3);
 u8 FUN_00301230(int param_1,u32 param_2,char param_3);
+#pragma alias FUN_00301230_narrow FUN_00301230
+extern u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3);
 void FUN_00301540(int param_1,u32 param_2);
 void FUN_00301690(u32 param_1);
 s8 FUN_00301750(int param_1,u32 param_2);
@@ -638,6 +640,8 @@ int FUN_0030bb40(u16 param_1);
 int FUN_0030bbb0(u8 param_1);
 u16 FUN_0030bc20(s16 param_1);
 
+#pragma alias FUN_0030bde0_narrow FUN_0030bde0
+extern short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2);
 u32 FUN_0030bc50(int param_1);
 short FUN_0030bde0(u16 *param_1,s32 param_2);
 int FUN_0030c0c0(void);
@@ -1140,8 +1144,9 @@ void FUN_00301150(int param_1,u8 param_2,s8 param_3)
 
 
 
+#pragma alias FUN_00301230_narrow FUN_00301230
 // FUN_00301230 NONMATCHING
-u8 FUN_00301230(int param_1,u32 param_2,char param_3)
+u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 
 {
   u8 bVar1;
@@ -4482,17 +4487,41 @@ u32 FUN_003083f0_narrow(u16 *param_1,u16 param_2)
   u32 uVar2;
   s32 lVar3;
   int iVar4;
+  u8 *skillData;
   u16 *puVar5;
 
-  if (0x1cf < param_2) {
+  if (param_2 >= 0x1d0) {
     FUN_0019d3f0((u32)D_0069aa80, 0xf27);
   }
   uVar2 = 0;
   lVar3 = FUN_0017d800();
   puVar5 = (u16 *)param_1;
   if ((lVar3 == 0) || ((*(u32 *)(puVar5 + 6) & 0x100) == 0)) {
-    cVar1 = *(char *)((u32)param_2 * 0x2c + DAT_007ce3f8 + 3);
-    if (cVar1 == '\x02') {
+    skillData = (u8 *)DAT_007ce3f8 + (u32)param_2 * 0x2c;
+    cVar1 = skillData[3];
+    switch (cVar1) {
+    case '\x01':
+      if ((*puVar5 & 4) != 0) {
+        if (0x14f < puVar5[1]) {
+          FUN_0019d3f0((u32)D_0069aa80, 0xf38);
+        }
+        if ((*(u16 *)(DAT_007ce410 + (u32)puVar5[1] * 0x3e) & 2) != 0) {
+          return 0;
+        }
+      }
+      uVar2 = FUN_002ffdf0(param_1);
+      iVar4 = (u32)param_2 * 0x2c + DAT_007ce3f8;
+      uVar2 = (int)((uVar2 & 0xffff) * (u32)*(u16 *)(iVar4 + 4)) / 100 +
+              (u32)*(u16 *)(iVar4 + 6);
+      lVar3 = FUN_003005e0(param_1,0x236);
+      if (lVar3 != 0) {
+        uVar2 = uVar2 >> 1;
+      }
+      if (uVar2 == 0) {
+        uVar2 = 1;
+      }
+      break;
+    case '\x02':
       if ((*puVar5 & 4) != 0) {
         if (0x14f < puVar5[1]) {
           FUN_0019d3f0((u32)D_0069aa80, 0xf51);
@@ -4501,7 +4530,7 @@ u32 FUN_003083f0_narrow(u16 *param_1,u16 param_2)
           return 0;
         }
       }
-      if ((*(u8 *)(DAT_007ce3f8 + (u32)param_2 * 0x2c) & 0x10) == 0) {
+      if ((skillData[0] & 0x10) == 0) {
         iVar4 = (u32)param_2 * 0x2c + DAT_007ce3f8;
         uVar2 = (u32)*(u16 *)(iVar4 + 4) + (u32)*(u16 *)(iVar4 + 6);
       }
@@ -4520,27 +4549,7 @@ u32 FUN_003083f0_narrow(u16 *param_1,u16 param_2)
           uVar2 = 1;
         }
       }
-    }
-    else if (cVar1 == '\x01') {
-      if ((*puVar5 & 4) != 0) {
-        if (0x14f < puVar5[1]) {
-          FUN_0019d3f0((u32)D_0069aa80, 0xf38);
-        }
-        uVar2 = 0;
-      }
-      else {
-        uVar2 = FUN_002ffdf0(param_1);
-        iVar4 = (u32)param_2 * 0x2c + DAT_007ce3f8;
-        uVar2 = (int)((uVar2 & 0xffff) * (u32)*(u16 *)(iVar4 + 4)) / 100 +
-                (u32)*(u16 *)(iVar4 + 6);
-        lVar3 = FUN_003005e0(param_1,0x236);
-        if (lVar3 != 0) {
-          uVar2 = uVar2 >> 1;
-        }
-        if (uVar2 == 0) {
-          uVar2 = 1;
-        }
-      }
+      break;
     }
   }
   else {
@@ -6375,8 +6384,9 @@ u32 FUN_0030bc50(int param_1)
 
 
 
+#pragma alias FUN_0030bde0_narrow FUN_0030bde0
 // FUN_0030bde0 NONMATCHING
-short FUN_0030bde0(u16 *param_1,s32 param_2)
+short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
 
 {
   u16 uVar1;
@@ -6400,13 +6410,13 @@ short FUN_0030bde0(u16 *param_1,s32 param_2)
   iVar9 = iGpffffb720 + (u32)param_1[1] * 0x3e;
   sVar7 = 0;
   if (param_2 != 0) {
-    *(u32 *)param_2 = 0;
+    *param_2 = 0;
   }
   if ((((*(short *)(iVar9 + 0x34) != 0) && (*(short *)(iVar9 + 0x32) != 0)) &&
       (lVar6 = FUN_0016f190(), lVar6 != 0)) &&
      ((bVar3 = FUN_002ffbc0(100), bVar3 < *(u8 *)(iVar9 + 0x36) &&
       (sVar7 = *(short *)(iVar9 + 0x34), param_2 != 0)))) {
-    *(u32 *)param_2 = 1;
+    *param_2 = 1;
   }
   if (sVar7 == 0) {
     uVar5 = 0;
