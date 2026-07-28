@@ -132,6 +132,25 @@ void f(void)
         self.assertIn("H008", codes(
             "void f(void){\n/* lint: allow H001 */\nregister int i;\n}"))
 
+    def test_inline_measured_comment_on_the_site_line_waives(self):
+        # The W170 convention embeds the justification inside the cast itself.
+        self.assertNotIn("H001", codes(
+            "void f(void){\n"
+            "    x = *(volatile /* Removing this qualifier loses fn "
+            "(MATCH nd0 -> MISMATCH nd6) - measured W170. */ f32*)&y;\n"
+            "}\n"))
+
+    def test_inline_allow_comment_on_the_site_line_waives(self):
+        self.assertNotIn("H008", codes(
+            "void f(void){\nregister int i; /* lint: allow H008 */\n}"))
+        self.assertIn("H008", codes(
+            "void f(void){\nregister int i; /* lint: allow H001 */\n}"))
+
+    def test_the_word_measured_in_code_does_not_waive(self):
+        # `measured` must be inside a comment, not an identifier in code.
+        self.assertIn("H008", codes(
+            "void f(void){\nregister int measured;\n}"))
+
     def test_handwritten_unsigned_float_expansion(self):
         self.assertIn("H005", codes(
             "void f(void){ if (a < 2147483648.0f) { b = (s32)a; } }"))
