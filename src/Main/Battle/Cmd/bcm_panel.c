@@ -462,7 +462,7 @@ void FUN_002230e0(void)
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
-    s32 alphaInt;
+    u8 alphaByte;
     s32 alphaInt;
     u32 handle;
     u32 table0;
@@ -928,7 +928,7 @@ void FUN_00224940(void)
     f32* basePos;
     f32 weight;
     f32 alphaF;
-    s32 alphaInt;
+    u8 alphaByte;
     u32 alphaU32;
     u32 defaultColour;
     u32 colour;
@@ -1295,7 +1295,7 @@ void FUN_002257F0(void)
     f32 ratio;
     f32 alphaF;
     s32 alphaI;
-    s32 alphaInt;
+    u8 alphaByte;
     u8 color[4];
     void* frame;
     f32 rect[4];
@@ -1994,7 +1994,7 @@ void FUN_00227F30(void)
     s32 i;
     s32 j;
     f32 alpha1;
-    s32 alphaInt;
+    u8 alphaByte;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -2287,7 +2287,7 @@ void FUN_00228E40(void)
     f32 rawScaled;
     f32 blend;
     f32 weight;
-    s32 alphaInt;
+    u8 alphaByte;
     s32 rawInt;
     u32 percentColour;
     u32 signedColour;
@@ -2620,7 +2620,7 @@ void FUN_0022A2B0(void)
     f32 alpha2;
     f32 blend;
     f32 scaled;
-    s32 alphaInt;
+    u8 alphaByte;
     u32 whiteColour;
     u32 greyColour;
     u32 sub;
@@ -3287,7 +3287,12 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    alphaInt = (s32)(u32)alpha;
+    if (2147483648.0f <= alpha) goto alpha_high_1;
+    alphaInt = (s32)alpha & 0xff;
+    goto alpha_done_1;
+alpha_high_1:
+    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+alpha_done_1:
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6a00, color);
  
@@ -3301,7 +3306,12 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    alphaInt = (s32)(u32)alpha;
+    if (2147483648.0f <= alpha) goto alpha_high_2;
+    alphaInt = (s32)alpha & 0xff;
+    goto alpha_done_2;
+alpha_high_2:
+    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+alpha_done_2:
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6b00, color);
  
@@ -3316,7 +3326,12 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    alphaInt = (s32)(u32)alpha;
+    if (2147483648.0f <= alpha) goto alpha_high_3;
+    alphaInt = (s32)alpha & 0xff;
+    goto alpha_done_3;
+alpha_high_3:
+    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+alpha_done_3:
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6c00, color);
 }
