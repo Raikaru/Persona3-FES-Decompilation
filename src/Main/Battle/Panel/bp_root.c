@@ -1467,10 +1467,10 @@ void FUN_002025E0(void)
         {
             *(u32*)row |= 2;
         }
-        switch (DAT_007ce3f8[
-                    (u16)*(u16*)(work + 0x2c +
-                                 (i + *(u32*)(work + 0x765c)) * 8) *
-                    0x2c + 3])
+        switch (((u8*)((uintptr_t)DAT_007ce3f8 +
+                       (u16)*(u16*)(work + 0x2c +
+                                    (i + *(u32*)(work + 0x765c)) * 8) *
+                       0x2c))[3])
         {
         case 1:
             *(u32*)(row + 8) = 0;

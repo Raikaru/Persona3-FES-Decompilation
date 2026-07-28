@@ -1170,7 +1170,7 @@ void FUN_00345ff0(int param_1);
 void FUN_00346050(int param_1);
 void FUN_003460a0(int param_1);
 u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
-u64 FUN_003461a0(long param_1);
+u32 FUN_003461a0(long param_1);
 void FUN_00346350(int param_1);
 u64 FUN_003463c0(int param_1);
 #pragma alias FUN_00347170_ptr FUN_00347170
@@ -40744,7 +40744,7 @@ void FUN_00346180(int param_1,float *param_2)
 // FUN_003461A0 NONMATCHING
 
 
-u64 FUN_003461a0(long param_1)
+u32 FUN_003461a0(long param_1)
 
 
 
@@ -40758,9 +40758,9 @@ u64 FUN_003461a0(long param_1)
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   long lVar8;
 

@@ -1767,33 +1767,46 @@ void func_0018e8e0(void* workData)
                 switch (i)
                 {
                 case 0:
+                {
+                    f32 x;
+                    f32 y;
+
                     func_001159f0(unused, work->atlas, 0,
                                   *(u8*)&transition->alpha,
                                   transition->position.valueF[0],
                                   transition->position.valueF[1],
                                   transition->depth);
-                    func_001159f0(
-                        unused, work->atlas, 2, *(u8*)&transition->alpha,
-                        21.0f + transition->position.valueF[0] - 174.0f - 27.0f,
-                        3.0f + (412.0f + transition->position.valueF[1] - 399.0f),
-                        transition->depth);
+                    x = 21.0f + transition->position.valueF[0] - 174.0f - 27.0f;
+                    y = 3.0f + (412.0f + transition->position.valueF[1] - 399.0f);
+                    func_001159f0(unused, work->atlas, 2,
+                                  *(u8*)&transition->alpha,
+                                  x, y, transition->depth);
                     break;
+                }
                 case 1:
+                {
+                    u32 color;
+
+                    color = (0xff - transition->alpha) | 0xffffff00;
                     func_003b2cb0(
                         transition->depth,
                         (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
                         (s32)transition->position.valueF[1] + 5,
-                        (0xff - transition->alpha) | 0xffffff00,
-                        5, 1, (u8*)work + 8, 0x10, 0);
+                        color, 5, 1, (u8*)work + 8, 0x10, 0);
                     break;
+                }
                 case 2:
+                {
+                    u32 color;
+
+                    color = (0xff - transition->alpha) | 0xffffff00;
                     func_003b2cb0(
                         transition->depth,
                         (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
                         (s32)transition->position.valueF[1] + 5,
-                        (0xff - transition->alpha) | 0xffffff00,
-                        5, 1, (u8*)work + 0x108, 0x10, 0);
+                        color, 5, 1, (u8*)work + 0x108, 0x10, 0);
                     break;
+                }
                 }
             }
         }
