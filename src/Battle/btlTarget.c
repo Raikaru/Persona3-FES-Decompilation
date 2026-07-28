@@ -4387,18 +4387,13 @@ void FUN_002d7560(BtlAction *action)
             u32 rawValue;
             f32 timeScale;
             f32 value;
-            f32 scaled;
             u32 amount;
             s16 personaId;
             action->unk_1a |= 0x20;
             rawValue = (u32)FUN_0030bc50(dat);
             timeScale = (f32)FUN_001c0070();
-            value = ((s32)rawValue < 0) ? (f32)rawValue : (f32)(s32)rawValue;
-            scaled = value * timeScale;
-            if (scaled < 2147483648.0f)
-                amount = (u32)scaled;
-            else
-                amount = (u32)(scaled - 2147483648.0f) | 0x80000000;
+            value = (f32)rawValue;
+            amount = (u32)(value * timeScale);
             BTLT_B32(0xbfc) += amount;
 
             personaId = (s16)FUN_0030bde0(dat, &outFlag);

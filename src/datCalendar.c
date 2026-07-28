@@ -3693,8 +3693,7 @@ typedef struct
     u32 state;
     s32 fadeTimer;
     s32 transitionTimer;
-    KwlnTask* firstTask;
-    KwlnTask* secondTask;
+    KwlnTask* tasks[2];
     u8 reserved14[4];
 } CalendarTransitionWork;
 
@@ -4686,8 +4685,8 @@ void* func_00186d50(KwlnTask* task)
     switch (work->state)
     {
         case 0:
-            work->firstTask = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4220);
-            work->secondTask = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4240);
+            work->tasks[0] = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4220);
+            work->tasks[1] = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4240);
             work->state = 1;
             break;
 
@@ -4695,17 +4694,17 @@ void* func_00186d50(KwlnTask* task)
             initialized = 1;
             for (i = 0; i < 2; i++)
             {
-                if (!H_Maestro_FinishedInit(*(&work->firstTask + i)))
+                if (!H_Maestro_FinishedInit(*(i + work->tasks)))
                 {
                     initialized = 0;
                 }
             }
             if (initialized)
             {
-                H_Maestro_00111f20(work->firstTask, 1);
-                H_Maestro_RequestDraw(work->firstTask);
+                H_Maestro_00111f20(work->tasks[0], 1);
+                H_Maestro_RequestDraw(work->tasks[0]);
                 work->transitionTimer = 0;
-                H_Maestro_SetAlphaMult(work->firstTask, 0.0f);
+                H_Maestro_SetAlphaMult(work->tasks[0], 0.0f);
                 work->fadeTimer = 0;
                 work->state = 2;
             }
@@ -4726,25 +4725,25 @@ void* func_00186d50(KwlnTask* task)
             {
                 work->fadeTimer++;
             }
-            H_Maestro_SetAlphaMult(work->firstTask,
+            H_Maestro_SetAlphaMult(work->tasks[0],
                                    (f32)work->fadeTimer / 20.0f);
-            if (H_Maestro_00111cb0(work->firstTask))
+            if (H_Maestro_00111cb0(work->tasks[0]))
             {
                 work->state = 3;
             }
             break;
 
         case 3:
-            if (H_Maestro_FinishedInit(work->secondTask))
+            if (H_Maestro_FinishedInit(work->tasks[1]))
             {
                 H_Fade_SetType(HFADE_DAY);
                 H_Fade_SetDuration(0x28);
-                if (work->firstTask != NULL)
+                if (work->tasks[0] != NULL)
                 {
-                    kwlnTaskDestroyWithHierarchy(work->firstTask);
-                    work->firstTask = NULL;
+                    kwlnTaskDestroyWithHierarchy(work->tasks[0]);
+                    work->tasks[0] = NULL;
                 }
-                H_Maestro_RequestDraw(work->secondTask);
+                H_Maestro_RequestDraw(work->tasks[1]);
                 work->fadeTimer = 0;
                 work->state = 4;
             }
@@ -4754,12 +4753,12 @@ void* func_00186d50(KwlnTask* task)
             work->fadeTimer++;
             if (work->fadeTimer > 40 && work->fadeTimer < 140)
             {
-                H_Maestro_SetAlphaMult(work->secondTask,
+                H_Maestro_SetAlphaMult(work->tasks[1],
                                        (100.0f - (f32)work->fadeTimer) / 100.0f);
             }
-            if (kwlnTaskGetState(work->secondTask) == KWLNTASK_STATE_DESTROY)
+            if (kwlnTaskGetState(work->tasks[1]) == KWLNTASK_STATE_DESTROY)
             {
-                work->secondTask = NULL;
+                work->tasks[1] = NULL;
                 func_00109f60(3, 0);
                 return KWLNTASK_STOP;
             }
@@ -4778,7 +4777,7 @@ void func_00187050(KwlnTask* task)
     work = (CalendarTransitionWork*)task->workData;
     for (i = 0; i < 2; i++)
     {
-        child = &work->firstTask + i;
+        child = &work->tasks[0] + i;
         if (*child != NULL)
         {
             kwlnTaskDestroyWithHierarchy(*child);

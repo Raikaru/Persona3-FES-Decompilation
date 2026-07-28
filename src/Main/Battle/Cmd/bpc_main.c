@@ -1169,34 +1169,26 @@ void FUN_00245420(uint *param_1,uint param_2)
     }
     break;
   }
-  uVar9 = func_0021cca0(uVar7,3);
-  func_0021d3b0(param_1 + 4,uVar9);
-  uVar9 = func_0021cca0(uVar7,2);
-  func_0021d3b0(param_1 + 0x84,uVar9);
-  uVar9 = func_0021cca0(uVar7,0x2c);
-  func_0021d3b0(param_1 + 0x144,uVar9);
-  uVar9 = func_0021cca0(uVar7,0x45);
-  func_0021d3b0(param_1 + 0x184,uVar9);
-  uVar9 = func_0021cca0(uVar7,1);
-  func_0021d3b0(param_1 + 0x104,uVar9);
-  uVar8 = func_0021cca0(uVar8,4);
-  func_0021d3b0(param_1 + 0xc4,uVar8);
+  func_0021d3b0(param_1 + 4,func_0021cca0(uVar7,3));
+  func_0021d3b0(param_1 + 0x84,func_0021cca0(uVar7,2));
+  func_0021d3b0(param_1 + 0x144,func_0021cca0(uVar7,0x2c));
+  func_0021d3b0(param_1 + 0x184,func_0021cca0(uVar7,0x45));
+  func_0021d3b0(param_1 + 0x104,func_0021cca0(uVar7,1));
+  func_0021d3b0(param_1 + 0xc4,func_0021cca0(uVar8,4));
   uVar4 = puVar1[1];
-  if (uVar4 == 2) {
-    uVar8 = func_0021cca0(uVar6,0x37);
-    func_0021d3b0(param_1 + 0x44,uVar8);
+  switch (uVar4) {
+  case 0:
+  case 1:
+    func_0021d3b0(param_1 + 0x44,func_0021cca0(uVar7,4));
+    break;
+  case 2:
+    func_0021d3b0(param_1 + 0x44,func_0021cca0(uVar6,0x37));
     if ((*param_1 & 0x80) != 0) {
-      uVar8 = func_0021cca0(uVar6,0x39);
-      func_0021d3b0(param_1 + 0x1c8,uVar8);
+      func_0021d3b0(param_1 + 0x1c8,func_0021cca0(uVar6,0x39));
     }
-    uVar7 = func_0021cca0(uVar7,8);
-    func_0021d3b0(param_1 + 0x248,uVar7);
-    uVar6 = func_0021cca0(uVar6,0x3d);
-    func_0021d3b0(param_1 + 0x208,uVar6);
-  }
-  else if ((uVar4 == 1) || (uVar4 == 0)) {
-    uVar6 = func_0021cca0(uVar7,4);
-    func_0021d3b0(param_1 + 0x44,uVar6);
+    func_0021d3b0(param_1 + 0x248,func_0021cca0(uVar7,8));
+    func_0021d3b0(param_1 + 0x208,func_0021cca0(uVar6,0x3d));
+    break;
   }
   return;
 }
