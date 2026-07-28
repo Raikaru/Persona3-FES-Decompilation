@@ -8369,10 +8369,10 @@ short FUN_0043b980(char param_1,u64 param_2)
 char FUN_0043bc20(char param_1)
 
 {
+  int cVar3;
   short sVar1;
   int iVar1;
   u32 uVar2;
-  int cVar3;
 
   cVar3 = 0;
   if (param_1 == '\0') {

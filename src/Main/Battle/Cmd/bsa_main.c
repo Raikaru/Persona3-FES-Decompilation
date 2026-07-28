@@ -26,7 +26,7 @@ extern code D_0096009C;
 
 extern void* func_001ff430(u32 id);
 extern void func_0017b1e0(u16 id);
-extern s16 func_0017d2e0(void);
+extern s32 func_0017d2e0(void);
 extern u32 func_0010a4e0(s32 a, s32 b, s32 c, s32 d);
 
 extern u32 func_0021c3f0(s32 texture);
@@ -275,7 +275,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
         func_0021e380(p + i * 0x80 + 0xc90, image, 1);
     }
     for (i = 0; i < 8; i++) {
-        if (*(s16*)(unit + i * 2) == 0)
+        if (*(u16*)(unit + i * 2) == 0)
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = 0x2b;
         else
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = func_0017d2e0() + 0x20;

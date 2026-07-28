@@ -1264,19 +1264,21 @@ short FUN_003f0830(int param_1)
   char socialLevel;
   u32 randomValue;
   int entry;
-  short socialLink;
+  int socialLink;
   short choice;
 
-  if (param_1 == 4) {
-    socialLink = 3;
-  }
-  else if (param_1 == 0) {
+  switch (param_1) {
+  case 0:
     socialLink = 0xf;
-  }
-  else {
+    break;
+  case 4:
+    socialLink = 3;
+    break;
+  default:
     socialLink = 0xff;
+    break;
   }
-  if ((param_1 < 0) || (8 < param_1)) {
+  if ((param_1 < 0) || (param_1 >= 9)) {
     K_Assert((const char *)DAT_006aede8,0xb9);
   }
   if (datGetScenarioMode() == 0) {
@@ -1289,7 +1291,7 @@ short FUN_003f0830(int param_1)
   shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0x14),1);
   if (shopList != NULL) {
     randomValue = RpRandom();
-    choice = *(short *)(shopList + ((randomValue % 0xffff) / 0xffff) * 2 + 8);
+    choice = *(short *)(((randomValue % 0xffff) / 0xffff) * 2 + (int)shopList + 8);
     if (choice != -1) {
       return *(short *)(shopList + 8);
     }
@@ -1300,16 +1302,16 @@ short FUN_003f0830(int param_1)
       K_Assert((const char *)DAT_006aede8,0x19c);
     }
     if (socialLink != 0xff) {
-      if (datSocialLinkLevelIsNotZero(socialLink) != 0) {
-        socialLevel = datGetSocialLinkLevel(socialLink);
-        if (socialLevel != '\0') {
+      if (datSocialLinkLevelIsNotZero((s16)socialLink) != 0) {
+        socialLevel = datGetSocialLinkLevel((s16)socialLink);
+        if (socialLevel == '\0') {
+          entry = *(int *)(shopData + 8);
+        }
+        else {
           if ((socialLevel < '\x01') || ('\n' < socialLevel)) {
             K_Assert((const char *)DAT_006aede8,0x1a2);
           }
           entry = *(int *)(shopData + 8) + socialLevel * 0x20;
-        }
-        else {
-          entry = *(int *)(shopData + 8);
         }
       }
       else {
@@ -1327,7 +1329,7 @@ short FUN_003f0830(int param_1)
   shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0x14),0);
   if (shopList != NULL) {
     randomValue = RpRandom();
-    choice = *(short *)(shopList + ((randomValue % 0xffff) / 0xffff) * 2 + 8);
+    choice = *(short *)(((randomValue % 0xffff) / 0xffff) * 2 + (int)shopList + 8);
     if (choice != -1) {
       return choice;
     }
