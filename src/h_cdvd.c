@@ -68,6 +68,8 @@ extern const char* D_005CE590[];
 extern const char* D_005CE780[];
 extern const char D_005CE970[];
 extern const char D_005CE988[];
+extern u32 D_007D4780;
+extern u32 D_007D4784;
 
 extern void* func_004bfd50(void* key);
 extern s32 func_004bf6e0(void* context, s32 count, void* key, void* callbackData);
@@ -837,6 +839,7 @@ void func_00101520(const char* dir)
     char normalized[256];
     s16 i;
     const char* source;
+    const char** command;
 
     H_Cdvd_NormalizePath(dir, normalized);
     i = 0;
@@ -849,9 +852,10 @@ void func_00101520(const char* dir)
         }
         if (strcmp(source, normalized + 4) == 0)
         {
+            command = &D_005CDDF0[i];
             do
             {
-            } while (func_00566b08((void*)0x007d4780, D_005CDDF0[i]) != 0);
+            } while (func_00566b08(&D_007D4780, *command) != 0);
             return;
         }
         i++;
@@ -869,10 +873,10 @@ secondTable:
         }
         if (strcmp(source, normalized + 4) == 0)
         {
+            command = &D_005CE780[i];
             while (true)
             {
-                s32 result = func_00566b08((void*)0x007d4784,
-                                            D_005CE780[i]);
+                s32 result = func_00566b08(&D_007D4784, *command);
                 if (result == 0)
                 {
                     return;

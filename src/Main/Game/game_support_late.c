@@ -24,6 +24,10 @@ extern void* func_001158b0(void* unused, void* atlas, s32 tile);
 extern void func_00115980(void* sprite);
 extern void func_001159f0(void* unused, void* atlas, s32 tile, u32 alpha,
                           f32 x, f32 y, f32 depth);
+#pragma alias gsDrawSpritePositionFirst func_001159f0
+extern void gsDrawSpritePositionFirst(f32 x, f32 y, void* unused,
+                                      void* atlas, s32 tile, u32 alpha,
+                                      f32 depth);
 extern void func_00115ad0(void* unused, void* atlas, s32 tile,
                           f32 x, f32 y, u32 alpha, u32 extraAlpha, f32 depth);
 extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
@@ -1778,33 +1782,33 @@ void func_0018e8e0(void* workData)
                                   transition->depth);
                     x = 21.0f + transition->position.valueF[0] - 174.0f - 27.0f;
                     y = 3.0f + (412.0f + transition->position.valueF[1] - 399.0f);
-                    func_001159f0(unused, work->atlas, 2,
-                                  *(u8*)&transition->alpha,
-                                  x, y, transition->depth);
+                    gsDrawSpritePositionFirst(x, y, unused, work->atlas, 2,
+                                              *(u8*)&transition->alpha,
+                                              transition->depth);
                     break;
                 }
                 case 1:
                 {
-                    u32 color;
+                    u32 alpha;
 
-                    color = (0xff - transition->alpha) | 0xffffff00;
+                    alpha = 0xff - transition->alpha;
                     func_003b2cb0(
                         transition->depth,
                         (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
                         (s32)transition->position.valueF[1] + 5,
-                        color, 5, 1, (u8*)work + 8, 0x10, 0);
+                        alpha | 0xffffff00, 5, 1, (u8*)work + 8, 0x10, 0);
                     break;
                 }
                 case 2:
                 {
-                    u32 color;
+                    u32 alpha;
 
-                    color = (0xff - transition->alpha) | 0xffffff00;
+                    alpha = 0xff - transition->alpha;
                     func_003b2cb0(
                         transition->depth,
                         (s32)((f32)(s32)transition->position.valueF[0] - 10.0f),
                         (s32)transition->position.valueF[1] + 5,
-                        color, 5, 1, (u8*)work + 0x108, 0x10, 0);
+                        alpha | 0xffffff00, 5, 1, (u8*)work + 0x108, 0x10, 0);
                     break;
                 }
                 }

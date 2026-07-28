@@ -2549,40 +2549,26 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
   iVar2 = piVar3[1];
 
   if (*(short *)(iVar2 + 0x18) == 0) {
-
-    uVar4 = 0;
-
+    return 0;
   }
 
-  else {
+  FUN_003a5fd0(iVar1 + 0xd4);
 
-    FUN_003a5fd0(iVar1 + 0xd4);
-
-    if (*(int *)(iVar1 + 8) != 0) {
-
-      FUN_003b19a0();
-
-    }
-
-    lVar5 = FUN_003a5940_typed(iVar2,param_3);
-
-    if (lVar5 == 0) {
-
-      uVar4 = 0;
-
-    }
-
-    else {
-
-      uVar6 = FUN_003b2900(0,0,lVar5,0);
-
-      uVar4 = FUN_003a6460_typed(uVar6);
-
-      FUN_003b0170(uVar6);
-
-    }
-
+  if (*(int *)(iVar1 + 8) != 0) {
+    FUN_003b19a0();
   }
+
+  lVar5 = FUN_003a5940_typed(iVar2,param_3);
+
+  if (lVar5 == 0) {
+    return 0;
+  }
+
+  uVar6 = FUN_003b2900(0,0,lVar5,0);
+
+  uVar4 = FUN_003a6460_typed(uVar6);
+
+  FUN_003b0170(uVar6);
 
   return uVar4;
 
