@@ -216,8 +216,11 @@ WAIVER_ALLOW_RE = re.compile(r"lint:\s*allow\s+([A-Z]\d{3})")
 def waived(src, idx, code):
     """True if the site on line `idx` (0-based) carries a justification.
 
-    Two scopes are honoured, matching how this tree actually annotates:
+    Three scopes are honoured, matching how this tree actually annotates:
 
+    * INLINE scope -- a comment on the site line itself.  The W170 volatile
+      convention embeds the justification directly in the cast:
+      `*(volatile /* Removing this ... - measured W170. */ f32*)&x`.
     * SITE scope -- a comment within three lines above the site.
     * FUNCTION scope -- a comment in the six lines above the nearest enclosing
       `// FUN_xxxxxxxx` marker.  This is the important one: the measurement
@@ -230,6 +233,14 @@ def waived(src, idx, code):
     containing `measured`, which is the tree's existing convention for
     recording a retained construct's measured removal cost.
     """
+    line = src.lines[idx]
+    m = WAIVER_ALLOW_RE.search(line)
+    if m and m.group(1) == code and WAIVER_ALLOW_RE.search(src.code[idx]) is None:
+        return True
+    # `measured` counts only inside a comment: present in the raw line but
+    # blanked out of the sanitized view.
+    if "measured" in line and "measured" not in src.code[idx]:
+        return True
     if _scan_waiver(src, idx, code, 3):
         return True
     marker = _enclosing_marker(src, idx)
