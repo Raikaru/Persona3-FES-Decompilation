@@ -700,8 +700,7 @@ void* func_001a7370(void* material, u32* state)
     s32 current;
     s32 selected;
     s32 value;
-    u32* candidateValues;
-    u32* currentValues;
+    u32* values;
 
     value = K_Clump_MatUsrDataGetInt((RpMaterial*)material, D_00678C28);
     if (K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C38))
@@ -712,20 +711,20 @@ void* func_001a7370(void* material, u32* state)
         }
         state[2] = 1;
     }
+    values = D_00678C00;
     candidate = 0;
-    candidateValues = D_00678C00;
     for (; candidate < 10; candidate++)
     {
-        if (state[0] == candidateValues[candidate])
+        if (state[0] == values[candidate])
         {
             break;
         }
     }
     current = 0;
-    currentValues = D_00678C00;
+    values = D_00678C00;
     for (; current < 10; current++)
     {
-        if (value == currentValues[current])
+        if (value == values[current])
         {
             break;
         }

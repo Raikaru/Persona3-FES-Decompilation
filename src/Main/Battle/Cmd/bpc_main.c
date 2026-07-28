@@ -58,9 +58,9 @@ extern void func_00280580_vec(int unit, RwV3d* projected);
 extern u32 func_002d20a0_vec(const RwV3d* projected, RwV2d* screen);
 extern int func_0029a1d0(int unit);
 extern int func_00301ca0(u32 calc, u32 skill);
-extern int func_00300e90(u32 calc, u16 id);
+extern int func_00300e90();
 extern u32 func_00306e80(u32 calc, s16 mode);
-extern s16 func_003082f0(u32 mode, u16 id);
+extern s16 func_003082f0();
 extern void func_003b0170(u32 resource);
 extern u32 func_003b0970(u32 resource, s32 mode, s32 group, s32 a, s32 b);
 extern void func_003b0d70(u32 resource, s32 x, s32 y);
@@ -1132,7 +1132,7 @@ void FUN_00245420(uint *param_1,uint param_2)
     }
     if (((*puVar1 & 8) != 0) &&
        (((**(ushort **)(iVar3 + 0xa2c) & 4) == 0 ||
-        ((*(ushort *)((uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e + DAT_007ce410 + 0x1e) & 0x20)
+        ((*(ushort *)(DAT_007ce410 + (uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e + 0x1e) & 0x20)
          == 0)))) {
       uVar2 = func_003082f0(0,(u16)puVar1[0x1cb4]);
       uVar11 = func_00306e80(*(u32 *)(iVar3 + 0xa2c),uVar2);
@@ -1152,14 +1152,14 @@ void FUN_00245420(uint *param_1,uint param_2)
       *param_1 = *param_1 | 0x80;
     }
     for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
-      param_1[iVar5 + 0x289] = 0;
+      (param_1 + iVar5)[0x289] = 0;
     }
     if ((*param_1 & 0x80) != 0) {
       iVar5 = func_001ff430(puVar1[4]);
       if (param_2 == *(uint *)(iVar5 + 0xa8)) {
         param_1[0x288] = 0;
       }
-      else if (*(short *)(*(int *)(iVar3 + 0xa2c) + 2) == *(short *)(*(int *)(iVar5 + 0xa2c) + 2)) {
+      else if (*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2) == *(u16 *)(*(int *)(iVar5 + 0xa2c) + 2)) {
         param_1[0x288] = 1;
       }
       else {

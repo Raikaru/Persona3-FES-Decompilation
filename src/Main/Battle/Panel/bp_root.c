@@ -1560,8 +1560,6 @@ void FUN_00202A10(void)
     s32 i;
     u32 handle;
     u8* entry;
-    s32 start;
-    s8 alpha;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
@@ -1582,12 +1580,14 @@ void FUN_00202A10(void)
     func_003b0e90(2);
     for (i = 0; i < *(s32*)(work + 0x70); i++)
     {
-        start = *(s32*)(work + 0x765c);
-        entry = (u8*)(uintptr_t)((i + start) * 8) +
+        entry = (u8*)(uintptr_t)(
+                    (i + *(s32*)(work + 0x765c)) * 8) +
                 (uintptr_t)work + 0x28;
-        alpha = i == *(s32*)(work + 0x7664) - start ? 6 : 0;
         handle = func_003b0970(
-            func_0030bb40(*(u16*)(entry + 4)), 2, alpha, 0, 0);
+            func_0030bb40(*(u16*)(entry + 4)), 2,
+            (s8)(i == *(s32*)(work + 0x7664) -
+                         *(s32*)(work + 0x765c) ? 6 : 0),
+            0, 0);
         *(u32*)(work + 0x78 + i * 4) = handle;
     }
     func_003b0e90(1);
