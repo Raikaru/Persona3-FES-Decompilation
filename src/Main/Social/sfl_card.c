@@ -1105,8 +1105,8 @@ void FUN_00258630(u32 *param_1)
     u64 origin_pair;
     f32 origin_z;
 
-    origin_pair = *(volatile u64 *)DAT_0068eab0_abs;
-    origin_z = *(volatile f32 *)DAT_0068eab8_abs;
+    origin_pair = *(volatile /* Removing this function's qualifier batch worsens FUN_00258630 (NONMATCHING nd6 -> NONMATCHING nd11, size 1044 -> 1044) - measured W170. */ u64 *)DAT_0068eab0_abs;
+    origin_z = *(volatile /* Removing this function's qualifier batch worsens FUN_00258630 (NONMATCHING nd6 -> NONMATCHING nd11, size 1044 -> 1044) - measured W170. */ f32 *)DAT_0068eab8_abs;
     *(u64 *)origin = origin_pair;
     origin[2] = origin_z;
     flags = *param_1;

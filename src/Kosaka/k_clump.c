@@ -798,15 +798,15 @@ void func_001a7710(u32* state)
     typedef struct
     {
         u8 pad[8];
-        volatile u32 list8;
-        volatile u32 listc;
-        volatile u32 list10;
-        volatile u32 list14;
-        volatile u32 list18;
-        volatile u32 list1c;
-        volatile u32 list20;
-        volatile u32 list24;
-        volatile u32 list28;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list8;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 listc;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list10;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list14;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list18;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list1c;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list20;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list24;
+        volatile /* Removing this function's qualifier batch worsens func_001a7710 (NONMATCHING nd3 -> NONMATCHING nd304, size 504 -> 468) - measured W170. */ u32 list28;
     } KClumpFreeState;
     KClumpFreeState* work;
     KClumpMaterialNode* node;
@@ -965,7 +965,7 @@ void func_001a7b50(void* state, u32 mode)
     item = *(KClumpMaterialNode**)((u8*)state + 8);
     while (item != NULL)
     {
-        object = (void*)*(volatile void**)&item->object;
+        object = (void*)*(void**)&item->object;
         sphere = func_004912b0(object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {

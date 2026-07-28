@@ -2885,15 +2885,15 @@ void FUN_0038a180(int param_1,int param_2)
   for (; iVar4 < 10; iVar4 = iVar4 + 1) {
     pfIn = (float *)((u8 *)pfVar5 + iVar4 * 4);
     /* Removing this barrier loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd6) - measured W164. */
-    asm volatile("" : "+r"(pfIn));
+    asm volatile /* Removing this function's qualifier batch loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd4, size 156 -> 156) - measured W170. */("" : "+r"(pfIn));
     pfOut = (float *)(param_2 + iVar4 * 4);
     /* Removing this barrier loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd11) - measured W164. */
-    asm volatile("" : "+r"(pfOut));
+    asm volatile /* Removing this function's qualifier batch loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd4, size 156 -> 156) - measured W170. */("" : "+r"(pfOut));
     pfOut[4] = pfIn[4];
-    uVar4 = *(volatile s16 *)DAT_00958978_abs;
-    uVar1 = *(volatile s16 *)DAT_0095897a_abs;
-    uVar2 = *(volatile s16 *)DAT_0095897c_abs;
-    uVar3 = *(volatile s16 *)DAT_0095897e_abs;
+    uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd4, size 156 -> 156) - measured W170. */ s16 *)DAT_00958978_abs;
+    uVar1 = *(volatile /* Removing this function's qualifier batch loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd4, size 156 -> 156) - measured W170. */ s16 *)DAT_0095897a_abs;
+    uVar2 = *(volatile /* Removing this function's qualifier batch loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd4, size 156 -> 156) - measured W170. */ s16 *)DAT_0095897c_abs;
+    uVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_0038a180 (MATCH nd0 -> MISMATCH nd4, size 156 -> 156) - measured W170. */ s16 *)DAT_0095897e_abs;
     *(u16 *)(param_2 + 8) = uVar4;
     *(u16 *)(param_2 + 0xa) = uVar1;
     *(u16 *)(param_2 + 0xc) = uVar2;
@@ -6675,7 +6675,7 @@ void FUN_0038d6b0(int index,u32 value)
    * PTR_DAT_007cca5c is gp-0x6294. MWCC does not emit a relocation for the
    * symbol inside inline assembly, so preserve the retail displacement.
    */
-  __asm__ volatile (
+  __asm__ (
       "slti $at, %0, 10\n"
       "beqz $at, 1f\n"
       "bgez %0, 2f\n"

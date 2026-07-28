@@ -725,10 +725,10 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
         return NULL;
     }
 
-    work->dimensions[0] = ((volatile s16*)&dimensions)[0];
-    work->dimensions[1] = ((volatile s16*)&dimensions)[1];
-    work->dimensions[2] = ((volatile s16*)&dimensions)[2];
-    work->dimensions[3] = ((volatile s16*)&dimensions)[3];
+    work->dimensions[0] = ((s16*)&dimensions)[0];
+    work->dimensions[1] = ((s16*)&dimensions)[1];
+    work->dimensions[2] = ((s16*)&dimensions)[2];
+    work->dimensions[3] = ((s16*)&dimensions)[3];
     sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
     work->useCdvd = true;
@@ -757,10 +757,10 @@ KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
         return NULL;
     }
 
-    dim0 = ((volatile s16*)&dimensions)[0];
-    dim1 = ((volatile s16*)&dimensions)[1];
-    dim2 = ((volatile s16*)&dimensions)[2];
-    dim3 = ((volatile s16*)&dimensions)[3];
+    dim0 = ((volatile /* Removing this function's qualifier batch loses func_00111260 (MATCH nd0 -> MISMATCH nd9, size 276 -> 276) - measured W170. */ s16*)&dimensions)[0];
+    dim1 = ((volatile /* Removing this function's qualifier batch loses func_00111260 (MATCH nd0 -> MISMATCH nd9, size 276 -> 276) - measured W170. */ s16*)&dimensions)[1];
+    dim2 = ((volatile /* Removing this function's qualifier batch loses func_00111260 (MATCH nd0 -> MISMATCH nd9, size 276 -> 276) - measured W170. */ s16*)&dimensions)[2];
+    dim3 = ((volatile /* Removing this function's qualifier batch loses func_00111260 (MATCH nd0 -> MISMATCH nd9, size 276 -> 276) - measured W170. */ s16*)&dimensions)[3];
     work->dimensions[0] = dim0;
     work->dimensions[1] = dim1;
     work->dimensions[2] = dim2;
@@ -794,10 +794,10 @@ KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* ar
         return NULL;
     }
 
-    dim0 = ((volatile s16*)&dimensions)[0];
-    dim1 = ((volatile s16*)&dimensions)[1];
-    dim2 = ((volatile s16*)&dimensions)[2];
-    dim3 = ((volatile s16*)&dimensions)[3];
+    dim0 = ((volatile /* Removing this function's qualifier batch loses func_00111380 (MATCH nd0 -> MISMATCH nd9, size 304 -> 304) - measured W170. */ s16*)&dimensions)[0];
+    dim1 = ((volatile /* Removing this function's qualifier batch loses func_00111380 (MATCH nd0 -> MISMATCH nd9, size 304 -> 304) - measured W170. */ s16*)&dimensions)[1];
+    dim2 = ((volatile /* Removing this function's qualifier batch loses func_00111380 (MATCH nd0 -> MISMATCH nd9, size 304 -> 304) - measured W170. */ s16*)&dimensions)[2];
+    dim3 = ((volatile /* Removing this function's qualifier batch loses func_00111380 (MATCH nd0 -> MISMATCH nd9, size 304 -> 304) - measured W170. */ s16*)&dimensions)[3];
     work->dimensions[0] = dim0;
     work->dimensions[1] = dim1;
     work->dimensions[2] = dim2;
@@ -808,7 +808,7 @@ KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* ar
     work->resourceTaskPriority = priority;
     work->useCdvd = false;
     work->cdvd = (HCdvd*)archive;
-    *(volatile u32*)&work->useCdvd = false;
+    *(volatile /* Removing this function's qualifier batch loses func_00111380 (MATCH nd0 -> MISMATCH nd9, size 304 -> 304) - measured W170. */ u32*)&work->useCdvd = false;
     return task;
 }
 

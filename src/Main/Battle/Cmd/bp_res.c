@@ -163,7 +163,7 @@ u64 func_0021bb50(void)
 void func_0021bcb0(void)
 {
     u32* work;
-    volatile u32 fileSize;
+    volatile /* Removing this qualifier loses func_0021bcb0 (MATCH nd0 -> MISMATCH nd90, size 1852 -> 1852) - measured W170. */ u32 fileSize;
     u32 flags;
     void* data;
     void* memory;
@@ -399,7 +399,7 @@ u32 func_0021c450(u32 param_1)
             }
             break;
         }
-        K_ASSERT(i < *(volatile s32*)((u8*)work + 0x44), 0x19e);
+        K_ASSERT(i < *(s32*)((u8*)work + 0x44), 0x19e);
         result = work[i + 0xe];
         break;
     }

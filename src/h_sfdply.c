@@ -1873,7 +1873,7 @@ void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
         sSfdCueTable_abs[cue].active = 1;
         outputHandle = sSfdDecodeSlots_abs[bank].outputHandle;
         /* Removing this barrier loses func_0010db60 (MATCH nd0 -> MISMATCH nd15) - measured W164. */
-        asm volatile("" : "+m"(outputHandle));
+        asm ("" : "+m"(outputHandle));
         sSfdCueTable_abs[cue].param = func_0051df58_t(outputHandle, 0, 10, param3, param4);
     }
 }
@@ -1999,7 +1999,7 @@ void func_0010dee0(HSfdImage* image, const u8* source)
     dst = image->pixels;
     width = image->width;
     /* Removing this barrier loses func_0010dee0 (MATCH nd0 -> MISMATCH nd10) - measured W164. */
-    asm volatile("" : "+r"(width));
+    asm ("" : "+r"(width));
     height = image->height;
     y = 0;
     count = width >> 1;

@@ -384,7 +384,7 @@ static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
 
     rowCount = ((a6 + 0x3f) / 0x40) * 0x40;
     /* Removing this barrier worsens hmallocEmitCommands (nd319 -> nd340) - measured W164. */
-    asm volatile("" : "+m"(rowCount));
+    asm ("" : "+m"(rowCount));
     output = (u32*)(uintptr_t)(packet + 0x20);
     hmallocWriteImage(output, texture, (u32)(rowCount / 0x40), 0);
     output = (u32*)(uintptr_t)(packet + 0x30);
@@ -516,10 +516,10 @@ static s32 hmallocTaskUpdateA(void* task)
             if (func_001016b0((void*)(uintptr_t)work[1]) == 1)
             {
                 resource = (HCdvd*)(uintptr_t)work[1];
-                fileSize = ((volatile HCdvd*)resource)->fileSize;
+                fileSize = ((volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateA (MATCH nd0 -> MISMATCH nd10, size 204 -> 204) - measured W170. */ HCdvd*)resource)->fileSize;
                 destination = D_0083BB30_abs;
-                __asm__ volatile ("" : "+r"(destination));
-                fileMemory = (void*)(uintptr_t)((volatile HCdvd*)resource)->fileMemory;
+                __asm__ volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateA (MATCH nd0 -> MISMATCH nd10, size 204 -> 204) - measured W170. */ ("" : "+r"(destination));
+                fileMemory = (void*)(uintptr_t)((volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateA (MATCH nd0 -> MISMATCH nd10, size 204 -> 204) - measured W170. */ HCdvd*)resource)->fileMemory;
                 func_00521250(destination, (u32)(uintptr_t)fileMemory, fileSize);
                 H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
                 work[1] = 0;
@@ -587,13 +587,13 @@ static s32 hmallocTaskUpdateB(void* task)
                 resource = (HCdvd*)(uintptr_t)work[1];
                 fileSize = resource->fileSize;
                 destination = D_0083BB30;
-                __asm__ volatile ("" : : "r"(destination) : "memory");
+                __asm__ volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateB (MATCH nd0 -> MISMATCH nd10, size 296 -> 296) - measured W170. */ ("" : : "r"(destination) : "memory");
                 func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
                 resource = (HCdvd*)(uintptr_t)work[2];
-                fileSize = ((volatile HCdvd*)resource)->fileSize;
+                fileSize = ((volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateB (MATCH nd0 -> MISMATCH nd10, size 296 -> 296) - measured W170. */ HCdvd*)resource)->fileSize;
                 destination = D_0083AB30_abs;
-                __asm__ volatile ("" : : "r"(destination) : "memory");
-                func_00521250(destination, (u32)(uintptr_t)((volatile HCdvd*)resource)->fileMemory, fileSize);
+                __asm__ volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateB (MATCH nd0 -> MISMATCH nd10, size 296 -> 296) - measured W170. */ ("" : : "r"(destination) : "memory");
+                func_00521250(destination, (u32)(uintptr_t)((volatile /* Removing this function's qualifier batch loses hmallocTaskUpdateB (MATCH nd0 -> MISMATCH nd10, size 296 -> 296) - measured W170. */ HCdvd*)resource)->fileMemory, fileSize);
                 H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
                 work[1] = 0;
                 H_Cdvd_Destroy((void*)(uintptr_t)work[2]);
@@ -659,7 +659,7 @@ static s32 hmallocTaskUpdateC(void* task)
     callback1 = D_005E4D04;
     callback2 = D_005E4D08;
     callback3 = D_005E4D0C;
-    __asm__ volatile ("" : : "f"(callback0), "f"(callback1), "f"(callback2), "f"(callback3) : "memory");
+    __asm__ ("" : : "f"(callback0), "f"(callback1), "f"(callback2), "f"(callback3) : "memory");
     ((f32*)callbacks)[0] = callback0;
     ((f32*)callbacks)[1] = callback1;
     ((f32*)callbacks)[2] = callback2;
@@ -726,7 +726,7 @@ static s32 hmallocTaskUpdateD(void* task)
     callback1 = D_005E4D24;
     callback2 = D_005E4D28;
     callback3 = D_005E4D2C;
-    __asm__ volatile ("" : : "f"(callback0), "f"(callback1), "f"(callback2), "f"(callback3) : "memory");
+    __asm__ ("" : : "f"(callback0), "f"(callback1), "f"(callback2), "f"(callback3) : "memory");
     ((f32*)callbacks)[0] = callback0;
     ((f32*)callbacks)[1] = callback1;
     ((f32*)callbacks)[2] = callback2;

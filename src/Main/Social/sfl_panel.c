@@ -388,10 +388,10 @@ done:
 void func_0023e970(void)
 {
     void* texture;
-    volatile code *quad;
+    code *quad;
     s32 mode;
-    volatile code *render;
-    volatile code *state;
+    code *render;
+    code *state;
     s32 i;
     u8* base;
 

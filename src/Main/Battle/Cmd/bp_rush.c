@@ -110,8 +110,8 @@ void bpRushDraw(void)
     extern void FUN_0021d8e0(void* destination, const f32* layout);
     extern void FUN_0021d950(void* destination, const u8* color);
     extern void FUN_004d7f60(s32 state, u32 value);
-    volatile code *state;
-    volatile code *quad;
+    volatile /* Removing this function's qualifier batch loses bpRushDraw (MATCH nd0 -> MISMATCH nd377, size 580 -> 592) - measured W170. */ code *state;
+    volatile /* Removing this function's qualifier batch loses bpRushDraw (MATCH nd0 -> MISMATCH nd377, size 580 -> 592) - measured W170. */ code *quad;
     u32* puVar1;
     void* uVar2;
     void* uVar3;

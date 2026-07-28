@@ -2328,8 +2328,8 @@ u16* FUN_00362310(int param_1)
             for (candidate = (u16*)group[0x1b]; candidate != NULL;
                  candidate = *(u16**)(candidate + 0x26))
             {
-                candidateTime = *(volatile u16*)candidate;
-                currentTime = *(volatile int*)(param_1 + 0x18);
+                candidateTime = *(volatile /* Removing this function's qualifier batch loses FUN_00362310 (MATCH nd0 -> MISMATCH nd74, size 128 -> 136) - measured W170. */ u16*)candidate;
+                currentTime = *(volatile /* Removing this function's qualifier batch loses FUN_00362310 (MATCH nd0 -> MISMATCH nd74, size 128 -> 136) - measured W170. */ int*)(param_1 + 0x18);
                 if ((int)candidateTime < currentTime)
                 {
                     distance = currentTime - candidateTime;
@@ -5452,8 +5452,8 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
         if (*(char *)((int)puVar1 + 0x19) != '\0') {
           uVar5 = 1;
         }
-        sVar6 = *(volatile short *)((int)puVar1 + 0x14);
-        uVar7 = *(volatile u16 *)(param_3 + 0xc);
+        sVar6 = *(volatile /* Removing this function's qualifier batch loses FUN_00365360 (MATCH nd0 -> MISMATCH nd6, size 208 -> 208) - measured W170. */ short *)((int)puVar1 + 0x14);
+        uVar7 = *(volatile /* Removing this function's qualifier batch loses FUN_00365360 (MATCH nd0 -> MISMATCH nd6, size 208 -> 208) - measured W170. */ u16 *)(param_3 + 0xc);
         uVar8 = (u8)puVar1[0xc];
         FUN_003b8e10_evt(uVar7,uVar8,sVar6,uVar5);
 

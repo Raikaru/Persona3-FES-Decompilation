@@ -1026,9 +1026,9 @@ u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 
     *(float *)(iVar1 + 0x90) = fVar3;
 
-    fVar2 = *(volatile float *)(param_2 + 0);
-    fVar3 = *(volatile float *)(param_2 + 1);
-    fVar1 = *(volatile float *)(param_2 + 2);
+    fVar2 = *(volatile /* Removing this function's qualifier batch loses FUN_003b8c30 (MATCH nd0 -> MISMATCH nd6, size 168 -> 168) - measured W170. */ float *)(param_2 + 0);
+    fVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_003b8c30 (MATCH nd0 -> MISMATCH nd6, size 168 -> 168) - measured W170. */ float *)(param_2 + 1);
+    fVar1 = *(volatile /* Removing this function's qualifier batch loses FUN_003b8c30 (MATCH nd0 -> MISMATCH nd6, size 168 -> 168) - measured W170. */ float *)(param_2 + 2);
 
     *(float *)(iVar1 + 0x94) = fVar2;
 
@@ -1057,7 +1057,7 @@ u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4)
     u32 uVar1;
     int iVar2;
     u16 *puVar3;
-    volatile u8 *puVar5;
+    volatile /* Removing this function's qualifier batch loses FUN_003b8ce0 (MATCH nd0 -> MISMATCH nd8, size 300 -> 300) - measured W170. */ u8 *puVar5;
     u8 bVar4;
     u8 bVar5;
     u8 bVar6;
@@ -1087,7 +1087,7 @@ u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4)
 
 type3:
     iVar2 = FUN_00318b00(*(u32 *)(puVar3 + 0x94));
-    puVar5 = (volatile u8 *)iVar2;
+    puVar5 = (volatile /* Removing this function's qualifier batch loses FUN_003b8ce0 (MATCH nd0 -> MISMATCH nd8, size 300 -> 300) - measured W170. */ u8 *)iVar2;
     bVar5 = puVar5[0];
     bVar6 = puVar5[1];
     bVar7 = puVar5[2];
@@ -1712,17 +1712,17 @@ void FUN_003b9610(Resrc* param_1)
 
   u32 uStack_50;
 
-  volatile float fStack_48;
+  float fStack_48;
 
-  volatile float fStack_44;
+  float fStack_44;
 
-  volatile float fStack_40;
+  float fStack_40;
 
-  volatile float fStack_38;
+  float fStack_38;
 
-  volatile float fStack_34;
+  float fStack_34;
 
-  volatile float fStack_30;
+  float fStack_30;
 
   float fStack_28;
 
@@ -1730,11 +1730,11 @@ void FUN_003b9610(Resrc* param_1)
 
   float fStack_20;
 
-  volatile float fStack_18;
+  float fStack_18;
 
-  volatile float fStack_14;
+  float fStack_14;
 
-  volatile float fStack_10;
+  float fStack_10;
 
   u8 auStack_8 [3];
 
@@ -4385,8 +4385,8 @@ u8 FUN_003bc900(float *param_1)
   if (*(u16 *)&DAT_007ce658 == 0) {
     return 0;
   }
-  param_1[0] = *(volatile float *)(uintptr_t)0x0095aff0;
-  param_1[1] = *(volatile float *)(uintptr_t)0x0095aff4;
+  param_1[0] = *(float *)(uintptr_t)0x0095aff0;
+  param_1[1] = *(float *)(uintptr_t)0x0095aff4;
   return 1;
 
 }
@@ -4692,7 +4692,7 @@ void FUN_003bd130(void)
 
       ppVar2 = (void **)(DAT_0095b000_abs + iVar2 * 4);
       /* Removing this barrier loses FUN_003bd130 (MATCH nd0 -> MISMATCH nd18) - measured W164. */
-      asm volatile("" : "+m"(*ppVar2));
+      asm ("" : "+m"(*ppVar2));
 
       pVar1 = FUN_00100d80_typed_scene((const char *)PTR_s_icon_ICON1_EPL_006a3130[iVar2],0);
 

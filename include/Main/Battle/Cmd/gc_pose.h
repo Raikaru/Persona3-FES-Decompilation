@@ -70,16 +70,21 @@ typedef struct GcPoseRotationVectorData
     u8 pad_0x34[0x3c];
 } GcPoseRotationVectorData;
 
-typedef struct GcPoseRotationMotionData
+typedef struct GcPoseRotationKinematics
 {
-    GcPoseScalar active;       // 0x28
-    GcPoseScalar flags;        // 0x2c
-    GcPoseScalar duration;     // 0x30
     RwV3d target;              // 0x34
     f32 startAngle;            // 0x40
     f32 endAngle;              // 0x44
     f32 velocity;              // 0x48
     f32 acceleration;          // 0x4c
+} GcPoseRotationKinematics;
+
+typedef struct GcPoseRotationMotionData
+{
+    GcPoseScalar active;       // 0x28
+    GcPoseScalar flags;        // 0x2c
+    GcPoseScalar duration;     // 0x30
+    GcPoseRotationKinematics motion;
     u8 pad_0x50[0x20];
 } GcPoseRotationMotionData;
 

@@ -3179,8 +3179,8 @@ u32 func_002f6330(void *param_1)
     FUN_002a4690(work.firstTransform, DAT_0069a5c8,
                  DAT_0069a5c8 + 0x20, D_00697880);
     {
-      u64 xy = *(volatile u64 *)DAT_0069a5c8;
-      f32 z = *(volatile f32 *)(DAT_0069a5c8 + 8);
+      u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6330 (MATCH nd0 -> MISMATCH nd10, size 480 -> 480) - measured W170. */ u64 *)DAT_0069a5c8;
+      f32 z = *(volatile /* Removing this function's qualifier batch loses func_002f6330 (MATCH nd0 -> MISMATCH nd10, size 480 -> 480) - measured W170. */ f32 *)(DAT_0069a5c8 + 8);
       work.firstPositionXY = xy;
       work.firstPositionZ = z;
     }
@@ -3194,8 +3194,8 @@ u32 func_002f6330(void *param_1)
     FUN_002a4690(work.firstTransform, DAT_0069a5d8,
                  DAT_0069a5d8 + 0x20, D_00697880);
     {
-      u64 xy = *(volatile u64 *)DAT_0069a5d8;
-      f32 z = *(volatile f32 *)(DAT_0069a5d8 + 8);
+      u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6330 (MATCH nd0 -> MISMATCH nd10, size 480 -> 480) - measured W170. */ u64 *)DAT_0069a5d8;
+      f32 z = *(volatile /* Removing this function's qualifier batch loses func_002f6330 (MATCH nd0 -> MISMATCH nd10, size 480 -> 480) - measured W170. */ f32 *)(DAT_0069a5d8 + 8);
       work.firstPositionXY = xy;
       work.firstPositionZ = z;
     }
@@ -3240,8 +3240,8 @@ encounterGroup:
   FUN_002a4690(work.firstTransform, DAT_0069a608,
                DAT_0069a628, D_00697880);
   {
-    u64 xy = *(volatile u64 *)DAT_0069a608;
-    f32 z = *(volatile f32 *)(DAT_0069a608 + 8);
+    u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6510 (MATCH nd0 -> MISMATCH nd10, size 816 -> 816) - measured W170. */ u64 *)DAT_0069a608;
+    f32 z = *(volatile /* Removing this function's qualifier batch loses func_002f6510 (MATCH nd0 -> MISMATCH nd10, size 816 -> 816) - measured W170. */ f32 *)(DAT_0069a608 + 8);
     work.firstPositionXY = xy;
     work.firstPositionZ = z;
   }
@@ -3257,8 +3257,8 @@ encounter126:
   FUN_002a4690(work.firstTransform, DAT_0069a648,
                DAT_0069a668, D_00697880);
   {
-    u64 xy = *(volatile u64 *)DAT_0069a648;
-    f32 z = *(volatile f32 *)(DAT_0069a648 + 8);
+    u64 xy = *(volatile /* Removing this function's qualifier batch loses func_002f6510 (MATCH nd0 -> MISMATCH nd10, size 816 -> 816) - measured W170. */ u64 *)DAT_0069a648;
+    f32 z = *(volatile /* Removing this function's qualifier batch loses func_002f6510 (MATCH nd0 -> MISMATCH nd10, size 816 -> 816) - measured W170. */ f32 *)(DAT_0069a648 + 8);
     work.firstPositionXY = xy;
     work.firstPositionZ = z;
   }
@@ -5213,7 +5213,7 @@ u32 func_002e4430(BtlAction* action, s32 skillId)
     entry = (u8*)(DAT_007ce3f8 + offset);
     if ((*entry & 8) == 0)
         return 0;
-    value = *(volatile u16*)(entry + 0xc);
+    value = *(volatile /* Removing this qualifier loses func_002e4430 (MATCH nd0 -> MISMATCH nd11, size 240 -> 240) - measured W170. */ u16*)(entry + 0xc);
     FUN_002bfcb0(action, &target, entry[9], entry[10], value);
     if (target.count == 0)
         return 2;

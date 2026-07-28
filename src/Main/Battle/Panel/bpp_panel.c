@@ -41,7 +41,7 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
             /* Removing this final barrier worsens bppPanelDrawParameterLayout (nd416 -> nd475) - measured W164. */
-            asm volatile("" : "+m"(quad));
+            asm ("" : "+m"(quad));
             renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD((u8*)work + i * BPP_PANEL_QUAD_SIZE, 4, 0, 2, 3);

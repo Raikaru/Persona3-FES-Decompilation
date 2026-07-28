@@ -1039,7 +1039,7 @@ void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
             value = *(u32*)(data + 0x8c);
         }
         *(u32*)(data + 0x90) = value;
-        __asm__ volatile (
+        __asm__ (
             "sd %0, 0($sp)\n"
             "lq $v1, 0($sp)\n"
             "sq $v1, 0(%1)"
@@ -1053,7 +1053,7 @@ void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
         }
         value = *(u32*)(data + 0x90) + amount;
         *(u32*)(data + 0x90) = value;
-        __asm__ volatile (
+        __asm__ (
             "sd %0, 0($sp)\n"
             "lq $v1, 0($sp)\n"
             "sq $v1, 0(%1)"
@@ -1067,7 +1067,7 @@ void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
             value = *(u32*)(data + 0x8c) - 1;
         }
         *(u32*)(data + 0x90) = value;
-        __asm__ volatile (
+        __asm__ (
             "sd %0, 0($sp)\n"
             "lq $v1, 0($sp)\n"
             "sq $v1, 0(%1)"
@@ -1076,7 +1076,7 @@ void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
     else
     {
         value = 1;
-        __asm__ volatile (
+        __asm__ (
             "sd %0, 0($sp)\n"
             "lq $v1, 0($sp)\n"
             "sq $v1, 0(%1)"

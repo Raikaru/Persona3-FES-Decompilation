@@ -2390,7 +2390,7 @@ static inline u16 func_00170760_impl(s16 pcId, s16 index)
 
     if (pcId == PC_HERO)
     {
-        heroEquip = *(u8* volatile*)&gGlobalWork.heroEquip.unkPtr;
+        heroEquip = *(u8* volatile /* Removing this inline-helper qualifier loses func_00170c00 (MATCH nd0 -> MISMATCH nd15, size 348 -> 348) - measured W170. */*)&gGlobalWork.heroEquip.unkPtr;
         address = index * 2;
         address += (s32)heroEquip;
         return *(u16*)(address - 8000);
@@ -2428,7 +2428,7 @@ u16 func_00170760(s16 pcId, s16 index)
 
     if (pcId == PC_HERO)
     {
-        heroEquip = *(u8* volatile*)&gGlobalWork.heroEquip.unkPtr;
+        heroEquip = *(u8* volatile /* Removing this qualifier loses func_00170760 (MATCH nd0 -> MISMATCH nd15, size 256 -> 256) - measured W170. */*)&gGlobalWork.heroEquip.unkPtr;
         address = index * 2;
         address += (s32)heroEquip;
         return *(u16*)(address - 8000);
@@ -2469,7 +2469,7 @@ void func_00170860(s16 pcId, s16 index, u16 value)
     K_ASSERT(value <= 99, 2341);
     if (pcId == PC_HERO)
     {
-        heroEquip = *(u8* volatile*)&gGlobalWork.heroEquip.unkPtr;
+        heroEquip = *(u8* volatile /* Removing this qualifier worsens func_00170860 (NONMATCHING nd68 -> NONMATCHING nd83, size 476 -> 476) - measured W170. */*)&gGlobalWork.heroEquip.unkPtr;
         address = index * 2;
         address += (s32)heroEquip;
         *(u16*)(address - 8000) = value;

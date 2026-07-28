@@ -176,7 +176,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
   u32 uStack_8;
 
   u32 uStack_4;
-  volatile u64 aSize[15];
+  volatile /* Removing this qualifier worsens FUN_0038dad0 (NONMATCHING nd1389 -> NONMATCHING nd1581, size 2420 -> 2064) - measured W170. */ u64 aSize[15];
 
   
 
@@ -867,7 +867,7 @@ void FUN_0038e660(int param_1,int param_2,int param_3)
     u16 sStack_3c;
     u16 uStack_3a;
     u16 uStack_38;
-    volatile s16 uStack_36;
+    volatile /* Removing this function's qualifier batch worsens FUN_0038e660 (NONMATCHING nd15 -> NONMATCHING nd48, size 504 -> 504) - measured W170. */ s16 uStack_36;
     s16 sStack_34;
     s16 sStack_32;
     s16 sStack_30;
@@ -899,12 +899,12 @@ process_node:
       stack.sStack_3e = *(u16 *)(psVar2 + 0);
       stack.sStack_3c = *(u16 *)(psVar2 + 1);
       stack.uStack_3a = (u16)*(u32 *)(psVar2 + 2);
-      stack.uStack_38 = *(volatile u16 *)((u8 *)piVar3 + 0xc);
+      stack.uStack_38 = *(volatile /* Removing this function's qualifier batch worsens FUN_0038e660 (NONMATCHING nd15 -> NONMATCHING nd48, size 504 -> 504) - measured W170. */ u16 *)((u8 *)piVar3 + 0xc);
       stack.uStack_36 = (s16)*(u32 *)(psVar2 + 0x1e);
-      c0 = ((volatile s16 *)psVar2)[4];
-      c1 = ((volatile s16 *)psVar2)[5];
-      c2 = ((volatile s16 *)psVar2)[6];
-      c3 = ((volatile s16 *)psVar2)[7];
+      c0 = ((volatile /* Removing this function's qualifier batch worsens FUN_0038e660 (NONMATCHING nd15 -> NONMATCHING nd48, size 504 -> 504) - measured W170. */ s16 *)psVar2)[4];
+      c1 = ((volatile /* Removing this function's qualifier batch worsens FUN_0038e660 (NONMATCHING nd15 -> NONMATCHING nd48, size 504 -> 504) - measured W170. */ s16 *)psVar2)[5];
+      c2 = ((volatile /* Removing this function's qualifier batch worsens FUN_0038e660 (NONMATCHING nd15 -> NONMATCHING nd48, size 504 -> 504) - measured W170. */ s16 *)psVar2)[6];
+      c3 = ((volatile /* Removing this function's qualifier batch worsens FUN_0038e660 (NONMATCHING nd15 -> NONMATCHING nd48, size 504 -> 504) - measured W170. */ s16 *)psVar2)[7];
       (stack.sStack_34 = c0, stack.sStack_32 = c1, stack.sStack_30 = c2, stack.sStack_2e = c3);
       FUN_005225a8_evt((const char *)DAT_006a0b50,*(u16 *)((u8 *)piVar3 + 0xc),stack.uStack_36);
       for (iVar1 = 0; iVar1 < 10; iVar1 = iVar1 + 1) {
@@ -1580,7 +1580,7 @@ void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
   int iVar7;
 
   int iVar8;
-  volatile MtEvtHalf4 half4;
+  volatile /* Removing this qualifier worsens FUN_0038f440 (NONMATCHING nd225 -> NONMATCHING nd806, size 1140 -> 1112) - measured W170. */ MtEvtHalf4 half4;
 
   
 
@@ -2869,7 +2869,7 @@ void FUN_00390920(int param_1,int param_2)
 
       half4 = *(MtEvtHalf4 *)(iVar10 + 0xc);
       /* Removing this barrier worsens FUN_00390920 (nd373 -> nd515) - measured W164. */
-      asm volatile("" : "+m"(half4));
+      asm ("" : "+m"(half4));
       *(MtEvtHalf4 *)(iVar5 + 8) = half4;
 
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) != 4) {
@@ -3100,7 +3100,7 @@ void FUN_00390ef0(int param_1,int param_2)
   u32 modelRes;
   u32 uVar7;
   float afStack_18[3];
-  volatile u16 auStack_4[2];
+  volatile /* Removing this qualifier loses FUN_00390ef0 (MATCH nd0 -> MISMATCH nd6, size 392 -> 392) - measured W170. */ u16 auStack_4[2];
   u32 uStack_8;
 
   if (*(char *)(param_2 + 0x22) < 0) {

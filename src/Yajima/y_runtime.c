@@ -12953,8 +12953,8 @@ u32 FUN_0044ad20(u64 param_1,char param_2)
   puVar6[0x40] = 0;
   if (*(char *)(DAT_0086ef3a_abs + iVar5) != '\0') {
     puVar6[0x18] = *(char *)(DAT_0086ef38_abs + param_2 * 0x1c0);
-    puVar6[0x8c] = (u32)*(volatile u8 *)(DAT_0086ef39_abs + param_2 * 0x1c0) >> 4;
-    puVar6[0x8b] = *(volatile u8 *)(DAT_0086ef39_abs + param_2 * 0x1c0) % 0x10;
+    puVar6[0x8c] = (u32)*(u8 *)(DAT_0086ef39_abs + param_2 * 0x1c0) >> 4;
+    puVar6[0x8b] = *(u8 *)(DAT_0086ef39_abs + param_2 * 0x1c0) % 0x10;
     puVar6[2] = *(char *)(DAT_0086ef3a_abs + iVar5);
     if (*piVar4 == 3) {
       if (puVar6[2] == '\x03') {
@@ -14399,7 +14399,7 @@ u32 FUN_0044f060(float param_1,int param_2,float *param_3)
   RwV3d delta;
   
   input = *(RwV3d *)param_3;
-  iVar2 = *(volatile int *)(param_2 + 0x3c);
+  iVar2 = *(volatile /* Removing this qualifier loses FUN_0044f060 (MATCH nd0 -> MISMATCH nd8, size 188 -> 188) - measured W170. */ int *)(param_2 + 0x3c);
   bVar1 = 0;
   iVar1 = *(int *)(DAT_0086ef08_abs + *(char *)(iVar2 + 1) * 0x1c0);
   delta.x = *(float *)(iVar1 + 0x100) - input.x;
@@ -16352,8 +16352,8 @@ void FUN_00453d90(char param_1)
     *(u16 *)(iVar7 + 0xc9a) = 0;
     iVar8 = iVar8 + 1;
   }
-  bVar2 = *(volatile u8 *)(iVar4 + 0x8b);
-  bVar1 = *(volatile u8 *)(iVar4 + 0x8c);
+  bVar2 = *(volatile /* Removing this function's qualifier batch worsens FUN_00453d90 (NONMATCHING nd98 -> NONMATCHING nd113, size 320 -> 320) - measured W170. */ u8 *)(iVar4 + 0x8b);
+  bVar1 = *(volatile /* Removing this function's qualifier batch worsens FUN_00453d90 (NONMATCHING nd98 -> NONMATCHING nd113, size 320 -> 320) - measured W170. */ u8 *)(iVar4 + 0x8c);
   iVar7 = *(int *)(iVar4 + 0x94);
   iVar8 = iVar4 + iVar7 * 4;
   *(u16 *)(iVar8 + 0xc98) = bVar2;
@@ -17436,8 +17436,8 @@ void FUN_004561f0(float param_1,int param_2)
 
   iVar1 = *(int *)(param_2 + 0x3c);
   axisData = DAT_006b4a78_abs;
-  xy = *(volatile u64 *)axisData;
-  z = *(volatile f32 *)(axisData + 8);
+  xy = *(volatile /* Removing this function's qualifier batch loses FUN_004561f0 (MATCH nd0 -> MISMATCH nd5, size 448 -> 448) - measured W170. */ u64 *)axisData;
+  z = *(volatile /* Removing this function's qualifier batch loses FUN_004561f0 (MATCH nd0 -> MISMATCH nd5, size 448 -> 448) - measured W170. */ f32 *)(axisData + 8);
   axis.xy = xy;
   axis.z = z;
   puVar8 = (u32 *)DAT_006b4a90_abs;
@@ -18010,8 +18010,8 @@ u32 FUN_00457470(int param_1)
     f32 z;
   } axis;
   
-  xy = *(volatile u64 *)DAT_006b4b20_abs;
-  z = *(volatile f32 *)(DAT_006b4b20_abs + 8);
+  xy = *(volatile /* Removing this function's qualifier batch worsens FUN_00457470 (NONMATCHING nd6 -> NONMATCHING nd11, size 356 -> 356) - measured W170. */ u64 *)DAT_006b4b20_abs;
+  z = *(volatile /* Removing this function's qualifier batch worsens FUN_00457470 (NONMATCHING nd6 -> NONMATCHING nd11, size 356 -> 356) - measured W170. */ f32 *)(DAT_006b4b20_abs + 8);
   axis.xy = xy;
   axis.z = z;
   row = DAT_0086e6a0_rows[param_1];
@@ -19255,8 +19255,8 @@ u32 FUN_00459e80(int param_1)
     {
       u32 uVar1;
       u32 uVar2;
-      uVar1 = *(volatile u32 *)(iVar3 + 0x104c);
-      sVar1 = *(volatile short *)(psVar1 + 2);
+      uVar1 = *(volatile /* Removing this function's qualifier batch loses FUN_00459e80 (MATCH nd0 -> MISMATCH nd14, size 172 -> 172) - measured W170. */ u32 *)(iVar3 + 0x104c);
+      sVar1 = *(volatile /* Removing this function's qualifier batch loses FUN_00459e80 (MATCH nd0 -> MISMATCH nd14, size 172 -> 172) - measured W170. */ short *)(psVar1 + 2);
       uVar2 = *(u32 *)(iVar2 + 0x1048);
       *(u32 *)(psVar1 + 4) =
         FUN_0035bc00_u32(10,uVar2,uVar1,sVar1);

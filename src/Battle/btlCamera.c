@@ -1245,7 +1245,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         }
         else
         {
-            half = unit->unk_8c * (*(volatile f32*)&unit->scale);
+            half = unit->unk_8c * (*(volatile /* Removing this qualifier loses btlCameraFrameAction (MATCH nd0 -> MISMATCH nd4, size 2540 -> 2540) - measured W170. */ f32*)&unit->scale);
             if (half > scaled.y)
             {
                 scaled.y = half;
@@ -2285,8 +2285,8 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
         if (work.generated.x == work.sphereCenter.x &&
             work.generated.z == work.sphereCenter.z)
         {
-            fixedXY = *(volatile u64 *)(uintptr_t)0x00697890;
-            fixedZ = *(volatile f32 *)D_00697898;
+            fixedXY = *(u64 *)(uintptr_t)0x00697890;
+            fixedZ = *(f32 *)D_00697898;
             *(s64*)&work.direction = fixedXY;
             work.direction.z = fixedZ;
         }
@@ -2329,8 +2329,8 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
         if (work.generated.x == work.sphereCenter.x &&
             work.generated.z == work.sphereCenter.z)
         {
-            fixedXY = *(volatile u64 *)(uintptr_t)0x00697890;
-            fixedZ = *(volatile f32 *)(uintptr_t)0x00697898;
+            fixedXY = *(u64 *)(uintptr_t)0x00697890;
+            fixedZ = *(f32 *)(uintptr_t)0x00697898;
             *(s64*)&work.direction = fixedXY;
             work.direction.z = fixedZ;
         }
@@ -4705,7 +4705,7 @@ void FUN_002b2800(BtlCamera *camera)
   s16 targetId;
 
   action = camera->action;
-  targetId = *(volatile s16 *)&action->target.specificId;
+  targetId = *(volatile /* Removing this qualifier loses FUN_002b2800 (MATCH nd0 -> MISMATCH nd6, size 128 -> 128) - measured W170. */ s16 *)&action->target.specificId;
   lVar1 = FUN_002f8eb0(action->unit, targetId);
   if (lVar1 == -1) {
     lVar1 = 4;
@@ -5906,14 +5906,14 @@ void FUN_002b5240(BtlCamera* camera)
     w.vy = w.vy + w.center2.y;
     w.vz = w.vz + w.center2.z;
 
-    xyTemp = *(volatile u64*)&w.center1;
-    pzTemp = *(volatile f32*)&w.center1.z;
+    xyTemp = *(volatile /* Removing this function's qualifier batch loses FUN_002b5240 (MATCH nd0 -> MISMATCH nd512, size 912 -> 908) - measured W170. */ u64*)&w.center1;
+    pzTemp = *(volatile /* Removing this function's qualifier batch loses FUN_002b5240 (MATCH nd0 -> MISMATCH nd512, size 912 -> 908) - measured W170. */ f32*)&w.center1.z;
     *(u64*)&w.px = xyTemp;
     w.pz = pzTemp;
     w.py = w.center2.y;
     w.d2x = w.px - w.center2.x;
     w.d2y = w.py - w.py;
-    w.d2z = *(volatile f32*)&w.pz - w.center2.z;
+    w.d2z = *(volatile /* Removing this function's qualifier batch loses FUN_002b5240 (MATCH nd0 -> MISMATCH nd512, size 912 -> 908) - measured W170. */ f32*)&w.pz - w.center2.z;
     FUN_004c69f0(&w.d2x, &w.d2x);
     factor = 1.5f * radius;
     w.px = w.px - w.d2z * factor;
@@ -6952,16 +6952,16 @@ u32 FUN_002b6f70(u16 *param_1)
 void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
 {
   u8 mode = *(u8 *)(param_1 + 0xa2);
-  volatile u8 *table;
+  volatile /* Removing this function's qualifier batch loses FUN_002b7000 (MATCH nd0 -> MISMATCH nd22, size 88 -> 88) - measured W170. */ u8 *table;
   switch (mode) {
   case 0:
     table = DAT_007ce3ec;
-    *(undefined4 *)((volatile u8 *)(uintptr_t)((param_2 & 0xffff) * 4) +
+    *(undefined4 *)((volatile /* Removing this function's qualifier batch loses FUN_002b7000 (MATCH nd0 -> MISMATCH nd22, size 88 -> 88) - measured W170. */ u8 *)(uintptr_t)((param_2 & 0xffff) * 4) +
                     (uintptr_t)table + 0xa3c) = param_3;
     break;
   case 1:
     table = DAT_007ce3ec;
-    *(undefined4 *)((volatile u8 *)(uintptr_t)((param_2 & 0xffff) * 4) +
+    *(undefined4 *)((volatile /* Removing this function's qualifier batch loses FUN_002b7000 (MATCH nd0 -> MISMATCH nd22, size 88 -> 88) - measured W170. */ u8 *)(uintptr_t)((param_2 & 0xffff) * 4) +
                     (uintptr_t)table + 0xa4c) = param_3;
     break;
   }
@@ -9329,8 +9329,8 @@ void func_002ad880(BtlCamera *camera, float angle, float distanceScale, float he
   btlUnitGetSphereWorldCenter((BtlUnit *)unitBytes, &scratch.sphereCenter.value);
   radius = *(float *)(unitBytes + 0x90) * *(float *)(unitBytes + 0x2c);
   halfHeight = *(float *)(unitBytes + 0x8c) * *(float *)(unitBytes + 0x2c) * 0.5f;
-  centerXY = *(volatile u64 *)&scratch.sphereCenter.value;
-  centerZ = *(volatile f32 *)&scratch.sphereCenter.value.z;
+  centerXY = *(volatile /* Removing this function's qualifier batch loses func_002ad880 (MATCH nd0 -> MISMATCH nd6, size 936 -> 936) - measured W170. */ u64 *)&scratch.sphereCenter.value;
+  centerZ = *(volatile /* Removing this function's qualifier batch loses func_002ad880 (MATCH nd0 -> MISMATCH nd6, size 936 -> 936) - measured W170. */ f32 *)&scratch.sphereCenter.value.z;
   *(u64 *)&scratch.center.value = centerXY;
   scratch.center.value.z = centerZ;
   scratch.center.value.y = halfHeight * heightScale + scratch.center.value.y + 0.0f;

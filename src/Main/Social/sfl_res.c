@@ -235,7 +235,7 @@ void sflResUpdate(void)
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     caseCopy = (*DAT_00960178)(fileSize, 0x40000);
                     work[0x16] = (u32)caseCopy;
-                    memcpy(caseCopy, file, *(volatile u32*)&fileSize);
+                    memcpy(caseCopy, file, *(volatile /* Removing this function's qualifier batch loses sflResUpdate (MATCH nd0 -> MISMATCH nd31, size 1980 -> 1980) - measured W170. */ u32*)&fileSize);
                     break;
                 }
                 case 4:
@@ -268,7 +268,7 @@ void sflResUpdate(void)
                     void* copy;
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     copy = (*DAT_00960178)(fileSize, 0x40000);
-                    memcpy(copy, file, *(volatile u32*)&fileSize);
+                    memcpy(copy, file, *(volatile /* Removing this function's qualifier batch loses sflResUpdate (MATCH nd0 -> MISMATCH nd31, size 1980 -> 1980) - measured W170. */ u32*)&fileSize);
                     work[0x1e] = (u32)copy;
                     break;
                 }
@@ -277,7 +277,7 @@ void sflResUpdate(void)
                     void* copy;
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     copy = (*DAT_00960178)(fileSize, 0x40000);
-                    memcpy(copy, file, *(volatile u32*)&fileSize);
+                    memcpy(copy, file, *(volatile /* Removing this function's qualifier batch loses sflResUpdate (MATCH nd0 -> MISMATCH nd31, size 1980 -> 1980) - measured W170. */ u32*)&fileSize);
                     work[0x1f] = (u32)copy;
                     break;
                 }

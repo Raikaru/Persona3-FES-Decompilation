@@ -717,7 +717,7 @@ void FUN_00395570(int param_1)
     DAT_00958aa4 = (f32)iVar2;
     q0 = DAT_00960088_abs;
     /* Removing this barrier worsens FUN_00395570 (nd103 -> nd117) - measured W164. */
-    asm volatile("" : "+m"(q0));
+    asm ("" : "+m"(q0));
     DAT_00958aa8 = *(f32 *)q0;
     DAT_00958ac0 = 0x43480000;
     DAT_00958ac4 = 0x42a00000;
@@ -1545,11 +1545,11 @@ void FUN_00396270(float param_1,int param_2,float *param_3)
 
     *(float *)(iVar1 + 0x690) = param_1;
 
-    fVar1 = ((volatile float *)param_3)[0];
+    fVar1 = ((volatile /* Removing this function's qualifier batch loses FUN_00396270 (MATCH nd0 -> MISMATCH nd6, size 80 -> 80) - measured W170. */ float *)param_3)[0];
 
-    fVar2 = ((volatile float *)param_3)[1];
+    fVar2 = ((volatile /* Removing this function's qualifier batch loses FUN_00396270 (MATCH nd0 -> MISMATCH nd6, size 80 -> 80) - measured W170. */ float *)param_3)[1];
 
-    fVar3 = ((volatile float *)param_3)[2];
+    fVar3 = ((volatile /* Removing this function's qualifier batch loses FUN_00396270 (MATCH nd0 -> MISMATCH nd6, size 80 -> 80) - measured W170. */ float *)param_3)[2];
 
     *(float *)(iVar1 + 0x684) = fVar1;
 
