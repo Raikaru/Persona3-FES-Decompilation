@@ -947,7 +947,7 @@ u32 scrComu00360d40(void)
 u32 scrComu00360ed0(int param_1)
 {
     char cVar1;
-    u8 bVar2;
+    u32 bVar2;
     u32 value;
     int lVar5;
     int flag;
@@ -961,8 +961,7 @@ u32 scrComu00360ed0(int param_1)
         cVar1 = *(char*)(param_1 + 0xc);
         switch (cVar1) {
         case 0:
-            result = 1;
-            break;
+            return 1;
         case 1:
             value = FUN_0038d6f0(*(short*)(param_1 + 8));
             result = *(short*)(param_1 + 10) == value;

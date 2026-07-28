@@ -874,7 +874,7 @@ case_1a4_done:
 }
 #pragma opt_loop_invariants off
 
-// FUN_002f8a40 NONMATCHING
+// FUN_002f8a40
 u32 func_002f8a40(BtlUnit* unit)
 {
     u16 encounterId;
@@ -957,16 +957,21 @@ block_1a1:
         case 1:
             goto block_1a1_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a1_done;
 
 block_1a1_genus1:
     switch (unit->charId)
     {
         case 0x101:
         case 0x102:
-            return 1;
+            result = 1;
+            goto block_1a1_done;
     }
-    return 0;
+    result = 0;
+
+block_1a1_done:
+    return result;
 
 block_1a2:
     switch (unit->genus)
@@ -974,15 +979,20 @@ block_1a2:
         case 1:
             goto block_1a2_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a2_done;
 
 block_1a2_genus1:
     switch (unit->charId)
     {
         case 0x103:
-            return 1;
+            result = 1;
+            goto block_1a2_done;
     }
-    return 0;
+    result = 0;
+
+block_1a2_done:
+    return result;
 
 block_1a3:
     switch (unit->genus)
@@ -990,15 +1000,20 @@ block_1a3:
         case 1:
             goto block_1a3_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a3_done;
 
 block_1a3_genus1:
     switch (unit->charId)
     {
         case 0x104:
-            return 1;
+            result = 1;
+            goto block_1a3_done;
     }
-    return 0;
+    result = 0;
+
+block_1a3_done:
+    return result;
 
 block_1a4:
     switch (unit->genus)
@@ -1006,7 +1021,8 @@ block_1a4:
         case 1:
             goto block_1a4_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a4_done;
 
 block_1a4_genus1:
     switch (unit->charId)
@@ -1014,9 +1030,13 @@ block_1a4_genus1:
         case 0x115:
         case 0x105:
         case 0x106:
-            return 1;
+            result = 1;
+            goto block_1a4_done;
     }
-    return 0;
+    result = 0;
+
+block_1a4_done:
+    return result;
 
 block_1a5:
     switch (unit->genus)
@@ -1024,15 +1044,20 @@ block_1a5:
         case 1:
             goto block_1a5_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a5_done;
 
 block_1a5_genus1:
     switch (unit->charId)
     {
         case 0x107:
-            return 1;
+            result = 1;
+            goto block_1a5_done;
     }
-    return 0;
+    result = 0;
+
+block_1a5_done:
+    return result;
 
 block_1a6:
     switch (unit->genus)
@@ -1040,15 +1065,20 @@ block_1a6:
         case 1:
             goto block_1a6_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a6_done;
 
 block_1a6_genus1:
     switch (unit->charId)
     {
         case 0x10a:
-            return 1;
+            result = 1;
+            goto block_1a6_done;
     }
-    return 0;
+    result = 0;
+
+block_1a6_done:
+    return result;
 
 block_zero_1a7:
     return 0;
@@ -1059,15 +1089,20 @@ block_1a8:
         case 1:
             goto block_1a8_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a8_done;
 
 block_1a8_genus1:
     switch (unit->charId)
     {
         case 0x10d:
-            return 1;
+            result = 1;
+            goto block_1a8_done;
     }
-    return 0;
+    result = 0;
+
+block_1a8_done:
+    return result;
 
 block_zero_1a9:
     return 0;
@@ -1087,15 +1122,20 @@ block_1ad:
         case 1:
             goto block_1ad_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1ad_done;
 
 block_1ad_genus1:
     switch (unit->charId)
     {
         case 0x112:
-            return 1;
+            result = 1;
+            goto block_1ad_done;
     }
-    return 0;
+    result = 0;
+
+block_1ad_done:
+    return result;
 
 block_zero_1ae:
     return 0;

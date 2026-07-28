@@ -12830,19 +12830,6 @@ void FUN_003282e0(int param_1)
 
   iStack_8 = *(int *)(param_1 + 4);
 
-  auVar5 = _pextlb(0,(long)iStack_8);
-
-  auVar5 = _pextlh(0,auVar5._0_8_);
-
-  auVar5 = _qmtc2(auVar5._0_4_);
-
-  auVar23 = _vitof0(auVar5);
-
-  auVar5 = _qmtc2(DAT_007caf08);
-
-  auVar5 = _vmulbc(auVar23,auVar5);
-
-  auStack_50 = _sqc2(auVar5);
 
   fVar14 = DAT_0096008c;
 
@@ -12918,38 +12905,8 @@ void FUN_003282e0(int param_1)
           uStack_20 = DAT_0069c4d8;
 
           iStack_10 = *(int *)(pauVar8[1] + 4);
-
-          auVar5 = _pextlb(0,(long)iStack_10);
-
-          auVar5 = _pextlh(0,auVar5._0_8_);
-
-          auVar5 = _qmtc2(auVar5._0_4_);
-
-          auVar23 = _vitof0(auVar5);
-
-          auVar5 = _qmtc2(DAT_007caf08);
-
-          auVar5 = _vmulbc(auVar23,auVar5);
-
-          auVar23 = _lqc2(auStack_50);
-
-          auVar23 = _vmul(auVar5,auVar23);
-
-          auVar5 = _qmtc2(0x437f0000);
-
-          auVar5 = _vmulbc(auVar23,auVar5);
-
-          auVar5 = _vftoi0(auVar5);
-
-          auVar5 = _qmfc2(auVar5._0_4_);
-
-          auVar5 = _ppach(in_zero_qw,auVar5);
-
-          auVar5 = _ppacb(in_zero_qw,auVar5);
-
-          uStack_18 = auVar5._0_4_;
-          bVar1 = (*((u8 *)&auVar5 + 3)) != '\0';
-          uStack_4 = uStack_18;
+          uStack_4 = mdlVuModulateStacked((u32 *)&iStack_8,(u32 *)&iStack_10,DAT_007caf08);
+          bVar1 = ((u8 *)&uStack_4)[3] != 0;
           if (bVar1) {
 
             FUN_00322fd0((int)(*(u32 *)(param_1 + 0x48)),(u32)(*(u32 *)pauVar8[1]),(float *)(&fStack_1d0));
@@ -13113,40 +13070,10 @@ void FUN_003282e0(int param_1)
         if (-1 < *(int *)pauVar8[1]) {
 
           iStack_c = *(int *)(pauVar8[1] + 4);
-
-          auVar5 = _pextlb(0,(long)iStack_c);
-
-          auVar5 = _pextlh(0,auVar5._0_8_);
-
-          auVar5 = _qmtc2(auVar5._0_4_);
-
-          auVar23 = _vitof0(auVar5);
-
-          auVar5 = _qmtc2(DAT_007caf08);
-
-          auVar5 = _vmulbc(auVar23,auVar5);
-
-          auVar23 = _lqc2(auStack_50);
-
-          auVar23 = _vmul(auVar5,auVar23);
-
-          auVar5 = _qmtc2(0x437f0000);
-
-          auVar5 = _vmulbc(auVar23,auVar5);
-
-          auVar5 = _vftoi0(auVar5);
-
-          auVar5 = _qmfc2(auVar5._0_4_);
-
-          auVar5 = _ppach(in_zero_qw,auVar5);
-
-          auVar5 = _ppacb(in_zero_qw,auVar5);
-
-          bVar1 = (*((u8 *)&auVar5 + 3)) != '\0';
+          uStack_4 = mdlVuModulateStacked((u32 *)&iStack_8,(u32 *)&iStack_c,DAT_007caf08);
+          bVar1 = ((u8 *)&uStack_4)[3] != 0;
 
           if (bVar1) {
-            u32 uStack_14 = auVar5._0_4_;
-            uStack_4 = uStack_14;
 
             FUN_00322fd0((int)(*(u32 *)(param_1 + 0x48)),(u32)(*(int *)pauVar8[1]),(float *)(&fStack_1d0));
 
