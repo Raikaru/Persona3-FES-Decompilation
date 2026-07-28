@@ -1243,7 +1243,7 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
     piVar3 = piVar3 + 1;
   } while (0 < iVar6);
   if ((param_3 == 0) || (4 < param_2)) {
-    K_Assert("fclCombineMisc.c",0x1c2);
+    K_Assert(DAT_006a5f70,0x1c2);
   }
   memset(param_1,0,0x34);
   iVar2 = aiStack_30[(int)param_2];

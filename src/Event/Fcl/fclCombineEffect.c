@@ -712,7 +712,7 @@ LAB_00417918:
 
     case '\x03':
       if (*(int *)(pcVar6 + 4) == 0) {
-        K_Assert((const char *)0x6b2ad0,0x324);
+        K_Assert(DAT_006b2ad0,0x324);
       }
       iVar14 = H_Cdvd_CacheFindFile(*(u32 *)(pcVar6 + 4),&iStack_4);
       piVar4[2] = iVar14;
@@ -3562,7 +3562,7 @@ LAB_0041b798:
 
       if (*(int *)(iVar3 + 8) == 0) {
 
-        K_Assert((const char *)0x6b2ad0,0x833);
+        K_Assert(DAT_006b2ad0,0x833);
 
       }
 
@@ -3816,7 +3816,7 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
   if (((param_1 == 0) || (param_4 < 1)) || (param_5 == 0)) {
 
-    K_Assert((const char *)0x6b2ad0,0x8e7);
+    K_Assert(DAT_006b2ad0,0x8e7);
 
   }
 
