@@ -53,6 +53,8 @@ BtlPacket* FUN_002822b0();
 BtlPacket* FUN_00282650();
 BtlPacket* FUN_002843e0(BtlUnit* unit, u16 id);
 void FUN_00175130(s16 id);
+#pragma alias FUN_00175130_btlAction FUN_00175130
+extern void FUN_00175130_btlAction(u16 id);
 s32 FUN_002fcf50(BtlAction* action);
 BtlPacket* FUN_00284200();
 BtlPacket* FUN_00284c90();
@@ -6152,6 +6154,7 @@ void btlActionInitStatePersona(BtlAction* action)
     BtlPacket* packet;
     BtlPacket* root;
     s32 table;
+    u16 personaId;
 
     btlAction0028a780(action);
     packet = func_002bd780(action->unit, action->target.commandId);
@@ -6160,7 +6163,7 @@ void btlActionInitStatePersona(BtlAction* action)
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_PERSONA);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    if (action->unit->genus != UNIT_GENUS_PC)
+    if (action->unit->genus == UNIT_GENUS_PC)
     {
         packet = FUN_002843e0(action->unit, 6);
         packet->actionUID = action->uid;
@@ -6179,8 +6182,9 @@ void btlActionInitStatePersona(BtlAction* action)
     {
         goto persona_init_done;
     }
-    FUN_00175130(ACTION_U16(action, 0x74));
-    btlUnitInitPersona(action->unit, ACTION_U16(action, 0x74));
+    FUN_00175130_btlAction(*(u16*)action->target.unkData1);
+    personaId = *(u16*)action->target.unkData1;
+    btlUnitInitPersona(action->unit, personaId);
 persona_init_done:
     table = FUN_002fcf50(action);
     if (table == 0)
@@ -6204,7 +6208,7 @@ persona_init_done:
     packet->unk_00 = 4;
     packet->parentUID = root->uid;
     packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
 persona_done:
     gBtl->flags |= 0x400000;
     BATTLE_U16(0x18) |= 4;

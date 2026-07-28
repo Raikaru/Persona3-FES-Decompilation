@@ -50,7 +50,7 @@ extern u8 DAT_006a0e60[0x20];
 void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6);
 void FUN_00393f30(u8 *param_1,u32 param_2);
 float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
-void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
+void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param_5);
 int FUN_00394270(void);
 u8 *FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5);
 void FUN_00394c30(u32 param_1,u32 param_2);
@@ -173,15 +173,17 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 /* Removing this worsens FUN_00394070 (nd25 -> nd245) - measured W161. */
 #pragma opt_loop_invariants on
 #undef FUN_00394070
-// FUN_00394070 NONMATCHING
+// FUN_00394070
 
 
-void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5)
+void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param_5)
 {
   u32 uVar1;
   u32 uVar2;
   int iVar3;
   int iVar4;
+  int copy_count;
+  float *source;
   float fStack_40[3];
   float fStack_30[3];
   float fStack_20[3];
@@ -195,43 +197,44 @@ void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param
   }
   if (param_3 != (u32 *)0x0) {
     if (param_4 == 0) {
-      iVar3 = 6;
+      copy_count = 6;
       do {
         uVar1 = *param_3;
         uVar2 = param_3[1];
         param_3 = param_3 + 2;
-        iVar3 = iVar3 + -1;
+        copy_count = copy_count + -1;
         *param_5 = uVar1;
         param_5[1] = uVar2;
         param_5 = param_5 + 2;
-      } while (0 < iVar3);
+      } while (0 < copy_count);
     }
     else {
+      source = (float *)param_3;
       iVar4 = (int)param_4;
       for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
         *(float *)((int)param_5 + iVar3 * 4 + 0x20) =
           param_1 *
             (*(float *)(iVar4 + iVar3 * 4 + 0x20) -
-             *(float *)((int)param_3 + iVar3 * 4 + 0x20)) +
-          *(float *)((int)param_3 + iVar3 * 4 + 0x20);
+             *(float *)((int)source + iVar3 * 4 + 0x20)) +
+          *(float *)((int)source + iVar3 * 4 + 0x20);
       }
       for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
         *(float *)((int)param_5 + iVar3 * 4) =
           param_1 *
             (*(float *)(iVar4 + iVar3 * 4) -
-             *(float *)((int)param_3 + iVar3 * 4)) +
-          *(float *)((int)param_3 + iVar3 * 4);
+             *(float *)((int)source + iVar3 * 4)) +
+          *(float *)((int)source + iVar3 * 4);
       }
-      fStack_40[0] = *(float *)((int)param_3 + 0x10);
-      fStack_40[1] = *(float *)((int)param_3 + 0x14);
-      fStack_40[2] = *(float *)((int)param_3 + 0x18);
+      fStack_40[0] = source[4];
+      fStack_40[1] = source[5];
+      fStack_40[2] = source[6];
       fStack_30[0] = *(float *)(iVar4 + 0x10);
       fStack_30[1] = *(float *)(iVar4 + 0x14);
       fStack_30[2] = *(float *)(iVar4 + 0x18);
       FUN_003bbaa0(fStack_40,fStack_30,fStack_20);
-      fStack_10[0] = fStack_20[0] * param_1 + fStack_40[0];
-      fStack_10[1] = fStack_20[1] * param_1 + fStack_40[1];
-      fStack_10[2] = fStack_20[2] * param_1 + fStack_40[2];
+      fStack_10[0] = fStack_20[0] * param_1 + source[4];
+      fStack_10[1] = fStack_20[1] * param_1 + source[5];
+      fStack_10[2] = fStack_20[2] * param_1 + source[6];
       FUN_003bb9b0(fStack_10);
       *(float *)((int)param_5 + 0x10) = fStack_10[0];
       *(float *)((int)param_5 + 0x14) = fStack_10[1];

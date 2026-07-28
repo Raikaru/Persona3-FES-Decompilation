@@ -578,9 +578,7 @@ void func_0021cd00(void* frameData, f32* uv)
 }
 
 #pragma optimization_level 2
-// Reconstructed full mode dispatch and duplicated axis calculations.
-// Remaining differences are MWCC register allocation and branch scheduling.
-// FUN_0021cec0 NONMATCHING
+// FUN_0021cec0
 void func_0021cec0(void* frameData, f32* uv, u32 mode)
 {
     BpTexFrameData* frame;

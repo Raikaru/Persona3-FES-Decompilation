@@ -1026,11 +1026,11 @@ state0:
     frac = phase - (f32)(s32)phase;
     if (frac < 0.5f)
     {
-        blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
+        blend = DAT_007cad74 * frac / 0.5f;
     }
     else
     {
-        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
+        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74;
     }
     *(f32*)(panel + 0x5f8) = blend;
 
@@ -1056,11 +1056,11 @@ state1:
     frac = phase - (f32)(s32)phase;
     if (frac < 0.5f)
     {
-        blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
+        blend = DAT_007cad74 * frac / 0.5f;
     }
     else
     {
-        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
+        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74;
     }
     *(f32*)(panel + 0x32c) = blend;
 
@@ -1141,18 +1141,14 @@ shared_tail:
         {
             if (*(u32*)(panel + 0x44) >= 0x1e0000)
             {
-                *(u32*)(panel + 0) &= ~2u;
+                *(u32*)(panel + 0) &= ~1u;
             }
-        }
-        else
-        {
-            *(u32*)(panel + 0) &= ~2u;
         }
     }
 
     if (*(u32*)(panel + 0) & 8)
     {
-        func_0020cf20(panel + 0xdc, panel);
+        func_0020cf20((void*)(uintptr_t)*(u32*)(panel + 0xdc), panel);
     }
 }
 

@@ -673,6 +673,7 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     KDrawArcTaskWork* work;
     u32 i;
     KDrawRenderObject* renderObject;
+    RwV3d* vertices;
     f32 fullAngle;
     f32 normalizedAngle;
     f32 startAngle;
@@ -705,30 +706,33 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 
     renderObject = work->render->manager->renderObject;
     func_00493370(renderObject, 0xfff);
-    renderObject->geometry->vertices[0] = work->render->center;
+    vertices = renderObject->geometry->vertices;
+    vertices[0].x = work->render->center.x;
+    vertices[0].y = work->render->center.y;
+    vertices[0].z = work->render->center.z;
+    fullAngle = (fullAngle * normalizedAngle) / 32.0f;
     theta = startAngle;
     for (i = 0; i < 0x20; i++)
     {
-        renderObject->geometry->vertices[i + 1].x =
+        vertices[i + 1].x =
             work->render->radius * cosf(theta) + work->render->center.x;
-        renderObject->geometry->vertices[i + 1].y = work->render->center.y;
-        renderObject->geometry->vertices[i + 1].z =
+        vertices[i + 1].y = work->render->center.y;
+        vertices[i + 1].z =
             work->render->radius * sinf(theta) + work->render->center.z;
-        theta += (fullAngle * normalizedAngle) / 32.0f;
+        theta += fullAngle;
     }
 
     if (work->render->angle == 360.0f)
     {
-        renderObject->geometry->vertices[0x21].x =
+        vertices[0x21].x =
             work->render->radius * cosf(startAngle) + work->render->center.x;
-        renderObject->geometry->vertices[0x21].y = work->render->center.y;
-        renderObject->geometry->vertices[0x21].z =
+        vertices[0x21].y = work->render->center.y;
+        vertices[0x21].z =
             work->render->radius * sinf(startAngle) + work->render->center.z;
     }
     else
     {
-        renderObject->geometry->vertices[0x21] =
-            renderObject->geometry->vertices[0];
+        vertices[0x21] = vertices[0];
     }
     func_004933d0(renderObject);
 }

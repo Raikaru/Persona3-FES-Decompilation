@@ -860,6 +860,8 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
   int iVar10;
 
+  u8 *puVar11;
+
   short sStack_2;
 
   
@@ -890,9 +892,7 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
     lVar4 = FUN_003d5a40(puVar8,(short)param_2 + 2,param_3,param_4,&sStack_2);
 
-    if ((long)sStack_2 <
-
-        CONCAT44((int)(((long)(iVar10 + 2) << 0x30) >> 0x3f),(int)(short)(iVar10 + 2))) {
+    if (sStack_2 < (short)((short)param_2 + 2)) {
 
       lVar4 = 0;
 
@@ -908,13 +908,15 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
         iVar5 = uVar6 * 8;
 
+        puVar11 = DAT_006a5410 + iVar5;
+
         bVar3 = bVar2;
 
-        if ((u32)uVar1 == (long)*(short *)(DAT_006a5414 + iVar5)) {
+        if ((u32)uVar1 == (long)*(short *)(puVar11 + 4)) {
 
-          if ((*(u16 *)(DAT_006a5416 + iVar5) & 1) != 0) {
+          if ((*(s16 *)(puVar11 + 6) & 1) != 0) {
 
-            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
+            lVar4 = datGetFlag(*(u32 *)puVar11);
 
             if (lVar4 == 0) {
 
@@ -928,9 +930,9 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
           else {
 
-            if ((*(u16 *)(DAT_006a5416 + iVar5) & 2) != 0) {
+            if ((*(s16 *)(puVar11 + 6) & 2) != 0) {
 
-              lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
+              lVar4 = datGetFlag(*(u32 *)puVar11);
 
               bVar2 = 1;
 

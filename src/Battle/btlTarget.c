@@ -152,6 +152,11 @@ static inline f32 btlTargetV2dLength(const RwV2d* v)
     return sqrtf(v->x * v->x + v->y * v->y);
 }
 
+static inline u16 btlTargetRandomDelay(u16 base, u32 limit)
+{
+    return (u16)(base + (u16)datCalcRand(limit));
+}
+
 // FUN_002d1570
 void btlTargetInit(BtlTarget* target)
 {
@@ -4989,28 +4994,24 @@ void FUN_002db2a0(u32 param_1)
     switch (index)
     {
     case 0:
-        threshold = 2;
-        threshold = (u16)(threshold + (u16)datCalcRand(2));
+        threshold = btlTargetRandomDelay(2, 2);
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         *(u32*)(iGpffffb6fc + 0xa10) = 0;
         break;
     case 1:
-        threshold = 2;
-        threshold = (u16)(threshold + (u16)datCalcRand(1));
+        threshold = btlTargetRandomDelay(2, 1);
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         break;
     case 2:
         if (datGetFlag(0x140) != 0)
         {
-            threshold = 2;
-            threshold = (u16)(threshold + (u16)datCalcRand(2));
+            threshold = btlTargetRandomDelay(2, 2);
         }
         else if (datGetFlag(0x141) != 0)
         {
-            threshold = 3;
-            threshold = (u16)(threshold + (u16)datCalcRand(2));
+            threshold = btlTargetRandomDelay(3, 2);
         }
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;

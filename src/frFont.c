@@ -1141,7 +1141,7 @@ long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
 }
 #define FUN_003b0620(...) ((long (*)(...))FUN_003b0620)(__VA_ARGS__)
 #undef FUN_003b0840
-// FUN_003B0840 NONMATCHING
+// FUN_003B0840
 
 int FUN_003b0840(short *param_1)
 {

@@ -1657,12 +1657,41 @@ void func_002faa50(BtlAction* source, BtlAction* target, BtlTargetResult* result
 void func_002faab0()
 {
     BtlUnit* unit;
-    u16 encounterId;
     u8* model;
 
-    encounterId = btlBossGetEncounterId();
-    if (encounterId == 0x1b4)
+    switch (btlBossGetEncounterId())
     {
+    case 0x1a4:
+        func_002eaa40();
+        break;
+    case 0x1a5:
+        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
+        {
+            if (unit->charId == 0x107)
+            {
+                model = (u8*)unit->mdl;
+                model[0x388] |= 8;
+                *(u32*)((u8*)gBtl + 0xb4c) = 0;
+                model[0x41d] = 0;
+            }
+        }
+        break;
+    case 0x1a8:
+        func_002ef5a0();
+        break;
+    case 0x1ac:
+        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
+        {
+            if (unit->charId == 0x111)
+            {
+                model = (u8*)unit->mdl;
+                model[0x388] |= 8;
+                *(u32*)((u8*)gBtl + 0xb50) = 0;
+                model[0x41d] = 0;
+            }
+        }
+        break;
+    case 0x1b4:
         for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
         {
             if (unit->charId == 0xf2)
@@ -1674,40 +1703,9 @@ void func_002faab0()
                 func_0027f650(unit, 0x957180);
             }
         }
-    }
-    else if (encounterId == 0x1ac)
-    {
-        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
-        {
-            if (unit->charId == 0x111)
-            {
-                model = (u8*)unit->mdl;
-                model[0x388] |= 8;
-                *(u32*)((u8*)gBtl + 0xb50) = 0;
-                model[0x41d] = 0;
-            }
-        }
-    }
-    else if (encounterId == 0x1a8)
-    {
-        func_002ef5a0();
-    }
-    else if (encounterId == 0x1a5)
-    {
-        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
-        {
-            if (unit->charId == 0x107)
-            {
-                model = (u8*)unit->mdl;
-                model[0x388] |= 8;
-                *(u32*)((u8*)gBtl + 0xb4c) = 0;
-                model[0x41d] = 0;
-            }
-        }
-    }
-    else if (encounterId == 0x1a4)
-    {
-        func_002eaa40();
+        break;
+    default:
+        break;
     }
 }
 

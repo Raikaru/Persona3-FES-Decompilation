@@ -484,6 +484,7 @@ extern u8 *PTR_s_HAMETU_006a01cc;
 extern u8 *PTR_s_HIRU_SASO_0069d880;
 extern u8 *PTR_s_KAIKIN_006a01c0;
 extern u8 *PTR_s_KEYFREE_007ccfbc;
+extern u8 gp0xffffa2d0;
 extern u8 *PTR_s_KUCHI_0069ee18;
 extern u8 *PTR_s_LENGTH_007cd22c;
 extern u8 *PTR_s_L_FLAG_NOTUSE_0069e990;
@@ -511,7 +512,7 @@ extern u8 *PTR_s_START_0069e100_abs[];
 extern u8 *PTR_s_START_0069ee24;
 extern u8 *PTR_s_START_007ccf50;
 extern u32 fGpffff80d0;
-extern u32 fGpffff8294;
+extern f32 fGpffff8294;
 extern u32 fGpffff8438;
 extern s16 gp0xffff9d78;
 extern s16 gp0xffff9d7c;
@@ -4440,7 +4441,7 @@ bool FUN_00372c40(int param_1)
 
       }
 
-      if (((long)(iVar8 + 2) <= (long)*(char *)(iVar3 + 0x11)) && (0 < lVar5)) {
+      if (((iVar8 + 2) <= *(char *)(iVar3 + 0x11)) && (0 < lVar5)) {
 
         *(u8 *)(iVar3 + 0x11) = 0;
 
@@ -17519,7 +17520,7 @@ void FUN_003840d0(int param_1,int param_2,int param_3,int param_4)
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar3, 0, (const char *)(void *)(DAT_006a0000_abs + 0x188));
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
-    evtMenuDrawText((param_1 + 0x18) * 0xc, param_2 * 0xc, uVar3, uVar1, (const char *)&gp0xffffa3b8, *(u32 *)(iVar2 + 0x198));
+    evtMenuDrawText((param_1 + 0x18) * 0xc, param_2 * 0xc, uVar3, uVar1, (const char *)&gp0xffffa2d0, *(u32 *)(iVar2 + 0x198));
     break;
   }
   return;
