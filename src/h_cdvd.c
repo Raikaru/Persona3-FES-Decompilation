@@ -833,7 +833,7 @@ void H_Cdvd_CacheRemove(void* requestData)
 }
 
 
-// FUN_00101520 NONMATCHING
+// FUN_00101520
 void func_00101520(const char* dir)
 {
     char normalized[256];
