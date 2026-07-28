@@ -3401,7 +3401,7 @@ u64 FUN_003ace60(u64 param_1,int param_2)
   int resource;
   u8 *data;
 
-  data = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  data = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
   low = data[0] - 1;
   high = data[1];
   if (high == 0xff) {
@@ -3412,7 +3412,7 @@ u64 FUN_003ace60(u64 param_1,int param_2)
   }
   packed1 = (u32)value << 8 | low & 0xff;
 
-  data = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
+  data = *(u8 **)(param_2 + 0x18) + *(u32 *)(param_2 + 0x10);
   low = data[2] - 1;
   high = data[3];
   if (high == 0xff) {
@@ -3424,9 +3424,13 @@ u64 FUN_003ace60(u64 param_1,int param_2)
   packed2 = (u32)value << 8 | low & 0xff;
 
   resource = FUN_0016f190(0x184);
-  if ((resource != 0) && ((DAT_007cd500 & 0x100) == 0)) {
-    FUN_0010a2e0(packed1,2,packed2);
+  if (resource == 0) {
+    return 0;
   }
+  if ((DAT_007cd500 & 0x100) != 0) {
+    return 0;
+  }
+  FUN_0010a2e0(packed1,2,packed2);
   return 0;
 
 }

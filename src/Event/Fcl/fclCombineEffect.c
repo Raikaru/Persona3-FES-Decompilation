@@ -3731,93 +3731,50 @@ u64 FUN_0041baf0(int param_1)
 
 
 void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *param_5)
-
-
-
 {
+  RwV3d *positions;
+  RwV2d *texcoords;
+  u8 *colors;
+  int count;
+  void *context;
+  int alloc_size;
+  u8 *result;
+  int i;
+  int offset;
+  u8 *entry;
+  RwV3d position;
 
-  u32 uVar1;
-
-  u8 *uVar2;
-
-  u32 *puVar3;
-
-  u32 *puVar4;
-
-  u8 *puVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  int iVar8;
-
-  u32 uVar9;
-
-  
-
-  if (((param_1 == 0) || (param_4 < 1)) || (param_5 == 0)) {
-
+  positions = (RwV3d *)param_1;
+  texcoords = (RwV2d *)param_2;
+  colors = (u8 *)param_3;
+  count = param_4;
+  context = param_5;
+  if (((positions == 0) || (count < 1)) || (context == 0)) {
     K_Assert(DAT_006b2ad0,0x8e7);
-
   }
+  alloc_size = count * 0x24 + 0x14;
+  result = (*DAT_00960178)(alloc_size,0x40000);
+  memset(result,0,alloc_size);
+  *(void **)(result + 0xc) = context;
+  *(int *)(result + 8) = count;
+  *(u8 **)(result + 4) = result + 0x14;
 
-  iVar7 = param_4 * 0x24 + 0x14;
-
-  uVar2 = (*DAT_00960178)(iVar7,0x40000);
-
-  memset(uVar2,0,iVar7);
-  iVar8 = (int)uVar2;
-  *(void **)(iVar8 + 0xc) = param_5;
-
-  *(int *)(iVar8 + 8) = param_4;
-
-  *(int *)(iVar8 + 4) = iVar8 + 0x14;
-
-  for (iVar7 = 0; iVar7 < param_4; iVar7 = iVar7 + 1) {
-
-    puVar3 = (u32 *)((u8 *)param_1 + iVar7 * 0xc);
-
-    uVar1 = puVar3[1];
-
-    uVar9 = puVar3[2];
-
-    iVar6 = iVar7 * 0x24;
-
-    puVar4 = (u32 *)(*(int *)(iVar8 + 4) + iVar6);
-
-    *puVar4 = *puVar3;
-
-    puVar4[1] = uVar1;
-
-    puVar4[2] = uVar9;
-
-    puVar3 = (u32 *)((u8 *)param_2 + iVar7 * 8);
-
-    *(u32 *)(*(int *)(iVar8 + 4) + iVar6 + 0x1c) = *puVar3;
-
-    *(u32 *)(*(int *)(iVar8 + 4) + iVar6 + 0x20) = puVar3[1];
-
-    iVar6 = *(int *)(iVar8 + 4) + iVar6;
-
-    puVar5 = (u8 *)param_3 + iVar7 * 4;
-
-    *(u8 *)(iVar6 + 0xc) = *puVar5;
-
-    *(u8 *)(iVar6 + 0xd) = puVar5[1];
-
-    *(u8 *)(iVar6 + 0xe) = puVar5[2];
-
-    *(u8 *)(iVar6 + 0xf) = puVar5[3];
-
+  for (i = 0; i < count; i++) {
+    position = positions[i];
+    offset = i * 0x24;
+    entry = *(u8 **)(result + 4) + offset;
+    *(f32 *)(entry + 0) = position.x;
+    *(f32 *)(entry + 4) = position.y;
+    *(f32 *)(entry + 8) = position.z;
+    *(f32 *)(entry + 0x1c) = texcoords[i].x;
+    *(f32 *)(entry + 0x20) = texcoords[i].y;
+    *(u8 *)(entry + 0xc) = colors[i * 4];
+    *(u8 *)(entry + 0xd) = colors[i * 4 + 1];
+    *(u8 *)(entry + 0xe) = colors[i * 4 + 2];
+    *(u8 *)(entry + 0xf) = colors[i * 4 + 3];
   }
-
-  uVar1 = FUN_004c38c0();
-
-  *(u32 *)(iVar8 + 0x10) = uVar1;
-
-  return uVar2;
-
+  *(u32 *)(result + 0x10) = FUN_004c38c0();
+  return result;
 }
 
 // FUN_0041BE50

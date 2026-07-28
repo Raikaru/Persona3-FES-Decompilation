@@ -236,7 +236,7 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
         "qmtc2       %0, $vf10           \n"
         "vitof0.xyzw $vf10, $vf10        \n"
         "mfc1        %0, %3              \n"
-        "nop                                \n"
+        "nop                             \n"
         "qmtc2       %0, $vf2            \n"
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
         "vmove.xyzw  $vf11, $vf10        \n"
@@ -246,7 +246,7 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
         "qmtc2       %0, $vf10           \n"
         "vitof0.xyzw $vf10, $vf10        \n"
         "mfc1        %0, %3              \n"
-        "nop                                \n"
+        "nop                             \n"
         "qmtc2       %0, $vf2            \n"
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
         "vmul.xyzw   $vf10, $vf10, $vf11 \n"
@@ -261,6 +261,47 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
         : "=&r"(tmp)
         : "r"(pc1), "r"(pc2), "f"(inv255)
         : "memory");
+    return tmp;
+}
+
+/* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
+static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, const u32 *pc2, f32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "lw          $v0, 0(%1)          \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %3             \n"
+        "nop                             \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmove.xyzw  $vf11, $vf10        \n"
+        "lw          $v0, 0(%2)          \n"
+        "pextlb      $v0, $zero, $v0     \n"
+        "pextlh      $v0, $zero, $v0     \n"
+        "qmtc2       $v0, $vf10          \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "mfc1        $v0, %3             \n"
+        "nop                             \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         $v0, 0x437F          \n"
+        "qmtc2       $v0, $vf2           \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       $v0, $vf10          \n"
+        "ppach       $v0, $zero, $v0     \n"
+        "ppacb       $v0, $zero, $v0     \n"
+        "sw          $v0, 0(%0)          \n"
+        ".set reorder"
+        :
+        : "r"(&tmp), "r"(pc1), "r"(pc2), "f"(inv255)
+        : "$v0", "memory");
     return tmp;
 }
 
@@ -7218,102 +7259,46 @@ void FUN_00322fd0(int param_1,u32 param_2,float *param_3)
 
 {
 
-  u32 uVar1;
+  u32 total = 0;
+  u32 index = 0xffffffff;
+  u32 count = *(u32 *)(param_1 + 4);
+  u32 i;
+  int *durations;
+  int *entry;
 
-  int iVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
-  int *piVar7;
-
-  u32 uVar8;
-
-  
-
-  uVar4 = 0xffffffff;
-
-  uVar1 = *(u32 *)(param_1 + 4);
-
-  if (uVar1 != 1) {
-
-    if ((*(u32 *)(param_1 + 8) & 1) == 0) {
-
-      if (*(u32 *)(param_1 + 0x18) <= param_2) {
-
-        uVar4 = uVar1 - 1;
-
-        param_2 = 0;
-
-      }
-
-    }
-
-    else {
-
-      param_2 = (int)param_2 % *(int *)(param_1 + 0x18);
-
-    }
-
-    uVar5 = uVar4;
-
-    if (uVar4 == 0xffffffff) {
-
-      piVar7 = *(int **)(param_1 + 0x10);
-
-      uVar6 = 0;
-
-      for (iVar3 = 0;
-
-          (uVar5 = uVar4, uVar6 < uVar1 &&
-
-          (iVar2 = *piVar7, uVar5 = uVar6, (u32)(iVar3 + iVar2) < param_2));
-
-          iVar3 = iVar3 + iVar2 + 1) {
-
-        uVar6 = uVar6 + 1;
-
-        piVar7 = piVar7 + 4;
-
-      }
-
-    }
-
+  if (count == 1) {
+    index = 0;
   }
-
   else {
+    if ((*(u32 *)(param_1 + 8) & 1) != 0) {
+      param_2 %= *(u32 *)(param_1 + 0x18);
+    }
+    else if (*(u32 *)(param_1 + 0x18) <= param_2) {
+      index = count - 1;
+      param_2 = 0;
+    }
 
-    uVar5 = 0;
-
+    if (index == 0xffffffff) {
+      durations = *(int **)(param_1 + 0x10);
+      for (i = 0; i < count; i++, durations += 4) {
+        if ((u32)(total + *durations) < param_2) {
+          goto next_duration;
+        }
+        index = i;
+        break;
+next_duration:
+        total += *durations + 1;
+      }
+    }
   }
 
-  uVar8 = 0x3f800000;
-
-  *(u32 *)param_3 = 0x3f800000;
-
-  if ((*(u32 *)(param_1 + 8) & 4) != 0) {
-
-    uVar8 = 0x40000000;
-
-  }
-
-  *(u32 *)(param_3 + 1) = uVar8;
-
-  piVar7 = *(int **)(*(int *)(param_1 + 0x14) + uVar5 * 4);
-
-  *(u32 *)(param_3 + 4) = (u32)piVar7;
-
-  iVar3 = *piVar7;
-
-  param_3[2] = (float)*(int *)(iVar3 + 0xc);
-
-  param_3[3] = (float)*(int *)(iVar3 + 0x10);
-
+  param_3[0] = 1.0f;
+  param_3[1] = ((*(u32 *)(param_1 + 8) & 4) != 0) ? 2.0f : 1.0f;
+  entry = *(int **)(*(int *)(param_1 + 0x14) + index * 4);
+  *(int **)(param_3 + 4) = entry;
+  entry = (int *)*entry;
+  param_3[2] = (float)entry[3];
+  param_3[3] = (float)entry[4];
   return;
 
 }
@@ -9890,7 +9875,7 @@ void FUN_00325b80(int param_1)
 
 
 
-// FUN_00325C10 NONMATCHING
+// FUN_00325C10
 
 
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
@@ -10008,9 +9993,9 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
     uVar1 = *(u16 *)(*(int *)(iVar5 + 0x90) + 4);
 
-    if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
-      PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
-                (*(u32 *)(*(int *)(iVar5 + 0x90) + 8));
+    if (((code (*)[13])PTR_LAB_0069be40)[uVar1][8] != NULL) {
+      ((code (*)[13])PTR_LAB_0069be40)[uVar1][8]
+                (*(u32 *)(*(int *)(iVar5 + 0x90) + 8),output);
 
     }
 
@@ -45306,8 +45291,8 @@ void FUN_0034cc00(u32 *param_1)
   u32 uStack_c;
 
   int iStack_4;
-
   int iStack_8;
+
 
   
 
@@ -45347,11 +45332,11 @@ void FUN_0034cc00(u32 *param_1)
 
     if (param_1[0x27] != 0) {
 
-      iStack_8 = FUN_0032a120((char *)(param_1 + 0xc),(u32 *)(param_1 + 0x15),iVar1,iVar2);
 
+      iStack_8 = FUN_0032a120((char *)(param_1 + 0xc),(u32 *)(param_1 + 0x15),iVar1,iVar2);
       iStack_4 = param_1[9];
 
-      uStack_c = mdlVuModulateStacked((u32 *)&iStack_4,(u32 *)&iStack_8,DAT_007cae4c);
+      uStack_c = mdlVuModulateStackedV0((u32 *)&iStack_4,(u32 *)&iStack_8,DAT_007cae4c);
 
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 

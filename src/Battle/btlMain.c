@@ -3596,7 +3596,7 @@ u32 FUN_002a0440(float *param_1)
 }
 #pragma opt_common_subs on
 #pragma optimization_level 2
-// FUN_002A10E0 NONMATCHING
+// FUN_002A10E0
 
 
 u8 FUN_002a10e0(BtlMainLerpWork *param_1)
@@ -3605,11 +3605,7 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
     f32 totalFloat;
     f32 ratio;
     f32 inverse;
-    f32 results[4];
-    f32 target0;
-    f32 target1;
-    f32 target2;
-    f32 target3;
+    RwV4d results;
     u32 totalFrames;
     u32 currentFrame;
     u8* global;
@@ -3617,14 +3613,7 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
     if (param_1->currentFrame == 0)
     {
         global = (u8*)iGpffffb6fc;
-        target0 = *(f32*)(global + 0x234);
-        target1 = *(f32*)(global + 0x238);
-        target2 = *(f32*)(global + 0x23c);
-        target3 = *(f32*)(global + 0x240);
-        param_1->target0 = target0;
-        param_1->target1 = target1;
-        param_1->target2 = target2;
-        param_1->target3 = target3;
+        *(RwV4d*)&param_1->target0 = *(RwV4d*)(global + 0x234);
     }
 
     totalFrames = param_1->totalFrames;
@@ -3636,25 +3625,23 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
 
         ratio = currentFloat / totalFloat;
         inverse = 1.0f - ratio;
-        results[0] = param_1->target0 * inverse + param_1->value0 * ratio;
-        results[1] = param_1->target1 * inverse + param_1->value1 * ratio;
-        results[2] = param_1->target2 * inverse + param_1->value2 * ratio;
-        results[3] = param_1->target3 * inverse + param_1->value3 * ratio;
+        results.x = param_1->target0 * inverse + param_1->value0 * ratio;
+        results.y = param_1->target1 * inverse + param_1->value1 * ratio;
+        results.z = param_1->target2 * inverse + param_1->value2 * ratio;
+        results.w = param_1->target3 * inverse + param_1->value3 * ratio;
         global = (u8*)iGpffffb6fc;
-        *(f32*)(global + 0x234) = results[0];
-        *(f32*)(global + 0x238) = results[1];
-        *(f32*)(global + 0x23c) = results[2];
-        *(f32*)(global + 0x240) = results[3];
-        param_1->currentFrame++;
-        return 0;
+        *(RwV4d*)(global + 0x234) = results;
     }
 
-    global = (u8*)iGpffffb6fc;
-    *(f32*)(global + 0x234) = param_1->value0;
-    *(f32*)(global + 0x238) = param_1->value1;
-    *(f32*)(global + 0x23c) = param_1->value2;
-    *(f32*)(global + 0x240) = param_1->value3;
-    return 1;
+    else
+    {
+        global = (u8*)iGpffffb6fc;
+        *(RwV4d*)(global + 0x234) = *(RwV4d*)&param_1->value0;
+        return 1;
+    }
+
+    param_1->currentFrame++;
+    return 0;
 }
 
 

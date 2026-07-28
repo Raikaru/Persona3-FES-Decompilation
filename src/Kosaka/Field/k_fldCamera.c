@@ -539,34 +539,38 @@ void func_001d68e0(CmrFile* cmr, KwlnTask* fldCameraTask)
 // FUN_001d69e0 NONMATCHING
 void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
 {
-    FldCamera* fldCamera;
-    RwCamera* camera;
+    KwlnTask* task;
+    const FldCameraRuntimeCmr* runtime;
     RwFrame* cameraFrame;
+    RwV3d* targetPosition;
 
-    camera = kwlnGetMainCamera();
-    K_View_SetFov(camera, ((const FldCameraRuntimeCmr*)cmr)->fields.fov);
-    camera = kwlnGetMainCamera();
-    cameraFrame = (RwFrame*)camera->object.object.parent;
-    FUN_004cb7f0(cameraFrame,
-                 &((const FldCameraRuntimeCmr*)cmr)->fields.mat, 0);
-    func_001d5c10(fldCameraTask,
-                  ((const FldCameraRuntimeCmr*)cmr)->fields.type);
+    runtime = (const FldCameraRuntimeCmr*)cmr;
+    task = fldCameraTask;
+    K_View_SetFov(kwlnGetMainCamera(), runtime->fields.fov);
+    FUN_004cb7f0(
+        (RwFrame*)kwlnGetMainCamera()->object.object.parent,
+        &runtime->fields.mat, 0);
+    func_001d5c10(task, runtime->fields.type);
 
-    fldCamera = (FldCamera*)fldCameraTask->workData;
-    fldCamera->posOffset = ((const FldCameraRuntimeCmr*)cmr)->fields.posOffset;
-    fldCamera->xzDeadZone =
-        ((const FldCameraRuntimeCmr*)cmr)->fields.xzDeadZone;
-    fldCamera->yDeadZone =
-        ((const FldCameraRuntimeCmr*)cmr)->fields.yDeadZone;
+    ((FldCamera*)task->workData)->posOffset = runtime->fields.posOffset;
+    ((FldCamera*)task->workData)->xzDeadZone = runtime->fields.xzDeadZone;
+    ((FldCamera*)task->workData)->yDeadZone = runtime->fields.yDeadZone;
 
-    if (fldCamera->type == 2)
+    switch (((FldCamera*)task->workData)->type)
     {
-        FUN_001a1210(camera, &cameraFrame->modelling.pos,
-                     &fldCamera->frame->modelling.pos, NULL);
-    }
-    else if (fldCamera->type == 5 || fldCamera->type == 0)
-    {
-        func_001d5e30(K_Field_Get()->cameraCtlTask, 0.0f);
+        case 0:
+        case 5:
+            func_001d5e30(K_Field_Get()->cameraCtlTask, 0.0f);
+            break;
+        case 2:
+            cameraFrame =
+                (RwFrame*)kwlnGetMainCamera()->object.object.parent;
+            targetPosition =
+                &((FldCamera*)task->workData)->frame->modelling.pos;
+            FUN_001a1210(
+                kwlnGetMainCamera(), &cameraFrame->modelling.pos,
+                targetPosition, NULL);
+            break;
     }
 }
 

@@ -9144,94 +9144,104 @@ u32 func_002ecc20(void)
 }
 
 // FUN_002ecc60 NONMATCHING
-void func_002ecc60(s32 param_1,s32 param_2)
-
+void func_002ecc60(s32 param_1, s32 param_2)
 {
-  short sVar1;
-  s32 lVar2;
-  u16 *puVar3;
-  u16 uVar4;
-  u32 uVar5;
-  int unaff_s3_lo;
-  u16 uVar6;
-  float fVar7;
-  float fVar8;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_44;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_34;
-  float afStack_30 [2];
-  float fStack_28;
-  float afStack_24 [2];
-  float fStack_1c;
-  float afStack_10 [2];
-  float fStack_8;
-  
-  sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xb44) + 0xa4);
-  if (sVar1 == 0xe6) {
-    unaff_s3_lo = 0x699f90;
+  typedef struct VoiceRegionLocals {
+    RwV2d center;
+    RwV2d firstEdge;
+    RwV2d secondEdge;
+    RwV2d listenerEdge;
+    RwV3d firstPoint;
+    RwV3d secondPoint;
+    u8 pointPadding[8];
+    RwV3d listenerPoint;
+  } VoiceRegionLocals;
+  VoiceRegionLocals stack;
+  s16 *table;
+  s16 firstResult;
+  s16 secondResult;
+  u16 index;
+  s16 *entry;
+  s16 *entryResult;
+  u16 command;
+  f32 limit;
+
+  command = *(u16 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0xa4);
+  switch (command) {
+  case 0xe2:
+    table = (s16 *)0x699e60;
+    break;
+  case 0xe3:
+    table = (s16 *)0x699eb0;
+    break;
+  case 0xe4:
+    table = (s16 *)0x699f00;
+    break;
+  case 0xe5:
+    table = (s16 *)0x699f50;
+    break;
+  case 0xe6:
+    table = (s16 *)0x699f90;
+    break;
   }
-  else if (sVar1 == 0xe5) {
-    unaff_s3_lo = 0x699f50;
-  }
-  else if (sVar1 == 0xe4) {
-    unaff_s3_lo = 0x699f00;
-  }
-  else if (sVar1 == 0xe3) {
-    unaff_s3_lo = 0x699eb0;
-  }
-  else if (sVar1 == 0xe2) {
-    unaff_s3_lo = 0x699e60;
-  }
-  uVar4 = 0xffff;
-  lVar2 = FUN_00318ed0_btlVoice_typed(*(u32 *)(*(int *)(DAT_007ce3ec + 0xb48) + 0x9f4),0x15,afStack_10);
-  uVar6 = uVar4;
-  if (lVar2 != 0) {
-    uVar5 = 0;
-    fVar8 = afStack_10[0];
-    while( true ) {
-      puVar3 = (u16 *)(unaff_s3_lo + uVar5 * 8);
-      uVar6 = 0xffff;
-      if (puVar3[2] == -1) break;
-      lVar2 = FUN_00318ed0_btlVoice_typed(*(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),*puVar3,
-                           afStack_30);
-      if ((lVar2 != 0) &&
-         (lVar2 = FUN_00318ed0_btlVoice_typed(*(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),puVar3[1],
-                               afStack_24), lVar2 != 0)) {
-        fStack_50 = (afStack_24[0] + afStack_30[0] + 0.0f) / 3.0f - 0.0f;
-        fStack_4c = (fStack_1c + fStack_28 + 0.0f) / 3.0f - 0.0f;
-        FUN_004c6b20_btlVoice_typed(&fStack_50,&fStack_50);
-        fStack_48 = afStack_30[0] - 0.0f;
-        fStack_44 = fStack_28 - 0.0f;
-        FUN_004c6b20_btlVoice_typed(&fStack_48,&fStack_48);
-        fStack_40 = afStack_24[0] - 0.0f;
-        fStack_3c = fStack_1c - 0.0f;
-        FUN_004c6b20_btlVoice_typed(&fStack_40,&fStack_40);
-        fStack_38 = fVar8 - 0.0f;
-        fStack_34 = fStack_8 - 0.0f;
-        FUN_004c6b20_btlVoice_typed(&fStack_38,&fStack_38);
-        fVar7 = fStack_50 * fStack_38 + fStack_4c * fStack_34;
-        if ((fStack_50 * fStack_48 + fStack_4c * fStack_44 <= fVar7) &&
-           (fStack_50 * fStack_40 + fStack_4c * fStack_3c <= fVar7)) {
-          uVar4 = puVar3[2];
-          uVar6 = *(u16 *)(uVar5 * 8 + unaff_s3_lo + 6);
+
+  firstResult = -1;
+  secondResult = firstResult;
+  if (FUN_00318ed0_btlVoice_typed(
+          *(u32 *)(*(int *)(DAT_007ce3ec + 0xb48) + 0x9f4),
+          0x15, &stack.listenerPoint.x) != 0) {
+    f32 listenerX = stack.listenerPoint.x;
+    f32 listenerZ = stack.listenerPoint.z;
+    index = 0;
+    while (1) {
+      entry = table + index * 4;
+      entryResult = entry + 2;
+      if (*entryResult == -1) {
+        break;
+      }
+      if (FUN_00318ed0_btlVoice_typed(
+              *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),
+              entry[0], &stack.firstPoint.x) != 0 &&
+          FUN_00318ed0_btlVoice_typed(
+              *(u32 *)(*(int *)(DAT_007ce3ec + 0xb44) + 0x9f4),
+              entry[1], &stack.secondPoint.x) != 0) {
+        stack.center.x =
+            (stack.secondPoint.x + stack.firstPoint.x + 0.0f) / 3.0f - 0.0f;
+        stack.center.y =
+            (stack.secondPoint.z + stack.firstPoint.z + 0.0f) / 3.0f - 0.0f;
+        FUN_004c6b20_btlVoice_typed(&stack.center.x, &stack.center.x);
+        stack.firstEdge.x = stack.firstPoint.x - 0.0f;
+        stack.firstEdge.y = stack.firstPoint.z - 0.0f;
+        FUN_004c6b20_btlVoice_typed(&stack.firstEdge.x, &stack.firstEdge.x);
+        stack.secondEdge.x = stack.secondPoint.x - 0.0f;
+        stack.secondEdge.y = stack.secondPoint.z - 0.0f;
+        FUN_004c6b20_btlVoice_typed(&stack.secondEdge.x, &stack.secondEdge.x);
+        stack.listenerEdge.x = listenerX - 0.0f;
+        stack.listenerEdge.y = listenerZ - 0.0f;
+        FUN_004c6b20_btlVoice_typed(&stack.listenerEdge.x,
+                                    &stack.listenerEdge.x);
+        limit = stack.center.x * stack.listenerEdge.x +
+                stack.center.y * stack.listenerEdge.y;
+        if (stack.center.x * stack.firstEdge.x +
+                    stack.center.y * stack.firstEdge.y <=
+                limit &&
+            stack.center.x * stack.secondEdge.x +
+                    stack.center.y * stack.secondEdge.y <=
+                limit) {
+          firstResult = *entryResult;
+          secondResult = entry[3];
           break;
         }
       }
-      uVar5 = uVar5 + 1 & 0xffff;
+      index = (index + 1) & 0xffff;
     }
   }
   if (param_1 != 0) {
-    *(u16 *)param_1 = uVar4;
+    *(s16 *)param_1 = firstResult;
   }
   if (param_2 != 0) {
-    *(u16 *)param_2 = uVar6;
+    *(s16 *)param_2 = secondResult;
   }
-  return;
 }
 
 // FUN_002ecf80

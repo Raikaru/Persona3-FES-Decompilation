@@ -10,6 +10,7 @@
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
 extern u8 D_0077e4e0[];
+extern u8 D_00803640[];
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
 extern f32 D_00960088;
@@ -1172,7 +1173,7 @@ void func_0010bff0(void)
     }
 }
 
-// FUN_0010C050 NONMATCHING
+// FUN_0010C050
 void func_0010c050(void)
 {
     typedef struct HSfdThreadParam
@@ -1209,7 +1210,7 @@ void func_0010c050(void)
         queueEntry->queue = NULL;
         sSfdQueue[queueIndex].state = 0;
         thread.function = func_0010c7d0;
-        thread.stack = (void*)0x803640;
+        thread.stack = D_00803640;
         thread.stackSize = 0x20000;
         thread.gpReg = &_mips_gp0_value;
         thread.initialPriority = 0x1C;

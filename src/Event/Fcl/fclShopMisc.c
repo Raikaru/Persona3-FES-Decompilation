@@ -2180,7 +2180,7 @@ u32 FUN_003f1910(u64 param_1)
   return uVar2;
 }
 
-// FUN_003F1A10 NONMATCHING
+// FUN_003F1A10
 
 
 u32 FUN_003f1a10(u32 param_1)
@@ -2190,20 +2190,17 @@ u32 FUN_003f1a10(u32 param_1)
 {
 
   u32 uVar1;
+  uVar1 = 0;
 
   
 
-  if ((param_1 & 0x7ffff) == 0) {
-
-    uVar1 = 0x4000;
-
+  if ((param_1 & 0x7ffff) != 0) {
+    uVar1 = uVar1 | 0x1000;
   }
-
   else {
-
-    uVar1 = 0x1000;
-
+    uVar1 = uVar1 | 0x4000;
   }
+
 
   if ((param_1 & 0xff00) != 0) {
 
@@ -2213,7 +2210,8 @@ u32 FUN_003f1a10(u32 param_1)
 
   }
 
-  if ((param_1 & 1) == 0) {
+  switch (param_1 & 1) {
+  case 0:
 
     if ((param_1 & 2) != 0) {
 
@@ -2303,16 +2301,11 @@ u32 FUN_003f1a10(u32 param_1)
 
                         else {
 
-                          if ((param_1 & 0x100000) == 0) {
-
-                            uVar1 = 0;
-
-                          }
-
-                          else {
-
+                          if ((param_1 & 0x100000) != 0) {
                             uVar1 = uVar1 | 0x40e;
-
+                          }
+                          else {
+                            uVar1 = 0;
                           }
 
                         }
@@ -2337,6 +2330,7 @@ u32 FUN_003f1a10(u32 param_1)
 
     }
 
+    break;
   }
 
   return uVar1;
@@ -19614,7 +19608,7 @@ void FUN_0040c1e0(int param_1,int param_2,int param_3)
 
 }
 
-// FUN_0040C310 NONMATCHING
+// FUN_0040C310
 
 
 void FUN_0040c310(int param_1)
@@ -19622,6 +19616,7 @@ void FUN_0040c310(int param_1)
   u32 *puVar1;
   u32 uVar3;
   int iVar6;
+  int iVar7;
   int *piVar5;
 
   piVar5 = *(int **)(*(int *)(param_1 + 0xc) + 4);
@@ -19629,16 +19624,27 @@ void FUN_0040c310(int param_1)
     switch (*piVar5) {
     case 0xd:
       puVar1 = *(u32 **)(piVar5[5] + 0x1c);
-      for (iVar6 = 0; iVar6 < (int)(FUN_00175410_u32() & 0xffff); iVar6++) {
-        uVar3 = datPersonaGetHeroPersona_u32((s16)iVar6);
-        if ((uVar3 != 0) && (FUN_0017ca10_u32(uVar3) == 1)) {
-          goto persona_found;
-        }
+      iVar6 = 0;
+      goto persona_check;
+persona_loop:
+      uVar3 = datPersonaGetHeroPersona_u32((s16)iVar6);
+      if ((uVar3 != 0) && (FUN_0017ca10_u32(uVar3) == 1)) {
+        iVar7 = 1;
+        goto persona_done;
       }
-      *puVar1 |= 1;
-      break;
-persona_found:
-      *puVar1 &= 0xfffffffe;
+      iVar6++;
+persona_check:
+      if (iVar6 < (int)(FUN_00175410_u32() & 0xffff)) {
+        goto persona_loop;
+      }
+      iVar7 = 0;
+persona_done:
+      if (iVar7 == 0) {
+        *puVar1 |= 1;
+      }
+      else {
+        *puVar1 &= 0xfffffffe;
+      }
       break;
     case 0xb:
       puVar1 = *(u32 **)(piVar5[5] + 0x1c);

@@ -49,7 +49,7 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4);
 u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3);
 u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4);
 char FUN_003d6910(void *param_1,int param_2,int *param_3);
-char FUN_003d6ae0(void *param_1,int param_2,int *param_3);
+u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3);
 u32 FUN_003d6c90(int param_1);
 s32 FUN_003d6e60(int param_1,int param_2);
 u32 FUN_003d6f80(int param_1,int param_2,void *param_3);
@@ -1249,19 +1249,19 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
 // FUN_003D6AE0 NONMATCHING
 
 
-char FUN_003d6ae0(void *param_1,int param_2,int *param_3)
+u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
 
 
 {
 
-  short sVar1;
+  u16 sVar1;
 
   u32 uVar2;
 
-  u32 uVar3;
+  int uVar3;
 
-  char cVar4;
+  u8 cVar4;
 
   u8 bVar5;
 
@@ -1275,13 +1275,13 @@ char FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   u32 *puVar10;
 
-  u8 auStack_60 [12];
-
-  short asStack_54 [8];
-
-  char acStack_44 [36];
-
   u32 auStack_20 [8];
+
+  struct {
+    u8 prefix[12];
+    u16 values[8];
+    u8 deltas[24];
+  } scratch;
 
   
 
@@ -1307,7 +1307,7 @@ char FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   memset(param_1,0,0x54);
 
-  memset(auStack_60,0,0x34);
+  memset(&scratch,0,0x34);
 
   puVar10 = (u32 *)param_1;
 
@@ -1319,15 +1319,15 @@ char FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   }
 
-  memcpy(auStack_60,puVar10 + 1,0x34);
+  memcpy(&scratch,puVar10 + 1,0x34);
 
   fclCombineMisc003d7a30(puVar10 + 1,param_3,auStack_20[(int)param_2]);
 
-  uVar3 = puVar10[2];
+  uVar3 = *(u8 *)(puVar10 + 2);
 
   bVar5 = datGetLevel(1);
 
-  if (bVar5 < (u8)uVar3) {
+  if (bVar5 < uVar3) {
 
     *puVar10 = *puVar10 | 2;
 
@@ -1335,9 +1335,9 @@ char FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   for (iVar7 = 0; iVar7 < 5; iVar7 = iVar7 + 1) {
 
-    *(char *)((int)puVar10 + iVar7 + 0x38) =
+    *(u8 *)((int)puVar10 + iVar7 + 0x38) =
 
-         *(char *)((int)puVar10 + iVar7 + 0x20) - acStack_44[iVar7];
+         *(u8 *)((int)puVar10 + iVar7 + 0x20) - scratch.deltas[iVar7];
 
   }
 
@@ -1345,17 +1345,17 @@ char FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
     iVar6 = iVar7 * 2;
 
-    sVar1 = *(short *)((int)puVar10 + iVar6 + 0x10);
+    sVar1 = *(u16 *)((int)puVar10 + iVar6 + 0x10);
 
-    if (sVar1 == asStack_54[iVar7]) {
+    if (sVar1 != scratch.values[iVar7]) {
 
-      *(u16 *)((int)puVar10 + iVar6 + 0x3e) = 0;
+      *(u16 *)((int)puVar10 + iVar6 + 0x3e) = sVar1;
 
     }
 
     else {
 
-      *(short *)((int)puVar10 + iVar6 + 0x3e) = sVar1;
+      *(u16 *)((int)puVar10 + iVar6 + 0x3e) = 0;
 
     }
 

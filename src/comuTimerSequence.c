@@ -964,16 +964,16 @@ code * FUN_003c0570(void)
 }
 #define FUN_003c0570(...) ((code * (*)(...))FUN_003c0570)(__VA_ARGS__)
 #undef FUN_003c07c0
-// FUN_003C07C0 NONMATCHING
+// FUN_003C07C0
 
 
 code * FUN_003c07c0(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
   code *pcVar4;
-  long lVar5;
+  int lVar5;
   u8 auStack_30 [28];
   u32 uStack_4;
   u32 uStack_8;
@@ -981,6 +981,7 @@ code * FUN_003c07c0(void)
   u32 result0;
   u32 result1;
   u32 result2;
+  int ready;
 
   piVar3 = (int *)FUN_00195540();
   uStack_4 = 0;
@@ -994,13 +995,17 @@ code * FUN_003c07c0(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
-      lVar5 = FUN_003bffa0(&uStack_4,&uStack_8,&uStack_c);
+      ready = 1;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
+      ready = 0;
+    }
+    if (ready) {
+      lVar5 = (FUN_003bffa0)(&uStack_4,&uStack_8,&uStack_c);
       if (lVar5 == 0) {
         *piVar3 = 3;
       }
@@ -1026,7 +1031,7 @@ code * FUN_003c07c0(void)
     else {
       bVar2 = 0;
     }
-    if (bVar2) {
+    if (bVar2 == 1) {
       *piVar3 = 3;
     }
     break;
