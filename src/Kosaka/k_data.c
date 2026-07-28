@@ -35,7 +35,7 @@ extern void* func_001016b0(void* request);
 extern void* func_00194b80(KwlnTask* parent, u32 priority, const char* name,
                            void* update, void* destroy, void* work);
 extern void* func_001d4360(void);
-extern u32 func_001d43e0(void);
+extern u32 func_001d43e0(void* object);
 extern void func_0019d3f0(const char* file, s32 line);
 extern void* func_00316bd0(u32 type, u32 priority, void* data, u32 size, u32 mode);
 extern u32 func_00316f70(Model* model);
@@ -292,7 +292,7 @@ void* func_001b7e60(KwlnTask* task)
         }
         if (work->enemyTableRequest != NULL)
         {
-            if (func_001d43e0() != 0)
+            if (func_001d43e0(work->enemyTableRequest) != 0)
             {
                 work->enemyTableRequest = NULL;
             }

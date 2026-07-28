@@ -1195,9 +1195,9 @@ u32 FUN_003998b0(int param_1)
 
   u32 *puVar1;
 
-  char cVar2;
+  u8 cVar2;
 
-  short sVar3;
+  int sVar3;
 
   u32 uVar4;
 
@@ -1285,13 +1285,13 @@ u32 FUN_003998b0(int param_1)
 
     if ((*(u32 *)(puVar1[1] + 4) & 8) == 0) {
 
-      FUN_0039f210(puVar7,0,0xffffffffffffffff,0xffffffffffffffff);
+      FUN_0039f210(puVar7,0,-1,-1);
 
     }
 
     else {
 
-      FUN_0039f210(puVar7,1,0xffffffffffffffff,0xffffffffffffffff);
+      FUN_0039f210(puVar7,1,-1,-1);
 
     }
 
@@ -1313,7 +1313,7 @@ u32 FUN_003998b0(int param_1)
 
   case 4:
 
-    FUN_0039f210(puVar7,2,3,0xffffffffffffffff);
+    FUN_0039f210(puVar7,2,3,-1);
 
     *puVar1 = 5;
 
@@ -1343,7 +1343,7 @@ u32 FUN_003998b0(int param_1)
 
       FUN_00172a20(1);
 
-      FUN_0039f210(puVar7,sVar3 * 2 + 5,0xffffffffffffffff,0xffffffffffffffff);
+      FUN_0039f210(puVar7,sVar3 * 2 + 5,-1,-1);
 
     }
 
@@ -1351,7 +1351,7 @@ u32 FUN_003998b0(int param_1)
 
       FUN_00172a20(0);
 
-      FUN_0039f210(puVar7,sVar3 * 2 + 6,0xffffffffffffffff,0xffffffffffffffff);
+      FUN_0039f210(puVar7,sVar3 * 2 + 6,-1,-1);
 
     }
 

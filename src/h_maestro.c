@@ -1277,12 +1277,12 @@ void func_00112110(void* param_1)
             break;
 
         case 1:
-            if (node->cdvd != NULL && !H_Cdvd_IsFileLoaded(node->cdvd))
-            {
-                break;
-            }
             if (node->cdvd != NULL)
             {
+                if (H_Cdvd_IsFileLoaded(node->cdvd) != 1)
+                {
+                    break;
+                }
                 node->source = (u8*)node->cdvd->fileMemory;
             }
             memcpy(node->header, node->source, sizeof(node->header));
@@ -1292,26 +1292,34 @@ void func_00112110(void* param_1)
             if (*((u16*)(node->header + 0x14)) == 0)
             {
                 node->state = 4;
+                break;
             }
-            break;
 
         case 2:
         {
-            u32 record[2];
-
-            memcpy(record, node->source + node->sourceOffset, sizeof(record));
-            node->sourceOffset += sizeof(record);
-            node->resources[node->resourceIndex++] = func_0010e880(node->source + record[1]);
-            if (node->resourceIndex == (s16)*((u16*)(node->header + 0x14)))
+            do
             {
-                node->state = 4;
-            }
+                u32 record[2];
+
+                memcpy(record, node->source + node->sourceOffset, sizeof(record));
+                node->sourceOffset += sizeof(record);
+                node->resources[node->resourceIndex] = func_0010e880(node->source + record[1]);
+                node->resourceIndex++;
+            } while (node->resourceIndex != *((u16*)(node->header + 0x14)));
+            node->state = 4;
             break;
         }
 
         case 3:
             node->resourceIndex++;
-            node->state = node->resourceIndex == (s16)*((u16*)(node->header + 0x14)) ? 4 : 2;
+            if (*((u16*)(node->header + 0x14)) == node->resourceIndex)
+            {
+                node->state = 4;
+            }
+            else
+            {
+                node->state = 2;
+            }
             break;
 
         case 4:

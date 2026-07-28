@@ -1049,13 +1049,13 @@ KwlnTask* func_001d8d80(FldUnit* unit)
 u32 func_001d8e60(KwlnTask* owner, FldUnit* pc, FldUnit* ec)
 {
     EncounterWork* work;
+    RwV3d delta;
     RwV3d axis;
     RwV3d forward;
-    RwV3d delta;
+    u32 changed;
     RwMatrix* matrix;
     f32 angle;
     s32 i;
-    u32 changed;
 
     work = (EncounterWork*)owner->workData;
     changed = 0;

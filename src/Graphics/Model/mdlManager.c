@@ -8285,7 +8285,7 @@ u32 func_0031b220(Model* param_1)
 
     uVar2 = 0;
 
-    switch((char)piVar1[0x12]) {
+    switch(*(u8 *)(piVar1 + 0x12)) {
 
     case '\0':
 
@@ -8300,10 +8300,9 @@ u32 func_0031b220(Model* param_1)
         lVar5 = H_Cdvd_IsFileLoaded((HCdvd*)piVar1[0x11]);
 
         if (lVar5 == 0) {
-
-          return 0;
-
+          goto switch_end;
         }
+
 
         if (piVar1[0x13] == 0) {
 
@@ -8345,7 +8344,7 @@ u32 func_0031b220(Model* param_1)
 
     case '\x01':
 
-      if ((char)piVar1[0x12] != '\x01') goto switchD_0031b278_caseD_2;
+      if (*(u8 *)(piVar1 + 0x12) != 1) goto switchD_0031b278_caseD_2;
 
       while (lVar5 = func_0031aad0(param_1), lVar5 != 0) {
 
@@ -8384,9 +8383,7 @@ switchD_0031b278_caseD_3:
       lVar5 = func_0031aad0(param_1);
 
       if (lVar5 == 0) {
-
-        return 0;
-
+        goto switch_end;
       }
 
       *(u8 *)(piVar1 + 0x12) = 4;
@@ -8419,6 +8416,7 @@ switchD_0031b278_caseD_4:
 
   }
 
+switch_end:
   return uVar2;
 
 }

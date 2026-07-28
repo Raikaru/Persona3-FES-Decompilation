@@ -7,17 +7,17 @@ static u32* sOpRoot; // DAT_007ce388
 static u32 D_007cdffc;
 static u32 D_007ce00c;
 
-void FUN_00265030();
-u32 FUN_00420340();
-int H_Snd_GetCurrentBgmId();
-void H_Snd_PlayBgm();
-void FUN_00269f50();
+void FUN_00265030(void);
+u32 FUN_00420340(u32 value, u32 mode);
+int H_Snd_GetCurrentBgmId(void);
+u8 H_Snd_PlayBgm(s16 id, s32 unused);
+void FUN_00269f50(void);
 void opMenu0026c710(void);
 void opWait0026e000(void);
 void opMenu0026cc90(void);
 void opTitle00268e20(void);
-void FUN_002720c0();
-void H_Snd_StopBgm();
+void FUN_002720c0(void);
+void H_Snd_StopBgm(void);
 void opResDestroyTitle(void);
 void opWait0026ebf0(void);
 void opMenu0026da10(void);
@@ -26,9 +26,9 @@ void opLogo00269d10(void);
 void opTitle002673f0(void);
 void opWait0026dd60(void);
 void opMenu0026a280(void);
-void FUN_00271d70();
-void opResShutdown();
-void H_Free();
+void FUN_00271d70(void);
+void opResShutdown(void);
+void H_Free(void* memory);
 void opLogo0026a0f0(void);
 u32 opLogo0026a1e0(void);
 void opLogo00269d50(void);
@@ -152,7 +152,7 @@ void opRoot00265ef0(int param_1)
     opResDestroyTitle();
     opResShutdown();
     sOpRoot = NULL;
-    H_Free(*(u32*)(param_1 + 0x3c));
+    H_Free(*(void**)(param_1 + 0x3c));
 }
 
 extern u16 DAT_007e094e;
