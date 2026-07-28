@@ -1785,7 +1785,7 @@ void FUN_001406d0(CampPair position, f32 texture,
 
 
 
-// FUN_00140e30 NONMATCHING
+// FUN_00140e30
 
 void FUN_00140e30(CampPair position, f32 texture,
                   CampEquipmentDetailWork* detail, s32 alpha)
@@ -1855,7 +1855,7 @@ void FUN_00140e30(CampPair position, f32 texture,
     }
     if (entryIndex == detail->selectedEntry) {
       variant = entryIndex * 0x1a;
-      campDrawSprite(parent, *(void**)DAT_00833B70_abs, 0x1b, (u8)alpha,
+      campDrawSprite(parent, *(void**)DAT_00833B70_abs, 0x1d, (u8)alpha,
                      panelBase, (rowBaseY + (float)variant) - 1.0f,
                      texture);
       textValue = FUN_0017b100(
@@ -1891,7 +1891,7 @@ void FUN_00140e30(CampPair position, f32 texture,
     else {
       variant = entryIndex * 0x1a;
       campDrawSpriteAltX(
-          parent, *(void**)DAT_00833B70_abs, 0x1a, (u8)alpha,
+          parent, *(void**)DAT_00833B70_abs, 0x1c, (u8)alpha,
           panelBase, 0x20, 0x43, 0x78,
           (rowBaseY + (float)variant) - 1.0f, texture);
       textValue = FUN_0017b100(

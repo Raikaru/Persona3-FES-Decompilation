@@ -345,7 +345,7 @@ void FUN_00179030(u32 saveType, void* stream)
     }
 }
  
-// FUN_001791d0 NONMATCHING
+// FUN_001791d0
 bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
 {
     u32 consumed;
@@ -396,7 +396,6 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
             return false;
         }
         return false;
-        }
     }
     return true;
 }

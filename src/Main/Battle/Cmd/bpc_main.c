@@ -709,10 +709,10 @@ void FUN_00244770(void)
   uint uVar1;
   uint *puVar2;
   u16 sVar3;
-  u32 iVar4;
+  s32 iVar4;
   int iVar5;
   u32 uVar6;
-  u32 iVar7;
+  s32 iVar7;
 
   if (sBpcWork == (uint *)0x0) {
     K_Assert(D_0068E880, 0x97);
@@ -722,7 +722,7 @@ void FUN_00244770(void)
     func_003b0170(sBpcWork[0x1b30]);
   }
   for (iVar4 = 0; (int)iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-    iVar5 = func_001ff430(*(puVar2 + iVar4 + 4));
+    iVar5 = func_001ff430(puVar2[iVar4 + 4]);
     switch (*(u8 *)(iVar5 + 0xa2)) {
     case 0:
       bppMain0020f8b0_u16(*(u16 *)(*(int *)(iVar5 + 0xa2c) + 2));
@@ -744,22 +744,28 @@ void FUN_00244770(void)
     }
   }
   uVar1 = puVar2[1];
-  if (uVar1 == 2) {
-    for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-      FUN_00245970(puVar2 + iVar4 * 0x290 + 0x10);
-      if ((puVar2[iVar4 * 0x290 + 0x10] & 0x480) == 0) {
-        puVar2[iVar4 * 0x290 + 0x10] = puVar2[iVar4 * 0x290 + 0x10] & 0xffffffdf;
-      }
-    }
-  }
-  else if ((uVar1 == 1) || (uVar1 == 0)) {
+  switch (uVar1) {
+  case 0:
+  case 1:
     for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
       FUN_00245970(FUN_00245bf0(puVar2[iVar4 + 4]));
     }
+    break;
+  case 2:
+    for (iVar4 = 0; iVar4 < (int)puVar2[3]; iVar4 = iVar4 + 1) {
+      FUN_00245970(puVar2 + iVar4 * 0x290 + 0x10);
+      if ((puVar2[iVar4 * 0x290 + 0x10] & 0x480) == 0) {
+        puVar2[iVar4 * 0x290 + 0x10] =
+            puVar2[iVar4 * 0x290 + 0x10] & 0xffffffdf;
+      }
+    }
+    break;
   }
   uVar1 = *puVar2;
-  *puVar2 = uVar1 & 0xfffffffe;
-  *puVar2 = uVar1 & 0xfffffffd;
+  uVar1 = uVar1 & 0xfffffffe;
+  *puVar2 = uVar1;
+  uVar1 = uVar1 & 0xfffffffd;
+  *puVar2 = uVar1;
   puVar2[2] = 0;
   *puVar2 = *puVar2 | 0x20;
   return;

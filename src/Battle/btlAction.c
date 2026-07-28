@@ -18,13 +18,18 @@ extern const char D_00693318[];
 #pragma alias D_00693318_abs D_00693318
 extern const char D_00693318_abs[];
 
+typedef struct BtlEnemyMoveSpeed
+{
+    u16 speedIndex;
+    s16 field_02;
+} BtlEnemyMoveSpeed;
+
 typedef struct BtlEnemyRecord
 {
     u8 pad_00[0x22];
     s16 field_22;
-    u8 pad_24[2];
-    s16 field_26;
-    u8 pad_28[0xc0];
+    BtlEnemyMoveSpeed moveSpeed[2];
+    u8 pad_2c[0xbc];
 } BtlEnemyRecord;
 
 
@@ -576,7 +581,7 @@ u32 FUN_00289f40(BtlAction* action)
             default:
                 break;
             case 1:
-                if (iGpffffb728[unitId].field_26 == 1)
+                if (iGpffffb728[unitId].moveSpeed[0].field_02 == 1)
                 {
                     return false;
                 }
@@ -2662,7 +2667,7 @@ set_action:
 }
 
 /* W111: reconstructed MoveHome, RoundUpMes, and RoundUp packet/state paths from retail. */
-// FUN_0028e7f0 NONMATCHING
+// FUN_0028e7f0
 void btlActionInitStateMoveHome(BtlAction* action)
 {
     BtlUnit* unit = action->unit;
@@ -2716,7 +2721,7 @@ void btlActionInitStateMoveHome(BtlAction* action)
             break;
         case UNIT_GENUS_EC:
             enemyRecords = iGpffffb728;
-            speedIdx = *(u16*)((u8*)enemyRecords + unitDatId * 0xe8 + allowMove * 4 + 0x24);
+            speedIdx = enemyRecords[unitDatId].moveSpeed[allowMove].speedIndex;
             break;
         default:
             break;

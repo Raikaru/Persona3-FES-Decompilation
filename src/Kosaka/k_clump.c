@@ -318,7 +318,7 @@ u32 func_001a66f0(void* clump, const char* name)
     return context.found;
 }
 
-// FUN_001a6740 NONMATCHING
+// FUN_001a6740
 u32 func_001a6740(void* geometry, const char* name)
 {
     s32 resourceIndex;
@@ -700,6 +700,7 @@ void* func_001a7370(void* material, u32* state)
     s32 current;
     s32 selected;
     s32 value;
+    u32* values;
 
     value = K_Clump_MatUsrDataGetInt((RpMaterial*)material, D_00678C28);
     if (K_Clump_MatUsrDataHasData((RpMaterial*)material, D_00678C38))
@@ -710,10 +711,14 @@ void* func_001a7370(void* material, u32* state)
         }
         state[2] = 1;
     }
-    for (candidate = 0; candidate < 10 && state[0] != D_00678C00[candidate]; candidate++)
+    candidate = 0;
+    values = D_00678C00;
+    for (; candidate < 10 && state[0] != values[candidate]; candidate++)
     {
     }
-    for (current = 0; current < 10 && value != D_00678C00[current]; current++)
+    current = 0;
+    values = D_00678C00;
+    for (; current < 10 && value != values[current]; current++)
     {
     }
     if (candidate < current)
