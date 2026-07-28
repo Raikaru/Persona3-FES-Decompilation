@@ -1796,6 +1796,7 @@ void FUN_003aa720(int param_1)
   short *psVar8;
 
   u32 cVar9;
+  u8 mask;
 
   short asStack_20 [16];
 
@@ -1839,7 +1840,8 @@ void FUN_003aa720(int param_1)
 
   *(u32 *)(iVar4 + 0x2c) = 0;
 
-  cVar9 = 0xff - (uVar3 & 0xff);
+  mask = uVar3 & 0xff;
+  cVar9 = 0xff - mask;
 
   *(char *)(iVar4 + 0x19) = cVar9;
 
@@ -4209,8 +4211,8 @@ u64 FUN_003ada00(u64 param_1,int param_2)
   int iVar5;
 
   u8 bVar6;
-
   u8 bVar1;
+
   int offset;
   int base;
 

@@ -214,7 +214,6 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     chunkOffset = 0;
     memcpy(buffer, &saveType, 4);
 
-    memset(header, 0, sizeof(header));
     *(u16*)(header + 0) = U16(0x0083679c);
     *(u16*)(header + 2) = U8(0x0083679e);
     *(u32*)(header + 4) = U32(0x0083a598);

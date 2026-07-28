@@ -93,7 +93,7 @@ void FUN_00252e80(void)
 
 }
 
-// FUN_00252F30 NONMATCHING
+// FUN_00252F30
 
 
 
@@ -114,10 +114,15 @@ void FUN_00252f30(void)
   float fVar12;
   float fVar10;
   float fVar11;
-  RwV4d rect;
-  RwV3d projected;
-  RwV2d screen;
-  RwRGBA color;
+  struct {
+    RwV4d rect;
+    u8 reserved10[0x10];
+    RwV3d projected;
+    f32 reserved2c;
+    RwV2d screen;
+    u32 reserved38;
+    RwRGBA color;
+  } layout;
 
   K_ASSERT(sBpd660 != NULL, 0x25);
   puVar2 = sBpd660;
@@ -132,8 +137,8 @@ void FUN_00252f30(void)
       for (iVar1 = *(int *)(iVar8 + iVar4 * 8 + 0x150); iVar1 != 0;
            iVar1 = *(int *)(iVar1 + 0xa34)) {
         if ((~*(u32 *)(iVar1 + 0x9c) & 8) == 0) {
-          FUN_002807a0(iVar1,&projected);
-          lVar6 = FUN_002d20a0(&projected,&screen);
+          FUN_002807a0(iVar1,&layout.projected);
+          lVar6 = FUN_002d20a0(&layout.projected,&layout.screen);
           if ((lVar6 != 0) &&
               (lVar6 = FUN_00300580(*(u32 *)(iVar1 + 0xa2c),0x100000),
                lVar6 != 0)) {
@@ -142,8 +147,8 @@ void FUN_00252f30(void)
             entry = puVar2 + uVar7 * 0x48;
             data = (f32 *)(entry + 4);
             entry[5] = *(u32 *)(iVar1 + 0xa8);
-            data[0x44] = screen.x;
-            data[0x45] = screen.y;
+            data[0x44] = layout.screen.x;
+            data[0x45] = layout.screen.y;
             iVar3 = FUN_0027f930(iVar1);
             data[0x46] = (f32)*(u8 *)(iVar3 + 3) / 255.0f;
             uVar7 = uVar7 + 1;
@@ -165,17 +170,17 @@ void FUN_00252f30(void)
           fGpffff8248 * (((float)(int)puVar2[0x2d5] / 15.0f) * 2.0f));
       iVar4 = FUN_0021cca0(uVar5,0x4c);
       width = (float)*(int *)(iVar4 + 0xc);
-      rect.x = fVar10 - width / 2.0f;
+      layout.rect.x = fVar10 - width / 2.0f;
       height = (float)*(int *)(iVar4 + 0x10);
-      rect.y = fVar9 + ((fVar11 - height / 2.0f) - 10.0f);
-      rect.z = width;
-      rect.w = height;
-      FUN_0021d8e0(entry + 4,&rect);
-      color.r = 0xff;
-      color.g = 0xff;
-      color.b = 0xff;
-      color.a = (u8)(255.0f * fVar12);
-      FUN_0021d950(entry + 4,&color);
+      layout.rect.y = fVar9 + ((fVar11 - height / 2.0f) - 10.0f);
+      layout.rect.z = width;
+      layout.rect.w = height;
+      FUN_0021d8e0(entry + 4,&layout.rect);
+      layout.color.r = 0xff;
+      layout.color.g = 0xff;
+      layout.color.b = 0xff;
+      layout.color.a = (u8)(255.0f * fVar12);
+      FUN_0021d950(entry + 4,&layout.color);
     }
   }
   return;

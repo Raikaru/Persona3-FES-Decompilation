@@ -271,7 +271,7 @@ u32 FUN_003f2f70_i(int param_1,int param_2,int param_3);
  #pragma alias FUN_003f39a0_i FUN_003f39a0
  u32 FUN_003f39a0_i(int param_1,int param_2,u32 param_3);
  #pragma alias FUN_003f3e60_i FUN_003f3e60
- u32 FUN_003f3e60_i(u32 param_1,u32 param_2);
+ u32 FUN_003f3e60_i(u32 param_1,int *param_2);
  #pragma alias FUN_003f3dc0_i FUN_003f3dc0
  void FUN_003f3dc0_i(int param_1,u32 param_2);
  #pragma alias FUN_003c58f0_i FUN_003c58f0
@@ -286,7 +286,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2);
 u64 FUN_003f3970(long param_1,u32 param_2);
 u64 FUN_003f39a0(long param_1,long param_2,u32 param_3);
 void FUN_003f3dc0(int param_1,int *param_2);
-u32 FUN_003f3e60(int param_1,u32 param_2);
+u32 FUN_003f3e60(int param_1,int *param_2);
 u32 FUN_003f3f00(u64 param_1);
 void FUN_003f3fc0(int param_1,int param_2,u32 param_3,u64 param_4);
 void FUN_003f4350(int param_1,int param_2,int param_3,int param_4);
@@ -956,35 +956,20 @@ int FUN_003f00d0(int *param_1,int param_2,int *param_3)
   iVar4 = *param_3;
 
   do {
-
     if (*param_1 <= iVar4) {
-
       *param_3 = -1;
-
       return 0;
-
     }
-
     sVar1 = *(short *)(iVar5 + 4);
-
     if ((sVar1 == 0) || (uVar2 = datGetLevel(1), sVar1 <= (short)(uVar2 & 0xff))) {
-
-
       lVar3 = FUN_003f04f0((u32)(iVar5 + 0xc),param_2);
       if (lVar3 != 0) {
-
         *param_3 = iVar4;
-
         return iVar5;
-
       }
-
       iVar5 = iVar5 + 0x14;
-
     }
-
     iVar4 = iVar4 + 1;
-
   } while( 1 );
 
 }
@@ -3453,7 +3438,7 @@ u64 FUN_003f33d0(int param_1,u32 param_2)
       result = 0;
       choice = (int *)(u32)FUN_003f39a0_i(param_1,1,param_2);
       if (choice != (int *)0) {
-        result = FUN_003f3e60_i(task,(u32)choice);
+        result = FUN_003f3e60_i(task,choice);
       }
       FUN_003c5a20((u32)choice);
       FUN_003c5a20(task);
@@ -3757,10 +3742,10 @@ void FUN_003f3dc0(int param_1,int *param_2)
   return;
 }
 
-// FUN_003F3E60 NONMATCHING
+// FUN_003F3E60
 
 
-u32 FUN_003f3e60(int param_1,u32 param_2)
+u32 FUN_003f3e60(int param_1,int *param_2)
 
 
 
@@ -3774,27 +3759,18 @@ u32 FUN_003f3e60(int param_1,u32 param_2)
 
   iVar2 = *(int *)(param_1 + 4);
 
-  while( 1 ) {
-
-    if (iVar2 == 0) {
-
-      return 0;
-
+  while (iVar2 != 0) {
+    lVar1 = fclShopNmlistFind(param_2,param_2 + 1,
+                              *(s16 *)(*(int *)(*(int *)(iVar2 + 0x14) + 0x1c) + 4));
+    if (lVar1 != 0) {
+      fclShopNmlistRemove(param_2,param_2 + 1,lVar1);
     }
-
-    lVar1 = FUN_003c4bf0(param_2,(int)param_2 + 4,
-
-                         *(u16 *)(*(int *)(*(int *)(iVar2 + 0x14) + 0x1c) + 4));
-
-    if (lVar1 == 0) break;
-
-    FUN_003c49e0(param_2,(int)param_2 + 4,lVar1);
-
+    else {
+      return 1;
+    }
     iVar2 = *(int *)(iVar2 + 0x10);
-
   }
-
-  return 1;
+  return 0;
 
 }
 
@@ -9769,15 +9745,17 @@ void FUN_003fcad0(u64 param_1,u64 param_2,u32 param_3,int param_4)
 
   if ((*(short *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 6) == -1) &&
      ((*(u32 *)(iVar1 + 8) & 0x1000) != 0)) {
-    FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,2,*(u16 *)(iVar1 + 6));
+    FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,2,*(s16 *)(iVar1 + 6));
     return;
   }
-  if ((*(u32 *)(iVar1 + 8) & 0x1000) == 0) {
-    FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,0,*(u16 *)(iVar1 + 4));
-    return;
+  if ((*(u32 *)(iVar1 + 8) & 0x1000) != 0) {
+    FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,1,
+                     (((u32)*(u8 *)(iVar1 + 0xd) << 16) & 0xffff0000U) |
+                     *(u16 *)(iVar1 + 4));
   }
-  FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,1,
-                   ((u32)*(u8 *)(iVar1 + 0xd) << 16) | *(u16 *)(iVar1 + 4));
+  else {
+    FUN_003c7e20_f32(0.0f,0x125,0xe3,param_3 | 0xffffff00U,1,5,0,*(s16 *)(iVar1 + 4));
+  }
 }
 
 // FUN_003FCBE0 NONMATCHING
@@ -9951,15 +9929,17 @@ void FUN_003fd030(u64 param_1,u64 param_2,u32 param_3,int param_4)
   iVar1 = *(int *)(*(int *)(*(int *)(param_4 + 0xc) + 0x14) + 0x1c);
   if ((*(short *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 6) == -1) &&
      ((*(u32 *)(iVar1 + 8) & 0x1000) != 0)) {
-    FUN_003c7e20_f32(0.0f,0x53,0xfa,param_3 | 0xffffff00U,1,5,2,*(u16 *)(iVar1 + 6));
+    FUN_003c7e20_f32(0.0f,0x53,0xfa,param_3 | 0xffffff00U,1,5,2,*(s16 *)(iVar1 + 6));
     return;
   }
-  if ((*(u32 *)(iVar1 + 8) & 0x1000) == 0) {
-    FUN_003c7e20_f32(0.0f,0x53,0xfa,param_3 | 0xffffff00U,1,5,0,*(u16 *)(iVar1 + 4));
-    return;
+  if ((*(u32 *)(iVar1 + 8) & 0x1000) != 0) {
+    FUN_003c7e20_f32(0.0f,0x53,0xfa,param_3 | 0xffffff00U,1,5,1,
+                     (((u32)*(u8 *)(iVar1 + 0xd) << 16) & 0xffff0000U) |
+                     *(u16 *)(iVar1 + 4));
   }
-  FUN_003c7e20_f32(0.0f,0x53,0xfa,param_3 | 0xffffff00U,1,5,1,
-                   ((u32)*(u8 *)(iVar1 + 0xd) << 16) | *(u16 *)(iVar1 + 4));
+  else {
+    FUN_003c7e20_f32(0.0f,0x53,0xfa,param_3 | 0xffffff00U,1,5,0,*(s16 *)(iVar1 + 4));
+  }
 }
 
 // FUN_003FD140 NONMATCHING
@@ -18131,10 +18111,13 @@ u32 FUN_00409c80(u32 param_1)
           2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        if ((entry[2] << 2) < 10000000) {
-          entry[2] = entry[2] << 2;
-        } else {
+        switch ((entry[2] << 2) < 10000000) {
+        default:
           entry[2] = 9999999;
+          break;
+        case 1:
+          entry[2] = entry[2] << 2;
+          break;
         }
       }
       entry[3] = FUN_003dfeb0(0);
