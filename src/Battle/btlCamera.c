@@ -4752,6 +4752,7 @@ void FUN_002b2940(void *arg0)
     f32 radius;
     f32 distance;
     f32 facing;
+    f32 targetHeight;
     camera = (BtlCamera*)arg0;
     action = camera->action;
     unit = action->unit;
@@ -4762,18 +4763,18 @@ void FUN_002b2940(void *arg0)
     btlUnitGetSphereWorldCenter(unit, &scratch.sourceCenter);
     if (!(scratch.targetCenter.y <= scratch.sourceCenter.y))
     {
+        targetHeight = target->unk_8c * target->scale;
         scratch.targetCenter.y =
-            (scratch.targetCenter.y) -
-            fGpffff8094 * (target->unk_8c * target->scale);
+            scratch.targetCenter.y - fGpffff8094 * targetHeight;
         scratch.sourceCenter.y =
             (scratch.sourceCenter.y) +
             fGpffff806c * (unit->unk_8c * unit->scale);
     }
     else
     {
+        targetHeight = target->unk_8c * target->scale;
         scratch.targetCenter.y =
-            (scratch.targetCenter.y) +
-            fGpffff8094 * (target->unk_8c * target->scale);
+            scratch.targetCenter.y + fGpffff8094 * targetHeight;
         scratch.sourceCenter.y =
             (scratch.sourceCenter.y) -
             fGpffff8094 * (unit->unk_8c * unit->scale);
@@ -4782,7 +4783,6 @@ void FUN_002b2940(void *arg0)
     {
         scratch.targetCenter.y = 65.0f;
     }
-
     scratch.direction.x = scratch.sourceCenter.x - scratch.targetCenter.x;
     scratch.direction.y = scratch.sourceCenter.y - scratch.targetCenter.y;
     scratch.direction.z = scratch.sourceCenter.z - scratch.targetCenter.z;
@@ -4865,7 +4865,7 @@ void FUN_002b2940(void *arg0)
     radius = RwV3dLength(&scratch.direction);
     distance = radius +
                distance / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
-    distance = (distance <= 0.0f) ? 0.0f : distance;
+    distance = (distance > 0.0f) ? distance : 0.0f;
     FUN_004be1e0(&scratch.direction, &D_006978A0, 1,
                  (u8*)&scratch.transform);
     scratch.direction.x = scratch.direction.x * distance;

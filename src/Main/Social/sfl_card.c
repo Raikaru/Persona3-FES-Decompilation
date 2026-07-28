@@ -1283,12 +1283,13 @@ void FUN_00258b40(void)
 
     iVar5 = iVar5 % (int)(puVar1[0x499f] - 1);
 
-    if ((int)iVar4 <= (int)iVar5) {
-      iVar7 = iVar5 + 1;
-    } else {
-      iVar7 = iVar4;
-      iVar4 = iVar5;
-    }
+    if ((int)iVar5 < (int)iVar4) goto swap_indices;
+    iVar7 = iVar5 + 1;
+    goto indices_ready;
+swap_indices:
+    iVar7 = iVar4;
+    iVar4 = iVar5;
+indices_ready:
 
     swapValue = aiStack_50[iVar4];
 

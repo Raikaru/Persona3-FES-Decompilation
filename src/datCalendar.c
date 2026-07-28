@@ -2347,7 +2347,7 @@ u32 func_00181c20(void)
     return 1;
 }
 
-// FUN_00181CC0 NONMATCHING
+// FUN_00181CC0
 void* func_00181cc0(KwlnTask* task)
 {
     CalendarAigesWork* work;
@@ -2408,11 +2408,15 @@ void* func_00181cc0(KwlnTask* task)
                 break;
             }
 
-            month = scenarioTable[func_0017d810()].month;
-            day = scenarioTable[func_0017d810()].day;
-            time = scenarioTable[func_0017d810()].time;
-            datSetDaysSinceApr5(clndGetDaysSinceStartFromDate(month, day));
-            datSetTime((u8)time);
+            {
+                s32 scenarioMonth;
+                s32 scenarioDay;
+                s32 scenarioTime;
+                scenarioMonth = scenarioTable[func_0017d810()].month;
+                scenarioDay = scenarioTable[func_0017d810()].day;
+                scenarioTime = scenarioTable[func_0017d810()].time;
+                datSetDaysSinceApr5(clndGetDaysSinceStartFromDate(scenarioMonth, scenarioDay));
+                datSetTime((u8)scenarioTime);
 
             if (scenarioTable[func_0017d810()].flagsOn[0] != -1)
                 datSetFlag(scenarioTable[func_0017d810()].flagsOn[0], true);
@@ -2450,11 +2454,11 @@ void* func_00181cc0(KwlnTask* task)
             displayTask = work->calendarDisplayTask;
             if (displayTask == NULL)
             {
-                work->calendarDisplayTask = func_00188440(parent, month, day, time);
+                work->calendarDisplayTask = func_00188440(parent, scenarioMonth, scenarioDay, scenarioTime);
             }
             else
             {
-                func_00188420(displayTask, month, day, time);
+                func_00188420(displayTask, scenarioMonth, scenarioDay, scenarioTime);
             }
 
             if (scenarioTable[func_0017d810()].mode != 0xff)
@@ -2474,6 +2478,7 @@ void* func_00181cc0(KwlnTask* task)
             work->actionTask = displayTask;
             work->state = 1;
             break;
+            }
 
         case 1:
             if (adminiGetNowSeqId_u32() == 3 || adminiGetNowSeqId_u32() == 2)

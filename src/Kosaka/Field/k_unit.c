@@ -2019,7 +2019,7 @@ void func_001d1910(void)
         }
     }
 }
-// FUN_001d19d0 NONMATCHING
+// FUN_001d19d0
 void func_001d19d0(void)
 {
     s32 i;
@@ -2042,7 +2042,7 @@ void func_001d19d0(void)
             offset = i * sizeof(FldUnit);
             unit = (FldUnit*)((int)gFldUnitsPc + offset);
             unit->unk_17c = 0;
-            func_001a60d0(0, unit->mdl, 0xff);
+            func_001a60d0(0, unit->mdl, 0xff, 1);
         }
     }
 }

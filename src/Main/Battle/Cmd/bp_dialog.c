@@ -298,28 +298,12 @@ void FUN_0025c220(void)
         FUN_0025cdb0(30.0f + (25.0f + (fVar9 + (f32)iVar2)),
                      fVar8 - 5.0f, puVar1[3]);
         fVar10 = 255.0f * fVar10 * fVar6;
-        if (2.1474836e+09f > fVar10) {
-            uVar6 = (s32)fVar10;
-            uVar6 &= 0xffu;
-        } else {
-            uVar6 = (s32)(fVar10 - 2.1474836e+09f);
-            uVar6 |= 0x80000000;
-            uVar6 &= 0xffu;
-        }
-        uVar6 &= 0xffu;
+        uVar6 = (u8)fVar10;
         uVar6 |= 0xffffff00u;
         func_003b0e20(puVar1[1], uVar6);
 
         fVar11 = (255.0f * fVar6) * fVar11;
-        if (2.1474836e+09f > fVar11) {
-            uVar7 = (s32)fVar11;
-            uVar7 &= 0xffu;
-        } else {
-            uVar7 = (s32)(fVar11 - 2.1474836e+09f);
-            uVar7 |= 0x80000000;
-            uVar7 &= 0xffu;
-        }
-        uVar7 &= 0xffu;
+        uVar7 = (u8)fVar11;
         uVar7 |= 0xffffff00u;
         func_003b0e20(puVar1[2], uVar7);
         func_003b0e20(puVar1[3], uVar7);
@@ -346,15 +330,7 @@ void FUN_0025c220(void)
         layout.color[0] = 0xff;
         layout.color[1] = 0xff;
         layout.color[2] = 0xff;
-        if (2.1474836e+09f > fVar10) {
-            uVar6 = (s32)fVar10;
-            uVar6 &= 0xffu;
-        } else {
-            uVar6 = (s32)(fVar10 - 2.1474836e+09f);
-            uVar6 |= 0x80000000;
-            uVar6 &= 0xffu;
-        }
-        layout.color[3] = (u8)uVar6;
+        layout.color[3] = (u8)fVar10;
         for (i = 0; i < 3; i++) {
             FUN_0021d950(puVar1 + i * 0x40 + 8, layout.color);
         }
@@ -376,15 +352,7 @@ void FUN_0025c220(void)
         layout.color[0] = 0xff;
         layout.color[1] = 0xff;
         layout.color[2] = 0xff;
-        if (2.1474836e+09f > fVar11) {
-            uVar7 = (s32)fVar11;
-            uVar7 &= 0xffu;
-        } else {
-            uVar7 = (s32)(fVar11 - 2.1474836e+09f);
-            uVar7 |= 0x80000000;
-            uVar7 &= 0xffu;
-        }
-        layout.color[3] = (u8)uVar7;
+        layout.color[3] = (u8)fVar11;
         for (i = 0; i < 2; i++) {
             FUN_0021d950(puVar1 + i * 0x40 + 0xcc, layout.color);
         }
