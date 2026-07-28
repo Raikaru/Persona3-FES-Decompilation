@@ -49,16 +49,24 @@ extern void* func_00198590(void);
 
 static u32* sOpWait; // DAT_007ce3b8
 
+typedef struct OpWaitPart
+{
+    s32 startFrame;
+    u8 pad_004[0x0c];
+    u8 quad[0x100];
+} OpWaitPart;
+
 typedef struct OpWaitWork
 {
     u32 flags;                  /* 0x0000 */
     s32 mode;                   /* 0x0004 */
+    s32 timer;                  /* 0x0008 */
     u32 counters[10];           /* 0x000c..0x0033 */
     u8 reserved_34[0x0c];       /* 0x0034..0x003f */
-    u8 quads[0xe00];             /* 0x0040..0x0e3f */
-    u8 parts[0x330];             /* 0x0e40..0x116f, stride 0x110 */
-    void* resources[2];          /* 0x1170/0x1174 */
-    f32 alpha;                   /* 0x1178 */
+    u8 quads[14][0x100];        /* 0x0040..0x0e3f */
+    OpWaitPart parts[3];        /* 0x0e40..0x116f */
+    void* resources[2];         /* 0x1170/0x1174 */
+    f32 alpha;                  /* 0x1178 */
 } OpWaitWork;
 static inline u32 opWaitU32(const u8* work, u32 offset)
 {
@@ -538,7 +546,7 @@ static inline void opWaitSetPolyPivot(void* destination, f32* points,
 // FUN_0026EED0 NONMATCHING
 void opWait0026eed0(void)
 {
-    u8* work;
+    OpWaitWork* work;
     void* atlas;
     void* frame;
     f32 points[8];
@@ -566,10 +574,10 @@ void opWait0026eed0(void)
     s32 i;
 
     K_ASSERT(sOpWait != NULL, 0xdb);
-    work = (u8*)sOpWait;
+    work = (OpWaitWork*)sOpWait;
     atlas = opResGetTitleSprite(0);
-    mode = *(s32*)(work + 4);
-    timer = *(s32*)(work + 8);
+    mode = work->mode;
+    timer = work->timer;
 
     if (mode == 1)
         alpha = 1.0f - opWaitClamp01(timer, 0, 0x28);
@@ -582,32 +590,32 @@ void opWait0026eed0(void)
         rect[1] = 0.0f;
         rect[2] = 640.0f;
         rect[3] = 448.0f;
-        func_0021d8e0(work + 0x40, rect);
-        opWaitSetColor(work + 0x40, alpha * 255.0f);
+        func_0021d8e0(work->quads[0], rect);
+        opWaitSetColor(work->quads[0], alpha * 255.0f);
     }
 
     phase = func_0052e878(DAT_007caf38 *
-                          ((f32)*(s32*)(work + 0x1c) / 70.0f) * 2.0f);
+                          ((f32)(s32)work->counters[4] / 70.0f) * 2.0f);
     phase *= DAT_007cad84;
-    opWaitSetPoly(work + 0x140, points, -1.0f, 29.0f, 643.0f, 419.0f,
+    opWaitSetPoly(work->quads[1], points, -1.0f, 29.0f, 643.0f, 419.0f,
                   1.0f, 1.0f);
-    opWaitSetColor(work + 0x140, alpha * 255.0f * (phase + 0.75f));
+    opWaitSetColor(work->quads[1], alpha * 255.0f * (phase + 0.75f));
 
-    x = 210.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 188.0f;
-    y = 69.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 93.0f;
+    x = 210.0f - ((f32)(s32)work->counters[5] / 690.0f) * 188.0f;
+    y = 69.0f - ((f32)(s32)work->counters[5] / 690.0f) * 93.0f;
     {
         rect[0] = x;
         rect[1] = y;
         rect[2] = 256.0f;
         rect[3] = 256.0f;
-        func_0021d8e0(work + 0x240, rect);
+        func_0021d8e0(work->quads[2], rect);
         if (mode == 1)
             alpha = 1.0f - opWaitClamp01(timer, 0, 20);
         else if (mode == 0)
             alpha = opWaitClamp01(timer, 0, 200);
         else
             alpha = 1.0f;
-        opWaitSetColor(work + 0x240, alpha * 255.0f);
+        opWaitSetColor(work->quads[2], alpha * 255.0f);
     }
 
     if (mode == 0)
@@ -618,19 +626,19 @@ void opWait0026eed0(void)
             rect[1] = 0.0f;
             rect[2] = 640.0f;
             rect[3] = 448.0f;
-            func_0021d8e0(work + 0x340, rect);
+            func_0021d8e0(work->quads[3], rect);
         }
     }
     else if (mode == 1)
     {
         phase = opWaitClamp01(timer, 0, 40);
         alpha = 1.0f - opWaitClamp01(timer, 0, 30);
-        opWaitSetPoly(work + 0x340, points, 140.0f, 150.0f,
+        opWaitSetPoly(work->quads[3], points, 140.0f, 150.0f,
                       640.0f, 448.0f,
                       1.0f + phase * 4.5f,
                       1.0f + phase * 6.75f);
     }
-    opWaitSetColor(work + 0x340, alpha * 255.0f);
+    opWaitSetColor(work->quads[3], alpha * 255.0f);
 
     if (mode == 0)
     {
@@ -643,7 +651,7 @@ void opWait0026eed0(void)
             rect[1] = y;
             rect[2] = 232.0f;
             rect[3] = 416.0f;
-            func_0021d8e0(work + 0x440, rect);
+            func_0021d8e0(work->quads[4], rect);
         }
         alpha = opWaitClamp01(timer, 55, 60);
     }
@@ -653,10 +661,10 @@ void opWait0026eed0(void)
         alpha = 1.0f - phase;
         x = 335.0f + phase * 500.0f - 30.0f;
         y = 32.0f + phase * 400.0f;
-        opWaitSetPoly(work + 0x440, points, x, y, 232.0f, 416.0f,
+        opWaitSetPoly(work->quads[4], points, x, y, 232.0f, 416.0f,
                       phase * 2.0f + 1.0f, phase * 2.0f + 1.0f);
     }
-    opWaitSetColor(work + 0x440, alpha * 255.0f);
+    opWaitSetColor(work->quads[4], alpha * 255.0f);
 
     if (mode == 1)
         alpha = 1.0f - opWaitClamp01(timer, 0, 20);
@@ -665,12 +673,12 @@ void opWait0026eed0(void)
     else
         alpha = 1.0f;
     phase = func_0052e878(DAT_007caf38 *
-                          ((f32)*(s32*)(work + 0x10) / 50.0f) * 2.0f);
-    opWaitSetColor(work + 0x640,
+                          ((f32)(s32)work->counters[1] / 50.0f) * 2.0f);
+    opWaitSetColor(work->quads[6],
                    alpha * 255.0f *
                    (DAT_007cad84 * phase + DAT_007cad94));
     {
-        f32 t = (f32)*(s32*)(work + 0x0c) / 90.0f;
+        f32 t = (f32)(s32)work->counters[0] / 90.0f;
         f32 pulse = t * 4.0f - t * 4.0f * t;
         f32 value = 0.5f - DAT_007cafec * pulse - DAT_007cb080;
 
@@ -678,27 +686,27 @@ void opWait0026eed0(void)
         rect[1] = value;
         rect[2] = 0.5f + DAT_007cafec * pulse + DAT_007cb080;
         rect[3] = rect[2];
-        func_0021eae0(work + 0x740, rect);
-        opWaitSetColor(work + 0x740, 255.0f);
+        func_0021eae0(work->quads[7], rect);
+        opWaitSetColor(work->quads[7], 255.0f);
     }
     if (mode == 1)
         alpha = 1.0f - opWaitClamp01(timer, 0, 0x28);
     else
         alpha = opWaitClamp01(timer, 0x28, 0x96);
-    *(f32*)(work + 0x1178) = alpha;
-    angle = DAT_007caf38 * ((f32)*(s32*)(work + 0x14) / 30.0f) * 2.0f;
+    work->alpha = alpha;
+    angle = DAT_007caf38 * ((f32)(s32)work->counters[2] / 30.0f) * 2.0f;
     phase = func_0052e878(angle) * DAT_007cb15c;
     scale = DAT_007cadb0;
-    opWaitSetPoly(work + 0x840, points, 0.0f, 0.0f, 640.0f, 448.0f,
+    opWaitSetPoly(work->quads[8], points, 0.0f, 0.0f, 640.0f, 448.0f,
                   phase + scale,
-                  DAT_007cb15c * func_0052e878(angle) + DAT_007cadb0);
+                  phase + scale);
     if (mode == 1)
         alpha = 1.0f - opWaitClamp01(timer, 0, 10);
     else if (mode == 0)
         alpha = opWaitClamp01(timer, 200, 220);
     else
         alpha = 1.0f;
-    opWaitSetColor(work + 0x840, alpha * 255.0f);
+    opWaitSetColor(work->quads[8], alpha * 255.0f);
 
     frame = func_0021cca0(atlas, 0x26);
     width = (f32)*(s32*)((u8*)frame + 0x0c);
@@ -728,8 +736,8 @@ void opWait0026eed0(void)
         rect[1] = y;
         rect[2] = width;
         rect[3] = height;
-        func_0021d8e0(work + 0xa40, rect);
-        opWaitSetColor(work + 0xa40, alpha * 255.0f);
+        func_0021d8e0(work->quads[10], rect);
+        opWaitSetColor(work->quads[10], alpha * 255.0f);
     }
     frame = func_0021cca0(atlas, 0x13);
     width = (f32)*(s32*)((u8*)frame + 0x0c);
@@ -758,8 +766,8 @@ void opWait0026eed0(void)
         rect[1] = y;
         rect[2] = width;
         rect[3] = height;
-        func_0021d8e0(work + 0x940, rect);
-        opWaitSetColor(work + 0x940, alpha * 255.0f);
+        func_0021d8e0(work->quads[9], rect);
+        opWaitSetColor(work->quads[9], alpha * 255.0f);
     }
     frame = func_0021cca0(atlas, 10);
     width = (f32)*(s32*)((u8*)frame + 0x0c);
@@ -788,8 +796,8 @@ void opWait0026eed0(void)
         rect[1] = y;
         rect[2] = width;
         rect[3] = height;
-        func_0021d8e0(work + 0xb40, rect);
-        opWaitSetColor(work + 0xb40, alpha * 255.0f);
+        func_0021d8e0(work->quads[11], rect);
+        opWaitSetColor(work->quads[11], alpha * 255.0f);
     }
     if (mode == 1)
         alpha = 1.0f - opWaitClamp01(timer, 0, 10);
@@ -799,19 +807,18 @@ void opWait0026eed0(void)
         alpha = 1.0f;
     (void)func_0021cca0(atlas, 0x10);
     {
-        f32 offset = ((f32)*(s32*)(work + 0x18) / 690.0f) * -300.0f;
+        f32 offset = ((f32)(s32)work->counters[3] / 690.0f) * -300.0f;
         rect[0] = 341.0f + offset;
         rect[1] = 256.0f;
         rect[2] = 375.0f;
         rect[3] = 202.0f;
-        func_0021d8e0(work + 0xd40, rect);
+        func_0021d8e0(work->quads[13], rect);
     }
-    opWaitSetColor(work + 0xd40, alpha * 255.0f);
+    opWaitSetColor(work->quads[13], alpha * 255.0f);
 
     for (i = 0; i < 3; i++)
     {
-        s32 elapsed = *(s32*)(work + 0x24) -
-                      *(s32*)(work + 0xe40 + (u32)i * 0x110);
+        s32 elapsed = (s32)work->counters[6] - work->parts[i].startFrame;
         s32 start;
         s32 hold;
         s32 end;
@@ -971,17 +978,17 @@ void opWait0026eed0(void)
             points[j * 2] += halfW + x;
             points[j * 2 + 1] += halfH + y;
         }
-        func_0021d890(work + 0xe50 + (u32)i * 0x110, points);
-        opWaitSetColor(work + 0xe50 + (u32)i * 0x110,
+        func_0021d890(work->parts[i].quad, points);
+        opWaitSetColor(work->parts[i].quad,
                        partAlpha * fade * 255.0f);
     }
 
     {
         callback.function = func_00271230;
         callback.work = (u32*)work;
-        func_00269a10(*(u32*)(work + 0x1170), &callback);
+        func_00269a10((u32)work->resources[0], &callback);
         callback.function = func_002716d0;
-        func_00269a10(*(u32*)(work + 0x1174), &callback);
+        func_00269a10((u32)work->resources[1], &callback);
     }
 #undef opWaitSetColor
 #undef callback

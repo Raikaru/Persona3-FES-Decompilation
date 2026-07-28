@@ -5482,6 +5482,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   int iVar9;
 
   int iVar10;
+  int halfAlpha;
 
   float fVar11;
 
@@ -5573,11 +5574,11 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,param_3 & 0xff,0x7d,0);
 
   iVar9 = iVar9 * 2;
+  halfAlpha = (int)((float)param_3 * 0.5f) & 0xff;
 
   if (scratch.itemSlots[iVar9] == -1) {
 
-    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,
-                     (int)((float)param_3 * 0.5f) & 0xff,0x7e,0);
+    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,halfAlpha,0x7e,0);
   }
 
   else {
@@ -5594,8 +5595,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 
   if (scratch.itemSlots[iVar9 + 1] == -1) {
 
-    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x3e,
-                     (int)((float)param_3 * 0.5f) & 0xff,0x7e,0);
+    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x3e,halfAlpha,0x7e,0);
   }
 
   else {

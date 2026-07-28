@@ -849,10 +849,8 @@ void func_001a7710(u32* state)
     KClumpMaterialNode* node;
     KClumpMaterialNode* next;
 
-    if (state != NULL)
-        goto state_valid;
-    return;
-state_valid:
+    if (state == NULL)
+        return;
     work = (KClumpFreeState*)(void*)state;
 
 
