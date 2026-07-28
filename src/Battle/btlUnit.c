@@ -5496,19 +5496,22 @@ int FUN_00288da0(BtlUnit* unit, u16 mode)
             if (modeNine)
             {
                 result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128 + 10);
+                goto pc_unit_id_done;
             }
-            else
-            {
-                result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128);
-            }
-        }
-        else if (modeNine)
-        {
-            result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a + 10);
+            result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128);
+pc_unit_id_done:
+            ;
         }
         else
         {
+            if (modeNine)
+            {
+                result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a + 10);
+                goto pc_char_id_done;
+            }
             result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a);
+pc_char_id_done:
+            ;
         }
         break;
 
@@ -5520,11 +5523,11 @@ int FUN_00288da0(BtlUnit* unit, u16 mode)
             if (modeNine)
             {
                 result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8 + 10);
+                goto enemy_char_id_done;
             }
-            else
-            {
-                result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8);
-            }
+            result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8);
+enemy_char_id_done:
+            ;
             break;
         }
         break;

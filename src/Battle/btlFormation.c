@@ -13644,7 +13644,7 @@ u32 func_002cec30(void)
   extern void func_0035f060(u32);
   u32 unit;
   u32 selector;
-  s32 count;
+  u16 count;
   u16 index;
   int selected;
   int *candidate;
