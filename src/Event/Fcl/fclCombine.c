@@ -3892,10 +3892,7 @@ void FUN_003d1df0(s32 param_1,int param_2)
 
   sVar2 = *(short *)(param_2 + 0x16);
 
-  uVar3 = *(u16 *)(param_2 + 0x26);
-
-  if (*(u32 *)(param_2 + 0x10) < 10) {
-
+  uVar3 = *(s16 *)(param_2 + 0x26);
 
     switch(*(u32 *)(param_2 + 0x10)) {
 
@@ -4013,7 +4010,6 @@ void FUN_003d1df0(s32 param_1,int param_2)
 
     }
 
-  }
 
   return;
 

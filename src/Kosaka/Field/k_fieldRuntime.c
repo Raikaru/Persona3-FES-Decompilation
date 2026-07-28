@@ -7888,8 +7888,8 @@ s32 func_001ef7f0(RuntimeTask* task)
                     func_003c72d0(func_002345d0(1));
                     *(u32*)(bytes + 0x3c) = 2;
                     *(s32*)(bytes + 0x154) = 0;
-                    id = *(u16*)(bytes + 0x140 +
-                                 *(s32*)(bytes + 0x154) * 2);
+                    id = ((u16*)(bytes + 0x140))[
+                        *(s32*)(bytes + 0x154)];
                     func_003c7c20(0, id, 5);
                     if (iGpffffb6fc != NULL)
                     {
@@ -7919,15 +7919,15 @@ s32 func_001ef7f0(RuntimeTask* task)
                 case 1:
                 {
                     s32 value;
-                    func_003c7990();
+                    func_003c7990(1);
                     if (func_003c7850() != 0)
                     {
                         break;
                     }
                     func_003c7650(1);
                     value = *(s32*)(bytes + 0x154);
-                    func_003c7c20(0,
-                                  *(u16*)(bytes + 0x140 + value * 2), 5);
+                    func_003c7c20(
+                        0, ((u16*)(bytes + 0x140))[value], 5);
                     func_003c7430(6);
                     *(u32*)(bytes + 0x38) = 2;
                     break;
@@ -7946,7 +7946,7 @@ s32 func_001ef7f0(RuntimeTask* task)
                     value = ++*(s32*)(bytes + 0x154);
                     if (value < *(s32*)(bytes + 0x150))
                     {
-                        id = *(u16*)(bytes + 0x140 + value * 2);
+                        id = ((u16*)(bytes + 0x140))[value];
                         func_003c7c20(0, id, 5);
                         if (iGpffffb6fc != NULL)
                         {
@@ -8153,8 +8153,8 @@ s32 func_001ef7f0(RuntimeTask* task)
                     *(s32*)(bytes + 0xc4) = 0;
                     func_003c7bc0(
                         0, func_00173220(
-                               *(u16*)(bytes + 0xd4 +
-                                       *(s32*)(bytes + 0xc4) * 2)));
+                               ((u16*)(bytes + 0xd4))[
+                                   *(s32*)(bytes + 0xc4)]));
                     func_003c7430(1);
                     work->selection = 1;
                     break;
@@ -8202,12 +8202,12 @@ s32 func_001ef7f0(RuntimeTask* task)
                         func_0019d3f0(D_00684578, 0x3f3);
                     }
                     func_00264e30(
-                        *(u16*)(bytes + 0xd4 +
-                                *(s32*)(bytes + 0xc4) * 2));
+                        ((u16*)(bytes + 0xd4))[
+                            *(s32*)(bytes + 0xc4)]);
                     *(u32*)(bytes + 0x3c) = 3;
                     entry.flags = 0;
-                    entry.id = *(u16*)(bytes + 0xd4 +
-                                       *(s32*)(bytes + 0xc4) * 2);
+                    entry.id = ((u16*)(bytes + 0xd4))[
+                        *(s32*)(bytes + 0xc4)];
                     entry.resource = func_00264ff0();
                     func_00272400(&entry);
                     func_002769c0(entry.resource, entry.id);
@@ -8260,13 +8260,13 @@ s32 func_001ef7f0(RuntimeTask* task)
                     {
                         func_00277070();
                         entry.flags = 0;
-                        entry.id = *(u16*)(bytes + 0xd4 +
-                                           *(s32*)(bytes + 0xc4) * 2);
+                        entry.id = ((u16*)(bytes + 0xd4))[
+                            *(s32*)(bytes + 0xc4)];
                         entry.resource = func_00264ff0();
                         func_00272400(&entry);
                         func_00264ef0(
-                            *(u16*)(bytes + 0xd4 +
-                                    *(s32*)(bytes + 0xc4) * 2));
+                            ((u16*)(bytes + 0xd4))[
+                                *(s32*)(bytes + 0xc4)]);
                         work->selection = 4;
                     }
                     else
