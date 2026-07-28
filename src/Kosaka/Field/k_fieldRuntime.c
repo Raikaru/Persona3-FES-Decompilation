@@ -1349,8 +1349,7 @@ HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant)
  * build model arrays, resolve both supplemental descriptor tables, and place
  * every field record. */
 // FUN_001E2E50 NONMATCHING
-u32 func_001e2e50(void* request, void** outFileMemory,
-                  u16 majorId, u16 minorId, s16 variant)
+u32 func_001e2e50(void* request, void** outFileMemory, u16 majorId, u16 minorId, s16 variant)
 {
     typedef struct RuntimeSupplementalEntry
     {
@@ -1399,11 +1398,9 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         *(u32*)(K_Field_Get() + 0x10c0) = modelCount;
         allocator = (void* (**)(u32, u32, u32))DAT_00960184_abs;
 
-        models = (*allocator)(1, *(u32*)(fileMemory + 8) * sizeof(Model*),
-                                     0x40000);
+        models = (*allocator)(1, *(u32*)(fileMemory + 8) * sizeof(Model*), 0x40000);
         *(Model***)(K_Field_Get() + 0x10c4) = models;
-        metadata = (*allocator)(
-            1, *(u32*)(fileMemory + 8) * 9 * sizeof(u32), 0x40000);
+        metadata = (*allocator)(1, *(u32*)(fileMemory + 8) * 9 * sizeof(u32), 0x40000);
         *(u32**)(K_Field_Get() + 0x10c8) = metadata;
 
         record = fileMemory + 0x18;
@@ -1411,26 +1408,21 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         modelIndex = 0;
         while (recordIndex < *(u32*)(fileMemory + 8))
         {
-            if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
-                *(u16*)(record + 6) == 0xffff && D_007CE200 == 1)
+            if (*(u16*)(record + 4) == MODEL_TYPE_FLD && *(u16*)(record + 6) == 0xffff)
             {
-                model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
-                                          D_00684040, MDL_READASYNC);
-                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) +
-                           modelIndex * sizeof(Model*)) = model;
-                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                        modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
-                modelIndex++;
+                if (D_007CE200 == 1)
+                {
+                    model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff, D_00684040, MDL_READASYNC);
+                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
+                    modelIndex++;
+                }
             }
             else
             {
-                model = mdlCreateAndResolvePath(*(u16*)(record + 4),
-                                                *(u16*)(record + 6),
-                                                MDL_READASYNC);
-                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) +
-                           modelIndex * sizeof(Model*)) = model;
-                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                        modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
+                model = mdlCreateAndResolvePath(*(u16*)(record + 4), *(u16*)(record + 6), MDL_READASYNC);
+                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
                 modelIndex++;
             }
             recordIndex++;
@@ -1442,10 +1434,8 @@ u32 func_001e2e50(void* request, void** outFileMemory,
             tableHeader = (u8*)func_001b83f0();
             if (tableHeader != NULL)
             {
-                table = (RuntimeSupplementalEntry*)func_001b85a0(
-                    *(u32*)(tableHeader + 0x0c));
-                for (sourceIndex = 0; table->fieldId != 0xffff;
-                     sourceIndex++, table++)
+                table = (RuntimeSupplementalEntry*)func_001b85a0(*(u32*)(tableHeader + 0x0c));
+                for (sourceIndex = 0; table->fieldId != 0xffff; sourceIndex++, table++)
                 {
                     u8* tableRecord;
                     u32 tableRecordIndex;
@@ -1454,8 +1444,7 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                     u32 fieldModelType;
 
                     tableFlag = table->flag;
-                    if (tableFlag == -1 ||
-                        datGetFlag((u32)tableFlag) != 1)
+                    if (tableFlag == -1 || datGetFlag((u32)tableFlag) != 1)
                     {
                         tableRecord = fileMemory + 0x18;
                         tableRecordIndex = 0;
@@ -1466,30 +1455,23 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                         {
                             if (*(u16*)(tableRecord + 4) == fieldModelType &&
                                 *(u16*)(tableRecord + 6) == invalidModelId &&
-                                *(u16*)(tableRecord + 8) ==
-                                    (u16)((table->fieldId & 0x3ff) | 0xc00) &&
-                                (table->majorId != 0 ||
-                                 table->minorId != 0))
+                                *(u16*)(tableRecord + 8) == (u16)((table->fieldId & 0x3ff) | 0xc00))
                             {
-                                u32 metadataOffset;
+                                if (table->majorId != 0 || table->minorId != 0)
+                                {
+                                    u32 metadataOffset;
 
-                                D_007CE2C0 = 1;
-                                model = mdlCreateAndResolvePath(
-                                    table->majorId, table->minorId,
-                                    MDL_READASYNC);
-                                *(Model**)((u8*)*(Model***)(K_Field_Get() +
-                                                                        0x10c4) +
-                                           modelIndex * sizeof(Model*)) = model;
-                                metadataOffset =
-                                    modelIndex * 9 * sizeof(u32);
-                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                        metadataOffset) = 1;
-                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                        metadataOffset + 4) = (u32)table;
-                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                        metadataOffset + 8) =
-                                    tableRecordIndex;
-                                modelIndex++;
+                                    D_007CE2C0 = 1;
+                                    model = mdlCreateAndResolvePath(table->majorId, table->minorId, MDL_READASYNC);
+                                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
+                                        model;
+                                    metadataOffset = modelIndex * 9 * sizeof(u32);
+                                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset) = 1;
+                                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 4) = (u32)table;
+                                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 8) =
+                                        tableRecordIndex;
+                                    modelIndex++;
+                                }
                                 break;
                             }
                             tableRecordIndex++;
@@ -1520,30 +1502,24 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                     {
                         if (*(u16*)(sourceRecord + 4) == fieldModelType &&
                             *(u16*)(sourceRecord + 6) == invalidModelId &&
-                            *(u16*)(sourceRecord + 8) ==
-                                (u16)((*(u16*)source & 0x3ff) | 0xc00) &&
-                            (*(u16*)(source + 0x64) != 0 ||
-                             *(u16*)(source + 0x66) != 0))
+                            *(u16*)(sourceRecord + 8) == (u16)((*(u16*)source & 0x3ff) | 0xc00))
                         {
-                            u32 metadataOffset;
+                            if (*(u16*)(source + 0x64) != 0 || *(u16*)(source + 0x66) != 0)
+                            {
+                                u32 metadataOffset;
 
-                            D_007CE2C0 = 1;
-                            model = mdlCreateAndResolvePath(
-                                *(u16*)(source + 0x64),
-                                *(u16*)(source + 0x66), MDL_READASYNC);
-                            *(Model**)((u8*)*(Model***)(K_Field_Get() +
-                                                                    0x10c4) +
-                                       modelIndex * sizeof(Model*)) = model;
-                            metadataOffset = modelIndex * 9 * sizeof(u32);
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset) = 2;
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset + 4) = (u32)source;
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset + 8) = sourceRecordIndex;
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset + 0x10) = sourceIndex;
-                            modelIndex++;
+                                D_007CE2C0 = 1;
+                                model = mdlCreateAndResolvePath(*(u16*)(source + 0x64), *(u16*)(source + 0x66),
+                                                                MDL_READASYNC);
+                                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
+                                    model;
+                                metadataOffset = modelIndex * 9 * sizeof(u32);
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset) = 2;
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 4) = (u32)source;
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 8) = sourceRecordIndex;
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 0x10) = sourceIndex;
+                                modelIndex++;
+                            }
                             break;
                         }
                         sourceRecordIndex++;
@@ -1560,8 +1536,7 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         {
             u16 resourceId;
 
-            resourceId =
-                func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
+            resourceId = func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
             asyncAngles[0] = func_001a5b30(record + 0x10);
             asyncAngles[1] = func_001a5aa0(record + 0x10);
             asyncAngles[2] = func_001a5bc0(record + 0x10);
@@ -1584,11 +1559,9 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         *(u32*)(K_Field_Get() + 0x10c0) = modelCount;
         allocator = (void* (**)(u32, u32, u32))DAT_00960184_abs;
 
-        models = (*allocator)(1, *(u32*)(fileMemory + 8) * sizeof(Model*),
-                                     0x40000);
+        models = (*allocator)(1, *(u32*)(fileMemory + 8) * sizeof(Model*), 0x40000);
         *(Model***)(K_Field_Get() + 0x10c4) = models;
-        metadata = (*allocator)(
-            1, *(u32*)(fileMemory + 8) * 9 * sizeof(u32), 0x40000);
+        metadata = (*allocator)(1, *(u32*)(fileMemory + 8) * 9 * sizeof(u32), 0x40000);
         *(u32**)(K_Field_Get() + 0x10c8) = metadata;
 
         record = fileMemory + 0x18;
@@ -1596,26 +1569,21 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         modelIndex = 0;
         while (recordIndex < *(u32*)(fileMemory + 8))
         {
-            if (*(u16*)(record + 4) == MODEL_TYPE_FLD &&
-                *(u16*)(record + 6) == 0xffff && D_007CE200 == 1)
+            if (*(u16*)(record + 4) == MODEL_TYPE_FLD && *(u16*)(record + 6) == 0xffff)
             {
-                model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
-                                          D_00684040, MDL_READASYNC);
-                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) +
-                           modelIndex * sizeof(Model*)) = model;
-                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                        modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
-                modelIndex++;
+                if (D_007CE200 == 1)
+                {
+                    model = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff, D_00684040, MDL_READASYNC);
+                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
+                    modelIndex++;
+                }
             }
             else
             {
-                model = mdlCreateAndResolvePath(*(u16*)(record + 4),
-                                                *(u16*)(record + 6),
-                                                MDL_READASYNC);
-                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) +
-                           modelIndex * sizeof(Model*)) = model;
-                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                        modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
+                model = mdlCreateAndResolvePath(*(u16*)(record + 4), *(u16*)(record + 6), MDL_READASYNC);
+                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) = model;
+                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + modelIndex * 9 * sizeof(u32) + 8) = recordIndex;
                 modelIndex++;
             }
             recordIndex++;
@@ -1627,10 +1595,8 @@ u32 func_001e2e50(void* request, void** outFileMemory,
             tableHeader = (u8*)func_001b83f0();
             if (tableHeader != NULL)
             {
-                table = (RuntimeSupplementalEntry*)func_001b85a0(
-                    *(u32*)(tableHeader + 0x0c));
-                for (sourceIndex = 0; table->fieldId != 0xffff;
-                     sourceIndex++, table++)
+                table = (RuntimeSupplementalEntry*)func_001b85a0(*(u32*)(tableHeader + 0x0c));
+                for (sourceIndex = 0; table->fieldId != 0xffff; sourceIndex++, table++)
                 {
                     u8* tableRecord;
                     u32 tableRecordIndex;
@@ -1639,8 +1605,7 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                     u32 fieldModelType;
 
                     tableFlag = table->flag;
-                    if (tableFlag == -1 ||
-                        datGetFlag((u32)tableFlag) != 1)
+                    if (tableFlag == -1 || datGetFlag((u32)tableFlag) != 1)
                     {
                         tableRecord = fileMemory + 0x18;
                         tableRecordIndex = 0;
@@ -1651,30 +1616,23 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                         {
                             if (*(u16*)(tableRecord + 4) == fieldModelType &&
                                 *(u16*)(tableRecord + 6) == invalidModelId &&
-                                *(u16*)(tableRecord + 8) ==
-                                    (u16)((table->fieldId & 0x3ff) | 0xc00) &&
-                                (table->majorId != 0 ||
-                                 table->minorId != 0))
+                                *(u16*)(tableRecord + 8) == (u16)((table->fieldId & 0x3ff) | 0xc00))
                             {
-                                u32 metadataOffset;
+                                if (table->majorId != 0 || table->minorId != 0)
+                                {
+                                    u32 metadataOffset;
 
-                                D_007CE2C0 = 1;
-                                model = mdlCreateAndResolvePath(
-                                    table->majorId, table->minorId,
-                                    MDL_READASYNC);
-                                *(Model**)((u8*)*(Model***)(K_Field_Get() +
-                                                                        0x10c4) +
-                                           modelIndex * sizeof(Model*)) = model;
-                                metadataOffset =
-                                    modelIndex * 9 * sizeof(u32);
-                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                        metadataOffset) = 1;
-                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                        metadataOffset + 4) = (u32)table;
-                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                        metadataOffset + 8) =
-                                    tableRecordIndex;
-                                modelIndex++;
+                                    D_007CE2C0 = 1;
+                                    model = mdlCreateAndResolvePath(table->majorId, table->minorId, MDL_READASYNC);
+                                    *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
+                                        model;
+                                    metadataOffset = modelIndex * 9 * sizeof(u32);
+                                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset) = 1;
+                                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 4) = (u32)table;
+                                    *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 8) =
+                                        tableRecordIndex;
+                                    modelIndex++;
+                                }
                                 break;
                             }
                             tableRecordIndex++;
@@ -1705,30 +1663,24 @@ u32 func_001e2e50(void* request, void** outFileMemory,
                     {
                         if (*(u16*)(sourceRecord + 4) == fieldModelType &&
                             *(u16*)(sourceRecord + 6) == invalidModelId &&
-                            *(u16*)(sourceRecord + 8) ==
-                                (u16)((*(u16*)source & 0x3ff) | 0xc00) &&
-                            (*(u16*)(source + 0x64) != 0 ||
-                             *(u16*)(source + 0x66) != 0))
+                            *(u16*)(sourceRecord + 8) == (u16)((*(u16*)source & 0x3ff) | 0xc00))
                         {
-                            u32 metadataOffset;
+                            if (*(u16*)(source + 0x64) != 0 || *(u16*)(source + 0x66) != 0)
+                            {
+                                u32 metadataOffset;
 
-                            D_007CE2C0 = 1;
-                            model = mdlCreateAndResolvePath(
-                                *(u16*)(source + 0x64),
-                                *(u16*)(source + 0x66), MDL_READASYNC);
-                            *(Model**)((u8*)*(Model***)(K_Field_Get() +
-                                                                    0x10c4) +
-                                       modelIndex * sizeof(Model*)) = model;
-                            metadataOffset = modelIndex * 9 * sizeof(u32);
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset) = 2;
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset + 4) = (u32)source;
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset + 8) = sourceRecordIndex;
-                            *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) +
-                                    metadataOffset + 0x10) = sourceIndex;
-                            modelIndex++;
+                                D_007CE2C0 = 1;
+                                model = mdlCreateAndResolvePath(*(u16*)(source + 0x64), *(u16*)(source + 0x66),
+                                                                MDL_READASYNC);
+                                *(Model**)((u8*)*(Model***)(K_Field_Get() + 0x10c4) + modelIndex * sizeof(Model*)) =
+                                    model;
+                                metadataOffset = modelIndex * 9 * sizeof(u32);
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset) = 2;
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 4) = (u32)source;
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 8) = sourceRecordIndex;
+                                *(u32*)((u8*)*(u32**)(K_Field_Get() + 0x10c8) + metadataOffset + 0x10) = sourceIndex;
+                                modelIndex++;
+                            }
                             break;
                         }
                         sourceRecordIndex++;
@@ -1745,8 +1697,7 @@ u32 func_001e2e50(void* request, void** outFileMemory,
         {
             u16 resourceId;
 
-            resourceId =
-                func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
+            resourceId = func_003b5e90((u16)(*(u16*)(record + 0x50) & 0x3ff));
             cachedAngles[0] = func_001a5b30(record + 0x10);
             cachedAngles[1] = func_001a5aa0(record + 0x10);
             cachedAngles[2] = func_001a5bc0(record + 0x10);
@@ -7683,7 +7634,7 @@ RuntimeTask* func_001ef500(RuntimeTask* parent)
 
 /* Retail request completion and all thirteen top-level runtime states are
  * reconstructed, including the nested result and persona resource flows. */
-// FUN_001EF7F0 NONMATCHING
+// FUN_001EF7F0
 s32 func_001ef7f0(RuntimeTask* task)
 {
     RuntimeWork* work;

@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include "Main/Battle/Cmd/gc_pose.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
 #include "Kosaka/k_assert.h"
@@ -30,78 +31,78 @@ extern f32 RwV3dNormalize(RwV3d *out, const RwV3d *in);
 extern f32 RwV3dLength(const RwV3d *in);
 
 // FUN_00250480
-void gcPose00250480(int param_1)
+void gcPose00250480(GcPoseController *pose)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 0, 0x466);
-    K_ASSERT(*(int*)(param_1 + 0x20) == 3, 0x467);
-    *(u32*)(param_1 + 0x28) &= 0xfffffffe;
+    K_ASSERT(pose->type.s32Value == 0, 0x466);
+    K_ASSERT(pose->state.position.mode.s32Value == 3, 0x467);
+    pose->state.position.data.translation.flags.u32Value &= 0xfffffffe;
 }
 
 // FUN_00250b90
-u32 gcPose00250b90(int param_1)
+u32 gcPose00250b90(GcPoseController *pose)
 {
-    K_ASSERT(*(int*)(param_1 + 0x20) == 3, 0x512);
-    return *(u32*)(param_1 + 0x28) & 1;
+    K_ASSERT(pose->state.position.mode.s32Value == 3, 0x512);
+    return pose->state.position.data.translation.flags.u32Value & 1;
 }
 
 // FUN_00250c70
-void gcPose00250c70(int param_1)
+void gcPose00250c70(GcPoseController *pose)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x539);
-    K_ASSERT(*(int*)(param_1 + 0x24) == 3, 0x53a);
-    *(u32*)(param_1 + 0x2c) &= 0xfffffffe;
+    K_ASSERT(pose->type.s32Value == 2, 0x539);
+    K_ASSERT(pose->state.rotation.mode.s32Value == 3, 0x53a);
+    pose->state.rotation.data.motion.flags.u32Value &= 0xfffffffe;
 }
 
 // FUN_00250e70
-u32 gcPose00250e70(int param_1)
+u32 gcPose00250e70(GcPoseController *pose)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x57d);
-    K_ASSERT(*(int*)(param_1 + 0x24) == 3, 0x57e);
-    return *(u32*)(param_1 + 0x2c) & 1;
+    K_ASSERT(pose->type.s32Value == 2, 0x57d);
+    K_ASSERT(pose->state.rotation.mode.s32Value == 3, 0x57e);
+    return pose->state.rotation.data.motion.flags.u32Value & 1;
 }
 
 // FUN_00250ef0
-void gcPose00250ef0(int param_1, float param_2)
+void gcPose00250ef0(GcPoseController *pose, float param_2)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x588);
-    K_ASSERT(*(int*)(param_1 + 0x24) == 4, 0x589);
-    *(float*)(param_1 + 0x6c) = param_2;
-    *(u32*)(param_1 + 8) |= 2;
+    K_ASSERT(pose->type.s32Value == 2, 0x588);
+    K_ASSERT(pose->state.rotation.mode.s32Value == 4, 0x589);
+    pose->state.rotation.data.random.scale = param_2;
+    pose->flags |= 2;
 }
 
 // FUN_0024f960
-void gcPose0024f960(int param_1, RwV3d *param_2)
+void gcPose0024f960(GcPoseController *pose, RwV3d *param_2)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 0, 0x375);
-    K_ASSERT(*(int*)(param_1 + 0x20) < 4, 0x376);
-    *param_2 = *(RwV3d*)(param_1 + 0x14);
+    K_ASSERT(pose->type.s32Value == 0, 0x375);
+    K_ASSERT(pose->state.position.mode.s32Value < 4, 0x376);
+    *param_2 = pose->state.position.value;
 }
 
 // FUN_00250500
-void gcPose00250500(int param_1, RwV3d *param_2, int param_3)
+void gcPose00250500(GcPoseController *pose, RwV3d *param_2, int param_3)
 {
-    K_ASSERT(*(int*)(param_1 + 0x20) == 3, 0x471);
-    *(u32*)(param_1 + 0x24) = 0;
-    *(RwV3d*)(param_1 + 0x30) = *param_2;
-    *(RwV3d*)(param_1 + 0x3c) = *(RwV3d*)(param_1 + 0x14);
-    *(u32*)(param_1 + 0x10) = 0;
-    *(int*)(param_1 + 0x2c) = param_3 << 0x10;
-    *(u32*)(param_1 + 0x28) |= 1;
+    K_ASSERT(pose->state.position.mode.s32Value == 3, 0x471);
+    pose->state.position.data.translation.active.u32Value = 0;
+    pose->state.position.data.translation.acceleration = *param_2;
+    pose->state.position.data.translation.direction = pose->state.position.value;
+    pose->field_0x10 = 0;
+    pose->state.position.data.translation.duration.s32Value = param_3 << 0x10;
+    pose->state.position.data.translation.flags.u32Value |= 1;
 }
 
 // FUN_0024faa0
-RwV3d* gcPose0024faa0(int param_1)
+RwV3d* gcPose0024faa0(GcPoseController *pose)
 {
-    K_ASSERT(*(int*)(param_1 + 0x20) < 2, 0x38e);
-    return (RwV3d*)(param_1 + 0x14);
+    K_ASSERT(pose->state.position.mode.s32Value < 2, 0x38e);
+    return &pose->state.position.value;
 }
 
 // FUN_0024fba0
-void gcPose0024fba0(int param_1, RtQuat *param_2)
+void gcPose0024fba0(GcPoseController *pose, RtQuat *param_2)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x3a6);
-    K_ASSERT(*(int*)(param_1 + 0x24) < 5, 0x3a7);
-    *param_2 = *(RtQuat*)(param_1 + 0x14);
+    K_ASSERT(pose->type.s32Value == 2, 0x3a6);
+    K_ASSERT(pose->state.rotation.mode.s32Value < 5, 0x3a7);
+    *param_2 = pose->state.rotation.value;
 }
 
 
@@ -116,12 +117,12 @@ void gcPose0024fba0(int param_1, RtQuat *param_2)
 #define GC_F32(work, offset) (*(f32*)((u8*)(work) + (offset)))
 #define GC_V3D(work, offset) ((RwV3d*)((u8*)(work) + (offset)))
 
-static void gcPose0024f350(void* state);
-static void gcPose0024f410(void* state);
-static void gcPose0024f780(void* state);
-static void gcPose0024f7f0(void* state, const RwV3d* offset);
-static void gcPose0024fe40(void* state);
-static void gcPose0024ff10(void* state);
+static void gcPose0024f350(GcPoseController* pose);
+static void gcPose0024f410(GcPoseController* pose);
+static void gcPose0024f780(GcPoseController* pose);
+static void gcPose0024f7f0(GcPoseController* pose, const RwV3d* offset);
+static void gcPose0024fe40(GcPoseController* pose);
+static void gcPose0024ff10(GcPoseController* pose);
 static void gcPose00250280(void* state, const RwV3d* offset);
 
 static inline f32 gcPoseRandomExtent(f32 extent)
@@ -132,23 +133,23 @@ static inline f32 gcPoseRandomExtent(f32 extent)
 
 
 // FUN_0024F090
-void gcPose0024f090(void* state)
+void gcPose0024f090(GcPoseController* pose)
 {
     u32 mode;
 
-    GC_U32(state, 8) |= 1;
-    switch (GC_U32(state, 0xc)) {
+    pose->flags |= 1;
+    switch (pose->type.u32Value) {
         case 0:
-            mode = GC_U32(state, 0x20);
+            mode = pose->state.position.mode.u32Value;
             switch (mode) {
                 case 1:
-                    gcPose0024f350(state);
+                    gcPose0024f350(pose);
                     break;
                 case 0:
                 case 2:
                     break;
                 case 3:
-                    gcPose0024f780(state);
+                    gcPose0024f780(pose);
                     break;
                 default:
                     K_ASSERT(0, 0x2d4);
@@ -156,7 +157,7 @@ void gcPose0024f090(void* state)
             }
             break;
         case 1:
-            mode = GC_U32(state, 0x20);
+            mode = pose->state.position.mode.u32Value;
             switch (mode) {
                 case 0:
                 case 1:
@@ -167,17 +168,17 @@ void gcPose0024f090(void* state)
             }
             break;
         case 2:
-            mode = GC_U32(state, 0x24);
+            mode = pose->state.rotation.mode.u32Value;
             switch (mode) {
                 case 0:
                 case 1:
                 case 2:
                     break;
                 case 3:
-                    GC_U32(state, 0x2c) = 0;
+                    pose->state.rotation.data.motion.flags.u32Value = 0;
                     break;
                 case 4:
-                    gcPose0024fe40(state);
+                    gcPose0024fe40(pose);
                     break;
                 default:
                     K_ASSERT(0, 0x2fb);
@@ -191,80 +192,80 @@ void gcPose0024f090(void* state)
 }
 
 // FUN_0024F210
-void gcPose0024f210(void* state, f32 first, u32 value, f32 fourth)
+void gcPose0024f210(GcPoseController* pose, f32 first, u32 value, f32 fourth)
 {
-    K_ASSERT(GC_U32(state, 0xc) == 0, 0x30b);
-    K_ASSERT(GC_U32(state, 0x20) == 1, 0x30c);
-    GC_F32(state, 0x54) = first;
-    GC_U32(state, 0x58) = value;
-    GC_F32(state, 0x5c) = fourth;
-    GC_U32(state, 8) |= 2;
+    K_ASSERT(pose->type.u32Value == 0, 0x30b);
+    K_ASSERT(pose->state.position.mode.u32Value == 1, 0x30c);
+    pose->state.position.data.random.randomExtent = first;
+    pose->state.position.data.random.parameter58.u32Value = value;
+    pose->state.position.data.random.offsetScale = fourth;
+    pose->flags |= 2;
 }
 
 // FUN_0024F2C0
-void gcPose0024f2c0(void* state, f32 value)
+void gcPose0024f2c0(GcPoseController* pose, f32 value)
 {
-    K_ASSERT(GC_U32(state, 0xc) == 0, 0x31b);
-    K_ASSERT(GC_U32(state, 0x20) == 1, 0x31c);
-    GC_F32(state, 0x60) = value;
-    GC_U32(state, 8) |= 2;
+    K_ASSERT(pose->type.u32Value == 0, 0x31b);
+    K_ASSERT(pose->state.position.mode.u32Value == 1, 0x31c);
+    pose->state.position.data.random.scale = value;
+    pose->flags |= 2;
 }
 
 // FUN_0024F350
-static void gcPose0024f350(void* state)
+static void gcPose0024f350(GcPoseController* pose)
 {
     RwV3d offset;
-    f32 *poseData;
+    GcPosePositionRandomData *poseData;
 
-    K_ASSERT(GC_U32(state, 0xc) == 0, 0x329);
-    K_ASSERT(GC_U32(state, 0x20) == 1, 0x32a);
+    K_ASSERT(pose->type.u32Value == 0, 0x329);
+    K_ASSERT(pose->state.position.mode.u32Value == 1, 0x32a);
 
-    poseData = (f32 *)((u8 *)state + 0x24);
-    poseData[12] = 10.0f;
-    *(u32 *)&poseData[13] = 0xb4;
-    poseData[14] = 10.0f;
-    poseData[15] = 1.0f;
-    gcPose0024f410(state);
+    poseData = &pose->state.position.data.random;
+    poseData->randomExtent = 10.0f;
+    poseData->parameter58.u32Value = 0xb4;
+    poseData->offsetScale = 10.0f;
+    poseData->scale = 1.0f;
+    gcPose0024f410(pose);
 
     offset.x = 0.0f;
     offset.y = 0.0f;
-    offset.z = poseData[14];
-    gcPose0024f7f0(state, &offset);
+    offset.z = poseData->offsetScale;
+    gcPose0024f7f0(pose, &offset);
 }
 
 // FUN_0024F410
-static void gcPose0024f410(void* state)
+static void gcPose0024f410(GcPoseController* pose)
 {
-    RwV3d pose;
-    f32* poseData;
+    RwV3d value;
+    GcPosePositionRandomData* poseData;
 
-    K_ASSERT(GC_U32(state, 0xc) == 0, 0x341);
-    K_ASSERT(GC_U32(state, 0x20) == 1, 0x342);
-    poseData = (f32*)((u8*)state + 0x24);
+    K_ASSERT(pose->type.u32Value == 0, 0x341);
+    K_ASSERT(pose->state.position.mode.u32Value == 1, 0x342);
+    poseData = &pose->state.position.data.random;
 
-    pose.x = gcPoseRandomExtent(poseData[12]);
-    pose.y = gcPoseRandomExtent(poseData[12]);
-    pose.z = gcPoseRandomExtent(poseData[12]);
-    *(RwV3d*)poseData = pose;
+    value.x = gcPoseRandomExtent(poseData->randomExtent);
+    value.y = gcPoseRandomExtent(poseData->randomExtent);
+    value.z = gcPoseRandomExtent(poseData->randomExtent);
+    poseData->sample = value;
 
-    pose.x = gcPoseRandomExtent(poseData[12]);
-    pose.y = gcPoseRandomExtent(poseData[12]);
-    pose.z = gcPoseRandomExtent(poseData[12]);
-    *(RwV3d*)(poseData + 9) = pose;
+    value.x = gcPoseRandomExtent(poseData->randomExtent);
+    value.y = gcPoseRandomExtent(poseData->randomExtent);
+    value.z = gcPoseRandomExtent(poseData->randomExtent);
+    poseData->anchor = value;
 }
 
 // FUN_0024F780
-static void gcPose0024f780(void* state)
+static void gcPose0024f780(GcPoseController* pose)
 {
-    K_ASSERT(GC_U32(state, 0xc) == 0, 0x355);
-    K_ASSERT(GC_U32(state, 0x20) == 3, 0x356);
-    GC_F32(state, 0x28) = 0.0f;
+    K_ASSERT(pose->type.u32Value == 0, 0x355);
+    K_ASSERT(pose->state.position.mode.u32Value == 3, 0x356);
+    pose->state.position.data.translation.flags.f32Value = 0.0f;
 }
 
 // FUN_0024F7F0
-static void gcPose0024f7f0(void* state, const RwV3d* offset)
+static void gcPose0024f7f0(GcPoseController* state, const RwV3d* offset)
 {
-    f32 *pose;
+    GcPosePositionRandomData *pose;
     RwV3d fromOrigin;
     RwV3d toOrigin;
     RwV3d anchor = { 0.0f, 0.0f, 0.0f };
@@ -276,17 +277,17 @@ static void gcPose0024f7f0(void* state, const RwV3d* offset)
     f32 tangentZ;
     f32 scale;
 
-    pose = (f32 *)((u8 *)state + 0x24);
-    pose[3] = pose[0] + offset->x;
-    pose[4] = pose[1] + offset->y;
-    pose[5] = pose[2] + offset->z;
+    pose = &state->state.position.data.random;
+    pose->shiftedSample.x = pose->sample.x + offset->x;
+    pose->shiftedSample.y = pose->sample.y + offset->y;
+    pose->shiftedSample.z = pose->sample.z + offset->z;
 
-    fromOrigin.x = anchor.x - pose[9];
-    fromOrigin.y = anchor.y - pose[10];
-    fromOrigin.z = anchor.z - pose[11];
-    toOrigin.x = pose[9] - pose[0];
-    toOrigin.y = pose[10] - pose[1];
-    toOrigin.z = pose[11] - pose[2];
+    fromOrigin.x = anchor.x - pose->anchor.x;
+    fromOrigin.y = anchor.y - pose->anchor.y;
+    fromOrigin.z = anchor.z - pose->anchor.z;
+    toOrigin.x = pose->anchor.x - pose->sample.x;
+    toOrigin.y = pose->anchor.y - pose->sample.y;
+    toOrigin.z = pose->anchor.z - pose->sample.z;
     RwV3dNormalize(&fromOrigin, &fromOrigin);
     RwV3dNormalize(&toOrigin, &toOrigin);
     crossX = toOrigin.y * fromOrigin.z - toOrigin.z * fromOrigin.y;
@@ -296,23 +297,23 @@ static void gcPose0024f7f0(void* state, const RwV3d* offset)
     tangentY = crossZ * fromOrigin.x - crossX * fromOrigin.z;
     tangentZ = crossX * fromOrigin.y - crossY * fromOrigin.x;
 
-    scale = pose[14];
+    scale = pose->offsetScale;
     tangentX *= scale;
     tangentY *= scale;
     tangentZ *= scale;
-    pose[6] = pose[9] + tangentX;
-    pose[7] = pose[10] + tangentY;
-    pose[8] = pose[11] + tangentZ;
+    pose->controlPoint.x = pose->anchor.x + tangentX;
+    pose->controlPoint.y = pose->anchor.y + tangentY;
+    pose->controlPoint.z = pose->anchor.z + tangentZ;
 }
 
 // FUN_0024F9F0
-void gcPose0024f9f0(int param_1, RwV3d* param_2)
+void gcPose0024f9f0(GcPoseController* pose, RwV3d* param_2)
 {
-    K_ASSERT(*(int*)(param_1 + 0x20) < 4, 0x37d);
-    switch (*(int*)(param_1 + 0x20)) {
+    K_ASSERT(pose->state.position.mode.s32Value < 4, 0x37d);
+    switch (pose->state.position.mode.s32Value) {
         case 0:
         case 3:
-            *(RwV3d*)(param_1 + 0x14) = *param_2;
+            pose->state.position.value = *param_2;
             break;
         default:
             K_ASSERT(0, 0x386);
@@ -321,13 +322,13 @@ void gcPose0024f9f0(int param_1, RwV3d* param_2)
 }
 
 // FUN_0024FAF0
-void gcPose0024faf0(int param_1, RwV3d* param_2)
+void gcPose0024faf0(GcPoseController* pose, RwV3d* param_2)
 {
-    K_ASSERT(*(int*)(param_1 + 0x20) < 2, 0x395);
-    switch (*(int*)(param_1 + 0x20)) {
+    K_ASSERT(pose->state.position.mode.s32Value < 2, 0x395);
+    switch (pose->state.position.mode.s32Value) {
         case 0:
         case 1:
-            *(RwV3d*)(param_1 + 0x14) = *param_2;
+            pose->state.position.value = *param_2;
             break;
         default:
             K_ASSERT(0, 0x39e);
@@ -336,15 +337,15 @@ void gcPose0024faf0(int param_1, RwV3d* param_2)
 }
 
 // FUN_0024FC40
-void gcPose0024fc40(int param_1, RtQuat* param_2)
+void gcPose0024fc40(GcPoseController* pose, RtQuat* param_2)
 {
-    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x3ae);
-    switch (*(int*)(param_1 + 0x24)) {
+    K_ASSERT(pose->type.s32Value == 2, 0x3ae);
+    switch (pose->state.rotation.mode.s32Value) {
         case 0:
         case 1:
         case 2:
         case 3:
-            *(RtQuat*)(param_1 + 0x14) = *param_2;
+            pose->state.rotation.value = *param_2;
             break;
         default:
             K_ASSERT(0, 0x3b9);
@@ -353,116 +354,116 @@ void gcPose0024fc40(int param_1, RtQuat* param_2)
 }
 
 // FUN_0024FD10
-void gcPose0024fd10(void* state)
+void gcPose0024fd10(GcPoseController* pose)
 {
-    GC_U32(state, 0xc) = 0;
-    GC_U32(state, 0x20) = 0;
+    pose->type.u32Value = 0;
+    pose->state.position.mode.u32Value = 0;
 }
 
 // FUN_0024FD20
-void gcPose0024fd20(void* state)
+void gcPose0024fd20(GcPoseController* pose)
 {
-    GC_U32(state, 0xc) = 0;
-    GC_U32(state, 0x20) = 1;
+    pose->type.u32Value = 0;
+    pose->state.position.mode.u32Value = 1;
 }
 
 // FUN_0024FD40
-void gcPose0024fd40(void* state)
+void gcPose0024fd40(GcPoseController* pose)
 {
-    s32* values;
+    GcPoseScalar* values;
     s32 index;
 
-    GC_U32(state, 0xc) = 0;
-    GC_U32(state, 0x20) = 2;
-    values = (s32*)((u8*)state + 0x24);
+    pose->type.u32Value = 0;
+    pose->state.position.mode.u32Value = 2;
+    values = pose->state.position.data.vector.values;
     for (index = 0; index < 3; index++) {
-        values[index] = 0;
+        values[index].s32Value = 0;
     }
 }
 
 // FUN_0024FD80
-void gcPose0024fd80(void* state)
+void gcPose0024fd80(GcPoseController* pose)
 {
-    GC_U32(state, 0xc) = 0;
-    GC_U32(state, 0x20) = 3;
+    pose->type.u32Value = 0;
+    pose->state.position.mode.u32Value = 3;
 }
 
 // FUN_0024FDA0
-void gcPose0024fda0(void* state)
+void gcPose0024fda0(GcPoseController* pose)
 {
-    GC_U32(state, 0xc) = 1;
-    GC_U32(state, 0x20) = 0;
+    pose->type.u32Value = 1;
+    pose->state.position.mode.u32Value = 0;
 }
 
 // FUN_0024FDC0
-void gcPose0024fdc0(void* state)
+void gcPose0024fdc0(GcPoseController* pose)
 {
-    s32* values;
+    GcPoseScalar* values;
     s32 index;
 
-    GC_U32(state, 0xc) = 2;
-    GC_U32(state, 0x24) = 2;
-    values = (s32*)((u8*)state + 0x28);
+    pose->type.u32Value = 2;
+    pose->state.rotation.mode.u32Value = 2;
+    values = pose->state.rotation.data.vector.values;
     for (index = 0; index < 3; index++) {
-        values[index] = 0;
+        values[index].s32Value = 0;
     }
 }
 
 // FUN_0024FE00
-void gcPose0024fe00(void* state)
+void gcPose0024fe00(GcPoseController* pose)
 {
-    GC_U32(state, 0xc) = 2;
-    GC_U32(state, 0x24) = 3;
+    pose->type.u32Value = 2;
+    pose->state.rotation.mode.u32Value = 3;
 }
 
 // FUN_0024FE20
-void gcPose0024fe20(void* state)
+void gcPose0024fe20(GcPoseController* pose)
 {
-    GC_U32(state, 0xc) = 2;
-    GC_U32(state, 0x24) = 4;
+    pose->type.u32Value = 2;
+    pose->state.rotation.mode.u32Value = 4;
 }
 
 // FUN_0024FE40
-static void gcPose0024fe40(void* state)
+static void gcPose0024fe40(GcPoseController* pose)
 {
     RwV3d offset;
-    f32* poseData;
+    GcPoseRotationRandomData* poseData;
 
-    K_ASSERT(GC_U32(state, 0xc) == 2, 0x41b);
-    K_ASSERT(GC_U32(state, 0x24) == 4, 0x41c);
-    poseData = (f32*)((u8*)state + 0x28);
-    GC_F32(state, 0x58) = 5.0f;
-    GC_F32(state, 0x5c) = 15.0f;
-    GC_F32(state, 0x60) = 15.0f;
-    GC_U32(state, 0x64) = 0xB4;
-    poseData[0x10] = 1.0f;
-    GC_F32(state, 0x6c) = 1.0f;
-    gcPose0024ff10(state);
+    K_ASSERT(pose->type.u32Value == 2, 0x41b);
+    K_ASSERT(pose->state.rotation.mode.u32Value == 4, 0x41c);
+    poseData = &pose->state.rotation.data.random;
+    poseData->randomExtentX = 5.0f;
+    poseData->randomExtentY = 15.0f;
+    poseData->randomExtentZ = 15.0f;
+    poseData->angle = 0xB4;
+    poseData->offsetScale = 1.0f;
+    poseData->scale = 1.0f;
+    gcPose0024ff10(pose);
     offset.x = 0.0f;
     offset.y = 0.0f;
-    offset.z = poseData[0x10];
-    gcPose00250280(state, &offset);
+    offset.z = poseData->offsetScale;
+    gcPose00250280(pose, &offset);
 }
 
 // FUN_0024FF10
-static void gcPose0024ff10(void* state)
+static void gcPose0024ff10(GcPoseController* pose)
 {
-    RwV3d pose;
-    f32* poseData;
+    RwV3d value;
+    GcPoseRotationRandomData* poseData;
 
-    K_ASSERT(GC_U32(state, 0xc) == 2, 0x434);
-    K_ASSERT(GC_U32(state, 0x24) == 4, 0x435);
-    poseData = (f32*)((u8*)state + 0x28);
+    K_ASSERT(pose->type.u32Value == 2, 0x434);
+    K_ASSERT(pose->state.rotation.mode.u32Value == 4, 0x435);
+    poseData = &pose->state.rotation.data.random;
 
-    pose.x = gcPoseRandomExtent(poseData[12]);
-    pose.y = gcPoseRandomExtent(poseData[13]);
-    pose.z = gcPoseRandomExtent(poseData[14]);
-    *(RwV3d*)poseData = pose;
+    value.x = gcPoseRandomExtent(poseData->randomExtentX);
+    value.y = gcPoseRandomExtent(poseData->randomExtentY);
+    value.z = gcPoseRandomExtent(poseData->randomExtentZ);
+    poseData->sample = value;
 
-    pose.x = gcPoseRandomExtent(poseData[12]);
-    pose.y = gcPoseRandomExtent(poseData[13]);
-    pose.z = gcPoseRandomExtent(poseData[14]);
-    *(RwV3d*)(poseData + 9) = pose;
+    value.x = gcPoseRandomExtent(poseData->randomExtentX);
+    value.y = gcPoseRandomExtent(poseData->randomExtentY);
+    value.z = gcPoseRandomExtent(poseData->randomExtentZ);
+    poseData->anchor = value;
 }
 
 // FUN_00250280
