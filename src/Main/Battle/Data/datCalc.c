@@ -596,7 +596,7 @@ u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
                  short param_6,u32 param_7,u8 param_8);
 
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4);
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
 u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
 u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
 u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
@@ -3164,7 +3164,7 @@ u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3)
   float fVar13;
   u16 auStack_30 [24];
   
-  if (0x26f < (param_1 & 0xffff)) {
+  if ((s32)(param_1 & 0xffff) >= 0x270) {
     FUN_0019d3f0((u32)D_0069aa80, 0xac9);
   }
   bVar1 = false;
@@ -3336,7 +3336,7 @@ LAB_00305f20:
 
 
 // FUN_00306020 NONMATCHING
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4)
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
 
 {
   u16 uVar1;
@@ -3515,14 +3515,14 @@ u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   u32 uVar6;
   int iVar7;
   
-  if (0x1cf < (param_1 & 0xffff)) {
+  if ((s32)(param_1 & 0xffff) >= 0x1d0) {
     FUN_0019d3f0((u32)D_0069aa80, 0xc22);
   }
   if ((param_2 != 0) && (param_3 != 0)) {
     lVar2 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
     lVar3 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
     uVar4 = FUN_00306020(param_1,param_2,param_3,1);
-    if (0x1cf < (param_1 & 0xffff)) {
+    if ((s32)(param_1 & 0xffff) >= 0x1d0) {
       FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
     }
     iVar7 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;

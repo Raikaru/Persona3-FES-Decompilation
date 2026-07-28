@@ -724,7 +724,7 @@ void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   *(float *)(iVar3 + 0x2c) = param_1;
 
-  *(char *)(iVar3 + 0x19) = -1 - (param_4 & 0xff);
+  *(u8 *)(iVar3 + 0x19) = 0xff - (param_4 & 0xff);
 
   *(char *)(iVar3 + 0x30) = (char)((u32)param_4 >> 0x18);
 

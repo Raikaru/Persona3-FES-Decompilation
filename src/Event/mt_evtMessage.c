@@ -651,6 +651,7 @@ void FUN_0039f410(int *param_1)
 
 {
 
+  u32 bVar0;
   int iVar1;
 
   int iVar2;
@@ -663,7 +664,8 @@ void FUN_0039f410(int *param_1)
 
   
 
-  if (*param_1 != 0) {
+  bVar0 = *param_1 != 0;
+  if (bVar0) {
 
     iVar2 = param_1[2];
 
@@ -702,7 +704,7 @@ void FUN_0039f410(int *param_1)
       
       FUN_003a30c0(param_1[2],param_1[4],0);
       
-      FUN_003a27c0(param_1[2],0xffffffffffffffff);
+      FUN_003a27c0(param_1[2]);
       
       param_1[3] = 2; }
 
@@ -766,7 +768,7 @@ void FUN_0039f410(int *param_1)
 
     case 5:
 
-      if (param_1[3] != 0) {
+      if (bVar0 && (param_1[3] != 0)) {
 
         FUN_003a25f0(iVar2,0);
 

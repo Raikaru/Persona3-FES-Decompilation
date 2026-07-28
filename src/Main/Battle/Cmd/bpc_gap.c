@@ -104,6 +104,7 @@ void FUN_00248620(void)
     u32* work;
     u32 texture;
     u32* entry;
+    u32* frame;
     f32 total;
     f32 half;
     f32 base;
@@ -142,11 +143,11 @@ void FUN_00248620(void)
     base = 309.0f - half;
     left = base - 57.0f;
 
-    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0x43);
+    frame = (u32*)(uintptr_t)func_0021cca0(texture, 0x43);
     layout.rect[0] = left;
     layout.rect[1] = 100.0f;
-    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
-    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    layout.rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     func_0021d8e0(work + 4, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;
@@ -154,11 +155,11 @@ void FUN_00248620(void)
     layout.color[3] = 0xff;
     func_0021d950(work + 4, layout.color);
 
-    x = (f32)*(s32*)((u8*)entry + 0xc) + left;
+    x = (f32)*(s32*)((u8*)frame + 0xc) + left;
     layout.rect[0] = x;
     half = 309.0f + half;
     layout.rect[2] = 57.0f + half - 16.0f - x;
-    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    layout.rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     func_0021d8e0(work + 0x44, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;
@@ -166,11 +167,11 @@ void FUN_00248620(void)
     layout.color[3] = 0xff;
     func_0021d950(work + 0x44, layout.color);
 
-    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0x44);
+    frame = (u32*)(uintptr_t)func_0021cca0(texture, 0x44);
     layout.rect[0] = left;
     layout.rect[1] = 100.0f;
-    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
-    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    layout.rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     func_0021d8e0(work + 0x84, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;
@@ -178,11 +179,11 @@ void FUN_00248620(void)
     layout.color[3] = 0xff;
     func_0021d950(work + 0x84, layout.color);
 
-    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0);
+    frame = (u32*)(uintptr_t)func_0021cca0(texture, 0);
     layout.rect[0] = base - 86.0f;
     layout.rect[1] = 54.0f;
     layout.rect[2] = 86.0f + half - layout.rect[0];
-    layout.rect[3] = (f32)((*(s32*)((u8*)entry + 0x10) * 390) / 100);
+    layout.rect[3] = (f32)((*(s32*)((u8*)frame + 0x10) * 390) / 100);
     func_0021d8e0(work + 0xc4, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;
@@ -212,13 +213,13 @@ void FUN_00248620(void)
                    ((u32)layout.color[0] << 24) | ((u32)layout.color[1] << 16) |
                    ((u32)layout.color[2] << 8) | layout.color[3]);
 
-    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0x42);
+    frame = (u32*)(uintptr_t)func_0021cca0(texture, 0x42);
     half = total / 2.0f;
     base = 309.0f - half;
     layout.rect[0] = base - 28.0f;
     layout.rect[1] = 91.0f;
-    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
-    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    layout.rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     func_0021d8e0(work + 0x104, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;
@@ -228,8 +229,8 @@ void FUN_00248620(void)
 
     layout.rect[0] = 309.0f + half + 28.0f - 16.0f;
     layout.rect[1] = 91.0f;
-    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
-    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    layout.rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     func_0021d8e0(work + 0x144, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;

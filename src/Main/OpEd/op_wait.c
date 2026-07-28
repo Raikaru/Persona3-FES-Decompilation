@@ -264,7 +264,7 @@ void opWait0026edb0(void)
 // FUN_0026E000 NONMATCHING
 void opWait0026e000(void)
 {
-    u8* work;
+    OpWaitWork* work;
     void* atlas;
     void* frame;
     void (**setState)(u32 state, u32 value);
@@ -275,9 +275,9 @@ void opWait0026e000(void)
     s32 i;
 
     K_ASSERT(sOpWait != NULL, 0xdb);
-    work = (u8*)sOpWait;
+    work = (OpWaitWork*)sOpWait;
     atlas = opResGetTitleSprite(0);
-    if ((~*(u32*)work & 1) != 0)
+    if ((~work->flags & 1) != 0)
         return;
     setState = (void (**)(u32, u32))D_00960090;
     (*setState)(8, 0);
@@ -287,23 +287,23 @@ void opWait0026e000(void)
     func_004d7f60(2, 0x44);
     (*setState)(1, opWaitGetTitleRasterU32(6));
     setQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
-    (*setQuad)(work + 0x40, 4, 0, 1, 2);
-    (*setQuad)(work + 0x40, 4, 0, 2, 3);
+    (*setQuad)(work->quads[0], 4, 0, 1, 2);
+    (*setQuad)(work->quads[0], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     (*setState)(1, opWaitGetTitleRasterU32(7));
-    (*setQuad)(work + 0x140, 4, 0, 1, 2);
-    (*setQuad)(work + 0x140, 4, 0, 2, 3);
+    (*setQuad)(work->quads[1], 4, 0, 1, 2);
+    (*setQuad)(work->quads[1], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     (*setState)(1, opWaitGetTitleRasterU32(8));
-    (*setQuad)(work + 0x240, 4, 0, 1, 2);
-    (*setQuad)(work + 0x240, 4, 0, 2, 3);
+    (*setQuad)(work->quads[2], 4, 0, 1, 2);
+    (*setQuad)(work->quads[2], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     for (i = 0; i < 3; i++)
     {
-        loopQuad = work + 0xe40 + (u32)i * 0x110;
+        loopQuad = &work->parts[i];
         switch (i)
         {
             case 0:
@@ -320,51 +320,51 @@ void opWait0026e000(void)
         }
         (*setState)(1, opWaitGetTitleRasterU32(frameId));
         loopSetQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
-        (*loopSetQuad)((u8*)loopQuad + 0x10, 4, 0, 1, 2);
-        (*loopSetQuad)((u8*)loopQuad + 0x10, 4, 0, 2, 3);
+        (*loopSetQuad)(((OpWaitPart*)loopQuad)->quad, 4, 0, 1, 2);
+        (*loopSetQuad)(((OpWaitPart*)loopQuad)->quad, 4, 0, 2, 3);
     }
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     (*setState)(1, opWaitGetTitleRasterU32(0xc));
-    (*setQuad)(work + 0x340, 4, 0, 1, 2);
-    (*setQuad)(work + 0x340, 4, 0, 2, 3);
+    (*setQuad)(work->quads[3], 4, 0, 1, 2);
+    (*setQuad)(work->quads[3], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     (*setState)(1, opWaitGetTitleRasterU32(0xd));
-    (*setQuad)(work + 0x440, 4, 0, 1, 2);
-    (*setQuad)(work + 0x440, 4, 0, 2, 3);
+    (*setQuad)(work->quads[4], 4, 0, 1, 2);
+    (*setQuad)(work->quads[4], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    func_002699d0(*(void**)(work + 0x1170));
+    func_002699d0(work->resources[0]);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    func_002699d0(*(void**)(work + 0x1174));
+    func_002699d0(work->resources[1]);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x54);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = func_0021cce0(func_0021cca0(atlas, 0x13));
     (*setState)(1, (u32)(unsigned long)frame);
-    (*setQuad)(work + 0x940, 4, 0, 1, 2);
-    (*setQuad)(work + 0x940, 4, 0, 2, 3);
+    (*setQuad)(work->quads[9], 4, 0, 1, 2);
+    (*setQuad)(work->quads[9], 4, 0, 2, 3);
     frame = func_0021cce0(func_0021cca0(atlas, 0x26));
     (*setState)(1, (u32)(unsigned long)frame);
-    (*setQuad)(work + 0xa40, 4, 0, 1, 2);
-    (*setQuad)(work + 0xa40, 4, 0, 2, 3);
+    (*setQuad)(work->quads[10], 4, 0, 1, 2);
+    (*setQuad)(work->quads[10], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = func_0021cce0(func_0021cca0(atlas, 10));
     (*setState)(1, (u32)(unsigned long)frame);
-    (*setQuad)(work + 0xb40, 4, 0, 1, 2);
-    (*setQuad)(work + 0xb40, 4, 0, 2, 3);
+    (*setQuad)(work->quads[11], 4, 0, 1, 2);
+    (*setQuad)(work->quads[11], 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
     frame = func_0021cce0(func_0021cca0(atlas, 0x10));
     (*setState)(1, (u32)(unsigned long)frame);
-    (*setQuad)(work + 0xd40, 4, 0, 1, 2);
-    (*setQuad)(work + 0xd40, 4, 0, 2, 3);
+    (*setQuad)(work->quads[13], 4, 0, 1, 2);
+    (*setQuad)(work->quads[13], 4, 0, 2, 3);
 }
 
 // FUN_0026E780

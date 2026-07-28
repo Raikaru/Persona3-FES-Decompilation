@@ -584,7 +584,7 @@ void FUN_002441b0(u32 param_1)
   int iVar6;
   u32 uVar9;
   u32 lVar8;
-  register u32 uVar7;
+  u32 uVar7;
   uint *puVar2;
   int iVar10;
   const char *message;

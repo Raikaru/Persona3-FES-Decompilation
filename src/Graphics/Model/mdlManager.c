@@ -2913,7 +2913,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   u16 *puVar4;
 
-  long lVar5;
+  int lVar5;
 
   
 
@@ -2923,10 +2923,10 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   if (piVar1 != (int *)0x0) {
 
-    lVar5 = (long)(short)puVar4[2];
+    lVar5 = (short)puVar4[2];
 
 
-    if (((lVar5 < (long)(u32)*(u16 *)(piVar1 + 1)) &&
+    if (((lVar5 < (u32)*(u16 *)(piVar1 + 1)) &&
 
         (puVar2 = *(u8 **)(*piVar1 + 0x40 + (short)puVar4[2] * 0x50),
 
@@ -2934,7 +2934,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
       if ((*puVar4 & 1) == 0) {
 
-        if ((lVar5 < (long)(u32)*(u16 *)(piVar1 + 1)) && (-1 < lVar5)) {
+        if ((lVar5 < (u32)*(u16 *)(piVar1 + 1)) && (-1 < lVar5)) {
 
           func_004b74c0(*(u32 *)(puVar2 + 0xc),*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20)
                       );
@@ -8486,11 +8486,10 @@ void func_0031b4a0(char* param_1,u16 param_2)
 
     iVar5 = iVar6 * 6;
 
-    lVar3 = datGetFlag(*(u16 *)(&DAT_0069aee0 + iVar5));
+    lVar3 = datGetFlag(*(u16 *)((u8 *)&DAT_0069aee0 + iVar5));
 
-    if ((lVar3 == 1) && (param_2 == *(u16 *)(&DAT_0069aee2 + iVar5))) {
-
-      param_2 = *(u16 *)(&DAT_0069aee4 + iVar5);
+    if ((lVar3 == 1) && (param_2 == *(u16 *)((u8 *)&DAT_0069aee2 + iVar5))) {
+      param_2 = *(u16 *)((u8 *)&DAT_0069aee4 + iVar5);
 
       break;
 
@@ -8540,7 +8539,7 @@ LAB_0031b594:
 
     }
 
-    if (param_2 == *(u16 *)(&DAT_0069af00 + uVar4 * 2)) {
+    if (param_2 == *(u16 *)((u8 *)&DAT_0069af00 + uVar4 * 2)) {
 
       bVar1 = true;
 
@@ -8548,7 +8547,7 @@ LAB_0031b594:
 
     }
 
-    if (param_2 < *(u16 *)(&DAT_0069af00 + uVar4 * 2)) goto LAB_0031b594;
+    if (param_2 < *(u16 *)((u8 *)&DAT_0069af00 + uVar4 * 2)) goto LAB_0031b594;
 
     uVar4 = uVar4 + 1;
 
@@ -8903,7 +8902,7 @@ u32 func_0031be80(u32 param_1)
 
   u32 uVar5;
 
-  u32 lVar6;
+  int lVar6;
 
   int iVar7;
 

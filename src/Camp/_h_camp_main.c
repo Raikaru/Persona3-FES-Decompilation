@@ -1767,6 +1767,7 @@ void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
     }
 }
 
+
 // FUN_001368A0 NONMATCHING
 void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 {

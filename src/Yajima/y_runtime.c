@@ -19756,62 +19756,52 @@ int FUN_0045b4b0(int param_1)
 // FUN_0045B4E0 NONMATCHING
 
 float FUN_0045b4e0(int param_1)
-
 {
-  char cVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  float fVar5;
-  
-  iVar3 = (int)param_1;
+  int flags;
+  int total;
+  int start;
+  int endOffset;
+  int current;
+  int numerator;
+  int denominator;
+  float progress;
+
   if (param_1 == 0) {
-    fVar5 = 0.0f;
+    return 0.0f;
   }
-  else if ((*(u32 *)(iVar3 + 0x8c) & 2) == 0) {
-    if ((*(u32 *)(iVar3 + 0x8c) & 1) != 0) {
-      iVar2 = *(int *)(iVar3 + 0x94);
-      if (iVar2 < 1) {
-        fVar5 = 0.0f;
-      }
-      else {
-        cVar1 = *(char *)(iVar3 + 0x1c);
-        iVar4 = *(int *)(iVar3 + 0x90);
-        if ((long)iVar4 < (long)cVar1) {
-          fVar5 = 0.0f;
-        }
-        else {
-          iVar3 = (int)*(char *)(*(int *)(iVar3 + 0x84) * 0x20 + iVar3 + -3);
-          if (iVar4 < iVar2 - iVar3) {
-            iVar4 = iVar4 - cVar1;
-            iVar3 = (iVar2 - cVar1) - iVar3;
-            if ((iVar4 < 1) || (iVar3 < 1)) {
-              fVar5 = 0.0f;
-            }
-            else {
-              fVar5 = (float)iVar4 / (float)iVar3;
-              if (fVar5 < 0.0f) {
-                fVar5 = 0.0f;
-              }
-              else if (1.0f < fVar5) {
-                fVar5 = 1.0f;
-              }
-            }
-          }
-          else {
-            fVar5 = 1.0f;
-          }
-        }
-      }
-    }
-    else {
-      fVar5 = 0.0f;
-    }
+  flags = *(u32 *)(param_1 + 0x8c);
+  if ((flags & 2) != 0) {
+    return 1.0f;
   }
-  else {
-    fVar5 = 1.0f;
+  if ((flags & 1) == 0) {
+    return 0.0f;
   }
-  return fVar5;
+  total = *(int *)(param_1 + 0x94);
+  if (total < 1) {
+    return 0.0f;
+  }
+  start = *(char *)(param_1 + 0x1c);
+  endOffset = *(char *)(*(int *)(param_1 + 0x84) * 0x20 + param_1 - 3);
+  current = *(int *)(param_1 + 0x90);
+  if (current < start) {
+    return 0.0f;
+  }
+  if (current >= total - endOffset) {
+    return 1.0f;
+  }
+  numerator = current - start;
+  denominator = total - start - endOffset;
+  if ((numerator < 1) || (denominator < 1)) {
+    return 0.0f;
+  }
+  progress = (float)numerator / (float)denominator;
+  if (progress < 0.0f) {
+    progress = 0.0f;
+  }
+  else if (progress > 1.0f) {
+    progress = 1.0f;
+  }
+  return progress;
 }
 
 #pragma push

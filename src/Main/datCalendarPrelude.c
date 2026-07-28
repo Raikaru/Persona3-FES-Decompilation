@@ -1668,16 +1668,17 @@ s32 FUN_0017ca10(const void* record)
 {
     const u8* source = (const u8*)record;
     u8* stored;
-    s32 id;
     s32 i;
     s32 j;
     u16 index;
-    s8 value8;
+    u8 unsignedValue;
+    s8 signedValue;
 
     if (record == NULL) FUN_0019d3f0((u32)D_005e3098, 0x1837);
-    id = *(const u16*)(source + 2);
-    if (id < 0 || id >= 0x100) FUN_0019d3f0((u32)D_005e3098, 0x1838);
-    stored = DAT_00836200 + id * 0x34 + 0xc1c;
+    if (*(const u16*)(source + 2) < 0 ||
+        *(const u16*)(source + 2) >= 0x100)
+        FUN_0019d3f0((u32)D_005e3098, 0x1838);
+    stored = DAT_00836200 + *(const u16*)(source + 2) * 0x34 + 0xc1c;
     if ((*(const u16*)stored & 1) == 0) return -1;
     if (*(const u16*)stored != *(const u16*)source) return 1;
     if (stored[4] != source[4]) return 1;
@@ -1686,25 +1687,25 @@ s32 FUN_0017ca10(const void* record)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
-        value8 = *(s8*)(stored + 0x1c + index);
+        unsignedValue = *(u8*)(stored + 0x1c + index);
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
-        if ((s32)value8 != (s32)*(s8*)(source + 0x1c + i)) return 1;
+        if ((u32)unsignedValue != (u32)*(u8*)(source + 0x1c + i)) return 1;
     }
     for (i = 0; i < 5; i++)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
-        value8 = *(s8*)(stored + 0x21 + index);
+        signedValue = *(s8*)(stored + 0x21 + index);
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
-        if ((s32)value8 != (s32)*(s8*)(source + 0x21 + i)) return 1;
+        if ((s32)signedValue != (s32)*(s8*)(source + 0x21 + i)) return 1;
     }
     for (i = 0; i < 5; i++)
     {
         index = (u16)i;
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
-        value8 = *(s8*)(stored + 0x26 + index);
+        signedValue = *(s8*)(stored + 0x26 + index);
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
-        if ((s32)value8 != (s32)*(s8*)(source + 0x26 + i)) return 1;
+        if ((s32)signedValue != (s32)*(s8*)(source + 0x26 + i)) return 1;
     }
     for (j = 0; j < 8; j++)
     {
@@ -2030,18 +2031,14 @@ u32 FUN_0017d450(s32 index, const void* date)
         return current[1] < ((const u8*)date)[1];
     if (current[0] < ((const u8*)date)[0])
         newer = 1;
-    if (newer == 0 && current[0] == ((const u8*)date)[0])
-    {
-        if (current[1] < ((const u8*)date)[1])
-            newer = 1;
-        if (newer == 0 && current[1] == ((const u8*)date)[1])
-        {
-            if (*(const s16*)(current + 2) != *(const s16*)((const u8*)date + 2))
-                newer = 1;
-            if (newer == 0 && *(const u32*)(current + 4) != *(const u32*)((const u8*)date + 4))
-                newer = 1;
-        }
-    }
+    if (newer == 0 && current[1] < ((const u8*)date)[1])
+        newer = 1;
+    if (newer == 0 &&
+        *(const u16*)(current + 2) != *(const u16*)((const u8*)date + 2))
+        newer = 1;
+    if (newer == 0 &&
+        *(const u32*)(current + 4) != *(const u32*)((const u8*)date + 4))
+        newer = 1;
     if (newer != 0)
     {
         if (FUN_003f33d0(index, 4) != 0) return 1;

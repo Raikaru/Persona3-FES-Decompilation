@@ -96,7 +96,7 @@ void func_00208b30(void)
     i = 0;
     unit = *(void**)(battleWork + 0x150);
     while (unit != NULL) {
-        if (((*(u32*)((u8*)unit + 0x9c) & 8) != 0) &&
+        if (((~*(u32*)((u8*)unit + 0x9c) & 8) == 0) &&
             (datCalcIsDead(*(void**)((u8*)unit + 0xa2c), 0) == 0)) {
             *(u32*)(work + i * 0x420 + 0x14) = *(u32*)((u8*)unit + 0xa8);
             i++;
@@ -105,7 +105,7 @@ void func_00208b30(void)
     }
     unit = *(void**)(battleWork + 0x158);
     while (unit != NULL) {
-        if (((*(u32*)((u8*)unit + 0x9c) & 8) != 0) &&
+        if (((~*(u32*)((u8*)unit + 0x9c) & 8) == 0) &&
             (datCalcIsDead(*(void**)((u8*)unit + 0xa2c), 0) == 0)) {
             *(u32*)(work + i * 0x420 + 0x14) = *(u32*)((u8*)unit + 0xa8);
             i++;

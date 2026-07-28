@@ -394,8 +394,6 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
 {
     s32 timer;
     timer = ((s32*)p)[0x29ac];
-    *slide = 0.0f;
-    *iconAlpha = 1.0f;
     if ((p[1] & BSA_FLAG_TRANSITION) == 0)
         return;
     if (((s32*)p)[0x29ad] == 1) {
