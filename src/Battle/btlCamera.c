@@ -3299,9 +3299,6 @@ typedef void undefined;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
-#ifndef ABS
-#define ABS(x) ((x) < 0 ? -(x) : (x))
-#endif
 extern u64 FUN_0019d400();
 extern u32 FUN_0027ec10();
 extern u64 FUN_0027f650();
@@ -3381,7 +3378,7 @@ extern u8 D_00696430[];
 extern u8 DAT_00694fea;
 extern u8 DAT_00694fec;
 extern u32 DAT_00697880;
-extern u32 DAT_00697888;
+extern f32 DAT_00697888;
 extern float DAT_007cad20;
 extern float DAT_007cad38;
 extern float DAT_007cad40;
@@ -4087,7 +4084,7 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
     dot = work.normalized.z * work.difference.z +
           work.normalized.x * work.difference.x +
           work.normalized.y * work.difference.y;
-    if ((ABS(dot) < ABS(distance)) && dot != 0.0f && distance != 0.0f)
+    if ((fabsf(dot) < fabsf(distance)) && dot != 0.0f && distance != 0.0f)
     {
         work.pair2[0] = work.scaled.x -
                         ((RwV2d*)&work.selectedXY)->x;
@@ -10515,7 +10512,7 @@ void func_002af960(BtlCamera* camera)
     RwV3dNormalize(&difference, &difference);
     dot2 = difference.y * offset.y + difference.x * offset.x +
            difference.z * offset.z;
-    if (((ABS(dot2) < ABS(dot)) && (dot2 != 0.0f)) && (dot != 0.0f))
+    if (((fabsf(dot2) < fabsf(dot)) && (dot2 != 0.0f)) && (dot != 0.0f))
     {
         planar.x = offset.x - finalPos.x;
         planar.y = offset.z - finalPos.z;

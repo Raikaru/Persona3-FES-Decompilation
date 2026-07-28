@@ -43,6 +43,11 @@ extern u16 func_0016c670(s16 pcId);
 extern s32 func_00530da0(f32 value);
 extern s32 sprintf(char* buffer, const char* format, ...);
 extern char* strcpy(char* destination, const char* source);
+#pragma alias gsConfigureTransition func_0018bc10
+extern void gsConfigureTransition(void* transition, s32 drawMode,
+                                  s32 positionMode, s32 alphaMode,
+                                  u64 start, u64 end, s32 param0, s32 tile,
+                                  s32 startFrame, s32 endFrame, f32 depth);
 
 /* Runtime allocator/free-function tables. */
 extern u32 D_00960184[];
@@ -123,7 +128,9 @@ typedef struct GsAnimationWork
 {
     u32 reserved00;
     HCdvd* cdvd;
-    u8 reserved08[0x208];
+    u8 reserved08[0x200];
+    u32 transitionInitialized;
+    u32 visible;
     void* transitions;
 } GsAnimationWork;
 typedef struct GsB270Entry
@@ -1658,40 +1665,45 @@ void* func_0018e540(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018E5C0 NONMATCHING
+// FUN_0018E5C0
 void func_0018e5c0(KwlnTask* task, void* record)
 {
-    u8* work = (u8*)task->workData;
-    GsPackedPosition start;
+    GsAnimationWork* work = (GsAnimationWork*)task->workData;
+    GsPackedPosition firstStart;
     GsPackedPosition end;
+    GsPackedPosition commonStart;
+    GsPackedPosition alternateStart;
 
-    if (GS_U32(work, 0x208) != 0)
+    if (work->transitionInitialized != 0)
     {
-        func_00524270(work + 0x108, work + 8);
-        start.valueF[0] = 40.0f;
-        start.valueF[1] = 407.0f;
-        end.valueF[0] = 240.0f;
+        func_00524270((u8*)work + 0x108, (u8*)work + 8);
+        end.valueF[0] = 40.0f;
         end.valueF[1] = 407.0f;
-        func_0018bc10(100.0f, (u8*)GS_PTR(work, 0x210) + 0x88,
-                      0, 2, 2, start.value, end.value, 0, 10, 0, 0);
+        firstStart = end;
+        end.valueF[0] = end.valueF[0] + 200.0f;
+        gsConfigureTransition((u8*)work->transitions + 0x88, 0, 2, 2,
+                              firstStart.value, end.value, 0, 0, 0, 10,
+                              100.0f);
     }
     else
     {
-        start.valueF[0] = 199.0f;
-        start.valueF[1] = 399.0f;
-        end.valueF[0] = 399.0f;
+        end.valueF[0] = 194.0f;
         end.valueF[1] = 399.0f;
-        func_0018bc10(100.0f, GS_PTR(work, 0x210), 0, 2, 1,
-                      start.value, end.value, 0, 10, 0, 0);
-        GS_U32(work, 0x208) = 1;
+        alternateStart = end;
+        alternateStart.valueF[0] = alternateStart.valueF[0] - 200.0f;
+        gsConfigureTransition(work->transitions, 0, 2, 1,
+                              alternateStart.value, end.value, 0, 0, 0, 10,
+                              100.0f);
+        work->transitionInitialized = 1;
     }
-    func_00524270(work + 8, record);
-    start.valueF[0] = -160.0f;
-    start.valueF[1] = 407.0f;
+    func_00524270((u8*)work + 8, record);
     end.valueF[0] = 40.0f;
     end.valueF[1] = 407.0f;
-    func_0018bc10(100.0f, (u8*)GS_PTR(work, 0x210) + 0x44,
-                  0, 2, 1, start.value, end.value, 0, 10, 0, 0);
+    commonStart = end;
+    commonStart.valueF[0] = commonStart.valueF[0] - 200.0f;
+    gsConfigureTransition((u8*)work->transitions + 0x44, 0, 2, 1,
+                          commonStart.value, end.value, 0, 0, 0, 10,
+                          100.0f);
 }
 
 // FUN_0018E7A0

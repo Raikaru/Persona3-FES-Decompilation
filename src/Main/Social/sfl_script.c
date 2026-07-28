@@ -1,5 +1,6 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "Main/Social/sfl_script.h"
 
 #pragma alias sflScriptInit FUN_00259610
 #pragma alias sflScriptClearWork FUN_00259630
@@ -68,7 +69,7 @@ u32 sflScriptHandleOpenCommand(s16 *param_1);
 u32 sflScriptHandleWaitCommand(s16 *param_1);
 extern u16 gSflScriptCommandTableWords[];
 extern u16 gSflScriptCommandParamSizes[];
-extern int sSflScriptWorkAddress;
+extern SflScriptWork* sSflScriptWorkAddress;
 extern u32 sSflScriptShuffleStarted;
 extern u32 sSflScriptWorkWord;
 extern const char sSflScriptStartActionsTrace[];
@@ -83,18 +84,18 @@ extern const char sSflScriptWaitTrace[];
 void debugPrintf(const char* message, ...);
 void bpTexRemoveNodeAt(s16 param_1);
 
-static u32* sSflScript; // puGpffffb668
+static SflScriptWork* sSflScript; // puGpffffb668
 
 
 // FUN_00259640
 void sflScriptStartQueuedCommands(void)
 {
-    u32* work;
+    SflScriptWork* work;
 
     K_ASSERT(sSflScript != NULL, 0x43);
     work = sSflScript;
-    work[2] = work[1];
-    *work |= 1;
+    work->executeCursor = work->bufferStart.unsignedValue;
+    work->flags |= 1;
 }
 
 // FUN_00259970
@@ -146,20 +147,20 @@ s32 bpTexHasPendingNode();
 // FUN_00259690
 void sflScriptConfigureCommandBuffer(u32 param_1, u32 param_2)
 {
-    u32* work;
+    SflScriptWork* work;
 
     K_ASSERT(sSflScript != NULL, 0x43);
     work = sSflScript;
-    work[1] = param_1;
-    work[3] = param_1;
-    work[4] = param_2;
+    work->bufferStart.unsignedValue = param_1;
+    work->appendCursor = param_1;
+    work->bufferCapacity.unsignedValue = param_2;
 }
 
 // FUN_002596f0
 u32 sflScriptIsRunning(void)
 {
     K_ASSERT(sSflScript != NULL, 0x43);
-    return *sSflScript & 1;
+    return sSflScript->flags & 1;
 }
 
 // FUN_00259c10
@@ -187,11 +188,11 @@ u32 sflScriptHandleWaitForActionsCommand(void)
 }
 
 // FUN_00259610
-void sflScriptInit(u32* param_1)
+void sflScriptInit(SflScriptWork* work)
 {
-    *param_1 = 0;
-    param_1[5] = 0;
-    sSflScript = param_1;
+    work->flags = 0;
+    work->waitCounter = 0;
+    sSflScript = work;
 }
 
 /* Recovered battle-misc harvest: 0x00259630-0x0025A030 */
@@ -220,7 +221,7 @@ void sflScriptDispatchCommands(void)
 {
 
   u16 *cursor;
-  u32 *work;
+  SflScriptWork *work;
   u32 callback_result;
   int opcode_offset;
   u32 next_offset;
@@ -231,19 +232,19 @@ void sflScriptDispatchCommands(void)
 
   
 
-  if (sSflScript == (u32 *)0x0) {
+  if (sSflScript == (SflScriptWork *)0x0) {
     K_Assert(sSflScriptSourceFile, 0x43);
 
   }
 
   work = sSflScript;
 
-  flags = ~*sSflScript;
+  flags = ~sSflScript->flags;
   if ((flags & 1U) == 0U) {
 
     while( 1 ) {
 
-      cursor = (u16 *)work[2];
+      cursor = (u16 *)work->executeCursor;
       opcode_offset = (u32)*cursor * 8;
       command_entry = gSflScriptCommandTableWords + ((u32)*cursor * 4);
       length = (u32)command_entry[2];
@@ -258,7 +259,7 @@ void sflScriptDispatchCommands(void)
       }
       callback_result = (*(code *)command_entry)(cursor);
       if (callback_result == 0) break;
-      next_offset = work[2] + 2;
+      next_offset = work->executeCursor + 2;
       if (command_entry[2] != 0) {
         if ((next_offset & 3) != 0) {
           next_offset += 2;
@@ -268,7 +269,7 @@ void sflScriptDispatchCommands(void)
           next_offset += 1;
         }
       }
-      work[2] = next_offset;
+      work->executeCursor = next_offset;
 
     }
 
@@ -364,12 +365,12 @@ void sflScriptQueueCloseCommand(u16 param_1,u16 param_2)
 // FUN_00259D10
 u64 sflScriptHandleEndCommand(void)
 {
-    u32 *work;
+    SflScriptWork *work;
 
     K_ASSERT(sSflScript != NULL, 0x43);
     work = sSflScript;
     debugPrintf(sSflScriptEndTrace);
-    *work &= ~1;
+    work->flags &= ~1;
     return 0;
 }
 
@@ -455,26 +456,26 @@ u32 sflScriptHandleOpenCommand(s16 *param_1)
 // FUN_0025A030
 u32 sflScriptHandleWaitCommand(s16 *param_1)
 {
-    u32 *work;
+    SflScriptWork *work;
     u32 count;
 
     K_ASSERT(sSflScript != NULL, 0x43);
     work = sSflScript;
     count = *(u16 *)param_1;
-    if ((~work[0] & 2) != 0) {
+    if ((~work->flags & 2) != 0) {
         debugPrintf(sSflScriptWaitTrace, *param_1);
-        work[5] = 0;
+        work->waitCounter = 0;
         if (count == 0) {
             return 1;
         }
     } else {
-        work[5] += 1;
-        if (work[5] == count) {
-            work[0] &= ~2;
+        work->waitCounter += 1;
+        if (work->waitCounter == count) {
+            work->flags &= ~2;
             return 1;
         }
     }
-    work[0] |= 2;
+    work->flags |= 2;
     return 0;
 }
 
@@ -488,15 +489,15 @@ void sflScriptAppendCommand(int param_1,const void* param_2)
 
 {
   u16 *packet_cursor;
-  u8 *work;
+  SflScriptWork *work;
   u16 *next_cursor;
   u32 cursor;
 
   if (sSflScriptWorkAddress == 0) {
     K_Assert(sSflScriptSourceFile, 0x43);
   }
-  work = (u8 *)sSflScriptWorkAddress;
-  packet_cursor = *(u16 **)(work + 0xc);
+  work = sSflScriptWorkAddress;
+  packet_cursor = (u16 *)work->appendCursor;
   *packet_cursor = (short)param_1;
   next_cursor = packet_cursor + 1;
   if (*(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8) != 0) {
@@ -508,13 +509,14 @@ void sflScriptAppendCommand(int param_1,const void* param_2)
     next_cursor = (u16 *)((int)next_cursor +
                      *(u16 *)((u8 *)gSflScriptCommandParamSizes + param_1 * 8));
   }
-  cursor = ((u32 *)work)[3];
+  cursor = work->appendCursor;
   cursor += (u32)next_cursor - cursor;
-  ((u32 *)work)[3] = cursor;
-  if ((int)cursor - *(int *)(work + 4) > *(int *)(work + 0x10)) {
+  work->appendCursor = cursor;
+  if ((int)cursor - work->bufferStart.signedValue >
+      work->bufferCapacity.signedValue) {
     K_Assert(sSflScriptSourceFile, 0xb2);
   }
-  if ((*(u32 *)(work + 0xc) & 1) != 0) {
-    *(u32 *)(work + 0xc) = *(u32 *)(work + 0xc) + 1;
+  if ((work->appendCursor & 1) != 0) {
+    work->appendCursor = work->appendCursor + 1;
   }
 }

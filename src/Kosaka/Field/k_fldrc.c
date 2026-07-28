@@ -255,6 +255,7 @@ extern char D_00678E50[];
 extern char D_00678E70[];
 extern char D_00678E90[];
 extern u8 D_00678F90[];
+extern u8 D_00678FB0[];
 extern HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant);
 extern HCdvd* func_001e7470(u16 majorId, u16 minorId);
 extern u32 func_001e2e50(void* request, void** outFile, u16 majorId,
@@ -1705,13 +1706,12 @@ void FUN_001b5610(u32* resource, const f32* color)
     }
 }
 
-// FUN_001b56f0 NONMATCHING
+// FUN_001b56f0
 void FUN_001b56f0(u32* resource, const f32* color)
 {
     u32 i;
     s32 node;
-    u8 rgba[4];
-    const f32* values;
+    RwRGBA rgba;
     u32 model;
 
     node = FUN_003b5d50(10);
@@ -1721,17 +1721,16 @@ void FUN_001b56f0(u32* resource, const f32* color)
     }
     for (i = 0; i < resource[5]; i++)
     {
-        FUN_001b5e30(resource[i + 6], color);
+        FUN_001b5e30(*(u32*)((u8*)resource + i * 4 + 0x18), color);
     }
-    values = color;
-    rgba[0] = (u8)(values[0] * 255.0f + 0.5f);
-    rgba[1] = (u8)(values[1] * 255.0f + 0.5f);
-    rgba[2] = (u8)(values[2] * 255.0f + 0.5f);
-    rgba[3] = (u8)(values[3] * 255.0f + 0.5f);
     while (node != 0)
     {
+        rgba.r = (s32)(color[0] * 255.0f + 0.5f);
+        rgba.g = (s32)(color[1] * 255.0f + 0.5f);
+        rgba.b = (s32)(color[2] * 255.0f + 0.5f);
+        rgba.a = (s32)(color[3] * 255.0f + 0.5f);
         model = *(u32*)(node + 0x104);
-        FUN_00318ad0(model, rgba);
+        FUN_00318ad0(model, &rgba);
         node = *(s32*)(node + 0xf8);
     }
 }
@@ -1880,34 +1879,37 @@ void FUN_001b5e60(u32 color, const void* scale)
     FUN_0049a7c0(color, (void (*)())FUN_001b5b50, (u32)scale);
 }
 
-// FUN_001b5e90 NONMATCHING
+// FUN_001b5e90
 void* FUN_001b5e90(void* value, const f32* scale)
 {
+    u32 created;
     u32 target;
-    f32* base;
-    f32 out[3];
+    RwV3d* base;
+    RwV3d out;
 
-    if (FUN_001a64f0((u32)value, 0x678fb0) == 0)
+    if (FUN_001a64f0((u32)value, D_00678FB0) == 0)
     {
-        target = FUN_0048ee70((u32)value, 0x678fb0, 2, 3);
-        target = FUN_0048eed0((u32)value, target);
-        FUN_0048efc0(target, 0, *(f32*)((u8*)value + 0x0c));
-        FUN_0048efc0(target, 1, *(f32*)((u8*)value + 0x10));
-        FUN_0048efc0(target, 2, *(f32*)((u8*)value + 0x14));
+        base = (RwV3d*)((u8*)value + 0x0c);
+        created = FUN_0048eed0(
+            (u32)value,
+            FUN_0048ee70((u32)value, D_00678FB0, 2, 3));
+        FUN_0048efc0(created, 0, base->x);
+        FUN_0048efc0(created, 1, base->y);
+        FUN_0048efc0(created, 2, base->z);
     }
-    target = FUN_001a6350((u32)value, 0x678fb0);
+    target = FUN_001a6350((u32)value, D_00678FB0);
     if (target != 0)
     {
-        out[0] = FUN_0048ef60(target, 0) * scale[0];
-        out[1] = FUN_0048ef60(target, 1) * scale[1];
-        out[2] = FUN_0048ef60(target, 2) * scale[2];
-        if (out[0] > 1.0f) out[0] = 1.0f;
-        if (out[1] > 1.0f) out[1] = 1.0f;
-        if (out[2] > 1.0f) out[2] = 1.0f;
-        base = (f32*)((u8*)value + 0x0c);
-        base[0] = out[0];
-        base[1] = out[1];
-        base[2] = out[2];
+        out.x = FUN_0048ef60(target, 0);
+        out.y = FUN_0048ef60(target, 1);
+        out.z = FUN_0048ef60(target, 2);
+        out.x = out.x * scale[0];
+        out.y = out.y * scale[1];
+        out.z = out.z * scale[2];
+        if (out.x > 1.0f) out.x = 1.0f;
+        if (out.y > 1.0f) out.y = 1.0f;
+        if (out.z > 1.0f) out.z = 1.0f;
+        *(RwV3d*)((u8*)value + 0x0c) = out;
     }
     return value;
 }

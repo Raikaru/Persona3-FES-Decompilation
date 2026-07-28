@@ -21,6 +21,7 @@ extern f32 acosf(f32 x);
 #pragma alias sDegreesPerRadian D_007CAFA0
 extern f32 sDegreesPerRadian;
 
+extern const char D_006836F0[];
 extern const char D_00683710[];
 extern u32 func_002ff790(void* object);
 extern s16 D_006836B0[];
@@ -63,7 +64,7 @@ static void FldEvent_ClearBytes(void* dst, u32 size)
     }
 }
 
-extern u32 func_00523ac8(void* buffer, u32 format, ...);
+extern u32 func_00523ac8(void* buffer, const char* format, ...);
 extern u32 func_00521250(void* dst, u32 src, u32 size);
 extern void K_Abort(const char* message, const char* file, s32 line);
 extern void func_001c80c0(void);
@@ -721,7 +722,7 @@ void func_001c7830(void* output, void* script)
     }
 }
 
-// FUN_001c7e70 NONMATCHING
+// FUN_001c7e70
 u32 func_001c7e70(u16 resourceId, u16 variant)
 {
     char path[128];
@@ -733,12 +734,13 @@ u32 func_001c7e70(u16 resourceId, u16 variant)
     }
     if (func_001b0910() == false)
     {
-        func_00523ac8(path, 0x6836f0, resourceId, variant);
+        func_00523ac8(path, D_006836F0, resourceId, variant);
         if (func_001008b0(path) == 0)
         {
             return false;
         }
-        func_00100d80(path, 0);
+        loaded = func_00100d80(path, 0);
+        return (u32)loaded;
     }
     return true;
 }

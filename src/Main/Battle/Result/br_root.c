@@ -529,29 +529,30 @@ void func_001f0ad0(KwlnTask *task, const u8 *params)
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
+    u8 *entry;
     u8 *work;
     s32 i;
     s32 j;
-    u8 *entry;
     work = task->workData;
 
     for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
-        entry = (u8 *)work + i * 8;
-        if (dat00171360(BR_U16(entry, 0x98)) != 0) {
-            func_00171390(BR_U16(entry, 0x98));
+        entry = work + i * 8 + 0x98;
+        if (dat00171360(BR_U16(entry, 0)) != 0) {
+            func_00171390(BR_U16(entry, 0));
         } else {
-            s32 level = (s32)(func_00170760(1, BR_S16(entry, 0x98)) & 0xffff);
-            level += BR_S32(entry, 0x9c);
+            u8 *base = work + i * 8;
+            s32 level = (s32)(func_00170760(1, BR_S16(entry, 0)) & 0xffff);
+            level += BR_S32(base, 0x9c);
             if (level >= 100) {
                 level = 99;
             }
-            func_00170860(1, BR_S16(entry, 0x98), (u16)level);
+            func_00170860(1, BR_S16(entry, 0), (u16)level);
         }
     }
     for (j = 0; j < (s32)BR_U32(work, 0x108); j++) {
-        func_00174e20(BR_U16(work, 0xf0 + j * 2));
+        func_00174e20(BR_U16(work + j * 2, 0xf0));
     }
-    BR_U32(work, 0) &= ~2u;
+    BR_U32(work, 0) &= ~1u;
     BR_SET_STATE(work, 13);
 }
 
@@ -698,27 +699,43 @@ void func_001f1240(KwlnTask *task)
 {
     u32 *work = (u32 *)BR_TASK_WORK(task);
     f32 ratio;
+    u8 level;
 
-    K_ASSERT((BR_U32(work, 0) & 0x20000) == 0, 0x603);
-    if ((BR_U32(work, 0) & 2) == 0) {
-        ratio = (f32)BR_S32(work, 0xb4) / (f32)BR_S32(work, 0x11c);
-    } else {
-        ratio = ((f32)BR_S32(work, 0xb4) * (f32)BR_S32(work, 0x2a5c) / 100.0f) /
-                (f32)BR_S32(work, 0x11c);
+    K_ASSERT((~work[0] & 0x20000) != 0, 0x603);
+    if ((~work[0] & 2) == 0) {
+        goto scaled_ratio;
     }
-    if (ratio == 0.0f) {
-        BR_U32(work, 0xb8) = 0;
-    } else if (ratio < 1.0f) {
-        BR_U32(work, 0xb8) = 1;
-    } else {
-        BR_U32(work, 0xb8) = (s32)ratio;
+    ratio = (f32)(s32)work[0x2d] / (f32)(s32)work[0x47];
+    goto ratio_ready;
+
+scaled_ratio:
+    ratio = ((f32)(s32)work[0x2d] * (f32)(s32)work[0xa97] / 100.0f) /
+            (f32)(s32)work[0x47];
+
+ratio_ready:
+    if (ratio != 0.0f) {
+        goto nonzero_ratio;
     }
-    BR_U32(work, 0x2a54) = BR_U32(work, 0x130);
-    BR_U32(work, 0x2a50) = func_001fbdf0((u8)datGetLevel(1), BR_U32(work, 0x2a54),
-                                         BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
-                                         BR_U32(work, 0x11c));
+    work[0x2e] = 0;
+    goto ratio_stored;
+
+nonzero_ratio:
+    if (!(ratio < 1.0f)) {
+        goto integral_ratio;
+    }
+    work[0x2e] = 1;
+    goto ratio_stored;
+
+integral_ratio:
+    work[0x2e] = (s32)ratio;
+
+ratio_stored:
+    work[0xa95] = work[0x4c];
+    level = (u8)datGetLevel(1);
+    work[0xa94] = func_001fbdf0(level, work[0xa95],
+                                work[0x2e], work[0xa96], work[0x47]);
     func_001f13b0(task);
-    BR_U32(work, 0) |= 0x20000;
+    work[0] |= 0x20000;
 }
 #pragma optimization_level 2
 
@@ -1097,7 +1114,7 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     RwCameraSetViewWindow((RwCamera *)kwlnGetMainCamera(), &viewWindow);
     BR_U32(work, 4) |= 3;
     func_00219c90(work + 0x95c0);
-    sflResInit(work + 0x60);
+    sflResInit((SflResourceManager *)(work + 0x60));
     func_00239170(work + 0xf0);
     func_0023d7a0(work + 0x8e90);
     func_0023d7f0();

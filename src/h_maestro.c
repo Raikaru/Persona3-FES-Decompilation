@@ -312,22 +312,16 @@ u32 func_00110510(KwlnTask* task)
         {
             s8 recordType;
 
-            for (;;)
+            while ((recordType = ((s8*)work->resources[i])[work->recordIndices[i] * 18 + 1]) != -1)
             {
-                recordType = ((s8*)work->resources[i])[work->recordIndices[i] * 18 + 1];
-                if (recordType != -1)
+                if (recordType == -2)
                 {
-                    if (recordType == -2)
-                    {
-                        return false;
-                    }
-                    work->recordIndices[i]++;
-                    continue;
+                    return false;
                 }
                 work->recordIndices[i]++;
-                work->completedRecords++;
-                break;
             }
+            work->recordIndices[i]++;
+            work->completedRecords++;
         }
     }
 
@@ -710,8 +704,12 @@ KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
 // FUN_00111150 NONMATCHING
 KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
 {
-    MaestroStreamWork* work;
     KwlnTask* task;
+    MaestroStreamWork* work;
+    s16 dim2;
+    s16 dim0;
+    s16 dim1;
+    s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
     if (work == NULL)
@@ -725,10 +723,14 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
         return NULL;
     }
 
-    work->dimensions[0] = ((s16*)&dimensions)[0];
-    work->dimensions[1] = ((s16*)&dimensions)[1];
-    work->dimensions[2] = ((s16*)&dimensions)[2];
-    work->dimensions[3] = ((s16*)&dimensions)[3];
+    dim0 = ((s16*)&dimensions)[0];
+    dim1 = ((s16*)&dimensions)[1];
+    dim2 = ((s16*)&dimensions)[2];
+    dim3 = ((s16*)&dimensions)[3];
+    work->dimensions[2] = dim2;
+    work->dimensions[0] = dim0;
+    work->dimensions[1] = dim1;
+    work->dimensions[3] = dim3;
     sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
     work->useCdvd = true;
@@ -3259,21 +3261,17 @@ void func_00115cd0(int unused0, int unused1, int unused2,
 
 
 void func_00115de0(int unused0, int unused1, int unused2,
-                   f32 param_1, f32 param_2, u16 param_4, u8 param_5,
+                   f32 param_1, f32 param_2, u32 param_4, u8 param_5,
                    u8 param_6, u8 param_7, u8 param_8, f32 param_3)
 
 
 {
-  int *piVar1;
-
-  void* uVar3;
-
   int *piVar2;
 
+  int *piVar1;
 
 
-  uVar3 = func_001158b0(0);
-  piVar2 = (int *)uVar3;
+  piVar2 = (int *)func_001158b0(0);
   ((f32 *)piVar2)[0xb] = param_3;
 
   ((f32 *)piVar2)[4] = param_1;
@@ -3719,11 +3717,11 @@ void func_001165c0(int param_1)
 
 {
 
-  int iVar2;
+  int iVar1;
 
   int *slot;
 
-  int iVar1;
+  int iVar2;
 
   int *p;
 
@@ -3733,25 +3731,25 @@ void func_001165c0(int param_1)
 
   if (*(int *)(iVar1 + 400) != 0) {
 
-    FUN_00102870();
+    FUN_00102870(*(void **)(iVar1 + 400));
 
   }
 
   if (*(int *)(iVar1 + 0x4f4) != 0) {
 
-    FUN_00102870();
+    FUN_00102870(*(void **)(iVar1 + 0x4f4));
 
   }
 
   if (*(int *)(iVar1 + 0x858) != 0) {
 
-    FUN_00102870();
+    FUN_00102870(*(void **)(iVar1 + 0x858));
 
   }
 
   if (*(int *)(iVar1 + 0x24) != 0) {
 
-    FUN_00100ec0();
+    FUN_00100ec0(*(void **)(iVar1 + 0x24));
 
     *(u32 *)(iVar1 + 0x24) = 0;
 
@@ -3761,7 +3759,7 @@ void func_001165c0(int param_1)
   for (iVar2 = 0; iVar2 < 2; iVar2 = iVar2 + 1) {
     slot = p + iVar2 + 0x2ab;
     if (*slot != 0) {
-      FUN_0034fcf0();
+      FUN_0034fcf0(*slot);
       *slot = 0;
     }
   }
