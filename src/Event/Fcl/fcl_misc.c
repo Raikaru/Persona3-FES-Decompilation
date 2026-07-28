@@ -32,6 +32,11 @@ typedef struct FclMiscVec4
     f32 z;
     f32 w;
 } FclMiscVec4;
+typedef union FclMiscColor
+{
+    f32 packed;
+    u8 channel[4];
+} FclMiscColor;
 typedef union FclMiscPair
 {
     FclMiscVec2 vec;
@@ -69,10 +74,14 @@ extern u32 DAT_006a41f8;
 extern u8 DAT_006a41e8_abs[];
 #pragma alias DAT_006a41f8_abs DAT_006a41f8
 extern u8 DAT_006a41f8_abs[];
-extern u32 DAT_006a4218;
-extern u32 DAT_006a4220;
-extern u32 DAT_006a4228;
-extern u32 DAT_006a4230;
+#pragma alias fclMiscInitialRotation DAT_006a4218
+extern u64 fclMiscInitialRotation[];
+#pragma alias fclMiscInitialRotationZ DAT_006a4220
+extern f32 fclMiscInitialRotationZ[];
+#pragma alias fclMiscInitialTranslation DAT_006a4228
+extern u64 fclMiscInitialTranslation[];
+#pragma alias fclMiscInitialTranslationZ DAT_006a4230
+extern f32 fclMiscInitialTranslationZ[];
 #pragma alias fclMiscDefaultQuat DAT_006a4240
 extern FclMiscVec4 fclMiscDefaultQuat[];
 #pragma alias fclMiscDefaultScale DAT_006a4250
@@ -83,7 +92,7 @@ extern f32 fclMiscDefaultScaleZ[];
 extern u64 fclMiscDefaultPosition[];
 #pragma alias fclMiscDefaultPositionZ DAT_006a4268
 extern f32 fclMiscDefaultPositionZ[];
-extern u32 DAT_007cd718;
+extern f32 DAT_007cd718;
 extern u32 DAT_007ce0cc;
 extern u32 DAT_007ce680;
 extern u32 DAT_0095be80;
@@ -100,6 +109,8 @@ extern u32 DAT_0095be9c;
 extern u32 DAT_0095be9d;
 extern code DAT_00960090;
 extern code DAT_00960178;
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
 extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
@@ -140,6 +151,8 @@ extern u64 fclMiscCa780Call(float, float, float, float, s32, s32, s32, s32, s32,
 extern f32 fclMisc52e878Call(f32);
 u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #pragma alias fclMiscCa780Call FUN_003ca780
+#pragma alias fclMiscC31b0Call FUN_004c31b0
+extern void fclMiscC31b0Call(f32, void *, void *, s32);
 #pragma alias fclMiscA2580Call FUN_003a2580
 extern s32 fclMiscA2580Call(s32);
 #pragma alias fclMiscC49e0Call FUN_003c49e0
@@ -3323,27 +3336,27 @@ void FUN_003cda60(u32 param_1)
 
   u64 uStack_20;
 
-  u32 uStack_18;
+  float fStack_18;
 
   u64 uStack_10;
 
-  u32 uStack_8;
+  float fStack_8;
 
-  u32 uStack_4;
+  FclMiscColor color;
 
   
 
-  uStack_10 = DAT_006a4218;
+  uStack_10 = fclMiscInitialRotation[0];
 
-  uStack_8 = DAT_006a4220;
+  fStack_8 = fclMiscInitialRotationZ[0];
 
-  uStack_20 = DAT_006a4228;
+  uStack_20 = fclMiscInitialTranslation[0];
 
-  uStack_18 = DAT_006a4230;
+  fStack_18 = fclMiscInitialTranslationZ[0];
 
-  uStack_4 = DAT_007cd718;
+  color.packed = DAT_007cd718;
 
-  uVar1 = (*DAT_00960178)(0x100,0x40000);
+  uVar1 = DAT_00960178_abs[0](0x100,0x40000);
 
   FUN_00521408(uVar1,0,0x100);
 
@@ -3353,17 +3366,17 @@ void FUN_003cda60(u32 param_1)
 
   *(u32 *)(iVar2 + 8) = 1;
 
-  FUN_004c31b0(0x43340000,iVar2 + 0x40,&uStack_20,0);
+  fclMiscC31b0Call(180.0f,iVar2 + 0x40,&uStack_20,0);
 
   FUN_004c35d0(iVar2 + 0x40,&uStack_10,2);
 
-  *(u8 *)(iVar2 + 0x80) = (u8)uStack_4;
+  *(u8 *)(iVar2 + 0x80) = color.channel[0];
 
-  *(u8 *)(iVar2 + 0x81) = (u8)(uStack_4 >> 8);
+  *(u8 *)(iVar2 + 0x81) = color.channel[1];
 
-  *(u8 *)(iVar2 + 0x82) = (u8)(uStack_4 >> 16);
+  *(u8 *)(iVar2 + 0x82) = color.channel[2];
 
-  *(u8 *)(iVar2 + 0x83) = (u8)(uStack_4 >> 24);
+  *(u8 *)(iVar2 + 0x83) = color.channel[3];
 
   FUN_0016bc80(0,*(u16 *)(iVar2 + 0xc),iVar2 + 0x84);
 
@@ -4140,7 +4153,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   float fStack_158;
 
-  u32 uStack_154;
+  float fStack_154;
 
   short sStack_150;
 
@@ -4420,7 +4433,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   } while (0 < iVar4);
 
-  FUN_004c31b0(uStack_154,auStack_140,&uStack_28,1);
+  fclMiscC31b0Call(fStack_154,auStack_140,&uStack_28,1);
 
   FUN_004c35d0(auStack_140,&fStack_38,2);
 

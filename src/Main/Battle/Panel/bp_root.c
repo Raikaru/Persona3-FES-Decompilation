@@ -1556,16 +1556,17 @@ void FUN_00202830(void)
 // FUN_00202A10 NONMATCHING
 void FUN_00202A10(void)
 {
-    u8* entry;
     u8* work;
-    s32 i;
+    s32 destroyIndex;
+    s32 rowIndex;
     u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
-    for (i = 0; i < *(s32*)(work + 0x70); i++)
+    for (destroyIndex = 0; destroyIndex < *(s32*)(work + 0x70);
+         destroyIndex++)
     {
-        func_003b0170(*(u32*)(work + 0x78 + i * 4));
+        func_003b0170(*(u32*)(work + 0x78 + destroyIndex * 4));
     }
     if (*(u32*)work & 0x800000)
     {
@@ -1578,17 +1579,18 @@ void FUN_00202A10(void)
     func_002082c0(handle);
     func_003b0e70(1);
     func_003b0e90(2);
-    for (i = 0; i < *(s32*)(work + 0x70); i++)
+    for (rowIndex = 0; rowIndex < *(s32*)(work + 0x70); rowIndex++)
     {
+        u8* entry;
         entry = (u8*)(uintptr_t)(
-                    (i + *(s32*)(work + 0x765c)) * 8) +
+                    (rowIndex + *(s32*)(work + 0x765c)) * 8) +
                 (uintptr_t)work + 0x28;
         handle = func_003b0970(
             func_0030bb40(*(u16*)(entry + 4)), 2,
-            (s8)(i == *(s32*)(work + 0x7664) -
-                         *(s32*)(work + 0x765c) ? 6 : 0),
+            (s8)(rowIndex == *(s32*)(work + 0x7664) -
+                                *(s32*)(work + 0x765c) ? 6 : 0),
             0, 0);
-        *(u32*)(work + 0x78 + i * 4) = handle;
+        *(u32*)(work + 0x78 + rowIndex * 4) = handle;
     }
     func_003b0e90(1);
     func_003b0e70(2);

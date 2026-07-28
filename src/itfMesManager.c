@@ -5588,14 +5588,13 @@ u32 FUN_003a7a40(int param_1)
 }
 #define FUN_003a7a40(...) ((u32 (*)(...))FUN_003a7a40)(__VA_ARGS__)
 #undef FUN_003a7cb0
-#undef FUN_003a6380
 // FUN_003A7CB0 NONMATCHING
 
 
 void FUN_003a7cb0(int param_1,int param_2)
 {
   FUN_003a6380(*(u32 *)(param_1 + 0xc),*(short *)(param_1 + 0x16),
-               *(short *)(param_1 + 0x1a),0,param_2,param_1);
+               *(short *)(param_1 + 0x1a),0);
   if (param_2 < 0) {
     param_2 = *(short *)(param_1 + 0x16) - 1;
     if (param_2 < 0) {
@@ -5609,7 +5608,7 @@ void FUN_003a7cb0(int param_1,int param_2)
     }
   }
   FUN_003a6380(*(u32 *)(param_1 + 0xc),param_2,
-               *(short *)(param_1 + 0x1a),6,param_2,param_1);
+               *(short *)(param_1 + 0x1a),6);
   *(short *)(param_1 + 0x16) = param_2;
   *(short *)(param_1 + 0x18) = param_2;
   FUN_0010a4e0(0,0,0,0);
