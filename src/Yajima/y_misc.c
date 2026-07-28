@@ -148,7 +148,9 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_5);
 void FUN_0042fd80(float *param_1,int param_2);
 #pragma alias FUN_004560d0_typed FUN_004560d0
-extern u64 FUN_004560d0_typed(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
+extern u32 FUN_004560d0_typed(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
+#pragma alias FUN_00423fe0_vec2 FUN_00423fe0
+extern void FUN_00423fe0_vec2(YajimaVec2 *param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
 void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
@@ -5445,11 +5447,9 @@ void FUN_0042adb0(int param_1)
 
   K_FldFrame_CtlCopyPos(&posCamera,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-  posTarget.x = posCamera.x;
+  posTarget = posCamera;
 
-  posTarget.y = posCamera.y;
 
-  posTarget.z = posCamera.z;
 
   ((u32 *)&rotScratch)[0] = DAT_006b44c0;
 
@@ -5459,11 +5459,9 @@ void FUN_0042adb0(int param_1)
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
-    posTarget.x = *(float *)(iVar1 + 0x868);
+    posTarget = *(YajimaVec3 *)(iVar1 + 0x868);
 
-    posTarget.y = *(float *)(iVar1 + 0x86c);
 
-    posTarget.z = *(float *)(iVar1 + 0x870);
 
   }
 
@@ -6079,7 +6077,7 @@ void FUN_0042bc10(int param_1)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   long lVar3;
 
@@ -6270,14 +6268,13 @@ void FUN_0042bfd0(int param_1)
 
   u32 uVar2;
 
-  float fStack_8;
-  float fStack_4;
+  YajimaVec2 offset;
 
   
 
   iVar1 = *(int *)((int)param_1 + 0x3c);
 
-  if (*(u32 *)DAT_008717e8_abs != 0 && *(int *)DAT_008717f4_abs != 0) {
+  if (0 < *(u32 *)DAT_008717e8_abs && 0 < *(u32 *)DAT_008717f4_abs) {
 
     if (*(int *)(iVar1 + 0x898) != 0) {
 
@@ -6285,12 +6282,12 @@ void FUN_0042bfd0(int param_1)
 
     }
 
-    FUN_00423fe0(&fStack_8,0,0x7e,0x7e,0x20,0x20);
+    FUN_00423fe0_vec2(&offset,0,0x7e,0x7e,0x20,0x20);
 
-    *(float *)(iVar1 + 0x89c) = *(float *)(iVar1 + 0x85c) + fStack_8;
-    *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + fStack_4;
-    uVar2 = FUN_004560d0(*(u32 *)(iVar1 + 0x89c),*(u32 *)(iVar1 + 0x8a0),0x3f800000,
-                         param_1,0x20,0x20);
+    *(float *)(iVar1 + 0x89c) = *(float *)(iVar1 + 0x85c) + offset.x;
+    *(float *)(iVar1 + 0x8a0) = *(float *)(iVar1 + 0x860) + offset.y;
+    uVar2 = FUN_004560d0_typed(param_1,*(float *)(iVar1 + 0x89c),
+                               *(float *)(iVar1 + 0x8a0),1.0f,0x20,0x20);
     *(u32 *)(iVar1 + 0x898) = uVar2;
 
   }
