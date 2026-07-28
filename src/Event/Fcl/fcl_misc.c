@@ -38,10 +38,17 @@ typedef struct FclMiscVec4
     f32 z;
     f32 w;
 } FclMiscVec4;
+typedef struct FclMiscRGBA
+{
+    u8 red;
+    u8 green;
+    u8 blue;
+    u8 alpha;
+} FclMiscRGBA;
 typedef union FclMiscColor
 {
     f32 packed;
-    u8 channel[4];
+    FclMiscRGBA rgba;
 } FclMiscColor;
 typedef union FclMiscPair
 {
@@ -3290,10 +3297,6 @@ void FUN_003cda60(u32 param_1)
   FclMiscVec3 translation;
 
   FclMiscColor color;
-  u8 red;
-  u8 green;
-  u8 blue;
-  u8 alpha;
 
   
 
@@ -3323,14 +3326,7 @@ void FUN_003cda60(u32 param_1)
 
   FUN_004c35d0(iVar2 + 0x40,&rotation,2);
 
-  red = color.channel[0];
-  green = color.channel[1];
-  blue = color.channel[2];
-  alpha = color.channel[3];
-  *(u8 *)(iVar2 + 0x80) = red;
-  *(u8 *)(iVar2 + 0x81) = green;
-  *(u8 *)(iVar2 + 0x82) = blue;
-  *(u8 *)(iVar2 + 0x83) = alpha;
+  *(FclMiscRGBA *)(iVar2 + 0x80) = color.rgba;
 
   fclMisc6bc80Call(0,*(u16 *)(iVar2 + 0xc),(void *)(iVar2 + 0x84));
 
