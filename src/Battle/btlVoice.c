@@ -1504,10 +1504,10 @@ void func_002f2890(BtlAction* action)
     BtlPacket* introPacket;
     introPacket = FUN_002a3d70_packet_voice(uGpffff82dc_f32_voice,
                                            *(u32*)(DAT_007ce3ec + 0x148),
-                                           (const RwV3d*)((const u8*)0x69a2d0 + index),
-                                           (const RwV3d*)((const u8*)0x69a2f0 + index),
-                                           (const RwV3d*)((const u8*)0x69a310 + index),
-                                           (const RwV3d*)((const u8*)0x69a330 + index));
+                                           (const RwV3d*)(DAT_0069a210_abs + 0xc0 + index),
+                                           (const RwV3d*)(DAT_0069a210_abs + 0xe0 + index),
+                                           (const RwV3d*)(DAT_0069a210_abs + 0x100 + index),
+                                           (const RwV3d*)(DAT_0069a210_abs + 0x120 + index));
     introPacket->preUpdateDelay = 3;
     introPacket->actionUID = action->uid;
     btlPacketRegister(introPacket, 0);

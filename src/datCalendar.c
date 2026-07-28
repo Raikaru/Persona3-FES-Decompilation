@@ -4665,7 +4665,6 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
             case 5: tile = 0xf; break;
             case 6: tile = 0x10; break;
             case 7: tile = 0x12; break;
-            case 8: tile = 0; break;
             default: tile = 0; break;
         }
     }

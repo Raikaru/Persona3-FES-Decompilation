@@ -29,7 +29,7 @@ typedef struct FclMiscVec3
 {
     u64 xy;
     f32 z;
-} FclMiscVec3;
+} __attribute__((packed)) FclMiscVec3;
 typedef struct FclMiscVec4
 {
     f32 x;
@@ -3335,9 +3335,9 @@ void FUN_003cda60(u32 param_1)
 
   int iVar2;
 
-  FclMiscVec3 translation;
-
   FclMiscVec3 rotation;
+
+  FclMiscVec3 translation;
 
   FclMiscColor color;
   u8 red;
