@@ -881,9 +881,7 @@ void FUN_00323b90(int param_1,u64 param_2);
 #pragma alias FUN_00323b90_i FUN_00323b90
 extern void FUN_00323b90_i(int param_1,int param_2);
 void FUN_00323bf0(int param_1,u32 *param_2);
-u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4);
-#pragma alias FUN_00323c20_u32 FUN_00323c20
-extern u32 FUN_00323c20_u32(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
+u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
 int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 
                  u32 param_6);
@@ -7968,7 +7966,7 @@ void FUN_00323bf0(int param_1,u32 *param_2)
 // FUN_00323C20 NONMATCHING
 
 
-u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
+u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
 
 
 
@@ -7991,6 +7989,9 @@ u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
   u32 uVar8;
 
   u16 *puVar9;
+  u32 vertexCount;
+  u32 indexCount;
+  u32 *entryData;
 
   
 
@@ -8002,15 +8003,18 @@ u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
 
   uVar5 = FUN_00491880_u32();
 
-  uVar6 = FUN_00493710_u32(param_2 * uVar7,param_3 * uVar7,param_4);
+  vertexCount = param_3 * uVar7;
+  indexCount = param_2 * uVar7;
+  uVar6 = FUN_00493710_u32(indexCount,vertexCount,param_4);
 
   puVar9 = (u16 *)uVar4;
+  entryData = (u32 *)(puVar9 + 0x16);
 
   for (uVar8 = 0; uVar8 < uVar7; uVar8 = uVar8 + 1 & 0xffff) {
 
     uVar3 = FUN_00494be0_u32();
 
-    *(u32 *)(puVar9 + 0x16 + uVar8 * 2) = uVar3;
+    entryData[uVar8] = uVar3;
 
   }
 
@@ -8018,7 +8022,6 @@ u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
 
   {
     struct {
-      u8 reserved[16];
       RwRGBAReal color;
     } lighting;
 
@@ -8052,11 +8055,11 @@ u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
 
   puVar9[0xe] = param_1;
 
-  puVar9[0xf] = (short)(param_2 * uVar7);
+  puVar9[0xf] = (short)indexCount;
 
-  puVar9[0x10] = (short)(param_3 * uVar7);
+  puVar9[0x10] = (short)vertexCount;
 
-  *(u16 **)(puVar9 + 0x14) = puVar9 + 0x16;
+  *(u32 **)(puVar9 + 0x14) = entryData;
 
   *(u8 *)(puVar9 + 0x11) = 0xff;
 
@@ -8099,7 +8102,7 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
   rowCount = (u16)param_2;
   rowStep = param_4;
   tripletIndexCount = (u16)param_3 * 3;
-  resource = FUN_00323c20_u32(param_1,
+  resource = FUN_00323c20(param_1,
                               rowCount * rowStep & 0xffff,
                               rowCount * (u16)param_3 & 0xffff,
                               param_6);
@@ -8166,7 +8169,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
   param_2 = param_2 & 0xffff;
 
-  iVar4 = FUN_00323c20_u32(param_1,(param_2 + 1) * (u32)param_4 & 0xffff,param_2 * iVar3 * 2 & 0xffff,
+  iVar4 = FUN_00323c20(param_1,(param_2 + 1) * (u32)param_4 & 0xffff,param_2 * iVar3 * 2 & 0xffff,
 
                        param_5);
 
@@ -8240,7 +8243,7 @@ u32 FUN_00324160(int param_1)
 
   
 
-  uVar4 = FUN_00323c20_u32(*(u16 *)(param_1 + 0x1c),*(u16 *)(param_1 + 8),
+  uVar4 = FUN_00323c20(*(u16 *)(param_1 + 0x1c),*(u16 *)(param_1 + 8),
 
                        *(u16 *)(param_1 + 10),*(u32 *)(param_1 + 4));
 
@@ -26582,7 +26585,7 @@ void FUN_003377f0(u32 param_1)
         else *entry &= 0xfffe;
         FUN_00323860_2arg((int)entry, *(u16 *)(node + 0x28));
       }
-      entries += 4;
+      entries += 3;
     }
   }
 }

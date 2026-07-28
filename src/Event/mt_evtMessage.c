@@ -1164,7 +1164,11 @@ void FUN_0039fbd0(int param_1)
 
   } while (0 < iVar3);
 
-  uStack_4 = CONCAT13((char)*(u32 *)(param_1 + 0x9c),*(undefined3 *)(param_1 + 0xb0));
+  ((u8 *)&uStack_4)[0] = *(u8 *)(param_1 + 0xb0);
+  ((u8 *)&uStack_4)[1] = *(u8 *)(param_1 + 0xb1);
+  ((u8 *)&uStack_4)[2] = *(u8 *)(param_1 + 0xb2);
+  ((u8 *)&uStack_4)[3] = *(u8 *)(param_1 + 0xb3);
+  ((u8 *)&uStack_4)[3] = *(u8 *)(param_1 + 0x9c);
 
   afStack_50[0x10] = 127.0f;
 
@@ -1378,7 +1382,7 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
 
   }
 
-  uStack_4 = CONCAT13(uVar3,(undefined3)uStack_4);
+  ((u8 *)&uStack_4)[3] = uVar3;
 
   FUN_00388000(0x40800000,*(u32 *)(param_1 + 0xac),&fStack_10,&fStack_18,&uStack_20,
 
@@ -1436,9 +1440,13 @@ u64 FUN_003a0220(int param_1)
 
   u32 uStack_c;
 
-  undefined3 uStack_8;
-
-  u8 uStack_5;
+  union {
+    u32 value;
+    struct {
+      u8 low[3];
+      u8 high;
+    } bytes;
+  } packedAngle;
 
   u32 uStack_4;
 
@@ -1472,11 +1480,13 @@ u64 FUN_003a0220(int param_1)
 
     uStack_38 = DAT_007cd498;
 
-    uStack_8 = CONCAT13((char)*(u32 *)(iVar1 + 0xa0),(int3)DAT_007cd4a0);
+    packedAngle.value = DAT_007cd4a0;
+    packedAngle.bytes.high = *(u8 *)(iVar1 + 0xa0);
 
-    FUN_00386f70(0x42c80000,auStack_30,&uStack_38,&uStack_8);
+    FUN_00386f70(0x42c80000,auStack_30,&uStack_38,&packedAngle);
 
-    uStack_4 = CONCAT13((char)*(u32 *)(iVar1 + 0x9c),*(undefined3 *)(iVar1 + 0xb0));
+    uStack_4 = *(u32 *)(iVar1 + 0xb0);
+    ((u8 *)&uStack_4)[3] = *(u8 *)(iVar1 + 0x9c);
 
     if ((float)*(int *)(iVar1 + 0xbc) != 0.0f) {
 
@@ -2896,7 +2906,8 @@ u32 FUN_003a0e90(int param_1)
 
     }
 
-    *(u32 *)auStack_4 = CONCAT13(uVar2,(*(u32 *)&fStack_4 & 0xffffff));
+    *(u32 *)auStack_4 = *(u32 *)&fStack_4;
+    auStack_4[3] = uVar2;
 
     FUN_0034ff90(*(u32 *)((int)lVar4 + 0x104),auStack_4);
 

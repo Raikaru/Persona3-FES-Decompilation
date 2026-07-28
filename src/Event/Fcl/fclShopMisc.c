@@ -500,7 +500,7 @@ u8 FUN_00405e30(u32 param_1);
 void FUN_00405f70(s32 param_1,s32 param_2,s32 param_3,int param_4,u64 param_5, int param_6,int param_7);
 void FUN_004064e0(int param_1,int param_2,u32 param_3,int param_4);
 void FUN_00406aa0(int param_1,int param_2,u32 param_3);
-void FUN_00406ca0(u64 param_1,u64 param_2,int *param_3);
+void FUN_00406ca0(int param_1,int param_2,int *param_3);
 void FUN_00407180(u32 param_1,u32 param_2,u16 param_3,int param_4);
 void FUN_00407210(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5);
 void FUN_004072d0(int param_1,long param_2,long param_3);
@@ -3922,10 +3922,6 @@ void FUN_003f7a80_i(int,int,int,int,int);
 
 void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
 {
-  int x = param_1;
-  int y = param_2;
-  int alpha = param_3;
-  int context = param_4;
   int drawAlpha = 0;
   u32 drawState;
   int config;
@@ -3935,17 +3931,17 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
   int spriteAlpha;
   float spriteScale;
 
-  drawState = *(u32 *)(context + 0xc);
-  config = *(int *)(*(int *)(context + 0x24) + 0x44);
-  x += *(short *)(config + 0x28);
-  y += *(short *)(config + 0x2a);
+  drawState = *(u32 *)(param_4 + 0xc);
+  config = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
+  param_1 += *(short *)(config + 0x28);
+  param_2 += *(short *)(config + 0x2a);
 
-  switch (FUN_003c6e10(context)) {
+  switch (FUN_003c6e10(param_4)) {
   case 0xc:
     drawAlpha = 0xff;
     break;
   case 0x14:
-    drawAlpha = alpha;
+    drawAlpha = param_3;
     break;
   case 1:
     drawAlpha = 0xff;
@@ -3953,14 +3949,14 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
   }
 
   if (drawAlpha != 0) {
-    FUN_0040e3c0_f32(0.0f,x + *(short *)(config + 0x38),
-                     y + *(short *)(config + 0x3a),
+    FUN_0040e3c0_f32(0.0f,param_1 + *(short *)(config + 0x38),
+                     param_2 + *(short *)(config + 0x3a),
                      (drawAlpha * *(short *)(config + 0x44)) / 0xff & 0xff,0x22,0);
-    spriteX = x + *(short *)(config + 0x48);
-    spriteY = y + *(short *)(config + 0x4a);
+    spriteX = param_1 + *(short *)(config + 0x48);
+    spriteY = param_2 + *(short *)(config + 0x4a);
     spriteAlpha = (drawAlpha * *(short *)(config + 0x54)) / 0xff;
     spriteScale = *(float *)(config + 0x50);
-    itemValue = *(int *)(*(int *)(context + 0x24) + 0x28);
+    itemValue = *(int *)(*(int *)(param_4 + 0x24) + 0x28);
     FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x15,spriteY - 0xb,
                      spriteAlpha & 0xff,0x24,0,0,0);
     FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x13,
@@ -3968,12 +3964,12 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
                      spriteAlpha & 0xff,0x25,0,0,0);
   }
 
-  FUN_003f7730_i(x - 0x15,y + 0x8b,alpha,context,drawState);
+  FUN_003f7730_i(param_1 - 0x15,param_2 + 0x8b,param_3,param_4,drawState);
   if (*(short *)(config + 6) == -1) {
-    FUN_003f5d10_i(0x15a,0xe6,alpha,context,drawState);
-    FUN_003f7a80_i(0x15b,0x134,alpha,context,drawState);
+    FUN_003f5d10_i(0x15a,0xe6,param_3,param_4,drawState);
+    FUN_003f7a80_i(0x15b,0x134,param_3,param_4,drawState);
   } else {
-    FUN_003f7a80_i(x + 1,y + 0xac,alpha,context,drawState);
+    FUN_003f7a80_i(param_1 + 1,param_2 + 0xac,param_3,param_4,drawState);
   }
 }
 
@@ -3982,10 +3978,6 @@ void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
 
 void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
 {
-  int x = param_1;
-  int y = param_2;
-  int alpha = param_3;
-  int context = param_4;
   int drawAlpha = 0;
   u32 drawState;
   int config;
@@ -3995,17 +3987,17 @@ void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
   int spriteAlpha;
   float spriteScale;
 
-  drawState = *(u32 *)(context + 0xc);
-  config = *(int *)(*(int *)(context + 0x24) + 0x44);
-  x += *(short *)(config + 0x28);
-  y += *(short *)(config + 0x2a);
+  drawState = *(u32 *)(param_4 + 0xc);
+  config = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
+  param_1 += *(short *)(config + 0x28);
+  param_2 += *(short *)(config + 0x2a);
 
-  switch (FUN_003c6e10(context)) {
+  switch (FUN_003c6e10(param_4)) {
   case 0xc:
     drawAlpha = 0xff;
     break;
   case 0x14:
-    drawAlpha = alpha;
+    drawAlpha = param_3;
     break;
   case 1:
     drawAlpha = 0xff;
@@ -4013,14 +4005,14 @@ void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
   }
 
   if (drawAlpha != 0) {
-    FUN_0040e3c0_f32(0.0f,x + *(short *)(config + 0x38),
-                     y + *(short *)(config + 0x3a),
+    FUN_0040e3c0_f32(0.0f,param_1 + *(short *)(config + 0x38),
+                     param_2 + *(short *)(config + 0x3a),
                      (drawAlpha * *(short *)(config + 0x44)) / 0xff & 0xff,0x26,0);
-    spriteX = x + *(short *)(config + 0x48);
-    spriteY = y + *(short *)(config + 0x4a);
+    spriteX = param_1 + *(short *)(config + 0x48);
+    spriteY = param_2 + *(short *)(config + 0x4a);
     spriteAlpha = (drawAlpha * *(short *)(config + 0x54)) / 0xff;
     spriteScale = *(float *)(config + 0x50);
-    itemValue = *(int *)(*(int *)(context + 0x24) + 0x28);
+    itemValue = *(int *)(*(int *)(param_4 + 0x24) + 0x28);
     FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x15,spriteY - 0xb,
                      spriteAlpha & 0xff,0x28,0,0,0);
     FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x13,
@@ -4028,12 +4020,12 @@ void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
                      spriteAlpha & 0xff,0x29,0,0,0);
   }
 
-  FUN_003f7730_i(x - 0x15,y + 0x8b,alpha,context,drawState);
+  FUN_003f7730_i(param_1 - 0x15,param_2 + 0x8b,param_3,param_4,drawState);
   if (*(short *)(config + 6) == -1) {
-    FUN_003f5f50_i(0x15a,0xe6,alpha,context,drawState);
-    FUN_003f7a80_i(0x15b,0x134,alpha,context,drawState);
+    FUN_003f5f50_i(0x15a,0xe6,param_3,param_4,drawState);
+    FUN_003f7a80_i(0x15b,0x134,param_3,param_4,drawState);
   } else {
-    FUN_003f7a80_i(x + 1,y + 0xac,alpha,context,drawState);
+    FUN_003f7a80_i(param_1 + 1,param_2 + 0xac,param_3,param_4,drawState);
   }
 }
 
@@ -17669,7 +17661,7 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 // FUN_00406CA0 NONMATCHING
 
 
-void FUN_00406ca0(u64 param_1,u64 param_2,int *param_3)
+void FUN_00406ca0(int param_1,int param_2,int *param_3)
 
 
 

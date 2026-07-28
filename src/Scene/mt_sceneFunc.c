@@ -25,6 +25,22 @@ extern u32 DAT_006a2ef8;
 extern u32 DAT_006a2f00;
 extern u32 DAT_006a2f08;
 extern u32 DAT_006a2f10;
+#pragma alias DAT_006a2ed8_abs DAT_006a2ed8
+extern u8 DAT_006a2ed8_abs[];
+#pragma alias DAT_006a2ee0_abs DAT_006a2ee0
+extern u8 DAT_006a2ee0_abs[];
+#pragma alias DAT_006a2ee8_abs DAT_006a2ee8
+extern u8 DAT_006a2ee8_abs[];
+#pragma alias DAT_006a2ef0_abs DAT_006a2ef0
+extern u8 DAT_006a2ef0_abs[];
+#pragma alias DAT_006a2ef8_abs DAT_006a2ef8
+extern u8 DAT_006a2ef8_abs[];
+#pragma alias DAT_006a2f00_abs DAT_006a2f00
+extern u8 DAT_006a2f00_abs[];
+#pragma alias DAT_006a2f08_abs DAT_006a2f08
+extern u8 DAT_006a2f08_abs[];
+#pragma alias DAT_006a2f10_abs DAT_006a2f10
+extern u8 DAT_006a2f10_abs[];
 extern u32 DAT_006a2f18;
 extern u32 DAT_006a2f20;
 extern u32 DAT_006a2f28;
@@ -545,9 +561,12 @@ u32 FUN_003bb180(u16 param_1,int param_2);
 u32  FUN_003bb1d0(u16 param_1,u8 param_2,u8 param_3,u16 param_4,  u16 param_5);
 u32 FUN_003bb280(void);
 void FUN_003bb340(void);
+#pragma alias FUN_004c31b0_sceneFunc FUN_004c31b0
+extern void FUN_004c31b0_sceneFunc(RwMatrix *matrix, const RwV3d *axis,
+                                   f32 angle, s32 mode);
 void FUN_003bb390(u32 param_2,u16 param_3,float param_1);
 void FUN_003bb400(u32 param_1);
-void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,  float *param_5,float *param_6);
+void FUN_003bb450(float param_1,float *param_2,float param_3,float param_4,float param_5,float *param_6);
 void FUN_003bb620(u32 param_1,u32 *param_2,int param_3);
 void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
@@ -3151,45 +3170,48 @@ void FUN_003bb400(u32 param_1)
 // FUN_003BB450 NONMATCHING
 
 
-void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,
-
-                 float *param_5,float *param_6)
-
-
-
+void FUN_003bb450(float scale, float *input, float angle_y, float angle_x,
+                 float angle_z, float *result)
 {
-
-  float fVar1;
-
-  float fVar2;
-
+  typedef union SceneVector {
+    RwV3d value;
+    struct {
+      u64 xy;
+      f32 z;
+      u32 pad;
+    } raw;
+  } SceneVector;
+  SceneVector axis0;
+  SceneVector transformed;
+  SceneVector source;
+  SceneVector output;
+  SceneVector axis1;
+  SceneVector axis2;
+  SceneVector axis3;
   RwMatrix matrix;
-  struct {
-    u64 xy;
-    u32 z;
-    u32 pad;
-  } stackVec[4];
+  u64 xy;
+  f32 z;
 
-  float fStack_20;
+  xy = *(u64 *)DAT_006a2ed8_abs;
+  z = *(f32 *)DAT_006a2ee0_abs;
+  axis0.raw.xy = xy;
+  axis0.raw.z = z;
+  xy = *(u64 *)DAT_006a2ee8_abs;
+  z = *(f32 *)DAT_006a2ef0_abs;
+  axis1.raw.xy = xy;
+  axis1.raw.z = z;
+  xy = *(u64 *)DAT_006a2ef8_abs;
+  z = *(f32 *)DAT_006a2f00_abs;
+  axis2.raw.xy = xy;
+  axis2.raw.z = z;
+  xy = *(u64 *)DAT_006a2f08_abs;
+  z = *(f32 *)DAT_006a2f10_abs;
+  axis3.raw.xy = xy;
+  axis3.raw.z = z;
 
-  float fStack_1c;
-
-  float fStack_18;
-
-  
-
-  stackVec[0].xy = DAT_006a2ed8;
-  stackVec[0].z = DAT_006a2ee0;
-  stackVec[1].xy = DAT_006a2ee8;
-  stackVec[1].z = DAT_006a2ef0;
-  stackVec[2].xy = DAT_006a2ef8;
-  stackVec[2].z = DAT_006a2f00;
-  stackVec[3].xy = DAT_006a2f08;
-  stackVec[3].z = DAT_006a2f10;
-
-  matrix.right.x = 1.0f;
-  matrix.up.y = 1.0f;
   matrix.at.z = 1.0f;
+  matrix.up.y = 1.0f;
+  matrix.right.x = 1.0f;
   matrix.up.x = 0.0f;
   matrix.right.z = 0.0f;
   matrix.right.y = 0.0f;
@@ -3199,25 +3221,18 @@ void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,
   matrix.pos.z = 0.0f;
   matrix.pos.y = 0.0f;
   matrix.pos.x = 0.0f;
-  matrix.flags = matrix.flags | 0x20003;
+  matrix.flags |= 0x20003;
 
-  FUN_004c31b0(param_3,&matrix,&stackVec[2].xy,1);
-  FUN_004c31b0(param_2,&matrix,&stackVec[1].xy,1);
-  FUN_004c31b0(param_4,&matrix,&stackVec[3].xy,1);
-  FUN_004c6c60(&fStack_20,&stackVec[0].xy,&matrix);
+  FUN_004c31b0_sceneFunc(&matrix, &axis2.value, angle_x, 1);
+  FUN_004c31b0_sceneFunc(&matrix, &axis1.value, angle_y, 1);
+  FUN_004c31b0_sceneFunc(&matrix, &axis3.value, angle_z, 1);
+  FUN_004c6c60(&transformed.value, &axis0.value, &matrix);
 
-  fVar1 = param_5[1];
-
-  fVar2 = param_5[2];
-
-  *param_6 = (*param_5) - fStack_20 * param_1;
-
-  param_6[1] = (fVar1) - fStack_1c * param_1;
-
-  param_6[2] = (fVar2) - fStack_18 * param_1;
-
-  return;
-
+  source.value = *(RwV3d *)input;
+  output.value.x = source.value.x - transformed.value.x * scale;
+  output.value.y = source.value.y - transformed.value.y * scale;
+  output.value.z = source.value.z - transformed.value.z * scale;
+  *(RwV3d *)result = output.value;
 }
 #define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
 #undef FUN_003bb620

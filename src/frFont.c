@@ -289,6 +289,7 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
   FrFontSlot *slot;
   u8 *data;
   int offset;
+  u8 id;
 
   if ((font_data == 0) && (resource != 0)) {
     font_data = resource;
@@ -297,9 +298,9 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
     FUN_0019d3f0(DAT_006a2730, 0x3ff);
   }
 
-  slot_id &= 0xff;
-  slot = &gFrFontManagerData_abs[0].slots[slot_id];
-  if (slot_id >= 9) {
+  id = slot_id;
+  slot = &gFrFontManagerData_abs[0].slots[id];
+  if (id >= 9) {
     FUN_0035ac50(DAT_006a27a0);
   }
 
@@ -323,7 +324,7 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
     slot->block1 = NULL;
   }
 
-  slot->flags = (u32)(data + offset);
+  slot->flags = (u32)((char *)slot->font_data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
   slot->object = data + offset +
@@ -741,11 +742,8 @@ void FUN_003b01d0(int param_1,int param_2)
 {
 
   char cVar1;
-
   u32 uVar3;
-
   int iVar4;
-
   int iVar5;
   FrFontSlot *slot;
 
