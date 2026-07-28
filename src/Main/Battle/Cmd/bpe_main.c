@@ -94,13 +94,22 @@ void func_002496e0(void* work)
         u8* data;
         s32 stride;
     };
+    struct Vec2 {
+        f32 x;
+        f32 y;
+    };
+    struct Vec3 {
+        f32 x;
+        f32 y;
+        f32 z;
+    };
     struct Local {
         f32 uv[4];
-        f32 world[3];
+        struct Vec3 world;
         u8 pad0[4];
-        f32 origin[3];
+        struct Vec3 origin;
         u8 pad1[4];
-        f32 dimensions[2];
+        struct Vec2 dimensions;
         struct Buffer positions;
         struct Buffer colors;
         u8 pad2[4];
@@ -116,9 +125,6 @@ void func_002496e0(void* work)
     s32 j;
     s32 i;
     struct Local local;
-    f32 worldX;
-    f32 worldY;
-    f32 worldZ;
 
     base = (u8*)work;
     camera = (u8*)func_00198590();
@@ -137,11 +143,10 @@ void func_002496e0(void* work)
     func_00521250(node + 0xe0, local.uv, sizeof(local.uv));
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x80000;
-    local.dimensions[0] = 20.0f;
-    local.dimensions[1] = 20.0f;
+    local.dimensions.x = 20.0f;
+    local.dimensions.y = 20.0f;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(f32*)(node + 0xc0) = local.dimensions[0];
-    *(f32*)(node + 0xc4) = local.dimensions[1];
+    *(struct Vec2 *)(node + 0xc0) = local.dimensions;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x4000;
     func_00494d50(
@@ -214,16 +219,11 @@ void func_002496e0(void* work)
 
     func_004747f0(*(void**)(base + 0x600));
     matrix = func_004cb2f0(*(void**)(camera + 4));
-    local.origin[0] = 0.0f;
-    local.origin[1] = 0.0f;
-    local.origin[2] = 100.0f;
-    func_004c6be0(local.world, local.origin, matrix);
-    worldZ = local.world[2];
-    worldX = local.world[0];
-    worldY = local.world[1];
-    *(f32*)(base + 0x608) = worldX;
-    *(f32*)(base + 0x60c) = worldY;
-    *(f32*)(base + 0x610) = worldZ;
+    local.origin.x = 0.0f;
+    local.origin.y = 0.0f;
+    local.origin.z = 100.0f;
+    func_004c6be0(&local.world, &local.origin, matrix);
+    *(struct Vec3 *)(base + 0x608) = local.world;
     *(u32*)(base + 0x604) |= 1;
 }
 #pragma opt_loop_invariants off
@@ -235,10 +235,13 @@ void func_00249c10(void* work)
         u8* data;
         s32 stride;
     };
+    union Vec3 {
+        f32 data[3];
+    };
     struct Local {
         struct Buffer colors;
         struct Buffer positions;
-        f32 transformed[3];
+        union Vec3 transformed;
         u8 pad0[4];
         f32 origin[3];
         u8 pad1[4];
@@ -270,12 +273,12 @@ void func_00249c10(void* work)
     local.origin[0] = 0.0f;
     local.origin[1] = 0.0f;
     local.origin[2] = 100.0f;
-    RwV3dTransformPoint(local.transformed, local.origin, cameraMatrix);
+    RwV3dTransformPoint(local.transformed.data, local.origin, cameraMatrix);
 
-    deltaX = local.transformed[0] - *(f32*)(base + 0x608);
-    deltaY = local.transformed[1] - *(f32*)(base + 0x60c);
-    deltaZ = local.transformed[2] - *(f32*)(base + 0x610);
-    func_004cb750(frame, local.transformed, 0);
+    deltaX = local.transformed.data[0] - *(f32*)(base + 0x608);
+    deltaY = local.transformed.data[1] - *(f32*)(base + 0x60c);
+    deltaZ = local.transformed.data[2] - *(f32*)(base + 0x610);
+    func_004cb750(frame, local.transformed.data, 0);
     func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 2, 0x40000000);
     func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 1, 0x40000000);
 
@@ -311,9 +314,9 @@ void func_00249c10(void* work)
             } else if (particleZ[0] > 150.0f) {
                 particleZ[0] -= 300.0f;
             }
-            position[0] = local.transformed[0] + *(f32*)(base + i * 0xc);
-            position[1] = local.transformed[1] + *(f32*)(base + i * 0xc + 4);
-            position[2] = local.transformed[2] + *(f32*)(base + i * 0xc + 8);
+            position[0] = local.transformed.data[0] + *(f32*)(base + i * 0xc);
+            position[1] = local.transformed.data[1] + *(f32*)(base + i * 0xc + 4);
+            position[2] = local.transformed.data[2] + *(f32*)(base + i * 0xc + 8);
             RwV3dTransformPoint(local.point, position, matrix);
 
             if (local.point[2] < 100.0f) {
@@ -351,9 +354,7 @@ void func_00249c10(void* work)
         }
     }
 
-    *(f32*)(base + 0x608) = local.transformed[0];
-    *(f32*)(base + 0x60c) = local.transformed[1];
-    *(f32*)(base + 0x610) = local.transformed[2];
+    *(union Vec3 *)(base + 0x608) = local.transformed;
     func_004747f0(*(void**)(base + 0x600));
     func_004c3880(matrix);
 }

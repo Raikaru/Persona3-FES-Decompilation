@@ -1124,12 +1124,10 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
   for (i = 0; i < 4; i++) {
     src = param_3 + i * 2;
     dst = xy[i];
-    dst[0] = src[0];
-    dst[1] = src[1];
+    *(RwV2d *)dst = *(RwV2d *)src;
     src = param_4 + i * 2;
     dst = uv[i];
-    dst[0] = src[0];
-    dst[1] = src[1];
+    *(RwV2d *)dst = *(RwV2d *)src;
   }
 
   color = *(RwRGBA *)param_6;
@@ -3259,13 +3257,13 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
     u8 pad_0c[0x14];
     RwV3d vector20;
   } EvtMiscVectorSource;
+  u32 *vectors;
   u8 *camera;
   u8 *cursor;
   s32 remaining;
   RwV3d input;
   RwV3d output1;
   RwV3d output2;
-  u32 *vectors;
 
   camera = (u8 *)FUN_00198590();
 
@@ -3711,21 +3709,7 @@ int FUN_0038ab00(int param_1,u64 param_2)
 
       if (lVar7 != 0) {
 
-        piVar5 = (int *)lVar7;
-
-        iVar1 = piVar5[1];
-
-        iVar9 = piVar5[2];
-
-        iVar3 = piVar5[3];
-
-        piVar8[3] = *piVar5;
-
-        piVar8[4] = iVar1;
-
-        piVar8[5] = iVar9;
-
-        piVar8[6] = iVar3;
+        *(RwV4d *)(piVar8 + 3) = *(RwV4d *)lVar7;
 
       }
 
@@ -3733,21 +3717,7 @@ int FUN_0038ab00(int param_1,u64 param_2)
 
       if (lVar7 != 0) {
 
-        piVar5 = (int *)lVar7;
-
-        iVar1 = piVar5[1];
-
-        iVar9 = piVar5[2];
-
-        iVar3 = piVar5[3];
-
-        piVar8[7] = *piVar5;
-
-        piVar8[8] = iVar1;
-
-        piVar8[9] = iVar9;
-
-        piVar8[10] = iVar3;
+        *(RwV4d *)(piVar8 + 7) = *(RwV4d *)lVar7;
 
       }
 
@@ -4142,35 +4112,21 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
     if (iVar4 == 3) {
 
       fVar9 = *(f32 *)param_2;
-
       fVar10 = *(f32 *)(param_2 + 1);
-
       fVar11 = *(f32 *)(param_2 + 2);
-
       fVar12 = *(f32 *)(param_2 + 3);
-
       *(f32 *)(puVar1 + 0x96) = fVar9;
-
       *(f32 *)(puVar1 + 0x98) = fVar10;
-
       *(f32 *)(puVar1 + 0x9a) = fVar11;
-
       *(f32 *)(puVar1 + 0x9c) = fVar12;
 
       fVar9 = *(f32 *)param_3;
-
       fVar10 = *(f32 *)(param_3 + 1);
-
       fVar11 = *(f32 *)(param_3 + 2);
-
       fVar12 = *(f32 *)(param_3 + 3);
-
       *(f32 *)(puVar1 + 0x9e) = fVar9;
-
       *(f32 *)(puVar1 + 0xa0) = fVar10;
-
       *(f32 *)(puVar1 + 0xa2) = fVar11;
-
       *(f32 *)(puVar1 + 0xa4) = fVar12;
 
       FUN_0038b600((u32 *)(puVar1 + 0xa8),param_4);
@@ -4188,37 +4144,23 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
         puVar2 = (u32 *)FUN_001a0d00();
 
         fVar9 = *(f32 *)(puVar1 + 0x96);
-
         fVar10 = *(f32 *)(puVar1 + 0x98);
-
         fVar11 = *(f32 *)(puVar1 + 0x9a);
-
         fVar12 = *(f32 *)(puVar1 + 0x9c);
-
         *(f32 *)puVar2 = fVar9;
-
         *(f32 *)(puVar2 + 1) = fVar10;
-
         *(f32 *)(puVar2 + 2) = fVar11;
-
         *(f32 *)(puVar2 + 3) = fVar12;
 
         puVar2 = (u32 *)FUN_001a0d40();
 
         fVar9 = *(f32 *)(puVar1 + 0x9e);
-
         fVar10 = *(f32 *)(puVar1 + 0xa0);
-
         fVar11 = *(f32 *)(puVar1 + 0xa2);
-
         fVar12 = *(f32 *)(puVar1 + 0xa4);
-
         *(f32 *)puVar2 = fVar9;
-
         *(f32 *)(puVar2 + 1) = fVar10;
-
         *(f32 *)(puVar2 + 2) = fVar11;
-
         *(f32 *)(puVar2 + 3) = fVar12;
 
         puVar2 = (u32 *)FUN_001a0d80();
@@ -4252,31 +4194,19 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
     else if (iVar4 == 1) {
 
       uVar8 = param_2[1];
-
       uVar6 = param_2[2];
-
       uVar7 = param_2[3];
-
       *(u32 *)(puVar1 + 0x96) = *param_2;
-
       *(u32 *)(puVar1 + 0x98) = uVar8;
-
       *(u32 *)(puVar1 + 0x9a) = uVar6;
-
       *(u32 *)(puVar1 + 0x9c) = uVar7;
 
       uVar8 = param_3[1];
-
       uVar6 = param_3[2];
-
       uVar7 = param_3[3];
-
       *(u32 *)(puVar1 + 0x9e) = *param_3;
-
       *(u32 *)(puVar1 + 0xa0) = uVar8;
-
       *(u32 *)(puVar1 + 0xa2) = uVar6;
-
       *(u32 *)(puVar1 + 0xa4) = uVar7;
 
       FUN_0038b600((u32 *)(puVar1 + 0xa8),param_4);
@@ -4286,35 +4216,21 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
     else if (iVar4 == 0xc) {
 
       fVar9 = *(f32 *)param_2;
-
       fVar10 = *(f32 *)(param_2 + 1);
-
       fVar11 = *(f32 *)(param_2 + 2);
-
       fVar12 = *(f32 *)(param_2 + 3);
-
       *(f32 *)(puVar1 + 0x80) = fVar9;
-
       *(f32 *)(puVar1 + 0x82) = fVar10;
-
       *(f32 *)(puVar1 + 0x84) = fVar11;
-
       *(f32 *)(puVar1 + 0x86) = fVar12;
 
       fVar9 = *(f32 *)param_3;
-
       fVar10 = *(f32 *)(param_3 + 1);
-
       fVar11 = *(f32 *)(param_3 + 2);
-
       fVar12 = *(f32 *)(param_3 + 3);
-
       *(f32 *)(puVar1 + 0x88) = fVar9;
-
       *(f32 *)(puVar1 + 0x8a) = fVar10;
-
       *(f32 *)(puVar1 + 0x8c) = fVar11;
-
       *(f32 *)(puVar1 + 0x8e) = fVar12;
 
       FUN_0038b600((u32 *)(puVar1 + 0x90),param_4);
@@ -6633,41 +6549,28 @@ void FUN_0038d790(int param_1)
 
 void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  float *pfVar5;
-  float *pfVar6;
-  float fVar7;
-  float fVar8;
-  float fVar9;
+  int count;
+  int index;
+  int reverseIndex;
+  int selectedIndex;
+  RwV3d *source;
+  RwV3d *destination;
 
   if (*param_1 == 0) {
-    iVar1 = (u32)param_1[1] * 3 + 1;
+    count = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-    iVar3 = 0;
-    iVar4 = 1;
-    iVar2 = iVar1 - 1;
-    for (; iVar3 < iVar1; iVar3 = iVar3 + 1) {
-      if (param_3 == iVar4) {
-        pfVar5 = (float *)(param_1 + (iVar2 - iVar3) * 0xc);
-        pfVar6 = (float *)(param_2 + iVar3 * 0xc);
-        fVar7 = pfVar5[1];
-        fVar8 = pfVar5[2];
-        fVar9 = pfVar5[3];
-        pfVar6[1] = fVar7;
-        pfVar6[2] = fVar8;
-        pfVar6[3] = fVar9;
+    selectedIndex = 1;
+    index = 0;
+    reverseIndex = count - 1;
+    for (; index < count; index++) {
+      if (param_3 == selectedIndex) {
+        source = (RwV3d *)(param_1 + (reverseIndex - index) * 0xc + 4);
+        destination = (RwV3d *)(param_2 + index * 0xc + 4);
+        *destination = *source;
       } else {
-        pfVar5 = (float *)(param_1 + iVar3 * 0xc);
-        pfVar6 = (float *)(param_2 + iVar3 * 0xc);
-        fVar7 = pfVar5[1];
-        fVar8 = pfVar5[2];
-        fVar9 = pfVar5[3];
-        pfVar6[1] = fVar7;
-        pfVar6[2] = fVar8;
-        pfVar6[3] = fVar9;
+        source = (RwV3d *)(param_1 + index * 0xc + 4);
+        destination = (RwV3d *)(param_2 + index * 0xc + 4);
+        *destination = *source;
       }
     }
   }

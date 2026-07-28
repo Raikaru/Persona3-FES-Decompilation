@@ -1723,21 +1723,13 @@ void FUN_003a05b0(int param_1,int param_2)
     } while (0 < iVar5);
 
     fStack_18 = fStack_90;
-
     fStack_14 = fStack_8c;
-
     fStack_10 = fStack_88;
-
     fStack_28 = fStack_a0;
-
     fStack_24 = fStack_9c;
-
     fStack_20 = fStack_98;
-
     fStack_38 = fStack_80;
-
     fStack_34 = fStack_7c;
-
     fStack_30 = fStack_78;
 
     FUN_004c69f0(&fStack_18,&fStack_18);
@@ -1847,9 +1839,7 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
   u16 *puVar7;
 
   u32 uStack_10;
-
   float fStack_c;
-
   u32 uStack_8;
 
   
@@ -1867,7 +1857,6 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
     puVar4 = (u32 *)0xc;
 
     puVar6 = &uStack_10;
-
     puVar1 = puVar6;
 
     while (puVar1 != (u32 *)0x0) {
@@ -1891,15 +1880,10 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
       if (iVar5 == 3) {
 
         lVar3 = FUN_00318ed0(*(u32 *)(puVar7 + 0x94),2,&uStack_10);
-
         if (lVar3 == 0) {
-
           iVar5 = FUN_00318b60(*(u32 *)(puVar7 + 0x94));
-
           uStack_10 = *(u32 *)(iVar5 + 0x30);
-
           uStack_8 = *(u32 *)(iVar5 + 0x38);
-
           fStack_c = *(float *)(iVar5 + 0x34) + 175.0f;
 
         }
@@ -1911,15 +1895,10 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
         FUN_00318b60(*(u32 *)(puVar7 + 0x94));
 
         lVar3 = FUN_00318ed0(*(u32 *)(puVar7 + 0x94),2,&uStack_10);
-
         if (lVar3 == 0) {
-
           iVar5 = FUN_00318b60(*(u32 *)(puVar7 + 0x94));
-
           uStack_10 = *(u32 *)(iVar5 + 0x30);
-
           uStack_8 = *(u32 *)(iVar5 + 0x38);
-
           fStack_c = *(float *)(iVar5 + 0x34) + 175.0f;
 
         }

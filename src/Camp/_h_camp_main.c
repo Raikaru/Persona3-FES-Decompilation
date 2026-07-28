@@ -281,6 +281,7 @@ typedef union CampMainPackedPosition
         f32 x;
         f32 y;
     } coordinates;
+    RwV2d vector;
     u64 value;
 } CampMainPackedPosition;
 typedef struct CampMainQuadPosition
@@ -290,6 +291,11 @@ typedef struct CampMainQuadPosition
     f32 z;
     f32 w;
 } CampMainQuadPosition;
+typedef struct CampMainListEntry
+{
+    s32 itemId;
+    s32 cursor;
+} CampMainListEntry;
 
 static u64 campMainPackPosition(f32 x, f32 y)
 {
@@ -540,8 +546,7 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
     switch (mode) {
     case 0:
         persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
-        packed.coordinates.x = item->x;
-        packed.coordinates.y = item->y;
+        packed.vector = *(RwV2d*)&item->x;
         FUN_0012b860(packed.value, 0, persona, (u8)item->alpha,
                      item->spriteScale);
         packed.coordinates.x = item->x + 12.0f;
@@ -551,8 +556,7 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
         break;
     case 1:
         persona = datPersonaGetHeroPersona(personaIds[alternatePersonaIndex]);
-        packed.coordinates.x = item->x;
-        packed.coordinates.y = item->y;
+        packed.vector = *(RwV2d*)&item->x;
         FUN_0012b860(packed.value, 0, persona, (u8)item->alpha,
                      item->spriteScale);
         packed.coordinates.x = item->x + 12.0f;
@@ -3361,10 +3365,8 @@ s32 FUN_0013BE50(s32 param_1, s32 param_2)
             func_00170860(1, (s16)itemId, 0);
             for (i = total; i < *(s32*)((u8*)param_1 + 0x96C) - 1; i++)
             {
-                *(s32*)((u8*)param_1 + i * 8 + 0x0C) =
-                    *(s32*)((u8*)param_1 + (i + 1) * 8 + 0x0C);
-                *(s32*)((u8*)param_1 + i * 8 + 0x10) =
-                    *(s32*)((u8*)param_1 + (i + 1) * 8 + 0x10);
+                *(CampMainListEntry*)((u8*)param_1 + i * 8 + 0x0C) =
+                    *(CampMainListEntry*)((u8*)param_1 + (i + 1) * 8 + 0x0C);
             }
             *(s32*)((u8*)param_1 + *(s32*)((u8*)param_1 + 0x96C) * 8 + 0x0C) = -1;
             *(s32*)((u8*)param_1 + *(s32*)((u8*)param_1 + 0x96C) * 8 + 0x10) = 0;

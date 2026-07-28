@@ -4513,9 +4513,7 @@ u32 FUN_00429d40(u32 param_1,u64 param_2)
       uVar2 = kwlnTaskCreateWithAutoPriority(param_1,0x106f,DAT_006b4470_abs,FUN_004281f0,FUN_00429c60,lVar1);
       puVar4 = (u8 *)lVar1;
 
-      *(float *)(puVar4 + 0x85c) = *(float *)&param_2;
-
-      *(float *)(puVar4 + 0x860) = *((float *)&param_2 + 1);
+      *(YajimaVec2 *)(puVar4 + 0x85c) = *(YajimaVec2 *)&param_2;
       *puVar4 = 0;
 
       puVar4[0x9fe] = 0;

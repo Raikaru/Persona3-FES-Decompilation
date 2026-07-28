@@ -284,6 +284,12 @@ void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
                   void* list, s32 alpha);
 void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
                   void* list, s32 alpha);
+#pragma alias campDataDrawListA FUN_0016A700
+extern void campDataDrawListA(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
+#pragma alias campDataDrawListB FUN_0016AF90
+extern void campDataDrawListB(f32 depth, void* resources, RwV2d coordinates,
+                              void* list, s32 alpha);
 
 
 typedef struct CampBridgeScreenWork
@@ -1563,17 +1569,19 @@ void FUN_00169AE0(int param_1)
 void FUN_00169B90(void* param_1, undefined8 param_2,
                   void* param_3, s32 param_4, undefined8 param_5)
 {
+    RwV2d position;
     f32 x;
     f32 y;
     f32 depth;
     f32 drawY;
 
-    y = *(f32*)((u8*)&param_2 + 4);
-    x = *(f32*)&param_2;
+    position = *(RwV2d*)&param_2;
+    y = position.y;
+    x = position.x;
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_0016a700(DAT_00960088 - depth, param_1, param_2, param_3, param_4);
+    campDataDrawListA(DAT_00960088 - depth, param_1, position, param_3, param_4);
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_0016af90(DAT_00960088 - depth, param_1, param_2, param_3, param_4);
+    campDataDrawListB(DAT_00960088 - depth, param_1, position, param_3, param_4);
     drawY = y + 18.0f;
     depth = (f32)FUN_0021ea00(0x28);
     campDataDrawSpriteDirect(x + 240.0f, drawY, DAT_00960088 - depth);
