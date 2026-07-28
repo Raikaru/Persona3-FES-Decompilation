@@ -12024,17 +12024,11 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   float y;
   int cVar1;
   int cVar2;
-  int index;
   int iVar3;
   int iVar4;
-  u8 *table;
-  u8 *row;
   struct CoordinateValues *coordinateBase;
   
-  index = (int)param_3 * 4;
-  table = iGpffffb9fc_ptr;
-  row = table + index;
-  cVar1 = *(s8 *)(row + 4);
+  cVar1 = *(s8 *)((int)param_3 * 4 + DAT_007ce6ec + 4);
   coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
   iVar3 = coordinateBase->y;
   iVar3 = iVar3 - (cVar1 - 1) * 0x40;
@@ -12042,9 +12036,7 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
   y = (float)iVar3;
-  for (iVar4 = 0;
-       iVar4 < *(char *)(row + 0xa0 - (int)param_3 * 4);
-       iVar4 = iVar4 + 1) {
+  for (iVar4 = 0; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
   }
   position.y = y - 32.0f;
   position.x = (float)coordinateBase->x;

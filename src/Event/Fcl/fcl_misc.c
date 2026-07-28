@@ -959,8 +959,7 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
   int iVar2;
 
   u32 offset;
-  u16 uVar3;
-  f32 scaled;
+  u32 uVar3;
 
   
 
@@ -981,26 +980,10 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    scaled = 4096.0f * param_2;
-    if (2.1474836e+09f <= scaled) {
-      goto param2_large;
-    }
-    uVar3 = (u16)(int)scaled;
-    goto param2_done;
-param2_large:
-    uVar3 = (u16)((u32)(int)(scaled - 2.1474836e+09f) | 0x80000000);
-param2_done:
+    uVar3 = (u32)(4096.0f * param_2);
     *(u16 *)(iVar2 + 0x28) = uVar3;
 
-    scaled = 4096.0f * param_3;
-    if (2.1474836e+09f <= scaled) {
-      goto param3_large;
-    }
-    uVar3 = (u16)(int)scaled;
-    goto param3_done;
-param3_large:
-    uVar3 = (u16)((u32)(int)(scaled - 2.1474836e+09f) | 0x80000000);
-param3_done:
+    uVar3 = (u32)(4096.0f * param_3);
     *(u16 *)(iVar2 + 0x2a) = uVar3;
 
     FUN_001127d0(uVar1,1);
@@ -1213,7 +1196,6 @@ void FUN_003c9570(u64 param_1)
   int count;
   int *source;
   int *destination;
-  int *values;
   int first;
   int second;
   FclMisc9570Layout layout;
@@ -1258,8 +1240,7 @@ void FUN_003c9570(u64 param_1)
 
   if (special) {
     FUN_003a3ce0(param_1,0x4d0,0x4e0);
-    values = layout.specialValues.raw;
-    index = values[index];
+    index = layout.specialValues.raw[index];
     FUN_003a8650(param_1,0,0x408,0,0x2800,index << 3);
     FUN_003a6a80(param_1,0x254,index + 0x71);
   }

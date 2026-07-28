@@ -159,7 +159,7 @@ void FUN_003a4270(int param_1);
 u32 FUN_003a42c0(int param_1,u32 param_2);
 u64 FUN_003a4360(u64 param_1,long param_2);
 u32 FUN_003a4a70(int param_1, int param_2, int param_3);
-u32 FUN_003a4b90(int param_1,int param_2,int param_3);
+u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3);
 void FUN_003a4ce0(void);
 void FUN_003a4dd0(int param_1);
 #pragma alias FUN_003a4dd0_typed FUN_003a4dd0
@@ -2554,13 +2554,13 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
 // FUN_003A4B90 NONMATCHING
 
 
-u32 FUN_003a4b90(int param_1,int param_2,int param_3)
+u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
 
 
 
 {
 
-  u32 *object;
+  int iVar1;
 
 
   int iVar2;
@@ -2575,16 +2575,16 @@ u32 FUN_003a4b90(int param_1,int param_2,int param_3)
 
   
 
-  object = *(u32 **)(DAT_00959eec_abs + param_1 * 0xd);
+  iVar1 = *(int *)(DAT_00959eec_abs + param_1 * 0xd);
 
 
-  if (object == NULL) {
+  if (iVar1 == 0) {
 
     FUN_0019d3f0("itfMesManager.c",0xcfe);
 
   }
 
-  piVar3 = (int *)FUN_003a50e0_typed((int)object,param_2);
+  piVar3 = (int *)FUN_003a50e0_typed(iVar1,param_2);
 
   if (*piVar3 != 0) {
 
@@ -2598,10 +2598,10 @@ u32 FUN_003a4b90(int param_1,int param_2,int param_3)
     return 0;
   }
 
-  FUN_003a5fd0((int)(object + 0x35));
+  FUN_003a5fd0(iVar1 + 0xd4);
 
-  if (object[2] != 0) {
-    FUN_003b19a0(object[2]);
+  if (*(int *)(iVar1 + 8) != 0) {
+    FUN_003b19a0(*(int *)(iVar1 + 8));
   }
 
   lVar5 = FUN_003a5940_typed(iVar2,param_3);
@@ -5958,14 +5958,7 @@ void FUN_003a8350(int param_1)
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  if (2.1474836e+09f <= fVar1) goto LAB_003a8400;
-  iVar1 = (int)fVar1;
-  iVar1 = iVar1 & 0xff;
-  goto LAB_003a8418;
-LAB_003a8400:
-  iVar1 = (int)(fVar1 - 2.1474836e+09f);
-  iVar1 = (iVar1 | 0x80000000) & 0xff;
-LAB_003a8418:
+  iVar1 = (u32)fVar1 & 0xff;
   FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
 }
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)

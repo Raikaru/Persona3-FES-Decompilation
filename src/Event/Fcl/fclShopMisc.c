@@ -18191,7 +18191,6 @@ u32 FUN_00409c80(u32 param_1)
   int *entry;
   void *persona;
   u32 firstSum;
-  int scaledPrice;
   int id;
 
   FUN_003f03e0_u32(8);
@@ -18218,16 +18217,10 @@ u32 FUN_00409c80(u32 param_1)
           2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        scaledPrice = entry[2] << 2;
-        if (scaledPrice < 10000000) {
-          goto use_scaled_price;
-        }
-        entry[2] = 9999999;
-        goto price_done;
-use_scaled_price:
-        entry[2] = scaledPrice;
+        (entry[2] << 2) < 10000000
+            ? (entry[2] = entry[2] << 2)
+            : (entry[2] = 9999999);
       }
-price_done:
       entry[3] = FUN_003dfeb0(0);
     }
   }
