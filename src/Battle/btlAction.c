@@ -7568,8 +7568,16 @@ void btlActionInitStateDead(BtlAction* action)
 
     unit = action->unit;
     FUN_0029a320(action);
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
+    case UNIT_GENUS_PC:
+        FUN_00301690(unit->datUnit);
+        if (ACTION_U8(unit->datUnit, 0x10) == 10)
+        {
+            ACTION_U8(unit->datUnit, 0x10) = 1;
+        }
+        break;
+    case UNIT_GENUS_EC:
         FUN_0017c750(unit->charId);
         FUN_002d7560(action);
         flags = unit->flags3;
@@ -7594,14 +7602,7 @@ void btlActionInitStateDead(BtlAction* action)
             unit->flags3 = flags & ~8;
             FUN_001fdd40();
         }
-    }
-    else if (unit->genus == 0)
-    {
-        FUN_00301690(unit->datUnit);
-        if (ACTION_U8(unit->datUnit, 0x10) == 10)
-        {
-            ACTION_U8(unit->datUnit, 0x10) = 1;
-        }
+        break;
     }
 }
 // FUN_00299990

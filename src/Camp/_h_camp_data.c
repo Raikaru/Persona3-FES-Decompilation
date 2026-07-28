@@ -976,32 +976,40 @@ void FUN_001685e0(KwlnTask* task, s32 command)
         if (command == 1) {
             work[3] = 0;
             work[0] = 3;
-            work[2] = 1;
+            work[2] = (u32)command;
         }
         break;
     case 1:
-        if (command == 4) {
-            work[3] = 3;
-            work[0] = 3;
-        }
-        else if (command == 3) {
-            work[1] = 10;
-            work[0] = 6;
-        }
-        else if (command == 2) {
+        switch (command) {
+        case 1:
+            break;
+        case 2:
             work[3] = 1;
             work[0] = 3;
+            break;
+        case 3:
+            work[1] = 10;
+            work[0] = 6;
+            break;
+        case 4:
+            work[3] = 3;
+            work[0] = 3;
+            break;
         }
         work[2] = (u32)command;
         break;
     case 2:
-        if (command == 3) {
-            work[1] = 10;
-            work[0] = 6;
-        }
-        else if ((command != 2) && (command == 1)) {
+        switch (command) {
+        case 1:
             work[3] = 2;
             work[0] = 3;
+            break;
+        case 2:
+            break;
+        case 3:
+            work[1] = 10;
+            work[0] = 6;
+            break;
         }
         work[2] = (u32)command;
         break;

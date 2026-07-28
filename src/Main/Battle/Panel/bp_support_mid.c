@@ -1150,7 +1150,7 @@ shared_tail:
 
     if (*(u32*)(panel + 0) & 8)
     {
-        func_0020cf20((void*)(uintptr_t)*(u32*)(panel + 0xdc), panel);
+        func_0020cf20((void*)(uintptr_t)*(u32*)(panel + 0xdc), (PanelTransform*)panel);
     }
 }
 
