@@ -3267,7 +3267,7 @@ void FUN_0022C2D0(void)
     u32 resourceA;
     f32 weight;
     f32 alpha;
-    u32 alphaInt;
+    s32 alphaInt;
     f32 rect[4];
     u8 color[4];
 
@@ -3287,11 +3287,12 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    if (alpha < 2147483648.0f) {
-        alphaInt = (s32)alpha & 0xff;
-    } else {
-        alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
-    }
+    if (2147483648.0f <= alpha) goto alpha_high_1;
+    alphaInt = (s32)alpha & 0xff;
+    goto alpha_done_1;
+alpha_high_1:
+    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+alpha_done_1:
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6a00, color);
  
@@ -3305,11 +3306,12 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    if (alpha < 2147483648.0f) {
-        alphaInt = (s32)alpha & 0xff;
-    } else {
-        alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
-    }
+    if (2147483648.0f <= alpha) goto alpha_high_2;
+    alphaInt = (s32)alpha & 0xff;
+    goto alpha_done_2;
+alpha_high_2:
+    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+alpha_done_2:
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6b00, color);
  
@@ -3324,11 +3326,12 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    if (alpha < 2147483648.0f) {
-        alphaInt = (s32)alpha & 0xff;
-    } else {
-        alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
-    }
+    if (2147483648.0f <= alpha) goto alpha_high_3;
+    alphaInt = (s32)alpha & 0xff;
+    goto alpha_done_3;
+alpha_high_3:
+    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+alpha_done_3:
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6c00, color);
 }

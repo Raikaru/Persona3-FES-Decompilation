@@ -3412,7 +3412,7 @@ void FUN_00207010(void)
     s32 rowIndex;
     s32 targetIndex;
     u32 type;
-    s8 alpha;
+    s32 alpha;
     u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);

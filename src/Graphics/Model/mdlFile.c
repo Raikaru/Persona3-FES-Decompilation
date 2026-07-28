@@ -29694,7 +29694,7 @@ void FUN_0033a220(int param_1)
   u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
-  u32 colourStack[4];
+  struct { u32 word[3]; union { u32 packed; RwRGBA rgba; } colour; } colourStack;
   int iVar3;
   int iVar4;
   int iVar6;
@@ -29712,32 +29712,32 @@ void FUN_0033a220(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack[2] = *(u32 *)(iVar5 + 0x30);
+    colourStack.word[2] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50((u32)iVar3);
-    colourStack[3] = colourStack[0];
-    if (((RwRGBA *)&colourStack[3])->a != 0xff) {
+    colourStack.colour.packed = colourStack.word[0];
+    if (colourStack.colour.rgba.a != 0xff) {
       dest = *(int *)(puVar2 + 10);
-      red = ((RwRGBA *)&colourStack[3])->r;
-      green = ((RwRGBA *)&colourStack[3])->g;
-      blue = ((RwRGBA *)&colourStack[3])->b;
-      alpha = ((RwRGBA *)&colourStack[3])->a;
+      red = colourStack.colour.rgba.r;
+      green = colourStack.colour.rgba.g;
+      blue = colourStack.colour.rgba.b;
+      alpha = colourStack.colour.rgba.a;
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
     }
     else {
-      ((RwRGBA *)&colourStack[3])->a = 0xfe;
+      colourStack.colour.rgba.a = 0xfe;
       dest = *(int *)(puVar2 + 10);
-      red = ((RwRGBA *)&colourStack[3])->r;
-      green = ((RwRGBA *)&colourStack[3])->g;
-      blue = ((RwRGBA *)&colourStack[3])->b;
-      alpha = ((RwRGBA *)&colourStack[3])->a;
+      red = colourStack.colour.rgba.r;
+      green = colourStack.colour.rgba.g;
+      blue = colourStack.colour.rgba.b;
+      alpha = colourStack.colour.rgba.a;
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
-      ((RwRGBA *)&colourStack[3])->a = 0xff;
+      colourStack.colour.rgba.a = 0xff;
     }
     FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {

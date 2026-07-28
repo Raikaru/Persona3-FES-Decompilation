@@ -852,8 +852,8 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 
   recipZ = 1.0f / *(f32*)(FUN_00198590() + 0x80);
   i = 0;
-  z = *(f32*)DAT_00960088_abs;
   vertices = DAT_0095aec0_abs;
+  z = *(f32*)DAT_00960088_abs;
   while (i < 4) {
     position = (int*)(param_1 + (u32)*param_3 * 8);
     color = (int*)(param_2 + (u32)*param_4 * 0x10);
