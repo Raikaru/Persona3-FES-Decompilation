@@ -55,6 +55,8 @@ BtlPacket* FUN_002843e0(BtlUnit* unit, u16 id);
 void FUN_00175130(s16 id);
 #pragma alias FUN_00175130_btlAction FUN_00175130
 extern void FUN_00175130_btlAction(u16 id);
+#pragma alias btlUnitCreateAnimPacketSignedId btlUnitCreateAnimPacket
+extern BtlPacket* btlUnitCreateAnimPacketSignedId(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u16 mode);
 s32 FUN_002fcf50(BtlAction* action);
 BtlPacket* FUN_00284200();
 BtlPacket* FUN_00284c90();
@@ -77,7 +79,7 @@ BtlPacket* FUN_002dd100(u32 a, u32 b, u32 c);
 BtlPacket* FUN_002d7e20(BtlAction* action, BtlAction* target, void* result, u32 a, u32 b);
 extern f32 D_00693300[];
 extern s16 D_00690E20[];
-s64 FUN_002dc670(BtlAction* action);
+s16 FUN_002dc670(BtlAction* action);
 u32 FUN_002dc130(BtlAction* action);
 BtlPacket* FUN_002dd5e0();
 BtlPacket* FUN_002e2be0();
@@ -6250,7 +6252,7 @@ void btlActionInitStateBadDamage(BtlAction* action)
 {
     (void)action;
 }
-// FUN_00297760 NONMATCHING
+// FUN_00297760
 void btlActionUpdateStateBadDamage(BtlAction* action)
 {
     BtlPacket* root;
@@ -6262,8 +6264,19 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
     s64 actionUID;
     u16 state;
 
-    if (btlPacketCountById(0x700) || btlPacketCountById(0x506) ||
-        btlPacketCountById(0x507) || btlPacketCountById(0x301))
+    if (btlPacketCountById(0x700))
+    {
+        return;
+    }
+    if (btlPacketCountById(0x506))
+    {
+        return;
+    }
+    if (btlPacketCountById(0x507))
+    {
+        return;
+    }
+    if (btlPacketCountById(0x301))
     {
         return;
     }
@@ -6271,10 +6284,11 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
     unit = action->unit;
     badStatus = datCalcGetBadStatus(unit->datUnit);
     actionUID = action->uid;
-    if ((badStatus & 0xfffff) == 0x80)
+    switch (badStatus & 0xfffff)
     {
+    case 0x80:
         FUN_002d5dc0(&work);
-        damage = (s32)FUN_002dc670(action);
+        damage = FUN_002dc670(action);
         work.hpDelta = damage;
         if (damage < 0)
         {
@@ -6294,7 +6308,7 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
             packet->parentUID = root->uid;
             packet->unk_47 &= ~0x20;
             btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-            packet = btlUnitCreateAnimPacket(unit, (s16)BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+            packet = btlUnitCreateAnimPacketSignedId(action->unit, BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
             packet->unk_00 = 4;
             packet->parentUID = root->uid;
             packet->actionUID = actionUID;
@@ -6316,9 +6330,8 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
             break;
         }
         btlActionSetState(action, state);
-    }
-    else
-    {
+        break;
+    default:
         switch (action->target.commandId)
         {
         case 1:
@@ -6331,6 +6344,7 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
             break;
         }
         btlActionSetState(action, state);
+        break;
     }
 }
 // FUN_00297a50

@@ -2316,13 +2316,14 @@ void FUN_0016c2f0(void)
     p += 0x10;
     DAT_007cdfb8 = (s32*)p;
     scaled = n << 1;
-    p += (scaled + n) << 2;
+    scaled += n;
+    p += scaled << 2;
     {
         s32* entry;
         u32* output;
         u32 i;
 
-        entry = (s32*)p;
+        entry = (s32*)(p + 0x10);
         output = DAT_0083aaa0;
         for (i = 0; i < 0x23; i++) {
             output[i] = (u32)entry;
