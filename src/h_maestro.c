@@ -70,6 +70,11 @@ typedef struct MaestroResourceWork
     u32 cancelRequested;
 } MaestroResourceWork;
 
+typedef struct MaestroStreamDimensions
+{
+    s16 values[4];
+} MaestroStreamDimensions;
+
 typedef struct MaestroStreamWork
 {
     s32 state;
@@ -695,15 +700,11 @@ KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
     return task;
 }
 
-// FUN_00111150 NONMATCHING
+// FUN_00111150
 KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
 {
     KwlnTask* task;
     MaestroStreamWork* work;
-    s16 dim2;
-    s16 dim0;
-    s16 dim1;
-    s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
     if (work == NULL)
@@ -717,14 +718,7 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
         return NULL;
     }
 
-    dim0 = ((s16*)&dimensions)[0];
-    dim1 = ((s16*)&dimensions)[1];
-    dim2 = ((s16*)&dimensions)[2];
-    dim3 = ((s16*)&dimensions)[3];
-    work->dimensions[0] = dim0;
-    work->dimensions[1] = dim1;
-    work->dimensions[2] = dim2;
-    work->dimensions[3] = dim3;
+    *(MaestroStreamDimensions*)work->dimensions = *(MaestroStreamDimensions*)&dimensions;
     sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
     work->useCdvd = true;

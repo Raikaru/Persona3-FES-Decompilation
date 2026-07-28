@@ -12049,7 +12049,8 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   
   index = (int)param_3 * 4;
   table = iGpffffb9fc_ptr;
-  row = table + index;
+  row = table;
+  row = row + index;
   cVar1 = *(s8 *)(row + 4);
   {
     struct CoordinateValues *coordinateBase;

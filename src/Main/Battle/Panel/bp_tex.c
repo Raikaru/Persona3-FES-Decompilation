@@ -104,6 +104,15 @@ typedef struct BpTexFrameData
     u8 color[16];
 } BpTexFrameData;
 
+typedef struct BpTexTexture
+{
+    u32 unused;
+    BpTexFrameData* frames;
+    u32* rasters;
+    u32 rasterCount;
+    u32 frameCount;
+} BpTexTexture;
+
 
 static inline u32 bpTexByteToFloatBits(u8 value)
 {
@@ -161,7 +170,7 @@ static void bpTexWriteVertex(void* destination,
  * Retail orders the raster/frame pointer arithmetic differently from MWCCPS2.
  * The reconstructed allocation, raster loop, frame fields, and color loop are complete.
  */
-// FUN_0021c9f0 NONMATCHING
+// FUN_0021c9f0
 void* bpTex0021c9f0(void* sprMemory)
 {
     u8* source;
@@ -196,7 +205,7 @@ void* bpTex0021c9f0(void* sprMemory)
 
         entry = rasterTable + i * 8;
         raster = bpTexCreateTmxRaster(source + *(u32*)(entry + 4));
-        BP_TEX_U32(texture, 8 + i * 4) = (u32)raster;
+        ((BpTexTexture*)texture)->rasters[i] = (u32)raster;
     }
 
     frameTable = source + *(u32*)(source + 0x1c);

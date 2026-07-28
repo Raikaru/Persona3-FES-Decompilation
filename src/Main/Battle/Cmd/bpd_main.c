@@ -115,8 +115,8 @@ void FUN_00252f30(void)
   float fVar10;
   float fVar11;
   RwV4d rect;
-  RwV3d projected;
   RwV2d screen;
+  RwV3d projected;
   RwRGBA color;
 
   K_ASSERT(sBpd660 != NULL, 0x25);

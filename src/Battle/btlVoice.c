@@ -6954,7 +6954,7 @@ void func_002e7db0(BtlCamera* param_1)
 }
 
 /* Retail reconstruction: action/mode dispatch 0x2e82d0-0x2e8464; playback A 0x2e8470-0x2e8584; playback B/C 0x2e8590-0x2e8784. Every added statement maps to these retail ranges; unjustified bytes: 0. */
-// FUN_002e82b0 NONMATCHING
+// FUN_002e82b0
 void func_002e82b0(BtlCamera* camera)
 {
   typedef struct {
@@ -6965,8 +6965,6 @@ void func_002e82b0(BtlCamera* camera)
   } BtlVoicePlayback;
   BtlVoiceCameraWork* work;
   u16 modeFlags;
-  u8* voiceData;
-  u32 randomIndex;
 
   work = (BtlVoiceCameraWork*)camera;
   work->mode = (u16)FUN_002a7830();
@@ -7020,12 +7018,14 @@ void func_002e82b0(BtlCamera* camera)
   case 5:
     if ((modeFlags & 2) != 0) {
       BtlVoicePlayback playbackA;
+      u32 randomIndex;
+      u8* voiceData;
+      u8* voiceBase;
 
-      randomIndex = FUN_002ffbc0(2);
-      voiceData = (u8*)DAT_007ce3ec;
-      randomIndex = (randomIndex & 0xffff) * 0x34;
-      voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)voiceData + 0xb18)) +
-                  randomIndex + 0x1a4;
+      randomIndex = (u16)FUN_002ffbc0(2);
+      voiceBase = (u8 *)(*(int *)(iGpffffb6fc + 0xb18));
+      randomIndex = randomIndex * 0x34;
+      voiceData = voiceBase + randomIndex + 0x1a4;
       btlVoicePlayCameraVoice(voiceData, playbackA.startTransform,
                               playbackA.endTransform, &playbackA.startPosition,
                               &playbackA.endPosition);
@@ -7038,6 +7038,7 @@ cameraVoiceState6:
     if ((work->action->unk_1a & 1) != 0) {
       if (((u8*)work->action->unit)[0xa2] == 0) {
         BtlVoicePlayback playbackB;
+        u8* voiceData;
 
         voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)DAT_007ce3ec + 0xb18)) +
                     0x3ac;
@@ -7048,12 +7049,14 @@ cameraVoiceState6:
       }
       else {
         BtlVoicePlayback playbackC;
+        u32 randomIndex;
+        u8* voiceData;
+        u8* voiceBase;
 
-        randomIndex = FUN_002ffbc0(2);
-        voiceData = (u8*)DAT_007ce3ec;
-        randomIndex = (randomIndex & 0xffff) * 0x34;
-        voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)voiceData + 0xb18)) +
-                    randomIndex + 0x20c;
+        randomIndex = (u16)FUN_002ffbc0(2);
+        voiceBase = (u8 *)(*(int *)(iGpffffb6fc + 0xb18));
+        randomIndex = randomIndex * 0x34;
+        voiceData = voiceBase + randomIndex + 0x20c;
         btlVoicePlayCameraVoice(voiceData, playbackC.startTransform,
                                 playbackC.endTransform,
                                 &playbackC.startPosition,
