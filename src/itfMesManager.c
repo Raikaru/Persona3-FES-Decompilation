@@ -5399,10 +5399,10 @@ void FUN_003a7dd0(int object)
     s16 value;
   } ItfMesAnim;
   s16 values[8];
+  ItfMesAnim *anim;
   s16 *source;
   s16 *dest;
   int count;
-  ItfMesAnim *anim;
 
   anim = (ItfMesAnim *)(object + 0x1d4);
   source = (s16 *)DAT_006a1bd0;

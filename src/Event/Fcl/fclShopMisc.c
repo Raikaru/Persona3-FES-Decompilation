@@ -322,7 +322,7 @@ void FUN_003f8a00(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
 void FUN_003f8e10(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
 void FUN_003f9220(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
 void FUN_003f9510(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
-u32 FUN_003f98f0(int param_1);
+u32 FUN_003f98f0(u16 param_1);
 u64 FUN_003f99d0(u32 param_1,u32 param_2);
 u64 FUN_003f9b20(u64 param_1,int param_2);
 s32 FUN_003f9cb0(u32 *param_1, u32 *param_2);
@@ -667,6 +667,8 @@ extern u8 DAT_006acc60_abs[];
 u32 DAT_006acc60;
 extern u8 DAT_006acc70[];
 extern u8 DAT_006acc72[];
+#pragma alias DAT_006acca0_abs DAT_006acca0
+extern u16 DAT_006acca0_abs[];
 u32 DAT_006acca0;
 u32 DAT_006aedc0[];
 u32 DAT_006aedc4[];
@@ -2522,24 +2524,34 @@ u8 FUN_003f2240(int param_1,long param_2)
   return 1;
 }
 
+typedef struct {
+  s16 id;
+  u8 pad[3];
+  s8 flags;
+  s16 value;
+} FclShopListEntry;
+
 // FUN_003F2320 NONMATCHING
+
 
 
 u64 FUN_003f2320(int task,int list)
 {
   u32 *panel;
-  short *entry;
+  FclShopListEntry *entry;
   int i;
   int node;
+  long entryId;
 
   panel = *(u32 **)(*(int *)(task + 0x24) + 0x44);
   *panel |= 2;
-  entry = *(short **)(list + 8);
+  entry = *(FclShopListEntry **)(list + 8);
   for (i = 0; i < *(short *)(list + 6); i++) {
-    if ((entry[0] != 0) && ((*(s8 *)((int)entry + 5) & 1) != 0)) {
+    entryId = entry->id;
+    if ((entryId != 0) && ((entry->flags & 1) != 0)) {
       node = *(int *)(task + 4);
       while (node != 0) {
-        if (*(short *)(*(int *)(*(int *)(node + 0x14) + 0x1c) + 4) == entry[0]) {
+        if (*(short *)(*(int *)(*(int *)(node + 0x14) + 0x1c) + 4) == entryId) {
           break;
         }
         node = *(int *)(node + 0x10);
@@ -2547,15 +2559,15 @@ u64 FUN_003f2320(int task,int list)
       if (node != 0) {
         panel = *(u32 **)(*(int *)(node + 0x14) + 0x1c);
         *panel |= 2;
-        if ((*(s8 *)((int)entry + 5) & 4) != 0) {
+        if ((entry->flags & 4) != 0) {
           *panel |= 8;
         }
-        else if ((*(s8 *)((int)entry + 5) & 2) != 0) {
+        else if ((entry->flags & 2) != 0) {
           *panel |= 4;
         }
       }
     }
-    entry += 4;
+    entry++;
   }
   for (node = *(int *)(task + 4); node != 0; node = *(int *)(node + 0x10)) {
     panel = *(u32 **)(*(int *)(node + 0x14) + 0x1c);
@@ -7146,58 +7158,26 @@ void FUN_003f9510(int param_1,int param_2,u32 param_3,int param_4,int param_5
 // FUN_003F98F0 NONMATCHING
 
 
-u32 FUN_003f98f0(int param_1)
-
-
-
+u32 FUN_003f98f0(u16 param_1)
 {
+  u16 *range;
+  u32 i;
 
-  u32 uVar1;
-
-  u16 *puVar2;
-
-  
-
-  puVar2 = (u16 *)(&DAT_006acca0);
-
-  uVar1 = 0;
-
-  do {
-
-    if (0xf < uVar1) {
-
-      return 1;
-
-    }
-
-    if ((*puVar2 == 0) && (puVar2[1] != 0)) {
-
+  range = DAT_006acca0_abs;
+  for (i = 0; i < 16; i++, range += 2) {
+    if ((range[0] == 0) && (range[1] != 0)) {
       K_Assert((const char *)DAT_006aede8,0xe12);
-
     }
-
-    if (puVar2[1] == 0) {
-
-      if (param_1 == *puVar2) {
-
+    if (range[1] != 0) {
+      if ((range[0] <= param_1) && (param_1 <= range[1])) {
         return 0;
-
       }
-
     }
-
-    else if ((*puVar2 <= param_1) && (param_1 <= puVar2[1])) {
-
+    else if (param_1 == range[0]) {
       return 0;
-
     }
-
-    puVar2 = puVar2 + 2;
-
-    uVar1 = uVar1 + 1;
-
-  } while( 1 );
-
+  }
+  return 1;
 }
 
 // FUN_003F99D0 NONMATCHING
@@ -8654,7 +8634,7 @@ int FUN_003fb2f0(u32 *param_1)
 
 }
 
-// FUN_003FB530 NONMATCHING
+// FUN_003FB530
 
 
 int FUN_003fb530(u32 *param_1)
@@ -8664,8 +8644,6 @@ int FUN_003fb530(u32 *param_1)
 {
 
   int iVar1;
-
-  int lVar2;
 
   int lVar3;
 
@@ -8696,26 +8674,19 @@ int FUN_003fb530(u32 *param_1)
 
   if (iVar1 != 0) {
 
-    lVar2 = (int)(param_1[2] + iVar1);
-
-    lVar3 = lVar4;
-
-    if ((lVar2 <= lVar4) && (lVar3 = lVar2, lVar2 < 1)) {
-
+    lVar3 = param_1[2] + iVar1;
+    if (lVar4 < lVar3) {
+      lVar3 = lVar4;
+    }
+    else if (lVar3 < 1) {
       lVar3 = 1;
-
     }
 
-    if (lVar3 < lVar4) {
-
-      *param_1 = *param_1 & 0xfffffff7;
-
+    if (lVar3 >= lVar4) {
+      *param_1 |= 8;
     }
-
     else {
-
-      *param_1 = *param_1 | 8;
-
+      *param_1 &= ~8;
     }
 
     if (lVar3 == 1) {
@@ -8730,32 +8701,15 @@ int FUN_003fb530(u32 *param_1)
 
     }
 
-    if ((int)param_1[2] != lVar3) {
-
-      param_1[2] = (u32)lVar3;
-
-      if (iVar1 < 1) {
-
-        if (iVar1 < 0) {
-
-          iVar1 = 2;
-
-        }
-
-      }
-
-      else {
-
-        iVar1 = 1;
-
-      }
-
+    if ((int)param_1[2] == lVar3) {
+      return 0;
     }
-
-    else {
-
-      iVar1 = 0;
-
+    param_1[2] = lVar3;
+    if (iVar1 > 0) {
+      return 1;
+    }
+    if (iVar1 < 0) {
+      return 2;
     }
 
   }
@@ -13337,42 +13291,31 @@ void FUN_00400e90(u32 param_1)
 // FUN_00401170 NONMATCHING
 
 
-void FUN_00401170(int param_1)
-
-
-
+void FUN_00401170(int root)
 {
+  code callback;
+  u32 enabled;
+  u32 *handler;
+  u32 *item;
+  u32 *list;
+  int node;
 
-  code *pcVar1;
-
-  u32 uVar2;
-
-  int iVar3;
-
-  
-
-  uVar2 = *(u32 *)param_1 & 1;
-
-  if (uVar2 != 0) {
-
-    for (iVar3 = *(int *)(((u32 *)param_1)[2] + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
-
-      uVar2 = (*(u32 **)(iVar3 + 0x14))[2];
-
-      if (((*(int *)(uVar2 + 0x14) == 3) && ((**(u32 **)(iVar3 + 0x14) & 1) != 0)) &&
-
-         (pcVar1 = *(code **)(uVar2 + 4), pcVar1 != (code *)0x0)) {
-
-        (*pcVar1)(param_1);
-
+  enabled = *(u32 *)root & 1;
+  if (enabled != 0) {
+    list = *(u32 **)(root + 8);
+    if (enabled != 0) {
+      for (node = list[1]; node != 0; node = *(int *)(node + 0x10)) {
+        item = *(u32 **)(node + 0x14);
+        handler = (u32 *)item[2];
+        if ((handler[5] == 3) && ((*item & 1) != 0)) {
+          callback = *(code *)(handler + 1);
+          if (callback != (code)0) {
+            (*callback)(root);
+          }
+        }
       }
-
     }
-
   }
-
-  return;
-
 }
 
 // FUN_00401210
@@ -16015,64 +15958,32 @@ LAB_00403b38:
 // FUN_00403E40 NONMATCHING
 
 
-u32 FUN_00403e40(int param_1,int param_2)
-
-
-
+u32 FUN_00403e40(int ids,int count)
 {
+  int entry;
+  int i;
+  int slot;
+  u8 found;
 
-  u8 bVar1;
-
-  int lVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  
-
-  iVar4 = 0;
-
-  do {
-
-    if (2 < iVar4) {
-
-      return 0;
-
-    }
-
-    lVar2 = FUN_0017c670(iVar4);
-
-    if (lVar2 != 0) {
-
-      for (iVar3 = 0; iVar3 < param_2; iVar3 = iVar3 + 1) {
-
-        if (*(short *)lVar2 == *(short *)(param_1 + iVar3 * 2)) {
-
-          bVar1 = 1;
-
-          goto LAB_00403ec0;
-
+  slot = 0;
+  while (slot < 3) {
+    entry = FUN_0017c670(slot);
+    if (entry != 0) {
+      for (i = 0; i < count; i++) {
+        if (*(short *)entry == *(short *)(ids + i * 2)) {
+          found = 1;
+          goto search_done;
         }
-
       }
-
-      bVar1 = 0;
-
-LAB_00403ec0:
-
-      if ((!bVar1) && (lVar2 = FUN_00403970(0), lVar2 != 0)) {
-
+      found = 0;
+search_done:
+      if (!found && FUN_00403970(*(short *)entry) != 0) {
         return 1;
-
       }
-
     }
-
-    iVar4 = iVar4 + 1;
-
-  } while( 1 );
-
+    slot++;
+  }
+  return 0;
 }
 
 // FUN_00403F20 NONMATCHING

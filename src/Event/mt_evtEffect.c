@@ -1800,17 +1800,15 @@ u32 FUN_003965f0(int *param_1)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   u8 auStack_4 [4];
 
   
 
 
-  if (*param_1 == 1)
-    goto active;
-  goto done;
-active:
+  switch (*param_1) {
+  case 1:
   {
 
     iVar1 = param_1[2];
@@ -1825,7 +1823,7 @@ active:
 
       if (param_1[iVar1 * 0xb + 4] == 0) {
 
-        FUN_005225a8(0x6a0f80,iVar1);
+        FUN_005225a8(DAT_006a0f80,iVar1);
 
         param_1[2] = param_1[2] + 1;
 
@@ -1843,7 +1841,7 @@ active:
 
             param_1[iVar1 * 0xb + 0xd] = iVar3;
 
-            FUN_005225a8(0x6a0fb0,iVar1,param_1 + iVar1 * 0xb + 5);
+            FUN_005225a8(DAT_006a0fb0,iVar1,param_1 + iVar1 * 0xb + 5);
 
             param_1[3] = 0;
 
@@ -1869,8 +1867,8 @@ active:
     }
 
   }
-
-done:
+    break;
+  }
   return 0;
 
 }

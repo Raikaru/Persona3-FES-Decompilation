@@ -1673,7 +1673,7 @@ u32 func_001a9180(const KwlnTask* task)
     return *(s32*)task->workData >= 1;
 }
 
-// FUN_001a91b0 NONMATCHING
+// FUN_001a91b0
 s32 func_001a91b0(KwlnTask* task, void* data)
 {
     KClumpStreamWork* work;
@@ -1700,7 +1700,7 @@ s32 func_001a91b0(KwlnTask* task, void* data)
         }
         indexOffset = index * 4;
         indexedWork = work;
-        indexedWork = (KClumpStreamWork*)((s32)indexedWork + indexOffset);
+        indexedWork = (KClumpStreamWork*)(indexOffset + (s32)indexedWork);
         streamSlot = &indexedWork->queuedStreams[0];
         *streamSlot = func_0034fd50(work->stream);
         stream = *streamSlot;

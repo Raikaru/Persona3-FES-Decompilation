@@ -536,12 +536,13 @@ void func_001d68e0(CmrFile* cmr, KwlnTask* fldCameraTask)
     *(FldCameraRuntimeCmr*)cmr = *(FldCameraRuntimeCmr*)data;
 }
 
-// FUN_001d69e0 NONMATCHING
+// FUN_001d69e0
 void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
 {
     KwlnTask* task;
     const FldCameraRuntimeCmr* runtime;
     RwFrame* cameraFrame;
+    RwCamera* mainCamera;
     RwV3d* targetPosition;
 
     runtime = (const FldCameraRuntimeCmr*)cmr;
@@ -567,8 +568,9 @@ void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
                 (RwFrame*)kwlnGetMainCamera()->object.object.parent;
             targetPosition =
                 &((FldCamera*)task->workData)->frame->modelling.pos;
+            mainCamera = kwlnGetMainCamera();
             FUN_001a1210(
-                kwlnGetMainCamera(), &cameraFrame->modelling.pos,
+                mainCamera, &cameraFrame->modelling.pos,
                 targetPosition, NULL);
             break;
     }

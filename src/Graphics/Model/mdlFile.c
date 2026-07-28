@@ -7965,7 +7965,7 @@ void FUN_00323bf0(int param_1,u32 *param_2)
 
 
 
-// FUN_00323C20 NONMATCHING
+// FUN_00323C20
 
 
 u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
@@ -7974,9 +7974,11 @@ u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
 
 {
 
+  u32 uVar2 __attribute__((aligned(16)));
+  struct {
+    RwRGBAReal color;
+  } lighting;
   int iVar1;
-
-  u32 uVar2;
 
   u32 uVar3;
 
@@ -8022,18 +8024,12 @@ u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
 
   FUN_00492d10(uVar5,uVar2);
 
-  {
-    struct {
-      RwRGBAReal color;
-    } lighting;
-
-    iVar1 = *(int *)((int)uVar6 + 0x5c);
-    lighting.color.r = 0.0f;
-    lighting.color.g = 0.0f;
-    lighting.color.b = 0.0f;
-    lighting.color.a = *(f32 *)&uGpffff8164;
-    *(RwRGBAReal *)(iVar1 + 4) = lighting.color;
-  }
+  iVar1 = *(int *)((int)uVar6 + 0x5c);
+  lighting.color.r = 0.0f;
+  lighting.color.g = 0.0f;
+  lighting.color.b = 0.0f;
+  lighting.color.a = *(f32 *)&uGpffff8164;
+  *(RwRGBAReal *)(iVar1 + 4) = lighting.color;
 
   FUN_004919b0(uVar5,uVar6,0);
 
@@ -37317,7 +37313,6 @@ void FUN_00343790(int param_1)
 
 
 
-
 // FUN_00343860 NONMATCHING
 
 
@@ -43059,52 +43054,33 @@ void FUN_0034a370(u8 (*param_1) [16])
 
 
 
-// FUN_0034A590 NONMATCHING
+// FUN_0034A590
 
 
 void FUN_0034a590(int param_1)
-
-
-
 {
+  float *entry;
+  u8 *state;
+  u32 surface;
+  int count;
+  int index;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  float *pfVar3;
-
-  int iVar4;
-
-  
-
-  pfVar3 = *(float **)(param_1 + 0x20);
-
-  if ((*(u32 *)(*(int *)(param_1 + 0x24) + 0xcc) & 0xff000000) != 0) {
-
-    uVar1 = *(u32 *)(*(int *)(param_1 + 0x28) + 8);
-
-    iVar2 = *(int *)(*(int *)(param_1 + 0x24) + 0xc0);
-
-    for (iVar4 = 0; iVar4 < iVar2; iVar4 = iVar4 + 1) {
-
-      if ((0.0f <= *pfVar3) && (*(char *)((int)pfVar3 + 0xf) != '\0')) {
-
-        FUN_00348da0((int)(pfVar3 + 2),(u32 *)(uVar1));
-
+  entry = *(float **)(param_1 + 0x20);
+  state = *(u8 **)(param_1 + 0x24) + 0xc0;
+  if ((*(u32 *)(state + 0xc) & 0xff000000) != 0) {
+    surface = *(u32 *)(*(int *)(param_1 + 0x28) + 8);
+    count = *(int *)state;
+    for (index = 0; index < count; entry += 0xd, index++) {
+      if (*entry < 0.0f) {
+        continue;
       }
-
-      pfVar3 = pfVar3 + 0xd;
-
+      if (*(u8 *)((u8 *)entry + 0xf) <= 0) {
+        continue;
+      }
+      FUN_00348da0((int)(entry + 2),(u32 *)surface);
     }
-
   }
-
-  return;
-
 }
-
-
 
 
 // FUN_0034A650

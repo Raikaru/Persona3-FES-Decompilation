@@ -1637,7 +1637,7 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4)
 
   int iVar10;
 
-  u32 uVar11;
+  int uVar11;
 
   
 
@@ -1702,70 +1702,43 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4)
      ) {
 
     iVar2 = *(int *)(iVar1 + 0x30);
-
-    if (iVar2 == 0xf247) {
-
+    switch (iVar2) {
+    case 0xf214:
       iVar2 = *(int *)(iVar1 + 0x3c);
-
-      if (iVar2 == -1) {
-
-        lVar6 = FUN_0010a500(2);
-
-        if (lVar6 != 0) {
-
-          bVar4 = 0;
-
-        }
-
-      }
-
-      else if (0 < iVar2) {
-
+      if (iVar2 > 0) {
         bVar4 = 0;
-
-        *(int *)(iVar1 + 0x3c) = iVar2 + -1;
-
+        if (bVar8 == 0xff) {
+          *(int *)(iVar1 + 0x3c) = iVar2 - 1;
+        }
       }
-
-    }
-
-    else if (iVar2 == 0xf215) {
-
+      break;
+    case 0xf215:
       iVar2 = *(int *)(iVar1 + 0x3c);
-
       if (iVar2 == -1) {
-
-        lVar6 = FUN_0010a500(2);
-
-        if (lVar6 != 0) {
-
+        if (FUN_0010a500(2) != 0) {
           bVar4 = 0;
-
         }
-
-      }
-
-      else if (0 < iVar2) {
-
+      } else if (iVar2 > 0) {
         bVar4 = 0;
-
-        *(int *)(iVar1 + 0x3c) = iVar2 + -1;
-
+        *(int *)(iVar1 + 0x3c) = iVar2 - 1;
       }
-
-    }
-
-    else if (((iVar2 == 0xf214) && (0 < *(int *)(iVar1 + 0x3c))) && (bVar4 = 0, bVar8 == 0xff))
-
-    {
-
-      *(int *)(iVar1 + 0x3c) = *(int *)(iVar1 + 0x3c) + -1;
-
+      break;
+    case 0xf247:
+      iVar2 = *(int *)(iVar1 + 0x3c);
+      if (iVar2 == -1) {
+        if (FUN_0010a500(2) != 0) {
+          bVar4 = 0;
+        }
+      } else if (iVar2 > 0) {
+        bVar4 = 0;
+        *(int *)(iVar1 + 0x3c) = iVar2 - 1;
+      }
+      break;
     }
 
   }
 
-  if ((*(int *)(param_1 + 0x34) == 0xf117) && (*(char *)(*(int *)(param_1 + 0x20) + 0x10) == -1)) {
+  if ((*(int *)(param_1 + 0x34) == 0xf117) && (*(u8 *)(*(int *)(param_1 + 0x20) + 0x10) == 0xff)) {
 
     if ((*(int *)(param_1 + 0x38) == 0) && (0 < *(int *)(param_1 + 0x3c))) {
 
@@ -1799,9 +1772,9 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4)
 
   if (bVar4) {
 
-    if ((param_4 & 0xff) < 0xff) {
+    if ((int)(param_4 & 0xff) < 0xff) {
 
-      uVar11 = (u32)((float)((param_4 & 0xff) << 5) /
+      uVar11 = (int)((float)((int)(param_4 & 0xff) << 5) /
 
                      (float)(*(int *)(param_2 + 6) + (int)*(char *)(param_1 + 3)));
 
@@ -1841,9 +1814,9 @@ int FUN_003b0f50(u8 *param_1,u16 *param_2,u8 param_3,u32 param_4)
 
   }
 
-  if (((char)*puVar9 != -1) && ((char)param_2[0xb] == '\x01')) {
+  if ((*(u8 *)puVar9 < 0xff) && (*(u8 *)((u8 *)param_2 + 0x16) == 1)) {
 
-    iVar10 = (((u32)param_2[1] << 1) % 5 - 2) * -0x10;
+    iVar10 = (((int)param_2[1] << 1) % 5 - 2) * -0x10;
 
   }
 
@@ -2593,10 +2566,15 @@ void FUN_003b1c90(int x, int y, int object)
     int xDelta;
     int halfWidth;
 
-    while (scan != NULL && scan->y < limit) {
-      int lineWidth = 0;
-      FrGlyphNode *glyph = scan->glyphs;
+    while (scan != NULL) {
+      int lineWidth;
+      FrGlyphNode *glyph;
 
+      if (scan->y >= limit) {
+        break;
+      }
+      lineWidth = 0;
+      glyph = scan->glyphs;
       while (glyph != NULL) {
         lineWidth += glyph->width;
         lineWidth += scan->spacing;
@@ -2608,7 +2586,10 @@ void FUN_003b1c90(int x, int y, int object)
 
     xDelta = x - line->x;
     halfWidth = totalWidth / 2;
-    while (line != NULL && line->y < limit) {
+    while (line != NULL) {
+      if (line->y >= limit) {
+        break;
+      }
       line->x += xDelta;
       line->x -= halfWidth * 0x10;
       line->y += yDelta;

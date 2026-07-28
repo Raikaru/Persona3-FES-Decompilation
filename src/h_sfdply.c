@@ -1392,44 +1392,53 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
 void func_0010c5f0(void)
 {
     HSfdAsyncEntry* entry;
-    s32 i;
+    s16 i;
     s32 enabled;
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
-        entry = sSfdQueue[i].entry;
+        entry = sSfdQueueEntries[i].next;
         while (entry != NULL)
         {
-            if (entry->state == 0)
+            switch (entry->state)
             {
-                if (entry->path[0] == '\0')
-                {
-                    enabled = FUN_0050d3f0();
-                    sSfdQueue[i].state = 1;
-                    entry->state = 2;
+                case 0:
+                    if (entry->path[0] != '\0')
+                    {
+                        enabled = FUN_0050d3a0();
+                        entry->request =
+                            H_Cdvd_Request(entry->path, entry->requestFlags);
+                        if (enabled != 0)
+                            FUN_0050d3f0();
+                        entry->state = 1;
+                        goto request_done;
+                    }
+                    entry->request = NULL;
+                    enabled = 0;
+                    goto request_ready;
+                case 1:
+                    enabled = FUN_0050d3a0();
+                    if (!H_Cdvd_IsFileLoaded(entry->request))
+                        goto request_restore;
                     if (enabled != 0)
-                        FUN_0050d3a0();
-                    func_00503090();
-                }
-                else
-                {
-                    entry->request = H_Cdvd_Request(entry->path, entry->requestFlags);
-                    entry->state = 1;
-                }
+                        FUN_0050d3f0();
+                    enabled = 0;
+request_ready:
+                    sSfdQueue[i].state = 1;
+                    sSfdQueue[i].entry = entry;
+                    entry->state = 2;
+                    func_00503090(sSfdThreadIds[i]);
+request_restore:
+                    if (enabled != 0)
+                        FUN_0050d3f0();
+                    break;
+                case 2:
+                    entry->age++;
+                    break;
+                case 3:
+                    break;
             }
-            else if ((entry->state == 1) && H_Cdvd_IsFileLoaded(entry->request))
-            {
-                enabled = FUN_0050d3f0();
-                sSfdQueue[i].state = 1;
-                entry->state = 2;
-                if (enabled != 0)
-                    FUN_0050d3a0();
-            }
-            else if (entry->state == 2)
-            {
-                entry->age++;
-                FUN_0050d3f0();
-            }
+request_done:
             entry = entry->next;
         }
     }

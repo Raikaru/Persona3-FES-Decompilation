@@ -8800,41 +8800,36 @@ u16 func_002c6ba0(int param_1)
 
 // FUN_002c6e30 NONMATCHING
 
-undefined * func_002c6e30(int param_1,u32 param_2)
-
+undefined* func_002c6e30(int unit, u32 group)
 {
-  u8 bVar1 = 0;
-  u16 sVar2 = 0;
-  u16 uVar3 = 0;
-  undefined *puVar4;
-  int iVar5 = 0;
-  u32 uVar6 = 0;
-  u16 uVar7 = 0;
-  int iVar8 = 0;
-  
-  uVar3 = *(u16 *)(*(int *)(param_1 + 0x30) + 0xa4);
-  sVar2 = 0;
-  iVar8 = (int)(DAT_007ce41c + ((u32)uVar3 * 0x28 + (u32)uVar3) * 4 + (param_2 & 0xffff) * 0x28);
-  for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-    sVar2 = sVar2 + (u16)*(u8 *)(iVar8 + uVar6 * 8 + 0x2c);
+  u16 unitId;
+  u16 total;
+  u16 random;
+  u16 cumulative;
+  s32 i;
+  s32 weight;
+  u8* weights;
+
+  unitId = *(u16*)(*(int*)(unit + 0x30) + 0xa4);
+  weights = DAT_007ce41c + ((unitId * 0x29) * 4) + (group & 0xffff) * 0x28;
+  total = 0;
+  for (i = 0; i < 5; i = (i + 1) & 0xffff) {
+    total += weights[i * 8 + 0x2c];
   }
-  if (sVar2 == 0) {
-    puVar4 = &DAT_007cc740;
+  if (total == 0) {
+    return &DAT_007cc740;
   }
-  else {
-    uVar3 = func_002ffbc0();
-    uVar7 = 0;
-    for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-      iVar5 = iVar8 + uVar6 * 8;
-      bVar1 = *(u8 *)(iVar5 + 0x2c);
-      uVar7 = uVar7 + bVar1;
-      if ((uVar3 <= uVar7) && (bVar1 != 0)) {
-        return (undefined *)(iVar5 + 0x2c);
-      }
+
+  random = func_002ffbc0();
+  cumulative = 0;
+  for (i = 0; i < 5; i = (i + 1) & 0xffff) {
+    weight = weights[i * 8 + 0x2c];
+    cumulative += weight;
+    if (random <= cumulative && weight != 0) {
+      return weights + i * 8 + 0x2c;
     }
-    puVar4 = (undefined *)0x0;
   }
-  return puVar4;
+  return NULL;
 }
 
 // FUN_002c6f50 NONMATCHING
