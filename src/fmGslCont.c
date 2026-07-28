@@ -76,7 +76,7 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4);
 int * FUN_003b49a0(int *param_1);
 void FUN_003b4a20(int *param_1,u32 *param_2);
 void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,int *param_6,  int param_7);
-void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4);
+void FUN_003b4b40(s32 *param_1,u32 *param_2,u8 *param_3,u8 *param_4);
 void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5  );
 void FUN_003b4e90(void);
 void FUN_003b4ea0(void);
@@ -293,19 +293,19 @@ int * FUN_003b4520(void)
 
 void FUN_003b4580(int param_1)
 {
-  int iVar2;
-  int iVar1;
+  int* next;
+  int* head;
 
   if (param_1 == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
-  iVar2 = *(int *)DAT_0095aebc_abs;
-  iVar1 = *(int *)(iVar2 + 0x1c);
-  *(int *)(param_1 + 0x18) = iVar2;
-  *(int *)(param_1 + 0x1c) = iVar1;
-  *(int *)(iVar2 + 0x1c) = param_1;
-  *(int *)(iVar1 + 0x18) = param_1;
-  *(int *)DAT_0095aeb8_abs = *(int *)DAT_0095aeb8_abs + 1;
+  head = *(int **)DAT_0095aebc_abs;
+  next = (int*)head[7];
+  ((int*)param_1)[6] = (int)head;
+  ((int*)param_1)[7] = (int)next;
+  head[7] = param_1;
+  next[6] = param_1;
+  ++*(int *)DAT_0095aeb8_abs;
   return;
 }
 #define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
@@ -843,11 +843,11 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 // FUN_003B4B40 NONMATCHING
 
 
-void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
+void FUN_003b4b40(s32* param_1, u32* param_2, u8* param_3, u8* param_4)
 {
-  int* position;
-  int* color;
   RwIm2DVertex* vertices;
+  int* color;
+  int* position;
   RwIm2DVertex* vertex;
   void (**setRenderState)(u32 state, u32 value);
   f32 recipZ;
@@ -859,8 +859,8 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
   vertices = DAT_0095aec0_abs;
   z = *(f32*)DAT_00960088_abs;
   while (i < 4) {
-    position = (int*)(param_1 + (u32)*param_3 * 8);
-    color = (int*)(param_2 + (u32)*param_4 * 0x10);
+    position = param_1 + (u32)*param_3 * 2;
+    color = (int*)(param_2 + (u32)*param_4 * 4);
     vertex = &vertices[i];
 
     vertex->u.els.scrVertex.x = (f32)(position[0] >> 4);

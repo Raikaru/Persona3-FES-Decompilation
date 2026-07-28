@@ -3020,7 +3020,7 @@ void FUN_003b22a0(u32 *param_1)
 
   int iVar6;
 
-  long lVar7;
+  int lVar7;
 
   
 

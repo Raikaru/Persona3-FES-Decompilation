@@ -5173,7 +5173,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
   u32 uVar8;
 
-  long lVar9;
+  int lVar9;
 
   u8 auStack_120 [4];
 

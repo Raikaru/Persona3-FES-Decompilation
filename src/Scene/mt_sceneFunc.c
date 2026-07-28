@@ -2518,7 +2518,7 @@ u32 FUN_003baa70(char *param_1)
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
   u32 uVar3;
 
@@ -3383,11 +3383,11 @@ void FUN_003bb7a0(Resrc* param_1)
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
   u32 *puVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar6;
 
@@ -3413,7 +3413,7 @@ void FUN_003bb7a0(Resrc* param_1)
 
   u32 uStack_8;
 
-  u64 uVar5;
+  int uVar5;
 
   
 
@@ -5237,7 +5237,7 @@ u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
   u8 *pbVar3;
 

@@ -1300,7 +1300,7 @@ u64 FUN_003c9850(u64 param_1,long param_2,u16 param_3,u16 param_4)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -3719,9 +3719,9 @@ u64 FUN_003ce2a0(u64 param_1)
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
   u8 *puVar8;
 
@@ -4073,9 +4073,9 @@ u64 FUN_003cea50(u16 *param_1)
 
   float *pfVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   long lVar8;
 

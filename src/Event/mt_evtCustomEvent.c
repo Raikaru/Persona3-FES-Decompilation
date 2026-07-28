@@ -3459,7 +3459,7 @@ u32 FUN_0039c0f0(int param_1)
 
   u32 uVar4;
 
-  long lVar5;
+  int lVar5;
 
   u32 *puVar6;
 
@@ -5052,7 +5052,7 @@ u32 FUN_0039db60(int param_1)
 
   u32 uVar4;
 
-  long lVar5;
+  int lVar5;
 
   u32 uVar6;
 

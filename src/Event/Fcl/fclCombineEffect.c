@@ -2068,7 +2068,7 @@ u32 FUN_004198f0(int param_1,int param_2)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -2356,7 +2356,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
   int iVar2;
 
   int iVar3;
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -2994,7 +2994,7 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
   u32 uVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 
@@ -3934,7 +3934,7 @@ void FUN_0041bf80(u32 *param_1)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   u32 *puVar5;
 

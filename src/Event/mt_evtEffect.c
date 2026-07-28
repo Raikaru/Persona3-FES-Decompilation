@@ -931,7 +931,7 @@ void FUN_00395950(int param_1)
 
   int iVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   int iVar4;
 

@@ -270,7 +270,7 @@ FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int pa
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   char *pcVar3;
 

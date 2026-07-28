@@ -4549,7 +4549,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
   u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   u32 uVar5;
 
@@ -5204,7 +5204,7 @@ void func_00315c20(int param_1)
 
   u32 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   long lVar3;
 
@@ -5656,7 +5656,7 @@ void func_00316970(Model* param_1)
 
   u32 uVar1;
 
-  long lVar2;
+  int lVar2;
 
   int iVar3;
 
@@ -6599,7 +6599,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
   u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
@@ -8497,7 +8497,7 @@ void func_0031b4a0(char* param_1,u16 param_2)
 
   short sVar2;
 
-  long lVar3;
+  int lVar3;
 
   u32 uVar4;
 

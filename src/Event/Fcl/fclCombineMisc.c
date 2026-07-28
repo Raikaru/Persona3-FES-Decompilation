@@ -606,7 +606,7 @@ u64 FUN_003d5bb0(u32 param_1)
 
 short FUN_003d5cd0(u32 *param_1)
 {
-  long lVar1;
+  int lVar1;
   u32 uVar2;
   u32 *puVar3;
   s32 sVar4;
@@ -1124,24 +1124,19 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
-  short sVar2;
+  u16 sVar2;
 
   u32 uVar3;
 
   int iVar4;
 
   u16 uStack_20;
-
   u16 uStack_1e;
-
   u16 uStack_1c;
-
   u16 uStack_8;
-
   u16 uStack_6;
-
   u16 uStack_4;
 
   
@@ -1185,11 +1180,8 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
       iVar4 = DAT_007ce420 + 3;
 
       sVar2 = FUN_003d7ac0(cVar1,((u32)*(u8 *)(iVar4 + (u32)uStack_1c * 0xe) +
-
                                  (u32)*(u8 *)(iVar4 + (u32)uStack_20 * 0xe) +
-
                                  (u32)*(u8 *)(iVar4 + (u32)uStack_1e * 0xe)) / 3 + 5 & 0xff,
-
                            &uStack_20);
 
       if (sVar2 != 0) {
@@ -1409,7 +1401,7 @@ u32 FUN_003d6c90(int param_1)
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
   
 
@@ -3491,7 +3483,7 @@ void FUN_003d9cc0(int param_1)
 
   int unaff_s1_lo;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 
@@ -3592,7 +3584,7 @@ void FUN_003d9ea0(int param_1)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
   int iVar6;
 

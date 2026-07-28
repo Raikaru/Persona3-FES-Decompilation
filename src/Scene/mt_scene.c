@@ -1244,7 +1244,7 @@ void FUN_003b7090(u64 param_1)
   u32 resource;
   u32 scene;
   u32 uVar2;
-  u64 uVar3;
+  u32 uVar3;
   u32 *puVar4;
   int iVar6;
 
@@ -2475,7 +2475,7 @@ u32 FUN_003b8540(float *param_1,float *param_2,float *param_3,float *param_4)
 
   u32 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   float fVar3;
 

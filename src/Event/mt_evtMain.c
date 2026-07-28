@@ -505,7 +505,7 @@ u16 * FUN_003645c0(u32 param_1,int param_2);
 u16 * FUN_003646d0(u32 param_1,int param_2);
 u16 * FUN_00364b10(u32 param_1,int param_2);
 u16 * FUN_003655f0(u32 param_1,int param_2,int param_3);
-u16 * FUN_00366540(u64 param_1,int param_2,long param_3,int param_4);
+u16 * FUN_00366540(u32 param_1,int param_2,int param_3,int param_4);
 #pragma alias FUN_00366540_evt_u32 FUN_00366540
 extern u32 FUN_00366540_evt_u32(u32 param_1,int param_2,int param_3,int param_4);
 u32 FUN_00368d70(u64 param_1,u64 param_2,u64 param_3);
@@ -2730,7 +2730,7 @@ void FUN_003628f0(void)
 
   u32 *puVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 
@@ -3177,7 +3177,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
   u64 uVar8;
 
-  long lVar9;
+  u32 lVar9;
 
   int iVar10;
 
@@ -3612,7 +3612,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   long lVar4;
 
@@ -4873,7 +4873,7 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
 
   u8 *puVar7;
 
-  long lVar8;
+  u32 lVar8;
 
   u8 *puVar9;
 
@@ -5516,7 +5516,7 @@ u16 * FUN_003655f0(u32 param_1,int param_2,int param_3)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u16 *puVar4;
 
@@ -5793,7 +5793,7 @@ void FUN_00365b70(u32 param_1,u32 param_2)
 
   u16 *puVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u32 uVar4;
 
@@ -6360,7 +6360,7 @@ outer_check:
 // FUN_00366540 NONMATCHING
 
 
-u16 * FUN_00366540(u64 param_1,int param_2,long param_3,int param_4)
+u16 * FUN_00366540(u32 param_1,int param_2,int param_3,int param_4)
 
 
 
@@ -6394,11 +6394,11 @@ u16 * FUN_00366540(u64 param_1,int param_2,long param_3,int param_4)
 
     }
 
-    if ((long)(u32)*puVar1 <= param_3) {
+    if ((u32)*puVar1 <= (u32)param_3) {
 
       if ((char)puVar1[0x11] == '\0') {
 
-        lVar2 = (long)(char)puVar1[10];
+        lVar2 = (int)(char)puVar1[10];
 
 LAB_003665e0:
 
@@ -6424,7 +6424,7 @@ LAB_003665e0:
 
         if (lVar2 != 0) {
 
-          lVar2 = (long)iStack_4;
+          lVar2 = iStack_4;
 
           goto LAB_003665e0;
 
@@ -7771,7 +7771,7 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
   u32 uVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 
@@ -12139,7 +12139,7 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
   short sVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 
@@ -13055,7 +13055,7 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 
   u32 uVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   u8 *iVar3;
 
@@ -13556,7 +13556,7 @@ code * FUN_0036d5f0(void)
 
   u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
@@ -13568,7 +13568,7 @@ code * FUN_0036d5f0(void)
 
   int iVar12;
 
-  long lVar13;
+  int lVar13;
 
   int iVar14;
 
@@ -13816,7 +13816,7 @@ u32 FUN_0036da10(int param_1)
 
   u32 uVar6;
 
-  long lVar7;
+  u32 lVar7;
 
   
 

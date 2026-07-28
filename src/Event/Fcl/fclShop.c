@@ -2581,7 +2581,7 @@ u8 * FUN_003e8860(u32 param_1,u32 param_2)
 
   u32 *puVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int lVar7;
 

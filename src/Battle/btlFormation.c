@@ -5076,7 +5076,7 @@ void func_002bfcb0(int param_1,u64 param_2,u32 param_3,u32 param_4,long param_5)
 {
   char cVar1 = 0;
   int iVar2 = 0;
-  long lVar3 = 0;
+  u32 lVar3 = 0;
   u32 uVar4 = 0;
   u32 unaff_s0_lo = 0;
   u32 unaff_s1_lo = 0;
@@ -7184,7 +7184,7 @@ func_002c3430(u64 param_1,u64 param_2,u32 param_3,u16 param_4,int param_5,
   int iVar2 = 0;
   u32 uVar3 = 0;
   long lVar4 = 0;
-  u64 uVar5 = 0;
+  u32 uVar5 = 0;
   int iVar6 = 0;
   u32 uVar7 = 0;
   int iVar8 = 0;
@@ -8004,7 +8004,7 @@ s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4)
   u16 uVar5 = 0;
   u32 uVar6 = 0;
   int iVar7 = 0;
-  long lVar8 = 0;
+  s32 lVar8 = 0;
   u32 uVar9 = 0;
   u32 uVar10 = 0;
   u32 uVar11 = 0;
@@ -8055,7 +8055,7 @@ LAB_002c5168:
             func_0019d3f0(0x696f88,0x468);
           }
           iVar3 = *(int *)((int)param_1 + 0x30);
-          lVar8 = func_00300580(*(u32 *)(iVar3 + 0xa2c),0x80274);
+          lVar8 = func_00300580_u32(*(u32 *)(iVar3 + 0xa2c),0x80274);
           if (lVar8 == 0) {
             lVar8 = func_003005e0(*(u32 *)(iVar3 + 0xa2c),uVar1);
             if (lVar8 != 0) {
@@ -8436,7 +8436,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
   short sVar5 = 0;
   u32 uVar6 = 0;
   int iVar7 = 0;
-  long lVar8 = 0;
+  s32 lVar8 = 0;
   u32 uVar9 = 0;
   u32 uVar10 = 0;
   u16 *puVar11;
@@ -8524,7 +8524,7 @@ s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4)
   u16 uVar4 = 0;
   short sVar5 = 0;
   short sVar6 = 0;
-  long lVar7 = 0;
+  s32 lVar7 = 0;
   u32 uVar8 = 0;
   u16 uVar9 = 0;
   u16 auStack_20 [16];
@@ -8598,7 +8598,7 @@ u32 func_002c65d0(int param_1)
   u16 uVar5 = 0;
   u32 uVar6 = 0;
   u32 uVar7 = 0;
-  long lVar8 = 0;
+  u32 lVar8 = 0;
   int iVar9 = 0;
   u32 uVar10 = 0;
   u32 uVar11 = 0;

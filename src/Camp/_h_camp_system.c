@@ -453,10 +453,10 @@ extern void FUN_001159F0(f32 x, f32 y, u32 drawContext);
 extern void FUN_00115BC0(f32 x, f32 y, u32 drawContext);
 extern void FUN_00115AD0(f32 x, f32 y, u32 drawContext);
 extern s32 FUN_0017D2E0(u16 arg0);
-extern u64 FUN_0030BB40(u16 arg0);
-extern u32 FUN_00523AC8(void *dst, u32 stringId, u64 arg2);
+extern u32 FUN_0030BB40(u16 arg0);
+extern u32 FUN_00523AC8(void *dst, u32 stringId, u32 arg2);
 #pragma alias campCE50FormatText FUN_00523AC8
-extern void campCE50FormatText(void *dst, const char *format, u64 arg);
+extern void campCE50FormatText(void *dst, const char *format, u32 arg);
 extern void FUN_003B32D0(u32 drawContext, s32 x, s32 y, u32 color, s32 font, s32 flags, void *text, s32 width, s32 height);
 #pragma alias campCE50DrawSprite FUN_001159F0
 #pragma alias campSystemDrawSprite FUN_001159F0
@@ -502,7 +502,7 @@ extern u64 FUN_0016C970(u16 arg0);
 extern s16 FUN_0016C920(u16 arg0);
 extern u32 FUN_0016C670(u16 arg0);
 extern u32 FUN_0016C5F0(u16 arg0);
-extern u64 FUN_00177790(u16 arg0);
+extern u32 FUN_00177790(u16 arg0);
 
 void *FUN_0015B430(KwlnTask *task);
 void FUN_0015C520(void *list, s32 ownerMode);
@@ -1150,7 +1150,7 @@ void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
     s32 i;
     s32 record_index;
     uintptr_t list;
-    u64 text_handle;
+    u32 text_handle;
     f32 x;
     f32 y;
     f32 row_x;
@@ -1857,7 +1857,7 @@ void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampDrawWork *work)
     s16 itemWord;
     s16 category;
     u8 alpha;
-    u64 spriteHandle;
+    u32 spriteHandle;
     CampD8Object *sprite;
     u8 *groupBase;
 

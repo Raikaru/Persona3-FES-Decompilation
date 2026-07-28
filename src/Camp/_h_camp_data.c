@@ -1614,7 +1614,7 @@ undefined4 FUN_0016A030(void)
     u32 secondaryAmount;
     u32 resource;
     s32 mode;
-    undefined8 packed;
+    u32 packed;
     u16 item;
     u16 itemIndex;
     u16 slot;

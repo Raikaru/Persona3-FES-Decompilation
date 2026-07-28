@@ -1210,9 +1210,9 @@ u32 func_001faea0(void)
 
   u16 uVar2;
 
-  long lVar3;
+  int lVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -2346,7 +2346,7 @@ u32 func_001fc720(u8* param_1)
   int in_v1_lo;
   int unaff_s0_lo;
   u32 unaff_s0_hi;
-  long lVar2;
+  int lVar2;
   u8 auStack_50[48];
   u8 auStack_20[24];
   int iStack_8;
@@ -2548,9 +2548,9 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
   u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
-  long lVar8;
+  int lVar8;
 
   int iVar9;
 

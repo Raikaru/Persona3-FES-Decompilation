@@ -3318,7 +3318,7 @@ void FUN_003e0a10(s32 param_1)
 
   int *piVar1;
 
-  long lVar2;
+  int lVar2;
 
   int iVar3;
 

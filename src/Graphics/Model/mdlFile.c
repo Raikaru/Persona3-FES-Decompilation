@@ -5177,11 +5177,11 @@ u64 FUN_00320de0(u64 param_1,u32 *param_2)
 
   int iVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
-  long lVar8;
+  int  lVar8;
 
   int iVar9;
 
@@ -6240,10 +6240,7 @@ void FUN_00321fe0(void)
 
 // FUN_00322010 NONMATCHING
 
-
 void FUN_00322010(void)
-
-
 
 {
 
@@ -6308,7 +6305,6 @@ void FUN_00322010(void)
   u32 uStack_8;
 
   
-
   uStack_50 = DAT_0069bcb0;
 
   uStack_4c = DAT_0069bcb4;
@@ -6403,11 +6399,15 @@ void FUN_00322010(void)
 
   uStack_10 = 0;
 
+
   uStack_c = 0;
+
 
   uStack_8 = 0;
 
+
   uStack_34 = 3;
+
 
   pfVar4 = &fStack_40;
 
@@ -8795,20 +8795,22 @@ void FUN_00324af0(int param_1, u32 param_2)
 
 // FUN_00324B50 NONMATCHING
 
-
-
-
-
-
 void FUN_00324b50(u32 param_1)
+
 {
+
   u8 *pauVar5;
 
   FUN_00521408(param_1,0,0x80);
+
   pauVar5 = (u8 *)param_1;
+
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar5) : "memory");
+
   __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar5) : "memory");
+
   __asm__ volatile ("sqc2 vf0, 64(%0)" : : "r"(pauVar5) : "memory");
+
   *(u32 *)(pauVar5 + 0x44) = 0x40a00000;
   __asm__ volatile ("sqc2 vf0, 80(%0)" : : "r"(pauVar5) : "memory");
   *(Qword128 *)(pauVar5 + 0x20) = *(Qword128 *)DAT_0069c4a0_abs;
@@ -8817,8 +8819,6 @@ void FUN_00324b50(u32 param_1)
   *(u32 *)(pauVar5 + 0x64) = 0xffffffff;
   *(u32 *)(pauVar5 + 0x68) = 0x80;
 }
-
-
 
 
 // FUN_00324BD0 NONMATCHING
@@ -8836,11 +8836,11 @@ u64 FUN_00324bd0(u64 param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   u64 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   u32 uVar7;
 
@@ -24411,7 +24411,7 @@ void FUN_00335180(int param_1)
 
         }
 
-        FUN_00323860();
+        FUN_00323860_2arg((int)puVar3,*(u16 *)(iVar1 + 0x28));
 
       }
 
@@ -26761,7 +26761,7 @@ void FUN_003377f0(u32 param_1)
 
         }
 
-        FUN_00323860();
+        FUN_00323860_2arg((int)puVar3,*(u16 *)(iVar1 + 0x28));
 
       }
 
@@ -45353,6 +45353,7 @@ void FUN_0034cc00(u32 *param_1)
   u32 uVar6;
 
   float fVar8;
+  float zero;
 
   __int128 auVar9;
 
@@ -45423,6 +45424,7 @@ void FUN_0034cc00(u32 *param_1)
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);
+      zero = 0.0f;
 
       for (uVar6 = 0; uVar6 < uVar3; uVar6 = uVar6 + 1) {
 
@@ -45436,7 +45438,7 @@ void FUN_0034cc00(u32 *param_1)
 
           positionStack[2] = matrixStack[14];
 
-          positionStack[3] = 0.0f;
+          positionStack[3] = zero;
 
           FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(positionStack));
 
@@ -45446,7 +45448,7 @@ void FUN_0034cc00(u32 *param_1)
 
           renderStack[2] = matrixStack[2];
 
-          renderStack[3] = 0.0f;
+          renderStack[3] = zero;
 
           renderStack[4] = matrixStack[4];
 
@@ -45454,7 +45456,7 @@ void FUN_0034cc00(u32 *param_1)
 
           renderStack[6] = matrixStack[6];
 
-          renderStack[7] = 0.0f;
+          renderStack[7] = zero;
 
           renderStack[8] = matrixStack[8];
 
@@ -45462,7 +45464,7 @@ void FUN_0034cc00(u32 *param_1)
 
           renderStack[10] = matrixStack[10];
 
-          renderStack[11] = 0.0f;
+          renderStack[11] = zero;
 
           renderStack[12] = matrixStack[12];
 
@@ -45470,7 +45472,7 @@ void FUN_0034cc00(u32 *param_1)
 
           renderStack[14] = matrixStack[14];
 
-          renderStack[15] = 0.0f;
+          renderStack[15] = zero;
 
           FUN_00329ed0((float *)(renderStack));
 
@@ -45805,9 +45807,9 @@ u64 FUN_0034d510(int param_1)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   long lVar4;
 
@@ -46906,7 +46908,7 @@ u64 FUN_0034e4c0(int param_1)
 
   u64 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   long lVar4;
 
@@ -47904,189 +47906,100 @@ void FUN_0034f6b0(int param_1)
 
 
 // FUN_0034F910 NONMATCHING
-
-
-void FUN_0034f910(u64 param_1,u32 param_2)
-
-
-
+#pragma alias FUN_0034f910_u32 FUN_0034f910
+void FUN_0034f910_u32(u32 param_1,u32 param_2)
 {
+#pragma alias FUN_0034eae0_u32last FUN_0034eae0
+  extern void FUN_0034eae0_u32last(int,u32 *,int,u32 *,u8 (*)[16],float *,u32);
+  int count;
+  int resource;
+  int *entry;
+  int data;
+  u8 (*vertices)[16];
+  int state;
+  int i;
+  u8 matrix[4][16];
+  u8 transformed[16];
+  u8 scale[16];
+  u8 localMatrix[16];
+  u8 localVector[16];
+  float size[2];
+  int packed;
 
-  int iVar1;
-
-  int iVar2;
-
-  __int128 auVar3;
-
-  int *piVar4;
-
-  __int128 auVar5;
-
-  int iVar6;
-
-  u8 (*pauVar7) [16];
-
-  int iVar8;
-
-  __int128 in_vf0;
-
-  __int128 auVar9;
-
-  __int128 auVar10;
-
-  __int128 extraout_vf28;
-
-  __int128 auVar11;
-
-  __int128 extraout_vf29;
-
-  __int128 auVar12;
-
-  __int128 extraout_vf30;
-
-  __int128 auVar13;
-
-  __int128 auVar14;
-
-  __int128 auVar15;
-
-  __int128 auStack_50;
-
-  __int128 auStack_40;
-
-  __int128 auStack_30;
-
-  __int128 auStack_20;
-
-  float sizeStack [2];
-
-  int iStack_4;
-
-  
-
-  iVar8 = (int)param_1;
-
-  iVar6 = *(int *)(iVar8 + 0x5c);
-
-  iVar1 = *(int *)(iVar6 + 8);
-
-  if ((iVar1 != 0) && (*(int *)(iVar6 + 0x10) != 0)) {
-
-    pauVar7 = *(u8 (**) [16])(iVar6 + 0x18);
-
-    iVar6 = *(int *)(iVar8 + 100);
-
-    piVar4 = (int *)FUN_003210a0(0x15);
-
-    iVar2 = *piVar4;
-
+  data = (int)param_1;
+  resource = *(int *)(data + 0x5c);
+  count = *(int *)(resource + 8);
+  if ((count != 0) && (*(int *)(resource + 0x10) != 0)) {
+    vertices = *(u8 (**)[16])(resource + 0x18);
+    resource = *(int *)(data + 100);
+    entry = (int *)FUN_003210a0(0x15);
+    state = *entry;
     if ((param_2 & 0xff) == 1) {
-
-      (*DAT_00960090)(1,iVar2);
-
+      (*DAT_00960090)(1,state);
     }
-
-    sizeStack[0] = (float)*(int *)(iVar2 + 0xc);
-
-    sizeStack[1] = (float)*(int *)(iVar2 + 0x10);
-
-    iStack_4 = *(int *)(iVar8 + 4);
-
-    auVar5 = _pextlb(0,(long)iStack_4);
-
-    auVar5 = _pextlh(0,auVar5._0_8_);
-
-    auVar5 = _qmtc2(auVar5._0_4_);
-
-    auVar9 = _vitof0(auVar5);
-
-    auVar5 = _qmtc2(DAT_007caf08);
-
-    auVar5 = _vmulbc(auVar9,auVar5);
-
-    auStack_20 = _sqc2(auVar5);
-
-    if ((*(u32 *)(*(int *)(iVar8 + 0x5c) + 0xc) & 1) != 0) {
-
-      FUN_003322f0((int)(*(int *)(iVar8 + 0x5c)),(u32 *)(&auStack_50));
-
-      FUN_003322b0((int)(*(u32 *)(iVar8 + 0x5c)),(u32 *)(&auStack_40));
-
-      _lqc2(auStack_50);
-
-      FUN_00357e30();
-
-      auVar14 = _lqc2(auStack_40);
-
-      auVar5 = _sqc2(extraout_vf28);
-
-      auVar9 = _sqc2(extraout_vf29);
-
-      auVar3 = _sqc2(extraout_vf30);
-
-      auVar14 = _sqc2(auVar14);
-
-      for (iVar8 = 0; iVar8 < iVar1; iVar8 = iVar8 + 1) {
-
-        if (-1 < *(int *)pauVar7[1]) {
-
-          auVar11 = _lqc2(auVar5);
-
-          auVar12 = _lqc2(auVar9);
-
-          auVar13 = _lqc2(auVar3);
-
-          auVar15 = _lqc2(auVar14);
-
-          auVar10 = _lqc2(*pauVar7);
-
-          _vmulabc(auVar11,auVar10);
-
-          _vmaddabc(auVar12,auVar10);
-
-          _vmaddabc(auVar13,auVar10);
-
-          auVar10 = _vmaddbc(auVar15,in_vf0);
-
-          auStack_30 = _sqc2(auVar10);
-
-          FUN_0034eae0((int)(param_1),(u32 *)(iVar6),(int)(pauVar7),(u32 *)(&auStack_30),(u8 (*) [16])(&auStack_20),sizeStack,(char)(param_2));
-
+    size[0] = (float)*(int *)(state + 0xc);
+    size[1] = (float)*(int *)(state + 0x10);
+    packed = *(int *)(data + 4);
+    __asm__ volatile (
+        ".set noreorder                     \n"
+        "lw $v0, 0(%0)                     \n"
+        "pextlb $v0, $zero, $v0            \n"
+        "pextlh $v0, $zero, $v0            \n"
+        "qmtc2.ni $v0, vf10                \n"
+        "vitof0.xyzw vf10, vf10            \n"
+        "qmtc2.ni %1, vf2                  \n"
+        "vmulx.xyzw vf10, vf10, vf2x       \n"
+        "sqc2 vf10, 0(%2)                  \n"
+        ".set reorder"
+        : : "r" (&packed), "r" (DAT_007caf08), "r" (scale)
+        : "v0", "vf2", "vf10", "memory");
+    if ((*(u32 *)(*(int *)(data + 0x5c) + 0xc) & 1) == 0) {
+      for (i = 0; i < count; i = i + 1) {
+        if (-1 < *(int *)vertices[1]) {
+          FUN_0034eae0_u32last((int)param_1,(u32 *)resource,(int)vertices,
+                       (u32 *)vertices,(u8 (*)[16])scale,size,param_2);
         }
-
-        pauVar7 = pauVar7 + 2;
-
-        iVar6 = iVar6 + 0x1c;
-
+        vertices = vertices + 2;
+        resource = resource + 0x1c;
       }
-
     }
-
     else {
-
-      for (iVar8 = 0; iVar8 < iVar1; iVar8 = iVar8 + 1) {
-
-        if (-1 < *(int *)pauVar7[1]) {
-
-          FUN_0034eae0((int)(param_1),(u32 *)(iVar6),(int)(pauVar7),(u32 *)(pauVar7),(u8 (*) [16])(&auStack_20),sizeStack,(char)(param_2));
-
+      FUN_003322f0(*(int *)(data + 0x5c),(u32 *)localMatrix);
+      FUN_003322b0(*(u32 *)(data + 0x5c),(u32 *)localVector);
+      __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r" (localMatrix) : "vf10", "memory");
+      FUN_00357e30();
+      __asm__ volatile (
+          "lqc2 vf31, 0(%0) \n"
+          "sqc2 vf28, 0(%1) \n"
+          "sqc2 vf29, 16(%1) \n"
+          "sqc2 vf30, 32(%1) \n"
+          "sqc2 vf31, 48(%1)"
+          : : "r" (localVector), "r" (matrix)
+          : "vf28", "vf29", "vf30", "vf31", "memory");
+      for (i = 0; i < count; i = i + 1) {
+        if (-1 < *(int *)vertices[1]) {
+          __asm__ volatile (
+              "lqc2 vf28, 0(%0)              \n"
+              "lqc2 vf29, 16(%0)             \n"
+              "lqc2 vf30, 32(%0)             \n"
+              "lqc2 vf31, 48(%0)             \n"
+              "lqc2 vf10, 0(%1)              \n"
+              "vmulax.xyzw ACC, vf28, vf10x  \n"
+              "vmadday.xyzw ACC, vf29, vf10y \n"
+              "vmaddaz.xyzw ACC, vf30, vf10z \n"
+              "vmaddw.xyzw vf10, vf31, vf0w  \n"
+              "sqc2 vf10, 0(%2)"
+              : : "r" (matrix), "r" (vertices), "r" (transformed)
+              : "ACC", "vf0", "vf10", "vf28", "vf29", "vf30", "vf31", "memory");
+          FUN_0034eae0_u32last((int)param_1,(u32 *)resource,(int)vertices,
+                       (u32 *)transformed,(u8 (*)[16])scale,size,param_2);
         }
-
-        pauVar7 = pauVar7 + 2;
-
-        iVar6 = iVar6 + 0x1c;
-
+        vertices = vertices + 2;
+        resource = resource + 0x1c;
       }
-
     }
-
   }
-
-  return;
-
 }
-
-
 
 
 // FUN_0034FB40
@@ -49627,7 +49540,7 @@ u64 FUN_00351a10(int param_1)
 
   int lVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   
 
@@ -51034,7 +50947,7 @@ void FUN_00352f70(float *param_1)
 
   bool bVar7;
 
-  long lVar8;
+  int lVar8;
 
   u32 uVar9;
 
@@ -53510,7 +53423,7 @@ void FUN_00356c70(u8 *param_1)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   u32 uVar5;
 
@@ -53950,7 +53863,7 @@ void FUN_00357550(int param_1)
 
   int iVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   long lVar4;
 
