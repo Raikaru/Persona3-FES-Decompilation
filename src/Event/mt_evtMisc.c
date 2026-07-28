@@ -6739,10 +6739,10 @@ void FUN_0038d790(int param_1)
 
 void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
 {
+  int iVar4;
   int iVar1;
   int iVar2;
   int iVar3;
-  int iVar4;
   float *pfVar5;
   float *pfVar6;
   float fVar7;

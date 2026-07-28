@@ -112,9 +112,6 @@ extern char gp0xffff8978[];
 #pragma alias h_campDrawSprite FUN_001159f0
 extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
                              u32 alpha, f32 x, f32 y, f32 scale);
-#pragma alias h_campDrawSpriteByteAlpha FUN_001159f0
-extern void h_campDrawSpriteByteAlpha(void* parent, void* resource, s32 frame,
-                                      u8 alpha, f32 x, f32 y, f32 scale);
 
 #pragma alias h_campNoopRootDrawCallback_4 h_campNoopRootDrawCallback
 extern void h_campNoopRootDrawCallback_4(s32, s32, f32, f32);
@@ -445,17 +442,16 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
     CampSpriteSetupWork* work;
     s32 i;
+    s32 copyIndex;
     u32 ready;
     u32 size;
 
     work = task->workData;
-    if (work->state == 3)
-        goto done;
-    if (work->state == 1)
-        goto wait_resources;
-    if (work->state == 0) {
-        if (!H_Cdvd_IsFileLoaded(work->archive))
-            goto done;
+    switch (work->state) {
+    case 0:
+        if (!H_Cdvd_IsFileLoaded(work->archive)) {
+            break;
+        }
         work->maestroResources[0] = func_00112420(
             H_Cdvd_ArchiveGetFile(work->archive, 0, &size));
         work->maestroResources[1] = func_00112420(
@@ -473,23 +469,26 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
         work->maestroResources[12] = func_00112420(
             H_Cdvd_ArchiveGetFile(work->archive, 7, &size));
         work->state = 1;
+        break;
+    case 1:
+        ready = 1;
+        for (i = 0; i < 14; i++) {
+            if (work->maestroResources[i] != NULL &&
+                !H_Maestro_00111f30(work->maestroResources[i])) {
+                ready = 0;
+            }
+        }
+        if (!ready) {
+            break;
+        }
+        for (copyIndex = 0; copyIndex < 14; copyIndex++) {
+            D_00833B70[copyIndex] = work->maestroResources[copyIndex];
+        }
+        work->state = 3;
+        break;
+    case 3:
+        break;
     }
-    goto done;
-
-wait_resources:
-    ready = 1;
-    for (i = 0; i < 14; i++) {
-        if (work->maestroResources[i] != NULL &&
-            !H_Maestro_00111f30(work->maestroResources[i]))
-            ready = 0;
-    }
-    if (!ready)
-        goto done;
-    for (i = 0; i < 14; i++)
-        D_00833B70[i] = work->maestroResources[i];
-    work->state = 3;
-
-done:
     return KWLNTASK_CONTINUE;
 }
 
@@ -1816,22 +1815,18 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
     }
 
     position = source;
-    h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 3, 0,
+    h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 3, 0,
                      589.0f + position.x, position.y - 190.0f, 100.0f);
-    h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 4, 0,
+    h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 4, 0,
                      589.0f + position.x,
                      (position.y - 129.0f) - 190.0f, 100.0f);
-    {
-        f32 threshold = 448.0f;
-    if (!(position.y <= threshold)) {
-        register f32 remainder = position.y;
-        remainder -= threshold;
-        h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 3, 0,
-                         589.0f + position.x, remainder - 190.0f, 100.0f);
-        h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 4, 0,
+    if (!(position.y <= 448.0f)) {
+        position.y -= 448.0f;
+        h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 3, 0,
+                         589.0f + position.x, position.y - 190.0f, 100.0f);
+        h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 4, 0,
                          589.0f + position.x,
-                         (remainder - 129.0f) - 190.0f, 100.0f);
-    }
+                         (position.y - 129.0f) - 190.0f, 100.0f);
     }
     h_campDrawRootUi(work, alpha);
 }
@@ -2911,14 +2906,16 @@ void h_campUpdateStatusExitTransition(KwlnTask* task)
     }
 }
 
-// FUN_0011faf0 NONMATCHING
+// FUN_0011faf0
 void h_campUpdateStatusFadeTransition(KwlnTask* task)
 {
     CampMenuWork* work;
     KwlnTask* child;
+    f32 fadeAlpha;
     f32 progress;
     s32 count;
     s32 i;
+    s32 fadeIndex;
 
     work = task->workData;
     switch (work->animationState) {
@@ -2948,11 +2945,14 @@ void h_campUpdateStatusFadeTransition(KwlnTask* task)
             work->animationState = 999;
             return;
         }
-        progress = (20.0f - (f32)count) / 20.0f;
-        for (i = 1; i < 10; i++) {
-            child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+        progress = (f32)count;
+        progress = (20.0f - progress) / 20.0f;
+        fadeIndex = 1;
+        fadeAlpha = 1.0f - progress;
+        for (; fadeIndex < 10; fadeIndex++) {
+            child = *(KwlnTask**)((u8*)work + 0x14 + fadeIndex * 4);
             if (child != NULL) {
-                H_Maestro_SetAlphaMult(child, 1.0f - progress);
+                H_Maestro_SetAlphaMult(child, fadeAlpha);
             }
         }
         H_Maestro_SetAlphaMult(work->childTasks[0], progress);
