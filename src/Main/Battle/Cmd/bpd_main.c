@@ -111,9 +111,9 @@ void FUN_00252f30(void)
   u32 uVar7;
   int iVar8;
   float fVar9;
+  float fVar12;
   float fVar10;
   float fVar11;
-  float fVar12;
   RwV4d rect;
   RwV3d projected;
   RwV2d screen;
@@ -153,28 +153,30 @@ void FUN_00252f30(void)
     }
     puVar2[0x2d4] = uVar7;
     for (iVar8 = 0; iVar8 < (int)puVar2[0x2d4]; iVar8 = iVar8 + 1) {
-      fVar10 = ((f32 *)puVar2)[iVar8 * 0x48 + 0x48];
-      fVar11 = ((f32 *)puVar2)[iVar8 * 0x48 + 0x49];
-      fVar12 = ((f32 *)puVar2)[iVar8 * 0x48 + 0x4a];
+      u32 *entry;
+      f32 width;
+      f32 height;
+
+      entry = puVar2 + iVar8 * 0x48 + 4;
+      fVar10 = ((f32 *)entry)[0x44];
+      fVar11 = ((f32 *)entry)[0x45];
+      fVar12 = ((f32 *)entry)[0x46];
       fVar9 = (float)FUN_0052e878(
-          fGpffff8248 * ((float)(int)puVar2[0x2d5] / 15.0f) * 2.0f);
-      fVar9 = fVar9 * 3.0f;
+          fGpffff8248 * (((float)(int)puVar2[0x2d5] / 15.0f) * 2.0f));
+      fVar9 = 3.0f * fVar9;
       iVar4 = FUN_0021cca0(uVar5,0x4c);
-      rect.z = (float)*(int *)(iVar4 + 0xc);
-      rect.x = fVar10 - rect.z / 2.0f;
-      rect.w = (float)*(int *)(iVar4 + 0x10);
-      rect.y = fVar9 + ((fVar11 - rect.w / 2.0f) - 10.0f);
-      FUN_0021d8e0(puVar2 + iVar8 * 0x48 + 8,&rect);
+      width = (float)*(int *)(iVar4 + 0xc);
+      rect.x = fVar10 - width / 2.0f;
+      height = (float)*(int *)(iVar4 + 0x10);
+      rect.y = fVar9 + ((fVar11 - height / 2.0f) - 10.0f);
+      rect.z = width;
+      rect.w = height;
+      FUN_0021d8e0(entry + 4,&rect);
       color.r = 0xff;
       color.g = 0xff;
       color.b = 0xff;
-      fVar12 = fVar12 * 255.0f;
-      if (fVar12 < 2.1474836e+09f) {
-        color.a = (u8)(int)fVar12;
-      } else {
-        color.a = (u8)(int)(fVar12 - 2.1474836e+09f);
-      }
-      FUN_0021d950(puVar2 + iVar8 * 0x48 + 8,&color);
+      color.a = (u8)(255.0f * fVar12);
+      FUN_0021d950(entry + 4,&color);
     }
   }
   return;

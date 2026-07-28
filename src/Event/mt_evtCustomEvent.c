@@ -5715,18 +5715,20 @@ void FUN_0039e700(u8 *param_1)
   int iVar6;
 
   int iVar7;
+  int type;
 
   
 
   *(u32 *)(param_1 + 0x78c) = 0;
 
   iVar1 = *(int *)(param_1 + 8);
+  type = 1;
 
   for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0x38); iVar7 = iVar7 + 1) {
 
     iVar6 = *(int *)(iVar1 + 0x34) + iVar7 * 0x20;
 
-    if (*(int *)(iVar6 + 0x18) == 1) {
+    if (*(int *)(iVar6 + 0x18) == type) {
 
       iVar2 = *(int *)(param_1 + 0x78c);
 
@@ -5741,7 +5743,7 @@ void FUN_0039e700(u8 *param_1)
 
       *(short *)(param_1 + iVar2 * 2 + 0x7b8) = iVar2 + 30000;
 
-      iVar6 = param_1 + iVar2 * 4;
+      iVar6 = (int)param_1 + iVar2 * 4;
 
       *(int *)(iVar6 + 0x790) = iVar3;
 

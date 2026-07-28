@@ -59,6 +59,20 @@ struct HCdvdStreamPosition
     u32 unused1;
 };
 
+typedef struct HCdvdRequestView
+{
+    u32 hasExternalMemory;
+    u32 readState;
+    char path[0x100];
+    u8* fileMemory;
+    u8 reserved10c[0x10];
+    u32 readByteSize;
+    u8 reserved120[0x28];
+    u32 fileMode;
+    u8 reserved14c[0x204];
+    s16 archiveFileCount;
+} HCdvdRequestView;
+
 extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
 extern u32 D_0096013C[];
@@ -1274,20 +1288,24 @@ void func_00101e30(void* requestData)
     s32 i;
     s32 scan;
     char c;
+    HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
-    if (*(u32*)((u8*)requestData + 0x148) == 0)
+    if (request->fileMode == 0)
     {
-        func_00102030(requestData, *(u8**)((u8*)requestData + 0x108),
-                      *(u32*)((u8*)requestData + 0x11c),
-                      (const char*)requestData + 8);
-        *(s16*)((u8*)requestData + 0x350) = 1;
+        func_00102030(requestData, request->fileMemory,
+                      request->readByteSize, request->path);
+        request->archiveFileCount = 1;
         return;
     }
 
     for (i = 0; i < 0x100; i++)
     {
-        c = ((const char*)requestData)[i + 8];
-        if (c == '\0')
+        c = request->path[i];
+        if (c != '\0')
+        {
+            work.entryPath[i] = c;
+        }
+        else
         {
             scan = i - 1;
             while (work.entryPath[scan - 1] != '\\')
@@ -1295,24 +1313,21 @@ void func_00101e30(void* requestData)
                 scan--;
             }
             work.entryPath[scan] = '\0';
-            break;
         }
-        work.entryPath[i] = c;
     }
 
-    *(s16*)((u8*)requestData + 0x350) = 0;
+    request->archiveFileCount = 0;
     offset = 0;
     while (true)
     {
         memcpy(work.directory, work.entryPath, 0xfc);
-        memcpy(work.fileName, *(u8**)((u8*)requestData + 0x108) + offset, 0xfc);
+        memcpy(work.fileName, request->fileMemory + offset, 0xfc);
         if (work.fileName[0] == '\0')
         {
             return;
         }
-        (*(s16*)((u8*)requestData + 0x350))++;
-        memcpy(&work.fileSize,
-               *(u8**)((u8*)requestData + 0x108) + offset + 0xfc, 4);
+        request->archiveFileCount++;
+        memcpy(&work.fileSize, request->fileMemory + offset + 0xfc, 4);
         offset += 0x100;
         strcat(work.directory, work.fileName);
         for (i = 0; i < 0xff; i++)
@@ -1332,8 +1347,7 @@ void func_00101e30(void* requestData)
                 work.directory[i] = '\\';
             }
         }
-        func_00102030(requestData,
-                      *(u8**)((u8*)requestData + 0x108) + offset,
+        func_00102030(requestData, request->fileMemory + offset,
                       work.fileSize, work.directory);
         work.fileSize = ((s32)(work.fileSize + 0x3f) / 0x40) * 0x40;
         offset += work.fileSize;

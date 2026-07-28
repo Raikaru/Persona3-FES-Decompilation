@@ -1894,9 +1894,11 @@ s32 func_001e3940(void* resource, u8* fileData)
             void* controller;
 
             controller = object->angleController;
+            /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
             __asm__ volatile ("" : "+r"(controller));
             func_001ad8c0(record->angle, controller);
             controller = object->stateController;
+            /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
             __asm__ volatile ("" : "+r"(controller));
             func_0019c320(record->scale, controller);
         }
@@ -1953,6 +1955,7 @@ s32 func_001e3940(void* resource, u8* fileData)
                 animationId =
                     ((RuntimeScaleDescriptor*)object->firstDescriptor)->
                         animationId;
+                /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
                 __asm__ volatile ("" : "+r"(animationId));
                 func_003182d0(object->model, 0, animationId, 8, 1);
             }
@@ -1976,6 +1979,7 @@ s32 func_001e3940(void* resource, u8* fileData)
                 animationId =
                     ((RuntimeEffectDescriptor*)object->secondDescriptor)->
                         animationId;
+                /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
                 __asm__ volatile ("" : "+r"(animationId));
                 func_003182d0(object->model, 0, animationId, 8, 1);
             }
@@ -3786,6 +3790,7 @@ void func_001e7aa0(RuntimeWork* work, s32 index, void* data)
 
     entry = *(u8**)((u8*)(uintptr_t)work->currentIndex + 0x2c) + index * 0x10;
     secondEntry = entry + 8;
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+r"(secondEntry) : : "memory");
     func_00493230((void*)(uintptr_t)work->currentIndex, entry);
     func_00493230((void*)(uintptr_t)work->currentIndex, secondEntry, data);
@@ -3844,6 +3849,7 @@ f32 func_001e7c20(u32 depth)
     firstPlane = *(f32*)((u8*)kwlnGetMainCamera() + 0x80);
     secondPlane = *(f32*)((u8*)kwlnGetMainCamera() + 0x84);
     maximum = 0xffff;
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+r"(maximum));
     negativeMaximum = -(f32)maximum;
     value = (f32)depth;
@@ -4778,9 +4784,11 @@ void func_001e9920(void* outputData, const void* configData)
     size += config->firstCount * 0x30;
     secondSize = config->secondCount << 1;
     highPart = config->secondCount << 4;
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+r"(highPart));
     highPart += secondSize;
     secondSize = highPart;
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+r"(secondSize));
     size += secondSize << 2;
     output->vectors[0] = FIELD_RUNTIME_PRIMARY_ALLOCATOR(size, 0x40000);
@@ -6299,10 +6307,12 @@ f32 func_001ecd90(void* data, s32 index, s32 vectorSet)
         sampleIndex += history->count;
     }
     sampleOffset = sampleIndex * sizeof(RuntimeVec3);
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+r"(sampleOffset));
     secondSamples = history->vectors[vectorSet];
     sample = (RuntimeVec3*)((u8*)secondSamples + sampleOffset);
     sampleValue = sample->x;
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+f"(sampleValue));
     delta.x -= sampleValue;
     delta.y -= sample->y;
@@ -6772,11 +6782,13 @@ void func_001edf10(void* workData)
                 func_004cb7f0(geometry, (u8*)owner + 0x90, 0);
             }
         }
+        /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
         __asm__ volatile ("" : "+r"(index));
         {
             void* callbackObject;
             void** renderObjects;
             renderObjects = work->renderObjects;
+            /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
             __asm__ volatile ("" : "+r"(renderObjects));
             callbackObject = *(void**)((u8*)renderObjects + index * 8);
             ((void (*)(void*))*(void**)((u8*)callbackObject + 0x48))(
@@ -7200,6 +7212,7 @@ RuntimeWork* func_001eeb90(RuntimeWork* input)
 
     config = (RuntimeRenderInput*)input;
     allocationEnd = (u8*)0;
+    /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
     __asm__ volatile ("" : "+r"(allocationEnd));
     allocationEnd += 0x24;
     allocationEnd += config->count * 0x4c;
@@ -7283,6 +7296,7 @@ RuntimeWork* func_001eeb90(RuntimeWork* input)
 
                 runtimeEntry =
                     (RuntimeWork*)(work->entries + index * 0x4c);
+                /* load-bearing: removing this file's 14 zero-width barriers loses 6 MATCHes (001E3940 nd0->32, 001E7AA0 ->9, 001E9920 ->5, 001ECD90 ->21, 001EDF10 ->407, 001EEB90 ->22) - measured W172 */
                 __asm__ volatile (
                     "" : "+r"(runtimeEntry) : : "memory");
                 renderObjects = work->renderObjects;

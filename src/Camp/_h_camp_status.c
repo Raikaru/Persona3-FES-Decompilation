@@ -2355,6 +2355,7 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
 }
 
 // FUN_001293B0 NONMATCHING
+#pragma push
 #pragma optimization_level 3
 void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
                                void* bonus, void* persona, s32 alpha)
@@ -2526,6 +2527,7 @@ static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
     }
 }
 
+#pragma pop
 // FUN_00129B30 NONMATCHING
 void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                                 void* persona, s32 frame)

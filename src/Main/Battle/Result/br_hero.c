@@ -44,7 +44,7 @@ typedef struct {
 } BrHeroResource;
 extern void* FUN_00233d70(s32);
 extern void* FUN_00233df0(s32);
-extern void* FUN_0021cca0(void*, s32);
+extern void* FUN_0021cca0();
 extern u32 FUN_0021cce0(void*);
 extern void FUN_0021d3b0(void*, void*);
 extern void FUN_0021cd00(void*, float*);
@@ -55,7 +55,7 @@ extern void FUN_0021e380(void*, void*, s32);
 extern void FUN_0021eac0(void*, float);
 extern void FUN_0021eae0(void*, float*);
 extern void FUN_0021eb80(void*, float*);
-extern void FUN_00238980(void*, s32, s32, s32);
+extern void FUN_00238980();
 extern void FUN_00238dc0(void*, s32, s32, s32, float*);
 extern void FUN_00238bf0(void*, s32, s32, s32, float*);
 extern void* brPersonaGetPortraitFrame(s32);

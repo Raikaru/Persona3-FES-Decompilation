@@ -2276,6 +2276,7 @@ void func_001bd8c0(void)
 }
 
 // FUN_001bd950 NONMATCHING
+#pragma push
 #pragma optimization_level 3
 /* Removing this loses func_001bf220 (MATCH nd0 -> MISMATCH nd159); worsens func_001bf340 (nd193 -> nd257) - measured W161. */
 #pragma schedule on
@@ -2559,6 +2560,7 @@ void func_001bd950(void)
 }
 #pragma schedule off
 
+#pragma pop
 // FUN_001bf220
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
 {
