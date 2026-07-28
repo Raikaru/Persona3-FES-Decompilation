@@ -4374,67 +4374,76 @@ void FUN_002d6620(BtlAction *action)
 // FUN_002d7560 NONMATCHING
 void FUN_002d7560(BtlAction *action)
 {
-    u32 i;
-    BtlUnit *unit = action->unit;
-    DatUnit *dat = unit->datUnit;
-    if (((action->unk_1a & 1) != 0) && (unit->genus == 1))
-    {
-        s32 outFlag;
-        if (unit->charId > 0x14f)
-            FUN_0019d3f0(0x6978e0, 0x37e);
-        if ((action->unk_1a & 0x20) == 0)
-        {
-            u32 rawValue;
-            f32 timeScale;
-            f32 value;
-            u32 amount;
-            s16 personaId;
-            action->unk_1a |= 0x20;
-            rawValue = (u32)FUN_0030bc50(dat);
-            timeScale = (f32)FUN_001c0070();
-            value = (f32)rawValue;
-            amount = (u32)(value * timeScale);
-            BTLT_B32(0xbfc) += amount;
+    extern f32 FUN_001c0070(void);
+    extern u32 FUN_0030bc50(DatUnit *);
+    extern u16 FUN_0030bde0(DatUnit *, s32 *);
+    BtlUnit *unit;
+    u16 i;
 
-            personaId = (s16)FUN_0030bde0(dat, &outFlag);
-            if ((outFlag != 1) && (BTLT_AS16(action, 0x80) != 0) &&
-                ((u8)FUN_002ffbc0(100) < BTLT_A8(action, 0x82)))
-                personaId = BTLT_AS16(action, 0x80);
-            if (personaId != 0)
+    if ((action->unk_1a & 1) != 0)
+    {
+        unit = action->unit;
+        if (unit->genus == 1)
+        {
+            s32 outFlag;
+            if (unit->charId > 0x14f)
+                FUN_0019d3f0(0x6978e0, 0x37e);
+            if ((action->unk_1a & 0x20) == 0)
             {
-                u8 found = 0;
-                for (i = 0; i < 3; i++)
+                u32 rawValue;
+                f32 timeScale;
+                f32 value;
+                u32 amount;
+                u16 personaId;
+                int found;
+
+                action->unk_1a |= 0x20;
+                rawValue = FUN_0030bc50(unit->datUnit);
+                timeScale = FUN_001c0070();
+                value = (f32)rawValue;
+                amount = (u32)(value * timeScale);
+                BTLT_B32(0xbfc) += amount;
+
+                personaId = FUN_0030bde0(unit->datUnit, &outFlag);
+                if ((outFlag != 1) && (BTLT_A16(action, 0x80) != 0) &&
+                    ((u8)FUN_002ffbc0(100) < BTLT_A8(action, 0x82)))
+                    personaId = BTLT_A16(action, 0x80);
+                if (personaId != 0)
                 {
-                    if (BTLT_BS16(0xbe0 + i * 8) == personaId)
-                    {
-                        BTLT_B32(0xbe4 + i * 8)++;
-                        found = 1;
-                        break;
-                    }
-                }
-                if (found == 0)
-                {
+                    found = 0;
                     for (i = 0; i < 3; i++)
                     {
-                        if (BTLT_BS16(0xbe0 + i * 8) == 0)
+                        if (BTLT_A16(DAT_007ce3ec, 0xbe0 + i * 8) == personaId)
                         {
-                            BTLT_BS16(0xbe0 + i * 8) = personaId;
-                            BTLT_B32(0xbe4 + i * 8) = 1;
-                            BTLT_B32(0xbf8) = i + 1;
+                            BTLT_B32(0xbe4 + i * 8)++;
+                            found = 1;
                             break;
                         }
                     }
+                    if (found == 0)
+                    {
+                        for (i = 0; i < 3; i++)
+                        {
+                            if (BTLT_A16(DAT_007ce3ec, 0xbe0 + i * 8) == 0)
+                            {
+                                BTLT_A16(DAT_007ce3ec, 0xbe0 + i * 8) = personaId;
+                                BTLT_B32(0xbe4 + i * 8) = 1;
+                                BTLT_B32(0xbf8) = i + 1;
+                                break;
+                            }
+                        }
+                    }
                 }
-            }
-            if ((*(u16 *)(DAT_007ce410 + (u32)unit->charId * 0x3e) & 0x40) != 0)
-                BTLT_B32(0xbdc) |= 2;
-            switch (BTLT_D16(dat, 2))
-            {
-            case 0xc4: BTLT_B32(0xc20) |= 8; break;
-            case 0xc3: BTLT_B32(0xc20) |= 4; break;
-            case 0xc2: BTLT_B32(0xc20) |= 2; break;
-            case 0xc1: BTLT_B32(0xc20) |= 1; break;
-            default: break;
+                if ((*(u16 *)(DAT_007ce410 + (u32)unit->charId * 0x3e) & 0x40) != 0)
+                    BTLT_B32(0xbdc) |= 2;
+                switch (BTLT_D16(unit->datUnit, 2))
+                {
+                case 0xc1: BTLT_B32(0xc20) |= 1; break;
+                case 0xc2: BTLT_B32(0xc20) |= 2; break;
+                case 0xc3: BTLT_B32(0xc20) |= 4; break;
+                case 0xc4: BTLT_B32(0xc20) |= 8; break;
+                default: break;
+                }
             }
         }
     }
