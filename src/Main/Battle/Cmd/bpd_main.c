@@ -116,10 +116,8 @@ void FUN_00252f30(void)
   float fVar11;
   RwV4d rect;
   RwV3d projected;
-  struct {
-    RwV3d screen;
-    RwRGBA color;
-  } output;
+  RwV2d screen;
+  RwRGBA color;
 
   K_ASSERT(sBpd660 != NULL, 0x25);
   puVar2 = sBpd660;
@@ -135,8 +133,7 @@ void FUN_00252f30(void)
            iVar1 = *(int *)(iVar1 + 0xa34)) {
         if ((~*(u32 *)(iVar1 + 0x9c) & 8) == 0) {
           FUN_002807a0(iVar1,&projected);
-          lVar6 = FUN_002d20a0(
-              &projected,(RwV2d *)&output.screen);
+          lVar6 = FUN_002d20a0(&projected,&screen);
           if ((lVar6 != 0) &&
               (lVar6 = FUN_00300580(*(u32 *)(iVar1 + 0xa2c),0x100000),
                lVar6 != 0)) {
@@ -145,8 +142,8 @@ void FUN_00252f30(void)
             entry = puVar2 + uVar7 * 0x48;
             data = (f32 *)(entry + 4);
             entry[5] = *(u32 *)(iVar1 + 0xa8);
-            data[0x44] = output.screen.x;
-            data[0x45] = output.screen.y;
+            data[0x44] = screen.x;
+            data[0x45] = screen.y;
             iVar3 = FUN_0027f930(iVar1);
             data[0x46] = (f32)*(u8 *)(iVar3 + 3) / 255.0f;
             uVar7 = uVar7 + 1;
@@ -164,9 +161,8 @@ void FUN_00252f30(void)
       fVar10 = ((f32 *)entry)[0x44];
       fVar11 = ((f32 *)entry)[0x45];
       fVar12 = ((f32 *)entry)[0x46];
-      fVar9 = (float)FUN_0052e878(
+      fVar9 = 3.0f * FUN_0052e878(
           fGpffff8248 * (((float)(int)puVar2[0x2d5] / 15.0f) * 2.0f));
-      fVar9 = 3.0f * fVar9;
       iVar4 = FUN_0021cca0(uVar5,0x4c);
       width = (float)*(int *)(iVar4 + 0xc);
       rect.x = fVar10 - width / 2.0f;
@@ -175,11 +171,11 @@ void FUN_00252f30(void)
       rect.z = width;
       rect.w = height;
       FUN_0021d8e0(entry + 4,&rect);
-      output.color.r = 0xff;
-      output.color.g = 0xff;
-      output.color.b = 0xff;
-      output.color.a = (u8)(255.0f * fVar12);
-      FUN_0021d950(entry + 4,&output.color);
+      color.r = 0xff;
+      color.g = 0xff;
+      color.b = 0xff;
+      color.a = (u8)(255.0f * fVar12);
+      FUN_0021d950(entry + 4,&color);
     }
   }
   return;

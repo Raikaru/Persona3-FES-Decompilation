@@ -1292,6 +1292,9 @@ void func_00101e30(void* requestData)
     s32 separator;
     s32 forwardSeparator;
     char* cursor;
+    s32 pathIndex;
+    s32 pathValue;
+    char* pathCharacter;
     HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
     if (request->fileMode == 0)
@@ -1350,21 +1353,22 @@ scan_finished:
         strcat(work.directory, work.fileName);
         separator = '\\';
         forwardSeparator = '/';
-        for (i = 0; i < 0xff; i++)
+        for (pathIndex = 0; pathIndex < 0xff; pathIndex++)
         {
-            c = work.directory[i];
-            if (c >= 'a' && c <= 'z')
+            pathCharacter = &work.directory[pathIndex];
+            pathValue = *pathCharacter;
+            if (pathValue >= 'a' && pathValue <= 'z')
             {
-                work.directory[i] = c - 0x20;
+                *pathCharacter = pathValue - 0x20;
             }
-            c = work.directory[i];
-            if (c == '\0')
+            pathValue = *pathCharacter;
+            if (pathValue == '\0')
             {
                 break;
             }
-            if (c == forwardSeparator)
+            if (pathValue == forwardSeparator)
             {
-                work.directory[i] = separator;
+                *pathCharacter = separator;
             }
         }
         func_00102030(requestData, request->fileMemory + offset,

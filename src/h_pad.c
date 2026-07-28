@@ -27,6 +27,8 @@ extern void* func_00520728(size_t size);
 extern void func_00520748(void* memory);
 extern s32 printf(const char* format, ...);
 extern const char D_005CEAE0[];
+#pragma alias D_005CEAE0_gp D_005CEAE0
+extern const char D_005CEAE0_gp;
 extern const char D_005CEAF0[];
 extern const char D_005CEB10[];
 extern const char D_005CEB30[];
@@ -517,7 +519,7 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 
     if (size == 0xAC)
     {
-        printf("CHECK !!\n");
+        printf(&D_005CEAE0_gp);
     }
 
     sRwAllocatedBytes += size;

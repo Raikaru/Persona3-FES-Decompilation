@@ -2255,13 +2255,15 @@ void FUN_0016c1d0(void)
 // FUN_0016C2F0 NONMATCHING
 void FUN_0016c2f0(void)
 {
+    u8* data;
     u32 count;
     s32 n;
     s32 scaled;
     u8* p;
 
-    count = DAT_0083bb30[0];
-    p = (u8*)DAT_0083bb30 + 0x10;
+    data = (u8*)DAT_0083bb30;
+    count = *(u32*)data;
+    p = data + 0x10;
     DAT_007cdfe4 = p;
     p += count * 0x28;
     n = *(s32*)p;
@@ -2312,6 +2314,7 @@ void FUN_0016c2f0(void)
     p += n << 3;
     n = *(s32*)p;
     p += 0x10;
+    DAT_007cdfb8 = (s32*)p;
     scaled = n << 1;
     p += (scaled + n) << 2;
     {

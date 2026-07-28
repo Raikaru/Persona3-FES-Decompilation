@@ -126,9 +126,8 @@ void bsaMain0020fe20(BsaWork* work)
 
 #pragma optimization_level 2
 // FUN_0020FE30 NONMATCHING
-void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
+void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
 {
-    u32* p;
     void* unit;
     u32 table6;
     u32 table1;
@@ -141,7 +140,6 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     s32 count;
     u32 flags;
     s32 category;
-    p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
