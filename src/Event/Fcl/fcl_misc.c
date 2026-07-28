@@ -25,6 +25,12 @@ typedef struct FclMiscVec2
     f32 x;
     f32 y;
 } FclMiscVec2;
+typedef struct FclMiscVec3
+{
+    f32 x;
+    f32 y;
+    f32 z;
+} FclMiscVec3;
 typedef struct FclMiscVec4
 {
     f32 x;
@@ -75,13 +81,9 @@ extern u8 DAT_006a41e8_abs[];
 #pragma alias DAT_006a41f8_abs DAT_006a41f8
 extern u8 DAT_006a41f8_abs[];
 #pragma alias fclMiscInitialRotation DAT_006a4218
-extern u64 fclMiscInitialRotation[];
-#pragma alias fclMiscInitialRotationZ DAT_006a4220
-extern f32 fclMiscInitialRotationZ[];
+extern FclMiscVec3 fclMiscInitialRotation[];
 #pragma alias fclMiscInitialTranslation DAT_006a4228
-extern u64 fclMiscInitialTranslation[];
-#pragma alias fclMiscInitialTranslationZ DAT_006a4230
-extern f32 fclMiscInitialTranslationZ[];
+extern FclMiscVec3 fclMiscInitialTranslation[];
 #pragma alias fclMiscDefaultQuat DAT_006a4240
 extern FclMiscVec4 fclMiscDefaultQuat[];
 #pragma alias fclMiscDefaultScale DAT_006a4250
@@ -3334,25 +3336,17 @@ void FUN_003cda60(u32 param_1)
 
   int iVar2;
 
-  u64 uStack_20;
+  FclMiscVec3 translation;
 
-  float fStack_18;
-
-  u64 uStack_10;
-
-  float fStack_8;
+  FclMiscVec3 rotation;
 
   FclMiscColor color;
 
   
 
-  uStack_10 = fclMiscInitialRotation[0];
+  rotation = fclMiscInitialRotation[0];
 
-  fStack_8 = fclMiscInitialRotationZ[0];
-
-  uStack_20 = fclMiscInitialTranslation[0];
-
-  fStack_18 = fclMiscInitialTranslationZ[0];
+  translation = fclMiscInitialTranslation[0];
 
   color.packed = DAT_007cd718;
 
@@ -3366,17 +3360,11 @@ void FUN_003cda60(u32 param_1)
 
   *(u32 *)(iVar2 + 8) = 1;
 
-  fclMiscC31b0Call(180.0f,(void *)(iVar2 + 0x40),&uStack_20,0);
+  fclMiscC31b0Call(180.0f,(void *)(iVar2 + 0x40),&translation,0);
 
-  FUN_004c35d0(iVar2 + 0x40,&uStack_10,2);
+  FUN_004c35d0(iVar2 + 0x40,&rotation,2);
 
-  *(u8 *)(iVar2 + 0x80) = color.channel[0];
-
-  *(u8 *)(iVar2 + 0x81) = color.channel[1];
-
-  *(u8 *)(iVar2 + 0x82) = color.channel[2];
-
-  *(u8 *)(iVar2 + 0x83) = color.channel[3];
+  memcpy((void *)(iVar2 + 0x80),&color,4);
 
   FUN_0016bc80(0,*(u16 *)(iVar2 + 0xc),iVar2 + 0x84);
 

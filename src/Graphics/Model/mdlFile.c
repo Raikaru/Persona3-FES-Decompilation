@@ -22070,6 +22070,8 @@ u32 FUN_00332780(int param_1)
   u32 *puVar3;
 
   u32 uVar4;
+  u16 modelIndex;
+
 
   
 
@@ -22107,9 +22109,11 @@ u32 FUN_00332780(int param_1)
 
   *(u16 *)(puVar3 + 0xd) = 1;
 
-  FUN_00332a30((int *)(uVar2),(u16)(**(u16 **)(param_1 + 0x30)),(int *)(param_1 + 0xc));
+  modelIndex = **(u16 **)(param_1 + 0x30);
+  FUN_00332a30((int *)uVar2,modelIndex,(int *)(param_1 + 0xc));
 
-  FUN_00332ac0((u32 *)(uVar2),(u16)(**(u16 **)(param_1 + 0x30)),(int *)(iVar1));
+  modelIndex = **(u16 **)(param_1 + 0x30);
+  FUN_00332ac0((u32 *)uVar2,modelIndex,(int *)iVar1);
 
   return uVar2;
 

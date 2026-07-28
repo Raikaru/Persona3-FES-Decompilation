@@ -4130,15 +4130,16 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 {
     f32 x;
     f32 y;
+    void* unused;
 
     x = clndPackedX(position);
     y = clndPackedY(position);
-    func_001159f0(NULL, resource, month < 4 ? 0x50 : 0x4f,
-                  alpha & 0xff, x + 289.0f, y + 112.0f, 72.0f);
-    func_001159f0(NULL, resource, month - 1,
-                  alpha & 0xff, x + 251.0f, y + 131.0f, 72.0f);
-    func_001159f0(NULL, resource, month + 0xb,
-                  alpha & 0xff, x + 251.0f, y + 163.0f, 72.0f);
+    func_001159f0(unused, resource, month < 4 ? 0x50 : 0x4f,
+                  alpha & 0xff, x + 289.0f, y + 112.0f, 50.0f);
+    func_001159f0(unused, resource, month - 1,
+                  alpha & 0xff, x + 251.0f, y + 131.0f, 50.0f);
+    func_001159f0(unused, resource, month + 0xb,
+                  alpha & 0xff, x + 251.0f, y + 163.0f, 50.0f);
 }
 
 // FUN_00185AE0
