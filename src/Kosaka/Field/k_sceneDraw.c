@@ -1023,7 +1023,7 @@ void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
 {
     gMtScene->shouldSortNpcs = shouldSortNpcs;
 }
-// FUN_0019f8f0 NONMATCHING
+// FUN_0019f8f0
 void func_0019f8f0(const RwRGBAReal* color)
 {
     ResrcFld* fld;

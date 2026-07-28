@@ -908,11 +908,11 @@ state_valid:
     (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
 }
 
-// FUN_001a7910 NONMATCHING
+// FUN_001a7910
 void func_001a7910(void* object, f32* scale)
 {
     KClumpResourceList* resources;
-    s32 i;
+    u32 i;
     u32 color;
     s32 red;
     s32 green;
@@ -922,7 +922,7 @@ void func_001a7910(void* object, f32* scale)
     RwRGBA materialColor;
 
     resources = (KClumpResourceList*)((KClumpContainer*)object)->resources;
-    for (i = 0; i < (s32)resources->count; i++)
+    for (i = 0; i < resources->count; i++)
     {
         material = resources->materials[i];
         func_001b5a30(material);
@@ -935,21 +935,21 @@ void func_001a7910(void* object, f32* scale)
         {
             red = 0xff;
         }
+        materialColor.r = (u8)red;
         if ((u32)green > 0xff)
         {
             green = 0xff;
         }
+        materialColor.g = (u8)green;
         if ((u32)blue > 0xff)
         {
             blue = 0xff;
         }
+        materialColor.b = (u8)blue;
         if ((u32)alpha > 0xff)
         {
             alpha = 0xff;
         }
-        materialColor.r = (u8)red;
-        materialColor.g = (u8)green;
-        materialColor.b = (u8)blue;
         materialColor.a = (u8)alpha;
         *(RwRGBA*)((u8*)material + 4) = materialColor;
     }

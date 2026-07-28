@@ -2863,12 +2863,14 @@ int FUN_0031e300(u32 *param_1)
 int mdlFileSelectCacheSlot(u32 param_1,u32 param_2)
 {
   u32 scanIndex;
+  u32 scanValue;
   u32 key1;
   u32 key2;
   u8 *table;
   s32 bestIndex;
   u32 bestValue;
   u32 candidateIndex;
+  u32 candidateValue;
   u8 *candidateTable;
   u32 currentValue;
   u32 offset;
@@ -2877,10 +2879,10 @@ int mdlFileSelectCacheSlot(u32 param_1,u32 param_2)
   key1 = (u16)param_1;
   key2 = (u16)param_2;
   table = DAT_00957220_abs;
-  for (; (scanIndex & 0xffff) < 3; scanIndex = (scanIndex + 1) & 0xffff) {
+  for (; (scanValue = scanIndex & 0xffff) < 3; scanIndex = (scanIndex + 1) & 0xffff) {
     if (key1 == *(u16 *)(table + (u16)scanIndex * 8 + 4) &&
         key2 == *(u16 *)(table + (u16)scanIndex * 8 + 6)) {
-      return (u16)scanIndex + 3;
+      return scanValue + 3;
     }
   }
 
@@ -2888,11 +2890,11 @@ int mdlFileSelectCacheSlot(u32 param_1,u32 param_2)
   bestValue = bestIndex;
   candidateIndex = 0;
   candidateTable = DAT_00957220_abs;
-  for (; (candidateIndex & 0xffff) < 3; candidateIndex = (candidateIndex + 1) & 0xffff) {
+  for (; (candidateValue = candidateIndex & 0xffff) < 3; candidateIndex = (candidateIndex + 1) & 0xffff) {
     currentValue = *(u32 *)(candidateTable + (u16)candidateIndex * 8);
     if (currentValue < bestValue) {
       bestValue = currentValue;
-      bestIndex = (u16)candidateIndex;
+      bestIndex = candidateValue;
     }
   }
 
@@ -13663,9 +13665,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
   sine = FUN_0052e878_f32(param_1);
   __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(axis) : "memory");
   square = axis[0] * axis[0];
-  square = square + 0.0f;
-  square += (1.0f - square) * cosine;
-  matrix.right.x = square;
+  matrix.right.x = square + (1.0f - square) * cosine;
   xy = axis[0] * axis[1];
   oneMinusCosine = 1.0f - cosine;
   zSine = axis[2] * sine;
@@ -13678,9 +13678,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
   matrix.flags = 0;
   matrix.up.x = xy - zSine;
   square = axis[1] * axis[1];
-  square = square + 0.0f;
-  square += (1.0f - square) * cosine;
-  matrix.up.y = square;
+  matrix.up.y = square + (1.0f - square) * cosine;
   yz = axis[1] * axis[2];
   xSine = axis[0] * sine;
   yz = yz * oneMinusCosine;
@@ -13689,9 +13687,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
   matrix.at.x = ySine + xz;
   matrix.at.y = yz - xSine;
   square = axis[2] * axis[2];
-  square = square + 0.0f;
-  square += (1.0f - square) * cosine;
-  matrix.at.z = square;
+  matrix.at.z = square + (1.0f - square) * cosine;
   matrix.pad2 = 0;
   __asm__ volatile (
       "lqc2 vf28, 0(%0)\n"
