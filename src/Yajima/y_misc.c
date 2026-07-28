@@ -23,6 +23,10 @@ typedef struct YajimaColor {
 typedef struct YajimaVec16 {
     f32 lane[16];
 } YajimaVec16;
+typedef struct YajimaPackedRow {
+    u8 pad[0x8c0];
+    u64 value;
+} __attribute__((packed)) YajimaPackedRow;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -156,6 +160,9 @@ extern void FUN_004c31b0_ymisc(void *matrix,const void *axis,f32 angle,s32 mode)
 void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
+extern u32 RpRandom(void);
+#pragma alias FUN_00430780_ymisc FUN_00430780
+extern void FUN_00430780_ymisc(f32, u64, s32, s32, s32);
 /* FUSION_GLOBALS */
 u32 DAT_0087190c;
 u32 DAT_0095c0e0;
@@ -6698,87 +6705,53 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
 
 void FUN_0042cd80(int param_1)
-
-
-
 {
+  u8 *work;
+  YajimaPackedRow *row;
+  u8 *entry;
+  s8 *counter;
+  s8 *delay;
+  s16 *offsetX;
+  s16 *offsetY;
+  u32 random;
+  s8 count;
+  s32 outer;
+  s32 inner;
+  s32 end;
 
-  int iVar1;
-
-  int uVar2;
-
-  long lVar3;
-
-  char cVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  int iVar8;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x3c);
-
-  for (iVar8 = 0; iVar8 < 3; iVar8 = iVar8 + 1) {
-
-    if ((*(char *)(iVar1 + iVar8 + 0x938) == '\x01') &&
-
-       (lVar3 = FUN_0043a230((char)iVar8 + '\x01'), lVar3 == 1)) {
-
-      for (iVar7 = iVar8 * 5; iVar7 < (iVar8 + 1) * 5; iVar7 = iVar7 + 1) {
-
-        iVar6 = iVar1 + iVar7;
-
-        iVar5 = iVar1 + iVar7 * 2;
-
-        FUN_00430780(0x41000000,*(u64 *)(iVar1 + iVar8 * 8 + 0x8c0),
-
-                     *(u8 *)(iVar5 + 0x8f6),*(u8 *)(iVar5 + 0x914),
-
-                     *(u8 *)(iVar6 + 0x8d8));
-
-        if (*(char *)(iVar6 + 0x8e7) < '\x01') {
-
-          cVar4 = *(char *)(iVar6 + 0x8d8) + '\x01';
-
-          *(char *)(iVar6 + 0x8d8) = cVar4;
-
-          if ('\x14' < cVar4) {
-
-            uVar2 = RpRandom();
-
-            *(short *)(iVar5 + 0x8f6) = (short)(int)(8.0f - (float)(uVar2 & 0xf));
-
-            uVar2 = RpRandom();
-
-            *(short *)(iVar5 + 0x914) = (short)(int)(8.0f - (float)(uVar2 & 0xf));
-
-            *(u8 *)(iVar6 + 0x8d8) = 0;
-
-            *(char *)(iVar6 + 0x8e7) = '\x04';
-
+  work = *(u8 **)(param_1 + 0x3c);
+  for (outer = 0; outer < 3; outer++) {
+    if ((*(s8 *)(work + outer + 0x938) == 1) &&
+        (FUN_0043a230((s8)(outer + 1)) == 1)) {
+      inner = outer * 5;
+      row = (YajimaPackedRow *)(work + outer * 8);
+      end = (outer + 1) * 5;
+      for (; inner < end; inner++) {
+        entry = work + inner;
+        counter = (s8 *)(entry + 0x8d8);
+        offsetY = (s16 *)(work + inner * 2 + 0x914);
+        offsetX = (s16 *)(work + inner * 2 + 0x8f6);
+        FUN_00430780_ymisc(8.0f, row->value,
+                           *(s8 *)offsetX, *(s8 *)offsetY, *counter);
+        delay = (s8 *)(entry + 0x8e7);
+        if (*delay < 1) {
+          count = *(s8 *)(entry + 0x8d8) + 1;
+          *(s8 *)(entry + 0x8d8) = count;
+          if (count > 20) {
+            random = RpRandom();
+            *offsetX = (s16)(8.0f - (f32)(random & 0xf));
+            random = RpRandom();
+            *offsetY = (s16)(8.0f - (f32)(random & 0xf));
+            *counter = 0;
+            *delay = 4;
           }
-
         }
-
         else {
-
-          *(char *)(iVar6 + 0x8e7) = *(char *)(iVar6 + 0x8e7) + -1;
-
+          (*delay)--;
         }
-
       }
-
     }
-
   }
-
-  return;
-
 }
 
 // FUN_0042CFC0 NONMATCHING

@@ -4507,49 +4507,45 @@ done:
 // FUN_00433160 NONMATCHING
 
 u32 FUN_00433160(int param_1)
-
 {
-  int cVar1;
-  int cVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  u32 uVar6;
-  
-  iVar3 = *(int *)(param_1 + 0x3c);
-  uVar6 = 0;
-  cVar1 = *(char *)(iVar3 + 0xdd);
-  cVar2 = *(char *)(iVar3 + 0xdc);
-  if ((*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x10a) == '\0') &&
-     (iVar5 = FUN_001b9120_u32(), (*(u8 *)(iVar5 + cVar1 * 0x100 + cVar2 * 0x10 + 0x53) & 8) != 0)) {
-    uVar6 = 4;
+  int work;
+  s8 row;
+  s8 column;
+  u32 result;
+
+  work = *(int *)(param_1 + 0x3c);
+  result = 0;
+  row = *(s8 *)(work + 0xdd);
+  column = *(s8 *)(work + 0xdc);
+  if ((*(u8 *)(column + work + row * 0x10 + 0x10a) == 0) &&
+      ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 8) != 0)) {
+    result = 4;
   }
   else {
-    if (*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x108) == '\0') {
-      cVar1 = *(char *)(iVar3 + 0xdd);
-      cVar2 = *(char *)(iVar3 + 0xdc);
-      iVar5 = FUN_001b9120_u32();
-      if ((*(u8 *)(iVar5 + cVar1 * 0x100 + cVar2 * 0x10 + 0x53) & 2) != 0) {
-        return 2;
+    if (*(u8 *)(column + work + row * 0x10 + 0x108) == 0) {
+      row = *(s8 *)(work + 0xdd);
+      column = *(s8 *)(work + 0xdc);
+      if ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 2) != 0) {
+        result = 2;
+        goto done;
       }
     }
-    iVar5 = (int)cVar2;
-    if (*(u8 *)(cVar1 * 0x10 + iVar5 + iVar3 + 0xf9) == '\0') {
-      cVar1 = *(char *)(iVar3 + 0xdd);
-      iVar5 = (int)*(char *)(iVar3 + 0xdc);
-      iVar4 = FUN_001b9120_u32();
-      if ((*(u8 *)(iVar4 + cVar1 * 0x100 + iVar5 * 0x10 + 0x53) & 1) != 0) {
-        return 1;
+    if (*(u8 *)(column + work + row * 0x10 + 0xf9) == 0) {
+      row = *(s8 *)(work + 0xdd);
+      column = *(s8 *)(work + 0xdc);
+      if ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 1) != 0) {
+        result = 1;
+        goto done;
       }
     }
-    if ((*(u8 *)(cVar1 * 0x10 + iVar5 + iVar3 + 0x119) == '\0') &&
-       (iVar5 = FUN_001b9120_u32(),
-       (*(u8 *)(iVar5 + *(char *)(iVar3 + 0xdd) * 0x100 + *(char *)(iVar3 + 0xdc) * 0x10 + 0x53) &
-       4) != 0)) {
-      uVar6 = 3;
+    if ((*(u8 *)(column + work + row * 0x10 + 0x119) == 0) &&
+        ((*(u8 *)(FUN_001b9120_u32() + *(s8 *)(work + 0xdd) * 0x100 +
+                  *(s8 *)(work + 0xdc) * 0x10 + 0x53) & 4) != 0)) {
+      result = 3;
     }
   }
-  return uVar6;
+done:
+  return result;
 }
 
 // FUN_004332F0

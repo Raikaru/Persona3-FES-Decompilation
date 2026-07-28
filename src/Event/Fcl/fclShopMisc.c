@@ -439,7 +439,7 @@ u32 FUN_00401de0(u64 param_1,long param_2,long param_3);
 void FUN_00402400(int param_1,u16 *param_2);
 u32 FUN_00402480(u16 *param_1);
 u32 FUN_00402510(u32 param_1,long param_2,u32 param_3,short param_4);
-u32 FUN_004026b0(u32 param_1,int param_2,u32 param_3);
+u32 FUN_004026b0(int param_1,int param_2,u32 param_3);
 void FUN_00402800(int param_1);
 void FUN_00402c80(int param_1);
 s16 FUN_004030b0(u16 param_1);
@@ -524,7 +524,7 @@ void FUN_0040a6d0(u32 param_1,int param_2);
 void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3);
 void FUN_0040a7f0(u64 param_1,int param_2,int *param_3);
 void FUN_0040b3a0(u64 param_1,int param_2,int param_3);
-void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,u64 param_4);
+void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,int param_4);
 void FUN_0040b780(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0040b840(int param_1);
 u32 FUN_0040b910(u64 param_1);
@@ -11157,9 +11157,9 @@ u64 FUN_003fea10(u32 param_1,u32 *param_2)
 
   u32 uVar4;
 
-  int iVar5;
-
   short *psVar6;
+
+  int iVar5;
 
   
 
@@ -14988,19 +14988,19 @@ u32 FUN_00402510(u32 param_1,long param_2,u32 param_3,short param_4)
 
 }
 
-// FUN_004026B0 NONMATCHING
+// FUN_004026B0
 
 
-u32 FUN_004026b0(u32 param_1,int param_2,u32 param_3)
+u32 FUN_004026b0(int param_1,int param_2,u32 param_3)
 {
   int available;
   int count;
   u32 category;
   u32 iterationCategory;
   u32 forceCategory;
-  u32 randomize;
   u32 preserveEffect;
   u8 effect;
+  u32 randomize;
   struct {
     u16 id;
     u16 unk_02;
@@ -15020,13 +15020,14 @@ u32 FUN_004026b0(u32 param_1,int param_2,u32 param_3)
       return 0;
     }
 
+    count = 0;
     forceCategory = param_3 & 2;
     category = (param_1 >> 24) & 0xf;
     randomize = param_3 & 1;
     preserveEffect = param_3 & 4;
     effect = (u8)(param_1 >> 16);
 
-    for (count = 0; count < param_2; count = count + 1) {
+    for (; count < param_2; count = count + 1) {
       if (forceCategory != 0) {
         iterationCategory = 2;
       } else {
@@ -18972,91 +18973,51 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
   }
 }
 
-// FUN_0040B630 NONMATCHING
+// FUN_0040B630
 
 
-void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,u64 param_4)
-
-
-
+void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,int param_4)
 {
-
   u32 *puVar1;
-
   u32 uVar2;
-
   u32 uVar3;
-
   u32 uVar4;
+  struct {
+    u32 param1;
+    u32 param2;
+    u16 param3;
+    u16 pad;
+    int param4;
+    u32 extra;
+  } data;
 
-  int iVar5;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u16 uStack_18;
-
-  int iStack_14;
-
-  u32 uStack_10;
-
-  
-
-  iVar5 = (int)param_4;
-
-  puVar1 = *(u32 **)(*(int *)(iVar5 + 0x24) + 0x44);
-
+  puVar1 = *(u32 **)(*(int *)(param_4 + 0x24) + 0x44);
   uVar2 = puVar1[7];
-
   uVar3 = puVar1[8];
+  FUN_0040e3c0_f32(0.0f,0,0,(u8)param_3,0x1b,0);
 
-  FUN_0040e3c0(0,0,0,param_3 & 0xff,0x1b,0);
-
-  uStack_10 = 0;
-
+  data.param1 = param_1;
+  data.param2 = param_2;
+  data.param3 = param_3;
+  data.param4 = param_4;
+  data.extra = 0;
   *puVar1 = *puVar1 | 4;
-
-  uStack_20 = param_1;
-
-  uStack_1c = param_2;
-
-  uStack_18 = param_3;
-
-  iStack_14 = iVar5;
-
-  FUN_003e0680(uVar2,0x40a7f0,&uStack_20);
+  FUN_003e0680(uVar2,FUN_0040a7f0,&data);
 
   uVar4 = *puVar1;
-
   *puVar1 = uVar4 & 0xfffffffb;
-
   *puVar1 = uVar4 & 0xfffffffb | 4;
-
   FUN_003c4e70(param_4);
-
   *puVar1 = *puVar1 & 0xfffffffb;
-
-  FUN_003e0680(uVar2,0x40a7f0,&uStack_20);
-
+  FUN_003e0680(uVar2,FUN_0040a7f0,&data);
   if (uVar3 != 0) {
-
-    uStack_10 = *(u32 *)(iVar5 + 0xc);
-
-    uStack_20 = param_1;
-
-    uStack_1c = param_2;
-
-    uStack_18 = param_3;
-
-    iStack_14 = iVar5;
-
-    FUN_003e0680(uVar3,0x40b3a0,&uStack_20);
-
+    data.param1 = param_1;
+    data.param2 = param_2;
+    data.param3 = param_3;
+    data.param4 = param_4;
+    data.extra = *(u32 *)(param_4 + 0xc);
+    FUN_003e0680(uVar3,FUN_0040b3a0,&data);
   }
-
-  return;
-
 }
 
 // FUN_0040B780

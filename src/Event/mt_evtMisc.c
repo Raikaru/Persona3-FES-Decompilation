@@ -193,6 +193,8 @@ extern u32 DAT_009589e8;
 #pragma alias DAT_00958a60_abs DAT_00958a60
 extern u8 DAT_00958a60_abs[];
 extern u32 DAT_00958a90;
+#pragma alias DAT_00958a90_abs DAT_00958a90
+extern u32 DAT_00958a90_abs[];
 extern f32 DAT_00960088;
 #pragma alias DAT_00960088_abs DAT_00960088
 extern u8 DAT_00960088_abs[];
@@ -3990,7 +3992,7 @@ void FUN_0038af70(u16 *param_1)
 }
 
 
-// FUN_0038B140 NONMATCHING
+// FUN_0038B140
 
 
 void FUN_0038b140(int param_1)
@@ -4001,9 +4003,17 @@ void FUN_0038b140(int param_1)
 
   int *piVar1;
 
-  int lVar2;
+  f32 *pfVar2;
 
-  int lVar3;
+  f32 *pfVar3;
+
+  f32 fVar1;
+
+  f32 fVar2;
+
+  f32 fVar3;
+
+  f32 fVar4;
 
   int iVar4;
 
@@ -4027,51 +4037,34 @@ void FUN_0038b140(int param_1)
 
     }
 
-    lVar2 = FUN_001a0d00();
-
-    lVar3 = FUN_001a0d00();
+    pfVar2 = (f32 *)FUN_001a0d00();
+    pfVar3 = (f32 *)FUN_001a0d00();
 
     piVar1 = (int *)FUN_001a0d80();
 
-    iVar4 = iGpffffb920;
+    if (pfVar2 != (f32 *)0x0) {
 
-    if (lVar2 != 0) {
-
-      iVar9 = piVar6[4];
-
-      iVar7 = piVar6[5];
-
-      iVar8 = piVar6[6];
-
-      piVar5 = (int *)lVar2;
-
-      *piVar5 = piVar6[3];
-
-      piVar5[1] = iVar9;
-
-      piVar5[2] = iVar7;
-
-      piVar5[3] = iVar8;
+      fVar1 = ((f32 *)piVar6)[3];
+      fVar2 = ((f32 *)piVar6)[4];
+      fVar3 = ((f32 *)piVar6)[5];
+      fVar4 = ((f32 *)piVar6)[6];
+      pfVar2[0] = fVar1;
+      pfVar2[1] = fVar2;
+      pfVar2[2] = fVar3;
+      pfVar2[3] = fVar4;
 
     }
 
-    if (lVar3 != 0) {
+    if (pfVar3 != (f32 *)0x0) {
 
-      iVar9 = piVar6[8];
-
-      iVar7 = piVar6[9];
-
-      iVar8 = piVar6[10];
-
-      piVar5 = (int *)lVar3;
-
-      *piVar5 = piVar6[7];
-
-      piVar5[1] = iVar9;
-
-      piVar5[2] = iVar7;
-
-      piVar5[3] = iVar8;
+      fVar1 = ((f32 *)piVar6)[7];
+      fVar2 = ((f32 *)piVar6)[8];
+      fVar3 = ((f32 *)piVar6)[9];
+      fVar4 = ((f32 *)piVar6)[10];
+      pfVar3[0] = fVar1;
+      pfVar3[1] = fVar2;
+      pfVar3[2] = fVar3;
+      pfVar3[3] = fVar4;
 
     }
 
@@ -4101,13 +4094,14 @@ void FUN_0038b140(int param_1)
 
     }
 
-    (*DAT_0096017c)(piVar6[2]);
-
-    DAT_00958a90 = DAT_00958a90 + iVar4 * -0x70;
-
-    (*DAT_0096017c)(param_1);
-
-    DAT_00958a90 = DAT_00958a90 + -0x70;
+    iVar4 = iGpffffb920 * 0x70;
+    {
+      void (**freeFn)(...) = (void (**)(...))DAT_0096017c_abs;
+      (*freeFn)(piVar6[2]);
+      *DAT_00958a90_abs = *DAT_00958a90_abs - iVar4;
+      (*freeFn)(param_1);
+      *DAT_00958a90_abs = *DAT_00958a90_abs - 0x70;
+    }
 
   }
 
@@ -5744,6 +5738,8 @@ void FUN_0038ca80(int param_1)
 
   int iVar3;
 
+  int node;
+
   short *psVar4;
 
   int iVar5;
@@ -5752,29 +5748,26 @@ void FUN_0038ca80(int param_1)
 
   
 
+  iVar3 = 0;
+
   iVar5 = 0;
-
-  iVar1 = FUN_003b5df0(3);
-
-  iVar2 = FUN_003b5df0(1);
-
-  iVar3 = FUN_003b5df0(0xc);
-
-  iVar3 = iVar1 + iVar2 + iVar3;
+  iVar3 = iVar3 + FUN_003b5df0(3);
+  iVar3 = iVar3 + FUN_003b5df0(1);
+  iVar3 = iVar3 + FUN_003b5df0(0xc);
 
   if (iVar3 < 0x33) {
-    for (iVar1 = FUN_003b5d50(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-      aiStack_d0[iVar5] = iVar1;
+    for (node = FUN_003b5d50(3); node != 0; node = *(int *)(node + 0xf8)) {
+      aiStack_d0[iVar5] = node;
       iVar5 = iVar5 + 1;
     }
 
-    for (iVar1 = FUN_003b5d50(1); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-      aiStack_d0[iVar5] = iVar1;
+    for (node = FUN_003b5d50(1); node != 0; node = *(int *)(node + 0xf8)) {
+      aiStack_d0[iVar5] = node;
       iVar5 = iVar5 + 1;
     }
 
-    for (iVar1 = FUN_003b5d50(0xc); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-      aiStack_d0[iVar5] = iVar1;
+    for (node = FUN_003b5d50(0xc); node != 0; node = *(int *)(node + 0xf8)) {
+      aiStack_d0[iVar5] = node;
       iVar5 = iVar5 + 1;
     }
 

@@ -32,6 +32,8 @@ extern s16 DAT_006a2060[];
 extern s16 DAT_006a2080[];
 extern u32 DAT_006a20a0;
 extern u32 DAT_006a20c0;
+extern u8 DAT_006a20e0[];
+extern u8 DAT_006a20f0[];
 extern u8 DAT_006a1ee0[];
 extern u8 DAT_006a1ef0[];
 #pragma alias DAT_006a1ee0_abs DAT_006a1ee0
@@ -2752,30 +2754,32 @@ void FUN_003abb10(int param_1)
 
 void FUN_003ac240(int param_1,u64 param_2)
 {
-  int upper;
+  u32 *panel;
   int lower;
+  int upper;
   u32 bounds[4];
 
+  panel = *(u32 **)(param_1 + 8);
   upper = *(int *)(param_1 + 0x10) + 0x3e0;
   lower = *(int *)(param_1 + 0x18) - 0x3e0;
   bounds[0] = *(u32 *)(param_1 + 0x10);
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = upper;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4e90(bounds,0x6a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
-               **(u32 **)(param_1 + 8),0,param_2);
+  FUN_003b4e90(bounds,DAT_006a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
+               *panel,0,param_2);
 
   bounds[0] = upper;
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = lower;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4ea0(bounds,0x6a20f0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
+  FUN_003b4ea0(bounds,DAT_006a20f0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
 
   bounds[0] = *(u32 *)(param_1 + 0x18);
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = lower;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4ea0(bounds,0x6a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
+  FUN_003b4ea0(bounds,DAT_006a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
 }
 #define FUN_003ac240(...) ((void (*)(...))FUN_003ac240)(__VA_ARGS__)
 #undef FUN_003ac350
@@ -3389,68 +3393,40 @@ u64 FUN_003ace60(u64 param_1,int param_2)
 
 {
 
-  u8 bVar1;
+  u8 low;
+  u8 high;
+  u8 value;
+  u32 packed1;
+  u32 packed2;
+  int resource;
+  u8 *data;
 
-  u8 bVar2;
-
-  char cVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  int lVar6;
-
-  u8 *pbVar7;
-
-  int iVar8;
-
-  
-
-  pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
-  bVar1 = *pbVar7;
-
-  bVar2 = pbVar7[1];
-
-  if (bVar2 == 0xff) {
-
-    uVar4 = 0;
-
+  data = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    value = 0;
   }
-
   else {
-
-    uVar4 = (u32)(u8)(bVar2 - 1);
-
+    value = high - 1;
   }
+  packed1 = (u32)value << 8 | low & 0xff;
 
-  iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
-  bVar2 = *(u8 *)(iVar8 + 2);
-
-  cVar3 = *(char *)(iVar8 + 3);
-
-  if (cVar3 == -1) {
-
-    uVar5 = 0;
-
+  data = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
+  low = data[2] - 1;
+  high = data[3];
+  if (high == 0xff) {
+    value = 0;
   }
-
   else {
-
-    uVar5 = (u32)(u8)(cVar3 - 1);
-
+    value = high - 1;
   }
+  packed2 = (u32)value << 8 | low & 0xff;
 
-  lVar6 = FUN_0016f190(0x184);
-
-  if ((lVar6 != 0) && ((DAT_007cd500 & 0x100) == 0)) {
-
-    FUN_0010a2e0(uVar4 << 8 | bVar1 - 1 & 0xff,2,uVar5 << 8 | bVar2 - 1 & 0xff);
-
+  resource = FUN_0016f190(0x184);
+  if ((resource != 0) && ((DAT_007cd500 & 0x100) == 0)) {
+    FUN_0010a2e0(packed1,2,packed2);
   }
-
   return 0;
 
 }

@@ -2149,17 +2149,19 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 0);
 }
 
-// FUN_00128480 NONMATCHING
+// FUN_00128480
 void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
                                 s32 alpha)
 {
-    u32 parent = 0x42c80000;
-    s32 i;
+    u32 parent;
+    u32 i;
     s32 value;
     s32 frame;
+    f32 x;
+    f32 y;
 
-    position.x += 32.0f;
-    position.y += 72.0f;
+    x = position.x + 32.0f;
+    y = position.y + 72.0f;
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0:
@@ -2206,13 +2208,13 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
         else if ((value & 0x8000000) != 0) {
             frame = 10;
         }
-        campStatusDrawSpriteCall(parent, DAT_00833B98, frame, (u8)alpha,
-                                 position.x, position.y, scale);
+        campStatusDrawSpriteCall(parent, *(void**)DAT_00833B98_abs, frame, (u8)alpha,
+                                 x, y, scale);
         if (i == 2) {
-            position.x = 162.0f;
+            x = 162.0f;
         }
         else {
-            position.x += 40.0f;
+            x += 40.0f;
         }
     }
 }

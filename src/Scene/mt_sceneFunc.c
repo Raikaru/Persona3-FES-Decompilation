@@ -4455,30 +4455,37 @@ int FUN_003bcda0(int *param_1,int *param_2)
 {
   int matrix;
   int second;
-  RwV3d origin;
-  RwV3d first;
-  RwV3d secondPos;
-  RwV3d firstDelta;
-  RwV3d secondDelta;
+  struct {
+    RwV3d origin;
+    u32 pad0;
+    RwV3d secondDelta;
+    u32 pad1;
+    RwV3d firstDelta;
+    u32 pad2;
+  } vectors;
+  RwMatrix secondPos;
+  RwMatrix first;
+  RwV3d *firstPosition;
+  RwV3d *secondPosition;
 
   matrix = FUN_00198590();
   matrix = FUN_004cb2f0(*(u32 *)(matrix + 4));
-  origin.x = *(float *)(matrix + 0x30);
-  origin.y = *(float *)(matrix + 0x34);
-  origin.z = *(float *)(matrix + 0x38);
+  vectors.origin = ((RwMatrix *)matrix)->pos;
 
   second = *param_2;
   FUN_0034ffc0(*(u32 *)(*param_1 + 0x104),&secondPos);
   FUN_0034ffc0(*(u32 *)(second + 0x104),&first);
+  firstPosition = &secondPos.pos;
+  secondPosition = &first.pos;
 
-  firstDelta.x = first.x - origin.x;
-  firstDelta.y = first.y - origin.y;
-  firstDelta.z = first.z - origin.z;
-  secondDelta.x = secondPos.x - origin.x;
-  secondDelta.y = secondPos.y - origin.y;
-  secondDelta.z = secondPos.z - origin.z;
+  vectors.firstDelta.x = firstPosition->x - vectors.origin.x;
+  vectors.firstDelta.y = firstPosition->y - vectors.origin.y;
+  vectors.firstDelta.z = firstPosition->z - vectors.origin.z;
+  vectors.secondDelta.x = secondPosition->x - vectors.origin.x;
+  vectors.secondDelta.y = secondPosition->y - vectors.origin.y;
+  vectors.secondDelta.z = secondPosition->z - vectors.origin.z;
 
-  return (int)(FUN_004c6ac0(&firstDelta) - FUN_004c6ac0(&secondDelta));
+  return (int)(FUN_004c6ac0(&vectors.firstDelta) - FUN_004c6ac0(&vectors.secondDelta));
 }
 #define FUN_003bcda0(...) ((int (*)(...))FUN_003bcda0)(__VA_ARGS__)
 #undef FUN_003bceb0

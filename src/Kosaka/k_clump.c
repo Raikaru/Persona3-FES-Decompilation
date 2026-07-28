@@ -84,7 +84,7 @@ extern u8 D_00960090_abs[];
 #pragma alias D_007D2D60_abs D_007D2D60
 extern u8 D_007D2D60_abs[];
 extern u32 D_00960184[];
-extern char D_00678C78[];
+extern char D_00678C78;
 #pragma alias D_00678C78_abs D_00678C78
 extern char D_00678C78_abs[];
 extern u32 D_00678C00[];
@@ -1880,27 +1880,34 @@ KwlnTask* func_001a96c0(KwlnTask* parent)
     return task;
 }
 
-// FUN_001a9760 NONMATCHING
+// FUN_001a9760
 void func_001a9760(KwlnTask* task, u32 value, const RwV3d* position, u32 sound, u32 flags)
 {
-    s32* work;
-    RwV3d* dst;
+    typedef struct KClumpSoundWork
+    {
+        s32 header[3];
+        s32 count;
+        u32 values[8];
+        RwV3d positions[8];
+        u32 sounds[8];
+        u32 flags[8];
+    } KClumpSoundWork;
+    KClumpSoundWork* work;
 
     if (task == NULL)
     {
         return;
     }
-    work = (s32*)task->workData;
-    if (work[3] >= 8)
+    work = (KClumpSoundWork*)task->workData;
+    if (work->count >= 8)
     {
-        K_Assert("k_clump.c", 0x260);
+        K_Assert(&D_00678C78, 0x260);
     }
-    work[4 + work[3]] = value;
-    dst = (RwV3d*)((u8*)work + 0x30 + work[3] * 0x0c);
-    *dst = *position;
-    work[0x24 + work[3]] = sound;
-    work[0x2c + work[3]] = flags;
-    work[3]++;
+    work->values[work->count] = value;
+    work->positions[work->count] = *position;
+    work->sounds[work->count] = sound;
+    work->flags[work->count] = flags;
+    work->count++;
 }
 
 // FUN_001a9850 NONMATCHING

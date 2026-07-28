@@ -9901,15 +9901,16 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
   u16 uVar1;
 
-  u8 output[16];
+  u8 matrix[64];
+
+  u8 transform[16];
 
   int iVar5;
 
   float fVar6;
+  float fVar7;
 
-  u8 transform[16];
-
-  u8 matrix[64];  
+  u8 output[16];
 
   __asm__ volatile (
       ".set noreorder                    \n"
@@ -9917,11 +9918,17 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
       "sqc2 vf10, 64(%1)                \n"
       "lqc2 vf11, 0(%1)                 \n"
       "vadd.xyzw vf10, vf10, vf11       \n"
-      "sqc2 vf10, 0(%2)                 \n"
+      ".set reorder"
+      : : "r" (param_2), "r" (param_1)
+      : "vf10", "vf11", "memory"
+  );
+  __asm__ volatile (
+      ".set noreorder                    \n"
+      "sqc2 vf10, 0(%0)                 \n"
       "lqc2 vf10, 80(%1)                \n"
       ".set reorder"
-      : : "r" (param_2), "r" (param_1), "r" (transform)
-      : "vf10", "vf11", "memory"
+      : : "r" (transform), "r" (param_1)
+      : "vf10", "memory"
   );
 
   FUN_00357e30();
@@ -9937,8 +9944,10 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
   );
 
   fVar6 = *(float *)param_1[6] * *(float *)(param_1[7] + 4);
+  iVar5 = *(int *)(param_1[8] + 0xc);
+  fVar7 = 5.0f;
 
-  for (iVar5 = *(int *)(param_1[8] + 0xc); iVar5 != 0; iVar5 = *(int *)(iVar5 + 0xac)) {
+  while (iVar5 != 0) {
 
     __asm__ volatile (
         ".set noreorder             \n"
@@ -9950,11 +9959,12 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
     if ((*(u32 *)(iVar5 + 0x68) & 4) != 0) {
       __asm__ volatile (
           ".set noreorder           \n"
-          "lui $v0, 0x40a0          \n"
+          "mfc1 $v0, %0             \n"
+          "nop                      \n"
           "qmtc2.ni $v0, vf2        \n"
           "vaddx.y vf10, vf0, vf2x  \n"
           ".set reorder"
-          : : : "v0", "vf2", "vf10"
+          : : "f" (fVar7) : "v0", "vf2", "vf10"
       );
     }
 
@@ -9987,10 +9997,13 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
         "vmadday.xyzw ACC, vf29, vf11y         \n"
         "vmaddz.xyzw vf11, vf30, vf11z         \n"
         "vadd.xyzw vf10, vf10, vf11            \n"
-        "sqc2 vf10, 0(%1)                      \n"
         ".set reorder"
-        : : "r" (matrix), "r" (output)
+        : : "r" (matrix)
         : "vf10", "vf11", "vf28", "vf29", "vf30", "vf31", "ACC", "memory"
+    );
+    __asm__ volatile (
+        "sqc2 vf10, 0(%0)"
+        : : "r" (output) : "memory"
     );
 
     uVar1 = *(u16 *)(*(int *)(iVar5 + 0x90) + 4);
@@ -10001,6 +10014,7 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
     }
 
+    iVar5 = *(int *)(iVar5 + 0xac);
   }
 
   return;
@@ -13529,7 +13543,7 @@ u32 FUN_00329a60(void)
   return uVar3;
 }
 
-// FUN_00329BA0 NONMATCHING
+// FUN_00329BA0
 
 
 
@@ -13544,9 +13558,9 @@ float FUN_00329ba0(float param_1)
 
   int camera;
   int matrix;
+  float depth;
   float nearPlane;
   float farPlane;
-  float depth;
   float length;
   float result;
   struct {
@@ -24227,19 +24241,16 @@ void FUN_00335180(int param_1)
 
   u32 *puVar11;
 
-  u8 auStack_70[64];
-
-  u8 scaledAlpha[16];
-
-  u32 uStack_14;
-
-  int iStack_10;
-
-  int iStack_c;
-
-  int iStack_8;
-
-  u32 uStack_4;
+  struct {
+    u8 matrix[64];
+    u8 scaledAlpha[16];
+    u8 reserved[12];
+    u32 packedAlpha;
+    int color;
+    int alpha;
+    int modelAlpha;
+    u32 output;
+  } stack;
 
   
 
@@ -24253,11 +24264,11 @@ void FUN_00335180(int param_1)
 
     iVar2 = *(int *)(iVar1 + 0x38);
 
-    iStack_c = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
+    stack.alpha = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
     fVar5 = DAT_007cae4c;
 
-    iStack_8 = *(int *)(iVar10 + 0x24);
+    stack.modelAlpha = *(int *)(iVar10 + 0x24);
 
     __asm__ volatile (
         ".set noreorder                      \n"
@@ -24282,11 +24293,11 @@ void FUN_00335180(int param_1)
         "sqc2 vf10, 0(%3)                   \n"
         ".set reorder"
         :
-        : "r" (iStack_8), "r" (iStack_c), "f" (fVar5), "r" (scaledAlpha)
+        : "r" (stack.modelAlpha), "r" (stack.alpha), "f" (fVar5), "r" (stack.scaledAlpha)
         : "v0", "vf2", "vf10", "vf11", "memory"
     );
 
-    FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(auStack_70),(s32)(param_1),(f32)(0));
+    FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(stack.matrix),(s32)(param_1),(f32)(0));
 
     for (iVar10 = 0; iVar10 < iVar2; iVar10 = iVar10 + 1) {
 
@@ -24294,9 +24305,8 @@ void FUN_00335180(int param_1)
 
         puVar3 = (u16 *)*puVar11;
 
-        FUN_004cb7f0(*(u32 *)(puVar3 + 6),auStack_70,0);
-
-        iStack_10 = puVar11[2];
+        FUN_004cb7f0(*(u32 *)(puVar3 + 6),stack.matrix,0);
+        stack.color = puVar11[2];
 
         __asm__ volatile (
             ".set noreorder                      \n"
@@ -24318,29 +24328,29 @@ void FUN_00335180(int param_1)
             "ppach %0, $zero, %0                \n"
             "ppacb %0, $zero, %0                \n"
             ".set reorder"
-            : "=r" (uStack_14)
-            : "r" (iStack_10), "f" (fVar5), "r" (scaledAlpha)
+            : "=r" (stack.packedAlpha)
+            : "r" (stack.color), "f" (fVar5), "r" (stack.scaledAlpha)
             : "v0", "vf2", "vf10", "vf11", "memory"
         );
 
-        uStack_4 = uStack_14;
-        uVar6 = (u8)uStack_4;
-        uVar7 = ((u8 *)&uStack_4)[1];
-        uVar8 = ((u8 *)&uStack_4)[2];
+        stack.output = stack.packedAlpha;
+        uVar6 = (u8)stack.output;
+        uVar7 = ((u8 *)&stack.output)[1];
+        uVar8 = ((u8 *)&stack.output)[2];
 
-        if ((*((u8 *)((u8 *)&uStack_4 + 3))) != -1) {
+        if ((*((u8 *)((u8 *)&stack.output + 3))) != -1) {
 
           iVar4 = *(int *)(puVar3 + 10);
 
-          *(u8 *)(iVar4 + 4) = (u8)uStack_4;
+          *(u8 *)(iVar4 + 4) = (u8)stack.output;
 
-          *(u8 *)(iVar4 + 5) = (*((u8 *)((u8 *)&uStack_4 + 1)));
+          *(u8 *)(iVar4 + 5) = (*((u8 *)((u8 *)&stack.output + 1)));
 
-          *(u8 *)(iVar4 + 6) = (*((u8 *)((u8 *)&uStack_4 + 2)));
+          *(u8 *)(iVar4 + 6) = (*((u8 *)((u8 *)&stack.output + 2)));
 
-          *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&uStack_4 + 3)));
+          *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&stack.output + 3)));
 
-          uStack_4 = uStack_14;
+          stack.output = stack.packedAlpha;
 
         }
 
@@ -24356,7 +24366,7 @@ void FUN_00335180(int param_1)
 
           *(u8 *)(iVar4 + 7) = 0xfe;
 
-          ((u8 *)&uStack_4)[3] = 0xff;
+          ((u8 *)&stack.output)[3] = 0xff;
 
         }
 
@@ -25427,19 +25437,16 @@ void FUN_00336630(int param_1)
 
   u32 *puVar11;
 
-  u8 auStack_70[64];
-
-  u8 scaledAlpha[16];
-
-  u32 uStack_14;
-
-  int iStack_10;
-
-  int iStack_c;
-
-  int iStack_8;
-
-  u32 uStack_4;
+  struct {
+    u8 matrix[64];
+    u8 scaledAlpha[16];
+    u8 reserved[12];
+    u32 packedAlpha;
+    int color;
+    int alpha;
+    int modelAlpha;
+    u32 output;
+  } stack;
 
   
 
@@ -25453,11 +25460,11 @@ void FUN_00336630(int param_1)
 
     iVar2 = *(int *)(iVar1 + 0x38);
 
-    iStack_c = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
+    stack.alpha = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
     fVar5 = DAT_007cae4c;
 
-    iStack_8 = *(int *)(iVar10 + 0x24);
+    stack.modelAlpha = *(int *)(iVar10 + 0x24);
 
     __asm__ volatile (
         ".set noreorder                      \n"
@@ -25482,11 +25489,11 @@ void FUN_00336630(int param_1)
         "sqc2 vf10, 0(%3)                   \n"
         ".set reorder"
         :
-        : "r" (iStack_8), "r" (iStack_c), "f" (fVar5), "r" (scaledAlpha)
+        : "r" (stack.modelAlpha), "r" (stack.alpha), "f" (fVar5), "r" (stack.scaledAlpha)
         : "v0", "vf2", "vf10", "vf11", "memory"
     );
 
-    FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(auStack_70),(s32)(param_1),(f32)(iVar10 + 0x10));
+    FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(stack.matrix),(s32)(param_1),(f32)(iVar10 + 0x10));
 
     for (iVar10 = 0; iVar10 < iVar2; iVar10 = iVar10 + 1) {
 
@@ -25494,9 +25501,9 @@ void FUN_00336630(int param_1)
 
         puVar3 = (u16 *)*puVar11;
 
-        FUN_004cb7f0(*(u32 *)(puVar3 + 6),auStack_70,0);
+        FUN_004cb7f0(*(u32 *)(puVar3 + 6),stack.matrix,0);
 
-        iStack_10 = puVar11[6];
+        stack.color = puVar11[6];
 
         __asm__ volatile (
             ".set noreorder                      \n"
@@ -25518,29 +25525,29 @@ void FUN_00336630(int param_1)
             "ppach %0, $zero, %0                \n"
             "ppacb %0, $zero, %0                \n"
             ".set reorder"
-            : "=r" (uStack_14)
-            : "r" (iStack_10), "f" (fVar5), "r" (scaledAlpha)
+            : "=r" (stack.packedAlpha)
+            : "r" (stack.color), "f" (fVar5), "r" (stack.scaledAlpha)
             : "v0", "vf2", "vf10", "vf11", "memory"
         );
 
-        uStack_4 = uStack_14;
-        uVar6 = (u8)uStack_4;
-        uVar7 = ((u8 *)&uStack_4)[1];
-        uVar8 = ((u8 *)&uStack_4)[2];
+        stack.output = stack.packedAlpha;
+        uVar6 = (u8)stack.output;
+        uVar7 = ((u8 *)&stack.output)[1];
+        uVar8 = ((u8 *)&stack.output)[2];
 
-        if ((*((u8 *)((u8 *)&uStack_4 + 3))) != -1) {
+        if ((*((u8 *)((u8 *)&stack.output + 3))) != -1) {
 
           iVar4 = *(int *)(puVar3 + 10);
 
-          *(u8 *)(iVar4 + 4) = (u8)uStack_4;
+          *(u8 *)(iVar4 + 4) = (u8)stack.output;
 
-          *(u8 *)(iVar4 + 5) = (*((u8 *)((u8 *)&uStack_4 + 1)));
+          *(u8 *)(iVar4 + 5) = (*((u8 *)((u8 *)&stack.output + 1)));
 
-          *(u8 *)(iVar4 + 6) = (*((u8 *)((u8 *)&uStack_4 + 2)));
+          *(u8 *)(iVar4 + 6) = (*((u8 *)((u8 *)&stack.output + 2)));
 
-          *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&uStack_4 + 3)));
+          *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&stack.output + 3)));
 
-          uStack_4 = uStack_14;
+          stack.output = stack.packedAlpha;
 
         }
 
@@ -25556,7 +25563,7 @@ void FUN_00336630(int param_1)
 
           *(u8 *)(iVar4 + 7) = 0xfe;
 
-          ((u8 *)&uStack_4)[3] = 0xff;
+          ((u8 *)&stack.output)[3] = 0xff;
 
         }
 
@@ -26577,19 +26584,16 @@ void FUN_003377f0(u32 param_1)
 
   u32 *puVar11;
 
-  u8 auStack_70[64];
-
-  u8 scaledAlpha[16];
-
-  u32 uStack_14;
-
-  int iStack_10;
-
-  int iStack_c;
-
-  int iStack_8;
-
-  u32 uStack_4;
+  struct {
+    u8 matrix[64];
+    u8 scaledAlpha[16];
+    u8 reserved[12];
+    u32 packedAlpha;
+    int color;
+    int alpha;
+    int modelAlpha;
+    u32 output;
+  } stack;
 
   
 
@@ -26603,11 +26607,11 @@ void FUN_003377f0(u32 param_1)
 
     iVar2 = *(int *)(iVar1 + 0x38);
 
-    iStack_c = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
+    stack.alpha = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
 
     fVar5 = DAT_007cae4c;
 
-    iStack_8 = *(int *)(iVar10 + 0x24);
+    stack.modelAlpha = *(int *)(iVar10 + 0x24);
 
     __asm__ volatile (
         ".set noreorder                      \n"
@@ -26632,11 +26636,11 @@ void FUN_003377f0(u32 param_1)
         "sqc2 vf10, 0(%3)                   \n"
         ".set reorder"
         :
-        : "r" (iStack_8), "r" (iStack_c), "f" (fVar5), "r" (scaledAlpha)
+        : "r" (stack.modelAlpha), "r" (stack.alpha), "f" (fVar5), "r" (stack.scaledAlpha)
         : "v0", "vf2", "vf10", "vf11", "memory"
     );
 
-    FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(auStack_70),(s32)(param_1),(f32)(0));
+    FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(stack.matrix),(s32)(param_1),(f32)(0));
 
     for (iVar10 = 0; iVar10 < iVar2; iVar10 = iVar10 + 1) {
 
@@ -26644,9 +26648,9 @@ void FUN_003377f0(u32 param_1)
 
         puVar3 = (u16 *)*puVar11;
 
-        FUN_004cb7f0(*(u32 *)(puVar3 + 6),auStack_70,0);
+        FUN_004cb7f0(*(u32 *)(puVar3 + 6),stack.matrix,0);
 
-        iStack_10 = puVar11[2];
+        stack.color = puVar11[2];
 
         __asm__ volatile (
             ".set noreorder                      \n"
@@ -26668,29 +26672,29 @@ void FUN_003377f0(u32 param_1)
             "ppach %0, $zero, %0                \n"
             "ppacb %0, $zero, %0                \n"
             ".set reorder"
-            : "=r" (uStack_14)
-            : "r" (iStack_10), "f" (fVar5), "r" (scaledAlpha)
+            : "=r" (stack.packedAlpha)
+            : "r" (stack.color), "f" (fVar5), "r" (stack.scaledAlpha)
             : "v0", "vf2", "vf10", "vf11", "memory"
         );
 
-        uStack_4 = uStack_14;
-        uVar6 = (u8)uStack_4;
-        uVar7 = ((u8 *)&uStack_4)[1];
-        uVar8 = ((u8 *)&uStack_4)[2];
+        stack.output = stack.packedAlpha;
+        uVar6 = (u8)stack.output;
+        uVar7 = ((u8 *)&stack.output)[1];
+        uVar8 = ((u8 *)&stack.output)[2];
 
-        if ((*((u8 *)((u8 *)&uStack_4 + 3))) != -1) {
+        if ((*((u8 *)((u8 *)&stack.output + 3))) != -1) {
 
           iVar4 = *(int *)(puVar3 + 10);
 
-          *(u8 *)(iVar4 + 4) = (u8)uStack_4;
+          *(u8 *)(iVar4 + 4) = (u8)stack.output;
 
-          *(u8 *)(iVar4 + 5) = (*((u8 *)((u8 *)&uStack_4 + 1)));
+          *(u8 *)(iVar4 + 5) = (*((u8 *)((u8 *)&stack.output + 1)));
 
-          *(u8 *)(iVar4 + 6) = (*((u8 *)((u8 *)&uStack_4 + 2)));
+          *(u8 *)(iVar4 + 6) = (*((u8 *)((u8 *)&stack.output + 2)));
 
-          *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&uStack_4 + 3)));
+          *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&stack.output + 3)));
 
-          uStack_4 = uStack_14;
+          stack.output = stack.packedAlpha;
 
         }
 
@@ -26706,7 +26710,7 @@ void FUN_003377f0(u32 param_1)
 
           *(u8 *)(iVar4 + 7) = 0xfe;
 
-          ((u8 *)&uStack_4)[3] = 0xff;
+          ((u8 *)&stack.output)[3] = 0xff;
 
         }
 
@@ -45322,11 +45326,11 @@ void FUN_0034cc00(u32 *param_1)
 
   __int128 auVar10;
 
-  float matrixStack [16];
-
   float positionStack [4];
 
   u8 auStack_40[16];
+
+  float matrixStack [16];
 
   float renderStack [16];
 
