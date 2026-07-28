@@ -1061,12 +1061,12 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
             s32 scenarioLevel;
 
             K_ASSERT((*(u16*)(persona_i + 2) >= 0xc0) &&
-                     (*(u16*)(persona_i + 2) < 0xe0), 0x5a4);
+                     (*(u16*)(persona_i + 2) <= 0xdf), 0x5a4);
             scenarioLevel =
-                *(u16*)(DAT_007ce430 +
-                        (u32)*(u16*)(persona_i + 2) * 0x26e - 0x1d280);
-            K_ASSERT(scenarioLevel >= 2 && scenarioLevel < 0xb, 0x5a6);
-            result = *(s32*)(DAT_007ce434 + (u32)scenarioLevel * 0x188 +
+                *(u16*)((u32)*(u16*)(persona_i + 2) * 0x26e +
+                         DAT_007ce430 - 0x1d280);
+            K_ASSERT(scenarioLevel > 1 && scenarioLevel < 0xb, 0x5a6);
+            result = *(s32*)((u32)scenarioLevel * 0x188 + DAT_007ce434 +
                              (u32)(level & 0xffff) * 4 - 0x318);
         }
     }

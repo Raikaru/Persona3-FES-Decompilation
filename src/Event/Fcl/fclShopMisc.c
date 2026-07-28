@@ -17783,8 +17783,6 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   int iVar5;
   int drawX;
   int drawY;
-  int finalX;
-  int finalY;
   int weekDay;
 
   float fVar6;
@@ -17853,9 +17851,9 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   weekDay = (int)clndGetCurrentWeekDay();
 
-  finalX = iVar5 + 0x60;
-  finalY = iVar4 + 1;
-  FUN_0040e3c0_f32(0.0f,finalX,finalY,param_3,0xf,weekDay);
+  drawX = iVar5 + 0x60;
+  drawY = iVar4 + 1;
+  FUN_0040e3c0_f32(0.0f,drawX,drawY,param_3,0xf,weekDay);
 
   return;
 
@@ -18219,9 +18217,11 @@ u32 FUN_00409c80(u32 param_1)
           2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        (entry[2] << 2) < 10000000
-            ? (entry[2] = entry[2] << 2)
-            : (entry[2] = 9999999);
+        if ((entry[2] << 2) < 10000000) {
+          entry[2] = entry[2] << 2;
+        } else {
+          entry[2] = 9999999;
+        }
       }
       entry[3] = FUN_003dfeb0(0);
     }
