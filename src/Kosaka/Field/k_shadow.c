@@ -597,7 +597,8 @@ u32 K_FldShadow_Draw(f32 xLeft, f32 yTop,
 }
 
 #define FLDSHADOW_RING_COLOR ((const RwRGBA*)0x007cc140)
-#define FLDSHADOW_RING_ANGLE_STEP (*(const f32*)0x007caf04)
+extern f32 fGpffff8214;
+#define FLDSHADOW_RING_ANGLE_STEP fGpffff8214
 
 static void K_FldShadow_SubmitFieldResource(ResrcFld* field,
                                              const RwV3d* position,

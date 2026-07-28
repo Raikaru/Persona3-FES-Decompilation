@@ -4405,50 +4405,50 @@ void FUN_002b2060(int param_1)
 {
   int iVar1;
   u16 uVar2;
-  u8 *base;
+  int iVar4;
   u8 *pVar;
   u32 uVarMode;
   int iVar5;
   u8 *pCenter;
 
-  base = (u8 *)(uintptr_t)param_1;
-  iVar1 = *(int *)(base + 0xe0);
-  if ((((iVar1 != 0) && (*(u16 *)(iVar1 + 0x6a) == 1)) && (*(int *)(base + 0x100) != 0)) &&
-     ((*(int *)(base + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
+  iVar4 = (int)param_1;
+  iVar1 = *(int *)(iVar4 + 0xe0);
+  if ((((iVar1 != 0) && (*(u16 *)(iVar1 + 0x6a) == 1)) && (*(int *)(iVar4 + 0x100) != 0)) &&
+     ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
-    if (FUN_002b6bd0((s32)(uintptr_t)(base + 0xec)) != 0) {
-      FUN_002b64d0((BtlCamera*)base,
-                   (struct B64CameraWork*)(base + 0xec));
+    if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
+      FUN_002b64d0((BtlCamera*)iVar4,
+                   (struct B64CameraWork*)(iVar4 + 0xec));
     }
-    pVar = FUN_002b6cd0((s32)(uintptr_t)(base + 0xec));
+    pVar = FUN_002b6cd0(iVar4 + 0xec);
     if (pVar != 0) {
       if (*(u16 *)(pVar + 0x1c) == 1) {
-        if (*(int *)(base + 0x114) != 0) {
-          FUN_002a3e80(0.0f,(u8*)(uintptr_t)*(undefined4 *)(base + 0xe0),
+        if (*(int *)(iVar4 + 0x114) != 0) {
+          FUN_002a3e80(0.0f,(u8*)(uintptr_t)*(undefined4 *)(iVar4 + 0xe0),
                        (u8*)0,(u8*)0,0x81);
         }
-        *(undefined4 *)(base + 0x110) = 1;
+        *(undefined4 *)(iVar4 + 0x110) = 1;
       }
       else {
-        if (*(int *)(base + 0x110) == 1) {
+        if (*(int *)(iVar4 + 0x110) == 1) {
           uVar2 = 3;
         }
         else {
           uVar2 = 0x33;
         }
         uVarMode = uVar2;
-        if (*(int *)(base + 0x114) == 0) {
-          if (FUN_0030b5a0(*(undefined4 *)(*(int *)(*(int *)(base + 0x100) + 0x30) + 0xa2c),0) == 0) {
-            pCenter = *(u8 **)(*(u8 **)(base + 0x100) + 0x30) + 4;
-            FUN_002a3e80(50.0f,(u8*)(uintptr_t)*(undefined4 *)(base + 0xe0),
-                         base + 0x9c,pCenter,uVarMode);
+        if (*(int *)(iVar4 + 0x114) == 0) {
+          if (FUN_0030b5a0(*(undefined4 *)(*(int *)(*(int *)(iVar4 + 0x100) + 0x30) + 0xa2c),0) == 0) {
+            pCenter = *(u8 **)(*(int *)(iVar4 + 0x100) + 0x30) + 4;
+            FUN_002a3e80(50.0f,(u8*)(uintptr_t)*(undefined4 *)(iVar4 + 0xe0),
+                         (u8*)(uintptr_t)(iVar4 + 0x9c),pCenter,uVarMode);
           }
         }
         else {
-          FUN_002a3e80(0.0f,(u8*)(uintptr_t)*(undefined4 *)(base + 0xe0),
+          FUN_002a3e80(0.0f,(u8*)(uintptr_t)*(undefined4 *)(iVar4 + 0xe0),
                        (u8*)0,(u8*)0,uVarMode);
         }
-        *(undefined4 *)(base + 0x110) = 0;
+        *(undefined4 *)(iVar4 + 0x110) = 0;
       }
     }
   }

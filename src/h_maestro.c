@@ -678,10 +678,10 @@ KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
         return NULL;
     }
 
-    for (i = 0; i < 4; i++)
-    {
-        work->dimensions[i] = ((s16*)&dimensions)[i];
-    }
+    work->dimensions[0] = ((s16*)&dimensions)[0];
+    work->dimensions[1] = ((s16*)&dimensions)[1];
+    work->dimensions[2] = ((s16*)&dimensions)[2];
+    work->dimensions[3] = ((s16*)&dimensions)[3];
     sprintf(name, D_005D6A80, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     printf(D_005D6AA0, name);
     strcpy(work->basePath, D_005D6AB8);

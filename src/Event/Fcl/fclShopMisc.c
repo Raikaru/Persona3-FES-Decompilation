@@ -19031,8 +19031,10 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
   int x;
   int y;
   int alpha;
-  int work;
+  u8 *work;
   int rowY;
+  int drawX;
+  int drawY;
   int i;
 
   x = *(short *)(param_2 + 0x14);
@@ -19041,7 +19043,7 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
   if (alpha != 0) {
     switch (*(int *)(param_2 + 0x10)) {
     case 0xb:
-      work = *(int *)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
+      work = *(u8 **)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa0,0);
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa1,0);
       for (i = 0; i < 9; i = i + 1) {
@@ -19051,19 +19053,25 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
       }
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa4,0);
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa5,0);
-      FUN_003c7e20_f32(0.0f,x + 0x16c,y + 0x77,alpha | 0xffffff00,
+      drawX = x + 0x16c;
+      drawY = y + 0x77;
+      FUN_003c7e20_f32(0.0f,drawX,drawY,alpha | 0xffffff00,
                        1,6,4,*(u16 *)(*(int *)(work + 4) + 2));
       break;
 
     case 0xc:
-      work = *(int *)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
+      work = *(u8 **)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0x9e,0);
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0x9f,0);
+      drawX = x + 0x15d;
+      drawY = y + 0x4d;
       FUN_0040e3c0_f32(
-          0.0f,x + 0x15d,y + 0x4d,alpha,0x9d,
-          ((u8 *)iGpffffb730)[*(u16 *)(*(int *)(work + 4) + 2) * 0x10 + 2] * 2 - 1);
+          0.0f,drawX,drawY,alpha,0x9d,
+          (((u8 *)iGpffffb730)[*(u16 *)(*(int *)(work + 4) + 2) * 0xe + 2] - 1) * 2 + 1);
+      drawX = x + 0x1af;
+      drawY = y + 0x48;
       FUN_003b32d0_f32(
-          0.0f,x + 0x1af,y + 0x48,0xffffffff,5,1,
+          0.0f,drawX,drawY,0xffffffff,5,1,
           (u8 *)iGpffffb7f4 + *(u16 *)(*(int *)(work + 4) + 2) * 0x11,0,0x78);
       break;
     }

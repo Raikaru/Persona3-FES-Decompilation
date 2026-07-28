@@ -649,12 +649,14 @@ void FUN_002441b0(u32 param_1)
     if ((*puVar2 & 4) != 0) {
       FUN_00244e80();
     }
-    if (*(char *)(iVar4 + 0xa2) == '\x01') {
-      uVar1 = *(ushort *)(*(int *)(iVar4 + 0xa2c) + 2);
-      unaff_s1_lo = DAT_007ce4e8 + (uint)uVar1 * 0x12 + (uint)uVar1;
-    }
-    else if (*(char *)(iVar4 + 0xa2) == '\0') {
+    switch (*(u8 *)(iVar4 + 0xa2)) {
+    case 0:
       unaff_s1_lo = func_001775a0(*(u16 *)(*(int *)(iVar4 + 0xa2c) + 2));
+      break;
+    case 1:
+      uVar1 = *(ushort *)(*(int *)(iVar4 + 0xa2c) + 2);
+      unaff_s1_lo = DAT_007ce4e8 + (uint)uVar1 * 0x13;
+      break;
     }
     func_003b0e70(1);
     func_003b0e90(2);
@@ -690,18 +692,21 @@ void FUN_002441b0(u32 param_1)
   }
   FUN_00245a00();
   uVar5 = puVar2[1];
-  if (uVar5 == 2) {
+  switch (uVar5) {
+  case 0:
+  case 1:
+    for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
+      FUN_00245910(FUN_00245bf0(puVar2[iVar4 + 4]));
+    }
+    break;
+  case 2:
     for (iVar4 = 0; iVar4 < (int)puVar2[3]; iVar4 = iVar4 + 1) {
       if ((puVar2[iVar4 * 0x290 + 0x12] == puVar2[4]) ||
          ((puVar2[iVar4 * 0x290 + 0x10] & 0x80) != 0)) {
         FUN_00245910(puVar2 + iVar4 * 0x290 + 0x10);
       }
     }
-  }
-  else if ((uVar5 == 1) || (uVar5 == 0)) {
-    for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-      FUN_00245910(FUN_00245bf0(puVar2[iVar4 + 4]));
-    }
+    break;
   }
   *puVar2 = *puVar2 | 1;
   return;

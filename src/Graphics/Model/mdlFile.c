@@ -31174,7 +31174,7 @@ void FUN_0033b2a0(int param_1)
 
 void FUN_0033bbe0(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
@@ -31189,7 +31189,7 @@ void FUN_0033bbe0(int param_1)
 
   iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
