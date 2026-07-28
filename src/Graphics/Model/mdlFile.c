@@ -2857,7 +2857,7 @@ int FUN_0031e300(u32 *param_1)
 
 
 
-// FUN_0031E310 NONMATCHING
+// FUN_0031E310
 
 
 int mdlFileSelectCacheSlot(u32 param_1,u32 param_2)
@@ -2869,8 +2869,8 @@ int mdlFileSelectCacheSlot(u32 param_1,u32 param_2)
   u8 *table;
   s32 bestIndex;
   u32 bestValue;
-  u32 candidateIndex;
   u32 candidateValue;
+  u32 candidateIndex;
   u8 *candidateTable;
   u32 currentValue;
   u32 offset;
@@ -29715,29 +29715,29 @@ void FUN_0033a220(int param_1)
     colourStack[2] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50((u32)iVar3);
     colourStack[3] = colourStack[0];
-    if (((u8 *)colourStack)[15] != 0xff) {
+    if (((RwRGBA *)&colourStack[3])->a != 0xff) {
       dest = *(int *)(puVar2 + 10);
-      red = ((u8 *)colourStack)[12];
-      green = ((u8 *)colourStack)[13];
-      blue = ((u8 *)colourStack)[14];
-      alpha = ((u8 *)colourStack)[15];
+      red = ((RwRGBA *)&colourStack[3])->r;
+      green = ((RwRGBA *)&colourStack[3])->g;
+      blue = ((RwRGBA *)&colourStack[3])->b;
+      alpha = ((RwRGBA *)&colourStack[3])->a;
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
     }
     else {
-      ((u8 *)colourStack)[15] = 0xfe;
+      ((RwRGBA *)&colourStack[3])->a = 0xfe;
       dest = *(int *)(puVar2 + 10);
-      red = ((u8 *)colourStack)[12];
-      green = ((u8 *)colourStack)[13];
-      blue = ((u8 *)colourStack)[14];
-      alpha = ((u8 *)colourStack)[15];
+      red = ((RwRGBA *)&colourStack[3])->r;
+      green = ((RwRGBA *)&colourStack[3])->g;
+      blue = ((RwRGBA *)&colourStack[3])->b;
+      alpha = ((RwRGBA *)&colourStack[3])->a;
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
-      ((u8 *)colourStack)[15] = 0xff;
+      ((RwRGBA *)&colourStack[3])->a = 0xff;
     }
     FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
@@ -43198,9 +43198,9 @@ void FUN_00349090(int *param_1,float *param_2)
 
   int iVar5;
 
-  u32 converted;
+  u8 uVar6;
 
-  u32 uVar6;
+  u32 converted;
 
   float fVar7;
 
@@ -43359,87 +43359,53 @@ void FUN_00349260(int param_1,float *param_2)
 
 
 void FUN_00349450(int *param_1,float *param_2)
-
-
-
 {
-
   int iVar1;
-
-  union { RwRGBA rgba; u32 packed; } uVar2;
-
+  union { RwRGBA rgba; u32 packed; } colour;
   u32 uVar3;
-
   int *piVar4;
-
   int iVar5;
-
   u8 uVar6;
-
+  u32 converted;
   float fVar7;
-
-  
+  float alpha;
+  float wave;
 
   piVar4 = param_1;
-
   iVar1 = *piVar4;
-
-  uVar2.packed = (u32)piVar4[3];
-
+  colour.packed = (u32)piVar4[3];
+  alpha = (float)colour.rgba.a;
   for (iVar5 = 0; iVar5 < iVar1; iVar5 = iVar5 + 1) {
-
     if (*(int *)param_2 == 0) {
-
-      if (fGpffff8168 < param_2[1]) {
-
+      if (param_2[1] > fGpffff8168) {
         FUN_00349260((int)param_1,param_2);
-
       }
-
       fVar7 = FUN_0052e878_f32(param_2[1]);
-
-      param_2[6] = (float)piVar4[6] * fVar7 + 1.0f;
-
+      param_2[6] = ((float *)piVar4)[6] * fVar7 + 1.0f;
       uVar3 = FUN_00530da0_f32_u32(param_2[1]);
       uVar3 = FUN_0052e118_u32(uVar3);
       uVar3 = FUN_005311c8_u32(uGpffff8010,uVar3);
       uVar3 = FUN_00531230_u32(uGpffff8018,uVar3);
-
-      fVar7 = FUN_005318a0_f32(uVar3);
-
-      fVar7 = (float)uVar2.rgba.a * fVar7;
-
-      if (fVar7 < 2.1474836e+09f) {
-
-        uVar6 = (u8)(int)fVar7;
-
+      wave = FUN_005318a0_f32(uVar3);
+      fVar7 = alpha * wave;
+      if (!(2.1474836e+09f <= fVar7)) {
+        converted = (u32)(int)fVar7;
+        uVar6 = (u8)converted;
       }
-
       else {
-
-        uVar6 = (u8)(int)(fVar7 - 2.1474836e+09f);
-
+        converted = (u32)(int)(fVar7 - 2.1474836e+09f) | 0x80000000;
+        uVar6 = (u8)converted;
       }
-
       *((u8 *)param_2 + 0xf) = uVar6;
-
-      param_2[1] = param_2[1] + (float)piVar4[2];
-
+      param_2[1] = param_2[1] + ((float *)piVar4)[2];
     }
-
     else {
-
       *((u8 *)param_2 + 0xf) = 0;
       *(int *)param_2 = *(int *)param_2 + -1;
-
     }
-
     param_2 = param_2 + 0xd;
-
   }
-
   return;
-
 }
 
 

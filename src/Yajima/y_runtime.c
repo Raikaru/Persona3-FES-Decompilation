@@ -12022,28 +12022,22 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   };
   RwV2d position;
   float y;
-  int cVar1;
-  int cVar2;
-  int index;
+  char cVar1;
+  char cVar2;
   int iVar3;
   int iVar4;
-  u8 *table;
-  struct CoordinateValues *coordinateBase;
   
-  index = (int)param_3 * 4;
-  table = iGpffffb9fc_ptr;
-  cVar1 = *(s8 *)(table + index + 4);
-  coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
-  iVar3 = coordinateBase->y;
+  cVar1 = *(s8 *)((int)param_3 * 4 + (int)iGpffffb9fc_ptr + 4);
+  iVar3 = ((struct CoordinateValues *)DAT_006b4796_abs)->y;
   iVar3 = iVar3 - (cVar1 - 1) * 0x40;
   cVar2 = *(s8 *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
   y = (float)iVar3;
-  for (iVar4 = 0; iVar4 < *(char *)(table + 0xa0); iVar4 = iVar4 + 1) {
+  for (iVar4 = 0; iVar4 < *(char *)(iGpffffb9fc_ptr + 0xa0); iVar4 = iVar4 + 1) {
   }
   position.y = y - 32.0f;
-  position.x = (float)coordinateBase->x;
+  position.x = (float)((struct CoordinateValues *)DAT_006b4796_abs)->x;
   *(RwV2d *)param_1 = position;
   return;
 }

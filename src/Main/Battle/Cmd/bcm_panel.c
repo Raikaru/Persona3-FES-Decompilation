@@ -3287,7 +3287,11 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    alphaInt = (u32)alpha & 0xff;
+    if (alpha < 2147483648.0f) {
+        alphaInt = (s32)alpha & 0xff;
+    } else {
+        alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+    }
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6a00, color);
  
@@ -3301,7 +3305,11 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    alphaInt = (u32)alpha & 0xff;
+    if (alpha < 2147483648.0f) {
+        alphaInt = (s32)alpha & 0xff;
+    } else {
+        alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+    }
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6b00, color);
  
@@ -3316,7 +3324,11 @@ void FUN_0022C2D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    alphaInt = (u32)alpha & 0xff;
+    if (alpha < 2147483648.0f) {
+        alphaInt = (s32)alpha & 0xff;
+    } else {
+        alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
+    }
     color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6c00, color);
 }
