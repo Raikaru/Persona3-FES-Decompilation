@@ -906,7 +906,7 @@ static void fldFrameMoveAppend(FldFrameMoveWork* work,
 /* Removing this worsens FUN_001ae480 (nd16 -> nd101) - measured W161. */
 #pragma opt_loop_invariants on
 
-// FUN_001ae480 NONMATCHING
+// FUN_001ae480
 u32 func_001ae480(KwlnTask* task)
 {
     FldFrameMoveWork* work;
@@ -925,27 +925,8 @@ u32 func_001ae480(KwlnTask* task)
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
-            s32 j;
-            u8* pointBase;
-            u32* source;
-            u32* destination;
-            pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);
-            source = (u32*)(pointBase + 0x38);
-            destination = (u32*)(pointBase + 0x20);
-            j = 3;
-
-            do
-            {
-                u32 value0 = source[0];
-                u32 value1 = source[1];
-
-                source += 2;
-                j--;
-                destination[0] = value0;
-                destination[1] = value1;
-                destination += 2;
-            } while (j > 0);
-            *(u32*)(pointBase + 0x4c) = 0;
+            work->points[i] = work->points[i + 1];
+            work->points[i + 1].drawTask = NULL;
         }
         return true;
     }

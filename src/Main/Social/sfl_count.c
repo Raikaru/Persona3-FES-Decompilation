@@ -129,8 +129,6 @@ void FUN_0025b690(void)
     s32 var_3;
     s32 var_3_2;
     s32 var_3_3;
-    u32 var_3_4;
-    u32 var_3_5;
     u8* resource;
     u8* temp_2_4;
     SflCountStack stack;
@@ -165,11 +163,10 @@ void FUN_0025b690(void)
         }
         for (iVar5 = 0; iVar5 < 3; iVar5++) {
             resource = (u8*)FUN_0020e610(iVar5);
-            temp_f0 = fGpffff83c4;
             fVar6 = (f32)*(s32*)(resource + 0xc);
             fVar7 = (f32)*(s32*)(resource + 0x10);
-            fVar6 = fVar6 * temp_f0;
-            fVar7 = fVar7 * temp_f0;
+            fVar6 = fGpffff83c4 * fVar6;
+            fVar7 = fGpffff83c4 * fVar7;
             stack.sp80 = 236.0f;
             stack.sp84 = 196.0f;
             stack.sp88 = 236.0f + fVar6;
@@ -236,24 +233,12 @@ void FUN_0025b690(void)
             stack.spAE = 0xff;
             fVar7 = 255.0f * var_f1 * fVar8;
             temp_f1 = 0.25f * fVar7;
-            if (2147483648.0f <= temp_f1) goto alpha1_high;
-            var_3_4 = (s32)temp_f1 & 0xff;
-            goto alpha1_done;
-alpha1_high:
-            var_3_4 = ((s32)(temp_f1 - 2147483648.0f) | 0x80000000) & 0xff;
-alpha1_done:
-            stack.spAF = var_3_4;
+            stack.spAF = (u8)temp_f1;
             FUN_0021d950(puVar2 + iVar5 * 0x40 + 4, &stack.spAC);
             stack.spAC = 0xff;
             stack.spAD = 0xff;
             stack.spAE = 0xff;
-            if (2147483648.0f <= fVar7) goto alpha2_high;
-            var_3_5 = (s32)fVar7 & 0xff;
-            goto alpha2_done;
-alpha2_high:
-            var_3_5 = ((s32)(fVar7 - 2147483648.0f) | 0x80000000) & 0xff;
-alpha2_done:
-            stack.spAF = var_3_5;
+            stack.spAF = (u8)fVar7;
             FUN_0021d950(puVar2 + iVar5 * 0x40 + 0xc4, &stack.spAC);
         }
     }

@@ -3637,9 +3637,9 @@ void FUN_003bbb90(const float *param_1,float *param_2)
   }
   else {
     afStack_20[1] = 0.0f;
-    uVar1 = FUN_00530da0_scene(afStack_20[2] * source.z +
-                         afStack_20[0] * ((float *)&source.xy)[0] +
-                         afStack_20[1] * ((float *)&source.xy)[1]);
+    uVar1 = FUN_00530da0_scene(afStack_20[0] * ((float *)&source.xy)[0] +
+                         afStack_20[1] * ((float *)&source.xy)[1] +
+                         afStack_20[2] * source.z);
     uVar1 = FUN_0052e9a0_scene_typed(uVar1);
     fVar2 = FUN_005318a0_scene_typed(uVar1);
     fVar2 = fGpffff8228 * fVar2;
@@ -3839,11 +3839,11 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
   else {
     param_2 = param_2 / param_1;
   }
-  pfVar1 = (float *)FUN_003b55b0(param_3);
   auStack[0] = 1;
   *(u32 *)(auStack + 4) = 0;
   *(u32 *)(auStack + 8) = 0;
   *(u32 *)(auStack + 0xc) = 0;
+  pfVar1 = (float *)FUN_003b55b0(param_3);
   *(float *)(auStack + 0x10) = pfVar1[0];
   *(float *)(auStack + 0x14) = pfVar1[2];
   *(u32 *)(auStack + 0x18) = 0;

@@ -547,7 +547,6 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
   u32 base;
   u32 outer16;
   u32 inner16;
-  u32 pixelOffset;
 
   u8 rawByte;
 
@@ -606,19 +605,18 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
       while ((int)uVar7 < 0x20) {
         inner16 = uVar7 & 0xffff;
 
-        pixelOffset = (u32)puVar6[inner16 & 0xf] +
-                      (base + ((int)inner16 >> 4) * 0x20 & 0xffffU);
-        uVar9 = pixelOffset & 0xffff;
+        uVar9 = ((u32)puVar6[inner16 & 0xf] +
+                (base + ((int)inner16 >> 4) * 0x20 & 0xffffU)) & 0xffff;
         pbVar11 = (u8 *)(iVar4 + ((int)uVar9 >> 1));
         uVar10 = *src >> ((uVar7 & 1) << 2);
+        rawByte = (u8)uVar10 & 0xf;
+        if ((uVar9 & 1) == 0) {
 
-        if ((pixelOffset & 1) == 0) {
-
-          *pbVar11 = (u8)uVar10 & 0xf;
+          *pbVar11 = rawByte;
         }
         else {
 
-          *pbVar11 = *pbVar11 | (u8)((uVar10 & 0xf) << 4);
+          *pbVar11 = *pbVar11 | (u8)(rawByte << 4);
         }
 
         if ((uVar7 & 1) != 0) {

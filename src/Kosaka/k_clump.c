@@ -184,7 +184,7 @@ static u32 kclump_render_item(KClumpMaterialNode* item, u32 callbackFlag)
     }
     if (item->enabled == 1)
     {
-        D_00960090(0xe);
+        D_00960090(0xe, 1);
     }
     return 1;
 }
@@ -955,7 +955,7 @@ void func_001a7910(void* object, f32* scale)
     }
 }
 
-// FUN_001a7b50 NONMATCHING
+// FUN_001a7b50
 void func_001a7b50(void* state, u32 mode)
 {
     KClumpMaterialNode* item;
@@ -973,7 +973,7 @@ void func_001a7b50(void* state, u32 mode)
         void (**renderState)(u32, ...);
 
         renderState = (void (**)(u32, ...))D_00960090_abs;
-        (*renderState)(6);
+        (*renderState)(6, 1);
         (*renderState)(8, 1);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
@@ -997,7 +997,7 @@ void func_001a7b50(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;
@@ -1028,7 +1028,7 @@ void func_001a7b50(void* state, u32 mode)
                     }
                     if (item->enabled == 1)
                     {
-                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
                     }
                 }
             }
@@ -1040,7 +1040,7 @@ void func_001a7b50(void* state, u32 mode)
         void (**renderState)(u32, ...);
 
         renderState = (void (**)(u32, ...))D_00960090_abs;
-        (*renderState)(6);
+        (*renderState)(6, 1);
         (*renderState)(8, 0);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
@@ -1063,7 +1063,7 @@ void func_001a7b50(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;
@@ -1073,7 +1073,7 @@ void func_001a7b50(void* state, u32 mode)
         void (**renderState)(u32, ...);
 
         renderState = (void (**)(u32, ...))D_00960090_abs;
-        (*renderState)(6);
+        (*renderState)(6, 1);
         (*renderState)(8, 1);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
@@ -1096,7 +1096,7 @@ void func_001a7b50(void* state, u32 mode)
             }
             if (item->enabled == 1)
             {
-                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
             }
         }
         item = item->next;
@@ -1149,7 +1149,7 @@ void func_001a7fc0(void* state, u32 mode)
                     }
                     if (item->enabled == 1)
                     {
-                        D_00960090(0xe);
+                        D_00960090(0xe, 1);
                     }
                 }
             }
@@ -1504,7 +1504,7 @@ void func_001a8b10(u32* entries)
             }
             if (item->enabled == 1)
             {
-                D_00960090(0xe);
+                D_00960090(0xe, 1);
             }
         }
     }
