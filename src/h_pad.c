@@ -511,6 +511,7 @@ void H_Pad_RwFreeRaw(void* memory)
     }
 }
 
+#pragma sdatathreshold 10
 // FUN_00103DA0 NONMATCHING
 void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 {
@@ -519,7 +520,7 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 
     if (size == 0xAC)
     {
-        printf(&D_005CEAE0_gp);
+        printf("CHECK !!\n");
     }
 
     sRwAllocatedBytes += size;
@@ -560,6 +561,7 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
     allocation->hint = sRwAllocationHint;
     return allocation + 1;
 }
+#pragma sdatathreshold 8
 
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)

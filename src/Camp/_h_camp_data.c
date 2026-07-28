@@ -201,8 +201,6 @@ extern u32 FUN_0040eb50();
 extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
                             const char* text, s32 maxWidth);
 extern u32 FUN_00521250();
-#pragma alias campDataCopy FUN_00521250
-extern void campDataCopy(void* destination, const void* source, u32 size);
 extern u32 FUN_00523ac8();
 
 extern void* func_00133780(KwlnTask* task);
@@ -1287,7 +1285,7 @@ void FUN_00169110(u16 param_1, CampFloatPair param_2,
 {
     f32 depth;
     f32* depthBase;
-    register s32 inverseAlpha;
+    s32 inverseAlpha;
     CampFloatPair drawPosition;
 
     inverseAlpha = 0xff - param_4;
@@ -2232,7 +2230,6 @@ void FUN_0016c1d0(void)
     u8 fileSizeScratch[4];
     void* cdvd;
     void* resource;
-    u32 copySize;
     s32 i;
 
     helpPaths = *(CampHelpPaths*)PTR_s_help_datWeaponHelp_bmd_005e31d0;
@@ -2246,13 +2243,13 @@ void FUN_0016c1d0(void)
     FUN_001023a0(DAT_007cdfe8 =
         (void*)(uintptr_t)FUN_00100d80(D_005E3200, 0));
     cdvd = DAT_007cdfe8;
-    copySize = *(u32*)((u8*)cdvd + 0x118);
-    campDataCopy(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110), copySize);
+    FUN_00521250(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110),
+                 *(u32*)((u8*)cdvd + 0x118));
     FUN_00100ec0(DAT_007cdfe8);
     FUN_0016c2f0();
 }
 
-// FUN_0016C2F0 NONMATCHING
+// FUN_0016C2F0
 void FUN_0016c2f0(void)
 {
     u8* data;
@@ -2324,8 +2321,9 @@ void FUN_0016c2f0(void)
         u32 i;
 
         entry = (s32*)(p + 0x10);
+        i = 0;
         output = DAT_0083aaa0;
-        for (i = 0; i < 0x23; i++) {
+        for (; i < 0x23; i++) {
             output[i] = (u32)entry;
             entry += 8;
         }
