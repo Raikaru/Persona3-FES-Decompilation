@@ -892,7 +892,7 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 extern void FUN_003b4b40_direct(s32* positions, u32* colors, u8* positionIndices,
                                 u8* colorIndices, u64 param_5, u64 param_6);
 #undef FUN_003b4d10
-// FUN_003B4D10 NONMATCHING
+// FUN_003B4D10
 
 
 void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5

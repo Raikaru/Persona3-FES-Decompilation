@@ -21617,7 +21617,6 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   int iVar1;
 
-  u32 type;
 
   
 
@@ -21631,9 +21630,8 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   }
 
-  type = param_2;
 
-  switch(type) {
+  switch((u32)param_2) {
   case 1:
 
     FUN_00326cf0_2(param_1[0xb],*param_1);
@@ -23754,31 +23752,16 @@ u32 FUN_00334390(int param_1)
 
       fVar16 = (float)(uVar5 >> 0x18) * fVar13;
 
-      if (2.1474836e+09f <= fVar16) {
-
-        fVar16 = fVar16 - 2.1474836e+09f;
-
-      }
 
       *puVar8 = (u32)(((u64)uVar5 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
 
       fVar16 = (float)(uVar4 >> 0x18) * fVar13;
 
-      if (2.1474836e+09f <= fVar16) {
-
-        fVar16 = fVar16 - 2.1474836e+09f;
-
-      }
 
       puVar8[1] = (u32)(((u64)uVar4 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
 
       fVar13 = (float)(uVar3 >> 0x18) * fVar13;
 
-      if (2.1474836e+09f <= fVar13) {
-
-        fVar13 = fVar13 - 2.1474836e+09f;
-
-      }
 
       puVar8[2] = (u32)(((u64)uVar3 << 0x28) >> 0x28) | (int)fVar13 << 0x18;
 

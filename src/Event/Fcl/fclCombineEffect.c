@@ -146,10 +146,8 @@ f32 DAT_006b2ee0;
 u64 DAT_006b2ee8;
 u32 DAT_006b2ef0;
 u32 DAT_006b2f00;
-u32 DAT_006b2f18;
-u32 DAT_006b2f20;
-u32 DAT_006b2f28;
-u32 DAT_006b2f30;
+RwV3d DAT_006b2f18;
+RwV3d DAT_006b2f28;
 u32 DAT_006b2f40;
 u64 DAT_006b2f68;
 u32 DAT_006b2f70;
@@ -2571,7 +2569,7 @@ u32 FUN_0041a2c0(int param_1, int* param_2)
     return 1;
 }
 
-// FUN_0041A310 NONMATCHING
+// FUN_0041A310
 
 
 u32 FUN_0041a310(u64 param_1,int param_2)
@@ -2586,13 +2584,9 @@ u32 FUN_0041a310(u64 param_1,int param_2)
 
   int iVar3;
 
-  u64 uStack_20;
+  RwV3d uStack_10;
 
-  u32 uStack_18;
-
-  u64 uStack_10;
-
-  u32 uStack_8;
+  RwV3d uStack_20;
 
   
 
@@ -2600,19 +2594,15 @@ u32 FUN_0041a310(u64 param_1,int param_2)
 
   uStack_10 = DAT_006b2f18;
 
-  uStack_8 = DAT_006b2f20;
-
   uStack_20 = DAT_006b2f28;
-
-  uStack_18 = DAT_006b2f30;
 
   for (iVar3 = 0; iVar3 < *(int *)(iVar1 + 4); iVar3 = iVar3 + 1) {
 
     iVar2 = *(int *)(*(int *)(iVar1 + iVar3 * 4 + 8) + 8);
 
-    FUN_004bdde0(0x420c0000,iVar2 + 0x10,&uStack_10,0);
+    FUN_004bdde0_fcl(35.0f,iVar2 + 0x10,&uStack_10,0);
 
-    FUN_004bdde0(0x43340000,iVar2 + 0x10,&uStack_20,1);
+    FUN_004bdde0_fcl(180.0f,iVar2 + 0x10,&uStack_20,1);
 
   }
 

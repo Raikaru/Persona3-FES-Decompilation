@@ -8,6 +8,8 @@ typedef struct {
   int menuId;
   u32 _pad_dc;
   u32 menuArg;
+  u8 _pad_e4[0x860];
+  u32 resourceHandles[7];
 } EvtMenuState;
 typedef struct {
   f32 x;
@@ -5694,16 +5696,13 @@ s32 FUN_00374af0(s32 param_1,s32 param_2,s32 param_3)
   int iVar3;
   int iVar4;
   int callCount;
-  s32 direction;
-  code *callback;
 
   iVar3 = param_3;
   iVar4 = 0xd;
   iVar1 = FUN_003b5df0(*(u32 *)(iVar3 + 0x660));
-  callback = (code *)FUN_003747a0;
   callCount = iVar1 + 1;
   FUN_0036f900(param_1,param_2,0xc,0xd,*(u32 *)(iVar3 + 0x108),callCount,param_3,0,
-               callback);
+               (code *)FUN_003747a0);
   if (*(int *)(iVar3 + 0xd4) != 10) {
     return 0;
   }
@@ -5715,10 +5714,9 @@ s32 FUN_00374af0(s32 param_1,s32 param_2,s32 param_3)
   FUN_003625e0_i(param_3);
   callCount = iVar1 + 1;
   FUN_0036f680(iVar3 + 0x108,iVar3 + 0x110,callCount,iVar4,0,0x4000,0x1000);
-  direction = 1;
-  FUN_0036f680(0,0,direction,direction,0,0x2000,0x8000);
+  FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
   if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
-    result = direction;
+    result = 1;
   }
   else if ((*(u16 *)DAT_007e094e_abs & 0x20) != 0) {
     result = -1;
@@ -18541,7 +18539,7 @@ u32 FUN_00385860(int param_1,u32 param_2,u32 param_3,u32 param_4,EvtMenuState *p
 
 #pragma alias FUN_001005b0_evt FUN_001005b0
 extern u32 FUN_001005b0_evt(f32 scale,u32 resource,u64 flags,void *params,u32 color);
-// FUN_003858C0 NONMATCHING
+// FUN_003858C0
 
 
 void FUN_003858c0(int param_1)
@@ -18552,7 +18550,6 @@ void FUN_003858c0(int param_1)
 
   u32 *puVar1;
 
-  u32 uVar2;
 
   int iVar3;
 
@@ -18580,13 +18577,12 @@ void FUN_003858c0(int param_1)
 
 
   for (iVar3 = 0; iVar3 < 7; iVar3 = iVar3 + 1) {
-    u32 *puVar4;
-    puVar4 = (u32 *)(param_1 + 0x944);
-    uVar2 = (puVar4[iVar3] = FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),
-                                       *(u64 *)(auStack_20 + 4),
-                                       &auStack_20[0],auStack_20[7]));
+    ((EvtMenuState *)param_1)->resourceHandles[iVar3] =
+        FUN_001005b0_evt(2.0f,*(u32 *)(param_1 + 0x92c),
+                         *(u64 *)(auStack_20 + 4),
+                         &auStack_20[0],auStack_20[7]);
 
-    puVar1 = (u32 *)FUN_00100570(uVar2);
+    puVar1 = (u32 *)FUN_00100570(((EvtMenuState *)param_1)->resourceHandles[iVar3]);
 
     *puVar1 = 0;
 
@@ -19238,19 +19234,15 @@ u32 FUN_00386430(int param_1,u16 param_2,u32 param_3)
   {
     u16 *puVar3;
     u16 *table;
-    s32 count;
     puVar3 = (u16 *)FUN_003b5d50(3);
     table = (u16 *)DAT_00958850_abs;
     while (puVar3 != NULL) {
+      s32 count;
       count = DAT_007ce60c;
       if (count >= 0x1e) {
         break;
       }
-      {
-        u16 value;
-        value = *puVar3;
-        table[count] = value;
-      }
+      table[count] = *puVar3;
       DAT_007ce60c = count + 1;
       puVar3 = *(u16 **)(puVar3 + 0x7c);
     }
@@ -19259,19 +19251,15 @@ u32 FUN_00386430(int param_1,u16 param_2,u32 param_3)
   {
     u16 *puVar3;
     u16 *table;
-    s32 count;
     puVar3 = (u16 *)FUN_003b5d50(1);
     table = (u16 *)DAT_00958850_abs;
     while (puVar3 != NULL) {
+      s32 count;
       count = DAT_007ce60c;
       if (count >= 0x1e) {
         break;
       }
-      {
-        u16 value;
-        value = *puVar3;
-        table[count] = value;
-      }
+      table[count] = *puVar3;
       DAT_007ce60c = count + 1;
       puVar3 = *(u16 **)(puVar3 + 0x7c);
     }

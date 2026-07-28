@@ -1451,9 +1451,9 @@ u32 FUN_00425690(int param_1)
 
   int lVar10;
 
-  float ambientColor[4];
+  YajimaVec4 ambientColor;
 
-  float directionalColor[4];
+  YajimaVec4 directionalColor;
 
   float auStack_70[16];
 
@@ -1470,17 +1470,11 @@ u32 FUN_00425690(int param_1)
 
   iVar5 = kwlnGetAmbientLight();
 
-  ambientColor[0] = *(float *)(iVar5 + 0x18);
-  ambientColor[1] = *(float *)(iVar5 + 0x1c);
-  ambientColor[2] = *(float *)(iVar5 + 0x20);
-  ambientColor[3] = *(float *)(iVar5 + 0x24);
+  ambientColor = *(YajimaVec4 *)(iVar5 + 0x18);
 
   iVar5 = kwlnGetDirectionalLight();
 
-  directionalColor[0] = *(float *)(iVar5 + 0x18);
-  directionalColor[1] = *(float *)(iVar5 + 0x1c);
-  directionalColor[2] = *(float *)(iVar5 + 0x20);
-  directionalColor[3] = *(float *)(iVar5 + 0x24);
+  directionalColor = *(YajimaVec4 *)(iVar5 + 0x18);
 
   iVar5 = kwlnGetDirectionalLight();
 
@@ -2080,21 +2074,9 @@ u64 FUN_004260a0(int param_1)
 
   u32 auStack_60 [16];
 
-  u32 uStack_20;
+  YajimaVec4 directionalColor;
 
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_14;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u32 uStack_4;
+  YajimaVec4 ambientColor;
 
   
 
@@ -2104,23 +2086,11 @@ u64 FUN_004260a0(int param_1)
 
   iVar7 = kwlnGetAmbientLight();
 
-  uStack_10 = *(u32 *)(iVar7 + 0x18);
-
-  uStack_c = *(u32 *)(iVar7 + 0x1c);
-
-  uStack_8 = *(u32 *)(iVar7 + 0x20);
-
-  uStack_4 = *(u32 *)(iVar7 + 0x24);
+  ambientColor = *(YajimaVec4 *)(iVar7 + 0x18);
 
   iVar7 = kwlnGetDirectionalLight();
 
-  uStack_20 = *(u32 *)(iVar7 + 0x18);
-
-  uStack_1c = *(u32 *)(iVar7 + 0x1c);
-
-  uStack_18 = *(u32 *)(iVar7 + 0x20);
-
-  uStack_14 = *(u32 *)(iVar7 + 0x24);
+  directionalColor = *(YajimaVec4 *)(iVar7 + 0x18);
 
   iVar7 = kwlnGetDirectionalLight();
 
@@ -2248,11 +2218,11 @@ u64 FUN_004260a0(int param_1)
 
   uVar8 = kwlnGetAmbientLight();
 
-  FUN_004944b0(uVar8,&uStack_10);
+  FUN_004944b0(uVar8,&ambientColor);
 
   uVar8 = kwlnGetDirectionalLight();
 
-  FUN_004944b0(uVar8,&uStack_20);
+  FUN_004944b0(uVar8,&directionalColor);
 
   iVar6 = kwlnGetDirectionalLight();
 
@@ -5791,25 +5761,39 @@ void FUN_0042b540(int param_1)
 
   float fVar12;
 
-  YajimaVec3 posCamera;
+  float fStack_50;
 
-  YajimaVec3 transformed;
+  u32 uStack_4c;
+
+  float fStack_48;
+
+  float afStack_40 [4];
 
   u64 uStack_30;
 
   u32 uStack_28;
 
-  YajimaVec3 posOther;
+  float afStack_20 [2];
 
-  YajimaVec3 posTarget;
+  float fStack_18;
+
+  float fStack_10;
+
+  u32 uStack_c;
+
+  float fStack_8;
 
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  K_FldFrame_CtlCopyPos(&posCamera.x,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&fStack_50,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-  posTarget = posCamera;
+  fStack_10 = fStack_50;
+
+  uStack_c = uStack_4c;
+
+  fStack_8 = fStack_48;
 
   uStack_30 = DAT_006b44e0;
 
@@ -5817,11 +5801,15 @@ void FUN_0042b540(int param_1)
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
-    posTarget = *(YajimaVec3 *)(iVar1 + 0x868);
+    fStack_10 = *(float *)(iVar1 + 0x868);
+
+    uStack_c = *(u32 *)(iVar1 + 0x86c);
+
+    fStack_8 = *(float *)(iVar1 + 0x870);
 
   }
 
-  fVar9 = posTarget.z;
+  fVar9 = fStack_8;
 
   for (iVar7 = 0; iVar7 < 0x18; iVar7 = iVar7 + 1) {
 
@@ -5867,7 +5855,7 @@ void FUN_0042b540(int param_1)
 
       puVar3[3] = puVar3[3] | 0x20003;
 
-      K_FldFrame_CtlCopyPos(&posOther.x,*(u32 *)(*(int *)(&DAT_0086edf4 + iVar6) + 0x1e0));
+      K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(*(int *)(&DAT_0086edf4 + iVar6) + 0x1e0));
 
       FUN_004c31b0_ymisc((void *)uVar4,(const void *)&uStack_30,
                      *(float *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
@@ -5875,21 +5863,21 @@ void FUN_0042b540(int param_1)
 
       iVar6 = iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar1 + 0xb90) * 0x28;
 
-      fVar11 = 63.0f - ((((*(float *)(iVar1 + 0xba4) - (*(float *)(iVar6 + -0x749c) - posOther.x))
+      fVar11 = 63.0f - ((((*(float *)(iVar1 + 0xba4) - (*(float *)(iVar6 + -0x749c) - afStack_20[0]))
 
                         * 2.25f) / 100.0f) * 2.25f) / 100.0f;
 
-      fVar12 = 63.0f - ((((*(float *)(iVar1 + 0xbac) - (*(float *)(iVar6 + -0x7494) - posOther.z)) *
+      fVar12 = 63.0f - ((((*(float *)(iVar1 + 0xbac) - (*(float *)(iVar6 + -0x7494) - fStack_18)) *
 
                         2.25f) / 100.0f) * 2.25f) / 100.0f;
 
-      transformed.x = ((posOther.x - posTarget.x) * 2.25f) / 100.0f;
+      afStack_40[0] = ((afStack_20[0] - fStack_10) * 2.25f) / 100.0f;
 
-      transformed.z = ((posOther.z - fVar9) * 2.25f) / 100.0f;
+      afStack_40[2] = ((fStack_18 - fVar9) * 2.25f) / 100.0f;
 
-      transformed.y = 0.0f;
+      afStack_40[1] = 0.0f;
 
-      RwV3dTransformPoint(&transformed.x,&transformed.x,uVar4);
+      RwV3dTransformPoint(afStack_40,afStack_40,uVar4);
 
       uVar5 = FUN_001158b0(0,uGpffffb9f4,0xb);
 
@@ -5899,11 +5887,11 @@ void FUN_0042b540(int param_1)
 
       fVar8 = (float)func_001126b0(uVar5);
 
-      *(float *)(iVar6 + 0x10) = (transformed.x + *(float *)(iVar1 + 0x85c) + fVar11) - fVar8 / 2.0f;
+      *(float *)(iVar6 + 0x10) = (afStack_40[0] + *(float *)(iVar1 + 0x85c) + fVar11) - fVar8 / 2.0f;
 
       fVar8 = (float)func_00112740(uVar5);
 
-      *(float *)(iVar6 + 0x14) = (transformed.z + *(float *)(iVar1 + 0x860) + fVar12) - fVar8 / 2.0f;
+      *(float *)(iVar6 + 0x14) = (afStack_40[2] + *(float *)(iVar1 + 0x860) + fVar12) - fVar8 / 2.0f;
 
       *(u8 *)(iVar6 + 0x18) = 0xff;
 
@@ -5911,19 +5899,19 @@ void FUN_0042b540(int param_1)
 
       fVar8 = (float)func_001126b0(uVar5);
 
-      if ((((fVar10 < ((transformed.x + fVar10 + fVar11) - fVar8 / 2.0f) + 8.0f) &&
+      if ((((fVar10 < ((afStack_40[0] + fVar10 + fVar11) - fVar8 / 2.0f) + 8.0f) &&
 
            (fVar10 = *(float *)(iVar1 + 0x860), fVar8 = (float)func_00112740(uVar5),
 
-           fVar10 < ((transformed.z + fVar10 + fVar12) - fVar8 / 2.0f) + 8.0f)) &&
+           fVar10 < ((afStack_40[2] + fVar10 + fVar12) - fVar8 / 2.0f) + 8.0f)) &&
 
           (fVar10 = *(float *)(iVar1 + 0x85c), fVar8 = (float)func_001126b0(uVar5),
 
-          ((transformed.x + fVar10 + fVar11) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) &&
+          ((afStack_40[0] + fVar10 + fVar11) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) &&
 
          (fVar10 = *(float *)(iVar1 + 0x860), fVar8 = (float)func_00112740(uVar5),
 
-         ((transformed.z + fVar10 + fVar12) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) {
+         ((afStack_40[2] + fVar10 + fVar12) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) {
 
         *(u8 *)(iVar6 + 0x18) = 0;
 
@@ -8759,11 +8747,7 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   u32 unaff_s5_lo;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  YajimaVec3 position;
 
   
 
@@ -8775,11 +8759,11 @@ void FUN_0042fd80(float *param_1,int param_2)
 
       iVar1 = K_Field_Get();
 
-      if (*(char *)(uVar5 * 0x100 + iVar1 + uVar4 * 0x10 + 0x4a) == '\b') {
+      if (*(u8 *)(uVar5 * 0x100 + iVar1 + uVar4 * 0x10 + 0x4a) == '\b') {
 
         iVar1 = K_Field_Get();
 
-        if (*(char *)(uVar5 * 0x100 + iVar1 + uVar4 * 0x10 + 0x49) == '\x01') {
+        if (*(u8 *)(uVar5 * 0x100 + iVar1 + uVar4 * 0x10 + 0x49) == '\x01') {
 
           unaff_s5_lo = uVar4;
 
@@ -8793,9 +8777,9 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   }
 
-  *(char *)(iVar3 + 0xbb0) = (char)unaff_s5_lo;
+  *(u8 *)(iVar3 + 0xbb0) = (char)unaff_s5_lo;
 
-  *(char *)(iVar3 + 0xbb1) = (char)unaff_s4_lo;
+  *(u8 *)(iVar3 + 0xbb1) = (char)unaff_s4_lo;
 
   *(float *)(iVar3 + 0xb10) = (float)(int)unaff_s5_lo * 800.0f;
 
@@ -8813,9 +8797,9 @@ void FUN_0042fd80(float *param_1,int param_2)
 
       if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 1) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(char *)(iVar3 + iVar1 + iVar2 + -0xb6) != '\b')) {
+         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + -0xb6) != '\b')) {
 
-        func_001bf220(&uStack_10,uVar5 & 0xffff,uVar4 - 1 & 0xffff);
+        func_001bf220(&position.x,uVar5 & 0xffff,uVar4 - 1 & 0xffff);
 
       }
 
@@ -8823,9 +8807,9 @@ void FUN_0042fd80(float *param_1,int param_2)
 
       if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 2) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(char *)(iVar3 + iVar1 + iVar2 + 0x3a) != '\b')) {
+         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + 0x3a) != '\b')) {
 
-        func_001bf220(&uStack_10,uVar5 - 1 & 0xffff,uVar4 & 0xffff);
+        func_001bf220(&position.x,uVar5 - 1 & 0xffff,uVar4 & 0xffff);
 
       }
 
@@ -8833,9 +8817,9 @@ void FUN_0042fd80(float *param_1,int param_2)
 
       if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 4) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(char *)(iVar3 + iVar1 + iVar2 + 0x14a) != '\b')) {
+         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + 0x14a) != '\b')) {
 
-        func_001bf220(&uStack_10,uVar5 & 0xffff,uVar4 + 1 & 0xffff);
+        func_001bf220(&position.x,uVar5 & 0xffff,uVar4 + 1 & 0xffff);
 
       }
 
@@ -8843,9 +8827,9 @@ void FUN_0042fd80(float *param_1,int param_2)
 
       if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 8) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(char *)(iVar3 + iVar1 + iVar2 + 0x5a) != '\b')) {
+         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + 0x5a) != '\b')) {
 
-        func_001bf220(&uStack_10,uVar5 + 1 & 0xffff,uVar4 & 0xffff);
+        func_001bf220(&position.x,uVar5 + 1 & 0xffff,uVar4 & 0xffff);
 
       }
 
@@ -8853,11 +8837,7 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   }
 
-  *(float *)param_1 = *(float *)&uStack_10;
-
-  *(float *)(param_1 + 1) = *(float *)&uStack_c;
-
-  *(float *)(param_1 + 2) = *(float *)&uStack_8;
+  *(YajimaVec3 *)param_1 = position;
 
   return;
 
