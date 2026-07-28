@@ -531,8 +531,6 @@ void FUN_003afe30(void)
   s32 checkedIndex;
   u8 slotIndex;
   FrFontSlot *slot;
-  void *allocation;
-  void **allocationEntry;
 
   for (i = 0; i < 9; i++) {
     slot = &gFrFontManagerData_abs[0].slots[i];
@@ -548,11 +546,9 @@ void FUN_003afe30(void)
         FUN_0019d3f0(DAT_006a2730, 0x432);
       }
 
-      allocation = gFrFontManagerData_abs[0].allocations[slotIndex];
-      if (allocation != NULL) {
-        allocationEntry = &gFrFontManagerData_abs[0].allocations[slotIndex];
-        FUN_00100ec0(allocation);
-        *allocationEntry = NULL;
+      if (gFrFontManagerData_abs[0].allocations[slotIndex] != NULL) {
+        FUN_00100ec0(gFrFontManagerData_abs[0].allocations[slotIndex]);
+        gFrFontManagerData_abs[0].allocations[slotIndex] = NULL;
         FUN_005225a8(DAT_006a2800, checkedIndex);
         slot->resource = NULL;
         slot->object = NULL;

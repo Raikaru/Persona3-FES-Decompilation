@@ -149,9 +149,9 @@ extern u32 uGpffffb964;
 
 extern void FUN_003bb060(u16 param_1,u16 param_2);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,  long param_7);
+void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5,u32 param_6,  long param_7);
 #pragma alias FUN_003a87d0_typed FUN_003a87d0
-extern void FUN_003a87d0_typed(float param_1,int param_2,int param_3,void* param_4,
+extern void FUN_003a87d0_typed(int param_2,int param_3,float param_1,void* param_4,
                                u32 param_5,u32 param_6,long param_7);
 void FUN_003a8dc0(int param_1,int param_2,int param_3,int param_4,  int param_5,int param_6);
 void FUN_003a8d60(int param_1);
@@ -325,7 +325,7 @@ void FUN_003a9ac0(int param_1,int param_2,int param_3,int param_4,int param_5);
 #undef FUN_003a87d0
 #pragma opt_loop_invariants on
 // FUN_003A87D0 NONMATCHING
-void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,
+void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5,u32 param_6,
                   long param_7)
 {
   u32 uVar1;
@@ -2593,9 +2593,9 @@ void FUN_003abb10(int param_1)
 
     iVar7 = ((0xff - iVar7) * -0xb4) / 0xff;
 
-    FUN_003a87d0_typed(0,0,iVar7,auStack_20,3,0x1b2d38ff,0);
+    FUN_003a87d0_typed(0,iVar7,0.0f,auStack_20,3,0x1b2d38ff,0);
 
-    FUN_003a87d0_typed(0,0,-iVar7,auStack_40,3,0x1b2d38ff,0);
+    FUN_003a87d0_typed(0,-iVar7,0.0f,auStack_40,3,0x1b2d38ff,0);
 
   }
 
@@ -2669,9 +2669,9 @@ void FUN_003abb10(int param_1)
 
     FUN_00115980(uVar5);
 
-    FUN_003a87d0_typed(0,0,0,auStack_20,3,0x1b2d38ff,0);
+    FUN_003a87d0_typed(0,0,0.0f,auStack_20,3,0x1b2d38ff,0);
 
-    FUN_003a87d0_typed(0,0,0,auStack_40,3,0x1b2d38ff,0);
+    FUN_003a87d0_typed(0,0,0.0f,auStack_40,3,0x1b2d38ff,0);
 
   }
 
@@ -2747,9 +2747,9 @@ void FUN_003abb10(int param_1)
 
     iVar7 = ((0xff - iVar7) * -0x141) / 0xff;
 
-    FUN_003a87d0_typed(0,iVar7,0,auStack_20,3,0x1b2d38ff,0);
+    FUN_003a87d0_typed(iVar7,0,0.0f,auStack_20,3,0x1b2d38ff,0);
 
-    FUN_003a87d0_typed(0,-iVar7,0,auStack_40,3,0x1b2d38ff,0);
+    FUN_003a87d0_typed(-iVar7,0,0.0f,auStack_40,3,0x1b2d38ff,0);
 
   }
 

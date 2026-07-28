@@ -6,6 +6,8 @@ typedef u32 int3;
 
 extern u32 DAT_006a11d0;
 extern char D_006A1200[];
+extern char DAT_006a12b0[];
+extern char DAT_006a12d0[];
 extern char DAT_006a1380[];
 extern char DAT_006a13a0[];
 extern char DAT_006a1500[];
@@ -1194,7 +1196,7 @@ void FUN_00399830(int param_1)
 }
 #define FUN_00399830(...) ((void (*)(...))FUN_00399830)(__VA_ARGS__)
 #undef FUN_003998b0
-// FUN_003998B0 NONMATCHING
+// FUN_003998B0
 
 
 u32 FUN_003998b0(int param_1)
@@ -1257,7 +1259,7 @@ u32 FUN_003998b0(int param_1)
 
     }
 
-    uVar4 = FUN_00100d80(0x6a12b0,1);
+    uVar4 = FUN_00100d80(DAT_006a12b0,1);
 
     puVar1[3] = uVar4;
 
@@ -1271,7 +1273,7 @@ u32 FUN_003998b0(int param_1)
 
     if (lVar6 == 1) {
 
-      uVar5 = FUN_001021c0(0x6a12d0,auStack_4);
+      uVar5 = FUN_001021c0(DAT_006a12d0,auStack_4);
 
       puVar1[0xc] = (int)uVar5;
 
@@ -1293,15 +1295,15 @@ u32 FUN_003998b0(int param_1)
 
   case 2:
 
-    if ((*(u32 *)(puVar1[1] + 4) & 8) == 0) {
+    if ((*(u32 *)(puVar1[1] + 4) & 8) != 0) {
 
-      FUN_0039f210(puVar7,0,-1,-1);
+      FUN_0039f210(puVar7,1,-1,-1);
 
     }
 
     else {
 
-      FUN_0039f210(puVar7,1,-1,-1);
+      FUN_0039f210(puVar7,0,-1,-1);
 
     }
 
@@ -1347,7 +1349,7 @@ u32 FUN_003998b0(int param_1)
 
   case 6:
 
-    sVar3 = FUN_0016dd40();
+    sVar3 = FUN_0016dd40_d010();
 
     if (puVar1[0xd] == 0) {
 
@@ -4919,7 +4921,6 @@ u32 FUN_0039db60(int param_1)
 {
   int *piVar1;
   u32 *config;
-  int sVar2;
   int iVar3;
   int lVar5;
   u32 uVar6;
@@ -4936,8 +4937,7 @@ u32 FUN_0039db60(int param_1)
       FUN_0016dfb0(6);
       FUN_001723a0(6,2,1);
     }
-    sVar2 = (short)FUN_0016dd40();
-    piVar1[3] = (int)sVar2;
+    piVar1[3] = (short)FUN_0016dd40();
     lVar5 = FUN_00172660();
     if (lVar5 == 0) {
       return 0xffffffff;
