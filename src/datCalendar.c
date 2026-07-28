@@ -3258,11 +3258,12 @@ void func_00183f60(void* resource,
                    f32 baseY)
 {
     s32 days;
+    void* unused;
 
     days = clndGetDaysSinceStartFromDate(month, day);
     if (func_0017db40(days) == 1 && time >= 2 && time <= 5)
     {
-        func_001159f0(NULL, resource, 0x36, alpha & 0xff,
+        func_001159f0(unused, resource, 0x36, alpha & 0xff,
                       baseX + 525.0f, baseY + 29.0f, 50.0f);
         return;
     }
@@ -3271,35 +3272,35 @@ void func_00183f60(void* resource,
     {
         case 0:
         case 7:
-            func_001159f0(NULL, resource, 0x35, alpha & 0xff,
+            func_001159f0(unused, resource, 0x35, alpha & 0xff,
                           baseX + 491.0f, baseY + 29.0f, 50.0f);
             return;
         case 1:
-            func_001159f0(NULL, resource, 0x2f, alpha & 0xff,
+            func_001159f0(unused, resource, 0x2f, alpha & 0xff,
                           baseX + 452.0f, baseY + 29.0f, 50.0f);
             return;
         case 2:
-            func_001159f0(NULL, resource, 0x30, alpha & 0xff,
+            func_001159f0(unused, resource, 0x30, alpha & 0xff,
                           baseX + 524.0f, baseY + 29.0f, 50.0f);
             return;
         case 3:
-            func_001159f0(NULL, resource, 0x31, alpha & 0xff,
+            func_001159f0(unused, resource, 0x31, alpha & 0xff,
                           baseX + 495.0f, baseY + 29.0f, 50.0f);
             return;
         case 4:
-            func_001159f0(NULL, resource, 0x32, alpha & 0xff,
+            func_001159f0(unused, resource, 0x32, alpha & 0xff,
                           baseX + 499.0f, baseY + 29.0f, 50.0f);
             return;
         case 5:
-            func_001159f0(NULL, resource, 0x33, alpha & 0xff,
+            func_001159f0(unused, resource, 0x33, alpha & 0xff,
                           baseX + 467.0f, baseY + 29.0f, 50.0f);
             return;
         case 6:
-            func_001159f0(NULL, resource, 0x34, alpha & 0xff,
+            func_001159f0(unused, resource, 0x34, alpha & 0xff,
                           baseX + 528.0f, baseY + 29.0f, 50.0f);
             return;
         case 8:
-            func_001159f0(NULL, resource, 0x37, alpha & 0xff,
+            func_001159f0(unused, resource, 0x37, alpha & 0xff,
                           baseX + 500.0f, baseY + 26.0f, 50.0f);
             return;
         default:

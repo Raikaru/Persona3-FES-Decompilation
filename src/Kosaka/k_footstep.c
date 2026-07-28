@@ -556,7 +556,7 @@ typedef struct
     u32 state;
     u32 mode;
 
-    u32 timer;
+    s32 timer;
     KwlnTask* eplTask;
 } FldEffectWork;
 
@@ -622,7 +622,7 @@ void* func_001dc6f0(KwlnTask* task)
         if (func_001a9180(work->eplTask) != 0)
         {
             RwV3d pos;
-            pos = mdlGetMatrix(D_008717F0)->pos;
+            pos = mdlGetMatrix(*(Model**)0x008717F0)->pos;
             pos.y += 240.0f;
             func_001a9390(work->eplTask, func_001a91b0(work->eplTask, &pos), 5);
             work->timer = 0;
@@ -1076,12 +1076,10 @@ u32 func_001dd600(void)
 // FUN_001dd8e0 NONMATCHING
 void func_001dd8e0(void)
 {
-    u32 i;
-    Field* field;
+    s32 i;
     void* owner;
 
-    field = K_Field_Get();
-    owner = field != NULL ? *(void**)((u8*)field + 0x28) : NULL;
+    owner = *(void**)((u8*)K_Field_Get() + 0x28);
     if (owner == NULL)
     {
         return;

@@ -1302,7 +1302,8 @@ void bpTexBeginRender(void)
     u32* node;
     f32 origin[3];
 
-    work = bpTexWork();
+    work = BP_TEX_GLOBAL;
+    K_ASSERT(work != NULL, 0xbc);
     origin[0] = *(f32*)0x0068ea30;
     origin[1] = *(f32*)0x0068ea34;
     origin[2] = *(f32*)0x0068ea38;

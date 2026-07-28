@@ -79,6 +79,15 @@ typedef struct ItfMesHandleSystem
     u8 bytes[0x100];
 } ItfMesHandleSystem;
 
+typedef struct ItfMesTextWork
+{
+  u8 unknown_00[0x10];
+  u32 flags;
+  u16 unknown_14;
+  s16 lineStart;
+  s16 lineEnd;
+} ItfMesTextWork;
+
 static ItfMesHandleSystem sItfMesHandleSystem;
 
 extern void* FUN_003b49a0(void* param);
@@ -1857,6 +1866,7 @@ void FUN_003a3c10(int param_1,int param_2)
 
 {
   int iVar1;
+  ItfMesTextWork *work;
 
   int sVar2;
 
@@ -1874,9 +1884,9 @@ void FUN_003a3c10(int param_1,int param_2)
 
   }
 
+  work = (ItfMesTextWork *)(iVar1 + 0x40);
   sVar2 = 0;
-
-  uVar4 = *(u32 *)(iVar1 + 0x50);
+  uVar4 = work->flags;
 
   iVar3 = 0;
 
@@ -1896,21 +1906,20 @@ void FUN_003a3c10(int param_1,int param_2)
 
   }
 
-  if ((uVar4 & 1) == 0) {
-
-    sVar2 = sVar2 + -1;
-
-  }
-
-  else {
+  if ((uVar4 & 1) != 0) {
 
     sVar2 = 0;
 
   }
 
-  *(short *)(iVar1 + 0x56) = sVar2;
+  else {
 
-  *(short *)(iVar1 + 0x58) = sVar2;
+    sVar2 = sVar2 + -1;
+
+  }
+
+  work->lineStart = sVar2;
+  work->lineEnd = sVar2;
 
   return;
 
@@ -5630,7 +5639,6 @@ void FUN_003a8350(int param_1)
   float fVar1;
   float fVar2;
   float fVar3;
-  int iVar1;
   int iVar2;
   int iVar3;
 
@@ -5644,8 +5652,7 @@ void FUN_003a8350(int param_1)
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  iVar1 = (u32)fVar1 & 0xff;
-  FUN_003a8710_typed(iVar2,iVar3,0.0f,iVar1,0x10);
+  FUN_003a8710_typed(iVar2,iVar3,0.0f,(u32)fVar1 & 0xff,0x10);
 }
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)
 #undef FUN_003a8440

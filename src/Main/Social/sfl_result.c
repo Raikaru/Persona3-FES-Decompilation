@@ -1280,11 +1280,12 @@ u32 func_001faea0(void)
 
     break;
 
+
   case 1:
 
     lVar4 = FUN_0017d800();
 
-    if ((lVar4 != 0) && (*(short *)(iVar5 + 2) == 0xc3)) {
+    if ((lVar4 != 0) && (*(u16 *)(iVar5 + 2) == 0xc3)) {
 
       FUN_00174e20(1);
 
@@ -1298,7 +1299,7 @@ u32 func_001faea0(void)
 
   case 2:
 
-    if (*(short *)(iVar5 + 2) == 0xc0) {
+    if (*(u16 *)(iVar5 + 2) == 0xc0) {
 
       func_001fb130(uVar2,0xc1);
 
@@ -1308,7 +1309,7 @@ u32 func_001faea0(void)
 
   case 3:
 
-    if (*(short *)(iVar5 + 2) == 0xc2) {
+    if (*(u16 *)(iVar5 + 2) == 0xc2) {
 
       func_001fb130(uVar2,0xc3);
 
@@ -1318,7 +1319,7 @@ u32 func_001faea0(void)
 
   case 4:
 
-    if (*(short *)(iVar5 + 2) == 0xc4) {
+    if (*(u16 *)(iVar5 + 2) == 0xc4) {
 
       func_001fb130(uVar2,0xc5);
 
@@ -1328,7 +1329,7 @@ u32 func_001faea0(void)
 
   case 5:
 
-    if (*(short *)(iVar5 + 2) == 0xc6) {
+    if (*(u16 *)(iVar5 + 2) == 0xc6) {
 
       func_001fb130(uVar2,199);
 
@@ -1338,7 +1339,7 @@ u32 func_001faea0(void)
 
   case 6:
 
-    if (*(short *)(iVar5 + 2) == 200) {
+    if (*(u16 *)(iVar5 + 2) == 200) {
 
       func_001fb130(uVar2,0xc9);
 
@@ -1348,7 +1349,7 @@ u32 func_001faea0(void)
 
   case 7:
 
-    if (*(short *)(iVar5 + 2) == 0xca) {
+    if (*(u16 *)(iVar5 + 2) == 0xca) {
 
       func_001fb130(uVar2,0xcb);
 
@@ -1358,7 +1359,7 @@ u32 func_001faea0(void)
 
   case 8:
 
-    if (*(short *)(iVar5 + 2) == 0xcc) {
+    if (*(u16 *)(iVar5 + 2) == 0xcc) {
 
       func_001fb130(uVar2,0xcd);
 
@@ -2054,24 +2055,30 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
     s32 i;
 
     flags = (u32*)(iGpffffb7b8 + category * 0x1c);
-    factor = fGpffff8070;
-    if (scaleMode != 4)
+    switch (scaleMode)
     {
-        if (scaleMode == 3)
-            factor = 1.0f;
-        else
-        {
-            factor = fGpffff83b4;
-            if (scaleMode != 2)
-            {
-                factor = fGpffff83b0;
-                if (scaleMode != 1)
-                    K_ASSERT(false, 0x21e);
-            }
-        }
+    case 1:
+        factor = fGpffff83b0;
+        break;
+    case 2:
+        factor = fGpffff83b4;
+        break;
+    case 3:
+        factor = 1.0f;
+        break;
+    case 4:
+        factor = fGpffff8070;
+        break;
+    default:
+        K_ASSERT(false, 0x21e);
+        break;
     }
 
-    if ((*flags & 0x80) == 0)
+    if ((*flags & 0x80) != 0)
+    {
+        value = (f32)amount;
+    }
+    else
     {
         i = end - start;
         if (i < 10)
@@ -2086,8 +2093,6 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
         K_ASSERT(i >= 0 && i <= 0x14, 0x20b);
         value = (f32)amount * *(f32*)(iGpffffb7ac + i * 4);
     }
-    else
-        value = (f32)amount;
 
     i = (s32)(value * factor);
     if (i > 0xffff)

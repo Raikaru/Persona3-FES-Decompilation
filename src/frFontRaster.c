@@ -145,12 +145,12 @@ void FUN_003b3770(void)
         if (*(int *)(iGpffffb954 + 8) == 0) {
           *(int *)(iGpffffb954 + 0xc) = 0;
         }
-        if (*(int *)(iGpffffb954 + 0x14) == 0) {
-          *(int **)(iGpffffb954 + 0x14) = current;
-          *(int **)(iGpffffb954 + 0x10) = current;
-        } else {
+        if (*(int *)(iGpffffb954 + 0x14) != 0) {
           *(int **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
           *(int **)(iGpffffb954 + 0x14) = current;
+        } else {
+          *(int **)(iGpffffb954 + 0x14) = current;
+          *(int **)(iGpffffb954 + 0x10) = current;
         }
         current[6] = 0;
         current = *(int **)(iGpffffb954 + 8);
@@ -158,23 +158,23 @@ void FUN_003b3770(void)
       } else if (current[6] == 0) {
         *(int **)(iGpffffb954 + 0xc) = previous;
         previous[6] = 0;
-        if (*(int *)(iGpffffb954 + 0x14) == 0) {
-          *(int **)(iGpffffb954 + 0x14) = current;
-          *(int **)(iGpffffb954 + 0x10) = current;
-        } else {
+        if (*(int *)(iGpffffb954 + 0x14) != 0) {
           *(int **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
           *(int **)(iGpffffb954 + 0x14) = current;
+        } else {
+          *(int **)(iGpffffb954 + 0x14) = current;
+          *(int **)(iGpffffb954 + 0x10) = current;
         }
         current[6] = 0;
         current = (int *)0x0;
       } else {
         previous[6] = current[6];
-        if (*(int *)(iGpffffb954 + 0x14) == 0) {
-          *(int **)(iGpffffb954 + 0x14) = current;
-          *(int **)(iGpffffb954 + 0x10) = current;
-        } else {
+        if (*(int *)(iGpffffb954 + 0x14) != 0) {
           *(int **)(*(int *)(iGpffffb954 + 0x14) + 0x18) = current;
           *(int **)(iGpffffb954 + 0x14) = current;
+        } else {
+          *(int **)(iGpffffb954 + 0x14) = current;
+          *(int **)(iGpffffb954 + 0x10) = current;
         }
         current[6] = 0;
         current = (int *)previous[6];

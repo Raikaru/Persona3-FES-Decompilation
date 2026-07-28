@@ -5613,27 +5613,26 @@ void FUN_003658b0(u32 param_1,int param_2)
 
           if ((lVar3 != 0) && (*puVar1 == param_1)) {
 
-            if ((char)puVar1[8] == '\x01') goto type1;
-            if ((char)puVar1[8] != '\0') goto type_done;
-            goto type0;
-type0:
-            if ((char)puVar1[10] == '\0') {
-              FUN_003b9500();
+            switch ((char)puVar1[8]) {
+            case 0:
+              if ((char)puVar1[10] == '\0') {
+                FUN_003b9500();
+              }
+              else {
+                FUN_003b9500(lVar3,0);
+              }
+              break;
+            case 1:
+              if ((short)puVar1[0xd] < 1) {
+                fVar6 = 1.0f;
+              }
+              else {
+                fVar6 = (float)(int)(short)puVar1[0xd] / 100.0f;
+              }
+              FUN_003b8ff0_evt(fVar6,lVar3,0,(char)puVar1[10],puVar1[0xb],
+                           *(char *)((int)puVar1 + 0x15) == '\0',puVar1[0xc]);
+              break;
             }
-            else {
-              FUN_003b9500(lVar3,0);
-            }
-            goto type_done;
-type1:
-            if ((short)puVar1[0xd] < 1) {
-              fVar6 = 1.0f;
-            }
-            else {
-              fVar6 = (float)(int)(short)puVar1[0xd] / 100.0f;
-            }
-            FUN_003b8ff0_evt(fVar6,lVar3,0,(char)puVar1[10],puVar1[0xb],
-                         *(char *)((int)puVar1 + 0x15) == '\0',puVar1[0xc]);
-type_done:
             ;
 
           }

@@ -712,7 +712,7 @@ void func_001f1240(KwlnTask *task)
     u32 *work = (u32 *)BR_TASK_WORK(task);
     f32 ratio;
 
-    K_ASSERT((BR_U32(work, 0) & 0x20000) == 0, 0x603);
+    K_ASSERT((~BR_U32(work, 0) & 0x20000) != 0, 0x603);
     if ((BR_U32(work, 0) & 2) == 0) {
         ratio = (f32)BR_S32(work, 0xb4) / (f32)BR_S32(work, 0x11c);
     } else {
@@ -988,8 +988,8 @@ void func_001f1c90(KwlnTask *task)
     if (BR_U32(work, 0xb0) != 0) {
         BR_U32(params, 0) |= 2;
     }
-    BR_U32(params, 0x28) = BR_U32(work, 0x2a50);
-    BR_U32(params, 0x2c) = BR_U32(work, 0xb0);
+    BR_U32(params, 0x2c) = BR_U32(work, 0x2a50);
+    BR_U32(params, 0x28) = BR_U32(work, 0xb0);
     for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
         u8 *entry = (u8 *)work + i * 8 + 0x98;
         ((u32 *)params)[i * 3 + 1] = dat00171360(BR_U16(entry, 0)) != 0;

@@ -439,7 +439,7 @@ failed:
     return false;
 }
 
-// FUN_001b83f0 NONMATCHING
+// FUN_001b83f0
 u16* func_001b83f0(void)
 {
     u16* record;
@@ -462,23 +462,28 @@ u16* func_001b83f0(void)
     {
         if (func_0017e480(record[0], record[1], fallbackMajor, fallbackMinor) == 1)
         {
-            if (!(record[0] == func_0017d920() &&
-                  record[1] == func_0017da40() &&
-                  (s32)(func_0016ef30() & 0xff) < (s32)record[2]) &&
-                !(fallbackMajor == func_0017d920() &&
-                  fallbackMinor == func_0017da40() &&
-                  (s32)fallbackDay < (s32)(func_0016ef30() & 0xff)))
+            if (record[0] == func_0017d920() &&
+                record[1] == func_0017da40() &&
+                (s32)(func_0016ef30() & 0xff) < (s32)record[2])
             {
-                if (*(u32*)&record[4] == (u32)-1 ||
-                    func_0016f190(*(u32*)&record[4]) == 1)
-                {
-                    break;
-                }
+                goto nextRecord;
+            }
+            if (fallbackMajor == func_0017d920() &&
+                fallbackMinor == func_0017da40() &&
+                (s32)(func_0016ef30() & 0xff) > (s32)fallbackDay)
+            {
+                goto nextRecord;
+            }
+            if (*(u32*)&record[4] == (u32)-1 ||
+                func_0016f190(*(u32*)&record[4]) == 1)
+            {
+                break;
             }
         }
         fallbackMajor = record[0];
         fallbackMinor = record[1];
         fallbackDay = record[2];
+nextRecord:
         i++;
         record -= 0x10;
     }

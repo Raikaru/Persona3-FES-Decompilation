@@ -1757,8 +1757,26 @@ void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
 
   *(u32 *)(iVar7 + 4) = 0xffffffff;
 
-  if (*(char *)(iVar7 + 0x10) == '\x02') {
+  switch (*(char *)(iVar7 + 0x10)) {
+  case 1:
+    if (*(char *)(iVar7 + 0x14) == '\x01') {
 
+      sVar4 = *(short *)(iVar5 + *(int *)(param_1 + 0x9c) + 10);
+
+      FUN_0038d790(param_2);
+
+      if (*(int *)(iVar7 + 0x40) == 0) {
+
+        FUN_0019d3f0("mt_evtLoadSave.c",0x6e1);
+
+      }
+
+      FUN_00521250(*(u32 *)(iVar7 + 0x40),
+
+                   *(int *)(param_1 + 100) + (sVar4 * 0x12 + (int)sVar4) * 0x10,0x130);
+    }
+    break;
+  case 2:
     if ((*(short *)(iVar7 + 0x28) < 10) || (500 < *(short *)(iVar7 + 0x28))) {
 
       *(u16 *)(iVar7 + 0x28) = 100;
@@ -1770,25 +1788,7 @@ void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
       *(u16 *)(iVar7 + 0x2a) = 100;
 
     }
-
-  }
-
-  else if ((*(char *)(iVar7 + 0x10) == '\x01') && (*(char *)(iVar7 + 0x14) == '\x01')) {
-
-    sVar4 = *(short *)(iVar5 + *(int *)(param_1 + 0x9c) + 10);
-
-    FUN_0038d790(param_2);
-
-    if (*(int *)(iVar7 + 0x40) == 0) {
-
-      FUN_0019d3f0("mt_evtLoadSave.c",0x6e1);
-
-    }
-
-    FUN_00521250(*(u32 *)(iVar7 + 0x40),
-
-                 *(int *)(param_1 + 100) + (sVar4 * 0x12 + (int)sVar4) * 0x10,0x130);
-
+    break;
   }
 
   return;

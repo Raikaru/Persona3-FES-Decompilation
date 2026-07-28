@@ -13756,7 +13756,7 @@ u32 FUN_0037ff10(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0037FF80 NONMATCHING
+// FUN_0037FF80
 
 
 void FUN_0037ff80(int param_1,int param_2,int param_3,int param_4)
@@ -13793,19 +13793,21 @@ void FUN_0037ff80(int param_1,int param_2,int param_3,int param_4)
     }
     break;
   case 1:
+    y = param_2 * 0xc;
     uVar4 = FUN_0038a220(*(u32 *)(iVar3 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, 0,
+    evtMenuDrawText(param_1 * 0xc, y, uVar4, 0,
                     (const char *)DAT_0069fd30_abs);
     uVar4 = FUN_0038a220(*(u32 *)(iVar3 + 0xe0));
-    evtMenuDrawText((param_1 + 0x10) * 0xc, param_2 * 0xc, uVar4, uVar2,
+    evtMenuDrawText((param_1 + 0x10) * 0xc, y, uVar4, uVar2,
                     (const char *)&gp0xffffa3b8, *(u32 *)(iVar3 + 0x198) & 0x3ff);
     break;
   case 2:
+    y = param_2 * 0xc;
     uVar4 = FUN_0038a220(*(u32 *)(iVar3 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, 0,
+    evtMenuDrawText(param_1 * 0xc, y, uVar4, 0,
                     (const char *)&gp0xffffa600);
     uVar4 = FUN_0038a220(*(u32 *)(iVar3 + 0xe0));
-    evtMenuDrawText((param_1 + 0x10) * 0xc, param_2 * 0xc, uVar4, uVar2,
+    evtMenuDrawText((param_1 + 0x10) * 0xc, y, uVar4, uVar2,
                     (const char *)DAT_0069fd48_abs);
     break;
   }
