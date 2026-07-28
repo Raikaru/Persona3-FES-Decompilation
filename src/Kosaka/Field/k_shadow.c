@@ -1575,13 +1575,13 @@ void func_0019c310(KwlnTask* renderTexTask, u16 mode)
     ((FldShadowRenderTex*)renderTexTask->workData)->mode = mode;
 }
 
-// FUN_0019c320 NONMATCHING
+// FUN_0019c320
 void func_0019c320(KwlnTask* renderTexTask, f32 radius)
 {
     FldShadowRenderTex* shadow;
     void* layout;
     void* geometry;
-    u8* vertices;
+    f32* vertices;
     f32* vertex;
     f32 ringAngle;
     s32 i;
@@ -1601,23 +1601,23 @@ void func_0019c320(KwlnTask* renderTexTask, f32 radius)
     layout = *(void**)((u8*)((FldShadowRingWork*)shadow->radius)->renderObject + 0x18);
     func_00493370(layout, 0xfff);
     geometry = *(void**)((u8*)layout + 0x5c);
-    vertices = *(u8**)((u8*)geometry + 0x14);
-    *(f32*)(vertices + 0) = 0.0f;
-    *(f32*)(vertices + 4) = 5.0f;
-    *(f32*)(vertices + 8) = 0.0f;
+    vertices = *(f32**)((u8*)geometry + 0x14);
+    vertices[0] = 0.0f;
+    vertices[1] = 5.0f;
+    vertices[2] = 0.0f;
     ringAngle = 0.0f;
     for (i = 0; i < 0x20; i++)
     {
-        vertex = (f32*)((u8*)vertices + i * 0x0c);
+        vertex = vertices + i * 3;
         vertex[3] = ((FldShadowRingWork*)shadow->radius)->radius * cosf(ringAngle);
         vertex[4] = 5.0f;
         vertex[5] = ((FldShadowRingWork*)shadow->radius)->radius * sinf(ringAngle);
         ringAngle += FLDSHADOW_RING_ANGLE_STEP;
     }
-    ((f32*)vertices)[i * 3 + 3] =
+    vertices[i * 3 + 3] =
         ((FldShadowRingWork*)shadow->radius)->radius * cosf(0.0f);
-    ((f32*)vertices)[i * 3 + 4] = 5.0f;
-    ((f32*)vertices)[i * 3 + 5] =
+    vertices[i * 3 + 4] = 5.0f;
+    vertices[i * 3 + 5] =
         ((FldShadowRingWork*)shadow->radius)->radius * sinf(0.0f);
 
     func_004933d0(layout);

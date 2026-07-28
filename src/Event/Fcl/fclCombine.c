@@ -4767,47 +4767,50 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
   char cVar2;
 
-  int iVar3;
+  int header;
 
-  u32 uVar4;
+  u32 copyWord;
+  u32 result;
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 entryValue;
   
-  long lVar7;
+  u32 flagEnabled;
   
-  long lVar8;
 
-  int iVar9;
+  int task;
+  int count;
 
-  u32 *puVar10;
+  u32 *copyDst;
+  u32 *node;
 
   char *pcVar11;
 
-  u32 *puVar12;
+  u32 *copySrc;
+  u32 *out;
 
   char *pcVar13;
 
   int iVar14;
+  int entryIndex;
 
   u32 uVar15;
 
-  u8 auStack_1a0 [144];
-
-  u32 auStack_110 [8];
-
-  char acStack_f0 [232];
-
-  char acStack_8 [8];
+  struct {
+    u8 work[144];
+    u32 entries[8];
+    char names[232];
+    char kinds[8];
+  } stack;
 
   
 
   pcVar13 = s_NORMAL_006a4730;
 
-  pcVar11 = acStack_f0;
+  pcVar11 = stack.names;
 
-  iVar9 = 0x70;
+  count = 0x70;
 
   do {
 
@@ -4817,7 +4820,7 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
     pcVar13 = pcVar13 + 2;
 
-    iVar9 = iVar9 + -1;
+    count = count + -1;
 
     *pcVar11 = cVar1;
 
@@ -4825,13 +4828,13 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
     pcVar11 = pcVar11 + 2;
 
-  } while (0 < iVar9);
+  } while (0 < count);
 
   pcVar13 = gp0xffffaa70;
 
-  pcVar11 = acStack_8;
+  pcVar11 = stack.kinds;
 
-  iVar9 = 7;
+  count = 7;
 
   do {
 
@@ -4839,57 +4842,56 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
     pcVar13 = pcVar13 + 1;
 
-    iVar9 = iVar9 + -1;
+    count = count + -1;
 
     *pcVar11 = cVar1;
 
     pcVar11 = pcVar11 + 1;
 
-  } while (0 < iVar9);
+  } while (0 < count);
 
-  puVar12 = DAT_006a4810;
+  copySrc = DAT_006a4810;
 
-  puVar10 = auStack_110;
+  copyDst = stack.entries;
 
-  iVar9 = 5;
+  count = 5;
 
   do {
 
-    uVar4 = *puVar12;
+    copyWord = *copySrc;
 
-    puVar12 = puVar12 + 1;
+    copySrc = copySrc + 1;
 
-    iVar9 = iVar9 + -1;
+    count = count + -1;
 
-    *puVar10 = uVar4;
+    *copyDst = copyWord;
 
-    puVar10 = puVar10 + 1;
+    copyDst = copyDst + 1;
 
-  } while (0 < iVar9);
+  } while (0 < count);
 
-  uVar5 = FUN_003c5470(param_2);
+  task = FUN_003c5470(param_2);
 
-  iVar9 = (int)uVar5;
 
-  *(u32 *)(iVar9 + 4) = *(u32 *)(iVar9 + 4) & 0xfffffffe;
+  *(u32 *)(task + 4) = *(u32 *)(task + 4) & 0xfffffffe;
 
-  uVar6 = FUN_003c58f0(0,0,10,0x20);
+  iVar14 = FUN_003c58f0(0,0,10,0x20);
 
-  FUN_003c6d60(uVar6,0x800);
+  FUN_003c6d60(iVar14,0x800);
 
-  FUN_003d5cd0(auStack_1a0);
+  FUN_003d5cd0(stack.work);
 
-  lVar7 = datGetFlag(0x1209);
+  flagEnabled = datGetFlag(0x1209) != 0;
 
   for (uVar15 = 0; uVar15 < 7; uVar15 = uVar15 + 1) {
 
-    cVar1 = acStack_8[uVar15];
+    cVar1 = stack.kinds[uVar15];
 
     if (((cVar1 == '\x02') || (cVar1 == '\x03')) || (cVar1 == '\x04')) {
 
-      if ((lVar7 != 0) && (lVar8 = FUN_003d84c0(auStack_1a0,auStack_110[uVar15]), lVar8 != 0)) {
+      if (flagEnabled && FUN_003d84c0(stack.work,stack.entries[uVar15]) != 0) {
 
-        FUN_003c5a40(uVar6,cVar1 + 1,4,acStack_f0 + uVar15 * 0x20);
+        FUN_003c5a40(iVar14,cVar1 + 1,4,stack.names + uVar15 * 0x20);
 
       }
 
@@ -4897,51 +4899,50 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
     else {
 
-      FUN_003c5a40(uVar6,cVar1 + 1,4,acStack_f0 + uVar15 * 0x20);
+      FUN_003c5a40(iVar14,cVar1 + 1,4,stack.names + uVar15 * 0x20);
 
     }
 
   }
 
-  iVar3 = FUN_003c5460(uGpffffb994);
+  header = FUN_003c5460(uGpffffb994);
 
-  iVar14 = (int)uVar6;
 
-  FUN_003c4df0(uVar6,iVar14 + 4,*(int *)(iVar3 + 0x10) + -1);
+  FUN_003c4df0(iVar14,iVar14 + 4,*(int *)(header + 0x10) + -1);
 
-  FUN_003c6ee0(uVar6);
+  FUN_003c6ee0(iVar14);
 
-  FUN_003c6d40(uVar6,0x40,0x20);
+  FUN_003c6d40(iVar14,0x40,0x20);
 
-  *(int *)(iVar9 + 8) = iVar14;
+  *(int *)(task + 8) = iVar14;
 
-  uVar4 = FUN_003dfeb0(uVar5);
+  result = FUN_003dfeb0(task);
 
-  *(u32 *)(iVar9 + 0x14) = uVar4;
+  *(u32 *)(task + 0x14) = result;
 
-  uVar4 = fclCombineList003decd0(uVar6);
+  result = fclCombineList003decd0(iVar14);
 
-  *(u32 *)(iVar9 + 0x10) = uVar4;
+  *(u32 *)(task + 0x10) = result;
 
-  puVar10 = *(u32 **)(iVar14 + 4);
+  node = *(u32 **)(iVar14 + 4);
 
   uVar5 = fclCombineList003def10(*(u16 *)(iVar14 + 0x10));
 
-  iVar3 = 0;
+  entryIndex = 0;
 
-  for (; puVar10 != (u32 *)0x0; puVar10 = (u32 *)puVar10[4]) {
+  for (; node != (u32 *)0x0; node = (u32 *)node[4]) {
 
-    puVar12 = *(u32 **)(puVar10[5] + 0x1c);
+    out = *(u32 **)(node[5] + 0x1c);
 
-    uVar4 = *puVar10;
+    result = *node;
 
-    uVar6 = fclCombineList003def40(uVar5,*(u16 *)(iVar14 + 0x10),iVar3);
+    entryValue = fclCombineList003def40(uVar5,*(u16 *)(iVar14 + 0x10),entryIndex);
 
-    uVar4 = fclCombineList003dee80(*(u32 *)(iVar9 + 0x10),puVar10,0,uVar4,uVar6,iVar3 * 3);
+    result = fclCombineList003dee80(*(u32 *)(task + 0x10),node,0,result,entryValue,entryIndex * 3);
 
-    *puVar12 = uVar4;
+    *out = result;
 
-    iVar3 = iVar3 + 1;
+    entryIndex = entryIndex + 1;
 
   }
 
@@ -6045,7 +6046,7 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 
   int iVar1;
 
-  int iVar2;
+  u32 *work;
 
   u32 uVar3;
 
@@ -6055,9 +6056,9 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 
   uVar3 = FUN_003c5460();
 
-  iVar2 = FUN_003c5470(param_2);
+  work = (u32 *)FUN_003c5470(param_2);
 
-  iVar1 = *(int *)(*(int *)(iVar2 + 8) + 0xc);
+  iVar1 = *(int *)(work[2] + 0xc);
 
   lVar4 = FUN_0040ca00();
 
@@ -6083,11 +6084,11 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 
   }
 
-  switch(*(u32 *)(iVar2 + 4)) {
+  switch(work[1]) {
 
   case 1:
 
-    *(u32 *)(iVar2 + 4) = 3;
+    work[1] = 3;
 
     func_001a0040(0,1);
 
@@ -6105,13 +6106,13 @@ u8 * FUN_003d4ff0(u64 param_1,u32 param_2)
 
   case 3:
 
-    lVar4 = FUN_003dff30(*(u32 *)(*(int *)(iVar2 + 8) + 8));
+    lVar4 = FUN_003dff30(*(u32 *)(work[2] + 8));
 
     if (lVar4 != 0) {
 
       FUN_003d06d0(uVar3,1,0);
 
-      *(u32 *)(iVar2 + 4) = 4;
+      work[1] = 4;
 
       FUN_003c6ec0(iVar1);
 
@@ -6129,9 +6130,9 @@ switchD_003d50f4_caseD_4:
 
           FUN_003c6f50(iVar1);
 
-          *(u32 *)(iVar2 + 4) = 2;
+          work[1] = 2;
 
-          FUN_0040c5b0(*(u32 *)(iVar2 + 8));
+          FUN_0040c5b0(work[2]);
 
         }
 
@@ -6143,7 +6144,7 @@ switchD_003d50f4_caseD_4:
 
         FUN_003c6ea0(iVar1);
 
-        *(u32 *)(iVar2 + 4) = 5;
+        work[1] = 5;
 
         FUN_003d06d0(uVar3,1,1);
 
@@ -6151,7 +6152,7 @@ switchD_003d50f4_caseD_4:
 
         FUN_003d06d0(uVar3,7,1);
 
-        FUN_0040c650(*(u32 *)(iVar2 + 8));
+        FUN_0040c650(work[2]);
 
       }
 
@@ -6175,7 +6176,7 @@ switchD_003d50f4_caseD_4:
 
     H_Dbprt_FmtLog(0x7bb740);
 
-    *(u32 *)(iVar2 + 4) = 0;
+    work[1] = 0;
 
     FUN_003d06d0(uVar3,1,1);
 
@@ -6187,15 +6188,15 @@ switchD_003d50f4_caseD_4:
 
   case 5:
 
-    lVar4 = FUN_003dff30(*(u32 *)(*(int *)(iVar2 + 8) + 8));
+    lVar4 = FUN_003dff30(*(u32 *)(work[2] + 8));
 
     if (lVar4 == 0) {
 
-      return (u8 *)0x0;
+      goto complete;
 
     }
 
-    *(u32 *)(iVar2 + 4) = 6;
+    work[1] = 6;
 
     FUN_003c7430(*(u32 *)
 
@@ -6209,18 +6210,19 @@ switchD_003d50f4_caseD_4:
 
       FUN_003c7700();
 
-      *(u32 *)(iVar2 + 4) = 3;
+      work[1] = 3;
 
       uVar3 = FUN_003c5460(DAT_007ce684);
 
       FUN_003d06d0(uVar3,7,0);
 
-      FUN_0040c6a0(*(u32 *)(iVar2 + 8));
+      FUN_0040c6a0(work[2]);
 
     }
 
   }
 
+complete:
   return (u8 *)0x0;
 
 }

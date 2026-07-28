@@ -29,10 +29,24 @@ typedef struct FrFontState {
   u8 position_dirty;
 } FrFontState;
 
+typedef struct FrFontSlot {
+  void *resource;
+  u8 unknown_04[0x14];
+  u32 flags;
+  void *object;
+} FrFontSlot;
+
+typedef struct FrFontManagerData {
+  FrFontSlot slots[9];
+  u8 unknown_120[0x64];
+  void *allocations[9];
+} FrFontManagerData;
+
 extern u32 DAT_006a2370;
 extern const char DAT_006a2730[];
 extern const char DAT_006a27a0[];
 extern const char DAT_006a27d0[];
+extern const char DAT_006a2800[];
 extern u8 DAT_006a2830[];
 extern u32 DAT_007cd4f8;
 #pragma alias DAT_007cd4f8_abs DAT_007cd4f8
@@ -46,6 +60,8 @@ extern u32 DAT_0095ac70_abs[];
 extern u32 DAT_0095acf0;
 #pragma alias DAT_0095acf0_abs DAT_0095acf0
 extern u32 DAT_0095acf0_abs[];
+#pragma alias gFrFontManagerData_abs DAT_0095acf0
+extern FrFontManagerData gFrFontManagerData_abs;
 extern u32 DAT_0095acf4;
 #pragma alias DAT_0095acf4_abs DAT_0095acf4
 extern u32 DAT_0095acf4_abs[];
@@ -542,61 +558,43 @@ void FUN_003afc70(void)
 
 
 void FUN_003afe30(void)
-
-
-
 {
+  s32 i;
+  s32 checkedIndex;
+  u8 slotIndex;
+  FrFontSlot *slot;
+  void *allocation;
+  FrFontManagerData *manager;
+  void **allocationEntry;
 
-  u32 uVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  
-
-  for (uVar3 = 0; (int)uVar3 < 9; uVar3 = uVar3 + 1) {
-
-    if ((&DAT_0095ad0c)[uVar3 * 8] != 0) {
-
-      uVar2 = uVar3 & 0xff;
-
-      if (8 < uVar2) {
-
-        FUN_0035ac50(0x6a27a0,uVar2);
-
+  for (i = 0; i < 9; i++) {
+    slot = &gFrFontManagerData_abs.slots[i];
+    if (slot->object != NULL) {
+      checkedIndex = (u8)i;
+      if (checkedIndex < 9) {
+      } else {
+        FUN_0035ac50(DAT_006a27a0, checkedIndex);
       }
 
-      uVar1 = uVar3 & 0xff;
-
-      if ((&DAT_0095ad0c)[uVar1 * 8] == 0) {
-
-        FUN_0019d3f0("frFont.c",0x432);
-
+      slotIndex = (u8)i;
+      slot = &gFrFontManagerData_abs.slots[slotIndex];
+      if (slot->object == NULL) {
+        FUN_0019d3f0(DAT_006a2730, 0x432);
       }
 
-      if ((&DAT_0095ae74)[uVar1] != 0) {
-
-        FUN_00100ec0();
-
-        (&DAT_0095ae74)[uVar3 & 0xff] = 0;
-
-        FUN_005225a8(0x6a2800,uVar2);
-
-        (&DAT_0095acf0)[uVar1 * 8] = 0;
-
-        (&DAT_0095ad0c)[uVar1 * 8] = 0;
-
+      manager = &gFrFontManagerData_abs;
+      allocation = manager->allocations[slotIndex];
+      if (allocation != NULL) {
+        allocationEntry = &manager->allocations[(u8)i];
+        FUN_00100ec0(allocation);
+        *allocationEntry = NULL;
+        FUN_005225a8(DAT_006a2800, checkedIndex);
+        slot->resource = NULL;
+        slot->object = NULL;
+        slot->flags = 0;
       }
-
-      *(u32 *)(&DAT_0095ad08 + uVar1 * 0x20) = 0;
-
     }
-
   }
-
-  return;
-
 }
 #define FUN_003afe30(...) ((void (*)(...))FUN_003afe30)(__VA_ARGS__)
 #undef FUN_003aff50

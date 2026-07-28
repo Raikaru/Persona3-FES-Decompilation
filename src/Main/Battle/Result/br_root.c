@@ -3195,38 +3195,40 @@ void func_001f6a60(void)
 #pragma optimization_level 3
 void func_001f6d20(const f32 *entry)
 {
-    u8 *work = sBrReward;
-    u32 type;
-    u32 index;
-    K_ASSERT(work != NULL, 0x8c);
-    type = BR_U32(entry, 0);
-    if (type == 0) {
-        index = BR_U32(work, 0x341c);
-        K_ASSERT(index < 8, 0x355);
-        BR_U32(work, 0x3c + index * 4) = index;
-        BR_U32(work, index * 0x670 + 0x5c) = 0;
-        BR_U32(work, index * 0x670 + 0x60) = 0;
-        BR_U32(work, index * 0x670 + 0x64) = 0;
-        BR_U32(work, index * 0x670 + 0x5c) = 0;
-        BR_U32(work, 0x341c) = index + 1;
-    } else if (type == 1) {
-        index = BR_U32(work, 0x3418);
-        K_ASSERT(index < 8, 0x35a);
-        BR_U32(work, 0x1c + index * 4) = index;
-        BR_U32(work, index * 0x670 + 0x5c) = 1;
-        BR_U32(work, 0x3418) = index + 1;
-    } else {
-        K_ASSERT(0, 0x35f);
-        return;
+    u8 *work;
+    u32 *words;
+    u8 *dst;
+
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
+    words = (u32 *)work;
+    K_ASSERT((s32)words[0xcf7] >= 0 &&
+             (s32)words[0xcf7] < 8,
+             0x34d);
+    dst = work + words[0xcf7] * 0x670;
+    *(f32 *)(dst + 0x5c) = entry[0];
+    *(f32 *)(dst + 0x60) = entry[1];
+    *(f32 *)(dst + 0x64) = entry[2];
+
+    switch (*(const u32 *)entry) {
+    case 0:
+        K_ASSERT((s32)words[0xd07] < 8, 0x355);
+        BR_U32((u8 *)(words[0xd07] * 4 + (u32)work), 0x3c) =
+            words[0xcf7];
+        words[0xd07]++;
+        break;
+    case 1:
+        K_ASSERT((s32)words[0xd06] < 8, 0x35a);
+        BR_U32((u8 *)(words[0xd06] * 4 + (u32)work), 0x1c) =
+            words[0xcf7];
+        words[0xd06]++;
+        break;
     }
-    BR_U32(work, BR_U32(work, 0x33dc) * 0x670 + 0x5c) = *(const u32 *)entry;
-    BR_U32(work, BR_U32(work, 0x33dc) * 0x670 + 0x60) = *(const u32 *)(entry + 1);
-    BR_U32(work, BR_U32(work, 0x33dc) * 0x670 + 0x64) = *(const u32 *)(entry + 2);
-    BR_U32(work, 0x33dc)++;
+    words[0xcf7]++;
 }
 #pragma optimization_level 2
 
-// FUN_001f6e80 NONMATCHING
+// FUN_001f6e80
 void func_001f6e80(void)
 {
     u8 *work;
@@ -3235,8 +3237,8 @@ void func_001f6e80(void)
     u32 idx;
     u32 offset;
     u8 *entry;
-    f32 output[3];
     f32 position[2];
+    f32 output[3];
     f32 scale;
     K_ASSERT(sBrReward != NULL, 0x8c);
     work = sBrReward;

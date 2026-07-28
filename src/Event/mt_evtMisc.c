@@ -5772,11 +5772,13 @@ void FUN_0038ca00(void)
   s32 iVar3;
   f32 *pfVar4;
   f32 *pfVar5;
+  u32 uVar6;
 
   iVar3 = 0;
   pfVar5 = DAT_009588b0_f32;
   fVar1 = DAT_007cadd0_f32;
   fVar2 = DAT_007cafec_f32;
+  uVar6 = 0x40e00000;
   for (; iVar3 < 3; iVar3 = iVar3 + 1) {
     pfVar4 = &pfVar5[iVar3 * 0x10];
     pfVar4[2] = fVar1;
@@ -5791,7 +5793,7 @@ void FUN_0038ca00(void)
     pfVar4[11] = fVar2;
     pfVar4[12] = fVar2;
     pfVar4[13] = 0.0f;
-    pfVar4[14] = 7.0f;
+    ((u32 *)pfVar4)[14] = uVar6;
     pfVar4[15] = 0.0f;
     pfVar4[0] = 0.0f;
     pfVar4[1] = 0.0f;

@@ -7543,17 +7543,17 @@ void btlActionUpdateStateEnd(BtlAction* action)
     }
 }
 
-// FUN_00299520 NONMATCHING
+// FUN_00299520
 void btlActionInitStateEndHome(BtlAction* action)
 {
     BtlPacket* packet;
     BtlUnit* unit = action->unit;
     BtlUnit* moveUnit;
     RwV3d homePos;
-    u16 speedIndex;
     u16 allowMove;
-    BtlEnemyRecord* enemyRecords;
     u16 unitId;
+    u16 speedIndex;
+    BtlEnemyRecord* enemyRecords;
 
     action->movedAwayFromHome = 0;
     if (datCalcIsDead(unit->datUnit, 0) != 0)
@@ -7596,8 +7596,7 @@ void btlActionInitStateEndHome(BtlAction* action)
             break;
         case UNIT_GENUS_EC:
             enemyRecords = iGpffffb728;
-            speedIndex = *(u16*)((u8*)enemyRecords + unitId * 0xe8 +
-                                 (u32)allowMove * 4 + 0x24);
+            speedIndex = enemyRecords[unitId].moveSpeed[allowMove].speedIndex;
             break;
         default:
             break;

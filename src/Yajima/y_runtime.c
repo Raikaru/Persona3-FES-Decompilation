@@ -12024,28 +12024,34 @@ u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 void FUN_00447f90(float *param_1,int param_2,char param_3)
 
 {
+  struct CoordinateValues {
+    s16 unused;
+    s16 x;
+    s16 y;
+  };
   RwV2d position;
   float y;
-  char cVar1;
-  char cVar2;
+  int cVar1;
+  int cVar2;
   int index;
   int iVar3;
   int iVar4;
-  u8 *coordinateBase;
+  u8 *table;
+  struct CoordinateValues *coordinateBase;
   
   index = (int)param_3 * 4;
-  cVar1 = *(char *)(index + DAT_007ce6ec + 4);
-  iVar4 = 0;
-  coordinateBase = DAT_006b4796_abs;
-  iVar3 = *(s16 *)(coordinateBase + 4) - (cVar1 - 1) * 0x40;
-  cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
+  table = iGpffffb9fc_ptr;
+  cVar1 = *(s8 *)(table + index + 4);
+  coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
+  iVar3 = coordinateBase->y - (cVar1 - 1) * 0x40;
+  cVar2 = *(s8 *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
   y = (float)iVar3;
-  for (; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
+  for (iVar4 = 0; iVar4 < *(char *)(table + 0xa0); iVar4 = iVar4 + 1) {
   }
   position.y = y - 32.0f;
-  position.x = (float)*(s16 *)(coordinateBase + 2);
+  position.x = (float)coordinateBase->x;
   *(RwV2d *)param_1 = position;
   return;
 }
