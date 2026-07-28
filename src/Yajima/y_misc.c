@@ -3111,6 +3111,10 @@ FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
   int iVar1;
   u32 uVar2;
   u8 *puVar3;
+  u32 bVar1;
+  u32 bVar2;
+  u32 bVar3;
+  u32 bVar4;
   YajimaVec4 size;
   YajimaVec4 rect;
 
@@ -3125,10 +3129,10 @@ FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
   *puVar3 = 0;
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
     u8 *entry = puVar3 + iVar1 * 4;
-    u8 bVar1 = ((u8 *)&param_5)[0];
-    u8 bVar4 = ((u8 *)&param_5)[3];
-    u8 bVar2 = ((u8 *)&param_5)[1];
-    u8 bVar3 = ((u8 *)&param_5)[2];
+    bVar1 = ((u8 *)&param_5)[0];
+    bVar2 = ((u8 *)&param_5)[1];
+    bVar3 = ((u8 *)&param_5)[2];
+    bVar4 = ((u8 *)&param_5)[3];
     entry[0x110] = bVar1;
     entry[0x111] = bVar2;
     entry[0x112] = bVar3;

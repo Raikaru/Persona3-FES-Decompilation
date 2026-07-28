@@ -8374,14 +8374,8 @@ int FUN_0043bc20(char param_1)
   int iVar1;
   u32 uVar2;
 
-  if (param_1 == '\0') {
-    cVar3 = 0;
-    sVar1 = 1;
-  }
-  else {
-    cVar3 = 0;
-    sVar1 = *(s16 *)(DAT_00871948_abs + param_1 * 0x1c0);
-  }
+  cVar3 = 0;
+  sVar1 = param_1 == '\0' ? 1 : *(s16 *)(DAT_00871948_abs + param_1 * 0x1c0);
   iVar1 = sVar1;
   uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 1) != 0) {

@@ -1499,12 +1499,12 @@ void FUN_003a9ed0(int param_1,u64 param_2)
 
 void FUN_003aa000(int param_1,u64 param_2)
 {
+  register int index;
   u32 uVar1;
   int iVar2;
   int iVar3;
   int iVar4;
   int iVar5;
-  int index;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   iVar2 = *(int *)(param_1 + 8);

@@ -126,15 +126,17 @@ void FUN_00396f50(int param_1)
 {
   int manager;
   int base;
-  u32 *entry;
   u32 *state_ptr;
+  u32 *entry;
   int offset;
+  int index;
 
+  index = param_1;
   manager = FUN_00195340("koma_Manager");
   if (manager != 0) {
-    if (param_1 < 3) {
+    if (index < 3) {
       base = FUN_00195540(manager);
-      offset = param_1 * 0xc;
+      offset = index * 0xc;
       entry = (u32 *)(offset + base);
       state_ptr = entry + 2;
       if (*state_ptr != 0) {
@@ -143,7 +145,7 @@ void FUN_00396f50(int param_1)
           break;
         case 1:
         case 2:
-          FUN_00397030_int(param_1);
+          FUN_00397030_int(index);
           break;
         default:
           FUN_00111500();

@@ -2985,9 +2985,8 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   if ((*puVar4 & 1) != 0) {
 
-    puVar4[6] = 0;
+    *(u32 *)(puVar4 + 6) = 0;
 
-    puVar4[7] = 0;
 
   }
 
