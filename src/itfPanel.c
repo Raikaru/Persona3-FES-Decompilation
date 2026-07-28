@@ -1788,7 +1788,6 @@ void FUN_003aa720(int param_1)
   short sVar2;
 
   u32 uVar3;
-
   int iVar4;
 
   u32 uVar5;
@@ -1798,6 +1797,7 @@ void FUN_003aa720(int param_1)
   short *psVar7;
 
   short *psVar8;
+
 
   u32 cVar9;
   u8 mask;
@@ -4660,7 +4660,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   piVar10 = (int *)DAT_006a2680;
   piVar9 = aiStack_20;
 
-  iVar8 = counter = 5;
+  counter = 5;
 
   do {
 

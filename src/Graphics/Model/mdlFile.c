@@ -365,6 +365,7 @@ static __inline void mdlVuModulateStacked90(u32 c2)
         : "$v0", "memory");
 }
 
+
 static __inline void mdlVuModulateStacked80V0(u32 c2)
 {
     f32 inv255;
@@ -7574,7 +7575,6 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
   u32 uVar3;
 
   u32 uVar4;
-
 
   u8 *model;
 
@@ -40454,7 +40454,6 @@ u32 FUN_00347170(u64 param_1)
 
   u32 uVar5;
 
-
   u32 *puVar6;
 
   u8 (*pauVar7) [16];
@@ -40482,7 +40481,6 @@ u32 FUN_00347170(u64 param_1)
   FUN_00493370(*(u32 *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18),8);
 
   puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18) + 0x30);
-
 
   for (uVar5 = 0; uVar5 < 0x34; uVar5 = uVar5 + 1) {
 
@@ -45203,7 +45201,6 @@ void FUN_0034cc00(u32 *param_1)
       iStack_4 = param_1[9];
 
       uStack_c = mdlVuModulateStackedV0((u32 *)&iStack_4,(u32 *)&iStack_8,DAT_007cae4c);
-
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);
@@ -49192,7 +49189,7 @@ void FUN_00351510(int param_1)
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
     ratio = 255.0f * ratio;
-    if (ratio < 2147483648.0f) {
+    if (ratio <= 2147483648.0f) {
       alphaByte = (s32)ratio & 0xff;
     } else {
       alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
