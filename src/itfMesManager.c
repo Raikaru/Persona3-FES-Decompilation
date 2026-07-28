@@ -4567,7 +4567,7 @@ void FUN_003a6ca0(int param_1,int param_2,int param_3)
 }
 #define FUN_003a6ca0(...) ((void (*)(...))FUN_003a6ca0)(__VA_ARGS__)
 #undef FUN_003a6e30
-// FUN_003A6E30 NONMATCHING
+// FUN_003A6E30
 
 
 void FUN_003a6e30(u32 *param_1)
@@ -4605,7 +4605,7 @@ void FUN_003a6e30(u32 *param_1)
       sVar1 = (short)param_1[0xf];
       entries = (u32 *)param_1[0xb];
       entryCount = *(short *)((u8 *)entries + 0x18);
-      if ((sVar1 < 0) || (entryCount <= sVar1)) {
+      if ((sVar1 < 0) || (sVar1 >= entryCount)) {
         uVar6 = 0;
       }
       else {
@@ -4615,7 +4615,7 @@ void FUN_003a6e30(u32 *param_1)
       sVar1 = (short)param_1[0xf];
       entries = (u32 *)param_1[0xb];
       entryCount = *(short *)((u8 *)entries + 0x18);
-      if ((sVar1 < 0) || (entryCount <= sVar1)) {
+      if ((sVar1 < 0) || (sVar1 >= entryCount)) {
         uVar6 = 0;
       }
       else {

@@ -6068,7 +6068,7 @@ void FUN_0042bd80(int param_1)
 
   u8 bVar2;
 
-  int iVar3;
+  u8 *work;
 
   int iVar4;
 
@@ -6082,17 +6082,17 @@ void FUN_0042bd80(int param_1)
 
   int iVar9;
 
-  int iVar10;
+  u8 *row;
 
   
 
-  iVar3 = *(int *)((int)param_1 + 0x3c);
+  work = *(u8 **)((int)param_1 + 0x3c);
 
   for (iVar7 = 0; iVar7 < 0x10; iVar7 = iVar7 + 1) {
 
     iVar6 = iVar7 * 0x100;
 
-    iVar10 = iVar3 + iVar7 * 0x80;
+    row = work + iVar7 * 0x80;
 
     for (iVar8 = 0; iVar8 < 0x10; iVar8 = iVar8 + 1) {
 
@@ -6104,11 +6104,9 @@ void FUN_0042bd80(int param_1)
 
         if (*(char *)(iVar6 + iVar4 + iVar8 * 0x10 + 0x49) == '\x01') {
 
-          iVar4 = iVar10 + iVar8 * 8;
+          piVar5 = (int *)(row + iVar8 * 8 + 0x5c);
 
-          piVar5 = (int *)(iVar4 + 0x5c);
-
-          if (*(int *)(iVar4 + 0x5c) != 0) {
+          if (*piVar5 != 0) {
 
             *piVar5 = 0;
 
@@ -6162,7 +6160,7 @@ void FUN_0042bd80(int param_1)
 
           *(u8 *)(*(int *)(*piVar5 + 0x3c) + 0x150) = 1;
 
-          *(u8 *)(iVar10 + iVar8 * 8 + 0x60) = 0;
+          *(u8 *)(row + iVar8 * 8 + 0x60) = 0;
 
         }
 

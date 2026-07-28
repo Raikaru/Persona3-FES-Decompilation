@@ -5768,7 +5768,6 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
 {
   int iVar1;
   int iVar2;
-  u8 bVar3;
   char cVar4;
   int iVar5;
   int iVar6;
@@ -5799,10 +5798,8 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
   *(u8 *)(iVar1 + 0x103) = param_5;
   *(u8 *)(iVar1 + 0x104) = param_6;
   *(YVec3f *)(iVar1 + 0xe0) = position;
-  bVar3 = 0;
   do {
     cVar4 = FUN_00433de0(param_1);
-    iVar1 = *(int *)((int)param_1 + 0x3c);
     iVar6 = *(int *)(iVar1 + 0xa10);
     *(u32 *)(iVar1 + 0x20c) = 0;
     for (iVar7 = 0; iVar7 < 0xff; iVar7 = iVar7 + 1) {
@@ -5816,15 +5813,11 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
     iVar6 = iVar1 + iVar6 * 8;
     *(char *)(iVar1 + 0xf8) = (char)*(u16 *)(iVar6 + 0x210);
     *(char *)(iVar1 + 0xf9) = (char)*(u16 *)(iVar6 + 0x212);
-    if (cVar4 == '\x01') {
-      cVar4 = '\x02';
-      bVar3 = 1;
-    }
-  } while (cVar4 != '\x02');
-  if (!bVar3) {
+  } while ((cVar4 != '\x01') && (cVar4 != '\x02'));
+  if (cVar4 != '\x01') {
     FUN_004343d0(param_1);
   }
-  return !bVar3;
+  return cVar4 == '\x01';
 }
 
 #pragma push
@@ -8389,49 +8382,45 @@ int FUN_0043bc20(char param_1)
 // FUN_0043BDA0 NONMATCHING
 
 short FUN_0043bda0(char param_1,char param_2)
-
 {
-  short sVar1;
-  int iVar2;
-  long lVar3;
-  short *psVar4;
-  int iVar5;
-  short sVar6;
-  int iVar7;
+  short value;
+  long result;
+  short *entry;
+  int i;
+  short selected;
+  u8 *actor;
+  u8 *target;
   u8 auStack_c [4];
   u8 auStack_8 [4];
   u8 auStack_4 [4];
-  
-  sVar6 = -1;
-  iVar5 = param_1 * 0x1c0;
-  iVar2 = (int)FUN_00173380_typed(*(u16 *)((u8 *)DAT_00871948 + iVar5));
-  iVar7 = 0;
+
+  selected = -1;
+  actor = DAT_008717a0_rows_abs[(char)param_1];
+  entry = (short *)FUN_00173380_typed(*(u16 *)(actor + 0x1a8));
+  i = 0;
+  target = DAT_008717a0_rows_abs[(char)param_2];
   do {
-    if (7 < iVar7) {
-      return sVar6;
+    if (7 < i) {
+      return selected;
     }
-    psVar4 = (short *)(iVar2 + iVar7 * 2);
-    sVar1 = *psVar4;
-    if (sVar1 != 0) {
-      if (sVar1 == 0xcc) {
-        lVar3 = FUN_0017b660_1arg(*(u16 *)((u8 *)DAT_00871948 + iVar5));
-        if ((lVar3 == 0) &&
-           (FUN_0017be10(*(u16 *)((u8 *)DAT_00871948 + iVar5),
-                         *(u16 *)((u8 *)DAT_00871948 + param_2 * 0x1c0),*psVar4,0,auStack_4,
-                         auStack_8,auStack_c), sVar6 != 0xcd)) {
-          sVar6 = *psVar4;
+    value = entry[i];
+    if (value != 0) {
+      if (value == 0xcc) {
+        result = FUN_0017b660_1arg(*(u16 *)(actor + 0x1a8));
+        if ((result == 0) &&
+           (FUN_0017be10(*(u16 *)(actor + 0x1a8), *(u16 *)(target + 0x1a8),
+                         entry[i],0,auStack_4,auStack_8,auStack_c), selected != 0xcd)) {
+          selected = entry[i];
         }
       }
-      else if ((sVar1 == 0xcd) &&
-              (lVar3 = FUN_0017b660_1arg(*(u16 *)((u8 *)DAT_00871948 + iVar5)), lVar3 == 0)) {
-        psVar4 = (short *)(iVar2 + iVar7 * 2);
-        FUN_0017be10(*(u16 *)((u8 *)DAT_00871948 + iVar5),
-                     *(u16 *)((u8 *)DAT_00871948 + param_2 * 0x1c0),*psVar4,0,auStack_4,auStack_8,
-                     auStack_c);
-        return *psVar4;
+      else if ((value == 0xcd) &&
+              (result = FUN_0017b660_1arg(*(u16 *)(actor + 0x1a8)), result == 0)) {
+        FUN_0017be10(*(u16 *)(actor + 0x1a8), *(u16 *)(target + 0x1a8),
+                     entry[i],0,auStack_4,auStack_8,auStack_c);
+        return entry[i];
       }
     }
-    iVar7 = iVar7 + 1;
+    i = i + 1;
   } while( 1 );
 }
 
