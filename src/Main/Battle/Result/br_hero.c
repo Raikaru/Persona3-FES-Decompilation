@@ -99,7 +99,7 @@ static void brHeroSetRect(void* object, float x, float y, float w, float h)
 }
 
 
-// FUN_00262790 NONMATCHING
+// FUN_00262790
 void brHero00262790(void)
 {
     u32* w;

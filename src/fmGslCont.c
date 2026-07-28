@@ -839,22 +839,21 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
 void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 {
-  RwIm2DVertex* vertices;
   RwIm2DVertex* vertex;
+  code* setRenderState;
   int* position;
   int* color;
-  f32 z;
   f32 recipZ;
+  f32 z;
   int i;
 
   recipZ = 1.0f / *(f32*)(FUN_00198590() + 0x80);
   i = 0;
-  vertices = DAT_0095aec0_abs;
   z = DAT_00960088;
   while (i < 4) {
     position = (int*)(param_1 + (u32)*param_3 * 8);
     color = (int*)(param_2 + (u32)*param_4 * 0x10);
-    vertex = &vertices[i];
+    vertex = &DAT_0095aec0_abs[i];
 
     vertex->u.els.scrVertex.x = (f32)(position[0] >> 4);
     vertex->u.els.scrVertex.y = (f32)(position[1] >> 3);
@@ -870,14 +869,15 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
     param_4++;
   }
 
-  (*DAT_00960090_abs)(1, 0);
-  (*DAT_00960090_abs)(7, 2);
-  (*DAT_00960090_abs)(0xC, 1);
-  (*DAT_00960090_abs)(10, 3);
-  (*DAT_00960090_abs)(0xB, 6);
+  setRenderState = DAT_00960090_abs;
+  (*setRenderState)(1, 0);
+  (*setRenderState)(7, 2);
+  (*setRenderState)(0xC, 1);
+  (*setRenderState)(10, 3);
+  (*setRenderState)(0xB, 6);
   FUN_004d7f60(2, 0x44);
   FUN_004d7f60(3, 0x717FB);
-  (*DAT_009600a0_abs)(5, vertices, 4);
+  (*DAT_009600a0_abs)(5, DAT_0095aec0_abs, 4);
 }
 #define FUN_003b4b40(...) ((void (*)(...))FUN_003b4b40)(__VA_ARGS__)
 #undef FUN_003b4d10

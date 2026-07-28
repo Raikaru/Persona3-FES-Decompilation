@@ -359,7 +359,7 @@ void opWait0026e000(void)
     (*setQuad)(work + 0xd40, 4, 0, 2, 3);
 }
 
-// FUN_0026E780 NONMATCHING
+// FUN_0026E780
 void opWait0026e780(void)
 {
     u8* work;

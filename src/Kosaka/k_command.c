@@ -2045,6 +2045,7 @@ u32 func_001c5980()
     {
     case 0:
     {
+        FldUnit* units;
         if (func_001d1a90() == false)
         {
             return false;
@@ -2060,15 +2061,18 @@ u32 func_001c5980()
 
         func_00455b50();
         slot = 1;
+        units = gFldUnitsPc;
         while (slot < 4)
         {
             FldUnit* candidate;
-            candidate = &gFldUnitsPc[slot];
+            candidate = &units[slot];
             valid = false;
-            if (candidate->genusBase != NULL &&
-                candidate->resrc != NULL)
+            if (candidate->genusBase != NULL)
             {
-                valid = true;
+                if (candidate->resrc != NULL)
+                {
+                    valid = true;
+                }
             }
             if (valid > 0 &&
                 candidate->charId == (u16)requestedId)
@@ -2092,11 +2096,13 @@ u32 func_001c5980()
 
     case 1:
     {
+        FldUnit* units;
         slot = 1;
+        units = gFldUnitsPc;
         while (slot < 4)
         {
             FldUnit* candidate;
-            candidate = &gFldUnitsPc[slot];
+            candidate = &units[slot];
             if (candidate->genusBase != NULL &&
                 candidate->charId == (u16)requestedId)
             {
