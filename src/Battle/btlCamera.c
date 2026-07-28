@@ -286,7 +286,7 @@ extern void btlCameraNoOp(void);
 extern void FUN_002b1bc0(int param_1);
 extern void FUN_002b1cf0(int param_1);
 extern void FUN_002b1e00(int param_1);
-extern void FUN_002b2060(BtlCamera *camera);
+extern void FUN_002b2060(int param_1);
 extern void FUN_002b2800(BtlCamera *camera);
 extern void FUN_002b2880(int param_1);
 extern void FUN_002b2940(void *arg0);
@@ -330,7 +330,7 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {FUN_002a5430, FUN_002a5460, 1, 1, "OWN"}, // OWN
     {func_002af960, (void(*)(BtlCamera*))FUN_002b0210, 1, 1, "ATTACK_SHORT"}, // ATTACK_SHORT
     {(void(*)(BtlCamera*))FUN_002b1020, (void(*)(BtlCamera*))btlCameraNoOp, 1, 1, "ATTACK_LONG"}, // ATTACK_LONG
-    {(void(*)(BtlCamera*))FUN_002b1e00, FUN_002b2060, 1, 1, "ATTACK_DOWN_P"}, // ATTACK_DOWN_P
+    {(void(*)(BtlCamera*))FUN_002b1e00, (void(*)(BtlCamera*))FUN_002b2060, 1, 1, "ATTACK_DOWN_P"}, // ATTACK_DOWN_P
     {FUN_002b2800, (void(*)(BtlCamera*))FUN_002b2880, 1, 1, "ATTACK_DOWN_E"}, // ATTACK_DOWN_E
     {(void(*)(BtlCamera*))FUN_002b2940, (void(*)(BtlCamera*))FUN_002b2ea0, 1, 1, "ATTACK_SLIP"}, // ATTACK_SLIP
     {(void(*)(BtlCamera*))FUN_002b1bc0, (void(*)(BtlCamera*))FUN_002b1cf0, 1, 1, "ATTACK_COMB"}, // ATTACK_COMB
@@ -4401,65 +4401,58 @@ void FUN_002b1e00(int param_1)
 
 // FUN_002b2060 NONMATCHING
 
-void FUN_002b2060(BtlCamera* camera)
+void FUN_002b2060(int param_1)
 {
-    u8* base;
-    u8* action;
-    u8* result;
-    u8* center;
-    u16 modeValue;
-    u32 mode;
+  int iVar1;
+  u16 uVar2;
+  u8 *base;
+  u8 *pVar;
+  u32 uVarMode;
+  int iVar5;
+  u8 *pCenter;
 
-    base = (u8*)camera;
-    action = *(u8**)(base + 0xe0);
-    if (action != NULL && *(u16*)(action + 0x6a) == 1 &&
-        *(u8**)(base + 0x100) != NULL &&
-        *(u8**)(base + 0x100) == *(u8**)(action + 0x38) &&
-        (*(u16*)(action + 0x1a) & 1) != 0)
-    {
-        if (FUN_002b6bd0((s32)(uintptr_t)(base + 0xec)) != 0)
-        {
-            FUN_002b64d0(camera, (struct B64CameraWork*)(base + 0xec));
-        }
-        result = FUN_002b6cd0((s32)(uintptr_t)(base + 0xec));
-        if (result != NULL)
-        {
-            if (*(u16*)(result + 0x1c) == 1)
-            {
-                if (*(s32*)(base + 0x114) != 0)
-                {
-                    FUN_002a3e80(0.0f, *(u8**)(base + 0xe0), NULL, NULL, 0x81);
-                }
-                *(s32*)(base + 0x110) = 1;
-            }
-            else
-            {
-                if (*(s32*)(base + 0x110) == 1)
-                {
-                    modeValue = 3;
-                }
-                else
-                {
-                    modeValue = 0x33;
-                }
-                mode = modeValue;
-                if (*(s32*)(base + 0x114) == 0)
-                {
-                    if (FUN_0030b5a0(*(undefined4*)(*(u8**)(*(u8**)(base + 0x100) + 0x30) + 0xa2c), 0) == 0)
-                    {
-                        center = *(u8**)(*(u8**)(base + 0x100) + 0x30) + 4;
-                        FUN_002a3e80(50.0f, *(u8**)(base + 0xe0),
-                                     base + 0x9c, center, mode);
-                    }
-                }
-                else
-                {
-                    FUN_002a3e80(0.0f, *(u8**)(base + 0xe0), NULL, NULL, mode);
-                }
-                *(s32*)(base + 0x110) = 0;
-            }
-        }
+  base = (u8 *)(uintptr_t)param_1;
+  iVar1 = *(int *)(base + 0xe0);
+  if ((((iVar1 != 0) && (*(u16 *)(iVar1 + 0x6a) == 1)) && (*(int *)(base + 0x100) != 0)) &&
+     ((*(int *)(base + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
+     ) {
+    if (FUN_002b6bd0((s32)(uintptr_t)(base + 0xec)) != 0) {
+      FUN_002b64d0((BtlCamera*)base,
+                   (struct B64CameraWork*)(base + 0xec));
     }
+    pVar = FUN_002b6cd0((s32)(uintptr_t)(base + 0xec));
+    if (pVar != 0) {
+      if (*(u16 *)(pVar + 0x1c) == 1) {
+        if (*(int *)(base + 0x114) != 0) {
+          FUN_002a3e80(0.0f,(u8*)(uintptr_t)*(undefined4 *)(base + 0xe0),
+                       (u8*)0,(u8*)0,0x81);
+        }
+        *(undefined4 *)(base + 0x110) = 1;
+      }
+      else {
+        if (*(int *)(base + 0x110) == 1) {
+          uVar2 = 3;
+        }
+        else {
+          uVar2 = 0x33;
+        }
+        uVarMode = uVar2;
+        if (*(int *)(base + 0x114) == 0) {
+          if (FUN_0030b5a0(*(undefined4 *)(*(int *)(*(int *)(base + 0x100) + 0x30) + 0xa2c),0) == 0) {
+            pCenter = *(u8 **)(*(u8 **)(base + 0x100) + 0x30) + 4;
+            FUN_002a3e80(50.0f,(u8*)(uintptr_t)*(undefined4 *)(base + 0xe0),
+                         base + 0x9c,pCenter,uVarMode);
+          }
+        }
+        else {
+          FUN_002a3e80(0.0f,(u8*)(uintptr_t)*(undefined4 *)(base + 0xe0),
+                       (u8*)0,(u8*)0,uVarMode);
+        }
+        *(undefined4 *)(base + 0x110) = 0;
+      }
+    }
+  }
+  return;
 }
 
 #pragma push

@@ -1614,9 +1614,9 @@ void func_0019c320(KwlnTask* renderTexTask, f32 radius)
         ringAngle += FLDSHADOW_RING_ANGLE_STEP;
     }
     vertex = (f32*)((u8*)vertices + i * 0x0c);
-    vertex[3] = ((FldShadowRingWork*)shadow->radius)->radius * cosf(ringAngle);
+    vertex[3] = ((FldShadowRingWork*)shadow->radius)->radius * cosf(0.0f);
     vertex[4] = 5.0f;
-    vertex[5] = ((FldShadowRingWork*)shadow->radius)->radius * sinf(ringAngle);
+    vertex[5] = ((FldShadowRingWork*)shadow->radius)->radius * sinf(0.0f);
 
     func_004933d0(layout);
 }
