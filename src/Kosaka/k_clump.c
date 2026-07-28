@@ -1883,36 +1883,24 @@ KwlnTask* func_001a96c0(KwlnTask* parent)
 // FUN_001a9760 NONMATCHING
 void func_001a9760(KwlnTask* task, u32 value, const RwV3d* position, u32 sound, u32 flags)
 {
-    u32* work;
-    u32 index;
-    u32 savedValue;
-    const RwV3d* savedPosition;
-    u32 savedSound;
-    u32 savedFlags;
-    f32* dst;
+    s32* work;
+    RwV3d* dst;
 
-    savedValue = value;
-    savedPosition = position;
-    savedSound = sound;
-    savedFlags = flags;
     if (task == NULL)
     {
         return;
     }
-    work = (u32*)task->workData;
-    index = work[3];
-    if (index >= 8)
+    work = (s32*)task->workData;
+    if (work[3] >= 8)
     {
-        K_Assert((const char*)0x007c8620, 0x260);
+        K_Assert("k_clump.c", 0x260);
     }
-    work[4 + index] = savedValue;
-    dst = (f32*)((u8*)work + 0x30 + index * 0x0c);
-    dst[0] = savedPosition->x;
-    dst[1] = savedPosition->y;
-    dst[2] = savedPosition->z;
-    work[0x24 + index] = savedSound;
-    work[0x2c + index] = savedFlags;
-    work[3] = index + 1;
+    work[4 + work[3]] = value;
+    dst = (RwV3d*)((u8*)work + 0x30 + work[3] * 0x0c);
+    *dst = *position;
+    work[0x24 + work[3]] = sound;
+    work[0x2c + work[3]] = flags;
+    work[3]++;
 }
 
 // FUN_001a9850 NONMATCHING

@@ -586,69 +586,89 @@ void FUN_002d1660(void* source, BtlTarget* target, u64 mask)
     }
 }
 
-// FUN_002d4ed0 NONMATCHING
+// FUN_002d4ed0
 u32 FUN_002d4ed0(s32 param_1)
 {
+    BtlEncountTable* encount;
     u16 encountId;
-    u32 encountFlags;
-    u16 startValue;
-    u16 startValue2;
-    u32 threshold;
+    u16 chance;
 
     encountId = gBtl->startInfo.enmUnits->encountId;
-    if (encountId == 0x1d5)
+    encount = &gEncountTbl[encountId];
+    switch (encountId)
     {
-        u16 count = (u16)FUN_001756f0();
-        u16 i;
-
-        for (i = 0; i < count; i++)
+    case 0x1d4:
+        return 1;
+    case 0x1d5:
         {
-            DatPersonaWork* persona = datPersonaGetHeroPersona((s16)i);
-            if (persona->id == 0x4c)
+            s32 count = FUN_001756f0() & 0xffff;
+            s32 i;
+
+            for (i = 0; i < count; i++)
             {
-                break;
+                DatPersonaWork* persona = datPersonaGetHeroPersona(i);
+                if (persona->id == 0x4c)
+                {
+                    break;
+                }
             }
+            if (i == count)
+            {
+                return 1;
+            }
+            return 0;
         }
-        return i == count;
     }
-    if (encountId == 0x1d4)
     {
-        return 1;
-    }
+        u16 startValue = *(u16*)((u8*)gBtl + 0xb9a);
+        u16 index;
 
-    /* These two halfwords are unnamed fields in the battle work. */
-    startValue = *(u16*)((u8*)gBtl + 0xb9a);
-    if (startValue == 0)
-    {
-        return 0;
-    }
-
-    encountFlags = *(u32*)((u8*)gEncountTbl + (u32)encountId * 0x1c);
-    if ((encountFlags & 2) != 0)
-    {
-        return 0;
-    }
-    if ((encountFlags & 4) != 0)
-    {
-        return 1;
-    }
-    if ((u32)(uintptr_t)gBtl->actionList.head == (u32)param_1)
-    {
-        return 1;
-    }
-
-    threshold = (u32)*(DAT_007ce488 + ((startValue - 1u > 8u) ? 8u : (startValue - 1u)));
-    startValue2 = *(u16*)((u8*)gBtl + 0xb9c);
-    if (startValue2 != 0)
-    {
-        u32 index = (u32)startValue2 - 1u;
-        if (index > 5u)
+        if (startValue == 0)
         {
-            index = 5u;
+            return 0;
         }
-        threshold += (u32)*(DAT_007ce488 + index + 9u);
+        if ((*(u32*)encount & 2) != 0)
+        {
+            return 0;
+        }
+        if ((*(u32*)encount & 4) != 0)
+        {
+            return 1;
+        }
+        if ((u32)(uintptr_t)gBtl->actionList.head == (u32)param_1)
+        {
+            return 1;
+        }
+        chance = 0;
+        if (startValue > 0)
+        {
+            index = startValue - 1;
+            if (index >= 9)
+            {
+                index = 8;
+            }
+            chance += DAT_007ce488[index];
+        }
     }
-    return datCalcRand(100) < threshold;
+    {
+        u16 startValue = *(u16*)((u8*)gBtl + 0xb9c);
+        u16 index;
+
+        if (startValue > 0)
+        {
+            index = startValue - 1;
+            if (index >= 6)
+            {
+                index = 5;
+            }
+            chance += DAT_007ce488[index + 9];
+        }
+    }
+    if (datCalcRand(100) < chance)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // FUN_002d50c0 NONMATCHING
@@ -5037,52 +5057,53 @@ u32 FUN_002db450(u32 param_1)
 u32 FUN_002db480(void)
 {
     u16 activeCount = 0;
-    u16 enabledCount = 0;
-    u16 slot;
+    u16 disabledCount = 0;
+    u16 missingCount = 0;
+    {
+        u16 enemySlot;
 
-    for (slot = 0; slot < 3; slot++)
-    {
-        u8* enemyGroup = *(u8**)(iGpffffb6fc + slot * 8 + 0xbc4);
-        if (enemyGroup != NULL && FUN_002FF790(enemyGroup) == 0)
+        for (enemySlot = 0; enemySlot < 3; enemySlot++)
         {
-            activeCount++;
-            if ((*(u16*)(enemyGroup + 0x0a) & 1) == 0)
+            if (*(u8**)(iGpffffb6fc + enemySlot * 8 + 0xbc4) != NULL &&
+                FUN_002FF790(*(u8**)(iGpffffb6fc + enemySlot * 8 + 0xbc4)) == 0)
             {
-                return 0;
-            }
-            enabledCount++;
-        }
-    }
-    if (activeCount != 0 && activeCount == enabledCount)
-    {
-        return 2;
-    }
-
-    enabledCount = 0;
-    for (slot = 0; slot < 4; slot++)
-    {
-        s16 pcId = datGetPartyId(slot);
-        if (pcId != 0)
-        {
-            BtlUnit* unit = *(BtlUnit**)(iGpffffb6fc + 0x150);
-            while (unit != NULL && unit->charId != (u16)pcId)
-            {
-                unit = unit->next;
-            }
-            if (unit == NULL)
-            {
-                DatUnit* datUnit = datGetUnit(pcId);
-                enabledCount++;
-                if (datCalcIsDead(datUnit, 0) == 0)
+                activeCount++;
+                if ((*(u16*)(*(u8**)(iGpffffb6fc + enemySlot * 8 + 0xbc4) + 0x0a) & 1) == 0)
                 {
-                    break;
+                    disabledCount++;
                 }
             }
         }
     }
-    if (enabledCount != 0 && slot == 4)
+    if (activeCount != 0 && activeCount == disabledCount)
     {
-        return 3;
+        return 2;
+    }
+    {
+        u16 partySlot;
+
+        for (partySlot = 0; partySlot < 4; partySlot++)
+        {
+            s16 pcId = datGetPartyId(partySlot);
+            if (pcId != 0)
+            {
+                BtlUnit* unit = *(BtlUnit**)(iGpffffb6fc + 0x150);
+                while (unit != NULL && unit->charId != (u16)pcId)
+                {
+                    unit = unit->next;
+                }
+                if (unit == NULL)
+                {
+                    DatUnit* datUnit = datGetUnit(pcId);
+                    missingCount++;
+                    datCalcIsDead(datUnit, 0);
+                }
+            }
+        }
+        if (missingCount != 0 && partySlot == 4)
+        {
+            return 3;
+        }
     }
     return 1;
 }

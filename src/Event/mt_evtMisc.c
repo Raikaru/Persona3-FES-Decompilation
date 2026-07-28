@@ -212,6 +212,7 @@ extern code DAT_00960184;
  #pragma alias FUN_0038b2c0_b550 FUN_0038b2c0
  extern void FUN_0038b2c0_b550(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,int param_5);
 extern void FUN_003bb280(int param_1);
+extern void FUN_00359380(f32 param_1,void *param_2,int param_3);
 extern int FUN_0031b680(u16 param_1,u16 param_2,u32 *param_3,int *param_4);
 extern u32 FUN_003b9500(int param_1,int param_2);
  extern int (*DAT_00960184_abs[])(...);
@@ -957,7 +958,7 @@ void FUN_00386e40(int param_1,u32 param_2)
 }
 
 
-// FUN_00386E50 NONMATCHING
+// FUN_00386E50
 
 
 void FUN_00386e50(void)
@@ -966,15 +967,15 @@ void FUN_00386e50(void)
 
 {
 
-  long lVar1;
+  int lVar1;
+  code *fn;
 
   int iVar2;
 
   u8 auStack_60 [64];
+  RwV3d stack10;
 
   RwV3d stack20;
-
-  RwV3d stack10;
 
   
 
@@ -982,15 +983,16 @@ void FUN_00386e50(void)
 
   if (lVar1 != 0) {
 
-    (*DAT_00960090)(1,0);
+    fn = (code *)&DAT_00960090_abs;
+    (*fn)(1,0);
 
-    (*DAT_00960090)(7,2);
+    (*fn)(7,2);
 
-    (*DAT_00960090)(0xc,1);
+    (*fn)(0xc,1);
 
-    (*DAT_00960090)(10,3);
+    (*fn)(10,3);
 
-    (*DAT_00960090)(0xb,6);
+    (*fn)(0xb,6);
 
     for (iVar2 = *(int *)((int)lVar1 + 0x20); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xf8)) {
 
@@ -1000,7 +1002,7 @@ void FUN_00386e50(void)
 
       FUN_003b79a0(auStack_60,&stack10,&stack20);
 
-      FUN_00359380(0x41700000,auStack_60,1);
+      FUN_00359380(15.0f,auStack_60,1);
 
     }
 

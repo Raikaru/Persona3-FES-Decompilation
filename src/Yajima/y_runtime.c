@@ -1552,7 +1552,7 @@ void FUN_00430630(int param_1);
 void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4);
 void FUN_00430a40(char param_1);
 void FUN_004310e0(int param_1);
-void FUN_004311f0(void *param_1,int param_2,int param_3);
+void FUN_004311f0(void *param_1,u32 param_2,u32 param_3);
 void FUN_00431630(int param_1);
 void FUN_004332f0(int param_1);
 void FUN_004333d0(int param_1);
@@ -2970,7 +2970,7 @@ void FUN_00430630(int param_1);
 void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4);
 void FUN_00430a40(char param_1);
 void FUN_004310e0(int param_1);
-void FUN_004311f0(void *param_1,int param_2,int param_3);
+void FUN_004311f0(void *param_1,u32 param_2,u32 param_3);
 void FUN_00431630(int param_1);
 void FUN_004332f0(int param_1);
 void FUN_004333d0(int param_1);
@@ -3639,40 +3639,17 @@ u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4)
   return uVar2;
 }
 
-// FUN_004311F0 NONMATCHING
+// FUN_004311F0
 
-void FUN_004311f0(void *param_1,int param_2,int param_3)
+void FUN_004311f0(void *param_1,u32 param_2,u32 param_3)
 
 {
-  float fStack_8;
-  u32 uStack_4;
-  float fStack_0;
-  float fVar1;
-  float fVar2;
-  float fVar3;
+  YVec3f vector;
   
-  fVar3 = 800.0f;
-  uStack_4 = 0;
-  if (param_2 < 0) {
-    fVar1 = (float)(int)(((u32)param_2 >> 1) | (param_2 & 1));
-    fVar1 = fVar1 + fVar1;
-  }
-  else {
-    fVar1 = (float)param_2;
-  }
-  fStack_0 = 800.0f * fVar1;
-  if (param_3 < 0) {
-    fVar2 = (float)(int)(((u32)param_3 >> 1) | (param_3 & 1));
-    fVar2 = fVar2 + fVar2;
-  }
-  else {
-    fVar2 = (float)param_3;
-  }
-  fVar3 = 800.0f * fVar2;
-  fStack_8 = fVar3;
-  *(float *)((u8 *)param_1 + 0) = fStack_0;
-  *(u32 *)((u8 *)param_1 + 4) = uStack_4;
-  *(float *)((u8 *)param_1 + 8) = fVar3;
+  vector.y = 0.0f;
+  vector.x = 800.0f * (float)param_2;
+  vector.z = 800.0f * (float)param_3;
+  *(YVec3f *)param_1 = vector;
 }
 
 // FUN_004312B0 NONMATCHING
@@ -12550,12 +12527,10 @@ void FUN_00449d60(int param_1)
   char cVar1;
   char cVar2;
   int iVar3;
-  u8 bVar4;
   u32 uStack_8;
   u32 uStack_4;
   
   iVar3 = *(int *)((int)param_1 + 0x3c);
-  bVar4 = 0;
   do {
     if (*(char *)(iVar3 + 0x940) < '\a') {
       if (*(char *)(iVar3 + 0x93e) < *(char *)(iVar3 + 0x93f) + -1) {
@@ -12585,11 +12560,9 @@ void FUN_00449d60(int param_1)
     FUN_00447f90((float *)(&uStack_8),param_1,*(char *)(iVar3 + 0x93e) + *(char *)(iVar3 + 0x941));
     *(u32 *)(iVar3 + 0x944) = uStack_8;
     *(u32 *)(iVar3 + 0x948) = uStack_4;
-    if (*(short *)(iGpffffb9fc + ((int)*(char *)(iVar3 + 0x93e) + (int)*(char *)(iVar3 + 0x941)) * 4
-                  + 6) == *(short *)(iGpffffb9fc + 0xa2)) {
-      bVar4 = 1;
-    }
-  } while (!bVar4);
+  } while (*(short *)(iGpffffb9fc + ((int)*(char *)(iVar3 + 0x93e) +
+                                     (int)*(char *)(iVar3 + 0x941)) * 4 + 6) !=
+           *(short *)(iGpffffb9fc + 0xa2));
   return;
 }
 

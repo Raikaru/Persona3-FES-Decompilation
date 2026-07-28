@@ -1229,7 +1229,7 @@ void FUN_00301540(int param_1,u32 param_2)
 
 {
   int iVar1;
-  u32 uVar2;
+  s32 uVar2;
   
   uVar2 = param_2 & 0xff;
   if (0x14 < uVar2) {
@@ -1240,7 +1240,7 @@ void FUN_00301540(int param_1,u32 param_2)
       FUN_0019d3f0((u32)D_0069aa80, 0x438);
     }
     iVar1 = (int)uVar2 >> 1;
-    if ((param_2 & 1) != 0) {
+    if ((uVar2 & 1) != 0) {
       *(u8 *)(iVar1 + param_1 + 0x1c) = *(u8 *)(iVar1 + param_1 + 0x1c) & 0xf;
     }
     else {
@@ -1249,14 +1249,14 @@ void FUN_00301540(int param_1,u32 param_2)
     if (0x14 < uVar2) {
       FUN_0019d3f0((u32)D_0069aa80, 0x455);
     }
-    if ((param_2 & 1) != 0) {
+    if ((uVar2 & 1) != 0) {
       *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf;
     }
     else {
       *(u8 *)(iVar1 + param_1 + 0x29) = *(u8 *)(iVar1 + param_1 + 0x29) & 0xf0;
     }
   }
-  *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & ~(1 << (param_2 & 0x1f));
+  *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & ~(1 << uVar2);
   return;
 }
 

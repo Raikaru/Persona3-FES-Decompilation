@@ -1971,8 +1971,13 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
 {
     u8* destination;
     u32 texture;
-    u8 color[4];
-    f32 rect[4];
+    struct {
+        f32 rect[4];
+        u32 reserved[7];
+        u8 color[4];
+    } scratch;
+#define rect scratch.rect
+#define color scratch.color
     f32 x;
     f32 y;
     u8 alphaByte;
@@ -2124,6 +2129,8 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     }
     func_003b0e20(*(u32*)(destination + 0x900), colorValue);
     (void)handle;
+#undef color
+#undef rect
 }
 #pragma optimization_level 2
 #pragma optimization_level 3
