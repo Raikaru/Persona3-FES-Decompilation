@@ -13634,7 +13634,7 @@ u32 func_002ceb20(void)
   return 1;
 }
 
-// FUN_002cec30 NONMATCHING
+// FUN_002cec30
 u32 func_002cec30(void)
 {
   extern u32 func_0035f160(void);
@@ -13645,8 +13645,8 @@ u32 func_002cec30(void)
   u32 unit;
   u32 selector;
   u16 count;
-  u16 index;
   int selected;
+  u16 index;
   int *candidate;
   int candidates[12];
 

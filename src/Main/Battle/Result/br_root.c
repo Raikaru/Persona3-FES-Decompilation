@@ -2994,13 +2994,17 @@ void func_001f64c0(void)
             if ((flags & 0x400) == 0) {
                 for (i = 0; i < (s32)BR_U32(work, 0x341c); i++) {
                     u32 idx = BR_U32(work + i * 4, 0x3c);
-                    u8 *entry = work + idx * 0x670 + 0x5c;
-                    func_0020b250(entry + 0xc);
+                    u32 address = idx * 0x670;
+                    address += (u32)work;
+                    address += 0x5c;
+                    func_0020b250((u8 *)address + 0xc);
                 }
                 for (i = 0; i < (s32)BR_U32(work, 0x3418); i++) {
                     u32 idx = BR_U32(work + i * 4, 0x1c);
-                    u8 *entry = work + idx * 0x670 + 0x5c;
-                    func_0020b250(entry + 0xc);
+                    u32 address = idx * 0x670;
+                    address += (u32)work;
+                    address += 0x5c;
+                    func_0020b250((u8 *)address + 0xc);
                 }
             }
             break;

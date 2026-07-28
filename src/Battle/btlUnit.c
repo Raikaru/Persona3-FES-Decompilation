@@ -5466,7 +5466,7 @@ void FUN_00288110(BtlUnit* unit)
     }
 }
 
-// FUN_00288DA0 NONMATCHING
+// FUN_00288DA0
 
 
 int FUN_00288da0(BtlUnit* unit, u16 mode)
@@ -5493,25 +5493,15 @@ int FUN_00288da0(BtlUnit* unit, u16 mode)
         if (charId == 1)
         {
             unitId = (u8)(u32)(uintptr_t)func_00308c60(unit->datUnit);
-            if (modeNine)
-            {
-                result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128 + 10);
-                goto pc_unit_id_done;
-            }
-            result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128);
-pc_unit_id_done:
-            ;
+            result = modeNine
+                ? (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128 + 10)
+                : (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128);
         }
         else
         {
-            if (modeNine)
-            {
-                result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a + 10);
-                goto pc_char_id_done;
-            }
-            result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a);
-pc_char_id_done:
-            ;
+            result = modeNine
+                ? (int)(uintptr_t)(iGpffffb71c + charId * 0x10a + 10)
+                : (int)(uintptr_t)(iGpffffb71c + charId * 0x10a);
         }
         break;
 
@@ -5520,14 +5510,9 @@ pc_char_id_done:
         switch ((u32)result)
         {
         case 0:
-            if (modeNine)
-            {
-                result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8 + 10);
-                goto enemy_char_id_done;
-            }
-            result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8);
-enemy_char_id_done:
-            ;
+            result = modeNine
+                ? (int)(uintptr_t)(iGpffffb728 + charId * 0xe8 + 10)
+                : (int)(uintptr_t)(iGpffffb728 + charId * 0xe8);
             break;
         }
         break;
