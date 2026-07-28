@@ -166,6 +166,7 @@ void func_00275050(s32 index)
     s32 skillCount;
     s32 slot;
     s32 skillIndex;
+    s32 recordIndex;
     s32 unavailable;
     s8 kind;
     u8 *entry;
@@ -182,8 +183,8 @@ void func_00275050(s32 index)
     unavailable = 0;
 
 loop:
-    record = (u8 *)(uintptr_t)work[0x34 / 4] +
-             ((s32)work[0x78 / 4] + slot) * 4;
+    recordIndex = (s32)work[0x78 / 4] + slot;
+    record = (u8 *)(uintptr_t)work[0x34 / 4] + recordIndex * 4;
     entry = record + 6;
     kind = *(s8 *)(record + 7);
     if (kind == 4)
@@ -205,6 +206,8 @@ loop:
     if (unavailable != index)
         goto unavailableSkill;
     goto done;
+unavailableSkill:
+    unavailable++;
 next:
     slot++;
     if ((s32)work[0x78 / 4] + slot >= 0x10)
@@ -212,9 +215,6 @@ next:
     goto loop;
     done:
     return;
-    unavailableSkill:
-    unavailable++;
-    goto next;
 }
 
 // FUN_002751e0

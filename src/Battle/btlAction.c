@@ -1091,7 +1091,7 @@ void btlActionUpdateStateStart(BtlAction* action)
     BtlPacket* packet;
 BtlPacket* result;
     BtlPacket* chain;
-    s32 work[4];
+    BtlTargetResult work;
     s32 stat;
     u32 messageId;
     u32 tableIndex;
@@ -1102,7 +1102,7 @@ BtlPacket* result;
     if (action->passiveSkillsFlags != 0)
     {
         btlAction0028a780(action);
-        FUN_002d5dc0(work);
+        FUN_002d5dc0(&work);
         messageId = 0;
         tableIndex = 0;
         stat = datCalcGetMaxHp(action->unit->datUnit) & 0xffff;
@@ -1113,7 +1113,7 @@ BtlPacket* result;
             messageId = 0x223;
             voice = 0xb;
             tableIndex = 0x2f;
-            work[0] = stat * 100 / 5000;
+            work.hpDelta = stat * 100 / 5000;
             action->passiveSkillsFlags &= ~1;
         }
         else if (action->passiveSkillsFlags & 2)
@@ -1121,7 +1121,7 @@ BtlPacket* result;
             messageId = 0x224;
             voice = 0xb;
             tableIndex = 0x2f;
-            work[0] = stat * 100 / 0x9c4;
+            work.hpDelta = stat * 100 / 0x9c4;
             action->passiveSkillsFlags &= ~2;
         }
         else if (action->passiveSkillsFlags & 4)
@@ -1129,7 +1129,7 @@ BtlPacket* result;
             messageId = 0x225;
             voice = 0xb;
             tableIndex = 0x30;
-            work[0] = stat * 100 / 0x682;
+            work.hpDelta = stat * 100 / 0x682;
             action->passiveSkillsFlags &= ~4;
         }
         else if (action->passiveSkillsFlags & 8)
@@ -1137,7 +1137,7 @@ BtlPacket* result;
             messageId = 0x226;
             voice = 0xb;
             tableIndex = 0x30;
-            work[1] = 3;
+            work.spDelta = 3;
             action->passiveSkillsFlags &= ~8;
         }
         else if (action->passiveSkillsFlags & 0x10)
@@ -1145,7 +1145,7 @@ BtlPacket* result;
             messageId = 0x227;
             voice = 0xb;
             tableIndex = 0x30;
-            work[1] = 5;
+            work.spDelta = 5;
             action->passiveSkillsFlags &= ~0x10;
         }
         else if (action->passiveSkillsFlags & 0x20)
@@ -1153,7 +1153,7 @@ BtlPacket* result;
             messageId = 0x228;
             voice = 0xb;
             tableIndex = 0x30;
-            work[1] = 7;
+            work.spDelta = 7;
             action->passiveSkillsFlags &= ~0x20;
         }
         else if (action->passiveSkillsFlags & 0x40)
@@ -1161,7 +1161,7 @@ BtlPacket* result;
             messageId = 0x25f;
             voice = 10;
             tableIndex = 0x39;
-            work[0] = stat * 100 / 0x4e2;
+            work.hpDelta = stat * 100 / 0x4e2;
             action->passiveSkillsFlags &= ~0x40;
         }
         else if (action->passiveSkillsFlags & 0x80)
@@ -1169,10 +1169,10 @@ BtlPacket* result;
             messageId = 0x260;
             voice = 10;
             tableIndex = 0x39;
-            work[0] = stat * 100 / 0x4e2;
+            work.hpDelta = stat * 100 / 0x4e2;
             action->passiveSkillsFlags &= ~0x80;
         }
-        if (work[0] != 0 || work[1] != 0)
+        if (work.hpDelta != 0 || work.spDelta != 0)
         {
             packet = FUN_002bd590(action->unit, messageId);
             packet->actionUID = action->uid;
@@ -1191,18 +1191,18 @@ BtlPacket* result;
                 packet->actionUID = action->uid;
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
             }
-            result = FUN_002d7e20(action, action, work, 1, 1);
+            result = FUN_002d7e20(action, action, &work, 1, 1);
             result->unk_00 = 0xb;
             result->parentUID = chain->uid;
             result->actionUID = action->uid;
             btlPacketRegister(result, BTLPACKET_TYPE_1);
-            packet = FUN_002bdbd0(action->unit, action->unit, -1, 0, 0, 0, 1, work);
+            packet = FUN_002bdbd0(action->unit, action->unit, -1, 0, 0, 0, 1, &work);
             packet->unk_00 = 4;
             packet->parentUID = result->uid;
             packet->unk_47 &= ~0x20;
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-            if (work[0] != 0)
+            if (work.hpDelta != 0)
             {
                 packet = FUN_002bd230(action->unit, 0, 0);
                 packet->unk_00 = 4;
@@ -1217,20 +1217,17 @@ BtlPacket* result;
             return;
         }
     }
-    if ((s8)FUN_00302f50(action->unit->datUnit) < 0)
+    if ((s8)FUN_00302f50(action->unit->datUnit) >= 0)
     {
-        if (FUN_002dc070(action))
-        {
-            btlActionSetState(action, BTLACTION_STATE_BAD);
-        }
-        else
-        {
-            btlActionSetState(action, BTLACTION_STATE_STARTHOME);
-        }
+        btlActionSetState(action, BTLACTION_STATE_SUPPORT);
+    }
+    else if (FUN_002dc070(action))
+    {
+        btlActionSetState(action, BTLACTION_STATE_BAD);
     }
     else
     {
-        btlActionSetState(action, BTLACTION_STATE_SUPPORT);
+        btlActionSetState(action, BTLACTION_STATE_STARTHOME);
     }
     }
 }

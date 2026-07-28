@@ -1899,19 +1899,18 @@ void func_0020cda0(u8* work)
 void func_0020cf20(void* destination, void* source)
 {
     u8* out = (u8*)destination;
-    register PanelTransform* transform = (PanelTransform*)source;
+    PanelMatrix* matrix;
+    PanelTransform* transform = (PanelTransform*)source;
     PanelVec3 axisZ;
     PanelVec3 facingAxis;
     PanelVec3 rotateAxis;
     PanelVec3 transformedAxis;
     PanelVec3 resourceCenter;
-    PanelVec3 transformedSource;
     PanelVec3 localPoint;
     PanelVec3 transformedPoint;
     PanelVec3 cameraDirection;
     PanelVec3 resourceDirection;
     const PanelVec3* cameraPosition;
-    PanelMatrix* matrix;
     void* camera;
     s32 row;
     s32 col;
@@ -1934,20 +1933,21 @@ void func_0020cf20(void* destination, void* source)
     func_004c6c60(&facingAxis, &facingAxis, matrix);
 
     resourceCenter = *(const PanelVec3*)(out + 0x994);
-    if (transform->model != NULL) {
-        RwV3dTransformPoint(&transformedSource, &transform->translation,
-                            func_004cb2f0(transform->model));
-    } else {
-        transformedSource = transform->translation;
-    }
-
     {
+        PanelVec3 transformedSource;
         f32 facing;
+
+        if (transform->model != NULL) {
+            RwV3dTransformPoint(&transformedSource, &transform->translation,
+                                func_004cb2f0(transform->model));
+        } else {
+            transformedSource = transform->translation;
+        }
 
         facing = facingAxis.x * (cameraPosition->x - transformedSource.x) +
                  facingAxis.y * (cameraPosition->y - transformedSource.y) +
                  facingAxis.z * (cameraPosition->z - transformedSource.z);
-        *(u32*)out &= ~2u;
+        *(u32*)out &= ~1u;
         if (facing < 0.0f) {
             RwMatrixRotate(matrix, &rotateAxis, 180.0f, 1);
             *(u32*)out |= 1;
@@ -1981,6 +1981,7 @@ void func_0020cf20(void* destination, void* source)
                 f32 diffuse;
                 f32 alpha;
                 u32 alphaByte;
+                u32 outputAlpha;
 
                 if (alternating != 0) {
                     if (col == 0) {
@@ -2046,14 +2047,11 @@ void func_0020cf20(void* destination, void* source)
                 }
                 alphaByte = color[3];
                 alpha *= (f32)alphaByte;
-                if (alpha < 2147483648.0f) {
-                    vertex[0x0c] = (u8)(s32)alpha;
-                } else {
-                    vertex[0x0c] = (u8)(s32)(alpha - 2147483648.0f);
-                }
-                vertex[0x0d] = vertex[0x0c];
-                vertex[0x0e] = vertex[0x0c];
-                vertex[0x0f] = vertex[0x0c];
+                outputAlpha = (u8)(u32)alpha;
+                vertex[0x0c] = outputAlpha;
+                vertex[0x0d] = outputAlpha;
+                vertex[0x0e] = outputAlpha;
+                vertex[0x0f] = outputAlpha;
                 vertex += 0x24;
             }
         }

@@ -1663,19 +1663,21 @@ void func_002faab0()
         break;
     case 0x1a5:
     {
-        BtlUnit* unit;
-        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
+        BtlUnit* unit = btlBossGetEnemyHead();
+        u16 expectedCharId = 0x107;
+        while (unit != NULL)
         {
-            switch (unit->charId)
+            if (unit->charId == expectedCharId)
             {
-            case 0x107:
-            {
-                ((u8*)unit->mdl)[0x388] |= 8;
-                *(u32*)((u8*)gBtl + 0xb4c) = 0;
-                ((u8*)unit->mdl)[0x41d] = 0;
-                break;
+                goto match_1a5;
             }
-            }
+            goto next_1a5;
+match_1a5:
+            ((u8*)unit->mdl)[0x388] |= 8;
+            *(u32*)((u8*)gBtl + 0xb4c) = 0;
+            ((u8*)unit->mdl)[0x41d] = 0;
+next_1a5:
+            unit = unit->next;
         }
         break;
     }
@@ -1684,19 +1686,21 @@ void func_002faab0()
         break;
     case 0x1ac:
     {
-        BtlUnit* unit;
-        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
+        BtlUnit* unit = btlBossGetEnemyHead();
+        u16 expectedCharId = 0x111;
+        while (unit != NULL)
         {
-            switch (unit->charId)
+            if (unit->charId == expectedCharId)
             {
-            case 0x111:
-            {
-                ((u8*)unit->mdl)[0x388] |= 8;
-                *(u32*)((u8*)gBtl + 0xb50) = 0;
-                ((u8*)unit->mdl)[0x41d] = 0;
-                break;
+                goto match_1ac;
             }
-            }
+            goto next_1ac;
+match_1ac:
+            ((u8*)unit->mdl)[0x388] |= 8;
+            *(u32*)((u8*)gBtl + 0xb50) = 0;
+            ((u8*)unit->mdl)[0x41d] = 0;
+next_1ac:
+            unit = unit->next;
         }
         break;
     }

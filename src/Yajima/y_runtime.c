@@ -5094,75 +5094,56 @@ void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float 
 {
   char cVar1;
   int iVar2;
-  u64 uVar3;
-  float fVar4;
-  float fVar5;
-  float fVar6;
-  float fVar7;
-  float fVar8;
-  float fVar9;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  fVar9 = *(float *)DAT_006b4610_abs;
-  uVar3 = *(u64 *)DAT_006b4608_abs;
-  fStack_10 = *param_4;
-  fVar4 = param_4[1];
-  fVar5 = param_4[2];
-  fStack_20 = *param_5;
-  fStack_1c = param_5[1];
-  fStack_18 = param_5[2];
+  float fVar3;
+  YVec3f axis;
+  YVec3f point;
+  YVec3f radial;
+  YVec3f delta;
+  YVec3f end;
+  YVec3f start;
+
+  start = *(YVec3f *)param_4;
+  end = *(YVec3f *)param_5;
   iVar2 = *(int *)(param_3 + 0x3c);
-  fStack_30 = fStack_10 - fStack_20;
-  fStack_2c = fVar4 - fStack_1c;
-  fStack_28 = fVar5 - fStack_18;
-  fStack_c = fVar4;
-  fStack_8 = fVar5;
-  fVar6 = (float)FUN_004c69f0(&fStack_30,&fStack_30);
-  fVar6 = fVar6 - param_1;
-  fVar8 = fStack_2c * fVar6;
-  fVar7 = fStack_10 - fStack_30 * fVar6;
-  fVar6 = fVar5 - fStack_28 * fVar6;
-  fStack_40 = fStack_10 - fVar7;
-  fStack_3c = fVar4 - fVar8;
-  fStack_38 = fVar5 - fVar6;
-  FUN_004c69f0(&fStack_40,&fStack_40);
-  fStack_5c = *(float *)((u8 *)&uVar3 + 4);
-  fVar5 = fStack_3c * fVar9 - fStack_38 * fStack_5c;
-  fStack_60 = *(float *)&uVar3;
-  fVar9 = fStack_38 * fStack_60 - fStack_40 * fVar9;
-  fVar4 = fStack_40 * fStack_5c - fStack_3c * fStack_60;
-  cVar1 = *(char *)((int)(u8 *)DAT_007ce6e4 + *(int *)(iVar2 + 4) + 3);
-  if (cVar1 == '\x03') {
-    fStack_40 = fVar5 * 60.0f;
-    fStack_3c = fVar9 * 60.0f;
-    fStack_38 = fVar4 * 60.0f;
+  axis = *(YVec3f *)DAT_006b4608_abs;
+  delta.x = start.x - end.x;
+  delta.y = start.y - end.y;
+  delta.z = start.z - end.z;
+  fVar3 = FUN_004c69f0(&delta.x,&delta.x) - param_1;
+  point.x = start.x - delta.x * fVar3;
+  point.y = start.y - delta.y * fVar3;
+  point.z = start.z - delta.z * fVar3;
+  radial.x = start.x - point.x;
+  radial.y = start.y - point.y;
+  radial.z = start.z - point.z;
+  FUN_004c69f0(&radial.x,&radial.x);
+  delta.x = radial.y * axis.z - radial.z * axis.y;
+  delta.y = radial.z * axis.x - radial.x * axis.z;
+  delta.z = radial.x * axis.y - radial.y * axis.x;
+  cVar1 = ((char *)&DAT_007ce6e4 + 3)[*(int *)(iVar2 + 4)];
+  switch (cVar1) {
+  case '\x01':
+    radial.x = delta.x * 20.0f;
+    radial.y = delta.y * 20.0f;
+    radial.z = delta.z * 20.0f;
+    break;
+  case '\x02':
+    radial.x = delta.x * -40.0f;
+    radial.y = delta.y * -40.0f;
+    radial.z = delta.z * -40.0f;
+    break;
+  case '\x03':
+    radial.x = delta.x * 60.0f;
+    radial.y = delta.y * 60.0f;
+    radial.z = delta.z * 60.0f;
+    break;
+  default:
+    break;
   }
-  else if (cVar1 == '\x02') {
-    fStack_40 = fVar5 * -40.0f;
-    fStack_3c = fVar9 * -40.0f;
-    fStack_38 = fVar4 * -40.0f;
-  }
-  else if (cVar1 == '\x01') {
-    fStack_40 = fVar5 * 20.0f;
-    fStack_3c = fVar9 * 20.0f;
-    fStack_38 = fVar4 * 20.0f;
-  }
-  *param_2 = fVar7 + fStack_40;
-  param_2[1] = fVar8 + fStack_3c;
-  param_2[2] = fVar6 + fStack_38;
+  point.x = point.x + radial.x;
+  point.y = point.y + radial.y;
+  point.z = point.z + radial.z;
+  *(YVec3f *)param_2 = point;
   return;
 }
 
@@ -14179,7 +14160,7 @@ u32 FUN_0044e560(int param_1)
   int iVar3;
   int iVar4;
   u32 lVar5;
-  u32 *puVar6;
+  float *puVar6;
   u32 uVar7;
   u32 uVar8;
   short sVar9;
@@ -14193,7 +14174,7 @@ u32 FUN_0044e560(int param_1)
   uVar8 = 0;
   uVar7 = 0xffffffffffffffff;
   sVar9 = 0;
-  puVar6 = (u32 *)
+  puVar6 = (float *)
            (DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + *(char *)(iVar1 + 1) * 0x1c0) * 0x40);
   uVar2 = FUN_0044f120(*(RwV3d *)(iVar1 + 0x60));
   *(u8 *)(iVar1 + 0x5c) = uVar2;

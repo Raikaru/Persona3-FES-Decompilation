@@ -2669,7 +2669,7 @@ u8 FUN_003f2240(int param_1,long param_2)
   if (sVar1 == 0) {
     return 0;
   }
-  puVar2 = (u32 *)func_00170e90(((long)param_2 << 0x30) >> 0x30);
+  puVar2 = (u32 *)func_00170e90((param_2 << 0x30) >> 0x30);
   puVar4 = (u16 *)param_1;
   *puVar4 = param_2;
   *(u32 *)(puVar4 + 2) = FUN_003f1a10(puVar2[0]);
@@ -17955,9 +17955,9 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   }
 
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,3,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,3,0);
 
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,uVar1 + 5,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,uVar1 + 5,0);
 
   uVar3 = clndGetCurrentMonth();
 
@@ -17973,7 +17973,7 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   FUN_0040ebc0_f32(0.0f,iVar5 + 0x212,iVar4 + 0x1b,uVar1 | 0xffffff00,3,auStack_8,2);
 
-  FUN_0040e3c0_u32(0.0f,iVar5 + 0x60,param_2,param_3 & 0xff,0xe,0);
+  FUN_0040e3c0_f32(0.0f,iVar5 + 0x60,param_2,param_3,0xe,0);
 
   uVar3 = clndGetCurrentDay();
 
@@ -17983,7 +17983,7 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   uVar3 = clndGetCurrentWeekDay();
 
-  FUN_0040e3c0_u32(0.0f,iVar5 + 0x60,iVar4 + 1,param_3 & 0xff,0xf,uVar3);
+  FUN_0040e3c0_f32(0.0f,iVar5 + 0x60,iVar4 + 1,param_3,0xf,uVar3);
 
   return;
 

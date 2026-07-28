@@ -162,6 +162,8 @@ void func_0016e410(s16 socialLink, s8 level);
 void func_0016e5f0(s32 socialLink, s8 progress);
 #pragma alias func_0016e5f0_call func_0016e5f0
 extern void func_0016e5f0_call(s16 socialLink, s8 progress);
+#pragma alias func_0016dbc0_s32 func_0016dbc0
+extern s32 func_0016dbc0_s32(s16 socialLink, u32* personaId);
 void func_0016e670(s16 socialLink);
 void func_0016e7a0(s16 socialLink, s16 day);
 s16 func_0016e850(s16 socialLink);
@@ -2013,36 +2015,50 @@ s16 func_0016e190(s32 socialLink)
 // FUN_0016e2b0 NONMATCHING
 void func_0016e2b0(s16 socialLink, s32 amount)
 {
-    s8* socialLinkBase;
-    s8 level;
+    s8* socialLevels;
+    s32 level;
     u32* progress;
     u32* table;
     u32 personaId;
+    u32 valid;
+    f32 scaledAmount;
 
-    socialLinkBase = gGlobalWork.heroStatus.socialLinkStat + socialLink;
-    level = socialLinkBase[0];
+    socialLevels = gGlobalWork.heroStatus.socialLinkStat;
+    level = socialLevels[socialLink];
     if (socialLink < 0 || socialLink >= 30)
     {
-        return;
+        valid = false;
     }
-    socialLink = socialLinkBase[0x76];
-    if (socialLink <= 0 || socialLink >= 10)
+    else
+    {
+        valid = true;
+    }
+    if (!valid)
     {
         return;
     }
-    if (func_0016dbc0(socialLink, &personaId) == true)
+    if (level >= 10)
     {
-        amount = (s32)((f32)amount * FUN_003BDB80());
+        return;
     }
-    progress = (u32*)((u8*)&gGlobalWork + 0x94 + socialLink * 4);
+    if (level <= 0)
+    {
+        return;
+    }
+    if (func_0016dbc0_s32(socialLink, &personaId) == true)
+    {
+        scaledAmount = (f32)amount;
+        amount = (s32)(scaledAmount * FUN_003BDB80());
+    }
+    progress = (u32*)gGlobalWork.heroStatus.socialLinkData + socialLink;
     *progress += amount;
     table = (u32*)FUN_003BDD90();
     K_ASSERT(table != NULL, 1495);
-    if (*progress < table[(u8)level - 1])
+    if (*progress < table[level - 1])
     {
         return;
     }
-    *progress = table[(u8)level - 1];
+    *progress = table[level - 1];
     FUN_001723A0(socialLink, level + 1, true);
 }
 #pragma opt_propagation off

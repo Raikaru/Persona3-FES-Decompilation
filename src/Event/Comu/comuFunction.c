@@ -58,7 +58,7 @@ extern u32 FUN_0016f190_comu(int param_1);
 extern u32 DAT_0095b280;
 extern u16* DAT_0095b2a0;
 #pragma alias DAT_0095b2a0_abs DAT_0095b2a0
-extern u8 DAT_0095b2a0_abs[];
+extern s16 *DAT_0095b2a0_abs[];
 #pragma alias DAT_0095b2a8_abs DAT_0095b2a8
 extern u8 DAT_0095b2a8_abs[];
 extern u32 DAT_0095b2a8;
@@ -193,8 +193,8 @@ void FUN_003bdbd0(int param_1)
         }
 
         if (bVar2) {
-          sVar1 = *(volatile /* Removing this qualifier worsens FUN_003bdbd0 (NONMATCHING nd41 -> NONMATCHING nd49, size 360 -> 360) - measured W170. */ s16 *)(*(u32 *)DAT_0095b2a0_abs);
-          FUN_00171960(iVar5 + 6,(s32)sVar1);
+          sVar1 = *(volatile /* Removing this qualifier worsens FUN_003bdbd0 (NONMATCHING nd41 -> NONMATCHING nd49, size 360 -> 360) - measured W170. */ s16 *)DAT_0095b2a0_abs[0];
+          func_00171960(iVar5 + 6,sVar1);
         }
       }
     }
