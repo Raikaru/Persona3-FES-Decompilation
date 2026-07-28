@@ -4377,14 +4377,11 @@ void FUN_002d7560(BtlAction *action)
     extern f32 FUN_001c0070(void);
     extern u32 FUN_0030bc50(DatUnit *);
     extern u16 FUN_0030bde0(DatUnit *, s32 *);
+    extern void FUN_0019d3f0(const char *, s32);
     struct BtlRewardPersona {
         u16 personaId;
         u16 pad;
         u32 count;
-    };
-    struct BtlRewardState {
-        u8 pad[0xbe0];
-        struct BtlRewardPersona rewards[3];
     };
     BtlUnit *unit;
     u16 i;
@@ -4396,7 +4393,7 @@ void FUN_002d7560(BtlAction *action)
         {
             s32 outFlag;
             if (unit->charId > 0x14f)
-                FUN_0019d3f0(0x6978e0, 0x37e);
+                FUN_0019d3f0((const char *)0x6978e0, 0x37e);
             if ((action->unk_1a & 0x20) == 0)
             {
                 u32 rawValue;
@@ -4419,34 +4416,30 @@ void FUN_002d7560(BtlAction *action)
                     personaId = action->target.rewardPersonaId;
                 if (personaId != 0)
                 {
-                    struct BtlRewardState *rewardState;
+                    struct BtlRewardPersona *rewards;
                     found = 0;
-                    i = 0;
-                    rewardState = (struct BtlRewardState *)DAT_007ce3ec;
-                    while (i < 3)
+                    rewards = (struct BtlRewardPersona *)(DAT_007ce3ec + 0xbe0);
+                    for (i = 0; i < 3; i++)
                     {
-                        if (personaId == rewardState->rewards[i].personaId)
+                        if (rewards[i].personaId == personaId)
                         {
-                            rewardState->rewards[i].count++;
+                            rewards[i].count++;
                             found = 1;
                             break;
                         }
-                        i++;
                     }
                     if (found == 0)
                     {
-                        i = 0;
-                        rewardState = (struct BtlRewardState *)DAT_007ce3ec;
-                        while (i < 3)
+                        rewards = (struct BtlRewardPersona *)(DAT_007ce3ec + 0xbe0);
+                        for (i = 0; i < 3; i++)
                         {
-                            if (rewardState->rewards[i].personaId == 0)
+                            if (rewards[i].personaId == 0)
                             {
-                                rewardState->rewards[i].personaId = personaId;
-                                ((struct BtlRewardState *)DAT_007ce3ec)->rewards[i].count = 1;
+                                rewards[i].personaId = personaId;
+                                rewards[i].count = 1;
                                 BTLT_B32(0xbf8) = i + 1;
                                 break;
                             }
-                            i++;
                         }
                     }
                 }

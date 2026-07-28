@@ -454,7 +454,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         unitsBase = gFldUnitsPc;
         for (; i < FLDUNIT_PC_MAX; i++)
         {
-            units = i + unitsBase;
+            units = &unitsBase[i];
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
@@ -471,7 +471,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         unitsBase = gFldUnitsEc;
         for (; i < FLDUNIT_EC_MAX; i++)
         {
-            units = i + unitsBase;
+            units = &unitsBase[i];
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
@@ -925,8 +925,8 @@ u32 func_001ae480(KwlnTask* task)
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
-            s32 j;
             u8* pointBase;
+            s32 j;
             u32* source;
             u32* destination;
             pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);
