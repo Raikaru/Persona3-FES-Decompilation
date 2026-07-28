@@ -12035,13 +12035,14 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   
   index = (int)param_3 * 4;
   cVar1 = *(char *)(index + DAT_007ce6ec + 4);
+  iVar4 = 0;
   coordinateBase = DAT_006b4796_abs;
   iVar3 = *(s16 *)(coordinateBase + 4) - (cVar1 - 1) * 0x40;
   cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
   y = (float)iVar3;
-  for (iVar4 = 0; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
+  for (; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
   }
   position.y = y - 32.0f;
   position.x = (float)*(s16 *)(coordinateBase + 2);

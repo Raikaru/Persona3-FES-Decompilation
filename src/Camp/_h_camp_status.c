@@ -2117,6 +2117,8 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     register u8* parent;
     void* resource;
     u32 value;
+    f32 digitY;
+    f32 digitX;
 
 
     value = FUN_00173660(persona, 0) & 0xff;
@@ -2128,10 +2130,12 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
             position.x + 69.0f, position.y + 131.0f - 25.0f,
             (u8)alpha, scale);
     }
+    digitY = position.y + 131.0f;
+    digitX = position.x + 85.0f;
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f - 25.0f,
+        digitX, digitY - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173660(persona, 1) & 0xff;
@@ -2146,7 +2150,7 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 19.0f - 25.0f,
+        digitX, digitY + 19.0f - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173660(persona, 2) & 0xff;
@@ -2161,7 +2165,7 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 38.0f - 25.0f,
+        digitX, digitY + 38.0f - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173660(persona, 3) & 0xff;
@@ -2176,7 +2180,7 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 57.0f - 25.0f,
+        digitX, digitY + 57.0f - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173660(persona, 4) & 0xff;
@@ -2191,7 +2195,7 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 76.0f - 25.0f,
+        digitX, digitY + 76.0f - 25.0f,
         (u8)alpha, scale);
 }
 
@@ -2269,6 +2273,8 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
     register u8* parent;
     void* resource;
     u32 value;
+    f32 digitY;
+    f32 digitX;
 
 
     value = FUN_00173580(persona, 0) & 0xff;
@@ -2280,10 +2286,12 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
             position.x + 69.0f, position.y + 131.0f - 25.0f,
             (u8)alpha, scale);
     }
+    digitY = position.y + 131.0f;
+    digitX = position.x + 85.0f;
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f - 25.0f,
+        digitX, digitY - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173580(persona, 1) & 0xff;
@@ -2298,7 +2306,7 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 19.0f - 25.0f,
+        digitX, digitY + 19.0f - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173580(persona, 2) & 0xff;
@@ -2313,7 +2321,7 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 38.0f - 25.0f,
+        digitX, digitY + 38.0f - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173580(persona, 3) & 0xff;
@@ -2328,7 +2336,7 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 57.0f - 25.0f,
+        digitX, digitY + 57.0f - 25.0f,
         (u8)alpha, scale);
 
     value = FUN_00173580(persona, 4) & 0xff;
@@ -2343,7 +2351,7 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
     resource = campStatusGetFont(2);
     campStatusDrawSpritePointerCall(
         parent, resource, value % 10 + 0xb,
-        position.x + 85.0f, position.y + 131.0f + 76.0f - 25.0f,
+        digitX, digitY + 76.0f - 25.0f,
         (u8)alpha, scale);
 }
 

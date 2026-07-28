@@ -27883,12 +27883,12 @@ void FUN_00337fd0(int param_1)
 
 void FUN_00338360(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
+  u8 *iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -27896,9 +27896,9 @@ void FUN_00338360(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)iVar3;
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -27932,7 +27932,7 @@ void FUN_00338360(int param_1)
       ((u8 *)colourStack)[15] = 0xff;
     }
     if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
-      FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+      FUN_003238d0_4arg((int)puVar2,(int)iVar5,(int)(iVar5 + 0x10),(int)(iVar5 + 0x20));
       if (*(u8 *)(iVar1 + 0x3c) != 0) {
         *puVar2 = *puVar2 | 1;
       }
@@ -32007,7 +32007,7 @@ void FUN_0033c1a0(int param_1)
 
 void FUN_0033c960(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
@@ -32022,7 +32022,7 @@ void FUN_0033c960(int param_1)
 
   iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -32761,7 +32761,7 @@ void FUN_0033cf00(int param_1)
 
 void FUN_0033d6d0(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
@@ -32776,7 +32776,7 @@ void FUN_0033d6d0(int param_1)
 
   iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -33606,7 +33606,7 @@ void FUN_0033dc70(int param_1)
 
 void FUN_0033e540(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
@@ -33621,7 +33621,7 @@ void FUN_0033e540(int param_1)
 
   iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -34361,7 +34361,7 @@ void FUN_0033e8e0(int param_1)
 
 void FUN_0033f2e0(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
@@ -34376,7 +34376,7 @@ void FUN_0033f2e0(int param_1)
 
   iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -35260,7 +35260,7 @@ void FUN_0033f860(int param_1)
 
 void FUN_00340100(int param_1)
 {
-  int iVar1;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
@@ -35276,7 +35276,7 @@ void FUN_00340100(int param_1)
 
   iVar5 = param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -54770,7 +54770,7 @@ void FUN_00356c70(float *param_1)
 
       FUN_00318a30(*piVar1,&fStack_10,2);
 
-      FUN_003189f0(*(u32 *)((int)fVar2 + 8),*piVar1,0);
+      FUN_003189f0_f32(*(float *)((int)fVar2 + 8),*piVar1,0);
 
       FUN_00317730(*piVar1);
 

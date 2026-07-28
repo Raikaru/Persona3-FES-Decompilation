@@ -211,12 +211,6 @@ extern void func_004cde90(void* resource);
 extern void func_004d0f00(void* resource);
 extern void func_0010ec50(KwlnTask* task);
 
-static s16 Maestro_Dimension(u64 dimensions, s32 index)
-{
-    return ((s16*)&dimensions)[index];
-}
-
-
 // FUN_001102E0
 void func_001102e0(KwlnTask* task)
 {
@@ -706,9 +700,9 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
 {
     KwlnTask* task;
     MaestroStreamWork* work;
+    s16 dim2;
     s16 dim0;
     s16 dim1;
-    s16 dim2;
     s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
@@ -3266,13 +3260,15 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
 
 {
-  int *piVar2;
-
   int *piVar1;
 
+  void* uVar3;
+
+  int *piVar2;
 
 
-  piVar2 = (int *)func_001158b0(0);
+  uVar3 = func_001158b0(0);
+  piVar2 = (int *)uVar3;
   ((f32 *)piVar2)[0xb] = param_3;
 
   ((f32 *)piVar2)[4] = param_1;
