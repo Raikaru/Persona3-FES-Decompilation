@@ -404,6 +404,7 @@ u32 FUN_003a8b00(int param_1,int param_2)
     *(int *)(iVar3 + 4) = (int)uVar2;
 
     *(int *)(iVar3 + 8) = (int)uVar2;
+    /* Removing this qualifier loses FUN_003a8b00 (MATCH nd0 -> MISMATCH nd10) - measured W170. */
     FUN_00521408(uVar2,0,*(volatile u32 *)&DAT_006a1d10_abs[param_1]);
 
 
@@ -4782,9 +4783,9 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   
 
-  first2 = *(volatile int *)(param_2 + 0x18);
+  first2 = *(int *)(param_2 + 0x18);
 
-  second2 = *(volatile int *)(param_2 + 0x10);
+  second2 = *(int *)(param_2 + 0x10);
 
   iVar8 = second2 + first2;
   pbVar7 = (u8 *)iVar8;
@@ -4808,8 +4809,9 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
 
   firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
+  /* Removing this qualifier worsens FUN_003ae160 (NONMATCHING nd7 -> nd128, size 252 -> 248) - measured W170. */
   first2 = *(volatile int *)(param_2 + 0x18);
-  second2 = *(volatile int *)(param_2 + 0x10);
+  second2 = *(int *)(param_2 + 0x10);
   iVar8 = first2 + second2;
   bVar2 = *(u8 *)(iVar8 + 2);
   secondLow = bVar2 - 1 & 0xff;
@@ -4891,8 +4893,8 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   
 
-  first2 = *(volatile int *)(param_2 + 0x18);
-  second2 = *(volatile int *)(param_2 + 0x10);
+  first2 = *(int *)(param_2 + 0x18);
+  second2 = *(int *)(param_2 + 0x10);
   iVar8 = second2 + first2;
   pbVar7 = (u8 *)iVar8;
 
@@ -4915,8 +4917,9 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
 
   uVar5 = (u8)uVar5 << 8 | (u8)firstLow;
+  /* Removing this qualifier worsens FUN_003ae260 (NONMATCHING nd7 -> nd127, size 252 -> 248) - measured W170. */
   first2 = *(volatile int *)(param_2 + 0x18);
-  second2 = *(volatile int *)(param_2 + 0x10);
+  second2 = *(int *)(param_2 + 0x10);
   iVar8 = first2 + second2;
   bVar2 = *(u8 *)(iVar8 + 2);
   secondLow = bVar2 - 1 & 0xff;
