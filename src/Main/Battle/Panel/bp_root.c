@@ -3407,65 +3407,87 @@ void FUN_00206F70(void)
 void FUN_00207010(void)
 {
     u8* work;
-    s32 i;
+    u32* typeEntry;
+    s32 destroyIndex;
+    s32 rowIndex;
+    s32 targetIndex;
     u32 type;
     s8 alpha;
     u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
-    for (i = 0; i < *(u32*)(work + 0x424); i++)
+    for (destroyIndex = 0; destroyIndex < *(s32*)(work + 0x424);
+         destroyIndex++)
     {
-        handle = *(u32*)(work + 0x414 + i * 4);
-        func_003b0170(handle);
-        *(u32*)(work + 0x414 + i * 4) = 0;
+        func_003b0170(*(u32*)(work + 0x414 + destroyIndex * 4));
     }
-    if (*(u32*)work & 0x80)
+    if (*(u32*)work & 0x800000)
+    {
         func_00208360();
+    }
+
     type = *(u32*)(work + 0x408 +
-                   (*(u32*)(work + 0x7768) +
-                    *(u32*)(work + 0x7760)) * 4);
-    if (type == 2)
+                   (*(s32*)(work + 0x7768) +
+                    *(s32*)(work + 0x7760)) * 4);
+    switch (type)
+    {
+    case 0:
+        switch (*(u32*)(work + 0x20))
+        {
+        case 0:
+            alpha = 0;
+            break;
+        case 1:
+            alpha = 1;
+            break;
+        }
+        break;
+    case 1:
+        alpha = 2;
+        break;
+    case 2:
         alpha = 3;
-    else if (type == 1)
-        alpha = 1;
-    else if (*(u32*)(work + 0x20) == 1)
-        alpha = 1;
-    else
-        alpha = 0;
-    handle = func_003a5540(100, 100, -1, 2, 6,
-                           *(void**)(work + 0x7798), alpha);
+        break;
+    }
+
+    handle = bpRoot_003a5540_typed(100, 100, -1, 0.0f, 2, 6,
+                                    *(void**)(work + 0x7798), alpha);
     func_002082c0(handle);
     func_003b0e70(1);
     func_003b0e90(2);
-    for (i = 0; i < *(u32*)(work + 0x424); i++)
+    for (rowIndex = 0; rowIndex < *(s32*)(work + 0x424); rowIndex++)
     {
-        alpha = i == *(u32*)(work + 0x7768) -
-                       *(u32*)(work + 0x7760) ? 6 : 0;
-        type = *(u32*)(work + 0x408 +
-                       (i + *(u32*)(work + 0x7760)) * 4);
-        if (type == 0)
+        targetIndex = rowIndex + *(s32*)(work + 0x7760);
+        typeEntry = (u32*)(work + 0x408 + targetIndex * 4);
+        alpha = rowIndex == *(s32*)(work + 0x7768) -
+                              *(s32*)(work + 0x7760) ? 6 : 0;
+        switch (*typeEntry)
         {
-            if (*(u32*)(work + 0x20) == 1)
-                handle = func_003b0970(func_0030bb40(0x146),
-                                        2, alpha, 0, 0);
-            else if (*(u32*)(work + 0x20) == 0)
+        case 0:
+            switch (*(u32*)(work + 0x20))
+            {
+            case 0:
                 handle = func_003b0970(func_0030bb40(0x144),
                                         2, alpha, 0, 0);
-        }
-        else if (type == 1)
-        {
+                break;
+            case 1:
+                handle = func_003b0970(func_0030bb40(0x146),
+                                        2, alpha, 0, 0);
+                break;
+            }
+            break;
+        case 1:
             handle = func_003b0970(*(u32*)0x007cc418,
                                     2, alpha, 0, 0);
-        }
-        else
-        {
-            if (*(u32*)(work + 0x20) != 1)
-                K_ASSERT(0, 0x1209);
+            break;
+        case 2:
+            K_ASSERT(*(u32*)(work + 0x20) == 1, 0x1209);
             handle = func_003b0970(func_0030bb40(0x145),
                                     2, alpha, 0, 0);
+            break;
         }
-        *(u32*)(work + 0x414 + i * 4) = handle;
+        *(u32*)(work + 0x414 + rowIndex * 4) = handle;
     }
     func_003b0e90(1);
     func_003b0e70(2);

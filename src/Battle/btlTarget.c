@@ -1108,10 +1108,6 @@ void FUN_002d8330(BtlAction* action)
     work = (BtlTargetActionPacketWork*)packet->workData;
     work->action = action;
 }
-static inline u16 btlTargetGetEnemyFlags(u8 **table, u16 characterId)
-{
-  return *(u16 *)(*table + (u32)characterId * 0x3e);
-}
 
 
 // FUN_002d8390 NONMATCHING
@@ -1129,15 +1125,11 @@ int FUN_002d8390(void)
   int hasStatus;
   int hasFlag40;
   int hasFlag80;
-  int result;
 
   selector = FUN_002d4e10(2, 0x80000);
-  result = -1;
-  if (selector < 6) {
-    goto valid;
+  if (selector >= 6) {
+    return -1;
   }
-  return result;
-valid:
   comparison = FUN_002d4cf0(2, 0x80000);
   level = FUN_002ffcc0_u32(*(u32 *)(*(u32 *)(*(u32 *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
   difference = (s32)(comparison - (level & 0xff)) >= 4;
