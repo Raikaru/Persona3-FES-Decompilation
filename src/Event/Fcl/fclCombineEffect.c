@@ -39,6 +39,10 @@ extern void FUN_0034fe30_fcl(s32, f32, f32, f32);
 extern void *RwMatrixRotate_fcl(void *, const void *, f32, s32);
 #pragma alias FUN_004bdde0_fcl FUN_004bdde0
 extern void FUN_004bdde0_fcl(f32, s32, const void *, s32);
+f32 FUN_0016ba00(u32 param_1, u32 param_2);
+f32 FUN_0016ba80(u32 param_1, u32 param_2);
+f32 FUN_0016bb00(u32 param_1, u32 param_2);
+f32 FUN_0016bb80(u32 param_1, u32 param_2);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -135,10 +139,8 @@ extern f32 DAT_006b2e50_abs[];
 u32 DAT_006b2e58;
 u32 DAT_006b2e5c;
 u32 DAT_006b2e60;
-FclEffectVec2 DAT_006b2e68;
-u32 DAT_006b2e70;
-FclEffectVec2 DAT_006b2e78;
-u32 DAT_006b2e80;
+RwV3d DAT_006b2e68;
+RwV3d DAT_006b2e78;
 u32 DAT_006b2e90;
 u32 DAT_006b2eb0;
 u64 DAT_006b2ed8;
@@ -2005,29 +2007,21 @@ u32 FUN_00419790(int param_1,int param_2)
 
 {
 
-  u16 uVar1;
-
   int iVar2;
 
   int iVar3;
+
+  u16 uVar1;
 
   float fVar4;
 
   u8 auStack_70 [64];
 
-  u32 uStack_30;
+  RwV3d uStack_10;
 
-  u32 uStack_2c;
+  RwV3d uStack_20;
 
-  u32 uStack_28;
-
-  FclEffectVec2 uStack_20;
-
-  float uStack_18;
-
-  FclEffectVec2 uStack_10;
-
-  float fStack_8;
+  RwV3d uStack_30;
 
   
 
@@ -2036,21 +2030,13 @@ u32 FUN_00419790(int param_1,int param_2)
   uVar1 = *(u16 *)(param_1 + 0x22);
   uStack_10 = DAT_006b2e68;
 
-  fStack_8 = DAT_006b2e70;
-
   uStack_20 = DAT_006b2e78;
-
-  uStack_18 = DAT_006b2e80;
 
   iVar3 = kwlnGetMainCamera();
 
   iVar3 = *(int *)(iVar3 + 4);
 
-  uStack_30 = FUN_0016ba00(0,uVar1);
-
-  uStack_2c = uStack_30;
-
-  uStack_28 = uStack_30;
+  uStack_30.x = uStack_30.y = uStack_30.z = FUN_0016ba00(0,uVar1);
 
   fVar4 = (float)FUN_0016ba80(0,uVar1);
 
@@ -2062,9 +2048,9 @@ u32 FUN_00419790(int param_1,int param_2)
 
   fVar4 = (float)FUN_0016bb80(0,uVar1);
 
-  fStack_8 = fStack_8 + fVar4;
+  uStack_10.z = uStack_10.z + fVar4;
 
-  RwMatrixRotate_fcl((void*)auStack_70,(void*)&uStack_20,*(float*)&(u32){0x43340000},0);
+  RwMatrixRotate_fcl((void*)auStack_70,(void*)&uStack_20,180.0f,0);
 
   RwMatrixTranslate((void*)auStack_70,(void*)&uStack_10,2);
 

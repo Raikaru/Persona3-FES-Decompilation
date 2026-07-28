@@ -2518,8 +2518,8 @@ u32 FUN_003f1dc0(long param_1,int param_2,int param_3)
 
 u8 FUN_003f2240(int param_1,long param_2)
 {
-  short sVar1;
   u32 *puVar2;
+  short sVar1;
   u16 *puVar4;
 
   if (param_1 == 0) {

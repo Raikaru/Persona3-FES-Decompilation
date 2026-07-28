@@ -2110,9 +2110,9 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
                                 void* persona, s32 alpha)
 {
+    u32 parent;
     void* resource;
     u32 value;
-    u32 parent;
 
 
 
