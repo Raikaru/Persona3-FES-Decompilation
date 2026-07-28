@@ -562,7 +562,8 @@ extern u32 FUN_003111f0();
 extern u32 FUN_00311250();
 extern void FUN_0035f080(float);
 extern u32 FUN_003951d0();
-u32 FUN_00300100(DatUnit* unit);
+#pragma alias datCalcGetMaxSp FUN_00300100
+u32 datCalcGetMaxSp(DatUnit* unit);
 s32 FUN_00300410(DatUnit *unit,s32 hpDelta);
 s32 FUN_00300480(DatUnit *unit,s32 spDelta);
 u32 FUN_003005a0(u16* param);
@@ -749,7 +750,7 @@ extern u32 iGpffffb7fc;
 extern u32 iGpffffb800;
 
 // FUN_00300100 NONMATCHING
-u32 FUN_00300100(DatUnit* unit)
+u32 datCalcGetMaxSp(DatUnit* unit)
 {
     s32 sp;
     s32 bonus;
@@ -849,7 +850,7 @@ s32 FUN_00300480(DatUnit *unit,s32 spDelta)
   if (newSp < 0) {
     newSp = 0;
   }
-  maxSp = FUN_00300100(unit) & 0xFFFF;
+  maxSp = datCalcGetMaxSp(unit) & 0xFFFF;
   if (maxSp < newSp) {
     newSp = maxSp;
   }
@@ -1943,7 +1944,7 @@ u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
     uStack_20 = (u16)*(u8 *)(iVar11 + 0x14);
     unaff_s5_lo = 0;
     uVar6 = (u32)puVar9[5];
-    uStack_30 = FUN_00300100((DatUnit*)param_3);
+    uStack_30 = datCalcGetMaxSp((DatUnit*)param_3);
     break;
   default:
     FUN_0019d3f0((u32)D_0069aa80, 0x6e3);
@@ -3535,7 +3536,7 @@ u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
       if ((int)uVar6 < 0) {
         uVar6 = 0;
       }
-      uVar1 = FUN_00300100((DatUnit*)param_3);
+      uVar1 = datCalcGetMaxSp((DatUnit*)param_3);
       if ((int)(uVar1 & 0xffff) < (int)uVar6) {
         uVar6 = uVar1 & 0xffff;
       }
@@ -3620,7 +3621,7 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   if ((*(u32 *)(iVar7 + 0xc) & 0x80000) == 0) {
     if (0 < lVar5) {
       uVar1 = *(u16 *)(iVar7 + 10);
-      uVar2 = FUN_00300100((DatUnit*)param_3);
+      uVar2 = datCalcGetMaxSp((DatUnit*)param_3);
       if (uVar1 < uVar2) {
         return 0;
       }
@@ -4505,7 +4506,7 @@ u32 FUN_003083f0(u32 param_1,u32 param_2)
         uVar2 = (u32)*(u16 *)(iVar4 + 4) + (u32)*(u16 *)(iVar4 + 6);
       }
       else {
-        uVar2 = FUN_00300100((DatUnit*)param_1);
+        uVar2 = datCalcGetMaxSp((DatUnit*)param_1);
         iVar4 = (u32)param_2 * 0x2c + DAT_007ce3f8;
         uVar2 = (int)((uVar2 & 0xffff) * (u32)*(u16 *)(iVar4 + 4)) / 100 +
                 (u32)*(u16 *)(iVar4 + 6);
@@ -6331,7 +6332,7 @@ u16 FUN_0030bc20(s16 param_1)
 
 
 
-// FUN_0030bc50 NONMATCHING
+// FUN_0030bc50
 
 u32 FUN_0030bc50(int param_1)
 
@@ -8234,7 +8235,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
     if (DAT_00957190 == 0) {
       FUN_0019d3f0((u32)D_0069aa80_abs, 0xde);
     }
-    uVar6 = FUN_00300100((DatUnit*)DAT_00957190);
+    uVar6 = datCalcGetMaxSp((DatUnit*)DAT_00957190);
     if ((s32)uVar6 < 0) {
       unaff_f20 = (float)(uVar6 & 0xffffffff);
     }
@@ -8246,7 +8247,7 @@ float FUN_0030fdf0(int param_1,u32 param_2)
     if (DAT_00957194 == 0) {
       FUN_0019d3f0((u32)D_0069aa80_abs, 0xe2);
     }
-    uVar6 = FUN_00300100((DatUnit*)DAT_00957194);
+    uVar6 = datCalcGetMaxSp((DatUnit*)DAT_00957194);
     if ((s32)uVar6 < 0) {
       unaff_f20 = (float)(uVar6 & 0xffffffff);
     }

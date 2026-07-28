@@ -671,12 +671,12 @@ void func_001a5700(KwlnTask* task, const RwRGBA* color)
 void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 {
     KDrawArcTaskWork* work;
-    u32 i;
     KDrawRenderObject* renderObject;
+    s32 i;
     RwV3d* vertices;
-    f32 fullAngle;
     f32 normalizedAngle;
     f32 startAngle;
+    f32 fullAngle;
     f32 theta;
 
     work = (KDrawArcTaskWork*)task->workData;
@@ -711,8 +711,9 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     vertices[0].y = work->render->center.y;
     vertices[0].z = work->render->center.z;
     fullAngle = (fullAngle * normalizedAngle) / 32.0f;
+    i = 0;
     theta = startAngle;
-    for (i = 0; i < 0x20; i++)
+    for (; i < 0x20; i++)
     {
         vertices[i + 1].x =
             work->render->radius * cosf(theta) + work->render->center.x;
@@ -732,7 +733,9 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     }
     else
     {
-        vertices[i + 1] = vertices[i];
+        vertices[i + 1].x = vertices[i].x;
+        vertices[i + 1].y = vertices[i].y;
+        vertices[i + 1].z = vertices[i].z;
     }
     func_004933d0(renderObject);
 }

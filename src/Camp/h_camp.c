@@ -1693,11 +1693,11 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
     func_00115980(particle);
 
     slide = (200.0f * (f32)(0x16 - work->frame)) / 22.0f;
-    oldDuration = (f32)work->transitionDuration;
-    work->transitionDuration = (u32)(oldDuration + 1.0f);
-    newDuration = (f32)work->transitionDuration;
+    oldDuration = (f32)(s32)work->transitionDuration;
+    work->transitionDuration = (s32)(oldDuration + 1.0f);
+    newDuration = (f32)(s32)work->transitionDuration;
     if (!(newDuration <= 767.0f)) {
-        work->transitionDuration = (u32)(newDuration - 448.0f);
+        work->transitionDuration = (s32)(newDuration - 448.0f);
     }
 
     x = 589.0f + slide;
@@ -1808,12 +1808,12 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
     f32 temp_f22;
 
     sp48 = 0;
-    temp_f1 = (f32)work->transitionDuration;
+    temp_f1 = (f32)(s32)work->transitionDuration;
     sp44 = temp_f1;
-    work->transitionDuration = (u32)(temp_f1 + 1.0f);
-    temp_f1_2 = (f32)work->transitionDuration;
+    work->transitionDuration = (s32)(temp_f1 + 1.0f);
+    temp_f1_2 = (f32)(s32)work->transitionDuration;
     if (!(temp_f1_2 <= (f32)0x2ff)) {
-        work->transitionDuration = (u32)(temp_f1_2 - 448.0f);
+        work->transitionDuration = (s32)(temp_f1_2 - 448.0f);
     }
     sp40 = *(s64*)&sp48;
     temp_f21 = 589.0f + *(f32*)&sp40;
@@ -1881,11 +1881,11 @@ void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
         work->drawChild = (KwlnTask*)1;
     }
 
-    oldDuration = (f32)work->transitionDuration;
-    work->transitionDuration = (u32)(oldDuration + 1.0f);
-    newDuration = (f32)work->transitionDuration;
+    oldDuration = (f32)(s32)work->transitionDuration;
+    work->transitionDuration = (s32)(oldDuration + 1.0f);
+    newDuration = (f32)(s32)work->transitionDuration;
     if (!(newDuration <= 767.0f)) {
-        work->transitionDuration = (u32)(newDuration - 448.0f);
+        work->transitionDuration = (s32)(newDuration - 448.0f);
     }
 
     pos.x = 0.0f;

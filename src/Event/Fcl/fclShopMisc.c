@@ -6281,8 +6281,6 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 // applies here too, except the "else" sub-case in each branch substitutes
 // iVar6 (a computed draw-x offset) and iVar5 (a computed fade alpha) for
 // param_1/param_3 - a background/unselected variant of the same draw call.
-// Residual: an unrelated register-widening mismatch in the pre-existing
-// (not touched by this fix) diff/count prefix logic above.
 
 
 void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
@@ -17790,6 +17788,7 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   int drawY;
 
   float fVar6;
+  float drawScale;
 
   u8 auStack_8 [8];
 
@@ -17853,11 +17852,11 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   drawY = iVar4 + 0x1b;
   FUN_0040ebc0_f32(0.0f,drawX,drawY,drawAlpha,3,auStack_8,2);
 
-  uVar3 = clndGetCurrentWeekDay();
 
   drawX = iVar5 + 0x60;
   drawY = iVar4 + 1;
-  FUN_0040e3c0_f32(0.0f,drawX,drawY,param_3,0xf,uVar3);
+  drawScale = 0.0f;
+  FUN_0040e3c0_u32(0.0f,drawX,drawY,param_3 & 0xff,0xf,clndGetCurrentWeekDay());
 
   return;
 

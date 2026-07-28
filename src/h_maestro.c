@@ -680,7 +680,7 @@ KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
 
     for (i = 0; i < 4; i++)
     {
-        work->dimensions[i] = Maestro_Dimension(dimensions, i);
+        work->dimensions[i] = ((s16*)&dimensions)[i];
     }
     sprintf(name, D_005D6A80, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     printf(D_005D6AA0, name);

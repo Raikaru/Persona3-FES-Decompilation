@@ -333,13 +333,12 @@ u32 FUN_004173e0(void)
 
 }
 
-// FUN_00417410 NONMATCHING
+// FUN_00417410
 
 
 u64 FUN_00417410(void)
 {
   int iVar1;
-  u32 uVar2;
   int *piVar3;
 
   piVar3 = (int *)kwlnTaskGetWorkData();
@@ -359,14 +358,11 @@ u64 FUN_00417410(void)
       goto complete;
     }
     *piVar3 = 3;
-    FUN_0041b550((int)piVar3);
   case 3:
+    FUN_0041b550((int)piVar3);
     *piVar3 = 4;
-    uVar2 = piVar3[1];
-    uVar2 = uVar2 | 4;
-    piVar3[1] = uVar2;
-    uVar2 = uVar2 | 1;
-    piVar3[1] = uVar2;
+    piVar3[1] |= 4;
+    piVar3[1] |= 1;
   case 4:
     break;
   default:

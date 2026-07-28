@@ -62,8 +62,6 @@ extern u8 DAT_007ce0e8;
 extern u8 DAT_007ce0ec;
 extern u8 DAT_007ce0f0;
 extern u8 DAT_007ce0f4;
-extern s64 D_00678AB8;
-extern f32 D_00678AC0;
 
 typedef struct SceneDrawObject
 {
@@ -1179,14 +1177,12 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
-    const u32 enabled = 1;
-    u32 hiddenMask;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
     while (fld != NULL)
     {
-        if (visible == enabled)
+        if (visible == 1)
         {
             fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
@@ -1196,14 +1192,13 @@ void func_001a0040(u32 visible, u32 updateField)
         {
             fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
-            *(u32*)((u8*)field + 0x34) = enabled;
+            *(u32*)((u8*)field + 0x34) = 1;
         }
         fld = fld->next;
     }
 
     if (updateField == 1)
     {
-        hiddenMask = ~SCENEDRAW_RESRC_FLAG_VISIBLE;
         while (modelFld != NULL)
         {
             if (visible == 1)
@@ -1212,7 +1207,7 @@ void func_001a0040(u32 visible, u32 updateField)
             }
             else
             {
-                modelFld->flags &= hiddenMask;
+                modelFld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             }
             modelFld = modelFld->next;
         }
@@ -1813,12 +1808,9 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     RwV3d* up;
 
     up = &defaultUp;
-    *(s64*)&defaultUp = D_00678AB8;
-    defaultUp.z = D_00678AC0;
-    if (upVector == NULL)
-    {
-    }
-    else
+    *(s64*)&defaultUp = *(s64*)0x00678ab8;
+    defaultUp.z = *(f32*)0x00678ac0;
+    if (upVector != NULL)
     {
         up = (RwV3d*)upVector;
     }

@@ -21,6 +21,7 @@ typedef u32 int3;
 #endif
 #define CONCAT44_F32(hi,lo) ((((u64)(*(u32 *)&(hi))) << 32) | *(u32 *)&(lo))
 extern u32 DAT_006a2af0[24];
+extern char DAT_006a2b50[];
 extern u32 DAT_006a2af4;
 extern u32 DAT_006a2af8;
 extern u32 DAT_006a2afc;
@@ -584,17 +585,15 @@ void FUN_003b55d0(u32 param_1,u32 *param_2)
 
 u32 FUN_003b5620(int param_1,int param_2)
 {
-  int iVar3 = param_1;
-  int iVar4 = param_2;
   u32 uVar1;
   int lVar2;
   u8 auStack_100[128];
   u8 auStack_80[128];
 
-  FUN_00524270(auStack_100,0x6a2b50);
-  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 8),iVar3);
+  FUN_00524270(auStack_100,DAT_006a2b50);
+  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 8),param_1);
   FUN_00523e68(auStack_100,auStack_80);
-  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 0x10),iVar4);
+  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 0x10),param_2);
   FUN_00523e68(auStack_100,auStack_80);
   FUN_00523e68(auStack_100,((u8 *)&PTR_DAT_007cd540 + 0x18));
   lVar2 = FUN_001008b0(auStack_100);
@@ -602,10 +601,10 @@ u32 FUN_003b5620(int param_1,int param_2)
     uVar1 = 0;
   } else {
     uVar1 = 1;
-    if ((((((0x13 < iVar3) && (iVar3 < 0x1d)) && (iVar4 == 0)) ||
-         ((0x32 < iVar3 && (iVar3 < 0x3b)))) ||
-        ((0x27 < iVar3 && ((iVar3 < 0x31 && (iVar4 == 0)))))) ||
-       ((0x46 < iVar3 && (iVar3 < 0x4f)))) {
+    if ((((((0x13 < param_1) && (param_1 < 0x1d)) && (param_2 == 0)) ||
+         ((0x32 < param_1 && (param_1 < 0x3b)))) ||
+        ((0x27 < param_1 && ((param_1 < 0x31 && (param_2 == 0)))))) ||
+       ((0x46 < param_1 && (param_1 < 0x4f)))) {
       uVar1 = 1;
     }
   }

@@ -1737,7 +1737,7 @@ void FUN_00361980(int param_1)
 }
 
 
-// FUN_00361B60 NONMATCHING
+// FUN_00361B60
 
 
 void FUN_00361b60(int *param_1,int param_2)
@@ -15416,7 +15416,7 @@ void FUN_0036f370(int param_1)
 }
 
 
-// FUN_0036F3B0 NONMATCHING
+// FUN_0036F3B0
 
 
 void FUN_0036f3b0(u64 param_1,u32 param_2)
@@ -15433,13 +15433,13 @@ void FUN_0036f3b0(u64 param_1,u32 param_2)
 
   
 
-  lVar3 = FUN_00386ae0(0x990,0);
+  lVar3 = FUN_00386ae0_evt(0x990,0);
 
   iVar1 = (int)lVar3;
 
   if (lVar3 == 0) {
 
-    FUN_0019d3f0(0x69d580,0x31aa);
+    FUN_0019d3f0((const char *)(DAT_006a0000 - 0x2a80),0x31aa);
 
   }
 
@@ -15451,7 +15451,7 @@ void FUN_0036f3b0(u64 param_1,u32 param_2)
 
   FUN_0036f490(0);
 
-  uVar2 = FUN_00194b20(param_1,0x69e0a0,0xf,0x36ee30,0x36f260,lVar3);
+  uVar2 = FUN_00194b20(param_1,(const char *)(DAT_006a0000 - 0x1f60),0xf,FUN_0036ee30,FUN_0036f260,lVar3);
 
   *(u32 *)(iVar1 + 0x92c) = uVar2;
 
