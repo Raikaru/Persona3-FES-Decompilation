@@ -6162,15 +6162,16 @@ void btlActionInitStatePersona(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
     if (action->unit->genus != UNIT_GENUS_PC)
     {
-        goto persona_anim;
+        packet = FUN_002843e0(action->unit, 6);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
-    packet = FUN_002843e0(action->unit, 6);
-    goto persona_anim_done;
-persona_anim:
-    packet = btlUnitCreateAnimPacket(action->unit, 0x17, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-persona_anim_done:
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    else
+    {
+        packet = btlUnitCreateAnimPacket(action->unit, 0x17, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
     packet = btlVoice002e2be0(action, 0x19, 0, 0, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
@@ -6742,6 +6743,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     BtlPacket* pkt;
     BtlPacket* rootPkt;
     BtlAction* selected;
+    BtlAction* candidate;
     BtlUnit* unit;
     u16 i;
     u16 count;
@@ -6753,30 +6755,28 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     unit = action->unit;
     if (unit->genus == UNIT_GENUS_PC)
     {
-        selected = action;
+        candidate = action;
     }
     else
     {
-        selected = action->target.targetedActions[0];
+        candidate = action->target.targetedActions[0];
     }
-    if (selected != NULL)
+    if (candidate != NULL)
     {
         count = ACTION_U16(gBtl, 0xb98);
         for (i = 0; i < count; i++)
         {
-            if (*(void**)((u8*)gBtl + 0xb88 + i * 4) == selected)
+            if (*(void**)((u8*)gBtl + 0xb88 + i * 4) == candidate)
             {
+                selected = candidate;
                 break;
             }
         }
-        if (i >= count)
-        {
-            selected = (void*)*(u32*)((u8*)gBtl + 0xb88 + (FUN_002ffbc0(count) & 0xffff) * 4);
-        }
     }
-    else
+    if (selected == NULL)
     {
-        selected = (void*)*(u32*)((u8*)gBtl + 0xb88 + (FUN_002ffbc0(ACTION_U16(gBtl, 0xb98)) & 0xffff) * 4);
+        selected = (void*)*(u32*)((u8*)gBtl + 0xb88 +
+                                 (FUN_002ffbc0(ACTION_U16(gBtl, 0xb98)) & 0xffff) * 4);
     }
 
     pkt = FUN_002e38a0(ACTION_U16(selected->unit, 0xa4));

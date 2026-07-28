@@ -6791,6 +6791,7 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   int iVar1;
   int iVar2;
   int iVar3;
+  int iVar4;
   float *pfVar5;
   float *pfVar6;
   float fVar7;
@@ -6800,11 +6801,10 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   if (*param_1 == 0) {
     iVar1 = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-    iVar3 = 0;
+    iVar3 = 0, iVar4 = 1;
     iVar2 = iVar1 - 1;
     for (; iVar3 < iVar1; iVar3 = iVar3 + 1) {
-      switch (param_3) {
-      case 1:
+      if (param_3 == iVar4) {
         pfVar5 = (float *)(param_1 + (iVar2 - iVar3) * 0xc);
         pfVar6 = (float *)(param_2 + iVar3 * 0xc);
         fVar7 = pfVar5[1];
@@ -6813,8 +6813,7 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
         pfVar6[1] = fVar7;
         pfVar6[2] = fVar8;
         pfVar6[3] = fVar9;
-        break;
-      default:
+      } else {
         pfVar5 = (float *)(param_1 + iVar3 * 0xc);
         pfVar6 = (float *)(param_2 + iVar3 * 0xc);
         fVar7 = pfVar5[1];
@@ -6823,7 +6822,6 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
         pfVar6[1] = fVar7;
         pfVar6[2] = fVar8;
         pfVar6[3] = fVar9;
-        break;
       }
     }
   }

@@ -236,8 +236,8 @@ void func_00249c10(void* work)
         s32 stride;
     };
     struct Local {
-        struct Buffer colors;
         struct Buffer positions;
+        struct Buffer colors;
         f32 transformed[3];
         u8 pad0[4];
         f32 origin[3];
@@ -276,8 +276,8 @@ void func_00249c10(void* work)
     deltaY = local.transformed[1] - *(f32*)(base + 0x60c);
     deltaZ = local.transformed[2] - *(f32*)(base + 0x610);
     func_004cb750(frame, local.transformed, 0);
-    func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 2, 0x40000000);
-    func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 1, 0x40000000);
+    func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 2, 0x40000000);
+    func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 1, 0x40000000);
 
     {
         u8* color;

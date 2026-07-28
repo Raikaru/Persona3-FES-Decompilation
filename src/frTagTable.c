@@ -1160,7 +1160,7 @@ u64 FUN_003af660(u32 param_1, int param_2)
   u8 *pbVar4;
   int base;
   int offset;
-  long lVar5;
+  s32 lVar5;
 
   offset = *(int *)(param_2 + 0x18);
   base = *(int *)(param_2 + 0x10);
@@ -1176,17 +1176,18 @@ u64 FUN_003af660(u32 param_1, int param_2)
   sVar3 = (short)(((u16)bVar2 << 8) | (bVar1 & 0xff));
 
   lVar5 = FUN_0016f190(0x185);
-  if (lVar5 != 0) {
-    if (*(int *)(*(int *)(param_2 + 0x14) + 0x34) != 0) {
-      *(u32 *)(*(int *)(param_2 + 0x14) + 0x38) = 1;
-    }
-    *(u32 *)(*(int *)(param_2 + 0x14) + 0x30) = param_1;
-    *(int *)(*(int *)(param_2 + 0x14) + 0x3c) = sVar3;
-    if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {
-      *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0;
-    }
-    DAT_007cd4e8 |= 0x40;
+  if (lVar5 == 0) {
+    return 0;
   }
+  if (*(int *)(*(int *)(param_2 + 0x14) + 0x34) != 0) {
+    *(u32 *)(*(int *)(param_2 + 0x14) + 0x38) = 1;
+  }
+  *(u32 *)(*(int *)(param_2 + 0x14) + 0x30) = param_1;
+  *(int *)(*(int *)(param_2 + 0x14) + 0x3c) = sVar3;
+  if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {
+    *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0;
+  }
+  DAT_007cd4e8 |= 0x40;
   return 0;
 }
 #define FUN_003af660(...) ((u64 (*)(...))FUN_003af660)(__VA_ARGS__)

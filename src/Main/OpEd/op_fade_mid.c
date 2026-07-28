@@ -210,8 +210,8 @@ block_16:
 s32 func_002751e0(void)
 {
     s32 remaining;
-    s32 unavailable;
     s32 slot;
+    s32 unavailable;
     s32 i;
     u16 *skills;
     s32 skillCount;
@@ -228,8 +228,8 @@ s32 func_002751e0(void)
     unavailable = 0;
     remaining =
         (OP_U8((void *)(uintptr_t)work[0x30 / 4], 4) -
-         OP_U8(DAT_007ce420 +
-                   OP_U16((void *)(uintptr_t)work[0x30 / 4], 2) * 0xe + 3,
+         OP_U8(OP_U16((void *)(uintptr_t)work[0x30 / 4], 2) * 0xe +
+                   DAT_007ce420 + 3,
                0)) -
         OP_U8(work, 0x38);
 
@@ -258,11 +258,12 @@ loop:
     case 4:
         break;
     case 0:
-        return unavailable;
+        goto done;
     }
     slot++;
     if ((s32)work[0x78 / 4] + slot != 0x10)
         goto loop;
+done:
     return unavailable;
 }
 

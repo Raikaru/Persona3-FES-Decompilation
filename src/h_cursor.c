@@ -10,7 +10,9 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
     RwRenderStateSetFunc* setRenderState;
     HCursorWork* work;
     RwIm2DVertex* vertex;
+    RwRGBA* color;
     f32 recipZ;
+    u8* globals;
     s16 i;
 
     work = (HCursorWork*)hcursorTask->workData;
@@ -37,16 +39,18 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
+            globals = rwGlobals_abs;
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];
 
-                vertex->u.els.scrVertex.z = *(RwReal*)(rwGlobals_abs + 0x88) - work->zOffset;
+                vertex->u.els.scrVertex.z = *(RwReal*)(globals + 0x88) - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
-                vertex->u.els.color.r = (f32)work->colors[i].r;
-                vertex->u.els.color.g = (f32)work->colors[i].g;
-                vertex->u.els.color.b = (f32)work->colors[i].b;
-                vertex->u.els.color.a = (f32)work->colors[i].a;
+                color = &work->colors[i];
+                vertex->u.els.color.r = (f32)color->r;
+                vertex->u.els.color.g = (f32)color->g;
+                vertex->u.els.color.b = (f32)color->b;
+                vertex->u.els.color.a = (f32)color->a;
             }
 
             work->vertices[0].u.els.scrVertex.x = work->pos.x;
