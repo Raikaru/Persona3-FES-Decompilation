@@ -2,6 +2,8 @@
 
 typedef int (*code)(...);
 typedef u8 bool;
+#pragma alias FUN_00396270_f32 FUN_00396270
+extern void FUN_00396270_f32(f32, int, f32 *);
 typedef u32 undefined3;
 typedef struct {
   u8 _pad_d8[0xd8];
@@ -9936,11 +9938,11 @@ u32 FUN_0037afc0(int param_1,int param_2,int param_3)
 
     uStack_4 = *(u32 *)(iVar5 + 0x16c);
 
-    FUN_003625e0(param_3);
+    FUN_003625e0_i(param_3);
 
     iVar2 = *(int *)(iVar5 + 0x220);
-
     ((u16 *)&uStack_4)[1] = (u16)(uStack_4 >> 0x10);
+
 
     if (iVar2 == 2) {
       u16 *puVar3;
@@ -9990,7 +9992,7 @@ u32 FUN_0037afc0(int param_1,int param_2,int param_3)
 
         ((u16 *)&uStack_4)[1] = *puVar3;
 
-        FUN_00396270(0x41a00000,param_3,puVar3 + 2);
+        FUN_00396270_f32(20.0f,param_3,(f32 *)(puVar3 + 2));
 
 
       }

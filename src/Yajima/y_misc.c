@@ -643,9 +643,9 @@ u32 FUN_004249b0(void)
 
 {
 
-  u8 bVar1;
+  char bVar1;
 
-  u32 uVar2;
+  int uVar2;
 
   short sVar3;
 
@@ -657,7 +657,7 @@ u32 FUN_004249b0(void)
 
   uVar2 = scrGetIntPara(0);
 
-  if ((0 < (long)uVar2) && ((long)uVar2 < 0xc)) {
+  if ((0 < uVar2) && (uVar2 < 0xc)) {
 
     for (iVar4 = 0; iVar4 < 0x14; iVar4 = iVar4 + 1) {
 

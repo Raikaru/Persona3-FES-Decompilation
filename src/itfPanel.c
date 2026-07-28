@@ -3555,67 +3555,38 @@ u64 FUN_003ad130(u32 param_1,int param_2)
 
 
 u64 FUN_003ad1b0(u32 param_1,int param_2)
-
-
-
 {
-
-  u8 bVar1;
-
-  int lVar2;
-
-  u8 *pbVar3;
-
-  
+  u8 low;
+  u8 high;
+  u32 value;
+  u8 *data;
+  int offset;
+  int base;
 
   if (*(int *)(*(int *)(param_2 + 0x14) + 0x34) != 0) {
-
     *(u32 *)(*(int *)(param_2 + 0x14) + 0x38) = 1;
-
   }
-
   *(u32 *)(*(int *)(param_2 + 0x14) + 0x30) = param_1;
-
-  lVar2 = FUN_0016f190(0x184);
-
-  if (lVar2 == 0) {
-
+  if (FUN_0016f190(0x184) == 0) {
     *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0x23;
-
-  }
-
-  else {
-
-    pbVar3 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
-    bVar1 = pbVar3[1];
-
-    if (bVar1 != 0xff) {
-
-      bVar1 = bVar1 - 1;
-
+  } else {
+    offset = *(int *)(param_2 + 0x18);
+    base = *(int *)(param_2 + 0x10);
+    data = (u8 *)(base + offset);
+    low = data[0] - 1;
+    high = data[1];
+    if (high == 0xff) {
+      high = 0;
+    } else {
+      high = high - 1;
     }
-
-    else {
-
-      bVar1 = 0;
-
-    }
-
-    *(int *)(*(int *)(param_2 + 0x14) + 0x3c) =
-
-         (int)(short)((u16)bVar1 << 8 | *pbVar3 - 1 & 0xff);
-
+    value = (u32)high << 8 | low & 0xff;
+    *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = value;
   }
-
   if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {
-
     *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0;
-
   }
-
   return 0;
-
 }
 #define FUN_003ad1b0(...) ((u64 (*)(...))FUN_003ad1b0)(__VA_ARGS__)
 // Retail 0x003ad2a0-0x003ad354

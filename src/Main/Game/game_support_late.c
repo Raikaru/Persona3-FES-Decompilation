@@ -686,70 +686,91 @@ s32 func_0018b360(KwlnTask* task)
 // FUN_0018B380 NONMATCHING
 void* func_0018b380(KwlnTask* task)
 {
-    u8* work = (u8*)task->workData;
-    void* allocation;
-    KwlnTask* child;
-
-    if (GS_U32(work, 0) == 4)
+    struct GsB380Work
     {
-        func_00111530(GS_TASK(work, 0x14));
-        func_00111530(GS_TASK(work, 0x18));
-        func_00111530(GS_TASK(work, 0x1c));
-        GS_S32(work, 0xa70) = -2;
+        u32 state;
+        u8 pad04[0x10];
+        KwlnTask* tasks[3];
+        u8 pad20[0x18];
+        u32 payload38;
+        u32 payload3c;
+        u8 pad40[0xa30];
+        s32 status;
+    };
+    struct GsB380Work* work = (struct GsB380Work*)task->workData;
+    void* allocation;
+    void* (**allocator)(u32, u32, u32);
 
-        allocation = GS_ALLOC(1, 0x10, 0x40000);
-        if (allocation != NULL)
+    if (work->state == 4)
+    {
+        func_00111530(work->tasks[0]);
+        func_00111530(work->tasks[1]);
+        func_00111530(work->tasks[2]);
+        work->status = -2;
+        allocator = (void* (**)(u32, u32, u32))D_00960184_abs;
+
         {
-            child = kwlnTaskCreate(NULL, D_005E4320, 0x18c0,
-                                   func_00188c30, func_0018a9c0, allocation);
-            if (child != NULL)
+            u32 payload = work->payload38;
+            allocation = (*allocator)(1, 0x10, 0x40000);
+            if (allocation != NULL)
             {
-                GS_U32(allocation, 0xc) = GS_U32(work, 0x38);
+                if (kwlnTaskCreate(NULL, D_005E4320, 0x18c0,
+                                   func_00188c30, func_0018a9c0, allocation) != NULL)
+                {
+                    GS_U32(allocation, 0xc) = payload;
+                }
             }
         }
-        allocation = GS_ALLOC(1, 0x10, 0x40000);
-        if (allocation != NULL)
         {
-            child = kwlnTaskCreate(NULL, D_005E4340, 0x18c0,
-                                   func_00189230, func_0018a9c0, allocation);
-            if (child != NULL)
+            u32 payload = work->payload38;
+            allocation = (*allocator)(1, 0x10, 0x40000);
+            if (allocation != NULL)
             {
-                GS_U32(allocation, 0xc) = GS_U32(work, 0x38);
+                if (kwlnTaskCreate(NULL, D_005E4340, 0x18c0,
+                                   func_00189230, func_0018a9c0, allocation) != NULL)
+                {
+                    GS_U32(allocation, 0xc) = payload;
+                }
             }
         }
-        allocation = GS_ALLOC(1, 0x10, 0x40000);
-        if (allocation != NULL)
         {
-            child = kwlnTaskCreate(NULL, D_005E4360, 0x18c0,
-                                   func_00189810, func_0018a9c0, allocation);
-            if (child != NULL)
+            u32 payload = work->payload38;
+            allocation = (*allocator)(1, 0x10, 0x40000);
+            if (allocation != NULL)
             {
-                GS_U32(allocation, 0xc) = GS_U32(work, 0x38);
+                if (kwlnTaskCreate(NULL, D_005E4360, 0x18c0,
+                                   func_00189810, func_0018a9c0, allocation) != NULL)
+                {
+                    GS_U32(allocation, 0xc) = payload;
+                }
             }
         }
-        allocation = GS_ALLOC(1, 0x10, 0x40000);
-        if (allocation != NULL)
         {
-            child = kwlnTaskCreate(NULL, D_005E4380, 0x18c0,
-                                   func_00189df0, func_0018a9c0, allocation);
-            if (child != NULL)
+            u32 payload = work->payload3c;
+            allocation = (*allocator)(1, 0x10, 0x40000);
+            if (allocation != NULL)
             {
-                GS_U32(allocation, 0xc) = GS_U32(work, 0x3c);
+                if (kwlnTaskCreate(NULL, D_005E4380, 0x18c0,
+                                   func_00189df0, func_0018a9c0, allocation) != NULL)
+                {
+                    GS_U32(allocation, 0xc) = payload;
+                }
             }
         }
-        allocation = GS_ALLOC(1, 0x10, 0x40000);
-        if (allocation != NULL)
         {
-            child = kwlnTaskCreate(NULL, D_005E43A0, 0x18c0,
-                                   func_0018a3f0, func_0018a9c0, allocation);
-            if (child != NULL)
+            u32 payload = work->payload3c;
+            allocation = (*allocator)(1, 0x10, 0x40000);
+            if (allocation != NULL)
             {
-                GS_U32(allocation, 0xc) = GS_U32(work, 0x3c);
+                if (kwlnTaskCreate(NULL, D_005E43A0, 0x18c0,
+                                   func_0018a3f0, func_0018a9c0, allocation) != NULL)
+                {
+                    GS_U32(allocation, 0xc) = payload;
+                }
             }
         }
-        GS_U32(work, 0) = 5;
+        work->state = 5;
     }
-    return KWLNTASK_CONTINUE;
 }
 
 // FUN_0018B5F0

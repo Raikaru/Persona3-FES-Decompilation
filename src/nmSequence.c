@@ -841,11 +841,13 @@ void FUN_003c5d40(u32 param_1,int param_2,int param_3)
 
   int iVar3;
 
+
   int iVar4;
 
   int iVar5;
 
   
+
 
   iVar3 = (int)param_1;
 

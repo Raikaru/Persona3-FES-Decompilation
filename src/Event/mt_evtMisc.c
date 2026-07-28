@@ -1626,7 +1626,6 @@ void FUN_00388ff0(int param_1)
     iVar1 = *(int *)(param_1 + 0x97c);
 
     (*DAT_0096017c)(*(u32 *)(param_1 + 0x980));
-
     DAT_00958a90 = DAT_00958a90 + iVar1 * -4;
 
     *(u32 *)(param_1 + 0x980) = 0;
@@ -5524,18 +5523,20 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
 void FUN_0038c830(int param_1,long param_2)
 {
-  s16 uVar1;
-  bool bVar2;
-  bool bVar3;
-  int lVar4;
-  int iVar5;
-  int group;
-  u16 *puVar6;
   int *piVar7;
+  u16 *puVar6;
+  bool bVar3;
+  int iVar5;
+  bool bVar2;
+  int group;
   u16 sStack_2;
 
-  for (piVar7 = *(int **)((int)param_1 + 0x84); (piVar7 != (int *)0x0 && (*piVar7 != 4));
-      piVar7 = (int *)piVar7[0x25]) {
+  piVar7 = *(int **)((int)param_1 + 0x84);
+  while (piVar7 != (int *)0x0) {
+    if (*piVar7 == 4) {
+      break;
+    }
+    piVar7 = (int *)piVar7[0x25];
   }
 
   if (piVar7 != (int *)0x0) {
@@ -5543,21 +5544,15 @@ void FUN_0038c830(int param_1,long param_2)
       bVar3 = false;
       for (puVar6 = (u16 *)piVar7[0x1b]; puVar6 != (u16 *)0x0;
           puVar6 = *(u16 **)(puVar6 + 0x26)) {
-        uVar1 = (s16)puVar6[8];
-        group = (uVar1 >> 0xc) & 0xf;
-        switch(*(u8 *)((int)puVar6 + 0x15)) {
-        default:
-switchD_0038c8e0_caseD_0:
-          bVar2 = true;
-          break;
+        group = ((s16)puVar6[8] >> 0xc) & 0xf;
+        switch(*(char *)((int)puVar6 + 0x15)) {
         case 1:
         case 2:
         case 3:
         case 4:
         case 5:
           sStack_2 = 0;
-          lVar4 = FUN_00397580(param_1,*(char *)((int)puVar6 + 0x15) + -1,&sStack_2);
-          if (lVar4 == 1) {
+          if (FUN_00397580(param_1,*((s8 *)&puVar6[10] + 1) + -1,&sStack_2) == 1) {
             if (sStack_2 != (u16)0xffff) goto switchD_0038c8e0_caseD_0;
             bVar2 = false;
           }
@@ -5566,7 +5561,12 @@ switchD_0038c8e0_caseD_0:
           }
           break;
         case 6:
+        default:
           bVar2 = false;
+          break;
+        case 0:
+switchD_0038c8e0_caseD_0:
+          bVar2 = true;
         }
         if (bVar2) {
           if (param_2 < (long)(u32)*puVar6) break;
@@ -5576,7 +5576,7 @@ switchD_0038c8e0_caseD_0:
           }
         }
       }
-      if ((!bVar3) && (lVar4 = FUN_0038d6f0(iVar5), lVar4 != -1)) {
+      if ((!bVar3) && (FUN_0038d6f0(iVar5) != -1)) {
         FUN_0038d6b0(iVar5,0);
         FUN_005225a8(0x6a0aa0,iVar5);
       }

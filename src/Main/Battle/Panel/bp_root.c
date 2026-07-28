@@ -1650,6 +1650,7 @@ void FUN_00202C90(void)
 // FUN_00202D70 NONMATCHING
 void FUN_00202D70(void)
 {
+    u8* work;
     u32 id;
     u32 out;
     u32 i;
@@ -1657,54 +1658,55 @@ void FUN_00202D70(void)
     u16 selected;
     PanelSkillRow* row;
 
+    work = panelWork();
     out = 0;
     for (id = 0xfa0; id < 0x107f && out < 0x100; id++)
     {
         if (FUN_00205650((s16)id) &&
             func_00170760(1, (s16)id) != 0)
         {
-            panelSetWork16(0x9c + out * 2, (u16)id);
+            *(u16*)(work + 0x9c + out * 2) = (u16)id;
             out++;
         }
     }
-    panelSetWork32(0x260, out);
+    *(u32*)(work + 0x260) = out;
     FUN_00203030();
-    panelSetWork32(0x768c, 0);
-    panelSetWork32(0x7694, panelWork32(0x25c));
-    panelSetWork32(0x769c, panelWork32(0x260));
-    func_00208570(panelWork() + 0x768c);
+    *(u32*)(work + 0x768c) = 0;
+    *(u32*)(work + 0x7694) = *(u32*)(work + 0x25c);
+    *(u32*)(work + 0x769c) = *(u32*)(work + 0x260);
+    func_00208570(work + 0x768c);
     selected = 0;
     if (datGetFlag(0x186) && FUN_0016F380(0x32))
     {
         for (i = 0; i < out; i++)
         {
-            if (panelWork16(0x9c + i * 2) == (u16)FUN_0016F380(0x32))
+            if (*(u16*)(work + 0x9c + i * 2) == (u16)FUN_0016F380(0x32))
             {
                 selected = (u16)i;
                 break;
             }
         }
     }
-    panelSetWork32(0x7698, selected);
-    panelSetWork32(0x7690, selected > 3 ? selected - 3 : 0);
-    visible = panelWork32(0x25c);
+    *(u32*)(work + 0x7698) = selected;
+    *(u32*)(work + 0x7690) = selected > 3 ? selected - 3 : 0;
+    visible = *(u32*)(work + 0x25c);
     for (i = 0; i < visible; i++)
     {
         row = panelItemRow(i);
         row->flags = 0;
-        row->handle = *(u32*)(panelWork() + 0x8c + i * 4);
+        row->handle = *(u32*)(work + 0x8c + i * 4);
         row->type = 0;
-        row->icon = func_00170760(1, panelWork16(0x9c + i * 2));
+        row->icon = func_00170760(1, *(u16*)(work + 0x9c + i * 2));
     }
-    panelSetWork32(0x7640, 0);
-    panelSetWork32(0x64a0, visible);
-    panelSetWork32(0x6498, panelWork32(0x7698));
-    panelSetWork32(0x649c, panelWork32(0x7690));
-    panelSetWork32(0x64a4, panelWork32(0x260));
-    panelSetWork32(0x6d28, 0);
+    *(u32*)(work + 0x7640) = 0;
+    *(u32*)(work + 0x64a0) = visible;
+    *(u32*)(work + 0x6498) = *(u32*)(work + 0x7698);
+    *(u32*)(work + 0x649c) = *(u32*)(work + 0x7690);
+    *(u32*)(work + 0x64a4) = *(u32*)(work + 0x260);
+    *(u32*)(work + 0x6d28) = 0;
     bcmPanel00222930();
     FUN_0010a4e0(0, 0, 0, 3);
-    panelSetWork32(0x10, 2);
+    *(u32*)(work + 0x10) = 2;
 }
 
 // FUN_00203030

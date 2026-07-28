@@ -292,9 +292,9 @@ extern void func_0051e028_t(s32 outputHandle, s32 channel, s32 count, s32 value)
 extern s32 func_0051df58_t(s32 outputHandle, s32 channel, s32 count, s32 value, ...);
 extern u32 FUN_00512868(void);
 extern u32 FUN_0051d5b0(u32 base, u32 stride, u32 count);
-extern u64 FUN_0051da48(void);
+extern u64 FUN_0051da48(u32 value);
 extern u64 FUN_0051da50(u64 size);
-extern void FUN_0051db00(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4);
+extern void FUN_0051db00(u32 a0, u32 a1, u32 a2, ...);
 extern u32 FUN_0051d6f8(s32 size);
 extern void FUN_0051deb0(u32 channel, void* handle);
 extern void FUN_0051dd48(u32 channel, void* handle);
@@ -1529,32 +1529,38 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {
-    
+    HSfdDecodeSlot* slot;
+    s16 i;
 
     FUN_00512868();
-    FUN_0051da48();
+    FUN_0051da48(0);
     FUN_0051da50(0x20);
     FUN_0051d5b0((u32)sSfdDecodeSlots, 0x20, 0);
-    FUN_0051db00(0, 0x8F, 0, 0, 0);
+    FUN_0051db00(0, 0x8F, 0);
     FUN_0051db00(3, 0x83, 0x105, 0x3C, 0);
-    FUN_0051db00(3, 0x84, 0x3C, 0x3C, 0);
-    FUN_0051db00(3, 0x82, 1, 0x3C, 0);
+    FUN_0051db00(3, 0x84, 0x3C, 0x3C);
+    FUN_0051db00(3, 0x82, 1);
     FUN_005129c0(1, 0x8010, 0x800, 0xFC0);
     FUN_005129c0(1, 0x8010, 0x801, 0xFCC);
-    FUN_0051db00(3, 0x80, 0x7F, 0x7F, 0);
+    FUN_0051db00(3, 0x80, 0x7F, 0x7F);
 
-    if (sSfdScratch == NULL)
-        sSfdScratch = (u8*)FUN_0051d6f8(0x96000);
-    if (sSfdDecodeBuffer == NULL)
-        sSfdDecodeBuffer = (u8*)FUN_0051d6f8(0xAF000);
-    if (sSfdFrameBuffers[0] == NULL)
-        sSfdFrameBuffers[0] = (u8*)FUN_0051d6f8(0x19000);
-    if (sSfdFrameBuffers[1] == NULL)
-        sSfdFrameBuffers[1] = (u8*)FUN_0051d6f8(0x19000);
-    if (sSfdFrameBuffers[2] == NULL)
-        sSfdFrameBuffers[2] = (u8*)FUN_0051d6f8(0x19000);
-    if (sSfdFrameBuffers[3] == NULL)
-        sSfdFrameBuffers[3] = (u8*)FUN_0051d6f8(0x19000);
+    for (i = 0; i < HSFD_DECODE_SLOTS; i++)
+    {
+        slot = &sSfdDecodeSlots_abs[i];
+        slot->state = 0;
+        slot->request = NULL;
+        slot->status = 0;
+        slot->index = i;
+    }
+    for (i = 0; i < 16; i++)
+        sSfdFrameIndex = 0;
+
+    sSfdDecodeSlots[0].intermediate = (u8*)FUN_0051d6f8(0x96000);
+    sSfdDecodeSlots[1].intermediate = (u8*)FUN_0051d6f8(0xAF000);
+    sSfdDecodeSlots[2].intermediate = (u8*)FUN_0051d6f8(0x19000);
+    sSfdDecodeSlots[3].intermediate = (u8*)FUN_0051d6f8(0x19000);
+    sSfdDecodeSlots[4].intermediate = (u8*)FUN_0051d6f8(0x19000);
+    sSfdDecodeSlots[5].intermediate = (u8*)FUN_0051d6f8(0x19000);
 }
 
 // FUN_0010CCE0
@@ -1847,7 +1853,6 @@ void func_0010d6f0(s16 index, s16 fileIndex)
 void func_0010d7b0(s16 index, s16 fileIndex, void* data0, u32 data0Size,
                    void* data1, u32 data1Size, void* data2, u32 data2Size)
 {
-
     if (sSfdDecodeSlots[index].status != 0)
     {
         func_0010d950(index);

@@ -1535,7 +1535,7 @@ s32 func_001d0720(s32 targetCount)
     spawned = 0;
     if (datGetFlag(0x1415) == 1)
     {
-        goto done;
+        return spawned;
     }
     ptr = (s32*)PTR_DAT_007cd540;
     major = ptr[0];

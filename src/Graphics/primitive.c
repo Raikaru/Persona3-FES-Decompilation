@@ -783,53 +783,30 @@ u32 FUN_0035a6a0(int param_1, u64 param_2)
     return 1;
 }
 
-// FUN_0035A770 NONMATCHING
+// FUN_0035A770
 
 
 void* FUN_0035a770(void* param_1, void* param_2)
-
-
-
 {
-
   int iVar1;
-
   long lVar2;
-
   int *piVar3;
-
   int iVar4;
-
   int iStack_4;
 
-  
-
   iVar1 = *(int *)((int)param_2 + 0x10);
-
   iVar4 = 0;
-
-  while( true ) {
-
-    if (*(int *)((int)param_2 + 4) <= iVar4) {
-
-      return param_2;
-
-    }
-
+  while (iVar4 < *(int *)((int)param_2 + 4)) {
     piVar3 = (int *)(iVar1 + iVar4 * 0x34);
-
     lVar2 = FUN_004c18b0_typed(param_1,piVar3 + 1,0x30);
-
-    if ((lVar2 == 0) || (lVar2 = FUN_004c1910_typed(param_1,&iStack_4,4), lVar2 == 0)) break;
-
+    if ((lVar2 == 0) ||
+        (lVar2 = FUN_004c1910_typed(param_1,&iStack_4,4), lVar2 == 0)) {
+      return 0;
+    }
     *piVar3 = iVar1 + iStack_4;
-
     iVar4 = iVar4 + 1;
-
   }
-
-  return 0;
-
+  return param_2;
 }
 // FUN_0035a850
 u32 LAB_0035a850(void* param_1)

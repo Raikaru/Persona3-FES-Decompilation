@@ -40,6 +40,8 @@ extern f32 DAT_007caea4;
 extern f32 DAT_007cada4;
 extern f32 DAT_007cb0cc;
 extern code DAT_00960090;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern code DAT_00960090_abs[];
 extern int iGpffffa850;
 extern int iGpffffb6fc;
 
@@ -4704,7 +4706,7 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
 }
 
 // FUN_00283E40 NONMATCHING
-u16 func_00283e40(BtlUnit* unit, s16 id)
+s16 func_00283e40(BtlUnit* unit, u16 id)
 {
     s16 category;
     u8 genus = unit->genus;
@@ -4734,25 +4736,22 @@ u16 func_00283e40(BtlUnit* unit, s16 id)
     if (category == -1)
         return 0;
 
+    charId = unit->charId;
     if (genus == UNIT_GENUS_PC)
     {
+        table = iGpffffb718 + (u32)charId * 0xe8 + 0x1c;
+    }
+    else if (charId == 1)
+    {
         unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
-        table = iGpffffb718 + (unitId & 0xff) * 0x128 + 0x1a;
+        table = iGpffffb728 + (unitId & 0xff) * 0x128 + 0x1a;
     }
     else
     {
-        charId = unit->charId;
-        if (charId == 1)
-        {
-            table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1c;
-        }
-        else
-        {
-            table = iGpffffb71c + ((u32)charId * 0x10a) + 0x1a;
-        }
+        table = iGpffffb71c + (u32)charId * 0x10a + 0x1a;
     }
 
-    return *(const u16*)(table + category * 4);
+    return *(const s16*)(table + category * 4);
 }
 
 
@@ -5615,7 +5614,7 @@ void FUN_002891e0(void)
 
   int iVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
   long lVar9;
 
@@ -5792,24 +5791,21 @@ void FUN_002891e0(void)
       if (lVar9 != 0) {
 
         if (bVar4) {
+          code* setRenderState;
+
+          setRenderState = DAT_00960090_abs;
 
           FUN_004d7f60(2,0x44);
 
           FUN_004d7f60(3,0x717fb);
 
-          (*DAT_00960090)(7,2);
-
-          (*DAT_00960090)(0xe,0);
-
-          (*DAT_00960090)(6,0);
-
-          (*DAT_00960090)(8,0);
-
-          (*DAT_00960090)(9,2);
-
-          (*DAT_00960090)(0xc,1);
-
-          (*DAT_00960090)(1,0);
+          (*setRenderState)(7,2);
+          (*setRenderState)(0xe,0);
+          (*setRenderState)(6,0);
+          (*setRenderState)(8,0);
+          (*setRenderState)(9,2);
+          (*setRenderState)(0xc,1);
+          (*setRenderState)(1,0);
 
           FUN_003294d0();
 

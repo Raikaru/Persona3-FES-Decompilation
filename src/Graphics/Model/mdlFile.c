@@ -1244,7 +1244,7 @@ void FUN_00340790(int param_1);
 void FUN_003407e0(int param_1);
 void FUN_00341ba0(int param_1);
 u32 FUN_00341f10(u32 param_1,u32 param_2);
-u64 FUN_00341fd0(u32 param_1);
+u32 FUN_00341fd0(u32 param_1);
 void FUN_003420c0(u32 param_1);
 u64 FUN_00342130(int param_1);
 void FUN_00342280(int param_1);
@@ -1574,6 +1574,8 @@ extern u64 FUN_002831c0();
 extern u64 FUN_00287b20();
 extern u64 FUN_00287cf0();
 extern u64 FUN_0029a1d0();
+#pragma alias FUN_0029a1d0_u32 FUN_0029a1d0
+extern u32 FUN_0029a1d0_u32(u32 param_1);
 extern u64 FUN_0029ea20();
 extern u64 FUN_0029ea30();
 extern u64 FUN_0029ea40();
@@ -1592,6 +1594,8 @@ extern u32 FUN_0030b5a0();
 extern u64 FUN_00316910();
 #pragma alias FUN_00316910_typed FUN_00316910
 extern u64 FUN_00316910_typed(u16 type,u16 id,u32 mode);
+#pragma alias FUN_00316910_u32_typed FUN_00316910
+extern u32 FUN_00316910_u32_typed(u16 type,u16 id,u32 mode);
 extern u64 FUN_00316bd0();
 #pragma alias FUN_00316bd0_u32 FUN_00316bd0
 extern u32 FUN_00316bd0_u32();
@@ -9964,7 +9968,8 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
 
 // FUN_00325D60 NONMATCHING
-void FUN_00325d60(u64 param_1,u8 (*param_2) [16])
+#pragma alias FUN_00325d60_u32 FUN_00325d60
+void FUN_00325d60_u32(u32 param_1,u8 (*param_2) [16])
 {
   u16 uVar1;
   int iVar3;
@@ -9972,7 +9977,7 @@ void FUN_00325d60(u64 param_1,u8 (*param_2) [16])
   float saved[4];
   float transformed[4];
 
-  pauVar4 = (u8 (*) [16])(u32)param_1;
+  pauVar4 = (u8 (*) [16])param_1;
   __asm__ volatile (
       ".set noreorder                   \n"
       "lqc2        $vf10, 0(%0)          \n"
@@ -35786,10 +35791,10 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
 
 
 
-// FUN_00341FD0 NONMATCHING
+// FUN_00341FD0
  
  
-u64 FUN_00341fd0(u32 param_1)
+u32 FUN_00341fd0(u32 param_1)
  
  
  
@@ -35805,16 +35810,20 @@ u64 FUN_00341fd0(u32 param_1)
  
   u32 uVar5;
  
-  int iVar6;
+  u32 dispatchOffset;
+  u32 (*create)(u32,u32);
+  void (*initialize)(u32);
  
  
  
   uVar3 = FUN_003245f0(param_1);
  
-  if (*(u16 *)(param_1 + 0x1c) == 4) {
-
+  switch (*(u16 *)(param_1 + 0x1c)) {
+  case 1:
+    break;
+  case 4:
     uVar3 = 0;
-
+    break;
   }
  
  
@@ -35824,13 +35833,14 @@ u64 FUN_00341fd0(u32 param_1)
  
   uVar5 = FUN_00341f10(uVar1,uVar4);
  
-  iVar6 = (uVar1 & 0xffff) * 0x1c;
-
-  uVar2 = (*(code *)((u8 *)DAT_0069c854_abs + iVar6))(uVar4,uVar3);
+  dispatchOffset = (uVar1 & 0xffff) * sizeof(MdlExtendedDispatch);
+  create = *(u32 (**)(u32,u32))((u8 *)DAT_0069c854_abs + dispatchOffset);
+  uVar2 = create(uVar4,uVar3);
  
   *(u32 *)(uVar5 + 0x3c) = uVar2;
  
-        DAT_0069c850_abs[(u32)uVar1].callback0(uVar5);
+  initialize = *(void (**)(u32))((u8 *)DAT_0069c850_abs + dispatchOffset);
+  initialize(uVar5);
  
   return uVar5;
  
@@ -44154,19 +44164,20 @@ u32 FUN_0034bfc0(u32 param_1)
 
 {
 
+  int lVar5;
+
   u32 uVar1;
 
   u32 uVar3;
 
   u32 uVar4;
 
-  int lVar5;
-
   int lVar6;
 
   int iVar7;
 
   u8 (*pauVar8) [16];
+  f32 one;
 
   
 
@@ -44180,7 +44191,8 @@ u32 FUN_0034bfc0(u32 param_1)
 
   *(u32 *)(pauVar8[2] + 8) = 0xffffffff;
 
-  *(u32 *)pauVar8[2] = 0x3f800000;
+  one = 1.0f;
+  *(f32 *)pauVar8[2] = one;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar8) : "memory");
 
@@ -44188,9 +44200,7 @@ u32 FUN_0034bfc0(u32 param_1)
 
   if (param_1 != 0) {
 
-    uVar4 = FUN_003245b0((int)(param_1));
-
-    FUN_00521250(pauVar8[2] + 0xc,uVar4,0x68);
+    FUN_00521250(pauVar8[2] + 0xc,FUN_003245b0((int)param_1),0x68);
 
     lVar5 = FUN_003245f0((int)(param_1));
 
@@ -44198,23 +44208,21 @@ u32 FUN_0034bfc0(u32 param_1)
 
       uVar1 = *(u32 *)((int)param_1 + 0x24);
 
-      while (lVar6 = FUN_00316910_typed(6,sGpffffb880,0), lVar6 != 0) {
+      while (lVar6 = FUN_00316910_u32_typed(6,sGpffffb880,0), lVar6 != 0) {
 
         sGpffffb880 = sGpffffb880 + 1;
 
       }
 
-      uVar4 = FUN_00316bd0(6,sGpffffb880,lVar5,uVar1,1);
+      uVar4 = FUN_00316bd0_typed(6,sGpffffb880,lVar5,uVar1,1);
 
       FUN_00318b10(uVar4);
 
-      lVar5 = FUN_003185b0(uVar4,0);
-
-      if (lVar5 != 0) {
+      if (FUN_003185b0(uVar4,0) != 0) {
 
         FUN_003182d0(uVar4,0,0,0,0);
 
-        FUN_003189f0(0x3f800000,uVar4,0);
+        FUN_003189f0_f32(one,uVar4,0);
 
       }
 
@@ -53201,7 +53209,8 @@ void FUN_00357550(int param_1)
 
   int *piVar1;
 
-  int iVar2;
+  int state;
+  int node;
 
   u32 uVar3;
 
@@ -53223,9 +53232,9 @@ void FUN_00357550(int param_1)
 
     FUN_002a3e80_typed(0.0f,0,0,0,0x40);
 
-    iVar2 = *piVar1;
+    state = *piVar1;
 
-    switch (iVar2) {
+    switch (state) {
     case 0:
       FUN_002a38f0(0x25,0);
       break;
@@ -53233,7 +53242,7 @@ void FUN_00357550(int param_1)
       FUN_002a38f0(0x26,0);
       break;
     case 2:
-      uVar3 = FUN_0029a1d0(DAT_00957bd4);
+      uVar3 = FUN_0029a1d0_u32(DAT_00957bd4_abs[0]);
       FUN_002a38f0(0x27,uVar3,1);
       break;
     }
@@ -53242,24 +53251,24 @@ void FUN_00357550(int param_1)
 
       for (uVar5 = 0; uVar5 < 2; uVar5 = uVar5 + 1) {
 
-        for (iVar2 = *(int *)(DAT_007ce3ec + uVar5 * 8 + 0x150); iVar2 != 0;
+        for (node = *(int *)(DAT_007ce3ec + uVar5 * 8 + 0x150); node != 0;
 
-            iVar2 = *(int *)(iVar2 + 0xa34)) {
+            node = *(int *)(node + 0xa34)) {
 
-          if ((*(int *)(iVar2 + 0xa2c) != 0) &&
+          if ((*(int *)(node + 0xa2c) != 0) &&
 
-             (lVar4 = FUN_0030b5a0(*(int *)(iVar2 + 0xa2c),0), lVar4 == 0)) {
+             (lVar4 = FUN_0030b5a0(*(int *)(node + 0xa2c),0), lVar4 == 0)) {
 
-            FUN_0027f7c0(iVar2,auStack_10,auStack_20,0);
+            FUN_0027f7c0(node,auStack_10,auStack_20,0);
 
-            FUN_0027f650(iVar2,auStack_10);
+            FUN_0027f650(node,auStack_10);
 
-            FUN_0027f680(iVar2,auStack_20);
+            FUN_0027f680(node,auStack_20);
 
-            FUN_002831c0(iVar2,0);
+            FUN_002831c0(node,0);
 
-            FUN_00282d40_anim(iVar2,*(s16 *)(iVar2 + 0x9e0),0,
-                              *(float *)(iVar2 + 0x9e4),*(s8 *)(iVar2 + 0x9e8));
+            FUN_00282d40_anim(node,*(s16 *)(node + 0x9e0),0,
+                              *(float *)(node + 0x9e4),*(s8 *)(node + 0x9e8));
 
           }
 
