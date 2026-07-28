@@ -1998,7 +1998,7 @@ u32 FUN_00419730(u64 param_1,int *param_2)
 
 }
 
-// FUN_00419790 NONMATCHING
+// FUN_00419790
 
 
 u32 FUN_00419790(int param_1,int param_2)
@@ -2007,11 +2007,11 @@ u32 FUN_00419790(int param_1,int param_2)
 
 {
 
+  u32 uVar1;
+
   int iVar2;
 
   int iVar3;
-
-  u16 uVar1;
 
   float fVar4;
 
@@ -2032,9 +2032,7 @@ u32 FUN_00419790(int param_1,int param_2)
 
   uStack_20 = DAT_006b2e78;
 
-  iVar3 = kwlnGetMainCamera();
-
-  iVar3 = *(int *)(iVar3 + 4);
+  iVar3 = *(int *)((int)kwlnGetMainCamera() + 4) + 0x10;
 
   uStack_30.x = uStack_30.y = uStack_30.z = FUN_0016ba00(0,uVar1);
 
@@ -2054,7 +2052,7 @@ u32 FUN_00419790(int param_1,int param_2)
 
   RwMatrixTranslate((void*)auStack_70,(void*)&uStack_10,2);
 
-  RwMatrixMultiply((void*)auStack_70,(void*)auStack_70,(void*)(iVar3 + 0x10));
+  RwMatrixMultiply((void*)auStack_70,(void*)auStack_70,(void*)iVar3);
 
   mdl00318a70(*(u32 *)(iVar2 + 8),auStack_70,0);
 

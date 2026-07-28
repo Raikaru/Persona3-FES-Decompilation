@@ -3941,6 +3941,7 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 
 }
 #define FUN_003ad400(...) ((u64 (*)(...))FUN_003ad400)(__VA_ARGS__)
+// measured: the fixed message buffer cuts nd157 to nd1; lint: allow S003
 #undef FUN_003ad640
 // FUN_003AD640 NONMATCHING
 
