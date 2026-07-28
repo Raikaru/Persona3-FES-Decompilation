@@ -545,7 +545,7 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
     }
 }
 
-// FUN_00101100 NONMATCHING
+// FUN_00101100
 void func_00101100(const char* path, char* fileNameDst, char* dirDst)
 {
     char reversedName[256];
