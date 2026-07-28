@@ -5955,65 +5955,39 @@ done:
 
 
 void FUN_0039eaa0(int param_1)
-
-
-
 {
+  int base;
+  int count;
+  int baseValue;
+  int entryValue;
+  int combinedValue;
+  int extraValue;
+  int index;
+  u8 *entry;
+  int *output;
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  int iVar6;
-  int iVar7;
-
-  int *piVar7;
-
-  
-
-  piVar7 = (int *)(param_1 + 0x7f4);
-
-  FUN_00521408_b8b0(piVar7,0,0x38);
-
-  iVar1 = *(int *)(param_1 + 8);
-
-  for (iVar7 = 2, iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
-
-    iVar5 = *(int *)(iVar1 + 0x34) + iVar6 * 0x20;
-
-    if (*(int *)(iVar5 + 0x18) == iVar7) {
-      iVar2 = *piVar7;
-
-      if (4 < iVar2) break;
-
-      iVar3 = *(int *)(iVar1 + 0x10);
-
-      iVar4 = *(int *)(iVar5 + 0x10);
-
-      iVar5 = *(int *)(iVar5 + 0x14);
-
-      *(short *)((int)piVar7 + iVar2 * 2 + 0x18) = iVar2 + 31000;
-
-      piVar7[iVar2 + 1] = iVar3 + iVar4;
-
-      piVar7[iVar2 + 9] = iVar5;
-
-      *piVar7 = *piVar7 + 1;
-
+  output = (int *)(param_1 + 0x7f4);
+  FUN_00521408_b8b0(output,0,0x38);
+  base = *(int *)(param_1 + 8);
+  for (index = 0; index < *(int *)(base + 0x38); index = index + 1) {
+    entry = (u8 *)(*(int *)(base + 0x34) + index * 0x20);
+    if (*(int *)(entry + 0x18) == 2) {
+      count = *output;
+      if (4 < count) {
+        break;
+      }
+      baseValue = *(int *)(base + 0x10);
+      entryValue = *(int *)(entry + 0x10);
+      combinedValue = baseValue + entryValue;
+      extraValue = *(int *)(entry + 0x14);
+      *(short *)((int)output + count * 2 + 0x18) = count + 31000;
+      output[count + 1] = combinedValue;
+      output[count + 9] = extraValue;
+      *output = *output + 1;
     }
-
   }
-
-  FUN_005225a8_eaa0(DAT_006a1820,*piVar7);
-
+  FUN_005225a8_eaa0(DAT_006a1820,*output);
   return;
-
 }
 #define FUN_0039eaa0(...) ((void (*)(...))FUN_0039eaa0)(__VA_ARGS__)
 #undef FUN_0039eb90

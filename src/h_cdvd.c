@@ -1282,8 +1282,8 @@ void func_00101e30(void* requestData)
         char directory[256];
         char fileName[256];
         char entryPath[256];
-        u32 fileSize;
     } work;
+    u32 fileSize;
     u32 offset;
     s32 i;
     s32 scan;
@@ -1342,7 +1342,7 @@ scan_finished:
             return;
         }
         request->archiveFileCount++;
-        memcpy(&work.fileSize, request->fileMemory + offset + 0xfc, 4);
+        memcpy(&fileSize, request->fileMemory + offset + 0xfc, 4);
         offset += 0x100;
         strcat(work.directory, work.fileName);
         for (i = 0; i < 0xff; i++)
@@ -1363,9 +1363,9 @@ scan_finished:
             }
         }
         func_00102030(requestData, request->fileMemory + offset,
-                      work.fileSize, work.directory);
-        work.fileSize = ((s32)(work.fileSize + 0x3f) / 0x40) * 0x40;
-        offset += work.fileSize;
+                      fileSize, work.directory);
+        fileSize = ((s32)(fileSize + 0x3f) / 0x40) * 0x40;
+        offset += fileSize;
     }
 }
 

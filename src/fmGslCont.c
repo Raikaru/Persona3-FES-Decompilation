@@ -24,6 +24,8 @@ extern u32 DAT_0095aee4;
 extern u32 DAT_0095aee8;
 extern u32 DAT_0095aeec;
 extern f32 DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
 extern code DAT_00960090;
 extern code DAT_009600a0;
 #pragma alias DAT_00960090_abs DAT_00960090
@@ -839,8 +841,9 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
 void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 {
+  RwIm2DVertex* vertices;
   RwIm2DVertex* vertex;
-  code* setRenderState;
+  void (**setRenderState)(u32 state, u32 value);
   int* position;
   int* color;
   f32 recipZ;
@@ -849,11 +852,12 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 
   recipZ = 1.0f / *(f32*)(FUN_00198590() + 0x80);
   i = 0;
-  z = DAT_00960088;
+  vertices = DAT_0095aec0_abs;
+  z = *(f32*)DAT_00960088_abs;
   while (i < 4) {
     position = (int*)(param_1 + (u32)*param_3 * 8);
     color = (int*)(param_2 + (u32)*param_4 * 0x10);
-    vertex = &DAT_0095aec0_abs[i];
+    vertex = &vertices[i];
 
     vertex->u.els.scrVertex.x = (f32)(position[0] >> 4);
     vertex->u.els.scrVertex.y = (f32)(position[1] >> 3);
@@ -869,7 +873,7 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
     param_4++;
   }
 
-  setRenderState = DAT_00960090_abs;
+  setRenderState = (void (**)(u32, u32))DAT_00960090_abs;
   (*setRenderState)(1, 0);
   (*setRenderState)(7, 2);
   (*setRenderState)(0xC, 1);

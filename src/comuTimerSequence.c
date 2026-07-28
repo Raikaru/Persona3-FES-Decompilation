@@ -1716,11 +1716,11 @@ code * FUN_003c15d0(void)
   int iVar2;
   int iVar3;
   int bVar4;
-  int iVar6;
+  int *piVar10;
   code *pcVar7;
   int lVar8;
   int *piVar9;
-  int *piVar10;
+  int iVar6;
   u8 auStack_40[0x1c];
   u8 auStack_20[0x1c];
 

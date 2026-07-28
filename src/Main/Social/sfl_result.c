@@ -2291,7 +2291,7 @@ u8 func_001fc230(DatPersonaWork* persona)
     }
     return i < indexCount;
 }
-// FUN_001FC3C0 NONMATCHING
+// FUN_001FC3C0
 u32 func_001fc3c0(DatPersonaWork* persona)
 {
     u16* skills;

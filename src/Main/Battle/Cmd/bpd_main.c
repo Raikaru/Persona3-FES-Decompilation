@@ -115,9 +115,11 @@ void FUN_00252f30(void)
   float fVar10;
   float fVar11;
   RwV4d rect;
-  RwV3d projected;
-  RwV2d screen;
-  RwRGBA color;
+  struct {
+    RwV4d projected;
+    RwV3d screen;
+    RwRGBA color;
+  } scratch;
 
   K_ASSERT(sBpd660 != NULL, 0x25);
   puVar2 = sBpd660;
@@ -132,8 +134,9 @@ void FUN_00252f30(void)
       for (iVar1 = *(int *)(iVar8 + iVar4 * 8 + 0x150); iVar1 != 0;
            iVar1 = *(int *)(iVar1 + 0xa34)) {
         if ((~*(u32 *)(iVar1 + 0x9c) & 8) == 0) {
-          FUN_002807a0(iVar1,&projected);
-          lVar6 = FUN_002d20a0(&projected,&screen);
+          FUN_002807a0(iVar1,(RwV3d *)&scratch.projected);
+          lVar6 = FUN_002d20a0(
+              (RwV3d *)&scratch.projected,(RwV2d *)&scratch.screen);
           if ((lVar6 != 0) &&
               (lVar6 = FUN_00300580(*(u32 *)(iVar1 + 0xa2c),0x100000),
                lVar6 != 0)) {
@@ -142,8 +145,8 @@ void FUN_00252f30(void)
             entry = puVar2 + uVar7 * 0x48;
             data = (f32 *)(entry + 4);
             entry[5] = *(u32 *)(iVar1 + 0xa8);
-            data[0x44] = screen.x;
-            data[0x45] = screen.y;
+            data[0x44] = scratch.screen.x;
+            data[0x45] = scratch.screen.y;
             iVar3 = FUN_0027f930(iVar1);
             data[0x46] = (f32)*(u8 *)(iVar3 + 3) / 255.0f;
             uVar7 = uVar7 + 1;
@@ -172,11 +175,11 @@ void FUN_00252f30(void)
       rect.z = width;
       rect.w = height;
       FUN_0021d8e0(entry + 4,&rect);
-      color.r = 0xff;
-      color.g = 0xff;
-      color.b = 0xff;
-      color.a = (u8)(255.0f * fVar12);
-      FUN_0021d950(entry + 4,&color);
+      scratch.color.r = 0xff;
+      scratch.color.g = 0xff;
+      scratch.color.b = 0xff;
+      scratch.color.a = (u8)(255.0f * fVar12);
+      FUN_0021d950(entry + 4,&scratch.color);
     }
   }
   return;

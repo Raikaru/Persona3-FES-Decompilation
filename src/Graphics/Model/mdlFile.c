@@ -946,6 +946,10 @@ void FUN_00329430(int param_1);
 void FUN_00329460(int param_1);
 void FUN_00329490(int param_1,u32 param_2);
 void FUN_003294a0(f32 param_1, int param_2);
+#pragma alias mdlFileEmitMaskedFrame1Packet FUN_003294d0
+#pragma alias mdlFileRestoreFrame1Packet FUN_00329550
+#pragma alias mdlFileEmitClamp1Packet FUN_003295c0
+#pragma alias mdlFileRestoreClamp1Packet FUN_00329630
 void FUN_003294d0(void);
 void FUN_00329550(void);
 void FUN_003295c0(u64 param_1);
@@ -1172,7 +1176,7 @@ void FUN_00345ff0(int param_1);
 void FUN_00346050(int param_1);
 void FUN_003460a0(int param_1);
 u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
-u32 FUN_003461a0(long param_1);
+u32 FUN_003461a0(u32 param_1);
 void FUN_00346350(int param_1);
 u64 FUN_003463c0(int param_1);
 #pragma alias FUN_00347170_ptr FUN_00347170
@@ -8420,31 +8424,16 @@ void FUN_003244c0(int param_1)
 
 
 void FUN_00324510(int param_1,u64 param_2)
-
-
-
 {
+  u32 index;
+  u32 handle;
 
-  u32 uVar1;
-
-  u32 uVar2;
-
-  
-
-  uVar1 = FUN_003210c0_ret((u64)param_2);
-
-  for (uVar2 = 0; (long)uVar2 < (long)*(short *)(param_1 + 0x1c);
-
-      uVar2 = (long)((int)uVar2 + 1) & 0xffff) {
-
-    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + (int)uVar2 * 4),uVar1);
-
+  handle = FUN_003210c0_ret(param_2);
+  for (index = 0; (u16)index < *(short *)(param_1 + 0x1c);
+       index = (index + 1) & 0xffff) {
+    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + (u16)index * 4),handle);
   }
-
-  FUN_004d0f00(uVar1);
-
-  return;
-
+  FUN_004d0f00(handle);
 }
 
 
@@ -13451,7 +13440,7 @@ void FUN_003294a0(f32 param_1, int param_2)
 
 
 // FUN_003294D0
-void FUN_003294d0(void)
+void mdlFileEmitMaskedFrame1Packet(void)
 {
   u64 lo;
   u32 hi;
@@ -13479,7 +13468,7 @@ void FUN_003294d0(void)
 }
 
 // FUN_00329550
-void FUN_00329550(void)
+void mdlFileRestoreFrame1Packet(void)
 {
   u64 lo;
   u32 hi;
@@ -13507,7 +13496,7 @@ void FUN_00329550(void)
 }
 
 // FUN_003295C0
-void FUN_003295c0(u64 param_1)
+void mdlFileEmitClamp1Packet(u64 param_1)
 {
   u64 lo;
   u32 hi;
@@ -13535,7 +13524,7 @@ void FUN_003295c0(u64 param_1)
 }
 
 // FUN_00329630
-void FUN_00329630(void)
+void mdlFileRestoreClamp1Packet(void)
 {
   u64 lo;
   u32 hi;
@@ -40684,109 +40673,49 @@ void FUN_00346180(int param_1,float *param_2)
 // FUN_003461A0 NONMATCHING
 
 
-u32 FUN_003461a0(long param_1)
-
-
-
+u32 FUN_003461a0(u32 param_1)
 {
+  u32 *work;
+  u16 *model;
+  u32 *colors;
+  u32 value;
 
-  short sVar1;
-
-  u32 *puVar2;
-
-  int iVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
-  u32 uVar7;
-
-  long lVar8;
-
-  u8 (*pauVar9) [16];
-
-  
-
-  uVar6 = (*DAT_00960178_abs)(0xd4,0x40000);
-
-  FUN_00521408(uVar6,0,0xd4);
-
-  pauVar9 = (u8 (*) [16])uVar6;
-
-  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar9) : "memory");
-
-  __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar9) : "memory");
-
-  *(u32 *)(pauVar9[2] + 4) = 0xffffffff;
-
-  *(u32 *)pauVar9[2] = 0x3f800000;
-
-  if (param_1 != 0) {
-
-    iVar4 = FUN_003233a0(1,2,4,0x69bdc8,0x4c);
-
-    *(int *)(pauVar9[0xc] + 8) = iVar4;
-
-    puVar2 = *(u32 **)(*(int *)(*(int *)(iVar4 + 0x10) + 0x18) + 0x30);
-
-    *puVar2 = 0xffffffff;
-
-    puVar2[1] = 0xffffffff;
-
-    puVar2[2] = 0xffffffff;
-
-    puVar2[3] = 0xffffffff;
-
-    *(u32 *)(pauVar9[2] + 8) = (u32)*(u16 *)((int)param_1 + 0xc);
-
-    uVar7 = FUN_003245b0((int)(param_1));
-
-    FUN_00521250(pauVar9 + 3,uVar7,0x98);
-
-    lVar8 = FUN_003245f0((int)(param_1));
-
-    if (lVar8 != 0) {
-
-      sVar1 = *(short *)((int)param_1 + 0x1c);
-
-      if (sVar1 == 7) {
-
-        uVar5 = FUN_00322dc0((u32 *)lVar8);
-
-        *(u32 *)(pauVar9[0xc] + 0xc) = uVar5;
-
-      }
-
-      else if (sVar1 == 4) {
-
-        uVar7 = FUN_003210a0(*(u16 *)lVar8);
-
-        FUN_00494d50(*(u32 *)(*(int *)(pauVar9[0xc] + 8) + 0x14),uVar7);
-
-      }
-
-      else if (sVar1 == 2) {
-
-        uVar5 = FUN_00322530(lVar8);
-
-        *(u32 *)pauVar9[0xd] = uVar5;
-
-      }
-
-      else if (sVar1 == 1) {
-
-        FUN_00323b90(*(u32 *)(pauVar9[0xc] + 8),lVar8);
-
-      }
-
-    }
-
-
+  work = (u32 *)(*DAT_00960178_abs)(0xd4,0x40000);
+  FUN_00521408(work,0,0xd4);
+  __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(work) : "memory");
+  __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(work) : "memory");
+  work[9] = 0xffffffff;
+  work[8] = 0x3f800000;
+  if (param_1 == 0) {
+    return (u32)work;
   }
-
-  return uVar6;
-
+  model = (u16 *)FUN_003233a0_ptr(1,2,4,DAT_0069bdc8_abs,0x4c);
+  work[0x32] = (u32)model;
+  colors = *(u32 **)(*(u32 *)(*(u32 *)(work[0x32] + 0x10) + 0x18) + 0x30);
+  colors[0] = 0xffffffff;
+  colors[1] = 0xffffffff;
+  colors[2] = 0xffffffff;
+  colors[3] = 0xffffffff;
+  work[10] = *(u16 *)(param_1 + 0xc);
+  FUN_00521250(work + 12,FUN_003245b0(param_1),0x98);
+  value = FUN_003245f0(param_1);
+  if (value != 0) {
+    switch (*(u16 *)(param_1 + 0x1c)) {
+    case 1:
+      FUN_00323b90_i(work[0x32],value);
+      break;
+    case 2:
+      work[0x34] = FUN_00322530(value);
+      break;
+    case 4:
+      FUN_00494d50(*(u32 *)(work[0x32] + 0x14),FUN_003210a0(*(u16 *)value));
+      break;
+    case 7:
+      work[0x33] = FUN_00322dc0((u32 *)value);
+      break;
+    }
+  }
+  return (u32)work;
 }
 
 
@@ -51141,12 +51070,14 @@ void FUN_00351ca0(int *param_1)
 
 
 
-// FUN_00351D20 NONMATCHING
+// FUN_00351D20
 
 
 u32 FUN_00351d20(u32 param_1)
 {
   u32 count;
+  u32 result;
+  int *allocated;
   u32 *work;
   u16 *model;
   u32 i;
@@ -51157,9 +51088,10 @@ u32 FUN_00351d20(u32 param_1)
   u32 *colors;
 
   count = *(u32 *)(param_1 + 0x38);
-  work = (u32 *)(*DAT_00960178_abs)(count * 8 + 0x10,0x40000);
-  work[0] = (u32)(work + 4);
-  work[2] = (u32)work;
+  result = (u32)(allocated = (int *)(*DAT_00960178_abs)(count * 8 + 0x10,0x40000));
+  *allocated = (int)(allocated + 4);
+  allocated[2] = (int)allocated;
+  work = (u32 *)result;
   model = (u16 *)FUN_003233a0_ptr(count & 0xffff,4,6,DAT_0069bcd0,0x48);
   work[1] = (u32)model;
   *model &= 0xfffe;
@@ -51177,7 +51109,7 @@ u32 FUN_00351d20(u32 param_1)
     colors[4] = colorB;
     colors[5] = maskedB;
   }
-  return (u32)work;
+  return result;
 }
 
 
