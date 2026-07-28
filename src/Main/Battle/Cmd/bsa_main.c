@@ -144,7 +144,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     if ((~p[1] & BSA_FLAG_ACTIVE) == 0)
         K_ASSERT(0, 0x91);
     p[1] = 0;
-    p[1] = BSA_FLAG_ACTIVE;
+    p[1] |= BSA_FLAG_ACTIVE;
     p[0] = (u32)mode;
     p[0x29ac] = 0;
     p[0x29ad] = 0;
@@ -162,7 +162,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     func_003b0e70(1);
     func_003b0e90(2);
     image = func_003b0970(
-        DAT_007ce4e8 + *(u16*)(p + 3) * 0x3e,
+        DAT_007ce4e8 + *(u16*)(p + 3) * 0x12 + *(u16*)(p + 3),
                           2, 6, 0, 0);
     func_003b0e90(1);
     func_003b0e70(2);

@@ -251,7 +251,7 @@ u32 FUN_003971a0(void)
 
 {
 
-  u8 bVar1;
+  u32 bVar1;
 
   int iVar2;
 

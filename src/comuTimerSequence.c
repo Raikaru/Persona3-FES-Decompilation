@@ -1661,7 +1661,7 @@ code * FUN_003c1440(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[2] <= piVar3[1]) {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
       bVar2 = 1;

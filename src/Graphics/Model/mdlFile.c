@@ -712,6 +712,8 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u64 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
+#pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
+extern u32 *FUN_0031fbd0_noargs(void);
 u8 * FUN_0031fd00(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031fde0(void);
 void FUN_00320080(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
@@ -4203,7 +4205,7 @@ u8 * FUN_0031fd00(float param_1,int *param_2,float param_3,int *param_4,float pa
   RwV4d first;
   RwV4d second;
 
-  first = *(RwV4d *)FUN_0031fbd0(param_1,param_2);
+  first = *(RwV4d *)FUN_0031fbd0_noargs();
   second = *(RwV4d *)FUN_0031fbd0(param_3,param_4);
   DAT_00957254_f32 = param_5 * (second.y - first.y) + first.y + 0.0f;
   DAT_00957258_f32 = param_5 * (second.z - first.z) + first.z + 0.0f;

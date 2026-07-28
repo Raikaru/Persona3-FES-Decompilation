@@ -246,10 +246,19 @@ extern void campDrawTextAlt(s32 x, s32 y, u32 color, f32 scale,
 extern void campDrawTextAltScale(f32 scale, s32 x, s32 y, u32 color,
                                  u32 font, u32 alignment, const char* text,
                                  u32 maxWidth, u32 shadow);
+#pragma alias campDrawTextAltXScale FUN_003b32d0
+extern void campDrawTextAltXScale(s32 x, f32 scale, s32 y, u32 color,
+                                  u32 font, u32 alignment,
+                                  const char* text, u32 maxWidth,
+                                  u32 shadow);
 #pragma alias campDrawSpriteAlt FUN_00115bc0
 extern void campDrawSpriteAlt(void* parent, void* resource, s32 frame,
                               u8 alpha, s32 red, s32 green, s32 blue,
                               f32 x, f32 y, f32 scale);
+#pragma alias campDrawSpriteAltX FUN_00115bc0
+extern void campDrawSpriteAltX(void* parent, void* resource, s32 frame,
+                               u8 alpha, f32 x, s32 red, s32 green,
+                               s32 blue, f32 y, f32 scale);
 #pragma alias campDrawText FUN_003b2cb0
 extern void campDrawText(f32 scale, s32 x, s32 y, s32 color, u32 font,
                          u32 alignment, const char* text, u32 maxWidth,
@@ -1660,6 +1669,8 @@ void FUN_001406d0(CampPair position, f32 texture,
   float tensX;
   float panelX;
   float originY;
+  float panelTopY;
+  float digitY;
   char textBuffer[256];
 
   inverseAlpha = 0xffU - alpha;
@@ -1675,9 +1686,10 @@ void FUN_001406d0(CampPair position, f32 texture,
                         (float)(detail->selectedEntry * 0x1a),
                     texture);
   }
+  panelTopY = position.y;
   panelX = position.x + 331.0f;
   campDrawSpriteXY(parent, DAT_00833A50[0], 0x1a, panelX,
-                   position.y + 6.0f, (u8)alpha, texture);
+                   panelTopY + 6.0f, (u8)alpha, texture);
   entryIndex = detail->entryCount + -5;
   if (entryIndex > 0) {
     entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
@@ -1712,8 +1724,8 @@ void FUN_001406d0(CampPair position, f32 texture,
           (u16)campDetailEntry(detail,
                                detail->firstVisibleEntry + entryIndex)->itemId);
       sprintf(textBuffer, &campDetailFormat, textValue);
-      campDrawTextAltScale(
-          texture, textX,
+      campDrawTextAltXScale(
+          textX, texture,
           (int)(textBaseY + (float)variant + 1.0f + 1.0f),
           packedValue, 6, 1, textBuffer, 0x10, 0x78);
       value = campDetailEntry(
@@ -1725,13 +1737,13 @@ void FUN_001406d0(CampPair position, f32 texture,
                        (panelY + (float)variant) - 3.0f, texture);
       }
       digitResource = H_Maestro_001120a0(1);
+      digitY = (panelY + (float)variant) - 3.0f;
       campDrawSprite(
           parent, digitResource,
           campDetailEntry(
               detail,
               detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
-          (u32)alpha, panelX,
-          (panelY + (float)variant) - 3.0f, texture);
+          (u32)alpha, panelX, digitY, texture);
       campDrawValueXY(
           valueX, valueY, texture, packedValue, 1, 10, 0,
           campDetailEntry(
@@ -1740,16 +1752,16 @@ void FUN_001406d0(CampPair position, f32 texture,
     }
     else {
       variant = entryIndex * 0x1a;
-      campDrawSpriteAlt(parent, *(void**)DAT_00833B70_abs, 0x1a, (u8)alpha,
-                        0x20, 0x43, 0x78, panelBase,
-                        (rowBaseY + (float)variant) - 1.0f,
-                        texture);
+      campDrawSpriteAltX(
+          parent, *(void**)DAT_00833B70_abs, 0x1a, (u8)alpha,
+          panelBase, 0x20, 0x43, 0x78,
+          (rowBaseY + (float)variant) - 1.0f, texture);
       textValue = FUN_0017b100(
           (u16)campDetailEntry(detail,
                                detail->firstVisibleEntry + entryIndex)->itemId);
       sprintf(textBuffer, &campDetailFormat, textValue);
-      campDrawTextAltScale(
-          texture, textX,
+      campDrawTextAltXScale(
+          textX, texture,
           (int)(textBaseY + (float)variant + 1.0f + 1.0f),
           packedValue, 10, 1, textBuffer, 0x10, 0x78);
       value = campDetailEntry(
@@ -1761,13 +1773,13 @@ void FUN_001406d0(CampPair position, f32 texture,
                        (panelY + (float)variant) - 3.0f, texture);
       }
       digitResource = H_Maestro_001120a0(2);
+      digitY = (panelY + (float)variant) - 3.0f;
       campDrawSprite(
           parent, digitResource,
           campDetailEntry(
               detail,
               detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
-          (u32)alpha, panelX,
-          (panelY + (float)variant) - 3.0f, texture);
+          (u32)alpha, panelX, digitY, texture);
     }
   }
 }

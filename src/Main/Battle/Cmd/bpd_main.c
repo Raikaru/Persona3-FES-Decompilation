@@ -31,7 +31,7 @@ s32 FUN_0021cce0();
 extern u32 FUN_0021cca0_u64_u32(u64 param_1, u32 param_2);
 extern u32 FUN_0021cce0_u32(u32 param_1);
 extern void FUN_002807a0(u32 param_1, RwV3d *position);
-extern u32 FUN_002d20a0(const RwV3d *projected, RwV3d *screen);
+extern u32 FUN_002d20a0(const RwV3d *projected, RwV2d *screen);
 extern u32 FUN_00300580(u32 param_1, u32 param_2);
 extern s32 FUN_0027f930(s32 param_1);
 extern f32 FUN_0052e878(f32 param_1);
@@ -115,8 +115,8 @@ void FUN_00252f30(void)
   float fVar10;
   float fVar11;
   RwV4d rect;
+  RwV2d screen;
   RwV3d projected;
-  RwV3d screen;
   RwRGBA color;
 
   K_ASSERT(sBpd660 != NULL, 0x25);
