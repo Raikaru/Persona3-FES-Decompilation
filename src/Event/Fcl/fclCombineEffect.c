@@ -3737,8 +3737,8 @@ void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *p
   u8 *colors;
   int count;
   void *context;
+  u8 *result = 0;
   int alloc_size;
-  u8 *result;
   int i;
   int offset;
   u8 *entry;
@@ -3753,25 +3753,31 @@ void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *p
     K_Assert(DAT_006b2ad0,0x8e7);
   }
   alloc_size = count * 0x24 + 0x14;
-  result = (*DAT_00960178)(alloc_size,0x40000);
+  result = (u8 *)(*DAT_00960178_abs)(alloc_size,0x40000);
   memset(result,0,alloc_size);
   *(void **)(result + 0xc) = context;
   *(int *)(result + 8) = count;
   *(u8 **)(result + 4) = result + 0x14;
 
-  for (i = 0; i < count; i++) {
-    position = positions[i];
-    offset = i * 0x24;
-    entry = *(u8 **)(result + 4) + offset;
-    *(f32 *)(entry + 0) = position.x;
-    *(f32 *)(entry + 4) = position.y;
-    *(f32 *)(entry + 8) = position.z;
-    *(f32 *)(entry + 0x1c) = texcoords[i].x;
-    *(f32 *)(entry + 0x20) = texcoords[i].y;
-    *(u8 *)(entry + 0xc) = colors[i * 4];
-    *(u8 *)(entry + 0xd) = colors[i * 4 + 1];
-    *(u8 *)(entry + 0xe) = colors[i * 4 + 2];
-    *(u8 *)(entry + 0xf) = colors[i * 4 + 3];
+  i = 0;
+  goto check;
+loop:
+  position = positions[i];
+  offset = i * 0x24;
+  entry = *(u8 **)(result + 4) + offset;
+  *(f32 *)(entry + 0) = position.x;
+  *(f32 *)(entry + 4) = position.y;
+  *(f32 *)(entry + 8) = position.z;
+  *(f32 *)(entry + 0x1c) = texcoords[i].x;
+  *(f32 *)(entry + 0x20) = texcoords[i].y;
+  *(u8 *)(entry + 0xc) = colors[i * 4];
+  *(u8 *)(entry + 0xd) = colors[i * 4 + 1];
+  *(u8 *)(entry + 0xe) = colors[i * 4 + 2];
+  *(u8 *)(entry + 0xf) = colors[i * 4 + 3];
+  i++;
+check:
+  if (i < count) {
+    goto loop;
   }
   *(u32 *)(result + 0x10) = FUN_004c38c0();
   return result;
