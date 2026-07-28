@@ -13108,7 +13108,7 @@ void FUN_0044af60(u32 param_1)
     }
     FUN_001b0250_typed(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0),
                  *(u32 *)(iVar12 + 0x20));
-    lVar10 = FUN_001afa20_typed((*(u32 *)(iVar12 + 8)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(iVar1 + 0x6c));
+    lVar10 = FUN_001afa20_typed((*(f32 *)(iVar12 + 8)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(iVar1 + 0x6c));
     if (lVar10 == 0) {
       return;
     }
@@ -13162,7 +13162,7 @@ void FUN_0044af60(u32 param_1)
     break;
   case 7:
     FUN_001b0250_typed(*(u32 *)((u8 *)DAT_0086ef10 + iVar11),0);
-    lVar10 = FUN_001afa20_typed((*(u32 *)(iVar12 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(iVar1 + 0x6c));
+    lVar10 = FUN_001afa20_typed((*(f32 *)(iVar12 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(iVar1 + 0x6c));
     if (lVar10 != 0) {
       *(u32 *)(iVar1 + 0x60) = *(u32 *)(iVar1 + 0x6c);
       *(u32 *)(iVar1 + 100) = *(u32 *)(iVar1 + 0x70);

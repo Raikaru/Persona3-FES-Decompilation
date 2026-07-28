@@ -1203,7 +1203,7 @@ void FUN_00348760(u8 *param_1,float *param_2);
 void FUN_00348950(u8 *param_1,float *param_2);
 void FUN_00348bd0(u8 *param_1,float *param_2);
 void FUN_00348da0(int param_1,u32 *param_2);
-void FUN_00348f30(int param_1,int *param_2);
+void FUN_00348f30(int param_1,float *param_2);
 void FUN_00349090(int *param_1,float *param_2);
 #pragma alias FUN_00349090_ptr FUN_00349090
 extern void FUN_00349090_ptr(int *param_1,int *param_2);
@@ -2078,7 +2078,7 @@ extern u8 gp0xffff9d40;
 extern u8 gp0xffffb854;
 extern u32 gp0xffffb884;
 extern u32 gp0xffffb888;
-extern u8* iGpffff81bc;
+extern f32 iGpffff81bc;
 extern u8* iGpffff9d4c;
 extern u8* iGpffffb6fc;
 extern u8* iGpffffb850;
@@ -13580,15 +13580,27 @@ void FUN_003295c0(u64 param_1)
 // FUN_00329630 NONMATCHING
 void FUN_00329630(void)
 {
-  Qword128 q;
+  u64 lo;
+  u32 hi;
+  u8 *packet;
+  u_long128 packed;
 
   FUN_004d59d0(0x80000000,2);
-  q.lo = 0x1000000000008001;
-  q.hi = 0xe;
-  *(u_long128 *)puGpffffbd04 = q.q;
-  q.lo = uGpffffbd68;
-  q.hi = 8;
-  *(u_long128 *)(puGpffffbd04 + 0x10) = q.q;
+  hi = 0xe;
+  lo = 0x1000000000008001;
+  __asm__ volatile (
+      "pcpyld %0, %1, %2"
+      : "=&r"(packed)
+      : "r"(hi), "r"(lo));
+  packet = puGpffffbd04;
+  *(u_long128 *)packet = packed;
+  hi = 8;
+  lo = uGpffffbd68;
+  __asm__ volatile (
+      "pcpyld %0, %1, %2"
+      : "=&r"(packed)
+      : "r"(hi), "r"(lo));
+  *(u_long128 *)(packet + 0x10) = packed;
   puGpffffbd04 = puGpffffbd04 + 0x20;
   return;
 }
@@ -24049,7 +24061,7 @@ u32 FUN_00334390(int param_1)
 
   uVar2 = *(u32 *)(param_1 + 0x38);
 
-  uVar7 = (*DAT_00960178_u32)(uVar2 * 0x10 + 4,0x40000);
+  uVar7 = (*DAT_00960178_abs)(uVar2 * 0x10 + 4,0x40000);
 
   puVar12 = (u32 *)uVar7;
 
@@ -43286,7 +43298,7 @@ void FUN_00348da0(int param_1,u32 *param_2)
 // FUN_00348F30 NONMATCHING
 
 
-void FUN_00348f30(int param_1,int *param_2)
+void FUN_00348f30(int param_1,float *param_2)
 
 
 
@@ -43306,15 +43318,15 @@ void FUN_00348f30(int param_1,int *param_2)
 
   iVar1 = FUN_00357fd0(0);
 
-  *param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
+  *(int *)param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
 
-  param_2[1] = (u32)iGpffff81bc;
+  param_2[1] = iGpffff81bc;
 
-  param_2[4] = *(int *)(param_1 + 0x10);
+  ((int *)param_2)[4] = *(int *)(param_1 + 0x10);
 
-  param_2[5] = *(int *)(param_1 + 0x14);
+  param_2[5] = *(float *)(param_1 + 0x14);
 
-  param_2[3] = *(int *)(param_1 + 0xc);
+  ((int *)param_2)[3] = *(int *)(param_1 + 0xc);
 
   fVar4 = (float)*(int *)(param_1 + 0x28) * 0.5f;
 
@@ -43328,17 +43340,12 @@ void FUN_00348f30(int param_1,int *param_2)
 
   fVar2 = fVar3 * (fVar2 - 0.5f) * 2.0f + *(float *)(param_1 + 0x20) + 0.0f;
 
-  param_2[7] = (int)fVar5;
-
-  param_2[8] = (int)fVar2;
-
-  param_2[9] = (int)(fVar5 - fVar4);
-
-  param_2[10] = (int)(fVar2 - fVar4);
-
-  param_2[0xb] = (int)(fVar5 + fVar4);
-
-  param_2[0xc] = (int)(fVar2 + fVar4);
+  param_2[7] = fVar5;
+  param_2[8] = fVar2;
+  param_2[9] = fVar5 - fVar4;
+  param_2[10] = fVar2 - fVar4;
+  param_2[0xb] = fVar5 + fVar4;
+  param_2[0xc] = fVar2 + fVar4;
 
   return;
 
@@ -49904,7 +49911,7 @@ u32 FUN_00350200(void)
 
 
 
-// FUN_00350230 NONMATCHING
+// FUN_00350230
 
 
 u32 FUN_00350230(u32 param_1)

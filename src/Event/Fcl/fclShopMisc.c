@@ -2669,7 +2669,7 @@ u8 FUN_003f2240(int param_1,long param_2)
   if (sVar1 == 0) {
     return 0;
   }
-  puVar2 = (u32 *)func_00170e90((short)param_2);
+  puVar2 = (u32 *)func_00170e90(((long)param_2 << 0x30) >> 0x30);
   puVar4 = (u16 *)param_1;
   *puVar4 = param_2;
   *(u32 *)(puVar4 + 2) = FUN_003f1a10(puVar2[0]);
@@ -17916,7 +17916,6 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   u32 uVar1;
 
   int lVar2;
-  int timeIndex;
 
   u32 uVar3;
 
@@ -17948,17 +17947,17 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   }
 
-  timeIndex = uVar1 - 1;
+  uVar1 = uVar1 - 1;
 
-  if (timeIndex < 0) {
+  if ((int)uVar1 < 0) {
 
-    timeIndex = 0;
+    uVar1 = 0;
 
   }
 
   FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,3,0);
 
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,timeIndex + 5,0);
+  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,uVar1 + 5,0);
 
   uVar3 = clndGetCurrentMonth();
 

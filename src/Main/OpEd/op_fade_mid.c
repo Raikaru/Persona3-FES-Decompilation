@@ -205,8 +205,6 @@ loop:
     if (unavailable != index)
         goto unavailableSkill;
     goto done;
-unavailableSkill:
-    unavailable++;
 next:
     slot++;
     if ((s32)work[0x78 / 4] + slot >= 0x10)
@@ -214,6 +212,9 @@ next:
     goto loop;
     done:
     return;
+    unavailableSkill:
+    unavailable++;
+    goto next;
 }
 
 // FUN_002751e0

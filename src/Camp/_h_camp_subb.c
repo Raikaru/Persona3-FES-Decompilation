@@ -1667,6 +1667,7 @@ void FUN_001406d0(CampPair position, f32 texture,
   }
   campDrawSprite(parent, DAT_00833A50[0], 0x20, (u32)alpha,
                  panelX, position.y + 10.0f + (float)entryIndex, texture);
+  entryIndex = 0;
   originY = position.y;
   rowBaseY = originY + 2.0f;
   panelBase = position.x + 15.0f;
@@ -1678,7 +1679,7 @@ void FUN_001406d0(CampPair position, f32 texture,
   panelX = position.x + 293.0f;
   valueY = (int)((originY + 200.0f) - 40.0f);
   valueX = (int)(position.x + 10.0f + 14.0f);
-  for (entryIndex = 0;
+  for (;
        entryIndex < 5 &&
        entryIndex + detail->firstVisibleEntry < detail->entryCount;
        entryIndex = entryIndex + 1) {

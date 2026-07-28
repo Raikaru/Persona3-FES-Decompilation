@@ -1193,9 +1193,12 @@ void func_00101c70(void)
     buildKey = (void (**)(void*, const char*))D_0096013C;
     (*buildKey)(&key0, "hst:");
     (*buildKey)(&key2, "hst");
-    if ((context1 = func_004c0fd0(5, D_007D4780_abs, 0x800,
-                                  &key0, &key2)) != NULL)
+    switch ((u32)(context1 = func_004c0fd0(5, D_007D4780_abs, 0x800,
+                                           &key0, &key2)))
     {
+    case 0:
+        break;
+    default:
         if (func_004bfc80(context1) == NULL)
         {
             printf("CDVD stream group registration failed\n");
@@ -1225,6 +1228,7 @@ void func_00101c70(void)
                 printf("CDVD stream group 3 registration failed\n");
             }
         }
+        break;
     }
 }
 

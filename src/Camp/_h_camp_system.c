@@ -217,6 +217,11 @@ extern u64 campC520PartyId(s32 index);
 extern s32 campC520NearHero(s32 owner);
 
 /* Camp draw/animation work used by FUN_0015E150..FUN_00160800. */
+typedef struct CampSystemPosition
+{
+    f32 x;
+    f32 y;
+} CampSystemPosition;
 typedef struct CampDrawRecord
 {
     u32 unknown00;
@@ -504,7 +509,7 @@ void FUN_0015C520(void *list, s32 ownerMode);
 void FUN_0015C840(void *list);
 void FUN_0015CE50(u64 packedPosition, void *list, s32 alpha,
                   f32 drawContext);
-void FUN_0015D8E0(u64 packedPosition, f32 drawContext, u8 alpha);
+void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha);
 void FUN_0015DA70(void *work);
 void FUN_0015E150(CampDrawWork *work);
 void FUN_0015E6E0(CampDrawWork *work);
@@ -1352,35 +1357,29 @@ void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
 }
 
 // FUN_0015D8E0 NONMATCHING
-void FUN_0015D8E0(u64 param_1, f32 param_2, u8 param_3)
+void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
 {
-    union
-    {
-        u64 packed;
-        f32 value[2];
-    } position;
     CampD8Object *object;
     f32 x;
     f32 y;
 
-    position.packed = param_1;
-    y = position.value[1];
+    y = position.y;
     object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
-    object->drawContext = param_2;
-    x = 218.0f + position.value[0];
+    object->drawContext = drawContext;
+    x = 218.0f + position.x;
     object->x = x + (f32)DAT_007cdf8c;
     y = 382.0f + y;
     object->y = y;
-    object->alpha = param_3;
+    object->alpha = alpha;
     campD8SetSprite(object, 1);
     campD8SubmitSprite(object);
 
     if (DAT_007cdf8c < -200) {
         object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
-        object->drawContext = param_2;
+        object->drawContext = drawContext;
         object->x = x + (f32)DAT_007cdf8c + 640.0f;
         object->y = y;
-        object->alpha = param_3;
+        object->alpha = alpha;
         campD8SetSprite(object, 1);
         campD8SubmitSprite(object);
     }
@@ -1888,7 +1887,7 @@ void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampDrawWork *work)
                      record->alpha, camp_draw_load_f32(record, 0x24));
         break;
     case 0:
-        FUN_0015D8E0(camp_draw_load_u64(record, 0x38),
+        FUN_0015D8E0(*(CampSystemPosition *)&record->x,
                      camp_draw_load_f32(record, 0x24), record->alpha);
         break;
     case 0x0a:
