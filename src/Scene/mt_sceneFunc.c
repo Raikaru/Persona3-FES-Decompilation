@@ -566,7 +566,7 @@ extern void FUN_004c31b0_sceneFunc(RwMatrix *matrix, const RwV3d *axis,
                                    f32 angle, s32 mode);
 void FUN_003bb390(u32 param_2,u16 param_3,float param_1);
 void FUN_003bb400(u32 param_1);
-void FUN_003bb450(float param_1,float *param_2,float param_3,float param_4,float param_5,float *param_6);
+void FUN_003bb450(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
 void FUN_003bb620(u32 param_1,u32 *param_2,int param_3);
 void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
@@ -3170,7 +3170,7 @@ void FUN_003bb400(u32 param_1)
 // FUN_003BB450 NONMATCHING
 
 
-void FUN_003bb450(float scale, float *input, float angle_y, float angle_x,
+void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
                  float angle_z, float *result)
 {
   typedef union SceneVector {
@@ -3629,9 +3629,14 @@ void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
   float w2 = (3.0f * oneMinus) * tSquared;
   float w3 = t * tSquared;
 
-  *outX = x[0] * w0 + x[1] * w1 + x[2] * w2 + x[3] * w3;
-  *outY = y[0] * w0 + y[1] * w1 + y[2] * w2 + y[3] * w3;
-  *outZ = z[0] * w0 + z[1] * w1 + z[2] * w2 + z[3] * w3;
+  RwV3d result;
+  result.x = x[0] * w0 + x[1] * w1 + x[2] * w2 + x[3] * w3;
+  result.y = y[0] * w0 + y[1] * w1 + y[2] * w2 + y[3] * w3;
+  result.z = z[0] * w0 + z[1] * w1 + z[2] * w2 + z[3] * w3;
+
+  *outX = result.x;
+  *outY = result.y;
+  *outZ = result.z;
 }
 #define FUN_003bbc90(...) ((void (*)(...))FUN_003bbc90)(__VA_ARGS__)
 #undef FUN_003bbd40
@@ -5051,7 +5056,7 @@ u32 FUN_003bd8b0(u32 id, u32 variant, u32 subVariant)
   for (; index < count; index++) {
     SceneLookupEntry *entry = &entries[index];
 
-    if (wildcard == entry->subVariant) {
+    if (entry->subVariant == wildcard) {
       if (id == entry->id && variant == entry->variant) {
         return entry->result;
       }

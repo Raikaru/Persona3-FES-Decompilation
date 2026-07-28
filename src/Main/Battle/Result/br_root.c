@@ -37,6 +37,8 @@ extern u32 jtbl_0096017C[];
 
 /* Result-resource and data helpers not yet described by public headers. */
 extern s32 printf(const char *, ...);
+extern const char D_006845c0[];
+extern const char D_006845d0[];
  
 extern void func_002350f0(void);
 extern void func_00278550(void);
@@ -506,8 +508,8 @@ void func_001f0ad0(KwlnTask *task, const u8 *params)
     BR_U32(work, 0xb4) = BR_U32(params, 0x20);
     BR_U32(work, 0x118) = BR_U32(params, 0x2c);
     BR_U32(work, 0x11c) = BR_U32(params, 0x30);
-    printf((const char *)0x006845c0, BR_U32(work, 0x118));
-    printf((const char *)0x006845d0, BR_U32(work, 0x11c));
+    printf(D_006845c0, BR_U32(work, 0x118));
+    printf(D_006845d0, BR_U32(work, 0x11c));
     BR_U32(work, 0x114) = 0;
     for (j = 0; j < (s32)BR_U32(params, 0x2c); j++) {
         u16 id = BR_U16(params + j * 2, 0x24);

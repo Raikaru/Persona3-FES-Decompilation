@@ -8,6 +8,8 @@ extern u32 DAT_006a11d0;
 extern char D_006A1200[];
 extern char DAT_006a1380[];
 extern char DAT_006a13a0[];
+extern char DAT_006a1500[];
+extern char DAT_006a1520[];
 extern u32 DAT_006a11d4;
 extern u32 DAT_007cd488;
 extern u32 DAT_007ce420;
@@ -110,7 +112,7 @@ u32 FUN_0039e6f0(void);
 void FUN_0039e700(u8 *param_1);
 void FUN_0039e7c0(void);
 void FUN_0039e820(u64 param_1);
-u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_0039ea20(int param_1,int param_2);
 void FUN_0039eaa0(int param_1);
 void FUN_0039eb90(void);
@@ -4198,133 +4200,68 @@ void FUN_0039cd60(int param_1)
 }
 #define FUN_0039cd60(...) ((void (*)(...))FUN_0039cd60)(__VA_ARGS__)
 #undef FUN_0039cdc0
-// FUN_0039CDC0 NONMATCHING
+// FUN_0039CDC0
 
 
 u32 FUN_0039cdc0(int param_1)
-
-
-
 {
+  int *state;
+  int *work;
+  int resourceId;
+  u32 fieldHandle;
+  u32 areaHandle;
+  u32 resourceHandle;
+  u32 unitHandle;
+  int result;
+  u8 pathScratch[4];
 
-  int *piVar1;
+  state = *(int **)(param_1 + 0x3c);
+  work = state + 4;
+  resourceId = state[1];
 
-  int iVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
- 
-  u32 uVar6;
- 
-  u32 uVar7;
- 
-  u32 uVar8;
- 
-  int lVar9;
-
-  int *piVar10;
-
-  u8 auStack_4 [4];
-
-  
-
-  piVar1 = *(int **)(param_1 + 0x3c);
-
-  piVar10 = piVar1 + 4;
-
-  iVar3 = piVar1[1];
-
-  iVar2 = *piVar1;
-
-  if (iVar2 != 4) {
-
-    if (iVar2 == 3) {
-
-      lVar9 = FUN_0039f6e0(piVar10);
-
-      if (lVar9 == 1) {
-
-        *piVar1 = 4;
-
-      }
-
+  switch (state[0]) {
+  case 0:
+    fieldHandle = FUN_0017d920();
+    areaHandle = FUN_0017da40();
+    resourceHandle = FUN_00386e10(resourceId);
+    unitHandle = FUN_00386e30(resourceId);
+    result = FUN_003bda60(fieldHandle,areaHandle,resourceHandle,unitHandle);
+    state[0xd] = result;
+    if (result == -1) {
+      *state = 4;
     }
-
-    else if (iVar2 == 2) {
-
-      FUN_0039f210(piVar10,piVar1[0xd],0xffffffffffffffff,0xffffffffffffffff);
-
-      *piVar1 = 3;
-
+    else {
+      state[3] = FUN_00100d80(DAT_006a1500,1);
+      *state = 1;
     }
+    break;
 
-    else if (iVar2 == 1) {
-
-      lVar9 = FUN_001016b0(piVar1[3]);
-
-      if (lVar9 == 1) {
-
-        uVar5 = FUN_001021c0(0x6a1520,auStack_4);
-
-        piVar1[0xc] = (int)uVar5;
-
-        FUN_0039ec70(piVar10,uVar5);
-
-        *piVar1 = 2;
-
-      }
-
+  case 1:
+    if (FUN_001016b0(state[3]) == 1) {
+      result = FUN_001021c0(DAT_006a1520,pathScratch);
+      state[0xc] = result;
+      FUN_0039ec70(work,result);
+      *state = 2;
     }
+    break;
 
-    else if (iVar2 == 0) {
+  case 2:
+    FUN_0039f210(work,state[0xd],-1,-1);
+    *state = 3;
+    break;
 
-      uVar5 = FUN_0017d920();
-
-      uVar6 = FUN_0017da40();
-
-      uVar7 = FUN_00386e10(iVar3);
-
-      uVar8 = FUN_00386e30(iVar3);
-
-      lVar9 = FUN_003bda60(uVar5,uVar6,uVar7,uVar8);
-
-      piVar1[0xd] = (int)lVar9;
-
-      if (lVar9 != -1) {
-
-        iVar3 = FUN_00100d80(0x6a1500,1);
-
-        piVar1[3] = iVar3;
-
-        *piVar1 = 1;
-
-      }
-
-      else {
-
-        *piVar1 = 4;
-
-      }
-
+  case 3:
+    if (FUN_0039f6e0(work) == 1) {
+      *state = 4;
     }
+    break;
 
-    FUN_0039f410(piVar10);
-
-    uVar4 = 0;
-
+  case 4:
+    return 0xffffffff;
   }
 
-  else {
-
-    uVar4 = 0xffffffff;
-
-  }
-
-  return uVar4;
-
+  FUN_0039f410(work);
+  return 0;
 }
 #define FUN_0039cdc0(...) ((u32 (*)(...))FUN_0039cdc0)(__VA_ARGS__)
 #undef FUN_0039cfb0
@@ -5818,13 +5755,13 @@ void FUN_0039e820(u64 param_1)
 // FUN_0039E880 NONMATCHING
 
 
-u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
+u32 FUN_0039e880(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 
 
 {
 
-  u8 bVar1;
+  int bVar1;
 
   u32 uVar2;
 
@@ -5864,7 +5801,7 @@ u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
       }
 
-      if (bVar1) {
+      if (bVar1 == 1) {
 
         FUN_003196f0(param_2,param_3 & 0xffff);
 
@@ -5886,20 +5823,13 @@ u32 FUN_0039e880(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
         lVar3 = FUN_00316910(5,*(u16 *)(iVar4 + 0x7b8),0);
 
-        if (lVar3 != 0) {
-
-          FUN_00319490(param_2,param_3 & 0xffff,5,*puVar5,0);
-
+        if (lVar3 == 0) {
+          iVar4 = param_4 * 4 + param_1;
+          FUN_00319390(param_2,param_3 & 0xffff,5,*puVar5,*(u32 *)(iVar4 + 0x790),
+                       *(u32 *)(iVar4 + 0x7cc),1);
         }
-
         else {
-
-          param_1 = param_4 * 4 + param_1;
-
-          FUN_00319390(param_2,param_3 & 0xffff,5,*puVar5,*(u32 *)(param_1 + 0x790),
-
-                       *(u32 *)(param_1 + 0x7cc),1);
-
+          FUN_00319490(param_2,param_3 & 0xffff,5,*puVar5,0);
         }
 
         FUN_003196d0(param_2,param_3 & 0xffff,param_5);

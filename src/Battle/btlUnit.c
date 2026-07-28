@@ -6,6 +6,7 @@
 #include "Graphics/Model/mdlManager.h"
 #include "Main/Battle/Data/datUnit.h"
 #include "Main/Battle/Data/datCalc.h"
+#include "Main/Battle/Data/datPersona.h"
 #include "Scene/mt_scene.h"
 #include "Graphics/Model/mdlFile.h"
 #include "h_cdvd.h"
@@ -20,7 +21,7 @@ void FUN_00287ea0(BtlUnit* unit);
 void FUN_00288110(BtlUnit* unit);
 int FUN_00288da0(BtlUnit* unit, u16 mode);
 void FUN_002891e0(void);
-u64 FUN_00289650(short param_1,u16 param_2,void* param_3);
+BtlAction* FUN_00289650(u16 param_1, u16 param_2, void* param_3);
 extern f32 DAT_007cad78;
 extern f32 fGpffff8218;
 extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
@@ -5872,118 +5873,58 @@ void FUN_002891e0(void)
 // FUN_00289650 NONMATCHING
 
 
-u64 FUN_00289650(short param_1,u16 param_2,void* param_3)
-
-
-
+BtlAction* FUN_00289650(u16 mode, u16 charId, void* data)
 {
+  BtlAction* action;
+  BtlUnit* unit;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  long lVar3;
-
-  int iVar4;
-
-u32 unaff_s1;
-
-u32 uVar5;
-
-  
-
-  uVar5 = 0;
-
-  if (param_1 == 1) {
-
-    unaff_s1 = FUN_002875a0();
-
-    uVar5 = FUN_00299e90();
-
-    FUN_00299e70(uVar5,unaff_s1);
-
-    FUN_0029a2c0(uVar5);
-
-    FUN_00299e30(uVar5);
-
-    FUN_00299d60(uVar5,1);
-
-  }
-
-  else if (param_1 == 0) {
-
-    unaff_s1 = FUN_002875a0(0);
-
-    uVar5 = FUN_00299e90();
-
-    FUN_00299e70(uVar5,unaff_s1);
-
-    FUN_0029a2c0(uVar5);
-
-    FUN_00299e30(uVar5);
-
-    FUN_00299d60(uVar5,1);
-
-    iVar4 = (int)uVar5;
-
-    if ((param_2 & 0xffff) == 1) {
-
-      *(u16 *)(iVar4 + 0x14) = 5;
-
-      *(int *)(iGpffffb6fc + 0x148) = iVar4;
-
+  action = NULL;
+  switch (mode) {
+  case 0:
+    unit = btlUnitCreate(0);
+    action = btlActionCreate();
+    btlActionSetUnit(action, unit);
+    FUN_0029a2c0(action);
+    btlAction0028a780(action);
+    FUN_00299d60(action, 1);
+    if (charId == 1) {
+      action->unk_14 = 5;
+      gBtl->actionList.head = action;
     }
-
-    iVar2 = FUN_00174800(param_2);
-
-    FUN_00288f80(unaff_s1,*(u16 *)(iVar2 + 2));
-
-    *(u16 *)(iVar4 + 0x1a) = *(u16 *)(iVar4 + 0x1a) | 0x10;
-
+    btlUnitInitPersona(unit, datPersonaGetByPcId(charId)->id);
+    action->unk_1a |= 0x10;
+    break;
+  case 1:
+    unit = btlUnitCreate(1);
+    action = btlActionCreate();
+    btlActionSetUnit(action, unit);
+    FUN_0029a2c0(action);
+    btlAction0028a780(action);
+    FUN_00299d60(action, 1);
+    break;
   }
 
-  iVar4 = (int)unaff_s1;
-
-  if (param_3 != 0) {
-
-    *(int *)(iVar4 + 0xa2c) = (int)param_3;
-
-    FUN_002889c0(unaff_s1,param_2 & 0xffff);
-
-    lVar3 = FUN_0030b5a0(param_3,0);
-
-    if (lVar3 != 0) {
-
-      *(u32 *)(iVar4 + 0x9c) = *(u32 *)(iVar4 + 0x9c) | 1;
-
+  if (data != NULL) {
+    unit->datUnit = data;
+    FUN_002889c0(unit, charId);
+    if (datCalcIsDead(data, 0) != 0) {
+      unit->flags3 |= BTLUNIT_FLAG3_DEAD;
     }
-
   }
-
-  iVar2 = (int)uVar5;
-
-  *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) = *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) | 8;
-
-  *(u16 *)(iVar2 + 0x1a) = *(u16 *)(iVar2 + 0x1a) | 8;
-
-  if ((param_1 != 1) && (param_1 == 0)) {
-
-    uVar1 = *(u32 *)(iVar4 + 0x9c);
-
-    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0x20;
-
-    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0x60;
-
-    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0xe0;
-
-    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0x2e0;
-
+  action->unit->flags3 |= BTLUNIT_FLAG3_UNK08;
+  action->unk_1a |= 8;
+  switch (mode) {
+  case 0:
+    unit->flags3 |= 0x20;
+    unit->flags3 |= 0x40;
+    unit->flags3 |= 0x80;
+    unit->flags3 |= 0x200;
+    break;
+  case 1:
+    break;
   }
-
-  FUN_002f9c10(uVar5);
-
-  return uVar5;
-
+  FUN_002f9c10(action);
+  return action;
 }
 
 /* Recovered battle-misc harvest: 0x00287B20-0x00287CF0 */

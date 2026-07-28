@@ -5608,11 +5608,12 @@ void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
 
 void FUN_0038c830(int param_1,long param_2)
 {
-  u16 uVar1;
+  s16 uVar1;
   bool bVar2;
   bool bVar3;
   int lVar4;
   int iVar5;
+  int group;
   u16 *puVar6;
   int *piVar7;
   u16 sStack_2;
@@ -5626,7 +5627,8 @@ void FUN_0038c830(int param_1,long param_2)
       bVar3 = false;
       for (puVar6 = (u16 *)piVar7[0x1b]; puVar6 != (u16 *)0x0;
           puVar6 = *(u16 **)(puVar6 + 0x26)) {
-        uVar1 = puVar6[8];
+        uVar1 = (s16)puVar6[8];
+        group = (uVar1 >> 0xc) & 0xf;
         switch(*(u8 *)((int)puVar6 + 0x15)) {
         default:
 switchD_0038c8e0_caseD_0:
@@ -5652,7 +5654,7 @@ switchD_0038c8e0_caseD_0:
         }
         if (bVar2) {
           if (param_2 < (long)(u32)*puVar6) break;
-          if (((int)(short)uVar1 >> 0xc & 0xfU) - 1 == iVar5) {
+          if (group - 1 == iVar5) {
             bVar3 = true;
             break;
           }
@@ -5713,46 +5715,53 @@ void FUN_0038ca00(void)
 
 void FUN_0038ca80(int param_1)
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int *node;
-  int *currentNode;
-  short *psVar4;
-  int iVar5;
-  int *aiStack_d0 [52];
+  int searchIndex;
+  int totalCount;
+  int listIndex;
+  int *listNode3;
+  int *listNode1;
+  int *listNode12;
+  u16 *currentNode;
+  u16 *matchedNode;
+  int matchCount;
+  int *nodes[52];
 
-  iVar3 = 0;
-  iVar5 = 0;
-  iVar3 = iVar3 + FUN_003b5df0(3);
-  iVar3 = iVar3 + FUN_003b5df0(1);
-  iVar3 = iVar3 + FUN_003b5df0(0xc);
+  totalCount = 0;
+  listIndex = 0;
+  totalCount += FUN_003b5df0(3);
+  totalCount += FUN_003b5df0(1);
+  totalCount += FUN_003b5df0(0xc);
 
-  if (iVar3 < 0x33) {
-    for (node = (int *)FUN_003b5d50(3); node != 0; node = (int *)node[0x3e]) {
-      aiStack_d0[iVar5] = node;
-      iVar5 = iVar5 + 1;
+  if (totalCount < 0x33) {
+    for (listNode3 = (int *)FUN_003b5d50(3); listNode3 != NULL;
+         listNode3 = (int *)listNode3[0x3e]) {
+      nodes[listIndex++] = listNode3;
     }
-    for (node = (int *)FUN_003b5d50(1); node != 0; node = (int *)node[0x3e]) {
-      aiStack_d0[iVar5] = node;
-      iVar5 = iVar5 + 1;
+    for (listNode1 = (int *)FUN_003b5d50(1); listNode1 != NULL;
+         listNode1 = (int *)listNode1[0x3e]) {
+      nodes[listIndex++] = listNode1;
     }
-    for (node = (int *)FUN_003b5d50(0xc); node != 0; node = (int *)node[0x3e]) {
-      aiStack_d0[iVar5] = node;
-      iVar5 = iVar5 + 1;
+    for (listNode12 = (int *)FUN_003b5d50(0xc); listNode12 != NULL;
+         listNode12 = (int *)listNode12[0x3e]) {
+      nodes[listIndex++] = listNode12;
     }
-    for (iVar1 = 0; iVar1 < iVar3; iVar1 = iVar1 + 1) {
-      currentNode = aiStack_d0[iVar1];
-      for (iVar2 = 0; iVar2 < *(int *)((int)param_1 + 0x97c); iVar2 = iVar2 + 1) {
-        psVar4 = *(short **)(*(int *)((int)param_1 + 0x980) + iVar2 * 4);
-        if (*psVar4 == *(short *)currentNode) goto LAB_0038cbd8;
+
+    for (listIndex = 0; listIndex < totalCount; listIndex++) {
+      currentNode = (u16 *)nodes[listIndex];
+      matchCount = *(int *)(param_1 + 0x97c);
+      matchedNode = NULL;
+      for (searchIndex = 0; searchIndex < matchCount; searchIndex++) {
+        matchedNode = *(u16 **)(*(int *)(param_1 + 0x980) + searchIndex * 4);
+        if (*matchedNode == *currentNode) {
+          break;
+        }
       }
-      psVar4 = (short *)0x0;
-LAB_0038cbd8:
-      FUN_0038cc10(param_1,(u16 *)currentNode,(int)psVar4);
+      if (searchIndex == matchCount) {
+        matchedNode = NULL;
+      }
+      FUN_0038cc10(param_1,currentNode,(int)matchedNode);
     }
   }
-  return;
 }
 
 
