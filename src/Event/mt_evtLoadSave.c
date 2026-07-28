@@ -2609,7 +2609,7 @@ void FUN_003905f0(int param_1,int param_2)
 
   if (0 < *(int *)(*(int *)((int)param_2 + 0x710) + 4)) {
 
-    uVar6 = FUN_00361ca0(0x25);
+    uVar6 = FUN_00361ca0(0x25,param_2);
 
     for (iVar10 = 0; iVar10 < *(int *)(param_1 + 0xb0); iVar10 = iVar10 + 1) {
 
@@ -2993,7 +2993,7 @@ void FUN_00390c90(int param_1,int param_2)
     s16 value_3;
   } stack;
 
-  token = FUN_00361ca0(0x2f);
+  token = FUN_00361ca0(0x2f,param_2);
   for (i = 0; i < *(int *)(param_1 + 0xb0); i = i + 1) {
     if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
       event_type = *(u16 *)(*(int *)(param_1 + 0x98) + i * 0x10);

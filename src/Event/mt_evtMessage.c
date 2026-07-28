@@ -2946,7 +2946,7 @@ u32 FUN_003a1c00(int param_1)
   iVar4 = *piVar1;
   switch (iVar4) {
   case 0:
-    iVar4 = FUN_00100d80(0x6a1940);
+    iVar4 = FUN_00100d80(0x6a1940,1);
     piVar1[4] = iVar4;
     *piVar1 = 1;
     break;

@@ -462,13 +462,13 @@ s32 func_001a6c00(void* object, const char* name)
             {
                 if (RpUserDataArrayGetFormat((RpUserDataArray*)material) == rpINTUSERDATA)
                 {
-                    context[0x24]++;
+                    context[0x10]++;
                 }
             }
         }
     }
     func_004cb6e0(*(void**)((u8*)object + 4), (KClumpCallback)func_001a6af0, context);
-    return (s32)context[0x24];
+    return (s32)context[0x10];
 }
 
 // FUN_001a6d20
@@ -764,13 +764,9 @@ void* func_001a7570(void* clump)
     u32* state;
 
     state = (u32*)kclump_alloc(1, 0x2c, 0x40000);
-    if (state == NULL)
-    {
-        return NULL;
-    }
     func_004916d0(clump, (KClumpCallback)func_001a74e0, state);
-    if (state[1] == 0 && state[0] == 0 && state[3] == 0 && state[4] == 0 && state[5] == 0 &&
-        state[6] == 0 && state[7] == 0 && state[8] == 0 && state[9] == 0 && state[10] == 0)
+    if (state[1] == 0 && state[0] == 0 && state[4] == 0 && state[3] == 0 && state[5] == 0 &&
+        state[9] == 0 && state[10] == 0 && state[6] == 0 && state[7] == 0 && state[8] == 0)
     {
         func_001a7710(state);
         state = NULL;

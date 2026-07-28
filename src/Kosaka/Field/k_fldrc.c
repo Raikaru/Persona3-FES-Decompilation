@@ -1458,7 +1458,7 @@ void FUN_001b4720(void* camera, u32* resource)
 /* Removing this worsens FUN_001b4e00 (nd650 -> nd651) - measured W161. */
 #pragma opt_loop_invariants on
 // FUN_001b4e00 NONMATCHING
-void FUN_001b4e00(u32 unused, u32* resource, const f32* offset)
+void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
 {
     u32 i;
     u32 count;
@@ -1613,25 +1613,28 @@ void FUN_001b5200(u32* resource, f32 angle)
     }
 }
 
+typedef struct FldrcCloneRecord
+{
+    u32 words[6];
+} FldrcCloneRecord;
+
 // FUN_001b5380 NONMATCHING
 void* FUN_001b5380(u32* resource, void* position, u32 direction)
 {
     u32* copy;
+    const FldrcCloneRecord* sourceRecord;
+    FldrcCloneRecord* copyRecord;
     u32 i;
-    u32 j;
     s16 type;
-    u32 model;
     u32 source;
+    f32 angle;
 
+    angle = (f32)direction * 90.0f;
     if ((*resource & 1) != 0)
     {
         return NULL;
     }
     copy = (u32*)(*DAT_00960184)(1, 0xa4c, 0x40000);
-    if (copy == NULL)
-    {
-        return NULL;
-    }
     copy[0] = resource[0] | 2;
     copy[1] = resource[1];
     *(u16*)((u8*)copy + 6) = *(u16*)((u8*)resource + 6);
@@ -1656,27 +1659,26 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
         }
     }
     copy[0x46] = resource[0x46];
-    for (i = 0; i < resource[0x46]; i++)
+    sourceRecord = (const FldrcCloneRecord*)&resource[0x47];
+    copyRecord = (FldrcCloneRecord*)&copy[0x47];
+    for (i = 0; i < resource[0x46]; i++, sourceRecord++, copyRecord++)
     {
-        for (j = 0; j < 6; j++)
-        {
-            copy[i * 6 + 0x47 + j] = resource[i * 6 + 0x47 + j];
-        }
-        type = (s16)resource[i * 6 + 0x47];
+        *copyRecord = *sourceRecord;
+        type = (s16)sourceRecord->words[0];
         if ((type == 0) || (type == 2))
         {
-            copy[i * 6 + 0x4a] = FUN_00317450(resource[i * 6 + 0x4a]);
+            copyRecord->words[3] = FUN_00317450(sourceRecord->words[3]);
         }
         else if (type == 1)
         {
-            copy[i * 6 + 0x4b] = FUN_0034fd50(resource[i * 6 + 0x4b]);
+            copyRecord->words[4] = FUN_0034fd50(sourceRecord->words[4]);
         }
     }
     copy[0x288] = resource[0x288];
     copy[0x289] = resource[0x289];
     copy[0x28a] = resource[0x28a];
-    FUN_001b5200(copy, (f32)direction * 90.0f);
-    FUN_001b4e00((u32)((f32)direction * 90.0f), copy, (const f32*)position);
+    FUN_001b5200(copy, angle);
+    FUN_001b4e00(copy, (const f32*)position, angle);
     return copy;
 }
 

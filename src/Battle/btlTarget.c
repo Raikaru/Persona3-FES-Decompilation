@@ -713,33 +713,14 @@ u16 FUN_002d50c0(void)
             return 0;
         }
 
-        {
-            f32 ratio = ((f32)value2 / (f32)value1) * 20.0f;
-            if (ratio >= 2147483648.0f)
-            {
-                ratio -= 2147483648.0f;
-            }
-            chance = (u16)(s32)ratio;
-        }
+        chance = (u16)(((f32)value2 / (f32)value1) * 20.0f);
         return datCalcRand(100) < chance ? 2 : 0;
     }
 
-    {
-        f32 ratio = ((f32)value1 / (f32)value2) * 20.0f;
-        if (ratio >= 2147483648.0f)
-        {
-            ratio -= 2147483648.0f;
-        }
-        chance = (u16)(s32)ratio;
-    }
+    chance = (u16)(((f32)value1 / (f32)value2) * 20.0f);
     if (hasSpecialSkill != 0)
     {
-        f32 ratio = (f32)chance * 0.5f;
-        if (ratio >= 2147483648.0f)
-        {
-            ratio -= 2147483648.0f;
-        }
-        chance = (u16)(s32)ratio;
+        chance = (u16)((f32)chance * 0.5f);
     }
     if (datGetFlag(0x1319) != 0)
     {

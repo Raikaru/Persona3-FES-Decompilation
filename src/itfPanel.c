@@ -2392,46 +2392,34 @@ void FUN_003ab320(int param_1)
     FUN_003c9000(0.0f,1.328125f,1.328125f,-31,-16,iVar3 & 0xff,piVar1[1],0);
   } else if (mode == 2) {
     fVar4 = fGpffff839c * (float)iVar3;
-    if (2147483648.0f <= fVar4)
-      fVar4 = fVar4 - 2147483648.0f;
-    FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(int)fVar4 & 0xff,0,1);
-    FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(int)fVar4 & 0xff,0,0);
+    FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(u8)fVar4,0,1);
+    FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(u8)fVar4,0,0);
     fVar4 = fGpffff845c * (float)iVar3;
-    if (2147483648.0f <= fVar4)
-      fVar4 = fVar4 - 2147483648.0f;
-    FUN_003c9000(0.0f,5.5f,uGpffff8070,-75,0x23,(int)fVar4 & 0xff,0,0);
+    FUN_003c9000(0.0f,5.5f,uGpffff8070,-75,0x23,(u8)fVar4,0,0);
     FUN_003c9000(0.0f,1.328125f,1.328125f,-31,-16,0xff,piVar1[1],0);
   } else if (mode == 1) {
     iVar2 = piVar1[2];
     if ((10 < iVar2) && (iVar2 < 0x10)) {
       fVar4 = (fGpffff839c * (float)iVar3 * (float)(iVar2 + -10)) / 5.0f;
-      if (2147483648.0f <= fVar4)
-        fVar4 = fVar4 - 2147483648.0f;
-      FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(int)fVar4 & 0xff,0,1);
+      FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(u8)fVar4,0,1);
     }
     iVar3 = piVar1[2];
     if (iVar3 < 6) {
       fVar4 = (float)(iVar3 * 0xff) / 5.0f;
-      if (2147483648.0f <= fVar4)
-        fVar4 = fVar4 - 2147483648.0f;
-      FUN_003c9000(0.0f,((float)iVar3 * 5.5f) / 5.0f,uGpffff8070,-75,0x23,(int)fVar4 & 0xff,0,0);
+      FUN_003c9000(0.0f,((float)iVar3 * 5.5f) / 5.0f,uGpffff8070,-75,0x23,(u8)fVar4,0,0);
     } else if (iVar3 < 0xd) {
       FUN_003c9000(0.0f,5.5f,uGpffff8070,-75,0x23,0xff,0,0);
     } else if (iVar3 < 0x10) {
       fVar4 = (float)((0xf - iVar3) * 0xff) / 3.0f;
-      if (2147483648.0f <= fVar4)
-        fVar4 = fVar4 - 2147483648.0f;
-      FUN_003c9000(0.0f,5.5f,uGpffff8070,-75,0x23,(int)fVar4 & 0xff,0,0);
+      FUN_003c9000(0.0f,5.5f,uGpffff8070,-75,0x23,(u8)fVar4,0,0);
     }
     iVar3 = piVar1[2];
     if (5 < iVar3) {
       if (iVar3 < 0xd) {
         iVar3 = iVar3 + -5;
         fVar4 = (float)(iVar3 * 0xff) / 7.0f;
-        if (2147483648.0f <= fVar4)
-          fVar4 = fVar4 - 2147483648.0f;
         FUN_003c9000(0.0f,5.5f,((float)iVar3 * 6.90625f) / 7.0f,-75,
-                     (int)(38.0f - (float)(iVar3 * 0x5f) / 7.0f),(int)fVar4 & 0xff,0,0);
+                     (int)(38.0f - (float)(iVar3 * 0x5f) / 7.0f),(u8)fVar4,0,0);
       } else {
         FUN_003c9000(0.0f,uGpffff8458,6.90625f,-75,-57,0xff,0,0);
       }

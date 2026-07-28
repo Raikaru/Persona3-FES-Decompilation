@@ -2195,10 +2195,9 @@ void FUN_003b9610(Resrc* param_1)
 
                  * (float)*(u32 *)(puVar8 + 0x5e) + (float)(u8)puVar8[0x5a];
 
+        /* Native u8 cast worsens FUN_003b9610 (size 5036 -> 5068, nd3677 -> nd3694); retail contains this bias expansion - measured W180. */
         if (2147483648.0f <= fVar11) {
-
           fVar11 = fVar11 - 2147483648.0f;
-
         }
 
         cVar9 = (char)(int)fVar11;
@@ -3484,7 +3483,7 @@ void FUN_003bb7a0(Resrc* param_1)
       correction.x = uStack_48;
       correction.y = uStack_44;
       correction.z = 0;
-      FUN_004c35d0(uVar5,&correction);
+      FUN_004c35d0(uVar5,&correction,1);
 
     }
 

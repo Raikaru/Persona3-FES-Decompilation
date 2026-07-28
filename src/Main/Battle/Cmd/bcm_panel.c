@@ -1294,7 +1294,6 @@ void FUN_002257F0(void)
     u32 mode;
     f32 ratio;
     f32 alphaF;
-    s32 alphaI;
     u8 alphaByte;
     u8 color[4];
     void* frame;
@@ -1335,12 +1334,7 @@ void FUN_002257F0(void)
     }
 
     alphaF = 255.0f * ratio * weight;
-    if (2147483648.0f <= alphaF) {
-        alphaI = (s32)(alphaF - 2147483648.0f) | 0x80000000;
-    } else {
-        alphaI = (s32)alphaF;
-    }
-    alphaByte = (u8)alphaI;
+    alphaByte = (u8)alphaF;
 
     frame = (void*)FUN_0021cca0(table0, 0x24);
     rect[0] = 47.0f + posB[0];
@@ -1707,24 +1701,12 @@ void FUN_002265D0(void)
     }
 
     ratio = 40.0f + 215.0f * transAlpha;
-    if (ratio < 2147483648.0f) {
-        color[0] = (u8)((s32)ratio & 0xff);
-    } else {
-        color[0] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    color[0] = (u8)ratio;
     color[1] = color[0];
     ratio = 30.0f + 225.0f * transAlpha;
-    if (ratio < 2147483648.0f) {
-        color[2] = (u8)((s32)ratio & 0xff);
-    } else {
-        color[2] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    color[2] = (u8)ratio;
     ratio = stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) * *(f32*)(work + 0x7214);
-    if (ratio < 2147483648.0f) {
-        color[3] = (u8)((s32)ratio & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    color[3] = (u8)ratio;
     for (i = 0; i < 9; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1530, color);
     }
@@ -1774,11 +1756,7 @@ void FUN_002265D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     ratio = 255.0f * stateAlpha * *(f32*)(work + 0x7214);
-    if (ratio < 2147483648.0f) {
-        color[3] = (u8)((s32)ratio & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    color[3] = (u8)ratio;
     for (i = 0; i < 3; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1e30, color);
     }
@@ -1824,11 +1802,7 @@ void FUN_002265D0(void)
     color[2] = 0xff;
     ratio = (f32)((s32)(30.0f + 225.0f * transAlpha) & 0xff) * 2.0f *
             stateAlpha * *(f32*)(work + 0x7214);
-    if (ratio < 2147483648.0f) {
-        color[3] = (u8)((s32)ratio & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    color[3] = (u8)ratio;
     for (j = 0; j < 2; ++j) {
         u8* slot = work + j * 0x200;
         FUN_0021d950(slot + 0x2230, color);
@@ -1836,11 +1810,7 @@ void FUN_002265D0(void)
     }
 
     ratio = 255.0f * transAlpha;
-    if (ratio < 2147483648.0f) {
-        color[3] = (u8)((s32)ratio & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    color[3] = (u8)ratio;
     for (j = 2; j < 6; ++j) {
         u8* slot = work + j * 0x200;
         FUN_0021d950(slot + 0x2230, color);
@@ -3256,10 +3226,7 @@ void FUN_0022C210(void)
 // Previous body was a wrong-helper stub unrelated to retail (720B window).
 // Rewritten from disasm: retail draws 3 rects (2 sharing a resource fetch)
 // with a shared alpha255=255*weight computed once and reused, matching
-// the doubled-alpha idiom used by the other draw functions in this file.
-// obj 228B->572B/720B; residual is register caching for resourceA offset
-// derefs and frame-size (retail keeps 3 s-regs live, this keeps 5).
-// FUN_0022C2D0 NONMATCHING
+// FUN_0022C2D0
 void FUN_0022C2D0(void)
 {
     u8* work;
@@ -3286,14 +3253,7 @@ void FUN_0022C2D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    alpha = 255.0f * weight;
-    if (2147483648.0f <= alpha) goto alpha_high_1;
-    alphaInt = (s32)alpha & 0xff;
-    goto alpha_done_1;
-alpha_high_1:
-    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
-alpha_done_1:
-    color[3] = (u8)alphaInt;
+    color[3] = (u8)(255.0f * weight);
     FUN_0021d950(work + 0x6a00, color);
  
     rect[0] = 57.0f + (f32)*(s32*)(resourceA + 0xc);
@@ -3305,14 +3265,7 @@ alpha_done_1:
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    alpha = 255.0f * weight;
-    if (2147483648.0f <= alpha) goto alpha_high_2;
-    alphaInt = (s32)alpha & 0xff;
-    goto alpha_done_2;
-alpha_high_2:
-    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
-alpha_done_2:
-    color[3] = (u8)alphaInt;
+    color[3] = (u8)(255.0f * weight);
     FUN_0021d950(work + 0x6b00, color);
  
     resourceA = FUN_0021cca0(table0, 0x43);
@@ -3325,14 +3278,7 @@ alpha_done_2:
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    alpha = 255.0f * weight;
-    if (2147483648.0f <= alpha) goto alpha_high_3;
-    alphaInt = (s32)alpha & 0xff;
-    goto alpha_done_3;
-alpha_high_3:
-    alphaInt = ((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff;
-alpha_done_3:
-    color[3] = (u8)alphaInt;
+    color[3] = (u8)(255.0f * weight);
     FUN_0021d950(work + 0x6c00, color);
 }
 
@@ -3516,6 +3462,8 @@ void FUN_0022c8a0(u32* object_param)
         color[3] = 0xff;
     } else if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
+            /* Native u8 casts measured 5920B/5744B (+264B for this batch);
+             * retail retains the explicit unsigned-conversion expansions. */
             /* Retail 0x484-0x578: the conversion remains runtime-valued in
              * the retail path even though this branch's color is constant. */
             colorF = (f32)*(s32*)(object + 0x844) -

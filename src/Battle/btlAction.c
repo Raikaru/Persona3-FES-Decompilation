@@ -261,7 +261,7 @@ extern void FUN_002b77c0(BtlUnit* unit);
 extern void FUN_00287490(BtlUnit* unit);
 extern void bpRoot001fe270(void* param);
 extern void bpRoot001fe2e0(void* param);
-extern void FUN_0016f190(u32 id, u32 arg);
+extern void FUN_0016f190(u32 id);
 extern void FUN_002ddbe0(void);
 extern BtlAction* btlActionFindByUnit(BtlUnit* unit);
 extern u16 func_00170760(s16 pcId, s16 index);
@@ -1746,7 +1746,7 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
         case 2:
             if (FUN_001febb0() == 0)
             {
-                FUN_0016f190(0x140, 1);
+                FUN_0016f190(0x140);
                 result = FUN_002dbb00();
                 if (result >= 0)
                 {
@@ -1754,7 +1754,7 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
                 }
                 else
                 {
-                    FUN_0016f190(0x141, 1);
+                    FUN_0016f190(0x141);
                 }
                 action->movedAwayFromHome = 3;
             }

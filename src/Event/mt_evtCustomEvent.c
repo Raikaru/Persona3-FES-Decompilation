@@ -4958,7 +4958,7 @@ u32 FUN_0039d8e0(int param_1)
 
         piVar1[3] = (int)sVar3;
 
-        lVar6 = FUN_0016dce0();
+        lVar6 = FUN_0016dce0(sVar3);
 
         if (lVar6 == 0) {
 

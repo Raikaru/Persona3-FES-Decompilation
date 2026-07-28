@@ -2255,6 +2255,8 @@ u32 FUN_0029f150(float *param_1)
   float fVar11;
 
   float fVar12;
+  u32 duration;
+  u32 counter;
 
   
 
@@ -2272,7 +2274,9 @@ u32 FUN_0029f150(float *param_1)
 
   else {
 
-  if (param_1[0x19] == 0.0f) {
+  duration = *(u32 *)(param_1 + 0x18);
+  counter = *(u32 *)(param_1 + 0x19);
+  if (counter == 0) {
 
       pfVar2 = (float *)FUN_0019fd40();
 
@@ -2324,9 +2328,8 @@ u32 FUN_0029f150(float *param_1)
 
     }
 
-    if ((u32)param_1[0x19] < (u32)param_1[0x18]) {
-
-      fVar11 = (float)(u32)param_1[0x19] / (float)(u32)param_1[0x18];
+    if (counter < duration) {
+      fVar11 = (float)counter / (float)duration;
 
       fVar12 = 1.0f - fVar11;
 
@@ -2382,7 +2385,7 @@ u32 FUN_0029f150(float *param_1)
 
       pfVar2[3] = fVar5 * fVar12 + fVar10 * fVar11;
 
-      param_1[0x19] = (float)((int)param_1[0x19] + 1);
+      *(u32 *)(param_1 + 0x19) = counter + 1;
 
       uVar1 = 0;
 
@@ -2472,6 +2475,8 @@ u32 FUN_0029f760(float *param_1)
   float fVar15;
 
   float fVar16;
+  u32 duration;
+  u32 counter;
 
   
 
@@ -2489,7 +2494,9 @@ u32 FUN_0029f760(float *param_1)
 
   else {
 
-    if (param_1[9] == 0.0f) {
+    duration = *(u32 *)(param_1 + 8);
+    counter = *(u32 *)(param_1 + 9);
+    if (counter == 0) {
 
       pfVar2 = (float *)FUN_0019fd40();
 
@@ -2527,9 +2534,8 @@ u32 FUN_0029f760(float *param_1)
 
     iVar1 = (int)(uintptr_t)DAT_007ce3ec;
 
-    if ((u32)param_1[9] < (u32)param_1[8]) {
-
-      fVar15 = (float)(u32)param_1[9] / (float)(u32)param_1[8];
+    if (counter < duration) {
+      fVar15 = (float)counter / (float)duration;
 
       fVar16 = 1.0f - fVar15;
 
@@ -2585,7 +2591,7 @@ u32 FUN_0029f760(float *param_1)
 
       pfVar2[3] = fVar7 * fVar16 + fVar14 * fVar15;
 
-      param_1[9] = (float)((int)param_1[9] + 1);
+      *(u32 *)(param_1 + 9) = counter + 1;
 
       uVar5 = 0;
 
@@ -3625,25 +3631,8 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
     currentFrame = param_1->currentFrame;
     if (currentFrame < totalFrames)
     {
-        if ((s32)currentFrame >= 0)
-        {
-            currentFloat = (f32)currentFrame;
-        }
-        else
-        {
-            currentFloat = (f32)(currentFrame >> 1);
-            currentFloat += currentFloat;
-        }
-
-        if ((s32)totalFrames >= 0)
-        {
-            totalFloat = (f32)totalFrames;
-        }
-        else
-        {
-            totalFloat = (f32)(totalFrames >> 1);
-            totalFloat += totalFloat;
-        }
+        currentFloat = (f32)currentFrame;
+        totalFloat = (f32)totalFrames;
 
         ratio = currentFloat / totalFloat;
         inverse = 1.0f - ratio;
@@ -3700,10 +3689,18 @@ u8 FUN_002a1400(float *param_1)
   float fVar6;
 
   float fVar7;
+  u32 duration;
+  u32 counter;
+  float target0;
+  float target1;
+  float target2;
+  float target3;
 
   
 
-  if (param_1[5] == 0.0f) {
+  duration = *(u32 *)(param_1 + 4);
+  counter = *(u32 *)(param_1 + 5);
+  if (counter == 0) {
 
     fVar6 = *(float *)(iGpffffb6fc + 0x238);
 
@@ -3721,13 +3718,12 @@ u8 FUN_002a1400(float *param_1)
 
   }
 
-  fVar1 = param_1[4];
-
-  fVar4 = param_1[5];
-
-  if ((u32)fVar1 > (u32)fVar4) {
-
-    fVar5 = (float)(u32)fVar4 / (float)(u32)fVar1;
+  target0 = fGpffff8218 * (float)bGpffffb808;
+  target1 = fGpffff8218 * (float)bGpffffb809;
+  target2 = fGpffff8218 * (float)bGpffffb80a;
+  target3 = fGpffff8218 * (float)bGpffffb80b;
+  if (duration > counter) {
+    fVar5 = (float)counter / (float)duration;
 
     fVar7 = 1.0f - fVar5;
 
@@ -3737,31 +3733,25 @@ u8 FUN_002a1400(float *param_1)
 
     fVar3 = param_1[3];
 
-    *(float *)(iGpffffb6fc + 0x234) = *param_1 * fVar7 + fGpffff8218 * (float)bGpffffb808 * fVar5;
+    *(float *)(iGpffffb6fc + 0x234) = *param_1 * fVar7 + target0 * fVar5;
+    *(float *)(iGpffffb6fc + 0x238) = fVar6 * fVar7 + target1 * fVar5;
+    *(float *)(iGpffffb6fc + 0x23c) = fVar2 * fVar7 + target2 * fVar5;
+    *(float *)(iGpffffb6fc + 0x240) = fVar3 * fVar7 + target3 * fVar5;
 
-    *(float *)(iGpffffb6fc + 0x238) = fVar6 * fVar7 + fGpffff8218 * (float)bGpffffb809 * fVar5;
-
-    *(float *)(iGpffffb6fc + 0x23c) = fVar2 * fVar7 + fGpffff8218 * (float)bGpffffb80a * fVar5;
-
-    *(float *)(iGpffffb6fc + 0x240) = fVar3 * fVar7 + fGpffff8218 * (float)bGpffffb80b * fVar5;
-
-    param_1[5] = (float)((int)param_1[5] + 1);
+    *(u32 *)(param_1 + 5) = counter + 1;
 
   }
 
   else {
 
-    *(float *)(iGpffffb6fc + 0x234) = fGpffff8218 * (float)bGpffffb808;
-
-    *(float *)(iGpffffb6fc + 0x238) = fGpffff8218 * (float)bGpffffb809;
-
-    *(float *)(iGpffffb6fc + 0x23c) = fGpffff8218 * (float)bGpffffb80a;
-
-    *(float *)(iGpffffb6fc + 0x240) = fGpffff8218 * (float)bGpffffb80b;
+    *(float *)(iGpffffb6fc + 0x234) = target0;
+    *(float *)(iGpffffb6fc + 0x238) = target1;
+    *(float *)(iGpffffb6fc + 0x23c) = target2;
+    *(float *)(iGpffffb6fc + 0x240) = target3;
 
   }
 
-  return (u32)fVar1 <= (u32)fVar4;
+  return duration <= counter;
 
 }
 

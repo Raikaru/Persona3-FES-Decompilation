@@ -92,7 +92,6 @@ void* func_001a1550(KwlnTask* task)
         {
             f32 tileColor;
             u8* tileBytes;
-            s32 alpha;
             s32 i;
             KWindowRenderData* renderData;
             KWindowQuad* quad;
@@ -106,16 +105,7 @@ void* func_001a1550(KwlnTask* task)
             ((RwRGBA*)((u8*)work->colorDataA + 4))->a = work->colorA.a;
             work->colorDataB = func_00494be0();
 
-            alpha = work->colorB.a;
-            if (alpha >= 0)
-            {
-                work->alphaStep = (f32)alpha;
-            }
-            else
-            {
-                work->alphaStep = (f32)(((u32)alpha >> 1) | (alpha & 1));
-                work->alphaStep += work->alphaStep;
-            }
+            work->alphaStep = (f32)(s32)work->colorB.a;
             work->colorB.a = 0;
             ((RwRGBA*)((u8*)work->colorDataB + 4))->r = work->colorB.r;
             ((RwRGBA*)((u8*)work->colorDataB + 4))->g = work->colorB.g;
