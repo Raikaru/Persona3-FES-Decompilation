@@ -13662,7 +13662,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
   sine = FUN_0052e878_f32(param_1);
   __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(axis) : "memory");
   matrix.right.x =
-      cosine * (1.0f - axis[0] * axis[0]) + axis[0] * axis[0] + 0.0f;
+      (1.0f - axis[0] * axis[0]) * cosine + axis[0] * axis[0] + 0.0f;
   xy = axis[0] * axis[1];
   oneMinusCosine = 1.0f - cosine;
   zSine = axis[2] * sine;
@@ -13675,7 +13675,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
   matrix.flags = 0;
   matrix.up.x = xy - zSine;
   matrix.up.y =
-      cosine * (1.0f - axis[1] * axis[1]) + axis[1] * axis[1] + 0.0f;
+      (1.0f - axis[1] * axis[1]) * cosine + axis[1] * axis[1] + 0.0f;
   yz = axis[1] * axis[2];
   xSine = axis[0] * sine;
   yz = yz * oneMinusCosine;
@@ -13684,7 +13684,7 @@ void mdlFileBuildAxisRotation(f32 param_1)
   matrix.at.x = ySine + xz;
   matrix.at.y = yz - xSine;
   matrix.at.z =
-      cosine * (1.0f - axis[2] * axis[2]) + axis[2] * axis[2] + 0.0f;
+      (1.0f - axis[2] * axis[2]) * cosine + axis[2] * axis[2] + 0.0f;
   matrix.pad2 = 0;
   __asm__ volatile (
       "lqc2 vf28, 0(%0)\n"
@@ -22070,8 +22070,6 @@ u32 FUN_00332780(int param_1)
   u32 *puVar3;
 
   u32 uVar4;
-  u16 modelIndex;
-
 
   
 
@@ -22109,11 +22107,9 @@ u32 FUN_00332780(int param_1)
 
   *(u16 *)(puVar3 + 0xd) = 1;
 
-  modelIndex = **(u16 **)(param_1 + 0x30);
-  FUN_00332a30((int *)uVar2,modelIndex,(int *)(param_1 + 0xc));
+  FUN_00332a30((int *)(uVar2),(u16)(**(u16 **)(param_1 + 0x30)),(int *)(param_1 + 0xc));
 
-  modelIndex = **(u16 **)(param_1 + 0x30);
-  FUN_00332ac0((u32 *)uVar2,modelIndex,(int *)iVar1);
+  FUN_00332ac0((u32 *)(uVar2),(u16)(**(u16 **)(param_1 + 0x30)),(int *)(iVar1));
 
   return uVar2;
 
@@ -43201,6 +43197,8 @@ void FUN_00349090(int *param_1,float *param_2)
 
   u8 uVar6;
 
+  u32 converted;
+
   float fVar7;
 
   float alpha;
@@ -43238,7 +43236,14 @@ void FUN_00349090(int *param_1,float *param_2)
 
       fVar7 = fVar7 * alpha;
 
-      uVar6 = (u32)fVar7 & 0xff;
+      if (!(2.1474836e+09f <= fVar7)) {
+        converted = (u32)(int)fVar7;
+        uVar6 = (u8)converted;
+      }
+      else {
+        converted = (u32)(int)(fVar7 - 2.1474836e+09f) | 0x80000000;
+        uVar6 = (u8)converted;
+      }
 
       *((u8 *)param_2 + 0xf) = uVar6;
 

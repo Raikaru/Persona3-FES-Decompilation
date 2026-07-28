@@ -86,7 +86,7 @@ extern u32 D_007D4780;
 extern u32 D_007D4784;
 #pragma alias D_007D4780_abs D_007D4780
 extern u32 D_007D4780_abs[];
-extern u8 D_007D1F80[];
+extern u32 D_007D1F80[];
 extern u32 D_007CF780[];
 extern u32 D_007CDF38;
 
@@ -1152,7 +1152,7 @@ static void H_Cdvd_SetStreamCallback(HCdvdStreamContext* context, u32 offset,
 }
 
 // FUN_00101ad0 NONMATCHING
-void* func_00101ad0(s32 count, u8* source, s32 stride,
+void* func_00101ad0(s32 count, void* source, s32 stride,
                                    void* callbackData, void* key)
 {
     HCdvdStreamContext* context;
@@ -1182,7 +1182,7 @@ void* func_00101ad0(s32 count, u8* source, s32 stride,
     {
         slot = &slots[i];
         slot->context = context;
-        slot->source = source + i * stride;
+        slot->source = (u8*)source + i * stride;
         slot->sourceStride = stride;
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)

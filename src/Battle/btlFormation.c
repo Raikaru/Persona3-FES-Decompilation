@@ -2344,61 +2344,48 @@ void func_002bacb0(u32 *param_1)
 // FUN_002bad60 NONMATCHING
 
 u32 func_002bad60(u32 *param_1)
+
 {
-  typedef struct FormationActionWork {
-    u32 context;
-    u32 firstUnit;
-    u32 secondUnit;
-    u16 side;
-    u16 padding;
-    u32 action;
-    u32 unused;
-    s32 counter;
-    u32 flags;
-  } FormationActionWork;
-  FormationActionWork *work;
   short sVar1;
   u16 *puVar2;
   int iVar3;
   u32 uVar4;
   u32 unaff_s2_lo;
   u32 unaff_s1_lo;
-
-  work = (FormationActionWork *)param_1;
-  if (func_002b9350_u32(work->context) == 0)
+  
+  if (func_002b9350_u32(*param_1) == 0)
     return 0;
-  puVar2 = (u16 *)work->action;
-  if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
-    uVar4 = 1;
-  }
-  else {
-    iVar3 = func_002b9370(work->context,work->side);
-    if ((*puVar2 & 0x40) == 0) {
-      if (work->counter >= iVar3 * 2 + -0xd) {
-        *puVar2 = *puVar2 | 0x100;
-        return 0;
-      }
-      if ((work->counter == 0) && ((work->flags & 0xc00) != 0xc00)) {
-        sVar1 = (s16)work->side;
-        switch (sVar1) {
-        case 0:
-          unaff_s2_lo = work->firstUnit;
-          unaff_s1_lo = work->secondUnit;
-          break;
-        case 1:
-          unaff_s2_lo = work->secondUnit;
-          unaff_s1_lo = work->firstUnit;
-          break;
-        }
-        uVar4 = func_002b93e0_4arg(work->context,sVar1,unaff_s2_lo,
-                                    unaff_s1_lo);
-        *(u32 *)(puVar2 + 8) = uVar4;
-        *puVar2 = *puVar2 | 0x30;
-      }
-      work->counter += 2;
+  puVar2 = (u16 *)param_1[4];
+    if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
+      uVar4 = 1;
     }
-    uVar4 = 0;
-  }
+    else {
+      iVar3 = func_002b9370(*param_1,*(u16 *)(param_1 + 3));
+      if ((*puVar2 & 0x40) == 0) {
+        if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
+          *puVar2 = *puVar2 | 0x100;
+          return 0;
+        }
+        if ((param_1[6] == 0) && ((param_1[7] & 0xc00) != 0xc00)) {
+          sVar1 = *(short *)(param_1 + 3);
+          switch (sVar1) {
+          case 0:
+            unaff_s2_lo = param_1[1];
+            unaff_s1_lo = param_1[2];
+            break;
+          case 1:
+            unaff_s2_lo = param_1[2];
+            unaff_s1_lo = param_1[1];
+            break;
+          }
+          uVar4 = func_002b93e0_4arg(*param_1,sVar1,unaff_s2_lo,unaff_s1_lo);
+          *(u32 *)(puVar2 + 8) = uVar4;
+          *puVar2 = *puVar2 | 0x30;
+        }
+        param_1[6] = param_1[6] + 2;
+      }
+      uVar4 = 0;
+    }
   return uVar4;
 }
 

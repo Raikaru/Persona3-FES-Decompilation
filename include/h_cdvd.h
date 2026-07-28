@@ -85,7 +85,7 @@ u32 func_00101810(void* slot, void* dst, u32 size);
 void func_001018c0(void* result, void* slot, u32 amount, s32 mode);
 void func_001019e0(void* context);
 s32 func_00101a10(void* unused, const char* path);
-void* func_00101ad0(s32 count, u8* source, s32 stride,
+void* func_00101ad0(s32 count, void* source, s32 stride,
                      void* callbackData, void* key);
 void func_00101c70(void);
 void func_00101e30(void* requestData);
