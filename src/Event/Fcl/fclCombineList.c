@@ -40,7 +40,7 @@ int FUN_003dffc0(int *param_1,int param_2,s32 param_3);
 void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4);
 #pragma alias FUN_003e0080_p FUN_003e0080
 extern void FUN_003e0080_p(void *param_1,int param_2,int param_3,u16 param_4);
-int FUN_003e0260(u32 param_1,u32 param_2);
+int FUN_003e0260(int *param_1,s32 param_2,int param_3,u16 param_4);
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4);
 int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4);
 u64 FUN_003e0650(u32 *param_1);
@@ -628,34 +628,35 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 void fclCombineList003da2a0(FclList* param_1)
 {
     FclTaskLink* node;
+    FclNodeData* data;
     s32 i;
-    s32 j;
-    FclTaskLink* selected;
 
     node = param_1->list->links;
     i = 0;
-    selected = 0;
     while (node != 0) {
-        FclNodeData* data = node->payload->data.node_data;
+        data = node->payload->data.node_data;
         if (data->selection_detail != 0 &&
-            data->selection_detail == (FclFusionDetail*)fclCombineList003da3e0(param_1, 0)) {
-            selected = node;
+            data->selection_detail == (FclFusionDetail*)fclCombineList003da3e0(param_1, 0))
             break;
-        }
         node = node->next;
         i++;
     }
-    if (selected != 0) selected->payload->data.node_data->record = 0;
-    node = param_1->list->links;
-    j = 0;
-    while (node != 0) {
-        FclNodeData* data = node->payload->data.node_data;
-        if (data->selection_detail != 0 && j != i)
-            data->record = (FclNodeData*)FUN_003d8370((s32)param_1->input_copy, i, j);
-        else
-            data->record = 0;
-        j++;
-        node = node->next;
+    data->record = 0;
+    {
+        FclTaskLink* scan;
+        s32 j;
+
+        scan = param_1->list->links;
+        j = 0;
+        while (scan != 0) {
+            data = scan->payload->data.node_data;
+            if (data->selection_detail != 0 && j != i)
+                data->record = (FclNodeData*)FUN_003d8370((s32)param_1->input_copy, i, j);
+            else
+                data->record = 0;
+            j++;
+            scan = scan->next;
+        }
     }
 }
 
@@ -2928,34 +2929,34 @@ void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4)
 
 }
 
-// FUN_003E0260 NONMATCHING
+// FUN_003E0260
 
 
-int FUN_003e0260(u32 param_1,u32 param_2)
+int FUN_003e0260(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
-  int iVar1;
-  int iVar2;
-  u8 auStack_20 [4];
-  int iStack_1c;
+    u8 result[0x1c];
+    s32 result_word;
+    FclAnimationNode *node;
+    FclNodeLink *link;
 
-  FUN_003e0080_p((void *)auStack_20,0,0,0);
-  iVar1 = FUN_003dff80((int *)param_1,param_2);
-  if (iVar1 == 0) {
-    iVar2 = (s32)FUN_003c4910((FclNodeList *)*(int *)param_1,
-                              *(u16 *)(*(int *)param_1 + 0x10) + 1,
-                              (FclNodeValueStorage *)(iStack_1c + 0x38));
-    iVar1 = *(int *)(iVar2 + 0x14);
-    *(int *)(iVar1 + 4) = iVar2;
-    if (iStack_1c != 0)
-      *(int *)(iVar1 + 0x34) = iVar1 + 0x38;
-    *(u32 *)(iVar1 + 0xc) = 0;
-    *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) | 4;
-  }
-  *(u32 *)(iVar1 + 0xc) = 1;
-  *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) & 0xfffffffb;
-  fclCombineList003df100((FclAnimationNode *)iVar1,
-                         (FclAnimationResultRecord *)auStack_20);
-  return iVar1;
+    FUN_003e0080_p(result,param_2,param_3,param_4);
+    result_word = *(s32 *)(result + 4);
+    node = (FclAnimationNode *)FUN_003dff80(param_1,param_2);
+    if (node == 0) {
+        link = FUN_003c4910((FclNodeList *)*param_1,
+                            *(u16 *)(*param_1 + 0x10) + 1,
+                            (FclNodeValueStorage *)(result_word + 0x38));
+        node = link->payload;
+        node->link = link;
+        if (result_word != 0)
+            node->value_storage = &node->inline_storage;
+        node->field_0c = 0;
+        node->flags |= 4;
+    }
+    node->field_0c = 1;
+    node->flags &= 0xfffffffb;
+    fclCombineList003df100(node,(FclAnimationResultRecord *)result);
+    return (int)node;
 }
 
 // FUN_003E0330

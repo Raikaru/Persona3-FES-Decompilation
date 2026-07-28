@@ -699,43 +699,27 @@ void func_001f1240(KwlnTask *task)
 {
     u32 *work = (u32 *)BR_TASK_WORK(task);
     f32 ratio;
-    u8 level;
 
-    K_ASSERT((~work[0] & 0x20000) != 0, 0x603);
-    if ((~work[0] & 2) == 0) {
-        goto scaled_ratio;
+    K_ASSERT((BR_U32(work, 0) & 0x20000) == 0, 0x603);
+    if ((BR_U32(work, 0) & 2) == 0) {
+        ratio = (f32)BR_S32(work, 0xb4) / (f32)BR_S32(work, 0x11c);
+    } else {
+        ratio = ((f32)BR_S32(work, 0xb4) * (f32)BR_S32(work, 0x2a5c) / 100.0f) /
+                (f32)BR_S32(work, 0x11c);
     }
-    ratio = (f32)(s32)work[0x2d] / (f32)(s32)work[0x47];
-    goto ratio_ready;
-
-scaled_ratio:
-    ratio = ((f32)(s32)work[0x2d] * (f32)(s32)work[0xa97] / 100.0f) /
-            (f32)(s32)work[0x47];
-
-ratio_ready:
-    if (ratio != 0.0f) {
-        goto nonzero_ratio;
+    if (ratio == 0.0f) {
+        BR_U32(work, 0xb8) = 0;
+    } else if (ratio < 1.0f) {
+        BR_U32(work, 0xb8) = 1;
+    } else {
+        BR_U32(work, 0xb8) = (s32)ratio;
     }
-    work[0x2e] = 0;
-    goto ratio_stored;
-
-nonzero_ratio:
-    if (!(ratio < 1.0f)) {
-        goto integral_ratio;
-    }
-    work[0x2e] = 1;
-    goto ratio_stored;
-
-integral_ratio:
-    work[0x2e] = (s32)ratio;
-
-ratio_stored:
-    work[0xa95] = work[0x4c];
-    level = (u8)datGetLevel(1);
-    work[0xa94] = func_001fbdf0(level, work[0xa95],
-                                work[0x2e], work[0xa96], work[0x47]);
+    BR_U32(work, 0x2a54) = BR_U32(work, 0x130);
+    BR_U32(work, 0x2a50) = func_001fbdf0((u8)datGetLevel(1), BR_U32(work, 0x2a54),
+                                         BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
+                                         BR_U32(work, 0x11c));
     func_001f13b0(task);
-    work[0] |= 0x20000;
+    BR_U32(work, 0) |= 0x20000;
 }
 #pragma optimization_level 2
 
@@ -2978,7 +2962,7 @@ final_exit:
 }
 #pragma optimization_level 2
 
-// FUN_001f64c0 NONMATCHING
+// FUN_001f64c0
 void func_001f64c0(void)
 {
     u8 *work;
@@ -2995,14 +2979,14 @@ void func_001f64c0(void)
                 for (i = 0; i < (s32)BR_U32(work, 0x341c); i++) {
                     u32 idx = BR_U32(work + i * 4, 0x3c);
                     u32 address = idx * 0x670;
-                    address += (u32)work;
+                    address = (u32)(work + address);
                     address += 0x5c;
                     func_0020b250((u8 *)address + 0xc);
                 }
                 for (i = 0; i < (s32)BR_U32(work, 0x3418); i++) {
                     u32 idx = BR_U32(work + i * 4, 0x1c);
                     u32 address = idx * 0x670;
-                    address += (u32)work;
+                    address = (u32)(work + address);
                     address += 0x5c;
                     func_0020b250((u8 *)address + 0xc);
                 }

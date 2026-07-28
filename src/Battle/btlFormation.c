@@ -2350,8 +2350,8 @@ u32 func_002bad60(u32 *param_1)
   u16 *puVar2;
   int iVar3;
   u32 uVar4;
-  u32 unaff_s1_lo;
   u32 unaff_s2_lo;
+  u32 unaff_s1_lo;
   
   if (func_002b9350_u32(*param_1) == 0)
     return 0;
@@ -2362,7 +2362,7 @@ u32 func_002bad60(u32 *param_1)
     else {
       iVar3 = func_002b9370(*param_1,*(u16 *)(param_1 + 3));
       if ((*puVar2 & 0x40) == 0) {
-        if (iVar3 * 2 + -0xd <= (int)param_1[6]) {
+        if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
           *puVar2 = *puVar2 | 0x100;
           return 0;
         }
@@ -13747,7 +13747,7 @@ u32 func_002ced60(void)
 }
 #pragma pop
 
-// FUN_002cef10 NONMATCHING
+// FUN_002cef10
 u32 func_002cef10(void)
 {
   extern u32 func_0035f160(void);
@@ -13758,12 +13758,12 @@ u32 func_002cef10(void)
   extern void func_0035f060(u32);
   u32 unit;
   u32 selector;
-  int selected;
   int candidate;
+  int selected;
   u32 index;
-  u32 highestLevel;
   u32 level;
   u32 highestHp;
+  u32 highestLevel;
   u32 hp;
 
   unit = func_0035f160();
@@ -13779,7 +13779,7 @@ u32 func_002cef10(void)
       for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
         candidate = *(int *)(unit + index * 4 + 0x38);
         level = func_002ffcc0(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
-        if (highestLevel <= level) {
+        if (level >= highestLevel) {
           hp = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
           if (highestHp < hp) {
             selected = candidate;
@@ -13839,7 +13839,7 @@ u32 func_002cf070(void)
   return 0xffffffff;
 }
 
-// FUN_002cf1d0 NONMATCHING
+// FUN_002cf1d0
 u32 func_002cf1d0(void)
 {
   extern u32 func_0035f160(void);
@@ -13852,9 +13852,9 @@ u32 func_002cf1d0(void)
   u32 selector;
   int selectedUnit;
   int candidate;
-  u16 selectedCount;
-  u32 highestLevel;
   u32 index;
+  u32 highestLevel;
+  u16 selectedCount;
   u32 level;
   int selected[12];
 
@@ -13870,7 +13870,7 @@ u32 func_002cf1d0(void)
       for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
         candidate = *(int *)(unit + index * 4 + 0x38);
         level = func_002ffcc0(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
-        if (highestLevel <= level) {
+        if (level >= highestLevel) {
           if (level == highestLevel) {
             selected[selectedCount] = candidate;
             selectedCount++;
