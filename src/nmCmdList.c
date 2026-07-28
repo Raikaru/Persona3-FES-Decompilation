@@ -62,9 +62,22 @@ extern void FUN_003a27c0_typed(int param_1,s16 param_2);
 extern u32 FUN_003a2830_nm_typed(int param_1);
 #pragma alias FUN_003a2750_nm_typed FUN_003a2750
 extern int FUN_003a2750_nm_typed(int param_1);
+#pragma alias DAT_0095be90_abs DAT_0095be90
 extern u8 DAT_0095be90_abs[];
+#pragma alias DAT_0095be94_abs DAT_0095be94
+extern u8 DAT_0095be94_abs[];
+#pragma alias DAT_0095be95_abs DAT_0095be95
+extern u8 DAT_0095be95_abs[];
+#pragma alias DAT_0095be98_abs DAT_0095be98
+extern u32 DAT_0095be98_abs[];
+#pragma alias DAT_0095be9c_abs DAT_0095be9c
+extern u8 DAT_0095be9c_abs[];
+#pragma alias DAT_0095be9d_abs DAT_0095be9d
+extern u8 DAT_0095be9d_abs[];
 #pragma alias FUN_003c7d50_ptr FUN_003c7d50
 extern u8 *FUN_003c7d50_ptr(void);
+#pragma alias FUN_003c8230_direct FUN_003c8230
+extern u64 FUN_003c8230_direct(s32* param_1, int param_2);
 #pragma alias FUN_003c6380_typed FUN_003c6380
 extern u64 FUN_003c6380_typed(int param_1);
 #pragma alias FUN_003c6900_typed FUN_003c6900
@@ -1539,48 +1552,28 @@ void FUN_003c72a0(int param_1)
 
 
 u8 FUN_003c72d0(u64 param_1)
-
-
-
 {
+    s32* command;
 
-  extern u8 *FUN_003c7d50_direct(void);
-  u8 bVar1;
+    if (DAT_0095be90_abs != NULL)
+    {
+        *(u32*)DAT_0095be90_abs = 0xffffffff;
+        DAT_0095be94_abs[0] = 0;
+        DAT_0095be95_abs[0] = 0;
+        DAT_0095be98_abs[0] = 0xffffffff;
+        DAT_0095be9c_abs[0] = 1;
+        DAT_0095be9d_abs[0] = 1;
+    }
 
-  int iVar2;
+    command = (s32*)FUN_003c7d50_direct();
+    if (*command < 0)
+    {
+        *command = FUN_003a2d80(param_1);
+        FUN_003c8230_direct(command, 0);
+        return 1;
+    }
 
-  u8 *uVar3;
-
-  
-
-  DAT_0095be90 = 0xffffffff;
-
-  DAT_0095be94 = 0;
-
-  DAT_0095be95 = 0;
-
-  DAT_0095be98 = 0xffffffff;
-
-  DAT_0095be9c = 1;
-
-  DAT_0095be9d = 1;
-
-  uVar3 = FUN_003c7d50_direct();
-
-  bVar1 = *(int *)uVar3 < 0;
-
-  if (bVar1) {
-
-    iVar2 = FUN_003a2d80(param_1);
-
-    *(int *)uVar3 = iVar2;
-
-    FUN_003c8230(uVar3,0);
-
-  }
-
-  return bVar1;
-
+    return 0;
 }
 #define FUN_003c72d0(...) ((u8 (*)(...))FUN_003c72d0)(__VA_ARGS__)
 #undef FUN_003c7390

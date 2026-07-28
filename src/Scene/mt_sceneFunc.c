@@ -3762,18 +3762,24 @@ void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,flo
   float fVar10;
 
   float fVar11;
+  float oneMinusSquared;
+  float paramSquared;
 
   
 
   fVar8 = 1.0f - param_1;
 
-  fVar11 = fVar8 * fVar8 * fVar8;
+  oneMinusSquared = fVar8 * fVar8;
 
-  fVar9 = param_1 * fVar8 * fVar8 * 3.0f;
+  fVar11 = fVar8 * oneMinusSquared;
 
-  fVar10 = fVar8 * 3.0f * param_1 * param_1;
+  fVar9 = param_1 * oneMinusSquared * 3.0f;
 
-  param_1 = param_1 * param_1 * param_1;
+  paramSquared = param_1 * param_1;
+
+  fVar10 = fVar8 * paramSquared * 3.0f;
+
+  param_1 = param_1 * paramSquared;
 
   fVar8 = *param_3;
 
@@ -3816,6 +3822,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
   int iVar2;
 
   int iVar3;
+  int segmentIndex;
 
 
   float fVar5;
@@ -3835,9 +3842,13 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
     if (!(param_1 < 1.0f)) {
 
-      for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+      iVar3 = 0;
+      segmentIndex = cVar1 - 1;
+      param_2 += segmentIndex * 0x24;
 
-        iVar2 = iVar3 * 0xc + (cVar1 + -1) * 0x24;
+      for (; iVar3 < 4; iVar3 = iVar3 + 1) {
+
+        iVar2 = iVar3 * 0xc;
 
         auStack_10[iVar3] = *(float *)(param_2 + iVar2 + 4);
 
@@ -3855,9 +3866,13 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
       fVar5 = 1.0f / (float)(int)cVar1;
 
-      for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+      iVar3 = 0;
+      segmentIndex = (int)(param_1 / fVar5);
+      param_2 += segmentIndex * 0x24;
 
-        iVar2 = iVar3 * 0xc + (int)(param_1 / fVar5) * 0x24;
+      for (; iVar3 < 4; iVar3 = iVar3 + 1) {
+
+        iVar2 = iVar3 * 0xc;
 
         auStack_10[iVar3] = *(float *)(param_2 + iVar2 + 4);
 
@@ -3867,7 +3882,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
       }
 
-      while (param_1 >= fVar5) {
+      while (param_1 > fVar5) {
 
         param_1 = param_1 - fVar5;
 

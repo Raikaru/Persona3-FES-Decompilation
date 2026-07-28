@@ -418,6 +418,8 @@ extern BtlPacket* FUN_002dd100_packet_voice(u32, u32, u32);
 extern BtlPacket* FUN_002a1db0_packet_voice(u32);
 #pragma alias FUN_002a1b00_voice FUN_002a1b00
 extern void FUN_002a1b00_voice(s32, s16, s32);
+#pragma alias FUN_002d4e10_u16_voice FUN_002d4e10
+extern u16 FUN_002d4e10_u16_voice(u16, u32);
 
 
 // FUN_002f0580
@@ -4303,7 +4305,7 @@ u32 func_002eea10(BtlAction* action);
 void func_002eeb70(BtlAction* action);
 void func_002eec60(void);
 u32 func_002eee20(BtlAction* param_1,float *param_2);
-void func_002ef000(u64 *param_1);
+void func_002ef000(BtlAction* action);
 u32 func_002ef250(BtlAction* action);
 void func_002ef360(void);
 void func_002ef5a0(void);
@@ -7647,11 +7649,11 @@ void func_002e9ac0(void)
 }
 #pragma opt_loop_invariants off
 
-// FUN_002e9c20 NONMATCHING
+// FUN_002e9c20
 void func_002e9c20(BtlAction* action)
 {
-    void* object;
     BtlUnit* unit;
+    void* object;
     BtlPacket* parent;
     BtlPacket* packet;
 
@@ -7659,15 +7661,19 @@ void func_002e9c20(BtlAction* action)
     *(u32*)((u8*)gBtl + 0xc) |= 0x00080000;
     unit = action->unit;
     object = func_002b8f90(0);
-    if (unit->charId == 0x102) {
-        func_002b90d0(object, func_002f87e0(3));
-        packet = FUN_002dd690_packet_voice(3, (const char*)0x699c68);
-        btlPacketRegister(packet, 1);
-    }
-    else if (unit->charId == 0x101) {
+    switch (unit->charId) {
+    case 0x101:
         func_002b90d0(object, func_002f87e0(2));
-        packet = FUN_002dd690_packet_voice(3, (const char*)0x699c58);
+        packet = FUN_002dd690_packet_voice(
+            3, (const char*)(DAT_006a0000 - 0x6398));
         btlPacketRegister(packet, 1);
+        break;
+    case 0x102:
+        func_002b90d0(object, func_002f87e0(3));
+        packet = FUN_002dd690_packet_voice(
+            3, (const char*)(DAT_006a0000 - 0x63a8));
+        btlPacketRegister(packet, 1);
+        break;
     }
     parent = FUN_00284200_packet_voice(1.0f, unit, 0x12, 0, 2);
     parent->preUpdateDelay = 2;
@@ -7678,7 +7684,7 @@ void func_002e9c20(BtlAction* action)
     packet->parentUID = parent->uid;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027fe90_packet_voice(unit, NULL, (const void*)0x6978b0, NULL);
+    packet = FUN_0027fe90_packet_voice(unit, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     packet->actionUID = action->uid;
@@ -7691,7 +7697,7 @@ void func_002e9c20(BtlAction* action)
     packet = FUN_002baf90_packet_voice(object, unit, unit, 0, 0x200);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, 2);
-    if (FUN_002d4e10(2, 0x80000) == 1) {
+    if (FUN_002d4e10_u16_voice(2, 0x80000) == 1) {
         packet = FUN_002db890_packet_voice();
         packet->preUpdateDelay = 0x2d;
         btlPacketRegister(packet, 1);
@@ -7982,76 +7988,82 @@ void func_002ea780(BtlAction* action)
     }
 }
 
-// FUN_002ea860 NONMATCHING
+// FUN_002ea860
 void func_002ea860(void)
-
 {
+  typedef struct {
+    u32 data[6];
+    s16 ids[4];
+    RwV3d position;
+  } VoicePositionWork;
+  typedef struct {
+    s16 a;
+    s16 b;
+    s16 c;
+  } VoiceIds;
+  VoicePositionWork work;
   u32 uVar1;
   u32 uVar2;
-  int iVar3;
   int iVar4;
-  u32 *puVar5;
   u32 *puVar6;
-  short sVar7;
-  u32 auStack_40030 [49158];
-  u16 auStack_10018 [32748];
-  u32 auStack_30 [6];
-  u16 auStack_18 [4];
-  f32 uStack_10;
-  f32 uStack_c;
-  f32 uStack_8;
-  
+  u32 *puVar5;
+  int copyCount;
+  int iVar3;
+  s16 sVar7;
+
   puVar6 = (u32*)DAT_00699d10;
-  puVar5 = auStack_30;
-  iVar4 = 3;
+  puVar5 = work.data;
+  copyCount = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    copyCount = copyCount + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = uGpffff9ca8;
-  auStack_18[1] = uGpffff9caa;
-  auStack_18[2] = uGpffff9cac;
+  } while (0 < copyCount);
+  *(VoiceIds *)&work.ids[0] = *(VoiceIds *)&uGpffff9ca8;
   sVar7 = 0;
-  uStack_c = 0.0f;
-  for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 1) {
-      uStack_10 = -150.0f;
-      uStack_8 = 450.0f;
+  work.position.y = 0.0f;
+  for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0;
+       iVar4 = *(int *)(iVar4 + 0xa34)) {
+    if (*(u16 *)(iVar4 + 0xa4) == 1) {
+      work.position.x = -150.0f;
+      work.position.z = 450.0f;
       *(u8 *)(iVar4 + 0x9f0) = 1;
     }
     else {
       iVar3 = (int)sVar7;
-      uStack_10 = *(f32*)&auStack_30[iVar3 * 2];
-      uStack_8 = *(f32*)&auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
-      sVar7 = sVar7 + 1;
+      work.position.x = *(f32*)((u8*)&work + iVar3 * 8);
+      work.position.z = *(f32*)((u8*)&work + iVar3 * 8 + 4);
+      *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
+      sVar7++;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar4 + 0x94, iVar4 + 0x96, &work.position.x);
+    FUN_0027f650(iVar4, &work.position.x);
   }
-  for (iVar4 = *(int *)(iGpffffb6fc + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    sVar7 = *(short *)(iVar4 + 0xa4);
-    if (sVar7 == 0x115) {
-      uStack_10 = 0.0f;
-      uStack_8 = -400.0f;
+  for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0;
+       iVar3 = *(int *)(iVar3 + 0xa34)) {
+    switch (*(u16 *)(iVar3 + 0xa4)) {
+    case 0x105:
+      work.position.x = -300.0f;
+      work.position.z = -400.0f;
+      break;
+    case 0x106:
+      work.position.x = 300.0f;
+      work.position.z = -500.0f;
+      break;
+    case 0x115:
+      work.position.x = 0.0f;
+      work.position.z = -400.0f;
+      break;
+    default:
+      break;
     }
-    else if (sVar7 == 0x106) {
-      uStack_10 = 300.0f;
-      uStack_8 = -500.0f;
-    }
-    else if (sVar7 == 0x105) {
-      uStack_10 = -300.0f;
-      uStack_8 = -400.0f;
-    }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar3 + 0x94, iVar3 + 0x96, &work.position.x);
+    FUN_0027f650(iVar3, &work.position.x);
   }
-  return;
 }
 
 #pragma opt_propagation off
@@ -10109,64 +10121,57 @@ u32 func_002eee20(BtlAction* action, f32* position)
   return result;
 }
 
-// FUN_002ef000 NONMATCHING
-void func_002ef000(u64 *param_1)
-
+// FUN_002ef000
+void func_002ef000(BtlAction* action)
 {
-  extern u32 func_002e2cb0();
-  int iVar1;
-  int iVar2;
-  u8 *puVar3;
-  u32 uVar4;
-  u32 uVar5;
-  u16 unaff_s0_lo;
-  
-  *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfdffffff;
-  *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x80000;
-  iVar1 = *(int *)(param_1 + 6);
-  if (*(u16 *)(iVar1 + 0xa4) == 0x10c) {
-    unaff_s0_lo = 3;
-    uVar4 = func_002e2cb0(0x312);
-    *(u16 *)((int)uVar4 + 0x48) = 3;
-    FUN_0027ed20_voice(uVar4,1);
+  BtlUnit* unit;
+  void* object;
+  BtlPacket* parent;
+  BtlPacket* packet;
+  s32 state;
+
+  gBtl->flags &= ~0x02000000;
+  gBtl->flags |= 0x00080000;
+  unit = action->unit;
+  switch (unit->charId) {
+  case 0x10b:
+    state = 2;
+    packet = (BtlPacket*)func_002e2cb0(0x2ff);
+    packet->preUpdateDelay = 3;
+    btlPacketRegister(packet, 1);
+    break;
+  case 0x10c:
+    state = 3;
+    packet = (BtlPacket*)func_002e2cb0(0x312);
+    packet->preUpdateDelay = state;
+    btlPacketRegister(packet, 1);
+    break;
   }
-  else if (*(u16 *)(iVar1 + 0xa4) == 0x10b) {
-    unaff_s0_lo = 2;
-    uVar4 = func_002e2cb0(0x2ff);
-    *(u16 *)((int)uVar4 + 0x48) = 3;
-    FUN_0027ed20_voice(uVar4,1);
-  }
-  uVar4 = FUN_002b8f90(0);
-  uVar5 = FUN_002f87e0(unaff_s0_lo);
-  FUN_002b90d0_voice(uVar4,uVar5);
-  uVar5 = FUN_00284200_u32_voice(1.0f,iVar1,0x12,0,2);
-  iVar2 = (int)uVar5;
-  *(u16 *)(iVar2 + 0x48) = 3;
-  *(u64 *)(iVar2 + 0x60) = *param_1;
-  FUN_0027ed20(uVar5,1);
-  uVar5 = FUN_002b8d60_u32_voice(1,0xfff);
-  puVar3 = (u8 *)uVar5;
-  *puVar3 = 4;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(iVar2 + 0x58);
-  *(u64 *)(puVar3 + 0x60) = *param_1;
-  FUN_0027ed20(uVar5,1);
-  uVar5 = FUN_0027fe90_u32_voice(iVar1,0,0x6978b0,0);
-  puVar3 = (u8 *)uVar5;
-  *puVar3 = 4;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(iVar2 + 0x58);
-  *(u64 *)(puVar3 + 0x60) = *param_1;
-  FUN_0027ed20(uVar5,1);
-  uVar5 = FUN_002a3b40_u32_voice(0,1);
-  puVar3 = (u8 *)uVar5;
-  *puVar3 = 4;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(iVar2 + 0x58);
-  *(u64 *)(puVar3 + 0x60) = *param_1;
-  FUN_0027ed20(uVar5,0);
-  uVar5 = FUN_002baf90_u32_voice(uVar4,iVar1,iVar1,0,0x200);
-  *(u64 *)((int)uVar5 + 0x60) = *param_1;
-  FUN_0027ed20(uVar5,2);
-  FUN_002b9030(uVar4);
-  return;
+  object = func_002b8f90(0);
+  func_002b90d0(object, func_002f87e0(state));
+  parent = FUN_00284200_packet_voice(1.0f, unit, 0x12, 0, 2);
+  parent->preUpdateDelay = 3;
+  parent->actionUID = action->uid;
+  btlPacketRegister(parent, 1);
+  packet = FUN_002b8d60_packet_voice(1, 0xfff);
+  packet->unk_00 = 4;
+  packet->parentUID = parent->uid;
+  packet->actionUID = action->uid;
+  btlPacketRegister(packet, 1);
+  packet = FUN_0027fe90_packet_voice(unit, NULL, D_006978B0, NULL);
+  packet->unk_00 = 4;
+  packet->parentUID = parent->uid;
+  packet->actionUID = action->uid;
+  btlPacketRegister(packet, 1);
+  packet = FUN_002a3b40_packet_voice(NULL, 1);
+  packet->unk_00 = 4;
+  packet->parentUID = parent->uid;
+  packet->actionUID = action->uid;
+  btlPacketRegister(packet, 0);
+  packet = FUN_002baf90_packet_voice(object, unit, unit, 0, 0x200);
+  packet->actionUID = action->uid;
+  btlPacketRegister(packet, 2);
+  func_002b9030(object);
 }
 
 // FUN_002ef250
@@ -10193,23 +10198,31 @@ u32 func_002ef250(BtlAction* action)
     return 1;
 }
 
-// FUN_002ef360 NONMATCHING
+// FUN_002ef360
 void func_002ef360(void)
 {
+  typedef struct {
+    u32 data[6];
+    s16 ids[4];
+    RwV3d position;
+  } VoicePositionWork;
+  typedef struct {
+    s16 a;
+    s16 b;
+    s16 c;
+  } VoiceIds;
+  VoicePositionWork work;
   u32 uVar1;
   u32 uVar2;
+  int iVar4;
+  u32 *puVar6;
+  u32 *puVar5;
   int copyCount;
   int iVar3;
-  int iVar4;
-  u32 *puVar5;
-  u32 *puVar6;
-  short sVar7;
-  u32 auStack_30 [6];
-  u16 auStack_18 [4];
-  RwV3d position;
-  
+  s16 sVar7;
+
   puVar6 = (u32*)DAT_0069a060;
-  puVar5 = auStack_30;
+  puVar5 = work.data;
   copyCount = 3;
   do {
     uVar1 = *puVar6;
@@ -10220,57 +10233,59 @@ void func_002ef360(void)
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
   } while (0 < copyCount);
-  auStack_18[0] = DAT_007cc9b8_s16;
-  auStack_18[1] = DAT_007cc9ba_s16;
-  auStack_18[2] = DAT_007cc9bc_s16;
+  *(VoiceIds *)&work.ids[0] = *(VoiceIds *)&DAT_007cc9b8_s16;
   sVar7 = 0;
-  position.y = 0.0f;
-  for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 1) {
-      position.x = 150.0f;
-      position.z = 500.0f;
+  work.position.y = 0.0f;
+  for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0;
+       iVar4 = *(int *)(iVar4 + 0xa34)) {
+    if (*(u16 *)(iVar4 + 0xa4) == 1) {
+      work.position.x = 150.0f;
+      work.position.z = 500.0f;
       *(u8 *)(iVar4 + 0x9f0) = 2;
     }
     else {
       iVar3 = (int)sVar7;
-      position.x = *(f32*)&auStack_30[iVar3 * 2];
-      position.z = *(f32*)&auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
-      sVar7 = sVar7 + 1;
+      work.position.x = *(f32*)((u8*)&work + iVar3 * 8);
+      work.position.z = *(f32*)((u8*)&work + iVar3 * 8 + 4);
+      *(u8 *)(iVar4 + 0x9f0) = (u8)work.ids[iVar3];
+      sVar7++;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,(f32*)&position);
-    FUN_0027f650(iVar4,&position);
+    FUN_002d2280(iVar4 + 0x94, iVar4 + 0x96, &work.position.x);
+    FUN_0027f650(iVar4, &work.position.x);
   }
-  for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    sVar7 = *(short *)(iVar4 + 0xa4);
-    if (sVar7 == 0x127) {
-      position.x = 250.0f;
-      position.z = 100.0f;
+  for (iVar3 = *(int *)(DAT_007ce3ec + 0x158); iVar3 != 0;
+       iVar3 = *(int *)(iVar3 + 0xa34)) {
+    switch (*(u16 *)(iVar3 + 0xa4)) {
+    case 0x10d:
+      work.position.x = 0.0f;
+      work.position.z = -500.0f;
+      break;
+    case 0x116:
+      work.position.x = -250.0f;
+      work.position.z = -450.0f;
+      break;
+    case 0x117:
+      work.position.x = 0.0f;
+      work.position.z = -200.0f;
+      break;
+    case 0x118:
+      work.position.x = 250.0f;
+      work.position.z = -450.0f;
+      break;
+    case 0x119:
+      work.position.x = -250.0f;
+      work.position.z = 100.0f;
+      break;
+    case 0x127:
+      work.position.x = 250.0f;
+      work.position.z = 100.0f;
+      break;
+    default:
+      break;
     }
-    else if (sVar7 == 0x119) {
-      position.x = -250.0f;
-      position.z = 100.0f;
-    }
-    else if (sVar7 == 0x118) {
-      position.x = 250.0f;
-      position.z = -450.0f;
-    }
-    else if (sVar7 == 0x117) {
-      position.x = 0.0f;
-      position.z = -200.0f;
-    }
-    else if (sVar7 == 0x116) {
-      position.x = -250.0f;
-      position.z = -450.0f;
-    }
-    else if (sVar7 == 0x10d) {
-      position.x = 0.0f;
-      position.z = -500.0f;
-    }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,(f32*)&position);
-    FUN_0027f650(iVar4,&position);
+    FUN_002d2280(iVar3 + 0x94, iVar3 + 0x96, &work.position.x);
+    FUN_0027f650(iVar3, &work.position.x);
   }
-  return;
 }
 
 // FUN_002ef5a0

@@ -113,6 +113,9 @@ extern u32 func_0053db90(ADXF adxf);
 static HCdvd sCdvdListHead;                    // 007e0380. Dummy head
 static HCdvdCache sCdvdCache[HCDVD_CACHE_MAX]; // 007d6f80
 
+static const char* sCdvdVolumePrefix = "VOL:";
+static const char* sCdvdBattlePrefix = "BTL:";
+
 static const char* sCdvdBtlDirectories[] = {
     "\\",
     "\\BATTLE\\",
@@ -542,45 +545,54 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
     }
 }
 
-// FUN_00101240 NONMATCHING
-void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
+// FUN_00101240
+s32 H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
 {
     char reverseFileName[256];
     char normalizedDir[256];
     u32 pathLength;
     u32 fileNameLength;
-    u32 i;
+    u32 reverseIndex;
+    u32 directoryIndex;
+    u32 outputIndex;
+    char current;
 
     strcpy(dirDst, path);
     pathLength = strlen(dirDst);
-    for (i = 1; i < pathLength; i++)
+    for (reverseIndex = 1; reverseIndex < pathLength; reverseIndex++)
     {
-        reverseFileName[i] = dirDst[pathLength - i];
-        if (reverseFileName[i] == '\\')
+        current = dirDst[pathLength - reverseIndex];
+        if (current == '\\')
         {
-            dirDst[pathLength - i + 1] = '\0';
-            reverseFileName[i] = '\0';
+            dirDst[pathLength - (reverseIndex - 1)] = '\0';
+            reverseFileName[reverseIndex - 1] = '\0';
             break;
         }
+        reverseFileName[reverseIndex - 1] = current;
     }
 
     H_Cdvd_NormalizePath(dirDst, normalizedDir);
-    strcpy(fileNameDst, "VOL:");
-    for (i = 0; i < 0xc8 && sCdvdBtlDirectories[i][0] != '\0'; i++)
+    strcpy(fileNameDst, sCdvdVolumePrefix);
+    for (directoryIndex = 0; directoryIndex < 0xc8; directoryIndex++)
     {
-        if (strcmp(sCdvdBtlDirectories[i], &normalizedDir[4]) == 0)
+        if (sCdvdBtlDirectories[directoryIndex][0] == '\0')
         {
-            strcpy(fileNameDst, "BTL:");
+            break;
+        }
+        if (strcmp(sCdvdBtlDirectories[directoryIndex], &normalizedDir[4]) == 0)
+        {
+            strcpy(fileNameDst, sCdvdBattlePrefix);
         }
     }
 
-    fileNameLength = strlen(&reverseFileName[1]);
-    for (i = 0; i < fileNameLength; i++)
+    fileNameLength = strlen(reverseFileName);
+    for (outputIndex = 0; outputIndex < fileNameLength; outputIndex++)
     {
-        fileNameDst[strlen(fileNameDst) + fileNameLength - i - 1] =
-            reverseFileName[i + 1];
+        fileNameDst[strlen(sCdvdVolumePrefix) + fileNameLength - outputIndex - 1] =
+            reverseFileName[outputIndex];
     }
-    fileNameDst[strlen(fileNameDst) + fileNameLength] = '\0';
+    fileNameDst[strlen(sCdvdVolumePrefix) + fileNameLength] = '\0';
+    return 0;
 }
 
 // FUN_001013f0
@@ -1128,6 +1140,8 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
 {
     HCdvdStreamContext* context;
     s32 i;
+    HCdvdStreamSlot* slot;
+    HCdvdStreamSlot* slots;
     void* (**allocator)(u32, u32, u32);
 
     if (func_004bfd50(key) != NULL)
@@ -1137,29 +1151,22 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     allocator = (void* (**)(u32, u32, u32))D_00960184;
 
     context = (HCdvdStreamContext*)(*allocator)(1, 0x5c, 0x40000);
-    if (context == NULL)
-    {
-        return NULL;
-    }
     context->callback14 = (void*)H_Cdvd_StreamGetSlot;
     context->callback18 = (void*)func_001019e0;
     context->callback28 = (void*)func_001016d0;
     context->callback2c = (void*)H_Cdvd_StreamNoop;
     context->callback30 = (void*)func_00101810;
-    context->callback38 = (void*)func_001018c0;
     context->callback44 = (void*)H_Cdvd_StreamComplete;
+    context->callback38 = (void*)func_001018c0;
     context->callback4c = (void*)func_00101a10;
-    context->count = count;
-    context->slots = (HCdvdStreamSlot*)(*allocator)(count, 0x110, 0x40000);
-    if (context->slots == NULL)
-    {
-        return context;
-    }
+    slots = (HCdvdStreamSlot*)(*allocator)(count, 0x110, 0x40000);
+    context->slots = slots;
     for (i = 0; i < count; i++)
     {
-        context->slots[i].context = context;
-        context->slots[i].source = (u8*)source + i * stride;
-        context->slots[i].sourceStride = stride;
+        slot = &slots[i];
+        slot->context = context;
+        slot->source = (u8*)source + i * stride;
+        slot->sourceStride = stride;
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)
     {
@@ -1528,6 +1535,16 @@ struct HCdvdFileContext
     u8 reserved50[8];
     u8* slots;
 };
+
+typedef struct
+{
+    u8 reserved00[0x50];
+    HCdvdFileContext* context;
+    u8 reserved54[0x14];
+    u8* source;
+    u32 sourceStride;
+    u8 reserved70[0x20];
+} HCdvdFileSlot;
 typedef struct
 {
     u8 reserved00[0x10];
@@ -1748,37 +1765,33 @@ void* func_00102e50(s32 count, void* source, s32 stride,
 {
     HCdvdFileContext* context;
     s32 i;
+    HCdvdFileSlot* slot;
+    HCdvdFileSlot* slots;
+    void* (**allocator)(u32, u32, u32);
 
     if (func_004bfd50(key) != NULL)
     {
         return NULL;
     }
-    context = (HCdvdFileContext*)HCDVD_ALLOC(1, 0x5c, 0x40000);
-    if (context == NULL)
-    {
-        return NULL;
-    }
+    allocator = (void* (**)(u32, u32, u32))D_00960184;
+    context = (HCdvdFileContext*)(*allocator)(1, 0x5c, 0x40000);
     context->callback14 = (void*)func_00102d90;
     context->callback18 = (void*)func_00102e00;
     context->callback28 = (void*)func_00102900;
     context->callback2c = (void*)func_00102a70;
     context->callback30 = (void*)func_00102ad0;
     context->callback34 = (void*)func_00102b60;
-    context->callback38 = (void*)func_00102bf0;
     context->callback44 = (void*)func_001028d0;
+    context->callback38 = (void*)func_00102bf0;
     context->callback4c = (void*)func_00102d10;
-    context->count = count;
-    context->slots = (u8*)HCDVD_ALLOC(count, 0x90, 0x40000);
-    if (context->slots == NULL)
-    {
-        return context;
-    }
+    slots = (HCdvdFileSlot*)(*allocator)(count, 0x90, 0x40000);
+    context->slots = (u8*)slots;
     for (i = 0; i < count; i++)
     {
-        u8* slot = context->slots + i * 0x90;
-        *(void**)(slot + 0x50) = context;
-        *(u8**)(slot + 0x68) = (u8*)source + i * stride;
-        *(u32*)(slot + 0x6c) = stride;
+        slot = &slots[i];
+        slot->context = context;
+        slot->source = (u8*)source + i * stride;
+        slot->sourceStride = stride;
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)
     {

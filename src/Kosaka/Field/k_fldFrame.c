@@ -932,8 +932,8 @@ u32 func_001ae480(KwlnTask* task)
             pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);
             source = (u32*)(pointBase + 0x38);
             destination = (u32*)(pointBase + 0x20);
-
             j = 3;
+
             do
             {
                 u32 value0 = source[0];
@@ -1496,7 +1496,7 @@ void func_001af8e0(KwlnTask* task)
     (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
-// FUN_001af930 NONMATCHING
+// FUN_001af930
 KwlnTask* func_001af930(KwlnTask* parent, void* resource)
 {
     u32 animation;
@@ -1517,7 +1517,7 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
     if ((*(u16*)resource & 0x3ff) < 100)
     {
         animation = *(u16*)((u8*)*(Model**)((u8*)resource + 0x128) + 0xd6);
-        if (animation >= 0x100)
+        if (animation > 0xff)
         {
             work->animation = animation >> 8;
         }

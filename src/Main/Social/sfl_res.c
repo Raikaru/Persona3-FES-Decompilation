@@ -41,7 +41,7 @@
 #pragma alias sSflPersonaChangeSpritePath DAT_0068e1e0
 
 
-static u32* sSflRes; // DAT_007ce2f0
+static SflResourceManager* sSflRes; // DAT_007ce2f0
 extern char sSflTutorialArchivePath[];
 extern char sSflPersonaChangeSpritePath[];
 extern char sSflBaseArchivePath[];
@@ -76,27 +76,27 @@ static void sflResRequire(void)
     K_ASSERT(sSflRes != NULL, 0x65);
 }
 
-static void sflResLoadRaster(u32* work, s32 requestIndex, s32 fileIndex, s32 destinationIndex)
+static void sflResLoadRaster(u32 request, s32 fileIndex, u32* destination)
 {
     u32 fileSize;
     void* file;
 
-    file = H_Cdvd_ArchiveGetFile((void*)work[requestIndex], fileIndex, &fileSize);
-    work[destinationIndex] = (u32)bpTexCreateTmxRaster(file);
+    file = H_Cdvd_ArchiveGetFile((void*)request, fileIndex, &fileSize);
+    *destination = (u32)bpTexCreateTmxRaster(file);
 }
 
-static void sflResCopyFile(u32* work, s32 requestIndex, s32 fileIndex, s32 destinationIndex)
+static void sflResCopyFile(u32 request, s32 fileIndex, u32* destination)
 {
     u32 fileSize;
     void* file;
     void* copy;
 
-    file = H_Cdvd_ArchiveGetFile((void*)work[requestIndex], fileIndex, &fileSize);
+    file = H_Cdvd_ArchiveGetFile((void*)request, fileIndex, &fileSize);
     copy = (*DAT_00960178)(fileSize, 0x40000);
     if (copy != NULL && file != NULL) {
         memcpy(copy, file, fileSize);
     }
-    work[destinationIndex] = (u32)copy;
+    *destination = (u32)copy;
 }
 
 // FUN_0020d500
@@ -185,14 +185,11 @@ void sflRes0020d770(void* work, f32 value)
 }
 
 // FUN_0020d7d0
-void sflResInit(void* value)
+void sflResInit(SflResourceManager* work)
 {
-    u32* work;
-
     K_ASSERT(sSflRes == NULL, 0x6c);
-    work = (u32*)value;
-    work[0] = 0;
-    work[1] = 0;
+    work->requestFlags = 0;
+    work->loadedFlags = 0;
     sSflRes = work;
 }
 
@@ -201,7 +198,7 @@ void sflResInit(void* value)
 // FUN_0020d820 MATCHING
 void sflResUpdate(void)
 {
-    u32* work;
+    SflResourceManager* work;
     void* file;
     void* copy;
     u32 fileSize;
@@ -209,38 +206,49 @@ void sflResUpdate(void)
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    if ((*work & 1) != 0) {
-        if (((~work[1]) & 2) == 0) {
+    if ((work->requestFlags & 1) != 0) {
+        if (((~work->loadedFlags) & 2) == 0) {
             goto first_check;
         }
-        if (H_Cdvd_IsFileLoaded((void*)work[0x1a]) == 0)
+        if (H_Cdvd_IsFileLoaded(
+                (void*)work->baseRequest) == 0)
             goto first_clear;
             for (i = 0; i < 0xf; i++) {
                 switch (i) {
                 case 0:
-                    work[5] = (u32)bpTexCreateTmxRaster(
-                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
+                    work->baseRasters[0] =
+                        (u32)bpTexCreateTmxRaster(H_Cdvd_ArchiveGetFile(
+                            (void*)work->baseRequest,
+                            i, &fileSize));
                     break;
                 case 1:
-                    work[6] = (u32)bpTexCreateTmxRaster(
-                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
+                    work->baseRasters[1] =
+                        (u32)bpTexCreateTmxRaster(H_Cdvd_ArchiveGetFile(
+                            (void*)work->baseRequest,
+                            i, &fileSize));
                     break;
                 case 2:
-                    work[7] = (u32)bpTexCreateTmxRaster(
-                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
+                    work->baseRasters[2] =
+                        (u32)bpTexCreateTmxRaster(H_Cdvd_ArchiveGetFile(
+                            (void*)work->baseRequest,
+                            i, &fileSize));
                     break;
                 case 3: {
                     void* file;
                     void* caseCopy;
-                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    file = H_Cdvd_ArchiveGetFile(
+                        (void*)work->baseRequest,
+                        i, &fileSize);
                     caseCopy = (*DAT_00960178)(fileSize, 0x40000);
-                    work[0x16] = (u32)caseCopy;
+                    work->baseSpriteData = (u32)caseCopy;
                     memcpy(caseCopy, file, *(volatile /* Removing this function's qualifier batch loses sflResUpdate (MATCH nd0 -> MISMATCH nd31, size 1980 -> 1980) - measured W170. */ u32*)&fileSize);
                     break;
                 }
                 case 4:
-                    work[8] = (u32)bpTexCreateTmxRaster(
-                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
+                    work->baseRasters[3] =
+                        (u32)bpTexCreateTmxRaster(H_Cdvd_ArchiveGetFile(
+                            (void*)work->baseRequest,
+                            i, &fileSize));
                     break;
                 case 5:
                 case 6:
@@ -249,36 +257,46 @@ void sflResUpdate(void)
                 case 9:
                 case 10: {
                     void* file;
-                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    file = H_Cdvd_ArchiveGetFile(
+                        (void*)work->baseRequest,
+                        i, &fileSize);
                     K_ASSERT(i - 5 >= 0, 0xa2);
                     K_ASSERT(i - 5 < 6, 0xa3);
-                    *(work + 5 + i) = (u32)bpTexCreateTmxRaster(file);
+                    work->baseSecondaryRasters[i - 5] =
+                        (u32)bpTexCreateTmxRaster(file);
                     break;
                 }
                 case 11:
                     func_0021b4a0(H_Cdvd_ArchiveGetFile(
-                        (void*)work[0x1a], i, &fileSize));
+                        (void*)work->baseRequest,
+                        i, &fileSize));
                     break;
                 case 12:
-                    work[9] = (u32)bpTexCreateTmxRaster(
-                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
+                    work->baseRasters[4] =
+                        (u32)bpTexCreateTmxRaster(H_Cdvd_ArchiveGetFile(
+                            (void*)work->baseRequest,
+                            i, &fileSize));
                     break;
                 case 13: {
                     void* file;
                     void* copy;
-                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    file = H_Cdvd_ArchiveGetFile(
+                        (void*)work->baseRequest,
+                        i, &fileSize);
                     copy = (*DAT_00960178)(fileSize, 0x40000);
                     memcpy(copy, file, *(volatile /* Removing this function's qualifier batch loses sflResUpdate (MATCH nd0 -> MISMATCH nd31, size 1980 -> 1980) - measured W170. */ u32*)&fileSize);
-                    work[0x1e] = (u32)copy;
+                    work->baseDataFiles[0] = (u32)copy;
                     break;
                 }
                 case 14: {
                     void* file;
                     void* copy;
-                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    file = H_Cdvd_ArchiveGetFile(
+                        (void*)work->baseRequest,
+                        i, &fileSize);
                     copy = (*DAT_00960178)(fileSize, 0x40000);
                     memcpy(copy, file, *(volatile /* Removing this function's qualifier batch loses sflResUpdate (MATCH nd0 -> MISMATCH nd31, size 1980 -> 1980) - measured W170. */ u32*)&fileSize);
-                    work[0x1f] = (u32)copy;
+                    work->baseDataFiles[1] = (u32)copy;
                     break;
                 }
                 default:
@@ -286,100 +304,113 @@ void sflResUpdate(void)
                     break;
                 }
             }
-            H_Cdvd_Destroy((void*)work[0x1a]);
-            work[1] |= 2;
+            H_Cdvd_Destroy((void*)work->baseRequest);
+            work->loadedFlags |= 2;
             goto first_clear;
     first_check:
-        K_ASSERT((work[1] & 2) != 0, 0xc6);
+        K_ASSERT((work->loadedFlags & 2) != 0, 0xc6);
     first_clear:
-        if ((work[1] & 2) != 0) {
-            *work &= ~1u;
+        if ((work->loadedFlags & 2) != 0) {
+            work->requestFlags &= ~1u;
         }
     }
-    if ((*work & 2) != 0) {
-        if (H_Cdvd_IsFileLoaded((void*)work[0x19]) != 0) {
-            K_ASSERT(((~work[1]) & 1) != 0, 0xd2);
-            sflResLoadGroundRasters(*(void**)((u8*)work[0x19] + 0x110));
-            H_Cdvd_Destroy((void*)work[0x19]);
-            work[1] |= 1;
-            *work &= ~2u;
+    if ((work->requestFlags & 2) != 0) {
+        if (H_Cdvd_IsFileLoaded((void*)work->groundRequest) != 0) {
+            K_ASSERT(((~work->loadedFlags) & 1) != 0, 0xd2);
+            sflResLoadGroundRasters(
+                *(void**)((u8*)work->groundRequest + 0x110));
+            H_Cdvd_Destroy((void*)work->groundRequest);
+            work->loadedFlags |= 1;
+            work->requestFlags &= ~2u;
         }
     }
-    if ((*work & 4) != 0) {
+    if ((work->requestFlags & 4) != 0) {
         s32 j;
-        if (((~work[1]) & 4) == 0) {
+        if (((~work->loadedFlags) & 4) == 0) {
             goto four_check;
         }
-        if (H_Cdvd_IsFileLoaded((void*)work[0x1b]) == 0) {
+        if (H_Cdvd_IsFileLoaded((void*)work->effectRequest) == 0) {
             goto four_done;
         }
         for (j = 0; j < 6; j++) {
             switch (j) {
             case 0:
-                work[0x10] = (u32)bpTexCreateTmxRaster(
-                    H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+                work->effectRasters[0] = (u32)bpTexCreateTmxRaster(
+                    H_Cdvd_ArchiveGetFile(
+                        (void*)work->effectRequest, j, &fileSize));
                 break;
             case 1:
-                work[0x11] = (u32)bpTexCreateTmxRaster(
-                    H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+                work->effectRasters[1] = (u32)bpTexCreateTmxRaster(
+                    H_Cdvd_ArchiveGetFile(
+                        (void*)work->effectRequest, j, &fileSize));
                 break;
             case 2:
-                work[0x12] = (u32)bpTexCreateTmxRaster(
-                    H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+                work->effectRasters[2] = (u32)bpTexCreateTmxRaster(
+                    H_Cdvd_ArchiveGetFile(
+                        (void*)work->effectRequest, j, &fileSize));
                 break;
             case 3:
-                work[0x13] = (u32)bpTexCreateTmxRaster(
-                    H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+                work->effectRasters[3] = (u32)bpTexCreateTmxRaster(
+                    H_Cdvd_ArchiveGetFile(
+                        (void*)work->effectRequest, j, &fileSize));
                 break;
             case 4:
-                work[0x14] = (u32)bpTexCreateTmxRaster(
-                    H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+                work->effectRasters[4] = (u32)bpTexCreateTmxRaster(
+                    H_Cdvd_ArchiveGetFile(
+                        (void*)work->effectRequest, j, &fileSize));
                 break;
             case 5:
-                work[0x15] = (u32)bpTexCreateTmxRaster(
-                    H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+                work->effectRasters[5] = (u32)bpTexCreateTmxRaster(
+                    H_Cdvd_ArchiveGetFile(
+                        (void*)work->effectRequest, j, &fileSize));
                 break;
             default:
                 K_ASSERT(0, 0xfe);
                 break;
             }
         }
-        H_Cdvd_Destroy((void*)work[0x1b]);
-        work[1] |= 4;
+        H_Cdvd_Destroy((void*)work->effectRequest);
+        work->loadedFlags |= 4;
         goto four_done;
     four_check:
-        K_ASSERT((work[1] & 4) != 0, 0x109);
+        K_ASSERT((work->loadedFlags & 4) != 0, 0x109);
     four_done:
-        if ((work[1] & 4) != 0) {
-            *work &= ~4u;
+        if ((work->loadedFlags & 4) != 0) {
+            work->requestFlags &= ~4u;
         }
     }
-    if ((*work & 8) != 0 && H_Cdvd_IsFileLoaded((void*)work[0x1c]) != 0) {
+    if ((work->requestFlags & 8) != 0 &&
+        H_Cdvd_IsFileLoaded((void*)work->tutorialRequest) != 0) {
         s32 k;
         for (k = 0; k < 2; k++) {
             switch (k) {
             case 0:
-                file = H_Cdvd_ArchiveGetFile((void*)work[0x1c], k, &fileSize);
-                work[0x17] = (u32)(*DAT_00960178)(fileSize, 0x40000);
-                memcpy((void*)work[0x17], file, (s32)fileSize);
+                file = H_Cdvd_ArchiveGetFile(
+                    (void*)work->tutorialRequest, k, &fileSize);
+                work->tutorialFiles[0] =
+                    (u32)(*DAT_00960178)(fileSize, 0x40000);
+                memcpy((void*)work->tutorialFiles[0], file, (s32)fileSize);
                 break;
             case 1:
-                file = H_Cdvd_ArchiveGetFile((void*)work[0x1c], k, &fileSize);
-                work[0x18] = (u32)(*DAT_00960178)(fileSize, 0x40000);
-                memcpy((void*)work[0x18], file, (s32)fileSize);
+                file = H_Cdvd_ArchiveGetFile(
+                    (void*)work->tutorialRequest, k, &fileSize);
+                work->tutorialFiles[1] =
+                    (u32)(*DAT_00960178)(fileSize, 0x40000);
+                memcpy((void*)work->tutorialFiles[1], file, (s32)fileSize);
                 break;
             }
-            H_Cdvd_Destroy((void*)work[0x1c]);
-            work[1] |= 8;
-            *work &= ~8u;
+            H_Cdvd_Destroy((void*)work->tutorialRequest);
+            work->loadedFlags |= 8;
+            work->requestFlags &= ~8u;
         }
     }
-    if ((*work & 0x10) != 0 && H_Cdvd_IsFileLoaded((void*)work[0x1d]) != 0) {
-        work[0x20] = (u32)func_0021c9f0(
-            *(void**)((u8*)work[0x1d] + 0x110));
-        H_Cdvd_Destroy((void*)work[0x1d]);
-        work[1] |= 0x10;
-        *work &= ~0x10u;
+    if ((work->requestFlags & 0x10) != 0 &&
+        H_Cdvd_IsFileLoaded((void*)work->personaChangeRequest) != 0) {
+        work->personaChangeSprite = (u32)func_0021c9f0(
+            *(void**)((u8*)work->personaChangeRequest + 0x110));
+        H_Cdvd_Destroy((void*)work->personaChangeRequest);
+        work->loadedFlags |= 0x10;
+        work->requestFlags &= ~0x10u;
     }
 }
 #pragma opt_loop_invariants off
@@ -388,13 +419,13 @@ void sflResUpdate(void)
 u32 sflResIsBaseArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);;
-    return *sSflRes & 1;
+    return (sSflRes)->requestFlags & 1;
 }
 
 // FUN_0020e030
 void sflResShutdown(void)
 {
-    u32* work;
+    SflResourceManager* work;
     s32 i18_1;
     s32 i18_2;
     s32 i18_3;
@@ -403,44 +434,50 @@ void sflResShutdown(void)
 
     K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    if ((work[1] & 8) == 0) {
+    if ((work->loadedFlags & 8) == 0) {
         goto skip_8;
     }
     sflResDestroyTutorialFiles();
 skip_8:
-    if ((work[1] & 2) == 0) {
+    if ((work->loadedFlags & 2) == 0) {
         goto skip_2;
     }
     {
         u32* callbacks;
         callbacks = (u32*)DAT_0096017c;
-        ((void (*)(void*))callbacks[0])((void*)work[0x16]);
+        ((void (*)(void*))callbacks[0])((void*)work->baseSpriteData);
         for (i18_1 = 0; i18_1 < 5; i18_1++) {
-            func_004cde90((void*)*((void**)((u8*)work + i18_1 * 4 + 0x14)));
+            func_004cde90((void*)*(u32*)((u32)work + i18_1 * sizeof(u32) +
+                (u32)&((SflResourceManager*)0)->baseRasters));
         }
         for (i18_2 = 0; i18_2 < 6; i18_2++) {
-            func_004cde90((void*)*((void**)((u8*)work + i18_2 * 4 + 0x28)));
+            func_004cde90((void*)*(u32*)((u32)work + i18_2 * sizeof(u32) +
+                (u32)&((SflResourceManager*)0)->baseSecondaryRasters));
         }
         for (i18_3 = 0; i18_3 < 2; i18_3++) {
-            ((void (*)(void*))callbacks[0])(*((void**)((u8*)work + i18_3 * 4 + 0x78)));
+            ((void (*)(void*))callbacks[0])(
+                (void*)*(u32*)((u32)work + i18_3 * sizeof(u32) +
+                    (u32)&((SflResourceManager*)0)->baseDataFiles));
         }
     }
 skip_2:
-    if ((work[1] & 1) == 0) {
+    if ((work->loadedFlags & 1) == 0) {
         goto skip_1;
     }
     for (i16_1 = 0; i16_1 < 3; i16_1++) {
-        func_004cde90((void*)*((void**)((u8*)work + i16_1 * 4 + 8)));
+        func_004cde90((void*)*(u32*)((u32)work + i16_1 * sizeof(u32) +
+            (u32)&((SflResourceManager*)0)->groundRasters));
     }
 skip_1:
-    if ((work[1] & 4) == 0) {
+    if ((work->loadedFlags & 4) == 0) {
         goto skip_4;
     }
     for (i16_2 = 0; i16_2 < 6; i16_2++) {
-        func_004cde90((void*)*((void**)((u8*)work + i16_2 * 4 + 0x40)));
+        func_004cde90((void*)*(u32*)((u32)work + i16_2 * sizeof(u32) +
+            (u32)&((SflResourceManager*)0)->effectRasters));
     }
 skip_4:
-    if ((work[1] & 0x10) != 0) {
+    if ((work->loadedFlags & 0x10) != 0) {
         sflResDestroyPersonaChangeSprite();
     }
     sSflRes = NULL;
@@ -449,184 +486,186 @@ skip_4:
 // FUN_0020e200
 void sflResRequestBaseArchive(void)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    K_ASSERT((~work[1] & 2) != 0, 0x180);
-    K_ASSERT((~*work & 1) != 0, 0x181);
-    work[0x1a] = (u32)H_Cdvd_Request(sSflBaseArchivePath, 1);
-    *work |= 1;
+    K_ASSERT((~work->loadedFlags & 2) != 0, 0x180);
+    K_ASSERT((~work->requestFlags & 1) != 0, 0x181);
+    work->baseRequest = (u32)H_Cdvd_Request(sSflBaseArchivePath, 1);
+    work->requestFlags |= 1;
 }
 
 // FUN_0020e2c0
 void sflResRequestGroundArchive(void)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    K_ASSERT((~work[1] & 1) != 0, 0x18a);
-    K_ASSERT((~*work & 2) != 0, 0x18b);
-    work[0x19] = (u32)H_Cdvd_Request(sSflGroundArchivePath, 0);
-    *work |= 2;
+    K_ASSERT((~work->loadedFlags & 1) != 0, 0x18a);
+    K_ASSERT((~work->requestFlags & 2) != 0, 0x18b);
+    work->groundRequest = (u32)H_Cdvd_Request(sSflGroundArchivePath, 0);
+    work->requestFlags |= 2;
 }
 
 // FUN_0020e380
 u32 sflResIsGroundArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);;
-    return *sSflRes & 2;
+    return (sSflRes)->requestFlags & 2;
 }
 
 // FUN_0020e3d0
 void sflResRequestEffectArchive(void)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    K_ASSERT((~work[1] & 4) != 0, 0x19b);
-    K_ASSERT((~*work & 4) != 0, 0x19c);
+    K_ASSERT((~work->loadedFlags & 4) != 0, 0x19b);
+    K_ASSERT((~work->requestFlags & 4) != 0, 0x19c);
     if (datGetScenarioMode() != 0) {
-        work[0x1b] = (u32)H_Cdvd_Request(sSflEpisodeAigisEffectArchivePath, 1);
+        work->effectRequest =
+            (u32)H_Cdvd_Request(sSflEpisodeAigisEffectArchivePath, 1);
     } else {
-        work[0x1b] = (u32)H_Cdvd_Request(sSflEffectArchivePath, 1);
+        work->effectRequest = (u32)H_Cdvd_Request(sSflEffectArchivePath, 1);
     }
-    *work |= 4;
+    work->requestFlags |= 4;
 }
 
 // FUN_0020e4c0
 u32 sflResIsEffectArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);;
-    return *sSflRes & 4;
+    return (sSflRes)->requestFlags & 4;
 }
 
 // FUN_0020e510
 void* sflResGetBaseRaster(s32 index)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 2) != 0, 0x1b7);
-    return (void*)work[index + 5];
+    K_ASSERT((work->loadedFlags & 2) != 0, 0x1b7);
+    return (void*)work->baseRasters[index];
 }
 
 // FUN_0020e590
 void* sflResGetGroundRaster(s32 index)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 1) != 0, 0x1be);
-    return (void*)work[index + 2];
+    K_ASSERT((work->loadedFlags & 1) != 0, 0x1be);
+    return (void*)work->groundRasters[index];
 }
 
 // FUN_0020e610
 void* sflResGetBaseSecondaryRaster(s32 index)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 2) != 0, 0x1c5);
-    return (void*)work[index + 10];
+    K_ASSERT((work->loadedFlags & 2) != 0, 0x1c5);
+    return (void*)work->baseSecondaryRasters[index];
 }
 
 // FUN_0020e690
 void* sflResGetEffectRaster(s32 index)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 4) != 0, 0x1cc);
-    return (void*)work[index + 16];
+    K_ASSERT((work->loadedFlags & 4) != 0, 0x1cc);
+    return (void*)work->effectRasters[index];
 }
 
 // FUN_0020e710
 void* sflResGetBaseDataFile(s32 index)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 2) != 0, 0x1d3);
-    return (void*)work[index + 30];
+    K_ASSERT((work->loadedFlags & 2) != 0, 0x1d3);
+    return (void*)work->baseDataFiles[index];
 }
 
 // FUN_0020e790
 void* sflResGetBaseSpriteData(void)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 2) != 0, 0x1da);
-    return (void*)work[0x16];
+    K_ASSERT((work->loadedFlags & 2) != 0, 0x1da);
+    return (void*)work->baseSpriteData;
 }
 
 // FUN_0020e800
 void sflResLoadGroundRasters(void* resource)
 {
-    u32* work;
+    SflResourceManager* work;
     u8* data;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((~work[1] & 1) != 0, 0x1e3);
+    K_ASSERT((~work->loadedFlags & 1) != 0, 0x1e3);
     K_ASSERT(*(u16*)((u8*)resource + 4) == 3, 0x1e7);
     data = (u8*)resource + 8;
-    work[2] = (u32)bpTexCreateTmxRaster(
+    work->groundRasters[0] = (u32)bpTexCreateTmxRaster(
         (u8*)resource + *(s32*)data);
-    work[3] = (u32)bpTexCreateTmxRaster(
+    work->groundRasters[1] = (u32)bpTexCreateTmxRaster(
         (u8*)resource + *(s32*)(data + 8));
-    work[4] = (u32)bpTexCreateTmxRaster(
+    work->groundRasters[2] = (u32)bpTexCreateTmxRaster(
         (u8*)resource + *(s32*)(data + 0x10));
-    work[1] |= 1;
+    work->loadedFlags |= 1;
 }
 
 // FUN_0020ea00
 void* sflResGetTutorialFile(s32 index)
 {
-    u32* work;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
-    K_ASSERT((work[1] & 8) != 0, 0x203);
-    return (void*)work[index + 0x17];
+    K_ASSERT((work->loadedFlags & 8) != 0, 0x203);
+    return (void*)work->tutorialFiles[index];
 }
 
 // FUN_0020e9b0
 u32 sflResIsTutorialArchivePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);
-    return *sSflRes & 8;
+    return (sSflRes)->requestFlags & 8;
 }
 
 // FUN_0020ea80
 void sflResDestroyTutorialFiles(void)
 {
-    int base;
+    SflResourceManager* work;
     int i;
 
     K_ASSERT(sSflRes != NULL, 0x65);
-    base = (int)sSflRes;
-    K_ASSERT(*(u32*)(base + 4) & 8, 0x20c);
+    work = sSflRes;
+    K_ASSERT(work->loadedFlags & 8, 0x20c);
     for (i = 0; i < 2; i++) {
-        RwFree(*(void**)(base + i * 4 + 0x5c));
+        RwFree((void*)*(u32*)((u32)work + i * sizeof(u32) +
+            (u32)&((SflResourceManager*)0)->tutorialFiles));
     }
-    *(u32*)(base + 4) &= 0xfffffff7;
+    work->loadedFlags &= 0xfffffff7;
 }
 
 // FUN_0020ec00
 u32 sflResIsPersonaChangeSpritePending(void)
 {
     K_ASSERT(sSflRes != NULL, 0x65);
-    return *sSflRes & 0x10;
+    return (sSflRes)->requestFlags & 0x10;
 }
 
 void FUN_0021cc20();
@@ -634,48 +673,50 @@ void FUN_0021cc20();
 // FUN_0020ec50
 u32 sflResGetPersonaChangeSprite(void)
 {
-    int base;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
-    base = (int)sSflRes;
-    K_ASSERT(*(u32*)(base + 4) & 0x10, 0x22a);
-    return *(u32*)(base + 0x80);
+    work = sSflRes;
+    K_ASSERT(work->loadedFlags & 0x10, 0x22a);
+    return work->personaChangeSprite;
 }
 
 // FUN_0020ecc0
 void sflResDestroyPersonaChangeSprite(void)
 {
-    int base;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
-    base = (int)sSflRes;
-    K_ASSERT(*(u32*)(base + 4) & 0x10, 0x232);
-    FUN_0021cc20(*(void**)(base + 0x80));
-    *(u32*)(base + 4) &= 0xffffffef;
+    work = sSflRes;
+    K_ASSERT(work->loadedFlags & 0x10, 0x232);
+    FUN_0021cc20((void*)work->personaChangeSprite);
+    work->loadedFlags &= 0xffffffef;
 }
 
 // FUN_0020e8f0
 void sflResRequestTutorialArchive(void)
 {
-    u32* puVar1;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
-    puVar1 = sSflRes;
-    K_ASSERT((~puVar1[1] & 8) != 0, 0x1f2);
-    K_ASSERT((~*puVar1 & 8) != 0, 0x1f3);
-    puVar1[0x1c] = (u32)(uintptr_t)H_Cdvd_Request(sSflTutorialArchivePath, 1);
-    *puVar1 |= 8;
+    work = sSflRes;
+    K_ASSERT((~work->loadedFlags & 8) != 0, 0x1f2);
+    K_ASSERT((~work->requestFlags & 8) != 0, 0x1f3);
+    work->tutorialRequest =
+        (u32)(uintptr_t)H_Cdvd_Request(sSflTutorialArchivePath, 1);
+    work->requestFlags |= 8;
 }
 
 // FUN_0020eb40
 void sflResRequestPersonaChangeSprite(void)
 {
-    u32* puVar1;
+    SflResourceManager* work;
 
     K_ASSERT(sSflRes != NULL, 0x65);
-    puVar1 = sSflRes;
-    K_ASSERT((~*puVar1 & 0x10) != 0, 0x218);
-    K_ASSERT((~puVar1[1] & 0x10) != 0, 0x219);
-    puVar1[0x1d] = (u32)(uintptr_t)H_Cdvd_Request(sSflPersonaChangeSpritePath, 0);
-    *puVar1 |= 0x10;
+    work = sSflRes;
+    K_ASSERT((~work->requestFlags & 0x10) != 0, 0x218);
+    K_ASSERT((~work->loadedFlags & 0x10) != 0, 0x219);
+    work->personaChangeRequest =
+        (u32)(uintptr_t)H_Cdvd_Request(sSflPersonaChangeSpritePath, 0);
+    work->requestFlags |= 0x10;
 }

@@ -18,7 +18,7 @@ void FUN_00287b20(int param_1,u16 param_2);
 void FUN_00287cf0(BtlUnit* unit, u16 mode);
 void FUN_00287ea0(BtlUnit* unit);
 void FUN_00288110(BtlUnit* unit);
-int FUN_00288da0(int param_1,short param_2);
+int FUN_00288da0(BtlUnit* unit, u16 mode);
 void FUN_002891e0(void);
 u64 FUN_00289650(short param_1,u16 param_2,void* param_3);
 extern f32 DAT_007cad78;
@@ -56,7 +56,7 @@ extern RwV3d D_00957180_abs;
 extern u8* DAT_007ce42c;
 extern const u8* iGpffffb718;
 extern const u8* iGpffffb71c;
-extern const u8 iGpffffb73c[];
+extern const u8* iGpffffb73c;
 extern void func_002ff890(DatUnit* unit, u32 param_2, u16 id);
 extern void* func_00308c60(DatUnit* unit);
 
@@ -4308,7 +4308,7 @@ extern const u8 DAT_006932e0[];
 extern const u8* iGpffffb718;
 extern const u8* iGpffffb71c;
 extern const u8* iGpffffb728;
-extern const u8 iGpffffb73c[];
+extern const u8* iGpffffb73c;
 extern const u16 gp0xffff9828[];
 extern u8* iGpffffb710;
 
@@ -5469,99 +5469,76 @@ void FUN_00288110(BtlUnit* unit)
 // FUN_00288DA0 NONMATCHING
 
 
-int FUN_00288da0(int param_1,short param_2)
-
-
-
+int FUN_00288da0(BtlUnit* unit, u16 mode)
 {
+    int result;
+    u32 modeNine;
+    u32 charId;
+    u8 unitId;
 
-  u8 bVar1;
-
-  char cVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  
-
-  uVar4 = (u32)*(u16 *)(param_1 + 0xa4);
-
-  bVar1 = param_2 != 9;
-
-  cVar2 = *(char *)(param_1 + 0xa2);
-
-  if (cVar2 == '\x02') {
-
-    iVar3 = (int)(uintptr_t)(iGpffffb73c + uVar4 * 0x58 + 2);
-
-  }
-
-  else if (cVar2 == '\x01') {
-
-    iVar3 = (int)(uintptr_t)func_002fc410(
-        (BtlUnit*)(uintptr_t)param_1);
-
-    if (iVar3 == 0) {
-
-      if (bVar1) {
-
-        iVar3 = (int)(uintptr_t)(iGpffffb728 + uVar4 * 0xe8);
-
-      }
-
-      else {
-
-        iVar3 = (int)(uintptr_t)(iGpffffb728 + uVar4 * 0xe8 + 10);
-
-      }
-
+    charId = unit->charId;
+    switch (mode)
+    {
+    case 9:
+        modeNine = 1;
+        break;
+    default:
+        modeNine = 0;
+        break;
     }
 
-  }
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_PC:
+        if (charId == 1)
+        {
+            unitId = (u8)(u32)(uintptr_t)func_00308c60(unit->datUnit);
+            if (modeNine)
+            {
+                result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128 + 10);
+            }
+            else
+            {
+                result = (int)(uintptr_t)(iGpffffb718 + (unitId & 0xff) * 0x128);
+            }
+        }
+        else if (modeNine)
+        {
+            result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a + 10);
+        }
+        else
+        {
+            result = (int)(uintptr_t)(iGpffffb71c + charId * 0x10a);
+        }
+        break;
 
-  else if (cVar2 == '\0') {
+    case UNIT_GENUS_EC:
+        result = (int)(uintptr_t)func_002fc410(unit);
+        switch ((u32)result)
+        {
+        case 0:
+            if (modeNine)
+            {
+                result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8 + 10);
+            }
+            else
+            {
+                result = (int)(uintptr_t)(iGpffffb728 + charId * 0xe8);
+            }
+            break;
+        }
+        break;
 
-    if (uVar4 == 1) {
+    case UNIT_GENUS_PS:
+        result = (int)(uintptr_t)(iGpffffb73c + charId * 0x58 + 2);
+        break;
 
-      uVar4 = FUN_00308c60(*(u32 *)(param_1 + 0xa2c));
-
-      if (bVar1) {
-
-        iVar3 = (int)(uintptr_t)(iGpffffb718 + (uVar4 & 0xff) * 0x128);
-
-      }
-
-      else {
-
-        iVar3 = (int)(uintptr_t)(iGpffffb718 + (uVar4 & 0xff) * 0x128 + 10);
-
-      }
-
+    default:
+        result = 0;
+        break;
     }
 
-    else if (bVar1) {
-
-      iVar3 = (int)(uintptr_t)(iGpffffb71c + uVar4 * 0x10a);
-
-    }
-
-    else {
-
-      iVar3 = (int)(uintptr_t)(iGpffffb71c + uVar4 * 0x10a + 10);
-
-    }
-
-  }
-
-  else {
-
-    iVar3 = 0;
-
-  }
-
-  return iVar3;
-
+    return result;
 }
 
 // FUN_00288FE0

@@ -70,7 +70,7 @@ u32 H_Cdvd_FileExists(const char* path);
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode);
 u32 H_Cdvd_Destroy(HCdvd* cdvd);
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst);
-void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
+s32 H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
 void H_Cdvd_NormalizePath(const char* src, char* dst);
 u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd);
 void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize);

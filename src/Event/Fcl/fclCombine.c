@@ -60,7 +60,7 @@ u32 FUN_003d2c10(s32 param_1);
 #pragma alias FUN_003d2f00_result FUN_003d2f00
 extern s32 FUN_003d2f00_result(void);
 u64 FUN_003d32e0(u64 param_1,u32 param_2);
-void FUN_003d3760(int param_1,long param_2,int param_3);
+void FUN_003d3760(int param_1,int param_2,int param_3);
 void FUN_003d38b0(u64 param_1,int param_2,int param_3);
 u32 FUN_003d3b70(u32 param_1,u32 param_2);
 u8 * FUN_003d3d20(u64 param_1,u64 param_2);
@@ -4949,149 +4949,84 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
 
 }
 
-// FUN_003D3760 NONMATCHING
+// FUN_003D3760
 
 
-void FUN_003d3760(int param_1,long param_2,int param_3)
-
-
-
+void FUN_003d3760(int param_1, int param_2, int param_3)
 {
+  typedef struct {
+    u32 prefix[6];
+    u16 half18;
+    u16 pad1a;
+    u32 word1c;
+    u8 middle[0x14];
+    u16 half34;
+    u16 pad36;
+  } FusionTemplate;
+  struct {
+    FusionTemplate choice1;
+    u8 gap38[8];
+    FusionTemplate choice0;
+    u8 gap78[8];
+    u32 choice1Copy[7];
+    u32 gap9c;
+    u32 choice0Copy[7];
+  } stack;
+  u32 owner;
+  u32 first;
+  u32 second;
+  u32 *src;
+  u32 *dst;
+  s32 count;
+  s32 listTask;
 
-  u32 uVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  u64 uVar4;
-
-  int iVar5;
-
-  u32 *puVar6;
-
-  u32 *puVar7;
-
-  u32 auStack_c0 [6];
-
-  u16 uStack_a8;
-
-  u32 auStack_a4 [6];
-
-  u16 uStack_8c;
-
-  u32 auStack_80 [6];
-
-  u16 uStack_68;
-
-  u32 uStack_64;
-
-  u16 uStack_4c;
-
-  u8 auStack_40 [4];
-
-  u32 uStack_3c;
-
-  u8 auStack_20 [4];
-
-  u32 uStack_1c;
-
-  
-
-  if (param_2 == 0) {
-
+  switch (param_2) {
+  case 0:
     if (param_3 == 0) {
-
-      uVar1 = *(u32 *)(param_1 + 0x14);
-
-      puVar7 = DAT_006a4830;
-
-      puVar6 = auStack_80;
-
-      iVar5 = 7;
-
+      owner = *(u32 *)(param_1 + 0x14);
+      src = DAT_006a4830;
+      dst = (u32 *)&stack.choice0;
+      count = 7;
       do {
-
-        uVar2 = *puVar7;
-
-        uVar3 = puVar7[1];
-
-        puVar7 = puVar7 + 2;
-
-        iVar5 = iVar5 + -1;
-
-        *puVar6 = uVar2;
-
-        puVar6[1] = uVar3;
-
-        puVar6 = puVar6 + 2;
-
-      } while (0 < iVar5);
-
-      auStack_80[0] = 0;
-
-      uStack_68 = 0;
-
-      uStack_64 = 0;
-
-      uStack_4c = 0;
-
-      memcpy(auStack_20,auStack_80,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,0,uStack_1c);
-
-      fclCombineList003df100(uVar4,auStack_20);
-
-    }
-
-    else if (param_3 == 1) {
-
-      uVar1 = *(u32 *)(param_1 + 0x14);
-
-      puVar7 = DAT_006a4830;
-
-      puVar6 = auStack_c0;
-
-      iVar5 = 7;
-
+        first = src[0];
+        second = src[1];
+        src += 2;
+        count--;
+        dst[0] = first;
+        dst[1] = second;
+        dst += 2;
+      } while (count > 0);
+      stack.choice0.prefix[0] = 0;
+      stack.choice0.half18 = 0;
+      stack.choice0.word1c = 0;
+      stack.choice0.half34 = 0;
+      memcpy(stack.choice0Copy, &stack.choice0, 0x1c);
+      listTask = FUN_003dffc0(owner, 0, stack.choice0Copy[1]);
+      fclCombineList003df100(listTask, stack.choice0Copy);
+    } else if (param_3 == 1) {
+      owner = *(u32 *)(param_1 + 0x14);
+      src = DAT_006a4830;
+      dst = (u32 *)&stack.choice1;
+      count = 7;
       do {
-
-        uVar2 = *puVar7;
-
-        uVar3 = puVar7[1];
-
-        puVar7 = puVar7 + 2;
-
-        iVar5 = iVar5 + -1;
-
-        *puVar6 = uVar2;
-
-        puVar6[1] = uVar3;
-
-        puVar6 = puVar6 + 2;
-
-      } while (0 < iVar5);
-
-      auStack_c0[0] = 0;
-
-      uStack_a8 = 0;
-
-      auStack_a4[0] = 0;
-
-      uStack_8c = 0;
-
-      memcpy(auStack_40,auStack_a4,0x1c);
-
-      uVar4 = FUN_003dffc0(uVar1,0,uStack_3c);
-
-      fclCombineList003df100(uVar4,auStack_40);
-
+        first = src[0];
+        second = src[1];
+        src += 2;
+        count--;
+        dst[0] = first;
+        dst[1] = second;
+        dst += 2;
+      } while (count > 0);
+      stack.choice1.prefix[0] = 0;
+      stack.choice1.half18 = 0;
+      stack.choice1.word1c = 0;
+      stack.choice1.half34 = 0;
+      memcpy(stack.choice1Copy, &stack.choice1.word1c, 0x1c);
+      listTask = FUN_003dffc0(owner, 0, stack.choice1Copy[1]);
+      fclCombineList003df100(listTask, stack.choice1Copy);
     }
-
+    break;
   }
-
-  return;
-
 }
 
 // FUN_003D38B0 NONMATCHING
