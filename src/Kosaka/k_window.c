@@ -620,6 +620,8 @@ typedef struct KWindowEntryDescriptor
 
 extern void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...);
 extern void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...);
+#pragma alias H_Dbprt_FmtCol3D_f32 H_Dbprt_FmtCol3D
+extern void H_Dbprt_FmtCol3D_f32(RwV2d pos, RwRGBA color, const char* fmt, f32 value);
 extern s32 strlen(const char* text);
 extern void func_00524270(void* destination, const void* source);
 extern void func_0019d3f0(const char* fileName, s32 line);
@@ -950,8 +952,8 @@ void func_001a2720(KwlnTask* task)
             else if (entry->type == 4)
             {
                 position.x = (f32)(right - 0x62);
-                H_Dbprt_FmtCol3D(position, color, "%.2f",
-                                 func_00530da0(entry->floatValue));
+                H_Dbprt_FmtCol3D_f32(position, color, "%.2f",
+                                     func_00530da0(entry->floatValue));
             }
         }
         position.y += 12.0f;

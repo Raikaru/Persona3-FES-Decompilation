@@ -468,8 +468,9 @@ u32 FUN_003c6120(int param_1,int param_2)
     puVar2[1] = uVar6 + iVar5;
   }
   if (puVar2[2] != 0) {
-    FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],puVar2[4] | 0xffffff00,
-                 (u32)(param_2 == *(int *)(param_1 + 0xc)),4,puVar2[2],0x10,0);
+    uVar7 = puVar2[4] | 0xffffff00;
+    uVar8 = (u32)(param_2 == *(int *)(param_1 + 0xc));
+    FUN_003b2cb0(0.0f,puVar2[0],puVar2[1],uVar7,uVar8,4,puVar2[2],0x10,0);
   }
   ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;
@@ -869,32 +870,23 @@ void FUN_003c69d0(int param_1)
   case 0:
     break;
   case 1:
-    uVar3 = puVar1->flags & 0xfffffff7;
-    puVar1->flags = uVar3;
-    uVar3 |= 2;
-    puVar1->flags = uVar3;
-    uVar3 |= 0x40;
-    puVar1->flags = uVar3;
-    uVar3 |= 0x80;
-    puVar1->flags = uVar3;
+    puVar1->flags &= 0xfffffff7;
+    puVar1->flags |= 2;
+    puVar1->flags |= 0x40;
+    puVar1->flags |= 0x80;
     puVar1->state = 2;
     puVar1->counter = 0;
   case 2:
-    sVar2 = puVar1->counter + 1;
-    puVar1->counter = sVar2;
+    sVar2 = ++puVar1->counter;
     puVar1->value = (sVar2 * 0xff) / (int)puVar1->duration1;
-    if (sVar2 < puVar1->duration1) {
+    if (puVar1->counter < puVar1->duration1) {
       break;
     }
     puVar1->value = 0xff;
     puVar1->counter = 0;
-    uVar3 = puVar1->flags;
-    uVar3 |= 8;
-    puVar1->flags = uVar3;
-    uVar3 |= 4;
-    puVar1->flags = uVar3;
-    uVar3 &= 0xffffff7f;
-    puVar1->flags = uVar3;
+    puVar1->flags |= 8;
+    puVar1->flags |= 4;
+    puVar1->flags &= 0xffffff7f;
     puVar1->state = 5;
     break;
   case 3:
@@ -907,10 +899,9 @@ void FUN_003c69d0(int param_1)
     puVar1->state = 4;
     puVar1->counter = 0;
   case 4:
-    sVar2 = puVar1->counter + 1;
-    puVar1->counter = sVar2;
+    sVar2 = ++puVar1->counter;
     puVar1->value = 0xff - (sVar2 * 0xff) / (int)puVar1->duration2;
-    if (sVar2 < puVar1->duration2) {
+    if (puVar1->counter < puVar1->duration2) {
       break;
     }
     puVar1->value = 0;
