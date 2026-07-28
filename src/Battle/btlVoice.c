@@ -1708,16 +1708,14 @@ void func_002f2b90(u64 param_1)
   return;
 }
 
-// FUN_002f3190 NONMATCHING
+// FUN_002f3190
 u32 func_002f3190(BtlAction* action)
 {
   u16 uVar1;
   int iVar2;
-  s32 lVar3;
   u64 uVar4;
 
-  lVar3 = FUN_0027e390(action->uid,0x3fffffffffffffff);
-  if (lVar3 == 0) {
+  if (FUN_0027e390(action->uid,0x3fffffffffffffff) == 0) {
     *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfff7ffff;
     iVar2 = *(int *)((u8 *)action->unit + 0xa2c);
     uVar1 = *(u16 *)(DAT_0069a1d0 + (u32)*(u16 *)(iGpffffb6fc + 0xb48) * 4);
@@ -1736,10 +1734,11 @@ u32 func_002f3190(BtlAction* action)
     FUN_00301540(iVar2,0xf);
     FUN_00301540(iVar2,0x10);
     FUN_002831c0(action->unit,6);
-    *(short *)(iGpffffb6fc + 0xb48) = *(short *)(iGpffffb6fc + 0xb48) + 1;
+    *(u16 *)(iGpffffb6fc + 0xb48) = *(u16 *)(iGpffffb6fc + 0xb48) + 1;
     FUN_001fdd40();
+    return 0;
   }
-  return lVar3 != 0;
+  return 1;
 }
 
 // FUN_002f3320

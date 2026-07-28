@@ -597,7 +597,7 @@ u64 FUN_00368c10(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00368cb0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3);
 u64 FUN_00369320(u64 param_1,int param_2,u64 param_3);
-u64 FUN_003698a0(u64 param_1,u64 param_2,int param_3);
+u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00369a20(int param_1,u64 param_2,int param_3);
 u64 FUN_0036be10(u64 param_1,u64 param_2,u32 param_3);
 u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3);
@@ -1044,6 +1044,7 @@ void FUN_00361270(int param_1)
   int iVar2;
 
   u16 *extraout_a1_lo;
+
 
   u16 *puVar3;
 
@@ -10116,7 +10117,7 @@ u64 FUN_00369320(u64 param_1,int param_2,u64 param_3)
 // FUN_003698A0 NONMATCHING
 
 
-u64 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
+u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
 
 
 
@@ -10132,7 +10133,7 @@ u64 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
 
   int iVar5;
 
-  u64 extraout_t0;
+  int extraout_t0;
 
   
 

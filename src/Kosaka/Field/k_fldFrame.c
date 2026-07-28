@@ -59,6 +59,7 @@ extern RwV3d* func_004c6ca0(RwV3d* out, const RwV3d* in,
                             u32 count, const RwMatrix* matrix);
 extern f32 func_004c6ac0(const RwV3d* vector);
 extern f32 fGpffff8078;
+extern f32 fGpffff820c;
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 
@@ -2743,7 +2744,7 @@ void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast)
     return collisionWorld;
 }
 
-// FUN_001acb70 NONMATCHING
+// FUN_001acb70
 u32 func_001acb70(void* collisionWorld, const RwV3d* line,
                   RwV3d* hitPointDst)
 {
@@ -2756,22 +2757,23 @@ u32 func_001acb70(void* collisionWorld, const RwV3d* line,
         FldFrameLine line;
         u32 type;
     } FldFrameIntersection;
-    FldFrameRaycast raycast;
-    FldFrameIntersection intersection __attribute__((aligned(16)));
     FldFrameLine lineCopy __attribute__((aligned(16)));
+    FldFrameIntersection intersection __attribute__((aligned(16)));
+    FldFrameRaycast raycast;
 
     lineCopy = *(const FldFrameLine*)line;
-    intersection.line = lineCopy;
-    intersection.type = 1;
     raycast.hitPointDst = hitPointDst;
     raycast.didHit = false;
+    raycast.nearestFraction = fGpffff820c;
+    intersection.type = 1;
+    intersection.line = lineCopy;
     *(FldFrameIntersection*)&raycast.line[0] = intersection;
-    raycast.nearestFraction = 1.0f;
 
-    if (collisionWorld != NULL)
+    if (collisionWorld == NULL)
     {
-        FUN_004916d0(collisionWorld, func_001acb20, &raycast);
+        return false;
     }
+    FUN_004916d0(collisionWorld, func_001acb20, &raycast);
     return raycast.didHit;
 }
 

@@ -513,6 +513,8 @@ extern code PTR_FUN_006974d4[];
 extern code PTR_FUN_006974e0[];
 extern code PTR_FUN_006974ec[];
 extern code PTR_FUN_006975e0[];
+#pragma alias PTR_FUN_006975e0_abs PTR_FUN_006975e0
+extern code PTR_FUN_006975e0_abs[];
 extern code PTR_FUN_006975e8[];
 extern code PTR_FUN_006975f0[];
 extern code PTR_FUN_006975f8[];
@@ -838,9 +840,12 @@ extern s32 func_002c6300(u32 param_1,u32 param_2,u16 param_3,s32 param_4);
 extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
-extern char func_002c6ba0(int param_1);
+extern u16 func_002c6ba0(int param_1);
 extern undefined * func_002c6e30(int param_1,u32 param_2);
 extern u32 func_002c6f50(u32 param_1,int param_2,u64 param_3,u64 param_4);
+// The caller passes two 32-bit resource identifiers.
+#pragma alias func_002c6f50_u32 func_002c6f50
+extern u32 func_002c6f50_u32(u32 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002c70d0(int param_1,int param_2);
 extern bool func_002c7250(int param_1);
 extern u32 func_002c7280(int param_1);
@@ -8722,7 +8727,7 @@ void func_002c6a00(int param_1,int param_2,u16 param_3)
 
 // FUN_002c6ba0 NONMATCHING
 
-char func_002c6ba0(int param_1)
+u16 func_002c6ba0(int param_1)
 
 {
   u16 uVar1 = 0;
@@ -8858,47 +8863,48 @@ u32 func_002c6f50(u32 param_1,int param_2,u64 param_3,u64 param_4)
 
 // FUN_002c70d0 NONMATCHING
 
-void func_002c70d0(int param_1,int param_2)
-
+void func_002c70d0(int param_1, int param_2)
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 unaff_s1_lo = 0;
-  u32 uVar5 = 0;
-  u16 unaff_s2_lo = 0;
-  u16 uVar6 = 0;
-  
-  uVar6 = *(u16 *)(*(int *)((int)param_1 + 0x30) + 0xa4);
+  u8 type;
+  u16 baseActionId;
+  u16 actionId;
+  int entry;
+  u32 actionWord;
+  u32 data;
+  u32 result;
+
+  baseActionId = *(u16 *)(*(int *)(param_1 + 0x30) + 0xa4);
   func_002d15a0(param_2);
-  cVar1 = *(char *)(*(int *)((int)param_1 + 0x30) + 0xa2);
-  if (cVar1 != '\x01') {
-    uVar5 = (u32)DAT_007ce4cc;
-    if (cVar1 != '\0') {
-      uVar5 = unaff_s1_lo;
-      uVar6 = unaff_s2_lo;
+  type = *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2);
+  switch (type) {
+  case 0:
+    actionId = baseActionId;
+    data = (u32)DAT_007ce4cc;
+    break;
+  case 1:
+    {
+      u8* table = DAT_007ce41c;
+      u8* action = table + ((u32)baseActionId * 0x28 + (u32)baseActionId) * 4;
+      actionId = *(u16 *)(action + 2);
+    data = (u32)DAT_007ce4d0;
     }
+    break;
+  }
+  if (actionId > 0) {
+    func_002c6f50_u32(param_1, param_2, data, actionId);
+    *(u8 *)(param_2 + 0x30) = 1;
   }
   else {
-    uVar6 = *(u16 *)(((u32)uVar6 * 0x28 + (u32)uVar6) * 4 + DAT_007ce41c + 2);
-    uVar5 = (u32)DAT_007ce4d0;
-  }
-  if (uVar6 == 0) {
-    uVar2 = func_002c6ba0(param_1);
-    iVar3 = (int)func_002c6e30(param_1,uVar2);
-    func_002c6a00(param_1,param_2,*(u16 *)(iVar3 + 2));
-    lVar4 = (*(PTR_FUN_006975e0)[(*(u32 *)(iVar3 + 4) >> 0x18) * 2])
-                      (param_1,*(u32 *)(iVar3 + 4) & 0xffffff);
-    if (lVar4 == 0) {
-      (*(code *)PTR_FUN_006975e0)(param_1,0);
+    actionId = func_002c6ba0(param_1);
+    entry = (int)func_002c6e30(param_1, actionId);
+    func_002c6a00(param_1, param_2, *(u16 *)(entry + 2));
+    actionWord = *(u32 *)(entry + 4);
+    result = (*(PTR_FUN_006975e0_abs)[((actionWord & 0xff000000) >> 0x18) * 2])
+                 (param_1, actionWord & 0xffffff);
+    if (result == 0) {
+      (*(code *)PTR_FUN_006975e0_abs)(param_1, 0);
     }
   }
-  else {
-    func_002c6f50(param_1,param_2,uVar5,0);
-    *(u8 *)((int)param_2 + 0x30) = 1;
-  }
-  return;
 }
 
 // FUN_002c7250

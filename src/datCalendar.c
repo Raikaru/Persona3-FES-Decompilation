@@ -880,13 +880,14 @@ done:
     return result;
 }
 
-// FUN_00181580 NONMATCHING
+// FUN_00181580
 KwlnTask* func_00181580(KwlnTask* clndTask, u32* specialAction)
 {
     u32 sequenceData[2];
     s32 eventIndex;
+    KwlnTask* result;
 
-    *specialAction = false;
+    result = NULL;
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
     datSetFlag(0xa82, false);
@@ -898,9 +899,9 @@ KwlnTask* func_00181580(KwlnTask* clndTask, u32* specialAction)
 
     if (datGetSkipToTarget() != 0)
     {
-        return NULL;
+        goto done;
     }
-    if (datGetFlag(0xa05) != 0)
+    if (datGetFlag(0xa05) == 1)
     {
         sequenceData[0] = 1;
         sequenceData[1] = 0;
@@ -909,18 +910,22 @@ KwlnTask* func_00181580(KwlnTask* clndTask, u32* specialAction)
         datSetFlag(0xa05, false);
         return NULL;
     }
-    if (datGetFlag(0xa03) != 0)
+    if (datGetFlag(0xa03) == 1)
     {
         datSetFlag(0xa03, false);
         eventIndex = clndFindAndExecSiteibiEvents();
-        if (eventIndex < 0)
+        if (eventIndex != -1)
         {
-            return func_003c1ab0(clndTask, datGetTime());
+            return func_00181950(clndTask, eventIndex);
         }
-        return func_00181950(clndTask, eventIndex);
+        else
+        {
+            result = func_003c1ab0(clndTask, datGetTime() & 0xff);
+        }
     }
 
-    return NULL;
+done:
+    return result;
 }
 
 // FUN_00181950 NONMATCHING

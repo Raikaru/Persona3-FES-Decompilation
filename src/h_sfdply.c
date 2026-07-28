@@ -1766,17 +1766,17 @@ void func_0010cdd0(void)
     }
 }
 
-// FUN_0010D6F0 NONMATCHING
-void func_0010d6f0(s32 index, s16 fileIndex)
+// FUN_0010D6F0
+void func_0010d6f0(s16 index, s16 fileIndex)
 {
-    if (sSfdDecodeSlots[(s16)index].state == 1)
+    if (sSfdDecodeSlots[index].state == 1)
     {
-        if (sSfdDecodeSlots[(s16)index].status != 0)
+        if (sSfdDecodeSlots[index].status != 0)
         {
-            func_0010d950((s16)index);
+            func_0010d950(index);
         }
-        sSfdDecodeSlots[(s16)index].fileIndex = fileIndex;
-        sSfdDecodeSlots[(s16)index].state = 2;
+        sSfdDecodeSlots[index].fileIndex = fileIndex;
+        sSfdDecodeSlots[index].state = 2;
     }
 }
 

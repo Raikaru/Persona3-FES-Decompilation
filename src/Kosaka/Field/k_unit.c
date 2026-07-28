@@ -2866,29 +2866,43 @@ s32 func_001d38a0(KwlnTask* task)
     return remaining < 0 ? 0 : remaining;
 }
 
-// FUN_001d38d0 NONMATCHING
+// FUN_001d38d0
 void func_001d38d0(KwlnTask* task, s32 multiplier)
 {
     s32* work;
-    s32 count;
+    typedef struct KUnitGridValue
+    {
+        u8 reserved[0x48];
+        u8 value;
+    } KUnitGridValue;
     s32 i;
     s32 j;
+    s32 count;
     s32 rowOffset;
 
     work = (s32*)task->workData;
     if (K_Scene_001a0250() == 1)
     {
+        i = 0;
         count = 0;
-        for (i = 0; i < 0x10; i++)
+        while (i < 0x10)
         {
+            j = 0;
             rowOffset = i * 0x100;
-            for (j = 0; j < 0x10; j++)
+            while (j < 0x10)
             {
-                if (func_001b9120()[rowOffset + j * 0x10 + 0x48] == 1)
+                KUnitGridValue* gridValue;
+
+                gridValue = (KUnitGridValue*)((u32)rowOffset +
+                                             (u32)func_001b9120());
+                gridValue = (KUnitGridValue*)((u8*)gridValue + j * 0x10);
+                if (gridValue->value == 1)
                 {
                     count++;
                 }
+                j++;
             }
+            i++;
         }
         if ((u32)(count * multiplier) < (u32)work[3])
         {
@@ -3072,26 +3086,32 @@ void func_001d4180(void)
 {
     s32 i;
     FldUnit* unit;
-    KwlnTask* effectTask;
+    s32 hasResources;
     s32* work;
     u8* scene;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
+        hasResources = false;
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL && unit->resrc != NULL &&
-            unit->unk_180 != NULL)
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            effectTask = unit->unk_180;
-            if (((s32*)effectTask->workData)[2] == 1)
+            hasResources = true;
+        }
+        if (hasResources && unit->unk_180 != NULL)
+        {
+            work = (s32*)unit->unk_180->workData;
+            if (work[2] == 1)
             {
-                work = (s32*)effectTask->workData;
                 work[2] = 0;
                 scene = func_001b9120();
                 func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
             }
-            func_00195020(effectTask);
-            unit->unk_180 = NULL;
+            if (unit->unk_180 != NULL)
+            {
+                func_00195020(unit->unk_180);
+                unit->unk_180 = NULL;
+            }
         }
     }
 }

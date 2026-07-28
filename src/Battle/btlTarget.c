@@ -5056,21 +5056,30 @@ u32 FUN_002db450(u32 param_1)
 // FUN_002db480 NONMATCHING
 u32 FUN_002db480(void)
 {
-    u16 activeCount = 0;
-    u16 disabledCount = 0;
-    u16 missingCount = 0;
+    u16 enemySlot;
+    u16 disabledCount;
+    u16 activeCount;
+    u16 missingCount;
+    u16 partySlot;
+    activeCount = 0;
+    disabledCount = 0;
+    missingCount = 0;
     {
-        u16 enemySlot;
 
-        for (enemySlot = 0; enemySlot < 3; enemySlot++)
+        for (enemySlot = 0; (u32)enemySlot < 3; enemySlot++)
         {
-            if (*(u8**)(iGpffffb6fc + enemySlot * 8 + 0xbc4) != NULL &&
-                FUN_002FF790(*(u8**)(iGpffffb6fc + enemySlot * 8 + 0xbc4)) == 0)
+            u8* battle = (u8*)iGpffffb6fc;
+            if (*(u8**)(battle + (enemySlot & 0xffff) * 8 + 0xbc4) != NULL &&
+                FUN_002FF790(*(u8**)(battle + (enemySlot & 0xffff) * 8 + 0xbc4)) == 0)
             {
                 activeCount++;
-                if ((*(u16*)(*(u8**)(iGpffffb6fc + enemySlot * 8 + 0xbc4) + 0x0a) & 1) == 0)
+                if ((*(u16*)(*(u8**)(iGpffffb6fc + (enemySlot & 0xffff) * 8 + 0xbc4) + 0x0a) & 1) != 0)
                 {
                     disabledCount++;
+                }
+                else
+                {
+                    return 0;
                 }
             }
         }
@@ -5080,7 +5089,6 @@ u32 FUN_002db480(void)
         return 2;
     }
     {
-        u16 partySlot;
 
         for (partySlot = 0; partySlot < 4; partySlot++)
         {
@@ -5088,19 +5096,26 @@ u32 FUN_002db480(void)
             if (pcId != 0)
             {
                 BtlUnit* unit = *(BtlUnit**)(iGpffffb6fc + 0x150);
-                while (unit != NULL && unit->charId != (u16)pcId)
+                while (unit != NULL)
                 {
+                    if (unit->charId == pcId)
+                    {
+                        break;
+                    }
                     unit = unit->next;
                 }
                 if (unit == NULL)
                 {
                     DatUnit* datUnit = datGetUnit(pcId);
                     missingCount++;
-                    datCalcIsDead(datUnit, 0);
+                    if (datCalcIsDead(datUnit, 0) == 0)
+                    {
+                        break;
+                    }
                 }
             }
         }
-        if (missingCount != 0 && partySlot == 4)
+        if (missingCount > 0 && partySlot == 4)
         {
             return 3;
         }

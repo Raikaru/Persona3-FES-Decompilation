@@ -921,7 +921,7 @@ u64 FUN_0036f500(int param_1);
 u64 FUN_003709d0(int param_1,int param_2,u8 *param_3);
 u64 FUN_003715b0(int param_1,int param_2,int param_3);
 u64 FUN_00379f30(int param_1,int param_2,int param_3);
-u64 FUN_0037a640(int param_1,int param_2,int param_3);
+u32 FUN_0037a640(int param_1,int param_2,int param_3);
 u32 FUN_0037abd0(int param_1,int param_2,int param_3);
 u32 FUN_00385bd0(int param_1,u64 param_2);
 u32 FUN_00385cd0(int param_1);
@@ -9491,7 +9491,7 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 // FUN_0037A640 NONMATCHING
 
 
-u64 FUN_0037a640(int param_1,int param_2,int param_3)
+u32 FUN_0037a640(int param_1,int param_2,int param_3)
 
 
 
@@ -9499,17 +9499,21 @@ u64 FUN_0037a640(int param_1,int param_2,int param_3)
 
   int lVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
-
-  u64 extraout_a2;
 
   
 
   iVar3 = (int)param_3;
 
-  if (*(int *)(iVar3 + 0x120) != 0) {
+  if (*(int *)(iVar3 + 0x120) == 0) {
+
+    lVar1 = 10;
+
+  }
+
+  else {
 
     lVar1 = FUN_00524388();
 
@@ -9521,17 +9525,16 @@ u64 FUN_0037a640(int param_1,int param_2,int param_3)
 
   }
 
-  else {
+  FUN_0036f900(param_1,param_2,lVar1,*(int *)(iVar3 + 0x11c) + 3,0,*(int *)(iVar3 + 0x11c),param_3,
+               (int)(code *)FUN_0037a4d0,(code *)FUN_0037a560);
 
-    lVar1 = 10;
+  if (*(int *)(iVar3 + 0xd4) != 2) {
+
+    uVar2 = 0;
 
   }
 
-  FUN_0036f900(param_1,param_2,lVar1,*(int *)(iVar3 + 0x11c) + 3,0,*(int *)(iVar3 + 0x11c),param_3,
-
-               0x37a4d0,0);
-
-  if (*(int *)(iVar3 + 0xd4) == 2) {
+  else {
 
     FUN_0036f680(0,iVar3 + 0x118,*(u32 *)(iVar3 + 0x11c),*(u32 *)(iVar3 + 0x11c),0,
 
@@ -9539,11 +9542,11 @@ u64 FUN_0037a640(int param_1,int param_2,int param_3)
 
     FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
 
-    uVar2 = extraout_a2;
+    uVar2 = 1;
 
-    if ((DAT_007e094e & 0x40) == 0) {
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
 
-      if ((DAT_007e094e & 0x20) == 0) {
+      if ((*(u16 *)DAT_007e094e_abs & 0x20) == 0) {
 
         uVar2 = 0;
 
@@ -9551,17 +9554,11 @@ u64 FUN_0037a640(int param_1,int param_2,int param_3)
 
       else {
 
-        uVar2 = 0xffffffffffffffff;
+        uVar2 = -1;
 
       }
 
     }
-
-  }
-
-  else {
-
-    uVar2 = 0;
 
   }
 

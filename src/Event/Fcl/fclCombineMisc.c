@@ -1640,7 +1640,7 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 u32 FUN_003d71d0(int param_1,int param_2,void *param_3)
 {
   u32 cVar1;
-  u32 sVar2;
+  u16 sVar2;
   u32 uVar3;
   s32 lVar4;
 
@@ -3547,6 +3547,8 @@ void FUN_003d9ea0(int param_1)
 
   int iVar1;
 
+  int iVar8;
+
   u32 uVar2;
 
   u32 uVar3;
@@ -3560,8 +3562,6 @@ void FUN_003d9ea0(int param_1)
   int iVar0;
 
   int iVar7;
-
-  int iVar8;
 
   int iVar9;
 
