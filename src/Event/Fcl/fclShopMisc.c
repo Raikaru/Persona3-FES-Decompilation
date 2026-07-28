@@ -572,6 +572,8 @@ u32 FUN_003f04f0_u32(u32 param_1,int param_2);
 u32 FUN_003f1dc0_u32(s32 param_1,void *param_2,s32 param_3);
 #pragma alias FUN_003f1dc0_u64 FUN_003f1dc0
 u32 FUN_003f1dc0_u64(u64 param_1,void *param_2,s32 param_3);
+#pragma alias FUN_003f2240_u32 FUN_003f2240
+u32 FUN_003f2240_u32(int param_1,s32 param_2);
 #pragma alias FUN_0040e3c0_f32 FUN_0040e3c0
 void FUN_0040e3c0_f32(float param_1,int param_2,int param_3,u8 param_4,int param_5,int param_6);
 #pragma alias FUN_0040e3c0_u32 FUN_0040e3c0
@@ -679,6 +681,8 @@ u32 DAT_006af000;
 u32 DAT_006af004;
 u32 DAT_006af008;
 u32 DAT_006af010;
+#pragma alias DAT_006af010_abs DAT_006af010
+extern u8 DAT_006af010_abs[];
 u32 DAT_006af0b0;
 u32 DAT_006af140;
 u32 DAT_006af170;
@@ -798,6 +802,12 @@ u32 PTR_FUN_006aee40[];
 u32 PTR_FUN_006af050[];
 u32 PTR_FUN_006af070[];
 u32 PTR_FUN_006af090[];
+#pragma alias PTR_FUN_006af050_abs PTR_FUN_006af050
+extern u8 PTR_FUN_006af050_abs[];
+#pragma alias PTR_FUN_006af070_abs PTR_FUN_006af070
+extern u8 PTR_FUN_006af070_abs[];
+#pragma alias PTR_FUN_006af090_abs PTR_FUN_006af090
+extern u8 PTR_FUN_006af090_abs[];
 u32 PTR_FUN_007cd970[];
 u32 PTR_FUN_007cd974[];
 u32 PTR_FUN_007cd978[];
@@ -7700,19 +7710,19 @@ u32 FUN_003f9e30(int param_1)
 
   u32 uVar13;
 
-  u8 auStack_c0 [32];
-
-  u32 auStack_a0 [8];
-
-  u32 auStack_80 [8];
+  u32 auStack_40 [16];
 
   u32 auStack_60 [8];
 
-  u32 auStack_40 [16];
+  u32 auStack_80 [8];
+
+  u32 auStack_a0 [8];
+
+  u8 auStack_c0 [32];
 
   
 
-  puVar11 = &DAT_006af010;
+  puVar11 = (u32 *)DAT_006af010_abs;
 
   puVar10 = auStack_40;
 
@@ -7744,14 +7754,16 @@ u32 FUN_003f9e30(int param_1)
 
   *(short *)(iVar9 + 4) = (short)param_1;
 
-  *(u16 *)(iVar9 + 6) = 0xffff;
+  *(short *)(iVar9 + 6) = -1;
   FUN_003f99d0(uVar7,0x7ffff);
 
 
-  for (uVar13 = 4000; ((int)uVar13 < 0x1080 && ((int)(uVar13 - 4000) < 300)); uVar13 = uVar13 + 1) {
+  for (uVar13 = 4000; (int)uVar13 < 0x1080; uVar13 = uVar13 + 1) {
 
-
-    if ((FUN_003f2240((int)auStack_c0,uVar13) != 0) &&
+    if ((int)(uVar13 - 4000) >= 300) {
+      break;
+    }
+    if ((FUN_003f2240_u32((int)auStack_c0,uVar13) != 0) &&
         (FUN_003f98f0(uVar13 & 0xffff) != 0)) {
 
       iVar9 = FUN_003c5a40(uVar7,*(u16 *)(iVar5 + 0x10) + 1,0x20,0);
@@ -7778,7 +7790,7 @@ u32 FUN_003f9e30(int param_1)
 
   FUN_003c6ee0(uVar7);
 
-  ppuVar12 = (u8 **)&PTR_FUN_006af050;
+  ppuVar12 = (u8 **)PTR_FUN_006af050_abs;
 
   puVar10 = auStack_60;
 
@@ -7802,7 +7814,7 @@ u32 FUN_003f9e30(int param_1)
 
   } while (0 < iVar9);
 
-  ppuVar12 = (u8 **)&PTR_FUN_006af070;
+  ppuVar12 = (u8 **)PTR_FUN_006af070_abs;
 
   puVar10 = auStack_80;
 
@@ -7826,7 +7838,7 @@ u32 FUN_003f9e30(int param_1)
 
   } while (0 < iVar9);
 
-  ppuVar12 = (u8 **)&PTR_FUN_006af090;
+  ppuVar12 = (u8 **)PTR_FUN_006af090_abs;
 
   puVar10 = auStack_a0;
 
@@ -19059,9 +19071,9 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
 void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
 {
-  short x;
-  short y;
-  short alpha;
+  int x;
+  int y;
+  int alpha;
   int work;
   int rowY;
   int i;

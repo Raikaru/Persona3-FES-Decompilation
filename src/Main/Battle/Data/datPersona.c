@@ -1042,8 +1042,7 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
         {
             K_ASSERT(*(u16*)(persona_i + 2) < 0x100, 0x599);
             levelF = (f32)level;
-            growthF = (f32)*(u8*)((u32)*(u16*)(persona_i + 2) * 0xe +
-                                   (u32)DAT_007ce420 + 3);
+            growthF = (f32)DAT_007ce420[(u32)*(u16*)(persona_i + 2) * 0xe + 3];
 
             if (FUN_0017d800() == 0)
             {

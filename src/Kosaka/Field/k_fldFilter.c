@@ -101,7 +101,7 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
     s32 bottomOffset;
     f32 z;
     f32 recipZ;
-    register f32 bottom;
+    f32 bottom;
     f32 top;
 
     z = camera->nearPlane;

@@ -5330,26 +5330,29 @@ void FUN_00434d30(void)
   char cVar1;
   int uVar2;
   int iVar3;
-  
+  u8 *row;
+  int *unit;
+
   for (iVar3 = 1; iVar3 < 4; iVar3 = iVar3 + 1) {
-    if (*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) != 0) {
+    row = DAT_008717a0_bytes + iVar3 * 0x1c0;
+    unit = (int *)(row + 0x16c);
+    if (*(int *)(row + 0x16c) != 0) {
       uVar2 = iVar3;
       cVar1 = FUN_0043c7f0(uVar2);
       if (cVar1 != '\x06') {
         cVar1 = FUN_0043c7f0(uVar2);
         if (cVar1 == '\x05') {
-          *(u8 *)(*(int *)(*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) + 0x3c) + 0x1214) = 1;
+          *(u8 *)(*(int *)(*unit + 0x3c) + 0x1214) = 1;
         }
-        else if (*(char *)(*(int *)(*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) + 0x3c) + 0x1222) ==
-                 '\0') {
+        else if (*(char *)(*(int *)(*unit + 0x3c) + 0x1222) == '\0') {
           FUN_0043c7a0(uVar2,2);
         }
       }
     }
   }
-  DAT_007ce6bc = 1;
+  *(u8 *)&DAT_007ce6bc = 1;
   for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-    ((u8 *)DAT_007ce6e8)[iVar3] = 0;
+    ((u8 *)&DAT_007ce6e8)[iVar3] = 0;
   }
 }
 // FUN_00434E60 NONMATCHING
@@ -5359,24 +5362,27 @@ void FUN_00434e60(void)
   char cVar1;
   int uVar2;
   int iVar3;
-  
+  u8 *row;
+  int *unit;
+
   for (iVar3 = 1; iVar3 < 4; iVar3 = iVar3 + 1) {
-    if (*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) != 0) {
+    row = DAT_008717a0_bytes + iVar3 * 0x1c0;
+    unit = (int *)(row + 0x16c);
+    if (*(int *)(row + 0x16c) != 0) {
       uVar2 = iVar3;
       cVar1 = FUN_0043c7f0(uVar2);
       if (cVar1 != '\x06') {
         cVar1 = FUN_0043c7f0(uVar2);
         if (cVar1 == '\x05') {
-          *(u8 *)(*(int *)(*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) + 0x3c) + 0x1214) = 0;
+          *(u8 *)(*(int *)(*unit + 0x3c) + 0x1214) = 0;
         }
-        else if (*(char *)(*(int *)(*(int *)((u8 *)DAT_008717a0_bytes + iVar3 * 0x1c0) + 0x3c) + 0x1222) ==
-                 '\0') {
+        else if (*(char *)(*(int *)(*unit + 0x3c) + 0x1222) == '\0') {
           FUN_0043c7a0(uVar2,1);
         }
       }
     }
   }
-  DAT_007ce6bc = 0;
+  *(u8 *)&DAT_007ce6bc = 0;
   return;
 }
 
