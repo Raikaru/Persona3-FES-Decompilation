@@ -1386,9 +1386,7 @@ u32 FUN_00418880(int param_1,int *param_2)
   f32 auStack_20 [4];
 
   u32 uStack_10;
-
   u32 uStack_c;
-
   u32 uStack_8;
 
   
@@ -1404,27 +1402,18 @@ u32 FUN_00418880(int param_1,int *param_2)
   auStack_20[2] = *DAT_006b2e50_abs;
 
   uStack_10 = 0x3f800000;
-
   uStack_c = 0;
-
   uStack_8 = 0;
-
   RwMatrixRotate((void*)auStack_60,(void*)&uStack_10,(float)(*(int *)(iVar3 + 0xc) / 0xffff),0);
 
   uStack_10 = 0;
-
   uStack_c = 0x3f800000;
-
   uStack_8 = 0;
-
   RwMatrixRotate((void*)auStack_60,(void*)&uStack_10,(float)(*(int *)(iVar3 + 0x10) / 0xffff),2);
 
   uStack_10 = 0;
-
   uStack_c = 0;
-
   uStack_8 = 0x3f800000;
-
   RwMatrixRotate((void*)auStack_60,(void*)&uStack_10,(float)(*(int *)(iVar3 + 0x14) / 0xffff),2);
 
   cVar1 = *(char *)(iVar3 + 4);
@@ -1671,9 +1660,7 @@ u8 FUN_00419050(int param_1,int *param_2)
   float auStack_20 [4];
 
   u32 uStack_10;
-
   u32 uStack_c;
-
   u32 uStack_8;
 
   
@@ -1798,27 +1785,18 @@ u8 FUN_00419050(int param_1,int *param_2)
   }
 
   uStack_10 = 0x3f800000;
-
   uStack_c = 0;
-
   uStack_8 = 0;
-
   RwMatrixRotate((void*)afStack_60,(void*)&uStack_10,(float)(*(int *)(iVar2 + 0xc) / 0xffff),0);
 
   uStack_10 = 0;
-
   uStack_c = 0x3f800000;
-
   uStack_8 = 0;
-
   RwMatrixRotate((void*)afStack_60,(void*)&uStack_10,(float)(*(int *)(iVar2 + 0x10) / 0xffff),2);
 
   uStack_10 = 0;
-
   uStack_c = 0;
-
   uStack_8 = 0x3f800000;
-
   RwMatrixRotate((void*)afStack_60,(void*)&uStack_10,(float)(*(int *)(iVar2 + 0x14) / 0xffff),2);
 
   piVar10 = param_2 + 8;

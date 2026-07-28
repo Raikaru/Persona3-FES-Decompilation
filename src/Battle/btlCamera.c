@@ -7876,7 +7876,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   float fVar13;
   float fVar14;
   float fVar15;
-  undefined4 uVar16;
+  f32 fVar16;
   float fVar17;
   float fStack_118;
   float fStack_114;
@@ -8044,7 +8044,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fStack_c8 = mid[2] + axis[2];
     FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,
                         (const void*)mid,(const void*)&D_00697880);
-    uVar16 = uGpffff8074;
+    fVar16 = *(f32*)&uGpffff8074;
   }
   else {
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar3),0);
@@ -8093,10 +8093,10 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fStack_ac = mid[2] + axis[2] * fVar13;
     if (lVar7 == 0) {
       if (0.0f <= fVar14) {
-        FUN_004c31b0(0xc1dc0000,auStack_110,&D_00697880,0);
+        FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, -27.5f, 0);
       }
       else {
-        FUN_004c31b0(0x41dc0000,auStack_110,&D_00697880,0);
+        FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, 27.5f, 0);
       }
       FUN_004c6c60(delta,(RwV3d*)axis,auStack_110);
       fVar13 = fVar13 * fGpffff807c;
@@ -8119,21 +8119,21 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       mid[1] = delta[1] * fVar15 + target[1];
       mid[2] = delta[2] * fVar15 + target[2];
       FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,(const void*)mid,(const void*)&D_00697880);
-      uVar16 = 0x40700000;
+      fVar16 = 3.75f;
     }
     else {
       sVar1 = *(short *)(*(int *)(iVar9 + 0xe0) + 0x6e);
       if (sVar1 == 0x38) {
         mid[1] = 1000.0f;
         fStack_cc = 500.0f;
-        uVar16 = 0x3fc00000;
+        fVar16 = 1.5f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 4;
       }
       else if (sVar1 == 0x2c) {
         mid[1] = 800.0f;
         fStack_cc = 500.0f;
-        uVar16 = 0x40000000;
+        fVar16 = 2.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
       }
@@ -8142,12 +8142,12 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
         fStack_cc = 200.0f;
         bVar5 = 0;
         *(undefined4 *)(iVar9 + 0xdc) = 8;
-        uVar16 = uGpffff80ac;
+        fVar16 = *(f32*)&uGpffff80ac;
       }
       else if (sVar1 == 0x26) {
         mid[1] = 500.0f;
         fStack_cc = 200.0f;
-        uVar16 = 0x3fa00000;
+        fVar16 = 1.25f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
       }
@@ -8156,7 +8156,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
         fStack_cc = 200.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0;
-        uVar16 = uGpffff809c;
+        fVar16 = *(f32*)&uGpffff809c;
       }
       param_2 = 0;
       fStack_d0 = fStack_b4;
@@ -8187,10 +8187,10 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   FUN_002a2290_b6070(camera, (RwV3d*)&fStack_d0,
                      (RwV3d*)&fStack_b4, 1);
   if (bVar5) {
-    FUN_002a3160_typed(camera, *(f32*)&uVar16);
+    FUN_002a3160_typed(camera, fVar16);
   }
   else {
-    FUN_002a3110_b6070(camera, *(f32*)&uVar16);
+    FUN_002a3110_b6070(camera, fVar16);
   }
   if (param_2 != 0) {
     FUN_00351bb0(0xc);
@@ -8232,7 +8232,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   float fVar8;
   float fVar9;
   float fVar10;
-  undefined4 uVar11;
+  f32 fVar11;
   float fVar12;
   float fVar13;
   float fVar14;
@@ -8476,7 +8476,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     if (result[1] < 25.0f) {
       result[1] = 25.0f;
     }
-    uVar11 = 0x40200000;
+    fVar11 = 2.5f;
   }
   else {
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar2),0);
@@ -8577,7 +8577,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     if (resultPos[1] < 25.0f) {
       resultPos[1] = 25.0f;
     }
-    uVar11 = 0x40100000;
+    fVar11 = 2.25f;
   }
   if (param_3 == 0) {
     result[0] = resultPos[0];
@@ -8592,7 +8592,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       camera->action, &((BtlUnit*)(uintptr_t)iVar7)->pos,
       (f32*)result, 3, 50.0f);
   FUN_002a2290((u16*)camera, (RwV3d*)result, (RwV3d*)resultPos, 1);
-  FUN_002a3110((u16*)camera, *(f32*)&uVar11);
+  FUN_002a3110((u16*)camera, fVar11);
   if (param_2 != 0) {
     FUN_00351bb0(0xc);
   }

@@ -1476,7 +1476,7 @@ u64 FUN_003a0220(int param_1)
     packedAngle.value = DAT_007cd4a0;
     packedAngle.bytes.high = *(u8 *)(iVar1 + 0xa0);
 
-    FUN_00386f70(0x42c80000,auStack_30,&uStack_38,&packedAngle);
+    FUN_00386f70(100.0f,auStack_30,&uStack_38,&packedAngle);
 
     uStack_4 = *(u32 *)(iVar1 + 0xb0);
     ((u8 *)&uStack_4)[3] = *(u8 *)(iVar1 + 0x9c);
@@ -1517,7 +1517,7 @@ u64 FUN_003a0220(int param_1)
 
         uStack_c = 0x42c00000;
 
-        FUN_00388000(0x40a00000,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
+        FUN_00388000(5.0f,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
 
                      &uStack_28,*(u32 *)(iVar1 + 0x68),&uStack_4,0);
 
@@ -1541,7 +1541,7 @@ u64 FUN_003a0220(int param_1)
 
         uStack_c = 0x42c00000;
 
-        FUN_00388000(0x40a00000,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
+        FUN_00388000(5.0f,*(u32 *)(iVar1 + 0xac),afStack_18 + 2,afStack_18,&uStack_20,
 
                      &uStack_28,*(u32 *)(iVar1 + 0x6c),&uStack_4,0);
 

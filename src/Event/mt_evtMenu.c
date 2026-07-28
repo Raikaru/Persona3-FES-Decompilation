@@ -10870,13 +10870,13 @@ u32 FUN_0037be50(int param_1,int param_2,int param_3)
 
       if ((int)(*puVar1 & 0xffc00) >> 10 == 7) {
 
-        FUN_00396270(0x41a00000,param_3,puVar1 + 2);
+        FUN_00396270(20.0f,param_3,puVar1 + 2);
 
       }
 
       else {
 
-        FUN_00396270(0x42480000,param_3,puVar1 + 2);
+        FUN_00396270(50.0f,param_3,puVar1 + 2);
 
       }
 

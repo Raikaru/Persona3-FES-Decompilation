@@ -1431,7 +1431,7 @@ void FUN_0015DA70(void *param_1)
             f32 row = (f32)(i * 0x55) + 42.0f;
             s32 item_offset = i * 10;
             x = row + 8.0f;
-            y = camp_list_bits_to_float(0x41700000);
+            y = 15.0f;
             FUN_0018bc10(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
@@ -1444,9 +1444,9 @@ void FUN_0015DA70(void *param_1)
                                     (size_t)(item_offset + 0x0b) * 0x44),
                 0, 2, 1,
                 camp_list_pack_f32(row + 31.0f,
-                                    camp_list_bits_to_float(0x41700000)),
+                                    15.0f),
                 camp_list_pack_f32(row + 31.0f,
-                                    camp_list_bits_to_float(0x42820000)),
+                                    65.0f),
                 0, 0);
             FUN_0018bc10(
                 100.0f,
@@ -1454,9 +1454,9 @@ void FUN_0015DA70(void *param_1)
                                     (size_t)(item_offset + 0x0c) * 0x44),
                 0, 2, 1,
                 camp_list_pack_f32(row + 45.0f,
-                                    camp_list_bits_to_float(0x41700000)),
+                                    15.0f),
                 camp_list_pack_f32(row + 45.0f,
-                                    camp_list_bits_to_float(0x42820000)),
+                                    65.0f),
                 0, 0);
             FUN_0018bc10(
                 100.0f,
@@ -1464,9 +1464,9 @@ void FUN_0015DA70(void *param_1)
                                     (size_t)(item_offset + 0x0d) * 0x44),
                 0, 2, 1,
                 camp_list_pack_f32(row + 64.0f,
-                                    camp_list_bits_to_float(0x41700000)),
+                                    15.0f),
                 camp_list_pack_f32(row + 64.0f,
-                                    camp_list_bits_to_float(0x42820000)),
+                                    65.0f),
                 0, 0);
             FUN_0018bc10(
                 100.0f,
@@ -1474,9 +1474,9 @@ void FUN_0015DA70(void *param_1)
                                     (size_t)(item_offset + 0x0e) * 0x44),
                 0, 2, 1,
                 camp_list_pack_f32(row + 2.0f,
-                                    camp_list_bits_to_float(0xc2100000)),
+                                    -36.0f),
                 camp_list_pack_f32(row + 2.0f,
-                                    camp_list_bits_to_float(0x41600000)),
+                                    14.0f),
                 0, 0);
             camp_list_store_u32(
                 (uintptr_t)camp_list_load_u32(work_address, 0x38) +

@@ -9174,7 +9174,7 @@ u64 FUN_00324bd0(u64 param_1)
 
   FUN_00325d60((u64)(uVar4),(u8 (*) [16])auStack_10_buf);
 
-  FUN_00325e40((float)(0x3f800000),(u8 (*) [16])(uVar4));
+  FUN_00325e40(1.0f,(u8 (*) [16])(uVar4));
 
   FUN_00326030(uVar4,0xffffffffffffffff);
 
@@ -9782,7 +9782,7 @@ u32 FUN_00325920(u64 *param_1)
 
   FUN_00325d60((u64)(uVar4),(u8 (*) [16])auStack_10_buf);
 
-  FUN_00325e40((float)(0x3f800000),(u8 (*) [16])(uVar4));
+  FUN_00325e40(1.0f,(u8 (*) [16])(uVar4));
 
   FUN_00326030(uVar4,0xffffffffffffffff);
 
@@ -12302,7 +12302,7 @@ void FUN_003275d0(float param_1,int param_2)
 
             auVar19 = _vmul(auVar9,auVar20);
 
-            auVar9 = _qmtc2(0x437f0000);
+            auVar9 = _qmtc2(255.0f);
 
             auVar9 = _vmulbc(auVar19,auVar9);
 
@@ -14329,7 +14329,7 @@ void FUN_0032a890(int param_1,u64 param_2)
 
               auStack_70 = _sqc2(auVar20);
 
-              auVar18 = _qmtc2(0x437f0000);
+              auVar18 = _qmtc2(255.0f);
 
               auVar18 = _vmulbc(auVar20,auVar18);
 
@@ -35321,7 +35321,7 @@ void FUN_003407e0(int param_1)
 
             auVar43 = _vmul(auVar42,auVar44);
 
-            auVar42 = _qmtc2(0x437f0000);
+            auVar42 = _qmtc2(255.0f);
 
             auVar42 = _vmulbc(auVar43,auVar42);
 
@@ -35343,7 +35343,7 @@ void FUN_003407e0(int param_1)
 
             auVar43 = _vmul(auVar42,auVar44);
 
-            auVar42 = _qmtc2(0x437f0000);
+            auVar42 = _qmtc2(255.0f);
 
             auVar42 = _vmulbc(auVar43,auVar42);
 
@@ -35365,7 +35365,7 @@ void FUN_003407e0(int param_1)
 
             auVar43 = _vmul(auVar42,auVar44);
 
-            auVar42 = _qmtc2(0x437f0000);
+            auVar42 = _qmtc2(255.0f);
 
             auVar42 = _vmulbc(auVar43,auVar42);
 
@@ -35387,7 +35387,7 @@ void FUN_003407e0(int param_1)
 
             auVar43 = _vmul(auVar42,auVar44);
 
-            auVar42 = _qmtc2(0x437f0000);
+            auVar42 = _qmtc2(255.0f);
 
             auVar42 = _vmulbc(auVar43,auVar42);
 

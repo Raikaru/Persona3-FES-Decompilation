@@ -230,6 +230,8 @@ typedef void (*CampSkillValueCall)(f32 depth, s32 x, s32 y, s32 color,
                                    s32 style, s32 font, s32 alignment,
                                    u32 value);
 
+#pragma alias campSkillDrawSpriteDirect FUN_001159f0
+extern void campSkillDrawSpriteDirect(f32 x, f32 y, f32 depth);
 #pragma alias FUN_001159f0_typed FUN_001159f0
 extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 f32 x, f32 y, f32 depth);
@@ -1124,9 +1126,9 @@ static void campSkillStartPanelPersona(KwlnTask* parent, s16 pcId)
 
 static void campSkillScroll(f32* x, f32* y)
 {
-    FUN_001159f0(*x, *y, 0x42c80000);
+    campSkillDrawSpriteDirect(*x, *y, 100.0f);
     if (*x < 0.0f) {
-        FUN_001159f0(*x + 640.0f, *y, 0x42c80000);
+        campSkillDrawSpriteDirect(*x + 640.0f, *y, 100.0f);
     }
     *x -= 1.0f;
     if (*x < -640.0f) {
