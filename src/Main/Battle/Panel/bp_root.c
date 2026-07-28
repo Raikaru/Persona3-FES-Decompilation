@@ -1555,7 +1555,7 @@ void FUN_00202830(void)
                               (uintptr_t)work + 0x2c));
 }
 
-// FUN_00202A10 NONMATCHING
+// FUN_00202A10
 void FUN_00202A10(void)
 {
     s32 destroyIndex;
@@ -1584,9 +1584,8 @@ void FUN_00202A10(void)
     for (rowIndex = 0; rowIndex < *(s32*)(work + 0x70); rowIndex++)
     {
         u8* entry;
-        entry = (u8*)(uintptr_t)(
-                    (rowIndex + *(s32*)(work + 0x765c)) * 8) +
-                (uintptr_t)work + 0x28;
+        entry = work +
+                (rowIndex + *(s32*)(work + 0x765c)) * 8 + 0x28;
         handle = func_003b0970(
             func_0030bb40(*(u16*)(entry + 4)), 2,
             (s8)(rowIndex == *(s32*)(work + 0x7664) -

@@ -775,49 +775,87 @@ void func_00276d30(void)
     gOpWorkD0 = NULL;
 }
 
-// FUN_00276d90 NONMATCHING
+typedef struct OpFadeEntry
+{
+    u32 drawHandle;
+    u8 pad_004[0x0c];
+    u8 draw[0x210];
+    u8 panel18[0x100];
+    u8 panel1b[0x100];
+    u8 panel14[0x100];
+    u8 panel14Alt[0x100];
+    u8 panel15[0x100];
+} OpFadeEntry;
+
+typedef struct OpFadeWork
+{
+    u32 flags;
+    u8 pad_004[0x0c];
+    u8 list12[8][0x110];
+    OpFadeEntry entries[5];
+    u8 panel13[0x100];
+    u8 panel15[0x100];
+    u8 panel15Alt[0x100];
+    u8 panel17[0x100];
+    u8 list14[7][0x100];
+    u32 pad_3730;
+    u32 drawHandle;
+    u32 pad_3738;
+    u32 state;
+    u32 frame;
+    u8 pad_3744[0x0c];
+    u8 draw[0x210];
+    u8 texture1[0x100];
+    u8 texture0[0x110];
+    u8 texture0Alt[0x100];
+} OpFadeWork;
+
+// FUN_00276d90
 void func_00276d90(void)
 {
-    u8 *work;
+    OpFadeWork* work;
     u32 res8;
+    u32 res10;
     u32 res1;
     s32 i;
-    f32 layout[4];
-    u8 color[4] = {0xff, 0xff, 0xff, 0xff};
-    K_ASSERT(gOpWorkD0 != NULL, 0x61);
-    work = OP_WORKD;
+
+    OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);
+    work = (OpFadeWork*)gOpWorkD0;
     res8 = func_00119a60(8);
+    res10 = func_00119a60(10);
     res1 = brRes00234630(1);
-    K_ASSERT((*gOpWorkD0 & 1) == 0, 0x84);
-    func_0025f5d0(work + 0xb4c, res1, 0x15);
-    func_0025fc50(work + 0xb8c, res1, 0x15, 1);
-    func_0025f5d0(work + 0xbcc, res1, 0x17);
-    func_0021d3b0(work + 0xe58, func_0021cca0(res1, 1));
-    func_0021d3b0(work + 0xe98, func_0021cca0(res1, 0));
-    func_0021d3b0(work + 0xedc, func_0021cca0(res1, 0));
+    OP_MATCH_ASSERT((~work->flags & 1) != 0, 0x84);
+
+    func_0025f5d0(work->panel15, res8, 0x15);
+    func_0025fc50(work->panel15Alt, res8, 0x15, 1);
+    func_0025f5d0(work->panel17, res8, 0x17);
+    func_0021d3b0(work->texture1, func_0021cca0(res1, 1));
+    func_0021d3b0(work->texture0, func_0021cca0(res1, 0));
+    func_0021d3b0(work->texture0Alt, func_0021cca0(res1, 0));
+
     for (i = 0; i < 5; i++)
     {
-        u8 *entry = work + i * 0x1c8;
-        func_0025f5d0(entry + 0x32c, res8, 0x14);
-        func_0025fc50(entry + 0x36c, res8, 0x14, 1);
-        func_0025f5d0(entry + 0x3ac, res8, 0x15);
-        func_00238980(entry + 0x228, 2, OP_U32(entry, 0x224), 2);
-        func_0025f5d0(entry + 0x2ac, res8, 0x18);
-        func_0025f5d0(entry + 0x2ec, res8, 0x1b);
+        OpFadeEntry* entry = &work->entries[i];
+        func_0025f5d0(entry->panel14, res10, 0x14);
+        func_0025fc50(entry->panel14Alt, res10, 0x14, 1);
+        func_0025f5d0(entry->panel15, res10, 0x15);
+        func_00238980(entry->draw, 2, entry->drawHandle, 2);
+        func_0025f5d0(entry->panel18, res10, 0x18);
+        func_0025f5d0(entry->panel1b, res10, 0x1b);
     }
+
     for (i = 0; i < 8; i++)
-        func_0025f5d0(work + i * 0x44 + 4, res1, 0x12);
-    func_0025f5d0(work + 0xb0c, res1, 0x13);
+        func_0025f5d0(work->list12[i], res8, 0x12);
+    func_0025f5d0(work->panel13, res8, 0x13);
     for (i = 0; i < 7; i++)
-        func_0025f5d0(work + i * 0x40 + 0xc0c, res1, 0x14);
-    layout[0] = 526.0f;
-    layout[1] = 328.0f;
-    func_00238dc0(work + 0xdd4, 2, OP_U32(work, 0x3734), 2, layout);
-    func_0021d950(work + 0xdd4, color);
-    func_0021d950(work + 0xe14, color);
+        func_0025f5d0(work->list14[i], res8, 0x14);
+
+    func_00238980(work->draw, 2, work->drawHandle, 2);
+    work->state = 0;
+    work->frame = 0;
     func_002771f0();
-    *gOpWorkD0 &= ~0x40u;
-    *gOpWorkD0 |= 1;
+    work->flags &= ~0x40u;
+    work->flags |= 1;
 }
 
 // FUN_00277070

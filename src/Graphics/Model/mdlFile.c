@@ -273,7 +273,7 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
 }
 
 /* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
-static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, const u32 *pc2, f32 inv255)
+static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
 {
     u32 tmp;
     __asm__ volatile (
@@ -288,7 +288,9 @@ static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, const u32 *pc2, f32 i
         "qmtc2       $v0, $vf2           \n"
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
         "vmove.xyzw  $vf11, $vf10        \n"
-        "lw          $v0, 0(%2)          \n"
+        "sw          %2, 0x138($sp)       \n"
+        "addiu       $v0, $sp, 0x138      \n"
+        "lw          $v0, 0($v0)          \n"
         "pextlb      $v0, $zero, $v0     \n"
         "pextlh      $v0, $zero, $v0     \n"
         "qmtc2       $v0, $vf10          \n"
@@ -305,10 +307,10 @@ static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, const u32 *pc2, f32 i
         "qmfc2       $v0, $vf10          \n"
         "ppach       $v0, $zero, $v0     \n"
         "ppacb       $v0, $zero, $v0     \n"
-        "sw          $v0, 0(%0)          \n"
+        "sw          $v0, 0x134($sp)      \n"
         ".set reorder"
-        :
-        : "r"(&tmp), "r"(pc1), "r"(pc2), "f"(inv255)
+        : "=m"(tmp)
+        : "r"(pc1), "r"(c2), "f"(inv255)
         : "$v0", "memory");
     return tmp;
 }
@@ -7265,43 +7267,47 @@ u32 FUN_00322fb0(u32 param_1)
 
 
 
-// FUN_00322FD0 NONMATCHING
+// FUN_00322FD0
 
 
 void FUN_00322fd0(int param_1,u32 param_2,float *param_3)
-
-
-
 {
-
-  u32 total = 0;
-  u32 index = 0xffffffff;
-  u32 count = *(u32 *)(param_1 + 4);
-  u32 i;
   int *durations;
+  u32 i;
+  u32 count;
+  u32 time;
+  int index;
   int *entry;
+  u32 elapsed;
+
+  time = 0;
+  index = -1;
+  count = *(u32 *)(param_1 + 4);
 
   if (count == 1) {
     index = 0;
   }
   else {
     if ((*(u32 *)(param_1 + 8) & 1) != 0) {
-      param_2 %= *(u32 *)(param_1 + 0x18);
+      time = param_2 % *(u32 *)(param_1 + 0x18);
     }
-    else if (*(u32 *)(param_1 + 0x18) <= param_2) {
+    else if (param_2 >= *(u32 *)(param_1 + 0x18)) {
       index = count - 1;
     }
+    else {
+      time = param_2;
+    }
 
-    if (index == 0xffffffff) {
+    if (index == -1) {
       durations = *(int **)(param_1 + 0x10);
+      elapsed = 0;
       for (i = 0; i < count; i++, durations += 4) {
-        if ((u32)(total + *durations) < param_2) {
-          goto next_duration;
+        if (time <= elapsed + *durations) {
+          index = i;
+          break;
+        } else {
+          elapsed = elapsed + *durations + 1;
         }
-        index = i;
-        break;
-next_duration:
-        total += *durations + 1;
       }
     }
   }
@@ -7313,8 +7319,6 @@ next_duration:
   entry = (int *)*entry;
   param_3[2] = (float)entry[3];
   param_3[3] = (float)entry[4];
-  return;
-
 }
 
 
@@ -8012,15 +8016,19 @@ u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
 
   FUN_00492d10(uVar5,uVar2);
 
-  iVar1 = *(int *)((int)uVar6 + 0x5c);
+  {
+    struct {
+      u8 reserved[16];
+      RwRGBAReal color;
+    } lighting;
 
-  *(u32 *)(iVar1 + 4) = 0;
-
-  *(u32 *)(iVar1 + 8) = 0;
-
-  *(u32 *)(iVar1 + 0xc) = 0;
-
-  *(u32 *)(iVar1 + 0x10) = uGpffff8164;
+    iVar1 = *(int *)((int)uVar6 + 0x5c);
+    lighting.color.r = 0.0f;
+    lighting.color.g = 0.0f;
+    lighting.color.b = 0.0f;
+    lighting.color.a = *(f32 *)&uGpffff8164;
+    *(RwRGBAReal *)(iVar1 + 4) = lighting.color;
+  }
 
   FUN_004919b0(uVar5,uVar6,0);
 
@@ -8069,75 +8077,55 @@ u64 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u64 param_4)
 
 
 int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
-
                  u32 param_6)
-
-
-
 {
+  u32 outerCount;
+  u16 rowCount;
+  u32 rowStep;
+  int tripletIndexCount;
+  int resource;
+  int material;
+  u32 *meshEntries;
+  int materialEntry;
+  u32 baseVertex;
+  int outerIndex;
+  int rowIndex;
+  int tripletIndex;
+  u32 *meshEntry;
+  u16 *triplet;
+  u16 rowBase;
 
-  int iVar1;
+  outerCount = param_1;
+  rowCount = (u16)param_2;
+  rowStep = param_4;
+  tripletIndexCount = (u16)param_3 * 3;
+  resource = FUN_00323c20_u32(param_1,
+                              rowCount * rowStep & 0xffff,
+                              rowCount * (u16)param_3 & 0xffff,
+                              param_6);
+  material = *(int *)(*(int *)(resource + 0x10) + 0x18);
+  meshEntries = *(u32 **)(resource + 0x28);
+  materialEntry = *(int *)(material + 0x2c);
+  baseVertex = 0;
 
-  int iVar2;
-
-  int iVar3;
-
-  u16 *puVar4;
-
-  u32 uVar5;
-
-  int lVar6;
-
-  int lVar7;
-
-  int iVar8;
-
-  int iVar9;
-
-  
-
-  param_2 = param_2 & 0xffff;
-
-  iVar3 = FUN_00323c20_u32(param_1,param_2 * (param_4 & 0xffff) & 0xffff,
-
-                       param_2 * (param_3 & 0xffff) & 0xffff,param_6);
-
-  iVar1 = *(int *)(*(int *)(iVar3 + 0x10) + 0x18);
-
-  iVar2 = *(int *)(iVar3 + 0x28);
-
-  iVar9 = *(int *)(iVar1 + 0x2c);
-
-  uVar5 = 0;
-
-  for (lVar6 = 0; lVar6 < ((u32)param_1 & 0xffff); lVar6 = lVar6 + 1) {
-
-    for (iVar8 = 0; iVar8 < (int)param_2; iVar8 = iVar8 + 1) {
-
-      for (lVar7 = 0; lVar7 < ((param_3 & 0xffff) * 3); lVar7 = lVar7 + 3)
-
-      {
-
-        puVar4 = (u16 *)(param_5 + (int)lVar7 * 2);
-
-        FUN_00493210(iVar1,iVar9,uVar5 + *puVar4 & 0xffff,uVar5 + puVar4[1] & 0xffff,
-
-                     uVar5 + puVar4[2] & 0xffff);
-
-        FUN_00493230(iVar1,iVar9,*(u32 *)(iVar2 + (int)lVar6 * 4));
-
-        iVar9 = iVar9 + 8;
-
+  for (outerIndex = 0; outerIndex < (u16)outerCount; outerIndex++) {
+    meshEntry = meshEntries + outerIndex;
+    for (rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+      rowBase = (u16)baseVertex;
+      for (tripletIndex = 0; tripletIndex < tripletIndexCount; tripletIndex += 3) {
+        triplet = (u16 *)(param_5 + tripletIndex * 2);
+        FUN_00493210(material,materialEntry,
+                     rowBase + triplet[0] & 0xffff,
+                     rowBase + triplet[1] & 0xffff,
+                     rowBase + triplet[2] & 0xffff);
+        FUN_00493230(material,materialEntry,*meshEntry);
+        materialEntry += 8;
       }
-
-      uVar5 = uVar5 + param_4 & 0xffff;
-
+      baseVertex = baseVertex + rowStep & 0xffff;
     }
-
   }
 
-  return iVar3;
-
+  return resource;
 }
 
 
@@ -24317,16 +24305,29 @@ void FUN_00335180(int param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
-          *(u8 *)(dst + 4) = stack.output.chan.r;
-          *(u8 *)(dst + 5) = stack.output.chan.g;
-          *(u8 *)(dst + 6) = stack.output.chan.b;
+          u8 red = stack.output.chan.r;
+          u8 green = stack.output.chan.g;
+          u8 blue = stack.output.chan.b;
+          *(u8 *)(dst + 4) = red;
+          *(u8 *)(dst + 5) = green;
+          *(u8 *)(dst + 6) = blue;
           *(u8 *)(dst + 7) = stack.output.chan.a;
         } else {
-          int dst = *(int *)(entry + 10);
-          *(u8 *)(dst + 4) = stack.output.chan.r;
-          *(u8 *)(dst + 5) = stack.output.chan.g;
-          *(u8 *)(dst + 6) = stack.output.chan.b;
-          *(u8 *)(dst + 7) = 0xfe;
+          int dst;
+          u8 red;
+          u8 green;
+          u8 blue;
+          u8 outputAlpha;
+          stack.output.chan.a = 0xfe;
+          dst = *(int *)(entry + 10);
+          red = stack.output.chan.r;
+          green = stack.output.chan.g;
+          blue = stack.output.chan.b;
+          outputAlpha = stack.output.chan.a;
+          *(u8 *)(dst + 4) = red;
+          *(u8 *)(dst + 5) = green;
+          *(u8 *)(dst + 6) = blue;
+          *(u8 *)(dst + 7) = outputAlpha;
           stack.output.chan.a = 0xff;
         }
         if (*(u8 *)(node + 0x5c) != 0) *entry |= 1;
@@ -25453,16 +25454,29 @@ void FUN_00336630(int param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
-          *(u8 *)(dst + 4) = stack.output.chan.r;
-          *(u8 *)(dst + 5) = stack.output.chan.g;
-          *(u8 *)(dst + 6) = stack.output.chan.b;
+          u8 red = stack.output.chan.r;
+          u8 green = stack.output.chan.g;
+          u8 blue = stack.output.chan.b;
+          *(u8 *)(dst + 4) = red;
+          *(u8 *)(dst + 5) = green;
+          *(u8 *)(dst + 6) = blue;
           *(u8 *)(dst + 7) = stack.output.chan.a;
         } else {
-          int dst = *(int *)(entry + 10);
-          *(u8 *)(dst + 4) = stack.output.chan.r;
-          *(u8 *)(dst + 5) = stack.output.chan.g;
-          *(u8 *)(dst + 6) = stack.output.chan.b;
-          *(u8 *)(dst + 7) = 0xfe;
+          int dst;
+          u8 red;
+          u8 green;
+          u8 blue;
+          u8 outputAlpha;
+          stack.output.chan.a = 0xfe;
+          dst = *(int *)(entry + 10);
+          red = stack.output.chan.r;
+          green = stack.output.chan.g;
+          blue = stack.output.chan.b;
+          outputAlpha = stack.output.chan.a;
+          *(u8 *)(dst + 4) = red;
+          *(u8 *)(dst + 5) = green;
+          *(u8 *)(dst + 6) = blue;
+          *(u8 *)(dst + 7) = outputAlpha;
           stack.output.chan.a = 0xff;
         }
         if (*(u8 *)(node + 0x5c) != 0) *entry |= 1;
@@ -26539,16 +26553,29 @@ void FUN_003377f0(u32 param_1)
             : "$v0", "vf2", "vf10", "vf11", "memory");
         if (stack.output.chan.a != 0xff) {
           int dst = *(int *)(entry + 10);
-          *(u8 *)(dst + 4) = stack.output.chan.r;
-          *(u8 *)(dst + 5) = stack.output.chan.g;
-          *(u8 *)(dst + 6) = stack.output.chan.b;
+          u8 red = stack.output.chan.r;
+          u8 green = stack.output.chan.g;
+          u8 blue = stack.output.chan.b;
+          *(u8 *)(dst + 4) = red;
+          *(u8 *)(dst + 5) = green;
+          *(u8 *)(dst + 6) = blue;
           *(u8 *)(dst + 7) = stack.output.chan.a;
         } else {
-          int dst = *(int *)(entry + 10);
-          *(u8 *)(dst + 4) = stack.output.chan.r;
-          *(u8 *)(dst + 5) = stack.output.chan.g;
-          *(u8 *)(dst + 6) = stack.output.chan.b;
-          *(u8 *)(dst + 7) = 0xfe;
+          int dst;
+          u8 red;
+          u8 green;
+          u8 blue;
+          u8 outputAlpha;
+          stack.output.chan.a = 0xfe;
+          dst = *(int *)(entry + 10);
+          red = stack.output.chan.r;
+          green = stack.output.chan.g;
+          blue = stack.output.chan.b;
+          outputAlpha = stack.output.chan.a;
+          *(u8 *)(dst + 4) = red;
+          *(u8 *)(dst + 5) = green;
+          *(u8 *)(dst + 6) = blue;
+          *(u8 *)(dst + 7) = outputAlpha;
           stack.output.chan.a = 0xff;
         }
         if (*(u8 *)(node + 0x5c) != 0) *entry |= 1;
@@ -45200,7 +45227,7 @@ void FUN_0034cc00(u32 *param_1)
       iStack_8 = FUN_0032a120((char *)(param_1 + 0xc),(u32 *)(param_1 + 0x15),iVar1,iVar2);
       iStack_4 = param_1[9];
 
-      uStack_c = mdlVuModulateStackedV0((u32 *)&iStack_4,(u32 *)&iStack_8,DAT_007cae4c);
+      uStack_c = mdlVuModulateStackedV0((u32 *)&iStack_4,(u32)iStack_8,DAT_007cae4c);
       fVar8 = (float)FUN_0032a540((char *)(param_1 + 0x19),iVar1,iVar2);
 
       fVar8 = (fVar8 / 10.0f) * *(float *)(param_1 + 8);

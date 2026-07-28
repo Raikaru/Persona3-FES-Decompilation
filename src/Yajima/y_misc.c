@@ -274,10 +274,14 @@ u8 DAT_0095c100[];
 u8 DAT_0095c110[];
 u8 DAT_0095c210[];
 float DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
 code DAT_00960090;
  #pragma alias DAT_00960090_abs DAT_00960090
  extern u8 DAT_00960090_abs[];
 code DAT_009600a0;
+#pragma alias DAT_009600a0_abs DAT_009600a0
+extern u8 DAT_009600a0_abs[];
 extern code DAT_0096017c;
  #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
@@ -3316,119 +3320,77 @@ void FUN_00427e60(int param_1,u8 param_2)
 
 }
 
+#define DAT_00960090 Yajima_setState
+
 // FUN_00427E70 NONMATCHING
 
 
-void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int param_5,int param_6,
-
-                 u32 *param_7)
-
-
-
+void FUN_00427e70(float depth, float x, float y, u32 color, int width, int height,
+                  u32 *raster)
 {
+  YajimaVec16 vertices[4];
+  float positions[4][2];
+  code *Yajima_setState;
+  int camera;
+  int i;
+  u32 red;
+  u32 green;
+  u32 blue;
+  u32 alpha;
+  float reciprocalZ;
 
-  int iVar1;
+  camera = kwlnGetMainCamera();
+  reciprocalZ = 1.0f / *(float *)(camera + 0x80);
+  alpha = ((color & 0xff000000) >> 24) & 0xff;
+  blue = ((color & 0xff0000) >> 16) & 0xff;
+  green = ((color & 0xff00) >> 8) & 0xff;
+  red = color & 0xff;
+  Yajima_setState = (code *)&DAT_00960090_abs;
 
-  float fVar2;
+  (*DAT_00960090)(6, 1);
+  (*DAT_00960090)(7, 2);
+  (*DAT_00960090)(8, 1);
+  (*DAT_00960090)(9, 2);
+  (*DAT_00960090)(0xc, 1);
+  (*DAT_00960090)(0xb, 6);
+  (*DAT_00960090)(10, 5);
+  (*DAT_00960090)(2, 4);
+  RpSkyRenderStateSet(2, 0x48);
+  RpSkyRenderStateSet(3, 0x71801);
 
-  float afStack_120 [8];
+  positions[0][0] = x;
+  positions[0][1] = y;
+  positions[3][0] = x + (float)width;
+  positions[3][1] = y + (float)height;
+  positions[1][0] = x + (float)width;
+  positions[1][1] = y;
+  positions[2][0] = x;
+  positions[2][1] = y + (float)height;
 
-  float fStack_10c;
-
-  float fStack_108;
-
-  float fStack_104;
-  YajimaVec16 afStack_100 [4];
-
-
-  
-
-  iVar1 = kwlnGetMainCamera();
-
-  fVar2 = *(float *)(iVar1 + 0x80);
-
-  (*DAT_00960090)(6,1);
-
-  (*DAT_00960090)(7,2);
-
-  (*DAT_00960090)(8,1);
-
-  (*DAT_00960090)(9,2);
-
-  (*DAT_00960090)(0xc,1);
-
-  (*DAT_00960090)(0xb,6);
-
-  (*DAT_00960090)(10,5);
-
-  (*DAT_00960090)(2,4);
-
-  RpSkyRenderStateSet(2,0x48);
-
-  RpSkyRenderStateSet(3,0x71801);
-
-  afStack_120[0] = param_2;
-
-  afStack_120[1] = param_3;
-
-  fStack_108 = param_2 + (float)param_5;
-
-  fStack_104 = param_3 + (float)param_6;
-
-  afStack_120[2] = param_2 + (float)param_5;
-
-  afStack_120[3] = param_3;
-
-  afStack_120[4] = param_2;
-
-  fStack_10c = param_3 + (float)param_6;
-
-  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-
-    afStack_100[iVar1].lane[2] = DAT_00960088 - param_1;
-
-    afStack_100[iVar1].lane[6] = 1.0f / fVar2;
-
-    afStack_100[iVar1].lane[8] = (float)(param_4 >> 0x18);
-
-    afStack_100[iVar1].lane[9] = (float)((param_4 & 0xff0000) >> 0x10);
-
-    afStack_100[iVar1].lane[10] = (float)((param_4 & 0xff00) >> 8);
-
-    afStack_100[iVar1].lane[0xb] = (float)(param_4 & 0xff);
-
-    afStack_100[iVar1].lane[0] = afStack_120[iVar1 * 2];
-
-    afStack_100[iVar1].lane[1] = afStack_120[iVar1 * 2 + 1];
-
+  for (i = 0; i < 4; i++) {
+    vertices[i].lane[2] = *(float *)DAT_00960088_abs - depth;
+    vertices[i].lane[6] = reciprocalZ;
+    vertices[i].lane[8] = (float)alpha;
+    vertices[i].lane[9] = (float)blue;
+    vertices[i].lane[10] = (float)green;
+    vertices[i].lane[11] = (float)red;
+    vertices[i].lane[0] = positions[i][0];
+    vertices[i].lane[1] = positions[i][1];
   }
 
-  afStack_100[0].lane[4] = 0.0f;
-  afStack_100[0].lane[5] = 0.0f;
-  afStack_100[1].lane[4] = 1.0f;
-  afStack_100[1].lane[5] = 0.0f;
-  afStack_100[2].lane[4] = 0.0f;
-  afStack_100[2].lane[5] = 1.0f;
-  afStack_100[3].lane[4] = 1.0f;
-  afStack_100[3].lane[5] = 1.0f;
-
-  (*DAT_00960090)(1,*param_7);
-  (*DAT_009600a0)(4,afStack_100,4);
-
-  afStack_100[0].lane[4] = 0.0f;
-  afStack_100[0].lane[5] = 0.0f;
-  afStack_100[1].lane[4] = 1.0f;
-  afStack_100[1].lane[5] = 0.0f;
-  afStack_100[2].lane[4] = 0.0f;
-  afStack_100[2].lane[5] = 1.0f;
-  afStack_100[3].lane[4] = 1.0f;
-  afStack_100[3].lane[5] = 1.0f;
-  (*DAT_00960090)(1,*param_7);
-  (*DAT_009600a0)(4,afStack_100,4);
-
-  return;
-
+  vertices[0].lane[4] = 0.0f;
+  vertices[0].lane[5] = 0.0f;
+  vertices[1].lane[4] = 1.0f;
+  vertices[1].lane[5] = 0.0f;
+  vertices[2].lane[4] = 0.0f;
+  vertices[2].lane[5] = 1.0f;
+  vertices[3].lane[4] = 1.0f;
+  vertices[3].lane[5] = 1.0f;
+  (*DAT_00960090)(1, *raster);
+  (*(code *)DAT_009600a0_abs)(4, vertices, 4);
 }
+
+#undef DAT_00960090
 
 // FUN_004281F0 NONMATCHING
 

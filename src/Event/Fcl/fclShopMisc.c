@@ -303,7 +303,7 @@ void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5);
 void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5, int param_6);
-void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5);
+void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7730(int param_1,int param_2,u8 param_3,int param_4,int param_5);
 void FUN_003f7890(int param_1,int param_2,u8 param_3,int param_4,int param_5,int param_6);
@@ -3921,191 +3921,120 @@ void FUN_003f7a80_i(int,int,int,int,int);
 
 
 void FUN_003f4350(int param_1,int param_2,int param_3,int param_4)
-
-
-
 {
+  int x = param_1;
+  int y = param_2;
+  int alpha = param_3;
+  int context = param_4;
+  int drawAlpha = 0;
+  u32 drawState;
+  int config;
+  int itemValue;
+  int spriteX;
+  int spriteY;
+  int spriteAlpha;
+  float spriteScale;
 
-  u32 uVar1;
+  drawState = *(u32 *)(context + 0xc);
+  config = *(int *)(*(int *)(context + 0x24) + 0x44);
+  x += *(short *)(config + 0x28);
+  y += *(short *)(config + 0x2a);
 
-  u32 uVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int lVar5;
-
-  int iVar6;
-
-  int lVar7;
-
-  int iVar8;
-
-  u32 uVar9;
-
-  
-
-  iVar6 = (int)param_4;
-
-  uVar2 = *(u32 *)(iVar6 + 0xc);
-
-  iVar3 = *(int *)(*(int *)(iVar6 + 0x24) + 0x44);
-
-  param_1 = param_1 + *(short *)(iVar3 + 0x28);
-
-  param_2 = param_2 + *(short *)(iVar3 + 0x2a);
-
-  lVar5 = FUN_003c6e10(param_4);
-
-  if (lVar5 == 1) {
-
-    lVar7 = 0xff;
-
+  switch (FUN_003c6e10(context)) {
+  case 0xc:
+    drawAlpha = 0xff;
+    break;
+  case 0x14:
+    drawAlpha = alpha;
+    break;
+  case 1:
+    drawAlpha = 0xff;
+    break;
   }
 
-  else {
-
-    lVar7 = param_3;
-
-    if ((lVar5 != 0x14) && (lVar7 = 0, lVar5 == 0xc)) {
-
-      lVar7 = 0xff;
-
-    }
-
+  if (drawAlpha != 0) {
+    FUN_0040e3c0_f32(0.0f,x + *(short *)(config + 0x38),
+                     y + *(short *)(config + 0x3a),
+                     (drawAlpha * *(short *)(config + 0x44)) / 0xff & 0xff,0x22,0);
+    spriteX = x + *(short *)(config + 0x48);
+    spriteY = y + *(short *)(config + 0x4a);
+    spriteAlpha = (drawAlpha * *(short *)(config + 0x54)) / 0xff;
+    spriteScale = *(float *)(config + 0x50);
+    itemValue = *(int *)(*(int *)(context + 0x24) + 0x28);
+    FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x15,spriteY - 0xb,
+                     spriteAlpha & 0xff,0x24,0,0,0);
+    FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x13,
+                     spriteY + 4 + (itemValue * 0x68) / 0xffff,
+                     spriteAlpha & 0xff,0x25,0,0,0);
   }
 
-  if (lVar7 != 0) {
-
-    FUN_0040e3c0(0,param_1 + *(short *)(iVar3 + 0x38),param_2 + *(short *)(iVar3 + 0x3a),
-                 ((int)lVar7 * (int)*(short *)(iVar3 + 0x44)) / 0xff & 0xff,0x22,0);
-
-    iVar8 = param_1 + *(short *)(iVar3 + 0x48);
-
-    iVar4 = param_2 + *(short *)(iVar3 + 0x4a);
-
-    uVar1 = ((int)lVar7 * (int)*(short *)(iVar3 + 0x54)) / 0xff;
-
-    uVar9 = *(u32 *)(iVar3 + 0x50);
-
-    iVar6 = *(int *)(*(int *)(iVar6 + 0x24) + 0x28);
-
-    FUN_0040e3f0(0,0,1.0f,uVar9,iVar8 + -0x15,iVar4 + -0xb,uVar1 & 0xff,0x24,0,0,0);
-
-    FUN_0040e3f0(0,0,1.0f,uVar9,iVar8 + -0x13,iVar4 + 4 + (iVar6 * 0x68) / 0xffff,uVar1 & 0xff
-                 ,0x25,0,0,0);
-
+  FUN_003f7730_i(x - 0x15,y + 0x8b,alpha,context,drawState);
+  if (*(short *)(config + 6) == -1) {
+    FUN_003f5d10_i(0x15a,0xe6,alpha,context,drawState);
+    FUN_003f7a80_i(0x15b,0x134,alpha,context,drawState);
+  } else {
+    FUN_003f7a80_i(x + 1,y + 0xac,alpha,context,drawState);
   }
-
-
-  FUN_003f7730_i(param_1 - 0x15,param_2 + 0x8b,(int)param_3,(int)param_4,uVar2);
-  if (*(short *)(iVar3 + 6) != -1) {
-    FUN_003f7a80_i(param_1 + 1,param_2 + 0xac,(int)param_3,(int)param_4,uVar2);
-  }
-  else {
-    FUN_003f5d10_i(0x15a,0xe6,(int)param_3,(int)param_4,uVar2);
-    FUN_003f7a80_i(0x15b,0x134,(int)param_3,(int)param_4,uVar2);
-  }
-
-  return;
-
 }
 
 // FUN_003F45E0 NONMATCHING
 
 
 void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4)
-
-
 {
+  int x = param_1;
+  int y = param_2;
+  int alpha = param_3;
+  int context = param_4;
+  int drawAlpha = 0;
+  u32 drawState;
+  int config;
+  int itemValue;
+  int spriteX;
+  int spriteY;
+  int spriteAlpha;
+  float spriteScale;
 
-  u32 uVar1;
+  drawState = *(u32 *)(context + 0xc);
+  config = *(int *)(*(int *)(context + 0x24) + 0x44);
+  x += *(short *)(config + 0x28);
+  y += *(short *)(config + 0x2a);
 
-  u32 uVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int lVar5;
-
-  int iVar6;
-
-  int lVar7;
-
-  int iVar8;
-
-  u32 uVar9;
-
-  
-
-  iVar6 = (int)param_4;
-
-  uVar2 = *(u32 *)(iVar6 + 0xc);
-
-  iVar3 = *(int *)(*(int *)(iVar6 + 0x24) + 0x44);
-
-  param_1 = param_1 + *(short *)(iVar3 + 0x28);
-
-  param_2 = param_2 + *(short *)(iVar3 + 0x2a);
-
-  lVar5 = FUN_003c6e10(param_4);
-
-  if (lVar5 == 1) {
-
-    lVar7 = 0xff;
-
+  switch (FUN_003c6e10(context)) {
+  case 0xc:
+    drawAlpha = 0xff;
+    break;
+  case 0x14:
+    drawAlpha = alpha;
+    break;
+  case 1:
+    drawAlpha = 0xff;
+    break;
   }
 
-  else {
-
-    lVar7 = param_3;
-
-    if ((lVar5 != 0x14) && (lVar7 = 0, lVar5 == 0xc)) {
-
-      lVar7 = 0xff;
-
-    }
-
+  if (drawAlpha != 0) {
+    FUN_0040e3c0_f32(0.0f,x + *(short *)(config + 0x38),
+                     y + *(short *)(config + 0x3a),
+                     (drawAlpha * *(short *)(config + 0x44)) / 0xff & 0xff,0x26,0);
+    spriteX = x + *(short *)(config + 0x48);
+    spriteY = y + *(short *)(config + 0x4a);
+    spriteAlpha = (drawAlpha * *(short *)(config + 0x54)) / 0xff;
+    spriteScale = *(float *)(config + 0x50);
+    itemValue = *(int *)(*(int *)(context + 0x24) + 0x28);
+    FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x15,spriteY - 0xb,
+                     spriteAlpha & 0xff,0x28,0,0,0);
+    FUN_0040e3f0_f32(0.0f,0.0f,1.0f,spriteScale,spriteX - 0x13,
+                     spriteY + 4 + (itemValue * 0x68) / 0xffff,
+                     spriteAlpha & 0xff,0x29,0,0,0);
   }
 
-  if (lVar7 != 0) {
-
-    FUN_0040e3c0(0,param_1 + *(short *)(iVar3 + 0x38),param_2 + *(short *)(iVar3 + 0x3a),
-
-                 ((int)lVar7 * (int)*(short *)(iVar3 + 0x44)) / 0xff & 0xff,0x26,0);
-
-    iVar8 = param_1 + *(short *)(iVar3 + 0x48);
-
-    iVar4 = param_2 + *(short *)(iVar3 + 0x4a);
-
-    uVar1 = ((int)lVar7 * (int)*(short *)(iVar3 + 0x54)) / 0xff;
-
-    uVar9 = *(u32 *)(iVar3 + 0x50);
-
-    iVar6 = *(int *)(*(int *)(iVar6 + 0x24) + 0x28);
-
-    FUN_0040e3f0(0,0,1.0f,uVar9,iVar8 + -0x15,iVar4 + -0xb,uVar1 & 0xff,0x28,0,0,0);
-
-    FUN_0040e3f0(0,0,1.0f,uVar9,iVar8 + -0x13,iVar4 + 4 + (iVar6 * 0x68) / 0xffff,uVar1 & 0xff
-
-                 ,0x29,0,0,0);
-
+  FUN_003f7730_i(x - 0x15,y + 0x8b,alpha,context,drawState);
+  if (*(short *)(config + 6) == -1) {
+    FUN_003f5f50_i(0x15a,0xe6,alpha,context,drawState);
+    FUN_003f7a80_i(0x15b,0x134,alpha,context,drawState);
+  } else {
+    FUN_003f7a80_i(x + 1,y + 0xac,alpha,context,drawState);
   }
-
-
-  FUN_003f7730_i(param_1 - 0x15,param_2 + 0x8b,(int)param_3,(int)param_4,uVar2);
-  if (*(short *)(iVar3 + 6) != -1) {
-    FUN_003f7a80_i(param_1 + 1,param_2 + 0xac,(int)param_3,(int)param_4,uVar2);
-  }
-  else {
-    FUN_003f5f50_i(0x15a,0xe6,(int)param_3,(int)param_4,uVar2);
-    FUN_003f7a80_i(0x15b,0x134,(int)param_3,(int)param_4,uVar2);
-  }
-
-  return;
-
 }
 
 // FUN_003F4870 NONMATCHING
@@ -5735,7 +5664,7 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 // FUN_003F6F20 NONMATCHING
 
 
-void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
+void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 
 
@@ -5745,7 +5674,6 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   char cVar2;
 
-  float fVar3;
 
   int iVar4;
 
@@ -5759,25 +5687,25 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   int iVar9;
 
-  u32 uVar10;
+  int iVar10;
 
   float fVar11;
 
-  u8 auStack_30[16];
-
-  char acStack_20 [16];
-
-  char acStack_10 [12];
-
-  short sStack_4;
-
-  short sStack_2;
+  struct {
+    u8 text[16];
+    char itemSlots[10];
+    u8 pad0[6];
+    char selectionFlags[5];
+    u8 pad1[7];
+    short xOffset;
+    short yOffset;
+  } scratch;
 
   
 
   pcVar6 = (char *)(&DAT_007cd948);
 
-  pcVar5 = acStack_10;
+  pcVar5 = scratch.selectionFlags;
 
   iVar4 = 5;
 
@@ -5795,13 +5723,12 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   } while (0 < iVar4);
 
-  sStack_4 = DAT_007cd950;
-
-  sStack_2 = DAT_007cd952;
+  scratch.xOffset = DAT_007cd950;
+  scratch.yOffset = DAT_007cd952;
 
   pcVar6 = (char *)(&DAT_006aefb8);
 
-  pcVar5 = acStack_20;
+  pcVar5 = scratch.itemSlots;
 
   iVar4 = 5;
 
@@ -5829,77 +5756,61 @@ void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5)
 
   fVar11 = DAT_007caef0 * (float)(int)param_3;
 
-  fVar3 = fVar11;
-
-  if (2.1474836e+09f <= fVar11) {
-
-    fVar3 = fVar11 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3c0(0,param_1,param_2,(int)fVar3 & 0xff,0x75,0);
-
-  if (2.1474836e+09f <= fVar11) {
-    fVar11 = fVar11 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3c0(0,param_1,param_2,(int)fVar11 & 0xff,0x76,0);
-
-  FUN_0040e3c0(0,param_1,param_2,param_3 & 0xff,0x77,0);
-
-  FUN_0040e3c0(0,param_1,param_2,param_3 & 0xff,0x78,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,(u32)fVar11 & 0xff,0x75,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,(u32)fVar11 & 0xff,0x76,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x77,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x78,0);
 
   iVar8 = (int)param_1;
 
   iVar7 = (int)param_2;
 
-  FUN_0040e3c0(0,iVar8 + 0x89,iVar7 + 8,param_3 & 0xff,5,*(u8 *)(iVar4 + 8) + 0x16);
+  FUN_0040e3c0_f32(0.0f,iVar8 + 0x89,iVar7 + 8,param_3 & 0xff,5,
+                   *(u8 *)(iVar4 + 8) + 0x16);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x79,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x7a,0);
 
-  FUN_0040e3c0(0,param_1,param_2,param_3 & 0xff,0x79,0);
-
-  FUN_0040e3c0(0,param_1,param_2,param_3 & 0xff,0x7a,0);
-
-  uVar10 = param_3;
-
-  if (acStack_10[iVar9] != '\0') {
-
-    uVar10 = param_3 >> 1;
+  iVar10 = param_3;
+  if (scratch.selectionFlags[iVar9] != '\0') {
+    iVar10 = (int)((float)param_3 * 0.5f);
   }
-
-  FUN_0040e3c0(0,param_1,param_2,uVar10 & 0xff,0x7b,0);
-
-  FUN_0040e3c0(0,param_1,param_2,uVar10 & 0xff,0x7c,0);
-
-  FUN_0040e3c0(0,param_1,iVar7 + 0x23,param_3 & 0xff,0x7d,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,iVar10 & 0xff,0x7b,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,iVar10 & 0xff,0x7c,0);
+  FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,param_3 & 0xff,0x7d,0);
 
   iVar9 = iVar9 * 2;
 
-  if (acStack_20[iVar9] == -1) {
+  if (scratch.itemSlots[iVar9] == -1) {
 
-    FUN_0040e3c0(0,param_1,iVar7 + 0x23,(param_3 >> 1) & 0xff,0x7e,0);
+    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,
+                     (int)((float)param_3 * 0.5f) & 0xff,0x7e,0);
   }
 
   else {
 
-    sprintf((char *)auStack_30,0x7cd900,*(u16 *)(acStack_20[iVar9] * 2 + iVar4 + 0x14));
-
-    FUN_0040eb50(0,iVar8 + sStack_4,iVar7 + 0x23 + (int)sStack_2,param_3 & 0xff,1,auStack_30,2);
+    sprintf((char *)scratch.text,0x7cd900,
+            *(u16 *)(scratch.itemSlots[iVar9] * 2 + iVar4 + 0x14));
+    FUN_0040eb50_f32(0.0f,iVar8 + scratch.xOffset,
+                     iVar7 + 0x23 + (int)scratch.yOffset,param_3 & 0xff,
+                     1,scratch.text,2);
 
   }
 
-  FUN_0040e3c0(0,param_1,iVar7 + 0x3e,param_3 & 0xff,0x7d,0);
+  FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x3e,param_3 & 0xff,0x7d,0);
 
-  if (acStack_20[iVar9 + 1] == -1) {
+  if (scratch.itemSlots[iVar9 + 1] == -1) {
 
-    FUN_0040e3c0(0,param_1,iVar7 + 0x3e,(param_3 >> 1) & 0xff,0x7e,0);
+    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x3e,
+                     (int)((float)param_3 * 0.5f) & 0xff,0x7e,0);
   }
 
   else {
 
-    sprintf((char *)auStack_30,0x7cd900,*(u16 *)(acStack_20[iVar9 + 1] * 2 + iVar4 + 0x14));
-
-    FUN_0040eb50(0,iVar8 + sStack_4,iVar7 + 0x3e + (int)sStack_2,param_3 & 0xff,1,auStack_30,2);
+    sprintf((char *)scratch.text,0x7cd900,
+            *(u16 *)(scratch.itemSlots[iVar9 + 1] * 2 + iVar4 + 0x14));
+    FUN_0040eb50_f32(0.0f,iVar8 + scratch.xOffset,
+                     iVar7 + 0x3e + (int)scratch.yOffset,param_3 & 0xff,
+                     1,scratch.text,2);
 
   }
 

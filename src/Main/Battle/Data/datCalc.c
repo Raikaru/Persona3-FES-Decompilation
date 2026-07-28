@@ -6753,34 +6753,25 @@ void FUN_0030cb90(void)
 
 
 
-// FUN_0030cc40 NONMATCHING
+// FUN_0030cc40
 void FUN_0030cc40(void)
-
 {
-  s32 lVar1;
-  float fVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  
-  lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0xe,3);
-    fVar5 = (fVar2 + 200.0f) / (fVar3 + 200.0f);
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0x1f,0);
-    fVar4 = (float)FUN_0030fdf0(0x11,0);
-    fVar4 = fVar5 * ((fVar2 + 200.0f) / (fVar3 / 2.0f + 200.0f)) * fVar4;
+  float ratio;
+  float value;
+  float output;
+
+  if (FUN_003111f0() != 0) {
+    value = (float)FUN_0030fdf0(0xd, 3) + 200.0f;
+    value /= (float)FUN_0030fdf0(0xe, 3) + 200.0f;
+    output = value * (float)FUN_0030fdf0(0x11, 0);
+  } else {
+    value = (float)FUN_0030fdf0(0xd, 3) + 200.0f;
+    ratio = value / ((float)FUN_0030fdf0(0xe, 3) + 200.0f);
+    value = (float)FUN_0030fdf0(0xd, 3) + 200.0f;
+    value /= (float)FUN_0030fdf0(0x1f, 0) / 2.0f + 200.0f;
+    output = ratio * value * (float)FUN_0030fdf0(0x11, 0);
   }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0xe,3);
-    fVar4 = (float)FUN_0030fdf0(0x11,0);
-    fVar4 = ((fVar2 + 200.0f) / (fVar3 + 200.0f)) * fVar4;
-  }
-  FUN_00311190((int)fVar4);
-  return;
+  FUN_00311190((int)output);
 }
 
 
@@ -7040,24 +7031,22 @@ void FUN_0030d4a0(void)
 
 
 
-// FUN_0030d4e0 NONMATCHING
+// FUN_0030d4e0
 void FUN_0030d4e0(void)
-
 {
-  float fVar1;
-  float fVar2;
-  
-  fVar1 = (float)FUN_0030fdf0(0xe,2);
-  fVar1 += (float)FUN_0030fdf0(0xe,2);
-  fVar2 = (float)FUN_0030fdf0(0x13,0);
-  fVar2 = sqrtf((((fVar2 - 30.0f) * 30.0f) / (fVar1 * 5.0f)) *
-                ((float)FUN_0030fdf0(0xd,0) / 5.0f)) * 10.0f;
-  fVar2 *= (float)FUN_0030fdf0(0xc,0);
-  fVar2 *= (float)FUN_0030fdf0(0x17,0);
-  fVar2 *= (float)FUN_0030fdf0(0x1b,0);
-  fVar2 *= (float)FUN_0030fdf0(0x21,0);
-  FUN_00311190((int)(fVar2 * DAT_007cad74));
-  return;
+  float value;
+
+  value = (float)FUN_0030fdf0(0xe, 2);
+  value += (float)FUN_0030fdf0(0xe, 2);
+  value = ((float)FUN_0030fdf0(0x13, 0) - 30.0f) * 30.0f /
+          (value * 5.0f);
+  value *= (float)FUN_0030fdf0(0xd, 0) / 5.0f;
+  value = sqrtf(value) * 10.0f;
+  value *= (float)FUN_0030fdf0(0xc, 0);
+  value *= (float)FUN_0030fdf0(0x17, 0);
+  value *= (float)FUN_0030fdf0(0x1b, 0);
+  value *= (float)FUN_0030fdf0(0x21, 0);
+  FUN_00311190((int)(value * DAT_007cad74));
 }
 
 
@@ -7155,43 +7144,37 @@ void FUN_0030d760(void)
 
 
 
-// FUN_0030db80 NONMATCHING
+// FUN_0030db80
 void FUN_0030db80(void)
-
 {
-  s32 lVar1;
-  float fVar2;
-  float fVar3;
-  float fVar4;
-  
-  lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar2 = (float)FUN_0030fdf0(0x20,0);
-    fVar3 = (float)FUN_0030fdf0(0xe,2);
-    fVar4 = DAT_007cad74 * (fVar3 * 2.0f + (fVar2 / 2.0f) / 2.0f);
-    fVar2 = (float)FUN_0030fdf0(0x13,0);
-    fVar3 = (float)FUN_0030fdf0(0xd,1);
-    fVar4 = sqrtf(((fVar2 * 30.0f) / (fVar4 * 5.0f)) * (fVar3 / 5.0f)) * 10.0f;
-    fVar2 = (float)FUN_0030fdf0(0x17,0);
-    fVar3 = (float)FUN_0030fdf0(0x19,0);
-    fVar2 = (fVar4 * fVar2 + fVar3) * DAT_007cadb4;
-    fVar3 = (float)FUN_0030fdf0(0xc,0);
-    fVar3 = (fVar2 - 10.0f) * fVar3;
+  float value;
+  float result;
+  float factor;
+
+  if (FUN_003111f0() != 0) {
+    value = (float)FUN_0030fdf0(0xe, 2);
+    value += (float)FUN_0030fdf0(0xe, 2);
+    value = ((float)FUN_0030fdf0(0x13, 0) * 30.0f) / (value * 5.0f);
+    value *= (float)FUN_0030fdf0(0xd, 1) / 5.0f;
+    result = sqrtf(value) * 10.0f;
+    result *= (float)FUN_0030fdf0(0xc, 0);
+    factor = (float)FUN_0030fdf0(0x17, 0);
+    factor = result * factor + (float)FUN_0030fdf0(0x19, 0);
+    factor *= DAT_007cae84;
+  } else {
+    value = (float)FUN_0030fdf0(0x20, 0) / 2.0f;
+    value = DAT_007cad74 *
+            ((float)FUN_0030fdf0(0xe, 2) * 2.0f + value / 2.0f);
+    value = ((float)FUN_0030fdf0(0x13, 0) * 30.0f) / (value * 5.0f);
+    value *= (float)FUN_0030fdf0(0xd, 1) / 5.0f;
+    result = sqrtf(value) * 10.0f;
+    factor = (float)FUN_0030fdf0(0x17, 0);
+    factor = result * factor + (float)FUN_0030fdf0(0x19, 0);
+    factor *= DAT_007cadb4;
+    factor -= 10.0f;
+    factor *= (float)FUN_0030fdf0(0xc, 0);
   }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0xe,2);
-    fVar3 = (float)FUN_0030fdf0(0xe,2);
-    fVar4 = (float)FUN_0030fdf0(0x13,0);
-    fVar4 = sqrtf(((fVar4 * 30.0f) / ((fVar2 + fVar3) * 5.0f)) *
-                  ((float)FUN_0030fdf0(0xd,1) / 5.0f)) * 10.0f;
-    fVar2 = (float)FUN_0030fdf0(0xc,0);
-    fVar4 = fVar4 * fVar2;
-    fVar2 = (float)FUN_0030fdf0(0x17,0);
-    fVar3 = (float)FUN_0030fdf0(0x19,0);
-    fVar3 = (fVar4 * fVar2 + fVar3) * DAT_007cae84;
-  }
-  FUN_00311190((int)fVar3);
-  return;
+  FUN_00311190((int)factor);
 }
 
 // FUN_0030ddf0 NONMATCHING
@@ -7220,34 +7203,25 @@ void FUN_0030ddf0(void)
 
 
 
-// FUN_0030dec0 NONMATCHING
+// FUN_0030dec0
 void FUN_0030dec0(void)
-
 {
-  s32 lVar1;
-  float fVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  
-  lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0xe,3);
-    fVar5 = (fVar2 + 200.0f) / (fVar3 + 200.0f);
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0x1f,0);
-    fVar4 = (float)FUN_0030fdf0(0x11,0);
-    fVar4 = fVar5 * ((fVar2 + 200.0f) / (fVar3 / 2.0f + 200.0f)) * fVar4;
+  float ratio;
+  float value;
+  float output;
+
+  if (FUN_003111f0() != 0) {
+    value = (float)FUN_0030fdf0(0xd, 3) + 200.0f;
+    value /= (float)FUN_0030fdf0(0xe, 3) + 200.0f;
+    output = value * (float)FUN_0030fdf0(0x11, 0);
+  } else {
+    value = (float)FUN_0030fdf0(0xd, 3) + 200.0f;
+    ratio = value / ((float)FUN_0030fdf0(0xe, 3) + 200.0f);
+    value = (float)FUN_0030fdf0(0xd, 3) + 200.0f;
+    value /= (float)FUN_0030fdf0(0x1f, 0) / 2.0f + 200.0f;
+    output = ratio * value * (float)FUN_0030fdf0(0x11, 0);
   }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0xe,3);
-    fVar4 = (float)FUN_0030fdf0(0x11,0);
-    fVar4 = ((fVar2 + 200.0f) / (fVar3 + 200.0f)) * fVar4;
-  }
-  FUN_00311190((int)fVar4);
-  return;
+  FUN_00311190((int)output);
 }
 
 
@@ -7630,44 +7604,36 @@ void FUN_0030ea00(void)
 
 
 
-// FUN_0030ee10 NONMATCHING
+// FUN_0030ee10
 void FUN_0030ee10(void)
-
 {
-  s32 lVar1;
-  float fVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  
-  lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar2 = (float)FUN_0030fdf0(0x20,0);
-    fVar3 = (float)FUN_0030fdf0(0xe,2);
-    fVar4 = DAT_007cad74 * (fVar3 * 2.0f + (fVar2 / 2.0f) / 2.0f);
-    fVar2 = (float)FUN_0030fdf0(0x13,0);
-    fVar3 = (float)FUN_0030fdf0(0xd,1);
-    fVar4 = sqrtf(((fVar2 * 30.0f) / (fVar4 * 5.0f)) * (fVar3 / 5.0f)) * 10.0f;
-    fVar2 = (float)FUN_0030fdf0(0x17,0);
-    fVar3 = (float)FUN_0030fdf0(0x19,0);
-    fVar2 = (fVar4 * fVar2 + fVar3) * DAT_007cad8c;
-    fVar3 = (float)FUN_0030fdf0(0xc,0);
-    fVar3 = (fVar2 - 10.0f) * fVar3;
+  float value;
+  float result;
+  float factor;
+
+  if (FUN_003111f0() != 0) {
+    value = (float)FUN_0030fdf0(0xe, 2);
+    value += (float)FUN_0030fdf0(0xe, 2);
+    value = ((float)FUN_0030fdf0(0x13, 0) * 30.0f) / (value * 5.0f);
+    value *= (float)FUN_0030fdf0(0xd, 1) / 5.0f;
+    result = sqrtf(value) * 10.0f;
+    result *= (float)FUN_0030fdf0(0xc, 0);
+    factor = (float)FUN_0030fdf0(0x17, 0);
+    factor = result * factor + (float)FUN_0030fdf0(0x19, 0);
+  } else {
+    value = (float)FUN_0030fdf0(0x20, 0) / 2.0f;
+    value = DAT_007cad74 *
+            ((float)FUN_0030fdf0(0xe, 2) * 2.0f + value / 2.0f);
+    value = ((float)FUN_0030fdf0(0x13, 0) * 30.0f) / (value * 5.0f);
+    value *= (float)FUN_0030fdf0(0xd, 1) / 5.0f;
+    result = sqrtf(value) * 10.0f;
+    factor = (float)FUN_0030fdf0(0x17, 0);
+    factor = result * factor + (float)FUN_0030fdf0(0x19, 0);
+    factor *= DAT_007cad8c;
+    factor -= 10.0f;
+    factor *= (float)FUN_0030fdf0(0xc, 0);
   }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0xe,2);
-    fVar3 = (float)FUN_0030fdf0(0xe,2);
-    fVar4 = (float)FUN_0030fdf0(0x13,0);
-    fVar5 = (float)FUN_0030fdf0(0xd,1);
-    fVar4 = sqrtf(((fVar4 * 30.0f) / ((fVar2 + fVar3) * 5.0f)) * (fVar5 / 5.0f)) * 10.0f;
-    fVar2 = (float)FUN_0030fdf0(0xc,0);
-    fVar4 = fVar4 * fVar2;
-    fVar2 = (float)FUN_0030fdf0(0x17,0);
-    fVar3 = (float)FUN_0030fdf0(0x19,0);
-    fVar3 = fVar4 * fVar2 + fVar3;
-  }
-  FUN_00311190((int)fVar3);
-  return;
+  FUN_00311190((int)factor);
 }
 
 
@@ -7994,24 +7960,22 @@ void FUN_0030f980(void)
 
 
 
-// FUN_0030f9c0 NONMATCHING
+// FUN_0030f9c0
 void FUN_0030f9c0(void)
-
 {
-  float fVar1;
-  float fVar2;
-  
-  fVar1 = (float)FUN_0030fdf0(0xe,2);
-  fVar1 += (float)FUN_0030fdf0(0xe,2);
-  fVar2 = (float)FUN_0030fdf0(0x13,0);
-  fVar2 = sqrtf((((fVar2 - 30.0f) * 30.0f) / (fVar1 * 5.0f)) *
-                ((float)FUN_0030fdf0(0xd,0) / 5.0f)) * 10.0f;
-  fVar2 *= (float)FUN_0030fdf0(0xc,0);
-  fVar2 *= (float)FUN_0030fdf0(0x17,0);
-  fVar2 *= (float)FUN_0030fdf0(0x1b,0);
-  fVar2 *= (float)FUN_0030fdf0(0x21,0);
-  FUN_00311190((int)(fVar2 * DAT_007cad74));
-  return;
+  float value;
+
+  value = (float)FUN_0030fdf0(0xe, 2);
+  value += (float)FUN_0030fdf0(0xe, 2);
+  value = ((float)FUN_0030fdf0(0x13, 0) - 30.0f) * 30.0f /
+          (value * 5.0f);
+  value *= (float)FUN_0030fdf0(0xd, 0) / 5.0f;
+  value = sqrtf(value) * 10.0f;
+  value *= (float)FUN_0030fdf0(0xc, 0);
+  value *= (float)FUN_0030fdf0(0x17, 0);
+  value *= (float)FUN_0030fdf0(0x1b, 0);
+  value *= (float)FUN_0030fdf0(0x21, 0);
+  FUN_00311190((int)(value * DAT_007cad74));
 }
 
 

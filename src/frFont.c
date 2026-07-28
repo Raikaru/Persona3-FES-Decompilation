@@ -31,7 +31,11 @@ typedef struct FrFontState {
 
 typedef struct FrFontSlot {
   void *resource;
-  u8 unknown_04[0x14];
+  void *font_data;
+  u32 block0_size;
+  u32 block1_size;
+  void *block0;
+  void *block1;
   u32 flags;
   void *object;
 } FrFontSlot;
@@ -52,8 +56,8 @@ extern u32 DAT_007cd4f8;
 #pragma alias DAT_007cd4f8_abs DAT_007cd4f8
 extern u8 DAT_007cd4f8_abs[];
 extern s16 DAT_007cd500;
-extern u32 DAT_007ce638;
-extern u32 DAT_007ce63c;
+extern s32 DAT_007ce638;
+extern s32 DAT_007ce63c;
 extern u32 DAT_0095ac70;
 #pragma alias DAT_0095ac70_abs DAT_0095ac70
 extern u32 DAT_0095ac70_abs[];
@@ -127,7 +131,7 @@ extern u32 uGpffffb940;
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003afa40(void);
-void FUN_003afad0(u32 param_1,int param_2,int param_3);
+void FUN_003afad0(int param_1,int param_2,int param_3);
 #pragma alias FUN_003afad0_typed FUN_003afad0
 extern void FUN_003afad0_typed(u32 param_1,u64 param_2,u32 param_3);
 void FUN_003afc30(u32 param_1);
@@ -276,91 +280,54 @@ void FUN_003afa40(void)
 // FUN_003AFAD0 NONMATCHING
 
 
-void FUN_003afad0(u32 param_1,int param_2,int param_3)
+void FUN_003afad0(int slot_id, int font_data, int resource)
 
 
 
 {
 
-  int iVar1;
+  FrFontSlot *slot;
+  u8 *data;
+  int offset;
 
-  int iVar2;
-
-  int *piVar3;
-
-  
-
-
-  if ((param_2 == 0) && (param_3 != 0)) {
-
-    param_2 = param_3;
-
+  if ((font_data == 0) && (resource != 0)) {
+    font_data = resource;
+  }
+  if (font_data == 0) {
+    FUN_0019d3f0(DAT_006a2730, 0x3ff);
   }
 
-  if (param_2 == 0) {
-
-    FUN_0019d3f0(DAT_006a2730,0x3ff);
-
-  }
-  param_1 = param_1 & 0xff;
-
-  iVar1 = param_1 * 0x20;
-
-
-  if (8 < param_1) {
-
+  slot_id &= 0xff;
+  slot = &gFrFontManagerData_abs[0].slots[slot_id];
+  if (slot_id >= 9) {
     FUN_0035ac50(DAT_006a27a0);
-
   }
 
-  (&DAT_0095acf0)[param_1 * 8] = (int)param_3;
-
-  piVar3 = (int *)param_2;
-
-  (&DAT_0095acf4)[param_1 * 8] = (u32)piVar3;
-
-  iVar2 = *piVar3 + (u32)*(u8 *)((int)piVar3 + 10) * 0x40;
-
-  if (*(char *)((int)piVar3 + 0x16) != '\0') {
-
-    (&DAT_0095acf8)[param_1 * 8] = *(u32 *)((int)piVar3 + iVar2);
-
-    *(int *)(&DAT_0095ad00 + iVar1) = (int)piVar3 + iVar2 + 4;
-
-    iVar2 = iVar2 + (&DAT_0095acf8)[param_1 * 8] + 4;
-
-    (&DAT_0095acfc)[param_1 * 8] = *(u32 *)((int)piVar3 + iVar2);
-
-    *(int *)(&DAT_0095ad04 + iVar1) = (int)piVar3 + iVar2 + 4;
-
-    iVar2 = iVar2 + (&DAT_0095acfc)[param_1 * 8] + 4;
-
+  slot->resource = (void *)resource;
+  slot->font_data = (void *)font_data;
+  data = (u8 *)font_data;
+  offset = *(u32 *)data + data[10] * 0x40;
+  if (data[0x16] != 0) {
+    slot->block0_size = *(u32 *)(data + offset);
+    offset += 4;
+    slot->block0 = data + offset;
+    offset += slot->block0_size;
+    slot->block1_size = *(u32 *)(data + offset);
+    offset += 4;
+    slot->block1 = data + offset;
+    offset += slot->block1_size;
+  } else {
+    slot->block0_size = 0;
+    slot->block0 = NULL;
+    slot->block1_size = 0;
+    slot->block1 = NULL;
   }
 
-  else {
-
-    (&DAT_0095acf8)[param_1 * 8] = 0;
-
-    *(u32 *)(&DAT_0095ad00 + iVar1) = 0;
-
-    (&DAT_0095acfc)[param_1 * 8] = 0;
-
-    *(u32 *)(&DAT_0095ad04 + iVar1) = 0;
-
-  }
-
-  *(int *)(&DAT_0095ad08 + iVar1) = (int)piVar3 + iVar2;
-
-  FUN_005225a8(DAT_006a27d0,(int)piVar3 + iVar2,iVar2,
-
-               *(u16 *)((&DAT_0095acf4)[param_1 * 8] + 0xe));
-
-  (&DAT_0095ad0c)[param_1 * 8] =
-
-       (int)piVar3 + iVar2 + (u32)*(u16 *)((&DAT_0095acf4)[param_1 * 8] + 0xe) * 4;
-
-  return;
-
+  slot->flags = (u32)(data + offset);
+  FUN_005225a8(DAT_006a27d0, data + offset, offset,
+               *(u16 *)((u8 *)slot->font_data + 0xe));
+  slot->object = data + offset +
+                 *(u16 *)((u8 *)slot->font_data + 0xe) * 4;
 }
 #define FUN_003afad0(...) ((void (*)(...))FUN_003afad0)(__VA_ARGS__)
 #undef FUN_003afc30
@@ -775,35 +742,35 @@ void FUN_003b01d0(int param_1,int param_2)
 
   char cVar1;
 
-  u8 uVar2;
-
   u32 uVar3;
 
   int iVar4;
 
   int iVar5;
+  FrFontSlot *slot;
 
   
 
   uVar3 = (u32)*(u8 *)(param_1 + 0x15);
+  slot = &gFrFontManagerData_abs[0].slots[uVar3];
 
-  *(u8 *)(param_1 + 0x18) = DAT_007cd4f8_abs[uVar3];
+  *(u8 *)(param_1 + 0x18) = ((s8 *)&DAT_007cd4f8)[uVar3];
 
-  *(u8 *)(param_1 + 0x19) = DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
+  *(u8 *)(param_1 + 0x19) = ((s8 *)&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
 
-  *(int *)(param_1 + 0xc) = (int)(char)DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
+  *(int *)(param_1 + 0xc) = ((s8 *)&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
 
   if ((((*(u8 *)(param_1 + 0x17) & 1) != 0) &&
 
-      (*(char *)((&DAT_0095acf4)[uVar3 * 8] + 0x16) != '\0')) &&
+      (*((u8 *)slot->font_data + 0x16) != 0)) &&
 
-     (param_2 = param_2 * 2, param_2 < (int)(&DAT_0095acf8)[uVar3 * 8])) {
+     (param_2 = param_2 * 2, param_2 < (int)slot->block0_size)) {
 
-    cVar1 = *(char *)(*(int *)(&DAT_0095ad00 + uVar3 * 0x20) + 1 + param_2);
+    cVar1 = *((s8 *)slot->block0 + 1 + param_2);
 
     if (cVar1 != '\0') {
 
-      iVar4 = (int)*(char *)(*(int *)(&DAT_0095ad00 + uVar3 * 0x20) + param_2);
+      iVar4 = (int)*((s8 *)slot->block0 + param_2);
 
       iVar5 = iVar4 * 0x10;
 
@@ -811,12 +778,12 @@ void FUN_003b01d0(int param_1,int param_2)
 
       param_2 = param_2 >> 1;
 
-      if ((param_2 == 1) || (param_2 == 0x11)) {
-
-        iVar5 = iVar5 + -0x20;
-
-        iVar4 = iVar4 + 4;
-
+      switch (param_2 + 0x20) {
+      case 0x31:
+      case 0x21:
+        iVar5 -= 0x20;
+        iVar4 += 4;
+        break;
       }
 
       if (param_2 < 0x1c6) {
@@ -831,7 +798,7 @@ void FUN_003b01d0(int param_1,int param_2)
 
       }
 
-      iVar5 = -iVar5 * (int)(char)DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
+      iVar5 = -iVar5 * ((s8 *)&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
 
       if (iVar5 < 0) {
 
@@ -841,7 +808,7 @@ void FUN_003b01d0(int param_1,int param_2)
 
       *(int *)(param_1 + 4) = iVar5 >> 5;
 
-      iVar4 = iVar4 * (char)DAT_007cd4f8_abs[*(u8 *)(param_1 + 0x15)];
+      iVar4 = iVar4 * ((s8 *)&DAT_007cd4f8)[*(u8 *)(param_1 + 0x15)];
 
       if (iVar4 < 0) {
 
@@ -855,15 +822,13 @@ void FUN_003b01d0(int param_1,int param_2)
 
         iVar4 = (u32)*(u8 *)(param_1 + 0x18) * DAT_007ce638;
 
-        uVar2 = (u8)(iVar4 >> 7);
-
         if (iVar4 < 0) {
 
-          uVar2 = (u8)(iVar4 + 0x7f >> 7);
+          iVar4 = iVar4 + 0x7f;
 
         }
 
-        *(u8 *)(param_1 + 0x18) = uVar2;
+        *(u8 *)(param_1 + 0x18) = iVar4 >> 7;
 
         iVar4 = *(int *)(param_1 + 0xc) * DAT_007ce638;
 
@@ -881,15 +846,13 @@ void FUN_003b01d0(int param_1,int param_2)
 
         iVar4 = (u32)*(u8 *)(param_1 + 0x19) * DAT_007ce63c;
 
-        uVar2 = (u8)(iVar4 >> 7);
-
         if (iVar4 < 0) {
 
-          uVar2 = (u8)(iVar4 + 0x7f >> 7);
+          iVar4 = iVar4 + 0x7f;
 
         }
 
-        *(u8 *)(param_1 + 0x19) = uVar2;
+        *(u8 *)(param_1 + 0x19) = iVar4 >> 7;
 
       }
 
