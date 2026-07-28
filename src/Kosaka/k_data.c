@@ -568,6 +568,9 @@ u32 func_001b8710(HCdvd* request)
     void* memory;
     HCdvd* requestCopy;
     u32 cachedSize;
+    Field* field;
+    u32 fileSize;
+    u32 allocSize;
 
     requestCopy = request;
     if (requestCopy == NULL)
@@ -580,11 +583,14 @@ u32 func_001b8710(HCdvd* request)
         {
             goto failed;
         }
+        allocSize = requestCopy->fileSize;
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
+            1, allocSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
-        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
-               requestCopy->fileMemory, requestCopy->fileSize);
+        field = K_Field_Get();
+        fileSize = requestCopy->fileSize;
+        memcpy(FIELD_DATA_AT(field, 0x1154, void*),
+               requestCopy->fileMemory, fileSize);
         H_Cdvd_Destroy(requestCopy);
         return true;
     }
@@ -593,11 +599,14 @@ u32 func_001b8710(HCdvd* request)
     requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
     if (requestCopy != NULL)
     {
+        allocSize = cachedSize;
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, cachedSize, rwMEMHINTDUR_GLOBAL);
+            1, allocSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
-        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
-               requestCopy, cachedSize);
+        field = K_Field_Get();
+        fileSize = cachedSize;
+        memcpy(FIELD_DATA_AT(field, 0x1154, void*),
+               requestCopy, fileSize);
     }
     return true;
 failed:

@@ -25,9 +25,9 @@ extern s32 campStatusDrawSpriteCallXY(u32 parent, void* resource, s32 frame,
 extern s32 campStatusDrawFadeSprite(f32 x, f32 y, f32 alpha, void* resource,
                                     s32 frame, s32 fade);
 #pragma alias campStatusDrawSpritePackedCall FUN_001159f0
-extern s32 campStatusDrawSpritePackedCall(f32 x, f32 y, f32 scale,
-                                          u32 parent, void* resource,
-                                          s32 frame, u8 alpha);
+extern s32 campStatusDrawSpritePackedCall(f32 x, f32 y, u32 parent,
+                                          void* resource, s32 frame,
+                                          u8 alpha, f32 scale);
 #pragma alias campStatusDrawSprite3Call FUN_001159f0
 extern void campStatusDrawSprite3Call(f32 x, f32 y, u32 parent);
 #pragma alias campStatusDrawSprite4Call FUN_001159f0
@@ -3197,7 +3197,7 @@ void FUN_00133180(CampVec2 position, f32 alpha, void* persona,
     FUN_00124fd0(position, alpha, currentStats, drawAlpha);
 }
 
-// FUN_001332F0 NONMATCHING
+// FUN_001332F0
 void FUN_001332f0(CampStatusPackedPosition position, f32 alpha, void* unused,
                   void* persona, s32 fade)
 {
@@ -3215,16 +3215,16 @@ void FUN_001332f0(CampStatusPackedPosition position, f32 alpha, void* unused,
     firstSpritePosition = position;
     campStatusDrawSpritePackedCall(
         firstSpritePosition.coordinates.x + 22.0f,
-        firstSpritePosition.coordinates.y + 117.0f, alpha, parent,
-        *(void**)DAT_00833B90_abs, 1, (u8)drawAlpha);
+        firstSpritePosition.coordinates.y + 117.0f, parent,
+        *(void**)DAT_00833B90_abs, 1, (u8)drawAlpha, alpha);
     secondSpritePosition = position;
     secondResource = *(void**)DAT_00833B88_abs;
     arcanaFrame =
         (FUN_00173280(*(u16*)((u8*)persona + 2)) & 0xff) - 1;
     campStatusDrawSpritePackedCall(
         secondSpritePosition.coordinates.x + 105.0f,
-        secondSpritePosition.coordinates.y + 142.0f, alpha, parent,
-        secondResource, arcanaFrame, (u8)drawAlpha);
+        secondSpritePosition.coordinates.y + 142.0f, parent,
+        secondResource, arcanaFrame, (u8)drawAlpha, alpha);
     campStatusDrawPersonaTopPacked(position, alpha, persona, drawAlpha);
     campStatusDrawPersonaBottomPacked(position, alpha, persona, drawAlpha);
 }

@@ -349,6 +349,10 @@ extern u8 DAT_0086e6e8_abs[];
 #pragma alias FUN_00195020_call FUN_00195020
 extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
+#pragma alias DAT_008717e8_abs DAT_008717e8
+extern u8 DAT_008717e8_abs[];
+#pragma alias DAT_008717f4_abs DAT_008717f4
+extern u8 DAT_008717f4_abs[];
 #pragma alias DAT_0086ede8_abs DAT_0086ede8
 extern u8 DAT_0086ede8_abs[];
 #pragma alias DAT_0086edf4_abs DAT_0086edf4
@@ -693,8 +697,8 @@ extern u32 FUN_001c7160_f32_u32(f32 param_1, void *param_2, void *param_3);
 extern long FUN_001c7160(u32 param_1, void *param_2, void *param_3);
 #pragma alias FUN_001c7160_i32 FUN_001c7160
 extern int FUN_001c7160_i32(u32 param_1, void *param_2, void *param_3);
- #pragma alias FUN_001c7270_u32 FUN_001c7270
- extern u32 FUN_001c7270_u32(u32 param_1,u32 param_2);
+#pragma alias FUN_001c7270_typed FUN_001c7270
+extern void *FUN_001c7270_typed(void *param_1, f32 param_2);
 extern code FUN_001c7b10;
 #pragma alias FUN_001c7b10_typed FUN_001c7b10
 extern u32 FUN_001c7b10_typed(const void *fldUnit);
@@ -7322,33 +7326,31 @@ switchD_004387bc_caseD_5:
 }
 
 #pragma pop
-// FUN_00439400 NONMATCHING
+// FUN_00439400
 
 void FUN_00439400(char param_1)
 
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int iVar3;
-  u32 lVar4;
-  u32 uVar5;
+  void *pvVar4;
   int iVar6;
   
+  iVar6 = param_1 * 0x1c0;
+  iVar1 = *(int *)(*(int *)(DAT_0087190c_abs + iVar6) + 0x3c);
   iVar3 = iGpffffb5a0;
-  iVar6 = (int)param_1;
-  iVar1 = *(int *)(*(int *)((u8 *)DAT_0087190c + iVar6 * 0x1c0) + 0x3c);
   if (((*(char *)(iVar1 + 0x1222) != '\x01') &&
-      (lVar4 = FUN_001c7270_u32(*(u32 *)(iGpffffb5a0 + 0x14),*(u32 *)(iVar1 + 0x24)),
-       lVar4 != 0)) && (*(int *)((int)lVar4 + 4) != 1)) {
-    bVar2 = 0;
-    if (((u8 *)DAT_008717e8)[iVar6 * 0x70] != 0) {
-      bVar2 = ((u8 *)DAT_008717f4)[iVar6 * 0x70] != 0;
+      (pvVar4 = FUN_001c7270_typed((void *)*(u32 *)(iVar1 + 0x24),*(float *)(iVar3 + 0x14)),
+       pvVar4 != NULL)) && (((int *)pvVar4)[1] != 1)) {
+    bVar2 = *(u32 *)(DAT_008717e8_abs + iVar6) != 0;
+    if (bVar2) {
+      bVar2 = *(u32 *)(DAT_008717f4_abs + iVar6) != 0;
     }
     if (bVar2) {
-      uVar5 = FUN_00318b60(*(u32 *)(*(int *)(iVar1 + 0x24) + 0x50));
-      lVar4 = FUN_001c6450_typed(uVar5,(void *)(lVar4 + 0x10c),
-                                 *(float *)(iVar3 + 0x10),*(float *)(iVar3 + 0x14));
-      if (lVar4 == 1) {
+      if (FUN_001c6450_typed(
+              FUN_00318b60(*(u32 *)(*(int *)(iVar1 + 0x24) + 0x50)),
+              (u8 *)pvVar4 + 0x10c,*(float *)(iVar3 + 0x10),*(float *)(iVar3 + 0x14)) == 1) {
         *(u8 *)(iVar1 + 0x1222) = 1;
         *(u8 *)(iVar1 + 0x1220) = 6;
       }
@@ -12022,18 +12024,22 @@ u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 void FUN_00447f90(float *param_1,int param_2,char param_3)
 
 {
+  RwV2d position;
+  s16 *coordinateBase;
   char cVar1;
   char cVar2;
   int iVar3;
-  long lVar4;
+  int iVar4;
   
   cVar1 = *(char *)(param_3 * 4 + DAT_007ce6ec + 4);
-  iVar3 = (int)DAT_006b479a;
+  coordinateBase = (s16 *)&DAT_006b4796;
+  iVar3 = coordinateBase[2];
   cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
-  for (lVar4 = 0; lVar4 < *(char *)(DAT_007ce6ec + 0xa0); lVar4 = (long)((int)lVar4 + 1)) {
+  position.y = (float)(iVar3 + (cVar1 + -1) * -0x40 + (6 - cVar2) * -0x20 + 0x20) - 32.0f;
+  for (iVar4 = 0; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
   }
-  *param_1 = (float)(int)DAT_006b4798;
-  param_1[1] = (float)(iVar3 + (cVar1 + -1) * -0x40 + (6 - cVar2) * -0x20 + 0x20) - 32.0f;
+  position.x = (float)coordinateBase[1];
+  *(RwV2d *)param_1 = position;
   return;
 }
 

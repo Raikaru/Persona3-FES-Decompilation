@@ -70,6 +70,7 @@ extern void func_004b74c0_frame(f32 frame, u32 interpolator);
 extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 #pragma alias func_00320640_frame FUN_00320640
 extern void func_00320640_frame(u32 arg0, f32 frame, u32 interpolator);
+extern f32 func_00320810(void* animation);
 void func_00316970(Model* mdl);
 u32 func_003115a0(void* param_1, u32* param_2);
 u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
@@ -1201,7 +1202,7 @@ void func_00313ca0(int *param_1,u32 param_2);
 int func_00313f40(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 void* func_003140c0(void* param_1,u16 *param_2);
-u64 func_00314170(u64 param_1,u32 param_2);
+void* func_00314170(void* param_1, void* param_2);
 u32 func_003142b0(void* param_1);
 void* func_00314510(void* param_1);
 u32 func_00314650(u32 param_1);
@@ -3439,9 +3440,8 @@ void func_003138e0(MdlAnim* param_1,s16 param_2,u16 param_3,u16 param_4)
 
             puVar6[0xc] = param_3;
 
-            puVar6[0xe] = 0;
+            *(f32 *)(puVar6 + 0xe) = 0.0f;
 
-            puVar6[0xf] = 0;
 
             goto LAB_00313b48;
 
@@ -3475,9 +3475,8 @@ void func_003138e0(MdlAnim* param_1,s16 param_2,u16 param_3,u16 param_4)
 
   puVar6[0xc] = 0;
 
-  puVar6[0xe] = 0;
+  *(f32 *)(puVar6 + 0xe) = 1.0f;
 
-  puVar6[0xf] = 0x3f80;
 
 LAB_00313b48:
 
@@ -3509,9 +3508,8 @@ LAB_00313b48:
 
   }
 
-  puVar6[6] = 0;
+  *(u32 *)(puVar6 + 6) = 0;
 
-  puVar6[7] = 0;
 
   puVar6[2] = param_2;
 
@@ -3639,7 +3637,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
             func_00320380(*(u32 *)(iVar7 + 0xc),iVar3);
 
-            fVar8 = (float)func_00320810(iVar3);
+            fVar8 = func_00320810((void*)iVar3);
 
             if (fVar8 < *(float *)(iVar7 + 0xc)) {
 
@@ -3828,7 +3826,7 @@ void* func_003140c0(void* param_1,u16 *param_2)
 // FUN_00314170 NONMATCHING
 
 
-u64 func_00314170(u64 param_1,u32 param_2)
+void* func_00314170(void* param_1, void* param_2)
 
 
 
@@ -3857,49 +3855,17 @@ u64 func_00314170(u64 param_1,u32 param_2)
          ) || (*(int *)(*piVar1 + (short)puVar3[2] * 8) == 0)) || ((*puVar3 & 1) == 0)) {
 
       piVar1 = *(int **)(puVar3 + 0xc);
-
-      if (piVar1 == (int *)0x0) {
-
-        return param_1;
-
+      if (piVar1 != (int *)0x0) {
+        lVar2 = (long)(short)puVar3[2];
+        if ((((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3)) &&
+              (*(int *)(*piVar1 + (short)puVar3[2] * 8) != 0)) &&
+             ((*puVar3 & 1) == 0)) &&
+            ((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3) &&
+              (0 <= (short)puVar3[2])))) {
+          func_004b74c0_typed(*(f32 *)(*piVar4 + 0xc),param_1);
+          *(u8 *)(puVar3 + 1) = 1;
+        }
       }
-
-      lVar2 = (long)(short)puVar3[2];
-
-      if ((long)(u32)*(u16 *)(piVar1 + 3) <= lVar2) {
-
-        return param_1;
-
-      }
-
-      if (*(int *)(*piVar1 + (short)puVar3[2] * 8) == 0) {
-
-        return param_1;
-
-      }
-
-      if ((*puVar3 & 1) != 0) {
-
-        return param_1;
-
-      }
-
-      if ((long)(u32)*(u16 *)(piVar1 + 3) <= lVar2) {
-
-        return param_1;
-
-      }
-
-      if (lVar2 < 0) {
-
-        return param_1;
-
-      }
-
-      func_004b74c0(*(u32 *)(*piVar4 + 0xc),param_1);
-
-      *(u8 *)(puVar3 + 1) = 1;
-
       return param_1;
 
     }

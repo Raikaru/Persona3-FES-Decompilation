@@ -458,10 +458,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
-                u16 charId;
-
-                charId = gFldUnitsPc[i].charId;
-                ctl->charId = charId;
+                ctl->charId = gFldUnitsPc[i].charId;
                 ctl->fldUnit = units;
                 break;
             }
@@ -475,10 +472,7 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
-                u16 charId;
-
-                charId = gFldUnitsEc[i].charId;
-                ctl->charId = charId;
+                ctl->charId = gFldUnitsEc[i].charId;
                 ctl->fldUnit = units;
                 break;
             }

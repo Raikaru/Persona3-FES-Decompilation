@@ -818,52 +818,56 @@ void func_002f0ea0(u64 *param_1)
 }
 
 // FUN_002f14a0 NONMATCHING
-u32 func_002f14a0(u64 *param_1)
-
+u32 func_002f14a0(BtlAction* action)
 {
-  u16 uVar1;
-  int iVar2;
-  int iVar3;
-  u32 uVar4;
-  s32 lVar5;
-  u64 uVar6;
-  u32 uVar7;
-  
-  uVar1 = *(u16 *)(iGpffffb6fc + 0xb50);
-  uVar7 = 0;
-  do {
-    if (uVar1 <= uVar7) {
-      lVar5 = FUN_0027e390(*param_1,0x3fffffffffffffff);
-      if (lVar5 != 0) {
-        uVar4 = 1;
-      }
-      else {
-        *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfff7ffff;
-        for (uVar7 = 0; uVar7 < uVar1; uVar7 = uVar7 + 1 & 0xffff) {
-          uVar4 = *(u32 *)(iGpffffb6fc + uVar7 * 4 + 0xb44);
-          FUN_002d7890(uVar4,0);
-          FUN_0029a320(uVar4);
+    u16 index;
+    s32 count;
+    BtlAction* cleanupAction;
+    BtlAction* current;
+    BtlPacket* packet;
+
+    index = 0;
+    count = *(u16*)(iGpffffb6fc + 0xb50);
+    while (index < count)
+    {
+        current = *(BtlAction**)(iGpffffb6fc + index * 4 + 0xb44);
+        if (current != btlActionCurrent())
+        {
+            if ((current->unit->flags3 & BTLUNIT_FLAG3_ENDURE) != 0)
+            {
+                return 1;
+            }
         }
-        *(u16 *)(iGpffffb6fc + 0xb50) = 0;
-        *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x2000000;
-        FUN_0027ed20(uVar6,1);
-        FUN_0027ed20(uVar6,1);
-        FUN_0027ed20(uVar6,1);
-        uVar4 = 0;
-      }
-      return uVar4;
+        else
+        {
+            current->unit->flags3 &= ~BTLUNIT_FLAG3_ENDURE;
+        }
+        index++;
     }
-    iVar2 = *(int *)(iGpffffb6fc + uVar7 * 4 + 0xb44);
-    iVar3 = FUN_0029ad20();
-    if (iVar2 == iVar3) {
-      *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) =
-           *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) & 0xffffffef;
+
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        gBtl->flags &= ~0x80000;
+        index = 0;
+        while (index < count)
+        {
+            cleanupAction = *(BtlAction**)(iGpffffb6fc + index * 4 + 0xb44);
+            FUN_002d7890(cleanupAction, 0);
+            FUN_0029a320(cleanupAction);
+            index++;
+        }
+        *(u16*)(iGpffffb6fc + 0xb50) = 0;
+        gBtl->flags |= 0x2000000;
+        packet = FUN_0029fa50(0x10);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002a1080(0x10, 4);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002a16c0(0x10);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        return 0;
     }
-    else if ((*(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) & 0x10) != 0) {
-      return 1;
-    }
-    uVar7 = uVar7 + 1 & 0xffff;
-  } while( true );
+
+    return 1;
 }
 
 // FUN_002f1680

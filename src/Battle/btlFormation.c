@@ -13801,7 +13801,7 @@ u32 func_002cef10(void)
   return 0xffffffff;
 }
 
-// FUN_002cf070 NONMATCHING
+// FUN_002cf070
 u32 func_002cf070(void)
 {
   extern u32 func_0035f160(void);
@@ -13812,8 +13812,8 @@ u32 func_002cf070(void)
   extern void func_0035f060(u32);
   u32 unit;
   u32 selector;
+  u32 index;
   u16 selectedCount;
-  u16 index;
   int candidate;
   int selected[12];
 
@@ -13821,8 +13821,9 @@ u32 func_002cf070(void)
   selector = func_0035ed20(0);
   if (func_002c3430(unit,selector,0,0x2c,0,(code *)&func_002c30f0) == 1) {
     selectedCount = 0;
-    for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
-      candidate = *(int *)(unit + index * 4 + 0x38);
+    for (index = 0; (u16)index < *(u16 *)(unit + 0x6a);
+         index = index + 1 & 0xffff) {
+      candidate = *(int *)(unit + (index & 0xffff) * 4 + 0x38);
       if ((func_00300530(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c)) &
            0xffefffff) == 0) {
         selected[selectedCount] = candidate;
@@ -14286,34 +14287,41 @@ u32 func_002cfd80(void)
   return 1;
 }
 
-// FUN_002cfeb0 NONMATCHING
+// FUN_002cfeb0
 
 u32 func_002cfeb0(void)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  int aiStack_30 [12] = {0};
-  
-  iVar2 = func_0035f160();
-  iVar2 = (int)func_002c08c0(iVar2 + 0x88);
-  if ((iVar2 == 0) || (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) != '\x01')) {
-    uVar4 = 0;
-    for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
-      if (((((*(u16 *)(iVar2 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar2 + 0x1a) & 8) != 0)) &&
-          (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\x01')) &&
-         ((iVar1 = *(int *)(*(int *)(iVar2 + 0x30) + 0xa2c), iVar1 == 0 ||
-          (lVar3 = func_0030b5a0(iVar1,0), lVar3 == 0)))) {
-        aiStack_30[uVar4] = iVar2;
-        uVar4 = uVar4 + 1 & 0xffff;
+  extern u32 func_0035f160(void);
+  extern int func_0030b5a0(u32,u32);
+  extern u32 func_002ffbc0(u32);
+  extern void func_0035f060(u32);
+  long *selected;
+  long *candidate;
+  u32 candidateData;
+  u16 selectedCount;
+  long *candidates[12];
+
+  selected = func_002c08c0(func_0035f160() + 0x88);
+  if ((selected == 0) ||
+      (*(u8 *)(*(int *)((u8 *)selected + 0x30) + 0xa2) != 1)) {
+    selectedCount = 0;
+    for (candidate = *(long **)(DAT_007ce3ec + 0x14c); candidate != 0;
+         candidate = *(long **)((u8 *)candidate + 0x4a8)) {
+      if (((*(u16 *)((u8 *)candidate + 0x1a) & 1) != 0) &&
+          ((*(u16 *)((u8 *)candidate + 0x1a) & 8) != 0) &&
+          (*(u8 *)(*(int *)((u8 *)candidate + 0x30) + 0xa2) == 1)) {
+        candidateData =
+            *(u32 *)(*(int *)((u8 *)candidate + 0x30) + 0xa2c);
+        if ((candidateData == 0) ||
+            (func_0030b5a0(candidateData,0) == 0)) {
+          candidates[selectedCount] = candidate;
+          selectedCount++;
+        }
       }
     }
-    iVar2 = func_002ffbc0(uVar4);
-    iVar2 = aiStack_30[iVar2];
+    selected = candidates[func_002ffbc0(selectedCount)];
   }
-  func_0035f060(*(u32 *)(iVar2 + 8) | 0x80000000);
+  func_0035f060(*(u32 *)((u8 *)selected + 8) | 0x80000000);
   return 1;
 }
 
@@ -14359,34 +14367,42 @@ u32 func_002cffc0(void)
   return 1;
 }
 
-// FUN_002d0150 NONMATCHING
+// FUN_002d0150
 
 u32 func_002d0150(void)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  int aiStack_30 [12] = {0};
-  
+  extern u32 func_0035f160(void);
+  extern int func_0030b5a0(u32,u32);
+  extern u32 func_002ffbc0(u32);
+  extern void func_0035f060(u32);
+  long *selected;
+  long *candidate;
+  u32 candidateData;
+  u16 selectedCount;
+  long *candidates[12];
+
   func_0035f160();
-  iVar2 = (int)func_002c08c0(*(int *)(DAT_007ce3ec + 0x148) + 0x88);
-  if ((iVar2 == 0) || (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) != '\x01')) {
-    uVar4 = 0;
-    for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
-      if (((((*(u16 *)(iVar2 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar2 + 0x1a) & 8) != 0)) &&
-          (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\x01')) &&
-         ((iVar1 = *(int *)(*(int *)(iVar2 + 0x30) + 0xa2c), iVar1 == 0 ||
-          (lVar3 = func_0030b5a0(iVar1,0), lVar3 == 0)))) {
-        aiStack_30[uVar4] = iVar2;
-        uVar4 = uVar4 + 1 & 0xffff;
+  selected = func_002c08c0(*(int *)(DAT_007ce3ec + 0x148) + 0x88);
+  if ((selected == 0) ||
+      (*(u8 *)(*(int *)((u8 *)selected + 0x30) + 0xa2) != 1)) {
+    selectedCount = 0;
+    for (candidate = *(long **)(DAT_007ce3ec + 0x14c); candidate != 0;
+         candidate = *(long **)((u8 *)candidate + 0x4a8)) {
+      if (((*(u16 *)((u8 *)candidate + 0x1a) & 1) != 0) &&
+          ((*(u16 *)((u8 *)candidate + 0x1a) & 8) != 0) &&
+          (*(u8 *)(*(int *)((u8 *)candidate + 0x30) + 0xa2) == 1)) {
+        candidateData =
+            *(u32 *)(*(int *)((u8 *)candidate + 0x30) + 0xa2c);
+        if ((candidateData == 0) ||
+            (func_0030b5a0(candidateData,0) == 0)) {
+          candidates[selectedCount] = candidate;
+          selectedCount++;
+        }
       }
     }
-    iVar2 = func_002ffbc0(uVar4);
-    iVar2 = aiStack_30[iVar2];
+    selected = candidates[func_002ffbc0(selectedCount)];
   }
-  func_0035f060(*(u32 *)(iVar2 + 8) | 0x80000000);
+  func_0035f060(*(u32 *)((u8 *)selected + 8) | 0x80000000);
   return 1;
 }
 

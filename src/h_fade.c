@@ -10,7 +10,7 @@ typedef struct FadeDayEpl FadeDayEpl;
 typedef struct FadeDayTmx FadeDayTmx;
 typedef struct HSfdAsyncEntry HSfdAsyncEntry;
 
-extern const f32 DAT_007caf38;
+extern f32 DAT_007caf38;
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
 typedef struct HFadeRwGlobals
@@ -650,11 +650,10 @@ static void H_Fade_Day()
     {
         u32 packedColor;
         s32 travel;
-        s32 halfTravel;
 
         if (sFadeState == HFADE_STATE_IN)
         {
-            s32 degrees;
+            f32 degrees;
             s32 alphaByte;
 
             if (sFadeCounter != 0)
@@ -663,10 +662,10 @@ static void H_Fade_Day()
             }
             else
             {
-                degrees = 90;
+                degrees = 90.0f;
             }
 
-            alphaByte = (s32)(sinf((DAT_007caf38 * (f32)degrees) / 180.0f) * 255.0f);
+            alphaByte = (s32)(255.0f * sinf((DAT_007caf38 * degrees) / 180.0f));
             packedColor = (u32)alphaByte | 0x00242000;
         }
         else
@@ -675,9 +674,8 @@ static void H_Fade_Day()
         }
 
         travel = ((sFadeDuration - sFadeCounter) * 5000) / sFadeDuration;
-        halfTravel = travel / 2;
         func_001140d0(packedColor, travel + 640, travel + 640, sFadeDayTmx,
-                       99.0f, (f32)-halfTravel, (f32)(-96 - halfTravel));
+                       99.0f, (f32)-(travel / 2), (f32)(-96 - travel / 2));
     }
     }
 }

@@ -6,6 +6,8 @@ typedef u32 int3;
 
 extern u32 DAT_006a11d0;
 extern char D_006A1200[];
+extern char DAT_006a1380[];
+extern char DAT_006a13a0[];
 extern u32 DAT_006a11d4;
 extern u32 DAT_007cd488;
 extern u32 DAT_007ce420;
@@ -50,6 +52,8 @@ extern void FUN_003196f0_ea20(int,u32);
 extern void FUN_005225a8_eaa0(const char *,...);
 #pragma alias FUN_00388000_d1c0 FUN_00388000
 extern void FUN_00388000_d1c0(f64, u32, void *, void *, void *, void *, u32, void *, long);
+#pragma alias FUN_003b91c0_a5c0 FUN_003b91c0
+extern u64 FUN_003b91c0_a5c0(float,u16,u32,u32,u32,u32,u32);
 
 extern char DAT_006a1820[];
 #pragma alias FUN_003b5d10_eb90 FUN_003b5d10
@@ -1968,7 +1972,7 @@ void FUN_0039a560(int param_1)
 }
 #define FUN_0039a560(...) ((void (*)(...))FUN_0039a560)(__VA_ARGS__)
 #undef FUN_0039a5c0
-// FUN_0039A5C0 NONMATCHING
+// FUN_0039A5C0
 
 
 u32 FUN_0039a5c0(int param_1)
@@ -1977,7 +1981,7 @@ u32 FUN_0039a5c0(int param_1)
 
 {
 
-  u16 uVar1;
+  u32 uVar1;
 
   u32 *puVar2;
 
@@ -2017,9 +2021,9 @@ u32 FUN_0039a5c0(int param_1)
 
       }
 
-      lVar6 = FUN_001717c0(*(u16 *)(puVar2 + 0xd));
+      lVar6 = FUN_001717c0(*(s16 *)(puVar2 + 0xd));
 
-      if ((lVar6 == 0) && (lVar6 = FUN_00172160(*(u16 *)(puVar2 + 0xd)), lVar6 == 0)) {
+      if ((lVar6 == 0) && (lVar6 = FUN_00172160(*(s16 *)(puVar2 + 0xd)), lVar6 == 0)) {
 
         *puVar2 = 6;
 
@@ -2037,13 +2041,13 @@ u32 FUN_0039a5c0(int param_1)
 
     uVar1 = *(u16 *)(puVar2[2] + 0x14);
 
-    FUN_003b91c0(1.0f,uVar1,0,3,0,0,0);
+    FUN_003b91c0_a5c0(1.0f,uVar1,0,3,0,0,0);
 
     FUN_003bb010(uVar1,0x11);
 
     FUN_003952d0(0,0x65,3);
 
-    uVar4 = FUN_00100d80(0x6a1380,1);
+    uVar4 = FUN_00100d80(DAT_006a1380,1);
 
     puVar2[3] = uVar4;
 
@@ -2057,7 +2061,7 @@ u32 FUN_0039a5c0(int param_1)
 
     if (lVar6 == 1) {
 
-      uVar5 = FUN_001021c0(0x6a13a0,auStack_4);
+      uVar5 = FUN_001021c0(DAT_006a13a0,auStack_4);
 
       puVar2[0xc] = (int)uVar5;
 
@@ -2071,7 +2075,7 @@ u32 FUN_0039a5c0(int param_1)
 
   case 2:
 
-    FUN_0039f210(puVar7,0,0xffffffffffffffff,0xffffffffffffffff);
+    FUN_0039f210(puVar7,0,-1,-1);
 
     *puVar2 = 3;
 
@@ -2091,7 +2095,7 @@ u32 FUN_0039a5c0(int param_1)
 
   case 4:
 
-    FUN_0039f210(puVar7,*(short *)(puVar2 + 0xd) + 3,0xffffffffffffffff,0xffffffffffffffff);
+    FUN_0039f210(puVar7,*(short *)(puVar2 + 0xd) + 3,-1,-1);
 
     *puVar2 = 5;
 
