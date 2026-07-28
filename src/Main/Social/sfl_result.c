@@ -2291,7 +2291,6 @@ u8 func_001fc230(DatPersonaWork* persona)
     }
     return i < indexCount;
 }
-#pragma opt_loop_invariants off
 // FUN_001FC3C0 NONMATCHING
 u32 func_001fc3c0(DatPersonaWork* persona)
 {
@@ -2301,8 +2300,10 @@ u32 func_001fc3c0(DatPersonaWork* persona)
     s8* current;
     s32 firstIndex;
     s32 indexCount;
-    s32 i;
-    s32 j;
+    register s32 active;
+    register s32 limit;
+    register s32 i;
+    register s32 j;
     u32 result;
 
     skills = datPersonaGetSkills(persona);
@@ -2323,9 +2324,11 @@ u32 func_001fc3c0(DatPersonaWork* persona)
     }
 
     current = entry + firstIndex * 4;
-    for (i = 0; i < indexCount; i++, current += 4)
+    limit = indexCount;
+    active = 1;
+    for (i = 0; i < limit; i++, current += 4)
     {
-        if (current[1] == 1)
+        if (current[1] == active)
         {
             j = 0;
             while (j < count)
@@ -2345,6 +2348,7 @@ u32 func_001fc3c0(DatPersonaWork* persona)
         result = *(u8*)current + DAT_007ce420[persona->id * 0xe + 3];
     return result;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001FC590
 u32 func_001fc590(u8* event, void* target)

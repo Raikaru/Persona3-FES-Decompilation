@@ -2062,14 +2062,16 @@ u32 func_001c5980()
         slot = 1;
         while (slot < 4)
         {
+            FldUnit* candidate;
+            candidate = &gFldUnitsPc[slot];
             valid = false;
-            if (gFldUnitsPc[slot].genusBase != NULL &&
-                gFldUnitsPc[slot].resrc != NULL)
+            if (candidate->genusBase != NULL &&
+                candidate->resrc != NULL)
             {
                 valid = true;
             }
             if (valid > 0 &&
-                gFldUnitsPc[slot].charId == (u16)requestedId)
+                candidate->charId == (u16)requestedId)
             {
                 break;
             }
@@ -2093,8 +2095,10 @@ u32 func_001c5980()
         slot = 1;
         while (slot < 4)
         {
-            if (gFldUnitsPc[slot].genusBase != NULL &&
-                gFldUnitsPc[slot].charId == (u16)requestedId)
+            FldUnit* candidate;
+            candidate = &gFldUnitsPc[slot];
+            if (candidate->genusBase != NULL &&
+                candidate->charId == (u16)requestedId)
             {
                 break;
             }

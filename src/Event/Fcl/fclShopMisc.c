@@ -253,7 +253,7 @@ u32 FUN_003f1830(short *param_1,int param_2);
 u32 FUN_003f1910(u64 param_1);
 u32 FUN_003f1a10(u32 param_1);
 void FUN_003f1ba0(int param_1,u32 param_2);
-u32 FUN_003f1dc0(u16 param_1,int param_2,int param_3);
+u32 FUN_003f1dc0(long param_1,int param_2,int param_3);
 u8 FUN_003f2240(int param_1,long param_2);
 u64 FUN_003f2320(int param_1,int param_2);
 u32 FUN_003f2510(void);
@@ -504,7 +504,7 @@ void FUN_00407210(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5);
 void FUN_004072d0(int param_1,long param_2,long param_3);
  #pragma alias FUN_004072d0_i FUN_004072d0
  void FUN_004072d0_i(u32 param_1,int param_2,int param_3);
-u64 FUN_00409c80(u64 param_1);
+u32 FUN_00409c80(u32 param_1);
  #pragma alias FUN_00409c80_i FUN_00409c80
  u32 FUN_00409c80_i(u32 param_1);
 u32 FUN_00409e90(void);
@@ -608,6 +608,10 @@ u32 FUN_0017c700_u32(void);
 u32 FUN_00175410_u32(void);
 #pragma alias datPersonaGetHeroPersona_u32 datPersonaGetHeroPersona
 u32 datPersonaGetHeroPersona_u32(s16 param_1);
+#pragma alias datGetPersonaByCompendium_ptr datGetPersonaByCompendium
+void *datGetPersonaByCompendium_ptr(s32 idx);
+#pragma alias datPersonaGetTotalStat_u16 datPersonaGetTotalStat
+u16 datPersonaGetTotalStat_u16(void *persona,u16 statId);
 #pragma alias FUN_0017ca10_u32 FUN_0017ca10
 u32 FUN_0017ca10_u32(u32 param_1);
 #pragma alias FUN_00173a00_u32 FUN_00173a00
@@ -2467,7 +2471,7 @@ void FUN_003f1ba0(int param_1,u32 param_2)
 // FUN_003F1DC0 NONMATCHING
 
 
-u32 FUN_003f1dc0(u16 param_1,int param_2,int param_3)
+u32 FUN_003f1dc0(long param_1,int param_2,int param_3)
 {
   u8 uVar1;
   short sVar2;
@@ -2477,14 +2481,14 @@ u32 FUN_003f1dc0(u16 param_1,int param_2,int param_3)
   float fVar7;
   int iStack_4;
 
-  if ((param_3 < 0) || (299 < param_3)) {
+  if ((param_3 < 0) || (param_3 >= 300)) {
     K_Assert((const char *)DAT_006aede8,0x40f);
   }
   if (param_2 == 0) {
     K_Assert((const char *)DAT_006aede8,0x410);
   }
   memset(param_2,0,0x1c);
-  sVar2 = datGetEquipmentId(param_1,param_3);
+  sVar2 = datGetEquipmentId((param_1 << 0x30) >> 0x30,param_3);
   if (sVar2 == 0) {
     return 0;
   }
@@ -2496,41 +2500,41 @@ u32 FUN_003f1dc0(u16 param_1,int param_2,int param_3)
   puVar3 = (u32 *)func_00170ed0(sVar2,&iStack_4);
   switch (iStack_4) {
   case 0:
-    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    uVar1 = datGetEquipmentEffect((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)((int)psVar6 + 9) = uVar1;
     pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
-    uVar1 = func_0016f810(param_1,param_3);
+    uVar1 = func_0016f810((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)(psVar6 + 4) = uVar1;
     *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[1]);
     fVar7 = (float)func_00171510(*(short *)(puVar3 + 7),(char)psVar6[4]);
     *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[6] * *pfVar4 * fVar7);
-    psVar6[8] = func_0016f9f0(param_1,param_3);
-    psVar6[9] = func_0016fae0(param_1,param_3);
+    psVar6[8] = func_0016f9f0((param_1 << 0x30) >> 0x30,param_3);
+    psVar6[9] = func_0016fae0((param_1 << 0x30) >> 0x30,param_3);
     break;
   case 1:
-    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    uVar1 = datGetEquipmentEffect((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)((int)psVar6 + 9) = uVar1;
     pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
-    uVar1 = func_0016f810(param_1,param_3);
+    uVar1 = func_0016f810((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)(psVar6 + 4) = uVar1;
     *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[1]);
     fVar7 = (float)func_00171510(*(short *)(puVar3 + 5),(char)psVar6[4]);
     *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[4] * *pfVar4 * fVar7);
-    psVar6[10] = func_0016fbd0(param_1,param_3);
+    psVar6[10] = func_0016fbd0((param_1 << 0x30) >> 0x30,param_3);
     break;
   case 2:
-    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    uVar1 = datGetEquipmentEffect((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)((int)psVar6 + 9) = uVar1;
     pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
-    uVar1 = func_0016f810(param_1,param_3);
+    uVar1 = func_0016f810((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)(psVar6 + 4) = uVar1;
     *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[1]);
     fVar7 = (float)func_00171510(*(short *)(puVar3 + 5),(char)psVar6[4]);
     *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[4] * *pfVar4 * fVar7);
-    psVar6[0xb] = func_0016fcc0(param_1,param_3);
+    psVar6[0xb] = func_0016fcc0((param_1 << 0x30) >> 0x30,param_3);
     break;
   case 3:
-    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    uVar1 = datGetEquipmentEffect((param_1 << 0x30) >> 0x30,param_3);
     *(u8 *)((int)psVar6 + 9) = uVar1;
     *(u8 *)(psVar6 + 4) = 2;
     *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[0]);
@@ -7685,7 +7689,6 @@ u32 FUN_003f9e30(int param_1)
 
   u32 uVar7;
 
-  long lVar8;
 
   int iVar9;
 
@@ -7742,12 +7745,14 @@ u32 FUN_003f9e30(int param_1)
   *(short *)(iVar9 + 4) = (short)param_1;
 
   *(u16 *)(iVar9 + 6) = 0xffff;
+  FUN_003f99d0(uVar7,0x7ffff);
 
 
   for (uVar13 = 4000; ((int)uVar13 < 0x1080 && ((int)(uVar13 - 4000) < 300)); uVar13 = uVar13 + 1) {
 
 
-    if ((lVar8 != 0) && (lVar8 = FUN_003f98f0(uVar13 & 0xffff), lVar8 != 0)) {
+    if ((FUN_003f2240((int)auStack_c0,uVar13) != 0) &&
+        (FUN_003f98f0(uVar13 & 0xffff) != 0)) {
 
       iVar9 = FUN_003c5a40(uVar7,*(u16 *)(iVar5 + 0x10) + 1,0x20,0);
 
@@ -18215,115 +18220,47 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
 // FUN_00409C80 NONMATCHING
 
 
-u64 FUN_00409c80(u64 param_1)
-
-
-
+u32 FUN_00409c80(u32 param_1)
 {
+  int *entry;
+  void *persona;
+  u32 firstSum;
+  u32 secondSum;
+  int price;
+  int id;
 
-  int iVar1;
+  FUN_003f03e0_u32(8);
+  for (id = 1; id < 0x100; id = id + 1) {
+    persona = datGetPersonaByCompendium_ptr(id);
+    if (persona != 0) {
+      entry = (int *)FUN_003c5a40(param_1,*(u16 *)(param_1 + 0x10) + 1,0x10,0);
+      entry = *(int **)(*(int *)(entry + 5) + 0x1c);
+      entry[1] = (int)persona;
 
-  u32 uVar2;
+      firstSum = datPersonaGetTotalStat_u16(persona,0) & 0xff;
+      firstSum += datPersonaGetTotalStat_u16(persona,1) & 0xff;
+      firstSum += datPersonaGetTotalStat_u16(persona,2) & 0xff;
+      firstSum += datPersonaGetTotalStat_u16(persona,3) & 0xff;
+      firstSum += datPersonaGetTotalStat_u16(persona,4) & 0xff;
+      secondSum = datPersonaGetTotalStat_u16(persona,0) & 0xff;
+      secondSum += datPersonaGetTotalStat_u16(persona,1) & 0xff;
+      secondSum += datPersonaGetTotalStat_u16(persona,2) & 0xff;
+      secondSum += datPersonaGetTotalStat_u16(persona,3) & 0xff;
+      secondSum += datPersonaGetTotalStat_u16(persona,4) & 0xff;
+      entry[2] = firstSum * secondSum * 3 + 2000;
 
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
-  u32 uVar7;
-
-  u32 uVar8;
-
-  u32 uVar9;
-
-  u32 uVar10;
-
-  u32 uVar11;
-
-  int iVar12;
-
-  u32 uVar13;
-
-  long lVar14;
-
-  int iVar15;
-
-  
-
-
-  for (iVar15 = 1; iVar15 < 0x100; iVar15 = iVar15 + 1) {
-
-    lVar14 = datGetPersonaByCompendium(iVar15);
-
-    if (lVar14 != 0) {
-
-      iVar1 = FUN_003c5a40(param_1,*(u16 *)((int)param_1 + 0x10) + 1,0x10,0);
-
-      iVar1 = *(int *)(*(int *)(iVar1 + 0x14) + 0x1c);
-
-      *(int *)(iVar1 + 4) = (int)lVar14;
-
-      uVar2 = datPersonaGetTotalStat(lVar14,0);
-
-      uVar3 = datPersonaGetTotalStat(lVar14,1);
-
-      uVar4 = datPersonaGetTotalStat(lVar14,2);
-
-      uVar5 = datPersonaGetTotalStat(lVar14,3);
-
-      uVar6 = datPersonaGetTotalStat(lVar14,4);
-
-      uVar7 = datPersonaGetTotalStat(lVar14,0);
-
-      uVar8 = datPersonaGetTotalStat(lVar14,1);
-
-      uVar9 = datPersonaGetTotalStat(lVar14,2);
-
-      uVar10 = datPersonaGetTotalStat(lVar14,3);
-
-      uVar11 = datPersonaGetTotalStat(lVar14,4);
-
-      *(u32 *)(iVar1 + 8) =
-
-           ((uVar6 & 0xff) + (uVar5 & 0xff) + (uVar4 & 0xff) + (uVar2 & 0xff) + (uVar3 & 0xff)) *
-
-           ((uVar11 & 0xff) + (uVar10 & 0xff) + (uVar9 & 0xff) + (uVar7 & 0xff) + (uVar8 & 0xff)) *
-
-           3 + 2000;
-
-      lVar14 = datGetFlag(0x1319);
-
-      if (lVar14 != 0) {
-
-        iVar12 = *(int *)(iVar1 + 8) << 2;
-
-        if (iVar12 >= 10000000) {
-
-          *(u8 **)(iVar1 + 8) = (u8 *)&DAT_0098967f;
-
+      if (datGetFlag_u32_arg(0x1319) != 0) {
+        price = entry[2] << 2;
+        if (price >= 10000000) {
+          entry[2] = 9999999;
+        } else {
+          entry[2] = price;
         }
-
-        else {
-
-          *(int *)(iVar1 + 8) = iVar12;
-
-        }
-
       }
-
-      uVar13 = FUN_003dfeb0(0);
-
-      *(u32 *)(iVar1 + 0xc) = uVar13;
-
+      entry[3] = FUN_003dfeb0(0);
     }
-
   }
-
   return 0;
-
 }
 
 // FUN_00409E90
@@ -19121,89 +19058,47 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
 
 void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
-
-
-
 {
+  short x;
+  short y;
+  short alpha;
+  int work;
+  int rowY;
+  int i;
 
-  short sVar1;
-
-  short sVar2;
-
-  u16 uVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  
-
-  sVar1 = *(short *)(param_2 + 0x14);
-
-  sVar2 = *(short *)(param_2 + 0x16);
-
-  uVar3 = *(u16 *)(param_2 + 0x26);
-
-  if (uVar3 != 0) {
-
-    iVar5 = (int)sVar2;
-
-    if (*(int *)(param_2 + 0x10) == 0xc) {
-
-      iVar4 = *(int *)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
-
-      FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0x9e,0);
-
-      FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0x9f,0);
-
-      FUN_0040e3c0(0,sVar1 + 0x15d,iVar5 + 0x4d,uVar3 & 0xff,0x9d,
-
-                   (*(u8 *)((u32)*(u16 *)(*(int *)(iVar4 + 4) + 2) * 0xe + iGpffffb730 + 2) -
-
-                   1) * 2 + 1);
-
-      FUN_003b32d0(0,sVar1 + 0x1af,iVar5 + 0x48,0xffffffffffffffff,5,1,
-
-                   iGpffffb7f4 + (u32)*(u16 *)(*(int *)(iVar4 + 4) + 2) * 0x11,0,0x78);
-
-    }
-
-    else if (*(int *)(param_2 + 0x10) == 0xb) {
-
-      iVar4 = *(int *)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
-
-      FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0xa0,0);
-
-      FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0xa1,0);
-
-      for (iVar6 = 0; iVar6 < 9; iVar6 = iVar6 + 1) {
-
-        iVar7 = iVar5 + iVar6 * 0x19;
-
-        FUN_0040e3c0(0,sVar1,iVar7,uVar3 & 0xff,0xa2,0);
-
-        FUN_0040e3c0(0,sVar1,iVar7,uVar3 & 0xff,0xa3,0);
-
+  x = *(short *)(param_2 + 0x14);
+  y = *(short *)(param_2 + 0x16);
+  alpha = *(short *)(param_2 + 0x26);
+  if (alpha != 0) {
+    switch (*(int *)(param_2 + 0x10)) {
+    case 0xb:
+      work = *(int *)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
+      FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa0,0);
+      FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa1,0);
+      for (i = 0; i < 9; i = i + 1) {
+        rowY = y + i * 0x19;
+        FUN_0040e3c0_f32(0.0f,x,rowY,alpha,0xa2,0);
+        FUN_0040e3c0_f32(0.0f,x,rowY,alpha,0xa3,0);
       }
+      FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa4,0);
+      FUN_0040e3c0_f32(0.0f,x,y,alpha,0xa5,0);
+      FUN_003c7e20_f32(0.0f,x + 0x16c,y + 0x77,alpha | 0xffffff00,
+                       1,6,4,*(u16 *)(*(int *)(work + 4) + 2));
+      break;
 
-      FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0xa4,0);
-
-      FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0xa5,0);
-
-      FUN_003c7e20(0,sVar1 + 0x16c,iVar5 + 0x77,uVar3 | 0xff00,1,6,4,
-
-                   *(u16 *)(*(int *)(iVar4 + 4) + 2));
-
+    case 0xc:
+      work = *(int *)(*(int *)(*(int *)(param_3 + 0x10) + 0x14) + 0x1c);
+      FUN_0040e3c0_f32(0.0f,x,y,alpha,0x9e,0);
+      FUN_0040e3c0_f32(0.0f,x,y,alpha,0x9f,0);
+      FUN_0040e3c0_f32(
+          0.0f,x + 0x15d,y + 0x4d,alpha,0x9d,
+          ((u8 *)iGpffffb730)[*(u16 *)(*(int *)(work + 4) + 2) * 0x10 + 2] * 2 - 1);
+      FUN_003b32d0_f32(
+          0.0f,x + 0x1af,y + 0x48,0xffffffff,5,1,
+          (u8 *)iGpffffb7f4 + *(u16 *)(*(int *)(work + 4) + 2) * 0x11,0,0x78);
+      break;
     }
-
   }
-
-  return;
-
 }
 
 // FUN_0040B630 NONMATCHING

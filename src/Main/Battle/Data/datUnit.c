@@ -42,8 +42,8 @@ DatUnitPc* datUnitCreatePc(u16 pcId)
 // FUN_002ff3e0 NONMATCHING
 DatUnitEc* datUnitCreateEc(u16 encountId)
 {
-    u16 count;
     u16 i;
+    u16 count;
     DatUnitEc* ec;
     u16 j;
     u16 k;

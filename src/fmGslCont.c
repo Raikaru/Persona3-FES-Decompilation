@@ -26,6 +26,12 @@ extern u32 DAT_0095aeec;
 extern f32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern code DAT_00960090_abs[];
+#pragma alias DAT_009600a0_abs DAT_009600a0
+extern code DAT_009600a0_abs[];
+#pragma alias DAT_0095aec0_abs DAT_0095aec0
+extern RwIm2DVertex DAT_0095aec0_abs[];
 extern code DAT_00960178;
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
@@ -831,80 +837,47 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 // FUN_003B4B40 NONMATCHING
 
 
-void FUN_003b4b40(int param_1,int param_2,u8 *param_3,u8 *param_4)
-
-
-
+void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 {
+  RwIm2DVertex* vertices;
+  RwIm2DVertex* vertex;
+  int* position;
+  int* color;
+  f32 z;
+  f32 recipZ;
+  int i;
 
-  f32 fVar1;
+  recipZ = 1.0f / *(f32*)(FUN_00198590() + 0x80);
+  i = 0;
+  vertices = DAT_0095aec0_abs;
+  z = DAT_00960088;
+  while (i < 4) {
+    position = (int*)(param_1 + (u32)*param_3 * 8);
+    color = (int*)(param_2 + (u32)*param_4 * 0x10);
+    vertex = &vertices[i];
 
-  int iVar2;
+    vertex->u.els.scrVertex.x = (f32)(position[0] >> 4);
+    vertex->u.els.scrVertex.y = (f32)(position[1] >> 3);
+    vertex->u.els.scrVertex.z = z;
+    vertex->u.els.color.r = (f32)color[0];
+    vertex->u.els.color.g = (f32)color[1];
+    vertex->u.els.color.b = (f32)color[2];
+    vertex->u.els.color.a = (f32)color[3];
+    vertex->u.els.recipZ = recipZ;
 
-  int iVar3;
-
-  int *piVar4;
-
-  int *piVar5;
-
-  float fVar6;
-
-  
-
-  iVar2 = FUN_00198590();
-
-  fVar1 = DAT_00960088;
-
-  fVar6 = *(float *)(iVar2 + 0x80);
-
-  for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
-
-    piVar5 = (int *)(param_1 + (u32)*param_3 * 8);
-
-    piVar4 = (int *)(param_2 + (u32)*param_4 * 0x10);
-
-    iVar3 = iVar2 * 0x40;
-
-    *(float *)(&DAT_0095aec0 + iVar3) = (float)(*piVar5 >> 4);
-
-    *(float *)(&DAT_0095aec4 + iVar3) = (float)(piVar5[1] >> 3);
-
-    *(float *)(&DAT_0095aec8 + iVar3) = fVar1;
-
-    *(float *)(&DAT_0095aee0 + iVar3) = (float)*piVar4;
-
-    *(float *)(&DAT_0095aee4 + iVar3) = (float)piVar4[1];
-
-    *(float *)(&DAT_0095aee8 + iVar3) = (float)piVar4[2];
-
-    *(float *)(&DAT_0095aeec + iVar3) = (float)piVar4[3];
-
-    *(float *)(&DAT_0095aed8 + iVar3) = 1.0f / fVar6;
-
-    param_3 = param_3 + 1;
-
-    param_4 = param_4 + 1;
-
+    i++;
+    param_3++;
+    param_4++;
   }
 
-  (*DAT_00960090)(1,0);
-
-  (*DAT_00960090)(7,2);
-
-  (*DAT_00960090)(0xc,1);
-
-  (*DAT_00960090)(10,3);
-
-  (*DAT_00960090)(0xb,6);
-
-  FUN_004d7f60(2,0x44);
-
-  FUN_004d7f60(3,0x717fb);
-
-  (*DAT_009600a0)(5,0x95aec0,4);
-
-  return;
-
+  (*DAT_00960090_abs)(1, 0);
+  (*DAT_00960090_abs)(7, 2);
+  (*DAT_00960090_abs)(0xC, 1);
+  (*DAT_00960090_abs)(10, 3);
+  (*DAT_00960090_abs)(0xB, 6);
+  FUN_004d7f60(2, 0x44);
+  FUN_004d7f60(3, 0x717FB);
+  (*DAT_009600a0_abs)(5, vertices, 4);
 }
 #define FUN_003b4b40(...) ((void (*)(...))FUN_003b4b40)(__VA_ARGS__)
 #undef FUN_003b4d10

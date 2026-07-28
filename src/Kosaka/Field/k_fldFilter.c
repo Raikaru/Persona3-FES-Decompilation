@@ -96,33 +96,42 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
     s32 y;
     s32 x;
     s32 rowOffset;
-    f32 top;
-    f32 bottom;
+    s32 rightOffset;
+    s32 topOffset;
+    s32 bottomOffset;
     f32 z;
     f32 recipZ;
+    register f32 bottom;
+    f32 top;
 
     z = camera->nearPlane;
     recipZ = 1.0f / z;
+    y = 0;
     grid = (FilterQuad (*)[FLDFILTER_GRID_WIDTH])sFilterGrid_abs;
-    for (y = 0; y < FLDFILTER_GRID_HEIGHT; y++)
+    while (y < FLDFILTER_GRID_HEIGHT)
     {
-        top = (f32)(y * FLDFILTER_QUAD_YPIXELS);
-        bottom = (f32)(y * FLDFILTER_QUAD_YPIXELS + FLDFILTER_QUAD_YPIXELS);
+        x = 0;
         row = grid[y];
-        for (x = 0; x < FLDFILTER_GRID_WIDTH; x++)
+        topOffset = y * FLDFILTER_QUAD_YPIXELS;
+        bottomOffset = topOffset + FLDFILTER_QUAD_YPIXELS;
+        top = (f32)topOffset;
+        bottom = (f32)bottomOffset;
+        while (x < FLDFILTER_GRID_WIDTH)
         {
             rowOffset = x * FLDFILTER_QUAD_XPIXELS;
             vertex = (f32*)&row[x];
             vertex[0] = (f32)rowOffset;
             vertex[1] = top;
             vertex[2] = z;
-            vertex[0x10] = (f32)(rowOffset + FLDFILTER_QUAD_XPIXELS);
+            x++;
+            rightOffset = x * FLDFILTER_QUAD_XPIXELS;
+            vertex[0x10] = (f32)rightOffset;
             vertex[0x11] = top;
             vertex[0x12] = z;
             vertex[0x20] = (f32)rowOffset;
             vertex[0x21] = bottom;
             vertex[0x22] = z;
-            vertex[0x30] = (f32)(rowOffset + FLDFILTER_QUAD_XPIXELS);
+            vertex[0x30] = (f32)rightOffset;
             vertex[0x31] = bottom;
             vertex[0x32] = z;
             vertex[6] = recipZ;
@@ -130,6 +139,7 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
             vertex[0x26] = recipZ;
             vertex[0x36] = recipZ;
         }
+        y++;
     }
 }
 

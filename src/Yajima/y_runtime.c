@@ -162,7 +162,7 @@ extern u32 DAT_007ce6d0;
 extern u32 DAT_007ce6d4;
 extern u32 DAT_007ce6e0;
 extern u32 DAT_007ce6e4;
-extern s8 DAT_007ce6e7[];
+extern s8 DAT_007ce6e7;
 extern u32 DAT_007ce6e8;
 extern u32 DAT_007ce6ec;
 extern u32 DAT_007ce6f0;
@@ -239,6 +239,9 @@ extern void FUN_001a91b0_call(u32 param_1, void *param_2);
 #pragma alias FUN_001a91b0_ret FUN_001a91b0
 extern u64 FUN_001a91b0_ret(u32 param_1, void *param_2);
 extern void FUN_00195020_y2(void);
+#pragma alias yRuntimeQueueTween FUN_0045afd0
+extern u32 yRuntimeQueueTween(float duration, int stateAddress, int startX, int startY, int endX,
+                              int endY, u8 delay, u8 hold, short frameCount);
 #pragma alias FUN_0045afd0_call FUN_0045afd0
 extern u32 FUN_0045afd0_call(float param_1,int param_2,int param_3,int param_4,int param_5,
                               int param_6,u8 param_7,u8 param_8,short param_9);
@@ -334,13 +337,13 @@ extern u8 DAT_007e0958_abs[];
 extern u8 DAT_007e095a_abs[];
 extern u8 DAT_007bc730_abs[];
 #pragma alias DAT_0086e80c_abs DAT_0086e80c
+extern u8 DAT_0086e80c_abs[];
 #pragma alias DAT_0086e9cc_abs DAT_0086e9cc
 extern u8 DAT_0086e9cc_abs[];
 #pragma alias DAT_0086eb8c_abs DAT_0086eb8c
 extern u8 DAT_0086eb8c_abs[];
 #pragma alias DAT_0086ed4c_abs DAT_0086ed4c
 extern u8 DAT_0086ed4c_abs[];
-extern u8 DAT_0086e80c_abs[];
 #pragma alias DAT_0086e6e8_abs DAT_0086e6e8
 extern u8 DAT_0086e6e8_abs[];
 #pragma alias FUN_00195020_call FUN_00195020
@@ -5102,8 +5105,8 @@ void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float 
   char cVar1;
   int iVar2;
   float fVar3;
-  u64 uVar4;
   float fVar5;
+  u64 uVar4;
   YVec3f start;
   YVec3f end;
   YVec3f delta;
@@ -5114,8 +5117,8 @@ void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float 
   start = *(YVec3f *)param_4;
   end = *(YVec3f *)param_5;
   iVar2 = *(int *)(param_3 + 0x3c);
-  uVar4 = *(u64 *)DAT_006b4608_abs;
   fVar5 = *(float *)DAT_006b4610_abs;
+  uVar4 = *(u64 *)DAT_006b4608_abs;
   *(u64 *)&axis = uVar4;
   axis.z = fVar5;
   delta.x = start.x - end.x;
@@ -5134,7 +5137,7 @@ void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float 
   delta.x = radial.y * axis.z - radial.z * axis.y;
   delta.y = radial.z * axis.x - radial.x * axis.z;
   delta.z = radial.x * axis.y - radial.y * axis.x;
-  cVar1 = DAT_007ce6e7[*(int *)(iVar2 + 4)];
+  cVar1 = *(&DAT_007ce6e7 + *(int *)(iVar2 + 4));
   switch (cVar1) {
   case '\x01':
     radial.x = delta.x * 20.0f;
@@ -19768,68 +19771,83 @@ clear:
   return 0;
 }
 
-// FUN_0045AFD0 NONMATCHING
+// FUN_0045AFD0
 
 u32
 FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6,
             u8 param_7,u8 param_8,short param_9)
-
 {
-  u32 uVar2;
-  int iVar3;
-  float *pfVar4;
-  
-  iVar3 = (int)param_2;
+  struct TweenEntry {
+    float startX;
+    float startY;
+    float endX;
+    float endY;
+    float stepX;
+    float stepY;
+    float rate;
+    s8 delay;
+    s8 hold;
+    s16 duration;
+  };
+  struct TweenState {
+    struct TweenEntry entries[4];
+    s32 current;
+    s32 count;
+    s32 frame;
+    u32 flags;
+    s32 timer;
+    s32 total;
+  };
+  struct TweenState *state;
+  struct TweenEntry *entry;
+  float duration;
+
   if (param_2 == 0) {
-    uVar2 = 1;
+    return 1;
   }
-  else if (*(int *)(iVar3 + 0x84) < 4) {
-    pfVar4 = (float *)(iVar3 + *(int *)(iVar3 + 0x84) * 0x20);
-    *(short *)((int)pfVar4 + 0x1e) = param_9;
-    if (param_9 < 1) {
-      *(u16 *)((int)pfVar4 + 0x1e) = 1;
-    }
-    *pfVar4 = (float)param_3;
-    pfVar4[1] = (float)param_4;
-    pfVar4[2] = (float)param_5;
-    pfVar4[3] = (float)param_6;
-    pfVar4[6] = param_1;
-    if (0.0f < param_1) {
-      pfVar4[4] = param_1 * (pfVar4[2] - *pfVar4);
-      pfVar4[5] = pfVar4[6] * (pfVar4[3] - pfVar4[1]);
-    }
-    else if (param_1 < 0.0f) {
-      pfVar4[4] = *pfVar4;
-      pfVar4[5] = pfVar4[1];
-    }
-    else {
-      pfVar4[4] = (pfVar4[2] - *pfVar4) / (float)(int)*(short *)((int)pfVar4 + 0x1e);
-      pfVar4[5] = (pfVar4[3] - pfVar4[1]) / (float)(int)*(short *)((int)pfVar4 + 0x1e);
-    }
-    *(u8 *)(pfVar4 + 7) = param_7;
-    *(u8 *)((int)pfVar4 + 0x1d) = param_8;
-    if (*(char *)(pfVar4 + 7) < '\0') {
-      *(u8 *)(pfVar4 + 7) = 0;
-    }
-    if (*(char *)((int)pfVar4 + 0x1d) < '\0') {
-      *(u8 *)((int)pfVar4 + 0x1d) = 0;
-    }
-    *(u32 *)(iVar3 + 0x80) = 0;
-    *(int *)(iVar3 + 0x84) = *(int *)(iVar3 + 0x84) + 1;
-    *(u32 *)(iVar3 + 0x88) = 0;
-    *(u32 *)(iVar3 + 0x90) = 0;
-    *(int *)(iVar3 + 0x94) =
-         *(int *)(iVar3 + 0x94) +
-         (int)*(char *)((int)pfVar4 + 0x1d) +
-         (int)*(short *)((int)pfVar4 + 0x1e) + (int)*(char *)(pfVar4 + 7);
-    *(u32 *)(iVar3 + 0x8c) |= 1;
-    *(u32 *)(iVar3 + 0x8c) &= 0xfffffffd;
-    uVar2 = 0;
+  state = (struct TweenState *)param_2;
+  if (state->count >= 4) {
+    return 2;
+  }
+  entry = &state->entries[state->count];
+  entry->duration = param_9;
+  if (entry->duration < 1) {
+    entry->duration = 1;
+  }
+  duration = (float)entry->duration;
+  entry->startX = (float)param_3;
+  entry->startY = (float)param_4;
+  entry->endX = (float)param_5;
+  entry->endY = (float)param_6;
+  entry->rate = param_1;
+  if (param_1 > 0.0f) {
+    entry->stepX = param_1 * (entry->endX - entry->startX);
+    entry->stepY = entry->rate * (entry->endY - entry->startY);
+  }
+  else if (param_1 < 0.0f) {
+    entry->stepX = entry->startX;
+    entry->stepY = entry->startY;
   }
   else {
-    uVar2 = 2;
+    entry->stepX = (entry->endX - entry->startX) / duration;
+    entry->stepY = (entry->endY - entry->startY) / duration;
   }
-  return uVar2;
+  entry->delay = param_7;
+  entry->hold = param_8;
+  if (entry->delay < 0) {
+    entry->delay = 0;
+  }
+  if (entry->hold < 0) {
+    entry->hold = 0;
+  }
+  state->current = 0;
+  state->count = state->count + 1;
+  state->frame = 0;
+  state->timer = 0;
+  state->total += entry->duration + entry->delay + entry->hold;
+  state->flags |= 1;
+  state->flags &= 0xfffffffd;
+  return 0;
 }
 
 // FUN_0045B190 NONMATCHING

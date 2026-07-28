@@ -365,7 +365,7 @@ void opWait0026e780(void)
     u8* work;
     void* atlas;
     void* frame;
-    f32 layout[4];
+    f32 layout[8];
     s32 order[3];
     s32 i;
     s32 j;
@@ -383,18 +383,33 @@ void opWait0026e780(void)
     layout[3] = 1.0f;
     func_0021eae0(work + 0x40, layout);
     func_0021eac0(work + 0x40, 0.0f);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
     func_0021eae0(work + 0x140, layout);
     func_0021eac0(work + 0x140, 0.0f);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
     func_0021eae0(work + 0x240, layout);
     func_0021eac0(work + 0x240, 0.0f);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
     for (i = 0; i < 3; i++)
         order[i] = i;
     for (j = 0; j < 0x10; j++)
     {
-        s32 a = func_00488f30() % 3;
+        s32 a = (u32)func_00488f30() % 3;
         s32 b = func_00488f30() & 1;
         s32 t;
-        if (a <= b)
+        if (b < a)
+        {
+        }
+        else
             b++;
         t = order[a];
         order[a] = order[b];
@@ -402,10 +417,10 @@ void opWait0026e780(void)
     }
     for (k = 0; k < 3; k++)
     {
-        *(u32*)(work + 0xe40 + (u32)k * 0x110) =
-            (u32)(order[k] * 100 + 0x3c);
-        func_0021eae0(work + 0xe50 + (u32)k * 0x110, layout);
-        func_0021eac0(work + 0xe50 + (u32)k * 0x110, 0.0f);
+        u8* item = work + 0xe40 + (u32)k * 0x110;
+        *(u32*)item = (u32)(order[k] * 100 + 0x3c);
+        func_0021eae0(item + 0x10, layout);
+        func_0021eac0(item + 0x10, 0.0f);
     }
     frame = opResGetTitleRaster(0xc);
     width = *(s32*)((u8*)frame + 0x0c);

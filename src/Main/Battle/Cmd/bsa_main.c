@@ -1008,7 +1008,19 @@ void bsaMain00213e80(BsaWork* work)
             D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 1, 2);
             D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 2, 3);
         }
-        if ((p[1] & BSA_FLAG_RESOURCE) != 0) {
+        if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
+            for (i = 0; i < (s32)p[0xd]; i++) {
+                image = func_0021cca0(
+                    table6, *(s16*)((u8*)p + i * 2 + 0xa6b8));
+                image = func_0021cce0(image);
+                D_00960090_abs(1, image);
+                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 2, 3);
+            }
+            for (i = 0; i < (s32)p[0xd]; i++) {
+                func_003b1360(p[i + 5], 1, 0);
+            }
+        } else {
             for (i = 0; i < 8; i++) {
                 image = func_0021cce0(func_0021cca0(table2, 0x32));
                 D_00960090_abs(1, image);
@@ -1020,18 +1032,6 @@ void bsaMain00213e80(BsaWork* work)
                 D_0096009C_abs(p + i * 0x100 + 0x1cac, 4, 0, 2, 3);
                 D_0096009C_abs(p + i * 0x100 + 0x1cec, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x100 + 0x1cec, 4, 0, 2, 3);
-            }
-        } else {
-            for (i = 0; i < (s32)p[0xd]; i++) {
-                image = func_0021cca0(
-                    table6, *(s16*)((u8*)p + i * 2 + 0xa6b8));
-                image = func_0021cce0(image);
-                D_00960090_abs(1, image);
-                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 1, 2);
-                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 2, 3);
-            }
-            for (i = 0; i < (s32)p[0xd]; i++) {
-                func_003b1360(p[i + 5], 1, 0);
             }
         }
     }

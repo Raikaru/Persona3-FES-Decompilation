@@ -37,6 +37,8 @@ extern u64 scrGetIntPara_u64(s32);
 extern void* (*DAT_00960184)();
 extern void* (*DAT_00960178)();
 extern f32 DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
 extern void* DAT_007cdf48;
 extern void* DAT_007cdf54;
 extern void* DAT_007cdf58;
@@ -963,7 +965,7 @@ u32 FUN_001685d0(KwlnTask* task)
     return ((u32*)task->workData)[2];
 }
 
-// FUN_001685e0 NONMATCHING
+// FUN_001685e0
 void FUN_001685e0(KwlnTask* task, s32 command)
 {
     u32* work;
@@ -1283,20 +1285,19 @@ void FUN_00169040(int param_1)
 void FUN_00169110(u16 param_1, CampFloatPair param_2,
                   void* param_3, s32 param_4)
 {
-    f32 x;
-    f32 y;
     f32 depth;
+    f32* depthBase;
+    register s32 inverseAlpha;
     CampFloatPair drawPosition;
 
-    y = param_2.y;
-    x = param_2.x;
-    depth = (f32)FUN_0021ea00(0x29);
-    FUN_00113a30(DAT_00960088 - depth, 0, 0,
-                 0xffU - (u32)param_4 | 0x20808000, 0x280, 0x1c0);
-    depth = (f32)FUN_0021ea00(0x28);
-    drawPosition.x = x + 40.0f;
-    drawPosition.y = y + 50.0f;
-    campDataDrawEquipment(DAT_00960088 - depth,
+    inverseAlpha = 0xff - param_4;
+    drawPosition.x = param_2.x + 40.0f;
+    drawPosition.y = param_2.y + 50.0f;
+    depthBase = (f32*)DAT_00960088_abs;
+    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f,
+                 (u32)inverseAlpha | 0x20808000U, 0x280, 0x1c0);
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipment(*depthBase - depth,
                           drawPosition, param_3, param_4);
 }
 
@@ -1304,25 +1305,26 @@ void FUN_00169110(u16 param_1, CampFloatPair param_2,
 void FUN_001691F0(u16 param_1, CampFloatPair param_2,
                   void* param_3, void* param_4, s32 param_5)
 {
-    f32 x;
     f32 y;
     f32 depth;
+    f32* depthBase;
+    s32 inverseAlpha;
     CampFloatPair drawPosition;
 
     y = param_2.y;
-    depth = (f32)FUN_0021ea00(0x29);
-    FUN_00113a30(DAT_00960088 - depth, 0, 0,
-                 0xffU - (u32)param_5 | 0x20808000, 0x280, 0x1c0);
-    x = param_2.x;
-    depth = y + 50.0f;
-    depth = (f32)FUN_0021ea00(0x28);
-    drawPosition.x = x + 40.0f;
+    inverseAlpha = 0xff - param_5;
+    depthBase = (f32*)DAT_00960088_abs;
+    FUN_00113a30(*depthBase - FUN_0021ea00(0x29), 0.0f, 0.0f,
+                 (u32)inverseAlpha | 0x20808000U, 0x280, 0x1c0);
+    drawPosition.x = param_2.x + 40.0f;
     drawPosition.y = y + 50.0f;
-    campDataDrawEquipmentAlt(DAT_00960088 - depth,
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipmentAlt(*depthBase - depth,
                              drawPosition, param_3, param_5);
-    depth = (f32)FUN_0021ea00(0x28);
+    drawPosition.x = param_2.x + 40.0f;
     drawPosition.y = y + 80.0f;
-    campDataDrawEquipment(DAT_00960088 - depth,
+    depth = FUN_0021ea00(0x28);
+    campDataDrawEquipment(*depthBase - depth,
                           drawPosition, param_4, param_5);
 }
 

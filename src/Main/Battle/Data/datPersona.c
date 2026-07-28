@@ -1028,8 +1028,8 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
             level = 99;
         }
 
-        if ((*(u16*)(persona_i + 2) < 0xc0) ||
-            (*(u16*)(persona_i + 2) >= 0xe0))
+        if ((*(u16*)(persona_i + 2) >= 0xc0) &&
+            (*(u16*)(persona_i + 2) < 0xe0))
         {
             scenario = 1;
         }
@@ -1059,7 +1059,7 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
         }
         else
         {
-            u32 scenarioLevel;
+            s32 scenarioLevel;
 
             K_ASSERT((*(u16*)(persona_i + 2) >= 0xc0) &&
                      (*(u16*)(persona_i + 2) < 0xe0), 0x5a4);

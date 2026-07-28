@@ -7559,7 +7559,7 @@ void btlActionUpdateStateEndHome(BtlAction* action)
     }
 }
 
-// FUN_00299800 NONMATCHING
+// FUN_00299800
 void btlActionInitStateDead(BtlAction* action)
 {
     BtlPacket* packet;
@@ -7572,13 +7572,13 @@ void btlActionInitStateDead(BtlAction* action)
     {
     case UNIT_GENUS_PC:
         FUN_00301690(unit->datUnit);
-        if (ACTION_U8(unit->datUnit, 0x10) == 10)
+        if ((s8)ACTION_U8(unit->datUnit, 0x10) == 10)
         {
             ACTION_U8(unit->datUnit, 0x10) = 1;
         }
         break;
     case UNIT_GENUS_EC:
-        FUN_0017c750(unit->charId);
+        FUN_0017c750((s16)unit->charId);
         FUN_002d7560(action);
         flags = unit->flags3;
         if ((flags & 0x20) == 0)
@@ -7590,7 +7590,7 @@ void btlActionInitStateDead(BtlAction* action)
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
                 packet = FUN_002baf90(ACTION_U32(gBtl, 0xcb0), unit, unit, 0, 0);
                 packet->actionUID = action->uid;
-                btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+                btlPacketRegister(packet, BTLPACKET_TYPE_3D);
                 packet = FUN_002dd100(10, 2, 8);
                 packet->actionUID = action->uid;
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
