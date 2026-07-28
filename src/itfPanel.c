@@ -339,6 +339,7 @@ void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5
   float fVar1;
   float fVar2;
   code *renderState;
+  float *source;
 
   if ((param_4 == 0) || (param_5 == 0)) {
     FUN_0019d3f0(DAT_006a1bf8,0x39);
@@ -365,11 +366,12 @@ void FUN_003a87d0(int param_2,int param_3,float param_1,long param_4,u32 param_5
 
   if ((param_7 != 0) || ((u8)param_6 > 0)) {
     uVar1 = (*DAT_00960178_abs)(param_5 << 6,0x40000);
+    source = (float *)param_4;
     uVar4 = 0;
     fVar1 = (float)param_2;
     fVar2 = (float)param_3;
     do {
-      pfVar3 = (float *)((int)param_4 + uVar4 * 8);
+      pfVar3 = source + uVar4 * 2;
       pfVar2 = (float *)((int)uVar1 + uVar4 * 0x40);
       *pfVar2 = fVar1 + *pfVar3;
       pfVar2[1] = fVar2 + pfVar3[1];
