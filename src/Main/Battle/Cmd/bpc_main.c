@@ -2,6 +2,7 @@
 #include "Kosaka/k_assert.h"
 #include "Battle/battle.h"
 #include "Main/Battle/Cmd/bpp_main.h"
+#include "rw/rwplcore.h"
 extern const char D_0068E880[];
 extern const char DAT_007cc468[];
 
@@ -50,6 +51,11 @@ extern void func_0021eb80(void* destination, const f32* layout);
 extern void func_0021cd00(u32 frame, f32* rect);
 extern void func_00280580(int unit, void* projected);
 extern u32 func_002d20a0(const void* projected, void* screen);
+// Typed aliases preserve the established ABI of unrelated callers.
+#pragma alias func_00280580_vec func_00280580
+extern void func_00280580_vec(int unit, RwV3d* projected);
+#pragma alias func_002d20a0_vec func_002d20a0
+extern u32 func_002d20a0_vec(const RwV3d* projected, RwV2d* screen);
 extern int func_0029a1d0(int unit);
 extern int func_00301ca0(u32 calc, u32 skill);
 extern int func_00300e90(u32 calc, s16 id);
@@ -803,7 +809,8 @@ void FUN_00244a40(u32 param_1)
   u32 uVar6;
   u32 lVar7;
   int unaff_s2_lo;
-  u8 auStack_10[32];
+  RwV3d projected;
+  RwV2d screen;
   
   if (sBpcWork == (uint *)0x0) {
     K_Assert(D_0068E880, 0x97);
@@ -814,8 +821,6 @@ void FUN_00244a40(u32 param_1)
   }
   iVar3 = func_001ff430(puVar2[4]);
   switch (*(u8 *)(iVar3 + 0xa2)) {
-  case 1:
-    break;
   case 0:
     bppMain0020f8b0_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
     bppMain0020fa80_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
@@ -826,24 +831,29 @@ void FUN_00244a40(u32 param_1)
     bppMain0020fb60_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
     bppMain0020f7d0_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
     break;
+  case 1:
+    break;
   }
   uVar5 = puVar2[1];
-  if (uVar5 == 2) {
-    puVar5 = FUN_00245bf0(puVar2[4]);
-    if ((*puVar5 & 0x80) == 0) {
-      FUN_00245970(puVar5);
-    }
-  }
-  else if ((uVar5 == 1) || (uVar5 == 0)) {
+  switch (uVar5) {
+  case 0:
+  case 1:
     puVar5 = FUN_00245bf0(puVar2[4]);
     FUN_00245970(puVar5);
+    break;
+  case 2:
+    puVar5 = FUN_00245bf0(puVar2[4]);
+    if ((~*puVar5 & 0x80) != 0) {
+      FUN_00245970(puVar5);
+    }
+    break;
   }
   uVar6 = func_001ff430(puVar2[4]);
-  func_00280580(uVar6,auStack_10 + 0x10);
-  lVar7 = func_002d20a0(auStack_10 + 0x10,(f32 *)(auStack_10 + 8));
+  func_00280580_vec(uVar6, &projected);
+  lVar7 = func_002d20a0_vec(&projected, &screen);
   if (lVar7 != 0) {
-    puVar2[0x1cb7] = *(u32 *)(auStack_10 + 8);
-    puVar2[0x1cb8] = *(u32 *)(auStack_10 + 0xc);
+    ((f32*)puVar2)[0x1cb7] = screen.x;
+    ((f32*)puVar2)[0x1cb8] = screen.y;
     *puVar2 = *puVar2 | 0x10;
   }
   if ((*puVar2 & 2) != 0) {
@@ -856,7 +866,13 @@ void FUN_00244a40(u32 param_1)
     *puVar4 = *puVar4 | 0x400;
   }
   uVar5 = puVar2[1];
-  if (uVar5 == 2) {
+  switch (uVar5) {
+  case 0:
+  case 1:
+    puVar5 = FUN_00245bf0(puVar2[4]);
+    FUN_00245910(puVar5);
+    break;
+  case 2:
     FUN_00245cd0();
     puVar5 = FUN_00245bf0(puVar2[4]);
     if ((*puVar5 & 0x80) != 0) {
@@ -865,22 +881,21 @@ void FUN_00244a40(u32 param_1)
     else {
       FUN_00245910(puVar5);
     }
-  }
-  else if ((uVar5 == 1) || (uVar5 == 0)) {
-    puVar5 = FUN_00245bf0(puVar2[4]);
-    FUN_00245910(puVar5);
+    break;
   }
   if ((*puVar2 & 4) != 0) {
     FUN_00244e80();
   }
   func_003b0170(puVar2[0x1b30]);
   iVar3 = func_001ff430(puVar2[4]);
-  if (*(u8 *)(iVar3 + 0xa2) == 1) {
+  switch (*(u8 *)(iVar3 + 0xa2)) {
+  case 0:
+    unaff_s2_lo = func_001775a0_s16(*(s16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+    break;
+  case 1:
     uVar1 = *(ushort *)(*(int *)(iVar3 + 0xa2c) + 2);
     unaff_s2_lo = DAT_007ce4e8 + (uint)uVar1 * 0x12 + (uint)uVar1;
-  }
-  else if (*(u8 *)(iVar3 + 0xa2) == 0) {
-    unaff_s2_lo = func_001775a0_s16(*(s16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+    break;
   }
   func_003b0e70(1);
   func_003b0e90(2);

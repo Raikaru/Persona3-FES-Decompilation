@@ -1393,6 +1393,7 @@ void FUN_0038f0f0(u32 param_1)
 
   u32 lVar8;
   u32 lVar9;
+  u32 finalData;
 
   u32 uVar10;
 
@@ -1405,6 +1406,7 @@ void FUN_0038f0f0(u32 param_1)
   u32 *puVar14;
 
   int iVar15;
+  int copyCount;
 
   u32 uVar16;
 
@@ -1512,20 +1514,20 @@ void FUN_0038f0f0(u32 param_1)
 
     }
 
-    lVar8 = FUN_003b5430(lVar8,5);
+    finalData = FUN_003b5430(lVar8,5);
 
-    if (lVar8 != 0) {
+    if (finalData != 0) {
 
-      iVar5 = (int)lVar8;
+      iVar5 = (int)finalData;
 
-      *(MtEvtVec4 *)(iVar15 + 0x870) = *(MtEvtVec4 *)(iVar5 + 0x100);
-      *(MtEvtVec4 *)(iVar15 + 0x880) = *(MtEvtVec4 *)(iVar5 + 0x110);
+      *(MtEvtVec4 *)(param_1 + 0x870) = *(MtEvtVec4 *)(iVar5 + 0x100);
+      *(MtEvtVec4 *)(param_1 + 0x880) = *(MtEvtVec4 *)(iVar5 + 0x110);
 
       puVar14 = (u32 *)(iVar5 + 0x120);
 
-      puVar13 = (u32 *)(iVar15 + 0x890);
+      puVar13 = (u32 *)(param_1 + 0x890);
 
-      iVar5 = 8;
+      copyCount = 8;
 
       do {
 
@@ -1535,7 +1537,7 @@ void FUN_0038f0f0(u32 param_1)
 
         puVar14 = puVar14 + 2;
 
-        iVar5 = iVar5 + -1;
+        copyCount = copyCount + -1;
 
         *puVar13 = uVar16;
 
@@ -1543,7 +1545,7 @@ void FUN_0038f0f0(u32 param_1)
 
         puVar13 = puVar13 + 2;
 
-      } while (0 < iVar5);
+      } while (0 < copyCount);
 
     }
 

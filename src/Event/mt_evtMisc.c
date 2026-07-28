@@ -2919,7 +2919,7 @@ float FUN_0038a220(int param_1)
 
 
 #pragma alias evtMenuDrawText FUN_0038a260
-// FUN_0038A260 NONMATCHING
+// FUN_0038A260
 
 
 
@@ -2937,14 +2937,14 @@ void evtMenuDrawText(s32 x,s32 y,f32 depth,s32 style,const char *format,...)
 
   switch (style) {
   case 0:
-    color.r = 0xe6;
-    color.g = 0xe6;
     color.b = 0xe6;
+    color.g = 0xe6;
+    color.r = 0xe6;
     color.a = 0xff;
     break;
   case 1:
-    color.r = 0x80;
     color.g = 0x80;
+    color.r = 0x80;
     color.b = 0xff;
     color.a = 0xff;
     break;
@@ -2952,14 +2952,14 @@ void evtMenuDrawText(s32 x,s32 y,f32 depth,s32 style,const char *format,...)
   case 3:
     break;
   case 4:
-    color.r = 0x80;
     color.g = 0x80;
+    color.r = 0x80;
     color.b = 0xff;
     color.a = 0xff;
     break;
   case 5:
-    color.r = 0x80;
     color.g = 0x80;
+    color.r = 0x80;
     color.b = 0xff;
     color.a = 0xff;
     break;
@@ -2976,9 +2976,9 @@ void evtMenuDrawText(s32 x,s32 y,f32 depth,s32 style,const char *format,...)
     color.a = 0xff;
     break;
   default:
-    color.r = 0x80;
-    color.g = 0x80;
     color.b = 0x80;
+    color.g = 0x80;
+    color.r = 0x80;
     color.a = 0xff;
     break;
   }

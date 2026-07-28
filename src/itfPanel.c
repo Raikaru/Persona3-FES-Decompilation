@@ -1465,30 +1465,34 @@ void FUN_003a9e20(int param_1,u64 param_2)
 void FUN_003a9ed0(int param_1,u64 param_2)
 {
   register int index;
+  int object;
+  u64 drawArg;
   u32 uVar1;
   int iVar2;
   int iVar3;
   int iVar5;
   int iVar4;
+  object = param_1;
+  drawArg = param_2;
 
-  uVar1 = *(u32 *)(param_1 + 0x38);
-  iVar2 = *(int *)(param_1 + 8);
+  uVar1 = *(u32 *)(object + 0x38);
+  iVar2 = *(int *)(object + 8);
   iVar3 = iVar2 + 0x140;
   iVar4 = iVar3 + 0x10;
   for (iVar5 = 1; iVar5 < 8; iVar5 = iVar5 + 1, iVar4 = iVar4 + 0x10) {
     *(u32 *)(iVar4 + 0xc) = uVar1;
   }
-  iVar2 = *(int *)(param_1 + 8);
+  iVar2 = *(int *)(object + 8);
   iVar3 = iVar2 + 0x140;
   for (index = 0; index < 3; index = index + 1) {
     FUN_003b4eb0(iVar2,iVar3,DAT_006a1f00_abs + index * 8,
                  DAT_006a1f20_abs + index * 8,8,
-                 *(u32 *)(param_1 + 0xc),param_2);
+                 *(u32 *)(object + 0xc),drawArg);
   }
   for (index = 0; index < 6; index = index + 1) {
     FUN_003b4ec0(iVar2 + (index * 4 + 0x10) * 8,iVar3,&gp0xffffa7d0,
                  DAT_006a1f40_abs + index * 4,4,
-                 *(u32 *)(param_1 + 0xc),param_2);
+                 *(u32 *)(object + 0xc),drawArg);
   }
   return;
 }
@@ -1503,16 +1507,15 @@ void FUN_003aa000(int param_1,u64 param_2)
   u32 uVar1;
   int iVar2;
   int iVar3;
-  int iVar4;
   int iVar5;
+  int iVar4;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   iVar2 = *(int *)(param_1 + 8);
   iVar3 = iVar2 + 0x100;
   iVar4 = iVar3 + 0x10;
-  for (iVar5 = 1; iVar5 < 6; iVar5 = iVar5 + 1) {
+  for (iVar5 = 1; iVar5 < 6; iVar5 = iVar5 + 1, iVar4 = iVar4 + 0x10) {
     *(u32 *)(iVar4 + 0xc) = uVar1;
-    iVar4 = iVar4 + 0x10;
   }
   iVar2 = *(int *)(param_1 + 8);
   iVar3 = iVar2 + 0x100;

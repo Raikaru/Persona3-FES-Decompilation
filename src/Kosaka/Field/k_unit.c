@@ -2088,32 +2088,60 @@ u32 func_001d1a90(void)
     }
     return result;
 }
-// FUN_001d1b60 NONMATCHING
+// FUN_001d1b60
 void func_001d1b60(void)
 {
     s32 i;
+    s32 offset;
+    FldUnit* unit;
+    FldUnit* unit2;
+    u32 valid;
+    u32 predicate;
 
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {
-        if (gFldUnitsEc[i].genusBase != NULL && gFldUnitsEc[i].resrc != NULL)
+        valid = 0;
+        unit = &gFldUnitsEc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            gFldUnitsEc[i].unk_17c = 0;
-            func_001a60d0(0, gFldUnitsEc[i].mdl, 0);
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
+        {
+            offset = i * sizeof(FldUnit);
+            unit2 = (FldUnit*)((int)gFldUnitsEc + offset);
+            unit2->unk_17c = 0;
+            func_001a60d0(0, unit2->mdl, 0, 1);
         }
     }
 }
 
-// FUN_001d1c20 NONMATCHING
+// FUN_001d1c20
 void func_001d1c20(void)
 {
     s32 i;
+    s32 offset;
+    FldUnit* unit;
+    FldUnit* unit2;
+    u32 valid;
+    u32 predicate;
 
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {
-        if (gFldUnitsEc[i].genusBase != NULL && gFldUnitsEc[i].resrc != NULL)
+        valid = 0;
+        unit = &gFldUnitsEc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            gFldUnitsEc[i].unk_17c = 0;
-            func_001a60d0(0, gFldUnitsEc[i].mdl, 0xff);
+            valid = 1;
+        }
+        predicate = valid > 0;
+        if (predicate == 1)
+        {
+            offset = i * sizeof(FldUnit);
+            unit2 = (FldUnit*)((int)gFldUnitsEc + offset);
+            unit2->unk_17c = 0;
+            func_001a60d0(0, unit2->mdl, 0xff, 1);
         }
     }
 }

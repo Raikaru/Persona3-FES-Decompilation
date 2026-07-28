@@ -4728,7 +4728,7 @@ void FUN_003f55b0(int param_1,int param_2,int param_3,int param_4,int param_5,
   if ((*puVar3 & 0x80) != 0) {
     FUN_0040e3c0_u32(0.0f,param_1,param_2,iVar10 & 0xff,1,0);
   }
-  FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,0,
+  FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,0,
                    (u32)(u8)puVar3[2] * 2 + iVar8);
   pcVar4 = func_00171110_ptr((s16)puVar3[1],(s16)(s8)puVar3[3]);
   FUN_003b2cb0_f32(0.0f,param_1 + 0x20,param_2 + 1,
@@ -6321,7 +6321,7 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
           *(int *)(*(int *)(*(int *)(iVar5 + 0x2c) + 0x14) + 0xc);
 
-  if (((long)iVar5 <= (long)sVar1) && (iVar3 = sVar1 - iVar5, 4 < iVar3)) {
+  if ((iVar5 <= sVar1) && (iVar3 = sVar1 - iVar5, 4 < iVar3)) {
 
     iVar3 = 5;
 
@@ -6331,7 +6331,7 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
   iVar5 = (iVar3 * 0xff) / 5;
 
-  if (3 < (long)sVar1) {
+  if (3 < sVar1) {
 
     iVar3 = sVar1 + -4;
 
@@ -18184,36 +18184,39 @@ u32 FUN_00409c80(u32 param_1)
   int *entry;
   void *persona;
   u32 firstSum;
-  u32 secondSum;
-  int price;
   int id;
 
   FUN_003f03e0_u32(8);
   for (id = 1; id < 0x100; id = id + 1) {
-    persona = datGetPersonaByCompendium_ptr(id);
-    if (persona != 0) {
+    if ((persona = datGetPersonaByCompendium_ptr(id)) != 0) {
       entry = (int *)FUN_003c5a40(param_1,*(u16 *)(param_1 + 0x10) + 1,0x10,0);
       entry = *(int **)(*(int *)(entry + 5) + 0x1c);
       entry[1] = (int)persona;
 
-      firstSum = datPersonaGetTotalStat_u16(persona,0) & 0xff;
-      firstSum += datPersonaGetTotalStat_u16(persona,1) & 0xff;
-      firstSum += datPersonaGetTotalStat_u16(persona,2) & 0xff;
-      firstSum += datPersonaGetTotalStat_u16(persona,3) & 0xff;
-      firstSum += datPersonaGetTotalStat_u16(persona,4) & 0xff;
-      secondSum = datPersonaGetTotalStat_u16(persona,0) & 0xff;
-      secondSum += datPersonaGetTotalStat_u16(persona,1) & 0xff;
-      secondSum += datPersonaGetTotalStat_u16(persona,2) & 0xff;
-      secondSum += datPersonaGetTotalStat_u16(persona,3) & 0xff;
-      secondSum += datPersonaGetTotalStat_u16(persona,4) & 0xff;
-      entry[2] = firstSum * secondSum * 3 + 2000;
+      firstSum =
+          (datPersonaGetTotalStat_u16(persona,4) & 0xff) +
+          ((datPersonaGetTotalStat_u16(persona,3) & 0xff) +
+           ((datPersonaGetTotalStat_u16(persona,2) & 0xff) +
+            ((datPersonaGetTotalStat_u16(persona,0) & 0xff) +
+             (datPersonaGetTotalStat_u16(persona,1) & 0xff))));
+      entry[2] =
+          firstSum *
+          ((datPersonaGetTotalStat_u16(persona,4) & 0xff) +
+           ((datPersonaGetTotalStat_u16(persona,3) & 0xff) +
+            ((datPersonaGetTotalStat_u16(persona,2) & 0xff) +
+             ((datPersonaGetTotalStat_u16(persona,0) & 0xff) +
+              (datPersonaGetTotalStat_u16(persona,1) & 0xff))))) *
+              3 +
+          2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        price = entry[2] << 2;
-        if (price >= 10000000) {
+        switch ((entry[2] << 2) < 10000000) {
+        case 0:
           entry[2] = 9999999;
-        } else {
-          entry[2] = price;
+          break;
+        case 1:
+          entry[2] = entry[2] << 2;
+          break;
         }
       }
       entry[3] = FUN_003dfeb0(0);

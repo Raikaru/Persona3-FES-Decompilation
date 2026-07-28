@@ -3104,12 +3104,12 @@ void func_001f6630(void)
     func_001f6a60();
 }
 
-// FUN_001f6a60 NONMATCHING
+// FUN_001f6a60
 void func_001f6a60(void)
 {
     u8 *work;
-    u32 state;
     s32 i;
+    u32 state;
     u32 result;
     K_ASSERT(sBrReward != NULL, 0x8c);
     work = sBrReward;
@@ -3163,18 +3163,17 @@ void func_001f6a60(void)
             switch (result) {
             case 0:
                 K_ASSERT(0, 0x32d);
-                break;
+                goto result_default;
             case 1:
-                goto result_one;
-            case 2:
                 BR_U32(work, 4) = 8;
                 return;
-            result_one:
+            case 2:
                 state = 8;
                 break;
             default:
+            result_default:
                 K_ASSERT(0, 0x337);
-                break;
+                goto state_default;
             }
             break;
         case 8:
@@ -3185,6 +3184,7 @@ void func_001f6a60(void)
             BR_U32(work, 4) = 9;
             return;
         default:
+        state_default:
             K_ASSERT(0, 0x341);
             break;
         }

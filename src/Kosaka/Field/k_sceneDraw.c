@@ -1065,10 +1065,10 @@ void func_0019f8f0(const RwRGBAReal* color)
     clearBlue = (s32)((f32)clearColor.b * color->b);
     clearAlpha = (s32)((f32)clearColor.a * color->a);
 
-    if ((u32)clearAlpha >= 0x100) clearAlpha = 0xff;
-    if ((u32)clearBlue >= 0x100) clearBlue = 0xff;
-    if ((u32)clearGreen >= 0x100) clearGreen = 0xff;
-    if ((u32)clearRed >= 0x100) clearRed = 0xff;
+    if ((u32)clearAlpha > 0xff) clearAlpha = 0xff;
+    if ((u32)clearBlue > 0xff) clearBlue = 0xff;
+    if ((u32)clearGreen > 0xff) clearGreen = 0xff;
+    if ((u32)clearRed > 0xff) clearRed = 0xff;
     kwlnSetClearColor((u8)clearRed, (u8)clearGreen, (u8)clearBlue, (u8)clearAlpha);
 
     fogRed = (s32)((f32)((fogColor >> 16) & 0xff) * color->r);
@@ -1076,13 +1076,13 @@ void func_0019f8f0(const RwRGBAReal* color)
     fogBlue = (s32)((f32)(fogColor & 0xff) * color->b);
     fogAlpha = (s32)((f32)((fogColor >> 24) & 0xff) * color->a);
 
-    if ((u32)fogRed >= 0x100) fogRed = 0xff;
+    if ((u32)fogRed > 0xff) fogRed = 0xff;
     gFogRed = (u8)fogRed;
-    if ((u32)fogGreen >= 0x100) fogGreen = 0xff;
+    if ((u32)fogGreen > 0xff) fogGreen = 0xff;
     gFogGreen = (u8)fogGreen;
-    if ((u32)fogBlue >= 0x100) fogBlue = 0xff;
+    if ((u32)fogBlue > 0xff) fogBlue = 0xff;
     gFogBlue = (u8)fogBlue;
-    if ((u32)fogAlpha >= 0x100) fogAlpha = 0xff;
+    if ((u32)fogAlpha > 0xff) fogAlpha = 0xff;
     gFogAlpha = (u8)fogAlpha;
 }
 
@@ -1177,12 +1177,15 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
+    u32 enabled;
+    u32 hiddenMask;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    enabled = 1;
     while (fld != NULL)
     {
-        if (visible == 1)
+        if (visible == enabled)
         {
             fld->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
@@ -1192,13 +1195,14 @@ void func_001a0040(u32 visible, u32 updateField)
         {
             fld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
             field = K_Field_Get();
-            *(u32*)((u8*)field + 0x34) = 1;
+            *(u32*)((u8*)field + 0x34) = enabled;
         }
         fld = fld->next;
     }
 
     if (updateField == 1)
     {
+        hiddenMask = ~SCENEDRAW_RESRC_FLAG_VISIBLE;
         while (modelFld != NULL)
         {
             if (visible == 1)
@@ -1207,7 +1211,7 @@ void func_001a0040(u32 visible, u32 updateField)
             }
             else
             {
-                modelFld->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+                modelFld->flags &= hiddenMask;
             }
             modelFld = modelFld->next;
         }

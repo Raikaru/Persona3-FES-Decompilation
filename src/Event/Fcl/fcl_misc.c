@@ -126,7 +126,7 @@ int kwlnTaskGetWorkData(void);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 u32 fclMisc003c9ab0(void);
 void fclMisc003c9b00(u32 param_1, void* param_2, void* param_3);
-extern u64 fclMiscCa780Call(float, float, float, float, s32, s32, s32, s32, s32, s32, s32);
+extern u64 fclMiscCa780Call(float, float, float, float, s32, s32, s32, s32, s32, s32, u32);
 #pragma alias fclMisc52e878Call FUN_0052e878
 extern f32 fclMisc52e878Call(f32);
 u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);

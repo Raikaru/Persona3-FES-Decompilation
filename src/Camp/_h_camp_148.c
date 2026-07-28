@@ -365,8 +365,8 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
                         *(u8*)(param_1 + 0x40),
                         *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
         campDrawSpriteXY(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 9,
-                         *(f32*)(param_1 + 0x38) + 97.0f,
-                         (*(f32*)(param_1 + 0x3c) + 389.0f) - 415.0f,
+                         *(f32*)(param_1 + 0x38) + 97,
+                         (389 + *(f32*)(param_1 + 0x3c)) - 415,
                          *(u8*)(param_1 + 0x40), *(f32*)(param_1 + 0x24));
         campDrawSpriteX(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 3,
                         *(f32*)(param_1 + 0x38) + 122.0f,
