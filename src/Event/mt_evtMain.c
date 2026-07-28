@@ -9515,8 +9515,10 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
   u8 *iVar5;
 
   int iVar8;
-
-  u32 uVar7;
+  int listIndex;
+  int eventKind;
+  u32 characterKind;
+  u32 selectedId;
 
   union EvtPackedValue {
     u32 value;
@@ -9538,15 +9540,15 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
   else {
 
-    iVar8 = 0;
+    listIndex = 0;
 
     for (iVar6 = *(int *)(*(int *)(iVar5 + 0x164) + 0x6c);
 
-        (iVar8 < *(int *)(iVar5 + 0x160) + *(int *)(iVar5 + 0x15c) && (iVar6 != 0));
+        (listIndex < *(int *)(iVar5 + 0x160) + *(int *)(iVar5 + 0x15c) && (iVar6 != 0));
 
         iVar6 = *(int *)(iVar6 + 0x4c)) {
 
-      iVar8 = iVar8 + 1;
+      listIndex = listIndex + 1;
 
     }
 
@@ -9573,11 +9575,11 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
       iVar8 = 0;
 
-      for (uVar7 = 0; (int)uVar7 < 0x16; uVar7 = uVar7 + 1) {
+      for (characterKind = 0; (int)characterKind < 0x16; characterKind = characterKind + 1) {
 
-        if (*(u32 *)(iVar5 + 0x660) == uVar7) {
+        if (*(u32 *)(iVar5 + 0x660) == characterKind) {
 
-          for (puVar2 = (u16 *)FUN_003b5430(lVar3,uVar7 & 0xff); puVar2 != (u16 *)0x0;
+          for (puVar2 = (u16 *)FUN_003b5430(lVar3,characterKind & 0xff); puVar2 != (u16 *)0x0;
 
               puVar2 = *(u16 **)(puVar2 + 0x7c)) {
 
@@ -9585,7 +9587,7 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
             if (iVar8 == *(int *)(iVar5 + 0x108) + *(int *)(iVar5 + 0x110)) {
 
-              uVar7 = 0x16;
+              characterKind = 0x16;
 
               break;
 
@@ -9601,17 +9603,17 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
     if (puVar2 == (u16 *)0x0) {
 
-      uVar7 = 0;
+      selectedId = 0;
 
     }
 
     else {
 
-      uVar7 = (u32)*puVar2;
+      selectedId = (u32)*puVar2;
 
     }
 
-    sVar4 = (short)uVar7;
+    sVar4 = (short)selectedId;
 
     if (param_2 == 0x17) {
 
@@ -9635,110 +9637,72 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
     else {
 
-      iVar8 = **(int **)(iVar5 + 0x164);
+      eventKind = **(int **)(iVar5 + 0x164);
 
-      cVar1 = (&DAT_0069e1a2)[*(int *)(iVar5 + 0x158) + iVar8 * 0xc];
+      cVar1 = ((char *)&DAT_0069e1a2)[*(int *)(iVar5 + 0x158) + eventKind * 0xc];
 
-      if (cVar1 == '\x13') {
-
-        if (*(char *)(iVar6 + 0x10) == '\x03') {
-
-          *(u16 *)(iVar6 + 0x14) = 0xffff;
-
+      switch (cVar1) {
+      case '\r':
+        switch (eventKind) {
+        case 0x14:
+        case 0x15:
+          *(u8 *)(*(int *)(iVar5 + 0x114) + iVar6 + 0x14) = 0xff;
+          break;
         }
-
-      }
-
-      else if (cVar1 == '\n') {
-
-        if (iVar8 == 0x12) {
-
-          *(u16 *)(iVar6 + 0x12) = 0xffff;
-
+        break;
+      case '\x1d':
+        switch (eventKind) {
+        case 0x2f:
+        case 0x31:
+          *(short *)(iVar6 + 0x12) = sVar4;
+          break;
         }
-
-        else if ((iVar8 != 9) && ((iVar8 == 0x1a || (iVar8 == 3)))) {
-
-          *(u16 *)(iVar6 + 0x16) = 0xffff;
-
-        }
-
-      }
-
-      else if (cVar1 == '\x1c') {
-
-        if (iVar8 == 0x29) {
-
-          switch(*(u8 *)(iVar6 + 0x10)) {
-
+        break;
+      case '\x1c':
+        if (eventKind == 0x29) {
+          switch (*(u8 *)(iVar6 + 0x10)) {
           case 0:
-
           case 3:
-
           case 4:
-
           case 5:
-
             *(short *)(iVar6 + 0x14) = sVar4;
-
             *(int *)(iVar5 + 0x198) = (int)sVar4;
-
             break;
-
           case 2:
-
             *(short *)(iVar6 + 0x1c) = sVar4;
-
-            *(u32 *)(iVar5 + 0x1b0) = uVar7;
-
+            *(u32 *)(iVar5 + 0x1b0) = selectedId;
             break;
-
           case 7:
-
             if (*(int *)(iVar5 + 400) == 4) {
-
               *(short *)(iVar6 + 0x1c) = sVar4;
-
               *(int *)(iVar5 + 0x1a8) = (int)sVar4;
-
             }
-
             FUN_005225a8(0x69d7b0);
-
             break;
-
           case 9:
-
             *(short *)(iVar6 + 0x16) = sVar4;
-
             *(int *)(iVar5 + 0x19c) = (int)sVar4;
-
           }
-
         }
-
-      }
-
-      else if (cVar1 == '\x1d') {
-
-        if (iVar8 == 0x31) {
-
-          *(short *)(iVar6 + 0x12) = sVar4;
-
+        break;
+      case '\n':
+        switch (eventKind) {
+        case 3:
+        case 0x1a:
+          *(u16 *)(iVar6 + 0x16) = 0xffff;
+          break;
+        case 9:
+          break;
+        case 0x12:
+          *(u16 *)(iVar6 + 0x12) = 0xffff;
+          break;
         }
-
-        else if (iVar8 == 0x2f) {
-
-          *(short *)(iVar6 + 0x12) = sVar4;
-
+        break;
+      case '\x13':
+        if (*(char *)(iVar6 + 0x10) == '\x03') {
+          *(u16 *)(iVar6 + 0x14) = 0xffff;
         }
-
-      }
-
-      else if ((cVar1 == '\r') && ((iVar8 == 0x15 || (iVar8 == 0x14)))) {
-
-        *(u8 *)(*(int *)(iVar5 + 0x114) + iVar6 + 0x14) = 0xff;
-
+        break;
       }
 
     }

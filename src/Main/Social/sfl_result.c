@@ -2338,7 +2338,7 @@ after_branch:
     return result;
 }
 // Retail uses separate 12-entry effect/skill result arrays and passes their counts to the selected dispatcher.
-// FUN_001FC720 NONMATCHING
+// FUN_001FC720
 
 
 u32 func_001fc720(u8* event)
@@ -2346,7 +2346,6 @@ u32 func_001fc720(u8* event)
     s32 in_v1;
     s32 in_s0;
     u32 result;
-    s32 threshold;
     u16 effectResults[12];
     u32 skillResults[12];
     s32 effectCount;
@@ -2360,9 +2359,7 @@ u32 func_001fc720(u8* event)
 
     func_001fc980(event, effectResults, &effectCount);
     func_001fcb30(event, skillResults, &skillCount);
-    threshold = in_s0 * 30 / 100;
-
-    if (threshold >= in_s0 && skillCount != 0)
+    if (in_s0 <= in_s0 * 30 / 100 && skillCount != 0)
     {
         func_001fd350(event, skillResults, skillCount);
         result = 1;
@@ -2372,7 +2369,7 @@ u32 func_001fc720(u8* event)
         func_001fce20(event, effectResults, effectCount);
         result = 1;
     }
-    else if (in_s0 >= threshold && skillCount != 0)
+    else if (in_s0 >= in_s0 * 30 / 100 && skillCount != 0)
     {
         func_001fd350(event, skillResults, skillCount);
         result = 1;
@@ -2389,16 +2386,20 @@ u32 func_001fc720(u8* event)
 int func_001fc870(u8* event, void* target)
 {
     s32 raw;
-    s32 level;
     s32 delta;
+    s32 level;
+    s32 half;
     f32 amount;
-    f32 scale;
 
     raw = FUN_0030bc50(target);
-    if (raw < 0)
-        amount = (f32)(s32)(((u32)raw >> 1) | (raw & 1)) * 2.0f;
-    else
+    if (raw >= 0)
         amount = (f32)raw;
+    else
+    {
+        half = (s32)(((u32)raw >> 1) | (raw & 1));
+        amount = (f32)half;
+        amount += amount;
+    }
 
     level = FUN_00173300(*(u16*)(event + 2));
     delta = *(u8*)((u8*)target + 6) - (level & 0xff);
@@ -2407,11 +2408,11 @@ int func_001fc870(u8* event, void* target)
     if (delta > 10)
         delta = 10;
 
-    scale = 1.0f;
-    if (1.0f <= amount * *(f32*)(DAT_00684d70 + (delta + 10) * 4))
-        scale = amount * *(f32*)(DAT_00684d70 + (delta + 10) * 4);
-    FUN_001f9e90(*(u16*)(event + 2), (s32)scale);
-    return (s32)scale;
+    amount *= *(f32*)(DAT_00684d70 + (delta + 10) * 4);
+    if (amount < 1.0f)
+        amount = 1.0f;
+    FUN_001f9e90(*(u16*)(event + 2), (s32)amount);
+    return (s32)amount;
 }
 // FUN_001FC980 NONMATCHING
 

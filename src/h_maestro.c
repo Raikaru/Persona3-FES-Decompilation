@@ -2163,10 +2163,10 @@ void func_001140d0(f32 depth,
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    u32 r;
-    u32 g;
-    u32 b;
-    u32 a;
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
@@ -2455,10 +2455,10 @@ void func_00114af0(f32 depth,
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    u32 r;
-    u32 g;
-    u32 b;
-    u32 a;
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;

@@ -25,6 +25,8 @@ extern u32 DAT_00958be8;
 #pragma alias DAT_00958be8_abs DAT_00958be8
 extern u8 DAT_00958be8_abs[];
 extern u32 DAT_00959ec0;
+#pragma alias DAT_00959ec0_abs DAT_00959ec0
+extern u32 DAT_00959ec0_abs[];
 extern u32 DAT_00959ec4;
 #pragma alias DAT_00959ec4_abs DAT_00959ec4
 extern u8 DAT_00959ec4_abs[];
@@ -39,6 +41,8 @@ extern u32 DAT_00959ed0;
 extern u8 DAT_00959ed0_abs[];
 extern u32 DAT_00959ed8;
 extern u32 DAT_00959ee0;
+#pragma alias DAT_00959ee0_abs DAT_00959ee0
+extern u8 DAT_00959ee0_abs[];
 extern u32 DAT_00959eec;
 #pragma alias itfMesEntries DAT_00959eec
 extern u32 itfMesEntries[];
@@ -78,6 +82,12 @@ typedef struct ItfMesHandleSystem
 static ItfMesHandleSystem sItfMesHandleSystem;
 
 extern void* FUN_003b49a0(void* param);
+#pragma alias FUN_003a6b00_direct FUN_003a6b00
+extern void FUN_003a6b00_direct(u32 activeMes);
+#pragma alias FUN_003a4ef0_direct FUN_003a4ef0
+extern void FUN_003a4ef0_direct(u32 *param_1);
+#pragma alias FUN_003b4a20_direct FUN_003b4a20
+extern void FUN_003b4a20_direct(void *entry, void *list);
 extern void FUN_005225a8();
 extern void FUN_003a8d60();
 extern s32 D_00959EC0[];
@@ -2598,73 +2608,40 @@ void FUN_003a4ce0(void)
 }
 #define FUN_003a4ce0(...) ((void (*)(...))FUN_003a4ce0)(__VA_ARGS__)
 #undef FUN_003a4dd0
-// FUN_003A4DD0 NONMATCHING
+// FUN_003A4DD0
 
 
-void FUN_003a4dd0(int param_1)
-
-
-
+void FUN_003a4dd0(int handleIndex)
 {
+  u8 *entry = DAT_00959ee0_abs + handleIndex * 0x34;
+  u8 *work = entry + 0x20;
+  int slot;
 
-  int iVar1;
+  if (*(u32 *)(entry + 0x2c) != 0) {
+    FUN_003a6b00_direct(*(u32 *)(entry + 0x2c));
+  }
+  *(u32 *)(work + 0xc) = 0;
 
-  int iVar2;
+  for (slot = 0; slot < 4; slot++) {
+    u32 value;
 
-  u8 *puVar3;
-
-  
-
-  param_1 = param_1 * 0x34;
-
-  puVar3 = (u8 *)&DAT_00959ee0 + param_1;
-
-  if (*(int *)(&DAT_00959eec + param_1) != 0) {
-
-    FUN_003a6b00();
-
+    if (work == NULL || slot < 0 || slot >= 4) {
+      FUN_0019d3f0("itfMesManager.c", 0x67a);
+    }
+    value = *(u32 *)(work + slot * 8 + 0x14);
+    if (value != 0) {
+      *(u32 *)(work + slot * 8 + 0x18) = 0;
+      *(u32 *)(work + slot * 8 + 0x14) = 0;
+    } else {
+      value = 0;
+    }
+    if (value != 0) {
+      FUN_003a4ef0_direct((u32 *)value);
+    }
   }
 
-  *(u32 *)(&DAT_00959eec + param_1) = 0;
-
-  for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
-
-    if (((puVar3 == (u8 *)0x0) || (iVar2 < 0)) || (3 < iVar2)) {
-
-      FUN_0019d3f0("itfMesManager.c",0x67a);
-
-    }
-
-    iVar1 = *(int *)(puVar3 + iVar2 * 8 + 0x14);
-
-    if (iVar1 != 0) {
-
-      *(u32 *)(puVar3 + iVar2 * 8 + 0x18) = 0;
-
-      *(u32 *)(puVar3 + iVar2 * 8 + 0x14) = 0;
-
-    }
-
-    else {
-
-      iVar1 = 0;
-
-    }
-
-    if (iVar1 != 0) {
-
-      FUN_003a4ef0();
-
-    }
-
-  }
-
-  FUN_003b4a20(puVar3,0x959ed0);
-
-  DAT_00959ec0 = DAT_00959ec0 + -1;
-
-  return;
-
+  FUN_003b4a20_direct(work, DAT_00959ed0_abs);
+  DAT_00959ec0_abs[0]--;
 }
 #define FUN_003a4dd0(...) ((void (*)(...))FUN_003a4dd0)(__VA_ARGS__)
 #undef FUN_003a4ef0
@@ -5412,74 +5389,50 @@ s16 FUN_003a7d60(int param_1)
 // FUN_003A7DD0 NONMATCHING
 
 
-void FUN_003a7dd0(int param_1)
-
-
-
+void FUN_003a7dd0(int object)
 {
+  typedef struct ItfMesAnim {
+    u8 active;
+    u8 pad;
+    s16 state;
+    s16 index;
+    s16 value;
+  } ItfMesAnim;
+  s16 values[8];
+  s16 *source;
+  s16 *dest;
+  int count;
+  ItfMesAnim *anim;
 
-  u16 uVar1;
-
-  u16 uVar2;
-
-  short sVar3;
-
-  int iVar4;
-
-  u16 *puVar5;
-
-  u16 *puVar6;
-
-  u16 auStack_10 [8];
-
-  
-
-  puVar5 = auStack_10;
-
-  puVar6 = DAT_006a1bd0;
-
-  iVar4 = 3;
+  anim = (ItfMesAnim *)(object + 0x1d4);
+  source = (s16 *)DAT_006a1bd0;
+  dest = values;
+  count = 3;
 
   do {
+    s16 first = source[0];
+    s16 second = source[1];
+    source += 2;
+    count--;
+    dest[0] = first;
+    dest[1] = second;
+    dest += 2;
+  } while (count > 0);
 
-    uVar1 = *puVar6;
-
-    uVar2 = puVar6[1];
-
-    puVar6 = puVar6 + 2;
-
-    iVar4 = iVar4 + -1;
-
-    *puVar5 = uVar1;
-
-    puVar5[1] = uVar2;
-
-    puVar5 = puVar5 + 2;
-
-  } while (0 < iVar4);
-
-  if (((*(char *)(param_1 + 0x1d4) != '\0') && (*(short *)(param_1 + 0x1d6) != 1)) &&
-
-     (*(short *)(param_1 + 0x1d6) == 0)) {
-
-    sVar3 = *(short *)(param_1 + 0x1d8) + 1;
-
-    *(short *)(param_1 + 0x1d8) = sVar3;
-
-    *(u16 *)(param_1 + 0x1da) = auStack_10[sVar3];
-
-    if (4 < *(short *)(param_1 + 0x1d8)) {
-
-      *(u16 *)(param_1 + 0x1d6) = 1;
-
-      *(u16 *)(param_1 + 0x1d8) = 5;
-
+  if (anim->active != 0) {
+    switch (anim->state) {
+    case 0:
+      anim->index++;
+      anim->value = values[anim->index];
+      if (anim->index >= 5) {
+        anim->state = 1;
+        anim->index = 5;
+      }
+      break;
+    case 1:
+      break;
     }
-
   }
-
-  return;
-
 }
 #define FUN_003a7dd0(...) ((void (*)(...))FUN_003a7dd0)(__VA_ARGS__)
 #undef FUN_003a7e90

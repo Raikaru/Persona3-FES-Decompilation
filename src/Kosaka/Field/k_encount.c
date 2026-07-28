@@ -469,56 +469,62 @@ ec_check:
 // FUN_001d7c60 NONMATCHING
 FldUnit* func_001d7c60(KwlnTask* task, s32 flatIndex)
 {
-    s32 temp_7;
-    s32 var_10;
-    s32 var_11;
-    s32 var_12;
-    s32 var_4;
-    void* temp_9;
+    s32 flatUnitIndex;
+    s32 pcIndex;
+    s32 pcCount;
+    s32 ecIndex;
+    s32 ecCount;
+    EncounterWork* work;
+    s32 unitIndex;
+    u32 ecOffset;
+    u8* ecBase;
+    FldUnit* unit;
 
-    temp_9 = task->workData;
-    var_11 = 0;
-    var_4 = 0;
-    goto loop_4;
+    work = (EncounterWork*)task->workData;
+    flatUnitIndex = 0;
+    pcIndex = 0;
+    pcCount = work->pcCount;
+    goto pc_check;
 pc_body:
-    if (flatIndex == var_11)
+    if (flatIndex == flatUnitIndex)
     {
-        return *(FldUnit**)((u8*)temp_9 + var_4 * 4 + 0x18);
+        return work->pc[pcIndex];
     }
-    var_11 += 1;
-    var_4 += 1;
-loop_4:
-    if (var_4 < *(s32*)((u8*)temp_9 + 0x10))
+    flatUnitIndex++;
+    pcIndex++;
+pc_check:
+    if (pcIndex < pcCount)
     {
         goto pc_body;
     }
-    var_10 = 0;
-    goto loop_14;
+
+    ecIndex = 0;
+    ecCount = work->ecCount;
+    goto ec_check;
 ec_body:
-    var_12 = 0;
-    temp_7 = var_10 * 4;
-    goto loop_12;
+    unitIndex = 0;
+    ecOffset = ecIndex * 4;
+    ecBase = (u8*)work + ecOffset;
+    goto unit_check;
 unit_body:
-    if (((*(FldUnit**)((u8*)temp_9 + temp_7 + 0x28))->genusBase->unit +
-         var_12)->id != 0)
+    unit = *(FldUnit**)(ecBase + 0x28);
+    if (unit->genusBase->unit[unitIndex].id != 0)
     {
-        if (flatIndex == var_11)
+        if (flatIndex == flatUnitIndex)
         {
-            return *(FldUnit**)((u8*)temp_9 + temp_7 + 0x28);
+            return work->ec[ecIndex];
         }
-        var_11 += 1;
-        goto block_11;
+        flatUnitIndex++;
     }
-block_11:
-    var_12 += 1;
-loop_12:
-    if (var_12 < 6)
+    unitIndex++;
+unit_check:
+    if (unitIndex < 6)
     {
         goto unit_body;
     }
-    var_10 += 1;
-loop_14:
-    if (var_10 < *(s32*)((u8*)temp_9 + 0x14))
+    ecIndex++;
+ec_check:
+    if (ecIndex < ecCount)
     {
         goto ec_body;
     }

@@ -6219,19 +6219,26 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
 {
 
-  u32 uVar1;
-
+  typedef struct {
+    u8 pad0[0xd4];
+    int state;
+    u8 padD8[0x94];
+    int value;
+    int lowerBound;
+    int upperBound;
+  } EvtMenuRangeState;
   int iVar2;
-
-  int iVar3;
+  u32 uVar1;
+  EvtMenuRangeState *menu;
 
   
 
-  FUN_0036f900(param_1,param_2,0x16,9,0,1,param_3,0x3756e0,0);
+  FUN_0036f900_evt(param_1,param_2,0x16,9,0,1,param_3,(code *)FUN_003756e0,
+                   (code *)FUN_00375750);
 
-  iVar3 = (int)param_3;
+  menu = (EvtMenuRangeState *)param_3;
 
-  if (*(int *)(iVar3 + 0xd4) != 7) {
+  if (menu->state != 7) {
 
     uVar1 = 0;
 
@@ -6239,7 +6246,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
   else {
 
-    if ((DAT_007e094e & 0x40) != 0) {
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
 
       uVar1 = 1;
 
@@ -6247,7 +6254,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
     else {
 
-      if ((DAT_007e094e & 0x20) != 0) {
+      if ((*(u16 *)DAT_007e094e_abs & 0x20) != 0) {
 
         uVar1 = 0xffffffff;
 
@@ -6257,7 +6264,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
         iVar2 = 0;
 
-        if ((DAT_007e0952 & 0x8000) != 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) {
 
           iVar2 = -1;
 
@@ -6265,7 +6272,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
         else {
 
-          if ((DAT_007e0952 & 0x2000) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) {
 
             iVar2 = 1;
 
@@ -6273,7 +6280,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
         }
 
-        if ((DAT_007e0952 & 0x1000) != 0) {
+        if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
 
           iVar2 = -10;
 
@@ -6281,7 +6288,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
         else {
 
-          if ((DAT_007e0952 & 0x4000) != 0) {
+          if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
 
             iVar2 = 10;
 
@@ -6289,19 +6296,19 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
         }
 
-        iVar2 = *(int *)(iVar3 + 0x16c) + iVar2;
+        iVar2 = iVar2 + menu->value;
 
-        *(int *)(iVar3 + 0x16c) = iVar2;
+        menu->value = iVar2;
 
-        if (iVar2 < *(int *)(iVar3 + 0x170)) {
+        if (iVar2 < menu->lowerBound) {
 
-          *(int *)(iVar3 + 0x16c) = *(int *)(iVar3 + 0x170);
+          menu->value = menu->lowerBound;
 
         }
 
-        if (*(int *)(iVar3 + 0x174) <= *(int *)(iVar3 + 0x16c)) {
+        if (menu->value >= menu->upperBound) {
 
-          *(int *)(iVar3 + 0x16c) = *(int *)(iVar3 + 0x174);
+          menu->value = menu->upperBound;
 
         }
 
@@ -13881,7 +13888,7 @@ void FUN_0037ff80(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-// FUN_00380200 NONMATCHING
+// FUN_00380200
 
 
 int FUN_00380200(int param_1,int param_2,int param_3)
@@ -13890,69 +13897,62 @@ int FUN_00380200(int param_1,int param_2,int param_3)
 
 {
 
-  int iVar1;
+  typedef struct {
+    u8 pad0[0xd4];
+    int state;
+    u8 padD8[0xb8];
+    int selection;
+  } EvtMenuSelectionState;
+  int result;
+  EvtMenuSelectionState *menu;
 
   
 
-  FUN_0036f900(param_1,param_2,0x17,6,0,1,param_3,0x37ff10,0);
+  FUN_0036f900_evt(param_1,param_2,0x17,6,0,1,param_3,(code *)FUN_0037ff10,
+                   (code *)FUN_0037ff80);
 
-  iVar1 = (int)param_3;
+  menu = (EvtMenuSelectionState *)param_3;
 
-  if (*(int *)(iVar1 + 0xd4) != 0x21) {
+  if (menu->state != 0x21) {
 
-    iVar1 = 0;
+    result = 0;
 
   }
 
   else {
 
-    if ((DAT_007e0952 & 0x1000) == 0) {
-
-      if ((DAT_007e0952 & 0x4000) != 0) {
-
-        if (*(int *)(iVar1 + 400) == 2) {
-
-          *(u32 *)(iVar1 + 400) = 0;
-
-        }
-
-        else {
-
-          *(int *)(iVar1 + 400) = *(int *)(iVar1 + 400) + 1;
-
-        }
-
+    if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
+      if (menu->selection == 0) {
+        menu->selection = 2;
       }
-
+      else {
+        menu->selection = menu->selection - 1;
+      }
+    }
+    else if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
+      if (menu->selection == 2) {
+        menu->selection = 0;
+      }
+      else {
+        menu->selection = menu->selection + 1;
+      }
     }
 
-    else if (*(int *)(iVar1 + 400) == 0) {
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
 
-      *(u32 *)(iVar1 + 400) = 2;
+      result = 1;
 
     }
 
     else {
 
-      *(int *)(iVar1 + 400) = *(int *)(iVar1 + 400) + -1;
-
-    }
-
-    if ((DAT_007e094e & 0x40) == 0) {
-
-      iVar1 = -(u32)((DAT_007e094e & 0x20) != 0);
-
-    }
-
-    else {
-
-      iVar1 = 1;
+      result = -(u32)((*(u16 *)DAT_007e094e_abs & 0x20) != 0);
 
     }
 
   }
 
-  return iVar1;
+  return result;
 
 }
 

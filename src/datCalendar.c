@@ -5140,10 +5140,11 @@ KwlnTask* func_00187e20(void)
     return task;
 }
 
-// FUN_00187EC0 NONMATCHING
+// FUN_00187EC0
 void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
 {
     CalendarTransitionMessageWork* work;
+    void* parent;
 
     work = (CalendarTransitionMessageWork*)task->workData;
     if (datGetFlag(0x141d) != 0 || datGetFlag(0x1407) != 0)
@@ -5151,16 +5152,16 @@ void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
         return;
     }
 
-    func_001159f0(NULL,
+    func_001159f0(parent,
                   work->resource,
                   0x3a,
                   0,
                   CLND_CALENDAR_X + 514.0f,
                   23.0f,
-                  72.0f);
+                  50.0f);
     if (time == 8)
     {
-        func_00115bc0(NULL,
+        func_00115bc0(parent,
                       work->resource,
                       0x39,
                       0,
@@ -5169,11 +5170,11 @@ void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
                       0x90,
                       CLND_CALENDAR_X + 390.0f,
                       -8.0f,
-                      72.0f);
+                      50.0f);
     }
     else
     {
-        func_00115bc0(NULL,
+        func_00115bc0(parent,
                       work->resource,
                       0x39,
                       0,
@@ -5182,68 +5183,68 @@ void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
                       0xff,
                       CLND_CALENDAR_X + 390.0f,
                       -8.0f,
-                      72.0f);
+                      50.0f);
     }
 
     if (month == 3 && day == 0x1f && time == 4)
     {
-        func_001159f0(NULL,
+        func_001159f0(parent,
                       work->resource,
                       0x50,
                       0,
                       CLND_CALENDAR_X + 416.0f,
                       14.0f,
-                      72.0f);
+                      50.0f);
     }
     else if (month == 3 && day == 0x1f && time == 6)
     {
-        func_001159f0(NULL,
+        func_001159f0(parent,
                       work->resource,
                       0x51,
                       0,
                       CLND_CALENDAR_X + 416.0f,
                       14.0f,
-                      72.0f);
+                      50.0f);
     }
     else if (month == 3 && day == 0x1f && time == 7)
     {
-        func_001159f0(NULL,
+        func_001159f0(parent,
                       work->resource,
                       0x52,
                       0,
                       CLND_CALENDAR_X + 416.0f,
                       14.0f,
-                      72.0f);
+                      50.0f);
     }
     else if (month == 4 && day == 2 && time == 7)
     {
-        func_001159f0(NULL,
+        func_001159f0(parent,
                       work->resource,
                       0x53,
                       0,
                       CLND_CALENDAR_X + 416.0f,
                       14.0f,
-                      72.0f);
+                      50.0f);
     }
     else if (month == 4 && day == 1 && time == 2)
     {
-        func_001159f0(NULL,
+        func_001159f0(parent,
                       work->resource,
                       0x54,
                       0,
                       CLND_CALENDAR_X + 416.0f,
                       14.0f,
-                      72.0f);
+                      50.0f);
     }
     else
     {
-        func_001159f0(NULL,
+        func_001159f0(parent,
                       work->resource,
                       0x55,
                       0,
                       CLND_CALENDAR_X + 416.0f,
                       14.0f,
-                      72.0f);
+                      50.0f);
     }
 }
 

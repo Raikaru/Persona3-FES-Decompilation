@@ -346,6 +346,8 @@ extern u8 DAT_0086eb8c_abs[];
 extern u8 DAT_0086ed4c_abs[];
 #pragma alias DAT_0086e6e8_abs DAT_0086e6e8
 extern u8 DAT_0086e6e8_abs[];
+#pragma alias DAT_0086e6f4_abs DAT_0086e6f4
+extern u8 DAT_0086e6f4_abs[];
 #pragma alias FUN_00195020_call FUN_00195020
 extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
@@ -1493,7 +1495,7 @@ s8 FUN_004353f0(int param_1);
 u8 FUN_00435810(void);
 u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4, u8 param_5,u8 param_6);
 u8 FUN_0043c730(char param_1);
-u8 FUN_0043c7f0(char param_1);
+char FUN_0043c7f0(char param_1);
 char FUN_00449c90(u64 param_1,char param_2);
 u8 FUN_0044a420(int param_1,int param_2,int param_3);
 u32 FUN_0044f060(float param_1,int param_2,float *param_3);
@@ -2911,7 +2913,7 @@ s8 FUN_004353f0(int param_1);
 u8 FUN_00435810(void);
 u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4, u8 param_5,u8 param_6);
 u8 FUN_0043c730(char param_1);
-u8 FUN_0043c7f0(char param_1);
+char FUN_0043c7f0(char param_1);
 char FUN_00449c90(u64 param_1,char param_2);
 u8 FUN_0044a420(int param_1,int param_2,int param_3);
 u32 FUN_0044f060(float param_1,int param_2,float *param_3);
@@ -8737,43 +8739,41 @@ void FUN_0043c7a0(char param_1,u8 param_2)
 
 // FUN_0043C7F0 NONMATCHING
 
-u8 FUN_0043c7f0(char param_1)
-
+char FUN_0043c7f0(char param_1)
 {
-  u8 bVar1;
-  u8 uVar2;
-  int iVar3;
-  
-  if (param_1 == '\0') {
-    uVar2 = 0;
+  int present;
+  char result;
+  int index = (int)param_1;
+  int rowOffset;
+
+  if (param_1 == 0) {
+    result = 0;
+  } else if (param_1 < 4) {
+    present = 0;
+    rowOffset = index * 0x1c0;
+    if ((*(int *)(DAT_008717e8_abs + rowOffset) != 0) &&
+        (*(int *)(DAT_008717f4_abs + rowOffset) != 0)) {
+      present = 1;
+    }
+    if (present) {
+      result = *(char *)(*(int *)(*(int *)(DAT_0087190c_abs + rowOffset) + 0x3c) + 1);
+    } else {
+      result = 6;
+    }
+  } else {
+    present = 0;
+    rowOffset = index * 0x1c0;
+    if ((*(int *)(DAT_0086e6e8_abs + rowOffset) != 0) &&
+        (*(int *)(DAT_0086e6f4_abs + rowOffset) != 0)) {
+      present = 1;
+    }
+    if (present) {
+      result = *(char *)(*(int *)(*(int *)(DAT_0086e80c_abs + rowOffset) + 0x3c) + 2);
+    } else {
+      result = 6;
+    }
   }
-  else if (param_1 < '\x04') {
-    bVar1 = 0;
-    iVar3 = (int)param_1;
-    if ((((u8 *)DAT_008717e8)[iVar3 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar3 * 0x70] != 0)) {
-      bVar1 = 1;
-    }
-    if (bVar1) {
-      uVar2 = *(u8 *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar3 * 0x1c0) + 0x3c) + 1);
-    }
-    else {
-      uVar2 = 6;
-    }
-  }
-  else {
-    bVar1 = 0;
-    iVar3 = param_1 * 0x1c0;
-    if ((*(int *)((u8 *)DAT_0086e6e8 + iVar3) != 0) && (*(int *)((u8 *)DAT_0086e6f4 + iVar3) != 0)) {
-      bVar1 = 1;
-    }
-    if (bVar1) {
-      uVar2 = *(u8 *)(*(int *)(((u8 *)DAT_0086e80c)[param_1 * 0x70] + 0x3c) + 2);
-    }
-    else {
-      uVar2 = 6;
-    }
-  }
-  return uVar2;
+  return result;
 }
 
 // FUN_0043C910 NONMATCHING

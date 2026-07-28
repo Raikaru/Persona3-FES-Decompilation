@@ -36,6 +36,25 @@ typedef struct KClumpResourceList
     void** materials;     // 0x20
     u32 count;            // 0x24
 } KClumpResourceList;
+typedef struct KClumpStreamWork
+{
+    u32 state;
+    u8 pad04[0x0c];
+    u32 mode;
+    void* stream;
+    u32 current;
+    u16 currentStatus;
+    u16 pad1e;
+    u32 count;
+    void* queuedStreams[8];
+    u32 queuedValues[8];
+    u16 queuedStatus[8];
+} KClumpStreamWork;
+typedef struct KClumpUserDataContext
+{
+    char name[0x40];
+    u32 count;
+} KClumpUserDataContext;
 
 
 /* The retail code uses these engine entry points through the split executable. */
@@ -446,31 +465,34 @@ void* func_001a6af0(void* object, u32* context)
     return object;
 }
 
-// FUN_001a6c00 NONMATCHING
+// FUN_001a6c00
 s32 func_001a6c00(void* object, const char* name)
 {
-    u32 context[0x15];
+    KClumpUserDataContext context;
     s32 resourceIndex;
     s32 elementIndex;
+    void* clump;
     void* material;
 
-    memset(context, 0, sizeof(context));
-    for (resourceIndex = 0; resourceIndex < func_0048ede0(*(void**)((u8*)object + 4)); resourceIndex++)
+    clump = *(void**)((u8*)object + 4);
+    strcpy(context.name, name);
+    context.count = 0;
+    for (resourceIndex = 0; resourceIndex < func_0048ede0(clump); resourceIndex++)
     {
-        material = func_0048ee30(*(void**)((u8*)object + 4), resourceIndex);
-        if (strcmp(RpUserDataArrayGetName((RpUserDataArray*)material), name) == 0)
+        material = func_0048ee30(clump, resourceIndex);
+        if (strcmp(RpUserDataArrayGetName((RpUserDataArray*)material), context.name) == 0)
         {
             for (elementIndex = 0; elementIndex < func_0048ef30(material); elementIndex++)
             {
                 if (RpUserDataArrayGetFormat((RpUserDataArray*)material) == rpINTUSERDATA)
                 {
-                    context[0x10]++;
+                    context.count++;
                 }
             }
         }
     }
-    func_004cb6e0(*(void**)((u8*)object + 4), (KClumpCallback)func_001a6af0, context);
-    return (s32)context[0x10];
+    func_004cb6e0(clump, (KClumpCallback)func_001a6af0, &context);
+    return (s32)context.count;
 }
 
 // FUN_001a6d20
@@ -1654,33 +1676,43 @@ u32 func_001a9180(const KwlnTask* task)
 // FUN_001a91b0 NONMATCHING
 s32 func_001a91b0(KwlnTask* task, void* data)
 {
-    u32* work;
+    KClumpStreamWork* work;
     s32 index;
     void* stream;
+    u32 indexOffset;
+    void** streamSlot;
 
-    work = (u32*)task->workData;
+    work = (KClumpStreamWork*)task->workData;
     index = -1;
-    if (work[4] == 1)
+    if (work->mode == 1)
     {
-        for (index = 0; index < 8 && work[9 + index] != 0; index++)
+        index = 0;
+        do
         {
-        }
-        stream = func_0034fd50((void*)work[5]);
-        work[9 + index] = (u32)stream;
+            if (work->queuedStreams[index] == NULL)
+            {
+                break;
+            }
+            index++;
+        } while (index < 8);
+        indexOffset = index * 4;
+        streamSlot = &work->queuedStreams[index];
+        stream = func_0034fd50(work->stream);
+        *streamSlot = stream;
         func_0034fdf0(stream, data);
-        work[0x11 + index] = 0;
-        *(u16*)((u8*)work + 100 + index * 2) = 2;
-        work[8]++;
+        *(u32*)((u8*)work->queuedValues + indexOffset) = 0;
+        work->queuedStatus[index] = 2;
+        work->count++;
     }
     else
     {
-        func_0034fd10((void*)work[5]);
-        func_0034fdf0((void*)work[5], data);
-        work[6] = 0;
-        work[4] = 1;
-        *(u16*)&work[7] = 2;
+        func_0034fd10(work->stream);
+        func_0034fdf0(work->stream, data);
+        work->current = 0;
+        work->mode = 1;
+        work->currentStatus = 2;
     }
-    work[0] = 2;
+    work->state = 2;
     return index;
 }
 

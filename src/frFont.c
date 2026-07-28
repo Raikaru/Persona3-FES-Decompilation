@@ -327,7 +327,7 @@ void FUN_003afad0(int slot_id, int font_data, int resource)
   slot->flags = (u32)((char *)slot->font_data + offset);
   FUN_005225a8(DAT_006a27d0, data + offset, offset,
                *(u16 *)((u8 *)slot->font_data + 0xe));
-  slot->object = data + offset +
+  slot->object = (u8 *)slot->font_data + offset +
                  *(u16 *)((u8 *)slot->font_data + 0xe) * 4;
 }
 #define FUN_003afad0(...) ((void (*)(...))FUN_003afad0)(__VA_ARGS__)
@@ -1575,30 +1575,36 @@ u16 FUN_003b0e90(u16 param_1)
 // FUN_003B0EC0 NONMATCHING
 
 
-u32 FUN_003b0ec0(int param_1)
+u32 FUN_003b0ec0(int list)
 {
-  u32 uVar1;
-  u32 uVar2;
-  int iVar3;
+  u32 result = 0;
+  u32 mask = ~0xff;
+  u32 changed = 1;
+  u32 type = 2;
 
-  uVar1 = 0;
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-    for (iVar3 = *(int *)(param_1 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
-      if (*(char *)(iVar3 + 0x16) == '\x02') {
-        uVar2 = *(u32 *)(iVar3 + 0x10) & 0xff;
-        if (uVar2 != 0) {
-          uVar2 = uVar2 - 8;
-          if ((int)uVar2 < 0) {
-            uVar2 = 0;
+  while (list != 0) {
+    int node = *(int *)(list + 0x1c);
+
+    while (node != 0) {
+      if (*(u8 *)(node + 0x16) == type) {
+        u32 word = *(u32 *)(node + 0x10);
+        u32 fade = word & 0xff;
+
+        if (fade != 0) {
+          fade -= 8;
+          if ((s32)fade < 0) {
+            fade = 0;
           }
-          *(u32 *)(iVar3 + 0x10) = *(u32 *)(iVar3 + 0x10) & 0xffffff00 | uVar2;
-          *(int *)(iVar3 + 8) = *(int *)(iVar3 + 8) + 0x10;
-          uVar1 = 1;
+          *(u32 *)(node + 0x10) = (word & mask) | fade;
+          *(u32 *)(node + 8) += 0x10;
+          result = changed;
         }
       }
+      node = *(int *)(node + 0x28);
     }
+    list = *(int *)(list + 0x24);
   }
-  return uVar1;
+  return result;
 }
 #define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
 #undef FUN_003b0f50
@@ -2551,56 +2557,64 @@ void FUN_003b1c40(int param_1,int param_2,int param_3)
 // FUN_003B1C90 NONMATCHING
 
 
-void FUN_003b1c90(int param_1,int param_2,int param_3)
-
-
-
+void FUN_003b1c90(int x, int y, int object)
 {
+  typedef struct FrGlyphNode {
+    u8 pad0[0xc];
+    int width;
+    u8 pad10[0x18];
+    struct FrGlyphNode *next;
+  } FrGlyphNode;
+  typedef struct FrLineNode {
+    u8 pad0[3];
+    s8 spacing;
+    int x;
+    int y;
+    u8 pad0c[0x10];
+    FrGlyphNode *glyphs;
+    u8 pad20[8];
+    struct FrLineNode *next;
+    struct FrLineNode *first;
+  } FrLineNode;
+  FrLineNode *line;
+  int yDelta;
 
-  int iVar1;
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int iVar5;
-  int iVar7;
-
-
-
-  
-
-  if (param_3 != 0) {
-    param_3 = *(int *)(param_3 + 0x2c);
-    iVar1 = *(int *)(param_3 + 8);
-    iVar1 = param_2 - iVar1;
-    while (param_3 != 0) {
-      iVar3 = 0;
-      iVar2 = *(int *)(param_3 + 8);
-      for (iVar7 = param_3;
-           (iVar7 != 0 && (*(int *)(iVar7 + 8) < iVar2 + 100));
-           iVar7 = *(int *)(iVar7 + 0x28)) {
-        iVar5 = 0;
-        for (iVar4 = *(int *)(iVar7 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
-          iVar5 = iVar5 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar7 + 3);
-        }
-        iVar3 = iVar3 + iVar5;
-      }
-      iVar7 = *(int *)(param_3 + 4);
-      if (iVar3 < 0) {
-        iVar3 = iVar3 + 1;
-      }
-      for (; (param_3 != 0 && (*(int *)(param_3 + 8) < iVar2 + 100));
-           param_3 = *(int *)(param_3 + 0x28)) {
-        iVar4 = *(int *)(param_3 + 4) + (param_1 - iVar7);
-        *(int *)(param_3 + 4) = iVar4;
-        *(int *)(param_3 + 4) = iVar4 + (iVar3 >> 1) * -0x10;
-        *(int *)(param_3 + 8) = *(int *)(param_3 + 8) + iVar1;
-      }
-    }
+  if (object == 0) {
+    return;
   }
 
+  line = *(FrLineNode **)(object + 0x2c);
+  yDelta = y - line->y;
+  while (line != NULL) {
+    int totalWidth = 0;
+    FrLineNode *scan = line;
+    int firstY = line->y;
+    int limit = firstY + 100;
+    int xDelta;
+    int halfWidth;
+
+    while (scan != NULL && scan->y < limit) {
+      int lineWidth = 0;
+      FrGlyphNode *glyph = scan->glyphs;
+
+      while (glyph != NULL) {
+        lineWidth += glyph->width;
+        lineWidth += scan->spacing;
+        glyph = glyph->next;
+      }
+      totalWidth += lineWidth;
+      scan = scan->next;
+    }
+
+    xDelta = x - line->x;
+    halfWidth = totalWidth / 2;
+    while (line != NULL && line->y < limit) {
+      line->x += xDelta;
+      line->x -= halfWidth * 0x10;
+      line->y += yDelta;
+      line = line->next;
+    }
+  }
 }
 #define FUN_003b1c90(...) ((void (*)(...))FUN_003b1c90)(__VA_ARGS__)
 #undef FUN_003b1d90
