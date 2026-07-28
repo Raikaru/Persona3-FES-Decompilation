@@ -428,7 +428,7 @@ void sflResult001f9c60(void)
     index *= 4;
     index += (u32)base;
     index = *(u32*)(index + 0x1c);
-    position = *(volatile struct Vector3*)(base + index * 0x670 + 0x88);
+    position = *(struct Vector3*)(base + index * 0x670 + 0x88);
     position.x = 0.0f;
     position.y = 120.0f;
     position.z = 200.0f;
@@ -1524,7 +1524,7 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
   i = 0;
   foundStart = 0;
   /* Removing this barrier loses func_001fb3f0 (MATCH nd0 -> MISMATCH nd2) - measured W164. */
-  asm volatile("" : "+r"(i));
+  asm ("" : "+r"(i));
   while (1) {
     entry = (u8 *)(param_1 + i * 10);
     if ((*(u16 *)(entry + 2) == 0) &&

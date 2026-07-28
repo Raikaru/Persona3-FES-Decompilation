@@ -228,7 +228,7 @@ void brRes00234070(void)
                 data = H_Cdvd_ArchiveGetFile(work[4], i, &size);
                 copy = (*(void* (**)(u32, u32))0x00960178)(size, 0x40000);
                 work[9] = (u32)copy;
-                memcpy(copy, data, *(volatile u32*)&size);
+                memcpy(copy, data, *(volatile /* Removing this function's qualifier batch loses brRes00234070 (MATCH nd0 -> MISMATCH nd28, size 1276 -> 1276) - measured W170. */ u32*)&size);
                 break;
             }
             case 1:
@@ -237,11 +237,11 @@ void brRes00234070(void)
                 data = H_Cdvd_ArchiveGetFile(work[4], i, &size);
                 copy = (*(void* (**)(u32, u32))0x00960178)(size, 0x40000);
                 work[10] = (u32)copy;
-                memcpy(copy, data, *(volatile u32*)&size);
+                memcpy(copy, data, *(volatile /* Removing this function's qualifier batch loses brRes00234070 (MATCH nd0 -> MISMATCH nd28, size 1276 -> 1276) - measured W170. */ u32*)&size);
                 break;
             }
             case 2:
-                brRes00234710(H_Cdvd_ArchiveGetFile(work[4], i, &size), *(volatile u32*)&size);
+                brRes00234710(H_Cdvd_ArchiveGetFile(work[4], i, &size), *(volatile /* Removing this function's qualifier batch loses brRes00234070 (MATCH nd0 -> MISMATCH nd28, size 1276 -> 1276) - measured W170. */ u32*)&size);
                 break;
             case 3:
                 brRes00234690(0, H_Cdvd_ArchiveGetFile(work[4], i, &size));

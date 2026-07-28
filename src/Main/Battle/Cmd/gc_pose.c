@@ -18,7 +18,7 @@
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction);
+void gcPoseStartDirectedTranslation(GcPoseController *work, const RwV3d *target, s32 frames, const RwV3d *direction);
 void gcPoseStartEaseOutTranslation(int param_1,u32 *param_2,int param_3);
 void gcPoseStartEaseInTranslation(int param_1,u32 *param_2,int param_3);
 void gcPoseSetRotationVectorElement(int param_1,int param_2,u32 param_3);
@@ -106,16 +106,6 @@ void gcPose0024fba0(GcPoseController *pose, RtQuat *param_2)
 }
 
 
-/*
- * The pose controller is a small two-level state machine.  Its retail work
- * area is embedded in several Battle model records, so the public callbacks
- * intentionally operate on byte offsets rather than imposing a new ABI on
- * those records.
- */
-#define GC_U32(work, offset) (*(u32*)((u8*)(work) + (offset)))
-#define GC_S32(work, offset) (*(s32*)((u8*)(work) + (offset)))
-#define GC_F32(work, offset) (*(f32*)((u8*)(work) + (offset)))
-#define GC_V3D(work, offset) ((RwV3d*)((u8*)(work) + (offset)))
 
 static void gcPose0024f350(GcPoseController* pose);
 static void gcPose0024f410(GcPoseController* pose);
@@ -123,7 +113,7 @@ static void gcPose0024f780(GcPoseController* pose);
 static void gcPose0024f7f0(GcPoseController* pose, const RwV3d* offset);
 static void gcPose0024fe40(GcPoseController* pose);
 static void gcPose0024ff10(GcPoseController* pose);
-static void gcPose00250280(void* state, const RwV3d* offset);
+static void gcPose00250280(GcPoseController* pose, const RwV3d* offset);
 
 static inline f32 gcPoseRandomExtent(f32 extent)
 {
@@ -467,9 +457,9 @@ static void gcPose0024ff10(GcPoseController* pose)
 }
 
 // FUN_00250280
-static void gcPose00250280(void* state, const RwV3d* offset)
+static void gcPose00250280(GcPoseController* state, const RwV3d* offset)
 {
-    f32 *pose;
+    GcPoseRotationRandomData *pose;
     RwV3d fromOrigin;
     RwV3d toOrigin;
     RwV3d anchor = { 0.0f, 0.0f, 0.0f };
@@ -481,17 +471,17 @@ static void gcPose00250280(void* state, const RwV3d* offset)
     f32 tangentZ;
     f32 scale;
 
-    pose = (f32 *)((u8 *)state + 0x28);
-    pose[3] = pose[0] + offset->x;
-    pose[4] = pose[1] + offset->y;
-    pose[5] = pose[2] + offset->z;
+    pose = &state->state.rotation.data.random;
+    pose->shiftedSample.x = pose->sample.x + offset->x;
+    pose->shiftedSample.y = pose->sample.y + offset->y;
+    pose->shiftedSample.z = pose->sample.z + offset->z;
 
-    fromOrigin.x = anchor.x - pose[9];
-    fromOrigin.y = anchor.y - pose[10];
-    fromOrigin.z = anchor.z - pose[11];
-    toOrigin.x = pose[9] - pose[0];
-    toOrigin.y = pose[10] - pose[1];
-    toOrigin.z = pose[11] - pose[2];
+    fromOrigin.x = anchor.x - pose->anchor.x;
+    fromOrigin.y = anchor.y - pose->anchor.y;
+    fromOrigin.z = anchor.z - pose->anchor.z;
+    toOrigin.x = pose->anchor.x - pose->sample.x;
+    toOrigin.y = pose->anchor.y - pose->sample.y;
+    toOrigin.z = pose->anchor.z - pose->sample.z;
     RwV3dNormalize(&fromOrigin, &fromOrigin);
     RwV3dNormalize(&toOrigin, &toOrigin);
     crossX = toOrigin.y * fromOrigin.z - toOrigin.z * fromOrigin.y;
@@ -501,33 +491,30 @@ static void gcPose00250280(void* state, const RwV3d* offset)
     tangentY = crossZ * fromOrigin.x - crossX * fromOrigin.z;
     tangentZ = crossX * fromOrigin.y - crossY * fromOrigin.x;
 
-    scale = pose[16];
+    scale = pose->offsetScale;
     tangentX *= scale;
     tangentY *= scale;
     tangentZ *= scale;
-    pose[6] = pose[9] + tangentX;
-    pose[7] = pose[10] + tangentY;
-    pose[8] = pose[11] + tangentZ;
+    pose->controlPoint.x = pose->anchor.x + tangentX;
+    pose->controlPoint.y = pose->anchor.y + tangentY;
+    pose->controlPoint.z = pose->anchor.z + tangentZ;
 }
 
 // FUN_002503F0
-void gcPose002503f0(void* state, s32 index, u32 value)
+void gcPose002503f0(GcPoseController* pose, s32 index, u32 value)
 {
-    u32 address;
-    K_ASSERT(GC_U32(state, 0x20) == 2, 0x45c);
+    K_ASSERT(pose->state.position.mode.u32Value == 2, 0x45c);
     K_ASSERT(index < 3, 0x45d);
-    address = index * 4;
-    address += (u32)state;
-    *(u32*)(address + 0x24) = value;
+    pose->state.position.data.vector.values[index].u32Value = value;
 }
 
 /* Recovered battle-misc harvest: 0x002505B0-0x00250F80 */
 // FUN_002505B0
 
 
-void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction)
+void gcPoseStartDirectedTranslation(GcPoseController *work, const RwV3d *target, s32 frames, const RwV3d *direction)
 {
-    u32 *state;
+    GcPoseTranslationData *state;
     RwV3d *acceleration;
     s32 fixedFrames;
     f32 duration;
@@ -544,21 +531,21 @@ void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, c
     f32 correctionZ;
     f32 factor;
 
-    K_ASSERT(*(s32 *)(work + 0xc) == 0, 0x4a9);
-    K_ASSERT(*(s32 *)(work + 0x20) == 3, 0x4aa);
+    K_ASSERT(work->type.s32Value == 0, 0x4a9);
+    K_ASSERT(work->state.position.mode.s32Value == 3, 0x4aa);
 
     fixedFrames = frames << 16;
     duration = (f32)fixedFrames / 1966080.0f;
-    state = (u32 *)(work + 0x24);
-    state[0] = 1;
-    acceleration = (RwV3d *)((u8 *)state + 0xc);
-    *(acceleration + 1) = *direction;
-    *(RwV3d *)(work + 0x54) = *target;
-    *(RwV3d *)(work + 0x48) = *(RwV3d *)(work + 0x14);
+    state = &work->state.position.data.translation;
+    state->active.u32Value = 1;
+    acceleration = &state->acceleration;
+    state->direction = *direction;
+    state->target = *target;
+    state->start = work->state.position.value;
 
-    delta.x = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
-    delta.y = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
-    delta.z = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
+    delta.x = state->target.x - state->start.x;
+    delta.y = state->target.y - state->start.y;
+    delta.z = state->target.z - state->start.z;
     RwV3dNormalize(&normalizedDelta, &delta);
     RwV3dNormalize(&normalizedDirection, acceleration + 1);
 
@@ -607,9 +594,9 @@ void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, c
         acceleration->z += correctionZ;
     }
 
-    *(u32 *)(work + 0x10) = 0;
-    state[2] = (u32)fixedFrames;
-    state[1] |= 1;
+    work->field_0x10 = 0;
+    state->duration.u32Value = (u32)fixedFrames;
+    state->flags.u32Value |= 1;
 }
 
 // FUN_002508C0
@@ -617,7 +604,7 @@ void gcPoseStartDirectedTranslation(u8 *work, const RwV3d *target, s32 frames, c
 
 void gcPoseStartEaseOutTranslation(int param_1, u32 *param_2, int param_3)
 {
-    u8 *work;
+    GcPoseController *work;
     f32 *target;
     f32 duration;
     f32 factor;
@@ -626,34 +613,37 @@ void gcPoseStartEaseOutTranslation(int param_1, u32 *param_2, int param_3)
     f32 y;
     f32 z;
 
-    work = (u8 *)param_1;
+    work = (GcPoseController *)param_1;
     target = (f32 *)param_2;
-    K_ASSERT(*(s32 *)(work + 0xc) == 0, 0x4d6);
-    K_ASSERT(*(s32 *)(work + 0x20) == 3, 0x4d7);
+    K_ASSERT(work->type.s32Value == 0, 0x4d6);
+    K_ASSERT(work->state.position.mode.s32Value == 3, 0x4d7);
 
     duration = (f32)(param_3 << 16) / 1966080.0f;
-    *(u32 *)(work + 0x24) = 1;
-    *(RwV3d *)(work + 0x54) = *(RwV3d *)target;
-    *(RwV3d *)(work + 0x48) = *(RwV3d *)(work + 0x14);
+    work->state.position.data.translation.active.u32Value = 1;
+    work->state.position.data.translation.target = *(RwV3d *)target;
+    work->state.position.data.translation.start = work->state.position.value;
 
     factor = 2.0f / (duration * duration);
-    delta = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
+    delta = work->state.position.data.translation.target.x -
+            work->state.position.data.translation.start.x;
     x = delta * factor;
-    delta = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
+    delta = work->state.position.data.translation.target.y -
+            work->state.position.data.translation.start.y;
     y = delta * factor;
-    delta = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
+    delta = work->state.position.data.translation.target.z -
+            work->state.position.data.translation.start.z;
     z = delta * factor;
 
-    *(f32 *)(work + 0x30) = -1.0f * x;
-    *(f32 *)(work + 0x34) = -1.0f * y;
-    *(f32 *)(work + 0x38) = -1.0f * z;
-    *(f32 *)(work + 0x3c) = x * duration;
-    *(f32 *)(work + 0x40) = y * duration;
-    *(f32 *)(work + 0x44) = z * duration;
+    work->state.position.data.translation.acceleration.x = -1.0f * x;
+    work->state.position.data.translation.acceleration.y = -1.0f * y;
+    work->state.position.data.translation.acceleration.z = -1.0f * z;
+    work->state.position.data.translation.direction.x = x * duration;
+    work->state.position.data.translation.direction.y = y * duration;
+    work->state.position.data.translation.direction.z = z * duration;
 
-    *(u32 *)(work + 0x10) = 0;
-    *(s32 *)(work + 0x2c) = param_3 << 16;
-    *(u32 *)(work + 0x28) |= 1;
+    work->field_0x10 = 0;
+    work->state.position.data.translation.duration.s32Value = param_3 << 16;
+    work->state.position.data.translation.flags.u32Value |= 1;
 }
 
 // FUN_00250A30
@@ -661,38 +651,41 @@ void gcPoseStartEaseOutTranslation(int param_1, u32 *param_2, int param_3)
 
 void gcPoseStartEaseInTranslation(int param_1, u32 *param_2, int param_3)
 {
-    u8 *work;
+    GcPoseController *work;
     f32 *target;
     f32 duration;
     f32 factor;
     f32 delta;
     RwV3d acceleration;
 
-    work = (u8 *)param_1;
+    work = (GcPoseController *)param_1;
     target = (f32 *)param_2;
-    K_ASSERT(*(s32 *)(work + 0xc) == 0, 0x4f5);
-    K_ASSERT(*(s32 *)(work + 0x20) == 3, 0x4f6);
+    K_ASSERT(work->type.s32Value == 0, 0x4f5);
+    K_ASSERT(work->state.position.mode.s32Value == 3, 0x4f6);
 
     duration = (f32)(param_3 << 16) / 1966080.0f;
-    *(u32 *)(work + 0x24) = 1;
-    *(RwV3d *)(work + 0x54) = *(RwV3d *)target;
-    *(RwV3d *)(work + 0x48) = *(RwV3d *)(work + 0x14);
+    work->state.position.data.translation.active.u32Value = 1;
+    work->state.position.data.translation.target = *(RwV3d *)target;
+    work->state.position.data.translation.start = work->state.position.value;
 
     factor = 2.0f / (duration * duration);
-    delta = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
+    delta = work->state.position.data.translation.target.x -
+            work->state.position.data.translation.start.x;
     acceleration.x = delta * factor;
-    delta = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
+    delta = work->state.position.data.translation.target.y -
+            work->state.position.data.translation.start.y;
     acceleration.y = delta * factor;
-    delta = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
+    delta = work->state.position.data.translation.target.z -
+            work->state.position.data.translation.start.z;
     acceleration.z = delta * factor;
-    *(RwV3d *)(work + 0x30) = acceleration;
+    work->state.position.data.translation.acceleration = acceleration;
 
-    *(u32 *)(work + 0x3c) = 0;
-    *(u32 *)(work + 0x40) = 0;
-    *(u32 *)(work + 0x44) = 0;
-    *(u32 *)(work + 0x10) = 0;
-    *(s32 *)(work + 0x2c) = param_3 << 16;
-    *(u32 *)(work + 0x28) |= 1;
+    work->state.position.data.translation.direction.x = 0;
+    work->state.position.data.translation.direction.y = 0;
+    work->state.position.data.translation.direction.z = 0;
+    work->field_0x10 = 0;
+    work->state.position.data.translation.duration.s32Value = param_3 << 16;
+    work->state.position.data.translation.flags.u32Value |= 1;
 }
 
 // FUN_00250BE0
@@ -700,12 +693,12 @@ void gcPoseStartEaseInTranslation(int param_1, u32 *param_2, int param_3)
 
 void gcPoseSetRotationVectorElement(int param_1, int param_2, u32 param_3)
 {
-    K_ASSERT(*(s32*)(param_1 + 0xc) == 2, 0x52f);
-    K_ASSERT(*(s32*)(param_1 + 0x24) == 2, 0x530);
-    {
-        s32 offset = param_2 * 4;
-        *(u32*)(offset + param_1 + 0x28) = param_3;
-    }
+    GcPoseController *pose;
+
+    pose = (GcPoseController *)param_1;
+    K_ASSERT(pose->type.s32Value == 2, 0x52f);
+    K_ASSERT(pose->state.rotation.mode.s32Value == 2, 0x530);
+    pose->state.rotation.data.vector.values[param_2].u32Value = param_3;
 }
 
 // FUN_00250CF0
@@ -713,32 +706,31 @@ void gcPoseSetRotationVectorElement(int param_1, int param_2, u32 param_3)
 
 void gcPoseStartRotation(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames)
 {
-    u32 *state;
-    u8 *motion;
+    GcPoseRotationMotionData *state;
+    GcPoseRotationKinematics *motion;
     f32 duration;
     f32 acceleration;
 
-    K_ASSERT(*(s32 *)((u8 *)work + 0xc) == 2, 0x55d);
-    K_ASSERT(*(s32 *)((u8 *)work + 0x24) == 3, 0x55e);
+    K_ASSERT(((GcPoseController *)work)->type.s32Value == 2, 0x55d);
+    K_ASSERT(((GcPoseController *)work)->state.rotation.mode.s32Value == 3, 0x55e);
 
-    state = (u32 *)((u8 *)work + 0x28);
-    motion = (u8 *)state + 0xc;
-    state[0] = 1;
-    *(RwV3d *)motion = *(RwV3d *)target;
-    *(f32 *)(motion + 0xc) = startAngle;
-    *(f32 *)(motion + 0x10) = endAngle;
-    FUN_004bdde0((*(f32 *)(motion + 0xc) / fGpffff81f8) * 360.0f,
-                 (u8 *)work + 0x14, target, 0);
+    state = &((GcPoseController *)work)->state.rotation.data.motion;
+    motion = &state->motion;
+    state->active.u32Value = 1;
+    motion->target = *(RwV3d *)target;
+    motion->startAngle = startAngle;
+    motion->endAngle = endAngle;
+    FUN_004bdde0((motion->startAngle / fGpffff81f8) * 360.0f,
+                 &((GcPoseController *)work)->state.rotation.value, target, 0);
 
     duration = (f32)(frames << 16) / 1966080.0f;
-    acceleration = ((*(f32 *)(motion + 0x10) -
-                     *(f32 *)(motion + 0xc)) * 2.0f) /
+    acceleration = ((motion->endAngle - motion->startAngle) * 2.0f) /
                    (duration * duration);
-    *(f32 *)(motion + 0x18) = -acceleration;
-    *(f32 *)(motion + 0x14) = acceleration * duration;
-    work[4] = 0;
-    state[2] = (u32)(frames << 16);
-    state[1] |= 1;
+    motion->acceleration = -acceleration;
+    motion->velocity = acceleration * duration;
+    ((GcPoseController *)work)->field_0x10 = 0;
+    state->duration.u32Value = (u32)(frames << 16);
+    state->flags.u32Value |= 1;
 }
 
 // FUN_00250F80

@@ -471,7 +471,7 @@ BtlPacket* func_002dd690(u16 channel, const char* streamName)
 // FUN_002dd720
 u32 func_002dd720(BtlSoundThreeCueWorkView* work)
 {
-    volatile s16* parameterPtr = &work->parameter;
+    volatile /* Removing this qualifier loses func_002dd720 (MATCH nd0 -> MISMATCH nd8, size 52 -> 52) - measured W170. */ s16* parameterPtr = &work->parameter;
     func_0010a240(work->channel, work->streamData, *parameterPtr);
     return 1;
 }

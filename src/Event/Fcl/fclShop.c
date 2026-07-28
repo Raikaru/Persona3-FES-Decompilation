@@ -286,7 +286,7 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
             random = RpRandom();
             slot[0x19] = (u8)((magnitude * (random % 0xffff)) / 0xffff);
             if ((*(u32*)owner & 2) != 0) {
-                __asm__ volatile ("" : "+r"(index));
+                __asm__ ("" : "+r"(index));
                 slot = owner + index * 16;
                 *(s8*)(slot + 0x15) =
                     (s8)(negativeDirection + ((((u32)RpRandom() % 0xffff) * 5) / 0xffff));
@@ -295,7 +295,7 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
                 random = RpRandom();
                 *(s16*)(slot + 0x12) = (s16)(((random % 0xffff) * 400) / 0xffff - 100);
             } else {
-                __asm__ volatile ("" : "+r"(index));
+                __asm__ ("" : "+r"(index));
                 slot = owner + index * 16;
                 *(s8*)(slot + 0x15) =
                     (s8)(direction + ((((u32)RpRandom() % 0xffff) * 5) / 0xffff));
@@ -304,7 +304,7 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
                 random = RpRandom();
                 *(s16*)(slot + 0x12) = (s16)(((random % 0xffff) * 400) / 0xffff - 100);
             }
-            __asm__ volatile ("" : "+r"(index));
+            __asm__ ("" : "+r"(index));
             slot = owner + index * 16;
             *(u8*)(slot + 0x14) = 0xff;
             *(u8*)(slot + 0x18) = 0;
@@ -336,7 +336,7 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
     {
         fVar4 = 0.25f * (f32)(*(s8 *)(param_2 + 0xc) + *(s8 *)(param_2 + 9));
         iVar1 = (s32)fVar4;
-        __asm__ volatile ("" : "+r"(iVar1));
+        __asm__ ("" : "+r"(iVar1));
         *(s16 *)(param_2 + 4) =
             *(s16 *)(param_2 + 4) + (s16)iVar1;
 
@@ -5360,8 +5360,8 @@ u8 * FUN_003ebcb0(u64 unused, u64 handle)
                 FUN_003f1720(*(s16*)(item + 4), 1);
                 amount = -*(s16*)(item + 0x16);
                 FUN_003f1720(*(s16*)(item + 0x14), amount);
-                amount = -*(volatile s16*)(item + 0x1a);
-                statId = *(volatile s16*)(item + 0x18);
+                amount = -*(volatile /* Removing this function's qualifier batch loses FUN_003ebcb0 (MATCH nd0 -> MISMATCH nd10, size 808 -> 808) - measured W170. */ s16*)(item + 0x1a);
+                statId = *(volatile /* Removing this function's qualifier batch loses FUN_003ebcb0 (MATCH nd0 -> MISMATCH nd10, size 808 -> 808) - measured W170. */ s16*)(item + 0x18);
                 FUN_003f1720(statId, amount);
                 FUN_003fee40(resource);
                 func_0010a4e0(0, 0, 0, 6);
@@ -7403,7 +7403,7 @@ u64 FUN_003ee920(u64 unused, u64 handle)
     FUN_0040e3c0(0.0f, x, -3, 0xff, descriptors[*state * 2 + 1], 0);
     sprintf(text, (const char*)&gp0xffffaad8, value);
     textX = x + 0x26d;
-    __asm__ volatile ("" : "+r"(textX));
+    __asm__ ("" : "+r"(textX));
     FUN_0040eb50(0.0f, textX, 0x27, 0xff, 0, text, 9);
 
     cosine = cosf((DAT_007cae00 * (float)*(s16*)(work + 0x1a)) / 255.0f);
@@ -7413,11 +7413,11 @@ u64 FUN_003ee920(u64 unused, u64 handle)
     FUN_0040e3c0(0.0f, x, -3, 0xff, descriptors[*state * 2 + 1], 0);
     sprintf(text, (const char*)&gp0xffffaad8, value);
     textX = x + 0x26d;
-    __asm__ volatile ("" : "+r"(textX));
+    __asm__ ("" : "+r"(textX));
     FUN_0040eb50(0.0f, textX, 0x1c, 0xff, 0, text, 9);
     sprintf(text, (const char*)&gp0xffffaad8, *(u32*)(work + 0x14));
     textX = x + 0x26d;
-    __asm__ volatile ("" : "+r"(textX));
+    __asm__ ("" : "+r"(textX));
     FUN_0040eb50(0.0f, textX, 0x31, 0xff, 0, text, 9);
 
     return 0;

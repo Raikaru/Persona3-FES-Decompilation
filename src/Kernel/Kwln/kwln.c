@@ -151,9 +151,9 @@ extern KwlnAllocateFunc DAT_00960178[];
 extern u32 DAT_0095f57c;
 extern u32 DAT_0095f580[];
 
-#define KWLN_U32_AT(address) (*(volatile u32*)(address))
-#define KWLN_F32_AT(address) (*(volatile f32*)(address))
-#define KWLN_LIGHT_AT(address) (*(RpLight* volatile*)(address))
+#define KWLN_U32_AT(address) (*(u32*)(address))
+#define KWLN_F32_AT(address) (*(f32*)(address))
+#define KWLN_LIGHT_AT(address) (*(RpLight* *)(address))
 extern u32 DAT_007cdffc;
 extern void* DAT_007cc90c;
 extern void* DAT_007cc910;
@@ -424,14 +424,14 @@ void kwlnInitGameData()
         if (datGetScenarioMode() != 0)
         {
             unitId = (u16)i;
-            __asm__ volatile("" : : "r"(unitId) : "memory");
+            __asm__ ("" : : "r"(unitId) : "memory");
             personaTable = D_005E4F40 + i;
             func_00175820(unitId, personaTable[-1]);
         }
         else
         {
             unitId = (u16)i;
-            __asm__ volatile("" : : "r"(unitId) : "memory");
+            __asm__ ("" : : "r"(unitId) : "memory");
             personaTable = D_005E4F20 + i;
             func_00175820(unitId, personaTable[-1]);
         }
@@ -1087,8 +1087,8 @@ void kwln00198010()
     func_00108740();
 
     memset((void*)D_00847F10, 0, 0x14);
-    (*(volatile u32*)D_00847F10) = (u32)(&gp0xffff9430 + 4);
-    (*(volatile u32*)D_00847F14) = 0;
+    (*(u32*)D_00847F10) = (u32)(&gp0xffff9430 + 4);
+    (*(u32*)D_00847F14) = 0;
     func_00547668((void*)D_00847F10);
     func_00540588(0);
     func_005417e0(5, 5);
@@ -1097,10 +1097,10 @@ void kwln00198010()
     func_00540570(kwln00197fb0, NULL);
     func_004fa4b8(func_00197fe0);
 
-    (*(volatile u32*)D_00847F00) = 6;
-    (*(volatile u32*)D_00847F04) = 3;
-    (*(volatile u32*)D_00847F08) = 0x344;
-    (*(volatile u32*)D_00847F0C) = (u32)D_00847F50;
+    (*(u32*)D_00847F00) = 6;
+    (*(u32*)D_00847F04) = 3;
+    (*(u32*)D_00847F08) = 0x344;
+    (*(u32*)D_00847F0C) = (u32)D_00847F50;
     func_00567820((void*)D_00847F00);
     func_00569f60(0, 0, 1);
     func_0053b220(0);
@@ -1121,9 +1121,9 @@ void kwln00198010()
 
     memset((void*)D_00847F30, 0, 0x20);
     KWLN_F32_AT(0x00847f30) = *((f32*)&gAspectRatio + 4);
-    (*(volatile u32*)D_00847F34) = 1;
-    (*(volatile u32*)D_00847F38) = 1;
-    (*(volatile u32*)D_00847F3C) = 0;
+    (*(u32*)D_00847F34) = 1;
+    (*(u32*)D_00847F38) = 1;
+    (*(u32*)D_00847F3C) = 0;
     func_0057f768((void*)D_00847F30);
     func_00540570(func_00197f80, NULL);
 

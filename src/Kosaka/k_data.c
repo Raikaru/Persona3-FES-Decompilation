@@ -394,10 +394,10 @@ u32 func_001b81f0(HCdvd* request)
             goto failed;
         }
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, ((volatile HCdvd*)request)->fileSize, rwMEMHINTDUR_GLOBAL);
+            1, ((volatile /* Removing this function's qualifier batch loses func_001b81f0 (MATCH nd0 -> MISMATCH nd36, size 512 -> 512) - measured W170. */ HCdvd*)request)->fileSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) = memory;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1158, void*),
-               request->fileMemory, *(volatile u32*)&request->fileSize);
+               request->fileMemory, *(volatile /* Removing this function's qualifier batch loses func_001b81f0 (MATCH nd0 -> MISMATCH nd36, size 512 -> 512) - measured W170. */ u32*)&request->fileSize);
         data = FIELD_DATA_AT(K_Field_Get(), 0x1158, void*);
         FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) =
             *(u32*)data;
@@ -417,10 +417,10 @@ u32 func_001b81f0(HCdvd* request)
         if (source != NULL)
         {
             memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-                1, *(volatile u32*)&cachedSize, rwMEMHINTDUR_GLOBAL);
+                1, *(volatile /* Removing this function's qualifier batch loses func_001b81f0 (MATCH nd0 -> MISMATCH nd36, size 512 -> 512) - measured W170. */ u32*)&cachedSize, rwMEMHINTDUR_GLOBAL);
             FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) = memory;
             memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1158, void*),
-                   source, *(volatile u32*)&cachedSize);
+                   source, *(volatile /* Removing this function's qualifier batch loses func_001b81f0 (MATCH nd0 -> MISMATCH nd36, size 512 -> 512) - measured W170. */ u32*)&cachedSize);
             data = FIELD_DATA_AT(K_Field_Get(), 0x1158, void*);
             FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) =
                 *(u32*)data;
@@ -714,7 +714,7 @@ void func_001b8b40(void)
     }
     request = H_Cdvd_Request(path, HCDVD_FILENORMAL);
     H_Cdvd_ReadSync(request);
-    allocSize = ((volatile HCdvd*)request)->fileSize;
+    allocSize = ((volatile /* Removing this qualifier loses func_001b8b40 (MATCH nd0 -> MISMATCH nd8, size 244 -> 244) - measured W170. */ HCdvd*)request)->fileSize;
     sComuTable = (s16*)(*(void* (**)(u32, u32, u32))D_00960184_abs)(
         1, allocSize, rwMEMHINTDUR_GLOBAL);
     fileSize = request->fileSize;

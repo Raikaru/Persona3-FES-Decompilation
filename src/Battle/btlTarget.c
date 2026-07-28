@@ -362,7 +362,7 @@ f32 FUN_002d1fd0(f32* a, f32* b, f32* point, f32* projected)
 }
 
 // FUN_002d21e0
-f32 FUN_002d21e0(f32 value, volatile f32* state)
+f32 FUN_002d21e0(f32 value, volatile /* Removing this qualifier loses FUN_002d21e0 (MATCH nd0 -> MISMATCH nd6, size 148 -> 148) - measured W170. */ f32* state)
 {
     f32 current;
     f32 slopeBase;
@@ -4061,7 +4061,7 @@ s32 FUN_002d6460(BtlAction* action, s32* param_2, u32 param_3,
 // FUN_002d6620 NONMATCHING
 void FUN_002d6620(BtlAction *action)
 {
-    volatile u16 inherited = 0;
+    volatile /* Removing this qualifier worsens FUN_002d6620 (NONMATCHING nd2980 -> NONMATCHING nd3061, size 3880 -> 3868) - measured W170. */ u16 inherited = 0;
     DatUnit *selfDat;
     u16 specificId;
     s32 mappedId;

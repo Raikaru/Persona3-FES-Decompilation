@@ -1811,7 +1811,7 @@ void FUN_001b5ae0(u32 value, const u8* rgba)
 void* FUN_001b5b50(void* color, const f32* scale)
 {
     u32 mode;
-    volatile u8 rgba[4];
+    volatile /* Removing this qualifier loses FUN_001b5b50 (MATCH nd0 -> MISMATCH nd62, size 668 -> 648) - measured W170. */ u8 rgba[4];
     u32 value;
     u32 packed;
     u32 r;

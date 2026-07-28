@@ -1340,8 +1340,8 @@ int FUN_003c6fb0(int param_1)
     u32 atEnd;
 
     count = 0;
-    targetOwner = *(volatile int *)(param_1 + 0x24);
-    current = *(volatile int *)(param_1 + 0xc);
+    targetOwner = *(volatile /* Removing this function's qualifier batch loses FUN_003c6fb0 (MATCH nd0 -> MISMATCH nd4, size 72 -> 72) - measured W170. */ int *)(param_1 + 0x24);
+    current = *(volatile /* Removing this function's qualifier batch loses FUN_003c6fb0 (MATCH nd0 -> MISMATCH nd4, size 72 -> 72) - measured W170. */ int *)(param_1 + 0xc);
     param_1 = *(int *)(targetOwner + 0x2c);
     if (param_1 == 0)
     {

@@ -141,7 +141,7 @@ Model* mdlInit(u16 type, u16 id)
 {
     Model* mdl;
     u32 i;
-    volatile RwRGBA* color;
+    volatile /* Removing this qualifier loses mdlInit (MATCH nd0 -> MISMATCH nd8, size 628 -> 628) - measured W170. */ RwRGBA* color;
     u8 red;
     u8 green;
     u8 blue;
@@ -774,7 +774,7 @@ void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
             table->entries[id].rtAnim != (RtAnimAnimation*)DAT_009571d0_abs)
         {
             hierarchy = mdl->animSlots[slotIdx].anim.hierarchy;
-            FUN_004b74c0(scaledFrame, ((volatile RpHAnimHierarchy*)hierarchy)->currentAnim);
+            FUN_004b74c0(scaledFrame, ((volatile /* Removing this qualifier loses mdlAnim00318770 (MATCH nd0 -> MISMATCH nd8, size 256 -> 256) - measured W170. */ RpHAnimHierarchy*)hierarchy)->currentAnim);
             mdl->animSlots[slotIdx].anim.flags |= MDLANIM_FLAG_FRAMESET;
         }
     }
@@ -5698,7 +5698,7 @@ void* func_003165e0(void* param_1)
   f32 y;
   f32 z;
   f32 w;
-  volatile f32 values[4];
+  volatile /* Removing this qualifier loses func_003165e0 (MATCH nd0 -> MISMATCH nd105, size 172 -> 132) - measured W170. */ f32 values[4];
 
   iVar4 = (int)param_1;
   iVar1 = *(int *)(iVar4 + 0x18);

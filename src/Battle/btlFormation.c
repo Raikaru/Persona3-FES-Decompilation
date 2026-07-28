@@ -1656,7 +1656,7 @@ void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
       scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
       scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
       func_004be1e0(&transformed, &scaled, 1,
-          (void*)((volatile u8*)param_1 + 0x40));
+          (void*)((u8*)param_1 + 0x40));
       position.x = transformed.x + *(f32*)(param_1 + 0x34);
       position.y = transformed.y + *(f32*)(param_1 + 0x38);
       position.z = transformed.z + *(f32*)(param_1 + 0x3c);
@@ -1697,7 +1697,7 @@ void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
       scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
       scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
       func_004be1e0(&transformed, &scaled, 1,
-          (void*)((volatile u8*)param_1 + 0x40));
+          (void*)((u8*)param_1 + 0x40));
       position.x = transformed.x + *(f32*)(param_1 + 0x34);
       position.y = transformed.y + *(f32*)(param_1 + 0x38);
       position.z = transformed.z + *(f32*)(param_1 + 0x3c);
@@ -1727,7 +1727,7 @@ void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4)
   fVar2 = func_00280870_btlFormation_f32(3,0,work.auStack_10,&work.fStack_4,0,0);
   uVar1 = *(u16 *)((int)param_3 + 4);
   if (uVar1 == 0) {
-    __asm__ volatile ("" : "+f"(fVar2));
+    __asm__ ("" : "+f"(fVar2));
   }
   else {
     fVar2 = (float)uVar1;
@@ -1766,7 +1766,7 @@ void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4)
   fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
   uVar1 = *(u16 *)((int)param_3 + 4);
   if (uVar1 == 0) {
-    __asm__ volatile ("" : "+f"(fVar3));
+    __asm__ ("" : "+f"(fVar3));
   }
   else {
     fVar3 = (float)uVar1;
@@ -1805,7 +1805,7 @@ void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4)
   fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
   uVar1 = *(u16 *)((int)param_3 + 4);
   if (uVar1 == 0) {
-    __asm__ volatile ("" : "+f"(fVar3));
+    __asm__ ("" : "+f"(fVar3));
   }
   else {
     fVar3 = (float)uVar1;
@@ -2396,14 +2396,14 @@ bool func_002baec0(u32 *param_1)
   int iVar2;
   u16 index;
   u32 value;
-  volatile u16 *index_ptr;
-  volatile u32 *value_ptr;
+  volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *index_ptr;
+  volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *value_ptr;
   
   if (!func_002b9350(*param_1)) {
     return false;
   }
-  index_ptr = (volatile u16 *)(param_1 + 3);
-  value_ptr = (volatile u32 *)param_1;
+  index_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u16 *)(param_1 + 3);
+  value_ptr = (volatile /* Removing this function's qualifier batch loses func_002baec0 (MATCH nd0 -> MISMATCH nd6, size 112 -> 112) - measured W170. */ u32 *)param_1;
   iVar2 = (index = *index_ptr,
            value = *value_ptr,
            func_002b93c0(value,index));
@@ -2729,7 +2729,7 @@ void *func_002bb7d0(void)
   u32 index;
   u32 nodeAddress;
   u16 *node;
-  register u32 (* volatile *allocate)(...);
+  register u32 (* volatile /* Removing this qualifier loses func_002bb7d0 (MATCH nd0 -> MISMATCH nd181, size 280 -> 284) - measured W170. */ *allocate)(...);
   
   allocate = DAT_00960178_u32_abs;
   rootAddress = (*allocate)(0xc8,0x40000);
@@ -2879,7 +2879,7 @@ void* func_002bbc00(void* owner)
   u32 rootAddress;
   u32 nodeAddress;
   u16* node;
-  register u32 (* volatile *allocate)(...);
+  register u32 (* volatile /* Removing this qualifier loses func_002bbc00 (MATCH nd0 -> MISMATCH nd167, size 244 -> 236) - measured W170. */ *allocate)(...);
 
   allocate = DAT_00960178_u32_abs;
   rootAddress = (*allocate)(0x18, 0x40000);
@@ -15061,7 +15061,7 @@ u32 func_002d14d0(void)
   u32 base;
 
   index = func_0035ed20(0);
-  base = (u32)*(u8* volatile *)&iGpffffb6fc;
+  base = (u32)*(u8* volatile /* Removing this qualifier loses func_002d14d0 (MATCH nd0 -> MISMATCH nd7, size 64 -> 64) - measured W170. */ *)&iGpffffb6fc;
   index <<= 2;
   func_0035f060(*(u32 *)(index + base + 0xd30));
   return 1;
@@ -15079,7 +15079,7 @@ u32 func_002d1510(void)
   
   iVar1 = func_0035ed20(0);
   uVar2 = func_0035ed20(1);
-  base = (u32)*(u8* volatile *)&iGpffffb6fc;
+  base = (u32)*(u8* volatile /* Removing this qualifier loses func_002d1510 (MATCH nd0 -> MISMATCH nd7, size 80 -> 80) - measured W170. */ *)&iGpffffb6fc;
   iVar1 <<= 2;
   *(u32 *)(iVar1 + base + 0xd30) = uVar2;
   return 1;

@@ -141,9 +141,9 @@ void FUN_0025a130(void)
   f32 f10;
   f32 f14;
   f32 f18;
-  volatile f32 fStack_18;
-  volatile f32 fStack_14;
-  volatile f32 fStack_10;
+  volatile /* Removing this function's qualifier batch worsens FUN_0025a130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_18;
+  volatile /* Removing this function's qualifier batch worsens FUN_0025a130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_14;
+  volatile /* Removing this function's qualifier batch worsens FUN_0025a130 (NONMATCHING nd185 -> NONMATCHING nd380, size 780 -> 732) - measured W170. */ f32 fStack_10;
 
   K_ASSERT(sSflCursor != NULL, 0x47);
   puVar1 = sSflCursor;
@@ -250,8 +250,8 @@ void FUN_0025a130(void)
 
 void FUN_0025a440(void)
 {
-  volatile code *pRender;
-  volatile code *pTex;
+  volatile /* Removing this function's qualifier batch loses FUN_0025a440 (MATCH nd0 -> MISMATCH nd618, size 908 -> 940) - measured W170. */ code *pRender;
+  volatile /* Removing this function's qualifier batch loses FUN_0025a440 (MATCH nd0 -> MISMATCH nd618, size 908 -> 940) - measured W170. */ code *pTex;
   u32 *puVar1;
   u32 *puVar2;
   u32 uVar2;
@@ -293,7 +293,7 @@ void FUN_0025a440(void)
         bVar3 = 1;
       }
       if (bVar3) {
-        volatile code *pTexInner;
+        volatile /* Removing this function's qualifier batch loses FUN_0025a440 (MATCH nd0 -> MISMATCH nd618, size 908 -> 940) - measured W170. */ code *pTexInner;
 
         uVar2 = FUN_0020e510(2);
         (*pRender)(1,uVar2);
@@ -302,7 +302,7 @@ void FUN_0025a440(void)
         (*pTexInner)(puVar2 + 4,4,0,2,3);
       }
       if (*puVar2 != 0) {
-        volatile code *pTexInner;
+        volatile /* Removing this function's qualifier batch loses FUN_0025a440 (MATCH nd0 -> MISMATCH nd618, size 908 -> 940) - measured W170. */ code *pTexInner;
 
         uVar2 = FUN_0020e510(1);
         (*pRender)(1,uVar2);

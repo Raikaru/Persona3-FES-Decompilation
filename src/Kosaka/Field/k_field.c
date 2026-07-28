@@ -186,11 +186,11 @@ extern u32 FUN_001bffa0(void);
 extern u64 FUN_001bffe0(void);
 extern u64 FUN_001c0010(void);
 
-#define FIELD_U8(address)  (*(volatile u8*)(address))
-#define FIELD_U16(address) (*(volatile u16*)(address))
-#define FIELD_U32(address) (*(volatile u32*)(address))
-#define FIELD_S32(address) (*(volatile s32*)(address))
-#define FIELD_F32(address) (*(volatile f32*)(address))
+#define FIELD_U8(address)  (*(u8*)(address))
+#define FIELD_U16(address) (*(u16*)(address))
+#define FIELD_U32(address) (*(u32*)(address))
+#define FIELD_S32(address) (*(s32*)(address))
+#define FIELD_F32(address) (*(f32*)(address))
 #define ROOT_U8(work, offset)  (*(u8*)((u8*)(work) + (offset)))
 #define ROOT_U16(work, offset) (*(u16*)((u8*)(work) + (offset)))
 #define ROOT_U32(work, offset) (*(u32*)((u8*)(work) + (offset)))

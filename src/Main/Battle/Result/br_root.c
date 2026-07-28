@@ -470,7 +470,7 @@ br_cleanup_done:
 // FUN_001f0a60
 void func_001f0a60(KwlnTask *task)
 {
-    volatile u32 *work = (volatile u32 *)BR_TASK_WORK(task);
+    u32 *work = (u32 *)BR_TASK_WORK(task);
     func_001f30d0((KwlnTask *)work[0x25]);
     work[0] &= ~0x8000u;
     work[0x25] = 0;
@@ -612,7 +612,7 @@ void func_001f0eb0(KwlnTask *task)
 // FUN_001f0f40
 void func_001f0f40(KwlnTask *task)
 {
-    volatile u32 *work = (volatile u32 *)BR_TASK_WORK(task);
+    u32 *work = (u32 *)BR_TASK_WORK(task);
     if ((~work[2] & 4) != 0) {
         K_ASSERT((~work[1] & 4) != 0, 0x59f);
         brRes00233b20();
@@ -668,7 +668,7 @@ void func_001f10f0(void)
 // FUN_001f1140
 void func_001f1140(KwlnTask *task)
 {
-    volatile u32 *work = (volatile u32 *)BR_TASK_WORK(task);
+    volatile /* Removing this function's qualifier batch loses func_001f1140 (MATCH nd0 -> MISMATCH nd46, size 200 -> 188) - measured W170. */ u32 *work = (volatile /* Removing this function's qualifier batch loses func_001f1140 (MATCH nd0 -> MISMATCH nd46, size 200 -> 188) - measured W170. */ u32 *)BR_TASK_WORK(task);
     if ((~work[2] & 4) != 0) {
         K_ASSERT((~work[1] & 4) != 0, 0x5e5);
         brRes00233b20();

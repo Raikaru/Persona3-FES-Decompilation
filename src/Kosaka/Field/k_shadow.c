@@ -716,7 +716,7 @@ u32 func_0019ab80(f32 alpha,
     f32 viewWidth;
     u32 count;
     RwFrame* frame;
-    volatile void (**stateSet)(u32, u32);
+    void (**stateSet)(u32, u32);
     ResrcFld* field;
     u8* collisionData;
     void* collisionWorld;
@@ -727,7 +727,7 @@ u32 func_0019ab80(f32 alpha,
     u16 resourceIds[5];
 
     field = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-    stateSet = (volatile void (**)(u32, u32))D_00960090_abs;
+    stateSet = (void (**)(u32, u32))D_00960090_abs;
     (*stateSet)(1, (u32)(uintptr_t)raster);
     (*stateSet)(2, 3);
     (*stateSet)(12, 1);

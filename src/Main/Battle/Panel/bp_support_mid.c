@@ -103,7 +103,7 @@ extern char D_0068DF30[];
 extern char D_0068DF60[];
 extern char D_0068E020[];
 extern char D_0068DD20[];
-extern volatile u16 D_00875A90[];
+extern u16 D_00875A90[];
 extern char D_0068E0B0[];
 extern void func_00209ba0(void* destination, s32 digit);
 extern void func_0020c7b0(u8* work);

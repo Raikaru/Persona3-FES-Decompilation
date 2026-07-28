@@ -3118,20 +3118,20 @@ u32 FUN_002a0440(float *param_1)
 
   float fVar17;
 
-  volatile float fStack_20;
+  float fStack_20;
 
-  volatile float fStack_1c;
+  float fStack_1c;
 
-  volatile float fStack_18;
+  float fStack_18;
 
-  volatile float fStack_14;
-  volatile float fStack_10;
+  float fStack_14;
+  float fStack_10;
 
-  volatile float fStack_c;
+  float fStack_c;
 
-  volatile float fStack_8;
+  float fStack_8;
 
-  volatile float fStack_4;
+  float fStack_4;
 
   
 
@@ -4895,7 +4895,7 @@ has_frame:
     }
     else
     {
-        curve = *(void* volatile *)(param_1 + 0x98);
+        curve = *(void* *)(param_1 + 0x98);
         FUN_0048d480((void*)curve, 0xa,
                      *(f32*)(param_1 + 0x7c),
                      (RwV3d *)param_2, ((void*)0));

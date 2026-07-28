@@ -1353,15 +1353,15 @@ u32 FUN_001C4080()
     result = 0;
     valid = 0;
     offset = ((index << 3) - index) << 6;
-    if (*(volatile u32*)(D_008717E8 + offset) != 0 &&
-        *(volatile u32*)(D_008717F4 + offset) != 0)
+    if (*(u32*)(D_008717E8 + offset) != 0 &&
+        *(u32*)(D_008717F4 + offset) != 0)
     {
         valid = 1;
     }
     predicate = valid > 0;
     if (predicate == 1)
     {
-        result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
+        result = *(u16*)*(u32**)(D_008717F4 + offset);
     }
     scrSetIntReturnVal((s32)result);
     return true;
@@ -1401,19 +1401,19 @@ u32 FUN_001C4120()
         resource = MT_Scene_GetRes((u16)resourceTypeId);
         if (resource != NULL)
         {
-            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            matrix = mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128));
             oldPosition = matrix->pos;
             inversePosition.x = -oldPosition.x;
             inversePosition.y = -oldPosition.y;
             inversePosition.z = -oldPosition.z;
-            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &inversePosition, rwCOMBINEPOSTCONCAT);
-            mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x128), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEREPLACE);
-            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &oldPosition, rwCOMBINEPOSTCONCAT);
-            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            mdlTranslate((Model*)*(Model**)((u8*)resource + 0x128), &inversePosition, rwCOMBINEPOSTCONCAT);
+            mdlRotate((Model*)*(Model**)((u8*)resource + 0x128), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEREPLACE);
+            mdlTranslate((Model*)*(Model**)((u8*)resource + 0x128), &oldPosition, rwCOMBINEPOSTCONCAT);
+            matrix = mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128));
             matrix->pos = *(RwV3d*)((u8*)hit + 0x100);
             RwEngineGetMatrixTolerances(&tolerance);
-            RwMatrixOptimize(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)), &tolerance);
-            RwMatrixUpdate(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)));
+            RwMatrixOptimize(mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128)), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128)));
         }
         break;
     }
@@ -1423,28 +1423,28 @@ u32 FUN_001C4120()
         resource = MT_Scene_GetRes((u16)resourceTypeId);
         if (resource != NULL)
         {
-            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            matrix = mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128));
             oldPosition = matrix->pos;
             inversePosition.x = -oldPosition.x;
             inversePosition.y = -oldPosition.y;
             inversePosition.z = -oldPosition.z;
-            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &inversePosition, rwCOMBINEPOSTCONCAT);
-            mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x128), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEPOSTCONCAT);
-            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &oldPosition, rwCOMBINEPOSTCONCAT);
-            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            mdlTranslate((Model*)*(Model**)((u8*)resource + 0x128), &inversePosition, rwCOMBINEPOSTCONCAT);
+            mdlRotate((Model*)*(Model**)((u8*)resource + 0x128), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEPOSTCONCAT);
+            mdlTranslate((Model*)*(Model**)((u8*)resource + 0x128), &oldPosition, rwCOMBINEPOSTCONCAT);
+            matrix = mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128));
             matrix->pos = *(RwV3d*)((u8*)hit + 0x100);
             RwEngineGetMatrixTolerances(&tolerance);
-            RwMatrixOptimize(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)), &tolerance);
-            RwMatrixUpdate(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)));
-            if ((Model*)*(volatile Model**)((u8*)resource + 0x1ec) != NULL)
+            RwMatrixOptimize(mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128)), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x128)));
+            if ((Model*)*(Model**)((u8*)resource + 0x1ec) != NULL)
             {
                 scale.x = K_FldFrame_CtlGetSphereCollisRadius(*(KwlnTask**)((u8*)resource + 0x1e8));
                 scale.y = scale.x;
                 scale.z = scale.x;
-                mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x1ec), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEPOSTCONCAT);
-                mdlScale((Model*)*(volatile Model**)((u8*)resource + 0x1ec), &scale, rwCOMBINEPOSTCONCAT);
-                mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x1ec), (RwV3d*)((u8*)hit + 0x100), rwCOMBINEPOSTCONCAT);
-                mdl00317730((Model*)*(volatile Model**)((u8*)resource + 0x1ec));
+                mdlRotate((Model*)*(Model**)((u8*)resource + 0x1ec), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEPOSTCONCAT);
+                mdlScale((Model*)*(Model**)((u8*)resource + 0x1ec), &scale, rwCOMBINEPOSTCONCAT);
+                mdlTranslate((Model*)*(Model**)((u8*)resource + 0x1ec), (RwV3d*)((u8*)hit + 0x100), rwCOMBINEPOSTCONCAT);
+                mdl00317730((Model*)*(Model**)((u8*)resource + 0x1ec));
             }
         }
         break;
@@ -1455,19 +1455,19 @@ u32 FUN_001C4120()
         resource = MT_Scene_GetRes((u16)resourceTypeId);
         if (resource != NULL)
         {
-            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104));
+            matrix = mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x104));
             oldPosition = matrix->pos;
             inversePosition.x = -oldPosition.x;
             inversePosition.y = -oldPosition.y;
             inversePosition.z = -oldPosition.z;
-            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x104), &inversePosition, rwCOMBINEPOSTCONCAT);
-            mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x104), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEREPLACE);
-            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x104), &oldPosition, rwCOMBINEPOSTCONCAT);
-            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104));
+            mdlTranslate((Model*)*(Model**)((u8*)resource + 0x104), &inversePosition, rwCOMBINEPOSTCONCAT);
+            mdlRotate((Model*)*(Model**)((u8*)resource + 0x104), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEREPLACE);
+            mdlTranslate((Model*)*(Model**)((u8*)resource + 0x104), &oldPosition, rwCOMBINEPOSTCONCAT);
+            matrix = mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x104));
             matrix->pos = *(RwV3d*)((u8*)hit + 0x100);
             RwEngineGetMatrixTolerances(&tolerance);
-            RwMatrixOptimize(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104)), &tolerance);
-            RwMatrixUpdate(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104)));
+            RwMatrixOptimize(mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x104)), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix((Model*)*(Model**)((u8*)resource + 0x104)));
         }
         break;
     }
@@ -2177,7 +2177,7 @@ u32 func_001c5d80()
             return false;
         }
 
-        scriptSize = *(volatile u32*)&gFldScrSize;
+        scriptSize = *(volatile /* Removing this qualifier loses func_001c5d80 (MATCH nd0 -> MISMATCH nd7, size 216 -> 216) - measured W170. */ u32*)&gFldScrSize;
         scrCreateTaskFromScriptMemory(10, gFldScrMemory, scriptSize, 1);
         scrSetIntReturnVal(2);
         return true;

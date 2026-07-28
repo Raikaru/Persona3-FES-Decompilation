@@ -37,8 +37,8 @@ extern f32 D_007CE834;
 extern f32 D_007CAF38;
 extern u32 D_007CE2B8;
 
-extern volatile f32 DAT_007cb144;
-extern volatile f32 DAT_007caf24;
+extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ f32 DAT_007cb144;
+extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ f32 DAT_007caf24;
 
 
 static f32 sVPadMoveSpeed;

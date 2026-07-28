@@ -17,20 +17,20 @@ extern u32 *DAT_007ce3d8;
 extern u32 *DAT_007ce3e4;
 #define sOpTailF DAT_007ce3e4
 #define sOpTailG (*(u32 **)(uintptr_t)0x007ce3e8)
-#define OP_F80BC (*(volatile float*)(uintptr_t)0x007cadac)
-#define OP_F80D8 (*(volatile float*)(uintptr_t)0x007cadc8)
-#define OP_F81F8 (*(volatile float*)(uintptr_t)0x007caee8)
-#define OP_F82BC (*(volatile float*)(uintptr_t)0x007cafac)
-#define OP_F82C0 (*(volatile float*)(uintptr_t)0x007cafb0)
-#define OP_F82C4 (*(volatile float*)(uintptr_t)0x007cafb4)
-extern volatile s32 iGpffff97f0;
+#define OP_F80BC (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cadac)
+#define OP_F80D8 (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cadc8)
+#define OP_F81F8 (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007caee8)
+#define OP_F82BC (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cafac)
+#define OP_F82C0 (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cafb0)
+#define OP_F82C4 (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cafb4)
+extern volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ s32 iGpffff97f0;
 extern f32 fGpffff80d8;
 extern f32 fGpffff82bc;
 extern f32 fGpffff82c0;
 extern f32 fGpffff82c4;
 extern u8 DAT_007cc4e8[1];
-#define OP_F82FC (*(volatile float*)(uintptr_t)0x007cafec)
-#define OP_F839C (*(volatile float*)(uintptr_t)0x007cb08c)
+#define OP_F82FC (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cafec)
+#define OP_F839C (*(volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ float*)(uintptr_t)0x007cb08c)
 
 extern void func_003b0170(u32 resource);
 extern u32 func_003b0970(const char* text, s32 mode, s32 group, s32 a, s32 b);
@@ -1053,7 +1053,7 @@ u32 func_0027b2b0(void)
 // FUN_0027b310
 u32 func_0027b310(void)
 {
-    void (* volatile *stateSetter)(s32 state, u32 value);
+    void (* volatile /* Removing this qualifier loses func_0027b310 (MATCH nd0 -> MISMATCH nd94, size 216 -> 220) - measured W170. */ *stateSetter)(s32 state, u32 value);
     u32 saved;
 
     if (func_004c9d10(func_00198590()) != 0) {
@@ -1204,8 +1204,8 @@ void func_0027b6c0(void)
 // FUN_0027b880
 void func_0027b880(void)
 {
-    void (* volatile *stateSetter)(s32 state, u32 value);
-    void (* volatile *draw)(void* vertices, s32 stride, s32 mode, s32 a, s32 b);
+    void (* volatile /* Removing this function's qualifier batch loses func_0027b880 (MATCH nd0 -> MISMATCH nd225, size 364 -> 368) - measured W170. */ *stateSetter)(s32 state, u32 value);
+    void (* volatile /* Removing this function's qualifier batch loses func_0027b880 (MATCH nd0 -> MISMATCH nd225, size 364 -> 368) - measured W170. */ *draw)(void* vertices, s32 stride, s32 mode, s32 a, s32 b);
     u32* work;
     u32 texture;
     u32 descriptor;

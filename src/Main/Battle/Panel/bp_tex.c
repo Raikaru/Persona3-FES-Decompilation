@@ -84,7 +84,7 @@ extern RwCamera* kwlnGetMainCamera(void);
 extern f32 func_0052ea18(f32 x, f32 y);
 extern f32 D_00960088;
 #pragma alias D_00960088_abs D_00960088
-extern volatile f32 D_00960088_abs[];
+extern volatile /* Removing this file's qualifier batch loses 0 MATCH(es) and worsens 1 other function(s) - measured W170. */ f32 D_00960088_abs[];
 extern f32 sqrtf(f32 value);
 extern RwRaster* func_004ce0f0(u32 width, u32 height, u32 depth, u32 flags);
 extern void* func_004cdf30(RwRaster* raster, u32 palette);
@@ -210,7 +210,7 @@ void* bpTex0021c9f0(void* sprMemory)
 
         entry = frameTable + i * 8;
         frameSource = source + *(u32*)(entry + 4);
-        frame = (BpTexFrameData*)(*(volatile u32*)(texture + 4)) + i;
+        frame = (BpTexFrameData*)(*(u32*)(texture + 4)) + i;
         frame->texture = (u32)texture;
         frame->rasterIndex = *(u32*)(frameSource + 0x14);
         frame->id = *(u32*)(frameSource + 0x18);
@@ -591,8 +591,8 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
     rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
     raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, rasterIndex * 4);
     {
-        volatile f32 xRange[2] = {0};
-        volatile f32 yRange[2];
+        f32 xRange[2] = {0};
+        f32 yRange[2];
         s32 rasterWidth;
         s32 rasterHeight;
         u32 xMode;
@@ -739,14 +739,14 @@ void func_0021d3b0(void* destination, void* frameData)
     BP_TEX_F32(destination, 0x14) = uv[1];
     BP_TEX_F32(destination, 0x18) = reciprocalDepth;
     depthAddress = (u32)D_00960088_abs;
-    BP_TEX_F32(destination, 0x08) = *(volatile f32*)depthAddress;
+    BP_TEX_F32(destination, 0x08) = *(f32*)depthAddress;
     BP_TEX_WRITE_COLOR_INLINE(destination, 0, frame->color);
     BP_TEX_WRITE_VERTEX_INLINE(destination, 0x40, uv[2], uv[1], frame->color + 4,
-                               *(volatile f32*)depthAddress, reciprocalDepth);
+                               *(f32*)depthAddress, reciprocalDepth);
     BP_TEX_WRITE_VERTEX_INLINE(destination, 0x80, uv[2], uv[3], frame->color + 8,
-                               *(volatile f32*)depthAddress, reciprocalDepth);
+                               *(f32*)depthAddress, reciprocalDepth);
     BP_TEX_WRITE_VERTEX_INLINE(destination, 0xc0, uv[0], uv[3], frame->color + 12,
-                               *(volatile f32*)depthAddress, reciprocalDepth);
+                               *(f32*)depthAddress, reciprocalDepth);
 }
 
 // FUN_0021d890
@@ -991,14 +991,14 @@ void func_0021e380(void* destination, void* frameData, u32 mode)
     BP_TEX_F32(destination, 0x14) = uv[1];
     BP_TEX_F32(destination, 0x18) = reciprocalDepth;
     depthAddress = (u32)D_00960088_abs;
-    BP_TEX_F32(destination, 0x08) = *(volatile f32*)depthAddress;
+    BP_TEX_F32(destination, 0x08) = *(f32*)depthAddress;
     BP_TEX_WRITE_COLOR_INLINE(destination, 0, firstColor);
     BP_TEX_WRITE_VERTEX_INLINE(destination, 0x40, uv[2], uv[1], secondColor,
-                               *(volatile f32*)depthAddress, reciprocalDepth);
+                               *(f32*)depthAddress, reciprocalDepth);
     BP_TEX_WRITE_VERTEX_INLINE(destination, 0x80, uv[2], uv[3], thirdColor,
-                               *(volatile f32*)depthAddress, reciprocalDepth);
+                               *(f32*)depthAddress, reciprocalDepth);
     BP_TEX_WRITE_VERTEX_INLINE(destination, 0xc0, uv[0], uv[3], fourthColor,
-                               *(volatile f32*)depthAddress, reciprocalDepth);
+                               *(f32*)depthAddress, reciprocalDepth);
 }
 
 // FUN_0021ea00
@@ -1405,7 +1405,7 @@ u32* bpTexFindFreeNode(void)
 // FUN_00255440 bpTexFindNodeByIndex
 u32* bpTexFindNodeByIndex(u32 index)
 {
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder ;"
         ".word 0x27bdffd0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
         ".word 0x0080882d ; .word 0x8f82b664 ; .word 0x14400006 ; .word 0x00000000 ;"
@@ -1751,7 +1751,7 @@ u32* bpTexGetCurrentNode(void)
 // FUN_00256110 bpTexFindNodeById
 u32* bpTexFindNodeById(u32 id)
 {
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder ;"
         ".word 0x27bdffd0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
         ".word 0x0080882d ; .word 0x8f82b664 ; .word 0x14400006 ; .word 0x00000000 ;"
@@ -1769,7 +1769,7 @@ u32* bpTexFindNodeById(u32 id)
 // FUN_002561E0
 void bpTexApplyGlobalAlpha(f32 amount, void* node)
 {
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder ;"
         ".word 0x27bdffb0 ; .word 0xffbf0010 ; .word 0x7fb00000 ; .word 0xc7809780 ;"
         ".word 0xe7a00048 ; .word 0x93a20048 ; .word 0x2442ff01 ; .word 0x44820000 ;"
@@ -1851,7 +1851,7 @@ void bpTexUpdateNode(void* nodeData)
     s32 finalCount;
     s32 i;
     f32 phase;
-    volatile f32 offsets[3];
+    volatile /* Removing this qualifier worsens bpTexUpdateNode (NONMATCHING nd1885 -> NONMATCHING nd1919, size 2488 -> 2472) - measured W170. */ f32 offsets[3];
     f32 rotation[4];
     f32 position[3];
     f32 direction[3];
@@ -2079,7 +2079,7 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
 // FUN_00256FA0
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder ;"
         ".word 0x27bdff40 ; .word 0xffbf0050 ; .word 0x7fb40040 ; .word 0x7fb30030 ;"
         ".word 0x7fb20020 ; .word 0x7fb10010 ; .word 0x7fb00000 ; .word 0x0080a02d ;"

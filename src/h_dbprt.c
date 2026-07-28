@@ -20,7 +20,7 @@ static RwRaster* sFontRaster;
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
 #pragma alias D_00960088_abs D_00960088
-extern volatile f32 D_00960088_abs[];
+extern volatile /* Removing this file's qualifier batch loses 0 MATCH(es) and worsens 1 other function(s) - measured W170. */ f32 D_00960088_abs[];
 extern RwIm2DRenderPrimitiveFunction D_009600A0_abs[];
 
 extern void (*D_00960090)(u32 state, u32 value);
@@ -129,7 +129,7 @@ void H_Dbprt_Main()
     kwlnPushCommonRenderStates();
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, (void*)sFontRaster);
 
-    z = *(volatile f32*)D_00960088_abs;
+    z = *(f32*)D_00960088_abs;
 
     for (vertex = 0; vertex < 4; vertex++)
     {
@@ -322,7 +322,7 @@ static void H_Dbprt_DrawText3D(void)
 }
 
 // FUN_00104D10 NONMATCHING
-void H_Dbprt_FmtAt(volatile RwV2d pos, const char* fmt, ...)
+void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NONMATCHING nd170 -> NONMATCHING nd290, size 412 -> 424) - measured W170. */ RwV2d pos, const char* fmt, ...)
 {
     char buffer[HDBPRT_LOG_MAXCHAR];
     s32 character;
@@ -397,7 +397,7 @@ static inline void H_Dbprt_AppendText3D(HDbText3D* text)
 }
 
 // FUN_00104EB0
-void H_Dbprt_FmtCol3D(RwV2d pos, volatile RwRGBA color, const char* fmt, ...)
+void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...)
 {
     HDbText3D* text;
     va_list args;
@@ -438,7 +438,7 @@ void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...)
 }
 
 // FUN_001050E0
-void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, volatile RwRGBA color, const char* fmt, ...)
+void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, RwRGBA color, const char* fmt, ...)
 {
     HDbText3D* text;
     va_list args;

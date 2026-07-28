@@ -496,7 +496,7 @@ void opMenu0026a2c0(void)
     ((f32*)((u8*)work + 0xaa0))[1] = rect[5];
 
     {
-        volatile u8 color[4];
+        u8 color[4];
         color[0] = 0x0a;
         color[1] = 0x11;
         color[2] = 0x30;

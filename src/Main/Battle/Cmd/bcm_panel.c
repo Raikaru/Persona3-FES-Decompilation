@@ -4222,7 +4222,7 @@ void FUN_0022ecb0(u8* destination, u8* source, f32 scale)
     f32 factor;
     f32 converted;
     u32 value;
-    volatile u8* depth;
+    u8* depth;
 
     factor = 1.0f / *(f32*)((u8*)FUN_00198590() + 0x80);
     FUN_0021cd00(source, values);

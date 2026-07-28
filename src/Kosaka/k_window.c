@@ -90,7 +90,7 @@ void* func_001a1550(KwlnTask* task)
     {
         case 0:
         {
-            volatile f32 tileColor;
+            f32 tileColor;
             u8* tileBytes;
             s32 alpha;
             s32 i;
@@ -819,10 +819,10 @@ static inline void KWindow_SetManagerRender(KWindowManagerWork* manager)
     s32 i;
 
     colorData = (RwRGBA*)((u8*)manager->colorData + 4);
-    *(volatile u8*)&colorData->r = *(volatile u8*)((u8*)&uGpffff94c4 + 0);
-    *(volatile u8*)&colorData->g = *(volatile u8*)((u8*)&uGpffff94c4 + 1);
-    *(volatile u8*)&colorData->b = *(volatile u8*)((u8*)&uGpffff94c4 + 2);
-    *(volatile u8*)&colorData->a = *(volatile u8*)((u8*)&uGpffff94c4 + 3);
+    *(u8*)&colorData->r = *(u8*)((u8*)&uGpffff94c4 + 0);
+    *(u8*)&colorData->g = *(u8*)((u8*)&uGpffff94c4 + 1);
+    *(u8*)&colorData->b = *(u8*)((u8*)&uGpffff94c4 + 2);
+    *(u8*)&colorData->a = *(u8*)((u8*)&uGpffff94c4 + 3);
     func_001e7aa0(manager->renderData, 0, manager->colorData);
 
     renderData = (KWindowRenderData*)manager->renderData;
@@ -995,10 +995,10 @@ void* func_001a2a80(KwlnTask* task)
                 manager->windowTask =
                     func_001a2200(task, &rect, (RwRGBA*)&colorA,
                                   (RwRGBA*)&colorB);
-                ((volatile u8*)&uGpffff94c4)[0] = 0xe3;
-                ((volatile u8*)&uGpffff94c4)[1] = 0x4a;
-                ((volatile u8*)&uGpffff94c4)[2] = 0;
-                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[0] = 0xe3;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[1] = 0x4a;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[2] = 0;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[3] = 0xff;
             }
             else if (manager->mode == 2)
             {
@@ -1015,10 +1015,10 @@ void* func_001a2a80(KwlnTask* task)
                 manager->windowTask =
                     func_001a2200(task, &rect, (RwRGBA*)&colorA,
                                   (RwRGBA*)&colorB);
-                ((volatile u8*)&uGpffff94c4)[0] = 0x54;
-                ((volatile u8*)&uGpffff94c4)[1] = 0;
-                ((volatile u8*)&uGpffff94c4)[2] = 0;
-                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[0] = 0x54;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[1] = 0;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[2] = 0;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[3] = 0xff;
             }
             else if (manager->mode == 3)
             {
@@ -1035,10 +1035,10 @@ void* func_001a2a80(KwlnTask* task)
                 manager->windowTask =
                     func_001a2200(task, &rect, (RwRGBA*)&colorA,
                                   (RwRGBA*)&colorB);
-                ((volatile u8*)&uGpffff94c4)[0] = 0x40;
-                ((volatile u8*)&uGpffff94c4)[1] = 0x40;
-                ((volatile u8*)&uGpffff94c4)[2] = 0x40;
-                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[0] = 0x40;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[1] = 0x40;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[2] = 0x40;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[3] = 0xff;
             }
             else
             {
@@ -1055,10 +1055,10 @@ void* func_001a2a80(KwlnTask* task)
                 manager->windowTask =
                     func_001a2200(task, &rect, (RwRGBA*)&colorA,
                                   (RwRGBA*)&colorB);
-                ((volatile u8*)&uGpffff94c4)[0] = 0xe3;
-                ((volatile u8*)&uGpffff94c4)[1] = 0x4a;
-                ((volatile u8*)&uGpffff94c4)[2] = 0;
-                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[0] = 0xe3;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[1] = 0x4a;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[2] = 0;
+                ((volatile /* Removing this function's qualifier batch worsens func_001a2a80 (NONMATCHING nd2940 -> NONMATCHING nd2995, size 3868 -> 3916) - measured W170. */ u8*)&uGpffff94c4)[3] = 0xff;
             }
 
             manager->renderData = func_001e78c0(1, 0x48);
@@ -1600,8 +1600,8 @@ s32 func_001a4510(KwlnTask* task)
 
     manager = (KWindowManagerWork*)task->workData;
     entry = manager->entries;
-    cursor = *(volatile s32*)&manager->cursor;
-    firstVisible = *(volatile s32*)&manager->firstVisible;
+    cursor = *(volatile /* Removing this function's qualifier batch loses func_001a4510 (MATCH nd0 -> MISMATCH nd3, size 100 -> 100) - measured W170. */ s32*)&manager->cursor;
+    firstVisible = *(volatile /* Removing this function's qualifier batch loses func_001a4510 (MATCH nd0 -> MISMATCH nd3, size 100 -> 100) - measured W170. */ s32*)&manager->firstVisible;
     index = firstVisible + cursor;
     if (index >= manager->entryCount)
     {

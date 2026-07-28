@@ -677,9 +677,9 @@ void FUN_0035a290(int param_1, int param_2)
     FUN_004c33d0((void*)buffer, (const void*)((u8*)param_2 + 0x24), 0);
     FUN_004c2f30(param_1, buffer, (f32*)&matrix);
 
-    value30 = *(volatile f32*)(param_2 + 0x18);
-    value34 = *(volatile f32*)(param_2 + 0x1c);
-    value38 = *(volatile f32*)(param_2 + 0x20);
+    value30 = *(volatile /* Removing this function's qualifier batch loses FUN_0035a290 (MATCH nd0 -> MISMATCH nd6, size 348 -> 348) - measured W170. */ f32*)(param_2 + 0x18);
+    value34 = *(volatile /* Removing this function's qualifier batch loses FUN_0035a290 (MATCH nd0 -> MISMATCH nd6, size 348 -> 348) - measured W170. */ f32*)(param_2 + 0x1c);
+    value38 = *(volatile /* Removing this function's qualifier batch loses FUN_0035a290 (MATCH nd0 -> MISMATCH nd6, size 348 -> 348) - measured W170. */ f32*)(param_2 + 0x20);
     *(f32*)((int)param_1 + 0x30) = value30;
     *(f32*)((int)param_1 + 0x34) = value34;
     *(f32*)((int)param_1 + 0x38) = value38;
@@ -852,7 +852,7 @@ void FUN_0035a870(void* param_1, void* param_2)
 {
     PrimInterpData* out = (PrimInterpData*)param_1;
     const PrimInterpData* in = (const PrimInterpData*)param_2;
-    volatile f32 saved[4];
+    volatile /* Removing this qualifier worsens FUN_0035a870 (NONMATCHING nd237 -> NONMATCHING nd295, size 404 -> 364) - measured W170. */ f32 saved[4];
     f32 inY;
     f32 inX;
     f32 inZ;

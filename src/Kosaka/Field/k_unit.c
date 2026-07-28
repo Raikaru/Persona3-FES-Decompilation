@@ -3087,8 +3087,8 @@ void func_001d4290(void)
         object = (HCdvd*)func_00100d80(path, 0);
         func_001023a0(object);
         DAT_007ce290 = DAT_00871ec0;
-        fileSize = ((volatile HCdvd*)object)->fileSize;
-        fileMemory = ((volatile HCdvd*)object)->fileMemory;
+        fileSize = ((volatile /* Removing this function's qualifier batch loses func_001d4290 (MATCH nd0 -> MISMATCH nd4, size 200 -> 200) - measured W170. */ HCdvd*)object)->fileSize;
+        fileMemory = ((volatile /* Removing this function's qualifier batch loses func_001d4290 (MATCH nd0 -> MISMATCH nd4, size 200 -> 200) - measured W170. */ HCdvd*)object)->fileMemory;
         func_00521250(DAT_00871ec0, fileMemory, fileSize);
         DAT_007ce294 = DAT_007ce290 + 0x180;
         func_00100ec0(object);
@@ -3107,8 +3107,8 @@ u32 func_001d43e0(void* object)
     }
     cdvd = (HCdvd*)object;
     DAT_007ce290 = DAT_00871ec0;
-    fileSize = ((volatile HCdvd*)cdvd)->fileSize;
-    fileMemory = ((volatile HCdvd*)cdvd)->fileMemory;
+    fileSize = ((volatile /* Removing this function's qualifier batch loses func_001d43e0 (MATCH nd0 -> MISMATCH nd4, size 120 -> 120) - measured W170. */ HCdvd*)cdvd)->fileSize;
+    fileMemory = ((volatile /* Removing this function's qualifier batch loses func_001d43e0 (MATCH nd0 -> MISMATCH nd4, size 120 -> 120) - measured W170. */ HCdvd*)cdvd)->fileMemory;
     func_00521250(DAT_00871ec0, fileMemory, fileSize);
     DAT_007ce294 = DAT_007ce290 + 0x180;
     func_00100ec0(cdvd);

@@ -170,7 +170,7 @@ void func_0024a180(u32* work)
     }
 }
 // FUN_0024A230
-void func_0024a230(void* work, const volatile SflGroundColor* color)
+void func_0024a230(void* work, const volatile /* Removing this qualifier loses func_0024a230 (MATCH nd0 -> MISMATCH nd8, size 40 -> 40) - measured W170. */ SflGroundColor* color)
 {
     u8 r;
     u8 g;
@@ -981,21 +981,21 @@ void func_0023b990(void)
     s32 state;
     s32 i;
     s32 j;
-    const volatile u32* stateTable;
-    const volatile u32* drawTable;
+    const u32* stateTable;
+    const u32* drawTable;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     stateTable = (const u32*)D_00960090_abs;
     drawTable = (const u32*)D_0096009C_abs;
     
-    stateTable = (const volatile u32*)D_00960090_abs;
+    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
-    stateTable = (const volatile u32*)D_00960090_abs;
+    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
-    stateTable = (const volatile u32*)D_00960090_abs;
+    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
-    stateTable = (const volatile u32*)D_00960090_abs;
+    stateTable = (const u32*)D_00960090_abs;
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
 
     state = work[3];
@@ -1204,7 +1204,7 @@ void func_0023c3a0(void* destination)
         base = (u8*)destination + i * 0x100;
         while (j < 4) {
             GROUND_F32(base + j * 0x40, 8) =
-                *(const volatile f32*)&D_00960088;
+                *(const volatile /* Removing this qualifier loses func_0023c3a0 (MATCH nd0 -> MISMATCH nd40, size 380 -> 380) - measured W170. */ f32*)&D_00960088;
             GROUND_F32(base + j * 0x40, 0x18) = cameraScale;
             j++;
         }
@@ -1306,8 +1306,8 @@ void func_0023c850(void* vertices, const SflGroundColor* color)
 void func_0023c8c0(void* vertices)
 {
     void* vertices_p;
-    register const volatile u32* stateTable;
-    register const volatile u32* drawTable;
+    register const u32* stateTable;
+    register const u32* drawTable;
 
     vertices_p = vertices;
     stateTable = D_00960090;
@@ -1607,7 +1607,7 @@ void func_0023d650(void)
             u8* tile;
             tile = (u8*)work + SFL_GROUND_TILE_OFFSET +
                    (row * 11 + column) * SFL_GROUND_TILE_STRIDE;
-            GROUND_F32(tile, 8) = *(const volatile f32*)&D_00960088;
+            GROUND_F32(tile, 8) = *(const volatile /* Removing this qualifier loses func_0023d650 (MATCH nd0 -> MISMATCH nd60, size 336 -> 336) - measured W170. */ f32*)&D_00960088;
             GROUND_F32(tile, 0x18) = cameraScale;
             GROUND_U32(tile, 0x20) = white;
             GROUND_U32(tile, 0x24) = white;

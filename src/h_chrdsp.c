@@ -331,8 +331,8 @@ void H_Chrdsp_Init(void)
 void H_Chrdsp_Main(void)
 {
     s16 workIndex;
-    volatile void (**setRenderState)(u32 state, u32 value);
-    setRenderState = (volatile void (**)(u32, u32))D_00960090_abs;
+    void (**setRenderState)(u32 state, u32 value);
+    setRenderState = (void (**)(u32, u32))D_00960090_abs;
     (*setRenderState)(6, 1);
     (*setRenderState)(7, 2);
     (*setRenderState)(8, 1);

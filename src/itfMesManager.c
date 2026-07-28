@@ -1119,8 +1119,8 @@ int FUN_003a2c90(int param_1,int param_2)
     }
     param_2 = (int)((u8 *)param_1 + offset);
     slot = (u32 *)(param_2 + 0x14);
-    *(volatile u32 *)((u8 *)param_1 + 0xc) = *slot;
-    *(volatile u32 *)((u8 *)param_1 + 0x10) = *slot;
+    *(u32 *)((u8 *)param_1 + 0xc) = *slot;
+    *(u32 *)((u8 *)param_1 + 0x10) = *slot;
     if (iVar1 != 0) {
       u32 first;
       first = auStack_1f0[0];
@@ -2794,7 +2794,7 @@ void FUN_003a5030(int object)
     if (*(u8*)(object + 0x1c) == 0) {
         base = object + 0x20;
         end = object + *(s32*)(object + 0x10);
-        FUN_0035ac90(base, base, end, *(volatile u32*)(object + 0x14));
+        FUN_0035ac90(base, base, end, *(volatile /* Removing this qualifier loses FUN_003a5030 (MATCH nd0 -> MISMATCH nd8, size 84 -> 84) - measured W170. */ u32*)(object + 0x14));
         *(u8*)(object + 0x1c) = 1;
     }
 }
@@ -2808,7 +2808,7 @@ int FUN_003a50e0(int param_1,int param_2)
   s32 base;
   s32 index;
 
-  base = *(volatile s32 *)(param_1 + 4);
+  base = *(volatile /* Removing this qualifier loses FUN_003a50e0 (MATCH nd0 -> MISMATCH nd9, size 24 -> 24) - measured W170. */ s32 *)(param_1 + 4);
   index = param_2 * 8;
   return index + base + 0x20;
 }
@@ -2854,7 +2854,7 @@ u32 FUN_003a5120(int param_1,int param_2)
 
   base = *(int *)(iVar1 + 4);
   /* Removing this barrier loses FUN_003a5120 (MATCH nd0 -> MISMATCH nd9) - measured W164. */
-  asm volatile("" : "+m"(base));
+  asm ("" : "+m"(base));
   offset = param_2 * 8;
   return *(u32 *)(offset + base + 0x20);
 
@@ -6000,7 +6000,7 @@ void FUN_003a8260(int param_1)
 
 void FUN_003a8350(int param_1)
 {
-  volatile u64 uStack_18;
+  u64 uStack_18;
   float fVar1;
   float fVar2;
   float fVar3;
@@ -6010,9 +6010,9 @@ void FUN_003a8350(int param_1)
 
   uStack_18 = gp0xffffa7c8;
   fVar2 = (float)(int)*(short *)(param_1 + 0x1e0);
-  *(volatile float *)&uStack_18 = fVar2;
+  *(float *)&uStack_18 = fVar2;
   fVar3 = (float)(int)*(short *)(param_1 + 0x1e2);
-  *((volatile float *)&uStack_18 + 1) = fVar3;
+  *((float *)&uStack_18 + 1) = fVar3;
   iVar2 = (int)fVar2;
   iVar3 = (int)fVar3 + -5 + (int)*(short *)(param_1 + 0x1da);
 
@@ -6096,7 +6096,7 @@ void FUN_003a8590(u32* param_1)
 {
   u8* puVar2;
   int iVar1;
-  volatile u32 auStack_20[8];
+  u32 auStack_20[8];
 
   puVar2 = (u8*)auStack_20;
   iVar1 = 0x20;

@@ -105,7 +105,7 @@ extern u32 fclCombineList003df100();
   (SRC)[17].field18 = 0; \
   memcpy((OUT), (SRC) + (COPY_OFFSET), 0x1c); \
   fclCombineList003df100( \
-      FUN_003dffc0((OWNER), (ID), *((volatile u32 *)((u8 *)(OUT) + 4))), \
+      FUN_003dffc0((OWNER), (ID), *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), \
       (OUT)); \
 } while (0)
 #define FCL_SHOP_MISC_BUILD(SRC, OUT, OWNER, ID, VALUE, FIELD, COPY_OFFSET) do { \
@@ -153,10 +153,10 @@ extern u32 fclCombineList003df100();
     memcpy((OUT), (SRC) + (COPY_OFFSET), 0x1c); \
     fclCombineList003df100( \
         FUN_003dffc0((OWNER), (ID), \
-            *((volatile u32 *)((u8 *)(OUT) + 4))), (OUT)); \
+            *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), (OUT)); \
 } while (0)
 #define FCL_SHOP_MISC_AT(OFFSET) \
-    ((volatile FclShopDispatchResult *)((u8 *)source + (OFFSET)))
+    ((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ FclShopDispatchResult *)((u8 *)source + (OFFSET)))
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 u64 FUN_00172660(s32 socialLink);
 extern u8 DAT_006aede8[];
@@ -16074,7 +16074,7 @@ LAB_0040370c:
 
 s16 FUN_00403740(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -16091,7 +16091,7 @@ s16 FUN_00403740(short param_1)
 
 s16 FUN_00403760(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -16107,7 +16107,7 @@ s16 FUN_00403760(short param_1)
 
 s16 FUN_00403780(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -16124,7 +16124,7 @@ s16 FUN_00403780(short param_1)
 
 s16 FUN_004037a0(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -16141,7 +16141,7 @@ s16 FUN_004037a0(short param_1)
 
 s16 FUN_004037c0(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -16236,7 +16236,7 @@ u32 FUN_004038a0(short param_1)
 
 u32 FUN_004038e0(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -16253,7 +16253,7 @@ u32 FUN_004038e0(short param_1)
 
 s16 FUN_00403900(short param_1)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder;"
       ".word 0x8f83ac00;"
       ".word 0x0004143c;"
@@ -17530,7 +17530,7 @@ int FUN_00405db0(u32* param_1, u32* param_2)
   base = (s16*)((u8*)iGpffffac00 + 0x3a);
   a = base[*(s16*)(*(u32*)(*(u32*)(*param_1 + 0x14) + 0x1c) + 4) * 0x20];
   /* Removing this barrier loses FUN_00405db0 (MATCH nd0 -> MISMATCH nd3) - measured W164. */
-  asm volatile("" : "+m"(a));
+  asm ("" : "+m"(a));
   b = base[*(s16*)(*(u32*)(*(u32*)(*param_2 + 0x14) + 0x1c) + 4) * 0x20];
   return b - a;
 }
@@ -20083,7 +20083,7 @@ void FUN_0040c150(u32 param_1)
 
 
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder       \n"
       "lw $v1, 0x24($a0)    \n"
       "lw $v1, 0x44($v1)    \n"

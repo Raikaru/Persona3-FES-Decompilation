@@ -682,7 +682,7 @@ void* K_FldFrame_UpdateCollisSphereTask(KwlnTask* collisSphereTask)
 
     {
         RwV3d spherePos;
-        volatile RwV3d posCopy;
+        volatile /* Removing this qualifier loses K_FldFrame_UpdateCollisSphereTask (MATCH nd0 -> MISMATCH nd101, size 296 -> 280) - measured W170. */ RwV3d posCopy;
         RwV3d pos = {0};
         RwRGBA color;
 

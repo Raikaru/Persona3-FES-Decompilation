@@ -266,8 +266,8 @@ alpha2_done:
 
 void FUN_0025bbf0(void)
 {
-    volatile code *draw;
-    volatile code *render;
+    code *draw;
+    code *render;
     u32* work;
     u32 resource;
     s32 i;

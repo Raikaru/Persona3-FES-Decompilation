@@ -1251,7 +1251,7 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
 
     selectedEntry = work->selectedEntry;
     /* Removing this barrier loses h_campDrawRootMenuEntries (MATCH nd0 -> MISMATCH nd463) - measured W164. */
-    asm volatile("" : "+r"(selectedEntry));
+    asm ("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;
     offset = temp;
@@ -1591,7 +1591,7 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
     pos.startX = -19.0f;
     selectedEntry = work->selectedEntry;
     /* Removing this barrier loses h_campDrawRootMenuEntriesClosing (MATCH nd0 -> MISMATCH nd455) - measured W164. */
-    asm volatile("" : "+r"(selectedEntry));
+    asm ("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;
     offset = temp;
@@ -1745,7 +1745,7 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
     pos.startX = -19.0f;
     selectedEntry = work->selectedEntry;
     /* Removing this barrier loses h_campDrawRootMenuEntriesFadeOut (MATCH nd0 -> MISMATCH nd455) - measured W164. */
-    asm volatile("" : "+r"(selectedEntry));
+    asm ("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;
     offset = temp;
@@ -4214,7 +4214,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 0;
             work->state = 0;
         }
-        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
+        drawTimer = ((CampPanelTransitionWork*)work)->timer;
         pos.x = 30.0f - (f32)((drawTimer * 500) / 8);
         pos.y = 219.0f;
         fade = (drawTimer * 255) / 8;
@@ -4237,7 +4237,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 1;
             work->state = 0;
         }
-        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
+        drawTimer = ((CampPanelTransitionWork*)work)->timer;
         pos.x = 30.0f - (f32)(500 - (drawTimer * 500) / 8);
         pos.y = 219.0f;
         fade = 255 - (drawTimer * 255) / 8;
@@ -4260,7 +4260,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 1;
             work->state = 0;
         }
-        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
+        drawTimer = ((CampPanelTransitionWork*)work)->timer;
         pos.x = 30.0f;
         pos.y = 219.0f;
         fade = 255 - (drawTimer * 255) / 0x14;
@@ -4290,7 +4290,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 0;
             work->state = 0;
         }
-        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
+        drawTimer = ((CampPanelTransitionWork*)work)->timer;
         pos.x = 30.0f;
         pos.y = 219.0f;
         fade = (drawTimer * 255) / 0xa;

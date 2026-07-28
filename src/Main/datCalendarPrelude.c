@@ -1958,8 +1958,8 @@ void FUN_0017d3c0(void)
         f32 c;
         f32 d;
     };
-    extern const volatile struct DateTemplate D_005e38c0;
-    volatile struct DateTemplate template;
+    extern const volatile /* Removing this function's qualifier batch loses FUN_0017d3c0 (MATCH nd0 -> MISMATCH nd18, size 144 -> 144) - measured W170. */ struct DateTemplate D_005e38c0;
+    volatile /* Removing this function's qualifier batch loses FUN_0017d3c0 (MATCH nd0 -> MISMATCH nd18, size 144 -> 144) - measured W170. */ struct DateTemplate template;
     f32 a;
     f32 b;
     f32 c;

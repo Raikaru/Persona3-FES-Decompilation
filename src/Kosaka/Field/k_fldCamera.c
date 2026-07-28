@@ -14,8 +14,8 @@
 #include "libm.h"
 #include "temporary.h"
 
-#define CAMERA_DATA_U32(address) (*(volatile u32*)(uintptr_t)(address))
-#define CAMERA_FIELD_IDS (*(volatile u32**)(uintptr_t)0x007cd540)
+#define CAMERA_DATA_U32(address) (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32*)(uintptr_t)(address))
+#define CAMERA_FIELD_IDS (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32**)(uintptr_t)0x007cd540)
 #define CAMERA_UP_AXIS ((const RwV3d*)(uintptr_t)0x00683a98)
 
 typedef struct FldCameraResource
@@ -105,13 +105,13 @@ setup_dead_zone:
     for (i = 0; i < 9; i++)
     {
         field = K_Field_Get();
-        fieldSub = (void*)*(volatile void**)((u8*)field + 0x116c);
+        fieldSub = (void*)*(void**)((u8*)field + 0x116c);
         amount = (f32)i * 0.125f;
         /* Removing this barrier loses func_001d5c10 (MATCH nd0 -> MISMATCH nd21) - measured W164. */
-        asm volatile("" : "+m"(amount));
+        asm ("" : "+m"(amount));
         destination = &fldCamera->deadZonePath[i];
         FUN_0048d480(amount,
-                     (void*)*(volatile void**)((u8*)fieldSub + 0xa1c),
+                     (void*)*(void**)((u8*)fieldSub + 0xa1c),
                      10, destination, NULL);
     }
     if (fldCamera->pointTask0 == NULL)
@@ -192,9 +192,9 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
         } while (i != 0);
     }
     axisPtr = &axis;
-    axisXY = *(volatile u64*)(uintptr_t)0x00683a98;
+    axisXY = *(u64*)(uintptr_t)0x00683a98;
     *(u64*)axisPtr = axisXY;
-    axisPtr->z = *(volatile f32*)(uintptr_t)0x00683aa0;
+    axisPtr->z = *(f32*)(uintptr_t)0x00683aa0;
     FUN_004cb890(cameraFrame, amount, axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();
@@ -261,9 +261,9 @@ void* func_001d5f90(KwlnTask* cameraRotationTask)
                 } while (i != 0);
             }
             axisPtr = &axis;
-            axisXY = *(volatile u64*)(uintptr_t)0x00683a98;
+            axisXY = *(u64*)(uintptr_t)0x00683a98;
             *(u64*)axisPtr = axisXY;
-            axisPtr->z = *(volatile f32*)(uintptr_t)0x00683aa0;
+            axisPtr->z = *(f32*)(uintptr_t)0x00683aa0;
             FUN_004cb890(cameraFrame, initialRotation, axisPtr, 2);
             cameraPosition = cameraFrame->modelling.pos;
             camera = kwlnGetMainCamera();
@@ -304,9 +304,9 @@ void* func_001d5f90(KwlnTask* cameraRotationTask)
                 } while (i != 0);
             }
             axisPtr = &axis;
-            axisXY = *(volatile u64*)(uintptr_t)0x00683a98;
+            axisXY = *(u64*)(uintptr_t)0x00683a98;
             *(u64*)axisPtr = axisXY;
-            axisPtr->z = *(volatile f32*)(uintptr_t)0x00683aa0;
+            axisPtr->z = *(f32*)(uintptr_t)0x00683aa0;
             FUN_004cb890(cameraFrame, sineDelta, axisPtr, 2);
             cameraPosition = cameraFrame->modelling.pos;
             camera = kwlnGetMainCamera();
@@ -760,7 +760,7 @@ void func_001d7260(void)
 {
     char path[128];
     HCdvd* object;
-    volatile HCdvd* volatileObject;
+    volatile /* Removing this qualifier loses func_001d7260 (MATCH nd0 -> MISMATCH nd18, size 148 -> 148) - measured W170. */ HCdvd* volatileObject;
     void* opmap;
     u32 count;
 

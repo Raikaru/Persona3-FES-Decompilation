@@ -466,10 +466,10 @@ void* func_001a5000(KwlnTask* task)
 void* func_001a50f0(KwlnTask* task)
 {
     KDrawArcTaskWork* work;
-    volatile u8 unused[0x10];
+    u8 unused[0x10];
     RwMatrix modelMatrix;
     RwSphere* sphere;
-    volatile void (**stateSet)(u32 state, u32 value);
+    void (**stateSet)(u32 state, u32 value);
 
     work = (KDrawArcTaskWork*)task->workData;
     if (work->state == 0)
@@ -485,7 +485,7 @@ void* func_001a50f0(KwlnTask* task)
 
     if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
     {
-        stateSet = (volatile void (**)(u32, u32))D_00960090_abs;
+        stateSet = (void (**)(u32, u32))D_00960090_abs;
         (*stateSet)(7, 2);
         (*stateSet)(6, 1);
         (*stateSet)(8, 0);
@@ -531,7 +531,7 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     u8* indexData;
     u8* colors;
     RwV3d* vertices;
-    volatile f32 colorValue;
+    f32 colorValue;
     RwSphere bounds;
     f32 theta;
     s32 i;

@@ -264,14 +264,14 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
 static __inline void mdlVuModulateStacked90(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x8c      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -313,14 +313,14 @@ static __inline void mdlVuModulateStacked90(u32 c2)
 static __inline void mdlVuModulateStacked80V0(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x7c      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -362,14 +362,14 @@ static __inline void mdlVuModulateStacked80V0(u32 c2)
 static __inline void mdlVuModulateStacked80V1(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x7c      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -411,14 +411,14 @@ static __inline void mdlVuModulateStacked80V1(u32 c2)
 static __inline void mdlVuModulateStacked50(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x48      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -460,14 +460,14 @@ static __inline void mdlVuModulateStacked50(u32 c2)
 static __inline void mdlVuModulateStacked50V1(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x48      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -509,14 +509,14 @@ static __inline void mdlVuModulateStacked50V1(u32 c2)
 static __inline void mdlVuModulateStacked70(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x6c      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -558,14 +558,14 @@ static __inline void mdlVuModulateStacked70(u32 c2)
 static __inline void mdlVuModulateStacked40V1(u32 c2)
 {
     f32 inv255;
-    __asm__ volatile (
+    __asm__ (
         ".set noreorder                  \n"
         "addiu       $v0, $sp, 0x3c      \n"
         ".set reorder"
         :
         :
         : "$v0", "memory");
-    inv255 = *(volatile f32 *)&DAT_007cae4c;
+    inv255 = *(f32 *)&DAT_007cae4c;
     __asm__ volatile (
         ".set noreorder                  \n"
         "lw          $v0, 0($v0)         \n"
@@ -3938,7 +3938,7 @@ void FUN_0031f5c0(int *param_1)
     s16 field1e;
   } MdlFrame;
   MdlFrame *frame;
-  volatile MdlFrame *vframe;
+  volatile /* Removing this qualifier loses FUN_0031f5c0 (MATCH nd0 -> MISMATCH nd8, size 272 -> 272) - measured W170. */ MdlFrame *vframe;
   s16 arg0;
   s16 arg1;
   s16 arg2;
@@ -4808,18 +4808,18 @@ void FUN_00320770(int *param_1)
 
     for (uVar7 = 0; uVar7 < uVar4; uVar7 = uVar7 + 1) {
       iVar6 = *(int *)(*piVar5 + uVar7 * 4);
-      uVar0 = *(volatile u8 *)(iVar8 + 0x40);
-      uVar1 = *(volatile u8 *)(iVar8 + 0x41);
-      uVar2 = *(volatile u8 *)(iVar8 + 0x42);
-      uVar3 = *(volatile u8 *)(iVar8 + 0x43);
+      uVar0 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ u8 *)(iVar8 + 0x40);
+      uVar1 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ u8 *)(iVar8 + 0x41);
+      uVar2 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ u8 *)(iVar8 + 0x42);
+      uVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ u8 *)(iVar8 + 0x43);
       *(u8 *)(iVar6 + 4) = uVar0;
       *(u8 *)(iVar6 + 5) = uVar1;
       *(u8 *)(iVar6 + 6) = uVar2;
       *(u8 *)(iVar6 + 7) = uVar3;
       iVar6 = *(int *)(*piVar5 + uVar7 * 4);
-      fVar9 = *(volatile f32 *)(iVar8 + 0x44);
-      fVar10 = *(volatile f32 *)(iVar8 + 0x48);
-      fVar11 = *(volatile f32 *)(iVar8 + 0x4c);
+      fVar9 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ f32 *)(iVar8 + 0x44);
+      fVar10 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ f32 *)(iVar8 + 0x48);
+      fVar11 = *(volatile /* Removing this function's qualifier batch loses FUN_00320770 (MATCH nd0 -> MISMATCH nd14, size 152 -> 152) - measured W170. */ f32 *)(iVar8 + 0x4c);
       *(f32 *)(iVar6 + 0xc) = fVar9;
       *(f32 *)(iVar6 + 0x10) = fVar10;
       *(f32 *)(iVar6 + 0x14) = fVar11;
@@ -7437,13 +7437,13 @@ u32 FUN_003230f0(u32 param_1,u32 param_2,u32 param_3)
 
   u16 *puVar7;
 
-  volatile f32 fStack_9c;
+  volatile /* Removing this function's qualifier batch loses FUN_003230f0 (MATCH nd0 -> MISMATCH nd115, size 332 -> 300) - measured W170. */ f32 fStack_9c;
 
-  volatile f32 fStack_98;
+  volatile /* Removing this function's qualifier batch loses FUN_003230f0 (MATCH nd0 -> MISMATCH nd115, size 332 -> 300) - measured W170. */ f32 fStack_98;
 
-  volatile f32 fStack_94;
+  volatile /* Removing this function's qualifier batch loses FUN_003230f0 (MATCH nd0 -> MISMATCH nd115, size 332 -> 300) - measured W170. */ f32 fStack_94;
 
-  volatile f32 fStack_90;
+  volatile /* Removing this function's qualifier batch loses FUN_003230f0 (MATCH nd0 -> MISMATCH nd115, size 332 -> 300) - measured W170. */ f32 fStack_90;
 
   f32 fVar3;
 
@@ -22606,7 +22606,7 @@ void FUN_00332e10(int *param_1)
       }
       uVar4 = *(u16 *)(iVar3 + 0x54);
       /* Removing this barrier loses FUN_00332e10 (MATCH nd0 -> MISMATCH nd8) - measured W164. */
-      asm volatile("" : "+r"(uVar4));
+      asm ("" : "+r"(uVar4));
       FUN_003342c0(iVar2,uVar4);
     }
 
@@ -22674,7 +22674,7 @@ void FUN_00332f10(int *param_1)
 
       uVar4 = *(u16 *)(iVar3 + 0x54);
       /* Removing this barrier loses FUN_00332f10 (MATCH nd0 -> MISMATCH nd8) - measured W164. */
-      asm volatile("" : "+r"(uVar4));
+      asm ("" : "+r"(uVar4));
       FUN_003342c0(iVar2,uVar4);
 
     }
@@ -22895,7 +22895,7 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
 
   iVar4 = *(int *)(param_1 + 0x10);
 
-  uVar4 = *(volatile u8 *)(param_3 + 3);
+  uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_00333300 (MATCH nd0 -> MISMATCH nd162, size 280 -> 272) - measured W170. */ u8 *)(param_3 + 3);
   if (uVar4 != 0xff) {
     iVar5 = (param_2 & 0xffff) * 4;
     iVar4 = *(int *)(*(int *)(iVar4 + 0x28) + iVar5);
@@ -22925,7 +22925,7 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
 
   iVar4 = *(int *)(param_1 + 0x14);
 
-  uVar4 = *(volatile u8 *)(param_3 + 3);
+  uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_00333300 (MATCH nd0 -> MISMATCH nd162, size 280 -> 272) - measured W170. */ u8 *)(param_3 + 3);
   if (uVar4 != 0xff) {
     iVar4 = *(int *)(*(int *)(iVar4 + 0x28) + iVar5);
     uVar5 = *param_3;
@@ -27607,28 +27607,28 @@ void FUN_00337e10(int param_1)
 
   pVar1 = *(int **)(param_1 + 0x3c);
   iVar1 = *pVar1;
-  if (*(volatile u8 *)&bGpffffb857 != 0xff) {
+  if (*(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857 != 0xff) {
     puVar2 = *(u8 **)(iVar1 + 0x14);
-    uVar3 = *(volatile u8 *)&bGpffffb854;
-    uVar4 = *(volatile u8 *)&bGpffffb855;
-    uVar5 = *(volatile u8 *)&bGpffffb856;
-    uVar6 = *(volatile u8 *)&bGpffffb857;
+    uVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb854;
+    uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb855;
+    uVar5 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb856;
+    uVar6 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857;
     puVar2[4] = uVar3;
     puVar2[5] = uVar4;
     puVar2[6] = uVar5;
     puVar2[7] = uVar6;
   } else {
-    *(volatile u8 *)&bGpffffb857 = 0xfe;
+    *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857 = 0xfe;
     puVar2 = *(u8 **)(iVar1 + 0x14);
-    uVar3 = *(volatile u8 *)&bGpffffb854;
-    uVar4 = *(volatile u8 *)&bGpffffb855;
-    uVar5 = *(volatile u8 *)&bGpffffb856;
-    uVar6 = *(volatile u8 *)&bGpffffb857;
+    uVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb854;
+    uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb855;
+    uVar5 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb856;
+    uVar6 = *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857;
     puVar2[4] = uVar3;
     puVar2[5] = uVar4;
     puVar2[6] = uVar5;
     puVar2[7] = uVar6;
-    *(volatile u8 *)&bGpffffb857 = 0xff;
+    *(volatile /* Removing this function's qualifier batch loses FUN_00337e10 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857 = 0xff;
   }
 }
 
@@ -29196,7 +29196,7 @@ void FUN_003397d0(int param_1)
   puVar1 = (u16 *)(*(u32 **)(param_1 + 0x3c))[1];
   iVar2 = *(int *)(*(int *)(param_1 + 0x40) + 0x38);
   FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
-  FUN_00521408(*(volatile u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
+  FUN_00521408(*(volatile /* Removing this qualifier loses FUN_003397d0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
   FUN_004933d0(iVar3);
@@ -29877,7 +29877,7 @@ void FUN_0033a3e0(int param_1)
   int iVar3;
 
   u32 *puVar4;
-  volatile u32 *puVar5;
+  volatile /* Removing this qualifier loses FUN_0033a3e0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *puVar5;
 
   
 
@@ -30625,7 +30625,7 @@ void FUN_0033b0d0(int param_1)
   int iVar3;
 
   u32 *puVar4;
-  volatile u32 *puVar5;
+  volatile /* Removing this qualifier loses FUN_0033b0d0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *puVar5;
 
   
 
@@ -31336,7 +31336,7 @@ void FUN_0033bda0(int param_1)
   int iVar3;
 
   u32 *puVar4;
-  volatile u32 *puVar5;
+  volatile /* Removing this qualifier loses FUN_0033bda0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *puVar5;
 
   
 
@@ -32171,7 +32171,7 @@ void FUN_0033cb20(int param_1)
   int iVar3;
 
   u32 *puVar4;
-  volatile u32 *puVar5;
+  volatile /* Removing this qualifier loses FUN_0033cb20 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *puVar5;
 
   
 
@@ -32929,7 +32929,7 @@ void FUN_0033d890(int param_1)
   int iVar3;
 
   u32 *puVar4;
-  volatile u32 *puVar5;
+  volatile /* Removing this qualifier loses FUN_0033d890 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *puVar5;
 
   
 
@@ -33785,7 +33785,7 @@ void FUN_0033e700(int param_1)
 
   FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
-  FUN_00521408(*(volatile u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
+  FUN_00521408(*(volatile /* Removing this qualifier loses FUN_0033e700 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
 
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
@@ -34546,7 +34546,7 @@ void FUN_0033f4a0(int param_1)
 
   FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
-  FUN_00521408(*(volatile u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
+  FUN_00521408(*(volatile /* Removing this qualifier loses FUN_0033f4a0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
 
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
@@ -35449,7 +35449,7 @@ void FUN_003402c0(int param_1)
 
   FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
-  FUN_00521408(*(volatile u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
+  FUN_00521408(*(volatile /* Removing this qualifier loses FUN_003402c0 (MATCH nd0 -> MISMATCH nd17, size 232 -> 232) - measured W170. */ u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
                (short)puVar1[4] * 0xc);
 
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
@@ -42499,7 +42499,7 @@ void FUN_00347f80(void)
 
 
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder ;"
       ".word 0x27bdfff0 ;"
       ".word 0xffbf0000 ;"
@@ -42586,7 +42586,7 @@ u32 FUN_00348090(int param_1)
 
   destination = (void *)((u32 *)uVar1 + 1);
   /* Removing this barrier loses FUN_00348090 (MATCH nd0 -> MISMATCH nd2) - measured W164. */
-  asm volatile("" : "+m"(destination));
+  asm ("" : "+m"(destination));
   source = (const void *)(param_1 + 4);
   FUN_00521250_mdl(destination,source,0x10);
 
@@ -46219,8 +46219,8 @@ void FUN_0034c890(int param_1)
 
       uVar3 = uVar2 * 4;
       /* Removing this barrier loses FUN_0034c890 (MATCH nd0 -> MISMATCH nd9) - measured W164. */
-      asm volatile("" : "+r"(uVar3));
-      iVar4 = *(volatile int *)(iVar1 + 0x98);
+      asm ("" : "+r"(uVar3));
+      iVar4 = *(int *)(iVar1 + 0x98);
       FUN_003257e0(*(u32 *)(iVar4 + uVar3));
 
     }
@@ -46727,10 +46727,10 @@ void FUN_0034cf30(int param_1)
 
   else {
 
-    lVar1 = *(volatile int *)(param_1 + 0x90);
-    uVar5 = *(volatile u32 *)(param_1 + 0x28);
-    puVar3 = (u32 *)(*(volatile u32 *)(param_1 + 0x98));
-    uVar2 = *(volatile u32 *)(param_1 + 0x2c);
+    lVar1 = *(int *)(param_1 + 0x90);
+    uVar5 = *(u32 *)(param_1 + 0x28);
+    puVar3 = (u32 *)(*(u32 *)(param_1 + 0x98));
+    uVar2 = *(u32 *)(param_1 + 0x2c);
 
     if (((int)uVar2 < lVar1) || (lVar1 == 0)) {
       for (uVar4 = 0; uVar4 < uVar5; uVar4 = uVar4 + 1) {
@@ -47190,7 +47190,7 @@ u32 FUN_0034d6f0(int param_1)
   puVar4[1] = 0xffffffff;
   puVar4[2] = 0x3f800000;
   FUN_00521250(uVar2 + 0x10,iVar3 + 0x10,0x44);
-  FUN_0034d8a0(uVar2,*(volatile u16 *)*(int *)(iVar3 + 0x58),iVar1);
+  FUN_0034d8a0(uVar2,*(volatile /* Removing this qualifier loses FUN_0034d6f0 (MATCH nd0 -> MISMATCH nd8, size 284 -> 284) - measured W170. */ u16 *)*(int *)(iVar3 + 0x58),iVar1);
   if (*(int *)(*(int *)(uVar2 + 0x58) + 8) != 0) {
     goto do_update;
   }
@@ -48372,7 +48372,7 @@ u32 FUN_0034e690(int param_1)
 
   FUN_00521250(uVar2 + 0xc,iVar3 + 0xc,0x48);
 
-  FUN_0034e820(uVar2,*(volatile u16 *)*(int *)(iVar3 + 0x5c),iVar1);
+  FUN_0034e820(uVar2,*(volatile /* Removing this qualifier loses FUN_0034e690 (MATCH nd0 -> MISMATCH nd8, size 292 -> 292) - measured W170. */ u16 *)*(int *)(iVar3 + 0x5c),iVar1);
 
   if (*(int *)(puVar4[0x17] + 8) != 0) {
     goto do_update_e;
@@ -49855,10 +49855,10 @@ void FUN_00350080(void)
 // FUN_003500A0
 void FUN_003500a0(u32 param_1,u16 param_2)
 {
-  *(volatile u32 *)DAT_00957bc0_abs = param_1;
-  *(volatile u16 *)DAT_00957bc4_abs = param_2;
-  *(volatile u32 *)DAT_00957bc8_abs = 0;
-  *(volatile u32 *)DAT_00957bcc_abs = 0;
+  *(u32 *)DAT_00957bc0_abs = param_1;
+  *(u16 *)DAT_00957bc4_abs = param_2;
+  *(u32 *)DAT_00957bc8_abs = 0;
+  *(u32 *)DAT_00957bcc_abs = 0;
   gp0xffffb884 = 0;
   gp0xffffb888 = 1;
 }
@@ -49944,12 +49944,12 @@ void FUN_00350190(void)
     
   uVar2 = FUN_0035ed20_i(1);
 
-  *(volatile u32 *)DAT_00957bc0_abs = uVar1;
-  *(volatile u16 *)DAT_00957bc4_abs = uVar2;
+  *(u32 *)DAT_00957bc0_abs = uVar1;
+  *(u16 *)DAT_00957bc4_abs = uVar2;
   uVar2 = 0;
   uVar3 = 0;
-  *(volatile u32 *)DAT_00957bc8_abs = 0;
-  *(volatile u32 *)DAT_00957bcc_abs = 0;
+  *(u32 *)DAT_00957bc8_abs = 0;
+  *(u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   uVar3 = 1;
   DAT_007ce578 = uVar3;
@@ -51279,7 +51279,7 @@ void FUN_00351c20(void)
 // FUN_00351CA0
 void FUN_00351ca0(int *param_1)
 {
-  volatile int *pVar1;
+  volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ int *pVar1;
   int iVar1;
   u8 *puVar2;
   u8 uVar3;
@@ -51290,29 +51290,29 @@ void FUN_00351ca0(int *param_1)
 
   pVar1 = *(int **)(param_1 + 7);
   iVar1 = *(int *)(pVar1 + 1);
-  if (*(volatile u8 *)&bGpffffb857 != 0xff) {
+  if (*(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857 != 0xff) {
     puVar2 = *(u8 **)(iVar1 + 0x14);
-    uVar3 = *(volatile u8 *)&bGpffffb854;
-    uVar4 = *(volatile u8 *)&bGpffffb855;
-    uVar5 = *(volatile u8 *)&bGpffffb856;
-    uVar6 = *(volatile u8 *)&bGpffffb857;
+    uVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb854;
+    uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb855;
+    uVar5 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb856;
+    uVar6 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857;
     puVar2[4] = uVar3;
     puVar2[5] = uVar4;
     puVar2[6] = uVar5;
     puVar2[7] = uVar6;
   }
   else {
-    *(volatile u8 *)&bGpffffb857 = 0xfe;
+    *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857 = 0xfe;
     puVar2 = *(u8 **)(iVar1 + 0x14);
-    uVar3 = *(volatile u8 *)&bGpffffb854;
-    uVar4 = *(volatile u8 *)&bGpffffb855;
-    uVar5 = *(volatile u8 *)&bGpffffb856;
-    uVar6 = *(volatile u8 *)&bGpffffb857;
+    uVar3 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb854;
+    uVar4 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb855;
+    uVar5 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb856;
+    uVar6 = *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857;
     puVar2[4] = uVar3;
     puVar2[5] = uVar4;
     puVar2[6] = uVar5;
     puVar2[7] = uVar6;
-    *(volatile u8 *)&bGpffffb857 = 0xff;
+    *(volatile /* Removing this function's qualifier batch loses FUN_00351ca0 (MATCH nd0 -> MISMATCH nd55, size 124 -> 120) - measured W170. */ u8 *)&bGpffffb857 = 0xff;
   }
 }
 

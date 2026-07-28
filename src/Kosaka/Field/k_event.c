@@ -1317,10 +1317,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 #define EVENT_U8(offset)  (*(u8*)((u8*)fldEvent + (offset)))
 #define FIELD_WORD(offset) (((u32*)K_Field_Get())[(offset) / sizeof(u32)])
 #define FIELD_U16(offset) (*(u16*)((u8*)K_Field_Get() + (offset)))
-#define DATA_U8(address)  (*(volatile u8*)(address))
-#define DATA_U16(address) (*(volatile u16*)(address))
-#define DATA_U32(address) (*(volatile u32*)(address))
-#define DATA_S32(address) (*(volatile s32*)(address))
+#define DATA_U8(address)  (*(u8*)(address))
+#define DATA_U16(address) (*(u16*)(address))
+#define DATA_U32(address) (*(u32*)(address))
+#define DATA_S32(address) (*(s32*)(address))
     extern void* K_Field_Get();
     extern u16 K_Field_GetMajorId();
     extern u16 K_Field_GetMinorId();

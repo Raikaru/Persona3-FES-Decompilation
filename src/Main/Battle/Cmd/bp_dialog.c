@@ -396,8 +396,8 @@ void FUN_0025c9c0(void)
 
 {
 
-  volatile code *pDraw;
-  volatile code *pState;
+  volatile /* Removing this function's qualifier batch loses FUN_0025c9c0 (MATCH nd0 -> MISMATCH nd569, size 868 -> 908) - measured W170. */ code *pDraw;
+  volatile /* Removing this function's qualifier batch loses FUN_0025c9c0 (MATCH nd0 -> MISMATCH nd569, size 868 -> 908) - measured W170. */ code *pState;
   u32 *puVar1;
   int iVar2;
   int iVar3;

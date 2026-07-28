@@ -5040,7 +5040,7 @@ void FUN_00429e90(int param_1,u8 param_2)
 float FUN_00429ef0(float param_1,char param_2)
 {
   int iVar1;
-  volatile YajimaVec3 saved;
+  YajimaVec3 saved;
   YajimaVec3 pos;
   float x;
   float z;
@@ -5071,7 +5071,7 @@ float FUN_00429ef0(float param_1,char param_2)
 float FUN_00429fe0(float param_1,char param_2)
 {
   int iVar1;
-  volatile YajimaVec3 saved;
+  YajimaVec3 saved;
   YajimaVec3 pos;
   float x;
   float z;
@@ -5148,7 +5148,7 @@ float FUN_0042a180(float param_1,u32 *param_2)
 float FUN_0042a230(float param_1,char param_2)
 {
   int iVar1;
-  volatile YajimaVec3 saved;
+  YajimaVec3 saved;
   YajimaVec3 pos;
   float z;
   float x;
@@ -5178,7 +5178,7 @@ float FUN_0042a230(float param_1,char param_2)
 float FUN_0042a310(float param_1,char param_2)
 {
   int iVar1;
-  volatile YajimaVec3 saved;
+  YajimaVec3 saved;
   YajimaVec3 pos;
   float x;
   float z;
@@ -6635,11 +6635,11 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
        param_4 == sVar4)) {
 
       if (*(char *)(iVar10 + 0x865) == '\0') {
-        volatile YajimaVec3 savedMain;
+        YajimaVec3 savedMain;
 
         YajimaVec3 posMain;
 
-        volatile YajimaVec3 savedObj;
+        YajimaVec3 savedObj;
 
         YajimaVec3 posObj;
 
@@ -6742,13 +6742,13 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
       }
 
       else {
-        volatile YajimaVec3 savedObj1;
+        YajimaVec3 savedObj1;
 
         YajimaVec3 posObj1;
 
         YajimaVec3 worldPos1;
 
-        volatile YajimaVec3 savedObj2;
+        YajimaVec3 savedObj2;
 
         YajimaVec3 posObj2;
 
@@ -7309,23 +7309,23 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
   
   YajimaVec3 posMain0;
-  volatile YajimaVec3 savedMain0;
+  YajimaVec3 savedMain0;
   YajimaVec3 posObj0;
-  volatile YajimaVec3 savedObj0;
+  YajimaVec3 savedObj0;
   YajimaVec3 worldPos1;
   YajimaVec3 posObj1;
-  volatile YajimaVec3 savedObj1;
+  YajimaVec3 savedObj1;
   YajimaVec3 worldPos2;
   YajimaVec3 posObj2;
-  volatile YajimaVec3 savedObj2;
+  YajimaVec3 savedObj2;
   YajimaVec3 posObj3;
-  volatile YajimaVec3 savedObj3;
+  YajimaVec3 savedObj3;
   YajimaVec3 posMain3;
-  volatile YajimaVec3 savedMain3;
+  YajimaVec3 savedMain3;
   YajimaVec3 posObj4;
-  volatile YajimaVec3 savedObj4;
+  YajimaVec3 savedObj4;
   YajimaVec3 posMain4;
-  volatile YajimaVec3 savedMain4;
+  YajimaVec3 savedMain4;
 
   iVar4 = *(int *)(param_1 + 0x3c);
 
@@ -7845,7 +7845,7 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
          CONCAT44((int)((long)((u32)param_3 << 0x30) >> 0x3f),(int)(short)param_3) == lVar8)) {
 
         if (*(char *)(iVar2 + 0x865) == '\0') {
-          volatile YajimaVec3 savedMain;
+          YajimaVec3 savedMain;
           YajimaVec3 posMain;
           YajimaVec3 worldPos1;
           YajimaVec3 worldPos2;

@@ -4143,10 +4143,10 @@ void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
     packed.bits = position;
     x = packed.coords[0] + 305.0f;
     /* Removing this barrier loses func_00185ae0 (MATCH nd0 -> MISMATCH nd35) - measured W164. */
-    asm volatile("" : "+m"(x));
+    asm ("" : "+m"(x));
     y = packed.coords[1] + 188.0f;
     /* Removing this barrier loses func_00185ae0 (MATCH nd0 -> MISMATCH nd20) - measured W164. */
-    asm volatile("" : "+m"(y));
+    asm ("" : "+m"(y));
     cellAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x4e, cellAlpha, x, y, 50.0f);
 }
@@ -4270,7 +4270,7 @@ void func_00185b40(void* resource,
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
-    volatile union
+    volatile /* Removing this qualifier worsens func_00186050 (NONMATCHING nd29 -> NONMATCHING nd32, size 172 -> 172) - measured W170. */ union
     {
         u64 value;
         struct
@@ -4312,7 +4312,7 @@ void func_00186100(void* resource, u64 position, u32 alpha)
     packed.value = position;
     y = packed.coords.y;
     /* Removing this barrier loses func_00186100 (MATCH nd0 -> MISMATCH nd24) - measured W164. */
-    asm volatile("" : "+m"(y));
+    asm ("" : "+m"(y));
     x = packed.coords.x;
     drawAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x29, drawAlpha,
@@ -4338,7 +4338,7 @@ void func_00186140(void* resource, u64 position, u32 alpha)
     packed.value = position;
     y = packed.coords.y + 404.0f;
     /* Removing this barrier loses func_00186140 (MATCH nd0 -> MISMATCH nd20) - measured W164. */
-    asm volatile("" : "+m"(y));
+    asm ("" : "+m"(y));
     x = packed.coords.x;
     drawAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x2a, drawAlpha,

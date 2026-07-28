@@ -146,8 +146,8 @@ u64 FUN_003ae420(u64 param_1, int param_2)
   s32 first;
   s16 second;
 
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch loses FUN_003ae420 (MATCH nd0 -> MISMATCH nd161, size 312 -> 304) - measured W170. */ int *)(param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch loses FUN_003ae420 (MATCH nd0 -> MISMATCH nd161, size 312 -> 304) - measured W170. */ int *)(param_2 + 0x10);
   data = (u8 *)(base + offset);
   low = data[0] - 1;
   if (data[1] == 0xff) {
@@ -157,8 +157,8 @@ u64 FUN_003ae420(u64 param_1, int param_2)
   }
   first = (u32)high << 8 | low;
 
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch loses FUN_003ae420 (MATCH nd0 -> MISMATCH nd161, size 312 -> 304) - measured W170. */ int *)(param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch loses FUN_003ae420 (MATCH nd0 -> MISMATCH nd161, size 312 -> 304) - measured W170. */ int *)(param_2 + 0x10);
   data = (u8 *)(offset + base);
   low = data[2] - 1;
   if (data[3] == 0xff) {
@@ -199,8 +199,8 @@ u64 FUN_003ae560(u64 param_1,int param_2)
   u32 base;
   u8 *pbVar3;
 
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(int *)(param_2 + 0x18);
+  base = *(int *)(param_2 + 0x10);
   pbVar3 = (u8 *)(base + offset);
   bVar1 = pbVar3[0] - 1;
   uVar3 = pbVar3[1];
@@ -237,8 +237,8 @@ u64 FUN_003ae650(u64 param_1,int param_2)
   u32 newline;
 
   index = 0;
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch worsens FUN_003ae650 (NONMATCHING nd73 -> NONMATCHING nd76, size 256 -> 256) - measured W170. */ int *)(param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch worsens FUN_003ae650 (NONMATCHING nd73 -> NONMATCHING nd76, size 256 -> 256) - measured W170. */ int *)(param_2 + 0x10);
   data = (u8 *)(base + offset);
   mask = 0xf0;
   newline = 10;
@@ -276,8 +276,8 @@ u64 FUN_003ae750(u64 param_1, int param_2)
   u32 first;
   u32 second;
 
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch loses FUN_003ae750 (MATCH nd0 -> MISMATCH nd90, size 208 -> 200) - measured W170. */ int *)(param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch loses FUN_003ae750 (MATCH nd0 -> MISMATCH nd90, size 208 -> 200) - measured W170. */ int *)(param_2 + 0x10);
   data = (u8 *)(base + offset);
   low = data[0] - 1;
   if (data[1] == 0xff)
@@ -290,8 +290,8 @@ u64 FUN_003ae750(u64 param_1, int param_2)
   }
   first = (u32)high << 8 | low;
 
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch loses FUN_003ae750 (MATCH nd0 -> MISMATCH nd90, size 208 -> 200) - measured W170. */ int *)(param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch loses FUN_003ae750 (MATCH nd0 -> MISMATCH nd90, size 208 -> 200) - measured W170. */ int *)(param_2 + 0x10);
   data = (u8 *)(offset + base);
   low = data[2] - 1;
   if (data[3] == 0xff)
@@ -613,8 +613,8 @@ u64 FUN_003aed10(u64 param_1,int param_2)
   u32 uVar3;
   u8 *pcVar4;
 
-  offset = *(volatile int *)((int)param_2 + 0x18);
-  base = *(volatile int *)((int)param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch loses FUN_003aed10 (MATCH nd0 -> MISMATCH nd3, size 240 -> 240) - measured W170. */ int *)((int)param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch loses FUN_003aed10 (MATCH nd0 -> MISMATCH nd3, size 240 -> 240) - measured W170. */ int *)((int)param_2 + 0x10);
   pcVar4 = (u8 *)(base + offset);
   low = pcVar4[0] - 1;
   high = pcVar4[1];
@@ -675,7 +675,7 @@ u64 FUN_003aee20(u64 param_1, int param_2)
   }
   uVar6 = ((u32)bVar2 << 8) | bVar1;
 
-  iVar11 = *(volatile int *)(param_2 + 0x18) + *(volatile int *)(param_2 + 0x10);
+  iVar11 = *(volatile /* Removing this function's qualifier batch loses FUN_003aee20 (MATCH nd0 -> MISMATCH nd491, size 748 -> 740) - measured W170. */ int *)(param_2 + 0x18) + *(volatile /* Removing this function's qualifier batch loses FUN_003aee20 (MATCH nd0 -> MISMATCH nd491, size 748 -> 740) - measured W170. */ int *)(param_2 + 0x10);
   bVar1 = *(u8 *)(iVar11 + 2) - 1;
   if (*(u8 *)(iVar11 + 3) == 0xff) {
     bVar2 = 0;
@@ -1124,8 +1124,8 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
   int offset;
   u32 uVar8;
 
-  offset = *(volatile int *)(param_2 + 0x18);
-  base = *(volatile int *)(param_2 + 0x10);
+  offset = *(volatile /* Removing this function's qualifier batch loses FUN_003af5a0 (MATCH nd0 -> MISMATCH nd3, size 180 -> 180) - measured W170. */ int *)(param_2 + 0x18);
+  base = *(volatile /* Removing this function's qualifier batch loses FUN_003af5a0 (MATCH nd0 -> MISMATCH nd3, size 180 -> 180) - measured W170. */ int *)(param_2 + 0x10);
   pbVar4 = (u8 *)(base + offset);
   bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];

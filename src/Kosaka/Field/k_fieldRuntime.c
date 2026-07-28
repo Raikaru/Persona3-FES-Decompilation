@@ -1528,9 +1528,9 @@ u32 func_001e2e50(void* request, void** outFileMemory, u16 majorId, u16 minorId,
                 }
                 sourceIndex++;
             }
+            *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
         }
 
-        *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
         recordIndex = 0;
         while (recordIndex < *(u32*)(fileMemory + 0x10))
         {
@@ -1552,7 +1552,7 @@ u32 func_001e2e50(void* request, void** outFileMemory, u16 majorId, u16 minorId,
         fileMemory = (u8*)func_001021c0(path, &fileSize);
         if (fileMemory == NULL)
         {
-            goto failure;
+            goto cached_success;
         }
         *outFileMemory = fileMemory;
         modelCount = *(u32*)(fileMemory + 8);
@@ -1689,9 +1689,9 @@ u32 func_001e2e50(void* request, void** outFileMemory, u16 majorId, u16 minorId,
                 }
                 sourceIndex++;
             }
+            *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
         }
 
-        *(u32*)(K_Field_Get() + 0x10c0) = modelIndex;
         recordIndex = 0;
         while (recordIndex < *(u32*)(fileMemory + 0x10))
         {
@@ -1705,6 +1705,7 @@ u32 func_001e2e50(void* request, void** outFileMemory, u16 majorId, u16 minorId,
             recordIndex++;
             record += 0x60;
         }
+cached_success:
         return true;
     }
 

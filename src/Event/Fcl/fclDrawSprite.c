@@ -126,7 +126,7 @@ void FUN_0040e3c0(u32 param_1,int param_2,int param_3,char param_4,int param_5,i
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder ;"
       ".word 0x27bdfff0 ;"
       ".word 0xffbf0000 ;"
@@ -145,7 +145,7 @@ void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int pa
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11)
 {
-  __asm__ volatile (
+  __asm__ (
       ".set noreorder ;"
       ".word 0x27bdfff0 ;"
       ".word 0xffbf0000 ;"

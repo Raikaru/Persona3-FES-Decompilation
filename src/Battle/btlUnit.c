@@ -2302,7 +2302,7 @@ void btlUnitInit002843e0Packet(void* work)
 // FUN_00284350
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
-    __asm__ volatile (
+    __asm__ (
       ".set noreorder ;"
       ".word 0x27bdfff0 ;"
       ".word 0xffbf0000 ;"
@@ -2459,7 +2459,7 @@ void btlUnitInit00284900Packet(void* work)
 // FUN_00284690
 u32 btlUnitUpdate00284900Packet(void* work)
 {
-    static volatile f32 one = 1.0f;
+    static f32 one = 1.0f;
     BtlUnitPacket00284900* packet;
     BtlUnit* unit;
     RwV3d position;
@@ -2563,10 +2563,10 @@ void btlUnitInitEnmDodgeAnimPacket(void* work)
 // FUN_002849a0
 u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
 {
-    static volatile f32 phaseLimit = 1.0f;
-    static volatile f32 baseScale = 0.3f;
-    static volatile f32 stepDelta = 0.05f;
-    static volatile f32 reverseStep = -0.3f;
+    static volatile /* Removing this function's qualifier batch loses btlUnitUpdateEnmDodgeAnimPacket (MATCH nd0 -> MISMATCH nd261, size 424 -> 420) - measured W170. */ f32 phaseLimit = 1.0f;
+    static volatile /* Removing this function's qualifier batch loses btlUnitUpdateEnmDodgeAnimPacket (MATCH nd0 -> MISMATCH nd261, size 424 -> 420) - measured W170. */ f32 baseScale = 0.3f;
+    static volatile /* Removing this function's qualifier batch loses btlUnitUpdateEnmDodgeAnimPacket (MATCH nd0 -> MISMATCH nd261, size 424 -> 420) - measured W170. */ f32 stepDelta = 0.05f;
+    static volatile /* Removing this function's qualifier batch loses btlUnitUpdateEnmDodgeAnimPacket (MATCH nd0 -> MISMATCH nd261, size 424 -> 420) - measured W170. */ f32 reverseStep = -0.3f;
     BtlUnitPacketEnmDodgeAnim* packet;
     BtlUnit* unit;
     RwV3d direction;

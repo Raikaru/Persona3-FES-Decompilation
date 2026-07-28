@@ -94,7 +94,7 @@ void FUN_002520f0(void)
     u32 uVar2;
     s32 iVar3;
     s32 iVar4;
-    volatile code *ppVar5;
+    volatile /* Removing this qualifier loses FUN_002520f0 (MATCH nd0 -> MISMATCH nd332, size 584 -> 616) - measured W170. */ code *ppVar5;
 
     K_ASSERT(sBpo65c != NULL, 0x36);
     puVar1 = sBpo65c;

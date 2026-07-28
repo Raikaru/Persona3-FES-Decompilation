@@ -517,8 +517,8 @@ u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
         if (iVar2 == 0) {
             bVar2 = 0;
         } else {
-            index = *(volatile int *)(param_1 + 0x970);
-            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            index = *(int *)(param_1 + 0x970);
+            length = (int)(u32)*(u16 *)(iVar2 + 2);
             if (length <= index) {
                 bVar2 = 0;
             } else {
@@ -529,8 +529,8 @@ u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
     if (!bVar2) {
         return 0;
     }
-    index = *(volatile int *)(param_1 + 0x970);
-    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
+    index = *(int *)(param_1 + 0x970);
+    iVar2 = *(int *)((u8 *)iVar1 + 0x60);
     *param_3 = *(u16 *)(*(int *)(iVar2 + 4) +
                         index * 0x8c + param_2 * 2);
     return 1;
@@ -558,8 +558,8 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
         if (iVar2 == 0) {
             bVar2 = 0;
         } else {
-            index = *(volatile int *)(param_1 + 0x970);
-            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            index = *(volatile /* Removing this function's qualifier batch loses FUN_00397630 (MATCH nd0 -> MISMATCH nd21, size 188 -> 188) - measured W170. */ int *)(param_1 + 0x970);
+            length = (int)(u32)*(volatile /* Removing this function's qualifier batch loses FUN_00397630 (MATCH nd0 -> MISMATCH nd21, size 188 -> 188) - measured W170. */ u16 *)(iVar2 + 2);
             if (length <= index) {
                 bVar2 = 0;
             } else {
@@ -573,9 +573,9 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
     if (param_2 >= 10) {
         return 0;
     }
-    index = *(volatile int *)(param_1 + 0x970);
-    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
-    base = *(volatile int *)(iVar2 + 4);
+    index = *(volatile /* Removing this function's qualifier batch loses FUN_00397630 (MATCH nd0 -> MISMATCH nd21, size 188 -> 188) - measured W170. */ int *)(param_1 + 0x970);
+    iVar2 = *(volatile /* Removing this function's qualifier batch loses FUN_00397630 (MATCH nd0 -> MISMATCH nd21, size 188 -> 188) - measured W170. */ int *)((u8 *)iVar1 + 0x60);
+    base = *(volatile /* Removing this function's qualifier batch loses FUN_00397630 (MATCH nd0 -> MISMATCH nd21, size 188 -> 188) - measured W170. */ int *)(iVar2 + 4);
     scaled = index * 0x8c;
     *param_3 = (u32)*(u8 *)((scaled + base) + param_2 + 0x16);
     return 1;
@@ -604,8 +604,8 @@ u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4)
         if (iVar2 == 0) {
             bVar1 = 0;
         } else {
-            index = *(volatile int *)(param_1 + 0x970);
-            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            index = *(int *)(param_1 + 0x970);
+            length = (int)(u32)*(u16 *)(iVar2 + 2);
             if (length <= index) {
                 bVar1 = 0;
             } else {
@@ -619,9 +619,9 @@ u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4)
     if (param_2 >= 10) {
         return 0;
     }
-    index = *(volatile int *)(param_1 + 0x970);
-    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
-    base = *(volatile int *)(iVar2 + 4);
+    index = *(int *)(param_1 + 0x970);
+    iVar2 = *(int *)((u8 *)iVar1 + 0x60);
+    base = *(int *)(iVar2 + 4);
     offset = param_2 * 2;
     scaled = index * 0x8c;
     *param_3 = (u32)*(u8 *)((scaled + base) + offset + 0x20);
@@ -651,8 +651,8 @@ u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
         if (iVar2 == 0) {
             bVar1 = 0;
         } else {
-            index = *(volatile int *)(param_1 + 0x970);
-            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            index = *(int *)(param_1 + 0x970);
+            length = (int)(u32)*(u16 *)(iVar2 + 2);
             if (length <= index) {
                 bVar1 = 0;
             } else {
@@ -663,9 +663,9 @@ u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
     if (!bVar1) {
         return 0;
     }
-    index = *(volatile int *)(param_1 + 0x970);
-    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
-    base = *(volatile int *)(iVar2 + 4);
+    index = *(int *)(param_1 + 0x970);
+    iVar2 = *(int *)((u8 *)iVar1 + 0x60);
+    base = *(int *)(iVar2 + 4);
     scaled = index * 0x8c;
     *param_2 = (u32)*(u16 *)((scaled + base) + 0xa);
     *param_3 = (u32)*(u16 *)(scaled + base + 0xe);

@@ -137,7 +137,7 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
   int *piVar7;
   int lVar3;
   int lVar8;
-  volatile code *alloc;
+  volatile /* Removing this qualifier loses FUN_003b41a0 (MATCH nd0 -> MISMATCH nd402, size 756 -> 760) - measured W170. */ code *alloc;
 
   lVar8 = 0;
   if ((*(u32 *)DAT_0095aebc_abs != 0) && (DAT_007ce64c != '\0')) {

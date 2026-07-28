@@ -80,7 +80,7 @@ void func_0024bb30(void)
                         work[4] = (u32)(uintptr_t)BRP_RES_ALLOC(
                             fileSize, 0x40000);
                         memcpy((void*)(uintptr_t)work[4], file,
-                               *(volatile u32*)&fileSize);
+                               *(volatile /* Removing this function's qualifier batch loses func_0024bb30 (MATCH nd0 -> MISMATCH nd50, size 780 -> 780) - measured W170. */ u32*)&fileSize);
                         break;
                     case 3:
                         file = H_Cdvd_ArchiveGetFile(
@@ -88,7 +88,7 @@ void func_0024bb30(void)
                         work[5] = (u32)(uintptr_t)BRP_RES_ALLOC(
                             fileSize, 0x40000);
                         memcpy((void*)(uintptr_t)work[5], file,
-                               *(volatile u32*)&fileSize);
+                               *(volatile /* Removing this function's qualifier batch loses func_0024bb30 (MATCH nd0 -> MISMATCH nd50, size 780 -> 780) - measured W170. */ u32*)&fileSize);
                         break;
                     case 4:
                         file = H_Cdvd_ArchiveGetFile(
@@ -96,7 +96,7 @@ void func_0024bb30(void)
                         work[6] = (u32)(uintptr_t)BRP_RES_ALLOC(
                             fileSize, 0x40000);
                         memcpy((void*)(uintptr_t)work[6], file,
-                               *(volatile u32*)&fileSize);
+                               *(volatile /* Removing this function's qualifier batch loses func_0024bb30 (MATCH nd0 -> MISMATCH nd50, size 780 -> 780) - measured W170. */ u32*)&fileSize);
                         break;
                     case 5:
                         file = H_Cdvd_ArchiveGetFile(
@@ -104,7 +104,7 @@ void func_0024bb30(void)
                         work[7] = (u32)(uintptr_t)BRP_RES_ALLOC(
                             fileSize, 0x40000);
                         memcpy((void*)(uintptr_t)work[7], file,
-                               *(volatile u32*)&fileSize);
+                               *(volatile /* Removing this function's qualifier batch loses func_0024bb30 (MATCH nd0 -> MISMATCH nd50, size 780 -> 780) - measured W170. */ u32*)&fileSize);
                         break;
                     default:
                         K_ASSERT(false, 0x8e);
@@ -125,7 +125,7 @@ void func_0024bb30(void)
                 ((HCdvd*)(uintptr_t)work[3])->fileSize, 0x40000);
             memcpy((void*)(uintptr_t)work[8],
                    ((HCdvd*)(uintptr_t)work[3])->fileMemory,
-                   *(volatile u32*)&((HCdvd*)(uintptr_t)work[3])->fileSize);
+                   *(volatile /* Removing this function's qualifier batch loses func_0024bb30 (MATCH nd0 -> MISMATCH nd50, size 780 -> 780) - measured W170. */ u32*)&((HCdvd*)(uintptr_t)work[3])->fileSize);
             work[1] |= 2;
             H_Cdvd_Destroy((HCdvd*)(uintptr_t)work[3]);
             work[0] &= ~2;
