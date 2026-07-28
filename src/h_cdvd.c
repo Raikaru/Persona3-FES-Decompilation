@@ -1152,7 +1152,7 @@ static void H_Cdvd_SetStreamCallback(HCdvdStreamContext* context, u32 offset,
 }
 
 // FUN_00101ad0 NONMATCHING
-void* func_00101ad0(s32 count, void* source, s32 stride,
+void* func_00101ad0(s32 count, u8* source, s32 stride,
                                    void* callbackData, void* key)
 {
     HCdvdStreamContext* context;
@@ -1182,7 +1182,7 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     {
         slot = &slots[i];
         slot->context = context;
-        slot->source = (u8*)source + i * stride;
+        slot->source = source + i * stride;
         slot->sourceStride = stride;
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)

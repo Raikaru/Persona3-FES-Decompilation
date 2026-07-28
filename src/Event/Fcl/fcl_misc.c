@@ -3366,7 +3366,7 @@ void FUN_003cda60(u32 param_1)
 
   *(u32 *)(iVar2 + 8) = 1;
 
-  fclMiscC31b0Call(180.0f,iVar2 + 0x40,&uStack_20,0);
+  fclMiscC31b0Call(180.0f,(void *)(iVar2 + 0x40),&uStack_20,0);
 
   FUN_004c35d0(iVar2 + 0x40,&uStack_10,2);
 

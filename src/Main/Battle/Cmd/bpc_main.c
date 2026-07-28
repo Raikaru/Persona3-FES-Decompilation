@@ -1127,7 +1127,10 @@ void FUN_00245420(uint *param_1,uint param_2)
   uVar4 = puVar1[1];
   switch (uVar4) {
   case 0:
-    lVar10 = func_00300e90(*(u32 *)(iVar3 + 0xa2c),(u16)puVar1[0x1cb4]);
+    {
+      u32 calc = *(u32 *)(iVar3 + 0xa2c);
+      lVar10 = func_00300e90(calc,(u16)puVar1[0x1cb4]);
+    }
     if (lVar10 != 0) {
       *param_1 = *param_1 | 1;
     }
@@ -1135,7 +1138,10 @@ void FUN_00245420(uint *param_1,uint param_2)
        (((**(ushort **)(iVar3 + 0xa2c) & 4) == 0 ||
         (skillOffset = (uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e,
          ((*(ushort *)(skillOffset + (uint)DAT_007ce410 + 0x1e) & 0x20) == 0))))) {
-      uVar2 = func_003082f0(0,(u16)puVar1[0x1cb4]);
+      {
+        u32 mode = 0;
+        uVar2 = func_003082f0(mode,(u16)puVar1[0x1cb4]);
+      }
       uVar11 = func_00306e80(*(u32 *)(iVar3 + 0xa2c),uVar2);
       lVar10 = func_0017b260(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
       if ((lVar10 != 0) &&

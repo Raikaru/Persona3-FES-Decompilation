@@ -19,7 +19,9 @@ typedef struct BtlTarget
     u16 unk_3e[3];                  // 0x3e
     u16 oldCommandId;               // 0x44
     u16 oldSpecificId;              // 0x46
-    u8 unkData2[0x08];
+    u16 rewardPersonaId;            // 0x48
+    u8 rewardPersonaChance;         // 0x4a
+    u8 unkData2[0x05];
 } BtlTarget;
 
 typedef struct BtlTargetResult
