@@ -5986,66 +5986,93 @@ void btlActionUpdateStateError(BtlAction* action)
 {
     BtlPacket* packet;
     BtlPacket* animPacket;
-    BtlPacket* effectPacket;
-    BtlPacket* cameraPacket;
-    BtlUnit* unit;
-    s16 animation;
-    s16 duration;
-    u32 table;
+    u16 animation;
+    u16 duration;
+    u16 table;
+    u16 cameraState;
+    u16 state;
+    u32 isCommand3;
+    u64 actionUID;
     f32 one = 1.0f;
 
-    unit = action->unit;
     btlAction0028a780(action);
-    if (action->target.commandId != 3)
+    isCommand3 = action->target.commandId == 3;
+    actionUID = action->uid;
+    if (!isCommand3)
     {
-        packet = FUN_002bd590(unit, action->target.specificId);
-        packet->actionUID = action->uid;
+        packet = FUN_002bd590(action->unit, action->target.specificId);
+        packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_2D);
     }
     else
     {
-        packet = FUN_002bd690(unit, action->target.unk_38);
-        packet->actionUID = action->uid;
+        packet = FUN_002bd690(action->unit, action->target.unk_38);
+        packet->actionUID = actionUID;
         btlPacketRegister(packet, BTLPACKET_TYPE_2D);
     }
-    if (unit->genus == UNIT_GENUS_PC)
+
+    if (action->unit->genus == UNIT_GENUS_PC)
     {
-        animation = action->target.commandId == 3 ? 0x15 : 0xc;
-        table = action->target.commandId == 3 ? 0x38 : 0x1c;
-        duration = FUN_002838d0_btlAction(one, unit, animation);
+        if (!isCommand3)
+        {
+            animation = 0xc;
+            table = 0x1c;
+        }
+        else
+        {
+            animation = 0x15;
+            table = 0x38;
+        }
+        cameraState = BTLCAMERA_STATE_SKILLRECITE_P;
+        duration = FUN_002838d0_btlAction(one, action->unit, animation);
     }
     else
     {
-        animation = FUN_002d6370(action->target.specificId) == 0 ? 7 : 4;
+        animation = FUN_002d6370(action->target.specificId) != 0 ? 4 : 7;
         table = 0x21;
-        duration = FUN_002835e0_btlAction(one, unit, animation);
+        cameraState = BTLCAMERA_STATE_SKILLRECITE_E;
+        duration = FUN_002835e0_btlAction(one, action->unit, animation);
     }
-    animPacket = btlUnitCreateAnimPacket(unit, animation, 6, one, BTLUNIT_ANIM_MODE_ONCE);
+
+    animPacket = btlUnitCreateAnimPacketSignedId(action->unit, animation, 6, one, BTLUNIT_ANIM_MODE_ONCE);
     ACTION_U16(animPacket, 0x4a) = duration + 6;
-    animPacket->actionUID = action->uid;
+    animPacket->actionUID = actionUID;
     btlPacketRegister(animPacket, BTLPACKET_TYPE_1);
-    effectPacket = func_002bb2f0(ACTION_U32(gBtl, 0xc24 + table * 4), unit, 0, animPacket->uid, 0x100);
-    effectPacket->actionUID = action->uid;
-    btlPacketRegister(effectPacket, BTLPACKET_TYPE_3D);
-    cameraPacket = btlCameraCreateSetStatePacket(action, 2);
-    cameraPacket->unk_00 = 4;
-    cameraPacket->parentUID = effectPacket->uid;
-    cameraPacket->actionUID = action->uid;
-    btlPacketRegister(cameraPacket, BTLPACKET_TYPE_0);
-    packet = FUN_002bd850(unit, ACTION_U16(action, 0xdc));
+
+    packet = func_002bb2f0(ACTION_U32(gBtl, 0xc24 + table * 4), action->unit, 0, animPacket->uid, 0x100);
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+
+    packet = btlCameraCreateSetStatePacket(action, cameraState);
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+    packet = FUN_002bd850(action->unit, ACTION_U16(action, 0xdc));
     packet->unk_00 = 4;
-    packet->actionUID = action->uid;
+    packet->parentUID = animPacket->uid;
+    packet->actionUID = actionUID;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+
+    packet = FUN_002d7fb0(action, 0);
+    packet->unk_00 = 4;
+    packet->parentUID = animPacket->uid;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
     if (FUN_002dc130(action))
     {
-        packet = FUN_002d7fb0(action, 0x19);
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
         btlActionSetState(action, BTLACTION_STATE_BADDMG);
+        return;
+    }
+    if (action->target.commandId == 2 || action->target.commandId == 3 || action->target.commandId == 1)
+    {
+        state = BTLACTION_STATE_PACKET;
     }
     else
     {
-        btlActionSetState(action, BTLACTION_STATE_PACKET);
+        state = BTLACTION_STATE_PACKET;
     }
+    btlActionSetState(action, state);
 }
 
 // FUN_00295f00

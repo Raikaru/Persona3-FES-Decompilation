@@ -25,6 +25,13 @@ typedef struct FclMiscVec2
     f32 x;
     f32 y;
 } FclMiscVec2;
+typedef struct FclMiscVec4
+{
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} FclMiscVec4;
 typedef union FclMiscPair
 {
     FclMiscVec2 vec;
@@ -66,14 +73,16 @@ extern u32 DAT_006a4218;
 extern u32 DAT_006a4220;
 extern u32 DAT_006a4228;
 extern u32 DAT_006a4230;
-extern u32 DAT_006a4240;
-extern u32 DAT_006a4244;
-extern u32 DAT_006a4248;
-extern u32 DAT_006a424c;
-extern u32 DAT_006a4250;
-extern u32 DAT_006a4258;
-extern u32 DAT_006a4260;
-extern u32 DAT_006a4268;
+#pragma alias fclMiscDefaultQuat DAT_006a4240
+extern FclMiscVec4 fclMiscDefaultQuat[];
+#pragma alias fclMiscDefaultScale DAT_006a4250
+extern u64 fclMiscDefaultScale[];
+#pragma alias fclMiscDefaultScaleZ DAT_006a4258
+extern f32 fclMiscDefaultScaleZ[];
+#pragma alias fclMiscDefaultPosition DAT_006a4260
+extern u64 fclMiscDefaultPosition[];
+#pragma alias fclMiscDefaultPositionZ DAT_006a4268
+extern f32 fclMiscDefaultPositionZ[];
 extern u32 DAT_007cd718;
 extern u32 DAT_007ce0cc;
 extern u32 DAT_007ce680;
@@ -1739,14 +1748,14 @@ void FUN_003c9fe0(int *param_1)
 
 u64 FUN_003ca230(void)
 {
-  s32 context;
+  u8 *context;
   s32 state;
   s16 value;
   u32 flags;
   u32 color;
   s32 status;
 
-  context = FUN_00195540();
+  context = (u8 *)FUN_00195540();
   state = *(s32 *)(context + 4);
 
   if (state != 4) {
@@ -2353,21 +2362,16 @@ void FUN_003cb100(int param_1)
 
 
 {
-  s32 flags;
-
-  flags = *(s16 *)(param_1 + 0x12) | -0x100;
   fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,0,0,
-                    flags,2,0,0,
+                    *(s16 *)(param_1 + 0x12) | -0x100,2,0,0,
                     *(u32 *)(param_1 + 0xd0));
 
-  flags = *(s16 *)(param_1 + 0x12) | -0x100;
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x165,0xbd,
-                    flags,0,0,0,
+                    *(s16 *)(param_1 + 0x12) | -0x100,0,0,0,
                     *(u32 *)(param_1 + 0xd0));
 
-  flags = *(s16 *)(param_1 + 0x12) | -0x100;
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x61,0xbd,
-                    flags,1,-0x104,0,
+                    *(s16 *)(param_1 + 0x12) | -0x100,1,-0x104,0,
                     *(u32 *)(param_1 + 0xd0));
 
   return;
@@ -4141,13 +4145,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   u32 auStack_140 [16];
 
-  float fStack_100;
-
-  float fStack_fc;
-
-  float fStack_f8;
-
-  float fStack_f4;
+  FclMiscVec4 vStack_100;
 
   float fStack_f0;
 
@@ -4204,8 +4202,7 @@ u64 FUN_003cea50(u16 *param_1)
   float fStack_30;
 
   u64 uStack_28;
-
-  u32 uStack_20;
+  float fStack_20;
 
   float fStack_18;
 
@@ -4277,17 +4274,10 @@ u64 FUN_003cea50(u16 *param_1)
 
   } while (0 < iVar4);
 
-  fStack_100 = DAT_006a4240;
+  vStack_100 = fclMiscDefaultQuat[0];
 
-  fStack_fc = DAT_006a4244;
-
-  fStack_f8 = DAT_006a4248;
-
-  fStack_f4 = DAT_006a424c;
-
-  uStack_28 = DAT_006a4250;
-
-  uStack_20 = DAT_006a4258;
+  uStack_28 = fclMiscDefaultScale[0];
+  fStack_20 = fclMiscDefaultScaleZ[0];
 
   pfVar5 = (float *)0xc;
 
@@ -4307,9 +4297,8 @@ u64 FUN_003cea50(u16 *param_1)
 
   }
 
-  uStack_48 = DAT_006a4260;
-
-  fStack_40 = (float)DAT_006a4268;
+  uStack_48 = fclMiscDefaultPosition[0];
+  fStack_40 = fclMiscDefaultPositionZ[0];
 
   iVar4 = FUN_00198590();
 
@@ -4327,35 +4316,34 @@ u64 FUN_003cea50(u16 *param_1)
 
   FUN_004944b0(uVar6,param_1 + 0x4a);
 
-  FUN_0016bee0(0,param_1[6],&fStack_100);
+  FUN_0016bee0(0,param_1[6],&vStack_100);
 
-  fVar15 = 2.0f / (fStack_f4 * fStack_f4 +
+  fVar15 = 2.0f / (vStack_100.w * vStack_100.w +
+                 vStack_100.z * vStack_100.z + vStack_100.x * vStack_100.x + vStack_100.y * vStack_100.y);
 
-                 fStack_f8 * fStack_f8 + fStack_100 * fStack_100 + fStack_fc * fStack_fc);
+  fVar16 = vStack_100.x * fVar15;
 
-  fVar16 = fStack_100 * fVar15;
+  fVar13 = vStack_100.y * fVar15;
 
-  fVar13 = fStack_fc * fVar15;
+  fVar15 = vStack_100.z * fVar15;
 
-  fVar15 = fStack_f8 * fVar15;
+  fStack_f0 = 1.0f - (vStack_100.y * fVar13 + vStack_100.z * fVar15);
 
-  fStack_f0 = 1.0f - (fStack_fc * fVar13 + fStack_f8 * fVar15);
+  fStack_ec = vStack_100.x * fVar13 + fVar15 * vStack_100.w;
 
-  fStack_ec = fStack_100 * fVar13 + fVar15 * fStack_f4;
+  fStack_e8 = vStack_100.z * fVar16 - fVar13 * vStack_100.w;
 
-  fStack_e8 = fStack_f8 * fVar16 - fVar13 * fStack_f4;
+  fStack_e0 = vStack_100.x * fVar13 - fVar15 * vStack_100.w;
 
-  fStack_e0 = fStack_100 * fVar13 - fVar15 * fStack_f4;
+  fStack_dc = 1.0f - (vStack_100.z * fVar15 + vStack_100.x * fVar16);
 
-  fStack_dc = 1.0f - (fStack_f8 * fVar15 + fStack_100 * fVar16);
+  fStack_d8 = vStack_100.y * fVar15 + fVar16 * vStack_100.w;
 
-  fStack_d8 = fStack_fc * fVar15 + fVar16 * fStack_f4;
+  fStack_d0 = vStack_100.z * fVar16 + fVar13 * vStack_100.w;
 
-  fStack_d0 = fStack_f8 * fVar16 + fVar13 * fStack_f4;
+  fStack_cc = vStack_100.y * fVar15 - fVar16 * vStack_100.w;
 
-  fStack_cc = fStack_fc * fVar15 - fVar16 * fStack_f4;
-
-  fStack_c8 = 1.0f - (fStack_100 * fVar16 + fStack_fc * fVar13);
+  fStack_c8 = 1.0f - (vStack_100.x * fVar16 + vStack_100.y * fVar13);
 
   uStack_c0 = 0;
 

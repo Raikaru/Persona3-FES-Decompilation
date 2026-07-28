@@ -3192,12 +3192,14 @@ void func_001f6a60(void)
 }
 
 // FUN_001f6d20 NONMATCHING
-#pragma optimization_level 3
 void func_001f6d20(const f32 *entry)
 {
     u8 *work;
     u32 *words;
     u8 *dst;
+    f32 z;
+    f32 y;
+    f32 x;
 
     K_ASSERT(sBrReward != NULL, 0x8c);
     work = sBrReward;
@@ -3206,9 +3208,12 @@ void func_001f6d20(const f32 *entry)
              (s32)words[0xcf7] < 8,
              0x34d);
     dst = work + words[0xcf7] * 0x670;
-    *(f32 *)(dst + 0x5c) = entry[0];
-    *(f32 *)(dst + 0x60) = entry[1];
-    *(f32 *)(dst + 0x64) = entry[2];
+    x = entry[0];
+    y = entry[1];
+    z = entry[2];
+    *(f32 *)(dst + 0x5c) = x;
+    *(f32 *)(dst + 0x60) = y;
+    *(f32 *)(dst + 0x64) = z;
 
     switch (*(const u32 *)entry) {
     case 0:
@@ -3226,7 +3231,6 @@ void func_001f6d20(const f32 *entry)
     }
     words[0xcf7]++;
 }
-#pragma optimization_level 2
 
 // FUN_001f6e80
 void func_001f6e80(void)
