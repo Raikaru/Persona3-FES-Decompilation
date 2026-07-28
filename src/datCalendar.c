@@ -3988,56 +3988,6 @@ void* func_00184f00(KwlnTask* task)
             }
             break;
 
-        case 6:
-            func_00185980(work->resource,
-                          clndPackPosition(&position, 0.0f, 0.0f),
-                          0,
-                          work->targetMonth);
-            func_00185ae0(work->resource,
-                          *(u64*)&position,
-                          0,
-                          work->targetMonth);
-            func_00185b40(work->resource,
-                          *(u64*)&position,
-                          0,
-                          work->targetMonth,
-                          work->targetDay);
-            func_00186050(work->resource, *(u64*)&position, 0);
-            func_00186100(work->resource, *(u64*)&position, 0);
-            func_00186140(work->resource, *(u64*)&position, 0);
-            work->frame++;
-            if (work->frame == 20)
-            {
-                work->frame = 0;
-                work->state = 8;
-            }
-            break;
-
-        case 7:
-            work->frame++;
-            alpha = (u16)((work->frame * 0xff) / 15);
-            func_00185980(work->resource,
-                          clndPackPosition(&position, 0.0f, 0.0f),
-                          alpha,
-                          work->targetMonth);
-            func_00185ae0(work->resource,
-                          *(u64*)&position,
-                          alpha,
-                          work->targetMonth);
-            func_00185b40(work->resource,
-                          *(u64*)&position,
-                          alpha,
-                          work->targetMonth,
-                          work->targetDay);
-            func_00186050(work->resource, *(u64*)&position, alpha);
-            func_00186100(work->resource, *(u64*)&position, alpha);
-            func_00186140(work->resource, *(u64*)&position, alpha);
-            if (work->frame == 15)
-            {
-                return KWLNTASK_STOP;
-            }
-            break;
-
         case 8:
             if (datGetFlag(0x141c) == 0)
             {
@@ -4088,6 +4038,31 @@ void* func_00184f00(KwlnTask* task)
             func_00186050(work->resource, *(u64*)&position, 0);
             func_00186100(work->resource, *(u64*)&position, 0);
             func_00186140(work->resource, *(u64*)&position, 0);
+            break;
+
+        case 7:
+            work->frame++;
+            alpha = (u16)((work->frame * 0xff) / 15);
+            func_00185980(work->resource,
+                          clndPackPosition(&position, 0.0f, 0.0f),
+                          alpha,
+                          work->targetMonth);
+            func_00185ae0(work->resource,
+                          *(u64*)&position,
+                          alpha,
+                          work->targetMonth);
+            func_00185b40(work->resource,
+                          *(u64*)&position,
+                          alpha,
+                          work->targetMonth,
+                          work->targetDay);
+            func_00186050(work->resource, *(u64*)&position, alpha);
+            func_00186100(work->resource, *(u64*)&position, alpha);
+            func_00186140(work->resource, *(u64*)&position, alpha);
+            if (work->frame == 15)
+            {
+                return KWLNTASK_STOP;
+            }
             break;
     }
 
@@ -4660,14 +4635,25 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
 // FUN_00186BD0 NONMATCHING
 void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
 {
+    union
+    {
+        u64 value;
+        struct
+        {
+            f32 x;
+            f32 y;
+        } coords;
+    } packed;
     s32 tile;
+    void* unused;
 
     if (alpha == 0xff)
     {
         return;
     }
+    packed.value = position;
     tile = 0;
-    if (clndIsHolidayOrSunday() != 0 && selection >= 2 && selection <= 5)
+    if (clndIsHolidayOrSunday() == true && selection >= 2 && selection <= 5)
     {
         tile = 0x11;
     }
@@ -4683,16 +4669,17 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
             case 5: tile = 0xf; break;
             case 6: tile = 0x10; break;
             case 7: tile = 0x12; break;
+            case 8: tile = 0; break;
             default: tile = 0; break;
         }
     }
-    func_001159f0(NULL,
+    func_001159f0(unused,
                   resource,
                   tile,
                   alpha & 0xff,
-                  clndPackedX(position) + 207.0f,
-                  clndPackedY(position) + 211.0f,
-                  72.0f);
+                  packed.coords.x + 207.0f,
+                  packed.coords.y + 211.0f,
+                  50.0f);
 }
 
 // FUN_00186D50

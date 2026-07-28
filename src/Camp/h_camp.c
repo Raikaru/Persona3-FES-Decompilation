@@ -1926,7 +1926,7 @@ u32 h_campGetRootMenuTransitionComplete(KwlnTask* task)
     return work->transitionComplete;
 }
 
-// FUN_0011e380 NONMATCHING
+// FUN_0011e380
 u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
 {
     CampMenuWork* work;
@@ -2176,6 +2176,8 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
         switch (secondary) {
         case 7:
             work->state = 35;
+            break;
+        case 8:
             break;
         }
         break;

@@ -50,7 +50,8 @@ extern f32 DAT_007caf24;
 extern f32 DAT_007caf34;
 extern code DAT_0096017c;
 extern u8 * PTR_DAT_007cd540;
-extern code DAT_0096017c;
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 
 #pragma alias PTR_DAT_007cd540_u32 PTR_DAT_007cd540
 extern u32 *PTR_DAT_007cd540_u32;
@@ -1353,13 +1354,13 @@ void FUN_003b7090(u64 param_1)
 
         if (puVar4[0x80] != 0) {
 
-          (*DAT_0096017c)();
+          (*DAT_0096017c_abs)();
 
         }
 
         if (puVar4[0x82] != 0) {
 
-          (*DAT_0096017c)();
+          (*DAT_0096017c_abs)();
 
         }
 

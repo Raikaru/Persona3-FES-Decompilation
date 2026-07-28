@@ -115,8 +115,8 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
         row = grid[y];
         topOffset = y * FLDFILTER_QUAD_YPIXELS;
         bottomOffset = topOffset + FLDFILTER_QUAD_YPIXELS;
-        top = (f32)topOffset;
         bottom = (f32)bottomOffset;
+        top = (f32)topOffset;
         while (x < FLDFILTER_GRID_WIDTH)
         {
             rowOffset = x * FLDFILTER_QUAD_XPIXELS;

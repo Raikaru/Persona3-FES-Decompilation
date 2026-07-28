@@ -1920,7 +1920,7 @@ void FUN_003a0960(int param_1,int param_2,u64 param_3)
 }
 #define FUN_003a0960(...) ((void (*)(...))FUN_003a0960)(__VA_ARGS__)
 #undef FUN_003a0b50
-// FUN_003A0B50 NONMATCHING
+// FUN_003A0B50
 
 
 u32 FUN_003a0b50(int param_1)
@@ -2068,7 +2068,8 @@ u32 FUN_003a0b50(int param_1)
 
   case 0xb:
 
-    FUN_0039f210_call((int *)(param_1 + 0x3c),*(short *)(param_1 + 4) * 2 + 6,-1,-1);
+    lVar3 = *(short *)(param_1 + 4) * 2 + 6;
+    FUN_0039f210_call((int *)(param_1 + 0x3c),lVar3,-1,-1);
 
     *puVar4 = 0xc;
 
@@ -2088,7 +2089,8 @@ u32 FUN_003a0b50(int param_1)
 
   case 0xd:
 
-    FUN_0039f210_call((int *)(param_1 + 0x3c),*(short *)(param_1 + 4) * 2 + 7,-1,-1);
+    lVar3 = *(short *)(param_1 + 4) * 2 + 7;
+    FUN_0039f210_call((int *)(param_1 + 0x3c),lVar3,-1,-1);
 
     *puVar4 = 0xe;
 

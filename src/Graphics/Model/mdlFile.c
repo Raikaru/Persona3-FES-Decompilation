@@ -274,6 +274,34 @@ static __inline u32 mdlVuModulateStacked(const u32 *pc1, const u32 *pc2, f32 inv
     return tmp;
 }
 
+static __inline u32 mdlVuScalePackedColor(u32 color, const u8 (*scale)[16], u32 inv255)
+{
+    u32 tmp;
+    __asm__ volatile (
+        ".set noreorder                  \n"
+        "pextlb      %0, $zero, %1       \n"
+        "pextlh      %0, $zero, %0       \n"
+        "qmtc2       %0, $vf10           \n"
+        "vitof0.xyzw $vf10, $vf10        \n"
+        "nop                             \n"
+        "qmtc2       %2, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "lqc2        $vf11, 0(%3)         \n"
+        "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+        "lui         %0, 0x437F          \n"
+        "qmtc2       %0, $vf2            \n"
+        "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+        "vftoi0.xyzw $vf10, $vf10        \n"
+        "qmfc2       %0, $vf10           \n"
+        "ppach       %0, $zero, %0       \n"
+        "ppacb       %0, $zero, %0       \n"
+        ".set reorder"
+        : "=&r"(tmp)
+        : "r"(color), "r"(inv255), "r"(scale)
+        : "memory");
+    return tmp;
+}
+
 /* Some retail paths reserve v0 for the macro-mode sequence and spill its result. */
 static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
 {
@@ -7485,7 +7513,6 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   u32 uVar2;
 
-  u32 uVar3;
 
   u32 uVar4;
 
@@ -7494,9 +7521,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   
 
-  uVar3 = (*DAT_00960178_abs)(0x1c,0x40000);
-
-  puVar1 = (u16 *)uVar3;
+  puVar1 = (u16 *)(*DAT_00960178_abs)(0x1c,0x40000);
 
   *puVar1 = 3;
 
@@ -7549,7 +7574,7 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   *(u32 *)(*(int *)(model + (int)iGpffffba80) + 4) = 0;
 
-  return uVar3;
+  return (u32)puVar1;
 
 }
 
@@ -10821,9 +10846,9 @@ void FUN_003269e0(int param_1,int param_2)
 
   case 4:
 
-    *(u32 *)(param_1 + 0x54) = *(u32 *)(param_2 + 0x54);
+    *(f32 *)(param_1 + 0x54) = *(f32 *)(param_2 + 0x54);
 
-    *(u32 *)(param_1 + 0x58) = *(u32 *)(param_2 + 0x58);
+    *(f32 *)(param_1 + 0x58) = *(f32 *)(param_2 + 0x58);
 
     break;
 
@@ -10859,7 +10884,7 @@ void FUN_003269e0(int param_1,int param_2)
 
       }
 
-      (*DAT_0096017c)(*(u32 *)(param_1 + 0x38));
+      DAT_0096017c_abs[0](*(u32 *)(param_1 + 0x38));
 
       *(u32 *)(param_1 + 0x34) = 0;
 
@@ -10903,11 +10928,11 @@ void FUN_003269e0(int param_1,int param_2)
 
       for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1) {
 
-        FUN_003257e0((u64)(*(u32 *)(*(int *)(param_1 + 0x3c) + uVar3 * 4)));
+        FUN_003257e0(*(u32 *)(*(int *)(param_1 + 0x3c) + uVar3 * 4));
 
       }
 
-      (*DAT_0096017c)(*(u32 *)(param_1 + 0x40));
+      DAT_0096017c_abs[0](*(u32 *)(param_1 + 0x40));
 
       *(u32 *)(param_1 + 0x3c) = 0;
 
@@ -36389,11 +36414,11 @@ u32 FUN_00342990(int param_1)
 
 {
 
+  u32 uVar3;
+
   int iVar1;
 
   int iVar2;
-
-  u32 uVar3;
 
   int *piVar4;
 
@@ -46994,6 +47019,8 @@ void FUN_0034e940(int param_1,float *param_2)
 
 
 
+// Genuine VU0 macro-mode colour scaling is not expressible in C.
+// Complete conversion of the fake intrinsic block: 1700/3024 nd1176 -> 1384/3024 nd897.
 // FUN_0034EAE0 NONMATCHING
 void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
@@ -47005,13 +47032,11 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
   bool bVar1;
 
-  __int128 in_zero_qw;
 
   int iVar2;
 
   u32 *puVar3;
 
-  __int128 auVar4;
 
   u8 bVar5;
 
@@ -47029,7 +47054,6 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
 
   float unaff_f22;
 
-  __int128 auVar11;
 
   float fStack_130;
 
@@ -47130,42 +47154,10 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
   
 
   iStack_c = *(int *)(param_3 + 0x14);
+  uStack_10 = mdlVuScalePackedColor(iStack_c,param_5,DAT_007caf08);
+  uStack_4 = uStack_10;
+  if ((u8)(uStack_4 >> 24) != 0) {
 
-  auVar4 = _pextlb(0,(long)iStack_c);
-
-  auVar4 = _pextlh(0,auVar4._0_8_);
-
-  auVar4 = _qmtc2(auVar4._0_4_);
-
-  auVar11 = _vitof0(auVar4);
-
-  auVar4 = _qmtc2(DAT_007caf08);
-
-  auVar4 = _vmulbc(auVar11,auVar4);
-
-  auVar11 = _lqc2(*param_5);
-
-  auVar11 = _vmul(auVar4,auVar11);
-
-  auVar4 = _qmtc2(0x437f0000);
-
-  auVar4 = _vmulbc(auVar11,auVar4);
-
-  auVar4 = _vftoi0(auVar4);
-
-  auVar4 = _qmfc2(auVar4._0_4_);
-
-  auVar4 = _ppach(in_zero_qw,auVar4);
-
-  auVar4 = _ppacb(in_zero_qw,auVar4);
-
-  uStack_10 = auVar4._0_4_;
-
-  (*((u8 *)((u8 *)&uStack_4 + 3))) = (*((u8 *)&auVar4 + 3));
-
-  if ((*((u8 *)((u8 *)&uStack_4 + 3))) != '\0') {
-
-    uStack_4 = uStack_10;
 
     FUN_004d81b0(2,&uStack_8);
 

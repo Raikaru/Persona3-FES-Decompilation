@@ -28,10 +28,10 @@ extern u32 D_006833C0[];
 extern void* DAT_0096017c[];
 extern void* DAT_00960184[];
 
-HCdvd* K_FldDungeon_RequestScript();
-void K_FldDungeon_DestroyScrMemory();
+HCdvd* K_FldDungeon_RequestScript(void);
+void K_FldDungeon_DestroyScrMemory(void);
 u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd);
-void K_FldDungeon_FUN_001c03f0();
+void K_FldDungeon_FUN_001c03f0(void);
 
 s32 func_001bf340(FldDungeonFloorData* floorData);
 u32 func_001c0440(void);
@@ -430,7 +430,7 @@ u32 K_FldDungeon_GetScrSize()
 }
 
 // FUN_001c0190. Request a cdvd stream to load main tartarus script
-HCdvd* K_FldDungeon_RequestScript()
+HCdvd* K_FldDungeon_RequestScript(void)
 {
     HCdvd* cdvd;
 
@@ -488,7 +488,7 @@ u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 }
 
 // FUN_001c02e0
-void K_FldDungeon_DestroyScrMemory()
+void K_FldDungeon_DestroyScrMemory(void)
 {
     FldDungeon* dungeon;
 
@@ -521,7 +521,7 @@ HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
 }
 
 // FUN_001c03f0
-void K_FldDungeon_FUN_001c03f0()
+void K_FldDungeon_FUN_001c03f0(void)
 {
     if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL && sDngBtlEffectCdvd == NULL)
     {
