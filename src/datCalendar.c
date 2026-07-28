@@ -4607,9 +4607,10 @@ KwlnTask* func_00186960(KwlnTask* parent, s32 currentValue, s32 targetValue)
 void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
 {
     s32 tile;
+    void* unused;
 
     tile = 0;
-    if (clndIsHolidayOrSunday() != 0 && selection >= 2 && selection <= 5)
+    if (clndIsHolidayOrSunday() == true && selection >= 2 && selection <= 5)
     {
         tile = 7;
     }
@@ -4625,16 +4626,17 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
             case 5: tile = 5; break;
             case 6: tile = 6; break;
             case 7: tile = 8; break;
+            case 8: tile = 0; break;
             default: tile = 0; break;
         }
     }
-    func_001159f0(NULL,
+    func_001159f0(unused,
                   resource,
                   tile,
                   alpha & 0xff,
                   clndPackedX(position) + 207.0f,
                   clndPackedY(position) + 183.0f,
-                  72.0f);
+                  50.0f);
 }
 
 // FUN_00186BD0 NONMATCHING
@@ -4647,7 +4649,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
         return;
     }
     tile = 0;
-    if (clndIsHolidayOrSunday() != 0 && selection >= 2 && selection <= 5)
+    if (clndIsHolidayOrSunday() == true && selection >= 2 && selection <= 5)
     {
         tile = 0x11;
     }
@@ -4663,6 +4665,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
             case 5: tile = 0xf; break;
             case 6: tile = 0x10; break;
             case 7: tile = 0x12; break;
+            case 8: tile = 0; break;
             default: tile = 0; break;
         }
     }
@@ -4672,7 +4675,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
                   alpha & 0xff,
                   clndPackedX(position) + 207.0f,
                   clndPackedY(position) + 211.0f,
-                  72.0f);
+                  50.0f);
 }
 
 // FUN_00186D50

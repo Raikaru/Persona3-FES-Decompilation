@@ -1119,9 +1119,9 @@ void FUN_00258630(u32 *param_1)
             FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
             break;
         case 0:
+            FUN_00209f00(param_1 + 6);
             card = param_1 + 6;
-            FUN_00209f00(card);
-            FUN_0020c590(card, (u16)param_1[2]);
+            FUN_0020c590(card, (u16)card[-4]);
             if ((*param_1 & 1) != 0) {
                 FUN_0020d6c0(param_1 + 6);
             }

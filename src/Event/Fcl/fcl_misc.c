@@ -27,8 +27,7 @@ typedef struct FclMiscVec2
 } FclMiscVec2;
 typedef struct FclMiscVec3
 {
-    f32 x;
-    f32 y;
+    u64 xy;
     f32 z;
 } FclMiscVec3;
 typedef struct FclMiscVec4
@@ -3341,6 +3340,10 @@ void FUN_003cda60(u32 param_1)
   FclMiscVec3 rotation;
 
   FclMiscColor color;
+  u8 red;
+  u8 green;
+  u8 blue;
+  u8 alpha;
 
   
 
@@ -3364,7 +3367,14 @@ void FUN_003cda60(u32 param_1)
 
   FUN_004c35d0(iVar2 + 0x40,&rotation,2);
 
-  memcpy((void *)(iVar2 + 0x80),&color,4);
+  red = color.channel[0];
+  green = color.channel[1];
+  blue = color.channel[2];
+  alpha = color.channel[3];
+  *(u8 *)(iVar2 + 0x80) = red;
+  *(u8 *)(iVar2 + 0x81) = green;
+  *(u8 *)(iVar2 + 0x82) = blue;
+  *(u8 *)(iVar2 + 0x83) = alpha;
 
   FUN_0016bc80(0,*(u16 *)(iVar2 + 0xc),iVar2 + 0x84);
 

@@ -5412,7 +5412,7 @@ void FUN_0038bc70(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0038C460 NONMATCHING
+// FUN_0038C460
 
 
 void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4)

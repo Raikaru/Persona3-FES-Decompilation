@@ -352,7 +352,6 @@ extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,
 #define FUN_003a628c(...) ((int (*)(...))FUN_003a628c)(__VA_ARGS__)
 #define FUN_003a62b0(...) ((void (*)(...))FUN_003a62b0)(__VA_ARGS__)
 #define FUN_003a62e0(...) ((int (*)(...))FUN_003a62e0)(__VA_ARGS__)
-#define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
 #define FUN_003a6460(...) ((int (*)(...))FUN_003a6460)(__VA_ARGS__)
 #define FUN_003a64c0(...) ((void (*)(...))FUN_003a64c0)(__VA_ARGS__)
@@ -3950,7 +3949,6 @@ set_check:
 done:
   return;
 }
-#define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #undef FUN_003a6410
 #pragma push
 /* Removing this loses FUN_003a6410 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
@@ -5609,7 +5607,6 @@ void FUN_003a7cb0(int param_1,int param_2)
   *(short *)(param_1 + 0x18) = param_2;
   FUN_0010a4e0(0,0,0,0);
 }
-#define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #define FUN_003a7cb0(...) ((void (*)(...))FUN_003a7cb0)(__VA_ARGS__)
 #undef FUN_003a7d60
 #pragma push
