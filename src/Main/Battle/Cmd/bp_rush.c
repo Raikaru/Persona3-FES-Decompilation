@@ -1,5 +1,6 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "Main/Battle/Cmd/bp_rush.h"
 #pragma alias bpRushRequestHide FUN_0025d6c0
 #pragma alias bpRushClearHideRequest FUN_0025d710
 #pragma alias bpRushRequestSecondaryHide FUN_0025d760
@@ -15,86 +16,89 @@
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 extern f32 DAT_007caee8;
-extern u32* DAT_007ce36c;
+extern BpRushWork* DAT_007ce36c;
 extern code DAT_00960090[];
 extern code DAT_0096009c[];
 extern const char DAT_0068ebe8[];
-extern void bpRushUpdateGeometry(void);
 extern f32 FUN_0052e6d8(f32 angle);
 extern f32 FUN_0052e878(f32 angle);
 extern void* FUN_0021cca0_ptr(void* texture, s32 frame);
 #pragma alias FUN_0021cca0_ptr FUN_0021cca0
 
-static u32* sBpRush; // DAT_007ce36c
+static BpRushWork* sBpRush; // DAT_007ce36c
 
 
 // FUN_0025d6c0
 void bpRushRequestHide(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
-    *sBpRush |= 0x10;
+    sBpRush->flags |= 0x10;
 }
 
 // FUN_0025d710
 void bpRushClearHideRequest(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
-    *sBpRush &= 0xffffffef;
+    sBpRush->flags &= 0xffffffef;
 }
 
 // FUN_0025d760
 void bpRushRequestSecondaryHide(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
-    *sBpRush |= 0x20;
+    sBpRush->flags |= 0x20;
 }
 
 // FUN_0025d7b0
 void bpRushClearSecondaryHideRequest(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
-    *sBpRush &= 0xffffffdf;
+    sBpRush->flags &= 0xffffffdf;
 }
 
 // FUN_0025d800
 void bpRushShowSpinner(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
-    *sBpRush |= 0x40;
+    sBpRush->flags |= 0x40;
 }
 
 // FUN_0025d850
 void bpRushHideSpinner(void)
 {
     K_ASSERT(sBpRush != NULL, 0x32);
-    *sBpRush &= 0xffffffbf;
+    sBpRush->flags &= 0xffffffbf;
 }
 
 // FUN_0025d020
 void bpRushUpdate(void)
 {
-    u32* work;
+    BpRushWork* work;
     u32 v;
 
     K_ASSERT(sBpRush != NULL, 0x32);
     work = sBpRush;
-    if ((~*sBpRush & 1) == 0) {
-        v = work[0x206];
-        work[0x206] = v + 1;
-        work[0x206] = (int)(v + 1) % 10;
-        if ((*work & 0x10) != 0 || (*work & 0x20) != 0) {
-            if (0 < (int)work[0x204]) {
-                work[0x204] = work[0x204] - 1;
+    if ((~sBpRush->flags & 1) == 0) {
+        v = work->spinFrame.unsignedValue;
+        work->spinFrame.unsignedValue = v + 1;
+        work->spinFrame.unsignedValue = (int)(v + 1) % 10;
+        if ((work->flags & 0x10) != 0 || (work->flags & 0x20) != 0) {
+            if (0 < (int)work->mainVisibility.unsignedValue) {
+                work->mainVisibility.unsignedValue =
+                    work->mainVisibility.unsignedValue - 1;
             }
-        } else if ((int)work[0x204] < 0x10) {
-            work[0x204] = work[0x204] + 1;
+        } else if ((int)work->mainVisibility.unsignedValue < 0x10) {
+            work->mainVisibility.unsignedValue =
+                work->mainVisibility.unsignedValue + 1;
         }
-        if ((*work & 0x40) != 0) {
-            if ((int)work[0x205] < 10) {
-                work[0x205] = work[0x205] + 1;
+        if ((work->flags & 0x40) != 0) {
+            if ((int)work->spinnerVisibility.unsignedValue < 10) {
+                work->spinnerVisibility.unsignedValue =
+                    work->spinnerVisibility.unsignedValue + 1;
             }
-        } else if (0 < (int)work[0x205]) {
-            work[0x205] = work[0x205] - 1;
+        } else if (0 < (int)work->spinnerVisibility.unsignedValue) {
+            work->spinnerVisibility.unsignedValue =
+                work->spinnerVisibility.unsignedValue - 1;
         }
         bpRushUpdateGeometry();
     }
@@ -112,18 +116,18 @@ void bpRushDraw(void)
     extern void FUN_004d7f60(s32 state, u32 value);
     volatile /* Removing this function's qualifier batch loses bpRushDraw (MATCH nd0 -> MISMATCH nd377, size 580 -> 592) - measured W170. */ code *state;
     volatile /* Removing this function's qualifier batch loses bpRushDraw (MATCH nd0 -> MISMATCH nd377, size 580 -> 592) - measured W170. */ code *quad;
-    u32* puVar1;
+    BpRushWork* puVar1;
     void* uVar2;
     void* uVar3;
     int iVar4;
     u32* pQuad;
 
-    if (DAT_007ce36c == (u32*)0x0) {
+    if (DAT_007ce36c == (BpRushWork*)0x0) {
         K_Assert(DAT_0068ebe8, 0x32);
     }
     puVar1 = DAT_007ce36c;
     uVar2 = FUN_00267390();
-    if ((~*puVar1 & 1) == 0) {
+    if ((~puVar1->flags & 1) == 0) {
         state = DAT_00960090;
         (*state)(9, 2);
         (*state)(0x14, 2);
@@ -135,7 +139,7 @@ void bpRushDraw(void)
         FUN_004d7f60(3, 0x71801);
         FUN_004d7f60(2, 0x48);
         for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
-            pQuad = puVar1 + iVar4 * 0x40 + 0x44;
+            pQuad = puVar1->spinnerQuads[iVar4].words;
             quad = DAT_0096009c;
             (*quad)(pQuad, 4, 0, 1, 2);
             (*quad)(pQuad, 4, 0, 2, 3);
@@ -146,8 +150,8 @@ void bpRushDraw(void)
         FUN_004d7f60(3, 0x717fb);
         FUN_004d7f60(2, 0x44);
         quad = DAT_0096009c;
-        (*quad)(puVar1 + 4, 4, 0, 1, 2);
-        (*quad)(puVar1 + 4, 4, 0, 2, 3);
+        (*quad)(puVar1->mainQuad.words, 4, 0, 1, 2);
+        (*quad)(puVar1->mainQuad.words, 4, 0, 2, 3);
     }
 }
 
@@ -155,11 +159,11 @@ void bpRushDraw(void)
 // FUN_0025D130
 void bpRushUpdateGeometry(void)
 {
-    u8* work;
+    BpRushWork* work;
     void* texture;
     void* frame;
     s32 i;
-    u8* quad;
+    u32* quad;
     f32 scaleX;
     f32 scaleY;
     f32 angleBase;
@@ -177,35 +181,35 @@ void bpRushUpdateGeometry(void)
         u8 b;
         u8 a;
     } color;
-    if (DAT_007ce36c == (u32*)0x0) {
+    if (DAT_007ce36c == (BpRushWork*)0x0) {
         K_Assert(DAT_0068ebe8, 0x32);
     }
-    work = (u8*)DAT_007ce36c;
+    work = DAT_007ce36c;
     texture = (void*)(uintptr_t)FUN_00267390();
-    scaleX = (f32)*(s32*)(work + 0x810) / 16.0f;
-    scaleY = (f32)*(s32*)(work + 0x814) / 10.0f;
+    scaleX = (f32)work->mainVisibility.signedValue / 16.0f;
+    scaleY = (f32)work->spinnerVisibility.signedValue / 10.0f;
 
     frame = FUN_0021cca0_ptr(texture, 0);
     rect[0] = 41.0f;
     rect[1] = 379.0f;
     rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
     rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
-    FUN_0021d8e0(work + 0x10, rect);
+    FUN_0021d8e0(work->mainQuad.words, rect);
 
     color.r = 0xff;
     color.g = 0xff;
     color.b = 0xff;
     colorValue = scaleX * 255.0f;
     color.a = (u8)colorValue;
-    FUN_0021d950(work + 0x10, &color);
-    spin = (f32)*(s32*)(work + 0x818) / 10.0f;
+    FUN_0021d950(work->mainQuad.words, &color);
+    spin = (f32)work->spinFrame.signedValue / 10.0f;
     frame = FUN_0021cca0_ptr(texture, 1);
     i = 0;
     angleBase = DAT_007caee8 * spin;
     width = scaleX * scaleY * 20.0f;
     alpha = colorValue * scaleY;
     while (i < 7) {
-        quad = work + i * 0x100 + 0x110;
+        quad = work->spinnerQuads[i].words;
         angle = angleBase + (DAT_007caee8 * (f32)i) / 7.0f;
         cosine = width * FUN_0052e6d8(angle);
         sine = width * FUN_0052e878(angle);
