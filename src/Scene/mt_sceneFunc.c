@@ -558,7 +558,7 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
 void FUN_003bbb90(const float *param_1,float *param_2);
 void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
 void FUN_003bbd40(float param_1,char *param_2,float *param_3);
-float FUN_003bbed0(float param_1,float param_2,u32 param_3);
+float FUN_003bbed0(u32 param_3,float param_1,float param_2);
 void FUN_003bbfd0(float param_1,float param_2,float *param_3,float *param_4,
                   float *param_5,float *param_6,float *param_7);
 float FUN_003bc0e0(char *param_1);
@@ -3589,7 +3589,7 @@ void FUN_003bbb90(const float *param_1,float *param_2)
                          afStack_20[2] * source.z);
     uVar1 = FUN_0052e9a0_scene_typed(uVar1);
     fVar2 = FUN_005318a0_scene_typed(uVar1);
-    fVar2 = fGpffff8228 * fVar2;
+    fVar2 = fVar2 * fGpffff8228;
     if (afStack_20[0] < 0.0f) {
       fVar2 = fVar2 * -1.0f;
     }
@@ -3772,12 +3772,12 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 // FUN_003BBED0 NONMATCHING
 
 
-float FUN_003bbed0(float param_1,float param_2,u32 param_3)
+float FUN_003bbed0(u32 param_3,float param_1,float param_2)
 {
   float *pfVar1;
   u8 auStack[0x138];
 
-  if (5 < param_3) {
+  if (param_3 >= 6) {
     FUN_0019d3f0("mt_sceneFunc.c",0x980);
   }
   if (param_1 == 0.0f) {

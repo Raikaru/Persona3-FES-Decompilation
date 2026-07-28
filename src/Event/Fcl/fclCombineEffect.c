@@ -3727,7 +3727,7 @@ u64 FUN_0041baf0(int param_1)
 
 }
 
-// FUN_0041BC90 NONMATCHING
+// FUN_0041BC90
 
 
 void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *param_5)
@@ -3762,12 +3762,12 @@ void *FUN_0041bc90(void *param_1,void *param_2,void *param_3,int param_4,void *p
   i = 0;
   goto check;
 loop:
-  position = positions[i];
+  position.x = positions[i].x;
+  position.y = positions[i].y;
+  position.z = positions[i].z;
   offset = i * 0x24;
   entry = *(u8 **)(result + 4) + offset;
-  *(f32 *)(entry + 0) = position.x;
-  *(f32 *)(entry + 4) = position.y;
-  *(f32 *)(entry + 8) = position.z;
+  *(RwV3d *)entry = position;
   *(f32 *)(*(u8 **)(result + 4) + offset + 0x1c) = texcoords[i].x;
   *(f32 *)(*(u8 **)(result + 4) + offset + 0x20) = texcoords[i].y;
   entry = *(u8 **)(result + 4) + offset;

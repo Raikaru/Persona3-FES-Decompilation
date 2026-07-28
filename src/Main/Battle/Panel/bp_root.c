@@ -1558,9 +1558,9 @@ void FUN_00202830(void)
 // FUN_00202A10 NONMATCHING
 void FUN_00202A10(void)
 {
-    u8* work;
     s32 destroyIndex;
     s32 rowIndex;
+    u8* work;
     u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);

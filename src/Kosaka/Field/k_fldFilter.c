@@ -426,10 +426,12 @@ void FUN_001d5130(u32 alpha)
 }
 
 /* Return the closest camera point to the controlled character. */
-// FUN_001d5140 NONMATCHING
+// FUN_001d5140
 s32 FUN_001d5140(KwlnTask* cameraTask)
 {
+    s32 bestIndex;
     FldFilterCameraWork* work;
+    FldFilterCameraWork* indexedWork;
     struct
     {
         RwV3d playerPos;
@@ -446,7 +448,6 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     f32 pointY;
     f32 pointZ;
     f32 pointX;
-    s32 bestIndex;
     s32 index;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
@@ -459,9 +460,11 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     pointX = pointCopy.x;
     for (; index < 9; index++)
     {
-        dx = (work->cameraPoints + index)->x - pointX;
-        dy = (work->cameraPoints + index)->y - pointY;
-        dz = (work->cameraPoints + index)->z - pointZ;
+        indexedWork = work;
+        indexedWork = (FldFilterCameraWork*)((s32)indexedWork + index * sizeof(RwV3d));
+        dx = indexedWork->cameraPoints[0].x - pointX;
+        dy = indexedWork->cameraPoints[0].y - pointY;
+        dz = indexedWork->cameraPoints[0].z - pointZ;
         distance = sqrtf(dx * dx + dy * dy + dz * dz);
         if (bestDistance > distance)
         {

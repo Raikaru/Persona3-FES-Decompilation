@@ -295,9 +295,9 @@ void FUN_003a8590(u32* param_1);
 extern void FUN_003a8590_direct(u32 *param_1);
 void FUN_003a8600(int param_1);
 void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6);
-u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5);
+u64 FUN_003a8710(int param_2,int param_3,float param_1,int param_4,int param_5);
  #pragma alias FUN_003a8710_typed FUN_003a8710
-extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,int param_5);
+extern u64 FUN_003a8710_typed(int param_2,int param_3,float param_1,int param_4,int param_5);
 
 /* Region call-cast macros */
 #define FUN_003a2150(...) ((u32 (*)(...))FUN_003a2150)(__VA_ARGS__)
@@ -2488,7 +2488,7 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
 }
 #define FUN_003a4a70(...) ((u32 (*)(...))FUN_003a4a70)(__VA_ARGS__)
 #undef FUN_003a4b90
-// FUN_003A4B90 NONMATCHING
+// FUN_003A4B90
 
 
 u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
@@ -2497,7 +2497,6 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
 
 {
 
-  int iVar1;
 
 
   int iVar2;
@@ -2509,6 +2508,7 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
   int lVar5;
 
   u32 uVar6;
+  int iVar1;
 
   
 
@@ -5600,9 +5600,9 @@ void FUN_003a8170(int param_1)
 
     iVar2 = (iVar3 >> 3) + 2;
 
-    FUN_003a8710(0,0xe1,iVar2,0xff,0x12);
+    FUN_003a8710(0xe1,iVar2,0.0f,0xff,0x12);
 
-    FUN_003a8710(0,0x231,iVar2,0xff,0x13);
+    FUN_003a8710(0x231,iVar2,0.0f,0xff,0x13);
 
   }
 
@@ -5687,7 +5687,7 @@ void FUN_003a8350(int param_1)
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
   iVar1 = (u32)fVar1 & 0xff;
-  FUN_003a8710_typed(0,iVar2,iVar3,iVar1,0x10);
+  FUN_003a8710_typed(iVar2,iVar3,0.0f,iVar1,0x10);
 }
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)
 #undef FUN_003a8440
@@ -5827,10 +5827,10 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,
 }
 #define FUN_003a8650(...) ((void (*)(...))FUN_003a8650)(__VA_ARGS__)
 #undef FUN_003a8710
-// FUN_003A8710 NONMATCHING
+// FUN_003A8710
 
 
-u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
+u64 FUN_003a8710(int param_2,int param_3,float param_1,int param_4,int param_5)
 {
   u32 object;
   object = FUN_001158b0(0,DAT_007ce654,param_5);

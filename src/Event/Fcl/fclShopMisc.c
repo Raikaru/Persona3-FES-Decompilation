@@ -18467,9 +18467,9 @@ void FUN_0040a6d0(u32 param_1,int param_2)
 
   u32 *puVar1;
 
-  u32 uVar2;
-
   u32 uVar3;
+
+  u32 uVar2;
 
   
 
@@ -18481,13 +18481,13 @@ void FUN_0040a6d0(u32 param_1,int param_2)
 
   if (param_2 == 1) {
 
-    FUN_003c7000(param_1,0x40a640,0);
+    FUN_003c7000(param_1,(int)FUN_0040a640,0);
 
   }
 
   else {
 
-    FUN_003c7000(param_1,0x40a5b0,0);
+    FUN_003c7000(param_1,(int)FUN_0040a5b0,0);
 
   }
 
