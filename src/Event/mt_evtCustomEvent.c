@@ -5706,6 +5706,8 @@ void FUN_0039e700(u8 *param_1)
 {
   extern u8 DAT_006a1800[];
 
+  int entryType;
+
   int iVar1;
 
   int iVar2;
@@ -5726,18 +5728,19 @@ void FUN_0039e700(u8 *param_1)
   *(u32 *)(param_1 + 0x78c) = 0;
 
   iVar1 = *(int *)(param_1 + 8);
+  entryType = 1;
+
 
 
   for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0x38); iVar7 = iVar7 + 1) {
 
     iVar6 = *(int *)(iVar1 + 0x34) + iVar7 * 0x20;
 
-    switch (*(int *)(iVar6 + 0x18)) {
-    case 1:
+    if (*(int *)(iVar6 + 0x18) == entryType) {
 
       iVar2 = *(int *)(param_1 + 0x78c);
 
-      if (9 < iVar2) goto done;
+      if (9 < iVar2) break;
 
       iVar3 = *(int *)(iVar1 + 0x10);
 
@@ -5760,7 +5763,6 @@ void FUN_0039e700(u8 *param_1)
 
   }
 
-done:
   FUN_005225a8((u32)DAT_006a1800,*(u32 *)(param_1 + 0x78c));
 
   return;
