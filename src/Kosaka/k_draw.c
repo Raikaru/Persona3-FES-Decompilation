@@ -724,15 +724,15 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 
     if (work->render->angle == 360.0f)
     {
-        vertices[0x21].x =
+        vertices[i + 1].x =
             work->render->radius * cosf(startAngle) + work->render->center.x;
-        vertices[0x21].y = work->render->center.y;
-        vertices[0x21].z =
+        vertices[i + 1].y = work->render->center.y;
+        vertices[i + 1].z =
             work->render->radius * sinf(startAngle) + work->render->center.z;
     }
     else
     {
-        vertices[0x21] = vertices[0];
+        vertices[i + 1] = vertices[i];
     }
     func_004933d0(renderObject);
 }

@@ -974,7 +974,9 @@ void func_0020ac90(void* work)
     f32 frac;
     f32 blend;
     s32 state;
-    s32 i;
+    s32 centerIndex;
+    s32 rotationIndex;
+    s32 restoreIndex;
     f32 corner[4][2];
     f32 angle;
     f32 x;
@@ -1096,29 +1098,29 @@ shared_tail:
         angle = *(f32*)(panel + 0x3c) / 4.0f;
         angle *= DAT_007caee8;
 
-        for (i = 0; i < 4; i++)
+        for (centerIndex = 0; centerIndex < 4; centerIndex++)
         {
-            corner[i][0] -= 0.5f;
-            corner[i][1] -= 0.5f;
+            corner[centerIndex][0] -= 0.5f;
+            corner[centerIndex][1] -= 0.5f;
         }
-        for (i = 0; i < 4; i++)
+        for (rotationIndex = 0; rotationIndex < 4; rotationIndex++)
         {
-            y = corner[i][1];
-            x = corner[i][0];
+            x = corner[rotationIndex][0];
+            y = corner[rotationIndex][1];
             sinA = FUN_0052e878(angle);
             cosA = FUN_0052e6d8(angle);
             rotatedX = x * cosA - y * sinA;
             sinA = FUN_0052e878(angle);
             cosA = FUN_0052e6d8(angle);
             rotatedY = x * sinA + y * cosA;
-            corner[i][0] = rotatedX;
-            corner[i][1] = rotatedY;
+            corner[rotationIndex][0] = rotatedX;
+            corner[rotationIndex][1] = rotatedY;
         }
 
-        for (i = 0; i < 4; i++)
+        for (restoreIndex = 0; restoreIndex < 4; restoreIndex++)
         {
-            corner[i][0] += 0.5f;
-            corner[i][1] += 0.5f;
+            corner[restoreIndex][0] += 0.5f;
+            corner[restoreIndex][1] += 0.5f;
         }
 
         *(f32*)(panel + 0x584) = corner[0][0];

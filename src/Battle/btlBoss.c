@@ -675,7 +675,7 @@ static u16 btlBossGetEncounterIdCall()
     return *(u16*)(*(u8**)((u8*)gBtl + 0xbbc) + 8);
 }
 
-static BtlUnit* btlBossGetEnemyHead()
+static inline BtlUnit* btlBossGetEnemyHead()
 {
     return *(BtlUnit**)((u8*)gBtl + 0x158);
 }

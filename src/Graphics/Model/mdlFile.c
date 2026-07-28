@@ -1339,9 +1339,7 @@ void FUN_003500e0(void);
 void FUN_00350110(void);
 void FUN_00350190(void);
 u32 FUN_00350200(void);
-u64 FUN_00350230(long param_1);
-#pragma alias FUN_00350230_u32 FUN_00350230
-extern u32 FUN_00350230_u32(long param_1);
+u32 FUN_00350230(u32 param_1);
 void FUN_003503e0(int param_1);
 u32 FUN_00350450(u32 param_1);
 void FUN_00350500(int param_1,int param_2);
@@ -43340,7 +43338,7 @@ void FUN_00349090(int *param_1,float *param_2)
 
   int iVar1;
 
-  RwRGBA colour;
+  union { RwRGBA rgba; u32 packed; } colour;
 
   u32 uVar3;
 
@@ -43358,7 +43356,7 @@ void FUN_00349090(int *param_1,float *param_2)
 
   iVar1 = *piVar4;
 
-  colour = *(RwRGBA *)&piVar4[3];
+  colour.packed = (u32)piVar4[3];
 
   for (iVar5 = 0; iVar5 < iVar1; iVar5 = iVar5 + 1) {
 
@@ -43381,7 +43379,7 @@ void FUN_00349090(int *param_1,float *param_2)
 
       fVar7 = FUN_005318a0_f32(uVar3);
 
-      fVar7 = (float)colour.a * fVar7;
+      fVar7 = (float)colour.rgba.a * fVar7;
 
       if (fVar7 < 2.1474836e+09f) {
 
@@ -49889,104 +49887,46 @@ u32 FUN_00350200(void)
 // FUN_00350230 NONMATCHING
 
 
-u64 FUN_00350230(long param_1)
-
-
-
+u32 FUN_00350230(u32 param_1)
 {
+  u32 *work;
+  u16 *model;
+  u32 *colors;
+  u32 value;
 
-  short sVar1;
-
-  u32 *puVar2;
-
-  u16 *puVar3;
-
-  u32 uVar4;
-
-  u64 uVar5;
-
-  u64 uVar6;
-
-  long lVar7;
-
-  u32 *puVar8;
-
-  
-
-  uVar5 = (*DAT_00960178)(0xb0,0x40000);
-
-  FUN_00521408(uVar5,0,0xb0);
-
-  puVar8 = (u32 *)uVar5;
-
-  *puVar8 = 0xffffffff;
-
+  work = (u32 *)(*DAT_00960178_abs)(0xb0,0x40000);
+  FUN_00521408(work,0,0xb0);
+  work[0] = 0xffffffff;
   if (param_1 != 0) {
-
-    puVar8[1] = (u32)*(u16 *)((int)param_1 + 0xc);
-
-    uVar6 = FUN_003245b0((int)(param_1));
-
-    FUN_00521250(puVar8 + 3,uVar6,0x98);
-
-    puVar3 = (u16 *)FUN_003233a0(1,2,4,0x69bdc8,0x4c);
-
-    puVar8[0x29] = (u32)puVar3;
-
-    *puVar3 = *puVar3 & 0xfffb;
-
-    puVar2 = *(u32 **)(*(int *)(*(int *)(puVar8[0x29] + 0x10) + 0x18) + 0x30);
-
-    *puVar2 = 0xffffffff;
-
-    puVar2[1] = 0xffffffff;
-
-    puVar2[2] = 0xffffffff;
-
-    puVar2[3] = 0xffffffff;
-
-    lVar7 = FUN_003245f0((int)(param_1));
-
-    if (lVar7 != 0) {
-
-      sVar1 = *(short *)((int)param_1 + 0x1c);
-
-      if (sVar1 == 7) {
-
-        uVar4 = FUN_00322dc0((u32 *)lVar7);
-
-        puVar8[0x2a] = uVar4;
-
+    work[1] = *(u16 *)(param_1 + 0xc);
+    FUN_00521250(work + 3,FUN_003245b0(param_1),0x98);
+    model = (u16 *)FUN_003233a0_ptr(1,2,4,DAT_0069bdc8_abs,0x4c);
+    work[0x29] = (u32)model;
+    *model &= 0xfffb;
+    colors = *(u32 **)(*(u32 *)(*(u32 *)(work[0x29] + 0x10) + 0x18) + 0x30);
+    colors[0] = 0xffffffff;
+    colors[1] = 0xffffffff;
+    colors[2] = 0xffffffff;
+    colors[3] = 0xffffffff;
+    value = FUN_003245f0(param_1);
+    if (value != 0) {
+      switch (*(u16 *)(param_1 + 0x1c)) {
+      case 1:
+        FUN_00323b90(work[0x29],value);
+        break;
+      case 2:
+        work[0x2b] = FUN_00322530(value);
+        break;
+      case 4:
+        FUN_00494d50(*(u32 *)(work[0x29] + 0x14),FUN_003210a0(*(u16 *)value));
+        break;
+      case 7:
+        work[0x2a] = FUN_00322dc0((u32 *)value);
+        break;
       }
-
-      else if (sVar1 == 4) {
-
-        uVar6 = FUN_003210a0(*(u16 *)lVar7);
-
-        FUN_00494d50(*(u32 *)(puVar8[0x29] + 0x14),uVar6);
-
-      }
-
-      else if (sVar1 == 2) {
-
-        uVar4 = FUN_00322530(lVar7);
-
-        puVar8[0x2b] = uVar4;
-
-      }
-
-      else if (sVar1 == 1) {
-
-        FUN_00323b90(puVar8[0x29],lVar7);
-
-      }
-
     }
-
   }
-
-  return uVar5;
-
+  return (u32)work;
 }
 
 
@@ -50049,7 +49989,7 @@ u32 FUN_00350450(u32 param_1)
 
   
 
-  uVar4 = FUN_00350230_u32(0);
+  uVar4 = FUN_00350230(0);
 
   iVar3 = (int)param_1;
 

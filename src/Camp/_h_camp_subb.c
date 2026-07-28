@@ -1627,23 +1627,24 @@ void FUN_001406d0(CampPair position, f32 texture,
 {
   register void* parent;
   u32 packedValue;
+  u32 inverseAlpha;
   const char* textValue;
   int entryIndex;
   int variant;
   int value;
   int textX;
-  int valueX;
   int valueY;
-  float panelX;
-  float panelY;
-  float panelBase;
+  int valueX;
   float rowBaseY;
+  float panelBase;
   float textBaseY;
+  float panelY;
   float tensX;
+  float panelX;
   float originY;
   char textBuffer[256];
 
-  packedValue = 0xffU - alpha;
+  inverseAlpha = 0xffU - alpha;
   if (detail->entryCount != 0) {
     campDrawSprite(parent, DAT_00833A50[0], 0x17, (u32)alpha,
                    position.x + 2.0f,
@@ -1658,18 +1659,18 @@ void FUN_001406d0(CampPair position, f32 texture,
   campDrawSprite(parent, DAT_00833A50[0], 0x1a, (u32)alpha,
                  panelX, position.y + 6.0f, texture);
   entryIndex = detail->entryCount + -5;
-  if (entryIndex < 1) {
-    entryIndex = 0;
+  if (entryIndex > 0) {
+    entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
   }
   else {
-    entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
+    entryIndex = 0;
   }
   campDrawSprite(parent, DAT_00833A50[0], 0x20, (u32)alpha,
                  panelX, position.y + 10.0f + (float)entryIndex, texture);
   originY = position.y;
   rowBaseY = originY + 2.0f;
   panelBase = position.x + 15.0f;
-  packedValue |= 0xffffff00;
+  packedValue = inverseAlpha | 0xffffff00;
   textBaseY = (float)(int)originY + 11.0f;
   textX = (int)((float)(int)position.x + 55.0f);
   panelY = originY + 16.0f;

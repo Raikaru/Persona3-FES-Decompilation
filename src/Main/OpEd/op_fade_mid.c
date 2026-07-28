@@ -199,18 +199,20 @@ loop:
             break;
         skillIndex++;
     }
-    if (skillIndex == skillCount)
-    {
-        if (unavailable != index)
-            unavailable++;
-        else
-            return;
-    }
+    if (skillIndex != skillCount)
+        goto next;
+    if (unavailable != index)
+        goto unavailableSkill;
+    goto done;
+unavailableSkill:
+    unavailable++;
 next:
     slot++;
     if ((s32)work[0x78 / 4] + slot >= 0x10)
         K_Assert(D_0068ED88, 0x65b);
     goto loop;
+    done:
+    return;
 }
 
 // FUN_002751e0

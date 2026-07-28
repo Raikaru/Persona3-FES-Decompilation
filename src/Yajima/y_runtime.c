@@ -1168,7 +1168,7 @@ u32 FUN_0044ad20(u64 param_1,char param_2);
 u32 FUN_0044e560(int param_1);
 u32 FUN_004542c0(char param_1);
 u64 FUN_00454620(char param_1);
-u64 FUN_00455e00(u64 param_1);
+u32 FUN_00455e00(u32 param_1);
 u64 FUN_004560d0(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
 u32 FUN_004579b0(u64 param_1);
 u64 FUN_00457a40(u64 param_1);
@@ -2585,8 +2585,8 @@ u64 FUN_0044aaf0(int param_1);
 u32 FUN_0044ad20(u64 param_1,char param_2);
 u32 FUN_0044e560(int param_1);
 u32 FUN_004542c0(char param_1);
-u64 FUN_00455e00(u64 param_1);
-u64 FUN_00455e00(u64 param_1);
+u32 FUN_00455e00(u32 param_1);
+u32 FUN_00455e00(u32 param_1);
 u64 FUN_004560d0(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
 u64 FUN_00457a40(u64 param_1);
 u64 FUN_00457a40(u64 param_1);
@@ -17295,7 +17295,7 @@ void FUN_00455cf0(void)
 #pragma opt_loop_invariants on
 // FUN_00455E00 NONMATCHING
 
-u64 FUN_00455e00(u64 param_1)
+u32 FUN_00455e00(u32 param_1)
 
 {
   char *pcVar1;
@@ -17303,8 +17303,9 @@ u64 FUN_00455e00(u64 param_1)
   char *pcVar3;
   u32 uVar4;
   int iVar5;
-  u64 uVar6;
+  int uVar6;
   float fVar7;
+  float fVar8;
   
   pcVar3 = *(char **)((int)param_1 + 0x3c);
   if ((pcVar3[0x148] != '\0') && (cVar2 = *pcVar3, cVar2 != '\x03')) {
@@ -17375,8 +17376,8 @@ u64 FUN_00455e00(u64 param_1)
     *(u32 *)(pcVar3 + 0xe0) = *(u32 *)(pcVar3 + 0x13c);
     *(u32 *)(pcVar3 + 0xe4) = *(u32 *)(pcVar3 + 0x140);
     uVar6 = FUN_00318b60(*(u32 *)(*(int *)(pcVar3 + 0x144) + 0x128));
-    uVar4 = FUN_001a5aa0_typed((const void *)(uVar6));
-    FUN_004561f0(uVar4,param_1);
+    fVar8 = FUN_001a5aa0_typed((const void *)(uVar6));
+    FUN_004561f0(fVar8,param_1);
     (*DAT_009600a0)(4,pcVar3 + 0x10,4);
   }
   return 0;
