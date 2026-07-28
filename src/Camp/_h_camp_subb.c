@@ -1679,10 +1679,10 @@ void FUN_001406d0(CampPair position, f32 texture,
   panelX = position.x + 293.0f;
   valueY = (int)((originY + 200.0f) - 40.0f);
   valueX = (int)(position.x + 10.0f + 14.0f);
-  for (;
-       entryIndex < 5 &&
-       entryIndex + detail->firstVisibleEntry < detail->entryCount;
-       entryIndex = entryIndex + 1) {
+  for (; entryIndex < 5; entryIndex = entryIndex + 1) {
+    if (entryIndex + detail->firstVisibleEntry >= detail->entryCount) {
+      break;
+    }
     variant = entryIndex * 0x1a;
     if (entryIndex == detail->selectedEntry) {
       campDrawSprite(parent, DAT_00833B70, 0x1b, (u32)alpha,

@@ -52,6 +52,9 @@ void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5)
  #pragma alias FUN_002a3e80_ab330 FUN_002a3e80
  extern void FUN_002a3e80_ab330(BtlAction* action, RwV3d* unitPos,
                                  f32* targetPos, s32 mode, f32 distance);
+#pragma alias FUN_002a3e80_side FUN_002a3e80
+extern void FUN_002a3e80_side(BtlAction* action, RwV3d* unitPos,
+                              f32* targetPos, f32 distance, s32 mode);
 extern u64 FUN_00280050();
 #pragma alias FUN_00280050_typed FUN_00280050
 extern void FUN_00280050_typed(BtlUnit* unit, RwV3d* out);
@@ -1909,8 +1912,8 @@ void btlCameraFrameActionSide(BtlCamera* camera)
     f32 t;
     f32 dot;
     f32 dot2;
-    f32 radius;
     f32 f6;
+    f32 radius;
     f32 ret;
     f32 dist;
     f32 f2;
@@ -2018,7 +2021,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
     {
         radius1 = radius2;
     }
-    FUN_002a3e80_ab330(camera->action, &center1, (f32*)&center2, 3, radius1);
+    FUN_002a3e80_side(camera->action, &center1, (f32*)&center2, radius1, 3);
 }
 
 // FUN_002a7378

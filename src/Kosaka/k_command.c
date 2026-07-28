@@ -2041,7 +2041,9 @@ u32 func_001c5980()
     requestedId = scrGetIntPara(0);
     state = K_CMD_GLOBAL_STATE;
 
-    if (state == 0)
+    switch (state)
+    {
+    case 0:
     {
         if (func_001d1a90() == false ||
             func_001d1ce0() == false ||
@@ -2076,7 +2078,7 @@ u32 func_001c5980()
         return false;
     }
 
-    if (state == 1)
+    case 1:
     {
         slot = 1;
         while (slot < 4)
@@ -2122,7 +2124,7 @@ u32 func_001c5980()
         return false;
     }
 
-    if (state == 2)
+    case 2:
     {
         if (func_001d1a90() == false ||
             func_001d1ce0() == false)
@@ -2130,6 +2132,8 @@ u32 func_001c5980()
             return false;
         }
         func_001d8c60(1);
+        break;
+    }
     }
 
     scene = gMtScene;

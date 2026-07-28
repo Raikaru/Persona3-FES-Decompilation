@@ -5606,7 +5606,6 @@ void btlActionUpdateStateReinforce(BtlAction* action)
     btlUnitAnimate(action->unit, -1, 0xc, 1.0f, 3);
     FUN_002b77c0(action->unit);
     btlUnit0027f7c0(action->unit, &pos, NULL, &direction);
-    FUN_00282d40_btlAction(action->unit->unk_9e4, action->unit, action->unit->unk_9e0, 0, action->unit->unk_9e8);
     packet = FUN_002864a0(action->unit, action->unit->charId, 0x10);
     packet->unk_00 = 4;
     packet->parentUID = root->uid;
@@ -6669,7 +6668,7 @@ void btlActionUpdateStateEscape(BtlAction* action)
         {
             current = escapeActions[i];
             currentUnit = current->unit;
-            func_00280050(currentUnit, &sphereCenter);
+            btlUnitGetSphereWorldCenter(currentUnit, &sphereCenter);
             btlUnit0027f7c0(currentUnit, NULL, &rotation, NULL);
             RtQuatTransformVectors(&direction, &D_006978A0, 1, (RtQuat*)&rotation);
             direction.x *= 500.0f;

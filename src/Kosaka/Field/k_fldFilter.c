@@ -92,8 +92,9 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
 {
     f32* vertex;
     FilterQuad (*grid)[FLDFILTER_GRID_WIDTH];
-    s32 x;
+    FilterQuad* row;
     s32 y;
+    s32 x;
     s32 rowOffset;
     f32 top;
     f32 bottom;
@@ -107,10 +108,11 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
     {
         top = (f32)(y * FLDFILTER_QUAD_YPIXELS);
         bottom = (f32)(y * FLDFILTER_QUAD_YPIXELS + FLDFILTER_QUAD_YPIXELS);
+        row = grid[y];
         for (x = 0; x < FLDFILTER_GRID_WIDTH; x++)
         {
             rowOffset = x * FLDFILTER_QUAD_XPIXELS;
-            vertex = (f32*)&grid[y][x];
+            vertex = (f32*)&row[x];
             vertex[0] = (f32)rowOffset;
             vertex[1] = top;
             vertex[2] = z;

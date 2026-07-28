@@ -162,6 +162,7 @@ extern u32 DAT_007ce6d0;
 extern u32 DAT_007ce6d4;
 extern u32 DAT_007ce6e0;
 extern u32 DAT_007ce6e4;
+extern s8 DAT_007ce6e7[];
 extern u32 DAT_007ce6e8;
 extern u32 DAT_007ce6ec;
 extern u32 DAT_007ce6f0;
@@ -1035,7 +1036,7 @@ u32 FUN_00459e80(int param_1);
 u32 FUN_0045a020(int param_1);
 u32 FUN_0045a280(int param_1,int param_2);
 u32 FUN_0045af40(void);
-u32 FUN_0045afd0(float param_1,long param_2,int param_3,int param_4,int param_5,int param_6, u8 param_7,u8 param_8,short param_9);
+u32 FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u8 param_7,u8 param_8,short param_9);
 u32 FUN_0045b190(long param_1);
 u32 FUN_0045b420(int param_1,float *param_2);
 u32 FUN_0045df00(int param_1);
@@ -2453,7 +2454,7 @@ u32 FUN_00459e80(int param_1);
 u32 FUN_0045a020(int param_1);
 u32 FUN_0045a280(int param_1,int param_2);
 u32 FUN_0045af40(void);
-u32 FUN_0045afd0(float param_1,long param_2,int param_3,int param_4,int param_5,int param_6, u8 param_7,u8 param_8,short param_9);
+u32 FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u8 param_7,u8 param_8,short param_9);
 u32 FUN_0045b190(long param_1);
 u32 FUN_0045b420(int param_1,float *param_2);
 u32 FUN_0045df00(int param_1);
@@ -5095,24 +5096,31 @@ void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float 
   char cVar1;
   int iVar2;
   float fVar3;
-  YVec3f axis;
-  YVec3f point;
-  YVec3f radial;
-  YVec3f delta;
-  YVec3f end;
+  u64 uVar4;
+  float fVar5;
   YVec3f start;
+  YVec3f end;
+  YVec3f delta;
+  YVec3f radial;
+  YVec3f point;
+  YVec3f axis;
 
   start = *(YVec3f *)param_4;
   end = *(YVec3f *)param_5;
   iVar2 = *(int *)(param_3 + 0x3c);
-  axis = *(YVec3f *)DAT_006b4608_abs;
+  uVar4 = *(u64 *)DAT_006b4608_abs;
+  fVar5 = *(float *)DAT_006b4610_abs;
+  *(u64 *)&axis = uVar4;
+  axis.z = fVar5;
   delta.x = start.x - end.x;
   delta.y = start.y - end.y;
   delta.z = start.z - end.z;
   fVar3 = FUN_004c69f0(&delta.x,&delta.x) - param_1;
-  point.x = start.x - delta.x * fVar3;
-  point.y = start.y - delta.y * fVar3;
-  point.z = start.z - delta.z * fVar3;
+  point.x = delta.x * fVar3;
+  point.y = delta.y * fVar3;
+  point.z = delta.z * fVar3;
+  point.x = start.x - point.x;
+  point.z = start.z - point.z;
   radial.x = start.x - point.x;
   radial.y = start.y - point.y;
   radial.z = start.z - point.z;
@@ -5120,7 +5128,7 @@ void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float 
   delta.x = radial.y * axis.z - radial.z * axis.y;
   delta.y = radial.z * axis.x - radial.x * axis.z;
   delta.z = radial.x * axis.y - radial.y * axis.x;
-  cVar1 = ((char *)&DAT_007ce6e4 + 3)[*(int *)(iVar2 + 4)];
+  cVar1 = DAT_007ce6e7[*(int *)(iVar2 + 4)];
   switch (cVar1) {
   case '\x01':
     radial.x = delta.x * 20.0f;
@@ -19757,11 +19765,10 @@ clear:
 // FUN_0045AFD0 NONMATCHING
 
 u32
-FUN_0045afd0(float param_1,long param_2,int param_3,int param_4,int param_5,int param_6,
+FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6,
             u8 param_7,u8 param_8,short param_9)
 
 {
-  u32 uVar1;
   u32 uVar2;
   int iVar3;
   float *pfVar4;
@@ -19809,9 +19816,8 @@ FUN_0045afd0(float param_1,long param_2,int param_3,int param_4,int param_5,int 
          *(int *)(iVar3 + 0x94) +
          (int)*(char *)((int)pfVar4 + 0x1d) +
          (int)*(short *)((int)pfVar4 + 0x1e) + (int)*(char *)(pfVar4 + 7);
-    uVar1 = *(u32 *)(iVar3 + 0x8c);
-    *(u32 *)(iVar3 + 0x8c) = uVar1 | 1;
-    *(u32 *)(iVar3 + 0x8c) = uVar1 & 0xfffffffd | 1;
+    *(u32 *)(iVar3 + 0x8c) |= 1;
+    *(u32 *)(iVar3 + 0x8c) &= 0xfffffffd;
     uVar2 = 0;
   }
   else {

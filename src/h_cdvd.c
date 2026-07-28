@@ -1193,41 +1193,42 @@ void func_00101c70(void)
     buildKey = (void (**)(void*, const char*))D_0096013C;
     (*buildKey)(&key0, "hst:");
     (*buildKey)(&key2, "hst");
-    switch ((context1 = func_004c0fd0(5, D_007D4780_abs, 0x800,
-                                      &key0, &key2)) != NULL)
+    if ((context1 = func_004c0fd0(5, D_007D4780_abs, 0x800,
+                                  &key0, &key2)) == NULL)
     {
-    case 1:
-        if (func_004bfc80(context1) == NULL)
-        {
-            printf("CDVD stream group registration failed\n");
-        }
-        else
-        {
-            (*buildKey)(&key0, "pak:");
-            (*buildKey)(&key2, "pak");
-            context2 = func_00101ad0(5, D_007D1F80, 0x800,
-                                     &key0, &key2);
-            if (func_004bfc80(context2) == NULL)
-            {
-                printf("CDVD stream group 2 registration failed\n");
-            }
-            else
-            {
-                func_004c0230(context2);
-            }
-            D_007CDF38 = 1;
-            buildHddKey = (void (**)(void*, const char*))D_0096013C;
-            (*buildHddKey)(&key0, "hdd:");
-            (*buildHddKey)(&key2, "hdd");
-            context3 = func_00102e50(5, D_007CF780, 0x800,
-                                     &key0, &key2);
-            if (func_004bfc80(context3) == NULL)
-            {
-                printf("CDVD stream group 3 registration failed\n");
-            }
-        }
-        break;
+        goto empty;
     }
+    if (func_004bfc80(context1) != NULL)
+    {
+        goto success;
+    }
+    printf("CDVD stream group registration failed\n");
+    goto done;
+empty:
+    goto done;
+success:
+    (*buildKey)(&key0, "pak:");
+    (*buildKey)(&key2, "pak");
+    context2 = func_00101ad0(5, D_007D1F80, 0x800, &key0, &key2);
+    if (func_004bfc80(context2) == NULL)
+    {
+        printf("CDVD stream group 2 registration failed\n");
+    }
+    else
+    {
+        func_004c0230(context2);
+    }
+    D_007CDF38 = 1;
+    buildHddKey = (void (**)(void*, const char*))D_0096013C;
+    (*buildHddKey)(&key0, "hdd:");
+    (*buildHddKey)(&key2, "hdd");
+    context3 = func_00102e50(5, D_007CF780, 0x800, &key0, &key2);
+    if (func_004bfc80(context3) == NULL)
+    {
+        printf("CDVD stream group 3 registration failed\n");
+    }
+done:
+    return;
 }
 
 static u32 H_Cdvd_Align64(u32 size)

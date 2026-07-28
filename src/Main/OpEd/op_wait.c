@@ -357,10 +357,6 @@ void opWait0026e000(void)
     (*setState)(1, (u32)(unsigned long)frame);
     (*setQuad)(work + 0xd40, 4, 0, 1, 2);
     (*setQuad)(work + 0xd40, 4, 0, 2, 3);
-    frame = func_0021cce0(func_0021cca0(atlas, 0x10));
-    (*setState)(1, (u32)(unsigned long)frame);
-    (*setQuad)(work + 0xd40, 4, 0, 1, 2);
-    (*setQuad)(work + 0xd40, 4, 0, 2, 3);
 }
 
 // FUN_0026E780 NONMATCHING

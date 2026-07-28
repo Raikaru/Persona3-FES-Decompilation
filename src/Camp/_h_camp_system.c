@@ -1356,19 +1356,21 @@ void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
     }
 }
 
-// FUN_0015D8E0 NONMATCHING
+// FUN_0015D8E0
 void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
 {
     CampD8Object *object;
     f32 x;
     f32 y;
+    f32 yBase;
 
-    y = position.y;
+    yBase = position.y;
     object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
     object->drawContext = drawContext;
     x = 218.0f + position.x;
     object->x = x + (f32)DAT_007cdf8c;
-    y = 382.0f + y;
+    y = 382.0f;
+    y = y + yBase;
     object->y = y;
     object->alpha = alpha;
     campD8SetSprite(object, 1);
@@ -1386,7 +1388,7 @@ void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
 
     DAT_007cdf8c = DAT_007cdf8c - 1;
     if ((f32)DAT_007cdf8c < -640.0f) {
-        DAT_007cdf8c = (s32)(640.0f + (f32)DAT_007cdf8c);
+        DAT_007cdf8c += 640.0f;
     }
 }
 // FUN_0015DA70 NONMATCHING

@@ -785,7 +785,7 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
   
 
-  for (; 0 < param_7; param_7 = param_7 + -1) {
+  while (0 < param_7) {
 
     iVar3 = param_2 * *param_6;
 
@@ -816,6 +816,7 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
     param_1[3] = param_5;
 
+    param_7 = param_7 + -1;
     param_6 = param_6 + 4;
 
     param_1 = param_1 + 4;

@@ -961,7 +961,7 @@ extern f32 DAT_007cad74;
 extern f32 DAT_007caee8;
 extern f32 FUN_0052e878(f32 angle);
 extern f32 FUN_0052e6d8(f32 angle);
-extern void func_0020cf20(void* destination, void* source);
+extern void func_0020cf20(void* destination, PanelTransform* transform);
 
 // Reconstructed state interpolation, UV projection, and corner rotation from retail control flow.
 // Remaining excess is retained pending MWCCPS2 register-allocation and scheduling convergence.
@@ -1896,11 +1896,10 @@ void func_0020cda0(u8* work)
     K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
 // FUN_0020cf20 NONMATCHING
-void func_0020cf20(void* destination, void* source)
+void func_0020cf20(void* destination, PanelTransform* transform)
 {
     u8* out = (u8*)destination;
     PanelMatrix* matrix;
-    PanelTransform* transform = (PanelTransform*)source;
     PanelVec3 axisZ;
     PanelVec3 facingAxis;
     PanelVec3 rotateAxis;
@@ -1934,19 +1933,18 @@ void func_0020cf20(void* destination, void* source)
 
     resourceCenter = *(const PanelVec3*)(out + 0x994);
     {
-        PanelVec3 transformedSource;
         f32 facing;
 
         if (transform->model != NULL) {
-            RwV3dTransformPoint(&transformedSource, &transform->translation,
+            RwV3dTransformPoint(&localPoint, &transform->translation,
                                 func_004cb2f0(transform->model));
         } else {
-            transformedSource = transform->translation;
+            localPoint = transform->translation;
         }
 
-        facing = facingAxis.x * (cameraPosition->x - transformedSource.x) +
-                 facingAxis.y * (cameraPosition->y - transformedSource.y) +
-                 facingAxis.z * (cameraPosition->z - transformedSource.z);
+        facing = facingAxis.x * (cameraPosition->x - localPoint.x) +
+                 facingAxis.y * (cameraPosition->y - localPoint.y) +
+                 facingAxis.z * (cameraPosition->z - localPoint.z);
         *(u32*)out &= ~1u;
         if (facing < 0.0f) {
             RwMatrixRotate(matrix, &rotateAxis, 180.0f, 1);
