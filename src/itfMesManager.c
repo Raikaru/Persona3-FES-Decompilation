@@ -231,13 +231,9 @@ extern void FUN_003a62b0_typed(u32 param_1, u32 *param_2);
 int FUN_003a62e0(int param_1,int param_2);
 #pragma alias FUN_003a62e0_typed FUN_003a62e0
 extern s32 FUN_003a62e0_typed(u32 param_1, u32 param_2);
-void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4,
-                  int param_5,int param_6);
+void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4);
 #pragma alias FUN_003a6380_direct FUN_003a6380
 extern void FUN_003a6380_direct(int param_1,int param_2,int param_3,u8 param_4);
-#pragma alias FUN_003a6380_hidden FUN_003a6380
-extern void FUN_003a6380_hidden(int param_1,int param_2,int param_3,u8 param_4,
-                                int param_5,int param_6);
 void FUN_003a6410(int param_1,u32 param_2);
 int FUN_003a6460(int param_1);
 void FUN_003a64c0(int param_1);
@@ -3895,8 +3891,7 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 // FUN_003A6380
 
 
-void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4,
-                  int param_5,int param_6)
+void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
 {
   int color;
   int diff;
@@ -5588,6 +5583,7 @@ u32 FUN_003a7a40(int param_1)
 }
 #define FUN_003a7a40(...) ((u32 (*)(...))FUN_003a7a40)(__VA_ARGS__)
 #undef FUN_003a7cb0
+#undef FUN_003a6380
 // FUN_003A7CB0 NONMATCHING
 
 

@@ -1472,9 +1472,9 @@ void func_002f2890(BtlAction* action)
 {
   BtlUnit* unit;
   void* object;
+  BtlPacket* actionPacket;
   BtlPacket* packet;
   BtlPacket* parent;
-  BtlPacket* actionPacket;
   u32 index;
   unit = gBtl->unitLists[UNIT_GENUS_EC].head;
   object = func_002b8f90(0);
