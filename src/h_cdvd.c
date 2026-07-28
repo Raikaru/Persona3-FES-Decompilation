@@ -70,6 +70,8 @@ extern const char D_005CE970[];
 extern const char D_005CE988[];
 extern u32 D_007D4780;
 extern u32 D_007D4784;
+extern u32 D_007D1F80;
+extern u32 D_007CF780;
 extern u32 D_007CDF38;
 
 extern void* func_004bfd50(void* key);
@@ -1189,14 +1191,18 @@ void func_00101c70(void)
     buildKey = (void (**)(void*, const char*))D_0096013C;
     (*buildKey)(&key0, "hst:");
     (*buildKey)(&key2, "hst");
-    context1 = func_004c0fd0(5, (void*)0x007d4780, 0x800, &key0, &key2);
-    if (context1 != NULL)
+    if ((context1 = func_004c0fd0(5, &D_007D4780, 0x800,
+                                  &key0, &key2)) != NULL)
     {
-        if (func_004bfc80(context1) != NULL)
+        if (func_004bfc80(context1) == NULL)
+        {
+            printf("CDVD stream group registration failed\n");
+        }
+        else
         {
             (*buildKey)(&key0, "pak:");
             (*buildKey)(&key2, "pak");
-            context2 = func_00101ad0(5, (void*)0x007d1f80, 0x800,
+            context2 = func_00101ad0(5, &D_007D1F80, 0x800,
                                      &key0, &key2);
             if (func_004bfc80(context2) == NULL)
             {
@@ -1210,16 +1216,12 @@ void func_00101c70(void)
             buildHddKey = (void (**)(void*, const char*))D_0096013C;
             (*buildHddKey)(&key0, "hdd:");
             (*buildHddKey)(&key2, "hdd");
-            context3 = func_00102e50(5, (void*)0x007cf780, 0x800,
+            context3 = func_00102e50(5, &D_007CF780, 0x800,
                                      &key0, &key2);
             if (func_004bfc80(context3) == NULL)
             {
                 printf("CDVD stream group 3 registration failed\n");
             }
-        }
-        else
-        {
-            printf("CDVD stream group registration failed\n");
         }
     }
 }

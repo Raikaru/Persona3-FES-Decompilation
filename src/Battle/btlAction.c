@@ -6155,6 +6155,7 @@ void btlActionInitStatePersona(BtlAction* action)
     BtlPacket* root;
     s32 table;
     u16 personaId;
+    BtlUnit* personaUnit;
 
     btlAction0028a780(action);
     packet = func_002bd780(action->unit, action->target.commandId);
@@ -6184,7 +6185,8 @@ void btlActionInitStatePersona(BtlAction* action)
     }
     FUN_00175130_btlAction(*(u16*)action->target.unkData1);
     personaId = *(u16*)action->target.unkData1;
-    btlUnitInitPersona(action->unit, personaId);
+    personaUnit = action->unit;
+    btlUnitInitPersona(personaUnit, personaId);
 persona_init_done:
     table = FUN_002fcf50(action);
     if (table == 0)

@@ -324,7 +324,7 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
 void FUN_003e5e20(u8* param_1, u8* param_2)
 {
     s16 iVar1;
-    u32 alpha;
+    u8 alpha;
     f32 fVar4;
     u32 random;
 
@@ -354,8 +354,8 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
 
         fVar4 = (f32)*(s8 *)(param_2 + 0xc);
         fVar4 /= 5.0f;
-        fVar4 = 1.0f + fVar4;
-        fVar4 = fVar4 + (f32)*(s16 *)(param_2 + 0xe);
+        fVar4 = fVar4 + 1.0f;
+        fVar4 = (f32)*(s16 *)(param_2 + 0xe) + fVar4;
         *(s16 *)(param_2 + 0xe) = (s16)(int)fVar4;
         if (*(s16 *)(param_2 + 0xe) < 0)
         {
@@ -380,8 +380,8 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
         {
             fVar4 = DAT_007cad84 * (f32)*(u8 *)(param_2 + 8);
             alpha = (u8)fVar4;
-            fVar4 = (f32)(int)*(s16 *)(param_2 + 0xe);
-            FUN_0040e3f0(0.0f, fVar4, 1.0f, 1.0f, *(s16 *)(param_2 + 4),
+            FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
+                         1.0f, 1.0f, *(s16 *)(param_2 + 4),
                          *(s16 *)(param_2 + 6),
                          alpha,
                          0xf7, 0, 0, 0);
@@ -6393,6 +6393,8 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   int iVar4;
 
+  int iVar8;
+
   s32 lVar5;
 
   u32 uVar6;
@@ -6553,11 +6555,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
                (cVar3 = FUN_003c9ee0(*(u32 *)(iVar2 + 8)), cVar3 == '\x01')) {
 
-              iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
+              iVar8 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
 
-              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
+              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar8 + 4) + 2));
 
-              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
+              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar8 + 4),uVar7);
 
               if (lVar5 != 0) {
 
@@ -6579,11 +6581,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
             if (cVar3 == '\0') {
 
-              iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
+              iVar8 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
 
-              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
+              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar8 + 4) + 2));
 
-              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
+              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar8 + 4),uVar7);
 
               if (lVar5 != 0) {
 

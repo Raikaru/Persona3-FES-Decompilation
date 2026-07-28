@@ -38,7 +38,7 @@ extern u32 func_0021cca0(u32 texture, s32 frame);
 extern u32 func_0021cce0(u32 frame);
 extern void func_0021d3b0(void* destination, u32 frame);
 extern void func_0021d8e0(void* destination, const f32* rect);
-extern void func_0021d950(void* destination, const void* color);
+extern void func_0021d950(void* destination, const u8* color);
 extern void func_0021e380(void* destination, u32 frame, s32 mode);
 extern f32 func_0021ea00(s32 duration);
 extern void func_0021eac0(void* animation, f32 value);
@@ -1971,12 +1971,7 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
 {
     u8* destination;
     u32 texture;
-    struct {
-        u8 r;
-        u8 g;
-        u8 b;
-        u8 a;
-    } color;
+    u8 color[4];
     f32 rect[4];
     f32 x;
     f32 y;
@@ -2012,13 +2007,13 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x200, rect);
-    color.r = 0xff;
-    color.g = 0xff;
-    color.b = 0xff;
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
     alphaByte = (u8)(alpha * 255.0f);
-    color.a = alphaByte;
+    color[3] = alphaByte;
     for (i = 0; i < 3; i++) {
-        func_0021d950(destination + i * 0x100, &color);
+        func_0021d950(destination + i * 0x100, color);
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x17);
     rect[0] = x + 202.0f;
@@ -2026,42 +2021,42 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x300, rect);
-    color.r = 0xff;
-    color.g = 0xff;
-    color.b = 0xff;
-    color.a = (u8)(alpha * 255.0f);
-    func_0021d950(destination + 0x300, &color);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
+    func_0021d950(destination + 0x300, color);
     frame = (u8*)(uintptr_t)func_002180b0(entry[2]);
     rect[0] = x + 202.0f;
     rect[1] = y + 93.0f;
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x400, rect);
-    color.r = 0xff;
-    color.g = 0xff;
-    color.b = 0xff;
-    color.a = (u8)(alpha * 255.0f);
-    func_0021d950(destination + 0x400, &color);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
+    func_0021d950(destination + 0x400, color);
     if (selected != 0)
     {
-        color.r = 4;
-        color.g = 0x29;
-        color.b = 0x46;
+        color[0] = 4;
+        color[1] = 0x29;
+        color[2] = 0x46;
     }
     else if ((*entry & 2) != 0)
     {
-        color.r = 0xff;
-        color.g = 0xfe;
-        color.b = 0xbb;
+        color[0] = 0xff;
+        color[1] = 0xfe;
+        color[2] = 0xbb;
     }
     else
     {
-        color.r = 0x71;
-        color.g = 0xbf;
-        color.b = 0xff;
+        color[0] = 0x71;
+        color[1] = 0xbf;
+        color[2] = 0xff;
     }
-    color.a = (u8)(alpha * 255.0f);
-    func_0021d950(destination + 0x400, &color);
+    color[3] = (u8)(alpha * 255.0f);
+    func_0021d950(destination + 0x400, color);
     if ((*entry & 2) != 0)
     {
         frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x25);
@@ -2070,11 +2065,11 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
         rect[2] = (f32)*(s32*)(frame + 0xc);
         rect[3] = (f32)*(s32*)(frame + 0x10);
         func_0021d8e0(destination + 0x500, rect);
-        color.r = 0xff;
-        color.g = 0xff;
-        color.b = 0xff;
-        color.a = (u8)(alpha * 255.0f);
-        func_0021d950(destination + 0x500, &color);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = (u8)(alpha * 255.0f);
+        func_0021d950(destination + 0x500, color);
     }
     if (selected != 0)
     {
@@ -2090,11 +2085,11 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[2] = (f32)*(s32*)(frame + 0xc);
     rect[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(destination + 0x600, rect);
-    color.r = 0xff;
-    color.g = 0xff;
-    color.b = 0xff;
-    color.a = (u8)(alpha * 255.0f);
-    func_0021d950(destination + 0x600, &color);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
+    func_0021d950(destination + 0x600, color);
     if (selected != 0)
     {
         mode = 1;
@@ -2106,12 +2101,12 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     rect[0] = x + 514.0f;
     rect[1] = y + 105.0f;
     handle = func_00238dc0(destination + 0x700, 2, entry[3], mode, rect);
-    color.r = 0xff;
-    color.g = 0xff;
-    color.b = 0xff;
-    color.a = (u8)(alpha * 255.0f);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(alpha * 255.0f);
     for (j = 0; j < 2; j++) {
-        func_0021d950(destination + 0x700 + j * 0x100, &color);
+        func_0021d950(destination + 0x700 + j * 0x100, color);
     }
     rect[0] = x + 290.0f;
     rect[1] = y + 93.0f;

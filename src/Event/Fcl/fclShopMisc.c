@@ -254,7 +254,7 @@ u32 FUN_003f1910(u64 param_1);
 u32 FUN_003f1a10(u32 param_1);
 void FUN_003f1ba0(int param_1,u32 param_2);
 u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3);
-u8 FUN_003f2240(int param_1,short param_2);
+u8 FUN_003f2240(int param_1,int param_2);
 u64 FUN_003f2320(int param_1,int param_2);
 u32 FUN_003f2510(void);
 u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3);
@@ -2655,7 +2655,7 @@ u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3)
 // FUN_003F2240 NONMATCHING
 
 
-u8 FUN_003f2240(int param_1,short param_2)
+u8 FUN_003f2240(int param_1,int param_2)
 {
   short sVar1;
   u32 *puVar2;
@@ -17965,17 +17965,7 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
 
   fVar6 = DAT_007cad74 * (float)(int)param_3;
 
-  if (fVar6 >= 2.1474836e+09f) {
-
-    uVar1 = (int)(fVar6 - 2.1474836e+09f) | 0x80000000;
-
-  }
-
-  else {
-
-    uVar1 = (u32)fVar6;
-
-  }
+  uVar1 = (u32)fVar6;
 
   iVar5 = (int)param_1;
 

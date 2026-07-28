@@ -823,14 +823,11 @@ u32 FUN_003bffa0(u32 *param_1,u32 *param_2,u32 *param_3)
 u32 FUN_003c03f0(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
   u32 uVar4;
-  long lVar5;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  int lVar5;
+  u8 auStack_20[0x1c];
 
   piVar3 = (int *)FUN_00195540();
   iVar1 = *piVar3;
@@ -847,15 +844,19 @@ u32 FUN_003c03f0(void)
     if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
-      FUN_00521408(auStack_20,0,0x1c);
-      uStack_14 = 0x8c;
-      uStack_10 = 4;
-      uStack_c = 0;
-      FUN_0027c080(3,auStack_20,0x1c,0);
-      *piVar3 = 2;
+      bVar2 = 1;
     }
     else {
       piVar3[1] = piVar3[1] + 1;
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      FUN_00521408(auStack_20,0,0x1c);
+      ((u32 *)auStack_20)[3] = 0x8c;
+      ((u32 *)auStack_20)[4] = 4;
+      ((u32 *)auStack_20)[5] = 0;
+      FUN_0027c080(3,auStack_20,0x1c,0);
+      *piVar3 = 2;
     }
     break;
   case 2:

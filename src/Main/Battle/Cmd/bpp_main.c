@@ -118,17 +118,18 @@ void bppMain0020edf0(void)
     s32 masked;
     u32 actionId;
     u32 flags;
+    u32 initialFlags;
     s32 transition;
 
     K_ASSERT(sBppMain != NULL, 0x43);
     work = sBppMain;
-    flags = *work;
-    if ((~flags & 0x80) != 0) {
+    initialFlags = *work;
+    if ((~initialFlags & 0x80) != 0) {
         return;
     }
 
-    if ((flags & 0x10) != 0 || (flags & 0x20) != 0 ||
-        (flags & 0x40) != 0) {
+    if ((initialFlags & 0x10) != 0 || (initialFlags & 0x20) != 0 ||
+        (initialFlags & 0x40) != 0) {
         transition = (s32)work[0x1697];
         if (transition > 0) {
             work[0x1697] = transition - 1;

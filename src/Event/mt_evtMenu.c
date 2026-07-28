@@ -123,7 +123,7 @@ extern u32 DAT_007ce5fc;
 extern u32 DAT_007ce600;
 extern u32 DAT_007ce604;
 extern u32 DAT_007ce608;
-extern u32 DAT_007ce60c;
+extern s32 DAT_007ce60c;
 extern u16 DAT_007e094c;
 #pragma alias DAT_007e094c_abs DAT_007e094c
 extern u8 DAT_007e094c_abs[];
@@ -297,7 +297,7 @@ extern f32 DAT_00958840_f32_abs[];
 extern f32 DAT_00958844_f32_abs[];
 #pragma alias DAT_00958848_f32_abs DAT_00958848
 extern f32 DAT_00958848_f32_abs[];
-extern u32 DAT_00958850;
+extern u16 DAT_00958850[];
 #pragma alias DAT_00958a60_abs DAT_00958a60
 extern u8 DAT_00958a60_abs[];
 #pragma alias DAT_00958850_abs DAT_00958850
@@ -19370,7 +19370,7 @@ u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
   for (; (puVar3 != (u16 *)0x0 && (DAT_007ce60c < 0x1e)); DAT_007ce60c = DAT_007ce60c + 1) {
 
-    *(u16 *)(&DAT_00958850 + DAT_007ce60c * 2) = *puVar3;
+    DAT_00958850[DAT_007ce60c] = *puVar3;
 
     puVar3 = *(u16 **)(puVar3 + 0x7c);
 
@@ -19380,7 +19380,7 @@ u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
   for (; (puVar3 != (u16 *)0x0 && (DAT_007ce60c < 0x1e)); DAT_007ce60c = DAT_007ce60c + 1) {
 
-    *(u16 *)(&DAT_00958850 + DAT_007ce60c * 2) = *puVar3;
+    DAT_00958850[DAT_007ce60c] = *puVar3;
 
     puVar3 = *(u16 **)(puVar3 + 0x7c);
 
@@ -19392,7 +19392,7 @@ u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
   while ((iVar1 = DAT_007ce608, iVar5 < DAT_007ce60c &&
 
-         ((param_2 != *(short *)(&DAT_00958850 + iVar5 * 2) || (iVar1 = iVar5, param_2 == 0))))) {
+         (((u16)param_2 != DAT_00958850[iVar5] || (iVar1 = iVar5, param_2 == 0))))) {
 
     iVar5 = iVar5 + 1;
 
