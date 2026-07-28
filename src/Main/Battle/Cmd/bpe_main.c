@@ -246,9 +246,9 @@ void func_00249c10(void* work)
     };
     u8* base;
     u8* camera;
-    u8* frame;
-    u8* cameraMatrix;
-    u8* matrix;
+    void* frame;
+    void* cameraMatrix;
+    void* matrix;
     struct Local local;
     f32 deltaX;
     f32 deltaY;
@@ -262,9 +262,9 @@ void func_00249c10(void* work)
     if ((~*(u32*)(base + 0x604) & 1u) != 0) {
         return;
     }
-    cameraMatrix = (u8*)func_004cb2f0(*(u8**)(camera + 4));
-    frame = *(u8**)(*(u8**)(base + 0x600) + 4);
-    matrix = (u8*)func_004c38c0();
+    cameraMatrix = func_004cb2f0(*(void**)(camera + 4));
+    frame = *(void**)(*(u8**)(base + 0x600) + 4);
+    matrix = func_004c38c0();
     func_004c32a0(matrix, cameraMatrix);
 
     local.origin[0] = 0.0f;

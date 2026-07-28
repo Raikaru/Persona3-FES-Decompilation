@@ -18293,13 +18293,16 @@ void FUN_00385260(int param_1,int param_2,int param_3,int param_4)
   f32 uVar4;
 
   f32 afStack_8[2];
+  f32 firstLabel;
+  f32 secondLabel;
 
   
 
   uVar2 = 0;
-  afStack_8[0] = PTR_DAT_007cd3d0_f32;
-
-  afStack_8[1] = PTR_s_COMSE_007cd3d4_f32;
+  firstLabel = PTR_DAT_007cd3d0_f32;
+  secondLabel = PTR_s_COMSE_007cd3d4_f32;
+  afStack_8[0] = firstLabel;
+  afStack_8[1] = secondLabel;
 
 
   FUN_00361830(param_4);

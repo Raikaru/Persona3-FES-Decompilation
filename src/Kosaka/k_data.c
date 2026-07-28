@@ -566,6 +566,7 @@ u32 func_001b8710(HCdvd* request)
 {
     char path[76];
     void* memory;
+    void* destination;
     HCdvd* requestCopy;
     u32 cachedSize;
     Field* field;
@@ -605,7 +606,8 @@ u32 func_001b8710(HCdvd* request)
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
         field = K_Field_Get();
         fileSize = cachedSize;
-        memcpy(FIELD_DATA_AT(field, 0x1154, void*),
+        destination = FIELD_DATA_AT(field, 0x1154, void*);
+        memcpy(destination,
                requestCopy, fileSize);
     }
     return true;
