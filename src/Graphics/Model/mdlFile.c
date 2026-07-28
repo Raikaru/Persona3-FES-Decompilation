@@ -943,6 +943,7 @@ void FUN_003275d0(float param_1,int param_2);
 extern void FUN_003275d0_evt(float param_1);
 #pragma alias FUN_003275d0_evt2 FUN_003275d0
 extern void FUN_003275d0_evt2(float param_1,int param_2);
+#pragma alias mdlFileDrawType7Billboards FUN_003282e0
 void FUN_003282e0(int param_1);
 void FUN_00329350(int param_1);
 void FUN_003293a0(void);
@@ -12626,6 +12627,7 @@ void FUN_003275d0(float param_1,int param_2)
 
 
 
+/* Rebuilt the type-7 billboard color and packet paths; VU0 transform dataflow remains nonmatching. */
 // FUN_003282E0 NONMATCHING
 void FUN_003282e0(int param_1)
 
@@ -12720,8 +12722,12 @@ void FUN_003282e0(int param_1)
   float vertices[4][16];
 
 
-  float transformed[3];
-  float position[3];
+  float fStack_38;
+  float fStack_34;
+  float fStack_30;
+  u32 uStack_28;
+  u32 uStack_24;
+  u32 uStack_20;
 
   u32 uStack_18;
 
@@ -12810,11 +12816,11 @@ void FUN_003282e0(int param_1)
 
           _DAT_0069c4d0 = _sqc2(auVar5);
 
-          position[0] = *(float *)&DAT_0069c4d0;
+          uStack_28 = DAT_0069c4d0;
 
-          position[1] = *(float *)&DAT_0069c4d4;
+          uStack_24 = DAT_0069c4d4;
 
-          position[2] = *(float *)&DAT_0069c4d8;
+          uStack_20 = DAT_0069c4d8;
 
           iStack_10 = *(int *)(pauVar8[1] + 4);
           uStack_4 = mdlVuModulateStacked((u32 *)&iStack_8,(u32 *)&iStack_10,*(float *)&DAT_007caf08);
@@ -12849,11 +12855,10 @@ void FUN_003282e0(int param_1)
 
             iVar4 = FUN_00198590();
 
-            RwV3dTransformPoint(transformed,position,iVar4 + 0x20);
+            RwV3dTransformPoint(&fStack_38,&uStack_28,iVar4 + 0x20);
 
-            if ((((transformed[0] / transformed[2] < -2.0f) || (2.0f < transformed[0] / transformed[2])) ||
-
-                (transformed[1] / transformed[2] < -2.0f)) || (2.0f < transformed[1] / transformed[2])) {
+            if ((((fStack_38 / fStack_30 < -2.0f) || (2.0f < fStack_38 / fStack_30)) ||
+                (fStack_34 / fStack_30 < -2.0f)) || (2.0f < fStack_34 / fStack_30)) {
 
               bVar1 = true;
 
@@ -12867,8 +12872,8 @@ void FUN_003282e0(int param_1)
 
             if (!bVar1) {
 
-              fVar10 = (fVar15 / transformed[2]) *
-                       (transformed[2] - fVar13) * ((fVar18 - fVar14) / (fVar15 - fVar13)) + fVar14 + 0.0f
+              fVar10 = (fVar15 / fStack_30) *
+                       (fStack_30 - fVar13) * ((fVar18 - fVar14) / (fVar15 - fVar13)) + fVar14 + 0.0f
 
               ;
 
@@ -12896,14 +12901,14 @@ void FUN_003282e0(int param_1)
               vertices[0][5] = 0.0f;
               vertices[1][5] = 0.0f;
               vertices[2][4] = 0.0f;
-              vertices[0][0] = ((transformed[0] + -fVar11 + fVar9) / transformed[2]) * 640.0f;
-              vertices[0][1] = fVar21 * ((transformed[1] - (-fVar20 - fVar12)) / transformed[2]);
-              vertices[1][0] = ((transformed[0] + fVar11 + fVar9) / transformed[2]) * 640.0f;
-              vertices[1][1] = fVar21 * ((transformed[1] - (fVar20 - fVar12)) / transformed[2]);
-              vertices[2][0] = ((transformed[0] + (-fVar11 - fVar9)) / transformed[2]) * 640.0f;
-              vertices[2][1] = fVar21 * ((transformed[1] - (-fVar20 + fVar12)) / transformed[2]);
-              vertices[3][0] = ((transformed[0] + (fVar11 - fVar9)) / transformed[2]) * 640.0f;
-              vertices[3][1] = fVar21 * ((transformed[1] - (fVar20 + fVar12)) / transformed[2]);
+              vertices[0][0] = ((fStack_38 + -fVar11 + fVar9) / fStack_30) * 640.0f;
+              vertices[0][1] = fVar21 * ((fStack_34 - (-fVar20 - fVar12)) / fStack_30);
+              vertices[1][0] = ((fStack_38 + fVar11 + fVar9) / fStack_30) * 640.0f;
+              vertices[1][1] = fVar21 * ((fStack_34 - (fVar20 - fVar12)) / fStack_30);
+              vertices[2][0] = ((fStack_38 + (-fVar11 - fVar9)) / fStack_30) * 640.0f;
+              vertices[2][1] = fVar21 * ((fStack_34 - (-fVar20 + fVar12)) / fStack_30);
+              vertices[3][0] = ((fStack_38 + (fVar11 - fVar9)) / fStack_30) * 640.0f;
+              vertices[3][1] = fVar21 * ((fStack_34 - (fVar20 + fVar12)) / fStack_30);
               vertices[0][2] = fVar10;
               vertices[0][6] = fVar17;
               vertices[1][2] = fVar10;
@@ -12972,18 +12977,18 @@ void FUN_003282e0(int param_1)
             vertices[3][10] = (float)((u8 *)&uStack_4)[2];
             vertices[3][11] = (float)((u8 *)&uStack_4)[3];
 
-            position[0] = *(float *)*pauVar8;
+            uStack_28 = *(u32 *)*pauVar8;
 
-            position[1] = *(float *)(*pauVar8 + 4);
+            uStack_24 = *(u32 *)(*pauVar8 + 4);
 
-            position[2] = *(float *)(*pauVar8 + 8);
+            uStack_20 = *(u32 *)(*pauVar8 + 8);
 
             iVar4 = FUN_00198590();
 
-            RwV3dTransformPoint(transformed,position,iVar4 + 0x20);
+            RwV3dTransformPoint(&fStack_38,&uStack_28,iVar4 + 0x20);
 
-            if (((transformed[0] / transformed[2] < -2.0f) || (2.0f < transformed[0] / transformed[2])) ||
-               ((transformed[1] / transformed[2] < -2.0f || (2.0f < transformed[1] / transformed[2])))) {
+            if (((fStack_38 / fStack_30 < -2.0f) || (2.0f < fStack_38 / fStack_30)) ||
+               ((fStack_34 / fStack_30 < -2.0f || (2.0f < fStack_34 / fStack_30)))) {
 
               bVar1 = true;
 
@@ -12997,7 +13002,7 @@ void FUN_003282e0(int param_1)
 
             if (!bVar1) {
 
-              fVar20 = (fVar15 / transformed[2]) * (transformed[2] - fVar13) * (fVar18 / fVar16) +
+              fVar20 = (fVar15 / fStack_30) * (fStack_30 - fVar13) * (fVar18 / fVar16) +
                        fVar14 + 0.0f;
               if (fVar20 < 0.0f) {
                 fVar20 = 0.0f;
@@ -13025,14 +13030,14 @@ void FUN_003282e0(int param_1)
               vertices[2][5] = 1.0f;
               vertices[3][4] = 1.0f;
               vertices[3][5] = 1.0f;
-              vertices[0][0] = ((transformed[0] + -fVar12 + fVar22) / transformed[2]) * 640.0f;
-              vertices[0][1] = ((transformed[1] - (-fVar21 - fVar9)) / transformed[2]) * 448.0f;
-              vertices[1][0] = ((transformed[0] + fVar12 + fVar22) / transformed[2]) * 640.0f;
-              vertices[1][1] = ((transformed[1] - (fVar21 - fVar9)) / transformed[2]) * 448.0f;
-              vertices[2][0] = ((transformed[0] + (-fVar12 - fVar22)) / transformed[2]) * 640.0f;
-              vertices[2][1] = ((transformed[1] - (-fVar21 + fVar9)) / transformed[2]) * 448.0f;
-              vertices[3][0] = ((transformed[0] + (fVar12 - fVar22)) / transformed[2]) * 640.0f;
-              vertices[3][1] = ((transformed[1] - (fVar21 + fVar9)) / transformed[2]) * 448.0f;
+              vertices[0][0] = ((fStack_38 + -fVar12 + fVar22) / fStack_30) * 640.0f;
+              vertices[0][1] = ((fStack_34 - (-fVar21 - fVar9)) / fStack_30) * 448.0f;
+              vertices[1][0] = ((fStack_38 + fVar12 + fVar22) / fStack_30) * 640.0f;
+              vertices[1][1] = ((fStack_34 - (fVar21 - fVar9)) / fStack_30) * 448.0f;
+              vertices[2][0] = ((fStack_38 + (-fVar12 - fVar22)) / fStack_30) * 640.0f;
+              vertices[2][1] = ((fStack_34 - (-fVar21 + fVar9)) / fStack_30) * 448.0f;
+              vertices[3][0] = ((fStack_38 + (fVar12 - fVar22)) / fStack_30) * 640.0f;
+              vertices[3][1] = ((fStack_34 - (fVar21 + fVar9)) / fStack_30) * 448.0f;
               vertices[0][2] = fVar20;
               vertices[0][6] = fVar19;
               vertices[1][2] = fVar20;
