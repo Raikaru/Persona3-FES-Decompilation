@@ -2170,7 +2170,7 @@ short FUN_002d9d70(int param_1)
   uint uVar5;
   uint uVar6;
   uint uVar7;
-  long lVar8;
+  s32 lVar8;
   undefined8 uVar9;
   ulong uVar10;
   short sVar11;

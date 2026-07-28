@@ -159,7 +159,7 @@ void FUN_003a4270(int param_1);
 u32 FUN_003a42c0(int param_1,u32 param_2);
 u64 FUN_003a4360(u64 param_1,long param_2);
 u32 FUN_003a4a70(int param_1, int param_2, int param_3);
-u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3);
+u32 FUN_003a4b90(int param_1,int param_2,int param_3);
 void FUN_003a4ce0(void);
 void FUN_003a4dd0(int param_1);
 #pragma alias FUN_003a4dd0_typed FUN_003a4dd0
@@ -2554,13 +2554,14 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
 // FUN_003A4B90 NONMATCHING
 
 
-u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
+u32 FUN_003a4b90(int param_1,int param_2,int param_3)
 
 
 
 {
 
   int iVar1;
+
 
   int iVar2;
 
@@ -2575,6 +2576,7 @@ u32 FUN_003a4b90(int param_1,u32 param_2,u32 param_3)
   
 
   iVar1 = *(int *)(DAT_00959eec_abs + param_1 * 0xd);
+
 
   if (iVar1 == 0) {
 
@@ -5587,27 +5589,24 @@ u32 FUN_003a7a40(int param_1)
 
 void FUN_003a7cb0(int param_1,int param_2)
 {
-  register int direction = param_2;
-  register int object = param_1;
-
-  FUN_003a6380(*(u32 *)(object + 0xc),*(short *)(object + 0x16),
-               *(short *)(object + 0x1a),0);
-  if (direction < 0) {
-    direction = *(short *)(object + 0x16) - 1;
-    if (direction < 0) {
-      direction = *(short *)(object + 0x1a) - 1;
+  FUN_003a6380(*(u32 *)(param_1 + 0xc),*(short *)(param_1 + 0x16),
+               *(short *)(param_1 + 0x1a),0);
+  if (param_2 < 0) {
+    param_2 = *(short *)(param_1 + 0x16) - 1;
+    if (param_2 < 0) {
+      param_2 = *(short *)(param_1 + 0x1a) - 1;
     }
   }
   else {
-    direction = *(short *)(object + 0x16) + 1;
-    if (*(short *)(object + 0x1a) <= direction) {
-      direction = 0;
+    param_2 = *(short *)(param_1 + 0x16) + 1;
+    if (*(short *)(param_1 + 0x1a) <= param_2) {
+      param_2 = 0;
     }
   }
-  FUN_003a6380(*(u32 *)(object + 0xc),direction,
-               *(short *)(object + 0x1a),6);
-  *(short *)(object + 0x16) = direction;
-  *(short *)(object + 0x18) = direction;
+  FUN_003a6380(*(u32 *)(param_1 + 0xc),param_2,
+               *(short *)(param_1 + 0x1a),6);
+  *(short *)(param_1 + 0x16) = param_2;
+  *(short *)(param_1 + 0x18) = param_2;
   FUN_0010a4e0(0,0,0,0);
 }
 #define FUN_003a7cb0(...) ((void (*)(...))FUN_003a7cb0)(__VA_ARGS__)

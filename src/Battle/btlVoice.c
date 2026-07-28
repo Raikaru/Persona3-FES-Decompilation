@@ -154,6 +154,10 @@ extern u8 DAT_0069a648[];
 extern f32 D_00697880[];
 extern const u8 D_006978B0[];
 extern const u8 D_0069A368[];
+extern const u8 D_0069A2D0[];
+extern const u8 D_0069A2F0[];
+extern const u8 D_0069A310[];
+extern const u8 D_0069A330[];
 extern u32 DAT_0069a650;
 extern u8 DAT_0069a658[];
 extern u32 DAT_0069a65c;
@@ -1467,7 +1471,7 @@ u32 func_002f2840(BtlAction* action)
   return lVar1 != 0;
 
 }
-// FUN_002f2890 NONMATCHING
+// FUN_002f2890
 void func_002f2890(BtlAction* action)
 {
   BtlUnit* unit;
@@ -1503,10 +1507,10 @@ void func_002f2890(BtlAction* action)
   {
     BtlPacket* introPacket;
     introPacket = FUN_002a3d70_packet_voice(*(BtlAction**)(DAT_007ce3ec + 0x148),
-                                           (const RwV3d*)((const u8*)0x69a2d0 + index),
-                                           (const RwV3d*)((const u8*)0x69a2f0 + index),
-                                           (const RwV3d*)((const u8*)0x69a310 + index),
-                                           (const RwV3d*)((const u8*)0x69a330 + index),
+                                           (const RwV3d*)(D_0069A2D0 + index),
+                                           (const RwV3d*)(D_0069A2F0 + index),
+                                           (const RwV3d*)(D_0069A310 + index),
+                                           (const RwV3d*)(D_0069A330 + index),
                                            uGpffff82dc_f32_voice);
     introPacket->preUpdateDelay = 3;
     introPacket->actionUID = action->uid;

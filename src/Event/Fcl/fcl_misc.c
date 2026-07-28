@@ -2362,15 +2362,15 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
 
   if (param_4 == 0) {
     offset = param_2 - param_6 * 4;
-    flags = *(s16 *)(param_8 + 0x12) | -0x100;
     kind = param_5 + 2;
+    flags = *(s16 *)(param_8 + 0x12) | -0x100;
     fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,param_1,offset,
                      flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
   else {
     offset = param_2 + (param_7 - param_6) * 4;
-    flags = *(s16 *)(param_8 + 0x12) | -0x100;
     kind = param_5 + 2;
+    flags = *(s16 *)(param_8 + 0x12) | -0x100;
     fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,param_1,offset,
                      flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
@@ -2387,21 +2387,25 @@ void FUN_003cb100(int param_1)
 
 {
   s32 flags;
+  u32 resource;
 
   flags = *(s16 *)(param_1 + 0x12) | -0x100;
+  resource = *(u32 *)(param_1 + 0xd0);
   fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,0,0,
                     flags,2,0,0,
-                    *(u32 *)(param_1 + 0xd0));
+                    resource);
 
   flags = *(s16 *)(param_1 + 0x12) | -0x100;
+  resource = *(u32 *)(param_1 + 0xd0);
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x165,0xbd,
                     flags,0,0,0,
-                    *(u32 *)(param_1 + 0xd0));
+                    resource);
 
   flags = *(s16 *)(param_1 + 0x12) | -0x100;
+  resource = *(u32 *)(param_1 + 0xd0);
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x61,0xbd,
                     flags,1,-0x104,0,
-                    *(u32 *)(param_1 + 0xd0));
+                    resource);
 
   return;
 }
