@@ -1207,7 +1207,7 @@ void FUN_00348f30(int param_1,float *param_2);
 void FUN_00349090(int *param_1,float *param_2);
 #pragma alias FUN_00349090_ptr FUN_00349090
 extern void FUN_00349090_ptr(int *param_1,int *param_2);
-void FUN_00349260(int param_1,int *param_2);
+void FUN_00349260(int param_1,float *param_2);
 void FUN_00349450(int *param_1,float *param_2);
 #pragma alias FUN_00349450_ptr FUN_00349450
 extern void FUN_00349450_ptr(int *param_1,int *param_2);
@@ -2995,22 +2995,22 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
 
   uVar8 = param_2 & 0xffff;
 
-  if ((uVar8 == 2) &&
-
-     ((((((uVar6 = param_3 & 0xffff, uVar6 == 0xe7 || (uVar6 == 0xe6)) || (uVar6 == 0xe5)) ||
-
-        ((uVar6 == 0xe4 || (uVar6 == 0xe3)))) ||
-
-       ((uVar6 == 0xe2 || ((uVar6 == 0x118 || (uVar6 == 0x117)))))) || (uVar6 == 0x116)))) {
-
-    bVar1 = true;
-
-  }
-
-  else {
-
-    bVar1 = false;
-
+  bVar1 = false;
+  if (uVar8 == 2) {
+    uVar6 = param_3 & 0xffff;
+    switch (uVar6) {
+    case 0x116:
+    case 0x117:
+    case 0x118:
+    case 0xe2:
+    case 0xe3:
+    case 0xe4:
+    case 0xe5:
+    case 0xe6:
+    case 0xe7:
+      bVar1 = true;
+      break;
+    }
   }
 
   if ((!bVar1) && ((iVar7 = *param_1, iVar7 == 0 || ((*(u16 *)(iVar7 + 0xe) & 1) == 0)))) {
@@ -3109,7 +3109,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
 
           }
 
-          else if (*(int *)(&DAT_0069ba18 + (int)param_3 * 4) == -1) {
+          else if (DAT_0069ba18_abs[(int)param_3] == -1) {
 
             lVar5 = 0;
 
@@ -3121,7 +3121,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
 
             if (lVar5 == 0) {
 
-              lVar5 = FUN_0016f190(*(int *)(&DAT_0069ba18 + (int)param_3 * 4));
+              lVar5 = FUN_0016f190(DAT_0069ba18_abs[(int)param_3]);
 
             }
 
@@ -43395,7 +43395,7 @@ void FUN_00349090(int *param_1,float *param_2)
 
       if (fGpffff8168 < param_2[1]) {
 
-        FUN_00348f30((int)param_1,(int *)param_2);
+        FUN_00348f30((int)param_1,param_2);
 
       }
 
@@ -43451,7 +43451,7 @@ void FUN_00349090(int *param_1,float *param_2)
 // FUN_00349260 NONMATCHING
 
 
-void FUN_00349260(int param_1,int *param_2)
+void FUN_00349260(int param_1,float *param_2)
 
 
 
@@ -43473,15 +43473,15 @@ void FUN_00349260(int param_1,int *param_2)
 
   iVar1 = FUN_00357fd0(0);
 
-  *param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
+  *(int *)param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
 
-  param_2[1] = (u32)iGpffff81bc;
+  param_2[1] = iGpffff81bc;
 
-  param_2[4] = *(int *)(param_1 + 0x10);
+  ((int *)param_2)[4] = *(int *)(param_1 + 0x10);
 
-  param_2[5] = *(int *)(param_1 + 0x14);
+  param_2[5] = *(float *)(param_1 + 0x14);
 
-  param_2[3] = *(int *)(param_1 + 0xc);
+  ((int *)param_2)[3] = *(int *)(param_1 + 0xc);
 
   fVar4 = (float)*(int *)(param_1 + 0x28) * 0.5f;
 
@@ -43511,17 +43511,12 @@ void FUN_00349260(int param_1,int *param_2)
 
   fVar2 = fVar5 * fVar2 + *(float *)(param_1 + 0x20) + 0.0f;
 
-  param_2[7] = (int)fVar3;
-
-  param_2[8] = (int)fVar2;
-
-  param_2[9] = (int)(fVar3 - fVar4);
-
-  param_2[10] = (int)(fVar2 - fVar4);
-
-  param_2[0xb] = (int)(fVar3 + fVar4);
-
-  param_2[0xc] = (int)(fVar2 + fVar4);
+  param_2[7] = fVar3;
+  param_2[8] = fVar2;
+  param_2[9] = fVar3 - fVar4;
+  param_2[10] = fVar2 - fVar4;
+  param_2[0xb] = fVar3 + fVar4;
+  param_2[0xc] = fVar2 + fVar4;
 
   return;
 
@@ -43571,7 +43566,7 @@ void FUN_00349450(int *param_1,float *param_2)
 
       if (fGpffff8168 < param_2[1]) {
 
-        FUN_00349260((int)param_1,(int *)param_2);
+        FUN_00349260((int)param_1,param_2);
 
       }
 
@@ -44003,7 +43998,7 @@ u32 FUN_00349ed0(int param_1)
 
     iVar4 = (int)uVar2 + iVar3 * 0x34;
 
-    FUN_00348f30((int)piVar5,(int *)iVar4);
+    FUN_00348f30((int)piVar5,(float *)iVar4);
 
     *(f32 *)(iVar4 + 4) = fGpffff81c0;
 
@@ -44438,7 +44433,7 @@ u32 FUN_0034a8c0(int param_1)
 
     iVar4 = (int)uVar2 + iVar3 * 0x34;
 
-    FUN_00349260((int)piVar5,(int *)iVar4);
+    FUN_00349260((int)piVar5,(float *)iVar4);
 
     *(f32 *)(iVar4 + 4) = fGpffff81c0;
 

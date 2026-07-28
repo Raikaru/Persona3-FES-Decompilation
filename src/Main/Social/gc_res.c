@@ -738,13 +738,14 @@ void* func_0021b420(s32 index)
 
 /* Removing this worsens FUN_0021b4a0 (nd114 -> nd116) - measured W161. */
 #pragma opt_loop_invariants on
-// FUN_0021B4A0 NONMATCHING
+// FUN_0021B4A0
 void func_0021b4a0(u8* resource)
 {
     GcResWork* work;
     u8* data;
     s32 i;
     s32 j;
+    u32 entry;
 
     K_ASSERT(sGcRes != NULL, 0x7c);
     work = (GcResWork*)sGcRes;
@@ -754,8 +755,10 @@ void func_0021b4a0(u8* resource)
     K_ASSERT(*(u16*)((u8*)resource + 4) == 10, 0x31a);
 
     for (i = 0; i < 7; i++) {
+        entry = i * 8;
+        entry += (u32)resource;
         work->cardResources[i] =
-            bpTexCreateTmxRaster(resource + *(s32*)((u32)(i * 8) + (u32)resource + 8));
+            bpTexCreateTmxRaster(resource + *(s32*)(entry + 8));
     }
     data = resource + 8;
     work->cardRaster =

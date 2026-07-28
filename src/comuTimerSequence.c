@@ -1053,13 +1053,10 @@ code * FUN_003c07c0(void)
 code * FUN_003c09a0(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
-  long lVar4;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  int lVar4;
+  u8 auStack_20[0x1c];
 
   piVar3 = (int *)FUN_00195540();
   iVar1 = *piVar3;
@@ -1073,38 +1070,45 @@ code * FUN_003c09a0(void)
     if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
-      uGpffffb980 = 0;
-      FUN_00521408(auStack_20,0,0x1c);
-      uStack_14 = 0x321;
-      uStack_10 = 1;
-      uStack_c = 0;
-      FUN_0027c080(3,auStack_20,0x1c,0);
-      *piVar3 = 2;
-    }
-    else {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    break;
-  case 2:
-    lVar4 = FUN_0027c2b0();
-    if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
       bVar2 = 1;
     }
     else {
+      piVar3[1] = piVar3[1] + 1;
       bVar2 = 0;
     }
     if (bVar2) {
-      lVar4 = FUN_0038d6f0(0);
-      if (lVar4 == 0) {
-        return (code *)0xffffffff;
+      uGpffffb980 = 0;
+      FUN_00521408(auStack_20,0,0x1c);
+      ((u32 *)auStack_20)[3] = 0x321;
+      ((u32 *)auStack_20)[4] = 1;
+      ((u32 *)auStack_20)[5] = 0;
+      FUN_0027c080(3,auStack_20,0x1c,0);
+      *piVar3 = 2;
+    }
+    break;
+  case 2:
+    {
+      int bVar3;
+      lVar4 = FUN_0027c2b0();
+      if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
+        bVar3 = 1;
       }
-      *piVar3 = 0;
-      piVar3[1] = 0;
-      piVar3[2] = 0;
-      piVar3[3] = 0;
-      piVar3[4] = 0;
-      piVar3[5] = 0;
-      return (code *)&FUN_003c07c0;
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        lVar4 = FUN_0038d6f0(0);
+        if (lVar4 == 0) {
+          return (code *)0xffffffff;
+        }
+        *piVar3 = 0;
+        piVar3[1] = 0;
+        piVar3[2] = 0;
+        piVar3[3] = 0;
+        piVar3[4] = 0;
+        piVar3[5] = 0;
+        return (code *)&FUN_003c07c0;
+      }
     }
     break;
   }
@@ -1217,35 +1221,36 @@ code * FUN_003c0bd0(void)
 
 u32 FUN_003c0c30(void)
 {
-  u8 bVar1;
   int *piVar2;
-  long lVar3;
-  u16 uStack_20;
-  u16 uStack_1e;
-  u16 uStack_1c;
-  u16 uStack_18;
+  int lVar3;
+  u16 auStack_20[0xe];
 
   piVar2 = (int *)FUN_00195540();
-  if (*piVar2 == 0) {
-    FUN_00521408(&uStack_20,0,0x1c);
-    uStack_20 = 7;
-    uStack_1e = 1;
-    uStack_1c = 0;
-    uStack_18 = 0;
-    FUN_0027c080(2,&uStack_20,0x1c,0);
+  switch (*piVar2) {
+  case 0:
+    FUN_00521408(auStack_20,0,0x1c);
+    auStack_20[0] = 7;
+    auStack_20[1] = 1;
+    auStack_20[2] = 0;
+    auStack_20[4] = 0;
+    FUN_0027c080(2,auStack_20,0x1c,0);
     *piVar2 = 1;
-  }
-  else if (*piVar2 == 1) {
-    lVar3 = FUN_0027c2b0();
-    if ((lVar3 == 0) && (lVar3 = FUN_0027c330(), lVar3 == -1)) {
-      bVar1 = 1;
+    break;
+  case 1:
+    {
+      int bVar1;
+      lVar3 = FUN_0027c2b0();
+      if ((lVar3 == 0) && (lVar3 = FUN_0027c330(), lVar3 == -1)) {
+        bVar1 = 1;
+      }
+      else {
+        bVar1 = 0;
+      }
+      if (bVar1 == 1) {
+        return 0xffffffff;
+      }
     }
-    else {
-      bVar1 = 0;
-    }
-    if (bVar1) {
-      return 0xffffffff;
-    }
+    break;
   }
   return 0;
 }
@@ -1582,35 +1587,36 @@ code * FUN_003c1300(void)
 
 u32 FUN_003c1340(void)
 {
-  u8 bVar1;
   int *piVar2;
   int lVar3;
-  u16 uStack_20;
-  u16 uStack_1e;
-  u16 uStack_1c;
-  u16 uStack_18;
+  u16 auStack_20[0xe];
 
   piVar2 = (int *)FUN_00195540();
-  if (*piVar2 == 0) {
-    FUN_00521408(&uStack_20,0,0x1c);
-    uStack_20 = 6;
-    uStack_1e = 3;
-    uStack_1c = 2;
-    uStack_18 = 0;
-    FUN_0027c080(2,&uStack_20,0x1c,0);
+  switch (*piVar2) {
+  case 0:
+    FUN_00521408(auStack_20,0,0x1c);
+    auStack_20[0] = 6;
+    auStack_20[1] = 3;
+    auStack_20[2] = 2;
+    auStack_20[4] = 0;
+    FUN_0027c080(2,auStack_20,0x1c,0);
     *piVar2 = 1;
-  }
-  else if (*piVar2 == 1) {
-    lVar3 = FUN_0027c2b0();
-    if ((lVar3 == 0) && (lVar3 = FUN_0027c330(), lVar3 == -1)) {
-      bVar1 = 1;
+    break;
+  case 1:
+    {
+      int bVar1;
+      lVar3 = FUN_0027c2b0();
+      if ((lVar3 == 0) && (lVar3 = FUN_0027c330(), lVar3 == -1)) {
+        bVar1 = 1;
+      }
+      else {
+        bVar1 = 0;
+      }
+      if (bVar1 == 1) {
+        return 0xffffffff;
+      }
     }
-    else {
-      bVar1 = 0;
-    }
-    if (bVar1) {
-      return 0xffffffff;
-    }
+    break;
   }
   return 0;
 }

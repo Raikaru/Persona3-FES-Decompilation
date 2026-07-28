@@ -816,6 +816,8 @@ void bsaMain00213e80(BsaWork* work)
         D_0096009C_abs(p + 0x256c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x256c, 4, 0, 2, 3);
         switch (p[0]) {
+        case 0:
+            break;
         case 1:
             for (i = 0; i < 8; i++) {
                 D_0096009C_abs(p + i * 0x80 + 0x25ac, 4, 0, 1, 2);
@@ -905,14 +907,10 @@ void bsaMain00213e80(BsaWork* work)
         D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x182c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x182c, 4, 0, 2, 3);
-        image = func_0021cce0(func_0021cca0(table2, 0x33));
-        D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x186c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x186c, 4, 0, 2, 3);
         D_0096009C_abs(p + 0x18ac, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x18ac, 4, 0, 2, 3);
-        image = func_0021cce0(func_0021cca0(table2, 0x36));
-        D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x18ec, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x18ec, 4, 0, 2, 3);
     } else {
@@ -928,14 +926,10 @@ void bsaMain00213e80(BsaWork* work)
         D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x192c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x192c, 4, 0, 2, 3);
-        image = func_0021cce0(func_0021cca0(table2, 0x34));
-        D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x196c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x196c, 4, 0, 2, 3);
         D_0096009C_abs(p + 0x19ac, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x19ac, 4, 0, 2, 3);
-        image = func_0021cce0(func_0021cca0(table2, 0x36));
-        D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x19ec, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x19ec, 4, 0, 2, 3);
     } else {
@@ -951,14 +945,10 @@ void bsaMain00213e80(BsaWork* work)
         D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x1a2c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x1a2c, 4, 0, 2, 3);
-        image = func_0021cce0(func_0021cca0(table2, 0x34));
-        D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x1a6c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x1a6c, 4, 0, 2, 3);
         D_0096009C_abs(p + 0x1aac, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x1aac, 4, 0, 2, 3);
-        image = func_0021cce0(func_0021cca0(table2, 0x36));
-        D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x1aec, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x1aec, 4, 0, 2, 3);
     } else {
@@ -969,13 +959,16 @@ void bsaMain00213e80(BsaWork* work)
             D_0096009C_abs(p + i * 0x40 + 0x149c, 4, 0, 2, 3);
         }
     }
+    image = bsaMain00215830(
+        DAT_007ce410[(*(u16*)(p + 3)) * 0x3e + 2]);
+    image = func_0021cce0(image);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x590, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x590, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x2f));
     D_00960090_abs(1, image);
     D_0096009C_abs(p + 0x5d0, 4, 0, 1, 2);
     D_0096009C_abs(p + 0x5d0, 4, 0, 2, 3);
-    D_00960090_abs(1, func_0021cce0(p[0x590]));
-    D_0096009C_abs(p + 0x590, 4, 0, 1, 2);
-    D_0096009C_abs(p + 0x590, 4, 0, 2, 3);
     func_003b1360(p[4], 1, 0);
     if (p[0] == 1) {
         image = func_0021cce0(func_0021cca0(table2, 0x27));
@@ -990,53 +983,55 @@ void bsaMain00213e80(BsaWork* work)
         D_00960090_abs(1, image);
         D_0096009C_abs(p + 0x1250, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x1250, 4, 0, 2, 3);
-        if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
-            for (i = 0; i < (s32)p[0xd]; i++) {
-                image = func_0021cce0(func_0021cca0(
-                    table6, *(s16*)((u8*)p + i * 2 + 0xa6b8)));
-                D_00960090_abs(1, image);
-                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 1, 2);
-                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 2, 3);
-            }
-            for (i = 0; i < (s32)p[0xd]; i++)
-                func_003b1360(p[i + 5], 1, 0);
+        if (((p[1] & BSA_FLAG_BOSS) == 0) && (p[0x17e8] != 7)) {
+            image = func_0021cca0(table2, p[0x17e8] + 0x16);
+        } else {
+            image = func_0021cca0(table2, 0x3c);
         }
-        else {
-            image = func_0021cce0(func_0021cca0(table2, 0x23));
-            D_00960090_abs(1, image);
+        image = func_0021cce0(image);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x17ec, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x17ec, 4, 0, 2, 3);
+        image = func_0021cce0(func_0021cca0(table2, 0x23));
+        D_00960090_abs(1, image);
+        for (i = 0; i < 8; i++) {
+            D_0096009C_abs(p + i * 0x80 + 0x850, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x80 + 0x850, 4, 0, 2, 3);
+            D_0096009C_abs(p + i * 0x80 + 0x890, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x80 + 0x890, 4, 0, 2, 3);
+        }
+        image = func_0021cce0(func_0021cca0(table2, 0x25));
+        D_00960090_abs(1, image);
+        for (i = 0; i < 8; i++) {
+            D_0096009C_abs(p + i * 0x80 + 0xc50, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x80 + 0xc50, 4, 0, 2, 3);
+            D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 2, 3);
+        }
+        if ((p[1] & BSA_FLAG_RESOURCE) != 0) {
             for (i = 0; i < 8; i++) {
-                D_0096009C_abs(p + i * 0x80 + 0x850, 4, 0, 1, 2);
-                D_0096009C_abs(p + i * 0x80 + 0x850, 4, 0, 2, 3);
-                D_0096009C_abs(p + i * 0x80 + 0x890, 4, 0, 1, 2);
-                D_0096009C_abs(p + i * 0x80 + 0x890, 4, 0, 2, 3);
-            }
-            image = func_0021cce0(func_0021cca0(table2, 0x25));
-            D_00960090_abs(1, image);
-            for (i = 0; i < 8; i++) {
-                D_0096009C_abs(p + i * 0x80 + 0xc50, 4, 0, 1, 2);
-                D_0096009C_abs(p + i * 0x80 + 0xc50, 4, 0, 2, 3);
-                D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 1, 2);
-                D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 2, 3);
-            }
-            image = func_0021cce0(func_0021cca0(table2, 0x32));
-            D_00960090_abs(1, image);
-            for (i = 0; i < 8; i++) {
+                image = func_0021cce0(func_0021cca0(table2, 0x32));
+                D_00960090_abs(1, image);
                 D_0096009C_abs(p + i * 0x100 + 0x1c2c, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x100 + 0x1c2c, 4, 0, 2, 3);
-            }
-            image = func_0021cce0(func_0021cca0(table2, 0x35));
-            D_00960090_abs(1, image);
-            for (i = 0; i < 8; i++) {
                 D_0096009C_abs(p + i * 0x100 + 0x1c6c, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x100 + 0x1c6c, 4, 0, 2, 3);
                 D_0096009C_abs(p + i * 0x100 + 0x1cac, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x100 + 0x1cac, 4, 0, 2, 3);
-            }
-            image = func_0021cce0(func_0021cca0(table2, 0x36));
-            D_00960090_abs(1, image);
-            for (i = 0; i < 8; i++) {
                 D_0096009C_abs(p + i * 0x100 + 0x1cec, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x100 + 0x1cec, 4, 0, 2, 3);
+            }
+        } else {
+            for (i = 0; i < (s32)p[0xd]; i++) {
+                image = func_0021cca0(
+                    table6, *(s16*)((u8*)p + i * 2 + 0xa6b8));
+                image = func_0021cce0(image);
+                D_00960090_abs(1, image);
+                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 2, 3);
+            }
+            for (i = 0; i < (s32)p[0xd]; i++) {
+                func_003b1360(p[i + 5], 1, 0);
             }
         }
     }

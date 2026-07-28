@@ -107,7 +107,7 @@ void bppMain0020edc0(void)
 
 /* Removing this worsens bppMain0020edf0 (nd135 -> nd794) - measured W161. */
 #pragma optimization_level 1
-// FUN_0020edf0 NONMATCHING
+// FUN_0020edf0
 void bppMain0020edf0(void)
 {
     s32 i;
@@ -131,9 +131,11 @@ void bppMain0020edf0(void)
 
     if ((initialFlags & 0x10) != 0 || (initialFlags & 0x20) != 0 ||
         (initialFlags & 0x40) != 0) {
-        transition = (s32)work[0x1697];
-        if (transition > 0) {
-            work[0x1697] = transition - 1;
+        s32 decrement;
+
+        decrement = (s32)work[0x1697];
+        if (decrement > 0) {
+            work[0x1697] = decrement - 1;
         }
     } else {
         transition = (s32)work[0x1697];

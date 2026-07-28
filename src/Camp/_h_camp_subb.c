@@ -1626,12 +1626,12 @@ void FUN_001406d0(CampPair position, f32 texture,
                   CampEquipmentDetailWork* detail, s32 alpha)
 {
   register void* parent;
+  register int value;
   u32 packedValue;
   u32 inverseAlpha;
   const char* textValue;
   int entryIndex;
   int variant;
-  int value;
   int textX;
   int valueY;
   int valueX;

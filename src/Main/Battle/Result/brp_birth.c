@@ -100,7 +100,7 @@ void func_0024a7f0(void)
 
     work = (u32*)BRP_BIRTH_ALLOC(0xC570, 0x40000);
     func_00219c90((u8*)work + 0xFD4);
-    sflResInit((u8*)work + 0x3730);
+    sflResInit((SflResourceManager*)((u8*)work + 0x3730));
     brpRes0024ba30((u32*)((u8*)work + 0x3704));
     func_00239170((u8*)work + 0x37C0);
     work[1] = 0;

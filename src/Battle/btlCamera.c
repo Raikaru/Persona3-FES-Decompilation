@@ -2018,11 +2018,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
     {
         radius1 = radius2;
     }
-    FUN_002a3e80(radius1,
-                 *(u8**)((int)camera + 0xe0),
-                 (u8*)&center1,
-                 (u8*)&center2,
-                 3);
+    FUN_002a3e80_ab330(camera->action, &center1, (f32*)&center2, 3, radius1);
 }
 
 // FUN_002a7378
