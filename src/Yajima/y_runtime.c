@@ -887,7 +887,7 @@ extern f32 FUN_00269ca0_f32(f32 value);
 extern f32 FUN_0052ea18_f32(f32 x, f32 y);
 
 char FUN_00435440(char param_1);
-char FUN_0043bc20(char param_1);
+int FUN_0043bc20(char param_1);
 float FUN_0045b4e0(int param_1);
 float FUN_004693a0(int param_1);
 float FUN_0047cfd0(u32 *param_1,u8 (*param_2) [12],u8 (*param_3) [12], int param_4,int param_5);
@@ -2305,7 +2305,7 @@ extern code FUN_0052ea18;
 extern code FUN_005316d0;
 
 char FUN_00435440(char param_1);
-char FUN_0043bc20(char param_1);
+int FUN_0043bc20(char param_1);
 float FUN_0045b4e0(int param_1);
 float FUN_004693a0(int param_1);
 float FUN_0047cfd0(u32 *param_1,u8 (*param_2) [12],u8 (*param_3) [12], int param_4,int param_5);
@@ -8366,7 +8366,7 @@ short FUN_0043b980(char param_1,u64 param_2)
 #pragma pop
 // FUN_0043BC20 NONMATCHING
 
-char FUN_0043bc20(char param_1)
+int FUN_0043bc20(char param_1)
 
 {
   int cVar3;
@@ -8374,11 +8374,12 @@ char FUN_0043bc20(char param_1)
   int iVar1;
   u32 uVar2;
 
-  cVar3 = 0;
   if (param_1 == '\0') {
+    cVar3 = 0;
     sVar1 = 1;
   }
   else {
+    cVar3 = 0;
     sVar1 = *(s16 *)(DAT_00871948_abs + param_1 * 0x1c0);
   }
   iVar1 = sVar1;

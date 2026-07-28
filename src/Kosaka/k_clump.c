@@ -713,13 +713,21 @@ void* func_001a7370(void* material, u32* state)
     }
     candidate = 0;
     values = D_00678C00;
-    for (; candidate < 10 && state[0] != values[candidate]; candidate++)
+    for (; candidate < 10; candidate++)
     {
+        if (state[0] == values[candidate])
+        {
+            break;
+        }
     }
     current = 0;
     values = D_00678C00;
-    for (; current < 10 && value != values[current]; current++)
+    for (; current < 10; current++)
     {
+        if (value == values[current])
+        {
+            break;
+        }
     }
     if (candidate < current)
     {

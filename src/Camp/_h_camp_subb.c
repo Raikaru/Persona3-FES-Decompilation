@@ -282,6 +282,14 @@ extern void FUN_003b2cb0(void* texture, s32 x, s32 y, s32 color, u32 font,
                          u32 alignment, const char* text, u32 maxWidth,
                          u32 shadow);
 extern int sprintf(char* buffer, const char* format, ...);
+#pragma alias campDrawEquipmentDetailList FUN_001406d0
+extern void campDrawEquipmentDetailList(CampPair position, f32 texture,
+                                        CampEquipmentDetailWork* detail,
+                                        s32 alpha);
+#pragma alias campDrawEquipmentDetailListAlt FUN_00140e30
+extern void campDrawEquipmentDetailListAlt(CampPair position, f32 texture,
+                                           CampEquipmentDetailWork* detail,
+                                           s32 alpha);
 extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
                           s32 positionMode, s32 alphaMode,
                           u64 start, u64 end, s32 param0, s32 tile,
@@ -2656,8 +2664,9 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                        item->x, item->y, campTextureAsFloat(item));
         break;
     case 7:
-        FUN_001406d0(*(CampPair*)&item->x, campTextureAsFloat(item),
-                     menu->detailList, item->alpha);
+        campDrawEquipmentDetailList(*(CampPair*)&item->x,
+                                    campTextureAsFloat(item),
+                                    menu->detailList, item->alpha);
         break;
     case 10:
     case 0xb:

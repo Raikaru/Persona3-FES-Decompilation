@@ -264,15 +264,20 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
         func_0021d3b0(p + i * 0x40 + 0x610,
                       func_0021cca0(table2, i + 0x16));
     }
-    for (i = 0; i < 8; i++) {
-        image = func_0021cca0(table2, 0x23);
-        func_0021d3b0(p + i * 0x80 + 0x850, image);
-        func_0021e380(p + i * 0x80 + 0x890, image, 0);
-    }
-    for (i = 0; i < 8; i++) {
-        image = func_0021cca0(table2, 0x25);
-        func_0021d3b0(p + i * 0x80 + 0xc50, image);
-        func_0021e380(p + i * 0x80 + 0xc90, image, 1);
+    {
+        s32 j;
+        u32 loopImage;
+
+        for (j = 0; j < 8; j++) {
+            loopImage = func_0021cca0(table2, 0x23);
+            func_0021d3b0(p + j * 0x80 + 0x850, loopImage);
+            func_0021e380(p + j * 0x80 + 0x890, loopImage, 0);
+        }
+        for (j = 0; j < 8; j++) {
+            loopImage = func_0021cca0(table2, 0x25);
+            func_0021d3b0(p + j * 0x80 + 0xc50, loopImage);
+            func_0021e380(p + j * 0x80 + 0xc90, loopImage, 1);
+        }
     }
     for (i = 0; i < 8; i++) {
         if (*(u16*)(unit + i * 2) == 0)
