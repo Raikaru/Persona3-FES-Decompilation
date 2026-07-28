@@ -311,17 +311,18 @@ RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
     }
 
     pixelSource = (u8*)tmxMemory + 0x40;
-    if (depth == 8)
+    switch (depth)
     {
+    case 8:
         paletteSource = pixelSource;
         pixelSource += (u32)source[0x10] << 10;
         paletteFlag = 1;
-    }
-    else if (depth == 4)
-    {
+        break;
+    case 4:
         paletteSource = pixelSource;
         pixelSource += (u32)source[0x10] << 6;
         paletteFlag = 1;
+        break;
     }
 
     flags = 4;
@@ -1469,10 +1470,7 @@ void bpTexQueueNodeRange(s32 start, s32 count)
     s32 total;
     s32 i;
 
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
     total = 0;
     for (node = BP_TEX_PTR(work, 0x1265c);
@@ -1510,10 +1508,7 @@ void bpTexQueueNodeRange(s32 start, s32 count)
         selected[start + i][0] |= 0x20;
     }
 
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     action = (u32*)((u8*)work + 0x12688 +
                     BP_TEX_U32(work, 0x127a8) * 0x24);
     action[0] = 1;
@@ -1620,16 +1615,10 @@ void bpTexShuffleNodes(void)
     s32 selected;
     f32 position[3];
 
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
     count = (s32)BP_TEX_U32(work, 0x1267c);
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     nodeCount = 0;
     for (node = BP_TEX_PTR(work, 0x1265c);
          node != NULL;
@@ -1669,10 +1658,7 @@ void bpTexShuffleNodes(void)
             break;
         }
     }
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     node = BP_TEX_PTR(work, 0x1265c);
     while (node != NULL)
     {

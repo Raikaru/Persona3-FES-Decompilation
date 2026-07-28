@@ -4250,7 +4250,7 @@ void func_002BE610(int param_1)
   *(u16 *)(param_1 + 0xc) = 0x26f;
 }
 
-// FUN_002be620 NONMATCHING
+// FUN_002be620
 
 u64 func_002be620(int param_1,int param_2)
 
@@ -4271,22 +4271,24 @@ u64 func_002be620(int param_1,int param_2)
     *(u16 *)(iVar5 + 0xc) = uVar1;
   }
   sVar2 = func_002bdfb0(param_1);
-  if (sVar2 == 2) {
+  switch (sVar2) {
+  case 1:
+    uVar3 = 1;
+    break;
+  case 2:
     iVar4 = (int)param_2;
     *(u16 *)(iVar4 + 0x6c) = 2;
-    if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
-      *(u16 *)(iVar4 + 0x6e) = auStack_20[*(short *)(iVar5 + 6)];
-    }
-    else {
+    if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) != 0) {
       *(short *)(iVar4 + 0x6e) = *(short *)(iVar5 + 6) + 1;
     }
-    uVar3 = 3;
-  }
-  else {
-    uVar3 = 1;
-    if (sVar2 != 1) {
-      uVar3 = 0;
+    else {
+      *(u16 *)(iVar4 + 0x6e) = auStack_20[*(short *)(iVar5 + 6)];
     }
+    uVar3 = 3;
+    break;
+  default:
+    uVar3 = 0;
+    break;
   }
   return uVar3;
 }

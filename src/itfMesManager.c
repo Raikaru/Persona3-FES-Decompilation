@@ -66,6 +66,10 @@ extern u32 gp0xffffb800;
 extern u64 gp0xffffa7c8;
 extern s8 DAT_00959eb0[];
 extern code DAT_00960178;
+#pragma alias DAT_006a1be0_abs DAT_006a1be0
+extern u8 DAT_006a1be0_abs[];
+#pragma alias DAT_006a1a70_abs DAT_006a1a70
+extern u8 DAT_006a1a70_abs[];
 
 extern void thunk_FUN_003a6334();
 #pragma alias thunk_FUN_003a6334_typed thunk_FUN_003a6334
@@ -87,6 +91,19 @@ typedef struct ItfMesTextWork
   s16 lineStart;
   s16 lineEnd;
 } ItfMesTextWork;
+
+typedef struct ItfMesChoiceEntry
+{
+  s16 type;
+  s16 value;
+} ItfMesChoiceEntry;
+
+typedef struct ItfMesChoiceWork
+{
+  u8 unknown_00[0x26];
+  s16 count;
+  ItfMesChoiceEntry entries[15];
+} ItfMesChoiceWork;
 
 static ItfMesHandleSystem sItfMesHandleSystem;
 
@@ -217,6 +234,9 @@ extern u64 FUN_003a53b0_8(int param_1,int param_2,u64 param_3,int param_4,int pa
 #pragma alias FUN_003a53b0_8f FUN_003a53b0
 extern u64 FUN_003a53b0_8f(int param_1,int param_2,f32 param_3,int param_4,int param_5,
                            u32 param_6,int param_7,int param_8);
+#pragma alias FUN_003a53b0_int FUN_003a53b0
+extern u64 FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
+                            u32 param_6,int param_7,int param_8,int param_9);
 #pragma alias FUN_003a5fd0_typed FUN_003a5fd0
 void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 #pragma alias FUN_003b0ce0_typed FUN_003b0ce0
@@ -1208,7 +1228,7 @@ int FUN_003a2c90(int param_1,int param_2)
 }
 #define FUN_003a2c90(...) ((int (*)(...))FUN_003a2c90)(__VA_ARGS__)
 #undef FUN_003a2ef0
-// FUN_003A2EF0 NONMATCHING
+// FUN_003A2EF0
 
 
 u32 FUN_003a2ef0(u32 param_1)
@@ -1237,7 +1257,7 @@ u32 FUN_003a2ef0(u32 param_1)
 
   if (lVar1 != 0) {
 
-    uVar2 = (*DAT_00960178)(0x1e8,0x40000);
+    uVar2 = (*DAT_00960178_abs)(0x1e8,0x40000);
 
   }
 
@@ -2468,13 +2488,13 @@ u64 FUN_003a4360(u64 param_1,long param_2)
 u32 FUN_003a4a70(int param_1, int param_2, int param_3)
 {
     u32 *object;
-    s16 *table;
-    s16 *found;
+    ItfMesChoiceWork *work;
+    ItfMesChoiceEntry *found;
     int count;
     s32 i;
 
     object = *(u32**)(DAT_00959eec_abs + param_1 * 0xd);
-    table = (s16*)((u8*)object + 0x40);
+    work = (ItfMesChoiceWork*)((u8*)object + 0x40);
     found = NULL;
     if (param_2 < 0 || param_2 >= 0x10)
         return 0;
@@ -2484,25 +2504,26 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
     if (param_2 == 6 || param_2 == 0xc || param_2 == 0xe)
         return 0;
 
-    count = *(s16*)((u8*)table + 0x26);
-    for (i = 0; i < count; i++)
+    i = 0;
+    count = work->count;
+    while (i < count)
     {
-        s16 *entry = (s16*)((u8*)table + i * 4 + 0x28);
-        if (entry[0] == param_2)
+        if (work->entries[i].type == param_2)
         {
-            found = entry;
+            found = &work->entries[i];
             break;
         }
+        i++;
     }
     if (found == NULL)
     {
         if (count >= 0xf)
             return 0;
-        found = (s16*)((u8*)table + count * 4 + 0x28);
-        *(s16*)((u8*)table + 0x26) = count + 1;
+        found = &work->entries[count];
+        work->count++;
     }
-    found[0] = param_2;
-    found[1] = param_3;
+    found->type = param_2;
+    found->value = param_3;
     return 1;
 }
 #define FUN_003a4a70(...) ((u32 (*)(...))FUN_003a4a70)(__VA_ARGS__)
@@ -2873,9 +2894,8 @@ FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 // FUN_003A53B0 NONMATCHING
 u64
 
-FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,
-
-            u32 param_6,int param_7,int param_8,int param_9)
+FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
+                 u32 param_6,int param_7,int param_8,int param_9)
 
 
 
@@ -2929,7 +2949,7 @@ FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,
 
   }
 
-  thunk_FUN_003b0e54_f32(uVar3,param_3);
+  thunk_FUN_003b0e54(uVar3,param_3);
 
   return uVar3;
 
@@ -5579,7 +5599,7 @@ void FUN_003a8170(int param_1)
 }
 #define FUN_003a8170(...) ((void (*)(...))FUN_003a8170)(__VA_ARGS__)
 #undef FUN_003a8260
-// FUN_003A8260 NONMATCHING
+// FUN_003A8260
 
 
 void FUN_003a8260(int param_1)
@@ -5587,6 +5607,8 @@ void FUN_003a8260(int param_1)
 
 
 {
+
+  u32 *work;
 
   short sVar1;
 
@@ -5598,31 +5620,33 @@ void FUN_003a8260(int param_1)
 
   
 
+  work = (u32 *)(param_1 + 0x40);
+
   sVar1 = *(short *)(param_1 + 0x58);
 
   if (sVar1 != -1) {
 
-    FUN_005225a8(0x6a1be0,0x6a1a70);
+    FUN_005225a8(DAT_006a1be0_abs,DAT_006a1a70_abs);
 
-    for (iVar3 = 0; iVar2 = FUN_003b1a90(*(u32 *)(param_1 + 0x4c)), iVar3 < iVar2;
+    for (iVar3 = 0; iVar2 = FUN_003b1a90(work[3]), iVar3 < iVar2;
 
         iVar3 = iVar3 + 1) {
 
-      iVar2 = FUN_003b1b00(iVar3,*(u32 *)(param_1 + 0x4c));
+      iVar2 = FUN_003b1b00(iVar3,work[3]);
 
-      if (*(int *)(param_1 + 0x60) < iVar2) {
+      if ((int)work[8] < iVar2) {
 
-        FUN_003b1bc0(auStack_8,iVar3,*(u32 *)(param_1 + 0x4c));
+        FUN_003b1bc0(auStack_8,iVar3,work[3]);
 
-        *(u32 *)(param_1 + 0x5c) = auStack_8[0];
+        work[7] = auStack_8[0];
 
-        *(int *)(param_1 + 0x60) = iVar2;
+        work[8] = iVar2;
 
       }
 
     }
 
-    FUN_003b1bc0(auStack_8,sVar1,*(u32 *)(param_1 + 0x4c));
+    FUN_003b1bc0(auStack_8,sVar1,work[3]);
 
   }
 

@@ -53,7 +53,7 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3);
 u32 FUN_003d6c90(int param_1);
 s32 FUN_003d6e60(int param_1,int param_2);
 u32 FUN_003d6f80(int param_1,int param_2,void *param_3);
-u32 FUN_003d71d0(int param_1,int param_2,u16 *param_3);
+u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3);
 u64 FUN_003d72f0(u16 *param_1);
 void FUN_003d74f0(int param_1,int param_2,int param_3);
 #pragma alias FUN_003d74f0_i FUN_003d74f0
@@ -1614,12 +1614,11 @@ u32 FUN_003d6f80(int param_1,int param_2,void *param_3)
 // FUN_003D71D0 NONMATCHING
 
 
-u32 FUN_003d71d0(int param_1,int param_2,u16 *param_3)
+u32 FUN_003d71d0(u32 *param_1,u8 *param_2,u16 *param_3)
 {
   u16 sVar2;
   u32 cVar1;
   u32 uVar3;
-  s32 lVar4;
 
   if ((param_2 == 0) || (param_1 == 0)) {
     K_Assert(DAT_006a5f70,0x2e5);
@@ -1630,11 +1629,10 @@ u32 FUN_003d71d0(int param_1,int param_2,u16 *param_3)
   if (sVar2 == 0) {
     uVar3 = 0;
   } else {
-    lVar4 = FUN_001749a0(sVar2);
-    if ((lVar4 == 0) && (*(u16 *)((int)param_2 + 6) != sVar2)) {
-      FUN_00176680((int)param_1 + 4,sVar2);
-      FUN_003d6e60(param_1,param_2);
-      FUN_00176c80((int)param_1 + 4,(int)param_2 + 4);
+    if ((FUN_001749a0(sVar2) == 0) && (*(u16 *)(param_2 + 6) != sVar2)) {
+      FUN_00176680(param_1 + 1,sVar2);
+      FUN_003d6e60((int)param_1,(int)param_2);
+      FUN_00176c80(param_1 + 1,param_2 + 4);
       uVar3 = 1;
     } else {
       uVar3 = 0;

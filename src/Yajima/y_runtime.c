@@ -93,6 +93,14 @@ extern u32 DAT_006b4784;
 extern u32 DAT_006b4786;
 extern u32 DAT_006b4788;
 extern u32 DAT_006b478a;
+#pragma alias DAT_006b46d0_abs DAT_006b46d0
+#pragma alias DAT_006b477e_abs DAT_006b477e
+#pragma alias DAT_006b4784_abs DAT_006b4784
+#pragma alias DAT_006b478a_abs DAT_006b478a
+extern s8 DAT_006b46d0_abs[];
+extern s8 DAT_006b477e_abs[];
+extern s8 DAT_006b4784_abs[];
+extern s8 DAT_006b478a_abs[];
 extern u32 DAT_006b478c;
 extern u32 DAT_006b478e;
 extern u32 DAT_006b4790;
@@ -12765,28 +12773,28 @@ void FUN_0044a630(int param_1)
 
 {
   int iVar1;
-  char lVar2;
+  int lVar2;
   int iVar3;
   
   iVar1 = *(int *)(param_1 + 0x3c);
   for (lVar2 = 0; lVar2 < *(char *)(iVar1 + 0x93f); lVar2++) {
-    iVar3 = iVar1 + (int)lVar2 * 4;
+    iVar3 = iVar1 + lVar2 * 4;
     *(u8 *)(*(int *)(iVar3 + 0x4a8) + 0x18) = 0xff;
     *(u8 *)(*(int *)(iVar3 + 0x4c0) + 0x18) = 0xff;
     *(u8 *)(*(int *)(iVar3 + 0x4f0) + 0x18) = 0xff;
     *(u8 *)(*(int *)(iVar3 + 0x4d8) + 0x18) = 0xff;
   }
-  *(u8 *)(*(int *)(DAT_006b46d0 * 4 + iVar1 + 8) + 0x18) = 0xff;
-  *(u8 *)(*(int *)(DAT_006b4784 * 4 + iVar1 + 8) + 0x18) = 0xff;
-  *(u8 *)(*(int *)(DAT_006b477e * 4 + iVar1 + 8) + 0x18) = 0xff;
-  *(u8 *)(*(int *)(DAT_006b478a * 4 + iVar1 + 8) + 0x18) = 0xff;
+  *(u8 *)(*(int *)(DAT_006b46d0_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
+  *(u8 *)(*(int *)(DAT_006b4784_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
+  *(u8 *)(*(int *)(DAT_006b477e_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
+  *(u8 *)(*(int *)(DAT_006b478a_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
   *(u8 *)(*(int *)(iVar1 + 0x868) + 0x18) = 0xff;
   *(u8 *)(*(int *)(iVar1 + 0x86c) + 0x18) = 0xff;
   for (iVar3 = 0; iVar3 < 6; iVar3 = iVar3 + 1) {
     *(u8 *)(*(int *)(iVar1 + iVar3 * 4 + 0x33c) + 0x18) = 0xff;
   }
   for (iVar3 = 0; iVar3 < 0x38; iVar3 = iVar3 + 1) {
-    if (((u8 *)DAT_006b46d0)[iVar3 * 6] != -1) {
+    if (DAT_006b46d0_abs[iVar3 * 6] != -1) {
       *(u8 *)(*(int *)(iVar1 + iVar3 * 4 + 8) + 0x18) = 0xff;
     }
   }
@@ -19084,7 +19092,7 @@ u32 FUN_0045a020(int param_1)
   float fVar4;
   
   puVar1 = *(u32 **)(param_1 + 0x3c);
-  if (*(char *)((int)puVar1 + 0x5d) != '\x01') {
+  if (*(char *)((int)puVar1 + 0x5d) == '\x01') {
     return 0;
   }
   switch(*(char *)(puVar1 + 1)) {
@@ -19108,8 +19116,8 @@ u32 FUN_0045a020(int param_1)
     fVar4 = FUN_004221a0(uGpffff82d4,1.0f,(float)(int)*(short *)(puVar1 + 0x11),10.0f,1);
     *(float *)(puVar1 + 0x12) = fVar4;
     *(u16 *)((int)puVar1 + 10) = 0;
-    if (*(short *)((int)puVar1 + 6) < 10) {
-      *(short *)((int)puVar1 + 6) = *(short *)((int)puVar1 + 6) + 1;
+    if (((short *)puVar1)[3] < 10) {
+      ((short *)puVar1)[3]++;
     }
     if (*(short *)(puVar1 + 0x11) < 10) {
       *(short *)(puVar1 + 0x11) = *(short *)(puVar1 + 0x11) + 1;

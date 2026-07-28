@@ -2781,7 +2781,7 @@ void FUN_002057C0(void)
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
-    K_ASSERT((*(u32*)work & 0x1000) == 0, 0xe89);
+    K_ASSERT(((~*(u32*)work) & 0x1000) != 0, 0xe89);
     count = 0;
     for (id = 1; id < 0xb; id++)
     {

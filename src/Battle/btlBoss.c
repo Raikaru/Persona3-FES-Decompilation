@@ -1713,16 +1713,14 @@ void func_002faab0()
         u16 expectedCharId = 0x107;
         while (unit != NULL)
         {
-            if (unit->charId == expectedCharId)
+            switch (unit->charId)
             {
-                goto match_1a5;
+            case 0x107:
+                ((u8*)unit->mdl)[0x388] |= 8;
+                *(u32*)((u8*)gBtl + 0xb4c) = 0;
+                ((u8*)unit->mdl)[0x41d] = 0;
+                break;
             }
-            goto next_1a5;
-match_1a5:
-            ((u8*)unit->mdl)[0x388] |= 8;
-            *(u32*)((u8*)gBtl + 0xb4c) = 0;
-            ((u8*)unit->mdl)[0x41d] = 0;
-next_1a5:
             unit = unit->next;
         }
         break;
@@ -1736,16 +1734,14 @@ next_1a5:
         u16 expectedCharId = 0x111;
         while (unit != NULL)
         {
-            if (unit->charId == expectedCharId)
+            switch (unit->charId)
             {
-                goto match_1ac;
+            case 0x111:
+                ((u8*)unit->mdl)[0x388] |= 8;
+                *(u32*)((u8*)gBtl + 0xb50) = 0;
+                ((u8*)unit->mdl)[0x41d] = 0;
+                break;
             }
-            goto next_1ac;
-match_1ac:
-            ((u8*)unit->mdl)[0x388] |= 8;
-            *(u32*)((u8*)gBtl + 0xb50) = 0;
-            ((u8*)unit->mdl)[0x41d] = 0;
-next_1ac:
             unit = unit->next;
         }
         break;

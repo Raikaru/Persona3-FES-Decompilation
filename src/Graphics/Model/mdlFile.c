@@ -107,6 +107,9 @@ typedef struct MdlExtendedDispatch {
     code callback5;
     code callback6;
 } MdlExtendedDispatch;
+typedef struct MdlDispatch13 {
+    code callbacks[13];
+} MdlDispatch13;
 typedef struct MdlStridedValue {
     s32 value;
     u8 next[0x18];
@@ -1407,10 +1410,12 @@ void FUN_0034e3d0(int param_1);
 void FUN_0034e420(int param_1);
 void FUN_0034e450(int param_1);
 void FUN_0034e490(f32 param_1, int param_2);
-u64 FUN_0034e4c0(int param_1);
+u32 FUN_0034e4c0(int param_1);
 void FUN_0034e610(int param_1);
 u32 FUN_0034e690(int param_1);
 void FUN_0034e7c0(int param_1,u64 param_2);
+#pragma alias FUN_0034e7c0_u32 FUN_0034e7c0
+extern void FUN_0034e7c0_u32(int param_1,u32 param_2);
 void FUN_0034e800(int param_1,int param_2);
 void FUN_0034e820(int param_1,u16 param_2,int param_3);
 void FUN_0034e910(int param_1);
@@ -2240,6 +2245,8 @@ extern u8 PTR_LAB_0069bb10_abs[];
 extern void* PTR_LAB_0069be20;
 #pragma alias PTR_LAB_0069be20_abs PTR_LAB_0069be20
 extern u8 PTR_LAB_0069be20_abs[];
+#pragma alias PTR_LAB_0069be20_table PTR_LAB_0069be20
+extern MdlDispatch13 PTR_LAB_0069be20_table[];
 extern code PTR_LAB_0069be28[];
 extern code PTR_LAB_0069be2c[];
 extern void* PTR_LAB_0069be30;
@@ -7153,7 +7160,7 @@ u32 FUN_00322dc0(u32 *param_1)
 
     FUN_00521250(*(int *)(iVar7 + 0x10) + uVar4 * 0x10,iVar6,0x10);
 
-    uVar1 = FUN_003210c0_ret((u64)iVar5);
+    uVar1 = FUN_003210c0_int(iVar5);
 
     *(u32 *)(*(int *)(iVar7 + 0x14) + uVar4 * 4) = uVar1;
 
@@ -9967,17 +9974,18 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
 
 
+// b210 floor: the remaining rows are three VU-asm operand-address setup order/color groups
+// at +0x14..+0x1c, +0x4c..+0x50, and +0x60..+0x64; all ordinary C and calls now agree.
 // FUN_00325D60 NONMATCHING
 #pragma alias FUN_00325d60_u32 FUN_00325d60
-void FUN_00325d60_u32(u32 param_1,u8 (*param_2) [16])
+void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
 {
   u16 uVar1;
   int iVar3;
-  u8 (*pauVar4) [16];
+  MdlDispatch13 *dispatch;
   float saved[4];
   float transformed[4];
 
-  pauVar4 = (u8 (*) [16])param_1;
   __asm__ volatile (
       ".set noreorder                   \n"
       "lqc2        $vf10, 0(%0)          \n"
@@ -9985,7 +9993,7 @@ void FUN_00325d60_u32(u32 param_1,u8 (*param_2) [16])
       "sqc2        $vf10, 0(%2)          \n"
       ".set reorder"
       :
-      : "r"(param_2), "r"(pauVar4), "r"(saved)
+      : "r"(param_2), "r"(param_1), "r"(saved)
       : "vf10", "memory");
   FUN_00357e30();
   __asm__ volatile (
@@ -9997,9 +10005,9 @@ void FUN_00325d60_u32(u32 param_1,u8 (*param_2) [16])
       "sqc2         $vf10, 0(%0)              \n"
       ".set reorder"
       :
-      : "r"(pauVar4)
+      : "r"(param_1)
       : "vf10", "ACC", "memory");
-  for (iVar3 = *(int *)(pauVar4[8] + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xac)) {
+  for (iVar3 = *(int *)(param_1[8] + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xac)) {
     __asm__ volatile (
         ".set noreorder                   \n"
         "lqc2        $vf10, 0x50(%0)       \n"
@@ -10011,12 +10019,12 @@ void FUN_00325d60_u32(u32 param_1,u8 (*param_2) [16])
     FUN_00357dd0();
     __asm__ volatile ("sqc2 $vf10, 0(%0)" : : "r"(transformed) : "memory");
     uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
-    if ((code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-      (*(code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1])
-                (*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
+    dispatch = &PTR_LAB_0069be20_table[uVar1];
+    if (dispatch->callbacks[9] != NULL) {
+      dispatch->callbacks[9](*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
     }
   }
-  FUN_00325c10(pauVar4,pauVar4 + 4);
+  FUN_00325c10(param_1,param_1 + 4);
 }
 
 
@@ -44155,6 +44163,8 @@ u32 FUN_0034bf10(int param_1)
 
 
 
+// b210 floor: the only residual is pre-JAL argument setup order at +0x140..+0x148:
+// ours mov.s $f12,$f20; move $a0,$s0; move $a1,$zero, retail emits the two moves first.
 // FUN_0034BFC0 NONMATCHING
 
 
@@ -46472,7 +46482,7 @@ void FUN_0034e490(f32 param_1, int param_2)
 // FUN_0034E4C0 NONMATCHING
 
 
-u64 FUN_0034e4c0(int param_1)
+u32 FUN_0034e4c0(int param_1)
 
 
 
@@ -46480,11 +46490,11 @@ u64 FUN_0034e4c0(int param_1)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   u32 *puVar5;
 
@@ -46514,7 +46524,7 @@ u64 FUN_0034e4c0(int param_1)
 
   }
 
-  uVar3 = (*DAT_00960178)(0x70,0x40000);
+  uVar3 = (*DAT_00960178_u32)(0x70,0x40000);
 
   FUN_00521408(uVar3,0,0x70);
 
@@ -46538,7 +46548,7 @@ u64 FUN_0034e4c0(int param_1)
 
      (*(short *)((int)param_1 + 0x1c) == 1)) {
 
-    FUN_0034e7c0(uVar3,lVar4);
+    FUN_0034e7c0_u32(uVar3,lVar4);
 
   }
 

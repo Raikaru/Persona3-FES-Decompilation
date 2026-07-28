@@ -3023,6 +3023,7 @@ void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_
 {
   u32 bVar1;
   int iVar2;
+  s32 hpDelta;
   BtlUnit* sourceUnit;
   u16 *puVar3;
   s32 lVar4;
@@ -3039,7 +3040,7 @@ void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_
       if ((*(u16 *)((int)param_3 + 0x1a) & 0x200) != 0) {
         *(u32 *)(DAT_007ce3ec + 0xb48) = 1;
         for (iVar2 = *(int *)(DAT_007ce3ec + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-          if (*(short *)(iVar2 + 0xa4) == 0xf2) {
+          if (*(u16 *)(iVar2 + 0xa4) == 0xf2) {
             *(u32 *)(DAT_007ce3ec + 0xb50) = 1;
             *(u16 *)(DAT_007ce3ec + 0xb54) = 0;
             *(u16 *)(DAT_007ce3ec + 0xb56) = 10;
@@ -3052,14 +3053,14 @@ void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_
       goto LAB_002f5d34;
     }
   }
-  iVar2 = *(int *)((int)param_2 + 0x30);
-  if (*(char *)(iVar2 + 0xa2) == '\x01') {
-    if (*(short *)(iVar2 + 0xa4) == 0xf1) {
-      iVar2 = param_3->hpDelta;
-      if (iVar2 < 0) {
+  sourceUnit = param_2->unit;
+  if (sourceUnit->genus == 1) {
+    if (sourceUnit->charId == 0xf1) {
+      hpDelta = param_3->hpDelta;
+      if (hpDelta < 0) {
         if (*(int *)(DAT_007ce3ec + 0xb48) == 1) {
-          if (-iVar2 < *(int *)(DAT_007ce3ec + 0xb4c)) {
-            *(int *)(DAT_007ce3ec + 0xb4c) = *(int *)(DAT_007ce3ec + 0xb4c) + iVar2;
+          if (-hpDelta < *(int *)(DAT_007ce3ec + 0xb4c)) {
+            *(int *)(DAT_007ce3ec + 0xb4c) = *(int *)(DAT_007ce3ec + 0xb4c) + hpDelta;
           }
           else {
             *(int *)(DAT_007ce3ec + 0xb4c) = 0;

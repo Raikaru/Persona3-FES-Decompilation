@@ -197,6 +197,12 @@ u32 DAT_007ce6c8;
 u32 DAT_007ce6cc;
 u32 DAT_007ce6d0;
 u32 DAT_007ce6d4;
+#pragma alias DAT_007ce6cc_byte DAT_007ce6cc
+#pragma alias DAT_007ce6d0_byte DAT_007ce6d0
+#pragma alias DAT_007ce6d4_byte DAT_007ce6d4
+extern u8 DAT_007ce6cc_byte;
+extern u8 DAT_007ce6d0_byte;
+extern u8 DAT_007ce6d4_byte;
 u32 DAT_007ce6d8;
 u32 DAT_007ce6dc;
 u32 DAT_007ce6e4;
@@ -253,6 +259,24 @@ u32 DAT_00871cc8;
 u32 DAT_00871d28;
 u32 DAT_00871d34;
 u32 DAT_00871e88;
+#pragma alias DAT_008719a8_abs DAT_008719a8
+#pragma alias DAT_008719b4_abs DAT_008719b4
+#pragma alias DAT_00871b08_abs DAT_00871b08
+#pragma alias DAT_00871b68_abs DAT_00871b68
+#pragma alias DAT_00871b74_abs DAT_00871b74
+#pragma alias DAT_00871cc8_abs DAT_00871cc8
+#pragma alias DAT_00871d28_abs DAT_00871d28
+#pragma alias DAT_00871d34_abs DAT_00871d34
+#pragma alias DAT_00871e88_abs DAT_00871e88
+extern u32 DAT_008719a8_abs[];
+extern u32 DAT_008719b4_abs[];
+extern u16 DAT_00871b08_abs[];
+extern u32 DAT_00871b68_abs[];
+extern u32 DAT_00871b74_abs[];
+extern u16 DAT_00871cc8_abs[];
+extern u32 DAT_00871d28_abs[];
+extern u32 DAT_00871d34_abs[];
+extern u16 DAT_00871e88_abs[];
 u32 DAT_0095be9c;
 u32 DAT_0095bea0;
 u32 DAT_0095bea4;
@@ -634,7 +658,7 @@ u32 FUN_00424880(void)
   return 1;
 }
 
-// FUN_004249B0 NONMATCHING
+// FUN_004249B0
 
 
 u32 FUN_004249b0(void)
@@ -647,7 +671,7 @@ u32 FUN_004249b0(void)
 
   int uVar2;
 
-  short sVar3;
+  u32 active;
 
   int iVar4;
 
@@ -661,51 +685,52 @@ u32 FUN_004249b0(void)
 
     for (iVar4 = 0; iVar4 < 0x14; iVar4 = iVar4 + 1) {
 
-      sVar3 = (short)uVar2;
 
-      func_00170b20(sVar3,(short)iVar4,0);
+      func_00170b20((short)uVar2,(short)iVar4,0);
 
-      func_00170b90(sVar3,(short)iVar4,0);
+      func_00170b90((short)uVar2,(short)iVar4,0);
 
-      func_0016fea0(sVar3 + 0x100,iVar4,0);
-
-    }
-
-    bVar1 = 0;
-
-    if ((DAT_008719a8 != 0 && DAT_008719b4 != 0) && (DAT_00871b08 == uVar2)) {
-
-      DAT_007ce6cc = 0;
-
-      bVar1 = 1;
+      func_0016fea0((short)(uVar2 + 0x100),iVar4,0);
 
     }
 
-    if ((DAT_00871b68 != 0 && DAT_00871b74 != 0) && (DAT_00871cc8 == uVar2)) {
 
-      DAT_007ce6d0 = 0;
-
+    active = (0 != DAT_008719a8_abs[0]);
+    if (active) {
+      active = (0 != DAT_008719b4_abs[0]);
+    }
+    if (active && DAT_00871b08_abs[0] == uVar2) {
+      DAT_007ce6cc_byte = 0;
       bVar1 = 1;
-
     }
 
-    if ((DAT_00871d28 != 0 && DAT_00871d34 != 0) && (DAT_00871e88 == uVar2)) {
-
-      DAT_007ce6d4 = 0;
-
+    active = (0 != DAT_00871b68_abs[0]);
+    if (active) {
+      active = (0 != DAT_00871b74_abs[0]);
+    }
+    if (active && DAT_00871cc8_abs[0] == uVar2) {
+      DAT_007ce6d0_byte = 0;
       bVar1 = 1;
+    }
 
+    active = (0 != DAT_00871d28_abs[0]);
+    if (active) {
+      active = (0 != DAT_00871d34_abs[0]);
+    }
+    if (active && DAT_00871e88_abs[0] == uVar2) {
+      DAT_007ce6d4_byte = 0;
+      bVar1 = 1;
     }
 
   }
 
-  if (!bVar1) {
+  if ((s8)bVar1 == 0) {
 
-    DAT_007ce6cc = 0;
+    DAT_007ce6cc_byte = 0;
 
-    DAT_007ce6d0 = 0;
+    DAT_007ce6d0_byte = 0;
 
-    DAT_007ce6d4 = 0;
+    DAT_007ce6d4_byte = 0;
 
   }
 

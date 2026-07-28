@@ -4665,21 +4665,35 @@ s16 func_00283c70(BtlUnit* unit, u16 id)
 
     if (genus == UNIT_GENUS_EC)
     {
-        if (id == 6 || id == 5 || id == 4)
+        switch (id)
+        {
+        case 4:
+        case 5:
+        case 6:
             category = 0;
-        else
+            break;
+        default:
             category = -1;
+            break;
+        }
     }
     else
     {
-        if (id == 6)
-            category = 2;
-        else if (id == 5)
-            category = 1;
-        else if (id == 4)
+        switch (id)
+        {
+        case 4:
             category = 0;
-        else
+            break;
+        case 5:
+            category = 1;
+            break;
+        case 6:
+            category = 2;
+            break;
+        default:
             category = -1;
+            break;
+        }
     }
 
     if (category == -1)
