@@ -228,6 +228,9 @@ extern s32 FUN_003a62e0_typed(u32 param_1, u32 param_2);
 void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4);
 #pragma alias FUN_003a6380_direct FUN_003a6380
 extern void FUN_003a6380_direct(int param_1,int param_2,int param_3,u8 param_4);
+#pragma alias FUN_003a6380_hidden FUN_003a6380
+extern void FUN_003a6380_hidden(int param_1,int param_2,int param_3,u8 param_4,
+                                int param_5,int param_6);
 void FUN_003a6410(int param_1,u32 param_2);
 int FUN_003a6460(int param_1);
 void FUN_003a64c0(int param_1);
@@ -5569,34 +5572,31 @@ u32 FUN_003a7a40(int param_1)
 }
 #define FUN_003a7a40(...) ((u32 (*)(...))FUN_003a7a40)(__VA_ARGS__)
 #undef FUN_003a7cb0
-#undef FUN_003a6380
 // FUN_003A7CB0 NONMATCHING
 
 
 void FUN_003a7cb0(int param_1,int param_2)
 {
-  int next;
-
-  FUN_003a6380(*(u32 *)(param_1 + 0xc),*(short *)(param_1 + 0x16),
-               *(short *)(param_1 + 0x1a),0);
+  FUN_003a6380_hidden(*(u32 *)(param_1 + 0xc),*(short *)(param_1 + 0x16),
+                      *(short *)(param_1 + 0x1a),0,param_2,param_1);
   if (param_2 < 0) {
-    next = *(short *)(param_1 + 0x16) - 1;
-    if (next < 0) {
-      next = *(short *)(param_1 + 0x1a) - 1;
+    param_2 = *(short *)(param_1 + 0x16) - 1;
+    if (param_2 < 0) {
+      param_2 = *(short *)(param_1 + 0x1a) - 1;
     }
   }
   else {
-    next = *(short *)(param_1 + 0x16) + 1;
-    if (*(short *)(param_1 + 0x1a) <= next) {
-      next = 0;
+    param_2 = *(short *)(param_1 + 0x16) + 1;
+    if (*(short *)(param_1 + 0x1a) <= param_2) {
+      param_2 = 0;
     }
   }
-  FUN_003a6380(*(u32 *)(param_1 + 0xc),next,*(short *)(param_1 + 0x1a),6);
-  *(short *)(param_1 + 0x16) = next;
-  *(short *)(param_1 + 0x18) = next;
+  FUN_003a6380_hidden(*(u32 *)(param_1 + 0xc),param_2,
+                      *(short *)(param_1 + 0x1a),6,param_2,param_1);
+  *(short *)(param_1 + 0x16) = param_2;
+  *(short *)(param_1 + 0x18) = param_2;
   FUN_0010a4e0(0,0,0,0);
 }
-#define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #define FUN_003a7cb0(...) ((void (*)(...))FUN_003a7cb0)(__VA_ARGS__)
 #undef FUN_003a7d60
 #pragma push

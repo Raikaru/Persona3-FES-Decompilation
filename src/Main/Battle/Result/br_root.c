@@ -3233,8 +3233,9 @@ void func_001f6e80(void)
     u32 *words;
     s32 i;
     u32 idx;
+    u32 offset;
     u8 *entry;
-    f32 output[2];
+    f32 output[3];
     f32 position[2];
     f32 scale;
     K_ASSERT(sBrReward != NULL, 0x8c);
@@ -3252,8 +3253,10 @@ void func_001f6e80(void)
             func_002508c0(entry + 0x60c, output, 0x14);
         }
     }
-    idx = BR_U32((u8 *)(words[0xd03] * 4 + (u32)work), 0x3c);
-    entry = (u8 *)(idx * 0x670 + (u32)work);
+    offset = words[0xd03] * 4;
+    idx = BR_U32((u8 *)(offset + (u32)work), 0x3c);
+    offset = idx * 0x670;
+    entry = (u8 *)(offset + (u32)work);
     func_003c7bc0(0, func_00173220(BR_U16(entry, 0x60)));
     func_003c7430(9);
     if (BR_U32(work, 0x340c) == BR_U32(work, 0x341c) - 1) {

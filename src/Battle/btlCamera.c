@@ -4417,7 +4417,7 @@ void FUN_002b2060(int param_1)
      ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
-      FUN_002b64d0((BtlCamera*)iVar4,
+      FUN_002b64d0((BtlCamera*)param_1,
                    (struct B64CameraWork*)(iVar4 + 0xec));
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);

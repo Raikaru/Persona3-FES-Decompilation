@@ -7548,6 +7548,7 @@ void btlActionInitStateEndHome(BtlAction* action)
 {
     BtlPacket* packet;
     BtlUnit* unit = action->unit;
+    BtlUnit* moveUnit;
     RwV3d homePos;
     u16 speedIndex;
     u16 allowMove;
@@ -7587,8 +7588,9 @@ void btlActionInitStateEndHome(BtlAction* action)
     {
         speedIndex = 2;
         allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
-        unitId = action->unit->datUnit->id;
-        switch (action->unit->genus)
+        moveUnit = action->unit;
+        unitId = moveUnit->datUnit->id;
+        switch (moveUnit->genus)
         {
         case UNIT_GENUS_PC:
             break;
@@ -7600,7 +7602,7 @@ void btlActionInitStateEndHome(BtlAction* action)
         default:
             break;
         }
-        packet = btlUnitCreateMovePacket(unit, &homePos, D_00693300[speedIndex], 0);
+        packet = btlUnitCreateMovePacket(moveUnit, &homePos, D_00693300[speedIndex], 0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         action->movedAwayFromHome = 1;
