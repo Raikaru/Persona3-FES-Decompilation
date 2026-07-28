@@ -1286,15 +1286,12 @@ void func_00101e30(void* requestData)
     u32 fileSize;
     u32 offset;
     u32 entryOffset;
-    s32 i;
     s32 scan;
     char c;
-    s32 separator;
-    s32 forwardSeparator;
     char* cursor;
-    s32 pathIndex;
-    s32 pathValue;
-    char* pathCharacter;
+    register s32 backslash;
+    register s32 slash;
+    s32 i;
     HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
     if (request->fileMode == 0)
@@ -1309,7 +1306,7 @@ void func_00101e30(void* requestData)
         return;
     }
 
-    separator = '\\';
+    backslash = '\\';
     for (i = 0; i < 0x100; i++)
     {
         c = request->path[i];
@@ -1322,7 +1319,7 @@ void func_00101e30(void* requestData)
             scan = i - 1;
 scan_separator:
             cursor = &work.entryPath[scan];
-            if (cursor[-1] != separator)
+            if (cursor[-1] != backslash)
             {
                 goto scan_previous;
             }
@@ -1351,25 +1348,26 @@ scan_finished:
         memcpy(&fileSize, request->fileMemory + entryOffset, 4);
         offset += 0x100;
         strcat(work.directory, work.fileName);
-        separator = '\\';
-        forwardSeparator = '/';
-        for (pathIndex = 0; pathIndex < 0xff; pathIndex++)
+        i = 0;
+        backslash = '\\';
+        slash = '/';
+        while (i < 0xff)
         {
-            pathCharacter = &work.directory[pathIndex];
-            pathValue = *pathCharacter;
-            if (pathValue >= 'a' && pathValue <= 'z')
+            c = work.directory[i];
+            if (c >= 'a' && c <= 'z')
             {
-                *pathCharacter = pathValue - 0x20;
+                work.directory[i] = c - 0x20;
             }
-            pathValue = *pathCharacter;
-            if (pathValue == '\0')
+            c = work.directory[i];
+            if (c == '\0')
             {
                 break;
             }
-            if (pathValue == forwardSeparator)
+            if (c == slash)
             {
-                *pathCharacter = separator;
+                work.directory[i] = backslash;
             }
+            i++;
         }
         func_00102030(requestData, request->fileMemory + offset,
                       fileSize, work.directory);

@@ -694,7 +694,7 @@ int FUN_0031e300(u32 *param_1);
 #pragma alias FUN_0031e300_wide FUN_0031e300
 extern u64 FUN_0031e300_wide(u32 *param_1);
 int FUN_0031e310(short param_1,short param_2);
- #pragma alias FUN_0031e310_u32 FUN_0031e310
+#pragma alias FUN_0031e310_u32 FUN_0031e310
 extern int FUN_0031e310_u32(u32 param_1,u32 param_2);
 u64 FUN_0031e420(u16 param_1,u32 param_2);
 void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3);
@@ -712,9 +712,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u64 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
-#pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
-extern u32 *FUN_0031fbd0_noargs(void);
-u8 * FUN_0031fd00(float param_1,int *param_2,float param_3,int *param_4,float param_5);
+u8 * FUN_0031fd00(void);
 void FUN_0031fde0(void);
 void FUN_00320080(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
 u32 FUN_00320230(void);
@@ -1289,7 +1287,7 @@ void FUN_0034cb60(int param_1);
 void FUN_0034cc00(u32 *param_1);
 void FUN_0034cf30(int param_1);
 void FUN_0034d050(int param_1);
-void FUN_0034d150(int param_1,u32 *param_2);
+void FUN_0034d150(u32 param_1,f32 *param_2);
 u64 FUN_0034d3a0(int param_1,int param_2,int param_3);
 u64 FUN_0034d510(int param_1);
 void FUN_0034d670(int param_1);
@@ -4200,16 +4198,24 @@ u32 * FUN_0031fbd0(float param_1,int *param_2)
 // FUN_0031FD00 NONMATCHING
 
 
-u8 * FUN_0031fd00(float param_1,int *param_2,float param_3,int *param_4,float param_5)
+u8 * FUN_0031fd00(void)
 {
-  RwV4d first;
-  RwV4d second;
+  int iVar1;
+  u32 extraout_t1;
+  float fVar2;
+  float fVar3;
+  float fVar4;
+  u32 extraout_f13;
+  float extraout_f14;
 
-  first = *(RwV4d *)FUN_0031fbd0_noargs();
-  second = *(RwV4d *)FUN_0031fbd0(param_3,param_4);
-  DAT_00957254_f32 = param_5 * (second.y - first.y) + first.y + 0.0f;
-  DAT_00957258_f32 = param_5 * (second.z - first.z) + first.z + 0.0f;
-  DAT_0095725c_f32 = param_5 * (second.w - first.w) + first.w + 0.0f;
+  iVar1 = ((code)FUN_0031fbd0)();
+  fVar4 = *(float *)(iVar1 + 4);
+  fVar2 = *(float *)(iVar1 + 8);
+  fVar3 = *(float *)(iVar1 + 0xc);
+  iVar1 = (int)FUN_0031fbd0((float)(extraout_f13),(int *)(extraout_t1));
+  DAT_00957254_f32 = extraout_f14 * (*(float *)(iVar1 + 4) - fVar4) + fVar4;
+  DAT_00957258_f32 = extraout_f14 * (*(float *)(iVar1 + 8) - fVar2) + fVar2;
+  DAT_0095725c_f32 = extraout_f14 * (*(float *)(iVar1 + 0xc) - fVar3) + fVar3;
   return (u8 *)&DAT_00957250;
 }
 
@@ -46664,148 +46670,81 @@ u32* FUN_0034d130(u32* param_1)
 // FUN_0034D150 NONMATCHING
 
 
-void FUN_0034d150(int param_1,u32 *param_2)
-
-
-
+void FUN_0034d150(u32 param_1,f32 *param_2)
 {
+  f32 vector[3];
+  f32 weight;
+  f32 random;
 
-  int iVar1;
-
-  u64 uVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  u32 in_vc6;
-
-  __int128 in_vf0;
-
-  __int128 auVar5;
-
-  __int128 auVar6;
-
-  u32 uVar7;
-
-  u8 auStack_10 [8];
-
-  float fStack_8;
-
-  u32 uStack_4;
-
-  
-
-  if (*(char *)(param_1 + 0x10) == '\0') {
-
-    memcpy(auStack_10, (u8 *)(param_1 + 0x14), 12);
-
+  if (*(u8 *)(param_1 + 0x10) == 0) {
+    vector[0] = *(f32 *)(param_1 + 0x14);
+    vector[1] = *(f32 *)(param_1 + 0x18);
+    vector[2] = *(f32 *)(param_1 + 0x1c);
+  } else {
+    vector[0] = (FUN_00358030(0) - 0.5f) * 2.0f;
+    vector[1] = (FUN_00358030(0) - 0.5f) * 2.0f;
+    vector[2] = (FUN_00358030(0) - 0.5f) * 2.0f;
   }
+  __asm__ volatile (
+      ".set noreorder                         \n"
+      "lqc2        $vf10, 0(%0)                \n"
+      "vmul.xyz    $vf2, $vf10, $vf10          \n"
+      "vaddy.x     $vf2, $vf2, $vf2y           \n"
+      "vaddz.x     $vf2, $vf2, $vf2z           \n"
+      "vsqrt       $Q, $vf2x                    \n"
+      "vwaitq                                     \n"
+      "cfc2        $v0, $vi22                  \n"
+      "mtc1        $v0, $f1                    \n"
+      "mtc1        $zero, $f0                  \n"
+      "nop                                        \n"
+      "c.eq.s      $f0, $f1                    \n"
+      "bc1t        1f                           \n"
+      "nop                                        \n"
+      "vmul.xyz    $vf2, $vf10, $vf10          \n"
+      "vmulax.w    $ACC, $vf0, $vf2x           \n"
+      "vmadday.w   $ACC, $vf0, $vf2y           \n"
+      "vmaddz.w    $vf2, $vf0, $vf2z           \n"
+      "vrsqrt      $Q, $vf0w, $vf2w            \n"
+      "vwaitq                                     \n"
+      "vmulq.xyz   $vf10, $vf10, $Q            \n"
+      "sqc2        $vf10, 0(%0)                \n"
+      "lwc1        $f0, 0(%0)                  \n"
+      "swc1        $f0, 0(%1)                  \n"
+      "lwc1        $f0, 4(%0)                  \n"
+      "swc1        $f0, 4(%1)                  \n"
+      "lwc1        $f0, 8(%0)                  \n"
+      "swc1        $f0, 8(%1)                  \n"
+      "b           2f                           \n"
+      "nop                                        \n"
+      "1:                                         \n"
+      "swc1        $f0, 0(%1)                  \n"
+      "lui         $v0, 0x3f80                 \n"
+      "sw          $v0, 4(%1)                  \n"
+      "swc1        $f0, 8(%1)                  \n"
+      "2:                                         \n"
+      ".set reorder"
+      :
+      : "r"(vector), "r"(param_2)
+      : "v0", "f0", "f1", "vf2", "vf10", "ACC", "Q", "memory");
 
-  else {
-
-    fVar3 = (float)FUN_00358030(0);
-
-    fVar4 = (float)FUN_00358030(0);
-
-    (*((u32 *)((u8 *)&auStack_10 + 4))) = (fVar4 - 0.5f) * 2.0f;
-
-    (*((u32 *)((u8 *)&auStack_10 + 0))) = (fVar3 - 0.5f) * 2.0f;
-
-    fVar3 = (float)FUN_00358030(0);
-
-    fStack_8 = (fVar3 - 0.5f) * 2.0f;
-
+  weight = *(f32 *)(param_1 + 0x28);
+  random = FUN_00358030(0);
+  param_2[4] = *(f32 *)(param_1 + 0x24) *
+               (weight * random + (1.0f - weight) + 0.0f);
+  random = FUN_00358030(0);
+  param_2[3] = DAT_007cae50 * random;
+  switch (*(u32 *)(param_1 + 0x34)) {
+  case 1:
+    *((u8 *)param_2 + 0x14) = (u8)((u32)FUN_00357fd0(0) % 6);
+    break;
+  case 2:
+    *((u8 *)param_2 + 0x14) =
+        (u8)((((u32)param_2 - *(u32 *)(param_1 + 0x5c)) / 0x18) % 6);
+    break;
+  default:
+    *((s8 *)param_2 + 0x14) = -1;
+    break;
   }
-
-  auVar6 = _lqc2(auStack_10);
-
-  auVar5 = _vmul(auVar6,auVar6);
-
-  auVar5 = _vaddbc(auVar5,auVar5);
-
-  auVar5 = _vaddbc(auVar5,auVar5);
-
-  _vsqrt(auVar5);
-
-  _vwaitq();
-
-  uVar2 = _cfc2(in_vc6);
-
-  if ((float)uVar2 == 0.0f) {
-
-    *param_2 = 0;
-
-    param_2[1] = 0x3f800000;
-
-    param_2[2] = 0;
-
-  }
-
-  else {
-
-    auVar5 = _vmul(auVar6,auVar6);
-
-    _vmulabc(in_vf0,auVar5);
-
-    _vmaddabc(in_vf0,auVar5);
-
-    auVar5 = _vmaddbc(in_vf0,auVar5);
-
-    _vrsqrt(in_vf0,auVar5);
-
-    uVar7 = _vwaitq();
-
-    auVar5 = _vmulq(auVar6,uVar7);
-
-    auVar5 = _sqc2(auVar5);
-
-    (*((u32 *)((u8 *)&auStack_10 + 0))) = auVar5._0_4_;
-
-    *param_2 = (*((u32 *)((u8 *)&auStack_10 + 0)));
-
-    (*((u32 *)((u8 *)&auStack_10 + 4))) = auVar5._4_4_;
-
-    param_2[1] = (*((u32 *)((u8 *)&auStack_10 + 4)));
-
-    fStack_8 = auVar5._8_4_;
-
-    param_2[2] = fStack_8;
-
-  }
-
-  fVar4 = *(float *)(param_1 + 0x28);
-
-  fVar3 = (float)FUN_00358030(0);
-
-  param_2[4] = *(float *)(param_1 + 0x24) * (fVar4 * fVar3 + (1.0f - fVar4) + 0.0f);
-
-  fVar3 = (float)FUN_00358030(0);
-
-  param_2[3] = DAT_007cae50 * fVar3;
-
-  if (*(int *)(param_1 + 0x34) == 2) {
-
-    *(char *)(param_2 + 5) = (char)((((int)param_2 - *(int *)(param_1 + 0x5c)) / 0x18) % 6);
-
-  }
-
-  else if (*(int *)(param_1 + 0x34) == 1) {
-
-    iVar1 = FUN_00357fd0(0);
-
-    *(char *)(param_2 + 5) = (char)(iVar1 % 6);
-
-  }
-
-  else {
-
-    *(u8 *)(param_2 + 5) = 0xff;
-
-  }
-
-  return;
-
 }
 
 
@@ -47090,7 +47029,7 @@ void FUN_0034d8a0(int param_1,u16 param_2,int param_3)
 
   for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1,puVar6 = puVar6 + 6) {
 
-    FUN_0034d150((int)(param_1),puVar6);
+    FUN_0034d150(param_1,(f32 *)puVar6);
   }
 
 
@@ -47219,7 +47158,7 @@ void FUN_0034db30(int param_1)
 
         if (*(int *)(iVar3 + 0x10) == 0) {
 
-          FUN_0034d150((int)(param_1),(u32 *)(iVar2));
+          FUN_0034d150(param_1,(f32 *)iVar2);
 
         }
 

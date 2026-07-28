@@ -161,15 +161,19 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     func_0017b1e0(*(u16*)(*(u32*)(unit + 0xa2c) + 2));
     func_003b0e70(1);
     func_003b0e90(2);
-    image = func_003b0970(
-        DAT_007ce4e8 + *(u16*)(p + 3) * 0x12 + *(u16*)(p + 3),
-                          2, 6, 0, 0);
-    func_003b0e90(1);
-    func_003b0e70(2);
-    func_003b0e20(image, 0xffffffff);
-    func_003b0d70(image, 0xa10, 0x268);
-    frFontSetTextScale(image, 0.0f);
-    p[4] = image;
+    {
+        u32 resource;
+
+        resource = func_003b0970(
+            DAT_007ce4e8 + *(u16*)(p + 3) * 0x13,
+                              2, 6, 0, 0);
+        func_003b0e90(1);
+        func_003b0e70(2);
+        func_003b0e20(resource, 0xffffffff);
+        func_003b0d70(resource, 0xa10, 0x268);
+        frFontSetTextScale(resource, 0.0f);
+        p[4] = resource;
+    }
 
     /* Retail 0x0134-0x031c: re-read the stored enemy id for each table access. */
     if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 2) != 0)
@@ -230,11 +234,15 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     func_0021d3b0(p + 0x550, func_0021cca0(table2, 0x27));
     func_0021d3b0(p + 0x12d0, func_0021cca0(table2, 0x20));
     func_0021d3b0(p + 0x1250, func_0021cca0(table2, 0x31));
-    if ((p[1] & BSA_FLAG_BOSS) == 0 && p[0x17e8] != 7)
-        image = func_0021cca0(table2, p[0x17e8] + 0x16);
-    else
-        image = func_0021cca0(table2, 0x3c);
-    func_0021d3b0(p + 0x17ec, image);
+    {
+        u32 bossImage;
+
+        if ((p[1] & BSA_FLAG_BOSS) != 0 || p[0x17e8] == 7)
+            bossImage = func_0021cca0(table2, 0x3c);
+        else
+            bossImage = func_0021cca0(table2, p[0x17e8] + 0x16);
+        func_0021d3b0(p + 0x17ec, bossImage);
+    }
     func_0021d3b0(p + 0x50, func_0021cca0(table1, 0x47));
     func_0021d3b0(p + 0x90, func_0021cca0(table2, 0x30));
     func_0021d3b0(p + 0xd0, func_0021cca0(table1, 0x48));

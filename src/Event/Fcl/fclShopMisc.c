@@ -1258,149 +1258,81 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
 
 
 short FUN_003f0830(int param_1)
-
-
-
 {
-
-  u8 *puVar1;
-
-  char cVar2;
-
-  int iVar3;
-
-  long lVar4;
-
-  short sVar5;
-
-  
+  u8 *shopData;
+  u8 *shopList;
+  char socialLevel;
+  u32 randomValue;
+  int entry;
+  short socialLink;
+  short choice;
 
   if (param_1 == 4) {
-
-    sVar5 = 3;
-
+    socialLink = 3;
   }
-
   else if (param_1 == 0) {
-
-    sVar5 = 0xf;
-
+    socialLink = 0xf;
   }
-
   else {
-
-    sVar5 = 0xff;
-
+    socialLink = 0xff;
   }
-
   if ((param_1 < 0) || (8 < param_1)) {
-
     K_Assert((const char *)DAT_006aede8,0xb9);
-
   }
-
-  lVar4 = datGetScenarioMode();
-
-  if (lVar4 != 0) {
-
-    param_1 = param_1 + 9;
-
+  if (datGetScenarioMode() == 0) {
+    shopData = *(u8 **)(DAT_006ac9d0 + param_1 * 0x24 + 0x20);
   }
-
-  puVar1 = (u8 *)((u32 **)&PTR_DAT_006ac9f0)[param_1 * 9];
-
-
-  if (lVar4 == 0) {
-
-    if (sVar5 != 0xff) {
-
-      if (*(int *)(puVar1 + 8) == 0) {
-
-        K_Assert((const char *)DAT_006aede8,0x19c);
-
-      }
-
-      if (sVar5 != 0xff) {
-
-        lVar4 = datSocialLinkLevelIsNotZero(sVar5);
-
-        if (lVar4 != 0) {
-
-          cVar2 = datGetSocialLinkLevel(sVar5);
-
-          if (cVar2 != '\0') {
-
-            if ((cVar2 < '\x01') || ('\n' < cVar2)) {
-
-              K_Assert((const char *)DAT_006aede8,0x1a2);
-
-            }
-
-            iVar3 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
-
-          }
-
-          else {
-
-            iVar3 = *(int *)(puVar1 + 8);
-
-          }
-
-        }
-
-        else {
-
-          iVar3 = *(int *)(puVar1 + 8);
-
-        }
-
-      }
-
-      else {
-
-        iVar3 = *(int *)(puVar1 + 8);
-
-      }
-
-      if ((iVar3 != 0) && (*(short *)(iVar3 + 0xc) != -1)) {
-
-        return *(short *)(iVar3 + 0xc);
-
-      }
-
-    }
-
-
-    if (lVar4 != 0) {
-
-      iVar3 = RpRandom();
-
-      sVar5 = *(short *)(((iVar3 % 0xffff) / 0xffff) * 2 + (int)lVar4 + 8);
-
-      if (sVar5 != -1) {
-
-        return sVar5;
-
-      }
-
-    }
-
-  }
-
   else {
-
-    iVar3 = RpRandom();
-
-    if (*(short *)(((iVar3 % 0xffff) / 0xffff) * 2 + (int)lVar4 + 8) != -1) {
-
-      return *(short *)((int)lVar4 + 8);
-
-    }
-
+    shopData = *(u8 **)(DAT_006ac9d0 + (param_1 + 9) * 0x24 + 0x20);
   }
 
-  return -1;
+  shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0x14),1);
+  if (shopList != NULL) {
+    randomValue = RpRandom();
+    choice = *(short *)(shopList + ((randomValue % 0xffff) / 0xffff) * 2 + 8);
+    if (choice != -1) {
+      return *(short *)(shopList + 8);
+    }
+  }
 
+  if (socialLink != 0xff) {
+    if (*(int *)(shopData + 8) == 0) {
+      K_Assert((const char *)DAT_006aede8,0x19c);
+    }
+    if (socialLink != 0xff) {
+      if (datSocialLinkLevelIsNotZero(socialLink) != 0) {
+        socialLevel = datGetSocialLinkLevel(socialLink);
+        if (socialLevel != '\0') {
+          if ((socialLevel < '\x01') || ('\n' < socialLevel)) {
+            K_Assert((const char *)DAT_006aede8,0x1a2);
+          }
+          entry = *(int *)(shopData + 8) + socialLevel * 0x20;
+        }
+        else {
+          entry = *(int *)(shopData + 8);
+        }
+      }
+      else {
+        entry = *(int *)(shopData + 8);
+      }
+    }
+    else {
+      entry = *(int *)(shopData + 8);
+    }
+    if ((entry != 0) && (*(short *)(entry + 0xc) != -1)) {
+      return *(short *)(entry + 0xc);
+    }
+  }
+
+  shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0x14),0);
+  if (shopList != NULL) {
+    randomValue = RpRandom();
+    choice = *(short *)(shopList + ((randomValue % 0xffff) / 0xffff) * 2 + 8);
+    if (choice != -1) {
+      return choice;
+    }
+  }
+  return -1;
 }
 
 // FUN_003F0AC0 NONMATCHING
@@ -7676,7 +7608,7 @@ ret:
 #pragma pop
 
 
-// FUN_003F9E30 NONMATCHING
+// FUN_003F9E30
 
 
 u32 FUN_003f9e30(int param_1)
@@ -7723,11 +7655,11 @@ u32 FUN_003f9e30(int param_1)
 
   
 
-  iVar9 = 8;
-
   puVar11 = (u32 *)DAT_006af010_abs;
 
   puVar10 = auStack_40;
+
+  iVar9 = 8;
 
   do {
 
@@ -7796,11 +7728,11 @@ items_done:
 
   FUN_003c6ee0(uVar7);
 
-  iVar9 = 4;
-
   ppuVar12 = (u8 **)PTR_FUN_006af050_abs;
 
   puVar10 = auStack_60;
+
+  iVar9 = 4;
 
   do {
 
@@ -7819,13 +7751,13 @@ items_done:
     puVar10 = puVar10 + 2;
 
   } while (0 < iVar9);
-
-  iVar9 = 4;
 
   ppuVar12 = (u8 **)PTR_FUN_006af070_abs;
 
   puVar10 = auStack_80;
 
+  iVar9 = 4;
+
   do {
 
     puVar3 = *ppuVar12;
@@ -7844,11 +7776,11 @@ items_done:
 
   } while (0 < iVar9);
 
-  iVar9 = 4;
-
   ppuVar12 = (u8 **)PTR_FUN_006af090_abs;
 
   puVar10 = auStack_a0;
+
+  iVar9 = 4;
 
   do {
 

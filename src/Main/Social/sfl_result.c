@@ -2257,10 +2257,8 @@ u32 func_001fc3c0(DatPersonaWork* persona)
     s8* current;
     s32 firstIndex;
     s32 indexCount;
-    register s32 active;
-    register s32 limit;
-    register s32 i;
-    register s32 j;
+    s32 i;
+    s32 j;
     u32 result;
 
     skills = datPersonaGetSkills(persona);
@@ -2281,12 +2279,9 @@ u32 func_001fc3c0(DatPersonaWork* persona)
     }
 
     current = entry + firstIndex * 4;
-    i = 0;
-    limit = indexCount;
-    active = 1;
-    for (; i < limit; i++, current += 4)
+    for (i = 0; i < indexCount; i++, current += 4)
     {
-        if (current[1] == active)
+        if (current[1] == 1)
         {
             j = 0;
             while (j < count)

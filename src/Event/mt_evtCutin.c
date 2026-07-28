@@ -242,7 +242,7 @@ void FUN_003970d0(void)
 }
 #define FUN_003970d0(...) ((void (*)(...))FUN_003970d0)(__VA_ARGS__)
 #undef FUN_003971a0
-// FUN_003971A0 NONMATCHING
+// FUN_003971A0
 
 
 u32 FUN_003971a0(void)
@@ -270,6 +270,9 @@ u32 FUN_003971a0(void)
   s32 uVar9;
 
   int lVar10;
+  int entry;
+  int base;
+  int offset;
 
   
 
@@ -323,11 +326,11 @@ u32 FUN_003971a0(void)
 
       else {
 
-        iVar2 = FUN_00195540(lVar10);
+        base = FUN_00195540(lVar10);
+        offset = (int)lVar3 * 0xc;
+        entry = offset + base;
 
-        iVar2 = (int)lVar3 * 0xc + iVar2;
-
-        if (*(int *)(iVar2 + 8) == 0) {
+        if (*(int *)(entry + 8) == 0) {
 
           bVar1 = 0;
 
@@ -337,7 +340,7 @@ u32 FUN_003971a0(void)
 
           bVar1 = 1;
 
-          *(u32 *)(iVar2 + 4) = 1;
+          *(u32 *)(entry + 4) = 1;
 
         }
 

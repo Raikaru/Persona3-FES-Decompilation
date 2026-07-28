@@ -1646,7 +1646,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 
 
 
-// FUN_001406d0 NONMATCHING
+// FUN_001406d0
 
 void FUN_001406d0(CampPair position, f32 texture,
                   CampEquipmentDetailWork* detail, s32 alpha)
@@ -1669,7 +1669,6 @@ void FUN_001406d0(CampPair position, f32 texture,
   float tensX;
   float panelX;
   float originY;
-  float panelTopY;
   float digitY;
   char textBuffer[256];
 
@@ -1686,10 +1685,9 @@ void FUN_001406d0(CampPair position, f32 texture,
                         (float)(detail->selectedEntry * 0x1a),
                     texture);
   }
-  panelTopY = position.y;
-  panelX = position.x + 331.0f;
-  campDrawSpriteXY(parent, DAT_00833A50[0], 0x1a, panelX,
-                   panelTopY + 6.0f, (u8)alpha, texture);
+  campDrawSpriteXY(parent, DAT_00833A50[0], 0x1a,
+                   position.x + 331.0f, position.y + 6.0f,
+                   (u8)alpha, texture);
   entryIndex = detail->entryCount + -5;
   if (entryIndex > 0) {
     entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
@@ -1698,7 +1696,8 @@ void FUN_001406d0(CampPair position, f32 texture,
     entryIndex = 0;
   }
   campDrawSprite(parent, DAT_00833A50[0], 0x20, (u32)alpha,
-                 panelX, position.y + 10.0f + (float)entryIndex, texture);
+                 position.x + 331.0f,
+                 position.y + 10.0f + (float)entryIndex, texture);
   entryIndex = 0;
   originY = position.y;
   rowBaseY = originY + 2.0f;
@@ -1788,78 +1787,139 @@ void FUN_001406d0(CampPair position, f32 texture,
 
 // FUN_00140e30 NONMATCHING
 
-void FUN_00140e30(void* texture,u64 position,CampEquipmentDetailWork* detail,s32 alpha)
-
+void FUN_00140e30(CampPair position, f32 texture,
+                  CampEquipmentDetailWork* detail, s32 alpha)
 {
+  register void* parent;
   u32 packedValue;
+  u32 inverseAlpha;
   const char* textValue;
+  void* digitResource;
+  s32 value;
   int entryIndex;
   int variant;
-  float panelX;
-  float panelY;
+  int textX;
+  int valueY;
+  int valueX;
+  float rowBaseY;
   float panelBase;
-  float originX;
+  float textBaseY;
+  float panelY;
+  float tensX;
+  float panelX;
   float originY;
+  float digitY;
   char textBuffer[256];
-  
-  originX = campPackedX(position);
-  originY = campPackedY(position);
+
+  inverseAlpha = 0xffU - alpha;
   if (detail->entryCount != 0) {
-    campDrawSpriteDetail(originX + 2.0f,originY + 6.0f + (float)(detail->selectedEntry * 0x1a),
-                 texture);
-    campDrawSpriteDetail(originX + 317.0f,originY + 6.0f + (float)(detail->selectedEntry * 0x1a),
-                 texture);
+    campDrawSpriteX(parent, DAT_00833A50[0], 0x17,
+                    position.x + 2.0f, (u8)alpha,
+                    position.y + 6.0f +
+                        (float)(detail->selectedEntry * 0x1a),
+                    texture);
+    campDrawSpriteX(parent, DAT_00833A50[0], 0x16,
+                    position.x + 317.0f, (u8)alpha,
+                    position.y + 6.0f +
+                        (float)(detail->selectedEntry * 0x1a),
+                    texture);
   }
-  panelX = originX + 331.0f;
-  campDrawSpriteDetail(panelX,originY + 6.0f,texture);
+  campDrawSpriteXY(parent, DAT_00833A50[0], 0x1a,
+                   position.x + 331.0f, position.y + 6.0f,
+                   (u8)alpha, texture);
   entryIndex = detail->entryCount + -5;
-  if (entryIndex < 1) {
-    entryIndex = 0;
-  }
-  else {
+  if (entryIndex > 0) {
     entryIndex = (detail->firstVisibleEntry * 0x59) / entryIndex;
   }
-  campDrawSpriteDetail(panelX,originY + 10.0f + (float)entryIndex,texture);
-  panelBase = originX + 15.0f;
-  packedValue = 0xffU - alpha | 0xffffff00;
+  else {
+    entryIndex = 0;
+  }
+  campDrawSprite(parent, DAT_00833A50[0], 0x20, (u32)alpha,
+                 position.x + 331.0f,
+                 position.y + 10.0f + (float)entryIndex, texture);
+  entryIndex = 0;
+  originY = position.y;
+  rowBaseY = originY + 2.0f;
+  panelBase = position.x + 15.0f;
+  packedValue = inverseAlpha | 0xffffff00;
+  textBaseY = (float)(int)originY + 11.0f;
+  textX = (int)((float)(int)position.x + 55.0f);
   panelY = originY + 16.0f;
-  panelX = originX + 293.0f;
-  for (entryIndex = 0; (entryIndex < 5 && (entryIndex + detail->firstVisibleEntry < detail->entryCount));
-      entryIndex = entryIndex + 1) {
+  tensX = position.x + 277.0f;
+  panelX = position.x + 293.0f;
+  valueY = (int)((originY + 200.0f) - 40.0f);
+  valueX = (int)(position.x + 10.0f + 14.0f);
+  for (; entryIndex < 5; entryIndex = entryIndex + 1) {
+    if (detail->entryCount <= entryIndex + detail->firstVisibleEntry) {
+      break;
+    }
     if (entryIndex == detail->selectedEntry) {
       variant = entryIndex * 0x1a;
-      campDrawSpriteDetail(panelBase,(originY + 2.0f + (float)variant) - 1.0f,texture);
-      textValue = FUN_0017b100((u16)campDetailEntry(detail, detail->firstVisibleEntry + entryIndex)->itemId);
-      sprintf(textBuffer,DAT_007cb66c,textValue);
-      FUN_003b32d0(texture,(int)((float)(int)originX + 55.0f),
-                   (int)((float)(int)originY + 11.0f + (float)variant + 1.0f + 1.0f),packedValue,6,1,
-                   textBuffer,0x10,0x78);
-      if (9 < campDetailEntry(detail, detail->firstVisibleEntry + entryIndex)->value) {
-        H_Maestro_001120a0(1);
-        campDrawSpriteDetail(originX + 277.0f,(panelY + (float)variant) - 3.0f,texture);
+      campDrawSprite(parent, *(void**)DAT_00833B70_abs, 0x1b, (u8)alpha,
+                     panelBase, (rowBaseY + (float)variant) - 1.0f,
+                     texture);
+      textValue = FUN_0017b100(
+          (u16)campDetailEntry(detail,
+                               detail->firstVisibleEntry + entryIndex)->itemId);
+      sprintf(textBuffer, &campDetailFormat, textValue);
+      campDrawTextAltXScale(
+          textX, texture,
+          (int)(textBaseY + (float)variant + 1.0f + 1.0f),
+          packedValue, 6, 1, textBuffer, 0x10, 0x78);
+      value = campDetailEntry(
+          detail, detail->firstVisibleEntry + entryIndex)->value;
+      if (value >= 10) {
+        digitResource = H_Maestro_001120a0(1);
+        campDrawSprite(parent, digitResource, value / 10 + 0xb,
+                       (u32)alpha, tensX,
+                       (panelY + (float)variant) - 3.0f, texture);
       }
-      H_Maestro_001120a0(1);
-      campDrawSpriteDetail(panelX,(panelY + (float)variant) - 3.0f,texture);
-      FUN_003c7e20(texture,(int)(originX + 10.0f + 14.0f),(int)((originY + 200.0f) - 40.0f),packedValue,
-                   1,10,0,campDetailEntry(detail, detail->firstVisibleEntry + entryIndex)->itemId);
+      digitResource = H_Maestro_001120a0(1);
+      digitY = (panelY + (float)variant) - 3.0f;
+      campDrawSprite(
+          parent, digitResource,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
+          (u32)alpha, panelX, digitY, texture);
+      campDrawValueXY(
+          valueX, valueY, texture, packedValue, 1, 10, 0,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->itemId);
     }
     else {
       variant = entryIndex * 0x1a;
-      campDrawSpriteDetailAlt(panelBase,(originY + 2.0f + (float)variant) - 1.0f,texture);
-      textValue = FUN_0017b100((u16)campDetailEntry(detail, detail->firstVisibleEntry + entryIndex)->itemId);
-      sprintf(textBuffer,DAT_007cb66c,textValue);
-      FUN_003b32d0(texture,(int)((float)(int)originX + 55.0f),
-                   (int)((float)(int)originY + 11.0f + (float)variant + 1.0f + 1.0f),packedValue,10,1,
-                   textBuffer,0x10,0x78);
-      if (9 < campDetailEntry(detail, detail->firstVisibleEntry + entryIndex)->value) {
-        H_Maestro_001120a0(2);
-        campDrawSpriteDetail(originX + 277.0f,(panelY + (float)variant) - 3.0f,texture);
+      campDrawSpriteAltX(
+          parent, *(void**)DAT_00833B70_abs, 0x1a, (u8)alpha,
+          panelBase, 0x20, 0x43, 0x78,
+          (rowBaseY + (float)variant) - 1.0f, texture);
+      textValue = FUN_0017b100(
+          (u16)campDetailEntry(detail,
+                               detail->firstVisibleEntry + entryIndex)->itemId);
+      sprintf(textBuffer, &campDetailFormat, textValue);
+      campDrawTextAltXScale(
+          textX, texture,
+          (int)(textBaseY + (float)variant + 1.0f + 1.0f),
+          packedValue, 10, 1, textBuffer, 0x10, 0x78);
+      value = campDetailEntry(
+          detail, detail->firstVisibleEntry + entryIndex)->value;
+      if (value >= 10) {
+        digitResource = H_Maestro_001120a0(2);
+        campDrawSprite(parent, digitResource, value / 10 + 0xb,
+                       (u32)alpha, tensX,
+                       (panelY + (float)variant) - 3.0f, texture);
       }
-      H_Maestro_001120a0(2);
-      campDrawSpriteDetail(panelX,(panelY + (float)variant) - 3.0f,texture);
+      digitResource = H_Maestro_001120a0(2);
+      digitY = (panelY + (float)variant) - 3.0f;
+      campDrawSprite(
+          parent, digitResource,
+          campDetailEntry(
+              detail,
+              detail->firstVisibleEntry + entryIndex)->value % 10 + 0xb,
+          (u32)alpha, panelX, digitY, texture);
     }
   }
-  return;
 }
 
 

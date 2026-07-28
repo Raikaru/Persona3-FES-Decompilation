@@ -330,8 +330,8 @@ u32 func_001a6740(void* geometry, const char* name)
     
     for (resourceIndex = 0; resourceIndex < (s32)*(u32*)((u8*)geometry + 0x14); resourceIndex++)
     {
-        result = 0;
         material = *(void**)(*(u32*)((u8*)geometry + 0x10) + resourceIndex * 4);
+        result = 0;
         for (materialIndex = 0; materialIndex < RpMaterialGetUserDataArrayCount((RpMaterial*)material); materialIndex++)
         {
             userData = RpMaterialGetUserDataArray((RpMaterial*)material, materialIndex);
@@ -344,10 +344,10 @@ u32 func_001a6740(void* geometry, const char* name)
         }
         if (result == 1)
         {
-            break;
+            return 1;
         }
     }
-    return result;
+    return 0;
 }
 
 // FUN_001a6860
