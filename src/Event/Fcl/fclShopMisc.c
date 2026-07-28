@@ -2518,8 +2518,8 @@ u32 FUN_003f1dc0(long param_1,int param_2,int param_3)
 
 u8 FUN_003f2240(int param_1,long param_2)
 {
-  u32 *puVar2;
   short sVar1;
+  u32 *puVar2;
   u16 *puVar4;
 
   if (param_1 == 0) {
@@ -10725,6 +10725,8 @@ u32 FUN_003fe020(int param_1,u64 param_2)
   for (iVar5 = 0; iVar5 < 4; iVar5 = iVar5 + 1) {
 
     uVar1 = datGetEquipmentIdx((short)param_2,(short)iVar5);
+
+    FUN_003f1dc0_u64(param_2,auStack_40,(s32)(s16)uVar1);
 
 
     iVar3 = FUN_003c5a40(uVar4,*(u16 *)(iVar2 + 0x10) + 1,0x20,0);

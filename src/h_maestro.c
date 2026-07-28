@@ -147,6 +147,7 @@ typedef struct MaestroOutputRecord
     u32 flags;                      // 0x18
     u8 reserved1[0x10];
     u32 renderStateFlags;           // 0x2c
+    u8 reserved30[4];
     s32 topExtension;               // 0x34
     s32 bottomExtension;            // 0x38
     s32 leftExtension;              // 0x3c
@@ -171,6 +172,8 @@ extern void (*D_00960090)(u32 state, u32 value);
  #pragma alias D_00960090_abs D_00960090
  extern u8 D_00960090_abs[];
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
+#pragma alias D_009600A0_abs D_009600A0
+extern u8 D_009600A0_abs[];
 extern f32 D_00960088;
 extern RwV3d D_005D6C28;
 extern MaestroRenderNode* DAT_00833a4c;
@@ -1527,12 +1530,13 @@ f32 func_00112740(void* param_1)
  * distinct render path: top, bottom, left, right, then node extraHeight and
  * extraWidth, each rebuilding the immediate-mode strip before returning.
  * The explicit branches below preserve those state transitions and duplicated
- * draw calls instead of folding them into one common tail. */
+ * draw calls instead of folding them into one common tail.  Current output is
+ * 4276/4704 bytes (90.9%); the remaining deficit is in the color path at
+ * 0x07ac-0x0c54 and extension store/call layout at 0x0c54-0x1224. */
 // FUN_001127D0 NONMATCHING
 void func_001127d0(void* param_1, u32 enabled)
 {
     MaestroRenderNode* node;
-    MaestroOutputRecord* record;
     RwV2d uv[4];
     RwV3d local[4];
     RwV3d transformed[4];
@@ -1542,6 +1546,8 @@ void func_001127d0(void* param_1, u32 enabled)
     RwCamera* camera;
     void* resource;
     s32* dimensions;
+    void (**setState)(u32 state, u32 value);
+    void (**drawPrimitive)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
     s32 width;
     s32 height;
     s32 edge;
@@ -1554,10 +1560,10 @@ void func_001127d0(void* param_1, u32 enabled)
     f32 recipZ;
     u32 i;
     u32 packedColor;
-    u32 red;
-    u32 green;
-    u32 blue;
-    u32 alpha;
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 alpha;
 
     node = (MaestroRenderNode*)param_1;
     /* Retail 0x2c-0x50 computes the camera reciprocal before any state or record work. */
@@ -1566,19 +1572,21 @@ void func_001127d0(void* param_1, u32 enabled)
 
     if (enabled != 0)
     {
-        D_00960090(6, 1);
-        D_00960090(7, 2);
-        D_00960090(8, 1);
-        D_00960090(9, 2);
-        D_00960090(12, 1);
-        D_00960090(11, 6);
-        D_00960090(10, 5);
-        D_00960090(2, 4);
-        D_00960090(14, 0);
+        void (**initialSetState)(u32 state, u32 value);
+
+        initialSetState = (void (**)(u32, u32))D_00960090_abs;
+        (*initialSetState)(6, 1);
+        (*initialSetState)(7, 2);
+        (*initialSetState)(8, 1);
+        (*initialSetState)(9, 2);
+        (*initialSetState)(12, 1);
+        (*initialSetState)(11, 6);
+        (*initialSetState)(10, 5);
+        (*initialSetState)(2, 4);
+        (*initialSetState)(14, 0);
     }
 
-    record = (MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80);
-    resource = node->blob->resources[record->resourceIndex];
+    resource = node->blob->resources[((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->resourceIndex];
 
     if (resource != NULL)
     {
@@ -1597,19 +1605,19 @@ void func_001127d0(void* param_1, u32 enabled)
     {
         RpSkyRenderStateSet(2, (void*)0x44);
         RpSkyRenderStateSet(3, (void*)0x717FB);
-        if ((record->renderStateFlags & 1) != 0)
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->renderStateFlags & 1) != 0)
         {
             RpSkyRenderStateSet(2, (void*)0x48);
             RpSkyRenderStateSet(3, (void*)0x71801);
         }
-        if ((record->renderStateFlags & 2) != 0)
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->renderStateFlags & 2) != 0)
         {
             RpSkyRenderStateSet(2, (void*)0x42);
             RpSkyRenderStateSet(3, (void*)0x71801);
         }
     }
 
-    if ((record->flags & 2) != 0)
+    if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 2) != 0)
     {
         RwV2d swap;
 
@@ -1620,7 +1628,7 @@ void func_001127d0(void* param_1, u32 enabled)
         uv[1] = uv[3];
         uv[3] = swap;
     }
-    if ((record->flags & 1) != 0)
+    if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 1) != 0)
     {
         RwV2d swap;
 
@@ -1632,19 +1640,21 @@ void func_001127d0(void* param_1, u32 enabled)
         uv[3] = swap;
     }
 
-    width = record->right - record->left;
-    if (record->overrideX != 0)
+    width = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->right -
+            ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->left;
+    if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->overrideX != 0)
     {
-        width = record->overrideX;
+        width = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->overrideX;
     }
     if (node->xScale != 0)
     {
         width = (width * (s32)node->xScale) >> 12;
     }
-    height = record->bottom - record->top;
-    if (record->overrideY != 0)
+    height = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->bottom -
+             ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->top;
+    if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->overrideY != 0)
     {
-        height = record->overrideY;
+        height = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->overrideY;
     }
     if (node->yScale != 0)
     {
@@ -1724,10 +1734,10 @@ void func_001127d0(void* param_1, u32 enabled)
     for (i = 0; i < 4; i++)
     {
         packedColor = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->colors[i == 2 ? 3 : (i == 3 ? 2 : i)];
-        red = ((packedColor >> 24) & 0xFF) * node->red / 255;
-        green = ((packedColor >> 16) & 0xFF) * node->green / 255;
-        blue = ((packedColor >> 8) & 0xFF) * node->blue / 255;
-        alpha = packedColor & 0xFF;
+        red = (s32)((packedColor & 0xFF000000) >> 24) * node->red / 255;
+        green = (s32)((packedColor & 0x00FF0000) >> 16) * node->green / 255;
+        blue = (s32)((packedColor & 0x0000FF00) >> 8) * node->blue / 255;
+        alpha = (s32)(packedColor & 0xFF);
         if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
         {
             red = red >= 0x81 ? 0xFF : red * 255 / 128;
@@ -1745,14 +1755,23 @@ void func_001127d0(void* param_1, u32 enabled)
             alpha = 0;
         }
 
-        vertices[i].u.els.color.r = (f32)red;
-        vertices[i].u.els.color.g = (f32)green;
-        vertices[i].u.els.color.b = (f32)blue;
-        vertices[i].u.els.color.a = (f32)alpha;
+        vertices[i].u.els.color.r = (f32)(u32)red;
+        vertices[i].u.els.color.g = (f32)(u32)green;
+        vertices[i].u.els.color.b = (f32)(u32)blue;
+        vertices[i].u.els.color.a = (f32)(u32)alpha;
     }
 
-    D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-    D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    drawPrimitive = (void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_abs;
+    if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+    {
+        (*setState)(1, (u32)resource);
+    }
+    else
+    {
+        (*setState)(1, 0);
+    }
+    (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
 
     edge = 0;
     if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->topExtension != 0)
@@ -1770,8 +1789,15 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[0].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[1].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[1].y;
-        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+        {
+            (*setState)(1, (u32)resource);
+        }
+        else
+        {
+            (*setState)(1, 0);
+        }
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->bottomExtension != 0)
     {
@@ -1788,17 +1814,24 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[2].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+        {
+            (*setState)(1, (u32)resource);
+        }
+        else
+        {
+            (*setState)(1, 0);
+        }
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->leftExtension != 0)
     {
         edge = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->leftExtension;
-        vertices[0].u.els.scrVertex.x = positions[0].x - edge;
+        vertices[0].u.els.scrVertex.x = (f32)((s32)positions[0].x - edge);
         vertices[0].u.els.scrVertex.y = positions[0].y;
         vertices[1].u.els.scrVertex.x = positions[0].x;
         vertices[1].u.els.scrVertex.y = positions[0].y;
-        vertices[2].u.els.scrVertex.x = positions[2].x - edge;
+        vertices[2].u.els.scrVertex.x = (f32)((s32)positions[2].x - edge);
         vertices[2].u.els.scrVertex.y = positions[2].y;
         vertices[3].u.els.scrVertex.x = positions[2].x;
         vertices[3].u.els.scrVertex.y = positions[2].y;
@@ -1806,26 +1839,40 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[1].u.els.v = uv[0].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[2].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[2].y;
-        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+        {
+            (*setState)(1, (u32)resource);
+        }
+        else
+        {
+            (*setState)(1, 0);
+        }
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->rightExtension != 0)
     {
         edge = ((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->rightExtension;
         vertices[0].u.els.scrVertex.x = positions[1].x;
         vertices[0].u.els.scrVertex.y = positions[1].y;
-        vertices[1].u.els.scrVertex.x = positions[1].x + edge;
+        vertices[1].u.els.scrVertex.x = (f32)((s32)positions[1].x + edge);
         vertices[1].u.els.scrVertex.y = positions[1].y;
         vertices[2].u.els.scrVertex.x = positions[3].x;
         vertices[2].u.els.scrVertex.y = positions[3].y;
-        vertices[3].u.els.scrVertex.x = positions[3].x + edge;
+        vertices[3].u.els.scrVertex.x = (f32)((s32)positions[3].x + edge);
         vertices[3].u.els.scrVertex.y = positions[3].y;
         vertices[0].u.els.u = vertices[1].u.els.u = uv[1].x;
         vertices[0].u.els.v = vertices[1].u.els.v = uv[1].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+        {
+            (*setState)(1, (u32)resource);
+        }
+        else
+        {
+            (*setState)(1, 0);
+        }
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (node->extraHeight != 0)
     {
@@ -1842,26 +1889,40 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[2].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+        {
+            (*setState)(1, (u32)resource);
+        }
+        else
+        {
+            (*setState)(1, 0);
+        }
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (node->extraWidth != 0)
     {
         edge = node->extraWidth;
         vertices[0].u.els.scrVertex.x = positions[1].x;
         vertices[0].u.els.scrVertex.y = positions[1].y;
-        vertices[1].u.els.scrVertex.x = positions[1].x + edge;
+        vertices[1].u.els.scrVertex.x = (f32)((s32)positions[1].x + edge);
         vertices[1].u.els.scrVertex.y = positions[1].y;
         vertices[2].u.els.scrVertex.x = positions[3].x;
         vertices[2].u.els.scrVertex.y = positions[3].y;
-        vertices[3].u.els.scrVertex.x = positions[3].x + edge;
+        vertices[3].u.els.scrVertex.x = (f32)((s32)positions[3].x + edge);
         vertices[3].u.els.scrVertex.y = positions[3].y;
         vertices[0].u.els.u = vertices[1].u.els.u = uv[1].x;
         vertices[0].u.els.v = vertices[1].u.els.v = uv[1].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[3].y;
-        D_00960090(1, (((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) != 0 ? 0 : (u32)resource);
-        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+        if ((((MaestroOutputRecord*)((u8*)node->blob->output + node->outputIndex * 0x80))->flags & 8) == 0)
+        {
+            (*setState)(1, (u32)resource);
+        }
+        else
+        {
+            (*setState)(1, 0);
+        }
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
 }
 

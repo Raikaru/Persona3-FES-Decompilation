@@ -69,8 +69,8 @@ extern void FUN_002508c0();
 extern void FUN_0010a4e0();
 extern void FUN_0025b300();
 extern void FUN_0025b3b0();
-extern void FUN_0024f2c0();
-extern void FUN_00250ef0();
+extern void FUN_0024f2c0(f32, void*);
+extern void FUN_00250ef0(f32, void*);
 extern void FUN_00251030();
 extern void FUN_0024dc90();
 extern void FUN_0024f9f0();
@@ -826,9 +826,9 @@ void FUN_00253a40(void)
 
           FUN_0024f9f0((void *)(iVar2 + 0x1094),(const f32 *)auStack_10);
 
-          FUN_0024f2c0(0,iVar2 + 0x1030);
+          FUN_0024f2c0(0.0f,(void *)(iVar2 + 0x1030));
 
-          FUN_00250ef0(0,iVar2 + 0x11d8);
+          FUN_00250ef0(0.0f,(void *)(iVar2 + 0x11d8));
 
         }
 
@@ -1218,6 +1218,7 @@ void FUN_00258b40(void)
   u32 *puVar1;
 
   u32 *puVar2;
+  u32 *secondNode;
 
   u32 uVar3;
 
@@ -1227,7 +1228,8 @@ void FUN_00258b40(void)
   u32 iVar4;
   u32 iVar5;
 
-  int iVar7;
+  u32 iVar7;
+  int swapValue;
 
   u32 *unaff_s3_lo;
 
@@ -1262,11 +1264,11 @@ void FUN_00258b40(void)
   }
 
 
+  iSecond = 0;
   uVar3 = puVar1[0x499f];
-  for (iSecond = 0; iSecond < (int)uVar3; iSecond = iSecond + 1) {
-
+  while (iSecond < (int)uVar3) {
     aiStack_50[iSecond] = iSecond;
-
+    iSecond++;
   }
 
   uVar3 = 0x400;
@@ -1282,20 +1284,17 @@ void FUN_00258b40(void)
     iVar5 = iVar5 % (int)(puVar1[0x499f] - 1);
 
     if ((int)iVar4 <= (int)iVar5) {
-
       iVar7 = iVar5 + 1;
-
-      iVar5 = iVar4;
-
-      iVar4 = iVar7;
-
+    } else {
+      iVar7 = iVar4;
+      iVar4 = iVar5;
     }
 
-    iVar7 = aiStack_50[iVar5];
+    swapValue = aiStack_50[iVar4];
 
-    aiStack_50[iVar5] = aiStack_50[iVar4];
+    aiStack_50[iVar4] = aiStack_50[iVar7];
 
-    aiStack_50[iVar4] = iVar7;
+    aiStack_50[iVar7] = swapValue;
 
   }
 
@@ -1330,16 +1329,16 @@ void FUN_00258b40(void)
 
     K_ASSERT(sSflCardB664 != NULL, 0xbc);
 
-    for (puVar2 = (u32 *)sSflCardB664[0x4997];
-        puVar2 != NULL;
-        puVar2 = (u32 *)puVar2[0x3f1]) {
-      unaff_s2_lo = puVar2;
-      if (((*puVar2 & 2) == 0) && (puVar2[4] == uVar3)) {
+    for (secondNode = (u32 *)sSflCardB664[0x4997];
+        secondNode != NULL;
+        secondNode = (u32 *)secondNode[0x3f1]) {
+      unaff_s2_lo = secondNode;
+      if (((*secondNode & 2) == 0) && (secondNode[4] == uVar3)) {
         break;
       }
     }
 
-    K_ASSERT(puVar2 != NULL, 0x47a);
+    K_ASSERT(secondNode != NULL, 0x47a);
 
     FUN_00256fa0(unaff_s2_lo,aiStack_30,auStack_4);
 
@@ -1362,9 +1361,9 @@ void FUN_00258b40(void)
 
     FUN_0024ff10(unaff_s2_lo + 0x476);
 
-    FUN_0024f2c0(0x3f800000,unaff_s2_lo + 0x40c);
+    FUN_0024f2c0(1.0f,unaff_s2_lo + 0x40c);
 
-    FUN_00250ef0(0x3f800000,unaff_s2_lo + 0x476);
+    FUN_00250ef0(1.0f,unaff_s2_lo + 0x476);
 
   }
 

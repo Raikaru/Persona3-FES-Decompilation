@@ -8725,7 +8725,7 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
 }
 
-// FUN_0042FD80 NONMATCHING
+// FUN_0042FD80
 
 
 void FUN_0042fd80(float *param_1,int param_2)
@@ -8734,11 +8734,15 @@ void FUN_0042fd80(float *param_1,int param_2)
 
 {
 
-  int iVar1;
+  u8 *fieldData;
 
   int iVar2;
 
   int iVar3;
+
+  int scanColumn;
+
+  int scanRow;
 
   u32 unaff_s5_lo;
 
@@ -8748,9 +8752,9 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   int columnOffset;
 
-  int uVar4;
-
   int uVar5;
+
+  int uVar4;
 
   YajimaVec3 position;
 
@@ -8758,25 +8762,27 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   iVar3 = *(int *)(param_2 + 0x3c);
 
-  for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
+  for (scanRow = 0; scanRow < 0x10; scanRow = scanRow + 1) {
 
-    rowOffset = uVar5 * 0x100;
+    scanColumn = 0;
 
-    for (uVar4 = 0; (int)uVar4 < 0x10; uVar4 = uVar4 + 1) {
+    rowOffset = scanRow * 0x100;
 
-      columnOffset = uVar4 * 0x10;
+    for (; scanColumn < 0x10; scanColumn = scanColumn + 1) {
 
-      iVar1 = K_Field_Get();
+      columnOffset = scanColumn * 0x10;
 
-      if (*(u8 *)(rowOffset + iVar1 + columnOffset + 0x4a) == '\b') {
+      fieldData = (u8 *)(rowOffset + K_Field_Get());
 
-        iVar1 = K_Field_Get();
+      if (*(u8 *)(fieldData + columnOffset + 0x4a) == '\b') {
 
-        if (*(u8 *)(rowOffset + iVar1 + columnOffset + 0x49) == '\x01') {
+        fieldData = (u8 *)(rowOffset + K_Field_Get());
 
-          unaff_s5_lo = uVar4;
+        if (*(u8 *)(fieldData + columnOffset + 0x49) == '\x01') {
 
-          unaff_s4_lo = uVar5;
+          unaff_s5_lo = scanColumn;
+
+          unaff_s4_lo = scanRow;
 
         }
 
@@ -8796,47 +8802,49 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   for (uVar5 = unaff_s5_lo; (int)uVar5 < (int)(unaff_s5_lo + 2); uVar5 = uVar5 + 1) {
 
+    uVar4 = unaff_s4_lo;
+
     iVar3 = uVar5 * 0x10;
 
-    for (uVar4 = unaff_s4_lo; (int)uVar4 < (int)(unaff_s4_lo + 2); uVar4 = uVar4 + 1) {
+    for (; (int)uVar4 < (int)(unaff_s4_lo + 2); uVar4 = uVar4 + 1) {
 
       iVar2 = uVar4 * 0x100;
 
-      iVar1 = K_Field_Get();
+      fieldData = (u8 *)(iVar3 + K_Field_Get());
 
-      if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 1) != 0) &&
+      if (((*(u8 *)(fieldData + iVar2 + 0x53) & 1) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + -0xb6) != '\b')) {
+         (fieldData = (u8 *)(iVar3 + K_Field_Get()), *(u8 *)(fieldData + iVar2 + -0xb6) != '\b')) {
 
         func_001bf220(&position.x,uVar5 & 0xffff,uVar4 - 1 & 0xffff);
 
       }
 
-      iVar1 = K_Field_Get();
+      fieldData = (u8 *)(iVar3 + K_Field_Get());
 
-      if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 2) != 0) &&
+      if (((*(u8 *)(fieldData + iVar2 + 0x53) & 2) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + 0x3a) != '\b')) {
+         (fieldData = (u8 *)(iVar3 + K_Field_Get()), *(u8 *)(fieldData + iVar2 + 0x3a) != '\b')) {
 
         func_001bf220(&position.x,uVar5 - 1 & 0xffff,uVar4 & 0xffff);
 
       }
 
-      iVar1 = K_Field_Get();
+      fieldData = (u8 *)(iVar3 + K_Field_Get());
 
-      if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 4) != 0) &&
+      if (((*(u8 *)(fieldData + iVar2 + 0x53) & 4) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + 0x14a) != '\b')) {
+         (fieldData = (u8 *)(iVar3 + K_Field_Get()), *(u8 *)(fieldData + iVar2 + 0x14a) != '\b')) {
 
         func_001bf220(&position.x,uVar5 & 0xffff,uVar4 + 1 & 0xffff);
 
       }
 
-      iVar1 = K_Field_Get();
+      fieldData = (u8 *)(iVar3 + K_Field_Get());
 
-      if (((*(u8 *)(iVar3 + iVar1 + iVar2 + 0x53) & 8) != 0) &&
+      if (((*(u8 *)(fieldData + iVar2 + 0x53) & 8) != 0) &&
 
-         (iVar1 = K_Field_Get(), *(u8 *)(iVar3 + iVar1 + iVar2 + 0x5a) != '\b')) {
+         (fieldData = (u8 *)(iVar3 + K_Field_Get()), *(u8 *)(fieldData + iVar2 + 0x5a) != '\b')) {
 
         func_001bf220(&position.x,uVar5 + 1 & 0xffff,uVar4 & 0xffff);
 

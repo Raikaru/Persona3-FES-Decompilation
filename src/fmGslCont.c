@@ -891,6 +891,7 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 #pragma alias FUN_003b4b40_direct FUN_003b4b40
 extern void FUN_003b4b40_direct(s32* positions, u32* colors, u8* positionIndices,
                                 u8* colorIndices, u64 param_5, u64 param_6);
+// measured: element-wise position/color updates are required for nd0; lint: allow S003
 #undef FUN_003b4d10
 // FUN_003B4D10
 
