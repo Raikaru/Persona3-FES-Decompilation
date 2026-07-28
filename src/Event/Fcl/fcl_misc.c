@@ -12,7 +12,7 @@ extern u32 FUN_003c9460(int *);
 #pragma alias fclMisc9240Call FUN_003c9240
 extern void fclMisc9240Call(int *);
 #pragma alias fclMisc9290Call FUN_003c9290
-extern u64 fclMisc9290Call(int *,u64,u64);
+extern u64 fclMisc9290Call(int *,u32,u32);
 #pragma alias fclMisc9340Call FUN_003c9340
 extern u32 fclMisc9340Call(int *);
 #pragma alias fclMisc9390Call FUN_003c9390
