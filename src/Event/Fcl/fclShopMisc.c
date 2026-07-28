@@ -496,7 +496,7 @@ u64 FUN_00405ac0(u64 param_1,long param_2);
 void FUN_00405d60(int param_1);
 void FUN_00405e00(u64 param_1);
 extern int FUN_00405db0(u32* param_1, u32* param_2);
-u8 FUN_00405e30(u32 param_1);
+u32 FUN_00405e30(u32 param_1);
 void FUN_00405f70(s32 param_1,s32 param_2,s32 param_3,int param_4,u64 param_5, int param_6,int param_7);
 void FUN_004064e0(int param_1,int param_2,u32 param_3,int param_4);
 void FUN_00406aa0(int param_1,int param_2,u32 param_3);
@@ -1341,157 +1341,92 @@ not_found:
   return -1;
 }
 
-// FUN_003F0AC0 NONMATCHING
+// FUN_003F0AC0
 
 
 short FUN_003f0ac0(int param_1)
-
-
-
 {
+  u8 *shopData;
+  u8 *shopList;
+  u8 *shopEntry;
+  char socialLevel;
+  u32 randomValue;
+  int entry;
+  int socialLink;
+  short choice;
 
-  u8 *puVar1;
-
-  char cVar2;
-
-  int iVar3;
-
-  int lVar4;
-
-  short sVar5;
-
-  
-
-  if (param_1 == 4) {
-
-    sVar5 = 3;
-
+  switch (param_1) {
+  case 0:
+    socialLink = 0xf;
+    break;
+  case 4:
+    socialLink = 3;
+    break;
+  default:
+    socialLink = 0xff;
+    break;
   }
-
-  else if (param_1 == 0) {
-
-    sVar5 = 0xf;
-
-  }
-
-  else {
-
-    sVar5 = 0xff;
-
-  }
-
-  if ((param_1 < 0) || (8 < param_1)) {
-
+  if ((param_1 < 0) || (param_1 >= 9)) {
     K_Assert((const char *)DAT_006aede8,0xb9);
-
   }
-
-  lVar4 = datGetScenarioMode();
-
-  if (lVar4 != 0) {
-
-    param_1 = param_1 + 9;
-
+  if (datGetScenarioMode() == 0) {
+    shopEntry = DAT_006ac9d0 + param_1 * 0x24;
   }
-
-  puVar1 = (u8 *)((u32 **)&PTR_DAT_006ac9f0)[param_1 * 9];
-
-
-  if (lVar4 == 0) {
-
-    if (sVar5 != 0xff) {
-
-      if (*(int *)(puVar1 + 8) == 0) {
-
-        K_Assert((const char *)DAT_006aede8,0x19c);
-
-      }
-
-      if (sVar5 != 0xff) {
-
-        lVar4 = datSocialLinkLevelIsNotZero(sVar5);
-
-        if (lVar4 != 0) {
-
-          cVar2 = datGetSocialLinkLevel(sVar5);
-
-          if (cVar2 != '\0') {
-
-            if ((cVar2 < '\x01') || ('\n' < cVar2)) {
-
-              K_Assert((const char *)DAT_006aede8,0x1a2);
-
-            }
-
-            iVar3 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
-
-          }
-
-          else {
-
-            iVar3 = *(int *)(puVar1 + 8);
-
-          }
-
-        }
-
-        else {
-
-          iVar3 = *(int *)(puVar1 + 8);
-
-        }
-
-      }
-
-      else {
-
-        iVar3 = *(int *)(puVar1 + 8);
-
-      }
-
-      if ((iVar3 != 0) && (*(short *)(iVar3 + 0xe) != -1)) {
-
-        return *(short *)(iVar3 + 0xe);
-
-      }
-
-    }
-
-
-    if (lVar4 == 0) {
-
-      return -1;
-
-    }
-
-    iVar3 = RpRandom();
-
-    sVar5 = *(short *)(((iVar3 % 0xffff) / 0xffff) * 2 + (int)lVar4 + 8);
-
-  }
-
   else {
+    shopEntry = DAT_006ac9d0 + (param_1 + 9) * 0x24;
+  }
+  shopData = *(u8 **)(shopEntry + 0x20);
 
-    if ((*(u32 *)lVar4 & 1) != 0) {
-
+  shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0xc),1);
+  if (shopList != NULL) {
+    if ((*(u32 *)shopList & 1) != 0) {
       FUN_003e6e20(1);
-
     }
-
-    iVar3 = RpRandom();
-
-    sVar5 = *(short *)((int)(u32 *)lVar4 + ((iVar3 % 0xffff) / 0xffff) * 2 + 8);
-
+    randomValue = RpRandom();
+    choice = ((short *)(shopList + 8))[(randomValue % 0xffff) / 0xffff];
+    if (choice == -1) {
+      goto not_found;
+    }
+    return choice;
   }
 
-  if (sVar5 == -1) {
-
-    return -1;
-
+  if (socialLink != 0xff) {
+    if (*(int *)(shopData + 8) == 0) {
+      K_Assert((const char *)DAT_006aede8,0x19c);
+    }
+    if (socialLink == 0xff) {
+      entry = *(int *)(shopData + 8);
+    }
+    else if (datSocialLinkLevelIsNotZero((s16)socialLink) == 0) {
+      entry = *(int *)(shopData + 8);
+    }
+    else {
+      socialLevel = datGetSocialLinkLevel((s16)socialLink);
+      if (socialLevel == '\0') {
+        entry = *(int *)(shopData + 8);
+      }
+      else {
+        if ((socialLevel < '\x01') || ('\n' < socialLevel)) {
+          K_Assert((const char *)DAT_006aede8,0x1a2);
+        }
+        entry = *(int *)(shopData + 8) + socialLevel * 0x20;
+      }
+    }
+    if ((entry != 0) && (*(short *)(entry + 0xe) != -1)) {
+      return *(short *)(entry + 0xe);
+    }
   }
 
-  return sVar5;
-
+  shopList = (u8 *)FUN_003f06e0((int *)(shopData + 0xc),0);
+  if (shopList != NULL) {
+    randomValue = RpRandom();
+    choice = ((short *)(shopList + 8))[(randomValue % 0xffff) / 0xffff];
+    if (choice != -1) {
+      return choice;
+    }
+  }
+not_found:
+  return -1;
 }
 
 // FUN_003F0D60 NONMATCHING
@@ -4543,7 +4478,7 @@ void FUN_003f55b0(int param_1,int param_2,int param_3,int param_4,int param_5,
   int iVar8;
   int iVar9;
   int iVar10;
-  u32 auStack_50[12];
+  u32 auStack_50[10];
   u8 auStack_20[24];
   FclShopFloatPair auStack_8;
 
@@ -10620,125 +10555,56 @@ LAB_003fe35c:
 
 
 u64 FUN_003fe3e0(u16 param_1)
-
-
-
 {
+  u32 list;
+  int listWork;
+  int entry;
+  int persona;
+  int i;
+  u16 itemId;
+  short itemIds[8];
+  u8 itemData[32];
 
-  short sVar1;
+  list = FUN_003c58f0(0,0x58,7,0x1a);
+  listWork = (int)list;
+  entry = *(int *)(*(int *)(listWork + 0x24) + 0x44);
+  *(u16 *)(entry + 4) = param_1;
+  *(short *)(entry + 6) = -4;
 
-  short sVar2;
-
-  int iVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  long lVar6;
-
-  int iVar7;
-
-  short *psVar8;
-
-  short *psVar9;
-
-  u32 uVar10;
-
-  short asStack_30 [8];
-
-  u8 auStack_20 [32];
-
-  
-
-  uVar5 = FUN_003c58f0(0,0x58,7,0x1a);
-
-  iVar3 = (int)uVar5;
-
-  iVar7 = *(int *)(*(int *)(iVar3 + 0x24) + 0x44);
-
-  *(u16 *)(iVar7 + 4) = param_1;
-
-  *(u16 *)(iVar7 + 6) = 0xfffc;
-
-  uVar10 = 0;
-
-  while( 1 ) {
-
-    psVar9 = (s16 *)(&DAT_006af180);
-
-    psVar8 = asStack_30;
-
-    iVar7 = 4;
-
+  for (i = 0; ; i++) {
+    short *source = (short *)&DAT_006af180;
+    short *dest = itemIds;
+    int count = 4;
     do {
+      dest[0] = source[0];
+      dest[1] = source[1];
+      source += 2;
+      dest += 2;
+      count--;
+    } while (count > 0);
 
-      sVar2 = *psVar9;
-
-      sVar1 = psVar9[1];
-
-      psVar9 = psVar9 + 2;
-
-      iVar7 = iVar7 + -1;
-
-      *psVar8 = sVar2;
-
-      psVar8[1] = sVar1;
-
-      psVar8 = psVar8 + 2;
-
-    } while (0 < iVar7);
-
-    if (uVar10 < 8) {
-
-      sVar2 = asStack_30[uVar10];
-
+    itemId = i < 8 ? itemIds[i] : 0;
+    if (itemId == 0) {
+      break;
     }
-
-    else {
-
-      sVar2 = 0;
-
-    }
-
-    if (sVar2 == 0) break;
-
-
-    if (lVar6 != 0) {
-
-      iVar7 = FUN_003c5a40(uVar5,*(u16 *)(iVar3 + 0x10) + 1,0x20,0);
-
-      memcpy(*(int *)(*(int *)(iVar7 + 0x14) + 0x1c) + 4,auStack_20,0x1c);
-
-      for (iVar7 = 0; uVar4 = FUN_00175410(), iVar7 < (int)(uVar4 & 0xffff); iVar7 = iVar7 + 1) {
-
-        datPersonaGetHeroPersona((short)iVar7);
-
+    if (FUN_003f2240((int)itemData,itemId) != 0) {
+      entry = FUN_003c5a40(list,*(u16 *)(listWork + 0x10) + 1,0x20,0);
+      memcpy((void *)(*(int *)(*(int *)(entry + 0x14) + 0x1c) + 4),itemData,0x1c);
+      for (persona = 0; persona < (int)(FUN_00175410() & 0xffff); persona++) {
+        datPersonaGetHeroPersona((short)persona);
       }
-
     }
-
-    uVar10 = uVar10 + 1;
-
   }
 
-
-  FUN_003c6ee0(uVar5);
-
-  FUN_003c5e80(uVar5,0x3fadc0);
-
-  FUN_003c5e20(uVar5,0x3f4de0);
-
-  FUN_003c5ee0(uVar5,0x3f9510);
-
-  FUN_003c6d40(uVar5,0x39,0x48);
-
-  *(u16 *)(*(int *)(iVar3 + 0x24) + 6) = 0xb;
-
-  *(u16 *)(*(int *)(iVar3 + 0x24) + 8) = 6;
-
-  return uVar5;
-
+  FUN_003f99d0(list,0xff00);
+  FUN_003c6ee0(list);
+  FUN_003c5e80(list,0x3fadc0);
+  FUN_003c5e20(list,0x3f4de0);
+  FUN_003c5ee0(list,0x3f9510);
+  FUN_003c6d40(list,0x39,0x48);
+  *(u16 *)(*(int *)(listWork + 0x24) + 6) = 0xb;
+  *(u16 *)(*(int *)(listWork + 0x24) + 8) = 6;
+  return list;
 }
 
 // FUN_003FE5D0
@@ -16605,10 +16471,10 @@ void FUN_00405e00(u64 param_1)
 
 }
 
-// FUN_00405E30 NONMATCHING
+// FUN_00405E30
 
 
-u8 FUN_00405e30(u32 param_1)
+u32 FUN_00405e30(u32 param_1)
 
 
 
@@ -16635,6 +16501,7 @@ u8 FUN_00405e30(u32 param_1)
   }
 
   lVar1 = FUN_003c6270(param_1);
+  lVar1 = (lVar1 == 3);
 
   lVar2 = FUN_003c6ce0(param_1);
 
@@ -16653,6 +16520,7 @@ u8 FUN_00405e30(u32 param_1)
   }
 
 
+  FUN_00404750(param_1,1,1);
   if (*(int *)(iVar3 + 0xc) != 0) {
 
     datSetFlag(*(short *)(*(int *)(*(int *)(*(int *)(iVar3 + 0xc) + 0x14) + 0x1c) + 4) + 0x10ff,1)
@@ -16661,7 +16529,7 @@ u8 FUN_00405e30(u32 param_1)
 
   }
 
-  return lVar1 == 3;
+  return lVar1;
 
 }
 

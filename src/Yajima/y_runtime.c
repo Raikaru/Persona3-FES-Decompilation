@@ -168,7 +168,7 @@ extern u32 DAT_007ce6ec;
 extern u32 DAT_007ce6f0;
 extern u32 DAT_007ce6f4;
 extern u32 DAT_007ce700;
-extern u32 DAT_007ce704;
+extern s32 DAT_007ce704;
 extern u32 DAT_007ce70c;
 extern u32 DAT_007ce710;
 extern u32 DAT_007ce714;
@@ -1920,7 +1920,7 @@ extern u32 DAT_007ce6ec;
 extern u32 DAT_007ce6f0;
 extern u32 DAT_007ce6f4;
 extern u32 DAT_007ce700;
-extern u32 DAT_007ce704;
+extern s32 DAT_007ce704;
 extern u32 DAT_007ce710;
 extern u32 DAT_007ce718;
 extern u32 DAT_007e094e;
@@ -20819,56 +20819,56 @@ u8 FUN_0045e0c0(int param_1)
 // FUN_0045E170 NONMATCHING
 
 u8 FUN_0045e170(int param_1)
-
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  
-  iVar1 = *(int *)(param_1 + 0x3c);
-  if (*(int *)(iVar1 + 8) == 0) {
+  int base;
+  int address;
+  int loop;
+  int result;
+  int count;
+  int entry;
+
+  base = *(int *)(param_1 + 0x3c);
+  if (*(int *)(base + 8) == 0) {
     DAT_007ce704 = 0;
-    *(u32 *)(iVar1 + 8) = 1;
+    *(u32 *)(base + 8) = 1;
   }
-  if ((DAT_007ce704 < 6) && (*(int *)(iVar1 + 0x18) % 6 == 0)) {
-    for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-      iVar4 = iVar1 + (DAT_007ce704 + iVar3 * 6) * 0x98 + 0x340;
-      FUN_0045af90(iVar4);
-      FUN_0045afd0(DAT_007cafc0,iVar4,0,0,0,0,0,0,6);
+  if ((DAT_007ce704 < 6) && (*(int *)(base + 0x18) % 6 == 0)) {
+    for (loop = 0; loop < 4; loop++) {
+      address = base + (DAT_007ce704 + loop * 6) * 0x98 + 0x340;
+      FUN_0045af90(address);
+      FUN_0045afd0(DAT_007cafc0,address,0,0,0,0,0,0,6);
     }
-    FUN_0045afd0(DAT_007cafc0,iVar1 + DAT_007ce704 * 0x98 + 0x1180,0,0xfffffffffffffffe,0,0,0,0,0xc)
-    ;
-    DAT_007ce704 = DAT_007ce704 + 1;
+    FUN_0045afd0(DAT_007cafc0,
+                 base + DAT_007ce704 * 0x98 + 0x1180,
+                 0,-2,0,0,0,0,0xc);
+    DAT_007ce704++;
   }
-  for (iVar3 = 0; iVar3 < 0x18; iVar3 = iVar3 + 1) {
-    iVar4 = iVar1 + iVar3 * 0x98 + 0x340;
-    iVar2 = FUN_0045b4b0(iVar4);
-    if (iVar2 == 0) {
-      FUN_0045b190(iVar4);
+  for (loop = 0; loop < 0x18; loop++) {
+    address = base + loop * 0x98 + 0x340;
+    result = FUN_0045b4b0(address);
+    if (result == 0) {
+      FUN_0045b190(address);
     }
   }
-  iVar4 = 0;
-  for (iVar3 = 0; iVar3 < 6; iVar3 = iVar3 + 1) {
-    iVar2 = FUN_0045b4b0(iVar1 + iVar3 * 0x98 + 0x1180);
-    if (iVar2 == 0) {
-      iVar5 = iVar1 + iVar3 * 0x98 + 0x1180;
-      FUN_0045b190(iVar5);
-      iVar2 = FUN_0045b480(iVar5);
-      if (iVar2 == 0) {
-        iVar4 = iVar4 + 1;
+  count = 0;
+  for (loop = 0; loop < 6; loop++) {
+    result = FUN_0045b4b0(base + loop * 0x98 + 0x1180);
+    if (result == 0) {
+      entry = base + loop * 0x98 + 0x1180;
+      FUN_0045b190(entry);
+      result = FUN_0045b480(entry);
+      if (result == 0) {
+        count++;
       }
     }
   }
-  if (iVar4 == 6) {
-    *(u32 *)(iVar1 + 8) = 0;
-    *(u32 *)(iVar1 + 0x18) = 0;
+  if (count == 6) {
+    *(u32 *)(base + 8) = 0;
+    *(u32 *)(base + 0x18) = 0;
+    return 1;
   }
-  else {
-    *(int *)(iVar1 + 0x18) = *(int *)(iVar1 + 0x18) + 1;
-  }
-  return iVar4 == 6;
+  *(int *)(base + 0x18) = *(int *)(base + 0x18) + 1;
+  return 0;
 }
 
 #pragma pop

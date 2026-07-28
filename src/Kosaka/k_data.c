@@ -563,54 +563,50 @@ void* func_001b8680(void)
     return result;
 }
 
-// FUN_001b8710 NONMATCHING
+// The `volatile` qualifiers below are the same batch annotated on func_001b81f0:
+// HCdvd::fileSize and the cache size-out are written by the CD/DVD driver, and
+// removing the batch loses this MATCH (nd0 -> nd18) - measured W198.
+// FUN_001b8710
 u32 func_001b8710(HCdvd* request)
 {
     char path[76];
     void* memory;
-    HCdvd* requestCopy;
+    void* source;
     u32 cachedSize;
-    Field* field;
-    u32 fileSize;
-    u32 allocSize;
-
-    requestCopy = request;
-    if (requestCopy == NULL)
+    if (request == NULL)
     {
         return true;
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(requestCopy) == 0)
+        if (H_Cdvd_IsFileLoaded(request) == 0)
         {
             goto failed;
         }
-        allocSize = requestCopy->fileSize;
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, allocSize, rwMEMHINTDUR_GLOBAL);
+            1, ((volatile HCdvd*)request)->fileSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
-        field = K_Field_Get();
-        fileSize = requestCopy->fileSize;
-        memcpy(FIELD_DATA_AT(field, 0x1154, void*),
-               requestCopy->fileMemory, fileSize);
-        H_Cdvd_Destroy(requestCopy);
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
+               request->fileMemory, *(volatile u32*)&request->fileSize);
+        H_Cdvd_Destroy(request);
         return true;
     }
-    sprintf(path, "field/pack/nm%03d_%03d.bmd",
-            PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
-    requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
-    if (requestCopy != NULL)
+    else
     {
-        allocSize = cachedSize;
-        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, allocSize, rwMEMHINTDUR_GLOBAL);
-        FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
-        field = K_Field_Get();
-        fileSize = cachedSize;
-        memcpy(FIELD_DATA_AT(field, 0x1154, void*),
-               requestCopy, fileSize);
+        sprintf(path, "field/pack/nm%03d_%03d.bmd",
+                PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
+        source = H_Cdvd_CacheFindFile(path, &cachedSize);
+        if (source != NULL)
+        {
+            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+                1, *(volatile u32*)&cachedSize, rwMEMHINTDUR_GLOBAL);
+            FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
+            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
+                   source, *(volatile u32*)&cachedSize);
+        }
     }
     return true;
+
 failed:
     return false;
 }
@@ -651,56 +647,52 @@ void* func_001b88d0(void)
     return result;
 }
 
-// FUN_001b8960 NONMATCHING
+// The `volatile` qualifiers below are the same batch annotated on func_001b81f0:
+// HCdvd::fileSize and the cache size-out are written by the CD/DVD driver, and
+// removing the batch loses this MATCH (nd0 -> nd18) - measured W198.
+// FUN_001b8960
 u32 func_001b8960(HCdvd* request)
 {
     char path[76];
     void* memory;
-    HCdvd* requestCopy;
+    void* source;
     u32 cachedSize;
-    Field* field;
-    u32 fileSize;
-    u32 allocSize;
-
-    requestCopy = request;
-    if (requestCopy == NULL)
+    if (request == NULL)
     {
         return true;
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(requestCopy) == 0)
+        if (H_Cdvd_IsFileLoaded(request) == 0)
         {
             goto failed;
         }
-        allocSize = requestCopy->fileSize;
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, allocSize, rwMEMHINTDUR_GLOBAL);
+            1, ((volatile HCdvd*)request)->fileSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
-        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = requestCopy->fileSize;
-        field = K_Field_Get();
-        fileSize = requestCopy->fileSize;
-        memcpy(FIELD_DATA_AT(field, 0x114c, void*),
-               requestCopy->fileMemory, fileSize);
-        H_Cdvd_Destroy(requestCopy);
+        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = request->fileSize;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
+               request->fileMemory, *(volatile u32*)&request->fileSize);
+        H_Cdvd_Destroy(request);
         return true;
     }
-    sprintf(path, "field/pack/ns%03d_%03d.bf",
-            PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
-    requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
-    if (requestCopy != NULL)
+    else
     {
-        allocSize = cachedSize;
-        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, allocSize, rwMEMHINTDUR_GLOBAL);
-        FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
-        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = cachedSize;
-        field = K_Field_Get();
-        fileSize = cachedSize;
-        memcpy(FIELD_DATA_AT(field, 0x114c, void*),
-               requestCopy, fileSize);
+        sprintf(path, "field/pack/ns%03d_%03d.bf",
+                PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
+        source = H_Cdvd_CacheFindFile(path, &cachedSize);
+        if (source != NULL)
+        {
+            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+                1, *(volatile u32*)&cachedSize, rwMEMHINTDUR_GLOBAL);
+            FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
+            FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = cachedSize;
+            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
+                   source, *(volatile u32*)&cachedSize);
+        }
     }
     return true;
+
 failed:
     return false;
 }

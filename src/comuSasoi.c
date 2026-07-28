@@ -509,132 +509,55 @@ LAB_003c2c00:
 
 
 u8 FUN_003c2c50(u32 param_1)
-
-
-
 {
-
   char cVar1;
-
-  u8 bVar2;
-
   int *piVar3;
-
+  u8 *entries;
+  int count;
+  u8 bVar2;
   int lVar4;
-
-
   int iVar6;
-
   short sStack_2;
 
-  
-
   lVar4 = FUN_00172c50(&sStack_2);
-
-  if ((lVar4 == 0) || (param_1 != sStack_2)) {
-
-    lVar4 = FUN_0016e100((s16)param_1);
-
-    if (lVar4 == 0) {
-
-      bVar2 = 0;
-
-    }
-
-    else {
-
-      lVar4 = FUN_001717c0(param_1);
-
-      if (lVar4 == 1) {
-
-        bVar2 = 0;
-
-      }
-
-      else {
-
-        lVar4 = FUN_00172160(param_1);
-
-        if (lVar4 == 1) {
-
-          bVar2 = 0;
-
-        }
-
-        else {
-
-          cVar1 = FUN_0016dba0((s16)param_1);
-
-          if (cVar1 == '\x01') {
-
-            bVar2 = 0;
-
-          }
-
-          else {
-
-            cVar1 = FUN_0016dba0((s16)param_1);
-
-            if (cVar1 == '\n') {
-
-              bVar2 = 0;
-
-            }
-
-            else {
-
-              piVar3 = (int *)FUN_003bdd50();
-
-              for (iVar6 = 0; iVar6 < piVar3[1]; iVar6 = iVar6 + 1) {
-
-                if (param_1 == *(u8 *)(*piVar3 + iVar6 * 0x18)) {
-
-                  bVar2 = 1;
-
-                  goto LAB_003c2db0;
-
-                }
-
-              }
-
-              bVar2 = 0;
-
-LAB_003c2db0:
-
-              if (bVar2) {
-
-                lVar4 = FUN_003951d0((int)param_1 + 0x960);
-
-                bVar2 = lVar4 != 1;
-
-              }
-
-              else {
-
-                bVar2 = 0;
-
-              }
-
-            }
-
-          }
-
-        }
-
-      }
-
-    }
-
+  if ((lVar4 != 0) && (param_1 == sStack_2)) {
+    return 0;
   }
-
-  else {
-
-    bVar2 = 0;
-
+  lVar4 = FUN_0016e100((s16)param_1);
+  if (lVar4 == 0) {
+    return 0;
   }
-
-  return bVar2;
-
+  lVar4 = FUN_001717c0(param_1);
+  if (lVar4 == 1) {
+    return 0;
+  }
+  lVar4 = FUN_00172160(param_1);
+  if (lVar4 == 1) {
+    return 0;
+  }
+  cVar1 = FUN_0016dba0((s16)param_1);
+  if (cVar1 == '\x01') {
+    return 0;
+  }
+  cVar1 = FUN_0016dba0((s16)param_1);
+  if (cVar1 == '\n') {
+    return 0;
+  }
+  piVar3 = (int *)FUN_003bdd50();
+  entries = (u8 *)piVar3[0];
+  count = piVar3[1];
+  bVar2 = 0;
+  for (iVar6 = 0; iVar6 < count; iVar6 = iVar6 + 1) {
+    if (param_1 == entries[iVar6 * 0x18]) {
+      bVar2 = 1;
+      break;
+    }
+  }
+  if (!bVar2) {
+    return 0;
+  }
+  lVar4 = FUN_003951d0((int)param_1 + 0x960);
+  return lVar4 != 1;
 }
 #undef FUN_003c2c50
 #undef FUN_003c2df0

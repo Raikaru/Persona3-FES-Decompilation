@@ -716,14 +716,17 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
     return true;
 }
 
-// FUN_001d70a0 NONMATCHING
+// FUN_001d70a0
 void func_001d70a0(void)
 {
     FldCameraResource* resource;
-    FldCamera* fldCamera;
+    KwlnTask* task;
     RwCamera* camera;
     RwFrame* cameraFrame;
+    RwV3d* targetPosition;
     RwMatrix matrix;
+    f32 xzDeadZone;
+    f32 yDeadZone;
 
     resource = (FldCameraResource*)MT_Scene_GetResListHead(RESRC_TYPE_20);
     if (resource == NULL)
@@ -731,33 +734,41 @@ void func_001d70a0(void)
         return;
     }
 
-    camera = kwlnGetMainCamera();
-    cameraFrame = (RwFrame*)camera->object.object.parent;
-    K_View_SetFov(camera, resource->fov);
+    K_View_SetFov(kwlnGetMainCamera(), resource->fov);
     func_004c2330(&matrix, resource->matrix);
-    FUN_004cb7f0(cameraFrame, &matrix, 0);
+    FUN_004cb7f0((RwFrame*)kwlnGetMainCamera()->object.object.parent,
+                 &matrix, 0);
     func_001d5c10(K_Field_Get()->cameraCtlTask, resource->type);
+    ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->posOffset =
+        resource->posOffset;
 
-    fldCamera = (FldCamera*)K_Field_Get()->cameraCtlTask->workData;
-    fldCamera->posOffset = resource->posOffset;
     if (resource->xzDeadZone == 0.0f && K_Scene_001a0250() == false)
     {
-        fldCamera->xzDeadZone = 50.0f;
+        resource->xzDeadZone = 50.0f;
     }
-    else
-    {
-        fldCamera->xzDeadZone = resource->xzDeadZone;
-    }
-    fldCamera->yDeadZone = resource->yDeadZone;
+    xzDeadZone = resource->xzDeadZone;
+    ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->xzDeadZone =
+        xzDeadZone;
+    yDeadZone = resource->yDeadZone;
+    ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->yDeadZone =
+        yDeadZone;
 
-    if (fldCamera->type == 2)
+    task = K_Field_Get()->cameraCtlTask;
+    switch (((FldCamera*)task->workData)->type)
     {
-        FUN_001a1210(camera, &cameraFrame->modelling.pos,
-                     &fldCamera->frame->modelling.pos, NULL);
-    }
-    else if (fldCamera->type == 5 || fldCamera->type == 0)
-    {
+    case 0:
+    case 5:
         func_001d5e30(K_Field_Get()->cameraCtlTask, 0.0f);
+        break;
+    case 2:
+        cameraFrame =
+            (RwFrame*)kwlnGetMainCamera()->object.object.parent;
+        targetPosition =
+            &((FldCamera*)task->workData)->frame->modelling.pos;
+        camera = kwlnGetMainCamera();
+        FUN_001a1210(camera, &cameraFrame->modelling.pos,
+                     targetPosition, NULL);
+        break;
     }
 }
 

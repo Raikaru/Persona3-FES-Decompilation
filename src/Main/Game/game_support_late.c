@@ -259,7 +259,22 @@ static inline s16 gsMappedPcId(s16 pcId)
 
 static inline void* gsPcAtlas(void* object, s16 pcId)
 {
-    return GS_PTR(object, 0x3c + ((u32)gsMappedPcId(pcId) * 4));
+    if (datGetScenarioMode() != 0)
+    {
+        if (pcId == 1)
+        {
+            pcId = 11;
+        }
+        if (pcId == 9)
+        {
+            pcId = 12;
+        }
+        if (pcId == 3)
+        {
+            pcId = 11;
+        }
+    }
+    return GS_PTR(object, 0x3c + (pcId * 4));
 }
 
 static inline void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
@@ -286,41 +301,43 @@ static inline void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
 static inline void gsDrawStatusBars(void* object)
 {
     s16 pcId;
-    f32 x;
-    f32 y;
-    f32 depth;
-    u32 alpha;
-    u32 value;
-    u32 maxValue;
-    u32 width;
+    s32 value;
+    s32 maxValue;
+    s32 width;
     void* transition;
 
     transition = GS_PTR(object, 0x70);
     pcId = GS_S16(object, 0x14);
-    x = GS_F32(transition, 0x38);
-    y = GS_F32(transition, 0x3c);
-    depth = GS_F32(transition, 0x24);
-    alpha = GS_U8(transition, 0x40);
 
     value = datGetHp(pcId);
     maxValue = datGetMaxHp(pcId);
     width = ((value & 0xffff) << 5) / (maxValue & 0xffff);
     if (width != 0x20)
     {
-        func_00113a30(depth - 1.0f, x + (f32)width + 50.0f,
-                      y + 46.0f, 0xffffff00, 0x20 - width, 0x14);
+        func_00113a30(GS_F32(transition, 0x24) - 1.0f,
+                      GS_F32(transition, 0x38) + (f32)width + 50.0f,
+                      GS_F32(transition, 0x3c) + 46.0f,
+                      0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 1, alpha, x + 50.0f, y + 46.0f, depth);
+    gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
+                 GS_F32(transition, 0x38) + 50.0f,
+                 GS_F32(transition, 0x3c) + 46.0f,
+                 GS_F32(transition, 0x24));
 
     value = datGetSp(pcId);
     maxValue = func_0016c670(pcId);
     width = ((value & 0xffff) << 5) / (maxValue & 0xffff);
     if (width != 0x20)
     {
-        func_00113a30(depth - 3.0f, x + (f32)width + 50.0f,
-                      y + 51.0f, 0xffffff00, 0x20 - width, 0x14);
+        func_00113a30(GS_F32(transition, 0x24) - 3.0f,
+                      GS_F32(transition, 0x38) + (f32)width + 50.0f,
+                      GS_F32(transition, 0x3c) + 51.0f,
+                      0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 2, alpha, x + 50.0f, y + 51.0f, depth - 2.0f);
+    gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
+                 GS_F32(transition, 0x38) + 50.0f,
+                 GS_F32(transition, 0x3c) + 51.0f,
+                 GS_F32(transition, 0x24) - 2.0f);
 }
 
 static inline void gsDrawAnimatedSprite(void* object, s32 atlasOffset,

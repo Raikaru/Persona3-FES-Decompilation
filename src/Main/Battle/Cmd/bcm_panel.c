@@ -2616,10 +2616,13 @@ void FUN_0022A2B0(void)
         K_ASSERT(0, 0xfb4);
     }
 
-    if (*(u32*)(work + 0x4644) == 4) {
-        alpha2 = 0.0f;
-    } else if (*(u32*)(work + 0x4644) == 0) {
+    switch (*(u32*)(work + 0x4644)) {
+    case 0:
         alpha2 = 1.0f;
+        break;
+    case 4:
+        alpha2 = 0.0f;
+        break;
     }
     scaled = alpha1 * alpha2;
     blend = 1.0f - scaled;
@@ -2796,8 +2799,8 @@ void FUN_0022A2B0(void)
     FUN_0021d950(overlay + 0x310, color);
 }
 
-#define BCM_2AE_STATE(...) ((void (*)(u32, u32))D_00960090)(__VA_ARGS__)
-#define BCM_2AE_QUAD(...) ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)(__VA_ARGS__)
+#define BCM_2AE_STATE(...) (*pRender)(__VA_ARGS__)
+#define BCM_2AE_QUAD(...) (*pQuad)(__VA_ARGS__)
 // FUN_0022AE80 NONMATCHING
 void FUN_0022AE80(void)
 {
@@ -2998,21 +3001,18 @@ void FUN_0022B630(void)
                    ((u32)overlayColour[2] << 8) | overlayColour[3];
     dispatch = *(u32*)(base + 0x463c);
     switch (dispatch) {
-    case 3:
-        secondaryDispatch = *(u32*)(base + 0x4644);
-        if (secondaryDispatch == 1 || secondaryDispatch == 2) {
+    case 0:
+        entry = *(u32*)(base + 0x68f0);
+        target = *(u32*)(entry + 0x24);
+        if (target != 0) {
+            FUN_003b0d70(target, 0x1020, 0xbe8);
+            FUN_003b0d70(*(u32*)(base + 0x68f0), 0x1020, 0xc98);
             entry = *(u32*)(base + 0x68f0);
-            target = *(u32*)(entry + 0x24);
-            if (target != 0) {
-                FUN_003b0d70(target, 0xc60, 0xbe8);
-                FUN_003b0d70(*(u32*)(base + 0x68f0), 0xc60, 0xc98);
-                entry = *(u32*)(base + 0x68f0);
-                FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
-                FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
-            } else {
-                FUN_003b0d70(entry, 0xc60, 0xbe8);
-                FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
-            }
+            FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
+            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+        } else {
+            FUN_003b0d70(entry, 0x1020, 0xbe8);
+            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
         }
         break;
     case 1: case 2:
@@ -3045,18 +3045,21 @@ void FUN_0022B630(void)
             FUN_0021d950(base + 0x6900, overlayColour);
         }
         break;
-    case 0:
-        entry = *(u32*)(base + 0x68f0);
-        target = *(u32*)(entry + 0x24);
-        if (target != 0) {
-            FUN_003b0d70(target, 0x1020, 0xbe8);
-            FUN_003b0d70(*(u32*)(base + 0x68f0), 0x1020, 0xc98);
+    case 3:
+        secondaryDispatch = *(u32*)(base + 0x4644);
+        if (secondaryDispatch == 1 || secondaryDispatch == 2) {
             entry = *(u32*)(base + 0x68f0);
-            FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
-            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
-        } else {
-            FUN_003b0d70(entry, 0x1020, 0xbe8);
-            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+            target = *(u32*)(entry + 0x24);
+            if (target != 0) {
+                FUN_003b0d70(target, 0xc60, 0xbe8);
+                FUN_003b0d70(*(u32*)(base + 0x68f0), 0xc60, 0xc98);
+                entry = *(u32*)(base + 0x68f0);
+                FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
+                FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+            } else {
+                FUN_003b0d70(entry, 0xc60, 0xbe8);
+                FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+            }
         }
         break;
     }

@@ -888,7 +888,7 @@ u32 FUN_003c03f0(void)
 code * FUN_003c0570(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
   code *pcVar4;
   int lVar5;

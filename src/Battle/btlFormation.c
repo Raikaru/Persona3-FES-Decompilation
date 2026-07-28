@@ -3556,44 +3556,35 @@ void LAB_002bd210(u32 **param_1)
 // FUN_002bd080 NONMATCHING
 
 u32 func_002bd080(int *work)
-
 {
   int unit;
-  s16 current;
-  u16 maximum;
-  int value;
-  int adjusted;
+  s32 value;
+  s32 maximum;
 
   unit = *work;
   switch (*(u8 *)((int)work + 4)) {
   case 0:
-    current = func_002ffd70(*(u32 *)(unit + 0xa2c));
-    maximum = func_002ffdf0(*(u32 *)(unit + 0xa2c));
-    value = (long)current;
+    value = (s16)func_002ffd70(*(u32 *)(unit + 0xa2c));
+    maximum = (s16)func_002ffdf0(*(u32 *)(unit + 0xa2c));
     if (*(s16 *)((int)work + 6) != 0) {
-      adjusted = (long)(s16)(current + *(s16 *)((int)work + 6));
-      value = (long)maximum;
-      if (adjusted <= value) {
-        value = adjusted;
-        if (adjusted < 0) {
-          value = 0;
-        }
+      value = (s16)(value + *(s16 *)((int)work + 6));
+      if (value > maximum) {
+        value = maximum;
+      } else if (value < 0) {
+        value = 0;
       }
     }
     *(float *)(unit + 0xa04) = (float)(int)value / (float)(int)maximum;
     break;
   case 1:
-    current = func_002ffd80(*(u32 *)(unit + 0xa2c));
-    maximum = func_00300100(*(u32 *)(unit + 0xa2c));
-    value = (long)current;
+    value = (s16)func_002ffd80(*(u32 *)(unit + 0xa2c));
+    maximum = (s16)func_00300100(*(u32 *)(unit + 0xa2c));
     if (*(s16 *)((int)work + 6) != 0) {
-      adjusted = (long)(s16)(current + *(s16 *)((int)work + 6));
-      value = (long)maximum;
-      if (adjusted <= value) {
-        value = adjusted;
-        if (adjusted < 0) {
-          value = 0;
-        }
+      value = (s16)(value + *(s16 *)((int)work + 6));
+      if (value > maximum) {
+        value = maximum;
+      } else if (value < 0) {
+        value = 0;
       }
     }
     *(float *)(unit + 0xa18) = (float)(int)value / (float)(int)maximum;

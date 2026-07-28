@@ -115,6 +115,8 @@ extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
 
 #pragma alias h_campNoopRootDrawCallback_4 h_campNoopRootDrawCallback
 extern void h_campNoopRootDrawCallback_4(s32, s32, f32, f32);
+#pragma alias h_campNoopRootDrawCallback_5 h_campNoopRootDrawCallback
+extern void h_campNoopRootDrawCallback_5(s32, s32, f32, f32, f32);
 static const char* sCourageLevels[] = {
     "Timid", "Ordinary", "Determined", "Though", "Fearless", "Badass"
 };
@@ -1347,7 +1349,8 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
                               color, colorAlpha, 0x280, 0x280,
                               (const u32*)textureState);
             }
-            h_campNoopRootDrawCallback();
+            h_campNoopRootDrawCallback_5((s32)(s16)fade, 0x1000,
+                                         0.0f, 0.0f, 5.0f + alpha);
         }
 
         fade = 0x32 - ((phase * 0x32) / 6);
@@ -1531,7 +1534,8 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
                       temp_3_2 | ~0xffu, var_5 | 0x4fa4ff00,
                       0x280, 0x280, (const u32*)var_8);
     }
-    h_campNoopRootDrawCallback_4((s32)(s16)temp_16, 0, 0.0f, 4.0f + alpha);
+    h_campNoopRootDrawCallback_5((s32)(s16)temp_16, 0, 0.0f, 0.0f,
+                                 4.0f + alpha);
 
     temp_2_2 = func_001158b0(0, DAT_00833B78, 0);
     *(f32*)((u8*)temp_2_2 + 0x2c) = 2.0f + alpha;
@@ -1843,16 +1847,15 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
 {
     register void* parent;
+    register void* textureState;
     void* stage;
-    void* textureState;
     void* node;
     s32 cacheIndex;
     f32* cacheSlot;
     f32 oldDuration;
     f32 newDuration;
-    CampVec2 pos;
-    f32 x;
-    f32 y;
+    CampVec2 source;
+    CampVec2 position;
 
     if (iGpffffb270 == NULL) {
         textureState = NULL;
@@ -1867,7 +1870,7 @@ void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
     if (textureState != NULL) {
         func_00114450_7arg(2.0f + alpha, 0.0f, -87.0f, -1, 0x4fa4ff19, 0x280, 0x280);
     }
-    h_campNoopRootDrawCallback();
+    h_campNoopRootDrawCallback_5(0, 0x1000, 0.0f, 0.0f, 2.0f + alpha);
 
     node = func_001158b0(0, DAT_00833B78, 0);
     *(f32*)((u8*)node + 0x2c) = 1.0f + alpha;
@@ -1887,27 +1890,28 @@ void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
         work->drawChild = (KwlnTask*)1;
     }
 
+    source.x = 0.0f;
     oldDuration = (f32)(s32)work->transitionDuration;
+    source.y = oldDuration;
     work->transitionDuration = (s32)(oldDuration + 1.0f);
     newDuration = (f32)(s32)work->transitionDuration;
     if (!(newDuration <= 767.0f)) {
         work->transitionDuration = (s32)(newDuration - 448.0f);
     }
 
-    pos.x = 0.0f;
-    pos.y = oldDuration;
-    x = 589.0f + pos.x;
-    y = pos.y - 190.0f;
-    h_campDrawSprite(parent, DAT_00833B8C, 3, 0, x, y, 100.0f);
-    y = (pos.y - 129.0f) - 190.0f;
-    h_campDrawSprite(parent, DAT_00833B8C, 4, 0, x, y, 100.0f);
-    if (!(pos.y <= 448.0f)) {
-        pos.y -= 448.0f;
-        x = 589.0f + pos.x;
-        y = pos.y - 190.0f;
-        h_campDrawSprite(parent, DAT_00833B8C, 3, 0, x, y, 100.0f);
-        y = (pos.y - 129.0f) - 190.0f;
-        h_campDrawSprite(parent, DAT_00833B8C, 4, 0, x, y, 100.0f);
+    position = source;
+    h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 3, 0,
+                     589.0f + position.x, position.y - 190.0f, 100.0f);
+    h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 4, 0,
+                     589.0f + position.x,
+                     (position.y - 129.0f) - 190.0f, 100.0f);
+    if (!(position.y <= 448.0f)) {
+        position.y -= 448.0f;
+        h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 3, 0,
+                         589.0f + position.x, position.y - 190.0f, 100.0f);
+        h_campDrawSprite(parent, *(void**)DAT_00833B8C_abs, 4, 0,
+                         589.0f + position.x,
+                         (position.y - 129.0f) - 190.0f, 100.0f);
     }
 
     h_campDrawRootUi(work, alpha);
