@@ -7675,7 +7675,7 @@ void FUN_0030ee10(void)
     fVar4 = fVar4 * fVar2;
     fVar2 = (float)FUN_0030fdf0(0x17,0);
     fVar3 = (float)FUN_0030fdf0(0x19,0);
-    fVar3 = fVar4 * fVar2 + fVar3 + 0.0f;
+    fVar3 = fVar4 * fVar2 + fVar3;
   }
   FUN_00311190((int)fVar3);
   return;
@@ -7832,7 +7832,7 @@ void FUN_0030f3e0(void)
   fVar1 = fVar1 / fVar2;
   fVar2 = fVar3 * fVar1 * 30.0f;
   fVar1 = (float)FUN_0030fdf0(0x22,0);
-  FUN_00311190((int)(fVar1 * 5.0f + fVar2 + 0.0f));
+  FUN_00311190((int)(fVar1 * 5.0f + fVar2));
   return;
 }
 

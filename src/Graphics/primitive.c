@@ -728,12 +728,12 @@ void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1)
     out->quat.z = firstWeight * first->quat.z + secondWeight * second->quat.z;
     out->quat.w = firstWeight * first->quat.w + secondWeight * second->quat.w;
 
-    out->values[0] = secondWeight * (second->values[0] - first->values[0]) + first->values[0] + 0.0f;
-    out->values[1] = secondWeight * (second->values[1] - first->values[1]) + first->values[1] + 0.0f;
-    out->values[2] = secondWeight * (second->values[2] - first->values[2]) + first->values[2] + 0.0f;
-    out->values[3] = secondWeight * (second->values[3] - first->values[3]) + first->values[3] + 0.0f;
-    out->values[4] = secondWeight * (second->values[4] - first->values[4]) + first->values[4] + 0.0f;
-    out->values[5] = secondWeight * (second->values[5] - first->values[5]) + first->values[5] + 0.0f;
+    out->values[0] = secondWeight * (second->values[0] - first->values[0]) + first->values[0];
+    out->values[1] = secondWeight * (second->values[1] - first->values[1]) + first->values[1];
+    out->values[2] = secondWeight * (second->values[2] - first->values[2]) + first->values[2];
+    out->values[3] = secondWeight * (second->values[3] - first->values[3]) + first->values[3];
+    out->values[4] = secondWeight * (second->values[4] - first->values[4]) + first->values[4];
+    out->values[5] = secondWeight * (second->values[5] - first->values[5]) + first->values[5];
 }
 
 // FUN_0035A620
@@ -896,12 +896,12 @@ void FUN_0035a870(void* param_1, void* param_2)
     out->quat.x = inZ * ay - inY * az;
     out->quat.y = inX * az - inZ * ax;
     out->quat.z = inY * ax - inX * ay;
-    out->quat.x = out->quat.x + ax * inW + 0.0f;
-    out->quat.y = out->quat.y + ay * inW + 0.0f;
-    out->quat.z = out->quat.z + az * inW + 0.0f;
-    out->quat.x = out->quat.x + inX * aw + 0.0f;
-    out->quat.y = out->quat.y + inY * aw + 0.0f;
-    out->quat.z = out->quat.z + inZ * aw + 0.0f;
+    out->quat.x = out->quat.x + ax * inW;
+    out->quat.y = out->quat.y + ay * inW;
+    out->quat.z = out->quat.z + az * inW;
+    out->quat.x = out->quat.x + inX * aw;
+    out->quat.y = out->quat.y + inY * aw;
+    out->quat.z = out->quat.z + inZ * aw;
 
     out->values[0] = out->values[0] - in->values[0];
     out->values[1] = out->values[1] - in->values[1];

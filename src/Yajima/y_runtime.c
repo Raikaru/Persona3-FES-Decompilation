@@ -12022,16 +12022,13 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   };
   RwV2d position;
   float y;
-  int cVar1;
   int cVar2;
   int iVar3;
   int iVar4;
   struct CoordinateValues *coordinateBase;
   
-  cVar1 = *(s8 *)((int)param_3 * 4 + DAT_007ce6ec + 4);
-  coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
-  iVar3 = coordinateBase->y;
-  iVar3 = iVar3 - (cVar1 - 1) * 0x40;
+  iVar3 = (coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs)->y -
+          (*(s8 *)((int)param_3 * 4 + DAT_007ce6ec + 4) - 1) * 0x40;
   cVar2 = *(s8 *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
