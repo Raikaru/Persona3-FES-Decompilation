@@ -1677,6 +1677,7 @@ u32 func_001a9180(const KwlnTask* task)
 s32 func_001a91b0(KwlnTask* task, void* data)
 {
     KClumpStreamWork* work;
+    KClumpStreamWork* indexedWork;
     s32 index;
     void* stream;
     u32 indexOffset;
@@ -1687,18 +1688,22 @@ s32 func_001a91b0(KwlnTask* task, void* data)
     if (work->mode == 1)
     {
         index = 0;
-        do
+        while (index < 8)
         {
-            if (work->queuedStreams[index] == NULL)
+            indexedWork = work;
+            indexedWork = (KClumpStreamWork*)((s32)indexedWork + index * 4);
+            if (indexedWork->queuedStreams[0] == NULL)
             {
                 break;
             }
             index++;
-        } while (index < 8);
+        }
         indexOffset = index * 4;
-        streamSlot = &work->queuedStreams[index];
-        stream = func_0034fd50(work->stream);
-        *streamSlot = stream;
+        indexedWork = work;
+        indexedWork = (KClumpStreamWork*)((s32)indexedWork + indexOffset);
+        streamSlot = &indexedWork->queuedStreams[0];
+        *streamSlot = func_0034fd50(work->stream);
+        stream = *streamSlot;
         func_0034fdf0(stream, data);
         *(u32*)((u8*)work->queuedValues + indexOffset) = 0;
         work->queuedStatus[index] = 2;

@@ -74,6 +74,8 @@ extern u8 DAT_0095ae60_abs[];
 extern u8 * PTR_s_Go_home_006a25c0;
 #pragma alias PTR_s_Go_home_006a25c0_abs PTR_s_Go_home_006a25c0
 extern u8 PTR_s_Go_home_006a25c0_abs[];
+#pragma alias FUN_003082f0_tag FUN_003082f0
+extern s16 FUN_003082f0_tag(s32 font, u16 glyph);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -574,14 +576,15 @@ u64 FUN_003aec20(u64 unused, int context)
   } else {
     high = cursor[1] - 1;
   }
-  glyph = FUN_003082f0(0, (u16)((u16)high << 8 | low));
+  glyph = FUN_003082f0_tag(0, (u16)((u16)high << 8 | low));
 
   source = DAT_006a26f0;
   dest = table;
   count = 0x13;
   do {
-    *dest++ = *source++;
+    char value = *source++;
     count--;
+    *dest++ = value;
   } while (count > 0);
 
   tag[0] = 0x8d;

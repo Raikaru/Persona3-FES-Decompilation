@@ -63,6 +63,8 @@ extern u32 DAT_0069de40;
 extern u32 DAT_0069e180;
 extern u32 DAT_0069e1a0;
 extern u32 DAT_0069e1a2;
+#pragma alias DAT_0069e1a2_byte DAT_0069e1a2
+extern char DAT_0069e1a2_byte[];
 extern u32 DAT_0069e1aa;
 extern u32 DAT_0069e420;
 extern u32 DAT_0069e422;
@@ -9506,19 +9508,21 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
   u16 *puVar2;
 
-  int iVar6;
+  int iVar8;
+
+  u32 characterKind;
 
   int lVar3;
 
-  short sVar4;
+  int iVar6;
+
+  u16 selectedId;
 
   u8 *iVar5;
 
-  int iVar8;
   int listIndex;
   int eventKind;
-  u32 characterKind;
-  u32 selectedId;
+  int opcodeOffset;
 
   union EvtPackedValue {
     u32 value;
@@ -9613,14 +9617,13 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
     }
 
-    sVar4 = (short)selectedId;
 
     if (param_2 == 0x17) {
 
       if (puVar2 == (u16 *)0x0) {
 
         packedNoEntry.value = *(u32 *)(iVar5 + 0x16c);
-        packedNoEntry.half.high = sVar4;
+        packedNoEntry.half.high = selectedId;
         *(u32 *)(iVar5 + 0x16c) = packedNoEntry.value;
 
       }
@@ -9628,7 +9631,7 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
       else {
 
         packedEntry.value = *(u32 *)(iVar5 + 0x16c);
-        packedEntry.half.high = sVar4;
+        packedEntry.half.high = selectedId;
         *(u32 *)(iVar5 + 0x16c) = packedEntry.value;
 
       }
@@ -9639,7 +9642,8 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
       eventKind = **(int **)(iVar5 + 0x164);
 
-      cVar1 = ((char *)&DAT_0069e1a2)[*(int *)(iVar5 + 0x158) + eventKind * 0xc];
+      opcodeOffset = eventKind * 0xc;
+      cVar1 = DAT_0069e1a2_byte[opcodeOffset + *(int *)(iVar5 + 0x158)];
 
       switch (cVar1) {
       case '\r':
@@ -9654,35 +9658,37 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
         switch (eventKind) {
         case 0x2f:
         case 0x31:
-          *(short *)(iVar6 + 0x12) = sVar4;
+          *(short *)(iVar6 + 0x12) = selectedId;
           break;
         }
         break;
       case '\x1c':
-        if (eventKind == 0x29) {
-          switch (*(u8 *)(iVar6 + 0x10)) {
+        switch (eventKind) {
+        case 0x29:
+          switch (*(char *)(iVar6 + 0x10)) {
           case 0:
           case 3:
           case 4:
           case 5:
-            *(short *)(iVar6 + 0x14) = sVar4;
-            *(int *)(iVar5 + 0x198) = (int)sVar4;
+            *(short *)(iVar6 + 0x14) = selectedId;
+            *(int *)(iVar5 + 0x198) = (s16)selectedId;
             break;
           case 2:
-            *(short *)(iVar6 + 0x1c) = sVar4;
+            *(short *)(iVar6 + 0x1c) = selectedId;
             *(u32 *)(iVar5 + 0x1b0) = selectedId;
             break;
           case 7:
             if (*(int *)(iVar5 + 400) == 4) {
-              *(short *)(iVar6 + 0x1c) = sVar4;
-              *(int *)(iVar5 + 0x1a8) = (int)sVar4;
+              *(short *)(iVar6 + 0x1c) = selectedId;
+              *(int *)(iVar5 + 0x1a8) = (s16)selectedId;
             }
-            FUN_005225a8(0x69d7b0);
+            FUN_005225a8(DAT_0069d7a0 + 0x10);
             break;
           case 9:
-            *(short *)(iVar6 + 0x16) = sVar4;
-            *(int *)(iVar5 + 0x19c) = (int)sVar4;
+            *(short *)(iVar6 + 0x16) = selectedId;
+            *(int *)(iVar5 + 0x19c) = (s16)selectedId;
           }
+          break;
         }
         break;
       case '\n':
