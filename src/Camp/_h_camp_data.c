@@ -2255,16 +2255,13 @@ void FUN_0016c1d0(void)
 // FUN_0016C2F0 NONMATCHING
 void FUN_0016c2f0(void)
 {
-    s32* piVar1;
-    u32 uVar2;
     u32 count;
     s32 n;
     s32 scaled;
     u8* p;
-    u32* output;
-    piVar1 = (s32*)DAT_0083bb30;
-    count = (u32)*piVar1;
-    p = (u8*)piVar1 + 0x10;
+
+    count = DAT_0083bb30[0];
+    p = (u8*)DAT_0083bb30 + 0x10;
     DAT_007cdfe4 = p;
     p += count * 0x28;
     n = *(s32*)p;
@@ -2308,21 +2305,25 @@ void FUN_0016c2f0(void)
     n = *(s32*)p;
     p += 0x10;
     DAT_007cdfb4 = (s32*)p;
-    scaled = n << 5;
-    n = *(s32*)(p + scaled);
-    p += scaled;
+    p += n << 5;
+    n = *(s32*)p;
     p += 0x10;
     DAT_007cdfc8 = (s32*)p;
-    scaled = n << 1;
-    p += (scaled + n) << 2;
+    p += n << 3;
     n = *(s32*)p;
     p += 0x10;
     scaled = n << 1;
     p += (scaled + n) << 2;
-    piVar1 = (s32*)p;
-    output = DAT_0083aaa0;
-    for (; uVar2 < 0x23; uVar2++) {
-        output[uVar2] = (u32)piVar1;
-        piVar1 += 8;
+    {
+        s32* entry;
+        u32* output;
+        u32 i;
+
+        entry = (s32*)p;
+        output = DAT_0083aaa0;
+        for (i = 0; i < 0x23; i++) {
+            output[i] = (u32)entry;
+            entry += 8;
+        }
     }
 }

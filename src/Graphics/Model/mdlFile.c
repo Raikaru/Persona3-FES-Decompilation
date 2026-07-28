@@ -8425,13 +8425,12 @@ void FUN_003244c0(int param_1)
 
 void FUN_00324510(int param_1,u64 param_2)
 {
-  u32 index;
+  u16 index;
   u32 handle;
 
   handle = FUN_003210c0_ret(param_2);
-  for (index = 0; (u16)index < *(short *)(param_1 + 0x1c);
-       index = (index + 1) & 0xffff) {
-    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + (u16)index * 4),handle);
+  for (index = 0; index < *(short *)(param_1 + 0x1c); index++) {
+    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + index * 4),handle);
   }
   FUN_004d0f00(handle);
 }
@@ -40670,7 +40669,7 @@ void FUN_00346180(int param_1,float *param_2)
 
 
 
-// FUN_003461A0 NONMATCHING
+// FUN_003461A0
 
 
 u32 FUN_003461a0(u32 param_1)

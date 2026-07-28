@@ -841,11 +841,11 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
 void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
 {
+  int* position;
+  int* color;
   RwIm2DVertex* vertices;
   RwIm2DVertex* vertex;
   void (**setRenderState)(u32 state, u32 value);
-  int* position;
-  int* color;
   f32 recipZ;
   f32 z;
   int i;

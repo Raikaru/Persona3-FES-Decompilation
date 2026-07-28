@@ -123,7 +123,7 @@ void func_001fa4f0(u32 param_1);
 u32 func_001faea0(void);
 void func_001fb130(u64 param_1,u64 param_2);
 void func_001fb1b0(u64 param_1,u64 param_2);
-void func_001fb1f0(u32 param_1,int param_2,int *param_3);
+void func_001fb1f0(DatPersonaWork* persona, u16* output, s32* outputCount);
 void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5);
 u16 func_001fb560(u32 param_1);
 u32 func_001fba70(short param_1);
@@ -1407,104 +1407,59 @@ void func_001fb1b0(u64 param_1,u64 param_2)
 // FUN_001FB1F0 NONMATCHING
 
 
-void func_001fb1f0(u32 param_1,int param_2,int *param_3)
-
-
-
+void func_001fb1f0(DatPersonaWork* persona, u16* output, s32* outputCount)
 {
+    u16* skills;
+    s32 skillCount;
+    s8* entry;
+    s8* current;
+    s32 firstIndex;
+    s32 indexCount;
+    s32 outputSize;
+    s32 i;
+    s32 j;
 
-  int iVar1;
-
-  int iVar2;
-
-  long lVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  int iStack_8;
-
-  int iStack_4;
-
-  
-
-  iVar1 = FUN_00173370();
-
-  iVar2 = FUN_00176a30(param_1);
-
-  lVar3 = FUN_00175ca0(param_1);
-
-  iVar6 = (int)param_1;
-
-  if (lVar3 != 0) {
-
-    iVar5 = (int)iGpffffb740 + (*(u16 *)(iVar6 + 2) - 0xc0) * 0x26e + 4;
-
-    func_001fb4b0((void*)iVar5,0x20,*(u8 *)(iVar6 + 4),99 - (u32)*(u8 *)(iVar6 + 4),&iStack_4,&iStack_8
-
-                );
-
-  }
-
-  else {
-
-    iVar5 = (int)iGpffffb738 + (u32)*(u16 *)(iVar6 + 2) * 0x46 + 6;
-
-    func_001fb4b0((void*)iVar5,0x10,
-
-                 (u32)*(u8 *)(iVar6 + 4) -
-
-                 (u32)*(u8 *)((u32)*(u16 *)(iVar6 + 2) * 0xe + iGpffffb730 + 3),
-
-                 99 - (u32)*(u8 *)(iVar6 + 4),&iStack_4,&iStack_8);
-
-  }
-
-  iVar5 = iVar5 + iStack_4 * 4;
-
-  iVar6 = 0;
-
-  for (iVar7 = 0; iVar7 < iStack_8; iVar7 = iVar7 + 1) {
-
-    if (*(char *)(iVar5 + 1) == '\x01') {
-
-      for (iVar4 = 0; (iVar4 < iVar2 && (*(short *)(iVar5 + 2) != *(short *)(iVar1 + iVar4 * 2)));
-
-          iVar4 = iVar4 + 1) {
-
-      }
-
-      if (iVar4 == iVar2) {
-
-        if (7 < iVar6) {
-
-          FUN_0019d3f0(0x684c28,0x5b);
-
-        }
-
-        *(u16 *)(param_2 + iVar6 * 2) = *(u16 *)(iVar5 + 2);
-
-        iVar6 = iVar6 + 1;
-
-      }
-
+    skills = datPersonaGetSkills(persona);
+    skillCount = datPersonaCountValidSkills(persona);
+    if (FUN_00175ca0(persona) != 0)
+    {
+        entry = (s8*)DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
+        func_001fb4b0(entry, 0x20, persona->level,
+                     99 - persona->level, &firstIndex, &indexCount);
+    }
+    else
+    {
+        entry = (s8*)DAT_007ce428 + persona->id * 0x46 + 6;
+        func_001fb4b0(entry, 0x10,
+                     persona->level -
+                         DAT_007ce420[persona->id * 0xe + 3],
+                     99 - persona->level, &firstIndex, &indexCount);
     }
 
-    if (iVar6 == 8) break;
-
-    iVar5 = iVar5 + 4;
-
-  }
-
-  *param_3 = iVar6;
-
-  return;
-
+    current = entry + firstIndex * 4;
+    outputSize = 0;
+    for (i = 0; i < indexCount; i++, current += 4)
+    {
+        if (current[1] == 1)
+        {
+            j = 0;
+            while (j < skillCount)
+            {
+                if (*(u16*)(current + 2) == skills[j])
+                    break;
+                j++;
+            }
+            if (j == skillCount)
+            {
+                K_ASSERT(outputSize < 8, 0x5b);
+                output[outputSize] = *(u16*)(current + 2);
+                outputSize++;
+            }
+        }
+        if (outputSize == 8)
+            break;
+    }
+    *outputCount = outputSize;
 }
 // FUN_001FB3F0
 #pragma optimization_level 2

@@ -1285,10 +1285,12 @@ void func_00101e30(void* requestData)
     } work;
     u32 fileSize;
     u32 offset;
+    u32 entryOffset;
     s32 i;
     s32 scan;
     char c;
-    char separator;
+    s32 separator;
+    s32 forwardSeparator;
     char* cursor;
     HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
@@ -1342,9 +1344,12 @@ scan_finished:
             return;
         }
         request->archiveFileCount++;
-        memcpy(&fileSize, request->fileMemory + offset + 0xfc, 4);
+        entryOffset = offset + 0xfc;
+        memcpy(&fileSize, request->fileMemory + entryOffset, 4);
         offset += 0x100;
         strcat(work.directory, work.fileName);
+        separator = '\\';
+        forwardSeparator = '/';
         for (i = 0; i < 0xff; i++)
         {
             c = work.directory[i];
@@ -1357,9 +1362,9 @@ scan_finished:
             {
                 break;
             }
-            if (c == '/')
+            if (c == forwardSeparator)
             {
-                work.directory[i] = '\\';
+                work.directory[i] = separator;
             }
         }
         func_00102030(requestData, request->fileMemory + offset,
