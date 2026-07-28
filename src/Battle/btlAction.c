@@ -700,22 +700,7 @@ u32 FUN_0028a3e0(BtlAction* action)
     u16 j;
     u8 count;
 
-    if (action->unit->genus == 1)
-    {
-        for (i = 0; i < action->target.targetedCount; i++)
-        {
-            target = action->target.targetedActions[i];
-            count = ACTION_U8(target, 0xc8);
-            for (j = 0; j < count; j++)
-            {
-                if ((ACTION_U16(target, 0xfa + j * 0x1c) & 4) != 0)
-                {
-                    return true;
-                }
-            }
-        }
-    }
-    else if (action->unit->genus == 0)
+    if (action->unit->genus == 0)
     {
         for (i = 0; i < action->target.targetedCount; i++)
         {
@@ -724,6 +709,21 @@ u32 FUN_0028a3e0(BtlAction* action)
             for (j = 0; j < count; j++)
             {
                 if ((ACTION_U32(target, 0xe8 + j * 0x1c) & 0x100000) != 0)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    else if (action->unit->genus == 1)
+    {
+        for (i = 0; i < action->target.targetedCount; i++)
+        {
+            target = action->target.targetedActions[i];
+            count = ACTION_U8(target, 0xc8);
+            for (j = 0; j < count; j++)
+            {
+                if ((ACTION_U16(target, 0xfa + j * 0x1c) & 4) != 0)
                 {
                     return true;
                 }

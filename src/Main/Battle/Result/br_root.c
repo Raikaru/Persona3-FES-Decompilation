@@ -3160,26 +3160,29 @@ void func_001f6a60(void)
                               work + (u32)i * 20 + 0x3420);
             }
             result = func_0035c250(BR_U32(work, 0x34c4));
-            if (result == 2) {
+            switch (result) {
+            case 0:
+                K_ASSERT(0, 0x32d);
+                break;
+            case 1:
+                goto result_one;
+            case 2:
                 BR_U32(work, 4) = 8;
                 return;
-            }
-            if (result == 1) {
+            result_one:
                 state = 8;
                 break;
+            default:
+                K_ASSERT(0, 0x337);
+                break;
             }
-            if (result == 0) {
-                K_ASSERT(0, 0x32d);
-            }
-            K_ASSERT(0, 0x337);
             break;
         case 8:
             func_003c72d0(sflResGetBaseSpriteData());
-            if (sBrReward == NULL) {
-                K_ASSERT(sBrReward != NULL, 0x8c);
-            }
-            BR_U32(sBrReward, 0) &= ~2u;
-            BR_U32(sBrReward, 4) = 9;
+            K_ASSERT(sBrReward != NULL, 0x8c);
+            work = sBrReward;
+            BR_U32(work, 0) &= ~1u;
+            BR_U32(work, 4) = 9;
             return;
         default:
             K_ASSERT(0, 0x341);

@@ -1462,7 +1462,7 @@ u8 clndIsHolidayOrSunday()
     s32 month;
     const Holiday* holidays;
     s32 day;
-    s16 sentinel;
+    s32 sentinel;
 
     daysSinceApr5 = datGetDaysSinceApr5();
     if ((daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)

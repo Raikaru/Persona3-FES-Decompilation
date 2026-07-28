@@ -32,6 +32,7 @@ extern u32 DAT_006a2f30;
 extern u32 DAT_006a2f38;
 extern u32 DAT_006a2f40;
 extern u32 DAT_006a2f48;
+extern char DAT_006a2e10[];
 extern char DAT_006a2df0[];
 extern u32 DAT_006a2f50;
 extern f32 DAT_007cad5c;
@@ -1349,7 +1350,7 @@ selected:
   if (0 < param_6) {
     FUN_00318770_scene_typed(uVar1,param_2,(float)(int)param_6);
   }
-  FUN_005225a8(0x6a2e10,uVar1,param_2,param_3);
+  FUN_005225a8(DAT_006a2e10,uVar1,param_2,param_3);
 complete:
   *(u32 *)(param_1 + 0x28) = *(u32 *)(param_1 + 0x28) & 0xffffdfff;
   return 1;

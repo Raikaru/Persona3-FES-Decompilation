@@ -2861,8 +2861,8 @@ int FUN_0031e300(u32 *param_1)
 int FUN_0031e310(short param_1,short param_2)
 {
   u32 scanIndex;
-  u16 key1;
-  u16 key2;
+  u32 key1;
+  u32 key2;
   u8 *table;
   s32 bestIndex;
   u32 bestValue;
@@ -2872,10 +2872,10 @@ int FUN_0031e310(short param_1,short param_2)
   u32 offset;
 
   scanIndex = 0;
-  key1 = param_1;
-  key2 = param_2;
+  key1 = (u16)param_1;
+  key2 = (u16)param_2;
   table = DAT_00957220_abs;
-  for (; scanIndex < 3; scanIndex = (scanIndex + 1) & 0xffff) {
+  for (; (scanIndex & 0xffff) < 3; scanIndex = (scanIndex + 1) & 0xffff) {
     if (key1 == *(u16 *)(table + (u16)scanIndex * 8 + 4) &&
         key2 == *(u16 *)(table + (u16)scanIndex * 8 + 6)) {
       return (u16)scanIndex + 3;
@@ -2886,7 +2886,7 @@ int FUN_0031e310(short param_1,short param_2)
   bestValue = bestIndex;
   candidateIndex = 0;
   candidateTable = DAT_00957220_abs;
-  for (; candidateIndex < 3; candidateIndex = (candidateIndex + 1) & 0xffff) {
+  for (; (candidateIndex & 0xffff) < 3; candidateIndex = (candidateIndex + 1) & 0xffff) {
     currentValue = *(u32 *)(candidateTable + (u16)candidateIndex * 8);
     if (currentValue < bestValue) {
       bestValue = currentValue;
@@ -43693,12 +43693,12 @@ void FUN_00349a30(int param_1)
 
 
 
-// FUN_00349AF0 NONMATCHING
+// FUN_00349AF0
 
 
 void FUN_00349af0(u8 (*param_1) [16])
 {
-  int iVar1;
+  u8 *iVar1;
   int iVar5;
   int iVar2;
   int iVar3;
@@ -43707,7 +43707,7 @@ void FUN_00349af0(u8 (*param_1) [16])
   u32 colourStack[4];
   f32 vuPos[4];
 
-  iVar1 = *(int *)(param_1[2] + 4);
+  iVar1 = *(u8 **)(param_1[2] + 4);
   state = (u8 *)(iVar1 + 0xc0);
   iVar2 = *(int *)(iVar1 + 0xb8);
   if (iVar2 == 0) {
@@ -43892,13 +43892,13 @@ void FUN_00349fa0(void)
 
 
 
-// FUN_00349FD0 NONMATCHING
+// FUN_00349FD0
 
 
 void FUN_00349fd0(u8 (*param_1) [16])
 {
   u32 uVar1;
-  int iVar2;
+  u8 *iVar2;
   u8 *state;
   int iVar6;
   int iVar3;
@@ -43908,7 +43908,7 @@ void FUN_00349fd0(u8 (*param_1) [16])
   f32 vuPos[4];
 
   uVar1 = *(u32 *)param_1[2];
-  iVar2 = *(int *)(param_1[2] + 4);
+  iVar2 = *(u8 **)(param_1[2] + 4);
   state = (u8 *)(iVar2 + 0xc0);
   iVar3 = *(int *)(iVar2 + 0xb8);
   if (iVar3 == 0) {
@@ -44072,13 +44072,13 @@ void FUN_0034a340(void)
 
 
 
-// FUN_0034A370 NONMATCHING
+// FUN_0034A370
 
 
 void FUN_0034a370(u8 (*param_1) [16])
 {
   u32 uVar1;
-  int iVar2;
+  u8 *iVar2;
   u8 *state;
   int iVar6;
   int iVar3;
@@ -44088,7 +44088,7 @@ void FUN_0034a370(u8 (*param_1) [16])
   f32 vuPos[4];
 
   uVar1 = *(u32 *)param_1[2];
-  iVar2 = *(int *)(param_1[2] + 4);
+  iVar2 = *(u8 **)(param_1[2] + 4);
   state = (u8 *)(iVar2 + 0xc0);
   iVar3 = *(int *)(iVar2 + 0xb8);
   if (iVar3 == 0) {
@@ -44327,13 +44327,13 @@ void FUN_0034a990(void)
 
 
 
-// FUN_0034A9C0 NONMATCHING
+// FUN_0034A9C0
 
 
 void FUN_0034a9c0(u8 (*param_1) [16])
 {
   u32 uVar1;
-  int iVar2;
+  u8 *iVar2;
   u8 *state;
   int iVar6;
   int iVar3;
@@ -44343,7 +44343,7 @@ void FUN_0034a9c0(u8 (*param_1) [16])
   f32 vuPos[4];
 
   uVar1 = *(u32 *)param_1[2];
-  iVar2 = *(int *)(param_1[2] + 4);
+  iVar2 = *(u8 **)(param_1[2] + 4);
   state = (u8 *)(iVar2 + 0xc0);
   iVar3 = *(int *)(iVar2 + 0xb8);
   if (iVar3 == 0) {
@@ -44524,12 +44524,12 @@ void FUN_0034ada0(int param_1)
 
 
 
-// FUN_0034AE30 NONMATCHING
+// FUN_0034AE30
 
 
 void FUN_0034ae30(u8 (*param_1) [16])
 {
-  int iVar1;
+  u8 *iVar1;
   int iVar4;
   int iVar2;
   int iVar3;
@@ -44538,7 +44538,7 @@ void FUN_0034ae30(u8 (*param_1) [16])
   u32 colourStack[4];
   f32 vuPos[4];
 
-  iVar1 = *(int *)(param_1[2] + 4);
+  iVar1 = *(u8 **)(param_1[2] + 4);
   state = (u8 *)(iVar1 + 0xc0);
   iVar2 = *(int *)(iVar1 + 0xb8);
   if (iVar2 == 0) {

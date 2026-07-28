@@ -2935,49 +2935,52 @@ void evtMenuDrawText(s32 x,s32 y,f32 depth,s32 style,const char *format,...)
   va_start(args,format);
   evtMenuVFormatText(text,format,args);
 
-  if (style == 0xe) {
-    color.r = 0x80;
-    color.g = 0xc8;
-    color.b = 0xc8;
+  switch (style) {
+  case 0:
+    color.r = 0xe6;
+    color.g = 0xe6;
+    color.b = 0xe6;
     color.a = 0xff;
-  }
-  else if (style == 6) {
+    break;
+  case 1:
+    color.r = 0x80;
+    color.g = 0x80;
+    color.b = 0xff;
+    color.a = 0xff;
+    break;
+  case 2:
+  case 3:
+    break;
+  case 4:
+    color.r = 0x80;
+    color.g = 0x80;
+    color.b = 0xff;
+    color.a = 0xff;
+    break;
+  case 5:
+    color.r = 0x80;
+    color.g = 0x80;
+    color.b = 0xff;
+    color.a = 0xff;
+    break;
+  case 6:
     color.r = 0xf0;
     color.g = 0xf0;
     color.b = 0x64;
     color.a = 0xff;
-  }
-  else if (style == 5) {
+    break;
+  case 0xe:
+    color.r = 0x80;
+    color.g = 0xc8;
+    color.b = 0xc8;
+    color.a = 0xff;
+    break;
+  default:
     color.r = 0x80;
     color.g = 0x80;
-    color.b = 0xff;
+    color.b = 0x80;
     color.a = 0xff;
-  }
-  else if (style == 4) {
-    color.r = 0x80;
-    color.g = 0x80;
-    color.b = 0xff;
-    color.a = 0xff;
-  }
-  else if ((style != 3) && (style != 2)) {
-    if (style == 1) {
-      color.r = 0x80;
-      color.g = 0x80;
-      color.b = 0xff;
-      color.a = 0xff;
-    }
-    else if (style == 0) {
-      color.r = 0xe6;
-      color.g = 0xe6;
-      color.b = 0xe6;
-      color.a = 0xff;
-    }
-    else {
-      color.r = 0x80;
-      color.g = 0x80;
-      color.b = 0x80;
-      color.a = 0xff;
-    }
+    break;
   }
 
   position.x = (f32)x;
