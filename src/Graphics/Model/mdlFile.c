@@ -5086,81 +5086,41 @@ LAB_003209a8:
 
 
 
-// FUN_00320BA0 NONMATCHING
+// FUN_00320BA0
 
 
 u32 FUN_00320ba0(u32 param_1,u32 *param_2)
-
-
-
 {
+  s32 arrayCount;
+  s32 dataCount;
+  s32 arrayIndex;
+  s32 dataIndex;
+  void *userData;
+  char *name;
+  char *data;
 
-  int iVar1;
-
-  int iVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  int lVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  
-
-  iVar1 = RpMaterialGetUserDataArrayCount();
-
-  iVar7 = 0;
-
-  do {
-
-    if (iVar1 <= iVar7) {
-
-      return param_1;
-
-    }
-
-    uVar3 = RpMaterialGetUserDataArray(param_1,iVar7);
-
-    uVar4 = RpUserDataArrayGetName(uVar3);
-
-    lVar5 = FUN_00524128(uVar4,&gp0xffff9d30);
-
-    if (lVar5 == 0) {
-
-      iVar2 = FUN_0048ef30(uVar3);
-
-      for (iVar6 = 0; iVar6 < iVar2; iVar6 = iVar6 + 1) {
-
-        lVar5 = RpUserDataArrayGetFormat(uVar3);
-
-        if (lVar5 == 3) {
-
-          uVar4 = FUN_0048ef80(uVar3,iVar6);
-
-          lVar5 = FUN_00524128(param_2[1],uVar4);
-
-          if (lVar5 == 0) {
-
-            FUN_00321070((int *)(*param_2),(u32)(param_1));
-
+  arrayCount = RpMaterialGetUserDataArrayCount();
+  arrayIndex = 0;
+  while (arrayIndex < arrayCount) {
+    userData = (void *)RpMaterialGetUserDataArray(param_1,arrayIndex);
+    name = (char *)RpUserDataArrayGetName((u32)userData);
+    if (strcmp(name,(char *)&gp0xffff9d30) == 0) {
+      dataCount = FUN_0048ef30((u32)userData);
+      dataIndex = 0;
+      while (dataIndex < dataCount) {
+        if (RpUserDataArrayGetFormat((u32)userData) == 3) {
+          data = (char *)FUN_0048ef80((u32)userData,dataIndex);
+          if (strcmp((char *)param_2[1],data) == 0) {
+            FUN_00321070((int *)*param_2,param_1);
             return 0;
-
           }
-
         }
-
+        dataIndex++;
       }
-
     }
-
-    iVar7 = iVar7 + 1;
-
-  } while( true );
-
+    arrayIndex++;
+  }
+  return param_1;
 }
 
 
@@ -5234,101 +5194,48 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 
 
 u64 FUN_00320de0(u64 param_1,u32 *param_2)
-
-
-
 {
+  s32 materialCount;
+  s32 arrayCount;
+  s32 dataCount;
+  s32 materialIndex;
+  s32 arrayIndex;
+  s32 dataIndex;
+  u32 material;
+  void *userData;
+  char *name;
+  char *data;
+  u32 geometry;
 
-  int iVar1;
-
-  int iVar2;
-
-  u32 uVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  u32 uVar6;
-
-  u32 uVar7;
-
-  int  lVar8;
-
-  int iVar9;
-
-  int iVar10;
-
-  int iVar11;
-
-  
-
-  iVar1 = *(int *)((int)param_1 + 0x18);
-
-  iVar2 = *(int *)(iVar1 + 0x24);
-
-  iVar11 = 0;
-
-  do {
-
-    if (iVar2 <= iVar11) {
-
-      return param_1;
-
-    }
-
-    uVar3 = *(u32 *)(*(int *)(iVar1 + 0x20) + iVar11 * 4);
-
-    iVar4 = RpMaterialGetUserDataArrayCount(uVar3);
-
-    iVar10 = 0;
-
-    while( true ) {
-
-      if (iVar4 <= iVar10) break;
-
-      uVar6 = RpMaterialGetUserDataArray(uVar3,iVar10);
-
-      uVar7 = RpUserDataArrayGetName(uVar6);
-
-      lVar8 = FUN_00524128(uVar7,&gp0xffff9d30);
-
-      if (lVar8 == 0) {
-
-        iVar5 = FUN_0048ef30(uVar6);
-
-        for (iVar9 = 0; iVar9 < iVar5; iVar9 = iVar9 + 1) {
-
-          lVar8 = RpUserDataArrayGetFormat(uVar6);
-
-          if (lVar8 == 3) {
-
-            uVar7 = FUN_0048ef80(uVar6,iVar9);
-
-            lVar8 = FUN_00524128(*param_2,uVar7);
-
-            if (lVar8 == 0) {
-
-              *(short *)(param_2 + 1) = *(short *)(param_2 + 1) + 1;
-
+  geometry = *(u32 *)((u32)param_1 + 0x18);
+  materialCount = *(s32 *)(geometry + 0x24);
+  materialIndex = 0;
+  while (materialIndex < materialCount) {
+    material = *(u32 *)(*(u32 *)(geometry + 0x20) + materialIndex * 4);
+    arrayCount = RpMaterialGetUserDataArrayCount(material);
+    arrayIndex = 0;
+    while (arrayIndex < arrayCount) {
+      userData = (void *)RpMaterialGetUserDataArray(material,arrayIndex);
+      name = (char *)RpUserDataArrayGetName((u32)userData);
+      if (strcmp(name,(char *)&gp0xffff9d30) == 0) {
+        dataCount = FUN_0048ef30((u32)userData);
+        dataIndex = 0;
+        while (dataIndex < dataCount) {
+          if (RpUserDataArrayGetFormat((u32)userData) == 3) {
+            data = (char *)FUN_0048ef80((u32)userData,dataIndex);
+            if (strcmp((char *)*param_2,data) == 0) {
+              *(u16 *)(param_2 + 1) = *(u16 *)(param_2 + 1) + 1;
               break;
-
             }
-
           }
-
+          dataIndex++;
         }
-
       }
-
-      iVar10 = iVar10 + 1;
-
+      arrayIndex++;
     }
-
-    iVar11 = iVar11 + 1;
-
-  } while( true );
-
+    materialIndex++;
+  }
+  return param_1;
 }
 
 
@@ -27579,7 +27486,7 @@ void FUN_00338ac0(u64 param_1)
 
   u8 uStack_2;
 
-  char cStack_1;
+  u8 cStack_1;
 
   
 
@@ -27609,7 +27516,7 @@ void FUN_00338ac0(u64 param_1)
 
     uStack_2 = packed[2];
 
-    if (cStack_1 == -1) {
+    if (cStack_1 == 0xff) {
 
       iVar8 = *(int *)(puVar3 + 10);
 
@@ -28321,7 +28228,7 @@ void FUN_003399a0(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -29024,7 +28931,7 @@ void FUN_0033a5b0(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -29736,7 +29643,7 @@ void FUN_0033b2a0(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -30595,7 +30502,7 @@ void FUN_0033c1a0(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -31381,7 +31288,7 @@ void FUN_0033cf00(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -32116,7 +32023,7 @@ void FUN_0033dc70(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -32803,7 +32710,7 @@ void FUN_0033e8e0(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -33725,7 +33632,7 @@ void FUN_0033f860(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   int iVar2;
 
@@ -41579,12 +41486,17 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
   float fVar14;
 
   float fVar15;
+  float color0;
+  float color1;
+  float color2;
+  float color3;
 
   
 
-  if ((((640.0f < *(float *)(param_1 + 0x18)) || (448.0f < *(float *)(param_1 + 0x1c))) ||
-
-      (*(float *)(param_1 + 0x20) < 0.0f)) || (*(float *)(param_1 + 0x24) < 0.0f)) {
+  if (((!(*(float *)(param_1 + 0x18) <= 640.0f) ||
+        !(*(float *)(param_1 + 0x1c) <= 448.0f)) ||
+       !(0.0f <= *(float *)(param_1 + 0x20))) ||
+      !(0.0f <= *(float *)(param_1 + 0x24))) {
 
     uVar6 = 0;
 
@@ -41602,21 +41514,25 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
     iVar5 = (int)FUN_00198590();
 
-    fVar11 = *(float *)DAT_00960088_abs;
+    fVar11 = *(float *)&DAT_00960088;
 
     fVar8 = *(float *)(iVar5 + 0x80);
+    color0 = (float)bVar1;
+    color1 = (float)bVar2;
+    color2 = (float)bVar3;
+    color3 = (float)bVar4;
 
     for (uVar7 = 0; uVar7 < 4; uVar7 = uVar7 + 1) {
 
       param_2[uVar7 * 0x10 + 6] = 1.0f / fVar8;
 
-      param_2[uVar7 * 0x10 + 8] = (float)bVar1;
+      param_2[uVar7 * 0x10 + 8] = color0;
 
-      param_2[uVar7 * 0x10 + 9] = (float)bVar2;
+      param_2[uVar7 * 0x10 + 9] = color1;
 
-      param_2[uVar7 * 0x10 + 10] = (float)bVar3;
+      param_2[uVar7 * 0x10 + 10] = color2;
 
-      param_2[uVar7 * 0x10 + 0xb] = (float)bVar4;
+      param_2[uVar7 * 0x10 + 0xb] = color3;
 
       param_2[uVar7 * 0x10 + 2] = fVar11;
 
@@ -41662,9 +41578,8 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
       if (*(float *)(param_1 + 8) != 0.0f) {
 
-        fVar9 = (float)FUN_0052e6d8();
-
-        fVar10 = (float)FUN_0052e878(*(u32 *)(param_1 + 8));
+        fVar9 = FUN_0052e6d8_f32(*(float *)(param_1 + 8));
+        fVar10 = FUN_0052e878_f32(*(float *)(param_1 + 8));
 
         param_2[4] = fVar15 + (fVar14 * fVar9 - fVar8 * fVar10);
 
@@ -41784,7 +41699,6 @@ void FUN_00348760(u8 *param_1,float *param_2)
     pfVar9[10] = (float)bVar3;
 
     pfVar9[0xb] = (float)bVar4;
-
     pfVar9[2] = fVar5;
 
     uVar7 = uVar7 + 1;
@@ -41918,7 +41832,6 @@ void FUN_00348950(u8 *param_1,float *param_2)
     pfVar13[10] = (float)bVar3;
 
     pfVar13[0xb] = (float)bVar4;
-
     pfVar13[2] = fVar5;
 
     uVar7 = uVar7 + 1;

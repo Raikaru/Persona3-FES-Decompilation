@@ -6,12 +6,6 @@ typedef struct YajimaVec2 {
   f32 y;
 } YajimaVec2;
 typedef u8 bool;
-#ifndef CONCAT44
-#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
-#ifndef CONCAT22
-#define CONCAT22(hi, lo) ((u32)((((u32)(u16)(hi)) << 16) | (u16)(lo)))
-#endif
 
 typedef union Vec128 { struct { u32 _0_4_; u32 _4_4_; u32 _8_4_; u32 _12_4_; }; struct { u64 _0_8_; u64 _8_8_; }; u8 _bytes[16]; } Vec128;
 static Vec128 rwVecZero(void) { Vec128 v; v._0_8_=0; v._8_8_=0; return v; }
@@ -8263,7 +8257,7 @@ LAB_0043acec:
         bVar3 = 1;
       }
       uVar23 = 1;
-    } while ((long)sVar5 < CONCAT44((int)(((long)sVar14 << 0x30) >> 0x3f),(int)sVar14));
+    } while (sVar5 < sVar14);
     if (sVar21 == -1) {
       uVar23 = 0;
     }
@@ -12247,11 +12241,8 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
 
 {
   char cVar1;
-  int iVar2;
   int iVar3;
   int iVar4;
-  int iVar6;
-  int iVar7;
   u32 uVar5;
   u8 bVar8;
   int iVar9;
@@ -12264,8 +12255,6 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
   float fVar16;
   float fVar17;
   float afStack_8[2];
-  Vec128 auVar18;
-  Vec128 auVar19;
   
   iVar4 = *(int *)((int)param_1 + 0x3c);
   cVar12 = '\0';
@@ -12280,13 +12269,7 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
   afStack_8[0] = afStack_8[0] + 127.0f;
   afStack_8[1] = *((float *)&param_3 + 1);
   afStack_8[1] = afStack_8[1] + 10.0f;
-  iVar10 = (int)(char)bVar8;
-  iVar6 = (int)((long)((u32)bVar8 << 0x38) >> 0x3f);
-  iVar2 = (int)(char)param_2;
-  iVar7 = (int)((long)((u32)param_2 << 0x38) >> 0x3f);
-  auVar18._0_8_ = CONCAT44(iVar6,iVar10);
-  auVar19._0_8_ = CONCAT44(iVar7,iVar2);
-  if (auVar19._0_8_ == auVar18._0_8_) {
+  if ((char)param_2 == (char)bVar8) {
     fVar16 = afStack_8[0] + 15.0f;
     for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
       fVar17 = 255.0f;
@@ -12330,7 +12313,7 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
   lVar11 = (long)param_5;
   iVar3 = (int)param_5;
   if (lVar11 < 10) {
-    if (auVar19._0_8_ != auVar18._0_8_) {
+    if ((char)param_2 != (char)bVar8) {
       cVar1 = (char)param_5;
       if (((*(char *)(iVar4 + 0x49b) == param_4) && (*(char *)(iVar4 + 0x49c) == lVar11)) &&
          (param_6 == '\x01')) {
@@ -12345,7 +12328,7 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
   else if (lVar11 < 100) {
     cVar12 = (char)(iVar3 / 10);
     param_5 = (short)(iVar3 % 10);
-    if (auVar19._0_8_ != auVar18._0_8_) {
+    if ((char)param_2 != (char)bVar8) {
       cVar1 = (char)(iVar3 % 10);
       if (((*(char *)(iVar4 + 0x49b) == param_4) && (*(char *)(iVar4 + 0x49c) == lVar11)) &&
          (param_6 == '\x01')) {
@@ -12367,7 +12350,7 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
     cVar12 = (char)iVar9;
     iVar3 = iVar3 - (iVar14 * 100 + (short)iVar9 * 10);
     param_5 = (short)iVar3;
-    if (auVar19._0_8_ != auVar18._0_8_) {
+    if ((char)param_2 != (char)bVar8) {
       cVar1 = (char)iVar3;
       if (((*(char *)(iVar4 + 0x49b) == param_4) && (*(char *)(iVar4 + 0x49c) == lVar11)) &&
          (param_6 == '\x01')) {
@@ -12385,7 +12368,7 @@ void FUN_00448cf0(int param_1,u8 param_2,u64 param_3,char param_4,short param_5,
       }
     }
   }
-  if (auVar19._0_8_ == auVar18._0_8_) {
+  if ((char)param_2 == (char)bVar8) {
     uVar5 = FUN_001158b0(0,*(u32 *)(iVar4 + 4),0x19);
     iVar4 = (int)uVar5;
     *(u8 *)(iVar4 + 0x18) = 0;
@@ -15431,8 +15414,7 @@ u32 FUN_004514a0(char param_1)
       lVar13 = (long)(iVar16 + 1);
     }
     sStack_6a0 = sStack_6a0 + 1;
-    if (CONCAT44((int)((long)((u32)(u32)(int)sVar1 << 0x30) >> 0x3f),(int)sVar1) <=
-        (long)sStack_6a0) {
+    if (sVar1 <= sStack_6a0) {
       sVar15 = 0;
     }
   } while (sVar15 != 0);
@@ -16753,8 +16735,7 @@ void FUN_00454f50(char param_1,char param_2)
   float fStack_240;
   float fStack_23c;
   float fStack_238;
-  u64 uStack_230;
-  float fStack_228;
+  float afStack_230[3];
   
   u8 auStack_210 [8];
   float fStack_208;
@@ -16946,8 +16927,9 @@ void FUN_00454f50(char param_1,char param_2)
     fStack_28 = fStack_28 + (fStack_10 * *((float *)&uStack_20 + 1) - fStack_c * *(float *)&uStack_20) * 400.0f;
   }
   FUN_001b0250_typed(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0),0);
-  uStack_230 = CONCAT44(*(u32 *)&fStack_2c,*(u32 *)&fStack_30);
-  fStack_228 = fStack_28;
+  afStack_230[0] = fStack_30;
+  afStack_230[1] = fStack_2c;
+  afStack_230[2] = fStack_28;
   iVar4 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + *(char *)(iVar1 + 1) * 0x1c0) + 0x3c) + 1) *
           0x1c0;
   pfVar6 = (float *)(DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + iVar4) * 0x40);

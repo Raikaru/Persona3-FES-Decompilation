@@ -8054,7 +8054,7 @@ s32 func_002c5030(u32 param_1,u32 param_2,s32 param_3,int param_4)
     }
     puVar12 = (u16 *)(iVar7 + uVar11 * 2);
     if ((*puVar12 != 0) && (*puVar12 < 0x1d0)) {
-      uVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c));
+      uVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c), *puVar12);
       uVar9 = func_003080c0(uVar5);
       if (param_4 == 0) {
         if ((uVar9 & 0x1fe) != 0) {
@@ -8467,7 +8467,7 @@ s32 func_002c5fc0(u32 param_1,u32 param_2,short param_3,int param_4)
     for (uVar10 = 0; uVar10 < (uVar6 & 0xffff); uVar10 = uVar10 + 1 & 0xffff) {
       puVar11 = (u16 *)(iVar7 + uVar10 * 2);
       if ((*puVar11 != 0) && (*puVar11 < 0x1d0)) {
-        sVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c));
+        sVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c), *puVar11);
         if (sVar5 == param_3) {
           uVar1 = *puVar11;
           if (0x26f < uVar1) {
@@ -14470,7 +14470,6 @@ u32 func_002d03e0(void)
   u32 uVar4 = 0;
   u32 uVar5 = 0;
   u32 uVar6 = 0;
-  long lVar7 = 0;
   u32 uVar8 = 0;
   u32 uVar9 = 0;
   int iVar10 = 0;
@@ -14481,19 +14480,20 @@ u32 func_002d03e0(void)
   iVar10 = 0;
   uVar9 = 0xfffffff;
   for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
-    if (((((*(u16 *)(iVar2 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar2 + 0x1a) & 8) != 0)) &&
-        (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\0')) &&
-       (((uVar6 & 0x80000) != 0 ||
-        (lVar7 = func_0030b5a0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),0), lVar7 == 0)))) {
+    if (((*(u16 *)(iVar2 + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(iVar2 + 0x1a) & 8) != 0) &&
+        (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\0') &&
+        (((uVar6 & 0x80000) != 0) ||
+         (func_0030b5a0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c), 0) == 0))) {
       uVar8 = func_002ffd70(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
       uVar8 = uVar8 & 0xffff;
-      if (((uVar5 <= uVar8) &&
+      if ((uVar5 <= uVar8) &&
           (uVar1 = *(u16 *)(*(int *)(*(int *)(iVar2 + 0x30) + 0xa2c) + 8),
            uVar4 = func_002ffdf0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c)),
-           (u32)uVar1 * 100 <= (uVar4 & 0xffff) * iVar3)) &&
-         (((uVar6 == 0 ||
-           (lVar7 = func_00300580(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),uVar6), lVar7 != 0)
-           ) && (uVar8 < uVar9)))) {
+           (u32)uVar1 * 100 <= (uVar4 & 0xffff) * iVar3) &&
+          ((uVar6 == 0) ||
+           (func_00300580(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c), uVar6) != 0)) &&
+          (uVar8 < uVar9)) {
         uVar9 = uVar8;
         iVar10 = iVar2;
       }

@@ -295,7 +295,7 @@ void opWait0026e000(void)
     func_004d7f60(2, 0x44);
     for (i = 0; i < 3; i++)
     {
-        loopQuad = work + 0xe50 + (u32)i * 0x110;
+        loopQuad = work + 0xe40 + (u32)i * 0x110;
         switch (i)
         {
             case 0:
@@ -312,8 +312,8 @@ void opWait0026e000(void)
         }
         (*setState)(1, opWaitGetTitleRasterU32(frameId));
         loopSetQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
-        (*loopSetQuad)(loopQuad, 4, 0, 1, 2);
-        (*loopSetQuad)(loopQuad, 4, 0, 2, 3);
+        (*loopSetQuad)((u8*)loopQuad + 0x10, 4, 0, 1, 2);
+        (*loopSetQuad)((u8*)loopQuad + 0x10, 4, 0, 2, 3);
     }
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
@@ -323,6 +323,8 @@ void opWait0026e000(void)
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     (*setState)(1, opWaitGetTitleRasterU32(0xd));
+    (*setQuad)(work + 0x440, 4, 0, 1, 2);
+    (*setQuad)(work + 0x440, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     func_002699d0(*(void**)(work + 0x1170));

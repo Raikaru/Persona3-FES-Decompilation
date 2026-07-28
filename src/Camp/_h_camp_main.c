@@ -1493,6 +1493,12 @@ extern void (*jtbl_0096017C)(void* work);
 extern void* DAT_00833B40[0x0b];
 extern void* DAT_00833B48;
 extern void* DAT_00833B68;
+#pragma alias DAT_00833B48_abs DAT_00833B48
+extern u8 DAT_00833B48_abs[];
+#pragma alias DAT_00833B68_abs DAT_00833B68
+extern u8 DAT_00833B68_abs[];
+#pragma alias D_00833BA4_abs D_00833BA4
+extern u8 D_00833BA4_abs[];
 extern void* DAT_00833A50[];
 extern void* DAT_00833A80[];
 extern s16 DAT_00833A60[];
@@ -2308,6 +2314,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     CampMainQuadPosition row;
     CampMainQuadPosition footer;
     CampMainSpriteNode* sprite;
+    void* parent;
     s32 i;
     s32 start;
     s32 visibleCount;
@@ -2356,7 +2363,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
         x = local.coordinates.x;
         y = local.coordinates.y + 24.0f;
         if (i == selected) {
-            FUN_001159f0(NULL, DAT_00833B48, 0xe, 0, x, y, alpha);
+            FUN_001159f0(parent, *(void**)DAT_00833B48_abs, 0xe, 0, x, y, alpha);
             FUN_00136a10(alpha, local.value, id, 1, 0);
             FUN_00137300(alpha, local.value, id, 1, 0, 0);
         } else {
@@ -2367,18 +2374,18 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     x = inputX;
     y = inputY;
     fade = 0;
-    FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
+    FUN_001159f0(parent, *(void**)DAT_00833B48_abs, 0xb, 0,
                  x + 600.0f, y + 308.0f, alpha - 1.0f);
-    FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
+    FUN_001159f0(parent, *(void**)DAT_00833B48_abs, 0xc, 0,
                  x + 600.0f, y + 402.0f, alpha - 1.0f);
     if (count > 5) {
         fade = offset * 59 / (count - 5);
     }
-    FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
+    FUN_001159f0(parent, *(void**)DAT_00833B48_abs, 0xa, 0,
                  x + 597.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
-    FUN_001159f0(NULL, DAT_00833B48, 8, 0,
+    FUN_001159f0(parent, *(void**)DAT_00833B48_abs, 8, 0,
                  x + 598.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
-    FUN_001159f0(NULL, DAT_00833B48, 9, 0,
+    FUN_001159f0(parent, *(void**)DAT_00833B48_abs, 9, 0,
                  x + 598.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
 
     sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
@@ -2388,10 +2395,10 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     sprite->alpha = 0;
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
-    FUN_001159f0(NULL, DAT_00833B68, 0, 0, 36.0f, 415.0f, alpha);
-    FUN_001159f0(NULL, DAT_00833B68, 6, 0, 80.0f, 415.0f, alpha);
-    FUN_001159f0(NULL, D_00833BA4, 1, 0, 465.0f, 415.0f, alpha);
-    FUN_001159f0(NULL, D_00833BA4, 3, 0, 561.0f, 415.0f, alpha);
+    FUN_001159f0(parent, *(void**)DAT_00833B68_abs, 0, 0, 36.0f, 415.0f, alpha);
+    FUN_001159f0(parent, *(void**)DAT_00833B68_abs, 6, 0, 80.0f, 415.0f, alpha);
+    FUN_001159f0(parent, *(void**)D_00833BA4_abs, 1, 0, 465.0f, 415.0f, alpha);
+    FUN_001159f0(parent, *(void**)D_00833BA4_abs, 3, 0, 561.0f, 415.0f, alpha);
 }
 
 extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,

@@ -586,11 +586,9 @@ FldUnit* func_001c6f50(const FldUnit* unit, f32 fov, f32 maxDist)
 // FUN_001c7270 NONMATCHING
 void* func_001c7270(const FldUnit* unit, f32 maxDist)
 {
-    RwMatrix* viewerMat;
+    RwV3d* viewerPos;
     u8* cell;
-    u8* objectTable;
-    u8* resultTable;
-    void* object;
+    void** objectSlot;
     RwV3d delta;
     s32 i;
     s32 rawX;
@@ -598,22 +596,22 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
     s32 x;
     s32 z;
 
-    viewerMat = mdlGetMatrix(unit->mdl);
+    viewerPos = &mdlGetMatrix(unit->mdl)->pos;
     x = 0;
     if (K_Scene_001a0250() != false)
     {
-        rawX = (s32)((viewerMat->pos.x + 400.0f) / 800.0f);
+        rawX = (s32)(viewerPos->x + 400.0f) / 800.0f;
         x = rawX >> 2;
         if (rawX < 0)
         {
             x = (rawX + 3) >> 2;
         }
     }
-    viewerMat = mdlGetMatrix(unit->mdl);
+    viewerPos = &mdlGetMatrix(unit->mdl)->pos;
     z = 0;
     if (K_Scene_001a0250() != false)
     {
-        rawZ = (s32)((viewerMat->pos.z + 400.0f) / 800.0f);
+        rawZ = (s32)(viewerPos->z + 400.0f) / 800.0f;
         z = rawZ >> 2;
         if (rawZ < 0)
         {
@@ -621,29 +619,22 @@ void* func_001c7270(const FldUnit* unit, f32 maxDist)
         }
     }
     cell = DAT_0086b180_abs + z * 0x310 + x * 0xc4;
-    objectTable = cell + 0x60;
-    resultTable = cell + 0x1e0;
-    for (i = 0; i < 0x31; i++)
+    i = 0;
+    while (*(void**)(cell + 0x60 + i * sizeof(void*)) != NULL)
     {
-        object = *(void**)(objectTable + i * sizeof(void*));
-        if (object == NULL)
-        {
-            return NULL;
-        }
-        if (*(u32*)object == 0)
-        {
-            continue;
-        }
-        delta.x = *(f32*)((u8*)object + 0x10c) -
+        objectSlot = (void**)(cell + 0x60 + i * sizeof(void*));
+        delta.x = *(f32*)((u8*)*objectSlot + 0x10c) -
                   mdlGetMatrix(unit->mdl)->pos.x;
-        delta.y = *(f32*)((u8*)object + 0x110) -
+        delta.y = *(f32*)((u8*)*objectSlot + 0x110) -
                   mdlGetMatrix(unit->mdl)->pos.y;
-        delta.z = *(f32*)((u8*)object + 0x114) -
+        delta.z = *(f32*)((u8*)*objectSlot + 0x114) -
                   mdlGetMatrix(unit->mdl)->pos.z;
         if (func_004c6ac0(&delta) < maxDist)
         {
-            return *(void**)(resultTable + i * sizeof(void*));
+            return *(void**)(DAT_0086b180_abs + z * 0x310 + x * 0xc4 +
+                             0x1e0 + i * sizeof(void*));
         }
+        i++;
     }
     return NULL;
 }
@@ -1375,7 +1366,6 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     extern s32 FUN_0045af40();
     extern f32 FUN_00318990();
     extern f32 FUN_004c6ac0();
-    extern void litodp();
     extern u32 func_0010a770();
 
     fldEvent = (FldEvent*)fldEventTask->workData;
@@ -1987,7 +1977,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 case6MatBuf.pos.x = 0.0f;
                 case6MatBuf.pos.y = 0.0f;
                 case6MatBuf.pos.z = 0.0f;
-                litodp(&case6MatBuf, &case6UpVec, 2);
+                RwMatrixScale(&case6MatBuf, &case6UpVec, rwCOMBINEPOSTCONCAT);
                 case6MatBuf.pos = case6UpVec;
                 FUN_001a9330((KwlnTask*)FIELD_WORD(0x1214), taskResult, &case6MatBuf);
             }

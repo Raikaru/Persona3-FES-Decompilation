@@ -602,8 +602,8 @@ void opMenu0026cc90(void)
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = sOpMenu;
     atlas = opResGetTitleSprite(0);
-    setState = (OpMenuSetFrame*)opMenuStatePtr;
-    draw = (OpMenuDraw*)opMenuDrawPtr;
+    setState = (OpMenuSetFrame*)D_00960090;
+    draw = (OpMenuDraw*)D_0096009C;
     if ((work[0] & 1) == 0)
         return;
 
@@ -619,80 +619,93 @@ void opMenu0026cc90(void)
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
 
-    if ((work[0] & 0x20) == 0)
+    if ((work[0] & 0x20) != 0)
     {
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 4; i++)
         {
-            id = i == 0 ? 0x1c : 0x1e;
+            u8* item = (u8*)work + 0xb00 + i * 0x310;
+            switch (i)
+            {
+                case 0: id = 0; break;
+                case 1: id = 2; break;
+                case 2: id = 4; break;
+                default: id = 0x19; break;
+            }
             frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
-            (*draw)((void*)((u8*)work + 0x1a70 + i * 0x310),
-                    4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0x1a70 + i * 0x310),
-                    4, 0, 2, 3);
+            (*draw)(item + 0x10, 4, 0, 1, 2);
+            (*draw)(item + 0x10, 4, 0, 2, 3);
+            switch (i)
+            {
+                case 0: id = 6; break;
+                case 1: id = 7; break;
+                case 2: id = 8; break;
+                default: id = 0x1b; break;
+            }
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)(item + 0x110, 4, 0, 1, 2);
+            (*draw)(item + 0x110, 4, 0, 2, 3);
+            switch (i)
+            {
+                case 0: id = 1; break;
+                case 1: id = 3; break;
+                case 2: id = 5; break;
+                default: id = 0x1a; break;
+            }
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)(item + 0x210, 4, 0, 1, 2);
+            (*draw)(item + 0x210, 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
-        for (i = 0; i < 2; i++)
         {
-            id = i == 0 ? 0x1d : 0x1f;
+            u8* item = (u8*)work + 0x1740;
+            id = work[0x1a50 / 4] + 0x22;
             frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
-            (*draw)((void*)((u8*)work + 0x1b70 + i * 0x310),
-                    4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0x1b70 + i * 0x310),
-                    4, 0, 2, 3);
+            if (work[0x1a50 / 4] == 0)
+            {
+                (*draw)(item + 0x10, 4, 0, 1, 2);
+                (*draw)(item + 0x10, 4, 0, 2, 3);
+            }
+            else
+            {
+                (*draw)(item + 0x110, 4, 0, 1, 2);
+                (*draw)(item + 0x110, 4, 0, 2, 3);
+            }
         }
     }
     else
     {
-        for (i = 0; i < 4; i++)
+        for (i = 0; i < 2; i++)
         {
-            if (i == 0) id = 0;
-            else if (i == 1) id = 2;
-            else if (i == 2) id = 4;
-            else id = 0x19;
+            u8* item = (u8*)work + 0x1a60 + i * 0x310;
+            switch (i)
+            {
+                case 0: id = 0x1c; break;
+                default: id = 0x1e; break;
+            }
             frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
-            (*draw)((void*)((u8*)work + 0xb10 + i * 0x310),
-                    4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0xb10 + i * 0x310),
-                    4, 0, 2, 3);
-            if (i == 0) id = 6;
-            else if (i == 1) id = 7;
-            else if (i == 2) id = 8;
-            else id = 0x1b;
-            frame = func_0021cce0(func_0021cca0(atlas, id));
-            (*setState)(1, frame);
-            (*draw)((void*)((u8*)work + 0xc10 + i * 0x310),
-                    4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0xc10 + i * 0x310),
-                    4, 0, 2, 3);
-            if (i == 0) id = 1;
-            else if (i == 1) id = 3;
-            else if (i == 2) id = 5;
-            else id = 0x1a;
-            frame = func_0021cce0(func_0021cca0(atlas, id));
-            (*setState)(1, frame);
-            (*draw)((void*)((u8*)work + 0xd10 + i * 0x310),
-                    4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0xd10 + i * 0x310),
-                    4, 0, 2, 3);
+            (*draw)(item + 0x10, 4, 0, 1, 2);
+            (*draw)(item + 0x10, 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
-        id = work[0x1a50 / 4] + 0x22;
-        frame = func_0021cce0(func_0021cca0(atlas, id));
-        (*setState)(1, frame);
-        if (work[0x1a50 / 4] == 0)
+        for (i = 0; i < 2; i++)
         {
-            (*draw)((void*)((u8*)work + 0x1750), 4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0x1750), 4, 0, 2, 3);
-        }
-        else
-        {
-            (*draw)((void*)((u8*)work + 0x1850), 4, 0, 1, 2);
-            (*draw)((void*)((u8*)work + 0x1850), 4, 0, 2, 3);
+            u8* item = (u8*)work + 0x1a60 + i * 0x310;
+            switch (i)
+            {
+                case 0: id = 0x1d; break;
+                default: id = 0x1f; break;
+            }
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)(item + 0x110, 4, 0, 1, 2);
+            (*draw)(item + 0x110, 4, 0, 2, 3);
         }
     }
 }
