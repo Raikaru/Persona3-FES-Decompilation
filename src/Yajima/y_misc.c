@@ -14,6 +14,12 @@ typedef struct YajimaVec4 {
     f32 z;
     f32 w;
 } YajimaVec4;
+typedef struct YajimaColor {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} YajimaColor;
 typedef struct YajimaVec16 {
     f32 lane[16];
 } YajimaVec16;
@@ -95,7 +101,7 @@ void FUN_00427640(int param_1);
 u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
 #pragma alias FUN_00427670_typed FUN_00427670
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
-u32 FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
+u32 FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, YajimaColor param_5,
                   float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
 u32 FUN_00427a10(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
                   float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8);
@@ -3105,16 +3111,12 @@ FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4,
 
 
 u32
-FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
+FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, YajimaColor param_5,
              float param_1, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8)
 {
   int iVar1;
   u32 uVar2;
   u8 *puVar3;
-  u32 bVar1;
-  u32 bVar2;
-  u32 bVar3;
-  u32 bVar4;
   YajimaVec4 size;
   YajimaVec4 rect;
 
@@ -3129,14 +3131,10 @@ FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
   *puVar3 = 0;
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
     u8 *entry = puVar3 + iVar1 * 4;
-    bVar1 = ((u8 *)&param_5)[0];
-    bVar2 = ((u8 *)&param_5)[1];
-    bVar3 = ((u8 *)&param_5)[2];
-    bVar4 = ((u8 *)&param_5)[3];
-    entry[0x110] = bVar1;
-    entry[0x111] = bVar2;
-    entry[0x112] = bVar3;
-    entry[0x113] = bVar4;
+    entry[0x110] = param_5.r;
+    entry[0x111] = param_5.g;
+    entry[0x112] = param_5.b;
+    entry[0x113] = param_5.a;
     *(u32 *)(puVar3 + iVar1 * 8 + 0x158) = 0;
     *(u32 *)(puVar3 + iVar1 * 8 + 0x154) = 0;
   }

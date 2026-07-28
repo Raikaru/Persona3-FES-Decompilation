@@ -1177,12 +1177,11 @@ void func_001a0040(u32 visible, u32 updateField)
     Resrc* fld;
     Resrc* modelFld;
     Field* field;
-    u32 enabled;
+    const u32 enabled = 1;
     u32 hiddenMask;
 
     fld = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
-    enabled = 1;
     while (fld != NULL)
     {
         if (visible == enabled)

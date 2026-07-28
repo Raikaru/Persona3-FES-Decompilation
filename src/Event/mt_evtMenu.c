@@ -17454,7 +17454,6 @@ void FUN_003840d0(int param_1,int param_2,int param_3,int param_4)
   u32 uVar1;
   int iVar2;
   f32 uVar3;
-  s32 scaledY;
 
   uVar1 = 0;
   FUN_00361830(param_4);
@@ -17463,34 +17462,42 @@ void FUN_003840d0(int param_1,int param_2,int param_3,int param_4)
     uVar1 = 4;
   }
   switch (param_3) {
-  case 0:
+  case 0: {
+    s32 scaledY;
     scaledY = param_2 * 0xc;
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, scaledY, uVar3, 0, (const char *)(void *)(DAT_006a0000_abs + 0x168));
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText((param_1 + 0x18) * 0xc, scaledY, uVar3, uVar1, (const char *)&gp0xffffa3b8, *(u32 *)(iVar2 + 0x198));
     break;
-  case 1:
+  }
+  case 1: {
+    s32 scaledY;
     scaledY = param_2 * 0xc;
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, scaledY, uVar3, 0, (const char *)(void *)DAT_0069ff20);
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText((param_1 + 0x18) * 0xc, scaledY, uVar3, uVar1, (const char *)&gp0xffffa3b8, *(u32 *)(iVar2 + 0x198));
     break;
-  case 2:
+  }
+  case 2: {
+    s32 scaledY;
     scaledY = param_2 * 0xc;
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, scaledY, uVar3, 0, (const char *)(void *)(DAT_006a0000_abs + 0x178));
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText((param_1 + 0x18) * 0xc, scaledY, uVar3, uVar1, (const char *)&gp0xffffa3b8, *(u32 *)(iVar2 + 0x198));
     break;
-  case 3:
+  }
+  case 3: {
+    s32 scaledY;
     scaledY = param_2 * 0xc;
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, scaledY, uVar3, 0, (const char *)(void *)(DAT_006a0000_abs + 0x188));
     uVar3 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
     evtMenuDrawText((param_1 + 0x18) * 0xc, scaledY, uVar3, uVar1, (const char *)&gp0xffffa2d0, *(u32 *)(iVar2 + 0x198));
     break;
+  }
   }
   return;
 }
