@@ -933,22 +933,26 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
 {
     CalendarTaskWork* work;
     SiteibiEventTable* eventTable;
-    SiteibiEvent* event;
     KwlnTask* actionTask;
 
     work = clndTask->workData;
     eventTable = Comu_GetSiteibiEvtTable();
-    event = &eventTable->events[eventIndex];
-    if (event->unk_07 == 0xff)
+    if (eventTable->events[eventIndex].unk_07 == 0xff)
     {
-        H_Dbprt_FmtLog("calendar: siteibi procedure %d", event->scrPrcdIdx);
-        actionTask = func_003bdd60(0xf, event->scrPrcdIdx);
+        H_Dbprt_FmtLog("calendar: siteibi procedure %d",
+                       eventTable->events[eventIndex].scrPrcdIdx);
+        actionTask = func_003bdd60(
+            0xf, eventTable->events[eventIndex].scrPrcdIdx);
     }
     else
     {
-        H_Dbprt_FmtLog("calendar: siteibi event %d", event->scrPrcdIdx);
-        actionTask = func_001ba5f0(clndTask, 0, 0, 0, 0, 0, 0, 0,
-                                   0, 0, 0, 0, 0, 0);
+        H_Dbprt_FmtLog("calendar: siteibi event %d",
+                       eventTable->events[eventIndex].scrPrcdIdx);
+        actionTask = func_001ba5f0(
+            clndTask, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            eventTable->events[eventIndex].scrPrcdIdx,
+            eventTable->events[eventIndex].unk_06,
+            eventTable->events[eventIndex].unk_07, 0);
         if (datGetTime() == CALENDAR_TIME_NULL)
         {
             func_00184c80(work->confirmationTask, true);
@@ -1006,8 +1010,12 @@ u32 func_0017db40(s16 daysSinceApr5)
     }
     day++;
 
-    for (i = 0; sHolidays[i].month != -1; i++)
+    for (i = 0; i < 0x164; i++)
     {
+        if (sHolidays[i].month == -1)
+        {
+            break;
+        }
         if (sHolidays[i].month == month && sHolidays[i].day == day)
         {
             return true;
@@ -4831,10 +4839,9 @@ void* func_001871a0(KwlnTask* task)
     u32 color;
 
     work = (CalendarRecoveredColdWork*)task->workData;
-    if (work->state == 1)
-        goto draw;
-    if (work->state == 0)
+    switch (work->state)
     {
+    case 0:
         work->messageIndex = -1;
         if (datGetFlag(0xa95) != 0)
             work->messageIndex = 0;
@@ -4880,6 +4887,11 @@ void* func_001871a0(KwlnTask* task)
         if (work->messageIndex < 0)
             return KWLNTASK_STOP;
         work->state = 1;
+        break;
+    case 1:
+        goto draw;
+    default:
+        break;
     }
     return KWLNTASK_CONTINUE;
 

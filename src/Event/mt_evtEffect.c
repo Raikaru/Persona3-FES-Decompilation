@@ -1995,6 +1995,11 @@ void FUN_003969b0(int param_1)
   return;
 }
 #define FUN_003969b0(...) ((void (*)(...))FUN_003969b0)(__VA_ARGS__)
+typedef struct {
+  u32 state;
+  u32 active;
+  u32 handle;
+} EvtEffectSlot;
 #undef FUN_00396a70
 // FUN_00396A70 NONMATCHING
 
@@ -2006,7 +2011,7 @@ u64 FUN_00396a70(void)
 {
 
 
-  u32 *base;
+  EvtEffectSlot *base;
 
 
 
@@ -2016,30 +2021,21 @@ u64 FUN_00396a70(void)
 
   
 
-  base = (u32 *)FUN_00195540();
+  base = (EvtEffectSlot *)FUN_00195540();
 
   for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
-
-    if ((base[iVar5 * 3] == 1) && (lVar2 = FUN_001114b0(base[iVar5 * 3 + 2]), lVar2 == 1)) {
-
-      base[iVar5 * 3] = 2;
-
+    if ((base[iVar5].state == 1) &&
+        (lVar2 = FUN_001114b0(base[iVar5].handle), lVar2 == 1)) {
+      base[iVar5].state = 2;
     }
-
-    if ((base[iVar5 * 3] == 2) && (base[iVar5 * 3 + 1] == 1)) {
-
-      FUN_00111530(base[iVar5 * 3 + 2]);
-
-      base[iVar5 * 3] = 3;
-
+    if ((base[iVar5].state == 2) && (base[iVar5].active == 1)) {
+      FUN_00111530(base[iVar5].handle);
+      base[iVar5].state = 3;
     }
-
-    if ((base[iVar5 * 3 + 2] != 0) && (lVar2 = FUN_00195290(), lVar2 == 3)) {
-
-      base[iVar5 * 3] = 0;
-
-      base[iVar5 * 3 + 2] = 0;
-
+    if ((base[iVar5].handle != 0) &&
+        (lVar2 = FUN_00195290(base[iVar5].handle), lVar2 == 3)) {
+      base[iVar5].state = 0;
+      base[iVar5].handle = 0;
     }
   }
 

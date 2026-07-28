@@ -1176,7 +1176,7 @@ void bpTexSortVisibleNodes(void)
     u32* work;
     void* camera;
     RwMatrix* cameraMatrix;
-    u32* nodes[8];
+    u32* node;
     u32* groups[8];
     f32 distance[8];
     u32* leaves[8];
@@ -1198,8 +1198,8 @@ void bpTexSortVisibleNodes(void)
     groupCount = 0;
     for (i = 0; i < nodeCount && groupCount < 8; i++)
     {
-        nodes[groupCount] = bpTexFindNodeByIndex(i);
-        bpTexCollect(nodes[groupCount], leaves, &leafCount);
+        node = bpTexFindNodeByIndex(i);
+        bpTexCollect(node, leaves, &leafCount);
         for (j = 0; j < leafCount && groupCount < 8; j++)
         {
             groups[groupCount] = leaves[j];
@@ -2638,7 +2638,7 @@ void func_0021f140(void)
     DAT_007ce408 = NULL;
 }
 
-// FUN_0021f150 NONMATCHING
+// FUN_0021f150
 void func_0021f150(u32 selection)
 {
     u8* work;
@@ -2651,8 +2651,8 @@ void func_0021f150(u32 selection)
     work = BP_PANEL_GLOBAL;
     words = (u32*)work;
     texture = func_0021c3f0(0);
-    K_ASSERT((words[0] & 1) != 0, 0x103);
-    words[0] &= ~0x11;
+    K_ASSERT((~words[0]) & 1, 0x103);
+    words[0] &= ~0x10;
     if (func_002d1a70() == 0)
     {
         words[0] |= 0x10;
@@ -2671,10 +2671,14 @@ void func_0021f150(u32 selection)
     func_0021d3b0(work + 0x1230, frame);
     for (i = 0; i < 7; i++)
     {
-        u32 id;
-
-        id = (*(u32*)(work + 0x1210 + i * 4) & 1) != 0 ? (u32)(i + 0x11) : (u32)(i + 0x41);
-        frame = func_0021cca0(texture, (s32)id);
+        if (*(u32*)(work + 0x1210 + i * 4) & 1)
+        {
+            frame = func_0021cca0(texture, 0x11);
+        }
+        else
+        {
+            frame = func_0021cca0(texture, 0x41);
+        }
         func_0021d3b0(work + 0x410 + i * 0x100, frame);
     }
     for (i = 0; i < 7; i++)

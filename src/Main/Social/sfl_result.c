@@ -2495,31 +2495,29 @@ void func_001fc980(u8* event, u16* result, s32* count)
 void func_001fcb30(u8* event, u32* result, s32* count)
 {
     s16 skill;
+    s32 resultCount;
     s32 i;
     u32 skillId;
-    u16 pcId;
-    s32 resultCount;
-    u32 hp;
+    s32 hp;
     u32 sp;
     u32 status;
 
     resultCount = 0;
     for (i = 0; i < 0xc; i++)
     {
-        pcId = *(u16*)(event + 2);
-        skill = FUN_001706c0(pcId, (u16)i);
+        skill = FUN_001706c0(*(s16*)(event + 2), (s16)i);
         if (skill != 0)
         {
-            skill = FUN_00170670(pcId, (u16)i);
+            skill = FUN_00170670(*(s16*)(event + 2), (s16)i);
             skillId = FUN_00170e90(skill);
             if (FUN_0017b4e0(*(u16*)(skillId + 8)) != 0)
             {
-                FUN_0017be10(pcId, pcId, *(u16*)(skillId + 8), 1,
-                             (s32*)&hp, &sp, &status);
+                FUN_0017be10(*(s16*)(event + 2), *(s16*)(event + 2),
+                             *(u16*)(skillId + 8), 1, &hp, &sp, &status);
                 FUN_005225a8(0x684dd0, hp, sp, status);
                 if (hp > 0 && (skill == 0xfa2 || skill == 0xfa1))
                 {
-                    result[resultCount] = FUN_00170670(pcId, (u16)i) & 0xffff;
+                    result[resultCount] = FUN_00170670(*(s16*)(event + 2), (s16)i) & 0xffff;
                     resultCount++;
                 }
             }
@@ -2815,7 +2813,7 @@ void func_001fd350(u8* param_1,u32 *param_2,int param_3)
 
   u32 auStack_50 [8];
 
-  int aiStack_30 [9];
+  int aiStack_30 [8];
 
   u8 auStack_c [4];
 

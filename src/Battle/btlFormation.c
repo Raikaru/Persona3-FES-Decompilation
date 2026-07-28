@@ -3542,8 +3542,8 @@ u32 func_002bd080(int *work)
     maximum = (s16)func_002ffdf0(*(u32 *)(unit + 0xa2c));
     if (*(s16 *)((int)work + 6) != 0) {
       value = (s16)(value + *(s16 *)((int)work + 6));
-      if (value > maximum) {
-        value = maximum;
+      if (value > (s16)maximum) {
+        value = (s16)maximum;
       } else if (value < 0) {
         value = 0;
       }
@@ -3555,8 +3555,8 @@ u32 func_002bd080(int *work)
     maximum = (s16)func_00300100(*(u32 *)(unit + 0xa2c));
     if (*(s16 *)((int)work + 6) != 0) {
       value = (s16)(value + *(s16 *)((int)work + 6));
-      if (value > maximum) {
-        value = maximum;
+      if (value > (s16)maximum) {
+        value = (s16)maximum;
       } else if (value < 0) {
         value = 0;
       }
@@ -4256,19 +4256,19 @@ u64 func_002be620(int param_1,int param_2)
 
 {
   u16 uVar1 = 0;
-  short sVar2 = 0;
+  u16 sVar2 = 0;
   u64 uVar3 = 0;
   int iVar4 = 0;
   int iVar5 = 0;
   u16 auStack_20[16];
   
   iVar5 = (int)param_1;
-  if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
-    uVar1 = func_002bde10(param_2,(u16*)auStack_20);
-    *(u16 *)(iVar5 + 0xc) = uVar1;
+  if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) != 0) {
+    *(u16 *)(iVar5 + 0xc) = 0x26f;
   }
   else {
-    *(u16 *)(iVar5 + 0xc) = 0x26f;
+    uVar1 = func_002bde10(param_2,(u16*)auStack_20);
+    *(u16 *)(iVar5 + 0xc) = uVar1;
   }
   sVar2 = func_002bdfb0(param_1);
   if (sVar2 == 2) {

@@ -3014,23 +3014,27 @@ void func_002f5a70(void)
   return;
 }
 
+void func_002f6840(BtlAction* action);
+u32 func_002f6ab0(BtlAction* action);
+
 // FUN_002f5bf0 NONMATCHING
 void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_3)
 
 {
   u32 bVar1;
   int iVar2;
+  BtlUnit* sourceUnit;
   u16 *puVar3;
   s32 lVar4;
   BtlAction* unaff_s0;
   
   bVar1 = false;
-  iVar2 = *(int *)((int)param_1 + 0x30);
-  if (*(char *)(iVar2 + 0xa2) == '\x01') {
-    if (*(short *)(iVar2 + 0xa4) == 0xf1) {
-      bVar1 = (*(u16 *)((int)param_3 + 0x1a) & 0x100) != 0;
-      if (bVar1) {
+  sourceUnit = param_1->unit;
+  if (sourceUnit->genus == 1) {
+    if (sourceUnit->charId == 0xf1) {
+      if ((*(u16 *)((int)param_3 + 0x1a) & 0x100) != 0) {
         unaff_s0 = param_1;
+        bVar1 = true;
       }
       if ((*(u16 *)((int)param_3 + 0x1a) & 0x200) != 0) {
         *(u32 *)(DAT_007ce3ec + 0xb48) = 1;
@@ -3042,7 +3046,7 @@ void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_
             *(u16 *)(DAT_007ce3ec + 0xb58) = 0;
           }
         }
-        puVar3 = *(u16 **)(*(int *)((int)param_1 + 0x30) + 0xa2c);
+        puVar3 = (u16*)param_1->unit->datUnit;
         *puVar3 = *puVar3 | 0x40;
       }
       goto LAB_002f5d34;
@@ -3068,7 +3072,7 @@ void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_
   }
 LAB_002f5d34:
   if ((bVar1) && (lVar4 = FUN_002e4250(), lVar4 == 0)) {
-    FUN_002e4220(0x2f6840,0x2f6ab0,unaff_s0);
+    FUN_002e4220(func_002f6840,func_002f6ab0,unaff_s0);
   }
   return;
 }

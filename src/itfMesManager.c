@@ -1857,7 +1857,7 @@ void FUN_003a3b00(u8 *param_1)
 }
 #define FUN_003a3b00(...) ((void (*)(...))FUN_003a3b00)(__VA_ARGS__)
 #undef FUN_003a3c10
-// FUN_003A3C10 NONMATCHING
+// FUN_003A3C10
 
 
 void FUN_003a3c10(int param_1,int param_2)
@@ -1867,12 +1867,13 @@ void FUN_003a3c10(int param_1,int param_2)
 {
   int iVar1;
   ItfMesTextWork *work;
-
-  int sVar2;
+  u32 uVar4;
 
   int iVar3;
 
-  u32 uVar4;
+  int sVar2;
+  int line;
+
 
   
 
@@ -1908,18 +1909,18 @@ void FUN_003a3c10(int param_1,int param_2)
 
   if ((uVar4 & 1) != 0) {
 
-    sVar2 = 0;
+    line = 0;
 
   }
 
   else {
 
-    sVar2 = sVar2 + -1;
+    line = sVar2 + -1;
 
   }
 
-  work->lineStart = sVar2;
-  work->lineEnd = sVar2;
+  work->lineStart = line;
+  work->lineEnd = line;
 
   return;
 

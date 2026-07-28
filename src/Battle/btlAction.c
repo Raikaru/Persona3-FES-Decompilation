@@ -1567,43 +1567,47 @@ void btlActionUpdateStateCommand(BtlAction* action)
 // FUN_0028c310 NONMATCHING
 void btlActionInitStateTarget(BtlAction* action)
 {
-    BtlTarget* work = (BtlTarget*)action->unkData3;
-    BtlAction* selected = NULL;
+    int specificId = action->target.specificId;
+    union {
+        BtlAction* selected;
+        u16 i;
+    } scratch;
     BtlPacket* packet;
-    u16 specificId = action->target.specificId;
-    u8 targetType = ACTION_U8(gBtl, 0x16fc + specificId * 0x2c);
 
     if (action->target.commandId == 4)
     {
-        FUN_002bfcb0(action, work, 2, 0, 0);
+        FUN_002bfcb0(action, (BtlTarget*)action->unkData3, 2, 0, 0);
         if (specificId == 0)
         {
             specificId = -1;
         }
     }
-    else if (targetType == 1 || targetType == 2)
+    else if (ACTION_U8(gBtl, 0x16fc + specificId * 0x2c) == 1 ||
+             ACTION_U8(gBtl, 0x16fc + specificId * 0x2c) == 2)
     {
-        FUN_002bfcb0(action, work, ACTION_U8(gBtl, 0x16fd + specificId * 0x2c),
+        FUN_002bfcb0(action, (BtlTarget*)action->unkData3,
+                      ACTION_U8(gBtl, 0x16fd + specificId * 0x2c),
                       ACTION_U8(gBtl, 0x16fe + specificId * 0x2c), 0);
     }
     else
     {
-        FUN_002bff60(action, work, specificId, 0);
+        FUN_002bff60(action, (BtlTarget*)action->unkData3, specificId, 0);
     }
-    FUN_002c0970(work);
-    if (targetType == 1 || targetType == 2)
+    FUN_002c0970((BtlTarget*)action->unkData3);
+    if (ACTION_U8(gBtl, 0x16fc + action->target.specificId * 0x2c) == 1 ||
+        ACTION_U8(gBtl, 0x16fc + action->target.specificId * 0x2c) == 2)
     {
-        u16 i;
-        for (i = 0; i < action->target.targetedCount; i++)
+        scratch.selected = NULL;
+        for (scratch.i = 0; scratch.i < action->target.targetedCount; scratch.i++)
         {
-            FUN_001fe7f0(action->target.targetedActions[i]->unit->id);
+            FUN_001fe7f0(action->target.targetedActions[scratch.i]->unit->id);
         }
     }
     else
     {
-        FUN_002c0ac0(action, work);
-        selected = FUN_002c0880(work);
-        FUN_001fe7f0(selected->unit->id);
+        FUN_002c0ac0(action, (BtlTarget*)action->unkData3);
+        scratch.selected = FUN_002c0880((BtlTarget*)action->unkData3);
+        FUN_001fe7f0(scratch.selected->unit->id);
     }
     FUN_001fe810(specificId);
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_TARGET);
@@ -1611,10 +1615,10 @@ void btlActionInitStateTarget(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
     FUN_001fef50();
     FUN_002899e0(action);
-    if (selected != NULL)
+    if (scratch.selected != NULL)
     {
-        btlPacketRegister(btlUnitCreateLookAtUnitPacket(NULL, selected->unit, BTLUNIT_LOOKAT_FLAG_ALLPLAYER), BTLPACKET_TYPE_1);
-        btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(selected->unit, 0), BTLPACKET_TYPE_1);
+        btlPacketRegister(btlUnitCreateLookAtUnitPacket(NULL, scratch.selected->unit, BTLUNIT_LOOKAT_FLAG_ALLPLAYER), BTLPACKET_TYPE_1);
+        btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(scratch.selected->unit, 0), BTLPACKET_TYPE_1);
     }
 }
 // FUN_0028c590 NONMATCHING

@@ -3011,7 +3011,6 @@ u32 func_001f65e0(void)
 void func_001f6630(void)
 {
     u32 *work;
-    s32 count;
     s32 i;
 
     K_ASSERT(sBrReward != NULL, 0x8c);
@@ -3022,20 +3021,19 @@ void func_001f6630(void)
     work[0xd05] = 0;
     work[0xd01] = 0;
     work[0xd00] = 0;
-    count = work[0xd07];
-    if (count != 0) {
+    if (work[0xd07] != 0) {
         u32 available = func_001756f0() & 0xffff;
         work[0] |= 8;
-        if ((func_00175410() & 0xffff) < available + count) {
+        if ((func_00175410() & 0xffff) < available + work[0xd07]) {
             work[0] |= 0x10;
         } else {
-            K_ASSERT(count < 9, 0x272);
-            for (i = 0; i < count; i++) {
+            K_ASSERT(work[0xd07] < 9, 0x272);
+            for (i = 0; i < (s32)work[0xd07]; i++) {
                 *(u16 *)((u8 *)work + 0x33f0 + i * 2) =
                     *(u16 *)((u8 *)work +
                              ((u32 *)((u8 *)work + 0x3c))[i] * 0x670 + 0x60);
             }
-            work[0xd01] = count;
+            work[0xd01] = work[0xd07];
         }
     }
     if (work[0xd06] != 0) {

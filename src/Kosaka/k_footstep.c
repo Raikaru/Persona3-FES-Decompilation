@@ -1101,9 +1101,9 @@ void func_001dd8e0(void)
             continue;
         }
         personaLevel = datPersonaGetLevelByPcId(unit->charId) & 0xff;
+        dataLevel = datGetLevel((s16)unit->charId) & 0xff;
         if (unit->charId == 1)
         {
-            dataLevel = datGetLevel((s16)unit->charId) & 0xff;
             unit->unk_184 = personaLevel;
             if (unit->unk_188 < dataLevel)
             {

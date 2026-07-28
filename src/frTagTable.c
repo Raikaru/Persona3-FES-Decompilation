@@ -244,17 +244,13 @@ u64 FUN_003ae650(u64 param_1,int param_2)
   data = (u8 *)(base + offset);
   mask = 0xf0;
   newline = 10;
-  do {
-    value = data[index];
-    index++;
-    if (value != newline) {
-      if ((value & mask) == mask) {
-        index += ((value & 0xf) - 1) * 2 + 1;
-      } else if (value >= 0x80) {
-        index++;
-      }
+  while ((value = data[index++]) != newline) {
+    if ((value & mask) == mask) {
+      index += ((value & 0xf) - 1) * 2 + 1;
+    } else if (value >= 0x80) {
+      index++;
     }
-  } while (value != newline);
+  }
 
   FUN_00521408(DAT_0095abf0_abs,0,0x80);
   FUN_00521250(DAT_0095abf0_abs,*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18),index);
