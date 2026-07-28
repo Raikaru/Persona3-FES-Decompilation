@@ -233,11 +233,9 @@ extern void FUN_003a62b0_typed(u32 param_1, u32 *param_2);
 int FUN_003a62e0(int param_1,int param_2);
 #pragma alias FUN_003a62e0_typed FUN_003a62e0
 extern s32 FUN_003a62e0_typed(u32 param_1, u32 param_2);
-void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4);
+static void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4);
 #pragma alias FUN_003a6380_direct FUN_003a6380
 extern void FUN_003a6380_direct(int param_1,int param_2,int param_3,u8 param_4);
-#pragma alias FUN_003a6380_result FUN_003a6380
-extern int FUN_003a6380_result(int param_1,int param_2,int param_3,u8 param_4);
 void FUN_003a6410(int param_1,u32 param_2);
 int FUN_003a6460(int param_1);
 void FUN_003a64c0(int param_1);
@@ -3753,7 +3751,7 @@ void thunk_FUN_003a6360(int param_1,u32 param_2)
 
 #undef FUN_003a6380
 // FUN_003A6380
-void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
+static void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4)
 {
   int color;
   int diff;
@@ -4585,7 +4583,6 @@ void FUN_003a6e30(u32 *param_1)
   int lVar3;
 
   int iVar4;
-
   u32 uVar5;
 
   u32 uVar6;
@@ -4647,8 +4644,12 @@ void FUN_003a6e30(u32 *param_1)
 
   switch (uVar5) {
   case 0x1000:
-    if (((*param_1 & 0x2000000) != 0 || (lVar3 = FUN_003cf630(), lVar3 == 0)) &&
-        (iVar4 = primary[14] + 0x20, primary[14] = iVar4, 199 < iVar4)) {
+    if ((*param_1 & 0x2000000) != 0 || (lVar3 = FUN_003cf630(), lVar3 == 0)) {
+      iVar4 = primary[14] + 0x20;
+      primary[14] = iVar4;
+      if (iVar4 < 200) {
+        break;
+      }
       primary[14] = 200;
       uVar2 = *param_1;
       *param_1 = uVar2 & 0xffffcfff;
@@ -5333,18 +5334,17 @@ u32 FUN_003a7a40(int param_1)
 
 void FUN_003a7cb0(int param_1,int param_2)
 {
-  int current;
   int next;
 
-  current = FUN_003a6380_result(*(u32 *)(param_1 + 0xc),*(s16 *)(param_1 + 0x16),
-                                *(s16 *)(param_1 + 0x1a),0);
+  FUN_003a6380(*(u32 *)(param_1 + 0xc),*(s16 *)(param_1 + 0x16),
+               *(s16 *)(param_1 + 0x1a),0);
   if (param_2 < 0) {
-    next = current - 1;
+    next = *(s16 *)(param_1 + 0x16) - 1;
     if (next < 0) {
       next = *(s16 *)(param_1 + 0x1a) - 1;
     }
   } else {
-    next = current + 1;
+    next = *(s16 *)(param_1 + 0x16) + 1;
     if (*(s16 *)(param_1 + 0x1a) <= next) {
       next = 0;
     }

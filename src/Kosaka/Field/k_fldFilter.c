@@ -443,6 +443,9 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     f32 dy;
     f32 dz;
     f32 distance;
+    f32 pointX;
+    f32 pointY;
+    f32 pointZ;
     s32 bestIndex;
     s32 index;
 
@@ -452,12 +455,14 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     pointCopy.y = playerPos.y;
     pointCopy.z = playerPos.z;
     bestDistance = fGpffff8248;
-    bestIndex = 0;
+    pointX = pointCopy.x;
+    pointY = pointCopy.y;
+    pointZ = pointCopy.z;
     for (index = 0; index < 9; index++)
     {
-        dx = work->cameraPoints[index].x - pointCopy.x;
-        dy = work->cameraPoints[index].y - pointCopy.y;
-        dz = work->cameraPoints[index].z - pointCopy.z;
+        dx = work->cameraPoints[index].x - pointX;
+        dy = work->cameraPoints[index].y - pointY;
+        dz = work->cameraPoints[index].z - pointZ;
         distance = sqrtf(dx * dx + dy * dy + dz * dz);
         if (bestDistance > distance)
         {

@@ -9492,78 +9492,36 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 
 
 u32 FUN_0037a640(int param_1,int param_2,int param_3)
-
-
-
 {
+  int rowCount;
+  u16 buttons;
 
-  int lVar1;
-
-  u32 uVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = (int)param_3;
-
-  if (*(int *)(iVar3 + 0x120) == 0) {
-
-    lVar1 = 10;
-
+  if (*(int *)(param_3 + 0x120) == 0) {
+    rowCount = 10;
   }
-
   else {
-
-    lVar1 = FUN_00524388();
-
-    if (lVar1 < 6) {
-
-      lVar1 = 6;
-
+    rowCount = FUN_00524388(*(int *)(param_3 + 0x120));
+    if (rowCount < 6) {
+      rowCount = 6;
     }
-
   }
-
-  FUN_0036f900(param_1,param_2,lVar1,*(int *)(iVar3 + 0x11c) + 3,0,*(int *)(iVar3 + 0x11c),param_3,
-               (int)(code *)FUN_0037a4d0,(code *)FUN_0037a560);
-
-  if (*(int *)(iVar3 + 0xd4) != 2) {
-
-    uVar2 = 0;
-
+  FUN_0036f900(param_1,param_2,rowCount,*(int *)(param_3 + 0x11c) + 3,0,
+               *(int *)(param_3 + 0x11c),param_3,(int)(code *)FUN_0037a4d0,
+               (code *)FUN_0037a560);
+  if (*(int *)(param_3 + 0xd4) != 2) {
+    return 0;
   }
-
-  else {
-
-    FUN_0036f680(0,iVar3 + 0x118,*(u32 *)(iVar3 + 0x11c),*(u32 *)(iVar3 + 0x11c),0,
-
-                 0x4000,0x1000);
-
-    FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
-
-    uVar2 = 1;
-
-    if ((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
-
-      if ((*(u16 *)DAT_007e094e_abs & 0x20) == 0) {
-
-        uVar2 = 0;
-
-      }
-
-      else {
-
-        uVar2 = -1;
-
-      }
-
-    }
-
+  FUN_0036f680(0,param_3 + 0x118,*(u32 *)(param_3 + 0x11c),
+               *(u32 *)(param_3 + 0x11c),0,0x4000,0x1000);
+  FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
+  buttons = *(u16 *)DAT_007e094e_abs;
+  if ((buttons & 0x40) != 0) {
+    return 1;
   }
-
-  return uVar2;
-
+  if ((buttons & 0x20) != 0) {
+    return -1;
+  }
+  return 0;
 }
 
 

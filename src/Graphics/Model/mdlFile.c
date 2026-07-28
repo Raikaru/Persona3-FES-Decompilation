@@ -9898,8 +9898,8 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
 
 {
-
   u16 uVar1;
+
 
   u8 matrix[64];
 
@@ -24231,13 +24231,9 @@ void FUN_00335180(int param_1)
 
   f32 fVar5;
 
-  u8 uVar6;
-
-  u8 uVar7;
-
-  u8 uVar8;
 
   int iVar10;
+  int index;
 
   u32 *puVar11;
 
@@ -24299,7 +24295,7 @@ void FUN_00335180(int param_1)
 
     FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(stack.matrix),(s32)(param_1),(f32)(0));
 
-    for (iVar10 = 0; iVar10 < iVar2; iVar10 = iVar10 + 1) {
+    for (index = 0; index < iVar2; index = index + 1) {
 
       if (0 < (int)puVar11[1]) {
 
@@ -24334,11 +24330,8 @@ void FUN_00335180(int param_1)
         );
 
         stack.output = stack.packedAlpha;
-        uVar6 = (u8)stack.output;
-        uVar7 = ((u8 *)&stack.output)[1];
-        uVar8 = ((u8 *)&stack.output)[2];
 
-        if ((*((u8 *)((u8 *)&stack.output + 3))) != -1) {
+        if (((u8 *)&stack.output)[3] != 0xff) {
 
           iVar4 = *(int *)(puVar3 + 10);
 
@@ -24350,19 +24343,15 @@ void FUN_00335180(int param_1)
 
           *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&stack.output + 3)));
 
-          stack.output = stack.packedAlpha;
-
         }
 
         else {
 
           iVar4 = *(int *)(puVar3 + 10);
 
-          *(u8 *)(iVar4 + 4) = uVar6;
-
-          *(u8 *)(iVar4 + 5) = uVar7;
-
-          *(u8 *)(iVar4 + 6) = uVar8;
+          *(u8 *)(iVar4 + 4) = (u8)stack.output;
+          *(u8 *)(iVar4 + 5) = ((u8 *)&stack.output)[1];
+          *(u8 *)(iVar4 + 6) = ((u8 *)&stack.output)[2];
 
           *(u8 *)(iVar4 + 7) = 0xfe;
 
@@ -25427,13 +25416,9 @@ void FUN_00336630(int param_1)
 
   f32 fVar5;
 
-  u8 uVar6;
-
-  u8 uVar7;
-
-  u8 uVar8;
 
   int iVar10;
+  int index;
 
   u32 *puVar11;
 
@@ -25495,7 +25480,7 @@ void FUN_00336630(int param_1)
 
     FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(stack.matrix),(s32)(param_1),(f32)(iVar10 + 0x10));
 
-    for (iVar10 = 0; iVar10 < iVar2; iVar10 = iVar10 + 1) {
+    for (index = 0; index < iVar2; index = index + 1) {
 
       if (0 < (int)puVar11[5]) {
 
@@ -25531,11 +25516,8 @@ void FUN_00336630(int param_1)
         );
 
         stack.output = stack.packedAlpha;
-        uVar6 = (u8)stack.output;
-        uVar7 = ((u8 *)&stack.output)[1];
-        uVar8 = ((u8 *)&stack.output)[2];
 
-        if ((*((u8 *)((u8 *)&stack.output + 3))) != -1) {
+        if (((u8 *)&stack.output)[3] != 0xff) {
 
           iVar4 = *(int *)(puVar3 + 10);
 
@@ -25547,19 +25529,15 @@ void FUN_00336630(int param_1)
 
           *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&stack.output + 3)));
 
-          stack.output = stack.packedAlpha;
-
         }
 
         else {
 
           iVar4 = *(int *)(puVar3 + 10);
 
-          *(u8 *)(iVar4 + 4) = uVar6;
-
-          *(u8 *)(iVar4 + 5) = uVar7;
-
-          *(u8 *)(iVar4 + 6) = uVar8;
+          *(u8 *)(iVar4 + 4) = (u8)stack.output;
+          *(u8 *)(iVar4 + 5) = ((u8 *)&stack.output)[1];
+          *(u8 *)(iVar4 + 6) = ((u8 *)&stack.output)[2];
 
           *(u8 *)(iVar4 + 7) = 0xfe;
 
@@ -26574,13 +26552,9 @@ void FUN_003377f0(u32 param_1)
 
   f32 fVar5;
 
-  u8 uVar6;
-
-  u8 uVar7;
-
-  u8 uVar8;
 
   int iVar10;
+  int index;
 
   u32 *puVar11;
 
@@ -26642,7 +26616,7 @@ void FUN_003377f0(u32 param_1)
 
     FUN_00323920((RwMatrix *)(*(u32 *)(iVar10 + 0x20)),(void *)(stack.matrix),(s32)(param_1),(f32)(0));
 
-    for (iVar10 = 0; iVar10 < iVar2; iVar10 = iVar10 + 1) {
+    for (index = 0; index < iVar2; index = index + 1) {
 
       if (0 < (int)puVar11[1]) {
 
@@ -26678,11 +26652,8 @@ void FUN_003377f0(u32 param_1)
         );
 
         stack.output = stack.packedAlpha;
-        uVar6 = (u8)stack.output;
-        uVar7 = ((u8 *)&stack.output)[1];
-        uVar8 = ((u8 *)&stack.output)[2];
 
-        if ((*((u8 *)((u8 *)&stack.output + 3))) != -1) {
+        if (((u8 *)&stack.output)[3] != 0xff) {
 
           iVar4 = *(int *)(puVar3 + 10);
 
@@ -26694,19 +26665,15 @@ void FUN_003377f0(u32 param_1)
 
           *(char *)(iVar4 + 7) = (*((u8 *)((u8 *)&stack.output + 3)));
 
-          stack.output = stack.packedAlpha;
-
         }
 
         else {
 
           iVar4 = *(int *)(puVar3 + 10);
 
-          *(u8 *)(iVar4 + 4) = uVar6;
-
-          *(u8 *)(iVar4 + 5) = uVar7;
-
-          *(u8 *)(iVar4 + 6) = uVar8;
+          *(u8 *)(iVar4 + 4) = (u8)stack.output;
+          *(u8 *)(iVar4 + 5) = ((u8 *)&stack.output)[1];
+          *(u8 *)(iVar4 + 6) = ((u8 *)&stack.output)[2];
 
           *(u8 *)(iVar4 + 7) = 0xfe;
 
@@ -45338,9 +45305,9 @@ void FUN_0034cc00(u32 *param_1)
 
   u32 uStack_c;
 
-  int iStack_8;
-
   int iStack_4;
+
+  int iStack_8;
 
   
 
@@ -45358,11 +45325,11 @@ void FUN_0034cc00(u32 *param_1)
 
     FUN_00318a70(param_1[0x28],(u32 *)matrixStack,0);
 
-    scaleStack[0] = *(float *)(param_1 + 8);
+    scaleStack[2] = *(float *)(param_1 + 8);
 
-    scaleStack[1] = scaleStack[0];
+    scaleStack[1] = scaleStack[2];
 
-    scaleStack[2] = scaleStack[0];
+    scaleStack[0] = scaleStack[2];
 
     FUN_00318a90(param_1[0x28],(u32 *)scaleStack,2);
 

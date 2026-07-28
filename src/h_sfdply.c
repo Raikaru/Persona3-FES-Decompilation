@@ -42,6 +42,7 @@ extern s16 uGpffffb228;
 extern s16 uGpffffb218;
 extern s32 uGpffffb230;
 extern s32 uGpffffb22c;
+extern u32 _mips_gp0_value;
 extern char uGpffff8840[];
 #pragma alias gp0xffff8840 uGpffff8840
 extern char gp0xffff8840;
@@ -111,7 +112,8 @@ extern s32 func_0051DC70(s32 a0, s32 a1, ...);
 extern s32 func_0051DDF0(s32 a0, s32 a1, ...);
 extern u8 D_00823650[];
 
-#define HSFD_QUEUE_COUNT 256
+#define HSFD_ENTRY_COUNT 256
+#define HSFD_QUEUE_COUNT 1
 #define HSFD_DECODE_SLOTS 6
 #define HSFD_STREAM_HINT rwMEMHINTDUR_GLOBAL
 
@@ -194,7 +196,14 @@ struct HSfdAsyncEntry
     s16 age;
     u16 padding1D2;
     void* result5;
+    u32 padding1D8;
 };
+typedef struct HSfdQueueEntry
+{
+    HSfdAsyncEntry* next;
+    HSfdQueueSlot* queue;
+    u8 reserved08[0x1d0];
+} HSfdQueueEntry;
 
 typedef struct HSfdRenderFrame
 {
@@ -231,8 +240,10 @@ typedef struct HSfdRenderView
 
 static s32 sSfdFrameIndex;
 static KwlnTask* sSfdPlayTask;
+static HSfdQueueEntry sSfdQueueEntries[HSFD_QUEUE_COUNT];
+static s32 sSfdThreadIds[HSFD_QUEUE_COUNT];
 static HSfdQueueSlot sSfdQueue[HSFD_QUEUE_COUNT];
-static HSfdAsyncEntry sSfdEntries[HSFD_QUEUE_COUNT];
+static HSfdAsyncEntry sSfdEntries[HSFD_ENTRY_COUNT];
 static HSfdDecodeSlot sSfdDecodeSlots[HSFD_DECODE_SLOTS];
 
 typedef struct HSfdCueEntry
@@ -1164,30 +1175,48 @@ void func_0010bff0(void)
 // FUN_0010C050 NONMATCHING
 void func_0010c050(void)
 {
-    s32 i;
-    s32 threadId;
-    s32 threadParam[14];
-
-    for (i = 0; i < HSFD_QUEUE_COUNT; i++)
+    typedef struct HSfdThreadParam
     {
-        sSfdEntries[i].next = NULL;
-        sSfdEntries[i].queue = NULL;
-        sSfdEntries[i].state = 0;
+        s32 status;
+        void (*function)(HSfdQueueSlot*);
+        void* stack;
+        s32 stackSize;
+        void* gpReg;
+        s32 initialPriority;
+        s32 currentPriority;
+        u32 attributes;
+        u32 option;
+    } HSfdThreadParam;
+    HSfdAsyncEntry* entries;
+    HSfdQueueEntry* queueEntry;
+    s16 entryIndex;
+    s16 queueIndex;
+    s32* threadIdSlot;
+    HSfdThreadParam thread;
+
+    entryIndex = 0;
+    entries = sSfdEntries;
+    while (entryIndex < HSFD_ENTRY_COUNT)
+    {
+        entries[entryIndex].next = NULL;
+        entryIndex++;
     }
 
-    sSfdQueue[0].state = 0;
-    sSfdQueue[0].padding02 = 0;
-    sSfdQueue[0].entry = NULL;
-    threadParam[1] = (s32)func_0010c7d0;
-    threadParam[2] = 0x803640;
-    threadParam[3] = 0x20000;
-    threadParam[4] = 0;
-    threadParam[5] = 0x1C;
-    threadId = func_00502f60(threadParam);
-    func_005042a0(threadId, &sSfdQueue[0]);
-    uGpffffb220 = (void*)(s32)threadId;
-    uGpffffb228 = 0;
-    uGpffffb218 = 0;
+    for (queueIndex = 0; queueIndex < HSFD_QUEUE_COUNT; queueIndex++)
+    {
+        queueEntry = &sSfdQueueEntries[queueIndex];
+        queueEntry->next = NULL;
+        queueEntry->queue = NULL;
+        sSfdQueue[queueIndex].state = 0;
+        thread.function = func_0010c7d0;
+        thread.stack = (void*)0x803640;
+        thread.stackSize = 0x20000;
+        thread.gpReg = &_mips_gp0_value;
+        thread.initialPriority = 0x1C;
+        threadIdSlot = &sSfdThreadIds[queueIndex];
+        *threadIdSlot = func_00502f60(&thread);
+        func_005042a0(*threadIdSlot, &sSfdQueue[queueIndex]);
+    }
     uGpffffb230 = 1;
 }
 
@@ -1320,7 +1349,7 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
     }
 
     header = (u8*)sSfdEntries;
-    for (i = 0; i < HSFD_QUEUE_COUNT; i++)
+    for (i = 0; i < HSFD_ENTRY_COUNT; i++)
     {
         if (*(void**)header != NULL &&
             entry == (HSfdAsyncEntry*)(header + 4))

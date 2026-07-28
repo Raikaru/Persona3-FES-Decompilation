@@ -2659,7 +2659,13 @@ static inline u64 campPackPosition(f32 x, f32 y)
 }
 
 extern void* kwlnGetMainCamera(void);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 extern void (*D_00960090)(u32 state, u32 value);
+#pragma alias D_009600A0_abs D_009600A0
+extern u8 D_009600A0_abs[];
+#pragma alias D_00960088_abs D_00960088
+extern u8 D_00960088_abs[];
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern f32 D_00960088;
 
@@ -2711,52 +2717,62 @@ extern s64 FUN_0017B860();
 extern s16 datGetPartyId(s32 index);
 extern s32 K_FldEvent_IsCharNearHeroBeforeBtl(s16 id);
 
-// FUN_00139DC0 NONMATCHING
+// FUN_00139DC0
 void FUN_00139DC0(f32 param_1)
 {
-    RwIm2DVertex vertices[3];
-    f32 positions[6];
+    struct {
+        u8 reserved[0x10];
+        f32 positions[6];
+        u8 align[8];
+        RwIm2DVertex vertices[3];
+    } work;
     f32 recipZ;
     f32 z;
     f32* vertex;
+    f32* position;
     void* camera;
+    void (**renderState)(u32 state, u32 value);
     s32 i;
 
     camera = kwlnGetMainCamera();
     recipZ = 1.0f / *(f32*)((u8*)camera + 0x80);
+    renderState = (void (**)(u32, u32))D_00960090_abs;
 
-    (*D_00960090)(6, 1);
-    (*D_00960090)(7, 2);
-    (*D_00960090)(8, 1);
-    (*D_00960090)(9, 1);
-    (*D_00960090)(0xC, 1);
-    (*D_00960090)(0xB, 6);
-    (*D_00960090)(0xA, 5);
-    (*D_00960090)(2, 4);
+    (*renderState)(6, 1);
+    (*renderState)(7, 2);
+    (*renderState)(8, 1);
+    (*renderState)(9, 1);
+    (*renderState)(0xC, 1);
+    (*renderState)(0xB, 6);
+    (*renderState)(0xA, 5);
+    (*renderState)(2, 4);
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x717FB);
 
-    positions[0] = 319.0f;
-    positions[1] = 448.0f;
-    positions[2] = 640.0f;
-    positions[3] = 328.0f;
-    positions[4] = 640.0f;
-    positions[5] = 448.0f;
-    z = D_00960088 - (param_1 - 1.0f);
-    for (i = 0; i < 3; i++)
+    work.positions[0] = 319.0f;
+    work.positions[1] = 448.0f;
+    work.positions[2] = 640.0f;
+    work.positions[3] = 328.0f;
+    work.positions[4] = 640.0f;
+    work.positions[5] = 448.0f;
+    i = 0;
+    z = *(f32*)D_00960088_abs - (param_1 - 1.0f);
+    for (; i < 3; i++)
     {
-        vertex = (f32*)&vertices[i];
+        vertex = (f32*)&work.vertices[i];
         vertex[2] = z;
         vertex[6] = recipZ;
         vertex[8] = 0.0f;
         vertex[9] = 0.0f;
         vertex[10] = 0.0f;
         vertex[11] = 0.0f;
-        vertex[0] = positions[i * 2];
-        vertex[1] = positions[i * 2 + 1];
+        position = &work.positions[i * 2];
+        vertex[0] = position[0];
+        vertex[1] = position[1];
     }
-    (*D_00960090)(1, 0);
-    (*D_009600A0)(rwPRIMTYPETRILIST, vertices, 3);
+    (*renderState)(1, 0);
+    (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_abs)
+        (rwPRIMTYPETRISTRIP, work.vertices, 3);
 }
 
 // FUN_00139FC0 NONMATCHING
