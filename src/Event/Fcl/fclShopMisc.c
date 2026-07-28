@@ -4232,7 +4232,7 @@ FUN_003f4a90(int param_1,int param_2,int param_3,int param_4,u64 param_5,short *
 
 {
 
-  u32 uVar1;
+  int uVar1;
 
   
 
@@ -4240,7 +4240,7 @@ FUN_003f4a90(int param_1,int param_2,int param_3,int param_4,u64 param_5,short *
 
   param_2 = param_2 + param_6[1];
 
-  uVar1 = (u32)((DAT_007caef0 * (float)param_3 * (float)(int)param_6[6]) / 255.0f);
+  uVar1 = (int)((DAT_007caef0 * (float)param_3 * (float)(int)param_6[6]) / 255.0f);
 
   if (param_4 != 4) {
 
@@ -9291,7 +9291,7 @@ u32 FUN_003fbc00(u32 *param_1)
 
   int iVar6;
 
-  u64 uVar7;
+  const char *uVar7;
 
   int iVar8;
 
@@ -9342,9 +9342,9 @@ u32 FUN_003fbc00(u32 *param_1)
 
     FUN_0040e3c0_u32(0.0f,sVar1 + 0x2a,sVar2 + 0x69,uVar3 & 0xff,0,(u32)(u8)param_1[4] * 2 + 1);
 
-    uVar7 = func_00171110((short)param_1[3],(char)param_1[5]);
+    uVar7 = func_00171110_ptr((short)param_1[3],(s16)(s8)param_1[5]);
 
-    FUN_003b2cb0(0,sVar1 + 0x4a,sVar2 + 0x73,uVar3 | 0xff00,6,1,uVar7,0x10,0);
+    FUN_003b2cb0_f32(0.0f,sVar1 + 0x4a,sVar2 + 0x73,uVar3 | 0xff00,6,1,uVar7,0x10,0);
 
     sprintf((char *)auStack_10,&gp0xffffac10,param_1[6]);
 
@@ -18210,13 +18210,10 @@ u32 FUN_00409c80(u32 param_1)
           2000;
 
       if (datGetFlag_u32_arg(0x1319) != 0) {
-        switch ((entry[2] << 2) < 10000000) {
-        case 0:
-          entry[2] = 9999999;
-          break;
-        case 1:
+        if ((entry[2] << 2) < 10000000) {
           entry[2] = entry[2] << 2;
-          break;
+        } else {
+          entry[2] = 9999999;
         }
       }
       entry[3] = FUN_003dfeb0(0);

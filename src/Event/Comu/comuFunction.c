@@ -1219,7 +1219,7 @@ int FUN_003beca0(int param_1)
 
   u32 uVar8;
 
-  long lVar9;
+  int lVar9;
 
   u8 *pbVar10;
 

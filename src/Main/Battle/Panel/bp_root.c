@@ -3088,9 +3088,10 @@ void FUN_002063F0(void)
 void FUN_002065A0(void)
 {
     u8* work;
+    u32* dispatchRow;
+    u8* row;
     s32 i;
     u32 type;
-    u32* dispatchRow;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
@@ -3104,7 +3105,6 @@ void FUN_002065A0(void)
     {
     case 0:
         {
-            u8* row;
             for (i = 0; i < *(s32*)(work + 0x3a8); i++)
             {
                 row = work + i * 0x18 + 0x2e0;

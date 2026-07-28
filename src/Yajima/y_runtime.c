@@ -208,8 +208,6 @@ extern u32 DAT_008717e8;
 #pragma alias DAT_008717e8_rows DAT_008717e8
 #pragma alias DAT_008717a0_bytes DAT_008717a0
 extern u8 DAT_008717a0_bytes[];
-#pragma alias DAT_008717a0_abs DAT_008717a0
-extern u8 DAT_008717a0_abs[];
 #pragma alias DAT_008717a0_rows_abs DAT_008717a0
 extern u8 DAT_008717a0_rows_abs[][0x1c0];
 #pragma alias DAT_008717a0_rows_check DAT_008717a0
@@ -392,6 +390,8 @@ extern void FUN_00100ec0_arg(u32 param_1);
 extern u8 DAT_0086e6a0_rows[][0x1c0];
 #pragma alias DAT_006b4b20_abs DAT_006b4b20
 extern u8 DAT_006b4b20_abs[];
+#pragma alias DAT_006b4796_abs DAT_006b4796
+extern s16 DAT_006b4796_abs[];
 extern void FUN_004d0f00_arg(u32 param_1);
 extern void FUN_00456410_noarg(void);
 #pragma alias DAT_0096017c_abs DAT_0096017c
@@ -12032,7 +12032,7 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   int iVar4;
   
   cVar1 = *(char *)(param_3 * 4 + DAT_007ce6ec + 4);
-  coordinateBase = (s16 *)&DAT_006b4796;
+  coordinateBase = DAT_006b4796_abs;
   iVar3 = coordinateBase[2];
   cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
   position.y = (float)(iVar3 + (cVar1 + -1) * -0x40 + (6 - cVar2) * -0x20 + 0x20) - 32.0f;

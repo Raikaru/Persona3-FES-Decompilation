@@ -141,7 +141,7 @@ u32 FUN_002d5bf0(BtlUnit* unit);
 u32 FUN_002d6370(s16 commandId);
 void FUN_002fd8a0(BtlAction* action);
 u8 FUN_003093a0(DatUnit* unit);
-u16 FUN_003082f0(DatUnit* unit, u64 id);
+s32 FUN_003082f0(DatUnit* unit, u32 id);
 void FUN_004c6c60(RwV3d* dst, const RwV3d* src, const RwMatrix* matrix);
 
 void FUN_002899e0(BtlAction* action);
@@ -150,7 +150,7 @@ u32 FUN_00289f40(BtlAction* action);
 u16 FUN_0028a0f0(BtlAction* action);
 u32 FUN_0028a200(BtlAction* action);
 u32 FUN_0028a3e0(BtlAction* action);
-void FUN_0028a540(BtlAction* action, u64 id, u16* out1, u16* out2, u16* out3, u16* out4);
+void FUN_0028a540(BtlAction* action, u32 id, u16* out1, u16* out2, u16* out3, u16* out4);
 
 
 void btlActionInitStateNon(BtlAction* action);
@@ -743,12 +743,12 @@ u32 FUN_0028a3e0(BtlAction* action)
 }
 
 // FUN_0028a540 NONMATCHING
-void FUN_0028a540(BtlAction* action, u64 id, u16* out1, u16* out2, u16* out3, u16* out4)
+void FUN_0028a540(BtlAction* action, u32 id, u16* out1, u16* out2, u16* out3, u16* out4)
 {
-    BtlUnit* unit;
     u16 itemId = (u16)id;
-    u16 type;
+    s16 type;
     u8 variant;
+    BtlUnit* unit;
 
     *out1 = 0;
     *out2 = 1;
@@ -765,31 +765,32 @@ void FUN_0028a540(BtlAction* action, u64 id, u16* out1, u16* out2, u16* out3, u1
         (unit->datUnit->id == 3 || FUN_002d5bf0(unit) != 0))
     {
         variant = FUN_003093a0(unit->datUnit);
-        if (variant == 3)
+        switch (variant)
         {
-            *out1 = 0x10;
-            *out2 = 0x13;
-            *out3 = 0x16;
-            *out4 = 0x19;
-        }
-        else if (variant == 2)
-        {
+        case 2:
             *out1 = 0xf;
             *out2 = 0x12;
             *out3 = 0x15;
             *out4 = 0x18;
-        }
-        else
-        {
+            break;
+        case 3:
+            *out1 = 0x10;
+            *out2 = 0x13;
+            *out3 = 0x16;
+            *out4 = 0x19;
+            break;
+        case 1:
+        default:
             *out1 = 0xe;
             *out2 = 0x11;
             *out3 = 0x14;
             *out4 = 0x17;
+            break;
         }
         return;
     }
 
-    type = FUN_003082f0(unit->datUnit, id);
+    type = (s16)FUN_003082f0(unit->datUnit, (u32)id);
     switch (type)
     {
     case 0:
@@ -806,7 +807,14 @@ void FUN_0028a540(BtlAction* action, u64 id, u16* out1, u16* out2, u16* out3, u1
         *out3 = 7;
         *out4 = 9;
         break;
+    case 1:
+    case 4:
+    case 5:
     default:
+        *out1 = 0;
+        *out2 = 1;
+        *out3 = 7;
+        *out4 = 9;
         break;
     }
 }

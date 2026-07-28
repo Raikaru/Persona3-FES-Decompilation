@@ -1465,15 +1465,13 @@ void FUN_003a9e20(int param_1,u64 param_2)
 void FUN_003a9ed0(int param_1,u64 param_2)
 {
   register int index;
-  int object;
-  u64 drawArg;
+  u8 *object = (u8 *)param_1;
+  u64 drawArg = param_2;
   u32 uVar1;
   int iVar2;
   int iVar3;
   int iVar5;
   int iVar4;
-  object = param_1;
-  drawArg = param_2;
 
   uVar1 = *(u32 *)(object + 0x38);
   iVar2 = *(int *)(object + 8);
