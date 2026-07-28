@@ -5825,16 +5825,13 @@ void FUN_00374d30(int param_1,int param_2,u32 param_3,u8 *param_4)
     evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar1, iVar3, (const char *)(u32)DAT_0069ea78);
     break;
   case 5:
+  case 7:
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar1, iVar3, (const char *)(u32)DAT_0069ea88);
     break;
   case 6:
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar1, iVar3, (const char *)(u32)DAT_0069ec28);
-    break;
-  case 7:
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, fVar1, iVar3, (const char *)(u32)DAT_0069ea88);
     break;
   }
 }

@@ -5767,9 +5767,9 @@ void FUN_0038ca00(void)
   f32 fVar1;
   f32 fVar2;
   s32 iVar3;
+  f32 *pfVar4;
   f32 *pfVar5;
   u32 uVar6;
-  f32 *pfVar4;
 
   iVar3 = 0;
   pfVar5 = DAT_009588b0_f32;
@@ -6788,10 +6788,10 @@ void FUN_0038d790(int param_1)
 
 void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
 {
+  int iVar4;
   int iVar1;
   int iVar2;
   int iVar3;
-  int iVar4;
   float *pfVar5;
   float *pfVar6;
   float fVar7;

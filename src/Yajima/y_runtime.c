@@ -17165,49 +17165,53 @@ void FUN_00454f50(char param_1,char param_2)
 // FUN_00455B50 NONMATCHING
 
 void FUN_00455b50(void)
-
 {
-  u8 bVar1;
+  u8 *base;
   int iVar2;
-  int iVar3;
-  int iVar4;
-  
-  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
-    iVar4 = 0;
-    if ((((u8 *)DAT_008717e8)[iVar2 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar2 * 0x70] != 0)) {
-      iVar4 = 1;
+  u8 *row;
+  int valid;
+  u8 *state;
+
+  iVar2 = 1;
+  for (; iVar2 < 4; iVar2 = iVar2 + 1) {
+    base = DAT_008717a0_bytes;
+    valid = 0;
+    row = base + iVar2 * 0x1c0;
+    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
+      valid = 1;
     }
-    if (iVar4 != 0) {
-      iVar3 = iVar2 * 0x1c0;
-      iVar4 = *(int *)(*(int *)((u8 *)DAT_0087190c + iVar3) + 0x3c);
-      ((u8 *)DAT_0087193c)[iVar3] = 0;
-      if (*(char *)(iVar4 + 0x1215) == '\x01') {
-        ((u8 *)DAT_0087193c)[iVar3] = 1;
+    valid = valid != 0;
+    if (valid == 1) {
+      state = *(u8 **)(*(int *)(row + 0x16c) + 0x3c);
+      row[0x19c] = 0;
+      if (*(s8 *)(state + 0x1215) == 1) {
+        row[0x19c] = 1;
       }
-      iVar3 = iVar2 * 0x1c0;
-      ((u8 *)DAT_0087193a)[iVar3] = *(u8 *)(iVar4 + 1);
-      ((u8 *)DAT_0087193b)[iVar3] = 0;
-      if (*(char *)(iVar4 + 1) == '\x05') {
-        ((u8 *)DAT_0087193b)[iVar3] = 1;
+      row[0x19a] = *(s8 *)(state + 1);
+      row[0x19b] = 0;
+      if (*(s8 *)(state + 1) == 5) {
+        row[0x19b] = 1;
       }
     }
   }
-  for (iVar2 = 0; iVar2 < 0x18; iVar2 = iVar2 + 1) {
-    bVar1 = 0;
-    if ((*(int *)((u8 *)DAT_0086ede8 + iVar2 * 0x1c0) != 0) &&
-       (*(int *)((u8 *)DAT_0086edf4 + iVar2 * 0x1c0) != 0)) {
-      bVar1 = 1;
+  iVar2 = 0;
+  for (; iVar2 < 0x18; iVar2 = iVar2 + 1) {
+    base = DAT_0086eda0_bytes;
+    valid = 0;
+    row = base + iVar2 * 0x1c0;
+    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
+      valid = 1;
     }
-    if (bVar1) {
-      iVar3 = iVar2 * 0x1c0;
-      iVar4 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + iVar3) + 0x3c);
-      ((u8 *)DAT_0086ef38)[iVar3] = *(u8 *)(iVar4 + 0x18);
-      ((u8 *)DAT_0086ef39)[iVar3] = *(char *)(iVar4 + 0x8b) + *(char *)(iVar4 + 0x8c) * '\x10';
-      ((u8 *)DAT_0086ef3a)[iVar3] = *(u8 *)(iVar4 + 2);
-      ((u8 *)DAT_0086ef3b)[iVar3] = 0;
-      ((u8 *)DAT_0086ef3c)[iVar3] = 0;
-      if (*(char *)(iVar4 + 0x40) == '\x01') {
-        ((u8 *)DAT_0086ef3c)[iVar3] = 1;
+    valid = valid != 0;
+    if (valid == 1) {
+      state = *(u8 **)(*(int *)(row + 0x16c) + 0x3c);
+      row[0x198] = *(s8 *)(state + 0x18);
+      row[0x199] = *(u8 *)(state + 0x8b) + *(u8 *)(state + 0x8c) * 0x10;
+      row[0x19a] = *(s8 *)(state + 2);
+      row[0x19b] = 0;
+      row[0x19c] = 0;
+      if (*(s8 *)(state + 0x40) == 1) {
+        row[0x19c] = 1;
       }
     }
   }

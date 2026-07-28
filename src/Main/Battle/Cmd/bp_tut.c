@@ -91,9 +91,9 @@ void FUN_002510d0(void)
 {
     BpTutWork* work;
     u32 result;
-    s32 value;
-    s16 flags[4];
     u32 value2;
+    s16 flags[4];
+    u32 value;
 
     if (sBpTut654 == NULL) {
         FUN_0019d3f0(DAT_0068e9c0, 0x39);

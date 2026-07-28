@@ -525,20 +525,18 @@ static void bpTexSetUvAxis(f32 start,
 }
 
 #pragma optimization_level 2
-// FUN_0021cd00 NONMATCHING
+// FUN_0021cd00
 void func_0021cd00(void* frameData, f32* uv)
 {
     BpTexFrameData* frame;
     u8* texture;
-    u8* rasterList;
+    u32* rasterList;
     u8* raster;
-    u32 rasterIndex;
 
     frame = (BpTexFrameData*)frameData;
     texture = (u8*)(uintptr_t)frame->texture;
-    rasterIndex = frame->rasterIndex;
-    rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
-    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, rasterIndex * 4);
+    rasterList = BP_TEX_PTR(texture, 8);
+    raster = (u8*)(uintptr_t)rasterList[frame->rasterIndex];
     {
         f32 xRange[2] = {0};
 

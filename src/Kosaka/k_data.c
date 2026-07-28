@@ -598,8 +598,8 @@ u32 func_001b8710(HCdvd* request)
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
                requestCopy, cachedSize);
-        return true;
     }
+    return true;
 failed:
     return false;
 }
@@ -679,8 +679,8 @@ u32 func_001b8960(HCdvd* request)
         FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = cachedSize;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
                requestCopy, cachedSize);
-        return true;
     }
+    return true;
 failed:
     return false;
 }

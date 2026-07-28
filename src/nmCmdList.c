@@ -330,7 +330,7 @@ void FUN_003c5fa0(int param_1,int param_2)
 {
 
   int iVar1;
-  u32 changed;
+  register u32 changed;
   int savedList;
   u32 iVar2;
   u32 iVar3;

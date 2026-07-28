@@ -20,6 +20,10 @@ typedef struct CampFloatPair
     f32 x;
     f32 y;
 } CampFloatPair;
+typedef struct CampHelpPaths
+{
+    const char* paths[8];
+} CampHelpPaths;
 #define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
 
 /* Retail globals shared by the Camp bridge state machines. */
@@ -2212,28 +2216,27 @@ void FUN_0016c010(void)
 // FUN_0016C1D0 NONMATCHING
 void FUN_0016c1d0(void)
 {
-    const char* helpPaths[8];
+    CampHelpPaths helpPaths;
     u8 fileSizeScratch[4];
     void* cdvd;
     void* resource;
+    u32 copySize;
     s32 i;
 
+    helpPaths = *(CampHelpPaths*)PTR_s_help_datWeaponHelp_bmd_005e31d0;
+    FUN_001023a0((void*)(uintptr_t)FUN_00100d80(D_005E31F0, 1));
     for (i = 0; i < 8; i++) {
-        helpPaths[i] = PTR_s_help_datWeaponHelp_bmd_005e31d0[i];
-    }
-    cdvd = (void*)(uintptr_t)FUN_00100d80((const char*)0x5e31f0, 1);
-    FUN_001023a0(cdvd);
-    for (i = 0; i < 8; i++) {
-        resource = (void*)(uintptr_t)FUN_001021c0(helpPaths[i], (u32*)fileSizeScratch);
+        resource = (void*)(uintptr_t)FUN_001021c0(
+            helpPaths.paths[i], (u32*)fileSizeScratch);
         FUN_003c7d80(i, resource);
     }
     FUN_0016c010();
-    cdvd = (void*)(uintptr_t)FUN_00100d80((const char*)0x5e3200, 0);
-    DAT_007cdfe8 = cdvd;
-    FUN_001023a0(cdvd);
-    FUN_00521250((void*)0x83bb30, *(void**)((u8*)cdvd + 0x110),
-                 *(u32*)((u8*)cdvd + 0x118));
-    FUN_00100ec0(cdvd);
+    FUN_001023a0(DAT_007cdfe8 =
+        (void*)(uintptr_t)FUN_00100d80(D_005E3200, 0));
+    cdvd = DAT_007cdfe8;
+    copySize = *(u32*)((u8*)cdvd + 0x118);
+    FUN_00521250(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110), copySize);
+    FUN_00100ec0(DAT_007cdfe8);
     FUN_0016c2f0();
 }
 

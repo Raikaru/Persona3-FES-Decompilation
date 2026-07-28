@@ -1591,12 +1591,12 @@ extern u64 FUN_00494be0();
 extern u32 FUN_00494be0_u32(void);
 extern u64 FUN_00494cc0();
 extern u64 FUN_00494d50();
-extern u64 FUN_004c1970();
+extern u32 FUN_004c1970(u32 param_1,u32 *param_2);
 extern u64 FUN_004c5250();
 extern u64 FUN_004c5620();
 extern u64 FUN_004c5780();
-extern u64 FUN_004c58a0();
-extern u64 FUN_004c8680();
+extern u32 FUN_004c58a0(u32 param_1,u32 param_2,u32 *param_3);
+extern u32 FUN_004c8680(u32 param_1);
 extern u64 FUN_004ca030();
 extern u64 FUN_004ca090();
 #pragma alias FUN_004ca090_u32 FUN_004ca090
@@ -8899,7 +8899,7 @@ void FUN_00324b50(u32 param_1)
   __asm__ volatile ("sqc2 vf0, 64(%0)" : : "r"(pauVar5) : "memory");
   *(u32 *)(pauVar5 + 0x44) = 0x40a00000;
   __asm__ volatile ("sqc2 vf0, 80(%0)" : : "r"(pauVar5) : "memory");
-  memcpy(pauVar5 + 0x20, DAT_0069c4a0_abs, 16);
+  *(Qword128 *)(pauVar5 + 0x20) = *(Qword128 *)DAT_0069c4a0_abs;
   *(u32 *)(pauVar5 + 0x60) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x74) = 0x3f800000;
   *(u32 *)(pauVar5 + 0x64) = 0xffffffff;
@@ -37408,13 +37408,13 @@ void FUN_00342550(int param_1,int param_2)
 
   u32 *puVar3;
 
-  u32 *puVar4;
+  float *puVar4;
 
   u16 *puVar5;
 
   u32 uVar6;
 
-  u32 *puVar7;
+  float *puVar7;
 
   u32 *puVar8;
 
@@ -37440,7 +37440,7 @@ void FUN_00342550(int param_1,int param_2)
 
     puVar3 = *(u32 **)(iVar2 + 0x30);
 
-    puVar4 = *(u32 **)(iVar2 + 0x34);
+    puVar4 = *(float **)(iVar2 + 0x34);
 
     fVar13 = *(float *)(param_2 + 0x90) / 3.0f;
 
@@ -38440,9 +38440,9 @@ void FUN_00343860(int param_1,int param_2)
 
   u32 uVar8;
 
-  u32 uVar9;
+  int uVar9;
 
-  u32 uVar10;
+  int uVar10;
 
   float fVar11;
 
@@ -38466,9 +38466,9 @@ void FUN_00343860(int param_1,int param_2)
 
     iVar2 = *(int *)(param_2 + 0x8c);
 
-    uVar9 = (u32)(*(float *)(param_2 + 0x78) * (float)iVar2);
+    uVar9 = (int)(*(float *)(param_2 + 0x78) * (float)iVar2);
 
-    uVar10 = (u32)(*(float *)(param_2 + 0x7c) * (float)iVar2);
+    uVar10 = (int)(*(float *)(param_2 + 0x7c) * (float)iVar2);
 
     uVar5 = iVar2 + 1;
 
@@ -39430,9 +39430,9 @@ void FUN_00344b70(int param_1,int param_2)
 
   u32 uVar9;
 
-  u32 uVar10;
+  int uVar10;
 
-  u32 uVar11;
+  int uVar11;
 
   float fVar12;
 
@@ -39456,9 +39456,9 @@ void FUN_00344b70(int param_1,int param_2)
 
     iVar2 = *(int *)(param_2 + 0x8c);
 
-    uVar10 = (u32)(*(float *)(param_2 + 0x78) * (float)iVar2);
+    uVar10 = (int)(*(float *)(param_2 + 0x78) * (float)iVar2);
 
-    uVar11 = (u32)(*(float *)(param_2 + 0x7c) * (float)iVar2);
+    uVar11 = (int)(*(float *)(param_2 + 0x7c) * (float)iVar2);
 
     uVar6 = iVar2 + 1;
 
@@ -47260,91 +47260,45 @@ void FUN_0034d8a0(int param_1,u16 param_2,int param_3)
 
 
 void FUN_0034d990(int param_1,u32 param_2,u32 param_3)
-
-
-
 {
+  u32 handle;
+  u32 child;
+  u32 resource;
+  u32 input[2];
+  u32 output[2];
+  int initialized;
 
-  u64 uVar1;
-
-  long lVar2;
-
-  long lVar3;
-
-  int lVar4;
-
-  int iStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  int iStack_4;
-
-  
-
-  lVar4 = 0;
-
-  lVar3 = 0;
-
-  iStack_4 = 0;
-
-  uStack_10 = param_2;
-
-  uStack_c = param_3;
-
-  uVar1 = FUN_004c58a0(3,1,&uStack_10);
-
-  while ((lVar2 = FUN_004c1970(uVar1,&iStack_30), lVar2 != 0 && (iStack_30 != 0))) {
-
-    if (iStack_30 == 0x10) {
-
-      if (lVar4 == 0) {
-
-        lVar4 = FUN_004920a0_u32(uVar1);
-
+  child = 0;
+  resource = 0;
+  initialized = 0;
+  input[0] = param_2;
+  input[1] = param_3;
+  handle = FUN_004c58a0(3,1,input);
+  while ((FUN_004c1970(handle,output) != 0) && (output[0] != 0)) {
+    switch (output[0]) {
+    case 0x16:
+      if (child == 0) {
+        child = FUN_004c8680(handle);
+        FUN_004d0dc0(child,0x1a13b0,&initialized);
+        FUN_004d0d10(child);
       }
-
-    }
-
-    else if (iStack_30 == 0x16) {
-
-      if (lVar3 == 0) {
-
-        lVar3 = FUN_004c8680(uVar1);
-
-        FUN_004d0dc0(lVar3,0x1a13b0,&iStack_4);
-
-        FUN_004d0d10(lVar3);
-
+      break;
+    case 0x10:
+      if (resource == 0) {
+        resource = FUN_004920a0_u32(handle);
       }
-
+      break;
+    default:
+      FUN_004c5620(handle,output[1]);
+      break;
     }
-
-    else {
-
-      FUN_004c5620(uVar1,uStack_2c);
-
-    }
-
   }
-
-  FUN_004c5780(uVar1,&uStack_10);
-
-  if (iStack_4 != 0) {
-
+  FUN_004c5780(handle,input);
+  if (initialized != 0) {
     FUN_001a14c0();
-
   }
-
-  *(int *)(param_1 + 0x54) = (int)lVar4;
-
-  FUN_004916d0(lVar4,0x34d130,0);
-
-  return;
-
+  *(u32 *)(param_1 + 0x54) = resource;
+  FUN_004916d0_u32(resource,(void *)FUN_0034d130,0);
 }
 
 
