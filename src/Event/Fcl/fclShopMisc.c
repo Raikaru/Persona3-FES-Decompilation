@@ -15606,16 +15606,21 @@ u32 FUN_00403520(void)
       if (datGetFlag(sVar1 + 0x1170) != 0) {
         iVar4 = 3;
       }
-      else if (FUN_003f04f0(FUN_004037e0(sVar1),0) != 0) {
-        if (FUN_0017c610(sVar1) != 0) {
-          iVar4 = 1;
-        }
-        else {
-          iVar4 = 0;
-        }
-      }
       else {
+        if (FUN_003f04f0(FUN_004037e0(sVar1),0) == 0) {
+          goto state_2;
+        }
+        if (FUN_0017c610(sVar1) == 0) {
+          goto state_0;
+        }
+        iVar4 = 1;
+        goto state_done;
+state_2:
         iVar4 = 2;
+        goto state_done;
+state_0:
+        iVar4 = 0;
+state_done:;
       }
       if (iVar4 == 2) {
         return 1;
