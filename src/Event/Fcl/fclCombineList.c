@@ -1211,7 +1211,7 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     u16 glyph_styles[2];
     u16 string_styles[2];
     s32 i;
-    float scaled_alpha;
+    u8 scaled_alpha;
     u32 scaled_color;
 
     resource_node = source_link->payload->data.text_node;
@@ -1249,8 +1249,8 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             FUN_0040e3c0(0.0f, base_x, base_y, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + 1);
             if (selected_style == 0) {
-                scaled_alpha = DAT_007cadd0 * (float)alpha;
-                scaled_color = ((u32)scaled_alpha & 0xff) | 0xffffff00;
+                scaled_alpha = (u8)(DAT_007cadd0 * (float)alpha);
+                scaled_color = (u32)scaled_alpha | 0xffffff00;
                 FUN_003b32d0(0.0f, base_x + 0x76, base_y + 0x7e, scaled_color,
                               (s8)glyph_styles[0], 1,
                               DAT_007ce4e4[record->text_id], 0x10, 0x6e);

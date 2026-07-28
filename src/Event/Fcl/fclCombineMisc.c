@@ -16,7 +16,7 @@ extern float DAT_007cb004;
 extern u16 _DAT_007cd788;
 extern u16 _DAT_007cd78a;
 extern u16 u_NDEFGHIJKLM_006a53b0[];
-extern u64 (*DAT_00960178)();
+extern void *(*DAT_00960178)();
 extern void (*PTR_LAB_007bb7a0[])();
 extern void (*PTR_LAB_007bb820[])();
 extern void (*DAT_0096017c)();
@@ -1817,17 +1817,14 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
 
   int iVar6;
 
-  u64 uVar7;
-
-  long lVar8;
-
-  u64 uVar9;
-
-  long lVar10;
+  s32 uVar7;
+  s32 lVar8;
+  int *uVar9;
+  s32 lVar10;
 
   int iVar11;
 
-  long lVar12;
+  s32 lVar12;
 
   int iVar13;
 
@@ -1863,7 +1860,7 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
 
       if (uVar3 != 0) {
 
-        lVar12 = (long)((int)lVar12 + 1);
+        lVar12 = lVar12 + 1;
 
         lVar10 = datPersonaFindSkillIdx(param_1,uVar3);
 
@@ -1967,7 +1964,7 @@ LAB_003d7790:
 
       }
 
-      uVar9 = (*DAT_00960178)((int)lVar12 << 2,0x40000);
+      uVar9 = (*DAT_00960178)(lVar12 << 2,0x40000);
 
 LAB_003d79d4:
 
@@ -2029,8 +2026,7 @@ LAB_003d79d4:
 
           }
 
-          piVar14 = (int *)((int)uVar9 + iVar6 * 4);
-
+          piVar14 = uVar9 + iVar6;
           *piVar14 = iVar13;
 
           if (iVar13 == 0) {
@@ -2053,13 +2049,13 @@ LAB_003d79d4:
 
         for (iVar5 = *(int *)(iVar11 + 4); iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x10)) {
 
-          iVar13 = iVar13 + *(int *)((int)uVar9 + iVar15 * 4);
+          iVar13 = iVar13 + uVar9[iVar15];
 
           if ((iVar16 * (iVar6 % 0xffff)) / 0xffff < iVar13) {
 
             datPersonaSetSkill(param_1,*(u16 *)(iVar5 + 4));
 
-            lVar10 = (long)((int)lVar10 + -1);
+            lVar10 = lVar10 - 1;
 
             FUN_003c49e0(uVar7,iVar11 + 4,iVar5);
 

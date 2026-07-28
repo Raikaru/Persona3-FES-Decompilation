@@ -1504,13 +1504,6 @@ int FUN_00388df0(int param_1,int param_2)
 
   iVar6 = 0;
 
-  if (10 < param_1) {
-
-    FUN_0019d3f0("mt_evtMisc.c",0x42d);
-
-  }
-
-  FUN_00521408(0x9589e0,0,param_1 * 0xc);
 
   for (iVar5 = 0; iVar5 < param_1; iVar5 = iVar5 + 1) {
 
@@ -5764,6 +5757,7 @@ void FUN_0038ca80(int param_1)
   iVar2 = FUN_003b5df0(1);
 
   iVar3 = FUN_003b5df0(0xc);
+
   iVar3 = iVar1 + iVar2 + iVar3;
 
   if (iVar3 < 0x33) {

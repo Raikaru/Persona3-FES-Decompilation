@@ -2397,7 +2397,7 @@ int func_001fc870(u8* event, void* target)
 
     raw = FUN_0030bc50(target);
     if (raw < 0)
-        amount = (f32)(((u32)raw >> 1) | (raw & 1)) * 2.0f;
+        amount = (f32)(s32)(((u32)raw >> 1) | (raw & 1)) * 2.0f;
     else
         amount = (f32)raw;
 

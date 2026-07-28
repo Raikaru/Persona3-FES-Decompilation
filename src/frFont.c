@@ -3602,7 +3602,7 @@ u64 FUN_003b2a30(void *param_1,u32 param_2)
 
     bVar1 = *(u8 *)(*(int *)(iVar7 + 0x10) + iVar3);
 
-    uVar8 = (u32)CONCAT11(bVar2,bVar1);
+    uVar8 = ((u32)bVar2 << 8) | (u32)bVar1;
 
     if ((param_2 != 0) && (uVar8 == param_2)) {
 
