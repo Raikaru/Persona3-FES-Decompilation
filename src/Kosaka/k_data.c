@@ -28,7 +28,7 @@ extern u32 func_0016ef30(void);
 extern u32 func_0016f190(u32 id);
 extern u32 func_0017d920(void);
 extern u32 func_0017da40(void);
-extern u32 func_0017e480(u16 major, u16 minor, u16 mode, u16 limit);
+extern u32 func_0017e480(u32 major, u32 minor, u32 mode, u32 limit);
 extern void* func_001021c0(void* source, u32* size);
 extern u32 func_001023a0(void* request);
 extern void* func_001016b0(void* request);
@@ -442,58 +442,51 @@ failed:
 // FUN_001b83f0 NONMATCHING
 u16* func_001b83f0(void)
 {
-    Field* field;
     u16* record;
-    u16* best;
-    u16 fallbackMajor;
-    u16 fallbackMinor;
-    u16 fallbackDay;
+    u32 fallbackMajor;
+    u32 fallbackMinor;
+    u32 fallbackDay;
     u32 i;
-    u32 count;
-    u32 currentDay;
 
-    field = K_Field_Get();
-    record = (u16*)FIELD_DATA_AT(field, 0x1160, void*);
-    count = FIELD_DATA_AT(field, 0x115c, u32);
-    if (record == NULL || count == 0)
+    record = (u16*)FIELD_DATA_AT(K_Field_Get(), 0x1160, void*);
+    if (record == NULL)
     {
         return NULL;
     }
-    record += (count - 1) * 0x10;
-    best = record;
+    record += (FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) - 1) * 0x10;
     fallbackMajor = 3;
     fallbackMinor = 0x1f;
     fallbackDay = 8;
-    currentDay = func_0016ef30() & 0xff;
-    for (i = 0; i < count; i++)
+    i = 0;
+    while (i < FIELD_DATA_AT(K_Field_Get(), 0x115c, u32))
     {
-        if (func_0017e480(record[0], record[1], 3, 0x1f) != 0)
+        if (func_0017e480(record[0], record[1], fallbackMajor, fallbackMinor) == 1)
         {
-            if (record[0] == func_0017d920() &&
-                record[1] == func_0017da40() &&
-                record[2] <= currentDay &&
-                fallbackMajor == 3 && fallbackMinor == 0x1f)
+            if (!(record[0] == func_0017d920() &&
+                  record[1] == func_0017da40() &&
+                  (s32)(func_0016ef30() & 0xff) < (s32)record[2]) &&
+                !(fallbackMajor == func_0017d920() &&
+                  fallbackMinor == func_0017da40() &&
+                  (s32)fallbackDay < (s32)(func_0016ef30() & 0xff)))
             {
-                return record;
-            }
-            if (record[4] != 0xffff && func_0016f190(record[4]) == 0)
-            {
-                return record;
+                if (*(u32*)&record[4] == (u32)-1 ||
+                    func_0016f190(*(u32*)&record[4]) == 1)
+                {
+                    break;
+                }
             }
         }
         fallbackMajor = record[0];
         fallbackMinor = record[1];
         fallbackDay = record[2];
-        (void)fallbackMajor;
-        (void)fallbackMinor;
-        (void)fallbackDay;
-        if (record == (u16*)FIELD_DATA_AT(field, 0x1160, void*))
-        {
-            break;
-        }
+        i++;
         record -= 0x10;
     }
-    return best == record ? NULL : record;
+    if (i >= FIELD_DATA_AT(K_Field_Get(), 0x115c, u32))
+    {
+        record = NULL;
+    }
+    return record;
 }
 
 #pragma push

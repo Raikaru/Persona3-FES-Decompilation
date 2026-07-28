@@ -2457,8 +2457,7 @@ u32 func_002bb0b0(u32 *param_1)
   u32 uVar3 = 0;
   long lVar4 = 0;
   
-  lVar4 = func_002b9350(*param_1);
-  if (lVar4 == 0) {
+  if (func_002b9350(*param_1) == 0) {
     uVar3 = 0;
   }
   else {
@@ -3467,7 +3466,6 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
 
 {
   short sVar1 = 0;
-  long lVar2 = 0;
   u32 uVar3 = 0;
   u64 uVar4 = 0;
   int iVar5 = 0;
@@ -3490,8 +3488,8 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
     else {
       param_5[1] = ((float)(int)sVar1 / 16.0f) * (param_5[3] - param_5[2]) + param_5[2] + 0.0f;
     }
-    lVar2 = func_001fef10(*(u32 *)(param_3 + 0xa8),&fStack_8);
-    if ((lVar2 != 0) && (param_4 != '\0')) {
+    if ((func_001fef10(*(u32 *)(param_3 + 0xa8),&fStack_8) != 0) &&
+        (param_4 != '\0')) {
       fVar6 = param_5[1];
       param_2 = fStack_4 + param_2;
       uVar3 = func_0021c3f0(1);
@@ -4315,8 +4313,7 @@ void func_002be720(short *param_1,short param_2,short param_3,u64 param_4)
     param_1[6] = 0x26f;
   }
   else {
-    sVar2 = func_002bde10(param_4,(u16*)auStack_20);
-    param_1[6] = sVar2;
+    param_1[6] = func_002bde10(param_4,(u16*)auStack_20);
   }
   uVar5 = (u32)param_1[6];
   if ((long)param_1[5] <= (long)uVar5) {
@@ -4379,7 +4376,6 @@ void func_002bea80(short *param_1,short param_2,short param_3)
 {
   short sVar1 = 0;
   short sVar2 = 0;
-  const char* uVar3 = NULL;
   int iVar4 = 0;
   short sVar5 = 0;
   u32 uVar6 = 0;
@@ -4401,12 +4397,12 @@ void func_002bea80(short *param_1,short param_2,short param_3)
   for (sVar8 = 0; sVar7 = (short)iVar4, (long)sVar8 < (long)(uVar6 & 0xffff); sVar8 = sVar8 + 1) {
     sVar5 = sVar2 + 0xfa1 + sVar8;
     if ((long)param_1[3] == (long)((int)sVar2 + (int)sVar8)) {
-      uVar3 = func_00171110(sVar5,0);
-      func_003b2cb0(0,sVar1 + param_2,sVar7,0xffffffffffffffff,1,2,uVar3,0,0);
+      func_003b2cb0(0,sVar1 + param_2,sVar7,0xffffffffffffffff,1,2,
+                    func_00171110(sVar5,0),0,0);
     }
     else {
-      uVar3 = func_00171110(sVar5,0);
-      func_003b2cb0(0,sVar1 + param_2,sVar7,0xffffffffffffffff,0,2,uVar3,0,0);
+      func_003b2cb0(0,sVar1 + param_2,sVar7,0xffffffffffffffff,0,2,
+                    func_00171110(sVar5,0),0,0);
     }
     iVar4 = sVar7 + 0x12;
   }
@@ -6923,13 +6919,12 @@ bool func_002c2ed0(int param_1,u16 param_2,int param_3)
   char cVar3 = 0;
   u32 uVar4 = 0;
   int iVar5 = 0;
-  long lVar6 = 0;
   u32 uVar7 = 0;
   u32 uVar8 = 0;
   
   iVar2 = *(int *)((int)param_1 + 0x30);
-  if (((*(char *)(iVar2 + 0xa2) == '\x01') && (lVar6 = func_002e3350(param_1,param_2), lVar6 == 0))
-     && (lVar6 = func_0017b260(*(u16 *)(iVar2 + 0xa4)), lVar6 == 0)) {
+  if (((*(char *)(iVar2 + 0xa2) == '\x01') && func_002e3350(param_1,param_2) == 0)
+     && func_0017b260(*(u16 *)(iVar2 + 0xa4)) == 0) {
     return true;
   }
   uVar7 = func_003080c0(param_2);
@@ -8720,7 +8715,7 @@ u16 func_002c6ba0(int param_1)
   int iVar6 = 0;
   u32 uVar7 = 0;
   u32 uVar8 = 0;
-  int aiStack_10 [4] = {0};
+  int aiStack_10 [4];
   
   uVar1 = *(u16 *)(*(int *)((int)param_1 + 0x30) + 0xa4);
   iVar6 = (int)(DAT_007ce41c + ((u32)uVar1 * 0x28 + (u32)uVar1) * 4);

@@ -1905,87 +1905,45 @@ void FUN_003ca6b0(void)
 
 
 u64
-
-FUN_003ca780(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
-
-            int param_6,u32 param_7,u32 param_8,u16 param_9,u16 param_10
-
-            ,u32 param_11)
-
-
-
+FUN_003ca780(int param_1,int param_2,float param_3,float param_4,float param_5,
+            float param_6,u32 param_7,u32 param_8,u16 param_9,u16 param_10,
+            u32 param_11)
 {
-
   int iVar1;
-
   u32 uVar2;
-
   u16 uVar3;
 
-  
-
   uVar2 = FUN_001158b0(0,param_11,param_8);
-
   iVar1 = (int)uVar2;
-
-  *(float *)(iVar1 + 0x10) = (float)param_5;
-
-  *(float *)(iVar1 + 0x14) = (float)param_6;
-
-  *(u32 *)(iVar1 + 0x2c) = param_1;
-
-  *(char *)(iVar1 + 0x19) = -1 - (char)param_7;
-
-  *(char *)(iVar1 + 0x30) = (char)((u32)param_7 >> 0x18);
-
-  *(char *)(iVar1 + 0x31) = (char)((u32)param_7 >> 0x10);
-
-  *(char *)(iVar1 + 0x32) = (char)((u32)param_7 >> 8);
-
+  *(float *)(iVar1 + 0x10) = (float)param_1;
+  *(float *)(iVar1 + 0x14) = (float)param_2;
+  *(float *)(iVar1 + 0x2c) = param_3;
+  *(u8 *)(iVar1 + 0x19) = 0xff - (param_7 & 0xff);
+  *(char *)(iVar1 + 0x30) = (char)(param_7 >> 0x18);
+  *(char *)(iVar1 + 0x31) = (char)(param_7 >> 0x10);
+  *(char *)(iVar1 + 0x32) = (char)(param_7 >> 8);
   *(u16 *)(iVar1 + 0x24) = param_9;
-
   *(u16 *)(iVar1 + 0x26) = param_10;
-
-  *(u32 *)(iVar1 + 0x20) = param_2;
-
-  param_3 = param_3 * 4096.0f;
-
-  if (param_3 < 2.1474836e+09f) {
-
-    uVar3 = (u16)(int)param_3;
-
+  *(float *)(iVar1 + 0x20) = param_4;
+  param_5 = param_5 * 4096.0f;
+  if (param_5 < 2.1474836e+09f) {
+    uVar3 = (u16)(int)param_5;
   }
-
   else {
-
-    uVar3 = (u16)(int)(param_3 - 2.1474836e+09f);
-
+    uVar3 = (u16)(int)(param_5 - 2.1474836e+09f);
   }
-
   *(u16 *)(iVar1 + 0x28) = uVar3;
-
-  param_4 = param_4 * 4096.0f;
-
-  if (param_4 < 2.1474836e+09f) {
-
-    uVar3 = (u16)(int)param_4;
-
+  param_6 = param_6 * 4096.0f;
+  if (param_6 < 2.1474836e+09f) {
+    uVar3 = (u16)(int)param_6;
   }
-
   else {
-
-    uVar3 = (u16)(int)(param_4 - 2.1474836e+09f);
-
+    uVar3 = (u16)(int)(param_6 - 2.1474836e+09f);
   }
-
   *(u16 *)(iVar1 + 0x2a) = uVar3;
-
   FUN_001127d0(uVar2,1);
-
   FUN_00115980(uVar2);
-
   return 0;
-
 }
 #define FUN_003ca780(...) fclMiscCa780Call(__VA_ARGS__)
 #undef FUN_003ca960
