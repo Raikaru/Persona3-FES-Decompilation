@@ -336,18 +336,18 @@ void FUN_003c5fa0(int param_1,int param_2)
   int iVar3;
 
   int iVar4;
+  u32 changed;
 
   
 
-  iVar2 = (int)param_1;
+  iVar1 = *(int *)(param_1 + 0x24);
+  changed = 1;
+  if (*(int *)(param_1 + 8) == param_2) {
+    changed = 0;
+  }
+  iVar2 = FUN_003c49e0(param_1,param_1 + 4,param_2);
 
-  iVar1 = *(int *)(iVar2 + 0x24);
-
-  iVar4 = *(int *)(iVar2 + 8);
-
-  iVar2 = FUN_003c49e0(param_1,iVar2 + 4,param_2);
-
-  if (iVar4 != param_2) {
+  if (changed != 0) {
 
     if (param_2 == *(int *)(iVar1 + 0x2c)) {
 
