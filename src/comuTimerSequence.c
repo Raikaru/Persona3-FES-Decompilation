@@ -112,7 +112,7 @@ u32 FUN_003bf720(void)
   int *piVar3;
   int lVar5;
   u32 uVar4;
-  u8 bVar2;
+  int bVar2;
   u8 auStack_30[0x1c];
 
   piVar3 = (int *)FUN_00195540();
@@ -132,7 +132,7 @@ u32 FUN_003bf720(void)
       piVar3[1] = piVar3[1] + 1;
       bVar2 = 0;
     }
-    if (bVar2) {
+    if (bVar2 == 1) {
       FUN_0016e920((s16)DAT_007ce678);
       uVar4 = _DAT_007ce678;
       FUN_00521408(auStack_30,0,0x1c);

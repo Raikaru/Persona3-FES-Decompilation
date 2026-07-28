@@ -403,28 +403,22 @@ void btlCameraUpdate(BtlCamera* camera)
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
     const BtlCameraStateEntry* entry;
-    const BtlCameraStateEntry* bossEntry;
-    s32 temp_3;
+    u16 temp_3;
     s32 temp_6;
-    long var_7;
+    u64 var_7;
 
-    bossEntry = btlBossGetCameraStateEntry(state);
-    if (bossEntry == NULL)
+    if ((entry = btlBossGetCameraStateEntry(state)) == NULL)
     {
         entry = &sCameraStateEntries[state];
-    }
-    else
-    {
-        entry = bossEntry;
     }
     temp_6 = state & 0xffff;
     if (gBtl->camera.state != temp_6 || entry->unk_08 != 0)
     {
         var_7 = 2;
-        while ((u16)var_7 == 0)
+        while ((temp_3 = var_7) == 0)
         {
             *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) =
-                *(u16*)(iGpffffb6fc + 0x102 + (u16)var_7 * 2);
+                *(u16*)(iGpffffb6fc + 0x102 + temp_3 * 2);
             var_7 = ((u16)var_7 - 1) & 0xffff;
         }
 
@@ -6947,9 +6941,9 @@ void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
   }
 }
 
-// FUN_002b7060
 
 /* Removing this loses FUN_002b7060 (MATCH nd0 -> MISMATCH nd81) - measured W161. */
+// FUN_002b7060
 #pragma opt_loop_invariants on
 s16 FUN_002b7060(void)
 {

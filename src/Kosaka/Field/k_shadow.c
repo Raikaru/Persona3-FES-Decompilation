@@ -537,7 +537,6 @@ static ShadowColors gShadowColors =
     {0, 0, 0, 255}
 };
 
-// FUN_001997e0
 //
 // to help visualizing:
 //
@@ -548,6 +547,7 @@ static ShadowColors gShadowColors =
 //                |         \     |
 //                |           \   |
 // (xLeft, yBot)  [1] --------- [3]  (xRight, yBot)
+// FUN_001997e0
 u32 K_FldShadow_Draw(f32 xLeft, f32 yTop,
                      f32 xRight, f32 yBot,
                      f32 zBufferNear, f32 recipZ,

@@ -1776,8 +1776,8 @@ u16 func_0016ccb0(s16 pcId)
 }
 
 
-// FUN_0016d280
 /* Removing this loses FUN_0016d280 (MATCH nd0 -> MISMATCH nd19) - measured W161. */
+// FUN_0016d280
 #pragma opt_loop_invariants on
 u8 func_0016d280(s32 exp)
 {
@@ -1884,8 +1884,8 @@ u8 func_0016de50(s32 index)
     return gGlobalWork.heroStatus.socialLinkData[0x4df + index];
 }
 
-// FUN_0016deb0
 /* Removing this loses FUN_0016deb0 (MATCH nd0 -> MISMATCH nd47) - measured W161. */
+// FUN_0016deb0
 #pragma opt_loop_invariants on
 s16 func_0016deb0(s16 arcana)
 {
@@ -3295,10 +3295,10 @@ u8* func_001778b0(s16 param_1)
     }
     return result;
 }
-// FUN_001779A0 NONMATCHING
 
 
 /* Removing this worsens FUN_001779a0 (nd14 -> nd121) - measured W161. */
+// FUN_001779A0 NONMATCHING
 #pragma opt_loop_invariants on
 void func_001779a0(void)
 {

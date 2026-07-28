@@ -999,8 +999,8 @@ void func_0018bc80(void)
     H_Cdvd_Destroy(cdvd);
 }
 
-// FUN_0018BD90
 /* Removing this loses FUN_0018bd90 (MATCH nd0 -> MISMATCH nd24) - measured W161. */
+// FUN_0018BD90
 #pragma opt_loop_invariants on
 void* func_0018bd90(KwlnTask* task)
 {

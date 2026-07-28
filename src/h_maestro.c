@@ -1936,10 +1936,10 @@ static f32 Maestro_NearReciprocal(void)
     return 1.0f / camera->nearPlane;
 }
 
-// FUN_00113A30 NONMATCHING
 // Same reconstruction pattern as func_001140d0 below: retail inlines the
 // state-set calls and per-vertex doubled-alpha color loop rather than
 // delegating to Maestro_SetPrimitiveStates/DrawQuad/NearReciprocal.
+// FUN_00113A30 NONMATCHING
 void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 {
     RwIm2DVertex vertices[4];
@@ -2013,8 +2013,8 @@ void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-// FUN_00113D80 NONMATCHING
 // Same reconstruction pattern as func_001140d0 below.
+// FUN_00113D80 NONMATCHING
 void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 {
     RwIm2DVertex vertices[4];
@@ -2088,7 +2088,6 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-// FUN_001140D0 NONMATCHING
 // Reconstructed from retail disassembly: unlike the sibling Maestro_Draw*
 // wrappers, retail does NOT call Maestro_SetPrimitiveStates/DrawQuad/
 // NearReciprocal for this function - it inlines the state-set calls, the
@@ -2099,6 +2098,7 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
 // pass (object 1100B vs 896B window) - a register/CSE floor after
 // extensive pragma and type experimentation; logic and call sequence are
 // confirmed correct against the retail bytes.
+// FUN_001140D0 NONMATCHING
 void func_001140d0(f32 depth,
                    f32 x,
                    f32 y,
@@ -2389,8 +2389,8 @@ void func_00114450(f32 depth,
 }
 #pragma opt_loop_invariants off
 
-// FUN_00114AF0 NONMATCHING
 // Same reconstruction pattern as func_001140d0 above.
+// FUN_00114AF0 NONMATCHING
 void func_00114af0(f32 depth,
                    f32 x,
                    f32 y,

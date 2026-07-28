@@ -7041,10 +7041,10 @@ void FUN_00322d10(int param_1,float *param_2)
 
 
 
-// FUN_00322D40
 
 
 /* Removing this loses FUN_00322d40 (MATCH nd0 -> MISMATCH nd45) - measured W161. */
+// FUN_00322D40
 #pragma opt_loop_invariants on
 void FUN_00322d40(int param_1,u32 param_2)
 {

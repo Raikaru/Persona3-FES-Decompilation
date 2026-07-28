@@ -292,8 +292,8 @@ u32 sflResult001f9170(u32 player)
     return 0;
 }
 
-// FUN_001f9680
 /* Removing this loses FUN_001f9680 (MATCH nd0 -> MISMATCH nd57) - measured W161. */
+// FUN_001f9680
 #pragma opt_loop_invariants on
 u32 sflResult001f9680(const s32* request)
 {
@@ -1510,8 +1510,8 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
 }
 #pragma opt_loop_invariants off
 #pragma optimization_level 2
-// FUN_001FB4B0
 /* Removing this loses FUN_001fb4b0 (MATCH nd0 -> MISMATCH nd118) - measured W161. */
+// FUN_001FB4B0
 #pragma opt_loop_invariants on
 
 
