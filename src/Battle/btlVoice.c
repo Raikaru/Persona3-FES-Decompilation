@@ -1479,27 +1479,39 @@ void func_002f2890(BtlAction* action)
   unit = gBtl->unitLists[UNIT_GENUS_EC].head;
   object = func_002b8f90(0);
   func_002b90d0(object, func_002f87e0(4));
-  packet = FUN_002bd590_packet_voice(unit, 0x67);
-  packet->actionUID = action->uid;
-  btlPacketRegister(packet, 3);
-  packet = FUN_002b8d60_packet_voice(3, 0xfff);
-  packet->preUpdateDelay = 3;
-  packet->actionUID = action->uid;
-  btlPacketRegister(packet, 0);
-  packet = FUN_002bc7e0_packet_voice(8);
-  packet->preUpdateDelay = 3;
-  packet->actionUID = action->uid;
-  btlPacketRegister(packet, 0);
+  {
+    BtlPacket* introPacket;
+    introPacket = FUN_002bd590_packet_voice(unit, 0x67);
+    introPacket->actionUID = action->uid;
+    btlPacketRegister(introPacket, 3);
+  }
+  {
+    BtlPacket* introPacket;
+    introPacket = FUN_002b8d60_packet_voice(3, 0xfff);
+    introPacket->preUpdateDelay = 3;
+    introPacket->actionUID = action->uid;
+    btlPacketRegister(introPacket, 0);
+  }
+  {
+    BtlPacket* introPacket;
+    introPacket = FUN_002bc7e0_packet_voice(8);
+    introPacket->preUpdateDelay = 3;
+    introPacket->actionUID = action->uid;
+    btlPacketRegister(introPacket, 0);
+  }
   index = (FUN_002ffbc0(100) < 0x32) * 0xc;
-  packet = FUN_002a3d70_packet_voice(*(BtlAction**)(DAT_007ce3ec + 0x148),
-                                     (const RwV3d*)((const u8*)0x69a2d0 + index),
-                                     (const RwV3d*)((const u8*)0x69a2f0 + index),
-                                     (const RwV3d*)((const u8*)0x69a310 + index),
-                                     (const RwV3d*)((const u8*)0x69a330 + index),
-                                     uGpffff82dc_f32_voice);
-  packet->preUpdateDelay = 3;
-  packet->actionUID = action->uid;
-  btlPacketRegister(packet, 0);
+  {
+    BtlPacket* introPacket;
+    introPacket = FUN_002a3d70_packet_voice(*(BtlAction**)(DAT_007ce3ec + 0x148),
+                                           (const RwV3d*)((const u8*)0x69a2d0 + index),
+                                           (const RwV3d*)((const u8*)0x69a2f0 + index),
+                                           (const RwV3d*)((const u8*)0x69a310 + index),
+                                           (const RwV3d*)((const u8*)0x69a330 + index),
+                                           uGpffff82dc_f32_voice);
+    introPacket->preUpdateDelay = 3;
+    introPacket->actionUID = action->uid;
+    btlPacketRegister(introPacket, 0);
+  }
   parent = FUN_002dd4a0_packet_voice(0x67, 0);
   parent->actionUID = action->uid;
   btlPacketRegister(parent, 1);

@@ -1096,6 +1096,7 @@ void FUN_00245420(uint *param_1,uint param_2)
   u32 uVar9;
   int lVar10;
   u32 uVar11;
+  u32 skillOffset;
   u8 auStack_10 [16];
   
   if (sBpcWork == (uint *)0x0) {
@@ -1132,8 +1133,8 @@ void FUN_00245420(uint *param_1,uint param_2)
     }
     if (((*puVar1 & 8) != 0) &&
        (((**(ushort **)(iVar3 + 0xa2c) & 4) == 0 ||
-        ((*(ushort *)((uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e + (uint)DAT_007ce410 + 0x1e) & 0x20)
-         == 0)))) {
+        (skillOffset = (uint)(*(ushort **)(iVar3 + 0xa2c))[1] * 0x3e,
+         ((*(ushort *)(skillOffset + (uint)DAT_007ce410 + 0x1e) & 0x20) == 0))))) {
       uVar2 = func_003082f0(0,(u16)puVar1[0x1cb4]);
       uVar11 = func_00306e80(*(u32 *)(iVar3 + 0xa2c),uVar2);
       lVar10 = func_0017b260(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));

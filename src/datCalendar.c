@@ -4674,7 +4674,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
                   72.0f);
 }
 
-// FUN_00186D50 NONMATCHING
+// FUN_00186D50
 void* func_00186d50(KwlnTask* task)
 {
     CalendarTransitionWork* work;

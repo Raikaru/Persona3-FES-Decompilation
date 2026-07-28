@@ -43234,7 +43234,7 @@ void FUN_00349090(int *param_1,float *param_2)
 
       fVar7 = fVar7 * alpha;
 
-      uVar6 = (u8)(u32)fVar7;
+      uVar6 = (u32)fVar7 & 0xff;
 
       *((u8 *)param_2 + 0xf) = uVar6;
 

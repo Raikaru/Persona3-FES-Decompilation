@@ -1159,15 +1159,15 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     s32 i;
     HCdvdStreamSlot* slot;
     HCdvdStreamSlot* slots;
-    u8* allocator;
+    void* (**allocator)(u32, u32, u32);
 
     if (func_004bfd50(key) != NULL)
     {
         return NULL;
     }
 
-    allocator = (u8*)D_00960184;
-    context = (HCdvdStreamContext*)(*(void* (**)(u32, u32, u32))allocator)(1, 0x5c, 0x40000);
+    allocator = (void* (**)(u32, u32, u32))D_00960184;
+    context = (HCdvdStreamContext*)(*allocator)(1, 0x5c, 0x40000);
     context->callback14 = (void*)H_Cdvd_StreamGetSlot;
     context->callback18 = (void*)func_001019e0;
     context->callback28 = (void*)func_001016d0;
@@ -1176,7 +1176,7 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     context->callback44 = (void*)H_Cdvd_StreamComplete;
     context->callback38 = (void*)func_001018c0;
     context->callback4c = (void*)func_00101a10;
-    slots = (HCdvdStreamSlot*)(*(void* (**)(u32, u32, u32))allocator)(count, 0x110, 0x40000);
+    slots = (HCdvdStreamSlot*)(*allocator)(count, 0x110, 0x40000);
     context->slots = slots;
     for (i = 0; i < count; i++)
     {
