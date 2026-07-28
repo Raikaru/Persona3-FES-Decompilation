@@ -712,7 +712,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u64 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
-u8 * FUN_0031fd00(void);
+u8 * FUN_0031fd00(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031fde0(void);
 void FUN_00320080(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
 u32 FUN_00320230(void);
@@ -4198,44 +4198,17 @@ u32 * FUN_0031fbd0(float param_1,int *param_2)
 // FUN_0031FD00 NONMATCHING
 
 
-u8 * FUN_0031fd00(void)
-
-
-
+u8 * FUN_0031fd00(float param_1,int *param_2,float param_3,int *param_4,float param_5)
 {
+  RwV4d first;
+  RwV4d second;
 
-  int iVar1;
-
-  u32 extraout_t1;
-
-  float fVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  u32 extraout_f13;
-
-  float extraout_f14;
-
-  
-
-  iVar1 = ((code)FUN_0031fbd0)();
-
-  fVar4 = *(float *)(iVar1 + 4);
-
-  fVar2 = *(float *)(iVar1 + 8);
-
-  fVar3 = *(float *)(iVar1 + 0xc);
-
-  iVar1 = (int)FUN_0031fbd0((float)(extraout_f13),(int *)(extraout_t1));
-
-  DAT_00957254_f32 = extraout_f14 * (*(float *)(iVar1 + 4) - fVar4) + fVar4;
-  DAT_00957258_f32 = extraout_f14 * (*(float *)(iVar1 + 8) - fVar2) + fVar2;
-  DAT_0095725c_f32 = extraout_f14 * (*(float *)(iVar1 + 0xc) - fVar3) + fVar3;
-
+  first = *(RwV4d *)FUN_0031fbd0(param_1,param_2);
+  second = *(RwV4d *)FUN_0031fbd0(param_3,param_4);
+  DAT_00957254_f32 = param_5 * (second.y - first.y) + first.y + 0.0f;
+  DAT_00957258_f32 = param_5 * (second.z - first.z) + first.z + 0.0f;
+  DAT_0095725c_f32 = param_5 * (second.w - first.w) + first.w + 0.0f;
   return (u8 *)&DAT_00957250;
-
 }
 
 

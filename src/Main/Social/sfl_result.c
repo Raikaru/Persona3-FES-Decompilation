@@ -1415,8 +1415,8 @@ void func_001fb1f0(DatPersonaWork* persona, u16* output, s32* outputCount)
     s8* current;
     s32 firstIndex;
     s32 indexCount;
-    s32 outputSize;
     s32 i;
+    s32 outputSize;
     s32 j;
 
     skills = datPersonaGetSkills(persona);
@@ -1440,8 +1440,9 @@ void func_001fb1f0(DatPersonaWork* persona, u16* output, s32* outputCount)
     outputSize = 0;
     for (i = 0; i < indexCount; i++, current += 4)
     {
-        if (current[1] == 1)
+        switch (current[1])
         {
+        case 1:
             j = 0;
             while (j < skillCount)
             {
@@ -1455,6 +1456,7 @@ void func_001fb1f0(DatPersonaWork* persona, u16* output, s32* outputCount)
                 output[outputSize] = *(u16*)(current + 2);
                 outputSize++;
             }
+            break;
         }
         if (outputSize == 8)
             break;

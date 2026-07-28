@@ -7698,6 +7698,7 @@ u32 FUN_003f9e30(int param_1)
   int iVar6;
 
   u32 uVar7;
+  u32 *puVar8;
 
 
   int iVar9;
@@ -7722,11 +7723,11 @@ u32 FUN_003f9e30(int param_1)
 
   
 
+  iVar9 = 8;
+
   puVar11 = (u32 *)DAT_006af010_abs;
 
   puVar10 = auStack_40;
-
-  iVar9 = 8;
 
   do {
 
@@ -7758,43 +7759,48 @@ u32 FUN_003f9e30(int param_1)
   FUN_003f99d0(uVar7,0x7ffff);
 
 
-  for (uVar13 = 4000; (int)uVar13 < 0x1080; uVar13 = uVar13 + 1) {
+  uVar13 = 4000;
+  goto item_check;
+item_body:
+  if ((int)(uVar13 - 4000) >= 300) {
+    goto items_done;
+  }
+  if ((FUN_003f2240_u32((int)auStack_c0,uVar13) != 0) &&
+      (FUN_003f98f0(uVar13 & 0xffff) != 0)) {
 
-    if ((int)(uVar13 - 4000) >= 300) {
-      break;
-    }
-    if ((FUN_003f2240_u32((int)auStack_c0,uVar13) != 0) &&
-        (FUN_003f98f0(uVar13 & 0xffff) != 0)) {
+    iVar9 = FUN_003c5a40(uVar7,*(u16 *)(iVar5 + 0x10) + 1,0x20,0);
 
-      iVar9 = FUN_003c5a40(uVar7,*(u16 *)(iVar5 + 0x10) + 1,0x20,0);
+    puVar8 = *(u32 **)(*(int *)(iVar9 + 0x14) + 0x1c);
 
-      iVar9 = *(int *)(*(int *)(iVar9 + 0x14) + 0x1c);
+    memcpy(puVar8 + 1,auStack_c0,0x1c);
 
-      memcpy(iVar9 + 4,auStack_c0,0x1c);
+    iVar6 = (int)puVar8[4] >> 2;
 
-      iVar6 = *(int *)(iVar9 + 0x10) >> 2;
+    puVar8[4] = iVar6;
 
-      *(int *)(iVar9 + 0x10) = iVar6;
+    if (iVar6 < 1) {
 
-      if (iVar6 < 1) {
-
-        *(u32 *)(iVar9 + 0x10) = 1;
-
-      }
+      puVar8[4] = 1;
 
     }
 
   }
+  uVar13 = uVar13 + 1;
+item_check:
+  if ((int)uVar13 < 0x1080) {
+    goto item_body;
+  }
+items_done:
 
   FUN_003c7000(uVar7,FUN_003f9cb0,0);
 
   FUN_003c6ee0(uVar7);
 
+  iVar9 = 4;
+
   ppuVar12 = (u8 **)PTR_FUN_006af050_abs;
 
   puVar10 = auStack_60;
-
-  iVar9 = 4;
 
   do {
 
@@ -7813,13 +7819,13 @@ u32 FUN_003f9e30(int param_1)
     puVar10 = puVar10 + 2;
 
   } while (0 < iVar9);
+
+  iVar9 = 4;
 
   ppuVar12 = (u8 **)PTR_FUN_006af070_abs;
 
   puVar10 = auStack_80;
 
-  iVar9 = 4;
-
   do {
 
     puVar3 = *ppuVar12;
@@ -7838,11 +7844,11 @@ u32 FUN_003f9e30(int param_1)
 
   } while (0 < iVar9);
 
+  iVar9 = 4;
+
   ppuVar12 = (u8 **)PTR_FUN_006af090_abs;
 
   puVar10 = auStack_a0;
-
-  iVar9 = 4;
 
   do {
 
