@@ -315,7 +315,13 @@ u32 FUN_003971a0(void)
 
       }
 
-      else if (lVar3 < 3) {
+      else if (lVar3 >= 3) {
+
+        bVar1 = 0;
+
+      }
+
+      else {
 
         iVar2 = FUN_00195540(lVar10);
 
@@ -337,12 +343,6 @@ u32 FUN_003971a0(void)
 
       }
 
-      else {
-
-        bVar1 = 0;
-
-      }
-
       if (!bVar1) {
 
         FUN_0019d3f0("mt_evtCutin.c",0x120);
@@ -361,17 +361,17 @@ u32 FUN_003971a0(void)
 
       }
 
-      else if (lVar3 < 3) {
+      else if (lVar3 >= 3) {
 
-        iVar2 = FUN_00195540(lVar10);
-
-        iVar2 = *(int *)(iVar2 + (int)lVar3 * 0xc);
+        iVar2 = 0;
 
       }
 
       else {
 
-        iVar2 = 0;
+        iVar2 = FUN_00195540(lVar10);
+
+        iVar2 = *(int *)(iVar2 + (int)lVar3 * 0xc);
 
       }
 

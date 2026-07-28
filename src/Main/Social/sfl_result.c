@@ -1404,7 +1404,7 @@ void func_001fb1b0(u64 param_1,u64 param_2)
   return;
 
 }
-// FUN_001FB1F0 NONMATCHING
+// FUN_001FB1F0
 
 
 void func_001fb1f0(DatPersonaWork* persona, u16* output, s32* outputCount)

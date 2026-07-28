@@ -128,13 +128,11 @@ void bsaMain0020fe20(BsaWork* work)
 // FUN_0020FE30 NONMATCHING
 void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
 {
-    void* unit;
+    u32 unit;
     u32 table6;
     u32 table1;
     u32 table2;
     u32 image;
-    u16 enemyId;
-    u16* slots;
     s16 slotId;
     s32 i;
     s32 count;
@@ -153,16 +151,14 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     p[1] |= BSA_FLAG_TRANSITION;
     p[2] = unitId;
 
-    unit = func_001ff430(unitId);
-    enemyId = *(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2);
-    *(u16*)(p + 3) = enemyId;
+    unit = (u32)func_001ff430(unitId);
+    *(u16*)(p + 3) = *(u16*)(*(u32*)(unit + 0xa2c) + 2);
     p[1] &= ~BSA_FLAG_BOSS;
-    if (enemyId == 0x126)
+    if (*(u16*)(p + 3) == 0x126)
         p[1] |= BSA_FLAG_BOSS;
 
     /* Retail 0x010c: re-fetch the unit calculation pointer for this call. */
-    func_0017b1e0(
-        *(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2));
+    func_0017b1e0(*(u16*)(*(u32*)(unit + 0xa2c) + 2));
     func_003b0e70(1);
     func_003b0e90(2);
     image = func_003b0970(
@@ -203,7 +199,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
         default: slotId = 0; K_ASSERT(0, 0xd9); break;
         }
         /* Retail 0x03dc-0x0478: reload calc flags and classify high-bit masks. */
-        flags = func_00306e80(*(u32*)((u8*)unit + 0xa2c), slotId);
+        flags = func_00306e80(*(u32*)(unit + 0xa2c), slotId);
         if ((flags & 0x1000000) != 0)
             category = 1;
         else if ((flags & 0x2000000) != 0)
@@ -220,15 +216,12 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     }
     /* Retail 0x0498-0x04b8: reload calc for the result and slot list. */
     p[0x17e8] = (u32)(s32)func_003082f0(
-        *(u32*)((u8*)unit + 0xa2c), 0);
-    slots = func_00308bb0(*(u32*)((u8*)unit + 0xa2c));
+        *(u32*)(unit + 0xa2c), 0);
+    unit = (u32)func_00308bb0(*(u32*)(unit + 0xa2c));
     /* Retail 0x04c0-0x04f4: keep an index separate from the nonzero count. */
     count = 0;
-    for (i = 0; i < 8; i++) {
-        if (slots[i] == 0)
-            break;
+    for (i = 0; i < 8 && *(s16*)(unit + i * 2) != 0; i++)
         count++;
-    }
     p[0xd] = count;
 
     /* Retail 0x0504-0x0918: pass each image directly to its draw setup. */
@@ -274,7 +267,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
         func_0021e380(p + i * 0x80 + 0xc90, image, 1);
     }
     for (i = 0; i < 8; i++) {
-        if (slots[i] == 0)
+        if (*(s16*)(unit + i * 2) == 0)
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = 0x2b;
         else
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = func_0017d2e0() + 0x20;
@@ -285,7 +278,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     }
     func_0021d3b0(
         p + 0x590,
-        bsaMain00215830(DAT_007ce410[enemyId * 0x3e + 2]));
+        bsaMain00215830(DAT_007ce410[*(u16*)(p + 3) * 0x3e + 2]));
     func_0021d3b0(p + 0x5d0, func_0021cca0(table2, 0x2f));
 
     /* Retail 0x096c-0x0c30: image handles feed draw setup directly. */
@@ -337,7 +330,7 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
             func_003b0e90(2);
             for (i = 0; i < (s32)p[0xd]; i++) {
                 image = func_003b0970(
-                    func_0030bb40(slots[i]), 2, 6, 0, 0);
+                    func_0030bb40(*(u16*)(unit + i * 2)), 2, 6, 0, 0);
                 func_003b0e20(image, 0xffffffff);
                 func_003b0d70(image, ((i / 4) * 0x96 + 0x82) * 0x10,
                               ((i % 4) * 0x19 + 100) * 8);

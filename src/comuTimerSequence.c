@@ -1648,21 +1648,29 @@ u8 * FUN_003c1430(void)
 code * FUN_003c1440(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
-  long lVar4;
+  int lVar4;
 
   piVar3 = (int *)FUN_00195540();
   iVar1 = *piVar3;
-  if (iVar1 == 0) {
+  switch (iVar1) {
+  case 0:
     piVar3[1] = 0;
     piVar3[2] = 2;
     *piVar3 = 1;
-  }
-  else if (iVar1 == 1) {
+    break;
+  case 1:
     if (piVar3[2] <= piVar3[1]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
+      bVar2 = 1;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
+      bVar2 = 0;
+    }
+    if (bVar2) {
       *piVar3 = 0;
       piVar3[1] = 0;
       piVar3[2] = 0;
@@ -1671,36 +1679,40 @@ code * FUN_003c1440(void)
       piVar3[5] = 0;
       return (code *)&FUN_003c1340;
     }
-    piVar3[1] = piVar3[1] + 1;
-  }
-  else if (iVar1 == 2) {
-    lVar4 = FUN_0027c2b0();
-    if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
-      bVar2 = 1;
-    }
-    else {
-      bVar2 = 0;
-    }
-    if (bVar2) {
-      lVar4 = FUN_0038d6f0(0);
-      if (lVar4 == 0) {
-        FUN_001728d0(0x95b750);
+    break;
+  case 2:
+    {
+      int bVar3;
+
+      lVar4 = FUN_0027c2b0();
+      if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
+        bVar3 = 1;
+      }
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        lVar4 = FUN_0038d6f0(0);
+        if (lVar4 == 0) {
+          FUN_001728d0(DAT_0095b750);
+          *piVar3 = 0;
+          piVar3[1] = 0;
+          piVar3[2] = 0;
+          piVar3[3] = 0;
+          piVar3[4] = 0;
+          piVar3[5] = 0;
+          return (code *)&FUN_003bf370;
+        }
         *piVar3 = 0;
         piVar3[1] = 0;
         piVar3[2] = 0;
         piVar3[3] = 0;
         piVar3[4] = 0;
         piVar3[5] = 0;
-        return (code *)&FUN_003bf370;
+        return (code *)&FUN_003c1340;
       }
-      *piVar3 = 0;
-      piVar3[1] = 0;
-      piVar3[2] = 0;
-      piVar3[3] = 0;
-      piVar3[4] = 0;
-      piVar3[5] = 0;
-      return (code *)&FUN_003c1340;
     }
+    break;
   }
   return (code *)0x0;
 }
