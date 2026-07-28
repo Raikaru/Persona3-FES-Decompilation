@@ -1229,9 +1229,9 @@ void FUN_00258b40(void)
 
   int iVar7;
 
-  u32 *unaff_s2_lo;
-
   u32 *unaff_s3_lo;
+
+  u32 *unaff_s2_lo;
 
   int iFirst;
 
@@ -1304,13 +1304,12 @@ void FUN_00258b40(void)
     K_ASSERT(sSflCardB664 != NULL, 0xbc);
 
     for (puVar2 = (u32 *)sSflCardB664[0x4997];
-
-        (puVar2 != (u32 *)0x0 &&
-
-        ((unaff_s3_lo = puVar2, (*puVar2 & 2) != 0 || (puVar2[4] != uVar3))));
-
+        puVar2 != NULL;
         puVar2 = (u32 *)puVar2[0x3f1]) {
-
+      unaff_s3_lo = puVar2;
+      if (((*puVar2 & 2) == 0) && (puVar2[4] == uVar3)) {
+        break;
+      }
     }
 
     K_ASSERT(puVar2 != NULL, 0x47a);
@@ -1332,13 +1331,12 @@ void FUN_00258b40(void)
     K_ASSERT(sSflCardB664 != NULL, 0xbc);
 
     for (puVar2 = (u32 *)sSflCardB664[0x4997];
-
-        (puVar2 != (u32 *)0x0 &&
-
-        ((unaff_s2_lo = puVar2, (*puVar2 & 2) != 0 || (puVar2[4] != uVar3))));
-
+        puVar2 != NULL;
         puVar2 = (u32 *)puVar2[0x3f1]) {
-
+      unaff_s2_lo = puVar2;
+      if (((*puVar2 & 2) == 0) && (puVar2[4] == uVar3)) {
+        break;
+      }
     }
 
     K_ASSERT(puVar2 != NULL, 0x47a);

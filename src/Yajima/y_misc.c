@@ -8740,12 +8740,17 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   int iVar3;
 
-  int uVar4;
-  int uVar5;
+  u32 unaff_s5_lo;
 
   u32 unaff_s4_lo;
 
-  u32 unaff_s5_lo;
+  int rowOffset;
+
+  int columnOffset;
+
+  int uVar4;
+
+  int uVar5;
 
   YajimaVec3 position;
 
@@ -8755,15 +8760,19 @@ void FUN_0042fd80(float *param_1,int param_2)
 
   for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
 
+    rowOffset = uVar5 * 0x100;
+
     for (uVar4 = 0; (int)uVar4 < 0x10; uVar4 = uVar4 + 1) {
+
+      columnOffset = uVar4 * 0x10;
 
       iVar1 = K_Field_Get();
 
-      if (*(u8 *)(uVar5 * 0x100 + iVar1 + uVar4 * 0x10 + 0x4a) == '\b') {
+      if (*(u8 *)(rowOffset + iVar1 + columnOffset + 0x4a) == '\b') {
 
         iVar1 = K_Field_Get();
 
-        if (*(u8 *)(uVar5 * 0x100 + iVar1 + uVar4 * 0x10 + 0x49) == '\x01') {
+        if (*(u8 *)(rowOffset + iVar1 + columnOffset + 0x49) == '\x01') {
 
           unaff_s5_lo = uVar4;
 
