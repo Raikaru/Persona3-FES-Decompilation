@@ -1151,15 +1151,15 @@ static void H_Cdvd_SetStreamCallback(HCdvdStreamContext* context, u32 offset,
     *(void (**)(void))((u8*)context + offset) = (void (*)(void))callback;
 }
 
-// FUN_00101ad0 NONMATCHING
+// FUN_00101ad0
 void* func_00101ad0(s32 count, void* source, s32 stride,
                                    void* callbackData, void* key)
 {
-    HCdvdStreamContext* context;
     s32 i;
     HCdvdStreamSlot* slot;
     HCdvdStreamSlot* slots;
     void* (**allocator)(u32, u32, u32);
+    HCdvdStreamContext* context;
 
     if (func_004bfd50(key) != NULL)
     {
@@ -1187,7 +1187,7 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)
     {
-        printf("CDVD stream registration failed: %d\n", count);
+        printf("CDVD stream registration failed: %d\n", i);
     }
     return context;
 }
@@ -1806,15 +1806,15 @@ void func_00102e00(void* contextData)
     HCDVD_FREE(context->slots);
 }
 
-// FUN_00102e50 NONMATCHING
+// FUN_00102e50
 void* func_00102e50(s32 count, void* source, s32 stride,
                                  void* callbackData, void* key)
 {
-    HCdvdFileContext* context;
     s32 i;
     HCdvdFileSlot* slot;
     HCdvdFileSlot* slots;
     void* (**allocator)(u32, u32, u32);
+    HCdvdFileContext* context;
 
     if (func_004bfd50(key) != NULL)
     {
@@ -1842,7 +1842,7 @@ void* func_00102e50(s32 count, void* source, s32 stride,
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)
     {
-        printf("CDVD file context registration failed: %d\n", count);
+        printf("CDVD file context registration failed: %d\n", i);
     }
     return context;
 }

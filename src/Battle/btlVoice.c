@@ -6966,7 +6966,7 @@ void func_002e82b0(BtlCamera* camera)
   BtlVoiceCameraWork* work;
   u16 modeFlags;
   u8* voiceData;
-  u16 randomIndex;
+  u32 randomIndex;
 
   work = (BtlVoiceCameraWork*)camera;
   work->mode = (u16)FUN_002a7830();
@@ -7023,8 +7023,9 @@ void func_002e82b0(BtlCamera* camera)
 
       randomIndex = FUN_002ffbc0(2);
       voiceData = (u8*)DAT_007ce3ec;
+      randomIndex = (randomIndex & 0xffff) * 0x34;
       voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)voiceData + 0xb18)) +
-                  randomIndex * 0x34 + 0x1a4;
+                  randomIndex + 0x1a4;
       btlVoicePlayCameraVoice(voiceData, playbackA.startTransform,
                               playbackA.endTransform, &playbackA.startPosition,
                               &playbackA.endPosition);
@@ -7050,8 +7051,9 @@ cameraVoiceState6:
 
         randomIndex = FUN_002ffbc0(2);
         voiceData = (u8*)DAT_007ce3ec;
+        randomIndex = (randomIndex & 0xffff) * 0x34;
         voiceData = (u8*)(uintptr_t)(*(u32*)((u8*)voiceData + 0xb18)) +
-                    randomIndex * 0x34 + 0x20c;
+                    randomIndex + 0x20c;
         btlVoicePlayCameraVoice(voiceData, playbackC.startTransform,
                                 playbackC.endTransform,
                                 &playbackC.startPosition,
