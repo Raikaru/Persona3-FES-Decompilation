@@ -949,7 +949,6 @@ u32 func_00281f20(void* workData)
     f32 sp48;
     f32 sp44;
     f32 sp40;
-    f32 sp38;
     f32 sp34;
     f32 sp30;
     f32 temp_f0;
@@ -1000,7 +999,6 @@ u32 func_00281f20(void* workData)
     sp30 = work->origin.x + sp40;
     sp34 = work->origin.y + sp44;
     temp_f0 = work->origin.z + sp48;
-    sp38 = temp_f0;
     unit->pos.x = sp30;
     unit->pos.y = sp34;
     unit->pos.z = temp_f0;
@@ -5630,37 +5628,19 @@ void FUN_002891e0(void)
   u32 auStack_b0 [16];
 
   u32 uStack_70;
-
   u32 uStack_6c;
-
   u32 uStack_68;
-
   u32 uStack_64;
 
-  u32 uStack_60;
+  u32 savedTarget[4];
 
-  u32 uStack_5c;
-
-  u32 uStack_58;
-
-  u32 uStack_54;
-
-  u32 uStack_50;
-
-  u32 uStack_4c;
-
-  u32 uStack_48;
-
-  u32 uStack_44;
+  u32 savedSource[4];
 
   int aiStack_40 [15];
 
   u8 uStack_4;
-
   u8 uStack_3;
-
   u8 uStack_2;
-
   u8 uStack_1;
 
   
@@ -5695,23 +5675,23 @@ void FUN_002891e0(void)
 
     iVar6 = FUN_00198560();
 
-    uStack_50 = *(u32 *)(iVar6 + 0x18);
+    savedSource[0] = *(u32 *)(iVar6 + 0x18);
 
-    uStack_4c = *(u32 *)(iVar6 + 0x1c);
+    savedSource[1] = *(u32 *)(iVar6 + 0x1c);
 
-    uStack_48 = *(u32 *)(iVar6 + 0x20);
+    savedSource[2] = *(u32 *)(iVar6 + 0x20);
 
-    uStack_44 = *(u32 *)(iVar6 + 0x24);
+    savedSource[3] = *(u32 *)(iVar6 + 0x24);
 
     iVar6 = FUN_00198570();
 
-    uStack_60 = *(u32 *)(iVar6 + 0x18);
+    savedTarget[0] = *(u32 *)(iVar6 + 0x18);
 
-    uStack_5c = *(u32 *)(iVar6 + 0x1c);
+    savedTarget[1] = *(u32 *)(iVar6 + 0x1c);
 
-    uStack_58 = *(u32 *)(iVar6 + 0x20);
+    savedTarget[2] = *(u32 *)(iVar6 + 0x20);
 
-    uStack_54 = *(u32 *)(iVar6 + 0x24);
+    savedTarget[3] = *(u32 *)(iVar6 + 0x24);
 
     iVar6 = FUN_00198570();
 
@@ -5865,7 +5845,7 @@ void FUN_002891e0(void)
 
     uVar8 = FUN_00198560();
 
-    FUN_004944b0(uVar8,&uStack_50);
+    FUN_004944b0(uVar8,savedSource);
 
     uVar8 = FUN_00198580();
 
@@ -5873,7 +5853,7 @@ void FUN_002891e0(void)
 
     uVar8 = FUN_00198570();
 
-    FUN_004944b0(uVar8,&uStack_60);
+    FUN_004944b0(uVar8,savedTarget);
 
     iVar12 = FUN_00198580();
 

@@ -780,7 +780,6 @@ void func_00276d90(void)
 {
     u8 *work;
     u32 res8;
-    u32 res10;
     u32 res1;
     s32 i;
     f32 layout[4];
@@ -788,7 +787,6 @@ void func_00276d90(void)
     K_ASSERT(gOpWorkD0 != NULL, 0x61);
     work = OP_WORKD;
     res8 = func_00119a60(8);
-    res10 = func_00119a60(10);
     res1 = brRes00234630(1);
     K_ASSERT((*gOpWorkD0 & 1) == 0, 0x84);
     func_0025f5d0(work + 0xb4c, res1, 0x15);

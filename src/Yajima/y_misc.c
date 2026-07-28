@@ -799,17 +799,9 @@ u32 FUN_00424b60(void)
 
   short unaff_s5_lo;
 
-  float uStack_20;
+  YajimaVec3 pos;
 
-  float uStack_1c;
-
-  float uStack_18;
-
-  float uStack_10;
-
-  float uStack_c;
-
-  float uStack_8;
+  YajimaVec3 copiedPos;
 
   char acStack_4 [4];
 
@@ -911,17 +903,13 @@ u32 FUN_00424b60(void)
 
       iVar7 = iVar7 + 1;
 
-      K_FldFrame_CtlCopyPos(&uStack_20,*(u32 *)(DAT_008717f4[iVar6 * 0x70] + 0x1e0));
+      K_FldFrame_CtlCopyPos(&pos,*(u32 *)(DAT_008717f4[iVar6 * 0x70] + 0x1e0));
 
-      uStack_10 = uStack_20;
-
-      uStack_c = uStack_1c;
-
-      uStack_8 = uStack_18;
+      copiedPos = pos;
 
       iVar4 = K_Field_Get();
 
-      func_001a9760(*(u32 *)(iVar4 + 0x10),6,&uStack_10,3,1);
+      func_001a9760(*(u32 *)(iVar4 + 0x10),6,&copiedPos,3,1);
 
       FUN_0016f3e0(0,iVar7);
 
@@ -3341,24 +3329,8 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
   float fStack_108;
 
   float fStack_104;
-
   YajimaVec16 afStack_100 [4];
 
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  u32 uStack_b0;
-
-  u32 uStack_ac;
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
 
   
 
@@ -3422,21 +3394,14 @@ void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int para
 
   }
 
-  uStack_f0 = 0;
-
-  uStack_ec = 0;
-
-  uStack_b0 = 0x3f800000;
-
-  uStack_ac = 0;
-
-  uStack_70 = 0;
-
-  uStack_6c = 0x3f800000;
-
-  uStack_30 = 0x3f800000;
-
-  uStack_2c = 0x3f800000;
+  afStack_100[0].lane[4] = 0.0f;
+  afStack_100[0].lane[5] = 0.0f;
+  afStack_100[1].lane[4] = 1.0f;
+  afStack_100[1].lane[5] = 0.0f;
+  afStack_100[2].lane[4] = 0.0f;
+  afStack_100[2].lane[5] = 1.0f;
+  afStack_100[3].lane[4] = 1.0f;
+  afStack_100[3].lane[5] = 1.0f;
 
   (*DAT_00960090)(1,*param_7);
   (*DAT_009600a0)(4,afStack_100,4);
@@ -3495,11 +3460,9 @@ u32 FUN_004281f0(u32 param_1)
 
   int iVar15;
 
-  u16 uVar16;
 
   int iVar17;
 
-  u16 uVar18;
 
   int iVar19;
 
@@ -3526,15 +3489,9 @@ u32 FUN_004281f0(u32 param_1)
 
   u8 auStack_90 [8];
 
-  u32 uStack_88;
-
-  u32 uStack_84;
 
   u8 auStack_80 [8];
 
-  u32 uStack_78;
-
-  u32 uStack_74;
 
   u32 uStack_68;
 
@@ -3852,9 +3809,6 @@ u32 FUN_004281f0(u32 param_1)
 
   case '\f':
 
-    uStack_78 = 0x7e;
-
-    uStack_74 = 0x7e;
 
     if (*(int *)(pcVar1 + 0xb20) != 0) {
 
@@ -4338,9 +4292,6 @@ u32 FUN_004281f0(u32 param_1)
             FUN_0042f440(param_1,(short)iVar19,(short)iVar13,iVar17,iVar15);
           }
 
-          uVar16 = (u16)iVar19;
-
-          uVar18 = (u16)iVar13;
 
 
 
@@ -4453,9 +4404,6 @@ u32 FUN_004281f0(u32 param_1)
     if (lVar21 == pcVar1[0xb2a]) {
 
 
-      uStack_88 = 0x7e;
-
-      uStack_84 = 0x7e;
 
       if (*(int *)(pcVar1 + 0xb20) != 0) {
 
@@ -5570,15 +5518,12 @@ void FUN_0042b050(int param_1)
 
   u64 uStack_30;
 
-  u32 uStack_28;
 
   float afStack_20 [2];
-
   float fStack_18;
 
   float fStack_10;
 
-  u32 uStack_c;
 
   float fStack_8;
 
@@ -5590,19 +5535,16 @@ void FUN_0042b050(int param_1)
 
   fStack_10 = fStack_50;
 
-  uStack_c = uStack_4c;
 
   fStack_8 = fStack_48;
 
   uStack_30 = DAT_006b44d0;
 
-  uStack_28 = DAT_006b44d8;
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
     fStack_10 = *(float *)(iVar1 + 0x868);
 
-    uStack_c = *(u32 *)(iVar1 + 0x86c);
 
     fStack_8 = *(float *)(iVar1 + 0x870);
 
@@ -5669,7 +5611,6 @@ void FUN_0042b050(int param_1)
                         2.25f) / 100.0f) * 2.25f) / 100.0f;
 
       afStack_40[0] = ((afStack_20[0] - fStack_10) * 2.25f) / 100.0f;
-
       afStack_40[2] = ((fStack_18 - fVar9) * 2.25f) / 100.0f;
 
       afStack_40[1] = 0.0f;
@@ -5771,7 +5712,6 @@ void FUN_0042b540(int param_1)
 
   u64 uStack_30;
 
-  u32 uStack_28;
 
   float afStack_20 [2];
 
@@ -5779,7 +5719,6 @@ void FUN_0042b540(int param_1)
 
   float fStack_10;
 
-  u32 uStack_c;
 
   float fStack_8;
 
@@ -5791,19 +5730,16 @@ void FUN_0042b540(int param_1)
 
   fStack_10 = fStack_50;
 
-  uStack_c = uStack_4c;
 
   fStack_8 = fStack_48;
 
   uStack_30 = DAT_006b44e0;
 
-  uStack_28 = DAT_006b44e8;
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
     fStack_10 = *(float *)(iVar1 + 0x868);
 
-    uStack_c = *(u32 *)(iVar1 + 0x86c);
 
     fStack_8 = *(float *)(iVar1 + 0x870);
 
@@ -5972,13 +5908,13 @@ void FUN_0042ba50(u32 param_1)
 
   float fVar10;
 
-  u8 auStack_20 [8];
+  YajimaVec4 result;
 
   int iStack_18;
 
   int iStack_14;
 
-  u32 uStack_4;
+  YajimaColor color;
 
   
 
@@ -6018,7 +5954,10 @@ void FUN_0042ba50(u32 param_1)
 
     iStack_18 = *(int *)(iVar5 + 0xc);
 
-    uStack_4 = 0xffffffff;
+    color.r = 0xff;
+    color.g = 0xff;
+    color.b = 0xff;
+    color.a = 0xff;
 
     iVar5 = iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar4 + 0xb7c) * 0x28;
 
@@ -6027,9 +5966,9 @@ void FUN_0042ba50(u32 param_1)
     fVar9 = *(float *)(iVar5 + -0x74b0);
 
     uVar3 = FUN_00427bf0(param_1, (u32)piVar2, *(YajimaVec2 *)(iVar6 + 0xb2c),
-                         0xffffffff, 5.0f, fVar9, fVar10,
+                         *(u32 *)&color, 5.0f, fVar9, fVar10,
                          fVar9 / (float)iStack_18, fVar10 / (float)iStack_14,
-                         (YajimaVec4 *)auStack_20);
+                         &result);
 
     *(u32 *)(iVar6 + 0x5c) = uVar3;
 
@@ -8025,17 +7964,9 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
   float fStack_58;
 
-  u32 uStack_50;
+  YajimaVec3 mainPosZ;
 
-  u32 uStack_4c;
-
-  float fStack_48;
-
-  u32 uStack_40;
-
-  u32 uStack_3c;
-
-  float fStack_38;
+  YajimaVec3 savedMainZ;
 
   float fStack_30;
 
@@ -8043,17 +7974,9 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
   u32 uStack_28;
 
-  float fStack_20;
+  YajimaVec3 mainPosX;
 
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  YajimaVec3 savedMainX;
 
   
 
@@ -8199,17 +8122,13 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&fStack_20,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&mainPosX,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fStack_10 = fStack_20;
-
-          uStack_c = uStack_1c;
-
-          uStack_8 = uStack_18;
+          savedMainX = mainPosX;
 
           iVar4 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fVar15 = fStack_10 - ((float)iVar4 * 800.0f - 400.0f);
+          fVar15 = savedMainX.x - ((float)iVar4 * 800.0f - 400.0f);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -8253,17 +8172,13 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&uStack_50,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&mainPosZ,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          uStack_40 = uStack_50;
-
-          uStack_3c = uStack_4c;
-
-          fStack_38 = fStack_48;
+          savedMainZ = mainPosZ;
 
           iVar4 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fVar15 = fStack_38 - ((float)iVar4 * 800.0f - 400.0f);
+          fVar15 = savedMainZ.z - ((float)iVar4 * 800.0f - 400.0f);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -8435,17 +8350,9 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
   float fStack_28;
 
-  float fStack_20;
+  YajimaVec3 mainPosX;
 
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  YajimaVec3 savedMainX;
 
   
 
@@ -8577,17 +8484,13 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
       fVar12 = (float)(int)*(char *)(iVar2 + 0xb29);
 
-      K_FldFrame_CtlCopyPos(&fStack_20,*(u32 *)(DAT_008717f4 + 0x1e0));
+      K_FldFrame_CtlCopyPos(&mainPosX,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-      fStack_10 = fStack_20;
-
-      uStack_c = uStack_1c;
-
-      uStack_8 = uStack_18;
+      savedMainX = mainPosX;
 
       iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-      fVar11 = fStack_10 - ((float)iVar5 * 800.0f - 400.0f);
+      fVar11 = savedMainX.x - ((float)iVar5 * 800.0f - 400.0f);
 
       cVar1 = *(char *)(iVar2 + 0xb29);
 

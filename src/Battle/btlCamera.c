@@ -7898,10 +7898,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   float fStack_d0;
   float fStack_cc;
   float fStack_c8;
-  undefined4 uStack_c4;
-  undefined4 uStack_c0;
-  undefined4 uStack_bc;
-  undefined4 uStack_b8;
+  u32 transformedQuat[4];
   float fStack_b4;
   float fStack_b0;
   float fStack_ac;
@@ -8044,7 +8041,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     axis[2] = fStack_88 - mid[2];
     fVar13 = (float)FUN_0052e930(fVar17);
     fVar15 = fVar15 + fVar14 / fVar13;
-    FUN_004be1e0_b6070((RwV3d*)axis,&D_006978A0,1,(const void*)&uStack_c4);
+    FUN_004be1e0_b6070((RwV3d*)axis,&D_006978A0,1,(const void*)transformedQuat);
     fVar13 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
     fVar13 = fVar15 * fVar13 * 0.21875f;
     fStack_98 = axis[0];
@@ -8183,11 +8180,11 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     }
   }
   if ((param_3 == 0) && (lVar7 == 0)) {
-    uStack_c4 = uStack_a8;
-    uStack_c0 = uStack_a4;
-    uStack_bc = uStack_a0;
-    uStack_b8 = uStack_9c;
-    FUN_004be1e0(axis,&D_00697890,1,&uStack_c4);
+    transformedQuat[0] = uStack_a8;
+    transformedQuat[1] = uStack_a4;
+    transformedQuat[2] = uStack_a0;
+    transformedQuat[3] = uStack_9c;
+    FUN_004be1e0(axis,&D_00697890,1,transformedQuat);
     axis[0] = axis[0] * 100.0f;
     axis[1] = axis[1] * 100.0f;
     axis[2] = axis[2] * 100.0f;

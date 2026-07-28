@@ -1970,8 +1970,7 @@ void func_002f3a80(BtlAction* param_1)
   u16 uVar15;
   u64 uVar16;
   u8 auStack_d0 [128];
-  u8 auStack_50 [12];
-  u32 uStack_44;
+  u32 stackData[4];
   int aiStack_28 [4];
   int aiStack_18 [4];
   u32 uStack_8;
@@ -2150,9 +2149,9 @@ void func_002f3a80(BtlAction* param_1)
           *(u16 *)(puVar4 + 0x48) = 0xa1;
           *(u64 *)(puVar4 + 0x60) = uVar14;
           FUN_0027ed20(uVar16,1);
-          FUN_002d5dc0(auStack_50);
-          uStack_44 = 0x100000;
-          uVar16 = FUN_002d7e20(param_1,iVar12,auStack_50,1,1);
+          FUN_002d5dc0(stackData);
+          stackData[3] = 0x100000;
+          uVar16 = FUN_002d7e20(param_1,iVar12,stackData,1,1);
           puVar3 = (u8 *)uVar16;
           *puVar3 = 4;
           *(u64 *)(puVar3 + 8) = *(u64 *)(puVar4 + 0x58);
@@ -5834,11 +5833,8 @@ void func_002e58a0(BtlCamera* param_1)
   RtQuat specQuat1;
   RwV3d specPos2;
   RtQuat specQuat2;
-  float fStack_c0;
-  float fStack_bc;
-  float fStack_b8;
-  float fStack_b4;
-  float fStack_b0;
+  float targetXZ[2];
+  float cameraXZ[2];
   float fStack_ac;
   float fStack_a8;
   float fStack_a4;
@@ -5937,7 +5933,6 @@ LAB_002e59dc:
   fStack_d8 = param_1->pos.x - target.x;
   fStack_dc = param_1->pos.z - target.z;
   FUN_004c6b20_btlVoice_typed(&fStack_d8,&fStack_d8);
-  fStack_b0 = dir.z;
   fStack_ac = -dir.x;
   fVar9 = dir.z * fStack_d8 + fStack_ac * fStack_dc;
   if (bVar1) {
@@ -5972,13 +5967,13 @@ LAB_002e59dc:
   }
   FUN_002a4690(&quat,&camOff,&target,D_00697880);
   FUN_004be1e0_btlVoice_typed(&dir,(const RwV3d *)&D_006978A0,1,&quat);
-  fStack_c0 = target.x;
-  fStack_bc = target.z;
-  fStack_b8 = camOff.x;
-  fStack_b4 = camOff.z;
+  targetXZ[0] = target.x;
+  targetXZ[1] = target.z;
+  cameraXZ[0] = camOff.x;
+  cameraXZ[1] = camOff.z;
   partPos[0] = pos1.x;
   partPos[1] = pos1.z;
-  fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,partPos,d1Out);
+  fVar12 = (float)FUN_002d1fd0(targetXZ,cameraXZ,partPos,d1Out);
   camOff.x = d1Out[0];
   camOff.z = d1Out[1];
   fVar10 = (fVar12 + fVar11 * fVar13) / (float)FUN_0052e930(DAT_007cad60 * param_1->fovRad * 0.5f);

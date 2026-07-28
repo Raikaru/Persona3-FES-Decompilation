@@ -1480,9 +1480,11 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
 {
     s32 temp_16;
     register void* parent;
-    f32 sp6C;
-    f32 sp68;
-    s64 sp60;
+    struct {
+        f32 x;
+        f32 y;
+    } position;
+    s64 packedPosition;
     f32 temp_f1;
     f32 temp_f1_2;
     f32 temp_f21;
@@ -1539,26 +1541,26 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
     func_001127d0(temp_2_2, 1);
     func_00115980(temp_2_2);
 
-    sp68 = (200.0f * (f32)(0x16 - work->frame)) / 22.0f;
+    position.x = (200.0f * (f32)(0x16 - work->frame)) / 22.0f;
     temp_f1 = (f32)(s32)work->transitionDuration;
-    sp6C = temp_f1;
+    position.y = temp_f1;
     work->transitionDuration = (s32)(temp_f1 + 1.0f);
     temp_f1_2 = (f32)(s32)work->transitionDuration;
     if (!(temp_f1_2 <= (f32)0x2ff)) {
         work->transitionDuration = (s32)(temp_f1_2 - 448.0f);
     }
-    sp60 = *(s64*)&sp68;
-    temp_f21 = 589.0f + *(f32*)&sp60;
+    packedPosition = *(s64*)&position;
+    temp_f21 = 589.0f + *(f32*)&packedPosition;
     h_campDrawSprite(parent, DAT_00833B8C, 3,
                      (u32)temp_16 & 0xff, temp_f21,
-                     *(f32*)((u8*)&sp60 + 4) - 190.0f, 100.0f);
+                     *(f32*)((u8*)&packedPosition + 4) - 190.0f, 100.0f);
     h_campDrawSprite(parent, DAT_00833B8C, 4,
                      (u32)temp_16 & 0xff, temp_f21,
-                     (*(f32*)((u8*)&sp60 + 4) - 129.0f) - 190.0f,
+                     (*(f32*)((u8*)&packedPosition + 4) - 129.0f) - 190.0f,
                      100.0f);
-    if (!(*((f32*)((u8*)&sp60 + 4)) <= 448.0f)) {
-        temp_f22 = *(f32*)((u8*)&sp60 + 4) - 448.0f;
-        temp_f21_2 = 589.0f + *(f32*)&sp60;
+    if (!(*(f32*)((u8*)&packedPosition + 4) <= 448.0f)) {
+        temp_f22 = *(f32*)((u8*)&packedPosition + 4) - 448.0f;
+        temp_f21_2 = 589.0f + *(f32*)&packedPosition;
         h_campDrawSprite(parent, DAT_00833B8C, 3,
                          (u32)temp_16 & 0xff, temp_f21_2,
                          temp_f22 - 190.0f, 100.0f);
