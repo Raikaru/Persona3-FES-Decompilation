@@ -61,7 +61,7 @@ extern u32 DAT_0095acf0;
 #pragma alias DAT_0095acf0_abs DAT_0095acf0
 extern u32 DAT_0095acf0_abs[];
 #pragma alias gFrFontManagerData_abs DAT_0095acf0
-extern FrFontManagerData gFrFontManagerData_abs;
+extern FrFontManagerData gFrFontManagerData_abs[];
 extern u32 DAT_0095acf4;
 #pragma alias DAT_0095acf4_abs DAT_0095acf4
 extern u32 DAT_0095acf4_abs[];
@@ -564,28 +564,27 @@ void FUN_003afe30(void)
   u8 slotIndex;
   FrFontSlot *slot;
   void *allocation;
-  FrFontManagerData *manager;
   void **allocationEntry;
+  FrFontManagerData *allocationBase;
 
   for (i = 0; i < 9; i++) {
-    slot = &gFrFontManagerData_abs.slots[i];
+    slot = &gFrFontManagerData_abs[0].slots[i];
     if (slot->object != NULL) {
       checkedIndex = (u8)i;
-      if (checkedIndex < 9) {
-      } else {
+      if (checkedIndex >= 9) {
         FUN_0035ac50(DAT_006a27a0, checkedIndex);
       }
 
       slotIndex = (u8)i;
-      slot = &gFrFontManagerData_abs.slots[slotIndex];
+      slot = &gFrFontManagerData_abs[0].slots[slotIndex];
       if (slot->object == NULL) {
         FUN_0019d3f0(DAT_006a2730, 0x432);
       }
 
-      manager = &gFrFontManagerData_abs;
-      allocation = manager->allocations[slotIndex];
+      allocationBase = gFrFontManagerData_abs;
+      allocation = allocationBase->allocations[slotIndex];
       if (allocation != NULL) {
-        allocationEntry = &manager->allocations[(u8)i];
+        allocationEntry = &allocationBase->allocations[(u8)i];
         FUN_00100ec0(allocation);
         *allocationEntry = NULL;
         FUN_005225a8(DAT_006a2800, checkedIndex);

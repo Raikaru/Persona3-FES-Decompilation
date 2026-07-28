@@ -3852,42 +3852,39 @@ u32 FUN_001FDDF0(void)
     return 0;
 }
 
-// FUN_001FDF10 NONMATCHING
+// FUN_001FDF10
 void FUN_001FDF10(void* out)
 {
     u32* work;
-    u32 flags;
     u32 mode;
     u16 value;
 
-    K_ASSERT(sBtlPanelTask != NULL, 0x164);
     work = (u32*)sBtlPanelTask->workData;
-    flags = work[0];
-    K_ASSERT((flags & 4) != 0, 0x1e9);
+    K_ASSERT((work[0] & 4) != 0, 0x1e9);
     *(u32*)out = 0;
-    if (flags & 0x2000)
+    if (work[0] & 0x2000)
     {
         *(u32*)((u8*)out + 4) = 10;
         *(u32*)((u8*)out + 0x10) = work[4];
         return;
     }
-    if (flags & 0x200)
+    if (work[0] & 0x200)
     {
         *(u32*)((u8*)out + 4) = 4;
         mode = work[3];
-        if (mode == 0)
+        switch (mode)
         {
+        case 0:
             *(u32*)out |= 1;
             *(u16*)((u8*)out + 0xA) = 0;
-        }
-        else if (mode == 1)
-        {
+            return;
+        case 1:
             *(u32*)out |= 2;
             *(u16*)((u8*)out + 0xA) = 0x144;
-        }
-        else
-        {
+            return;
+        default:
             K_ASSERT(0, 0x200);
+            break;
         }
         return;
     }
@@ -3917,15 +3914,15 @@ void FUN_001FDF10(void* out)
         value = FUN_00205550();
         *(u16*)((u8*)out + 8) = value;
         break;
-    case 3:
+    case 4:
         *(u32*)((u8*)out + 4) = 5;
         value = FUN_002055A0();
         *(u16*)((u8*)out + 0xC) = value;
         break;
-    case 4:
+    case 5:
         *(u32*)((u8*)out + 4) = 6;
         break;
-    case 5:
+    case 6:
         *(u32*)((u8*)out + 4) = 7;
         break;
     default:

@@ -2744,6 +2744,8 @@ u32 func_00182d90(s16 id, u8 row, u8 effect, DatEquipment* out)
 {
     u8* resource;
     u16* range;
+    u16 minimum;
+    u16 maximum;
     s32 percent;
     s32 value;
 
@@ -2766,9 +2768,12 @@ u32 func_00182d90(s16 id, u8 row, u8 effect, DatEquipment* out)
         out->id = id;
         out->type = *(u32*)(resource + 4);
         out->unk_08 = row;
-        range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0a));
+        range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0a)) +
+                out->unk_08 * 2;
+        minimum = range[0];
+        maximum = range[1];
         percent = (s32)(func_00488f30() % 100) + 1;
-        value = (s32)range[0] + ((s32)range[1] - range[0]) * percent / 100;
+        value = (s32)minimum + ((s32)maximum - minimum) * percent / 100;
         out->unk_10 = (u16)((u16)*(u16*)(resource + 8) * (value & 0xffff) / 100);
         out->effect = effect;
         return 1;
@@ -2779,9 +2784,12 @@ u32 func_00182d90(s16 id, u8 row, u8 effect, DatEquipment* out)
         out->id = id;
         out->type = *(u32*)(resource + 4);
         out->unk_08 = row;
-        range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0a));
+        range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0a)) +
+                out->unk_08 * 2;
+        minimum = range[0];
+        maximum = range[1];
         percent = (s32)(func_00488f30() % 100) + 1;
-        value = (s32)range[0] + ((s32)range[1] - range[0]) * percent / 100;
+        value = (s32)minimum + ((s32)maximum - minimum) * percent / 100;
         out->unk_0e = (u16)((u16)*(u16*)(resource + 8) * (value & 0xffff) / 100);
         out->effect = effect;
         return 1;
@@ -2790,13 +2798,19 @@ u32 func_00182d90(s16 id, u8 row, u8 effect, DatEquipment* out)
     out->id = id;
     out->type = *(u32*)(resource + 4);
     out->unk_08 = 2;
-    range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0a));
+    range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0a)) +
+            out->unk_08 * 2;
+    minimum = range[0];
+    maximum = range[1];
     percent = (s32)(func_00488f30() % 100) + 1;
-    value = (s32)range[0] + ((s32)range[1] - range[0]) * percent / 100;
+    value = (s32)minimum + ((s32)maximum - minimum) * percent / 100;
     out->firstStat = (u16)((u16)*(u16*)(resource + 8) * (value & 0xffff) / 100);
-    range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0e));
+    range = (u16*)(uintptr_t)func_001714d0(*(u16*)(resource + 0x0e)) +
+            out->unk_08 * 2;
+    minimum = range[0];
+    maximum = range[1];
     percent = (s32)(func_00488f30() % 100) + 1;
-    value = (s32)range[0] + ((s32)range[1] - range[0]) * percent / 100;
+    value = (s32)minimum + ((s32)maximum - minimum) * percent / 100;
     out->secondStat = (u16)((u16)*(u16*)(resource + 0x0c) * (value & 0xffff) / 100);
     out->effect = effect;
     return 1;
@@ -4665,82 +4679,91 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
 void* func_00186d50(KwlnTask* task)
 {
     CalendarTransitionWork* work;
-    KwlnTask* child;
+    s32 initialized;
+    s32 i;
 
     work = (CalendarTransitionWork*)task->workData;
-    if (work->state == 4)
+    switch (work->state)
     {
-        work->fadeTimer++;
-        if (work->fadeTimer > 40 && work->fadeTimer < 140)
-        {
-            H_Maestro_SetAlphaMult(work->secondTask,
-                                   (100.0f - (f32)work->fadeTimer) / 100.0f);
-        }
-        if (kwlnTaskGetState(work->secondTask) == KWLNTASK_STATE_DESTROY)
-        {
-            work->secondTask = NULL;
-            func_00109f60(3, 0);
-            return KWLNTASK_STOP;
-        }
-    }
-    else if (work->state == 3)
-    {
-        if (H_Maestro_FinishedInit(work->secondTask))
-        {
-            H_Fade_SetType(HFADE_DAY);
-            H_Fade_SetDuration(0x28);
-            if (work->firstTask != NULL)
+        case 0:
+            work->firstTask = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4220);
+            work->secondTask = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4240);
+            work->state = 1;
+            break;
+
+        case 1:
+            initialized = 1;
+            for (i = 0; i < 2; i++)
             {
-                kwlnTaskDestroyWithHierarchy(work->firstTask);
-                work->firstTask = NULL;
+                if (!H_Maestro_FinishedInit((&work->firstTask)[i]))
+                {
+                    initialized = 0;
+                }
             }
-            H_Maestro_RequestDraw(work->secondTask);
-            work->fadeTimer = 0;
-            work->state = 4;
-        }
-    }
-    else if (work->state == 2)
-    {
-        work->transitionTimer++;
-        if (work->transitionTimer == 0x19)
-        {
-            func_0010a370(3, D_005E4260);
-        }
-        if (work->transitionTimer == 0x14 && H_Fade_IsHolding() == 0)
-        {
-            H_Fade_FadeOut();
-            H_Fade_SetType(HFADE_TRANSITION2);
-        }
-        if (work->fadeTimer != 0x14)
-        {
+            if (initialized)
+            {
+                H_Maestro_00111f20(work->firstTask, 1);
+                H_Maestro_RequestDraw(work->firstTask);
+                work->transitionTimer = 0;
+                H_Maestro_SetAlphaMult(work->firstTask, 0.0f);
+                work->fadeTimer = 0;
+                work->state = 2;
+            }
+            break;
+
+        case 2:
+            work->transitionTimer++;
+            if (work->transitionTimer == 0x19)
+            {
+                func_0010a370(3, D_005E4260);
+            }
+            if (work->transitionTimer == 0x14 && H_Fade_IsHolding() == 0)
+            {
+                H_Fade_FadeOut();
+                H_Fade_SetType(HFADE_TRANSITION2);
+            }
+            if (work->fadeTimer != 0x14)
+            {
+                work->fadeTimer++;
+            }
+            H_Maestro_SetAlphaMult(work->firstTask,
+                                   (f32)work->fadeTimer / 20.0f);
+            if (H_Maestro_00111cb0(work->firstTask))
+            {
+                work->state = 3;
+            }
+            break;
+
+        case 3:
+            if (H_Maestro_FinishedInit(work->secondTask))
+            {
+                H_Fade_SetType(HFADE_DAY);
+                H_Fade_SetDuration(0x28);
+                if (work->firstTask != NULL)
+                {
+                    kwlnTaskDestroyWithHierarchy(work->firstTask);
+                    work->firstTask = NULL;
+                }
+                H_Maestro_RequestDraw(work->secondTask);
+                work->fadeTimer = 0;
+                work->state = 4;
+            }
+            break;
+
+        case 4:
             work->fadeTimer++;
-        }
-        H_Maestro_SetAlphaMult(work->firstTask,
-                               (f32)work->fadeTimer / 20.0f);
-        if (H_Maestro_00111cb0(work->firstTask))
-        {
-            work->state = 3;
-        }
-    }
-    else if (work->state == 1)
-    {
-        if (H_Maestro_FinishedInit(work->firstTask) &&
-            H_Maestro_FinishedInit(work->secondTask))
-        {
-            H_Maestro_00111f20(work->firstTask, 1);
-            H_Maestro_RequestDraw(work->firstTask);
-            work->transitionTimer = 0;
-            H_Maestro_SetAlphaMult(work->firstTask, 0.0f);
-            work->fadeTimer = 0;
-            work->state = 2;
-        }
-    }
-    else
-    {
-        child = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4220);
-        work->firstTask = child;
-        work->secondTask = H_Maestro_CreateTask(NULL, 0x1cd2, D_005E4240);
-        work->state = 1;
+            if (work->fadeTimer > 40 && work->fadeTimer < 140)
+            {
+                H_Maestro_SetAlphaMult(work->secondTask,
+                                       (100.0f - (f32)work->fadeTimer) / 100.0f);
+            }
+            if (kwlnTaskGetState(work->secondTask) == KWLNTASK_STATE_DESTROY)
+            {
+                work->secondTask = NULL;
+                func_00109f60(3, 0);
+                return KWLNTASK_STOP;
+            }
+            break;
     }
     return KWLNTASK_CONTINUE;
 }

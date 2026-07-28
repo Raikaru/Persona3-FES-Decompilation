@@ -1112,104 +1112,84 @@ void FUN_002d8330(BtlAction* action)
 // FUN_002d8390 NONMATCHING
 
 int FUN_002d8390(void)
-
 {
-  ushort uVar1;
-  short sVar2;
-  bool bVar3;
-  bool bVar4;
-  bool bVar5;
-  bool bVar6;
-  int uVar7;
-  uint uVar8;
-  uint uVar9;
-  int iVar10;
-  long lVar11;
-  
-  uVar7 = FUN_002d4e10(2,0x80000);
-  uVar7 = uVar7 & 0xffff;
-  if (uVar7 >= 6) {
+  u16 selector;
+  u32 comparison;
+  u32 level;
+  u32 unit;
+  struct BtlTargetEnemyData {
+    u16 flags;
+    u8 data[0x3c];
+  } *enemyData;
+  u16 enemyFlags;
+  u16 state;
+  int difference;
+  int hasStatus;
+  int hasFlag40;
+  int hasFlag80;
+
+  selector = FUN_002d4e10(2, 0x80000);
+  if (selector >= 6) {
     return -1;
   }
-  uVar8 = FUN_002d4cf0(2,0x80000);
-  uVar8 = uVar8 & 0xffff;
-  uVar9 = FUN_002ffcc0_u32(*(undefined4 *)(*(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
-  bVar3 = (int)(uVar8 - (uVar9 & 0xff)) >= 4;
-  bVar6 = false;
-  bVar5 = false;
-  bVar4 = false;
-  for (iVar10 = *(int *)(DAT_007ce3ec + 0x158); iVar10 != 0; iVar10 = *(int *)(iVar10 + 0xa34)) {
-    lVar11 = FUN_00300580(*(undefined4 *)(iVar10 + 0xa2c),2);
-    if (lVar11 != 0) {
-      bVar6 = true;
+  comparison = FUN_002d4cf0(2, 0x80000);
+  level = FUN_002ffcc0_u32(*(u32 *)(*(u32 *)(*(u32 *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
+  difference = (s32)(comparison - (level & 0xff)) >= 4;
+  hasStatus = 0;
+  hasFlag40 = 0;
+  hasFlag80 = 0;
+  for (unit = *(u32 *)(DAT_007ce3ec + 0x158); unit != 0;
+       unit = *(u32 *)(unit + 0xa34)) {
+    if (FUN_00300580_u32(*(u32 *)(unit + 0xa2c), 2) != 0) {
+      hasStatus = 1;
     }
-    uVar1 = *(ushort *)(DAT_007ce410 + (uint)*(ushort *)(iVar10 + 0xa4) * 0x3e);
-    if ((uVar1 & 0x40) != 0) {
-      bVar5 = true;
+    enemyData = DAT_007ce410;
+    enemyFlags = enemyData[*(u16 *)(unit + 0xa4)].flags;
+    if ((enemyFlags & 0x40) != 0) {
+      hasFlag40 = 1;
     }
-    if ((uVar1 & 0x80) != 0) {
-      bVar4 = true;
-    }
-  }
-  sVar2 = *(short *)(DAT_007ce3ec + 0x1a);
-  if (sVar2 == 2) {
-    if (bVar4) {
-      iVar10 = 0x5c;
-    }
-    else if (bVar5) {
-      iVar10 = 0x5d;
-    }
-    else if (bVar3) {
-      iVar10 = uVar7 + 0x51;
-    }
-    else {
-      iVar10 = uVar7 + 0x56;
+    if ((enemyFlags & 0x80) != 0) {
+      hasFlag80 = 1;
     }
   }
-  else if (sVar2 == 1) {
-    if (bVar4) {
-      iVar10 = 0x50;
+  state = *(u16 *)(DAT_007ce3ec + 0x1a);
+  switch (state) {
+  case 0:
+    if (hasFlag80) {
+      return 10;
     }
-    else if (bVar5) {
-      iVar10 = 0x51;
+    if (hasFlag40) {
+      return 0xb;
     }
-    else if (bVar3) {
-      if (bVar6) {
-        iVar10 = 5;
-      }
-      else {
-        iVar10 = 0;
-      }
-      iVar10 = uVar7 + 0x3b + iVar10;
+    if (difference) {
+      return selector + 4;
     }
-    else {
-      if (bVar6) {
-        iVar10 = 5;
-      }
-      else {
-        iVar10 = 0;
-      }
-      iVar10 = uVar7 + 0x45 + iVar10;
+    return selector - 1;
+  case 1:
+    if (hasFlag80) {
+      return 0x50;
     }
+    if (hasFlag40) {
+      return 0x51;
+    }
+    if (difference) {
+      return selector + 0x45 + (hasStatus ? 5 : 0);
+    }
+    return selector + 0x3b + (hasStatus ? 5 : 0);
+  case 2:
+    if (hasFlag80) {
+      return 0x5c;
+    }
+    if (hasFlag40) {
+      return 0x5d;
+    }
+    if (difference) {
+      return selector + 0x56;
+    }
+    return selector + 0x51;
+  default:
+    return -1;
   }
-  else if (sVar2 == 0) {
-    if (bVar4) {
-      iVar10 = 10;
-    }
-    else if (bVar5) {
-      iVar10 = 0xb;
-    }
-    else if (bVar3) {
-      iVar10 = uVar7 - 1;
-    }
-    else {
-      iVar10 = uVar7 + 4;
-    }
-  }
-  else {
-    iVar10 = -1;
-  }
-  return iVar10;
 }
 
 // FUN_002D8610

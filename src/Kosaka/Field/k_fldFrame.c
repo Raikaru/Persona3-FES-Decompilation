@@ -422,8 +422,8 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
     CollisCtl* ctl;
     Resrc* res;
     s32 i;
-    FldUnit* unitsBase;
     FldUnit* units;
+    FldUnit* unitsBase;
 
     ctl = RwCalloc(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
     if (ctl == NULL)
@@ -458,7 +458,10 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
-                ctl->charId = gFldUnitsPc[i].charId;
+                u16 charId;
+
+                charId = gFldUnitsPc[i].charId;
+                ctl->charId = charId;
                 ctl->fldUnit = units;
                 break;
             }
@@ -472,7 +475,10 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
-                ctl->charId = gFldUnitsEc[i].charId;
+                u16 charId;
+
+                charId = gFldUnitsEc[i].charId;
+                ctl->charId = charId;
                 ctl->fldUnit = units;
                 break;
             }

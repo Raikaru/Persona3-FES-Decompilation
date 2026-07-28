@@ -45,6 +45,7 @@ extern u32 D_00960184[];
 #pragma alias D_00960184_abs D_00960184
 extern u8 D_00960184_abs[];
 
+
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
 Model* gFldBaseMdl;  // 007ce21c
@@ -566,7 +567,6 @@ u32 func_001b8710(HCdvd* request)
 {
     char path[76];
     void* memory;
-    void* destination;
     HCdvd* requestCopy;
     u32 cachedSize;
     Field* field;
@@ -606,8 +606,7 @@ u32 func_001b8710(HCdvd* request)
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
         field = K_Field_Get();
         fileSize = cachedSize;
-        destination = FIELD_DATA_AT(field, 0x1154, void*);
-        memcpy(destination,
+        memcpy(FIELD_DATA_AT(field, 0x1154, void*),
                requestCopy, fileSize);
     }
     return true;

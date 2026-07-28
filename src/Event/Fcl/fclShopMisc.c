@@ -480,8 +480,8 @@ s16 FUN_00403900(short param_1);
 u32 FUN_00403920(short param_1,short param_2);
 u32 FUN_00403970(short param_1);
 u32 FUN_00403e40(int param_1,int param_2);
-u32 FUN_00403f20(short param_1,long param_2);
-u32 FUN_00404120(short param_1,long param_2);
+u32 FUN_00403f20(short param_1,int param_2);
+u32 FUN_00404120(short param_1,int param_2);
 void FUN_00404470(short param_1);
 #pragma alias FUN_00404470_alt FUN_00404470
 void FUN_00404470_alt(short param_1,int param_2);
@@ -12851,7 +12851,7 @@ u32 FUN_004003f0(int *param_1)
 
   int iVar6;
 
-  long lVar7;
+  int lVar7;
 
   
 
@@ -15977,15 +15977,15 @@ u32 FUN_00403970(short param_1)
 
   u32 uVar7;
 
-  long lVar8;
+  int lVar8;
 
-  long lVar9;
+  int lVar9;
 
   u8 bVar10;
 
   int iVar11;
 
-  long lVar12;
+  int lVar12;
 
   
 
@@ -16263,13 +16263,13 @@ LAB_00403d20:
 
       lVar9 = FUN_00402510((u32)uVar5 |
 
-                           ((u32)(((long)cVar1 << 0x3c) >> 0x3c) & 0xf) << 0x18 |
+                           ((u32)cVar1 & 0xf) << 0x18 |
 
-                           (u32)(u8)((u32)((long)sVar3 << 0x34) >> 0x38) << 0x10,lVar8,
+                           (u32)(u8)(sVar3 >> 4) << 0x10,lVar8,
 
                            bVar10 | 8,iVar6);
 
-      if ((lVar9 != 0) && (lVar12 = (long)((int)lVar12 + 1), (short)(u16)bVar2 <= lVar12)) {
+      if ((lVar9 != 0) && (lVar12 = lVar12 + 1, (short)(u16)bVar2 <= lVar12)) {
 
         bVar4 = 1;
 
@@ -16361,7 +16361,7 @@ LAB_00403ec0:
 // FUN_00403F20 NONMATCHING
 
 
-u32 FUN_00403f20(short param_1,long param_2)
+u32 FUN_00403f20(short param_1,int param_2)
 
 
 
@@ -16375,7 +16375,7 @@ u32 FUN_00403f20(short param_1,long param_2)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
   u8 bVar6;
 
@@ -16477,9 +16477,9 @@ u32 FUN_00403f20(short param_1,long param_2)
 
       lVar5 = FUN_004026b0((u32)*(u16 *)(iVar3 + 0x28) |
 
-                           ((u32)(((long)*(char *)(iVar3 + 0x2a) << 0x3c) >> 0x3c) & 0xf) << 0x18 |
+                           ((u32)*(char *)(iVar3 + 0x2a) & 0xf) << 0x18 |
 
-                           (u32)(u8)((u32)((long)*(short *)(iVar3 + 0x2a) << 0x34) >> 0x38) <<
+                           (u32)(u8)(*(short *)(iVar3 + 0x2a) >> 4) <<
 
                            0x10,*(u8 *)(iVar3 + 0x27),bVar6);
 
@@ -16500,7 +16500,7 @@ u32 FUN_00403f20(short param_1,long param_2)
 // FUN_00404120 NONMATCHING
 
 
-u32 FUN_00404120(short param_1,long param_2)
+u32 FUN_00404120(short param_1,int param_2)
 
 
 
@@ -16518,9 +16518,9 @@ u32 FUN_00404120(short param_1,long param_2)
 
   u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
-  long lVar8;
+  int lVar8;
 
   u32 uVar9;
 
@@ -16530,7 +16530,7 @@ u32 FUN_00404120(short param_1,long param_2)
 
   int iVar12;
 
-  long lVar13;
+  int lVar13;
 
   
 
@@ -16566,7 +16566,7 @@ u32 FUN_00404120(short param_1,long param_2)
 
       uVar9 = FUN_001752b0();
 
-      if ((long)sVar2 == (uVar9 & 0xffff)) {
+      if (sVar2 == (uVar9 & 0xffff)) {
 
         K_Assert((const char *)DAT_006aede8,0x1e6d);
 
@@ -16634,13 +16634,13 @@ u32 FUN_00404120(short param_1,long param_2)
 
           uVar3 = *(u16 *)(puVar4 + param_1 * 0x40 + 0x1c);
 
-          for (lVar13 = 0; lVar13 < 300; lVar13 = (long)((int)lVar13 + 1)) {
+          for (lVar13 = 0; lVar13 < 300; lVar13 = lVar13 + 1) {
 
             lVar8 = FUN_00402510((u32)uVar3 |
 
-                                 ((u32)(((long)cVar1 << 0x3c) >> 0x3c) & 0xf) << 0x18 |
+                                 ((u32)cVar1 & 0xf) << 0x18 |
 
-                                 (u32)(u8)((u32)((long)sVar2 << 0x34) >> 0x38) << 0x10,lVar7,
+                                 (u32)(u8)(sVar2 >> 4) << 0x10,lVar7,
 
                                  bVar10 | 8,lVar13);
 
@@ -19032,7 +19032,7 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
   int y;
   int alpha;
   u8 *work;
-  u8 *tableEntry;
+  u32 tableEntry;
   int rowY;
   int drawX;
   int drawY;
@@ -19066,10 +19066,10 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0x9f,0);
       drawX = x + 0x15d;
       drawY = y + 0x4d;
-      tableEntry = (u8 *)(*(u16 *)(*(int *)(work + 4) + 2) * 0xe + iGpffffb730);
+      tableEntry = *(u16 *)(*(int *)(work + 4) + 2) * 0xe + iGpffffb730;
       FUN_0040e3c0_f32(
           0.0f,drawX,drawY,alpha,0x9d,
-          (tableEntry[2] - 1) * 2 + 1);
+          (*(u8 *)(tableEntry + 2) - 1) * 2 + 1);
       drawX = x + 0x1af;
       drawY = y + 0x48;
       FUN_003b32d0_f32(

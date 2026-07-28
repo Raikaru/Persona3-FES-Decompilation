@@ -183,8 +183,8 @@ extern void FUN_004350e0(s32 enabled, s32 update);
 extern void FUN_00429e80(u32 object, s32 enabled);
 extern u32 FUN_001c0330(u8 blockId);
 extern u32 FUN_001bffa0(void);
-extern u64 FUN_001bffe0(void);
-extern u64 FUN_001c0010(void);
+extern u32 FUN_001bffe0(void);
+extern u32 FUN_001c0010(void);
 
 #define FIELD_U8(address)  (*(u8*)(address))
 #define FIELD_U16(address) (*(u16*)(address))
@@ -331,8 +331,8 @@ void* func_001b9480(KwlnTask* fldRootTask)
     u32 request;
     u32 resource;
     u32 camera;
-    u64 list;
-    u64 list2;
+    u32 list;
+    u32 list2;
 
     work = (u8*)fldRootTask->workData;
     state = ROOT_U32(work, 0);
@@ -757,7 +757,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                     FUN_0017f8d0();
                     FUN_0035bfb0();
                     ROOT_U16(work, 0x14) = FUN_0036f4c0();
-                    FUN_001d03f0((s16)ROOT_U16(work, 0x14));
+                    FUN_001d03f0(ROOT_U16(work, 0x14));
                     FUN_001d70a0();
                     if (ROOT_U16(work, 0x10) < 200)
                     {
