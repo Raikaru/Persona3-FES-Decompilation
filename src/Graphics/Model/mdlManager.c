@@ -2235,11 +2235,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff814c * fVar22 +
 
-                                                               fGpffff8048 + 0.0f) +
+                                                               fGpffff8048) +
 
-                                                     fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
+                                                     fGpffff8118) + fGpffff8050) +
 
-                                 fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar21 + 0.0f;
+                                 fGpffff8054) + fGpffff8058) + fVar21;
 
               fVar20 = fVar20 * fStack_330;
 
@@ -2249,19 +2249,19 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff814c * fVar22 +
 
-                                                               fGpffff8048 + 0.0f) +
+                                                               fGpffff8048) +
 
-                                                     fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
+                                                     fGpffff8118) + fGpffff8050) +
 
-                                 fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar20 + 0.0f;
+                                 fGpffff8054) + fGpffff8058) + fVar20;
 
             }
 
-            fStack_360 = fStack_340 * fVar20 + fStack_350 * fVar21 + 0.0f;
+            fStack_360 = fStack_340 * fVar20 + fStack_350 * fVar21;
 
-            fStack_35c = fStack_33c * fVar20 + fStack_34c * fVar21 + 0.0f;
+            fStack_35c = fStack_33c * fVar20 + fStack_34c * fVar21;
 
-            fStack_358 = fStack_338 * fVar20 + fStack_348 * fVar21 + 0.0f;
+            fStack_358 = fStack_338 * fVar20 + fStack_348 * fVar21;
 
             fStack_354 = fStack_344 * fVar21 + fStack_334 * fVar20;
 
@@ -2293,7 +2293,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        fStack_378 * -fStack_358 +
 
-                       fStack_380 * -fStack_360 + fStack_37c * -fStack_35c + 0.0f + 0.0f + 0.0f;
+                       fStack_380 * -fStack_360 + fStack_37c * -fStack_35c;
 
             }
 
@@ -2355,11 +2355,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                            (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff8158 * fVar22 +
 
-                                                                   fGpffff8048 + 0.0f) +
+                                                                   fGpffff8048) +
 
-                                                         fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
+                                                         fGpffff8118) + fGpffff8050) +
 
-                                     fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar21 + 0.0f;
+                                     fGpffff8054) + fGpffff8058) + fVar21;
 
                   fVar20 = fVar20 * fStack_330;
 
@@ -2369,11 +2369,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                            (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff8158 * fVar22 +
 
-                                                                   fGpffff8048 + 0.0f) +
+                                                                   fGpffff8048) +
 
-                                                         fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
+                                                         fGpffff8118) + fGpffff8050) +
 
-                                     fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar20 + 0.0f;
+                                     fGpffff8054) + fGpffff8058) + fVar20;
 
                 }
 
@@ -2383,11 +2383,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                 *(float *)(param_3 + 0xc) = fStack_348 * fVar21;
 
-                *(float *)(param_3 + 8) = fStack_340 * fVar20 + *(float *)(param_3 + 8) + 0.0f;
+                *(float *)(param_3 + 8) = fStack_340 * fVar20 + *(float *)(param_3 + 8);
 
-                *(float *)(param_3 + 10) = fStack_33c * fVar20 + *(float *)(param_3 + 10) + 0.0f;
+                *(float *)(param_3 + 10) = fStack_33c * fVar20 + *(float *)(param_3 + 10);
 
-                *(float *)(param_3 + 0xc) = fStack_338 * fVar20 + *(float *)(param_3 + 0xc) + 0.0f;
+                *(float *)(param_3 + 0xc) = fStack_338 * fVar20 + *(float *)(param_3 + 0xc);
 
                 *(float *)(param_3 + 0xe) = fStack_344 * fVar21 + fStack_334 * fVar20;
 
@@ -4910,7 +4910,7 @@ void func_003151d0(Model* param_1)
 
                *(float *)(iVar11 + 0x38c) * fStack_120 +
 
-               *(float *)(iVar11 + 0x390) * fStack_11c + 0.0f + 0.0f + 0.0f;
+               *(float *)(iVar11 + 0x390) * fStack_11c;
 
     }
 
@@ -4968,11 +4968,11 @@ void func_003151d0(Model* param_1)
 
                    (fVar17 * (fVar17 * (fVar17 * (fVar17 * (DAT_007caf10 * fVar17 +
 
-                                                           DAT_007cad38 + 0.0f) + DAT_007cae08 + 0.0f)
+                                                           DAT_007cad38) + DAT_007cae08)
 
-                                       + DAT_007cad40 + 0.0f) + DAT_007cad44 + 0.0f) +
+                                       + DAT_007cad40) + DAT_007cad44) +
 
-                   DAT_007caed0 + 0.0f) + fVar16 + 0.0f;
+                   DAT_007caed0) + fVar16;
 
           fVar15 = fVar15 * fStack_f0;
 
@@ -4982,19 +4982,19 @@ void func_003151d0(Model* param_1)
 
                    (fVar17 * (fVar17 * (fVar17 * (fVar17 * (DAT_007caf10 * fVar17 +
 
-                                                           DAT_007cad38 + 0.0f) + DAT_007cae08 + 0.0f)
+                                                           DAT_007cad38) + DAT_007cae08)
 
-                                       + DAT_007cad40 + 0.0f) + DAT_007cad44 + 0.0f) +
+                                       + DAT_007cad40) + DAT_007cad44) +
 
-                   DAT_007caed0 + 0.0f) + fVar15 + 0.0f;
+                   DAT_007caed0) + fVar15;
 
         }
 
-        fStack_120 = fStack_100 * fVar15 + fStack_110 * fVar16 + 0.0f;
+        fStack_120 = fStack_100 * fVar15 + fStack_110 * fVar16;
 
-        fStack_11c = fStack_fc * fVar15 + fStack_10c * fVar16 + 0.0f;
+        fStack_11c = fStack_fc * fVar15 + fStack_10c * fVar16;
 
-        fStack_118 = fStack_f8 * fVar15 + fStack_108 * fVar16 + 0.0f;
+        fStack_118 = fStack_f8 * fVar15 + fStack_108 * fVar16;
 
         fStack_114 = fStack_104 * fVar16 + fStack_f4 * fVar15;
 
@@ -5050,7 +5050,7 @@ void func_003151d0(Model* param_1)
 
       *(float *)(iVar11 + 0x39c) =
 
-           *(float *)(iVar11 + 0x3a4) * (*(float *)(iVar11 + 0x3a0) - fVar15) + fVar15 + 0.0f;
+           *(float *)(iVar11 + 0x3a4) * (*(float *)(iVar11 + 0x3a0) - fVar15) + fVar15;
 
     }
 

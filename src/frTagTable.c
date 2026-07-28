@@ -1164,8 +1164,7 @@ u64 FUN_003af660(u32 param_1, int param_2)
 
   offset = *(int *)(param_2 + 0x18);
   base = *(int *)(param_2 + 0x10);
-  offset = base + offset;
-  pbVar4 = (u8 *)offset;
+  pbVar4 = (u8 *)(base + offset);
   bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];
   if (bVar2 == 0xff) {

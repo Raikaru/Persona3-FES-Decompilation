@@ -1847,15 +1847,15 @@ void FUN_003b9610(Resrc* param_1)
 
             *(float *)(puVar8 + 2) =
 
-                 fStack_48 * *(float *)(puVar8 + 0x2c) + *(float *)(puVar8 + 2) + 0.0f;
+                 fStack_48 * *(float *)(puVar8 + 0x2c) + *(float *)(puVar8 + 2);
 
             *(float *)(puVar8 + 4) =
 
-                 fStack_44 * *(float *)(puVar8 + 0x2c) + *(float *)(puVar8 + 4) + 0.0f;
+                 fStack_44 * *(float *)(puVar8 + 0x2c) + *(float *)(puVar8 + 4);
 
             *(float *)(puVar8 + 6) =
 
-                 fStack_40 * *(float *)(puVar8 + 0x2c) + *(float *)(puVar8 + 6) + 0.0f;
+                 fStack_40 * *(float *)(puVar8 + 0x2c) + *(float *)(puVar8 + 6);
 
           }
 
@@ -1903,15 +1903,15 @@ void FUN_003b9610(Resrc* param_1)
 
             *(float *)(puVar8 + 2) =
 
-                 fStack_38 * (float)*(u32 *)(puVar8 + 0x2e) + *(float *)(puVar8 + 0x16) + 0.0f;
+                 fStack_38 * (float)*(u32 *)(puVar8 + 0x2e) + *(float *)(puVar8 + 0x16);
 
             *(float *)(puVar8 + 4) =
 
-                 fStack_34 * (float)*(u32 *)(puVar8 + 0x2e) + *(float *)(puVar8 + 0x18) + 0.0f;
+                 fStack_34 * (float)*(u32 *)(puVar8 + 0x2e) + *(float *)(puVar8 + 0x18);
 
             *(float *)(puVar8 + 6) =
 
-                 fStack_30 * (float)*(u32 *)(puVar8 + 0x2e) + *(float *)(puVar8 + 0x1a) + 0.0f;
+                 fStack_30 * (float)*(u32 *)(puVar8 + 0x2e) + *(float *)(puVar8 + 0x1a);
 
             break;
 
@@ -1929,9 +1929,9 @@ void FUN_003b9610(Resrc* param_1)
 
                                          (float)*(u32 *)(puVar8 + 0x2e));
 
-            *(float *)(puVar8 + 2) = fStack_38 * fVar11 + *(float *)(puVar8 + 0x16) + 0.0f;
+            *(float *)(puVar8 + 2) = fStack_38 * fVar11 + *(float *)(puVar8 + 0x16);
 
-            *(float *)(puVar8 + 4) = fStack_34 * fVar11 + *(float *)(puVar8 + 0x18) + 0.0f;
+            *(float *)(puVar8 + 4) = fStack_34 * fVar11 + *(float *)(puVar8 + 0x18);
 
             *(float *)(puVar8 + 6) = fStack_30 * fVar11 + *(float *)(puVar8 + 0x1a);
 
