@@ -7982,9 +7982,9 @@ u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
 
   u32 uVar4;
 
-  u32 uVar5;
-
   u32 uVar6;
+
+  u32 uVar5;
 
   u32 uVar7;
 
@@ -49218,7 +49218,7 @@ void FUN_00351510(int param_1)
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
     ratio = 255.0f * ratio;
-    if (ratio <= 2147483648.0f) {
+    if (2147483648.0f >= ratio) {
       alphaByte = (s32)ratio & 0xff;
     } else {
       alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;

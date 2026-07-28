@@ -6210,7 +6210,7 @@ void FUN_00375750(int param_1,int param_2,u32 param_3,u8 *param_4)
 }
 
 
-// FUN_00375900 NONMATCHING
+// FUN_00375900
 
 
 u32 FUN_00375900(int param_1,int param_2,int param_3)
@@ -6230,6 +6230,7 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
   int iVar2;
   u32 uVar1;
   EvtMenuRangeState *menu;
+  int *value;
 
   
 
@@ -6296,9 +6297,9 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
 
         }
 
-        iVar2 = iVar2 + menu->value;
-
-        menu->value = iVar2;
+        value = &menu->value;
+        *value += iVar2;
+        iVar2 = *value;
 
         if (iVar2 < menu->lowerBound) {
 
@@ -6307,7 +6308,6 @@ u32 FUN_00375900(int param_1,int param_2,int param_3)
         }
 
         if (menu->value >= menu->upperBound) {
-
           menu->value = menu->upperBound;
 
         }
