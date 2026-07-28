@@ -323,6 +323,7 @@ u32* func_00279940(const u32* header)
     u32 size;
     u32* out;
     u32* data;
+    u32 aligned;
     u32 cursor;
     u32 i;
     u8* bytes;
@@ -340,16 +341,16 @@ u32* func_00279940(const u32* header)
     data = out = (u32*)(*DAT_00960178)(size, 0x40000);
     data += 5;
     out[2] = (u32)data;
-    cursor = (u32)data + header[3] * 4;
-    if ((cursor & 3) != 0) {
-        cursor += 4 - (cursor & 3);
+    aligned = (u32)data + header[3] * 4;
+    if ((aligned & 3) != 0) {
+        aligned += 4 - (aligned & 3);
     }
-    out[3] = cursor;
-    cursor += header[6];
-    if ((cursor & 3) != 0) {
-        cursor += 4 - (cursor & 3);
+    out[3] = aligned;
+    aligned += header[6];
+    if ((aligned & 3) != 0) {
+        aligned += 4 - (aligned & 3);
     }
-    out[4] = cursor;
+    out[4] = aligned;
     out[1] = header[3];
     out[0] = header[0];
     func_00521250((void*)out[3], (const u8*)header + header[5], header[6]);

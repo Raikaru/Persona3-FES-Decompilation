@@ -970,6 +970,7 @@ void FUN_00329890(u32 param_1);
 void FUN_003299b0(void);
 u32 FUN_00329a60(void);
 float FUN_00329ba0(float param_1);
+#pragma alias mdlFileInterpolateCatmullRomVU FUN_00329d60
 void FUN_00329d60(float param_1,u8 (*param_2) [16]);
 void FUN_00329ed0(float *param_1);
 u32 FUN_0032a120(char *param_1,u32 *param_2,int param_3,int param_4);
@@ -13880,181 +13881,106 @@ float FUN_00329ba0(float param_1)
 
 
 
-// FUN_00329D60 NONMATCHING
+/* Retail's 364-byte Catmull-Rom interpolator builds tangents and returns its VU0 vector in vf10. */
+// FUN_00329D60
 
 
 void FUN_00329d60(float param_1,u8 (*param_2) [16])
-
-
-
 {
-
-  __int128 auVar1;
-
-  float fVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  __int128 auVar6;
-
-  __int128 auVar7;
-
-  __int128 auVar8;
-
-  __int128 auVar9;
-
-  __int128 auVar10;
-
-  u32 uStack_64;
-
-  u32 uStack_54;
-
-  u32 uStack_44;
-
-  u32 uStack_34;
-
-  u32 uStack_24;
-
-  
-
-  fVar4 = param_1 * param_1;
-
-  fVar5 = fVar4 * param_1;
-
-  auVar6 = _lqc2(param_2[1]);
-
-  auVar7 = _lqc2(*param_2);
-
-  auVar6 = _vsub(auVar6,auVar7);
-
-  auVar8 = _vmove(auVar6);
-
-  auVar6 = _lqc2(param_2[2]);
-
-  auVar7 = _lqc2(param_2[1]);
-
-  auVar6 = _vsub(auVar6,auVar7);
-
-  auVar6 = _vadd(auVar6,auVar8);
-
-  auVar10._8_4_ = 0x3f000000;
-
-  auVar10._0_8_ = 0x3f0000003f000000;
-
-  auVar10._12_4_ = uStack_24;
-
-  auVar7 = _lqc2(auVar10);
-
-  auVar6 = _vmul(auVar6,auVar7);
-
-  auVar6 = _sqc2(auVar6);
-
-  auVar7 = _lqc2(param_2[2]);
-
-  auVar8 = _lqc2(param_2[1]);
-
-  auVar7 = _vsub(auVar7,auVar8);
-
-  auVar9 = _vmove(auVar7);
-
-  auVar7 = _lqc2(param_2[3]);
-
-  auVar8 = _lqc2(param_2[2]);
-
-  auVar7 = _vsub(auVar7,auVar8);
-
-  auVar7 = _vadd(auVar7,auVar9);
-
-  auVar1._8_4_ = 0x3f000000;
-
-  auVar1._0_8_ = 0x3f0000003f000000;
-
-  auVar1._12_4_ = uStack_24;
-
-  auVar8 = _lqc2(auVar1);
-
-  auVar7 = _vmul(auVar7,auVar8);
-
-  auVar7 = _sqc2(auVar7);
-
-  fVar2 = (fVar5 * 2.0f - fVar4 * 3.0f) + 1.0f;
-
-  param_1 = param_1 + ((fVar5 + 0.0f) - fVar4 * 2.0f);
-
-  fVar3 = fVar5 - fVar4;
-
-  fVar4 = fVar5 * -2.0f + fVar4 * 3.0f + 0.0f;
-
-  auVar8._4_4_ = fVar2;
-
-  auVar8._0_4_ = fVar2;
-
-  auVar8._8_4_ = fVar2;
-
-  auVar8._12_4_ = uStack_64;
-
-  auVar8 = _lqc2(auVar8);
-
-  auVar9 = _lqc2(param_2[1]);
-
-  auVar8 = _vmul(auVar8,auVar9);
-
-  auVar10 = _vmove(auVar8);
-
-  auVar9._4_4_ = param_1;
-
-  auVar9._0_4_ = param_1;
-
-  auVar9._8_4_ = param_1;
-
-  auVar9._12_4_ = uStack_54;
-
-  auVar8 = _lqc2(auVar9);
-
-  auVar6 = _lqc2(auVar6);
-
-  auVar6 = _vmul(auVar8,auVar6);
-
-  auVar8 = _vadd(auVar10,auVar6);
-
-  auVar6._4_4_ = fVar3;
-
-  auVar6._0_4_ = fVar3;
-
-  auVar6._8_4_ = fVar3;
-
-  auVar6._12_4_ = uStack_44;
-
-  auVar6 = _lqc2(auVar6);
-
-  auVar7 = _lqc2(auVar7);
-
-  auVar6 = _vmul(auVar6,auVar7);
-
-  auVar8 = _vadd(auVar8,auVar6);
-
-  auVar7._4_4_ = fVar4;
-
-  auVar7._0_4_ = fVar4;
-
-  auVar7._8_4_ = fVar4;
-
-  auVar7._12_4_ = uStack_34;
-
-  auVar6 = _lqc2(auVar7);
-
-  auVar7 = _lqc2(param_2[2]);
-
-  auVar6 = _vmul(auVar6,auVar7);
-
-  _vadd(auVar6,auVar8);
-
-  return;
-
+  float work[7][4];
+  float square;
+  float cube;
+  float coefficient;
+
+  square = param_1 * param_1;
+  cube = square * param_1;
+
+  work[4][0] = 0.5f;
+  work[4][1] = 0.5f;
+  work[4][2] = 0.5f;
+
+  /* VU0 builds the two Catmull-Rom tangent vectors in work[6] and work[5]. */
+  __asm__ volatile (
+      ".set noreorder                         \n"
+      "lqc2        $vf10, 0x10($a0)           \n"
+      "lqc2        $vf11, 0x0($a0)            \n"
+      "vsub.xyzw   $vf10, $vf10, $vf11        \n"
+      "vmove.xyzw  $vf12, $vf10               \n"
+      "lqc2        $vf10, 0x20($a0)           \n"
+      "lqc2        $vf11, 0x10($a0)           \n"
+      "vsub.xyzw   $vf10, $vf10, $vf11        \n"
+      "vadd.xyzw   $vf10, $vf10, $vf12        \n"
+      "addiu       $v1, $sp, 0x40              \n"
+      "lqc2        $vf11, 0x0($v1)            \n"
+      "vmul.xyzw   $vf10, $vf10, $vf11        \n"
+      "addiu       $a2, $sp, 0x60              \n"
+      "sqc2        $vf10, 0x0($a2)            \n"
+      "lqc2        $vf10, 0x20($a0)           \n"
+      "lqc2        $vf11, 0x10($a0)           \n"
+      "vsub.xyzw   $vf10, $vf10, $vf11        \n"
+      "vmove.xyzw  $vf12, $vf10               \n"
+      "lqc2        $vf10, 0x30($a0)           \n"
+      "lqc2        $vf11, 0x20($a0)           \n"
+      "vsub.xyzw   $vf10, $vf10, $vf11        \n"
+      "vadd.xyzw   $vf10, $vf10, $vf12        \n"
+      "lqc2        $vf11, 0x0($v1)            \n"
+      "vmul.xyzw   $vf10, $vf10, $vf11        \n"
+      "addiu       $a1, $sp, 0x50              \n"
+      "sqc2        $vf10, 0x0($a1)            \n"
+      ".set reorder"
+      :
+      :
+      : "memory"
+  );
+
+  coefficient = cube * 2.0f - square * 3.0f + 1.0f;
+  work[0][0] = coefficient;
+  work[0][1] = coefficient;
+  work[0][2] = coefficient;
+
+  coefficient = param_1 + (cube - square * 2.0f);
+  work[1][0] = coefficient;
+  work[1][1] = coefficient;
+  work[1][2] = coefficient;
+
+  coefficient = cube - square;
+  work[2][0] = coefficient;
+  work[2][1] = coefficient;
+  work[2][2] = coefficient;
+
+  coefficient = cube * -2.0f + square * 3.0f;
+  work[3][0] = coefficient;
+  work[3][1] = coefficient;
+  work[3][2] = coefficient;
+
+  /* VU0 evaluates the Hermite basis and leaves the interpolated vector in vf10. */
+  __asm__ volatile (
+      ".set noreorder                         \n"
+      "addiu       $v1, $sp, 0x0               \n"
+      "lqc2        $vf10, 0x0($v1)            \n"
+      "lqc2        $vf11, 0x10($a0)           \n"
+      "vmul.xyzw   $vf10, $vf10, $vf11        \n"
+      "vmove.xyzw  $vf12, $vf10               \n"
+      "addiu       $v1, $sp, 0x10              \n"
+      "lqc2        $vf10, 0x0($v1)            \n"
+      "lqc2        $vf11, 0x0($a2)            \n"
+      "vmul.xyzw   $vf10, $vf10, $vf11        \n"
+      "vadd.xyzw   $vf12, $vf12, $vf10        \n"
+      "addiu       $v1, $sp, 0x20              \n"
+      "lqc2        $vf10, 0x0($v1)            \n"
+      "lqc2        $vf11, 0x0($a1)            \n"
+      "vmul.xyzw   $vf10, $vf10, $vf11        \n"
+      "vadd.xyzw   $vf12, $vf12, $vf10        \n"
+      "addiu       $v1, $sp, 0x30              \n"
+      "lqc2        $vf10, 0x0($v1)            \n"
+      "lqc2        $vf11, 0x20($a0)           \n"
+      "vmul.xyzw   $vf10, $vf10, $vf11        \n"
+      "vadd.xyzw   $vf10, $vf10, $vf12        \n"
+      ".set reorder"
+      :
+      :
+      : "memory"
+  );
 }
 
 
@@ -50134,6 +50060,11 @@ bool FUN_00351290(int param_1)
 // commutative FPU operand-order floor and relocation-masked global loads.
 // Camera typing and DAT_00960090/DAT_009600a0/DAT_0096008c_abs caching follow
 // the sibling FUN_00351290 implementation.
+/* Retail contains this float-to-unsigned expansion: deleting it leaves the
+   function UNDERSIZED at 1008/1072 and nd11 -> nd566, so the conversion is
+   real code, not fabrication. No plain (u32) cast reproduces it -- four
+   spellings were measured on fcl_misc 003C9000 and all fold to the short
+   signed path. Retained until the honest source form is found - measured W176. */
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
 {
@@ -50157,7 +50088,11 @@ void FUN_00351510(int param_1)
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
     ratio = 255.0f * ratio;
-    alphaByte = (s32)ratio & 0xff;
+    if (ratio < 2147483648.0f) {
+      alphaByte = (s32)ratio & 0xff;
+    } else {
+      alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
+    }
     alphaS32 = alphaByte & 0xff;
 
     textureHandle = *(u32 *)(*(int *)(param_1 + 0xc) + 0x60);

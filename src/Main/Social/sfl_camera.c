@@ -451,7 +451,7 @@ void func_0024dc90(void* camera)
     f32 dot;
     f32 angle;
     f32 extent;
-    s32 random;
+    u32 random;
     u32 duration;
     RwV3d first;
     RwV3d second;
@@ -497,20 +497,16 @@ void func_0024dc90(void* camera)
                 first.x = -first.x;
                 first.y = -first.y;
                 first.z = -first.z;
-                p[0] = p[9];
-                p[1] = p[10];
-                p[2] = p[11];
+                *(RwV3d*)&p[0] = *(RwV3d*)&p[9];
                 extent = p[12];
                 
-                random = (s32)(RpRandom() & 0xfff);
+                random = RpRandom() & 0xfff;
                 offset.x = extent / 2.0f - extent * (f32)random / 4096.0f;
-                random = (s32)(RpRandom() & 0xfff);
+                random = RpRandom() & 0xfff;
                 offset.y = extent / 2.0f - extent * (f32)random / 4096.0f;
-                random = (s32)(RpRandom() & 0xfff);
+                random = RpRandom() & 0xfff;
                 offset.z = extent / 2.0f - extent * (f32)random / 4096.0f;
-                p[9] = offset.x;
-                p[10] = offset.y;
-                p[11] = offset.z;
+                *(RwV3d*)&p[9] = offset;
                 func_0024f7f0(node, &first);
                 *(u32*)(node + 0x10) = 0;
                 
@@ -756,19 +752,15 @@ void func_0024dc90(void* camera)
                     first.x = -first.x;
                     first.y = -first.y;
                     first.z = -first.z;
-                    p[0] = p[9];
-                    p[1] = p[10];
-                    p[2] = p[11];
+                    *(RwV3d*)&p[0] = *(RwV3d*)&p[9];
                     extent = p[12];
-                    random = (s32)(RpRandom() & 0xfff);
+                    random = RpRandom() & 0xfff;
                     offset.x = extent / 2.0f - extent * (f32)random / 4096.0f;
-                    random = (s32)(RpRandom() & 0xfff);
+                    random = RpRandom() & 0xfff;
                     offset.y = extent / 2.0f - extent * (f32)random / 4096.0f;
-                    random = (s32)(RpRandom() & 0xfff);
+                    random = RpRandom() & 0xfff;
                     offset.z = extent / 2.0f - extent * (f32)random / 4096.0f;
-                    p[9] = offset.x;
-                    p[10] = offset.y;
-                    p[11] = offset.z;
+                    *(RwV3d*)&p[9] = offset;
                     func_00250280(node, &first);
                     *(u32*)(node + 0x10) = 0;
                     if (oldTimer >= firstDuration) {

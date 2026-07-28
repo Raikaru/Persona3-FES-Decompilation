@@ -151,6 +151,8 @@ void FUN_0042fd80(float *param_1,int param_2);
 extern u32 FUN_004560d0_typed(u32 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
 #pragma alias FUN_00423fe0_vec2 FUN_00423fe0
 extern void FUN_00423fe0_vec2(YajimaVec2 *param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
+#pragma alias FUN_004c31b0_ymisc FUN_004c31b0
+extern void FUN_004c31b0_ymisc(void *matrix,const void *axis,f32 angle,s32 mode);
 void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
@@ -5402,7 +5404,7 @@ void FUN_0042adb0(int param_1)
 
   u32 *puVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -5495,10 +5497,9 @@ void FUN_0042adb0(int param_1)
 
   puVar2[3] = puVar2[3] | 0x20003;
 
-  RwMatrixRotate(*(u32 *)
-
-                (*(short *)(iVar1 + 0xb90) * 0x28 + *piGpffffa850 * 0x3c4 + iGpffffb5c0 + -0x74a0),
-               uVar3,&rotScratch,2);
+  FUN_004c31b0_ymisc((void *)uVar3,(const void *)&rotScratch,
+                 *(float *)(*(short *)(iVar1 + 0xb90) * 0x28 +
+                            *piGpffffa850 * 0x3c4 + iGpffffb5c0 - 0x74a0),2);
 
   delta.x = *(float *)(iVar1 + 0xba4) - posTarget.x;
 
@@ -5565,7 +5566,7 @@ void FUN_0042b050(int param_1)
 
   int iVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   u64 uVar6;
 
@@ -5581,7 +5582,11 @@ void FUN_0042b050(int param_1)
 
   float fVar12;
 
-  YajimaVec3 sourcePos;
+  float fStack_50;
+
+  u32 uStack_4c;
+
+  float fStack_48;
 
   float afStack_40 [4];
 
@@ -5593,15 +5598,23 @@ void FUN_0042b050(int param_1)
 
   float fStack_18;
 
-  YajimaVec3 targetPos;
+  float fStack_10;
+
+  u32 uStack_c;
+
+  float fStack_8;
 
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  K_FldFrame_CtlCopyPos(&sourcePos,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&fStack_50,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-  targetPos = sourcePos;
+  fStack_10 = fStack_50;
+
+  uStack_c = uStack_4c;
+
+  fStack_8 = fStack_48;
 
   uStack_30 = DAT_006b44d0;
 
@@ -5609,11 +5622,15 @@ void FUN_0042b050(int param_1)
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
-    targetPos = *(YajimaVec3 *)(iVar1 + 0x868);
+    fStack_10 = *(float *)(iVar1 + 0x868);
+
+    uStack_c = *(u32 *)(iVar1 + 0x86c);
+
+    fStack_8 = *(float *)(iVar1 + 0x870);
 
   }
 
-  fVar9 = targetPos.z;
+  fVar9 = fStack_8;
 
   for (iVar7 = 1; iVar7 < 4; iVar7 = iVar7 + 1) {
 
@@ -5659,11 +5676,9 @@ void FUN_0042b050(int param_1)
 
       K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(DAT_008717f4[iVar7 * 0x70] + 0x1e0));
 
-      RwMatrixRotate(*(u32 *)
-
-                    (iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar1 + 0xb90) * 0x28 +
-
-                    -0x74a0),uVar5,&uStack_30,2);
+      FUN_004c31b0_ymisc((void *)uVar5,(const void *)&uStack_30,
+                     *(float *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
+                                *(short *)(iVar1 + 0xb90) * 0x28 - 0x74a0),2);
 
       iVar4 = iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar1 + 0xb90) * 0x28;
 
@@ -5675,7 +5690,7 @@ void FUN_0042b050(int param_1)
 
                         2.25f) / 100.0f) * 2.25f) / 100.0f;
 
-      afStack_40[0] = ((afStack_20[0] - targetPos.x) * 2.25f) / 100.0f;
+      afStack_40[0] = ((afStack_20[0] - fStack_10) * 2.25f) / 100.0f;
 
       afStack_40[2] = ((fStack_18 - fVar9) * 2.25f) / 100.0f;
 
@@ -5768,7 +5783,11 @@ void FUN_0042b540(int param_1)
 
   float fVar12;
 
-  YajimaVec3 sourcePos;
+  float fStack_50;
+
+  u32 uStack_4c;
+
+  float fStack_48;
 
   float afStack_40 [4];
 
@@ -5780,15 +5799,23 @@ void FUN_0042b540(int param_1)
 
   float fStack_18;
 
-  YajimaVec3 targetPos;
+  float fStack_10;
+
+  u32 uStack_c;
+
+  float fStack_8;
 
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  K_FldFrame_CtlCopyPos(&sourcePos,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&fStack_50,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-  targetPos = sourcePos;
+  fStack_10 = fStack_50;
+
+  uStack_c = uStack_4c;
+
+  fStack_8 = fStack_48;
 
   uStack_30 = DAT_006b44e0;
 
@@ -5796,11 +5823,15 @@ void FUN_0042b540(int param_1)
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
-    targetPos = *(YajimaVec3 *)(iVar1 + 0x868);
+    fStack_10 = *(float *)(iVar1 + 0x868);
+
+    uStack_c = *(u32 *)(iVar1 + 0x86c);
+
+    fStack_8 = *(float *)(iVar1 + 0x870);
 
   }
 
-  fVar9 = targetPos.z;
+  fVar9 = fStack_8;
 
   for (iVar7 = 0; iVar7 < 0x18; iVar7 = iVar7 + 1) {
 
@@ -5848,11 +5879,9 @@ void FUN_0042b540(int param_1)
 
       K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(*(int *)(&DAT_0086edf4 + iVar6) + 0x1e0));
 
-      RwMatrixRotate(*(u32 *)
-
-                    (iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar1 + 0xb90) * 0x28 +
-
-                    -0x74a0),uVar4,&uStack_30,2);
+      FUN_004c31b0_ymisc((void *)uVar4,(const void *)&uStack_30,
+                     *(float *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
+                                *(short *)(iVar1 + 0xb90) * 0x28 - 0x74a0),2);
 
       iVar6 = iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar1 + 0xb90) * 0x28;
 
@@ -5864,7 +5893,7 @@ void FUN_0042b540(int param_1)
 
                         2.25f) / 100.0f) * 2.25f) / 100.0f;
 
-      afStack_40[0] = ((afStack_20[0] - targetPos.x) * 2.25f) / 100.0f;
+      afStack_40[0] = ((afStack_20[0] - fStack_10) * 2.25f) / 100.0f;
 
       afStack_40[2] = ((fStack_18 - fVar9) * 2.25f) / 100.0f;
 

@@ -212,16 +212,31 @@ WAIVER_ALLOW_RE = re.compile(r"lint:\s*allow\s+([A-Z]\d{3})")
 def waived(src, idx, code):
     """True if the site on line `idx` (0-based) carries a justification.
 
-    Looks up to three lines above, skipping marker lines and blanks, and
-    accepts either an explicit `lint: allow CODE` or the tree's established
-    `... - measured Wxxx.` annotation.
+    Two scopes are honoured, matching how this tree actually annotates:
+
+    * SITE scope -- a comment within three lines above the site.
+    * FUNCTION scope -- a comment in the six lines above the nearest enclosing
+      `// FUN_xxxxxxxx` marker.  This is the important one: the measurement
+      behind an annotation is always "removing this loses FUNCTION X", so one
+      annotation covers every occurrence of the construct in that function.
+      Without it a multi-line construct would need the same note repeated on
+      each line, which is noise, not evidence.
+
+    A justification is either an explicit `lint: allow CODE` or a comment
+    containing `measured`, which is the tree's existing convention for
+    recording a retained construct's measured removal cost.
     """
+    if _scan_waiver(src, idx, code, 3):
+        return True
+    marker = _enclosing_marker(src, idx)
+    return marker is not None and _scan_waiver(src, marker, code, 6)
+
+
+def _scan_waiver(src, idx, code, depth):
     checked = 0
     j = idx
-    while j >= 0 and checked < 3:
+    while j > 0 and checked < depth:
         j -= 1
-        if j < 0:
-            break
         line = src.lines[j]
         stripped = line.strip()
         if not stripped:
@@ -231,13 +246,25 @@ def waived(src, idx, code):
         m = WAIVER_ALLOW_RE.search(line)
         if m:
             return m.group(1) == code
-        if ("/*" in line or "//" in line) and "measured" in line:
+        # `measured` counts only inside a comment.  The sanitized view blanks
+        # comment text, so presence in `lines` but absence in `code` proves it.
+        if "measured" in line and "measured" not in src.code[j]:
             return True
         checked += 1
-        if not (stripped.startswith("/*") or stripped.startswith("//")
-                or stripped.startswith("*") or stripped.startswith("#")):
+        is_comment = (stripped.startswith("/*") or stripped.startswith("//")
+                      or stripped.startswith("*") or stripped.endswith("*/")
+                      or not src.code[j].strip())
+        if not (is_comment or stripped.startswith("#")):
             break
     return False
+
+
+def _enclosing_marker(src, idx):
+    """Index of the nearest `// FUN_` marker at or above `idx`, else None."""
+    for j in range(idx, max(-1, idx - 600), -1):
+        if MARKER_RE.match(src.lines[j]):
+            return j
+    return None
 
 
 # --------------------------------------------------------------------- rules

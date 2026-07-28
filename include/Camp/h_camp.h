@@ -35,7 +35,7 @@ typedef struct CampRootDrawWork
     u32 transitionKind;        // 0x14
     u32 flags;                 // 0x18
     u32 timer;                 // 0x1c
-    s32 transitionDuration;    // 0x20
+    u32 transitionDuration;    // 0x20
     KwlnTask* menuTask;        // 0x24
     KwlnTask* drawChild;       // 0x28
 } CampRootDrawWork;
@@ -45,7 +45,7 @@ typedef struct CampMenuWork
     u32 state;                 // 0x00: menu dispatcher state
     u32 animationState;        // 0x04: animation callback substate
     u32 command;               // 0x08
-    s32 timer;                 // 0x0c
+    u32 timer;                 // 0x0c
     u32 transitionComplete;    // 0x10
     KwlnTask* childTasks[10];  // 0x14
     KwlnTask* activeAnimation; // 0x3c

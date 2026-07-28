@@ -485,6 +485,8 @@ u32 FUN_00404120(short param_1,int param_2);
 void FUN_00404470(short param_1);
 #pragma alias FUN_00404470_alt FUN_00404470
 void FUN_00404470_alt(short param_1,int param_2);
+#pragma alias FUN_00404470_long FUN_00404470
+void FUN_00404470_long(long param_1,int param_2);
 void FUN_004044c0(short param_1);
 void FUN_004045d0(u64 param_1);
 void FUN_00404750(u32 param_1,u32 param_2,u32 param_3);
@@ -15589,7 +15591,7 @@ u8 FUN_00403410(short param_1)
   return uVar1;
 }
 
-// FUN_00403520 NONMATCHING
+// FUN_00403520
 
 
 u32 FUN_00403520(void)
@@ -15634,106 +15636,51 @@ state_done:;
 
 
 int FUN_00403610(void)
-
-
-
 {
-
   short sVar1;
-
-  long lVar2;
-
-  long lVar3;
-
-  u64 uVar4;
-
-  int iVar5;
-
   int iVar6;
-
+  int iVar5;
   int iVar7;
-
-  
+  int lVar2;
+  short sVar2;
 
   iVar7 = 0;
-
   iVar6 = 0;
-
-LAB_0040370c:
-
-  do {
-
-    if (2 < iVar7) {
-
-      return iVar6;
-
-    }
-
+  while (iVar7 < 3) {
     lVar2 = FUN_0017c670(iVar7);
-
     if (lVar2 != 0) {
-
       sVar1 = *(short *)lVar2;
-
-      lVar3 = datGetFlag(sVar1 + 0x1170);
-
-      if (lVar3 != 0) {
-
+      if (datGetFlag(sVar1 + 0x1170) != 0) {
         iVar5 = 3;
-
       }
-
       else {
-
-
-
-        if (lVar3 == 0) {
-
-          iVar5 = 2;
-
+        if (FUN_003f04f0(FUN_004037e0(sVar1),0) == 0) {
+          goto state_2;
         }
-
-        else {
-
-          lVar3 = FUN_0017c610(sVar1);
-
-          if (lVar3 != 0) {
-
-            iVar5 = 1;
-
-          }
-
-          else {
-
-            iVar5 = 0;
-
-          }
-
+        if (FUN_0017c610(sVar1) == 0) {
+          goto state_0;
         }
-
+        iVar5 = 1;
+        goto state_done;
+state_2:
+        iVar5 = 2;
+        goto state_done;
+state_0:
+        iVar5 = 0;
+state_done:;
       }
-
       if (iVar5 == 2) {
-
-        sVar1 = *(short *)lVar2;
-
-        FUN_0017c590(sVar1);
-
-
+        sVar2 = *(short *)lVar2;
+        FUN_0017c590(sVar2);
+        FUN_00404470_long(sVar2,0);
         iVar6 = iVar6 + 1;
-
         iVar7 = 0;
-
-        goto LAB_0040370c;
-
+        continue;
       }
-
     }
-
     iVar7 = iVar7 + 1;
-
-  } while( 1 );
-
+  }
+  return iVar6;
 }
 
 // FUN_00403740
@@ -20111,7 +20058,7 @@ u32 FUN_0040ca00(int param_1)
 
 }
 
-// FUN_0040CAD0 NONMATCHING
+// FUN_0040CAD0
 
 
 void FUN_0040cad0(int param_1)
@@ -20126,15 +20073,15 @@ void FUN_0040cad0(int param_1)
 
   int iVar3;
 
-  int iVar4;
-
   int iVar5;
+
+  int iVar4;
 
   struct {
     u32 uStack_20;
     u32 uStack_1c;
     u16 uStack_18;
-    u16 uStack_16;
+    s16 uStack_16;
     int iStack_14;
     int iStack_10;
     u8 pad[8];
@@ -20152,9 +20099,7 @@ void FUN_0040cad0(int param_1)
 
   iVar2 = *(int *)(iVar1 + 0xc);
 
-  do {
-
-    if (iVar5 == 0) break;
+  while (iVar5 != 0) {
 
     if (iVar5 != iVar2) {
 
@@ -20179,8 +20124,11 @@ void FUN_0040cad0(int param_1)
     iVar5 = *(int *)(iVar5 + 0x10);
 
     iVar4 = iVar4 + 1;
+    if (iVar4 >= *(int *)(*(int *)(iVar1 + 0x24) + 0x20)) {
+      break;
+    }
 
-  } while (iVar4 < *(int *)(*(int *)(iVar1 + 0x24) + 0x20));
+  }
 
   iVar5 = *(int *)(*(int *)(iVar2 + 0x14) + 0x1c);
 
