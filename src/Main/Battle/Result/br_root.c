@@ -3197,9 +3197,7 @@ void func_001f6d20(const f32 *entry)
     u8 *work;
     u32 *words;
     u8 *dst;
-    f32 z;
-    f32 y;
-    f32 x;
+    RwV3d value;
 
     K_ASSERT(sBrReward != NULL, 0x8c);
     work = sBrReward;
@@ -3208,23 +3206,23 @@ void func_001f6d20(const f32 *entry)
              (s32)words[0xcf7] < 8,
              0x34d);
     dst = work + words[0xcf7] * 0x670;
-    x = entry[0];
-    y = entry[1];
-    z = entry[2];
-    *(f32 *)(dst + 0x5c) = x;
-    *(f32 *)(dst + 0x60) = y;
-    *(f32 *)(dst + 0x64) = z;
+    value.x = entry[0];
+    value.y = entry[1];
+    value.z = entry[2];
+    *(f32 *)(dst + 0x5c) = value.x;
+    *(f32 *)(dst + 0x60) = value.y;
+    *(f32 *)(dst + 0x64) = value.z;
 
     switch (*(const u32 *)entry) {
     case 0:
         K_ASSERT((s32)words[0xd07] < 8, 0x355);
-        BR_U32((u8 *)(words[0xd07] * 4 + (u32)work), 0x3c) =
+        BR_U32((u8 *)((u32)work + words[0xd07] * 4), 0x3c) =
             words[0xcf7];
         words[0xd07]++;
         break;
     case 1:
         K_ASSERT((s32)words[0xd06] < 8, 0x35a);
-        BR_U32((u8 *)(words[0xd06] * 4 + (u32)work), 0x1c) =
+        BR_U32((u8 *)((u32)work + words[0xd06] * 4), 0x1c) =
             words[0xcf7];
         words[0xd06]++;
         break;

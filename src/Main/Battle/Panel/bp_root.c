@@ -1696,31 +1696,40 @@ void FUN_00202D70(void)
 // FUN_00203030 NONMATCHING
 void FUN_00203030(void)
 {
-    u32 i;
-    u32 count;
+    u8* work;
+    s32 i;
     u32 handle;
-    const char* name;
+    extern void func_003b2c60(u32, f32);
 
-    count = panelWork32(0x260);
-    for (i = 0; i < panelWork32(0x25c); i++)
-    {
-        handle = *(u32*)(panelWork() + 0x8c + i * 4);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x8c + i * 4) = 0;
-    }
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
     func_003b0e70(1);
     func_003b0e90(2);
-    if (count > 4) count = 4;
-    for (i = 0; i < count; i++)
+    for (i = 0; i < 4; i++)
     {
-        name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
-        handle = func_003b0970((u32)name, 2, i == 0 ? 6 : 0, 0, 0);
-        *(u32*)(panelWork() + 0x8c + i * 4) = handle;
+        if (i >= *(s32*)(work + 0x260))
+            break;
+        if (i == 0)
+        {
+            handle = func_003b0970(
+                (u32)func_00171110(*(s16*)(work + 0x9c + i * 2), 0),
+                2, 6, 0, 0);
+        }
+        else
+        {
+            handle = func_003b0970(
+                (u32)func_00171110(*(s16*)(work + 0x9c + i * 2), 0),
+                2, 0, 0, 0);
+        }
+        func_003b0d70(handle, 0x730, (i * 9 * 2 + 0x118) * 8);
+        func_003b2c60(handle, 0.0f);
+        func_003b0e20(handle, -1);
+        *(u32*)(work + 0x8c + i * 4) = handle;
     }
-    panelSetWork32(0x25c, count);
+    *(u32*)(work + 0x25c) = i;
     func_003b0e90(1);
     func_003b0e70(2);
-    panelSetWork32(0, panelWork32(0) | 4);
+    *(u32*)work |= 4;
 }
 
 // FUN_002031C0 NONMATCHING

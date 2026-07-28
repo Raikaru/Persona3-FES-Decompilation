@@ -2357,21 +2357,26 @@ void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
 // FUN_003CB100 NONMATCHING
 
 
-void FUN_003cb100(int param_1)
+void FUN_003cb100(u8 *param_1)
 
 
 
 {
+  s32 flags;
+
+  flags = *(s16 *)(param_1 + 0x12) | -0x100;
   fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,0,0,
-                    *(s16 *)(param_1 + 0x12) | -0x100,2,0,0,
+                    flags,2,0,0,
                     *(u32 *)(param_1 + 0xd0));
 
+  flags = *(s16 *)(param_1 + 0x12) | -0x100;
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x165,0xbd,
-                    *(s16 *)(param_1 + 0x12) | -0x100,0,0,0,
+                    flags,0,0,0,
                     *(u32 *)(param_1 + 0xd0));
 
+  flags = *(s16 *)(param_1 + 0x12) | -0x100;
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x61,0xbd,
-                    *(s16 *)(param_1 + 0x12) | -0x100,1,-0x104,0,
+                    flags,1,-0x104,0,
                     *(u32 *)(param_1 + 0xd0));
 
   return;

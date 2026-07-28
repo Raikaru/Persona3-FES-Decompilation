@@ -565,7 +565,6 @@ void FUN_003afe30(void)
   FrFontSlot *slot;
   void *allocation;
   void **allocationEntry;
-  FrFontManagerData *allocationBase;
 
   for (i = 0; i < 9; i++) {
     slot = &gFrFontManagerData_abs[0].slots[i];
@@ -581,10 +580,9 @@ void FUN_003afe30(void)
         FUN_0019d3f0(DAT_006a2730, 0x432);
       }
 
-      allocationBase = gFrFontManagerData_abs;
-      allocation = allocationBase->allocations[slotIndex];
+      allocation = gFrFontManagerData_abs[0].allocations[slotIndex];
       if (allocation != NULL) {
-        allocationEntry = &allocationBase->allocations[(u8)i];
+        allocationEntry = &gFrFontManagerData_abs[0].allocations[slotIndex];
         FUN_00100ec0(allocation);
         *allocationEntry = NULL;
         FUN_005225a8(DAT_006a2800, checkedIndex);

@@ -4695,7 +4695,7 @@ void* func_00186d50(KwlnTask* task)
             initialized = 1;
             for (i = 0; i < 2; i++)
             {
-                if (!H_Maestro_FinishedInit((&work->firstTask)[i]))
+                if (!H_Maestro_FinishedInit(*(&work->firstTask + i)))
                 {
                     initialized = 0;
                 }
