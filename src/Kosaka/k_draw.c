@@ -667,7 +667,7 @@ void func_001a5700(KwlnTask* task, const RwRGBA* color)
 
 /* Removing this worsens FUN_001a57a0 (nd395 -> nd409) - measured W161. */
 #pragma opt_loop_invariants on
-// FUN_001A57A0 NONMATCHING
+// FUN_001A57A0
 void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 {
     KDrawArcTaskWork* work;

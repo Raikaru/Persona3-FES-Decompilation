@@ -1122,18 +1122,21 @@ int FUN_002d8390(void)
   u32 comparison;
   u32 level;
   u32 unit;
+  u16 *enemyEntry;
   u16 enemyFlags;
   u16 state;
   int difference;
   int hasStatus;
   int hasFlag40;
   int hasFlag80;
+  int result;
 
   selector = FUN_002d4e10(2, 0x80000);
+  result = -1;
   if (selector < 6) {
     goto valid;
   }
-  return -1;
+  return result;
 valid:
   comparison = FUN_002d4cf0(2, 0x80000);
   level = FUN_002ffcc0_u32(*(u32 *)(*(u32 *)(*(u32 *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
@@ -1146,7 +1149,9 @@ valid:
     if (FUN_00300580_u32(*(u32 *)(unit + 0xa2c), 2) != 0) {
       hasStatus = 1;
     }
-    enemyFlags = btlTargetGetEnemyFlags(&DAT_007ce410, *(u16 *)(unit + 0xa4));
+    enemyEntry = (u16 *)DAT_007ce410;
+    enemyEntry = (u16 *)((u8 *)enemyEntry + (u32)*(u16 *)(unit + 0xa4) * 0x3e);
+    enemyFlags = *enemyEntry;
     if ((enemyFlags & 0x40) != 0) {
       hasFlag40 = 1;
     }

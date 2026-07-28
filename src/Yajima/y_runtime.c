@@ -11868,7 +11868,6 @@ u32 FUN_0043ca30(int param_1)
 void FUN_00447ad0(int param_1)
 
 {
-  u32 *puVar6;
   int iVar1;
   int iVar2;
   int iVar3;
@@ -11878,93 +11877,82 @@ void FUN_00447ad0(int param_1)
   iVar1 = *(int *)(param_1 + 0x3c);
   for (iVar4 = 0; iVar4 < 6; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4;
-    if (*(u32 *)(iVar3 + 0x274) != 0) {
-      FUN_004d0f00_arg(*(u32 *)(iVar3 + 0x274));
+    if (*(void **)(iVar3 + 0x274) != NULL) {
+      FUN_004d0f00_ptr(*(void **)(iVar3 + 0x274));
       *(u32 *)(iVar3 + 0x274) = 0;
     }
   }
   for (iVar4 = 0; iVar4 < 5; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4;
-    if (*(u32 *)(iVar3 + 0x3c8) != 0) {
-      FUN_004d0f00_arg(*(u32 *)(iVar3 + 0x3c8));
+    if (*(void **)(iVar3 + 0x3c8) != NULL) {
+      FUN_004d0f00_ptr(*(void **)(iVar3 + 0x3c8));
       *(u32 *)(iVar3 + 0x3c8) = 0;
     }
   }
   for (iVar4 = 0; iVar4 < 2; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4;
-    if (*(u32 *)(iVar3 + 0x424) != 0) {
-      FUN_004d0f00_arg(*(u32 *)(iVar3 + 0x424));
+    if (*(void **)(iVar3 + 0x424) != NULL) {
+      FUN_004d0f00_ptr(*(void **)(iVar3 + 0x424));
       *(u32 *)(iVar3 + 0x424) = 0;
     }
   }
-  puVar6 = (u32 *)(iVar1 + 4);
-  if (*puVar6 != 0) {
-    FUN_001124b0_u32(*puVar6);
-    *puVar6 = 0;
+  if (*(void **)(iVar1 + 4) != NULL) {
+    FUN_001124b0_ptr(*(void **)(iVar1 + 4));
+    *(u32 *)(iVar1 + 4) = 0;
   }
-  puVar6 = (u32 *)(iVar1 + 0xe8);
-  if (*puVar6 != 0) {
-    FUN_001124b0_u32(*puVar6);
-    *puVar6 = 0;
+  if (*(void **)(iVar1 + 0xe8) != NULL) {
+    FUN_001124b0_ptr(*(void **)(iVar1 + 0xe8));
+    *(u32 *)(iVar1 + 0xe8) = 0;
   }
   for (iVar4 = 0; iVar4 < 0x38; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4;
-    puVar6 = (u32 *)(iVar3 + 8);
-    if (*puVar6 != 0) {
-      FUN_00115980_arg(*puVar6);
-      *puVar6 = 0;
+    if (*(void **)(iVar3 + 8) != NULL) {
+      FUN_00115980_ptr(*(void **)(iVar3 + 8));
+      *(u32 *)(iVar3 + 8) = 0;
     }
   }
   for (iVar4 = 0; iVar4 < 6; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4;
-    puVar6 = (u32 *)(iVar3 + 0x4a8);
-    if (*puVar6 != 0) {
-      FUN_00115980_arg(*puVar6);
-      *puVar6 = 0;
+    if (*(void **)(iVar3 + 0x4a8) != NULL) {
+      FUN_00115980_ptr(*(void **)(iVar3 + 0x4a8));
+      *(u32 *)(iVar3 + 0x4a8) = 0;
     }
-    puVar6 = (u32 *)(iVar3 + 0x4c0);
-    if (*puVar6 != 0) {
-      FUN_00115980_arg(*puVar6);
-      *puVar6 = 0;
+    if (*(void **)(iVar3 + 0x4c0) != NULL) {
+      FUN_00115980_ptr(*(void **)(iVar3 + 0x4c0));
+      *(u32 *)(iVar1 + iVar4 * 4 + 0x4c0) = 0;
     }
-    puVar6 = (u32 *)(iVar3 + 0x4f0);
-    if (*puVar6 != 0) {
-      FUN_00115980_arg(*puVar6);
-      *puVar6 = 0;
+    if (*(void **)(iVar3 + 0x4f0) != NULL) {
+      FUN_00115980_ptr(*(void **)(iVar3 + 0x4f0));
+      *(u32 *)(iVar1 + iVar4 * 4 + 0x4f0) = 0;
     }
-    puVar6 = (u32 *)(iVar3 + 0x4d8);
-    if (*puVar6 != 0) {
-      FUN_00115980_arg(*puVar6);
-      *puVar6 = 0;
+    if (*(void **)(iVar3 + 0x4d8) != NULL) {
+      FUN_00115980_ptr(*(void **)(iVar3 + 0x4d8));
+      *(u32 *)(iVar1 + iVar4 * 4 + 0x4d8) = 0;
     }
     for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
       for (iVar5 = 0; iVar5 < 0xc; iVar5 = iVar5 + 1) {
         iVar2 = iVar1 + iVar4 * 0x90 + iVar3 * 0x30 + iVar5 * 4;
-        puVar6 = (u32 *)(iVar2 + 0x508);
-        if (*puVar6 != 0) {
-          FUN_00115980_arg(*puVar6);
-          *puVar6 = 0;
+        if (*(void **)(iVar2 + 0x508) != NULL) {
+          FUN_00115980_ptr(*(void **)(iVar2 + 0x508));
+          *(u32 *)(iVar2 + 0x508) = 0;
         }
       }
     }
   }
   for (iVar4 = 0; iVar4 < 6; iVar4 = iVar4 + 1) {
     iVar3 = iVar1 + iVar4 * 4;
-    puVar6 = (u32 *)(iVar3 + 0x33c);
-    if (*puVar6 != 0) {
-      FUN_00115980_arg(*puVar6);
-      *puVar6 = 0;
+    if (*(void **)(iVar3 + 0x33c) != NULL) {
+      FUN_00115980_ptr(*(void **)(iVar3 + 0x33c));
+      *(u32 *)(iVar3 + 0x33c) = 0;
     }
   }
-  puVar6 = (u32 *)(iVar1 + 0x868);
-  if (*puVar6 != 0) {
-    FUN_00115980_arg(*puVar6);
-    *puVar6 = 0;
+  if (*(void **)(iVar1 + 0x868) != NULL) {
+    FUN_00115980_ptr(*(void **)(iVar1 + 0x868));
+    *(u32 *)(iVar1 + 0x868) = 0;
   }
-  puVar6 = (u32 *)(iVar1 + 0x86c);
-  if (*puVar6 != 0) {
-    FUN_00115980_arg(*puVar6);
-    *puVar6 = 0;
+  if (*(void **)(iVar1 + 0x86c) != NULL) {
+    FUN_00115980_ptr(*(void **)(iVar1 + 0x86c));
+    *(u32 *)(iVar1 + 0x86c) = 0;
   }
   if (*(char *)(iVar1 + 0x251) == '\0') {
     FUN_001a0040_typed(1,0);
