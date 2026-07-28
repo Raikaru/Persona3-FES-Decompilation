@@ -3439,7 +3439,7 @@ void func_00221b60(void)
         frame = texture;
         currentFrame = func_0021cca0(frame, (s32)*(u32*)(work + 0x4634));
         previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
-        mask = 1;
+        mask |= 1;
         if (*(u32*)(work + 0x464c) != 4)
         {
             mask |= 2;
@@ -3452,7 +3452,7 @@ void func_00221b60(void)
         switch (sub)
         {
         case 0:
-            mask = 1;
+            mask |= 1;
             if (*(u32*)(work + 0x4650) != 3)
             {
                 mask |= 2;
@@ -3462,7 +3462,7 @@ void func_00221b60(void)
         case 2:
         case 3:
         case 4:
-            mask = 2;
+            mask |= 2;
             if (*(u32*)(work + 0x4650) != 3)
             {
                 mask |= 1;
@@ -3476,14 +3476,14 @@ void func_00221b60(void)
         {
         case 0:
             currentFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
-            mask = 1;
+            mask |= 1;
             break;
         case 1:
         case 2:
         case 3:
         case 4:
             previousFrame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634) + 7);
-            mask = 2;
+            mask |= 2;
             break;
         }
         break;

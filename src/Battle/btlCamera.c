@@ -9686,6 +9686,7 @@ void func_002ae740(BtlCamera* camera, int param_2)
     f32 f20;
     f32 half;
     f32 mag;
+    f32 scale;
 
     action = camera->action;
     unit = action->unit;
@@ -9724,11 +9725,11 @@ void func_002ae740(BtlCamera* camera, int param_2)
     f21 = f20 * FUN_0052e930(DAT_007cad60 *
                              (0.5f * camera->fovRad)) *
           0.21875f;
-    buf[24] = buf[48];
-    buf[25] = buf[50];
-    FUN_004c6b20_ae740(buf + 24, buf + 24);
-    buf[60] = buf[25] * f21 + buf[60];
-    buf[62] = (buf[62]) - buf[24] * f21;
+    buf[64] = buf[48];
+    buf[65] = buf[50];
+    FUN_004c6b20_ae740(buf + 64, buf + 64);
+    buf[60] = buf[65] * f21 + buf[60];
+    buf[62] = (buf[62]) - buf[64] * f21;
     buf[12] = buf[60] + buf[48];
     buf[13] = buf[61] + buf[49];
     buf[14] = buf[62] + buf[50];
@@ -9743,14 +9744,14 @@ void func_002ae740(BtlCamera* camera, int param_2)
             buf[50] = buf[46] - buf[58];
             mag = FUN_004c69f0_ae740((RwV3d*)(buf + 48),
                                      (RwV3d*)(buf + 48));
-            buf[33] = DAT_007cae18 * mag;
-            buf[52] = buf[48] * buf[33] + buf[56];
-            buf[53] = buf[49] * buf[33] + buf[57];
-            buf[54] = buf[50] * buf[33] + buf[58];
-            buf[33] = mag * 0.5f;
-            buf[52] = buf[48] * buf[33] + buf[44];
+            scale = DAT_007cae18 * mag;
+            buf[52] = buf[48] * scale + buf[56];
+            buf[53] = buf[49] * scale + buf[57];
+            buf[54] = buf[50] * scale + buf[58];
+            scale = mag * 0.5f;
+            buf[52] = buf[48] * scale + buf[44];
             buf[53] = buf[67] * 1.5f;
-            buf[54] = buf[50] * buf[33] + buf[46];
+            buf[54] = buf[50] * scale + buf[46];
             FUN_002a4690((void*)(buf + 38), (void*)(buf + 52),
                          (void*)(buf + 60), &D_00697880);
             FUN_004be1e0_ae740((RwV3d*)(buf + 48), &D_006978A0, 1,
@@ -9759,11 +9760,11 @@ void func_002ae740(BtlCamera* camera, int param_2)
             buf[49] = buf[49] * f20;
             f21 = f20 * FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f) *
                   0.21875f;
-            buf[24] = buf[48];
-            buf[25] = buf[50];
-            FUN_004c6b20_ae740(buf + 24, buf + 24);
-            buf[60] = buf[25] * f21 + buf[60];
-            buf[62] = (buf[62]) - buf[24] * f21;
+            buf[64] = buf[48];
+            buf[65] = buf[50];
+            FUN_004c6b20_ae740(buf + 64, buf + 64);
+            buf[60] = buf[65] * f21 + buf[60];
+            buf[62] = (buf[62]) - buf[64] * f21;
             buf[35] = buf[60] + buf[48];
             buf[36] = buf[61] + buf[49];
             buf[37] = buf[62] + buf[50];
@@ -9782,15 +9783,15 @@ void func_002ae740(BtlCamera* camera, int param_2)
         buf[50] = buf[50] * f20;
         f21 = f20 * FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f) *
               0.21875f;
-        buf[24] = buf[48];
-        buf[25] = buf[50];
-        FUN_004c6b20_ae740(buf + 24, buf + 24);
-        buf[60] = buf[25] * f21 + buf[60];
-        buf[62] = (buf[62]) - buf[24] * f21;
+        buf[64] = buf[48];
+        buf[65] = buf[50];
+        FUN_004c6b20_ae740(buf + 64, buf + 64);
+        buf[60] = buf[65] * f21 + buf[60];
+        buf[62] = (buf[62]) - buf[64] * f21;
         buf[19] = buf[60] + buf[48];
         buf[20] = buf[61] + buf[49];
         buf[21] = buf[62] + buf[50];
-        if (*(s16*)((u8*)camera + 0x106) == 0) {
+        if (*(u16*)((u8*)camera + 0x106) == 0) {
             FUN_004be310_ae740((void*)(buf + 15), (void*)(buf + 22),
                                (RwV3d*)(buf + 0));
             buf[31] = DAT_007cad94;

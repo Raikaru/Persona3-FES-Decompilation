@@ -1051,7 +1051,6 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
       memset(uStack_20,0,0x18);
 
       uVar6 = ((int)((u32)*(u8 *)(DAT_007ce420 + 3 + (u32)param_2 * 0xe) +
-
                     (u32)*(u8 *)(DAT_007ce420 + 3 + iVar7)) >> 1) + 1U & 0xff;
 
       uStack_20[0] = param_2;
@@ -1059,7 +1058,6 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
       uStack_20[1] = param_3;
 
       if ((cVar3 == *(char *)(DAT_007ce420 + 2 + (u32)param_2 * 0xe)) &&
-
          (cVar3 == *(char *)(DAT_007ce420 + 2 + iVar7))) {
 
         sVar4 = FUN_003d7da0(cVar3,uVar6,uStack_20);
@@ -1450,7 +1448,7 @@ s32 FUN_003d6e60(s32 param_1,s32 param_2)
   s32 temp_2;
   s32 var_16;
   s32 var_5;
-  u16 temp_19;
+  u32 temp_19;
   u16 temp_3;
   u8 *temp_4;
   void *dest;

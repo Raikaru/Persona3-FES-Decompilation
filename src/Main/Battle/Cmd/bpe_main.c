@@ -86,7 +86,7 @@ void FUN_00249690(void* work)
 }
 
 /* Removing this worsens FUN_002496e0 (nd110 -> nd136) - measured W161. */
-// FUN_002496E0 NONMATCHING
+// FUN_002496E0
 #pragma opt_loop_invariants on
 void func_002496e0(void* work)
 {
@@ -164,14 +164,10 @@ void func_002496e0(void* work)
     func_005225a8((const void*)(D_0068E880 + 0x30), *(void**)node);
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x800000;
-    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(u32*)(node + 4) = 0x80;
-    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(u32*)(node + 0xb4) = 1;
-    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(u32*)(node + 0xac) = 3;
-    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(u32*)(node + 0xb0) = 9;
+    *(u32*)(*(u8**)(*(u8**)(base + 0x600) + DAT_007ce770) + 4) = 0x80;
+    *(u32*)(*(u8**)(*(u8**)(base + 0x600) + DAT_007ce770) + 0xb4) = 1;
+    *(u32*)(*(u8**)(*(u8**)(base + 0x600) + DAT_007ce770) + 0xac) = 3;
+    *(u32*)(*(u8**)(*(u8**)(base + 0x600) + DAT_007ce770) + 0xb0) = 9;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x10000000;
     func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 2, 0x40000000);
@@ -219,9 +215,9 @@ void func_002496e0(void* work)
 
     func_004747f0(*(void**)(base + 0x600));
     matrix = func_004cb2f0(*(void**)(camera + 4));
+    local.origin.z = 100.0f;
     local.origin.x = 0.0f;
     local.origin.y = 0.0f;
-    local.origin.z = 100.0f;
     func_004c6be0(&local.world, &local.origin, matrix);
     *(struct Vec3 *)(base + 0x608) = local.world;
     *(u32*)(base + 0x604) |= 1;

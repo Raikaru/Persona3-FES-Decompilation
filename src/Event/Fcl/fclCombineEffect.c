@@ -86,7 +86,7 @@ u8 FUN_00419f20(int param_1,int *param_2);
 u32 FUN_0041a2c0(int param_1,int *param_2);
 u32 FUN_0041a310(u64 param_1,int param_2);
 u8 FUN_0041a3f0(u64 param_1,int param_2);
-u8 FUN_0041a730(u64 param_1,int param_2);
+u32 FUN_0041a730(u64 param_1,int param_2);
 u8 FUN_0041a900(u64 param_1,int param_2);
 u8 FUN_0041abc0(int param_1,int *param_2);
 u32 FUN_0041ae20(int param_1);
@@ -2745,7 +2745,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 // FUN_0041A730 NONMATCHING
 
 
-u8 FUN_0041a730(u64 param_1,int param_2)
+u32 FUN_0041a730(u64 param_1,int param_2)
 
 
 
@@ -2779,13 +2779,13 @@ u8 FUN_0041a730(u64 param_1,int param_2)
 
     if (*(int *)(param_2 + 0xc) == uVar4 << 1) {
 
-      *puVar1 = *puVar1 | 1 << (uVar4 & 0x1f);
+      *puVar1 = *puVar1 | 1 << uVar4;
 
       func_0010a4e0(1,(short)uVar4,6,3);
 
     }
 
-    uVar3 = 1 << (uVar4 & 0x1f);
+    uVar3 = 1 << uVar4;
 
     if (((*puVar1 & uVar3) != 0) &&
 

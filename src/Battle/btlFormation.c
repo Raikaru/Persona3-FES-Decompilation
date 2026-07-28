@@ -4675,7 +4675,7 @@ u32 func_002bf3f0(int param_1)
   if (lVar2 == 1) {
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xffffbfff;
   }
-  lVar2 = func_00195340(0x696f50);
+  lVar2 = func_00195340(D_00696f50);
   if (lVar2 != 0) {
     uVar1 = 0;
   }
@@ -7193,20 +7193,21 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
   requireOrder = loopFlags & 0x10;
   while ((u16)index < *(u16 *)(formation + 0xc0)) {
     unit = *(int *)(formation + (index & 0xffff) * 4 + 0x88);
-    unitData = *(int *)(unit + 0x30);
-    if ((*(u16 *)(unit + 0x1a) & 1) != 0 &&
-        (loopFlags == 0 ||
-         ((requireFlag == 0 ||
-           func_00300580(*(u32 *)(unitData + 0xa2c),0x100000) != 0) &&
-          (requireActive == 0 || *(u8 *)(unitData + 0xa2) != 1 ||
-           func_002e3350(unit,(s16)selector) != 0 ||
-           func_0017b260(*(u16 *)(unitData + 0xa4)) != 0) &&
-          (requireOrder == 0 || func_002c5030(formation,unit,0,0) >= 0))) &&
-        func_00300580(*(u32 *)(unitData + 0xa2c),excludedFlags) == 0 &&
-        predicate(unit,selector) != rejectedResult) {
-      candidates[candidateCount] = unit;
+    if ((*(u16 *)(unit + 0x1a) & 1) != 0) {
+      unitData = *(int *)(unit + 0x30);
+      if ((loopFlags == 0 ||
+           ((requireFlag == 0 ||
+             func_00300580(*(u32 *)(unitData + 0xa2c),0x100000) != 0) &&
+            (requireActive == 0 || *(u8 *)(unitData + 0xa2) != 1 ||
+             func_002e3350(unit,(s16)selector) != 0 ||
+             func_0017b260(*(u16 *)(unitData + 0xa4)) != 0) &&
+            (requireOrder == 0 || func_002c5030(formation,unit,0,0) >= 0))) &&
+          func_00300580(*(u32 *)(unitData + 0xa2c),excludedFlags) == 0 &&
+          predicate(unit,selector) != rejectedResult) {
+      candidates[(u16)candidateCount] = unit;
       candidateCount = candidateCount + 1 & 0xffff;
     }
+      }
     index = index + 1 & 0xffff;
   }
 
@@ -7225,10 +7226,11 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
     *(int *)(formation + 0x38) = candidates[(u16)chosenIndex];
     *(u16 *)(formation + 0x6a) = 1;
   } else {
-    for (index = 0; (u16)index < (u16)candidateCount;
-         index = index + 1 & 0xffff) {
-      *(int *)(formation + (index & 0xffff) * 4 + 0x38) =
-          candidates[index & 0xffff];
+    int copyIndex;
+    for (copyIndex = 0; (u16)copyIndex < (u16)candidateCount;
+         copyIndex = copyIndex + 1 & 0xffff) {
+      *(int *)(formation + (copyIndex & 0xffff) * 4 + 0x38) =
+          candidates[copyIndex & 0xffff];
     }
     *(u16 *)(formation + 0x6a) = candidateCount;
   }

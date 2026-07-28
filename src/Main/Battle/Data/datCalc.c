@@ -3691,6 +3691,7 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
       else {
         uVar1 = 0;
       }
+      *(u32 *)param_7 = uVar1;
     }
     *(u32 *)((int)param_2 + 0x18) = 0;
     *(u32 *)((int)param_3 + 0x18) = 0;
