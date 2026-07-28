@@ -218,6 +218,8 @@ extern u64 func_002d1a10();
 extern u64 func_002d1a70();
 extern u64 func_002d1de0();
 extern u64 func_002d1fd0();
+#pragma alias func_002d1fd0_c0070 func_002d1fd0
+extern f32 func_002d1fd0_c0070();
 extern u32 func_002d4cf0();
 extern u32 func_002d4e10();
 extern u64 func_002d5550();
@@ -5349,7 +5351,7 @@ void func_002c0070(int param_1,int param_2)
         func_0027ffb0_v3d(*(u32 *)(uVar5 + 0x30),&origin);
         fStack_8 = origin.x;
         fStack_4 = origin.y;
-        fVar12 = (float)func_002d1fd0(&fStack_50,&fStack_48,&fStack_8,&fStack_10);
+        fVar12 = func_002d1fd0_c0070(&fStack_50,&fStack_48,&fStack_8,&fStack_10);
         fStack_18 = fStack_8 - fStack_10;
         fStack_14 = fStack_4 - fStack_c;
         func_004c6b20(&fStack_18,&fStack_18);
@@ -8696,42 +8698,42 @@ void func_002c6a00(int param_1,int param_2,u16 param_3)
     dispatch = param_3;
   }
   switch (dispatch) {
+  case 0x1000:
+    *(u16 *)(param_2 + 0x34) = 9;
+    *(u16 *)(param_2 + 0x36) = 0x155;
+    *(u16 *)(param_2 + 0x3e) = param_3 & 0xfff;
+    break;
+  case 0x2000:
+    *(u16 *)(param_1 + 0xdc) = param_3 & 0xfff;
+    *(u16 *)(param_2 + 0x34) = 7;
+    break;
+  case 0x8000:
+    *(u16 *)(param_2 + 0x34) = 1;
+    value = func_00308930(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
+    *(u16 *)(param_2 + 0x36) = value;
+    break;
+  case 0x8001:
+    *(u16 *)(param_2 + 0x34) = 6;
+    break;
+  case 0x8002:
+    *(u16 *)(param_2 + 0x34) = 7;
+    break;
   case 0x8004:
     param_3 = func_00308a80(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
   default:
     *(u16 *)(param_2 + 0x34) = 2;
     *(u16 *)(param_2 + 0x36) = param_3;
     break;
-  case 0x8008:
-    *(u16 *)(param_2 + 0x34) = 0xc;
-    break;
-  case 0x8001:
-    *(u16 *)(param_2 + 0x34) = 6;
+  case 0x8005:
     break;
   case 0x8006:
     *(u16 *)(param_2 + 0x34) = 0xb;
     break;
-  case 0x8005:
-    break;
   case 0x8007:
     *(u16 *)(param_2 + 0x34) = 8;
     break;
-  case 0x8002:
-    *(u16 *)(param_2 + 0x34) = 7;
-    break;
-  case 0x2000:
-    *(u16 *)(param_1 + 0xdc) = param_3 & 0xfff;
-    *(u16 *)(param_2 + 0x34) = 7;
-    break;
-  case 0x1000:
-    *(u16 *)(param_2 + 0x34) = 9;
-    *(u16 *)(param_2 + 0x36) = 0x155;
-    *(u16 *)(param_2 + 0x3e) = param_3 & 0xfff;
-    break;
-  case 0x8000:
-    *(u16 *)(param_2 + 0x34) = 1;
-    value = func_00308930(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
-    *(u16 *)(param_2 + 0x36) = value;
+  case 0x8008:
+    *(u16 *)(param_2 + 0x34) = 0xc;
     break;
   }
 }

@@ -2075,88 +2075,18 @@ void FUN_0029ee20(u32 param_1)
 
     cVar1 = *(char *)(iVar4 + 0xa2);
 
-    if (cVar1 == '\x02') {
-
-      FUN_004c31b0(0xc2b40000,&matrix,0x697870,0);
-
-      puVar3 = (u32 *)FUN_001a0700(*(u16 *)(iVar4 + 0x9f2));
-
-      uVar8 = DAT_0069385c;
-
-      uVar7 = DAT_00693858;
-
-      uVar6 = DAT_00693854;
-
-      *puVar3 = DAT_00693850;
-
-      puVar3[1] = uVar6;
-
-      puVar3[2] = uVar7;
-
-      puVar3[3] = uVar8;
-
-      puVar3 = (u32 *)FUN_001a07f0(*(u16 *)(iVar4 + 0x9f2));
-
-      uVar8 = _DAT_0069386c;
-
-      uVar7 = DAT_00693868;
-
-      uVar6 = DAT_00693864;
-
-      *puVar3 = DAT_00693860;
-
-      puVar3[1] = uVar6;
-
-      puVar3[2] = uVar7;
-
-      puVar3[3] = uVar8;
-
-      puVar3 = (u32 *)FUN_001a08e0(*(u16 *)(iVar4 + 0x9f2));
-
-      puVar5 = (u64 *)&matrix;
-
-      iVar4 = 8;
-
-      do {
-
-        uVar6 = *(u32 *)puVar5;
-
-        uVar7 = *(u32 *)((int)puVar5 + 4);
-
-        puVar5 = puVar5 + 1;
-
-        iVar4 = iVar4 + -1;
-
-        *puVar3 = uVar6;
-
-        puVar3[1] = uVar7;
-
-        puVar3 = puVar3 + 2;
-
-      } while (0 < iVar4);
-
-    }
-
-    else if ((cVar1 == '\x01') || (cVar1 == '\0')) {
-
+    switch (cVar1) {
+    case '\0':
+    case '\x01':
       unitPos.x = *(float *)(iVar4 + 0x54);
-
       unitPos.y = *(float *)(iVar4 + 0x58);
-
       unitPos.z = *(float *)(iVar4 + 0x5c);
-
       FUN_0027ffb0(param_1,&targetPos);
-
       fVar2 = targetPos.y + 5.0f;
-
       if (targetPos.y + 5.0f < unitPos.y) {
-
         fVar2 = unitPos.y;
-
       }
-
       unitPos.y = fVar2;
-
       direction.x = targetPos.x - unitPos.x;
       direction.y = targetPos.y - unitPos.y;
       direction.z = targetPos.z - unitPos.z;
@@ -2167,55 +2097,62 @@ void FUN_0029ee20(u32 param_1)
       cross.z = DAT_00697880 * direction.y - DAT_00697884 * direction.x;
       FUN_004c69f0(&cross,&cross);
       matrix.right = cross;
-
       matrix.up.x = direction.y * cross.z - direction.z * cross.y;
-
       matrix.up.y = direction.z * cross.x - direction.x * cross.z;
-
       matrix.up.z = direction.x * cross.y - direction.y * cross.x;
-
       matrix.pos = matrix.up;
-
       puVar3 = (u32 *)FUN_001a07f0(*(u16 *)(iVar4 + 0x9f2));
-
       uVar8 = *(u32 *)(iVar4 + 0x74);
-
       uVar6 = *(u32 *)(iVar4 + 0x78);
-
       uVar7 = *(u32 *)(iVar4 + 0x7c);
-
       *puVar3 = *(u32 *)(iVar4 + 0x70);
-
       puVar3[1] = uVar8;
-
       puVar3[2] = uVar6;
-
       puVar3[3] = uVar7;
-
       puVar3 = (u32 *)FUN_001a08e0(*(u16 *)(iVar4 + 0x9f2));
-
       puVar5 = (u64 *)&matrix;
-
       iVar4 = 8;
-
       do {
-
         uVar6 = *(u32 *)puVar5;
-
         uVar7 = *(u32 *)((int)puVar5 + 4);
-
         puVar5 = puVar5 + 1;
-
         iVar4 = iVar4 + -1;
-
         *puVar3 = uVar6;
-
         puVar3[1] = uVar7;
-
         puVar3 = puVar3 + 2;
-
       } while (0 < iVar4);
-
+      break;
+    case '\x02':
+      FUN_004c31b0(0xc2b40000,&matrix,0x697870,0);
+      puVar3 = (u32 *)FUN_001a0700(*(u16 *)(iVar4 + 0x9f2));
+      uVar8 = DAT_0069385c;
+      uVar7 = DAT_00693858;
+      uVar6 = DAT_00693854;
+      *puVar3 = DAT_00693850;
+      puVar3[1] = uVar6;
+      puVar3[2] = uVar7;
+      puVar3[3] = uVar8;
+      puVar3 = (u32 *)FUN_001a07f0(*(u16 *)(iVar4 + 0x9f2));
+      uVar8 = _DAT_0069386c;
+      uVar7 = DAT_00693868;
+      uVar6 = DAT_00693864;
+      *puVar3 = DAT_00693860;
+      puVar3[1] = uVar6;
+      puVar3[2] = uVar7;
+      puVar3[3] = uVar8;
+      puVar3 = (u32 *)FUN_001a08e0(*(u16 *)(iVar4 + 0x9f2));
+      puVar5 = (u64 *)&matrix;
+      iVar4 = 8;
+      do {
+        uVar6 = *(u32 *)puVar5;
+        uVar7 = *(u32 *)((int)puVar5 + 4);
+        puVar5 = puVar5 + 1;
+        iVar4 = iVar4 + -1;
+        *puVar3 = uVar6;
+        puVar3[1] = uVar7;
+        puVar3 = puVar3 + 2;
+      } while (0 < iVar4);
+      break;
     }
 
   }

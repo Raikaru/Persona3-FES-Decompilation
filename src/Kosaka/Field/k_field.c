@@ -105,15 +105,15 @@ extern void func_001a0040(u32 visible, u32 updateField);
 extern void func_0019fec0(const void* position);
 extern void func_001c07f0(void);
 extern void func_001cd8e0(void);
-extern void func_001e7410();
+extern void func_001e7410(void);
 extern void func_00350080(s32 sequence);
 extern void func_003c8f70(void);
 extern void func_003c8f40(void);
 extern void func_00458bb0(void);
 extern void func_0045a430(s32 enabled);
 extern void func_0045af70(s32 enabled);
-extern void func_004cb930();
-extern void func_004cb270();
+extern void func_004cb930(void* frame);
+extern void func_004cb270(void* frame);
 extern u32 FUN_00398060(u32 resource);
 extern u32 FUN_00398140(u32 resource, s32* id, u32* minor, u32* param4, u32* param5);
 
@@ -900,7 +900,13 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
         parentTask, 10, (const char*)0x0067f5c8, func_001b9480, func_001ba3d0,
         workData);
     sField.rootTask = fldRootTask;
-    if (param11 < 1)
+    if (param11 >= 1)
+    {
+        ROOT_U32(workData, 0x38) = FUN_00397ec0(param11, param12, param13, param14);
+        ROOT_U32(workData, 0) = 0;
+        ROOT_S32(workData, 0x0c) = param11;
+    }
+    else
     {
         FUN_0017f8d0();
         FUN_0035bfb0();
@@ -920,12 +926,6 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
             K_FldDungeon_FUN_001c03f0();
         }
         ROOT_U32(workData, 0) = 1;
-    }
-    else
-    {
-        ROOT_U32(workData, 0x38) = FUN_00397ec0(param11, param12, param13, param14);
-        ROOT_U32(workData, 0) = 0;
-        ROOT_S32(workData, 0x0c) = param11;
     }
 
     clearDepth = *(f32*)(void*)0x0067f5c0;
@@ -2619,42 +2619,44 @@ u32 func_001bf340(const FldDungeonFloorData* floorData)
     {
         goto done;
     }
-    if (chance - 1 != 0)
+    if (chance - 1 == 0)
+    {
+        random = (s32)(RpRandom() % 100);
+        lower = (s32)FUN_0016F380(0x3c);
+        if (random >= lower)
+        {
+            goto done;
+        }
+        lower = (s32)FUN_0016F380(0x3d);
+        upper = (s32)FUN_0016F380(0x3e);
+        total = (s32)FUN_0016F380(0x37);
+        (void)FUN_0016F380(0x36);
+        total += lower + upper;
+        choice = (s32)(RpRandom() % total);
+        FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
+        if (choice < lower)
+        {
+            return 1;
+        }
+        if (choice < lower + upper)
+        {
+            return 2;
+        }
+        if (choice < total)
+        {
+            return 3;
+        }
+        for (i = 0; i < 3; i++)
+        {
+            if (FUN_0016DD60(i) >= 1)
+            {
+                return 4;
+            }
+        }
+    }
+    else
     {
         FUN_0016F3E0(0x3b, chance - 1);
-        goto done;
-    }
-    random = (s32)(RpRandom() % 100);
-    lower = (s32)FUN_0016F380(0x3c);
-    if (random >= lower)
-    {
-        goto done;
-    }
-    lower = (s32)FUN_0016F380(0x3d);
-    upper = (s32)FUN_0016F380(0x3e);
-    total = (s32)FUN_0016F380(0x37);
-    (void)FUN_0016F380(0x36);
-    total += lower + upper;
-    choice = (s32)(RpRandom() % total);
-    FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
-    if (choice < lower)
-    {
-        return 1;
-    }
-    if (choice < lower + upper)
-    {
-        return 2;
-    }
-    if (choice < total)
-    {
-        return 3;
-    }
-    for (i = 0; i < 3; i++)
-    {
-        if (FUN_0016DD60(i) >= 1)
-        {
-            return 4;
-        }
     }
 done:
     return 0;

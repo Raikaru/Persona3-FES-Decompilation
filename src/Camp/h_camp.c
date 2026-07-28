@@ -793,12 +793,15 @@ void* h_campUpdateRootDrawTask(KwlnTask* task)
     case 3:
         if (h_campGetRootMenuTransitionComplete(work->menuTask) != 0) {
             work->frame = 0;
-            if (work->menuMode == 1) {
-                h_campDrawRootMenuEntriesAlternate(work, 100.0f);
-                work->state = 5;
-            } else if (work->menuMode == 0) {
+            switch (work->menuMode) {
+            case 0:
                 h_campDrawRootMenuEntries(work, 100.0f);
                 work->state = 4;
+                break;
+            case 1:
+                h_campDrawRootMenuEntriesAlternate(work, 100.0f);
+                work->state = 5;
+                break;
             }
             h_campRequestMenuTransition(sCampPersonaDisplayTask, 1);
             FUN_00122710(sCampPersonaControlTask, 1);

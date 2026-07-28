@@ -669,42 +669,26 @@ void FUN_0039f410(int *param_1)
 
       if (iVar5 < 0) { param_1[3] = 3; } else { iVar1 = param_1[1];
       
-      if (iVar1 == 2) {
-      
-        iVar2 = FUN_003a4b90(iVar2,iVar5,0);
-      
-        iVar5 = iVar2 >> 5;
-      
-        if (iVar2 >> 4 < 0) {
-      
-          iVar5 = (iVar2 >> 4) + 1 >> 1;
-      
-        }
-      
-        FUN_003a3ce0(param_1[2],(0x140 - iVar5) * 0x10,0x5f0);
-      
-      }
-      
-      else if (iVar1 == 1) {
-      
-        iVar2 = FUN_003a4b90(iVar2,iVar5,0);
-      
-        iVar5 = iVar2 >> 5;
-      
-        if (iVar2 >> 4 < 0) {
-      
-          iVar5 = (iVar2 >> 4) + 1 >> 1;
-      
-        }
-      
-        FUN_003a3ce0(param_1[2],(0x140 - iVar5) * 0x10,0x8a0);
-      
-      }
-      
-      else if (iVar1 == 0) {
-      
+      switch (iVar1) {
+      case 0:
         FUN_003a3e10(iVar2,0x200000);
-      
+        break;
+      case 1:
+        iVar2 = FUN_003a4b90(iVar2,iVar5,0);
+        iVar5 = iVar2 >> 5;
+        if (iVar2 >> 4 < 0) {
+          iVar5 = (iVar2 >> 4) + 1 >> 1;
+        }
+        FUN_003a3ce0(param_1[2],(0x140 - iVar5) * 0x10,0x8a0);
+        break;
+      case 2:
+        iVar2 = FUN_003a4b90(iVar2,iVar5,0);
+        iVar5 = iVar2 >> 5;
+        if (iVar2 >> 4 < 0) {
+          iVar5 = (iVar2 >> 4) + 1 >> 1;
+        }
+        FUN_003a3ce0(param_1[2],(0x140 - iVar5) * 0x10,0x5f0);
+        break;
       }
       
       FUN_003a30c0(param_1[2],param_1[4],0);

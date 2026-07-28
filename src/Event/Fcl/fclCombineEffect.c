@@ -1912,57 +1912,28 @@ u8 FUN_00419050(int param_1,int *param_2)
 
 
 u32 FUN_004195f0(int param_1,int *param_2)
-
-
-
 {
-
   int iVar1;
-
   long lVar2;
 
-  
-
   iVar1 = *param_2;
-
-  if (*(char *)(iVar1 + 4) == '\x03') {
-
-    mdlAnimSet(*(u32 *)(param_2[1] + 8),0,
-
-                 (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
-
-                 *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
-
-  }
-
-  else if (*(char *)(iVar1 + 4) == '@') {
-
-    if (*(char *)(iVar1 + 5) == '\x03') {
-
-      FUN_003cdcd0(*(u32 *)(param_1 + 0x18),
-
-                   (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
-
-                   *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
-
-    }
-
-    else if ((*(char *)(iVar1 + 5) == '\x02') &&
-
-            (lVar2 = MT_Scene_GetRes(*(u32 *)(iVar1 + 0xc) & 0x3ff | 0xc00), lVar2 != 0)) {
-
+  if (*(char *)(iVar1 + 4) == '@') {
+    if ((*(char *)(iVar1 + 5) == '') &&
+        (lVar2 = MT_Scene_GetRes(*(u32 *)(iVar1 + 0xc) & 0x3ff | 0xc00), lVar2 != 0)) {
       mdlAnimSet(*(u32 *)((int)lVar2 + 0x128),0,
-
+                 (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
+                 *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
+    } else if (*(char *)(iVar1 + 5) == '') {
+      FUN_003cdcd0(*(u32 *)(param_1 + 0x18),
                    (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
-
                    *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
-
     }
-
+  } else if (*(char *)(iVar1 + 4) == '') {
+    mdlAnimSet(*(u32 *)(param_2[1] + 8),0,
+               (short)((u32)*(u32 *)(iVar1 + 0xc) >> 0x10),
+               *(u32 *)(iVar1 + 0x10) & 0xffff,(int)*(u32 *)(iVar1 + 0x10) >> 0x10 & 0xffff);
   }
-
   return 1;
-
 }
 
 // FUN_00419730
