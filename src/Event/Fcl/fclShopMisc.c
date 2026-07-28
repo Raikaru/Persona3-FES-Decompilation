@@ -14212,7 +14212,7 @@ check:
 
 }
 
-// FUN_00401890 NONMATCHING
+// FUN_00401890
 
 
 u32 FUN_00401890(short param_1)
@@ -14263,7 +14263,7 @@ found:
   return 0;
 }
 
-// FUN_00401950 NONMATCHING
+// FUN_00401950
 
 
 u32 FUN_00401950(u16 param_1)

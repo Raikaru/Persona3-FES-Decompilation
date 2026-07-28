@@ -799,42 +799,37 @@ void H_Cdvd_CacheRemove(void* requestData)
 // FUN_00101100 NONMATCHING
 void func_00101100(const char* path, char* fileNameDst, char* dirDst)
 {
-    char reversedName[257];
-    size_t pathLength;
-    size_t nameLength;
-    size_t i;
-    size_t slashOffset;
+    char reversedName[256];
+    u32 pathLength;
+    u32 nameLength;
+    u32 reverseIndex;
+    u32 outputIndex;
+    char current;
+    s32 backslash;
 
-    strcpy(fileNameDst, "VOL:");
+    strcpy(fileNameDst, sCdvdVolumePrefix);
     strcpy(dirDst, path);
     pathLength = strlen(dirDst);
-    slashOffset = pathLength;
-    while (slashOffset > 0)
+    backslash = '\\';
+    for (reverseIndex = 1; reverseIndex < pathLength; reverseIndex++)
     {
-        if (dirDst[slashOffset - 1] == '\\' || dirDst[slashOffset - 1] == '/')
+        current = dirDst[pathLength - reverseIndex];
+        if (current == backslash)
         {
+            dirDst[pathLength - (reverseIndex - 1)] = '\0';
+            reversedName[reverseIndex - 1] = '\0';
             break;
         }
-        slashOffset--;
+        reversedName[reverseIndex - 1] = current;
     }
-
-    if (slashOffset == 0)
-    {
-        reversedName[0] = '\0';
-    }
-    else
-    {
-        strcpy(reversedName, dirDst + slashOffset);
-        dirDst[slashOffset] = '\0';
-    }
-
 
     nameLength = strlen(reversedName);
-    for (i = 0; i < nameLength; i++)
+    for (outputIndex = 0; outputIndex < nameLength; outputIndex++)
     {
-        fileNameDst[4 + nameLength - i - 1] = reversedName[i];
+        fileNameDst[strlen(sCdvdVolumePrefix) + nameLength - outputIndex - 1] =
+            reversedName[outputIndex];
     }
-    fileNameDst[4 + nameLength] = '\0';
+    fileNameDst[strlen(sCdvdVolumePrefix) + nameLength] = '\0';
 }
 
 // FUN_00101520 NONMATCHING
