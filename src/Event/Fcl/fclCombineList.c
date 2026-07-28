@@ -627,8 +627,8 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
 // FUN_003da2a0 NONMATCHING
 void fclCombineList003da2a0(FclList* param_1)
 {
-    FclTaskLink* node;
     FclNodeData* data;
+    FclTaskLink* node;
     s32 i;
 
     node = param_1->list->links;
@@ -1407,7 +1407,7 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
             } else {
                 FUN_003b32d0(0.0f, x + 0x19c, y + 0x7e,
                               (s32)((byte)alpha | 0xffffff00),
-                              (s8)(text_shades[selected] >> 8), 1,
+                              (s8)text_shades[selected], 1,
                               DAT_007ce4e4[text_id], 0x10, 0x6e);
                 FUN_00523ac8(&layout, &DAT_007cd798.layout_template, text_style);
                 FUN_0040eb50(0.0f, x + 0x260, y + 0x7f, (byte)alpha,
@@ -1422,7 +1422,7 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
                       (draw_variant - 1) * 2 + selected);
         FUN_003b32d0(0.0f, x + 0x19c, y + 0x7e,
                       (s32)((byte)alpha | 0xffffff00),
-                      (s8)(text_shades[selected] >> 8), 1,
+                      (s8)text_shades[selected], 1,
                       DAT_007ce4e4[text_id], 0x10, 0x6e);
         FUN_00523ac8(&layout, &DAT_007cd798.layout_template, text_style);
         FUN_0040eb50(0.0f, x + 0x260, y + 0x7f, (byte)alpha,

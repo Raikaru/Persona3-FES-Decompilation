@@ -302,19 +302,21 @@ void FUN_0025c220(void)
             uVar6 = (s32)fVar10;
             uVar6 &= 0xffu;
         } else {
-            uVar6 = (s32)(fVar10 - 2.1474836e+09f) | 0x80000000;
+            uVar6 = (s32)(fVar10 - 2.1474836e+09f);
+            uVar6 |= 0x80000000;
             uVar6 &= 0xffu;
         }
         uVar6 &= 0xffu;
         uVar6 |= 0xffffff00u;
         func_003b0e20(puVar1[1], uVar6);
 
-        fVar11 = fVar11 * (255.0f * fVar6);
+        fVar11 = (255.0f * fVar6) * fVar11;
         if (2.1474836e+09f > fVar11) {
             uVar7 = (s32)fVar11;
             uVar7 &= 0xffu;
         } else {
-            uVar7 = (s32)(fVar11 - 2.1474836e+09f) | 0x80000000;
+            uVar7 = (s32)(fVar11 - 2.1474836e+09f);
+            uVar7 |= 0x80000000;
             uVar7 &= 0xffu;
         }
         uVar7 &= 0xffu;
@@ -348,7 +350,8 @@ void FUN_0025c220(void)
             uVar6 = (s32)fVar10;
             uVar6 &= 0xffu;
         } else {
-            uVar6 = (s32)(fVar10 - 2.1474836e+09f) | 0x80000000;
+            uVar6 = (s32)(fVar10 - 2.1474836e+09f);
+            uVar6 |= 0x80000000;
             uVar6 &= 0xffu;
         }
         layout.color[3] = (u8)uVar6;
@@ -377,7 +380,8 @@ void FUN_0025c220(void)
             uVar7 = (s32)fVar11;
             uVar7 &= 0xffu;
         } else {
-            uVar7 = (s32)(fVar11 - 2.1474836e+09f) | 0x80000000;
+            uVar7 = (s32)(fVar11 - 2.1474836e+09f);
+            uVar7 |= 0x80000000;
             uVar7 &= 0xffu;
         }
         layout.color[3] = (u8)uVar7;

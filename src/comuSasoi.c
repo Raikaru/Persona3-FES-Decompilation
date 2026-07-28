@@ -522,7 +522,6 @@ u8 FUN_003c2c50(u32 param_1)
 
   int lVar4;
 
-  short uVar5;
 
   int iVar6;
 
@@ -534,8 +533,7 @@ u8 FUN_003c2c50(u32 param_1)
 
   if ((lVar4 == 0) || (param_1 != sStack_2)) {
 
-    uVar5 = (u16)param_1;
-    lVar4 = FUN_0016e100(uVar5);
+    lVar4 = FUN_0016e100((s16)param_1);
 
     if (lVar4 == 0) {
 
@@ -565,7 +563,7 @@ u8 FUN_003c2c50(u32 param_1)
 
         else {
 
-          cVar1 = FUN_0016dba0(uVar5);
+          cVar1 = FUN_0016dba0((s16)param_1);
 
           if (cVar1 == '\x01') {
 
@@ -575,7 +573,7 @@ u8 FUN_003c2c50(u32 param_1)
 
           else {
 
-            cVar1 = FUN_0016dba0(uVar5);
+            cVar1 = FUN_0016dba0((s16)param_1);
 
             if (cVar1 == '\n') {
 

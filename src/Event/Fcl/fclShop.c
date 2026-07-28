@@ -2217,7 +2217,7 @@ LAB_003e789c:
 
     if (lVar8 == -1) {
 
-      K_Assert((const char *)0x6a6af8,0x78c);
+      K_Assert(DAT_006a6af8,0x78c);
 
     }
 
@@ -2814,7 +2814,7 @@ LAB_003e8b7c:
 
         if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x18] != 0) {
 
-          K_Assert((const char *)0x6a6af8,0x8a2);
+          K_Assert(DAT_006a6af8,0x8a2);
 
         }
 
@@ -2840,7 +2840,7 @@ LAB_003e8b7c:
 
         if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] == 0) {
 
-          K_Assert((const char *)0x6a6af8,0x8ad);
+          K_Assert(DAT_006a6af8,0x8ad);
 
         }
 
@@ -2850,7 +2850,7 @@ LAB_003e8b7c:
 
         if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x18] != 0) {
 
-          K_Assert((const char *)0x6a6af8,0x8b3);
+          K_Assert(DAT_006a6af8,0x8b3);
 
         }
 
@@ -2864,7 +2864,7 @@ LAB_003e8b7c:
 
         if (piVar3[*(char *)((int)puVar10 + 3) * 2 + 0x19] == 0) {
 
-          K_Assert((const char *)0x6a6af8,0x8b9);
+          K_Assert(DAT_006a6af8,0x8b9);
 
         }
 

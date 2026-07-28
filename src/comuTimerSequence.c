@@ -224,20 +224,17 @@ code * FUN_003bf8e0(void)
 }
 #define FUN_003bf8e0(...) ((code * (*)(...))FUN_003bf8e0)(__VA_ARGS__)
 #undef FUN_003bf950
-// FUN_003BF950 NONMATCHING
+// FUN_003BF950
 
 
 code * FUN_003bf950(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
   code *pcVar4;
-  long lVar5;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  int lVar5;
+  u8 auStack_20[0x1c];
 
   piVar3 = (int *)FUN_00195540();
   FUN_001717b0();
@@ -252,27 +249,34 @@ code * FUN_003bf950(void)
     if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
-      FUN_00521408(auStack_20,0,0x1c);
-      uStack_14 = 0x32b;
-      uStack_10 = 1;
-      uStack_c = 0;
-      FUN_0027c080(3,auStack_20,0x1c,0);
-      *piVar3 = 2;
-    }
-    else {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    break;
-  case 2:
-    lVar5 = FUN_0027c2b0();
-    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
       bVar2 = 1;
     }
     else {
+      piVar3[1] = piVar3[1] + 1;
       bVar2 = 0;
     }
-    if (bVar2) {
-      *piVar3 = 3;
+    if (bVar2 == 1) {
+      FUN_00521408(auStack_20,0,0x1c);
+      ((u32 *)auStack_20)[3] = 0x32b;
+      ((u32 *)auStack_20)[4] = 1;
+      ((u32 *)auStack_20)[5] = 0;
+      FUN_0027c080(3,auStack_20,0x1c,0);
+      *piVar3 = 2;
+    }
+    break;
+  case 2:
+    {
+      int bVar3;
+      lVar5 = FUN_0027c2b0();
+      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+        bVar3 = 1;
+      }
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        *piVar3 = 3;
+      }
     }
     break;
   case 3:
@@ -289,20 +293,17 @@ code * FUN_003bf950(void)
 }
 #define FUN_003bf950(...) ((code * (*)(...))FUN_003bf950)(__VA_ARGS__)
 #undef FUN_003bfae0
-// FUN_003BFAE0 NONMATCHING
+// FUN_003BFAE0
 
 
 u32 FUN_003bfae0(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
   u32 uVar4;
-  long lVar5;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  int lVar5;
+  u8 auStack_20[0x1c];
 
   piVar3 = (int *)FUN_00195540();
   FUN_001717b0();
@@ -317,27 +318,34 @@ u32 FUN_003bfae0(void)
     if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
-      FUN_00521408(auStack_20,0,0x1c);
-      uStack_14 = 0x328;
-      uStack_10 = 1;
-      uStack_c = 0;
-      FUN_0027c080(3,auStack_20,0x1c,0);
-      *piVar3 = 2;
-    }
-    else {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    break;
-  case 2:
-    lVar5 = FUN_0027c2b0();
-    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
       bVar2 = 1;
     }
     else {
+      piVar3[1] = piVar3[1] + 1;
       bVar2 = 0;
     }
     if (bVar2) {
-      *piVar3 = 3;
+      FUN_00521408(auStack_20,0,0x1c);
+      ((u32 *)auStack_20)[3] = 0x328;
+      ((u32 *)auStack_20)[4] = 1;
+      ((u32 *)auStack_20)[5] = 0;
+      FUN_0027c080(3,auStack_20,0x1c,0);
+      *piVar3 = 2;
+    }
+    break;
+  case 2:
+    {
+      int bVar3;
+      lVar5 = FUN_0027c2b0();
+      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+        bVar3 = 1;
+      }
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        *piVar3 = 3;
+      }
     }
     break;
   case 3:
@@ -354,15 +362,12 @@ u32 FUN_003bfae0(void)
 code * FUN_003bfc50(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   u32 uVar3;
   int *piVar4;
   code *pcVar5;
-  long lVar6;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  int lVar6;
+  u8 auStack_20[0x1c];
 
   piVar4 = (int *)FUN_00195540();
   uVar3 = DAT_007ce674;
@@ -375,9 +380,9 @@ code * FUN_003bfc50(void)
     break;
   case 1:
     FUN_00521408(auStack_20,0,0x1c);
-    uStack_14 = 0x32a;
-    uStack_10 = 1;
-    uStack_c = uVar3;
+    ((u32 *)auStack_20)[3] = 0x32a;
+    ((u32 *)auStack_20)[4] = 1;
+    ((u32 *)auStack_20)[5] = uVar3;
     FUN_0027c080(3,auStack_20,0x1c,0);
     *piVar4 = 2;
     break;
@@ -389,7 +394,7 @@ code * FUN_003bfc50(void)
     else {
       bVar2 = 0;
     }
-    if (bVar2) {
+    if (bVar2 == 1) {
       FUN_00172b20();
       *piVar4 = 3;
     }

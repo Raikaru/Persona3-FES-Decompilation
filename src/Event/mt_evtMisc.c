@@ -5767,9 +5767,9 @@ void FUN_0038ca00(void)
   f32 fVar1;
   f32 fVar2;
   s32 iVar3;
-  f32 *pfVar4;
   f32 *pfVar5;
   u32 uVar6;
+  f32 *pfVar4;
 
   iVar3 = 0;
   pfVar5 = DAT_009588b0_f32;

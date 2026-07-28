@@ -4,9 +4,14 @@ typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 typedef struct FrFontGlyph {
-  u8 unknown_00[0xc];
+  u8 unknown_00[8];
+  int vertical_offset;
   int advance;
-  u8 unknown_10[0x18];
+  u32 color;
+  u16 unknown_14;
+  u8 type;
+  u8 unknown_17;
+  u8 unknown_18[0x10];
   struct FrFontGlyph *next;
 } FrFontGlyph;
 
@@ -1617,28 +1622,31 @@ u16 FUN_003b0e90(u16 param_1)
 
 u32 FUN_003b0ec0(int param_1)
 {
-  u32 uVar1;
-  u32 uVar2;
-  int iVar3;
+  u32 changed = 0;
+  u32 alpha_mask = 0xffffff00;
+  u32 changed_value = 1;
+  u32 target_type = 2;
+  FrFontNode *node;
+  FrFontGlyph *glyph;
 
-  uVar1 = 0;
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-    for (iVar3 = *(int *)(param_1 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
-      if (*(char *)(iVar3 + 0x16) == '\x02') {
-        uVar2 = *(u32 *)(iVar3 + 0x10) & 0xff;
-        if (uVar2 != 0) {
-          uVar2 = uVar2 - 8;
-          if ((int)uVar2 < 0) {
-            uVar2 = 0;
+  for (node = (FrFontNode *)param_1; node != NULL; node = node->next) {
+    for (glyph = node->glyphs; glyph != NULL; glyph = glyph->next) {
+      if (glyph->type == target_type) {
+        u32 color = glyph->color;
+        u32 alpha = color & 0xff;
+        if (alpha != 0) {
+          alpha -= 8;
+          if ((int)alpha < 0) {
+            alpha = 0;
           }
-          *(u32 *)(iVar3 + 0x10) = *(u32 *)(iVar3 + 0x10) & 0xffffff00 | uVar2;
-          *(int *)(iVar3 + 8) = *(int *)(iVar3 + 8) + 0x10;
-          uVar1 = 1;
+          glyph->color = (color & alpha_mask) | alpha;
+          glyph->vertical_offset += 0x10;
+          changed = changed_value;
         }
       }
     }
   }
-  return uVar1;
+  return changed;
 }
 #define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
 #undef FUN_003b0f50

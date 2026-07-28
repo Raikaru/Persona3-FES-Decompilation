@@ -13596,14 +13596,15 @@ u32 func_002cea40(void)
   return 1;
 }
 
-// FUN_002ceb20 NONMATCHING
+// FUN_002ceb20
 u32 func_002ceb20(void)
 {
   extern u32 func_0035f160(void);
   extern u32 func_0035ed20(u32);
   extern u32 func_002ffbc0(u32);
   extern void func_0035f060(u32);
-  s32 count;
+  u8 *formation;
+  u16 count;
   int selected;
   u32 unit;
   u32 selector;
@@ -13615,16 +13616,19 @@ u32 func_002ceb20(void)
   count = func_002c0f40(unit,selector,0x80000,1,1,
                         (FormationPredicate)&func_002c3400,candidates);
   if (count > 0) {
-    for (index = 0; index < count; index++) {
-      if (*(int *)(DAT_007ce3ec + 0x148) == candidates[index]) {
+    index = 0;
+    formation = DAT_007ce3ec;
+    while (index < count) {
+      if (*(int *)(formation + 0x148) == candidates[index]) {
         break;
       }
+      index++;
     }
     if (index == count) {
       selected = candidates[func_002ffbc0(count)];
     }
     else {
-      selected = *(int *)(DAT_007ce3ec + 0x148);
+      selected = *(int *)(formation + 0x148);
     }
     func_0035f060(*(u32 *)(selected + 8) | 0x80000000);
   }

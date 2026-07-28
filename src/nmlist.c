@@ -258,7 +258,7 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
 {
     NmlistList *list;
     NmlistNode *node;
-    NmlistNode *prev;
+    NmlistNode *result;
     NmlistNode *next;
 
     if (param_1 == 0) {
@@ -270,36 +270,36 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
     list = (NmlistList *)param_1;
     node = (NmlistNode *)param_2;
     list->count--;
-    prev = node->prev;
-    if (prev == 0) {
-        next = node->next;
-        if (next == 0) {
+    result = node->prev;
+    if (result == 0) {
+        result = node->next;
+        if (result == 0) {
             if (list->head == node) {
                 list->tail = 0;
                 list->head = 0;
             }
-            next = 0;
+            result = 0;
         }
         else {
-            next->prev = 0;
-            list->head = next;
+            result->prev = 0;
+            list->head = result;
         }
     }
     else {
         next = node->next;
         if (next == 0) {
-            prev->next = 0;
-            list->tail = prev;
+            result->next = 0;
+            list->tail = result;
         }
         else {
-            prev->next = next;
-            next->prev = prev;
-            next = prev->next;
+            result->next = next;
+            next->prev = result;
+            result = result->next;
         }
     }
     node->prev = 0;
     node->next = 0;
-    return next;
+    return result;
 }
 #define FUN_003c4820(...) ((NmlistNode * (*)(...))FUN_003c4820)(__VA_ARGS__)
 #undef FUN_003c4910

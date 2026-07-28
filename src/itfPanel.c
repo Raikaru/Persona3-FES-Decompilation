@@ -1467,16 +1467,18 @@ void FUN_003a9ed0(int param_1,u64 param_2)
   u32 uVar1;
   int iVar2;
   int iVar3;
+  int iVar5;
   int iVar4;
-  int index;
 
   uVar1 = *(u32 *)(param_1 + 0x38);
   iVar2 = *(int *)(param_1 + 8);
   iVar3 = iVar2 + 0x140;
   iVar4 = iVar3 + 0x10;
-  for (index = 1; index < 8; index = index + 1, iVar4 = iVar4 + 0x10) {
+  for (iVar5 = 1; iVar5 < 8; iVar5 = iVar5 + 1, iVar4 = iVar4 + 0x10) {
     *(u32 *)(iVar4 + 0xc) = uVar1;
   }
+  {
+    register int index;
   iVar2 = *(int *)(param_1 + 8);
   iVar3 = iVar2 + 0x140;
   for (index = 0; index < 3; index = index + 1) {
@@ -1488,6 +1490,7 @@ void FUN_003a9ed0(int param_1,u64 param_2)
     FUN_003b4ec0(iVar2 + (index * 4 + 0x10) * 8,iVar3,&gp0xffffa7d0,
                  DAT_006a1f40_abs + index * 4,4,
                  *(u32 *)(param_1 + 0xc),param_2);
+  }
   }
   return;
 }

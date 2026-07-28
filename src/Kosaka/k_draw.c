@@ -529,7 +529,7 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     KDrawArcTaskWork* work;
     KDrawRenderObject* renderObject;
     u8* indexData;
-    RwRGBA* colors;
+    u8* colors;
     RwV3d* vertices;
     f32 colorValue;
     RwSphere bounds;
@@ -600,17 +600,18 @@ KwlnTask* func_001a5320(KwlnTask* parent)
 
     colorR = 0xff;
     colorA = 0x80;
-    colors = (RwRGBA*)renderObject->colors;
-    colors[0].r = colorR;
-    colors[0].g = 0;
-    colors[0].b = 0;
-    colors[0].a = colorA;
+    colors = renderObject->colors;
+    colors[0] = colorR;
+    colors[1] = 0;
+    colors[2] = 0;
+    colors[3] = colorA;
     for (k = 0; k < 0x21; k++)
     {
-        colors[k + 1].r = colorR;
-        colors[k + 1].g = 0;
-        colors[k + 1].b = 0;
-        colors[k + 1].a = colorA;
+        colors[4] = colorR;
+        colors[5] = 0;
+        colors[6] = 0;
+        colors[7] = colorA;
+        colors += 4;
     }
     func_004933d0(renderObject);
     func_00492e20(renderObject->geometry, &bounds);

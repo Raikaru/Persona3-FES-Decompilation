@@ -576,17 +576,17 @@ u32 func_001b8710(HCdvd* request)
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(requestCopy) != 0)
+        if (H_Cdvd_IsFileLoaded(requestCopy) == 0)
         {
-            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-                1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
-            FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
-            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
-                   requestCopy->fileMemory, requestCopy->fileSize);
-            H_Cdvd_Destroy(requestCopy);
-            return true;
+            goto failed;
         }
-        return false;
+        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+            1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
+               requestCopy->fileMemory, requestCopy->fileSize);
+        H_Cdvd_Destroy(requestCopy);
+        return true;
     }
     sprintf(path, "field/pack/nm%03d_%03d.bmd",
             PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
@@ -598,8 +598,10 @@ u32 func_001b8710(HCdvd* request)
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
                requestCopy, cachedSize);
+        return true;
     }
-    return true;
+failed:
+    return false;
 }
 
 // FUN_001b8870
@@ -653,18 +655,18 @@ u32 func_001b8960(HCdvd* request)
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(requestCopy) != 0)
+        if (H_Cdvd_IsFileLoaded(requestCopy) == 0)
         {
-            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-                1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
-            FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
-            FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = requestCopy->fileSize;
-            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
-                   requestCopy->fileMemory, requestCopy->fileSize);
-            H_Cdvd_Destroy(requestCopy);
-            return true;
+            goto failed;
         }
-        return false;
+        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+            1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
+        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = requestCopy->fileSize;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
+               requestCopy->fileMemory, requestCopy->fileSize);
+        H_Cdvd_Destroy(requestCopy);
+        return true;
     }
     sprintf(path, "field/pack/ns%03d_%03d.bf",
             PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
@@ -677,8 +679,10 @@ u32 func_001b8960(HCdvd* request)
         FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = cachedSize;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
                requestCopy, cachedSize);
+        return true;
     }
-    return true;
+failed:
+    return false;
 }
  
 

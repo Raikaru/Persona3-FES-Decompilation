@@ -109,6 +109,8 @@ extern u32 DAT_007ce50a;
 extern u32 DAT_007ce50c;
 extern u32 DAT_007ce4d0;
 extern u32 DAT_0069aa50[];
+#pragma alias DAT_0069aa50_ptr DAT_0069aa50
+extern ScrHeader* DAT_0069aa50_ptr;
 extern f32 DAT_0096008c;
 extern void (*DAT_00960090)(...);
 extern void (*DAT_00960094)(...);
@@ -2861,31 +2863,30 @@ u32 FUN_002fd2e0(int param_1, u16 param_2)
     switch (param_2)
     {
     case 0:
-        if (*(s32*)((u8*)gBtl + 0xb1c) != -1)
+        if (*(s32*)((u8*)gBtl + 0xb1c) == -1)
         {
-            goto fd2_create;
+            return 0;
         }
-        return 0;
+        break;
     case 1:
-        if (*(s32*)((u8*)gBtl + 0xb20) != -1)
+        if (*(s32*)((u8*)gBtl + 0xb20) == -1)
         {
-            goto fd2_create;
+            return 0;
         }
-        return 0;
+        break;
     case 2:
-        if (*(s32*)((u8*)gBtl + 0xb24) != -1)
+        if (*(s32*)((u8*)gBtl + 0xb24) == -1)
         {
-            goto fd2_create;
+            return 0;
         }
-        return 0;
+        break;
     default:
         break;
     }
 
-fd2_create:
     task = scrCreateTaskFromHeader_2(
         (u32)(*(s32*)(*(u8**)((u8*)gBtl + 0xd18) + 0x20) - 1),
-        *(ScrHeader**)DAT_0069aa50);
+        DAT_0069aa50_ptr);
     FUN_0035c1a0(task, *(s32*)((u8*)gBtl + 0x148));
     scr = (ScrData*)FUN_0035ae10(task);
     if (scr->mesHandleIdx >= 0)

@@ -838,7 +838,7 @@ bool FUN_001681d0(void)
     return 0;
 }
 
-// FUN_00168220 NONMATCHING
+// FUN_00168220
 void* FUN_00168220(KwlnTask* task)
 {
     CampBridgeBlendWork* work;
@@ -857,41 +857,28 @@ void* FUN_00168220(KwlnTask* task)
         }
         break;
     case 3:
-        if (work->mode == 3) {
-            goto camp_blend_mode3;
+        switch (work->mode) {
+        case 0:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBFD0_abs);
+            work->targetTask = child;
+            break;
+        case 1:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBFA0_abs);
+            work->targetTask = child;
+            break;
+        case 2:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBF70_abs);
+            work->targetTask = child;
+            break;
+        case 3:
+            child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                              (const char*)D_005DBF40_abs);
+            work->targetTask = child;
+            break;
         }
-        if (work->mode == 2) {
-            goto camp_blend_mode2;
-        }
-        if (work->mode == 1) {
-            goto camp_blend_mode1;
-        }
-        if (work->mode == 0) {
-            goto camp_blend_mode0;
-        }
-        goto camp_blend_mode_done;
-
-camp_blend_mode3:
-        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                          (const char*)D_005DBFD0_abs);
-        work->targetTask = child;
-        goto camp_blend_mode_done;
-camp_blend_mode2:
-        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                          (const char*)D_005DBFA0_abs);
-        work->targetTask = child;
-        goto camp_blend_mode_done;
-camp_blend_mode1:
-        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                          (const char*)D_005DBF70_abs);
-        work->targetTask = child;
-        goto camp_blend_mode_done;
-camp_blend_mode0:
-        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
-                                          (const char*)D_005DBF40_abs);
-        work->targetTask = child;
-        goto camp_blend_mode_done;
-camp_blend_mode_done:
         work->timer = 0;
         work->state = 4;
         break;
@@ -912,15 +899,15 @@ camp_blend_mode_done:
                          1.0f - (f32)(s32)work->timer / 10.0f);
         }
         if (H_Maestro_00111cb0((KwlnTask*)work->targetTask) != 0) {
-            if (work->mode == 3) {
-                H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 0.0f);
-            }
-            else {
+            if (work->mode != 3) {
                 if (work->sourceTask != 0) {
                     kwlnTaskDestroyWithHierarchy((KwlnTask*)work->sourceTask);
                 }
                 work->sourceTask = work->targetTask;
                 work->targetTask = 0;
+            }
+            else {
+                H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask, 0.0f);
             }
             work->state = 2;
         }
@@ -928,11 +915,13 @@ camp_blend_mode_done:
     case 6:
         frame = (s32)work->timer - 1;
         work->timer = (u32)frame;
-        if (frame == 0) {
+        if (frame != 0) {
+            H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
+                         (f32)frame / 10.0f);
+        }
+        else {
             return KWLNTASK_STOP;
         }
-        H_Maestro_SetAlphaMult((KwlnTask*)work->sourceTask,
-                     (f32)frame / 10.0f);
         break;
     case 7:
         frame = (s32)work->timer - 1;

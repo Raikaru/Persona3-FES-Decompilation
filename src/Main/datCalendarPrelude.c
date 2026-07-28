@@ -1439,31 +1439,41 @@ s32 FUN_0017c2f0(const u32* left, const u32* right)
 // FUN_0017c350 NONMATCHING
 void FUN_0017c350(void)
 {
+    void* (**allocator)(u32, u32);
+    void (**releaser)(void*);
     s16* source;
     u8** sorted;
-    s32 count = 0;
+    s32 count;
     s32 i;
 
-    source = (s16*)(*(void* (**)(u32, u32))D_00960178)(0x10, 0x40000);
-    memcpy(source, PTR8(0x0083a718), 0x10);
-    sorted = (u8**)(*(void* (**)(u32, u32))D_00960178)(0x10, 0x40000);
-    memset(sorted, 0, 0x10);
+    count = 0;
+    allocator = (void* (**)(u32, u32))D_00960178;
+    source = (s16*)(*allocator)(0x10, 0x40000);
+    memcpy(source, DAT_0083a718, 0x10);
+    sorted = (u8**)(*allocator)(0x10, 0x40000);
+    FUN_00521408(sorted, 0, 0x10);
     for (i = 0; i < 4; i++)
     {
-        if (source[i * 2] != -1)
-            sorted[count++] = (u8*)(source + i * 2);
+        if (source[i * 2] == -1)
+            continue;
+        sorted[count++] = (u8*)(source + i * 2);
     }
     if (count != 0)
-        qsort(sorted, count, 4, (int (*)(const void*, const void*))FUN_0017c2f0);
-    for (i = 0; i < 4; i++)
     {
-        if (sorted[i] != NULL)
-            memcpy(PTR8(0x00836200) + i * 4 + 0x4518, sorted[i], 4);
-        else
-            *(s16*)(PTR8(0x00836200) + i * 4 + 0x4518) = -1;
+        qsort(sorted, count, 4, (int (*)(const void*, const void*))FUN_0017c2f0);
+        count = 0;
+        while (count < 4)
+        {
+            if (sorted[count] != NULL)
+                memcpy(DAT_00836200 + count * 4 + 0x4518, sorted[count], 4);
+            else
+                *(s16*)(DAT_00836200 + count * 4 + 0x4518) = -1;
+            count++;
+        }
     }
-    RELEASE(sorted);
-    RELEASE(source);
+    releaser = (void (**)(void*))D_0096017C;
+    (*releaser)(sorted);
+    (*releaser)(source);
 }
 
 /* Removing this loses FUN_0017c4e0 (MATCH nd0 -> MISMATCH nd22) - measured W161. */

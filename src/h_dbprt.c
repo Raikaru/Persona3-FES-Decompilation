@@ -168,10 +168,10 @@ void H_Dbprt_Main()
                 glyphByte = (u8)glyphIndex;
                 uv[0] = 0.0625f * (f32)(glyphByte % 16);
                 uv[1] = 0.0625f * (f32)(glyphByte / 16);
-                uv[2] = uv[0] + 0.03125f;
+                uv[2] = uv[0] + 0.046875f;
                 uv[3] = uv[1];
                 uv[4] = uv[0];
-                uv[5] = uv[1] + 0.03125f;
+                uv[5] = uv[1] + 0.046875f;
                 uv[6] = uv[2];
                 uv[7] = uv[5];
 

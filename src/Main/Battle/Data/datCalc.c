@@ -244,24 +244,20 @@ u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
         }
     }
 
-    if (unit->flags & UNIT_FLAG_ENEMY)
+    if (!(unit->flags & UNIT_FLAG_ENEMY))
     {
-        return 0;
-    }
+        pcId = (s16)unit->id;
+        equipmentIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_ACCESSORY);
+        if (equipmentIdx >= 0)
+        {
+            equipmentId = datGetEquipmentId(pcId, equipmentIdx);
+            accessoryEffect = func_00170e40((s16)equipmentId);
 
-    pcId = (s16)unit->id;
-    equipmentIdx = datGetEquipmentIdx(pcId, EQUIPMENT_TYPE_ACCESSORY);
-    if (equipmentIdx < 0)
-    {
-        return 0;
-    }
-
-    equipmentId = datGetEquipmentId(pcId, equipmentIdx);
-    accessoryEffect = func_00170e40((s16)equipmentId);
-
-    if (accessoryEffect != NULL && accessoryEffect->skillId == skillId)
-    {
-        return 1;
+            if (accessoryEffect != NULL && accessoryEffect->skillId == skillId)
+            {
+                return 1;
+            }
+        }
     }
 
     return 0;
@@ -706,7 +702,7 @@ extern f32 DAT_007cad74;
 extern f32 DAT_007cad8c;
 extern f32 DAT_007cadb4;
 extern u32 DAT_007cae84;
-extern u32 DAT_007caf8c;
+extern f32 DAT_007caf8c;
 extern u32 DAT_007ce3ec;
 extern u32 DAT_007ce3f4;
 extern u32 DAT_007ce3f8;

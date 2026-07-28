@@ -2991,7 +2991,7 @@ void FUN_002d3d70(void)
     *(f32*)(iGpffffb6fc + 0x664) = 1750.0f;
 }
 
-// FUN_002d3e00 NONMATCHING
+// FUN_002d3e00
 void FUN_002d3e00(BtlUnit* unit, RwV3d* outPos)
 {
     RwV3d center;
@@ -2999,11 +2999,11 @@ void FUN_002d3e00(BtlUnit* unit, RwV3d* outPos)
     s16 tileX;
     s16 tileZ;
     u8* raw = (u8*)unit;
-    u8* head;
 
     btlUnitGetSphereWorldCenter(unit, &center);
     radius = unit->sphereRadius * unit->scale;
     btlTargetWorldToTile(&tileX, &tileZ, (f32*)&center);
+    btlTargetBuildBounds(raw, tileX, tileZ, radius);
 
     if (outPos != NULL)
     {
@@ -3011,20 +3011,22 @@ void FUN_002d3e00(BtlUnit* unit, RwV3d* outPos)
         outPos->y = 0.0f;
         outPos->z = (f32)((s32)tileZ * 0x19 - 0x6d6);
     }
-    btlTargetBuildBounds(raw, tileX, tileZ, radius);
     *(s16*)(raw + 0x4fc) = tileX;
     *(s16*)(raw + 0x4fe) = tileZ;
     *(f32*)(raw + 0x500) = radius;
+    unit->flags3 |= 4;
     *(u32*)(raw + 0x9c4) = 0;
 
-    head = *(u8**)(iGpffffb6fc + 0x2cc);
-    *(u8**)(raw + 0x9c8) = head;
-    if (head != NULL)
+    if (*(u8**)(iGpffffb6fc + 0x2cc) != NULL)
     {
-        *(u8**)(head + 0x4c8) = raw + 0x4fc;
+        *(u8**)(*(u8**)(iGpffffb6fc + 0x2cc) + 0x4c8) = raw + 0x4fc;
+        *(u8**)(raw + 0x9c8) = *(u8**)(iGpffffb6fc + 0x2cc);
+    }
+    else
+    {
+        *(u8**)(raw + 0x9c8) = NULL;
     }
     *(u8**)(iGpffffb6fc + 0x2cc) = raw + 0x4fc;
-    unit->flags3 |= 4;
 }
 
 // FUN_002d3fe0
