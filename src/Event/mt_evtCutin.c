@@ -125,14 +125,15 @@ u32 FUN_00396ed0(int param_1)
 void FUN_00396f50(int param_1)
 {
   int manager;
-  int base;
-  u32 *entry;
-  u32 *state_ptr;
-  int offset;
 
   manager = FUN_00195340("koma_Manager");
   if (manager != 0) {
     if (param_1 < 3) {
+      int base;
+      u32 *entry;
+      u32 *state_ptr;
+      int offset;
+
       base = FUN_00195540(manager);
       offset = param_1 * 0xc;
       entry = (u32 *)(offset + base);

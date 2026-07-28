@@ -5969,17 +5969,15 @@ void FUN_0039eaa0(int param_1)
   int combinedValue;
   int extraValue;
   int index;
-  int entryType;
   u8 *entry;
   int *output;
 
   output = (int *)(param_1 + 0x7f4);
   FUN_00521408_b8b0(output,0,0x38);
   base = *(int *)(param_1 + 8);
-  entryType = 2;
   for (index = 0; index < *(int *)(base + 0x38); index = index + 1) {
     entry = (u8 *)(*(int *)(base + 0x34) + index * 0x20);
-    if (*(int *)(entry + 0x18) == entryType) {
+    if (*(int *)(entry + 0x18) == 2) {
       count = *output;
       if (4 < count) {
         break;
