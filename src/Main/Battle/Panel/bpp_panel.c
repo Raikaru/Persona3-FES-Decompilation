@@ -22,8 +22,8 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
 {
     u32 texture;
     BppPanelSetRenderState* setRenderState;
-    u8* quad;
     BppPanelRenderQuad* renderQuad;
+    u8* quad;
     s32 i;
     u32 frame;
     texture = func_0021c3f0(4);

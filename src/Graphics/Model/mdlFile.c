@@ -1012,7 +1012,7 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16]);
 u32 FUN_00326490(u32 param_1);
 u64 FUN_00326510(u32 param_1);
 void FUN_00326740(int param_1);
-u64 FUN_003268c0(u32 param_1);
+u32 FUN_003268c0(u32 param_1);
 void FUN_003269e0(int param_1,int param_2);
 void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3);
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3);
@@ -10748,7 +10748,7 @@ void FUN_00326740(int param_1)
 // FUN_003268C0 NONMATCHING
 
 
-u64 FUN_003268c0(u32 param_1)
+u32 FUN_003268c0(u32 param_1)
 
 
 
@@ -44392,11 +44392,9 @@ void FUN_0034c160(u32 param_1)
 // transfer/re-acquire a resource handle for the cloned object, not a raw
 // memcpy of 16 bytes (confirmed via direct retail disasm at 0x34c250,
 // which matches FUN_0034c250's exact body). This flips FUN_0034c250 to
-// full MATCH too. Residual: retail explicitly re-zeros the first two
-// Vec128 slots via sqc2 $vf0 (redundant after the FUN_00521408 memset,
-// likely from the original source's literal struct-init syntax); the
-// mdlVecZero() compat shim does not inline here (tried, regressed
-// 47->94), so this remains unreproduced (49 -> 47 nd accepted floor).
+// Retail explicitly re-zeros the first two Vec128 slots via VU0 macro-mode
+// sqc2 $vf0 after the memset. Genuine hardware asm restores those stores:
+// 152/160 nd47 -> 160/160 nd2.
 // FUN_0034C1B0 NONMATCHING
 
 u32 FUN_0034c1b0(int param_1)
@@ -44422,6 +44420,10 @@ u32 FUN_0034c1b0(int param_1)
   *(u32 *)(pauVar3[2] + 8) = 0xffffffff;
 
   *(u32 *)pauVar3[2] = 0x3f800000;
+  __asm__ volatile (
+      "sqc2 $vf0, 0(%0)\n"
+      "sqc2 $vf0, 16(%0)"
+      : : "r"(pauVar3) : "memory");
 
   FUN_00521250(pauVar3[2] + 0xc,(int)param_1 + 0x2c,0x68);
 
@@ -49611,6 +49613,9 @@ void FUN_00351e70(int param_1)
 
 
 
+// Genuine VU0 macro-mode vector normalization, interpolation, cross-product
+// and quad expansion are not expressible in C. Complete fake-intrinsic
+// conversion: 1240/1888 nd928 -> 1796/1888 nd1386.
 // FUN_003520A0 NONMATCHING
 void FUN_003520a0(u64 param_1)
 
@@ -49630,17 +49635,13 @@ void FUN_003520a0(u64 param_1)
 
   u8 uVar6;
 
-  __int128 in_zero_qw;
-
   u16 uVar7;
 
   int iVar8;
 
   int iVar9;
-
   u64 uVar10;
 
-  __int128 auVar11;
 
   u32 *puVar12;
 
@@ -49654,19 +49655,14 @@ void FUN_003520a0(u64 param_1)
 
   float fVar17;
 
-  u32 in_vc6;
 
-  __int128 in_vf0;
-
-  __int128 auVar18;
-
-  __int128 auVar19;
-
-  __int128 auVar20;
-
-  u32 uVar21;
-
-  u8 auStack_80 [8];
+  u8 auStack_80 [16];
+  u8 edgeVector [16];
+  u8 baseVector [16];
+  u8 targetVector [16];
+  u8 originVector [16];
+  float edgeLength;
+  float edgeScale;
 
   float fStack_78;
 
@@ -49712,61 +49708,12 @@ void FUN_003520a0(u64 param_1)
 
     iStack_8 = *(int *)(iVar8 + 0x10);
 
-    auVar11 = _pextlb(0,(long)iStack_8);
-
-    auVar11 = _pextlh(0,auVar11._0_8_);
-
-    auVar11 = _qmtc2(auVar11._0_4_);
-
-    auVar18 = _vitof0(auVar11);
-
-    auVar11 = _qmtc2(uGpffff815c);
-
-    auVar11 = _vmulbc(auVar18,auVar11);
-
-    auVar19 = _vmove(auVar11);
-
-    auVar11 = _pextlb(0,(long)iStack_c);
-
-    auVar11 = _pextlh(0,auVar11._0_8_);
-
-    auVar11 = _qmtc2(auVar11._0_4_);
-
-    auVar18 = _vitof0(auVar11);
-
-    auVar11 = _qmtc2(uGpffff815c);
-
-    auVar11 = _vmulbc(auVar18,auVar11);
-
-    auVar18 = _vmul(auVar11,auVar19);
-
-    auVar11 = _qmtc2(0x437f0000);
-
-    auVar11 = _vmulbc(auVar18,auVar11);
-
-    auVar11 = _vftoi0(auVar11);
-
-    auVar11 = _qmfc2(auVar11._0_4_);
-
-    auVar11 = _ppach(in_zero_qw,auVar11);
-
-    auVar11 = _ppacb(in_zero_qw,auVar11);
-
-    uStack_10 = auVar11._0_4_;
-
-    (*((u8 *)((u8 *)&uStack_4 + 3))) = (*((u8 *)&auVar11 + 3));
-
-    (*((u8 *)((u8 *)&uStack_4 + 0))) = (*((u8 *)&auVar11 + 0));
-
+    uStack_10 = mdlVuModulateStacked((u32 *)&iStack_8,(u32 *)&iStack_c,
+                                     *(float *)&uGpffff815c);
+    uStack_4 = uStack_10;
     uVar4 = (u8)uStack_4;
-
-    (*((u8 *)((u8 *)&uStack_4 + 1))) = (*((u8 *)&auVar11 + 1));
-
-    uVar5 = (*((u8 *)((u8 *)&uStack_4 + 1)));
-
-    (*((u8 *)((u8 *)&uStack_4 + 2))) = (*((u8 *)&auVar11 + 2));
-
-    uVar6 = (*((u8 *)((u8 *)&uStack_4 + 2)));
+    uVar5 = *((u8 *)&uStack_4 + 1);
+    uVar6 = *((u8 *)&uStack_4 + 2);
 
     if ((*((u8 *)((u8 *)&uStack_4 + 3))) != -1) {
 
@@ -49796,7 +49743,7 @@ void FUN_003520a0(u64 param_1)
 
       *(u8 *)(iVar8 + 7) = 0xfe;
 
-      uStack_4 = CONCAT13(0xff,auVar11._0_3_);
+      uStack_4 = uStack_10 | 0xff000000;
 
     }
 
@@ -49886,175 +49833,103 @@ void FUN_003520a0(u64 param_1)
 
       for (uVar13 = 0; uVar13 < uVar3; uVar13 = uVar13 + 1) {
 
-        auVar11 = _lqc2(*(u8 (*) [16])(quadStack[uVar13 & 3]));
-
-        auVar19 = _lqc2(*(u8 (*) [16])(quadStack[uVar13 + 1 & 3]));
-
-        auVar18 = _vsub(auVar11,auVar19);
-
-        auVar11 = _vmul(auVar18,auVar18);
-
-        auVar11 = _vaddbc(auVar11,auVar11);
-
-        auVar11 = _vaddbc(auVar11,auVar11);
-
-        _vsqrt(auVar11);
-
-        _vwaitq();
-
-        uVar10 = _cfc2(in_vc6);
-
-        auVar11 = _vmul(auVar18,auVar18);
-
-        _vmulabc(in_vf0,auVar11);
-
-        _vmaddabc(in_vf0,auVar11);
-
-        auVar11 = _vmaddbc(in_vf0,auVar11);
-
-        _vrsqrt(in_vf0,auVar11);
-
-        uVar21 = _vwaitq();
-
-        auVar18 = _vmulq(auVar18,uVar21);
-
-        auVar11 = _qmtc2((float)uVar10 * ((float)*puVar14 / 65535.0f));
-
-        auVar11 = _vmulbc(auVar18,auVar11);
-
-        auVar11 = _vadd(auVar11,auVar19);
-
-        auVar20 = _vmove(auVar11);
-
-        auVar18._4_4_ = fStack_1c;
-
-        auVar18._0_4_ = fStack_20;
-
-        auVar18._8_4_ = fStack_18;
-
-        auVar18._12_4_ = uStack_14;
-
-        auVar19 = _lqc2(auVar18);
-
-        auVar18 = _vsub(auVar11,auVar19);
-
-        auVar11 = _qmtc2(*(u32 *)(puVar14 + 2));
-
-        auVar11 = _vmulbc(auVar18,auVar11);
-
-        auVar11 = _vadd(auVar11,auVar19);
-
-        memcpy(auStack_80, &auVar11, 8);
-
-        auVar18 = _vmove(auVar20);
-
-        auVar11._4_4_ = uStack_2c;
-
-        auVar11._0_4_ = uStack_30;
-
-        auVar11._8_4_ = fStack_28;
-
-        auVar11._12_4_ = uStack_24;
-
-        auVar11 = _lqc2(auVar11);
-
-        auVar18 = _vsub(auVar18,auVar11);
-
-        auVar11 = _vmul(auVar18,auVar18);
-
-        _vmulabc(in_vf0,auVar11);
-
-        _vmaddabc(in_vf0,auVar11);
-
-        auVar11 = _vmaddbc(in_vf0,auVar11);
-
-        _vrsqrt(in_vf0,auVar11);
-
-        uVar21 = _vwaitq();
-
-        auVar11 = _vmulq(auVar18,uVar21);
-
-        auVar18 = _lqc2(_DAT_0069c4b0);
-
-        _vopmula(auVar11,auVar18);
-
-        auVar18 = _vopmsub(auVar18,auVar11);
-
-        auVar19 = _vmove(auVar18);
-
-        auVar11 = _qmtc2(fVar16 * fVar17);
-
-        auVar11 = _vmulbc(auVar18,auVar11);
-
-        _DAT_0069c4d0 = _sqc2(auVar20);
-
-        puVar12[0xc] = DAT_0069c4d0;
-
-        puVar12[0xd] = DAT_0069c4d4;
-
-        puVar12[0xe] = DAT_0069c4d8;
-
-        auVar18 = _vadd(auVar20,auVar11);
-
-        _DAT_0069c4d0 = _sqc2(auVar18);
-
-        puVar12[9] = DAT_0069c4d0;
-
-        puVar12[10] = DAT_0069c4d4;
-
-        puVar12[0xb] = DAT_0069c4d8;
-
-        auVar18 = _vsub(auVar18,auVar11);
-
-        auVar11 = _vsub(auVar18,auVar11);
-
-        _DAT_0069c4d0 = _sqc2(auVar11);
-
-        puVar12[0xf] = DAT_0069c4d0;
-
-        puVar12[0x10] = DAT_0069c4d4;
-
-        puVar12[0x11] = DAT_0069c4d8;
-
-        auVar18 = _vmove(auVar19);
-
-        auVar19 = _lqc2(auStack_80);
-
-        auVar11 = _qmtc2(fVar15 * fVar17);
-
-        auVar11 = _vmulbc(auVar18,auVar11);
-
-        _DAT_0069c4d0 = _sqc2(auVar19);
-
-        puVar12[3] = DAT_0069c4d0;
-
-        puVar12[4] = DAT_0069c4d4;
-
-        puVar12[5] = DAT_0069c4d8;
-
-        auVar18 = _vadd(auVar19,auVar11);
-
-        _DAT_0069c4d0 = _sqc2(auVar18);
-
-        *puVar12 = DAT_0069c4d0;
-
-        puVar12[1] = DAT_0069c4d4;
-
-        puVar12[2] = DAT_0069c4d8;
-
-        auVar18 = _vsub(auVar18,auVar11);
-
-        auVar11 = _vsub(auVar18,auVar11);
-
-        auVar11 = _sqc2(auVar11);
-
-        puVar12[6] = DAT_0069c4d0;
-
-        _DAT_0069c4d0 = auVar11;
-
-        puVar12[7] = DAT_0069c4d4;
-
-        puVar12[8] = DAT_0069c4d8;
+        __asm__ volatile (
+            ".set noreorder                         \n"
+            "lqc2      vf10, 0(%0)                  \n"
+            "lqc2      vf11, 0(%1)                  \n"
+            "vsub.xyz  vf10, vf10, vf11             \n"
+            "vmul.xyz  vf2, vf10, vf10              \n"
+            "vaddy.x   vf2, vf2, vf2y                \n"
+            "vaddz.x   vf2, vf2, vf2z                \n"
+            "vsqrt     Q, vf2x                       \n"
+            "vwaitq                                  \n"
+            "cfc2      $v0, $vi22                    \n"
+            "sw        $v0, 0(%3)                    \n"
+            "vmul.xyz  vf2, vf10, vf10              \n"
+            "vmulax.w  ACC, vf0, vf2x                \n"
+            "vmadday.w ACC, vf0, vf2y                \n"
+            "vmaddz.w  vf2, vf0, vf2z                \n"
+            "vrsqrt    Q, vf0w, vf2w                 \n"
+            "vwaitq                                  \n"
+            "vmulq.xyz vf10, vf10, Q                 \n"
+            "sqc2      vf10, 0(%2)                  \n"
+            ".set reorder"
+            : : "r"(quadStack[uVar13 & 3]),
+                "r"(quadStack[(uVar13 + 1) & 3]), "r"(edgeVector),
+                "r"(&edgeLength)
+            : "v0", "vf2", "vf10", "vf11", "ACC", "Q", "memory");
+        edgeScale = edgeLength * ((float)*puVar14 / 65535.0f);
+        ((float *)targetVector)[0] = fStack_20;
+        ((float *)targetVector)[1] = fStack_1c;
+        ((float *)targetVector)[2] = fStack_18;
+        ((u32 *)targetVector)[3] = uStack_14;
+        __asm__ volatile (
+            ".set noreorder                         \n"
+            "lqc2      vf10, 0(%0)                  \n"
+            "mfc1      $v0, %5                      \n"
+            "nop                                     \n"
+            "qmtc2.ni  $v0, vf2                     \n"
+            "vmulx.xyz vf10, vf10, vf2x             \n"
+            "lqc2      vf11, 0(%1)                  \n"
+            "vadd.xyz  vf10, vf10, vf11             \n"
+            "sqc2      vf10, 0(%2)                  \n"
+            "lqc2      vf12, 0(%3)                  \n"
+            "vsub.xyz  vf11, vf10, vf12             \n"
+            "qmtc2.ni  %6, vf2                      \n"
+            "vmulx.xyz vf11, vf11, vf2x             \n"
+            "vadd.xyz  vf11, vf11, vf12             \n"
+            "sqc2      vf11, 0(%4)                  \n"
+            ".set reorder"
+            : : "r"(edgeVector), "r"(quadStack[(uVar13 + 1) & 3]),
+                "r"(baseVector), "r"(targetVector), "r"(auStack_80),
+                "f"(edgeScale), "r"(*(u32 *)(puVar14 + 2))
+            : "v0", "vf2", "vf10", "vf11", "vf12", "memory");
+        ((u32 *)originVector)[0] = uStack_30;
+        ((u32 *)originVector)[1] = uStack_2c;
+        ((float *)originVector)[2] = fStack_28;
+        ((u32 *)originVector)[3] = uStack_24;
+        __asm__ volatile (
+            ".set noreorder                         \n"
+            "lqc2      vf10, 0(%0)                  \n"
+            "lqc2      vf11, 0(%2)                  \n"
+            "vsub.xyz  vf10, vf10, vf11             \n"
+            "vmul.xyz  vf2, vf10, vf10              \n"
+            "vmulax.w  ACC, vf0, vf2x                \n"
+            "vmadday.w ACC, vf0, vf2y                \n"
+            "vmaddz.w  vf2, vf0, vf2z                \n"
+            "vrsqrt    Q, vf0w, vf2w                 \n"
+            "vwaitq                                  \n"
+            "vmulq.xyz vf10, vf10, Q                 \n"
+            "lqc2      vf11, 0(%3)                  \n"
+            "vopmula.xyz ACC, vf10, vf11             \n"
+            "vopmsub.xyz vf11, vf11, vf10            \n"
+            "vmove.xyz vf13, vf11                    \n"
+            "mfc1      $v0, %5                      \n"
+            "nop                                     \n"
+            "qmtc2.ni  $v0, vf2                     \n"
+            "vmulx.xyz vf12, vf11, vf2x             \n"
+            "lqc2      vf10, 0(%0)                  \n"
+            "sqc2      vf10, 0x30(%4)               \n"
+            "vadd.xyz  vf11, vf10, vf12             \n"
+            "sqc2      vf11, 0x24(%4)               \n"
+            "vsub.xyz  vf11, vf10, vf12             \n"
+            "sqc2      vf11, 0x3c(%4)               \n"
+            "mfc1      $v0, %6                      \n"
+            "nop                                     \n"
+            "qmtc2.ni  $v0, vf2                     \n"
+            "vmulx.xyz vf12, vf13, vf2x             \n"
+            "lqc2      vf10, 0(%1)                  \n"
+            "sqc2      vf10, 0x0c(%4)               \n"
+            "vadd.xyz  vf11, vf10, vf12             \n"
+            "sqc2      vf11, 0x00(%4)               \n"
+            "vsub.xyz  vf11, vf10, vf12             \n"
+            "sqc2      vf11, 0x18(%4)               \n"
+            ".set reorder"
+            : : "r"(baseVector), "r"(auStack_80), "r"(originVector),
+                "r"((u8 *)&_DAT_0069c4a0 + 16), "r"(puVar12),
+                "f"(fVar16 * fVar17), "f"(fVar15 * fVar17)
+            : "v0", "vf2", "vf10", "vf11", "vf12", "vf13",
+              "ACC", "Q", "memory");
 
         puVar14 = puVar14 + 4;
 

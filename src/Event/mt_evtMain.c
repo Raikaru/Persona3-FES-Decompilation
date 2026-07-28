@@ -26,6 +26,12 @@ extern void FUN_004c6c60_evt_main(void *out, void *in, void *matrix);
 extern u32 DAT_0069d590;
 #pragma alias DAT_0069d590_abs DAT_0069d590
 extern s8 DAT_0069d590_abs[];
+#pragma alias DAT_0069d580_abs DAT_0069d580
+extern s8 DAT_0069d580_abs[];
+#pragma alias DAT_0069e068_abs DAT_0069e068
+extern s8 DAT_0069e068_abs[];
+#pragma alias DAT_0069e078_abs DAT_0069e078
+extern s8 DAT_0069e078_abs[];
 typedef struct {
   u8 pad_00[0x80];
   s32 count;
@@ -9480,7 +9486,7 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
         switch (eventKind) {
         case 0x14:
         case 0x15:
-          *(u8 *)(*(int *)(iVar5 + 0x114) + iVar6 + 0x14) = 0xff;
+          *(s8 *)(*(int *)(iVar5 + 0x114) + iVar6 + 0x14) = -1;
           break;
         }
         break;
@@ -9525,18 +9531,18 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
         switch (eventKind) {
         case 3:
         case 0x1a:
-          *(u16 *)(iVar6 + 0x16) = 0xffff;
+          *(s16 *)(iVar6 + 0x16) = -1;
           break;
         case 9:
           break;
         case 0x12:
-          *(u16 *)(iVar6 + 0x12) = 0xffff;
+          *(s16 *)(iVar6 + 0x12) = -1;
           break;
         }
         break;
       case '\x13':
         if (*(char *)(iVar6 + 0x10) == '\x03') {
-          *(u16 *)(iVar6 + 0x14) = 0xffff;
+          *(s16 *)(iVar6 + 0x14) = -1;
         }
         break;
       }
@@ -14893,7 +14899,7 @@ void FUN_0036f000(int param_1)
 
   if (*(int *)(iVar3 + 0x924) != 0) {
 
-    FUN_00195020();
+    FUN_00195020(*(int *)(iVar3 + 0x924));
 
     *(u32 *)(iVar3 + 0x924) = 0;
 
@@ -14901,7 +14907,7 @@ void FUN_0036f000(int param_1)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0(0x69d580,0x167);
+    FUN_0019d3f0(DAT_0069d580_abs,0x167);
 
   }
 
@@ -14927,7 +14933,7 @@ void FUN_0036f000(int param_1)
 
     FUN_003b5ab0();
 
-    FUN_005225a8(0x69e068);
+    FUN_005225a8(DAT_0069e068_abs);
 
   }
 
@@ -14937,7 +14943,7 @@ void FUN_0036f000(int param_1)
 
     *(u32 *)(iVar3 + 0x8dc) = 0;
 
-    FUN_005225a8(0x69e078);
+    FUN_005225a8(DAT_0069e078_abs);
 
   }
 
@@ -14953,13 +14959,13 @@ void FUN_0036f000(int param_1)
 
     while (*(int *)(iVar1 + 0x6c) != 0) {
 
-      FUN_00361890((int *)iVar1,0);
+      FUN_00361890((int *)iVar1,*(int *)(iVar1 + 0x6c));
 
     }
 
     FUN_00361c30(iVar1,param_1);
 
-    FUN_00386b70(0,0,0);
+    FUN_00386b70(0,7,0x9c);
 
   }
 

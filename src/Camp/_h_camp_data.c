@@ -36,6 +36,8 @@ extern void* (*DAT_00960184_abs[])(...);
 extern u64 scrGetIntPara_u64(s32);
 extern void* (*DAT_00960184)();
 extern void* (*DAT_00960178)();
+#pragma alias DAT_00960178_abs DAT_00960178
+extern void* (*DAT_00960178_abs[])(...);
 extern f32 DAT_00960088;
 #pragma alias DAT_00960088_abs DAT_00960088
 extern u8 DAT_00960088_abs[];
@@ -2213,7 +2215,7 @@ void FUN_0016c010(void)
     cdvd = (void*)(uintptr_t)FUN_00100d80(D_005E30B0, 0);
     FUN_001023a0(cdvd);
     descriptor = *(s32**)((u8*)cdvd + 0x110);
-    root = (CampDataBridgeRoot*)(*DAT_00960178)(
+    root = (CampDataBridgeRoot*)DAT_00960178_abs[0](
         (((descriptor[0] + descriptor[4]) << 5) + 0x20) +
         ((descriptor[1] + descriptor[5]) << 4), 0x40000);
     iGpffffb2c0 = root;

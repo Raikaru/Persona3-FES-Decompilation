@@ -1334,7 +1334,12 @@ void FUN_00202010(void)
     if (datGetFlag(0x186))
     {
         selectedSkill = FUN_0016F380(0x31);
-        if (selectedSkill != 0)
+        if (selectedSkill == 0)
+        {
+            *(u32*)(p + 0x7664) = 0;
+            *(u32*)(p + 0x765c) = 0;
+        }
+        else
         {
             for (i = 0; i < *(s32*)(p + 0x74); i++)
             {
@@ -1365,11 +1370,6 @@ void FUN_00202010(void)
                 *(u32*)(p + 0x765c) = 0;
                 *(u32*)(p + 0x7664) = i;
             }
-        }
-        else
-        {
-            *(u32*)(p + 0x7664) = 0;
-            *(u32*)(p + 0x765c) = 0;
         }
     }
     else
