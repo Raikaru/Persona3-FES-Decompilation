@@ -1485,11 +1485,9 @@ typedef struct CampCardSprite
     u8 opaque00[0x10];
     f32 x;
     f32 y;
-    u8 opaque18[0x10];
-    u16 frame;
-    u16 scale;
-    f32 spriteScale;
     u8 alpha;
+    u8 opaque19[0x13];
+    f32 spriteScale;
 } CampCardSprite;
 
 extern void* (*DAT_00960184)(u32 count, u32 size, u32 heap);
@@ -1673,7 +1671,6 @@ void FUN_001365b0(KwlnTask* task)
     u8* slot;
     void** pendingPtr;
     void** requestPtr;
-    void** resourcePtr;
     void* pending;
     void* request;
     void* record;
@@ -1710,19 +1707,17 @@ void FUN_001365b0(KwlnTask* task)
                 H_Cdvd_Destroy((HCdvd*)request);
                 *requestPtr = NULL;
             }
-            resourcePtr = (void**)(slot + 0x16c);
-            pending = *resourcePtr;
+            pending = *(void**)(slot + 0x16c);
             if (pending != NULL) {
                 FUN_004d0f00(pending);
-                *resourcePtr = NULL;
+                *(void**)(slot + 0x16c) = NULL;
             }
         }
     }
-    requestPtr = (void**)(work + 0x150);
-    request = *requestPtr;
+    request = *(void**)(work + 0x150);
     if (request != NULL) {
         H_Cdvd_Destroy((HCdvd*)request);
-        *requestPtr = NULL;
+        *(void**)(work + 0x150) = NULL;
     }
     FUN_003C7DD0(0x0b);
     (*jtbl_0096017C)(work);

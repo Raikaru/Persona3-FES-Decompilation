@@ -359,6 +359,7 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
 }
 
 #undef FUN_003c8400
+// W212: structured break-based list search measured nd126 -> nd231 and 328/336 -> 344/336; rejected as over-window.
 // FUN_003C8400 NONMATCHING
 u32 FUN_003c8400(u32 param_1,int param_2)
 {

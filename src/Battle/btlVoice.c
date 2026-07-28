@@ -4324,7 +4324,7 @@ void func_002e7710(BtlCamera* camera);
 void func_002e77c0(BtlCamera* camera);
 void func_002e7810(int param_1);
 void func_002e7880(void);
-void func_002e7890(u64 param_1);
+void func_002e7890(u32 param_1);
 void func_002e7db0(BtlCamera* param_1);
 void func_002e82b0(BtlCamera* camera);
 void func_002e87b0(BtlCamera* camera);
@@ -6797,9 +6797,16 @@ static inline void btlVoicePlayCameraVoice(u8 *voiceData,
   FUN_002a3110((u8 *)DAT_007ce3ec + 0x20, duration);
 }
 
+/* W212: matched 002e82b0's per-branch playback aggregates plus the retail u32 pointer contract improve nd912/1272 to nd848/1268 (window 1312); residual begins at frame 0xd0 versus retail 0x120. */
 // FUN_002e7890 NONMATCHING
-void func_002e7890(u64 param_1)
+void func_002e7890(u32 param_1)
 {
+  typedef struct {
+    RwV3d startPosition;
+    f32 startTransform[4];
+    RwV3d endPosition;
+    f32 endTransform[4];
+  } BtlVoicePlayback;
   BtlVoiceCameraWork *work;
   BtlAction *action;
   BtlUnit *unit;
@@ -6812,10 +6819,6 @@ void func_002e7890(u64 param_1)
   s8 voiceType;
   u32 isSpecial;
   u32 randomIndex;
-  f32 startTransform[5];
-  f32 endTransform[5];
-  RwV3d startPosition;
-  RwV3d endPosition;
 
   work = (BtlVoiceCameraWork *)(uintptr_t)param_1;
   action = work->action;
@@ -6862,28 +6865,36 @@ void func_002e7890(u64 param_1)
     break;
   case 3:
   case 5:
+    {
+    BtlVoicePlayback playbackA;
     randomIndex = FUN_002ffbc0(2);
     voiceType = unit->unk_9f0;
     voiceData = base + (voiceType * 0x68) +
                 ((randomIndex & 0xffff) * 0x34) + 4;
-    btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
-                             &startPosition, &endPosition);
+    btlVoicePlayCameraVoice(voiceData, playbackA.startTransform,
+                            playbackA.endTransform, &playbackA.startPosition,
+                            &playbackA.endPosition);
     FUN_002a3e80(0.0f, (u8 *)work->action, 0, 0, 0x40);
     break;
+    }
   case 6:
     action = work->action;
     if ((action->unk_1a & 1) == 0)
       break;
     if (unit->genus == 0) {
+      BtlVoicePlayback playbackB;
       voiceData = base + 0x3ac + 4;
-      btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
-                               &startPosition, &endPosition);
+      btlVoicePlayCameraVoice(voiceData, playbackB.startTransform,
+                              playbackB.endTransform, &playbackB.startPosition,
+                              &playbackB.endPosition);
     }
     else {
+      BtlVoicePlayback playbackC;
       randomIndex = FUN_002ffbc0(2);
       voiceData = base + ((randomIndex & 0xffff) * 0x34) + 0x20c + 4;
-      btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
-                               &startPosition, &endPosition);
+      btlVoicePlayCameraVoice(voiceData, playbackC.startTransform,
+                              playbackC.endTransform, &playbackC.startPosition,
+                              &playbackC.endPosition);
     }
     FUN_002a3e80(0.0f, (u8 *)work->action, 0, 0, 0x40);
     break;
@@ -6891,6 +6902,7 @@ void func_002e7890(u64 param_1)
 }
 
 
+/* W212: template 002f6510 confirms aggregate-based camera math, but this target remains an incomplete reconstruction at nd865/1156 (window 1280); residual begins at frame 0xf0 versus retail 0x130 and retail has 124 bytes of real tail code, so no honest local transfer was kept. */
 // FUN_002e7db0 NONMATCHING
 void func_002e7db0(BtlCamera* param_1)
 
@@ -8615,6 +8627,7 @@ u32 func_002eb9e0(BtlAction* action)
     return 1;
 }
 
+/* W212: template 002ef000 confirms direct packet locals and flag-first setup already used here; target remains nd768/1064 (window 1136). Residual starts at frame 0x70 versus retail 0xa0 and retail has 52 bytes of real tail code, so the deficit is reconstruction rather than a removable staged result. */
 // FUN_002eba50 NONMATCHING
 void func_002eba50(BtlAction* action)
 {
@@ -9928,6 +9941,7 @@ u32 func_002ed360(u64 *param_1)
   return 1;
 }
 
+/* W212: template 002f3320's packet-local structure is already present. Recasting the unit search as retail's explicit do/while held nd444 but shrank 968 to 960 (window 976), so it was reverted; residual first differs at offset 28 as cyclic saved-register coloring, then at offset 292 in the search dispatch. */
 // FUN_002ee640 NONMATCHING
 void func_002ee640(BtlAction* action)
 {

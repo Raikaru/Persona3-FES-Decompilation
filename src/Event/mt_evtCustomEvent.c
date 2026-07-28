@@ -27,6 +27,8 @@ extern u32 DAT_007cd488;
 extern u32 DAT_007ce420;
 extern u32 DAT_007ce618;
 extern u32 DAT_007e0952;
+#pragma alias DAT_007e0952_d550_abs DAT_007e0952
+extern u16 DAT_007e0952_d550_abs[];
 extern code DAT_00960178;
 extern code DAT_0096017c;
 extern u32 LAB_00398d80;
@@ -111,6 +113,8 @@ void FUN_0039cfb0(int param_1);
 u32 FUN_0039d010(int param_1);
 void FUN_0039d190(int param_1);
 void FUN_0039d1c0(int param_1);
+#pragma alias FUN_0039d1c0_d550 FUN_0039d1c0
+extern void FUN_0039d1c0_d550(int);
 u32 FUN_0039d550(int param_1);
 void FUN_0039d880(int param_1);
 u32 FUN_0039d8e0(int param_1);
@@ -4574,7 +4578,7 @@ void FUN_0039d1c0(int param_1)
 }
 #define FUN_0039d1c0(...) ((void (*)(...))FUN_0039d1c0)(__VA_ARGS__)
 #undef FUN_0039d550
-// FUN_0039D550 NONMATCHING
+// FUN_0039D550
 
 
 u32 FUN_0039d550(int param_1)
@@ -4586,22 +4590,24 @@ u32 FUN_0039d550(int param_1)
   u32 *puVar1;
 
   int iVar2;
+  int config;
 
   u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   int lVar5;
 
   u32 *puVar6;
 
-  int iStack_8;
-
   u8 auStack_4 [4];
+
+  int iStack_8;
 
   
 
   puVar1 = *(u32 **)(param_1 + 0x3c);
+  config = puVar1[1];
 
   puVar6 = puVar1 + 8;
 
@@ -4609,7 +4615,7 @@ u32 FUN_0039d550(int param_1)
 
   case 0:
 
-    if (((*(u32 *)(puVar1[1] + 4) & 8) != 0) && (lVar5 = FUN_00188660(), lVar5 == 0)) {
+    if (((*(u32 *)(config + 4) & 8) != 0) && (lVar5 = FUN_00188660(), lVar5 == 0)) {
 
       FUN_003951a0(0x1413);
 
@@ -4617,7 +4623,7 @@ u32 FUN_0039d550(int param_1)
 
     }
 
-    uVar3 = FUN_00100d80(0x6a1540,1);
+    uVar3 = FUN_00100d80(DAT_006a1400 + 0x140,1);
 
     puVar1[3] = uVar3;
 
@@ -4631,11 +4637,11 @@ u32 FUN_0039d550(int param_1)
 
     if (lVar5 == 1) {
 
-      uVar4 = FUN_001021c0(0x6a1560,auStack_4);
+      uVar4 = FUN_001021c0(DAT_006a1400 + 0x160,auStack_4);
 
       FUN_0039ec70(puVar6,uVar4);
 
-      uVar3 = FUN_0010c1a0(0,0x6a1580,0,0,0,0,0,0);
+      uVar3 = FUN_0010c1a0(0,DAT_006a1400 + 0x180,0,0,0,0,0,0,0,0,D_006A1200,0xe90);
 
       puVar1[4] = uVar3;
 
@@ -4681,20 +4687,11 @@ u32 FUN_0039d550(int param_1)
 
   case 4:
 
-    if (((DAT_007e0952 & 0x1000) == 0) && ((DAT_007e0952 & 0x4000) == 0)) {
-
-      if ((DAT_007e0952 & 0x40) != 0) {
-
-        *puVar1 = 5;
-
-      }
-
-    }
-
-    else {
-
+    if (((DAT_007e0952_d550_abs[0] & 0x1000) != 0) || ((DAT_007e0952_d550_abs[0] & 0x4000) != 0)) {
       puVar1[7] = (u32)(puVar1[7] == 0);
-
+    }
+    else if ((DAT_007e0952_d550_abs[0] & 0x40) != 0) {
+      *puVar1 = 5;
     }
 
     break;
@@ -4731,7 +4728,7 @@ u32 FUN_0039d550(int param_1)
 
   case 6:
 
-    FUN_0039f210(puVar6,0,1,0xffffffffffffffff);
+    FUN_0039f210(puVar6,0,1,-1);
 
     *puVar1 = 7;
 
@@ -4769,7 +4766,7 @@ u32 FUN_0039d550(int param_1)
 
   }
 
-  FUN_0039d1c0(puVar1);
+  FUN_0039d1c0_d550((int)puVar1);
 
   FUN_0039f410(puVar6);
 

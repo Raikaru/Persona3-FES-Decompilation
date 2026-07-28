@@ -294,6 +294,9 @@ void func_0017fe10(KwlnTask* clndTask)
     func_001b7700(clndTask);
 }
 
+/* W212: first divergence is the prologue (ours 0x60-byte frame, retail 0x40).
+ * Recomputing dates in-loop measured nd202 -> nd296 (424/496), and additionally
+ * recomputing the record measured nd342 (480/496); both honest probes were reverted. */
 // FUN_00180030 NONMATCHING
 void func_00180030(void)
 {
@@ -2135,6 +2138,9 @@ KwlnTask* clndCreateTask()
     return clndTask;
 }
 
+/* W212: first divergence is the prologue (ours 0x50-byte frame, retail 0x60).
+ * Delaying the event pointer and retaining startTime across its call reconciled
+ * the frame but regressed nd298 -> nd329 (512/560), so the probe was reverted. */
 // FUN_00181720 NONMATCHING
 s32 clndFindAndExecSiteibiEvents()
 {
@@ -3318,6 +3324,9 @@ void func_00183f60(void* resource,
     }
 }
 
+/* W212: first divergence is the prologue (ours 0xa0-byte frame, retail 0x90);
+ * this is an excess live-range/frame defect before the displaced draw tail, not
+ * a tail defect.  func_00187ec0 does not share this draw/phase loop structure. */
 // FUN_001842C0 NONMATCHING
 void func_001842c0(KwlnTask* task,
                    s32 month,

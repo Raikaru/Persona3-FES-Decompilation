@@ -3332,7 +3332,7 @@ u32 FUN_003b2430(void *param_1)
 
     bVar1 = *(u8 *)(puVar12[4] + iVar10);
 
-    if (0x4c < bVar1) {
+    if (!(bVar1 < 0x4d)) {
 
       FUN_0019d3f0(DAT_006a2730,0xdf9);
 

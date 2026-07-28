@@ -631,7 +631,7 @@ u32 * FUN_003c2ee0(u32 param_1)
 
   DAT_0095b790_abs[0] = 0;
 
-  if (0x1d < param_1) {
+  if (!(param_1 < 0x1e)) {
 
     FUN_0019d3f0("comuSasoi.c",0x558);
 

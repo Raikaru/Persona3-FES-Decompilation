@@ -6547,145 +6547,81 @@ u32 func_00318b90(u32 param_1)
 
 
 
+// Template probe: reversing the two top-level branches to match func_00318ed0
+// retained 420/448 bytes but regressed normalized diff 268 -> 287; reverted.
 // FUN_00318D10 NONMATCHING
 
 
 u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
-
-
-
 {
-
   u16 *puVar1;
-
   u32 uVar2;
-
   int iVar3;
-
   u32 uVar4;
-
   u32 *puVar5;
-
   u32 uVar6;
-
   int lVar7;
-
   int iVar8;
-
   u32 uVar9;
-
   int iVar10;
-
   int iVar11;
-
   struct {
     int result;
     int expected;
   } callbackData;
 
-  
-
   puVar1 = *(u16 **)(param_1 + 0x3f0);
-
   if (puVar1 == (u16 *)0x0) {
-
     lVar7 = func_001a69a0(*(u32 *)(param_1 + 0xdc),0x69abb8,param_2);
-
     if (lVar7 == 0) {
-
       uVar4 = 0;
-
     }
-
     else {
-
       puVar5 = (u32 *)func_004cb2f0(lVar7);
-
       iVar8 = 8;
-
       do {
-
         uVar4 = *puVar5;
-
         uVar2 = puVar5[1];
-
         puVar5 = puVar5 + 2;
-
         iVar8 = iVar8 + -1;
-
         *param_3 = uVar4;
-
         param_3[1] = uVar2;
-
         param_3 = param_3 + 2;
-
       } while (0 < iVar8);
-
       uVar4 = 1;
-
     }
-
   }
-
   else {
-
     uVar9 = 0;
-
     while ((uVar9 < *puVar1 &&
-
            ((param_2 & 0xffff) != *(u32 *)(*(int *)(puVar1 + 2) + uVar9 * 0x50 + 0x40)))) {
-
       uVar9 = uVar9 + 1 & 0xffff;
-
     }
-
     if (uVar9 == *puVar1) {
-
       uVar4 = 0;
-
     }
-
     else {
-
       iVar11 = *(int *)(puVar1 + 2) + uVar9 * 0x50;
-
       iVar8 = *(int *)(iVar11 + 0x44);
-
       iVar10 = *(int *)(*(int *)(param_1 + 0xdc) + 4);
-
       iVar3 = func_00466720(iVar10);
-
       if (iVar8 != iVar3) {
-
         callbackData.result = 0;
         callbackData.expected = iVar8;
         func_004cb6e0(iVar10,0x315010,&callbackData);
         iVar10 = callbackData.result;
-
       }
-
       if (iVar10 == 0) {
-
         uVar4 = 0;
-
       }
-
       else {
-
         uVar6 = func_004cb2f0(iVar10);
-
         FUN_004c2f30((RwMatrix*)param_3,(const RwMatrix*)iVar11,(const RwMatrix*)uVar6);
-
         uVar4 = 1;
-
       }
-
     }
-
   }
-
   return uVar4;
-
 }
 
 

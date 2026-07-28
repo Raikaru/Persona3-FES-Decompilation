@@ -3899,12 +3899,15 @@ void FUN_0022c8a0(u32* object_param)
 #undef color
 }
 
-#define BCM_PANEL_STATE(...) ((void (*)(u32, u32))D_00960090)(__VA_ARGS__)
-#define BCM_PANEL_QUAD(...) ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)(__VA_ARGS__)
+// W212: matched-sibling vtable transfer changed nd 1383 -> 1343 and
+// reached the 2160/2160 window. The first residual is a saved-register
+// bank mismatch at +0x20 (ours object in s3, retail s4); declaration
+// ordering cannot safely solve the cascading allocation difference.
 // FUN_0022DF10 NONMATCHING
 void FUN_0022df10(u32* object)
 {
-    void (*setQuad)(u32*, u32, u32, u32, u32);
+    void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
     u32 table3;
     u32 table5;
     u32 text;
@@ -3914,29 +3917,30 @@ void FUN_0022df10(u32* object)
     table3 = FUN_0021c3f0(3);
     table5 = FUN_0021c3f0(5);
     text = FUN_0021c450(*(u16*)((u8*)object + 4));
-    setQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
-    BCM_PANEL_STATE(0x14, 2);
-    BCM_PANEL_STATE(8, 0);
-    BCM_PANEL_STATE(6, 0);
-    BCM_PANEL_STATE(1, FUN_0021cce0(FUN_0021cca0(text, 1)));
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setState)(0x14, 2);
+    (*setState)(8, 0);
+    (*setState)(6, 0);
+    (*setState)(1, FUN_0021cce0(FUN_0021cca0(text, 1)));
 
     if ((object[0] & 0x20) != 0) {
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        BCM_PANEL_QUAD((u32*)((u8*)object + 0x310), 4, 0, 1, 2);
-        BCM_PANEL_QUAD((u32*)((u8*)object + 0x310), 4, 0, 2, 3);
+        (*setQuad)((u32*)((u8*)object + 0x310), 4, 0, 1, 2);
+        (*setQuad)((u32*)((u8*)object + 0x310), 4, 0, 2, 3);
 
         if (!((object[0] & 4) != 0 && object[0x20c] == 8)) {
             RpSkyRenderStateSet(3, (void*)0x717fb);
             RpSkyRenderStateSet(2, (void*)0x44);
-            BCM_PANEL_QUAD((u32*)((u8*)object + 0x410), 4, 0, 1, 2);
-            BCM_PANEL_QUAD((u32*)((u8*)object + 0x410), 4, 0, 2, 3);
+            (*setQuad)((u32*)((u8*)object + 0x410), 4, 0, 1, 2);
+            (*setQuad)((u32*)((u8*)object + 0x410), 4, 0, 2, 3);
         }
     }
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x110), 4, 0, 1, 2);
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x110), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0x110), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x110), 4, 0, 2, 3);
 
     if ((object[0] & 0x20) == 0) {
         goto check210_flag8;
@@ -3957,20 +3961,20 @@ check210_flag8:
 draw210:
     RpSkyRenderStateSet(3, (void*)0x71801);
     RpSkyRenderStateSet(2, (void*)0x48);
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x210), 4, 0, 1, 2);
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x210), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0x210), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x210), 4, 0, 2, 3);
 skip210:
 
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    BCM_PANEL_STATE(1, FUN_0021cce0(FUN_0021cca0(text, 0)));
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x10), 4, 0, 1, 2);
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x10), 4, 0, 2, 3);
+    (*setState)(1, FUN_0021cce0(FUN_0021cca0(text, 0)));
+    (*setQuad)((u32*)((u8*)object + 0x10), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x10), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table3, 0xa);
-    BCM_PANEL_STATE(1, FUN_0021cce0(resource));
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
-    BCM_PANEL_QUAD((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
+    (*setState)(1, FUN_0021cce0(resource));
+    (*setQuad)((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
 
     if ((object[0] & 0x20) == 0) {
         goto check730_flag8;
@@ -3991,49 +3995,47 @@ check730_flag8:
 draw730:
     RpSkyRenderStateSet(3, (void*)0x71801);
     RpSkyRenderStateSet(2, (void*)0x48);
-    setQuad((u32*)((u8*)object + 0x730), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0x730), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0x730), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x730), 4, 0, 2, 3);
 skip730:
 
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     resource = FUN_0021cca0(table3, 0);
-    BCM_PANEL_STATE(1, FUN_0021cce0(resource));
-    setQuad((u32*)((u8*)object + 0x860), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0x860), 4, 0, 2, 3);
-    setQuad((u32*)((u8*)object + 0x960), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0x960), 4, 0, 2, 3);
-    setQuad((u32*)((u8*)object + 0xa60), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0xa60), 4, 0, 2, 3);
-    setQuad((u32*)((u8*)object + 0xb60), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0xb60), 4, 0, 2, 3);
-    setQuad((u32*)((u8*)object + 0xc60), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0xc60), 4, 0, 2, 3);
-    setQuad((u32*)((u8*)object + 0xd60), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0xd60), 4, 0, 2, 3);
+    (*setState)(1, FUN_0021cce0(resource));
+    (*setQuad)((u32*)((u8*)object + 0x860), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x860), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0x960), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0x960), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0xa60), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0xa60), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0xb60), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0xb60), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0xc60), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0xc60), 4, 0, 2, 3);
+    (*setQuad)((u32*)((u8*)object + 0xd60), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0xd60), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table5, 2);
-    BCM_PANEL_STATE(1, FUN_0021cce0(resource));
-    setQuad((u32*)((u8*)object + 0xe60), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0xe60), 4, 0, 2, 3);
+    (*setState)(1, FUN_0021cce0(resource));
+    (*setQuad)((u32*)((u8*)object + 0xe60), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0xe60), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table5, 3);
-    BCM_PANEL_STATE(1, FUN_0021cce0(resource));
-    setQuad((u32*)((u8*)object + 0xf60), 4, 0, 1, 2);
-    setQuad((u32*)((u8*)object + 0xf60), 4, 0, 2, 3);
+    (*setState)(1, FUN_0021cce0(resource));
+    (*setQuad)((u32*)((u8*)object + 0xf60), 4, 0, 1, 2);
+    (*setQuad)((u32*)((u8*)object + 0xf60), 4, 0, 2, 3);
 
     if ((object[0] & 2) != 0) {
         resource = FUN_0021cca0(table3, FUN_0022e850(object[0x14a]));
-        BCM_PANEL_STATE(1, FUN_0021cce0(resource));
-        setQuad((u32*)((u8*)object + 0x530), 4, 0, 1, 2);
-        setQuad((u32*)((u8*)object + 0x530), 4, 0, 2, 3);
+        (*setState)(1, FUN_0021cce0(resource));
+        (*setQuad)((u32*)((u8*)object + 0x530), 4, 0, 1, 2);
+        (*setQuad)((u32*)((u8*)object + 0x530), 4, 0, 2, 3);
     }
     if ((object[0] & 4) != 0) {
         bppPanelDrawParameterLayout((void*)object);
     }
 }
-#undef BCM_PANEL_STATE
-#undef BCM_PANEL_QUAD
 // FUN_0022E780
 void FUN_0022e780(u32* object, u32 command)
 {

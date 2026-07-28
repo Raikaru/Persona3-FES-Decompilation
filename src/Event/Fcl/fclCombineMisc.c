@@ -1191,6 +1191,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 
 }
 
+// W212: restoring helper-failure early returns measured nd168 -> nd193 (396 -> 456 bytes); rejected.
 // FUN_003D6910 NONMATCHING
 
 
@@ -3436,15 +3437,19 @@ void FUN_003d9cc0(int param_1)
 
   int iVar8;
 
+  int entry_base;
+
   
 
   iVar7 = (int)param_1;
+
+  entry_base = iVar7 + 0x11c;
 
   iVar1 = *(int *)(iVar7 + 0x14);
 
   for (iVar5 = 0; iVar5 < 0xc; iVar5 = iVar5 + 1) {
 
-    iVar8 = iVar7 + 0x11c + iVar5 * 0xc;
+    iVar8 = entry_base + iVar5 * 0xc;
 
     lVar6 = 0;
 
@@ -3474,7 +3479,7 @@ void FUN_003d9cc0(int param_1)
 
       if (*(int *)(iVar7 + 4) == 0) {
 
-        uVar3 = FUN_003d8260(iVar7 + 0x11c,iVar5);
+        uVar3 = FUN_003d8260(entry_base,iVar5);
 
         *(u32 *)(unaff_s1_lo + 4) = uVar3;
 

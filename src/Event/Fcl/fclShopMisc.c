@@ -494,10 +494,12 @@ void FUN_00404470_alt(short param_1,int param_2);
 void FUN_00404470_long(long param_1,int param_2);
 void FUN_004044c0(short param_1);
 void FUN_004045d0(u64 param_1);
+#pragma alias FUN_004045d0_u32 FUN_004045d0
+void FUN_004045d0_u32(u32 param_1);
 void FUN_00404750(u32 param_1,u32 param_2,u32 param_3);
 u64 FUN_00405970(u64 param_1,int param_2);
 void FUN_00405a90(u64 param_1,int param_2);
-u64 FUN_00405ac0(u64 param_1,long param_2);
+u32 FUN_00405ac0(u64 param_1,long param_2);
 void FUN_00405d60(int param_1);
 void FUN_00405e00(u64 param_1);
 extern int FUN_00405db0(u32* param_1, u32* param_2);
@@ -709,6 +711,16 @@ typedef union {
   FclShopFloatQuad vector;
   u8 *value[4];
 } FclShopDataSet;
+typedef struct {
+  u8 *default_data;
+  u32 pad04;
+  u8 *alternate_data;
+  u32 pad0c;
+  u8 *entry_table;
+  int entry_count;
+} FclShopStockConfig;
+#pragma alias fclShopStockConfig PTR_DAT_006ad4a0
+extern FclShopStockConfig fclShopStockConfig;
 FclShopDataSet DAT_006af170;
 u32 DAT_006af180;
 extern u16 DAT_006af180_abs[];
@@ -1689,22 +1701,15 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
 
   
 
-  if (param_1 != 4) {
-
-    if (param_1 != 0) {
-
-      return 0xffff;
-
-    }
-
+  switch (param_1) {
+  case 0:
     sVar6 = 0xf;
-
-  }
-
-  else {
-
+    break;
+  case 4:
     sVar6 = 3;
-
+    break;
+  default:
+    return 0xffff;
   }
 
   if ((param_1 < 0) || (8 < param_1)) {
@@ -1810,22 +1815,15 @@ u16 FUN_003f12a0(int param_1,int param_2)
 
   
 
-  if (param_1 != 4) {
-
-    if (param_1 != 0) {
-
-      return 0xffff;
-
-    }
-
+  switch (param_1) {
+  case 0:
     sVar6 = 0xf;
-
-  }
-
-  else {
-
+    break;
+  case 4:
     sVar6 = 3;
-
+    break;
+  default:
+    return 0xffff;
   }
 
   if ((param_1 < 0) || (8 < param_1)) {
@@ -2960,6 +2958,7 @@ u64 FUN_003f2d60(int param_1)
 
 }
 
+// W212: narrowing the maintained result to short measured nd187 -> nd227 and 416/432 -> 444/432; rejected as over-window.
 // FUN_003F2DC0 NONMATCHING
 
 
@@ -8303,10 +8302,10 @@ int FUN_003fb2f0(u32 *param_1)
 
   datGetMoney();
 
-  if (((DAT_007e0952 & 0x1000) == 0) && ((DAT_007e095a & 0x1000) == 0)) {
-    if (((DAT_007e0952 & 0x4000) == 0) && ((DAT_007e095a & 0x4000) == 0)) {
-      if (((DAT_007e0952 & 0x2000) == 0) && ((DAT_007e095a & 0x2000) == 0)) {
-        if (((DAT_007e0952 & 0x8000) != 0) || ((DAT_007e095a & 0x8000) != 0)) {
+  if (((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) && ((*(u16 *)DAT_007e095a_abs & 0x1000) == 0)) {
+    if (((*(u16 *)DAT_007e0952_abs & 0x4000) == 0) && ((*(u16 *)DAT_007e095a_abs & 0x4000) == 0)) {
+      if (((*(u16 *)DAT_007e0952_abs & 0x2000) == 0) && ((*(u16 *)DAT_007e095a_abs & 0x2000) == 0)) {
+        if (((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) || ((*(u16 *)DAT_007e095a_abs & 0x8000) != 0)) {
           iVar5 = -10;
         }
       }
@@ -10100,7 +10099,11 @@ void FUN_003fdcc0(int param_1,int param_2,int *param_3)
 
   int iVar8;
 
+  int table_index;
+
   FclShopFloatPair auStack_8;
+
+  table_index = param_3[1];
 
   auStack_8 = *(FclShopFloatPair *)&DAT_007cd968;
 
@@ -10117,7 +10120,7 @@ void FUN_003fdcc0(int param_1,int param_2,int *param_3)
     switch (iVar2) {
     case 0:
       FUN_0040e3c0_f32(0.0f,*(short *)(param_2 + 0x14),*(short *)(param_2 + 0x16),uVar1,
-                   auStack_8.u[param_3[1]],0);
+                   auStack_8.u[table_index],0);
       break;
     case 1:
       uVar4 = FUN_00177790(**(u16 **)(param_1 + 4));
@@ -10237,7 +10240,7 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
 {
 
-  u16 uVar1;
+  s16 uVar1;
 
   int iVar2;
 
@@ -10270,7 +10273,7 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
     uVar1 = datGetEquipmentIdx((short)param_2,(short)iVar5);
 
-    FUN_003f1dc0_u64(param_2,auStack_40,(s32)(s16)uVar1);
+    FUN_003f1dc0_u64(param_2,auStack_40,uVar1);
 
 
     iVar3 = FUN_003c5a40(uVar4,*(u16 *)(iVar2 + 0x10) + 1,0x20,0);
@@ -10384,6 +10387,7 @@ LAB_003fe35c:
   return uVar3;
 }
 
+// W212: rotating the copied-table loop to retail's apparent branch target measured nd206 -> nd295 (488 -> 492 bytes); rejected.
 // FUN_003FE3E0 NONMATCHING
 
 
@@ -10836,6 +10840,7 @@ LAB_003fee10:
 
 }
 
+// W212: signed short result local measured nd94 -> nd117 and 240/240 -> 248/240; rejected as over-window.
 // FUN_003FEE40 NONMATCHING
 
 
@@ -10889,6 +10894,8 @@ u32 FUN_003fef30(int param_1,int param_2)
 
   int iVar6;
 
+  FclShopStockConfig *config;
+
   
 
   uVar3 = FUN_003c58f0(0,0x58,5,0x1a);
@@ -10899,13 +10906,15 @@ u32 FUN_003fef30(int param_1,int param_2)
 
   *(short *)(iVar2 + 4) = (short)param_1;
 
-  ppuVar5 = (u8 **)&PTR_DAT_006ad4a0;
+  config = &fclShopStockConfig;
+
+  ppuVar5 = (u8 **)&config->default_data;
 
   if (param_2 != 0) {
 
     *(u16 *)(iVar2 + 6) = 0xfffd;
 
-    ppuVar5 = (u8 **)0x6ad4a8;
+    ppuVar5 = (u8 **)&config->alternate_data;
 
   }
 
@@ -10926,11 +10935,11 @@ u32 FUN_003fef30(int param_1,int param_2)
   if (param_2 == 0) {
     iVar2 = FUN_003f03e0(4);
     for (iVar6 = 1; iVar6 <= iVar2; iVar6 = iVar6 + 1) {
-      if ((iVar6 < 0) || (DAT_006ad4b4 < iVar6)) {
+      if ((iVar6 < 0) || (config->entry_count < iVar6)) {
         K_Assert((const char *)DAT_006aede8,0x1df);
       }
-      if ((u8 *)PTR_DAT_006ad4b0 + iVar6 * 8 != (u8 *)0x0) {
-        FUN_003fea10_3((int)uVar3,(u32 *)((u8 *)PTR_DAT_006ad4b0 + iVar6 * 8),0);
+      if (config->entry_table + iVar6 * 8 != (u8 *)0x0) {
+        FUN_003fea10_3((int)uVar3,(u32 *)(config->entry_table + iVar6 * 8),0);
       }
     }
 
@@ -11697,6 +11706,8 @@ void FUN_003ffe00(int param_1)
 
 }
 
+// W212: signed-byte and typed-callback transfer measured nd914 -> nd972 (1344 -> 1320 bytes); rejected.
+// W212: retaining the final callback across calls fixed the 0x100-byte frame but measured nd914 -> nd942 and 1344/1344 -> 1352/1344; rejected as over-window.
 // FUN_003FFE60 NONMATCHING
 
 
@@ -16062,39 +16073,22 @@ u64 FUN_00405970(u64 param_1,int param_2)
 
   lVar2 = datGetFlag(sVar3 + 0x1170);
 
-  if (lVar2 == 0) {
-
-
-    if (FUN_003f04f0(FUN_004037e0(sVar3),0) == 0) {
-
-      sVar3 = 2;
-
-    }
-
-    else {
-
-      lVar2 = FUN_0017c610(sVar3);
-
-      if (lVar2 == 0) {
-
-        sVar3 = 0;
-
-      }
-
-      else {
-
-        sVar3 = 1;
-
-      }
-
-    }
-
-  }
-
-  else {
-
+  if (lVar2 != 0) {
     sVar3 = 3;
-
+  }
+  else {
+    if (FUN_003f04f0(FUN_004037e0(sVar3),0) == 0) {
+      sVar3 = 2;
+    }
+    else {
+      lVar2 = FUN_0017c610(sVar3);
+      if (lVar2 == 0) {
+        sVar3 = 0;
+      }
+      else {
+        sVar3 = 1;
+      }
+    }
   }
 
   if ((((sVar3 == 4) || (sVar3 == 2)) || (sVar3 == 1)) || (sVar3 == 3)) {
@@ -16139,7 +16133,7 @@ void FUN_00405a90(u64 param_1,int param_2)
 // FUN_00405AC0 NONMATCHING
 
 
-u64 FUN_00405ac0(u64 param_1,long param_2)
+u32 FUN_00405ac0(u64 param_1,long param_2)
 
 
 
@@ -16176,7 +16170,7 @@ u64 FUN_00405ac0(u64 param_1,long param_2)
   puVar1 = *(u32 **)(*(int *)(iVar3 + 0x24) + 0x44);
 
   if (param_2 == 0) {
-    FUN_004045d0(uVar9);
+    FUN_004045d0_u32(uVar9);
   }
   else {
 
@@ -18964,6 +18958,7 @@ void FUN_0040c6a0(u64 param_1)
 
 }
 
+// W212: absolute u32 alias for DAT_006af930 measured nd290 -> nd295 (588 -> 592 bytes); rejected.
 // FUN_0040C6F0 NONMATCHING
 
 

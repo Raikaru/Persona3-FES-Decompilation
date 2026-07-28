@@ -5842,6 +5842,9 @@ void FUN_0042bc10(int param_1)
 
 }
 
+/* W212: first divergence is the prologue (ours 0xc0-byte frame, retail 0xb0),
+ * followed by different nested-loop induction lifetimes.  FUN_0042fd80 has a
+ * grid scan but no per-cell allocation/update body, so its template is not transferable. */
 // FUN_0042BD80 NONMATCHING
 
 

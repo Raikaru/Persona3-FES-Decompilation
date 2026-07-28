@@ -1905,12 +1905,16 @@ extern u32 DAT_0069cb94;
 extern u32 DAT_0069cb98;
 extern u32 DAT_0069cb9c;
 extern u32 DAT_0069cba0;
+#pragma alias DAT_0069cba0_s8 DAT_0069cba0
+extern s8 DAT_0069cba0_s8;
 extern u32 DAT_0069cba4;
 extern MdlTypeDispatch DAT_0069cc50[];
 extern u32 DAT_0069cc54;
 extern u32 DAT_0069cc58;
 extern u32 DAT_0069cc5c;
 extern u32 DAT_0069cc60;
+#pragma alias DAT_0069cc60_s8 DAT_0069cc60
+extern s8 DAT_0069cc60_s8;
 extern u32 DAT_0069cc64;
 extern MdlTypeDispatch DAT_0069ccc0[];
 #pragma alias DAT_0069ccc0_abs DAT_0069ccc0
@@ -41933,7 +41937,7 @@ void FUN_00348f30(int param_1,float *param_2)
 
 {
 
-  int iVar1;
+  u32 iVar1;
 
   float fVar2;
 
@@ -41942,14 +41946,16 @@ void FUN_00348f30(int param_1,float *param_2)
   float fVar4;
 
   float fVar5;
+  float *output;
 
   
 
   iVar1 = FUN_00357fd0(0);
 
-  *(int *)param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
+  *(u32 *)param_2 = iVar1 % (*(u32 *)(param_1 + 4) + 1);
 
   param_2[1] = iGpffff81bc;
+  output = param_2 + 2;
 
   ((int *)param_2)[4] = *(int *)(param_1 + 0x10);
 
@@ -41969,12 +41975,12 @@ void FUN_00348f30(int param_1,float *param_2)
 
   fVar2 = fVar3 * (fVar2 - 0.5f) * 2.0f + *(float *)(param_1 + 0x20) + 0.0f;
 
-  param_2[7] = fVar5;
-  param_2[8] = fVar2;
-  param_2[9] = fVar5 - fVar4;
-  param_2[10] = fVar2 - fVar4;
-  param_2[0xb] = fVar5 + fVar4;
-  param_2[0xc] = fVar2 + fVar4;
+  output[5] = fVar5;
+  output[6] = fVar2;
+  output[7] = fVar5 - fVar4;
+  output[8] = fVar2 - fVar4;
+  output[9] = fVar5 + fVar4;
+  output[10] = fVar2 + fVar4;
 
   return;
 
@@ -42083,7 +42089,7 @@ void FUN_00349260(int param_1,float *param_2)
 
 {
 
-  int iVar1;
+  u32 iVar1;
 
   float fVar2;
 
@@ -42094,14 +42100,16 @@ void FUN_00349260(int param_1,float *param_2)
   float fVar5;
 
   float fVar6;
+  float *output;
 
   
 
   iVar1 = FUN_00357fd0(0);
 
-  *(int *)param_2 = iVar1 % (*(int *)(param_1 + 4) + 1);
+  *(u32 *)param_2 = iVar1 % (*(u32 *)(param_1 + 4) + 1);
 
   param_2[1] = iGpffff81bc;
+  output = param_2 + 2;
 
   ((int *)param_2)[4] = *(int *)(param_1 + 0x10);
 
@@ -42137,12 +42145,12 @@ void FUN_00349260(int param_1,float *param_2)
 
   fVar2 = fVar5 * fVar2 + *(float *)(param_1 + 0x20) + 0.0f;
 
-  param_2[7] = fVar3;
-  param_2[8] = fVar2;
-  param_2[9] = fVar3 - fVar4;
-  param_2[10] = fVar2 - fVar4;
-  param_2[0xb] = fVar3 + fVar4;
-  param_2[0xc] = fVar2 + fVar4;
+  output[5] = fVar3;
+  output[6] = fVar2;
+  output[7] = fVar3 - fVar4;
+  output[8] = fVar2 - fVar4;
+  output[9] = fVar3 + fVar4;
+  output[10] = fVar2 + fVar4;
 
   return;
 
@@ -43383,7 +43391,7 @@ u64 FUN_0034b1a0(u32 param_1)
 
   lVar7 = FUN_003245f0((int)(param_1));
 
-  if ((lVar7 != 0) && ((&DAT_0069cba0)[*(int *)(pauVar9[1] + 8) * 0x18] != '\0')) {
+  if ((lVar7 != 0) && (*(&DAT_0069cba0_s8 + *(int *)(pauVar9[1] + 8) * 0x18) != '\0')) {
 
     uVar4 = FUN_0034bbc0(lVar7,*(u16 *)((int)param_1 + 0x1c));
 
@@ -43494,7 +43502,7 @@ u64 FUN_0034b3a0(int param_1)
 
   }
 
-  if ((*(int *)(param_1 + 0x28) != 0) && ((&DAT_0069cba0)[*(int *)(pauVar7[1] + 8) * 0x18] != '\0'))
+  if ((*(int *)(param_1 + 0x28) != 0) && (*(&DAT_0069cba0_s8 + *(int *)(pauVar7[1] + 8) * 0x18) != '\0'))
 
   {
 
@@ -43673,7 +43681,7 @@ u64 FUN_0034b6b0(u32 param_1)
 
   lVar7 = FUN_003245f0((int)(param_1));
 
-  if ((lVar7 != 0) && ((&DAT_0069cc60)[*(int *)(pauVar9[1] + 8) * 0x18] != '\0')) {
+  if ((lVar7 != 0) && (*(&DAT_0069cc60_s8 + *(int *)(pauVar9[1] + 8) * 0x18) != '\0')) {
 
     uVar4 = FUN_0034bbc0(lVar7,*(u16 *)((int)param_1 + 0x1c));
 
@@ -43784,7 +43792,7 @@ u64 FUN_0034b8b0(int param_1)
 
   }
 
-  if ((*(int *)(param_1 + 0x28) != 0) && ((&DAT_0069cc60)[*(int *)(pauVar7[1] + 8) * 0x18] != '\0'))
+  if ((*(int *)(param_1 + 0x28) != 0) && (*(&DAT_0069cc60_s8 + *(int *)(pauVar7[1] + 8) * 0x18) != '\0'))
 
   {
 
@@ -53447,96 +53455,49 @@ void FUN_00357930(u32 param_1)
 
 
 u32 FUN_003579b0(u32 param_1)
-
-
-
 {
-
   u32 uVar1;
-
   int iVar2;
-
   u32 uVar4;
-
   u32 uVar5;
-
   u8 (*pauVar6) [16];
-
   int iVar7;
 
-  
-
   iVar7 = (int)param_1;
-
   uVar1 = *(u32 *)(iVar7 + 0x2c);
-
-  if (DAT_0069ccf0[uVar1].callback3 != (code)0) {
-
+  if (DAT_0069ccf0[uVar1].callback3 == (code)0) {
     uVar4 = *(u32 *)(iVar7 + 0x38);
-
-    iVar2 = DAT_0069cd08[uVar1 & 0xffff].value;
-
-    uVar5 = (*DAT_00960178_abs)(iVar2 + 0x40,0x40000);
-
-    pauVar6 = (u8 (*) [16])uVar5;
-
-    *(u8 (**) [16])(pauVar6[3] + 8) = pauVar6 + 4;
-
-    *(u32 *)(pauVar6[2] + 8) = 0;
-
-    *(u32 *)(pauVar6[2] + 0xc) = uVar1 & 0xffff;
-
-    *(u32 *)(pauVar6[2] + 4) = 0x80808080;
-
-    *(u32 *)pauVar6[2] = 0x3f800000;
-
-    __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar6) : "memory");
-
-    __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar6) : "memory");
-
-    FUN_00521250(*(u32 *)(pauVar6[3] + 8),uVar4,iVar2);
-
-    uVar4 = DAT_0069ccf0[*(int *)(iVar7 + 0x2c)].callback3(param_1);
-
-    *(u32 *)pauVar6[3] = uVar4;
-
-    if (DAT_0069ccf0[*(int *)(iVar7 + 0x2c)].callback0 != (code)0) {
-
-      DAT_0069ccf0[*(int *)(iVar7 + 0x2c)].callback0(uVar5);
-
-    }
-
-  }
-
-  else {
-
-    uVar4 = *(u32 *)(iVar7 + 0x38);
-
     uVar5 = FUN_00357770(uVar1 & 0xffff,uVar4);
-
     if (DAT_007ce3ec != 0) {
-
-
       if (DAT_0069ccf0[uVar1 & 0xffff].callback1 != (code)0) {
-
         uVar4 = DAT_0069ccf0[uVar1 & 0xffff].callback1(uVar4,0,0,0);
-
         *(u32 *)((int)uVar5 + 0x30) = uVar4;
-
       }
-
       if (DAT_0069ccf0[uVar1 & 0xffff].callback0 != (code)0) {
-
         DAT_0069ccf0[uVar1 & 0xffff].callback0(uVar5);
-
       }
-
     }
-
   }
-
+  else {
+    uVar4 = *(u32 *)(iVar7 + 0x38);
+    iVar2 = DAT_0069cd08[uVar1 & 0xffff].value;
+    uVar5 = (*DAT_00960178_abs)(iVar2 + 0x40,0x40000);
+    pauVar6 = (u8 (*) [16])uVar5;
+    *(u8 (**) [16])(pauVar6[3] + 8) = pauVar6 + 4;
+    *(u32 *)(pauVar6[2] + 8) = 0;
+    *(u32 *)(pauVar6[2] + 0xc) = uVar1 & 0xffff;
+    *(u32 *)(pauVar6[2] + 4) = 0x80808080;
+    *(u32 *)pauVar6[2] = 0x3f800000;
+    __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar6) : "memory");
+    __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar6) : "memory");
+    FUN_00521250(*(u32 *)(pauVar6[3] + 8),uVar4,iVar2);
+    uVar4 = DAT_0069ccf0[*(int *)(iVar7 + 0x2c)].callback3(param_1);
+    *(u32 *)pauVar6[3] = uVar4;
+    if (DAT_0069ccf0[*(int *)(iVar7 + 0x2c)].callback0 != (code)0) {
+      DAT_0069ccf0[*(int *)(iVar7 + 0x2c)].callback0(uVar5);
+    }
+  }
   return uVar5;
-
 }
 
 

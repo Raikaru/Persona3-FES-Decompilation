@@ -1108,6 +1108,7 @@ void btlActionInitStateStart(BtlAction* action)
         }
     }
 }
+/* W212: transferring 00297760's early-return cascade holds nd907/1480 (window 1488). Narrow u16 stat/message/table contracts improve nd907 to nd285 but grow to 1504, so were reverted; residual first differs at offset 48, a common-exit branch displaced by the 8-byte deficit. */
 // FUN_0028b230 NONMATCHING
 void btlActionUpdateStateStart(BtlAction* action)
 {
@@ -1119,9 +1120,18 @@ BtlPacket* result;
     u32 messageId;
     u32 tableIndex;
     s16 voice;
-    if (!(gBtl->flags & 0x80000) && !btlPacketCountById(0x700) && !btlPacketCountById(0x504) &&
-        !btlPacketCountById(0x506) && !btlPacketCountById(0x301) && !btlPacketCountById(0x104))
-    {
+    if (gBtl->flags & 0x80000)
+        return;
+    if (btlPacketCountById(0x700))
+        return;
+    if (btlPacketCountById(0x504))
+        return;
+    if (btlPacketCountById(0x506))
+        return;
+    if (btlPacketCountById(0x301))
+        return;
+    if (btlPacketCountById(0x104))
+        return;
     if (action->passiveSkillsFlags != 0)
     {
         btlAction0028a780(action);
@@ -1251,7 +1261,6 @@ BtlPacket* result;
     else
     {
         btlActionSetState(action, BTLACTION_STATE_STARTHOME);
-    }
     }
 }
 
@@ -6105,6 +6114,7 @@ void btlActionInitStateEndure(BtlAction* action)
         btlActionSetState(action, BTLACTION_STATE_STANDBY);
     }
 }
+/* W212: template 00297760 suggested restoring actionUID writes after two packet constructors; the honest probe grew 788 to 804 bytes but regressed nd507 to nd548 (window 880), so it was reverted. Residual starts at frame 0x50 versus retail 0x80, confirming broader missing packet-chain structure. */
 // FUN_00295fa0 NONMATCHING
 void btlActionUpdateStateEndure(BtlAction* action)
 {

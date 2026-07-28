@@ -632,6 +632,7 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
     return radius;
 }
 
+/* W212: template 002823b0 confirms direct flag-first guarded movement, but target remains nd800/1076 (window 1232); residual begins at offset 4 (saved-ra slot 0x80 versus retail 0x60) and retail has 140 bytes of real tail logic, so no honest local template transfer was kept. */
 // FUN_00280DA0 NONMATCHING
 #pragma optimization_level 3
 void func_00280da0(BtlUnit* unit)
