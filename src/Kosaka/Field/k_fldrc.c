@@ -167,7 +167,7 @@ extern u32 FUN_004bda10();
 extern u32 FUN_004c1970();
 extern u32 FUN_004c2cc0();
 extern u32 FUN_004c2d20();
-extern u32 FUN_004c31b0();
+extern void FUN_004c31b0(void* matrix, const void* axis, f32 angle, s32 combine);
 extern u32 FUN_004c3880();
 extern u32 FUN_004c38c0();
 extern u32 FUN_004c5620();
@@ -1552,7 +1552,7 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
             params[14] = 0x3f800000;
             transform[0] = DAT_00678f58;
             transform[1] = DAT_00678f60;
-            FUN_004c31b0(unused, (u32)params, transform, 2);
+            FUN_004c31b0(params, transform, unused, 2);
             matrix = FUN_004cb2f0(resource[i * 6 + 0x49]);
             modelPos[0] = *(f32*)(matrix + 0x30);
             modelPos[1] = *(f32*)(matrix + 0x34);

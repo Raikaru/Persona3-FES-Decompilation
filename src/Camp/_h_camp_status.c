@@ -703,33 +703,34 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
 void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
                             f32 alpha, s16 pcId, s32 fade)
 {
+    u32 parent;
+    void* font;
     u32 level;
-    u32 hp;
-    u32 maxHp;
-    u32 sp;
-    u32 maxSp;
-    s32 bright;
+    s32 hpBarOffset;
+    s32 spBarOffset;
 
-    bright = campStatusClampFade(fade);
-    campStatusDrawFadeSprite(position.x + 22.0f, position.y + 27.0f, alpha,
-                             DAT_00833B90, 0, bright);
-    level = datGetLevel(pcId);
-    campStatusDrawNumber(alpha, position.x + 81.0f, position.y + 40.0f,
-                         level);
-    campStatusDrawNumber(alpha, position.x + 96.0f, position.y + 40.0f,
-                         level);
-    hp = datGetHp(pcId);
-    maxHp = datGetMaxHp(pcId);
-    sp = datGetSp(pcId);
-    maxSp = func_0016c670(pcId);
-    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 58.0f, hp);
-    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 58.0f,
-                         maxHp);
-    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 73.0f, sp);
-    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 73.0f,
-                         maxSp);
-    h_campStatusDrawPhysicalCondition(position, alpha, pcId, bright);
-    h_campStatusDrawBadStatus(position, alpha, pcId, bright);
+    campStatusDrawSpriteCall(parent, *(void**)DAT_00833B90_abs, 0, (u8)fade,
+                             position.x + 22.0f,
+                             position.y + 27.0f - 12.0f, alpha);
+    if ((u8)datGetLevel(pcId) >= 10) {
+        font = (void*)H_Maestro_001120a0(2);
+        level = (u8)datGetLevel(pcId);
+        campStatusDrawSpriteCall(parent, font, level / 10 + 0xb, (u8)fade,
+                                 position.x + 81.0f,
+                                 position.y + 40.0f - 1.0f - 12.0f, alpha);
+    }
+    font = (void*)H_Maestro_001120a0(2);
+    level = (u8)datGetLevel(pcId);
+    campStatusDrawSpriteCall(parent, font, level % 10 + 0xb, (u8)fade,
+                             position.x + 96.0f,
+                             position.y + 40.0f - 1.0f - 12.0f, alpha);
+
+    hpBarOffset = 0x4c - (datGetHp(pcId) * 0x4c) / datGetMaxHp(pcId);
+    h_campStatusDrawHp(position, alpha, pcId, hpBarOffset, fade);
+    spBarOffset = 0x4c - (datGetSp(pcId) * 0x4c) / func_0016c670(pcId);
+    h_campStatusDrawSp(position, alpha, pcId, spBarOffset, fade);
+    h_campStatusDrawPhysicalCondition(position, alpha, pcId, fade);
+    h_campStatusDrawBadStatus(position, alpha, pcId, fade);
 }
 
 // FUN_00123540. Destroy callback of the "H_CampPcStatusRoot" task

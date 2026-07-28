@@ -22,7 +22,7 @@ extern s32 FUN_001159f0(f32 x, f32 y, f32 alpha, ...);
 #pragma alias campPersonaDrawSprite FUN_001159f0
 extern void campPersonaDrawSprite(void* parent, void* resource, s32 frame,
                                   f32 x, f32 y, u8 alpha, f32 scale);
-#pragma alias campPersonaSetRenderState DAT_00960090
+extern void (*DAT_00960090)(s32 state, s32 value);
 extern f32 FUN_001126b0(void* particle);
 extern f32 FUN_00112740(void* particle);
 extern s32 FUN_00114450(f32 x, f32 y, f32 z, s32 a, s32 b, s32 c,
@@ -56,7 +56,6 @@ extern u8 DAT_00833B74_abs[];
 extern u8 DAT_00833BA0_abs[];
 extern char gp0xffff897c[];
 extern void* h_campUpdatePanelTransition(KwlnTask* task);
-extern void campPersonaSetRenderState(s32 state, s32 value);
 
 
 typedef struct CampPersonaKaniWork
@@ -684,8 +683,8 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
         FUN_001127d0(particle, 0);
         FUN_00115980(particle);
 
-        campPersonaSetRenderState(2, 0x44);
-        campPersonaSetRenderState(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        RpSkyRenderStateSet(3, 0x717fb);
 
         bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
         scale = (f32)((10 - bright) * 0x518 / 10) + (f32)0xc18;

@@ -28,6 +28,7 @@ extern f32 fGpffff82ac;
 extern f32 fGpffff83b8;
 extern f32 fGpffff83bc;
 extern f32 fGpffff82fc;
+extern f32 FUN_0052e878(f32 angle);
 extern u32 uGpffffb670;
 
 typedef struct { f32 a; f32 b; f32 c; } SflVec3;

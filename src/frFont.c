@@ -3212,9 +3212,8 @@ u32 FUN_003b2430(void *param_1)
 
           uStack_3 = *(u8 *)(puVar12[4] + iVar10);
 
-          if (CONCAT11(bVar2,uStack_3) >= 0xc080) {
-
-            iVar10 = CONCAT11(bVar2,uStack_3) - 0x4000;
+          if ((((u16)bVar2 << 8) | uStack_3) >= 0xc080) {
+            iVar10 = (((u16)bVar2 << 8) | uStack_3) - 0x4000;
 
             bStack_4 = (u8)((u32)iVar10 >> 8);
 
@@ -3350,7 +3349,7 @@ u32 FUN_003b2430(void *param_1)
 
     }
 
-    lVar9 = (*(code *)(&DAT_006a2370 + (u32)bVar1 * 4))(CONCAT11(bVar2,bVar1),param_1);
+    lVar9 = (*(code *)(&DAT_006a2370 + (u32)bVar1 * 4))(((u16)bVar2 << 8) | bVar1,param_1);
 
     puVar12[6] = puVar12[6] + (((int)((uVar13 & 0xf) << 8) >> 8) + -1) * 2;
 

@@ -3,6 +3,7 @@
 #include "Main/Battle/Result/br_panel.h"
 #include "Main/Battle/Result/br_res.h"
 #include "Main/Social/sfl_res.h"
+#include "Main/Social/sfl_script.h"
 #include "Main/Battle/Data/datPersona.h"
 #include "Main/g_data.h"
 #include "h_fade.h"
@@ -211,6 +212,13 @@ extern void sflScript00259c10(void);
 extern void sflScript00259bc0(void);
 extern void sflScript00259c60(u16);
 extern void sflScript00259cc0(void);
+extern void sflScriptQueueEndCommand(void);
+extern void sflScriptQueueWaitCommand(u16 frames);
+extern void sflScriptQueueOpenCommand(u16 card);
+extern void sflScriptQueueWaitForActionsCommand(void);
+extern void sflScriptQueueStartActionsCommand(void);
+extern void sflScriptQueueSetCardValueCommand(u16 value);
+extern void sflScriptQueueShuffleCommand(void);
 extern void func_002595c0(void);
 extern void func_002508c0(void *, const float *, s32);
 extern void func_0020b250(void *);
@@ -1109,7 +1117,7 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     func_0024da00(work + 0xbd04);
     sflCamera0024d110(work + 0xbcf0);
     func_002534d0(work + 0xc100);
-    sflScript00259610(work + 0xbf10);
+    sflScriptInit((SflScriptWork*)(work + 0xbf10));
     sflCursor0025a110(work + 0x1ed90);
     func_001f58f0(work + 0x1fd60);
     func_00215a50(work + 0x23280);
@@ -1173,7 +1181,7 @@ void *func_001f2300(KwlnTask *task)
         break;
     case 7:
         if (sflCard002582b0() == 0) {
-            sflScript00259640();
+            sflScriptStartQueuedCommands();
             BR_U32(work, 0x1fd5c) = 0;
             BR_U32(work, 8) = 8;
         }
@@ -2285,10 +2293,10 @@ void func_001f4a00(void)
     persona = datPersonaGetByPcId(1);
     func_00173660(persona, 4);
     datPersonaGetLevel(persona);
-    sflScript00259690(work + 0x1e990, 0x400);
+    sflScriptConfigureCommandBuffer((u32)(work + 0x1e990), 0x400);
     printf(D_006847A0);
     printf(D_00696964);
-    sflScript00259b00(10);
+    sflScriptQueueWaitCommand(10);
     count = (s32)func_00255130();
     printf(D_006847D0, count);
     printf(D_00696964);
@@ -2338,9 +2346,9 @@ void func_001f4a00(void)
         u32 totalWeight;
         u32 choiceWeight;
 
-        sflScript00259c60((u16)((f32)(s32)actTable[0] +
-                                progress * ((f32)(s32)actTable[1] -
-                                            (f32)(s32)actTable[0]) / maxProgress));
+        sflScriptQueueSetCardValueCommand((u16)((f32)(s32)actTable[0] +
+                                               progress * ((f32)(s32)actTable[1] -
+                                                           (f32)(s32)actTable[0]) / maxProgress));
         for (i = 0; i < 4; i++) {
             enabled[i] = 0;
         }
@@ -2396,27 +2404,27 @@ void func_001f4a00(void)
             groups++;
             count -= active - 1;
         } else if (selected == 2) {
-            sflScript00259b60(0);
+            sflScriptQueueOpenCommand(0);
             printf(D_00684840, (s32)func_00530da0(progress));
             groups--;
             count += groupSize[groups] - 1;
         }
         if (selected == 0 || selected == 1 || selected == 2) {
-            sflScript00259c10();
-            sflScript00259bc0();
+            sflScriptQueueStartActionsCommand();
+            sflScriptQueueWaitForActionsCommand();
         }
         if (selected == 3) {
-            sflScript00259cc0();
+            sflScriptQueueShuffleCommand();
             progress += 3.0f;
             printf(D_00684840, (s32)func_00530da0(progress));
         }
     }
     for (i = 0; i < groups; i++) {
-        sflScript00259b60(0);
-        sflScript00259c10();
-        sflScript00259bc0();
+        sflScriptQueueOpenCommand(0);
+        sflScriptQueueStartActionsCommand();
+        sflScriptQueueWaitForActionsCommand();
     }
-    sflScript00259970();
+    sflScriptQueueEndCommand();
     func_00257f10();
     func_0010a4e0(1, 0, 6, 1);
     BR_U32(work, 8) = 7;
