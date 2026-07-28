@@ -4939,7 +4939,7 @@ void func_002bf9a0(void)
 void func_002bf9b0(void)
 
 {
-  int entry = 0;
+  u8 *entry = 0;
   long fadeSuppressed = 0;
   u32 alpha = 0;
   u32 listIndex = 0;
@@ -4952,8 +4952,8 @@ void func_002bf9b0(void)
        ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) &&
       ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x800) != 0)) {
     for (listIndex = 0; listIndex < 4; listIndex = listIndex + 1) {
-      for (entry = *(int *)(DAT_007ce3ec + listIndex * 8 + 0x150); entry != 0;
-           entry = *(int *)(entry + 0xa34)) {
+      for (entry = *(u8 **)(DAT_007ce3ec + listIndex * 8 + 0x150); entry != 0;
+           entry = *(u8 **)(entry + 0xa34)) {
         if (*(int *)(entry + 0xa2c) != 0) {
           zero = 0.0f;
           if (*(u8 *)(entry + 0x37) != 0) {
@@ -4964,7 +4964,7 @@ void func_002bf9b0(void)
           }
           firstZero = zero;
           callColor = alpha | 0xb4736400;
-          func_002bce10(firstZero, zero, (u8*)entry, callColor, (float *)(entry + 0xa04));
+          func_002bce10(firstZero, zero, entry, callColor, (float *)(entry + 0xa04));
         }
       }
     }

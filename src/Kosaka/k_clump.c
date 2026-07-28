@@ -711,8 +711,8 @@ void* func_001a7370(void* material, u32* state)
         }
         state[2] = 1;
     }
-    values = D_00678C00;
     candidate = 0;
+    values = D_00678C00;
     for (; candidate < 10; candidate++)
     {
         if (state[0] == values[candidate])
@@ -803,8 +803,6 @@ u32 func_001a76e0(const u32* state)
     return state[8] != 0;
 }
 
-// The retail entry uses the opposite null-state branch layout; MWCC keeps the equivalent beqz form.
-// The nine volatile list traversals and final state release are otherwise instruction-identical.
 // FUN_001a7710 NONMATCHING
 void func_001a7710(u32* state)
 {
@@ -826,9 +824,7 @@ void func_001a7710(u32* state)
     KClumpMaterialNode* next;
 
     if (state != NULL)
-        goto state_valid;
-    return;
-state_valid:
+    {
     work = (KClumpFreeState*)(void*)state;
 
 
@@ -905,6 +901,7 @@ state_valid:
     }
 
     (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
+    }
 }
 
 // FUN_001a7910 NONMATCHING
