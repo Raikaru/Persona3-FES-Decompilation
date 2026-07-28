@@ -149,12 +149,11 @@ void FUN_002510d0(void)
                     switch (FUN_003c7610()) {
                     case 0:
                         FUN_003c7650(1);
-                        value = work->type;
-                        switch (value) {
+                        switch (work->type) {
                         case 0:
                         case 2:
                         case 3:
-                            switch (value) {
+                            switch (work->type) {
                             case 0:
                                 FUN_003c7430();
                                 break;
@@ -165,8 +164,7 @@ void FUN_002510d0(void)
                                 FUN_003c7430(0x12);
                                 break;
                             }
-                            value2 = work->type;
-                            switch (value2) {
+                            switch (work->type) {
                             case 0:
                                 FUN_003c74e0();
                                 break;
@@ -215,12 +213,11 @@ void FUN_002510d0(void)
                     switch (FUN_003c7610()) {
                     case 1:
                         FUN_003c7650(1);
-                        value = work->type;
-                        switch (value) {
+                        switch (work->type) {
                         case 0:
                         case 2:
                         case 3:
-                            switch (value) {
+                            switch (work->type) {
                             case 0:
                                 FUN_003c7430();
                                 break;
@@ -231,8 +228,7 @@ void FUN_002510d0(void)
                                 FUN_003c7430(0x12);
                                 break;
                             }
-                            value2 = work->type;
-                            switch (value2) {
+                            switch (work->type) {
                             case 0:
                                 FUN_003c74e0();
                                 break;
