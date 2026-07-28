@@ -12,6 +12,11 @@ float fGpffff82cc;
 float fGpffff8328;
 float fGpffffad78;
 u32 uGpffffad78;
+extern u8 DAT_006b3070[];
+extern char DAT_007cb790[];
+extern char DAT_007cb780[];
+extern char DAT_007cb760[];
+extern char DAT_007cb740[];
 /* FUSION_EXACT_PROTOS */
 #pragma alias K_View_GetFov_typed K_View_GetFov
 f32 K_View_GetFov_typed(RwCamera *camera);
@@ -181,6 +186,10 @@ u32 DAT_007e094c;
 u32 DAT_007e094e;
 u32 DAT_007e0956;
 u32 DAT_007e0958;
+#pragma alias DAT_007e094e_0041ae20 DAT_007e094e
+extern u16 DAT_007e094e_0041ae20[];
+#pragma alias DAT_007e0958_0041ae20 DAT_007e0958
+extern u16 DAT_007e0958_0041ae20[];
 u8 DAT_007e095e[];
 u8 DAT_007e095f[];
 u8 DAT_007e0960[];
@@ -3077,12 +3086,14 @@ u32 FUN_0041ae20(int param_1)
   u32 uVar2;
 
   int iVar3;
+  int node;
+  short type;
 
   
 
   if (*(int *)(*(int *)(param_1 + 0x3c) + 8) == 0) {
 
-    func_0010a370(3,0x6b3070);
+    func_0010a370(3,DAT_006b3070);
 
     func_001a0040(1,1);
 
@@ -3092,15 +3103,14 @@ u32 FUN_0041ae20(int param_1)
 
     func_001a0150(0xc02,1);
 
-    printf((const char*)0x7bb790,(const char*)0x7bb780,0x22);
-
-    printf((const char*)0x7bb760);
-
-    H_Dbprt_FmtLog(0x7bb740);
+    printf(DAT_007cb790,DAT_007cb780,0x22);
+    printf(DAT_007cb760);
+    H_Dbprt_FmtLog(DAT_007cb740);
 
   }
 
-  if ((((DAT_007e094e & 0x40) != 0) || ((DAT_007e0958 & 0x40) != 0)) &&
+  if ((((DAT_007e094e_0041ae20[0] & 0x40) != 0) ||
+       ((DAT_007e0958_0041ae20[0] & 0x40) != 0)) &&
 
      (*(int *)(*(int *)(param_1 + 0x3c) + 8) < 0x15e)) {
 
@@ -3114,11 +3124,10 @@ u32 FUN_0041ae20(int param_1)
 
   if (*(int *)(iVar3 + 8) == 0x582) {
 
-    for (iVar3 = *(int *)(*(int *)(iVar3 + 4) + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
-
-      piVar1 = *(int **)(iVar3 + 0x14);
-
-      if ((*(short *)(*piVar1 + 6) == 6) || (*(short *)(*piVar1 + 6) == 7)) {
+    for (node = *(int *)(*(int *)(iVar3 + 4) + 0xc); node != 0; node = *(int *)(node + 0x10)) {
+      piVar1 = *(int **)(node + 0x14);
+      type = *(short *)(*piVar1 + 6);
+      if ((type == 6) || (type == 7)) {
 
         piVar1[3] = piVar1[3] + 1000;
 

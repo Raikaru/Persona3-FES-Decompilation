@@ -700,6 +700,8 @@ u32 DAT_006af010;
 extern u8 DAT_006af010_abs[];
 u32 DAT_006af0b0;
 u32 DAT_006af140;
+#pragma alias DAT_006af140_003fd570 DAT_006af140
+extern int DAT_006af140_003fd570[];
 typedef struct {
   f32 x, y, z, w;
 } FclShopFloatQuad;
@@ -9705,7 +9707,7 @@ u64 FUN_003fd570(int param_1,u32 *param_2)
 
   
 
-  piVar11 = (int *)(&DAT_006af140);
+  piVar11 = DAT_006af140_003fd570;
 
   piVar10 = aiStack_30;
 
@@ -9734,6 +9736,7 @@ u64 FUN_003fd570(int param_1,u32 *param_2)
   *puVar3 = 1;
 
 
+  uVar6 = FUN_003fe020(param_1,1);
   puVar3[1] = uVar6;
 
   uVar6 = FUN_003dfeb0(puVar3);
@@ -9797,6 +9800,7 @@ u64 FUN_003fd570(int param_1,u32 *param_2)
         *puVar4 = uVar12;
 
 
+        uVar7 = FUN_003fe020(param_1,uVar12);
         puVar4[1] = uVar7;
 
         uVar7 = FUN_003dfeb0(puVar4);
@@ -10487,9 +10491,7 @@ u64 FUN_003fe690(u32 param_1,u8 *param_2)
 
   for (iVar7 = 0; uVar4 = FUN_00175410(), iVar7 < (int)(uVar4 & 0xffff); iVar7 = iVar7 + 1) {
 
-    lVar5 = datPersonaGetHeroPersona((short)iVar7);
-
-    if (lVar5 != 0) {
+    if ((lVar5 = datPersonaGetHeroPersona((short)iVar7)) != 0) {
 
       uVar6 = FUN_003c5a40(param_1,*(u16 *)(param_1 + 0x10) + 1,0x20,0);
 
@@ -12537,29 +12539,17 @@ void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4)
   iVar2 = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
 
   sVar1 = *(short *)(param_4 + 0x10);
-
   if (sVar1 == 6) {
-
     FUN_0040e3c0_u32(1.0f,param_1,param_2,param_3,0x4f,0);
-
     FUN_0040e3c0_u32(1.0f,param_1,param_2,param_3,0x50,0);
-
   }
-
   else if (sVar1 == 5) {
-
     FUN_0040e3c0_u32(1.0f,param_1,param_2,param_3,0x51,0);
-
     FUN_0040e3c0_u32(1.0f,param_1,param_2,param_3,0x52,0);
-
   }
-
   else if (sVar1 == 4) {
-
     FUN_0040e3c0_u32(1.0f,param_1,param_2,param_3,0x53,0);
-
     FUN_0040e3c0_u32(1.0f,param_1,param_2,param_3,0x54,0);
-
   }
 
   iVar2 = *(int *)(iVar2 + 4);
@@ -15780,6 +15770,8 @@ void FUN_00404470(short param_1)
   }
 }
 
+// b210 floor: at +0xc4 candidate emits lh/sll/lw while retail emits lw/lh/sll
+// for independent table and entry loads; all remaining visible words are this ordering.
 // FUN_004044C0 NONMATCHING
 
 
@@ -15803,7 +15795,7 @@ void FUN_004044c0(short param_1)
 
   entryOffset = (int)param_1 * 0x40;
 
-  lVar2 = FUN_0017c610();
+  lVar2 = FUN_0017c610(param_1);
 
   if (lVar2 == 0) {
 
@@ -15872,26 +15864,21 @@ void FUN_004045d0(u64 param_1)
   
 
   iVar2 = DAT_007cd8f4;
-
   iVar7 = 0;
-
-  puVar8 = (u8 *)(PTR_DAT_007cd8f0);
-
+  puVar8 = PTR_DAT_007cd8f0_ptr;
   do {
-
     if (iVar2 <= iVar7) {
-
       return;
-
     }
 
     if (((iVar7 != 0x37) || (lVar4 = FUN_0017d7b0(), lVar4 != 0)) &&
 
-       (*(short *)(PTR_DAT_007cd8f0 + (short)iVar7 * 0x40 + 0x3a) != 0)) {
+       (*(short *)(puVar8 + 0x3a) != 0)) {
 
       for (iVar6 = 0; iVar6 < 2; iVar6 = iVar6 + 1) {
 
-        if ((*(short *)(puVar8 + iVar6 * 2 + 4) != -1) && (lVar4 = datGetFlag(), lVar4 == 0)) {
+        if ((*(u16 *)(puVar8 + iVar6 * 2 + 4) != (u16)-1) &&
+            (lVar4 = datGetFlag(*(u16 *)(puVar8 + iVar6 * 2 + 4)), lVar4 == 0)) {
 
           bVar1 = 0;
 
@@ -15902,16 +15889,11 @@ void FUN_004045d0(u64 param_1)
       }
 
 
-      if (lVar4 == 0) {
-
+      if (FUN_003f04f0((u32)(puVar8 + 8),2) == 0) {
         bVar1 = 0;
-
       }
-
       else {
-
         bVar1 = 1;
-
       }
 
 LAB_004046bc:
@@ -15927,6 +15909,7 @@ LAB_004046bc:
         uVar3 = FUN_003dfeb0(0);
 
         *(u32 *)(iVar6 + 8) = uVar3;
+        FUN_00405970(param_1,uVar5);
 
 
       }
@@ -15934,9 +15917,7 @@ LAB_004046bc:
     }
 
     puVar8 = puVar8 + 0x40;
-
     iVar7 = iVar7 + 1;
-
   } while( 1 );
 
 }

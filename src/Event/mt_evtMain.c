@@ -6,6 +6,8 @@ typedef u8 bool;
 extern u8 D_0069DFF0[];
 extern u8 D_0069E088[];
 extern u8 DAT_006a0000[];
+#pragma alias DAT_006a0000_65430_abs DAT_006a0000
+extern u8 DAT_006a0000_65430_abs[];
 extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
 extern u8 DAT_0069de20[];
@@ -1619,6 +1621,9 @@ void FUN_00361890(int *param_1,int param_2)
 }
 
 
+// Transferred the matched node-walk shape: hoist the bound once, then advance
+// the link before incrementing the counter. This improves nd216 -> nd189 at
+// unchanged size 480/480; hidden-argument probes reached 504/480 and were reverted.
 // FUN_00361980 NONMATCHING
 
 
@@ -1635,6 +1640,7 @@ void FUN_00361980(int param_1)
   int iVar3;
 
   int iVar4;
+  int iVar5;
 
   
 
@@ -1657,15 +1663,11 @@ void FUN_00361980(int param_1)
   else {
 
     iVar3 = 0;
-
-    for (iVar4 = *(int *)(*(int *)(iVar2 + 0x164) + 0x6c);
-
-        (iVar3 < *(int *)(iVar2 + 0x160) + *(int *)(iVar2 + 0x15c) && (iVar4 != 0));
-
-        iVar4 = *(int *)(iVar4 + 0x4c)) {
-
+    iVar4 = *(int *)(*(int *)(iVar2 + 0x164) + 0x6c);
+    iVar5 = *(int *)(iVar2 + 0x160) + *(int *)(iVar2 + 0x15c);
+    for (; (iVar3 < iVar5 && (iVar4 != 0));) {
+      iVar4 = *(int *)(iVar4 + 0x4c);
       iVar3 = iVar3 + 1;
-
     }
 
   }
@@ -2064,6 +2066,9 @@ int FUN_00361f60(int param_1,int param_2)
 }
 
 
+// Two honest branch-layout attempts were measured and reverted: an early return
+// from the search loop regressed nd108 -> nd173/size260 -> 264; inverting the
+// call test plus an early post-loop return regressed to nd118/size272.
 // FUN_00361FE0 NONMATCHING
 
 
@@ -4393,6 +4398,9 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 }
 
 
+// b210 floor: the only residual is call-argument setup order. At +0xc8/+0xcc,
+// retail loads a2 before a0; at +0xec..+0x100, retail loads v0/addiu/andi,
+// a3/t0 before a0, while b210 emits the independent a0 load first.
 // FUN_00364470 NONMATCHING
 
 u16 * FUN_00364470(u32 param_1,int param_2)
@@ -4432,6 +4440,9 @@ u16 * FUN_00364470(u32 param_1,int param_2)
   return puVar5;
 }
 
+// b210 floor: the only residual is call-argument setup order at +0xb8..+0xcc.
+// Retail loads a2, then the three float stores, then a0; b210 emits the stores,
+// a0, then a2 for the same FUN_003b8c30 call.
 // FUN_003645C0 NONMATCHING
 
 u16 * FUN_003645c0(u32 param_1,int param_2)
@@ -5086,6 +5097,8 @@ void FUN_00364e40(u32 param_1,int param_2,int param_3)
 }
 
 
+// The first divergence suggests a 0x000ffc00 mask, but that informed spelling
+// regressed nd219 -> nd224 and size392 -> 396, so it was reverted.
 // FUN_003650C0 NONMATCHING
 
 
@@ -5182,6 +5195,9 @@ void FUN_003650c0(int param_1,u64 param_2,int param_3)
 }
 
 
+// Corrected the case-0 byte contract to u8 (retail lbu). The seven remaining
+// differing words are b210 call-argument setup order at +0x8c/+0x90 and
+// +0xc8/+0xcc: retail materializes a1 before the independent a0 load.
 // FUN_00365250 NONMATCHING
 
 
@@ -5209,7 +5225,7 @@ void FUN_00365250(u32 param_1,u64 param_2,int param_3)
 
       switch (*(char *)((int)puVar1 + 0x15)) {
       case 0:
-        FUN_003bb010(*(u16 *)(param_3 + 0xc),(char)puVar1[10]);
+        FUN_003bb010(*(u16 *)(param_3 + 0xc),(u8)puVar1[10]);
         break;
       case 1:
         uStack_4 = 0;
@@ -5294,6 +5310,10 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
 }
 
 
+// Caller-specific absolute BYTE-base loads now reproduce retail's shared
+// DAT_006a0000 offsets for both u64 xy and f32 z. The remaining nine words are
+// b210 scheduling/register choices: a1 setup, v0/v1 load coloring, and the
+// independent aggregate stores/a0 setup around FUN_003b7930.
 // FUN_00365430 NONMATCHING
 
 
@@ -5328,8 +5348,8 @@ void FUN_00365430(int param_1,int param_2)
       if (((*(u32 *)(iVar3 + 4) & 8) == 0) && (param_1 == *(int *)(iVar3 + 0x10))) {
 
         FUN_003b78b0((u16)piVar1[3],piVar1 + 0xf,piVar1 + 0x12);
-        position.xy = DAT_0069d6e8_abs[0];
-        position.z = DAT_0069d6f0_abs[0];
+        position.xy = *(u64 *)(DAT_006a0000_65430_abs - 0x2918);
+        position.z = *(f32 *)(DAT_006a0000_65430_abs - 0x2910);
         FUN_003b7930((u16)piVar1[3],&position);
         FUN_003b8f30((u16)piVar1[3]);
         FUN_003b8e10((u16)piVar1[3],*(u8 *)((int)piVar1 + 0x57),0,0);
@@ -5367,6 +5387,8 @@ void FUN_00365430(int param_1,int param_2)
 }
 
 
+// An ascending two-case switch reproduced the intended physical body order but
+// regressed nd214 -> nd216 and size448 -> 452, so the if/else form was restored.
 // FUN_003655F0 NONMATCHING
 
 
@@ -6726,6 +6748,9 @@ int FUN_00366eb0(int param_1,int param_2,int param_3)
 }
 
 
+// Removed an invented cast-only base local so the function uses param_3 directly.
+// This improves nd245 -> nd244 at unchanged size348/352; the remaining first
+// divergence is saved-register coloring and load/branch scheduling.
 // FUN_00366F90 NONMATCHING
 
 
@@ -6739,43 +6764,41 @@ u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
 
   u16 *puVar2;
 
-  int iVar3;
 
   int iVar4;
 
   
 
-  iVar3 = (int)param_3;
 
-  iVar1 = *(int *)(iVar3 + 0x108) + *(int *)(iVar3 + 0x110);
+  iVar1 = *(int *)(param_3 + 0x108) + *(int *)(param_3 + 0x110);
 
   if (iVar1 == 0) {
 
-    *(u8 *)(*(int *)(iVar3 + 0x164) + 0x22) = 0;
+    *(u8 *)(*(int *)(param_3 + 0x164) + 0x22) = 0;
 
   }
 
   else if (iVar1 == 1) {
 
-    *(u8 *)(*(int *)(iVar3 + 0x164) + 0x22) = 1;
+    *(u8 *)(*(int *)(param_3 + 0x164) + 0x22) = 1;
 
   }
 
   else if (iVar1 == 2) {
 
-    *(u8 *)(*(int *)(iVar3 + 0x164) + 0x22) = 2;
+    *(u8 *)(*(int *)(param_3 + 0x164) + 0x22) = 2;
 
   }
 
   else {
 
-    *(u8 *)(*(int *)(iVar3 + 0x164) + 0x22) = 3;
+    *(u8 *)(*(int *)(param_3 + 0x164) + 0x22) = 3;
 
     iVar4 = 0;
 
-    iVar1 = *(int *)(iVar3 + 0x108) + *(int *)(iVar3 + 0x110) + -3;
+    iVar1 = *(int *)(param_3 + 0x108) + *(int *)(param_3 + 0x110) + -3;
 
-    *(u16 *)(*(int *)(iVar3 + 0x164) + 0x24) = 0;
+    *(u16 *)(*(int *)(param_3 + 0x164) + 0x24) = 0;
 
     for (puVar2 = (u16 *)FUN_003b5d50(); puVar2 != (u16 *)0x0;
 
@@ -6783,7 +6806,7 @@ u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
 
       if (iVar4 == iVar1) {
 
-        *(u16 *)(*(int *)(iVar3 + 0x164) + 0x24) = *puVar2;
+        *(u16 *)(*(int *)(param_3 + 0x164) + 0x24) = *puVar2;
 
         break;
 
@@ -6793,7 +6816,7 @@ u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
 
     }
 
-    if (*(short *)(*(int *)(iVar3 + 0x164) + 0x24) == 0) {
+    if (*(short *)(*(int *)(param_3 + 0x164) + 0x24) == 0) {
 
       for (puVar2 = (u16 *)FUN_003b5d50(1); puVar2 != (u16 *)0x0;
 
@@ -6801,7 +6824,7 @@ u64 FUN_00366f90(u64 param_1,u64 param_2,u32 param_3)
 
         if (iVar4 == iVar1) {
 
-          *(u16 *)(*(int *)(iVar3 + 0x164) + 0x24) = *puVar2;
+          *(u16 *)(*(int *)(param_3 + 0x164) + 0x24) = *puVar2;
 
           break;
 
@@ -9797,6 +9820,8 @@ u64 FUN_00369320(u64 param_1,int param_2,u64 param_3)
 }
 
 
+// Removing the decompiler's apparent t0 call-output assignment regressed
+// nd224 -> nd234 at unchanged size376/384, so the assignment was restored.
 // FUN_003698A0 NONMATCHING
 
 
@@ -13448,6 +13473,9 @@ code * FUN_0036d5f0(void)
 }
 
 
+// b210 floor after an informed type attempt regressed and was reverted: all 22
+// remaining words are cyclic saved-register coloring (ours s1/s0/s3/s2 versus
+// retail s3/s2/s1/s0), including the dependent moves/sign extensions/branches.
 // FUN_0036DA10 NONMATCHING
 
 

@@ -2210,40 +2210,38 @@ void FUN_0016c010(void)
     void* cdvd;
     s32* descriptor;
     u8* payload;
-    CampDataBridgeRoot* root;
 
     cdvd = (void*)(uintptr_t)FUN_00100d80(D_005E30B0, 0);
     FUN_001023a0(cdvd);
     descriptor = *(s32**)((u8*)cdvd + 0x110);
-    root = (CampDataBridgeRoot*)DAT_00960178_abs[0](
+    iGpffffb2c0 = (CampDataBridgeRoot*)DAT_00960178_abs[0](
         (((descriptor[0] + descriptor[4]) << 5) + 0x20) +
         ((descriptor[1] + descriptor[5]) << 4), 0x40000);
-    iGpffffb2c0 = root;
-    root->groups[0].recordCount = descriptor[0];
-    root->groups[0].auxiliaryCount = descriptor[1];
-    root->groups[0].records = (CampDataBridgeRecord*)((u8*)root + 0x20);
-    root->groups[0].auxiliaryData =
-        (u8*)root->groups[0].records + (descriptor[0] << 5);
-    root->groups[1].recordCount = descriptor[4];
-    root->groups[1].auxiliaryCount = descriptor[5];
-    root->groups[1].records =
-        (CampDataBridgeRecord*)(root->groups[0].auxiliaryData +
+    iGpffffb2c0->groups[0].recordCount = descriptor[0];
+    iGpffffb2c0->groups[0].auxiliaryCount = descriptor[1];
+    iGpffffb2c0->groups[0].records =
+        (CampDataBridgeRecord*)((u8*)iGpffffb2c0 + 0x20);
+    iGpffffb2c0->groups[0].auxiliaryData =
+        (u8*)iGpffffb2c0->groups[0].records + (descriptor[0] << 5);
+    payload = (u8*)(descriptor + 8);
+    FUN_00521250(iGpffffb2c0->groups[0].records,
+                 payload, descriptor[0] << 5);
+    payload += descriptor[0] << 5;
+    FUN_00521250(iGpffffb2c0->groups[0].auxiliaryData,
+                 payload, descriptor[1] << 4);
+    iGpffffb2c0->groups[1].recordCount = descriptor[4];
+    iGpffffb2c0->groups[1].auxiliaryCount = descriptor[5];
+    iGpffffb2c0->groups[1].records =
+        (CampDataBridgeRecord*)(iGpffffb2c0->groups[0].auxiliaryData +
                                 (descriptor[1] << 4));
-    root->groups[1].auxiliaryData =
-        (u8*)root->groups[1].records + (descriptor[4] << 5);
-    FUN_00521250(root->groups[0].records,
-                 (u8*)(descriptor + 8), descriptor[0] << 5);
-    FUN_00521250(root->groups[0].auxiliaryData,
-                 (u8*)(descriptor + 8) + (descriptor[0] << 5),
-                 descriptor[1] << 4);
-    FUN_00521250(root->groups[1].records,
-                 (u8*)(descriptor + 8) + (descriptor[0] << 5) +
-                     (descriptor[1] << 4),
-                 descriptor[4] << 5);
-    FUN_00521250(root->groups[1].auxiliaryData,
-                 (u8*)(descriptor + 8) + (descriptor[0] << 5) +
-                     (descriptor[1] << 4) + (descriptor[4] << 5),
-                 descriptor[5] << 4);
+    iGpffffb2c0->groups[1].auxiliaryData =
+        (u8*)iGpffffb2c0->groups[1].records + (descriptor[4] << 5);
+    payload += descriptor[1] << 4;
+    FUN_00521250(iGpffffb2c0->groups[1].records,
+                 payload, descriptor[4] << 5);
+    payload += descriptor[4] << 5;
+    FUN_00521250(iGpffffb2c0->groups[1].auxiliaryData,
+                 payload, descriptor[5] << 4);
     FUN_00100ec0(cdvd);
 }
 

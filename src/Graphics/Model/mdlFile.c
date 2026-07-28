@@ -4584,6 +4584,8 @@ void FUN_00320290(u64 param_1)
 
 
 
+// Confirmed b210 saved-register colouring floor (W211): ours/retail s1/s0 at
+// +56/+60, s0/s1 at +88/+92/+124/+156/+172, and v1/a0 at +104/+108.
 // FUN_00320380 NONMATCHING
 
 
@@ -6820,11 +6822,13 @@ u32 FUN_00322880(int param_1)
 
   piVar3[5] = *piVar3 + *(int *)*piVar3 + 8;
 
-  for (iVar8 = 0; piVar2 = piVar2 + 1, iVar8 < iVar1; iVar8 = iVar8 + 1) {
+  piVar2 = piVar2 + 1;
+  for (iVar8 = 0; iVar8 < iVar1; iVar8 = iVar8 + 1) {
 
-    uVar4 = FUN_003210c0_ret((u64)((int)piVar6 + *piVar2));
+    uVar4 = FUN_003210c0_int((int)piVar6 + *piVar2);
 
     *(u32 *)(piVar3[5] + iVar8 * 4) = uVar4;
+    piVar2 = piVar2 + 1;
 
   }
 
@@ -8304,6 +8308,8 @@ void FUN_003243d0(void)
 
 
 
+// Confirmed b210 loop-rotation colouring floor (W211): the sole residual is
+// +40 ffff8230/ffff0232 (andi v0,a0 vs andi v0,s0).
 // FUN_003243F0 NONMATCHING
 
 
@@ -21720,6 +21726,8 @@ u32 FUN_00332780(int param_1)
 
 
 
+// Confirmed b210 call-argument setup-order floor (W211): +196/+200 are the
+// independent move a0,s0 and lhu a1,0(v0), emitted in the opposite order.
 // FUN_00332880 NONMATCHING
 u32 *FUN_00332880(int *arg0)
 {
@@ -35747,6 +35755,9 @@ void FUN_00341ba0(int param_1)
 
 
 
+// Genuine VU0 asm; removing the typed colour-address local regresses size.
+// Confirmed operand-register floor (W211): +112..124 use v1 vs retail v0,
+// and +136 loads via v0 vs retail s2 (five differing words total).
 // FUN_00341F10 NONMATCHING
 
 
@@ -39129,6 +39140,8 @@ void FUN_00345970(u64 param_1)
 
 
 
+// Genuine VU0 asm. Confirmed operand-register floor (W211): +112..124 use
+// v1 vs retail v0, and +136 loads via v0 vs retail s2 (five words total).
 // FUN_00345CF0 NONMATCHING
 
 
@@ -42461,75 +42474,52 @@ void FUN_00349af0(u8 (*param_1) [16])
 
 
 
+// Reconstructed from the matched draw sibling: unsigned control byte, typed
+// state subobject, cached render callbacks, two correctly ordered buffers,
+// and a 32-bit draw result. Residual is call-argument setup ordering.
 // FUN_00349D30 NONMATCHING
 
 
 void FUN_00349d30(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u32 *puVar2;
-
-  long lVar3;
-
-  u8 auStack_210 [256];
-
-  u8 auStack_110 [268];
-
+  int iVar3;
+  u8 *state;
+  u8 auStack_110[256];
+  u8 auStack_210[256];
   u32 uStack_4;
-
-  
+  void (**setState)(int, int);
+  void (**setBuffer)(int, void *, int, void *, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
-
-  if (*(char *)(iVar1 + 199) != '\0') {
-
+  state = (u8 *)(iVar1 + 0xc0);
+  if (state[7] > 0) {
     puVar2 = *(u32 **)(*(int *)(param_1 + 0x28) + 8);
+    FUN_004d81b0(2, &uStack_4);
 
-    FUN_004d81b0(2,&uStack_4);
-
-    (*DAT_00960090_abs)(1,*puVar2);
-
+    setState = (void (**)(int, int))DAT_00960090_abs;
+    (*setState)(1, *puVar2);
     FUN_003294d0();
+    RpSkyRenderStateSet(2, 0x44);
+    RpSkyRenderStateSet(3, 0x31001);
 
-    RpSkyRenderStateSet(2,0x44);
-
-    RpSkyRenderStateSet(3,0x31001);
-
-    FUN_00348760((u8 *)(iVar1 + 0xc4),(float *)(&auStack_110));
-
-    (*DAT_009600a4_abs)(3,auStack_110,4,0x69cb80,6);
-
+    FUN_00348760(state + 4, (float *)auStack_110);
+    setBuffer = (void (**)(int, void *, int, void *, int))DAT_009600a4_abs;
+    (*setBuffer)(3, auStack_110, 4, DAT_0069cb80_abs, 6);
     FUN_00329550();
+    RpSkyRenderStateSet(2, uStack_4 | 0x10);
 
-    RpSkyRenderStateSet(2,uStack_4 | 0x10);
-
-    lVar3 = FUN_00348340((u8 *)(iVar1 + 0xc4),(float *)(auStack_210));
-
-    if (lVar3 != 0) {
-
-      (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
-
-      RpSkyRenderStateSet(3,0x31001);
-
+    iVar3 = FUN_00348340(state + 4, (float *)auStack_210);
+    if (iVar3 != 0) {
+      (*setState)(1, *(u32 *)DAT_00957ba8_abs);
+      RpSkyRenderStateSet(3, 0x31001);
       FUN_003295c0(0x6fc009fc00a);
-
-      (*DAT_009600a4_abs)(3,auStack_210,4,0x69cb80,6);
-
+      (*setBuffer)(3, auStack_210, 4, DAT_0069cb80_abs, 6);
       FUN_00329630();
-
     }
-
-    RpSkyRenderStateSet(2,uStack_4);
-
+    RpSkyRenderStateSet(2, uStack_4);
   }
-
-  return;
-
 }
 
 
@@ -43272,81 +43262,56 @@ void FUN_0034ae30(u8 (*param_1) [16])
 
 
 
+// Reconstructed from the matched draw sibling: unsigned control byte, typed
+// state subobject, cached render callbacks, and correctly ordered buffers.
+// Residual is two independent call-argument setup-order pairs.
 // FUN_0034B010 NONMATCHING
 
 
 void FUN_0034b010(int param_1)
-
-
-
 {
-
   int iVar1;
-
   u32 *puVar2;
-
-  u8 auStack_210 [256];
-
-  float afStack_110 [4] [16];
-
+  u8 *state;
+  float afStack_110[4][16];
+  u8 auStack_210[256];
   u32 uStack_4;
-
-  
+  void (**setState)(int, int);
+  void (**setBuffer)(int, void *, int, void *, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
-
-  if (*(char *)(iVar1 + 0xcf) != '\0') {
-
+  state = (u8 *)(iVar1 + 0xc0);
+  if (state[0xf] > 0) {
     puVar2 = *(u32 **)(*(int *)(param_1 + 0x28) + 8);
+    FUN_004d81b0(2, &uStack_4);
 
-    FUN_004d81b0(2,&uStack_4);
-
-    (*DAT_00960090)(1,*puVar2);
-
+    setState = (void (**)(int, int))DAT_00960090_abs;
+    (*setState)(1, *puVar2);
     FUN_003294d0();
+    RpSkyRenderStateSet(2, 0x44);
+    RpSkyRenderStateSet(3, 0x31001);
 
-    RpSkyRenderStateSet(2,0x44);
-
-    RpSkyRenderStateSet(3,0x31001);
-
-    FUN_00348bd0((u8 *)(iVar1 + 0xcc),afStack_110[0]);
-
+    FUN_00348bd0(state + 0xc, afStack_110[0]);
     afStack_110[0][4] = 0.0f;
-
     afStack_110[0][5] = 0.0f;
-
     afStack_110[1][4] = 0.0f;
-
     afStack_110[1][5] = 1.0f;
-
     afStack_110[2][4] = 1.0f;
-
     afStack_110[2][5] = 1.0f;
-
     afStack_110[3][4] = 1.0f;
-
     afStack_110[3][5] = 0.0f;
 
-    (*DAT_009600a4)(3,afStack_110,4,0x69cb80,6);
-
+    setBuffer = (void (**)(int, void *, int, void *, int))DAT_009600a4_abs;
+    (*setBuffer)(3, afStack_110, 4, DAT_0069cb80_abs, 6);
     FUN_00329550();
+    RpSkyRenderStateSet(2, uStack_4 | 0x10);
 
-    RpSkyRenderStateSet(2,uStack_4 | 0x10);
-
-    FUN_00348bd0((u8 *)(iVar1 + 0xcc),(float *)(auStack_210));
-
-    (*DAT_00960090)(1,0);
-
-    RpSkyRenderStateSet(3,0x31001);
-
-    (*DAT_009600a4)(3,auStack_210,4,0x69cb80,6);
-
-    RpSkyRenderStateSet(2,uStack_4);
-
+    FUN_00348bd0(state + 0xc, (float *)auStack_210);
+    (*setState)(1, 0);
+    RpSkyRenderStateSet(3, 0x31001);
+    (*setBuffer)(3, auStack_210, 4, DAT_0069cb80_abs, 6);
+    RpSkyRenderStateSet(2, uStack_4);
   }
-
-  return;
-
 }
 
 
@@ -44277,6 +44242,8 @@ void FUN_0034c160(u32 param_1)
 // Retail explicitly re-zeros the first two Vec128 slots via VU0 macro-mode
 // sqc2 $vf0 after the memset. Genuine hardware asm restores those stores:
 // 152/160 nd47 -> 160/160 nd2.
+// Confirmed b210 call-argument setup-order floor (W211): +96/+100 merely
+// swap the independent addiu a1,s1,0x2c and addiu a0,s0,0x2c.
 // FUN_0034C1B0 NONMATCHING
 
 u32 FUN_0034c1b0(int param_1)
@@ -45700,7 +45667,7 @@ void FUN_0034db00(int param_1)
 
 
 
-// FUN_0034DB30 NONMATCHING
+// FUN_0034DB30
 
 
 void FUN_0034db30(int param_1)
@@ -45741,7 +45708,7 @@ void FUN_0034db30(int param_1)
 
   switch (*(u16 *)(iVar4 + 0xc)) {
   case 3:
-    for (iVar4 = 0; iVar4 < iVar1; iVar4 = iVar4 + 1) {
+    for (iVar4 = 0; iVar4 < iVar1;) {
 
       if (*(int *)(iVar3 + 0x10) == 0) {
 
@@ -45749,6 +45716,7 @@ void FUN_0034db30(int param_1)
 
       }
 
+      iVar4 = iVar4 + 1;
       iVar3 = iVar3 + 0x20;
 
       iVar2 = iVar2 + 0x18;
@@ -48096,6 +48064,9 @@ void FUN_00350110(void)
 
 
 
+// Confirmed b210 temporary-register colouring floor (W211): the six residual
+// words use v1 where retail uses v0 for two absolute zero stores and the
+// GP-relative DAT_007ce578 = 1 store; declaration-order changes are inert.
 // FUN_00350190 NONMATCHING
 
 

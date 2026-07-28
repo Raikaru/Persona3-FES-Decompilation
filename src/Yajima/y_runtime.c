@@ -12602,6 +12602,8 @@ void FUN_00449fa0(void)
   return;
 }
 
+// MWCC b210 floor: call argument setup remains lh $t2,0xee($s1) / addiu $a0,$sp,0x48 / move $a1,$zero;
+// retail emits the same three independent instructions in the rotated order $a0 / $a1 / $t2.
 // FUN_00449FE0 NONMATCHING
 
 u32
@@ -12638,6 +12640,8 @@ FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5
   return uVar5;
 }
 
+// MWCC b210 floor: call argument setup remains lh $t2,0xf4($s1) / addiu $a0,$sp,0x48 / move $a1,$zero;
+// retail emits the same three independent instructions in the rotated order $a0 / $a1 / $t2.
 // FUN_0044A110 NONMATCHING
 
 u32
@@ -12817,6 +12821,7 @@ void FUN_0044a790(u32 *param_1)
   float fVar8;
   float fVar9;
   float fVar10;
+  float scaledX;
   
   iVar3 = param_1[3];
   iVar1 = FUN_00198590_typed();
@@ -12824,16 +12829,16 @@ void FUN_0044a790(u32 *param_1)
   fVar9 = (float)*(int *)(iVar3 + 0x480) / 180.0f;
   pfVar2 = (float *)(param_1[4] * 0x40 + *(int *)*param_1);
   fVar4 = *(float *)(param_1 + 1);
+  scaledX = fVar4 * 640.0f;
   fVar8 = *(float *)(param_1 + 2) * 448.0f;
-  fVar6 = fVar4 * 640.0f - 320.0f;
-  fVar7 = SQRT(fVar6 * fVar6 + (fVar8 - 224.0f) * (fVar8 - 224.0f));
-  fVar5 = FUN_0052ea18_f32(fVar8 - 224.0f, fVar6);
+  fVar7 = SQRT((scaledX - 320.0f) * (scaledX - 320.0f) + (fVar8 - 224.0f) * (fVar8 - 224.0f));
+  fVar5 = FUN_0052ea18_f32(fVar8 - 224.0f, scaledX - 320.0f);
   fVar6 = (float)FUN_0052e878_typed(fGpffff8248 * (fVar7 / 200.0f - fVar9) * 2.0f);
   fVar9 = fVar6 * 20.0f + fVar7 + 0.0f;
   fVar6 = FUN_00269c80_f32(fVar5);
   fVar7 = fVar9 * fVar6 + 320.0f;
   fVar6 = FUN_00269ca0_f32(fVar5);
-  *pfVar2 = fVar4 * 640.0f;
+  *pfVar2 = scaledX;
   pfVar2[1] = fVar8;
   pfVar2[4] = fVar7 / 640.0f;
   pfVar2[5] = (fVar9 * fVar6 + 224.0f) / 448.0f;
@@ -17175,6 +17180,8 @@ void FUN_00456050(int param_1)
   return;
 }
 
+// MWCC b210 floor: the mixed-ABI prologue preserves $f14 before $a1/$a2; retail preserves
+// $a1, then $a2, then $f14. The remaining body is instruction-identical after relocations.
 // FUN_004560D0 NONMATCHING
 
 u32 FUN_004560d0(u64 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6)
@@ -17791,6 +17798,8 @@ int FUN_00457410(void)
   return result;
 }
 
+// MWCC b210 floor: the final call setup emits addiu $a1,$v0,0x100 before lw $a0,0x1e0($v1);
+// retail reverses these two independent argument instructions.
 // FUN_00457470 NONMATCHING
 
 u32 FUN_00457470(int param_1)
@@ -19762,6 +19771,8 @@ int FUN_0045b4b0(int param_1)
   return bVar1;
 }
 
+// MWCC b210 floor: the sole residual is commutative addu $v0,$a0,$v0 versus retail's
+// addu $v0,$v0,$a0.
 // FUN_0045B4E0 NONMATCHING
 
 float FUN_0045b4e0(int param_1)

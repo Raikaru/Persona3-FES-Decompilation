@@ -844,6 +844,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
 #define FUN_0038dad0(...) ((void (*)(...))FUN_0038dad0)(__VA_ARGS__)
 #undef FUN_0038e660
+// A direct typed f32 source/destination indexing attempt regressed nd13 -> nd179
+// and size 504 -> 500, so it was reverted. The seven-word residual is confined
+// to the ten-float copy loop's equivalent index/base address-formation order.
 // FUN_0038E660 NONMATCHING
 
 

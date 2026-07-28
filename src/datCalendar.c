@@ -928,6 +928,8 @@ done:
     return result;
 }
 
+// MWCC b210 floor: the remaining call setup is addiu $a0,$zero,0xf followed by lhu $a1,4($v0);
+// retail reverses these two independent argument instructions.
 // FUN_00181950 NONMATCHING
 KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
 {

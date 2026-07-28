@@ -718,6 +718,8 @@ void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
     state[0]++;
 }
 
+// MWCC floor: retail holds D_00678C00 in $v1 while b210 assigns the equivalent
+// pointer lifetime to $a0; direct indexing regresses nd5 to nd34.
 // FUN_001a7370 NONMATCHING
 void* func_001a7370(void* material, u32* state)
 {
@@ -1124,12 +1126,12 @@ void func_001a7b50(void* state, u32 mode)
     }
 }
 
-// FUN_001a7fc0 NONMATCHING
+// FUN_001a7fc0
 void func_001a7fc0(void* state, u32 mode)
 {
     KClumpMaterialNode* item;
     RwSphere* sphere;
-    void* object;
+    void* resources;
     void (*resourceCall)(void*);
     u32 found;
 
@@ -1139,8 +1141,11 @@ void func_001a7fc0(void* state, u32 mode)
     }
     if (mode == 1)
     {
-        D_00960090(6, 1);
-        D_00960090(8, 0);
+        void (**renderState)(u32, ...);
+
+        renderState = (void (**)(u32, ...))D_00960090_abs;
+        (*renderState)(6, 1);
+        (*renderState)(8, 0);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x717fb);
@@ -1148,29 +1153,31 @@ void func_001a7fc0(void* state, u32 mode)
     while (item != NULL)
     {
         found = 0;
-        object = item->object;
-        if (object != NULL)
+        resources = ((KClumpContainer*)item->object)->resources;
+        if (resources != NULL)
         {
-            func_004932c0(((KClumpContainer*)object)->resources,
-                          (KClumpCallback)kclump_alpha_callback, &found);
-            if (found != 0)
+            func_004932c0(resources, (KClumpCallback)kclump_alpha_callback,
+                          &found);
+            if (found == 0)
             {
-                sphere = func_004912b0(object);
-                if (sphere != NULL &&
-                    RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
+                sphere = func_004912b0(item->object);
+                if (RwCameraFrustumTestSphere(
+                        (RwCamera*)*(void**)(u8*)0x00960070, sphere) !=
+                    rwSPHEREOUTSIDE)
                 {
                     if (item->enabled == 1)
                     {
-                        D_00960090(0xe, 0);
+                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
                     }
                     if (*(u32*)((u8*)&D_007CC1F8 + 4) == 1)
                     {
-                        resourceCall = *(void (**)(void*))((u8*)object + 0x48);
-                        (*resourceCall)(object);
+                        resourceCall =
+                            *(void (**)(void*))((u8*)item->object + 0x48);
+                        (*resourceCall)(item->object);
                     }
                     if (item->enabled == 1)
                     {
-                        D_00960090(0xe, 1);
+                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 1);
                     }
                 }
             }
@@ -1853,31 +1860,11 @@ s32 func_001a9500(KwlnTask* task)
     KwlnTask** fieldTasks;
 
     work = (KClumpSoundUpdateWork*)task->workData;
-    if (work->state == 3)
+    switch (work->state)
     {
-        return -1;
-    }
-    if (work->state == 2)
-    {
-        if (work->timer < work->delay)
-        {
-            work->timer++;
-        }
-        else
-        {
-            work->state = 1;
-        }
-    }
-    else
-    {
-        if (work->state != 0 && work->state != 1)
-        {
-            return 0;
-        }
-        if (work->state == 0)
-        {
-            work->state = 1;
-        }
+    case 0:
+        work->state = 1;
+    case 1:
         if (work->count > 0)
         {
             fieldTasks = (KwlnTask**)((u8*)K_Field_Get() + 0x11f4);
@@ -1898,6 +1885,19 @@ s32 func_001a9500(KwlnTask* task)
             work->timer = 0;
             work->state++;
         }
+        break;
+    case 2:
+        if (work->timer < work->delay)
+        {
+            work->timer++;
+        }
+        else
+        {
+            work->state = 1;
+        }
+        break;
+    case 3:
+        return -1;
     }
     return 0;
 }

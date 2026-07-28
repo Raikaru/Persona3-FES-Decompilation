@@ -3551,6 +3551,8 @@ u64 FUN_003ad130(u32 param_1,int param_2)
   return 0;
 }
 #undef FUN_003ad1b0
+// b210 floor: swapping the integer operand order fixed the independent load
+// order; only commutative addu orientation remains (ours 21186200; retail 21184300).
 // FUN_003AD1B0 NONMATCHING
 
 
@@ -3572,7 +3574,7 @@ u64 FUN_003ad1b0(u32 param_1,int param_2)
   } else {
     offset = *(int *)(param_2 + 0x18);
     base = *(int *)(param_2 + 0x10);
-    data = (u8 *)(base + offset);
+    data = (u8 *)(offset + base);
     low = data[0] - 1;
     high = data[1];
     if (high == 0xff) {
@@ -3781,6 +3783,8 @@ u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 #define FUN_003ad400(...) ((u64 (*)(...))FUN_003ad400)(__VA_ARGS__)
 // measured: the fixed message buffer cuts nd157 to nd1; lint: allow S003
 #undef FUN_003ad640
+// b210 floor: only remaining word is commutative addu orientation:
+// ours 21186200 addu $v1,$v1,$v0; retail 21184300 addu $v1,$v0,$v1.
 // FUN_003AD640 NONMATCHING
 
 

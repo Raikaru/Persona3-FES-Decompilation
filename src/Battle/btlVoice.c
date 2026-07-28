@@ -4299,7 +4299,7 @@ void func_002e4310(void);
 u32 func_002e4330(u32 param_1);
 s32 func_002e43a0(void);
 u32 func_002e4430(BtlAction* action, s32 skillId);
-u32 func_002e4520(int param_1,u32 param_2,u64 param_3);
+u32 func_002e4520(int param_1,u32 param_2,u32 param_3);
 u32 func_002e4720(u16 param_1);
 u32 func_002e47a0(BtlAction* action, s32 skillId);
 u32 func_002e4910(BtlAction* action, s32 skillId);
@@ -5307,7 +5307,7 @@ u32 func_002e4430(BtlAction* action, s32 skillId)
 }
 
 // FUN_002e4520 NONMATCHING
-u32 func_002e4520(int param_1,u32 param_2,u64 param_3)
+u32 func_002e4520(int param_1,u32 param_2,u32 param_3)
 
 {
   extern u32 FUN_00301ca0();

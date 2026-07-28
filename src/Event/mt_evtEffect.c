@@ -1840,7 +1840,6 @@ u32 FUN_003965f0(int *param_1)
           if (lVar4 == 1) {
 
             iVar3 = (int)FUN_001021c0((const char *)(param_1 + iVar1 * 0xb + 5),auStack_4);
-
             param_1[iVar1 * 0xb + 0xd] = iVar3;
 
             FUN_005225a8(DAT_006a0fb0,iVar1,param_1 + iVar1 * 0xb + 5);
@@ -1854,10 +1853,11 @@ u32 FUN_003965f0(int *param_1)
         }
 
         else {
+          int *entryResult;
+          entryResult = param_1 + iVar1 * 0xb + 0xe;
 
-          iVar3 = (int)FUN_00100d80((const char *)(param_1 + iVar1 * 0xb + 5),0);
-
-          param_1[iVar1 * 0xb + 0xe] = iVar3;
+          iVar3 = (int)FUN_00100d80((const char *)(entryResult - 9),0);
+          *entryResult = iVar3;
 
           param_1[3] = iVar3;
 
