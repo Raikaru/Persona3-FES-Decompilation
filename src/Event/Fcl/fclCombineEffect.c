@@ -3768,8 +3768,9 @@ loop:
   *(f32 *)(entry + 0) = position.x;
   *(f32 *)(entry + 4) = position.y;
   *(f32 *)(entry + 8) = position.z;
-  *(f32 *)(entry + 0x1c) = texcoords[i].x;
-  *(f32 *)(entry + 0x20) = texcoords[i].y;
+  *(f32 *)(*(u8 **)(result + 4) + offset + 0x1c) = texcoords[i].x;
+  *(f32 *)(*(u8 **)(result + 4) + offset + 0x20) = texcoords[i].y;
+  entry = *(u8 **)(result + 4) + offset;
   *(u8 *)(entry + 0xc) = colors[i * 4];
   *(u8 *)(entry + 0xd) = colors[i * 4 + 1];
   *(u8 *)(entry + 0xe) = colors[i * 4 + 2];

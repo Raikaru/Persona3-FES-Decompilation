@@ -5760,15 +5760,15 @@ u8 FUN_00435810(void)
   return uVar9;
 }
 
-// FUN_004359F0 NONMATCHING
+// FUN_004359F0
 
 u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
                  u8 param_5,u8 param_6)
 
 {
   int iVar1;
-  int iVar2;
   char cVar4;
+  int iVar2;
   int iVar5;
   int iVar6;
   char state;

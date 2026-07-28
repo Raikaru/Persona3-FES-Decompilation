@@ -2349,12 +2349,12 @@ void FUN_003ab320(int param_1)
   float fVar5;
 
   piVar1 = *(int **)(param_1 + 8);
-  iVar3 = piVar1[3];
   mode = *piVar1;
   switch (mode) {
   case 0:
     break;
   case 1:
+    iVar3 = piVar1[3];
     iVar2 = piVar1[2];
     if ((10 < iVar2) && (iVar2 < 0x10)) {
       fVar4 = (fGpffff839c * (float)iVar3 * (float)(iVar2 + -10)) / 5.0f;
@@ -2394,6 +2394,7 @@ void FUN_003ab320(int param_1)
     }
     break;
   case 2:
+    iVar3 = piVar1[3];
     fVar4 = fGpffff839c * (float)iVar3;
     FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(u8)fVar4,0,1);
     FUN_003c9000(0.0f,5.5f,6.90625f,-75,-57,(u8)fVar4,0,0);
