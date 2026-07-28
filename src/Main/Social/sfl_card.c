@@ -1242,13 +1242,11 @@ void FUN_00258b40(void)
 
   int aiStack_50 [8];
 
-  u32 uStack_18;
+  struct { f32 x; f32 y; } transformed;
 
-  u32 uStack_14;
+  struct { f32 x; f32 y; } origin;
 
-  u8 auStack_10 [4];
 
-  float fStack_c;
 
   u8 auStack_4 [4];
 
@@ -1347,18 +1345,18 @@ void FUN_00258b40(void)
 
     FUN_00256fa0(unaff_s2_lo,aiStack_30,auStack_4);
 
-    uStack_18 = FUN_0020c660(unaff_s2_lo[4],puVar1[0x499f]);
+    origin.x = FUN_0020c660(unaff_s2_lo[4],puVar1[0x499f]);
 
-    uStack_14 = 0x43380000;
+    origin.y = 184.0f;
 
     uVar8 = FUN_0020c500((void *)(aiStack_30[0] + 0x18),90.0f);
-    FUN_0020c400((void *)(aiStack_30[0] + 0x18),(const f32 *)&uStack_18,uVar8,(f32 *)auStack_10);
+    FUN_0020c400((void *)(aiStack_30[0] + 0x18),(const f32 *)&origin,uVar8,(f32 *)&transformed);
 
-    fStack_c = fStack_c + 100.0;
+    transformed.y += 100.0f;
 
     FUN_00250480(unaff_s2_lo + 0x425);
 
-    FUN_0024f9f0(unaff_s2_lo + 0x425,(const f32 *)auStack_10);
+    FUN_0024f9f0(unaff_s2_lo + 0x425,(const f32 *)&transformed);
 
     FUN_00250c70(unaff_s2_lo + 0x45a);
 

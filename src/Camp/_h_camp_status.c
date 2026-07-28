@@ -204,7 +204,7 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 void h_campStatusDrawStatLabels(CampVec2 position, f32 scale,
                                 void* persona, s32 alpha);
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale,
-                                void* bonus, void* persona, u8 alpha);
+                                void* bonus, void* persona, s32 alpha);
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale,
                                  void* bonus, void* persona, s32 alpha);
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
@@ -2108,13 +2108,12 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 
 // FUN_00128720 NONMATCHING
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
-                                void* persona, u8 alpha)
+                                void* persona, s32 alpha)
 {
     void* resource;
     u32 value;
     u32 parent;
 
-    parent = 0x42c80000;
 
 
     value = FUN_00173660(persona, 0) & 0xff;
