@@ -2995,6 +2995,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
   
 
   uVar8 = param_2 & 0xffff;
+  bVar1 = 0;
 
   if (uVar8 == 2) {
     uVar6 = param_3 & 0xffff;
@@ -3010,13 +3011,7 @@ void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3)
     case 0xe7:
       bVar1 = 1;
       break;
-    default:
-      bVar1 = 0;
-      break;
     }
-  }
-  else {
-    bVar1 = 0;
   }
 
   if (bVar1 == 0) {
@@ -26321,7 +26316,7 @@ u64 FUN_00336920(int param_1)
 
       }
 
-      *puVar8 = (u32)(((u64)uVar5 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      *puVar8 = (u32)((u32)((long)(int)uVar5 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
 
       fVar16 = (float)(uVar4 >> 0x18) * fVar13;
 
@@ -26331,7 +26326,7 @@ u64 FUN_00336920(int param_1)
 
       }
 
-      puVar8[1] = (u32)(((u64)uVar4 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      puVar8[1] = (u32)((u32)((long)(int)uVar4 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
 
       fVar16 = (float)(uVar3 >> 0x18) * fVar13;
 
@@ -26341,7 +26336,7 @@ u64 FUN_00336920(int param_1)
 
       }
 
-      puVar8[2] = (u32)(((u64)uVar3 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      puVar8[2] = (u32)((u32)((long)(int)uVar3 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
 
       *(char *)(puVar8 + 3) = (char)puVar8[1];
 

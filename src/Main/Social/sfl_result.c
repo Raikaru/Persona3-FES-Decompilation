@@ -2324,9 +2324,10 @@ u32 func_001fc3c0(DatPersonaWork* persona)
     }
 
     current = entry + firstIndex * 4;
+    i = 0;
     limit = indexCount;
     active = 1;
-    for (i = 0; i < limit; i++, current += 4)
+    for (; i < limit; i++, current += 4)
     {
         if (current[1] == active)
         {

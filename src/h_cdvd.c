@@ -1288,16 +1288,23 @@ void func_00101e30(void* requestData)
     s32 i;
     s32 scan;
     char c;
+    char separator;
+    char* cursor;
     HCdvdRequestView* request = (HCdvdRequestView*)requestData;
 
     if (request->fileMode == 0)
     {
-        func_00102030(requestData, request->fileMemory,
-                      request->readByteSize, request->path);
+        u32 readByteSize;
+        u8* fileMemory;
+
+        readByteSize = request->readByteSize;
+        fileMemory = request->fileMemory;
+        func_00102030(requestData, fileMemory, readByteSize, request->path);
         request->archiveFileCount = 1;
         return;
     }
 
+    separator = '\\';
     for (i = 0; i < 0x100; i++)
     {
         c = request->path[i];
@@ -1308,11 +1315,19 @@ void func_00101e30(void* requestData)
         else
         {
             scan = i - 1;
-            while (work.entryPath[scan - 1] != '\\')
+scan_separator:
+            cursor = &work.entryPath[scan];
+            if (cursor[-1] != separator)
             {
-                scan--;
+                goto scan_previous;
             }
-            work.entryPath[scan] = '\0';
+            *cursor = '\0';
+            goto scan_finished;
+scan_previous:
+            scan--;
+            goto scan_separator;
+scan_finished:
+            ;
         }
     }
 
