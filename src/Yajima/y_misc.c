@@ -117,7 +117,7 @@ void FUN_00427de0(int param_1,u8 param_2,u8 param_3,u8 param_4, u8 param_5);
 void FUN_00427e20(float param_1,float param_2,int param_3);
 void FUN_00427e50(int param_1,u8 param_2);
 void FUN_00427e60(int param_1,u8 param_2);
-void FUN_00427e70(float param_1,float param_2,float param_3,u32 param_4,int param_5,int param_6, u32 *param_7);
+void FUN_00427e70(float param_1,u32 param_4,float param_2,float param_3,int param_5,int param_6, u32 *param_7);
 u32 FUN_004281f0(u32 param_1);
 void FUN_00429c60(int param_1);
 u64 FUN_00429d40(u64 param_1,u64 param_2);
@@ -3325,7 +3325,7 @@ void FUN_00427e60(int param_1,u8 param_2)
 // FUN_00427E70 NONMATCHING
 
 
-void FUN_00427e70(float depth, float x, float y, u32 color, int width, int height,
+void FUN_00427e70(float depth, u32 color, float x, float y, int width, int height,
                   u32 *raster)
 {
   YajimaVec16 vertices[4];

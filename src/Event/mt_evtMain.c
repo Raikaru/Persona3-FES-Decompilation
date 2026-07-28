@@ -10227,7 +10227,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
         *(int *)(iVar10 + 0x168) =
 
-             (int)(char)(&DAT_0069e1a2)[*(int *)(iVar10 + 0x158) + *piVar5 * 0xc];
+             (int)((char *)&DAT_0069e1a2)[*(int *)(iVar10 + 0x158) + *piVar5 * 0xc];
 
         piVar5 = *(int **)(iVar10 + 0x164);
 

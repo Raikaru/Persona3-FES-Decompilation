@@ -618,6 +618,7 @@ u32 FUN_003b5620(int param_1,int param_2)
 void FUN_003b58c0(short param_1)
 {
     int iVar1;
+    int wait;
 
     if ((gMtScene->flags & 1) != 0) {
         if (gMtScene->unk_14 == param_1) {
@@ -627,8 +628,9 @@ void FUN_003b58c0(short param_1)
         } else {
             gMtScene->flags |= 2;
             gMtScene->unk_14 = param_1;
+            wait = 0x1e;
             iVar1 = FUN_001b9120();
-            *(u32 *)(iVar1 + 0x1058) = 0x1e;
+            *(u32 *)(iVar1 + 0x1058) = wait;
             return;
         }
         return;

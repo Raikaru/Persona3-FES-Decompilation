@@ -5491,24 +5491,24 @@ u32 FUN_002dc180(BtlAction* action)
         }
         switch (bit)
         {
-        case 0x100:
-            threshold = (datGetScenarioMode() != 0) ? 5 : 4;
-            useCounter = 1;
-            break;
-        case 0x200:
-            threshold = 3;
-            useCounter = 1;
-            break;
-        case 0x40:
-            chance = FUN_0030FC40(0xe, datUnit, datUnit, 0, 0x40);
-            threshold = 2;
-            useCounter = 0;
+        case 1:
+            chance = FUN_0030FC40(8, datUnit, datUnit, 0, 1);
+            threshold = 4;
             reduceBySkills = 1;
             break;
-        case 0x20:
-            chance = FUN_0030FC40(0xd, datUnit, datUnit, 0, 0x20);
-            threshold = 2;
-            useCounter = 0;
+        case 2:
+            chance = FUN_0030FC40(9, datUnit, datUnit, 0, 2);
+            threshold = 3;
+            reduceBySkills = 1;
+            break;
+        case 4:
+            chance = FUN_0030FC40(0xa, datUnit, datUnit, 0, 4);
+            threshold = 3;
+            reduceBySkills = 1;
+            break;
+        case 8:
+            chance = FUN_0030FC40(0xb, datUnit, datUnit, 0, 8);
+            threshold = 3;
             reduceBySkills = 1;
             break;
         case 0x10:
@@ -5520,25 +5520,25 @@ u32 FUN_002dc180(BtlAction* action)
                 reduceBySkills = 1;
             }
             break;
-        case 8:
-            chance = FUN_0030FC40(0xb, datUnit, datUnit, 0, 8);
-            threshold = 3;
+        case 0x20:
+            chance = FUN_0030FC40(0xd, datUnit, datUnit, 0, 0x20);
+            threshold = 2;
+            useCounter = 0;
             reduceBySkills = 1;
             break;
-        case 4:
-            chance = FUN_0030FC40(0xa, datUnit, datUnit, 0, 4);
-            threshold = 3;
+        case 0x40:
+            chance = FUN_0030FC40(0xe, datUnit, datUnit, 0, 0x40);
+            threshold = 2;
+            useCounter = 0;
             reduceBySkills = 1;
             break;
-        case 2:
-            chance = FUN_0030FC40(9, datUnit, datUnit, 0, 2);
+        case 0x200:
             threshold = 3;
-            reduceBySkills = 1;
+            useCounter = 1;
             break;
-        case 1:
-            chance = FUN_0030FC40(8, datUnit, datUnit, 0, 1);
-            threshold = 4;
-            reduceBySkills = 1;
+        case 0x100:
+            threshold = (datGetScenarioMode() != 0) ? 5 : 4;
+            useCounter = 1;
             break;
         default:
             break;

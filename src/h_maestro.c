@@ -174,7 +174,11 @@ extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 #pragma alias D_009600A0_abs D_009600A0
 extern u8 D_009600A0_abs[];
+#pragma alias D_009600A0_data_abs D_009600A0
+extern u8 D_009600A0_data_abs[];
 extern f32 D_00960088;
+#pragma alias D_00960088_abs D_00960088
+extern u8 D_00960088_abs[];
 extern RwV3d D_005D6C28;
 extern MaestroRenderNode* DAT_00833a4c;
 extern MaestroBlobNode* DAT_00833a50;
@@ -2167,9 +2171,9 @@ void func_001140d0(f32 depth,
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (color >> 24) & 0xff;
-    g = (color >> 16) & 0xff;
-    b = (color >> 8) & 0xff;
+    r = ((color & 0xff000000) >> 24) & 0xff;
+    g = ((color & 0x00ff0000) >> 16) & 0xff;
+    b = ((color & 0x0000ff00) >> 8) & 0xff;
     a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
@@ -2194,7 +2198,7 @@ void func_001140d0(f32 depth,
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
-    z = D_00960088 - depth;
+    z = *(f32*)D_00960088_abs - depth;
 
     for (i = 0; i < 4; i++)
     {
@@ -2220,7 +2224,7 @@ void func_001140d0(f32 depth,
 
     (*setState)(1, *textureState);
 
-    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_data_abs)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 /* Removing this worsens FUN_00114450 (nd988 -> nd1385) - measured W161. */
@@ -2459,9 +2463,9 @@ void func_00114af0(f32 depth,
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (color >> 24) & 0xff;
-    g = (color >> 16) & 0xff;
-    b = (color >> 8) & 0xff;
+    r = ((color & 0xff000000) >> 24) & 0xff;
+    g = ((color & 0x00ff0000) >> 16) & 0xff;
+    b = ((color & 0x0000ff00) >> 8) & 0xff;
     a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
@@ -2486,7 +2490,7 @@ void func_00114af0(f32 depth,
     corners[1][1] = y;
     corners[2][0] = x;
     corners[2][1] = farY;
-    z = D_00960088 - depth;
+    z = *(f32*)D_00960088_abs - depth;
 
     for (i = 0; i < 4; i++)
     {
@@ -2512,7 +2516,7 @@ void func_00114af0(f32 depth,
 
     (*setState)(1, *textureState);
 
-    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*(void (**)(RwPrimitiveType, RwIm2DVertex*, s32))D_009600A0_data_abs)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // Retail reconstruction: camera/state setup (0x114e70-0x114fec), vertex/color loop (0x115030-0x115164), UV/orientation staging (0x115168-0x115294), and final draw (0x1152a0-0x115300).

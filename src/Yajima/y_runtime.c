@@ -861,7 +861,7 @@ extern code FUN_00427e60;
 extern void FUN_00427e60_typed(int param_1, u8 param_2);
 extern code FUN_00427e70;
 #pragma alias FUN_00427e70_typed FUN_00427e70
-extern void FUN_00427e70_typed(float param_1,float param_2,float param_3,u32 param_4,int param_5,
+extern void FUN_00427e70_typed(float param_1,u32 param_4,float param_2,float param_3,int param_5,
                                int param_6,u32 param_7);
 extern code FUN_00429e80;
 #pragma alias FUN_00429e80_typed FUN_00429e80
@@ -4924,10 +4924,8 @@ u32 FUN_00433de0(int param_1)
   YRuntimePathWork *work;
   YRuntimePathNode *node;
   YRuntimePathNode *target;
-  u8 x;
-  u8 y;
-  u8 northX;
-  u8 northY;
+  u8 currentX;
+  u8 currentY;
   u8 targetIndex;
   u8 index;
   int field;
@@ -4941,15 +4939,15 @@ u32 FUN_00433de0(int param_1)
     }
   }
 
-  northY = work->y;
-  northX = work->x;
+  currentY = work->y;
+  currentX = work->x;
   field = FUN_001b9120_u32();
-  if ((*(u8 *)(field + (u32)northY * 0x100 + (u32)northX * 0x10 + 0x53) & 1) != 0) {
-    index = northX + (northY - 1) * 16;
+  if ((*(u8 *)(field + (u32)currentY * 0x100 + (u32)currentX * 0x10 + 0x53) & 1) != 0) {
+    index = currentX + (currentY - 1) * 16;
     node = &work->nodes[index];
     if ((node->x == 0) && (node->y == 0)) {
-      node->x = northX;
-      node->y = work->y - 1;
+      node->x = currentX;
+      node->y = currentY - 1;
       node->previousX = work->x;
       node->previousY = work->y;
       work->openNodes[work->openCount] = index;
@@ -4965,15 +4963,15 @@ u32 FUN_00433de0(int param_1)
     }
   }
 
-  y = work->y;
-  x = work->x;
+  currentY = work->y;
+  currentX = work->x;
   field = FUN_001b9120_u32();
-  if ((*(u8 *)(field + (u32)y * 0x100 + (u32)x * 0x10 + 0x53) & 2) != 0) {
-    index = (x - 1) + (u32)y * 16;
+  if ((*(u8 *)(field + (u32)currentY * 0x100 + (u32)currentX * 0x10 + 0x53) & 2) != 0) {
+    index = (currentX - 1) + (u32)currentY * 16;
     node = &work->nodes[index];
     if ((node->x == 0) && (node->y == 0)) {
-      node->x = work->x - 1;
-      node->y = work->y;
+      node->x = currentX - 1;
+      node->y = currentY;
       node->previousX = work->x;
       node->previousY = work->y;
       work->openNodes[work->openCount] = (work->x - 1) + (u32)work->y * 16;
@@ -4990,15 +4988,15 @@ u32 FUN_00433de0(int param_1)
     }
   }
 
-  y = work->y;
-  x = work->x;
+  currentY = work->y;
+  currentX = work->x;
   field = FUN_001b9120_u32();
-  if ((*(u8 *)(field + (u32)y * 0x100 + (u32)x * 0x10 + 0x53) & 8) != 0) {
-    index = x + 1 + (u32)y * 16;
+  if ((*(u8 *)(field + (u32)currentY * 0x100 + (u32)currentX * 0x10 + 0x53) & 8) != 0) {
+    index = currentX + 1 + (u32)currentY * 16;
     node = &work->nodes[index];
     if ((node->x == 0) && (node->y == 0)) {
-      work->nodes[work->x + 1 + (u32)work->y * 16].x = work->x + 1;
-      work->nodes[work->x + 1 + (u32)work->y * 16].y = work->y;
+      work->nodes[work->x + 1 + (u32)work->y * 16].x = currentX + 1;
+      work->nodes[work->x + 1 + (u32)work->y * 16].y = currentY;
       work->nodes[work->x + 1 + (u32)work->y * 16].previousX = work->x;
       work->nodes[work->x + 1 + (u32)work->y * 16].previousY = work->y;
       work->openNodes[work->openCount] = work->x + 1 + (u32)work->y * 16;
@@ -5015,15 +5013,15 @@ u32 FUN_00433de0(int param_1)
     }
   }
 
-  y = work->y;
-  x = work->x;
+  currentY = work->y;
+  currentX = work->x;
   field = FUN_001b9120_u32();
-  if ((*(u8 *)(field + (u32)y * 0x100 + (u32)x * 0x10 + 0x53) & 4) != 0) {
-    index = (u32)x + (y + 1) * 16;
+  if ((*(u8 *)(field + (u32)currentY * 0x100 + (u32)currentX * 0x10 + 0x53) & 4) != 0) {
+    index = (u32)currentX + (currentY + 1) * 16;
     node = &work->nodes[index];
     if ((node->x == 0) && (node->y == 0)) {
-      work->nodes[(u32)work->x + (work->y + 1) * 16].x = work->x;
-      work->nodes[(u32)work->x + (work->y + 1) * 16].y = work->y + 1;
+      work->nodes[(u32)work->x + (work->y + 1) * 16].x = currentX;
+      work->nodes[(u32)work->x + (work->y + 1) * 16].y = currentY + 1;
       work->nodes[(u32)work->x + (work->y + 1) * 16].previousX = work->x;
       work->nodes[(u32)work->x + (work->y + 1) * 16].previousY = work->y;
       work->openNodes[work->openCount] = (u32)work->x + (work->y + 1) * 16;
@@ -10960,8 +10958,9 @@ u32 FUN_0043ca30(int param_1)
                    *(u32 *)(puVar2 + iVar17 * 4 + 0x270));
       for (iVar17 = 0; iVar17 < 3; iVar17 = iVar17 + 1) {
         iVar13 = (int)*(char *)(DAT_007ce6ec + 0xae);
-        FUN_00427e70_typed(4.0f,*(float *)(puVar2 + iVar13 * 8 + 0x2c4) - 128.0f,
-                     *(float *)(puVar2 + iVar13 * 8 + 0x2c8) - 64.0f,uVar21 | 0xffffff00,0x100,0x80,
+        FUN_00427e70_typed(4.0f,uVar21 | 0xffffff00,
+                     *(float *)(puVar2 + iVar13 * 8 + 0x2c4) - 128.0f,
+                     *(float *)(puVar2 + iVar13 * 8 + 0x2c8) - 64.0f,0x100,0x80,
                      *(u32 *)(puVar2 + iVar13 * 4 + 0x270));
       }
     }
