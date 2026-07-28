@@ -1437,7 +1437,7 @@ void FUN_002024B0(void)
     *(u32*)p |= 2;
 }
 
-// FUN_002025E0 NONMATCHING
+// FUN_002025E0
 void FUN_002025E0(void)
 {
     u8* work;

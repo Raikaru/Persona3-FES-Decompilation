@@ -9028,7 +9028,6 @@ void func_002acf90(BtlCamera* camera, long unused)
     s32 i;
     u32 rand;
     u16 targetId;
-    BtlAction* actionBase;
     BtlAction* action;
     f32 tempX;
     f32 tempZ;
