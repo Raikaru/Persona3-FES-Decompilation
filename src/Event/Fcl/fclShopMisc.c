@@ -6277,12 +6277,12 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
   FUN_003c7e20_f32(0.0f,param_1,param_2,param_3 | 0xffffff00,1,5,0,*(short *)(iVar1 + 4));
 }
 
-// FUN_003F7D50 NONMATCHING
 // Filled in from retail disassembly: sibling FUN_003f7fe0's pattern (3/3/1
 // true-branch, 2/2/0 false-branch constants to FUN_003f55b0/FUN_003f5830)
 // applies here too, except the "else" sub-case in each branch substitutes
 // iVar6 (a computed draw-x offset) and iVar5 (a computed fade alpha) for
 // param_1/param_3 - a background/unselected variant of the same draw call.
+// FUN_003F7D50 NONMATCHING
 
 
 void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
@@ -6453,11 +6453,11 @@ void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 }
 
 
-// FUN_003F8180 NONMATCHING
 // Filled in from retail disassembly, same dispatch family as the sibling
 // functions above (3/3/1 true-branch, 2/2/0 false-branch constants to
 // func_003f55b0/func_003f5830). Residual: a register-bank floor (obj
 // 1088B vs 1056B window); logic and constants verified against retail.
+// FUN_003F8180 NONMATCHING
 
 
 void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5

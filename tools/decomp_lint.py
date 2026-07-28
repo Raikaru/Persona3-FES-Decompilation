@@ -86,7 +86,11 @@ RULES = {
     "H008": ("error", "`register` storage class on an ordinary local"),
     # ---- M: marker hygiene -------------------------------------------------
     "M001": ("error", "duplicate // FUN_ marker address within one file"),
-    "M002": ("error", "comment between a marker and its function definition (breaks marker binding)"),
+    # verify.py itself tolerates this -- it blanks comments before reading the
+    # header -- but a comment here defeats the "marker line is immediately
+    # followed by its definition" assumption that byte-splice edits rely on,
+    # and it is how a marker and its function get separated by accident.
+    "M002": ("warn", "comment between a marker and its definition; annotations belong ABOVE the marker"),
     "M003": ("error", "marker has no resolvable function definition beneath it"),
     "M004": ("warn",  "NONMATCHING tag is misspelled or mis-cased; verify.py will not see it"),
     # ---- P: pragma balance -------------------------------------------------

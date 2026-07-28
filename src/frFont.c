@@ -1481,7 +1481,6 @@ void thunk_FUN_003b0e04(int param_1, u8 param_2)
   FUN_003b0e04(param_1, param_2);
 }
 #pragma optimization_level 2
-// FUN_003B0DD8
 /* Falls through into FUN_003b0e04 (no jr $ra of its own); FUN_003b0e04
  * branches back to this function's entry. Together they implement:
  *   do {
@@ -1492,6 +1491,7 @@ void thunk_FUN_003b0e04(int param_1, u8 param_2)
  * split across two retail symbols, which a single portable-C function
  * cannot reproduce byte-for-byte (the loop-back branch must land at this
  * function's exact address). Kept as readable mnemonic asm. */
+// FUN_003B0DD8
 asm void FUN_003b0dd8(int param_1, u8 param_2)
 {
   .set noreorder
@@ -1512,9 +1512,9 @@ FUN_003b0dd8_check:
 
 #define FUN_003b0d70(...) ((void (*)(...))FUN_003b0d70)(__VA_ARGS__)
 #undef FUN_003b0e04
-// FUN_003B0E04
 /* Continuation of FUN_003b0dd8 (see comment there); branches back to its
  * start when param_1 != 0, otherwise returns. */
+// FUN_003B0E04
 asm void FUN_003b0e04(int param_1, u8 param_2)
 {
   .set noreorder
@@ -1536,12 +1536,12 @@ void thunk_FUN_003b0e54(int param_1, u32 param_2)
   FUN_003b0e54(param_1, param_2);
 }
 #pragma optimization_level 2
-// FUN_003B0E28
 /* Falls through into FUN_003b0e54 (no jr $ra of its own); FUN_003b0e54
  * branches back to this function's entry. Same structure as
  * FUN_003b0dd8/FUN_003b0e04 above but stores a u32 at offset 0x10 instead
  * of a u8 at offset 0x14; see that pair's comment for the full loop shape
  * and why the cross-function branch cannot be portable C. */
+// FUN_003B0E28
 asm void FUN_003b0e28(int param_1, u32 param_2)
 {
   .set noreorder
@@ -1562,9 +1562,9 @@ FUN_003b0e28_check:
 
 #define FUN_003b0e04(...) ((void (*)(...))FUN_003b0e04)(__VA_ARGS__)
 #undef FUN_003b0e54
-// FUN_003B0E54
 /* Continuation of FUN_003b0e28 (see comment there); branches back to its
  * start when param_1 != 0, otherwise returns. */
+// FUN_003B0E54
 asm void FUN_003b0e54(int param_1, u32 param_2)
 {
   .set noreorder

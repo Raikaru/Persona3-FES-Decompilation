@@ -7,9 +7,9 @@
 #pragma alias scrSetResourceFlag FUN_00395170
 #pragma alias scrClearResourceFlag FUN_003951a0
 
-// FUN_0035ad80.
 // 'unused1' and 'unused2' were probably 'runningDelay' and 'destroyDelay',
 // but instead of using 'kwlnTaskInitEx' they used the normal one for some reason
+// FUN_0035ad80.
 KwlnTask* dds3InitProcess(const char* name,
                           u32 priority,
                           s32 unused1,

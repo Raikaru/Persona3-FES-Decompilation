@@ -1534,13 +1534,13 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
     return task;
 }
 
-// FUN_001AFA20 NONMATCHING
 // Retail fully inlines fldFrameMoveWork/fldFrameMoveResolvePosition, and
 // (pathMode==0 branch) fldFrameMoveAppend/fldFrameMoveCreateDebugPoint -
 // none are called via jal. K_FldFrame_Raycast is duplicated per branch,
 // not shared. Dispatch uses work->pathMode (0x18), not work->mode (0x8,
 // a different field - see func_001b0260/func_001b0240). Residual: a
 // register-bank floor (764B vs 800B window); logic verified vs retail.
+// FUN_001AFA20 NONMATCHING
 u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
 {
     FldFrameMoveWork* work;
@@ -1609,11 +1609,11 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
     }
 }
 
-// FUN_001AFD40 NONMATCHING
 // Same inlining pattern as func_001afa20 above (fldFrameMoveWork,
 // fldFrameMoveResolvePosition, fldFrameMoveAppend/CreateDebugPoint all
 // inlined; retail does not jal any of them) - simpler single-path variant
 // with a fixed kind=3, no pathMode dispatch.
+// FUN_001AFD40 NONMATCHING
 u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
 {
     FldFrameMoveWork* work;
@@ -1660,11 +1660,11 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     return true;
 }
 
-// FUN_001AFF70
 // The existing model/matrix-derived position guess did not match retail
 // at all - retail's bytes have NO fldFrameMoveModel/mdlGetMatrix calls
 // and never write points[pointCount].position for this kind=1 point (it
 // is a duration/kind-only marker point, position is left whatever it was).
+// FUN_001AFF70
 u32 func_001aff70(KwlnTask* task, s32 duration)
 {
     FldFrameMoveWork* work;
@@ -2397,8 +2397,8 @@ extern void* func_002ff790(void* object);
 extern u32 func_001acb70(void* collisionWorld, const RwV3d* line, RwV3d* hitPointDst);
 extern u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position);
 
-// FUN_001abd20 NONMATCHING
 // Remaining: post-grid collision processing (type1 walk, final apply, dampening)
+// FUN_001abd20 NONMATCHING
 s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                    RwV3d* translation, f32 sphereCollisRadius, u16 resTypeId)
 {

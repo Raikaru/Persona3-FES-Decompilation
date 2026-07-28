@@ -276,8 +276,8 @@ int FUN_00394270(void)
 }
 #define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
 #undef FUN_003942f0
-// FUN_003942F0 NONMATCHING
 // Dispatch handlers are reconstructed; the final animation-state path still needs byte-level tuning.
+// FUN_003942F0 NONMATCHING
 
 
 u8 *

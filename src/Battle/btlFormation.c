@@ -4932,9 +4932,9 @@ void func_002bf9a0(void)
   return;
 }
 
-// FUN_002bf9b0 NONMATCHING
 // Forbidden inline asm (mtc1/daddu/mov.s) removed and replaced with honest C;
 // residual is 3-word MWCC call-argument evaluation-order scheduling.
+// FUN_002bf9b0 NONMATCHING
 
 void func_002bf9b0(void)
 
@@ -5467,8 +5467,8 @@ long *func_002c08c0(int param_1)
 }
 
 /* Removing this loses func_002c0970 (MATCH nd0 -> MISMATCH nd12) - measured W161. */
-// FUN_002c0970
 /* Removing this loses FUN_002c09f0 (MATCH nd0 -> MISMATCH nd50) - measured W161. */
+// FUN_002c0970
 #pragma opt_loop_invariants on
 #pragma opt_common_subs off
 

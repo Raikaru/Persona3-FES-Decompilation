@@ -3798,10 +3798,10 @@ int thunk_FUN_003a628c(int param_1)
 #pragma optimization_level 2
 #define FUN_003a6140(...) ((long (*)(...))FUN_003a6140)(__VA_ARGS__)
 
-// FUN_003A6288
 /* Fall-through-only branch target for the loop in FUN_003a628c; never returns
  * on its own and has no C equivalent (a normal C function always emits a
  * return). Kept as single-instruction inline asm. */
+// FUN_003A6288
 asm void FUN_003a6288(void)
 {
   .set noreorder

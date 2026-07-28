@@ -640,8 +640,8 @@ LAB_003c2db0:
 #undef FUN_003c2df0
 
 
-// FUN_003C2DF0
 /* Removing this loses FUN_003c2df0 (MATCH nd0 -> MISMATCH nd82) - measured W161. */
+// FUN_003C2DF0
 #pragma opt_loop_invariants on
 u32 FUN_003c2df0(u32 param_1)
 {
@@ -864,8 +864,8 @@ work:
 }
 #define FUN_003c3120(...) ((u8 (*)(...))FUN_003c3120)(__VA_ARGS__)
 #undef FUN_003c3190
-// FUN_003C3190 NONMATCHING
 /* Removing this worsens FUN_003c3190 (nd306 -> nd307) - measured W161. */
+// FUN_003C3190 NONMATCHING
 #pragma opt_loop_invariants on
 
 
