@@ -1163,15 +1163,19 @@ LAB_003b0860:
     goto LAB_003b095c;
   }
   sVar1 = *(u16 *)param_1;
-  if (sVar1 == 0x80d5) goto LAB_003b08d4;
-  if (sVar1 == 0x80cf) goto LAB_003b08d4;
-  if (sVar1 == 0x80c5) goto LAB_003b08d4;
-  if (sVar1 == 0x80c1) goto LAB_003b08d4;
-  if (sVar1 == 0x75) goto LAB_003b08d4;
-  if (sVar1 == 0x6f) goto LAB_003b08d4;
-  if (sVar1 == 0x65) goto LAB_003b08d4;
-  if (sVar1 == 0x61) goto LAB_003b08d4;
-  goto LAB_003b095c;
+  switch (sVar1) {
+  case 0x61:
+  case 0x65:
+  case 0x6f:
+  case 0x75:
+  case 0x80c1:
+  case 0x80c5:
+  case 0x80cf:
+  case 0x80d5:
+    goto LAB_003b08d4;
+  default:
+    goto LAB_003b095c;
+  }
 LAB_003b08d4:
   sVar1 = *puVar3;
   if (sVar1 == 0x54) goto LAB_003b08f0;
@@ -1620,26 +1624,20 @@ u32 FUN_003b0ec0(int param_1)
   u32 uVar1;
   u32 uVar2;
   int iVar3;
-  u32 alpha_mask;
-  u32 changed_value;
-  u32 target_type;
 
   uVar1 = 0;
-  alpha_mask = 0xffffff00;
-  changed_value = 1;
-  target_type = 2;
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
     for (iVar3 = *(int *)(param_1 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
-      if (*(u8 *)(iVar3 + 0x16) == target_type) {
+      if (*(char *)(iVar3 + 0x16) == '\x02') {
         uVar2 = *(u32 *)(iVar3 + 0x10) & 0xff;
         if (uVar2 != 0) {
           uVar2 = uVar2 - 8;
           if ((int)uVar2 < 0) {
             uVar2 = 0;
           }
-          *(u32 *)(iVar3 + 0x10) = (*(u32 *)(iVar3 + 0x10) & alpha_mask) | uVar2;
+          *(u32 *)(iVar3 + 0x10) = *(u32 *)(iVar3 + 0x10) & 0xffffff00 | uVar2;
           *(int *)(iVar3 + 8) = *(int *)(iVar3 + 8) + 0x10;
-          uVar1 = changed_value;
+          uVar1 = 1;
         }
       }
     }

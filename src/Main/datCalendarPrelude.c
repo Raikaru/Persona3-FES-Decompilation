@@ -858,8 +858,20 @@ void FUN_0017a430(u32 saveType, u32 id, u32 size, const void* data)
 // FUN_0017ac60 NONMATCHING
 void FUN_0017ac60(u32 code)
 {
+    struct CodeEntry
+    {
+        u8 first;
+        u8 second;
+        u8 third;
+        u8 fourth;
+    };
+    struct CodeWork
+    {
+        u8 unused[0x5a7];
+        struct CodeEntry entries[0x100];
+    };
     u8 bytes[4];
-    u8* base;
+    struct CodeWork* work;
     s32 i;
     s32 j;
     s32 b0;
@@ -871,19 +883,16 @@ void FUN_0017ac60(u32 code)
     b0 = bytes[0];
     b1 = bytes[1];
     b2 = bytes[2];
-    base = DAT_00836200;
+    work = (struct CodeWork*)DAT_00836200;
     while (i < 0x100)
     {
-        if (base[i * 4 + 0x5a7] != 0 && base[i * 4 + 0x5a7] == b0 &&
-            base[i * 4 + 0x5a8] == b1 && base[i * 4 + 0x5a9] == b2)
+        if (work->entries[i].first != 0 && work->entries[i].first == b0 &&
+            work->entries[i].second == b1 && work->entries[i].third == b2)
         {
             j = i;
             while (j < 0xff)
             {
-                base[j * 4 + 0x5a7] = base[j * 4 + 0x5ab];
-                base[j * 4 + 0x5a8] = base[j * 4 + 0x5ac];
-                base[j * 4 + 0x5a9] = base[j * 4 + 0x5ad];
-                base[j * 4 + 0x5aa] = base[j * 4 + 0x5ae];
+                work->entries[j] = work->entries[j + 1];
                 j++;
             }
             U8(0x00836ba3) = 0;
@@ -891,14 +900,12 @@ void FUN_0017ac60(u32 code)
         i++;
     }
     i = 0;
+    work = (struct CodeWork*)DAT_00836200;
     while (i < 0x100)
     {
-        if (base[i * 4 + 0x5a7] == 0)
+        if (work->entries[i].first == 0)
         {
-            base[i * 4 + 0x5a7] = bytes[0];
-            base[i * 4 + 0x5a8] = bytes[1];
-            base[i * 4 + 0x5a9] = bytes[2];
-            base[i * 4 + 0x5aa] = bytes[3];
+            work->entries[i] = *(struct CodeEntry*)bytes;
             break;
         }
         i++;

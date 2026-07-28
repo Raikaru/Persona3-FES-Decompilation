@@ -1243,7 +1243,7 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
     piVar3 = piVar3 + 1;
   } while (0 < iVar6);
   if ((param_3 == 0) || (4 < param_2)) {
-    K_Assert(DAT_006a5f70,0x1c2);
+    K_Assert("fclCombineMisc.c",0x1c2);
   }
   memset(param_1,0,0x34);
   iVar2 = aiStack_30[(int)param_2];
@@ -2123,33 +2123,15 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
   int iVar11;
 
+  u8 *puVar12;
+
   
 
   uVar9 = 0;
 
   uVar8 = 0;
 
-  uVar10 = 0;
-
-  do {
-
-    if (0xbf < uVar10) {
-
-      if (uVar8 == 0) {
-
-        K_Assert(DAT_006a5f70,0x45b);
-
-      }
-
-      if ((uVar9 == 0) && (*(u8 *)((int)uVar8 * 0xe + DAT_007ce420 + 3) < param_2)) {
-
-        uVar9 = uVar8;
-
-      }
-
-      return uVar9;
-
-    }
+  for (uVar10 = 0; uVar10 < 0xc0; uVar10 = uVar10 + 1) {
 
     iVar11 = (int)uVar10 * 0xe;
 
@@ -2187,11 +2169,13 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
           iVar6 = uVar7 * 8;
 
-          if (uVar10 == (long)*(short *)(DAT_006a5414 + iVar6)) {
+          puVar12 = DAT_006a5410 + iVar6;
 
-            if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) != 0) {
+          if (uVar10 == (long)*(short *)(puVar12 + 4)) {
 
-              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+            if ((*(s16 *)(puVar12 + 6) & 1) != 0) {
+
+              lVar5 = datGetFlag(*(u32 *)puVar12);
 
               if (lVar5 == 0) {
 
@@ -2203,9 +2187,9 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
             }
 
-            else if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
+            else if ((*(s16 *)(puVar12 + 6) & 2) != 0) {
 
-              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+              lVar5 = datGetFlag(*(u32 *)puVar12);
 
               if (lVar5 == 1) {
 
@@ -2271,9 +2255,21 @@ LAB_003d7cb4:
 
     }
 
-    uVar10 = uVar10 + 1;
+  }
 
-  } while( 1 );
+  if (uVar8 == 0) {
+
+    K_Assert(DAT_006a5f70,0x45b);
+
+  }
+
+  if ((uVar9 == 0) && (*(u8 *)((int)uVar8 * 0xe + DAT_007ce420 + 3) < param_2)) {
+
+    uVar9 = uVar8;
+
+  }
+
+  return uVar9;
 
 }
 
@@ -2307,33 +2303,15 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
   int iVar11;
 
+  u8 *puVar12;
+
   
 
   uVar9 = 0;
 
   uVar8 = 0;
 
-  uVar10 = 0;
-
-  do {
-
-    if (0xbf < uVar10) {
-
-      if (uVar8 == 0) {
-
-        K_Assert(DAT_006a5f70,0x47c);
-
-      }
-
-      if ((uVar9 == 0) && (*(u8 *)((int)uVar8 * 0xe + DAT_007ce420 + 3) < param_2)) {
-
-        uVar9 = uVar8;
-
-      }
-
-      return uVar9;
-
-    }
+  for (uVar10 = 0; uVar10 < 0xc0; uVar10 = uVar10 + 1) {
 
     iVar11 = (int)uVar10 * 0xe;
 
@@ -2371,11 +2349,13 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
           iVar6 = uVar7 * 8;
 
-          if (uVar10 == (long)*(short *)(DAT_006a5414 + iVar6)) {
+          puVar12 = DAT_006a5410 + iVar6;
 
-            if ((*(u16 *)(DAT_006a5416 + iVar6) & 1) != 0) {
+          if (uVar10 == (long)*(short *)(puVar12 + 4)) {
 
-              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+            if ((*(s16 *)(puVar12 + 6) & 1) != 0) {
+
+              lVar5 = datGetFlag(*(u32 *)puVar12);
 
               if (lVar5 == 0) {
 
@@ -2387,9 +2367,9 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
             }
 
-            else if ((*(u16 *)(DAT_006a5416 + iVar6) & 2) != 0) {
+            else if ((*(s16 *)(puVar12 + 6) & 2) != 0) {
 
-              lVar5 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar6));
+              lVar5 = datGetFlag(*(u32 *)puVar12);
 
               if (lVar5 == 1) {
 
@@ -2455,9 +2435,21 @@ LAB_003d7f94:
 
     }
 
-    uVar10 = uVar10 + 1;
+  }
 
-  } while( 1 );
+  if (uVar8 == 0) {
+
+    K_Assert(DAT_006a5f70,0x47c);
+
+  }
+
+  if ((uVar9 == 0) && (*(u8 *)((int)uVar8 * 0xe + DAT_007ce420 + 3) < param_2)) {
+
+    uVar9 = uVar8;
+
+  }
+
+  return uVar9;
 
 }
 
@@ -2816,6 +2808,8 @@ u32 FUN_003d8630(int param_1,int param_2)
 
   u16 *puVar9;
 
+  u8 *puVar10;
+
   u16 auStack_20 [15];
 
   short sStack_2;
@@ -2868,13 +2862,15 @@ u32 FUN_003d8630(int param_1,int param_2)
 
         iVar5 = uVar8 * 8;
 
+        puVar10 = DAT_006a5410 + iVar5;
+
         bVar3 = bVar2;
 
-        if ((u32)uVar1 == (long)*(short *)(DAT_006a5414 + iVar5)) {
+        if ((u32)uVar1 == (long)*(short *)(puVar10 + 4)) {
 
-          if ((*(u16 *)(DAT_006a5416 + iVar5) & 1) != 0) {
+          if ((*(s16 *)(puVar10 + 6) & 1) != 0) {
 
-            lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
+            lVar4 = datGetFlag(*(u32 *)puVar10);
 
             if (lVar4 == 0) {
 
@@ -2888,9 +2884,9 @@ u32 FUN_003d8630(int param_1,int param_2)
 
           else {
 
-            if ((*(u16 *)(DAT_006a5416 + iVar5) & 2) != 0) {
+            if ((*(s16 *)(puVar10 + 6) & 2) != 0) {
 
-              lVar4 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar5));
+              lVar4 = datGetFlag(*(u32 *)puVar10);
 
               bVar2 = 1;
 

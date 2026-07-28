@@ -4980,7 +4980,7 @@ void FUN_002dae30(u64 param_1)
 // FUN_002db2a0 NONMATCHING
 void FUN_002db2a0(u32 param_1)
 {
-    s16 threshold;
+    u16 threshold;
     u32 index;
 
     index = param_1 & 0xffff;
@@ -4989,27 +4989,31 @@ void FUN_002db2a0(u32 param_1)
     switch (index)
     {
     case 0:
-        threshold = (s16)(datCalcRand(0) + 2);
+        threshold = 2;
+        threshold = (u16)(threshold + (u16)datCalcRand(2));
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         *(u32*)(iGpffffb6fc + 0xa10) = 0;
         break;
     case 1:
-        threshold = (s16)(datCalcRand(1) + 2);
+        threshold = 2;
+        threshold = (u16)(threshold + (u16)datCalcRand(1));
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         break;
     case 2:
         if (datGetFlag(0x140) != 0)
         {
-            threshold = (s16)(datCalcRand(2) + 2);
+            threshold = 2;
+            threshold = (u16)(threshold + (u16)datCalcRand(2));
         }
         else if (datGetFlag(0x141) != 0)
         {
-            threshold = (s16)(datCalcRand(2) + 3);
+            threshold = 3;
+            threshold = (u16)(threshold + (u16)datCalcRand(2));
         }
         *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
-        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
         break;
     default:
         break;

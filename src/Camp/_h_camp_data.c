@@ -199,6 +199,8 @@ extern u32 FUN_0040eb50();
 extern s32 campDataDrawText(f32 scale, s32 x, s32 y, u8 color, s16 font,
                             const char* text, s32 maxWidth);
 extern u32 FUN_00521250();
+#pragma alias campDataCopy FUN_00521250
+extern void campDataCopy(void* destination, const void* source, u32 size);
 extern u32 FUN_00523ac8();
 
 extern void* func_00133780(KwlnTask* task);
@@ -2235,7 +2237,7 @@ void FUN_0016c1d0(void)
         (void*)(uintptr_t)FUN_00100d80(D_005E3200, 0));
     cdvd = DAT_007cdfe8;
     copySize = *(u32*)((u8*)cdvd + 0x118);
-    FUN_00521250(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110), copySize);
+    campDataCopy(DAT_0083bb30, *(void**)((u8*)cdvd + 0x110), copySize);
     FUN_00100ec0(DAT_007cdfe8);
     FUN_0016c2f0();
 }

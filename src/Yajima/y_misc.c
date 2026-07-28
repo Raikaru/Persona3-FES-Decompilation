@@ -258,7 +258,7 @@ extern void FUN_004d0f00_arg(u32 param_1);
 #pragma alias FUN_00115980_arg FUN_00115980
 extern void FUN_00115980_arg(u32 param_1);
 #pragma alias FUN_00194b80_u32 FUN_00194b80
-extern u32 FUN_00194b80_u32(u64, u32, u8 *, u32 (*)(int), void (*)(int), u32);
+extern u32 FUN_00194b80_u32(u32, u32, u8 *, u32 (*)(int), void (*)(int), u32);
 code DAT_00960184;
 extern char DAT_006b4400[];
 #pragma alias DAT_00960184_abs DAT_00960184
@@ -3115,16 +3115,15 @@ FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
   if (puVar3 == 0) {
     return 0;
   }
-  uVar2 = FUN_00194b80_u32(param_2, 0x106f, DAT_006b4400 + 0x40,
+  uVar2 = FUN_00194b80_u32(param_2, 0x106f, (u8 *)DAT_006b4400 + 0x40,
                            FUN_00426590, FUN_00427640, (u32)puVar3);
   *puVar3 = 0;
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
+    u8 *entry = puVar3 + iVar1 * 4;
     u8 bVar1 = ((u8 *)&param_5)[0];
     u8 bVar2 = ((u8 *)&param_5)[1];
     u8 bVar3 = ((u8 *)&param_5)[2];
     u8 bVar4 = ((u8 *)&param_5)[3];
-    u8 *entry = puVar3 + iVar1 * 4;
-+
     entry[0x110] = bVar1;
     entry[0x111] = bVar2;
     entry[0x112] = bVar3;

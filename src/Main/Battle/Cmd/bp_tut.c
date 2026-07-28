@@ -19,7 +19,7 @@ typedef struct BpTutWork
 {
     u32 flags;
     u32 phase;
-    u32 type;
+    s32 type;
     u32 step;
     KwlnTask* task;
 } BpTutWork;
@@ -33,7 +33,7 @@ void FUN_003c72d0(s32 handle);
 void FUN_003c7430();
 void FUN_003c74e0();
 void FUN_003c7560(s32 param_1);
-void FUN_003c7650(s32 param_1);
+u32 FUN_003c7650(s32 param_1);
 void FUN_003c77a0(void);
 u32 FUN_003c7850(void);
 void FUN_003c7990(s32 param_1);

@@ -577,9 +577,7 @@ void func_0021cd00(void* frameData, f32* uv)
     }
 }
 
-#pragma optimization_level 3
-/* Removing this loses FUN_00255390 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
-#pragma schedule on
+#pragma optimization_level 2
 // Reconstructed full mode dispatch and duplicated axis calculations.
 // Remaining differences are MWCC register allocation and branch scheduling.
 // FUN_0021cec0 NONMATCHING
@@ -587,145 +585,150 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
 {
     BpTexFrameData* frame;
     u8* texture;
-    u8* rasterList;
+    u32* rasterList;
     u8* raster;
-    u32 rasterIndex;
 
     frame = (BpTexFrameData*)frameData;
-    rasterIndex = frame->rasterIndex;
     texture = (u8*)(uintptr_t)frame->texture;
-    rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
-    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, rasterIndex * 4);
+    rasterList = BP_TEX_PTR(texture, 8);
+    raster = (u8*)(uintptr_t)rasterList[frame->rasterIndex];
     {
         f32 xRange[2] = {0};
-        f32 yRange[2];
-        s32 rasterWidth;
-        s32 rasterHeight;
-        u32 xMode;
-        u32 yMode;
-    xRange[0] = (f32)frame->x;
-    xRange[1] = (f32)(frame->x + frame->width);
-    rasterWidth = *(s32*)(raster + 0x0c);
-    yRange[0] = (f32)frame->y;
-    yRange[1] = (f32)(frame->y + frame->height);
-    rasterHeight = *(s32*)(raster + 0x10);
 
-    switch (mode)
-    {
-    case 0:
-        xMode = 0;
-        yMode = 1;
-        break;
-    case 1:
-        xMode = 2;
-        yMode = 2;
-        break;
-    case 2:
-        xMode = 0;
-        yMode = 2;
-        break;
-    case 3:
-        xMode = 1;
-        yMode = 0;
-        break;
-    case 4:
-        xMode = 2;
-        yMode = 1;
-        break;
-    case 5:
-        xMode = 2;
-        yMode = 2;
-        break;
-    case 6:
-        xMode = 2;
-        yMode = 1;
-        break;
-    case 7:
-        xMode = 1;
-        yMode = 1;
-        break;
-    }
+        xRange[0] = (f32)frame->x;
+        xRange[1] = (f32)(frame->x + frame->width);
+        {
+            f32 yRange[2] = {0};
+            s32 rasterWidth;
+            s32 rasterHeight;
+            u32 xMode;
+            u32 yMode;
 
-    if (xMode == 0)
-    {
-        if ((frame->id & 1) != 0)
-        {
-            uv[0] = xRange[1] / (f32)rasterWidth;
-            uv[2] = xRange[0] / (f32)rasterWidth;
+            yRange[0] = (f32)frame->y;
+            yRange[1] = (f32)(frame->y + frame->height);
+            rasterWidth = *(s32*)(raster + 0x0c);
+            rasterHeight = *(s32*)(raster + 0x10);
+
+            switch (mode)
+            {
+            case 0:
+                xMode = 0;
+                yMode = 1;
+                break;
+            case 1:
+                xMode = 2;
+                yMode = 0;
+                break;
+            case 2:
+                xMode = 0;
+                yMode = 2;
+                break;
+            case 3:
+                xMode = 1;
+                yMode = 0;
+                break;
+            case 4:
+                xMode = 2;
+                yMode = 1;
+                break;
+            case 5:
+                xMode = 2;
+                yMode = 2;
+                break;
+            case 6:
+                xMode = 2;
+                yMode = 1;
+                break;
+            case 7:
+                xMode = 1;
+                yMode = 1;
+                break;
+            }
+
+            switch (xMode)
+            {
+            case 0:
+                if ((~frame->id & 1) != 0)
+                {
+                    uv[0] = xRange[0] / (f32)rasterWidth;
+                    uv[2] = xRange[1] / (f32)rasterWidth;
+                }
+                else
+                {
+                    uv[0] = xRange[1] / (f32)rasterWidth;
+                    uv[2] = xRange[0] / (f32)rasterWidth;
+                }
+                break;
+            case 1:
+                if ((~frame->id & 1) != 0)
+                {
+                    uv[0] = xRange[0] / (f32)rasterWidth;
+                    uv[2] = (xRange[0] + 1.0f) / (f32)rasterWidth;
+                }
+                else
+                {
+                    uv[0] = xRange[1] / (f32)rasterWidth;
+                    uv[2] = (xRange[1] - 1.0f) / (f32)rasterWidth;
+                }
+                break;
+            case 2:
+                if ((~frame->id & 1) != 0)
+                {
+                    uv[0] = (xRange[1] - 1.0f) / (f32)rasterWidth;
+                    uv[2] = xRange[1] / (f32)rasterWidth;
+                }
+                else
+                {
+                    uv[0] = (xRange[0] + 1.0f) / (f32)rasterWidth;
+                    uv[2] = xRange[0] / (f32)rasterWidth;
+                }
+                break;
+            }
+
+            switch (yMode)
+            {
+            case 0:
+                if ((~frame->id & 2) != 0)
+                {
+                    uv[1] = yRange[0] / (f32)rasterHeight;
+                    uv[3] = yRange[1] / (f32)rasterHeight;
+                }
+                else
+                {
+                    uv[1] = yRange[1] / (f32)rasterHeight;
+                    uv[3] = yRange[0] / (f32)rasterHeight;
+                }
+                break;
+            case 1:
+                if ((~frame->id & 2) != 0)
+                {
+                    uv[1] = yRange[0] / (f32)rasterHeight;
+                    uv[3] = (yRange[0] + 1.0f) / (f32)rasterHeight;
+                }
+                else
+                {
+                    uv[1] = yRange[1] / (f32)rasterHeight;
+                    uv[3] = (yRange[1] - 1.0f) / (f32)rasterHeight;
+                }
+                break;
+            case 2:
+                if ((~frame->id & 2) != 0)
+                {
+                    uv[1] = (yRange[1] - 1.0f) / (f32)rasterHeight;
+                    uv[3] = yRange[1] / (f32)rasterHeight;
+                }
+                else
+                {
+                    uv[1] = (yRange[0] + 1.0f) / (f32)rasterHeight;
+                    uv[3] = yRange[0] / (f32)rasterHeight;
+                }
+                break;
+            }
         }
-        else
-        {
-            uv[0] = xRange[0] / (f32)rasterWidth;
-            uv[2] = xRange[1] / (f32)rasterWidth;
-        }
-    }
-    else if (xMode == 1)
-    {
-        if ((frame->id & 1) != 0)
-        {
-            uv[0] = xRange[1] / (f32)rasterWidth;
-            uv[2] = (xRange[1] - 1.0f) / (f32)rasterWidth;
-        }
-        else
-        {
-            uv[0] = xRange[0] / (f32)rasterWidth;
-            uv[2] = (xRange[0] + 1.0f) / (f32)rasterWidth;
-        }
-    }
-    else
-    {
-        if ((frame->id & 1) != 0)
-        {
-            uv[0] = (xRange[0] + 1.0f) / (f32)rasterWidth;
-            uv[2] = xRange[0] / (f32)rasterWidth;
-        }
-        else
-        {
-            uv[0] = (xRange[1] - 1.0f) / (f32)rasterWidth;
-            uv[2] = xRange[1] / (f32)rasterWidth;
-        }
-    }
-    if (yMode == 0)
-    {
-        if ((frame->id >> 1 & 1) != 0)
-        {
-            uv[1] = yRange[1] / (f32)rasterHeight;
-            uv[3] = yRange[0] / (f32)rasterHeight;
-        }
-        else
-        {
-            uv[1] = yRange[0] / (f32)rasterHeight;
-            uv[3] = yRange[1] / (f32)rasterHeight;
-        }
-    }
-    else if (yMode == 1)
-    {
-        if ((frame->id >> 1 & 1) != 0)
-        {
-            uv[1] = yRange[1] / (f32)rasterHeight;
-            uv[3] = (yRange[1] - 1.0f) / (f32)rasterHeight;
-        }
-        else
-        {
-            uv[1] = yRange[0] / (f32)rasterHeight;
-            uv[3] = (yRange[0] + 1.0f) / (f32)rasterHeight;
-        }
-    }
-    else
-    {
-        if ((frame->id >> 1 & 1) != 0)
-        {
-            uv[1] = (yRange[0] + 1.0f) / (f32)rasterHeight;
-            uv[3] = yRange[0] / (f32)rasterHeight;
-        }
-        else
-        {
-            uv[1] = (yRange[1] - 1.0f) / (f32)rasterHeight;
-            uv[3] = yRange[1] / (f32)rasterHeight;
-        }
-    }
     }
 }
+/* Removing this loses FUN_00255390 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
+#pragma schedule on
 #pragma optimization_level 2
 
 // FUN_0021d3b0

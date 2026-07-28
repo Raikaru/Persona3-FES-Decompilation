@@ -2568,9 +2568,7 @@ void FUN_003dfae0(int *param_1,int *param_2)
   bVar1 = *(int *)(*param_1 + 0xc) == *param_2;
 
   if (bVar1) {
-
     fVar10 = DAT_007caffc;
-
   }
 
   sVar2 = *(s16 *)((int)param_2 + 0x14);
