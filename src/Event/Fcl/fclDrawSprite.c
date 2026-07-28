@@ -4,7 +4,7 @@ typedef int (*code)();
 void FUN_0040e300(u32 param_1,u32 param_2);
 void FUN_0040e360(void);
 void FUN_0040e390(void);
-void FUN_0040e3c0(u32 param_1,int param_2,int param_3,char param_4,int param_5,int param_6,int param_7);
+void FUN_0040e3c0(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6);
 void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11);
 #pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0
@@ -16,7 +16,7 @@ void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int pa
 u32 FUN_0040e450(int param_1);
 u32 FUN_0040e4f0(int *param_1);
 void FUN_0040e580(u32 param_1);
-u64 FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5, int param_6, int param_7);
+u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
 u64 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
 #pragma alias fclDrawSpriteCreate FUN_001158b0
@@ -116,10 +116,9 @@ void FUN_0040e390(void)
 // FUN_0040E3C0
 
 
-void FUN_0040e3c0(u32 param_1,int param_2,int param_3,char param_4,int param_5,int param_6,
-                   int param_7)
+void FUN_0040e3c0(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6)
 {
-  FUN_0040e610(param_1,param_2,param_3,param_4,param_5,DAT_007ce6a0,param_7);
+  FUN_0040e610(param_2,param_3,param_1,param_4,param_5,param_6,DAT_007ce6a0);
 }
 
 // FUN_0040E3F0
@@ -256,12 +255,11 @@ void FUN_0040e580(u32 param_1)
 
 }
 
-// FUN_0040E610 NONMATCHING
+// FUN_0040E610
 
 
 u64
-FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int param_6,
-
+FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,
             int param_7)
 
 
@@ -288,9 +286,9 @@ FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int pa
 
   *(float *)(iVar1 + 0x14) = (float)(param_3 + *(short *)(pcVar3 + 6));
 
-  *(u32 *)(iVar1 + 0x2c) = param_1;
+  *(float *)(iVar1 + 0x2c) = param_1;
 
-  *(char *)(iVar1 + 0x19) = -1 - param_4;
+  *(u8 *)(iVar1 + 0x19) = 0xff - param_4;
 
   func_001127d0(uVar2,1);
 

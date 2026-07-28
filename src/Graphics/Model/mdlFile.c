@@ -852,7 +852,7 @@ extern void FUN_003243d0_1arg(u32 param_1);
 #pragma alias FUN_003243f0_i FUN_003243f0
 extern void FUN_003243f0_i(int param_1,int param_2);
 extern void FUN_003243d0_2arg(u32 param_1,u16 param_2);
-void FUN_003243f0(int param_1,u64 param_2);
+void FUN_003243f0(int param_1,u32 param_2);
 #pragma alias FUN_00324510_i FUN_00324510
 extern void FUN_00324510_i(int param_1,int param_2);
 void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
@@ -8361,7 +8361,7 @@ void FUN_003243d0(void)
 // FUN_003243F0 NONMATCHING
 
 
-void FUN_003243f0(int param_1,u64 param_2)
+void FUN_003243f0(int param_1,u32 param_2)
 
 
 
@@ -47905,24 +47905,24 @@ void FUN_0034f6b0(int param_1)
 
 
 
-// FUN_0034F910 NONMATCHING
+// FUN_0034F910
 #pragma alias FUN_0034f910_u32 FUN_0034f910
 void FUN_0034f910_u32(u32 param_1,u32 param_2)
 {
 #pragma alias FUN_0034eae0_u32last FUN_0034eae0
   extern void FUN_0034eae0_u32last(int,u32 *,int,u32 *,u8 (*)[16],float *,u32);
   int count;
-  int resource;
+  u8 (*vertices)[16];
   int *entry;
   int data;
-  u8 (*vertices)[16];
+  int resource;
   int state;
   int i;
-  u8 matrix[4][16];
-  u8 transformed[16];
   u8 scale[16];
-  u8 localMatrix[16];
+  u8 transformed[16];
   u8 localVector[16];
+  u8 localMatrix[16];
+  u8 matrix[4][16];
   float size[2];
   int packed;
 
@@ -47935,7 +47935,7 @@ void FUN_0034f910_u32(u32 param_1,u32 param_2)
     entry = (int *)FUN_003210a0(0x15);
     state = *entry;
     if ((param_2 & 0xff) == 1) {
-      (*DAT_00960090)(1,state);
+      (*DAT_00960090_abs)(1,state);
     }
     size[0] = (float)*(int *)(state + 0xc);
     size[1] = (float)*(int *)(state + 0x10);
@@ -47947,18 +47947,24 @@ void FUN_0034f910_u32(u32 param_1,u32 param_2)
         "pextlh $v0, $zero, $v0            \n"
         "qmtc2.ni $v0, vf10                \n"
         "vitof0.xyzw vf10, vf10            \n"
+        "nop                                \n"
         "qmtc2.ni %1, vf2                  \n"
         "vmulx.xyzw vf10, vf10, vf2x       \n"
-        "sqc2 vf10, 0(%2)                  \n"
         ".set reorder"
-        : : "r" (&packed), "r" (DAT_007caf08), "r" (scale)
+        : : "r" (&packed), "r" (DAT_007caf08)
         : "v0", "vf2", "vf10", "memory");
+    __asm__ volatile (
+        ".set noreorder                     \n"
+        "sqc2 vf10, 0(%0)                  \n"
+        ".set reorder"
+        : : "r" (scale) : "vf10", "memory");
     if ((*(u32 *)(*(int *)(data + 0x5c) + 0xc) & 1) == 0) {
-      for (i = 0; i < count; i = i + 1) {
-        if (-1 < *(int *)vertices[1]) {
+      for (i = 0; i < count;) {
+        if (*(int *)vertices[1] >= 0) {
           FUN_0034eae0_u32last((int)param_1,(u32 *)resource,(int)vertices,
                        (u32 *)vertices,(u8 (*)[16])scale,size,param_2);
         }
+        i = i + 1;
         vertices = vertices + 2;
         resource = resource + 0x1c;
       }
@@ -47969,31 +47975,44 @@ void FUN_0034f910_u32(u32 param_1,u32 param_2)
       __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r" (localMatrix) : "vf10", "memory");
       FUN_00357e30();
       __asm__ volatile (
-          "lqc2 vf31, 0(%0) \n"
-          "sqc2 vf28, 0(%1) \n"
-          "sqc2 vf29, 16(%1) \n"
-          "sqc2 vf30, 32(%1) \n"
-          "sqc2 vf31, 48(%1)"
-          : : "r" (localVector), "r" (matrix)
+          ".set noreorder       \n"
+          "lqc2 vf31, 0(%0)     \n"
+          ".set reorder"
+          : : "r" (localVector) : "vf31", "memory");
+      __asm__ volatile (
+          ".set noreorder        \n"
+          "sqc2 vf28, 0(%0)      \n"
+          "sqc2 vf29, 16(%0)     \n"
+          "sqc2 vf30, 32(%0)     \n"
+          "sqc2 vf31, 48(%0)     \n"
+          ".set reorder"
+          : : "r" (matrix)
           : "vf28", "vf29", "vf30", "vf31", "memory");
-      for (i = 0; i < count; i = i + 1) {
-        if (-1 < *(int *)vertices[1]) {
+      for (i = 0; i < count;) {
+        if (*(int *)vertices[1] >= 0) {
           __asm__ volatile (
-              "lqc2 vf28, 0(%0)              \n"
-              "lqc2 vf29, 16(%0)             \n"
-              "lqc2 vf30, 32(%0)             \n"
-              "lqc2 vf31, 48(%0)             \n"
-              "lqc2 vf10, 0(%1)              \n"
-              "vmulax.xyzw ACC, vf28, vf10x  \n"
-              "vmadday.xyzw ACC, vf29, vf10y \n"
-              "vmaddaz.xyzw ACC, vf30, vf10z \n"
-              "vmaddw.xyzw vf10, vf31, vf0w  \n"
-              "sqc2 vf10, 0(%2)"
-              : : "r" (matrix), "r" (vertices), "r" (transformed)
+              ".set noreorder                     \n"
+              "lqc2 vf28, 0(%0)                   \n"
+              "lqc2 vf29, 16(%0)                  \n"
+              "lqc2 vf30, 32(%0)                  \n"
+              "lqc2 vf31, 48(%0)                  \n"
+              "lqc2 vf10, 0(%1)                   \n"
+              "vmulax.xyzw ACC, vf28, vf10x       \n"
+              "vmadday.xyzw ACC, vf29, vf10y      \n"
+              "vmaddaz.xyzw ACC, vf30, vf10z      \n"
+              "vmaddw.xyzw vf10, vf31, vf0w       \n"
+              ".set reorder"
+              : : "r" (matrix), "r" (vertices)
               : "ACC", "vf0", "vf10", "vf28", "vf29", "vf30", "vf31", "memory");
+          __asm__ volatile (
+              ".set noreorder                     \n"
+              "sqc2 vf10, 0(%0)                   \n"
+              ".set reorder"
+              : : "r" (transformed) : "vf10", "memory");
           FUN_0034eae0_u32last((int)param_1,(u32 *)resource,(int)vertices,
                        (u32 *)transformed,(u8 (*)[16])scale,size,param_2);
         }
+        i = i + 1;
         vertices = vertices + 2;
         resource = resource + 0x1c;
       }
