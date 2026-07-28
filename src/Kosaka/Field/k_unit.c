@@ -1873,7 +1873,7 @@ void func_001d1360(void)
     u16 resourceId;
     ResrcModelChar* resource;
     RwV3d light;
-    u64 modelData;
+    u32 modelData;
 
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {

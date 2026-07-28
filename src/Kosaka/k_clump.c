@@ -758,15 +758,18 @@ void* func_001a74e0(void* object, u32* state)
     return object;
 }
 
-// FUN_001a7570 NONMATCHING
+// FUN_001a7570
 void* func_001a7570(void* clump)
 {
     u32* state;
 
     state = (u32*)kclump_alloc(1, 0x2c, 0x40000);
     func_004916d0(clump, (KClumpCallback)func_001a74e0, state);
-    if (state[1] == 0 && state[0] == 0 && state[4] == 0 && state[3] == 0 && state[5] == 0 &&
-        state[9] == 0 && state[10] == 0 && state[6] == 0 && state[7] == 0 && state[8] == 0)
+    if (state[1] == 0 &&
+        (state[0] == 0 ||
+         (state[4] == 0 && state[3] == 0 && state[5] == 0 &&
+          state[9] == 0 && state[10] == 0 && state[6] == 0 &&
+          state[7] == 0 && state[8] == 0)))
     {
         func_001a7710(state);
         state = NULL;

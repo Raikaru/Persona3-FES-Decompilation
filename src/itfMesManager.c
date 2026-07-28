@@ -4211,7 +4211,7 @@ void FUN_003a67e0(u32 *param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u32 *puVar4;
 

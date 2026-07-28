@@ -1413,11 +1413,9 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
                    param_4 * 0xc,(float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0)) + 1.0f);
 
   if (param_8 != 0) {
-
     iVar2 = ((code)param_8)(param_1,param_2,param_7);
     param_2 = param_2 + iVar2;
     iVar1 = iVar1 + iVar2;
-
   }
 
   for (; iVar1 < param_4; iVar1 = iVar1 + 1) {
@@ -9496,7 +9494,7 @@ u64 FUN_0037a640(int param_1,int param_2,int param_3)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   u64 uVar2;
 
@@ -10806,7 +10804,7 @@ u32 FUN_0037be50(int param_1,int param_2,int param_3)
 
   u32 uVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   int iVar5;
 
@@ -16413,7 +16411,7 @@ int FUN_00383360(int param_1,int param_2,int param_3)
 
   int iVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 

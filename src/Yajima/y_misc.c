@@ -2050,11 +2050,11 @@ u64 FUN_004260a0(int param_1)
 
   int iVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
-  long lVar10;
+  int lVar10;
 
   u32 *puVar11;
 
@@ -6241,7 +6241,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
   u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
   int iVar10;
 
@@ -6804,9 +6804,9 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
   int iVar7;
 
-  long lVar8;
+  int lVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
   int iVar10;
 
@@ -7912,9 +7912,9 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   int iVar8;
 

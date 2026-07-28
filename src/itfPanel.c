@@ -13,6 +13,8 @@ extern void FUN_0019d3f0(const char *file,s32 line);
 extern u32 FUN_00171250(s16 id);
 extern u32 FUN_00170d60(s16 id);
 extern u64 FUN_00171110(s16 id,s16 field);
+extern u32 FUN_00171110_u32(s16 id,s16 field);
+#pragma alias FUN_00171110_u32 FUN_00171110
 extern const char DAT_006a1bf8[];
 extern u32 DAT_006a1d10;
 #pragma alias DAT_006a1d10_abs DAT_006a1d10
@@ -1800,9 +1802,7 @@ void FUN_003aa720(int param_1)
   
 
   iVar4 = *(int *)(param_1 + 8);
-
   psVar8 = DAT_006a2060;
-
   psVar7 = asStack_20;
 
   iVar6 = 8;
@@ -3286,7 +3286,7 @@ u64 FUN_003acbc0(u64 param_1,int param_2)
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
   u8 *pbVar7;
 
@@ -3429,7 +3429,7 @@ u64 FUN_003ace60(u64 param_1,int param_2)
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
   u8 *pbVar7;
 
@@ -3636,7 +3636,7 @@ u64 FUN_003ad1b0(u32 param_1,int param_2)
 
   u8 bVar1;
 
-  long lVar2;
+  int lVar2;
 
   u8 *pbVar3;
 
@@ -4203,8 +4203,7 @@ u64 FUN_003ada00(u64 param_1,int param_2)
 
   u8 uVar2;
 
-  u64 uVar3;
-
+  u32 uVar3;
   u8 *pbVar4;
 
   int iVar5;
@@ -4255,7 +4254,7 @@ u64 FUN_003ada00(u64 param_1,int param_2)
 
   FUN_003b22a0(param_2);
 
-  uVar3 = FUN_00171110((u16)((bVar7 & 0xff) << 8 | bVar1),0);
+  uVar3 = FUN_00171110_u32((u16)((bVar7 & 0xff) << 8 | bVar1),0);
 
   FUN_003b2020(uVar3,param_2);
 

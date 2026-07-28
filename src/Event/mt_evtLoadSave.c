@@ -127,11 +127,11 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
   int iVar4;
 
-  long lVar5;
+  int lVar5;
 
-  long lVar6;
+  int lVar6;
 
-  long lVar7;
+  int lVar7;
 
   int *piVar8;
 
@@ -949,11 +949,11 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
   int iVar1;
 
-  long lVar2;
+  u32 lVar2;
 
-  long lVar3;
+  u32 lVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
