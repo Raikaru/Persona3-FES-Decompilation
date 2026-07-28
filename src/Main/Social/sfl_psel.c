@@ -670,11 +670,11 @@ void sflPsel00261480(void)
     sflPselSetAlpha(sflPselBytes(work, 0x710), 0xff);
 
     *(f32*)sflPselBytes(work, 0x810) = 517.0f;
-    *(u32*)sflPselBytes(work, 0x814) = 0x43e00000;
-    *(u32*)sflPselBytes(work, 0x850) = 0x44200000;
+    *(f32*)sflPselBytes(work, 0x814) = 448.0f;
+    *(f32*)sflPselBytes(work, 0x850) = 640.0f;
     *(f32*)sflPselBytes(work, 0x854) = 325.0f;
-    *(u32*)sflPselBytes(work, 0x890) = 0x44200000;
-    *(u32*)sflPselBytes(work, 0x894) = 0x43e00000;
+    *(f32*)sflPselBytes(work, 0x890) = 640.0f;
+    *(f32*)sflPselBytes(work, 0x894) = 448.0f;
 
     color[0] = 0x4f;
     color[1] = 0xa4;

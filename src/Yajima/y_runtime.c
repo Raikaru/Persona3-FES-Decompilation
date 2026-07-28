@@ -20557,7 +20557,7 @@ void FUN_0045ce90(int param_1)
     }
   }
   if ((*(int *)(iVar10 + 0x14) == 3) && (*(int *)(iVar10 + 8) == 0)) {
-    FUN_001159f0_3fv(0,0x42cc0000,0,uStack_20,DAT_007ce718,0xac,0);
+    FUN_001159f0_3fv(0,102.0f,0,uStack_20,DAT_007ce718,0xac,0);
   }
   uVar2 = FUN_00524388_str((const char*)(0x95c240));
   if (uVar2 >> 1 != 0) {

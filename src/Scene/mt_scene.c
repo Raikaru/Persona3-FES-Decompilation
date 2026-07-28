@@ -1759,7 +1759,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   u8 auStack_210 [64];
 
-  u32 uStack_1d0;
+  float uStack_1d0;
 
   u32 uStack_1cc;
 
@@ -1769,7 +1769,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   u32 uStack_1c0;
 
-  u32 uStack_1bc;
+  float uStack_1bc;
 
   u32 uStack_1b8;
 
@@ -1777,7 +1777,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   u32 uStack_1ac;
 
-  u32 uStack_1a8;
+  float uStack_1a8;
 
   u32 uStack_1a0;
 
@@ -1795,7 +1795,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   u8 auStack_150 [64];
 
-  u32 uStack_110;
+  float uStack_110;
 
   u32 uStack_10c;
 
@@ -1805,7 +1805,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   u32 uStack_100;
 
-  u32 uStack_fc;
+  float uStack_fc;
 
   u32 uStack_f8;
 
@@ -1813,7 +1813,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   u32 uStack_ec;
 
-  u32 uStack_e8;
+  float uStack_e8;
 
   u32 uStack_e0;
 
@@ -2020,11 +2020,11 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   }
 
-  uStack_e8 = 0x3f800000;
+  uStack_e8 = 1.0f;
 
-  uStack_fc = 0x3f800000;
+  uStack_fc = 1.0f;
 
-  uStack_110 = 0x3f800000;
+  uStack_110 = 1.0f;
 
   uStack_100 = 0;
 
@@ -2116,11 +2116,11 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   }
 
-  uStack_1a8 = 0x3f800000;
+  uStack_1a8 = 1.0f;
 
-  uStack_1bc = 0x3f800000;
+  uStack_1bc = 1.0f;
 
-  uStack_1d0 = 0x3f800000;
+  uStack_1d0 = 1.0f;
 
   uStack_1c0 = 0;
 
@@ -2148,11 +2148,11 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   FUN_004c2f30(auStack_250,auStack_210,&uStack_d0);
 
-  uStack_1a8 = 0x3f800000;
+  uStack_1a8 = 1.0f;
 
-  uStack_1bc = 0x3f800000;
+  uStack_1bc = 1.0f;
 
-  uStack_1d0 = 0x3f800000;
+  uStack_1d0 = 1.0f;
 
   uStack_1c0 = 0;
 
