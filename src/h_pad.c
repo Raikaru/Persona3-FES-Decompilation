@@ -514,12 +514,10 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 {
     HPadRwAllocation* allocation;
     s32 intrState;
-    const char* message;
 
     if (size == 0xAC)
     {
-        message = D_005CEAE0;
-        printf(message);
+        printf("CHECK !!\n");
     }
 
     sRwAllocatedBytes += size;

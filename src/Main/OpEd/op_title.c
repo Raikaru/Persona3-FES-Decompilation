@@ -688,7 +688,7 @@ void opTitle00267430(void)
         }
     }
 }
-// FUN_00268E20 NONMATCHING
+// FUN_00268E20
 void opTitle00268e20(void)
 {
     void* frame;
@@ -749,16 +749,14 @@ void opTitle00268e20(void)
                 frame = func_0021cce0(func_0021cca0(resource, 0x11));
                 state = (code *)&D_00960090_abs;
                 (*state)(1, (u32)(uintptr_t)frame);
-                (*quad)(work + 0x84, 4, 0, 1, 2);
                 quad = (code *)&D_0096009C_abs;
+                (*quad)(work + 0x84, 4, 0, 1, 2);
                 (*quad)(work + 0x84, 4, 0, 2, 3);
 
                 func_004d7f60(2, 0x58);
                 frame = func_0021cce0(func_0021cca0(resource, 0xf));
-                state = (code *)&D_00960090_abs;
                 (*state)(1, (u32)(uintptr_t)frame);
                 (*quad)(slot + 4, 4, 0, 1, 2);
-                quad = (code *)&D_0096009C_abs;
                 (*quad)(slot + 4, 4, 0, 2, 3);
             }
         }

@@ -5332,6 +5332,8 @@ void FUN_00434d30(void)
   int iVar3;
   u8 *row;
   int *unit;
+  u8 *clearBase;
+  int clearIndex;
 
   for (iVar3 = 1; iVar3 < 4; iVar3 = iVar3 + 1) {
     row = DAT_008717a0_bytes + iVar3 * 0x1c0;
@@ -5351,11 +5353,13 @@ void FUN_00434d30(void)
     }
   }
   *(u8 *)&DAT_007ce6bc = 1;
-  for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-    ((u8 *)&DAT_007ce6e8)[iVar3] = 0;
+  clearIndex = 0;
+  clearBase = (u8 *)&DAT_007ce6e8;
+  for (; clearIndex < 3; clearIndex = clearIndex + 1) {
+    clearBase[clearIndex] = 0;
   }
 }
-// FUN_00434E60 NONMATCHING
+// FUN_00434E60
 void FUN_00434e60(void)
 
 {

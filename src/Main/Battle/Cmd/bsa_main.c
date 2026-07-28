@@ -206,15 +206,15 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         }
         /* Retail 0x03dc-0x0478: reload calc flags and classify high-bit masks. */
         flags = func_00306e80(*(u32*)((u8*)unit + 0xa2c), slotId);
-        if ((flags & 0x100000) != 0)
+        if ((flags & 0x1000000) != 0)
             category = 1;
-        else if ((flags & 0x200000) != 0)
+        else if ((flags & 0x2000000) != 0)
             category = 4;
-        else if ((flags & 0x400000) != 0)
+        else if ((flags & 0x4000000) != 0)
             category = 3;
-        else if ((flags & 0x800000) != 0)
+        else if ((flags & 0x8000000) != 0)
             category = 0;
-        else if ((flags & 0x1000000) != 0)
+        else if ((flags & 0x10000000) != 0)
             category = 2;
         else
             category = 5;

@@ -6256,68 +6256,81 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
     BtlPacket* root;
     BtlPacket* packet;
     BtlUnit* unit;
-    s32 work;
+    BtlTargetResult work;
     s32 damage;
-
-    unit = action->unit;
+    u32 badStatus;
+    s64 actionUID;
+    u16 state;
 
     if (btlPacketCountById(0x700) || btlPacketCountById(0x506) ||
         btlPacketCountById(0x507) || btlPacketCountById(0x301))
     {
         return;
     }
-    if ((datCalcGetBadStatus(unit->datUnit) & 0xfffff) != 0x80)
+
+    unit = action->unit;
+    badStatus = datCalcGetBadStatus(unit->datUnit);
+    actionUID = action->uid;
+    if ((badStatus & 0xfffff) == 0x80)
     {
-        if (action->target.commandId == 2 || action->target.commandId == 3 ||
-            action->target.commandId == 1)
+        FUN_002d5dc0(&work);
+        damage = (s32)FUN_002dc670(action);
+        work.hpDelta = damage;
+        if (damage < 0)
         {
-            btlActionSetState(action, BTLACTION_STATE_PACKET);
+            root = FUN_002d7e20(action, action, &work, 1, 1);
+            btlPacketRegister(root, BTLPACKET_TYPE_1);
+            packet = FUN_002bd480(unit);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, &work);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->unk_47 &= ~0x20;
+            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+            packet = FUN_002bd230(unit, 0, 0);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->unk_47 &= ~0x20;
+            btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+            packet = btlUnitCreateAnimPacket(unit, (s16)BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->actionUID = actionUID;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            packet = FUN_002dd100(10, 6, 0xc);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
-        else
+        switch (action->target.commandId)
         {
-            btlActionSetState(action, BTLACTION_STATE_PACKET);
+        case 1:
+        case 3:
+        case 2:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        default:
+            state = BTLACTION_STATE_PACKET;
+            break;
         }
-        return;
-    }
-    FUN_002d5dc0(&work);
-    damage = (s32)FUN_002dc670(action);
-    work = damage;
-    if (damage < 0)
-    {
-        root = FUN_002d7e20(action, action, &work, 1, 1);
-        btlPacketRegister(root, BTLPACKET_TYPE_1);
-        packet = FUN_002bd480(unit);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002bdbd0(unit, unit, -1, 0, 0, 0, 1, &work);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        packet->unk_47 &= ~0x20;
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        packet = FUN_002bd230(unit, 0, 0);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        packet->unk_47 &= ~0x20;
-        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
-        packet = btlUnitCreateAnimPacket(unit, BTLUNIT_ANIM_RESNULLIFIED, 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002dd100(10, 6, 0xc);
-        packet->unk_00 = 4;
-        packet->parentUID = root->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    }
-    if (action->target.commandId == 2 || action->target.commandId == 3 ||
-        action->target.commandId == 1)
-    {
-        btlActionSetState(action, BTLACTION_STATE_PACKET);
+        btlActionSetState(action, state);
     }
     else
     {
-        btlActionSetState(action, BTLACTION_STATE_PACKET);
+        switch (action->target.commandId)
+        {
+        case 1:
+        case 3:
+        case 2:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        default:
+            state = BTLACTION_STATE_PACKET;
+            break;
+        }
+        btlActionSetState(action, state);
     }
 }
 // FUN_00297a50
