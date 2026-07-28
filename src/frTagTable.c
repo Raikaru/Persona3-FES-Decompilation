@@ -557,42 +557,38 @@ u64 FUN_003aea50(u64 param_1,int param_2)
 // FUN_003AEC20 NONMATCHING
 
 
-u64 FUN_003aec20(u64 param_1,int param_2)
+u64 FUN_003aec20(u64 unused, int context)
 {
-  char cVar1;
-  u8 bVar2;
-  short sVar3;
-  u32 uVar4;
-  u8 *pbVar5;
-  int iVar6;
-  char *pcVar7;
-  char *pcVar8;
-  char acStack_20 [28];
-  u8 tag[3];
+  u8 *cursor = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
+  u8 low = cursor[0] - 1;
+  u8 high;
+  int glyph;
+  char table[28];
+  char tag[3];
+  char *source;
+  char *dest;
+  int count;
 
-  pbVar5 = (u8 *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
-  bVar2 = pbVar5[1];
-  if (bVar2 == 0xff) {
-    uVar4 = 0;
+  if (cursor[1] == 0xff) {
+    high = 0;
   } else {
-    uVar4 = (u32)(u8)(bVar2 - 1);
+    high = cursor[1] - 1;
   }
-  sVar3 = FUN_003082f0(0,uVar4 << 8 | *pbVar5 - 1 & 0xff);
-  pcVar8 = DAT_006a26f0;
-  pcVar7 = acStack_20;
-  iVar6 = 0x13;
+  glyph = FUN_003082f0(0, (u16)((u16)high << 8 | low));
+
+  source = DAT_006a26f0;
+  dest = table;
+  count = 0x13;
   do {
-    cVar1 = *pcVar8;
-    pcVar8 = pcVar8 + 1;
-    iVar6 = iVar6 + -1;
-    *pcVar7 = cVar1;
-    pcVar7 = pcVar7 + 1;
-  } while (0 < iVar6);
+    *dest++ = *source++;
+    count--;
+  } while (count > 0);
+
   tag[0] = 0x8d;
-  tag[1] = acStack_20[sVar3] + -0x5a;
+  tag[1] = table[glyph] - 0x5a;
   tag[2] = 0;
-  FUN_003b22a0(param_2);
-  FUN_003b2020(tag,param_2);
+  FUN_003b22a0(context);
+  FUN_003b2020(tag, context);
   return 0;
 }
 #define FUN_003aec20(...) ((u64 (*)(...))FUN_003aec20)(__VA_ARGS__)

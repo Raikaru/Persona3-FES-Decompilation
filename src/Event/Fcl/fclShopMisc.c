@@ -415,7 +415,7 @@ u64 FUN_00400690(u32 *param_1);
 void FUN_004006c0(int param_1,int param_2,int param_3,int param_4);
 void FUN_00400740(u64 param_1,u64 param_2,u8 param_3,int param_4);
 void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4);
-void FUN_00400a90(int param_1,u64 param_2,int param_3,int param_4,u32 *param_5);
+void FUN_00400a90(int param_1,int param_2,int param_3,int param_4,u32 *param_5);
 void FUN_00400e30(int param_1);
 int FUN_00400d60(void);
 u32 FUN_00401210(int param_1);
@@ -771,6 +771,10 @@ u32 DAT_007e094e;
 u32 DAT_007e0952;
 u32 DAT_007e0958;
 u32 DAT_007e095a;
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e095a_abs[];
 u32 DAT_00960088;
 code DAT_00960090;
 code DAT_009600a0;
@@ -2521,117 +2525,55 @@ u8 FUN_003f2240(int param_1,long param_2)
 // FUN_003F2320 NONMATCHING
 
 
-u64 FUN_003f2320(int param_1,int param_2)
-
-
-
+u64 FUN_003f2320(int task,int list)
 {
+  u32 *panel;
+  short *entry;
+  int i;
+  int node;
 
-  u32 *puVar1;
-
-  int lVar2;
-
-  short *psVar3;
-
-  int iVar4;
-
-  
-
-  puVar1 = *(u32 **)(*(int *)(param_1 + 0x24) + 0x44);
-
-  *puVar1 = *puVar1 | 2;
-
-  psVar3 = *(short **)(param_2 + 8);
-
-  lVar2 = 0;
-
-  do {
-
-    if (*(short *)(param_2 + 6) <= lVar2) {
-
-      for (iVar4 = *(int *)(param_1 + 4); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x10)) {
-
-        puVar1 = *(u32 **)(*(int *)(iVar4 + 0x14) + 0x1c);
-
-        if ((*puVar1 & 8) == 0) {
-
-          if ((*puVar1 & 4) != 0) {
-
-            puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0f) - fGpffff808c * (float)(int)puVar1[4]);
-
-          }
-
-          else {
-
-            puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0f) - (float)(int)puVar1[4] * 0.25f);
-
-          }
-
+  panel = *(u32 **)(*(int *)(task + 0x24) + 0x44);
+  *panel |= 2;
+  entry = *(short **)(list + 8);
+  for (i = 0; i < *(short *)(list + 6); i++) {
+    if ((entry[0] != 0) && ((*(s8 *)((int)entry + 5) & 1) != 0)) {
+      node = *(int *)(task + 4);
+      while (node != 0) {
+        if (*(short *)(*(int *)(*(int *)(node + 0x14) + 0x1c) + 4) == entry[0]) {
+          break;
         }
-
-        else {
-
-          puVar1[4] = (int)(((float)(int)puVar1[4] + 0.0f) - (float)(int)puVar1[4] * 0.5f);
-
-        }
-
-        if ((int)puVar1[4] < 0) {
-
-          puVar1[4] = 1;
-
-        }
-
+        node = *(int *)(node + 0x10);
       }
-
-
-      return 0;
-
+      if (node != 0) {
+        panel = *(u32 **)(*(int *)(node + 0x14) + 0x1c);
+        *panel |= 2;
+        if ((*(s8 *)((int)entry + 5) & 4) != 0) {
+          *panel |= 8;
+        }
+        else if ((*(s8 *)((int)entry + 5) & 2) != 0) {
+          *panel |= 4;
+        }
+      }
     }
-
-    if ((*psVar3 != 0) && ((*(u8 *)((int)psVar3 + 5) & 1) != 0)) {
-
-      for (iVar4 = *(int *)(param_1 + 4); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x10)) {
-
-        if (*(short *)(*(int *)(*(int *)(iVar4 + 0x14) + 0x1c) + 4) == *psVar3) goto LAB_003f23a8;
-
-      }
-
-      iVar4 = 0;
-
-LAB_003f23a8:
-
-      if (iVar4 != 0) {
-
-        puVar1 = *(u32 **)(*(int *)(iVar4 + 0x14) + 0x1c);
-
-        *puVar1 = *puVar1 | 2;
-
-        if ((*(u8 *)((int)psVar3 + 5) & 4) == 0) {
-
-          if ((*(u8 *)((int)psVar3 + 5) & 2) != 0) {
-
-            *puVar1 = *puVar1 | 4;
-
-          }
-
-        }
-
-        else {
-
-          *puVar1 = *puVar1 | 8;
-
-        }
-
-      }
-
+    entry += 4;
+  }
+  for (node = *(int *)(task + 4); node != 0; node = *(int *)(node + 0x10)) {
+    panel = *(u32 **)(*(int *)(node + 0x14) + 0x1c);
+    if ((*panel & 8) != 0) {
+      panel[4] = (int)((float)(int)panel[4] - (float)(int)panel[4] * 0.5f);
     }
-
-    psVar3 = psVar3 + 4;
-
-    lVar2 = (long)((int)lVar2 + 1);
-
-  } while( 1 );
-
+    else if ((*panel & 4) != 0) {
+      panel[4] = (int)((float)(int)panel[4] - fGpffff808c * (float)(int)panel[4]);
+    }
+    else {
+      panel[4] = (int)((float)(int)panel[4] - (float)(int)panel[4] * 0.25f);
+    }
+    if ((int)panel[4] < 0) {
+      panel[4] = 1;
+    }
+  }
+  FUN_003f2d60(task);
+  return 0;
 }
 
 // FUN_003F2510
@@ -8723,11 +8665,11 @@ int FUN_003fb530(u32 *param_1)
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
-  long lVar3;
+  int lVar3;
 
-  long lVar4;
+  int lVar4;
 
   
 
@@ -8735,40 +8677,21 @@ int FUN_003fb530(u32 *param_1)
 
   lVar4 = (long)*(short *)((int)param_1 + 0x16);
 
-  if (((DAT_007e0952 & 0x1000) == 0) && ((DAT_007e095a & 0x1000) == 0)) {
-
-    if (((DAT_007e0952 & 0x4000) == 0) && ((DAT_007e095a & 0x4000) == 0)) {
-
-      if (((DAT_007e0952 & 0x2000) == 0) && ((DAT_007e095a & 0x2000) == 0)) {
-
-        if (((DAT_007e0952 & 0x8000) != 0) || ((DAT_007e095a & 0x8000) != 0)) {
-
-          iVar1 = -10;
-
-        }
-
-      }
-
-      else {
-
-        iVar1 = 10;
-
-      }
-
-    }
-
-    else {
-
-      iVar1 = -1;
-
-    }
-
-  }
-
-  else {
-
+  if (((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) ||
+      ((*(u16 *)DAT_007e095a_abs & 0x1000) != 0)) {
     iVar1 = 1;
-
+  }
+  else if (((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) ||
+           ((*(u16 *)DAT_007e095a_abs & 0x4000) != 0)) {
+    iVar1 = -1;
+  }
+  else if (((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) ||
+           ((*(u16 *)DAT_007e095a_abs & 0x2000) != 0)) {
+    iVar1 = 10;
+  }
+  else if (((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) ||
+           ((*(u16 *)DAT_007e095a_abs & 0x8000) != 0)) {
+    iVar1 = -10;
   }
 
   if (iVar1 != 0) {
@@ -13073,46 +12996,37 @@ void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4)
 // FUN_00400A90 NONMATCHING
 
 
-void FUN_00400a90(int param_1,u64 param_2,int param_3,int param_4,u32 *param_5)
-
-
-
+void FUN_00400a90(int x,int y,int alpha,int task,u32 *entry)
 {
+  int drawAlpha;
+  int config;
+  int spriteConfig;
+  u32 *flags;
+  int selected;
+  int xOffset;
+  int duration;
+  int divisor;
 
-  u8 bVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar2 = *(int *)(param_4 + 0x24);
-
-  iVar3 = 0;
-
-  bVar1 = param_5 == *(u32 **)(param_4 + 0xc);
-
-  if (bVar1) {
-
-    iVar3 = (int)((float)(*(short *)(iVar2 + 4) * 600) / (float)(int)*(short *)(iVar2 + 8));
-
-    param_3 = 0xff;
-
+  drawAlpha = alpha;
+  config = *(int *)(task + 0x24);
+  spriteConfig = *(int *)(config + 0x44);
+  flags = *(u32 **)(entry[5] + 0x1c);
+  selected = 0;
+  xOffset = 0;
+  duration = *(short *)(config + 4);
+  divisor = *(short *)(config + 8);
+  if (entry == *(u32 **)(task + 0xc)) {
+    selected = 1;
   }
-
-  if ((**(u32 **)(param_5[5] + 0x1c) & 1) != 0) {
-
-    param_3 = (int)((float)param_3 * fGpffff8090);
-
+  if (selected != 0) {
+    xOffset = (int)((float)(duration * 600) / (float)divisor);
+    drawAlpha = 0xff;
   }
-
-  FUN_003ff630(0x3f800000,param_1 + iVar3,param_2,0,param_3,
-
-               *(u16 *)(*(int *)(iVar2 + 0x44) + 8),(short)*param_5 + -1,bVar1 | 2);
-
-  return;
-
+  if ((*flags & 1) != 0) {
+    drawAlpha = (int)((float)drawAlpha * fGpffff8090);
+  }
+  FUN_003ff630_f32(1.0f,x + xOffset,y,0,drawAlpha,*(short *)(spriteConfig + 8),
+                   (short)(*entry - 1),selected | 2);
 }
 
 // FUN_00400B90 NONMATCHING

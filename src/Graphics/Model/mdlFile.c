@@ -301,10 +301,10 @@ static __inline u32 mdlVuModulateStackedV0(const u32 *pc1, u32 c2, f32 inv255)
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
         "vmul.xyzw   $vf10, $vf10, $vf11 \n"
         "lui         $v0, 0x437F          \n"
-        "qmtc2       $v0, $vf2           \n"
+        "qmtc2       $v0, $vf2            \n"
         "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
         "vftoi0.xyzw $vf10, $vf10        \n"
-        "qmfc2       $v0, $vf10          \n"
+        "qmfc2       $v0, $vf10           \n"
         "ppach       $v0, $zero, $v0     \n"
         "ppacb       $v0, $zero, $v0     \n"
         "sw          $v0, 0x134($sp)      \n"
@@ -882,6 +882,8 @@ void FUN_00323b90(int param_1,u64 param_2);
 extern void FUN_00323b90_i(int param_1,int param_2);
 void FUN_00323bf0(int param_1,u32 *param_2);
 u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4);
+#pragma alias FUN_00323c20_u32first FUN_00323c20
+extern u32 FUN_00323c20_u32first(u32 param_1,u16 param_2,u16 param_3,u32 param_4);
 int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 
                  u32 param_6);
@@ -7986,7 +7988,7 @@ u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
 
   u32 uVar7;
 
-  u32 uVar8;
+  u16 uVar8;
 
   u16 *puVar9;
   u32 vertexCount;
@@ -8010,7 +8012,7 @@ u32 FUN_00323c20(u16 param_1,u16 param_2,u16 param_3,u32 param_4)
   puVar9 = (u16 *)uVar4;
   entryData = (u32 *)(puVar9 + 0x16);
 
-  for (uVar8 = 0; uVar8 < uVar7; uVar8 = uVar8 + 1 & 0xffff) {
+  for (uVar8 = 0; (int)uVar8 < (int)uVar7; uVar8++) {
 
     uVar3 = FUN_00494be0_u32();
 
@@ -8099,10 +8101,10 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
   u16 rowBase;
 
   outerCount = param_1;
-  rowCount = (u16)param_2;
   rowStep = param_4;
   tripletIndexCount = (u16)param_3 * 3;
-  resource = FUN_00323c20(param_1,
+  rowCount = (u16)param_2;
+  resource = FUN_00323c20_u32first(param_1,
                               rowCount * rowStep & 0xffff,
                               rowCount * (u16)param_3 & 0xffff,
                               param_6);
@@ -24272,7 +24274,7 @@ void FUN_00335180(int param_1)
         : "$v0", "vf2", "vf10", "vf11", "memory");
 
     FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
-    for (index = 0; index < count; index++) {
+    for (index = 0; index < count; index++, entries += 4) {
       if (0 < (int)entries[1]) {
         entry = (u16 *)*entries;
         FUN_004cb7f0(*(u32 *)(entry + 6), stack.matrix, 0);
@@ -24337,7 +24339,6 @@ void FUN_00335180(int param_1)
         else *entry &= 0xfffe;
         FUN_00323860_2arg((int)entry, *(u16 *)(node + 0x28));
       }
-      entries += 4;
     }
   }
 }
@@ -25421,7 +25422,7 @@ void FUN_00336630(int param_1)
         : "$v0", "vf2", "vf10", "vf11", "memory");
 
     FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, param_1 + 0x10, *(f32 *)(param_1 + 0x20));
-    for (index = 0; index < count; index++) {
+    for (index = 0; index < count; index++, entries += 12) {
       if (0 < (int)entries[5]) {
         entry = (u16 *)*entries;
         FUN_004cb7f0(*(u32 *)(entry + 6), stack.matrix, 0);
@@ -25486,7 +25487,6 @@ void FUN_00336630(int param_1)
         else *entry &= 0xfffe;
         FUN_00323860_2arg((int)entry, *(u16 *)(node + 0x28));
       }
-      entries += 12;
     }
   }
 }
@@ -26520,7 +26520,7 @@ void FUN_003377f0(u32 param_1)
         : "$v0", "vf2", "vf10", "vf11", "memory");
 
     FUN_00323920((RwMatrix *)stack.matrix, (void *)param_1, 0, *(f32 *)(param_1 + 0x20));
-    for (index = 0; index < count; index++) {
+    for (index = 0; index < count; index++, entries += 3) {
       if (0 < (int)entries[1]) {
         entry = (u16 *)*entries;
         FUN_004cb7f0(*(u32 *)(entry + 6), stack.matrix, 0);
@@ -26585,7 +26585,6 @@ void FUN_003377f0(u32 param_1)
         else *entry &= 0xfffe;
         FUN_00323860_2arg((int)entry, *(u16 *)(node + 0x28));
       }
-      entries += 3;
     }
   }
 }

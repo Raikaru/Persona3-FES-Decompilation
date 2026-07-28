@@ -5472,8 +5472,8 @@ u32 FUN_002dc130(BtlAction* action)
 // FUN_002dc180 NONMATCHING
 u32 FUN_002dc180(BtlAction* action)
 {
-    DatUnit* datUnit = action->unit->datUnit;
-    u32 status = datCalcGetBadStatus(datUnit);
+    BtlUnit* unit = action->unit;
+    u32 status = datCalcGetBadStatus(unit->datUnit);
     u32 result = 0;
     u32 index;
 
@@ -5492,22 +5492,22 @@ u32 FUN_002dc180(BtlAction* action)
         switch (bit)
         {
         case 1:
-            chance = FUN_0030FC40(8, datUnit, datUnit, 0, 1);
+            chance = FUN_0030FC40(8, unit->datUnit, unit->datUnit, 0, 1);
             threshold = 4;
             reduceBySkills = 1;
             break;
         case 2:
-            chance = FUN_0030FC40(9, datUnit, datUnit, 0, 2);
+            chance = FUN_0030FC40(9, unit->datUnit, unit->datUnit, 0, 2);
             threshold = 3;
             reduceBySkills = 1;
             break;
         case 4:
-            chance = FUN_0030FC40(0xa, datUnit, datUnit, 0, 4);
+            chance = FUN_0030FC40(0xa, unit->datUnit, unit->datUnit, 0, 4);
             threshold = 3;
             reduceBySkills = 1;
             break;
         case 8:
-            chance = FUN_0030FC40(0xb, datUnit, datUnit, 0, 8);
+            chance = FUN_0030FC40(0xb, unit->datUnit, unit->datUnit, 0, 8);
             threshold = 3;
             reduceBySkills = 1;
             break;
@@ -5515,19 +5515,19 @@ u32 FUN_002dc180(BtlAction* action)
             if (*(u8*)((u8*)action + 0x28) == 0 &&
                 *(u8*)((u8*)action + 0x29) == 0)
             {
-                chance = FUN_0030FC40(0xc, datUnit, datUnit, 0, 0x10);
+                chance = FUN_0030FC40(0xc, unit->datUnit, unit->datUnit, 0, 0x10);
                 threshold = 4;
                 reduceBySkills = 1;
             }
             break;
         case 0x20:
-            chance = FUN_0030FC40(0xd, datUnit, datUnit, 0, 0x20);
+            chance = FUN_0030FC40(0xd, unit->datUnit, unit->datUnit, 0, 0x20);
             threshold = 2;
             useCounter = 0;
             reduceBySkills = 1;
             break;
         case 0x40:
-            chance = FUN_0030FC40(0xe, datUnit, datUnit, 0, 0x40);
+            chance = FUN_0030FC40(0xe, unit->datUnit, unit->datUnit, 0, 0x40);
             threshold = 2;
             useCounter = 0;
             reduceBySkills = 1;
@@ -5545,13 +5545,13 @@ u32 FUN_002dc180(BtlAction* action)
         }
         if (reduceBySkills && threshold != 0)
         {
-            if (datCalcHasSkill(datUnit, 0x262) != 0)
+            if (datCalcHasSkill(unit->datUnit, 0x262) != 0)
             {
                 threshold >>= 1;
                 if (threshold == 0)
                     threshold = 1;
             }
-            if (datCalcHasSkill(datUnit, 0x263) != 0)
+            if (datCalcHasSkill(unit->datUnit, 0x263) != 0)
                 threshold = 1;
         }
         if (useCounter == 0 || *((u8*)action + index + 0x462) > 1)
@@ -6087,14 +6087,14 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
 
         if (result == 0)
         {
-            if ((((*(const f32*)(param_1 + 8) <= *(f32*)(list + 8)) ||
-                  (*(const f32*)(param_1 + 0xc) <= *(f32*)(list + 0xc))) ||
-                 ((*(f32*)(list + 0x268) <= *(const f32*)(param_1 + 8)) ||
-                  (*(f32*)(list + 0x26c) <= *(const f32*)(param_1 + 0xc)))) &&
-                (((*(const f32*)(param_2 + 8) <= *(f32*)(list + 8)) ||
-                  (*(const f32*)(param_2 + 0xc) <= *(f32*)(list + 0xc))) ||
-                 ((*(f32*)(list + 0x268) <= *(const f32*)(param_2 + 8)) ||
-                  (*(f32*)(list + 0x26c) <= *(const f32*)(param_2 + 0xc)))))
+            if ((*(f32*)(list + 8) < *(const f32*)(param_1 + 8)) &&
+                (*(f32*)(list + 0xc) < *(const f32*)(param_1 + 0xc)) &&
+                ((*(f32*)(list + 0x268) <= *(const f32*)(param_1 + 8)) ||
+                 (*(f32*)(list + 0x26c) <= *(const f32*)(param_1 + 0xc))) &&
+                (*(f32*)(list + 8) < *(const f32*)(param_2 + 8)) &&
+                (*(f32*)(list + 0xc) < *(const f32*)(param_2 + 0xc)) &&
+                ((*(f32*)(list + 0x268) <= *(const f32*)(param_2 + 8)) ||
+                 (*(f32*)(list + 0x26c) <= *(const f32*)(param_2 + 0xc))))
             {
                 for (i = 0; i < 4; i++)
                 {

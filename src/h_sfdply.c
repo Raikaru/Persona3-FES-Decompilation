@@ -199,6 +199,11 @@ struct HSfdAsyncEntry
     void* result5;
     u32 padding1D8;
 };
+typedef struct HSfdPoolEntry
+{
+    s32 state;
+    u8 entry[0x1d8];
+} HSfdPoolEntry;
 typedef struct HSfdQueueEntry
 {
     HSfdAsyncEntry* next;
@@ -1227,54 +1232,73 @@ HSfdAsyncEntry* func_0010c1a0(s32 kind, const char* name, const char* path,
                                s32 byteCount, const char* cacheName,
                                void* result2, void* result3, void* result4)
 {
+    HSfdAsyncEntry** link;
     HSfdAsyncEntry* entry;
-    s32 i;
+    s16 index;
     s32 enabled;
 
-    entry = NULL;
+    link = &sSfdQueueEntries[0].next;
     enabled = FUN_0050d3a0();
-    for (i = 0; i < HSFD_QUEUE_COUNT; i++)
+link_check:
+    if (*link != NULL)
     {
-        if (sSfdQueue[i].entry == NULL)
-        {
-            entry = &sSfdEntries[i];
-            sSfdQueue[i].entry = entry;
-            sSfdQueue[i].state = 0;
-            break;
-        }
-    }
-    if (entry == NULL)
-    {
-        return NULL;
+        goto link_next;
     }
 
-    memset(entry, 0, sizeof(*entry));
-    entry->queue = &sSfdQueue[i];
-    entry->kind = kind;
-    entry->requestFlags = requestFlags;
-    entry->source = source;
-    entry->byteCount = byteCount;
-    entry->buffer = buffer;
-    entry->result2 = result2;
-    entry->result3 = result3;
-    entry->result4 = result4;
-    entry->state = 0;
-    entry->age = 0;
+    index = 0;
+    goto pool_check;
+pool_body:
+    if (((HSfdPoolEntry*)sSfdEntries)[index].state == 0)
+    {
+        ((HSfdPoolEntry*)sSfdEntries)[index].state = 1;
+        entry = (HSfdAsyncEntry*)((HSfdPoolEntry*)sSfdEntries)[index].entry;
+        memset(entry, 0, 0x1d8);
+        goto entry_found;
+    }
+    index++;
+pool_check:
+    if (index < HSFD_ENTRY_COUNT)
+    {
+        goto pool_body;
+    }
+    entry = NULL;
+
+entry_found:
+    entry->next = NULL;
+    entry->name[0] = '\0';
     if (name != NULL)
     {
         strcpy(entry->name, name);
     }
+    entry->path[0] = '\0';
     if (path != NULL)
     {
         strcpy(entry->path, path);
     }
+    entry->source = source;
+    entry->state = 0;
+    entry->requestFlags = requestFlags;
+    entry->kind = kind;
+    entry->buffer = buffer;
+    entry->byteCount = byteCount;
+    entry->cacheName[0] = '\0';
+    *(void**)((u8*)entry + 0x20) = result2;
+    entry->result3 = result3;
+    entry->age = 0;
     if (cacheName != NULL)
     {
         strcpy(entry->cacheName, cacheName);
     }
-    if (enabled == 0)
+    entry->queue = (HSfdQueueSlot*)link;
+    *link = entry;
+    if (enabled != 0)
+    {
         FUN_0050d3f0();
+    }
     return entry;
+link_next:
+    link = &(*link)->next;
+    goto link_check;
 }
 
 // FUN_0010C3A0 NONMATCHING

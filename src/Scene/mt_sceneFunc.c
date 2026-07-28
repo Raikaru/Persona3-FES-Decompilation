@@ -3618,78 +3618,20 @@ void FUN_003bbb90(const float *param_1,float *param_2)
 // FUN_003BBC90 NONMATCHING
 
 
-void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,
-
-                 float *param_6,float *param_7)
-
-
-
+void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
+                  float *outY, float *outZ)
 {
+  float oneMinus = 1.0f - t;
+  float oneMinusSquared = oneMinus * oneMinus;
+  float w0 = oneMinus * oneMinusSquared;
+  float w1 = t * (3.0f * oneMinusSquared);
+  float tSquared = t * t;
+  float w2 = (3.0f * oneMinus) * tSquared;
+  float w3 = t * tSquared;
 
-  float fVar1;
-
-  float fVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float fVar9;
-
-  float fVar10;
-
-  float fVar11;
-  float oneMinusSquared;
-  float paramSquared;
-
-  
-
-  fVar8 = 1.0f - param_1;
-
-  oneMinusSquared = fVar8 * fVar8;
-
-  fVar11 = fVar8 * oneMinusSquared;
-
-  fVar9 = param_1 * oneMinusSquared * 3.0f;
-
-  paramSquared = param_1 * param_1;
-
-  fVar10 = fVar8 * paramSquared * 3.0f;
-
-  param_1 = param_1 * paramSquared;
-
-  fVar8 = *param_3;
-
-  fVar1 = param_3[1];
-
-  fVar2 = param_3[2];
-
-  fVar3 = param_3[3];
-
-  fVar4 = *param_4;
-
-  fVar5 = param_4[1];
-
-  fVar6 = param_4[2];
-
-  fVar7 = param_4[3];
-
-  *param_5 = *param_2 * fVar11 + param_2[1] * fVar9 + param_2[2] * fVar10 + param_2[3] * param_1;
-
-  *param_6 = fVar8 * fVar11 + fVar1 * fVar9 + fVar2 * fVar10 + fVar3 * param_1;
-
-  *param_7 = fVar4 * fVar11 + fVar5 * fVar9 + fVar6 * fVar10 + fVar7 * param_1;
-
-  return;
-
+  *outX = x[0] * w0 + x[1] * w1 + x[2] * w2 + x[3] * w3;
+  *outY = y[0] * w0 + y[1] * w1 + y[2] * w2 + y[3] * w3;
+  *outZ = z[0] * w0 + z[1] * w1 + z[2] * w2 + z[3] * w3;
 }
 #define FUN_003bbc90(...) ((void (*)(...))FUN_003bbc90)(__VA_ARGS__)
 #undef FUN_003bbd40
@@ -5092,75 +5034,40 @@ u32 * FUN_003bd8a0(void)
 // FUN_003BD8B0 NONMATCHING
 
 
-u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3)
-
-
-
+u32 FUN_003bd8b0(u32 id, u32 variant, u32 subVariant)
 {
+  typedef struct SceneLookupEntry {
+    u16 id;
+    u8 variant;
+    u8 subVariant;
+    u8 result;
+    u8 pad;
+  } SceneLookupEntry;
+  int index = 0;
+  SceneLookupEntry *entries = *(SceneLookupEntry **)DAT_0095b71c_abs;
+  int count = *(int *)DAT_0095b720_abs;
+  u32 wildcard = 0xff;
 
-  u32 uVar1;
+  for (; index < count; index++) {
+    SceneLookupEntry *entry = &entries[index];
 
-  u16 *puVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = 0;
-
-  do {
-
-    if (DAT_0095b720 <= iVar3) {
-
-      if (((int)param_1 < 0) || (499 < (int)param_1)) {
-        if (((int)param_1 < 0x3de) || (999 < (int)param_1)) {
-
-          uVar1 = 0xffffffff;
-
-        }
-
-        else {
-
-          uVar1 = 0;
-
-        }
-
+    if (wildcard == entry->subVariant) {
+      if (id == entry->id && variant == entry->variant) {
+        return entry->result;
       }
-
-      else {
-
-        uVar1 = 0;
-
-      }
-
-      return uVar1;
-
+    } else if (id == entry->id && variant == entry->variant
+               && subVariant == entry->subVariant) {
+      return entry->result;
     }
+  }
 
-    puVar2 = (u16 *)(DAT_0095b71c + iVar3 * 6);
-
-    if (*(u8 *)((int)puVar2 + 3) == 0xff) {
-
-      if ((param_1 == *puVar2) && (param_2 == (u8)puVar2[1])) {
-
-        return (u32)(u8)puVar2[2];
-
-      }
-
-    }
-
-    else if (((param_1 == *puVar2) && (param_2 == (u8)puVar2[1])) &&
-
-            (param_3 == *(u8 *)((int)puVar2 + 3))) {
-
-      return (u32)(u8)puVar2[2];
-
-    }
-
-    iVar3 = iVar3 + 1;
-
-  } while( 1 );
-
+  if ((s32)id >= 0 && (s32)id < 500) {
+    return 0;
+  }
+  if ((s32)id >= 990 && (s32)id < 1000) {
+    return 0;
+  }
+  return (u32)-1;
 }
 #define FUN_003bd8b0(...) ((u32 (*)(...))FUN_003bd8b0)(__VA_ARGS__)
 #undef FUN_003bd9a0
