@@ -9845,7 +9845,7 @@ void FUN_003fcbe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
-// FUN_003FCDC0 NONMATCHING
+// FUN_003FCDC0
 
 
 void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
@@ -9856,7 +9856,6 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 
   int iVar2;
-  int selectedPair;
 
   u32 uVar3;
 
@@ -9892,7 +9891,7 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
     FUN_0040e3c0_i(param_1 + 0x71,param_2 + -3,0.0f,(u8)param_3,0,
 
-                     (u32)*(u8 *)(iVar2 + 8) * 2 + uVar6);
+                     ((u32)*(u8 *)(iVar2 + 8) << 1) + uVar6);
 
     pcVar4 = func_00171110_ptr(*(s16 *)(iVar2 + 4),*(s8 *)(iVar2 + 0xc));
 
@@ -9903,9 +9902,8 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
     switch (iVar5) {
     case 0:
       sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(s16 *)(iVar2 + 0x14));
-      selectedPair = (int)&auStack_8.u[uVar6];
-      uVar3 = *(u32 *)selectedPair;
-      FUN_0040eb50_i(param_1 + 0x1d1,param_2 + 7,0.0f,param_3 & 0xff,uVar3,auStack_20,1);
+      uVar3 = *(u32 *)(int)&auStack_8.u[uVar6];
+      FUN_0040eb50_i(param_1 + 0x1d1,param_2 + 7,0.0f,(u8)param_3,uVar3,auStack_20,1);
       sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(s16 *)(iVar2 + 0x16));
       FUN_0040eb50_i(param_1 + 0x236,param_2 + 7,0.0f,param_3 & 0xff,uVar3,auStack_20,1);
       break;
@@ -10032,7 +10030,7 @@ void FUN_003fd140(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
-// FUN_003FD320 NONMATCHING
+// FUN_003FD320
 
 
 void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
@@ -10043,7 +10041,6 @@ void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 
   int iVar2;
-  int selectedPair;
 
   u32 uVar3;
 
@@ -10079,7 +10076,7 @@ void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
     FUN_0040e3c0_i(param_1 + 0x71,param_2 + -3,0.0f,(u8)param_3,0,
 
-                     (u32)*(u8 *)(iVar2 + 8) * 2 + uVar6);
+                     ((u32)*(u8 *)(iVar2 + 8) << 1) + uVar6);
 
     pcVar4 = func_00171110_ptr(*(s16 *)(iVar2 + 4),*(s8 *)(iVar2 + 0xc));
 
@@ -10090,9 +10087,8 @@ void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5)
     switch (iVar5) {
     case 0:
       sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(s16 *)(iVar2 + 0x14));
-      selectedPair = (int)&auStack_8.u[uVar6];
-      uVar3 = *(u32 *)selectedPair;
-      FUN_0040eb50_i(param_1 + 0x1d1,param_2 + 7,0.0f,param_3 & 0xff,uVar3,auStack_20,1);
+      uVar3 = *(u32 *)(int)&auStack_8.u[uVar6];
+      FUN_0040eb50_i(param_1 + 0x1d1,param_2 + 7,0.0f,(u8)param_3,uVar3,auStack_20,1);
       sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(s16 *)(iVar2 + 0x16));
       FUN_0040eb50_i(param_1 + 0x236,param_2 + 7,0.0f,param_3 & 0xff,uVar3,auStack_20,1);
       break;

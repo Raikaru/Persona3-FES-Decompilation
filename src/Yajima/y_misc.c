@@ -165,6 +165,14 @@ u32 DAT_006b44d0;
 u32 DAT_006b44d8;
 u32 DAT_006b44e0;
 u32 DAT_006b44e8;
+#pragma alias DAT_006b44d0_abs DAT_006b44d0
+extern u8 DAT_006b44d0_abs[];
+#pragma alias DAT_006b44d8_abs DAT_006b44d8
+extern u8 DAT_006b44d8_abs[];
+#pragma alias DAT_006b44e0_abs DAT_006b44e0
+extern u8 DAT_006b44e0_abs[];
+#pragma alias DAT_006b44e8_abs DAT_006b44e8
+extern u8 DAT_006b44e8_abs[];
 float DAT_007cb134;
 float DAT_007cb138;
 u32 DAT_007ce0cc;
@@ -5783,39 +5791,25 @@ void FUN_0042b540(int param_1)
 
   float fVar12;
 
-  float fStack_50;
+  YajimaVec3 posCamera;
 
-  u32 uStack_4c;
-
-  float fStack_48;
-
-  float afStack_40 [4];
+  YajimaVec3 transformed;
 
   u64 uStack_30;
 
   u32 uStack_28;
 
-  float afStack_20 [2];
+  YajimaVec3 posOther;
 
-  float fStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  float fStack_8;
+  YajimaVec3 posTarget;
 
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  K_FldFrame_CtlCopyPos(&fStack_50,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&posCamera.x,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-  fStack_10 = fStack_50;
-
-  uStack_c = uStack_4c;
-
-  fStack_8 = fStack_48;
+  posTarget = posCamera;
 
   uStack_30 = DAT_006b44e0;
 
@@ -5823,15 +5817,11 @@ void FUN_0042b540(int param_1)
 
   if (*(char *)(iVar1 + 0x865) == '\x01') {
 
-    fStack_10 = *(float *)(iVar1 + 0x868);
-
-    uStack_c = *(u32 *)(iVar1 + 0x86c);
-
-    fStack_8 = *(float *)(iVar1 + 0x870);
+    posTarget = *(YajimaVec3 *)(iVar1 + 0x868);
 
   }
 
-  fVar9 = fStack_8;
+  fVar9 = posTarget.z;
 
   for (iVar7 = 0; iVar7 < 0x18; iVar7 = iVar7 + 1) {
 
@@ -5877,7 +5867,7 @@ void FUN_0042b540(int param_1)
 
       puVar3[3] = puVar3[3] | 0x20003;
 
-      K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(*(int *)(&DAT_0086edf4 + iVar6) + 0x1e0));
+      K_FldFrame_CtlCopyPos(&posOther.x,*(u32 *)(*(int *)(&DAT_0086edf4 + iVar6) + 0x1e0));
 
       FUN_004c31b0_ymisc((void *)uVar4,(const void *)&uStack_30,
                      *(float *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
@@ -5885,21 +5875,21 @@ void FUN_0042b540(int param_1)
 
       iVar6 = iGpffffb5c0 + *piGpffffa850 * 0x3c4 + *(short *)(iVar1 + 0xb90) * 0x28;
 
-      fVar11 = 63.0f - ((((*(float *)(iVar1 + 0xba4) - (*(float *)(iVar6 + -0x749c) - afStack_20[0]))
+      fVar11 = 63.0f - ((((*(float *)(iVar1 + 0xba4) - (*(float *)(iVar6 + -0x749c) - posOther.x))
 
                         * 2.25f) / 100.0f) * 2.25f) / 100.0f;
 
-      fVar12 = 63.0f - ((((*(float *)(iVar1 + 0xbac) - (*(float *)(iVar6 + -0x7494) - fStack_18)) *
+      fVar12 = 63.0f - ((((*(float *)(iVar1 + 0xbac) - (*(float *)(iVar6 + -0x7494) - posOther.z)) *
 
                         2.25f) / 100.0f) * 2.25f) / 100.0f;
 
-      afStack_40[0] = ((afStack_20[0] - fStack_10) * 2.25f) / 100.0f;
+      transformed.x = ((posOther.x - posTarget.x) * 2.25f) / 100.0f;
 
-      afStack_40[2] = ((fStack_18 - fVar9) * 2.25f) / 100.0f;
+      transformed.z = ((posOther.z - fVar9) * 2.25f) / 100.0f;
 
-      afStack_40[1] = 0.0f;
+      transformed.y = 0.0f;
 
-      RwV3dTransformPoint(afStack_40,afStack_40,uVar4);
+      RwV3dTransformPoint(&transformed.x,&transformed.x,uVar4);
 
       uVar5 = FUN_001158b0(0,uGpffffb9f4,0xb);
 
@@ -5909,11 +5899,11 @@ void FUN_0042b540(int param_1)
 
       fVar8 = (float)func_001126b0(uVar5);
 
-      *(float *)(iVar6 + 0x10) = (afStack_40[0] + *(float *)(iVar1 + 0x85c) + fVar11) - fVar8 / 2.0f;
+      *(float *)(iVar6 + 0x10) = (transformed.x + *(float *)(iVar1 + 0x85c) + fVar11) - fVar8 / 2.0f;
 
       fVar8 = (float)func_00112740(uVar5);
 
-      *(float *)(iVar6 + 0x14) = (afStack_40[2] + *(float *)(iVar1 + 0x860) + fVar12) - fVar8 / 2.0f;
+      *(float *)(iVar6 + 0x14) = (transformed.z + *(float *)(iVar1 + 0x860) + fVar12) - fVar8 / 2.0f;
 
       *(u8 *)(iVar6 + 0x18) = 0xff;
 
@@ -5921,19 +5911,19 @@ void FUN_0042b540(int param_1)
 
       fVar8 = (float)func_001126b0(uVar5);
 
-      if ((((fVar10 < ((afStack_40[0] + fVar10 + fVar11) - fVar8 / 2.0f) + 8.0f) &&
+      if ((((fVar10 < ((transformed.x + fVar10 + fVar11) - fVar8 / 2.0f) + 8.0f) &&
 
            (fVar10 = *(float *)(iVar1 + 0x860), fVar8 = (float)func_00112740(uVar5),
 
-           fVar10 < ((afStack_40[2] + fVar10 + fVar12) - fVar8 / 2.0f) + 8.0f)) &&
+           fVar10 < ((transformed.z + fVar10 + fVar12) - fVar8 / 2.0f) + 8.0f)) &&
 
           (fVar10 = *(float *)(iVar1 + 0x85c), fVar8 = (float)func_001126b0(uVar5),
 
-          ((afStack_40[0] + fVar10 + fVar11) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) &&
+          ((transformed.x + fVar10 + fVar11) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) &&
 
          (fVar10 = *(float *)(iVar1 + 0x860), fVar8 = (float)func_00112740(uVar5),
 
-         ((afStack_40[2] + fVar10 + fVar12) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) {
+         ((transformed.z + fVar10 + fVar12) - fVar8 / 2.0f) + 12.0f < fVar10 + 126.0f)) {
 
         *(u8 *)(iVar6 + 0x18) = 0;
 
