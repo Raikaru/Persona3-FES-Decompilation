@@ -3199,7 +3199,7 @@ u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3)
       return 0;
     }
   }
-  fVar13 = ((float)(uVar6 & 0xffff) / 100.0f) * 1.0f;
+  fVar13 = ((float)(uVar6 & 0xffff) / 100.0f);
   if ((uVar9 & 0x80000) == 0) {
     if ((*puVar10 & 4) != 0) {
       sVar3 = 0;
@@ -5269,14 +5269,14 @@ LAB_00309c04:
     case 0:
       lVar18 = FUN_003005e0(param_2,0x1fd);
       if (lVar18 != 0) {
-        fVar25 = fGpffff80c4 * 1.0f;
+        fVar25 = fGpffff80c4;
         uVar14 = 0x11fd;
       }
       else {
         lVar18 = FUN_003005e0(param_2,0x1fc);
         fVar25 = fVar24;
         if (lVar18 != 0) {
-          fVar25 = fGpffff80a4 * 1.0f;
+          fVar25 = fGpffff80a4;
           uVar14 = 0x11fc;
         }
       }

@@ -1933,7 +1933,7 @@ void FUN_003b9610(Resrc* param_1)
 
             *(float *)(puVar8 + 4) = fStack_34 * fVar11 + *(float *)(puVar8 + 0x18) + 0.0f;
 
-            *(float *)(puVar8 + 6) = fStack_30 * fVar11 + *(float *)(puVar8 + 0x1a) + 0.0f;
+            *(float *)(puVar8 + 6) = fStack_30 * fVar11 + *(float *)(puVar8 + 0x1a);
 
           }
 
@@ -2048,11 +2048,11 @@ void FUN_003b9610(Resrc* param_1)
 
           uVar1 = *(u32 *)(puVar8 + 0x42);
 
-          fStack_88 = (fStack_78 / fVar11) * (float)uVar1 + *(float *)(puVar8 + 0x32) + 0.0f;
+          fStack_88 = (fStack_78 / fVar11) * (float)uVar1 + *(float *)(puVar8 + 0x32);
 
-          fStack_84 = fStack_74 * (float)uVar1 + *(float *)(puVar8 + 0x34) + 0.0f;
+          fStack_84 = fStack_74 * (float)uVar1 + *(float *)(puVar8 + 0x34);
 
-          fStack_80 = (fStack_70 / fVar11) * (float)uVar1 + *(float *)(puVar8 + 0x36) + 0.0f;
+          fStack_80 = (fStack_70 / fVar11) * (float)uVar1 + *(float *)(puVar8 + 0x36);
 
           break;
 
@@ -2072,11 +2072,11 @@ void FUN_003b9610(Resrc* param_1)
 
                                        *(u8 *)((int)puVar8 + 0x7d));
 
-          fStack_88 = (fStack_78 / fVar11) * fVar12 + *(float *)(puVar8 + 0x32) + 0.0f;
+          fStack_88 = (fStack_78 / fVar11) * fVar12 + *(float *)(puVar8 + 0x32);
 
-          fStack_84 = fStack_74 * fVar12 + *(float *)(puVar8 + 0x34) + 0.0f;
+          fStack_84 = fStack_74 * fVar12 + *(float *)(puVar8 + 0x34);
 
-          fStack_80 = (fStack_70 / fVar11) * fVar12 + *(float *)(puVar8 + 0x36) + 0.0f;
+          fStack_80 = (fStack_70 / fVar11) * fVar12 + *(float *)(puVar8 + 0x36);
 
         }
 
@@ -2142,19 +2142,19 @@ void FUN_003b9610(Resrc* param_1)
 
              ((*(float *)(puVar8 + 0x4a) - *(float *)(puVar8 + 0x44)) / fVar11) * (float)uVar1 +
 
-             *(float *)(puVar8 + 0x44) + 0.0f;
+             *(float *)(puVar8 + 0x44);
 
         *(float *)(puVar8 + 0x10) =
 
              ((*(float *)(puVar8 + 0x4c) - *(float *)(puVar8 + 0x46)) / fVar11) * (float)uVar1 +
 
-             *(float *)(puVar8 + 0x46) + 0.0f;
+             *(float *)(puVar8 + 0x46);
 
         *(float *)(puVar8 + 0x12) =
 
              ((*(float *)(puVar8 + 0x4e) - *(float *)(puVar8 + 0x48)) / fVar11) * (float)uVar1 +
 
-             *(float *)(puVar8 + 0x48) + 0.0f;
+             *(float *)(puVar8 + 0x48);
 
         if (*(u32 *)(puVar8 + 0x52) < *(u32 *)(puVar8 + 0x50)) {
 
@@ -2202,7 +2202,7 @@ void FUN_003b9610(Resrc* param_1)
 
         fVar11 = (((float)*(u8 *)((int)puVar8 + 0xb5) - (float)(u8)puVar8[0x5a]) / (float)uVar2)
 
-                 * (float)*(u32 *)(puVar8 + 0x5e) + (float)(u8)puVar8[0x5a] + 0.0f;
+                 * (float)*(u32 *)(puVar8 + 0x5e) + (float)(u8)puVar8[0x5a];
 
         if (2147483648.0f <= fVar11) {
 
@@ -2294,7 +2294,7 @@ void FUN_003b9610(Resrc* param_1)
 
              ((fVar11 - *(float *)(puVar8 + 0x62)) / (float)iVar6) * (float)*(u32 *)(puVar8 + 0x2e)
 
-             + *(float *)(puVar8 + 0x62) + 0.0f;
+             + *(float *)(puVar8 + 0x62);
 
         if (*(int *)(puVar8 + 0x68) < iVar6) {
 
@@ -3302,11 +3302,11 @@ void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,
 
   fVar2 = param_5[2];
 
-  *param_6 = (*param_5 + 0.0f) - fStack_20 * param_1;
+  *param_6 = (*param_5) - fStack_20 * param_1;
 
-  param_6[1] = (fVar1 + 0.0f) - fStack_1c * param_1;
+  param_6[1] = (fVar1) - fStack_1c * param_1;
 
-  param_6[2] = (fVar2 + 0.0f) - fStack_18 * param_1;
+  param_6[2] = (fVar2) - fStack_18 * param_1;
 
   return;
 
@@ -3424,9 +3424,9 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
     FUN_004c69f0(afStack_50,&uStack_40);
 
-    fStack_10 = (fStack_10 + 0.0f) - afStack_50[0] * 15.0f;
+    fStack_10 = (fStack_10) - afStack_50[0] * 15.0f;
 
-    fStack_8 = (fStack_8 + 0.0f) - fStack_48 * 15.0f;
+    fStack_8 = (fStack_8) - fStack_48 * 15.0f;
 
   }
 
@@ -4220,11 +4220,11 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
           fStack_60 = fStack_30 - fStack_2c;
 
-          *param_4 = fStack_68 * fVar8 + fStack_1c + 0.0f;
+          *param_4 = fStack_68 * fVar8 + fStack_1c;
 
-          param_4[1] = fStack_64 * fVar8 + fStack_24 + 0.0f;
+          param_4[1] = fStack_64 * fVar8 + fStack_24;
 
-          param_4[2] = fStack_60 * fVar8 + fStack_2c + 0.0f;
+          param_4[2] = fStack_60 * fVar8 + fStack_2c;
 
           fVar9 = fVar9 + fVar6 * fVar8;
 
@@ -4512,7 +4512,7 @@ void FUN_003bc940(void)
 
           fVar3 = (float)FUN_00358030(0);
 
-          *pfVar2 = fVar5 * (fVar3 - 0.5f) * 2.0f + *pfVar2 + 0.0f;
+          *pfVar2 = fVar5 * (fVar3 - 0.5f) * 2.0f + *pfVar2;
 
         }
 
