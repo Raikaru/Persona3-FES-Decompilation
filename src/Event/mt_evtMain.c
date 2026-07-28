@@ -5706,7 +5706,7 @@ void FUN_00365b70(u32 param_1,u32 param_2)
 
             switch (cVar1) {
             case 0:
-              FUN_00395430(param_2,piVar7[1],puVar2[0xc],puVar2[0xd],puVar2[0xe]);
+              FUN_00395430(param_2,piVar7[1],(s16)puVar2[0xc],(s16)puVar2[0xd],(s16)puVar2[0xe]);
               break;
             case 1:
               FUN_003954e0(piVar7[1]);
