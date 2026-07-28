@@ -479,7 +479,7 @@ u32 FUN_00398530(int param_1)
 
       else {
 
-        FUN_0019d3f0("mt_evtCustomEvent.c",0x1df,fVar18);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0x1df);
 
       }
 
@@ -5715,20 +5715,18 @@ void FUN_0039e700(u8 *param_1)
   int iVar6;
 
   int iVar7;
-  int type;
 
   
 
   *(u32 *)(param_1 + 0x78c) = 0;
 
   iVar1 = *(int *)(param_1 + 8);
-  type = 1;
 
   for (iVar7 = 0; iVar7 < *(int *)(iVar1 + 0x38); iVar7 = iVar7 + 1) {
 
     iVar6 = *(int *)(iVar1 + 0x34) + iVar7 * 0x20;
 
-    if (*(int *)(iVar6 + 0x18) == type) {
+    if (*(int *)(iVar6 + 0x18) == 1) {
 
       iVar2 = *(int *)(param_1 + 0x78c);
 

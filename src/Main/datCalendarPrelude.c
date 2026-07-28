@@ -373,28 +373,29 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
         for (;;)
         {
             memcpy(&id, cursor, 4);
-            if (id != 0xffffffff)
+            if (id == 0xffffffff)
+                break;
+            if (id == 0x2000)
             {
-                if (id == 0x2000)
-                {
-                    checksum = 0;
-                    for (i = 0; i < consumed; i++)
-                        checksum = (checksum + start[i]) & 0xff;
-                    memcpy(&size, cursor + 4, 4);
-                    memcpy(&stored, cursor + 8, 1);
-                    return !((u8)checksum ^ stored);
-                }
+                checksum = 0;
+                for (i = 0; i < consumed; i++)
+                    checksum = (checksum + start[i]) & 0xff;
                 memcpy(&size, cursor + 4, 4);
-                if (size != 0)
-                {
-                    cursor += 8;
-                    cursor += size;
-                    consumed += 8;
-                    consumed += size;
-                    if (consumed < limit) continue;
-                }
+                memcpy(&stored, cursor + 8, 1);
+                return ((u32)((u8)checksum ^ stored) < 1);
             }
+            memcpy(&size, cursor + 4, 4);
+            if (size == 0)
+                return false;
+            cursor += 8;
+            cursor += size;
+            consumed += 8;
+            consumed += size;
+            if (consumed < limit)
+                continue;
             return false;
+        }
+        return false;
         }
     }
     return true;

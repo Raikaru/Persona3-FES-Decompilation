@@ -27,8 +27,8 @@ extern void* func_00520728(size_t size);
 extern void func_00520748(void* memory);
 extern s32 printf(const char* format, ...);
 extern const char D_005CEAE0[];
-#pragma alias D_005CEAE0_gp D_005CEAE0
-extern const char D_005CEAE0_gp;
+#pragma alias D_005CEAE0_sda D_005CEAE0
+extern const char D_005CEAE0_sda[] __attribute__((section(".sdata")));
 extern const char D_005CEAF0[];
 extern const char D_005CEB10[];
 extern const char D_005CEB30[];
@@ -511,8 +511,7 @@ void H_Pad_RwFreeRaw(void* memory)
     }
 }
 
-#pragma sdatathreshold 10
-// FUN_00103DA0 NONMATCHING
+// FUN_00103DA0
 void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 {
     HPadRwAllocation* allocation;
@@ -520,7 +519,7 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 
     if (size == 0xAC)
     {
-        printf("CHECK !!\n");
+        printf(D_005CEAE0_sda);
     }
 
     sRwAllocatedBytes += size;
@@ -561,7 +560,6 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
     allocation->hint = sRwAllocationHint;
     return allocation + 1;
 }
-#pragma sdatathreshold 8
 
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
@@ -644,8 +642,11 @@ void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint)
 
     if (kwlnTaskGetUpdating() != NULL) {
         if (strcmp("H_CutInDraw", (const char*)kwlnTaskGetUpdating()) == 0) {
-            if (size == 0x27d8 || size == 0x1fe0) {
-                printf(D_005CEAE0);
+            switch (size) {
+            case 0x1fe0:
+            case 0x27d8:
+                printf(D_005CEAE0_sda);
+                break;
             }
         }
     }

@@ -501,8 +501,8 @@ extern code FUN_0016c920;
 #pragma alias FUN_0016c920_typed FUN_0016c920
 extern s16 FUN_0016c920_typed(u16 id);
 extern u32 FUN_0016c970(u16 param_1);
-#pragma alias FUN_0016c970_s16 FUN_0016c970
-extern u32 FUN_0016c970_s16(s16 param_1);
+#pragma alias FUN_0016c970_s32 FUN_0016c970
+extern u32 FUN_0016c970_s32(s32 param_1);
 extern code FUN_0016cf40;
 #pragma alias FUN_0016cf40_typed FUN_0016cf40
 extern void FUN_0016cf40_typed(s16 pcId, s16 hp);
@@ -8369,45 +8369,47 @@ short FUN_0043b980(char param_1,u64 param_2)
 char FUN_0043bc20(char param_1)
 
 {
+  short sVar1;
   int iVar1;
   u32 uVar2;
-  char cVar3;
+  int cVar3;
 
   cVar3 = 0;
   if (param_1 == '\0') {
-    iVar1 = 1;
+    sVar1 = 1;
   }
   else {
-    iVar1 = *(s16 *)(DAT_00871948_abs + param_1 * 0x1c0);
+    sVar1 = *(s16 *)(DAT_00871948_abs + param_1 * 0x1c0);
   }
-  uVar2 = FUN_0016c970_s16(iVar1);
+  iVar1 = sVar1;
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 1) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
-  uVar2 = FUN_0016c970_s16(iVar1);
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 2) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
-  uVar2 = FUN_0016c970_s16(iVar1);
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 4) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
-  uVar2 = FUN_0016c970_s16(iVar1);
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 8) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
-  FUN_0016c970_s16(iVar1);
-  uVar2 = FUN_0016c970_s16(iVar1);
+  FUN_0016c970_s32(iVar1);
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 0x20) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
-  uVar2 = FUN_0016c970_s16(iVar1);
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 0x40) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
-  uVar2 = FUN_0016c970_s16(iVar1);
+  uVar2 = FUN_0016c970_s32(iVar1);
   if ((uVar2 & 0x80) != 0) {
-    cVar3 = cVar3 + 1;
+    cVar3 = (char)(cVar3 + 1);
   }
   return cVar3;
 }

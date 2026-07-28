@@ -2670,78 +2670,87 @@ void btlActionInitStateMoveHome(BtlAction* action)
     RwV3d homePos;
     u16 commandId;
     u16 nextState;
-    u32 allowMove;
+    u16 allowMove;
     u16 unitDatId;
     u16 speedIdx;
     u8 genus;
     f32 speed;
+    BtlUnit* moveUnit;
+    BtlEnemyRecord* enemyRecords;
 
     if ((gBtl->flags & 0x400000) && (BATTLE_U16(0x18) & 2))
     {
         commandId = action->target.commandId;
-        if (commandId == 9)
+        switch (commandId)
         {
-            nextState = BTLACTION_STATE_SUMMON;
-        }
-        else if (commandId == 3 || commandId == 2)
-        {
-            nextState = BTLACTION_STATE_SKILL;
-        }
-        else if (commandId == 1)
-        {
+        case 1:
             nextState = BTLACTION_STATE_ATTACK;
-        }
-        else
-        {
+            break;
+        case 2:
+        case 3:
+            nextState = BTLACTION_STATE_SKILL;
+            break;
+        case 9:
+            nextState = BTLACTION_STATE_SUMMON;
+            break;
+        default:
             nextState = BTLACTION_STATE_NON;
+            break;
         }
         btlActionSetState(action, nextState);
         return;
     }
 
     btlUnit0027f7c0(unit, &homePos, NULL, NULL);
-    if (FUN_002d1ed0(&unit->pos, &homePos) <= 75.0f)
+    if (FUN_002d1ed0(&unit->pos, &homePos) > 75.0f)
     {
-        commandId = action->target.commandId;
-        if (commandId == 9)
+        btlAction0028a780(action);
+        speedIdx = 2;
+        allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
+        moveUnit = action->unit;
+        unitDatId = moveUnit->datUnit->id;
+        genus = moveUnit->genus;
+        switch (genus)
         {
-            nextState = BTLACTION_STATE_SUMMON;
+        case UNIT_GENUS_PC:
+            break;
+        case UNIT_GENUS_EC:
+            enemyRecords = iGpffffb728;
+            speedIdx = *(u16*)((u8*)enemyRecords + unitDatId * 0xe8 + allowMove * 4 + 0x24);
+            break;
+        default:
+            break;
         }
-        else if (commandId == 3 || commandId == 2)
-        {
-            nextState = BTLACTION_STATE_SKILL;
-        }
-        else if (commandId == 1)
-        {
-            nextState = BTLACTION_STATE_ATTACK;
-        }
-        else
-        {
-            nextState = BTLACTION_STATE_NON;
-        }
-        btlActionSetState(action, nextState);
-        return;
-    }
-
-    btlAction0028a780(action);
-    allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
-    unitDatId = unit->datUnit->id;
-    genus = unit->genus;
-    if (genus == UNIT_GENUS_EC)
-    {
-        speedIdx = *(u16*)((u8*)iGpffffb728 + unitDatId * 0xe8 + allowMove * 4 + 0x24);
+        speed = D_00693300[speedIdx];
+        speed *= uGpffff8088;
+        packet = btlUnitCreateMovePacket(moveUnit, &homePos, speed, 0);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVEHOME);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_0);
     }
     else
     {
-        speedIdx = 0;
+        commandId = action->target.commandId;
+        switch (commandId)
+        {
+        case 1:
+            nextState = BTLACTION_STATE_ATTACK;
+            break;
+        case 2:
+        case 3:
+            nextState = BTLACTION_STATE_SKILL;
+            break;
+        case 9:
+            nextState = BTLACTION_STATE_SUMMON;
+            break;
+        default:
+            nextState = BTLACTION_STATE_NON;
+            break;
+        }
+        btlActionSetState(action, nextState);
     }
-    speed = D_00693300[speedIdx] * uGpffff8088;
-    packet = btlUnitCreateMovePacket(unit, &homePos, speed, 0);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_MOVEHOME);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_0);
 }
 // FUN_0028ea90
 void btlActionUpdateStateMoveHome(BtlAction* action)
