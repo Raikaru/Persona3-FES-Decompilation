@@ -782,33 +782,43 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
                                          KwlnTaskDestroyFunc destroy,
                                          void* workData)
 {
-    KwlnTask* currParent;
     u32 maxPriority;
+    KwlnTask* currParent;
     u32 currPriority;
     KwlnTask* task;
 
     currParent = parentTask;
+    if (currParent == NULL)
+    {
+        goto noParent;
+    }
+
+    maxPriority = 0;
+    goto parentCheck;
+
+parentBody:
+    currPriority = currParent->priority;
+    if (currPriority >= priority &&
+        currPriority < priority + 1024 &&
+        currPriority > maxPriority)
+    {
+        maxPriority = currPriority;
+    }
+
+    currParent = currParent->parent;
+
+parentCheck:
     if (currParent != NULL)
     {
-        maxPriority = 0;
-        while (currParent != NULL)
-        {
-            currPriority = currParent->priority;
-            if (currPriority >= priority &&
-                currPriority < priority + 1024 &&
-                currPriority > maxPriority)
-            {
-                maxPriority = currPriority;
-            }
-
-            currParent = currParent->parent;
-        }
-
-        if (maxPriority != 0)
-        {
-            priority = maxPriority + 1;
-        }
+        goto parentBody;
     }
+
+    if (maxPriority != 0)
+    {
+        priority = maxPriority + 1;
+    }
+
+noParent:
 
     task = kwlnTaskInit(name, priority, update, destroy, workData);
     kwlnTaskAddChild(parentTask, task);
@@ -1087,7 +1097,7 @@ u32 kwlnTaskGetState(KwlnTask* task)
 #pragma push
 /* Removing this worsens FUN_00195340 (nd68 -> nd106) - measured W161. */
 #pragma opt_loop_invariants on
-// FUN_00195340 NONMATCHING
+// FUN_00195340
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
 {
     KwlnTask* list;
@@ -1129,15 +1139,11 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
                 {
                     if (k == 0)
                     {
-                        break;
+                        return list;
                     }
                     k--;
                 }
 
-                if (k == 0)
-                {
-                    return list;
-                }
             }
 
             list = list->next;

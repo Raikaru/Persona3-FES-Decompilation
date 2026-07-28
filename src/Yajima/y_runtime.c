@@ -18049,8 +18049,8 @@ u32 FUN_004575e0(int param_1)
   u32 uVar2;
   u32 uVar3;
   u32 uVar4;
-  u64 uVar5;
-  long lVar6;
+  u32 uVar5;
+  u32 lVar6;
   int iVar7;
   
   puVar1 = *(u8 **)(param_1 + 0x3c);

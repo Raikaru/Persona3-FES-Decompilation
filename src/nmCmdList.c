@@ -330,26 +330,26 @@ void FUN_003c5fa0(int param_1,int param_2)
 {
 
   int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
   u32 changed;
+  int savedList;
+  u32 iVar2;
+  u32 iVar3;
+  u32 iVar4;
+  u32 done;
 
   
 
   iVar1 = *(int *)(param_1 + 0x24);
   changed = 1;
-  if (*(int *)(param_1 + 8) == param_2) {
+  savedList = param_2;
+  if (*(int *)(param_1 + 8) == savedList) {
     changed = 0;
   }
-  iVar2 = FUN_003c49e0(param_1,param_1 + 4,param_2);
+  iVar2 = FUN_003c49e0(param_1,param_1 + 4,savedList);
 
   if (changed != 0) {
 
-    if (param_2 == *(int *)(iVar1 + 0x2c)) {
+    if (savedList == *(int *)(iVar1 + 0x2c)) {
 
       *(int *)(iVar1 + 0x2c) = iVar2;
 
@@ -364,32 +364,22 @@ void FUN_003c5fa0(int param_1,int param_2)
   }
 
   iVar3 = *(int *)(iVar1 + 0x2c);
-
   iVar2 = iVar3;
-
-  for (iVar4 = *(int *)(iVar1 + 0x20); (iVar2 != 0 && (iVar4 != 0)); iVar4 = iVar4 + -1) {
-
+  iVar4 = *(int *)(iVar1 + 0x20);
+  while ((done = (iVar2 == 0)) == 0 && iVar4 != 0) {
     iVar2 = *(int *)(iVar2 + 0x10);
-
+    iVar4--;
   }
 
   if ((iVar2 == 0) && (iVar4 != 0)) {
-
-    while ((iVar4 != 0 && (iVar3 != 0))) {
-
+    while ((done = (--iVar4 == 0)) == 0 && iVar3 != 0) {
       iVar3 = *(int *)(iVar3 + 0xc);
-
       if (iVar3 != 0) {
-
         *(int *)(iVar1 + 0x2c) = iVar3;
-
       }
-
-      iVar4 = iVar4 + -1;
-
     }
-
   }
+
 
   return;
 
@@ -858,7 +848,7 @@ typedef struct {
   u32 value;
 } NmCmdState;
 
-// FUN_003C69D0 NONMATCHING
+// FUN_003C69D0
 void FUN_003c69d0(int param_1)
 {
   NmCmdState *puVar1;

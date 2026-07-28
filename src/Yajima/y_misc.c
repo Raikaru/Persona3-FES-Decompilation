@@ -3096,137 +3096,47 @@ FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4,
 // FUN_00427830 NONMATCHING
 
 
-u64
-
-FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4,
-            u32 param_5,int param_6,u32 *param_7,u8 param_8)
-
-
-
+u32
+FUN_00427830(float param_1, int param_2, u32 param_3, YajimaVec2 param_4,
+             u32 param_5, YajimaVec4 *param_6, YajimaVec4 *param_7, int param_8)
 {
+  int iVar1;
+  u32 uVar2;
+  u8 *puVar3;
+  YajimaVec4 size;
+  YajimaVec4 rect;
 
-  u32 lVar1;
-
-  u64 uVar2;
-
-  int iVar3;
-
-  u8 *puVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  int iVar8;
-
-  u32 uVar9;
-
-  u32 uVar10;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u8 uStack_24;
-
-  u8 uStack_23;
-
-  u8 uStack_22;
-
-  u8 uStack_21;
-
-  
-
-  iVar5 = *(int *)(param_6 + 8);
-
-  iVar7 = *(int *)(param_6 + 0xc);
-
-  uVar9 = *param_7;
-
-  uVar10 = param_7[1];
-
-  iVar6 = param_7[2];
-
-  iVar8 = param_7[3];
-
-  lVar1 = (*DAT_00960184)(1,400,0x40000);
-
-  if (lVar1 == 0) {
-
-    uVar2 = 0;
-
+  size = *param_6;
+  rect = *param_7;
+  puVar3 = (u8 *)(*DAT_00960184_abs)(1, 400, 0x40000);
+  if (puVar3 == 0) {
+    return 0;
   }
-
-  else {
-
-    uVar2 = kwlnTaskCreateWithAutoPriority(param_2,0x106f,0x6b4440,0x426590,0x427640,lVar1);
-
-    puVar4 = (u8 *)lVar1;
-
-    *puVar4 = 0;
-
-    for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-
-      uStack_24 = (u8)param_5;
-
-      uStack_23 = (u8)((u32)param_5 >> 8);
-
-      uStack_22 = (u8)((u32)param_5 >> 0x10);
-
-      uStack_21 = (u8)((u32)param_5 >> 0x18);
-
-      puVar4[iVar3 * 4 + 0x110] = uStack_24;
-
-      puVar4[iVar3 * 4 + 0x111] = uStack_23;
-
-      puVar4[iVar3 * 4 + 0x112] = uStack_22;
-
-      puVar4[iVar3 * 4 + 0x113] = uStack_21;
-
-      *(u32 *)(puVar4 + iVar3 * 8 + 0x158) = 0;
-
-      *(u32 *)(puVar4 + iVar3 * 8 + 0x154) = 0;
-
-    }
-
-    uStack_30 = (u32)param_4;
-
-    uStack_2c = (u32)((u32)param_4 >> 0x20);
-
-    *(u32 *)(puVar4 + 0x134) = uStack_30;
-
-    *(u32 *)(puVar4 + 0x138) = uStack_2c;
-
-    *(u32 *)(puVar4 + 0x120) = uVar9;
-
-    *(u32 *)(puVar4 + 0x124) = uVar10;
-
-    *(int *)(puVar4 + 0x128) = iVar6;
-
-    *(int *)(puVar4 + 300) = iVar8;
-
-    *(u32 *)(puVar4 + 0x130) = param_1;
-
-    *(u32 *)(puVar4 + 0x13c) = param_3;
-
-    puVar4[0x141] = param_8;
-
-    *(float *)(puVar4 + 0x14c) = 1.0f;
-
-    *(float *)(puVar4 + 0x144) = (1.0f / (float)iVar5) * (float)iVar6;
-
-    *(float *)(puVar4 + 0x148) = (1.0f / (float)iVar7) * (float)iVar8;
-
-    puVar4[0x150] = 0;
-
-    puVar4[0x18c] = 0;
-
+  uVar2 = (u32)kwlnTaskCreateWithAutoPriority((KwlnTask *)param_2, 0x106f,
+      (char *)0x6b4440, (KwlnTaskUpdateFunc)0x426590,
+      (KwlnTaskDestroyFunc)0x427640, puVar3);
+  *puVar3 = 0;
+  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
+    puVar3[iVar1 * 4 + 0x110] = ((u8 *)&param_5)[0];
+    puVar3[iVar1 * 4 + 0x111] = ((u8 *)&param_5)[1];
+    puVar3[iVar1 * 4 + 0x112] = ((u8 *)&param_5)[2];
+    puVar3[iVar1 * 4 + 0x113] = ((u8 *)&param_5)[3];
+    *(u32 *)(puVar3 + iVar1 * 8 + 0x158) = 0;
+    *(u32 *)(puVar3 + iVar1 * 8 + 0x154) = 0;
   }
-
+  *(YajimaVec2 *)(puVar3 + 0x134) = param_4;
+  *(YajimaVec4 *)(puVar3 + 0x120) = rect;
+  *(float *)(puVar3 + 0x130) = param_1;
+  *(u32 *)(puVar3 + 0x13c) = param_3;
+  puVar3[0x141] = param_8;
+  *(float *)(puVar3 + 0x14c) = 1.0f;
+  *(float *)(puVar3 + 0x144) =
+      (1.0f / (float)*(s32 *)&size.z) * (float)*(s32 *)&rect.z;
+  *(float *)(puVar3 + 0x148) =
+      (1.0f / (float)*(s32 *)&size.w) * (float)*(s32 *)&rect.w;
+  puVar3[0x150] = 0;
+  puVar3[0x18c] = 0;
   return uVar2;
-
 }
 
 // FUN_00427A10 NONMATCHING

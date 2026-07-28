@@ -95,8 +95,8 @@ extern f32 DAT_007cadc0;
 extern u32 DAT_007cadd0;
 extern u32 DAT_007cae18;
 extern u32 DAT_007cafec;
-extern u32 DAT_007cb0cc;
-extern u32 DAT_007cb110;
+extern f32 DAT_007cb0cc;
+extern f32 DAT_007cb110;
 extern u32 DAT_007cb120;
 #pragma alias DAT_007cb120_f32 DAT_007cb120
 extern f32 DAT_007cb120_f32;
@@ -1504,7 +1504,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
       switch (cVar1) {
       case '\0':
         uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-        evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)(void *)0x7ccd50, *(short *)(*(int *)(param_4 + 0x164) + 0x20));
+        evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa060, *(short *)(*(int *)(param_4 + 0x164) + 0x20));
         break;
 
       case '\x01': {
@@ -1513,11 +1513,11 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
         cVar2 = *(char *)((u8 *)piVar4 + 0x22);
         if (cVar2 < '\x03') {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)(void *)0x7ccd58, (u32)(&PTR_s_DISABLE_0069e6c8)[cVar2]);
+          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa068, (u32)(&PTR_s_DISABLE_0069e6c8)[cVar2]);
         }
         else {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)(void *)0x7ccd60, *(u16 *)((u8 *)piVar4 + 0x24));
+          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa070, *(u16 *)((u8 *)piVar4 + 0x24));
         }
         break;
       }
@@ -1525,17 +1525,17 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
       case '\x02':
         if (*(char *)(*(int *)(param_4 + 0x164) + 0x22) == '\0') {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)(void *)0x7ccd68);
+          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa070 + 8);
         }
         else {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)(void *)0x7ccd70);
+          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa070 + 0x10);
         }
         break;
 
       case '\x03':
         uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-        evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)(void *)0x7ccd50, *(char *)(*(int *)(param_4 + 0x164) + 0x22));
+        evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa060, *(char *)(*(int *)(param_4 + 0x164) + 0x22));
         break;
       }
 

@@ -48,13 +48,16 @@ u64 FUN_003c57e0(u64 param_1,int param_2);
 u64 FUN_003c5810(u64 param_1,int param_2);
 void FUN_003c5840(u64 param_1,int param_2);
 u64 FUN_003c5870(u64 param_1,int param_2);
-u64 FUN_003c58f0(u32 param_1,long param_2,u32 param_3,u32 param_4);
+u32 FUN_003c58f0(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_003c5a20(void);
 u32 FUN_003c5a40(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_003c5af0(u32 param_1);
 void FUN_003c5bb0(u32 param_1);
 u32 FUN_003c5c50(u32 param_1);
 void FUN_003c5d40(u32 param_1,int param_2,int param_3);
+u32 FUN_003c60c0(int param_1,int param_2);
+u64 FUN_003c60f0(int param_1);
+u32 FUN_003c6120(int param_1,int param_2);
 #pragma alias FUN_003c4c80_nm_typed FUN_003c4c80
 extern u32 FUN_003c4c80_nm_typed(int *param_1, int *param_2);
 
@@ -70,7 +73,7 @@ extern u32 FUN_003c4c80_nm_typed(int *param_1, int *param_2);
 #define FUN_003c5810(...) ((u64 (*)(...))FUN_003c5810)(__VA_ARGS__)
 #define FUN_003c5840(...) ((void (*)(...))FUN_003c5840)(__VA_ARGS__)
 #define FUN_003c5870(...) ((u64 (*)(...))FUN_003c5870)(__VA_ARGS__)
-#define FUN_003c58f0(...) ((u64 (*)(...))FUN_003c58f0)(__VA_ARGS__)
+#define FUN_003c58f0(...) ((u32 (*)(...))FUN_003c58f0)(__VA_ARGS__)
 #define FUN_003c5a20(...) ((void (*)(...))FUN_003c5a20)(__VA_ARGS__)
 #define FUN_003c5a40(...) ((u32 (*)(...))FUN_003c5a40)(__VA_ARGS__)
 #define FUN_003c5af0(...) ((void (*)(...))FUN_003c5af0)(__VA_ARGS__)
@@ -583,7 +586,7 @@ void FUN_003c58e0(void)
 // FUN_003C58F0 NONMATCHING
 
 
-u64 FUN_003c58f0(u32 param_1,long param_2,u32 param_3,u32 param_4)
+u32 FUN_003c58f0(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
 
 
@@ -593,11 +596,10 @@ u64 FUN_003c58f0(u32 param_1,long param_2,u32 param_3,u32 param_4)
 
   u32 *puVar1;
 
-  u32 uVar2;
 
   
 
-  uVar3 = FUN_003c44d0((int)param_2 + 0x48,0x3c60c0,0x3c60f0,0x3c6120);
+  uVar3 = FUN_003c44d0(param_2 + 0x48,FUN_003c60c0,FUN_003c60f0,FUN_003c6120);
 
   puVar1 = *(u32 **)((int)uVar3 + 0x24);
 
@@ -627,11 +629,9 @@ u64 FUN_003c58f0(u32 param_1,long param_2,u32 param_3,u32 param_4)
 
   *(u16 *)((int)puVar1 + 10) = 0;
 
-  uVar2 = *puVar1;
+  *puVar1 = *puVar1 | 8;
 
-  *puVar1 = uVar2 | 8;
-
-  *puVar1 = uVar2 | 0x1008;
+  *puVar1 = *puVar1 | 0x1000;
 
   if ((param_1 & 1) != 0) {
 

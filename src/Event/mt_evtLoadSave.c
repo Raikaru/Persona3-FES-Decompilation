@@ -911,9 +911,7 @@ process_node:
         iVar2 = iVar1 * 4;
         iVar4 = (int)psVar2;
         iVar4 += iVar2;
-        iVar2 += (int)&stack;
-        iVar2 += 0x74;
-        *(f32 *)iVar2 = *(f32 *)(iVar4 + 0x10);
+        *(f32 *)((int)&stack + iVar2 + 0x14) = *(f32 *)(iVar4 + 0x10);
       }
       switch (*piVar3) {
       case 8:

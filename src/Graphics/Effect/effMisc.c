@@ -263,19 +263,26 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
 
     __asm__ volatile (
         ".set noreorder                              \n"
-        "lqc2 vf10, 0(%1)                            \n"
+        "lqc2 vf10, 0(%0)                            \n"
         "vmul.xyz vf2, vf10, vf10                    \n"
-        "vmulax.w ACC, vf0, vf2x                    \n"
-        "vmadday.w ACC, vf0, vf2y                   \n"
+        "vmulax.w ACC, vf0, vf2x                     \n"
+        "vmadday.w ACC, vf0, vf2y                    \n"
         "vmaddz.w vf2, vf0, vf2z                    \n"
         "vrsqrt Q, vf0w, vf2w                       \n"
         "vwaitq                                      \n"
         "vmulq.xyz vf10, vf10, Q                    \n"
-        "sqc2 vf10, 0(%0)                            \n"
         ".set reorder"
         :
-        : "r" (&normalizedAxis), "r" (axis)
+        : "r" (axis)
         : "vf2", "vf10", "ACC", "Q", "memory"
+    );
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "sqc2 vf10, 0(%0)        \n"
+        ".set reorder"
+        :
+        : "r" (&normalizedAxis)
+        : "memory"
     );
 
     x = normalizedAxis.x;

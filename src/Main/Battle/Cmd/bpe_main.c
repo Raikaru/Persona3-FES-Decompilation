@@ -1,6 +1,7 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 #include "Utils.h"
+#include "rw/rwplcore.h"
  
 static u32* sBpeWork; // puGpffffb638
 
@@ -95,16 +96,16 @@ void func_002496e0(void* work)
         s32 stride;
     };
     struct Local {
-        f32 uv[4];
-        f32 world[3];
+        RwV4d uv;
+        RwV3d world;
         u8 pad0[4];
-        f32 origin[3];
+        RwV3d origin;
         u8 pad1[4];
-        f32 dimensions[2];
+        RwV2d dimensions;
         struct Buffer positions;
         struct Buffer colors;
         u8 pad2[4];
-        u8 white[4];
+        RwRGBA white;
     };
     u8* base;
     u8* node;
@@ -126,33 +127,33 @@ void func_002496e0(void* work)
     func_00492d10(*(void**)(base + 0x600), func_004caf10());
 
     texture = func_003210a0(1);
-    local.uv[0] = 1.0f / (f32)*(s32*)((u8*)*texture + 0xc);
-    local.uv[1] = 1.0f / (f32)*(s32*)((u8*)*texture + 0x10);
-    local.uv[2] = ((f32)*(s32*)((u8*)*texture + 0xc) - 1.0f) /
-                  (f32)*(s32*)((u8*)*texture + 0xc);
-    local.uv[3] = ((f32)*(s32*)((u8*)*texture + 0x10) - 1.0f) /
-                  (f32)*(s32*)((u8*)*texture + 0x10);
+    local.uv.x = 1.0f / (f32)*(s32*)((u8*)*texture + 0xc);
+    local.uv.y = 1.0f / (f32)*(s32*)((u8*)*texture + 0x10);
+    local.uv.z = ((f32)*(s32*)((u8*)*texture + 0xc) - 1.0f) /
+                 (f32)*(s32*)((u8*)*texture + 0xc);
+    local.uv.w = ((f32)*(s32*)((u8*)*texture + 0x10) - 1.0f) /
+                 (f32)*(s32*)((u8*)*texture + 0x10);
 
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    func_00521250(node + 0xe0, local.uv, sizeof(local.uv));
+    func_00521250(node + 0xe0, &local.uv, sizeof(local.uv));
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x80000;
-    local.dimensions[0] = 20.0f;
-    local.dimensions[1] = 20.0f;
+    local.dimensions.x = 20.0f;
+    local.dimensions.y = 20.0f;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(f32*)(node + 0xc0) = local.dimensions[0];
-    *(f32*)(node + 0xc4) = local.dimensions[1];
+    *(f32*)(node + 0xc0) = local.dimensions.x;
+    *(f32*)(node + 0xc4) = local.dimensions.y;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x4000;
     func_00494d50(
         **(void***)((u8*)*(void**)(*(u8**)(base + 0x600) + 0x18) + 0x20), texture);
 
-    local.white[0] = 0xff;
-    local.white[1] = 0xff;
-    local.white[2] = 0xff;
-    local.white[3] = 0xff;
+    local.white.r = 0xff;
+    local.white.g = 0xff;
+    local.white.b = 0xff;
+    local.white.a = 0xff;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    func_00521250(node + 0xd0, local.white, 0x10);
+    func_00521250(node + 0xd0, &local.white, 0x10);
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x40000;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
@@ -214,13 +215,13 @@ void func_002496e0(void* work)
 
     func_004747f0(*(void**)(base + 0x600));
     matrix = func_004cb2f0(*(void**)(camera + 4));
-    local.origin[0] = 0.0f;
-    local.origin[1] = 0.0f;
-    local.origin[2] = 100.0f;
-    func_004c6be0(local.world, local.origin, matrix);
-    worldZ = local.world[2];
-    worldX = local.world[0];
-    worldY = local.world[1];
+    local.origin.x = 0.0f;
+    local.origin.y = 0.0f;
+    local.origin.z = 100.0f;
+    func_004c6be0(&local.world, &local.origin, matrix);
+    worldZ = local.world.z;
+    worldX = local.world.x;
+    worldY = local.world.y;
     *(f32*)(base + 0x608) = worldX;
     *(f32*)(base + 0x60c) = worldY;
     *(f32*)(base + 0x610) = worldZ;
@@ -238,11 +239,11 @@ void func_00249c10(void* work)
     struct Local {
         struct Buffer colors;
         struct Buffer positions;
-        f32 transformed[3];
+        RwV3d transformed;
         u8 pad0[4];
-        f32 origin[3];
+        RwV3d origin;
         u8 pad1[4];
-        f32 point[3];
+        RwV3d point;
     };
     u8* base;
     u8* camera;
@@ -267,15 +268,15 @@ void func_00249c10(void* work)
     matrix = func_004c38c0();
     func_004c32a0(matrix, cameraMatrix);
 
-    local.origin[0] = 0.0f;
-    local.origin[1] = 0.0f;
-    local.origin[2] = 100.0f;
-    RwV3dTransformPoint(local.transformed, local.origin, cameraMatrix);
+    local.origin.x = 0.0f;
+    local.origin.y = 0.0f;
+    local.origin.z = 100.0f;
+    RwV3dTransformPoint(&local.transformed, &local.origin, cameraMatrix);
 
-    deltaX = local.transformed[0] - *(f32*)(base + 0x608);
-    deltaY = local.transformed[1] - *(f32*)(base + 0x60c);
-    deltaZ = local.transformed[2] - *(f32*)(base + 0x610);
-    func_004cb750(frame, local.transformed, 0);
+    deltaX = local.transformed.x - *(f32*)(base + 0x608);
+    deltaY = local.transformed.y - *(f32*)(base + 0x60c);
+    deltaZ = local.transformed.z - *(f32*)(base + 0x610);
+    func_004cb750(frame, &local.transformed, 0);
     func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 2, 0x40000000);
     func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 1, 0x40000000);
 
@@ -311,27 +312,27 @@ void func_00249c10(void* work)
             } else if (particleZ[0] > 150.0f) {
                 particleZ[0] -= 300.0f;
             }
-            position[0] = local.transformed[0] + *(f32*)(base + i * 0xc);
-            position[1] = local.transformed[1] + *(f32*)(base + i * 0xc + 4);
-            position[2] = local.transformed[2] + *(f32*)(base + i * 0xc + 8);
-            RwV3dTransformPoint(local.point, position, matrix);
+            position[0] = local.transformed.x + *(f32*)(base + i * 0xc);
+            position[1] = local.transformed.y + *(f32*)(base + i * 0xc + 4);
+            position[2] = local.transformed.z + *(f32*)(base + i * 0xc + 8);
+            RwV3dTransformPoint(&local.point, position, matrix);
 
-            if (local.point[2] < 100.0f) {
-                if (local.point[2] < 40.0f) {
+            if (local.point.z < 100.0f) {
+                if (local.point.z < 40.0f) {
                     alpha = 0.0f;
-                } else if (local.point[2] < 100.0f) {
-                    alpha = (local.point[2] - 40.0f) / 60.0f;
-                } else if (local.point[2] < 170.0f) {
+                } else if (local.point.z < 100.0f) {
+                    alpha = (local.point.z - 40.0f) / 60.0f;
+                } else if (local.point.z < 170.0f) {
                     alpha = 1.0f;
-                } else if (local.point[2] < 230.0f) {
-                    alpha = 1.0f - (local.point[2] - 170.0f) / 60.0f;
+                } else if (local.point.z < 230.0f) {
+                    alpha = 1.0f - (local.point.z - 170.0f) / 60.0f;
                 } else {
                     alpha = 0.0f;
                 }
             } else {
-                distance = local.point[2] - 100.0f;
-                distance = local.point[1] * local.point[1] +
-                           local.point[0] * local.point[0] +
+                distance = local.point.z - 100.0f;
+                distance = local.point.y * local.point.y +
+                           local.point.x * local.point.x +
                            distance * distance;
                 alpha = 0.0f;
                 distance = sqrtf(distance);
@@ -351,9 +352,9 @@ void func_00249c10(void* work)
         }
     }
 
-    *(f32*)(base + 0x608) = local.transformed[0];
-    *(f32*)(base + 0x60c) = local.transformed[1];
-    *(f32*)(base + 0x610) = local.transformed[2];
+    *(f32*)(base + 0x608) = local.transformed.x;
+    *(f32*)(base + 0x60c) = local.transformed.y;
+    *(f32*)(base + 0x610) = local.transformed.z;
     func_004747f0(*(void**)(base + 0x600));
     func_004c3880(matrix);
 }

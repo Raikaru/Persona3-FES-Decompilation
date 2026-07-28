@@ -524,7 +524,7 @@ static void bpTexSetUvAxis(f32 start,
     }
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 2
 // FUN_0021cd00 NONMATCHING
 void func_0021cd00(void* frameData, f32* uv)
 {
@@ -532,42 +532,50 @@ void func_0021cd00(void* frameData, f32* uv)
     u8* texture;
     u8* rasterList;
     u8* raster;
-    s32 rasterWidth;
-    s32 rasterHeight;
-    f32 yRange[2] = {0};
-    f32 xRange[2] = {0};
+    u32 rasterIndex;
 
     frame = (BpTexFrameData*)frameData;
     texture = (u8*)(uintptr_t)frame->texture;
+    rasterIndex = frame->rasterIndex;
     rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
-    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, frame->rasterIndex * 4);
-    yRange[0] = (f32)frame->y;
-    yRange[1] = (f32)(frame->y + frame->height);
-    xRange[0] = (f32)frame->x;
-    xRange[1] = (f32)(frame->x + frame->width);
-    rasterWidth = *(s32*)(raster + 0x0c);
-    rasterHeight = *(s32*)(raster + 0x10);
+    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, rasterIndex * 4);
+    {
+        f32 xRange[2] = {0};
 
-    if ((frame->id & 1) != 0)
-    {
-        uv[0] = yRange[1] / (f32)rasterWidth;
-        uv[2] = yRange[0] / (f32)rasterWidth;
-    }
-    else
-    {
-        uv[0] = yRange[0] / (f32)rasterWidth;
-        uv[2] = yRange[1] / (f32)rasterWidth;
-    }
+        xRange[0] = (f32)frame->x;
+        xRange[1] = (f32)(frame->x + frame->width);
+        {
+            f32 yRange[2] = {0};
+            s32 rasterWidth;
+            s32 rasterHeight;
 
-    if ((frame->id & 2) != 0)
-    {
-        uv[1] = xRange[1] / (f32)rasterHeight;
-        uv[3] = xRange[0] / (f32)rasterHeight;
-    }
-    else
-    {
-        uv[1] = xRange[0] / (f32)rasterHeight;
-        uv[3] = xRange[1] / (f32)rasterHeight;
+            yRange[0] = (f32)frame->y;
+            yRange[1] = (f32)(frame->y + frame->height);
+            rasterWidth = *(s32*)(raster + 0x0c);
+            rasterHeight = *(s32*)(raster + 0x10);
+
+            if ((~frame->id & 1) != 0)
+            {
+                uv[0] = xRange[0] / (f32)rasterWidth;
+                uv[2] = xRange[1] / (f32)rasterWidth;
+            }
+            else
+            {
+                uv[0] = xRange[1] / (f32)rasterWidth;
+                uv[2] = xRange[0] / (f32)rasterWidth;
+            }
+
+            if ((~frame->id & 2) != 0)
+            {
+                uv[1] = yRange[0] / (f32)rasterHeight;
+                uv[3] = yRange[1] / (f32)rasterHeight;
+            }
+            else
+            {
+                uv[1] = yRange[1] / (f32)rasterHeight;
+                uv[3] = yRange[0] / (f32)rasterHeight;
+            }
+        }
     }
 }
 

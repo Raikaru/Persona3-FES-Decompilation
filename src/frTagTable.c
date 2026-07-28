@@ -243,8 +243,8 @@ u64 FUN_003ae650(u64 param_1,int param_2)
   mask = 0xf0;
   newline = 10;
   do {
-    value = data[index];
     index++;
+    value = data[index++];
     if (value != newline) {
       if ((value & mask) == mask) {
         index += ((value & 0xf) - 1) * 2 + 1;
