@@ -169,6 +169,7 @@ void func_00275050(s32 index)
     s32 unavailable;
     s8 kind;
     u8 *entry;
+    u8 *record;
 
     if (gOpWorkC0 == NULL)
         K_Assert(D_0068ED88, 0xb0);
@@ -176,15 +177,15 @@ void func_00275050(s32 index)
     skills = datPersonaGetSkills((void *)(uintptr_t)work[0x30 / 4]);
     skillCount = (s32)datPersonaCountValidSkills(
         (void *)(uintptr_t)work[0x30 / 4]);
-    if (index >= (s32)work[0x1c0 / 4])
-        K_Assert(D_0068ED88, 0x638);
+    OP_MATCH_ASSERT(index < (s32)work[0x1c0 / 4], 0x638);
     slot = 0;
     unavailable = 0;
 
 loop:
-    entry = (u8 *)(uintptr_t)work[0x34 / 4] +
-            ((s32)work[0x78 / 4] + slot) * 4 + 6;
-    kind = *(s8 *)(entry + 1);
+    record = (u8 *)(uintptr_t)work[0x34 / 4] +
+             ((s32)work[0x78 / 4] + slot) * 4;
+    entry = record + 6;
+    kind = *(s8 *)(record + 7);
     if (kind == 4)
         goto next;
     if (kind != 1)

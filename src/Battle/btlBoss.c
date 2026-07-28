@@ -1656,54 +1656,68 @@ void func_002faa50(BtlAction* source, BtlAction* target, BtlTargetResult* result
 // FUN_002faab0 NONMATCHING
 void func_002faab0()
 {
-    BtlUnit* unit;
-    u8* model;
-
     switch (btlBossGetEncounterId())
     {
     case 0x1a4:
         func_002eaa40();
         break;
     case 0x1a5:
+    {
+        BtlUnit* unit;
         for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
         {
-            if (unit->charId == 0x107)
+            switch (unit->charId)
             {
-                model = (u8*)unit->mdl;
-                model[0x388] |= 8;
+            case 0x107:
+            {
+                ((u8*)unit->mdl)[0x388] |= 8;
                 *(u32*)((u8*)gBtl + 0xb4c) = 0;
-                model[0x41d] = 0;
+                ((u8*)unit->mdl)[0x41d] = 0;
+                break;
+            }
             }
         }
         break;
+    }
     case 0x1a8:
         func_002ef5a0();
         break;
     case 0x1ac:
+    {
+        BtlUnit* unit;
         for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
         {
-            if (unit->charId == 0x111)
+            switch (unit->charId)
             {
-                model = (u8*)unit->mdl;
-                model[0x388] |= 8;
+            case 0x111:
+            {
+                ((u8*)unit->mdl)[0x388] |= 8;
                 *(u32*)((u8*)gBtl + 0xb50) = 0;
-                model[0x41d] = 0;
+                ((u8*)unit->mdl)[0x41d] = 0;
+                break;
+            }
             }
         }
         break;
+    }
     case 0x1b4:
+    {
+        BtlUnit* unit;
         for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
         {
-            if (unit->charId == 0xf2)
+            switch (unit->charId)
             {
+            case 0xf2:
                 func_002d3fe0(unit);
                 func_002831c0(unit, 0);
                 func_00282d40(unit->unk_9e4, unit, unit->unk_9e0, 0, unit->unk_9e8);
                 func_00287510(unit);
                 func_0027f650(unit, 0x957180);
+                break;
             }
         }
         break;
+    }
     default:
         break;
     }

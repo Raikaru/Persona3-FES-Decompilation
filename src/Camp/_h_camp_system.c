@@ -1364,18 +1364,19 @@ void FUN_0015D8E0(u64 param_1, f32 param_2, u8 param_3)
     f32 y;
 
     position.packed = param_1;
-    x = 218.0f + position.value[1];
-    y = 382.0f + position.value[0];
-    object = campD8MakeSprite(0, DAT_00833a50, 0x0c);
+    y = position.value[1];
+    object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
     object->drawContext = param_2;
+    x = 218.0f + position.value[0];
     object->x = x + (f32)DAT_007cdf8c;
+    y = 382.0f + y;
     object->y = y;
     object->alpha = param_3;
     campD8SetSprite(object, 1);
     campD8SubmitSprite(object);
 
     if (DAT_007cdf8c < -200) {
-        object = campD8MakeSprite(0, DAT_00833a50, 0x0c);
+        object = campD8MakeSprite(0, *(void **)DAT_00833a50_abs, 0x0c);
         object->drawContext = param_2;
         object->x = x + (f32)DAT_007cdf8c + 640.0f;
         object->y = y;
@@ -1386,7 +1387,7 @@ void FUN_0015D8E0(u64 param_1, f32 param_2, u8 param_3)
 
     DAT_007cdf8c = DAT_007cdf8c - 1;
     if ((f32)DAT_007cdf8c < -640.0f) {
-        DAT_007cdf8c = (s32)((f32)DAT_007cdf8c + 640.0f);
+        DAT_007cdf8c = (s32)(640.0f + (f32)DAT_007cdf8c);
     }
 }
 // FUN_0015DA70 NONMATCHING

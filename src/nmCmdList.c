@@ -330,7 +330,7 @@ void FUN_003c5fa0(int param_1,int param_2)
 {
 
   int iVar1;
-  u32 changed;
+  u8 changed;
   int savedList;
   u32 iVar2;
   u32 iVar3;
@@ -364,8 +364,8 @@ void FUN_003c5fa0(int param_1,int param_2)
   }
 
   iVar3 = *(int *)(iVar1 + 0x2c);
-  iVar2 = iVar3;
   iVar4 = *(int *)(iVar1 + 0x20);
+  iVar2 = iVar3;
   while ((done = (iVar2 == 0)) == 0 && iVar4 != 0) {
     iVar2 = *(int *)(iVar2 + 0x10);
     iVar4--;

@@ -6393,7 +6393,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   int iVar4;
 
-  int iVar8;
 
   s32 lVar5;
 
@@ -6419,11 +6418,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   lVar5 = FUN_0040a490(iVar1);
 
-  if (lVar5 != 0) {
-
-    return (u8 *)&LAB_003c5170;
-
-  }
+  if (lVar5 == 0) {
 
     switch(*(u32 *)(iVar4 + 8)) {
 
@@ -6555,11 +6550,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
                (cVar3 = FUN_003c9ee0(*(u32 *)(iVar2 + 8)), cVar3 == '\x01')) {
 
-              iVar8 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
+              iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
 
-              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar8 + 4) + 2));
+              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
 
-              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar8 + 4),uVar7);
+              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
 
               if (lVar5 != 0) {
 
@@ -6581,11 +6576,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
             if (cVar3 == '\0') {
 
-              iVar8 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
+              iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
 
-              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar8 + 4) + 2));
+              uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
 
-              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar8 + 4),uVar7);
+              lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
 
               if (lVar5 != 0) {
 
@@ -6801,7 +6796,11 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
     }
 
-  return (u8 *)0x0;
+    return (u8 *)0x0;
+
+  }
+
+  return (u8 *)&LAB_003c5170;
 
 }
 
