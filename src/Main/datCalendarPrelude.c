@@ -2017,6 +2017,9 @@ void FUN_0017d3c0(void)
     }
 }
 
+/* W212: first divergence is the prologue (ours 0x60-byte frame, retail 0x50).
+ * Replacing the addressed u8[8] with a u64 aggregate measured identically
+ * (nd228, 440/448) and was reverted; FUN_0017cd30 has no comparable date cascade. */
 // FUN_0017d450 NONMATCHING
 u32 FUN_0017d450(s32 index, const void* date)
 {

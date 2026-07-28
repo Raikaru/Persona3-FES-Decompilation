@@ -20,6 +20,17 @@ typedef struct ItfMes
     u8 unkData[0x1e8];
 } ItfMes;
 
+// Lives at offset 0xd4 within the message-manager record. Both arrays are
+// indexed by the same 0..31 slot id: `objects` holds the live object pointer
+// for a slot and `allocations` the backing block returned by the allocator.
+#define ITF_MES_SLOT_COUNT 32
+
+typedef struct ItfMesAllocationSlots
+{
+    u32 objects[ITF_MES_SLOT_COUNT];
+    u32 allocations[ITF_MES_SLOT_COUNT];
+} ItfMesAllocationSlots;
+
 s32 itfMesMngInitialize(BmdHeader* bmdHeader);
 void itfMesMngDestroyHandle(s32 mesHandleIdx);
 void itfMesMngChangeWindowType(s32 mesHandleIdx, s32 type, u32 param_3);

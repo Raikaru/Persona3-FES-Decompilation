@@ -1483,6 +1483,10 @@ s32 func_001a89c0(const u32* left, const u32* right)
     return (s32)(leftDistance - rightDistance);
 }
 
+// W212: transferring the matched sibling's absolute 0x00960090 call
+// spelling regressed nd 351 -> 420 (664/672) and was reverted. The first
+// residual remains the frame at +0x0 (ours 0x40, retail 0x50); the transfer
+// grows the frame but worsens the body, so this is not an honest close.
 // FUN_001a8b10 NONMATCHING
 void func_001a8b10(u32* entries)
 {

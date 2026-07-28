@@ -64,6 +64,14 @@ extern char s_evtMenu_0069e9e0[];
 extern char s_evtMenuTextFormat_007ccd58[];
 #pragma alias DAT_0069e888_abs DAT_0069e888
 extern u8 DAT_0069e888_abs[];
+#pragma alias DAT_0069f948_abs DAT_0069f948
+extern u8 DAT_0069f948_abs[];
+#pragma alias DAT_0069f958_abs DAT_0069f958
+extern u8 DAT_0069f958_abs[];
+#pragma alias DAT_0069f968_abs DAT_0069f968
+extern u8 DAT_0069f968_abs[];
+#pragma alias DAT_0069f978_abs DAT_0069f978
+extern u8 DAT_0069f978_abs[];
 #pragma alias DAT_0069fdf0_abs DAT_0069fdf0
 extern u8 DAT_0069fdf0_abs[];
 #pragma alias DAT_0069fe30_abs DAT_0069fe30
@@ -481,6 +489,8 @@ extern u8 *PTR_s_CREATE_0069da70;
 extern u8 *PTR_s_CREATE_0069ee30;
 extern u8 *PTR_s_DELETE_0069ee38;
 extern u8 *PTR_s_DIRECT_0069e9c0;
+#pragma alias PTR_s_DIRECT_0069e9c0_abs PTR_s_DIRECT_0069e9c0
+extern u8 *PTR_s_DIRECT_0069e9c0_abs[];
 extern u8 *PTR_s_DIRECT_0069f9a0;
 extern u8 *PTR_s_DIRECT_0069fa88;
 extern u8 *PTR_s_DIRECT_007ccda0;
@@ -496,6 +506,8 @@ extern u8 *PTR_s_FADEOUT_WAIT_007ccf9c;
 extern u8 *PTR_s_FADE_IN_007cce88;
 extern u8 *PTR_s_FALSE_007ccdb8;
 extern u8 *PTR_s_GAKURYOKU_0069feb0;
+#pragma alias PTR_s_GAKURYOKU_0069feb0_abs PTR_s_GAKURYOKU_0069feb0
+extern u8 *PTR_s_GAKURYOKU_0069feb0_abs[];
 extern u8 *PTR_s_HAMETU_006a01cc;
 extern u8 *PTR_s_HIRU_SASO_0069d880;
 extern u8 *PTR_s_KAIKIN_006a01c0;
@@ -504,6 +516,8 @@ extern u8 gp0xffffa2d0;
 extern u8 *PTR_s_KUCHI_0069ee18;
 extern u8 *PTR_s_LENGTH_007cd22c;
 extern u8 *PTR_s_L_FLAG_NOTUSE_0069e990;
+#pragma alias PTR_s_L_FLAG_NOTUSE_0069e990_abs PTR_s_L_FLAG_NOTUSE_0069e990
+extern u8 *PTR_s_L_FLAG_NOTUSE_0069e990_abs[];
 extern u8 *PTR_s_MEPACHI_0069ee1c;
 extern u8 *PTR_s_MES_WAIT_007ccf98;
 extern u8 *PTR_s_MOVE_D_0069ee34;
@@ -520,6 +534,8 @@ extern u8 *PTR_s_RELEASE_0069ee28;
 extern u8 *PTR_s_REPEAT_007ccd88;
 extern u8 *PTR_s_REVERSE_006a01c8;
 extern u8 *PTR_s_SAVE_PROJ_;
+#pragma alias PTR_s_SAVE_PROJ_abs PTR_s_SAVE_PROJ_
+extern u8 *PTR_s_SAVE_PROJ_abs[];
 extern u8 *PTR_s_SOUTAI_007ccd78;
 extern u8 *PTR_s_SPEED_007cd228;
 extern u8 *PTR_s_START_0069e100;
@@ -3101,7 +3117,7 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
   f32 fVar5;
   s32 lVar6;
 
-  ppuVar4 = (u8 **)0x69e990;
+  ppuVar4 = PTR_s_L_FLAG_NOTUSE_0069e990_abs;
   puVar3 = auStack_30;
   iVar2 = 0xb;
   do {
@@ -3111,7 +3127,7 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
     *puVar3 = (u32)puVar1;
     puVar3 = puVar3 + 1;
   } while (0 < iVar2);
-  ppuVar4 = (u8 **)0x69e9c0;
+  ppuVar4 = PTR_s_DIRECT_0069e9c0_abs;
   puVar3 = auStack_50;
   iVar2 = 7;
   do {
@@ -9556,7 +9572,7 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0037A790 NONMATCHING
+// FUN_0037A790
 
 
 void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
@@ -9573,26 +9589,26 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
   u32 uVar4;
 
-  int iVar5;
-  int y;
+  u8 **ppuVar7;
 
   u32 *puVar6;
 
-  u8 **ppuVar7;
+  int iVar5;
 
   u32 uVar8;
+  int y;
 
   f32 uVar9;
 
-  u32 auStack_60 [20];
+  u32 auStack_60 [17];
 
-  u32 auStack_10 [3];
+  RwV2d auStack_10;
 
   u8 auStack_4 [4];
 
   
 
-  ppuVar7 = &PTR_s_SAVE_PROJ_;
+  ppuVar7 = PTR_s_SAVE_PROJ_abs;
 
   puVar6 = auStack_60;
 
@@ -9612,9 +9628,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
   } while (0 < iVar5);
 
-  auStack_10[0] = uGpffffa4b8;
-
-  auStack_10[1] = uGpffffa4bc;
+  auStack_10 = *(RwV2d *)&uGpffffa4b8;
 
   if (param_3 < 0x11) {
 
@@ -9652,7 +9666,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
       uVar9 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
 
-      evtMenuDrawText((param_1 + 9) * 0xc, y, uVar9, uVar8, (const char *)(void *)0x69f948, *(u32 *)(iVar5 + 0x3c), *(u32 *)(iVar5 + 0x40), *(u8 *)(iVar5 + 0x46), *(u16 *)(iVar5 + 0x48));
+      evtMenuDrawText((param_1 + 9) * 0xc, y, uVar9, uVar8, (const char *)DAT_0069f948_abs, *(u32 *)(iVar5 + 0x3c), *(u32 *)(iVar5 + 0x40), *(u8 *)(iVar5 + 0x46), *(s16 *)(iVar5 + 0x48));
 
     }
 
@@ -9664,7 +9678,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
         uVar9 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
 
-        evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)(void *)0x69f958);
+        evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)DAT_0069f958_abs);
 
       }
 
@@ -9682,7 +9696,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
       uVar9 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
 
-      evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)&gp0xffffa4c8, auStack_10[*(char *)(iVar5 + 0x44)]);
+      evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)&gp0xffffa4c8, ((u32 *)&auStack_10)[*(char *)(iVar5 + 0x44)]);
 
     }
 
@@ -9694,7 +9708,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
         uVar9 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
 
-        evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)(void *)0x69f968);
+        evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)DAT_0069f968_abs);
 
       }
 
@@ -9704,7 +9718,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
         uVar4 = FUN_00397500(param_4);
 
-        evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)(void *)0x69f978, (void *)uVar4);
+        evtMenuDrawText((param_1 + 10) * 0xc, y, uVar9, uVar8, (const char *)DAT_0069f978_abs, (void *)uVar4);
 
       }
 
@@ -9712,7 +9726,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
     else if (param_3 == 0xe) {
 
-      if ((*(u8 *)(iVar5 + 0x4c) & 1) == 0) {
+      if ((*(s8 *)(iVar5 + 0x4c) & 1) != 0) {
 
         uVar9 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
 
@@ -9732,7 +9746,7 @@ void FUN_0037a790(int param_1,int param_2,int param_3,int param_4)
 
     else if (param_3 == 0x10) {
 
-      if ((*(u8 *)(iVar5 + 0x4c) & 4) == 0) {
+      if ((*(s8 *)(iVar5 + 0x4c) & 4) != 0) {
 
         uVar9 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
 
@@ -14869,7 +14883,7 @@ void FUN_00381540(int param_1,int param_2,u32 param_3,u8 *param_4)
   int iVar3;
   u8 **puVar4;
   u8 **ppuVar5;
-  u8 *auStack_30[16];
+  u8 *auStack_30[8];
   f32 uStack_8;
   f32 uStack_4;
   int iVar6;
@@ -14878,7 +14892,7 @@ void FUN_00381540(int param_1,int param_2,u32 param_3,u8 *param_4)
 
   uStack_8 = gp0xffffa650_f32;
   uStack_4 = gp0xffffa654_f32;
-  ppuVar5 = (u8 **)0x69feb0;
+  ppuVar5 = PTR_s_GAKURYOKU_0069feb0_abs;
   puVar4 = auStack_30;
   iVar3 = 4;
   do {

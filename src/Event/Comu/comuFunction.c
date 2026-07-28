@@ -1383,7 +1383,7 @@ u8 * FUN_003bee80(u16 param_1,int *param_2)
 
       else {
 
-        if (0xe < iVar13) {
+        if (!(iVar13 < 0xf)) {
 
           FUN_0019d3f0("comuFunction.c",0x4b2);
 
@@ -1401,7 +1401,7 @@ u8 * FUN_003bee80(u16 param_1,int *param_2)
 
   if (iVar12 != -1) {
 
-    if (0xe < iVar13) {
+    if (!(iVar13 < 0xf)) {
 
       FUN_0019d3f0("comuFunction.c",0x4c4);
 

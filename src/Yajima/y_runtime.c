@@ -3435,6 +3435,9 @@ void FUN_00430630(int param_1)
   return;
 }
 
+/* W212: first divergence is offset 216 after an exact prefix; the residual begins with
+ * retail retaining the divided float in $f2 while this build puts it in $f0.  The
+ * FUN_0045b620 template shares calls but not this straight-line float lifetime shape. */
 // FUN_00430780 NONMATCHING
 
 void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4)
@@ -15509,6 +15512,9 @@ void FUN_00451d70(int param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
+/* W212: first divergence is the prologue (ours 0x100-byte frame, retail 0x150);
+ * the missing 0x50 bytes are live search-state/aggregate structure, not a transfer
+ * from the scalar FUN_00431aa0 template. */
 // FUN_00452010 NONMATCHING
 
 void FUN_00452010(float *param_1)
@@ -16007,6 +16013,9 @@ void FUN_00453490(int param_1)
   return;
 }
 
+/* W212: first divergence is offset 40 (global-base setup and saved work pointer);
+ * the 260-byte object deficit confirms a full four-direction path reconstruction,
+ * not the matched FUN_00431aa0 dispatch idiom. */
 // FUN_004534B0 NONMATCHING
 
 
@@ -16991,60 +17000,65 @@ void FUN_00454f50(char param_1,char param_2)
   return;
 }
 
+/* W212: hoisting the first-loop invariants and preserving its distinct one/five
+ * values improved nd287 -> nd283 (340 -> 332 bytes).  The remaining offset-0
+ * divergence is the combined retail preheader; no window growth was introduced. */
 // FUN_00455B50 NONMATCHING
 
 void FUN_00455b50(void)
 {
-  u8 *base;
-  int iVar2;
-  u8 *row;
+  int index;
   int valid;
+  int storeOne;
+  int stateFive;
+  int expectedValid;
+  u8 *row;
   u8 *state;
 
-  iVar2 = 1;
-  for (; iVar2 < 4; iVar2 = iVar2 + 1) {
-    base = DAT_008717a0_bytes;
-    valid = 0;
-    row = base + iVar2 * 0x1c0;
+  index = 1;
+  valid = index;
+  storeOne = index;
+  stateFive = 5;
+  expectedValid = index;
+  for (; index < 4; index = index + 1) {
+    int rowValid = 0;
+    row = DAT_008717a0_bytes + index * 0x1c0;
     if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
-      valid = 1;
+      rowValid = valid;
     }
-    valid = valid != 0;
-    if (valid == 1) {
+    if ((rowValid != 0) == expectedValid) {
       state = *(u8 **)(*(int *)(row + 0x16c) + 0x3c);
       row[0x19c] = 0;
-      if (*(s8 *)(state + 0x1215) == 1) {
-        row[0x19c] = 1;
+      if (*(s8 *)(state + 0x1215) == expectedValid) {
+        row[0x19c] = expectedValid;
       }
       row[0x19a] = *(s8 *)(state + 1);
       row[0x19b] = 0;
-      if (*(s8 *)(state + 1) == 5) {
-        row[0x19b] = 1;
+      if (*(s8 *)(state + 1) == stateFive) {
+        row[0x19b] = storeOne;
       }
     }
   }
-  iVar2 = 0;
-  for (; iVar2 < 0x18; iVar2 = iVar2 + 1) {
-    base = DAT_0086eda0_bytes;
-    valid = 0;
-    row = base + iVar2 * 0x1c0;
+  index = 0;
+  valid = 1;
+  for (; index < 0x18; index = index + 1) {
+    int rowValid = 0;
+    row = DAT_0086eda0_bytes + index * 0x1c0;
     if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
-      valid = 1;
+      rowValid = valid;
     }
-    valid = valid != 0;
-    if (valid == 1) {
+    if ((rowValid != 0) == valid) {
       state = *(u8 **)(*(int *)(row + 0x16c) + 0x3c);
       row[0x198] = *(s8 *)(state + 0x18);
       row[0x199] = *(u8 *)(state + 0x8b) + *(u8 *)(state + 0x8c) * 0x10;
       row[0x19a] = *(s8 *)(state + 2);
       row[0x19b] = 0;
       row[0x19c] = 0;
-      if (*(s8 *)(state + 0x40) == 1) {
-        row[0x19c] = 1;
+      if (*(s8 *)(state + 0x40) == valid) {
+        row[0x19c] = valid;
       }
     }
   }
-  return;
 }
 
 #pragma push

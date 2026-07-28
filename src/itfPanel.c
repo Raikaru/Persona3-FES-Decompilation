@@ -3479,6 +3479,10 @@ u32 FUN_003acf80(u32 param_1,int param_2)
 }
 #define FUN_003acf80(...) ((u64 (*)(...))FUN_003acf80)(__VA_ARGS__)
 #undef FUN_003ad030
+// W212: transferring FUN_003ACDA0's two-step pointer construction
+// regressed nd 104 -> 110 (240/256) and was reverted. The first residual
+// remains +0x18, where ours retains the pointer in a1 and retail in v1;
+// this is the closed commutative-addu operand/allocation floor.
 // FUN_003AD030 NONMATCHING
 
 
