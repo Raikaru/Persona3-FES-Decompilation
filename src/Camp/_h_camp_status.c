@@ -18,6 +18,10 @@ extern s32 FUN_001159f0();
 #pragma alias campStatusDrawSpriteCall FUN_001159f0
 extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
                                     u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campStatusDrawSpritePointerCall FUN_001159f0
+extern s32 campStatusDrawSpritePointerCall(void* parent, void* resource,
+                                           s32 frame, u8 alpha, f32 x, f32 y,
+                                           f32 scale);
 #pragma alias campStatusDrawSpriteCallXY FUN_001159f0
 extern s32 campStatusDrawSpriteCallXY(u32 parent, void* resource, s32 frame,
                                       f32 x, f32 y, u32 alpha, f32 scale);
@@ -2110,70 +2114,69 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
                                 void* persona, u8 alpha)
 {
-    u32 parent;
     void* resource;
     u32 value;
+    register void* parent;
 
-    parent = 0x42c80000;
 
     value = FUN_00173660(persona, 0) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x38);
     if (value >= 10) {
         resource = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        campStatusDrawSpritePointerCall(parent, resource, value / 10 + 0xb, (u8)alpha,
         position.x + 69.0f, position.y + 131.0f - 25.0f,
         scale);
     }
     resource = campStatusGetFont(2);
-    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    campStatusDrawSpritePointerCall(parent, resource, value % 10 + 0xb, (u8)alpha,
     position.x + 85.0f, position.y + 131.0f - 25.0f, scale);
 
     value = FUN_00173660(persona, 1) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x39);
     if (value >= 10) {
         resource = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        campStatusDrawSpritePointerCall(parent, resource, value / 10 + 0xb, (u8)alpha,
         position.x + 69.0f, position.y + 131.0f + 19.0f - 25.0f,
         scale);
     }
     resource = campStatusGetFont(2);
-    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    campStatusDrawSpritePointerCall(parent, resource, value % 10 + 0xb, (u8)alpha,
     position.x + 85.0f, position.y + 131.0f + 19.0f - 25.0f, scale);
 
     value = FUN_00173660(persona, 2) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x3a);
     if (value >= 10) {
         resource = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        campStatusDrawSpritePointerCall(parent, resource, value / 10 + 0xb, (u8)alpha,
         position.x + 69.0f, position.y + 131.0f + 38.0f - 25.0f,
         scale);
     }
     resource = campStatusGetFont(2);
-    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    campStatusDrawSpritePointerCall(parent, resource, value % 10 + 0xb, (u8)alpha,
     position.x + 85.0f, position.y + 131.0f + 38.0f - 25.0f, scale);
 
     value = FUN_00173660(persona, 3) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x3b);
     if (value >= 10) {
         resource = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        campStatusDrawSpritePointerCall(parent, resource, value / 10 + 0xb, (u8)alpha,
         position.x + 69.0f, position.y + 131.0f + 57.0f - 25.0f,
         scale);
     }
     resource = campStatusGetFont(2);
-    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    campStatusDrawSpritePointerCall(parent, resource, value % 10 + 0xb, (u8)alpha,
     position.x + 85.0f, position.y + 131.0f + 57.0f - 25.0f, scale);
 
     value = FUN_00173660(persona, 4) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x3c);
     if (value >= 10) {
         resource = campStatusGetFont(2);
-        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        campStatusDrawSpritePointerCall(parent, resource, value / 10 + 0xb, (u8)alpha,
         position.x + 69.0f, position.y + 131.0f + 76.0f - 25.0f,
         scale);
     }
     resource = campStatusGetFont(2);
-    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    campStatusDrawSpritePointerCall(parent, resource, value % 10 + 0xb, (u8)alpha,
     position.x + 85.0f, position.y + 131.0f + 76.0f - 25.0f, scale);
 }
 
@@ -2248,11 +2251,10 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
 {
-    u32 parent;
+    register u32 parent;
     void* resource;
     u32 value;
 
-    parent = 0x42c80000;
 
     value = FUN_00173580(persona, 0) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x38);

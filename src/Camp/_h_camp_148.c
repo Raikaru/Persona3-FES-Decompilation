@@ -203,23 +203,17 @@ void h_campDrawStatusOverview(int param_1)
     pair.x = 379.0f;
     pair.y = 12.0f;
     tmp[0].u = *(u64*)&pair;
-    tmp[0].f[0] += 0.0f;
     pair.x = 13.0f;
     pair.y = 27.0f;
     tmp[1].u = *(u64*)&pair;
-    tmp[1].f[0] += 0.0f;
     pair.x = 112.0f;
     tmp[2].u = *(u64*)&pair;
-    tmp[2].f[0] += 0.0f;
     pair.x = 135.0f;
     tmp[3].u = *(u64*)&pair;
-    tmp[3].f[0] += 0.0f;
     pair.x = 278.0f;
     tmp[4].u = *(u64*)&pair;
-    tmp[4].f[0] += 0.0f;
     pair.x = 301.0f;
     tmp[5].u = *(u64*)&pair;
-    tmp[5].f[0] += 0.0f;
 
     pair.x = 379.0f;
     pair.y = 12.0f;
@@ -252,7 +246,6 @@ void h_campDrawStatusOverview(int param_1)
             pair.x = 30.0f;
             pair.y = 64.0f + (f32)(i * 0x55);
             tmp[8 + (i & 1)].u = *(u64*)&pair;
-            tmp[8 + (i & 1)].f[0] += 0.0f;
             func_0018bc10(100.0f,
                           (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
                           0, 2, 2, tmp[8 + (i & 1)].u, tmp[8 + (i & 1)].u,
@@ -262,19 +255,15 @@ void h_campDrawStatusOverview(int param_1)
     pair.x = 104.0f;
     pair.y = 61.0f;
     tmp[6].u = *(u64*)&pair;
-    tmp[6].f[0] += 0.0f;
     pair.x = 124.0f;
     pair.y = 219.0f;
     tmp[7].u = *(u64*)&pair;
-    tmp[7].f[0] += 0.0f;
     pair.x = 226.0f;
     pair.y = 415.0f;
     tmp[8].u = *(u64*)&pair;
-    tmp[8].f[0] += 0.0f;
     pair.x = 439.0f;
     pair.y = 415.0f;
     tmp[9].u = *(u64*)&pair;
-    tmp[9].f[0] += 0.0f;
     pair.x = 104.0f;
     pair.y = 61.0f;
     func_0018bc10(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 0, 2, 2,
@@ -2088,7 +2077,6 @@ void h_campDrawItemFrameSelected(int param_1)
                   first.u, first.u, 0, 0, 0, 10);
 }
 
-
 // FUN_0014F680
 u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 {
@@ -2246,7 +2234,6 @@ u32 h_campUpdateSystemMenuTask(int param_1)
       h_campDrawItemFrame((int)puVar1);
       pair.u = 0xc1600000423c0000ULL;
       tmp70.u = pair.u;
-      tmp70.f[0] += 0.0f;
       func_0018bc10(100.0f, (void*)(puVar1[3]), 0, 2, 1,
                     tmp70.u, pair.u, 0, 0, 0, 10);
       *puVar1 = 3;
@@ -2389,41 +2376,35 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     pair.f[0] = 394.0f;
     pair.f[1] = 125.0f;
     tmpd8.u = pair.u;
-    tmpd8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x44), 0, 2, 2,
                   tmpd8.u, pair.u, 0, 0, 0, 10);
     pair.f[0] = 402.0f;
     pair.f[1] = 126.0f;
     tmpe0.u = pair.u;
-    tmpe0.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0xcc), 0, 2, 2,
                   tmpe0.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x150) = 0;
     pair.f[0] = 321.0f;
     pair.f[1] = 15.0f;
     tmpe8.u = pair.u;
-    tmpe8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x110), 0, 2, 2,
                   tmpe8.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x194) = 0;
     pair.f[0] = 355.0f;
     pair.f[1] = 124.0f;
     tmpf0.u = pair.u;
-    tmpf0.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x154), 0, 2, 2,
                   tmpf0.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x194) = 0;
     pair.f[0] = 47.0f;
     pair.f[1] = 385.0f;
     tmpf8.u = pair.u;
-    tmpf8.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x198), 0, 2, 2,
                   tmpf8.u, pair.u, 0, 0, 0, 10);
     *(u32 *)(puVar1[3] + 0x194) = 0;
     pair.f[0] = 392.0f;
     pair.f[1] = 385.0f;
     tmp100.u = pair.u;
-    tmp100.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[3] + 0x1dc), 0, 2, 2,
                   tmp100.u, pair.u, 0, 0, 0, 10);
     FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
@@ -2454,7 +2435,6 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     pair.f[0] = 87.0f;
     pair.f[1] = 92.0f;
     tmp98.u = pair.u;
-    tmp98.f[0] += 0.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1,
                   tmp98.u, pair.u, 0, 0, 0, 10);
     pair.u = 0x42b8000042ae0000ULL;

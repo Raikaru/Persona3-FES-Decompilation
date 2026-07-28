@@ -2167,7 +2167,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        *(float *)(param_3 + 8) * -fStack_320 +
 
-                       *(float *)(param_3 + 10) * -fStack_31c + 0.0f + 0.0f + 0.0f;
+                       *(float *)(param_3 + 10) * -fStack_31c;
 
             }
 

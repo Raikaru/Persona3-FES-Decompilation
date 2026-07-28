@@ -14,7 +14,7 @@ PYTHON ?= python
 SPLAT_CONFIG = config/slus21621.yaml
 C_SRCS := $(shell find src -name '*.c' 2>/dev/null)
 
-.PHONY: all build setup split verify check test symbols objdiff ctx m2c-setup m2c progress format clean distclean
+.PHONY: all build setup split verify check test lint lint-errors symbols objdiff ctx m2c-setup m2c progress format clean distclean
 
 all: build verify
 
@@ -37,6 +37,16 @@ verify check:
 
 test:
 	$(PYTHON) -m unittest discover -s tests -v
+
+# Source-honesty and structural lint over src/ and include/.  Complements
+# verify.py: that answers "do the bytes match?", this answers "is the source
+# an honest decompilation?".  Non-zero exit if any error-severity finding.
+lint:
+	$(PYTHON) tools/decomp_lint.py
+
+# Just the error tier, one line per finding -- the pre-commit gate.
+lint-errors:
+	$(PYTHON) tools/decomp_lint.py --severity error
 
 # Regenerate the recovered symbol table (data-symbol addresses + _gp).
 symbols:

@@ -734,7 +734,7 @@ void FUN_0038a590(int param_1,int param_2);
 void FUN_0038a620(int param_1,int param_2);
 void FUN_0038a6c0(int param_1);
 void FUN_0038a730(int param_1);
-void FUN_0038a7c0(u32 *param_1,u32 *param_2);
+void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2);
 int FUN_0038a920(int param_1,u16 *param_2,int param_3);
 void FUN_0038af70(u16 *param_1);
 void FUN_0038b140(int param_1);
@@ -3287,114 +3287,57 @@ void FUN_0038a730(int param_1)
 // FUN_0038A7C0 NONMATCHING
 
 
-void FUN_0038a7c0(u32 *param_1,u32 *param_2)
-
-
-
+void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
 {
+  typedef struct {
+    RwV3d vector0;
+    u8 pad_0c[0x14];
+    RwV3d vector20;
+  } EvtMiscVectorSource;
+  u8 *camera;
+  u8 *cursor;
+  s32 remaining;
+  RwV3d input;
+  RwV3d output1;
+  RwV3d output2;
+  u32 *vectors;
 
-  u32 *puVar1;
+  camera = (u8 *)FUN_00198590();
 
-  long lVar2;
-
-  u32 *puVar3;
-
-  u32 *puVar4;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  lVar2 = FUN_00198590();
-
-  puVar3 = (u32 *)0xc;
-
-  puVar4 = &uStack_20;
-
-  puVar1 = puVar4;
-
-  while (puVar1 != (u32 *)0x0) {
-
-    *(u8 *)puVar4 = 0;
-
-    puVar4 = (u32 *)((int)puVar4 + 1);
-
-    puVar3 = (u32 *)((int)puVar3 + -1);
-
-    puVar1 = puVar3;
-
+  cursor = (u8 *)&output1;
+  remaining = sizeof(RwV3d);
+  if (cursor != NULL) {
+    do {
+      *cursor = 0;
+      cursor++;
+      remaining--;
+    } while (remaining != 0);
   }
 
-  puVar3 = (u32 *)0xc;
-
-  puVar4 = &uStack_30;
-
-  puVar1 = puVar4;
-
-  while (puVar1 != (u32 *)0x0) {
-
-    *(u8 *)puVar4 = 0;
-
-    puVar4 = (u32 *)((int)puVar4 + 1);
-
-    puVar3 = (u32 *)((int)puVar3 + -1);
-
-    puVar1 = puVar3;
-
+  cursor = (u8 *)&output2;
+  remaining = sizeof(RwV3d);
+  if (cursor != NULL) {
+    do {
+      *cursor = 0;
+      cursor++;
+      remaining--;
+    } while (remaining != 0);
   }
 
-  if ((lVar2 != 0) && (*(int *)((int)lVar2 + 4) != 0)) {
+  if (camera != NULL && *(int *)(camera + 4) != 0) {
+    vectors = (u32 *)FUN_004cb2f0();
 
-    puVar4 = (u32 *)FUN_004cb2f0();
+    input = ((EvtMiscVectorSource *)vectors)->vector20;
+    input.y = 0;
+    FUN_004c69f0(&output1,&input);
 
-    uStack_10 = puVar4[8];
+    input = ((EvtMiscVectorSource *)vectors)->vector0;
+    input.y = 0;
+    FUN_004c69f0(&output2,&input);
 
-    uStack_8 = puVar4[10];
-
-    uStack_c = 0;
-
-    FUN_004c69f0(&uStack_20,&uStack_10);
-
-    uStack_10 = *puVar4;
-
-    uStack_8 = puVar4[2];
-
-    uStack_c = 0;
-
-    FUN_004c69f0(&uStack_30,&uStack_10);
-
-    *param_1 = uStack_20;
-
-    param_1[1] = uStack_1c;
-
-    param_1[2] = uStack_18;
-
-    *param_2 = uStack_30;
-
-    param_2[1] = uStack_2c;
-
-    param_2[2] = uStack_28;
-
+    *param_1 = output1;
+    *param_2 = output2;
   }
-
-  return;
-
 }
 
 

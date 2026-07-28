@@ -112,6 +112,9 @@ extern char gp0xffff8978[];
 #pragma alias h_campDrawSprite FUN_001159f0
 extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
                              u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias h_campDrawSpriteByteAlpha FUN_001159f0
+extern void h_campDrawSpriteByteAlpha(void* parent, void* resource, s32 frame,
+                                      u8 alpha, f32 x, f32 y, f32 scale);
 
 #pragma alias h_campNoopRootDrawCallback_4 h_campNoopRootDrawCallback
 extern void h_campNoopRootDrawCallback_4(s32, s32, f32, f32);
@@ -1798,37 +1801,37 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
 void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 {
     register void* parent;
-    s32 sp48;
-    f32 sp44;
-    s64 sp40;
-    f32 temp_f1;
-    f32 temp_f1_2;
-    f32 temp_f21;
-    f32 temp_f21_2;
-    f32 temp_f22;
+    CampVec2 source;
+    CampVec2 position;
+    f32 oldDuration;
+    f32 newDuration;
 
-    sp48 = 0;
-    temp_f1 = (f32)(s32)work->transitionDuration;
-    sp44 = temp_f1;
-    work->transitionDuration = (s32)(temp_f1 + 1.0f);
-    temp_f1_2 = (f32)(s32)work->transitionDuration;
-    if (!(temp_f1_2 <= (f32)0x2ff)) {
-        work->transitionDuration = (s32)(temp_f1_2 - 448.0f);
+    source.x = 0.0f;
+    oldDuration = (f32)(s32)work->transitionDuration;
+    source.y = oldDuration;
+    work->transitionDuration = (s32)(1.0f + oldDuration);
+    newDuration = (f32)(s32)work->transitionDuration;
+    if (!(newDuration <= 767.0f)) {
+        work->transitionDuration = (s32)(newDuration - 448.0f);
     }
-    sp40 = *(s64*)&sp48;
-    temp_f21 = 589.0f + *(f32*)&sp40;
-    h_campDrawSprite(parent, DAT_00833B8C, 3, 0, temp_f21,
-                     *(f32*)((u8*)&sp40 + 4) - 190.0f, 100.0f);
-    h_campDrawSprite(parent, DAT_00833B8C, 4, 0, temp_f21,
-                     (*(f32*)((u8*)&sp40 + 4) - 129.0f) - 190.0f,
-                     100.0f);
-    if (!(*((f32*)((u8*)&sp40 + 4)) <= 448.0f)) {
-        temp_f22 = *((f32*)((u8*)&sp40 + 4)) - 448.0f;
-        temp_f21_2 = 589.0f + *(f32*)&sp40;
-        h_campDrawSprite(parent, DAT_00833B8C, 3, 0, temp_f21_2,
-                         temp_f22 - 190.0f, 100.0f);
-        h_campDrawSprite(parent, DAT_00833B8C, 4, 0, temp_f21_2,
-                         (temp_f22 - 129.0f) - 190.0f, 100.0f);
+
+    position = source;
+    h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 3, 0,
+                     589.0f + position.x, position.y - 190.0f, 100.0f);
+    h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 4, 0,
+                     589.0f + position.x,
+                     (position.y - 129.0f) - 190.0f, 100.0f);
+    {
+        f32 threshold = 448.0f;
+    if (!(position.y <= threshold)) {
+        register f32 remainder = position.y;
+        remainder -= threshold;
+        h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 3, 0,
+                         589.0f + position.x, remainder - 190.0f, 100.0f);
+        h_campDrawSpriteByteAlpha(parent, *(void**)DAT_00833B8C_abs, 4, 0,
+                         589.0f + position.x,
+                         (remainder - 129.0f) - 190.0f, 100.0f);
+    }
     }
     h_campDrawRootUi(work, alpha);
 }
@@ -2847,12 +2850,13 @@ void h_campUpdateStatusPersonaAnimation(KwlnTask* task)
     }
 }
 
-// FUN_0011f900 NONMATCHING
+// FUN_0011f900
 void h_campUpdateStatusExitTransition(KwlnTask* task)
 {
     CampMenuWork* work;
     s32 count;
     s32 i;
+    s32 fadeIndex;
     s32 found;
     f32 progress;
 
@@ -2870,7 +2874,10 @@ void h_campUpdateStatusExitTransition(KwlnTask* task)
         return;
     case 2:
         found = 0;
-        if ((count = --work->timer) == 0) {
+        count = work->timer;
+        count--;
+        work->timer = count;
+        if (count == 0) {
             for (i = 1; i < 10; i++) {
                 if (*(KwlnTask**)((u8*)work + 0x14 + i * 4) != NULL) {
                     if (found == 0) {
@@ -2891,10 +2898,10 @@ void h_campUpdateStatusExitTransition(KwlnTask* task)
             return;
         }
         progress = (10.0f - (f32)count) / 10.0f;
-        for (i = 1; i < 10; i++) {
-            if (*(KwlnTask**)((u8*)work + 0x14 + i * 4) != NULL) {
+        for (fadeIndex = 1; fadeIndex < 10; fadeIndex++) {
+            if (*(KwlnTask**)((u8*)work + 0x14 + fadeIndex * 4) != NULL) {
                 H_Maestro_SetAlphaMult(
-                    *(KwlnTask**)((u8*)work + 0x14 + i * 4), 1.0f);
+                    *(KwlnTask**)((u8*)work + 0x14 + fadeIndex * 4), 1.0f);
             }
         }
         H_Maestro_SetAlphaMult(work->childTasks[0], progress);
