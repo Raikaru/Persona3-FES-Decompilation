@@ -17781,10 +17781,13 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   int lVar2;
 
   u32 uVar3;
+  u32 drawAlpha;
 
   int iVar4;
 
   int iVar5;
+  int drawX;
+  int drawY;
 
   float fVar6;
 
@@ -17829,24 +17832,32 @@ void FUN_00406aa0(int param_1,int param_2,u32 param_3)
   fVar6 = DAT_007cad74 * (float)(int)param_3;
 
   uVar1 = (u32)fVar6;
+  drawAlpha = uVar1 | 0xffffff00;
 
   iVar5 = (int)param_1;
 
   iVar4 = (int)param_2;
 
-  FUN_0040ebc0_f32(0.0f,iVar5 + 0x212,iVar4 + 0x1b,uVar1 | 0xffffff00,3,auStack_8,2);
+  drawX = iVar5 + 0x212;
+  drawY = iVar4 + 0x1b;
+  FUN_0040ebc0_f32(0.0f,drawX,drawY,drawAlpha,3,auStack_8,2);
 
-  FUN_0040e3c0_f32(0.0f,iVar5 + 0x60,param_2,param_3,0xe,0);
+  drawX = iVar5 + 0x60;
+  FUN_0040e3c0_f32(0.0f,drawX,param_2,param_3,0xe,0);
 
   uVar3 = clndGetCurrentDay();
 
   sprintf((char *)auStack_8,(char *)&gp0xffffac10,uVar3);
 
-  FUN_0040ebc0_f32(0.0f,iVar5 + 0x23c,iVar4 + 0x1b,uVar1 | 0xffffff00,3,auStack_8,2);
+  drawX = iVar5 + 0x23c;
+  drawY = iVar4 + 0x1b;
+  FUN_0040ebc0_f32(0.0f,drawX,drawY,drawAlpha,3,auStack_8,2);
 
   uVar3 = clndGetCurrentWeekDay();
 
-  FUN_0040e3c0_f32(0.0f,iVar5 + 0x60,iVar4 + 1,param_3,0xf,uVar3);
+  drawX = iVar5 + 0x60;
+  drawY = iVar4 + 1;
+  FUN_0040e3c0_f32(0.0f,drawX,drawY,param_3,0xf,uVar3);
 
   return;
 

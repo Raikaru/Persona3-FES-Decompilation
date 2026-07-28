@@ -2110,11 +2110,10 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
                                 void* persona, u8 alpha)
 {
-    u32 parent;
+    register u32 parent;
     void* resource;
     u32 value;
 
-    parent = 0x42c80000;
 
     value = FUN_00173660(persona, 0) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x38);
@@ -2248,11 +2247,10 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
 {
-    u32 parent;
+    register u32 parent;
     void* resource;
     u32 value;
 
-    parent = 0x42c80000;
 
     value = FUN_00173580(persona, 0) & 0xff;
     if (bonus != NULL) value += *((u8*)bonus + 0x38);

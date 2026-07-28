@@ -27,6 +27,14 @@ extern void FUN_004c35d0_evt_main(void *matrix, void *vector, s32 mode);
 #pragma alias FUN_004c6c60_evt_main FUN_004c6c60
 extern void FUN_004c6c60_evt_main(void *out, void *in, void *matrix);
 extern u32 DAT_0069d590;
+#pragma alias DAT_0069d590_abs DAT_0069d590
+extern s8 DAT_0069d590_abs[];
+typedef struct {
+  u8 pad_00[0x80];
+  s32 count;
+  int *head;
+  int *tail;
+} MtEvtNodeList;
 extern u32 DAT_0069d5c8;
 extern u32 DAT_0069d5d0;
 extern u32 DAT_0069d5d8;
@@ -1739,13 +1747,15 @@ void FUN_00361b60(int *param_1,int param_2)
 {
 
   int *piVar1;
+  MtEvtNodeList *list;
 
-  piVar1 = *(int **)(param_2 + 0x84);
+  list = (MtEvtNodeList *)param_2;
+  piVar1 = list->head;
   if (piVar1 == (int *)0x0) {
 
-    *(u32 *)(param_2 + 0x84) = (u32)param_1;
+    list->head = param_1;
 
-    *(u32 *)(param_2 + 0x88) = (u32)param_1;
+    list->tail = param_1;
 
     param_1[0x25] = 0;
 
@@ -1757,30 +1767,19 @@ void FUN_00361b60(int *param_1,int param_2)
 
     for (; piVar1 != (int *)0x0; piVar1 = (int *)piVar1[0x25]) {
 
-      if ((char)(&DAT_0069d590)[*param_1] < (char)(&DAT_0069d590)[*piVar1]) {
+      if (DAT_0069d590_abs[*param_1] < DAT_0069d590_abs[*piVar1]) {
 
-        if (piVar1[0x26] != 0) {
-
-          *(int **)(piVar1[0x26] + 0x94) = param_1;
-
-          param_1[0x26] = piVar1[0x26];
-
-          param_1[0x25] = (int)piVar1;
-
+        if (piVar1[0x26] == 0) {
+          list->head = param_1;
           piVar1[0x26] = (int)param_1;
-
-        }
-
-        else {
-
-          *(int **)(param_2 + 0x84) = param_1;
-
-          piVar1[0x26] = (int)param_1;
-
           param_1[0x26] = 0;
-
           param_1[0x25] = (int)piVar1;
-
+        }
+        else {
+          *(int **)(piVar1[0x26] + 0x94) = param_1;
+          param_1[0x26] = piVar1[0x26];
+          param_1[0x25] = (int)piVar1;
+          piVar1[0x26] = (int)param_1;
         }
 
         break;
@@ -1791,19 +1790,19 @@ void FUN_00361b60(int *param_1,int param_2)
 
     if (piVar1 == (int *)0x0) {
 
-      *(int **)(*(int *)(param_2 + 0x88) + 0x94) = param_1;
+      *(int **)((int)list->tail + 0x94) = param_1;
 
-      param_1[0x26] = *(int *)(param_2 + 0x88);
+      param_1[0x26] = (int)list->tail;
 
       param_1[0x25] = 0;
 
-      *(int **)(param_2 + 0x88) = param_1;
+      list->tail = param_1;
 
     }
 
   }
 
-  *(int *)(param_2 + 0x80) = *(int *)(param_2 + 0x80) + 1;
+  list->count = list->count + 1;
 
   return;
 

@@ -12025,7 +12025,8 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
 
 {
   RwV2d position;
-  s16 *coordinateBase;
+  register s16 *coordinateBase;
+  float y;
   char cVar1;
   char cVar2;
   int iVar3;
@@ -12033,11 +12034,14 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   
   cVar1 = *(char *)(param_3 * 4 + DAT_007ce6ec + 4);
   coordinateBase = DAT_006b4796_abs;
-  iVar3 = coordinateBase[2];
+  iVar3 = coordinateBase[2] - (cVar1 - 1) * 0x40;
   cVar2 = *(char *)(*(int *)(param_2 + 0x3c) + 0x253);
-  position.y = (float)(iVar3 + (cVar1 + -1) * -0x40 + (6 - cVar2) * -0x20 + 0x20) - 32.0f;
+  iVar3 = iVar3 - (6 - cVar2) * 0x20;
+  iVar3 = iVar3 + 0x20;
+  y = (float)iVar3;
   for (iVar4 = 0; iVar4 < *(char *)(DAT_007ce6ec + 0xa0); iVar4 = iVar4 + 1) {
   }
+  position.y = y - 32.0f;
   position.x = (float)coordinateBase[1];
   *(RwV2d *)param_1 = position;
   return;

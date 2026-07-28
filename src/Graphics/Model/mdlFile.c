@@ -693,6 +693,7 @@ void FUN_0031e2c0(int param_1);
 int FUN_0031e300(u32 *param_1);
 #pragma alias FUN_0031e300_wide FUN_0031e300
 extern u64 FUN_0031e300_wide(u32 *param_1);
+#pragma alias mdlFileSelectCacheSlot FUN_0031e310
 int FUN_0031e310(short param_1,short param_2);
 #pragma alias FUN_0031e310_u32 FUN_0031e310
 extern int FUN_0031e310_u32(u32 param_1,u32 param_2);
@@ -2856,18 +2857,18 @@ int FUN_0031e300(u32 *param_1)
 // FUN_0031E310 NONMATCHING
 
 
-int FUN_0031e310(short param_1,short param_2)
+int mdlFileSelectCacheSlot(u32 param_1,u32 param_2)
 {
-  u32 candidateIndex;
-  s32 offset;
-  u32 bestValue;
   u32 scanIndex;
-  s32 bestIndex;
-  u8 *table;
-  u32 key2;
   u32 key1;
+  u32 key2;
+  u8 *table;
+  s32 bestIndex;
+  u32 bestValue;
+  u32 candidateIndex;
   u8 *candidateTable;
   u32 currentValue;
+  u32 offset;
 
   scanIndex = 0;
   key1 = (u16)param_1;
@@ -27319,6 +27320,8 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   int iVar1;
 
+  u32 index;
+
   u32 uVar3;
 
   u32 uVar4;
@@ -27327,9 +27330,9 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   
 
-  param_1 = param_1 & 0xffff;
+  index = param_1 & 0xffff;
 
-  iVar1 = DAT_0069c5d0[param_1].allocationSize;
+  iVar1 = DAT_0069c5d0[index].allocationSize;
 
   uVar4 = (*DAT_00960178_abs)(iVar1 + 0x40,0x40000);
 
@@ -27339,7 +27342,7 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   *(u32 *)(pauVar5[2] + 8) = 0;
 
-  *(u32 *)(pauVar5[2] + 0xc) = param_1;
+  *(u32 *)(pauVar5[2] + 0xc) = index;
 
   *(u32 *)(pauVar5[2] + 4) = 0xffffffff;
 
@@ -27352,11 +27355,11 @@ u32 FUN_00337a60(u32 param_1,u32 param_2)
 
   FUN_00521250(*(u32 *)(pauVar5[3] + 4),param_2,iVar1);
 
-  uVar3 = DAT_0069c5d0[param_1].create(param_2);
+  uVar3 = DAT_0069c5d0[index].create(param_2);
 
   *(u32 *)pauVar5[3] = uVar3;
 
-  DAT_0069c5d0[param_1].destroy(uVar4);
+  DAT_0069c5d0[index].destroy(uVar4);
 
   return uVar4;
 
@@ -35409,7 +35412,7 @@ void FUN_003403b0(int param_1,int param_2)
 
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
-    pfVar4 = (float *)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
+    pfVar4 = *(float **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
 
     for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
 
@@ -55709,4 +55712,5 @@ void FUN_0034b6a0(int param_1,float param_2)
 {
   *(float *)(param_1 + 0x14) = param_2;
 }
+
 
