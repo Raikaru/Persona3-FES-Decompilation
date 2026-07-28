@@ -27856,15 +27856,11 @@ void FUN_00338360(int param_1)
   u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
-  u32 colourStack[4];
+  u8 colourStack[16];
   int iVar3;
   int iVar4;
   int iVar6;
-  int dest;
-  u8 red;
-  u8 green;
-  u8 blue;
-  u8 alpha;
+  u8 *dest;
 
   iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
@@ -27874,32 +27870,18 @@ void FUN_00338360(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack[2] = *(u32 *)(iVar5 + 0x30);
+    *(u32 *)&colourStack[8] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50V1((u32)iVar3);
-    colourStack[3] = colourStack[0];
-    if (((u8 *)colourStack)[15] != 0xff) {
-      dest = *(int *)(puVar2 + 10);
-      red = ((u8 *)colourStack)[12];
-      green = ((u8 *)colourStack)[13];
-      blue = ((u8 *)colourStack)[14];
-      alpha = ((u8 *)colourStack)[15];
-      *(u8 *)(dest + 4) = red;
-      *(u8 *)(dest + 5) = green;
-      *(u8 *)(dest + 6) = blue;
-      *(u8 *)(dest + 7) = alpha;
+    *(u32 *)&colourStack[12] = *(u32 *)&colourStack[0];
+    if (colourStack[15] != 0xff) {
+      dest = *(u8 **)(puVar2 + 10);
+      *(RwRGBA *)(dest + 4) = *(RwRGBA *)&colourStack[12];
     }
     else {
-      ((u8 *)colourStack)[15] = 0xfe;
-      dest = *(int *)(puVar2 + 10);
-      red = ((u8 *)colourStack)[12];
-      green = ((u8 *)colourStack)[13];
-      blue = ((u8 *)colourStack)[14];
-      alpha = ((u8 *)colourStack)[15];
-      *(u8 *)(dest + 4) = red;
-      *(u8 *)(dest + 5) = green;
-      *(u8 *)(dest + 6) = blue;
-      *(u8 *)(dest + 7) = alpha;
-      ((u8 *)colourStack)[15] = 0xff;
+      colourStack[15] = 0xfe;
+      dest = *(u8 **)(puVar2 + 10);
+      *(RwRGBA *)(dest + 4) = *(RwRGBA *)&colourStack[12];
+      colourStack[15] = 0xff;
     }
     if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
       FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
@@ -29686,7 +29668,7 @@ void FUN_003399a0(int param_1)
 
 
 
-// FUN_0033A220 NONMATCHING
+// FUN_0033A220
 
 
 void FUN_0033a220(int param_1)
@@ -29694,15 +29676,11 @@ void FUN_0033a220(int param_1)
   u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
-  struct { u32 word[3]; union { u32 packed; RwRGBA rgba; } colour; } colourStack;
+  u8 colourStack[16];
   int iVar3;
   int iVar4;
   int iVar6;
-  int dest;
-  u8 red;
-  u8 green;
-  u8 blue;
-  u8 alpha;
+  u8 *dest;
 
   iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
@@ -29712,32 +29690,18 @@ void FUN_0033a220(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack.word[2] = *(u32 *)(iVar5 + 0x30);
+    *(u32 *)&colourStack[8] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50((u32)iVar3);
-    colourStack.colour.packed = colourStack.word[0];
-    if (colourStack.colour.rgba.a != 0xff) {
-      dest = *(int *)(puVar2 + 10);
-      red = colourStack.colour.rgba.r;
-      green = colourStack.colour.rgba.g;
-      blue = colourStack.colour.rgba.b;
-      alpha = colourStack.colour.rgba.a;
-      *(u8 *)(dest + 4) = red;
-      *(u8 *)(dest + 5) = green;
-      *(u8 *)(dest + 6) = blue;
-      *(u8 *)(dest + 7) = alpha;
+    *(u32 *)&colourStack[12] = *(u32 *)&colourStack[0];
+    if (colourStack[15] != 0xff) {
+      dest = *(u8 **)(puVar2 + 10);
+      *(RwRGBA *)(dest + 4) = *(RwRGBA *)&colourStack[12];
     }
     else {
-      colourStack.colour.rgba.a = 0xfe;
-      dest = *(int *)(puVar2 + 10);
-      red = colourStack.colour.rgba.r;
-      green = colourStack.colour.rgba.g;
-      blue = colourStack.colour.rgba.b;
-      alpha = colourStack.colour.rgba.a;
-      *(u8 *)(dest + 4) = red;
-      *(u8 *)(dest + 5) = green;
-      *(u8 *)(dest + 6) = blue;
-      *(u8 *)(dest + 7) = alpha;
-      colourStack.colour.rgba.a = 0xff;
+      colourStack[15] = 0xfe;
+      dest = *(u8 **)(puVar2 + 10);
+      *(RwRGBA *)(dest + 4) = *(RwRGBA *)&colourStack[12];
+      colourStack[15] = 0xff;
     }
     FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
@@ -41466,6 +41430,7 @@ u32 FUN_00347170(u64 param_1)
 
   u32 uVar5;
 
+
   u32 *puVar6;
 
   u8 (*pauVar7) [16];
@@ -41493,6 +41458,7 @@ u32 FUN_00347170(u64 param_1)
   FUN_00493370(*(u32 *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18),8);
 
   puVar6 = *(u32 **)(*(int *)(*(int *)(*(int *)(pauVar7[5] + 8) + 0x10) + 0x18) + 0x30);
+
 
   for (uVar5 = 0; uVar5 < 0x34; uVar5 = uVar5 + 1) {
 

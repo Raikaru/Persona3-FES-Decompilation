@@ -2560,7 +2560,7 @@ u32 FUN_003a4b90(int param_1,int param_2,int param_3)
 
 {
 
-  int iVar1;
+  register u32 *object;
 
 
   int iVar2;
@@ -2575,16 +2575,16 @@ u32 FUN_003a4b90(int param_1,int param_2,int param_3)
 
   
 
-  iVar1 = *(int *)(DAT_00959eec_abs + param_1 * 0xd);
+  object = *(u32 **)(DAT_00959eec_abs + param_1 * 0xd);
 
 
-  if (iVar1 == 0) {
+  if (object == NULL) {
 
     FUN_0019d3f0("itfMesManager.c",0xcfe);
 
   }
 
-  piVar3 = (int *)FUN_003a50e0_typed(iVar1,param_2);
+  piVar3 = (int *)FUN_003a50e0_typed((int)object,param_2);
 
   if (*piVar3 != 0) {
 
@@ -2598,10 +2598,10 @@ u32 FUN_003a4b90(int param_1,int param_2,int param_3)
     return 0;
   }
 
-  FUN_003a5fd0(iVar1 + 0xd4);
+  FUN_003a5fd0((int)(object + 0x35));
 
-  if (*(int *)(iVar1 + 8) != 0) {
-    FUN_003b19a0(*(int *)(iVar1 + 8));
+  if (object[2] != 0) {
+    FUN_003b19a0(object[2]);
   }
 
   lVar5 = FUN_003a5940_typed(iVar2,param_3);
@@ -6111,14 +6111,14 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,
 
 u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
 {
-  u32 uVar2;
-  int iVar1;
-  uVar2 = FUN_001158b0(0,DAT_007ce654,param_5);
-  *(float *)(iVar1 + 0x10) = (float)param_2;
-  *(float *)(iVar1 + 0x14) = (float)param_3;
-  *(char *)(iVar1 + 0x19) = 0xff - (u8)param_4;
-  FUN_001127d0(uVar2,1);
-  FUN_00115980(uVar2);
+  u32 object;
+  object = FUN_001158b0(0,DAT_007ce654,param_5);
+  *(float *)(object + 0x10) = (float)param_2;
+  *(float *)(object + 0x14) = (float)param_3;
+  *(float *)(object + 0x2c) = param_1;
+  *(u8 *)(object + 0x19) = 0xff - (u8)param_4;
+  FUN_001127d0(object,1);
+  FUN_00115980(object);
   return 0;
 
 }

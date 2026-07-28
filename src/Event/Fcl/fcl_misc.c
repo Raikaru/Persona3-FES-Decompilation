@@ -48,6 +48,16 @@ typedef union FclMiscPair
     FclMiscVec2 vec;
     u64 bits;
 } FclMiscPair;
+typedef union FclMisc9570SpecialValues
+{
+    FclMiscVec3 vec;
+    s32 raw[3];
+} FclMisc9570SpecialValues;
+typedef struct FclMisc9570Layout
+{
+    s32 sizeTable[8];
+    FclMisc9570SpecialValues specialValues;
+} FclMisc9570Layout;
 #pragma alias fclMiscDrawStatusCall FUN_00133180
 extern void fclMiscDrawStatusCall(u64 position, f32 alpha,
                                    void *persona, void *currentStats, s32 fade);
@@ -70,10 +80,10 @@ extern u32 gp0xffffaa14;
 extern char DAT_006a3e18[];
 #pragma alias DAT_006a3e18_abs DAT_006a3e18
 extern char DAT_006a3e18_abs[];
-extern u32 DAT_006a3f70;
-extern u32 DAT_006a3f88;
-extern u32 DAT_006a3f8c;
-extern u32 DAT_006a3f90;
+#pragma alias fclMiscSizeTable DAT_006a3f70
+extern s32 fclMiscSizeTable[];
+#pragma alias fclMiscSpecialValues DAT_006a3f88
+extern f32 fclMiscSpecialValues[];
 extern u32 DAT_006a41e8;
 extern u32 DAT_006a41f8;
 #pragma alias DAT_006a41e8_abs DAT_006a41e8
@@ -949,8 +959,6 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
   int iVar2;
 
   u32 offset;
-  u16 uVar3;
-  f32 scaled;
 
   
 
@@ -971,27 +979,9 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
     *(f32 *)(iVar2 + 0x2c) = param_1;
     *(char *)(iVar2 + 0x19) = 0xff - (param_6 & 0xff);
 
-    scaled = 4096.0f * param_2;
-    if (2.1474836e+09f <= scaled) {
-      goto param2_large;
-    }
-    uVar3 = (u16)(int)scaled;
-    goto param2_done;
-param2_large:
-    uVar3 = (u16)((u32)(int)(scaled - 2.1474836e+09f) | 0x80000000);
-param2_done:
-    *(u16 *)(iVar2 + 0x28) = uVar3;
+    *(u16 *)(iVar2 + 0x28) = (u16)(u32)(4096.0f * param_2);
 
-    scaled = 4096.0f * param_3;
-    if (2.1474836e+09f <= scaled) {
-      goto param3_large;
-    }
-    uVar3 = (u16)(int)scaled;
-    goto param3_done;
-param3_large:
-    uVar3 = (u16)((u32)(int)(scaled - 2.1474836e+09f) | 0x80000000);
-param3_done:
-    *(u16 *)(iVar2 + 0x2a) = uVar3;
+    *(u16 *)(iVar2 + 0x2a) = (u16)(u32)(4096.0f * param_3);
 
     FUN_001127d0(uVar1,1);
 
@@ -1193,123 +1183,70 @@ u32 FUN_003c94e0(void)
 
 
 void FUN_003c9570(u64 param_1)
-
-
-
 {
+  int x;
+  int width;
+  int height;
+  int special;
+  int index;
+  int y;
+  int count;
+  int *source;
+  int *destination;
+  int *values;
+  int first;
+  int second;
+  FclMisc9570Layout layout;
 
-  u8 bVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  int *piVar7;
-
-  int *piVar8;
-
-  int aiStack_30 [8];
-
-  int aiStack_10 [4];
-
-  
-
-  iVar2 = 0;
-
-  piVar8 = (int *)&DAT_006a3f70;
-
-  piVar7 = aiStack_30;
-
-  iVar6 = 3;
-
+  special = 0;
+  index = 0;
+  source = fclMiscSizeTable;
+  destination = layout.sizeTable;
+  count = 3;
   do {
+    first = source[0];
+    second = source[1];
+    source += 2;
+    count--;
+    destination[0] = first;
+    destination[1] = second;
+    destination += 2;
+  } while (count > 0);
 
-    iVar3 = *piVar8;
+  layout.specialValues.vec = *(FclMiscVec3 *)fclMiscSpecialValues;
 
-    iVar4 = piVar8[1];
-
-    piVar8 = piVar8 + 2;
-
-    iVar6 = iVar6 + -1;
-
-    *piVar7 = iVar3;
-
-    piVar7[1] = iVar4;
-
-    piVar7 = piVar7 + 2;
-
-  } while (0 < iVar6);
-
-  aiStack_10[0] = DAT_006a3f88;
-
-  aiStack_10[1] = DAT_006a3f8c;
-
-  aiStack_10[2] = DAT_006a3f90;
-
-  iVar6 = FUN_003af380();
-
-  bVar1 = (short)iVar6 != -1;
-
-  if (bVar1) {
-
-    iVar3 = FUN_003af390();
-
+  width = FUN_003af380();
+  if ((short)width == -1) {
+    special = 1;
+    index = FUN_003af390();
+    width = layout.sizeTable[index * 2];
+    height = layout.sizeTable[index * 2 + 1] * 25;
   }
-
   else {
-
-    iVar2 = FUN_003af390();
-
-    iVar6 = aiStack_30[iVar2 * 2];
-
-    iVar3 = aiStack_30[iVar2 * 2 + 1];
-
+    height = FUN_003af390() * 25;
   }
 
-  iVar4 = FUN_003af360();
-
-  if ((short)iVar4 == -1) {
-
-    iVar4 = 0x140 - (iVar6 >> 1);
-
+  x = FUN_003af360();
+  if ((short)x == -1) {
+    x = 0x140 - (width >> 1);
   }
 
-  iVar5 = FUN_003af370();
-
-  if ((short)iVar5 == -1) {
-
-    iVar5 = 0xe0 - (iVar3 * 0x19 >> 1);
-
+  y = FUN_003af370();
+  if ((short)y == -1) {
+    y = 0xe0 - (height >> 1);
   }
 
-  if (bVar1) {
-
-    FUN_003a3ce0(param_1,iVar4 << 4,iVar5 << 3);
-
-    FUN_003a8650(param_1,iVar4 << 4,iVar5 << 3,0,iVar6 << 4,iVar3 * 200);
-
-  }
-
-  else {
-
+  if (special) {
     FUN_003a3ce0(param_1,0x4d0,0x4e0);
-
-    iVar2 = aiStack_10[iVar2];
-
-    FUN_003a8650(param_1,0,0x408,0,0x2800,iVar2 << 3);
-
-    FUN_003a6a80(param_1,0x254,iVar2 + 0x71);
-
+    values = layout.specialValues.raw;
+    index = values[index];
+    FUN_003a8650(param_1,0,0x408,0,0x2800,index << 3);
+    FUN_003a6a80(param_1,0x254,index + 0x71);
   }
-
-  return;
-
+  else {
+    FUN_003a3ce0(param_1,x << 4,y << 3);
+    FUN_003a8650(param_1,x << 4,y << 3,0,width << 4,height << 3);
+  }
 }
 #define FUN_003c9570(...) ((void (*)(...))FUN_003c9570)(__VA_ARGS__)
 #undef FUN_003c9570
@@ -2387,25 +2324,21 @@ void FUN_003cb100(int param_1)
 
 {
   s32 flags;
-  u32 resource;
 
   flags = *(s16 *)(param_1 + 0x12) | -0x100;
-  resource = *(u32 *)(param_1 + 0xd0);
   fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,0,0,
                     flags,2,0,0,
-                    resource);
+                    *(u32 *)(param_1 + 0xd0));
 
   flags = *(s16 *)(param_1 + 0x12) | -0x100;
-  resource = *(u32 *)(param_1 + 0xd0);
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x165,0xbd,
                     flags,0,0,0,
-                    resource);
+                    *(u32 *)(param_1 + 0xd0));
 
   flags = *(s16 *)(param_1 + 0x12) | -0x100;
-  resource = *(u32 *)(param_1 + 0xd0);
   fclMiscCa780Call(0.0f,-35.0f,1.0f,1.0f,-0x61,0xbd,
                     flags,1,-0x104,0,
-                    resource);
+                    *(u32 *)(param_1 + 0xd0));
 
   return;
 }

@@ -1738,7 +1738,7 @@ u32 FUN_002ded60(int param_1)
     return uVar1;
 }
 
-// FUN_002DEFE0 NONMATCHING
+// FUN_002DEFE0
 
 
 u32 FUN_002defe0(int param_1)
@@ -1768,7 +1768,7 @@ u32 FUN_002defe0(int param_1)
 
   }
 
-  lVar2 = FUN_00300580(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
+  lVar2 = FUN_00300580(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c), 1);
 
   if (lVar2 != 0) {
 
@@ -1801,7 +1801,7 @@ u32 FUN_002defe0(int param_1)
 
   {
 
-    iVar1 = FUN_002ffbc0();
+    iVar1 = FUN_002ffbc0(uVar4 & 0xffff);
 
     iVar1 = aiStack_30[iVar1];
 
