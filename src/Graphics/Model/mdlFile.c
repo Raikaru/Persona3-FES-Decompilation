@@ -13641,11 +13641,12 @@ void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
 }
 
 
-// FUN_00329890 NONMATCHING
+// FUN_00329890
 
 
 void mdlFileBuildAxisRotation(f32 param_1)
 {
+  f32 square;
   f32 cosine;
   f32 sine;
   f32 oneMinusCosine;
@@ -13661,8 +13662,10 @@ void mdlFileBuildAxisRotation(f32 param_1)
   cosine = FUN_0052e6d8_f32(param_1);
   sine = FUN_0052e878_f32(param_1);
   __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(axis) : "memory");
-  matrix.right.x =
-      (1.0f - axis[0] * axis[0]) * cosine + axis[0] * axis[0] + 0.0f;
+  square = axis[0] * axis[0];
+  square = square + 0.0f;
+  square += (1.0f - square) * cosine;
+  matrix.right.x = square;
   xy = axis[0] * axis[1];
   oneMinusCosine = 1.0f - cosine;
   zSine = axis[2] * sine;
@@ -13674,8 +13677,10 @@ void mdlFileBuildAxisRotation(f32 param_1)
   matrix.right.z = xz - ySine;
   matrix.flags = 0;
   matrix.up.x = xy - zSine;
-  matrix.up.y =
-      (1.0f - axis[1] * axis[1]) * cosine + axis[1] * axis[1] + 0.0f;
+  square = axis[1] * axis[1];
+  square = square + 0.0f;
+  square += (1.0f - square) * cosine;
+  matrix.up.y = square;
   yz = axis[1] * axis[2];
   xSine = axis[0] * sine;
   yz = yz * oneMinusCosine;
@@ -13683,8 +13688,10 @@ void mdlFileBuildAxisRotation(f32 param_1)
   matrix.pad1 = 0;
   matrix.at.x = ySine + xz;
   matrix.at.y = yz - xSine;
-  matrix.at.z =
-      (1.0f - axis[2] * axis[2]) * cosine + axis[2] * axis[2] + 0.0f;
+  square = axis[2] * axis[2];
+  square = square + 0.0f;
+  square += (1.0f - square) * cosine;
+  matrix.at.z = square;
   matrix.pad2 = 0;
   __asm__ volatile (
       "lqc2 vf28, 0(%0)\n"
@@ -30433,12 +30440,12 @@ void FUN_0033a5b0(int param_1)
 
 void FUN_0033af10(int param_1)
 {
-  int iVar1;
+  u8 *iVar5;
+  u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -30446,9 +30453,9 @@ void FUN_0033af10(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
-  iVar1 = *(int *)(iVar5 + 0x40);
+  iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
   iVar6 = *(int *)(iVar5 + 0x34);
   iVar4 = *(int *)(iVar1 + 0x34);
@@ -30481,7 +30488,7 @@ void FUN_0033af10(int param_1)
       *(u8 *)(dest + 7) = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -31141,12 +31148,12 @@ void FUN_0033b2a0(int param_1)
 
 void FUN_0033bbe0(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -31154,7 +31161,7 @@ void FUN_0033bbe0(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
@@ -31189,7 +31196,7 @@ void FUN_0033bbe0(int param_1)
       *(u8 *)(dest + 7) = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -31974,12 +31981,12 @@ void FUN_0033c1a0(int param_1)
 
 void FUN_0033c960(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -31987,7 +31994,7 @@ void FUN_0033c960(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
@@ -32022,7 +32029,7 @@ void FUN_0033c960(int param_1)
       *(u8 *)(dest + 7) = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -32728,12 +32735,12 @@ void FUN_0033cf00(int param_1)
 
 void FUN_0033d6d0(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -32741,7 +32748,7 @@ void FUN_0033d6d0(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
@@ -32776,7 +32783,7 @@ void FUN_0033d6d0(int param_1)
       *(u8 *)(dest + 7) = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -33573,12 +33580,12 @@ void FUN_0033dc70(int param_1)
 
 void FUN_0033e540(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -33586,7 +33593,7 @@ void FUN_0033e540(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
@@ -33621,7 +33628,7 @@ void FUN_0033e540(int param_1)
       *(u8 *)(dest + 7) = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -34328,12 +34335,12 @@ void FUN_0033e8e0(int param_1)
 
 void FUN_0033f2e0(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 red;
@@ -34341,7 +34348,7 @@ void FUN_0033f2e0(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
@@ -34376,7 +34383,7 @@ void FUN_0033f2e0(int param_1)
       *(u8 *)(dest + 7) = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -35227,12 +35234,12 @@ void FUN_0033f860(int param_1)
 
 void FUN_00340100(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
   int dest;
   u8 *packed;
@@ -35241,7 +35248,7 @@ void FUN_00340100(int param_1)
   u8 blue;
   u8 alpha;
 
-  iVar5 = param_1;
+  iVar5 = (u8 *)param_1;
   iVar3 = *(int *)(iVar5 + 0x3c);
   iVar1 = *(u8 **)(iVar5 + 0x40);
   puVar2 = *(u16 **)(iVar3 + 4);
@@ -35278,7 +35285,7 @@ void FUN_00340100(int param_1)
       *(u8 *)(dest + 7) = alpha;
       packed[3] = 0xff;
     }
-    FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
+    FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
       *puVar2 = *puVar2 | 1;
     }
@@ -43197,11 +43204,13 @@ void FUN_00349090(int *param_1,float *param_2)
 
   u32 converted;
 
-  u8 uVar6;
+  u32 uVar6;
 
   float fVar7;
 
   float alpha;
+
+  float wave;
 
   
 
@@ -43232,9 +43241,9 @@ void FUN_00349090(int *param_1,float *param_2)
       uVar3 = FUN_005311c8_u32(uGpffff8020,uVar3);
       uVar3 = FUN_00531230_u32(uGpffff8018,uVar3);
 
-      fVar7 = FUN_005318a0_f32(uVar3);
+      wave = FUN_005318a0_f32(uVar3);
 
-      fVar7 = fVar7 * alpha;
+      fVar7 = alpha * wave;
 
       if (!(2.1474836e+09f <= fVar7)) {
         converted = (u32)(int)fVar7;

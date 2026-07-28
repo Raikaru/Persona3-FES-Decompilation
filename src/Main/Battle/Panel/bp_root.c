@@ -18,6 +18,7 @@ typedef struct PanelSkillRow
 
 extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce3ec;
+extern u32 D_00684F00[];
 
 static u8* panelWork(void)
 {
@@ -1780,41 +1781,59 @@ void FUN_002031C0(void)
     bcmPanel00222d60();
 }
 
-// FUN_00203410 NONMATCHING
+// FUN_00203410
 void FUN_00203410(void)
 {
-    u32 i;
-    u32 count;
+    u8* work;
+    s32 destroyIndex;
+    s32 rowIndex;
+    s32 targetIndex;
     u32 handle;
-    const char* name;
+    extern void func_003b2c60(u32, f32);
 
-    count = panelWork32(0x25c);
-    for (i = 0; i < panelWork32(0x25c); i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    for (destroyIndex = 0; destroyIndex < *(s32*)(work + 0x25c);
+         destroyIndex++)
     {
-        handle = *(u32*)(panelWork() + 0x8c + i * 4);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x8c + i * 4) = 0;
+        func_003b0170(*(u32*)(work + 0x8c + destroyIndex * 4));
     }
-    if (panelWork32(0) & 0x800000)
+    if (*(u32*)work & 0x800000)
     {
         func_00208360();
     }
-    func_003c7d60(5);
-    for (i = 0; i < count && i < 4; i++)
+    handle = bpRoot_003a5540_typed(
+        100, 100, -1, 0.0f, 2, 6, (void*)func_003c7d60(5),
+        *(u16*)((u8*)(uintptr_t)(*(s32*)(work + 0x7698) * 2) +
+                 (uintptr_t)work + 0x9c) - 0xfa0);
+    func_002082c0(handle);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (rowIndex = 0; rowIndex < *(s32*)(work + 0x25c); rowIndex++)
     {
-        if (i == panelWork32(0x7698) - panelWork32(0x7690))
+        targetIndex = rowIndex + *(s32*)(work + 0x7690);
+        if (*(s32*)(work + 0x7698) == targetIndex)
         {
-            name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
-            handle = func_003b0970((u32)name, 2, 6, 0, 0);
+            handle = func_003b0970(
+                (u32)func_00171110(
+                    *(s16*)(work + 0x9c + targetIndex * 2), 0),
+                2, 6, 0, 0);
         }
         else
         {
-            name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
-            handle = func_003b0970((u32)name, 2, 0, 0, 0);
+            handle = func_003b0970(
+                (u32)func_00171110(
+                    *(s16*)(work + 0x9c + targetIndex * 2), 0),
+                2, 0, 0, 0);
         }
-        *(u32*)(panelWork() + 0x8c + i * 4) = handle;
+        func_003b0d70(handle, 0x730,
+                      (rowIndex * 9 * 2 + 0x118) * 8);
+        func_003b2c60(handle, 0.0f);
+        func_003b0e20(handle, -1);
+        *(u32*)(work + 0x8c + rowIndex * 4) = handle;
     }
-    panelSetWork32(0x25c, count < 4 ? count : 4);
+    func_003b0e90(1);
+    func_003b0e70(2);
 }
 
 // FUN_00203630
@@ -3003,32 +3022,44 @@ void FUN_002060B0(void)
     func_00225670();
 }
 
-// FUN_00206170 NONMATCHING
+// FUN_00206170
 void FUN_00206170(void)
 {
-    u32 i;
-    u32 count;
+    u8* work;
+    s32 destroyIndex;
+    s32 rowIndex;
+    s32 targetIndex;
     u32 handle;
-    u32 id;
 
-    count = panelWork32(0x404);
-    for (i = 0; i < count; i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    for (destroyIndex = 0; destroyIndex < *(s32*)(work + 0x400);
+         destroyIndex++)
     {
-        handle = *(u32*)(panelWork() + 0x3d8 + i * 4);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x3d8 + i * 4) = 0;
+        func_003b0170(*(u32*)(work + 0x3d8 + destroyIndex * 4));
     }
-    if (panelWork32(0) & 0x800000)
+    if (*(u32*)work & 0x800000)
+    {
         func_00208360();
-    handle = func_003a5540(100, 100, -1, 2, 6, NULL, 0);
+    }
+    handle = bpRoot_003a5540_typed(
+        100, 100, -1, 0.0f, 2, 6, *(void**)(work + 0x7794),
+        *(u32*)((u8*)(uintptr_t)(*(s32*)(work + 0x7734) * 4) +
+                (uintptr_t)work + 0x3b0) - 1);
     func_002082c0(handle);
     func_003b0e70(1);
     func_003b0e90(2);
-    for (i = 0; i < count; i++)
+    for (rowIndex = 0; rowIndex < *(s32*)(work + 0x400); rowIndex++)
     {
-        id = panelWork32(0x3b0 + i * 4);
-        handle = func_003b0970(id, 2, i == panelWork32(0x7734) ? 6 : 0, 0, 0);
-        *(u32*)(panelWork() + 0x3d8 + i * 4) = handle;
+        u32* resourceEntry;
+        targetIndex = rowIndex + *(s32*)(work + 0x772c);
+        resourceEntry = &D_00684F00[
+            *(u32*)(work + 0x3b0 + targetIndex * 4)];
+        handle = func_003b0970(
+            resourceEntry[-1], 2,
+            (s8)(targetIndex == *(s32*)(work + 0x7734) ? 6 : 0),
+            0, 0);
+        *(u32*)(work + 0x3d8 + rowIndex * 4) = handle;
     }
     func_003b0e90(1);
     func_003b0e70(2);

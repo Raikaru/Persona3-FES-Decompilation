@@ -403,14 +403,19 @@ void btlCameraUpdate(BtlCamera* camera)
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
     const BtlCameraStateEntry* entry;
+    const BtlCameraStateEntry* bossEntry;
     s32 temp_3;
     s32 temp_6;
-    u64 var_7;
+    long var_7;
 
-    entry = btlBossGetCameraStateEntry(state);
-    if (entry == NULL)
+    bossEntry = btlBossGetCameraStateEntry(state);
+    if (bossEntry == NULL)
     {
         entry = &sCameraStateEntries[state];
+    }
+    else
+    {
+        entry = bossEntry;
     }
     temp_6 = state & 0xffff;
     if (gBtl->camera.state != temp_6 || entry->unk_08 != 0)
@@ -418,9 +423,9 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
         var_7 = 2;
         while ((u16)var_7 == 0)
         {
-            temp_3 = *(u16*)(iGpffffb6fc + 0x102 + (u16)var_7 * 2);
-            *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) = temp_3;
-            var_7 = (var_7 - 1) & 0xffff;
+            *(u16*)(iGpffffb6fc + 0x104 + (u16)var_7 * 2) =
+                *(u16*)(iGpffffb6fc + 0x102 + (u16)var_7 * 2);
+            var_7 = ((u16)var_7 - 1) & 0xffff;
         }
 
         *(u16*)((u8*)gBtl + 0x104) = gBtl->camera.state;
@@ -4412,7 +4417,7 @@ void FUN_002b2060(int param_1)
      ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
-      FUN_002b64d0((BtlCamera*)param_1,
+      FUN_002b64d0((BtlCamera*)iVar4,
                    (struct B64CameraWork*)(iVar4 + 0xec));
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);
@@ -4434,7 +4439,7 @@ void FUN_002b2060(int param_1)
         uVarMode = uVar2;
         if (*(int *)(iVar4 + 0x114) == 0) {
           if (FUN_0030b5a0(*(undefined4 *)(*(int *)(*(int *)(iVar4 + 0x100) + 0x30) + 0xa2c),0) == 0) {
-            pCenter = *(u8 **)(*(u8 **)(uintptr_t)(iVar4 + 0x100) + 0x30) + 4;
+            pCenter = *(u8 **)(*(int *)(iVar4 + 0x100) + 0x30) + 4;
             FUN_002a3e80(50.0f,(u8*)(uintptr_t)*(undefined4 *)(iVar4 + 0xe0),
                          (u8*)(uintptr_t)(iVar4 + 0x9c),pCenter,uVarMode);
           }

@@ -3264,9 +3264,10 @@ void FUN_0022C2D0(void)
 {
     u8* work;
     u32 table0;
-    void* resourceA;
+    u32 resourceA;
     f32 weight;
     f32 alpha;
+    u32 alphaInt;
     f32 rect[4];
     u8 color[4];
 
@@ -3275,57 +3276,48 @@ void FUN_0022C2D0(void)
     table0 = FUN_0021c3f0(0);
     weight = *(f32*)(work + 0x7214);
 
-    resourceA = (void*)FUN_0021cca0(table0, 0x42);
+    resourceA = FUN_0021cca0(table0, 0x42);
     rect[0] = 57.0f;
     rect[1] = (f32)0x13d;
-    rect[2] = (f32)*(s32*)((u8*)resourceA + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
+    rect[2] = (f32)*(s32*)(resourceA + 0xc);
+    rect[3] = (f32)*(s32*)(resourceA + 0x10);
     FUN_0021d8e0(work + 0x6a00, rect);
 
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    if (alpha < 2147483648.0f) {
-        color[3] = (u8)((s32)alpha & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    alphaInt = (u32)alpha;
+    color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6a00, color);
  
-    rect[0] = 57.0f + (f32)*(s32*)((u8*)resourceA + 0xc);
+    rect[0] = 57.0f + (f32)*(s32*)(resourceA + 0xc);
     rect[1] = (f32)0x13d;
     rect[2] = 133.0f;
-    rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
+    rect[3] = (f32)*(s32*)(resourceA + 0x10);
     FUN_0021d8e0(work + 0x6b00, rect);
  
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    if (alpha < 2147483648.0f) {
-        color[3] = (u8)((s32)alpha & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    alphaInt = (u32)alpha;
+    color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6b00, color);
  
-    resourceA = (void*)FUN_0021cca0(table0, 0x43);
+    resourceA = FUN_0021cca0(table0, 0x43);
     rect[0] = 400.0f;
     rect[1] = (f32)0x13d;
-    rect[2] = (f32)*(s32*)((u8*)resourceA + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
+    rect[2] = (f32)*(s32*)(resourceA + 0xc);
+    rect[3] = (f32)*(s32*)(resourceA + 0x10);
     FUN_0021d8e0(work + 0x6c00, rect);
  
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
     alpha = 255.0f * weight;
-    if (alpha < 2147483648.0f) {
-        color[3] = (u8)((s32)alpha & 0xff);
-    } else {
-        color[3] = (u8)(((s32)(alpha - 2147483648.0f) | 0x80000000) & 0xff);
-    }
+    alphaInt = (u32)alpha;
+    color[3] = (u8)alphaInt;
     FUN_0021d950(work + 0x6c00, color);
 }
 

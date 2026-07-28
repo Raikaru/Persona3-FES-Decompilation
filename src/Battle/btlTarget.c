@@ -1108,6 +1108,11 @@ void FUN_002d8330(BtlAction* action)
     work = (BtlTargetActionPacketWork*)packet->workData;
     work->action = action;
 }
+static inline u16 btlTargetGetEnemyFlags(u8 **table, u16 characterId)
+{
+  return *(u16 *)(*table + (u32)characterId * 0x3e);
+}
+
 
 // FUN_002d8390 NONMATCHING
 
@@ -1117,7 +1122,6 @@ int FUN_002d8390(void)
   u32 comparison;
   u32 level;
   u32 unit;
-  u32 enemyData;
   u16 enemyFlags;
   u16 state;
   int difference;
@@ -1126,9 +1130,11 @@ int FUN_002d8390(void)
   int hasFlag80;
 
   selector = FUN_002d4e10(2, 0x80000);
-  if (selector >= 6) {
-    return -1;
+  if (selector < 6) {
+    goto valid;
   }
+  return -1;
+valid:
   comparison = FUN_002d4cf0(2, 0x80000);
   level = FUN_002ffcc0_u32(*(u32 *)(*(u32 *)(*(u32 *)(DAT_007ce3ec + 0x148) + 0x30) + 0xa2c));
   difference = (s32)(comparison - (level & 0xff)) >= 4;
@@ -1140,8 +1146,7 @@ int FUN_002d8390(void)
     if (FUN_00300580_u32(*(u32 *)(unit + 0xa2c), 2) != 0) {
       hasStatus = 1;
     }
-    enemyData = (u32)DAT_007ce410;
-    enemyFlags = *(u16 *)(enemyData + (u32)*(u16 *)(unit + 0xa4) * 0x3e);
+    enemyFlags = btlTargetGetEnemyFlags(&DAT_007ce410, *(u16 *)(unit + 0xa4));
     if ((enemyFlags & 0x40) != 0) {
       hasFlag40 = 1;
     }
@@ -4393,7 +4398,7 @@ void FUN_002d7560(BtlAction *action)
         {
             s32 outFlag;
             if (unit->charId > 0x14f)
-                FUN_0019d3f0((const char *)0x6978e0, 0x37e);
+                FUN_0019d3f0((const char *)DAT_00697880 + 0x60, 0x37e);
             if ((action->unk_1a & 0x20) == 0)
             {
                 u32 rawValue;

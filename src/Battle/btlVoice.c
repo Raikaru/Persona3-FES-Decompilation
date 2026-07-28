@@ -379,7 +379,7 @@ extern BtlPacket* FUN_002bd590_packet_voice(BtlUnit* unit, u16 id);
 #pragma alias FUN_002bc7e0_packet_voice FUN_002bc7e0
 extern BtlPacket* FUN_002bc7e0_packet_voice(u16 type);
 #pragma alias FUN_002a3d70_packet_voice FUN_002a3d70
-extern BtlPacket* FUN_002a3d70_packet_voice(f32, u32, const RwV3d*, const RwV3d*, const RwV3d*, const RwV3d*);
+extern BtlPacket* FUN_002a3d70_packet_voice(BtlAction*, const RwV3d*, const RwV3d*, const RwV3d*, const RwV3d*, f32);
 #pragma alias FUN_002dd4a0_packet_voice FUN_002dd4a0
 extern BtlPacket* FUN_002dd4a0_packet_voice(u16, u16);
 #pragma alias FUN_002dd5e0_packet_voice FUN_002dd5e0
@@ -1417,10 +1417,10 @@ void func_002f2550(BtlAction* action)
   packet->preUpdateDelay = 3;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 0);
-  packet = FUN_002a3d70_packet_voice(uGpffff82e0_f32_voice,
-                                     *(u32*)(DAT_007ce3ec + 0x148),
+  packet = FUN_002a3d70_packet_voice(*(BtlAction**)(DAT_007ce3ec + 0x148),
                                      (const RwV3d*)0x69a250, (const RwV3d*)0x69a270,
-                                     (const RwV3d*)0x69a290, (const RwV3d*)0x69a2b0);
+                                     (const RwV3d*)0x69a290, (const RwV3d*)0x69a2b0,
+                                     uGpffff82e0_f32_voice);
   packet->preUpdateDelay = 3;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 0);
@@ -1502,12 +1502,12 @@ void func_002f2890(BtlAction* action)
   index = (FUN_002ffbc0(100) < 0x32) * 0xc;
   {
     BtlPacket* introPacket;
-    introPacket = FUN_002a3d70_packet_voice(uGpffff82dc_f32_voice,
-                                           *(u32*)(DAT_007ce3ec + 0x148),
-                                           (const RwV3d*)(DAT_0069a210_abs + 0xc0 + index),
-                                           (const RwV3d*)(DAT_0069a210_abs + 0xe0 + index),
-                                           (const RwV3d*)(DAT_0069a210_abs + 0x100 + index),
-                                           (const RwV3d*)(DAT_0069a210_abs + 0x120 + index));
+    introPacket = FUN_002a3d70_packet_voice(*(BtlAction**)(DAT_007ce3ec + 0x148),
+                                           (const RwV3d*)((const u8*)0x69a2d0 + index),
+                                           (const RwV3d*)((const u8*)0x69a2f0 + index),
+                                           (const RwV3d*)((const u8*)0x69a310 + index),
+                                           (const RwV3d*)((const u8*)0x69a330 + index),
+                                           uGpffff82dc_f32_voice);
     introPacket->preUpdateDelay = 3;
     introPacket->actionUID = action->uid;
     btlPacketRegister(introPacket, 0);
@@ -2015,12 +2015,12 @@ void func_002f3a80(BtlAction* param_1)
   *(u64 *)((int)uVar7 + 0x60) = *puVar13;
   FUN_0027ed20(uVar7,0);
   iVar8 = iVar12 * 0xc;
-  uVar7 = (u32)FUN_002a3d70_packet_voice(*(float *)(iVar12 * 4 + 0x69a458) / 30.0f,
-                       *(u32*)(iGpffffb6fc + 0x148),
+  uVar7 = (u32)FUN_002a3d70_packet_voice(*(BtlAction**)(iGpffffb6fc + 0x148),
                        (const RwV3d*)((const u8*)0x69a3a0 + iVar8),
                        (const RwV3d*)((const u8*)0x69a3d0 + iVar8),
                        (const RwV3d*)((const u8*)0x69a400 + iVar8),
-                       (const RwV3d*)((const u8*)0x69a430 + iVar8));
+                       (const RwV3d*)((const u8*)0x69a430 + iVar8),
+                       *(float *)(iVar12 * 4 + 0x69a458) / 30.0f);
   *(u16 *)((int)uVar7 + 0x48) = 0;
   *(u64 *)((int)uVar7 + 0x60) = *puVar13;
   FUN_0027ed20(uVar7,0);

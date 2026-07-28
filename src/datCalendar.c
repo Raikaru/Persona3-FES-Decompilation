@@ -3622,6 +3622,10 @@ extern void func_00108f70();
 extern u8 func_00109f60(s16 channelIndex, s16 mappedChannelIndex);
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_00960094)(u32 state, void* value);
+#pragma alias D_00960090_abs D_00960090
+#pragma alias D_00960094_abs D_00960094
+extern u8 D_00960090_abs[];
+extern u8 D_00960094_abs[];
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern f32 D_00960088;
 extern const f32 DAT_007caf38;
@@ -4649,7 +4653,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
         return;
     }
     tile = 0;
-    if (clndIsHolidayOrSunday() == true && selection >= 2 && selection <= 5)
+    if (clndIsHolidayOrSunday() != 0 && selection >= 2 && selection <= 5)
     {
         tile = 0x11;
     }
@@ -4674,7 +4678,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
                   alpha & 0xff,
                   clndPackedX(position) + 207.0f,
                   clndPackedY(position) + 211.0f,
-                  50.0f);
+                  72.0f);
 }
 
 // FUN_00186D50
@@ -5031,73 +5035,72 @@ void func_001875f0(s32 angle, s32 scaleAngle, s32 alpha)
     D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-// FUN_00187BE0 NONMATCHING
+// FUN_00187BE0
 void* func_00187be0(KwlnTask* task)
 {
     CalendarSkipDrawWork* work;
-    RwCamera* camera;
+    void (**setState)(u32 state, u32 value);
     u32 oldState;
 
     work = (CalendarSkipDrawWork*)task->workData;
-    camera = kwlnGetMainCamera();
-    if (RwCameraBeginUpdate(camera) == NULL)
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) == NULL)
     {
         return KWLNTASK_CONTINUE;
     }
-    D_00960094(0xe, &oldState);
-    D_00960090(0xe, 0);
+    (*(void (**)(u32, void*))D_00960094_abs)(0xe, &oldState);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(0xe, 0);
 
-    if (work->state == 3)
+    switch (work->state)
     {
-        func_001875f0(work->scaleAngle, work->angle, work->alpha);
-        D_00960090(0xe, oldState);
-        RwCameraEndUpdate(camera);
-        work->angle += 10;
-        work->alpha -= 20;
-        if (work->alpha < 0)
-        {
-            return KWLNTASK_STOP;
-        }
-    }
-    else if (work->state == 2)
-    {
-        if (datGetFlag(0x1421) == 0)
-        {
-            func_001875f0(work->scaleAngle, work->angle, work->alpha);
-            work->angle += 10;
-            work->alpha += 20;
-            if (work->alpha > 0xff)
-            {
-                work->alpha = 0xff;
-            }
-        }
-        else
-        {
+        case 0:
             work->alpha = 0;
-        }
-        D_00960090(0xe, oldState);
-        RwCameraEndUpdate(camera);
+            work->timer = 10;
+            work->scaleAngle = 0x28;
+            work->angle = 0;
+            work->state = 1;
+            break;
+
+        case 1:
+            work->timer--;
+            if (work->timer < 0)
+            {
+                work->state = 2;
+            }
+            break;
+
+        case 2:
+            if (datGetFlag(0x1421) == 0)
+            {
+                func_001875f0(work->scaleAngle, work->angle, work->alpha);
+                work->angle += 10;
+                work->alpha += 20;
+                if (work->alpha >= 0xff)
+                {
+                    work->alpha = 0xff;
+                }
+            }
+            else
+            {
+                work->alpha = 0;
+            }
+            break;
+
+        case 3:
+            func_001875f0(work->scaleAngle, work->angle, work->alpha);
+            (*setState)(0xe, oldState);
+            RwCameraEndUpdate(kwlnGetMainCamera());
+            work->angle += 10;
+            work->alpha -= 20;
+            if (work->alpha < 0)
+            {
+                return KWLNTASK_STOP;
+            }
+            return KWLNTASK_CONTINUE;
     }
-    else if (work->state == 1)
-    {
-        work->timer--;
-        if (work->timer < 0)
-        {
-            work->state = 2;
-        }
-        D_00960090(0xe, oldState);
-        RwCameraEndUpdate(camera);
-    }
-    else
-    {
-        work->alpha = 0;
-        work->timer = 10;
-        work->scaleAngle = 0x28;
-        work->angle = 0;
-        work->state = 1;
-        D_00960090(0xe, oldState);
-        RwCameraEndUpdate(camera);
-    }
+
+    (*setState)(0xe, oldState);
+    RwCameraEndUpdate(kwlnGetMainCamera());
     return KWLNTASK_CONTINUE;
 }
 
@@ -5232,41 +5235,44 @@ void func_00187ec0(KwlnTask* task, s32 month, s32 day, s32 time)
     }
 }
 
-// FUN_00188250 NONMATCHING
+// FUN_00188250
 void* func_00188250(KwlnTask* task)
 {
     CalendarTransitionMessageWork* work;
-    RwCamera* camera;
+    void (**setState)(u32 state, u32 value);
     u32 oldState;
 
     work = (CalendarTransitionMessageWork*)task->workData;
-    if (work->state == 2)
+    switch (work->state)
     {
-        CLND_CALENDAR_X = 0.0f;
-        work->month = clndGetCurrentMonth();
-        work->day = clndGetCurrentDay();
-        work->time = datGetTime() & 0xff;
-        camera = kwlnGetMainCamera();
-        if (RwCameraBeginUpdate(camera) != NULL)
-        {
-            D_00960094(0xe, &oldState);
-            D_00960090(0xe, 0);
+        case 0:
+            work->resource = func_00112370(D_005E4190);
+            work->state = 1;
+            break;
+
+        case 1:
+            if (H_Maestro_00111f30((s16*)work->resource) == true)
+            {
+                work->state = 2;
+            }
+            break;
+
+        case 2:
+            CLND_CALENDAR_X = 0.0f;
+            work->month = clndGetCurrentMonth();
+            work->day = clndGetCurrentDay();
+            work->time = datGetTime() & 0xff;
+            if (RwCameraBeginUpdate(kwlnGetMainCamera()) == NULL)
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            (*(void (**)(u32, void*))D_00960094_abs)(0xe, &oldState);
+            setState = (void (**)(u32, u32))D_00960090_abs;
+            (*setState)(0xe, 0);
             func_00187ec0(task, work->month, work->day, work->time);
-            D_00960090(0xe, oldState);
-            RwCameraEndUpdate(camera);
-        }
-    }
-    else if (work->state == 1)
-    {
-        if (H_Maestro_00111f30((s16*)work->resource))
-        {
-            work->state = 2;
-        }
-    }
-    else
-    {
-        work->resource = func_00112370(D_005E4190);
-        work->state = 1;
+            (*setState)(0xe, oldState);
+            RwCameraEndUpdate(kwlnGetMainCamera());
+            break;
     }
     return KWLNTASK_CONTINUE;
 }

@@ -925,8 +925,8 @@ u32 func_001ae480(KwlnTask* task)
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
-            u8* pointBase;
             s32 j;
+            u8* pointBase;
             u32* source;
             u32* destination;
             pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);

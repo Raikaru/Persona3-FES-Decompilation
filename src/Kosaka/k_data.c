@@ -567,7 +567,6 @@ u32 func_001b8710(HCdvd* request)
 {
     char path[76];
     void* memory;
-    void* source;
     HCdvd* requestCopy;
     u32 cachedSize;
     Field* field;
@@ -598,8 +597,8 @@ u32 func_001b8710(HCdvd* request)
     }
     sprintf(path, "field/pack/nm%03d_%03d.bmd",
             PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
-    source = H_Cdvd_CacheFindFile(path, &cachedSize);
-    if (source != NULL)
+    requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
+    if (requestCopy != NULL)
     {
         allocSize = cachedSize;
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
@@ -608,7 +607,7 @@ u32 func_001b8710(HCdvd* request)
         field = K_Field_Get();
         fileSize = cachedSize;
         memcpy(FIELD_DATA_AT(field, 0x1154, void*),
-               source, fileSize);
+               requestCopy, fileSize);
     }
     return true;
 failed:
@@ -656,7 +655,6 @@ u32 func_001b8960(HCdvd* request)
 {
     char path[76];
     void* memory;
-    void* source;
     HCdvd* requestCopy;
     u32 cachedSize;
     Field* field;
@@ -688,8 +686,8 @@ u32 func_001b8960(HCdvd* request)
     }
     sprintf(path, "field/pack/ns%03d_%03d.bf",
             PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
-    source = H_Cdvd_CacheFindFile(path, &cachedSize);
-    if (source != NULL)
+    requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
+    if (requestCopy != NULL)
     {
         allocSize = cachedSize;
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
@@ -699,7 +697,7 @@ u32 func_001b8960(HCdvd* request)
         field = K_Field_Get();
         fileSize = cachedSize;
         memcpy(FIELD_DATA_AT(field, 0x114c, void*),
-               source, fileSize);
+               requestCopy, fileSize);
     }
     return true;
 failed:
