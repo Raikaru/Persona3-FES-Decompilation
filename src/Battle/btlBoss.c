@@ -878,6 +878,7 @@ case_1a4_done:
 u32 func_002f8a40(BtlUnit* unit)
 {
     u16 encounterId;
+    u32 result;
 
     encounterId = btlBossGetEncounterId();
     switch (encounterId)
@@ -935,15 +936,20 @@ block_1a0:
         case 1:
             goto block_1a0_genus1;
     }
-    return 0;
+    result = 0;
+    goto block_1a0_done;
 
 block_1a0_genus1:
     switch (unit->charId)
     {
         case 0x100:
-            return 1;
+            result = 1;
+            goto block_1a0_done;
     }
-    return 0;
+    result = 0;
+
+block_1a0_done:
+    return result;
 
 block_1a1:
     switch (unit->genus)
