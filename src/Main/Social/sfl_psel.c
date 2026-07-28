@@ -301,7 +301,7 @@ void sflPsel00260e00(void)
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
-    if ((*work & 1) == 0)
+    if (((~*work) & 1) != 0)
         return;
 
     texture = sflResGetPersonaChangeSprite();

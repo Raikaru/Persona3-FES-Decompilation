@@ -162,6 +162,34 @@ extern u32 DAT_009588d8;
 extern u32 DAT_009588dc;
 extern u32 DAT_009588e0;
 extern u32 DAT_009588e4;
+#pragma alias DAT_009588b0_abs DAT_009588b0
+#pragma alias DAT_009588b4_abs DAT_009588b4
+#pragma alias DAT_009588b8_abs DAT_009588b8
+#pragma alias DAT_009588bc_abs DAT_009588bc
+#pragma alias DAT_009588c0_abs DAT_009588c0
+#pragma alias DAT_009588c4_abs DAT_009588c4
+#pragma alias DAT_009588c8_abs DAT_009588c8
+#pragma alias DAT_009588cc_abs DAT_009588cc
+#pragma alias DAT_009588d0_abs DAT_009588d0
+#pragma alias DAT_009588d4_abs DAT_009588d4
+#pragma alias DAT_009588d8_abs DAT_009588d8
+#pragma alias DAT_009588dc_abs DAT_009588dc
+#pragma alias DAT_009588e0_abs DAT_009588e0
+#pragma alias DAT_009588e4_abs DAT_009588e4
+extern u8 DAT_009588b0_abs[];
+extern u8 DAT_009588b4_abs[];
+extern u8 DAT_009588b8_abs[];
+extern u8 DAT_009588bc_abs[];
+extern u8 DAT_009588c0_abs[];
+extern u8 DAT_009588c4_abs[];
+extern u8 DAT_009588c8_abs[];
+extern u8 DAT_009588cc_abs[];
+extern u8 DAT_009588d0_abs[];
+extern u8 DAT_009588d4_abs[];
+extern u8 DAT_009588d8_abs[];
+extern u8 DAT_009588dc_abs[];
+extern u8 DAT_009588e0_abs[];
+extern u8 DAT_009588e4_abs[];
 extern u32 DAT_009588e8;
 extern u32 DAT_009588ec;
 extern u32 DAT_00958970;
@@ -753,7 +781,7 @@ void FUN_0038c830(int param_1,long param_2);
 void FUN_0038ca00(void);
 void FUN_0038ca80(int param_1);
 void FUN_0038cc10(int param_1,u16 *param_2,int param_3);
-void FUN_0038d560(int param_1,int param_2,u32 param_3,u32 *param_4, u32 *param_5,u32 *param_6);
+void FUN_0038d560(int param_1,int param_2,u32 param_3,f32 *param_4, f32 *param_5,f32 *param_6);
 void FUN_0038d6b0(int param_1,u32 param_2);
 void FUN_0038d720(int param_1);
 void FUN_0038d790(int param_1);
@@ -6363,12 +6391,11 @@ void FUN_0038cc10(int param_1,u16 *param_2,int param_3)
 }
 
 
-// FUN_0038D560 NONMATCHING
+// FUN_0038D560
 
 
-void FUN_0038d560(int param_1,int param_2,u32 param_3,u32 *param_4,
-
-                 u32 *param_5,u32 *param_6)
+void FUN_0038d560(int param_1,int param_2,u32 param_3,f32 *param_4,
+                 f32 *param_5,f32 *param_6)
 
 
 
@@ -6382,43 +6409,26 @@ void FUN_0038d560(int param_1,int param_2,u32 param_3,u32 *param_4,
 
     iVar1 = (int)param_1 * 0x40;
 
-    *(u32 *)(&DAT_009588b8 + iVar1) = *param_4;
-
-    *(u32 *)(&DAT_009588bc + iVar1) = param_4[1];
-
-    *(u32 *)(&DAT_009588c0 + iVar1) = param_4[2];
-
-    *(u32 *)(&DAT_009588c4 + iVar1) = 0;
-
-    *(u32 *)(&DAT_009588c8 + iVar1) = *param_5;
-
-    *(u32 *)(&DAT_009588cc + iVar1) = param_5[1];
-
-    *(u32 *)(&DAT_009588d0 + iVar1) = param_5[2];
-
-    *(u32 *)(&DAT_009588d4 + iVar1) = param_5[3];
-
-    *(u32 *)(&DAT_009588d8 + iVar1) = *param_6;
-
-    *(u32 *)(&DAT_009588dc + iVar1) = param_6[1];
-
-    *(u32 *)(&DAT_009588e0 + iVar1) = param_6[2];
-
-    *(u32 *)(&DAT_009588e4 + iVar1) = 0x3f800000;
-
-    *(int *)(&DAT_009588b0 + iVar1) = (int)param_2;
-
+    *(f32 *)(DAT_009588b8_abs + iVar1) = param_4[0];
+    *(f32 *)(DAT_009588bc_abs + iVar1) = param_4[1];
+    *(f32 *)(DAT_009588c0_abs + iVar1) = param_4[2];
+    *(f32 *)(DAT_009588c4_abs + iVar1) = 0.0f;
+    *(f32 *)(DAT_009588c8_abs + iVar1) = param_5[0];
+    *(f32 *)(DAT_009588cc_abs + iVar1) = param_5[1];
+    *(f32 *)(DAT_009588d0_abs + iVar1) = param_5[2];
+    *(f32 *)(DAT_009588d4_abs + iVar1) = param_5[3];
+    *(f32 *)(DAT_009588d8_abs + iVar1) = param_6[0];
+    *(f32 *)(DAT_009588dc_abs + iVar1) = param_6[1];
+    *(f32 *)(DAT_009588e0_abs + iVar1) = param_6[2];
+    *(f32 *)(DAT_009588e4_abs + iVar1) = 1.0f;
+    *(int *)(DAT_009588b0_abs + iVar1) = param_2;
     if (param_2 == 3) {
-
-      *(u32 *)(&DAT_009588b4 + iVar1) = param_3;
-
+      *(u32 *)(DAT_009588b4_abs + iVar1) = param_3;
     }
-
     else {
-
-      *(u32 *)(&DAT_009588b4 + iVar1) = 0;
-
+      *(u32 *)(DAT_009588b4_abs + iVar1) = 0;
     }
+
 
   }
 

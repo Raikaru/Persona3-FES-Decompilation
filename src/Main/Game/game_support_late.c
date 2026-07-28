@@ -698,7 +698,6 @@ void* func_0018b380(KwlnTask* task)
         s32 status;
     };
     struct GsB380Work* work = (struct GsB380Work*)task->workData;
-    void* allocation;
     void* (**allocator)(u32, u32, u32);
 
     if (work->state == 4)
@@ -711,6 +710,7 @@ void* func_0018b380(KwlnTask* task)
 
         {
             u32 payload = work->payload38;
+            void* allocation;
             allocation = (*allocator)(1, 0x10, 0x40000);
             if (allocation != NULL)
             {
@@ -723,6 +723,7 @@ void* func_0018b380(KwlnTask* task)
         }
         {
             u32 payload = work->payload38;
+            void* allocation;
             allocation = (*allocator)(1, 0x10, 0x40000);
             if (allocation != NULL)
             {
@@ -735,6 +736,7 @@ void* func_0018b380(KwlnTask* task)
         }
         {
             u32 payload = work->payload38;
+            void* allocation;
             allocation = (*allocator)(1, 0x10, 0x40000);
             if (allocation != NULL)
             {
@@ -747,6 +749,7 @@ void* func_0018b380(KwlnTask* task)
         }
         {
             u32 payload = work->payload3c;
+            void* allocation;
             allocation = (*allocator)(1, 0x10, 0x40000);
             if (allocation != NULL)
             {
@@ -759,6 +762,7 @@ void* func_0018b380(KwlnTask* task)
         }
         {
             u32 payload = work->payload3c;
+            void* allocation;
             allocation = (*allocator)(1, 0x10, 0x40000);
             if (allocation != NULL)
             {

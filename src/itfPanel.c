@@ -100,7 +100,7 @@ extern u32 DAT_00960088_abs[];
 extern code DAT_009600a0;
 extern code DAT_00960178;
 extern code DAT_0096017c;
-extern char gp0xffffa830[];
+extern char gp0xffffa830;
 extern u8 LAB_003a9170[];
 extern u8 LAB_003a9230[];
 extern u8 LAB_003a92d0[];
@@ -3123,7 +3123,7 @@ u64 FUN_003ac890(u64 param_1,u64 param_2)
 }
 #define FUN_003ac890(...) ((u64 (*)(...))FUN_003ac890)(__VA_ARGS__)
 #undef FUN_003ac900
-// FUN_003AC900 NONMATCHING
+// FUN_003AC900
 
 
 u64 FUN_003ac900(u64 param_1,int param_2)
@@ -3135,7 +3135,7 @@ u64 FUN_003ac900(u64 param_1,int param_2)
   lVar1 = FUN_0017d800();
   if (lVar1 == 0) {
     uVar2 = FUN_00177790(1);
-    FUN_00523ac8(auStack_20,gp0xffffa830,uVar2);
+    FUN_00523ac8(auStack_20,&gp0xffffa830,uVar2);
     FUN_003b22a0(param_2);
     FUN_003b2020(auStack_20,param_2);
     auStack_20[0] = 0x83;
@@ -3144,12 +3144,12 @@ u64 FUN_003ac900(u64 param_1,int param_2)
     FUN_003b22a0(param_2);
     FUN_003b2020(auStack_20,param_2);
     uVar2 = FUN_00177670(1);
-    FUN_00523ac8(auStack_20,gp0xffffa830,uVar2);
+    FUN_00523ac8(auStack_20,&gp0xffffa830,uVar2);
     FUN_003b22a0(param_2);
     FUN_003b2020(auStack_20,param_2);
   } else {
     uVar2 = FUN_00177670(1);
-    FUN_00523ac8(auStack_20,gp0xffffa830,uVar2);
+    FUN_00523ac8(auStack_20,&gp0xffffa830,uVar2);
     FUN_003b22a0(param_2);
     FUN_003b2020(auStack_20,param_2);
   }
@@ -3558,7 +3558,7 @@ u64 FUN_003ad1b0(u32 param_1,int param_2)
 {
   u8 low;
   u8 high;
-  u32 value;
+  s16 value;
   u8 *data;
   int offset;
   int base;
@@ -3580,7 +3580,7 @@ u64 FUN_003ad1b0(u32 param_1,int param_2)
     } else {
       high = high - 1;
     }
-    value = (u32)high << 8 | low & 0xff;
+    value = high << 8 | low & 0xff;
     *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = value;
   }
   if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {

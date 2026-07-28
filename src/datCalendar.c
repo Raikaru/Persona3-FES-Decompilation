@@ -937,14 +937,7 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
 
     work = clndTask->workData;
     eventTable = Comu_GetSiteibiEvtTable();
-    if (eventTable->events[eventIndex].unk_07 == 0xff)
-    {
-        H_Dbprt_FmtLog("calendar: siteibi procedure %d",
-                       eventTable->events[eventIndex].scrPrcdIdx);
-        actionTask = func_003bdd60(
-            0xf, eventTable->events[eventIndex].scrPrcdIdx);
-    }
-    else
+    if (eventTable->events[eventIndex].unk_07 != 0xff)
     {
         H_Dbprt_FmtLog("calendar: siteibi event %d",
                        eventTable->events[eventIndex].scrPrcdIdx);
@@ -962,11 +955,18 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
             func_001848f0(work->confirmationTask, true);
         }
     }
+    else
+    {
+        H_Dbprt_FmtLog("calendar: siteibi procedure %d",
+                       eventTable->events[eventIndex].scrPrcdIdx);
+        actionTask = func_003bdd60(
+            0xf, eventTable->events[eventIndex].scrPrcdIdx);
+    }
 
     datSetDaysSkipTarget(clndGetDaysSinceStartFromDate(
         eventTable->events[eventIndex].endMonth,
         eventTable->events[eventIndex].endDay));
-    datSetTimeSkipTarget(eventTable->events[eventIndex].endTime);
+    datSetTimeSkipTarget_u8(eventTable->events[eventIndex].endTime);
     datSetSkipToTarget(true);
     return actionTask;
 }
@@ -4884,7 +4884,7 @@ void* func_001871a0(KwlnTask* task)
         datSetFlag(0xacd, false);
         datSetFlag(0xace, false);
 
-        if (work->messageIndex < 0)
+        if (work->messageIndex == -1)
             return KWLNTASK_STOP;
         work->state = 1;
         break;
@@ -4898,10 +4898,10 @@ void* func_001871a0(KwlnTask* task)
 draw:
     if (work->timer < 10)
         color = (u32)((work->timer * 0xff) / 10);
-    else if (work->timer < 0x51)
-        color = 0xff;
-    else
+    else if (work->timer >= 0x51)
         color = (u32)(((0x5a - work->timer) * 0xff) / 10);
+    else
+        color = 0xff;
 
     func_003b2cb0(0.0f,
                   0x140,
@@ -4913,9 +4913,9 @@ draw:
                   0x18,
                   0);
     work->timer++;
-    if (work->timer > 0x59)
-        return KWLNTASK_STOP;
-    return KWLNTASK_CONTINUE;
+    if (work->timer < 0x5a)
+        return KWLNTASK_CONTINUE;
+    return KWLNTASK_STOP;
 }
 
 // FUN_00187550

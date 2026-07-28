@@ -1541,24 +1541,22 @@ s32 func_001d0720(s32 targetCount)
     major = ptr[0];
     if (major >= 0x14)
     {
-        if (major < 0x1d)
+        if (major >= 0x1d)
+        {
+            if (major < 0x28)
+            {
+                goto spawn;
+            }
+            if (major >= 0x31)
+            {
+                goto spawn;
+            }
+        }
+        if (ptr[1] != 0)
         {
             goto done;
         }
     }
-    if (major < 0x28)
-    {
-        goto spawn;
-    }
-    if (major >= 0x31)
-    {
-        goto spawn;
-    }
-    if (ptr[1] == 0)
-    {
-        goto spawn;
-    }
-    goto done;
 
 spawn:
     values = (u16*)PTR_DAT_007cd540;
@@ -1572,7 +1570,7 @@ spawn:
         }
         if ((area & 0xffff) == 0xffff)
         {
-            K_ASSERT(0, 0x57c);
+            K_ASSERT("k_unit.c", 0x57c);
             area = 1;
         }
         func_001cf940(area, entry);
