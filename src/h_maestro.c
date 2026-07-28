@@ -2004,18 +2004,18 @@ void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
+    u32 r;
+    u32 g;
+    u32 b;
+    u32 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (s32)((color & 0xff000000) >> 24);
-    g = (s32)((color & 0xff0000) >> 16);
-    b = (s32)((color & 0xff00) >> 8);
-    a = (s32)(color & 0xff);
+    r = (color >> 24) & 0xff;
+    g = (color >> 16) & 0xff;
+    b = (color >> 8) & 0xff;
+    a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2046,10 +2046,10 @@ void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
         v->u.els.recipZ = recipZ;
-        v->u.els.color.r = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
-        v->u.els.color.g = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
-        v->u.els.color.b = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
-        v->u.els.color.a = a >= 0 ? (f32)a : (f32)(((u32)a >> 1) | (a & 1)) * 2.0f;
+        v->u.els.color.r = (f32)r;
+        v->u.els.color.g = (f32)g;
+        v->u.els.color.b = (f32)b;
+        v->u.els.color.a = (f32)a;
         v->u.els.scrVertex.x = corners[i][0];
         v->u.els.scrVertex.y = corners[i][1];
     }
@@ -2079,18 +2079,18 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
+    u32 r;
+    u32 g;
+    u32 b;
+    u32 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (s32)((color & 0xff000000) >> 24);
-    g = (s32)((color & 0xff0000) >> 16);
-    b = (s32)((color & 0xff00) >> 8);
-    a = (s32)(color & 0xff);
+    r = (color >> 24) & 0xff;
+    g = (color >> 16) & 0xff;
+    b = (color >> 8) & 0xff;
+    a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2121,10 +2121,10 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
         v->u.els.recipZ = recipZ;
-        v->u.els.color.r = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
-        v->u.els.color.g = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
-        v->u.els.color.b = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
-        v->u.els.color.a = a >= 0 ? (f32)a : (f32)(((u32)a >> 1) | (a & 1)) * 2.0f;
+        v->u.els.color.r = (f32)r;
+        v->u.els.color.g = (f32)g;
+        v->u.els.color.b = (f32)b;
+        v->u.els.color.a = (f32)a;
         v->u.els.scrVertex.x = corners[i][0];
         v->u.els.scrVertex.y = corners[i][1];
     }
@@ -2143,16 +2143,6 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-// Reconstructed from retail disassembly: unlike the sibling Maestro_Draw*
-// wrappers, retail does NOT call Maestro_SetPrimitiveStates/DrawQuad/
-// NearReciprocal for this function - it inlines the state-set calls, the
-// camera near-plane division, and a custom per-vertex loop with PS2 GS
-// "doubled alpha" color-channel expansion (see k_sceneDraw.c func_0019f8f0
-// for the same idiom). Residual: MWCC recomputes/partially duplicates the
-// per-channel branch inside the loop differently from retail's single
-// pass (object 1100B vs 896B window) - a register/CSE floor after
-// extensive pragma and type experimentation; logic and call sequence are
-// confirmed correct against the retail bytes.
 // FUN_001140D0 NONMATCHING
 void func_001140d0(f32 depth,
                    f32 x,
@@ -2169,18 +2159,18 @@ void func_001140d0(f32 depth,
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
+    u32 r;
+    u32 g;
+    u32 b;
+    u32 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (s32)((color & 0xff000000) >> 24);
-    g = (s32)((color & 0xff0000) >> 16);
-    b = (s32)((color & 0xff00) >> 8);
-    a = (s32)(color & 0xff);
+    r = (color >> 24) & 0xff;
+    g = (color >> 16) & 0xff;
+    b = (color >> 8) & 0xff;
+    a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2211,10 +2201,10 @@ void func_001140d0(f32 depth,
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
         v->u.els.recipZ = recipZ;
-        v->u.els.color.r = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
-        v->u.els.color.g = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
-        v->u.els.color.b = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
-        v->u.els.color.a = a >= 0 ? (f32)a : (f32)(((u32)a >> 1) | (a & 1)) * 2.0f;
+        v->u.els.color.r = (f32)r;
+        v->u.els.color.g = (f32)g;
+        v->u.els.color.b = (f32)b;
+        v->u.els.color.a = (f32)a;
         v->u.els.scrVertex.x = corners[i][0];
         v->u.els.scrVertex.y = corners[i][1];
     }
@@ -2461,18 +2451,18 @@ void func_00114af0(f32 depth,
     f32 recipZ;
     f32 z;
     void (**setState)(u32, u32);
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
+    u32 r;
+    u32 g;
+    u32 b;
+    u32 a;
     s32 i;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
-    r = (s32)((color & 0xff000000) >> 24);
-    g = (s32)((color & 0xff0000) >> 16);
-    b = (s32)((color & 0xff00) >> 8);
-    a = (s32)(color & 0xff);
+    r = (color >> 24) & 0xff;
+    g = (color >> 16) & 0xff;
+    b = (color >> 8) & 0xff;
+    a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);
@@ -2503,10 +2493,10 @@ void func_00114af0(f32 depth,
         RwIm2DVertex* v = &vertices[i];
         v->u.els.scrVertex.z = z;
         v->u.els.recipZ = recipZ;
-        v->u.els.color.r = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
-        v->u.els.color.g = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
-        v->u.els.color.b = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
-        v->u.els.color.a = a >= 0 ? (f32)a : (f32)(((u32)a >> 1) | (a & 1)) * 2.0f;
+        v->u.els.color.r = (f32)r;
+        v->u.els.color.g = (f32)g;
+        v->u.els.color.b = (f32)b;
+        v->u.els.color.a = (f32)a;
         v->u.els.scrVertex.x = corners[i][0];
         v->u.els.scrVertex.y = corners[i][1];
     }

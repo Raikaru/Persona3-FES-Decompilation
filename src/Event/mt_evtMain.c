@@ -3234,7 +3234,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
         if ((lVar9 != 0) && (lVar9 = FUN_003c3fe0(uStack_2), lVar9 != 0)) {
 
-          FUN_0039ef30(iVar13 + 0x82c,10);
+          FUN_0039ef30(iVar13 + 0x82c,10,lVar9);
 
         }
 

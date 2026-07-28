@@ -9745,7 +9745,7 @@ u32 func_002ed360(u64 *param_1)
         *(u64 *)(puVar7 + 0x60) = uVar18;
         FUN_0027ed20(uVar14,1);
         if (((uVar17 == 0) && (uVar20 == 0)) && (*(short *)(DAT_007ce3ec + 0xb62) != -1)) {
-          uVar14 = FUN_002bd850(*(u32 *)(puVar16 + 6));
+          uVar14 = FUN_002bd850(*(u32 *)(puVar16 + 6), *(short *)(DAT_007ce3ec + 0xb62));
           puVar8 = (u8 *)uVar14;
           *puVar8 = 0xb;
           *(u64 *)(puVar8 + 8) = *(u64 *)(iVar11 + 0x58);
@@ -10711,7 +10711,7 @@ void func_002efe50(u64 *param_1)
   *(u64 *)(puVar10 + 8) = *(u64 *)(puVar7 + 0x58);
   *(u16 *)(puVar10 + 0x48) = 1;
   *(u64 *)(puVar10 + 0x60) = uVar14;
-  FUN_0027ed20(uVar12);
+  FUN_0027ed20(uVar12,1);
   uVar12 = FUN_002a3b40(param_1,0x25);
   puVar7 = (u8 *)uVar12;
   *puVar7 = 4;

@@ -256,7 +256,7 @@ u32 FUN_001685d0(KwlnTask*);
 void FUN_001685e0(KwlnTask*, s32);
 void FUN_00168720(KwlnTask*);
 KwlnTask* FUN_00168770(KwlnTask*, u32);
-u32 FUN_00168810(undefined8);
+u32 FUN_00168810(u32);
 void FUN_00169040(int);
 void FUN_00169110(u16, CampFloatPair, void*, s32);
 void FUN_001691F0(u16, CampFloatPair, void*, void*, s32);
@@ -380,8 +380,8 @@ typedef struct CampTargetList
 typedef struct CampTargetLoadWork
 {
     u32 state;                 /* +0x00 */
-    s32 frame;                 /* +0x04 */
-    u32 reserved08;            /* +0x08 */
+    u32 reserved04;            /* +0x04 */
+    s32 frame;                 /* +0x08 */
     u32 drawIdWord;            /* +0x0c (low half is the draw id) */
     void* archive;             /* +0x10 */
     void* resources[2];        /* +0x14 */
@@ -1060,11 +1060,12 @@ KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
 
 
 // FUN_00168810 NONMATCHING
-undefined4 FUN_00168810(undefined8 param_1)
+u32 FUN_00168810(u32 param_1)
 {
     KwlnTask* task;
     CampTargetLoadWork* work;
     u8 readyScratch[4];
+    CampFloatPair drawPosition;
     s32 i;
     s32 entry;
     s32 nextFrame;
@@ -1081,7 +1082,7 @@ undefined4 FUN_00168810(undefined8 param_1)
                 FUN_00102100(work->archive, 0, readyScratch));
             work->resources[1] = (void*)(uintptr_t)FUN_00112420(
                 FUN_00102100(work->archive, 1, readyScratch));
-            work->childTask = (void*)(uintptr_t)FUN_00119f10((undefined8)param_1, 1);
+            work->childTask = (void*)(uintptr_t)FUN_00119f10(param_1, 1);
             DAT_00833a50[0] = (u32)(uintptr_t)work->resources[0];
             DAT_00833a50[1] = (u32)(uintptr_t)work->resources[1];
             work->state = 1;
@@ -1133,7 +1134,9 @@ undefined4 FUN_00168810(undefined8 param_1)
         if (nextFrame > 9) {
             work->state = 3;
         }
-        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
                      work->listA,
                      (s32)(0xff - (work->frame * 0xff) / 10));
         break;
@@ -1158,7 +1161,9 @@ undefined4 FUN_00168810(undefined8 param_1)
             FUN_0010a4e0(0, 0, 0, 2);
             work->state = 6;
         }
-        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
                      work->listA, 0);
         break;
 
@@ -1170,15 +1175,15 @@ undefined4 FUN_00168810(undefined8 param_1)
             } else {
                 u32 sourceId;
                 u32 destinationId;
-                undefined8 sourceValue6;
-                undefined8 sourceValue7;
-                undefined8 sourceValue8;
-                undefined8 sourceValue9;
-                undefined8 sourceValueA;
-                undefined8 sourceValueB;
-                undefined8 sourceValueC;
-                undefined8 sourceValueD;
-                undefined8 destinationValue;
+                u16 sourceValue6;
+                u32 sourceValue7;
+                u8 sourceValue8;
+                u8 sourceValue9;
+                u16 sourceValueA;
+                u16 sourceValueB;
+                u16 sourceValueC;
+                u16 sourceValueD;
+                u32 destinationValue;
                 u16 drawId = (u16)work->drawIdWord;
 
                 FUN_0010a4e0(0, 0, 0, 1);
@@ -1225,7 +1230,9 @@ undefined4 FUN_00168810(undefined8 param_1)
             FUN_0010a4e0(0, 0, 0, 2);
             work->state = 3;
         }
-        FUN_001691F0((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_001691F0((u16)work->drawIdWord, drawPosition,
                      work->listA, work->listB, 0);
         break;
 
@@ -1234,7 +1241,9 @@ undefined4 FUN_00168810(undefined8 param_1)
             FUN_003c7700();
             work->state = 3;
         }
-        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
                      work->listA, 0);
         break;
 
@@ -1244,7 +1253,9 @@ undefined4 FUN_00168810(undefined8 param_1)
         if (nextFrame < 1) {
             work->state = 7;
         }
-        FUN_00169110((u16)work->drawIdWord, (CampFloatPair){0.0f, 0.0f},
+        drawPosition.x = 0.0f;
+        drawPosition.y = 0.0f;
+        FUN_00169110((u16)work->drawIdWord, drawPosition,
                      work->listA,
                      (s32)(0xff - (work->frame * 0xff) / 10));
         break;

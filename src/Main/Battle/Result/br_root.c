@@ -280,6 +280,8 @@ extern u16 func_00170760(s16, s16);
 extern void func_00170860(s16, s16, u16);
 extern void datSetMoney(u32);
 extern void func_001828d0(s16, void *, void *);
+#pragma alias func_001828d0_2arg func_001828d0
+extern void func_001828d0_2arg(s16, void *);
 extern void func_00182d90(s16, s16, u32, void *);
 extern void func_00521250(void *, const void *, u32);
 extern u32 func_003c7bc0(s32, u32);
@@ -2927,11 +2929,7 @@ main_exit:
                 col[0] = 0xff;
                 col[1] = 0xff;
                 col[2] = 0xff;
-                if (t < 2147483648.0f) {
-                    col[3] = (u8)((s32)t & 0xff);
-                } else {
-                    col[3] = (u8)(((s32)(t - 2147483648.0f) | 0x80000000) & 0xff);
-                }
+                col[3] = (u8)t;
                 func_0020cc80(entry + 0xc, col);
                 gcPose0024f960(entry + 0x60c, &temp);
                 sflResSetSpritePosition(entry + 0xc, &temp);
@@ -2945,11 +2943,7 @@ main_exit:
                 col[0] = 0xff;
                 col[1] = 0xff;
                 col[2] = 0xff;
-                if (t < 2147483648.0f) {
-                    col[3] = (u8)((s32)t & 0xff);
-                } else {
-                    col[3] = (u8)(((s32)(t - 2147483648.0f) | 0x80000000) & 0xff);
-                }
+                col[3] = (u8)t;
                 func_0020cc80(entry + 0xc, col);
                 gcPose0024f960(entry + 0x60c, &temp);
                 sflResSetSpritePosition(entry + 0xc, &temp);
@@ -3742,7 +3736,7 @@ void func_001f7210(void)
             printf("rank %d\n", value);
             printf("type : get item\n");
             if (selected_value < 0) {
-                func_001828d0((s16)selected_id, (void *)card_buf, (void *)0);
+                func_001828d0_2arg((s16)selected_id, (void *)card_buf);
                 value = (s32)*(u8 *)(card_buf + 8);
             } else {
                 func_00182d90((s16)selected_id, (u8)selected_value,

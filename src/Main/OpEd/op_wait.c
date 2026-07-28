@@ -974,6 +974,7 @@ static inline RwIm2DVertex* opWaitVertex(u32* param)
     return (RwIm2DVertex*)(stream + param[4] * sizeof(RwIm2DVertex));
 }
 
+// Native (u8)value measured 840B/1184B (-4B); retail retains this expansion.
 static inline u8 opWaitColorByte(f32 value)
 {
     s32 result;

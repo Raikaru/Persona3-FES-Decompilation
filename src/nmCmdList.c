@@ -20,8 +20,8 @@ extern u8 DAT_006a3e60_abs[];
 #define DAT_006a3e60 (*(u32*)DAT_006a3e60_abs)
 extern s32 DAT_006a3e90[];
 extern s32 DAT_006a3eb0[];
-extern u32 DAT_007cae18;
-extern u32 DAT_007cb01c;
+extern f32 DAT_007cae18;
+extern f32 DAT_007cb01c;
 extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;

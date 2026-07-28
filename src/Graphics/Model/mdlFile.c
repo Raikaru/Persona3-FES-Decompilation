@@ -1492,6 +1492,8 @@ extern u64 FUN_002a2170();
 extern u64 FUN_002a38f0();
 extern u64 FUN_002a3a80();
 extern u64 FUN_002a3e80();
+#pragma alias FUN_002a3e80_typed FUN_002a3e80
+extern u64 FUN_002a3e80_typed(float,int,int,int,int);
 extern u64 FUN_002a4690();
 extern u64 FUN_002f8810();
 extern u64 FUN_002ffbc0();
@@ -13782,14 +13784,13 @@ void FUN_00329ed0(float *param_1)
 
 
 {
+  u8 uVar1;
 
-  u32 uVar1;
-
-  u32 uVar2;
+  u8 uVar2;
 
   __int128 auVar3;
 
-  u32 uVar4;
+  u8 uVar4;
 
   float fVar5;
 
@@ -54046,9 +54047,9 @@ void FUN_003571c0(float *param_1)
 
   int *piVar1;
 
-  float fVar2;
+  int iVar2;
 
-  short sVar3;
+  u16 sVar3;
 
   u32 uStack_f0;
 
@@ -54090,21 +54091,21 @@ void FUN_003571c0(float *param_1)
 
   
 
-  piVar1 = (int *)(u32)param_1[0xc];
+  piVar1 = (int *)((u32 *)param_1)[0xc];
 
-  fVar2 = param_1[0xe];
+  iVar2 = ((u32 *)param_1)[0xe];
 
-  if (((u32)param_1[10] <= (u32)*(float *)((int)fVar2 + 0x2c)) ||
+  if ((((u32 *)param_1)[10] <= *(u32 *)(iVar2 + 0x2c)) ||
 
-     (*(float *)((int)fVar2 + 0x2c) == 0.0f)) {
+     (*(u32 *)(iVar2 + 0x2c) == 0)) {
 
-    if (param_1[10] == 0.0f) {
+    if (((u32 *)param_1)[10] == 0) {
 
-      if (*(short *)((int)fVar2 + 0x38) == 0) {
+      if (*(u16 *)(iVar2 + 0x38) == 0) {
 
         FUN_002a38f0(1,0,1);
 
-        FUN_002a3e80(0,0,0,0,0x40);
+        FUN_002a3e80_typed(0.0f,0,0,0,0x40);
 
       }
 
@@ -54124,7 +54125,7 @@ void FUN_003571c0(float *param_1)
 
       FUN_00318a70(*piVar1,auStack_50,0);
 
-      fStack_10 = param_1[8] * *(float *)((int)fVar2 + 0x34);
+      fStack_10 = param_1[8] * *(float *)(iVar2 + 0x34);
 
       fStack_c = fStack_10;
 
@@ -54140,7 +54141,7 @@ void FUN_003571c0(float *param_1)
 
       FUN_00318a30(*piVar1,&fStack_10,2);
 
-      FUN_003189f0_f32(*(float *)((int)fVar2 + 0x30),*piVar1,0);
+      FUN_003189f0_f32(*(float *)(iVar2 + 0x30),*piVar1,0);
 
       FUN_00317730(*piVar1);
 

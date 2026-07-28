@@ -1721,10 +1721,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                         }
                         else
                         {
-                            currentActor = PTR_S16((void*)PTR_U32((void*)npc, 0x1fc), 0x70);
+                            currentActor = PTR_S32((void*)PTR_U32((void*)npc, 0x1fc), 0x70);
                             if (currentActor != -1)
                             {
-                                EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce23c), DATA_U32(0x007ce238));
+                                EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce23c), DATA_U32(0x007ce238), currentActor);
 
                                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
                                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
@@ -2590,8 +2590,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     /* Retail offsets 0x4e6c-0x4f0c use the completion flag at event offset 0xe0. */
     if (EVENT_WORD(0xe0) == 1)
     {
-        heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0), &heroMatBuf);
-        markerPos = heroMatBuf.pos;
+        heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+        markerPos = heroMat->pos;
         markerPos.y += 200.0f;
         if (DATA_U32(0x00871914) != 0)
         {
