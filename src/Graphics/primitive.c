@@ -350,8 +350,6 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
 // FUN_00359b40 NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
-    const RwRGBA* color_p = color;
-    f32 radius_p = radius;
     u32 i;
     const PrimRenderState* currRenderState;
     RwMatrix mat;
@@ -366,7 +364,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
     f32 angle;
 
     rotAxis = sSphereRotAxis;
-    rwSphere.radius = radius_p;
+    rwSphere.radius = radius;
     rwSphere.center.x = center->x;
     rwSphere.center.y = center->y;
     rwSphere.center.z = center->z;
@@ -397,14 +395,14 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         for (j = 0; j < 9; j++)
         {
             angle += g18deg;
-            yOffset = radius_p * cosf(angle);
-            circleRadius = radius_p * sinf(angle);
+            yOffset = radius * cosf(angle);
+            circleRadius = radius * sinf(angle);
 
             finalCenter.x = center->x;
             finalCenter.y = center->y + yOffset;
             finalCenter.z = center->z;
 
-            primCircleLine3D(&finalCenter, circleRadius, color_p, &mat, false);
+            primCircleLine3D(&finalCenter, circleRadius, color, &mat, false);
         }
 
         RwMatrixRotate(&mat, &rotAxis, 90.0f, rwCOMBINEPOSTCONCAT);
@@ -413,7 +411,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         for (j = 0; j < 9; j++)
         {
             angle += g18deg;
-            yOffset = radius_p * cosf(angle);
+            yOffset = radius * cosf(angle);
             circleRadius = radius * sinf(angle);
 
             finalCenter.x = center->x;

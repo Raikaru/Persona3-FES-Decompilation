@@ -755,7 +755,7 @@ void func_0021b4a0(u8* resource)
 
     for (i = 0; i < 7; i++) {
         work->cardResources[i] =
-            bpTexCreateTmxRaster(resource + ((s32*)resource)[i * 2 + 2]);
+            bpTexCreateTmxRaster(resource + *(s32*)((u32)(i * 8) + (u32)resource + 8));
     }
     data = resource + 8;
     work->cardRaster =

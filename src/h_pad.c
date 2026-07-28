@@ -422,7 +422,7 @@ void H_Pad_UpdateRumble(void)
             goto rumble_off;
         }
         {
-            u16 intensity;
+            s32 intensity;
             u8 intensityByte;
             intensityByte = sRumbleIntensity.b;
             intensity = intensityByte;
