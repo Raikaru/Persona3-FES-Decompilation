@@ -19285,16 +19285,20 @@ u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
 
 {
+  typedef struct EvtMenuListNode {
+    u16 value;
+    u8 pad_002[0xf6];
+    struct EvtMenuListNode *next;
+  } EvtMenuListNode;
 
-  int iVar1;
 
   u32 *puVar2;
 
-  u16 *puVar3;
+  EvtMenuListNode *puVar3;
 
   u32 uVar4;
-
   int iVar5;
+
 
   
 
@@ -19316,39 +19320,46 @@ u32 FUN_00386430(int param_1,int param_2,u32 param_3)
 
   DAT_007ce60c = 0;
 
-  puVar3 = (u16 *)FUN_003b5d50(3);
+  puVar3 = (EvtMenuListNode *)FUN_003b5d50(3);
 
-  for (; (puVar3 != (u16 *)0x0 && (DAT_007ce60c < 0x1e)); DAT_007ce60c = DAT_007ce60c + 1) {
-
-    *(u16 *)(&DAT_00958850 + DAT_007ce60c * 2) = *puVar3;
-
-    puVar3 = *(u16 **)(puVar3 + 0x7c);
-
+  {
+    u16 *table = (u16 *)DAT_00958850_abs;
+    while (DAT_007ce60c < 0x1e) {
+      table[DAT_007ce60c] = puVar3->value;
+      DAT_007ce60c = DAT_007ce60c + 1;
+      puVar3 = puVar3->next;
+      if (puVar3 == NULL) {
+        break;
+      }
+    }
   }
 
-  puVar3 = (u16 *)FUN_003b5d50(1);
+  puVar3 = (EvtMenuListNode *)FUN_003b5d50(1);
 
-  for (; (puVar3 != (u16 *)0x0 && (DAT_007ce60c < 0x1e)); DAT_007ce60c = DAT_007ce60c + 1) {
-
-    *(u16 *)(&DAT_00958850 + DAT_007ce60c * 2) = *puVar3;
-
-    puVar3 = *(u16 **)(puVar3 + 0x7c);
-
+  {
+    u16 *table = (u16 *)DAT_00958850_abs;
+    while (DAT_007ce60c < 0x1e) {
+      table[DAT_007ce60c] = puVar3->value;
+      DAT_007ce60c = DAT_007ce60c + 1;
+      puVar3 = puVar3->next;
+      if (puVar3 == NULL) {
+        break;
+      }
+    }
   }
 
   DAT_007ce608 = 0;
 
-  iVar5 = 0;
-
-  while ((iVar1 = DAT_007ce608, iVar5 < DAT_007ce60c &&
-
-         ((param_2 != *(short *)(&DAT_00958850 + iVar5 * 2) || (iVar1 = iVar5, param_2 == 0))))) {
-
-    iVar5 = iVar5 + 1;
-
+  {
+    u16 *table = (u16 *)DAT_00958850_abs;
+    for (iVar5 = 0; iVar5 < DAT_007ce60c; iVar5 = iVar5 + 1) {
+      if (param_2 == table[iVar5] && param_2 != 0) {
+        DAT_007ce608 = iVar5;
+        break;
+      }
+    }
   }
 
-  DAT_007ce608 = iVar1;
 
   return uVar4;
 

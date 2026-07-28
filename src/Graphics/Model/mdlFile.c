@@ -160,7 +160,7 @@ static Vec128 auStack_10, auStack_30, auStack_40, auStack_50, auStack_80, auStac
 static Vec128 _DAT_0069c4d0;
 static u64 _DAT_0069c4a0;
 #pragma alias DAT_0069c4a0_abs _DAT_0069c4a0
-extern Qword128 DAT_0069c4a0_abs[];
+extern u8 DAT_0069c4a0_abs[];
 static float _fStack_50;
 static u32 *piGpffffa850;
 static u8 *puGpffffbd04;
@@ -1145,10 +1145,10 @@ u32 FUN_003406f0(int param_1);
 void FUN_00340790(int param_1);
 void FUN_003407e0(int param_1);
 void FUN_00341ba0(int param_1);
-u32 FUN_00341f10(u32 param_1,u32 param_2);
-u32 FUN_00341fd0(u32 param_1);
+u64 FUN_00341f10(u32 param_1,u32 param_2);
+u64 FUN_00341fd0(u32 param_1);
 void FUN_003420c0(u32 param_1);
-u32 FUN_00342130(int param_1);
+u64 FUN_00342130(int param_1);
 void FUN_00342280(int param_1);
 void FUN_003422d0(int param_1);
 void FUN_00342330(int param_1);
@@ -4082,13 +4082,6 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 
 
 // FUN_0031FAF0 NONMATCHING
-// Fixed two bugs in the raw decompiler output: (1) separate uStack_1..4
-// scalars were dead-store-eliminated since only &uStack_4 was passed out
-// - switched to a real u8[4] array; (2) 1.0/255.0 literals forced double-
-// precision software float calls instead of retail's hardware sub.s/
-// mul.s - added f suffixes. obj 88B->220B/224B; residual is the usual
-// safe-float-to-byte compare-shape floor (compare op now matches
-// exactly, branch polarity/placement doesn't).
 void FUN_0031faf0(f32 *param_1,u64 param_2)
 {
   u32 uVar1;
@@ -4099,12 +4092,7 @@ void FUN_0031faf0(f32 *param_1,u64 param_2)
 
   fVar2 = (1.0f - param_1[1]) * 255.0f;
 
-  if (2147483648.0f <= fVar2) {
-    rgba[3] = (u8)((int)(fVar2 - 2147483648.0f) | 0x80000000);
-  }
-  else {
-    rgba[3] = (u8)(int)fVar2;
-  }
+  rgba[3] = (u8)(int)fVar2;
 
   rgba[2] = (u8)uVar1;
   rgba[1] = (u8)((u32)uVar1 >> 8);
@@ -11223,7 +11211,7 @@ void FUN_00326f00(int param_1,u32 param_2)
 
 
 
-// FUN_00326F60 NONMATCHING
+// FUN_00326F60
 
 
 void FUN_00326f60(u32 *param_1,int param_2)
@@ -11260,7 +11248,7 @@ void FUN_00326f60(u32 *param_1,int param_2)
 
     }
 
-    (*DAT_0096017c)(param_1[0xe]);
+    (*DAT_0096017c_abs)(param_1[0xe]);
 
     param_1[0xd] = 0;
 
@@ -11270,7 +11258,7 @@ void FUN_00326f60(u32 *param_1,int param_2)
 
   if (uVar3 << 2 != 0) {
 
-    uVar1 = (*DAT_00960178)(uVar3 << 2,0x40000);
+    uVar1 = (*DAT_00960178_abs)(uVar3 << 2,0x40000);
 
     param_1[0xe] = uVar1;
 
@@ -36701,7 +36689,7 @@ void FUN_00341ba0(int param_1)
 
 
 
-u32 FUN_00341f10(u32 param_1,u32 param_2)
+u64 FUN_00341f10(u32 param_1,u32 param_2)
 
 
 
@@ -36729,7 +36717,7 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
 
   *(u32 *)pauVar7[3] = 0xffffffff;
 
-  *(Qword128 *)pauVar7[2] = DAT_0069c4a0_abs[0];
+  *(Qword128 *)pauVar7[2] = *(Qword128 *)DAT_0069c4a0_abs;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
@@ -36747,7 +36735,7 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
 // FUN_00341FD0 NONMATCHING
  
  
-u32 FUN_00341fd0(u32 param_1)
+u64 FUN_00341fd0(u32 param_1)
  
  
  
@@ -36815,7 +36803,7 @@ void FUN_003420c0(u32 param_1)
 // FUN_00342130 NONMATCHING
 
 
-u32 FUN_00342130(int param_1)
+u64 FUN_00342130(int param_1)
 
 
 
@@ -36825,7 +36813,7 @@ u32 FUN_00342130(int param_1)
 
   u32 uVar2;
 
-  u32 uVar3;
+  u64 uVar3;
 
   int iVar4;
 
@@ -45753,7 +45741,7 @@ u32 FUN_0034c940(int param_1)
 
 
 
-// FUN_0034C9B0 NONMATCHING
+// FUN_0034C9B0
 
 
 void FUN_0034c9b0(int param_1,int param_2)
@@ -45831,12 +45819,12 @@ void FUN_0034c9b0(int param_1,int param_2)
     *(u32 *)(param_1 + 0x98) = uVar1;
 
     for (uVar4 = 0; uVar4 < *(u32 *)(param_1 + 0x28); uVar4 = uVar4 + 1) {
-      u32 offset;
+      u32 *entries;
 
       uVar1 = FUN_00325920_u32((u64 *)(**(u32 **)(param_2 + 0x98)));
 
-      offset = uVar4 * 4;
-      *(u32 *)(*(int *)(param_1 + 0x98) + offset) = uVar1;
+      entries = *(u32 **)(param_1 + 0x98);
+      entries[uVar4] = uVar1;
 
     }
 
@@ -47905,7 +47893,7 @@ void FUN_0034e910(int param_1)
 
 
 
-// FUN_0034E940 NONMATCHING
+// FUN_0034E940
 
 
 void FUN_0034e940(int param_1,float *param_2)
@@ -47944,11 +47932,11 @@ void FUN_0034e940(int param_1,float *param_2)
 
   fVar1 = (float)FUN_00358030(0);
 
-  param_2[2] = fVar2 * *(float *)(param_1 + 0x10) * (DAT_007cad7c * fVar1 + DAT_007cadd0 + 0.0f);
+  param_2[2] = fVar2 * (*(float *)(param_1 + 0x10) * (DAT_007cad7c * fVar1 + DAT_007cadd0 + 0.0f));
 
   fVar1 = (float)FUN_00358030(0);
 
-  param_2[5] = fVar2 * *(float *)(param_1 + 0x14) * (DAT_007cad7c * fVar1 + DAT_007cadd0 + 0.0f);
+  param_2[5] = fVar2 * (*(float *)(param_1 + 0x14) * (DAT_007cad7c * fVar1 + DAT_007cadd0 + 0.0f));
 
   fVar2 = *(float *)(param_1 + 0x24);
 
@@ -49590,15 +49578,7 @@ void FUN_003505d0(int *param_1)
 
   u16 *puVar3;
 
-  u8 uVar4;
-
-  u8 uVar5;
-
-  u8 uVar6;
-
-  u8 packed[4];
-  u32 c1s;
-  u32 c2s;
+  u8 colourStack[16];
 
   u16 uVar7;
 
@@ -49606,7 +49586,6 @@ void FUN_003505d0(int *param_1)
 
   int iVar9;
 
-  __int128 auVar10;
   u32 uVar11;
 
   float *pfVar12;
@@ -49695,13 +49674,11 @@ void FUN_003505d0(int *param_1)
 
   u32 uStack_1c;
 
-  u32 uStack_10;
 
   int iStack_c;
 
   int iStack_8;
 
-  u32 uStack_4;
 
   
 
@@ -49717,34 +49694,20 @@ void FUN_003505d0(int *param_1)
 
     iStack_8 = *param_1;
 
-    c1s = (u32)(iStack_8);
-
-    c2s = (u32)(iStack_c);
-
-    *(u32 *)packed = mdlVuModulate(&c1s,&c2s,DAT_007cae4c);
-    uStack_10 = *(u32 *)packed;
-    (*((u8 *)((u8 *)&uStack_4 + 3))) = packed[3];
-    (*((u8 *)((u8 *)&uStack_4 + 0))) = packed[0];
-    uVar4 = (u8)uStack_4;
-    (*((u8 *)((u8 *)&uStack_4 + 1))) = packed[1];
-    uVar5 = (*((u8 *)((u8 *)&uStack_4 + 1)));
-    (*((u8 *)((u8 *)&uStack_4 + 2))) = packed[2];
-    uVar6 = (*((u8 *)((u8 *)&uStack_4 + 2)));
-    if ((*((u8 *)((u8 *)&uStack_4 + 3))) == -1) {
+    *(u32 *)&colourStack[8] = (u32)iStack_8;
+    *(u32 *)&colourStack[4] = (u32)iStack_c;
+    *(u32 *)&colourStack[0] =
+        mdlVuModulateStacked((u32 *)&colourStack[8],(u32 *)&colourStack[4],DAT_007cae4c);
+    *(u32 *)&colourStack[12] = *(u32 *)&colourStack[0];
+    if (colourStack[15] != 0xff) {
       iVar16 = *(int *)(puVar1 + 10);
-      *(u8 *)(iVar16 + 4) = uVar4;
-      *(u8 *)(iVar16 + 5) = uVar5;
-      *(u8 *)(iVar16 + 6) = uVar6;
-      *(u8 *)(iVar16 + 7) = 0xfe;
-      uStack_4 = CONCAT13(0xff,auVar10._0_3_);
+      *(RwRGBA *)(iVar16 + 4) = *(RwRGBA *)&colourStack[12];
     }
     else {
+      colourStack[15] = 0xfe;
       iVar16 = *(int *)(puVar1 + 10);
-      *(u8 *)(iVar16 + 4) = (u8)uStack_4;
-      *(u8 *)(iVar16 + 5) = (*((u8 *)((u8 *)&uStack_4 + 1)));
-      *(u8 *)(iVar16 + 6) = (*((u8 *)((u8 *)&uStack_4 + 2)));
-      *(char *)(iVar16 + 7) = (*((u8 *)((u8 *)&uStack_4 + 3)));
-      uStack_4 = uStack_10;
+      *(RwRGBA *)(iVar16 + 4) = *(RwRGBA *)&colourStack[12];
+      colourStack[15] = 0xff;
     }
 
     fVar13 = (float)FUN_0032a540((char *)(param_1 + 0x10),iVar9,iVar8);
@@ -50194,11 +50157,7 @@ void FUN_00351510(int param_1)
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
     ratio = 255.0f * ratio;
-    if (ratio < 2147483648.0f) {
-      alphaByte = (s32)ratio & 0xff;
-    } else {
-      alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
-    }
+    alphaByte = (s32)ratio & 0xff;
     alphaS32 = alphaByte & 0xff;
 
     textureHandle = *(u32 *)(*(int *)(param_1 + 0xc) + 0x60);

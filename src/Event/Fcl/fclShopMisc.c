@@ -7452,8 +7452,6 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
 {
 
-  int iVar6;
-
   short sVar1;
 
   int iVar2;
@@ -7464,6 +7462,8 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 
   long lVar5;
   int iVar7;
+
+  int iVar6;
 
 
 
@@ -7488,14 +7488,12 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 1:
     case 2:
     case 3:
-      iVar6 = 0;
       lVar5 = sVar1;
-      while (iVar6 < 300) {
+      for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
         uVar4 = datGetEquipmentId(1,iVar6);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
-        iVar6 = iVar6 + 1;
       }
       break;
     case 4:
@@ -15596,44 +15594,35 @@ u8 FUN_00403410(short param_1)
 
 u32 FUN_00403520(void)
 {
+  int iVar5;
   short sVar1;
   int lVar2;
-  u64 uVar3;
   int iVar4;
-  int iVar5;
 
-  iVar5 = 0;
-  do {
-    if (2 < iVar5) {
-      return 0;
-    }
+  for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
     lVar2 = FUN_0017c670(iVar5);
     if (lVar2 != 0) {
       sVar1 = *(short *)lVar2;
-      lVar2 = datGetFlag(sVar1 + 0x1170);
-      if (lVar2 != 0) {
+      if (datGetFlag(sVar1 + 0x1170) != 0) {
         iVar4 = 3;
       }
-      else {
-        if (lVar2 == 0) {
-          iVar4 = 2;
+      else if (FUN_003f04f0(FUN_004037e0(sVar1),0) != 0) {
+        if (FUN_0017c610(sVar1) != 0) {
+          iVar4 = 1;
         }
         else {
-          lVar2 = FUN_0017c610(sVar1);
-          if (lVar2 != 0) {
-            iVar4 = 1;
-          }
-          else {
-            iVar4 = 0;
-          }
+          iVar4 = 0;
         }
+      }
+      else {
+        iVar4 = 2;
       }
       if (iVar4 == 2) {
         return 1;
       }
     }
-    iVar5 = iVar5 + 1;
-  } while (1);
+  }
+  return 0;
 }
 
 // FUN_00403610 NONMATCHING

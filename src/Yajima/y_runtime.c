@@ -407,6 +407,8 @@ extern code DAT_00960184;
 extern code DAT_00960184_abs[];
 #pragma alias FUN_00194b80_u32 FUN_00194b80
 extern u32 FUN_00194b80_u32(u64, u32, u8 *, u32 (*)(int), void (*)(int), u32);
+#pragma alias FUN_00194b80_u32arg FUN_00194b80
+extern u32 FUN_00194b80_u32arg(u32, u32, u8 *, u32 (*)(int), void (*)(int), u32);
 extern u32 PTR_DAT_006b46f0;
 extern u32 PTR_DAT_006b4720;
 extern u32 PTR_DAT_006b4de0;
@@ -1055,7 +1057,7 @@ u32 FUN_00459790(u64 param_1,char param_2);
 u32 FUN_00459e00(char param_1);
 u32 FUN_00459e80(int param_1);
 u32 FUN_0045a020(int param_1);
-u32 FUN_0045a280(int param_1,int param_2);
+u32 FUN_0045a280(u32 param_1,u32 param_2);
 u32 FUN_0045af40(void);
 u32 FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u8 param_7,u8 param_8,short param_9);
 u32 FUN_0045b190(long param_1);
@@ -2473,7 +2475,7 @@ u32 FUN_00459790(u64 param_1,char param_2);
 u32 FUN_00459e00(char param_1);
 u32 FUN_00459e80(int param_1);
 u32 FUN_0045a020(int param_1);
-u32 FUN_0045a280(int param_1,int param_2);
+u32 FUN_0045a280(u32 param_1,u32 param_2);
 u32 FUN_0045af40(void);
 u32 FUN_0045afd0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u8 param_7,u8 param_8,short param_9);
 u32 FUN_0045b190(long param_1);
@@ -19438,12 +19440,13 @@ void FUN_0045a220(int param_1)
   return;
 }
 
-// FUN_0045A280 NONMATCHING
+// FUN_0045A280
 
-u32 FUN_0045a280(int param_1,int param_2)
+u32 FUN_0045a280(u32 param_1,u32 param_2)
 
 {
-  char cVar1;
+  char minutes;
+  char seconds;
   u32 uVar2;
   int lVar3;
   int iVar4;
@@ -19453,7 +19456,8 @@ u32 FUN_0045a280(int param_1,int param_2)
     uVar2 = 0;
   }
   else {
-    uVar2 = FUN_00194b80_u32(param_1,0x106f,DAT_006b4be0,FUN_0045a020,FUN_0045a220,lVar3);
+    uVar2 = FUN_00194b80_u32arg(param_1,0x106f,DAT_006b4be0,FUN_0045a020,FUN_0045a220,lVar3);
+    uGpffffba08 = uVar2;
     iVar4 = (int)lVar3;
     *(u8 *)(iVar4 + 4) = 0;
     *(u8 *)(iVar4 + 5) = 0;
@@ -19463,15 +19467,15 @@ u32 FUN_0045a280(int param_1,int param_2)
     *(u8 *)(iVar4 + 0x43) = 0;
     *(u8 *)(iVar4 + 0x4c) = 1;
     *(int *)(iVar4 + 0x50) = param_2;
-    cVar1 = (char)(param_2 / 0x3c);
-    *(char *)(iVar4 + 0x54) = cVar1 / '\n';
-    *(char *)(iVar4 + 0x55) = cVar1 % '\n';
-    cVar1 = (char)(param_2 % 0x3c);
-    *(char *)(iVar4 + 0x56) = cVar1 / '\n';
-    *(char *)(iVar4 + 0x57) = cVar1 % '\n';
+    minutes = (char)(param_2 / 0x3c);
+    seconds = (char)(param_2 % 0x3c);
+    *(char *)(iVar4 + 0x54) = minutes / '\n';
+    *(char *)(iVar4 + 0x55) = minutes % '\n';
+    *(char *)(iVar4 + 0x56) = seconds / '\n';
+    *(char *)(iVar4 + 0x57) = seconds % '\n';
     *(u8 *)(iVar4 + 0x5c) = 0;
     *(u8 *)(iVar4 + 0x5d) = 0;
-    uGpffffba08 = uVar2;
+    uVar2 = uGpffffba08;
   }
   return uVar2;
 }
