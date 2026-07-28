@@ -2056,57 +2056,15 @@ void FUN_0029ee20(u32 param_1)
 
   u32 uVar8;
 
-  u64 uStack_90;
+  RwMatrix matrix;
 
-  float fStack_88;
+  RwV3d unitPos;
 
-  float fStack_80;
+  RwV3d targetPos;
 
-  float fStack_7c;
+  RwV3d direction;
 
-  float fStack_78;
-
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_50;
-
-  float fStack_4c;
-
-  float fStack_48;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
+  RwV3d cross;
 
   
 
@@ -2118,7 +2076,7 @@ void FUN_0029ee20(u32 param_1)
 
     if (cVar1 == '\x02') {
 
-      FUN_004c31b0(0xc2b40000,&uStack_90,0x697870,0);
+      FUN_004c31b0(0xc2b40000,&matrix,0x697870,0);
 
       puVar3 = (u32 *)FUN_001a0700(*(u16 *)(iVar4 + 0x9f2));
 
@@ -2154,7 +2112,7 @@ void FUN_0029ee20(u32 param_1)
 
       puVar3 = (u32 *)FUN_001a08e0(*(u16 *)(iVar4 + 0x9f2));
 
-      puVar5 = &uStack_90;
+      puVar5 = (u64 *)&matrix;
 
       iVar4 = 8;
 
@@ -2180,51 +2138,42 @@ void FUN_0029ee20(u32 param_1)
 
     else if ((cVar1 == '\x01') || (cVar1 == '\0')) {
 
-      fStack_40 = *(float *)(iVar4 + 0x54);
+      unitPos.x = *(float *)(iVar4 + 0x54);
 
-      fStack_3c = *(float *)(iVar4 + 0x58);
+      unitPos.y = *(float *)(iVar4 + 0x58);
 
-      fStack_38 = *(float *)(iVar4 + 0x5c);
+      unitPos.z = *(float *)(iVar4 + 0x5c);
 
-      FUN_0027ffb0(param_1,&fStack_50);
+      FUN_0027ffb0(param_1,&targetPos);
 
-      fVar2 = fStack_4c + 5.0f;
+      fVar2 = targetPos.y + 5.0f;
 
-      if (fStack_4c + 5.0f < fStack_3c) {
+      if (targetPos.y + 5.0f < unitPos.y) {
 
-        fVar2 = fStack_3c;
+        fVar2 = unitPos.y;
 
       }
 
-      fStack_3c = fVar2;
+      unitPos.y = fVar2;
 
-      fStack_10 = fStack_50 - fStack_40;
-      fStack_c = fStack_4c - fStack_3c;
-      fStack_8 = fStack_48 - fStack_38;
-      FUN_004c69f0((RwV3d*)&fStack_10,(RwV3d*)&fStack_10);
-      fStack_70 = fStack_10;
-      fStack_6c = fStack_c;
-      fStack_68 = fStack_8;
-      fStack_20 = DAT_00697884 * fStack_8 - DAT_00697888 * fStack_c;
-      fStack_1c = DAT_00697888 * fStack_10 - DAT_00697880 * fStack_8;
-      fStack_18 = DAT_00697880 * fStack_c - DAT_00697884 * fStack_10;
-      FUN_004c69f0((RwV3d*)&fStack_20,(RwV3d*)&fStack_20);
-      ((float *)&uStack_90)[0] = fStack_20;
-      ((float *)&uStack_90)[1] = fStack_1c;
+      direction.x = targetPos.x - unitPos.x;
+      direction.y = targetPos.y - unitPos.y;
+      direction.z = targetPos.z - unitPos.z;
+      FUN_004c69f0(&direction,&direction);
+      matrix.at = direction;
+      cross.x = DAT_00697884 * direction.z - DAT_00697888 * direction.y;
+      cross.y = DAT_00697888 * direction.x - DAT_00697880 * direction.z;
+      cross.z = DAT_00697880 * direction.y - DAT_00697884 * direction.x;
+      FUN_004c69f0(&cross,&cross);
+      matrix.right = cross;
 
-      fStack_88 = fStack_18;
+      matrix.up.x = direction.y * cross.z - direction.z * cross.y;
 
-      fStack_80 = fStack_c * fStack_18 - fStack_8 * fStack_1c;
+      matrix.up.y = direction.z * cross.x - direction.x * cross.z;
 
-      fStack_7c = fStack_8 * fStack_20 - fStack_10 * fStack_18;
+      matrix.up.z = direction.x * cross.y - direction.y * cross.x;
 
-      fStack_78 = fStack_10 * fStack_1c - fStack_c * fStack_20;
-
-      fStack_30 = fStack_80;
-
-      fStack_2c = fStack_7c;
-
-      fStack_28 = fStack_78;
+      matrix.pos = matrix.up;
 
       puVar3 = (u32 *)FUN_001a07f0(*(u16 *)(iVar4 + 0x9f2));
 
@@ -2244,7 +2193,7 @@ void FUN_0029ee20(u32 param_1)
 
       puVar3 = (u32 *)FUN_001a08e0(*(u16 *)(iVar4 + 0x9f2));
 
-      puVar5 = &uStack_90;
+      puVar5 = (u64 *)&matrix;
 
       iVar4 = 8;
 

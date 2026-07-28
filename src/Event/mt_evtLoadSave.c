@@ -27,6 +27,28 @@ typedef struct {
   f32 w;
 } MtEvtVec4;
 
+typedef struct {
+  u8 unused0;
+  u8 unused1;
+  u16 unused2;
+  int size;
+  char magic[4];
+  u32 unused12;
+  int entryCount;
+  u32 reserved[3];
+} MtEvtSaveHeader;
+
+typedef struct {
+  u8 type;
+  u8 subtype;
+  u16 id;
+  u16 flags;
+  u8 field6;
+  u8 field7;
+  u16 field8;
+  u8 reserved[10];
+} MtEvtSaveNodeHeader;
+
 extern u32 LAB_00391290;
 extern u32 DAT_007cca68;
 extern u32 DAT_007cca6c;
@@ -151,31 +173,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
   int iStack_24;
 
-  u8 uStack_20;
-
-  u8 uStack_1f;
-
-  u16 uStack_1e;
-
-  int iStack_1c;
-
-  u8 uStack_18;
-
-  u8 uStack_17;
-
-  u8 uStack_16;
-
-  char cStack_15;
-
-  u32 uStack_14;
-
-  int iStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u32 uStack_4;
+  MtEvtSaveHeader header;
   volatile /* Removing this qualifier worsens FUN_0038dad0 (NONMATCHING nd1389 -> NONMATCHING nd1581, size 2420 -> 2064) - measured W170. */ u64 aSize[15];
 
   
@@ -425,7 +423,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
     FUN_005225a8(0x6a0ae0,iVar9);
 
-    iStack_1c = 0x20;
+    header.size = 0x20;
 
     if (param_2 == 3) {
 
@@ -433,7 +431,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
       iStack_50 = 0x30;
 
-      iStack_1c = iVar4 * 0x3c + 0x30;
+      header.size = iVar4 * 0x3c + 0x30;
 
     }
 
@@ -531,7 +529,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         iStack_50 = iVar12 * 0x10 + 0x20;
 
-        iStack_1c = iStack_50 + (int)aSize[0] + 0x24 + (int)aSize[1] + (int)aSize[2] +
+        header.size = iStack_50 + (int)aSize[0] + 0x24 + (int)aSize[1] + (int)aSize[2] +
 
                     (int)aSize[3] + (int)aSize[4] + (int)aSize[5] + (int)aSize[6] + (int)aSize[7]
 
@@ -543,31 +541,31 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
     }
 
-    uStack_20 = 0;
+    header.unused0 = 0;
 
-    uStack_1f = 0;
+    header.unused1 = 0;
 
-    uStack_1e = 0;
+    header.unused2 = 0;
 
-    uStack_18 = 0x50;
+    header.magic[0] = 'P';
 
-    uStack_17 = 0x4d;
+    header.magic[1] = 'M';
 
-    uStack_16 = 0x44;
+    header.magic[2] = 'D';
 
-    cStack_15 = (char)param_2 + '0';
+    header.magic[3] = (char)param_2 + '0';
 
-    uStack_14 = 0;
+    header.unused12 = 0;
 
-    uStack_c = 0xc;
+    header.reserved[0] = 0xc;
 
-    uStack_8 = 0;
+    header.reserved[1] = 0;
 
-    uStack_4 = 0;
+    header.reserved[2] = 0;
 
-    iStack_10 = iVar12;
+    header.entryCount = iVar12;
 
-    FUN_004c0420(&uStack_20,0x20,1,param_1);
+    FUN_004c0420(&header,0x20,1,param_1);
 
     for (iVar12 = 0; iVar12 < 0x1c; iVar12 = iVar12 + 1) {
 
@@ -969,19 +967,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
   u32 *puVar10;
 
-  u8 uStack_120;
-
-  u8 uStack_11f;
-
-  u16 uStack_11e;
-
-  u16 uStack_11c;
-
-  u8 uStack_11a;
-
-  u8 uStack_119;
-
-  u16 uStack_118;
+  MtEvtSaveNodeHeader nodeHeader;
 
   int aiStack_100 [8];
 
@@ -999,9 +985,6 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
   iVar7 = (int)param_2;
 
-  for (iVar9 = *(int *)(iVar7 + 0x84); iVar9 != 0; iVar9 = *(int *)(iVar9 + 0x94)) {
-
-  }
 
   if (param_1 != 0) {
 
@@ -1069,23 +1052,23 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
             puVar10 = (u32 *)puVar10[0x25]) {
 
-          FUN_00521408(&uStack_120,0,0x14);
+          FUN_00521408(&nodeHeader,0,0x14);
 
-          uStack_120 = (u8)*puVar10;
+          nodeHeader.type = (u8)*puVar10;
 
-          uStack_11f = (u8)puVar10[1];
+          nodeHeader.subtype = (u8)puVar10[1];
 
-          uStack_11e = (u16)puVar10[2];
+          nodeHeader.id = (u16)puVar10[2];
 
-          uStack_11c = *(u16 *)(puVar10 + 8);
+          nodeHeader.flags = *(u16 *)(puVar10 + 8);
 
-          uStack_11a = *(u8 *)((int)puVar10 + 0x22);
+          nodeHeader.field6 = *(u8 *)((int)puVar10 + 0x22);
 
-          uStack_119 = *(u8 *)((int)puVar10 + 0x23);
+          nodeHeader.field7 = *(u8 *)((int)puVar10 + 0x23);
 
-          uStack_118 = *(u16 *)(puVar10 + 9);
+          nodeHeader.field8 = *(u16 *)(puVar10 + 9);
 
-          FUN_004c0420(&uStack_120,0x14,1,lVar2);
+          FUN_004c0420(&nodeHeader,0x14,1,lVar2);
 
         }
 

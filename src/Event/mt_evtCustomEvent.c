@@ -212,8 +212,6 @@ u32 FUN_00398530(int param_1)
 {
   extern float FUN_0038d840(u32 param_1,char *param_2,int param_3);
   extern void FUN_0019d3f0(const char *param_1,int param_2,...);
-  float fVar18;
-
   u8 bVar1;
 
   u16 uVar2;
@@ -449,7 +447,7 @@ u32 FUN_00398530(int param_1)
 
       *(u16 *)(puVar3 + 0x25) = uVar5;
 
-      fVar18 = FUN_0038d840(*(u32 *)(puVar3[0x13] + 0x40),acStack_140,0);
+      FUN_0038d840(*(u32 *)(puVar3[0x13] + 0x40),acStack_140,0);
 
       uVar8 = FUN_0038a900(5);
 

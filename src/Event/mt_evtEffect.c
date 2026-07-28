@@ -984,17 +984,6 @@ void FUN_00395950(int param_1)
 
   u8 auStack_5f0 [1464];
 
-  f32 uStack_38;
-
-  f32 uStack_34;
-
-  f32 uStack_30;
-
-  f32 uStack_28;
-
-  f32 uStack_24;
-
-  f32 uStack_20;
 
 
   u8 uStack_18;
@@ -1168,11 +1157,6 @@ void FUN_00395950(int param_1)
 
           FUN_003bbc90(fVar9,auStack_630,auStack_640,auStack_650,&uStack_10,&uStack_c,auStack_8);
 
-          uStack_28 = uStack_10;
-
-          uStack_24 = uStack_c;
-
-          uStack_20 = auStack_8[0];
 
           iVar5 = iVar7 * 0x48;
 
@@ -1194,11 +1178,6 @@ void FUN_00395950(int param_1)
 
                        ,auStack_8);
 
-          uStack_38 = uStack_10;
-
-          uStack_34 = uStack_c;
-
-          uStack_30 = auStack_8[0];
 
           auStack_5fc[iVar7 * 0x12] = uStack_10;
 
@@ -2170,17 +2149,15 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
   int iVar9;
 
-  float fStack_10;
+  union {
+    float values[2];
+    u64 packed;
+  } position;
 
-  float fStack_c;
-
-  u16 uStack_8;
-
-  u16 uStack_6;
-
-  u16 uStack_4;
-
-  u16 uStack_2;
+  union {
+    u16 values[4];
+    u64 packed;
+  } color;
 
   
 
@@ -2188,7 +2165,7 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
   pfVar2 = (u8 *)0x8;
 
-  pfVar8 = (u8 *)&fStack_10;
+  pfVar8 = (u8 *)&position;
 
   pfVar1 = pfVar8;
 
@@ -2220,11 +2197,11 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
     }
 
-    fStack_10 = (float)param_2;
+    position.values[0] = (float)param_2;
 
-    fStack_c = (float)param_3;
+    position.values[1] = (float)param_3;
 
-    FUN_00521408(&uStack_8,0,8);
+    FUN_00521408(&color,0,8);
 
     iVar9 = (int)param_1 * 0xc;
 
@@ -2232,17 +2209,17 @@ FUN_00396c70(int param_1,int param_2,int param_3,u16 param_4,u16 param_5,
 
     *puVar4 = 1;
 
-    uStack_8 = param_4;
+    color.values[0] = param_4;
 
-    uStack_6 = param_5;
+    color.values[1] = param_5;
 
-    uStack_4 = param_6;
+    color.values[2] = param_6;
 
-    uStack_2 = param_7;
+    color.values[3] = param_7;
 
-    uVar7 = FUN_00110f80(lVar6,CONCAT26(param_7,CONCAT24(param_6,CONCAT22(param_5,param_4))));
+    uVar7 = FUN_00110f80(lVar6,color.packed);
+    FUN_00111580(uVar7,position.packed);
 
-    FUN_00111580(uVar7,*(u64 *)&fStack_10);
 
 
     *(u32 *)(iVar9 + iVar3 + 4) = 0;

@@ -1745,17 +1745,8 @@ void FUN_003b9610(Resrc* param_1)
 
   float fStack_10;
 
-  u8 auStack_8 [3];
-
-  char cStack_5;
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
+  u8 auStack_8[4];
+  u8 color[4];
 
   
 
@@ -2230,7 +2221,7 @@ void FUN_003b9610(Resrc* param_1)
 
         FUN_00350040(*(u32 *)(puVar8 + 0x82),auStack_8);
 
-        cStack_5 = cVar9;
+        auStack_8[3] = cVar9;
 
         FUN_0034ff90(*(u32 *)(puVar8 + 0x82),auStack_8);
 
@@ -2240,13 +2231,10 @@ void FUN_003b9610(Resrc* param_1)
 
         puVar4 = (u8 *)FUN_00318b00(*(u32 *)(puVar8 + 0x94));
 
-        uStack_4 = *puVar4;
-
-        uStack_3 = puVar4[1];
-
-        uStack_2 = puVar4[2];
-
-        cStack_1 = cVar9;
+        color[0] = puVar4[0];
+        color[1] = puVar4[1];
+        color[2] = puVar4[2];
+        color[3] = cVar9;
 
         if (cVar9 == -1) {
 
@@ -2268,7 +2256,7 @@ void FUN_003b9610(Resrc* param_1)
 
         }
 
-        FUN_00318ad0(*(u32 *)(puVar8 + 0x94),&uStack_4);
+        FUN_00318ad0(*(u32 *)(puVar8 + 0x94),color);
 
       }
 
@@ -2539,9 +2527,10 @@ u32 FUN_003baa70(char *param_1)
 
   float fVar5;
 
-  u64 uStack_20;
-
-  u32 uStack_18;
+  struct {
+    u64 xy;
+    u32 z;
+  } bounds;
 
   int iStack_10;
 
@@ -2569,9 +2558,8 @@ u32 FUN_003baa70(char *param_1)
 
     for (; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
-      uStack_20 = DAT_006a2da0;
-
-      uStack_18 = DAT_006a2da8;
+      bounds.xy = DAT_006a2da0;
+      bounds.z = DAT_006a2da8;
 
       iStack_10 = iVar1 + 0x11c;
 
@@ -2579,7 +2567,7 @@ u32 FUN_003baa70(char *param_1)
 
       iStack_8 = iVar1 + 0x134;
 
-      lVar2 = FUN_001aaad0(param_1,&iStack_10,&uStack_20);
+      lVar2 = FUN_001aaad0(param_1,&iStack_10,&bounds);
 
       if (lVar2 == 1) {
 
@@ -2601,7 +2589,7 @@ u32 FUN_003baa70(char *param_1)
 
       iStack_8 = iVar1 + 0x140;
 
-      lVar2 = FUN_001aaad0(param_1,&iStack_10,&uStack_20);
+      lVar2 = FUN_001aaad0(param_1,&iStack_10,&bounds);
 
       if (lVar2 == 1) {
 
@@ -3198,43 +3186,12 @@ void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,
 
   float fVar2;
 
-  u32 uStack_b0;
-
-  u32 uStack_ac;
-
-  u32 uStack_a8;
-
-  u32 uStack_a4;
-
-  u32 uStack_a0;
-
-  u32 uStack_9c;
-
-  u32 uStack_98;
-
-  u32 uStack_90;
-
-  u32 uStack_8c;
-
-  u32 uStack_88;
-
-  u32 uStack_80;
-
-  u32 uStack_7c;
-
-  u32 uStack_78;
-
-  u64 uStack_70;
-
-  u32 uStack_68;
-
-  u64 uStack_60;
-
-  u32 uStack_58;
-
-  u64 uStack_50;
-
-  u32 uStack_48;
+  RwMatrix matrix;
+  struct {
+    u64 xy;
+    u32 z;
+    u32 pad;
+  } stackVec[4];
 
   float fStack_20;
 
@@ -3242,61 +3199,35 @@ void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,
 
   float fStack_18;
 
-  u64 uStack_10;
-
-  u32 uStack_8;
-
   
 
-  uStack_10 = DAT_006a2ed8;
+  stackVec[0].xy = DAT_006a2ed8;
+  stackVec[0].z = DAT_006a2ee0;
+  stackVec[1].xy = DAT_006a2ee8;
+  stackVec[1].z = DAT_006a2ef0;
+  stackVec[2].xy = DAT_006a2ef8;
+  stackVec[2].z = DAT_006a2f00;
+  stackVec[3].xy = DAT_006a2f08;
+  stackVec[3].z = DAT_006a2f10;
 
-  uStack_8 = DAT_006a2ee0;
+  matrix.right.x = 1.0f;
+  matrix.up.y = 1.0f;
+  matrix.at.z = 1.0f;
+  matrix.up.x = 0.0f;
+  matrix.right.z = 0.0f;
+  matrix.right.y = 0.0f;
+  matrix.at.y = 0.0f;
+  matrix.at.x = 0.0f;
+  matrix.up.z = 0.0f;
+  matrix.pos.z = 0.0f;
+  matrix.pos.y = 0.0f;
+  matrix.pos.x = 0.0f;
+  matrix.flags = matrix.flags | 0x20003;
 
-  uStack_50 = DAT_006a2ee8;
-
-  uStack_48 = DAT_006a2ef0;
-
-  uStack_60 = DAT_006a2ef8;
-
-  uStack_58 = DAT_006a2f00;
-
-  uStack_70 = DAT_006a2f08;
-
-  uStack_68 = DAT_006a2f10;
-
-  uStack_88 = 0x3f800000;
-
-  uStack_9c = 0x3f800000;
-
-  uStack_b0 = 0x3f800000;
-
-  uStack_a0 = 0;
-
-  uStack_a8 = 0;
-
-  uStack_ac = 0;
-
-  uStack_8c = 0;
-
-  uStack_90 = 0;
-
-  uStack_98 = 0;
-
-  uStack_78 = 0;
-
-  uStack_7c = 0;
-
-  uStack_80 = 0;
-
-  uStack_a4 = uStack_a4 | 0x20003;
-
-  FUN_004c31b0(param_3,&uStack_b0,&uStack_60,1);
-
-  FUN_004c31b0(param_2,&uStack_b0,&uStack_50,1);
-
-  FUN_004c31b0(param_4,&uStack_b0,&uStack_70,1);
-
-  FUN_004c6c60(&fStack_20,&uStack_10,&uStack_b0);
+  FUN_004c31b0(param_3,&matrix,&stackVec[2].xy,1);
+  FUN_004c31b0(param_2,&matrix,&stackVec[1].xy,1);
+  FUN_004c31b0(param_4,&matrix,&stackVec[3].xy,1);
+  FUN_004c6c60(&fStack_20,&stackVec[0].xy,&matrix);
 
   fVar1 = param_5[1];
 
@@ -3344,9 +3275,10 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
   float fStack_48;
 
-  u64 uStack_40;
-
-  u32 uStack_38;
+  struct {
+    u64 xy;
+    u32 z;
+  } direction;
 
   u32 uStack_30;
 
@@ -3418,11 +3350,9 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
     } while (0 < iVar4);
 
-    uStack_40 = uStack_90;
-
-    uStack_38 = uStack_88;
-
-    FUN_004c69f0(afStack_50,&uStack_40);
+    direction.xy = uStack_90;
+    direction.z = uStack_88;
+    FUN_004c69f0(afStack_50,&direction);
 
     fStack_10 = (fStack_10) - afStack_50[0] * 15.0f;
 
@@ -3462,27 +3392,21 @@ void FUN_003bb7a0(Resrc* param_1)
 
   int iVar6;
 
-  u32 uStack_58;
-
-  u32 uStack_54;
-
-  u32 uStack_50;
+  struct {
+    u32 x;
+    u32 y;
+    u32 z;
+  } correction;
 
   u32 uStack_48;
 
   u32 uStack_44;
 
-  u64 uStack_40;
-
-  u32 uStack_38;
-
-  u64 uStack_30;
-
-  u32 uStack_28;
-
-  u64 uStack_20;
-
-  u32 uStack_18;
+  struct {
+    u64 xy;
+    u32 z;
+    u32 pad;
+  } stackVec[3];
 
   u32 uStack_10;
 
@@ -3496,17 +3420,12 @@ void FUN_003bb7a0(Resrc* param_1)
 
   lVar4 = FUN_00198590();
 
-  uStack_20 = DAT_006a2f18;
-
-  uStack_18 = DAT_006a2f20;
-
-  uStack_30 = DAT_006a2f28;
-
-  uStack_28 = DAT_006a2f30;
-
-  uStack_40 = DAT_006a2f38;
-
-  uStack_38 = DAT_006a2f40;
+  stackVec[0].xy = DAT_006a2f18;
+  stackVec[0].z = DAT_006a2f20;
+  stackVec[1].xy = DAT_006a2f28;
+  stackVec[1].z = DAT_006a2f30;
+  stackVec[2].xy = DAT_006a2f38;
+  stackVec[2].z = DAT_006a2f40;
 
   iVar1 = *(int *)((int)lVar4 + 4);
 
@@ -3552,11 +3471,9 @@ void FUN_003bb7a0(Resrc* param_1)
 
     puVar3[3] = puVar3[3] | 0x20003;
 
-    FUN_004c31b0(*(u32 *)(iVar6 + 0x14),uVar5,&uStack_20,1);
-
-    FUN_004c31b0(*(u32 *)(iVar6 + 0x10),uVar5,&uStack_30,1);
-
-    FUN_004c31b0(*(u32 *)(iVar6 + 0x18),uVar5,&uStack_40,1);
+    FUN_004c31b0(*(u32 *)(iVar6 + 0x14),uVar5,&stackVec[0].xy,1);
+    FUN_004c31b0(*(u32 *)(iVar6 + 0x10),uVar5,&stackVec[1].xy,1);
+    FUN_004c31b0(*(u32 *)(iVar6 + 0x18),uVar5,&stackVec[2].xy,1);
 
     FUN_004c35d0(uVar5,&uStack_10,2);
 
@@ -3564,13 +3481,10 @@ void FUN_003bb7a0(Resrc* param_1)
 
     if (lVar2 == 1) {
 
-      uStack_58 = uStack_48;
-
-      uStack_54 = uStack_44;
-
-      uStack_50 = 0;
-
-      FUN_004c35d0(uVar5,&uStack_58);
+      correction.x = uStack_48;
+      correction.y = uStack_44;
+      correction.z = 0;
+      FUN_004c35d0(uVar5,&correction);
 
     }
 
@@ -4087,31 +4001,13 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
   u32 auStack_d0 [6];
 
-  float fStack_b8;
-
-  float fStack_b4;
-
-  float fStack_b0;
-
-  float fStack_a8;
-
-  float fStack_a4;
-
-  float fStack_a0;
-
-  float fStack_98;
-
-  float fStack_94;
-
-  float fStack_90;
+  RwV3d tangent;
+  RwV3d segment;
+  RwV3d finalSegment;
 
   u8 auStack_88 [16];
 
-  float fStack_78;
-
-  float fStack_74;
-
-  float fStack_70;
+  RwV3d direction;
 
   float fStack_68;
 
@@ -4195,13 +4091,10 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
                      &fStack_28,&fStack_30);
 
-        fStack_a8 = fStack_20 - fStack_1c;
-
-        fStack_a4 = fStack_28 - fStack_24;
-
-        fStack_a0 = fStack_30 - fStack_2c;
-
-        fVar5 = (float)FUN_004c6ac0(&fStack_a8);
+        segment.x = fStack_20 - fStack_1c;
+        segment.y = fStack_28 - fStack_24;
+        segment.z = fStack_30 - fStack_2c;
+        fVar5 = (float)FUN_004c6ac0(&segment);
 
         fStack_58 = fStack_20;
 
@@ -4234,21 +4127,15 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
                        &fStack_48);
 
-          fStack_b8 = fStack_38 - fStack_34;
+          tangent.x = fStack_38 - fStack_34;
+          tangent.y = fStack_40 - fStack_3c;
+          tangent.z = fStack_48 - fStack_44;
+          FUN_004c6ac0(&tangent);
 
-          fStack_b4 = fStack_40 - fStack_3c;
-
-          fStack_b0 = fStack_48 - fStack_44;
-
-          FUN_004c6ac0(&fStack_b8);
-
-          fStack_78 = fStack_34 - fStack_38;
-
-          fStack_74 = fStack_3c - fStack_40;
-
-          fStack_70 = fStack_44 - fStack_48;
-
-          FUN_004c69f0(auStack_88,&fStack_78);
+          direction.x = fStack_34 - fStack_38;
+          direction.y = fStack_3c - fStack_40;
+          direction.z = fStack_44 - fStack_48;
+          FUN_004c69f0(auStack_88,&direction);
 
           FUN_003bbb90(auStack_88,param_5);
 
@@ -4282,13 +4169,10 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
     FUN_003bbc90(0x3f800000,auStack_d0,auStack_e0,auStack_f0,&fStack_8,&fStack_10,&fStack_18);
 
-    fStack_98 = fStack_8 - fStack_4;
-
-    fStack_94 = fStack_10 - fStack_c;
-
-    fStack_90 = fStack_18 - fStack_14;
-
-    FUN_004c6ac0(&fStack_98);
+    finalSegment.x = fStack_8 - fStack_4;
+    finalSegment.y = fStack_10 - fStack_c;
+    finalSegment.z = fStack_18 - fStack_14;
+    FUN_004c6ac0(&finalSegment);
 
     fStack_58 = fStack_8;
 

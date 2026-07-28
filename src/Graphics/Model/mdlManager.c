@@ -1462,31 +1462,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
   float fStack_314;
 
-  float fStack_310;
-
-  float fStack_30c;
-
-  float fStack_308;
-
-  u32 uStack_304;
-
-  float fStack_300;
-
-  float fStack_2fc;
-
-  float fStack_2f8;
-
-  float fStack_2f0;
-
-  float fStack_2ec;
-
-  float fStack_2e8;
-
-  float fStack_2e0;
-
-  float fStack_2dc;
-
-  float fStack_2d8;
+  RwMatrix rotation;
 
   u8 auStack_2d0 [64];
 
@@ -1526,19 +1502,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
   u32 uStack_98;
 
-  float afStack_90 [8];
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  u32 uStack_68;
-
-  u32 uStack_60;
-
-  u32 uStack_5c;
-
-  u32 uStack_58;
+  float afStack_90 [16];
 
   float fStack_50;
 
@@ -1585,6 +1549,19 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 #define uStack_1e0 (*(u32*)&matrix210.pos.x)
 #define uStack_1dc (*(u32*)&matrix210.pos.y)
 #define uStack_1d8 (*(u32*)&matrix210.pos.z)
+#define fStack_310 rotation.right.x
+#define fStack_30c rotation.right.y
+#define fStack_308 rotation.right.z
+#define uStack_304 rotation.flags
+#define fStack_300 rotation.up.x
+#define fStack_2fc rotation.up.y
+#define fStack_2f8 rotation.up.z
+#define fStack_2f0 rotation.at.x
+#define fStack_2ec rotation.at.y
+#define fStack_2e8 rotation.at.z
+#define fStack_2e0 rotation.pos.x
+#define fStack_2dc rotation.pos.y
+#define fStack_2d8 rotation.pos.z
 
   bVar14 = false;
 
@@ -1664,7 +1641,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
     if ((uVar6 == 0) || (iVar11 = *(int *)(uVar6 + 4), iVar11 == 0)) {
 
-      uStack_68 = 0x3f800000;
+      afStack_90[10] = 1.0f;
 
       afStack_90[5] = 1.0f;
 
@@ -1676,17 +1653,14 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       afStack_90[1] = 0.0f;
 
-      uStack_6c = 0;
-
-      uStack_70 = 0;
+      afStack_90[9] = 0.0f;
+      afStack_90[8] = 0.0f;
 
       afStack_90[6] = 0.0f;
 
-      uStack_58 = 0;
-
-      uStack_5c = 0;
-
-      uStack_60 = 0;
+      afStack_90[14] = 0.0f;
+      afStack_90[13] = 0.0f;
+      afStack_90[12] = 0.0f;
 
       afStack_90[3] = (float)((u32)afStack_90[3] | 0x20003);
 
@@ -2693,6 +2667,19 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 #undef uStack_1e0
 #undef uStack_1dc
 #undef uStack_1d8
+#undef fStack_310
+#undef fStack_30c
+#undef fStack_308
+#undef uStack_304
+#undef fStack_300
+#undef fStack_2fc
+#undef fStack_2f8
+#undef fStack_2f0
+#undef fStack_2ec
+#undef fStack_2e8
+#undef fStack_2e0
+#undef fStack_2dc
+#undef fStack_2d8
 
 
 
@@ -3937,9 +3924,10 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
   u32 lVar4;
 
-  code pcStack_8;
-
-  u32 uStack_4;
+  struct {
+    code callback;
+    u32 value;
+  } callbackData;
 
   
 
@@ -3949,11 +3937,10 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
     uVar1 = func_004c1d50(4,0);
 
-    pcStack_8 = (code)func_00313f40;
+    callbackData.callback = (code)func_00313f40;
+    callbackData.value = uVar1;
 
-    uStack_4 = uVar1;
-
-    func_004916d0(param_2,0x313fe0,&pcStack_8);
+    func_004916d0(param_2,0x313fe0,&callbackData);
 
     *(u32 *)(*(int *)(param_1 + 0x18) + 8) = uVar1;
 
@@ -4570,9 +4557,10 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
   int iVar7;
 
-  int iStack_8;
-
-  int iStack_4;
+  struct {
+    int result;
+    int expected;
+  } callbackData;
 
   
 
@@ -4598,13 +4586,10 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u16 param_3,int param_4)
 
     if (iVar1 != iVar2) {
 
-      iStack_8 = 0;
-
-      iStack_4 = iVar1;
-
-      func_004cb6e0(iVar6,0x315010,&iStack_8);
-
-      iVar6 = iStack_8;
+      callbackData.result = 0;
+      callbackData.expected = iVar1;
+      func_004cb6e0(iVar6,0x315010,&callbackData);
+      iVar6 = callbackData.result;
 
     }
 
@@ -4718,31 +4703,7 @@ void func_003151d0(Model* param_1)
 
   int iStack_ec;
 
-  u32 uStack_e0;
-
-  u32 uStack_dc;
-
-  u32 uStack_d8;
-
-  u32 uStack_d4;
-
-  float fStack_d0;
-
-  u32 uStack_cc;
-
-  float fStack_c8;
-
-  u32 uStack_c0;
-
-  u32 uStack_bc;
-
-  u32 uStack_b8;
-
-  u32 uStack_b0;
-
-  u32 uStack_ac;
-
-  u32 uStack_a8;
+  RwMatrix lightMatrix;
 
   u8 auStack_a0 [64];
 
@@ -4756,13 +4717,7 @@ void func_003151d0(Model* param_1)
 
   u32 uStack_8;
 
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
+  u8 color[4];
 
   
 
@@ -4816,11 +4771,9 @@ void func_003151d0(Model* param_1)
 
   }
 
-  uStack_4 = 0;
-
-  uStack_3 = 0;
-
-  uStack_2 = 0;
+  color[0] = 0;
+  color[1] = 0;
+  color[2] = 0;
 
   fVar15 = ((float)((u32)*(u8 *)(iVar11 + 0x3a8) * (u32)*(u8 *)(iVar11 + 0xd3)) / 65025.0f) *
 
@@ -4828,13 +4781,13 @@ void func_003151d0(Model* param_1)
 
   if (fVar15 < 2.1474836e+09f) {
 
-    cStack_1 = (char)(int)fVar15;
+    color[3] = (char)(int)fVar15;
 
   }
 
   else {
 
-    cStack_1 = (char)(int)(fVar15 - 2.1474836e+09f);
+    color[3] = (char)(int)(fVar15 - 2.1474836e+09f);
 
   }
 
@@ -5028,7 +4981,7 @@ void func_003151d0(Model* param_1)
 
   fVar15 = DAT_007caf0c;
 
-  if (cStack_1 != '\0') {
+  if (color[3] != '\0') {
 
     if (0.0f <= fStack_14) {
 
@@ -5063,37 +5016,25 @@ void func_003151d0(Model* param_1)
 
     }
 
-    uStack_b8 = 0x3f800000;
-
-    uStack_e0 = 0x3f800000;
-
-    uStack_d8 = 0;
-
-    uStack_dc = 0;
-
-    uStack_bc = 0;
-
-    uStack_c0 = 0;
-
-    uStack_a8 = 0;
-
-    uStack_ac = 0;
-
-    uStack_b0 = 0;
-
-    uStack_d4 = uStack_d4 | 0x20003;
-
-    fStack_d0 = -fStack_18 / fStack_14;
-
-    uStack_cc = DAT_007cada0;
-
-    fStack_c8 = -fStack_10 / fStack_14;
+    lightMatrix.at.z = 1.0f;
+    lightMatrix.right.x = 1.0f;
+    lightMatrix.right.z = 0.0f;
+    lightMatrix.right.y = 0.0f;
+    lightMatrix.at.y = 0.0f;
+    lightMatrix.at.x = 0.0f;
+    lightMatrix.pos.z = 0.0f;
+    lightMatrix.pos.y = 0.0f;
+    lightMatrix.pos.x = 0.0f;
+    lightMatrix.flags = lightMatrix.flags | 0x20003;
+    lightMatrix.up.x = -fStack_18 / fStack_14;
+    lightMatrix.up.y = DAT_007cada0;
+    lightMatrix.up.z = -fStack_10 / fStack_14;
 
     uVar3 = *(u32 *)(*(int *)(iVar11 + 0xdc) + 4);
 
     RwMatrixMultiply((RwMatrix*)auStack_a0,(const RwMatrix*)(iVar11 + 0x40),(RwMatrix*)param_1);
 
-    RwMatrixMultiply((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,(RwMatrix*)&uStack_e0);
+    RwMatrixMultiply((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,&lightMatrix);
 
     func_004cb7f0(uVar3,auStack_60,0);
 
@@ -5119,7 +5060,7 @@ void func_003151d0(Model* param_1)
 
     RpSkyRenderStateSet(2, (void*)0x44);
 
-    func_00316320(*(u32 *)(iVar11 + 0xdc),(u32*)&uStack_4,(*(u8 *)(iVar11 + 0x388) & 8) != 0);
+    func_00316320(*(u32 *)(iVar11 + 0xdc),(u32*)color,(*(u8 *)(iVar11 + 0x388) & 8) != 0);
 
     iVar9 = *(int *)(iVar11 + 0xe0);
 
@@ -5163,7 +5104,7 @@ void func_003151d0(Model* param_1)
 
         RwMatrixMultiply((RwMatrix*)auStack_a0,(const RwMatrix*)(iVar9 + 0x40),(RwMatrix*)iVar9);
 
-        RwMatrixMultiply((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,(RwMatrix*)&uStack_e0);
+        RwMatrixMultiply((RwMatrix*)auStack_60,(const RwMatrix*)auStack_a0,&lightMatrix);
 
         func_004cb7f0(uVar3,auStack_60,0);
 
@@ -5203,7 +5144,7 @@ void func_003151d0(Model* param_1)
 
         }
 
-        func_00316320(iVar4,(u32*)&uStack_4,(*(u8 *)(iVar9 + 0x388) & 8) != 0);
+        func_00316320(iVar4,(u32*)color,(*(u8 *)(iVar9 + 0x388) & 8) != 0);
 
         iVar6 = *(int *)(iVar11 + 0xe0);
 
@@ -5816,13 +5757,9 @@ Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4)
   int iVar6;
 
   u32 uStack_18;
-
   u32 uStack_14;
-
   u32 uStack_10;
-
   u32 uStack_c;
-
   u32 uStack_4;
 
   
@@ -5848,9 +5785,7 @@ Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4)
     mdlStreamInit(uVar4);
 
     uStack_10 = uVar1;
-
     uStack_c = uVar2;
-
     mdlStreamSetRmdFileMemory(uVar4,(const MdlRmdFileMemory*)&uStack_10);
 
     mdlStreamRead(uVar4);
@@ -5876,9 +5811,7 @@ Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4)
     mdlStreamInit(uVar4);
 
     uStack_14 = uVar1;
-
     uStack_18 = uVar2;
-
     mdlStreamSetRmdFileMemory(uVar4,(const MdlRmdFileMemory*)&uStack_18);
 
     mdlStreamRead(uVar4);
@@ -6140,7 +6073,6 @@ void func_00317a20(u64 param_1)
   u32 uVar13;
 
   int iStack_18;
-
   u16 uStack_14;
 
   int iStack_c;
@@ -6148,11 +6080,8 @@ void func_00317a20(u64 param_1)
   int iStack_8;
 
   u8 uStack_4;
-
   u8 uStack_3;
-
   u8 uStack_2;
-
   char cStack_1;
 
   
@@ -6194,9 +6123,7 @@ void func_00317a20(u64 param_1)
       func_00313ca0((int*)(iVar8 + 0x35c),iVar8 + 0xec);
 
       iStack_18 = iVar8 + 0xd0;
-
       uStack_14 = 0;
-
       func_004916d0(*(u32 *)(iVar8 + 0xdc),0x315f50,&iStack_18);
 
       if (((*(u16 *)(iVar8 + 0xd8) & 0x20) == 0) || (*(char *)(iVar8 + 0xd3) == -1)) {
@@ -6264,29 +6191,17 @@ void func_00317a20(u64 param_1)
           if ((*(u16 *)(iVar8 + 0xd8) & 0x80) == 0) {
 
             uStack_4 = (u8)
-
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd0) *
-
                              DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a) * 255.0f + 0.5f);
-
             uStack_3 = (u8)
-
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd1) *
-
                              DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b) * 255.0f + 0.5f);
-
             uStack_2 = (u8)
-
                        (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd2) *
-
                              DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c) * 255.0f + 0.5f);
-
             cStack_1 = (char)(int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd3) *
-
                                    DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d) * 255.0f + 0.5f);
-
             func_0031dd40(*(u32 *)(iVar8 + 0x3f4),&uStack_4);
-
             if (cStack_1 != '\0') {
 
               func_0031dc80(*(u32 *)(iVar8 + 0x3f4),*(u16 *)(iVar8 + 0x418));
@@ -6694,9 +6609,10 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
   int iVar11;
 
-  int iStack_8;
-
-  int iStack_4;
+  struct {
+    int result;
+    int expected;
+  } callbackData;
 
   
 
@@ -6772,13 +6688,10 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
       if (iVar8 != iVar3) {
 
-        iStack_8 = 0;
-
-        iStack_4 = iVar8;
-
-        func_004cb6e0(iVar10,0x315010,&iStack_8);
-
-        iVar10 = iStack_8;
+        callbackData.result = 0;
+        callbackData.expected = iVar8;
+        func_004cb6e0(iVar10,0x315010,&callbackData);
+        iVar10 = callbackData.result;
 
       }
 

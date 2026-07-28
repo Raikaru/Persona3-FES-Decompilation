@@ -568,9 +568,7 @@ u64 FUN_003aec20(u64 param_1,int param_2)
   char *pcVar7;
   char *pcVar8;
   char acStack_20 [28];
-  u8 uStack_4;
-  char cStack_3;
-  u8 uStack_2;
+  u8 tag[3];
 
   pbVar5 = (u8 *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
   bVar2 = pbVar5[1];
@@ -590,11 +588,11 @@ u64 FUN_003aec20(u64 param_1,int param_2)
     *pcVar7 = cVar1;
     pcVar7 = pcVar7 + 1;
   } while (0 < iVar6);
-  uStack_4 = 0x8d;
-  cStack_3 = acStack_20[sVar3] + -0x5a;
-  uStack_2 = 0;
+  tag[0] = 0x8d;
+  tag[1] = acStack_20[sVar3] + -0x5a;
+  tag[2] = 0;
   FUN_003b22a0(param_2);
-  FUN_003b2020(&uStack_4,param_2);
+  FUN_003b2020(tag,param_2);
   return 0;
 }
 #define FUN_003aec20(...) ((u64 (*)(...))FUN_003aec20)(__VA_ARGS__)

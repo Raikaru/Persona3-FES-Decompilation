@@ -321,6 +321,8 @@ extern u32 DAT_0095c25c;
 extern u32 DAT_0095c260;
 extern f32 DAT_00960088;
 extern code DAT_00960090;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
 extern code DAT_009600a0;
 extern code DAT_0096017c;
 #pragma alias DAT_0087190c_abs DAT_0087190c
@@ -12912,33 +12914,37 @@ void FUN_0044a790(u32 *param_1)
   return;
 }
 
-// FUN_0044A990 NONMATCHING
+// FUN_0044A990
 
 void FUN_0044a990(int param_1,u32 *param_2)
 
 {
   int iVar1;
-  code *pcStack_8;
-  int iStack_4;
+  void (**renderState)();
+  struct {
+    code *callback;
+    int context;
+  } callback;
   
   iVar1 = *(int *)(param_1 + 0x480) + 1;
   *(int *)(param_1 + 0x480) = iVar1;
   *(int *)(param_1 + 0x480) = iVar1 % 0xb4;
-  iStack_4 = param_1;
-  (*DAT_00960090)(6,1);
-  (*DAT_00960090)(7,2);
-  (*DAT_00960090)(8,1);
-  (*DAT_00960090)(9,2);
-  (*DAT_00960090)(0xc,1);
-  (*DAT_00960090)(0xb,6);
-  (*DAT_00960090)(10,5);
-  (*DAT_00960090)(2,4);
+  callback.context = param_1;
+  renderState = (void (**)())DAT_00960090_abs;
+  (*renderState)(6,1);
+  (*renderState)(7,2);
+  (*renderState)(8,1);
+  (*renderState)(9,2);
+  (*renderState)(0xc,1);
+  (*renderState)(0xb,6);
+  (*renderState)(10,5);
+  (*renderState)(2,4);
   FUN_004d7f60_typed(2,0x44);
   FUN_004d7f60_typed(3,0x717fb);
-  (*DAT_00960090)(1,*param_2);
+  (*renderState)(1,*param_2);
   FUN_002699d0_typed(*(u32 *)(param_1 + 0x47c));
-  pcStack_8 = (code *)&FUN_0044a790;
-  FUN_00269a10_typed(*(u32 *)(param_1 + 0x47c),&pcStack_8);
+  callback.callback = (code *)&FUN_0044a790;
+  FUN_00269a10_typed(*(u32 *)(param_1 + 0x47c),&callback);
   return;
 }
 
@@ -13878,12 +13884,7 @@ void FUN_0044d600(int param_1)
   u64 uVar5;
   long lVar6;
   u32 uVar7;
-  u32 uStack_120;
-  u32 uStack_11c;
-  u32 uStack_118;
-  u32 uStack_114;
-  u32 uStack_110;
-  u32 uStack_10c;
+  YVec3f a[2];
   u8 auStack_100 [16];
   u8 auStack_f0 [16];
   u8 auStack_e0 [16];
@@ -13893,21 +13894,12 @@ void FUN_0044d600(int param_1)
   u8 auStack_a0 [16];
   u8 auStack_90 [16];
   u8 auStack_80 [16];
-  u32 uStack_70;
-  float fStack_6c;
-  u32 uStack_68;
+  YVec3f v;
+  YVec3f spawn;
   u8 auStack_60 [16];
   u8 auStack_50 [16];
   u8 auStack_40 [16];
-  u32 uStack_30;
-  float fStack_2c;
-  u32 uStack_28;
-  u32 uStack_20;
-  float fStack_1c;
-  u32 uStack_18;
-  u32 uStack_10;
-  float fStack_c;
-  u32 uStack_8;
+  
   
   iVar2 = DAT_007ce290;
   iVar1 = *(int *)(param_1 + 0x3c);
@@ -14029,24 +14021,19 @@ void FUN_0044d600(int param_1)
         *(u8 *)(iVar1 + 3) = 4;
       }
       else {
-        FUN_001ad940(&uStack_70,*(u32 *)(DAT_008717f4 + 0x1e0));
-        uStack_20 = uStack_70;
-        fStack_1c = fStack_6c;
-        uStack_18 = uStack_68;
-        uStack_114 = uStack_70;
-        uStack_10c = uStack_68;
-        uStack_120 = uStack_70;
-        uStack_118 = uStack_68;
-        *(float *)&uStack_11c = 400.0f;
-        uStack_110 = 0xc3c80000;
-        FUN_001acc30_typed((void*)(&uStack_120),(void*)(&uStack_20));
-        if (fStack_1c > 50.0f) {
+        FUN_001ad940(&v,*(u32 *)(DAT_008717f4 + 0x1e0));
+        a[1] = v;
+        a[0] = a[1];
+        a[0].y = 400.0f;
+        a[1].y = -400.0f;
+        FUN_001acc30_typed((void*)a,(void*)(&v));
+        if (v.y > 50.0f) {
           FUN_004543c0(*(u8 *)(iVar1 + 1),4);
           ((u8 *)DAT_0095c210)[*(char *)(iVar1 + 1)] = 0;
         }
         else {
           FUN_001b0250_typed(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0),0);
-          lVar6 = FUN_001afa20_typed((*(u32 *)(iVar2 + 0x4c)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(&uStack_20));
+          lVar6 = FUN_001afa20_typed((*(u32 *)(iVar2 + 0x4c)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(&v));
           if (lVar6 != 0) {
             *(char *)(iVar1 + 8) = (char)*(u32 *)(iVar2 + 0x68);
             *(u8 *)(iVar1 + 3) = 3;
@@ -14063,13 +14050,11 @@ void FUN_0044d600(int param_1)
       }
     }
     else if (cVar3 == '\0') {
-      FUN_001ad940(&uStack_30,
+      FUN_001ad940(&spawn,
                    *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-      uStack_10 = uStack_30;
-      uStack_8 = uStack_28;
-      fStack_c = fStack_2c + 100.0f;
+      spawn.y = spawn.y + 100.0f;
       iVar4 = FUN_001b9120_u32();
-      uVar5 = FUN_001a91b0_ret(*(u32 *)(iVar4 + 0x1208),&uStack_10);
+      uVar5 = FUN_001a91b0_ret(*(u32 *)(iVar4 + 0x1208),&spawn);
       iVar4 = FUN_001b9120_u32();
       FUN_001a9390_typed((void *)(*(u32 *)(iVar4 + 0x1208)),uVar5,3);
       lVar6 = FUN_001c7130(2400.0f,(u32)((u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0));
@@ -14573,54 +14558,24 @@ u32 FUN_0044f300(char param_1)
   u32 uVar9;
   float fVar10;
   float fVar11;
-  float fStack_120;
-  float fStack_11c;
-  float fStack_118;
-  float fStack_110;
-  float fStack_10c;
-  float fStack_108;
-  float fStack_100;
-  float fStack_fc;
-  float fStack_f8;
-  float fStack_f0;
-  float fStack_ec;
-  float fStack_e8;
-  float fStack_e0;
-  float fStack_dc;
-  float fStack_d8;
-  float fStack_d0;
-  float fStack_cc;
-  float fStack_c8;
-  float fStack_c0;
-  float fStack_bc;
-  float fStack_b8;
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a8;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
+  RwV3d target;
+  RwV3d self;
+  RwV3d first;
+  RwV3d second;
+  RwV3d delta;
+  RwV3d target2;
+  RwV3d self2;
+  RwV3d first2;
+  RwV3d second2;
+  RwV3d delta2;
+  RwV3d target3;
+  RwV3d self3;
+  RwV3d first3;
+  RwV3d second3;
+  RwV3d delta3;
   u8 auStack_90 [16];
   u8 auStack_80 [16];
-  float fStack_70;
-  float fStack_6c;
-  float fStack_68;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
   u8 auStack_50 [16];
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
   
   iVar1 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_1 * 0x1c0) + 0x3c);
   uVar9 = 0;
@@ -14629,39 +14584,31 @@ u32 FUN_0044f300(char param_1)
     uVar9 = 0;
   }
   else {
-    FUN_001ad940(&fStack_20,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar1 + 0x18) * 0x70] + 0x1e0)
+    FUN_001ad940(&target,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar1 + 0x18) * 0x70] + 0x1e0)
                 );
-    FUN_001ad940(&fStack_10,
+    FUN_001ad940(&self,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    fStack_a0 = fStack_10;
-    fStack_9c = fStack_c;
-    fStack_98 = fStack_8;
-    fStack_b0 = fStack_20;
-    fStack_ac = fStack_1c;
-    fStack_a8 = fStack_18;
-    fStack_c0 = fStack_10 - fStack_20;
-    fStack_bc = fStack_c - fStack_1c;
-    fStack_b8 = fStack_8 - fStack_18;
-    fVar10 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_c0));
+    first = self;
+    second = target;
+    delta.x = first.x - second.x;
+    delta.y = first.y - second.y;
+    delta.z = first.z - second.z;
+    fVar10 = (float)FUN_004c6ac0_vec(&delta);
     lVar3 = FUN_001c6d70_typed(*(u32 *)(iVar8 + 0x14),(u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0);
     if (lVar3 != 0) {
       lVar3 = FUN_001c6dd0_typed(*(u32 *)(iVar8 + 0x14),(u8 *)DAT_0086eda0 + *(char *)(iVar1 + 1) * 0x1c0);
       if (*(char *)(iVar1 + 0x18) != lVar3) {
-        FUN_001ad940(&fStack_40,
+        FUN_001ad940(&target2,
                      *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar1 + 0x18) * 0x70] + 0x1e0));
-        FUN_001ad940(&fStack_30,
+        FUN_001ad940(&self2,
                      *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0)
                     );
-        fStack_d0 = fStack_30;
-        fStack_cc = fStack_2c;
-        fStack_c8 = fStack_28;
-        fStack_e0 = fStack_40;
-        fStack_dc = fStack_3c;
-        fStack_d8 = fStack_38;
-        fStack_f0 = fStack_30 - fStack_40;
-        fStack_ec = fStack_2c - fStack_3c;
-        fStack_e8 = fStack_28 - fStack_38;
-        fVar11 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_f0));
+        first2 = self2;
+        second2 = target2;
+        delta2.x = first2.x - second2.x;
+        delta2.y = first2.y - second2.y;
+        delta2.z = first2.z - second2.z;
+        fVar11 = (float)FUN_004c6ac0_vec(&delta2);
         cVar6 = (char)lVar3;
         if (fVar11 < fVar10) {
           FUN_001ad940(auStack_50,
@@ -14700,20 +14647,16 @@ u32 FUN_0044f300(char param_1)
         }
         fVar11 = *(float *)(iVar8 + 4);
         piVar7 = (int *)((u8 *)DAT_008717f4 + (int)lVar3 * 0x70);
-        FUN_001ad940(&fStack_70,*(u32 *)(*piVar7 + 0x1e0));
-        FUN_001ad940(&fStack_60,
+        FUN_001ad940(&target3,*(u32 *)(*piVar7 + 0x1e0));
+        FUN_001ad940(&self3,
                      *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0)
                     );
-        fStack_100 = fStack_60;
-        fStack_fc = fStack_5c;
-        fStack_f8 = fStack_58;
-        fStack_110 = fStack_70;
-        fStack_10c = fStack_6c;
-        fStack_108 = fStack_68;
-        fStack_120 = fStack_60 - fStack_70;
-        fStack_11c = fStack_5c - fStack_6c;
-        fStack_118 = fStack_58 - fStack_68;
-        fVar10 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_120));
+        first3 = self3;
+        second3 = target3;
+        delta3.x = first3.x - second3.x;
+        delta3.y = first3.y - second3.y;
+        delta3.z = first3.z - second3.z;
+        fVar10 = (float)FUN_004c6ac0_vec(&delta3);
         if (fVar10 < fVar11) {
           uVar5 = FUN_00318b60(*(u32 *)
                                 (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
@@ -14966,56 +14909,27 @@ void FUN_004501b0(char param_1)
   u32 uVar7;
   float fVar8;
   float fVar9;
-  u32 uStack_160;
-  u32 uStack_15c;
-  u32 uStack_158;
-  u32 uStack_154;
-  u32 uStack_150;
-  u32 uStack_14c;
-  float fStack_140;
-  float fStack_13c;
-  float fStack_138;
-  float fStack_130;
-  float fStack_12c;
-  float fStack_128;
-  float fStack_120;
-  float fStack_11c;
-  float fStack_118;
-  float fStack_110;
-  float fStack_10c;
-  float fStack_108;
-  float fStack_100;
-  float fStack_fc;
-  float fStack_f8;
-  float fStack_f0;
-  float fStack_ec;
-  float fStack_e8;
+  YVec3f a[2];
+  RwV3d selfCopy2;
+  RwV3d targetCopy2;
+  RwV3d delta2;
+  RwV3d selfCopy;
+  RwV3d targetCopy;
+  RwV3d delta;
   u8 auStack_e0 [16];
   u8 auStack_d0 [16];
   u8 auStack_c0 [16];
   u8 auStack_b0 [16];
   u8 auStack_a0 [16];
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
+  RwV3d target2;
+  RwV3d self2;
   u8 auStack_70 [16];
   u8 auStack_60 [16];
-  u32 uStack_50;
-  float fStack_4c;
-  u32 uStack_48;
+  YVec3f v;
   u8 auStack_40 [16];
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  u32 uStack_10;
-  float fStack_c;
-  u32 uStack_8;
+  RwV3d target;
+  RwV3d self;
+  
   
   iVar2 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_1 * 0x1c0) + 0x3c);
   cVar3 = *(char *)(iVar2 + 1);
@@ -15024,40 +14938,31 @@ void FUN_004501b0(char param_1)
   switch (cVar1) {
   case '\x02':
     FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + cVar3 * 0x1c0));
-    FUN_001ad940(&fStack_30,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
+    FUN_001ad940(&target,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
                 );
-    FUN_001ad940(&fStack_20,
+    FUN_001ad940(&self,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-    fStack_f0 = fStack_20;
-    fStack_ec = fStack_1c;
-    fStack_e8 = fStack_18;
-    fStack_100 = fStack_30;
-    fStack_fc = fStack_2c;
-    fStack_f8 = fStack_28;
-    fStack_110 = fStack_20 - fStack_30;
-    fStack_10c = fStack_1c - fStack_2c;
-    fStack_108 = fStack_18 - fStack_28;
-    uVar7 = FUN_004c6ac0_vec((const RwV3d*)(&fStack_110));
+    selfCopy = self;
+    targetCopy = target;
+    delta.x = selfCopy.x - targetCopy.x;
+    delta.y = selfCopy.y - targetCopy.y;
+    delta.z = selfCopy.z - targetCopy.z;
+    uVar7 = FUN_004c6ac0_vec(&delta);
     *(u32 *)(iVar2 + 0x44) = uVar7;
     FUN_001ad940(auStack_40,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
                 );
     lVar4 = FUN_00454520((float *)auStack_40,*(u8 *)(iVar2 + 1));
     if (lVar4 != 0) {
-      FUN_001ad940(&uStack_50,
+      FUN_001ad940(&v,
                    *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      uStack_10 = uStack_50;
-      fStack_c = fStack_4c;
-      uStack_8 = uStack_48;
-      uStack_154 = uStack_50;
-      uStack_14c = uStack_48;
-      uStack_160 = uStack_50;
-      uStack_158 = uStack_48;
-      *(float *)&uStack_15c = 400.0f;
-      uStack_150 = 0xc3c80000;
-      FUN_001acc30_typed((void*)(&uStack_160),(void*)(&uStack_10));
-      if (fStack_c <= 50.0f) {
+      a[1] = v;
+      a[0] = a[1];
+      a[0].y = 400.0f;
+      a[1].y = -400.0f;
+      FUN_001acc30_typed((void*)a,(void*)(&v));
+      if (v.y <= 50.0f) {
         FUN_001b0250_typed(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0),0);
-        lVar4 = FUN_001afa20_typed((*(u32 *)(iVar6 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0)),(void*)(&uStack_10));
+        lVar4 = FUN_001afa20_typed((*(u32 *)(iVar6 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0)),(void*)(&v));
         if (lVar4 != 0) {
           *(char *)(iVar2 + 8) = (char)*(u32 *)(iVar6 + 0x28);
           *(u8 *)(iVar2 + 3) = 3;
@@ -15104,20 +15009,16 @@ void FUN_004501b0(char param_1)
     lVar4 = FUN_00454400((f32*)(auStack_70),(char)(cVar3));
     if (lVar4 != 0) {
       fVar8 = *(float *)(iVar6 + 0x14);
-      FUN_001ad940(&fStack_90,
+      FUN_001ad940(&target2,
                    *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      FUN_001ad940(&fStack_80,
+      FUN_001ad940(&self2,
                    *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-      fStack_120 = fStack_80;
-      fStack_11c = fStack_7c;
-      fStack_118 = fStack_78;
-      fStack_130 = fStack_90;
-      fStack_12c = fStack_8c;
-      fStack_128 = fStack_88;
-      fStack_140 = fStack_80 - fStack_90;
-      fStack_13c = fStack_7c - fStack_8c;
-      fStack_138 = fStack_78 - fStack_88;
-      fVar9 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_140));
+      selfCopy2 = self2;
+      targetCopy2 = target2;
+      delta2.x = selfCopy2.x - targetCopy2.x;
+      delta2.y = selfCopy2.y - targetCopy2.y;
+      delta2.z = selfCopy2.z - targetCopy2.z;
+      fVar9 = (float)FUN_004c6ac0_vec(&delta2);
       if (fVar9 < fVar8 * 3.0f) {
         FUN_001ad940(auStack_a0,
                      *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
@@ -15203,56 +15104,27 @@ void FUN_00450b30(char param_1)
   u32 uVar7;
   float fVar8;
   float fVar9;
-  u32 uStack_160;
-  u32 uStack_15c;
-  u32 uStack_158;
-  u32 uStack_154;
-  u32 uStack_150;
-  u32 uStack_14c;
-  float fStack_140;
-  float fStack_13c;
-  float fStack_138;
-  float fStack_130;
-  float fStack_12c;
-  float fStack_128;
-  float fStack_120;
-  float fStack_11c;
-  float fStack_118;
-  float fStack_110;
-  float fStack_10c;
-  float fStack_108;
-  float fStack_100;
-  float fStack_fc;
-  float fStack_f8;
-  float fStack_f0;
-  float fStack_ec;
-  float fStack_e8;
+  YVec3f a[2];
+  RwV3d selfCopy2;
+  RwV3d targetCopy2;
+  RwV3d delta2;
+  RwV3d selfCopy;
+  RwV3d targetCopy;
+  RwV3d delta;
   u8 auStack_e0 [16];
   u8 auStack_d0 [16];
   u8 auStack_c0 [16];
   u8 auStack_b0 [16];
   u8 auStack_a0 [16];
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
+  RwV3d target2;
+  RwV3d self2;
   u8 auStack_70 [16];
   u8 auStack_60 [16];
-  u32 uStack_50;
-  float fStack_4c;
-  u32 uStack_48;
+  YVec3f v;
   u8 auStack_40 [16];
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  u32 uStack_10;
-  float fStack_c;
-  u32 uStack_8;
+  RwV3d target;
+  RwV3d self;
+  
   
   iVar2 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_1 * 0x1c0) + 0x3c);
   cVar3 = *(char *)(iVar2 + 1);
@@ -15261,20 +15133,16 @@ void FUN_00450b30(char param_1)
   switch (cVar1) {
   case '\a':
     FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + cVar3 * 0x1c0));
-    FUN_001ad940(&fStack_30,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
+    FUN_001ad940(&target,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
                 );
-    FUN_001ad940(&fStack_20,
+    FUN_001ad940(&self,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-    fStack_f0 = fStack_20;
-    fStack_ec = fStack_1c;
-    fStack_e8 = fStack_18;
-    fStack_100 = fStack_30;
-    fStack_fc = fStack_2c;
-    fStack_f8 = fStack_28;
-    fStack_110 = fStack_20 - fStack_30;
-    fStack_10c = fStack_1c - fStack_2c;
-    fStack_108 = fStack_18 - fStack_28;
-    uVar7 = FUN_004c6ac0_vec((const RwV3d*)(&fStack_110));
+    selfCopy = self;
+    targetCopy = target;
+    delta.x = selfCopy.x - targetCopy.x;
+    delta.y = selfCopy.y - targetCopy.y;
+    delta.z = selfCopy.z - targetCopy.z;
+    uVar7 = FUN_004c6ac0_vec(&delta);
     *(u32 *)(iVar2 + 0x44) = uVar7;
     FUN_001ad940(auStack_40,*(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0)
                 );
@@ -15282,21 +15150,16 @@ void FUN_00450b30(char param_1)
       *(u8 *)(iVar2 + 3) = 9;
     }
     else {
-      FUN_001ad940(&uStack_50,
+      FUN_001ad940(&v,
                    *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      uStack_10 = uStack_50;
-      fStack_c = fStack_4c;
-      uStack_8 = uStack_48;
-      uStack_154 = uStack_50;
-      uStack_14c = uStack_48;
-      uStack_160 = uStack_50;
-      uStack_158 = uStack_48;
-      *(float *)&uStack_15c = 400.0f;
-      uStack_150 = 0xc3c80000;
-      FUN_001acc30_typed((void*)(&uStack_160),(void*)(&uStack_10));
-      if (fStack_c <= 50.0f) {
+      a[1] = v;
+      a[0] = a[1];
+      a[0].y = 400.0f;
+      a[1].y = -400.0f;
+      FUN_001acc30_typed((void*)a,(void*)(&v));
+      if (v.y <= 50.0f) {
         FUN_001b0250_typed(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0),0);
-        lVar4 = FUN_001afa20_typed((*(u32 *)(iVar6 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0)),(void*)(&uStack_10));
+        lVar4 = FUN_001afa20_typed((*(u32 *)(iVar6 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0)),(void*)(&v));
         if (lVar4 != 0) {
           *(char *)(iVar2 + 8) = (char)*(u32 *)(iVar6 + 0x28);
           *(u8 *)(iVar2 + 3) = 8;
@@ -15343,20 +15206,16 @@ void FUN_00450b30(char param_1)
     }
     else {
       fVar8 = *(float *)(iVar6 + 0x14);
-      FUN_001ad940(&fStack_90,
+      FUN_001ad940(&target2,
                    *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
-      FUN_001ad940(&fStack_80,
+      FUN_001ad940(&self2,
                    *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-      fStack_120 = fStack_80;
-      fStack_11c = fStack_7c;
-      fStack_118 = fStack_78;
-      fStack_130 = fStack_90;
-      fStack_12c = fStack_8c;
-      fStack_128 = fStack_88;
-      fStack_140 = fStack_80 - fStack_90;
-      fStack_13c = fStack_7c - fStack_8c;
-      fStack_138 = fStack_78 - fStack_88;
-      fVar9 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_140));
+      selfCopy2 = self2;
+      targetCopy2 = target2;
+      delta2.x = selfCopy2.x - targetCopy2.x;
+      delta2.y = selfCopy2.y - targetCopy2.y;
+      delta2.z = selfCopy2.z - targetCopy2.z;
+      fVar9 = (float)FUN_004c6ac0_vec(&delta2);
       if (fVar9 < fVar8 * 3.0f) {
         FUN_001ad940(auStack_a0,
                      *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar2 + 0x18) * 0x70] + 0x1e0));
@@ -15831,39 +15690,19 @@ u32 FUN_004523c0(u64 param_1,char param_2)
   long lVar13;
   float fVar14;
   float fVar15;
-  float fStack_d0;
-  float fStack_cc;
-  float fStack_c8;
-  float fStack_c0;
-  float fStack_bc;
-  float fStack_b8;
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a8;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
+  RwV3d first;
+  RwV3d second;
+  RwV3d delta;
+  RwV3d first2;
+  RwV3d second2;
+  RwV3d delta2;
   u8 auStack_70 [16];
   u8 auStack_60 [16];
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
+  RwV3d target2;
+  RwV3d self2;
   u8 auStack_30 [16];
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  RwV3d target;
+  RwV3d self;
   
   iVar1 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_2 * 0x1c0) + 0x3c);
   iVar11 = iGpffffb5a0 + *(int *)((u8 *)DAT_0086ef2c + *(char *)(iVar1 + 1) * 0x1c0) * 0x40;
@@ -15877,20 +15716,16 @@ u32 FUN_004523c0(u64 param_1,char param_2)
       sVar6 = FUN_0043c910((char)lVar13);
       if (sVar6 != 0) {
         fVar15 = *(float *)(iVar11 + 0x14);
-        FUN_001ad940(&fStack_20,*(u32 *)(((u8 *)DAT_008717f4)[iVar12 * 0x70] + 0x1e0));
-        FUN_001ad940(&fStack_10,
+        FUN_001ad940(&target,*(u32 *)(((u8 *)DAT_008717f4)[iVar12 * 0x70] + 0x1e0));
+        FUN_001ad940(&self,
                      *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0)
                     );
-        fStack_80 = fStack_10;
-        fStack_7c = fStack_c;
-        fStack_78 = fStack_8;
-        fStack_90 = fStack_20;
-        fStack_8c = fStack_1c;
-        fStack_88 = fStack_18;
-        fStack_a0 = fStack_10 - fStack_20;
-        fStack_9c = fStack_c - fStack_1c;
-        fStack_98 = fStack_8 - fStack_18;
-        fVar14 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_a0));
+        first = self;
+        second = target;
+        delta.x = first.x - second.x;
+        delta.y = first.y - second.y;
+        delta.z = first.z - second.z;
+        fVar14 = (float)FUN_004c6ac0_vec(&delta);
         if (fVar14 < fVar15) {
           uVar9 = FUN_00318b60(*(u32 *)
                                 (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x128));
@@ -15899,21 +15734,17 @@ u32 FUN_004523c0(u64 param_1,char param_2)
                                 auStack_30);
           if (lVar10 == 1) {
             fVar15 = *(float *)(iVar11 + 0x14);
-            FUN_001ad940(&fStack_50,
+            FUN_001ad940(&target2,
                          *(u32 *)(((u8 *)DAT_008717f4)[*(char *)(iVar1 + 0x18) * 0x70] + 0x1e0));
-            FUN_001ad940(&fStack_40,
+            FUN_001ad940(&self2,
                          *(u32 *)
                           (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-            fStack_b0 = fStack_40;
-            fStack_ac = fStack_3c;
-            fStack_a8 = fStack_38;
-            fStack_c0 = fStack_50;
-            fStack_bc = fStack_4c;
-            fStack_b8 = fStack_48;
-            fStack_d0 = fStack_40 - fStack_50;
-            fStack_cc = fStack_3c - fStack_4c;
-            fStack_c8 = fStack_38 - fStack_48;
-            fVar14 = (float)FUN_004c6ac0_vec((const RwV3d*)(&fStack_d0));
+            first2 = self2;
+            second2 = target2;
+            delta2.x = first2.x - second2.x;
+            delta2.y = first2.y - second2.y;
+            delta2.z = first2.z - second2.z;
+            fVar14 = (float)FUN_004c6ac0_vec(&delta2);
             if (fVar15 <= fVar14) {
               sVar6 = FUN_001ad910(*(u32 *)(((u8 *)DAT_008717f4)[iVar12 * 0x70] + 0x1e0));
               sVar7 = FUN_001ad920(*(u32 *)(((u8 *)DAT_008717f4)[iVar12 * 0x70] + 0x1e0));
@@ -16975,29 +16806,16 @@ void FUN_00454f50(char param_1,char param_2)
   float fVar10;
   float fVar11;
   float fVar12;
-  float afStack_2b0 [3];
-  float fStack_2a4;
-  u32 uStack_2a0;
-  float fStack_29c;
-  float afStack_290 [3];
-  float fStack_284;
-  u32 uStack_280;
-  float fStack_27c;
-  float fStack_270;
-  float fStack_26c;
-  float fStack_268;
-  u64 uStack_260;
-  float fStack_258;
-  float fStack_250;
-  float fStack_24c;
-  float fStack_248;
+  YVec3f line2[2];
+  YVec3f collision2;
+  YVec3f line[2];
+  YVec3f collision;
   float fStack_240;
   float fStack_23c;
   float fStack_238;
   u64 uStack_230;
   float fStack_228;
-  u64 uStack_220;
-  float fStack_218;
+  
   u8 auStack_210 [8];
   float fStack_208;
   u8 auStack_200 [4];
@@ -17137,34 +16955,29 @@ void FUN_00454f50(char param_1,char param_2)
     fStack_2c = fVar11 + fStack_16c;
     FUN_001ad940(auStack_180,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    afStack_290[2] = fVar9 + fStack_178;
-    uStack_260 = CONCAT44(*(u32 *)&fStack_2c,*(u32 *)&fStack_30);
-    fStack_284 = fStack_30;
-    afStack_290[0] = fStack_30;
-    afStack_290[1] = 400.0f;
-    uStack_280 = 0xc3c80000;
-    fStack_27c = afStack_290[2];
-    fStack_258 = afStack_290[2];
-    uStack_220 = uStack_260;
-    fStack_218 = afStack_290[2];
-    fStack_28 = afStack_290[2];
+    fStack_28 = fVar9 + fStack_178;
+    collision.x = fStack_30;
+    collision.y = fStack_2c;
+    collision.z = fStack_28;
+    line[1] = collision;
+    line[0] = line[1];
+    line[0].y = 400.0f;
+    line[1].y = -400.0f;
     if (*(int *)((u8 *)DAT_0086ef2c +
                 *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + *(char *)(iVar1 + 1) * 0x1c0) + 0x3c) +
                          1) * 0x1c0) == 4) {
       bVar2 = 1;
     }
     else {
-      lVar3 = FUN_001acc30_typed((void*)(afStack_290),(void*)(&uStack_220));
+      lVar3 = FUN_001acc30_typed((void*)line,(void*)(&collision));
       bVar2 = 1;
       if (lVar3 != 1) {
         bVar2 = 0;
       }
-      else {
-        if (50.0f < *((float *)&uStack_220 + 1)) {
+      else if (50.0f < collision.y) {
           bVar2 = 0;
         }
       }
-    }
     if (!bVar2) {
       FUN_001ad940(&fStack_30,
                    *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
@@ -17211,35 +17024,28 @@ void FUN_00454f50(char param_1,char param_2)
     }
   }
   else {
-    fStack_250 = fStack_30;
-    fStack_24c = fStack_2c;
-    fStack_268 = fStack_28;
-    fStack_248 = fStack_28;
-    fStack_2a4 = fStack_30;
-    fStack_29c = fStack_28;
-    afStack_2b0[0] = fStack_30;
-    afStack_2b0[2] = fStack_28;
-    afStack_2b0[1] = 400.0f;
-    uStack_2a0 = 0xc3c80000;
-    fStack_270 = fStack_250;
-    fStack_26c = fStack_24c;
+    collision2.x = fStack_30;
+    collision2.y = fStack_2c;
+    collision2.z = fStack_28;
+    line2[1] = collision2;
+    line2[0] = line2[1];
+    line2[0].y = 400.0f;
+    line2[1].y = -400.0f;
     if (*(int *)((u8 *)DAT_0086ef2c +
                 *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + *(char *)(iVar1 + 1) * 0x1c0) + 0x3c) +
                          1) * 0x1c0) == 4) {
       bVar2 = 1;
     }
     else {
-      lVar3 = FUN_001acc30_typed((void*)(afStack_2b0),(void*)(&fStack_250));
+      lVar3 = FUN_001acc30_typed((void*)line2,(void*)(&collision2));
       bVar2 = 1;
       if (lVar3 != 1) {
         bVar2 = 0;
       }
-      else {
-        if (50.0f < fStack_24c) {
+      else if (50.0f < collision2.y) {
           bVar2 = 0;
         }
       }
-    }
     if (bVar2) {
       FUN_001afa20_typed((*(u32 *)(iVar7 + 0xc)),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(&fStack_30));
       *(u8 *)(iVar1 + 3) = 0x19;
@@ -17923,18 +17729,9 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
   char cVar13;
   u64 uVar14;
   u64 uVar15;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  YVec3f target;
+  YVec3f origin;
+  YVec3f midpoint;
   
   cVar13 = (char)param_2;
   iVar1 = *(int *)(*(int *)((u8 *)DAT_0087190c + cVar13 * 0x1c0) + 0x3c);
@@ -17945,15 +17742,12 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
       sVar4 = FUN_0043bda0(param_2,param_3);
       if (sVar4 != -1) {
         iVar11 = cVar10 * 0x1c0;
-        FUN_001ad940(&fStack_40,*(u32 *)(((u8 *)DAT_008717f4)[cVar10 * 0x70] + 0x1e0));
-        fStack_10 = fStack_40;
-        fStack_c = fStack_3c;
-        fStack_8 = fStack_38;
+        FUN_001ad940(&target,*(u32 *)(((u8 *)DAT_008717f4)[cVar10 * 0x70] + 0x1e0));
         uVar14 = 0xffffffffffffffff;
-        FUN_00318ed0_typed(*(u32 *)(((u8 *)DAT_008717f4)[cVar10 * 0x70] + 0x128),2,(float *)(&fStack_20));
-        fStack_30 = (fStack_20 + fStack_10) / 2.0f;
-        fStack_2c = (fStack_1c + fStack_c) / 2.0f;
-        fStack_28 = (fStack_18 + fStack_8) / 2.0f;
+        FUN_00318ed0_typed(*(u32 *)(((u8 *)DAT_008717f4)[cVar10 * 0x70] + 0x128),2,(float *)(&origin));
+        midpoint.x = (origin.x + target.x) / 2.0f;
+        midpoint.y = (origin.y + target.y) / 2.0f;
+        midpoint.z = (origin.z + target.z) / 2.0f;
         lVar9 = FUN_001c7130(2400.0f,(u32)((u8 *)DAT_008717a0 + iVar11));
         if (lVar9 == 1) {
           FUN_0010a4e0(1,8,3,2);
@@ -17963,9 +17757,9 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
           uVar15 = 3;
           uVar14 = 2;
         }
-        fStack_2c = fStack_2c - 80.0f;
+        midpoint.y = midpoint.y - 80.0f;
         iVar8 = FUN_001b9120_u32();
-        FUN_001a9760_typed((void *)(*(u32 *)(iVar8 + 0x10)),2,(void *)(&fStack_30),uVar15,uVar14);
+        FUN_001a9760_typed((void *)(*(u32 *)(iVar8 + 0x10)),2,(void *)(&midpoint),uVar15,uVar14);
         iVar8 = FUN_001b9120_u32();
         if (*(int *)(iVar8 + 0x28) != 0) {
           iVar8 = FUN_001b9120_u32();
