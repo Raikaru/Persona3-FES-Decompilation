@@ -161,6 +161,16 @@ extern const u8 D_006978B0[];
 extern const u8 D_00699FE0[];
 extern const u8 D_00699FF0[];
 extern const u8 D_0069A368[];
+#pragma alias voicePartyCameraStarts DAT_0069a3a0
+#pragma alias voicePartyCameraEnds DAT_0069a3d0
+#pragma alias voicePartyCameraTargets DAT_0069a400
+#pragma alias voicePartyCameraUps DAT_0069a430
+#pragma alias voicePartyCameraDurations DAT_0069a458
+extern RwV3d voicePartyCameraStarts[];
+extern RwV3d voicePartyCameraEnds[];
+extern RwV3d voicePartyCameraTargets[];
+extern RwV3d voicePartyCameraUps[];
+extern f32 voicePartyCameraDurations[];
 extern const u8 D_0069A2D0[];
 extern const u8 D_0069A2F0[];
 extern const u8 D_0069A310[];
@@ -2027,11 +2037,11 @@ void func_002f3a80(BtlAction* param_1)
   FUN_0027ed20(uVar7,0);
   iVar8 = iVar12 * 0xc;
   uVar7 = (u32)FUN_002a3d70_packet_voice(*(BtlAction**)(iGpffffb6fc + 0x148),
-                       (const RwV3d*)((const u8*)0x69a3a0 + iVar8),
-                       (const RwV3d*)((const u8*)0x69a3d0 + iVar8),
-                       (const RwV3d*)((const u8*)0x69a400 + iVar8),
-                       (const RwV3d*)((const u8*)0x69a430 + iVar8),
-                       *(float *)(iVar12 * 4 + 0x69a458) / 30.0f);
+                       voicePartyCameraStarts + iVar12,
+                       voicePartyCameraEnds + iVar12,
+                       voicePartyCameraTargets + iVar12,
+                       voicePartyCameraUps + iVar12,
+                       voicePartyCameraDurations[iVar12] / 30.0f);
   *(u16 *)((int)uVar7 + 0x48) = 0;
   *(u64 *)((int)uVar7 + 0x60) = *puVar13;
   FUN_0027ed20(uVar7,0);
@@ -3843,6 +3853,34 @@ extern f32 DAT_00697c9c;
 extern f32 DAT_00697ca0;
 extern f32 DAT_00697ca4;
 extern f32 DAT_00697ca8;
+#pragma alias voiceCameraPathsPlayer DAT_00697cc0
+#pragma alias voiceCameraPathType2 DAT_00698460
+#pragma alias voiceCameraPathType3_1 DAT_00698560
+#pragma alias voiceCameraPathType3_2 DAT_00698654
+#pragma alias voiceCameraPathType3_3 DAT_00698748
+#pragma alias voiceCameraPathType3_2Special DAT_00698e40
+#pragma alias voiceCameraPathType4 DAT_00698840
+#pragma alias voiceCameraPathType4Special DAT_00698f40
+#pragma alias voiceCameraPathType5 DAT_00698940
+#pragma alias voiceCameraPathType7 DAT_00698a40
+#pragma alias voiceCameraPathType7Special DAT_00699040
+#pragma alias voiceCameraPathType8 DAT_00698b40
+#pragma alias voiceCameraPathType8Special DAT_00699140
+#pragma alias voiceCameraPathType9 DAT_00698c40
+extern u8 voiceCameraPathsPlayer[];
+extern u8 voiceCameraPathType2[];
+extern u8 voiceCameraPathType3_1[];
+extern u8 voiceCameraPathType3_2[];
+extern u8 voiceCameraPathType3_3[];
+extern u8 voiceCameraPathType3_2Special[];
+extern u8 voiceCameraPathType4[];
+extern u8 voiceCameraPathType4Special[];
+extern u8 voiceCameraPathType5[];
+extern u8 voiceCameraPathType7[];
+extern u8 voiceCameraPathType7Special[];
+extern u8 voiceCameraPathType8[];
+extern u8 voiceCameraPathType8Special[];
+extern u8 voiceCameraPathType9[];
 extern u8 DAT_00698d40[];
 extern s16 DAT_00699240[];
 extern f32 DAT_00699244[];
@@ -3917,6 +3955,8 @@ extern f32 DAT_007cafe8;
 extern f32 DAT_007cafec;
 extern RwV3d D_00697890;
 extern RwV3d D_006978A0;
+#pragma alias D_006978A0_abs D_006978A0
+extern RwV3d D_006978A0_abs[];
 extern u32 DAT_007cc9a0;
 extern u32 DAT_007cc9a2;
 extern u32 DAT_007cc9a4;
@@ -6317,7 +6357,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
 
   if (firstUnit->genus == 0) {
     FUN_002d1de0_6a20(&work.rotation, &work.first, &work.second);
-    FUN_004be1e0_6a20(&work.rotated, (const RwV3d*)(uintptr_t)0x6978a0,
+    FUN_004be1e0_6a20(&work.rotated, D_006978A0_abs,
                       1, &work.rotation);
     work.rotated.x = work.rotated.x * work.secondRadius;
     work.rotated.y = work.rotated.y * work.secondRadius;
@@ -6335,7 +6375,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
   }
   else {
     FUN_002d1de0_6a20(&work.rotation, &work.second, &work.first);
-    FUN_004be1e0_6a20(&work.rotated, (const RwV3d*)(uintptr_t)0x6978a0,
+    FUN_004be1e0_6a20(&work.rotated, D_006978A0_abs,
                       1, &work.rotation);
     work.rotated.x = work.rotated.x * work.firstRadius;
     work.rotated.y = work.rotated.y * work.firstRadius;
@@ -6377,7 +6417,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
 
   FUN_002a4690_6a20(&work.aim, &work.camera, &work.base,
                     (const RwV3d*)D_00697880);
-  FUN_004be1e0_6a20(&work.rotated, (const RwV3d*)(uintptr_t)0x6978a0,
+  FUN_004be1e0_6a20(&work.rotated, D_006978A0_abs,
                     1, &work.aim);
   work.fromXZ[0] = work.base.x;
   work.fromXZ[1] = work.base.z;
@@ -6428,7 +6468,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
   else {
     FUN_002a44f0_6a20((f32*)&work.pose.pos, (f32*)&work.target);
     FUN_004be1e0_6a20(&work.rotated,
-                      (const RwV3d*)(uintptr_t)0x6978a0, 1,
+                      D_006978A0_abs, 1,
                       &work.pose.rot);
     work.rotated.x = work.rotated.x * 150.0f;
     work.rotated.y = work.rotated.y * 150.0f;
@@ -6560,57 +6600,57 @@ void func_002e7330(u64 param_1)
     switch(uVar3) {
     case 1:
       uVar4 = FUN_00308c60(*(u32 *)(iVar1 + 0xa2c));
-      unaff_s1_lo = (u8 *)((uVar4 & 0xff) * 0xf4 + 0x697cc0);
+      unaff_s1_lo = voiceCameraPathsPlayer + (uVar4 & 0xff) * 0xf4;
       break;
     case 2:
-      unaff_s1_lo = (u8 *)0x698460;
+      unaff_s1_lo = voiceCameraPathType2;
       break;
     case 3:
       cVar2 = FUN_003093a0(*(u32 *)(iVar1 + 0xa2c));
       if (cVar2 == '\x03') {
-        unaff_s1_lo = (u8 *)0x698748;
+        unaff_s1_lo = voiceCameraPathType3_3;
       }
       else if (cVar2 == '\x02') {
         if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4) {
-          unaff_s1_lo = (u8 *)0x698654;
+          unaff_s1_lo = voiceCameraPathType3_2;
         }
         else {
-          unaff_s1_lo = (u8 *)0x698e40;
+          unaff_s1_lo = voiceCameraPathType3_2Special;
         }
       }
       else if (cVar2 == '\x01') {
-        unaff_s1_lo = (u8 *)0x698560;
+        unaff_s1_lo = voiceCameraPathType3_1;
       }
       break;
     case 4:
       if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4) {
-        unaff_s1_lo = (u8 *)0x698840;
+        unaff_s1_lo = voiceCameraPathType4;
       }
       else {
-        unaff_s1_lo = (u8 *)0x698f40;
+        unaff_s1_lo = voiceCameraPathType4Special;
       }
       break;
     case 5:
-      unaff_s1_lo = (u8 *)0x698940;
+      unaff_s1_lo = voiceCameraPathType5;
       break;
     case 7:
       if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4) {
-        unaff_s1_lo = (u8 *)0x698a40;
+        unaff_s1_lo = voiceCameraPathType7;
       }
       else {
-        unaff_s1_lo = (u8 *)0x699040;
+        unaff_s1_lo = voiceCameraPathType7Special;
       }
       break;
     case 8:
       if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4) {
-        unaff_s1_lo = (u8 *)0x698b40;
+        unaff_s1_lo = voiceCameraPathType8;
       }
       else {
-        unaff_s1_lo = (u8 *)0x699140;
+        unaff_s1_lo = voiceCameraPathType8Special;
       }
       break;
     case 9:
-      unaff_s1_lo = (u8 *)0x698c40;
+      unaff_s1_lo = voiceCameraPathType9;
       break;
     case 10:
       unaff_s1_lo = DAT_00698d40;
