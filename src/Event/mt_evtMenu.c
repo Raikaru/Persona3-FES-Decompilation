@@ -24,21 +24,6 @@ typedef struct {
   f32 dy;
   f32 dz;
 } EvtRay;
-#ifndef CONCAT11
-#define CONCAT11(a,b) ((((u16)(u8)(a)) << 8) | (u8)(b))
-#endif
-#ifndef CONCAT12
-#define CONCAT12(a,b) ((((u32)(u8)(a)) << 16) | (u16)(b))
-#endif
-#ifndef CONCAT13
-#define CONCAT13(a,b) ((((u32)(u8)(a)) << 24) | (u32)(b))
-#endif
-#ifndef CONCAT31
-#define CONCAT31(a,b) ((((u32)(a)) << 8) | (u8)(b))
-#endif
-#ifndef CONCAT44
-#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
 
 void FUN_003957d0(f32 value, u64 object, u32* data);
 
@@ -479,6 +464,10 @@ extern u8 *PTR_s_DIRECT_0069f9a0;
 extern u8 *PTR_s_DIRECT_0069fa88;
 extern u8 *PTR_s_DIRECT_007ccda0;
 extern u8 *PTR_s_DIRECT_007cd258;
+#pragma alias PTR_s_DIRECT_007cd258_f32 PTR_s_DIRECT_007cd258
+extern f32 PTR_s_DIRECT_007cd258_f32;
+extern f32 PTR_DAT_007cd25c_f32;
+#pragma alias PTR_DAT_007cd25c_f32 PTR_DAT_007cd25c
 extern u8 *PTR_s_DISABLE_0069e6c8;
 extern u8 *PTR_s_DISPONOFF_007ccaa8;
 extern u8 *PTR_s_FADEOUT_0069ee14;
@@ -615,6 +604,14 @@ extern u8 DAT_0069fa30[];
 extern u8 DAT_0069fb58[];
 extern u8 DAT_0069fb88[];
 extern u8 DAT_0069fbd8[];
+#pragma alias DAT_0069fb98_abs DAT_0069fb98
+extern u8 DAT_0069fb98_abs[];
+#pragma alias DAT_0069fba8_abs DAT_0069fba8
+extern u8 DAT_0069fba8_abs[];
+#pragma alias DAT_0069fbc0_abs DAT_0069fbc0
+extern u8 DAT_0069fbc0_abs[];
+extern u8 DAT_007ccca8[];
+extern u8 DAT_007cd260[];
 extern u8 DAT_0069fc78[];
 extern u8 DAT_0069fc88[];
 extern u8 DAT_0069fc98[];
@@ -639,6 +636,7 @@ extern f32 DAT_0069eb18_f32[];
 extern f32 DAT_0069eb1c_f32[];
 #pragma alias DAT_0069eb20_f32 DAT_0069eb20
 extern f32 DAT_0069eb20_f32[];
+extern u8 gp0xffff9fb8;
 extern u8 gp0xffffa118;
 extern u8 gp0xffffa120;
 extern u8 gp0xffffa128;
@@ -12270,83 +12268,59 @@ u32 FUN_0037df50(int param_1,int param_2,int param_3)
 // FUN_0037DFC0 NONMATCHING
 
 
-void FUN_0037dfc0(int param_1,int param_2,int param_3,int param_4)
-
-
-
+void FUN_0037dfc0(int column, int row, int item, int menu)
 {
+  typedef union EvtMenuLabel {
+    f32 storage;
+    u8 *text;
+  } EvtMenuLabel;
+  u32 colour = 0;
+  EvtMenuLabel labels[2];
 
-  int lVar1;
+  labels[0].storage = PTR_s_DIRECT_007cd258_f32;
+  labels[1].storage = PTR_DAT_007cd25c_f32;
 
-  int iVar2;
-
-  u32 uVar3;
-
-  f32 uVar4;
-
-  u8 *apuStack_10 [4];
-
-  
-
-  uVar3 = 0;
-
-  apuStack_10[0] = PTR_s_DIRECT_007cd258;
-
-  apuStack_10[1] = PTR_DAT_007cd25c;
-
-  iVar2 = (int)param_4;
-
-  if (*(int *)(iVar2 + 400) == param_3) {
-
-    uVar3 = 4;
-
+  if (*(int *)(menu + 0x190) == item) {
+    colour = 4;
   }
 
-  if (param_3 == 1) {
+  switch (item) {
+  case 0:
+    if (*(int *)(menu + 0x198) < 2) {
+      int y = row * 0xc;
+      int x = column * 0xc;
+      f32 scale = FUN_0038a220(*(u32 *)(menu + 0xe0));
 
-    param_2 = param_2 * 0xc;
-
-    param_1 = param_1 * 0xc;
-
-    uVar4 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
-
-    evtMenuDrawText(param_1, param_2, uVar4, 0, (const char *)(void *)0x7ccca8);
-
-    uVar4 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
-
-    evtMenuDrawText(param_1, param_2, uVar4, uVar3, (const char *)(void *)0x69fba8, *(u32 *)(iVar2 + 0x19c));
-
-    if (*(int *)(iVar2 + 0x198) == 1) {
-
-
-      lVar1 = FUN_00397630(param_4,*(u32 *)(iVar2 + 0x19c),apuStack_10 + 3);
-
-      if (lVar1 == 1) {
-
-        uVar4 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
-
-        evtMenuDrawText(param_1, param_2, uVar4, uVar3, (const char *)(void *)0x69fbc0, (u32)apuStack_10[3]);
-
-      }
-
+      evtMenuDrawText(x, y, scale, 0, (const char *)&gp0xffff9fb8);
+      scale = FUN_0038a220(*(u32 *)(menu + 0xe0));
+      evtMenuDrawText(x, y, scale, colour, (const char *)DAT_0069fb98_abs,
+                      labels[*(int *)(menu + 0x198)].text);
     }
+    break;
 
+  case 1:
+    {
+      int y = row * 0xc;
+      int x = column * 0xc;
+      u8 *detail;
+      f32 scale = FUN_0038a220(*(u32 *)(menu + 0xe0));
+
+      evtMenuDrawText(x, y, scale, 0, (const char *)&gp0xffffa570);
+      scale = FUN_0038a220(*(u32 *)(menu + 0xe0));
+      evtMenuDrawText(x, y, scale, colour, (const char *)DAT_0069fba8_abs,
+                      *(u32 *)(menu + 0x19c));
+
+      if (*(int *)(menu + 0x198) == 1) {
+        detail = 0;
+        if (FUN_00397630(menu, *(u32 *)(menu + 0x19c), &detail) == 1) {
+          scale = FUN_0038a220(*(u32 *)(menu + 0xe0));
+          evtMenuDrawText(x, y, scale, colour,
+                          (const char *)DAT_0069fbc0_abs, detail);
+        }
+      }
+    }
+    break;
   }
-
-  else if ((param_3 == 0) && (*(int *)(iVar2 + 0x198) < 2)) {
-
-    uVar4 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
-
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, 0, (const char *)(void *)0x7cd260);
-
-    uVar4 = FUN_0038a220(*(u32 *)(iVar2 + 0xe0));
-
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar4, uVar3, (const char *)(void *)0x69fb98, (u32)apuStack_10[*(int *)(iVar2 + 0x198)]);
-
-  }
-
-  return;
-
 }
 
 

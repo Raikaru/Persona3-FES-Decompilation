@@ -2034,47 +2034,60 @@ void h_campDrawItemFrame(int param_1)
 // FUN_0014F320 NONMATCHING
 void h_campDrawItemFrameSelected(int param_1)
 {
-    CampBits pair;
-    CampBits first;
-    CampBits second;
+    struct {
+        u8 padding[8];
+        CampBits end;
+        CampBits start;
+        CampBits position;
+    } local;
 
-    pair.u = *(u64 *)(*(int *)(param_1 + 0xc) + 0x30);
+    local.position.f[0] = *(f32 *)(*(int *)(param_1 + 0xc) + 0x30);
+    local.position.f[1] = *(f32 *)(*(int *)(param_1 + 0xc) + 0x34);
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc)), 0, 2, 2,
-                  pair.u, pair.u, 0, 0, 0, 10);
-    first.f[0] = 590.0f;
-    first.f[1] = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
+                  local.position.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 590.0f;
+    local.position.f[1] = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 2,
-                  first.u, first.u, 0, 0, 0, 10);
+                  local.position.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 394.0f;
+    local.position.f[1] = 125.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 2,
-                  CAMP_PAIR_FLOATS(125.0f, 394.0f),
-                  CAMP_PAIR_FLOATS(125.0f, 394.0f), 0, 0, 0, 10);
+                  local.position.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 402.0f;
+    local.position.f[1] = 126.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0xcc), 0, 2, 2,
-                  CAMP_PAIR_FLOATS(126.0f, 402.0f),
-                  CAMP_PAIR_FLOATS(126.0f, 402.0f), 0, 0, 0, 10);
+                  local.position.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 321.0f;
+    local.position.f[1] = 15.0f;
+    local.start.u = local.position.u;
+    local.position.f[1] += 600.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
-    first.f[0] = 321.0f;
-    first.f[1] = 126.0f;
-    second.f[0] = 321.0f;
-    second.f[1] = 614.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 2,
-                  first.u, second.u, 0, 0, 0, 10);
+                  local.start.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 355.0f;
+    local.position.f[1] = 124.0f;
+    local.end.u = local.position.u;
+    local.position.f[1] += 600.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-    first.f[0] = 354.0f;
-    first.f[1] = 124.0f;
-    second.f[0] = 354.0f;
-    second.f[1] = 726.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x154), 0, 2, 2,
-                  first.u, second.u, 0, 0, 0, 10);
+                  local.end.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 47.0f;
+    local.position.f[1] = 385.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-    first.f[0] = 47.0f;
-    first.f[1] = 384.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 2,
-                  first.u, first.u, 0, 0, 0, 10);
+                  local.position.u, local.position.u, 0, 0, 0, 10);
+
+    local.position.f[0] = 392.0f;
+    local.position.f[1] = 385.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-    first.f[0] = 392.0f;
-    first.f[1] = 384.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 2,
-                  first.u, first.u, 0, 0, 0, 10);
+                  local.position.u, local.position.u, 0, 0, 0, 10);
 }
 
 // FUN_0014F680

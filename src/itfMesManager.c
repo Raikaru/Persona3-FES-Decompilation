@@ -45,6 +45,8 @@ extern u32 itfMesEntries[];
 #pragma alias DAT_00959eec_abs DAT_00959eec
 extern u32 DAT_00959eec_abs[];
 extern code DAT_00960178;
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
 extern u8 * PTR_LAB_007bb150;
 #pragma alias DAT_00959870_abs DAT_00959870
 extern u8 DAT_00959870_abs[];
@@ -210,7 +212,7 @@ extern void FUN_003a5980_typed(u32 *param_1);
 void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4);
 #pragma alias FUN_003a5ca0_typed FUN_003a5ca0
 extern void FUN_003a5ca0_typed(u32 param_1,long param_2,u64 param_3,long param_4);
-void FUN_003a5ea0(long param_1,long param_2,u32 param_3);
+void FUN_003a5ea0(int param_1,int param_2,u32 param_3);
 #pragma alias FUN_003a5ea0_typed FUN_003a5ea0
 extern void FUN_003a5ea0_typed(u32 param_1);
 void FUN_003a5fd0(int param_1);
@@ -3438,44 +3440,49 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 }
 #define FUN_003a5ca0(...) ((void (*)(...))FUN_003a5ca0)(__VA_ARGS__)
 #undef FUN_003a5ea0
-// FUN_003A5EA0 NONMATCHING
+typedef struct ItfMesAllocationSlots {
+  u32 objects[32];
+  u32 allocations[32];
+} ItfMesAllocationSlots;
+
+// FUN_003A5EA0
 
 
-void FUN_003a5ea0(long param_1,long param_2,u32 param_3)
+void FUN_003a5ea0(int manager, int index, u32 value)
 {
-  u32 uVar1;
-  long lVar2;
-  int iVar3;
-  int *piVar4;
-  u32 *puVar5;
-  int iVar6;
+  ItfMesAllocationSlots *slots;
+  u32 *object;
+  u32 *allocation;
+  int byte_offset;
+  u32 memory;
 
-  if (param_1 == 0) {
-    FUN_0019d3f0("itfMesManager.c",0x10ea);
+  if (manager == 0) {
+    FUN_0019d3f0("itfMesManager.c", 0x10ea);
   }
-  if ((param_2 < 0) || (0x1f < param_2)) {
-    FUN_0019d3f0("itfMesManager.c",0x10eb);
+  if ((index < 0) || (index >= 32)) {
+    FUN_0019d3f0("itfMesManager.c", 0x10eb);
   }
-  iVar3 = (int)param_1 + 0xd4;
-  iVar6 = (int)param_2 * 4;
-  piVar4 = (int *)(iVar3 + iVar6);
-  if (*piVar4 != 0) {
-    FUN_00191a10(piVar4[0x20]);
-    *piVar4 = 0;
+
+  manager += 0xd4;
+  slots = (ItfMesAllocationSlots *)manager;
+  byte_offset = index * sizeof(u32);
+  object = (u32 *)((u8 *)slots->objects + byte_offset);
+  if (*object != 0) {
+    FUN_00191a10(*(u32 *)((u8 *)slots->allocations + byte_offset));
+    *object = 0;
   }
-  lVar2 = FUN_0016f190(0x1424);
-  if (lVar2 == 0) {
-    puVar5 = (u32 *)(iVar6 + iVar3 + 0x80);
-    uVar1 = FUN_00191af0(4);
-    *puVar5 = uVar1;
+
+  if (FUN_0016f190(0x1424) != 0) {
+    allocation = (u32 *)((u8 *)slots->allocations + byte_offset);
+    *allocation = (*DAT_00960178_abs)(4, 0x40000);
   } else {
-    puVar5 = (u32 *)(iVar6 + iVar3 + 0x80);
-    uVar1 = (*DAT_00960178)(4,0x40000);
-    *puVar5 = uVar1;
+    allocation = (u32 *)((u8 *)slots->allocations + byte_offset);
+    *allocation = FUN_00191af0(4);
   }
-  puVar5 = (u32 *)*puVar5;
-  *(u32 **)(iVar3 + (int)param_2 * 4) = puVar5;
-  *puVar5 = param_3;
+  object = &slots->objects[index];
+  memory = *allocation;
+  *object = memory;
+  *(u32 *)memory = value;
 }
 #define FUN_003a5ea0(...) ((void (*)(...))FUN_003a5ea0)(__VA_ARGS__)
 #undef FUN_003a5fd0

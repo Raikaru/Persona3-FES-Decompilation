@@ -2337,53 +2337,52 @@ after_branch:
     }
     return result;
 }
+// Retail uses separate 12-entry effect/skill result arrays and passes their counts to the selected dispatcher.
 // FUN_001FC720 NONMATCHING
 
 
-u32 func_001fc720(u8* param_1)
+u32 func_001fc720(u8* event)
 {
-  u32 uVar1;
-  int in_v1_lo;
-  int unaff_s0_lo;
-  u32 unaff_s0_hi;
-  int lVar2;
-  u8 auStack_50[48];
-  u8 auStack_20[24];
-  int iStack_8;
-  int iStack_4;
+    s32 in_v1;
+    s32 in_s0;
+    u32 result;
+    s32 threshold;
+    u16 effectResults[12];
+    u32 skillResults[12];
+    s32 effectCount;
+    s32 skillCount;
 
-  if (in_v1_lo / 3 >= in_v1_lo) {
-    if ((~*(u16*)param_1 & 4) == 0)
-      FUN_0019d3f0(0x684d60, 0xaa);
+    if (in_v1 / 3 < in_v1)
+        return 0;
 
-    func_001fc980(param_1, (u16*)auStack_20, &iStack_4);
-    func_001fcb30(param_1, (u32*)auStack_50, &iStack_8);
-    lVar2 = (long)((unaff_s0_lo * 0x1e) / 100);
-    if ((lVar2 < CONCAT44(unaff_s0_hi, unaff_s0_lo)) || (iStack_8 == 0)) {
-      if (iStack_4 == 0) {
-        if ((CONCAT44(unaff_s0_hi, unaff_s0_lo) < lVar2) ||
-            (iStack_8 == 0)) {
-          uVar1 = 0;
-        }
-        else {
-          func_001fd350(param_1, (u32*)auStack_50, 1);
-          uVar1 = 1;
-        }
-      }
-      else {
-        func_001fce20(param_1, (u16*)auStack_20, 1);
-        uVar1 = 1;
-      }
+    if ((~*(u16*)event & 4) == 0)
+        FUN_0019d3f0((u32)DAT_00684d60, 0xaa);
+
+    func_001fc980(event, effectResults, &effectCount);
+    func_001fcb30(event, skillResults, &skillCount);
+    threshold = in_s0 * 30 / 100;
+
+    if (threshold >= in_s0 && skillCount != 0)
+    {
+        func_001fd350(event, skillResults, skillCount);
+        result = 1;
     }
-    else {
-      func_001fd350(param_1, (u32*)auStack_50, 1);
-      uVar1 = 1;
+    else if (effectCount != 0)
+    {
+        func_001fce20(event, effectResults, effectCount);
+        result = 1;
     }
-  }
-  else {
-    uVar1 = 0;
-  }
-  return uVar1;
+    else if (in_s0 >= threshold && skillCount != 0)
+    {
+        func_001fd350(event, skillResults, skillCount);
+        result = 1;
+    }
+    else
+    {
+        result = 0;
+    }
+
+    return result;
 }
 // FUN_001FC870 NONMATCHING
 

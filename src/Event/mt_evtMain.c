@@ -2,9 +2,6 @@
 
 typedef int code(...);
 typedef u8 bool;
-#ifndef CONCAT44
-#define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
-#endif
 
 extern u8 D_0069DFF0[];
 extern u8 D_0069E088[];
@@ -9509,7 +9506,9 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
   u16 *puVar2;
 
-  long lVar3;
+  int iVar6;
+
+  int lVar3;
 
   short sVar4;
 
@@ -9517,13 +9516,15 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
   int iVar8;
 
-  int iVar6;
-
   u32 uVar7;
 
-  u32 uStack_8;
-
-  u32 uStack_4;
+  union EvtPackedValue {
+    u32 value;
+    struct {
+      u16 low;
+      u16 high;
+    } half;
+  } packedNoEntry, packedEntry;
 
   
 
@@ -9551,7 +9552,14 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
   }
 
-  if ((iVar6 != 0) && (lVar3 = FUN_003b5d00(), lVar3 != 0)) {
+  if (iVar6 == 0) {
+    return 0;
+  }
+  lVar3 = FUN_003b5d00();
+  if (lVar3 == 0) {
+    return 0;
+  }
+  {
 
     if (*(int *)(iVar5 + 0x108) + *(int *)(iVar5 + 0x110) == 0) {
 
@@ -9609,17 +9617,17 @@ u64 FUN_00368f20(u64 param_1,int param_2,u8 *param_3)
 
       if (puVar2 == (u16 *)0x0) {
 
-        uStack_4 = CONCAT22(sVar4,(short)*(u32 *)(iVar5 + 0x16c));
-
-        *(u32 *)(iVar5 + 0x16c) = uStack_4;
+        packedNoEntry.value = *(u32 *)(iVar5 + 0x16c);
+        packedNoEntry.half.high = sVar4;
+        *(u32 *)(iVar5 + 0x16c) = packedNoEntry.value;
 
       }
 
       else {
 
-        uStack_8 = CONCAT22(sVar4,(short)*(u32 *)(iVar5 + 0x16c));
-
-        *(u32 *)(iVar5 + 0x16c) = uStack_8;
+        packedEntry.value = *(u32 *)(iVar5 + 0x16c);
+        packedEntry.half.high = sVar4;
+        *(u32 *)(iVar5 + 0x16c) = packedEntry.value;
 
       }
 
