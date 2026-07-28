@@ -2190,7 +2190,7 @@ void func_001aa1b0(void)
     func_00109f60(4, 0);
 }
 
-// FUN_001aa8f0 NONMATCHING
+// FUN_001aa8f0
 void* func_001aa8f0(KwlnTask* task)
 {
     u32* work = (u32*)task->workData;
@@ -2202,7 +2202,7 @@ void* func_001aa8f0(KwlnTask* task)
             work[2] = 0;
         }
     }
-    else if (func_001c7130(0x45228000, work[0]) == 1)
+    else if (func_001c7130(2600, work[0]) == 1)
     {
         if (work[2] > 0x96)
         {

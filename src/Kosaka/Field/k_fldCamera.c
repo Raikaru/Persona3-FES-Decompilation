@@ -59,6 +59,8 @@ extern const char DAT_00683b10[];
 extern const char D_00683A8C[];
 extern const char D_00683AD0[];
 extern const char D_00683A90[];
+extern const u64 D_00683A98;
+extern const f32 D_00683AA0;
 extern void* DAT_00960184[];
 extern u32* PTR_DAT_007cd540;
 extern void* D_007CE2B0;
@@ -192,9 +194,9 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
         } while (i != 0);
     }
     axisPtr = &axis;
-    axisXY = *(u64*)(uintptr_t)0x00683a98;
+    axisXY = D_00683A98;
     *(u64*)axisPtr = axisXY;
-    axisPtr->z = *(f32*)(uintptr_t)0x00683aa0;
+    axisPtr->z = D_00683AA0;
     FUN_004cb890(cameraFrame, amount, axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();

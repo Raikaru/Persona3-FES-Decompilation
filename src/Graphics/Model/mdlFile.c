@@ -799,7 +799,7 @@ u32 FUN_0031f740(float param_1,int *param_2);
 u8 * FUN_0031f7a0(float param_1,int *param_2);
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
-void FUN_0031faf0(f32 *param_1,u64 param_2);
+void FUN_0031faf0(f32 *param_1,u32 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
 #pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
 extern u32 *FUN_0031fbd0_noargs(void);
@@ -1552,7 +1552,7 @@ extern u64 FUN_0019fd70();
 extern void func_001a13b0(void);
 extern void FUN_001a14c0(u32 param_1);
 extern u64 FUN_001a4b70();
-extern u64 FUN_001a6400();
+extern u32 FUN_001a6400();
 extern u64 FUN_001b5ae0();
 extern u64 FUN_001eda00();
 #pragma alias FUN_001eda00_u32 FUN_001eda00
@@ -1977,6 +1977,7 @@ extern u32 DAT_007caea0;
 extern u32 DAT_007caea4;
 extern u32 DAT_007caf08;
 extern float DAT_007caf14;
+extern u8 DAT_0069baf0[];
 extern f32 DAT_007caf84;
 extern u8 DAT_007cca38;
 extern u8 DAT_007cca39;
@@ -4200,17 +4201,17 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 
 
 // FUN_0031FAF0 NONMATCHING
-void FUN_0031faf0(f32 *param_1,u64 param_2)
+void FUN_0031faf0(f32 *param_1,u32 param_2)
 {
   u32 uVar1;
   float fVar2;
   u8 rgba[4];
 
-  uVar1 = FUN_001a6400(param_2,0x69baf0);
+  uVar1 = FUN_001a6400(param_2,(u32)DAT_0069baf0);
 
   fVar2 = (1.0f - param_1[1]) * 255.0f;
 
-  rgba[3] = (u8)(int)fVar2;
+  rgba[3] = (u8)(u32)fVar2;
 
   rgba[2] = (u8)uVar1;
   rgba[1] = (u8)((u32)uVar1 >> 8);
@@ -10817,19 +10818,19 @@ u32 FUN_003268c0(u32 param_1)
 
   FUN_00326c70((u32 *)(uVar3),(u16)(**(u16 **)(iVar4 + 0x4c)),(u32)(iVar1));
 
-  if (*puVar5 != 0) {
+  if (*puVar5 == 0) {
+    return uVar3;
+  }
 
-    if (*(int *)(iVar4 + 0x50) != 0) {
+  if (*(int *)(iVar4 + 0x50) != 0) {
 
-      uVar2 = FUN_00323640((u16 *)(param_1));
+    uVar2 = FUN_00323640((u16 *)(param_1));
 
-      puVar5[0x14] = uVar2;
-
-    }
-
-    FUN_003269e0(uVar3,param_1);
+    puVar5[0x14] = uVar2;
 
   }
+
+  FUN_003269e0(uVar3,param_1);
 
   return uVar3;
 
@@ -21477,6 +21478,8 @@ u32 FUN_00332370(int param_1)
 
 
 
+// Confirmed b210 register-colouring floor (W205): +68 ffff2332/ffff2632,
+// +72 0800612c/0800c12c, +92 80180300/80180600 (ours/retail).
 // FUN_00332470 NONMATCHING
 
 
@@ -27156,6 +27159,7 @@ void FUN_00338530(int param_1)
   }
 
   else {
+
 
     iVar2 = *(int *)(iVar2 + 0x14);
 

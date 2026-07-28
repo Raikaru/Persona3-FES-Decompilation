@@ -625,6 +625,8 @@ FclList* fclCombineList003da0c0(void* param_1, s32 param_2)
     return work;
 }
 
+// Confirmed cyclic saved-register floor: +32..+200 swaps $s1/$s2 throughout;
+// the loop bounds, node traversal, call arguments, and instruction sequence are identical.
 // FUN_003da2a0 NONMATCHING
 void fclCombineList003da2a0(FclList* param_1)
 {

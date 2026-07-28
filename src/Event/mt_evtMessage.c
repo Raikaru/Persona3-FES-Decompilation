@@ -7,6 +7,15 @@ typedef u32 int3;
 extern u32 DAT_006a1850;
 extern u8 DAT_006a0000[];
 extern u32 DAT_006a1870;
+extern u8 DAT_006a1940[];
+extern u8 DAT_006a1960[];
+extern u8 DAT_006a1980[];
+extern u8 DAT_006a19a0[];
+extern u8 DAT_006a19c0[];
+extern u8 DAT_006a19e0[];
+extern u8 DAT_006a1a00[];
+extern u8 DAT_006a1a20[];
+extern u8 DAT_006a1a40[];
 extern f32 DAT_007cae58;
 extern f32 DAT_007caf30;
 extern u32 DAT_007cd490;
@@ -55,7 +64,7 @@ extern void FUN_003b7090(u16 param_1);
 extern void FUN_00100ec0(int param_1);
 extern void FUN_00133d30(int param_1,int param_2);
 extern u32 FUN_001021c0();
-extern long FUN_00195460();
+extern int FUN_00195460();
 extern int FUN_00194b20();
 
 #ifndef CONCAT44
@@ -2886,7 +2895,7 @@ u32 FUN_003a0e90(int param_1)
 }
 #define FUN_003a0e90(...) ((u32 (*)(...))FUN_003a0e90)(__VA_ARGS__)
 #undef FUN_003a1c00
-// FUN_003A1C00 NONMATCHING
+// FUN_003A1C00
 
 
 u32 FUN_003a1c00(int param_1)
@@ -2922,14 +2931,14 @@ u32 FUN_003a1c00(int param_1)
   iVar4 = *piVar1;
   switch (iVar4) {
   case 0:
-    iVar4 = FUN_00100d80(0x6a1940,1);
+    iVar4 = FUN_00100d80(DAT_006a1940,1);
     piVar1[4] = iVar4;
     *piVar1 = 1;
     break;
   case 1:
     lVar6 = FUN_001016b0(piVar1[4]);
     if (lVar6 == 1) {
-      uVar7 = FUN_001021c0(0x6a1960,auStack_4);
+      uVar7 = FUN_001021c0(DAT_006a1960,auStack_4);
       piVar1[0x17] = (int)uVar7;
       FUN_0039ec70_call(piVar8,uVar7);
       uVar3 = FUN_001099a0();
@@ -2944,23 +2953,23 @@ u32 FUN_003a1c00(int param_1)
         FUN_0039f120_call(piVar8,4,(short)piVar1[1],cVar2);
       }
       FUN_0039eef0_call(piVar8,5,cVar2);
-      uVar7 = FUN_001021c0(0x6a1980,auStack_4);
+      uVar7 = FUN_001021c0(DAT_006a1980,auStack_4);
       FUN_0039ed20_call(piVar1 + 0xf,uVar7);
       FUN_0039efd0_call(piVar1 + 0xf,0,(short)piVar1[1]);
       FUN_0039f190_call(piVar1 + 0xf,1,(short)piVar1[1]);
-      iVar4 = FUN_001021c0(0x6a19a0,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a19a0,auStack_4);
       piVar1[0x1d] = iVar4;
-      iVar4 = FUN_001021c0(0x6a19c0,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a19c0,auStack_4);
       piVar1[0x1e] = iVar4;
-      iVar4 = FUN_001021c0(0x6a19a0,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a19a0,auStack_4);
       piVar1[0x1f] = iVar4;
-      iVar4 = FUN_001021c0(0x6a19e0,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a19e0,auStack_4);
       piVar1[0x20] = iVar4;
-      iVar4 = FUN_001021c0(0x6a1a00,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a1a00,auStack_4);
       piVar1[0x21] = iVar4;
-      iVar4 = FUN_001021c0(0x6a1a20,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a1a20,auStack_4);
       piVar1[0x22] = iVar4;
-      iVar4 = FUN_001021c0(0x6a1a40,auStack_4);
+      iVar4 = FUN_001021c0(DAT_006a1a40,auStack_4);
       piVar1[0x23] = iVar4;
       for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
         *(u16 *)((int)piVar1 + iVar4 * 2 + 0xec) = 0;
@@ -2969,7 +2978,7 @@ u32 FUN_003a1c00(int param_1)
     }
     break;
   case 2:
-    iVar4 = FUN_00194b20(param_1,&gp0xffffa7b8,0x10,0x3a0e90,0,piVar1);
+    iVar4 = FUN_00194b20(param_1,&gp0xffffa7b8,0x10,FUN_003a0e90,0,piVar1);
     FUN_0039f950_call((int)piVar1);
     piVar1[0x24] = iVar4;
     *piVar1 = 3;

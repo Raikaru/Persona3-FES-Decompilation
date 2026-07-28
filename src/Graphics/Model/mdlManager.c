@@ -1151,6 +1151,7 @@ extern u8 DAT_009571b8_abs[];
 #pragma alias DAT_009571bc_abs DAT_009571bc
 extern u8 DAT_009571bc_abs[];
 extern float fGpffff80e4;
+extern char gp0xffff9d10;
 extern u8 LAB_003131f8;
 extern f32 DAT_007cada4;
 extern void (*DAT_0096017c[])(...);
@@ -1159,6 +1160,10 @@ extern u8 LAB_00313790;
 extern u8 LAB_00313b48;
 extern u8 LAB_00314020;
 extern u8 LAB_00314060;
+#pragma alias LAB_00314020_abs LAB_00314020
+extern u8 LAB_00314020_abs[];
+#pragma alias LAB_00314060_abs LAB_00314060
+extern u8 LAB_00314060_abs[];
 extern u8 LAB_0031494c;
 extern u8 LAB_003140a0;
 extern u8 LAB_003140b0;
@@ -3925,7 +3930,8 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
   u32 *puVar3;
 
-  u32 lVar4;
+  u32 userData;
+  u32 animation;
 
   struct {
     code callback;
@@ -3943,7 +3949,7 @@ void func_003143c0(u8* param_1,RpClump* param_2)
     callbackData.callback = (code)func_00313f40;
     callbackData.value = uVar1;
 
-    func_004916d0(param_2,0x313fe0,&callbackData);
+    func_004916d0(param_2,(u32)func_00313fe0,&callbackData);
 
     *(u32 *)(*(int *)(param_1 + 0x18) + 8) = uVar1;
 
@@ -3953,17 +3959,17 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
         puVar2 != puVar3; puVar2 = puVar2 + 1) {
 
-      lVar4 = func_003142b0((void*)*puVar2);
+      userData = func_003142b0((void*)*puVar2);
 
-      if (((lVar4 != 0) && (lVar4 = func_00524670(lVar4,0x7cca00,5), lVar4 == 0)) &&
+      if (((userData != 0) && (func_00524670(userData,(u32)&gp0xffff9d10,5) == 0)) &&
 
-         (lVar4 = func_004b97b0(*puVar2,0), lVar4 != 0)) {
+         (animation = func_004b97b0(*puVar2,0), animation != 0)) {
 
-        func_004b7010(lVar4,0x314170,0);
+        func_004b7010(animation,(u32)func_00314170,0);
 
-        *(u8 **)((int)lVar4 + 0x40) = &LAB_00314020;
+        *(u8 **)((int)animation + 0x40) = LAB_00314020_abs;
 
-        *(u8 **)((int)lVar4 + 0x44) = &LAB_00314060;
+        *(u8 **)((int)animation + 0x44) = LAB_00314060_abs;
 
       }
 
@@ -7055,6 +7061,10 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 
 
+// Confirmed b210 cyclic a2/a3 colouring floor (W205, ours/retail):
+// +4 08000724/08000624, +16 ffff6631/ffff6731, +20 40180600/40180700,
+// +24 21186600/21186700, +52 2d40e000/2d40c000, +60 0000468d/0000478d,
+// +76 000026ad/000027ad.
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_propagation off
@@ -8374,6 +8384,8 @@ switchD_0031b278_caseD_2:
       }
 
       break;
+
+
 
     case '\x02':
 
