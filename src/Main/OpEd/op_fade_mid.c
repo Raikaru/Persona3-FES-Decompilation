@@ -161,52 +161,59 @@ static inline u8 opFadeColorByte(f32 value)
 // FUN_00275050 NONMATCHING
 void func_00275050(s32 index)
 {
-    u8 *work;
+    u32 *work;
     u16 *skills;
-    s32 count;
+    s32 skillCount;
     s32 slot;
-    s32 found;
-    s32 i;
+    s32 skillIndex;
+    s32 unavailable;
+    s8 kind;
+    u8 *entry;
 
     if (gOpWorkC0 == NULL)
         K_Assert(D_0068ED88, 0xb0);
-    work = (u8 *)gOpWorkC0;
-    skills = datPersonaGetSkills(OP_PTR(work, 0x30));
-    count = (s32)datPersonaCountValidSkills(OP_PTR(work, 0x30));
-    if (index >= OP_S32(work, 0x1c0))
+    work = gOpWorkC0;
+    skills = datPersonaGetSkills((void *)(uintptr_t)work[0x30 / 4]);
+    skillCount = (s32)datPersonaCountValidSkills(
+        (void *)(uintptr_t)work[0x30 / 4]);
+    if (index >= (s32)work[0x1c0 / 4])
         K_Assert(D_0068ED88, 0x638);
     slot = 0;
-    found = 0;
-loop_5:
-    if (OP_S8((u8 *)(uintptr_t)(OP_S32(work, 0x34) +
-        (OP_S32(work, 0x78) + slot) * 4), 7) == 4)
-        goto block_16;
-    if (OP_S8((u8 *)(uintptr_t)(OP_S32(work, 0x34) +
-        (OP_S32(work, 0x78) + slot) * 4), 7) != 1)
+    unavailable = 0;
+
+loop:
+    entry = (u8 *)(uintptr_t)work[0x34 / 4] +
+            ((s32)work[0x78 / 4] + slot) * 4 + 6;
+    kind = *(s8 *)(entry + 1);
+    if (kind == 4)
+        goto next;
+    if (kind != 1)
     {
         K_Assert(D_0068ED88, 0x644);
-        goto block_16;
+        goto next;
     }
-    for (i = 0; i < count; i++)
+    skillIndex = 0;
+    while (skillIndex < skillCount)
     {
-        if (OP_U16((u8 *)(uintptr_t)(OP_S32(work, 0x34) +
-            (OP_S32(work, 0x78) + slot) * 4), 8) == skills[i])
+        if (skills[skillIndex] == *(u16 *)(entry + 2))
             break;
+        skillIndex++;
     }
-    if (i == count)
+    if (skillIndex == skillCount)
     {
-        if (found == index)
+        if (unavailable != index)
+            unavailable++;
+        else
             return;
-        found += 1;
     }
-block_16:
-    slot += 1;
-    if (OP_S32((u8 *)gOpWorkC0, 0x78) + slot >= 0x10)
+next:
+    slot++;
+    if ((s32)work[0x78 / 4] + slot >= 0x10)
         K_Assert(D_0068ED88, 0x65b);
-    goto loop_5;
+    goto loop;
 }
 
-// FUN_002751e0 NONMATCHING
+// FUN_002751e0
 s32 func_002751e0(void)
 {
     s32 remaining;
@@ -217,6 +224,7 @@ s32 func_002751e0(void)
     s32 skillCount;
     u32 *work;
     u8 *entry;
+    u8 *persona;
 
     if (gOpWorkC0 == NULL)
         K_Assert(D_0068ED88, 0xb0);
@@ -226,12 +234,10 @@ s32 func_002751e0(void)
         (void *)(uintptr_t)work[0x30 / 4]);
     slot = 0;
     unavailable = 0;
-    remaining =
-        (OP_U8((void *)(uintptr_t)work[0x30 / 4], 4) -
-         OP_U8(OP_U16((void *)(uintptr_t)work[0x30 / 4], 2) * 0xe +
-                   DAT_007ce420 + 3,
-               0)) -
-        OP_U8(work, 0x38);
+    persona = (u8 *)(uintptr_t)work[0x30 / 4];
+    remaining = persona[4] -
+                DAT_007ce420[*(u16 *)(persona + 2) * 0xe + 3] -
+                OP_U8(work, 0x38);
 
 loop:
     entry = (u8 *)(uintptr_t)(

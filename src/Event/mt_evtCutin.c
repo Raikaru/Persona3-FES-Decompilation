@@ -674,83 +674,49 @@ u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
 // FUN_00397870 NONMATCHING
 
 
-u32
-
-FUN_00397870(int param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6)
-
-
-
+u32 FUN_00397870(int param_1,int param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6)
 {
+    int iVar1;
+    int iVar2;
+    int index;
+    int length;
+    int base;
+    int offset;
+    int scaled;
+    u32 bVar1;
 
-  u8 bVar1;
-
-  u32 uVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = *(int *)(param_1 + 8);
-
-  if (iVar3 == 0) {
-
-    bVar1 = 0;
-
-  }
-
-  else if (*(int *)(iVar3 + 0x60) == 0) {
-
-    bVar1 = 0;
-
-  }
-
-  else if (*(int *)(param_1 + 0x970) < (int)(u32)*(u16 *)(*(int *)(iVar3 + 0x60) + 2)) {
-
-    bVar1 = 1;
-
-  }
-
-  else {
-
-    bVar1 = 0;
-
-  }
-
-  if (bVar1) {
-
+    iVar1 = *(int *)(param_1 + 8);
+    if (iVar1 == 0) {
+        bVar1 = 0;
+    } else {
+        iVar2 = *(int *)(iVar1 + 0x60);
+        if (iVar2 == 0) {
+            bVar1 = 0;
+        } else {
+            index = *(int *)(param_1 + 0x970);
+            length = (int)(u32)*(u16 *)(iVar2 + 2);
+            if (length <= index) {
+                bVar1 = 0;
+            } else {
+                bVar1 = 1;
+            }
+        }
+    }
+    if (!bVar1) {
+        return 0;
+    }
     if (param_2 >= 10) {
-
-      uVar2 = 0;
-
+        return 0;
     }
-
-    else {
-
-      iVar3 = (int)param_2 * 8 +
-
-              *(int *)(param_1 + 0x970) * 0x8c + *(int *)(*(int *)(iVar3 + 0x60) + 4);
-
-      *param_3 = (u32)*(u16 *)(iVar3 + 0x34);
-
-      *param_4 = (u32)*(u16 *)(iVar3 + 0x36);
-
-      *param_5 = (u32)*(u16 *)(iVar3 + 0x38);
-
-      *param_6 = (u32)*(u16 *)(iVar3 + 0x3a);
-
-      uVar2 = 1;
-
-    }
-
-  }
-
-  else {
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+    index = *(int *)(param_1 + 0x970);
+    iVar2 = *(int *)((u8 *)iVar1 + 0x60);
+    base = *(int *)(iVar2 + 4);
+    offset = param_2 * 8;
+    scaled = index * 0x8c;
+    *param_3 = (u32)*(u16 *)((scaled + base) + offset + 0x34);
+    *param_4 = (u32)*(u16 *)(scaled + base + offset + 0x36);
+    *param_5 = (u32)*(u16 *)(scaled + base + offset + 0x38);
+    *param_6 = (u32)*(u16 *)(scaled + base + offset + 0x3a);
+    return 1;
 }
 #define FUN_00397870(...) ((u32 (*)(...))FUN_00397870)(__VA_ARGS__)

@@ -2197,13 +2197,13 @@ HSfdImage* func_0010e0d0(const u8* stream)
     return image;
 }
 
-// FUN_0010E500 NONMATCHING
+// FUN_0010E500
 HSfdImage* func_0010e500(void* stream)
 {
     u8 header[0x40];
     void* handle;
-    u8* buffer;
     HSfdImage* image;
+    u8* buffer;
 
     image = NULL;
     handle = func_004c58a0(2, 1, stream);

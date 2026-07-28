@@ -5,6 +5,8 @@
 static u32* sBppMain; // DAT_007ce2f4
 void bppMain0020f680(void);
 u8* bppMain0020f720(s16 pcId);
+#pragma alias bppMain0020f720_u16 bppMain0020f720
+extern u8* bppMain0020f720_u16(u16 pcId);
 
 extern void* btlOrderGetActionPlaying(void);
 extern u32 func_0029b0c0(void* action);
@@ -149,7 +151,7 @@ void bppMain0020edf0(void)
             case 0:
                 K_ASSERT((*work & 4) != 0, 0x93);
                 bppPanelDeactivateDetail((BppPanelWork*)(
-                    bppMain0020f720(
+                    bppMain0020f720_u16(
                         *(u16*)((u8*)*(void**)((u8*)action + 0xa2c) + 2)) + 0x20));
                 break;
             }
@@ -166,7 +168,7 @@ void bppMain0020edf0(void)
                 case 0:
                     K_ASSERT((*work & 4) != 0, 0xad);
                     bppPanelDeactivateDetail((BppPanelWork*)(
-                        bppMain0020f720(
+                        bppMain0020f720_u16(
                             *(u16*)((u8*)*(void**)((u8*)unit + 0xa2c) + 2)) + 0x20));
                     break;
                 }
@@ -174,32 +176,40 @@ void bppMain0020edf0(void)
             }
             *work &= ~1u;
             if (func_0029b0c0(action) != 0) {
-                switch (*(u8*)((u8*)*(void**)((u8*)action + 0x30) + 0xa2)) {
+                void* actionUnit;
+
+                actionUnit = *(void**)((u8*)action + 0x30);
+                switch (*(u8*)((u8*)actionUnit + 0xa2)) {
                 case 0:
                     bppPanelActivateDetail((BppPanelWork*)(
-                        bppMain0020f720(
-                            *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2)) + 0x20));
+                        bppMain0020f720_u16(
+                            *(u16*)((u8*)*(void**)((u8*)actionUnit + 0xa2c) + 2)) + 0x20));
                     *(u16*)((u8*)work + 0x5a58) =
                         *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2);
                     *work |= 4;
                     break;
                 }
-                work[0x1695] = *(u32*)((u8*)action + 0xa8);
+                work[0x1695] =
+                    *(u32*)((u8*)*(void**)((u8*)action + 0x30) + 0xa8);
                 *work |= 1;
             }
         } else if (action != NULL && (~*work & 1) != 0 &&
                    func_0029b0c0(action) != 0) {
-            switch (*(u8*)((u8*)*(void**)((u8*)action + 0x30) + 0xa2)) {
+            void* actionUnit;
+
+            actionUnit = *(void**)((u8*)action + 0x30);
+            switch (*(u8*)((u8*)actionUnit + 0xa2)) {
             case 0:
                 bppPanelActivateDetail((BppPanelWork*)(
-                    bppMain0020f720(
-                        *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2)) + 0x20));
+                    bppMain0020f720_u16(
+                        *(u16*)((u8*)*(void**)((u8*)actionUnit + 0xa2c) + 2)) + 0x20));
                 *(u16*)((u8*)work + 0x5a58) =
                     *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2);
                 *work |= 4;
                 break;
             }
-            work[0x1695] = *(u32*)((u8*)action + 0xa8);
+            work[0x1695] =
+                *(u32*)((u8*)*(void**)((u8*)action + 0x30) + 0xa8);
             *work |= 1;
         }
     }

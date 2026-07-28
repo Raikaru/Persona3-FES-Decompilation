@@ -14,7 +14,7 @@ extern void FUN_00124e00(CampVec2 position, CampVec2 otherPosition,
                          f32 alpha, void* persona,
                          s32 mode, s32 frame, s32 fade);
 extern void* FUN_00173220(u16 personaId);
-extern s32 FUN_00173280();
+extern u8 FUN_00173280(s32 personaId);
 extern s32 FUN_00176600(void* persona);
 extern s32 FUN_00177790();
 extern s32 FUN_001120a0();
@@ -811,35 +811,42 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
     void* resource;
     s32 personaId;
     u8 level;
-    CampVec2 finalPosition;
+    CampVec2 originalPosition;
+    CampVec2 iconPosition;
+    CampVec2 levelPosition;
+    CampVec2 drawPosition;
 
+    originalPosition = position;
+    drawPosition = position;
     drawAlpha = alpha;
-    finalPosition = position;
-    campPersonaDrawSprite(parent, DAT_00833B90, 1,
-                          position.x + 22.0f, position.y + 117.0f,
+    campPersonaDrawSprite(parent, *(void**)DAT_00833B90_abs, 1,
+                          drawPosition.x + 22.0f, drawPosition.y + 117.0f,
                           fade, drawAlpha);
-    resource = DAT_00833B88;
+    iconPosition = originalPosition;
+    resource = *(void**)DAT_00833B88_abs;
     personaId = FUN_00173280(*(u16*)((u8*)persona + 2)) - 1;
     campPersonaDrawSprite(parent, resource, personaId,
-                          position.x + 105.0f, position.y + 142.0f,
+                          iconPosition.x + 105.0f, iconPosition.y + 142.0f,
                           fade, alpha);
+    levelPosition = originalPosition;
     level = *((u8*)persona + 4);
     if (level >= 10) {
         campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
                               level / 10 + 0xb,
-                              position.x + 67.0f,
-                              position.y + 127.0f, fade, alpha);
+                              levelPosition.x + 67.0f,
+                              levelPosition.y + 127.0f, fade, alpha);
         campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
                               level % 10 + 0xb,
-                              position.x + 82.0f,
-                              position.y + 127.0f, fade, alpha);
-    } else {
-        campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                              level % 10 + 0xb,
-                              position.x + 75.0f,
-                              position.y + 127.0f, fade, alpha);
+                              levelPosition.x + 82.0f,
+                              levelPosition.y + 127.0f, fade, alpha);
     }
-    FUN_00124fd0(finalPosition, alpha, persona, fade);
+    else {
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                              level % 10 + 0xb,
+                              levelPosition.x + 75.0f,
+                              levelPosition.y + 127.0f, fade, alpha);
+    }
+    FUN_00124fd0(originalPosition, alpha, persona, fade);
 }
 
 static s32 campPersonaTransitionIsReady(void)

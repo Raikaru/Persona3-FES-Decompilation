@@ -398,35 +398,69 @@ static void K_Encount_Face(FldUnit* unit, FldUnit* target)
 // FUN_001d7b70 NONMATCHING
 DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
 {
-    EncounterWork* work;
-    s32 currentIndex;
-    s32 pcIndex;
-    s32 ecIndex;
-    s32 unitIndex;
+    s32 temp_3;
+    s32 temp_6;
+    s32 var_10;
+    s32 var_11;
+    s32 var_4;
+    s32 var_9;
+    s32 pcCount;
+    s32 ecCount;
+    void* temp_8;
+    void* ecBase;
 
-    work = (EncounterWork*)task->workData;
-    currentIndex = 0;
-    for (pcIndex = 0; pcIndex < work->pcCount; pcIndex++)
+    temp_8 = task->workData;
+    var_10 = 0;
+    var_4 = 0;
+    pcCount = *(s32*)((u8*)temp_8 + 0x10);
+    goto pc_check;
+pc_body:
+    if (flatIndex == var_10)
     {
-        if (flatIndex == currentIndex)
-        {
-            return work->pc[pcIndex]->genusBase->unit;
-        }
-        currentIndex++;
+        return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + var_4 * 4 + 0x18) +
+                                      0x48))->unit;
     }
-    for (ecIndex = 0; ecIndex < work->ecCount; ecIndex++)
+    var_10 += 1;
+    var_4 += 1;
+pc_check:
+    if (var_4 < pcCount)
     {
-        for (unitIndex = 0; unitIndex < 6; unitIndex++)
+        goto pc_body;
+    }
+    var_9 = 0;
+    ecCount = *(s32*)((u8*)temp_8 + 0x14);
+    goto ec_check;
+ec_body:
+    var_11 = 0;
+    temp_6 = var_9 * 4;
+    ecBase = (u8*)temp_8 + temp_6;
+    goto unit_check;
+unit_body:
+    temp_3 = var_11 * 0x3c;
+    if (((*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) + 0x48))->unit +
+         var_11)->id != 0)
+    {
+        if (flatIndex == var_10)
         {
-            if (work->ec[ecIndex]->genusBase->unit[unitIndex].id != 0)
-            {
-                if (flatIndex == currentIndex)
-                {
-                    return &work->ec[ecIndex]->genusBase->unit[unitIndex];
-                }
-                currentIndex++;
-            }
+            return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + temp_6 +
+                                                           0x28) +
+                                          0x48))->unit + var_11;
         }
+        var_10 += 1;
+        goto unit_next;
+    }
+unit_next:
+    var_11 += 1;
+unit_check:
+    if (var_11 < 6)
+    {
+        goto unit_body;
+    }
+    var_9 += 1;
+ec_check:
+    if (var_9 < ecCount)
+    {
+        goto ec_body;
     }
     return NULL;
 }
@@ -435,35 +469,58 @@ DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
 // FUN_001d7c60 NONMATCHING
 FldUnit* func_001d7c60(KwlnTask* task, s32 flatIndex)
 {
-    EncounterWork* work;
-    s32 currentIndex;
-    s32 pcIndex;
-    s32 ecIndex;
-    s32 unitIndex;
+    s32 temp_7;
+    s32 var_10;
+    s32 var_11;
+    s32 var_12;
+    s32 var_4;
+    void* temp_9;
 
-    work = (EncounterWork*)task->workData;
-    currentIndex = 0;
-    for (pcIndex = 0; pcIndex < work->pcCount; pcIndex++)
+    temp_9 = task->workData;
+    var_11 = 0;
+    var_4 = 0;
+    goto loop_4;
+pc_body:
+    if (flatIndex == var_11)
     {
-        if (flatIndex == currentIndex)
-        {
-            return work->pc[pcIndex];
-        }
-        currentIndex++;
+        return *(FldUnit**)((u8*)temp_9 + var_4 * 4 + 0x18);
     }
-    for (ecIndex = 0; ecIndex < work->ecCount; ecIndex++)
+    var_11 += 1;
+    var_4 += 1;
+loop_4:
+    if (var_4 < *(s32*)((u8*)temp_9 + 0x10))
     {
-        for (unitIndex = 0; unitIndex < 6; unitIndex++)
+        goto pc_body;
+    }
+    var_10 = 0;
+    goto loop_14;
+ec_body:
+    var_12 = 0;
+    temp_7 = var_10 * 4;
+    goto loop_12;
+unit_body:
+    if (((*(FldUnit**)((u8*)temp_9 + temp_7 + 0x28))->genusBase->unit +
+         var_12)->id != 0)
+    {
+        if (flatIndex == var_11)
         {
-            if (work->ec[ecIndex]->genusBase->unit[unitIndex].id != 0)
-            {
-                if (flatIndex == currentIndex)
-                {
-                    return work->ec[ecIndex];
-                }
-                currentIndex++;
-            }
+            return *(FldUnit**)((u8*)temp_9 + temp_7 + 0x28);
         }
+        var_11 += 1;
+        goto block_11;
+    }
+block_11:
+    var_12 += 1;
+loop_12:
+    if (var_12 < 6)
+    {
+        goto unit_body;
+    }
+    var_10 += 1;
+loop_14:
+    if (var_10 < *(s32*)((u8*)temp_9 + 0x14))
+    {
+        goto ec_body;
     }
     return NULL;
 }

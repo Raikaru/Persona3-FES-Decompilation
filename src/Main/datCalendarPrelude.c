@@ -66,6 +66,7 @@ extern u8 D_0083A6FC[];
 extern const char D_005e3098[];
 extern const char D_005e3278[];
 extern u8 DAT_00836e1c[];
+extern u8 DAT_00836ba3[];
 extern u32 gSpecialStatusMessage;
 extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce420;
@@ -895,7 +896,7 @@ void FUN_0017ac60(u32 code)
                 work->entries[j] = work->entries[j + 1];
                 j++;
             }
-            U8(0x00836ba3) = 0;
+            DAT_00836ba3[0] = 0;
         }
         i++;
     }

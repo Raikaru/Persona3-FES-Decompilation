@@ -6801,7 +6801,8 @@ void FUN_0038d840(u8 *param_1,u8 *param_2,int param_3)
   if (*param_1 == 0) {
     iVar1 = (u32)param_1[1] * 3 + 1;
     *param_2 = param_1[1];
-    iVar3 = 0, iVar4 = 1;
+    iVar3 = 0;
+    iVar4 = 1;
     iVar2 = iVar1 - 1;
     for (; iVar3 < iVar1; iVar3 = iVar3 + 1) {
       if (param_3 == iVar4) {

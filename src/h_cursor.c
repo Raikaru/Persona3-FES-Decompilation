@@ -9,11 +9,11 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 {
     RwRenderStateSetFunc* setRenderState;
     HCursorWork* work;
+    HCursorWork* indexedWork;
     RwIm2DVertex* vertex;
-    RwRGBA* color;
     f32 recipZ;
-    u8* globals;
     s16 i;
+    u8* globals;
 
     work = (HCursorWork*)hcursorTask->workData;
 
@@ -46,11 +46,11 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 
                 vertex->u.els.scrVertex.z = *(RwReal*)(globals + 0x88) - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
-                color = &work->colors[i];
-                vertex->u.els.color.r = (f32)color->r;
-                vertex->u.els.color.g = (f32)color->g;
-                vertex->u.els.color.b = (f32)color->b;
-                vertex->u.els.color.a = (f32)color->a;
+                indexedWork = (HCursorWork*)((RwRGBA*)work + i);
+                vertex->u.els.color.r = (f32)indexedWork->colors[0].r;
+                vertex->u.els.color.g = (f32)indexedWork->colors[0].g;
+                vertex->u.els.color.b = (f32)indexedWork->colors[0].b;
+                vertex->u.els.color.a = (f32)indexedWork->colors[0].a;
             }
 
             work->vertices[0].u.els.scrVertex.x = work->pos.x;
