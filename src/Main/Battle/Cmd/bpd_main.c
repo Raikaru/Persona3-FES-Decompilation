@@ -31,7 +31,7 @@ s32 FUN_0021cce0();
 extern u32 FUN_0021cca0_u64_u32(u64 param_1, u32 param_2);
 extern u32 FUN_0021cce0_u32(u32 param_1);
 extern void FUN_002807a0(u32 param_1, RwV3d *position);
-extern u32 FUN_002d20a0(const RwV3d *projected, RwV2d *screen);
+extern u32 FUN_002d20a0(const RwV3d *projected, f32 *screen);
 extern u32 FUN_00300580(u32 param_1, u32 param_2);
 extern s32 FUN_0027f930(s32 param_1);
 extern f32 FUN_0052e878(f32 param_1);
@@ -116,7 +116,7 @@ void FUN_00252f30(void)
   float fVar12;
   RwV4d rect;
   RwV3d projected;
-  RwV2d screen;
+  f32 screen[3];
   RwRGBA color;
 
   K_ASSERT(sBpd660 != NULL, 0x25);
@@ -133,7 +133,7 @@ void FUN_00252f30(void)
            iVar1 = *(int *)(iVar1 + 0xa34)) {
         if ((~*(u32 *)(iVar1 + 0x9c) & 8) == 0) {
           FUN_002807a0(iVar1,&projected);
-          lVar6 = FUN_002d20a0(&projected,&screen);
+          lVar6 = FUN_002d20a0(&projected,screen);
           if ((lVar6 != 0) &&
               (lVar6 = FUN_00300580(*(u32 *)(iVar1 + 0xa2c),0x100000),
                lVar6 != 0)) {
@@ -142,8 +142,8 @@ void FUN_00252f30(void)
             entry = puVar2 + uVar7 * 0x48;
             data = (f32 *)(entry + 4);
             entry[5] = *(u32 *)(iVar1 + 0xa8);
-            data[0x44] = screen.x;
-            data[0x45] = screen.y;
+            data[0x44] = screen[0];
+            data[0x45] = screen[1];
             iVar3 = FUN_0027f930(iVar1);
             data[0x46] = (f32)*(u8 *)(iVar3 + 3) / 255.0f;
             uVar7 = uVar7 + 1;

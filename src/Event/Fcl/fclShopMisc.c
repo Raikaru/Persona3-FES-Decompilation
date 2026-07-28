@@ -253,7 +253,7 @@ u32 FUN_003f1830(short *param_1,int param_2);
 u32 FUN_003f1910(u64 param_1);
 u32 FUN_003f1a10(u32 param_1);
 void FUN_003f1ba0(int param_1,u32 param_2);
-u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3);
+u32 FUN_003f1dc0(u16 param_1,int param_2,int param_3);
 u8 FUN_003f2240(int param_1,long param_2);
 u64 FUN_003f2320(int param_1,int param_2);
 u32 FUN_003f2510(void);
@@ -2467,189 +2467,88 @@ void FUN_003f1ba0(int param_1,u32 param_2)
 // FUN_003F1DC0 NONMATCHING
 
 
-u32 FUN_003f1dc0(u16 param_1,long param_2,long param_3)
-
-
-
+u32 FUN_003f1dc0(u16 param_1,int param_2,int param_3)
 {
-
   u8 uVar1;
-
   short sVar2;
-
   u32 *puVar3;
-
   float *pfVar4;
-
-  u32 uVar5;
-
   short *psVar6;
-
   float fVar7;
-
   int iStack_4;
 
-  
-
   if ((param_3 < 0) || (299 < param_3)) {
-
     K_Assert((const char *)DAT_006aede8,0x40f);
-
   }
-
   if (param_2 == 0) {
-
     K_Assert((const char *)DAT_006aede8,0x410);
-
   }
-
   memset(param_2,0,0x1c);
-
   sVar2 = datGetEquipmentId(param_1,param_3);
-
-  if (sVar2 != 0) {
-
-    psVar6 = (short *)param_2;
-
-    *psVar6 = sVar2;
-
-    psVar6[5] = 1;
-
-    psVar6[1] = (short)param_3;
-
-    iStack_4 = 0;
-
-    puVar3 = (u32 *)func_00170ed0(sVar2,&iStack_4);
-
-    if (iStack_4 == 4) {
-
-      K_Assert((const char *)DAT_006aede8,0x442);
-
-      *(u8 *)(psVar6 + 4) = 2;
-
-
-      *(u32 *)(psVar6 + 2) = uVar5;
-
-      *(u32 *)(psVar6 + 6) = puVar3[3];
-
-    }
-
-    else if (iStack_4 == 3) {
-
-      uVar1 = datGetEquipmentEffect(param_1,param_3);
-
-      *(u8 *)((int)psVar6 + 9) = uVar1;
-
-      *(u8 *)(psVar6 + 4) = 2;
-
-
-      *(u32 *)(psVar6 + 2) = uVar5;
-
-      *(u32 *)(psVar6 + 6) = puVar3[4];
-
-      psVar6[8] = *(short *)(puVar3 + 1);
-
-      psVar6[9] = *(short *)(puVar3 + 2);
-
-      psVar6[10] = *(short *)((int)puVar3 + 6);
-
-      psVar6[0xb] = *(short *)((int)puVar3 + 10);
-
-      psVar6[0xc] = *(short *)(puVar3 + 3);
-
-    }
-
-    else if (iStack_4 == 2) {
-
-      uVar1 = datGetEquipmentEffect(param_1,param_3);
-
-      *(u8 *)((int)psVar6 + 9) = uVar1;
-
-      pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
-
-      uVar1 = func_0016f810(param_1,param_3);
-
-      *(u8 *)(psVar6 + 4) = uVar1;
-
-
-      *(u32 *)(psVar6 + 2) = uVar5;
-
-      fVar7 = (float)func_00171510(*(u16 *)(puVar3 + 5),(char)psVar6[4]);
-
-      *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[4] * *pfVar4 * fVar7);
-
-      sVar2 = func_0016fcc0(param_1,param_3);
-
-      psVar6[0xb] = sVar2;
-
-    }
-
-    else if (iStack_4 == 1) {
-
-      uVar1 = datGetEquipmentEffect(param_1,param_3);
-
-      *(u8 *)((int)psVar6 + 9) = uVar1;
-
-      pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
-
-      uVar1 = func_0016f810(param_1,param_3);
-
-      *(u8 *)(psVar6 + 4) = uVar1;
-
-
-      *(u32 *)(psVar6 + 2) = uVar5;
-
-      fVar7 = (float)func_00171510(*(u16 *)(puVar3 + 5),(char)psVar6[4]);
-
-      *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[4] * *pfVar4 * fVar7);
-
-      sVar2 = func_0016fbd0(param_1,param_3);
-
-      psVar6[10] = sVar2;
-
-    }
-
-    else if (iStack_4 == 0) {
-
-      uVar1 = datGetEquipmentEffect(param_1,param_3);
-
-      *(u8 *)((int)psVar6 + 9) = uVar1;
-
-      pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
-
-      uVar1 = func_0016f810(param_1,param_3);
-
-      *(u8 *)(psVar6 + 4) = uVar1;
-
-
-      *(u32 *)(psVar6 + 2) = uVar5;
-
-      fVar7 = (float)func_00171510(*(u16 *)(puVar3 + 7),(char)psVar6[4]);
-
-      *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[6] * *pfVar4 * fVar7);
-
-      sVar2 = func_0016f9f0(param_1,param_3);
-
-      psVar6[8] = sVar2;
-
-      sVar2 = func_0016fae0(param_1,param_3);
-
-      psVar6[9] = sVar2;
-
-    }
-
-    uVar5 = 1;
-
+  if (sVar2 == 0) {
+    return 0;
   }
-
-  else {
-
-    uVar5 = 0;
-
+  psVar6 = (short *)param_2;
+  *psVar6 = sVar2;
+  psVar6[5] = 1;
+  psVar6[1] = (short)param_3;
+  iStack_4 = 0;
+  puVar3 = (u32 *)func_00170ed0(sVar2,&iStack_4);
+  switch (iStack_4) {
+  case 0:
+    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    *(u8 *)((int)psVar6 + 9) = uVar1;
+    pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
+    uVar1 = func_0016f810(param_1,param_3);
+    *(u8 *)(psVar6 + 4) = uVar1;
+    *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[1]);
+    fVar7 = (float)func_00171510(*(short *)(puVar3 + 7),(char)psVar6[4]);
+    *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[6] * *pfVar4 * fVar7);
+    psVar6[8] = func_0016f9f0(param_1,param_3);
+    psVar6[9] = func_0016fae0(param_1,param_3);
+    break;
+  case 1:
+    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    *(u8 *)((int)psVar6 + 9) = uVar1;
+    pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
+    uVar1 = func_0016f810(param_1,param_3);
+    *(u8 *)(psVar6 + 4) = uVar1;
+    *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[1]);
+    fVar7 = (float)func_00171510(*(short *)(puVar3 + 5),(char)psVar6[4]);
+    *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[4] * *pfVar4 * fVar7);
+    psVar6[10] = func_0016fbd0(param_1,param_3);
+    break;
+  case 2:
+    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    *(u8 *)((int)psVar6 + 9) = uVar1;
+    pfVar4 = (float *)func_001714f0(*(u8 *)((int)psVar6 + 9));
+    uVar1 = func_0016f810(param_1,param_3);
+    *(u8 *)(psVar6 + 4) = uVar1;
+    *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[1]);
+    fVar7 = (float)func_00171510(*(short *)(puVar3 + 5),(char)psVar6[4]);
+    *(int *)(psVar6 + 6) = (int)((float)(u32)puVar3[4] * *pfVar4 * fVar7);
+    psVar6[0xb] = func_0016fcc0(param_1,param_3);
+    break;
+  case 3:
+    uVar1 = datGetEquipmentEffect(param_1,param_3);
+    *(u8 *)((int)psVar6 + 9) = uVar1;
+    *(u8 *)(psVar6 + 4) = 2;
+    *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[0]);
+    *(u32 *)(psVar6 + 6) = puVar3[4];
+    psVar6[8] = *(u16 *)(puVar3 + 1);
+    psVar6[9] = *(u16 *)(puVar3 + 2);
+    psVar6[10] = *(u16 *)((int)puVar3 + 6);
+    psVar6[0xb] = *(u16 *)((int)puVar3 + 10);
+    psVar6[0xc] = *(u16 *)(puVar3 + 3);
+    break;
+  case 4:
+    K_Assert((const char *)DAT_006aede8,0x442);
+    *(u8 *)(psVar6 + 4) = 2;
+    *(u32 *)(psVar6 + 2) = FUN_003f1a10(puVar3[0]);
+    *(u32 *)(psVar6 + 6) = puVar3[3];
+    break;
   }
-
-  return uVar5;
-
+  return 1;
 }
 
 // FUN_003F2240 NONMATCHING

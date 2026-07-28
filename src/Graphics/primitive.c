@@ -350,10 +350,10 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
 // FUN_00359b40 NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
-    u32 i;
-    const PrimRenderState* currRenderState;
     const RwRGBA* color_p = color;
     f32 radius_p = radius;
+    u32 i;
+    const PrimRenderState* currRenderState;
     RwMatrix mat;
     u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
     u32* currSavedRenderState;

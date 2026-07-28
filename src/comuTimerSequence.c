@@ -1491,14 +1491,11 @@ u32 FUN_003c0f20(void)
 u32 FUN_003c1150(void)
 {
   int iVar1;
-  u8 bVar2;
+  int bVar2;
   int *piVar3;
   u32 uVar4;
-  long lVar5;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  int lVar5;
+  u8 auStack_20[0x1c];
 
   piVar3 = (int *)FUN_00195540();
   iVar1 = *piVar3;
@@ -1509,12 +1506,16 @@ u32 FUN_003c1150(void)
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
+      bVar2 = 1;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
+      bVar2 = 0;
+    }
+    if (bVar2) {
       lVar5 = FUN_003c2630(0,0,0);
       if (lVar5 != 1) {
         return 0xffffffff;
@@ -1524,22 +1525,25 @@ u32 FUN_003c1150(void)
     break;
   case 2:
     FUN_00521408(auStack_20,0,0x1c);
-    uStack_14 = 0x32c;
-    uStack_10 = 2;
-    uStack_c = 0;
+    ((u32 *)auStack_20)[3] = 0x32c;
+    ((u32 *)auStack_20)[4] = 2;
+    ((u32 *)auStack_20)[5] = 0;
     FUN_0027c080(3,auStack_20,0x1c,0);
     *piVar3 = 3;
     break;
   case 3:
-    lVar5 = FUN_0027c2b0();
-    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-      bVar2 = 1;
-    }
-    else {
-      bVar2 = 0;
-    }
-    if (bVar2) {
-      *piVar3 = 4;
+    {
+      int bVar3;
+      lVar5 = FUN_0027c2b0();
+      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+        bVar3 = 1;
+      }
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        *piVar3 = 4;
+      }
     }
     break;
   case 4:
