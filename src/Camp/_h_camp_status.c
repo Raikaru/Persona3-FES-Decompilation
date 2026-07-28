@@ -2117,8 +2117,8 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     register u8* parent;
     void* resource;
     u32 value;
-    f32 digitY;
     f32 digitX;
+    f32 digitY;
 
 
     value = FUN_00173660(persona, 0) & 0xff;
@@ -2273,8 +2273,8 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
     register u8* parent;
     void* resource;
     u32 value;
-    f32 digitY;
     f32 digitX;
+    f32 digitY;
 
 
     value = FUN_00173580(persona, 0) & 0xff;
@@ -3810,7 +3810,7 @@ void* FUN_001311d0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00133780 NONMATCHING
+// FUN_00133780
 void* func_00133780(KwlnTask* task)
 {
     u8* work;
@@ -3819,23 +3819,23 @@ void* func_00133780(KwlnTask* task)
     work = (u8*)task->workData;
     switch (*(u32*)work) {
     case 0:
-        if (*(u32*)(work + 4) == 0) {
+        if (*(u32*)(work + 4) != 0) {
+            sprintf((char*)(work + 0x2c), D_005DACB0,
+                    *(u32*)(work + 4));
+            cdvd = H_Cdvd_Request((char*)(work + 0x2c), HCDVD_FILENORMAL);
+            *(HCdvd**)(work + 0x24) = cdvd;
+            *(u32*)work = 1;
+            *(f32*)(work + 0x18) = 700.0f;
+            *(f32*)(work + 0x1c) = -117.0f;
+            *(f32*)(work + 0x14) = 10.0f;
+        } else {
             *(u32*)work = 3;
-            break;
         }
-        sprintf((char*)(work + 0x2c), D_005DACB0,
-                *(u32*)(work + 4));
-        cdvd = H_Cdvd_Request((char*)(work + 0x2c), HCDVD_FILENORMAL);
-        *(HCdvd**)(work + 0x24) = cdvd;
-        *(u32*)work = 1;
-        *(f32*)(work + 0x18) = 700.0f;
-        *(f32*)(work + 0x1c) = -117.0f;
-        *(f32*)(work + 0x14) = 10.0f;
         break;
 
     case 1:
         cdvd = *(HCdvd**)(work + 0x24);
-        if (cdvd != NULL && H_Cdvd_IsFileLoaded(cdvd) != 0) {
+        if (H_Cdvd_IsFileLoaded(cdvd) != 0) {
             *(void**)(work + 0x20) = func_0010c1a0(
                 NULL, (char*)(work + 0x2c), 0, 0, 0, 0, 0, 0, 0, 0,
                 D_005DB170, 0x3c0);
@@ -3844,19 +3844,14 @@ void* func_00133780(KwlnTask* task)
         break;
 
     case 2:
-        if (*(void**)(work + 0x20) != NULL) {
-            *(void**)(work + 0x28) =
-                func_0010c3a0(*(void**)(work + 0x20),
-                              &wasReady, NULL);
-            if (wasReady != 0) {
-                *(void**)(work + 0x20) = NULL;
-                cdvd = *(HCdvd**)(work + 0x24);
-                if (cdvd != NULL) {
-                    H_Cdvd_Destroy(cdvd);
-                    *(HCdvd**)(work + 0x24) = NULL;
-                }
-                *(u32*)work = 3;
-            }
+        *(void**)(work + 0x28) =
+            func_0010c3a0(*(void**)(work + 0x20), &wasReady, NULL);
+        if (wasReady != 0) {
+            *(void**)(work + 0x20) = NULL;
+            cdvd = *(HCdvd**)(work + 0x24);
+            H_Cdvd_Destroy(cdvd);
+            *(HCdvd**)(work + 0x24) = NULL;
+            *(u32*)work = 3;
         }
         break;
 

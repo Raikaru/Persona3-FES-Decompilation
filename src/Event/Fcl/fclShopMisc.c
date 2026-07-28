@@ -177,7 +177,7 @@ float fGpffff823c;
 int *iGpffffabf8;
 int iGpffffabfc;
 int iGpffffac00;
-int *iGpffffb730;
+u32 iGpffffb730;
 int *iGpffffb7f4;
 int iGpffffb7f8;
 extern u8 *pbGpffffabe8;
@@ -19066,7 +19066,7 @@ void FUN_0040b3a0(u64 param_1,int param_2,int param_3)
       FUN_0040e3c0_f32(0.0f,x,y,alpha,0x9f,0);
       drawX = x + 0x15d;
       drawY = y + 0x4d;
-      tableEntry = (u8 *)iGpffffb730 + *(u16 *)(*(int *)(work + 4) + 2) * 0xe;
+      tableEntry = (u8 *)(*(u16 *)(*(int *)(work + 4) + 2) * 0xe + iGpffffb730);
       FUN_0040e3c0_f32(
           0.0f,drawX,drawY,alpha,0x9d,
           (tableEntry[2] - 1) * 2 + 1);

@@ -35,6 +35,10 @@ typedef struct {
   int *head;
   int *tail;
 } MtEvtNodeList;
+#pragma alias mtEvtInsertPriorityNode FUN_00361b60
+extern void mtEvtInsertPriorityNode(int *node, MtEvtNodeList *list);
+#pragma alias mtEvtCreateMainTask FUN_0036f3b0
+extern void mtEvtCreateMainTask(u64 taskArg,u32 mode);
 extern u32 DAT_0069d5c8;
 extern u32 DAT_0069d5d0;
 extern u32 DAT_0069d5d8;

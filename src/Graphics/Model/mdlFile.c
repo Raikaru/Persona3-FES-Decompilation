@@ -809,6 +809,8 @@ void FUN_00323880(int param_1,u16 *param_2,int param_3,int param_4);
 void FUN_003238d0(int param_1);
 #pragma alias FUN_003238d0_4arg FUN_003238d0
 extern void FUN_003238d0_4arg(int param_1,int param_2,int param_3,int param_4);
+#pragma alias FUN_003238d0_ptr4 FUN_003238d0
+extern void FUN_003238d0_ptr4(u16 *param_1,u8 *param_2,u8 *param_3,u8 *param_4);
  #pragma alias FUN_00323920_out FUN_00323920
  extern void FUN_00323920_out(u8 *param_1);
  #pragma alias FUN_00323a30_out FUN_00323a30
@@ -961,6 +963,7 @@ void FUN_003296a0(u32 *param_1,u8 (*param_2) [16]);
 void FUN_00329740(u32 *param_1);
 void FUN_003297a0(u32 *param_1);
 void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16]);
+#pragma alias mdlFileBuildAxisRotation FUN_00329890
 void FUN_00329890(u32 param_1);
 void FUN_003299b0(void);
 u32 FUN_00329a60(void);
@@ -13641,90 +13644,53 @@ void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
 // FUN_00329890 NONMATCHING
 
 
-void FUN_00329890(u32 param_1)
-
-
-
+void mdlFileBuildAxisRotation(f32 param_1)
 {
+  f32 cosine;
+  f32 sine;
+  f32 oneMinusCosine;
+  f32 xy;
+  f32 xz;
+  f32 yz;
+  f32 xSine;
+  f32 ySine;
+  f32 zSine;
+  RwMatrix matrix;
+  f32 axis[4];
 
-  __int128 auVar1;
-
-  __int128 auVar2;
-
-  __int128 auVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  __int128 extraout_vf10;
-
-  u32 uStack_50;
-
-  u32 uStack_4c;
-
-  u32 uStack_48;
-
-  
-
-  fVar4 = (float)FUN_0052e6d8();
-
-  fVar5 = (float)FUN_0052e878(param_1);
-
-  auVar1 = _sqc2(extraout_vf10);
-
-  uStack_50 = auVar1._0_4_;
-
-  uStack_4c = auVar1._4_4_;
-
-  fVar8 = 1.0f - fVar4;
-
-  uStack_48 = auVar1._8_4_;
-
-  fVar7 = uStack_50 * uStack_4c * fVar8;
-
-  fVar6 = uStack_50 * uStack_48 * fVar8;
-
-  fVar8 = uStack_4c * uStack_48 * fVar8;
-
-  auVar1._4_4_ = uStack_48 * fVar5 + fVar7;
-
-  auVar1._0_4_ = (1.0f - uStack_50 * uStack_50) * fVar4 + uStack_50 * uStack_50 + 0.0f;
-
-  auVar1._8_4_ = fVar6 - uStack_4c * fVar5;
-
-  auVar1._12_4_ = 0;
-
-  _lqc2(auVar1);
-
-  auVar2._4_4_ = (1.0f - uStack_4c * uStack_4c) * fVar4 + uStack_4c * uStack_4c + 0.0f;
-
-  auVar2._0_4_ = fVar7 - uStack_48 * fVar5;
-
-  auVar2._8_4_ = uStack_50 * fVar5 + fVar8;
-
-  auVar2._12_4_ = 0;
-
-  _lqc2(auVar2);
-
-  auVar3._4_4_ = fVar8 - uStack_50 * fVar5;
-
-  auVar3._0_4_ = uStack_4c * fVar5 + fVar6;
-
-  auVar3._8_4_ = (1.0f - uStack_48 * uStack_48) * fVar4 + uStack_48 * uStack_48 + 0.0f;
-
-  auVar3._12_4_ = 0;
-
-  _lqc2(auVar3);
-
-  return;
-
+  cosine = FUN_0052e6d8_f32(param_1);
+  sine = FUN_0052e878_f32(param_1);
+  __asm__ volatile ("sqc2 vf10, 0(%0)" : : "r"(axis) : "memory");
+  matrix.right.x =
+      cosine * (1.0f - axis[0] * axis[0]) + axis[0] * axis[0] + 0.0f;
+  xy = axis[0] * axis[1];
+  oneMinusCosine = 1.0f - cosine;
+  zSine = axis[2] * sine;
+  xy = xy * oneMinusCosine;
+  matrix.right.y = zSine + xy;
+  xz = axis[0] * axis[2];
+  ySine = axis[1] * sine;
+  xz = xz * oneMinusCosine;
+  matrix.right.z = xz - ySine;
+  matrix.flags = 0;
+  matrix.up.x = xy - zSine;
+  matrix.up.y =
+      cosine * (1.0f - axis[1] * axis[1]) + axis[1] * axis[1] + 0.0f;
+  yz = axis[1] * axis[2];
+  xSine = axis[0] * sine;
+  yz = yz * oneMinusCosine;
+  matrix.up.z = xSine + yz;
+  matrix.pad1 = 0;
+  matrix.at.x = ySine + xz;
+  matrix.at.y = yz - xSine;
+  matrix.at.z =
+      cosine * (1.0f - axis[2] * axis[2]) + axis[2] * axis[2] + 0.0f;
+  matrix.pad2 = 0;
+  __asm__ volatile (
+      "lqc2 vf28, 0(%0)\n"
+      "lqc2 vf29, 16(%0)\n"
+      "lqc2 vf30, 32(%0)"
+      : : "r"(&matrix) : "memory");
 }
 
 
@@ -27883,14 +27849,14 @@ void FUN_00337fd0(int param_1)
 
 void FUN_00338360(int param_1)
 {
+  u8 *iVar5;
   u8 *iVar1;
   u16 *puVar2;
   u32 colourStack[4];
   int iVar3;
   int iVar4;
-  u8 *iVar5;
   int iVar6;
-  int dest;
+  u8 *dest;
   u8 red;
   u8 green;
   u8 blue;
@@ -27908,31 +27874,31 @@ void FUN_00338360(int param_1)
     mdlVuModulateStacked50V1((u32)iVar3);
     colourStack[3] = colourStack[0];
     if (((u8 *)colourStack)[15] != 0xff) {
-      dest = *(int *)(puVar2 + 10);
+      dest = *(u8 **)(puVar2 + 10);
       red = ((u8 *)colourStack)[12];
       green = ((u8 *)colourStack)[13];
       blue = ((u8 *)colourStack)[14];
       alpha = ((u8 *)colourStack)[15];
-      *(u8 *)(dest + 4) = red;
-      *(u8 *)(dest + 5) = green;
-      *(u8 *)(dest + 6) = blue;
-      *(u8 *)(dest + 7) = alpha;
+      dest[4] = red;
+      dest[5] = green;
+      dest[6] = blue;
+      dest[7] = alpha;
     }
     else {
       ((u8 *)colourStack)[15] = 0xfe;
-      dest = *(int *)(puVar2 + 10);
+      dest = *(u8 **)(puVar2 + 10);
       red = ((u8 *)colourStack)[12];
       green = ((u8 *)colourStack)[13];
       blue = ((u8 *)colourStack)[14];
       alpha = ((u8 *)colourStack)[15];
-      *(u8 *)(dest + 4) = red;
-      *(u8 *)(dest + 5) = green;
-      *(u8 *)(dest + 6) = blue;
-      *(u8 *)(dest + 7) = alpha;
+      dest[4] = red;
+      dest[5] = green;
+      dest[6] = blue;
+      dest[7] = alpha;
       ((u8 *)colourStack)[15] = 0xff;
     }
     if (*(u8 *)(*(int *)(puVar2 + 10) + 7) != 0) {
-      FUN_003238d0_4arg((int)puVar2,(int)iVar5,(int)(iVar5 + 0x10),(int)(iVar5 + 0x20));
+      FUN_003238d0_ptr4(puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
       if (*(u8 *)(iVar1 + 0x3c) != 0) {
         *puVar2 = *puVar2 | 1;
       }
@@ -31176,7 +31142,7 @@ void FUN_0033bbe0(int param_1)
 {
   u8 *iVar1;
   u16 *puVar2;
-  u32 colourStack[4];
+  RwRGBA colourStack[4];
   int iVar3;
   int iVar4;
   int iVar5;
@@ -31195,32 +31161,32 @@ void FUN_0033bbe0(int param_1)
   iVar4 = *(int *)(iVar1 + 0x34);
   if (((u32)iVar6 <= (u32)iVar4) || (iVar4 == 0)) {
     iVar3 = FUN_0032a120((char *)iVar1,(u32 *)(iVar1 + 0x24),iVar6,iVar4);
-    colourStack[2] = *(u32 *)(iVar5 + 0x30);
+    *(u32 *)&colourStack[2] = *(u32 *)(iVar5 + 0x30);
     mdlVuModulateStacked50((u32)iVar3);
-    colourStack[3] = colourStack[0];
-    if (((u8 *)colourStack)[15] != 0xff) {
+    *(u32 *)&colourStack[3] = *(u32 *)&colourStack[0];
+    if (colourStack[3].a != 0xff) {
       dest = *(int *)(puVar2 + 10);
-      red = ((u8 *)colourStack)[12];
-      green = ((u8 *)colourStack)[13];
-      blue = ((u8 *)colourStack)[14];
-      alpha = ((u8 *)colourStack)[15];
+      red = colourStack[3].r;
+      green = colourStack[3].g;
+      blue = colourStack[3].b;
+      alpha = colourStack[3].a;
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
     }
     else {
-      ((u8 *)colourStack)[15] = 0xfe;
+      colourStack[3].a = 0xfe;
       dest = *(int *)(puVar2 + 10);
-      red = ((u8 *)colourStack)[12];
-      green = ((u8 *)colourStack)[13];
-      blue = ((u8 *)colourStack)[14];
-      alpha = ((u8 *)colourStack)[15];
+      red = colourStack[3].r;
+      green = colourStack[3].g;
+      blue = colourStack[3].b;
+      alpha = colourStack[3].a;
       *(u8 *)(dest + 4) = red;
       *(u8 *)(dest + 5) = green;
       *(u8 *)(dest + 6) = blue;
       *(u8 *)(dest + 7) = alpha;
-      ((u8 *)colourStack)[15] = 0xff;
+      colourStack[3].a = 0xff;
     }
     FUN_003238d0_4arg((int)puVar2,iVar5,iVar5 + 0x10,iVar5 + 0x20);
     if (*(u8 *)(iVar1 + 0x56) != 0) {
@@ -46667,7 +46633,7 @@ u32* FUN_0034d130(u32* param_1)
 }
 
 
-// FUN_0034D150 NONMATCHING
+// FUN_0034D150
 
 
 void FUN_0034d150(u32 param_1,f32 *param_2)
@@ -46708,11 +46674,11 @@ void FUN_0034d150(u32 param_1,f32 *param_2)
       "vwaitq                                     \n"
       "vmulq.xyz   $vf10, $vf10, $Q            \n"
       "sqc2        $vf10, 0(%0)                \n"
-      "lwc1        $f0, 0(%0)                  \n"
+      "lwc1        $f0, 0x40($sp)              \n"
       "swc1        $f0, 0(%1)                  \n"
-      "lwc1        $f0, 4(%0)                  \n"
+      "lwc1        $f0, 0x44($sp)              \n"
       "swc1        $f0, 4(%1)                  \n"
-      "lwc1        $f0, 8(%0)                  \n"
+      "lwc1        $f0, 0x48($sp)              \n"
       "swc1        $f0, 8(%1)                  \n"
       "b           2f                           \n"
       "nop                                        \n"
@@ -52351,7 +52317,7 @@ void FUN_00352f70(float *param_1)
 
       FUN_00318a30(*piVar2,&fStack_20,2);
 
-      FUN_003189f0(*(u32 *)((int)fVar3 + 0x18),*piVar2,0);
+      FUN_003189f0_f32(*(float *)((int)fVar3 + 0x18),*piVar2,0);
 
       FUN_00317730(*piVar2);
 
@@ -55053,7 +55019,7 @@ void FUN_003571c0(float *param_1)
 
       FUN_00318a30(*piVar1,&fStack_10,2);
 
-      FUN_003189f0(*(u32 *)((int)fVar2 + 0x30),*piVar1,0);
+      FUN_003189f0_f32(*(float *)((int)fVar2 + 0x30),*piVar1,0);
 
       FUN_00317730(*piVar1);
 
