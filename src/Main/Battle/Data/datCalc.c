@@ -702,7 +702,7 @@ float FUN_0030fdf0(int param_1,u32 param_2);
 extern f32 DAT_007cad74;
 extern f32 DAT_007cad8c;
 extern f32 DAT_007cadb4;
-extern u32 DAT_007cae84;
+extern f32 DAT_007cae84;
 extern f32 DAT_007caf8c;
 extern u32 DAT_007ce3ec;
 extern u32 DAT_007ce3f4;
@@ -1414,9 +1414,7 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
 {
     s8 value;
     u8 result;
-    DatUnit* unit;
 
-    unit = (DatUnit*)param_1;
     if (param_2 == 0)
     {
         result = false;
@@ -1463,11 +1461,11 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
     }
     else if (param_2 & 0x400)
     {
-        result = (unit->bad & 0x80000) != 0;
+        result = (*(u32*)(param_1 + 0x14) & 0x80000) != 0;
     }
     else if (param_2 & 0x800)
     {
-        result = (unit->bad & 0x100000) != 0;
+        result = (*(u32*)(param_1 + 0x14) & 0x100000) != 0;
     }
     else if (param_2 & 0x4000)
     {
@@ -1479,11 +1477,11 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
     }
     else if (param_2 & 0x10000)
     {
-        result = (unit->bad & 0x20000) != 0;
+        result = (*(u32*)(param_1 + 0x14) & 0x20000) != 0;
     }
     else if (param_2 & 0x20000)
     {
-        result = (unit->bad & 0x40000) != 0;
+        result = (*(u32*)(param_1 + 0x14) & 0x40000) != 0;
     }
     else if (param_2 & 0x40000)
     {
@@ -1523,11 +1521,18 @@ u8 FUN_00301ca0(u32 param_1, u32 param_2)
     }
     else if (param_2 & 0x1000)
     {
-        result = FUN_00300f60(param_1, 0) < 1 &&
-                 FUN_00300f60(param_1, 1) < 1 &&
-                 FUN_00300f60(param_1, 2) < 1 &&
-                 FUN_00300f60(param_1, 3) < 1 &&
-                 FUN_00300f60(param_1, 4) < 1;
+        if (FUN_00300f60(param_1, 0) > 0 ||
+            FUN_00300f60(param_1, 1) > 0 ||
+            FUN_00300f60(param_1, 2) > 0 ||
+            FUN_00300f60(param_1, 3) > 0 ||
+            FUN_00300f60(param_1, 4) > 0)
+        {
+            result = false;
+        }
+        else
+        {
+            result = true;
+        }
     }
     else if (param_2 & 0x2000)
     {
@@ -6333,31 +6338,18 @@ u32 FUN_0030bc50(int param_1)
 {
   s32 lVar1;
   u32 uVar2;
-  float fVar3;
   
-  if (0x14f < *(u16 *)(param_1 + 2)) {
+  if (*(u16 *)(param_1 + 2) >= 0x150) {
     FUN_0019d3f0((u32)D_0069aa80, 0x165b);
   }
   uVar2 = (u32)*(u16 *)(iGpffffb720 + (u32)*(u16 *)(param_1 + 2) * 0x3e + 0x20);
   lVar1 = FUN_0016f190(0xbd0);
   if (lVar1 == 1) {
-    fVar3 = fGpffff8194 * (float)uVar2;
-    if (fVar3 >= 2.1474836e+09f) {
-      uVar2 = (int)(fVar3 - 2.1474836e+09f) | 0x80000000;
-    }
-    else {
-      uVar2 = (u32)fVar3;
-    }
+    uVar2 = (u32)(fGpffff8194 * (float)uVar2);
   }
   lVar1 = FUN_0016f190(0x1311);
   if (lVar1 == 1) {
-    fVar3 = fGpffff8070 * (float)uVar2;
-    if (fVar3 >= 2.1474836e+09f) {
-      uVar2 = (int)(fVar3 - 2.1474836e+09f) | 0x80000000;
-    }
-    else {
-      uVar2 = (u32)fVar3;
-    }
+    uVar2 = (u32)(fGpffff8070 * (float)uVar2);
   }
   return uVar2;
 }

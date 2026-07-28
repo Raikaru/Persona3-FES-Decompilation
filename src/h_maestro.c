@@ -706,9 +706,9 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
 {
     KwlnTask* task;
     MaestroStreamWork* work;
-    s16 dim2;
     s16 dim0;
     s16 dim1;
+    s16 dim2;
     s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);

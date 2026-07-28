@@ -796,7 +796,7 @@ void FUN_00244a00(void)
 
 
 
-// FUN_00244A40 NONMATCHING
+// FUN_00244A40
 void FUN_00244a40(u32 param_1)
 
 {
@@ -852,8 +852,7 @@ void FUN_00244a40(u32 param_1)
   func_00280580_vec(uVar6, &projected);
   lVar7 = func_002d20a0_vec(&projected, &screen);
   if (lVar7 != 0) {
-    ((f32*)puVar2)[0x1cb7] = screen.x;
-    ((f32*)puVar2)[0x1cb8] = screen.y;
+    *(RwV2d*)&((f32*)puVar2)[0x1cb7] = screen;
     *puVar2 = *puVar2 | 0x10;
   }
   if ((*puVar2 & 2) != 0) {
@@ -894,7 +893,7 @@ void FUN_00244a40(u32 param_1)
     break;
   case 1:
     uVar1 = *(ushort *)(*(int *)(iVar3 + 0xa2c) + 2);
-    unaff_s2_lo = DAT_007ce4e8 + (uint)uVar1 * 0x12 + (uint)uVar1;
+    unaff_s2_lo = DAT_007ce4e8 + (uint)uVar1 * 0x13;
     break;
   }
   func_003b0e70(1);

@@ -742,7 +742,7 @@ u32 FUN_0028a3e0(BtlAction* action)
     return false;
 }
 
-// FUN_0028a540 NONMATCHING
+// FUN_0028a540
 void FUN_0028a540(BtlAction* action, u32 id, u16* out1, u16* out2, u16* out3, u16* out4)
 {
     u16 itemId = (u16)id;

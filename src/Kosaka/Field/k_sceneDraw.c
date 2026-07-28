@@ -62,6 +62,8 @@ extern u8 DAT_007ce0e8;
 extern u8 DAT_007ce0ec;
 extern u8 DAT_007ce0f0;
 extern u8 DAT_007ce0f4;
+extern s64 D_00678AB8;
+extern f32 D_00678AC0;
 
 typedef struct SceneDrawObject
 {
@@ -1811,9 +1813,12 @@ void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position,
     RwV3d* up;
 
     up = &defaultUp;
-    *(s64*)&defaultUp = *(s64*)0x00678ab8;
-    defaultUp.z = *(f32*)0x00678ac0;
-    if (upVector != NULL)
+    *(s64*)&defaultUp = D_00678AB8;
+    defaultUp.z = D_00678AC0;
+    if (upVector == NULL)
+    {
+    }
+    else
     {
         up = (RwV3d*)upVector;
     }
