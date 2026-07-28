@@ -392,13 +392,6 @@ extern u8 DAT_0086e6a0_rows[][0x1c0];
 extern u8 DAT_006b4b20_abs[];
 #pragma alias DAT_006b4796_abs DAT_006b4796
 extern u8 DAT_006b4796_abs[];
-typedef struct {
-  s16 unused;
-  s16 x;
-  s16 y;
-} YCoordinateValues;
-#pragma alias DAT_006b4796_coord DAT_006b4796
-extern YCoordinateValues DAT_006b4796_coord[];
 extern void FUN_004d0f00_arg(u32 param_1);
 #pragma alias FUN_004d0f00_ptr FUN_004d0f00
 extern void FUN_004d0f00_ptr(void *param_1);
@@ -12022,24 +12015,37 @@ u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 void FUN_00447f90(float *param_1,int param_2,char param_3)
 
 {
+  struct CoordinateValues {
+    s16 unused;
+    s16 x;
+    s16 y;
+  };
   RwV2d position;
   float y;
-  char cVar1;
-  char cVar2;
+  int cVar1;
+  int cVar2;
+  int index = (int)param_3 * 4;
   int iVar3;
   int iVar4;
+  u8 *table;
+  u8 *row;
+  struct CoordinateValues *coordinateBase;
   
-  cVar1 = *(s8 *)((int)param_3 * 4 + (int)iGpffffb9fc_ptr + 4);
-  iVar3 = DAT_006b4796_coord[0].y;
+  table = iGpffffb9fc_ptr;
+  row = table + index;
+  cVar1 = *(s8 *)(row + 4);
+  row = table;
+  coordinateBase = (struct CoordinateValues *)DAT_006b4796_abs;
+  iVar3 = coordinateBase->y;
   iVar3 = iVar3 - (cVar1 - 1) * 0x40;
   cVar2 = *(s8 *)(*(int *)(param_2 + 0x3c) + 0x253);
   iVar3 = iVar3 - (6 - cVar2) * 0x20;
   iVar3 = iVar3 + 0x20;
   y = (float)iVar3;
-  for (iVar4 = 0; iVar4 < *(char *)(iGpffffb9fc_ptr + 0xa0); iVar4 = iVar4 + 1) {
+  for (iVar4 = 0; iVar4 < *(char *)(row + 0xa0); iVar4 = iVar4 + 1) {
   }
   position.y = y - 32.0f;
-  position.x = (float)DAT_006b4796_coord[0].x;
+  position.x = (float)coordinateBase->x;
   *(RwV2d *)param_1 = position;
   return;
 }

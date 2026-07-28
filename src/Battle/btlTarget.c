@@ -923,7 +923,7 @@ extern u32 FUN_00300580_u32(u32 unit, u32 status);
 extern u64 FUN_003005e0();
 extern u64 FUN_00301ca0();
 extern void FUN_00302c50(u32 datUnit);
-extern u64 FUN_003083f0();
+extern u32 FUN_003083f0(u32 param_1, u32 param_2);
 extern u64 FUN_0030b5a0();
 extern u64 FUN_0030b5e0();
 extern u8* DAT_007ce3ec;
@@ -1037,13 +1037,13 @@ void func_002d80f0(void* arg)
 undefined4 FUN_002d8110(int *param_1)
 
 {
-  char cVar1;
+  u8 cVar1;
   int iVar2;
   int iVar3;
   short sVar4;
   ushort uVar5;
   short sVar6;
-  long lVar7;
+  u32 lVar7;
   
   iVar2 = *param_1;
   iVar3 = *(int *)(iVar2 + 0x30);
@@ -1054,11 +1054,13 @@ undefined4 FUN_002d8110(int *param_1)
       lVar7 = FUN_003083f0(*(undefined4 *)(iVar3 + 0xa2c),uVar5);
       if (lVar7 != 0) {
         cVar1 = *(char *)(((uint)uVar5 * 10 + (uint)uVar5) * 4 + DAT_007ce3f8 + 3);
-        if (cVar1 == '\x02') {
-          FUN_00300480(*(undefined4 *)(iVar3 + 0xa2c),-(int)lVar7);
-        }
-        else if (cVar1 == '\x01') {
+        switch (cVar1) {
+        case 1:
           FUN_00300410(*(undefined4 *)(iVar3 + 0xa2c),-(int)lVar7);
+          break;
+        case 2:
+          FUN_00300480(*(undefined4 *)(iVar3 + 0xa2c),-(int)lVar7);
+          break;
         }
       }
       break;
@@ -1603,7 +1605,6 @@ int FUN_002d8f70(int param_1)
   
   if (*(u8 *)(*(u32 *)(param_1 + 0x30) + 0xa2) == 0) {
     uVar3 = FUN_002d4e10(2,0x80000);
-    uVar3 = uVar3 & 0xffff;
     uVar2 = *(ushort *)(param_1 + 0x1a);
     *(ushort *)(param_1 + 0x1a) = uVar2 | 0x40;
     switch(*(undefined2 *)(*(int *)(param_1 + 0x30) + 0xa4)) {
@@ -2170,8 +2171,8 @@ short FUN_002d9d70(int param_1)
   uint uVar5;
   uint uVar6;
   uint uVar7;
-  s32 lVar8;
-  undefined8 uVar9;
+  long lVar8;
+  u32 uVar9;
   ulong uVar10;
   short sVar11;
   bool bVar12;

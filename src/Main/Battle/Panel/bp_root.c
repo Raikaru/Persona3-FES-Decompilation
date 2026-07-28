@@ -198,6 +198,7 @@ u32 func_003a5540(u32, ...);
 #pragma alias bpRoot_003a5540_typed func_003a5540
 extern u32 bpRoot_003a5540_typed(u32 p1, u32 p2, s32 p3, f32 angle,
                                   u32 p4, u32 p5, void* p6, u32 p7);
+extern u32 D_007CC418;
 void* func_0030c0c0(void);
 u32 func_003086f0(u32, u16);
 u32 func_003083f0(u32, u16);
@@ -3287,7 +3288,7 @@ void FUN_00206740(void)
         }
         else if (type == 1)
         {
-            handle = func_003b0970(*(u32*)0x007cc418,
+            handle = func_003b0970(D_007CC418,
                                     2, alpha, 0, 0);
         }
         else
@@ -3403,24 +3404,22 @@ void FUN_00206F70(void)
     func_00225670();
 }
 
-// FUN_00207010 NONMATCHING
+// FUN_00207010
 void FUN_00207010(void)
 {
+    s32 alpha;
     u8* work;
-    u32* typeEntry;
-    s32 destroyIndex;
+    u32 handle;
     s32 rowIndex;
     s32 targetIndex;
+    u32* typeEntry;
     u32 type;
-    s32 alpha;
-    u32 handle;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
-    for (destroyIndex = 0; destroyIndex < *(s32*)(work + 0x424);
-         destroyIndex++)
+    for (rowIndex = 0; rowIndex < *(s32*)(work + 0x424); rowIndex++)
     {
-        func_003b0170(*(u32*)(work + 0x414 + destroyIndex * 4));
+        func_003b0170(*(u32*)(work + 0x414 + rowIndex * 4));
     }
     if (*(u32*)work & 0x800000)
     {
@@ -3469,22 +3468,22 @@ void FUN_00207010(void)
             {
             case 0:
                 handle = func_003b0970(func_0030bb40(0x144),
-                                        2, alpha, 0, 0);
+                                        2, (s8)alpha, 0, 0);
                 break;
             case 1:
                 handle = func_003b0970(func_0030bb40(0x146),
-                                        2, alpha, 0, 0);
+                                        2, (s8)alpha, 0, 0);
                 break;
             }
             break;
         case 1:
-            handle = func_003b0970(*(u32*)0x007cc418,
-                                    2, alpha, 0, 0);
+            handle = func_003b0970(D_007CC418,
+                                    2, (s8)alpha, 0, 0);
             break;
         case 2:
             K_ASSERT(*(u32*)(work + 0x20) == 1, 0x1209);
             handle = func_003b0970(func_0030bb40(0x145),
-                                    2, alpha, 0, 0);
+                                    2, (s8)alpha, 0, 0);
             break;
         }
         *(u32*)(work + 0x414 + rowIndex * 4) = handle;
