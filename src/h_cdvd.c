@@ -1156,7 +1156,6 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
                                    void* callbackData, void* key)
 {
     HCdvdStreamContext* context;
-    s32 i;
     HCdvdStreamSlot* slot;
     HCdvdStreamSlot* slots;
     void* (**allocator)(u32, u32, u32);
@@ -1178,12 +1177,15 @@ void* func_00101ad0(s32 count, void* source, s32 stride,
     context->callback4c = (void*)func_00101a10;
     slots = (HCdvdStreamSlot*)(*allocator)(count, 0x110, 0x40000);
     context->slots = slots;
-    for (i = 0; i < count; i++)
     {
-        slot = &slots[i];
-        slot->context = context;
-        slot->source = (u8*)source + i * stride;
-        slot->sourceStride = stride;
+        s32 i;
+        for (i = 0; i < count; i++)
+        {
+            slot = &slots[i];
+            slot->context = context;
+            slot->source = (u8*)source + i * stride;
+            slot->sourceStride = stride;
+        }
     }
     if (func_004bf6e0(context, count, key, callbackData) != 1)
     {

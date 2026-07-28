@@ -5988,8 +5988,8 @@ void btlActionUpdateStateError(BtlAction* action)
     BtlPacket* animPacket;
     u16 animation;
     u16 duration;
+    BtlCameraState cameraState;
     u16 table;
-    u16 cameraState;
     u16 state;
     u32 isCommand3;
     u64 actionUID;
