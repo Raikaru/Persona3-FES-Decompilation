@@ -122,6 +122,12 @@ typedef struct MdlFileResource {
     u32 unk_60;
     u32 unk_64;
 } MdlFileResource;
+typedef struct MdlRuntimeState {
+    u8 unk_00[0x38];
+    s32 allocationCount;
+    u8 unk_3c[0x50];
+    u32 minimumMode;
+} MdlRuntimeState;
 
 
 static const u32 sMdlNanBits = 0x7fffffff;
@@ -1164,13 +1170,13 @@ void FUN_00342a90(int param_1);
 void FUN_00343410(u64 param_1);
 void FUN_00343860(int param_1,int param_2);
 u32 FUN_00343b60(u32 *param_1,int param_2);
-u64 FUN_00343c60(int param_1);
+u32 FUN_00343c60(int param_1);
 void FUN_00343d10(int param_1);
 void FUN_00343d60(int param_1);
 void FUN_00344720(u64 param_1);
 void FUN_00344b70(int param_1,int param_2);
 u64 FUN_00344eb0(u32 param_1,int param_2);
-u64 FUN_00344fc0(int param_1);
+u32 FUN_00344fc0(int param_1);
 void FUN_00345080(int param_1);
 void FUN_003450d0(int param_1);
 void FUN_00345970(u64 param_1);
@@ -7572,9 +7578,10 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   u32 uVar4;
 
-  int model;
-
   u32 enabled;
+
+  u8 *model;
+
 
   
 
@@ -7604,35 +7611,36 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   FUN_00492d10(*(u32 *)(puVar1 + 8),uVar4);
 
+
+
   enabled = 1;
+  model = *(u8 **)(puVar1 + 8);
 
-  model = *(int *)(puVar1 + 8);
-
-  *(u32 *)(*(int *)(iGpffffba80 + model) + 0xb4) = enabled;
+  *(u32 *)(*(int *)(model + (int)iGpffffba80) + 0xb4) = enabled;
 
   if ((param_2 & 0x80000) != 0) {
-    model = *(int *)(puVar1 + 8);
+    model = *(u8 **)(puVar1 + 8);
 
 
-    FUN_00521250(*(int *)(iGpffffba80 + model) + 0xe0,PTR_LAB_0069be20_abs - 0x10,0x10);
+    FUN_00521250(*(int *)(model + (int)iGpffffba80) + 0xe0,PTR_LAB_0069be20_abs - 0x10,0x10);
 
-    model = *(int *)(puVar1 + 8);
+    model = *(u8 **)(puVar1 + 8);
 
-    *(u32 *)(*(int *)(iGpffffba80 + model) + 0x40) =
+    *(u32 *)(*(int *)(model + (int)iGpffffba80) + 0x40) =
 
-         *(u32 *)(*(int *)(iGpffffba80 + model) + 0x40) | 0x80000;
+         *(u32 *)(*(int *)(model + (int)iGpffffba80) + 0x40) | 0x80000;
 
   }
 
-  model = *(int *)(puVar1 + 8);
+  model = *(u8 **)(puVar1 + 8);
 
-  *(u32 *)(*(int *)(iGpffffba80 + model) + 0x40) =
+  *(u32 *)(*(int *)(model + (int)iGpffffba80) + 0x40) =
 
-       *(u32 *)(*(int *)(iGpffffba80 + model) + 0x40) | 0x800000;
+       *(u32 *)(*(int *)(model + (int)iGpffffba80) + 0x40) | 0x800000;
 
-  model = *(int *)(puVar1 + 8);
+  model = *(u8 **)(puVar1 + 8);
 
-  *(u32 *)(*(int *)(iGpffffba80 + model) + 4) = 0;
+  *(u32 *)(*(int *)(model + (int)iGpffffba80) + 4) = 0;
 
   return uVar3;
 
@@ -21609,6 +21617,8 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   int iVar1;
 
+  u32 type;
+
   
 
   if (param_1[0xb] == 0) {
@@ -21621,7 +21631,9 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
   }
 
-  switch((u32)param_2) {
+  type = param_2;
+
+  switch(type) {
   case 1:
 
     FUN_00326cf0_2(param_1[0xb],*param_1);
@@ -37942,20 +37954,21 @@ u32 FUN_00343b60(u32 *param_1,int param_2)
 
 
 
-// FUN_00343C60 NONMATCHING
+// FUN_00343C60
 
 
-u64 FUN_00343c60(int param_1)
+u32 FUN_00343c60(int param_1)
 
 
 
 {
 
-  int iVar1;
+  u32 uVar3;
+
+  MdlRuntimeState *state;
 
   int iVar2;
-
-  u32 uVar3;
+  u32 minimumMode;
 
   int *piVar4;
 
@@ -37963,9 +37976,9 @@ u64 FUN_00343c60(int param_1)
 
   iVar2 = *(int *)(param_1 + 0x3c);
 
-  iVar1 = *(int *)(param_1 + 0x40);
+  state = *(MdlRuntimeState **)(param_1 + 0x40);
 
-  uVar3 = (*DAT_00960178_u32)(*(int *)(iVar1 + 0x38) * 0x30 + 0xc,0x40000);
+  uVar3 = (*(u32 (**)(...))DAT_00960178_abs)(state->allocationCount * 0x30 + 0xc,0x40000);
 
   piVar4 = (int *)uVar3;
 
@@ -37973,9 +37986,10 @@ u64 FUN_00343c60(int param_1)
 
   piVar4[2] = (int)piVar4;
 
-  if (*(u32 *)(iVar1 + 0x8c) < 3) {
+  minimumMode = state->minimumMode;
+  if (minimumMode < 3) {
 
-    *(u32 *)(iVar1 + 0x8c) = 3;
+    state->minimumMode = 3;
 
   }
 
@@ -37983,7 +37997,7 @@ u64 FUN_00343c60(int param_1)
 
   piVar4[1] = iVar2;
 
-  FUN_00343860(uVar3,iVar1);
+  FUN_00343860(uVar3,(int)state);
 
   return uVar3;
 
@@ -38964,20 +38978,21 @@ u64 FUN_00344eb0(u32 param_1,int param_2)
 
 
 
-// FUN_00344FC0 NONMATCHING
+// FUN_00344FC0
 
 
-u64 FUN_00344fc0(int param_1)
+u32 FUN_00344fc0(int param_1)
 
 
 
 {
 
-  int iVar1;
+  u32 uVar3;
+
+  MdlRuntimeState *state;
 
   int iVar2;
-
-  u32 uVar3;
+  u32 minimumMode;
 
   int *piVar4;
 
@@ -38985,9 +39000,9 @@ u64 FUN_00344fc0(int param_1)
 
   iVar2 = *(int *)(param_1 + 0x3c);
 
-  iVar1 = *(int *)(param_1 + 0x40);
+  state = *(MdlRuntimeState **)(param_1 + 0x40);
 
-  uVar3 = (*DAT_00960178_u32)(*(int *)(iVar1 + 0x38) * 0x2c + 0xc,0x40000);
+  uVar3 = (*(u32 (**)(...))DAT_00960178_abs)(state->allocationCount * 0x2c + 0xc,0x40000);
 
   piVar4 = (int *)uVar3;
 
@@ -38995,9 +39010,10 @@ u64 FUN_00344fc0(int param_1)
 
   piVar4[2] = (int)piVar4;
 
-  if (*(u32 *)(iVar1 + 0x8c) < 3) {
+  minimumMode = state->minimumMode;
+  if (minimumMode < 3) {
 
-    *(u32 *)(iVar1 + 0x8c) = 3;
+    state->minimumMode = 3;
 
   }
 
@@ -39005,7 +39021,7 @@ u64 FUN_00344fc0(int param_1)
 
   piVar4[1] = iVar2;
 
-  FUN_00344b70(uVar3,iVar1);
+  FUN_00344b70(uVar3,(int)state);
 
   return uVar3;
 
@@ -54893,12 +54909,12 @@ void FUN_00357450(void)
 }
 
 /* Retail sibling body starts at offset 0x2B0 from 0x003571C0. */
-// FUN_00357470 NONMATCHING
+// FUN_00357470
 void FUN_00357470(int param_1)
 {
+  u32 *param_2;
   u32 iVar2;
   u32 iVar1;
-  u32 *param_2;
   float fVar1;
   float fVar2;
   float fVar3;
@@ -54907,9 +54923,11 @@ void FUN_00357470(int param_1)
   param_2 = *(u32 **)(param_1 + 0x38);
   iVar1 = *(u32 *)(param_1 + 0x28);
   iVar2 = *param_2;
-  if (iVar2 != 0) {
-    switch (iVar2 < iVar1) {
-    case 0:
+  if (iVar2 == 0) goto skipInterpolation;
+  if (iVar2 >= iVar1) goto interpolate;
+skipInterpolation:
+  return;
+interpolate:
     fVar2 = *(float *)(param_2 + 1);
     fVar1 = (float)iVar1;
     fVar3 = (float)iVar2;
@@ -54917,9 +54935,6 @@ void FUN_00357470(int param_1)
     fVar1 = (*(float *)(param_2 + 2) - fVar2) * fVar1;
     fVar1 = fVar1 + fVar2;
     *(float *)(DAT_007ce3ec + 0xd8) = fGpffff8144 * fVar1;
-      break;
-    }
-  }
 }
 // FUN_00357540
 void FUN_00357540(void)

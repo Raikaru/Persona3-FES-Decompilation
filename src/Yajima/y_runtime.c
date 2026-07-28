@@ -362,6 +362,14 @@ extern u8 DAT_0086ef10_abs[];
 extern u8 DAT_0086ef08_abs[];
 extern u8 DAT_0086ef0c_abs[];
 typedef struct YVec3f { f32 x, y, z; } YVec3f;
+typedef struct YPositionWork {
+  u8 pad_000[4];
+  u32 resource;
+  u8 pad_008[0xe6];
+  s16 counter0;
+  u8 pad_0f0[4];
+  s16 counter1;
+} YPositionWork;
 #pragma alias DAT_0086ef2c_abs DAT_0086ef2c
 extern u8 DAT_0086ef2c_abs[];
 #pragma alias DAT_0086ef38_abs DAT_0086ef38
@@ -12650,28 +12658,32 @@ u32
 FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5,short param_6)
 
 {
+  YPositionWork *work;
   int iVar3;
   u32 uVar4;
   u32 uVar5;
-  float fStack_8;
-  float fStack_4;
+  RwV2d position;
+  float *positionOut;
   
-  iVar3 = *(int *)(param_5 + 0x3c);
+  work = *(YPositionWork **)(param_5 + 0x3c);
   uVar5 = 0;
-  fStack_8 = param_2;
-  fStack_4 = param_4;
-  if (param_6 != 0) {
-    FUN_004222d0_typed((float*)(&fStack_8),(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)(*(u16 *)(iVar3 + 0xee)),(short)(param_6));
-    if (*(short *)(iVar3 + 0xee) < param_6) {
-      *(short *)(iVar3 + 0xee) = *(short *)(iVar3 + 0xee) + 1;
+  if (param_6 == 0) {
+    position.x = param_2;
+    position.y = param_4;
+  }
+  else {
+    positionOut = &position.x;
+    FUN_004222d0_typed(positionOut,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)work->counter0,(short)(param_6));
+    if (work->counter0 < param_6) {
+      work->counter0 += 1;
       uVar5 = 1;
     }
   }
-  uVar4 = FUN_001158b0(0,*(u32 *)(iVar3 + 4),0);
+  uVar4 = FUN_001158b0(0,work->resource,0);
   iVar3 = (int)uVar4;
   *(u8 *)(iVar3 + 0x18) = 0;
-  *(float *)(iVar3 + 0x10) = fStack_8;
-  *(float *)(iVar3 + 0x14) = fStack_4;
+  *(float *)(iVar3 + 0x10) = position.x;
+  *(float *)(iVar3 + 0x14) = position.y;
   *(float *)(iVar3 + 0x2c) = 3.0f;
   FUN_001127d0(uVar4,1);
   FUN_00115980(uVar4);
@@ -12684,28 +12696,30 @@ u32
 FUN_0044a110(float param_1,float param_2,float param_3,float param_4,int param_5,short param_6)
 
 {
+  YPositionWork *work;
   int iVar3;
   u32 uVar4;
   u32 uVar5;
-  float fStack_8;
-  float fStack_4;
+  RwV2d position;
   
-  iVar3 = *(int *)(param_5 + 0x3c);
+  work = *(YPositionWork **)(param_5 + 0x3c);
   uVar5 = 0;
-  fStack_8 = param_2;
-  fStack_4 = param_4;
-  if (param_6 != 0) {
-    FUN_004222d0_typed((float*)(&fStack_8),(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)(*(u16 *)(iVar3 + 0xf4)),(short)(param_6));
-    if (*(short *)(iVar3 + 0xf4) < param_6) {
-      *(short *)(iVar3 + 0xf4) = *(short *)(iVar3 + 0xf4) + 1;
+  if (param_6 == 0) {
+    position.x = param_2;
+    position.y = param_4;
+  }
+  else {
+    FUN_004222d0_typed(&position.x,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)work->counter1,(short)(param_6));
+    if (work->counter1 < param_6) {
+      work->counter1 += 1;
       uVar5 = 1;
     }
   }
-  uVar4 = FUN_001158b0(0,*(u32 *)(iVar3 + 4),1);
+  uVar4 = FUN_001158b0(0,work->resource,1);
   iVar3 = (int)uVar4;
   *(u8 *)(iVar3 + 0x18) = 0;
-  *(float *)(iVar3 + 0x10) = fStack_8;
-  *(float *)(iVar3 + 0x14) = fStack_4;
+  *(float *)(iVar3 + 0x10) = position.x;
+  *(float *)(iVar3 + 0x14) = position.y;
   *(float *)(iVar3 + 0x2c) = 3.0f;
   FUN_001127d0(uVar4,1);
   FUN_00115980(uVar4);
