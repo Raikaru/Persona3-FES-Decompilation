@@ -12658,12 +12658,11 @@ u32
 FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5,short param_6)
 
 {
+  RwV2d position;
   YPositionWork *work;
   int iVar3;
   u32 uVar4;
   u32 uVar5;
-  RwV2d position;
-  float *positionOut;
   
   work = *(YPositionWork **)(param_5 + 0x3c);
   uVar5 = 0;
@@ -12672,8 +12671,7 @@ FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5
     position.y = param_4;
   }
   else {
-    positionOut = &position.x;
-    FUN_004222d0_typed(positionOut,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)work->counter0,(short)(param_6));
+    FUN_004222d0_typed(&position.x,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)work->counter0,(short)(param_6));
     if (work->counter0 < param_6) {
       work->counter0 += 1;
       uVar5 = 1;

@@ -3897,14 +3897,10 @@ void btlUnitInitLookAtUnitPacket(void* work)
     packet->targetUnit->packetCount++;
 }
 
-// FUN_00288430 NONMATCHING
+// FUN_00288430
 u32 btlUnitUpdateLookAtUnitPacket(void* work)
 {
-    BtlUnit* curr;
-    BtlUnit* targetUnit;
     BtlUnitPacketLookAtUnit* packet;
-    Battle* btl;
-    BtlUnit* unit;
     f32 maxPitchAngle1;
     f32 maxYawAngle1;
     f32 maxPitchAngle2;
@@ -3926,6 +3922,9 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
     {
         if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLPLAYER)
         {
+            Battle* btl;
+            BtlUnit* curr;
+            BtlUnit* targetUnit;
             btl = gBtl;
             curr = btl->unitLists[UNIT_GENUS_PC].tail;
             while (curr != NULL)
@@ -3967,6 +3966,9 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
         if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLENEMY)
         {
+            Battle* btl;
+            BtlUnit* curr;
+            BtlUnit* targetUnit;
             btl = gBtl;
             curr = btl->unitLists[UNIT_GENUS_EC].tail;
             while (curr != NULL)
@@ -4008,6 +4010,8 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
     }
     else
     {
+        BtlUnit* targetUnit;
+        BtlUnit* unit;
         targetUnit = packet->targetUnit;
         unit = packet->unit;
         if (&maxPitchAngle3 != NULL)

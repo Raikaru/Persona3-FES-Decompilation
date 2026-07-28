@@ -40,6 +40,10 @@ extern code DAT_00960178_abs[];
 extern code DAT_0096017c;
 extern u32 DAT_007cd530;
 extern u32 DAT_007cd538;
+extern u8 DAT_007cd52c;
+extern u8 DAT_006a2a28[];
+extern u8 DAT_006a2a2c[];
+extern u8 DAT_006a2a30[];
 extern char DAT_006a2a40[];
 extern void FUN_003cfe50(void);
 extern u64 FUN_003b18c0(void);
@@ -884,6 +888,9 @@ void FUN_003b4b40(int param_1, int param_2, u8* param_3, u8* param_4)
   (*DAT_009600a0_abs)(5, DAT_0095aec0_abs, 4);
 }
 #define FUN_003b4b40(...) ((void (*)(...))FUN_003b4b40)(__VA_ARGS__)
+#pragma alias FUN_003b4b40_direct FUN_003b4b40
+extern void FUN_003b4b40_direct(s32* positions, u32* colors, u8* positionIndices,
+                                u8* colorIndices, u64 param_5, u64 param_6);
 #undef FUN_003b4d10
 // FUN_003B4D10 NONMATCHING
 
@@ -893,50 +900,36 @@ void FUN_003b4d10(int *param_1,u32 *param_2,u64 param_3,int param_4,u64 param_5
                  )
 {
   int iVar1;
-  u32 uStack_40;
-  u32 uStack_3c;
-  u32 uStack_38;
-  u32 uStack_34;
-  u32 uStack_30;
-  u32 uStack_2c;
-  u32 uStack_28;
-  u32 uStack_24;
-  int iStack_20;
-  int iStack_1c;
-  int iStack_18;
-  int iStack_14;
-  int iStack_10;
-  int iStack_c;
-  int iStack_8;
-  int iStack_4;
-  iStack_20 = *param_1;
-  iVar1 = (param_1[2] - iStack_20) + param_4 * -2;
-  uStack_40 = *param_2;
-  uStack_3c = param_2[1];
-  uStack_38 = param_2[2];
-  uStack_34 = 0;
-  uStack_24 = param_2[3];
-  iStack_1c = param_1[1];
-  iStack_18 = iStack_20 + param_4;
-  iStack_c = param_1[3];
-  uStack_30 = uStack_40;
-  uStack_2c = uStack_3c;
-  uStack_28 = uStack_38;
-  iStack_14 = iStack_1c;
-  iStack_10 = iStack_18;
-  iStack_8 = iStack_20;
-  iStack_4 = iStack_c;
-  FUN_003b4b40(&iStack_20,&uStack_40,0x7cd52c,0x6a2a28,param_3,param_5);
-  iStack_20 = iStack_20 + param_4;
-  iStack_18 = iStack_18 + iVar1;
-  iStack_10 = iStack_10 + iVar1;
-  iStack_8 = iStack_8 + param_4;
-  FUN_003b4b40(&iStack_20,&uStack_40,0x7cd52c,0x6a2a2c,param_3,param_5);
-  iStack_20 = iStack_20 + iVar1;
-  iStack_18 = iStack_18 + param_4;
-  iStack_10 = iStack_10 + param_4;
-  iStack_8 = iStack_8 + iVar1;
-  FUN_003b4b40(&iStack_20,&uStack_40,0x7cd52c,0x6a2a30,param_3,param_5);
+  s32 positions[8];
+  u32 colors[8];
+  iVar1 = (param_1[2] - param_1[0]) - param_4 * 2;
+  colors[0] = param_2[0];
+  colors[1] = param_2[1];
+  colors[2] = param_2[2];
+  colors[3] = 0;
+  colors[4] = colors[0];
+  colors[5] = colors[1];
+  colors[6] = colors[2];
+  colors[7] = param_2[3];
+  positions[0] = param_1[0];
+  positions[1] = param_1[1];
+  positions[2] = positions[0] + param_4;
+  positions[3] = positions[1];
+  positions[4] = positions[2];
+  positions[5] = param_1[3];
+  positions[6] = positions[0];
+  positions[7] = positions[5];
+  FUN_003b4b40_direct(positions, colors, &DAT_007cd52c, DAT_006a2a28, param_3, param_5);
+  positions[0] = positions[0] + param_4;
+  positions[2] = positions[2] + iVar1;
+  positions[4] = positions[4] + iVar1;
+  positions[6] = positions[6] + param_4;
+  FUN_003b4b40_direct(positions, colors, &DAT_007cd52c, DAT_006a2a2c, param_3, param_5);
+  positions[0] = positions[0] + iVar1;
+  positions[2] = positions[2] + param_4;
+  positions[4] = positions[4] + param_4;
+  positions[6] = positions[6] + iVar1;
+  FUN_003b4b40_direct(positions, colors, &DAT_007cd52c, DAT_006a2a30, param_3, param_5);
   return;
 }
 #define FUN_003b4d10(...) ((void (*)(...))FUN_003b4d10)(__VA_ARGS__)

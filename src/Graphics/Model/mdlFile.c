@@ -4473,9 +4473,9 @@ void FUN_00320380(float param_1,int *param_2)
 
 {
 
+
   u32 uVar1;
 
-  u32 *piVar2;
 
 
   int iVar6;
@@ -4493,17 +4493,19 @@ void FUN_00320380(float param_1,int *param_2)
 
   for (iVar6 = *param_2; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x54)) {
 
-    piVar2 = *(u32 **)(iVar6 + 0x50);
+    u32 *piVar2 = *(u32 **)(iVar6 + 0x50);
+
+
 
     uVar1 = *(u16 *)(piVar2 + 1);
 
     for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
-      int *puVar6;
+      int *puVar6 = (int *)(PTR_LAB_0069bb10_abs + uVar4 * 0x10);
 
 
 
 
-      puVar6 = (int *)(PTR_LAB_0069bb10_abs + uVar4 * 0x10);
+
       if ((puVar6[3] != 0) &&
 
          (*(int *)(iVar6 + uVar4 * 0x10 + 0xc) != 0)) {
@@ -4757,15 +4759,13 @@ void FUN_00320810(int *param_1)
   int iVar3;
   u32 uVar2;
   float fVar4;
-  u32 uVar6;
   float fVar5;
 
 
   fVar5 = 0.0f;
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
-      uVar6 = uVar2 * 0x10;
-      iVar1 = (u32 *)(iVar3 + uVar6);
+      iVar1 = (u32 *)(iVar3 + uVar2 * 0x10);
       if (*(int *)((u8 *)iVar1 + 0xc) != 0) {
         fVar4 = *(float *)((u8 *)iVar1 + 4);
         if (fVar4 > fVar5) {
@@ -11316,7 +11316,7 @@ void FUN_00326f60(u32 *param_1,int param_2)
 
 
 
-// FUN_00327090 NONMATCHING
+// FUN_00327090
 
 
 void FUN_00327090(u32 *param_1,u64 param_2)
@@ -11349,11 +11349,11 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 
     for (uVar1 = 0; uVar1 < uVar3; uVar1 = uVar1 + 1) {
 
-      FUN_003257e0((u64)(*(u32 *)(param_1[0xf] + uVar1 * 4)));
+      FUN_003257e0(*(u32 *)(param_1[0xf] + uVar1 * 4));
 
     }
 
-    (*DAT_0096017c)(param_1[0x10]);
+    (*DAT_0096017c_abs)(param_1[0x10]);
 
     param_1[0xf] = 0;
 
@@ -36425,8 +36425,8 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
 
   int iVar1;
 
-  int colourAddress;
   u8 (*pauVar7) [16];
+  u32 colourAddress;
 
   
 
@@ -36445,13 +36445,13 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
   *(u32 *)pauVar7[3] = 0xffffffff;
 
   colourAddress = (u32)DAT_0069c4a0_abs;
-  ((Qword128 *)pauVar7)[2] = *(Qword128 *)colourAddress;
+  *(Qword128 *)pauVar7[2] = *(Qword128 *)colourAddress;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
   __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar7) : "memory");
 
-  FUN_00521250(*(u32 *)(uVar6 + 0x40),param_2,iVar1);
+  FUN_00521250(*(u32 *)pauVar7[4],param_2,iVar1);
 
   return uVar6;
 
@@ -37968,7 +37968,6 @@ u32 FUN_00343c60(int param_1)
   MdlRuntimeState *state;
 
   int iVar2;
-  u32 minimumMode;
 
   int *piVar4;
 
@@ -37986,8 +37985,7 @@ u32 FUN_00343c60(int param_1)
 
   piVar4[2] = (int)piVar4;
 
-  minimumMode = state->minimumMode;
-  if (minimumMode < 3) {
+  if (state->minimumMode < 3) {
 
     state->minimumMode = 3;
 
@@ -38992,7 +38990,6 @@ u32 FUN_00344fc0(int param_1)
   MdlRuntimeState *state;
 
   int iVar2;
-  u32 minimumMode;
 
   int *piVar4;
 
@@ -39010,8 +39007,7 @@ u32 FUN_00344fc0(int param_1)
 
   piVar4[2] = (int)piVar4;
 
-  minimumMode = state->minimumMode;
-  if (minimumMode < 3) {
+  if (state->minimumMode < 3) {
 
     state->minimumMode = 3;
 
@@ -39813,8 +39809,8 @@ u32 FUN_00345cf0(u32 param_1,u64 param_2)
 
   int iVar1;
 
-  int colourAddress;
   u8 (*pauVar7) [16];
+  u32 colourAddress;
 
   
 
@@ -39833,13 +39829,13 @@ u32 FUN_00345cf0(u32 param_1,u64 param_2)
   *(u32 *)pauVar7[3] = 0xffffffff;
 
   colourAddress = (u32)DAT_0069c4a0_abs;
-  ((Qword128 *)pauVar7)[2] = *(Qword128 *)colourAddress;
+  *(Qword128 *)pauVar7[2] = *(Qword128 *)colourAddress;
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
   __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar7) : "memory");
 
-  FUN_00521250(*(u32 *)(uVar6 + 0x40),param_2,iVar1);
+  FUN_00521250(*(u32 *)pauVar7[4],param_2,iVar1);
 
   return uVar6;
 

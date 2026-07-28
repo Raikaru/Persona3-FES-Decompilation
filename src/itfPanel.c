@@ -3965,15 +3965,11 @@ u64 FUN_003ad640(u64 param_1,int param_2)
 
   char msg[8];
   u16 index;
-  int offset;
-  int base;
 
   
 
   iVar6 = (int)param_2;
-  offset = *(int *)(iVar6 + 0x18);
-  base = *(int *)(iVar6 + 0x10);
-  pbVar4 = (u8 *)(base + offset);
+  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x18) + *(int *)(iVar6 + 0x10));
 
   uVar5 = *pbVar4 - 1 & 0xff;
 
