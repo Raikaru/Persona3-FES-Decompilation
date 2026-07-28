@@ -302,7 +302,7 @@ void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5);
-void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5, int param_6);
+void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5, int param_6);
 void FUN_003f6f20(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5);
 void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7730(int param_1,int param_2,u8 param_3,int param_4,int param_5);
@@ -5433,8 +5433,7 @@ void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5)
 // FUN_003F67E0 NONMATCHING
 
 
-void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
-
+void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
                  int param_6)
 
 
@@ -5457,31 +5456,34 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
 
   int iVar8;
 
-  long lVar9;
+  int lVar9;
 
   int iVar10;
 
   int iVar11;
 
-  long lVar12;
+  int lVar12;
 
   u32 uVar13;
 
   u32 uVar14;
 
-  u8 auStack_30[16];
-
-  char acStack_20 [16];
-
-  short sStack_10;
-
-  short sStack_e;
-
-  short sStack_c;
-
-  short sStack_a;
-
-  char acStack_8 [8];
+  struct {
+    u8 auStack_30[16];
+    char acStack_20[16];
+    short sStack_10;
+    short sStack_e;
+    short sStack_c;
+    short sStack_a;
+    char acStack_8[8];
+  } stack;
+#define auStack_30 stack.auStack_30
+#define acStack_20 stack.acStack_20
+#define sStack_10 stack.sStack_10
+#define sStack_e stack.sStack_e
+#define sStack_c stack.sStack_c
+#define sStack_a stack.sStack_a
+#define acStack_8 stack.acStack_8
 
   
 
@@ -5722,6 +5724,13 @@ void FUN_003f67e0(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5,
   return;
 
 }
+#undef auStack_30
+#undef acStack_20
+#undef sStack_10
+#undef sStack_e
+#undef sStack_c
+#undef sStack_a
+#undef acStack_8
 
 // FUN_003F6F20 NONMATCHING
 

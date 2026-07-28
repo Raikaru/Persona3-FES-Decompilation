@@ -75,6 +75,8 @@ extern u32 D_007CC1E4;
 extern u32 D_007CC1F4;
 extern u32 D_007CC1F8;
 extern u32 D_007CC1C0;
+extern u32 D_007CE158;
+extern u32 D_008668F0[];
 extern void (*jtbl_0096017C)(void* memory);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
@@ -1202,7 +1204,7 @@ void func_001a8140(void* state, u32 mode)
         item = item->next;
     }
 
-    if (*(u32*)0x007ce158 == 1)
+    if (D_007CE158 == 1)
     {
         RpSkyRenderStateSet(2, (void*)0x44);
         RpSkyRenderStateSet(3, (void*)0x707fd);
@@ -1296,7 +1298,7 @@ void func_001a8140(void* state, u32 mode)
             {
                 if (*(u32*)((u8*)&D_007CC1F8 + 0x1c) == 1)
                 {
-                    func_001a8920((u32*)0x008668f0, (const u32*)item);
+                    func_001a8920(D_008668F0, (const u32*)item);
                 }
             }
             else if (*(u32*)((u8*)&D_007CC1F8 + 0x1c) == 1)
@@ -1330,7 +1332,7 @@ void func_001a8140(void* state, u32 mode)
             {
                 if (*(u32*)((u8*)&D_007CC1F8 + 0x18) == 1)
                 {
-                    func_001a8920((u32*)0x008668f0, (const u32*)item);
+                    func_001a8920(D_008668F0, (const u32*)item);
                 }
             }
             else if (*(u32*)((u8*)&D_007CC1F8 + 0x18) == 1)
@@ -1354,7 +1356,7 @@ void func_001a8140(void* state, u32 mode)
         {
             if (item->colorScale[0] < 1.0f && item->colorScale[0] > 0.0f)
             {
-                func_001a8920((u32*)0x008668f0, (const u32*)item);
+                func_001a8920(D_008668F0, (const u32*)item);
             }
         }
         item = item->next;

@@ -9835,8 +9835,8 @@ u64 FUN_00369320(u64 param_1,int param_2,u64 param_3)
 
   }
 
-  piVar3 = *(int **)(iVar5 + 0x164);
 
+  piVar3 = *(int **)(iVar5 + 0x164);
   if (piVar3 == (int *)0x0) {
 
     iVar4 = 0;
@@ -13819,14 +13819,16 @@ u32 FUN_0036db20(int param_1)
   u32 lVar7;
 
   int iVar8;
+  u32 *state;
 
   int iStack_4;
 
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
+  state = (u32 *)(iVar1 + 0x960);
 
-  switch(*(u32 *)(iVar1 + 0x960)) {
+  switch(*state) {
 
   case 0:
 
@@ -13836,7 +13838,7 @@ u32 FUN_0036db20(int param_1)
 
     *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) | 1;
 
-    *(u32 *)(iVar1 + 0x960) = 1;
+    *state = 1;
 
     uVar4 = FUN_00198590();
 
@@ -13866,7 +13868,7 @@ u32 FUN_0036db20(int param_1)
 
     FUN_005225a8((const char *)(DAT_006a0000 - 0x20b0),uVar4,uVar5);
 
-    *(u32 *)(iVar1 + 0x960) = 2;
+    *state = 2;
 
 switchD_0036db68_caseD_2:
 
@@ -13874,7 +13876,7 @@ switchD_0036db68_caseD_2:
 
     if (lVar7 != 0) {
 
-      *(u32 *)(iVar1 + 0x960) = 3;
+      *state = 3;
 
 switchD_0036db68_caseD_3:
 
@@ -13907,7 +13909,7 @@ switchD_0036db68_caseD_3:
 
       *(int *)(iVar1 + 8) = iVar8;
 
-      *(u32 *)(iVar1 + 0x960) = 4;
+      *state = 4;
 
       FUN_005225a8(0x69df70);
 
@@ -13917,13 +13919,13 @@ switchD_0036db68_caseD_4:
 
       if (lVar7 == 0) {
 
-        *(u32 *)(iVar1 + 0x960) = 6;
+        *state = 6;
 
       }
 
       else {
 
-        *(u32 *)(iVar1 + 0x960) = 5;
+        *state = 5;
 
         FUN_005225a8(0x69dfa0);
 
@@ -13965,7 +13967,7 @@ switchD_0036db68_caseD_4:
 
       }
 
-      *(u32 *)(iVar1 + 0x960) = 6;
+      *state = 6;
 
     }
 
@@ -13975,7 +13977,7 @@ switchD_0036db68_caseD_4:
 
     if (*(int *)(iVar1 + 0x974) < 1) {
 
-      *(u32 *)(iVar1 + 0x960) = 8;
+      *state = 8;
 
     }
 
@@ -13983,7 +13985,7 @@ switchD_0036db68_caseD_4:
 
       DAT_007ce5e8 = FUN_00316e00(0,2,0);
 
-      *(u32 *)(iVar1 + 0x960) = 7;
+      *state = 7;
 
     }
 
@@ -14001,7 +14003,7 @@ switchD_0036db68_caseD_4:
 
       *(int *)(iVar1 + 0x974) = *(int *)(iVar1 + 0x974) + -1;
 
-      *(u32 *)(iVar1 + 0x960) = 6;
+      *state = 6;
 
     }
 
@@ -14015,7 +14017,7 @@ switchD_0036db68_caseD_4:
 
     }
 
-    *(u32 *)(iVar1 + 0x960) = 9;
+    *state = 9;
 
   case 9:
 
@@ -14039,7 +14041,7 @@ switchD_0036db68_caseD_4:
 
     FUN_003965d0(*(u32 *)(iVar1 + 0x710));
 
-    *(u32 *)(iVar1 + 0x960) = 10;
+    *state = 10;
 
     break;
 
@@ -14053,17 +14055,17 @@ switchD_0036db68_caseD_4:
 
     }
 
-    *(u32 *)(iVar1 + 0x960) = 0xb;
+    *state = 0xb;
 
   case 0xb:
 
     FUN_003912f0(*(u32 *)(iVar1 + 8),iVar1);
 
-    *(u32 *)(iVar1 + 0x960) = 0xc;
+    *state = 0xc;
 
 switchD_0036db68_caseD_c:
 
-    *(u32 *)(iVar1 + 0x960) = 0xe;
+    *state = 0xe;
 
     break;
 
@@ -14081,13 +14083,13 @@ switchD_0036db68_caseD_c:
 
     }
 
-    *(u32 *)(iVar1 + 0x960) = 0xe;
+    *state = 0xe;
 
   case 0xe:
 
     if ((*(u8 *)(iVar1 + 0x4c) & 1) == 0) {
 
-      *(u32 *)(iVar1 + 0x960) = 0x10;
+      *state = 0x10;
 
     }
 
@@ -14101,7 +14103,7 @@ switchD_0036db68_caseD_c:
 
       *(u32 *)(iVar1 + 0x93c) = uVar2;
 
-      *(u32 *)(iVar1 + 0x960) = 0xf;
+      *state = 0xf;
 
     }
 
@@ -14113,7 +14115,7 @@ switchD_0036db68_caseD_c:
 
     if (lVar7 != 0) {
 
-      *(u32 *)(iVar1 + 0x960) = 0x10;
+      *state = 0x10;
 
       goto switchD_0036db68_caseD_10;
 

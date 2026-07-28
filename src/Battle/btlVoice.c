@@ -9398,6 +9398,7 @@ u32 func_002ed360(u64 *param_1)
   u16 sVar4;
   u32 uVar5;
   int iVar6;
+  BtlUnit *unitIter;
   u8 *puVar7;
   u8 *puVar8;
   u8 *puVar9;
@@ -9427,9 +9428,10 @@ u32 func_002ed360(u64 *param_1)
   sVar22 = *(short *)(DAT_007ce3ec + 0xb58);
   switch (sVar22) {
   case 0:
-    for (iVar6 = *(int *)(DAT_007ce3ec + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
-    if (*(short *)(iVar6 + 0xa4) == 0x10a) {
-      lVar13 = FUN_0030b5a0(*(u32 *)(iVar6 + 0xa2c),0);
+    for (unitIter = *(BtlUnit **)(DAT_007ce3ec + 0x158);
+         unitIter != NULL; unitIter = unitIter->next) {
+    if (unitIter->charId == 0x10a) {
+      lVar13 = FUN_0030b5a0(unitIter->datUnit,0);
       if (lVar13 == 0) {
         bVar3 = true;
       }

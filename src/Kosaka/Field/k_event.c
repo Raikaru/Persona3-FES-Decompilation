@@ -52,6 +52,8 @@ extern void* DAT_00960184[];
 extern void (*DAT_0096017c[])(void*);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern u32 DAT_0096017c_abs[];
+extern u8 D_0086B180[];
+extern RwV3d D_008717D0;
 static void FldEvent_ClearBytes(void* dst, u32 size)
 {
     u8* bytes;
@@ -422,7 +424,7 @@ void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
     }
 
     i = 0;
-    cell = (u8*)0x0086b180 + z * 0x310 + x * 0xc4;
+    cell = D_0086B180 + z * 0x310 + x * 0xc4;
     entry = (FldUnit**)(cell + i * 4);
     candidate = *entry;
     while (candidate != NULL)
@@ -823,9 +825,7 @@ void func_001c8120(void* work)
     {
         return;
     }
-    center.x = *(f32*)0x008717d0;
-    center.y = *(f32*)0x008717d4;
-    center.z = *(f32*)0x008717d8;
+    center = D_008717D0;
     center.x = (f32)((s32)((center.x + 400.0f) / 800.0f)) * 800.0f;
     center.z = (f32)((s32)((center.z + 400.0f) / 800.0f)) * 800.0f;
     candidates[0] = center;

@@ -218,6 +218,8 @@ u32 DAT_0086bf90;
 u32 DAT_0086bf94;
 u32 DAT_0086e580;
 float DAT_0086e684;
+#pragma alias DAT_0086e684_abs DAT_0086e684
+extern u8 DAT_0086e684_abs[];
 u32 DAT_0086e688;
 u32 DAT_0086e68c;
 extern u8 DAT_0086e6a0[];
@@ -6250,6 +6252,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
   int iVar10;
 
+
   u8 bVar11;
 
   int *piVar12;
@@ -7891,6 +7894,7 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
   int iVar9;
 
+
   float *pfVar10;
 
   int iVar11;
@@ -7956,6 +7960,7 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
   for (iVar9 = 0; iVar9 < 0x20; iVar9 = iVar9 + 1) {
 
     if (*(int *)(&DAT_0086be80 + iVar9 * 0x138) != 0) {
+
 
       lVar6 = FUN_0044f120(&DAT_0086bf8c + iVar9 * 0x138);
 
@@ -8329,9 +8334,9 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
   iVar2 = *(int *)(param_1 + 0x3c);
 
-  if (((DAT_0086e580 == 1) && (sVar4 = FUN_0044f120(0x86e684), param_2 == sVar4)) &&
+  if (((DAT_0086e580 == 1) && (sVar4 = FUN_0044f120(DAT_0086e684_abs), param_2 == sVar4)) &&
 
-     (sVar4 = FUN_0044f170(0x86e684), param_3 == sVar4)) {
+     (sVar4 = FUN_0044f170(DAT_0086e684_abs), param_3 == sVar4)) {
 
     uVar7 = FUN_001158b0(0,DAT_007ce6e4,5);
 

@@ -76,9 +76,8 @@ static inline void opWaitPutU32(u8* work, u32 offset, u32 value)
     *(u32*)(work + offset) = value;
 }
 
-static inline void opWaitSetColor(void* quad, f32 alpha)
+static inline void opWaitSetColor(void* quad, f32 alpha, u8* color)
 {
-    u8 color[4];
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
@@ -542,6 +541,17 @@ void opWait0026eed0(void)
     void* atlas;
     void* frame;
     f32 points[8];
+    union {
+        f32 values[4];
+        u8 rgba[4];
+        struct {
+            void (*function)(u32*);
+            u32* work;
+        } callback_data;
+    } scratch;
+#define rect scratch.values
+#define callback scratch.callback_data
+#define opWaitSetColor(quad, alpha) opWaitSetColor(quad, alpha, scratch.rgba)
     f32 alpha;
     f32 phase;
     f32 x;
@@ -567,7 +577,10 @@ void opWait0026eed0(void)
     else
         alpha = 1.0f;
     {
-        f32 rect[4] = {0.0f, 0.0f, 640.0f, 448.0f};
+        rect[0] = 0.0f;
+        rect[1] = 0.0f;
+        rect[2] = 640.0f;
+        rect[3] = 448.0f;
         func_0021d8e0(work + 0x40, rect);
         opWaitSetColor(work + 0x40, alpha * 255.0f);
     }
@@ -582,7 +595,10 @@ void opWait0026eed0(void)
     x = 210.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 188.0f;
     y = 69.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 93.0f;
     {
-        f32 rect[4] = {x, y, 256.0f, 256.0f};
+        rect[0] = x;
+        rect[1] = y;
+        rect[2] = 256.0f;
+        rect[3] = 256.0f;
         func_0021d8e0(work + 0x240, rect);
         if (mode == 1)
             alpha = 1.0f - opWaitClamp01(timer, 0, 20);
@@ -597,7 +613,10 @@ void opWait0026eed0(void)
     {
         alpha = opWaitClamp01(timer, 0, 60);
         {
-            f32 rect[4] = {0.0f, 0.0f, 640.0f, 448.0f};
+            rect[0] = 0.0f;
+            rect[1] = 0.0f;
+            rect[2] = 640.0f;
+            rect[3] = 448.0f;
             func_0021d8e0(work + 0x340, rect);
         }
     }
@@ -619,7 +638,10 @@ void opWait0026eed0(void)
         x = 335.0f + (1.0f - scale) * -370.0f;
         y = 32.0f + (1.0f - scale) * 200.0f;
         {
-            f32 rect[4] = {x, y, 232.0f, 416.0f};
+            rect[0] = x;
+            rect[1] = y;
+            rect[2] = 232.0f;
+            rect[3] = 416.0f;
             func_0021d8e0(work + 0x440, rect);
         }
         alpha = opWaitClamp01(timer, 55, 60);
@@ -650,7 +672,6 @@ void opWait0026eed0(void)
         f32 t = (f32)*(s32*)(work + 0x0c) / 90.0f;
         f32 pulse = t * 4.0f - t * 4.0f * t;
         f32 value = 0.5f - DAT_007cafec * pulse - DAT_007cb080;
-        f32 rect[4];
 
         rect[0] = value;
         rect[1] = value;
@@ -702,7 +723,10 @@ void opWait0026eed0(void)
         alpha = 1.0f;
     }
     {
-        f32 rect[4] = {x, y, width, height};
+        rect[0] = x;
+        rect[1] = y;
+        rect[2] = width;
+        rect[3] = height;
         func_0021d8e0(work + 0xa40, rect);
         opWaitSetColor(work + 0xa40, alpha * 255.0f);
     }
@@ -729,7 +753,10 @@ void opWait0026eed0(void)
         y = 401.0f;
     }
     {
-        f32 rect[4] = {x, y, width, height};
+        rect[0] = x;
+        rect[1] = y;
+        rect[2] = width;
+        rect[3] = height;
         func_0021d8e0(work + 0x940, rect);
         opWaitSetColor(work + 0x940, alpha * 255.0f);
     }
@@ -756,7 +783,10 @@ void opWait0026eed0(void)
         y = 15.0f;
     }
     {
-        f32 rect[4] = {x, y, width, height};
+        rect[0] = x;
+        rect[1] = y;
+        rect[2] = width;
+        rect[3] = height;
         func_0021d8e0(work + 0xb40, rect);
         opWaitSetColor(work + 0xb40, alpha * 255.0f);
     }
@@ -768,7 +798,6 @@ void opWait0026eed0(void)
         alpha = 1.0f;
     (void)func_0021cca0(atlas, 0x10);
     {
-        f32 rect[4];
         f32 offset = ((f32)*(s32*)(work + 0x18) / 690.0f) * -300.0f;
         rect[0] = 341.0f + offset;
         rect[1] = 256.0f;
@@ -947,17 +976,15 @@ void opWait0026eed0(void)
     }
 
     {
-        struct
-        {
-            void (*function)(u32*);
-            u32* work;
-        } callback;
         callback.function = func_00271230;
         callback.work = (u32*)work;
         func_00269a10(*(u32*)(work + 0x1170), &callback);
         callback.function = func_002716d0;
         func_00269a10(*(u32*)(work + 0x1174), &callback);
     }
+#undef opWaitSetColor
+#undef callback
+#undef rect
 }
 extern f32 func_00269c80(f32 value);
 extern f32 func_00269ca0(f32 value);

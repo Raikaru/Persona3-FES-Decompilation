@@ -443,26 +443,25 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     f32 dy;
     f32 dz;
     f32 distance;
-    f32 pointX;
     f32 pointY;
     f32 pointZ;
+    f32 pointX;
     s32 bestIndex;
     s32 index;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
     K_FldFrame_CtlCopyPos(&playerPos, work->playerResrc->collisCtlTask);
-    pointCopy.x = playerPos.x;
-    pointCopy.y = playerPos.y;
-    pointCopy.z = playerPos.z;
+    pointCopy = playerPos;
     bestDistance = fGpffff8248;
-    pointX = pointCopy.x;
+    index = 0;
     pointY = pointCopy.y;
     pointZ = pointCopy.z;
-    for (index = 0; index < 9; index++)
+    pointX = pointCopy.x;
+    for (; index < 9; index++)
     {
-        dx = work->cameraPoints[index].x - pointX;
-        dy = work->cameraPoints[index].y - pointY;
-        dz = work->cameraPoints[index].z - pointZ;
+        dx = (work->cameraPoints + index)->x - pointX;
+        dy = (work->cameraPoints + index)->y - pointY;
+        dz = (work->cameraPoints + index)->z - pointZ;
         distance = sqrtf(dx * dx + dy * dy + dz * dz);
         if (bestDistance > distance)
         {

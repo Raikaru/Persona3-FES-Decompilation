@@ -62,6 +62,8 @@ extern f32 fGpffff8078;
 extern f32 fGpffff820c;
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
+extern u8 D_008717A0[];
+extern u8 D_0086B180[];
 
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
@@ -2480,7 +2482,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
             void* gridEntry;
             void* objData;
             s32 entryOff = quadIter * 448;
-            gridEntry = (u8*)0x008717a0 + entryOff;
+            gridEntry = D_008717A0 + entryOff;
 
             if (*(u32*)((u8*)gridEntry + 0x48) == 0) continue;
             if (*(u32*)((u8*)gridEntry + 0x54) == 0) continue;
@@ -2546,7 +2548,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
 
         cellX = (s32)((pos->x + 400.0f) / 800.0f);
         cellZ = (s32)((pos->z + 400.0f) / 800.0f);
-        cell = (u8*)0x0086b180 + cellZ * 0x310 + cellX * 0xc4;
+        cell = D_0086B180 + cellZ * 0x310 + cellX * 0xc4;
         for (i = 0; i < 100; i++)
         {
             void* entry;
@@ -2580,7 +2582,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
     {
         u8* cell;
         void* extraData;
-        cell = (u8*)0x0086b180 +
+        cell = D_0086B180 +
                (s32)((pos->z + 400.0f) / 800.0f) * 0x310 +
                (s32)((pos->x + 400.0f) / 800.0f) * 0xc4;
         extraData = *(void**)(cell + 0x310);

@@ -4781,9 +4781,10 @@ void FUN_0038bc70(int param_1,int param_2,int param_3)
 
   
 
+  puVar3 = *(u32 **)(param_1 + 0x84);
   sVar1 = (short)param_3;
 
-  for (puVar3 = *(u32 **)(param_1 + 0x84); puVar3 != (u32 *)0x0;
+  for (; puVar3 != (u32 *)0x0;
 
       puVar3 = (u32 *)puVar3[0x25]) {
 

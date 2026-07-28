@@ -3348,11 +3348,15 @@ void FUN_0022c8a0(u32* object_param)
     u32 table3;
     u32 table5;
     f32 rect[4];
-    u8 color[4];
+    union {
+        u8 values[4];
+        u8 temp[4];
+    } colorScratch;
+#define color colorScratch.values
+#define colorTmp colorScratch.temp
     u32 color1;
     u32 color2;
     u32 color3;
-    u8 colorTmp[4];
     s32 s0;
     f32 pos1X, pos1Y;
     f32 pos2X, pos2Y;
@@ -3898,6 +3902,8 @@ void FUN_0022c8a0(u32* object_param)
     if (*(u32*)object & 4) {
         FUN_0022fa80((u32*)object);
     }
+#undef colorTmp
+#undef color
 }
 
 #define BCM_PANEL_STATE(...) ((void (*)(u32, u32))D_00960090)(__VA_ARGS__)
@@ -4585,7 +4591,19 @@ void FUN_0022fa80(u32* object)
     u32 state;
     f32 offset_x;
     f32 offset_y;
-    f32 rect_work[12];
+    union {
+        struct {
+            f32 values[12];
+            u8 reserved[28];
+            u8 rgba[4];
+        } active;
+    } scratch;
+#define rect_work scratch.active.values
+#define colour scratch.active.rgba
+#define rect scratch.active.values
+#define rect0 scratch.active.values
+#define rect1 (scratch.active.values + 4)
+#define rect2 (scratch.active.values + 8)
 
     bytes = (u8*)object;
     offset_x = *(f32*)(bytes + 0x510) + *(f32*)(bytes + 0x518) + *(f32*)(bytes + 0x520);
@@ -4596,7 +4614,6 @@ void FUN_0022fa80(u32* object)
     case 0:
     {
         u8* base;
-        u8 colour[4];
         u32 resource;
 
         base = bytes + 0x1060;
@@ -4688,7 +4705,6 @@ void FUN_0022fa80(u32* object)
         u8* base;
         u32 resource;
         u32 s3, s4;
-        u8 colour[4];
 
         base = bytes + 0x1060;
         *(u32*)(bytes + 0x166c) = *(u32*)(bytes + 0x166c) + 1;
@@ -4735,7 +4751,6 @@ void FUN_0022fa80(u32* object)
             f32 pos_y = 11.0f + offset_y;
             resource = FUN_0021cca0(table, 1);
             for (s3 = 0; s3 < 3; s3++) {
-                f32 rect0[4], rect1[4], rect2[4];
                 f32 t, angle, s, c;
                 f32 x0, y0, x1, y1, x2, y2, x3, y3;
                 f32 w, h;
@@ -4781,7 +4796,6 @@ void FUN_0022fa80(u32* object)
             f32 pos_y = 11.0f + offset_y;
             resource = FUN_0021cca0(table, 2);
             for (s3 = 0; s3 < 3; s3++) {
-                f32 rect0[4], rect1[4], rect2[4];
                 f32 t, angle, s, c;
                 f32 x0, y0, x1, y1, x2, y2, x3, y3;
                 f32 w, h;
@@ -4825,7 +4839,6 @@ void FUN_0022fa80(u32* object)
     case 2:
     {
         u8* base;
-        u8 colour[4];
         u32 resource;
         u32 i;
         u32 j;
@@ -4912,7 +4925,6 @@ void FUN_0022fa80(u32* object)
             f32 pos_x = 90.0f + offset_x;
             f32 pos_y = 40.0f + offset_y;
             for (i = 0; i < 3; i++) {
-                f32 rect0[4], rect1[4], rect2[4];
                 f32 t, angle, s, c;
                 f32 x0, y0, x1, y1, x2, y2, x3, y3;
                 f32 w, h;
@@ -4973,7 +4985,6 @@ void FUN_0022fa80(u32* object)
         f32 pos_x0, pos_y0;
         f32 pos_x1, pos_y1;
         f32 size_w, size_h;
-        u8 colour[4];
 
         resource = FUN_0021cca0(table, 8);
         *(u32*)(bytes + 0x126c) = *(u32*)(bytes + 0x126c) + 1;
@@ -4997,7 +5008,6 @@ void FUN_0022fa80(u32* object)
 
         // Outer loop: two slots
         for (i = 0; i < 2; i++) {
-            f32 rect[8]; // 4 corners x,y pairs at [0..7]
             f32 cnt_f;
             f32 t;
             f32 scale_x, scale_y;
@@ -5096,7 +5106,6 @@ void FUN_0022fa80(u32* object)
     {
         u8* base;
         u32 i;
-        u8 colour[4];
         u32 resource;
 
         base = bytes + 0x1060;
@@ -5176,7 +5185,6 @@ void FUN_0022fa80(u32* object)
             f32 pos_x = 66.0f + offset_x;
             f32 pos_y = 11.0f + offset_y;
             for (i = 0; i < 2; i++) {
-                f32 rect0[4], rect1[4], rect2[4];
                 f32 t, angle, s, c;
                 f32 x0, y0, x1, y1, x2, y2, x3, y3;
                 u32 flag;
@@ -5225,10 +5233,8 @@ void FUN_0022fa80(u32* object)
     {
         u8* base;
         u32 i;
-        u8 colour[4];
         u32 resource;
         u32 slot_resource;
-        f32 rect[4];
 
         base = bytes + 0x1060;
         *(u32*)(bytes + 0x1570) = *(u32*)(bytes + 0x1570) + 1;
@@ -5320,7 +5326,6 @@ void FUN_0022fa80(u32* object)
             f32 pos_y = 19.0f + offset_y;
             resource = FUN_0021cca0(table, 12);
             {
-                f32 rect0[4], rect1[4], rect2[4];
                 f32 t, angle, s, c;
                 f32 x0, y0, x1, y1, x2, y2, x3, y3;
                 f32 w, h;
@@ -5367,10 +5372,8 @@ void FUN_0022fa80(u32* object)
         u8* base;
         u32 resource;
         u32 i;
-        u8 colour[4];
         f32 counter_f;
         f32 pos_x, pos_y;
-        f32 rect[8];
         f32 cx, cy;
         f32 angle;
         f32 s0, c0;
@@ -5638,7 +5641,6 @@ void FUN_0022fa80(u32* object)
     case 7:
     {
         u32 i;
-        u8 colour[4];
         u8* base = bytes + 0x1060;
         f32 pos_x;
         f32 pos_y;
@@ -5696,7 +5698,6 @@ void FUN_0022fa80(u32* object)
         pos_x = 66.0f + offset_x;
         pos_y = 11.0f + offset_y;
         for (i = 0; i < 4; i++) {
-            f32 rect0[4], rect1[4], rect2[4];
             f32 angle;
             f32 s, c;
             f32 x0, y0, x1, y1, x2, y2, x3, y3;
@@ -5743,7 +5744,6 @@ void FUN_0022fa80(u32* object)
     case 8:
     {
         u32 resource;
-        f32 rect[4];
 
         resource = FUN_0021cca0(table, 0x11);
         rect[0] = 39.0f + offset_x;
@@ -5756,7 +5756,6 @@ void FUN_0022fa80(u32* object)
     case 9:
     {
         u32 resource;
-        f32 rect[4];
 
         resource = FUN_0021cca0(table, 0);
         rect[0] = 60.0f + offset_x;
@@ -5767,5 +5766,11 @@ void FUN_0022fa80(u32* object)
         break;
     }
     }
+#undef rect2
+#undef rect1
+#undef rect0
+#undef rect
+#undef colour
+#undef rect_work
 }
 
