@@ -668,11 +668,13 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                  alpha);
     }
 
-    hpFade = phase < 15 ? 0xff - ((phase - 11) * 0xff) / 4 : 0;
-    spFade = phase < 19 ? 0xff - ((phase - 15) * 0xff) / 4 : 0;
-    effectFade = phase < 20 ? 0xff - ((phase - 16) * 0xff) / 4 : 0;
 
     if (phase > 10) {
+        if (phase < 15) {
+            hpFade = 0xff - ((phase - 11) * 0xff) / 4;
+        } else {
+            hpFade = 0;
+        }
         if (phase < 15) {
             hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
             maxHp = (s32)(u32)datGetMaxHp(pcId);
@@ -692,6 +694,11 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
 
     if (phase > 14) {
         if (phase < 19) {
+            spFade = 0xff - ((phase - 15) * 0xff) / 4;
+        } else {
+            spFade = 0;
+        }
+        if (phase < 19) {
             spScaled = (s32)(u32)datGetSp(pcId) * 0x4c;
             maxSp = (s32)(u32)func_0016c670(pcId);
             ratio = spScaled / maxSp;
@@ -706,10 +713,20 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
             spBarOffset = 0x4c - spScaled / maxSp;
         }
         h_campStatusDrawSp(position, alpha, pcId, spBarOffset, spFade);
+        if (phase < 19) {
+            spFade = 0xff - ((phase - 15) * 0xff) / 4;
+        } else {
+            spFade = 0;
+        }
         h_campStatusDrawPhysicalCondition(position, alpha, pcId, spFade);
     }
 
     if (phase > 15) {
+        if (phase < 20) {
+            effectFade = 0xff - ((phase - 16) * 0xff) / 4;
+        } else {
+            effectFade = 0;
+        }
         h_campStatusDrawBadStatus(position, alpha, pcId, effectFade);
     }
 }
@@ -2684,12 +2701,12 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                              (u8)alpha, bottomPos.x + 275.0f,
                              bottomPos.y + 86.0f, scale);
     bottomPos.y += 88.0f;
-    if (*((u8*)persona + 4) != 0x63) {
-        rank = FUN_00173340(persona) - FUN_00173330(persona);
-        FUN_00523ac8(text, gp0xffff8978, rank);
+    if (*((u8*)persona + 4) == 0x63) {
+        FUN_00523ac8(text, gp0xffff8980);
     }
     else {
-        FUN_00523ac8(text, gp0xffff8980);
+        rank = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, rank);
     }
     FUN_0040eb50(0x42c80000, (s32)bottomPos.x + 275,
                  (s32)bottomPos.y, 0xff - alpha,
@@ -2799,12 +2816,12 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22, alpha,
                              drawPosition.x + 287.0f,
                              drawPosition.y + 278.0f, scale);
-    if (*((u8*)persona + 4) != 0x63) {
-        value = FUN_00173340(persona) - FUN_00173330(persona);
-        FUN_00523ac8(text, gp0xffff8978, value);
+    if (*((u8*)persona + 4) == 0x63) {
+        FUN_00523ac8(text, gp0xffff8980);
     }
     else {
-        FUN_00523ac8(text, gp0xffff8980);
+        value = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, value);
     }
     FUN_0040eb50(parentBottom, (s32)footerX, (s32)footerY,
                  0xff - alpha, 4, text, 1);

@@ -5684,6 +5684,7 @@ void func_00316970(Model* param_1)
   func_004916d0(*(u32 *)(iVar3 + 0xdc),0x3165e0,0);
 
   if (*(int *)(iVar3 + 0x37c) != 0) {
+    func_003143c0((u8 *)param_1 + 0x364,param_1->clump);
 
   }
 
@@ -5736,6 +5737,7 @@ void func_00316970(Model* param_1)
   func_004916d0(*(u32 *)(iVar3 + 0xdc),0x315ed0,0);
 
   if (*(int *)(iVar3 + 0x3f4) != 0) {
+    func_0031ded0(*(void **)(iVar3 + 0x3f4));
 
   }
 

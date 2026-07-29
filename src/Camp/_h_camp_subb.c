@@ -2233,23 +2233,55 @@ void FUN_00142930(CampEquipmentPanelWork* work)
   float slotX;
   float slotY;
   u64 spriteTopLeft;
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, 0x4140000042dc0000, 0x4140000042200000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d800004404c000, 0x41d80000435b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, 0x41d800004404c000, 0x41d800004404c000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, 0x41d80000439f0000, 0x41d80000439f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, 0x41d8000043aa8000, 0x41d8000043aa8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, 0x41d8000043f20000, 0x41d8000043f20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, 0x41d8000043fd8000, 0x41d8000043fd8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, 0x4274000043948000, 0x4274000043630000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, 0x435b000043948000, 0x435b000043770000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, 0x4286000044310000, 0x42860000440b8000, 0, 0, 0, 0);
+  CampBits pair0;
+  CampBits pair1;
+  pair0.f[0] = 40.0f;
+  pair0.f[1] = 12.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 110.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 10);
+  pair0.f[0] = 219.0f;
+  pair0.f[1] = 27.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 531.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, pair1.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 531.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 318.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 341.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 484.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 507.0f;
+  pair0.f[1] = 27.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, pair0.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 227.0f;
+  pair0.f[1] = 61.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 297.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 247.0f;
+  pair0.f[1] = 219.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 297.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 5);
+  pair0.f[0] = 559.0f;
+  pair0.f[1] = 67.0f;
+  pair1.u = pair0.u;
+  pair1.f[0] = 708.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, pair1.u, pair0.u, 0, 0, 0, 5);
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
       slotX = (float)(row * 0x55) + 62.0f;
       if ((row == work->selectedSlot) || (work->selectedSlot == -2)) {
         slotY = 48.0f;
         spriteTopLeft = CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x42780000);
-        func_0018bc10(100.0f, (void*)(work->drawBuffer + (row * 10 + 0x24) * 0x44), 0, 2, 2, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (row * 10 + 0x24) * 0x44), 0, 2, 2, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 5);
       }
       else {
         slotY = 27.0f;
@@ -2257,15 +2289,15 @@ void FUN_00142930(CampEquipmentPanelWork* work)
       }
       spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 8.0f, slotY + 65.0f);
       index = row * 10;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 8.0f, 0x42820000), 0, 0, 0, 5);
       spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 31.0f, slotY + 65.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 31.0f, 0x42820000), 0, 0, 0, 5);
       spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 45.0f, slotY + 65.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 45.0f, 0x42820000), 0, 0, 0, 5);
       spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 64.0f, slotY + 65.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 64.0f, 0x42820000), 0, 0, 0, 5);
       spriteTopLeft = CAMP_SUBB_PAIR_FLOATS(slotX + 2.0f, slotY + 14.0f);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, spriteTopLeft, CAMP_SUBB_PAIR_FLOAT_HIGH(slotX + 2.0f, 0x41600000), 0, 0, 0, 5);
       *(u32 *)(work->drawBuffer + row * 0x2a8 + 0x950) = 0;
     }
     else {
@@ -2279,10 +2311,10 @@ void FUN_00142930(CampEquipmentPanelWork* work)
       *(u32 *)(work->drawBuffer + index + 0x994) = 0;
     }
   }
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x12dc), 0, 2, 2, 0x43cf800042be0000, 0x43cf800042be0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x13a8), 0, 2, 2, 0x43cf800043e28000, 0x43cf800043e28000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1298), 0, 2, 1, 0x43cf800042780000, 0x43cf800042780000, 0, 0, 0, 5);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x12dc), 0, 2, 2, 0x43cf800042be0000, 0x43cf800042be0000, 0, 0, 0, 5);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1364), 0, 2, 1, 0x43cf8000436f0000, 0x43cf8000436f0000, 0, 0, 0, 5);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x13a8), 0, 2, 2, 0x43cf800043e28000, 0x43cf800043e28000, 0, 0, 0, 5);
   return;
 }
 

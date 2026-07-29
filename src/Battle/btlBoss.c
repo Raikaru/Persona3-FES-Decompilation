@@ -1955,130 +1955,175 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
     {
         case 0x1a0:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x100) return (s16)DAT_00699BF0[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x100:
+                    return (s32)DAT_00699BF0[index];
+            }
+            return -1;
         }
         case 0x1a1:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x102) return DAT_00699C3A[index];
-            if (unit->charId == 0x101) return DAT_00699C20[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x101:
+                    return (s32)DAT_00699C20[index];
+                case 0x102:
+                    return (s32)DAT_00699C3A[index];
+            }
+            return -1;
         }
         case 0x1a2:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x103) return DAT_00699C90[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x103:
+                    return (s32)DAT_00699C90[index];
+            }
+            return -1;
         }
         case 0x1a3:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x104) return DAT_00699CE0[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x104:
+                    return (s32)DAT_00699CE0[index];
+            }
+            return -1;
         }
         case 0x1a4:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x105) return DAT_00699D30[index];
-            if (unit->charId == 0x106) return DAT_00699D4A[index];
-            if (unit->charId == 0x115) return DAT_00699D64[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x105:
+                    return (s32)DAT_00699D30[index];
+                case 0x106:
+                    return (s32)DAT_00699D4A[index];
+                case 0x115:
+                    return (s32)DAT_00699D64[index];
+            }
+            return -1;
         }
         case 0x1a5:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x107)
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
             {
-                if ((index == 0x11 || index == 3 || index == 0) &&
-                    *(void**)((u8*)gBtl + 0xb44) != NULL)
-                {
-                    *(u32*)((u8*)gBtl + 0xb4c) = 1;
-                    return 0xf;
-                }
-                if (*(void**)((u8*)gBtl + 0xb44) == NULL)
-                {
-                    *(u32*)((u8*)gBtl + 0xb4c) = 0;
-                }
-                return DAT_00699DD0[index];
+                case 0x107:
+                    if ((index == 0x11 || index == 3 || index == 0) &&
+                        *(void**)((u8*)gBtl + 0xb44) != NULL)
+                    {
+                        *(u32*)((u8*)gBtl + 0xb4c) = 1;
+                        return 0xf;
+                    }
+                    if (*(void**)((u8*)gBtl + 0xb44) == NULL)
+                    {
+                        *(u32*)((u8*)gBtl + 0xb4c) = 0;
+                    }
+                    return (s32)DAT_00699DD0[index];
             }
-            return 0xffff;
+            return -1;
         }
         case 0x1a6:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x10a) return DAT_00699E3A[index];
-            if (unit->charId == 0x109)
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
             {
-                if ((index == 9 || index == 0x11 || index == 3 || index == 0) &&
-                    *(u32*)((u8*)gBtl + 0xb50) == 1)
-                {
-                    return 6;
-                }
-                return DAT_00699E20[index];
+                case 0xe2:
+                case 0xe3:
+                case 0xe4:
+                case 0xe5:
+                case 0xe6:
+                case 0xe7:
+                case 0xe8:
+                    return -1;
+                case 0x109:
+                    if ((index == 9 || index == 0x11 || index == 3 || index == 0) &&
+                        *(u32*)((u8*)gBtl + 0xb50) == 1)
+                    {
+                        return 6;
+                    }
+                    return (s32)DAT_00699E20[index];
+                case 0x10a:
+                    return (s32)DAT_00699E3A[index];
             }
-            if (unit->charId == 0xe8 || unit->charId == 0xe7 || unit->charId == 0xe6 ||
-                unit->charId == 0xe5 || unit->charId == 0xe4 || unit->charId == 0xe3 ||
-                unit->charId == 0xe2)
-            {
-                return 0xffff;
-            }
-            return 0xffff;
+            return -1;
         }
         case 0x1a7:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x10c) return DAT_0069A03A[index];
-            if (unit->charId == 0x10b) return DAT_0069A020[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x10b:
+                    return (s32)DAT_0069A020[index];
+                case 0x10c:
+                    return (s32)DAT_0069A03A[index];
+            }
+            return -1;
         }
         case 0x1a8:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x127 || unit->charId == 0x119)
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
             {
-                if (index == 3 && func_00300580(*(u32*)unit->datUnit, 0x400) != 0)
-                {
-                    return 0xf;
-                }
-                return DAT_0069A0CE[index];
+                case 0x10d:
+                    if (*(u32*)((u8*)gBtl + 0xb54) == 0)
+                    {
+                        return (s32)DAT_0069A080[index];
+                    }
+                    return (s32)DAT_0069A09A[index];
+                case 0x116:
+                case 0x117:
+                case 0x118:
+                    return (s32)DAT_0069A0B4[index];
+                case 0x119:
+                case 0x127:
+                    if (index == 3 && func_00300580(*(u32*)unit->datUnit, 0x400) != 0)
+                    {
+                        return 0xf;
+                    }
+                    return (s32)DAT_0069A0CE[index];
             }
-            if (unit->charId == 0x118 || unit->charId == 0x117 || unit->charId == 0x116)
-            {
-                return DAT_0069A0B4[index];
-            }
-            if (unit->charId == 0x10d)
-            {
-                if (*(u32*)((u8*)gBtl + 0xb54) == 0)
-                {
-                    return DAT_0069A080[index];
-                }
-                return DAT_0069A09A[index];
-            }
-            return 0xffff;
+            return -1;
         }
         case 0x1a9:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x108) return DAT_0069A130[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x108:
+                    return (s32)DAT_0069A130[index];
+            }
+            return -1;
         }
         case 0x1aa:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x10f) return DAT_0069A170[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x10f:
+                    return (s32)DAT_0069A170[index];
+            }
+            return -1;
         }
         case 0x1ab:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x110) return DAT_0069A1B0[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x110:
+                    return (s32)DAT_0069A1B0[index];
+            }
+            return -1;
         }
         case 0x1ac:
         {
-            if (unit->genus != 1) return 0xffff;
+            if (unit->genus != 1) return -1;
             {
                 if ((index == 0x11 || index == 3 || index == 0) &&
                     func_00301750(*(u32*)unit->datUnit, 0xb) > 0)
@@ -2090,64 +2135,89 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
                 {
                     *(u32*)((u8*)gBtl + 0xb50) = 0;
                 }
-                return DAT_0069A230[index];
+                return (s32)DAT_0069A230[index];
             }
         }
         case 0x1ad:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x112) return DAT_0069A380[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x112:
+                    return (s32)DAT_0069A380[index];
+            }
+            return -1;
         }
         case 0x1ae:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0x126) return DAT_0069A490[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0x126:
+                    return (s32)DAT_0069A490[index];
+            }
+            return -1;
         }
         case 0x1af:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0xe9) return DAT_0069A4D0[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0xe9:
+                    return (s32)DAT_0069A4D0[index];
+            }
+            return -1;
         }
         case 0x1b0:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0xea) return DAT_0069A510[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0xea:
+                    return (s32)DAT_0069A510[index];
+            }
+            return -1;
         }
         case 0x1b1:
         case 0x1b2:
         case 0x1b3:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId >= 0xeb && unit->charId <= 0xf0)
-                return DAT_0069A530[index];
-            return 0xffff;
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
+            {
+                case 0xeb:
+                case 0xec:
+                case 0xed:
+                case 0xee:
+                case 0xef:
+                case 0xf0:
+                    return (s32)DAT_0069A530[index];
+            }
+            return -1;
         }
         case 0x1b4:
         {
-            if (unit->genus != 1) return 0xffff;
-            if (unit->charId == 0xf1)
+            if (unit->genus != 1) return -1;
+            switch (unit->charId)
             {
-                if (*(u32*)((u8*)gBtl + 0xb48) == 0)
-                {
-                    if (index == 2 && func_0030b5e0(*(u32*)unit->datUnit) != 0)
+                case 0xf1:
+                    if (*(u32*)((u8*)gBtl + 0xb48) == 0)
                     {
-                        return 6;
+                        if (index == 2 && func_0030b5e0(*(u32*)unit->datUnit) != 0)
+                        {
+                            return 6;
+                        }
+                        return (s32)DAT_0069A570[index];
                     }
-                    return DAT_0069A570[index];
-                }
-                else
-                {
-                    return DAT_0069A58A[index];
-                }
+                    else
+                    {
+                        return (s32)DAT_0069A58A[index];
+                    }
             }
-            return 0xffff;
+            return -1;
         }
         default:
-            return 0xffff;
+            return -1;
     }
 }
 

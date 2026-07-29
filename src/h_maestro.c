@@ -3368,7 +3368,7 @@ u32 func_00115f00(KwlnTask* param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int lVar4;
 
@@ -3376,13 +3376,8 @@ u32 func_00115f00(KwlnTask* param_1)
 
   u8 auStack_110 [256];
 
-  u16 uStack_10;
+  u16 uStack[4];
 
-  u16 uStack_e;
-
-  u16 uStack_c;
-
-  u16 uStack_a;
 
   u8 auStack_4 [4];
 
@@ -3460,65 +3455,58 @@ u32 func_00115f00(KwlnTask* param_1)
 
       }
 
-      uStack_10 = 0x28;
+      uStack[0] = 0x28;
 
-      uStack_e = 3;
+      uStack[1] = 3;
 
       iVar5 = puVar1[1];
 
       if (iVar5 == 0xea) {
 
-        uStack_c = 0xb;
-
-        uStack_a = 6;
+        uStack[2] = 0xb;
+        uStack[3] = 6;
 
       }
 
       else if (iVar5 == 0xe9) {
 
-        uStack_c = 0xb;
-
-        uStack_a = 5;
+        uStack[2] = 0xb;
+        uStack[3] = 5;
 
       }
 
       else if (iVar5 == 0x67) {
 
-        uStack_c = 0xb;
-
-        uStack_a = 3;
+        uStack[2] = 0xb;
+        uStack[3] = 3;
 
       }
 
       else if (iVar5 == 0x11) {
 
-        uStack_c = 0xb;
-
-        uStack_a = 2;
+        uStack[2] = 0xb;
+        uStack[3] = 2;
 
       }
 
       else if (iVar5 == 0x10) {
 
-        uStack_c = 0xb;
-
-        uStack_a = 1;
+        uStack[2] = 0xb;
+        uStack[3] = 1;
 
       }
 
       else if (iVar5 == 0xf) {
 
-        uStack_c = 0xb;
-
-        uStack_a = 0;
+        uStack[2] = 0xb;
+        uStack[3] = 0;
 
       }
 
       else if (iVar5 == 10) {
 
-        uStack_c = 10;
-
-        uStack_a = 8;
+        uStack[2] = 10;
+        uStack[3] = 8;
 
       }
 
@@ -3528,17 +3516,15 @@ u32 func_00115f00(KwlnTask* param_1)
 
         if (lVar4 != 0) {
 
-          uStack_c = 0xb;
-
-          uStack_a = 4;
+          uStack[2] = 0xb;
+          uStack[3] = 4;
 
         }
 
         else {
 
-          uStack_c = 10;
-
-          uStack_a = 7;
+          uStack[2] = 10;
+          uStack[3] = 7;
 
         }
 
@@ -3546,57 +3532,50 @@ u32 func_00115f00(KwlnTask* param_1)
 
       else if (iVar5 == 8) {
 
-        uStack_c = 10;
-
-        uStack_a = 6;
+        uStack[2] = 10;
+        uStack[3] = 6;
 
       }
 
       else if (iVar5 == 7) {
 
-        uStack_c = 10;
-
-        uStack_a = 5;
+        uStack[2] = 10;
+        uStack[3] = 5;
 
       }
 
       else if (iVar5 == 6) {
 
-        uStack_c = 10;
-
-        uStack_a = 9;
+        uStack[2] = 10;
+        uStack[3] = 9;
 
       }
 
       else if (iVar5 == 5) {
 
-        uStack_c = 10;
-
-        uStack_a = 4;
+        uStack[2] = 10;
+        uStack[3] = 4;
 
       }
 
       else if (iVar5 == 4) {
 
-        uStack_c = 10;
-
-        uStack_a = 3;
+        uStack[2] = 10;
+        uStack[3] = 3;
 
       }
 
       else if (iVar5 == 3) {
 
-        uStack_c = 10;
-
-        uStack_a = 2;
+        uStack[2] = 10;
+        uStack[3] = 2;
 
       }
 
       else if (iVar5 == 2) {
 
-        uStack_c = 10;
-
-        uStack_a = 1;
+        uStack[2] = 10;
+        uStack[3] = 1;
 
       }
 
@@ -3606,49 +3585,47 @@ u32 func_00115f00(KwlnTask* param_1)
 
         if (lVar4 != 0) {
 
-          uStack_c = 10;
-
-          uStack_a = 2;
+          uStack[2] = 10;
+          uStack[3] = 2;
 
         }
 
         else {
 
-          uStack_c = 10;
-
-          uStack_a = 0;
+          uStack[2] = 10;
+          uStack[3] = 0;
 
         }
 
       }
 
-      uVar2 = FUN_00111260(param_1, *(u64 *)&uStack_10, puVar1 + 0x1d2);
+      uVar2 = FUN_00111260(param_1, *(u64 *)uStack, puVar1 + 0x1d2);
 
       puVar1[5] = uVar2;
 
-      uStack_10 = 0x28;
+      uStack[0] = 0x28;
 
-      uStack_e = 3;
+      uStack[1] = 3;
 
-      uStack_c = 0xb;
+      uStack[2] = 0xb;
 
-      uStack_a = 9;
+      uStack[3] = 9;
 
-      uVar3 = FUN_00111260(param_1,0x9000b00030028,puVar1 + 0xf9);
+      uVar3 = FUN_00111260(param_1, *(u64 *)uStack, puVar1 + 0xf9);
 
       puVar1[4] = (int)uVar3;
 
       FUN_00111570(uVar3,1);
 
-      uStack_10 = 0x28;
+      uStack[0] = 0x28;
 
-      uStack_e = 3;
+      uStack[1] = 3;
 
-      uStack_c = 0xb;
+      uStack[2] = 0xb;
 
-      uStack_a = 8;
+      uStack[3] = 8;
 
-      uVar3 = FUN_00111260(param_1,0x8000b00030028,puVar1 + 0x20);
+      uVar3 = FUN_00111260(param_1, *(u64 *)uStack, puVar1 + 0x20);
 
       puVar1[3] = (int)uVar3;
 
@@ -3684,6 +3661,8 @@ u32 func_00115f00(KwlnTask* param_1)
 
     }
 
+    break;
+  case 3:
     break;
 
   case 4:
@@ -5293,14 +5272,21 @@ static inline void MaestroEffectStartStreams(
 
 static inline void MaestroEffectSetReady(MaestroPerEffectWork* work)
 {
-    s32 i;
 
-    for (i = 0; i < 3; i++)
+    switch (work->effectCount)
     {
-        if (work->resourceTasks[i] != NULL)
-        {
-            func_001104d0(work->resourceTasks[i]);
-        }
+    case 0:
+        func_001104d0(work->resourceTasks[0]);
+        break;
+    case 1:
+        func_001104d0(work->resourceTasks[0]);
+        func_001104d0(work->resourceTasks[1]);
+        break;
+    case 2:
+        func_001104d0(work->resourceTasks[0]);
+        func_001104d0(work->resourceTasks[1]);
+        func_001104d0(work->resourceTasks[2]);
+        break;
     }
     func_00111530(work->streamTask);
     work->state = 4;

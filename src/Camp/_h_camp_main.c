@@ -1901,29 +1901,43 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
                      10, 1, text, 0x10, -1);
     }
     if (FUN_00172160(id) != NULL) {
-        hCampMainDrawSprite7(parent, D_00833B48, selected != 0 ? 0x10 : 6,
-                     (u8)textAlpha, p.value.x + 165.0f,
-                     p.value.y + 34.0f, alpha);
+        if (selected != 0) {
+            hCampMainDrawSprite7(parent, D_00833B48, 0x10,
+                         (u8)textAlpha, p.value.x + 165.0f,
+                         p.value.y + 34.0f, alpha);
+        } else {
+            hCampMainDrawSprite7(parent, D_00833B48, 6,
+                         (u8)textAlpha, p.value.x + 165.0f,
+                         p.value.y + 34.0f, alpha);
+        }
         return;
     }
     if (FUN_001717C0(id) != NULL) {
-        hCampMainDrawSprite7(parent, D_00833B48, selected != 0 ? 0xf : 5,
-                     (u8)textAlpha, p.value.x + 165.0f,
-                     p.value.y + 34.0f, alpha);
+        if (selected != 0) {
+            hCampMainDrawSprite7(parent, D_00833B48, 0xf,
+                         (u8)textAlpha, p.value.x + 165.0f,
+                         p.value.y + 34.0f, alpha);
+        } else {
+            hCampMainDrawSprite7(parent, D_00833B48, 5,
+                         (u8)textAlpha, p.value.x + 165.0f,
+                         p.value.y + 34.0f, alpha);
+        }
         return;
     }
     if (selected != 0) {
         frame = 0x12;
         socialLevel = 0x14;
+        hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
+                     p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     } else {
         frame = 0x11;
         socialLevel = 0x13;
         if (datGetSocialLinkLevel((s16)id) == 10) {
             socialLevel = 0x14;
         }
+        hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
+                     p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     }
-    hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
-                 p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     for (i = 0; i < datGetSocialLinkLevel((s16)id); i++) {
         hCampMainDrawSprite7(parent, D_00833B48, socialLevel, (u8)textAlpha,
                      p.value.x + 174.0f + i * 17.0f,
