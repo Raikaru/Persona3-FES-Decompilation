@@ -392,10 +392,9 @@ void func_002392d0(void)
     f32 invNormFade;
     f32 work2F;
     s32 active;
-    f32 sixHundred;
+    f32 sixHundred = 600.0f;
     f32 sinAngle;
     f32 cosAngle;
-    f32 angleArg;
     s32 found;
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
@@ -572,8 +571,8 @@ void func_002392d0(void)
             panelPhase = 1.0f - (f32)((s32)work[1] - 10) / 10.0f;
         panelScale = 1.0f;
     { f32 _sgav = panelFade * panelPhase * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
-        sinAngle = func_0052e6d8(angleArg);
-        cosAngle = func_0052e878(angleArg);
+        sinAngle = func_0052e6d8(frameAngle);
+        cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
         direction.y = cosAngle;
         center.x = 320.0f;
@@ -583,18 +582,18 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x910), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x910), &color);
 
-        sinAngle = func_0052e6d8(angleArg);
-        cosAngle = func_0052e878(angleArg);
+        sinAngle = func_0052e6d8(frameAngle);
+        cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
         direction.y = cosAngle;
-        trig1 = func_0052e6d8(angleArg);
-        trig2 = func_0052e6d8(angleArg);
-        trig3 = func_0052e6d8(angleArg);
+        trig1 = func_0052e6d8(frameAngle);
+        trig2 = func_0052e6d8(frameAngle);
+        trig3 = func_0052e6d8(frameAngle);
         motion = sixHundred * (panelPhase * (trig2 + trig3) - trig1);
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(angleArg);
-        trig2 = func_0052e878(angleArg);
-        trig3 = func_0052e878(angleArg);
+        trig1 = func_0052e878(frameAngle);
+        trig2 = func_0052e878(frameAngle);
+        trig3 = func_0052e878(frameAngle);
         motion = sixHundred * (panelPhase * (trig2 + trig3) - trig1);
         center.y = 30.0f + motion;
         scale.x = panelScale;
@@ -602,18 +601,18 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0xb10), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0xb10), &color);
 
-        sinAngle = func_0052e6d8(angleArg);
-        cosAngle = func_0052e878(angleArg);
+        sinAngle = func_0052e6d8(frameAngle);
+        cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
         direction.y = cosAngle;
-        trig1 = func_0052e6d8(angleArg);
-        trig2 = func_0052e6d8(angleArg);
-        trig3 = func_0052e6d8(angleArg);
+        trig1 = func_0052e6d8(frameAngle);
+        trig2 = func_0052e6d8(frameAngle);
+        trig3 = func_0052e6d8(frameAngle);
         motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(angleArg);
-        trig2 = func_0052e878(angleArg);
-        trig3 = func_0052e878(angleArg);
+        trig1 = func_0052e878(frameAngle);
+        trig2 = func_0052e878(frameAngle);
+        trig3 = func_0052e878(frameAngle);
         motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
@@ -621,18 +620,18 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x110), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x110), &color);
 
-        sinAngle = func_0052e6d8(angleArg);
-        cosAngle = func_0052e878(angleArg);
+        sinAngle = func_0052e6d8(frameAngle);
+        cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
         direction.y = cosAngle;
-        trig1 = func_0052e6d8(angleArg);
-        trig2 = func_0052e6d8(angleArg);
-        trig3 = func_0052e6d8(angleArg);
+        trig1 = func_0052e6d8(frameAngle);
+        trig2 = func_0052e6d8(frameAngle);
+        trig3 = func_0052e6d8(frameAngle);
         motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(angleArg);
-        trig2 = func_0052e878(angleArg);
-        trig3 = func_0052e878(angleArg);
+        trig1 = func_0052e878(frameAngle);
+        trig2 = func_0052e878(frameAngle);
+        trig3 = func_0052e878(frameAngle);
         motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
@@ -640,18 +639,18 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x310), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x310), &color);
 
-        sinAngle = func_0052e6d8(angleArg);
-        cosAngle = func_0052e878(angleArg);
+        sinAngle = func_0052e6d8(frameAngle);
+        cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
         direction.y = cosAngle;
-        trig1 = func_0052e6d8(angleArg);
-        trig2 = func_0052e6d8(angleArg);
-        trig3 = func_0052e6d8(angleArg);
+        trig1 = func_0052e6d8(frameAngle);
+        trig2 = func_0052e6d8(frameAngle);
+        trig3 = func_0052e6d8(frameAngle);
         motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(angleArg);
-        trig2 = func_0052e878(angleArg);
-        trig3 = func_0052e878(angleArg);
+        trig1 = func_0052e878(frameAngle);
+        trig2 = func_0052e878(frameAngle);
+        trig3 = func_0052e878(frameAngle);
         motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
@@ -659,8 +658,8 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x510), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x510), &color);
 
-        sinAngle = func_0052e6d8(angleArg);
-        cosAngle = func_0052e878(angleArg);
+        sinAngle = func_0052e6d8(frameAngle);
+        cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
         direction.y = cosAngle;
         center.x = 320.0f;
@@ -804,7 +803,7 @@ void func_002392d0(void)
                 (GROUND_U32(tile, 0x414) + 1) & 0xfff;
             scale.x = 76.5f;
             scale.y = 192.0f;
-            direction.x = func_0052e878(angleArg + 0.17453294f);
+            direction.x = func_0052e878(frameAngle + 0.17453294f);
             direction.y = 0.43f;
             for (j = 0; j < 4; j++) {
                 center.x = ((f32)i + 0.5f) * (224.0f / 7.0f);

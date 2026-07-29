@@ -1049,6 +1049,8 @@ void func_00271230(u32* param)
     RwCamera* camera;
     f32 width;
     f32 height;
+    f32 rawX;
+    f32 rawY;
     f32 x;
     f32 y;
     f32 angle;
@@ -1063,8 +1065,10 @@ void func_00271230(u32* param)
     camera = kwlnGetMainCamera();
     width = (f32)*(s32*)(context + 0x2c);
     height = (f32)*(s32*)(context + 0x30);
-    x = *(f32*)&param[1] * 640.0f - 100.0f;
-    y = *(f32*)&param[2] * 448.0f - 100.0f;
+    rawX = *(f32*)&param[1] * 640.0f;
+    rawY = *(f32*)&param[2] * 448.0f;
+    x = rawX - 100.0f;
+    y = rawY - 100.0f;
     angle = func_0052ea18(y, x);
     distance = sqrtf(x * x + y * y);
     wave = func_00269c80(fGpffff8248 * (distance / 1200.0f -
@@ -1084,8 +1088,8 @@ void func_00271230(u32* param)
              cosine / fGpffff81f8) * 2.0f) * 0.5f + 0.5f) +
              fGpffff82fc) * 255.0f * *(f32*)(context + 0x1178);
     vertex = opWaitVertex(param);
-    opWaitSetVertex(vertex, *(f32*)&param[1] * 640.0f,
-                    *(f32*)&param[2] * 448.0f,
+    opWaitSetVertex(vertex, rawX,
+                    rawY,
                     scale / 640.0f, wave / 448.0f,
                     alpha, 1.0f / camera->nearPlane);
 }

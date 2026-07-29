@@ -632,7 +632,6 @@ static void brPanel00236390(void)
 
     K_ASSERT(sBrPanel != NULL, 0x99);
     work = (u8*)sBrPanel;
-    root2 = sqrtf(2.0f);
     texture = brPanelResRaw(0);
     digitTexture = brPanelResRaw(1);
     frame = func_0021cca0(texture, 0);
