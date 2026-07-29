@@ -63,15 +63,16 @@ void FUN_0024c110(void)
     if (*(s32*)(work + 0xc) == 14) {
         func_0010a4e0(1, 0, 7, 5);
     }
-    if (*(u32*)work != 1) {
-        if (*(u32*)work) {
-        } else {
-            baseX = 60.0f;
-            baseY = -40.0f;
-        }
-    } else {
+    switch (*(u32*)work)
+    {
+    case 0:
+        baseX = 60.0f;
+        baseY = -40.0f;
+        break;
+    case 1:
         baseX = -60.0f;
         baseY = 40.0f;
+        break;
     }
 
     if (*(s32*)(work + 0xc) < 10) {

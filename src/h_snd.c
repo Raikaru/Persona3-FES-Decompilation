@@ -802,10 +802,10 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
     sSlotWork[slotIndex].param2 = 0x3E7;
     ((HsndSlotWork *)sSlotWork_alt)[slotIndex].state = 2;
     sSlotWork[slotIndex].data0 = data0;
-    sSlotWork[slotIndex].data3 = data0Size;
     sSlotWork[slotIndex].data1 = data1;
-    sSlotWork[slotIndex].data4 = data1Size;
     sSlotWork[slotIndex].data2 = data2;
+    sSlotWork[slotIndex].data3 = data0Size;
+    sSlotWork[slotIndex].data4 = data1Size;
     sSlotWork[slotIndex].data5 = data2Size;
 }
 // FUN_00109CA0

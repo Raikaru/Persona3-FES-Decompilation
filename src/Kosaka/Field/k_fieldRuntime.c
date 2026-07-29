@@ -5660,7 +5660,7 @@ void func_001eba50(RuntimeResetWork* work)
     func_001ed0b0(work->work);
 }
 
-// FUN_001EBA80 NONMATCHING
+// FUN_001EBA80
 void func_001eba80(RuntimeCommandWork* work, u32* unused)
 {
     u16* cursor;
@@ -5731,50 +5731,16 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
             cursor++;
             break;
         case 0x200:
+            switch (work->delay)
             {
-                __asm__ volatile (
-                    ".set noreorder\n"
-                    "lhu $v1, 0x18(%1)\n"
-                    "beq $v1, $zero, command_delay_zero\n"
-                    "nop\n"
-                    "b command_delay_done\n"
-                    "nop\n"
-                    "command_delay_zero:\n"
-                    "lw $a0, 0x1c(%1)\n"
-                    "beq $a0, $zero, command_delay_done\n"
-                    "nop\n"
-                    "bltz $a0, command_delay_unsigned\n"
-                    "nop\n"
-                    "mtc1 $a0, $f0\n"
-                    "nop\n"
-                    "cvt.s.w $f1, $f0\n"
-                    "b command_delay_converted\n"
-                    "nop\n"
-                    "command_delay_unsigned:\n"
-                    "srl $v1, $a0, 1\n"
-                    "andi $v0, $a0, 1\n"
-                    "or $v1, $v1, $v0\n"
-                    "mtc1 $v1, $f0\n"
-                    "nop\n"
-                    "cvt.s.w $f1, $f0\n"
-                    "add.s $f1, $f1, $f1\n"
-                    "command_delay_converted:\n"
-                    "lui $v0, 0x41f0\n"
-                    "mtc1 $v0, $f0\n"
-                    "nop\n"
-                    "div.s $f12, $f1, $f0\n"
-                    "nop\n"
-                    "nop\n"
-                    "lw $a0, 0x10(%1)\n"
-                    "jal func_001ed080\n"
-                    "nop\n"
-                    "command_delay_done:\n"
-                    "addiu %0, %0, 2\n"
-                    ".set reorder\n"
-                    : "+r"(cursor)
-                    : "r"(work)
-                    : "$v0", "$v1", "$a0", "$f0", "$f1", "$f12", "memory");
+            case 0:
+                if (work->duration != 0)
+                {
+                    func_001ed080((f32)work->duration / 30.0f, work->target);
+                }
+                break;
             }
+            cursor++;
             break;
         case 0x201:
             work->delay = (s16)cursor[1];

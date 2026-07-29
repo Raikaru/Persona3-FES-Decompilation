@@ -315,26 +315,16 @@ void func_0024adf0(void)
     flags = work[1];
     if ((flags & 2) != 0)
     {
-        if (work[0] == 1)
+        switch (work[0])
         {
-            if ((flags & 8) == 0 && func_0021a120() == 0)
-            {
-                work[1] |= 8;
-            }
-            if ((work[1] & 8) != 0 && brpRes0024bed0() == 0)
-            {
-                work[1] &= ~2;
-            }
-        }
-        else if (work[0] == 0)
-        {
-            if ((flags & 4) == 0 &&
+        case 0:
+            if (((~flags & 4) != 0) &&
                 func_003cdc80(work[0x3158]) == 0)
             {
                 func_003cdcd0(work[0x3158], 0, 0, 1);
                 work[1] |= 4;
             }
-            if ((work[1] & 8) == 0 && func_0021a120() == 0)
+            if ((~work[1] & 8) != 0 && func_0021a120() == 0)
             {
                 work[1] |= 8;
             }
@@ -342,6 +332,17 @@ void func_0024adf0(void)
             {
                 work[1] &= ~2;
             }
+            break;
+        case 1:
+            if ((~flags & 8) != 0 && func_0021a120() == 0)
+            {
+                work[1] |= 8;
+            }
+            if ((work[1] & 8) != 0 && brpRes0024bed0() == 0)
+            {
+                work[1] &= ~2;
+            }
+            break;
         }
     }
 

@@ -777,7 +777,6 @@ static void H_Fade_Custom()
         vertices[i].u.els.color.b = blue;
         vertices[i].u.els.color.a = alpha;
     }
-
     vertices[0].u.els.scrVertex.x = 0.0f;
     vertices[0].u.els.scrVertex.y = 0.0f;
     vertices[1].u.els.scrVertex.x = SCREEN_WIDTH;

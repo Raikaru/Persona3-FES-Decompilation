@@ -476,9 +476,9 @@ FldUnit* func_001d7c60(KwlnTask* task, s32 flatIndex)
     s32 ecCount;
     EncounterWork* work;
     s32 unitIndex;
+    s32 unitOffset;
     u32 ecOffset;
     u8* ecBase;
-    FldUnit* unit;
 
     work = (EncounterWork*)task->workData;
     flatUnitIndex = 0;
@@ -507,8 +507,8 @@ ec_body:
     ecBase = (u8*)work + ecOffset;
     goto unit_check;
 unit_body:
-    unit = *(FldUnit**)(ecBase + 0x28);
-    if (unit->genusBase->unit[unitIndex].id != 0)
+    unitOffset = unitIndex * sizeof(DatUnit);
+    if (((DatUnit*)((u8*)(*(FldUnit**)(ecBase + 0x28))->genusBase->unit + unitOffset))->id != 0)
     {
         if (flatIndex == flatUnitIndex)
         {

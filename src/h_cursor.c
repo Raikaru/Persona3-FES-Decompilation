@@ -3,6 +3,8 @@
 #include "Kernel/Kwln/kwln.h"
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
 extern f32 DAT_00960088;
 
 // FUN_00100230 NONMATCHING
@@ -40,7 +42,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
-            globals = &DAT_00960088;
+            globals = (f32*)DAT_00960088_abs;
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];

@@ -438,7 +438,7 @@ void func_0023e970(void)
         }
         (*state)(6, 0);
 
-        texture = sflResGetEffectRaster(mode);
+        texture = mode == 1 ? sflResGetEffectRaster(2) : sflResGetEffectRaster(1);
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
         render = (code *)&DAT_00960090_abs;

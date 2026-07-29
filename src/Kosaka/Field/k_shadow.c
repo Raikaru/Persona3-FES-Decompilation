@@ -1481,7 +1481,6 @@ void func_0019bcf0(KwlnTask* renderTexTask)
     RwFrame* frame;
     RwCamera* camera;
     RwRaster* raster;
-    void* texture;
 
     task = renderTexTask;
     shadow = (FldShadowRenderTex*)task->workData;
@@ -1517,16 +1516,13 @@ destroyMode1:
         }
         func_004ca030(camera);
     }
-    raster = shadow->raster;
-    func_004f1780(raster, false);
-    func_004cde90(raster);
-    texture = shadow->texture;
-    func_004d0be0(texture, NULL);
-    func_004d0f00(texture);
+    func_004f1780(shadow->raster, false);
+    func_004cde90(shadow->raster);
+    func_004d0be0(shadow->texture, NULL);
+    func_004d0f00(shadow->texture);
     if (shadow->unk_48 != NULL)
     {
         (*jtbl_0096017C)(shadow->unk_48);
-        shadow->unk_48 = NULL;
     }
     goto destroyRing;
 
@@ -1549,7 +1545,6 @@ destroyRing:
             (*jtbl_0096017C)(ring->renderObject);
         }
         (*jtbl_0096017C)(ring);
-        shadow->radius = NULL;
     }
     (*jtbl_0096017C)(task->workData);
 }
