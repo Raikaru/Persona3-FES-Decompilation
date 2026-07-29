@@ -1510,12 +1510,11 @@ void func_0023d2a0(void)
     viewport = sflResGetGroundRaster(2);
     width = (f32)viewport->width;
     height = (f32)viewport->height;
-    i = 0;
     rect0 = 0.0f / width;
     rect1 = 1.0f / height;
     rect2 = 63.0f / width;
     rect3 = 81.0f / height;
-    for (; i < 48; i++) {
+    for (i = 0; i < 48; i++) {
         particle = (u32*)GROUND_PTR(work, SFL_GROUND_PARTICLE_OFFSET + i * SFL_GROUND_PARTICLE_STRIDE);
         GROUND_U32(particle, 0) = 0;
         rect[0] = rect0;

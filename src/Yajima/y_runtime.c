@@ -19507,7 +19507,7 @@ void FUN_0045ace0(void)
       }
     }
     if (((*(char *)(puVar1 + 0x13) == '\0') && (puVar1[0x14] != 0)) &&
-       ('\x1d' < *(char *)((int)puVar1 + 0x43))) {
+       (!(*(char *)((int)puVar1 + 0x43) < '\x1e'))) {
       puVar1[0x16] = uGpffffb418;
       cVar3 = *(char *)((int)puVar1 + 0x42) + '\x01';
       *(char *)((int)puVar1 + 0x42) = cVar3;

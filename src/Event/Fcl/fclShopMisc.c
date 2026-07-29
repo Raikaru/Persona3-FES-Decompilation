@@ -1680,228 +1680,125 @@ u32 FUN_003f0ec0(u16 param_1)
 
 
 u16 FUN_003f10b0(int param_1,u16 param_2)
-
-
-
 {
-
-  u8 *puVar1;
-
-  char cVar2;
-
-  u16 uVar3;
-
-  int lVar4;
-
-  int iVar5;
-
-  short sVar6;
-
-  
+  u8 *shopData;
+  u8 *shopEntry;
+  char socialLevel;
+  u16 result;
+  int level;
+  int entry;
+  int socialLink;
 
   switch (param_1) {
   case 0:
-    sVar6 = 0xf;
+    socialLink = 0xf;
     break;
   case 4:
-    sVar6 = 3;
+    socialLink = 3;
     break;
   default:
     return 0xffff;
   }
-
-  if ((param_1 < 0) || (8 < param_1)) {
-
+  if ((param_1 < 0) || (param_1 >= 9)) {
     K_Assert((const char *)DAT_006aede8,0xb9);
-
   }
-
-  lVar4 = datGetScenarioMode();
-
-  if (lVar4 != 0) {
-
-    param_1 = param_1 + 9;
-
+  if (datGetScenarioMode() == 0) {
+    shopEntry = DAT_006ac9d0 + param_1 * 0x24;
   }
-
-  puVar1 = (u8 *)((u32 **)&PTR_DAT_006ac9f0)[param_1 * 9];
-
-  if (*(int *)(puVar1 + 8) == 0) {
-
+  else {
+    shopEntry = DAT_006ac9d0 + (param_1 + 9) * 0x24;
+  }
+  shopData = *(u8 **)(shopEntry + 0x20);
+  if (*(int *)(shopData + 8) == 0) {
     K_Assert((const char *)DAT_006aede8,0x19c);
-
   }
-
-  if (sVar6 != 0xff) {
-
-    lVar4 = datSocialLinkLevelIsNotZero(sVar6);
-
-    if (lVar4 != 0) {
-
-      cVar2 = datGetSocialLinkLevel(sVar6);
-
-      if (cVar2 != '\0') {
-
-        if ((cVar2 < '\x01') || ('\n' < cVar2)) {
-
-          K_Assert((const char *)DAT_006aede8,0x1a2);
-
-        }
-
-        iVar5 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
-
-      }
-
-      else {
-
-        iVar5 = *(int *)(puVar1 + 8);
-
-      }
-
+  if (socialLink == 0xff) {
+    entry = *(int *)(shopData + 8);
+  }
+  else if (datSocialLinkLevelIsNotZero((s16)socialLink) == 0) {
+    entry = *(int *)(shopData + 8);
+  }
+  else {
+    socialLevel = datGetSocialLinkLevel((s16)socialLink);
+    if (socialLevel == '\0') {
+      entry = *(int *)(shopData + 8);
     }
-
     else {
-
-      iVar5 = *(int *)(puVar1 + 8);
-
+      if ((socialLevel < '\x01') || ('\n' < socialLevel)) {
+        K_Assert((const char *)DAT_006aede8,0x1a2);
+      }
+      entry = *(int *)(shopData + 8) + socialLevel * 0x20;
     }
-
   }
-
+  if ((entry == 0) || (level = FUN_003f0ec0(param_2), level == 0)) {
+    result = 0xffff;
+  }
   else {
-
-    iVar5 = *(int *)(puVar1 + 8);
-
+    result = *(u16 *)(entry + level * 2 + 0xe);
   }
-
-  if ((iVar5 == 0) || (lVar4 = FUN_003f0ec0(param_2), lVar4 == 0)) {
-
-    uVar3 = 0xffff;
-
-  }
-
-  else {
-
-    uVar3 = *(u16 *)((int)lVar4 * 2 + iVar5 + 0xe);
-
-  }
-
-  return uVar3;
-
+  return result;
 }
 
 // FUN_003F12A0 NONMATCHING
 
 
 u16 FUN_003f12a0(int param_1,int param_2)
-
-
-
 {
-
-  u8 *puVar1;
-
-  char cVar2;
-
-  u16 uVar3;
-
-  int lVar4;
-
-  int iVar5;
-
-  short sVar6;
-
-  
+  u8 *shopData;
+  u8 *shopEntry;
+  char socialLevel;
+  short result;
+  int entry;
+  int socialLink;
 
   switch (param_1) {
   case 0:
-    sVar6 = 0xf;
+    socialLink = 0xf;
     break;
   case 4:
-    sVar6 = 3;
+    socialLink = 3;
     break;
   default:
-    return 0xffff;
+    return -1;
   }
-
-  if ((param_1 < 0) || (8 < param_1)) {
-
+  if ((param_1 < 0) || (param_1 >= 9)) {
     K_Assert((const char *)DAT_006aede8,0xb9);
-
   }
-
-  lVar4 = datGetScenarioMode();
-
-  if (lVar4 != 0) {
-
-    param_1 = param_1 + 9;
-
+  if (datGetScenarioMode() == 0) {
+    shopEntry = DAT_006ac9d0 + param_1 * 0x24;
   }
-
-  puVar1 = (u8 *)((u32 **)&PTR_DAT_006ac9f0)[param_1 * 9];
-
-  if (*(int *)(puVar1 + 8) == 0) {
-
+  else {
+    shopEntry = DAT_006ac9d0 + (param_1 + 9) * 0x24;
+  }
+  shopData = *(u8 **)(shopEntry + 0x20);
+  if (*(int *)(shopData + 8) == 0) {
     K_Assert((const char *)DAT_006aede8,0x19c);
-
   }
-
-  if (sVar6 != 0xff) {
-
-    lVar4 = datSocialLinkLevelIsNotZero(sVar6);
-
-    if (lVar4 != 0) {
-
-      cVar2 = datGetSocialLinkLevel(sVar6);
-
-      if (cVar2 != '\0') {
-
-        if ((cVar2 < '\x01') || ('\n' < cVar2)) {
-
-          K_Assert((const char *)DAT_006aede8,0x1a2);
-
-        }
-
-        iVar5 = *(int *)(puVar1 + 8) + cVar2 * 0x20;
-
-      }
-
-      else {
-
-        iVar5 = *(int *)(puVar1 + 8);
-
-      }
-
+  if (socialLink == 0xff) {
+    entry = *(int *)(shopData + 8);
+  }
+  else if (datSocialLinkLevelIsNotZero((s16)socialLink) == 0) {
+    entry = *(int *)(shopData + 8);
+  }
+  else {
+    socialLevel = datGetSocialLinkLevel((s16)socialLink);
+    if (socialLevel == '\0') {
+      entry = *(int *)(shopData + 8);
     }
-
     else {
-
-      iVar5 = *(int *)(puVar1 + 8);
-
+      if ((socialLevel < '\x01') || ('\n' < socialLevel)) {
+        K_Assert((const char *)DAT_006aede8,0x1a2);
+      }
+      entry = *(int *)(shopData + 8) + socialLevel * 0x20;
     }
-
   }
-
+  if (entry != 0) {
+    result = *(short *)(entry + param_2 * 2 + 0x18);
+  }
   else {
-
-    iVar5 = *(int *)(puVar1 + 8);
-
+    result = -1;
   }
-
-  if (iVar5 == 0) {
-
-    uVar3 = 0xffff;
-
-  }
-
-  else {
-
-    uVar3 = *(u16 *)(param_2 * 2 + iVar5 + 0x18);
-
-  }
-
-  return uVar3;
-
+  return result;
 }
 
 // FUN_003F1470
@@ -8273,7 +8170,10 @@ int FUN_003fb2f0(u32 *param_1)
 
 {
 
-  u16 uVar1;
+  struct {
+    u16 key;
+    u16 pad;
+  } lookup;
 
   int iVar2;
 
@@ -8347,8 +8247,9 @@ int FUN_003fb2f0(u32 *param_1)
 
     }
 
-    uVar1 = FUN_003e6dc0();
-    uVar3 = FUN_0017d250(uVar1,(short)param_1[3]);
+    lookup.key = FUN_003e6dc0();
+    lookup.pad = 0;
+    uVar3 = FUN_0017d250(*(u32 *)&lookup,(u16)param_1[3]);
 
     if ((uVar3 != 0xffffffff) && ((int)uVar3 < (int)uVar4)) {
 
@@ -16035,7 +15936,7 @@ void FUN_00404750(u32 param_1,u32 param_2,u32 param_3)
   }
 }
 
-// FUN_00405970 NONMATCHING
+// FUN_00405970
 
 
 u64 FUN_00405970(u64 param_1,int param_2)
@@ -16049,6 +15950,7 @@ u64 FUN_00405970(u64 param_1,int param_2)
   int lVar2;
 
   short sVar3;
+  int iVar4;
 
   
 
@@ -16059,41 +15961,39 @@ u64 FUN_00405970(u64 param_1,int param_2)
   lVar2 = datGetFlag(sVar3 + 0x1170);
 
   if (lVar2 != 0) {
-    sVar3 = 3;
+    iVar4 = 3;
   }
   else {
-    if (FUN_003f04f0(FUN_004037e0(sVar3),0) == 0) {
-      sVar3 = 2;
+    if (FUN_003f04f0(iGpffffac00 + sVar3 * 0x40 + 8,0) == 0) {
+      goto state_2;
     }
-    else {
-      lVar2 = FUN_0017c610(sVar3);
-      if (lVar2 == 0) {
-        sVar3 = 0;
-      }
-      else {
-        sVar3 = 1;
-      }
+    if (FUN_0017c610(sVar3) == 0) {
+      goto state_0;
     }
+    iVar4 = 1;
+    goto state_done;
+state_2:
+    iVar4 = 2;
+    goto state_done;
+state_0:
+    iVar4 = 0;
+state_done:;
   }
 
-  if ((((sVar3 == 4) || (sVar3 == 2)) || (sVar3 == 1)) || (sVar3 == 3)) {
-
+  switch (iVar4) {
+  case 3:
+  case 1:
+  case 2:
+  case 4:
     *puVar1 = *puVar1 | 0x10;
-
-    *(short *)((int)puVar1 + 6) = sVar3;
-
-  }
-
-  else {
-
+    *(short *)((int)puVar1 + 6) = iVar4;
+    break;
+  default:
     lVar2 = datGetFlag((short)puVar1[1] + 0x10ff);
-
     if (lVar2 == 0) {
-
       *puVar1 = *puVar1 | 0x100;
-
     }
-
+    break;
   }
 
   return 0;

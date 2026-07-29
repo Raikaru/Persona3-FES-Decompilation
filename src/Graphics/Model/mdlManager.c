@@ -5747,52 +5747,38 @@ void func_00316970(Model* param_1)
 // FUN_00316C70 NONMATCHING
 
 
-Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4)
+Model* func_00316c70(u16 modelType,u16 id,void* archive,u32 readMode)
 {
-  u32 uVar1;
-  u32 uVar2;
-  long lVar3;
-  Model* uVar4;
-  void* uVar5;
-  int iVar6;
-  u32 uStack_18;
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_4;
-
-  lVar3 = mdlFileIsTypePac(param_1);
-  if (lVar3 == 0) {
-    uVar1 = *(u32 *)((int)param_3 + 0x110);
-    uVar2 = *(u32 *)((int)param_3 + 0x118);
-    uStack_4 = uVar2;
-    uVar4 = mdlInit(param_1,param_2);
-    if ((param_4 & 1) != 0) {
-      *(u16 *)((int)uVar4 + 0xd8) = *(u16 *)((int)uVar4 + 0xd8) | 0x4000;
+  Model *mdl;
+  MdlRmdFileMemory rmd;
+  void *data;
+  u32 size;
+  if (!mdlFileIsTypePac(modelType)) {
+    rmd.memory = *(void **)((int)archive + 0x110);
+    rmd.size = *(u32 *)((int)archive + 0x118);
+    mdl = mdlInit(modelType,id);
+    if ((readMode & 1) != 0) {
+      mdl->flags |= 0x4000;
     }
-    mdlStreamInit(uVar4);
-    uStack_10 = uVar1;
-    uStack_c = uVar2;
-    mdlStreamSetRmdFileMemory(uVar4,(const MdlRmdFileMemory*)&uStack_10);
-    mdlStreamRead(uVar4);
+    mdlStreamInit(mdl);
+    mdlStreamSetRmdFileMemory(mdl,&rmd);
+    mdlStreamRead(mdl);
   }
   else {
-    uVar2 = (u32)H_Cdvd_ArchiveGetFile((HCdvd*)param_3,0,&uStack_4);
-    uVar1 = uStack_4;
-    uVar4 = mdlInit(param_1,param_2);
-    iVar6 = (int)uVar4;
-    if ((param_4 & 1) != 0) {
-      *(u16 *)(iVar6 + 0xd8) = *(u16 *)(iVar6 + 0xd8) | 0x4000;
+    data = H_Cdvd_ArchiveGetFile((HCdvd*)archive,0,&size);
+    mdl = mdlInit(modelType,id);
+    if ((readMode & 1) != 0) {
+      mdl->flags |= 0x4000;
     }
-    mdlStreamInit(uVar4);
-    uStack_14 = uVar1;
-    uStack_18 = uVar2;
-    mdlStreamSetRmdFileMemory(uVar4,(const MdlRmdFileMemory*)&uStack_18);
-    mdlStreamRead(uVar4);
-    uVar5 = H_Cdvd_ArchiveGetFile((HCdvd*)param_3,1,&uStack_4);
-    func_0031e8d0(iVar6 + 0x3f8,param_1,param_2,(u64)uVar5,uStack_4);
+    mdlStreamInit(mdl);
+    rmd.memory = data;
+    rmd.size = size;
+    mdlStreamSetRmdFileMemory(mdl,&rmd);
+    mdlStreamRead(mdl);
+    data = H_Cdvd_ArchiveGetFile((HCdvd*)archive,1,&size);
+    func_0031e8d0((int)mdl + 0x3f8,modelType,id,data,size);
   }
-  return uVar4;
+  return mdl;
 }
 
 

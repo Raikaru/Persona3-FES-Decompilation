@@ -16153,24 +16153,33 @@ void FUN_00382f30(int param_1,int param_2,int param_3,int param_4)
       evtMenuDrawText((param_1 + 0x10) * 0xc, param_2, uVar6, uVar4, (const char *)&gp0xffffa698);
     }
     break;
-  case 2:
+  case 2: {
+    s32 scaledY;
+    scaledY = param_2 * 0xc;
     uVar6 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar6, 0, (const char *)(void *)(DAT_006a0000_abs + 0x58));
+    evtMenuDrawText(param_1 * 0xc, scaledY, uVar6, 0, (const char *)(void *)(DAT_006a0000_abs + 0x58));
     uVar6 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
-    evtMenuDrawText((param_1 + 0x10) * 0xc, param_2 * 0xc, uVar6, uVar4, (const char *)&gp0xffffa3b8, *(u32 *)(iVar5 + 0x1a0));
+    evtMenuDrawText((param_1 + 0x10) * 0xc, scaledY, uVar6, uVar4, (const char *)&gp0xffffa3b8, *(u32 *)(iVar5 + 0x1a0));
     break;
-  case 3:
+  }
+  case 3: {
+    s32 scaledY;
+    scaledY = param_2 * 0xc;
     uVar6 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar6, 0, (const char *)(void *)(DAT_006a0000_abs + 0x68));
+    evtMenuDrawText(param_1 * 0xc, scaledY, uVar6, 0, (const char *)(void *)(DAT_006a0000_abs + 0x68));
     uVar6 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
-    evtMenuDrawText((param_1 + 0x10) * 0xc, param_2 * 0xc, uVar6, uVar4, (const char *)&gp0xffffa3b8, *(u32 *)(iVar5 + 0x1a4));
+    evtMenuDrawText((param_1 + 0x10) * 0xc, scaledY, uVar6, uVar4, (const char *)&gp0xffffa3b8, *(u32 *)(iVar5 + 0x1a4));
     break;
-  case 4:
+  }
+  case 4: {
+    s32 scaledY;
+    scaledY = param_2 * 0xc;
     uVar6 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
-    evtMenuDrawText(param_1 * 0xc, param_2 * 0xc, uVar6, 0, (const char *)&gp0xffffa4e8);
+    evtMenuDrawText(param_1 * 0xc, scaledY, uVar6, 0, (const char *)&gp0xffffa4e8);
     uVar6 = FUN_0038a220(*(u32 *)(iVar5 + 0xe0));
-    evtMenuDrawText((param_1 + 0x10) * 0xc, param_2 * 0xc, uVar6, uVar4, (const char *)&gp0xffffa3b8, *(u32 *)(iVar5 + 0x1a8));
+    evtMenuDrawText((param_1 + 0x10) * 0xc, scaledY, uVar6, uVar4, (const char *)&gp0xffffa3b8, *(u32 *)(iVar5 + 0x1a8));
     break;
+  }
   }
 
   return;

@@ -671,6 +671,10 @@ KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
     KwlnTask* task;
     char name[256];
     s32 i;
+    s16 dim0;
+    s16 dim1;
+    s16 dim2;
+    s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
     if (work == NULL)
@@ -684,17 +688,25 @@ KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
         return NULL;
     }
 
-    work->dimensions[0] = ((s16*)&dimensions)[0];
-    work->dimensions[1] = ((s16*)&dimensions)[1];
-    work->dimensions[2] = ((s16*)&dimensions)[2];
-    work->dimensions[3] = ((s16*)&dimensions)[3];
+    dim0 = ((s16*)&dimensions)[0];
+    dim1 = ((s16*)&dimensions)[1];
+    dim2 = ((s16*)&dimensions)[2];
+    dim3 = ((s16*)&dimensions)[3];
+    work->dimensions[0] = dim0;
+    work->dimensions[1] = dim1;
+    work->dimensions[2] = dim2;
+    work->dimensions[3] = dim3;
     sprintf(name, D_005D6A80, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     printf(D_005D6AA0, name);
     strcpy(work->basePath, D_005D6AB8);
     work->useCdvd = true;
 
-    for (i = 0; i < 10000 && D_005D66E0[i][0] != '\0'; i++)
+    for (i = 0; i < 10000; i++)
     {
+        if (D_005D66E0[i][0] == '\0')
+        {
+            break;
+        }
         if (strcmp(name, D_005D66E0[i]) == 0)
         {
             sprintf(work->path, D_005D6AD0, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
