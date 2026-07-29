@@ -609,14 +609,14 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
                 (base + ((int)inner16 >> 4) * 0x20 & 0xffffU)) & 0xffff;
         pbVar11 = (u8 *)(iVar4 + ((int)uVar9 >> 1));
         uVar10 = *src >> ((uVar7 & 1) << 2);
-        rawByte = (u8)uVar10 & 0xf;
+        rawByte = uVar10 & 0xf;
         if ((uVar9 & 1) == 0) {
 
           *pbVar11 = rawByte;
         }
         else {
 
-          *pbVar11 = *pbVar11 | (u8)(rawByte << 4);
+          *pbVar11 = *pbVar11 | (u8)((rawByte << 4) & 0xf0);
         }
 
         if ((uVar7 & 1) != 0) {

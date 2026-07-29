@@ -6589,7 +6589,7 @@ u32 FUN_00366ea0(void)
   return 0;
 }
 
-// FUN_00366EB0 NONMATCHING
+// FUN_00366EB0
 
 
 int FUN_00366eb0(int param_1,int param_2,int param_3)
@@ -6628,29 +6628,28 @@ int FUN_00366eb0(int param_1,int param_2,int param_3)
 
   }
 
-  if (iVar2 != 0) {
-
-    *(u32 *)(iVar2 + 0x14) = *(u32 *)(iVar3 + 0x16c);
-
-    *(short *)(iVar2 + 0x20) = (short)*(u32 *)(iVar3 + 0x198);
-
-    *(char *)(iVar2 + 0x22) = (char)*(u32 *)(iVar3 + 0x19c);
-
-    *(char *)(iVar2 + 0x23) = (char)*(u32 *)(iVar3 + 0x1a0);
-
-    *(char *)(iVar2 + 0x24) = (char)*(u32 *)(iVar3 + 0x1a4);
-
-    *(char *)(iVar2 + 0x25) = (char)*(u32 *)(iVar3 + 0x1a8);
-
-    *(short *)(iVar2 + 0x26) = (short)*(u32 *)(iVar3 + 0x1ac);
-
-    *(short *)(iVar2 + 0x28) = (short)*(u32 *)(iVar3 + 0x1b0);
-
-    *(short *)(iVar2 + 0x2a) = (short)*(u32 *)(iVar3 + 0x1b4);
-
-    FUN_0036f640(param_3);
-
+  if (iVar2 == 0) {
+    return 0;
   }
+  *(u32 *)(iVar2 + 0x14) = *(u32 *)(iVar3 + 0x16c);
+
+  *(short *)(iVar2 + 0x20) = (short)*(u32 *)(iVar3 + 0x198);
+
+  *(char *)(iVar2 + 0x22) = (char)*(u32 *)(iVar3 + 0x19c);
+
+  *(char *)(iVar2 + 0x23) = (char)*(u32 *)(iVar3 + 0x1a0);
+
+  *(char *)(iVar2 + 0x24) = (char)*(u32 *)(iVar3 + 0x1a4);
+
+  *(char *)(iVar2 + 0x25) = (char)*(u32 *)(iVar3 + 0x1a8);
+
+  *(short *)(iVar2 + 0x26) = (short)*(u32 *)(iVar3 + 0x1ac);
+
+  *(short *)(iVar2 + 0x28) = (short)*(u32 *)(iVar3 + 0x1b0);
+
+  *(short *)(iVar2 + 0x2a) = (short)*(u32 *)(iVar3 + 0x1b4);
+
+  FUN_0036f640(param_3);
 
   return 0;
 

@@ -125,6 +125,11 @@ extern int FUN_003b0bb0();
 extern int FUN_003b0c20();
 extern int FUN_003b0ce0();
 extern int thunk_FUN_003b0e04();
+#pragma alias FUN_003b2940_u8 FUN_003b2940
+extern u32 FUN_003b2940_u8(u32 param_1,u32 param_2,u8 param_3,u8 param_4,
+                           u32 param_5,u32 param_6,u32 param_7,u32 param_8);
+#pragma alias thunk_FUN_003b0e04_u8 thunk_FUN_003b0e04
+extern int thunk_FUN_003b0e04_u8(u32 param_1,u8 param_2);
 #pragma alias FUN_003b1300_typed FUN_003b1300
 extern int FUN_003b1300_typed(u32 param_1);
 #pragma alias FUN_003b1330_typed FUN_003b1330
@@ -2948,11 +2953,11 @@ FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
   }
 
-  uVar3 = FUN_003b2940(param_1 << 4,param_2 << 3,param_4,param_5,0,0xff,lVar2,0);
+  uVar3 = FUN_003b2940_u8(param_1 << 4,param_2 << 3,param_4,param_5,0,0xff,lVar2,0);
 
   if ((param_6 & 1) != 0) {
 
-    thunk_FUN_003b0e04(uVar3,param_5);
+    thunk_FUN_003b0e04_u8(uVar3,param_5);
 
   }
 

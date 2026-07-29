@@ -2326,146 +2326,231 @@ f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 animation)
 }
 
 /* Recovered battle-misc harvest: 0x002FCAA0-0x002FED10 */
-// FUN_002FCAA0 NONMATCHING
+// FUN_002FCAA0
 
 
 u32 FUN_002fcaa0(int param_1, u32* param_2)
 {
-    u16 encounterId = *(u16*)(*(int*)(DAT_007ce3ec + 0xbbc) + 8);
+    u16 encounterId;
+    u32 result;
+    u32 caseResult;
 
+    encounterId = *(u16*)(*(int*)(DAT_007ce3ec + 0xbbc) + 8);
     switch (encounterId)
     {
     case 0x1a7:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0x10b:
-        case 0x10c:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0x10b:
+                case 0x10c:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1a9:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0x108:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0x108:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1aa:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0x10f:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0x10f:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1ab:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0x110:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0x110:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1ae:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0x126:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0x126:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1af:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0xe9:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0xe9:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1b0:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0xea:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0xea:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     case 0x1b1:
     case 0x1b2:
     case 0x1b3:
         if ((*(u16*)(param_1 + 0x1a) & 1) == 0)
-            return 0;
-        if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
-            return 0;
-        switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+            caseResult = 0;
+        else
         {
-        case 0xeb:
-        case 0xec:
-        case 0xed:
-        case 0xee:
-        case 0xef:
-        case 0xf0:
-            *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
-            param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
-            param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
-            return 1;
-        default:
-            return 0;
+            if (*(u8*)(*(int*)(param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(int*)(param_1 + 0x30) + 0xa4))
+                {
+                case 0xeb:
+                case 0xec:
+                case 0xed:
+                case 0xee:
+                case 0xef:
+                case 0xf0:
+                    *param_2 = *(u32*)(DAT_007ce3ec + 0xb44);
+                    param_2[1] = *(u32*)(DAT_007ce3ec + 0xb48);
+                    param_2[2] = *(u32*)(DAT_007ce3ec + 0xb4c);
+                    caseResult = 1;
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
         }
+        result = caseResult;
+        break;
     default:
-        return 0;
+        result = 0;
+        break;
     }
+    return result;
 }
 
 // FUN_002FCF50

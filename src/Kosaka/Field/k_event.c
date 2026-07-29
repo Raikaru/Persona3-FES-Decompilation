@@ -54,6 +54,10 @@ extern void (*DAT_0096017c[])(void*);
 extern u32 DAT_0096017c_abs[];
 extern u8 D_0086B180[];
 extern RwV3d D_008717D0;
+extern u8 DAT_0086be80[0x2700];
+extern u8 DAT_0086e580[0x114];
+extern const char D_00683730[];
+extern void func_0019d3f0(const char* file, s32 line);
 extern u32 gTraceCode;
 extern u32 gFldScrMemory;
 extern u32 gFldScrSize;
@@ -820,11 +824,16 @@ void func_001c80c0(void)
 void func_001c8120(void* work)
 {
     RwV3d candidates[5];
-    RwV3d center;
-    RwV3d delta;
-    s32 target;
+    RwV3d pcDelta;
+    RwV3d ecDelta;
+    RwV3d specialDelta;
+    RwV3d* candidate;
+    FldUnit* targetUnit;
+    FldUnit* unit;
+    u8* record;
     s32 slot;
     s32 i;
+    s32 target;
     s32 j;
     u32 occupied;
 
@@ -832,101 +841,112 @@ void func_001c8120(void* work)
     {
         return;
     }
-    center = D_008717D0;
-    center.x = (f32)((s32)((center.x + 400.0f) / 800.0f)) * 800.0f;
-    center.z = (f32)((s32)((center.z + 400.0f) / 800.0f)) * 800.0f;
-    candidates[0] = center;
-    candidates[1] = center;
-    candidates[1].x += 250.0f;
-    candidates[1].z += 250.0f;
-    candidates[2] = center;
-    candidates[2].x -= 250.0f;
-    candidates[2].z -= 250.0f;
-    candidates[3] = center;
-    candidates[3].x += 250.0f;
-    candidates[3].z -= 250.0f;
-    candidates[4] = center;
-    candidates[4].x -= 250.0f;
-    candidates[4].z += 250.0f;
+
+    candidates[0].x = (f32)((s32)((D_008717D0.x + 400.0f) / 800.0f)) * 800.0f;
+    candidates[0].y = D_008717D0.y;
+    candidates[0].z = (f32)((s32)((D_008717D0.z + 400.0f) / 800.0f)) * 800.0f;
+    candidates[1].x = candidates[0].x + 250.0f;
+    candidates[1].y = candidates[0].y;
+    candidates[1].z = candidates[0].z + 250.0f;
+    candidates[2].x = candidates[0].x - 250.0f;
+    candidates[2].y = candidates[0].y;
+    candidates[2].z = candidates[0].z - 250.0f;
+    candidates[3].x = candidates[0].x + 250.0f;
+    candidates[3].y = candidates[0].y;
+    candidates[3].z = candidates[0].z - 250.0f;
+    candidates[4].x = candidates[0].x - 250.0f;
+    candidates[4].y = candidates[0].y;
+    candidates[4].z = candidates[0].z + 250.0f;
 
     for (slot = 0; slot < 3; slot++)
     {
         void* entry;
-        u16 flags;
 
         entry = *(void**)((u8*)work + 0x1c + slot * 8);
-        if (entry == NULL)
+        if (entry == NULL || (*(u16*)((u8*)entry + 10) & 1) == 0)
         {
             continue;
         }
-        flags = *(u16*)((u8*)entry + 10);
-        if ((flags & 1) == 0)
+
+        targetUnit = NULL;
+        for (i = 1; i < FLDUNIT_PC_MAX; i++)
         {
-            continue;
-        }
-        target = -1;
-        for (i = 0; i < FLDUNIT_PC_MAX; i++)
-        {
-            if (gFldUnitsPc[i].genusBase != NULL &&
-                gFldUnitsPc[i].resrc != NULL &&
-                *(u16*)((u8*)gFldUnitsPc[i].genusBase + 2) ==
-                    *(u16*)((u8*)entry + 4))
+            unit = &gFldUnitsPc[i];
+            if (unit->genusBase != NULL &&
+                *(u16*)(*(u8**)((u8*)entry + 4) + 2) == unit->charId)
             {
+                targetUnit = unit;
                 target = i;
                 break;
             }
         }
-        if (target < 0)
+        if (targetUnit == NULL)
         {
             continue;
         }
+
         for (i = 0; i < 5; i++)
         {
+            candidate = &candidates[i];
             occupied = false;
             for (j = 0; j < FLDUNIT_PC_MAX; j++)
             {
-                if (j == target || gFldUnitsPc[j].genusBase == NULL ||
-                    gFldUnitsPc[j].mdl == NULL)
+                unit = &gFldUnitsPc[j];
+                if (unit->genusBase == NULL || j == target)
                 {
                     continue;
                 }
-                delta.x = candidates[i].x - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.x;
-                delta.y = candidates[i].y - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.y;
-                delta.z = candidates[i].z - mdlGetMatrix(gFldUnitsPc[j].mdl)->pos.z;
-                if (RwV3dLength(&delta) < 70.0f)
+                pcDelta.x = candidate->x - unit->matBeforeBtl.pos.x;
+                pcDelta.y = candidate->y - unit->matBeforeBtl.pos.y;
+                pcDelta.z = candidate->z - unit->matBeforeBtl.pos.z;
+                if (RwV3dLength(&pcDelta) < 70.0f)
                 {
                     occupied = true;
                     break;
                 }
             }
+
             if (occupied == false)
             {
-                for (j = 0; j < FLDUNIT_EC_MAX; j++)
+                for (j = 0; j < 0x20; j++)
                 {
-                    if (gFldUnitsEc[j].genusBase == NULL)
+                    record = DAT_0086be80 + j * 0x138;
+                    if (*(u32*)record == 0)
                     {
                         continue;
                     }
-                    delta.x = candidates[i].x - gFldUnitsEc[j].spawnPos.x;
-                    delta.y = candidates[i].y - gFldUnitsEc[j].spawnPos.y;
-                    delta.z = candidates[i].z - gFldUnitsEc[j].spawnPos.z;
-                    if (RwV3dLength(&delta) < 70.0f)
+                    ecDelta.x = candidate->x - *(f32*)(record + 0x10c);
+                    ecDelta.y = candidate->y - *(f32*)(record + 0x110);
+                    ecDelta.z = candidate->z - *(f32*)(record + 0x114);
+                    if (RwV3dLength(&ecDelta) < 70.0f)
                     {
                         occupied = true;
                         break;
                     }
                 }
             }
+
+            if (occupied == false && *(u32*)DAT_0086e580 == 1)
+            {
+                specialDelta.x = candidate->x - *(f32*)(DAT_0086e580 + 0x104);
+                specialDelta.y = candidate->y - *(f32*)(DAT_0086e580 + 0x108);
+                specialDelta.z = candidate->z - *(f32*)(DAT_0086e580 + 0x10c);
+                if (RwV3dLength(&specialDelta) < 70.0f)
+                {
+                    occupied = true;
+                }
+            }
+
             if (occupied == false)
             {
-                gFldUnitsPc[target].spawnPos = candidates[i];
                 break;
             }
         }
         if (i == 5)
         {
-            K_Abort("field party position unavailable", __FILE__, __LINE__);
+            func_0019d3f0(D_00683730, 0x502);
         }
+        targetUnit->matBeforeBtl.pos = candidates[i];
     }
 }
 
