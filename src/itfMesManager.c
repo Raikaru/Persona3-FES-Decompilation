@@ -349,6 +349,8 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,
 u64 FUN_003a8710(int param_2,int param_3,float param_1,int param_4,int param_5);
  #pragma alias FUN_003a8710_typed FUN_003a8710
 extern u64 FUN_003a8710_typed(int param_2,int param_3,float param_1,int param_4,int param_5);
+#pragma alias FUN_003a8710_u8 FUN_003a8710
+extern u64 FUN_003a8710_u8(int param_2,int param_3,float param_1,u8 param_4,int param_5);
 
 /* Region call-cast macros */
 #define FUN_003a2150(...) ((u32 (*)(...))FUN_003a2150)(__VA_ARGS__)
@@ -5449,9 +5451,9 @@ void FUN_003a7dd0(int object)
   } ItfMesAnim;
   s16 values[8];
   ItfMesAnim *anim;
+  int count;
   s16 *source;
   s16 *dest;
-  int count;
 
   anim = (ItfMesAnim *)(object + 0x1d4);
   source = DAT_006a1bd0_signed;
@@ -5676,7 +5678,7 @@ void FUN_003a8260(int param_1)
 }
 #define FUN_003a8260(...) ((void (*)(...))FUN_003a8260)(__VA_ARGS__)
 #undef FUN_003a8350
-// FUN_003A8350 NONMATCHING
+// FUN_003A8350
 
 
 void FUN_003a8350(int param_1)
@@ -5698,7 +5700,7 @@ void FUN_003a8350(int param_1)
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  FUN_003a8710_typed(iVar2,iVar3,0.0f,(u32)fVar1 & 0xff,0x10);
+  FUN_003a8710_u8(iVar2,iVar3,0.0f,(u8)fVar1,0x10);
 }
 #define FUN_003a8350(...) ((void (*)(...))FUN_003a8350)(__VA_ARGS__)
 #undef FUN_003a8440

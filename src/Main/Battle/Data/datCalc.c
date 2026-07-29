@@ -1096,7 +1096,7 @@ s8 FUN_00300f60(int param_1,u32 param_2)
   return value;
 }
 
-// FUN_00301030 NONMATCHING
+// FUN_00301030
 void FUN_00301030(int param_1, u8 param_2, s8 param_3)
 {
   u8 index;
@@ -1112,7 +1112,7 @@ void FUN_00301030(int param_1, u8 param_2, s8 param_3)
   }
   offset = index >> 1;
   if (param_3 < 0) {
-    param_3 += 0xf;
+    param_3 = (s8)(param_3 + 0xf);
   }
   if (index & 1) {
     value = *(u8 *)(offset + param_1 + 0x1c);
