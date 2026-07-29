@@ -613,7 +613,7 @@ u32 FUN_003b5620(int param_1,int param_2)
 }
 #define FUN_003b5620(...) ((u32 (*)(...))FUN_003b5620)(__VA_ARGS__)
 #undef FUN_003b58c0
-// FUN_003B58C0 NONMATCHING
+// FUN_003B58C0
 
 
 void FUN_003b58c0(short param_1)
@@ -622,17 +622,15 @@ void FUN_003b58c0(short param_1)
     int wait;
 
     if ((gMtScene->flags & 1) != 0) {
-        if (gMtScene->unk_14 == param_1) {
-            for (iVar1 = (int)MT_Scene_GetResListHead(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-                *(u32 *)(iVar1 + 0x28) |= 2;
-            }
-        } else {
+        if (gMtScene->unk_14 != param_1) {
             gMtScene->flags |= 2;
             gMtScene->unk_14 = param_1;
             wait = 0x1e;
-            iVar1 = FUN_001b9120();
-            *(u32 *)(iVar1 + 0x1058) = wait;
+            *(u32 *)(FUN_001b9120() + 0x1058) = wait;
             return;
+        }
+        for (iVar1 = (int)MT_Scene_GetResListHead(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
+            *(u32 *)(iVar1 + 0x28) |= 2;
         }
         return;
     }

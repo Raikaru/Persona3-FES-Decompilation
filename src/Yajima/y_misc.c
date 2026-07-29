@@ -4897,12 +4897,12 @@ void FUN_0042ac60(int param_1,int param_2)
   int iVar8;
 
   iVar1 = *(int *)(param_1 + 0x3c);
-  cVar2 = param_2 - 0x1f;
+  cVar2 = (s8)(param_2 - 0x1f);
   iVar6 = (cVar2 * 0xf0 + (int)cVar2) * 4;
   cVar2 = *(char *)(*(short *)(iVar1 + 0xb90) * 0x28 + iVar6 + iGpffffb5c0 + 4);
   iVar7 = 0;
   for (iVar8 = 0; piVar4 = (int *)(iVar6 + iGpffffb5c0), iVar8 < *piVar4; iVar8 = iVar8 + 1) {
-    if ((long)cVar2 == (long)piVar4[iVar8 * 10 + 1]) {
+    if (cVar2 == piVar4[iVar8 * 10 + 1]) {
       for (iVar5 = 0; iVar5 < 0xff; iVar5 = iVar5 + 1) {
         DAT_0095bfe0_abs[iVar5] = 0;
       }

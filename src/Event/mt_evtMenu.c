@@ -3072,8 +3072,9 @@ int FUN_003715b0(int param_1,int param_2,int param_3)
   FUN_0036f900(param_1,param_2,0x14,iVar4,*(u32 *)(iVar2 + 0x108),iVar1 + 3,param_3,0,
                (code *)FUN_00371350);
 
-  switch (*(int *)(iVar2 + 0xd4)) {
-  case 0x11:
+  if (*(int *)(iVar2 + 0xd4) != 0x11) {
+    return 0;
+  }
     if (iVar1 + 3 < 0xf) {
       iVar4 = iVar1 + 3;
     }
@@ -3090,10 +3091,6 @@ int FUN_003715b0(int param_1,int param_2,int param_3)
         uVar3 = 0;
       }
     }
-    break;
-  default:
-    return 0;
-  }
 
   return uVar3;
 

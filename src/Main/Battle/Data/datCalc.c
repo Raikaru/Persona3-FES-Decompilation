@@ -167,8 +167,8 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     {
         bonus -= (baseHp * 50) / 100;
     }
-
     hp += bonus;
+
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1a) * 10;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1b) * 20;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1c) * 30;
@@ -6480,7 +6480,7 @@ short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
 int FUN_0030c0c0(void)
 
 {
-  u32 currentValue;
+  u16 currentValue;
   u16 current;
   u16 count;
   u16 inner;
