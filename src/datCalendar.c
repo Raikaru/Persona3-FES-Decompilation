@@ -3338,7 +3338,6 @@ void func_001842c0(KwlnTask* task,
 {
     CalendarConfirmWork* work;
     void* resource;
-    f32 x;
     s32 fade;
     s32 dayIndex;
     s32 moonOffset;
@@ -3350,15 +3349,14 @@ void func_001842c0(KwlnTask* task,
     (void)context;
     work = (CalendarConfirmWork*)task->workData;
     resource = work->resource;
-    x = CLND_CALENDAR_X;
 
     func_001159f0(NULL, resource, 0x3a, 0,
-                  x + 514.0f, 23.0f, 50.0f);
+                  CLND_CALENDAR_X + 514.0f, 23.0f, 50.0f);
     if (time == 8)
     {
         func_00115bc0(NULL, resource, 0x39, 0,
                       0x7c, 0xff, 0x90,
-                      x + 390.0f, -8.0f, 50.0f);
+                      CLND_CALENDAR_X + 390.0f, -8.0f, 50.0f);
         red = 0x7c;
         green = 0xff;
         blue = 0x90;
@@ -3367,16 +3365,16 @@ void func_001842c0(KwlnTask* task,
     {
         func_00115bc0(NULL, resource, 0x39, 0,
                       0x4c, 0x9a, 0xff,
-                      x + 390.0f, -8.0f, 50.0f);
+                      CLND_CALENDAR_X + 390.0f, -8.0f, 50.0f);
         red = 0x4a;
         green = 0x9a;
         blue = 0xff;
     }
 
-    func_00183840(resource, 0, month, day, x, 0.0f);
-    func_00183be0(resource, 0, month, day, x, 0.0f);
+    func_00183840(resource, 0, month, day, CLND_CALENDAR_X, 0.0f);
+    func_00183be0(resource, 0, month, day, CLND_CALENDAR_X, 0.0f);
     fade = ((60 - timer) * 0xff) / 60;
-    func_00183f60(resource, fade, month, day, time, x, 0.0f);
+    func_00183f60(resource, fade, month, day, time, CLND_CALENDAR_X, 0.0f);
 
     if (datGetFlag(0x1420) != 0)
     {
@@ -3401,7 +3399,7 @@ void func_001842c0(KwlnTask* task,
     if (moonOffset >= 10)
     {
         func_001159f0(NULL, resource, 0x4c, 0,
-                      x + 497.0f, 66.0f, 50.0f);
+                      CLND_CALENDAR_X + 497.0f, 66.0f, 50.0f);
         D_00960090(6, 1);
         D_00960090(7, 2);
         D_00960090(8, 1);
@@ -3415,15 +3413,15 @@ void func_001842c0(KwlnTask* task,
         RpSkyRenderStateSet(3, (void*)0x71801);
         func_00115cd0(NULL, resource, moonOffset / 10 + 0x23, 0,
                       red, green, blue,
-                      x + 554.0f, 67.0f, 50.0f);
+                      CLND_CALENDAR_X + 554.0f, 67.0f, 50.0f);
         func_00115cd0(NULL, resource, moonOffset % 10 + 0x23, 0,
                       red, green, blue,
-                      x + 571.0f, 67.0f, 50.0f);
+                      CLND_CALENDAR_X + 571.0f, 67.0f, 50.0f);
     }
     else
     {
         func_001159f0(NULL, resource, 0x4c, 0,
-                      x + 514.0f, 66.0f, 50.0f);
+                      CLND_CALENDAR_X + 514.0f, 66.0f, 50.0f);
         D_00960090(6, 1);
         D_00960090(7, 2);
         D_00960090(8, 1);
@@ -3437,7 +3435,7 @@ void func_001842c0(KwlnTask* task,
         RpSkyRenderStateSet(3, (void*)0x71801);
         func_00115cd0(NULL, resource, moonOffset % 10 + 0x23, 0,
                       red, green, blue,
-                      x + 571.0f, 67.0f, 50.0f);
+                      CLND_CALENDAR_X + 571.0f, 67.0f, 50.0f);
     }
 }
 
@@ -4381,8 +4379,6 @@ void* func_00186190(KwlnTask* task)
     void* source;
     s32 alpha;
     s32 timer;
-    f32 x;
-    f32 y;
     work = (CalendarMoonWork*)task->workData;
     switch (work->state)
     {
@@ -4436,15 +4432,17 @@ void* func_00186190(KwlnTask* task)
             break;
 
         case 4:
+        {
+            f32 _x;
             timer = ++work->timer;
-            x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f);
+            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * 300.0f;
             alpha = (timer * 0xff) / 10;
             func_00186a40(work->resource,
-                          clndPackPosition(&position, x * 300.0f, 0.0f),
+                          clndPackPosition(&position, _x, 0.0f),
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
-                          clndPackPosition(&position, x * 300.0f, 0.0f),
+                          clndPackPosition(&position, _x, 0.0f),
                           alpha,
                           (s16)work->selectedValue);
             if (timer == 10)
@@ -4454,13 +4452,16 @@ void* func_00186190(KwlnTask* task)
                 work->state = 5;
             }
             break;
+        }
 
         case 5:
+        {
+            f32 _x;
             timer = ++work->timer;
             timer = 10 - timer;
-            x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f);
+            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 10)) / 180.0f) * -300.0f;
             func_00186a40(work->resource,
-                          clndPackPosition(&position, x * -300.0f, 0.0f),
+                          clndPackPosition(&position, _x, 0.0f),
                           (timer * 0xff) / 10,
                           (s16)work->selectedValue);
             if (work->timer == 10)
@@ -4469,6 +4470,7 @@ void* func_00186190(KwlnTask* task)
                 work->state = 6;
             }
             break;
+        }
 
         case 6:
             timer = ++work->timer;
@@ -4509,18 +4511,19 @@ void* func_00186190(KwlnTask* task)
             break;
 
         case 7:
+        {
+            f32 _x;
+            f32 _y;
             timer = ++work->timer;
-            x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f);
-            x *= CLND_MOON_X_SCALE;
-            y = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f);
-            y *= CLND_MOON_Y_SCALE;
+            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) * CLND_MOON_X_SCALE;
+            _y = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) * CLND_MOON_Y_SCALE;
             alpha = (timer * 0xff) / 5;
             func_00186a40(work->resource,
-                          clndPackPosition(&position, x, y),
+                          clndPackPosition(&position, _x, _y),
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
-                          clndPackPosition(&position, x, y),
+                          clndPackPosition(&position, _x, _y),
                           alpha,
                           (s16)work->selectedValue);
             if (timer == 5)
@@ -4528,6 +4531,7 @@ void* func_00186190(KwlnTask* task)
                 return KWLNTASK_STOP;
             }
             break;
+        }
 
         case 8:
             timer = ++work->timer;
