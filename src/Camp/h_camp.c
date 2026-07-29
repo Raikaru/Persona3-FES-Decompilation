@@ -1438,7 +1438,8 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    temp = 19.0f * (f32)work->selectedEntry;
+    temp += 57.0f;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;

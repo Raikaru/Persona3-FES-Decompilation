@@ -2494,7 +2494,7 @@ void func_001fc980(u8* event, u16* result, s32* count)
 // FUN_001FCB30 NONMATCHING
 void func_001fcb30(u8* event, u32* result, s32* count)
 {
-    s16 skill;
+    s32 skill;
     s32 resultCount;
     s32 i;
     u32 skillId;
@@ -2515,10 +2515,16 @@ void func_001fcb30(u8* event, u32* result, s32* count)
                 FUN_0017be10(*(s16*)(event + 2), *(s16*)(event + 2),
                              *(u16*)(skillId + 8), 1, &hp, &sp, &status);
                 FUN_005225a8(0x684dd0, hp, sp, status);
-                if (hp > 0 && (skill == 0xfa2 || skill == 0xfa1))
+                if (hp > 0)
                 {
-                    result[resultCount] = FUN_00170670(*(s16*)(event + 2), (s16)i) & 0xffff;
-                    resultCount++;
+                    switch (skill)
+                    {
+                    case 0xfa1:
+                    case 0xfa2:
+                        result[resultCount] = FUN_00170670(*(s16*)(event + 2), (s16)i) & 0xffff;
+                        resultCount++;
+                        break;
+                    }
                 }
             }
         }

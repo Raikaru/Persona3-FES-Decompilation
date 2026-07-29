@@ -1274,6 +1274,8 @@ void btlActionInitStateStartHome(BtlAction* action)
     u16 speedIndex;
     BtlEnemyRecord* enemyRecords;
     u16 unitId;
+    u8 genus;
+    BtlUnit* moveUnit;
 
     if ((gBtl->flags & 0x2000) && (action->unk_1a & 1) && unit->genus == UNIT_GENUS_PC)
     {
@@ -1289,20 +1291,22 @@ void btlActionInitStateStartHome(BtlAction* action)
     {
         speedIndex = 2;
         allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
-        switch (action->unit->genus)
+        moveUnit = action->unit;
+        unitId = moveUnit->datUnit->id;
+        genus = moveUnit->genus;
+        switch (genus)
         {
+        case UNIT_GENUS_PC:
+            break;
         case UNIT_GENUS_EC:
-            unitId = action->unit->datUnit->id;
             enemyRecords = iGpffffb728;
             speedIndex = *(u16*)((u8*)enemyRecords +
                                  unitId * 0xe8 + (u32)allowMove * 4 + 0x24);
             break;
-        case UNIT_GENUS_PC:
-            break;
         default:
             break;
         }
-        packet = btlUnitCreateMovePacket(unit, &homePos, D_00693300[speedIndex], 0);
+        packet = btlUnitCreateMovePacket(moveUnit, &homePos, D_00693300[speedIndex], 0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }

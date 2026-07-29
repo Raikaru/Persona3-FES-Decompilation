@@ -1892,6 +1892,8 @@ extern MdlExtendedDispatch DAT_0069c970[];
 #pragma alias DAT_0069c970_abs DAT_0069c970
 extern MdlExtendedDispatch DAT_0069c970_abs[];
 extern u32 DAT_0069c974;
+#pragma alias DAT_0069c974_abs DAT_0069c974
+extern code DAT_0069c974_abs[];
 extern u32 DAT_0069c978;
 extern u32 DAT_0069c97c;
 extern MdlStridedCallback28 DAT_0069c980[];
@@ -39208,7 +39210,7 @@ u32 FUN_00345cf0(u32 param_1,u64 param_2)
 
 
 
-// FUN_00345DB0 NONMATCHING
+// FUN_00345DB0
 
 
 int FUN_00345db0(int param_1)
@@ -39231,9 +39233,9 @@ int FUN_00345db0(int param_1)
   }
   model = FUN_003245b0(param_1);
   type = *(u16 *)(param_1 + 0xc);
-  object = FUN_00345cf0(type,model);
+  object = FUN_00345cf0_u32(type,model);
   dispatchOffset = (type & 0xffff) * sizeof(MdlExtendedDispatch);
-  create = *(u32 (**)(u32,u32))((u8 *)&DAT_0069c974 + dispatchOffset);
+  create = *(u32 (**)(u32,u32))((u8 *)DAT_0069c974_abs + dispatchOffset);
   data = create(model,extra);
   *(u32 *)(object + 0x3c) = data;
   initialize = *(void (**)(u32))((u8 *)DAT_0069c970_abs + dispatchOffset);
@@ -46502,7 +46504,7 @@ u32 FUN_0034e4c0(int param_1)
 
   }
 
-  uVar3 = (*DAT_00960178_u32)(0x70,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0x70,0x40000);
 
   FUN_00521408(uVar3,0,0x70);
 
@@ -46522,14 +46524,19 @@ u32 FUN_0034e4c0(int param_1)
 
   FUN_0034e820(uVar3,*(u16 *)((int)param_1 + 0xc),iVar1 + 0x48);
 
-  if (((*(int *)(puVar5[0x17] + 8) != 0) && (lVar4 = FUN_003245f0((int)(param_1)), lVar4 != 0)) &&
-
-     (*(short *)((int)param_1 + 0x1c) == 1)) {
-
-    FUN_0034e7c0_u32(uVar3,lVar4);
-
+  if (*(int *)(puVar5[0x17] + 8) != 0) {
+    goto do_update;
   }
-
+  return uVar3;
+do_update:
+  lVar4 = FUN_003245f0((int)param_1);
+  if (lVar4 != 0) {
+    switch (*(u16 *)((int)param_1 + 0x1c)) {
+    case 1:
+      FUN_0034e7c0_u32(uVar3,lVar4);
+      break;
+    }
+  }
   return uVar3;
 
 }

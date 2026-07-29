@@ -1771,28 +1771,27 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
     f32 x;
     f32 y;
 
-    p = campCarouselUnpackPosition(position);
-    x = p.value.x + 218.0f;
-    y = p.value.y + 20.0f + (f32)DAT_007cdf9c;
-    sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40, 1);
-    if (sprite != NULL) {
-        sprite->spriteScale = alpha;
-        sprite->x = x;
-        sprite->y = y;
-        sprite->alpha = drawAlpha;
-        FUN_001127D0(sprite, 1);
-        FUN_00115980(sprite);
-    }
-    if (sprite != NULL) {
-        y = p.value.y + 1126.0f + (f32)DAT_007cdf9c;
-        sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40, 1);
-        sprite->spriteScale = alpha;
-        sprite->x = x;
-        sprite->y = y;
-        sprite->alpha = drawAlpha;
-        FUN_001127D0(sprite, 1);
-        FUN_00115980(sprite);
-    }
+    p.packed = position;
+    y = p.value.y;
+    sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40[0], 1);
+    sprite->spriteScale = alpha;
+    x = (p.value.x + 318.0f) - 100.0f;
+    sprite->x = x;
+    y += 20.0f;
+    sprite->y = y + (f32)DAT_007cdf9c;
+    sprite->alpha = drawAlpha;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
+
+    sprite = (CampCardSprite*)FUN_001158B0(NULL, DAT_00833B40[0], 1);
+    sprite->spriteScale = alpha;
+    sprite->x = x;
+    y = 100.0f + (y + ((f32)0x3ee + (f32)DAT_007cdf9c));
+    sprite->y = y;
+    sprite->alpha = drawAlpha;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
+
     DAT_007cdf9c--;
     if (DAT_007cdf9c < -0x452) {
         DAT_007cdf9c += 0x452;
