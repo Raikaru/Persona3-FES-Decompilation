@@ -141,7 +141,8 @@ struct RuntimeControllerWork
 {
     u32 state;
     void* windowTask;
-    u8 reserved08[8];
+    void* secondaryTask;
+    u32 count;
     u16 majorId;
     u16 minorId;
     u16 resourceId;
@@ -2395,7 +2396,7 @@ s32 func_001e4bc0(RuntimeTask* task)
     RuntimeVec3 direction;
     RuntimeVec3 center;
     RuntimeVec3 adjusted;
-    RuntimeVec3 position;
+    u8* clear;
     RuntimeVec3 angles;
     RuntimeMatrix rotation;
     char text[96];
@@ -2408,8 +2409,6 @@ s32 func_001e4bc0(RuntimeTask* task)
     u32 count;
     f32 distance;
     f32 angle;
-    f32 x;
-    f32 y;
 
     work = (RuntimeControllerWork*)task->workData;
     switch (work->state)
@@ -2417,7 +2416,7 @@ s32 func_001e4bc0(RuntimeTask* task)
         case 0:
             manager = func_001e1840();
             node = *(FieldRuntimeResourceNode**)manager;
-            count = 0;
+            work->count = 0;
             work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
             while (node != NULL)
             {
@@ -2428,11 +2427,10 @@ s32 func_001e4bc0(RuntimeTask* task)
                 index = func_001a3f20(work->windowTask, text);
                 *(FieldRuntimeResourceNode**)func_001a41b0(
                     work->windowTask, index) = node;
-                count++;
+                work->count++;
                 node = node->next;
             }
-            *(u32*)((u8*)work + 0xc) = count;
-            if (count != 0)
+            if (work->count != 0)
             {
                 func_001a3bf0(work->windowTask, 1);
                 work->state++;
@@ -2446,8 +2444,7 @@ s32 func_001e4bc0(RuntimeTask* task)
 
         case 1:
             index = 0;
-            count = *(u32*)((u8*)work + 0xc);
-            while (index < count)
+            while (index < work->count)
             {
                 node = *(FieldRuntimeResourceNode**)func_001a41b0(
                     work->windowTask, index);
@@ -2468,9 +2465,25 @@ s32 func_001e4bc0(RuntimeTask* task)
                 func_00195020(work->windowTask);
                 work->model = selected->resource;
                 work->resourceId = selected->resourceId;
+                work->majorId = selected->areaId;
+                work->minorId = selected->roomId;
+                work->angle = selected->angle;
+                work->flags = selected->flags;
+                work->type = selected->type;
+                work->value = selected->value;
+                work->sourceType = selected->state;
+                work->scale = selected->scale;
                 object = func_003b5d10(work->resourceId);
-                func_001ad870(
-                    *(void**)((u8*)object + 0x1e8), 0x80000000);
+                work->controller = *(void**)((u8*)object + 0x1e8);
+                func_001ad870(work->controller, 0x80000000);
+                if ((work->flags & 1) != 0)
+                {
+                    *(u32*)((u8*)object + 0x28) |= 0x80000000;
+                }
+                else
+                {
+                    *(u32*)((u8*)object + 0x28) &= 0x7fffffff;
+                }
                 work->windowTask = func_001a3b10(
                     task, 0x20, 0x20, 2);
                 func_001a3dc0(work->windowTask, D_00684120, 8);
@@ -2530,11 +2543,11 @@ s32 func_001e4bc0(RuntimeTask* task)
                 result = (u32)func_001a4510(work->windowTask);
                 if (result == 9)
                 {
-                    work->controller = func_001a3b10(
+                    work->secondaryTask = func_001a3b10(
                         task, 0x12c, 0xdc, 2);
-                    func_001a3f20(work->controller, D_006843D0);
-                    func_001a3f20(work->controller, D_006843E0);
-                    func_001a3bf0(work->controller, 1);
+                    func_001a3f20(work->secondaryTask, D_006843D0);
+                    func_001a3f20(work->secondaryTask, D_006843E0);
+                    func_001a3bf0(work->secondaryTask, 1);
                     func_001a3bf0(work->windowTask, 0);
                     work->state = 5;
                 }
@@ -2548,14 +2561,26 @@ s32 func_001e4bc0(RuntimeTask* task)
             {
                 node = func_001e2810(work->resourceId);
                 object = func_003b5d10(work->resourceId);
-                matrix = (RuntimeMatrix*)func_00318b60(
-                    *(void**)node);
-                if (node != NULL)
+                matrix = (RuntimeMatrix*)func_00318b60(work->model);
+                node->matrix = *matrix;
+                node->angle = work->angle;
+                node->flags = work->flags;
+                if ((node->flags & 1) != 0)
                 {
-                    node->matrix = *matrix;
+                    *(u32*)((u8*)object + 0x28) |= 0x80000000;
                 }
+                else
+                {
+                    *(u32*)((u8*)object + 0x28) &= 0x7fffffff;
+                }
+                node->type = work->type;
+                *(u16*)((u8*)object + 0x1e0) = node->type;
+                node->value = work->value;
+                *(u32*)((u8*)object + 0x1e4) = node->value;
                 func_003b78b0(
                     work->resourceId, (u8*)node + 0x50, &angles);
+                node->state = work->sourceType;
+                node->scale = work->scale;
                 func_0019c320(
                     work->scale, *(void**)((u8*)object + 0x1f0));
                 angles.x = func_001a5b30(&node->matrix);
@@ -2571,33 +2596,40 @@ s32 func_001e4bc0(RuntimeTask* task)
             break;
 
         case 4:
+            clear = (u8*)&base;
+            count = sizeof(base);
+            if (clear != NULL)
+            {
+                do
+                {
+                    *clear++ = 0;
+                    count--;
+                } while (count != 0);
+            }
             axis = D_006843B0;
             input = DAT_007e094c;
-            x = (f32)DAT_007e095e[1] * 2.0f - 128.0f;
-            y = (f32)DAT_007e095e[0] * 2.0f - 128.0f;
+            base.z = (f32)DAT_007e095e[1] * 2.0f - 128.0f;
+            base.x = (f32)DAT_007e095e[0] * 2.0f - 128.0f;
             if ((input & 0x1000) != 0)
             {
-                x = -128.0f;
+                base.z = -128.0f;
             }
             if ((input & 0x4000) != 0)
             {
-                x = 128.0f;
+                base.z = 128.0f;
             }
             if ((input & 0x8000) != 0)
             {
-                y = -128.0f;
+                base.x = -128.0f;
             }
             if ((input & 0x2000) != 0)
             {
-                y = 128.0f;
+                base.x = 128.0f;
             }
-            base.x = y;
-            base.y = 0.0f;
-            base.z = x;
             angle = func_001a5aa0(
                 func_004cb2f0(*(void**)((u8*)func_00198590() + 4)));
-            if (x < -48.0f || x > 48.0f ||
-                y < -48.0f || y > 48.0f)
+            if (base.z < -48.0f || base.z > 48.0f ||
+                base.x < -48.0f || base.x > 48.0f)
             {
                 matrixFlags = *(u32*)&rotation.values[3];
                 rotation.values[0] = 1.0f;
@@ -2621,14 +2653,22 @@ s32 func_001e4bc0(RuntimeTask* task)
                 direction.y = -direction.y;
                 direction.z = -direction.z;
                 func_004c6be0(&direction, &direction, &rotation);
-                distance = (x + y) * D_007CB118[0] / 2.0f;
+                if (base.x < 1.0f)
+                {
+                    base.x = -base.x;
+                }
+                if (base.z < 1.0f)
+                {
+                    base.z = -base.z;
+                }
+                distance = (base.z + base.x) * D_007CB118[0] / 2.0f;
                 func_001addf0(distance, work->model, &direction);
             }
-            if (x < -48.0f || x > 48.0f)
+            base.x = (f32)DAT_007e0960[0] * 2.0f - 128.0f;
+            if (base.x < -48.0f || base.x > 48.0f)
             {
-                position = D_00684260;
-                distance = y * D_007CB118[1];
-                func_001adff0(distance, work->model, &position);
+                distance = base.x * D_007CB118[1];
+                func_001adff0(distance, work->model, &axis);
             }
             if ((input & 6) != 0)
             {
@@ -2637,18 +2677,18 @@ s32 func_001e4bc0(RuntimeTask* task)
                 adjusted.y -= 10.0f;
                 func_001adc20(work->model, &adjusted);
             }
-            if ((input & 9) != 0)
+            else if ((input & 9) != 0)
             {
                 func_001ad940(&center, work->model);
                 adjusted = center;
                 adjusted.y += 10.0f;
                 func_001adc20(work->model, &adjusted);
             }
-            if ((input & 0x80) != 0)
+            else if ((input & 0x80) != 0)
             {
                 func_001ae0d0(work->model);
             }
-            if ((input & 0x60) != 0)
+            else if ((DAT_007e094e & 0x60) != 0)
             {
                 func_001a3bf0(work->windowTask, 1);
                 work->state = 3;
@@ -2658,7 +2698,7 @@ s32 func_001e4bc0(RuntimeTask* task)
         case 5:
             if ((DAT_007e094e & 0x40) != 0)
             {
-                result = (u32)func_001a4510(work->controller);
+                result = (u32)func_001a4510(work->secondaryTask);
                 if (result == 1)
                 {
                     work->state = 3;
@@ -2673,7 +2713,7 @@ s32 func_001e4bc0(RuntimeTask* task)
                     node = func_001e2810(work->resourceId);
                     func_001e28a0(node, 1);
                     func_00195020(work->windowTask);
-                    func_00195020(work->controller);
+                    func_00195020(work->secondaryTask);
                 }
             }
             break;

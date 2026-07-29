@@ -13,7 +13,8 @@ extern u8 D_0077e4e0[];
 extern u8 D_00803640[];
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
-extern f32 D_00960088;
+#pragma alias D_00960088_abs D_00960088
+extern f32 D_00960088_abs[];
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_00960094)(u32 state, void* value);
 extern void (*D_009600A0)(u32 primitive, void* vertices, s32 count);
@@ -24,8 +25,10 @@ extern void (*D_0096017c)(void* memory);
 extern void* (*D_00960178_abs[])(u32 size, u32 flags);
 #pragma alias D_0096017c_abs D_0096017c
 extern void (*D_0096017c_abs[])(void* memory);
-extern u16 DAT_007e094e;
-extern void* D_0077e4f0;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u16 DAT_007e094e_abs[];
+#pragma alias D_0077e4f0_abs D_0077e4f0
+extern void* D_0077e4f0_abs[];
 extern s16 D_005D4B70[];
 extern u8 D_005D4B74[];
 extern u8 D_005D4B7C[];
@@ -509,7 +512,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 func_003b5ab0();
             if (work->stateTimer == 6)
             {
-                if (func_004c2120(D_0077e4f0) != 0)
+                if (func_004c2120(D_0077e4f0_abs[0]) != 0)
                     K_Assert(D_005D5250, 0x180);
                 func_004b7690(D_0077e4e0);
             }
@@ -634,7 +637,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 
             for (i = 0; i < 4; i++)
             {
-                *(f32*)(work->quads[i].data + 8) = D_00960088;
+                *(f32*)(work->quads[i].data + 8) = D_00960088_abs[0];
                 *(f32*)(work->quads[i].data + 0x18) = reciprocalNear;
                 *(u32*)(work->quads[i].data + 0x20) = 0x437F0000;
                 *(u32*)(work->quads[i].data + 0x24) = 0x437F0000;
@@ -685,10 +688,10 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 *(s32*)((u8*)work + 0x164) = 0x42200000;
                 *(f32*)((u8*)work + 0x1A4) = topBottom;
             }
-            *(f32*)((u8*)work + 0xE8) = D_00960088;
-            *(f32*)((u8*)work + 0x128) = D_00960088;
-            *(f32*)((u8*)work + 0x168) = D_00960088;
-            *(f32*)((u8*)work + 0x1A8) = D_00960088;
+            *(f32*)((u8*)work + 0xE8) = D_00960088_abs[0];
+            *(f32*)((u8*)work + 0x128) = D_00960088_abs[0];
+            *(f32*)((u8*)work + 0x168) = D_00960088_abs[0];
+            *(f32*)((u8*)work + 0x1A8) = D_00960088_abs[0];
             powerWidth = 0x10;
             powerHeight = 0x10;
             width = *(s32*)HSFD_TABLE(D_005D4B7C, work->id) + 1;
@@ -716,11 +719,11 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
         case HSFD_STATE_FADE_OUT:
             if (work->id == 1 || work->id == 0x23)
             {
-                if ((DAT_007e094e & 0x9FF) != 0)
+                if ((DAT_007e094e_abs[0] & 0x9FF) != 0)
                     work->state = HSFD_STATE_CLEANUP;
             }
             else if (work->id != 0x20 && work->id != 0x21 &&
-                     work->id != 0x2A && (DAT_007e094e & 0x800) != 0)
+                     work->id != 0x2A && (DAT_007e094e_abs[0] & 0x800) != 0)
                 work->state = HSFD_STATE_CLEANUP;
 
             func_0057e530(work->decoder, (s32*)frameInfo);
@@ -927,7 +930,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
         case 11:
             H_Dbprt_FmtAt((RwV2d){2.0f, 10.0f}, D_005D5280);
             H_Dbprt_FmtAt((RwV2d){2.0f, 11.0f}, uGpffff8840);
-            if ((DAT_007e094e & 0x10) != 0)
+            if ((DAT_007e094e_abs[0] & 0x10) != 0)
             {
                 if (work->isStart != 0)
                     return KWLNTASK_STOP;
