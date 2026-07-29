@@ -1077,26 +1077,17 @@ u32 func_001f1f40(void)
 }
 
 // FUN_001f2080 NONMATCHING
-#pragma optimization_level 3
 KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
 {
     u8 *work = (u8 *)BR_ALLOC2(0x2a220, 0x40000);
     KwlnTask *task;
     KwlnTask *child;
     RwV2d viewWindow;
-    if (work == NULL) {
-        return NULL;
-    }
     sBrCard = work;
     BR_U32(work, 4) = 0;
     BR_U32(work, 0x14) = 0;
     task = kwlnTaskCreateWithAutoPriority(parent, 10, "battle result card",
                                           func_001f2300, func_001f2fd0, work);
-    if (task == NULL) {
-        BR_FREE(work);
-        sBrCard = NULL;
-        return NULL;
-    }
     child = kwlnTaskInitEx("battle result ground", 0x106f, 1, 2,
                            func_001f2f50, NULL, work);
     BR_U32(work, 0x0c) = (u32)child;
@@ -1131,10 +1122,8 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     BR_U32(work, 0x2a210) = 0;
     return task;
 }
-#pragma optimization_level 2
 
 // FUN_001f2300 NONMATCHING
-#pragma optimization_level 3
 void *func_001f2300(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
@@ -1474,7 +1463,6 @@ void *func_001f2300(KwlnTask *task)
     BR_U32(work, 4) &= ~3u;
     return KWLNTASK_CONTINUE;
 }
-#pragma optimization_level 2
 
 // FUN_001f2f50
 void *func_001f2f50(KwlnTask *task)
@@ -2259,7 +2247,6 @@ u32 func_001f4990(void)
 }
 
 // FUN_001f4a00 NONMATCHING
-#pragma optimization_level 3
 void func_001f4a00(void)
 {
     u8 *work = sBrCard;
@@ -2429,7 +2416,6 @@ void func_001f4a00(void)
     func_0010a4e0(1, 0, 6, 1);
     BR_U32(work, 8) = 7;
 }
-#pragma optimization_level 2
 
 // FUN_001f53a0
 void func_001f53a0(void)

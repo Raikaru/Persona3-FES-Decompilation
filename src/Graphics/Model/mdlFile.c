@@ -41336,7 +41336,6 @@ void FUN_00347d60(void)
 // FUN_00347F80
 
 
-#pragma optimization_level 3
 void FUN_00347f80(void)
 
 
@@ -41357,7 +41356,6 @@ void FUN_00347f80(void)
       ".word 0x27bd0010 ;"
       ".set reorder");
 }
-#pragma optimization_level 2
 
 
 

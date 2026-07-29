@@ -478,8 +478,6 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
 }
 // FUN_001d5220 NONMATCHING
 #pragma push
-#pragma optimization_level 3
-/* Removing this worsens FUN_001d5220 (nd1214 -> nd1269) - measured W161. */
 #pragma schedule on
 void* FUN_001d5220(KwlnTask* cameraTask)
 {

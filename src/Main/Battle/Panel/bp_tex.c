@@ -876,7 +876,6 @@ void func_0021dd60(void* destination, const u8* colors)
     BP_TEX_F32(destination, 0xec) = converted;
 }
 
-#pragma optimization_level 3
 // FUN_0021e170 NONMATCHING
 void func_0021e170(void* destination,
                    const f32* center,
@@ -929,7 +928,6 @@ void func_0021e170(void* destination,
     BP_TEX_F32(destination, 0xc0) = points[6];
     BP_TEX_F32(destination, 0xc4) = points[7];
 }
-#pragma optimization_level 2
 
 // FUN_0021e380
 void func_0021e380(void* destination, void* frameData, u32 mode)
