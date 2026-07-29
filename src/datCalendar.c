@@ -175,8 +175,8 @@ void clndDestroyTask(KwlnTask* clndTask);
 KwlnTask* func_0017fc70(KwlnTask* clndTask)
 {
     s32 eventIndex;
-    register KwlnTask* task = clndTask;
-    register KwlnTask* actionTask = NULL;
+    KwlnTask* task = clndTask;
+    KwlnTask* actionTask = NULL;
 
     if (datGetSkipToTarget() == 0)
     {
@@ -593,8 +593,8 @@ void func_00180220(void)
 KwlnTask* func_00180a20(KwlnTask* clndTask)
 {
     s32 eventIndex;
-    register KwlnTask* task;
-    register CalendarTaskWork* work;
+    KwlnTask* task;
+    CalendarTaskWork* work;
 
     task = clndTask;
     work = task->workData;
@@ -723,8 +723,8 @@ void func_00180e60(void)
 KwlnTask* func_00180ee0(KwlnTask* clndTask)
 {
     s32 eventIndex;
-    register KwlnTask* task = clndTask;
-    register KwlnTask* actionTask = NULL;
+    KwlnTask* task = clndTask;
+    KwlnTask* actionTask = NULL;
 
     H_Dbprt_FmtLog("calendar: morning");
     datSetFlag(0xa80, false);
@@ -824,8 +824,8 @@ extern const char D_005E3E70[];
 KwlnTask* func_00181310(KwlnTask* clndTask)
 {
     s32 eventIndex;
-    register KwlnTask* task = clndTask;
-    register KwlnTask* actionTask = NULL;
+    KwlnTask* task = clndTask;
+    KwlnTask* actionTask = NULL;
 
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
@@ -1034,7 +1034,7 @@ u32 func_0017db40(s16 daysSinceApr5)
 
 // Residual is limited to MWCC register coloring and branch layout; date and holiday logic matches retail.
 // FUN_0017DDF0 NONMATCHING
-u32 func_0017ddf0(register s16* monthOut, register s16* dayOut)
+u32 func_0017ddf0(s16* monthOut, s16* dayOut)
 {
     s16 month;
     s16 currentDay;
@@ -1343,9 +1343,9 @@ s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 {
     s32 dayAccumulator = 0;
     s32 m = CALENDAR_MONTH_APRIL;
-    register s32 monthEnd = CALENDAR_MONTH_MAX;
-    register s32 monthsInYear = CALENDAR_MONTH_DECEMBER;
-    register s32 firstMonth = CALENDAR_MONTH_JANUARY;
+    s32 monthEnd = CALENDAR_MONTH_MAX;
+    s32 monthsInYear = CALENDAR_MONTH_DECEMBER;
+    s32 firstMonth = CALENDAR_MONTH_JANUARY;
     s32 startMonth;
     startMonth = m;
 

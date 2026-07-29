@@ -102,7 +102,6 @@ void func_00357e30(void)
     );
 }
 
-#pragma optimization_level 2
 // FUN_00357ea0
 void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
 {
@@ -138,7 +137,6 @@ void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
         : "vf10", "memory"
     );
 }
-#pragma optimization_level 2
 
 // FUN_00357fd0. [0;16777215]
 u32 effMiscRand(EffRandState* state)

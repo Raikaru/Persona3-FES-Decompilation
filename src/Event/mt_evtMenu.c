@@ -1202,7 +1202,6 @@ extern u8 DAT_006a0000[];
 extern u8 DAT_006a0000_abs[];
 #pragma push
 #pragma opt_propagation off
-#pragma opt_rebuildconditionals off
 // FUN_0036F500
 
 
@@ -14830,8 +14829,6 @@ u32 FUN_003814d0(int param_1,int param_2,int param_3)
 }
 
 
-#pragma push
-#pragma opt_propagation off
 // FUN_00381540 NONMATCHING
 void FUN_00381540(int param_1,int param_2,u32 param_3,u8 *param_4)
 {
@@ -14926,7 +14923,6 @@ void FUN_00381540(int param_1,int param_2,u32 param_3,u8 *param_4)
     break;
   }
 }
-#pragma pop
 
 
 // FUN_003819B0 NONMATCHING
@@ -15638,9 +15634,6 @@ u32 FUN_003826f0(int param_1,int param_2,int param_3)
 }
 
 
-#pragma push
-#pragma opt_propagation off
-#pragma opt_rebuildconditionals off
 // FUN_00382760
 void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
 {
@@ -15664,7 +15657,6 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
     return;
   }
 }
-#pragma pop
 
 
 #pragma alias FUN_003b55b0_evt_f32 FUN_003b55b0
@@ -15905,8 +15897,6 @@ u32 FUN_00382c10(int param_1,int param_2,int param_3)
 }
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_00382C80
 void FUN_00382c80(int param_1,int param_2,int param_3,int param_4)
 {
@@ -15930,7 +15920,6 @@ void FUN_00382c80(int param_1,int param_2,int param_3,int param_4)
     return;
   }
 }
-#pragma pop
 
 
 // FUN_00382D60 NONMATCHING

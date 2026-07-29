@@ -1691,8 +1691,6 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
     FUN_00177c10(work->pcId, (s16)oldEquipment);
 }
 
-#pragma push
-#pragma optimization_level 2
 // FUN_00164920 NONMATCHING
 void* FUN_00164920(KwlnTask* task)
 {
@@ -1896,7 +1894,6 @@ void* FUN_00164920(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
-#pragma pop
 
 // FUN_001669B0
 void FUN_001669b0(KwlnTask* task)

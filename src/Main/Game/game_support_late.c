@@ -392,7 +392,7 @@ void* func_0018a9f0(KwlnTask* task)
     GsPackedDimensions dimensions;
     void* resource;
     u32 alpha;
-    register u8* work = (u8*)task->workData;
+    u8* work = (u8*)task->workData;
 
     switch (GS_U32(work, 0))
     {

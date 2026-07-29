@@ -408,7 +408,7 @@ LAB_003c84bc:
 
 u64 FUN_003c8550(u8 *param_1)
 {
-  register u8 *context;
+  u8 *context;
   int iVar5;
   int iVar6;
   u32 uVar1;
@@ -577,7 +577,7 @@ u64 FUN_003c89a0(void)
     u32 result;
     int *piVar2;
     int iVar4;
-    register int *pContext;
+    int *pContext;
 
     piVar2 = piGpffffb98c;
     if ((piVar2[1] & 1U) != 0) {
@@ -967,9 +967,6 @@ void FUN_003c8fa0(void)
 #define FUN_003c9460(...) ((u32 (*)(...))FUN_003c9460)(__VA_ARGS__)
 #define FUN_003c8fa0(...) ((void (*)(...))FUN_003c8fa0)(__VA_ARGS__)
 #undef FUN_003c9000
-#pragma push
-/* Removing this worsens FUN_003c9000 (nd10 -> nd72) - measured W161. */
-#pragma opt_rebuildconditionals off
 // FUN_003C9000 NONMATCHING
 
 
@@ -1021,7 +1018,6 @@ void FUN_003c9000(int param_4, int param_5, f32 param_1, u32 param_6,
   return;
 
 }
-#pragma pop
 #define FUN_003c9000(...) ((void (*)(...))FUN_003c9000)(__VA_ARGS__)
 #undef FUN_003c91b0
 // FUN_003C91B0

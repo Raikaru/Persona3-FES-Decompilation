@@ -4894,7 +4894,7 @@ void FUN_002b2eb0(int param_1, float *param_2)
     f32 result;
   } work;
   f32 initial;
-  register f32 ratio;
+  f32 ratio;
   f32 angle;
   f32 factor;
   f32 inverse;

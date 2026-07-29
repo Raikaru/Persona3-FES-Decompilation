@@ -337,7 +337,7 @@ KwlnTask* adminiCreateTask()
     s32 i;
     AdminiWork* admini;
     void* nullData;
-    register s32 invalidSeqId;
+    s32 invalidSeqId;
 
     if (kwlnTaskGetTaskByName("admini") != NULL)
     {

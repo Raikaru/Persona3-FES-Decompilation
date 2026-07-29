@@ -725,7 +725,6 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
     work->entryCount = recordCount;
 }
  
-#pragma optimization_level 2
 // Inline macro overrides: expand helpers to direct campDrawSprite calls.
 #undef campEquipmentDrawFixed
 #define campEquipmentDrawFixed(scale,alpha,frame,x,y) \
@@ -1013,7 +1012,7 @@ LAB_0013e694:
 void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alpha)
 
 {
-  register void* parent;
+  void* parent;
   CampPair origin;
   char textBuffer[272];
   char category;
@@ -1374,7 +1373,7 @@ LAB_0013fc20:
 
 void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 {
-    register void* parent;
+    void* parent;
     const char* textValue;
     u32 categoryMask;
     u32 color;
@@ -1570,7 +1569,7 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
 void FUN_001406d0(CampPair position, f32 texture,
                   CampEquipmentDetailWork* detail, s32 alpha)
 {
-  register void* parent;
+  void* parent;
   u32 packedValue;
   u32 inverseAlpha;
   const char* textValue;
@@ -1709,7 +1708,7 @@ void FUN_001406d0(CampPair position, f32 texture,
 void FUN_00140e30(CampPair position, f32 texture,
                   CampEquipmentDetailWork* detail, s32 alpha)
 {
-  register void* parent;
+  void* parent;
   u32 packedValue;
   u32 inverseAlpha;
   const char* textValue;
@@ -2523,7 +2522,7 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
 
 void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
 {
-    register void* parent;
+    void* parent;
     DatPersonaWork* persona;
     CampEquipmentMenuWork* menu = (CampEquipmentMenuWork*)workData;
     void* resourceRecord;

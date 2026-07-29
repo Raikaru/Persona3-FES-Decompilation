@@ -3355,8 +3355,6 @@ void func_00115de0(int unused0, int unused1, int unused2,
   return;
 
 }
-/* Removing this worsens FUN_00115f00 (nd1065 -> nd1085) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_00115F00 NONMATCHING
 
 
@@ -3743,7 +3741,6 @@ u32 func_00115f00(KwlnTask* param_1)
   return 0;
 
 }
-#pragma opt_loop_invariants off
 // FUN_001165C0
 
 
@@ -3893,8 +3890,6 @@ u32 func_001167c0(int param_1,u32 param_2)
   return *(u32 *)(idx + 0x68);
 
 }
-/* Removing this worsens FUN_001167f0 (nd846 -> nd822) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_001167F0 NONMATCHING
 
 
@@ -4189,7 +4184,6 @@ u32 func_001167f0(u32 param_1)
   return 0;
 
 }
-#pragma opt_loop_invariants off
 // FUN_00116CF0
 
 

@@ -73,7 +73,7 @@ void* H_Malloc(size_t size)
     HHeapAlloc* alloc;
     u32 i;
     HHeapAlloc* allocs;
-    register u32 count;
+    u32 count;
     u32 heapCursor;
     u32 allocEnd;
     s32 intr;

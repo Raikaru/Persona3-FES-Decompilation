@@ -1598,9 +1598,9 @@ void FUN_00425ba0(int param_1)
 
 {
 
-  register int object = param_1;
+  int object = param_1;
   {
-    register int iVar1;
+    int iVar1;
     for (iVar1 = 0; iVar1 < 6; iVar1 = iVar1 + 1) {
       if (((u32 *)DAT_0095bec0_abs)[iVar1] != 0) {
         mdlDestroy(((u32 *)DAT_0095bec0_abs)[iVar1]);
@@ -1608,7 +1608,7 @@ void FUN_00425ba0(int param_1)
     }
   }
   {
-    register int iVar1;
+    int iVar1;
     for (iVar1 = 0; iVar1 < 6; iVar1 = iVar1 + 1) {
       if (((u32 *)DAT_0095bea0_abs)[iVar1] != 0) {
         mdlDestroy(((u32 *)DAT_0095bea0_abs)[iVar1]);

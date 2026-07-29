@@ -2693,7 +2693,6 @@ reward_done:
 }
 
 // FUN_001f5b20 NONMATCHING
-#pragma optimization_level 3
 void *func_001f5b20(void)
 {
     u32 flags;
@@ -2964,7 +2963,6 @@ main_exit:
 final_exit:
     return KWLNTASK_CONTINUE;
 }
-#pragma optimization_level 2
 
 // FUN_001f64c0
 void func_001f64c0(void)

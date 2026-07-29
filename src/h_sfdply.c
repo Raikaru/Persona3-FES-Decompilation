@@ -445,7 +445,7 @@ static void H_SfdPlay_BeginStream(HSfd* work)
 // FUN_0010A860 NONMATCHING
 void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
-    register HSfd* work;
+    HSfd* work;
     u8* camera;
     u8* raster;
     u8 frameInfo[0x30];
@@ -468,7 +468,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
     f32 topBottom;
     void* framePixels;
     void (**setRenderState)(u32, u32);
-    register u8* config;
+    u8* config;
     work = (HSfd*)sfdPlayTask->workData;
 
     switch (work->state)

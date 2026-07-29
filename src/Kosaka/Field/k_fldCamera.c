@@ -168,7 +168,7 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwV3d cameraPosition;
     RwV3d target;
     RwV3d axis;
-    register RwV3d* axisPtr;
+    RwV3d* axisPtr;
     u64 axisXY;
     u8* targetBytes;
     u32 i;
@@ -246,7 +246,7 @@ void* func_001d5f90(KwlnTask* cameraRotationTask)
             u64 axisXY;
             u8* targetBytes;
             u32 i;
-            register RwV3d* axisPtr;
+            RwV3d* axisPtr;
 
             camera = kwlnGetMainCamera();
             cameraFrame = (RwFrame*)camera->object.object.parent;
@@ -289,7 +289,7 @@ void* func_001d5f90(KwlnTask* cameraRotationTask)
             u64 axisXY;
             u8* targetBytes;
             u32 i;
-            register RwV3d* axisPtr;
+            RwV3d* axisPtr;
 
             camera = kwlnGetMainCamera();
             cameraFrame = (RwFrame*)camera->object.object.parent;

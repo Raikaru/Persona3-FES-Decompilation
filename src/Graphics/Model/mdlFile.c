@@ -6105,9 +6105,9 @@ u64 FUN_00321ce0(void)
 
 u64 FUN_00321d40(void)
 {
-  register u32 *src;
-  register u32 *dst;
-  register int count;
+  u32 *src;
+  u32 *dst;
+  int count;
   u32 model;
   RwCamera *camera;
   u32 auStack_40[16];

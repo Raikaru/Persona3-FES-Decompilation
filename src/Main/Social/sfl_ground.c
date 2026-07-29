@@ -159,7 +159,7 @@ void func_0024a180(u32* work)
     }
 
     {
-        register const u32* const state = &D_00960090[0];
+        const u32* const state = &D_00960090[0];
 
         ((SflGroundRenderStateCallback)(void*)state[0])(9, 2);
         ((SflGroundRenderStateCallback)(void*)state[0])(0x14, 2);
@@ -1143,11 +1143,11 @@ void func_0023c3a0(void* destination)
     f32 cameraScale;
     f32 width;
     f32 height;
-    register f32 invWidth;
+    f32 invWidth;
     f32 rect[4];
     u8* base;
-    register s32 i;
-    register s32 j;
+    s32 i;
+    s32 j;
 
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
     viewport = sflResGetGroundRaster(1);
@@ -1271,8 +1271,8 @@ void func_0023c850(void* vertices, const SflGroundColor* color)
 void func_0023c8c0(void* vertices)
 {
     void* vertices_p;
-    register const u32* stateTable;
-    register const u32* drawTable;
+    const u32* stateTable;
+    const u32* drawTable;
 
     vertices_p = vertices;
     stateTable = D_00960090;
@@ -1496,10 +1496,10 @@ void func_0023d2a0(void)
     SflGroundViewport* viewport;
     f32 width;
     f32 height;
-    register f32 rect0;
-    register f32 rect1;
-    register f32 rect2;
-    register f32 rect3;
+    f32 rect0;
+    f32 rect1;
+    f32 rect2;
+    f32 rect3;
     f32 rect[4];
     s32 i;
     u32* particle;

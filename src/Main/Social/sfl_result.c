@@ -1226,7 +1226,6 @@ void func_001fa4f0(u32 param_1)
   return;
 
 }
-#pragma optimization_level 3
 // FUN_001FAEA0 NONMATCHING
 
 
@@ -1382,7 +1381,6 @@ u32 func_001faea0(void)
   return 1;
 
 }
-#pragma optimization_level 2
 
 
 // FUN_001fb130
