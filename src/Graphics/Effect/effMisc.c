@@ -249,6 +249,9 @@ void func_00358160(f32 angle)
 // FUN_003581f0 NONMATCHING
 void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
 {
+    f32 angle_p;
+    const RwV3d* axis_p;
+    RwMatrix* matrix_p;
     RwV3d normalizedAxis;
     f32 cosine;
     f32 sine;
@@ -256,8 +259,9 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     f32 y;
     f32 z;
 
-    cosine = cosf(angle);
-    sine = sinf(angle);
+    angle_p = angle, axis_p = axis, matrix_p = matrix;
+    cosine = cosf(angle_p);
+    sine = sinf(angle_p);
 
     __asm__ volatile (
         ".set noreorder                              \n"
@@ -271,7 +275,7 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
         "vmulq.xyz vf10, vf10, Q                    \n"
         ".set reorder"
         :
-        : "r" (axis)
+        : "r" (axis_p)
         : "vf2", "vf10", "ACC", "Q", "memory"
     );
     __asm__ volatile (
@@ -287,27 +291,27 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     y = normalizedAxis.y;
     z = normalizedAxis.z;
 
-    matrix->right.x = x * x + (1.0f - x * x) * cosine;
-    matrix->right.y = z * sine + x * y * (1.0f - cosine);
-    matrix->right.z = x * z * (1.0f - cosine) - y * sine;
-    matrix->flags = 0;
+    matrix_p->right.x = x * x + (1.0f - x * x) * cosine;
+    matrix_p->right.y = z * sine + x * y * (1.0f - cosine);
+    matrix_p->right.z = x * z * (1.0f - cosine) - y * sine;
+    matrix_p->flags = 0;
 
-    matrix->up.x = z * sine - x * y * (1.0f - cosine);
-    matrix->up.y = y * y + (1.0f - y * y) * cosine;
-    matrix->up.z = x * sine + y * z * (1.0f - cosine);
-    matrix->pad1 = 0;
+    matrix_p->up.x = z * sine - x * y * (1.0f - cosine);
+    matrix_p->up.y = y * y + (1.0f - y * y) * cosine;
+    matrix_p->up.z = x * sine + y * z * (1.0f - cosine);
+    matrix_p->pad1 = 0;
 
-    matrix->at.x = x * z * (1.0f - cosine) + y * sine;
-    matrix->at.y = y * z * (1.0f - cosine) - x * sine;
-    matrix->at.z = z * z + (1.0f - z * z) * cosine;
-    matrix->pad2 = 0;
+    matrix_p->at.x = x * z * (1.0f - cosine) + y * sine;
+    matrix_p->at.y = y * z * (1.0f - cosine) - x * sine;
+    matrix_p->at.z = z * z + (1.0f - z * z) * cosine;
+    matrix_p->pad2 = 0;
 
     __asm__ volatile (
         ".set noreorder          \n"
         "sqc2 vf0, 0x30(%0)       \n"
         ".set reorder"
         :
-        : "r" (matrix)
+        : "r" (matrix_p)
         : "memory"
     );
 }

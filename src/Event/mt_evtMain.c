@@ -12911,7 +12911,7 @@ void FUN_0036d030(int param_1)
 }
 
 
-// FUN_0036D320 NONMATCHING
+// FUN_0036D320
 
 
 bool FUN_0036d320(int param_1)
@@ -12922,9 +12922,19 @@ bool FUN_0036d320(int param_1)
   iVar1 = *(int *)(param_1 + 0xd4);
   if (iVar1 == 0x1a) {
     iVar1 = *(int *)(param_1 + 0x16c);
-    if ((((((iVar1 == 0xd) || (iVar1 == 0xc)) || (iVar1 == 10)) || ((iVar1 == 9 || (iVar1 == 8))))
-        || ((iVar1 == 6 || ((bVar2 = true, iVar1 == 1 || (iVar1 == 0)))))) || (iVar1 == 4)) {
-      bVar2 = false;
+    switch (iVar1) {
+    case 4:
+    case 0:
+    case 1:
+    case 6:
+    case 8:
+    case 9:
+    case 10:
+    case 0xc:
+    case 0xd:
+      return false;
+    default:
+      return true;
     }
   }
   else if (iVar1 == 0x17) {

@@ -1833,9 +1833,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
     }
 
     if (*(int *)(param_1[4] + iVar19 * 0x10) != 0x1389) {
-
-      FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)&fStack_210,(RwMatrix*)pfVar16);
-
+      goto non_special_matrix;
     }
 
     else {
@@ -2539,6 +2537,10 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
       }
 
     }
+    goto special_matrix_done;
+non_special_matrix:
+    FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)&fStack_210,(RwMatrix*)pfVar16);
+special_matrix_done:
 
     iVar9 = *(int *)(uVar18 + 0xc);
 

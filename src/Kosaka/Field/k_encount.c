@@ -466,16 +466,16 @@ ec_check:
 }
 
 
-// FUN_001d7c60 NONMATCHING
+// FUN_001d7c60
 FldUnit* func_001d7c60(KwlnTask* task, s32 flatIndex)
 {
+    s32 unitIndex;
     s32 flatUnitIndex;
     s32 pcIndex;
     s32 pcCount;
     s32 ecIndex;
     s32 ecCount;
     EncounterWork* work;
-    s32 unitIndex;
     s32 unitOffset;
     u32 ecOffset;
     u8* ecBase;

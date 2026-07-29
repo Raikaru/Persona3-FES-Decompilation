@@ -4900,7 +4900,7 @@ u8 FUN_00308fd0(u16 *param_1,u16 param_2)
 
 
 
-// FUN_00309080 NONMATCHING
+// FUN_00309080
 u32 FUN_00309080(u16 *param_1,u8 param_2)
 
 {
@@ -4930,7 +4930,9 @@ u32 FUN_00309080(u16 *param_1,u8 param_2)
   }
   else {
     uVar1 = param_1[1];
-    if (10 < uVar1) {
+    if (uVar1 < 11) {
+    }
+    else {
       FUN_0019d3f0((u32)D_0069aa80, 0x1116);
     }
     uVar2 = (s16)FUN_0016cb80((s16)uVar1,0);
