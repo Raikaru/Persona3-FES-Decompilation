@@ -1310,19 +1310,12 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
   float fVar5;
 
   u32 uStack_28;
-
   u32 uStack_24;
-
   u32 uStack_20;
-
   u32 uStack_1c;
-
   float fStack_18;
-
   float fStack_14;
-
   float fStack_10;
-
   float fStack_c;
 
   u32 uStack_4;
@@ -1348,19 +1341,12 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
   uVar1 = FUN_00531230(uVar2,uVar1);
 
   fStack_18 = (float)FUN_005318a0(uVar1);
-
   fStack_14 = fVar5 * 164.0f;
-
   fStack_10 = 320.0f - fStack_18 / 2.0f;
-
   fStack_c = 178.0f - fStack_14 / 2.0f;
-
   uStack_20 = 0;
-
   uStack_1c = 0;
-
   uStack_28 = 0x3f800000;
-
   uStack_24 = 0x3f240000;
 
   fVar4 = (1.0f - fVar4) * 128.0f;
@@ -1380,7 +1366,6 @@ void FUN_0039ffc0(int param_1,float *param_2,int param_3,u32 param_4)
   ((u8 *)&uStack_4)[3] = uVar3;
 
   FUN_00388000(0x40800000,*(u32 *)(param_1 + 0xac),&fStack_10,&fStack_18,&uStack_20,
-
                &uStack_28,param_4,&uStack_4,0);
 
   *param_2 = DAT_007caf30 * (float)param_3;

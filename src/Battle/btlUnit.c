@@ -5645,10 +5645,7 @@ void FUN_002891e0(void)
 
   int aiStack_40 [15];
 
-  u8 uStack_4;
-  u8 uStack_3;
-  u8 uStack_2;
-  u8 uStack_1;
+  RwRGBA clearColor;
 
   
 
@@ -5815,15 +5812,12 @@ void FUN_002891e0(void)
 
           FUN_003294d0();
 
-          uStack_4 = 0;
+          clearColor.r = 0;
+          clearColor.g = 0;
+          clearColor.b = 0;
+          clearColor.a = 0xff;
 
-          uStack_3 = 0;
-
-          uStack_2 = 0;
-
-          uStack_1 = 0xff;
-
-          FUN_00358460(&uStack_4,0);
+          FUN_00358460(&clearColor,0);
 
           FUN_00329550();
 

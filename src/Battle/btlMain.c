@@ -2590,19 +2590,19 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
 {
 
-  u64 uVar1;
 
-  u32 uVar2;
+  f32 lightValueA;
 
   u32 uVar3;
+
+  f32 lightValueB;
 
   u32 uVar4;
 
   int iVar5;
 
-  u32 *puVar6;
-
-  float *pfVar7;
+  u_long128 *matrixDst;
+  u_long128 *matrixSrc;
 
   BtlMainColorWork *colorWork;
 
@@ -2622,39 +2622,9 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
   float fVar16;
 
-  float fStack_50;
+  RwRGBAReal color;
 
-  float fStack_4c;
-
-  float fStack_48;
-
-  u32 uStack_44;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  u32 uStack_34;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  RwMatrix matrix;
 
   
 
@@ -2754,64 +2724,29 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
       fVar9 = fVar13 * fVar9;
 
-      fStack_40 = 1.0f - (fVar14 * fVar11 + fVar13 * fVar9);
-
-      fStack_3c = fVar15 * fVar11 + fVar9 * fVar12;
-
-      fStack_38 = fVar13 * fVar10 - fVar11 * fVar12;
-
-      fStack_30 = fVar15 * fVar11 - fVar9 * fVar12;
-
-      fStack_2c = 1.0f - (fVar13 * fVar9 + fVar15 * fVar10);
-
-      fStack_28 = fVar14 * fVar9 + fVar10 * fVar12;
-
-      fStack_20 = fVar13 * fVar10 + fVar11 * fVar12;
-
-      fStack_1c = fVar14 * fVar9 - fVar10 * fVar12;
-
-      fStack_18 = 1.0f - (fVar15 * fVar10 + fVar14 * fVar11);
-      puVar6 = (u32*)&DAT_00957270;
-      uStack_10 = 0;
-
-      uStack_c = 0;
-
-      uStack_8 = 0;
-
-      uStack_34 = 3;
-
-      pfVar7 = &fStack_40;
-
-      puVar6 = (u32*)&DAT_00957270;
+      matrix.right.x = 1.0f - (fVar14 * fVar11 + fVar13 * fVar9);
+      matrix.right.y = fVar15 * fVar11 + fVar9 * fVar12;
+      matrix.right.z = fVar13 * fVar10 - fVar11 * fVar12;
+      matrix.up.x = fVar15 * fVar11 - fVar9 * fVar12;
+      matrix.up.y = 1.0f - (fVar13 * fVar9 + fVar15 * fVar10);
+      matrix.up.z = fVar14 * fVar9 + fVar10 * fVar12;
+      matrix.at.x = fVar13 * fVar10 + fVar11 * fVar12;
+      matrix.at.y = fVar14 * fVar9 - fVar10 * fVar12;
+      matrix.at.z = 1.0f - (fVar15 * fVar10 + fVar14 * fVar11);
+      matrix.pos.x = 0.0f;
+      matrix.pos.y = 0.0f;
+      matrix.pos.z = 0.0f;
+      matrix.flags = 3;
+      matrixSrc = (u_long128*)&matrix;
+      matrixDst = (u_long128*)&DAT_00957270;
 
       iVar5 = 4;
 
       do {
-
-        uVar1 = *(u64 *)pfVar7;
-
-        fVar9 = pfVar7[2];
-
-        fVar10 = pfVar7[3];
-
-        pfVar7 = pfVar7 + 4;
-
+        *matrixDst++ = *matrixSrc++;
         iVar5 = iVar5 + -1;
-
-        *puVar6 = (int)uVar1;
-
-        puVar6[1] = (int)((u32)uVar1 >> 0x20);
-
-        puVar6[2] = fVar9;
-
-        puVar6[3] = fVar10;
-
-        uVar2 = DAT_007cafbc;
-
-        uVar3 = DAT_007caee8;
-
-        puVar6 = puVar6 + 4;
-
+        lightValueA = DAT_007cafbc;
+        lightValueB = DAT_007caee8;
       } while (0 < iVar5);
 
       DAT_009572d0 = 1;
@@ -2850,9 +2785,9 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
               }
 
-              *(u32 *)(*(int *)(iVar5 + 0x9f4) + 0x3ac) = uVar2;
+              *(f32 *)(*(int *)(iVar5 + 0x9f4) + 0x3ac) = lightValueA;
 
-              *(u32 *)(*(int *)(iVar5 + 0x9f4) + 0x3b0) = uVar3;
+              *(f32 *)(*(int *)(iVar5 + 0x9f4) + 0x3b0) = lightValueB;
       iVar5 = (int)(uintptr_t)DAT_007ce3ec;
             }
 
@@ -2872,23 +2807,15 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
       fVar16 = 1.0f - fVar15;
 
-      fStack_50 = colorWork->unk_10 * fVar16 + colorWork->r * fVar15;
-
-      fStack_4c = colorWork->unk_14 * fVar16 + colorWork->g * fVar15;
-
-      fStack_48 = colorWork->b * fVar15 + colorWork->unk_18 * fVar16;
-
-      uStack_44 = 0x3f800000;
-
-      *(float *)(DAT_007ce3ec + 0x224) = fStack_50;
-
-      *(float *)(iVar5 + 0x228) = fStack_4c;
-
-      *(float *)(iVar5 + 0x22c) = fStack_48;
-
-      *(u32 *)(iVar5 + 0x230) = 0x3f800000;
-
-      FUN_0019f8f0(&fStack_50);
+      color.r = colorWork->unk_10 * fVar16 + colorWork->r * fVar15;
+      color.g = colorWork->unk_14 * fVar16 + colorWork->g * fVar15;
+      color.b = colorWork->b * fVar15 + colorWork->unk_18 * fVar16;
+      color.a = 1.0f;
+      *(float *)(DAT_007ce3ec + 0x224) = color.r;
+      *(float *)(iVar5 + 0x228) = color.g;
+      *(float *)(iVar5 + 0x22c) = color.b;
+      *(float *)(iVar5 + 0x230) = color.a;
+      FUN_0019f8f0(&color);
 
       fVar10 = colorWork->unk_34;
 
