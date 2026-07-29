@@ -1038,12 +1038,11 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
                           color & 0xff, x - 27.0f, y + 2.0f, alpha);
             func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0x80,
                           color & 0xff, x, y, alpha);
-        } else {
-            func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0,
-                          color & 0xff, x - 27.0f, y + 2.0f, alpha);
-            func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0,
-                          color & 0xff, x, y, alpha);
         }
+        func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0,
+                      color & 0xff, x - 27.0f, y + 2.0f, alpha);
+        func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0,
+                      color & 0xff, x, y, alpha);
     }
 
     if (func_0018b700((u8*)iGpffffb25c + 0x2a8) != 0) {
