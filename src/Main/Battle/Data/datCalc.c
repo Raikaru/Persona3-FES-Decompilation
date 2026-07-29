@@ -1097,29 +1097,31 @@ s8 FUN_00300f60(int param_1,u32 param_2)
 }
 
 // FUN_00301030 NONMATCHING
-void FUN_00301030(int param_1,u8 param_2,s8 param_3)
+void FUN_00301030(int param_1, u8 param_2, s8 param_3)
 {
-  int iVar1;
-  
-  if (0x14 < (param_2 & 0xff)) {
+  u8 index;
+  u16 offset;
+  u8 value;
+
+  index = param_2;
+  if (!(index < 0x15)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x438);
   }
-  if (('\a' < (char)param_3) || ((char)param_3 < -7)) {
+  if (('\a' < param_3) || (param_3 < -7)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x439);
   }
-  iVar1 = (int)(param_2 & 0xff) >> 1;
-  if ((char)param_3 < '\0') {
-    param_3 = param_3 + 0xf;
+  offset = index >> 1;
+  if (param_3 < 0) {
+    param_3 += 0xf;
   }
-  if ((param_2 & 1) != 0) {
-    iVar1 = iVar1 + param_1;
-    *(u8 *)(iVar1 + 0x1c) = *(u8 *)(iVar1 + 0x1c) & 0xf | param_3 << 4;
+  if (index & 1) {
+    value = *(u8 *)(offset + param_1 + 0x1c);
+    *(u8 *)(offset + param_1 + 0x1c) = value & 0xf | (param_3 & 0xf) << 4;
   }
   else {
-    iVar1 = iVar1 + param_1;
-    *(u8 *)(iVar1 + 0x1c) = *(u8 *)(iVar1 + 0x1c) & 0xf0 | param_3 & 0xf;
+    value = *(u8 *)(offset + param_1 + 0x1c);
+    *(u8 *)(offset + param_1 + 0x1c) = value & 0xf0 | param_3 & 0xf;
   }
-  return;
 }
 
 
@@ -1245,7 +1247,7 @@ u8 FUN_00301230_narrow(u8 *param_1,u8 param_2,s8 param_3)
 void FUN_00301540(int param_1,u32 param_2)
 
 {
-  int iVar1;
+  u16 iVar1;
   s32 uVar2;
   
   uVar2 = param_2 & 0xff;

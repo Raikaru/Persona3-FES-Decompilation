@@ -4704,10 +4704,10 @@ void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3)
       if (*(int **)(iVar5 + 0x50) == piVar3) goto LAB_00320524;
 
     }
-
     iVar5 = 0;
 
 LAB_00320524:
+
 
     if (iVar5 != 0) {
 

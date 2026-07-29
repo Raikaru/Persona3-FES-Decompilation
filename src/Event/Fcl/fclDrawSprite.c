@@ -660,7 +660,7 @@ u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4,
 
 }
 
-// FUN_0040EEF0 NONMATCHING
+// FUN_0040EEF0
 
 
 void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
@@ -676,11 +676,9 @@ void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
 
   u32 maestro;
 
-  int iVar3;
-
-  u32 *puVar4;
-
   u32 *puVar5;
+  u32 *puVar4;
+  int iVar3;
 
   u32 auStack_20 [8];
 

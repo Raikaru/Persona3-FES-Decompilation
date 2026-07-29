@@ -164,15 +164,6 @@ static u32 bit_mask(s32 value)
     return 1u << (value & 31);
 }
 
-#define SAVE_CHUNK(cursor, id_value, chunk_size, source) \
-    do { \
-        id = (id_value); \
-        FUN_00521250((cursor), &id, 4); \
-        size = (chunk_size); \
-        FUN_00521250((cursor) + 4, &size, 4); \
-        FUN_00521250((cursor) + 8, (source), size); \
-        (cursor) += size + 8; \
-    } while (0)
 #define SAVE_AT(base, offset, id_value, chunk_size, source) \
     do { \
         id = (id_value); \
@@ -206,6 +197,7 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     u32 today;
     u32 month;
     u32 day;
+    s32 resultSize;
 
     U32(0x0083a6ec) = ((u32*)D_00960184_abs)[0];
     U32(0x0083a6f0) = ((u32*)D_00960184_abs)[1];
@@ -282,33 +274,34 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     {
         u32 base = 0x100 + i * 0x100;
         u32 sourceAddress = 0x00834010 + i * 0x364;
-        SAVE_CHUNK(cursor, base, 4, PTR8(sourceAddress));
-        SAVE_CHUNK(cursor, base + 1, 0x50, PTR8(sourceAddress + 4));
-        SAVE_CHUNK(cursor, base + 2, 8, PTR8(sourceAddress + 0x54));
-        SAVE_CHUNK(cursor, base + 3, 0x50, PTR8(sourceAddress + 0x5c));
-        SAVE_CHUNK(cursor, base + 4, 0x30, PTR8(sourceAddress + 0xac));
-        SAVE_CHUNK(cursor, base + 5, 0x34, PTR8(sourceAddress + 0xdc));
-        SAVE_CHUNK(cursor, base + 6, 0x10, PTR8(sourceAddress + 0x110));
-        SAVE_CHUNK(cursor, base + 7, 0x10, PTR8(sourceAddress + 0x120));
-        SAVE_CHUNK(cursor, base + 8, 0x50, PTR8(sourceAddress + 0x130));
-        SAVE_CHUNK(cursor, base + 9, 0x190, PTR8(sourceAddress + 0x180));
-        SAVE_CHUNK(cursor, base + 10, 0x50, PTR8(sourceAddress + 0x310));
-        SAVE_CHUNK(cursor, base + 11, 4, PTR8(sourceAddress + 0x360));
+        SAVE_AT(cursor, 0, base, 4, PTR8(sourceAddress));
+        SAVE_AT(cursor, 0x0c, base + 1, 0x50, PTR8(sourceAddress + 4));
+        SAVE_AT(cursor, 0x64, base + 2, 8, PTR8(sourceAddress + 0x54));
+        SAVE_AT(cursor, 0x74, base + 3, 0x50, PTR8(sourceAddress + 0x5c));
+        SAVE_AT(cursor, 0xcc, base + 4, 0x30, PTR8(sourceAddress + 0xac));
+        SAVE_AT(cursor, 0x104, base + 5, 0x34, PTR8(sourceAddress + 0xdc));
+        SAVE_AT(cursor, 0x140, base + 6, 0x10, PTR8(sourceAddress + 0x110));
+        SAVE_AT(cursor, 0x158, base + 7, 0x10, PTR8(sourceAddress + 0x120));
+        SAVE_AT(cursor, 0x170, base + 8, 0x50, PTR8(sourceAddress + 0x130));
+        SAVE_AT(cursor, 0x1c8, base + 9, 0x190, PTR8(sourceAddress + 0x180));
+        SAVE_AT(cursor, 0x360, base + 10, 0x50, PTR8(sourceAddress + 0x310));
+        SAVE_AT(cursor, 0x3b8, base + 11, 4, PTR8(sourceAddress + 0x360));
+        cursor += 0x3c4;
         chunkOffset += 0x3c4;
     }
-    SAVE_CHUNK(cursor, 0x1000, 400, PTR8(0x00833e80));
-    SAVE_CHUNK(cursor, 0x1001, 600, PTR8(0x00833c20));
+    SAVE_AT(cursor, 0, 0x1000, 400, PTR8(0x00833e80));
+    SAVE_AT(cursor, 0x198, 0x1001, 600, PTR8(0x00833c20));
     checksum = 0;
     for (i = 0; i < chunkOffset + 0x3c0; i++)
         checksum = (u8)(checksum + buffer[0x38 + i]);
-    SAVE_CHUNK(cursor, 0x2000, 1, &checksum);
+    SAVE_AT(cursor, 0x3f8, 0x2000, 1, &checksum);
     {
         u32 end = 0xffffffff;
-        memcpy(cursor, &end, 4);
-        cursor += 4;
+        memcpy(cursor + 0x401, &end, 4);
     }
-    if (saveSize != NULL) *saveSize = (s32)(cursor - buffer);
-    printf("save image size %d\n", (s32)(cursor - buffer));
+    resultSize = (s32)(cursor + 0x405 - buffer);
+    *saveSize = resultSize;
+    printf("save image size %d\n", resultSize);
     return buffer;
 }
 

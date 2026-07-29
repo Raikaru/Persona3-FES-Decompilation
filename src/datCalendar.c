@@ -235,7 +235,6 @@ u32 func_0017fd30(void)
 void func_0017fe10(KwlnTask* clndTask)
 {
     CalendarDateTable* table;
-    const u8* record;
     s32 i;
     s32 day;
     s32 month;
@@ -273,21 +272,22 @@ void func_0017fe10(KwlnTask* clndTask)
 
     for (index = 0; index < table->total; index++)
     {
-        if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) ==
-                table->records[index * 6] &&
-            clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5()) ==
-                table->records[index * 6 + 1])
+        month = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+        if (month == table->records[index * 6])
         {
-            record = table->records + index * 6;
-            flag = *(const u16*)(record + 2);
-            if (flag != 0)
+            day = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+            if (day == table->records[index * 6 + 1])
             {
-                datSetFlag(flag, true);
-            }
-            flag = *(const u16*)(record + 4);
-            if (flag != 0)
-            {
-                datSetFlag(flag, false);
+                flag = *(const u16*)(table->records + index * 6 + 2);
+                if (flag != 0)
+                {
+                    datSetFlag(flag, true);
+                }
+                flag = *(const u16*)(table->records + index * 6 + 4);
+                if (flag != 0)
+                {
+                    datSetFlag(flag, false);
+                }
             }
         }
     }
