@@ -4201,6 +4201,7 @@ u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float pa
   else {
     *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data1 + 4);
   }
+  *(float *)&DAT_007ce530 = param_1;
   fVar1 = *(float *)&DAT_007ce534;
   uVar2 = FUN_0031f740(param_3,param_4);
   if (uVar2 < *param_4 - 1U) {
@@ -8124,9 +8125,9 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
   int iVar4;
 
-  short *psVar5;
+  const u16 *psVar5;
 
-  int sVar6;
+  u16 sVar6;
 
   int lVar7;
 
@@ -8160,7 +8161,7 @@ int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5)
 
       for (iVar8 = 0; iVar8 < iVar3 * 6; iVar8 = iVar8 + 3) {
 
-        psVar5 = (short *)(param_3 + iVar8 * 2);
+        psVar5 = (const u16 *)(param_3 + iVar8 * 2);
 
         FUN_00493210(iVar1,iVar9,sVar6 + *psVar5,sVar6 + psVar5[1],sVar6 + psVar5[2]);
 
@@ -36184,6 +36185,7 @@ u32 FUN_00342130(int param_1)
     uVar3 = FUN_00341f10(uVar1 & 0xffff,uVar2);
 
     iVar4 = (uVar1 & 0xffff) * 0x1c;
+    uVar2 = DAT_0069c850[uVar1 & 0xffff].callback1(uVar2,0);
 
     *(u32 *)((int)uVar3 + 0x3c) = uVar2;
 

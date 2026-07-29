@@ -428,7 +428,6 @@ void bsaMain00210d90(BsaWork* work)
     u32 image;
     u32 resource;
     f32 alpha;
-    f32 alpha255;
     f32 slide;
     f32 iconAlpha;
     f32 x;
@@ -450,7 +449,7 @@ void bsaMain00210d90(BsaWork* work)
     slide = 0.0f;
     iconAlpha = 1.0f;
     bsaTransition(p, &alpha, &slide, &iconAlpha);
-    alpha255 = alpha * 255.0f;
+    #define alpha255 (alpha * 255.0f)
     base = (p[0] == 0) ? 180.0f : 0.0f;
 
     image = func_0021cca0(table2, 0x1f);
@@ -771,6 +770,7 @@ void bsaMain00210d90(BsaWork* work)
             func_0021dd60(p + i * 0x80 + 0x25ec, fill);
         }
     }
+    #undef alpha255
 }
 
 // FUN_00213E80 NONMATCHING
