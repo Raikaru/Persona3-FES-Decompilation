@@ -886,7 +886,6 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
     u8* cameraFrame;
     RwMatrixTolerance tolerance;
     RwMatrix* matrix;
-    f32 clearDepth;
 
 
     memset(&sField, 0, 0x1148);
@@ -928,7 +927,6 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
         ROOT_U32(workData, 0) = 1;
     }
 
-    clearDepth = *(f32*)(void*)0x0067f5c0;
     camera = kwlnGetMainCamera();
     cameraFrame = (u8*)camera->object.object.parent;
     func_004cb930(cameraFrame);
@@ -936,7 +934,7 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
     cameraFrame = (u8*)camera->object.object.parent;
     *(f32*)(cameraFrame + 0x40) = *(f32*)(void*)0x0067f5b8;
     *(f32*)(cameraFrame + 0x44) = *(f32*)(void*)0x0067f5bc;
-    *(f32*)(cameraFrame + 0x48) = clearDepth;
+    *(f32*)(cameraFrame + 0x48) = *(f32*)(void*)0x0067f5c0;
     RwEngineGetMatrixTolerances(&tolerance);
     camera = kwlnGetMainCamera();
     matrix = (RwMatrix*)((u8*)camera->object.object.parent + 0x10);
