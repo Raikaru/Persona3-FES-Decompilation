@@ -299,9 +299,13 @@ void FUN_003f55b0(int param_1,int param_2,int param_3,int param_4,int param_5, u
 void FUN_003f55b0_i(int,int,int,int,int,int);
 void FUN_003f5830(int param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
 void FUN_003f5ab0(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
+#pragma alias FUN_003f5ab0_i FUN_003f5ab0
+void FUN_003f5ab0_i(int,int,int,int,int);
 void FUN_003f5d10(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
 void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5);
+#pragma alias FUN_003f61d0_i FUN_003f61d0
+void FUN_003f61d0_i(int,int,int,int,int);
 void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5, int param_6);
 void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5);
@@ -3580,7 +3584,7 @@ void FUN_003f3fc0(int param_1,int param_2,u32 param_3,int param_4)
 
   u32 uVar1;
 
-  short sVar2;
+  int sVar2;
 
   u32 uVar3;
 
@@ -3647,7 +3651,7 @@ void FUN_003f3fc0(int param_1,int param_2,u32 param_3,int param_4)
 
     RpSkyRenderStateSet(3,0x7000d);
 
-    FUN_0040e3c0(1.0f,0,0,((int)uVar8 * (int)sVar2) / 0xff & 0xff,0x23,0);
+    FUN_0040e3c0_f32(1.0f,0,0,((int)uVar8 * (int)sVar2) / 0xff & 0xff,0x23,0);
 
     RpSkyRenderStateSet(2,0x44);
 
@@ -3675,11 +3679,11 @@ void FUN_003f3fc0(int param_1,int param_2,u32 param_3,int param_4)
 
   FUN_003f7730(param_1 - 0x15,param_2 + 0x8b,param_3,param_4,uVar3);
   if (*(short *)(iVar4 + 6) != -1) {
-    FUN_003f61d0(0x15d,0xe0,param_3,param_4,uVar3);
+    FUN_003f61d0_i(0x15d,0xe0,param_3,param_4,uVar3);
     FUN_003f7a80(0x161,0x133,param_3,param_4,uVar3);
   }
   else {
-    FUN_003f5ab0(0x161,0xe0,param_3,param_4,uVar3);
+    FUN_003f5ab0_i(0x161,0xe0,param_3,param_4,uVar3);
     FUN_003f7a80(0x161,0x130,param_3,param_4,uVar3);
   }
 
@@ -12046,7 +12050,7 @@ int * FUN_003ffe60(int param_1)
 
   FUN_003c5e20(uVar7,uVar12);
 
-  FUN_003c5ee0(uVar7,(u64)FUN_00400b90);
+  FUN_003c5ee0(uVar7,(u32)FUN_00400b90);
 
   *(u16 *)(*(int *)(iVar9 + 0x24) + 6) = 10;
 
@@ -16405,7 +16409,6 @@ LAB_004062e0:
 
     }
 
-    if (lVar7 != 0) goto LAB_004062e0;
 
     iVar6 = 3;
 
@@ -16451,7 +16454,6 @@ LAB_004062e0:
 
 LAB_00406468:
 
-  FUN_0040e3c0(0,param_1,param_2,param_3 & 0xff,iVar11 + 0x44,0);
 
   FUN_0040e3c0(0,param_1,param_2,param_3 & 0xff,0x4e,0);
 

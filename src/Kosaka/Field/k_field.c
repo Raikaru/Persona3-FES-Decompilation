@@ -820,10 +820,10 @@ void* func_001b9480(KwlnTask* fldRootTask)
 // FUN_001ba3d0 NONMATCHING
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
-    u8* work;
+    FldRootWork* work;
     s32 nextSeq;
 
-    work = (u8*)fldRootTask->workData;
+    work = (FldRootWork*)fldRootTask->workData;
     if (ROOT_U32(work, 0x44) != 0)
     {
         clnd00187ea0((void*)ROOT_U32(work, 0x44));
@@ -834,7 +834,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     func_003c8f40();
     func_00109170();
     func_00109e30(4, 0);
-    if ((ROOT_U16(work, 0x10) == 4 && ROOT_U16(work, 0x12) == 10) ||
+    if ((work->majorId == 4 && work->minorId == 10) ||
         FIELD_U32(0x007ce26c) != 0)
     {
         func_001cd8e0();
@@ -854,13 +854,13 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     {
         MT_Scene_Destroy();
     }
-    if ((ROOT_U16(work, 0x10) == 4 && ROOT_U16(work, 0x12) == 10) ||
+    if ((work->majorId == 4 && work->minorId == 10) ||
         FIELD_U32(0x007ce26c) != 0)
     {
         MT_Scene_Destroy();
         FIELD_U32(0x007ce26c) = 0;
     }
-    if (ROOT_U16(work, 0x10) > 0x1d && ROOT_U16(work, 0x10) < 0x28 &&
+    if (work->majorId > 0x1d && work->majorId < 0x28 &&
         K_FldDungeon_GetCurrentFloor() == 0)
     {
         func_001c07f0();
@@ -1327,6 +1327,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
 {
     u8* fieldRoot;
     u8* fieldCell;
+    FieldDungeonCell* dungeon;
     u8* source;
     u8* roomCopy;
     u8* records;
@@ -1355,51 +1356,43 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     colOffset = (u32)x * 0x10;
     rowOffset = (u32)y * 0x100;
 
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    if (fieldCell[0x48] == 0)
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
+    if (dungeon->occupied == 0)
     {
         return;
     }
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    if (fieldCell[0x49] == 0)
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
+    if (dungeon->placed == 0)
     {
         return;
     }
 
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    if ((u32)x + fieldCell[0x4f] - 1 >= 0x10)
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
+    if ((u32)x + dungeon->width - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x139);
     }
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    if ((u32)y + fieldCell[0x50] - 1 >= 0x10)
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
+    if ((u32)y + dungeon->height - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x13a);
     }
 
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
     origin.x = (f32)x * 800.0f +
-               (f32)(fieldCell[0x4f] - 1) * 400.0f;
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    origin.y = (f32)(s8)fieldCell[0x52] * 300.0f;
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
+               (f32)(dungeon->width - 1) * 400.0f;
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
+    origin.y = (f32)dungeon->elevation * 300.0f;
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
     origin.z = (f32)y * 800.0f +
-               (f32)(fieldCell[0x50] - 1) * 400.0f;
+               (f32)(dungeon->height - 1) * 400.0f;
 
     fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    sourceIndex = fieldCell[0x4a];
+    dungeon = &((Field*)fieldRoot)->dungeonCells[y][x];
+    sourceIndex = dungeon->patternId;
     source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    direction = fieldCell[0x4e];
+    dungeon = &K_Field_Get()->dungeonCells[y][x];
+    direction = dungeon->direction;
     roomCopy = (u8*)func_001b5380((u32*)source, &origin, (direction + 2) & 3);
     roomResId = func_003b6790(patternId, roomCopy);
     sceneResource = (u8*)MT_Scene_GetRes(roomResId);

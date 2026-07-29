@@ -773,7 +773,7 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4, int param
 void FUN_0038b550(int param_1,u32 *param_2,u32 *param_3,u32 *param_4);
 void FUN_0038b600(u32 *param_1,u32 *param_2);
 void FUN_0038b6e0(int param_1,int param_2,int param_3);
-void FUN_0038b960(int param_1,long param_2,int param_3);
+void FUN_0038b960(int param_1,int param_2,int param_3);
 void FUN_0038bc70(int param_1,int param_2,int param_3);
 void FUN_0038c460(int param_1,int param_2,u8 **param_3,u32 *param_4);
 void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4, u32 *param_5,u32 *param_6);
@@ -4547,7 +4547,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 // FUN_0038B960 NONMATCHING
 
 
-void FUN_0038b960(int param_1,long param_2,int param_3)
+void FUN_0038b960(int param_1,int param_2,int param_3)
 
 
 
@@ -4559,7 +4559,7 @@ void FUN_0038b960(int param_1,long param_2,int param_3)
 
   int iVar3;
 
-  long lVar4;
+  int lVar4;
 
   int lVar5;
 
@@ -4613,7 +4613,7 @@ void FUN_0038b960(int param_1,long param_2,int param_3)
 
           }
 
-          if ((((long)(u32)*puVar6 < param_2) && (param_2 <= lVar4)) && (lVar4 != 0)) {
+          if (((*puVar6 < param_2) && (param_2 <= lVar4)) && (lVar4 != 0)) {
 
             iVar3 = *piVar7;
 
@@ -4673,7 +4673,7 @@ void FUN_0038b960(int param_1,long param_2,int param_3)
 
           uVar2 = puVar6[1];
 
-          if (((uVar2 != 0) && ((long)(u32)*puVar6 < param_2)) &&
+          if (((uVar2 != 0) && (*puVar6 < param_2)) &&
 
              (param_2 <= (int)((u32)*puVar6 + (u32)uVar2))) {
 
@@ -4687,7 +4687,7 @@ void FUN_0038b960(int param_1,long param_2,int param_3)
 
                 ((uVar2 = puVar6[1], uVar2 != 0 &&
 
-                 (((long)(u32)*puVar6 < param_2 && (param_2 <= (int)((u32)*puVar6 + (u32)uVar2))
+                 ((*puVar6 < param_2 && (param_2 <= (int)((u32)*puVar6 + (u32)uVar2))
 
                   ))))) {
 
@@ -4695,7 +4695,7 @@ void FUN_0038b960(int param_1,long param_2,int param_3)
 
         }
 
-        lVar5 = (long)((int)lVar5 + 1);
+        lVar5 = lVar5 + 1;
 
       }
 

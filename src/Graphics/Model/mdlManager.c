@@ -3215,13 +3215,13 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
     piVar2 = *(int **)(puVar4 + 0x16);
 
-    if (((piVar2 == (int *)0x0) || ((long)(u32)*(u16 *)(piVar2 + 1) <= (long)(short)uVar1)) ||
+    if (((piVar2 == (int *)0x0) || ((u32)*(u16 *)(piVar2 + 1) <= (s32)(s16)uVar1)) ||
 
        ((puVar3 = *(u8 **)(*piVar2 + 0x40 + (short)uVar1 * 0x50), puVar3 == (u8 *)0x0
 
         || (puVar3 == (u8 *)&DAT_009571d0)))) {
 
-      if (((piVar2 == (int *)0x0) || ((long)(u32)*(u16 *)(piVar2 + 1) <= (long)(short)uVar1))
+      if (((piVar2 == (int *)0x0) || ((u32)*(u16 *)(piVar2 + 1) <= (s32)(s16)uVar1))
 
          || (*(u8 **)((short)uVar1 * 0x50 + *piVar2 + 0x40) != (u8 *)&DAT_009571d0)) {
 
@@ -3243,15 +3243,15 @@ void* func_00313490(MdlAnimSlot* param_1,void* param_2)
 
     piVar2 = *(int **)(puVar4 + 0x16);
 
-    if ((piVar2 != (int *)0x0) && ((long)(short)uVar1 < (long)(u32)*(u16 *)(piVar2 + 1))) {
+    if ((piVar2 != (int *)0x0) && ((s32)(s16)uVar1 < (u32)*(u16 *)(piVar2 + 1))) {
 
       puVar3 = *(u8 **)(*piVar2 + 0x40 + (short)uVar1 * 0x50);
 
       if ((puVar3 != (u8 *)0x0) &&
 
-         ((((puVar3 != (u8 *)&DAT_009571d0 && (piVar2 != (int *)0x0)) &&
+         ((((puVar3 != (u8 *)&DAT_009571d0) &&
 
-           ((long)(short)puVar4[8] < (long)(u32)*(u16 *)(piVar2 + 1))) &&
+           ((s32)(s16)puVar4[8] < (u32)*(u16 *)(piVar2 + 1))) &&
 
           ((puVar3 = *(u8 **)(*piVar2 + 0x40 + (short)puVar4[8] * 0x50),
 
@@ -3291,7 +3291,7 @@ LAB_0031379c:
 
   piVar2 = *(int **)(puVar4 + 0x16);
 
-  if (((piVar2 != (int *)0x0) && ((long)(short)uVar1 < (long)(u32)*(u16 *)(piVar2 + 1))) &&
+  if (((piVar2 != (int *)0x0) && ((s32)(s16)uVar1 < (u32)*(u16 *)(piVar2 + 1))) &&
 
      ((puVar3 = *(u8 **)(*piVar2 + 0x40 + (short)uVar1 * 0x50), puVar3 != (u8 *)0x0 &&
 
@@ -3562,7 +3562,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
   u8 *puVar5;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 
@@ -3578,7 +3578,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
     sVar1 = *(short *)(iVar7 + 4);
 
-    lVar6 = (long)sVar1;
+    lVar6 = (int)sVar1;
 
     if (-1 < lVar6) {
 
@@ -3626,7 +3626,7 @@ void func_00313ca0(int *param_1,u32 param_2)
 
           piVar4 = *(int **)(iVar7 + 0x2c);
 
-          if ((((piVar4 == (int *)0x0) || ((long)(u32)*(u16 *)(piVar4 + 1) <= lVar6)) ||
+          if ((((piVar4 == (int *)0x0) || ((u32)*(u16 *)(piVar4 + 1) <= (u32)lVar6)) ||
 
               (puVar5 = *(u8 **)(*piVar4 + 0x40 + (sVar1 * 4 + (int)sVar1) * 0x10),
 
@@ -6464,7 +6464,7 @@ u32 func_00318b90(u32 param_1)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -6480,7 +6480,7 @@ u32 func_00318b90(u32 param_1)
 
   if ((((piVar1 == (int *)0x0) ||
 
-       ((long)(u32)*(u16 *)(piVar1 + 1) <= (long)*(short *)(iVar6 + 0xf0))) ||
+       ((u32)*(u16 *)(piVar1 + 1) <= (s32)*(short *)(iVar6 + 0xf0))) ||
 
       (puVar2 = *(u8 **)(*piVar1 + 0x40 + *(short *)(iVar6 + 0xf0) * 0x50),
 
@@ -6508,7 +6508,7 @@ u32 func_00318b90(u32 param_1)
 
         if (((piVar1 != (int *)0x0) &&
 
-            ((long)*(short *)(iVar5 + 0xf0) < (long)(u32)*(u16 *)(piVar1 + 1))) &&
+            ((s32)*(short *)(iVar5 + 0xf0) < (u32)*(u16 *)(piVar1 + 1))) &&
 
            ((puVar2 = *(u8 **)(*piVar1 + *(short *)(iVar5 + 0xf0) * 0x50 + 0x40),
 
@@ -8580,7 +8580,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
     if ((cVar2 == '\x03') || (cVar2 == '\a')) {
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar4,0);
+      lVar6 = (int)mdlSearch(7,sVar4,0);
 
       if (lVar6 == 0) {
 
@@ -8608,7 +8608,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
       sVar7 = sVar4 + 1000;
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar7,0);
+      lVar6 = (int)mdlSearch(7,sVar7,0);
 
       if (lVar6 == 0) {
 
@@ -8656,7 +8656,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   case 3:
 
-    lVar6 = (long)(void*)mdlSearch(7,sVar4,0);
+    lVar6 = (int)mdlSearch(7,sVar4,0);
 
     if (lVar6 == 0) {
 
@@ -8674,7 +8674,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
     sVar7 = sVar4 + 1000;
 
-    lVar6 = (long)(void*)mdlSearch(7,sVar7,0);
+    lVar6 = (int)mdlSearch(7,sVar7,0);
 
     if (lVar6 == 0) {
 
@@ -8708,7 +8708,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
   case 7:
 
-    lVar6 = (long)(void*)mdlSearch(7,sVar4,0);
+    lVar6 = (int)mdlSearch(7,sVar4,0);
 
     if (lVar6 == 0) {
 
@@ -8726,7 +8726,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
     sVar7 = sVar4 + 1000;
 
-    lVar6 = (long)(void*)mdlSearch(7,sVar7,0);
+    lVar6 = (int)mdlSearch(7,sVar7,0);
 
     if (lVar6 == 0) {
 
@@ -8758,7 +8758,7 @@ void func_0031b820(u32 param_1,u32 param_2)
 
     if (lVar6 != 0) {
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar4,0);
+      lVar6 = (int)mdlSearch(7,sVar4,0);
 
       if (lVar6 == 0) {
 
@@ -9107,7 +9107,6 @@ u32 func_0031c1d0(int param_1)
   int sVar3;
 
   u32 uVar4;
-
   u32 uVar5;
 
   int lVar6;
@@ -9346,13 +9345,11 @@ u32 func_0031c1d0(int param_1)
     mdl003196d0((Model*)param_1,1,0x1f5);
 
     uVar4 = 1;
-
     break;
   default:
     uVar4 = 0;
     break;
   }
-
   return uVar4;
 }
 

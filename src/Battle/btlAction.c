@@ -4063,14 +4063,14 @@ void btlActionUpdateStateSkill(BtlAction *action) {
     s64 temp_s3;
     s64 temp_s3_2;
     s64 temp_v0_30;
-    s64 temp_v0_31;
+    s32 temp_v0_31;
     s64 temp_v1_12;
     s64 var_s1;
     s64 var_s2;
     s64 var_s2_3;
-    s64 var_v0;
+    s32 var_v0;
     s64 var_v1;
-    s8 var_s6;
+    s32 var_s6;
     u16 temp_a2;
     u16 temp_v1;
     u16 temp_v1_16;
@@ -4215,14 +4215,14 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         if ((sp1C0 == 0) && (sp1A0 == 0)) {
             if (var_s6 == 0) {
                 if (!(action->unk_18 & 0x40) && ((temp_s2 = func_002ddc80(action->unit->charId), (func_002d5eb0(action) != 0)) || (temp_s2 != 0))) {
-                    var_s1 = (s64) (func_002e33f0(action) << 0x30) >> 0x30;
+                    var_s1 = (s16)func_002e33f0(action);
                     if ((var_s1 != -1) && ((datCalcRand(0x64U) < 0x14U) || (temp_s2 != 0))) {
                         sp2F0 = 1;
                         action->unk_18 |= 0x40;
                     }
                 }
             } else if ((var_s6 == 1) && !(action->unk_18 & 0x40)) {
-                var_s1 = (s64) (func_002e33f0(action) << 0x30) >> 0x30;
+                var_s1 = (s16)func_002e33f0(action);
                 if (var_s1 != -1) {
                     sp2F0 = 1;
                     action->unk_18 |= 0x40;
@@ -4383,7 +4383,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_29->actionUID = temp_s0;
             btlPacketRegister(temp_v0_29, 1U);
             temp_a1 = action->unit;
-            temp_v0_30 = (s64) (func_00284040(temp_a1->personaUnit, temp_a1, temp_s7, sp2EC) << 0x30) >> 0x30;
+            temp_v0_30 = (s16)func_00284040(temp_a1->personaUnit, temp_a1, temp_s7, sp2EC);
             sp3F0 = (s16) temp_v0_30;
             temp_v0_31 = (s64) (func_002835e0(action->unit->personaUnit, temp_v0_30 & 0xFFFF, 1.0f) << 0x30) >> 0x30;
             sp3B0 = (s32) temp_v0_31;
@@ -4876,7 +4876,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
     sp170 = func_002d4cc0(sp250) & 0xFFFF;
     sp3C0 = 0;
     sp370 = 0;
-    sp260 = (s32) ((s64) ((s64) temp_s7 << 0x30) >> 0x30);
+    sp260 = temp_s7;
 loop_306:
     sp230 = (s32) sp370;
     if ((s32) sp370 < (s32) action->target.targetedCount) {
@@ -5373,7 +5373,7 @@ block_325:
             temp_v0_146->preUpdateDelay = (s16) sp3C0;
             btlPacketRegister(temp_v0_146, 1U);
         } else if ((func_002d6210(action) == 1) && (func_002d5f50(action) == 0) && (sp290 == 0)) {
-            temp_v0_147 = btlVoice002e2be0(action, 0xF, (s32) ((s64) (func_003082f0(action->unit->datUnit, sp250) << 0x30) >> 0x30), 0, 0);
+            temp_v0_147 = btlVoice002e2be0(action, 0xF, (s16)func_003082f0(action->unit->datUnit, sp250), 0, 0);
             temp_v0_147->unk_00 = 5;
             temp_v0_147->parentUID = temp_s2_4;
             temp_v0_147->preUpdateDelay = (s16) sp3C0;

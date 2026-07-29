@@ -1033,18 +1033,11 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
         x = *(f32*)((u8*)iGpffffb25c + i * 0x44 + 0x38);
         y = *(f32*)((u8*)iGpffffb25c + i * 0x44 + 0x3c);
         color = *(u32*)((u8*)iGpffffb25c + i * 0x44 + 0x40);
-        if (i == 5) {
-            if (func_0017d800() != 0) {
-                func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0x80,
-                              color & 0xff, x - 27.0f, y + 2.0f, alpha);
-                func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0x80,
-                              color & 0xff, x, y, alpha);
-            } else {
-                func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0,
-                              color & 0xff, x - 27.0f, y + 2.0f, alpha);
-                func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0,
-                              color & 0xff, x, y, alpha);
-            }
+        if (i == 5 && func_0017d800() != 0) {
+            func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0x80,
+                          color & 0xff, x - 27.0f, y + 2.0f, alpha);
+            func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0x80,
+                          color & 0xff, x, y, alpha);
         } else {
             func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0,
                           color & 0xff, x - 27.0f, y + 2.0f, alpha);
@@ -1116,9 +1109,6 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
             glyph = 0x22;
             break;
         case 8:
-            glyph = 0x24;
-            break;
-        default:
             glyph = 0x24;
             break;
         }

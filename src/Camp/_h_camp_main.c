@@ -2400,9 +2400,10 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     FUN_001159f0(parent, *(void**)D_00833BA4_abs, 3, 0, 561.0f, 415.0f, alpha);
 }
 
-extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,
-                         s32 offset, s32 selected, s32 menuFlags, s64 frame,
-                         s32 transition);
+#pragma alias FUN_00139FC0_call FUN_00139FC0
+extern void FUN_00139FC0_call(f32 alpha, u64 position, const s32* entries, u64 unused,
+                              s32 offset, s32 selected, s32 menuFlags, s64 frame,
+                              s32 transition);
 extern void FUN_0013AFD0(f32 alpha, u64 position, const s32* entries, u64 unused,
                          s32 count, s32 offset, s32 transition, s32 transitionHi);
 
@@ -2415,7 +2416,7 @@ void FUN_00138E80(f32 alpha, u64 position, const s32* entries,
     savedPosition = position;
     switch (mode) {
     case 0:
-        FUN_00139FC0(alpha, position, entries, count, offset, selected,
+        FUN_00139FC0_call(alpha, position, entries, count, offset, selected,
                      menuFlags, frame, extra0);
         break;
     case 1:
@@ -2793,7 +2794,7 @@ void FUN_00139DC0(f32 param_1)
 
 // FUN_00139FC0 NONMATCHING
 void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
-                  s32 param_5, s32 param_6, s32 param_7, s64 param_8, s32 param_9)
+                  s32 param_5, s32 param_6, s32 param_7, s32 param_8, s32 param_9)
 {
     CampPackedPosition position;
     const s32* item;
@@ -3290,45 +3291,41 @@ void FUN_0013BCE0(u8 param_1)
 }
 
 // FUN_0013BE50 NONMATCHING
-s32 FUN_0013BE50(s32 param_1, s32 param_2)
+s32 FUN_0013BE50(u8* param_1, s32 param_2)
 {
     s32 total;
+    s32 byteOffset;
     s32 cursor;
     s32 i;
     s32 j;
     s32 count;
     s32 changed;
-    s16 member;
-    s16 candidate;
-    u16 itemId;
+    s32 itemId;
     u16 partyId;
     void* item;
-    s64 result;
+#define entries ((CampMainListEntry*)(param_1 + 0x0C))
 
     total = *(s32*)((u8*)param_1 + 0x970) + *(s32*)((u8*)param_1 + 0x974);
-    itemId = *(u16*)((u8*)param_1 + total * 8 + 0x0C);
+    byteOffset = total * 8;
+    itemId = *(s32*)(param_1 + byteOffset + 0x0C);
     item = func_00170e90((s16)itemId);
     changed = 0;
 
     if (param_2 == -2)
     {
-        result = FUN_0017BC20(1, 1, *(u16*)((u8*)item + 8), 1);
-        if (result == 0)
+        if (FUN_0017BC20(1, 1, *(u16*)((u8*)item + 8), 1) == 0)
         {
             changed = 1;
             FUN_0017B860(1, 1, *(u16*)((u8*)item + 8), 1);
         }
         for (i = 0; i < 3; i++)
         {
-            member = datGetPartyId(i);
-            if (member != 0)
+            if (datGetPartyId(i) != 0)
             {
-                candidate = datGetPartyId(i);
-                if (K_FldEvent_IsCharNearHeroBeforeBtl(candidate) != 0)
+                if (K_FldEvent_IsCharNearHeroBeforeBtl(datGetPartyId(i)) != 0)
                 {
                     partyId = (u16)datGetPartyId(i);
-                    result = FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1);
-                    if (result == 0)
+                    if (FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1) == 0)
                     {
                         changed = 1;
                         FUN_0017B860(1, partyId, *(u16*)((u8*)item + 8), 1);
@@ -3339,8 +3336,7 @@ s32 FUN_0013BE50(s32 param_1, s32 param_2)
     }
     else if (param_2 == 0)
     {
-        result = FUN_0017BC20(1, 1, *(u16*)((u8*)item + 8), 1);
-        if (result == 0)
+        if (FUN_0017BC20(1, 1, *(u16*)((u8*)item + 8), 1) == 0)
         {
             changed = 1;
             FUN_0017B860(1, 1, *(u16*)((u8*)item + 8), 1);
@@ -3351,18 +3347,15 @@ s32 FUN_0013BE50(s32 param_1, s32 param_2)
         count = 0;
         for (j = 0; j < 3; j++)
         {
-            member = datGetPartyId(j);
-            if (member != 0)
+            if (datGetPartyId(j) != 0)
             {
                 count++;
                 if (param_2 == count)
                 {
-                    candidate = datGetPartyId(j);
-                    if (K_FldEvent_IsCharNearHeroBeforeBtl(candidate) != 0)
+                    if (K_FldEvent_IsCharNearHeroBeforeBtl(datGetPartyId(j)) != 0)
                     {
                         partyId = (u16)datGetPartyId(j);
-                        result = FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1);
-                        if (result == 0)
+                        if (FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1) == 0)
                         {
                             changed = 1;
                             FUN_0017B860(1, partyId, *(u16*)((u8*)item + 8), 1);
@@ -3376,17 +3369,16 @@ s32 FUN_0013BE50(s32 param_1, s32 param_2)
 
     if (changed != 0)
     {
-        cursor = *(s32*)((u8*)param_1 + total * 8 + 0x10);
+        cursor = *(s32*)(param_1 + byteOffset + 0x10);
         if (cursor == 1)
         {
             func_00170860(1, (s16)itemId, 0);
             for (i = total; i < *(s32*)((u8*)param_1 + 0x96C) - 1; i++)
             {
-                *(CampMainListEntry*)((u8*)param_1 + i * 8 + 0x0C) =
-                    *(CampMainListEntry*)((u8*)param_1 + (i + 1) * 8 + 0x0C);
+                entries[i] = entries[i + 1];
             }
-            *(s32*)((u8*)param_1 + *(s32*)((u8*)param_1 + 0x96C) * 8 + 0x0C) = -1;
-            *(s32*)((u8*)param_1 + *(s32*)((u8*)param_1 + 0x96C) * 8 + 0x10) = 0;
+            entries[*(s32*)(param_1 + 0x96C)].itemId = -1;
+            entries[*(s32*)(param_1 + 0x96C)].cursor = 0;
             count = *(s32*)((u8*)param_1 + 0x96C) - 1;
             *(s32*)((u8*)param_1 + 0x96C) = count;
             if (count == 0)
@@ -3413,9 +3405,11 @@ s32 FUN_0013BE50(s32 param_1, s32 param_2)
         }
         else
         {
-            *(s32*)((u8*)param_1 + total * 8 + 0x10) = cursor - 1;
-            func_00170860(1, (s16)itemId, *(u16*)((u8*)param_1 + total * 8 + 0x10));
+            *(s32*)(param_1 + byteOffset + 0x10) = cursor - 1;
+            func_00170860(1, (s16)itemId,
+                          *(u16*)(param_1 + byteOffset + 0x10));
         }
     }
     return changed;
+#undef entries
 }

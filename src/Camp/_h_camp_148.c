@@ -2150,6 +2150,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   int iVar3;
   s32 lVar4;
   u64 uVar5;
+  u32 scalarValue;
   s32 bVar6;
   int iVar7;
   int iVar8;
@@ -2242,11 +2243,11 @@ u32 h_campUpdateSystemMenuTask(int param_1)
        (lVar4 = FUN_001016b0(puVar1[0xb]), lVar4 != 0)) {
       FUN_003c7d80(0xc,*(u32 *)(puVar1[9] + 0x110));
       FUN_003c7d80(8,*(u32 *)(puVar1[10] + 0x110));
-      uVar5 = FUN_00102100(puVar1[0xb],0,auStack_4);
-      uVar2 = FUN_00112420(uVar5);
+      scalarValue = FUN_00102100(puVar1[0xb],0,auStack_4);
+      uVar2 = FUN_00112420(scalarValue);
       puVar1[5] = uVar2;
-      uVar5 = FUN_00102100(puVar1[0xb],1,auStack_4);
-      uVar2 = FUN_00112420(uVar5);
+      scalarValue = FUN_00102100(puVar1[0xb],1,auStack_4);
+      uVar2 = FUN_00112420(scalarValue);
       puVar1[6] = uVar2;
       *puVar1 = 2;
     }
@@ -3004,8 +3005,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x50c), 0, 2, 1, 0x42d4000043a80000, 0x42d4000043a80000, 0, 0, 0, 10);
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x550), 0, 2, 1, 0x42e8000043a80000, 0x42e8000043a80000, 0, 0, 0, 10);
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 1, 0x43c0800041f80000, 0x43c0800041f80000, 0, 0, 0, 10);
-    uVar5 = FUN_0017d8b0(puVar1[0x53],1);
-    iVar3 = FUN_0017dae0(uVar5);
+    scalarValue = FUN_0017d8b0(puVar1[0x53],1);
+    iVar3 = FUN_0017dae0(scalarValue);
     iVar9 = 0;
     for (iVar8 = 1; iVar8 < DAT_005e3b5e[puVar1[0x53]] + 1; iVar8 = iVar8 + 1) {
       lVar4 = h_campIsSocialLinkAvailable(puVar1[0x53],iVar8);
@@ -3137,8 +3138,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
         for (iVar3 = 0x15; iVar3 < 0x35; iVar3 = iVar3 + 1) {
           *(u32 *)(puVar1[4] + iVar3 * 0x44 + 4) = 0;
         }
-        uVar5 = FUN_0017d8b0(puVar1[0x53],1);
-        iVar3 = FUN_0017dae0(uVar5);
+        scalarValue = FUN_0017d8b0(puVar1[0x53],1);
+        iVar3 = FUN_0017dae0(scalarValue);
         iVar9 = 0;
         for (iVar8 = 1; iVar8 < DAT_005e3b5e[puVar1[0x53]] + 1; iVar8 = iVar8 + 1)
         {
@@ -3196,8 +3197,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x50c), 0, 2, 2, 0x42d4000043a80000, 0x42d4000043a80000, 0, 0, 0, 10);
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x550), 0, 2, 2, 0x42e8000043a80000, 0x42e8000043a80000, 0, 0, 0, 10);
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 2, 0x43c0800041f80000, 0x43c0800041f80000, 0, 0, 0, 10);
-    uVar5 = FUN_0017d8b0(puVar1[0x53],1);
-    iVar3 = FUN_0017dae0(uVar5);
+    scalarValue = FUN_0017d8b0(puVar1[0x53],1);
+    iVar3 = FUN_0017dae0(scalarValue);
     iVar9 = 0;
     for (iVar8 = 1; iVar8 < DAT_005e3b5e[puVar1[0x53]] + 1; iVar8 = iVar8 + 1) {
       lVar4 = h_campIsSocialLinkAvailable(puVar1[0x53],iVar8);
