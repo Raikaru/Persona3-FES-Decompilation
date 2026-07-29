@@ -6003,9 +6003,9 @@ void btlActionUpdateStateError(BtlAction* action)
     BtlPacket* packet;
     BtlPacket* animPacket;
     u16 animation;
-    u16 duration;
-    u16 cameraState;
     u16 table;
+    u16 cameraState;
+    u16 duration;
     u16 state;
     u32 isCommand3;
     u64 actionUID;

@@ -3490,7 +3490,7 @@ u32 FUN_0039c0f0(int param_1)
 
   int iVar9;
 
-  short sVar10;
+  int sVar10;
 
   int aiStack_30 [8];
 
@@ -3528,7 +3528,10 @@ u32 FUN_0039c0f0(int param_1)
 
         iVar7 = iVar9;
 
-        if (lVar5 != 1) break;
+        if (lVar5 != 1) {
+          sVar10 &= 0xffff;
+          break;
+        }
 
         asStack_10[iVar8] = sVar10;
 

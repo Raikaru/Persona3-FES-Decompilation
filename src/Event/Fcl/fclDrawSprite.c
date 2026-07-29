@@ -18,7 +18,7 @@ u32 FUN_0040e4f0(int *param_1);
 void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
-u64 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
+u64 FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,int param_10,int param_11,int param_12,float param_2,float param_3,float param_4);
 #pragma alias fclDrawSpriteCreate FUN_001158b0
 extern u32 fclDrawSpriteCreate();
 #pragma alias fclDrawSpriteEmit FUN_0040e3c0
@@ -27,7 +27,7 @@ s32 FUN_0040eb50(float param_1,int param_2,int param_3,u8 param_4,int param_5,co
 s32 FUN_0040ebc0(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7);
 void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
 #pragma alias FUN_0040ec20_typed FUN_0040ec20
-void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
+void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
 
                   int param_6);
 u32 FUN_0040ec50();
@@ -55,6 +55,8 @@ typedef struct {
   float z;
 } FclDrawSpriteVec3;
 u32 DAT_006af9a0;
+#pragma alias DAT_006af9a0_abs DAT_006af9a0
+extern u32 DAT_006af9a0_abs[];
 u16 DAT_006af9c0[];
 typedef short DAT_006af9c0_abs_t;
 #pragma alias DAT_006af9c0_abs DAT_006af9c0
@@ -381,11 +383,9 @@ scale_y_done:
 u64
 
 
-FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
+FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,
 
-            int param_6,int param_7,int param_8,int param_9,int param_10,int param_11,
-
-            int param_12)
+            int param_10,int param_11,int param_12,float param_2,float param_3,float param_4)
 {
 
   int iVar1;
@@ -663,7 +663,7 @@ u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4,
 // FUN_0040EEF0 NONMATCHING
 
 
-void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
+void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
 
                  int param_6)
 
@@ -686,7 +686,7 @@ void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   
 
-  puVar5 = &DAT_006af9a0;
+  puVar5 = DAT_006af9a0_abs;
 
   puVar4 = auStack_20;
 

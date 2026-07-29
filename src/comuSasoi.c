@@ -77,7 +77,7 @@ u32 FUN_003c2ab0(u32 param_1,u32 param_2);
 u32 FUN_003c2b40(int *param_1,int *param_2);
 u8 FUN_003c2c50(u32 param_1);
 u32 FUN_003c2df0(u32 param_1);
-u32 * FUN_003c2ee0(u32 param_1);
+u32 * FUN_003c2ee0(s32 param_1);
 u32 * FUN_003c3050(u32 param_1);
 u8 FUN_003c30b0(void);
 u8 FUN_003c3120(void);
@@ -505,7 +505,7 @@ LAB_003c2c00:
 }
 #define FUN_003c2b40(...) ((u32 (*)(...))FUN_003c2b40)(__VA_ARGS__)
 #undef FUN_003c2c50
-// FUN_003C2C50 NONMATCHING
+// FUN_003C2C50
 
 
 u8 FUN_003c2c50(u32 param_1)
@@ -514,7 +514,7 @@ u8 FUN_003c2c50(u32 param_1)
   int *piVar3;
   u8 *entries;
   int count;
-  u8 bVar2;
+  u32 bVar2;
   int lVar4;
   int iVar6;
   short sStack_2;
@@ -546,13 +546,14 @@ u8 FUN_003c2c50(u32 param_1)
   piVar3 = (int *)FUN_003bdd50();
   entries = (u8 *)piVar3[0];
   count = piVar3[1];
-  bVar2 = 0;
   for (iVar6 = 0; iVar6 < count; iVar6 = iVar6 + 1) {
     if (param_1 == entries[iVar6 * 0x18]) {
       bVar2 = 1;
-      break;
+      goto LAB_003c2db0;
     }
   }
+  bVar2 = 0;
+LAB_003c2db0:
   if (!bVar2) {
     return 0;
   }
@@ -601,7 +602,7 @@ u32 FUN_003c2df0(u32 param_1)
 // FUN_003C2EE0 NONMATCHING
 
 
-u32 * FUN_003c2ee0(u32 param_1)
+u32 * FUN_003c2ee0(s32 param_1)
 
 
 

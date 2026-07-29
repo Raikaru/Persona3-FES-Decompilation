@@ -1829,19 +1829,24 @@ footstep_case1_after_time:
                 goto footstep_case1_status;
             }
         }
-        if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 3)
+        if (gMtScene->fldMajorId != 0x27)
         {
-            goto footstep_case1_status;
+            goto footstep_case1_default_e630;
         }
+        if (gMtScene->fldMinorId != 3)
+        {
+            goto footstep_case1_default_e630;
+        }
+footstep_case1_status:
+        result = 3;
+        break;
+
+footstep_case1_default_e630:
         result = 3;
         if (datGetFlag(0xC35) != 0)
         {
             result -= 1;
         }
-        break;
-
-footstep_case1_status:
-        result = 3;
         break;
 
     case 2:
@@ -2056,17 +2061,20 @@ after_special_result:
         goto footstep_case1_status_ded40;
     if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 2)
         goto footstep_case1_status_ded40;
-    if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 3)
-        goto footstep_case1_status_ded40;
+    if (gMtScene->fldMajorId != 0x27)
+        goto footstep_case1_default_ded40;
+    if (gMtScene->fldMinorId != 3)
+        goto footstep_case1_default_ded40;
+footstep_case1_status_ded40:
+    result = 3;
+    goto done;
+
+footstep_case1_default_ded40:
     result = 5;
     if (datGetFlag(0xc35))
     {
         result -= 1;
     }
-    goto done;
-
-footstep_case1_status_ded40:
-    result = 3;
     goto done;
 
 handler_2:
