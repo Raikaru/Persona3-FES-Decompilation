@@ -4442,7 +4442,7 @@ void* func_00186190(KwlnTask* task)
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
-                          clndPackPosition(&position, _x, 0.0f),
+                          *(u64*)&position,
                           alpha,
                           (s16)work->selectedValue);
             if (timer == 10)
@@ -4514,16 +4514,18 @@ void* func_00186190(KwlnTask* task)
         {
             f32 _x;
             f32 _y;
+            f32 sine;
             timer = ++work->timer;
-            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) * CLND_MOON_X_SCALE;
-            _y = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) * CLND_MOON_Y_SCALE;
+            sine = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f);
+            _x = sine * CLND_MOON_X_SCALE;
+            _y = sine * CLND_MOON_Y_SCALE;
             alpha = (timer * 0xff) / 5;
             func_00186a40(work->resource,
                           clndPackPosition(&position, _x, _y),
                           alpha,
                           (s16)work->selectedValue);
             func_00186bd0(work->resource,
-                          clndPackPosition(&position, _x, _y),
+                          *(u64*)&position,
                           alpha,
                           (s16)work->selectedValue);
             if (timer == 5)

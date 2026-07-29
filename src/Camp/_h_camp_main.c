@@ -410,9 +410,9 @@ void FUN_00133E10(CampMainDrawItem* item,
     switch (mode) {
     case 0:
         campMainQueueSprite(item, campMainResource(resources, 0), 0,
-                            310.0f + item->x - 60.0f, item->y);
+                            item->x + 250.0f, item->y);
         campMainQueueSprite(item, campMainResource(resources, 0), 0,
-                            1060.0f + item->x - 60.0f, item->y);
+                            item->x + 1000.0f, item->y);
         item->scrollX -= 1.0f;
         if (item->scrollX < -750.0f) {
             item->scrollX += 750.0f;
@@ -444,45 +444,45 @@ void FUN_00133E10(CampMainDrawItem* item,
             persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
             if (personaIndex == (s32)selected) {
                 FUN_001159f0(parent, campMainResource(resources, 1), 8,
-                             (u8)item->alpha, 120.0f + item->x - 60.0f,
-                             15.0f + item->y - 12.0f, item->spriteScale);
+                             (u8)item->alpha, item->x + 60.0f,
+                             item->y + 3.0f, item->spriteScale);
                 level = persona->level;
                 if (level >= 10) {
                     digit = level / 10;
                     fontResource = H_Maestro_001120a0(1);
                     FUN_001159f0(parent, fontResource, digit + 11,
-                                 (u8)item->alpha, 148.0f + item->x - 60.0f,
-                                 24.0f + item->y - 12.0f, item->spriteScale);
+                                 (u8)item->alpha, item->x + 88.0f,
+                                 item->y + 12.0f, item->spriteScale);
                 }
                 digit = level % 10;
                 fontResource = H_Maestro_001120a0(1);
                 FUN_001159f0(parent, fontResource, digit + 11,
-                             (u8)item->alpha, 164.0f + item->x - 60.0f,
-                             24.0f + item->y - 12.0f, item->spriteScale);
+                             (u8)item->alpha, item->x + 104.0f,
+                             item->y + 12.0f, item->spriteScale);
             } else {
                 equippedPersona = datGetPersonaId(1);
                 if (persona->id == (u16)equippedPersona) {
                     FUN_001159f0(parent, campMainResource(resources, 0), 5,
-                                 (u8)item->alpha, 120.0f + item->x - 60.0f,
-                                 15.0f + item->y - 12.0f, item->spriteScale);
+                                 (u8)item->alpha, item->x + 60.0f,
+                                 item->y + 3.0f, item->spriteScale);
                 } else {
                     FUN_001159f0(parent, campMainResource(resources, 1), 7,
-                                 (u8)item->alpha, 120.0f + item->x - 60.0f,
-                                 15.0f + item->y - 12.0f, item->spriteScale);
+                                 (u8)item->alpha, item->x + 60.0f,
+                                 item->y + 3.0f, item->spriteScale);
                 }
                 level = persona->level;
                 if (level >= 10) {
                     digit = level / 10;
                     fontResource = H_Maestro_001120a0(2);
                     FUN_001159f0(parent, fontResource, digit + 11,
-                                 (u8)item->alpha, 148.0f + item->x - 60.0f,
-                                 24.0f + item->y - 12.0f, item->spriteScale);
+                                 (u8)item->alpha, item->x + 88.0f,
+                                 item->y + 12.0f, item->spriteScale);
                 }
                 digit = level % 10;
                 fontResource = H_Maestro_001120a0(2);
                 FUN_001159f0(parent, fontResource, digit + 11,
-                             (u8)item->alpha, 164.0f + item->x - 60.0f,
-                             24.0f + item->y - 12.0f, item->spriteScale);
+                             (u8)item->alpha, item->x + 104.0f,
+                             item->y + 12.0f, item->spriteScale);
             }
         }
         break;
