@@ -803,10 +803,10 @@ u8 * FUN_0031f7a0(float param_1,int *param_2);
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(f32 *param_1,u32 param_2);
-u32 * FUN_0031fbd0(float param_1,int *param_2);
+static u32 * FUN_0031fbd0(float param_1,int *param_2);
 #pragma alias FUN_0031fbd0_noargs FUN_0031fbd0
 extern u32 *FUN_0031fbd0_noargs(void);
-u8 * FUN_0031fd00(void);
+u8 * FUN_0031fd00(float firstTime, int *track);
 void FUN_0031fde0(void);
 void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float param_3);
 u32 FUN_00320230(void);
@@ -2054,6 +2054,14 @@ extern f32 DAT_00957254_f32;
 extern f32 DAT_00957258_f32;
 #pragma alias DAT_0095725c_f32 DAT_0095725c
 extern f32 DAT_0095725c_f32;
+#pragma alias DAT_00957250_abs DAT_00957250
+extern u8 DAT_00957250_abs[];
+#pragma alias DAT_00957254_abs DAT_00957254
+extern u8 DAT_00957254_abs[];
+#pragma alias DAT_00957258_abs DAT_00957258
+extern u8 DAT_00957258_abs[];
+#pragma alias DAT_0095725c_abs DAT_0095725c
+extern u8 DAT_0095725c_abs[];
 extern u32 DAT_00957244;
 extern u32 DAT_00957248;
 extern u32 DAT_0095724c;
@@ -4247,7 +4255,7 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
 // FUN_0031FBD0 NONMATCHING
 
 
-u32 * FUN_0031fbd0(float param_1,int *param_2)
+static u32 * FUN_0031fbd0(float param_1,int *param_2)
 
 
 
@@ -4331,25 +4339,19 @@ u32 * FUN_0031fbd0(float param_1,int *param_2)
 // FUN_0031FD00 NONMATCHING
 
 
-u8 * FUN_0031fd00(void)
+u8 * FUN_0031fd00(float firstTime, int *track)
 {
-  int iVar1;
-  u32 extraout_t1;
-  u32 extraout_f13;
+  struct Float4 { float x, y, z, w; } first;
+  struct Float4 second;
+  float extraout_f13;
   float extraout_f14;
-  float fVar2;
-  float fVar3;
-  float fVar4;
 
-  iVar1 = (int)FUN_0031fbd0_noargs();
-  fVar4 = *(float *)(iVar1 + 4);
-  fVar2 = *(float *)(iVar1 + 8);
-  fVar3 = *(float *)(iVar1 + 0xc);
-  iVar1 = (int)FUN_0031fbd0((float)(extraout_f13),(int *)(extraout_t1));
-  DAT_00957254_f32 = extraout_f14 * (*(float *)(iVar1 + 4) - fVar4) + fVar4;
-  DAT_00957258_f32 = extraout_f14 * (*(float *)(iVar1 + 8) - fVar2) + fVar2;
-  DAT_0095725c_f32 = extraout_f14 * (*(float *)(iVar1 + 0xc) - fVar3) + fVar3;
-  return (u8 *)&DAT_00957250;
+  first = *(struct Float4 *)FUN_0031fbd0(firstTime, track);
+  second = *(struct Float4 *)FUN_0031fbd0(extraout_f13, track);
+  *(float *)DAT_00957254_abs = extraout_f14 * (second.y - first.y) + first.y;
+  *(float *)DAT_00957258_abs = extraout_f14 * (second.z - first.z) + first.z;
+  *(float *)DAT_0095725c_abs = extraout_f14 * (second.w - first.w) + first.w;
+  return DAT_00957250_abs;
 }
 
 

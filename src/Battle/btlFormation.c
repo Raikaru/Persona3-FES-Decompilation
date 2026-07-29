@@ -4326,7 +4326,7 @@ void func_002be720(short *param_1,short param_2,short param_3,int param_4)
   u32 uVar5;
   short sVar6;
   short sVar7;
-  u16 auStack_20[16];
+  u16 auStack_20[8];
   
   func_002bc9c0((float)((int)param_2 + (int)*param_1 + -2),
                (float)((int)param_3 + (int)param_1[1] + -2),

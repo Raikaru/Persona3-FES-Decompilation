@@ -1640,9 +1640,10 @@ void FUN_00388ff0(int param_1)
 
       if (iVar2 != 0) {
 
-        (*DAT_0096017c_abs)(iVar2);
-
-        *(u32 *)(*(int *)(param_1 + 0x980) + iVar3 * 4) = 0;
+        if (iVar2 != 0) {
+          (*DAT_0096017c_abs)(iVar2);
+          *(u32 *)(*(int *)(param_1 + 0x980) + iVar3 * 4) = 0;
+        }
 
       }
 
