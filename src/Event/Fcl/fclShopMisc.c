@@ -379,7 +379,7 @@ u64 FUN_003fdf80(u32 *param_1);
 u32 FUN_003fe020(int param_1,u64 param_2);
 u32 FUN_003fe1f0(u64 param_1);
 u32 FUN_003fe2b0(void);
-u64 FUN_003fe3e0(u16 param_1);
+u32 FUN_003fe3e0(u16 param_1);
 u32 FUN_003fe5d0(u64 param_1);
 u64 FUN_003fe690(u32 param_1,u8 *param_2);
 #pragma alias FUN_003fe690_p FUN_003fe690
@@ -3309,11 +3309,13 @@ u64 FUN_003f3970(long param_1,u32 param_2)
 
   return FUN_003f39a0(param_1,0,param_2);
 }
+#pragma alias FUN_003f39a0_u32ret FUN_003f39a0
+u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3);
 
 // FUN_003F39A0 NONMATCHING
 
 
-u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
+u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3)
 
 
 
@@ -10236,7 +10238,7 @@ LAB_003fe35c:
 // FUN_003FE3E0 NONMATCHING
 
 
-u64 FUN_003fe3e0(u16 param_1)
+u32 FUN_003fe3e0(u16 param_1)
 {
   u32 list;
   int listWork;

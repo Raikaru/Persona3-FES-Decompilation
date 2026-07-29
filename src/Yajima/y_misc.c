@@ -4900,10 +4900,8 @@ void FUN_0042ac60(int param_1,int param_2)
   iVar1 = *(int *)(param_1 + 0x3c);
   cVar2 = (s8)(param_2 - 0x1f);
   iVar6 = (cVar2 * 0xf0 + (int)cVar2) * 4;
-  {
-    int tableBase = iVar6 + iGpffffb5c0;
-    cVar2 = *(char *)(tableBase + *(short *)(iVar1 + 0xb90) * 0x28 + 4);
-  }
+  piVar4 = (int *)(iVar6 + iGpffffb5c0);
+  cVar2 = *(char *)((int)piVar4 + *(short *)(iVar1 + 0xb90) * 0x28 + 4);
   iVar8 = 0;
   iVar7 = 0;
   for (; piVar4 = (int *)(iVar6 + iGpffffb5c0), iVar8 < *piVar4; iVar8 = iVar8 + 1) {

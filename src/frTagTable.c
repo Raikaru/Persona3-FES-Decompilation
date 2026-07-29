@@ -84,25 +84,25 @@ extern s16 FUN_003082f0_tag(s32 font, u16 glyph);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 u64 FUN_003ae420(u64 param_1,int param_2);
 u64 FUN_003ae560(u64 param_1,int param_2);
-u64 FUN_003ae650(u64 param_1,int param_2);
+u32 FUN_003ae650(u64 param_1,int param_2);
 u64 FUN_003ae750(u64 param_1,int param_2);
 u64 FUN_003ae870(u64 param_1,u64 param_2);
 u64 FUN_003ae8d0(u64 param_1,u64 param_2);
 u64 FUN_003ae930(void);
 u64 FUN_003ae970(void);
 u64 FUN_003ae9b0(u64 param_1,u64 param_2);
-u64 FUN_003aea50(u64 param_1,int param_2);
-u64 FUN_003aec20(u64 param_1,int param_2);
+u32 FUN_003aea50(u64 param_1,int param_2);
+u32 FUN_003aec20(u64 param_1,int param_2);
 u64 FUN_003aed10(u64 param_1,int param_2);
 u64 FUN_003aee20(u64 param_1,int param_2);
-u64 FUN_003af110(u64 param_1,int param_2);
+u32 FUN_003af110(u64 param_1,int param_2);
 u32 FUN_003af360(void);
 u32 FUN_003af370(void);
 u32 FUN_003af380(void);
 u32 FUN_003af390(void);
 u64 FUN_003af520(void);
 u64 FUN_003af560(void);
-u64 FUN_003af660(u32 param_1,int param_2);
+u32 FUN_003af660(u32 param_1,int param_2);
 void FUN_003af770(u64 param_1,u64 param_2);
 void FUN_003af7a0(int param_1,u64 param_2);
 
@@ -225,7 +225,7 @@ u64 FUN_003ae560(u64 param_1,int param_2)
 // FUN_003AE650 NONMATCHING
 
 
-u64 FUN_003ae650(u64 param_1,int param_2)
+u32 FUN_003ae650(u64 param_1,int param_2)
 {
   int index;
   int base;
@@ -490,7 +490,7 @@ u64 FUN_003ae9b0(u64 param_1,u64 param_2)
 // FUN_003AEA50 NONMATCHING
 
 
-u64 FUN_003aea50(u64 param_1,int param_2)
+u32 FUN_003aea50(u64 param_1,int param_2)
 {
   u8 cVar1;
   u8 bVar2;
@@ -552,7 +552,7 @@ u64 FUN_003aea50(u64 param_1,int param_2)
 // FUN_003AEC20 NONMATCHING
 
 
-u64 FUN_003aec20(u64 unused, int context)
+u32 FUN_003aec20(u64 unused, int context)
 {
   u8 *cursor = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
   u8 low = cursor[0] - 1;
@@ -755,7 +755,7 @@ u64 FUN_003aee20(u64 param_1, int param_2)
 // FUN_003AF110 NONMATCHING
 
 
-u64 FUN_003af110(u64 param_1,int param_2)
+u32 FUN_003af110(u64 param_1,int param_2)
 
 
 
@@ -777,7 +777,7 @@ u64 FUN_003af110(u64 param_1,int param_2)
 
   u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
   u8 *pbVar10;
 
@@ -1144,7 +1144,7 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
 // FUN_003AF660 NONMATCHING
 
 
-u64 FUN_003af660(u32 param_1, int param_2)
+u32 FUN_003af660(u32 param_1, int param_2)
 {
   u8 bVar1;
   u8 bVar2;
