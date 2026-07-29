@@ -1249,7 +1249,7 @@ void FUN_00341ba0(int param_1);
 u32 FUN_00341f10(u32 param_1,u32 param_2);
 u32 FUN_00341fd0(u32 param_1);
 void FUN_003420c0(u32 param_1);
-u64 FUN_00342130(int param_1);
+u32 FUN_00342130(int param_1);
 void FUN_00342280(int param_1);
 void FUN_003422d0(int param_1);
 void FUN_00342330(int param_1);
@@ -1260,19 +1260,19 @@ u32 FUN_00342890(u32 *param_1,int param_2);
 u32 FUN_00342990(int param_1);
 void FUN_00342a40(int param_1);
 void FUN_00342a90(int param_1);
-void FUN_00343410(u64 param_1);
+void FUN_00343410(int param_1);
 void FUN_00343860(int param_1,int param_2);
 u32 FUN_00343b60(u32 *param_1,int param_2);
 u32 FUN_00343c60(int param_1);
 void FUN_00343d10(int param_1);
 void FUN_00343d60(int param_1);
-void FUN_00344720(u64 param_1);
+void FUN_00344720(int param_1);
 void FUN_00344b70(int param_1,int param_2);
 u32 FUN_00344eb0(u32 param_1,int param_2);
 u32 FUN_00344fc0(int param_1);
 void FUN_00345080(int param_1);
 void FUN_003450d0(int param_1);
-void FUN_00345970(u64 param_1);
+void FUN_00345970(int param_1);
 u32 FUN_00345cf0(u32 param_1,u64 param_2);
 #pragma alias FUN_00345cf0_u32 FUN_00345cf0
 extern u32 FUN_00345cf0_u32(u32 param_1,u32 param_2);
@@ -10626,7 +10626,7 @@ u64 FUN_00326510(u32 param_1)
 
     case 1:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),(long)(1));
+      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),1);
 
       FUN_00326e50(uVar3,lVar4);
 
@@ -10634,7 +10634,7 @@ u64 FUN_00326510(u32 param_1)
 
     case 2:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),(long)(2));
+      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),2);
 
       FUN_00326f00(uVar3,lVar4);
 
@@ -10642,7 +10642,7 @@ u64 FUN_00326510(u32 param_1)
 
     case 4:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),(long)(4));
+      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),4);
 
       FUN_00326db0(uVar3,*(u32 *)lVar4);
 
@@ -10662,7 +10662,7 @@ u64 FUN_00326510(u32 param_1)
 
     case 7:
 
-      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),(long)(7));
+      FUN_00326cf0((int)(uVar3),(u16)(*(u32 *)(puVar5[0x13] + 8)),7);
 
       FUN_003271c0(uVar3,lVar4);
 
@@ -22265,7 +22265,7 @@ u64 FUN_003330e0(u16 param_1,u16 param_2)
 
   u16 *puVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -35901,7 +35901,7 @@ void FUN_003420c0(u32 param_1)
 // FUN_00342130 NONMATCHING
 
 
-u64 FUN_00342130(int param_1)
+u32 FUN_00342130(int param_1)
 
 
 
@@ -35911,7 +35911,7 @@ u64 FUN_00342130(int param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -36934,7 +36934,7 @@ LAB_0034334c:
 // FUN_00343410 NONMATCHING
 
 
-void FUN_00343410(u64 param_1)
+void FUN_00343410(int param_1)
 
 
 
@@ -37003,7 +37003,7 @@ void FUN_00343410(u64 param_1)
 
       if (*puVar9 < uVar4) {
 
-        iVar5 = FUN_0032a120((char *)(iVar1 + 0x3c),(u32 *)(iVar1 + 0x60),(int)(*puVar9),(long)(uVar4));
+        iVar5 = FUN_0032a120((char *)(iVar1 + 0x3c),(u32 *)(iVar1 + 0x60),(int)(*puVar9),(u32)(uVar4));
 
         c1s2 = (u32)(iVar5);
 
@@ -37914,7 +37914,7 @@ LAB_00344650:
 // FUN_00344720 NONMATCHING
 
 
-void FUN_00344720(u64 param_1)
+void FUN_00344720(int param_1)
 
 
 
@@ -37991,7 +37991,7 @@ void FUN_00344720(u64 param_1)
 
       if (*puVar12 < uVar4) {
 
-        iVar8 = FUN_0032a120((char *)(iVar1 + 0x3c),(u32 *)(iVar1 + 0x60),(int)(*puVar12),(long)(uVar4));
+        iVar8 = FUN_0032a120((char *)(iVar1 + 0x3c),(u32 *)(iVar1 + 0x60),(int)(*puVar12),(u32)(uVar4));
 
         c1s2 = (u32)(iVar8);
 
@@ -38974,7 +38974,7 @@ LAB_003458ac:
 // FUN_00345970 NONMATCHING
 
 
-void FUN_00345970(u64 param_1)
+void FUN_00345970(int param_1)
 
 
 
@@ -39051,7 +39051,7 @@ void FUN_00345970(u64 param_1)
 
       if (*puVar12 < uVar4) {
 
-        iVar8 = FUN_0032a120((char *)(iVar1 + 0x3c),(u32 *)(iVar1 + 0x60),(int)(*puVar12),(long)(uVar4));
+        iVar8 = FUN_0032a120((char *)(iVar1 + 0x3c),(u32 *)(iVar1 + 0x60),(int)(*puVar12),(u32)(uVar4));
 
         c1s2 = (u32)(iVar8);
 
@@ -45342,7 +45342,7 @@ u64 FUN_0034d3a0(int param_1,int param_2,int param_3)
   count = *(int *)(param_1 + 0x38) / 6;
   if (count < 1) {
     index = (int)*(s8 *)(param_2 + 0x14);
-    return (u64)*(u32 *)(param_1 + 0x3c + index * 4);
+    return *(u32 *)(param_1 + 0x3c + index * 4);
   }
 
   fraction = (float)(param_3 % count) / (float)count;
@@ -45360,7 +45360,7 @@ u64 FUN_0034d3a0(int param_1,int param_2,int param_3)
        ((current >> 24) & 0xff) * invWeight) >> 8;
   result = (r & 0xff) | ((g & 0xff) << 8) |
            ((b & 0xff) << 16) | ((a & 0xff) << 24);
-  return (u64)current | ((u64)result << 32);
+  return ((u64)result << 32) | current;
 }
 
 

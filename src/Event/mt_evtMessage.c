@@ -1617,19 +1617,19 @@ void FUN_003a05b0(int param_1,int param_2)
 
   u32 *puVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
-  u64 uVar10;
+  u32 uVar10;
 
-  u64 uVar11;
+  u32 uVar11;
 
-  u64 uVar12;
+  u32 uVar12;
 
-  u64 uVar13;
+  u32 uVar13;
 
   u32 *puVar14;
 

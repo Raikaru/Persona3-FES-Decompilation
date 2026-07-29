@@ -3335,10 +3335,9 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
   int iVar11;
 
-  u64 uVar12;
-
-  long lVar13;
-
+  u32 uVar12;
+  int lVar13;
+  int lVar23;
 
   int iVar14;
 
@@ -3358,7 +3357,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
   int iVar22;
 
-  long lVar23;
+
 
   int iVar24;
 
@@ -5576,7 +5575,7 @@ LAB_00392bb0:
     }
 
 
-    lVar23 = (long)(int)((u32)lVar23 + 1);
+    lVar23++;
 
   } while( 1 );
 

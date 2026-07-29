@@ -2573,9 +2573,9 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
   int iVar2;
 
-  short sVar3;
+  int sVar3;
 
-  short sVar4;
+  int sVar4;
 
   u32 uVar5;
 
