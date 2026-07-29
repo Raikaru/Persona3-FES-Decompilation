@@ -823,17 +823,13 @@ extern u8 D_007E0960[];
 extern u8 D_007E0961[];
 extern u8 D_007E094C[];
 
-static FldFrameMoveWork* fldFrameMoveWork(KwlnTask* task)
+static inline FldFrameMoveWork* fldFrameMoveWork(KwlnTask* task)
 {
     return (FldFrameMoveWork*)task->workData;
 }
 
-static Model* fldFrameMoveModel(const FldFrameMoveWork* work)
+static inline Model* fldFrameMoveModel(const FldFrameMoveWork* work)
 {
-    if (work->resource == NULL)
-    {
-        return NULL;
-    }
     return *(Model**)((u8*)work->resource + 0x128);
 }
 

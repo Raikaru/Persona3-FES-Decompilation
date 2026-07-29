@@ -303,17 +303,21 @@ void func_00180030(void)
     CalendarDateTable* table;
     u32 i;
     u32 currentDate;
+    u32 recordDate;
+    u8* records;
 
     table = func_003bd890();
     for (i = 0; i < table->total; i++)
     {
         currentDate = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-        if (currentDate != table->records[i * 4])
+        recordDate = table->records[i * 4];
+        if (recordDate != currentDate)
         {
             continue;
         }
         currentDate = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-        if (currentDate != table->records[i * 4 + 1])
+        recordDate = table->records[i * 4 + 1];
+        if (recordDate != currentDate)
         {
             continue;
         }
@@ -343,8 +347,9 @@ void func_00180030(void)
             }
         }
 
-        func_0016d6b0(table->records[i * 4 + 2],
-                      table->records[i * 4 + 3]);
+        records = table->records;
+        func_0016d6b0(records[i * 4 + 2],
+                      records[i * 4 + 3]);
     }
 }
 

@@ -467,7 +467,7 @@ void brHero00263170(void)
     resource = (BrHeroResource*)FUN_0021cca0(text1, 4);
     rect[0] = 224.0f;
     rect[1] = 238.0f;
-    rect[2] = (1.0f + (float)resource->width) * (float)w[0x589] / (float)w[0x58a];
+    rect[2] = (1.0f + (float)resource->width) * (float)(s32)w[0x589] / (float)(s32)w[0x58a];
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0x794, rect);
     rect[0] = 109.0f;
@@ -476,11 +476,14 @@ void brHero00263170(void)
     rect[0] = 168.0f;
     rect[1] = 252.0f;
     FUN_00238bf0(w + 0x894, 3, w[0x58c], 2, rect);
+    for (i = 0; i < 3; i++) {
+        FUN_0021d950(w + i * 0x40 + 0x894, color);
+    }
 
     resource = (BrHeroResource*)FUN_0021cca0(text1, 5);
     rect[0] = 224.0f;
     rect[1] = 254.0f;
-    rect[2] = (1.0f + (float)resource->width) * (float)w[0x58b] / (float)w[0x58c];
+    rect[2] = (1.0f + (float)resource->width) * (float)(s32)w[0x58b] / (float)(s32)w[0x58c];
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0x954, rect);
 
@@ -515,6 +518,9 @@ void brHero00263170(void)
     rect[2] = (float)resource->width;
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0xcd8, rect);
+    rect[0] = 217.0f;
+    rect[1] = 301.0f;
+    FUN_00238dc0(w + 0xd18, 5, w[0x591], 2, rect);
 }
 
 #define setRenderState(...) (*setRenderState)(__VA_ARGS__)
@@ -601,10 +607,10 @@ void brHero00263db0(void)
     setRenderState(1, texture);
     renderQuad(w + 0x444, 4, 0, 1, 2);
     renderQuad(w + 0x444, 4, 0, 2, 3);
-    setRenderState(1, FUN_0021cce0(FUN_00233df0(0)));
+    setRenderState(1, (u32)FUN_00233df0(0));
     renderQuad(w + 0xa54, 4, 0, 1, 2);
     renderQuad(w + 0xa54, 4, 0, 2, 3);
-    setRenderState(1, FUN_0021cce0(FUN_00233df0(1)));
+    setRenderState(1, (u32)FUN_00233df0(1));
     for (i = 0; i < 2; i++)
     {
         renderQuad(w + i * 0x40 + 0x4c8, 4, 0, 1, 2);

@@ -220,6 +220,8 @@ extern u32 DAT_009589d0;
 extern u32 DAT_009589e0;
 extern u32 DAT_009589e4;
 extern u32 DAT_009589e8;
+#pragma alias DAT_009589e0_abs DAT_009589e0
+extern u8 DAT_009589e0_abs[];
 #pragma alias DAT_00958a60_abs DAT_00958a60
 extern u8 DAT_00958a60_abs[];
 extern u32 DAT_00958a90;
@@ -1525,6 +1527,8 @@ int FUN_00388df0(int param_1,int param_2)
 
   int iVar7;
 
+  u8 *entries;
+
   
 
   iVar4 = 0;
@@ -1532,6 +1536,13 @@ int FUN_00388df0(int param_1,int param_2)
   iVar7 = 0;
 
   iVar6 = 0;
+
+  if (param_1 >= 11) {
+    FUN_0019d3f0_evt("mt_evtMisc.c",0x42d);
+  }
+
+  entries = DAT_009589e0_abs;
+  FUN_00521408(entries,0,param_1 * 0xc);
 
 
   for (iVar5 = 0; iVar5 < param_1; iVar5 = iVar5 + 1) {
@@ -1542,11 +1553,11 @@ int FUN_00388df0(int param_1,int param_2)
 
       iVar1 = iVar5 * 0xc;
 
-      *(u32 *)(&DAT_009589e0 + iVar1) = 0xffffffff;
+      *(u32 *)(entries + iVar1) = 0xffffffff;
 
-      *(u32 *)(&DAT_009589e4 + iVar1) = 0xffffffff;
+      *(u32 *)(entries + iVar1 + 4) = 0xffffffff;
 
-      *(u32 *)(&DAT_009589e8 + iVar1) = 0xffffffff;
+      *(u32 *)(entries + iVar1 + 8) = 0xffffffff;
 
     }
 
@@ -1554,13 +1565,13 @@ int FUN_00388df0(int param_1,int param_2)
 
       iVar2 = iVar5 * 0xc;
 
-      *(int *)(&DAT_009589e0 + iVar2) = iVar4;
+      *(int *)(entries + iVar2) = iVar4;
 
       iVar4 = iVar4 + iVar1;
 
-      *(int *)(&DAT_009589e4 + iVar2) = iVar4 + -1;
+      *(int *)(entries + iVar2 + 4) = iVar4 + -1;
 
-      *(int *)(&DAT_009589e8 + iVar2) = iVar1;
+      *(int *)(entries + iVar2 + 8) = iVar1;
 
     }
 
@@ -1578,7 +1589,7 @@ int FUN_00388df0(int param_1,int param_2)
 
       for (iVar4 = 0; iVar4 < param_1; iVar4 = iVar4 + 1) {
 
-        iVar5 = *(int *)(&DAT_009589e8 + iVar4 * 0xc);
+        iVar5 = *(int *)(entries + iVar4 * 0xc + 8);
 
         if ((iVar5 != -1) && (iVar6 < iVar5)) {
 
@@ -1594,11 +1605,11 @@ int FUN_00388df0(int param_1,int param_2)
 
     }
 
-    if (((*(u32 *)(&DAT_009589e0 + iVar4 * 0xc) != 0xffffffff) &&
+    if (((*(u32 *)(entries + iVar4 * 0xc) != 0xffffffff) &&
 
-        (*(u32 *)(&DAT_009589e0 + iVar4 * 0xc) <= uVar3)) &&
+        (*(u32 *)(entries + iVar4 * 0xc) <= uVar3)) &&
 
-       (uVar3 <= *(u32 *)(&DAT_009589e4 + iVar4 * 0xc))) break;
+       (uVar3 <= *(u32 *)(entries + iVar4 * 0xc + 4))) break;
 
     iVar4 = iVar4 + 1;
 

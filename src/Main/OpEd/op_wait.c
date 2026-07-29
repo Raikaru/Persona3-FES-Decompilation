@@ -695,11 +695,9 @@ void opWait0026eed0(void)
         alpha = opWaitClamp01(timer, 0x28, 0x96);
     work->alpha = alpha;
     angle = DAT_007caf38 * ((f32)(s32)work->counters[2] / 30.0f) * 2.0f;
-    phase = func_0052e878(angle) * DAT_007cb15c;
-    scale = DAT_007cadb0;
     opWaitSetPoly(work->quads[8], points, 0.0f, 0.0f, 640.0f, 448.0f,
-                  phase + scale,
-                  phase + scale);
+                  DAT_007cadb0 + DAT_007cb15c * func_0052e878(angle),
+                  DAT_007cadb0 + DAT_007cb15c * func_0052e878(angle));
     if (mode == 1)
         alpha = 1.0f - opWaitClamp01(timer, 0, 10);
     else if (mode == 0)
@@ -1036,51 +1034,65 @@ void func_00271230(u32* param)
     u8* context;
     RwIm2DVertex* vertex;
     RwCamera* camera;
+    f32 recipZ;
     f32 width;
     f32 height;
-    f32 rawX;
-    f32 rawY;
     f32 x;
     f32 y;
     f32 angle;
+    f32 angle2;
     f32 distance;
     f32 wave;
+    f32 wave2;
     f32 scale;
     f32 sine;
     f32 cosine;
+    f32 transformedX;
+    f32 transformedY;
     f32 alpha;
 
     context = (u8*)(uintptr_t)param[3];
     camera = kwlnGetMainCamera();
-    width = (f32)*(s32*)(context + 0x2c);
-    height = (f32)*(s32*)(context + 0x30);
-    rawX = *(f32*)&param[1] * 640.0f;
-    rawY = *(f32*)&param[2] * 448.0f;
-    x = rawX - 100.0f;
-    y = rawY - 100.0f;
+    recipZ = 1.0f / camera->nearPlane;
+    width = (f32)*(s32*)(context + 0x2c) / 180.0f;
+    height = (f32)*(s32*)(context + 0x30) / 512.0f;
+    x = *(f32*)&param[1] * 640.0f - 100.0f;
+    y = *(f32*)&param[2] * 448.0f - 100.0f;
     angle = func_0052ea18(y, x);
-    distance = sqrtf(x * x + y * y);
-    wave = func_00269c80(fGpffff8248 * (distance / 1200.0f -
-                                           width / 180.0f) * 2.0f);
-    wave *= 20.0f;
+    distance = sqrtf(y * y + x * x);
+    wave = func_00269c80(fGpffff8248 *
+                         (distance / 1200.0f - width) * 2.0f) * 20.0f;
     if (wave > 0.0f)
         wave = -wave;
-    scale = distance + wave * (distance / 400.0f);
-    (void)func_00269c80(fGpffff8248 * (distance / 640.0f -
-                                       height / 512.0f) * 2.0f);
-    sine = func_00269c80(angle);
-    cosine = func_00269ca0(angle);
-    wave = sine * scale + 100.0f;
-    scale = cosine * scale + 100.0f;
-    alpha = (fGpffff839c * (1.0f -
-             func_00269c80(fGpffff8248 * (distance / 1200.0f +
-             cosine / fGpffff81f8) * 2.0f) * 0.5f + 0.5f) +
+    scale = distance + wave * (y / 400.0f);
+    angle2 = angle + func_00269c80(fGpffff8248 *
+                                   (distance / 640.0f - height) * 2.0f) *
+                     0.0f;
+    cosine = func_00269ca0(angle2);
+    transformedX = cosine * scale + 100.0f;
+    sine = func_00269c80(angle2);
+    transformedY = sine * scale + 100.0f;
+
+    x = *(f32*)&param[1] * 640.0f - 255.0f;
+    y = *(f32*)&param[2] * 448.0f - 255.0f;
+    angle = func_0052ea18(y, x);
+    distance = sqrtf(y * y + x * x);
+    wave = func_00269c80(angle + fGpffff8248 *
+                         (distance / 300.0f - width) * 2.0f);
+    wave2 = func_00269c80((f32)*(s32*)(context + 0x30) / 30.0f * 3.0f -
+                          distance / 100.0f);
+    wave = func_00269c80(fGpffff8248 *
+                         (fGpffff82fc * wave2 + distance / 1200.0f +
+                          angle / fGpffff81f8) * 2.0f);
+    alpha = (fGpffff839c * (1.0f - (wave * 0.5f + 0.5f)) +
              fGpffff82fc) * 255.0f * *(f32*)(context + 0x1178);
+
     vertex = opWaitVertex(param);
-    opWaitSetVertex(vertex, rawX,
-                    rawY,
-                    scale / 640.0f, wave / 448.0f,
-                    alpha, 1.0f / camera->nearPlane);
+    opWaitSetVertex(vertex,
+                    *(f32*)&param[1] * 640.0f,
+                    *(f32*)&param[2] * 448.0f,
+                    transformedX / 640.0f, transformedY / 448.0f,
+                    alpha, recipZ);
 }
 
 // FUN_002716D0 NONMATCHING

@@ -1454,18 +1454,10 @@ void func_0010c7d0(HSfdQueueSlot* slot)
     s32 enabled;
 
     func_00503080();
-    if (slot == NULL)
+    while (slot->state != 1)
     {
-        FUN_0050d3f0();
-        return;
     }
     entry = slot->entry;
-    if (entry == NULL)
-    {
-        slot->state = 0;
-        FUN_0050d3f0();
-        return;
-    }
 
     switch (entry->kind)
     {
@@ -2162,6 +2154,8 @@ HSfdImage* func_0010e0d0(const u8* stream)
     HSfdImage* image;
     s32 bits;
     const u8* payload;
+    s32 paletteBits;
+    s32 paletteBytes;
 
     payload = stream + 0x40;
     if ((stream[0] != 2) || (stream[1] != 0) ||
@@ -2197,77 +2191,99 @@ HSfdImage* func_0010e0d0(const u8* stream)
             return NULL;
     }
 
-    image = func_004cbe00((u32)(stream[0x12] | (stream[0x13] << 8)),
-                          (u32)(stream[0x14] | (stream[0x15] << 8)), bits);
-    if (image == NULL)
-    {
-        return NULL;
-    }
+    if (bits < 0x10)
+        bits = 0x20;
+    image = func_004cbe00(*(const u16*)(stream + 0x12),
+                          *(const u16*)(stream + 0x14), bits);
 
     func_004cbf20(image);
-    image->stride = image->width * 4;
     if (stream[0x10] != 0)
     {
-        if (bits == 4)
+        switch (stream[0x11])
         {
-            func_0010df60(image, payload);
+            case 0:
+                paletteBits = 0x20;
+                break;
+            case 2:
+            case 0x0A:
+                paletteBits = 0x10;
+                break;
+            default:
+                paletteBits = 0;
+                break;
         }
-        else if (bits == 8)
+        paletteBytes = ((1 << bits) * stream[0x10] * paletteBits) >> 3;
+
+        switch (stream[0x11])
         {
-            func_0010de40(image, payload);
+            case 0:
+                func_0010df60(image, payload);
+                break;
+            case 1:
+            {
+                u8* dst;
+                s32 count;
+                s32 i;
+
+                dst = image->palette;
+                count = 1 << image->depth;
+                for (i = 0; i < count; i++)
+                {
+                    u16 pixel = ((const u16*)payload)[i];
+                    dst[i * 4] = (pixel & 0x1f) << 3;
+                    dst[i * 4 + 1] = ((pixel >> 5) & 0x1f) << 3;
+                    dst[i * 4 + 2] = ((pixel >> 10) & 0x1f) << 3;
+                    dst[i * 4 + 3] = i == 0 ? 0 : 0xff;
+                }
+                break;
+            }
+            case 2:
+            case 0x0A:
+                break;
         }
+        func_0010e010(image, bits);
+        payload += paletteBytes;
     }
 
     switch (stream[0x16])
     {
         case 0:
-            if (stream[0x10] != 0)
-                func_0010df60(image, payload);
-            func_0010e010(image, bits);
+            func_0010de40(image, payload);
             break;
         case 1:
-            func_0010e010(image, bits);
             func_0010ddc0(image, payload);
             break;
         case 2:
         case 0x0A:
-            if (stream[0x10] != 0)
-                func_0010de40(image, payload);
             func_0010dd10(image, payload);
-            func_0010e010(image, bits);
             break;
         case 0x13:
         case 0x1B:
-            func_0010e010(image, bits);
             func_0010dee0(image, payload);
             break;
         case 0x14:
         case 0x24:
         case 0x2C:
-            func_0010e010(image, bits);
-            func_0010df60(image, payload);
-            break;
-        default:
             if (image->pixels != NULL)
             {
-                u8* dst = image->pixels;
+                u8* dst;
                 u32 y;
                 u32 x;
+
+                dst = image->pixels;
                 y = 0;
                 while (y < image->height)
                 {
                     x = 0;
                     while (x < image->width)
                     {
-                        dst[x] = payload[0];
-                        payload++;
+                        *dst++ = *payload++;
                         x++;
                     }
-                    dst += image->stride;
+                    dst += image->stride - image->width;
                     y++;
                 }
             }
-            func_0010e010(image, bits);
             break;
     }
     return image;

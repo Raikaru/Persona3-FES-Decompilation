@@ -90,7 +90,7 @@ static inline f32 opMenuClamp01(s32 value, s32 begin, s32 end)
     return (f32)(value - begin) / (f32)(end - begin);
 }
 
-static void opMenuSetRect(u32 offset, f32 x, f32 y, f32 width, f32 height)
+static inline void opMenuSetRect(u32 offset, f32 x, f32 y, f32 width, f32 height)
 {
     f32 rect[4];
     rect[0] = x;
@@ -133,14 +133,23 @@ static void opMenuSetPoly(u32 offset, f32 x, f32 y, f32 width, f32 height,
     func_0021d890(opMenuData(offset), poly);
 }
 
-static void opMenuSetIcon(u32 offset, void* frame, f32 x, f32 y)
+static inline void opMenuSetIcon(u32 offset, void* frame, f32 x, f32 y)
 {
-    f32 rect[4];
-    rect[0] = x;
-    rect[1] = y;
-    rect[2] = (f32)*(s32*)((u8*)frame + 0x0c);
-    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
-    func_0021d8e0(opMenuData(offset), rect);
+    f32* destination;
+    f32 width;
+    f32 height;
+
+    destination = (f32*)opMenuData(offset);
+    width = (f32)*(s32*)((u8*)frame + 0x0c);
+    height = (f32)*(s32*)((u8*)frame + 0x10);
+    destination[0x00 / 4] = x;
+    destination[0x04 / 4] = y;
+    destination[0x40 / 4] = x + width;
+    destination[0x44 / 4] = y;
+    destination[0x80 / 4] = x + width;
+    destination[0x84 / 4] = y + height;
+    destination[0xc0 / 4] = x;
+    destination[0xc4 / 4] = y + height;
 }
 
 
