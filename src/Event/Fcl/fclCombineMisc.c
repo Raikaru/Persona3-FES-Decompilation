@@ -627,7 +627,6 @@ s16 FUN_003d5dc0(u32 param_1)
     return u_NDEFGHIJKLM_006a53b0[iVar4];
 }
 
-#pragma optimization_level 3
 // FUN_003D5E60 NONMATCHING
 
 
@@ -811,7 +810,6 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
   return uVar7;
 
 }
-#pragma optimization_level 2
 
 // FUN_003D6200 NONMATCHING
 

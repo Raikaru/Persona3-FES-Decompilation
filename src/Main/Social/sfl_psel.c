@@ -290,7 +290,6 @@ void sflPsel00260d20(void)
     FUN_00261480();
 }
 
-#pragma optimization_level 3
 // FUN_00260e00 NONMATCHING
 void sflPsel00260e00(void)
 {
@@ -328,8 +327,7 @@ void sflPsel00260e00(void)
 
     (*state)(8, 0);
     (*state)(6, 1);
-    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x3a));
-    (*state)(1, texture);
+    (*state)(1, FUN_0021cce0(FUN_0021cca0(texture, 0x3a)));
     (*draw)((u32*)((u8*)work + 0x710), 4, 0, 1, 2);
     (*draw)(&work[0x1c4], 4, 0, 2, 3);
     (*state)(1, 0);
@@ -370,20 +368,16 @@ void sflPsel00260e00(void)
     (*state)(6, 1);
     (*state)(6, 1);
     (*state)(8, 0);
-    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x34));
-    (*state)(1, texture);
+    (*state)(1, FUN_0021cce0(FUN_0021cca0(texture, 0x34)));
     (*draw)((u32*)((u8*)work + 0x410), 4, 0, 1, 2);
     (*draw)(&work[0x104], 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x35));
-    (*state)(1, texture);
+    (*state)(1, FUN_0021cce0(FUN_0021cca0(texture, 0x35)));
     (*draw)((u32*)((u8*)work + 0x510), 4, 0, 1, 2);
     (*draw)(&work[0x144], 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x36));
-    (*state)(1, texture);
+    (*state)(1, FUN_0021cce0(FUN_0021cca0(texture, 0x36)));
     (*draw)((u32*)((u8*)work + 0x610), 4, 0, 1, 2);
     (*draw)(&work[0x184], 4, 0, 2, 3);
 }
-#pragma optimization_level 2
 
 extern void FUN_0021d890(void*, const void*);
 
@@ -1312,7 +1306,6 @@ u32 func_002168a0(void)
     return *sSflPsel & 0x20;
 }
 
-#pragma optimization_level 3
 // FUN_002168F0 NONMATCHING
 void func_002168f0(void)
 {
@@ -1397,29 +1390,25 @@ void func_002168f0(void)
     (*state)(8, 0);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    texture = func_0021cce0(func_0021cca0(texture, 0x1e));
-    (*state)(1, texture);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x1e)));
     draw = (SflPselDrawCallback*)D_0096009C_abs;
     (*draw)((u32*)(work + 0x5c90), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5c90), 4, 0, 2, 3);
     (*draw)((u32*)(work + 0x5d90), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5d90), 4, 0, 2, 3);
-    texture = func_0021cce0(func_0021cca0(sflResGetPersonaChangeSprite(), 0x1f));
-    (*state)(1, texture);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x1f)));
     (*draw)((u32*)(work + 0x5e90), 4, 0, 1, 2);
     (*draw)((u32*)(work + 0x5e90), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    if (*(u32*)(work + 0x5330) > 8)
+    if ((s32)*(u32*)(work + 0x5330) > 8)
     {
-        texture = func_0021cce0(func_0021cca0(sflResGetPersonaChangeSprite(), 0x1d));
-        (*state)(1, texture);
+        (*state)(1, func_0021cce0(func_0021cca0(texture, 0x1d)));
         draw = (SflPselDrawCallback*)D_0096009C_abs;
         (*draw)((u32*)(work + 0x5f90), 4, 0, 1, 2);
         (*draw)((u32*)(work + 0x5f90), 4, 0, 2, 3);
     }
 }
-#pragma optimization_level 2
 
 // FUN_002170C0
 void func_002170c0(void)
@@ -1582,8 +1571,6 @@ void func_00217610(void)
         func_0021eac0(work + 0x5a40 + i * 0x100, func_0021ea00(0x28));
     }
 }
-// Reconstructed from retail draw/alpha sequences at offsets 0x54-0x908; added logic has zero unjustified bytes.
-#pragma optimization_level 3
 // FUN_00217780 NONMATCHING
 void func_00217780(void)
 {
@@ -1693,14 +1680,14 @@ void func_00217780(void)
                       (u32*)(work + 0x10 + *(u32*)(work + 0x5c58) * 0x10),
                       0, panelOrigin, *(f32*)(work + 0x5c4c));
     }
-    if (*(u32*)(work + 0x5330) < 9)
+    if (*(s32*)(work + 0x5330) < 9)
     {
         scrollY = 0.0f;
     }
     else
     {
-        scrollY = (f32)*(u32*)(work + 0x5c60) * 214.0f /
-                  (f32)(*(u32*)(work + 0x5330) - 8) + 89.0f;
+        scrollY = (f32)*(s32*)(work + 0x5c60) * 214.0f /
+                  (f32)(*(s32*)(work + 0x5330) - 8) + 89.0f;
     }
     frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x1d);
     origin[0] = 573.0f;
@@ -1738,7 +1725,6 @@ void func_00217780(void)
     func_0021d950(work + 0x5d90, color2);
     func_0021d950(work + 0x5e90, color2);
 }
-#pragma optimization_level 2
 
 // FUN_002180B0
 u32 func_002180b0(u32 value)

@@ -395,33 +395,36 @@ void sflResult001f98d0(void)
     }
 }
 
-#pragma optimization_level 3
 // FUN_001f9a80 NONMATCHING
 void sflResult001f9a80(void)
 {
     u8* base;
     s32 i;
-    s32 count;
 
     K_ASSERT(sSflResult != NULL, 0x8c);
     base = (u8*)sSflResult;
     *(u32*)(base + 0x3408) = 0;
     if (*(u32*)(base + 8) == 1) {
-        count = *(s32*)(base + 0x3418);
-        for (i = 0; i < count; i++) {
+        for (i = 0; i < *(s32*)(base + 0x3418); i++) {
             u32 index = *(u32*)(base + 0x1c + i * 4);
             u8* entry = base + index * 0x670 + 0x68;
-            float scale[3] = {10.0f, 10.0f, 10.0f};
+            float scale[3];
             float origin[2] = {(float)i * 220.0f + 320.0f, 184.0f};
             float rect[4];
-            float quad[3] = {0.0f, 1.0f, 0.0f};
+            float quad[3];
             u32 frame;
 
+            scale[0] = 10.0f;
+            scale[1] = 10.0f;
+            scale[2] = 10.0f;
             sflResSetSpriteScale(entry, scale);
             frame = func_0020c500(200.0f, entry);
             func_0020c400(frame, entry, origin, rect);
             rect[1] += 100.0f;
             sflResSetSpritePosition(entry, rect);
+            quad[0] = 0.0f;
+            quad[1] = 1.0f;
+            quad[2] = 0.0f;
             func_004bdde0(180.0f, quad, quad, 0);
             sflResSetSpriteRotation(entry, quad);
         }
@@ -438,7 +441,6 @@ void sflResult001f9a80(void)
     func_001f7210();
     *(u32*)(base + 4) = 7;
 }
-#pragma optimization_level 2
 
 // FUN_001f9c60
 void sflResult001f9c60(void)
@@ -531,7 +533,6 @@ void sflResult001f9e90(u16 owner, s32 exp)
     FUN_005225a8(0x684bf8, owner, level);
     (void)level;
 }
-#pragma optimization_level 3
 #define FUN_00182c50 FUN_00182c50_typed
 #define FUN_001831e0 FUN_001831e0_typed
 #define FUN_0016da50 FUN_0016da50_typed
@@ -629,7 +630,6 @@ void func_001fa0d0(void)
 #undef FUN_00182c50
 #undef FUN_001831e0
 #undef FUN_0016da50
-#pragma optimization_level 2
 
 
 // FUN_001fa450
@@ -1912,8 +1912,8 @@ u32 func_001fba70(short param_1)
   iVar6 = 0;
 
   do {
-
     psVar7 = psGpffffb754;
+
 
     if (iVar9 <= iVar6) {
 
@@ -2563,7 +2563,6 @@ void func_001fccc0(u8* src, u8* dst, u32 skillId)
     event_id = *(s16*)(src + 2);
     FUN_00170710(event_id, (s16)i, (s16)(currentSkill - 1));
 }
-#pragma optimization_level 3
 // FUN_001FCE20 NONMATCHING
 
 
@@ -2781,7 +2780,6 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
   return;
 
 }
-#pragma optimization_level 2
 // FUN_001FD350 NONMATCHING
 
 
