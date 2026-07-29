@@ -719,6 +719,7 @@ extern u64 FUN_00351bb0();
 extern u64 FUN_004be310();
 extern u64 FUN_004c6b20();
 extern f32 FUN_0052e930(f32 x);
+/* This no-argument declaration is caller-specific; the state-table callback uses a camera pointer. */
 extern void FUN_002b6460();
 
 extern f32 fGpffff812c;
@@ -2215,7 +2216,6 @@ typedef struct BtlCameraTargetingWork
 } BtlCameraTargetingWork;
 
 
-extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
 // FUN_002a79f0 NONMATCHING
 void btlCameraFrameActionTargeting(BtlCamera* camera)
 {
@@ -3302,6 +3302,7 @@ extern u64 FUN_00308a50(u16 param_1);
 extern u8 FUN_003093a0();
 extern u64 FUN_0030b5a0();
 extern u64 FUN_0030c3a0();
+/* Broad K&R declarations preserve this function's retail call ABI; typed callers below narrow them locally. */
 extern u64 FUN_004be1e0();
 extern u64 FUN_004c31b0();
 extern float FUN_004c69f0();
@@ -5590,6 +5591,7 @@ void FUN_002b47b0(BtlCamera* camera)
   s16 state;
   B47Scratch scratch;
   extern u8 (*gp0xffffb714)[0x4c];
+  /* Caller-specific typed ABI: this path supplies the vector and mode arguments explicitly. */
   extern void FUN_004be1e0(RwV3d*, const RwV3d*, int, void*);
 
   action = camera->action;
@@ -5698,6 +5700,7 @@ void FUN_002b4c00(int param_1)
 
 void FUN_002b4db0(int param_2,float param_1)
 {
+  /* Caller-specific typed ABIs retain float arguments that the broad declarations do not describe. */
   extern void FUN_004c31b0(void *,void *,f32,int);
   extern f32 FUN_0052e930(f32);
   int iVar1;
@@ -6072,6 +6075,7 @@ void FUN_002b58f0(BtlCamera* param_1)
     #define fStack_118 work.fStack_118
     #define matrix work.matrix
     #define quat work.quat
+    /* Caller-specific typed ABIs retain the matrix/vector arguments used by this camera path. */
     extern void FUN_004c31b0(RwMatrix* mat, const RwV3d* axis, f32 angle, s32 mode);
     extern void FUN_004be1e0(RwV3d* out, const RwV3d* basis, s32 mode, void* source);
 
@@ -9246,6 +9250,7 @@ void func_002ad770(BtlCamera* camera)
 // FUN_002ad880
 void func_002ad880(BtlCamera *camera, float angle, float distanceScale, float heightScale, float minimumDistance)
 {
+  /* Caller-specific typed ABIs retain the orbit transform arguments used by this path. */
   extern void FUN_004c31b0(RwMatrix *matrix, const RwV3d *axis, f32 angle, s32 mode);
   extern void FUN_004be1e0(RwV3d *out, const RwV3d *basis, s32 mode, void *source);
   extern RwV3d D_00697890;
@@ -9377,6 +9382,7 @@ void func_002ADD00(void)
 
 u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4)
 {
+    /* Caller-specific typed ABIs: retail passes pointer arguments for these math calls here. */
     extern u64 FUN_002d1de0(RtQuat* out, RwV3d* first, RwV3d* second);
     extern f32 FUN_002d1f30(f32* first, f32* second);
     extern f32 FUN_004c69f0(f32* out, f32* in);

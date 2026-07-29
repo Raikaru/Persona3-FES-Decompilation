@@ -286,6 +286,7 @@ void FUN_003bdde0(void)
 
 {
   extern u32 FUN_0016e100(s16 param_1);
+  /* This caller uses the s32 ABI; the settled callers above intentionally materialize long arguments. */
   extern s32 FUN_001717c0(s32 param_1);
   extern s32 FUN_00172160(s32 param_1);
   extern s8 FUN_0016dba0(s16 param_1);

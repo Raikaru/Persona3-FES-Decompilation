@@ -4316,6 +4316,7 @@ void FUN_003a6b00(u32 *param_1)
 
 
 {
+  /* Caller-specific typed ABI: this path passes the resource handle in a0. */
   extern void FUN_003a8d60(u32 resource);
 
   u32 *mesHandles;

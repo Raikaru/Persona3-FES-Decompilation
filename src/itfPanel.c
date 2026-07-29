@@ -2846,7 +2846,6 @@ void FUN_003ac500(int param_1,u64 param_2)
   auStack_10[1] = p[5];
   auStack_10[2] = p[6];
   auStack_10[3] = p[7];
-  asm ("" : "+m"(auStack_10));
 
   FUN_003b4d10(auStack_10,(u32 *)(DAT_006a212c_abs - 0xc),p[3],0x240,param_2);
 
@@ -3141,25 +3140,21 @@ u64 FUN_003aca90(u64 param_1,u64 param_2)
 // FUN_003ACAB0
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 u32 FUN_003acab0(u64 param_1,u64 param_2)
 {
   u32 uVar1;
 
-  if ((DAT_007cd500 & 8) == 0) goto clearcase;
-  DAT_007cd4e8 = DAT_007cd4e8 | 1;
-  uVar1 = 1;
-  goto done;
-clearcase:
-  if ((DAT_007cd500 & 0x20) != 0) {
-    FUN_003b2400(param_2);
+  if ((DAT_007cd500 & 8) != 0) {
+    DAT_007cd4e8 = DAT_007cd4e8 | 1;
+    uVar1 = 1;
+  } else {
+    if ((DAT_007cd500 & 0x20) != 0) {
+      FUN_003b2400(param_2);
+    }
+    uVar1 = 0;
   }
-  uVar1 = 0;
-done:
   return uVar1;
 }
-#pragma pop
 
 // FUN_003ACB10
 u64 FUN_003acb10(int param_1,int param_2)

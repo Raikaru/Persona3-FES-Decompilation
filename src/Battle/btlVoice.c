@@ -701,6 +701,7 @@ s32 func_002f0e30(BtlAction* action)
 void func_002f0ea0(u64 *param_1)
 
 {
+  /* Caller-specific return width: retail consumes only the s32 result in this path. */
   extern s32 FUN_0030b5a0();
   short sVar1;
   u32 bVar2;
@@ -3095,6 +3096,7 @@ LAB_002f5d34:
 void func_002f5d80(u32 param_1)
 
 {
+  /* Caller-specific return widths: this path consumes the narrow integer results. */
   extern u32 FUN_0027f930();
   extern s32 FUN_00287580();
   u32 bVar1;
@@ -4094,6 +4096,7 @@ extern void FUN_00282d40_call(BtlUnit* unit, s16 id, u32 blend, s8 mode,
                               f32 speed);
 #pragma alias FUN_00282d40_call FUN_00282d40
 extern u64 FUN_002831c0();
+/* Broad declarations in this block intentionally coexist with caller-local result-width aliases below. */
 extern u64 FUN_002838d0();
 extern u64 FUN_00283c50(f32 value, u32 handle);
 extern u64 FUN_00284200();
@@ -4215,6 +4218,7 @@ extern u64 FUN_002ffdf0();
 extern u64 FUN_003004f0();
 extern u64 FUN_00300560();
 extern u64 FUN_00300580();
+/* These spellings intentionally select different return widths at their respective call sites. */
 extern u64 FUN_00301ca0();
 extern u32 func_00301ca0();
 extern u64 FUN_003068d0();
@@ -5323,6 +5327,7 @@ u32 func_002e4430(BtlAction* action, s32 skillId)
 u32 func_002e4520(int param_1,u32 param_2,u32 param_3)
 
 {
+  /* Caller-specific return widths keep these two results in the retail integer register class. */
   extern u32 FUN_00301ca0();
   extern u32 FUN_003068d0();
   u32 uVar1;
@@ -7627,6 +7632,7 @@ void func_002e95f0(void)
 // FUN_002e97e0
 int func_002e97e0(void)
 {
+  /* Caller-specific return width: retail consumes only the s32 result in this path. */
   extern s32 FUN_0030b5a0();
   BtlUnit* enemy;
   BtlAction* action;
@@ -8256,6 +8262,7 @@ void func_002eabb0(void)
 void func_002eabf0(void)
 
 {
+  /* Caller-specific return widths: this path consumes u32 results, not the broad u64 forms. */
   extern u32 FUN_002dd4a0();
   extern u32 FUN_002dd5e0();
   extern u32 FUN_00285f20();
@@ -8440,6 +8447,7 @@ u32 func_002eb250(BtlAction* action)
 void func_002eb2c0(void)
 
 {
+  /* Caller-specific return widths: this path consumes u32 results, not the broad u64 forms. */
   extern u32 FUN_002dd4a0();
   extern u32 FUN_002dd5e0();
   extern u32 FUN_00284c90();
@@ -9444,6 +9452,7 @@ void func_002ed350(void)
 u32 func_002ed360(u64 *param_1)
 
 {
+  /* Caller-specific ABI block: retail consumes the listed narrow results in this dispatcher. */
   extern u32 FUN_002baf90();
   extern s32 FUN_0027e390();
   extern s32 FUN_0030b5a0();
@@ -10527,6 +10536,7 @@ void func_002ef7e0(void)
 // FUN_002ef9d0
 int func_002ef9d0(void)
 {
+  /* Caller-specific return width: retail consumes only the s32 result in this path. */
   extern s32 FUN_0030b5a0();
   BtlUnit* enemy;
   BtlAction* action;

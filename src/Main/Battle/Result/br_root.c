@@ -1173,8 +1173,8 @@ void *func_001f2300(KwlnTask *task)
         if ((BR_U32(work, 4) & 2) == 0) {
             u16 v;
             sflResRequestTutorialArchive();
-            v = *(volatile u16*)0x007E094E;
-            if ((v & 0x9ff) != 0 || (*(volatile u16*)0x007E094C & 0x10) != 0) {
+            v = *(u16*)0x007E094E;
+            if ((v & 0x9ff) != 0 || (*(u16*)0x007E094C & 0x10) != 0) {
                 func_001f4a00();
             }
         }
@@ -1192,8 +1192,8 @@ void *func_001f2300(KwlnTask *task)
             BR_U32(work, 0x1fd5c) = temp + 1;
         }
         if (BR_U32(work, 0x1fd5c) == 15 &&
-            ((*(volatile u16*)0x007E094E & 0x40) != 0 ||
-             (*(volatile u16*)0x007E094C & 0x10) != 0)) {
+            ((*(u16*)0x007E094E & 0x40) != 0 ||
+             (*(u16*)0x007E094C & 0x10) != 0)) {
             func_00258a50();
             BR_U32(work, 8) = 9;
         } else {
@@ -1224,8 +1224,8 @@ void *func_001f2300(KwlnTask *task)
         u32 ready;
 
         if (sflCount0025b640() != 0 &&
-            (*(volatile u16 *)0x007E094E & 0x40) == 0 &&
-            (*(volatile u16 *)0x007E094C & 0x10) == 0) {
+            (*(u16 *)0x007E094E & 0x40) == 0 &&
+            (*(u16 *)0x007E094C & 0x10) == 0) {
             break;
         }
         sflCount0025b5f0();

@@ -5099,7 +5099,6 @@ void FUN_0042b050(int param_1)
 
   float fVar8;
 
-  float fVar9;
 
   float fVar10;
 
@@ -5149,7 +5148,6 @@ void FUN_0042b050(int param_1)
 
   }
 
-  fVar9 = fStack_8;
 
   for (iVar7 = 1; iVar7 < 4; iVar7 = iVar7 + 1) {
     row = (YRuntimeUnitRow *)&DAT_008717a0 + iVar7;

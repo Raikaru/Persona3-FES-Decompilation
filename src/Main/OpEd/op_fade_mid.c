@@ -144,17 +144,7 @@ extern u32 *DAT_007ce3d0;
 
 static inline u8 opFadeColorByte(f32 value)
 {
-    s32 result;
-
-    if (value < 2147483648.0f)
-    {
-        result = (s32)value & 0xff;
-    }
-    else
-    {
-        result = ((s32)(value - 2147483648.0f) | 0x80000000) & 0xff;
-    }
-    return (u8)result;
+    return (u8)(u32)value;
 }
 
 

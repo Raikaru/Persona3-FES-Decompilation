@@ -131,8 +131,6 @@ void FUN_003af7a0(int param_1,u64 param_2);
 #define FUN_003af770(...) ((void (*)(...))FUN_003af770)(__VA_ARGS__)
 #define FUN_003af7a0(...) ((void (*)(...))FUN_003af7a0)(__VA_ARGS__)
 
-#pragma push
-#pragma opt_rebuildconditionals off
  
 #undef FUN_003ae420
 // FUN_003AE420
@@ -185,7 +183,6 @@ second_done:
   FUN_0017c7f0(first, (s16)second);
   return 0;
 }
-#pragma pop
 #define FUN_003ae420(...) ((u64 (*)(...))FUN_003ae420)(__VA_ARGS__)
 #undef FUN_003ae560
 // FUN_003AE560

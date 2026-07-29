@@ -889,16 +889,10 @@ u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4)
     float y;
     float z;
   } values;
-  float source10;
-  float source14;
-  float source18;
   struct V3 *input;
 
   input = (struct V3 *)param_2;
   values = *input;
-  source10 = 0.0f;
-  source14 = 0.0f;
-  source18 = 0.0f;
 
   if (param_1 == 0) {
     return 0;

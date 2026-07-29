@@ -2994,6 +2994,7 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
 }
 #pragma optimization_level 3
+#pragma push
 #pragma opt_common_subs on
  
 // FUN_002A0440 NONMATCHING
@@ -3532,7 +3533,7 @@ u32 FUN_002a0440(float *param_1)
   return uVar9;
 
 }
-#pragma opt_common_subs on
+#pragma pop
 #pragma optimization_level 2
 // FUN_002A10E0
 

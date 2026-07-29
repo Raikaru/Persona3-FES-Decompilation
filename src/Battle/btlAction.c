@@ -1030,6 +1030,7 @@ void btlActionInitStateStart(BtlAction* action)
                 btlPacketRegister(pkt, BTLPACKET_TYPE_3D);
             }
             {
+                /* This caller needs the u16 second-argument ABI; the later skill caller needs u32. */
                 extern s64 FUN_002838d0(BtlUnit* unit, u16 a, f32 b);
                 animLen = (u32)(s16)FUN_002838d0(unit, 0xc, 1.0f);
             }
@@ -2840,6 +2841,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     BtlPacket* packet;
     BtlPacket* animPacket;
     BtlPacket* subHitPacket;
+    /* Per-caller ABI declarations: the RoundUp caller intentionally uses a float-first signature. */
     extern BtlPacket* FUN_00284200(BtlUnit*, u16, u32, u32, f32);
     extern s64 FUN_002835e0(BtlUnit*, u16, f32);
     extern s16 FUN_00283750(BtlUnit*, u16, f32);
@@ -3695,9 +3697,9 @@ void btlActionInitStateSkill(BtlAction* action)
 extern u32 func_0027fc80(BtlUnit *);
 extern u32 func_00280870(s32, u32, RwV3d *, u32, u32, u32);
 extern s64 func_002835e0(BtlUnit *, u16, f32);
+/* This skill path keeps the u32 argument live; other callers intentionally use u16. */
 extern s64 func_002838d0(BtlUnit *, u32, f32);
 extern u16 func_00283a70(BtlUnit *, u32);
-extern s64 func_00284040(BtlUnit *, BtlUnit *, s16, s32);
 extern s64 func_002b7060(u32);
 extern s32 func_002b8f90(u32);
 extern f32 func_002b9590(BtlUnit *);
@@ -7202,6 +7204,7 @@ void btlActionInitStateRoundUp(BtlAction* action)
 // FUN_00298610 NONMATCHING
 void btlActionUpdateStateRoundUp(BtlAction* action)
 {
+    /* Retail passes the scalar in f12 here, unlike the unit-first callers of this symbol. */
     extern BtlPacket* FUN_00284200(f32, BtlUnit*, u16, u16, u16);
     BtlPacket* packet;
     BtlPacket* skillPacket;
