@@ -30,6 +30,14 @@ extern u32 DAT_006a1fdc;
 extern u32 DAT_006a1fec;
 extern u32 DAT_006a1ffc;
 extern u32 DAT_006a200c;
+#pragma alias DAT_006a1fdc_abs DAT_006a1fdc
+extern u32 DAT_006a1fdc_abs[];
+#pragma alias DAT_006a1fec_abs DAT_006a1fec
+extern u32 DAT_006a1fec_abs[];
+#pragma alias DAT_006a1ffc_abs DAT_006a1ffc
+extern u32 DAT_006a1ffc_abs[];
+#pragma alias DAT_006a200c_abs DAT_006a200c
+extern u32 DAT_006a200c_abs[];
 extern s16 DAT_006a2060[];
 extern s16 DAT_006a2080[];
 extern u32 DAT_006a20a0;
@@ -1612,148 +1620,91 @@ void FUN_003aa370(int param_1,u64 param_2)
   u32 *puVar1;
 
   int iVar2;
+  int scaled;
 
-  int iStack_10;
-
-  int iStack_c;
-
-  int iStack_8;
-
-  int iStack_4;
+  int rect[4];
 
   
 
   puVar1 = *(u32 **)(param_1 + 8);
 
   iVar2 = *(int *)(param_1 + 0x38) * 0x39;
-
+  scaled = iVar2 >> 7;
   if (iVar2 < 0) {
-
-    iVar2 = iVar2 + 0x7f;
-
+    scaled = (iVar2 + 0x7f) >> 7;
   }
+  DAT_006a1fdc_abs[0] = scaled;
 
-  DAT_006a1fdc = iVar2 >> 7;
-
-  iStack_10 = *(int *)(param_1 + 0x10);
-
-  iStack_c = *(u32 *)(param_1 + 0x14);
-
-  iStack_8 = *(u32 *)(param_1 + 0x18);
-
-  iStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  FUN_003b4d10(&iStack_10,0x6a1fd0,*(u32 *)(param_1 + 0xc),0x490,param_2);
+  rect[0] = *(int *)(param_1 + 0x10);
+  rect[1] = *(u32 *)(param_1 + 0x14);
+  rect[2] = *(u32 *)(param_1 + 0x18);
+  rect[3] = *(u32 *)(param_1 + 0x1c);
+  FUN_003b4d10(rect,0x6a1fd0,*(u32 *)(param_1 + 0xc),0x490,param_2);
 
   iVar2 = *(int *)(param_1 + 0x38) * 0x26;
-
+  scaled = iVar2 >> 7;
   if (iVar2 < 0) {
-
-    iVar2 = iVar2 + 0x7f;
-
+    scaled = (iVar2 + 0x7f) >> 7;
   }
+  DAT_006a1fec_abs[0] = scaled;
 
-  DAT_006a1fec = iVar2 >> 7;
+  rect[0] = *(int *)(param_1 + 0x10) + 0x720;
+  rect[1] = *(u32 *)(param_1 + 0x14);
+  rect[2] = rect[0] + 0x10c0;
+  rect[3] = *(u32 *)(param_1 + 0x1c);
+  FUN_003b4d10(rect,0x6a1fe0,*(u32 *)(param_1 + 0xc),0x680,param_2);
 
-  iStack_10 = *(int *)(param_1 + 0x10) + 0x720;
+  rect[0] = *(int *)(param_1 + 0x10) + -0x140;
+  rect[1] = *(int *)(param_1 + 0x14) + 0x48;
+  rect[2] = rect[0] + 0xc80;
+  rect[3] = *(u32 *)(param_1 + 0x1c);
+  FUN_003b4e90(rect,0x6a2040,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
-  iStack_c = *(u32 *)(param_1 + 0x14);
-
-  iStack_8 = *(int *)(param_1 + 0x10) + 0x17e0;
-
-  iStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  FUN_003b4d10(&iStack_10,0x6a1fe0,*(u32 *)(param_1 + 0xc),0x680,param_2);
-
-  iStack_10 = *(int *)(param_1 + 0x10) + -0x140;
-
-  iStack_c = *(int *)(param_1 + 0x14) + 0x48;
-
-  iStack_8 = *(int *)(param_1 + 0x10) + 0xb40;
-
-  iStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  FUN_003b4e90(&iStack_10,0x6a2040,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
-
-  if (0 < *(int *)(param_1 + 0x28)) {
-
-    if (*(int *)(param_1 + 0x24) != *(int *)(param_1 + 0x14)) {
-
-      DAT_006a200c = 0x80 - ((*(int *)(param_1 + 0x24) - *(int *)(param_1 + 0x14)) * 0x80) /
-
-                            *(int *)(param_1 + 0x28);
-
-      goto LAB_003aa508;
-
-    }
-
+  if ((0 < *(int *)(param_1 + 0x28)) &&
+      (*(int *)(param_1 + 0x24) != *(int *)(param_1 + 0x14))) {
+    scaled = 0x80 - ((*(int *)(param_1 + 0x24) - *(int *)(param_1 + 0x14)) * 0x80) /
+                    *(int *)(param_1 + 0x28);
+  } else {
+    scaled = *(int *)(param_1 + 0x38);
   }
+  DAT_006a200c_abs[0] = scaled;
 
-  DAT_006a200c = *(int *)(param_1 + 0x38);
-
-LAB_003aa508:
-
-  iStack_10 = *(int *)(param_1 + 0x18) + -0xb40;
-
-  iStack_c = *(u32 *)(param_1 + 0x14);
-
-  iStack_8 = *(int *)(param_1 + 0x18) + 0x140;
-
-  iStack_4 = *(int *)(param_1 + 0x1c) + -0x48;
-
-  FUN_003b4e90(&iStack_10,0x6a2050,0x6a2000,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  rect[0] = *(int *)(param_1 + 0x18) + -0xb40;
+  rect[1] = *(u32 *)(param_1 + 0x14);
+  rect[2] = rect[0] + 0xc80;
+  rect[3] = *(int *)(param_1 + 0x1c) + -0x48;
+  FUN_003b4e90(rect,0x6a2050,0x6a2000,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   iVar2 = *(int *)(param_1 + 0x38) * 0x46;
-
+  scaled = iVar2 >> 7;
   if (iVar2 < 0) {
-
-    iVar2 = iVar2 + 0x7f;
-
+    scaled = (iVar2 + 0x7f) >> 7;
   }
+  DAT_006a1ffc_abs[0] = scaled;
 
-  DAT_006a1ffc = iVar2 >> 7;
+  rect[0] = *(int *)(param_1 + 0x10) + -0x140;
+  rect[1] = *(int *)(param_1 + 0x14) + -0xb8;
+  rect[2] = rect[0] + 0x1b80;
+  rect[3] = *(int *)(param_1 + 0x14) + 8;
+  FUN_003b4e90(rect,0x6a2040,0x6a1ff0,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
-  iStack_10 = *(int *)(param_1 + 0x10) + -0x140;
+  rect[0] = *(int *)(param_1 + 0x10) + 0x8b0;
+  rect[3] = *(int *)(param_1 + 0x14);
+  rect[1] = rect[3] + -0x10;
+  rect[2] = rect[0] + 0x710;
+  FUN_003b4e90(rect,0x6a2020,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  rect[0] = rect[2];
+  rect[2] = rect[2] + 0x1040;
+  FUN_003b4e90(rect,0x6a2030,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
-  iStack_c = *(int *)(param_1 + 0x14) + -0xb8;
-
-  iStack_8 = *(int *)(param_1 + 0x10) + 0x1a40;
-
-  iStack_4 = *(int *)(param_1 + 0x14) + 8;
-
-  FUN_003b4e90(&iStack_10,0x6a2040,0x6a1ff0,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
-
-  iStack_10 = *(int *)(param_1 + 0x10) + 0x8b0;
-
-  iStack_4 = *(int *)(param_1 + 0x14);
-
-  iStack_c = iStack_4 + -0x10;
-
-  iStack_8 = *(int *)(param_1 + 0x10) + 0xfc0;
-
-  FUN_003b4e90(&iStack_10,0x6a2020,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
-
-  iStack_10 = iStack_8;
-
-  iStack_8 = iStack_8 + 0x1040;
-
-  FUN_003b4e90(&iStack_10,0x6a2030,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
-
-  iStack_10 = *(int *)(param_1 + 0x10) + 0x1020;
-
-  iStack_4 = *(int *)(param_1 + 0x1c);
-
-  iStack_c = iStack_4 + -0x10;
-
-  iStack_8 = *(int *)(param_1 + 0x10) + 0x1730;
-
-  FUN_003b4e90(&iStack_10,0x6a2010,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
-
-  iStack_8 = iStack_10;
-
-  iStack_10 = iStack_10 + -0x1220;
-
-  FUN_003b4e90(&iStack_10,0x6a2030,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  rect[0] = *(int *)(param_1 + 0x10) + 0x1020;
+  rect[3] = *(int *)(param_1 + 0x1c);
+  rect[1] = rect[3] + -0x10;
+  rect[2] = rect[0] + 0x710;
+  FUN_003b4e90(rect,0x6a2010,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
+  rect[2] = rect[0];
+  rect[0] = rect[0] + -0x1220;
+  FUN_003b4e90(rect,0x6a2030,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),*puVar1,0,param_2);
 
   return;
 
@@ -3249,11 +3200,11 @@ u64 FUN_003acbc0(u64 param_1,int param_2)
 
   char cVar2;
 
-  u32 uVar3;
+  int uVar3;
 
-  u32 uVar4;
+  int uVar4;
 
-  u32 uVar5;
+  int uVar5;
 
   int lVar6;
 

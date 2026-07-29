@@ -812,6 +812,7 @@ void func_00241910(void)
     u32 mode;
     s32 i;
     u8* slot;
+    u8* panel;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
     work = sBiMain;
@@ -832,42 +833,44 @@ void func_00241910(void)
         mode = BI_U32(slot, 4);
         switch (mode) {
         case 0:
+            panel = slot + 0x10;
             frame = func_0021cca0(renderContext, 0xa);
             (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
-                BI_MAIN_DRAW_ALT(slot + 0x10);
+                BI_MAIN_DRAW_ALT(panel);
             } else {
                 frame = func_0021cca0(renderContext, 0xb);
                 (*stateSet)(1, (u32)func_0021cce0(frame));
-                BI_MAIN_DRAW_BASIC(slot + 0x10);
+                BI_MAIN_DRAW_BASIC(panel);
             }
             break;
         case 1:
+            panel = slot + 0x10;
             frame = func_0021cca0(renderContext, 0x12);
             (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
-                BI_MAIN_DRAW_ALT(slot + 0x10);
+                BI_MAIN_DRAW_ALT(panel);
             } else {
-                BI_MAIN_DRAW_BASIC(slot + 0x10);
-            }
-            break;
-        case 2:
-            frame = func_0021cca0(renderContext, 0x1d);
-            (*stateSet)(1, (u32)func_0021cce0(frame));
-            if ((flags & BI_SLOT_ALT_STYLE) != 0) {
-                BI_MAIN_DRAW_ALT(slot + 0x10);
-            } else {
-                BI_MAIN_DRAW_BASIC(slot + 0x10);
+                BI_MAIN_DRAW_BASIC(panel);
             }
             break;
         case 3:
-            frame = func_0021cca0(renderContext, 0x13);
+            panel = slot + 0x10;
+            frame = func_0021cca0(renderContext, 0x22);
             (*stateSet)(1, (u32)func_0021cce0(frame));
-            if ((flags & BI_SLOT_ALT_STYLE) != 0) {
-                BI_MAIN_DRAW_ALT(slot + 0x10);
-            } else {
-                BI_MAIN_DRAW_BASIC(slot + 0x10);
-            }
+            BI_MAIN_DRAW_BASIC(panel);
+            break;
+        case 2:
+            panel = slot + 0x10;
+            frame = func_0021cca0(renderContext, 0x1d);
+            (*stateSet)(1, (u32)func_0021cce0(frame));
+            BI_MAIN_DRAW_BASIC(panel + 0x100);
+            frame = func_0021cca0(renderContext, 0x1c);
+            (*stateSet)(1, (u32)func_0021cce0(frame));
+            BI_MAIN_DRAW_BASIC(panel + 0x200);
+            frame = func_0021cca0(renderContext, 0x1e);
+            (*stateSet)(1, (u32)func_0021cce0(frame));
+            BI_MAIN_DRAW_BASIC(panel);
             break;
         }
     }

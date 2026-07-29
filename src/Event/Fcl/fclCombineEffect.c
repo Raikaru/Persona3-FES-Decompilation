@@ -3069,6 +3069,22 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
 }
 
+// FUN_0041ADD0 NONMATCHING
+u32 FUN_0041add0(int param_1, int *param_2)
+{
+  int i;
+  int mask;
+  s16 *entry;
+
+  param_2 = (int *)((int *)param_2[1])[2];
+  mask = -2;
+  for (i = 0; i < param_2[1]; i = i + 1) {
+    entry = *(s16 **)(param_2 + i + 2);
+    *entry = *entry & mask;
+  }
+  return 1;
+}
+
 
 // FUN_0041AE20 NONMATCHING
 

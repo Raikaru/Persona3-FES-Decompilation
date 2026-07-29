@@ -1,4 +1,5 @@
 #include "Yajima/y_misc.h"
+#include "Yajima/y_runtime.h"
 typedef struct YajimaVec2 {
     f32 x;
     f32 y;
@@ -2259,6 +2260,8 @@ u32 FUN_00426590(int param_1)
   char cVar1;
 
   char *pcVar2;
+  char *entry;
+  char *color;
 
   int iVar3;
 
@@ -2371,18 +2374,20 @@ u32 FUN_00426590(int param_1)
         switch (cVar1) { case '\0': if (pcVar2[0x150] == '\0') {
         
           for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+            entry = pcVar2 + iVar3 * 0x40;
+            color = pcVar2 + iVar3 * 4 + 0x110;
         
-            *(float *)(pcVar2 + iVar3 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
+            *(float *)(entry + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
         
-            *(float *)(pcVar2 + iVar3 * 0x40 + 0x28) = fVar5;
+            *(float *)(entry + 0x28) = fVar5;
         
-            *(float *)(pcVar2 + iVar3 * 0x40 + 0x30) = (float)(u8)pcVar2[iVar3 * 4 + 0x110];
+            *(float *)(entry + 0x30) = (float)(u8)color[0];
         
-            *(float *)(pcVar2 + iVar3 * 0x40 + 0x34) = (float)(u8)pcVar2[iVar3 * 4 + 0x111];
+            *(float *)(entry + 0x34) = (float)(u8)color[1];
         
-            *(float *)(pcVar2 + iVar3 * 0x40 + 0x38) = (float)(u8)pcVar2[iVar3 * 4 + 0x112];
+            *(float *)(entry + 0x38) = (float)(u8)color[2];
         
-            *(float *)(pcVar2 + iVar3 * 0x40 + 0x3c) = (float)(u8)pcVar2[iVar3 * 4 + 0x113];
+            *(float *)(entry + 0x3c) = (float)(u8)color[3];
         
           }
         
@@ -2509,36 +2514,26 @@ u32 FUN_00426590(int param_1)
         }
         
         (*DAT_009600a0)(4,pcVar2 + 0x10,4); break; case '\x01': for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+          entry = pcVar2 + iVar3 * 0x40;
+          color = pcVar2 + iVar3 * 4 + 0x110;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
+          *(float *)(entry + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x28) = fVar5;
+          *(float *)(entry + 0x28) = fVar5;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x30) = (float)(u8)pcVar2[iVar3 * 4 + 0x110];
+          *(float *)(entry + 0x30) = (float)(u8)color[0];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x34) = (float)(u8)pcVar2[iVar3 * 4 + 0x111];
+          *(float *)(entry + 0x34) = (float)(u8)color[1];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x38) = (float)(u8)pcVar2[iVar3 * 4 + 0x112];
+          *(float *)(entry + 0x38) = (float)(u8)color[2];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x3c) = (float)(u8)pcVar2[iVar3 * 4 + 0x113];
+          *(float *)(entry + 0x3c) = (float)(u8)color[3];
         
         }
         
-        pcVar2[0x20] = '\0';
+        *(u32 *)(pcVar2 + 0x20) = 0;
         
-        pcVar2[0x21] = '\0';
-        
-        pcVar2[0x22] = '\0';
-        
-        pcVar2[0x23] = '\0';
-        
-        pcVar2[0x24] = '\0';
-        
-        pcVar2[0x25] = '\0';
-        
-        pcVar2[0x26] = '\0';
-        
-        pcVar2[0x27] = '\0';
+        *(u32 *)(pcVar2 + 0x24) = 0;
         
         *(float *)(pcVar2 + 0x10) =
         
@@ -2552,21 +2547,9 @@ u32 FUN_00426590(int param_1)
         
              ((float)*(int *)(pcVar2 + 300) * *(float *)(pcVar2 + 0x14c)) / 2.0f;
         
-        pcVar2[0x60] = '\0';
+        *(float *)(pcVar2 + 0x60) = 1.0f;
         
-        pcVar2[0x61] = '\0';
-        
-        pcVar2[0x62] = -0x80;
-        
-        pcVar2[99] = '?';
-        
-        pcVar2[100] = '\0';
-        
-        pcVar2[0x65] = '\0';
-        
-        pcVar2[0x66] = '\0';
-        
-        pcVar2[0x67] = '\0';
+        *(u32 *)(pcVar2 + 0x64) = 0;
         
         *(float *)(pcVar2 + 0x50) =
         
@@ -2580,21 +2563,9 @@ u32 FUN_00426590(int param_1)
         
              ((float)*(int *)(pcVar2 + 300) * *(float *)(pcVar2 + 0x14c)) / 2.0f;
         
-        pcVar2[0xa0] = '\0';
+        *(u32 *)(pcVar2 + 0xa0) = 0;
         
-        pcVar2[0xa1] = '\0';
-        
-        pcVar2[0xa2] = '\0';
-        
-        pcVar2[0xa3] = '\0';
-        
-        pcVar2[0xa4] = '\0';
-        
-        pcVar2[0xa5] = '\0';
-        
-        pcVar2[0xa6] = -0x80;
-        
-        pcVar2[0xa7] = '?';
+        *(float *)(pcVar2 + 0xa4) = 1.0f;
         
         *(float *)(pcVar2 + 0x90) =
         
@@ -2608,21 +2579,9 @@ u32 FUN_00426590(int param_1)
         
              ((float)*(int *)(pcVar2 + 300) * *(float *)(pcVar2 + 0x14c)) / 2.0f;
         
-        pcVar2[0xe0] = '\0';
+        *(float *)(pcVar2 + 0xe0) = 1.0f;
         
-        pcVar2[0xe1] = '\0';
-        
-        pcVar2[0xe2] = -0x80;
-        
-        pcVar2[0xe3] = '?';
-        
-        pcVar2[0xe4] = '\0';
-        
-        pcVar2[0xe5] = '\0';
-        
-        pcVar2[0xe6] = -0x80;
-        
-        pcVar2[0xe7] = '?';
+        *(float *)(pcVar2 + 0xe4) = 1.0f;
         
         *(float *)(pcVar2 + 0xd0) =
         
@@ -2637,132 +2596,76 @@ u32 FUN_00426590(int param_1)
              ((float)*(int *)(pcVar2 + 300) * *(float *)(pcVar2 + 0x14c)) / 2.0f;
         
         (*DAT_009600a0)(4,pcVar2 + 0x10,4); break; case '\x02': for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+          entry = pcVar2 + iVar3 * 0x40;
+          color = pcVar2 + iVar3 * 4 + 0x110;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
+          *(float *)(entry + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x28) = fVar5;
+          *(float *)(entry + 0x28) = fVar5;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x30) = (float)(u8)pcVar2[iVar3 * 4 + 0x110];
+          *(float *)(entry + 0x30) = (float)(u8)color[0];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x34) = (float)(u8)pcVar2[iVar3 * 4 + 0x111];
+          *(float *)(entry + 0x34) = (float)(u8)color[1];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x38) = (float)(u8)pcVar2[iVar3 * 4 + 0x112];
+          *(float *)(entry + 0x38) = (float)(u8)color[2];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x3c) = (float)(u8)pcVar2[iVar3 * 4 + 0x113];
+          *(float *)(entry + 0x3c) = (float)(u8)color[3];
         
         }
         
-        pcVar2[0x20] = '\0';
+        *(u32 *)(pcVar2 + 0x20) = 0;
         
-        pcVar2[0x21] = '\0';
-        
-        pcVar2[0x22] = '\0';
-        
-        pcVar2[0x23] = '\0';
-        
-        pcVar2[0x24] = '\0';
-        
-        pcVar2[0x25] = '\0';
-        
-        pcVar2[0x26] = '\0';
-        
-        pcVar2[0x27] = '\0';
+        *(u32 *)(pcVar2 + 0x24) = 0;
         
         *(u32 *)(pcVar2 + 0x10) = *(u32 *)(pcVar2 + 0x134);
         
         *(u32 *)(pcVar2 + 0x14) = *(u32 *)(pcVar2 + 0x138);
         
-        pcVar2[0x60] = '\0';
+        *(float *)(pcVar2 + 0x60) = 1.0f;
         
-        pcVar2[0x61] = '\0';
-        
-        pcVar2[0x62] = -0x80;
-        
-        pcVar2[99] = '?';
-        
-        pcVar2[100] = '\0';
-        
-        pcVar2[0x65] = '\0';
-        
-        pcVar2[0x66] = '\0';
-        
-        pcVar2[0x67] = '\0';
+        *(u32 *)(pcVar2 + 0x64) = 0;
         
         *(float *)(pcVar2 + 0x50) = *(float *)(pcVar2 + 0x134) + (float)*(int *)(pcVar2 + 0x128);
         
         *(u32 *)(pcVar2 + 0x54) = *(u32 *)(pcVar2 + 0x138);
         
-        pcVar2[0xa0] = '\0';
+        *(u32 *)(pcVar2 + 0xa0) = 0;
         
-        pcVar2[0xa1] = '\0';
-        
-        pcVar2[0xa2] = '\0';
-        
-        pcVar2[0xa3] = '\0';
-        
-        pcVar2[0xa4] = '\0';
-        
-        pcVar2[0xa5] = '\0';
-        
-        pcVar2[0xa6] = -0x80;
-        
-        pcVar2[0xa7] = '?';
+        *(float *)(pcVar2 + 0xa4) = 1.0f;
         
         *(u32 *)(pcVar2 + 0x90) = *(u32 *)(pcVar2 + 0x134);
         
         *(float *)(pcVar2 + 0x94) = *(float *)(pcVar2 + 0x138) + (float)*(int *)(pcVar2 + 300);
         
-        pcVar2[0xe0] = '\0';
+        *(float *)(pcVar2 + 0xe0) = 1.0f;
         
-        pcVar2[0xe1] = '\0';
-        
-        pcVar2[0xe2] = -0x80;
-        
-        pcVar2[0xe3] = '?';
-        
-        pcVar2[0xe4] = '\0';
-        
-        pcVar2[0xe5] = '\0';
-        
-        pcVar2[0xe6] = -0x80;
-        
-        pcVar2[0xe7] = '?';
+        *(float *)(pcVar2 + 0xe4) = 1.0f;
         
         *(float *)(pcVar2 + 0xd0) = *(float *)(pcVar2 + 0x134) + (float)*(int *)(pcVar2 + 0x128);
         
         *(float *)(pcVar2 + 0xd4) = *(float *)(pcVar2 + 0x138) + (float)*(int *)(pcVar2 + 300);
         
         (*DAT_009600a0)(4,pcVar2 + 0x10,4); break; case '\x03': for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+          entry = pcVar2 + iVar3 * 0x40;
+          color = pcVar2 + iVar3 * 4 + 0x110;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
+          *(float *)(entry + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x28) = fVar5;
+          *(float *)(entry + 0x28) = fVar5;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x30) = (float)(u8)pcVar2[iVar3 * 4 + 0x110];
+          *(float *)(entry + 0x30) = (float)(u8)color[0];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x34) = (float)(u8)pcVar2[iVar3 * 4 + 0x111];
+          *(float *)(entry + 0x34) = (float)(u8)color[1];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x38) = (float)(u8)pcVar2[iVar3 * 4 + 0x112];
+          *(float *)(entry + 0x38) = (float)(u8)color[2];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x3c) = (float)(u8)pcVar2[iVar3 * 4 + 0x113];
+          *(float *)(entry + 0x3c) = (float)(u8)color[3];
         
         }
         
-        pcVar2[0x20] = '\0';
+        *(u32 *)(pcVar2 + 0x20) = 0;
         
-        pcVar2[0x21] = '\0';
-        
-        pcVar2[0x22] = '\0';
-        
-        pcVar2[0x23] = '\0';
-        
-        pcVar2[0x24] = '\0';
-        
-        pcVar2[0x25] = '\0';
-        
-        pcVar2[0x26] = '\0';
-        
-        pcVar2[0x27] = '\0';
+        *(u32 *)(pcVar2 + 0x24) = 0;
         
         *(u32 *)(pcVar2 + 0x10) = *(u32 *)(pcVar2 + 0x134);
         
@@ -2770,25 +2673,13 @@ u32 FUN_00426590(int param_1)
         
         *(u32 *)(pcVar2 + 0x60) = *(u32 *)(pcVar2 + 0x174);
         
-        pcVar2[100] = '\0';
-        
-        pcVar2[0x65] = '\0';
-        
-        pcVar2[0x66] = '\0';
-        
-        pcVar2[0x67] = '\0';
+        *(u32 *)(pcVar2 + 0x64) = 0;
         
         *(float *)(pcVar2 + 0x50) = *(float *)(pcVar2 + 0x134) + *(float *)(pcVar2 + 0x184);
         
         *(u32 *)(pcVar2 + 0x54) = *(u32 *)(pcVar2 + 0x138);
         
-        pcVar2[0xa0] = '\0';
-        
-        pcVar2[0xa1] = '\0';
-        
-        pcVar2[0xa2] = '\0';
-        
-        pcVar2[0xa3] = '\0';
+        *(u32 *)(pcVar2 + 0xa0) = 0;
         
         *(u32 *)(pcVar2 + 0xa4) = *(u32 *)(pcVar2 + 0x178);
         
@@ -2805,64 +2696,42 @@ u32 FUN_00426590(int param_1)
         *(float *)(pcVar2 + 0xd4) = *(float *)(pcVar2 + 0x138) + *(float *)(pcVar2 + 0x188);
         
         (*DAT_009600a0)(4,pcVar2 + 0x10,4); break; case '\x04': for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+          entry = pcVar2 + iVar3 * 0x40;
+          color = pcVar2 + iVar3 * 4 + 0x110;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
+          *(float *)(entry + 0x18) = DAT_00960088 - *(float *)(pcVar2 + 0x130);
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x28) = fVar5;
+          *(float *)(entry + 0x28) = fVar5;
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x30) = (float)(u8)pcVar2[iVar3 * 4 + 0x110];
+          *(float *)(entry + 0x30) = (float)(u8)color[0];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x34) = (float)(u8)pcVar2[iVar3 * 4 + 0x111];
+          *(float *)(entry + 0x34) = (float)(u8)color[1];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x38) = (float)(u8)pcVar2[iVar3 * 4 + 0x112];
+          *(float *)(entry + 0x38) = (float)(u8)color[2];
         
-          *(float *)(pcVar2 + iVar3 * 0x40 + 0x3c) = (float)(u8)pcVar2[iVar3 * 4 + 0x113];
+          *(float *)(entry + 0x3c) = (float)(u8)color[3];
         
         }
         
         for (iVar3 = 0; iVar3 < *(int *)(pcVar2 + 300); iVar3 = iVar3 + 1) {
         
-          pcVar2[0x20] = '\0';
-        
-          pcVar2[0x21] = '\0';
-        
-          pcVar2[0x22] = '\0';
-        
-          pcVar2[0x23] = '\0';
+          *(u32 *)(pcVar2 + 0x20) = 0;
         
           fVar5 = (float)iVar3;
         
           *(float *)(pcVar2 + 0x24) = (1.0f / (float)*(int *)(pcVar2 + 300)) * fVar5;
         
-          pcVar2[0x60] = '\0';
-        
-          pcVar2[0x61] = '\0';
-        
-          pcVar2[0x62] = -0x80;
-        
-          pcVar2[99] = '?';
+          *(float *)(pcVar2 + 0x60) = 1.0f;
         
           *(float *)(pcVar2 + 100) = (1.0f / (float)*(int *)(pcVar2 + 300)) * fVar5;
         
-          pcVar2[0xa0] = '\0';
-        
-          pcVar2[0xa1] = '\0';
-        
-          pcVar2[0xa2] = '\0';
-        
-          pcVar2[0xa3] = '\0';
+          *(u32 *)(pcVar2 + 0xa0) = 0;
         
           fVar6 = (float)(iVar3 + 1);
         
           *(float *)(pcVar2 + 0xa4) = (1.0f / (float)*(int *)(pcVar2 + 300)) * fVar6;
         
-          pcVar2[0xe0] = '\0';
-        
-          pcVar2[0xe1] = '\0';
-        
-          pcVar2[0xe2] = -0x80;
-        
-          pcVar2[0xe3] = '?';
+          *(float *)(pcVar2 + 0xe0) = 1.0f;
         
           *(float *)(pcVar2 + 0xe4) = (1.0f / (float)*(int *)(pcVar2 + 300)) * fVar6;
         
@@ -4792,6 +4661,7 @@ void FUN_0042a550(int param_1,u32 param_2,u32 param_3,u32 param_4)
 
   char cVar1;
 
+  YRuntimeUnitRow *row;
   char cVar2;
 
   u32 uVar3;
@@ -4925,12 +4795,13 @@ void FUN_0042a550(int param_1,u32 param_2,u32 param_3,u32 param_4)
   cVar8 = (char)param_2;
 
   if (cVar8 != '\0') {
+    row = (YRuntimeUnitRow *)&DAT_008717a0 + cVar8;
 
     cVar1 = FUN_00435260(param_2);
 
     if (cVar1 == '\0') {
 
-      cVar1 = FUN_004353f0(&DAT_008717a0 + cVar8 * 0x1c0);
+      cVar1 = FUN_004353f0(row);
 
       if (((cVar1 != '\x01') && (cGpffffb9d8 == '\0')) &&
 
@@ -4948,13 +4819,13 @@ void FUN_0042a550(int param_1,u32 param_2,u32 param_3,u32 param_4)
 
         cVar1 = *(char *)(iVar5 + 0xb0b);
 
-        cVar2 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4[cVar8 * 0x70] + 0x1e0));
+        cVar2 = K_FldFrame_CtlGetXGrid(*(u32 *)((u8 *)row->unk_054 + 0x1e0));
 
         if ((cVar1 == cVar2) &&
 
            (cVar1 = *(char *)(iVar5 + 0xb0c),
 
-           cVar2 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4[cVar8 * 0x70] + 0x1e0)),
+           cVar2 = K_FldFrame_CtlGetZGrid(*(u32 *)((u8 *)row->unk_054 + 0x1e0)),
 
            cVar1 == cVar2)) {
 
@@ -4962,7 +4833,7 @@ void FUN_0042a550(int param_1,u32 param_2,u32 param_3,u32 param_4)
 
           if (lVar7 == 1) {
 
-            cVar8 = FUN_004353f0(&DAT_008717a0 + cVar8 * 0x1c0);
+            cVar8 = FUN_004353f0(row);
 
             if (cVar8 != '\x01') {
 
@@ -4978,11 +4849,11 @@ void FUN_0042a550(int param_1,u32 param_2,u32 param_3,u32 param_4)
 
         else {
 
-          iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4[cVar8 * 0x70] + 0x1e0));
+          iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)((u8 *)row->unk_054 + 0x1e0));
 
           iVar4 = K_Field_Get();
 
-          iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4[cVar8 * 0x70] + 0x1e0));
+          iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)((u8 *)row->unk_054 + 0x1e0));
 
           if (*(char *)(iVar4 + iVar5 * 0x100 + iVar6 * 0x10 + 0x4a) == '\b') {
 
@@ -5283,6 +5154,7 @@ void FUN_0042b050(int param_1)
   u8 bVar2;
 
   u32 *puVar3;
+  YRuntimeUnitRow *row;
 
   int iVar4;
 
@@ -5347,10 +5219,11 @@ void FUN_0042b050(int param_1)
   fVar9 = fStack_8;
 
   for (iVar7 = 1; iVar7 < 4; iVar7 = iVar7 + 1) {
+    row = (YRuntimeUnitRow *)&DAT_008717a0 + iVar7;
 
     bVar2 = 0;
 
-    if ((DAT_008717e8[iVar7 * 0x70] != 0) && (DAT_008717f4[iVar7 * 0x70] != 0)) {
+    if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
 
       bVar2 = 1;
 
@@ -5388,7 +5261,7 @@ void FUN_0042b050(int param_1)
 
       puVar3[3] = puVar3[3] | 0x20003;
 
-      K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(DAT_008717f4[iVar7 * 0x70] + 0x1e0));
+      K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)((u8 *)row->unk_054 + 0x1e0));
 
       FUN_004c31b0_ymisc((void *)uVar5,(const void *)&uStack_30,
                      *(float *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
@@ -5477,6 +5350,7 @@ void FUN_0042b540(int param_1)
   u8 bVar2;
 
   u32 *puVar3;
+  YRuntimeUnitRow *row;
 
   u32 uVar4;
 
@@ -5541,9 +5415,8 @@ void FUN_0042b540(int param_1)
 
     bVar2 = 0;
 
-    iVar6 = iVar7 * 0x1c0;
-
-    if ((*(int *)(&DAT_0086ede8 + iVar6) != 0) && (*(int *)(&DAT_0086edf4 + iVar6) != 0)) {
+    row = (YRuntimeUnitRow *)DAT_0086e6a0 + iVar7 + 4;
+    if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
 
       bVar2 = 1;
 
@@ -5581,7 +5454,7 @@ void FUN_0042b540(int param_1)
 
       puVar3[3] = puVar3[3] | 0x20003;
 
-      K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(*(int *)(&DAT_0086edf4 + iVar6) + 0x1e0));
+      K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)((u8 *)row->unk_054 + 0x1e0));
 
       FUN_004c31b0_ymisc((void *)uVar4,(const void *)&uStack_30,
                      *(float *)(iGpffffb5c0 + *piGpffffa850 * 0x3c4 +
