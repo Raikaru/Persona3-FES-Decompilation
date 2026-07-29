@@ -9780,29 +9780,25 @@ u32 FUN_0037abd0(int param_1,int param_2,int param_3)
 
 {
 
-  u32 uVar1;
-
-  
-
   FUN_0036f900(param_1,param_2,0x16,0x11,0,0x11,param_3,0,(code *)FUN_0037a790);
 
   if (*(int *)((int)param_3 + 0xd4) != 1) {
-    uVar1 = 0;
+    return 0;
   }
   else {
-    uVar1 = FUN_0036f680_ret(0,(int)param_3 + 0x104,0x11,0x11,0,0x4000,0x1000);
-    FUN_0036f680(0,0,uVar1,uVar1,0,0x2000,0x8000);
+    u32 result = FUN_0036f680_ret(0,(int)param_3 + 0x104,0x11,0x11,0,0x4000,0x1000);
+    FUN_0036f680(0,0,result,result,0,0x2000,0x8000);
 
     if ((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
       if ((*(u16 *)DAT_007e094e_abs & 0x20) != 0) {
-        uVar1 = -1;
+        return -1;
       }
       else {
-        uVar1 = 0;
+        return 0;
       }
     }
+    return 1;
   }
-  return uVar1;
 
 }
 

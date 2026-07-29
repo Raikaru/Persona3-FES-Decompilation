@@ -6042,15 +6042,9 @@ void FUN_00366210(u32 param_1,int param_2)
 
   u32 lVar2;
 
-  u32 uStack_8;
+  u16 *puStack_4 = (u16 *)0x0;
 
-  u16 *puStack_4;
-
-  
-
-  puStack_4 = (u16 *)0x0;
-
-  uStack_8 = 0;
+  u32 uStack_8 = 0;
 
   for (piVar1 = *(int **)(param_2 + 0x84); (piVar1 != (int *)0x0 && (*piVar1 != 0x22));
 
