@@ -246,6 +246,8 @@ u32 DAT_0086ef2c;
 u32 DAT_008717a0;
 #pragma alias DAT_008717a0_unit_rows DAT_008717a0
 extern YRuntimeUnitRow DAT_008717a0_unit_rows[];
+#pragma alias DAT_008717a0_unit_rows_abs DAT_008717a0
+extern YRuntimeUnitRow DAT_008717a0_unit_rows_abs[];
 u32 DAT_008717e8[];
 #pragma alias DAT_008717e8_abs DAT_008717e8
 extern u8 DAT_008717e8_abs[];
@@ -747,163 +749,92 @@ u32 FUN_004249b0(void)
 
 
 u32 FUN_00424b60(void)
-
-
-
 {
-
   u8 bVar1;
-
   u8 bVar2;
-
   short sVar3;
-
   int iVar4;
-
   int lVar5;
-
   int iVar6;
-
   int iVar7;
-
   short sVar8;
-
   short unaff_s5_lo;
-
+  YRuntimeUnitRow *selectedRow;
   YajimaVec3 pos;
-
   YajimaVec3 copiedPos;
-
   char acStack_4 [4];
 
-  
-
   sVar8 = 2;
-
   bVar2 = 0;
-
   iVar7 = 0;
-
   FUN_0016f3e0(0,0);
-
   sVar3 = scrGetIntPara(0);
-
-  for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
-
-    acStack_4[iVar6] = '\0';
-
-    bVar1 = 0;
-
-    if ((DAT_008717e8[iVar6 * 0x70] != 0) && (DAT_008717f4[iVar6 * 0x70] != 0)) {
-
-      bVar1 = 1;
-
+  {
+    int scanIndex;
+    YRuntimeUnitRow *rows = DAT_008717a0_unit_rows_abs;
+    for (scanIndex = 0; scanIndex < 4; scanIndex = scanIndex + 1) {
+      YRuntimeUnitRow *row = &rows[scanIndex];
+      acStack_4[scanIndex] = '\0';
+      bVar1 = 0;
+      if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
+        bVar1 = 1;
+      }
+      if ((bVar1) && ((long)sVar3 == row->unit_id)) {
+        unaff_s5_lo = (short)scanIndex;
+      }
     }
-
-    if ((bVar1) && ((long)sVar3 == (u32)*(u16 *)(&DAT_00871948 + iVar6 * 0x1c0))) {
-
-      unaff_s5_lo = (short)iVar6;
-
-    }
-
   }
-
+  selectedRow = &DAT_008717a0_unit_rows_abs[unaff_s5_lo];
   for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
-
+    YRuntimeUnitRow *row = &DAT_008717a0_unit_rows_abs[iVar6];
     bVar1 = 0;
-
-    if ((DAT_008717e8[iVar6 * 0x70] != 0) && (DAT_008717f4[iVar6 * 0x70] != 0)) {
-
+    if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
       bVar1 = 1;
-
     }
-
     if ((bVar1) &&
-
-       (lVar5 = K_FldEvent_AreUnitsWithinDist(0x43fa0000,&DAT_008717a0 + unaff_s5_lo * 0x1c0), lVar5 == 1)) {
-
+       (lVar5 = K_FldEvent_AreUnitsWithinDist(0x43fa0000,selectedRow), lVar5 == 1)) {
       sVar3 = FUN_0043a9d0((char)unaff_s5_lo,(char)iVar6,0);
-
       if (sVar3 != 2) {
-
         sVar8 = sVar3;
-
       }
-
       if ((sVar3 == 0) || (sVar3 == 1)) {
-
         bVar2 = 1;
-
         acStack_4[iVar6] = '\x01';
-
       }
-
       else if (sVar3 == 5) {
-
         for (iVar4 = 0; iVar4 < 4; iVar4 = iVar4 + 1) {
-
+          YRuntimeUnitRow *row = &DAT_008717a0_unit_rows_abs[iVar4];
           bVar1 = 0;
-
-          if ((DAT_008717e8[iVar4 * 0x70] != 0) && (DAT_008717f4[iVar4 * 0x70] != 0)) {
-
+          if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
             bVar1 = 1;
-
           }
-
           if ((bVar1) &&
-
-             (lVar5 = K_FldEvent_AreUnitsWithinDist(0x43fa0000,&DAT_008717a0 + unaff_s5_lo * 0x1c0), lVar5 == 1)) {
-
+             (lVar5 = K_FldEvent_AreUnitsWithinDist(0x43fa0000,selectedRow), lVar5 == 1)) {
             acStack_4[iVar4] = '\x01';
-
             bVar2 = 1;
-
           }
-
         }
-
       }
-
     }
-
   }
-
   for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
-
     if (acStack_4[iVar6] == '\x01') {
-
       iVar7 = iVar7 + 1;
-
-      K_FldFrame_CtlCopyPos(&pos,*(u32 *)(DAT_008717f4[iVar6 * 0x70] + 0x1e0));
-
+      K_FldFrame_CtlCopyPos(&pos,*(u32 *)((u8 *)DAT_008717a0_unit_rows_abs[iVar6].unk_054 + 0x1e0));
       copiedPos = pos;
-
       iVar4 = K_Field_Get();
-
       func_001a9760(*(u32 *)(iVar4 + 0x10),6,&copiedPos,3,1);
-
       FUN_0016f3e0(0,iVar7);
-
     }
-
   }
-
   if ((bVar2) && (sVar8 == 4)) {
-
     sVar8 = 0;
-
   }
-
   if (sVar8 == 5) {
-
     sVar8 = 1;
-
   }
-
   scrSetIntReturnVal(sVar8);
-
   return 1;
-
 }
 
 // FUN_00424F10

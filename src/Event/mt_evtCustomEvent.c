@@ -39,6 +39,10 @@ extern u8 * PTR_s_Academics_006a1320[];
 extern u32 iGpffffb730;
 extern u8 *PTR_s_It_seems_further_power_lies_hi_007cd6f4;
 extern u8 *PTR_s_No_further_power_is_available__007cd6f0;
+#pragma alias PTR_s_It_seems_further_power_lies_hi_007cd6f4_abs PTR_s_It_seems_further_power_lies_hi_007cd6f4
+extern u8 *PTR_s_It_seems_further_power_lies_hi_007cd6f4_abs;
+#pragma alias PTR_s_No_further_power_is_available__007cd6f0_abs PTR_s_No_further_power_is_available__007cd6f0
+extern u8 *PTR_s_No_further_power_is_available__007cd6f0_abs;
  
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
@@ -5044,9 +5048,9 @@ u32 FUN_0039dd90(int param_1)
 
   u16 auStack_20 [12];
 
-  int iStack_8;
-
   u8 auStack_4 [4];
+
+  int iStack_8;
 
   
 
@@ -5179,13 +5183,13 @@ u32 FUN_0039dd90(int param_1)
 
   case 4:
 
-    cVar4 = FUN_0016dba0(*(u16 *)(puVar2 + 3));
+    cVar4 = FUN_0016dba0((short)puVar2[3]);
 
-    puVar3 = PTR_s_It_seems_further_power_lies_hi_007cd6f4;
+    puVar3 = PTR_s_It_seems_further_power_lies_hi_007cd6f4_abs;
 
     if (cVar4 == '\n') {
 
-      puVar3 = PTR_s_No_further_power_is_available__007cd6f0;
+      puVar3 = PTR_s_No_further_power_is_available__007cd6f0_abs;
 
     }
 

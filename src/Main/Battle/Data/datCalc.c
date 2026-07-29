@@ -1800,7 +1800,7 @@ void FUN_00302d40(u32 param_1)
   char cVar1;
   char bVar2;
   int iVar3;
-  u32 uVar4;
+  s32 uVar4;
   u32 uVar5;
   int iVar6;
   
@@ -1853,7 +1853,7 @@ u8 FUN_00302f50(u32 param_1)
   char cVar1;
   u8 bVar2;
   int iVar3;
-  u32 uVar4;
+  s32 uVar4;
   u32 uVar5;
   int iVar6;
   

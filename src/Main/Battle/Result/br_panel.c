@@ -422,6 +422,7 @@ void brPanel002350f0(void)
     if (mode == 1) {
         D_00960090(1, 0);
         D_0096009C((u32*)(work + 0x2360), 4, 0, 1, 2);
+        D_0096009C((u32*)(work + 0x2360), 4, 0, 2, 3);
     } else if (mode == 2) {
         D_00960090(6, 0);
         D_00960090(8, 0);
@@ -448,6 +449,7 @@ void brPanel002350f0(void)
     frame = func_0021cce0((void*)(uintptr_t)frame);
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0x1f60), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x1f60), 4, 0, 2, 3);
     workFlags = *(u32*)work;
     if (workFlags & 4) {
         frame = func_0021cce0(func_0021cca0(texture, 7));

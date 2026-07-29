@@ -2767,8 +2767,8 @@ void func_00312d40(u8* param_1,u8* param_2)
     }
 
     DAT_009571bc = (float*)(iVar3 + 0x38);
-    DAT_009571c0 = *(u32 *)(iVar3 + 0x44);
-    DAT_009571c4 = *(u32 *)(iVar3 + 0x48);
+    DAT_009571c0 = *(float *)(iVar3 + 0x44);
+    DAT_009571c4 = *(float *)(iVar3 + 0x48);
 
     if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) != 0) {
 
@@ -4083,9 +4083,9 @@ void func_00314730(f32 param_1,u8* param_2)
 
   if ((*(int *)(param_2 + 0x18) != 0) && (*(int *)(*(int *)(param_2 + 0x18) + 8) != 0)) {
 
-    *(u32 *)(param_2 + 0xc) = param_1;
+    *(f32 *)(param_2 + 0xc) = param_1;
 
-    *(u32 *)(param_2 + 0x10) = param_1;
+    *(f32 *)(param_2 + 0x10) = param_1;
 
     uVar1 = *(u32 *)(*(int *)(param_2 + 0x18) + 8);
 

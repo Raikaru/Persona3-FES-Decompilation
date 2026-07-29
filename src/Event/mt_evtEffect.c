@@ -978,11 +978,11 @@ void FUN_00395950(int param_1)
 
   f32 auStack_630 [4];
 
-  u32 auStack_620 [3];
+  f32 auStack_620 [3];
 
   u8 auStack_614 [24];
 
-  u32 auStack_5fc [3];
+  f32 auStack_5fc [3];
 
   u8 auStack_5f0 [1464];
 
