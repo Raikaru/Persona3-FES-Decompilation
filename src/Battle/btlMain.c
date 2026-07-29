@@ -546,6 +546,7 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
             unit->flags2 |= 8;
             unit->resTypeId = FUN_003b6000(charId, model);
             FUN_001a0590(unit->resTypeId, 1);
+            FUN_00287b20(unit, 1);
             FUN_002831c0(unit, 0);
             FUN_00282d40(unit->unk_9e4, unit, unit->unk_9e0, 0, unit->unk_9e8);
             FUN_00282bc0(unit);
@@ -553,6 +554,7 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
             {
                 FUN_0031c7e0();
             }
+            FUN_00287b20(unit, 4);
             FUN_00287490(unit);
         }
         i++;
@@ -698,11 +700,15 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
             movePacket = FUN_002819d0(DAT_007cad78, unit, &unitPos, 8);
             btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
             packet = FUN_002822b0(unit, &unitRot, 0);
-            btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, movePacket->uid);
+            packet->unk_00 = 4;
+            packet->parentUID = movePacket->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
             if (FUN_00300580(unit->datUnit, 0xfffff) == 0 && FUN_0030b5e0(unit->datUnit) == 0)
             {
                 packet = FUN_00284200(1.0f, unit, 0x10, 4, 0);
-                btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, movePacket->uid);
+                packet->unk_00 = 4;
+                packet->parentUID = movePacket->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
                 (*(u16*)((u8*)(packet) + (0x48))) = 4;
             }
         }

@@ -451,6 +451,8 @@ extern BtlPacket* FUN_002bb2f0_packet_voice(u32, BtlUnit*, u32, u64, u32);
 extern BtlPacket* FUN_002dd100_packet_voice(u32, u32, u32);
 #pragma alias FUN_002a1db0_packet_voice FUN_002a1db0
 extern BtlPacket* FUN_002a1db0_packet_voice(u32);
+#pragma alias FUN_002a1b00_packet_voice FUN_002a1b00
+extern BtlPacket* FUN_002a1b00_packet_voice(BtlAction*, s16, s32);
 #pragma alias FUN_002a1b00_voice FUN_002a1b00
 extern void FUN_002a1b00_voice(s32, s16, s32);
 #pragma alias FUN_002d4e10_u16_voice FUN_002d4e10
@@ -493,7 +495,7 @@ void func_002f05f0(BtlAction *action)
     u32 voiceData;
     s16 voiceId;
     s16 childId;
-    s16 i;
+    u32 i;
 
     voiceId = *(s16*)((u8*)action + 0x6e);
     actionUID = action->uid;
@@ -575,7 +577,11 @@ void func_002f05f0(BtlAction *action)
     packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
-    FUN_002a1b00_voice((s32)action, 0, 0x10);
+    packet = FUN_002a1b00_packet_voice(action, 0, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = rootUID;
+    packet->actionUID = actionUID;
+    btlPacketRegister(packet, 1);
 
     for (i = 0; i < 3; i++) {
         childId = action->target.unk_3e[i];
@@ -4327,7 +4333,7 @@ void func_002e70b0(BtlCamera* camera);
 void func_002e71c0(int param_1);
 void func_002e7210(BtlCamera* camera);
 void func_002e7320(void);
-void func_002e7330(u64 param_1);
+void func_002e7330(int param_1);
 void func_002e7680(void);
 void func_002e76a0(BtlCamera* camera);
 void func_002e7710(BtlCamera* camera);
@@ -6583,7 +6589,7 @@ void func_002e7320(void)
 
 
 // FUN_002e7330 NONMATCHING
-void func_002e7330(u64 param_1)
+void func_002e7330(int param_1)
 
 {
   int iVar1;
@@ -6591,11 +6597,11 @@ void func_002e7330(u64 param_1)
   u16 uVar3;
   u32 uVar4;
   s32 lVar5;
-  u64 uVar6;
+  u16 uVar6;
   int iVar7;
   u8 *unaff_s1_lo;
   
-  iVar7 = (int)param_1;
+  iVar7 = param_1;
   lVar5 = FUN_002f8a40(*(u32 *)(*(int *)(*(int *)(iVar7 + 0xe0) + 0x38) + 0x30));
   if (lVar5 == 0) {
     FUN_002b1e00(param_1);
@@ -6671,7 +6677,7 @@ void func_002e7330(u64 param_1)
     case 10:
       unaff_s1_lo = DAT_00698d40;
     }
-    if (lVar5 != 0) {
+    if (FUN_002fdfa0(iVar1) != 0) {
       uVar6 = 5;
     }
     else {
@@ -6682,11 +6688,13 @@ void func_002e7330(u64 param_1)
   }
   lVar5 = FUN_002b6cd0(iVar7 + 0xec);
   if (lVar5 != 0) {
-    if (*(short *)((int)lVar5 + 0x1c) != 1) {
-      *(u32 *)(iVar7 + 0x110) = 0;
+    if (*(short *)((int)lVar5 + 0x1c) == 1) {
+      FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(u32 *)(iVar7 + 0xe0), 0, 0, 1);
+      *(u32 *)(iVar7 + 0x110) = 1;
     }
     else {
-      *(u32 *)(iVar7 + 0x110) = 1;
+      FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(u32 *)(iVar7 + 0xe0), 0, 0, 3);
+      *(u32 *)(iVar7 + 0x110) = 0;
     }
   }
   *(u32 *)(iVar7 + 0x114) = 1;

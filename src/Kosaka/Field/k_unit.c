@@ -1514,9 +1514,15 @@ void func_001d03f0(u16 charId)
 }
 #pragma opt_loop_invariants off
 
+typedef struct FldUnitNode
+{
+    Resrc base;
+    RwV3d pos;
+} FldUnitNode;
+
 static RwV3d* FldUnit_NodePos(u8* node)
 {
-    return (RwV3d*)(node + 0x100);
+    return &((FldUnitNode*)node)->pos;
 }
 
 static f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
@@ -1882,7 +1888,6 @@ void func_001d1360(void)
     u16 resourceId;
     ResrcModelChar* resource;
     RwV3d light;
-    u32 modelData;
 
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {
@@ -1894,8 +1899,7 @@ void func_001d1360(void)
             func_00318a90(gFldUnitsEc[i].mdl, &DAT_00683780[gFldUnitsEc[i].scaleIdx], 2);
             *(RwMatrix*)func_00318b60(gFldUnitsEc[i].mdl) =
                 gFldUnitsEc[i].matBeforeBtl;
-            modelData = func_00318b70(gFldUnitsEc[i].mdl);
-            func_004c2f10(modelData);
+            func_004c2f10(func_00318b70(gFldUnitsEc[i].mdl));
             func_001a0dc0(resourceId, 1);
             func_001ad870(resource->collisCtlTask, 0x40000000);
             func_001add40(resource->collisCtlTask);
@@ -1905,7 +1909,8 @@ void func_001d1360(void)
             light.y = light.x;
             light.z = light.x;
             func_00318a90(resource->baseMdl, &light, 2);
-            func_004cb420(modelData, func_00318b70(resource->baseMdl));
+            func_004cb420(func_00318b70(gFldUnitsEc[i].mdl),
+                          func_00318b70(resource->baseMdl));
             func_00317730(resource->baseMdl);
             gFldUnitsEc[i].unk_170 = (KwlnTask*)func_001af930(0, resource);
             gFldUnitsEc[i].unk_16c = (KwlnTask*)func_0044ad20(0, i);
@@ -2357,6 +2362,7 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
     s32 slot;
 
     node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_16);
+    K_FldDungeon_GetCurrentFloor();
     best = NULL;
     if (K_Scene_001a0250() == 1)
     {
@@ -2364,11 +2370,13 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
         {
             return NULL;
         }
-        heroPos = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos;
+        heroPos.x = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.x;
+        heroPos.y = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.y;
+        heroPos.z = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.z;
         bestDistance = 1.1754944e-38f;
         while (node != NULL)
         {
-            RwV3d* pos = FldUnit_NodePos(node);
+            RwV3d* pos = &((FldUnitNode*)node)->pos;
             delta.x = pos->x - heroPos.x;
             delta.y = pos->y - heroPos.y;
             delta.z = pos->z - heroPos.z;
@@ -3038,7 +3046,8 @@ void* func_001d3ce0(KwlnTask* task)
             damage = (s32)func_0016c4f0((s16)((FldUnit*)work[1])->charId) - damage;
             if (damage < 1) damage = 1;
             func_0016cf40((s16)((FldUnit*)work[1])->charId, (u16)damage);
-            work[4] = now;
+            work[4] = func_001ad930(
+                ((FldUnit*)work[1])->resrc->collisCtlTask);
         }
         colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
         color.r = colorData[0];

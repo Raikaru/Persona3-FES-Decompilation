@@ -680,6 +680,8 @@ void FUN_0025aad0(void)
 
 
 
+      FUN_00258540(uVar5, auStack_20);
+      FUN_00250f80(&fStack_10, auStack_20);
       iVar2 = FUN_0020e510(1);
 
       rect[0] = fStack_10 - 92.0f;

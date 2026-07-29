@@ -4,6 +4,8 @@
 #include "h_cdvd.h"
 #include "rw/rwcore.h"
 #include "temporary.h"
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
 
 extern u32 FUN_004c2090(void* param_1);
 extern f32 FUN_004b1a70(u32 param_1);
@@ -914,7 +916,7 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
 {
     HMaestro* work;
     RwCamera* camera;
-    Rt2dMaestro* maestro;
+
     RwRGBAReal color;
     f32 savedNearPlane;
     RwV2d animOutput[3];
@@ -922,6 +924,7 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
     f32 animCurrent;
     u32 anim;
     u32 finished;
+    RwBool (**setRenderState)(RwRenderState state, void* value);
 
     work = (HMaestro*)hmaestroTask->workData;
     camera = kwlnGetMainCamera();
@@ -935,18 +938,16 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
     func_004a9f20(0.0f, 0.0f, 640.0f, 448.0f);
     func_004aa410(kwlnGetMainCamera());
 
-    if (work->state == HMAESTRO_STATE_INITCDVD)
+    switch (work->state)
     {
+    case HMAESTRO_STATE_INITCDVD:
         if (work->useCdvd != 0)
         {
             work->cdvd = H_Cdvd_Request(work->path, HCDVD_FILENORMAL);
         }
         work->state = HMAESTRO_STATE_INITSTREAM;
         work->deltaTime = 0.0f;
-    }
-
-    if (work->state == HMAESTRO_STATE_INITSTREAM)
-    {
+    case HMAESTRO_STATE_INITSTREAM:
         if (work->useCdvd != 0 && H_Cdvd_IsFileLoaded(work->cdvd) == 0)
         {
             goto restore_continue;
@@ -956,26 +957,24 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
         if (work->rws == NULL)
         {
             printf(D_005D6B80);
-            camera = kwlnGetMainCamera();
-            RwCameraEndUpdate(camera);
-            camera = kwlnGetMainCamera();
-            func_004c9d70(camera, savedNearPlane);
-            camera = kwlnGetMainCamera();
-            RwCameraBeginUpdate(camera);
+            RwCameraEndUpdate(kwlnGetMainCamera());
+            func_004c9d70(kwlnGetMainCamera(), savedNearPlane);
+            RwCameraBeginUpdate(kwlnGetMainCamera());
             return KWLNTASK_STOP;
         }
         if (func_004c1600(work->rws, 0x1B1, 0, 0) == 0)
         {
             printf(D_005D6BA0);
-            goto restore_stop;
+            RwCameraEndUpdate(kwlnGetMainCamera());
+            func_004c9d70(kwlnGetMainCamera(), savedNearPlane);
+            RwCameraBeginUpdate(kwlnGetMainCamera());
+            return KWLNTASK_STOP;
         }
         work->maestro = func_004b45b0(NULL, work->rws);
         work->state = HMAESTRO_STATE_INITSCENE;
         goto restore_continue;
-    }
 
-    if (work->state == HMAESTRO_STATE_INITSCENE)
-    {
+    case HMAESTRO_STATE_INITSCENE:
         func_004c5780(work->rws, NULL);
         work->rws = NULL;
         func_004a9d80(&animOutput[0], &animOutput[1], &animOutput[2]);
@@ -986,56 +985,57 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
         func_004a9bf0();
         work->state = HMAESTRO_STATE_IDLE;
         goto restore_continue;
-    }
 
-    if (work->state != HMAESTRO_STATE_DRAW)
-    {
+    case HMAESTRO_STATE_DRAW:
+        break;
+
+    default:
         goto restore_continue;
     }
 
     camera = kwlnGetMainCamera();
     func_004aa3d0(gUnk_007cadd0 * camera->nearPlane);
-    func_004aa410(camera);
-    maestro = work->maestro;
-    anim = FUN_004c2090(*(void**)((u8*)maestro + 8));
+    func_004aa410(kwlnGetMainCamera());
+    anim = FUN_004c2090(*(void**)((u8*)work->maestro + 8));
     animEnd = FUN_004b1a70(anim + 4);
     animCurrent = FUN_004b1a60(anim + 4);
     finished = false;
 
     if (work->noDeltaTime != 0)
     {
-        func_004b5000(maestro, 0.0f);
+        func_004b5000(work->maestro, 0.0f);
     }
     else if (work->shouldLoop != 0)
     {
         work->deltaTime += 1.0f;
-        func_004b5000(maestro, fGpffff80e4);
+        func_004b5000(work->maestro, fGpffff80e4);
     }
     else if (animEnd > fGpffff80e4 + animCurrent)
     {
         work->deltaTime += 1.0f;
-        func_004b5000(maestro, fGpffff80e4);
+        func_004b5000(work->maestro, fGpffff80e4);
     }
     else
     {
-        func_004b5000(maestro, 0.0f);
+        func_004b5000(work->maestro, 0.0f);
         if (work->unk_120 == 0)
         {
             finished = true;
         }
     }
 
-    func_004b4c70(maestro);
-    func_004b3cc0(maestro);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, (void*)false);
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, (void*)false);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
-    RwRenderStateSet(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
+    func_004b4c70(work->maestro);
+    func_004b3cc0(work->maestro);
+    setRenderState = (RwBool (**)(RwRenderState, void*))DAT_00960090_abs;
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)false);
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)false);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
     color.r = 1.0f;
     color.g = 1.0f;
     color.b = 1.0f;
@@ -1045,7 +1045,7 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
     func_004a9bf0();
     func_004aaa60();
     func_004ae060(work->scene);
-    func_004b5330(maestro);
+    func_004b5330(work->maestro);
     func_004aad50();
     func_004aad50();
 
@@ -1060,21 +1060,15 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
     }
 
 restore_continue:
-    camera = kwlnGetMainCamera();
-    RwCameraEndUpdate(camera);
-    camera = kwlnGetMainCamera();
-    func_004c9d70(camera, savedNearPlane);
-    camera = kwlnGetMainCamera();
-    RwCameraBeginUpdate(camera);
+    RwCameraEndUpdate(kwlnGetMainCamera());
+    func_004c9d70(kwlnGetMainCamera(), savedNearPlane);
+    RwCameraBeginUpdate(kwlnGetMainCamera());
     return KWLNTASK_CONTINUE;
 
 restore_stop:
-    camera = kwlnGetMainCamera();
-    RwCameraEndUpdate(camera);
-    camera = kwlnGetMainCamera();
-    func_004c9d70(camera, savedNearPlane);
-    camera = kwlnGetMainCamera();
-    RwCameraBeginUpdate(camera);
+    RwCameraEndUpdate(kwlnGetMainCamera());
+    func_004c9d70(kwlnGetMainCamera(), savedNearPlane);
+    RwCameraBeginUpdate(kwlnGetMainCamera());
     return KWLNTASK_STOP;
 }
 

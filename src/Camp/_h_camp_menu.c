@@ -204,10 +204,17 @@ void FUN_00154970(CampMenuDrawItem* item,
             }
         } else {
             for (i = 0; i < 6; i++) {
-                campMenuDrawSprite(parent, *labels, i,
-                                   campDrawAlpha8(item), item->x,
-                                   item->y + (f32)(i * 0x11),
-                                   item->scale);
+                if (i == count) {
+                    campMenuDrawSprite(parent, *labels, i,
+                                       campDrawAlpha8(item), item->x,
+                                       item->y + (f32)(i * 0x11),
+                                       item->scale);
+                } else {
+                    campMenuDrawSprite(parent, *labels, i + 6,
+                                       campDrawAlpha8(item), item->x,
+                                       item->y + (f32)(i * 0x11),
+                                       item->scale);
+                }
             }
         }
         break;
