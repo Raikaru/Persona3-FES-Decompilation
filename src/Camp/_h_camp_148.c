@@ -141,7 +141,8 @@ extern u32 FUN_00103c30();
 extern u32 FUN_00103cb0();
 extern u32 FUN_0010a4e0();
 extern u32 FUN_0010c1a0(int param_1, u32 param_2, int param_3, int param_4,
-                        int param_5, int param_6, int param_7, int param_8);
+                        int param_5, int param_6, int param_7, int param_8,
+                        int param_9, int param_10, u32 param_11, u32 param_12);
 extern u32 FUN_0010c3a0();
 extern u32 FUN_00111f30();
 extern u32 FUN_00112420();
@@ -2210,11 +2211,11 @@ u32 h_campUpdateSystemMenuTask(int param_1)
     }
     lVar4 = FUN_0017d800();
     if (lVar4 != 0) {
-      uVar2 = FUN_0010c1a0(0,0x5db050,0,0,0,0,0,0);
+      uVar2 = FUN_0010c1a0(0,0x5db050,0,0,0,0,0,0,0,0,0x5dbc80,0x1b3);
       puVar1[7] = uVar2;
     }
     else {
-      uVar2 = FUN_0010c1a0(0,0x5db0a0,0,0,0,0,0,0);
+      uVar2 = FUN_0010c1a0(0,0x5db0a0,0,0,0,0,0,0,0,0,0x5dbc80,0x1b5);
       puVar1[7] = uVar2;
     }
     uVar2 = (u32)func_0018b6d0(10);

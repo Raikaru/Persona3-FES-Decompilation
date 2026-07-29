@@ -32,6 +32,10 @@ extern s32 campStatusDrawSpritePackedCall(f32 x, f32 y, u32 parent,
 extern void campStatusDrawSprite3Call(f32 x, f32 y, u32 parent);
 #pragma alias campStatusDrawSprite4Call FUN_001159f0
 extern void campStatusDrawSprite4Call(f32 x, f32 y, f32 alpha, s32 digit);
+#pragma alias campStatusDrawSpriteFadeCall FUN_00115ad0
+extern void campStatusDrawSpriteFadeCall(u32 parent, void* resource, s32 frame,
+                                         u32 alpha, f32 x, f32 y, f32 scale,
+                                         u32 fade);
 #pragma alias campStatusDrawGaugeCall FUN_00113a30
 extern void campStatusDrawGaugeCall(f32 scale, f32 x, f32 y, u32 color,
                                     s32 width, s32 height);
@@ -221,7 +225,7 @@ typedef struct CampStatusParticle
 
 static s32 sCampStatusScrollX;
 
-static s32 campStatusClampFade(s32 fade)
+static inline s32 campStatusClampFade(s32 fade)
 {
     if (fade < 0) {
         return 0;
@@ -251,15 +255,12 @@ static void campStatusDrawNumber(f32 alpha, f32 x, f32 y, u32 value)
     campStatusDrawDigit(alpha, x + 30.0f, y, value);
 }
 
-static void campStatusDrawParticle(f32 texture, f32 x, f32 y, s8 alpha,
+static inline void campStatusDrawParticle(f32 texture, f32 x, f32 y, s8 alpha,
                                    s32 slot)
 {
     CampStatusParticle* particle;
 
     particle = (CampStatusParticle*)FUN_001158b0(0, DAT_00833B90, slot);
-    if (particle == NULL) {
-        return;
-    }
     *(f32*)((u8*)particle + 0x2c) = texture;
     particle->x = x;
     particle->y = y;
@@ -414,6 +415,8 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     u32 val;
     f32 dx;
     f32 dy;
+    u32 parent;
+    void* font;
 
     FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
     bright = campStatusClampFade(0xff - fade);
@@ -426,44 +429,49 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                                 position.x + 59.0f, 0xffffff00, barOffset, 10);
     }
     dy = (70.0f + position.y) - 12.0f;
-    campStatusGetFont(2);
+    /* Separator */
+    campStatusDrawSpriteCall(parent, DAT_00833B90, 4, (u32)(u8)fade,
+                             position.x + 85.0f, dy, alpha);
     /* Draw current HP digits */
     val = datGetHp(pcId);
     dx = position.x + 79.0f;
     if (val >= 100) {
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
-                                (u32)(u8)fade, dx, dy, 0);
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
+                                 (u32)(u8)fade, dx, dy, alpha);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
-                                (u32)(u8)fade, dx, dy, 0);
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
+                                 (u32)(u8)fade, dx, dy, alpha);
         val %= 10;
         dx += 15.0f;
     }
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
-                            (u32)(u8)fade, dx, dy, 0);
-    /* Separator */
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 4,
-                            (u32)(u8)fade, position.x + 85.0f, dy, 0);
+    font = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, font, val + 0xb,
+                             (u32)(u8)fade, dx, dy, alpha);
     /* Draw max HP digits */
     val = datGetMaxHp(pcId);
     dx = position.x + 138.0f;
     if (val >= 100) {
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
-                                (u32)(u8)fade, dx, dy, 0);
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteFadeCall(parent, font, val / 100 + 0xb,
+                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
-        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
-                                (u32)(u8)fade, dx, dy, 0);
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
+                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 10;
         dx += 15.0f;
     }
-    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
-                            (u32)(u8)fade, dx, dy, 0);
+    font = campStatusGetFont(2);
+    campStatusDrawSpriteFadeCall(parent, font, val + 0xb,
+                                 (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
 
 // FUN_00123B70 NONMATCHING
@@ -482,44 +490,49 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                                 position.x + 75.0f, 0xffffff00, barOffset, 10);
     }
     dy = position.y + 73.0f;
-    font = (void*)campStatusGetFont(2);
+    /* Separator */
+    campStatusDrawSpriteCall(parent, DAT_00833B90, 4, (u32)(u8)fade,
+                             position.x + 97.0f, dy, alpha);
     /* Draw current SP digits */
     val = datGetSp(pcId);
     dx = position.x + 79.0f;
     if (val >= 100) {
+        font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
+        font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha);
         val %= 10;
         dx += 15.0f;
     }
+    font = campStatusGetFont(2);
     campStatusDrawSpriteCall(parent, font, val + 0xb,
                              (u32)(u8)fade, dx, dy, alpha);
-    /* Separator */
-    campStatusDrawSpriteCall(parent, font, 4, (u32)(u8)fade,
-                             position.x + 97.0f, dy, alpha);
     /* Draw max SP digits */
     val = func_0016c670(pcId);
     dx = position.x + 138.0f;
     if (val >= 100) {
-        campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
-                                 (u32)(u8)fade, dx, dy, alpha);
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteFadeCall(parent, font, val / 100 + 0xb,
+                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
-        campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
-                                 (u32)(u8)fade, dx, dy, alpha);
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
+                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 10;
         dx += 15.0f;
     }
-    campStatusDrawSpriteCall(parent, font, val + 0xb,
-                             (u32)(u8)fade, dx, dy, alpha);
+    font = campStatusGetFont(2);
+    campStatusDrawSpriteFadeCall(parent, font, val + 0xb,
+                                 (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
 
 // FUN_00123F80
@@ -1579,7 +1592,7 @@ static void h_campStatusDrawPanel(CampStatusPartsWork* work, s32 alpha,
     h_campStatusDrawEquipmentSlots(parent, position, persona, bonus, alpha);
 }
 
-static void h_campStatusResetInput(CampStatusPartsWork* work, s32 mask)
+static inline void h_campStatusResetInput(CampStatusPartsWork* work, s32 mask)
 {
     if ((DAT_007e094e & 0x20) != 0) {
         FUN_0010a4e0(0, 0, 0, 2);
@@ -1961,6 +1974,8 @@ KwlnTask* h_campStatusCreatePartsTask(KwlnTask* parent, u32 priority,
     return task;
 }
 
+void h_campStatusRenderMode(CampVec2 position, f32 scale, void* persona,
+                            s32 mode, s32 frame, s32 alpha);
 // FUN_00127C00 NONMATCHING
 void* h_campStatusUpdatePanelTask(KwlnTask* task)
 {
@@ -1983,15 +1998,10 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
         }
         break;
     case 1:
-        if (DAT_007cdf50 != NULL && DAT_007cdf50->workData != NULL &&
-            *((s32*)((u8*)DAT_007cdf50->workData + 0x10)) != 0) {
+        if (*((s32*)((u8*)DAT_007cdf50->workData + 0x10)) != 0) {
             work->animationFrame = 0;
-            if (DAT_007cdf54 != NULL) {
-                FUN_00121de0(DAT_007cdf54, 3);
-            }
-            if (DAT_007cdf58 != NULL) {
-                FUN_00122710(DAT_007cdf58, 3);
-            }
+            FUN_00121de0(DAT_007cdf54, 3);
+            FUN_00122710(DAT_007cdf58, 3);
             work->state = 2;
         }
         break;
@@ -2008,7 +2018,9 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
                 input = 1;
             }
             if (work->animationFrame != 0) {
-                h_campStatusDrawPanelFrame(0x42c80000, position, 0xff);
+                h_campStatusRenderMode(position, 100.0f,
+                                       (void*)FUN_00174800(1), 0,
+                                       work->animationFrame, 0);
             }
             if (input != 0) {
                 if ((DAT_007e094e & 0x20) != 0) {
@@ -2032,8 +2044,9 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
                     work->alpha = 0xff;
                 }
             }
-            h_campStatusDrawPanelFrame(0x42c80000, position,
-                                       0xff - work->alpha);
+            h_campStatusRenderMode(position, 100.0f,
+                                   (void*)FUN_00174800(1), 2, 0,
+                                   0xff - work->alpha);
         }
         break;
     case 3:
@@ -2041,11 +2054,14 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
         if (work->alpha < 0) {
             return KWLNTASK_STOP;
         }
-        h_campStatusDrawPanelFrame(0x42c80000, position, work->alpha);
+        h_campStatusRenderMode(position, 100.0f,
+                               (void*)FUN_00174800(1), 2, 0,
+                               0xff - work->alpha);
         break;
     case 4:
-        h_campStatusDrawPanelFrame(0x42c80000, position, 0);
-        if (FUN_0011e380(DAT_007cdf50, 0) != 0) {
+        h_campStatusRenderMode(position, 100.0f,
+                               (void*)FUN_00174800(1), 2, 0, 0);
+        if (*((s32*)((u8*)DAT_007cdf50->workData + 0x10)) != 0) {
             work->animationFrame = 0;
             work->state = 5;
         }
@@ -2055,8 +2071,9 @@ void* h_campStatusUpdatePanelTask(KwlnTask* task)
         if (work->animationFrame >= 10) {
             return KWLNTASK_STOP;
         }
-        h_campStatusDrawPanelFrame(0x42c80000, position,
-                                   work->animationFrame * 25);
+        h_campStatusRenderMode(position, 100.0f,
+                               (void*)FUN_00174800(1), 1,
+                               work->animationFrame, 0);
         break;
     }
     (void)done;

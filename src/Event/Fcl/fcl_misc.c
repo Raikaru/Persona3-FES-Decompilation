@@ -1204,7 +1204,7 @@ u32 FUN_003c94e0(void)
 }
 #define FUN_003c94e0(...) ((u32 (*)(...))FUN_003c94e0)(__VA_ARGS__)
 #undef FUN_003c9570
-// FUN_003C9570 NONMATCHING
+// FUN_003C9570
 
 
 void FUN_003c9570(u64 param_1)
@@ -1215,9 +1215,9 @@ void FUN_003c9570(u64 param_1)
   int special;
   int index;
   int y;
-  int count;
   int *source;
   int *destination;
+  int count;
   int first;
   int second;
   FclMisc9570Layout layout;
@@ -1239,8 +1239,7 @@ void FUN_003c9570(u64 param_1)
 
   layout.specialValues.vec = *(FclMiscVec3 *)fclMiscSpecialValues;
 
-  width = FUN_003af380();
-  if ((short)width == -1) {
+  if ((short)(width = FUN_003af380()) == -1) {
     special = 1;
     index = FUN_003af390();
     width = layout.sizeTable[index * 2];
@@ -1250,8 +1249,7 @@ void FUN_003c9570(u64 param_1)
     height = FUN_003af390() * 25;
   }
 
-  x = FUN_003af360();
-  if ((short)x == -1) {
+  if ((short)(x = FUN_003af360()) == -1) {
     x = 0x140 - (width >> 1);
   }
 
