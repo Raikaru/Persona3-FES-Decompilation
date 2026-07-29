@@ -1611,22 +1611,13 @@ void bpTexShuffleNodes(void)
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
     count = (s32)BP_TEX_U32(work, 0x1267c);
-    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
-    nodeCount = 0;
-    for (node = BP_TEX_PTR(work, 0x1265c);
-         node != NULL;
-         node = (u32*)node[0x3f1])
-    {
-        if ((node[0] & 2) == 0)
-        {
-            nodeCount++;
-        }
-    }
     func_005225a8((u32)"speed:%d\n", BP_TEX_U32(work, 0x126b0));
     BP_TEX_U32(work, 0x4a22 * 4) =
-        (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 10.0f + 3.0f);
+        (s32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 10.0f + 3.0f);
     BP_TEX_U32(work, 0x4a23 * 4) =
-        (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 3.0f + 5.0f);
+        (s32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 3.0f + 5.0f);
+    func_005225a8((u32)"divH:%d\n", BP_TEX_U32(work, 0x4a22 * 4));
+    func_005225a8((u32)"divV:%d\n", BP_TEX_U32(work, 0x4a23 * 4));
     for (i = 0; i < count; i++)
     {
         BP_TEX_U32(work, (0x49ef + i) * 4) = (u32)i;
@@ -1644,6 +1635,17 @@ void bpTexShuffleNodes(void)
             BP_TEX_U32(work, (0x49ef + selected) * 4);
         BP_TEX_U32(work, (0x49ef + selected) * 4) = tmp;
     }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    nodeCount = 0;
+    for (node = BP_TEX_PTR(work, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        if ((node[0] & 2) == 0)
+        {
+            nodeCount++;
+        }
+    }
     for (i = 0; i < count; i++)
     {
         if (BP_TEX_U32(work, (0x49ef + i) * 4) == 0)
@@ -1651,7 +1653,6 @@ void bpTexShuffleNodes(void)
             break;
         }
     }
-    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     node = BP_TEX_PTR(work, 0x1265c);
     while (node != NULL)
     {
@@ -1671,6 +1672,7 @@ void bpTexShuffleNodes(void)
     func_00250a30((u8*)node + 0x1094,
                   position,
                   BP_TEX_U32(work, 0x4a23 * 4));
+    FUN_0010a4e0(1, 0, 6, 2);
     *node |= 0x60;
     BP_TEX_U32(work, 0x49ed * 4) = 0;
     BP_TEX_U32(work, 0x49ee * 4) = 0;
@@ -2706,23 +2708,23 @@ extern u8 D_0096009C_abs[];
 
 static inline void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32* x, f32* y)
 {
-    if (mode == 3)
+    if (sub != 0 && !bpPanelInTransition(sub))
+    {
+        K_ASSERT(false, 0x185);
+        *x = 103.0f;
+        *y = 361.0f;
+    }
+    else if (mode == 3)
     {
         if (sub == 0)
         {
             *x = 61.5f + 41.5f * timer / 3.0f;
             *y = 388.5f - 27.5f * timer / 3.0f;
         }
-        else if (bpPanelInTransition(sub))
+        else
         {
             *x = 103.0f - 41.5f * timer / 3.0f;
             *y = 361.0f + 27.5f * timer / 3.0f;
-        }
-        else
-        {
-            K_ASSERT(false, 0x185);
-            *x = 103.0f;
-            *y = 361.0f;
         }
     }
     else if (sub == 0)
@@ -2730,16 +2732,10 @@ static inline void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32*
         *x = 103.0f;
         *y = 361.0f;
     }
-    else if (bpPanelInTransition(sub))
+    else
     {
         *x = 61.5f;
         *y = 388.5f;
-    }
-    else
-    {
-        K_ASSERT(false, 0x185);
-        *x = 103.0f;
-        *y = 361.0f;
     }
     (void)work;
 }
@@ -2875,8 +2871,8 @@ void func_0021f410(void)
 
     K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
     work = BP_PANEL_GLOBAL;
-    K_ASSERT((*(u32*)work & 1) != 0, 0x151);
     texture = func_0021c3f0(0);
+    K_ASSERT((*(u32*)work & 1) != 0, 0x151);
     dt = *(f32*)(work + 0x7214);
     func_0022b630();
 

@@ -7167,7 +7167,7 @@ switchD_004387bc_caseD_5:
       }
       break;
     case 6:
-      iVar10 = ((code)FUN_001c7270)(*(u32 *)(iVar14 + 0x14),*(u32 *)(iVar2 + 0x24));
+      iVar10 = (int)FUN_001c7270_typed((void *)*(u32 *)(iVar2 + 0x24), *(float *)(iVar14 + 0x14));
       *(int *)(iVar2 + 0x28) = iVar10;
       if (iVar10 == 0) {
         if (DAT_007ce6bc == '\0') {

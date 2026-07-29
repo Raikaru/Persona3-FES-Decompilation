@@ -164,14 +164,11 @@ void H_Pad_Poll(HPad* pad)
     case HPAD_STATE_WAITING_FOR_MODE:
         if (padState == HPAD_PAD_STATE_STABLE)
         {
-            if (scePadSetMainMode(port, slot, 0, 0) == 1)
-            {
-                pad->state = HPAD_STATE_WAITING_FOR_MODE;
-            }
-        }
-        else
-        {
             pad->state = HPAD_STATE_CONFIGURING_ACTUATORS;
+        }
+        else if (padState != HPAD_PAD_STATE_FIND_CTP1)
+        {
+            pad->state = HPAD_STATE_INITIALIZING;
         }
         break;
 

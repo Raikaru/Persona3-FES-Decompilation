@@ -457,6 +457,10 @@ extern BtlPacket* FUN_002a1b00_packet_voice(BtlAction*, s16, s32);
 extern void FUN_002a1b00_voice(s32, s16, s32);
 #pragma alias FUN_002d4e10_u16_voice FUN_002d4e10
 extern u16 FUN_002d4e10_u16_voice(u16, u32);
+#pragma alias FUN_002838d0_s16_voice FUN_002838d0
+extern s16 FUN_002838d0_s16_voice(f32, BtlUnit*, u16);
+#pragma alias FUN_002ff540_u32_voice FUN_002ff540
+extern u32 FUN_002ff540_u32_voice(u32, s16);
 
 
 // FUN_002f0580
@@ -1592,7 +1596,7 @@ u32 func_002f2b40(BtlAction* action)
 }
 
 // FUN_002f2b90 NONMATCHING
-void func_002f2b90(u64 param_1)
+void func_002f2b90(u64 *param_1)
 
 {
   u16 uVar1;
@@ -1604,15 +1608,13 @@ void func_002f2b90(u64 param_1)
   u32 uVar7;
   u32 uVar8;
   u32 uVar9;
-  u64 *puVar10;
   u64 uVar11;
   u8 auStack_90 [136];
   u32 uStack_8;
   u32 uStack_4;
   
-  puVar10 = (u64 *)param_1;
-  uVar11 = *puVar10;
-  sVar2 = FUN_002835e0(1.0f,*(u32 *)(puVar10 + 6),0x17);
+  uVar11 = *param_1;
+  sVar2 = FUN_002835e0(1.0f,*(u32 *)(param_1 + 6),0x17);
   uVar1 = *(u16 *)(DAT_0069a1d2 + (u32)*(u16 *)(iGpffffb6fc + 0xb48) * 4);
   uVar7 = FUN_002b8f90_u32_voice(0);
   uVar8 = FUN_002b8f90_u32_voice(1);
@@ -1621,7 +1623,7 @@ void func_002f2b90(u64 param_1)
   uVar9 = (u32)FUN_002d1d00_packet_voice((BtlAction*)param_1,2,(const char*)0x69a350);
   iVar3 = (int)uVar9;
   *(u16 *)(iVar3 + 0x48) = 0x1e;
-  *(u64 *)(iVar3 + 0x60) = *puVar10;
+  *(u64 *)(iVar3 + 0x60) = *param_1;
   FUN_0027ed20(uVar9,0);
   uVar9 = (u32)FUN_002a3b40_packet_voice(0,1);
   puVar4 = (u8 *)uVar9;
@@ -1629,24 +1631,24 @@ void func_002f2b90(u64 param_1)
   *(u64 *)(puVar4 + 8) = *(u64 *)(iVar3 + 0x58);
   *(u16 *)(puVar4 + 0x48) = 0x10;
   FUN_0027ed20(uVar9,0);
-  uVar9 = (u32)FUN_002bb2f0_packet_voice(uVar7,(BtlUnit*)*(u32 *)(puVar10 + 6),sVar2 + 6,0,0x200);
+  uVar9 = (u32)FUN_002bb2f0_packet_voice(uVar7,(BtlUnit*)*(u32 *)(param_1 + 6),sVar2 + 6,0,0x200);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
-  *(u64 *)(puVar5 + 0x60) = *puVar10;
+  *(u64 *)(puVar5 + 0x60) = *param_1;
   FUN_0027ed20(uVar9,2);
-  uVar9 = (u32)FUN_00284200_packet_voice(1.0f,(BtlUnit*)*(u32 *)(puVar10 + 6),0x17,0,0);
+  uVar9 = (u32)FUN_00284200_packet_voice(1.0f,(BtlUnit*)*(u32 *)(param_1 + 6),0x17,0,0);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
   *(u16 *)(puVar5 + 0x48) = 4;
-  *(u64 *)(puVar5 + 0x60) = *puVar10;
+  *(u64 *)(puVar5 + 0x60) = *param_1;
   FUN_0027ed20(uVar9,1);
   uVar9 = (u32)FUN_002b8d60_packet_voice(3,0xfff);
   *(u8 *)uVar9 = 4;
   *(u64 *)((u8 *)uVar9 + 8) = *(u64 *)(puVar5 + 0x58);
   FUN_0027ed20(uVar9,1);
-  uVar9 = (u32)FUN_002bd590_packet_voice((BtlUnit*)*(u32 *)(puVar10 + 6),uVar1);
+  uVar9 = (u32)FUN_002bd590_packet_voice((BtlUnit*)*(u32 *)(param_1 + 6),uVar1);
   puVar6 = (u8 *)uVar9;
   *puVar6 = 4;
   *(u64 *)(puVar6 + 8) = *(u64 *)(puVar5 + 0x58);
@@ -1689,7 +1691,7 @@ void func_002f2b90(u64 param_1)
   *puVar4 = 4;
   *(u64 *)(puVar4 + 8) = *(u64 *)(puVar5 + 0x58);
   FUN_0027ed20(uVar9,1);
-  uVar9 = (u32)FUN_002baf90_packet_voice((void*)uVar8,(BtlUnit*)*(u32 *)(puVar10 + 6),(BtlUnit*)*(u32 *)(puVar10 + 6),0,0);
+  uVar9 = (u32)FUN_002baf90_packet_voice((void*)uVar8,(BtlUnit*)*(u32 *)(param_1 + 6),(BtlUnit*)*(u32 *)(param_1 + 6),0,0);
   puVar6 = (u8 *)uVar9;
   *puVar6 = 4;
   *(u64 *)(puVar6 + 8) = *(u64 *)(puVar5 + 0x58);
@@ -1701,7 +1703,7 @@ void func_002f2b90(u64 param_1)
   *(u8 *)uVar9 = 5;
   *(u64 *)((u8 *)uVar9 + 8) = *(u64 *)(puVar6 + 0x58);
   FUN_0027ed20(uVar9,1);
-  uVar9 = (u32)FUN_002baf90_packet_voice((void*)uVar8,(BtlUnit*)*(u32 *)(puVar10 + 6),(BtlUnit*)*(u32 *)(puVar10 + 6),1,0);
+  uVar9 = (u32)FUN_002baf90_packet_voice((void*)uVar8,(BtlUnit*)*(u32 *)(param_1 + 6),(BtlUnit*)*(u32 *)(param_1 + 6),1,0);
   puVar6 = (u8 *)uVar9;
   *puVar6 = 4;
   *(u64 *)(puVar6 + 8) = *(u64 *)(puVar5 + 0x58);
@@ -6394,6 +6396,7 @@ void func_002e6a20(BtlCamera* camera, float weight)
     work.scale = firstUnit->sphereRadius * firstUnit->scale * 1.25f;
     work.temp0 = work.secondRadius;
     selectedUnit = secondUnit;
+    FUN_004c69f0_6a20(&work.delta, &work.delta);
   }
   else {
     FUN_002d1de0_6a20(&work.rotation, &work.second, &work.first);
@@ -6412,10 +6415,10 @@ void func_002e6a20(BtlCamera* camera, float weight)
     work.scale = secondUnit->sphereRadius * secondUnit->scale * 0.5f;
     work.temp0 = work.firstRadius;
     selectedUnit = firstUnit;
+    FUN_004c69f0_6a20(&work.delta, &work.delta);
   }
 
   work.scale = work.scale * DAT_007cad88;
-  FUN_004c69f0_6a20(&work.delta, &work.delta);
   work.delta.x = work.delta.x * work.scale;
   work.delta.y = work.delta.y * work.scale;
   work.delta.z = work.delta.z * work.scale;
@@ -10687,7 +10690,7 @@ u32 func_002efdb0(BtlUnit* unit)
 void func_002efe50(u64 *param_1)
 
 {
-  u16 uVar1;
+  s16 uVar1;
   short sVar2;
   u64 *puVar3;
   u32 uVar4;
@@ -10707,7 +10710,7 @@ void func_002efe50(u64 *param_1)
   u32 uStack_8;
   u32 uStack_4;
   
-  uVar1 = *(u16 *)((int)param_1 + 0x6e);
+  uVar1 = *(s16 *)((int)param_1 + 0x6e);
   uVar14 = *param_1;
   sVar2 = *(short *)((int)param_1 + 0x76);
   uVar11 = FUN_002b8f90_u32_voice(0);
@@ -10726,7 +10729,7 @@ void func_002efe50(u64 *param_1)
   iVar6 = (int)uVar12;
   *(u64 *)(iVar6 + 0x60) = uVar14;
   FUN_0027ed20(uVar12,1);
-  sVar5 = FUN_002838d0(1.0f,*(u32 *)(param_1 + 6),7);
+  sVar5 = FUN_002838d0_s16_voice(1.0f,(BtlUnit *)*(u32 *)(param_1 + 6),7);
   uVar13 = *(u64 *)(iVar6 + 0x58);
   uVar12 = (u32)FUN_002b8d60_packet_voice(3,0xfff);
   puVar7 = (u8 *)uVar12;
@@ -10793,7 +10796,7 @@ void func_002efe50(u64 *param_1)
   *(u64 *)(puVar7 + 8) = uVar13;
   *(u64 *)(puVar7 + 0x60) = uVar14;
   FUN_0027ed20(uVar12,1);
-  uVar12 = FUN_002ff540(*(u32 *)(DAT_007ce3ec + 0xbbc),sVar2);
+  uVar12 = FUN_002ff540_u32_voice(*(u32 *)(DAT_007ce3ec + 0xbbc),sVar2);
   uVar4 = *(u32 *)(puVar8 + 6);
   FUN_002889c0(uVar4,sVar2);
   FUN_002b71e0();

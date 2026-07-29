@@ -1780,11 +1780,9 @@ void func_001d0e50(s32 isDungeon)
             resourceId = func_003b6030(i, 1, unit->mdl);
             resource = (ResrcModelChar*)func_003b5d10(resourceId);
             unit->resrc = resource;
-            func_00318a90(unit->mdl, &DAT_00683780[unit->scaleIdx], 2);
             modelMatrix = (RwV3d*)func_00318b60(unit->mdl);
-            *(RwMatrix*)func_00318b60(unit->mdl) = unit->matBeforeBtl;
-            modelData = func_00318b70(unit->mdl);
-            func_004c2f10(modelData);
+            *(RwMatrix*)modelMatrix = unit->matBeforeBtl;
+            func_004c2f10((u64)func_00318b60(unit->mdl));
             func_001a0dc0(resourceId, 1);
             func_001ad870(resource->collisCtlTask, 0x40000000);
             func_001add40(resource->collisCtlTask);
@@ -1802,7 +1800,7 @@ void func_001d0e50(s32 isDungeon)
             light.z = light.x;
             scale = light;
             func_00318a90(resource->baseMdl, &scale, 2);
-            func_004cb420(modelData, func_00318b70(resource->baseMdl));
+            func_004cb420(func_00318b70(unit->mdl), func_00318b70(resource->baseMdl));
             func_00317730(resource->baseMdl);
             if (func_002ff790(unit->genusBase) == 0)
             {
@@ -2282,7 +2280,6 @@ void func_001d1fa0(void)
     index = 0;
     while ((spawn = (u8*)func_001d2300(index, count)) != NULL)
     {
-        (void)func_001d78c0(*puGpffffa850, puGpffffa850[2], area);
         for (slot = 0; slot < 0x20; slot++)
         {
             record = DAT_0086be80 + slot * 0x138;
@@ -2695,6 +2692,7 @@ void* func_001d32a0(KwlnTask* task)
     s32 state;
     s32 i;
     s32 count;
+    s32 encounterMode;
     u32 area;
     u16 grid;
     u32 available;
@@ -2726,19 +2724,22 @@ void* func_001d32a0(KwlnTask* task)
         uGpffffb59c = 0;
         grid = func_001bff20();
         available = func_001d75f0((u16)piGpffffa850[0], (u16)piGpffffa850[1], grid);
-        if (func_001c0040() != 4)
+        encounterMode = func_001c0040();
+        switch (encounterMode)
         {
-            if (func_001c0040() == 3 || func_001c0040() == 1)
-            {
-                available <<= 1;
-                if (available > 0x12) available = 0x12;
-                func_001d38d0(task, 2);
-            }
-            else
-            {
-                available = 0;
-                func_001d38d0(task, 1);
-            }
+        case 0:
+            available = 0;
+            func_001d38d0(task, 1);
+            break;
+        case 1:
+        case 2:
+        case 3:
+            available <<= 1;
+            if (available > 0x12) available = 0x12;
+            func_001d38d0(task, 2);
+            break;
+        case 4:
+            break;
         }
         func_001d0720(available);
         work[0]++;

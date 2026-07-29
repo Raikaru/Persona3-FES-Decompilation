@@ -567,7 +567,9 @@ extern void FUN_004c31b0_sceneFunc(RwMatrix *matrix, const RwV3d *axis,
 void FUN_003bb390(u32 param_2,u16 param_3,float param_1);
 void FUN_003bb400(u32 param_1);
 void FUN_003bb450(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
-void FUN_003bb620(u32 param_1,u32 *param_2,int param_3);
+#pragma alias FUN_003bb450_scene_typed FUN_003bb450
+extern void FUN_003bb450_scene_typed(float *param_1,float param_2,float param_3,float param_4,float param_5,float *param_6);
+void FUN_003bb620(float param_1,u32 *param_2,int param_3);
 void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
 #pragma alias FUN_003bb9b0_scene_typed FUN_003bb9b0
@@ -3234,11 +3236,12 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
   *(RwV3d *)result = output.value;
 }
 #define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
+#undef FUN_003bb450
 #undef FUN_003bb620
 // FUN_003BB620 NONMATCHING
 
 
-void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
+void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
 
 
@@ -3271,17 +3274,17 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
     u32 z;
   } direction;
 
-  u32 uStack_30;
+  float uStack_30;
 
-  u32 uStack_2c;
+  float uStack_2c;
 
-  u32 uStack_28;
+  float uStack_28;
 
-  u32 uStack_20;
+  float uStack_20;
 
-  u32 uStack_1c;
+  float uStack_1c;
 
-  u32 uStack_18;
+  float uStack_18;
 
   float fStack_10;
 
@@ -3297,11 +3300,11 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
   fStack_8 = *(float *)(param_3 + 0xc);
 
-  uStack_20 = *(u32 *)(param_3 + 0x10);
+  uStack_20 = *(float *)(param_3 + 0x10);
 
-  uStack_1c = *(u32 *)(param_3 + 0x14);
+  uStack_1c = *(float *)(param_3 + 0x14);
 
-  uStack_18 = *(u32 *)(param_3 + 0x18);
+  uStack_18 = *(float *)(param_3 + 0x18);
 
   if ((*(short *)(param_3 + 0x10c) != 0) && (lVar3 = FUN_003b5d10(), lVar3 != 0)) {
 
@@ -3313,7 +3316,7 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
     fStack_8 = *(float *)(iVar4 + 0xc);
 
-    param_1 = *(u32 *)(param_3 + 0x104);
+    param_1 = *(float *)(param_3 + 0x104);
 
     FUN_003b79a0(auStack_d0,&fStack_10,&uStack_20);
 
@@ -3351,17 +3354,18 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 
   }
 
-  FUN_003bb450(param_1,uStack_20,uStack_1c,uStack_18,&fStack_10,&uStack_30);
+  FUN_003bb450_scene_typed(&fStack_10,param_1,uStack_20,uStack_1c,uStack_18,&uStack_30);
 
-  *param_2 = uStack_30;
+  *(float *)param_2 = uStack_30;
 
-  param_2[1] = uStack_2c;
+  *(float *)(param_2 + 1) = uStack_2c;
 
-  param_2[2] = uStack_28;
+  *(float *)(param_2 + 2) = uStack_28;
 
   return;
 
 }
+#define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
 #define FUN_003bb620(...) ((void (*)(...))FUN_003bb620)(__VA_ARGS__)
 #undef FUN_003bb7a0
 // FUN_003BB7A0 NONMATCHING

@@ -686,7 +686,18 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
         FUN_00287490(unit);
-        if (FUN_0030b5a0(unit->datUnit, 0) == 0 && gBtl->unk_ba4 > 1 && (gBtl->unk_10 & 1) == 0)
+        if (FUN_0030b5a0(unit->datUnit, 0) != 0)
+        {
+            FUN_003004f0(unit->datUnit, 0x80000);
+            FUN_002ffd90(unit->datUnit, 0);
+            unit->flags3 |= (1 << 0);
+            FUN_002831c0(unit, 0);
+            btlPacketRegister(FUN_002dd960(unit), BTLPACKET_TYPE_1);
+            btlPacketRegister(FUN_00284200(1.0f, unit, 0x12, 0, 2), BTLPACKET_TYPE_1);
+            btlPacketRegister(FUN_00284d80(unit, FUN_002838d0(1.0f, unit, 0x12)), BTLPACKET_TYPE_1);
+            btlPacketRegister(FUN_002dd8e0(unit), BTLPACKET_TYPE_1);
+        }
+        else if (gBtl->unk_ba4 > 1 && (gBtl->unk_10 & 1) == 0)
         {
             btlUnit0027f7c0(unit, &unitPos, ((void*)0), (RwV3d*)&unitRot);
             direction.x = unitPos.x - homePos.x;
@@ -711,15 +722,6 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
                 btlPacketRegister(packet, BTLPACKET_TYPE_1);
                 (*(u16*)((u8*)(packet) + (0x48))) = 4;
             }
-        }
-        else if (FUN_0030b5a0(unit->datUnit, 0) != 0)
-        {
-            FUN_003004f0(unit->datUnit, 0x80000);
-            FUN_002ffd90(unit->datUnit, 0);
-            unit->flags3 |= (1 << 0);
-            FUN_002831c0(unit, 0);
-            btlPacketRegister(FUN_00284200(1.0f, unit, 0x12, 0, 2), BTLPACKET_TYPE_1);
-            btlPacketRegister(FUN_00284d80(unit, FUN_002838d0(1.0f, unit, 0x12)), BTLPACKET_TYPE_1);
         }
     }
     for (genus = 0; genus < 2; genus++)

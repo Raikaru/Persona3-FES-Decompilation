@@ -22,6 +22,8 @@ extern u8 D_00960090_abs[];
 #pragma alias D_00960088_abs D_00960088
 extern volatile /* Removing this file's qualifier batch loses 0 MATCH(es) and worsens 1 other function(s) - measured W170. */ f32 D_00960088_abs[];
 extern RwIm2DRenderPrimitiveFunction D_009600A0_abs[];
+#pragma alias hDbprtDrawPrimitiveSlot D_009600A0
+extern RwIm2DRenderPrimitiveFunction hDbprtDrawPrimitiveSlot[];
 
 extern void (*D_00960090)(u32 state, u32 value);
 extern f32 D_00960088;
@@ -37,7 +39,6 @@ static char sLogs[HDBPRT_LOG_MAXLINE][HDBPRT_LOG_MAXCHAR];
 static void H_Dbprt_DrawText3D(void);
 static f32 H_Dbprt_CalculateScreenZ(f32 zOffset);
 static void H_Dbprt_DrawLog(void);
-static void H_Dbprt_DrawGlyph(f32 x, f32 y, f32 z, f32 recipZ, const RwRGBA* color, s32 glyph);
 static void H_Dbprt_AppendText3D(HDbText3D* text);
 
 // FUN_001042E0
@@ -512,33 +513,43 @@ void H_Dbprt_FmtLog(const char* fmt, ...)
 static void H_Dbprt_DrawLog(void)
 {
     RwIm2DVertex vertices[4];
+    RwV2d textureCoords[4];
     RwRGBA color;
     f32 recipZ;
     f32 z;
+    f32 x;
+    f32 y;
+    f32 u;
+    f32 v;
+    RwIm2DRenderPrimitiveFunction* drawPrimitive;
+    void (**setState)(u32 state, u32 value);
     s32 vertex;
     s32 row;
     s32 column;
     u8 glyph;
 
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
     if (sDrawLogEnabled == 0)
     {
         return;
     }
+    setState = (void (**)(u32, u32))D_00960090_abs;
 
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERNEAREST);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+
+    (*setState)(rwRENDERSTATEZTESTENABLE, true);
+    (*setState)(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
+    (*setState)(rwRENDERSTATEZWRITEENABLE, true);
+    (*setState)(rwRENDERSTATETEXTUREFILTER, rwFILTERNEAREST);
+    (*setState)(rwRENDERSTATEVERTEXALPHAENABLE, true);
 
     kwlnPushCommonRenderStates();
-    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    (*setState)(rwRENDERSTATETEXTURERASTER, (u32)NULL);
 
     color.r = 64;
     color.g = 64;
     color.b = 64;
     color.a = 128;
-    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
     z = RwIm2DGetNearScreenZ();
 
     for (vertex = 0; vertex < 4; vertex++)
@@ -559,15 +570,25 @@ static void H_Dbprt_DrawLog(void)
     vertices[2].u.els.scrVertex.y = sLogBoxPos.y + 196.0f;
     vertices[3].u.els.scrVertex.x = sLogBoxPos.x + 480.0f;
     vertices[3].u.els.scrVertex.y = sLogBoxPos.y + 196.0f;
-    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+    drawPrimitive = hDbprtDrawPrimitiveSlot;
+    (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
 
     kwlnPushCommonRenderStates();
-    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
+    (*setState)(rwRENDERSTATETEXTURERASTER, (u32)sFontRaster);
 
     color.r = 255;
     color.g = 255;
     color.b = 255;
     color.a = 255;
+    for (vertex = 0; vertex < 4; vertex++)
+    {
+        vertices[vertex].u.els.scrVertex.z = z;
+        vertices[vertex].u.els.recipZ = recipZ;
+        vertices[vertex].u.els.color.r = (f32)color.r;
+        vertices[vertex].u.els.color.g = (f32)color.g;
+        vertices[vertex].u.els.color.b = (f32)color.b;
+        vertices[vertex].u.els.color.a = (f32)color.a;
+    }
     for (row = 0; row < sLogLine; row++)
     {
         for (column = 0; column < HDBPRT_GRID_WIDTH; column++)
@@ -580,56 +601,37 @@ static void H_Dbprt_DrawLog(void)
 
             if (glyph != ' ')
             {
-                H_Dbprt_DrawGlyph(sLogStringsPos.x + 12.0f * (f32)column,
-                                   sLogStringsPos.y + 12.0f * (f32)row,
-                                   z,
-                                   recipZ,
-                                   &color,
-                                   (s32)glyph - ' ');
+                x = sLogStringsPos.x + 12.0f * (f32)column;
+                y = sLogStringsPos.y + 12.0f * (f32)row;
+
+                vertices[0].u.els.scrVertex.x = x;
+                vertices[0].u.els.scrVertex.y = y;
+                vertices[1].u.els.scrVertex.x = x + 12.0f;
+                vertices[1].u.els.scrVertex.y = y;
+                vertices[2].u.els.scrVertex.x = x;
+                vertices[2].u.els.scrVertex.y = y + 12.0f;
+                vertices[3].u.els.scrVertex.x = x + 12.0f;
+                vertices[3].u.els.scrVertex.y = y + 12.0f;
+
+                glyph -= ' ';
+                u = 0.0625f * (f32)(glyph % 16);
+                v = 0.0625f * (f32)(glyph / 16);
+                textureCoords[0].x = u;
+                textureCoords[0].y = v;
+                textureCoords[1].x = u + 0.0625f;
+                textureCoords[1].y = v;
+                textureCoords[2].x = u;
+                textureCoords[2].y = v + 0.0625f;
+                textureCoords[3].x = u + 0.0625f;
+                textureCoords[3].y = v + 0.0625f;
+                for (vertex = 0; vertex < 4; vertex++)
+                {
+                    vertices[vertex].u.els.u = textureCoords[vertex].x;
+                    vertices[vertex].u.els.v = textureCoords[vertex].y;
+                }
+                (*drawPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
             }
         }
     }
 }
 
-static void H_Dbprt_DrawGlyph(f32 x, f32 y, f32 z, f32 recipZ, const RwRGBA* color, s32 glyph)
-{
-    RwIm2DVertex vertices[4];
-    f32 u;
-    f32 v;
-    s32 vertex;
-
-    u = 0.0625f * (f32)(glyph % 16);
-    v = 0.0625f * (f32)(glyph / 16);
-
-    for (vertex = 0; vertex < 4; vertex++)
-    {
-        vertices[vertex].u.els.scrVertex.z = z;
-        vertices[vertex].u.els.recipZ = recipZ;
-        vertices[vertex].u.els.color.r = (f32)color->r;
-        vertices[vertex].u.els.color.g = (f32)color->g;
-        vertices[vertex].u.els.color.b = (f32)color->b;
-        vertices[vertex].u.els.color.a = (f32)color->a;
-    }
-
-    vertices[0].u.els.scrVertex.x = x;
-    vertices[0].u.els.scrVertex.y = y;
-    vertices[0].u.els.u = u;
-    vertices[0].u.els.v = v;
-
-    vertices[1].u.els.scrVertex.x = x + 12.0f;
-    vertices[1].u.els.scrVertex.y = y;
-    vertices[1].u.els.u = u + 0.0625f;
-    vertices[1].u.els.v = v;
-
-    vertices[2].u.els.scrVertex.x = x;
-    vertices[2].u.els.scrVertex.y = y + 12.0f;
-    vertices[2].u.els.u = u;
-    vertices[2].u.els.v = v + 0.0625f;
-
-    vertices[3].u.els.scrVertex.x = x + 12.0f;
-    vertices[3].u.els.scrVertex.y = y + 12.0f;
-    vertices[3].u.els.u = u + 0.0625f;
-    vertices[3].u.els.v = v + 0.0625f;
-
-    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
-}

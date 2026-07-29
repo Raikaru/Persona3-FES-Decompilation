@@ -5072,21 +5072,18 @@ void FUN_003650c0(int param_1,u64 param_2,int param_3)
   iVar3 = (int)(*(u16 *)(param_3 + 0xc) & 0xFC00) >> 10;
 
   switch (iVar3) {
-
-  case 1:
-
   case 3:
-
     lVar2 = FUN_003b5d10();
-
     if (lVar2 != 0) {
-
       iVar4 = *(int *)((int)lVar2 + 0x128);
-
     }
-
     break;
-
+  case 1:
+    lVar2 = FUN_003b5d10();
+    if (lVar2 != 0) {
+      iVar4 = *(int *)((int)lVar2 + 0x128);
+    }
+    break;
   }
 
   if (iVar4 != 0) {
@@ -13853,7 +13850,7 @@ u32 FUN_0036e2f0(int param_1)
 
   int iVar5;
 
-  short sVar6;
+  u16 sVar6;
 
   u32 uVar7;
 
@@ -13996,6 +13993,9 @@ u32 FUN_0036e2f0(int param_1)
       iVar13 = *(int *)(iVar4 + 0x918);
 
       sVar6 = FUN_003b6270(iVar13 + 900U & 0xffff,3,*(u32 *)(iVar4 + 0x91c));
+      if (sVar6 == 0) {
+        FUN_0019d3f0(DAT_0069ffd0,0x2eb7);
+      }
 
 
       FUN_003b9550(sVar6,1);

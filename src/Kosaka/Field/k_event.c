@@ -1844,7 +1844,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                             fovPos.z = *(f32*)((u8*)model + 0x10c);
                             break;
                     }
-                    active = K_FldEvent_IsPosWithinFov(heroMat, &fovPos, 120.0f);
+                    active = K_FldEvent_IsPosWithinFov((RwMatrix*)FUN_00318b60(*(u32*)D_008717F0_abs), &fovPos, 120.0f);
                 }
                 if (active != false)
                 {
@@ -2033,9 +2033,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 case6MatBuf.pos.x = 0.0f;
                 case6MatBuf.pos.y = 0.0f;
                 case6MatBuf.pos.z = 0.0f;
-                RwMatrixScale(&case6MatBuf, &case6UpVec, rwCOMBINEPOSTCONCAT);
+                RwMatrixRotate(&case6MatBuf, &case6UpVec, 180.0f, rwCOMBINEPOSTCONCAT);
                 case6MatBuf.pos = case6UpVec;
                 FUN_001a9330((KwlnTask*)FIELD_WORD(0x1214), taskResult, &case6MatBuf);
+                FUN_001a9390((KwlnTask*)FIELD_WORD(0x1214), taskResult, 3);
             }
             else
             {
@@ -2152,6 +2153,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                         FUN_0010a4e0(1, 8, 2, 8);
                         FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1204), &markerPos);
                         FUN_001d0110(EVENT_WORD(9));
+                        if (FUN_0017d800() == true) FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
                         FUN_003182d0(*(u32*)D_008717F0_abs, 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
                         FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);
                         FUN_001d8c60(false);
@@ -2168,6 +2170,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 heroMat->pos.x = *(f32*)((u8*)fldEvent + 0x114);
                 heroMat->pos.y = *(f32*)((u8*)fldEvent + 0x118);
                 heroMat->pos.z = *(f32*)((u8*)fldEvent + 0x11c);
+                if (FUN_0017d800() == true) FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
                 FUN_003182d0(*(u32*)D_008717F0_abs, 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);
                 FUN_001d8c60(false);
@@ -2177,7 +2180,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             }
             else if (currentArea >= 0)
             {
-                EVENT_WORD(9) = 0x0086eda0 + currentArea * 0x1c0;
+                EVENT_WORD(9) = 0x0086eda0 + FUN_00453460() * 0x1c0;
                 if (FUN_002ff790(PTR_U32(EVENT_WORD(9), 0x48)) != true)
                 {
                     FUN_001c7830(&EVENT_WORD(10), EVENT_WORD(9));
@@ -2424,7 +2427,17 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FIELD_WORD(0x1c) = FUN_001c1f30((KwlnTask*)FIELD_WORD(0), PTR_U32((void*)*(u32*)D_008717F4_abs, 0xf0));
                 EVENT_WORD(5) = FUN_003b5d10(0x400);
                 FUN_001a9850();
-                if (gMtScene->fldMajorId == 0x1f) FUN_003952d0(0, FUN_0016f190(0xe39) == false ? 0x2d0 : 0x2cf, 3);
+                if (gMtScene->fldMajorId == 0x1f)
+                {
+                    if (FUN_0016f190(0xe39) == false)
+                    {
+                        FUN_003952d0(0, 0x2d0, 3);
+                    }
+                    else
+                    {
+                        FUN_003952d0(0, 0x2cf, 3);
+                    }
+                }
                 FUN_001c0110();
                 FUN_004533e0(true);
                 FUN_001085c0();

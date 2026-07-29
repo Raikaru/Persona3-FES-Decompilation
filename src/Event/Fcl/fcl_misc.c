@@ -210,6 +210,8 @@ extern u64 fclMiscCa780Call(float, float, float, float, s32, s32, s32, s32, s32,
 extern f32 fclMisc52e878Call(f32);
 u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #pragma alias fclMiscCa780Call FUN_003ca780
+#pragma alias fclMiscCacc0Call FUN_003cacc0
+extern void fclMiscCacc0Call(void *);
 #pragma alias fclMiscC31b0Call FUN_004c31b0
 extern void fclMiscC31b0Call(f32, void *, void *, s32);
 #pragma alias fclMisc6bc80Call FUN_0016bc80
@@ -2537,7 +2539,7 @@ void FUN_003cb1f0(u64 param_1)
     FUN_003ca780(0,0,1.0f,1.0f,0xc1,8,*(u16 *)((int)piVar8 + 0x12) | 0xff00,0x14,0,0,
 
                  piVar8[0x34]);
-    FUN_003cacc0((int)piVar8 + 0x12);
+    fclMiscCacc0Call((void *)((int)piVar8 + 0x12));
 
     if ((*(u16 *)((int)piVar8 + 0x22) != 0) && (piVar8[0x1b] != 0)) {
 

@@ -722,7 +722,7 @@ extern u16 DAT_007e0952;
 extern u16 DAT_007e095a;
 
 
-static void h_campQueueResourceTaskForCurrent(void* resource, void* archive)
+static inline void h_campQueueResourceTaskForCurrent(void* resource, void* archive)
 {
     KwlnTask* task;
     u32* work;

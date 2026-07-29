@@ -276,7 +276,6 @@ void func_00108740(void)
 
     sChannels[4].handle = NULL;
     slotWork = sSlotWork;
-    memset(slotWork, 0, sizeof(sSlotWork));
     for (i = 0; i < HSND_SLOT_COUNT; i++)
     {
         slotWork[i].state = 0;
