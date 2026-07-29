@@ -1532,6 +1532,14 @@ extern void* FUN_001158B0(void* owner, void* resource, s32 frame);
 extern void FUN_001127D0(void* sprite, s32 enabled);
 extern void FUN_00115980(void* sprite);
 extern void FUN_001159F0();
+#pragma alias hCampMainCardFrameResource D_00833B58
+extern u8 hCampMainCardFrameResource[];
+#pragma alias hCampMainSocialFrameResource D_00833B44
+extern u8 hCampMainSocialFrameResource[];
+#pragma alias hCampMainCardIconResource D_00833B64
+extern u8 hCampMainCardIconResource[];
+#pragma alias hCampMainCardGlowResource D_00833B5C
+extern u8 hCampMainCardGlowResource[];
 #pragma alias hCampMainDrawSprite7 FUN_001159F0
 extern void hCampMainDrawSprite7(void* parent, void* resource, s32 frame,
                                  u32 alpha, f32 x, f32 y, f32 scale);
@@ -1541,6 +1549,10 @@ extern void hCampMainDrawSprite3(f32 x, f32 y, f32 scale);
 extern void hCampMainDrawSpriteAlt10(void* parent, void* resource, s32 frame,
                                      u32 alpha, s32 red, s32 green, s32 blue,
                                      f32 x, f32 y, f32 scale);
+#pragma alias hCampMainDrawSpriteFade FUN_00115AD0
+extern void hCampMainDrawSpriteFade(void* parent, void* resource, s32 frame,
+                                    u32 alpha, f32 x, f32 y, f32 scale,
+                                    u32 fade);
 #pragma alias hCampMainDrawSpriteAlt3 FUN_00115BC0
 extern void hCampMainDrawSpriteAlt3(f32 x, f32 y, f32 scale);
 #pragma alias hCampMainDrawQuad7 FUN_001140D0
@@ -2427,48 +2439,106 @@ void FUN_00138E80(f32 alpha, u64 position, const s32* entries,
 }
 
 // FUN_00138EE0 NONMATCHING
-void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 unused)
+void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 drawAlpha)
 {
+    void* parent;
     CampCarouselPackedPosition p;
+    void* font;
     s32 kind;
 
-    p = campCarouselUnpackPosition(position);
-    kind = FUN_0016DBA0((s16)id);
-    hCampMainDrawSpriteAlt3(84.0f + p.value.x - 60.0f, 62.0f + p.value.y - 25.0f, alpha);
-    hCampMainDrawSpriteAlt3(84.0f + p.value.x - 60.0f, 194.0f + p.value.y - 25.0f, alpha);
-    hCampMainDrawSpriteAlt3(94.0f + p.value.x - 60.0f, 43.0f + p.value.y - 25.0f, alpha);
-    hCampMainDrawSpriteAlt3(94.0f + p.value.x - 60.0f, 175.0f + p.value.y - 25.0f, alpha);
-    if (kind == '\n') {
-        hCampMainDrawSprite3(111.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
+    p.packed = position;
+    if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL) {
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x16, (u8)drawAlpha,
+                                 0x55, 3, 0, p.value.x + 24.0f,
+                                 p.value.y + 37.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x17, (u8)drawAlpha,
+                                 0x55, 3, 0, p.value.x + 24.0f,
+                                 p.value.y + 169.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x16, (u8)drawAlpha,
+                                 0x55, 3, 0, p.value.x + 34.0f,
+                                 p.value.y + 18.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x17, (u8)drawAlpha,
+                                 0xff, 0xff, 0, p.value.x + 34.0f,
+                                 p.value.y + 150.0f, alpha);
     } else {
-        hCampMainDrawSprite3(102.0f + p.value.x - 60.0f, 48.0f + p.value.y - 25.0f, alpha);
-        FUN_001120A0(1);
-        hCampMainDrawSprite3(165.0f + p.value.x - 60.0f, 49.0f + p.value.y - 25.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x16, (u8)drawAlpha,
+                                 1, 0x2f, 0x49, p.value.x + 24.0f,
+                                 p.value.y + 37.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x17, (u8)drawAlpha,
+                                 1, 0x2f, 0x49, p.value.x + 24.0f,
+                                 p.value.y + 169.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x16, (u8)drawAlpha,
+                                 1, 0x2f, 0x49, p.value.x + 34.0f,
+                                 p.value.y + 18.0f, alpha);
+        hCampMainDrawSpriteAlt10(parent, *(void**)hCampMainCardFrameResource, 0x17, (u8)drawAlpha,
+                                 1, 0x2f, 0x49, p.value.x + 34.0f,
+                                 p.value.y + 150.0f, alpha);
+    }
+    kind = FUN_0016DBA0((s16)id);
+    if (kind == 10) {
+        hCampMainDrawSprite7(parent, *(void**)hCampMainSocialFrameResource, 0x2e, (u8)drawAlpha,
+                             p.value.x + 51.0f, p.value.y + 23.0f, alpha);
+    } else {
+        hCampMainDrawSprite7(parent, *(void**)hCampMainSocialFrameResource, 0x2c, (u8)drawAlpha,
+                             p.value.x + 42.0f, p.value.y + 23.0f, alpha);
+        font = H_Maestro_001120a0(1);
+        kind = FUN_0016DBA0((s16)id);
+        hCampMainDrawSprite7(parent, font, kind + 0xb, (u8)drawAlpha,
+                             p.value.x + 105.0f, p.value.y + 24.0f, alpha);
     }
 }
 
 // FUN_001392D0 NONMATCHING
-void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
+void FUN_001392D0(f32 alpha, u64 position, s32 textAlpha, s32 resource)
 {
     CampCarouselPackedPosition p;
+    void* parent;
     u32 color;
+    s32 fade;
 
     iGpffffb2a8++;
     if (iGpffffb2a8 > 0x13) {
         iGpffffb2a8 = 0;
     }
+    if (iGpffffb2a8 >= 0xb) {
+        fade = ((0x14 - iGpffffb2a8) * 0x80) / 10;
+    }
     if (iGpffffb284 != 0) {
+        p.packed = position;
         color = (0xffU - (u32)textAlpha) | 0xffffff00U;
-        if (FUN_00172160((s32)resource) == NULL && FUN_001717C0((s32)resource) == NULL) {
-            hCampMainDrawTexQuad(alpha, campCarouselUnpackPosition(position).value.x + 28.0f,
-                         campCarouselUnpackPosition(position).value.y + 43.0f,
-                         1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
+        if (FUN_00172160(resource) != NULL) {
+            hCampMainDrawTexQuad(alpha, p.value.x + 28.0f,
+                                 p.value.y + 43.0f, 1.0f, 1.0f, 0,
+                                 color, 0x62, 0x7e, iGpffffb284);
+            hCampMainDrawSprite7(parent, *(void**)hCampMainCardIconResource,
+                                 0, (u8)textAlpha, p.value.x + 23.0f,
+                                 p.value.y + 33.0f, alpha);
+            hCampMainDrawSprite7(parent, *(void**)hCampMainCardFrameResource,
+                                 0x28, (u8)textAlpha, p.value.x + 29.0f,
+                                 p.value.y + 148.0f, alpha);
+        } else if (FUN_001717C0(resource) != NULL) {
+            hCampMainDrawTexQuad(alpha, p.value.x + 28.0f,
+                                 p.value.y + 43.0f, 1.0f, 1.0f, 2,
+                                 color, 0x62, 0x7e, iGpffffb284);
+            hCampMainDrawSpriteFade(parent, *(void**)hCampMainCardFrameResource,
+                                    0x29, (u8)textAlpha, p.value.x + 24.0f,
+                                    p.value.y + 37.0f, alpha,
+                                    (u8)(fade + 0x7f));
+            hCampMainDrawSpriteFade(parent, *(void**)hCampMainCardFrameResource,
+                                    0x2a, (u8)textAlpha, p.value.x + 24.0f,
+                                    p.value.y + 169.0f, alpha,
+                                    (u8)(fade + 0x7f));
+            hCampMainDrawSpriteFade(parent, *(void**)hCampMainCardGlowResource,
+                                    0, (u8)textAlpha, p.value.x - 12.0f,
+                                    p.value.y - 9.0f, alpha,
+                                    (u8)(fade + 0x7f));
+            hCampMainDrawSprite7(parent, *(void**)hCampMainCardFrameResource,
+                                 0x27, (u8)textAlpha, p.value.x + 29.0f,
+                                 p.value.y + 148.0f, alpha);
         } else {
-            p = campCarouselUnpackPosition(position);
-            hCampMainDrawTexQuad(alpha, 88.0f + p.value.x - 60.0f, 68.0f + p.value.y - 25.0f,
-                         1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
-            hCampMainDrawSprite3(75.0f + p.value.x - 60.0f, 58.0f + p.value.y - 25.0f, alpha);
-            hCampMainDrawSprite3(86.0f + p.value.x - 60.0f, 173.0f + p.value.y - 25.0f, alpha);
+            hCampMainDrawTexQuad(alpha, p.value.x + 28.0f,
+                                 p.value.y + 43.0f, 1.0f, 1.0f, 0,
+                                 color, 0x62, 0x7e, iGpffffb284);
         }
     }
 }
@@ -2679,7 +2749,7 @@ extern f32 D_00960088;
 extern void FUN_00139DC0(f32 param_1);
 extern void FUN_001368A0();
 extern void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 unused);
-extern void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha);
+extern void FUN_001392D0(f32 alpha, u64 position, s32 textAlpha, s32 resource);
 extern void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha);
 extern void FUN_001140D0();
 extern void FUN_001159F0();
@@ -2839,12 +2909,12 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
             x += 5.0f;
             y -= 10.0f;
             shiftedPosition = campPackPosition(x, y);
-            FUN_001392D0(param_1, shiftedPosition, DAT_005E3220[id], 0);
+            FUN_001392D0(param_1, shiftedPosition, 0, DAT_005E3220[id]);
         }
         else
         {
             FUN_00138EE0(param_1, param_2, id, 0);
-            FUN_001392D0(param_1, param_2, DAT_005E3220[id], 0);
+            FUN_001392D0(param_1, param_2, 0, DAT_005E3220[id]);
         }
     }
 
@@ -3100,7 +3170,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     item = param_3 + param_5 + param_6;
     id = *item;
     FUN_00138EE0(param_1, param_2, DAT_005E3220[id], 0);
-    FUN_001392D0(param_1, param_2, DAT_005E3220[id], 0);
+    FUN_001392D0(param_1, param_2, 0, DAT_005E3220[id]);
     FUN_00139660(param_1, param_2, id, (s32)param_7, 0);
     FUN_00139DC0(param_1);
 

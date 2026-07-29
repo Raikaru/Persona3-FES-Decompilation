@@ -15127,6 +15127,30 @@ void FUN_0032af30(int param_1)
   return;
 
 }
+// FUN_0032B990
+void FUN_0032b990(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xcc) = *(float *)(source + 0xcc) * scale;
+  *(float *)(dest + 0xd4) = *(float *)(source + 0xd4) * scale;
+  *(float *)(dest + 0xd8) = *(float *)(source + 0xd8) * scale;
+  *(float *)(dest + 0xe0) = *(float *)(source + 0xe0) * scale;
+}
+
 
 
 
@@ -15636,6 +15660,29 @@ void FUN_0032ba30(int param_1)
 
 
 
+
+// FUN_0032C2B0
+void FUN_0032c2b0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xd0) = *(float *)(source + 0xd0) * scale;
+  *(float *)(dest + 0xd8) = *(float *)(source + 0xd8) * scale;
+  *(float *)(dest + 0xdc) = *(float *)(source + 0xdc) * scale;
+}
 
 // FUN_0032C340 NONMATCHING
 
@@ -16221,6 +16268,30 @@ void FUN_0032c340(int param_1)
 
 
 
+// FUN_0032CD70
+void FUN_0032cd70(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xcc) = *(float *)(source + 0xcc) * scale;
+  *(float *)(dest + 0xd4) = *(float *)(source + 0xd4) * scale;
+  *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
+  *(float *)(dest + 0xf0) = *(float *)(source + 0xf0) * scale;
+}
+
 // FUN_0032CE10 NONMATCHING
 
 
@@ -16766,6 +16837,28 @@ void FUN_0032ce10(int param_1)
 
 
 
+// FUN_0032D7C0
+void FUN_0032d7c0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xd0) = *(float *)(source + 0xd0) * scale;
+  *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
+}
+
 // FUN_0032D840 NONMATCHING
 
 
@@ -17295,6 +17388,29 @@ void FUN_0032d840(int param_1)
 
 
 
+
+// FUN_0032E110
+void FUN_0032e110(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xd8) = *(float *)(source + 0xd8) * scale;
+  *(float *)(dest + 0xe0) = *(float *)(source + 0xe0) * scale;
+  *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
+}
 
 // FUN_0032E1A0 NONMATCHING
 
@@ -17841,6 +17957,29 @@ void FUN_0032e1a0(int param_1)
 
 
 
+
+// FUN_0032EAB0
+void FUN_0032eab0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xd8) = *(float *)(source + 0xd8) * scale;
+  *(float *)(dest + 0xe0) = *(float *)(source + 0xe0) * scale;
+  *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
+}
 
 // FUN_0032EB40 NONMATCHING
 
@@ -18762,6 +18901,25 @@ void FUN_0032eb40(int param_1)
 
 
 
+// FUN_0032F8B0
+void FUN_0032f8b0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+}
+
 // FUN_0032F910 NONMATCHING
 
 
@@ -19244,6 +19402,29 @@ void FUN_0032f910(int param_1)
 
 
 
+
+// FUN_00330100
+void FUN_00330100(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xdc) = *(float *)(source + 0xdc) * scale;
+  *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
+  *(float *)(dest + 0xe8) = *(float *)(source + 0xe8) * scale;
+}
 
 // FUN_00330190 NONMATCHING
 
@@ -19938,6 +20119,29 @@ void FUN_00330190(u64 param_1)
 
 
 
+// FUN_00330BB0
+void FUN_00330bb0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xd0) = *(float *)(source + 0xd0) * scale;
+  *(float *)(dest + 0xdc) = *(float *)(source + 0xdc) * scale;
+  *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
+}
+
 // FUN_00330C40 NONMATCHING
 
 
@@ -20590,6 +20794,28 @@ void FUN_00330c40(u64 param_1)
 
 
 
+// FUN_003315D0
+void FUN_003315d0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xcc) = *(float *)(source + 0xcc) * scale;
+  *(float *)(dest + 0xdc) = *(float *)(source + 0xdc) * scale;
+}
+
 // FUN_00331650 NONMATCHING
 
 
@@ -21175,6 +21401,30 @@ void FUN_00331650(int param_1)
 
 
 
+
+// FUN_00331FD0
+void FUN_00331fd0(int param_1, float scale)
+{
+  int dest;
+  int source;
+  u32 i;
+  float value;
+
+  dest = *(int *)(param_1 + 0x20);
+  source = *(int *)(param_1 + 0x24);
+  *(float *)(dest + 0x64) = *(float *)(source + 0x64) * scale;
+  *(float *)(dest + 0x68) = *(float *)(source + 0x68) * scale;
+  for (i = 0; i < 3; i++) {
+    value = *(float *)(source + i * 8 + 0x74);
+    value = value * scale;
+    *(float *)(dest + i * 8 + 0x74) = value;
+  }
+  *(float *)(dest + 0xc8) = *(float *)(source + 0xc8) * scale;
+  *(float *)(dest + 0xcc) = *(float *)(source + 0xcc) * scale;
+  *(float *)(dest + 0xd4) = *(float *)(source + 0xd4) * scale;
+  *(float *)(dest + 0xd8) = *(float *)(source + 0xd8) * scale;
+  *(float *)(dest + 0xe0) = *(float *)(source + 0xe0) * scale;
+}
 
 // FUN_00332070 NONMATCHING
 
@@ -27530,6 +27780,32 @@ void FUN_00338ac0(u64 param_1)
   return;
 
 }
+// FUN_00338CE0 NONMATCHING
+void FUN_00338ce0(int param_1)
+{
+  int *chain;
+  int model;
+  u8 *color;
+
+  chain = *(int **)(param_1 + 0x3c);
+  model = *chain;
+  if (bGpffffb857 != 0xff) {
+    color = *(u8 **)(model + 0x14);
+    color[4] = bGpffffb854;
+    color[5] = bGpffffb855;
+    color[6] = bGpffffb856;
+    color[7] = bGpffffb857;
+  } else {
+    bGpffffb857 = 0xfe;
+    color = *(u8 **)(model + 0x14);
+    color[4] = bGpffffb854;
+    color[5] = bGpffffb855;
+    color[6] = bGpffffb856;
+    color[7] = bGpffffb857;
+    bGpffffb857 = 0xff;
+  }
+}
+
 
 
 
@@ -43532,6 +43808,12 @@ u64 FUN_0034b3a0(int param_1)
 
 
 
+// FUN_0034B510
+void FUN_0034b510(int param_1)
+{
+  *(int *)(param_1 + 0x1c) = 0;
+}
+
 // FUN_0034B520
 
 
@@ -43821,6 +44103,12 @@ u64 FUN_0034b8b0(int param_1)
 
 
 
+
+// FUN_0034BA20
+void FUN_0034ba20(int param_1)
+{
+  *(int *)(param_1 + 0x1c) = 0;
+}
 
 // FUN_0034BA30
 
@@ -51124,6 +51412,11 @@ void FUN_003539c0(int param_1)
 
 
 
+
+// FUN_00354290
+void FUN_00354290(void)
+{
+}
 
 // FUN_003542A0 NONMATCHING
 void FUN_003542a0(int param_1)

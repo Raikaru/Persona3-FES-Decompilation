@@ -2,6 +2,8 @@
 #define BR_PANEL_H
 
 #include "Utils.h"
+#include "rw/rwplcore.h"
+
 
 typedef struct BrPanelResultEntry {
     s32 type;
@@ -9,10 +11,10 @@ typedef struct BrPanelResultEntry {
     u16 unk_06;
     s32 value;
     u32 fontHandle;
-    u8 background[0x100];
-    u8 label[0x100];
-    u8 digits[2][0x100];
-    u8 typeIcon[0x100];
+    RwIm2DVertex background[4];
+    RwIm2DVertex label[4];
+    RwIm2DVertex digits[2][4];
+    RwIm2DVertex typeIcon[4];
 } BrPanelResultEntry;
 
 void brPanel00234820(u32* work);

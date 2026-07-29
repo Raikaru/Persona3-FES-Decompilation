@@ -244,6 +244,8 @@ u32 DAT_0086edf4;
 extern u8 DAT_0086edf4_abs[];
 u32 DAT_0086ef2c;
 u32 DAT_008717a0;
+#pragma alias DAT_008717a0_unit_rows DAT_008717a0
+extern YRuntimeUnitRow DAT_008717a0_unit_rows[];
 u32 DAT_008717e8[];
 #pragma alias DAT_008717e8_abs DAT_008717e8
 extern u8 DAT_008717e8_abs[];
@@ -5927,16 +5929,20 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
   u32 uVar18;
 
   float fVar19;
+  YRuntimeUnitRow *row;
+  float *paramSlot;
 
 
 
   iVar10 = *(int *)(param_1 + 0x3c);
+  paramSlot = (float *)(iVar10 + (int)param_2 * 8 + 0x8b8);
 
   bVar11 = 0;
 
   iVar7 = (int)param_2;
+  row = &DAT_008717a0_unit_rows[iVar7];
 
-  if ((DAT_008717e8[iVar7 * 0x70] != 0) && (DAT_008717f4[iVar7 * 0x70] != 0)) {
+  if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
 
     bVar11 = 1;
 
@@ -5944,11 +5950,11 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
   if (bVar11) {
 
-    sVar4 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4[iVar7 * 0x70] + 0x1e0));
+    sVar4 = K_FldFrame_CtlGetXGrid(*(u32 *)((u8 *)row->unk_054 + 0x1e0));
 
     if ((param_3 == sVar4) &&
 
-       (sVar4 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4[iVar7 * 0x70] + 0x1e0)),
+       (sVar4 = K_FldFrame_CtlGetZGrid(*(u32 *)((u8 *)row->unk_054 + 0x1e0)),
 
        param_4 == sVar4)) {
 
@@ -5985,7 +5991,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar3 = *(char *)(iVar10 + 0xb29);
 
-        pfVar15 = (float *)(param_2 * 8 + iVar10 + 0x8b8);
+        pfVar15 = paramSlot;
 
         iVar5 = (int)cVar3;
 
@@ -6031,7 +6037,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar2 = *(char *)(iVar10 + 0xb29);
 
-        pfVar13 = (float *)(param_2 * 8 + iVar10 + 0x8bc);
+        pfVar13 = paramSlot + 1;
 
         iVar5 = (int)cVar2;
 
@@ -6094,7 +6100,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar3 = *(char *)(iVar10 + 0xb29);
 
-        pfVar15 = (float *)(param_2 * 8 + iVar10 + 0x8b8);
+        pfVar15 = paramSlot;
 
         iVar5 = (int)cVar3;
 
@@ -6138,7 +6144,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar2 = *(char *)(iVar10 + 0xb29);
 
-        pfVar13 = (float *)(param_2 * 8 + iVar10 + 0x8bc);
+        pfVar13 = paramSlot + 1;
 
         iVar5 = (int)cVar2;
 
@@ -6208,11 +6214,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
               *(u32 *)(iVar7 + 0x2c) = 0x40400000;
 
-              iVar10 = param_2 * 8 + iVar10;
 
-              *(float *)(iVar7 + 0x10) = *(float *)(iVar10 + 0x8b8) + 3.0f;
-
-              *(float *)(iVar7 + 0x14) = *(float *)(iVar10 + 0x8bc) + 3.0f;
+              *(float *)(iVar7 + 0x10) = paramSlot[0] + 3.0f;
+              *(float *)(iVar7 + 0x14) = paramSlot[1] + 3.0f;
 
               if (fVar17 < 2.1474836e+09f) {
 
@@ -6298,11 +6302,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
             *(u32 *)(iVar7 + 0x2c) = 0x40400000;
 
-            iVar10 = param_2 * 8 + iVar10;
 
-            *(float *)(iVar7 + 0x10) = *(float *)(iVar10 + 0x8b8) + 3.0f;
-
-            *(float *)(iVar7 + 0x14) = *(float *)(iVar10 + 0x8bc) + 3.0f;
+            *(float *)(iVar7 + 0x10) = paramSlot[0] + 3.0f;
+            *(float *)(iVar7 + 0x14) = paramSlot[1] + 3.0f;
 
             if (fVar17 < 2.1474836e+09f) {
 

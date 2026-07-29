@@ -155,7 +155,7 @@ void func_0023f540(void)
     u8* slot;
     f32 projected[2];
     f32 transform[4];
-    f32 layout[8];
+    RwV2d layout[4];
     f32 x;
     f32 y;
     f32 alpha;
@@ -207,16 +207,16 @@ void func_0023f540(void)
         } else {
             BI_U32(slot, 0) |= BI_SLOT_HIDDEN;
         }
-        layout[0] = projected[0] - 1.0f;
-        layout[1] = projected[1] - 100.0f;
-        layout[2] = 2.0f;
-        layout[3] = 200.0f;
-        func_0021d8e0(slot + 0xd40, layout);
-        layout[0] = projected[0] - 100.0f;
-        layout[1] = projected[1] - 1.0f;
-        layout[2] = 200.0f;
-        layout[3] = 2.0f;
-        func_0021d8e0(slot + 0xe40, layout);
+        layout[0].x = projected[0] - 1.0f;
+        layout[0].y = projected[1] - 100.0f;
+        layout[1].x = 2.0f;
+        layout[1].y = 200.0f;
+        func_0021d8e0(slot + 0xd40, (f32*)layout);
+        layout[0].x = projected[0] - 100.0f;
+        layout[0].y = projected[1] - 1.0f;
+        layout[1].x = 200.0f;
+        layout[1].y = 2.0f;
+        func_0021d8e0(slot + 0xe40, (f32*)layout);
 
         if ((BI_U32(slot, 0) & BI_SLOT_READY) == 0) {
             continue;
@@ -227,11 +227,11 @@ void func_0023f540(void)
             x = 9.0f + (projected[0] - 110.0f);
             y = ((projected[1] - 60.0f) - 7.0f) - 14.0f;
             frame = func_0021cca0(renderContext, 0xb);
-            layout[0] = 53.0f + x;
-            layout[1] = 51.0f + y;
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-            func_0021d8e0(slot + 0x10, layout);
+            layout[0].x = 53.0f + x;
+            layout[0].y = 51.0f + y;
+            layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+            func_0021d8e0(slot + 0x10, (f32*)layout);
             age = (s32)BI_U32(slot, 0x310);
             if (age < 0) {
                 alpha = 0.0f;
@@ -260,31 +260,31 @@ void func_0023f540(void)
                 } else {
                     alpha = 1.0f;
                 }
-                layout[0] = 0.0f;
-                layout[1] = 0.0f;
-                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-                layout[3] = 0.0f;
-                layout[4] = layout[2];
-                layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
-                layout[6] = 0.0f;
-                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[0].x = 0.0f;
+                layout[0].y = 0.0f;
+                layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[1].y = 0.0f;
+                layout[2].x = layout[1].x;
+                layout[2].y = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[3].x = 0.0f;
+                layout[3].y = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] -= 75.0f;
-                    layout[j * 2 + 1] -= 34.0f;
+                    layout[j].x -= 75.0f;
+                    layout[j].y -= 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] *= alpha;
-                    layout[j * 2 + 1] *= alpha;
+                    layout[j].x *= alpha;
+                    layout[j].y *= alpha;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f;
-                    layout[j * 2 + 1] += 34.0f;
+                    layout[j].x += 75.0f;
+                    layout[j].y += 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f + x;
-                    layout[j * 2 + 1] += 29.0f + y;
+                    layout[j].x += 75.0f + x;
+                    layout[j].y += 29.0f + y;
                 }
-                func_0021d890(slot + 0x100, layout);
+                func_0021d890(slot + 0x100, (f32*)layout);
                 age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
@@ -318,31 +318,31 @@ void func_0023f540(void)
                 } else {
                     alpha = 1.0f;
                 }
-                layout[0] = 0.0f;
-                layout[1] = 0.0f;
-                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-                layout[3] = 0.0f;
-                layout[4] = layout[2];
-                layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
-                layout[6] = 0.0f;
-                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[0].x = 0.0f;
+                layout[0].y = 0.0f;
+                layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[1].y = 0.0f;
+                layout[2].x = layout[1].x;
+                layout[2].y = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[3].x = 0.0f;
+                layout[3].y = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] -= 75.0f;
-                    layout[j * 2 + 1] -= 34.0f;
+                    layout[j].x -= 75.0f;
+                    layout[j].y -= 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] *= alpha;
-                    layout[j * 2 + 1] *= alpha;
+                    layout[j].x *= alpha;
+                    layout[j].y *= alpha;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f;
-                    layout[j * 2 + 1] += 34.0f;
+                    layout[j].x += 75.0f;
+                    layout[j].y += 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f + x;
-                    layout[j * 2 + 1] += 29.0f + y;
+                    layout[j].x += 75.0f + x;
+                    layout[j].y += 29.0f + y;
                 }
-                func_0021d890(slot + 0x200, layout);
+                func_0021d890(slot + 0x200, (f32*)layout);
                 age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
@@ -367,11 +367,11 @@ void func_0023f540(void)
             x = 9.0f + (projected[0] - 110.0f);
             y = ((projected[1] - 60.0f) - 7.0f) - 14.0f;
             frame = func_0021cca0(renderContext, 0xb);
-            layout[0] = 53.0f + x;
-            layout[1] = 51.0f + y;
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-            func_0021d8e0(slot + 0x10, layout);
+            layout[0].x = 53.0f + x;
+            layout[0].y = 51.0f + y;
+            layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+            func_0021d8e0(slot + 0x10, (f32*)layout);
             age = (s32)BI_U32(slot, 0x310);
             if (age < 0) {
                 alpha = 0.0f;
@@ -400,31 +400,31 @@ void func_0023f540(void)
                 } else {
                     alpha = 1.0f;
                 }
-                layout[0] = 0.0f;
-                layout[1] = 0.0f;
-                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-                layout[3] = 0.0f;
-                layout[4] = layout[2];
-                layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
-                layout[6] = 0.0f;
-                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[0].x = 0.0f;
+                layout[0].y = 0.0f;
+                layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[1].y = 0.0f;
+                layout[2].x = layout[1].x;
+                layout[2].y = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[3].x = 0.0f;
+                layout[3].y = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] -= 75.0f;
-                    layout[j * 2 + 1] -= 34.0f;
+                    layout[j].x -= 75.0f;
+                    layout[j].y -= 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] *= alpha;
-                    layout[j * 2 + 1] *= alpha;
+                    layout[j].x *= alpha;
+                    layout[j].y *= alpha;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f;
-                    layout[j * 2 + 1] += 34.0f;
+                    layout[j].x += 75.0f;
+                    layout[j].y += 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f + x;
-                    layout[j * 2 + 1] += 29.0f + y;
+                    layout[j].x += 75.0f + x;
+                    layout[j].y += 29.0f + y;
                 }
-                func_0021d890(slot + 0x100, layout);
+                func_0021d890(slot + 0x100, (f32*)layout);
                 age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
@@ -458,31 +458,31 @@ void func_0023f540(void)
                 } else {
                     alpha = 1.0f;
                 }
-                layout[0] = 0.0f;
-                layout[1] = 0.0f;
-                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-                layout[3] = 0.0f;
-                layout[4] = layout[2];
-                layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
-                layout[6] = 0.0f;
-                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[0].x = 0.0f;
+                layout[0].y = 0.0f;
+                layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[1].y = 0.0f;
+                layout[2].x = layout[1].x;
+                layout[2].y = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[3].x = 0.0f;
+                layout[3].y = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] -= 75.0f;
-                    layout[j * 2 + 1] -= 34.0f;
+                    layout[j].x -= 75.0f;
+                    layout[j].y -= 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] *= alpha;
-                    layout[j * 2 + 1] *= alpha;
+                    layout[j].x *= alpha;
+                    layout[j].y *= alpha;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f;
-                    layout[j * 2 + 1] += 34.0f;
+                    layout[j].x += 75.0f;
+                    layout[j].y += 34.0f;
                 }
                 for (j = 0; j < 4; j++) {
-                    layout[j * 2] += 75.0f + x;
-                    layout[j * 2 + 1] += 29.0f + y;
+                    layout[j].x += 75.0f + x;
+                    layout[j].y += 29.0f + y;
                 }
-                func_0021d890(slot + 0x200, layout);
+                func_0021d890(slot + 0x200, (f32*)layout);
                 age = (s32)BI_U32(slot, 0x310);
                 if (age < 0) {
                     colorAlpha = 0.0f;
@@ -505,23 +505,23 @@ void func_0023f540(void)
             break;
         case 3:
             frame = func_0021cca0(renderContext, 0x22);
-            layout[0] = projected[0] -
+            layout[0].x = projected[0] -
                         (f32)((s32)*(s32*)((u8*)frame + 0xc) / 2);
-            layout[1] = projected[1] -
+            layout[0].y = projected[1] -
                         (f32)((s32)*(s32*)((u8*)frame + 0x10) / 2);
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-            func_0021d8e0(slot + 0x10, layout);
+            layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+            func_0021d8e0(slot + 0x10, (f32*)layout);
             break;
         case 2:
             x = projected[0] - 135.0f;
             y = projected[1] - 87.0f;
             frame = func_0021cca0(renderContext, 0x1e);
-            layout[0] = x + 86.0f;
-            layout[1] = y + 78.0f;
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-            func_0021d8e0(slot + 0x10, layout);
+            layout[0].x = x + 86.0f;
+            layout[0].y = y + 78.0f;
+            layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+            func_0021d8e0(slot + 0x10, (f32*)layout);
             /* Retail 0x240a44-0x240a80 reloads slot age after the first mode 2 draw. */
             age = (s32)BI_U32(slot, 0x310);
             if (age < 0) {
@@ -552,35 +552,35 @@ void func_0023f540(void)
             } else {
                 alpha = 1.0f;
             }
-            layout[0] = 0.0f;
-            layout[1] = 0.0f;
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = 0.0f;
-            layout[4] = layout[2];
-            layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
-            layout[6] = 0.0f;
-            layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
+            layout[0].x = 0.0f;
+            layout[0].y = 0.0f;
+            layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[1].y = 0.0f;
+            layout[2].x = layout[1].x;
+            layout[2].y = (f32)*(s32*)((u8*)frame + 0x10);
+            layout[3].x = 0.0f;
+            layout[3].y = (f32)*(s32*)((u8*)frame + 0x10);
             for (j = 0; j < 4; j++) {
-                layout[j * 2] -=
+                layout[j].x -=
                     (f32)((s32)*(s32*)((u8*)frame + 0xc) / 2);
-                layout[j * 2 + 1] -=
+                layout[j].y -=
                     (f32)((s32)*(s32*)((u8*)frame + 0x10) / 2);
             }
             for (j = 0; j < 4; j++) {
-                layout[j * 2] *= alpha;
-                layout[j * 2 + 1] *= alpha;
+                layout[j].x *= alpha;
+                layout[j].y *= alpha;
             }
             for (j = 0; j < 4; j++) {
-                layout[j * 2] +=
+                layout[j].x +=
                     (f32)((s32)*(s32*)((u8*)frame + 0xc) / 2);
-                layout[j * 2 + 1] +=
+                layout[j].y +=
                     (f32)((s32)*(s32*)((u8*)frame + 0x10) / 2);
             }
             for (j = 0; j < 4; j++) {
-                layout[j * 2] += 83.0f + x;
-                layout[j * 2 + 1] += 63.0f + y;
+                layout[j].x += 83.0f + x;
+                layout[j].y += 63.0f + y;
             }
-            func_0021d890(slot + 0x110, layout);
+            func_0021d890(slot + 0x110, (f32*)layout);
             color[0] = 0xff;
             color[1] = 0xff;
             color[2] = 0xff;
@@ -610,11 +610,11 @@ void func_0023f540(void)
                     vertical = 0.0f;
                 }
             }
-            layout[0] = 75.0f + x + digitOffset;
-            layout[1] = 61.0f + y + vertical;
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-            func_0021d8e0(slot + 0x210, layout);
+            layout[0].x = 75.0f + x + digitOffset;
+            layout[0].y = 61.0f + y + vertical;
+            layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+            func_0021d8e0(slot + 0x210, (f32*)layout);
             age = (s32)BI_U32(slot, 0x310);
             if (age < 8) {
                 alpha = 0.0f;
@@ -693,11 +693,11 @@ void func_0023f540(void)
                     digitOffset = -28.0f;
                 }
                 frame = func_0021cca0(renderContext, 0x2e);
-                layout[0] = x + 28.0f * (f32)j;
-                layout[1] = y + vertical + digitOffset;
-                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-                layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-                func_0021d8e0(slot + 0x320 + j * 0x100, layout);
+                layout[0].x = x + 28.0f * (f32)j;
+                layout[0].y = y + vertical + digitOffset;
+                layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+                func_0021d8e0(slot + 0x320 + j * 0x100, (f32*)layout);
                 if ((BI_U32(slot, 0) & BI_SLOT_TEXT_0) != 0) {
                     color[0] = 0xff;
                     color[1] = 0xff;
@@ -711,11 +711,11 @@ void func_0023f540(void)
                 func_0021d950(slot + 0x320 + j * 0x100, color);
             }
             for (; j < 5; j++) {
-                layout[0] = x;
-                layout[1] = y;
-                layout[2] = 0.0f;
-                layout[3] = 0.0f;
-                func_0021d8e0(slot + 0x320 + j * 0x100, layout);
+                layout[0].x = x;
+                layout[0].y = y;
+                layout[1].x = 0.0f;
+                layout[1].y = 0.0f;
+                func_0021d8e0(slot + 0x320 + j * 0x100, (f32*)layout);
             }
         }
 
@@ -743,11 +743,11 @@ void func_0023f540(void)
                     alpha = 0.0f;
                 }
                 frame = func_0021cca0(renderContext, 0x2e);
-                layout[0] = x + 28.0f * (f32)j;
-                layout[1] = y + vertical;
-                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-                layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-                func_0021d8e0(slot + 0x830 + j * 0x100, layout);
+                layout[0].x = x + 28.0f * (f32)j;
+                layout[0].y = y + vertical;
+                layout[1].x = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[1].y = (f32)*(s32*)((u8*)frame + 0x10);
+                func_0021d8e0(slot + 0x830 + j * 0x100, (f32*)layout);
                 if ((BI_U32(slot, 0) & BI_SLOT_TEXT_1) != 0) {
                     color[0] = 0xf0;
                     color[1] = 0xaa;
@@ -761,11 +761,11 @@ void func_0023f540(void)
                 func_0021d950(slot + 0x830 + j * 0x100, color);
             }
             for (; j < 5; j++) {
-                layout[0] = x;
-                layout[1] = y;
-                layout[2] = 0.0f;
-                layout[3] = 0.0f;
-                func_0021d8e0(slot + 0x830 + j * 0x100, layout);
+                layout[0].x = x;
+                layout[0].y = y;
+                layout[1].x = 0.0f;
+                layout[1].y = 0.0f;
+                func_0021d8e0(slot + 0x830 + j * 0x100, (f32*)layout);
             }
         }
     }

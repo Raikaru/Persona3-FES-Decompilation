@@ -370,10 +370,6 @@ void brPanel002350f0(void)
         D_00960090(1, frame);
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
-        D_0096009C((u32*)entry->digits[0], 4, 0, 1, 2);
-        D_0096009C((u32*)entry->digits[0], 4, 0, 2, 3);
-        D_0096009C((u32*)entry->digits[1], 4, 0, 1, 2);
-        D_0096009C((u32*)entry->digits[1], 4, 0, 2, 3);
         for (j = 0; j < 2; j++) {
             entrySetQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
             (*entrySetQuad)((u32*)entry->digits[j], 4, 0, 1, 2);

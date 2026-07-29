@@ -4098,10 +4098,10 @@ static u32 func_002bdfb0(int state)
       for (index = 0; index < steps; index++) {
         firstEntry = menu->firstEntry;
         selectedEntry = menu->selectedEntry;
-        if ((long)(firstEntry + 1) < (long)selectedEntry) {
+        if (firstEntry + 1 < selectedEntry) {
           menu->selectedEntry = selectedEntry - 1;
         } else if (firstEntry < 1) {
-          if ((long)selectedEntry == 1) {
+          if (selectedEntry == 1) {
             menu->selectedEntry = 0;
           } else {
             menu->firstEntry = menu->entryCount - menu->visibleEntries;
@@ -4124,11 +4124,11 @@ static u32 func_002bdfb0(int state)
         steps = 1;
       }
       for (index = 0; index < steps; index++) {
-        selected = (long)menu->selectedEntry;
+        selected = menu->selectedEntry;
         if (selected < (int)menu->firstEntry + (int)menu->visibleEntries - 2 &&
             selected < menu->entryCount - 2) {
           menu->selectedEntry++;
-        } else if ((long)menu->firstEntry < (long)(menu->entryCount - menu->visibleEntries)) {
+        } else if (menu->firstEntry < menu->entryCount - menu->visibleEntries) {
           menu->firstEntry++;
           menu->selectedEntry++;
         } else if (selected < menu->entryCount - 1) {
@@ -4145,6 +4145,11 @@ static u32 func_002bdfb0(int state)
   }
 
   return result;
+}
+
+// FUN_002BE2E0
+void FUN_002BE2E0(void)
+{
 }
 
 // FUN_002be2f0
@@ -4336,6 +4341,11 @@ void func_002be720(short *param_1,short param_2,short param_3,int param_4)
     iVar4 = sVar6 + 0x12;
   }
   return;
+}
+
+// FUN_002BE9D0
+void FUN_002BE9D0(void)
+{
 }
 
 // FUN_002be9e0
