@@ -849,7 +849,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
     void* itemRecord;
     f32 fade;
     u32 fadeAlpha;
-    u8 text[0xe0];
+    u8 text[0xf0];
     switch (mode) {
     case 0:
         parent = (u32)FUN_001158b0(0, *labels, 0x13);
@@ -1296,7 +1296,7 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
 {
     register u32 parent;
     s32 i;
-    u8 text[0x110];
+    u8 text[0x120];
     u32 workId;
 
     switch (mode) {

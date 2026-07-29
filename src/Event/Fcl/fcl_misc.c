@@ -4023,7 +4023,7 @@ u64 FUN_003ce2a0(u64 param_1)
       }
 
       else {
-
+        FUN_003cdba0(param_1,*(short *)(iVar9 + 0xe));
 
       }
 
@@ -4072,7 +4072,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   float fVar13;
 
-  u32 uVar14;
+  float uVar14;
 
   float fVar15;
 

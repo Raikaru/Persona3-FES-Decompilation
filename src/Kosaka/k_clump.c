@@ -1219,8 +1219,8 @@ void func_001a8140(void* state, u32 mode)
             }
             if (D_007CC1F8 == 1)
             {
-                object = item->object;
-                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                void* object = item->object;
+                void (**resourceCall)(void*) = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
             if (item->enabled == 1)
@@ -1253,8 +1253,8 @@ void func_001a8140(void* state, u32 mode)
             }
             if (*(u32*)((u8*)&D_007CC1F8 + 4) == 1)
             {
-                object = item->object;
-                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                void* object = item->object;
+                void (**resourceCall)(void*) = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
             if (item->enabled == 1)
@@ -1275,11 +1275,11 @@ void func_001a8140(void* state, u32 mode)
     item = *(KClumpMaterialNode**)((u8*)state + 0x14);
     while (item != NULL)
     {
-        found = 0;
-        object = item->object;
+        u32 found = 0;
+        void* object = item->object;
         if (object != NULL)
         {
-            resources = *(void**)((u8*)object + 0x18);
+            void* resources = *(void**)((u8*)object + 0x18);
             if (resources != NULL)
             {
                 func_004932c0(resources, (KClumpCallback)kclump_alpha_callback, &found);
@@ -1295,7 +1295,7 @@ void func_001a8140(void* state, u32 mode)
                         if ((item->flags == 0 || item->colorScale[0] == 1.0f) &&
                             *(u32*)((u8*)&D_007CC1F8 + 8) == 1)
                         {
-                            resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                            void (**resourceCall)(void*) = (void (**)(void*))((u8*)object + 0x48);
                             (*resourceCall)(object);
                         }
                         if (item->enabled == 1)
@@ -1330,8 +1330,8 @@ void func_001a8140(void* state, u32 mode)
             }
             else if (*(u32*)((u8*)&D_007CC1F8 + 0x1c) == 1)
             {
-                object = item->object;
-                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                void* object = item->object;
+                void (**resourceCall)(void*) = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
             if (item->enabled == 1)
@@ -1364,8 +1364,8 @@ void func_001a8140(void* state, u32 mode)
             }
             else if (*(u32*)((u8*)&D_007CC1F8 + 0x18) == 1)
             {
-                object = item->object;
-                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                void* object = item->object;
+                void (**resourceCall)(void*) = (void (**)(void*))((u8*)object + 0x48);
                 (*resourceCall)(object);
             }
             if (item->enabled == 1)

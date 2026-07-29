@@ -5171,7 +5171,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         }
         {
             RuntimeVec3* surface;
-            RuntimeVec3 scratch[8];
             RuntimeVec3 first;
             RuntimeVec3 second;
             RuntimeVec3 blended0;
@@ -5204,11 +5203,11 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                                  second.y * weight;
                     blended0.z = first.z * inverseWeight +
                                  second.z * weight;
-                    scratch[index] = blended0;
                     surface[index] = blended0;
                 }
             }
-            if (surface != NULL && vector2 != NULL && vector3 != NULL)
+            if (surface != NULL && vector2 != NULL && vector3 != NULL &&
+                vector0 != NULL && vector1 != NULL)
             {
                 if (limit > 8)
                 {
@@ -5230,24 +5229,28 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                         scratchIndex = 0;
                     }
                     blended0.x = second.x + first.x * scale +
-                                 scratch[scratchIndex].x * inverseWeight;
+                                 surface[scratchIndex].x * inverseWeight;
                     blended0.y = second.y + first.y * scale +
-                                 scratch[scratchIndex].y * inverseWeight;
+                                 surface[scratchIndex].y * inverseWeight;
                     blended0.z = second.z + first.z * scale +
-                                 scratch[scratchIndex].z * inverseWeight;
+                                 surface[scratchIndex].z * inverseWeight;
                     surface[index] = blended0;
                 }
             }
-            if (surface != NULL && vertices != NULL)
+            if (surface != NULL && vertices != NULL &&
+                vector0 != NULL && vector1 != NULL)
             {
                 for (index = 0; index < limit; index++)
                 {
                     scratchIndex = index;
-                    if (scratchIndex >= 8)
-                    {
-                        scratchIndex = 0;
-                    }
-                    first = scratch[scratchIndex];
+                    weight = (f32)scratchIndex / (f32)(count + 1);
+                    inverseWeight = 1.0f - weight;
+                    first.x = vector0[scratchIndex].x * inverseWeight +
+                              vector1[scratchIndex].x * weight;
+                    first.y = vector0[scratchIndex].y * inverseWeight +
+                              vector1[scratchIndex].y * weight;
+                    first.z = vector0[scratchIndex].z * inverseWeight +
+                              vector1[scratchIndex].z * weight;
                     second = surface[index];
                     second.x -= first.x;
                     second.y -= first.y;
@@ -5258,22 +5261,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                     vertices[index] = blended0;
                 }
             }
-            for (index = 0; index < 8; index++)
-            {
-                scratchIndex = index == 0 ? 0 : index - 1;
-                first = scratch[scratchIndex];
-                second = scratch[index];
-                blended0 = scratch[index == 7 ? 7 : index + 1];
-                scratch[index].x = (first.x + second.x + blended0.x) *
-                                   0.33333334f;
-                scratch[index].y = (first.y + second.y + blended0.y) *
-                                   0.33333334f;
-                scratch[index].z = (first.z + second.z + blended0.z) *
-                                   0.33333334f;
-            }
-            (void)scratch;
             (void)scale;
-            (void)inverseWeight;
         }
         {
             f32 blendAmount;

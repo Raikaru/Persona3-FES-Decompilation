@@ -12697,7 +12697,7 @@ void FUN_003282e0(int param_1)
 
   __int128 auStack_160;
 
-  float vertices[4][16];
+  float vertices[4][12];
 
 
   float fStack_38;
@@ -14588,9 +14588,8 @@ void FUN_0032af30(int param_1)
   float fVar23;
 
   float fVar24;
-
   float fVar25;
-
+  float fVar26;
 
   u32 uVar30;
 
@@ -14629,6 +14628,8 @@ void FUN_0032af30(int param_1)
     cVar1 = pauVar4[9][0xc];
 
     fVar24 = *(float *)(pauVar4[0xd] + 4);
+    fVar25 = *(float *)(pauVar4[0xe] + 4);
+    fVar26 = *(float *)(pauVar4[0xe] + 8);
 
     vuVec[3] = 0.0f;
 
@@ -14853,8 +14854,6 @@ void FUN_0032af30(int param_1)
 
             fVar21 = *(float *)(pauVar4[0xd] + 8) * (fVar20 * fVar18 + (fVar23 - fVar20) + 0.0f);
 
-            fVar25 = *(float *)(pauVar4[0xe] + 4);
-
             fVar18 = (float)FUN_00358030(0);
 
             fVar20 = *(float *)pauVar4[0xe];
@@ -14869,7 +14868,7 @@ void FUN_0032af30(int param_1)
 
             fVar18 = (float)FUN_00358030(0);
 
-            pfVar14[10] = *(float *)(pauVar4[0xe] + 8) * (fVar20 * fVar18 + (fVar23 - fVar20) + 0.0f)
+            pfVar14[10] = fVar26 * (fVar20 * fVar18 + (fVar23 - fVar20) + 0.0f)
 
             ;
 
@@ -15681,11 +15680,10 @@ void FUN_0032c340(int param_1)
   float fVar26;
 
   float fVar27;
-
   float fVar28;
-
   float fVar29;
-
+  float fVar30;
+  float fVar31;
 
   u32 uStack_70;
 
@@ -15732,8 +15730,9 @@ void FUN_0032c340(int param_1)
     cVar1 = *(char *)((int)puVar4 + 0x9c);
 
     fVar27 = *(float *)(puVar4 + 0x1e);
-
     fVar28 = *(float *)((int)puVar4 + 0xec);
+    fVar30 = *(float *)(puVar4 + 0x19);
+    fVar31 = *(float *)(puVar4 + 0x1b);
 
     motionVec[3] = 0.0f;
     vuVec[3] = 0.0f;
@@ -15873,15 +15872,13 @@ void FUN_0032c340(int param_1)
 
             fVar26 = *(float *)((int)puVar4 + 0xcc) * (fVar25 * fVar23 + (1.0f - fVar25) + 0.0f);
 
-            fVar29 = *(float *)(puVar4 + 0x1b);
-
             fVar23 = (float)FUN_00358030(0);
 
             fVar25 = *(float *)((int)puVar4 + 0xd4);
 
             pfVar19[8] = fVar26;
 
-            pfVar19[9] = (fVar25 * (fVar29 * fVar23 + (1.0f - fVar29) + 0.0f) - fVar26) / (float)iVar5
+            pfVar19[9] = (fVar25 * (fVar31 * fVar23 + (1.0f - fVar31) + 0.0f) - fVar26) / (float)iVar5
 
             ;
 
@@ -15911,7 +15908,7 @@ void FUN_0032c340(int param_1)
 
             fVar23 = (float)FUN_00358030(0);
 
-            pfVar19[7] = *(float *)(puVar4 + 0x19) * fVar23;
+            pfVar19[7] = fVar30 * fVar23;
 
             scaleVec[0] = fVar26;
             scaleVec[1] = fVar26;
