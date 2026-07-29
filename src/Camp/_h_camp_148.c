@@ -988,7 +988,6 @@ void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
 }
 
 /* Removing this worsens FUN_0014c5c0 (nd6343 -> nd6433) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_0014C5C0 NONMATCHING
 u32 h_campUpdateNewItemTask(int param_1)
 
@@ -1969,7 +1968,6 @@ u32 h_campUpdateNewItemTask(int param_1)
   }
   return 0;
 }
-#pragma opt_loop_invariants off
 
 // FUN_0014EE80
 KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)

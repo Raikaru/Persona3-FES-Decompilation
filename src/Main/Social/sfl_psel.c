@@ -1946,7 +1946,6 @@ void func_00218810(void* panel, const u32* entry, s32 selected)
     func_0021eac0(destination + 0x800, func_0021ea00(0x28));
 }
 
-#pragma optimization_level 2
 // FUN_00218B20
 void func_00218b20(void* panel, const u32* entry, s32 selected,
                    const f32* origin, f32 alpha)
@@ -2114,7 +2113,6 @@ void func_00218b20(void* panel, const u32* entry, s32 selected,
 #undef color
 #undef rect
 }
-#pragma optimization_level 2
 // FUN_00219370 NONMATCHING
 void func_00219370(void* panel, const u32* entry, s32 selected)
 {

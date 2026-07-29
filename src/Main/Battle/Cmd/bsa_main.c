@@ -121,7 +121,6 @@ void bsaMain0020fe20(BsaWork* work)
     work->words[1] = 0;
 }
 
-#pragma optimization_level 2
 // FUN_0020FE30 NONMATCHING
 void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
 {
@@ -373,10 +372,8 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     }
     func_0010a4e0(1, 0, 2, 0x15);
 }
-#pragma optimization_level 2
 #undef p
 
-#pragma optimization_level 2
 // FUN_00210D60
 void bsaMain00210d60(BsaWork* work)
 {

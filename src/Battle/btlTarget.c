@@ -5402,7 +5402,6 @@ u32 FUN_002dbb00(BtlUnit* param_1)
     return result;
 }
 
-#pragma push
 // FUN_002dbeb0
 u32 FUN_002dbeb0(void* param_1)
 {
@@ -5433,7 +5432,6 @@ one:
 zero:
     return 0;
 }
-#pragma pop
 
 // FUN_002dbfe0
 BtlPacket* FUN_002dbfe0(u16 param_1)

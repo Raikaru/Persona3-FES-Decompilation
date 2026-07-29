@@ -743,7 +743,6 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
 }
 
 /* Removing this worsens FUN_003da700 (nd2097 -> nd2101) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_003da700 NONMATCHING
 s32 fclCombineList003da700(FclList* param_1)
 {
@@ -996,7 +995,6 @@ selection_back:
     FUN_003d8850((s32)param_1, 0x1c, 0);
     return 0;
 }
-#pragma opt_loop_invariants off
 
 // FUN_003db580
 s32 fclCombineList003db580(FclList* param_1)

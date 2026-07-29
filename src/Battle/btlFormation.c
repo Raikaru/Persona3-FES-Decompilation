@@ -5156,40 +5156,38 @@ LAB_002bfefc:
   return;
 }
 
-#pragma opt_propagation off
 // FUN_002bff60
 
-u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4)
+u8 func_002bff60(u64 param_1,long param_2,u32 original,long param_4)
 
 {
-  u32 original = param_3;
+  u32 effect;
   int iVar3;
   u32 bVar4;
   
   if (param_2 != 0) {
     iVar3 = (original & 0xffff) * 0x2c;
-    param_3 = DAT_007ce3f8[iVar3 + 9];
+    effect = DAT_007ce3f8[iVar3 + 9];
     bVar4 = DAT_007ce3f8[iVar3 + 10];
     if (param_4 != 0) {
-      param_4 = (u8)param_3;
+      param_4 = (u8)effect;
       if (((param_4 & 1) != 0) && ((param_4 & 2) == 0)) {
-        param_3 = (u8)(param_3 & 0xfe);
-        param_3 = (u8)(param_3 | 2);
+        effect = (u8)(effect & 0xfe);
+        effect = (u8)(effect | 2);
       }
       else if (((param_4 & 2) != 0) && ((param_4 & 1) == 0)) {
-        param_3 = (u8)(param_3 & 0xfd);
-        param_3 = (u8)(param_3 | 1);
+        effect = (u8)(effect & 0xfd);
+        effect = (u8)(effect | 1);
       }
       if (((u8)bVar4 & 1) != 0) {
         bVar4 = (u8)(bVar4 & 0xfe);
         bVar4 = (u8)(bVar4 | 2);
       }
     }
-    func_002bfcb0_u64call(param_1,param_2,param_3,bVar4,*(u16 *)(iVar3 + (int)DAT_007ce3f8 + 0xc));
+    func_002bfcb0_u64call(param_1,param_2,effect,bVar4,*(u16 *)(iVar3 + (int)DAT_007ce3f8 + 0xc));
   }
   return DAT_007ce3f8[(original & 0xffff) * 0x2c + 8];
 }
-#pragma opt_propagation on
 
 // FUN_002c0070 NONMATCHING
 
