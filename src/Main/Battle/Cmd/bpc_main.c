@@ -1546,7 +1546,7 @@ LAB_00246060:
       auStack_4[1] = 0xff;
       auStack_4[2] = 0xff;
       fVar20 = fVar19 * 255.0f;
-      auStack_4[3] = (u8)(int)fVar20;
+      auStack_4[3] = (u8)(u32)fVar20;
       func_0021d950(puVar11 + 1,&auStack_4[0]);
       uVar10 = puVar1[1];
       if (uVar10 == 2) {
@@ -1709,7 +1709,7 @@ LAB_00246060:
       auStack_4[1] = 0xff;
       auStack_4[2] = 0xff;
       fVar20 = fVar19 * 255.0f;
-      auStack_4[3] = (u8)(int)fVar20;
+      auStack_4[3] = (u8)(u32)fVar20;
       func_0021d950(puVar11 + 0x11,&auStack_4[0]);
       iVar4 = func_0021cca0(uVar7,2);
       iVar12 = *(int *)(iVar4 + 0xc);
@@ -1775,7 +1775,7 @@ LAB_00246060:
       auStack_4[1] = 0xff;
       auStack_4[2] = 0xff;
       fVar20 = fVar19 * 255.0f;
-      auStack_4[3] = (u8)(int)fVar20;
+      auStack_4[3] = (u8)(u32)fVar20;
       func_0021d950(puVar11 + 0x21,&auStack_4[0]);
       iVar12 = func_0021cca0(uVar7,0x2c);
       fVar20 = fVar17 - 45.0f;
@@ -1832,7 +1832,7 @@ LAB_00246060:
       auStack_4[1] = 0xff;
       auStack_4[2] = 0xff;
       fVar20 = fVar19 * 255.0f;
-      auStack_4[3] = (u8)(int)fVar20;
+      auStack_4[3] = (u8)(u32)fVar20;
       func_0021d950(puVar11 + 0x144,&auStack_4[0]);
       uVar10 = puVar1[1];
       if (uVar10 == 2) {
@@ -1871,7 +1871,7 @@ LAB_00246060:
       auStack_4[1] = 0xff;
       auStack_4[2] = 0xff;
       fVar19 = fVar19 * 255.0f;
-      auStack_4[3] = (u8)(int)fVar19;
+      auStack_4[3] = (u8)(u32)fVar19;
       func_0021d950(puVar11 + 0x184,&auStack_4[0]);
       if ((puVar1[1] == 1) || (puVar1[1] == 0)) {
         if ((*puVar11 & 0x10) == 0) {
@@ -1906,7 +1906,7 @@ LAB_00246060:
         auStack_4[1] = 0xff;
         auStack_4[2] = 0xff;
         fVar20 = fVar20 * 255.0f;
-        auStack_4[3] = (u8)(int)fVar20;
+        auStack_4[3] = (u8)(u32)fVar20;
         func_0021d950(puVar11 + 0x104,&auStack_4[0]);
         uVar8 = func_0021cca0(uVar2,4);
         func_0021cd00(uVar8, (f32*)afStack_30);
@@ -1923,7 +1923,7 @@ LAB_00246060:
         auStack_4[0] = 0xff;
         auStack_4[1] = 0xff;
         auStack_4[2] = 0xff;
-        auStack_4[3] = (u8)(int)fVar20;
+        auStack_4[3] = (u8)(u32)fVar20;
         func_0021d950(puVar11 + 0xc4,&auStack_4[0]);
       }
       if (puVar1[1] == 2) {
@@ -1962,7 +1962,7 @@ LAB_00246060:
         auStack_4[1] = 0xff;
         auStack_4[2] = 0xff;
         fVar19 = fVar19 * 255.0f;
-        auStack_4[3] = (u8)(int)fVar19;
+        auStack_4[3] = (u8)(u32)fVar19;
         func_0021d950(puVar11 + 0x1c8,&auStack_4[0]);
         uVar10 = *puVar11;
         if ((uVar10 & 0x80) == 0) {
@@ -1999,7 +1999,7 @@ LAB_00246060:
         auStack_4[1] = 0xff;
         auStack_4[2] = 0xff;
         fVar19 = fVar19 * 255.0f;
-        auStack_4[3] = (u8)(int)fVar19;
+        auStack_4[3] = (u8)(u32)fVar19;
         func_0021d950(puVar11 + 0x208,&auStack_4[0]);
         uVar10 = *puVar11;
         if ((uVar10 & 0x80) == 0) {
@@ -2036,7 +2036,7 @@ LAB_00246060:
         auStack_4[1] = 0xff;
         auStack_4[2] = 0xff;
         fVar19 = fVar19 * 255.0f;
-        auStack_4[3] = (u8)(int)fVar19;
+        auStack_4[3] = (u8)(u32)fVar19;
         func_0021d950(puVar11 + 0x248,&auStack_4[0]);
       }
     }

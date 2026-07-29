@@ -564,7 +564,7 @@ void func_00275cb0(void)
 // FUN_002760f0 NONMATCHING
 void func_002760f0(void)
 {
-    u32 *work;
+    u32* work;
     f32 rect[4];
     u8 color[4];
     f32 alpha;
@@ -572,88 +572,142 @@ void func_002760f0(void)
     f32 alphaScaled;
     u32 resource;
     u32 baseResource;
+
     K_ASSERT(gOpWorkC8 != NULL, 0x3b);
-    work = (u32 *)OP_WORK8;
+    work = (u32*)OP_WORK8;
     baseResource = brRes00234630(0);
-    resource = func_0021cca0(baseResource, 0);
-    if ((OP_U32(work, 0) & 2) == 0)
-        alpha = (OP_U32(work, 0) & 4) != 0 ? 1.0f : 0.0f;
-    else if (OP_S32(work, 0x614) == 1)
+    if ((OP_U32(work, 0) & 2) != 0)
     {
-        alpha = 1.0f;
-        offset = 0.0f;
-    }
-    else if (OP_S32(work, 0x614) == 0)
-    {
-        if (OP_S32(work, 0x610) < 0)
-            alpha = 0.0f;
-        else if (OP_S32(work, 0x610) < 6)
+        if (OP_S32(work, 0x614) == 1)
         {
-            alpha = (f32)OP_S32(work, 0x610) / 6.0f;
-            offset = (1.0f - alpha) * 100.0f;
-        }
-        else
             alpha = 1.0f;
-    }
-    alphaScaled = alpha * 255.0f;
-    resource = baseResource;
-    rect[0] = offset + 128.0f;
-    rect[1] = 0.0f;
-    rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
-    rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
-    func_0021d8e0(work + 4, rect);
-    color[0] = color[1] = color[2] = 0xff;
-    color[3] = opFadeColorByte(alphaScaled);
-    func_0021d950(work + 4, color);
-    resource = func_0021cca0(baseResource, 1);
-    rect[0] = offset + 359.0f;
-    rect[1] = 0.0f;
-    rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
-    rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
-    func_0021d8e0(work + 0x84, rect);
-    color[3] = opFadeColorByte(alphaScaled);
-    func_0021d950(work + 0x84, color);
-    if ((OP_U32(work, 0) & 2) == 0)
-        alpha = 0.0f;
-    else if (OP_S32(work, 0x614) == 1)
-    {
-        s32 frame = OP_S32(work, 0x610);
-        alpha = frame < 0 ? 0.0f : frame < 3 ? (f32)frame / 3.0f
-                                             : frame < 0x21 ? 1.0f - (f32)(frame - 3) / 30.0f : 0.0f;
+            offset = 0.0f;
+        }
+        else if (OP_S32(work, 0x614) == 0)
+        {
+            if (OP_S32(work, 0x610) < 0)
+            {
+                alpha = 0.0f;
+                offset = 0.0f;
+            }
+            else if (OP_S32(work, 0x610) < 6)
+            {
+                alpha = (f32)OP_S32(work, 0x610) / 6.0f;
+                offset = (1.0f - alpha) * 100.0f;
+            }
+            else
+            {
+                alpha = 1.0f;
+            }
+        }
     }
     else
     {
-        s32 frame = OP_S32(work, 0x610);
-        alpha = frame < 3 ? 0.0f : frame < 6 ? (f32)(frame - 3) / 3.0f
-                                             : frame < 0x24 ? 1.0f - (f32)(frame - 6) / 30.0f : 0.0f;
+        alpha = (OP_U32(work, 0) & 4) != 0 ? 1.0f : 0.0f;
     }
+
+    alphaScaled = alpha * 255.0f;
+    resource = func_0021cca0(baseResource, 0);
+    rect[0] = offset + 128.0f;
+    rect[1] = 0.0f;
+    rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
+    func_0021d8e0(work + 4, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = opFadeColorByte(alphaScaled);
+    func_0021d950(work + 4, color);
+
+    resource = func_0021cca0(baseResource, 1);
+    rect[0] = offset + 359.0f;
+    rect[1] = 0.0f;
+    rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
+    func_0021d8e0(work + 0x84, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = opFadeColorByte(alphaScaled);
+    func_0021d950(work + 0x84, color);
+
+    if ((OP_U32(work, 0) & 2) != 0)
+    {
+        if (OP_S32(work, 0x614) == 1)
+        {
+            s32 frame = OP_S32(work, 0x610);
+            if (frame < 0)
+                alpha = 0.0f;
+            else if (frame < 3)
+                alpha = (f32)frame / 3.0f;
+            else if (frame < 0x21)
+                alpha = 1.0f - (f32)(frame - 3) / 30.0f;
+            else
+                alpha = 0.0f;
+        }
+        else if (OP_S32(work, 0x614) == 0)
+        {
+            s32 frame = OP_S32(work, 0x610);
+            if (frame < 3)
+                alpha = 0.0f;
+            else if (frame < 6)
+                alpha = (f32)(frame - 3) / 3.0f;
+            else if (frame < 0x24)
+                alpha = 1.0f - (f32)(frame - 6) / 30.0f;
+            else
+                alpha = 0.0f;
+        }
+    }
+    else
+    {
+        alpha = 0.0f;
+    }
+
     alphaScaled = alpha * 255.0f;
     resource = func_0021cca0(baseResource, 2);
     rect[0] = 128.0f;
     rect[1] = 0.0f;
-    rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
-    rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
+    rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x44, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
     color[3] = opFadeColorByte(alphaScaled);
     func_0021d950(work + 0x44, color);
+
     resource = func_0021cca0(baseResource, 3);
     rect[0] = 359.0f;
     rect[1] = 0.0f;
-    rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
-    rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
+    rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0xc4, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = opFadeColorByte(alphaScaled);
     func_0021d950(work + 0xc4, color);
+
     resource = func_0021cca0(baseResource, 0xb);
     rect[0] = 0.0f;
     rect[1] = 0.0f;
-    rect[2] = (f32)OP_S32((void *)(uintptr_t)resource, 0xc);
-    rect[3] = (f32)OP_S32((void *)(uintptr_t)resource, 0x10);
+    rect[2] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x104, rect);
-    rect[0] = rect[2];
+    rect[0] = (f32)OP_S32((void*)(uintptr_t)resource, 0xc);
+    rect[1] = 0.0f;
     rect[2] = 650.0f;
+    rect[3] = (f32)OP_S32((void*)(uintptr_t)resource, 0x10);
     func_0021d8e0(work + 0x144, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
     color[3] = 0xff;
     func_0021d950(work + 0x104, color);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
     func_0021d950(work + 0x144, color);
 }
 

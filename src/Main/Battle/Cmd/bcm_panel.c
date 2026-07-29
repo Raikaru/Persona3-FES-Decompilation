@@ -2248,7 +2248,6 @@ void FUN_00228E40(void)
     f32* basePos;
     f32 alpha1;
     f32 alpha2;
-    f32 rawScaled;
     f32 blend;
     f32 weight;
     u8 alphaByte;
@@ -2293,8 +2292,7 @@ void FUN_00228E40(void)
     default:
         break;
     }
-    rawScaled = alpha1 * alpha2;
-    blend = 1.0f - rawScaled;
+    blend = 1.0f - alpha1 * alpha2;
 
     frame = (void*)FUN_0021cca0(table0, 0x23);
     rect[0] = 47.0f + basePos[0];
@@ -2315,13 +2313,13 @@ void FUN_00228E40(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    alphaByte = (u8)(u32)(255.0f * rawScaled * weight);
+    alphaByte = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
     color[3] = alphaByte;
     FUN_0021d950(work + 0x4230, color);
     FUN_0021d950(work + 0x4330, color);
 
-    percentColour = ((u8)(u32)(255.0f * rawScaled * weight) * 50 / 100) | 0xffffff00u;
-    rawInt = (s32)(255.0f * rawScaled * weight);
+    percentColour = ((u8)(u32)(255.0f * (alpha1 * alpha2) * weight) * 50 / 100) | 0xffffff00u;
+    rawInt = (s32)(255.0f * (alpha1 * alpha2) * weight);
     signedColour = (u32)rawInt | 0xffffff00u;
     greyColour = (u32)rawInt | 0xcccccc00u;
 
@@ -2358,7 +2356,7 @@ void FUN_00228E40(void)
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
-        color[3] = (u8)(u32)(255.0f * rawScaled * weight);
+        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
         FUN_0021d950(record + 0x10, color);
 
         rect[0] = 281.0f + basePos[0];
@@ -2375,7 +2373,7 @@ void FUN_00228E40(void)
             color[1] = 0x5a;
             color[2] = 0x5a;
         }
-        alphaByte = (u8)(u32)(255.0f * rawScaled * weight);
+        alphaByte = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
         color[3] = alphaByte;
         FUN_0021d950(record + 0x110, color);
         FUN_0021d950(record + 0x210, color);
@@ -2398,7 +2396,7 @@ void FUN_00228E40(void)
             color[1] = 0x4e;
             color[2] = 0x50;
         }
-        color[3] = (u8)(u32)(255.0f * rawScaled * weight);
+        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
         FUN_0021d950(record + 0x410, color);
     }
 

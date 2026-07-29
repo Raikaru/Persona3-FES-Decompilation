@@ -1923,36 +1923,14 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
         uVar1 = *param_3;
 
         if ((uVar1 & 0x100) != 0) {
-
-          RtQuatConvertFromMatrix((RtQuat*)&fStack_320,(const RwMatrix*)&fStack_310);
-
+          goto use_existing_rotation;
         }
-
-        else {
+        {
 
           if ((uVar1 & 0x80) != 0) {
-
-            iStack_3a0 = 0;
-
-            uStack_10 = 0x3f800000;
-
-            uStack_c = 0;
-
-            uStack_8 = 0;
-
-            RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)&uStack_10,*(float *)(param_3 + 0x1e),0);
-
-            uStack_10 = 0;
-
-            uStack_c = 0x3f800000;
-
-            uStack_8 = 0;
-
-            RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)&uStack_10,*(float *)(param_3 + 0x20),2);
-
+            goto direct_rotation;
           }
-
-          else {
+          {
 
             iStack_3a0 = 1;
 
@@ -2071,6 +2049,18 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
             RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)auStack_250,fVar20 + fVar22,2);
 
           }
+          goto finished_direct_rotation;
+direct_rotation:
+          iStack_3a0 = 0;
+          uStack_10 = 0x3f800000;
+          uStack_c = 0;
+          uStack_8 = 0;
+          RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)&uStack_10,*(float *)(param_3 + 0x1e),0);
+          uStack_10 = 0;
+          uStack_c = 0x3f800000;
+          uStack_8 = 0;
+          RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)&uStack_10,*(float *)(param_3 + 0x20),2);
+finished_direct_rotation:
 
           FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)auStack_250,(RwMatrix*)auStack_290);
 
@@ -2111,8 +2101,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
             fStack_314 = *(float *)(param_3 + 0x16);
 
           }
-
         }
+        goto finished_rotation_setup;
+use_existing_rotation:
+        RtQuatConvertFromMatrix((RtQuat*)&fStack_320,(const RwMatrix*)&fStack_310);
+finished_rotation_setup:
 
         if ((*param_3 & 0x200) != 0) {
 
