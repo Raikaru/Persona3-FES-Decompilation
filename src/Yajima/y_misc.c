@@ -34,7 +34,7 @@ char cGpffffb9d8;
 char cGpffffb9ec;
 int iGpffffb5c0;
 int *piGpffffa850;
-u32 uGpffffb9ec;
+u8 uGpffffb9ec;
 u32 uGpffffb9f4;
 extern u8 cGpffffb9c0;
 extern u8* iGpffffb9b8;

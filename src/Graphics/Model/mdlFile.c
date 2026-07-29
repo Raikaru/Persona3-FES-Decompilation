@@ -4439,6 +4439,8 @@ void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float para
 
   int *piVar2;
 
+  int *callbacks;
+
   u32 uVar3;
 
   int iVar4;
@@ -4457,17 +4459,19 @@ void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float para
 
     for (uVar6 = 0; uVar6 < 4; uVar6 = uVar6 + 1) {
 
-      if ((*(void **)(PTR_FUN_0069bb1c_abs + uVar6 * 0x10) != (u8 *)0x0) &&
+      callbacks = (int *)(PTR_LAB_0069bb10_abs + uVar6 * 0x10);
+
+      if ((callbacks[3] != 0) &&
 
          (iVar4 = param_4 + uVar6 * 0x10, *(int *)(iVar4 + 0xc) != 0)) {
 
         if (*(int *)(param_5 + uVar6 * 0x10 + 0xc) != 0) {
 
-          uVar3 = (*(MdlCreate3FloatFn *)(PTR_FUN_0069bb14_abs + uVar6 * 0x10))(param_1,param_2,param_3);
+          uVar3 = (*(MdlCreate3FloatFn *)(&callbacks[1]))(param_1,param_2,param_3);
 
           for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
 
-            (*(code *)*(void **)(PTR_FUN_0069bb1c_abs + uVar6 * 0x10))(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
+            ((code)callbacks[3])(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
 
           }
 
@@ -4475,11 +4479,11 @@ void FUN_00320080(int param_4,float param_1,int param_5,float param_2,float para
 
         else {
 
-          uVar3 = (*(MdlCreate2FloatFn *)(PTR_FUN_0069bb18_abs + uVar6 * 0x10))(param_1,param_4 + 0x40,param_3);
+          uVar3 = (*(MdlCreate2FloatFn *)(&callbacks[2]))(param_1,param_4 + 0x40,param_3);
 
           for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
 
-            (*(code *)*(void **)(PTR_FUN_0069bb1c_abs + uVar6 * 0x10))(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
+            ((code)callbacks[3])(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
 
           }
 
@@ -9181,11 +9185,13 @@ void FUN_003252a0(u64 param_1)
 
   int iVar3;
 
-  __int128 savedTransform;
+  float five;
+
+  u_long128 savedTransform;
 
   u8 (*pauVar7) [16];
 
-  __int128 auStack_30;
+  u_long128 auStack_30;
 
   u8 auStack_20[16];
 
@@ -9193,7 +9199,7 @@ void FUN_003252a0(u64 param_1)
 
   
 
-  pauVar7 = (u8 (*) [16])param_1;
+  pauVar7 = (u8 (*) [16])(u32)param_1;
 
   __asm__ volatile (
       ".set noreorder                    \n"
@@ -9209,17 +9215,19 @@ void FUN_003252a0(u64 param_1)
 
   if ((*(u32 *)(pauVar7[6] + 8) & 0x60) != 0) {
 
-    savedTransform = *(__int128 *)pauVar7[5];
+    savedTransform = *(u_long128 *)pauVar7[5];
 
-    FUN_003263b0((int)(param_1),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+    FUN_003263b0((u32)param_1,(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
-    FUN_00325d60((u64)(param_1),(u8 (*) [16])(&auStack_30));
+    FUN_00325d60((u32)param_1,(u8 (*) [16])(&auStack_30));
 
-    *(__int128 *)pauVar7[5] = savedTransform;
+    *(u_long128 *)pauVar7[5] = savedTransform;
 
   }
 
   iVar2 = *(int *)(pauVar7[8] + 4);
+
+  five = 5.0f;
 
   for (iVar3 = *(int *)(pauVar7[8] + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xac)) {
 
@@ -9242,12 +9250,12 @@ void FUN_003252a0(u64 param_1)
 
           __asm__ volatile (
               ".set noreorder           \n"
-              "lui $v0, 0x40a0          \n"
+              "mfc1 $v0, %0             \n"
               "qmtc2.ni $v0, vf2        \n"
               "vaddx.y vf10, vf0, vf2x  \n"
               ".set reorder"
               :
-              :
+              : "f" (five)
               : "v0", "vf2", "vf10"
           );
 
@@ -9273,7 +9281,7 @@ void FUN_003252a0(u64 param_1)
               ".set reorder"
               :
               :
-              : "v0", "vf2", "vf11"
+              : "v0", "vf2", "vf11", "f21"
           );
 
         }
@@ -9290,8 +9298,8 @@ void FUN_003252a0(u64 param_1)
 
         uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
-        if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
-          PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
+        if (((code (*)[13])PTR_LAB_0069be40)[uVar1][8] != NULL) {
+          ((code (*)[13])PTR_LAB_0069be40)[uVar1][8]
                     (*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
 
         }
@@ -9304,10 +9312,8 @@ void FUN_003252a0(u64 param_1)
 
         uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
-        if ((code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-          (*(code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+        if (((code (*)[13])PTR_LAB_0069be40)[uVar1][9] != NULL) {
+          ((code (*)[13])PTR_LAB_0069be40)[uVar1][9]
                     (*(u32 *)(*(int *)(iVar3 + 0x90) + 8),auStack_30);
 
         }
@@ -9316,7 +9322,7 @@ void FUN_003252a0(u64 param_1)
 
       uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
-      PTR_LAB_0069be28[(u32)uVar1 * 0xc + (u32)uVar1]
+      ((code (*)[13])PTR_LAB_0069be40)[uVar1][2]
                 (*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
 
     }
@@ -9351,13 +9357,15 @@ void FUN_00325500(u64 param_1)
 
   int iVar4;
 
-  __int128 savedTransform;
+  u_long128 savedTransform;
 
   u8 (*pauVar8) [16];
 
   float fVar9;
 
-  __int128 auStack_30;
+  float five;
+
+  u_long128 auStack_30;
 
   u8 auStack_20[16];
 
@@ -9365,7 +9373,7 @@ void FUN_00325500(u64 param_1)
 
   
 
-  pauVar8 = (u8 (*) [16])param_1;
+  pauVar8 = (u8 (*) [16])(u32)param_1;
 
   if (0 < *(int *)(pauVar8[8] + 4)) {
 
@@ -9385,19 +9393,21 @@ void FUN_00325500(u64 param_1)
 
     if (((uVar2 & 0x60) != 0) && ((uVar2 & 0x80000000) == 0)) {
 
-      savedTransform = *(__int128 *)pauVar8[5];
+      savedTransform = *(u_long128 *)pauVar8[5];
 
-      FUN_003263b0((int)(param_1),(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
+      FUN_003263b0((u32)param_1,(*(u64 *)(&auStack_10)),(u8 (*) [16])(&auStack_30));
 
-      FUN_00325d60((u64)(param_1),(u8 (*) [16])(&auStack_30));
+      FUN_00325d60((u32)param_1,(u8 (*) [16])(&auStack_30));
 
-      *(__int128 *)pauVar8[5] = savedTransform;
+      *(u_long128 *)pauVar8[5] = savedTransform;
 
     }
 
     iVar3 = *(int *)(pauVar8[8] + 4);
 
     fVar9 = *(float *)pauVar8[6] * *(float *)(pauVar8[7] + 4);
+
+    five = 5.0f;
 
     for (iVar4 = *(int *)(pauVar8[8] + 0xc); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xac)) {
 
@@ -9420,11 +9430,11 @@ void FUN_00325500(u64 param_1)
 
               __asm__ volatile (
                   ".set noreorder           \n"
-                  "lui $v0, 0x40a0          \n"
+                  "mfc1 $v0, %0             \n"
                   "qmtc2.ni $v0, vf2        \n"
                   "vaddx.y vf10, vf0, vf2x  \n"
                   ".set reorder"
-                  : : : "v0", "vf2", "vf10"
+                  : : "f" (five) : "v0", "vf2", "vf10"
               );
 
             }
@@ -9460,8 +9470,8 @@ void FUN_00325500(u64 param_1)
 
             uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
-            if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
-              PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
+            if (((code (*)[13])PTR_LAB_0069be40)[uVar1][8] != NULL) {
+              ((code (*)[13])PTR_LAB_0069be40)[uVar1][8]
                         (*(u32 *)(*(int *)(iVar4 + 0x90) + 8));
 
             }
@@ -9474,10 +9484,8 @@ void FUN_00325500(u64 param_1)
 
             uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
-            if ((code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-              (*(code *)(&PTR_LAB_0069be44)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+            if (((code (*)[13])PTR_LAB_0069be40)[uVar1][9] != NULL) {
+              ((code (*)[13])PTR_LAB_0069be40)[uVar1][9]
                         (*(u32 *)(*(int *)(iVar4 + 0x90) + 8),auStack_30);
 
             }
@@ -9488,14 +9496,14 @@ void FUN_00325500(u64 param_1)
 
         uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
-        PTR_LAB_0069be2c[(u32)uVar1 * 0xc + (u32)uVar1]
+        ((code (*)[13])PTR_LAB_0069be40)[uVar1][3]
                   (*(u32 *)(*(int *)(iVar4 + 0x90) + 8));
 
       }
 
     }
 
-    *(u32 *)(pauVar8[6] + 8) = (u32)((u32)((long)*(int *)(pauVar8[6] + 8) << 0x21) >> 0x21);
+    *(u32 *)(pauVar8[6] + 8) = (u32)(((u64)*(u32 *)(pauVar8[6] + 8) << 0x21) >> 0x21);
 
   }
 
