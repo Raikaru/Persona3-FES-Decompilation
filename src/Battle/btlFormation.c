@@ -257,6 +257,8 @@ extern u16 func_002ffd80(u32 unit);
 extern u16 func_002ffdf0(u32 unit);
 extern u16 func_00300100(u32 unit);
 extern u64 func_00300530();
+#pragma alias func_00300530_u32 func_00300530
+extern u32 func_00300530_u32(u32 unit);
 extern u64 func_00300550();
 #pragma alias func_00300550_u32 func_00300550
 extern u32 func_00300550_u32(u32 param_1);
@@ -378,6 +380,8 @@ extern u8 DAT_00696e10;
 extern u32 DAT_00696e30;
 extern u32 DAT_00696e34;
 extern u8 DAT_00696fb0;
+#pragma alias DAT_00696fb0_abs DAT_00696fb0
+extern u8 DAT_00696fb0_abs[];
 extern u32 DAT_006971b0;
 extern code gFormationDispatchTable[];
 extern code gFormationActionTable[];
@@ -7418,10 +7422,10 @@ u32 func_002c3ce0(u32 param_1)
 {
   u16 result;
   u16 copyIndex;
-  u16 index;
-  int selected;
-  u16 best;
   int unit;
+  int selected;
+  u16 index;
+  u16 best;
   u8 score;
   extern u8 func_002ffcc0(u32);
 
@@ -7439,8 +7443,8 @@ u32 func_002c3ce0(u32 param_1)
     unit = *(int *)(param_1 + (index & 0xffff) * 4 + 0x88);
     score = func_002ffcc0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
     if (score < best) {
-      best = score;
       selected = unit;
+      best = score;
     }
   }
   *(int *)(param_1 + 0x38) = selected;
@@ -8614,34 +8618,38 @@ u32 func_002c65d0(int param_1)
   int iVar13 = 0;
   short asStack_20 [16];
   
-  if (*(short *)(param_1 + 0xc0) != 1) {
-    iVar13 = 0;
+  if (*(u16 *)(param_1 + 0xc0) == 1) {
+    return *(u32 *)(param_1 + 0x88);
+  }
+  iVar13 = 0;
     for (uVar6 = 0; uVar6 < *(u16 *)(param_1 + 0xc0); uVar6 = uVar6 + 1) {
-      iVar13 = iVar13 + *(int *)(&DAT_00696fb0 + uVar6 * 4);
+      iVar13 = iVar13 + *(int *)(DAT_00696fb0_abs + uVar6 * 4);
       iVar9 = *(int *)(param_1 + uVar6 * 4 + 0x88);
       psVar12 = asStack_20 + uVar6;
       *psVar12 = 0;
       uVar4 = func_002ffdf0(*(u32 *)(*(int *)(iVar9 + 0x30) + 0xa2c));
       uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar9 + 0x30) + 0xa2c));
       *psVar12 = *psVar12 + (short)(int)(100.0f - ((float)uVar5 / (float)uVar4) * 100.0f);
-      lVar8 = func_00300530(*(u32 *)(*(int *)(iVar9 + 0x30) + 0xa2c));
-      if (lVar8 == 0x40) {
+      lVar8 = func_00300530_u32(*(u32 *)(*(int *)(iVar9 + 0x30) + 0xa2c));
+      switch (lVar8) {
+      case 2:
         *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
-      }
-      else if (lVar8 == 0x20) {
-        *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
-      }
-      else if (lVar8 == 0x10) {
+        break;
+      case 4:
         *psVar12 = (short)(int)((float)(int)*psVar12 + 30.0f);
-      }
-      else if (lVar8 == 8) {
+        break;
+      case 8:
         *psVar12 = (short)(int)((float)(int)*psVar12 + 50.0f);
-      }
-      else if (lVar8 == 4) {
+        break;
+      case 0x10:
         *psVar12 = (short)(int)((float)(int)*psVar12 + 30.0f);
-      }
-      else if (lVar8 == 2) {
+        break;
+      case 0x20:
         *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
+        break;
+      case 0x40:
+        *psVar12 = (short)(int)((float)(int)*psVar12 + 20.0f);
+        break;
       }
     }
     do {
@@ -8663,16 +8671,12 @@ u32 func_002c65d0(int param_1)
     uVar11 = 0;
     uVar6 = func_002ffbc0(iVar13);
     for (uVar10 = 0; uVar10 < *(u16 *)(param_1 + 0xc0); uVar10 = uVar10 + 1) {
-      uVar11 = uVar11 + *(int *)(&DAT_00696fb0 + uVar10 * 4);
+      uVar11 = uVar11 + *(int *)(DAT_00696fb0_abs + uVar10 * 4);
       if (uVar6 < uVar11) {
         return *(u32 *)(uVar10 * 4 + param_1 + 0x88);
       }
     }
-    uVar7 = 0;
-  }
-  else {
-    uVar7 = *(u32 *)(param_1 + 0x88);
-  }
+  uVar7 = 0;
   return uVar7;
 }
 

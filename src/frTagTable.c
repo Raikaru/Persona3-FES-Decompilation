@@ -557,12 +557,12 @@ u64 FUN_003aec20(u64 unused, int context)
   u8 *cursor = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
   u8 low = cursor[0] - 1;
   u8 high;
+  int count;
   int glyph;
   char table[28];
   char tag[3];
   char *source;
   char *dest;
-  int count;
 
   if (cursor[1] == 0xff) {
     high = 0;
