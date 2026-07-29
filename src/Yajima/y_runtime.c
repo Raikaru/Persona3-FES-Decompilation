@@ -15848,6 +15848,7 @@ void FUN_00452f70(YVec3f *param_1,int param_2)
   int iVar2;
   int iVar3;
   int iVar4;
+  int columnOffset;
   u32 uVar5;
   u32 uVar6;
   u32 uVar7;
@@ -15860,11 +15861,13 @@ void FUN_00452f70(YVec3f *param_1,int param_2)
   
   iVar1 = *(int *)(param_2 + 0x3c);
   for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
+    iVar3 = uVar5 * 0x100;
     for (uVar6 = 0; (int)uVar6 < 0x10; uVar6 = uVar6 + 1) {
+      columnOffset = uVar6 * 0x10;
       iVar4 = FUN_001b9120_u32();
-      if ((*(u8 *)(uVar5 * 0x100 + iVar4 + uVar6 * 0x10 + 0x49) == 1) &&
+      if ((*(u8 *)(iVar3 + iVar4 + columnOffset + 0x49) == 1) &&
          (iVar4 = FUN_001b9120_u32(),
-         *(u8 *)(uVar5 * 0x100 + iVar4 + uVar6 * 0x10 + 0x4a) == 8)) {
+         *(u8 *)(iVar3 + iVar4 + columnOffset + 0x4a) == 8)) {
         uVar7 = uVar6;
         uVar8 = uVar5;
         goto LAB_00453278;
@@ -15875,31 +15878,31 @@ LAB_00453278:
   for (uVar5 = uVar8; (int)uVar5 < (int)(uVar8 + 2); uVar5 = uVar5 + 1) {
     iVar3 = uVar5 * 0x100;
     for (uVar6 = uVar7; (int)uVar6 < (int)(uVar7 + 2); uVar6 = uVar6 + 1) {
-      iVar4 = uVar6 * 0x10;
+      columnOffset = uVar6 * 0x10;
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(iVar4 + iVar2 + iVar3 + 0x53) & 1) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(iVar4 + iVar2 + iVar3 + -0xb6) != 8)) {
+      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 1) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + -0xb6) != 8)) {
         FUN_001bf220(&position,uVar6,uVar5 - 1);
         FUN_001bf220(&northPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = northPosition;
       }
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(iVar4 + iVar2 + iVar3 + 0x53) & 2) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(iVar4 + iVar2 + iVar3 + 0x3a) != 8)) {
+      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 2) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + 0x3a) != 8)) {
         FUN_001bf220(&position,uVar6 - 1,uVar5);
         FUN_001bf220(&westPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = westPosition;
       }
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(iVar4 + iVar2 + iVar3 + 0x53) & 4) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(iVar4 + iVar2 + iVar3 + 0x14a) != 8)) {
+      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 4) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + 0x14a) != 8)) {
         FUN_001bf220(&position,uVar6,uVar5 + 1);
         FUN_001bf220(&southPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = southPosition;
       }
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(iVar4 + iVar2 + iVar3 + 0x53) & 8) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(iVar4 + iVar2 + iVar3 + 0x5a) != 8)) {
+      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 8) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + 0x5a) != 8)) {
         FUN_001bf220(&position,uVar6 + 1,uVar5);
         FUN_001bf220(&eastPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = eastPosition;

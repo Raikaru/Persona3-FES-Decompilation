@@ -1065,6 +1065,7 @@ void FUN_0036efb0(void);
 void FUN_0036f000(long param_1);
 void FUN_0036f260(void);
 void FUN_0036f370(int param_1);
+void FUN_00350040(int param_1,u32 *param_2);
 void FUN_003722d0(u32 param_1,u32 param_2,u32 param_3,u8 *param_4);
 void FUN_0036f490(int param_1);
 void FUN_0036f4d0(void);
@@ -5668,7 +5669,7 @@ void FUN_003747a0(int param_1,int param_2,int param_3,int param_4)
 
                   }
 
-                  FUN_00350040(*(u32 *)(puVar5 + 0x82),iVar8 + 0x85c);
+                  FUN_00350040(*(u32 *)(puVar5 + 0x82),(u32 *)(iVar8 + 0x85c));
 
                   *(u32 *)(iVar8 + 0x864) = *(u32 *)(puVar5 + 0x82);
 
