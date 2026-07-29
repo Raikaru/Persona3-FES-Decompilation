@@ -1812,7 +1812,7 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
 
           }
 
-          lVar10 = (long)*(char *)(DAT_007ce3f4 + (u32)uVar3 * 2);
+          lVar10 = (int)*(char *)(DAT_007ce3f4 + (u32)uVar3 * 2);
 
           if (lVar10 == -1) {
 
@@ -1880,7 +1880,7 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
 
       if (*(char *)(iVar5 * 2 + 0x6a48d0) <= lVar12) {
 
-        lVar10 = (long)*(char *)(iVar5 * 2 + 0x6a48d1);
+        lVar10 = (int)*(char *)(iVar5 * 2 + 0x6a48d1);
 
         goto LAB_003d7790;
 
@@ -1894,7 +1894,7 @@ LAB_003d7790:
 
     iVar5 = datPersonaCountValidSkills(param_1);
 
-    lVar8 = (long)(8 - iVar5);
+    lVar8 = 8 - iVar5;
 
     if (lVar8 != 0) {
 
@@ -1928,7 +1928,7 @@ LAB_003d79d4:
 
           }
 
-          lVar12 = (long)*(char *)(DAT_007ce3f4 + (u32)uVar3 * 2);
+          lVar12 = (int)*(char *)(DAT_007ce3f4 + (u32)uVar3 * 2);
 
           if (lVar12 == -1) {
 

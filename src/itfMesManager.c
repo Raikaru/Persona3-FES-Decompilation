@@ -3331,7 +3331,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
   u32 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   u32 *puVar5;
 
@@ -4893,13 +4893,13 @@ void FUN_003a7490(u32 *param_1)
 
 {
 
-  short sVar1;
+  int sVar1;
 
   u32 uVar2;
 
   int lVar3;
 
-  short sVar4;
+  int sVar4;
 
   int iVar5;
 
@@ -4921,7 +4921,7 @@ void FUN_003a7490(u32 *param_1)
 
   uVar2 = *puVar11;
 
-  sVar4 = (short)puVar11[0x15];
+  sVar4 = puVar11[0x15] & 0xffff;
 
   if (sVar4 == 4) {
 
@@ -4941,7 +4941,7 @@ void FUN_003a7490(u32 *param_1)
 
   else if (sVar4 == 3) {
 
-    sVar4 = (short)puVar11[0x19] + -0x10;
+    sVar4 = (puVar11[0x19] & 0xffff) + -0x10;
 
     *(short *)(puVar11 + 0x19) = sVar4;
 
@@ -4989,7 +4989,7 @@ void FUN_003a7490(u32 *param_1)
 
       puVar10 = (u32 *)(iVar5 + 0x20);
 
-      for (lVar3 = 0; lVar3 < sVar1; lVar3 = (long)((int)lVar3 + 1)) {
+      for (lVar3 = 0; lVar3 < sVar1; lVar3++) {
 
         if (lVar3 == sVar4) {
 
@@ -5299,11 +5299,11 @@ u32 FUN_003a7a40(int param_1)
 
       uVar4 = *(u32 *)(param_1 + 0x50);
 
-      lVar5 = (long)*(short *)(param_1 + 0x56);
+      lVar5 = *(short *)(param_1 + 0x56);
 
       iVar3 = 0;
 
-      while ((iVar3 < 0x20 && (((uVar4 & 1) != 0 || (lVar5 = (long)((int)lVar5 + -1), -1 < lVar5))))
+      while ((iVar3 < 0x20 && (((uVar4 & 1) != 0 || (lVar5 = lVar5 - 1, -1 < lVar5))))
 
             ) {
 

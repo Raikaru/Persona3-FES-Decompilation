@@ -9884,7 +9884,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
   u32 *puVar6;
 
-  long lVar7;
+  int lVar7;
 
   int iVar8;
 
@@ -10999,7 +10999,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           case '\x02':
 
-            lVar7 = (long)FUN_003b5d10_evt_main((u16)piVar5[3]);
+            lVar7 = (int)FUN_003b5d10_evt_main((u16)piVar5[3]);
 
             if (lVar7 != 0) {
 
@@ -11049,7 +11049,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           case '\x04':
 
-            lVar7 = (long)FUN_003b5d10_evt_main((u16)piVar5[3]);
+            lVar7 = (int)FUN_003b5d10_evt_main((u16)piVar5[3]);
 
             if (lVar7 != 0) {
 
@@ -11327,7 +11327,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           if ((char)puVar9[9] == '\0') {
 
-            lVar7 = (long)FUN_003b5d10_evt_main(0x1e59);
+            lVar7 = (int)FUN_003b5d10_evt_main(0x1e59);
 
             if (lVar7 != 0) {
 

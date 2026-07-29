@@ -1309,7 +1309,7 @@ int FUN_003c9840(void)
 // FUN_003C9850 NONMATCHING
 
 
-u64 FUN_003c9850(u64 param_1,long param_2,u16 param_3,u16 param_4)
+u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
 
 
@@ -2147,7 +2147,7 @@ void FUN_003cacc0(int param_1)
   short *psVar4;
 
   int iVar5;
-  long lVar6;
+  int lVar6;
 
 
   
@@ -2240,11 +2240,11 @@ void FUN_003cacc0(int param_1)
 
     }
 
-    lVar6 = (long)(iVar5 + 1);
+    lVar6 = iVar5 + 1;
 
   }
 
-  if ((long)*(char *)(param_1 + 0xe8) == (long)iVar5) {
+  if ((int)*(char *)(param_1 + 0xe8) == iVar5) {
 
     FUN_003ca780(0,0,1.0f,1.0f,(int)asStack_10[iVar2] + iVar5 * asStack_20[iVar2],10,
 
@@ -4059,7 +4059,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   u32 uVar7;
 
-  long lVar8;
+  u32 lVar8;
 
   float *pfVar9;
 

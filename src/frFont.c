@@ -361,7 +361,7 @@ void FUN_003afc70(void)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int iVar4;
 
@@ -915,11 +915,11 @@ void FUN_003b0430(int param_1,u32 param_2)
 
   u32 lVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  u64 unaff_s3;
+  u32 unaff_s3;
 
   u8 auStack_10 [16];
 
@@ -3152,7 +3152,7 @@ u32 FUN_003b2430(void *param_1)
 
           if (lVar9 != 0) {
 
-            uVar8 = FUN_003b1920(uVar8,lVar9,1);
+            uVar8 = FUN_003b1920_typed(uVar8,lVar9,1);
 
           }
 
