@@ -236,7 +236,7 @@ static inline s32 campStatusClampFade(s32 fade)
     return fade;
 }
 
-static void campStatusDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
+static inline void campStatusDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
 {
     FUN_001120a0(2);
     campStatusDrawSprite4Call(x, y, alpha, digit);
@@ -843,7 +843,7 @@ typedef s32 (*CampStatusRawSpriteFn)(void* parent, void* resource,
                                      s32 frame, u32 alpha, f32 x, f32 y,
                                      f32 scale);
 
-static void campStatusDrawSprite(void* resource, s32 frame, f32 x, f32 y,
+static inline void campStatusDrawSprite(void* resource, s32 frame, f32 x, f32 y,
                                  f32 scale, s32 alpha)
 {
     CampStatusRawSpriteFn draw;

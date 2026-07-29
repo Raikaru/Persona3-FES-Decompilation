@@ -314,7 +314,7 @@ static inline void* campMainResource(const void* resources, s32 index)
     return ((void* const*)resources)[index];
 }
 
-static void campMainDrawSprite(const CampMainDrawItem* item, void* resource,
+static inline void campMainDrawSprite(const CampMainDrawItem* item, void* resource,
                                s32 frame, f32 x, f32 y)
 {
     FUN_001159f0(NULL, resource, frame, (u8)item->alpha, x, y,
@@ -2775,7 +2775,7 @@ extern void FUN_001392D0(f32 alpha, u64 position, s32 textAlpha, s32 resource);
 extern void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha);
 extern void FUN_001140D0();
 extern void FUN_001159F0();
-static void campDrawSprite(void* resource, s32 frame, u32 alpha, f32 x, f32 y, f32 scale)
+static inline void campDrawSprite(void* resource, s32 frame, u32 alpha, f32 x, f32 y, f32 scale)
 {
     hCampMainDrawSprite7(NULL, resource, frame, alpha, x, y, scale);
 }

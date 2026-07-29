@@ -474,41 +474,99 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
             field = (u8*)K_Field_Get_B();
             *(s16*)(field + 0x1060 + count * 4) = (s16)index;
             field = (u8*)K_Field_Get_C();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_D();
             *(s16*)(field + 0x1062 + count * 4) = 18;
-            field = (u8*)K_Field_Get_D();
-            *(s16*)(field + 0x1060 + (count + 1) * 4) = (s16)index;
             field = (u8*)K_Field_Get_E();
-            *(s16*)(field + 0x1062 + (count + 1) * 4) = 8;
+            *(u32*)(field + 0x105c) += 1;
+
             field = (u8*)K_Field_Get_A();
-            *(s16*)(field + 0x1060 + (count + 2) * 4) = (s16)index;
+            count = *(u32*)(field + 0x105c);
             field = (u8*)K_Field_Get_B();
-            *(s16*)(field + 0x1062 + (count + 2) * 4) = 7;
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
             field = (u8*)K_Field_Get_C();
-            *(s16*)(field + 0x1060 + (count + 3) * 4) = (s16)index;
+            count = *(u32*)(field + 0x105c);
             field = (u8*)K_Field_Get_D();
-            *(s16*)(field + 0x1062 + (count + 3) * 4) = 6;
+            *(s16*)(field + 0x1062 + count * 4) = 8;
             field = (u8*)K_Field_Get_E();
-            *(s16*)(field + 0x1060 + (count + 4) * 4) = (s16)index;
+            *(u32*)(field + 0x105c) += 1;
+
             field = (u8*)K_Field_Get_A();
-            *(s16*)(field + 0x1062 + (count + 4) * 4) = 5;
+            count = *(u32*)(field + 0x105c);
             field = (u8*)K_Field_Get_B();
-            *(s16*)(field + 0x1060 + (count + 5) * 4) = (s16)index;
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
             field = (u8*)K_Field_Get_C();
-            *(s16*)(field + 0x1062 + (count + 5) * 4) = 4;
+            count = *(u32*)(field + 0x105c);
             field = (u8*)K_Field_Get_D();
-            *(s16*)(field + 0x1060 + (count + 6) * 4) = (s16)index;
+            *(s16*)(field + 0x1062 + count * 4) = 7;
             field = (u8*)K_Field_Get_E();
-            *(s16*)(field + 0x1062 + (count + 6) * 4) = 3;
+            *(u32*)(field + 0x105c) += 1;
+
             field = (u8*)K_Field_Get_A();
-            *(s16*)(field + 0x1060 + (count + 7) * 4) = (s16)index;
+            count = *(u32*)(field + 0x105c);
             field = (u8*)K_Field_Get_B();
-            *(s16*)(field + 0x1062 + (count + 7) * 4) = 2;
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
             field = (u8*)K_Field_Get_C();
-            *(s16*)(field + 0x1060 + (count + 8) * 4) = (s16)index;
+            count = *(u32*)(field + 0x105c);
             field = (u8*)K_Field_Get_D();
-            *(s16*)(field + 0x1062 + (count + 8) * 4) = 1;
+            *(s16*)(field + 0x1062 + count * 4) = 6;
             field = (u8*)K_Field_Get_E();
-            *(u32*)(field + 0x105c) = count + 9;
+            *(u32*)(field + 0x105c) += 1;
+
+            field = (u8*)K_Field_Get_A();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_B();
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
+            field = (u8*)K_Field_Get_C();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_D();
+            *(s16*)(field + 0x1062 + count * 4) = 5;
+            field = (u8*)K_Field_Get_E();
+            *(u32*)(field + 0x105c) += 1;
+
+            field = (u8*)K_Field_Get_A();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_B();
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
+            field = (u8*)K_Field_Get_C();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_D();
+            *(s16*)(field + 0x1062 + count * 4) = 4;
+            field = (u8*)K_Field_Get_E();
+            *(u32*)(field + 0x105c) += 1;
+
+            field = (u8*)K_Field_Get_A();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_B();
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
+            field = (u8*)K_Field_Get_C();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_D();
+            *(s16*)(field + 0x1062 + count * 4) = 3;
+            field = (u8*)K_Field_Get_E();
+            *(u32*)(field + 0x105c) += 1;
+
+            field = (u8*)K_Field_Get_A();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_B();
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
+            field = (u8*)K_Field_Get_C();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_D();
+            *(s16*)(field + 0x1062 + count * 4) = 2;
+            field = (u8*)K_Field_Get_E();
+            *(u32*)(field + 0x105c) += 1;
+
+            field = (u8*)K_Field_Get_A();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_B();
+            *(s16*)(field + 0x1060 + count * 4) = (s16)index;
+            field = (u8*)K_Field_Get_C();
+            count = *(u32*)(field + 0x105c);
+            field = (u8*)K_Field_Get_D();
+            *(s16*)(field + 0x1062 + count * 4) = 1;
+            field = (u8*)K_Field_Get_E();
+            *(u32*)(field + 0x105c) += 1;
         }
         else
         {
@@ -540,9 +598,7 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
         field = (u8*)K_Field_Get_D();
         *(s16*)(field + 0x1062 + count * 4) = minorId;
         field = (u8*)K_Field_Get_E();
-        count = *(u32*)(field + 0x105c);
-        field = (u8*)K_Field_Get_A();
-        *(u32*)(field + 0x105c) = count + 1;
+        *(u32*)(field + 0x105c) += 1;
     }
     if (((majorId >= 21) && (majorId < 29) && (minorId == 0)) ||
         ((majorId >= 41) && (majorId < 49) && (minorId == 0)) ||

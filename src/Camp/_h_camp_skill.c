@@ -251,7 +251,7 @@ extern void FUN_003b2cb0_typed(f32 depth, s32 x, s32 y, s32 color, s32 font,
 extern void FUN_003c7e20_typed(f32 depth, s32 x, s32 y, s32 color, s32 style,
                                 s32 font, s32 alignment, u32 value);
 
-static void campSkillDrawSprite(const CampSkillRecord* record, void* atlas,
+static inline void campSkillDrawSprite(const CampSkillRecord* record, void* atlas,
                                 s32 tile, f32 x, f32 y)
 {
     FUN_001159f0_typed(NULL, atlas, tile, record->alpha,
@@ -295,14 +295,14 @@ static void campSkillDrawNumberColor(const CampSkillRecord* record,
                  (s32)record->alpha, value, digits);
 }
 
-static void campSkillDrawNumber(const CampSkillRecord* record, void* atlas,
+static inline void campSkillDrawNumber(const CampSkillRecord* record, void* atlas,
                                 f32 x, f32 y, s32 value, s32 digits)
 {
     campSkillDrawNumberColor(record, atlas, x, y, 0xff, 0xff, 0xff, value,
                              digits);
 }
 
-static s32 campSkillDrawColor(const CampSkillRecord* record)
+static inline s32 campSkillDrawColor(const CampSkillRecord* record)
 {
     return (s32)((0xffU - record->alpha) | 0xffffff00U);
 }

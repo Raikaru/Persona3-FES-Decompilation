@@ -299,7 +299,7 @@ extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
                           s32 startFrame, s32 endFrame);
 extern void qsort(void* base, u32 count, u32 width,
                   int (*compare)(const void*, const void*));
-static void campEquipmentDrawFixed(f32 scale, u32 alpha, s32 frame,
+static inline void campEquipmentDrawFixed(f32 scale, u32 alpha, s32 frame,
                                    f32 x, f32 y)
 {
     campDrawSprite((void*)(u32)scale, DAT_00833A50[0], frame, alpha,
@@ -320,7 +320,7 @@ static void campEquipmentDrawAlt(f32 scale, u32 alpha, s32 frame,
                       0x20, 0x43, 0x78, x, y, scale);
 }
 
-static void campEquipmentDrawDigit(f32 scale, u32 alpha, s32 font,
+static inline void campEquipmentDrawDigit(f32 scale, u32 alpha, s32 font,
                                    s32 frame, f32 x, f32 y)
 {
     campDrawSprite((void*)(u32)scale, H_Maestro_001120a0(font), frame, alpha,

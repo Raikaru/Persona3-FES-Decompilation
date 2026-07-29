@@ -3769,7 +3769,7 @@ static inline u64 clndPackPosition(CalendarPackedPosition* position, f32 x, f32 
     return *(u64*)position;
 }
 
-static f32 clndPackedX(u64 position)
+static inline f32 clndPackedX(u64 position)
 {
     union
     {
@@ -3781,7 +3781,7 @@ static f32 clndPackedX(u64 position)
     return bits.value;
 }
 
-static f32 clndPackedY(u64 position)
+static inline f32 clndPackedY(u64 position)
 {
     union
     {
