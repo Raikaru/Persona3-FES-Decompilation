@@ -357,6 +357,9 @@ extern u64 func_0035f060();
 extern u64 func_0035f160();
 extern u64 func_003a4220();
 extern u64 func_003b2cb0();
+#pragma alias func_003b2cb0_typed func_003b2cb0
+extern void func_003b2cb0_typed(f32 scale, s32 x, s32 y, u32 color, u32 font,
+                                u32 align, const void *text, u32 width, u32 flags);
 extern u64 func_0045a430();
 extern u64 func_0045af40();
 extern u64 func_0045af70();
@@ -3846,6 +3849,12 @@ void btlFormationInit050aPacket(void* work)
 u32 func_002bd8e0(int *param_1)
 
 {
+  typedef struct {
+    u32 words[11];
+    u16 count;
+    u16 current;
+  } FormationPacketWork;
+  FormationPacketWork *work = (FormationPacketWork *)param_1;
   char cVar1 = 0;
   bool bVar2 = 0;
   u16 uVar3 = 0;
@@ -3865,13 +3874,7 @@ u32 func_002bd8e0(int *param_1)
     u32 uStack_8;
   } packet;
   
-  if (param_1[0xc] == 0) {
-    lVar5 = func_001feb50(*(u32 *)(param_1[1] + 0xa8));
-    if ((lVar5 == 0) || ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x800) == 0)) {
-      return 1;
-    }
-  }
-  else {
+  if (param_1[0xc] != 0) {
     uVar7 = 0;
     if (((*(u16 *)(param_1 + 10) & 4) == 0) &&
        ((((param_1[2] != 0 || (param_1[3] != 0)) || (param_1[4] != 0)) ||
@@ -3895,7 +3898,7 @@ u32 func_002bd8e0(int *param_1)
     else {
       iVar8 = 0;
     }
-    if ((u32)*(u16 *)((int)param_1 + 0x2e) == *(u16 *)(param_1 + 0xb) + 1) {
+    if (work->current == *(u16 *)(param_1 + 0xb) + 1) {
       if (((*(u16 *)((int)param_1 + 0x2a) & 2) != 0) && (!bVar2)) {
         uVar7 = uVar7 | 1;
       }
@@ -3939,12 +3942,17 @@ u32 func_002bd8e0(int *param_1)
     packet.uStack_14 = *(u32 *)(*param_1 + 0xa8);
     packet.uStack_10 = *(u32 *)(param_1[1] + 0xa8);
     packet.uStack_8 = (u32)*(u16 *)(param_1 + 0xb);
-    packet.uStack_c = (u32)*(u16 *)((int)param_1 + 0x2e);
+    packet.uStack_c = work->current;
     packet.iStack_20 = iVar9;
     packet.iStack_1c = iVar8;
     packet.uStack_18 = uVar7;
     func_001fe650(&packet);
     param_1[0xc] = 0;
+    return 0;
+  }
+  lVar5 = func_001feb50(*(u32 *)(param_1[1] + 0xa8));
+  if ((lVar5 == 0) || ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x800) == 0)) {
+    return 1;
   }
   return 0;
 }
@@ -4218,18 +4226,18 @@ void func_002be390(short *param_1,int param_2,int param_3)
                (float)((int)param_3 + (int)param_1[1] + -2),
                (float)(param_1[4] * 0x12 + (int)param_1[4] + 4),(float)(param_1[5] * 0x12 + 4),0,0,
                0xffffffffc0c0c0c0,0);
-  sVar1 = *param_1;
+  sVar1 = *param_1 + param_2;
   iVar3 = (int)param_1[1] + (int)param_3 + -8;
   sVar2 = param_1[2];
   iVar4 = sVar2 * 4 + 0x696d90;
   for (sVar6 = 0; sVar5 = (short)iVar3, sVar6 < param_1[5]; sVar6 = sVar6 + 1) {
     iVar3 = (int)sVar6;
     if ((int)param_1[3] != (int)(sVar2 + iVar3)) {
-      func_003b2cb0(0,sVar1 + param_2,sVar5,0xffffffffffffffff,0,2,*(u32 *)(iVar4 + iVar3 * 4)
+      func_003b2cb0_typed(0.0f,sVar1,sVar5,0xffffffff,0,2,*(void **)(iVar4 + iVar3 * 4)
                    ,0,0);
     }
     else {
-      func_003b2cb0(0,sVar1 + param_2,sVar5,0xffffffffffffffff,1,2,*(u32 *)(iVar4 + iVar3 * 4)
+      func_003b2cb0_typed(0.0f,sVar1,sVar5,0xffffffff,1,2,*(void **)(iVar4 + iVar3 * 4)
                    ,0,0);
     }
     iVar3 = sVar5 + 0x12;
@@ -4429,11 +4437,11 @@ void func_002bea80(short *param_1,short param_2,short param_3)
   for (sVar8 = 0; sVar7 = (short)iVar4, (long)sVar8 < (long)(uVar6 & 0xffff); sVar8 = sVar8 + 1) {
     sVar5 = sVar2 + 0xfa1 + sVar8;
     if ((long)param_1[3] == (long)((int)sVar2 + (int)sVar8)) {
-      func_003b2cb0(0,sVar1 + param_2,sVar7,0xffffffffffffffff,1,2,
+      func_003b2cb0_typed(0.0f,sVar1 + param_2,sVar7,0xffffffff,1,2,
                     func_00171110(sVar5,0),0,0);
     }
     else {
-      func_003b2cb0(0,sVar1 + param_2,sVar7,0xffffffffffffffff,0,2,
+      func_003b2cb0_typed(0.0f,sVar1 + param_2,sVar7,0xffffffff,0,2,
                     func_00171110(sVar5,0),0,0);
     }
     iVar4 = sVar7 + 0x12;

@@ -125,49 +125,49 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
 u16 datCalcGetMaxHp(DatUnit* unit)
 {
     s32 hp;
-    s32 bonus;
-    u16 baseHp;
+    s32 result;
+    s32 baseHp;
+    u16 rawBaseHp;
     u16 pcId;
+    hp = 0;
     pcId = unit->id;
-    bonus = 0;
 
     if (unit->flags & UNIT_FLAG_ENEMY)
     {
         K_ASSERT(pcId < 0x150, 169);
-        baseHp = D_007CE410[pcId].hp;
+        rawBaseHp = D_007CE410[pcId].hp;
     }
     else
     {
         K_ASSERT(pcId < PC_MAX, 172);
-        baseHp = func_0016cc00((s16)pcId);
+        rawBaseHp = func_0016cc00((s16)pcId);
     }
+    baseHp = rawBaseHp;
 
-    hp = baseHp;
     if (datCalcHasSkill(unit, 0x219))
     {
-        bonus += (baseHp * 10) / 100;
+        hp += (baseHp * 10) / 100;
     }
     if (datCalcHasSkill(unit, 0x21a))
     {
-        bonus += (baseHp * 20) / 100;
+        hp += (baseHp * 20) / 100;
     }
     if (datCalcHasSkill(unit, 0x21b))
     {
-        bonus += (baseHp * 30) / 100;
+        hp += (baseHp * 30) / 100;
     }
     if (datCalcHasSkill(unit, 0x26c))
     {
-        bonus += (baseHp * 50) / 100;
+        hp += (baseHp * 50) / 100;
     }
     if (datCalcHasSkill(unit, 0x237))
     {
-        bonus += baseHp;
+        hp += baseHp;
     }
     if (datCalcHasSkill(unit, 0x238))
     {
-        bonus -= (baseHp * 50) / 100;
+        hp -= (baseHp * 50) / 100;
     }
-    hp += bonus;
 
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1a) * 10;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1b) * 20;
@@ -175,13 +175,14 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1d) * 40;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1e) * 50;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x8e) * 100;
+    result = hp + baseHp;
 
-    if (!(unit->flags & UNIT_FLAG_ENEMY) && hp >= 1000)
+    if (!(unit->flags & UNIT_FLAG_ENEMY) && result >= 1000)
     {
-        hp = 999;
+        result = 999;
     }
 
-    return (u16)hp;
+    return (u16)result;
 }
 
 // FUN_003004f0

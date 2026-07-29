@@ -65,6 +65,23 @@ typedef struct FclMisc9570Layout
     s32 sizeTable[8];
     FclMisc9570SpecialValues specialValues;
 } FclMisc9570Layout;
+typedef struct FclMisc9850Work
+{
+    s32 facility;
+    s32 active;
+    u8 reserved08[4];
+    s16 width;
+    s16 height;
+    u8 reserved10[8];
+    s32 status;
+    u8 reserved1c[0xa8];
+    s32 drawHandle;
+    u8 reservedc8[4];
+    u32 battlePackage;
+    u8 reservedd0[0xc];
+    u32 initialData[3];
+    u8 reservede8[4];
+} FclMisc9850Work;
 #pragma alias fclMiscDrawStatusCall FUN_00133180
 extern void fclMiscDrawStatusCall(u64 position, f32 alpha,
                                    void *persona, void *currentStats, s32 fade);
@@ -1308,7 +1325,7 @@ int FUN_003c9840(void)
 // FUN_003C9850 NONMATCHING
 
 
-u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
+u32 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
 
 
@@ -1325,6 +1342,8 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
   u32 *puVar5;
 
   int *piVar7;
+
+  FclMisc9850Work *work;
 
   int iVar4;
 
@@ -1384,35 +1403,35 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   FUN_00521408(uVar2,0,0xec);
 
-  piVar7 = (int *)uVar2;
+  work = (FclMisc9850Work *)uVar2;
 
-  piVar7[1] = 1;
+  work->active = 1;
 
   iVar4 = (int)param_2;
 
-  *piVar7 = iVar4;
+  work->facility = iVar4;
 
-  piVar7[0x33] = aiStack_20[iVar4];
+  work->battlePackage = aiStack_20[iVar4];
 
-  FUN_00521250(piVar7 + 0x37,auStack_60 + iVar4 * 3,0xc);
+  FUN_00521250(work->initialData,auStack_60 + iVar4 * 3,0xc);
 
-  *(u16 *)(piVar7 + 3) = param_3;
+  work->width = param_3;
 
-  *(u16 *)((int)piVar7 + 0xe) = param_4;
+  work->height = param_4;
 
-  if ((short)piVar7[3] < 1) {
+  if (work->width < 1) {
 
-    *(u16 *)(piVar7 + 3) = 1;
-
-  }
-
-  if (*(short *)((int)piVar7 + 0xe) < 1) {
-
-    *(u16 *)((int)piVar7 + 0xe) = 1;
+    work->width = 1;
 
   }
 
-  piVar7[6] = -1;
+  if (work->height < 1) {
+
+    work->height = 1;
+
+  }
+
+  work->status = -1;
 
   uVar3 = FUN_00194b20(param_1,fclMiscTaskDescriptor0,10,fclMiscTaskUpdateCallback,fclMiscTaskDestroyCallback,uVar2);
 
@@ -1422,7 +1441,7 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   iVar4 = FUN_001339a0_f32(0.0f,uVar3,0x1488,0,-1);
 
-  piVar7[0x31] = iVar4;
+  work->drawHandle = iVar4;
 
   FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x67c);
 

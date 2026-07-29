@@ -95,6 +95,8 @@ s32 clndFindAndExecSiteibiEvents();
 u32 func_0017db40(s16 daysSinceApr5);
 #pragma alias clndGetTimeSigned datGetTime
 extern s16 clndGetTimeSigned(void);
+#pragma alias clndIsHolidayOrSunday_u32 clndIsHolidayOrSunday
+extern u32 clndIsHolidayOrSunday_u32(void);
 KwlnTask* func_0017fc70(KwlnTask* clndTask);
 KwlnTask* func_00180a20(KwlnTask* clndTask);
 KwlnTask* func_00180c40(KwlnTask* clndTask);
@@ -3189,12 +3191,12 @@ void func_00183be0(void* resource,
                    f32 baseX,
                    f32 baseY)
 {
-    s32 days;
-    s32 weekday;
-    s32 weekdayFrame;
     u32 red;
     u32 green;
     u32 blue;
+    s32 weekday;
+    s32 days;
+    void* unused;
 
     if (alpha < 0x28)
     {
@@ -3202,23 +3204,23 @@ void func_00183be0(void* resource,
     }
     if (month >= 10)
     {
-        func_00115bc0(NULL, resource, 0x24, alpha & 0xff,
+        func_00115bc0(unused, resource, 0x24, alpha & 0xff,
                       0, 0x0e, 2,
                       baseX + 515.0f, baseY + 15.0f, 50.0f);
     }
-    func_00115bc0(NULL, resource, (month % 10) + 0x23, alpha & 0xff,
+    func_00115bc0(unused, resource, (month % 10) + 0x23, alpha & 0xff,
                   0, 0x0e, 2,
                   baseX + 532.0f, baseY + 15.0f, 50.0f);
-    func_00115bc0(NULL, resource, 0x2d, alpha & 0xff,
+    func_00115bc0(unused, resource, 0x2d, alpha & 0xff,
                   0, 0x0e, 2,
                   baseX + 548.0f, baseY + 15.0f, 50.0f);
     if (day >= 10)
     {
-        func_00115bc0(NULL, resource, day / 10 + 0x23, alpha & 0xff,
+        func_00115bc0(unused, resource, day / 10 + 0x23, alpha & 0xff,
                       0, 0x0e, 2,
                       baseX + 557.0f, baseY + 15.0f, 50.0f);
     }
-    func_00115bc0(NULL, resource, day % 10 + 0x23, alpha & 0xff,
+    func_00115bc0(unused, resource, day % 10 + 0x23, alpha & 0xff,
                   0, 0x0e, 2,
                   baseX + 574.0f, baseY + 15.0f, 50.0f);
 
@@ -3244,16 +3246,16 @@ void func_00183be0(void* resource,
     weekday = clndGetWeekDay(days);
     switch (weekday)
     {
-        case 0: weekdayFrame = 0x22; break;
-        case 1: weekdayFrame = 0x1c; break;
-        case 2: weekdayFrame = 0x1d; break;
-        case 3: weekdayFrame = 0x1e; break;
-        case 4: weekdayFrame = 0x1f; break;
-        case 5: weekdayFrame = 0x20; break;
-        case 6: weekdayFrame = 0x21; break;
-        default: return;
+        case 0: weekday = 0x22; break;
+        case 1: weekday = 0x1c; break;
+        case 2: weekday = 0x1d; break;
+        case 3: weekday = 0x1e; break;
+        case 4: weekday = 0x1f; break;
+        case 5: weekday = 0x20; break;
+        case 6: weekday = 0x21; break;
+        default: break;
     }
-    func_00115bc0(NULL, resource, weekdayFrame, alpha & 0xff,
+    func_00115bc0(unused, resource, weekday, alpha & 0xff,
                   red, green, blue,
                   baseX + 592.0f, baseY + 13.0f, 50.0f);
 }
@@ -4619,11 +4621,25 @@ KwlnTask* func_00186960(KwlnTask* parent, s32 currentValue, s32 targetValue)
 // FUN_00186A40 NONMATCHING
 void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
 {
+    union
+    {
+        u64 value;
+        struct
+        {
+            f32 x;
+            f32 y;
+        } coords;
+    } packed;
     s32 tile;
     void* unused;
+    f32 x;
+    f32 y;
 
+    packed.value = position;
     tile = 0;
-    if (clndIsHolidayOrSunday() == true && selection >= 2 && selection <= 5)
+    x = packed.coords.x + 207.0f;
+    y = packed.coords.y + 183.0f;
+    if (clndIsHolidayOrSunday_u32() == true && selection >= 2 && selection <= 5)
     {
         tile = 7;
     }
@@ -4640,15 +4656,15 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
             case 6: tile = 6; break;
             case 7: tile = 8; break;
             case 8: tile = 0; break;
-            default: tile = 0; break;
+            default: break;
         }
     }
     func_001159f0(unused,
                   resource,
                   tile,
                   alpha & 0xff,
-                  clndPackedX(position) + 207.0f,
-                  clndPackedY(position) + 183.0f,
+                  x,
+                  y,
                   50.0f);
 }
 
@@ -4673,7 +4689,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
     }
     packed.value = position;
     tile = 0;
-    if (clndIsHolidayOrSunday() == true && selection >= 2 && selection <= 5)
+    if (clndIsHolidayOrSunday_u32() == true && selection >= 2 && selection <= 5)
     {
         tile = 0x11;
     }
@@ -4690,7 +4706,7 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
             case 6: tile = 0x10; break;
             case 7: tile = 0x12; break;
             case 8: tile = 0; break;
-            default: tile = 0; break;
+            default: break;
         }
     }
     func_001159f0(unused,

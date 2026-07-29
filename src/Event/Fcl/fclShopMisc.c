@@ -234,7 +234,9 @@ short FUN_003f0830(int param_1);
 short FUN_003f0ac0(int param_1);
 long FUN_003f0d60(int param_1,u64 param_2);
 u32 FUN_003f0ec0(u16 param_1);
-u16 FUN_003f10b0(int param_1,u16 param_2);
+#pragma alias FUN_003f0ec0_s16 FUN_003f0ec0
+u32 FUN_003f0ec0_s16(s16 param_1);
+s16 FUN_003f10b0(int param_1,u16 param_2);
 short FUN_003f12a0(int param_1,int param_2);
 u64 FUN_003f1470(int param_1);
 void FUN_003f1520(int param_1);
@@ -1040,8 +1042,8 @@ int FUN_003f00d0(int *param_1,int param_2,int *param_3)
         *param_3 = iVar4;
         return iVar5;
       }
-      iVar5 = iVar5 + 0x14;
     }
+    iVar5 = iVar5 + 0x14;
     iVar4 = iVar4 + 1;
   } while( 1 );
 
@@ -1692,12 +1694,11 @@ u32 FUN_003f0ec0(u16 param_1)
 // FUN_003F10B0 NONMATCHING
 
 
-u16 FUN_003f10b0(int param_1,u16 param_2)
+s16 FUN_003f10b0(int param_1,u16 param_2)
 {
   u8 *shopData;
   u8 *shopEntry;
   char socialLevel;
-  u16 result;
   int level;
   int entry;
   int socialLink;
@@ -1710,7 +1711,7 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
     socialLink = 3;
     break;
   default:
-    return 0xffff;
+    return -1;
   }
   if ((param_1 < 0) || (param_1 >= 9)) {
     K_Assert((const char *)DAT_006aede8,0xb9);
@@ -1743,13 +1744,13 @@ u16 FUN_003f10b0(int param_1,u16 param_2)
       entry = *(int *)(shopData + 8) + socialLevel * 0x20;
     }
   }
-  if ((entry == 0) || (level = FUN_003f0ec0(param_2), level == 0)) {
-    result = 0xffff;
+  if (entry != 0) {
+    level = FUN_003f0ec0_s16((s16)param_2);
+    if (level != 0) {
+      return *(s16 *)(entry + level * 2 + 0xe);
+    }
   }
-  else {
-    result = *(u16 *)(entry + level * 2 + 0xe);
-  }
-  return result;
+  return -1;
 }
 
 // FUN_003F12A0 NONMATCHING

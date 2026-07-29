@@ -3852,50 +3852,66 @@ u32 FUN_00431670(int param_1,char param_2,u32 param_3)
 u32 FUN_00431880(int param_1)
 
 {
+  typedef struct {
+    u8 pad00[4];
+    s32 mode;
+    u8 pad08[0xc8];
+    RwV3d position;
+    s8 mapX;
+    s8 mapY;
+    u8 padDe[0x1a];
+    u8 savedX;
+    u8 savedY;
+    u8 padFa[0xf];
+    u8 counters[0x100];
+  } YRuntimeMapWork;
+  YRuntimeMapWork *work;
   char cVar1;
   char cVar2;
-  int iVar3;
   u8 uVar4;
   int iVar5;
   
-  iVar3 = *(int *)(param_1 + 0x3c);
-  uVar4 = FUN_0044f120(*(RwV3d *)(iVar3 + 0xd0));
-  *(u8 *)(iVar3 + 0xdc) = uVar4;
-  uVar4 = FUN_0044f170(*(RwV3d *)(iVar3 + 0xd0));
-  *(u8 *)(iVar3 + 0xdd) = uVar4;
-  *(u8 *)(iVar3 + 0xf8) = *(u8 *)(iVar3 + 0xdc);
-  *(u8 *)(iVar3 + 0xf9) = *(u8 *)(iVar3 + 0xdd);
-  iVar5 = *(char *)(iVar3 + 0xdd) * 0x10 + *(char *)(iVar3 + 0xdc) + iVar3;
-  *(char *)(iVar5 + 0x109) = *(char *)(iVar5 + 0x109) + '\x01';
-  if (*(int *)(iVar3 + 4) == 2) {
-    cVar1 = *(char *)(iVar3 + 0xdd);
-    cVar2 = *(char *)(iVar3 + 0xdc);
-    if (((u32)*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x109) % 3 == 0) &&
-       (iVar5 = FUN_001b9120_u32(), *(char *)(iVar5 + cVar1 * 0x100 + cVar2 * 0x10 + 0x4a) == '\x03')) {
-      return 1;
+  work = *(YRuntimeMapWork **)(param_1 + 0x3c);
+  uVar4 = FUN_0044f120(work->position);
+  work->mapX = uVar4;
+  uVar4 = FUN_0044f170(work->position);
+  work->mapY = uVar4;
+  work->savedX = work->mapX;
+  work->savedY = work->mapY;
+  work->counters[work->mapY * 0x10 + work->mapX]++;
+  if (work->mode == 2) {
+    cVar1 = work->mapY;
+    cVar2 = work->mapX;
+    uVar4 = work->counters[cVar1 * 0x10 + cVar2];
+    if (uVar4 % 3 == 0) {
+      iVar5 = FUN_001b9120_u32();
+      if (*(char *)(iVar5 + cVar1 * 0x100 + cVar2 * 0x10 + 0x4a) == '\x03') {
+        return 1;
+      }
     }
-    if ((*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x109) & 3) != 0) {
+    if ((work->counters[work->mapY * 0x10 + work->mapX] & 3) != 0) {
       return 0;
     }
     iVar5 = FUN_001b9120_u32();
-    cVar1 = *(char *)(iVar5 + *(char *)(iVar3 + 0xdd) * 0x100 + *(char *)(iVar3 + 0xdc) * 0x10 +
-                     0x4a);
+    uVar4 = *(u8 *)(iVar5 + work->mapY * 0x100 + work->mapX * 0x10 + 0x4a);
   }
   else {
-    cVar1 = *(char *)(iVar3 + 0xdd);
-    cVar2 = *(char *)(iVar3 + 0xdc);
-    if (((u32)*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x109) % 5 == 0) &&
-       (iVar5 = FUN_001b9120_u32(), *(char *)(iVar5 + cVar1 * 0x100 + cVar2 * 0x10 + 0x4a) == '\x03')) {
-      return 1;
+    cVar1 = work->mapY;
+    cVar2 = work->mapX;
+    uVar4 = work->counters[cVar1 * 0x10 + cVar2];
+    if (uVar4 % 5 == 0) {
+      iVar5 = FUN_001b9120_u32();
+      if (*(char *)(iVar5 + cVar1 * 0x100 + cVar2 * 0x10 + 0x4a) == '\x03') {
+        return 1;
+      }
     }
-    if ((u32)*(u8 *)(cVar1 * 0x10 + cVar2 + iVar3 + 0x109) % 9 != 0) {
+    if (work->counters[work->mapY * 0x10 + work->mapX] % 9 != 0) {
       return 0;
     }
     iVar5 = FUN_001b9120_u32();
-    cVar1 = *(char *)(iVar5 + *(char *)(iVar3 + 0xdd) * 0x100 + *(char *)(iVar3 + 0xdc) * 0x10 +
-                     0x4a);
+    uVar4 = *(u8 *)(iVar5 + work->mapY * 0x100 + work->mapX * 0x10 + 0x4a);
   }
-  if (cVar1 != '\x01') {
+  if (uVar4 != 1) {
     return 0;
   }
   return 1;
@@ -16654,39 +16670,45 @@ u8 FUN_00454d00(RwV3d param_1)
   int iVar1;
   int iVar2;
   int iVar3;
+  int rowOffset;
+  int columnOffset;
   float fVar4;
   float fVar5;
+  RwV3d gridPosition;
+  RwV3d localPosition;
   
-  iVar2 = (int)(char)(int)((param_1.x + 400.0f) / 800.0f);
-  fVar5 = ((param_1.x + 0.0f) - (float)iVar2 * 800.0f) + 400.0f;
-  iVar3 = (int)(char)(int)((param_1.z + 400.0f) / 800.0f);
-  fVar4 = ((param_1.z + 0.0f) - (float)iVar3 * 800.0f) + 400.0f;
-  iVar3 = iVar3 * 0x100;
-  iVar2 = iVar2 * 0x10;
+  gridPosition = param_1;
+  iVar2 = (int)(char)(int)((gridPosition.x + 400.0f) / 800.0f);
+  localPosition = gridPosition;
+  fVar5 = ((localPosition.x + 0.0f) - (float)iVar2 * 800.0f) + 400.0f;
+  iVar3 = (int)(char)(int)((gridPosition.z + 400.0f) / 800.0f);
+  fVar4 = ((localPosition.z + 0.0f) - (float)iVar3 * 800.0f) + 400.0f;
+  rowOffset = iVar3 * 0x100;
+  columnOffset = iVar2 * 0x10;
   iVar1 = FUN_001b9120_u32();
-  if (*(char *)(iVar1 + iVar3 + iVar2 + 0x48) != '\x01') {
+  if (*(u8 *)(iVar1 + rowOffset + columnOffset + 0x48) != 1) {
     return 0;
   }
   if (fVar4 < 150.0f) {
     if ((150.0f <= fVar5) && (fVar5 <= 650.0f)) {
       iVar1 = FUN_001b9120_u32();
-      return (*(u8 *)(iVar1 + iVar3 + iVar2 + 0x53) & 1) != 0;
+      return (*(u8 *)(iVar1 + rowOffset + columnOffset + 0x53) & 1) != 0;
     }
   }
   else if (650.0f < fVar4) {
     if ((150.0f <= fVar5) && (fVar5 <= 650.0f)) {
       iVar1 = FUN_001b9120_u32();
-      return (*(u8 *)(iVar1 + iVar3 + iVar2 + 0x53) & 4) != 0;
+      return (*(u8 *)(iVar1 + rowOffset + columnOffset + 0x53) & 4) != 0;
     }
   }
   else {
     if (fVar5 < 150.0f) {
       iVar1 = FUN_001b9120_u32();
-      return (*(u8 *)(iVar1 + iVar3 + iVar2 + 0x53) & 2) != 0;
+      return (*(u8 *)(iVar1 + rowOffset + columnOffset + 0x53) & 2) != 0;
     }
     if (650.0f < fVar5) {
       iVar1 = FUN_001b9120_u32();
-      return (*(u8 *)(iVar1 + iVar3 + iVar2 + 0x53) & 8) != 0;
+      return (*(u8 *)(iVar1 + rowOffset + columnOffset + 0x53) & 8) != 0;
     }
   }
   return 1;
