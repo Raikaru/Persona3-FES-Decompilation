@@ -259,6 +259,7 @@ void FUN_0029a570(void)
     } while (swapped != 0);
 }
 
+#pragma opt_loop_invariants on
 /* Removing this worsens FUN_0029a690 (nd5 -> nd109) - measured W161. */
 // The residual is limited to MWCCPS2 register coloring/scheduling; logical control flow and object size match retail.
 // FUN_0029a690 NONMATCHING
@@ -311,6 +312,7 @@ void FUN_0029a690(u16 genus)
         }
     } while (swapped != 0);
 }
+#pragma opt_loop_invariants off
 /* Removing this worsens FUN_0029a750 (nd120 -> nd774) - measured W161. */
 // The residual is limited to MWCCPS2 register coloring/scheduling; logical control flow and object size match retail.
 // FUN_0029a750 NONMATCHING

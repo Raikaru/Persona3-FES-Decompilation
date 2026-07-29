@@ -2776,6 +2776,7 @@ void FUN_003905f0(int param_1,int param_2)
 #pragma push
 /* Removing this worsens FUN_00390920 (nd373 -> nd467) - measured W161. */
  
+#pragma opt_common_subs off
 // FUN_00390920 NONMATCHING
 
 
@@ -2963,6 +2964,7 @@ void FUN_00390920(int param_1,int param_2)
   return;
 
 }
+#pragma opt_common_subs on
 #pragma pop
 #define FUN_00390920(...) ((void (*)(...))FUN_00390920)(__VA_ARGS__)
 #undef FUN_00390c90

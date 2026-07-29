@@ -1382,6 +1382,7 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
 }
 #pragma push
 /* Removing this worsens FUN_0012f6d0 (nd4178 -> nd4407) - measured W161. */
+#pragma opt_loop_invariants on
 // FUN_0012F6D0 NONMATCHING
 void FUN_0012f6d0(void* work, s32 index, u8* record)
 {

@@ -2806,6 +2806,7 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 }
 #pragma push
  
+#pragma opt_common_subs on
 // FUN_002A0440 NONMATCHING
 u32 FUN_002a0440(float *param_1)
 

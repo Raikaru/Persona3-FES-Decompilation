@@ -3311,6 +3311,7 @@ u8 FUN_0041b530(int param_1)
 // FUN_0041B550 MATCHING
 
 
+#pragma optimization_level 2
 void FUN_0041b550(int param_1)
 {
   u32 *effect_data;
