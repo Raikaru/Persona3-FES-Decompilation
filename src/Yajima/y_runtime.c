@@ -1228,7 +1228,7 @@ u32 FUN_0044e560(int param_1);
 u32 FUN_004542c0(char param_1);
 u64 FUN_00454620(char param_1);
 u32 FUN_00455e00(u32 param_1);
-u32 FUN_004560d0(u64 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
+u32 FUN_004560d0(u64 param_1,float param_2,float param_3,u32 param_5,u32 param_6,float param_4);
 u32 FUN_004579b0(u64 param_1);
 u64 FUN_00457a40(u64 param_1);
 u32 FUN_00458630(u64 param_1,char param_2,u8 param_3);
@@ -1578,7 +1578,7 @@ void FUN_004332f0(int param_1);
 void FUN_004333d0(int param_1);
 void FUN_004334d0(int param_1);
 void FUN_004343d0(int param_1);
-void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float *param_5);
+void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float *param_5);
 void FUN_00434c90(char param_1);
 void FUN_00434d30(void);
 void FUN_00434e60(void);
@@ -2646,7 +2646,7 @@ u32 FUN_0044e560(int param_1);
 u32 FUN_004542c0(char param_1);
 u32 FUN_00455e00(u32 param_1);
 u32 FUN_00455e00(u32 param_1);
-u32 FUN_004560d0(u64 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6);
+u32 FUN_004560d0(u64 param_1,float param_2,float param_3,u32 param_5,u32 param_6,float param_4);
 u64 FUN_00457a40(u64 param_1);
 u64 FUN_00457a40(u64 param_1);
 u32 FUN_00458630(u64 param_1,char param_2,u8 param_3);
@@ -2996,7 +2996,7 @@ void FUN_004332f0(int param_1);
 void FUN_004333d0(int param_1);
 void FUN_004334d0(int param_1);
 void FUN_004343d0(int param_1);
-void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float *param_5);
+void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float *param_5);
 void FUN_00434c90(char param_1);
 void FUN_00434d30(void);
 void FUN_00434e60(void);
@@ -5126,7 +5126,7 @@ void FUN_004343d0(int param_1)
 #pragma pop
 // FUN_004344F0 NONMATCHING
 
-void FUN_004344f0(float param_1,float *param_2,int param_3,float *param_4,float *param_5)
+void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float *param_5)
 
 {
   char cVar1;
@@ -5215,7 +5215,7 @@ u32 FUN_00434770(float param_1,float param_2,int param_3,float *param_4)
   fVar4 = (float)FUN_004c69f0(&delta.x,&delta.x);
   delta.y = 0.0f;
   if (!(fVar4 < param_2)) {
-    FUN_004344f0(param_1,&result.x,param_3,(float *)(iVar2 + 0xe0),&position.x);
+    FUN_004344f0(&result.x,param_1,param_3,(float *)(iVar2 + 0xe0),&position.x);
     uVar5 = FUN_001e13c0_typed();
     FUN_001afa20_typed((uVar5),(void*)(*(u32 *)(*(int *)(iVar2 + 0x24) + 0x170)),&result);
     *(YVec3f *)(iVar2 + 0xe0) = result;
@@ -17152,9 +17152,9 @@ void FUN_00456050(int param_1)
 
 // MWCC b210 floor: the mixed-ABI prologue preserves $f14 before $a1/$a2; retail preserves
 // $a1, then $a2, then $f14. The remaining body is instruction-identical after relocations.
-// FUN_004560D0 NONMATCHING
+// FUN_004560D0
 
-u32 FUN_004560d0(u64 param_1,float param_2,float param_3,float param_4,u32 param_5,u32 param_6)
+u32 FUN_004560d0(u64 param_1,float param_2,float param_3,u32 param_5,u32 param_6,float param_4)
 {
   int lVar1;
   u32 uVar2;
@@ -19755,13 +19755,14 @@ int FUN_0045b4b0(int param_1)
 
 // MWCC b210 floor: the sole residual is commutative addu $v0,$a0,$v0 versus retail's
 // addu $v0,$v0,$a0.
-// FUN_0045B4E0 NONMATCHING
+// FUN_0045B4E0
 
 float FUN_0045b4e0(int param_1)
 {
   int flags;
   int total;
   int start;
+  int tableOffset;
   int endOffset;
   int current;
   int numerator;
@@ -19783,7 +19784,8 @@ float FUN_0045b4e0(int param_1)
     return 0.0f;
   }
   start = *(char *)(param_1 + 0x1c);
-  endOffset = *(char *)(*(int *)(param_1 + 0x84) * 0x20 + param_1 - 3);
+  tableOffset = *(int *)(param_1 + 0x84) * 0x20;
+  endOffset = *(char *)(tableOffset + param_1 - 3);
   current = *(int *)(param_1 + 0x90);
   if (current < start) {
     return 0.0f;

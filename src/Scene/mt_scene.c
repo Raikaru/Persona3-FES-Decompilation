@@ -588,6 +588,7 @@ u32 FUN_003b5620(int param_1,int param_2)
 {
   u32 uVar1;
   int lVar2;
+  u32 ok;
   u8 auStack_100[128];
   u8 auStack_80[128];
 
@@ -602,10 +603,11 @@ u32 FUN_003b5620(int param_1,int param_2)
     uVar1 = 0;
   } else {
     uVar1 = 1;
-    if ((((((0x13 < param_1) && (param_1 < 0x1d)) && (param_2 == 0)) ||
-         ((0x32 < param_1 && (param_1 < 0x3b)))) ||
-        ((0x27 < param_1 && ((param_1 < 0x31 && (param_2 == 0)))))) ||
-       ((0x46 < param_1 && (param_1 < 0x4f)))) {
+    ok = (param_1 < 0x14);
+    if ((((ok == 0) && (param_1 < 0x1d) && (param_2 == 0)) ||
+         (((ok = (param_1 < 0x33)) == 0) && (param_1 < 0x3b))) ||
+        (((ok = (param_1 < 0x28)) == 0) && (param_1 < 0x31) && (param_2 == 0)) ||
+        (((ok = (param_1 < 0x47)) == 0) && (param_1 < 0x4f))) {
       uVar1 = 1;
     }
   }

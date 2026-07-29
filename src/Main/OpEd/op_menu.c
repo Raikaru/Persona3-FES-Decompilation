@@ -588,7 +588,7 @@ void opMenu0026c710(void)
     (*draw)(work + 0x204, 4, 0, 2, 3);
 }
 
-// FUN_0026CC90 NONMATCHING
+// FUN_0026CC90
 void opMenu0026cc90(void)
 {
     u32* work;
@@ -623,7 +623,7 @@ void opMenu0026cc90(void)
     {
         for (i = 0; i < 4; i++)
         {
-            u8* item = (u8*)work + 0xb00 + i * 0x370;
+            u8* item = (u8*)work + 0xb00 + i * 0x310;
             switch (i)
             {
                 case 0: id = 0; break;
@@ -653,7 +653,7 @@ void opMenu0026cc90(void)
         func_004d7f60(2, 0x48);
         for (i = 0; i < 4; i++)
         {
-            u8* item = (u8*)work + 0xb00 + i * 0x370;
+            u8* item = (u8*)work + 0xb00 + i * 0x310;
             switch (i)
             {
                 case 0: id = 1; break;
@@ -692,7 +692,7 @@ void opMenu0026cc90(void)
     {
         for (i = 0; i < 2; i++)
         {
-            u8* item = (u8*)work + 0x1a60 + i * 0x370;
+            u8* item = (u8*)work + 0x1a60 + i * 0x310;
             switch (i)
             {
                 case 0: id = 0x1c; break;
@@ -708,7 +708,7 @@ void opMenu0026cc90(void)
         func_004d7f60(2, 0x48);
         for (i = 0; i < 2; i++)
         {
-            u8* item = (u8*)work + 0x1a60 + i * 0x370;
+            u8* item = (u8*)work + 0x1a60 + i * 0x310;
             switch (i)
             {
                 case 0: id = 0x1d; break;

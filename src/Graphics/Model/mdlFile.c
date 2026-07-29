@@ -44532,7 +44532,7 @@ void FUN_0034c160(u32 param_1)
 // 152/160 nd47 -> 160/160 nd2.
 // Confirmed b210 call-argument setup-order floor (W211): +96/+100 merely
 // swap the independent addiu a1,s1,0x2c and addiu a0,s0,0x2c.
-// FUN_0034C1B0 NONMATCHING
+// FUN_0034C1B0
 
 u32 FUN_0034c1b0(int param_1)
 
@@ -44543,6 +44543,8 @@ u32 FUN_0034c1b0(int param_1)
   u32 uVar2;
 
   u8 (*pauVar3) [16];
+  void *destination;
+  const void *source;
 
   
 
@@ -44562,7 +44564,9 @@ u32 FUN_0034c1b0(int param_1)
       "sqc2 $vf0, 16(%0)"
       : : "r"(pauVar3) : "memory");
 
-  FUN_00521250(pauVar3[2] + 0xc,(int)param_1 + 0x2c,0x68);
+  destination = pauVar3[2] + 0xc;
+  source = (u8 *)param_1 + 0x2c;
+  FUN_00521250(destination,source,0x68);
 
   FUN_0034c250((int)uVar2,param_1);
 
@@ -46759,8 +46763,8 @@ u32 FUN_0034e4c0(int param_1)
   puVar5[2] = 0x3f800000;
 
   puVar5[0x15] = 0;
-
   puVar5[0x16] = 0;
+
 
   FUN_00521250(puVar5 + 3,uVar2,0x48);
 

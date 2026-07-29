@@ -10690,7 +10690,7 @@ LAB_003fee10:
 }
 
 // W212: signed short result local measured nd94 -> nd117 and 240/240 -> 248/240; rejected as over-window.
-// FUN_003FEE40 NONMATCHING
+// FUN_003FEE40
 
 
 u64 FUN_003fee40(int param_1)
@@ -10708,11 +10708,13 @@ u64 FUN_003fee40(int param_1)
   };
   u32 *puVar2;
   struct ShopRequirements *puVar1;
+  u32 ok;
 
   for (puVar2 = *(u32 **)(param_1 + 4); puVar2 != 0; puVar2 = (u32 *)puVar2[4]) {
     puVar1 = *(struct ShopRequirements **)(puVar2[5] + 0x1c);
     puVar1->value = FUN_003f1910(puVar1->item);
-    if (0x62 < puVar1->value) {
+    ok = (puVar1->value < 0x63);
+    if (ok == 0) {
       puVar1->flags = puVar1->flags | 0x10;
     }
     if (puVar1->target1 == 0) {
