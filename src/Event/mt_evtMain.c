@@ -5588,7 +5588,7 @@ void FUN_00365a40(u32 param_1,int param_2)
 
 
 
-// FUN_00365B70 NONMATCHING
+// FUN_00365B70
 
 
 void FUN_00365b70(u32 param_1,u32 param_2)
@@ -5599,15 +5599,9 @@ void FUN_00365b70(u32 param_1,u32 param_2)
 
   char cVar1;
 
-  u16 *puVar2;
-
   u32 lVar3;
 
   u32 uVar4;
-
-  u32 uVar5;
-
-  u16 *puVar6;
 
   int *piVar7;
 
@@ -5619,11 +5613,14 @@ void FUN_00365b70(u32 param_1,u32 param_2)
 
     if (*piVar7 == 0x23) {
 
-      uVar5 = 0xffffffff;
 
-      puVar6 = (u16 *)0x0;
+      u16 *puVar2;
 
-      for (puVar2 = (u16 *)piVar7[0x1b]; puVar2 != (u16 *)0x0;
+      u16 *puVar6;
+
+      u32 uVar5;
+
+      for (puVar2 = (uVar5 = 0xffffffff, puVar6 = (u16 *)0x0, (u16 *)piVar7[0x1b]); puVar2 != (u16 *)0x0;
 
           puVar2 = *(u16 **)(puVar2 + 0x26)) {
 

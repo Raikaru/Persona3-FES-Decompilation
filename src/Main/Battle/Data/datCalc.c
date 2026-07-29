@@ -6500,8 +6500,9 @@ int FUN_0030c0c0(void)
   }
   currentValue = FUN_001752b0();
   count = FUN_00175410();
+  outer = 0;
   current = (u16)currentValue;
-  for (outer = 0; outer < 0x20; outer = (outer + 1) & 0xffff) {
+  for (; outer < 0x20; outer = (outer + 1) & 0xffff) {
     offset = outer * 6;
     entry = (u8*)(DAT_007ce3fc + offset);
     if (current == *(u16 *)(entry + 2)) {
