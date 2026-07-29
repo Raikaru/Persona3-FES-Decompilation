@@ -2193,7 +2193,7 @@ void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
     sprite->spriteScale = footerStage.z;
     sprite->x = 289.0f + footerStage.x;
     sprite->y = footerStage.y - 33.0f;
-    sprite->alpha = (u8)footerStage.w;
+    sprite->alpha = (u8)fade;
     FUN_001127D0(sprite, 1);
     FUN_00115980(sprite);
 }
@@ -2241,7 +2241,7 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
         sprite->x = header.x;
         sprite->y = header.y + 24.0f;
         sprite->rotation = 0x1000;
-        sprite->alpha = (u8)header.w;
+        sprite->alpha = (u8)frame;
         FUN_001127D0(sprite, 1);
         FUN_00115980(sprite);
     }
@@ -2353,7 +2353,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
         sprite->x = header.x;
         sprite->y = header.y + 24.0f;
         sprite->rotation = 0x1000;
-        sprite->alpha = (u8)header.w;
+        sprite->alpha = (u8)frame;
         FUN_001127D0(sprite, 1);
         FUN_00115980(sprite);
     }
