@@ -574,6 +574,10 @@ void FUN_003bb9b0(float *param_1);
 extern void FUN_003bb9b0_scene_typed(float *param_1);
 void FUN_003bba70(int param_1);
 void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
+#pragma alias FUN_003bbaa0_scene_typed FUN_003bbaa0
+extern void FUN_003bbaa0_scene_typed(float *param_1, float *param_2, float *param_3);
+#pragma alias FUN_003baa70_scene_typed FUN_003baa70
+extern u32 FUN_003baa70_scene_typed(char *param_1);
 void FUN_003bbb90(const float *param_1,float *param_2);
 void FUN_003bbc90(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,  float *param_6,float *param_7);
 void FUN_003bbd40(float param_1,char *param_2,float *param_3);
@@ -593,6 +597,9 @@ extern u32 FUN_003182d0_scene_typed(u32 param_1, u16 param_2, s16 param_3,
                                     u16 param_4, u16 param_5);
 #pragma alias FUN_003189f0_scene_typed FUN_003189f0
 extern void FUN_003189f0_scene_typed(u32 param_1, u16 param_2, float param_3);
+/* Retail calls: FUN_003bc220 + 0x1e8, + 0x494. */
+#pragma alias FUN_003bbb90_scene_typed FUN_003bbb90
+extern void FUN_003bbb90_scene_typed(const float *param_1, u32 *param_2);
 /* Retail calls: FUN_003bbd40 + 0x0ac, + 0x178; FUN_003bc220 + 0x110, + 0x138, + 0x2a0, + 0x2d8, + 0x3e0, + 0x408; FUN_003bc730 + 0x0e0, + 0x118. */
 #pragma alias FUN_003bbc90_scene_typed FUN_003bbc90
 extern void FUN_003bbc90_scene_typed(float param_1,...);
@@ -2018,7 +2025,7 @@ void FUN_003b9610(Resrc* param_1)
 
       else {
 
-        FUN_003bbaa0(puVar8 + 0x32,puVar8 + 0x38,&stack.m_fStack_78);
+        FUN_003bbaa0_scene_typed((float *)(puVar8 + 0x32), (float *)(puVar8 + 0x38), &stack.m_fStack_78);
 
         fVar11 = (float)*(u32 *)(puVar8 + 0x40);
 
@@ -2096,7 +2103,7 @@ void FUN_003b9610(Resrc* param_1)
 
     }
 
-    FUN_003bb9b0(puVar8 + 8);
+    FUN_003bb9b0_scene_typed((float *)(puVar8 + 8));
 
     if ((*(u32 *)(puVar8 + 0x14) & 0x8000) != 0) {
 
@@ -2364,11 +2371,9 @@ void FUN_003b9610(Resrc* param_1)
 
       {
 
-        FUN_003b8ff0(*(u32 *)(puVar5 + 10),param_1,*(int *)puVar5,*(u32 *)(puVar5 + 2)
-
-                     ,*(u32 *)(puVar5 + 4),*(u32 *)(puVar5 + 6),
-
-                     *(u32 *)(puVar5 + 8));
+        FUN_003b8ff0_typed(*(u32 *)(puVar5 + 10),(u32)param_1,*(int *)puVar5,*(u32 *)(puVar5 + 2),
+                          *(u32 *)(puVar5 + 4),*(u32 *)(puVar5 + 6),
+                          *(float *)(puVar5 + 8));
 
         *(u32 *)(puVar8 + 0x14) = *(u32 *)(puVar8 + 0x14) & 0xffffdfff;
 
@@ -2388,7 +2393,7 @@ void FUN_003b9610(Resrc* param_1)
 
           *(u8 *)puVar5 = 0;
 
-          sVar3 = FUN_003baa70(puVar8 + 2);
+          sVar3 = FUN_003baa70_scene_typed((char *)(puVar8 + 2));
 
           FUN_0010a4e0(0,(char)puVar8[0x55],1,(u16)*(u8 *)((int)puVar8 + 0xa9) + sVar3 * 4);
 
@@ -2420,7 +2425,7 @@ void FUN_003b9610(Resrc* param_1)
 
           *(u8 *)puVar5 = 0;
 
-          sVar3 = FUN_003baa70(puVar8 + 2);
+          sVar3 = FUN_003baa70_scene_typed((char *)(puVar8 + 2));
 
           FUN_0010a4e0(0,(char)puVar8[0x55],1,(u16)*(u8 *)((int)puVar8 + 0xa9) + sVar3 * 4);
 
@@ -2446,7 +2451,7 @@ void FUN_003b9610(Resrc* param_1)
 
           if (puVar8[0x56] == 0) {
 
-            sVar3 = FUN_003baa70(puVar8 + 2);
+            sVar3 = FUN_003baa70_scene_typed((char *)(puVar8 + 2));
 
             FUN_0010a4e0(0,(char)puVar8[0x55],1,(u16)*(u8 *)((int)puVar8 + 0xa9) + sVar3 * 4);
 
@@ -4040,7 +4045,7 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
           direction.z = fStack_44 - fStack_48;
           FUN_004c69f0(auStack_88,&direction);
 
-          FUN_003bbb90(auStack_88,param_5);
+          FUN_003bbb90_scene_typed((const float *)auStack_88,param_5);
 
           return fVar7 + fVar6 * fVar8;
 
@@ -4068,9 +4073,9 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
     }
 
-    FUN_003bbc90(DAT_007caea4,auStack_d0,auStack_e0,auStack_f0,&fStack_4,&fStack_c,&fStack_14);
+    FUN_003bbc90_scene_typed(DAT_007caea4,auStack_d0,auStack_e0,auStack_f0,&fStack_4,&fStack_c,&fStack_14);
 
-    FUN_003bbc90(0x3f800000,auStack_d0,auStack_e0,auStack_f0,&fStack_8,&fStack_10,&fStack_18);
+    FUN_003bbc90_scene_typed(1.0f,auStack_d0,auStack_e0,auStack_f0,&fStack_8,&fStack_10,&fStack_18);
 
     finalSegment.x = fStack_8 - fStack_4;
     finalSegment.y = fStack_10 - fStack_c;
@@ -4097,7 +4102,7 @@ float FUN_003bc220(char *param_1,float param_2,float param_3,float *param_4,u32 
 
     FUN_004c69f0(auStack_88,&fStack_68);
 
-    FUN_003bbb90(auStack_88,param_5);
+    FUN_003bbb90_scene_typed((const float *)auStack_88,param_5);
 
     fVar6 = 1.0f;
 

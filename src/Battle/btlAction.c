@@ -261,7 +261,7 @@ extern void FUN_002b77c0(BtlUnit* unit);
 extern void FUN_00287490(BtlUnit* unit);
 extern void bpRoot001fe270(void* param);
 extern void bpRoot001fe2e0(void* param);
-extern void FUN_0016f190(u32 id);
+extern u32 FUN_0016f190(u32 id);
 extern void FUN_002ddbe0(void);
 extern BtlAction* btlActionFindByUnit(BtlUnit* unit);
 extern u16 func_00170760(s16 pcId, s16 index);
@@ -1739,6 +1739,8 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
 {
     BtlPacket* packet;
     BtlUnit* unit;
+    BtlAction* targetAction;
+    u32 unitId;
     s32 result;
 
     if (btlPacketCountById(0x800) != 0)
@@ -1748,10 +1750,35 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
     switch (action->movedAwayFromHome)
     {
         case 1:
-            unit = btlUnitFindFromId(FUN_002db690());
-            if (unit != NULL && datCalcIsDead(unit->datUnit, 0) == 0)
+            unitId = FUN_002db690();
+            unit = btlUnitFindFromId(unitId);
+            if (unit != NULL && datCalcIsDead(unit->datUnit, 0) == 0 &&
+                (unit->flags3 & 8))
             {
+                if (FUN_0016f190(0x140) != 0)
+                {
+                    bpRoot001fe2e0((void*)unitId);
+                }
+                else if (FUN_0016f190(0x141) != 0)
+                {
+                    bpRoot001fe270((void*)unitId);
+                }
+
+                targetAction = btlActionFindByUnit(unit);
+                btlAction0028a780(action);
+                packet = FUN_002b8d60(3, 0xfff);
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_0);
+                packet = FUN_002a3b40(targetAction, 3);
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_0);
                 FUN_002dba80();
+                FUN_002ddbe0();
+                if (FUN_002d1a70() == 1)
+                {
+                    gBtl->flags &= ~0x4000;
+                    FUN_001ff350();
+                }
                 action->movedAwayFromHome = 2;
             }
             else
@@ -1763,30 +1790,24 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
         case 2:
             if (FUN_001febb0() == 0)
             {
-                FUN_0016f190(0x140);
-                result = FUN_002dbb00();
-                if (result >= 0)
+                unit = btlUnitFindFromId(FUN_002db690());
+                if (unit != NULL)
                 {
-                    bpRoot001fe2e0((void*)result);
+                    result = FUN_002dbb00();
+                    if (result >= 0)
+                    {
+                        FUN_002e2d00(result);
+                    }
+                    action->movedAwayFromHome = 3;
                 }
-                else
-                {
-                    FUN_0016f190(0x141);
-                }
-                action->movedAwayFromHome = 3;
             }
             break;
         case 3:
             if ((DAT_007e094e & 0x60) || (DAT_007e0958 & 0x60))
             {
-                bpRoot001fe270(action);
-                btlActionFindByUnit(action->unit);
                 FUN_001fe350();
                 if (FUN_002d1a70() == 1)
                 {
-                    packet = FUN_002b8d60(3, 0xfff);
-                    packet->actionUID = action->uid;
-                    btlPacketRegister(packet, BTLPACKET_TYPE_0);
                     gBtl->flags |= 0x4000;
                     FUN_001ff370();
                 }
@@ -1794,10 +1815,8 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
             }
             break;
         case 4:
-            btlAction0028a780(action);
             packet = FUN_002db740(action, 10, 0, 0, 0);
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            FUN_002ddbe0();
             action->movedAwayFromHome = 6;
             break;
         case 5:
@@ -1818,7 +1837,6 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
             {
                 gBtl->flags |= 0x400000;
                 BATTLE_U16(0x18) |= 0xc;
-                FUN_002e2d00();
                 btlActionSetState(action, BTLACTION_STATE_PACKET);
             }
             action->movedAwayFromHome = 0;

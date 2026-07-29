@@ -63,6 +63,10 @@ extern u32 LAB_00392bb0;
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_0038dad0(u32 param_1,int param_2,int param_3);
 void FUN_0038e660(int param_1,int param_2,int param_3);
+#pragma alias FUN_0038dad0_loadsave_call FUN_0038dad0
+extern void FUN_0038dad0_loadsave_call(u32 param_1, int param_2, int param_3);
+#pragma alias FUN_0038e660_loadsave_call FUN_0038e660
+extern void FUN_0038e660_loadsave_call(int param_1, int param_2, int param_3);
 u32 FUN_0038e860(u32 param_1,u32 param_2);
 void FUN_0038f0f0(u32 param_1);
 void FUN_0038f440(u8 *param_1,void *param_2,int param_3);
@@ -1003,7 +1007,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
     }
 
-    FUN_0038dad0(lVar2,2,param_2);
+    FUN_0038dad0_loadsave_call(lVar2,2,param_2);
 
     for (iVar9 = 0; iVar9 < 0x1c; iVar9 = iVar9 + 1) {
 
@@ -1265,7 +1269,7 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
       else if (iVar9 == 4) {
 
-        FUN_0038e660(lVar2,2,param_2);
+        FUN_0038e660_loadsave_call(lVar2,2,param_2);
 
       }
 
@@ -1323,13 +1327,13 @@ u32 FUN_0038e860(u32 param_1,u32 param_2)
 
     }
 
-    FUN_0038dad0(lVar3,3,param_2);
+    FUN_0038dad0_loadsave_call(lVar3,3,param_2);
 
     for (iVar9 = 0; iVar9 < 0x1c; iVar9 = iVar9 + 1) {
 
       if (iVar9 == 4) {
 
-        FUN_0038e660(lVar3,3,param_2);
+        FUN_0038e660_loadsave_call(lVar3,3,param_2);
 
       }
 

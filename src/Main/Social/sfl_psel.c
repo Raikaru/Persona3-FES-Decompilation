@@ -441,7 +441,10 @@ void sflPsel00261480(void)
     case 0:
         alpha = 1.0f;
         if (frame < 6) {
-            points[0] = -(109.0f + (f32)sflPselReadS32(resource34, 0x10)) +
+            points[0] =
+                -(109.0f +
+                  (f32)sflPselReadS32(
+                      (u8*)(uintptr_t)FUN_0021cca0(texture, 0x35), 0x10)) +
                         ((f32)frame / 6.0f) *
                         (225.0f + (f32)sflPselReadS32(resource34, 0x10));
             points[1] = 109.0f + (f32)sflPselReadS32(resource34, 0x10) -
@@ -463,12 +466,16 @@ void sflPsel00261480(void)
     points[3] = (f32)sflPselReadS32(resource34, 0x10);
     FUN_0021d8e0(sflPselBytes(work, 0x510), points);
     sflPselSetAlpha(sflPselBytes(work, 0x510), (u8)(alpha * 255.0f));
+    resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x36);
 
     switch (mode) {
     case 0:
         alpha = 1.0f;
         if (frame < 6) {
-            points[0] = -(109.0f + (f32)sflPselReadS32(resource34, 0x10)) +
+            points[0] =
+                -(109.0f +
+                  (f32)sflPselReadS32(
+                      (u8*)(uintptr_t)FUN_0021cca0(texture, 0x36), 0x10)) +
                         ((f32)frame / 6.0f) *
                         (225.0f + (f32)sflPselReadS32(resource34, 0x10));
             points[1] = 109.0f + (f32)sflPselReadS32(resource34, 0x10) -

@@ -442,6 +442,18 @@ void FUN_00133E10(CampMainDrawItem* item,
         FUN_001159f0(parent, campMainResource(resources, 0), 4,
                      (u8)item->alpha, item->x, item->y,
                      item->spriteScale);
+        FUN_001159f0(parent, campMainResource(resources, 2), 1,
+                     (u8)item->alpha, item->x + 16.0f, item->y,
+                     item->spriteScale);
+        FUN_001159f0(parent, D_00833BA4, 1,
+                     (u8)item->alpha, item->x + 431.0f, item->y,
+                     item->spriteScale);
+        FUN_001159f0(parent, D_00833BA4, 3,
+                     (u8)item->alpha, item->x + 527.0f, item->y,
+                     item->spriteScale);
+        FUN_001159f0(parent, D_00833BA4, 4,
+                     (u8)item->alpha, item->x + 336.0f, item->y,
+                     item->spriteScale);
         break;
     case 0x1c:
         FUN_001159f0(parent, campMainResource(resources, 2), 0,
@@ -1514,6 +1526,9 @@ extern void* (*DAT_00960184)(u32 count, u32 size, u32 heap);
 extern void (*jtbl_0096017C)(void* work);
 extern void* DAT_00833B40[0x0b];
 extern void* DAT_00833B48;
+extern void* DAT_00833B4C;
+extern void* DAT_00833B50;
+extern void* DAT_00833B54;
 extern void* DAT_00833B68;
 #pragma alias DAT_00833B48_abs DAT_00833B48
 extern u8 DAT_00833B48_abs[];
@@ -2015,7 +2030,8 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
 
     (void)selected;
     (void)frame;
-    p = campCarouselUnpackPosition(position);
+    p.packed = position;
+    FUN_00172160(id);
     kind = (u8)DAT_005E3220[id] - 1;
     resource = DAT_00833A80[kind];
     if (resource == NULL) {
@@ -2029,10 +2045,15 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
         hCampMainDrawTexQuadPtr(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
                      1.0f, 1.0f, 2, color, 0x40, 0x40, resource);
     }
-    if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL ||
-        FUN_0016DBA0((s16)id) == '\n') {
-        campDrawCardSprite(DAT_00833B40, kind + 1, alpha,
+    if (FUN_00172160(id) != NULL) {
+        campDrawCardSprite(DAT_00833B54, 0, alpha,
                            p.value.x + 10.0f, p.value.y + 5.0f, textAlpha);
+    } else if (FUN_001717C0(id) != NULL) {
+        campDrawCardSprite(DAT_00833B50, 0, alpha,
+                           p.value.x + 24.0f, p.value.y + 10.0f, textAlpha);
+    } else if (FUN_0016DBA0((s16)id) == '\n') {
+        campDrawCardSprite(DAT_00833B4C, 0, alpha,
+                           p.value.x + 24.0f, p.value.y + 10.0f, textAlpha);
     }
 }
 

@@ -275,7 +275,9 @@ void* h_campUpdateTask(KwlnTask* task)
             break;
         case 5:
             sCampSelectedEntry = 5;
-            h_campRequestMenuTransition(sCampPersonaDisplayTask, 0);
+            h_campBeginRootItemExit(sCampRootDrawTask);
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 7);
+            FUN_00122710(sCampPersonaControlTask, 7);
             work->state = 13;
             break;
         case 6:

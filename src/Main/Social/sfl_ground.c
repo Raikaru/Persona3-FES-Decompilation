@@ -582,41 +582,53 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x910), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x910), &color);
 
-        direction.x = sinAngle;
-        direction.y = cosAngle;
-        motion = sixHundred * (panelPhase * (sinAngle + sinAngle) - sinAngle);
-        center.x = 320.0f + motion;
-        motion = sixHundred * (panelPhase * (cosAngle + cosAngle) - cosAngle);
-        center.y = 30.0f + motion;
+        direction.x = func_0052e6d8(frameAngle);
+        direction.y = func_0052e878(frameAngle);
+        center.x = 320.0f;
+        center.y = 224.0f;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0xb10), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0xb10), &color);
 
-        direction.x = sinAngle;
-        direction.y = cosAngle;
-        motion = sixHundred * (sinAngle - panelPhase * (sinAngle + sinAngle));
-        center.x = 320.0f + motion;
-        motion = sixHundred * (cosAngle - panelPhase * (cosAngle + cosAngle));
-        center.y = 418.0f + motion;
-        scale.x = panelScale;
-        scale.y = panelScale;
+        panelPhase = (f32)(work[1] % 40) / 40.0f;
+        center.x = 320.0f +
+                   panelPhase *
+                       (600.0f * func_0052e6d8(frameAngle) -
+                        -600.0f * func_0052e6d8(frameAngle)) +
+                   -600.0f * func_0052e6d8(frameAngle);
+        center.y = 30.0f +
+                   panelPhase *
+                       (600.0f * func_0052e878(frameAngle) -
+                        -600.0f * func_0052e878(frameAngle)) +
+                   -600.0f * func_0052e878(frameAngle);
+        direction.x = func_0052e6d8(frameAngle);
+        direction.y = func_0052e878(frameAngle);
+        scale.x = 1.0f;
+        scale.y = 1.0f;
         func_0023c520(GROUND_PTR(work, 0x110), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x110), &color);
 
-        direction.x = sinAngle;
-        direction.y = cosAngle;
-        motion = sixHundred * (sinAngle - panelPhase * (sinAngle + sinAngle));
-        center.x = 320.0f + motion;
-        motion = sixHundred * (cosAngle - panelPhase * (cosAngle + cosAngle));
-        center.y = 418.0f + motion;
-        scale.x = panelScale;
-        scale.y = panelScale;
+        panelPhase = (f32)((work[1] + 20) % 40) / 40.0f;
+        center.x = 320.0f +
+                   panelPhase *
+                       (600.0f * func_0052e6d8(frameAngle) -
+                        -600.0f * func_0052e6d8(frameAngle)) +
+                   -600.0f * func_0052e6d8(frameAngle);
+        center.y = 30.0f +
+                   panelPhase *
+                       (600.0f * func_0052e878(frameAngle) -
+                        -600.0f * func_0052e878(frameAngle)) +
+                   -600.0f * func_0052e878(frameAngle);
+        direction.x = func_0052e6d8(frameAngle);
+        direction.y = func_0052e878(frameAngle);
+        scale.x = 1.0f;
+        scale.y = 1.0f;
         func_0023c520(GROUND_PTR(work, 0x310), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x310), &color);
 
-        direction.x = sinAngle;
-        direction.y = cosAngle;
+        direction.x = func_0052e6d8(frameAngle);
+        direction.y = func_0052e878(frameAngle);
         motion = sixHundred * (sinAngle - panelPhase * (sinAngle + sinAngle));
         center.x = 320.0f + motion;
         motion = sixHundred * (cosAngle - panelPhase * (cosAngle + cosAngle));
@@ -626,8 +638,8 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x510), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x510), &color);
 
-        direction.x = sinAngle;
-        direction.y = cosAngle;
+        direction.x = func_0052e6d8(frameAngle);
+        direction.y = func_0052e878(frameAngle);
         center.x = 320.0f;
         center.y = 418.0f;
         scale.x = panelScale;
@@ -1043,6 +1055,7 @@ void func_0023b990(void)
         }
         break;
     }
+    func_0024a180(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
 
     switch (state) {
     case 3:
@@ -1067,6 +1080,12 @@ void func_0023b990(void)
     }
 
     
+    if (state == 3 || state == 4) {
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+            1, (u32)sflResGetEffectRaster(3));
+    }
     drawTable = (const u32*)D_0096009C_abs;
     if ((work[0] & 8) == 0) {
         ((SflGroundRenderQuadCallback)(void*)drawTable[0])(

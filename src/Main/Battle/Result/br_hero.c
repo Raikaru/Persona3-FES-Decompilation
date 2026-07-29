@@ -286,6 +286,7 @@ void brHero00263170(void)
     float offset;
     float scroll;
     u8 color[4];
+    s32 i;
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     if ((*w & 1) == 0)
@@ -446,12 +447,36 @@ void brHero00263170(void)
     rect[2] = (float)resource->width;
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0x548, rect);
+    rect[0] = 118.0f;
+    rect[1] = 218.0f;
+    FUN_00238dc0(w + 0x594, 2, w[0x588], 2, rect);
+    rect[0] = 109.0f;
+    rect[1] = 236.0f;
+    FUN_00238bf0(w + 0x614, 3, w[0x589], 2, rect);
+    rect[0] = 168.0f;
+    rect[1] = 236.0f;
+    FUN_00238bf0(w + 0x6d4, 3, w[0x58a], 2, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0x99;
+    for (i = 0; i < 3; i++) {
+        FUN_0021d950(w + i * 0x40 + 0x6d4, color);
+    }
+
     resource = (BrHeroResource*)FUN_0021cca0(text1, 4);
     rect[0] = 224.0f;
     rect[1] = 238.0f;
     rect[2] = (1.0f + (float)resource->width) * (float)w[0x589] / (float)w[0x58a];
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0x794, rect);
+    rect[0] = 109.0f;
+    rect[1] = 252.0f;
+    FUN_00238bf0(w + 0x7d4, 3, w[0x58b], 2, rect);
+    rect[0] = 168.0f;
+    rect[1] = 252.0f;
+    FUN_00238bf0(w + 0x894, 3, w[0x58c], 2, rect);
+
     resource = (BrHeroResource*)FUN_0021cca0(text1, 5);
     rect[0] = 224.0f;
     rect[1] = 254.0f;

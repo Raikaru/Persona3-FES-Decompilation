@@ -1487,13 +1487,15 @@ void func_001a8b10(u32* entries)
 {
     s32 i;
     KClumpMaterialNode* item;
+    RwSphere* sphere;
 
     qsort(entries + 1, entries[0], 0x2c, (int (*)(const void*, const void*))func_001a89c0);
     for (i = (s32)entries[0] - 1; i >= 0; i--)
     {
         item = &((KClumpMaterialNode*)(entries + 1))[i];
-        if (func_004912b0(item->object) != NULL &&
-            RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, func_004912b0(item->object)) != rwSPHEREOUTSIDE)
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) !=
+            rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
@@ -1508,7 +1510,8 @@ void func_001a8b10(u32* entries)
                 RpSkyRenderStateSet(3, (void*)0x72001);
                 if (item->kind == 2)
                 {
-                    kclump_call_resource(item->object);
+                    (*(void (**)(void*))((u8*)item->object + 0x48))(
+                        item->object);
                 }
                 D_00960090(6, 1);
                 D_00960090(8, 0);
@@ -1527,7 +1530,7 @@ void func_001a8b10(u32* entries)
                     RpSkyRenderStateSet(2, (void*)0x44);
                     RpSkyRenderStateSet(3, (void*)0x717fb);
                 }
-                kclump_call_resource(item->object);
+                (*(void (**)(void*))((u8*)item->object + 0x48))(item->object);
             }
             if (item->enabled == 1)
             {
@@ -2041,8 +2044,8 @@ void func_001a9850(void)
              gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
     else if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1)
     {
-        u8 time = FUN_0016ef30();
-        if (time < 2 || time > 6) FUN_00108fd0(0x14);
+        if ((u8)FUN_0016ef30() < 2 || (u8)FUN_0016ef30() > 6)
+            FUN_00108fd0(0x14);
     }
     else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
               gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||

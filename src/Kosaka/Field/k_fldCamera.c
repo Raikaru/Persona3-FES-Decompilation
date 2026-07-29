@@ -55,6 +55,9 @@ extern void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 extern void FUN_004cb890(RwFrame* frame, f32 amount, const RwV3d* axis, u32 mode);
 extern void FUN_004c31b0(f32 angle, RwFrame* frame, const RwV3d* axis, u32 mode);
 extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
+extern s32 func_00530da0(f32 value);
+extern s32 func_0052e118(s32 value);
+extern s32 func_0045ec00(s32 left, s32 right);
 extern const char DAT_00683b10[];
 extern const char D_00683A8C[];
 extern const char D_00683AD0[];
@@ -342,16 +345,17 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
     f32 directDelta;
     f32 wrappedDelta;
 
+    task = NULL;
     if (CAMERA_DATA_U32(0x008717e8) == 0)
     {
-        return NULL;
+        goto done;
     }
 
     work = (FldCameraRotationWork*)RwCalloc(1, sizeof(FldCameraRotationWork),
                                              rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
-        return NULL;
+        goto done;
     }
 
     task = kwlnTaskCreateWithAutoPriority(parentTask, 10,
@@ -425,7 +429,8 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
         wrappedDelta -= 360.0f;
     }
 
-    if (fabsf(directDelta) < fabsf(wrappedDelta))
+    if (func_0045ec00(func_0052e118(func_00530da0(directDelta)),
+                      func_0052e118(func_00530da0(wrappedDelta))) != 0)
     {
         work->angleDelta = directDelta;
     }
@@ -433,6 +438,7 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
     {
         work->angleDelta = wrappedDelta;
     }
+done:
     return task;
 }
 
@@ -448,16 +454,17 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
     f32 directDelta;
     f32 wrappedDelta;
 
+    task = NULL;
     if (CAMERA_DATA_U32(0x008717e8) == 0)
     {
-        return NULL;
+        goto done;
     }
 
     work = (FldCameraRotationWork*)RwCalloc(1, sizeof(FldCameraRotationWork),
                                              rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
-        return NULL;
+        goto done;
     }
 
     task = kwlnTaskCreateWithAutoPriority(parentTask, 10,
@@ -505,7 +512,8 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
         wrappedDelta -= 360.0f;
     }
 
-    if (fabsf(directDelta) < fabsf(wrappedDelta))
+    if (func_0045ec00(func_0052e118(func_00530da0(directDelta)),
+                      func_0052e118(func_00530da0(wrappedDelta))) != 0)
     {
         work->angleDelta = directDelta;
     }
@@ -513,6 +521,7 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
     {
         work->angleDelta = wrappedDelta;
     }
+done:
     return task;
 }
 
@@ -638,9 +647,9 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
         }
         else
         {
-            camera = kwlnGetMainCamera();
-            cameraFrame = (RwFrame*)camera->object.object.parent;
-            K_View_SetFov(camera, cmr->fov);
+            K_View_SetFov(kwlnGetMainCamera(), cmr->fov);
+            cameraFrame =
+                (RwFrame*)kwlnGetMainCamera()->object.object.parent;
             FUN_004cb7f0(cameraFrame, &cmr->mat, 0);
             func_001d5c10(K_Field_Get()->cameraCtlTask, cmr->type);
             ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->posOffset =
@@ -656,8 +665,11 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
             fldCamera = (FldCamera*)K_Field_Get()->cameraCtlTask->workData;
             if (fldCamera->type == 2)
             {
-                FUN_001a1210(camera, &cameraFrame->modelling.pos,
-                             &fldCamera->frame->modelling.pos, NULL);
+                FUN_001a1210(
+                    kwlnGetMainCamera(),
+                    &((RwFrame*)kwlnGetMainCamera()->object.object.parent)
+                         ->modelling.pos,
+                    &fldCamera->frame->modelling.pos, NULL);
             }
             else if (fldCamera->type == 5 || fldCamera->type == 0)
             {
@@ -688,9 +700,8 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
     }
     else
     {
-        camera = kwlnGetMainCamera();
-        cameraFrame = (RwFrame*)camera->object.object.parent;
-        K_View_SetFov(camera, cmr->fov);
+        K_View_SetFov(kwlnGetMainCamera(), cmr->fov);
+        cameraFrame = (RwFrame*)kwlnGetMainCamera()->object.object.parent;
         FUN_004cb7f0(cameraFrame, &cmr->mat, 0);
         func_001d5c10(K_Field_Get()->cameraCtlTask, cmr->type);
         ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->posOffset =
@@ -706,8 +717,11 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
         fldCamera = (FldCamera*)K_Field_Get()->cameraCtlTask->workData;
         if (fldCamera->type == 2)
         {
-            FUN_001a1210(camera, &cameraFrame->modelling.pos,
-                         &fldCamera->frame->modelling.pos, NULL);
+            FUN_001a1210(
+                kwlnGetMainCamera(),
+                &((RwFrame*)kwlnGetMainCamera()->object.object.parent)
+                     ->modelling.pos,
+                &fldCamera->frame->modelling.pos, NULL);
         }
         else if (fldCamera->type == 5 || fldCamera->type == 0)
         {

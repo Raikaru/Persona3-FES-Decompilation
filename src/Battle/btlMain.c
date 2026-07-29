@@ -337,10 +337,6 @@ void FUN_002ffdc0();
 void FUN_00299d60();
 void FUN_0048d480(void* curve,s32 mode,f32 time,RwV3d* dst,void* aux);
 
-static u16 btlMainGetDatUnitId(const DatUnit* datUnit)
-{
-    return *(const u16*)((const u8*)datUnit + 2);
-}
 
 static void btlMainRegisterDependentPacket(BtlPacket* packet, u8 type, u64 parentUID)
 {
@@ -350,10 +346,6 @@ static void btlMainRegisterDependentPacket(BtlPacket* packet, u8 type, u64 paren
 }
 
 
-static void btlMainSetPacketAction(BtlPacket* packet, const BtlAction* action)
-{
-    packet->actionUID = action->uid;
-}
 
 void btlSound002dced0(u16 param_1);
 void btlSound002dcf80(s32 param_1, u16 param_2);
@@ -1342,7 +1334,7 @@ void btlMainInitStateCondition(BtlStateWork* work)
     sickUnitCount = 0;
     for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
-        unitId = btlMainGetDatUnitId(unit->datUnit);
+        unitId = unit->datUnit->id;
         oldCondition = FUN_0016c920(unitId);
         if (FUN_0017d800() == 0 && oldCondition != 5 && oldCondition != 4 && oldCondition != 3)
         {
@@ -1362,7 +1354,7 @@ void btlMainInitStateCondition(BtlStateWork* work)
     newCondition = 0;
     for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
-        unitId = btlMainGetDatUnitId(unit->datUnit);
+        unitId = unit->datUnit->id;
         oldCondition = FUN_0016c920(unitId);
         newCondition = oldCondition;
         if (FUN_0030b5a0(unit->datUnit, 0) == 0)
@@ -1422,7 +1414,7 @@ void btlMainInitStateCondition(BtlStateWork* work)
     }
     action = FUN_0029a1d0(changedUnit);
     cameraPacket = FUN_002a3b40(action, 0x21);
-    btlMainSetPacketAction(cameraPacket, action);
+    cameraPacket->actionUID = action->uid;
     (*(u16*)((u8*)(cameraPacket) + (0x48))) = 8;
     btlPacketRegister(cameraPacket, BTLPACKET_TYPE_0);
     packet = FUN_002bc7e0(8);
