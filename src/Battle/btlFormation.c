@@ -14451,6 +14451,7 @@ u32 func_002d03e0(void)
   u32 uVar4 = 0;
   u32 uVar5 = 0;
   u32 uVar6 = 0;
+  u32 specialMask;
   u32 uVar8 = 0;
   u32 uVar9 = 0;
   int iVar10 = 0;
@@ -14458,13 +14459,14 @@ u32 func_002d03e0(void)
   uVar5 = func_0035ed20_u32(0);
   iVar3 = func_0035ed20_u32(1);
   uVar6 = func_0035ed20_u32(2);
+  specialMask = uVar6 & 0x80000;
   iVar10 = 0;
   uVar9 = 0xfffffff;
   for (iVar2 = *(int *)(DAT_007ce3ec + 0x14c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x4a8)) {
     if (((*(u16 *)(iVar2 + 0x1a) & 1) != 0) &&
         ((*(u16 *)(iVar2 + 0x1a) & 8) != 0) &&
-        (*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\0') &&
-        (((uVar6 & 0x80000) != 0) ||
+        (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) == 0) &&
+        ((specialMask != 0) ||
          (func_0030b5a0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c), 0) == 0))) {
       uVar8 = func_002ffd70(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
       uVar8 = uVar8 & 0xffff;
@@ -14480,11 +14482,11 @@ u32 func_002d03e0(void)
       }
     }
   }
-  if (iVar10 == 0) {
-    func_0035f060(0xffffffffffffffff);
+  if (iVar10 != 0) {
+    func_0035f060(*(u32 *)(iVar10 + 8) | 0x80000000);
   }
   else {
-    func_0035f060(*(u32 *)(iVar10 + 8) | 0x80000000);
+    func_0035f060(0xffffffffffffffff);
   }
   return 1;
 }

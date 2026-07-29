@@ -747,6 +747,8 @@ void FUN_0013cc90(CampEquipmentWork* work)
                 work->entries[recordCount].valueD =
                     func_0016fcc0(1, candidate);
                 break;
+            case 3:
+                break;
             default:
                 break;
             }

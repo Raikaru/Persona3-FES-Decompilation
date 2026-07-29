@@ -160,6 +160,12 @@ extern f32 D_00697880[];
 extern const u8 D_006978B0[];
 extern const u8 D_00699FE0[];
 extern const u8 D_00699FF0[];
+#pragma alias voiceStream115Both DAT_00699d80
+#pragma alias voiceStream115First DAT_00699d90
+#pragma alias voiceStream115Second DAT_00699da0
+extern const char voiceStream115Both[];
+extern const char voiceStream115First[];
+extern const char voiceStream115Second[];
 extern const u8 D_0069A368[];
 #pragma alias voicePartyCameraStarts DAT_0069a3a0
 #pragma alias voicePartyCameraEnds DAT_0069a3d0
@@ -171,6 +177,14 @@ extern RwV3d voicePartyCameraEnds[];
 extern RwV3d voicePartyCameraTargets[];
 extern RwV3d voicePartyCameraUps[];
 extern f32 voicePartyCameraDurations[];
+#pragma alias voiceCameraStart66 DAT_0069a250
+#pragma alias voiceCameraEnd66 DAT_0069a270
+#pragma alias voiceCameraTarget66 DAT_0069a290
+#pragma alias voiceCameraUp66 DAT_0069a2b0
+extern const RwV3d voiceCameraStart66;
+extern const RwV3d voiceCameraEnd66;
+extern const RwV3d voiceCameraTarget66;
+extern const RwV3d voiceCameraUp66;
 extern const u8 D_0069A2D0[];
 extern const u8 D_0069A2F0[];
 extern const u8 D_0069A310[];
@@ -841,12 +855,12 @@ void func_002f0ea0(u64 *param_1)
 // FUN_002f14a0 NONMATCHING
 u32 func_002f14a0(BtlAction* action)
 {
-    u32 actionIndex;
+    u16 actionIndex;
     u16 count;
     BtlAction* cleanupAction;
     BtlAction* current;
     BtlPacket* packet;
-    u32 cleanupIndex;
+    u16 cleanupIndex;
 
     count = *(u16*)(iGpffffb6fc + 0xb50);
     for (actionIndex = 0; (actionIndex & 0xffff) < count;
@@ -1440,8 +1454,8 @@ void func_002f2550(BtlAction* action)
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 0);
   packet = FUN_002a3d70_packet_voice(*(BtlAction**)(DAT_007ce3ec + 0x148),
-                                     (const RwV3d*)0x69a250, (const RwV3d*)0x69a270,
-                                     (const RwV3d*)0x69a290, (const RwV3d*)0x69a2b0,
+                                     &voiceCameraStart66, &voiceCameraEnd66,
+                                     &voiceCameraTarget66, &voiceCameraUp66,
                                      uGpffff82e0_f32_voice);
   packet->preUpdateDelay = 3;
   packet->actionUID = action->uid;
@@ -8680,21 +8694,21 @@ void func_002eba50(BtlAction* action)
             aiStack_10[2] = aiStack_10[0];
             aiStack_10[3] = aiStack_10[1];
             mode = 2;
-            packet = FUN_002dd690_packet_voice(3, (const char*)0x699d80);
+            packet = FUN_002dd690_packet_voice(3, voiceStream115Both);
             btlPacketRegister(packet, 1);
         }
         else if (selected->unit == (BtlUnit*)aiStack_10[0]) {
             aiStack_10[2] = aiStack_10[0];
             aiStack_10[3] = 0;
             mode = 3;
-            packet = FUN_002dd690_packet_voice(3, (const char*)0x699d90);
+            packet = FUN_002dd690_packet_voice(3, voiceStream115First);
             btlPacketRegister(packet, 1);
         }
         else {
             aiStack_10[2] = aiStack_10[1];
             aiStack_10[3] = 0;
             mode = 4;
-            packet = FUN_002dd690_packet_voice(3, (const char*)0x699da0);
+            packet = FUN_002dd690_packet_voice(3, voiceStream115Second);
             btlPacketRegister(packet, 1);
         }
         func_002b90d0(object, func_002f87e0((u16)mode));
@@ -8715,7 +8729,7 @@ void func_002eba50(BtlAction* action)
         for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
              unit != NULL; unit = unit->next) {
             packet = FUN_0027fe90_packet_voice(
-                unit, NULL, (const void*)0x6978b0, NULL);
+                unit, NULL, D_006978B0, NULL);
             packet->unk_00 = 4;
             packet->parentUID = parent->uid;
             packet->actionUID = selected->uid;

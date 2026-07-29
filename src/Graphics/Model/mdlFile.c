@@ -1268,7 +1268,7 @@ void FUN_00343d10(int param_1);
 void FUN_00343d60(int param_1);
 void FUN_00344720(int param_1);
 void FUN_00344b70(int param_1,int param_2);
-u32 FUN_00344eb0(u32 param_1,int param_2);
+u32 FUN_00344eb0(u32 *param_1,int param_2);
 u32 FUN_00344fc0(int param_1);
 void FUN_00345080(int param_1);
 void FUN_003450d0(int param_1);
@@ -8385,7 +8385,7 @@ void FUN_003244c0(int param_1)
 
 
 
-// FUN_00324510 NONMATCHING
+// FUN_00324510
 
 
 void FUN_00324510(int param_1,u64 param_2)
@@ -8395,7 +8395,7 @@ void FUN_00324510(int param_1,u64 param_2)
 
   handle = FUN_003210c0_ret(param_2);
   for (index = 0; index < *(short *)(param_1 + 0x1c); index++) {
-    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + index * 4),handle);
+    FUN_00494d50((*(u32 **)(param_1 + 0x28))[index],handle);
   }
   FUN_004d0f00(handle);
 }
@@ -21582,35 +21582,35 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
 
 u32 *FUN_003325d0(int *arg0)
 {
-  int *temp_2_2;
-  int *temp_4;
-  u32 *temp_2;
-  u32 var_19;
-  int temp_2_3;
+  int *model;
+  int *work;
+  u32 *result;
+  u32 count;
+  int extra;
 
-  temp_2_2 = (int *)FUN_003245b0((int)arg0);
-  temp_4 = (int *)((u8 *)temp_2_2 + 0x1c);
-  if (*((int *)((u8 *)temp_2_2 + 0x3c)) == 0) {
-    var_19 = temp_4[0x26] * temp_4[9];
+  model = (int *)FUN_003245b0((int)arg0);
+  work = model + 7;
+  if (*(int *)((u8 *)model + 0x3c) == 0) {
+    count = work[46] * work[9];
   } else {
-    var_19 = *((int *)((u8 *)temp_2_2 + 0x3c)) * temp_4[9];
+    count = *(int *)((u8 *)model + 0x3c) * work[9];
   }
-  if (var_19 >= 0x65U) {
-    var_19 = 0x64;
+  if (count > 100) {
+    count = 100;
   }
-  temp_2 = (u32 *)DAT_00960178_abs[0](0x38,0x40000);
-  FUN_00521408(temp_2,0,0x38);
-  temp_2[0] = var_19;
-  temp_2[1] = -1;
-  temp_2[2] = 0x3f800000;
-  *(u16 *)(temp_2 + 0xd) = 1;
-  FUN_00332a30((int *)temp_2,*(u16 *)((u8 *)arg0 + 0xc),temp_2_2);
-  FUN_00332ac0(temp_2,*(u16 *)((u8 *)arg0 + 0xc),temp_4);
-  temp_2_3 = FUN_003245f0((int)arg0);
-  if (temp_2_3 != 0) {
-    FUN_00332470(temp_2,*(u16 *)((u8 *)arg0 + 0x1c),(int *)temp_2_3);
+  result = (u32 *)(*DAT_00960178_abs)(0x38,0x40000);
+  FUN_00521408(result,0,0x38);
+  result[0] = count;
+  result[1] = -1;
+  result[2] = 0x3f800000;
+  *(u16 *)(result + 0xd) = 1;
+  FUN_00332a30((int *)result,*(u16 *)((u8 *)arg0 + 0xc),model);
+  FUN_00332ac0(result,*(u16 *)((u8 *)arg0 + 0xc),(int *)((u8 *)model + 0x1c));
+  extra = FUN_003245f0((int)arg0);
+  if (extra != 0) {
+    FUN_00332470(result,*(u16 *)((u8 *)arg0 + 0x1c),(int *)extra);
   }
-  return temp_2;
+  return result;
 }
 
 
@@ -30287,32 +30287,34 @@ void FUN_0033be90(int param_1,int param_2)
 
 
 
-// FUN_0033BFA0 NONMATCHING
+// FUN_0033BFA0
 
 u32 FUN_0033bfa0(u32 *param_1,int param_2)
 {
   int iVar2;
+  u8 *piVarTmp;
+  int *piVar1;
   u32 uVar3;
   u32 uVar4;
 
-  uVar3 = (*DAT_00960178_abs)(param_1[0xe] * 0x18 + 0x10,0x40000);
-
-  *(u32 *)uVar3 = uVar3 + 0x10;
-  *(u32 *)(uVar3 + 8) = uVar3;
+  uVar3 = (u32)(piVarTmp = (u8 *)(*DAT_00960178_abs)(param_1[0xe] * 0x18 + 0x10,0x40000));
+  *(u32 *)piVarTmp = (u32)(piVarTmp + 0x10);
+  *(u32 *)(piVarTmp + 8) = (u32)piVarTmp;
+  piVar1 = (int *)uVar3;
 
   if (param_1[0x1c] == 0) {
     param_1[0x1c] = 1;
   }
 
   iVar2 = FUN_003233a0_ptr(((u16 *)param_1)[0x1c],2,4,DAT_0069bdc8_abs,0x4c);
-  *(u32 *)(uVar3 + 4) = iVar2;
+  piVar1[1] = iVar2;
 
-  if (param_2 != 0) {
-    FUN_00323b90_i(*(u32 *)(uVar3 + 4),param_2);
+  if (param_2 == 0) {
+    uVar4 = FUN_003210a0(0x12);
+    FUN_00494d50(*(u32 *)(piVar1[1] + 0x14),uVar4);
   }
   else {
-    uVar4 = FUN_003210a0(0x12);
-    FUN_00494d50(*(u32 *)(*(u32 *)(uVar3 + 4) + 0x14),uVar4);
+    FUN_00323b90_i(piVar1[1],param_2);
   }
 
   FUN_0033be90((int)uVar3,(int)param_1);
@@ -38284,10 +38286,10 @@ void FUN_00344b70(int param_1,int param_2)
 
 
 
-// FUN_00344EB0 NONMATCHING
+// FUN_00344EB0
 
 
-u32 FUN_00344eb0(u32 param_1,int param_2)
+u32 FUN_00344eb0(u32 *param_1,int param_2)
 
 
 
@@ -38303,35 +38305,31 @@ u32 FUN_00344eb0(u32 param_1,int param_2)
 
   
 
-  iVar1 = (int)param_1;
 
-  uVar2 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x2c + 0xc,0x40000);
-
+  uVar2 = (*DAT_00960178_abs)(param_1[0xe] * 0x2c + 0xc,0x40000);
   piVar4 = (int *)uVar2;
-
   *piVar4 = (int)(piVar4 + 3);
-
   piVar4[2] = (int)piVar4;
 
-  if (*(u32 *)(iVar1 + 0x8c) < 3) {
+  if (param_1[0x23] < 3) {
 
-    *(u32 *)(iVar1 + 0x8c) = 3;
+    param_1[0x23] = 3;
 
   }
 
-  iVar1 = FUN_00323fb0(*(u16 *)(iVar1 + 0x38),*(u16 *)(iVar1 + 0x8c),0x69bcf0,4,0x4c);
+  iVar1 = FUN_00323fb0(((u16 *)param_1)[0x1c],((u16 *)param_1)[0x46],(int)(DAT_0069bdc8_abs - 0xd8),4,0x4c);
 
   piVar4[1] = iVar1;
 
-  if (param_2 != 0) {
-    FUN_00324510_i(piVar4[1],param_2);
-  }
-  else {
+  if (param_2 == 0) {
     uVar3 = FUN_003210a0(0x14);
     FUN_003243f0_i(piVar4[1],uVar3);
   }
+  else {
+    FUN_00324510_i(piVar4[1],param_2);
+  }
 
-  FUN_00344b70(uVar2,param_1);
+  FUN_00344b70(uVar2,(int)param_1);
 
   return uVar2;
 
@@ -39214,49 +39212,33 @@ u32 FUN_00345cf0(u32 param_1,u64 param_2)
 
 
 int FUN_00345db0(int param_1)
-
-
-
 {
-
-  u16 uVar1;
-
-  u32 uVar2;
-
-  int uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  int iVar6;
-
-  
-
-  uVar3 = FUN_003245f0((int)(param_1));
-
-  if (*(short *)((int)param_1 + 0x1c) == 4) {
-
-    uVar3 = 0;
-
+  u16 type;
+  u32 model;
+  int extra;
+  u32 object;
+  u32 data;
+  u32 dispatchOffset;
+  u32 (*create)(u32,u32);
+  void (*initialize)(u32);
+  extra = FUN_003245f0(param_1);
+  switch (*(u16 *)(param_1 + 0x1c)) {
+  case 1:
+    break;
+  case 4:
+    extra = 0;
+    break;
   }
-
-  uVar4 = FUN_003245b0((int)(param_1));
-
-  uVar1 = *(u16 *)((int)param_1 + 0xc);
-
-  uVar5 = FUN_00345cf0(uVar1,uVar4);
-
-  iVar6 = (u32)uVar1 * 0x1c;
-
-  uVar2 = (*(code *)(&DAT_0069c974 + iVar6))(uVar4,uVar3);
-
-  *(u32 *)((int)uVar5 + 0x3c) = uVar2;
-
-        DAT_0069c970[(u32)uVar1].callback0(uVar5);
-
-  return uVar5;
-
+  model = FUN_003245b0(param_1);
+  type = *(u16 *)(param_1 + 0xc);
+  object = FUN_00345cf0(type,model);
+  dispatchOffset = (type & 0xffff) * sizeof(MdlExtendedDispatch);
+  create = *(u32 (**)(u32,u32))((u8 *)&DAT_0069c974 + dispatchOffset);
+  data = create(model,extra);
+  *(u32 *)(object + 0x3c) = data;
+  initialize = *(void (**)(u32))((u8 *)DAT_0069c970_abs + dispatchOffset);
+  initialize(object);
+  return object;
 }
 
 

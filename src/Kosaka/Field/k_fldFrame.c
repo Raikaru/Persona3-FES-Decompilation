@@ -2681,15 +2681,15 @@ void* func_001ac950(const RwV3d* line, void* unused,
     segment.x = lineCopy.point[0].x - lineCopy.point[1].x;
     segment.y = lineCopy.point[0].y - lineCopy.point[1].y;
     segment.z = lineCopy.point[0].z - lineCopy.point[1].z;
-    denominator = candidate->normal.x * segment.x
-                + candidate->normal.y * segment.y
-                + candidate->normal.z * segment.z;
-    vertexDot = candidate->normal.x * candidate->vertices[0]->x
-              + candidate->normal.y * candidate->vertices[0]->y
-              + candidate->normal.z * candidate->vertices[0]->z;
-    lineDot = candidate->normal.x * lineCopy.point[0].x
-            + candidate->normal.y * lineCopy.point[0].y
-            + candidate->normal.z * lineCopy.point[0].z;
+    denominator = candidate->normal.y * segment.y;
+    denominator += candidate->normal.x * segment.x;
+    denominator += candidate->normal.z * segment.z;
+    vertexDot = candidate->normal.z * candidate->vertices[0]->z;
+    vertexDot += candidate->normal.x * candidate->vertices[0]->x;
+    vertexDot += candidate->normal.y * candidate->vertices[0]->y;
+    lineDot = candidate->normal.z * lineCopy.point[0].z;
+    lineDot += candidate->normal.x * lineCopy.point[0].x;
+    lineDot += candidate->normal.y * lineCopy.point[0].y;
     fraction = -(-vertexDot + lineDot) / denominator;
     raycast->hitPointDst->x = lineCopy.point[0].x + segment.x * fraction;
     raycast->hitPointDst->y = lineCopy.point[0].y + segment.y * fraction;
