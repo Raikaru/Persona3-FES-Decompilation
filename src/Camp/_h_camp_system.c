@@ -395,6 +395,11 @@ extern char DAT_007cb66c[];
 extern void FUN_0018bc10(f32 first, void *animation, s32 start,
                          s32 end, s32 mode, u64 startValues,
                          u64 endValues, u32 param8, u32 param9);
+#pragma alias campListAnimate FUN_0018bc10
+extern void campListAnimate(f32 first, void *animation, s32 start,
+                            s32 end, s32 mode, u64 startValues,
+                            u64 endValues, u32 param8, u32 param9,
+                            u32 param10, u32 param11);
 /* Explicit unresolved retail API declarations. */
 extern void *FUN_0010c1a0(u32 mode, const char *path, u32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6, u32 arg7);
 extern s32 FUN_0010c3a0(void *request, u32 *loaded, u64 arg3);
@@ -1395,89 +1400,123 @@ void FUN_0015D8E0(CampSystemPosition position, f32 drawContext, u8 alpha)
 void FUN_0015DA70(void *param_1)
 {
     uintptr_t work_address = (uintptr_t)(u32)(uintptr_t)param_1;
-    f32 x;
-    f32 y;
+    CampMenuAnimPair pair;
+    CampMenuAnimPair shifted;
+    f32 row;
     s32 i;
+    s32 item_offset;
 
-    x = 22.0f;
-    y = 50.0f;
-    FUN_0018bc10(
+    pair.f[0] = 29.0f;
+    pair.f[1] = 22.0f;
+    shifted = pair;
+    shifted.f[0] += 50.0f;
+    campListAnimate(
         100.0f,
         (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x44),
-        0, 2, 1, camp_list_pack_f32(x, y),
-        camp_list_pack_f32(x, y - 21.0f), 0, 0);
-    FUN_0018bc10(100.0f,
-                 (void *)(uintptr_t)camp_list_load_u32(work_address, 0x38),
-                 0, 2, 1, 0, 0, 0, 0);
+        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+    pair.f[0] = 0.0f;
+    pair.f[1] = 0.0f;
+    campListAnimate(100.0f,
+                    (void *)(uintptr_t)camp_list_load_u32(work_address, 0x38),
+                    0, 2, 1, pair.q, pair.q, 0, 0, 6, 0x0d);
     camp_list_store_u32(
         (uintptr_t)camp_list_load_u32(work_address, 0x38), 0x8c, 0);
-    x = 411.0f;
-    y = 496.0f;
-    FUN_0018bc10(
+
+    pair.f[0] = (f32)0x1bf;
+    pair.f[1] = (f32)0x19b;
+    shifted = pair;
+    shifted.f[0] += 50.0f;
+    campListAnimate(
         100.0f,
         (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xcc),
-        0, 2, 1, camp_list_pack_f32(x, y),
-        camp_list_pack_f32(x, y - 49.0f), 0, 0);
-    x = 24.0f;
-    y = 197.0f;
-    FUN_0018bc10(
+        0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+    pair.f[0] = 247.0f;
+    pair.f[1] = 24.0f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
         100.0f,
         (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0x110),
-        0, 2, 1, camp_list_pack_f32(x, y),
-        camp_list_pack_f32(x, y + 50.0f), 0, 0);
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
 
     for (i = 0; i < 4; ++i) {
         if (i < camp_list_load_s32(work_address, 0x4c)) {
-            f32 row = (f32)(i * 0x55) + 42.0f;
-            s32 item_offset = i * 10;
-            x = row + 8.0f;
-            y = 15.0f;
-            FUN_0018bc10(
+            row = (f32)(i * 0x55) + 42.0f;
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 8.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
                                     (size_t)(i + 1) * 0x2a8),
-                0, 2, 1, camp_list_pack_f32(x, y),
-                camp_list_pack_f32(x, y + 50.0f), 0, 0);
-            FUN_0018bc10(
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            item_offset = i * 10;
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 31.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
                                     (size_t)(item_offset + 0x0b) * 0x44),
-                0, 2, 1,
-                camp_list_pack_f32(row + 31.0f,
-                                    15.0f),
-                camp_list_pack_f32(row + 31.0f,
-                                    65.0f),
-                0, 0);
-            FUN_0018bc10(
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 45.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
                                     (size_t)(item_offset + 0x0c) * 0x44),
-                0, 2, 1,
-                camp_list_pack_f32(row + 45.0f,
-                                    15.0f),
-                camp_list_pack_f32(row + 45.0f,
-                                    65.0f),
-                0, 0);
-            FUN_0018bc10(
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 65.0f;
+            pair.f[1] = row + 64.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
                                     (size_t)(item_offset + 0x0d) * 0x44),
-                0, 2, 1,
-                camp_list_pack_f32(row + 64.0f,
-                                    15.0f),
-                camp_list_pack_f32(row + 64.0f,
-                                    65.0f),
-                0, 0);
-            FUN_0018bc10(
+                0, 2, 1, shifted.q, pair.q, 0, 0, 6, 0x0d);
+
+            pair.f[0] = 14.0f;
+            pair.f[1] = row + 2.0f;
+            shifted = pair;
+            shifted.f[0] -= 50.0f;
+            campListAnimate(
                 100.0f,
                 (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) +
                                     (size_t)(item_offset + 0x0e) * 0x44),
-                0, 2, 1,
-                camp_list_pack_f32(row + 2.0f,
-                                    -36.0f),
-                camp_list_pack_f32(row + 2.0f,
-                                    14.0f),
-                0, 0);
+                0, 2, 1, shifted.q, pair.q, 0, 0, 3, 10);
+
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x400, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x444, 0);
+        } else {
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x2ac, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x2f0, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x334, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x378, 0);
+            camp_list_store_u32(
+                (uintptr_t)camp_list_load_u32(work_address, 0x38) +
+                    (size_t)i * 0x2a8, 0x3bc, 0);
             camp_list_store_u32(
                 (uintptr_t)camp_list_load_u32(work_address, 0x38) +
                     (size_t)i * 0x2a8, 0x400, 0);
@@ -1486,35 +1525,26 @@ void FUN_0015DA70(void *param_1)
                     (size_t)i * 0x2a8, 0x444, 0);
         }
     }
-    for (; i < 4; ++i) {
-        uintptr_t item =
-            (uintptr_t)camp_list_load_u32(work_address, 0x38) +
-            (size_t)i * 0x2a8;
-        camp_list_store_u32(item, 0x2ac, 0);
-        camp_list_store_u32(item, 0x2f0, 0);
-        camp_list_store_u32(item, 0x334, 0);
-        camp_list_store_u32(item, 0x378, 0);
-        camp_list_store_u32(item, 0x3bc, 0);
-        camp_list_store_u32(item, 0x400, 0);
-        camp_list_store_u32(item, 0x444, 0);
-    }
 
-    x = 415.0f;
-    y = -33.0f;
-    FUN_0018bc10(
+    pair.f[0] = 15.0f;
+    pair.f[1] = (f32)0x19f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
         100.0f,
         (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xd48),
-        0, 2, 1, camp_list_pack_f32(x, y),
-        camp_list_pack_f32(x, y + 50.0f), 0, 0);
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
     camp_list_store_u32(
         (uintptr_t)camp_list_load_u32(work_address, 0x38), 0xd90, 0);
-    x = 439.0f;
-    y = 415.0f;
-    FUN_0018bc10(
+
+    pair.f[0] = 488.0f;
+    pair.f[1] = (f32)0x19f;
+    shifted = pair;
+    shifted.f[0] -= 50.0f;
+    campListAnimate(
         100.0f,
         (void *)(uintptr_t)(camp_list_load_u32(work_address, 0x38) + 0xdd0),
-        0, 2, 1, camp_list_pack_f32(x, y),
-        camp_list_pack_f32(x, y + 73.0f), 0, 0);
+        0, 2, 1, shifted.q, pair.q, 0, 0, 8, 0x0d);
 }
 
 // FUN_0015E150 NONMATCHING

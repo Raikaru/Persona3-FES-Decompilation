@@ -1222,17 +1222,17 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
         charId = unit->genus == 1 ? unit->charId : 0;
         if ((charId == 0x102 || charId == 0x101) && id == 0x170)
             return 0x17;
-        break;
+        return -1;
     case 0x1a2:
         charId = unit->genus == 1 ? unit->charId : 0;
         if (charId == 0x103 && id == 0x163)
             return 0x17;
-        break;
+        return -1;
     case 0x1a3:
         charId = unit->genus == 1 ? unit->charId : 0;
         if (charId == 0x104 && func_002d6370(id) != 0)
             return 0x18;
-        break;
+        return -1;
     case 0x1a5:
         charId = unit->genus == 1 ? unit->charId : 0;
         if (charId == 0x107)
@@ -1242,25 +1242,25 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
             if (id == 0x16c)
                 return 0x19;
         }
-        break;
+        return -1;
     case 0x1a6:
         charId = unit->genus == 1 ? unit->charId : 0;
         if (charId == 0x10a &&
             (id == 0x90 || id == 0x8e || id == 0x8d || id == 0x83 ||
              id == 0x80 || id == 0x7f || id == 0x77 || id == 0x75 || id == 0x73))
             return 0x18;
-        break;
+        return -1;
     case 0x1a8:
         charId = unit->genus == 1 ? unit->charId : 0;
         if (charId == 0x10d && id == 0x134)
             return *(u32*)((u8*)gBtl + 0xb54) == 0 ? 7 : 0x15;
-        break;
+        return -1;
     case 0x1b4:
         charId = unit->genus == 1 ? unit->charId : 0;
         if (charId == 0xf1 &&
             (id == 0x126 || id == 0x128 || id == 0x127 || id == 0x125))
             return 0;
-        break;
+        return -1;
     default:
         break;
     }

@@ -4974,7 +4974,7 @@ void FUN_0042adb0(int param_1)
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
-  K_FldFrame_CtlCopyPos(&posCamera,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&posCamera,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
   posTarget = posCamera;
 
@@ -5901,11 +5901,11 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
 
         cVar1 = *(char *)(iVar10 + 0xb29);
-        K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
         savedMain = *(YajimaVec3 *)&posMain;
 
-        iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+        iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
         fVar17 = savedMain.x - ((float)iVar5 * 800.0f - 400.0f);
 
@@ -5951,11 +5951,11 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar1 = *(char *)(iVar10 + 0xb29);
 
-        K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
         savedMain = *(YajimaVec3 *)&posMain;
 
-        iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+        iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
         fVar17 = savedMain.z - ((float)iVar5 * 800.0f - 400.0f);
 
@@ -6566,11 +6566,11 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           cVar1 = *(char *)(iVar4 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&posMain0,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain0,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMain0 = posMain0;
 
-          iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           fVar18 = savedMain0.x - ((float)iVar6 * 800.0f - 400.0f);
 
@@ -6614,11 +6614,11 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           cVar1 = *(char *)(iVar4 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&posMain0,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain0,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMain0 = posMain0;
 
-          iVar6 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar6 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           fVar18 = savedMain0.z - ((float)iVar6 * 800.0f - 400.0f);
 
@@ -6837,11 +6837,11 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           fVar19 = (float)(int)*(char *)(iVar4 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&posMain3,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain3,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMain3 = posMain3;
 
-          iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           cVar3 = *(char *)(iVar4 + 0xb29);
 
@@ -6877,11 +6877,11 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           fVar19 = (float)(int)*(char *)(iVar4 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&posMain4,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain4,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMain4 = posMain4;
 
-          iVar6 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar6 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           cVar1 = *(char *)(iVar4 + 0xb29);
 
@@ -7073,13 +7073,13 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
           cVar3 = *(char *)(iVar2 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMain = *(YajimaVec3 *)&posMain;
 
 
 
-          iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           fVar17 = savedMain.x - ((float)iVar5 * 800.0f - 400.0f);
 
@@ -7123,13 +7123,13 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
                    - 8.0f;
 
-          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMain = *(YajimaVec3 *)&posMain;
 
 
 
-          iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           fVar17 = savedMain.z - ((float)iVar5 * 800.0f - 400.0f);
 
@@ -7374,15 +7374,15 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
           YajimaVec3 delta;
 
 
-          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           delta.x = *pfVar14 - posMain.x;
 
-          K_FldFrame_CtlCopyPos(&posY,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posY,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           delta.y = *(float *)(&DAT_0086be08 + iVar15 * 0x10) - posY.y;
 
-          K_FldFrame_CtlCopyPos(&posZ,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posZ,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           delta.z = *(float *)(&DAT_0086be0c + iVar15 * 0x10) - posZ.z;
 
@@ -7689,11 +7689,11 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&mainPosX,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&mainPosX,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMainX = mainPosX;
 
-          iVar4 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar4 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           fVar15 = savedMainX.x - ((float)iVar4 * 800.0f - 400.0f);
 
@@ -7739,11 +7739,11 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
           fVar16 = (float)(int)*(char *)(iVar2 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&mainPosZ,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&mainPosZ,*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           savedMainZ = mainPosZ;
 
-          iVar4 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
+          iVar4 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(u32 *)DAT_008717f4_abs + 0x1e0));
 
           fVar15 = savedMainZ.z - ((float)iVar4 * 800.0f - 400.0f);
 

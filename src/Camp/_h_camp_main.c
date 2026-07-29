@@ -45,6 +45,8 @@ extern const char D_005DB1D0[];
 extern const char D_005DB1F0[];
 extern const char D_005DB210[];
 
+#pragma alias campMainSocialLevelFresh datGetSocialLinkLevel
+extern s8 campMainSocialLevelFresh(s16 socialLink);
 extern void* func_0010c3a0(void* stream, u32* wasReady, s32* byteCount);
 extern void func_004d0f00(void* resource);
 extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
@@ -1827,6 +1829,12 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
         DAT_007cdf9c += 0x452;
     }
 }
+#pragma alias campMainSocialFrameResourceAbs D_00833B44
+extern u8 campMainSocialFrameResourceAbs[];
+#pragma alias campMainSocialIconResourceAbs D_00833B48
+extern u8 campMainSocialIconResourceAbs[];
+#define D_00833B44 (*(void**)campMainSocialFrameResourceAbs)
+#define D_00833B48 (*(void**)campMainSocialIconResourceAbs)
 
 // FUN_00136A10 NONMATCHING
 void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
@@ -1859,6 +1867,7 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
         frame = (DAT_005E3220[id] - 1) * 2 + 1;
         hCampMainDrawSprite7(parent, D_00833B44, frame, (u8)textAlpha,
                      p.value.x + 84.0f, p.value.y + 46.0f, alpha);
+        socialLevel = campMainSocialLevelFresh((s16)id);
         sprintf(text, gp0xffff897c,
                 D_005D80E4[id * 10 + socialLevel]);
         FUN_003b2f90(100.0f, (s32)p.value.x + 0xad,
@@ -1877,6 +1886,7 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
             hCampMainDrawSprite7(parent, D_00833B44, 0x2e, (u8)textAlpha,
                          p.value.x + 87.0f, p.value.y + 29.0f, alpha);
         }
+        socialLevel = campMainSocialLevelFresh((s16)id);
         if (socialLevel != 10) {
             hCampMainDrawSpriteAlt10(parent, D_00833B44, 0x30, (u8)textAlpha,
                          0x4f, 0xa4, 0xff, p.value.x + 83.0f,
@@ -1888,11 +1898,13 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
         socialLevel = datGetSocialLinkLevel((s16)id);
         if (socialLevel != 10) {
             frame = (DAT_005E3220[id] - 1) * 2;
+            hCampMainDrawSprite7(parent, D_00833B44, frame, (u8)textAlpha,
+                         p.value.x + 84.0f, p.value.y + 46.0f, alpha);
         } else {
             frame = (DAT_005E3220[id] - 1) * 2 + 1;
+            hCampMainDrawSprite7(parent, D_00833B44, frame, (u8)textAlpha,
+                         p.value.x + 84.0f, p.value.y + 46.0f, alpha);
         }
-        hCampMainDrawSprite7(parent, D_00833B44, frame, (u8)textAlpha,
-                     p.value.x + 84.0f, p.value.y + 46.0f, alpha);
         socialLevel = datGetSocialLinkLevel((s16)id);
         sprintf(text, gp0xffff897c,
                 D_005D80E4[id * 10 + socialLevel]);
@@ -1924,26 +1936,28 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
         }
         return;
     }
+    socialLevel = datGetSocialLinkLevel((s16)id);
     if (selected != 0) {
         frame = 0x12;
         socialLevel = 0x14;
-        hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
-                     p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     } else {
         frame = 0x11;
-        socialLevel = 0x13;
-        if (datGetSocialLinkLevel((s16)id) == 10) {
+        if (socialLevel != 10) {
+            socialLevel = 0x13;
+        } else {
             socialLevel = 0x14;
         }
-        hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
-                     p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     }
+    hCampMainDrawSprite7(parent, D_00833B48, frame, (u8)textAlpha,
+                 p.value.x + 165.0f, p.value.y + 34.0f, alpha);
     for (i = 0; i < datGetSocialLinkLevel((s16)id); i++) {
         hCampMainDrawSprite7(parent, D_00833B48, socialLevel, (u8)textAlpha,
                      p.value.x + 174.0f + i * 17.0f,
                      p.value.y + 37.0f, alpha);
     }
 }
+#undef D_00833B44
+#undef D_00833B48
 
 /* Draw the common five-card carousel frame used by all three modes. */
 static void campDrawCarousel(f32 alpha, u64 position, const s32* entries,

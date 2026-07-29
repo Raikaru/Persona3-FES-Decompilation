@@ -50333,9 +50333,9 @@ s8 FUN_00352c70(int param_1,u8 *param_2)
 
 {
 
-  u8 cVar1;
-
-  u32 uVar2;
+  u16 uVar2;
+  u32 uVar3;
+  u32 *table;
 
   
 
@@ -50344,63 +50344,41 @@ s8 FUN_00352c70(int param_1,u8 *param_2)
     return true;
 
   }
+  uVar2 = 0;
+  table = DAT_00957bd0_abs;
 
-  for (uVar2 = 0; (uVar2 < 3 && ((&DAT_00957bd8)[uVar2] != 0)); uVar2 = uVar2 + 1 & 0xffff) {
-
-    if ((((u32)(u8)param_2[2] & 1 << (uVar2 & 0x1f)) != 0) && ((&DAT_00957bd8)[uVar2] == param_1)
-
-       ) {
-
+  for (; (u32)uVar2 < 3; uVar2++) {
+    uVar3 = table[uVar2 + 2];
+    if (uVar3 == 0) {
+      break;
+    }
+    if ((((u32)param_2[2] & 1 << (uVar2 & 0x1f)) != 0) && (uVar3 == param_1)) {
       return true;
+    }
+  }
 
+  if ((DAT_00957bd0_abs[0] != 0) && (*(u8 *)(param_1 + 0xa2) == *(u8 *)(DAT_00957bd0_abs[0] + 0xa2))) {
+
+    switch (*param_2) {
+    case 0:
+      return false;
+    case 1:
+      return DAT_00957bd0_abs[0] == param_1;
+    case 2:
+      return true;
     }
 
   }
 
-  if ((DAT_00957bd0 != 0) && (*(char *)(param_1 + 0xa2) == *(char *)(DAT_00957bd0 + 0xa2))) {
+  if ((DAT_00957bd4_abs[0] != 0) && (*(u8 *)(param_1 + 0xa2) == *(u8 *)(DAT_00957bd4_abs[0] + 0xa2))) {
 
-    cVar1 = *param_2;
-
-    if (cVar1 == '\x02') {
-
-      return true;
-
-    }
-
-    if (cVar1 == '\x01') {
-
-      return DAT_00957bd0 == param_1;
-
-    }
-
-    if (cVar1 == '\0') {
-
+    switch (param_2[1]) {
+    case 0:
       return false;
-
-    }
-
-  }
-
-  if ((DAT_00957bd4 != 0) && (*(char *)(param_1 + 0xa2) == *(char *)(DAT_00957bd4 + 0xa2))) {
-
-    cVar1 = param_2[1];
-
-    if (cVar1 == '\x02') {
-
+    case 1:
+      return DAT_00957bd4_abs[0] == param_1;
+    case 2:
       return true;
-
-    }
-
-    if (cVar1 == '\x01') {
-
-      return DAT_00957bd4 == param_1;
-
-    }
-
-    if (cVar1 == '\0') {
-
-      return false;
-
     }
 
   }
