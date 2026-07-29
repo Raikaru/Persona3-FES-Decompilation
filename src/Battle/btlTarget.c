@@ -2882,7 +2882,7 @@ void FUN_002d32b0(float param_1)
                     float centerDistance;
                     centerDelta.x = (float)((s32)*(s16 *)node * 0x19 - 0x6d6) - candidateX;
                     centerDelta.y = (float)((s32)*(s16 *)(node + 0x02) * 0x19 - 0x6d6) - candidateY;
-                    centerDistance = btlTargetV2dLength(&centerDelta);
+                    centerDistance = FUN_004c6af0((f32*)&centerDelta);
                     *(float *)(record + 0x20) = centerDistance - (*(float *)(node + 0x04) + candidateZ);
                 }
             }
@@ -2907,7 +2907,7 @@ void FUN_002d32b0(float param_1)
 
                 delta.x = candidate[0] - start[0];
                 delta.y = candidate[1] - start[1];
-                distance = btlTargetV2dLength(&delta);
+                distance = FUN_004c6af0((f32*)&delta);
                 if (distance < bestDistance)
                 {
                     FUN_004C6B20(&bestDirection, &delta);

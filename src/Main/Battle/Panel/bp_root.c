@@ -2515,7 +2515,18 @@ void FUN_00204CC0(void)
     {
         entry = work + (*(u32*)(work + 0x76f8) + i) * 0x18 + 0x2e0;
         type = *(u32*)(entry + 4);
-        color = (i == *(u32*)(work + 0x7700)) ? (s32)0xffffffff : (s32)0x8080ffff;
+        if (i == *(u32*)(work + 0x7700))
+        {
+            K_ASSERT(gBcmWork != NULL, 0x164);
+            if ((*work & 1) != 0 || (*work & 0x20000000) != 0)
+                color = 0xffff;
+            else
+                color = (s32)0x8080ffff;
+        }
+        else
+        {
+            color = -1;
+        }
         if (type == 0)
         {
             handle = *(u32*)(work + 0x370 + i * 8);
@@ -2942,6 +2953,7 @@ void FUN_00205D60(void)
         entry = work + (i + *(u32*)(work + 0x76f8)) * 0x18 + 0x2e0;
         if (*(u32*)(work + 0x7700) == i + *(u32*)(work + 0x76f8))
         {
+            K_ASSERT(gBcmWork != NULL, 0x164);
             if ((*work & 1) != 0 || (*work & 0x20000000) != 0)
                 color = 0xffff;
             else

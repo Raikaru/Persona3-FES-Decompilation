@@ -1042,7 +1042,8 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
         if (shadow->camera != NULL)
         {
             func_004d1840(shadow->camera, func_004caf10());
-            func_004cb930((RwFrame*)shadow->camera->object.object.parent,
+            func_004cb930_one((RwFrame*)shadow->camera->object.object.parent);
+            func_004cb750((RwFrame*)shadow->camera->object.object.parent,
                           FLDSHADOW_CAMERA_OFFSET, rwCOMBINEREPLACE);
             if (shadow->camera->object.object.parent != NULL)
             {

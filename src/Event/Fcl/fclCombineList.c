@@ -556,6 +556,8 @@ byte datGetLevel(s16);
 extern FclPersonaDefinition* DAT_007ce420[];
 extern u8* gp0xffffb730;
 extern const FclGlyphSet* DAT_007ce4e4[];
+#pragma alias DAT_007ce4e4_ptr DAT_007ce4e4
+extern const FclGlyphSet** DAT_007ce4e4_ptr;
 extern const FclTextRuntimeTable DAT_007cd798;
 extern u16 DAT_007cd79c;
 extern u16 DAT_007cd79e;
@@ -1028,6 +1030,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     FclDb650TextData* text_data;
     s32 index;
     s32 draw_variant;
+    s32 mode;
     s16 x;
     s16 y;
     s16 alpha;
@@ -1036,9 +1039,10 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     x = result->x;
     y = result->y;
     alpha = result->alpha;
+    mode = result->mode;
     (void)stream;
 
-    switch (result->mode) {
+    switch (mode) {
     case 4:
         if ((work->flags & 0x10000) != 0) return;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x1a, 0);
@@ -1135,12 +1139,12 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         FUN_0040e3c0(0.0f, x, y, alpha, 0x17, 0);
         text_data = result->text_data;
         if (text_data == 0 || text_data->glyph_index == 0) return;
-        draw_variant = (s32)DAT_007ce420[text_data->glyph_index]->field_02.draw_variant;
+        draw_variant = (s32)((FclPersonaTableEntry *)gp0xffffb730)[text_data->glyph_index].fields.arcana;
         FUN_0040e3c0(0.0f, x, y, alpha, 0x18,
                       (byte)((draw_variant - 1) * 2));
         FUN_003b32d0(0.0f, x + 0x8a, y + 0x35,
                      (s32)alpha | -0x100, 6, 3,
-                     DAT_007ce4e4[text_data->glyph_index], 0x10, 0x6e);
+                     DAT_007ce4e4_ptr[text_data->glyph_index], 0x10, 0x6e);
         FUN_0040e3c0(0.0f, x, y, alpha, 0x14, 0);
         sprintf(number_text, DAT_007cd798.format_string, (s32)text_data->decimal_value);
         FUN_0040eb50(0.0f, x + 0x157, y + 0x34, alpha,
@@ -1153,12 +1157,12 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x17, 0);
         text_data = result->text_data;
         if (text_data == 0 || text_data->glyph_index == 0) return;
-        draw_variant = (s32)DAT_007ce420[text_data->glyph_index]->field_02.draw_variant;
+        draw_variant = (s32)((FclPersonaTableEntry *)gp0xffffb730)[text_data->glyph_index].fields.arcana;
         FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x18,
                       (byte)((draw_variant - 1) * 2));
         FUN_003b32d0(0.0f, x + 0x8a, y + 0x4f,
                      (s32)alpha | -0x100, 6, 3,
-                     DAT_007ce4e4[text_data->glyph_index], 0x10, 0x6e);
+                     DAT_007ce4e4_ptr[text_data->glyph_index], 0x10, 0x6e);
         FUN_0040e3c0(0.0f, x, y + 0x1a, alpha, 0x14, 0);
         sprintf(number_text, DAT_007cd798.format_string, (s32)text_data->decimal_value);
         FUN_0040eb50(0.0f, x + 0x157, y + 0x4e, alpha,
@@ -1172,6 +1176,9 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     case 17:
     case 18:
     case 19:
+        if ((work->flags & 0x10000) != 0) return;
+        FUN_0040e3c0(1.0f, x, y, alpha, 0x0d, mode - 0x10);
+        return;
     default:
         return;
     }

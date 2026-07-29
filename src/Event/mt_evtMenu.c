@@ -17021,6 +17021,8 @@ int FUN_00384780(int param_1,int param_2,int param_3)
 
   iVar1 = 1;
 
+  FUN_00361830(param_3);
+
   FUN_0036f900(param_1,param_2,0x1e,6,0,1,param_3,0x3844b0,(code *)FUN_00384520);
 
 

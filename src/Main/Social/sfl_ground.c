@@ -510,7 +510,7 @@ void func_002392d0(void)
         rect[2] = 640.0f;
         rect[3] = 448.0f;
         func_0021d8e0(GROUND_PTR(work, 0x10), rect);
-    { f32 _sgav = panelFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = panelFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         func_0021d950(GROUND_PTR(work, 0x10), &color);
     }
 
@@ -537,7 +537,7 @@ void func_002392d0(void)
             if (alpha < 0.0f)
                 alpha = 0.0f;
             wave = alpha * 255.0f;
-    { f32 _sgav = wave * 255.0f; u8 _sgar; if (_sgav >= 255.0f) _sgar = 0xff; else if (_sgav <= 0.0f) _sgar = 0; else _sgar = (u8)_sgav; GROUND_F32(tile, 0x2c) = (f32)_sgar; }
+    { f32 _sgav = wave * 255.0f; u8 _sgar; if (_sgav >= 255.0f) _sgar = 0xff; else if (_sgav <= 0.0f) _sgar = 0; else _sgar = (s32)_sgav; GROUND_F32(tile, 0x2c) = (f32)_sgar; }
 
             distance = sqrtf((x - 320.0f) * (x - 320.0f) + y * y);
             angle = func_0052ea18(y, x - 320.0f);
@@ -570,7 +570,7 @@ void func_002392d0(void)
         else
             panelPhase = 1.0f - (f32)((s32)work[1] - 10) / 10.0f;
         panelScale = 1.0f;
-    { f32 _sgav = panelFade * panelPhase * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = panelFade * panelPhase * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         sinAngle = func_0052e6d8(frameAngle);
         cosAngle = func_0052e878(frameAngle);
         direction.x = sinAngle;
@@ -627,21 +627,47 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x310), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x310), &color);
 
+        panelPhase = (f32)(work[1] % 40) / 40.0f;
+        if ((work[0] & 1) != 0) {
+            center.x = 320.0f +
+                       panelPhase *
+                           (600.0f * func_0052e6d8(frameAngle) -
+                            -600.0f * func_0052e6d8(frameAngle)) +
+                       -600.0f * func_0052e6d8(frameAngle);
+            center.y = 418.0f +
+                       panelPhase *
+                           (600.0f * func_0052e878(frameAngle) -
+                            -600.0f * func_0052e878(frameAngle)) +
+                       -600.0f * func_0052e878(frameAngle);
+        } else {
+            center.x = 320.0f;
+            center.y = 418.0f;
+        }
         direction.x = func_0052e6d8(frameAngle);
         direction.y = func_0052e878(frameAngle);
-        motion = sixHundred * (sinAngle - panelPhase * (sinAngle + sinAngle));
-        center.x = 320.0f + motion;
-        motion = sixHundred * (cosAngle - panelPhase * (cosAngle + cosAngle));
-        center.y = 418.0f + motion;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0x510), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x510), &color);
 
+        panelPhase = (f32)((work[1] + 20) % 40) / 40.0f;
+        if ((work[0] & 1) != 0) {
+            center.x = 320.0f +
+                       panelPhase *
+                           (600.0f * func_0052e6d8(frameAngle) -
+                            -600.0f * func_0052e6d8(frameAngle)) +
+                       -600.0f * func_0052e6d8(frameAngle);
+            center.y = 418.0f +
+                       panelPhase *
+                           (600.0f * func_0052e878(frameAngle) -
+                            -600.0f * func_0052e878(frameAngle)) +
+                       -600.0f * func_0052e878(frameAngle);
+        } else {
+            center.x = 320.0f;
+            center.y = 418.0f;
+        }
         direction.x = func_0052e6d8(frameAngle);
         direction.y = func_0052e878(frameAngle);
-        center.x = 320.0f;
-        center.y = 418.0f;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0x710), &center, &direction, &scale);
@@ -676,7 +702,7 @@ void func_002392d0(void)
         particleFade = 0.0f;
         break;
     }
-    { f32 _sgav = fade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = fade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
     active = 0;
     for (i = 0; i < 48; i++) {
         particle = (u8*)work + SFL_GROUND_PARTICLE_OFFSET +
@@ -763,7 +789,7 @@ void func_002392d0(void)
         direction.x = deltaX;
         direction.y = deltaY;
         func_0021e170(particle + 0x10, &center, &direction, &scale);
-    { f32 _sgav = particleFade * height * progress * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = particleFade * height * progress * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         func_0021d950(particle + 0x10, &color);
     }
 
@@ -793,7 +819,7 @@ void func_002392d0(void)
                 center.y -= 96.0f;
                 func_0021e170(tile + 0x10 + j * 0x100, &center,
                               &direction, &scale);
-    { f32 _sgav = panelScale * 0.43f * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = panelScale * 0.43f * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
                 func_0021d950(tile + 0x10 + j * 0x100, &color);
             }
         }
@@ -805,7 +831,7 @@ void func_002392d0(void)
         rect[2] = 640.0f;
         rect[3] = 238.0f;
         func_0021d8e0(GROUND_PTR(work, 0x4610), rect);
-    { f32 _sgav = panelScale * 0.2f * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = panelScale * 0.2f * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         func_0021d950(GROUND_PTR(work, 0x4610), &color);
     }
     if (work[3] == 3 || work[3] == 4) {
@@ -816,7 +842,7 @@ void func_002392d0(void)
         rect[2] = 640.0f;
         rect[3] = 223.0f;
         func_0021d8e0(GROUND_PTR(work, 0x4710), rect);
-    { f32 _sgav = panelScale * 0.4f * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+    { f32 _sgav = panelScale * 0.4f * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         func_0021d950(GROUND_PTR(work, 0x4710), &color);
     }
 
@@ -840,7 +866,7 @@ void func_002392d0(void)
             f32 _normFade;
             if ((s32)work[1] >= 30) _normFade = 1.0f;
             else _normFade = (f32)work[1] / 30.0f;
-            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         }
         func_0021d950(GROUND_PTR(work, 0x64f0), &color);
 
@@ -852,7 +878,7 @@ void func_002392d0(void)
             f32 _normFade;
             if ((s32)work[1] >= 30) _normFade = 1.0f;
             else _normFade = (f32)work[1] / 30.0f;
-            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         }
         func_0021d950(GROUND_PTR(work, 0x65f0), &color);
 
@@ -884,7 +910,7 @@ void func_002392d0(void)
             f32 _normFade;
             if ((s32)work[1] >= 30) _normFade = 1.0f;
             else _normFade = (f32)work[1] / 30.0f;
-            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         }
         func_0021d950(GROUND_PTR(work, 0x66f0), &color);
         panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
@@ -901,7 +927,7 @@ void func_002392d0(void)
             f32 _normFade;
             if ((s32)work[1] >= 30) _normFade = 1.0f;
             else _normFade = (f32)work[1] / 30.0f;
-            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         }
         func_0021d950(GROUND_PTR(work, 0x67f0), &color);
         panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
@@ -918,7 +944,7 @@ void func_002392d0(void)
             f32 _normFade;
             if ((s32)work[1] >= 30) _normFade = 1.0f;
             else _normFade = (f32)work[1] / 30.0f;
-            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (u8)_sgav; }
+            { f32 _sgav = _normFade * 255.0f; if (_sgav >= 255.0f) color.a = 0xff; else if (_sgav <= 0.0f) color.a = 0; else color.a = (s32)_sgav; }
         }
         func_0021d950(GROUND_PTR(work, 0x68f0), &color);
         panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;

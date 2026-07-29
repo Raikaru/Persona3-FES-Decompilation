@@ -984,8 +984,7 @@ init_phase8:
         }
     }
     scenePath = K_Scene_001a0250();
-    if (scenePath == 1 || (gMtScene->fldMajorId < 0x3b) ||
-        ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
+    if (scenePath == 1)
     {
         D_0086BDC0[0] =
             *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0xa3c);
@@ -1015,6 +1014,17 @@ init_phase8:
             {
                 func_001bd450((u32)(gMtScene->fldMajorId - 0x28), 1);
             }
+        }
+        func_001bd8c0();
+    }
+    else if (((gMtScene->fldMajorId >= 0x33) && (gMtScene->fldMajorId < 0x3b)) ||
+             ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
+    {
+        for (i = 0; i < 9; i++)
+        {
+            D_0086BDC0[i] =
+                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
+                          0xa3c);
         }
         func_001bd8c0();
     }
@@ -1072,6 +1082,9 @@ init_phase8:
              i < *(u32*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0x118);
              i++)
         {
+            (void)func_004cb2f0(
+                *(u32*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                        i * 0x18 + 0x124));
             if (*(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
                         i * 0x18 + 0x11c) == 1)
             {

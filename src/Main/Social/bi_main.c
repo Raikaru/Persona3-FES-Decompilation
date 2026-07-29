@@ -846,11 +846,13 @@ void func_00241910(void)
             break;
         case 1:
             panel = slot + 0x10;
-            frame = func_0021cca0(renderContext, 0x12);
-            (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
+                frame = func_0021cca0(renderContext, 0x13);
+                (*stateSet)(1, (u32)func_0021cce0(frame));
                 BI_MAIN_DRAW_ALT(panel);
             } else {
+                frame = func_0021cca0(renderContext, 0x12);
+                (*stateSet)(1, (u32)func_0021cce0(frame));
                 BI_MAIN_DRAW_BASIC(panel);
             }
             break;

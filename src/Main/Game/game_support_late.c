@@ -1414,13 +1414,37 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        burstAlpha = randomFrame & 0xff;
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 1, 0xff, burstAlpha, GS_F32(transition, 0x38) + 28.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24) - 4.0f);
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 2, 0xff, burstAlpha, GS_F32(transition, 0x38) + 59.0f, GS_F32(transition, 0x3c) + 23.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 1, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 28.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24) - 4.0f);
+    }
+    burstFrame = GS_S32(object, 0x18) - 5;
+    if (burstFrame >= 0)
+    {
         if (burstFrame < 5)
         {
-            gsDrawSpriteAlt(GS_PTR(object, 0x38), 3, 0xff, burstAlpha, GS_F32(transition, 0x38) + 21.0f, GS_F32(transition, 0x3c) + 47.0f, GS_F32(transition, 0x24) - 4.0f);
+            randomFrame = (u32)(burstFrame / 5);
         }
+        else
+        {
+            randomFrame = RpRandom() % 0x99;
+        }
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 2, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 59.0f, GS_F32(transition, 0x3c) + 23.0f, GS_F32(transition, 0x24) - 4.0f);
+    }
+    burstFrame = GS_S32(object, 0x18) - 5;
+    if (burstFrame >= 0)
+    {
+        if (burstFrame < 5)
+        {
+            randomFrame = (u32)(burstFrame / 5);
+        }
+        else
+        {
+            randomFrame = RpRandom() % 0x99;
+        }
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 3, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 21.0f, GS_F32(transition, 0x3c) + 47.0f, GS_F32(transition, 0x24) - 4.0f);
+    }
+    burstFrame = GS_S32(object, 0x18) - 5;
+    if (burstFrame >= 0)
+    {
         if (burstFrame < 5)
         {
             randomFrame = (u32)(burstFrame / 5);
@@ -1430,6 +1454,10 @@ void func_0018d320(KwlnTask* task)
             randomFrame = RpRandom() % 0x99;
         }
         gsDrawSpriteAlt(GS_PTR(object, 0x38), 4, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 49.0f, GS_F32(transition, 0x3c) + 43.0f, GS_F32(transition, 0x24) - 4.0f);
+    }
+    burstFrame = GS_S32(object, 0x18) - 5;
+    if (burstFrame >= 0)
+    {
         if (burstFrame < 5)
         {
             randomFrame = (u32)(burstFrame / 5);

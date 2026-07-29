@@ -1804,7 +1804,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         position.x = 0.0f;
         position.y = 0.0f;
         h_campStatusDrawPanelFrame(1, position, 0);
-        if (FUN_0011e380(DAT_007cdf50, 0) != 0) {
+        if (*((s32*)((u8*)DAT_007cdf50->workData + 0x10)) != 0) {
             work->detailFrame = 0;
             child = *((KwlnTask**)((u8*)work + 0x24));
             childWork = child->workData;
