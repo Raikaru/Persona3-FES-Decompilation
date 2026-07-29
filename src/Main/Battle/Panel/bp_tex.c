@@ -889,10 +889,12 @@ void func_0021e170(void* destination,
     f32 angle;
     f32 sine;
     f32 cosine;
+    f32 cx;
     f32 x;
     f32 y;
     s32 i;
 
+    cx = center[0];
     length = sqrtf(direction[0] * direction[0] +
                    direction[1] * direction[1]);
     angle = func_0052ea18(direction[0] / length,
@@ -915,7 +917,7 @@ void func_0021e170(void* destination,
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
         points[i * 2 + 1] = x * sine + y * cosine;
-        points[i * 2] += center[0];
+        points[i * 2] += cx;
         points[i * 2 + 1] += center[1];
     }
     BP_TEX_F32(destination, 0x00) = points[0];

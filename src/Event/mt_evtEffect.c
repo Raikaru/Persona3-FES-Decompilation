@@ -1286,29 +1286,29 @@ void FUN_00395e20(int param_1)
 
   float fVar9;
 
-  u32 uStack_80;
+  float fStack_80;
 
-  u32 uStack_7c;
+  float fStack_7c;
 
-  u32 uStack_78;
+  float fStack_78;
 
-  u32 uStack_74;
+  float fStack_74;
 
-  u32 uStack_70;
+  float fStack_70;
 
   float fStack_6c;
 
   float fStack_68;
 
-  u32 uStack_64;
+  float fStack_64;
 
-  u32 uStack_60;
+  float fStack_60;
 
   float fStack_5c;
 
   float fStack_58;
 
-  u32 uStack_54;
+  float fStack_54;
 
   float fStack_50;
 
@@ -1366,21 +1366,21 @@ void FUN_00395e20(int param_1)
 
   } while (0 < iVar6);
 
-  uStack_60 = DAT_006a0ef0;
+  fStack_60 = *(float *)&DAT_006a0ef0;
 
-  uStack_54 = DAT_006a0efc;
+  fStack_54 = DAT_006a0efc;
 
-  uStack_70 = DAT_006a0f00;
+  fStack_70 = DAT_006a0f00;
 
-  uStack_64 = DAT_006a0f0c;
+  fStack_64 = DAT_006a0f0c;
 
-  uStack_80 = DAT_006a0f10;
+  fStack_80 = DAT_006a0f10;
 
-  uStack_7c = DAT_006a0f14;
+  fStack_7c = DAT_006a0f14;
 
-  uStack_78 = DAT_006a0f18;
+  fStack_78 = DAT_006a0f18;
 
-  uStack_74 = _DAT_006a0f1c;
+  fStack_74 = _DAT_006a0f1c;
 
   pfVar3 = *(float **)(param_1 + 0x6e8);
 
@@ -1448,7 +1448,7 @@ void FUN_00395e20(int param_1)
 
     for (iVar6 = 0; iVar6 < 0x29; iVar6 = iVar6 + 1) {
 
-      FUN_003bbc90(fVar9,&uStack_60,&uStack_70,&uStack_80,&fStack_30,&fStack_2c,auStack_28);
+      FUN_003bbc90(fVar9,&fStack_60,&fStack_70,&fStack_80,&fStack_30,&fStack_2c,auStack_28);
 
       if (0 < iVar6) {
 

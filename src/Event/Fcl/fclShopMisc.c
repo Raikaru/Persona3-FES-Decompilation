@@ -5500,6 +5500,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   int halfAlpha;
 
   float fVar11;
+  float fHalf;
 
   struct {
     u8 text[16];
@@ -5580,16 +5581,17 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x79,0);
   FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x7a,0);
 
+  fHalf = (float)param_3 * 0.5f;
   iVar10 = param_3;
   if (scratch.selectionFlags[iVar9] != '\0') {
-    iVar10 = (int)((float)param_3 * 0.5f);
+    iVar10 = (int)fHalf;
   }
   FUN_0040e3c0_f32(0.0f,param_1,param_2,iVar10 & 0xff,0x7b,0);
   FUN_0040e3c0_f32(0.0f,param_1,param_2,iVar10 & 0xff,0x7c,0);
   FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,param_3 & 0xff,0x7d,0);
 
   iVar9 = iVar9 * 2;
-  halfAlpha = (int)((float)param_3 * 0.5f) & 0xff;
+  halfAlpha = (int)fHalf & 0xff;
 
   if (scratch.itemSlots[iVar9] == -1) {
 

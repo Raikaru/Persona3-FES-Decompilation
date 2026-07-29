@@ -2517,6 +2517,7 @@ void FUN_0031d9c0(int *param_1,u32 *param_2)
   float fVar10;
   float fVar9;
   float fVar8;
+  float alphaF;
   u32 auStack_40[16];
   union {
     float f[16];
@@ -6283,6 +6284,7 @@ void FUN_00322010(void)
   float fVar7;
 
   float fVar8;
+  float alphaF;
 
   u8 auStack_160 [256];
 
@@ -23533,6 +23535,7 @@ void FUN_003348b0(int param_1)
   float fVar7;
 
   float fVar8;
+  float alphaF;
 
   int iVar9;
 
@@ -24183,6 +24186,7 @@ void FUN_003353f0(int param_1)
   int iVar2;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -24463,6 +24467,7 @@ void FUN_00335a70(int param_1)
   float fVar7;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -28140,6 +28145,7 @@ void FUN_003399a0(int param_1)
   __int128 in_zero_qw;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -30414,6 +30420,7 @@ void FUN_0033c1a0(int param_1)
   __int128 in_zero_qw;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -32622,6 +32629,7 @@ void FUN_0033e8e0(int param_1)
   __int128 in_zero_qw;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -37410,6 +37418,7 @@ void FUN_00343d60(int param_1)
   bool bVar7;
 
   float fVar8;
+  float alphaF;
 
   int iVar9;
 
@@ -41359,6 +41368,7 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
   u32 uVar7;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -41554,6 +41564,7 @@ void FUN_00348760(u8 *param_1,float *param_2)
   float *pfVar9;
 
   float fVar8;
+  float alphaF;
 
   
 
@@ -41666,6 +41677,7 @@ void FUN_00348950(u8 *param_1,float *param_2)
   float *pfVar13;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -41807,6 +41819,7 @@ void FUN_00348bd0(u8 *param_1,float *param_2)
   float *pfVar9;
 
   float fVar8;
+  float alphaF;
 
   
 
@@ -42242,6 +42255,7 @@ void FUN_00349620(int *param_1,float *param_2)
   int iVar7;
 
   float fVar8;
+  float alphaF;
 
   int iVar9;
 
@@ -42250,6 +42264,7 @@ void FUN_00349620(int *param_1,float *param_2)
   iVar1 = *param_1;
 
   uVar2.packed = (u32)param_1[3];
+  alphaF = (float)uVar2.rgba.a;
 
   for (iVar4 = 0; iVar4 < iVar1; iVar4 = iVar4 + 1) {
 
@@ -42267,7 +42282,7 @@ void FUN_00349620(int *param_1,float *param_2)
 
       ((int *)param_2)[3] = param_1[3];
 
-      fVar6 = (float)uVar2.rgba.a * (1.0f - *param_2);
+      fVar6 = alphaF * (1.0f - *param_2);
 
       if (fVar6 < 2.1474836e+09f) {
 
@@ -44905,6 +44920,7 @@ void FUN_0034cc00(u32 *param_1)
   u32 uVar6;
 
   float fVar8;
+  float alphaF;
   float zero;
 
   __int128 auVar9;
@@ -45773,6 +45789,7 @@ void FUN_0034dc00(u64 param_1)
   int iVar7;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -46916,6 +46933,7 @@ void FUN_0034eae0(int param_1,u32 *param_2,int param_3,u32 *param_4,
   float fVar7;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -49381,6 +49399,7 @@ void FUN_00351e70(int param_1)
   float fVar7;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
@@ -51924,6 +51943,7 @@ void FUN_003556d0(int param_1)
   int iVar7;
 
   float fVar8;
+  float alphaF;
 
   float fVar9;
 
