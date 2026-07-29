@@ -208,6 +208,7 @@ extern const char* func_00171110(s16 id, s16 field);
 extern u32 func_00171250(s16 id);
 extern u16 func_001712d0(s16 id);
 extern const char* FUN_00173220(u16 personaId);
+extern DatPersonaWork* FUN_00174a90(s16 id);
 extern const char* FUN_00177790(s16 id);
 extern u32 FUN_0016c470(u16 id);
 extern u32 FUN_0016c4f0(u16 id);
@@ -2623,7 +2624,6 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     void* resourceRecord;
     const char* resourceText;
     u16 resourceItemId;
-    u32 resourceFlags;
     u32 textColor;
     u32 value;
     u32 denominator;
@@ -2673,79 +2673,6 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
         campDrawEquipmentDetailList(*(CampPair*)&item->x,
                                     depth,
                                     menu->detailList, item->alpha);
-        break;
-    case 10:
-    case 0xb:
-    case 0xc:
-    case 0xd:
-    case 0xe:
-    case 0xf:
-    case 0x10:
-    case 0x11:
-    case 0x12:
-    case 0x13:
-    case 0x14:
-    case 0x15:
-        persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
-        drawPair.f[0] = item->x;
-        drawPair.f[1] = item->y;
-        if (selected != 0) {
-            campDrawSprite(parent, DAT_00833A50[1], 8, item->alpha,
-                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
-                           depth);
-        } else {
-            campDrawSprite(parent, DAT_00833A50[1], 7, item->alpha,
-                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
-                           depth);
-        }
-        resourceRecord = func_00170e90(DAT_007cdf94);
-        resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
-        hasAvailableBonus = 0;
-        if (FUN_0017bf70(resourceItemId) != 0) {
-            for (index = 0; index < 5; index++) {
-                resourceRecord = func_00170e90(DAT_007cdf94);
-                resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
-                if (FUN_0017bfa0(resourceItemId, (u8)index) != 0 &&
-                    datPersonaGetTotalStat(persona, (u16)index) != 99) {
-                    hasAvailableBonus = 1;
-                }
-            }
-        }
-        if (hasAvailableBonus != 0) {
-            if (selected != 0) {
-                campDrawSprite(parent, DAT_00833A50[0], 0x26, item->alpha,
-                               item->x + 9.0f, item->y + 9.0f,
-                               depth);
-            } else {
-                campDrawSprite(parent, DAT_00833A50[0], 0x25, item->alpha,
-                               item->x + 8.0f, item->y + 8.0f,
-                               depth);
-            }
-        }
-        if (selected != 0 && persona->level > 9) {
-            campDrawSprite(parent, H_Maestro_001120a0(1),
-                           persona->level / 10 + 0xb, item->alpha,
-                           88.0f + item->x - 10.0f, item->y + 11.0f,
-                           depth);
-            campDrawSprite(parent, H_Maestro_001120a0(1),
-                           persona->level % 10 + 0xb, item->alpha,
-                           104.0f + item->x - 10.0f, item->y + 11.0f,
-                           depth);
-        } else {
-            campDrawSprite(parent, H_Maestro_001120a0(2),
-                           persona->level / 10 + 0xb, item->alpha,
-                           88.0f + item->x - 10.0f, item->y + 11.0f,
-                           depth);
-            campDrawSprite(parent, H_Maestro_001120a0(2),
-                           persona->level % 10 + 0xb, item->alpha,
-                           104.0f + item->x - 10.0f, item->y + 11.0f,
-                           depth);
-        }
-        resourceText = FUN_00173220(persona->id);
-        textColor = (0xffU - item->alpha) | 0xffffff00;
-        campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
-                     (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
-                     0x10, 0);
         break;
     case 0x1e:
     case 0x28:
@@ -2860,10 +2787,9 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                             rank % 10 + 0xb, item->alpha,
                             item->x + 16.0f, item->y,
                             depth);
-        resourceFlags = FUN_0016c970(statValue);
-        if ((resourceFlags & 0x80000) != 0) {
+        if ((FUN_0016c970(statValue) & 0x80000) != 0) {
             icon = 0xe;
-        } else if ((resourceFlags & 0x80) != 0) {
+        } else if ((FUN_0016c970(statValue) & 0x80) != 0) {
             icon = 0xf;
         } else {
             statType = FUN_0016c920(statValue);
@@ -2903,6 +2829,79 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x42:
         campDrawSprite(parent, DAT_00833A50[1], 4, item->alpha,
                        item->x, item->y, depth);
+        break;
+    case 10:
+    case 0xb:
+    case 0xc:
+    case 0xd:
+    case 0xe:
+    case 0xf:
+    case 0x10:
+    case 0x11:
+    case 0x12:
+    case 0x13:
+    case 0x14:
+    case 0x15:
+        persona = FUN_00174a90((s16)(menuCode - 10));
+        drawPair.f[0] = item->x;
+        drawPair.f[1] = item->y;
+        if (selected != 0) {
+            campDrawSprite(parent, DAT_00833A50[1], 8, item->alpha,
+                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
+                           depth);
+        } else {
+            campDrawSprite(parent, DAT_00833A50[1], 7, item->alpha,
+                           60.0f + drawPair.f[0] - 10.0f, drawPair.f[1] + 3.0f,
+                           depth);
+        }
+        resourceRecord = func_00170e90(DAT_007cdf94);
+        resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
+        hasAvailableBonus = 0;
+        if (FUN_0017bf70(resourceItemId) != 0) {
+            for (index = 0; index < 5; index++) {
+                resourceRecord = func_00170e90(DAT_007cdf94);
+                resourceItemId = ((CampEquipmentResourceRecord*)resourceRecord)->itemId;
+                if (FUN_0017bfa0(resourceItemId, (u8)index) != 0 &&
+                    datPersonaGetTotalStat(persona, (u16)index) != 99) {
+                    hasAvailableBonus = 1;
+                }
+            }
+        }
+        if (hasAvailableBonus != 0) {
+            if (selected != 0) {
+                campDrawSprite(parent, DAT_00833A50[0], 0x26, item->alpha,
+                               item->x + 9.0f, item->y + 9.0f,
+                               depth);
+            } else {
+                campDrawSprite(parent, DAT_00833A50[0], 0x25, item->alpha,
+                               item->x + 8.0f, item->y + 8.0f,
+                               depth);
+            }
+        }
+        if (selected != 0 && persona->level > 9) {
+            campDrawSprite(parent, H_Maestro_001120a0(1),
+                           persona->level / 10 + 0xb, item->alpha,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+            campDrawSprite(parent, H_Maestro_001120a0(1),
+                           persona->level % 10 + 0xb, item->alpha,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+        } else {
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           persona->level / 10 + 0xb, item->alpha,
+                           88.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           persona->level % 10 + 0xb, item->alpha,
+                           104.0f + item->x - 10.0f, item->y + 11.0f,
+                           depth);
+        }
+        resourceText = FUN_00173220(persona->id);
+        textColor = (0xffU - item->alpha) | 0xffffff00;
+        campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
+                     (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
+                     0x10, 0);
         break;
     case 0x46:
         campDrawSprite(parent, DAT_00833A50[2], 8, item->alpha,

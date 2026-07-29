@@ -1142,7 +1142,7 @@ typedef union CampSkillAnimPair
     f32 f[2];
 } CampSkillAnimPair;
 
-static void campSkillOpenMain(CampSkillInnerWork* work)
+static inline void campSkillOpenMain(CampSkillInnerWork* work)
 {
     CampSkillAnimPair pairs[10];
     s32 i;

@@ -266,6 +266,9 @@ extern const char* FUN_00173220(u16 personaId);
 extern void FUN_003b2cb0(f32 scale, s32 x, s32 y, s32 color, u32 font,
                          u32 alignment, const char* text, u32 maxWidth,
                          u32 shadow);
+extern void FUN_003b2f90(f32 scale, s32 x, s32 y, s32 color, u32 font,
+                         u32 alignment, const char* text, u32 maxWidth,
+                         u32 shadow);
 extern int sprintf(char* buffer, const char* format, ...);
 extern void* D_00833BA4;
 extern void* D_00833B44;
@@ -409,10 +412,25 @@ void FUN_00133E10(CampMainDrawItem* item,
 
     switch (mode) {
     case 0:
-        campMainQueueSprite(item, campMainResource(resources, 0), 0,
-                            item->x + 250.0f, item->y);
-        campMainQueueSprite(item, campMainResource(resources, 0), 0,
-                            item->x + 1000.0f, item->y);
+        {
+            CampMainSpriteNode* node;
+
+            node = FUN_001158b0(NULL, campMainResource(resources, 0), 0);
+            node->spriteScale = item->spriteScale;
+            node->x = item->x + 250.0f;
+            node->y = item->y;
+            node->alpha = (u8)item->alpha;
+            FUN_001127d0(node, 1);
+            FUN_00115980(node);
+
+            node = FUN_001158b0(NULL, campMainResource(resources, 0), 0);
+            node->spriteScale = item->spriteScale;
+            node->x = item->x + (f32)0x2ee + 250.0f;
+            node->y = item->y;
+            node->alpha = (u8)item->alpha;
+            FUN_001127d0(node, 1);
+            FUN_00115980(node);
+        }
         item->scrollX -= 1.0f;
         if (item->scrollX < -750.0f) {
             item->scrollX += 750.0f;
@@ -1820,16 +1838,16 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
     s32 frame;
     u32 color;
     char text[0x100];
-    parent = NULL;
 
     p.packed = position;
-    color = (0xffU - (u32)textAlpha) | 0xffffff00U;
-    socialLevel = datGetSocialLinkLevel((s16)id);
+    color = 0xffU - (u32)textAlpha;
     if (selected != 0) {
+        socialLevel = datGetSocialLinkLevel((s16)id);
         if (socialLevel != 10) {
             hCampMainDrawSprite7(parent, D_00833B44, 0x2c, (u8)textAlpha,
                          p.value.x + 84.0f, p.value.y + 34.0f, alpha);
-            hCampMainDrawSprite7(parent, H_Maestro_001120a0(1), socialLevel + 0xb,
+            hCampMainDrawSprite7(parent, H_Maestro_001120a0(1),
+                         datGetSocialLinkLevel((s16)id) + 0xb,
                          (u8)textAlpha, p.value.x + 146.0f,
                          p.value.y + 35.0f, alpha);
         } else {
@@ -1843,13 +1861,16 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
                      p.value.x + 84.0f, p.value.y + 46.0f, alpha);
         sprintf(text, gp0xffff897c,
                 D_005D80E4[id * 10 + socialLevel]);
-        FUN_003b2cb0(100.0f, (s32)p.value.x + 0xad,
-                     (s32)p.value.y + 0x35, color, 6, 1, text, 0x10, -1);
+        FUN_003b2f90(100.0f, (s32)p.value.x + 0xad,
+                     (s32)p.value.y + 0x35, color | 0xffffff00U,
+                     6, 1, text, 0x10, -1);
     } else {
+        socialLevel = datGetSocialLinkLevel((s16)id);
         if (socialLevel != 10) {
             hCampMainDrawSprite7(parent, D_00833B44, 0x2d, (u8)textAlpha,
                          p.value.x + 84.0f, p.value.y + 34.0f, alpha);
-            hCampMainDrawSprite7(parent, H_Maestro_001120a0(2), socialLevel + 0xb,
+            hCampMainDrawSprite7(parent, H_Maestro_001120a0(2),
+                         datGetSocialLinkLevel((s16)id) + 0xb,
                          (u8)textAlpha, p.value.x + 146.0f,
                          p.value.y + 35.0f, alpha);
         } else {
@@ -1875,8 +1896,9 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
         socialLevel = datGetSocialLinkLevel((s16)id);
         sprintf(text, gp0xffff897c,
                 D_005D80E4[id * 10 + socialLevel]);
-        FUN_003b2cb0(100.0f, (s32)p.value.x + 0xad,
-                     (s32)p.value.y + 0x35, color, 10, 1, text, 0x10, -1);
+        FUN_003b2f90(100.0f, (s32)p.value.x + 0xad,
+                     (s32)p.value.y + 0x35, color | 0xffffff00U,
+                     10, 1, text, 0x10, -1);
     }
     if (FUN_00172160(id) != NULL) {
         hCampMainDrawSprite7(parent, D_00833B48, selected != 0 ? 0x10 : 6,
