@@ -8759,12 +8759,11 @@ u32 func_0031c1d0(int param_1)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u16 uVar2;
 
   int sVar3;
-  u32 uVar4;
 
 
   u32 uVar5;
@@ -8783,8 +8782,7 @@ u32 func_0031c1d0(int param_1)
 
   iVar7 = (int)param_1;
 
-  switch (*(u16 *)(iVar7 + 0xd4)) {
-  case 1:
+  if (*(u16 *)(iVar7 + 0xd4) != 1) return 0;
 
     uVar2 = datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0);
 
@@ -8800,19 +8798,19 @@ u32 func_0031c1d0(int param_1)
 
       if ((cVar1 == '\x03') || (cVar1 == '\a')) {
 
-        lVar6 = (long)(void*)mdlSearch(10,sVar3,0);
+        lVar6 = (int)mdlSearch(10,sVar3,0);
 
         if (lVar6 == 0) {
 
           if (cVar1 == '\a') {
 
-            sprintf(auStack_100, (const char*)0x69b110, 0x7cca10,sVar3);
+            sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
 
           }
 
           else {
 
-            sprintf(auStack_100, (const char*)0x69b0f0, 0x7cca10,sVar3);
+            sprintf(auStack_100, (const char*)0x69b0f0, &gp0xffff9d20,sVar3);
 
           }
 
@@ -8828,19 +8826,19 @@ u32 func_0031c1d0(int param_1)
 
         sVar8 = sVar3 + 1000;
 
-        lVar6 = (long)(void*)mdlSearch(10,sVar8,0);
+        lVar6 = (int)mdlSearch(10,sVar8,0);
 
         if (lVar6 == 0) {
 
           if (cVar1 == '\a') {
 
-            sprintf(auStack_100, (const char*)0x69b150, 0x7cca10,sVar3);
+            sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
 
           }
 
           else {
 
-            sprintf(auStack_100, (const char*)0x69b130, 0x7cca10,sVar3);
+            sprintf(auStack_100, (const char*)0x69b130, &gp0xffff9d20,sVar3);
 
           }
 
@@ -8869,11 +8867,11 @@ u32 func_0031c1d0(int param_1)
 
     case 3:
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar3,0);
+      lVar6 = (int)mdlSearch(7,sVar3,0);
 
       if (lVar6 == 0) {
 
-        sprintf(auStack_100, (const char*)0x69b110, 0x7cca10,sVar3);
+        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
 
         func_003192a0(param_1,0,7,sVar3,auStack_100,0);
 
@@ -8887,11 +8885,11 @@ u32 func_0031c1d0(int param_1)
 
       sVar8 = sVar3 + 1000;
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar8,0);
+      lVar6 = (int)mdlSearch(7,sVar8,0);
 
       if (lVar6 == 0) {
 
-        sprintf(auStack_100, (const char*)0x69b150, 0x7cca10,sVar3);
+        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
 
         func_003192a0(param_1,1,7,sVar8,auStack_100,0);
 
@@ -8919,11 +8917,11 @@ u32 func_0031c1d0(int param_1)
 
     case 7:
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar3,0);
+      lVar6 = (int)mdlSearch(7,sVar3,0);
 
       if (lVar6 == 0) {
 
-        sprintf(auStack_100, (const char*)0x69b110, 0x7cca10,sVar3);
+        sprintf(auStack_100, (const char*)0x69b110, &gp0xffff9d20,sVar3);
 
         func_003192a0(param_1,0,7,sVar3,auStack_100,0);
 
@@ -8937,11 +8935,11 @@ u32 func_0031c1d0(int param_1)
 
       sVar8 = sVar3 + 1000;
 
-      lVar6 = (long)(void*)mdlSearch(7,sVar8,0);
+      lVar6 = (int)mdlSearch(7,sVar8,0);
 
       if (lVar6 == 0) {
 
-        sprintf(auStack_100, (const char*)0x69b150, 0x7cca10,sVar3);
+        sprintf(auStack_100, (const char*)0x69b150, &gp0xffff9d20,sVar3);
 
         func_003192a0(param_1,1,7,sVar8,auStack_100,0);
 
@@ -8973,11 +8971,11 @@ u32 func_0031c1d0(int param_1)
 
       else {
 
-        lVar6 = (long)(void*)mdlSearch(7,sVar3,0);
+        lVar6 = (int)mdlSearch(7,sVar3,0);
 
         if (lVar6 == 0) {
 
-          sprintf(auStack_100, (const char*)0x69b170, 0x7cca10,sVar3);
+          sprintf(auStack_100, (const char*)0x69b170, &gp0xffff9d20,sVar3);
 
           func_003192a0(param_1,0,7,sVar3,auStack_100,0);
 
@@ -9003,13 +9001,7 @@ u32 func_0031c1d0(int param_1)
 
     mdl003196d0((Model*)param_1,1,0x1f5);
 
-    uVar4 = 1;
-    break;
-  default:
-    uVar4 = 0;
-    break;
-  }
-  return uVar4;
+  return 1;
 }
 
 

@@ -798,7 +798,7 @@ void FUN_0031eee0(int *param_1);
 void FUN_0031ef80(int *param_1,short param_2,short param_3);
 void FUN_0031f5c0(int *param_1);
 void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4);
-u32 FUN_0031f740(float param_1,int *param_2);
+static u32 FUN_0031f740(float param_1,int *param_2);
 u8 * FUN_0031f7a0(float param_1,int *param_2);
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
@@ -4071,7 +4071,7 @@ void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4)
 
 
 // FUN_0031F740
-u32 FUN_0031f740(float param_1,int *param_2)
+static u32 FUN_0031f740(float param_1,int *param_2)
 {
   int high;
   int low;
@@ -4391,19 +4391,12 @@ void FUN_0031fde0(void)
   bVar2 = extraout_t1_lo[2];
 
   *(float *)(iVar3 + 4) =
-
        extraout_f13 * ((float)*extraout_t1_lo / 255.0f - *(float *)(iVar3 + 4)) +
-
        *(float *)(iVar3 + 4) + 0.0f;
-
   *(float *)(iVar3 + 8) =
-
        extraout_f13 * ((float)bVar1 / 255.0f - *(float *)(iVar3 + 8)) + *(float *)(iVar3 + 8) + 0.0f;
-
   *(float *)(iVar3 + 0xc) =
-
        extraout_f13 * ((float)bVar2 / 255.0f - *(float *)(iVar3 + 0xc)) +
-
        *(float *)(iVar3 + 0xc) + 0.0f;
 
   return;
@@ -4689,24 +4682,16 @@ void FUN_003204a0(int *param_4,float param_1,float param_2,float param_3)
 
   iVar2 = *param_4;
 
-  do {
+  while (iVar2 != 0) {
 
-    if (iVar2 == 0) {
-
-      return;
-
-    }
 
     piVar3 = *(int **)(iVar2 + 0x50);
 
     for (iVar5 = *param_4; iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x54)) {
 
-      if (*(int **)(iVar5 + 0x50) == piVar3) goto LAB_00320524;
+      if (*(int **)(iVar5 + 0x50) == piVar3) break;
 
     }
-    iVar5 = 0;
-
-LAB_00320524:
 
 
     if (iVar5 != 0) {
@@ -4720,16 +4705,17 @@ LAB_00320524:
       uVar1 = *(u16 *)(piVar3 + 1);
 
       for (uVar7 = 0; uVar7 < 4; uVar7 = uVar7 + 1) {
+        int *callbacks = (int *)(PTR_LAB_0069bb10_abs + uVar7 * 0x10);
 
-        if ((*(void **)(PTR_FUN_0069bb1c_abs + uVar7 * 0x10) != (u8 *)0x0) &&
+        if ((callbacks[3] != 0) &&
 
            (iVar5 = iVar2 + uVar7 * 0x10, *(int *)(iVar5 + 0xc) != 0)) {
 
-          uVar4 = (*(MdlCreate2FloatFn *)(PTR_FUN_0069bb18_abs + uVar7 * 0x10))(param_1,iVar2 + 0x40,param_3);
+          uVar4 = (*(MdlCreate2FloatFn *)(&callbacks[2]))(param_1,iVar2 + 0x40,param_3);
 
           for (uVar6 = 0; uVar6 < uVar1; uVar6 = uVar6 + 1) {
 
-            (*(code *)*(void **)(PTR_FUN_0069bb1c_abs + uVar7 * 0x10))(uVar4,*(u32 *)(*piVar3 + uVar6 * 4));
+            (*(code *)callbacks[3])(uVar4,*(u32 *)(*piVar3 + uVar6 * 4));
 
           }
 
@@ -4741,7 +4727,8 @@ LAB_00320524:
 
     iVar2 = *(int *)(iVar2 + 0x54);
 
-  } while( true );
+  }
+  return;
 
 }
 

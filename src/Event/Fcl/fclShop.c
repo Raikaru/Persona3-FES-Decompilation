@@ -30,6 +30,10 @@ typedef struct {
     float uStack_8;
     u32 _pad_end;
 } FclShopStack;
+typedef struct {
+    s16 *entries;
+    u32 count;
+} FclShopDrawGroup;
 u32 uGpffffb998;
 extern u8 DAT_006a6a90[];
 extern char DAT_006a6af8[];
@@ -7853,8 +7857,10 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
 
 {
+  extern void FUN_0040e3c0(float, s32, s32, u8, u32, s32);
 
-  s16 cVar1;
+
+  u8 cVar1;
   s16 uVar2;
   s16 uVar3;
 
@@ -7870,9 +7876,11 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
   s16 *puVar8;
 
-  s16 **ppuVar9;
+  FclShopDrawGroup *groupDst;
 
   u32 *puVar11;
+
+  s16 entryId;
 
   u32 uVar12;
 
@@ -7880,21 +7888,7 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
   short sVar14;
 
-  s16 *puStack_120;
-
-  u32 uStack_11c;
-
-  s16 *puStack_118;
-
-  s16 *puStack_110;
-
-  s16 *puStack_108;
-
-  s16 *puStack_100;
-
-  s16 *puStack_f0;
-
-  s16 *puStack_e0;
+  FclShopDrawGroup groups[9];
 
   s16 auStack_d0 [16];
 
@@ -8084,53 +8078,51 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
   puVar11 = &DAT_006a7590;
 
-  ppuVar9 = &puStack_120;
+  groupDst = groups;
 
   iVar7 = 9;
 
   do {
 
-    puVar8 = (s16 *)*puVar11;
+    groupDst->entries = (s16 *)*puVar11;
 
-    puVar10 = (s16 *)puVar11[1];
+    groupDst->count = puVar11[1];
 
     puVar11 = puVar11 + 2;
 
     iVar7 = iVar7 + -1;
 
-    *ppuVar9 = puVar8;
-
-    ppuVar9[1] = puVar10;
-
-    ppuVar9 = ppuVar9 + 2;
+    groupDst = groupDst + 1;
 
   } while (0 < iVar7);
 
-  puStack_120 = auStack_30;
+  groups[0].entries = auStack_30;
 
-  puStack_118 = auStack_50;
+  groups[1].entries = auStack_50;
 
-  puStack_110 = auStack_70;
+  groups[2].entries = auStack_70;
 
-  puStack_108 = auStack_10;
+  groups[3].entries = auStack_10;
 
-  puStack_100 = auStack_90;
+  groups[4].entries = auStack_90;
 
-  puStack_f0 = auStack_b0;
+  groups[6].entries = auStack_b0;
 
-  puStack_e0 = auStack_d0;
+  groups[8].entries = auStack_d0;
 
   iVar7 = *piVar4;
+  groupDst = &groups[iVar7];
 
-  puVar8 = (&puStack_120)[iVar7 * 2];
+
+  puVar8 = groupDst->entries;
 
   iVar5 = FUN_003c5470(param_2);
 
-  for (uVar13 = 0; uVar13 < (&uStack_11c)[iVar7 * 2]; uVar13 = uVar13 + 1) {
+  for (uVar13 = 0; uVar13 < groupDst->count; uVar13 = uVar13 + 1) {
 
     iVar6 = iVar5 + uVar13 * 8;
 
-    cVar1 = *(char *)(iVar6 + 0xd);
+    cVar1 = *(u8 *)(iVar6 + 0xd);
 
     if (cVar1 != '\0') {
 
@@ -8138,19 +8130,19 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 
       sVar14 = *(short *)(iVar6 + 10);
 
-      uVar12 = (u32)(short)puVar8[uVar13 * 2];
+      entryId = puVar8[uVar13 * 2];
 
-      if (uVar12 != 0xffffffffffffffff) {
+      if (entryId != -1) {
 
-        if ((uVar12 & 0x8000) == 0) {
+        if ((entryId & 0x8000) == 0) {
 
-          FUN_0040e3c0(0,uVar2,sVar14,cVar1,uVar12,0);
+          FUN_0040e3c0(0,uVar2,sVar14,cVar1,entryId,0);
 
         }
 
         else {
 
-          uVar12 = uVar12 & 0x7fff;
+          uVar12 = entryId & 0x7fff;
 
           if (uVar12 == 4) {
 

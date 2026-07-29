@@ -2382,39 +2382,12 @@ u32 FUN_0029f760(float *param_1)
 
 {
 
-  int iVar1;
 
-  float *pfVar2;
-
-  u32 *puVar3;
-
-  float fVar4;
-
+  RwRGBAReal *colorPtr;
+  RwRGBAReal color;
   u32 uVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  u32 uVar9;
-
-  float fVar10;
-
-  float fVar11;
-
-  float fVar12;
-
-  u32 uVar13;
-
-  float fVar14;
-
   float fVar15;
-
   float fVar16;
-  u32 duration;
-  u32 counter;
 
   
 
@@ -2432,104 +2405,44 @@ u32 FUN_0029f760(float *param_1)
 
   else {
 
-    duration = *(u32 *)(param_1 + 8);
-    counter = *(u32 *)(param_1 + 9);
-    if (counter == 0) {
+    if (*(u32 *)(param_1 + 9) == 0) {
 
-      pfVar2 = (float *)FUN_0019fd40();
-
-      fVar11 = pfVar2[1];
-
-      fVar4 = pfVar2[2];
-
-      fVar6 = pfVar2[3];
-
-      *param_1 = *pfVar2;
-
-      param_1[1] = fVar11;
-
-      param_1[2] = fVar4;
-
-      param_1[3] = fVar6;
-
-      pfVar2 = (float *)FUN_0019fd70();
-
-      fVar11 = pfVar2[1];
-
-      fVar4 = pfVar2[2];
-
-      fVar6 = pfVar2[3];
-    iVar1 = (int)(uintptr_t)DAT_007ce3ec;
-      param_1[4] = *pfVar2;
-
-      param_1[5] = fVar11;
-
-      param_1[6] = fVar4;
-
-      param_1[7] = fVar6;
+      colorPtr = (RwRGBAReal *)FUN_0019fd40();
+      *(RwRGBAReal *)param_1 = *colorPtr;
+      colorPtr = (RwRGBAReal *)FUN_0019fd70();
+      *(RwRGBAReal *)(param_1 + 4) = *colorPtr;
 
     }
 
-    iVar1 = (int)(uintptr_t)DAT_007ce3ec;
 
-    if (counter < duration) {
-      fVar15 = (float)counter / (float)duration;
+    if (*(u32 *)(param_1 + 9) < *(u32 *)(param_1 + 8)) {
+      fVar15 = (float)*(u32 *)(param_1 + 9) / (float)*(u32 *)(param_1 + 8);
 
       fVar16 = 1.0f - fVar15;
 
-      fVar6 = *param_1;
+      color.r = param_1[0] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x194) * fVar15;
+      color.g = param_1[1] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x198) * fVar15;
+      color.b = param_1[2] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x19c) * fVar15;
+      color.a = param_1[3] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x1a0) * fVar15;
+      colorPtr = (RwRGBAReal *)FUN_0019fd40();
+      *colorPtr = color;
 
-      fVar11 = param_1[1];
+      color.r = param_1[4] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x1a4) * fVar15;
+      color.g = param_1[5] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x1a8) * fVar15;
+      color.b = param_1[6] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x1ac) * fVar15;
+      color.a = param_1[7] * fVar16 +
+                *(float *)(DAT_007ce3ec + 0x1b0) * fVar15;
+      colorPtr = (RwRGBAReal *)FUN_0019fd70();
+      *colorPtr = color;
 
-      fVar7 = param_1[2];
-
-      fVar8 = param_1[3];
-
-      fVar14 = *(float *)(DAT_007ce3ec + 0x194) * fVar15;
-
-      fVar10 = *(float *)(DAT_007ce3ec + 0x198) * fVar15;
-
-      fVar12 = *(float *)(DAT_007ce3ec + 0x19c) * fVar15;
-
-      fVar4 = *(float *)(DAT_007ce3ec + 0x1a0) * fVar15;
-
-      pfVar2 = (float *)FUN_0019fd40();
-
-      *pfVar2 = fVar6 * fVar16 + fVar14;
-
-      pfVar2[1] = fVar11 * fVar16 + fVar10;
-
-      pfVar2[2] = fVar7 * fVar16 + fVar12;
-
-      pfVar2[3] = fVar4 + fVar8 * fVar16;
-
-      fVar4 = param_1[4];
-
-      fVar8 = *(float *)(DAT_007ce3ec + 0x1a4);
-
-      fVar6 = param_1[5];
-
-      fVar10 = *(float *)(DAT_007ce3ec + 0x1a8);
-
-      fVar11 = param_1[6];
-
-      fVar12 = *(float *)(DAT_007ce3ec + 0x1ac);
-
-      fVar7 = param_1[7];
-
-      fVar14 = *(float *)(DAT_007ce3ec + 0x1b0);
-
-      pfVar2 = (float *)FUN_0019fd70();
-
-      *pfVar2 = fVar4 * fVar16 + fVar8 * fVar15;
-
-      pfVar2[1] = fVar6 * fVar16 + fVar10 * fVar15;
-
-      pfVar2[2] = fVar11 * fVar16 + fVar12 * fVar15;
-
-      pfVar2[3] = fVar7 * fVar16 + fVar14 * fVar15;
-
-      *(u32 *)(param_1 + 9) = counter + 1;
+      *(u32 *)(param_1 + 9) = *(u32 *)(param_1 + 9) + 1;
 
       uVar5 = 0;
 
@@ -2537,39 +2450,10 @@ u32 FUN_0029f760(float *param_1)
 
     else {
 
-      puVar3 = (u32 *)FUN_0019fd40();
-
-      uVar13 = *(u32 *)(iVar1 + 0x198);
-
-      uVar5 = *(u32 *)(iVar1 + 0x19c);
-      iVar1 = (int)(uintptr_t)DAT_007ce3ec;
-      uVar9 = *(u32 *)(iVar1 + 0x1a0);
-
-      *puVar3 = *(u32 *)(iVar1 + 0x194);
-
-      puVar3[1] = uVar13;
-
-      puVar3[2] = uVar5;
-
-      puVar3[3] = uVar9;
-
-      iVar1 = (int)(uintptr_t)DAT_007ce3ec;
-
-      puVar3 = (u32 *)FUN_0019fd70();
-
-      uVar13 = *(u32 *)(iVar1 + 0x1a8);
-
-      uVar5 = *(u32 *)(iVar1 + 0x1ac);
-
-      uVar9 = *(u32 *)(iVar1 + 0x1b0);
-
-      *puVar3 = *(u32 *)(iVar1 + 0x1a4);
-
-      puVar3[1] = uVar13;
-
-      puVar3[2] = uVar5;
-
-      puVar3[3] = uVar9;
+      colorPtr = (RwRGBAReal *)FUN_0019fd40();
+      *colorPtr = *(RwRGBAReal *)(DAT_007ce3ec + 0x194);
+      colorPtr = (RwRGBAReal *)FUN_0019fd70();
+      *colorPtr = *(RwRGBAReal *)(DAT_007ce3ec + 0x1a4);
 
       uVar5 = 1;
 

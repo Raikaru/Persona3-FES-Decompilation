@@ -4055,6 +4055,9 @@ u64 FUN_003cea50(u16 *param_1)
 
 
 {
+  extern float FUN_001a4600(u32);
+  extern void FUN_001a4580(u32, float);
+
 
   u32 uVar1;
 
@@ -4109,49 +4112,12 @@ u64 FUN_003cea50(u16 *param_1)
 
   FclMiscVec4 vStack_100;
 
-  float fStack_f0;
-
-  float fStack_ec;
-
-  float fStack_e8;
-
-  u32 uStack_e4;
-
-  float fStack_e0;
-
-  float fStack_dc;
-
-  float fStack_d8;
-
-  float fStack_d0;
-
-  float fStack_cc;
-
-  float fStack_c8;
-
-  u32 uStack_c0;
-
-  u32 uStack_bc;
-
-  u32 uStack_b8;
+    RwMatrix matrix;
 
   u32 auStack_b0 [16];
 
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_68;
-
-  float fStack_64;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_54;
+    FclMiscVec4 savedView;
+    FclMiscVec4 savedProjection;
 
   u64 uStack_48;
 
@@ -4186,23 +4152,17 @@ u64 FUN_003cea50(u16 *param_1)
 
   iVar4 = FUN_00198560();
 
-  fStack_60 = *(float *)(iVar4 + 0x18);
-
-  fStack_5c = *(float *)(iVar4 + 0x1c);
-
-  fStack_58 = *(float *)(iVar4 + 0x20);
-
-  fStack_54 = *(float *)(iVar4 + 0x24);
+  savedView.x = *(float *)(iVar4 + 0x18);
+  savedView.y = *(float *)(iVar4 + 0x1c);
+  savedView.z = *(float *)(iVar4 + 0x20);
+  savedView.w = *(float *)(iVar4 + 0x24);
 
   iVar4 = FUN_00198570();
 
-  fStack_70 = *(float *)(iVar4 + 0x18);
-
-  fStack_6c = *(float *)(iVar4 + 0x1c);
-
-  fStack_68 = *(float *)(iVar4 + 0x20);
-
-  fStack_64 = *(float *)(iVar4 + 0x24);
+  savedProjection.x = *(float *)(iVar4 + 0x18);
+  savedProjection.y = *(float *)(iVar4 + 0x1c);
+  savedProjection.z = *(float *)(iVar4 + 0x20);
+  savedProjection.w = *(float *)(iVar4 + 0x24);
 
   iVar4 = FUN_00198590();
 
@@ -4268,7 +4228,7 @@ u64 FUN_003cea50(u16 *param_1)
 
   uVar6 = FUN_00198590();
 
-  FUN_001a4580(0x42200000,uVar6);
+  FUN_001a4580(uVar6, 40.0f);
 
   uVar6 = FUN_00198560();
 
@@ -4289,37 +4249,24 @@ u64 FUN_003cea50(u16 *param_1)
 
   fVar15 = vStack_100.z * fVar15;
 
-  fStack_f0 = 1.0f - (vStack_100.y * fVar13 + vStack_100.z * fVar15);
-
-  fStack_ec = vStack_100.x * fVar13 + fVar15 * vStack_100.w;
-
-  fStack_e8 = vStack_100.z * fVar16 - fVar13 * vStack_100.w;
-
-  fStack_e0 = vStack_100.x * fVar13 - fVar15 * vStack_100.w;
-
-  fStack_dc = 1.0f - (vStack_100.z * fVar15 + vStack_100.x * fVar16);
-
-  fStack_d8 = vStack_100.y * fVar15 + fVar16 * vStack_100.w;
-
-  fStack_d0 = vStack_100.z * fVar16 + fVar13 * vStack_100.w;
-
-  fStack_cc = vStack_100.y * fVar15 - fVar16 * vStack_100.w;
-
-  fStack_c8 = 1.0f - (vStack_100.x * fVar16 + vStack_100.y * fVar13);
-
-  uStack_c0 = 0;
-
-  uStack_bc = 0;
-
-  uStack_b8 = 0;
-
-  uStack_e4 = 3;
-
-  FUN_004c2f30(&fStack_f0,&fStack_f0,iVar12);
+  matrix.right.x = 1.0f - (vStack_100.y * fVar13 + vStack_100.z * fVar15);
+  matrix.right.y = vStack_100.x * fVar13 + fVar15 * vStack_100.w;
+  matrix.right.z = vStack_100.z * fVar16 - fVar13 * vStack_100.w;
+  matrix.up.x = vStack_100.x * fVar13 - fVar15 * vStack_100.w;
+  matrix.up.y = 1.0f - (vStack_100.z * fVar15 + vStack_100.x * fVar16);
+  matrix.up.z = vStack_100.y * fVar15 + fVar16 * vStack_100.w;
+  matrix.at.x = vStack_100.z * fVar16 + fVar13 * vStack_100.w;
+  matrix.at.y = vStack_100.y * fVar15 - fVar16 * vStack_100.w;
+  matrix.at.z = 1.0f - (vStack_100.x * fVar16 + vStack_100.y * fVar13);
+  matrix.pos.x = 0.0f;
+  matrix.pos.y = 0.0f;
+  matrix.pos.z = 0.0f;
+  matrix.flags = 3;
+  FUN_004c2f30(&matrix, &matrix, iVar12);
 
   iVar4 = FUN_00198570();
 
-  FUN_004cb7f0(*(u32 *)(iVar4 + 4),&fStack_f0,0);
+  FUN_004cb7f0(*(u32 *)(iVar4 + 4), &matrix, 0);
 
   iVar4 = FUN_00198570();
 
@@ -4425,15 +4372,13 @@ u64 FUN_003cea50(u16 *param_1)
 
   uVar6 = FUN_00198590();
 
-  FUN_001a4580(uVar14,uVar6);
+  FUN_001a4580(uVar6, uVar14);
 
   uVar6 = FUN_00198560();
 
-  FUN_004944b0(uVar6,&fStack_60);
-
+  FUN_004944b0(uVar6, &savedView);
   uVar6 = FUN_00198570();
-
-  FUN_004944b0(uVar6,&fStack_70);
+  FUN_004944b0(uVar6, &savedProjection);
 
   iVar4 = FUN_00198570();
 

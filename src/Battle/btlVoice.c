@@ -703,7 +703,7 @@ void func_002f0ea0(u64 *param_1)
 {
   /* Caller-specific return width: retail consumes only the s32 result in this path. */
   extern s32 FUN_0030b5a0();
-  short sVar1;
+  u16 sVar1;
   u32 bVar2;
   u8 *puVar3;
   int iVar4;
@@ -714,10 +714,11 @@ void func_002f0ea0(u64 *param_1)
   BtlPacket* packet;
   u32 uVar9;
   s32 lVar10;
-  u32 uVar11;
-  u32 uVar12;
+  s32 uVar11;
+  s32 uVar12;
   int iVar13;
   int iVar14;
+  int initialPacket;
   
   uVar11 = (u32)*(u16 *)(iGpffffb6fc + 0xb50);
   *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x80000;
@@ -725,22 +726,17 @@ void func_002f0ea0(u64 *param_1)
   iVar14 = 0;
   for (iVar4 = *(int *)(iGpffffb6fc + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
     lVar10 = FUN_0030b5a0(*(u32 *)(iVar4 + 0xa2c),0);
-    iVar13 = iVar14;
     if (lVar10 == 0) {
       sVar1 = *(short *)(iVar4 + 0xa4);
       if (((sVar1 == 0x118) || (sVar1 == 0x117)) || (sVar1 == 0x116)) {
         uVar12 = uVar12 + 1 & 0xffff;
       }
-      else {
-        iVar13 = iVar4;
-        if (sVar1 != 0x10d) {
-          iVar13 = iVar14;
-        }
+      else if (sVar1 == 0x10d) {
+        iVar14 = iVar4;
       }
     }
-    iVar14 = iVar13;
   }
-  bVar2 = uVar12 != uVar11;
+  bVar2 = uVar12 == uVar11;
   uVar6 = FUN_002b8f90_u32_voice(0);
   uVar7 = FUN_002b8f90_u32_voice(0);
   if (uVar11 == 1) {
@@ -751,7 +747,7 @@ void func_002f0ea0(u64 *param_1)
     uVar8 = FUN_002f87e0_u32_voice(3);
     FUN_002b90d0(uVar6,uVar8);
   }
-  if (bVar2) {
+  if (!bVar2) {
     uVar8 = FUN_002f87e0_u32_voice(4);
     FUN_002b90d0(uVar7,uVar8);
   }
@@ -768,31 +764,30 @@ void func_002f0ea0(u64 *param_1)
     *(u64 *)((int)uVar8 + 0x60) = *param_1;
     FUN_0027ed20(uVar8,1);
   }
+  initialPacket = (int)uVar8;
   uVar9 = (u32)FUN_002f8810_ptr_voice();
   uVar9 = (u32)FUN_002dd760_packet_voice(3,(void *)uVar9,0);
   *(u16 *)((int)uVar9 + 0x48) = 2;
   *(u64 *)((int)uVar9 + 0x60) = *param_1;
   FUN_0027ed20(uVar9,1);
-  uVar9 = (u32)FUN_002b8d60_packet_voice(3,0xfff);
-  puVar3 = (u8 *)uVar9;
+  puVar3 = (u8 *)FUN_002b8d60_packet_voice(3,0xfff);
   *puVar3 = 4;
-  iVar13 = (int)uVar8;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(iVar13 + 0x58);
+  *(u64 *)(puVar3 + 8) = *(u64 *)(initialPacket + 0x58);
   *(u64 *)(puVar3 + 0x60) = *param_1;
-  FUN_0027ed20(uVar9,1);
+  FUN_0027ed20((u32)puVar3,1);
   for (uVar12 = 0; uVar12 < uVar11; uVar12 = uVar12 + 1 & 0xffff) {
     iVar4 = *(int *)(iGpffffb6fc + uVar12 * 4 + 0xb44);
     uVar8 = (u32)FUN_0027fe90_packet_voice((BtlUnit *)*(u32 *)(iVar4 + 0x30),0,(const void *)0x6978b0,0);
     puVar3 = (u8 *)uVar8;
     *puVar3 = 4;
-    *(u64 *)(puVar3 + 8) = *(u64 *)(iVar13 + 0x58);
+    *(u64 *)(puVar3 + 8) = *(u64 *)(initialPacket + 0x58);
     *(u64 *)(puVar3 + 0x60) = *param_1;
     FUN_0027ed20(uVar8,1);
   }
   uVar8 = (u32)FUN_002a3b40_packet_voice(0,1);
   puVar3 = (u8 *)uVar8;
   *puVar3 = 4;
-  *(u64 *)(puVar3 + 8) = *(u64 *)(iVar13 + 0x58);
+  *(u64 *)(puVar3 + 8) = *(u64 *)(initialPacket + 0x58);
   *(u64 *)(puVar3 + 0x60) = *param_1;
   FUN_0027ed20(uVar8,0);
   packet = FUN_002baf90_packet_voice((void*)uVar6, (BtlUnit*)*(u32 *)(iVar4 + 0x30), (BtlUnit*)*(u32 *)(iVar4 + 0x30), 0, 0x200);
@@ -832,18 +827,16 @@ void func_002f0ea0(u64 *param_1)
   *(u64 *)(puVar3 + 0x60) = *param_1;
   FUN_0027ed20(uVar8,2);
   if ((!bVar2) && (*(int *)(iGpffffb6fc + 0xb60) == 0)) {
-    uVar8 = (u32)FUN_002db890_packet_voice();
-    puVar5 = (u8 *)uVar8;
+    puVar5 = (u8 *)FUN_002db890_packet_voice();
     *puVar5 = 5;
     *(u64 *)(puVar5 + 8) = *(u64 *)(puVar3 + 0x58);
     *(u16 *)(puVar5 + 0x48) = 0x41;
-    FUN_0027ed20(uVar8,1);
-    uVar8 = (u32)FUN_002db800_packet_voice(0x20,0x31);
-    puVar5 = (u8 *)uVar8;
+    FUN_0027ed20((u32)puVar5,1);
+    puVar5 = (u8 *)FUN_002db800_packet_voice(0x20,0x31);
     *puVar5 = 5;
     *(u64 *)(puVar5 + 8) = *(u64 *)(puVar3 + 0x58);
     *(u16 *)(puVar5 + 0x48) = 0x41;
-    FUN_0027ed20(uVar8,1);
+    FUN_0027ed20((u32)puVar5,1);
     *(u32 *)(iGpffffb6fc + 0xb60) = 1;
   }
   *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x400000;

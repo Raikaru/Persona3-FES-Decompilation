@@ -1277,8 +1277,6 @@ void func_0018c780(KwlnTask* task)
     void* sprite;
     f32 width;
     f32 height;
-    f32 halfWidth;
-    f32 halfHeight;
 
     gsDrawHeader(object, 8, 7, 6);
     gsDrawStatusBars(object);
@@ -1292,14 +1290,14 @@ void func_0018c780(KwlnTask* task)
     ((GsSprite*)sprite)->scaleX = scale;
     ((GsSprite*)sprite)->scaleY = scale;
     width = func_001126b0(sprite);
-    halfWidth = width / 2.0f;
-    ((GsSprite*)sprite)->centerX = (s16)(s32)halfWidth;
+    ((GsSprite*)sprite)->centerX = (s16)(s32)(width / 2.0f);
     height = func_00112740(sprite);
-    halfHeight = height / 2.0f;
-    ((GsSprite*)sprite)->centerY = (s16)(s32)halfHeight;
+    ((GsSprite*)sprite)->centerY = (s16)(s32)(height / 2.0f);
     ((GsSprite*)sprite)->angle = 90.0f;
-    ((GsSprite*)sprite)->x = GS_F32(transition, 0x38) + 48.0f - halfWidth;
-    ((GsSprite*)sprite)->y = GS_F32(transition, 0x3c) + 43.0f - halfHeight;
+    width = func_001126b0(sprite);
+    ((GsSprite*)sprite)->x = GS_F32(transition, 0x38) + 48.0f - width / 2.0f;
+    height = func_00112740(sprite);
+    ((GsSprite*)sprite)->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
     ((GsSprite*)sprite)->alpha = (u8)(0xff - (frame * 0xff) / 5);
     func_001127d0(sprite, 1);
     func_00115980(sprite);
@@ -1314,13 +1312,13 @@ void func_0018c780(KwlnTask* task)
         ((GsSprite*)sprite)->scaleX = (s16)(scale + 1);
         ((GsSprite*)sprite)->scaleY = (s16)(scale + 1);
         width = func_001126b0(sprite);
-        halfWidth = width / 2.0f;
-        ((GsSprite*)sprite)->centerX = (s16)(s32)halfWidth;
+        ((GsSprite*)sprite)->centerX = (s16)(s32)(width / 2.0f);
         height = func_00112740(sprite);
-        halfHeight = height / 2.0f;
-        ((GsSprite*)sprite)->centerY = (s16)(s32)halfHeight;
-        ((GsSprite*)sprite)->x = GS_F32(transition, 0x38) + 49.0f - halfWidth;
-        ((GsSprite*)sprite)->y = GS_F32(transition, 0x3c) + 43.0f - halfHeight;
+        ((GsSprite*)sprite)->centerY = (s16)(s32)(height / 2.0f);
+        width = func_001126b0(sprite);
+        ((GsSprite*)sprite)->x = GS_F32(transition, 0x38) + 49.0f - width / 2.0f;
+        height = func_00112740(sprite);
+        ((GsSprite*)sprite)->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
         ((GsSprite*)sprite)->alpha = fadeAlpha;
         func_001127d0(sprite, 1);
         func_00115980(sprite);
@@ -1343,8 +1341,6 @@ void func_0018ce50(KwlnTask* task)
     GsSprite* node;
     f32 width;
     f32 height;
-    f32 halfWidth;
-    f32 halfHeight;
 
     gsDrawHeader(object, 8, 7, 6);
     gsDrawStatusBars(object);
@@ -1354,14 +1350,14 @@ void func_0018ce50(KwlnTask* task)
     node->scaleX = 0x1000;
     node->scaleY = 0x1000;
     width = func_001126b0(sprite);
-    halfWidth = width / 2.0f;
-    node->centerX = (s16)(s32)halfWidth;
+    node->centerX = (s16)(s32)(width / 2.0f);
     height = func_00112740(sprite);
-    halfHeight = height / 2.0f;
-    node->centerY = (s16)(s32)halfHeight;
+    node->centerY = (s16)(s32)(height / 2.0f);
     node->angle = 90.0f;
-    node->x = GS_F32(transition, 0x38) + 48.0f - halfWidth;
-    node->y = GS_F32(transition, 0x3c) + 43.0f - halfHeight;
+    width = func_001126b0(sprite);
+    node->x = GS_F32(transition, 0x38) + 48.0f - width / 2.0f;
+    height = func_00112740(sprite);
+    node->y = GS_F32(transition, 0x3c) + 43.0f - height / 2.0f;
     node->alpha = 0x28;
     func_001127d0(sprite, 1);
     func_00115980(sprite);
@@ -1376,8 +1372,6 @@ void func_0018d320(KwlnTask* task)
     GsSprite* node;
     f32 width;
     f32 height;
-    f32 halfWidth;
-    f32 halfHeight;
     s32 frame;
     s32 burstFrame;
     s32 i;
@@ -1398,13 +1392,13 @@ void func_0018d320(KwlnTask* task)
     node->scaleX = (s16)((frame << 0xc) / 5);
     node->scaleY = (s16)((frame << 0xc) / 5);
     width = func_001126b0(sprite);
-    halfWidth = width / 2.0f;
-    node->centerX = (s16)(s32)halfWidth;
+    node->centerX = (s16)(s32)(width / 2.0f);
     height = func_00112740(sprite);
-    halfHeight = height / 2.0f;
-    node->centerY = (s16)(s32)halfHeight;
-    node->x = GS_F32(transition, 0x38) + 64.0f - halfWidth;
-    node->y = GS_F32(transition, 0x3c) + 60.0f - halfHeight;
+    node->centerY = (s16)(s32)(height / 2.0f);
+    width = func_001126b0(sprite);
+    node->x = GS_F32(transition, 0x38) + 64.0f - width / 2.0f;
+    height = func_00112740(sprite);
+    node->y = GS_F32(transition, 0x3c) + 60.0f - height / 2.0f;
     node->alpha = (u8)alpha;
     func_001127d0(sprite, 1);
     func_00115980(sprite);
@@ -1572,12 +1566,12 @@ void* func_0018de60(KwlnTask* task)
                 {
                     y = 324.0f;
                 }
-                printf(D_005E4500, GS_S32(work, 8), func_00530da0(y));
+                end.valueF[0] = 534.0f;
+                end.valueF[1] = y;
+                printf(D_005E4500, GS_S32(work, 8), func_00530da0(end.valueF[1]));
                 transition = GS_TASK(work, 0x70)->workData;
                 start.valueF[0] = GS_F32(transition, 0x38);
                 start.valueF[1] = GS_F32(transition, 0x3c);
-                end.valueF[0] = 834.0f;
-                end.valueF[1] = y;
                 func_0018bc10(110.0f, transition, 0, 2, 0,
                               start.value, end.value, 0, 0, 0, 0);
             }
@@ -1615,13 +1609,13 @@ void* func_0018de60(KwlnTask* task)
                 {
                     y = 324.0f;
                 }
-                printf(D_005E4500, GS_S32(work, 8), func_00530da0(y));
-                GS_S32(work, 4) = 1;
-                transition = GS_TASK(work, 0x70)->workData;
-                start.valueF[0] = 834.0f;
-                start.valueF[1] = y;
                 end.valueF[0] = 534.0f;
                 end.valueF[1] = y;
+                printf(D_005E4500, GS_S32(work, 8), func_00530da0(end.valueF[1]));
+                GS_S32(work, 4) = 1;
+                transition = GS_TASK(work, 0x70)->workData;
+                start = end;
+                start.valueF[0] += 300.0f;
                 func_0018bc10(110.0f, transition, 0, 2, 1,
                               start.value, end.value, 0, 0, 0, 0);
             }
