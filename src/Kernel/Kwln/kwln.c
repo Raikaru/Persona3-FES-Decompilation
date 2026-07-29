@@ -424,14 +424,12 @@ void kwlnInitGameData()
         if (datGetScenarioMode() != 0)
         {
             unitId = (u16)i;
-            __asm__ ("" : : "r"(unitId) : "memory");
             personaTable = D_005E4F40 + i;
             func_00175820(unitId, personaTable[-1]);
         }
         else
         {
             unitId = (u16)i;
-            __asm__ ("" : : "r"(unitId) : "memory");
             personaTable = D_005E4F20 + i;
             func_00175820(unitId, personaTable[-1]);
         }

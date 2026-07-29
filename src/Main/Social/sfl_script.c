@@ -223,7 +223,6 @@ void sflScriptDispatchCommands(void)
   u16 *cursor;
   SflScriptWork *work;
   u32 callback_result;
-  int opcode_offset;
   u32 next_offset;
   u16 *command_entry;
   u32 flags;
@@ -245,7 +244,6 @@ void sflScriptDispatchCommands(void)
     while( 1 ) {
 
       cursor = (u16 *)work->executeCursor;
-      opcode_offset = (u32)*cursor * 8;
       command_entry = gSflScriptCommandTableWords + ((u32)*cursor * 4);
       length = (u32)command_entry[2];
       has_length = (length != 0) ^ 1U;

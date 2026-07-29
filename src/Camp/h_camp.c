@@ -9,8 +9,6 @@ extern void* func_0010c1a0();
 extern void* func_0010c3a0();
 extern void func_00133d30();
 extern void func_004d0f00();
-extern void func_001958a0();
-extern void func_001957b0();
 extern void func_00123640();
 typedef struct CampVec2
 {

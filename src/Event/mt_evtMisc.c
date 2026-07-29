@@ -823,8 +823,6 @@ int FUN_00386ae0(int param_1,int param_2)
 }
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_00386B70
 
 
@@ -852,7 +850,6 @@ subtract_index:
 done_index:
   return;
 }
-#pragma pop
 
 
 // FUN_00386C40
@@ -2700,8 +2697,6 @@ void FUN_00389d80(int param_1,int param_2)
 }
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_00389F40
 
 
@@ -2755,7 +2750,6 @@ LAB_0038a080:
   }
   return;
 }
-#pragma pop
 
 
 // FUN_0038a0b0
@@ -6649,8 +6643,6 @@ done_index:
 }
 
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0038DA10
 
 
@@ -6676,5 +6668,4 @@ case_29:
 done_index:
   return 0;
 }
-#pragma pop
 

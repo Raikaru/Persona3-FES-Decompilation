@@ -1986,14 +1986,17 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   fVar5 = fStack_58;
 
   uStack_50 = CONCAT44_F32(fStack_5c,fStack_60);
-
   fStack_48 = fStack_58;
 
-  fStack_70 = fStack_c0 - fStack_60;
 
+
+  fStack_70 = fStack_c0 - fStack_60;
   fStack_6c = fStack_bc - fStack_5c;
 
   fStack_68 = fStack_b8 - fStack_58;
+
+
+
 
   fVar7 = fStack_5c;
 
@@ -2020,6 +2023,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   }
 
+
   uStack_e8 = 1.0f;
 
   uStack_fc = 1.0f;
@@ -2043,6 +2047,8 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   uStack_dc = 0;
 
   uStack_e0 = 0;
+
+
 
   uStack_104 = uStack_104 | 0x20003;
 
@@ -2087,10 +2093,11 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   }
 
   fStack_80 = fStack_20 - fStack_10;
-
   fStack_7c = fStack_1c - fStack_c;
 
   fStack_78 = fStack_18 - fStack_8;
+
+
 
   fVar7 = FUN_004c6ac0_mt_scene(&fStack_80);
 
@@ -2215,10 +2222,11 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
   }
 
   fStack_90 = fStack_20 - fStack_10;
-
   fStack_8c = fStack_1c - fStack_c;
 
   fStack_88 = fStack_18 - fStack_8;
+
+
 
   fVar6 = FUN_004c6ac0_mt_scene(&fStack_90);
 

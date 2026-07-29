@@ -614,7 +614,6 @@ extern void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...);
 extern void H_Dbprt_FmtCol3D_f32(RwV2d pos, RwRGBA color, const char* fmt, f32 value);
 extern s32 strlen(const char* text);
 extern void func_00524270(void* destination, const void* source);
-extern void func_0019d3f0(const char* fileName, s32 line);
 extern void (*D_0096017c)(void* object);
 #pragma alias D_0096017c_abs D_0096017c
 extern u32 D_0096017c_abs[];

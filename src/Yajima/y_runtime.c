@@ -3503,7 +3503,6 @@ void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4)
   return;
 }
 
-#pragma push
 #pragma opt_loop_invariants on
 // FUN_00430A40
 
@@ -3533,7 +3532,7 @@ void FUN_00430a40(char param_1)
   return;
 }
 
-#pragma pop
+#pragma opt_loop_invariants off
 // FUN_00430BB0 NONMATCHING
 
 u64 FUN_00430bb0(int param_1)
@@ -5454,7 +5453,6 @@ void FUN_00434f70(void)
 }
 
 #pragma push
-#pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
 // FUN_00435060
 
@@ -5520,8 +5518,6 @@ void FUN_004350e0(char param_1,char param_2)
 }
 #pragma pop
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_00435260
 
 u32 FUN_00435260(char param_1)
@@ -5544,11 +5540,9 @@ u32 FUN_00435260(char param_1)
   return uVar2;
 }
 
-#pragma pop
 // FUN_004352E0
 
 #pragma push
-#pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
 u32 FUN_004352e0(void)
 {
@@ -5576,7 +5570,6 @@ u32 FUN_004352e0(void)
 #pragma pop
 
 #pragma push
-#pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
 // FUN_00435370
 
@@ -15946,7 +15939,6 @@ void FUN_004532d0(char param_1)
 
 #pragma pop
 #pragma push
-#pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
 // FUN_004533E0
 
@@ -18463,6 +18455,7 @@ u32 FUN_00458a80(char param_1,char param_2)
   return 0;
 }
 #pragma pop
+#pragma push
 #pragma opt_loop_invariants on
 // FUN_00458B00
 
@@ -18479,6 +18472,7 @@ void FUN_00458b00(void)
   }
   return;
 }
+#pragma pop
 // FUN_00458B60
 #pragma push
 #pragma opt_loop_invariants on
@@ -18504,8 +18498,6 @@ extern void FUN_003174e0_y2(u32 param_1);
 extern void FUN_003b7090_y2(u32 param_1);
 #pragma alias FUN_00195020_call2 FUN_00195020
 extern void FUN_00195020_call2(u32 param_1);
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_00458BB0
 void FUN_00458bb0(void)
 {
@@ -18550,7 +18542,6 @@ void FUN_00458bb0(void)
     }
   }
 }
-#pragma pop
 
 // FUN_00458CB0 NONMATCHING
 
@@ -19822,8 +19813,6 @@ float FUN_0045b4e0(int param_1)
   return progress;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0045B620
 
 void FUN_0045b620(u32 param_5,float param_1,float param_2,float param_3,float param_4,
@@ -19862,7 +19851,6 @@ void FUN_0045b620(u32 param_5,float param_1,float param_2,float param_3,float pa
   FUN_00115980_arg(uVar2);
   return;
 }
-#pragma pop
 
 // FUN_0045B830
 

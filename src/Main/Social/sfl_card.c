@@ -73,7 +73,6 @@ extern void FUN_0024f2c0(f32, void*);
 extern void FUN_00250ef0(f32, void*);
 extern void FUN_00251030();
 extern void FUN_0024dc90();
-extern void FUN_0024f9f0();
 extern u32 FUN_0021a120(void);
 extern u32 FUN_00250b90(void*);
 extern u32 FUN_00250e70(u32);

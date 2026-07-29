@@ -15,7 +15,7 @@ typedef void (*OpLogoSetRenderState)(u32 state, u32 value);
 typedef void (*OpLogoRenderQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
 extern long func_00271e70(void);
 extern void func_00271db0(void);
-extern volatile u16 DAT_007e094e[8];
+extern u16 DAT_007e094e[8];
 
 typedef struct OpLogoWork
 {

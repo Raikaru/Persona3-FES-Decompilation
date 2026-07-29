@@ -2794,12 +2794,12 @@ void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4)
     s32 first;
     u8 prefix[0x14];
     struct {
-      volatile u16 value;
+      u16 value;
       u16 pad;
-      volatile int index;
+      int index;
       u8 tail[0x14];
     } pairs[43];
-    volatile u16 last;
+    u16 last;
   } work;
 
   piVar5 = (int*)DAT_006a6040_abs;
