@@ -170,13 +170,12 @@ void FUN_00252340(void)
         break;
     }
 
-    uVar1 = puVar2[1];
-    if ((int)uVar1 < 3) {
-        fVar11 = (float)(int)uVar1 / 3.0f;
-    } else if ((int)uVar1 < 0x14) {
+    if ((s32)puVar2[1] < 3) {
+        fVar11 = (float)(s32)puVar2[1] / 3.0f;
+    } else if ((s32)puVar2[1] < 0x14) {
         fVar11 = 1.0f;
-    } else if ((int)uVar1 < 0x1e) {
-        fVar11 = 1.0f - (float)(int)(uVar1 - 0x14) / 10.0f;
+    } else if ((s32)puVar2[1] < 0x1e) {
+        fVar11 = 1.0f - (float)(s32)(puVar2[1] - 0x14) / 10.0f;
     } else {
         fVar11 = 0.0f;
     }
@@ -216,9 +215,9 @@ void FUN_00252340(void)
         fVar13 = fGpffff8070 * ((float)(int)puVar2[1] / 30.0f) + fGpffff83e0 + 0.0f;
         break;
     }
-    if (uVar1 == 1) {
+    if (puVar2[2] == 1) {
         in_f21 = ((float)(int)puVar2[1] / 30.0f) * -20.0f + 10.0f;
-    } else if (uVar1 == 0) {
+    } else if (puVar2[2] == 0) {
         in_f21 = ((float)(int)puVar2[1] / 30.0f) * 20.0f - 10.0f;
     }
 

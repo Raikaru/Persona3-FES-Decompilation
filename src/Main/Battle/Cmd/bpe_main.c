@@ -245,16 +245,18 @@ void func_00249c10(void* work)
     };
     u8* base;
     u8* camera;
-    void* frame;
     void* cameraMatrix;
+    void* frame;
     void* matrix;
-    struct Local local;
+    f32* position;
+    u8* color;
     f32 deltaX;
     f32 deltaY;
     f32 deltaZ;
     f32 alpha;
     f32 distance;
     s32 i;
+    struct Local local;
 
     base = (u8*)work;
     camera = (u8*)func_00198590();
@@ -266,9 +268,9 @@ void func_00249c10(void* work)
     matrix = func_004c38c0();
     func_004c32a0(matrix, cameraMatrix);
 
+    local.origin[2] = 100.0f;
     local.origin[0] = 0.0f;
     local.origin[1] = 0.0f;
-    local.origin[2] = 100.0f;
     RwV3dTransformPoint(local.transformed.data, local.origin, cameraMatrix);
 
     deltaX = local.transformed.data[0] - *(f32*)(base + 0x608);
@@ -279,8 +281,6 @@ void func_00249c10(void* work)
     func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 1, 0x40000000);
 
     {
-        u8* color;
-        f32* position;
 
         color = local.colors.data;
         position = (f32*)local.positions.data;

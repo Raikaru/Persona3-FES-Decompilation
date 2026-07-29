@@ -323,22 +323,24 @@ void H_Dbprt_FmtAt(volatile /* Removing this qualifier worsens H_Dbprt_FmtAt (NO
 {
     char buffer[HDBPRT_LOG_MAXCHAR];
     s32 character;
-    s32 baseX;
-    s32 y;
     s32 x;
+    s32 y;
+    s32 baseX;
+    f32 posY;
     char glyph;
     va_list args;
+    posY = pos.y;
 
     va_start(args, fmt);
     vsprintf(buffer, fmt, args);
 
-    baseX = (s32)pos.x;
-    x = baseX;
-    y = (s32)pos.y;
+    x = (s32)pos.x;
+    y = (s32)posY;
     character = 0;
+    baseX = x;
     while (character < HDBPRT_LOG_MAXCHAR)
     {
-        if (pos.x >= HDBPRT_GRID_WIDTH || pos.y >= HDBPRT_GRID_HEIGHT ||
+        if (pos.x >= HDBPRT_GRID_WIDTH || posY >= HDBPRT_GRID_HEIGHT ||
             x >= HDBPRT_GRID_WIDTH || y >= HDBPRT_GRID_HEIGHT)
         {
             break;

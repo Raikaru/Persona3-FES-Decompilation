@@ -865,6 +865,7 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
     s32 product;
     s32 columnsPlus1;
     s32 columnsPlus2;
+    s32 allocationSize;
 
     switch (mode)
     {
@@ -901,8 +902,11 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
         break;
     }
 
-    memory = (void*)(uintptr_t)(*DAT_00960178_abs)(
-        (u32)(0x20 + indexCount * 0x40 + vertexCount * 2), 0x40000);
+    allocationSize = 0;
+    allocationSize += 0x20;
+    allocationSize += indexCount * 0x40;
+    allocationSize += vertexCount * 2;
+    memory = (void*)(uintptr_t)(*DAT_00960178_abs)((u32)allocationSize, 0x40000);
     mesh = (u32*)memory;
     mesh[0] = (u32)(uintptr_t)((u8*)memory + 0x20);
     mesh[1] = mesh[0] + indexCount * 0x40;

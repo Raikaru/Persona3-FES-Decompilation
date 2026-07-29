@@ -97,6 +97,18 @@ extern const char D_0068EE60[];
 extern const char D_0068EE80[];
 extern const char D_0068EE90[];
 extern u32 gp0xffff97d0;
+#pragma alias gp0xffff97d0_1 gp0xffff97d0
+extern u32 gp0xffff97d0_1;
+#pragma alias gp0xffff97d0_2 gp0xffff97d0
+extern u32 gp0xffff97d0_2;
+#pragma alias gp0xffff97d0_3 gp0xffff97d0
+extern u32 gp0xffff97d0_3;
+#pragma alias gp0xffff97d0_4 gp0xffff97d0
+extern u32 gp0xffff97d0_4;
+#pragma alias gp0xffff97d0_5 gp0xffff97d0
+extern u32 gp0xffff97d0_5;
+#pragma alias gp0xffff97d0_6 gp0xffff97d0
+extern u32 gp0xffff97d0_6;
 extern void FUN_005225a8(u32 format, ...);
 extern const char D_0068ED98[];
 extern const char D_0068EDA8[];
@@ -1161,10 +1173,10 @@ void func_00274590(void)
     u16* skills;
     s8* rankMap;
     u8 level;
-    u16 excluded[16];
-    u16 candidates[8];
-    s32 indices[8];
     s32 flags[2];
+    s32 indices[8];
+    u16 candidates[8];
+    u16 excluded[16];
     s32 excludedCount;
     s32 skillCount;
     s32 candidateCount;
@@ -1197,15 +1209,15 @@ void func_00274590(void)
         FUN_005225a8((u32)(uintptr_t)D_0068EE00);
         goto done;
     }
-    FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
-    FUN_005225a8((u32)(uintptr_t)(&gp0xffff97d0 + 1),
+    FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0_1);
+    FUN_005225a8((u32)(uintptr_t)(&gp0xffff97d0_2 + 1),
                  randomValue, 0xc);
     if (randomValue >= 0xc)
     {
         FUN_005225a8((u32)(uintptr_t)D_0068EE00);
         goto done;
     }
-    FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+    FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0_3);
     randomValue = FUN_00488f30() & 0xff;
     FUN_005225a8((u32)(uintptr_t)D_0068EE10, randomValue, 1);
     if (randomValue == 0)
@@ -1254,7 +1266,7 @@ void func_00274590(void)
             FUN_005225a8((u32)(uintptr_t)D_0068EE00);
             goto next_mode;
         }
-        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0_4);
         randomValue = FUN_00488f30();
         randomIndex = randomValue % candidateCount;
         FUN_005225a8((u32)(uintptr_t)D_0068EE40, randomIndex);
@@ -1296,7 +1308,7 @@ mode_one:
             FUN_005225a8((u32)(uintptr_t)D_0068EE00);
             goto next_mode;
         }
-        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0_5);
         randomValue = FUN_00488f30();
         randomIndex = randomValue % candidateCount;
         FUN_005225a8((u32)(uintptr_t)D_0068EE40, randomIndex);
@@ -1323,7 +1335,7 @@ mode_one:
             FUN_005225a8((u32)(uintptr_t)D_0068EE00);
             goto next_mode;
         }
-        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0_6);
         randomValue = FUN_00488f30();
         randomIndex = randomValue % candidateCount;
         i = 0;
