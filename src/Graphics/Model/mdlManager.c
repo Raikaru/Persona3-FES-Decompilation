@@ -83,6 +83,8 @@ void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
 extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
 #pragma alias func_004916d0_typed func_004916d0
 extern void func_004916d0_typed(u64 object, void* callback, void* data);
+#pragma alias func_004916d0_callback func_004916d0
+extern void func_004916d0_callback(RpClump* object, void (*callback)(void), void* data);
 void func_0031f5c0(void* data);
 
 /* Removing this loses FUN_00311310 (MATCH nd0 -> MISMATCH nd178) - measured W161. */
@@ -3949,7 +3951,7 @@ void func_003143c0(u8* param_1,RpClump* param_2)
     callbackData.callback = (code)func_00313f40;
     callbackData.value = uVar1;
 
-    func_004916d0(param_2,(u32)func_00313fe0,&callbackData);
+    func_004916d0_callback(param_2,(void (*)(void))func_00313fe0,&callbackData);
 
     *(u32 *)(*(int *)(param_1 + 0x18) + 8) = uVar1;
 

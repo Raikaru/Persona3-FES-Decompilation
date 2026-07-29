@@ -1367,6 +1367,8 @@ void FUN_0034bbb0(u32 *param_1, float param_2);
 u32 FUN_0034bbc0(int param_1,u32 param_2);
 #pragma alias FUN_0034bbc0_u16 FUN_0034bbc0
 extern u32 FUN_0034bbc0_u16(int param_1,u16 param_2);
+#pragma alias RpSkyRenderStateSet_u32 RpSkyRenderStateSet
+extern void RpSkyRenderStateSet_u32(int state,u32 value);
 void FUN_0034bc80(u32 param_1);
 u32 FUN_0034bcf0(u32 param_1);
 void FUN_0034bd10(void);
@@ -1622,6 +1624,8 @@ extern void FUN_00318770(u32 param_1,u32 param_2,f32 param_3);
 extern u64 FUN_003189f0();
 #pragma alias FUN_003189f0_f32 FUN_003189f0
 extern u64 FUN_003189f0_f32(float param_1,u32 param_2,u32 param_3);
+#pragma alias FUN_003189f0_typed FUN_003189f0
+extern u64 FUN_003189f0_typed(void *param_1,u16 param_2,float param_3);
 #pragma alias FUN_00318ad0_u32 FUN_00318ad0
 extern u64 FUN_00318ad0_u32(u32 param_1,u32 *param_2);
 #pragma alias FUN_00318a70_u32 FUN_00318a70
@@ -42737,7 +42741,7 @@ void FUN_00349af0(u8 (*param_1) [16])
 // Reconstructed from the matched draw sibling: unsigned control byte, typed
 // state subobject, cached render callbacks, two correctly ordered buffers,
 // and a 32-bit draw result. Residual is call-argument setup ordering.
-// FUN_00349D30 NONMATCHING
+// FUN_00349D30
 
 
 void FUN_00349d30(int param_1)
@@ -42749,7 +42753,7 @@ void FUN_00349d30(int param_1)
   u8 auStack_110[256];
   u8 auStack_210[256];
   u32 uStack_4;
-  void (**setState)(int, int);
+  void (**setState)(int, u32);
   void (**setBuffer)(int, void *, int, void *, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
@@ -42758,7 +42762,7 @@ void FUN_00349d30(int param_1)
     puVar2 = *(u32 **)(*(int *)(param_1 + 0x28) + 8);
     FUN_004d81b0(2, &uStack_4);
 
-    setState = (void (**)(int, int))DAT_00960090_abs;
+    setState = (void (**)(int, u32))DAT_00960090_abs;
     (*setState)(1, *puVar2);
     FUN_003294d0();
     RpSkyRenderStateSet(2, 0x44);
@@ -42778,7 +42782,7 @@ void FUN_00349d30(int param_1)
       (*setBuffer)(3, auStack_210, 4, DAT_0069cb80_abs, 6);
       FUN_00329630();
     }
-    RpSkyRenderStateSet(2, uStack_4);
+    RpSkyRenderStateSet_u32(2, uStack_4);
   }
 }
 
@@ -43525,7 +43529,7 @@ void FUN_0034ae30(u8 (*param_1) [16])
 // Reconstructed from the matched draw sibling: unsigned control byte, typed
 // state subobject, cached render callbacks, and correctly ordered buffers.
 // Residual is two independent call-argument setup-order pairs.
-// FUN_0034B010 NONMATCHING
+// FUN_0034B010
 
 
 void FUN_0034b010(int param_1)
@@ -43536,7 +43540,7 @@ void FUN_0034b010(int param_1)
   float afStack_110[4][16];
   u8 auStack_210[256];
   u32 uStack_4;
-  void (**setState)(int, int);
+  void (**setState)(int, u32);
   void (**setBuffer)(int, void *, int, void *, int);
 
   iVar1 = *(int *)(param_1 + 0x24);
@@ -43545,7 +43549,7 @@ void FUN_0034b010(int param_1)
     puVar2 = *(u32 **)(*(int *)(param_1 + 0x28) + 8);
     FUN_004d81b0(2, &uStack_4);
 
-    setState = (void (**)(int, int))DAT_00960090_abs;
+    setState = (void (**)(int, u32))DAT_00960090_abs;
     (*setState)(1, *puVar2);
     FUN_003294d0();
     RpSkyRenderStateSet(2, 0x44);
@@ -43570,7 +43574,7 @@ void FUN_0034b010(int param_1)
     (*setState)(1, 0);
     RpSkyRenderStateSet(3, 0x31001);
     (*setBuffer)(3, auStack_210, 4, DAT_0069cb80_abs, 6);
-    RpSkyRenderStateSet(2, uStack_4);
+    RpSkyRenderStateSet_u32(2, uStack_4);
   }
 }
 
@@ -44414,7 +44418,7 @@ u32 FUN_0034bf10(int param_1)
 
 // b210 floor: the only residual is pre-JAL argument setup order at +0x140..+0x148:
 // ours mov.s $f12,$f20; move $a0,$s0; move $a1,$zero, retail emits the two moves first.
-// FUN_0034BFC0 NONMATCHING
+// FUN_0034BFC0
 
 
 u32 FUN_0034bfc0(u32 param_1)
@@ -44481,7 +44485,7 @@ u32 FUN_0034bfc0(u32 param_1)
 
         FUN_003182d0(uVar4,0,0,0,0);
 
-        FUN_003189f0_f32(one,uVar4,0);
+        FUN_003189f0_typed((void *)uVar4,0,one);
 
       }
 

@@ -848,6 +848,9 @@ extern code FUN_004222d0;
 #pragma alias FUN_004222d0_typed FUN_004222d0
 extern void FUN_004222d0_typed(float *param_1,char param_2,int param_3,int param_4,int param_5,int param_6,
                  int param_7,short param_8);
+#pragma alias FUN_004222d0_s16_counter FUN_004222d0
+extern void FUN_004222d0_s16_counter(float *param_1, char param_2, int param_3, int param_4,
+                 int param_5, int param_6, s16 param_7, short param_8);
 extern u32 FUN_004229d0(int param_1, u64 param_2, int param_3);
 extern void FUN_00422c10(u32 param_1, int param_2);
 extern void FUN_00422c30(u32 param_1, u64 param_2, void *param_3);
@@ -12618,9 +12621,7 @@ void FUN_00449fa0(void)
   return;
 }
 
-// MWCC b210 floor: call argument setup remains lh $t2,0xee($s1) / addiu $a0,$sp,0x48 / move $a1,$zero;
-// retail emits the same three independent instructions in the rotated order $a0 / $a1 / $t2.
-// FUN_00449FE0 NONMATCHING
+// FUN_00449FE0
 
 u32
 FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5,short param_6)
@@ -12639,7 +12640,7 @@ FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5
     position.y = param_4;
   }
   else {
-    FUN_004222d0_typed(&position.x,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)work->counter0,(short)(param_6));
+    FUN_004222d0_s16_counter(&position.x,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),work->counter0,(short)(param_6));
     if (work->counter0 < param_6) {
       work->counter0 += 1;
       uVar5 = 1;
@@ -12656,9 +12657,7 @@ FUN_00449fe0(float param_1,float param_2,float param_3,float param_4,int param_5
   return uVar5;
 }
 
-// MWCC b210 floor: call argument setup remains lh $t2,0xf4($s1) / addiu $a0,$sp,0x48 / move $a1,$zero;
-// retail emits the same three independent instructions in the rotated order $a0 / $a1 / $t2.
-// FUN_0044A110 NONMATCHING
+// FUN_0044A110
 
 u32
 FUN_0044a110(float param_1,float param_2,float param_3,float param_4,int param_5,short param_6)
@@ -12677,7 +12676,7 @@ FUN_0044a110(float param_1,float param_2,float param_3,float param_4,int param_5
     position.y = param_4;
   }
   else {
-    FUN_004222d0_typed(&position.x,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),(int)work->counter1,(short)(param_6));
+    FUN_004222d0_s16_counter(&position.x,(char)(0),(int)((short)(int)param_1),(int)((short)(int)param_2),(int)((short)(int)param_3),(int)((short)(int)param_4),work->counter1,(short)(param_6));
     if (work->counter1 < param_6) {
       work->counter1 += 1;
       uVar5 = 1;

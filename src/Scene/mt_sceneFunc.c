@@ -598,7 +598,7 @@ extern void FUN_003189f0_scene_typed(u32 param_1, u16 param_2, float param_3);
 extern void FUN_003bbc90_scene_typed(float param_1,...);
 /* Retail call: FUN_003bbed0 + 0x0d4. */
 #pragma alias FUN_003bbd40_scene_typed FUN_003bbd40
-extern void FUN_003bbd40_scene_typed(float param_1,...);
+extern void FUN_003bbd40_scene_typed(char *param_1,float param_2,float *param_3);
 /* Retail calls: FUN_003b9610 + 0x52c, + 0x978. */
 #pragma alias FUN_003bbed0_scene_typed FUN_003bbed0
 extern float FUN_003bbed0_scene_typed(float param_1,float param_2,...);
@@ -3725,7 +3725,7 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 }
 #define FUN_003bbd40(...) ((void (*)(...))FUN_003bbd40)(__VA_ARGS__)
 #undef FUN_003bbed0
-// FUN_003BBED0 NONMATCHING
+// FUN_003BBED0
 
 
 float FUN_003bbed0(u32 param_3,float param_1,float param_2)
@@ -3756,7 +3756,7 @@ float FUN_003bbed0(u32 param_3,float param_1,float param_2)
   *(u32 *)(auStack + 0x28) = 0x3f800000;
   *(u32 *)(auStack + 0x2c) = 0x3f800000;
   *(u32 *)(auStack + 0x30) = 0;
-  FUN_003bbd40_scene_typed(param_2,auStack,(float *)(auStack + 0x130));
+  FUN_003bbd40_scene_typed((char *)auStack,param_2,(float *)(auStack + 0x130));
   return *(float *)(auStack + 0x134) * param_1;
 }
 #define FUN_003bbed0(...) ((float (*)(...))FUN_003bbed0)(__VA_ARGS__)
