@@ -8091,6 +8091,8 @@ u64 FUN_003680e0(u64 param_1,u64 param_2,int param_3)
 
   int iVar8;
 
+  int limit;
+
   u8 auStack_20 [16];
 
   u8 auStack_10 [16];
@@ -8111,9 +8113,11 @@ u64 FUN_003680e0(u64 param_1,u64 param_2,int param_3)
 
     iVar6 = 0;
 
+    limit = *(int *)(iVar7 + 0x160) + *(int *)(iVar7 + 0x15c);
+
     for (iVar8 = piVar2[0x1b];
 
-        (iVar6 < *(int *)(iVar7 + 0x160) + *(int *)(iVar7 + 0x15c) && (iVar8 != 0));
+        (iVar6 < limit && (iVar8 != 0));
 
         iVar8 = *(int *)(iVar8 + 0x4c)) {
 

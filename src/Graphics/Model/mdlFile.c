@@ -10796,8 +10796,8 @@ u32 FUN_003268c0(u32 param_1)
 
   u32 uVar3;
 
-  int iVar4;
 
+  int iVar4;
   u32 *puVar5;
 
   
@@ -10842,14 +10842,14 @@ u32 FUN_003268c0(u32 param_1)
     return uVar3;
   }
 
-  if (*(int *)(iVar4 + 0x50) != 0) {
+  uVar2 = *(u32 *)(iVar4 + 0x50);
+  if (uVar2 != 0) {
 
-    uVar2 = FUN_00323640((u16 *)(param_1));
+    uVar2 = FUN_00323640((u16 *)uVar2);
 
     puVar5[0x14] = uVar2;
 
   }
-
   FUN_003269e0(uVar3,param_1);
 
   return uVar3;
@@ -11053,7 +11053,7 @@ void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3)
 
 
 
-// FUN_00326CF0 NONMATCHING
+// FUN_00326CF0
 
 
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
@@ -11064,9 +11064,10 @@ void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
 
   
 
-  if (*(int *)(param_1 + 0x50) != 0) {
+  uVar1 = *(u32 *)(param_1 + 0x50);
+  if (uVar1 != 0) {
 
-    FUN_003237c0((int)(param_1));
+    FUN_003237c0((int)uVar1);
 
   }
 
@@ -46475,6 +46476,7 @@ u32 FUN_0034e4c0(int param_1)
   u32 uVar3;
 
   int lVar4;
+  int file;
 
   u32 *puVar5;
 
@@ -46482,7 +46484,8 @@ u32 FUN_0034e4c0(int param_1)
 
   
 
-  uVar2 = FUN_003245b0((int)(param_1));
+  file = param_1;
+  uVar2 = FUN_003245b0(file);
 
   iVar1 = (int)uVar2;
 
@@ -46522,16 +46525,16 @@ u32 FUN_0034e4c0(int param_1)
 
   FUN_00521250(puVar5 + 3,uVar2,0x48);
 
-  FUN_0034e820(uVar3,*(u16 *)((int)param_1 + 0xc),iVar1 + 0x48);
+  FUN_0034e820(uVar3,*(u16 *)(file + 0xc),iVar1 + 0x48);
 
   if (*(int *)(puVar5[0x17] + 8) != 0) {
     goto do_update;
   }
   return uVar3;
 do_update:
-  lVar4 = FUN_003245f0((int)param_1);
+  lVar4 = FUN_003245f0(file);
   if (lVar4 != 0) {
-    switch (*(u16 *)((int)param_1 + 0x1c)) {
+    switch (*(u16 *)(file + 0x1c)) {
     case 1:
       FUN_0034e7c0_u32(uVar3,lVar4);
       break;

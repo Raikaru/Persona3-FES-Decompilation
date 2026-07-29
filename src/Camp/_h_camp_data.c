@@ -2204,7 +2204,7 @@ void FUN_0016bf80(u32 param_1, u32 param_2, void* param_3)
     FUN_00521250(param_3, &iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff], 0x20);
 }
 
-// FUN_0016C010 NONMATCHING
+// FUN_0016C010
 void FUN_0016c010(void)
 {
     void* cdvd;
@@ -2222,26 +2222,28 @@ void FUN_0016c010(void)
     iGpffffb2c0->groups[0].records =
         (CampDataBridgeRecord*)((u8*)iGpffffb2c0 + 0x20);
     iGpffffb2c0->groups[0].auxiliaryData =
-        (u8*)iGpffffb2c0->groups[0].records + (descriptor[0] << 5);
+        (u8*)iGpffffb2c0->groups[0].records +
+        (iGpffffb2c0->groups[0].recordCount << 5);
     payload = (u8*)(descriptor + 8);
     FUN_00521250(iGpffffb2c0->groups[0].records,
-                 payload, descriptor[0] << 5);
-    payload += descriptor[0] << 5;
+                 payload, iGpffffb2c0->groups[0].recordCount << 5);
+    payload += iGpffffb2c0->groups[0].recordCount << 5;
     FUN_00521250(iGpffffb2c0->groups[0].auxiliaryData,
-                 payload, descriptor[1] << 4);
+                 payload, iGpffffb2c0->groups[0].auxiliaryCount << 4);
     iGpffffb2c0->groups[1].recordCount = descriptor[4];
     iGpffffb2c0->groups[1].auxiliaryCount = descriptor[5];
     iGpffffb2c0->groups[1].records =
         (CampDataBridgeRecord*)(iGpffffb2c0->groups[0].auxiliaryData +
-                                (descriptor[1] << 4));
+            (iGpffffb2c0->groups[0].auxiliaryCount << 4));
     iGpffffb2c0->groups[1].auxiliaryData =
-        (u8*)iGpffffb2c0->groups[1].records + (descriptor[4] << 5);
-    payload += descriptor[1] << 4;
+        (u8*)iGpffffb2c0->groups[1].records +
+        (iGpffffb2c0->groups[1].recordCount << 5);
+    payload += iGpffffb2c0->groups[0].auxiliaryCount << 4;
     FUN_00521250(iGpffffb2c0->groups[1].records,
-                 payload, descriptor[4] << 5);
-    payload += descriptor[4] << 5;
+                 payload, iGpffffb2c0->groups[1].recordCount << 5);
+    payload += iGpffffb2c0->groups[1].recordCount << 5;
     FUN_00521250(iGpffffb2c0->groups[1].auxiliaryData,
-                 payload, descriptor[5] << 4);
+                 payload, iGpffffb2c0->groups[1].auxiliaryCount << 4);
     FUN_00100ec0(cdvd);
 }
 
