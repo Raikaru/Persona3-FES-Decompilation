@@ -168,8 +168,6 @@ extern const u8 D_005E3C20[];
 void* clndUpdateTask(KwlnTask* clndTask);
 void clndDestroyTask(KwlnTask* clndTask);
 
-#pragma push
-#pragma opt_propagation off
  
 // FUN_0017FC70
 KwlnTask* func_0017fc70(KwlnTask* clndTask)
@@ -200,7 +198,6 @@ KwlnTask* func_0017fc70(KwlnTask* clndTask)
 
     return actionTask;
 }
-#pragma pop
 
 // FUN_0017FD30
 u32 func_0017fd30(void)
@@ -1336,8 +1333,6 @@ s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
     return month;
 }
 
-#pragma push
-#pragma opt_propagation on
 // FUN_0017d8b0 MATCHING
 s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 {
@@ -1372,7 +1367,6 @@ s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 
     return dayAccumulator + (day - 5); // - 5 because the game starts in april 5th
 }
-#pragma pop
 
 // FUN_0017d920 MATCHING
 u32 clndGetCurrentMonth()

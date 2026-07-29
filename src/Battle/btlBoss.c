@@ -804,7 +804,6 @@ void* func_002f8810()
 }
 
 /* Removing this worsens FUN_002f88c0 (nd2 -> nd85) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_002f88c0 NONMATCHING
 u64 func_002f88c0()
 {
@@ -872,7 +871,6 @@ case_1a4_done:
             return 0;
     }
 }
-#pragma opt_loop_invariants off
 
 // FUN_002f8a40
 u32 func_002f8a40(BtlUnit* unit)

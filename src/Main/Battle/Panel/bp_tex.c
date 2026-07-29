@@ -163,8 +163,6 @@ static void bpTexWriteVertex(void* destination,
 } while (0)
 #pragma optimization_level 3
 #pragma push
-/* Removing this worsens FUN_0021c9f0 (nd22 -> nd361) - measured W161. */
-#pragma opt_rebuildconditionals off
 #pragma schedule off
 /*
  * Retail orders the raster/frame pointer arithmetic differently from MWCCPS2.
@@ -534,7 +532,6 @@ static void bpTexSetUvAxis(f32 start,
     }
 }
 
-#pragma optimization_level 2
 // FUN_0021cd00
 void func_0021cd00(void* frameData, f32* uv)
 {
@@ -587,7 +584,6 @@ void func_0021cd00(void* frameData, f32* uv)
     }
 }
 
-#pragma optimization_level 2
 // FUN_0021cec0
 void func_0021cec0(void* frameData, f32* uv, u32 mode)
 {
@@ -735,9 +731,6 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
         }
     }
 }
-/* Removing this loses FUN_00255390 (MATCH nd0 -> MISMATCH nd86) - measured W161. */
-#pragma schedule on
-#pragma optimization_level 2
 
 // FUN_0021d3b0
 void func_0021d3b0(void* destination, void* frameData)
@@ -2433,7 +2426,6 @@ void bpTexApplyActions(void)
     BP_TEX_U32(BP_TEX_GLOBAL, 0x127a8) = 0;
     func_005225a8((u32)"speed: %d\n", BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
 }
-#pragma optimization_level 2
 
 
 // FUN_00257D00 bpTexBuildPosition
@@ -2492,7 +2484,6 @@ void bpTexDumpNodes(void)
     }
     func_005225a8((u32)"\n\n");
 }
-#pragma optimization_level 2
 
 // FUN_00257F10 NONMATCHING
 void bpTexPrepareNodes(void)

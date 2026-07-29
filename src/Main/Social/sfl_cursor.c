@@ -129,7 +129,6 @@ void FUN_0025a120(void)
  * spill placement; object size now exactly matches the retail function window.
  */
 /* Removing this worsens FUN_0025a130 (nd185 -> nd295) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_0025A130 NONMATCHING
 
 
@@ -244,7 +243,6 @@ void FUN_0025a130(void)
   FUN_0025aad0();
   return;
 }
-#pragma opt_loop_invariants off
 
 // FUN_0025A440
 
