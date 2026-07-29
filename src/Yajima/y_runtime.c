@@ -9,7 +9,7 @@ typedef struct YajimaVec2 {
 typedef u8 bool;
 
 typedef union Vec128 { struct { u32 _0_4_; u32 _4_4_; u32 _8_4_; u32 _12_4_; }; struct { u64 _0_8_; u64 _8_8_; }; u8 _bytes[16]; } Vec128;
-static Vec128 rwVecZero(void) { Vec128 v; v._0_8_=0; v._8_8_=0; return v; }
+static inline Vec128 rwVecZero(void) { Vec128 v; v._0_8_=0; v._8_8_=0; return v; }
 static Vec128 rwVecKeep(Vec128 v) { return v; }
 #define _lqc2(x) rwVecZero()
 #define _sqc2(x) rwVecKeep(x)
@@ -16718,56 +16718,36 @@ void FUN_00454f50(char param_1,char param_2)
   float fStack_238;
   RwV3d afStack_230;
   
-  u8 auStack_210 [8];
-  float fStack_208;
-  u8 auStack_200 [4];
-  float fStack_1fc;
-  float afStack_1f0 [4];
-  u8 auStack_1e0 [8];
-  float fStack_1d8;
-  u8 auStack_1d0 [4];
-  float fStack_1cc;
-  float afStack_1c0 [4];
-  u8 auStack_1b0 [8];
-  float fStack_1a8;
-  u8 auStack_1a0 [4];
-  float fStack_19c;
-  float afStack_190 [4];
-  u8 auStack_180 [8];
-  float fStack_178;
-  u8 auStack_170 [4];
-  float fStack_16c;
-  float afStack_160 [4];
-  u8 auStack_150 [8];
-  float fStack_148;
-  u8 auStack_140 [8];
-  float fStack_138;
-  u8 auStack_130 [4];
-  float fStack_12c;
-  u8 auStack_120 [4];
-  float fStack_11c;
-  float afStack_110 [4];
-  float afStack_100 [4];
-  u8 auStack_f0 [8];
-  float fStack_e8;
-  u8 auStack_e0 [8];
-  float fStack_d8;
-  u8 auStack_d0 [4];
-  float fStack_cc;
-  u8 auStack_c0 [4];
-  float fStack_bc;
-  float afStack_b0 [4];
-  float afStack_a0 [4];
-  u8 auStack_90 [8];
-  float fStack_88;
-  u8 auStack_80 [8];
-  float fStack_78;
-  u8 auStack_70 [4];
-  float fStack_6c;
-  u8 auStack_60 [4];
-  float fStack_5c;
-  float afStack_50 [4];
-  float afStack_40 [4];
+  float afStack_210[4];
+  float afStack_200[4];
+  float afStack_1f0[4];
+  float afStack_1e0[4];
+  float afStack_1d0[4];
+  float afStack_1c0[4];
+  float afStack_1b0[4];
+  float afStack_1a0[4];
+  float afStack_190[4];
+  float afStack_180[4];
+  float afStack_170[4];
+  float afStack_160[4];
+  float afStack_150[4];
+  float afStack_140[4];
+  float afStack_130[4];
+  float afStack_120[4];
+  float afStack_110[4];
+  float afStack_100[4];
+  float afStack_f0[4];
+  float afStack_e0[4];
+  float afStack_d0[4];
+  float afStack_c0[4];
+  float afStack_b0[4];
+  float afStack_a0[4];
+  float afStack_90[4];
+  float afStack_80[4];
+  float afStack_70[4];
+  float afStack_60[4];
+  float afStack_50[4];
+  float afStack_40[4];
   float fStack_30;
   float fStack_2c;
   float fStack_28;
@@ -16791,14 +16771,14 @@ void FUN_00454f50(char param_1,char param_2)
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
     FUN_001ad940(afStack_50,*(u32 *)(*piVar8 + 0x1e0));
     fStack_10 = afStack_40[0] - afStack_50[0];
-    FUN_001ad940(auStack_60,
+    FUN_001ad940(afStack_60,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_70,*(u32 *)(*piVar8 + 0x1e0));
-    fStack_c = fStack_5c - fStack_6c;
-    FUN_001ad940(auStack_80,
+    FUN_001ad940(afStack_70,*(u32 *)(*piVar8 + 0x1e0));
+    fStack_c = afStack_60[1] - afStack_70[1];
+    FUN_001ad940(afStack_80,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_90,*(u32 *)(*piVar8 + 0x1e0));
-    fStack_8 = fStack_78 - fStack_88;
+    FUN_001ad940(afStack_90,*(u32 *)(*piVar8 + 0x1e0));
+    fStack_8 = afStack_80[2] - afStack_90[2];
   }
   else {
     piVar8 = (int *)((u8 *)DAT_008717f4 + param_2 * 0x70);
@@ -16806,14 +16786,14 @@ void FUN_00454f50(char param_1,char param_2)
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
     FUN_001ad940(afStack_a0,*(u32 *)(*piVar8 + 0x1e0));
     fStack_10 = afStack_a0[0] - afStack_b0[0];
-    FUN_001ad940(auStack_d0,
+    FUN_001ad940(afStack_d0,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_c0,*(u32 *)(*piVar8 + 0x1e0));
-    fStack_c = fStack_bc - fStack_cc;
-    FUN_001ad940(auStack_f0,
+    FUN_001ad940(afStack_c0,*(u32 *)(*piVar8 + 0x1e0));
+    fStack_c = afStack_c0[1] - afStack_d0[1];
+    FUN_001ad940(afStack_f0,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_e0,*(u32 *)(*piVar8 + 0x1e0));
-    fStack_8 = fStack_d8 - fStack_e8;
+    FUN_001ad940(afStack_e0,*(u32 *)(*piVar8 + 0x1e0));
+    fStack_8 = afStack_e0[2] - afStack_f0[2];
   }
   fVar9 = (float)FUN_004c69f0(&fStack_10,&fStack_10);
   if (fVar9 >= 300.0f) {
@@ -16824,12 +16804,12 @@ void FUN_00454f50(char param_1,char param_2)
     FUN_001ad940(afStack_1f0,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
     fStack_30 = fVar11 + afStack_1f0[0];
-    FUN_001ad940(auStack_200,
+    FUN_001ad940(afStack_200,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    fStack_2c = (fVar12 - fVar9) * 400.0f + fStack_1fc;
-    FUN_001ad940(auStack_210,
+    fStack_2c = (fVar12 - fVar9) * 400.0f + afStack_200[1];
+    FUN_001ad940(afStack_210,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    fStack_28 = fVar10 + fStack_208;
+    fStack_28 = fVar10 + afStack_210[2];
   }
   else {
     piVar8 = (int *)((u8 *)DAT_008717f4 + param_2 * 0x70);
@@ -16837,14 +16817,14 @@ void FUN_00454f50(char param_1,char param_2)
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
     FUN_001ad940(afStack_110,*(u32 *)(*piVar8 + 0x1e0));
     fStack_10 = afStack_100[0] - afStack_110[0];
-    FUN_001ad940(auStack_120,
+    FUN_001ad940(afStack_120,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_130,*(u32 *)(*piVar8 + 0x1e0));
-    fStack_c = fStack_11c - fStack_12c;
-    FUN_001ad940(auStack_140,
+    FUN_001ad940(afStack_130,*(u32 *)(*piVar8 + 0x1e0));
+    fStack_c = afStack_120[1] - afStack_130[1];
+    FUN_001ad940(afStack_140,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    FUN_001ad940(auStack_150,*(u32 *)(*piVar8 + 0x1e0));
-    fStack_8 = fStack_138 - fStack_148;
+    FUN_001ad940(afStack_150,*(u32 *)(*piVar8 + 0x1e0));
+    fStack_8 = afStack_140[2] - afStack_150[2];
     FUN_004c69f0(&fStack_10,&fStack_10);
     fVar10 = fStack_10 * 400.0f;
     fVar11 = fStack_c * 400.0f;
@@ -16852,12 +16832,12 @@ void FUN_00454f50(char param_1,char param_2)
     FUN_001ad940(afStack_160,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
     fStack_30 = fVar10 + afStack_160[0];
-    FUN_001ad940(auStack_170,
+    FUN_001ad940(afStack_170,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    fStack_2c = fVar11 + fStack_16c;
-    FUN_001ad940(auStack_180,
+    fStack_2c = fVar11 + afStack_170[1];
+    FUN_001ad940(afStack_180,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar1 + 1) * 0x1c0) + 0x1e0));
-    fStack_28 = fVar9 + fStack_178;
+    fStack_28 = fVar9 + afStack_180[2];
     collision.x = fStack_30;
     collision.y = fStack_2c;
     collision.z = fStack_28;
@@ -16888,19 +16868,19 @@ void FUN_00454f50(char param_1,char param_2)
       piVar8 = (int *)((u8 *)DAT_008717f4 + param_2 * 0x70);
       FUN_001ad940(afStack_190,*(u32 *)(*piVar8 + 0x1e0));
       fStack_10 = fStack_30 - afStack_190[0];
-      FUN_001ad940(auStack_1a0,*(u32 *)(*piVar8 + 0x1e0));
-      fStack_c = fStack_2c - fStack_19c;
-      FUN_001ad940(auStack_1b0,*(u32 *)(*piVar8 + 0x1e0));
-      fStack_8 = fStack_28 - fStack_1a8;
+      FUN_001ad940(afStack_1a0,*(u32 *)(*piVar8 + 0x1e0));
+      fStack_c = fStack_2c - afStack_1a0[1];
+      FUN_001ad940(afStack_1b0,*(u32 *)(*piVar8 + 0x1e0));
+      fStack_8 = fStack_28 - afStack_1b0[2];
     }
     else {
       piVar8 = (int *)((u8 *)DAT_008717f4 + param_2 * 0x70);
       FUN_001ad940(afStack_1c0,*(u32 *)(*piVar8 + 0x1e0));
       fStack_10 = afStack_1c0[0] - fStack_30;
-      FUN_001ad940(auStack_1d0,*(u32 *)(*piVar8 + 0x1e0));
-      fStack_c = fStack_1cc - fStack_2c;
-      FUN_001ad940(auStack_1e0,*(u32 *)(*piVar8 + 0x1e0));
-      fStack_8 = fStack_1d8 - fStack_28;
+      FUN_001ad940(afStack_1d0,*(u32 *)(*piVar8 + 0x1e0));
+      fStack_c = afStack_1d0[1] - fStack_2c;
+      FUN_001ad940(afStack_1e0,*(u32 *)(*piVar8 + 0x1e0));
+      fStack_8 = afStack_1e0[2] - fStack_28;
     }
     FUN_004c69f0(&fStack_10,&fStack_10);
     fStack_30 = fStack_30 + (fStack_c * fStack_18 - fStack_8 * *((float *)&uStack_20 + 1)) * 400.0f;
