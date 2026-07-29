@@ -1928,10 +1928,10 @@ u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
   u16 uStack_30;
   u16 uStack_20;
   
-  if (0x26f < (param_1 & 0xffff)) {
+  if (!((param_1 & 0xffff) < 0x270)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x6c3);
   }
-  if (0x1cf < (param_1 & 0xffff)) {
+  if (!((param_1 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x6c4);
   }
   fVar13 = 1.0f;
@@ -3345,7 +3345,7 @@ u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,u16 param_4)
   u32 uVar4;
   s32 lVar5;
   
-  if (0x1cf < (param_1 & 0xffff)) {
+  if (!((param_1 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xb95);
   }
   if (param_4 != 1) {
@@ -3592,7 +3592,7 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   int iVar7;
   u32 uVar8;
   
-  if (0x1cf < (param_1 & 0xffff)) {
+  if (!((param_1 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xc67);
   }
   uVar8 = 0;
@@ -3605,7 +3605,7 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   lVar4 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
   lVar5 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
   lVar6 = FUN_00306020(param_1,param_2,param_3,1);
-  if (0x1cf < (param_1 & 0xffff)) {
+  if (!((param_1 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
   }
   iVar7 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;
@@ -5072,7 +5072,7 @@ u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4)
   float fVar25;
   u16 uVar15;
   
-  if (0x1cf < (param_3 & 0xffff)) {
+  if (!((param_3 & 0xffff) < 0x1d0)) {
     FUN_0019d3f0((u32)D_0069aa80_abs, 0x1175);
   }
   uVar12 = (u32)param_3 & 0xffff;
@@ -8088,8 +8088,8 @@ u32 FUN_0030fdc0(void)
  
 #define DAT_00957190 (*(u32*)DAT_00957190_abs)
 #define DAT_00957194 (*(u32*)DAT_00957194_abs)
-#define DAT_00957198 (*(u32*)DAT_00957198_abs)
-#define DAT_0095719c (*(u32*)DAT_0095719c_abs)
+#define DAT_00957198 (*(s16*)DAT_00957198_abs)
+#define DAT_0095719c (*(u16*)DAT_0095719c_abs)
 #define DAT_009571a0 (*(u32*)DAT_009571a0_abs)
 // FUN_0030fdf0 NONMATCHING
 

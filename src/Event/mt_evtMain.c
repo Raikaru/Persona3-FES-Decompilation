@@ -5122,21 +5122,13 @@ void FUN_003650c0(int param_1,u64 param_2,int param_3)
 
   iVar4 = 0;
 
-  iVar3 = (int)(*(u16 *)(param_3 + 0xc) & -0x400) >> 10;
+  iVar3 = (int)(*(u16 *)(param_3 + 0xc) & 0xFC00) >> 10;
 
-  if (iVar3 == 1) {
+  switch (iVar3) {
 
-    lVar2 = FUN_003b5d10();
+  case 1:
 
-    if (lVar2 != 0) {
-
-      iVar4 = *(int *)((int)lVar2 + 0x128);
-
-    }
-
-  }
-
-  else if (iVar3 == 3) {
+  case 3:
 
     lVar2 = FUN_003b5d10();
 
@@ -5145,6 +5137,8 @@ void FUN_003650c0(int param_1,u64 param_2,int param_3)
       iVar4 = *(int *)((int)lVar2 + 0x128);
 
     }
+
+    break;
 
   }
 
