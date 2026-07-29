@@ -10127,7 +10127,10 @@ u32 FUN_003fe020(int param_1,u64 param_2)
 
   callbackData.callbacks[1].vector = PTR_FUN_007cd970.vector;
   callbackData.callbacks[0].vector = PTR_FUN_007cd978.vector;
-  callbackData.data.vector = DAT_006af170.vector;
+  callbackData.data.vector.x = DAT_006af170.vector.x;
+  callbackData.data.vector.y = DAT_006af170.vector.y;
+  callbackData.data.vector.z = DAT_006af170.vector.z;
+  callbackData.data.vector.w = DAT_006af170.vector.w;
 
   FUN_003c5e20(uVar4,callbackData.callbacks[1].value[param_1]);
   FUN_003c5ee0(uVar4,callbackData.callbacks[0].value[param_1]);

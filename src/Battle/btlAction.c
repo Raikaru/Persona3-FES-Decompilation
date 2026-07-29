@@ -6982,7 +6982,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
                     genus = unit->genus;
                     if (genus == UNIT_GENUS_EC)
                     {
-                        speedIdx = *(u16*)((u8*)iGpffffb728 + unitDatId * 0xe8 + allowMove * 4 + 0x24);
+                        speedIdx = iGpffffb728[unitDatId].moveSpeed[allowMove].speedIndex;
                     }
                     else
                     {
