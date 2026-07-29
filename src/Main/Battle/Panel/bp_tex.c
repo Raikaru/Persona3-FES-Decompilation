@@ -2592,6 +2592,17 @@ static inline void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue,
     func_0021d950(destination, color);
 }
 
+static inline void bpPanelSetColorUnsigned(void* destination, u8 red, u8 green, u8 blue, f32 alpha)
+{
+    u8 color[4];
+
+    color[0] = red;
+    color[1] = green;
+    color[2] = blue;
+    color[3] = (u8)alpha;
+    func_0021d950(destination, color);
+}
+
 // FUN_0021f0c0
 void func_0021f0c0(void* work)
 {
@@ -2929,7 +2940,7 @@ void func_0021f410(void)
 
     frame = func_0021cca0(texture, 0x10);
     bpPanelSetRect(work + 0x10, centerX - 62.5f, centerY - 62.5f, frame);
-    bpPanelSetColor(work + 0x10, 0xff, 0xff, 0xff, 255.0f * dt);
+    bpPanelSetColorUnsigned(work + 0x10, 0xff, 0xff, 0xff, 255.0f * dt);
 
     bpPanelGetCommandPosition(mode, sub, (f32)timerB, &commandX, &commandY);
     frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
@@ -2956,7 +2967,7 @@ void func_0021f410(void)
         case 0:
             factor = (f32)timerB / 3.0f;
             alpha = (3.0f - (f32)timerB) / 3.0f;
-            bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+            bpPanelSetColorUnsigned(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
             bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
             break;
         case 1:
@@ -2965,7 +2976,7 @@ void func_0021f410(void)
         case 4:
             factor = (3.0f - (f32)timerB) / 3.0f;
             alpha = (f32)timerB / 3.0f;
-            bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+            bpPanelSetColorUnsigned(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
             bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
             break;
         default:

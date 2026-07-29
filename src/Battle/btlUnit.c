@@ -4980,13 +4980,13 @@ void func_00286540(void)
                     fade = (f32)unit->unk_4c / 8.0f;
                     unit->cols[BTLUNIT_COL_MAX - 1].r =
                         (u8)(unit->unk_44[4] +
-                             (s32)(fade * (f32)(unit->unk_44[0] - unit->unk_44[4])));
+                             (u32)(fade * (f32)(unit->unk_44[0] - unit->unk_44[4])));
                     unit->cols[BTLUNIT_COL_MAX - 1].g =
                         (u8)(unit->unk_44[5] +
-                             (s32)(fade * (f32)(unit->unk_44[1] - unit->unk_44[5])));
+                             (u32)(fade * (f32)(unit->unk_44[1] - unit->unk_44[5])));
                     unit->cols[BTLUNIT_COL_MAX - 1].b =
                         (u8)(unit->unk_44[6] +
-                             (s32)(fade * (f32)(unit->unk_44[2] - unit->unk_44[6])));
+                             (u32)(fade * (f32)(unit->unk_44[2] - unit->unk_44[6])));
 
                 }
                 if (unit->flags2 & BTLUNIT_FLAG2_DIRTY)

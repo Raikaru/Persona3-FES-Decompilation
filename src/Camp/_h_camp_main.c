@@ -2696,14 +2696,16 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                                        (u32)textAlpha, stage0.x + 35.0f,
                                        stage0.y + 196.0f + (f32)rowOffset,
                                        alpha);
-                FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
+                FUN_003b2cb0(100.0f, textX0,
+                             (s32)(2.0f + (f32)(textY0 + rowOffset)),
                              color, 6, 1, text, 0x10, 0);
             } else {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x19,
                                        (u32)textAlpha, stage0.x + 35.0f,
                                        stage0.y + 196.0f + (f32)rowOffset,
                                        alpha);
-                FUN_003b2cb0(100.0f, textX0, textY0 + rowOffset,
+                FUN_003b2cb0(100.0f, textX0,
+                             (s32)(2.0f + (f32)(textY0 + rowOffset)),
                              color, 10, 1, text, 0x10, 0);
             }
         }
@@ -2737,14 +2739,16 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                                        (u32)textAlpha, stage1.x + 35.0f,
                                        stage1.y + 196.0f + (f32)rowOffset,
                                        alpha);
-                FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
+                FUN_003b2cb0(100.0f, textX1,
+                             (s32)(2.0f + (f32)(textY1 + rowOffset)),
                              color, 6, 1, text, 0x10, 0);
             } else {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x19,
                                        (u32)textAlpha, stage1.x + 35.0f,
                                        stage1.y + 196.0f + (f32)rowOffset,
                                        alpha);
-                FUN_003b2cb0(100.0f, textX1, textY1 + rowOffset,
+                FUN_003b2cb0(100.0f, textX1,
+                             (s32)(2.0f + (f32)(textY1 + rowOffset)),
                              color, 10, 1, text, 0x10, 0);
             }
         }
@@ -2779,14 +2783,16 @@ void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
                                        (u32)textAlpha, stage2.x + 35.0f,
                                        stage2.y + 196.0f + (f32)rowOffset,
                                        alpha);
-                FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
+                FUN_003b2cb0(100.0f, textX2,
+                             (s32)(2.0f + (f32)(textY2 + rowOffset)),
                              color, 6, 1, text, 0x10, 0);
             } else {
                 campMainDrawCardSprite(NULL, D_00833B58, 0x19,
                                        (u32)textAlpha, stage2.x + 35.0f,
                                        stage2.y + 196.0f + (f32)rowOffset,
                                        alpha);
-                FUN_003b2cb0(100.0f, textX2, textY2 + rowOffset,
+                FUN_003b2cb0(100.0f, textX2,
+                             (s32)(2.0f + (f32)(textY2 + rowOffset)),
                              color, 10, 1, text, 0x10, 0);
             }
         }
