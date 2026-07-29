@@ -1593,18 +1593,8 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
       if ((*puVar1 & 1) == 0) {
   
         fVar11 = 65535.0f - (float)(*(short *)((int)puVar1 + 0x1a) * 0xffff) / 600.0f;
-  
-        if (fVar11 < 2.1474836e+09f) {
-  
-          uVar12 = (u16)(int)fVar11;
-  
-        }
-  
-        else {
-  
-          uVar12 = (u16)(int)(fVar11 - 2.1474836e+09f);
-  
-        }
+
+        uVar12 = (u16)(s32)fVar11;
   
         *(u16 *)((int)puVar1 + 0x16) = uVar12;
   
@@ -1613,18 +1603,8 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
       else {
   
         fVar11 = (float)(*(short *)((int)puVar1 + 0x1a) * 0xffff) / 600.0f;
-  
-        if (fVar11 < 2.1474836e+09f) {
-  
-          uVar12 = (u16)(int)fVar11;
-  
-        }
-  
-        else {
-  
-          uVar12 = (u16)(int)(fVar11 - 2.1474836e+09f);
-  
-        }
+
+        uVar12 = (u16)(s32)fVar11;
   
         *(u16 *)((int)puVar1 + 0x16) = uVar12;
   
@@ -1702,7 +1682,7 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
           *(short *)((int)puVar1 + 0x1a) =
   
-               (short)(int)(600.0f - (float)((u32)*(u16 *)((int)puVar1 + 0x16) * 600) / 65535.0f
+               (short)(int)(600.0f - (float)(*(u16 *)((int)puVar1 + 0x16) * 600) / 65535.0f
   
                            );
   
@@ -1712,7 +1692,7 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
           *(short *)((int)puVar1 + 0x1a) =
   
-               (short)(int)((float)((u32)*(u16 *)((int)puVar1 + 0x16) * 600) / 65535.0f);
+               (short)(int)((float)(*(u16 *)((int)puVar1 + 0x16) * 600) / 65535.0f);
   
         }
   
