@@ -3786,7 +3786,6 @@ u32 FUN_00431670(int param_1,char param_2,u32 param_3)
   u32 lVar2;
   u32 uVar3;
   int iVar4;
-  u32 uVar5;
   u8 *puVar6;
   
   lVar2 = (*DAT_00960184)(1,0x1264,0x40000);
@@ -3798,8 +3797,7 @@ u32 FUN_00431670(int param_1,char param_2,u32 param_3)
     uVar1 = FUN_003b5d10_eb90(0x400);
     puVar6 = (u8 *)lVar2;
     *(u32 *)(puVar6 + 8) = uVar1;
-    uVar5 = (u32)param_2;
-    uVar1 = FUN_003b5d10_eb90(uVar5 & 0x3ff | 0x400);
+    uVar1 = FUN_003b5d10_eb90((u16)((u32)param_2 & 0x3ff | 0x400));
     *(u32 *)(puVar6 + 0xc) = uVar1;
     *puVar6 = 0;
     puVar6[0x1223] = 0;
@@ -3807,13 +3805,13 @@ u32 FUN_00431670(int param_1,char param_2,u32 param_3)
     puVar6[1] = 0;
     *(int *)(puVar6 + 4) = (int)param_2;
     *(u32 *)(puVar6 + 0x24) = param_3;
-    if (uVar5 == 3) {
+    if (param_2 == 3) {
       puVar6[0x101] = 2;
     }
-    else if (uVar5 == 2) {
+    else if (param_2 == 2) {
       puVar6[0x101] = 1;
     }
-    else if (uVar5 == 1) {
+    else if (param_2 == 1) {
       puVar6[0x101] = 0;
     }
     puVar6[0x102] = 1;
@@ -4527,21 +4525,16 @@ done:
 
 u32 FUN_00433160(int param_1)
 {
-  int work;
-  s8 row;
-  s8 column;
-  u32 result;
-
-  work = *(int *)(param_1 + 0x3c);
-  result = 0;
-  row = *(s8 *)(work + 0xdd);
-  column = *(s8 *)(work + 0xdc);
-  if ((*(u8 *)(column + work + row * 0x10 + 0x10a) == 0) &&
+  u32 result = 0;
+  u8 *work = *(u8 **)(param_1 + 0x3c);
+  s8 row = *(s8 *)(work + 0xdd);
+  s8 column = *(s8 *)(work + 0xdc);
+  if ((work[column + row * 0x10 + 0x10a] == 0) &&
       ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 8) != 0)) {
     result = 4;
   }
   else {
-    if (*(u8 *)(column + work + row * 0x10 + 0x108) == 0) {
+    if (work[column + row * 0x10 + 0x108] == 0) {
       row = *(s8 *)(work + 0xdd);
       column = *(s8 *)(work + 0xdc);
       if ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 2) != 0) {
@@ -4549,7 +4542,7 @@ u32 FUN_00433160(int param_1)
         goto done;
       }
     }
-    if (*(u8 *)(column + work + row * 0x10 + 0xf9) == 0) {
+    if (work[column + row * 0x10 + 0xf9] == 0) {
       row = *(s8 *)(work + 0xdd);
       column = *(s8 *)(work + 0xdc);
       if ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 1) != 0) {
@@ -4557,7 +4550,7 @@ u32 FUN_00433160(int param_1)
         goto done;
       }
     }
-    if ((*(u8 *)(column + work + row * 0x10 + 0x119) == 0) &&
+    if ((work[column + row * 0x10 + 0x119] == 0) &&
         ((*(u8 *)(FUN_001b9120_u32() + *(s8 *)(work + 0xdd) * 0x100 +
                   *(s8 *)(work + 0xdc) * 0x10 + 0x53) & 4) != 0)) {
       result = 3;

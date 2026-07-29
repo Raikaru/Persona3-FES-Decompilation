@@ -1262,7 +1262,8 @@ void FUN_003c9570(u64 param_1)
 
   if (special) {
     FUN_003a3ce0(param_1,0x4d0,0x4e0);
-    index = layout.specialValues.raw[index];
+    source = layout.specialValues.raw + index;
+    index = *source;
     FUN_003a8650(param_1,0,0x408,0,0x2800,index << 3);
     FUN_003a6a80(param_1,0x254,index + 0x71);
   }

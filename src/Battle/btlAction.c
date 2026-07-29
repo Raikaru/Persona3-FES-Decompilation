@@ -1980,7 +1980,7 @@ void btlActionUpdateStateBad(BtlAction* action)
     BtlPacket* cameraPacket;
     BtlPacket* animPacket;
     u32 badStatus;
-    s32 work[4];
+    s32 work[7];
     s32 result;
     s32 playAnim;
     s32 threshold;
