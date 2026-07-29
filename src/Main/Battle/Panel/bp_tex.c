@@ -2114,7 +2114,6 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
         ".set reorder"
     );
 }
-#pragma optimization_level 3
 
 /*
  * Retail offsets 0x9ec-0xbc4 count unowned roots, locate each by index, and redraw leaves.

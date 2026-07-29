@@ -2606,28 +2606,26 @@ int FUN_002d2ee0(const float *param_1, const float *param_2, const float *param_
 u32 FUN_002d2f50(float param_1, u8 *param_2)
 {
     u16 count = 0;
-    u32 i;
+    u16 i;
     u8 *node;
 
     for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
-        u32 i;
         for (i = 0; i < 4; ++i)
         {
-            u8 *record = node + i * 0x130;
-            float *point = (float *)(record + 0x08);
+            float *point = (float *)(node + i * 0x130 + 0x08);
 
             if ((point != (float *)param_2) &&
-                (0.0f < *(float *)(record + 0x1c)) &&
-                (param_1 <= *(float *)(record + 0x20)) &&
+                (0.0f < *(float *)(node + i * 0x130 + 0x1c)) &&
+                (param_1 <= *(float *)(node + i * 0x130 + 0x20)) &&
                 (FUN_002d25c0(param_2, point) == 0))
             {
                 RwV2d delta;
-                float *out;
-                delta.x = *(float *)(param_2 + 0x08) - *(float *)(record + 0x10);
-                delta.y = *(float *)(param_2 + 0x0c) - *(float *)(record + 0x14);
-                out = (float *)(param_2 + 0xb0 + ((u32)count * 4));
-                *out = btlTargetV2dLength(&delta);
+                float length;
+                delta.x = *(float *)(param_2 + 0x08) - *(float *)(node + i * 0x130 + 0x10);
+                delta.y = *(float *)(param_2 + 0x0c) - *(float *)(node + i * 0x130 + 0x14);
+                length = FUN_004c6af0((f32*)&delta);
+                *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
                 *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = (u8 *)point;
                 count = (u16)(count + 1);
             }
@@ -2636,19 +2634,18 @@ u32 FUN_002d2f50(float param_1, u8 *param_2)
 
     for (i = 0; i < 4; ++i)
     {
-        u8 *record = iGpffffb6fc + i * 0x130;
-        float *point = (float *)(record + 0x2d0);
+        float *point = (float *)(iGpffffb6fc + i * 0x130 + 0x2d0);
 
         if ((point != (float *)param_2) &&
-            (0.0f < *(float *)(record + 0x2e4)) &&
+            (0.0f < *(float *)(iGpffffb6fc + i * 0x130 + 0x2e4)) &&
             (FUN_002d25c0(param_2, point) == 0))
         {
             RwV2d delta;
-            float *out;
-            delta.x = *(float *)(param_2 + 0x08) - *(float *)(record + 0x2d8);
-            delta.y = *(float *)(param_2 + 0x0c) - *(float *)(record + 0x2dc);
-            out = (float *)(param_2 + 0xb0 + ((u32)count * 4));
-            *out = btlTargetV2dLength(&delta);
+            float length;
+            delta.x = *(float *)(param_2 + 0x08) - *(float *)(iGpffffb6fc + i * 0x130 + 0x2d8);
+            delta.y = *(float *)(param_2 + 0x0c) - *(float *)(iGpffffb6fc + i * 0x130 + 0x2dc);
+            length = FUN_004c6af0((f32*)&delta);
+            *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
             *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = (u8 *)point;
             count = (u16)(count + 1);
         }
@@ -2657,11 +2654,11 @@ u32 FUN_002d2f50(float param_1, u8 *param_2)
     if ((iGpffffb6fc + 0x790 != param_2) && (FUN_002d25c0(param_2, iGpffffb6fc + 0x790) == 0))
     {
         RwV2d delta;
-        float *out;
+        float length;
         delta.x = *(float *)(param_2 + 0x08) - *(float *)(iGpffffb6fc + 0x798);
         delta.y = *(float *)(param_2 + 0x0c) - *(float *)(iGpffffb6fc + 0x79c);
-        out = (float *)(param_2 + 0xb0 + ((u32)count * 4));
-        *out = btlTargetV2dLength(&delta);
+        length = FUN_004c6af0((f32*)&delta);
+        *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
         *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = iGpffffb6fc + 0x790;
         count = (u16)(count + 1);
     }
@@ -2669,11 +2666,11 @@ u32 FUN_002d2f50(float param_1, u8 *param_2)
     if ((iGpffffb6fc + 0x8c0 != param_2) && (FUN_002d25c0(param_2, iGpffffb6fc + 0x8c0) == 0))
     {
         RwV2d delta;
-        float *out;
+        float length;
         delta.x = *(float *)(param_2 + 0x08) - *(float *)(iGpffffb6fc + 0x8c8);
         delta.y = *(float *)(param_2 + 0x0c) - *(float *)(iGpffffb6fc + 0x8cc);
-        out = (float *)(param_2 + 0xb0 + ((u32)count * 4));
-        *out = btlTargetV2dLength(&delta);
+        length = FUN_004c6af0((f32*)&delta);
+        *(float *)(param_2 + 0xb0 + ((u32)count * 4)) = length;
         *(u8 **)(param_2 + 0x30 + ((u32)count * 4)) = iGpffffb6fc + 0x8c0;
         count = (u16)(count + 1);
     }
@@ -6044,10 +6041,6 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
     list = *(u8**)(iGpffffb6fc + 0x2cc);
     do
     {
-        if ((list == NULL) || (result != 0))
-        {
-            return result;
-        }
 
         for (i = 0; i < 4; i++)
         {
@@ -6060,15 +6053,17 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
             {
                 RwV2d delta;
                 const f32* otherPoint;
+                const f32* cellX = (const f32*)(cell + 0x10);
+                const f32* cellY = (const f32*)(cell + 0x14);
                 s32 side1;
                 s32 side2;
 
-                delta.x = *(f32*)(cell + 0x10) - *(const f32*)(param_1 + 8);
-                delta.y = *(f32*)(cell + 0x14) - *(const f32*)(param_1 + 0xc);
+                delta.x = *cellX - *(const f32*)(param_1 + 8);
+                delta.y = *cellY - *(const f32*)(param_1 + 0xc);
                 if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
                 {
-                    delta.x = *(f32*)(cell + 0x10) - *(const f32*)(param_2 + 8);
-                    delta.y = *(f32*)(cell + 0x14) - *(const f32*)(param_2 + 0xc);
+                    delta.x = *cellX - *(const f32*)(param_2 + 8);
+                    delta.y = *cellY - *(const f32*)(param_2 + 0xc);
                     if (!(FUN_004c6af0((f32*)&delta) < 1.0f))
                     {
                         otherPoint = *(const f32**)(cell + 0x18);
@@ -6133,5 +6128,6 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
         }
 
         list = *(u8**)(list + 0x4cc);
-    } while (1);
+    } while ((list != NULL) && (result == 0));
+    return result;
 }

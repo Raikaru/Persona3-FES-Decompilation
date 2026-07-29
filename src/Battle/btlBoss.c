@@ -2053,8 +2053,8 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
                 if (*(u32*)((u8*)gBtl + 0xb54) == 0)
                 {
                     return DAT_0069A080[index];
-                return DAT_0069A09A[index];
                 }
+                return DAT_0069A09A[index];
             }
             return 0xffff;
         }

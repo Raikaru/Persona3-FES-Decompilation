@@ -3315,7 +3315,6 @@ void func_001f7170(void)
 }
 
 // FUN_001f7210 NONMATCHING
-#pragma optimization_level 3
 void func_001f7210(void)
 {
     u8 *work = sBrReward;
@@ -4228,4 +4227,3 @@ animation_tail:
         }
     }
 }
-#pragma optimization_level 2
