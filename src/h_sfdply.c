@@ -1392,7 +1392,7 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
 void func_0010c5f0(void)
 {
     HSfdAsyncEntry* entry;
-    s16 i;
+    s32 i;
     s32 enabled;
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
@@ -1531,7 +1531,7 @@ void func_0010cac0(void)
 {
     HSfdDecodeSlot* slot;
     HSfdDecodeSlot* slots;
-    s16 i;
+    s32 i;
 
     FUN_00512868();
     FUN_0051da48(0);
