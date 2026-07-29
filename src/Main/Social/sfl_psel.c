@@ -386,7 +386,6 @@ void sflPsel00260e00(void)
 #pragma optimization_level 2
 
 extern void FUN_0021d890(void*, const void*);
-#pragma optimization_level 3
 
 // Reconstructed the complete retail animation path, including all quad states.
 // The original source omitted dynamic frame branches and contiguous color writes.
@@ -777,7 +776,6 @@ void sflPsel00261480(void)
     }
     *(f32*)sflPselBytes(work, 0x8bc) = channelFloat;
 }
-#pragma optimization_level 2
 
 // FUN_00260a10
 void sflPsel00260a10(void)
@@ -1007,7 +1005,6 @@ void func_00215b00(void)
     *sSflPsel |= 1;
 }
 
-#pragma optimization_level 3
 // FUN_00215FC0 NONMATCHING
 void func_00215fc0(void)
 {
@@ -1291,7 +1288,6 @@ void func_00215fc0(void)
     }
     func_00217780();
 }
-#pragma optimization_level 2
 // FUN_00216800
 void func_00216800(void)
 {
@@ -1586,8 +1582,8 @@ void func_00217610(void)
         func_0021eac0(work + 0x5a40 + i * 0x100, func_0021ea00(0x28));
     }
 }
-#pragma optimization_level 3
 // Reconstructed from retail draw/alpha sequences at offsets 0x54-0x908; added logic has zero unjustified bytes.
+#pragma optimization_level 3
 // FUN_00217780 NONMATCHING
 void func_00217780(void)
 {
@@ -2133,7 +2129,6 @@ void func_00218b20(void* panel, const u32* entry, s32 selected,
 #undef rect
 }
 #pragma optimization_level 2
-#pragma optimization_level 3
 // FUN_00219370 NONMATCHING
 void func_00219370(void* panel, const u32* entry, s32 selected)
 {
@@ -2211,7 +2206,6 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     }
     func_003b1360(*(u32*)((u8*)panel + 0x900), 1, 0);
 }
-#pragma optimization_level 2
 
 // FUN_00219970
 void func_00219970(void)

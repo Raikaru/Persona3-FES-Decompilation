@@ -420,7 +420,6 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
     }
 }
 
-#pragma optimization_level 3
 // FUN_00210D90 NONMATCHING
 void bsaMain00210d90(BsaWork* work)
 {
@@ -775,7 +774,6 @@ void bsaMain00210d90(BsaWork* work)
         }
     }
 }
-#pragma optimization_level 2
 
 // FUN_00213E80 NONMATCHING
 void bsaMain00213e80(BsaWork* work)

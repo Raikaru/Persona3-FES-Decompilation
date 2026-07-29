@@ -602,18 +602,18 @@ void opMenu0026cc90(void)
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = sOpMenu;
     atlas = opResGetTitleSprite(0);
-    setState = (OpMenuSetFrame*)D_00960090;
-    draw = (OpMenuDraw*)D_0096009C;
-    if ((work[0] & 1) == 0)
+    if ((~work[0] & 1) != 0)
         return;
 
+    setState = (OpMenuSetFrame*)D_00960090;
     (*setState)(8, 0);
     (*setState)(6, 0);
     (*setState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    frame = opResGetTitleRasterU32(0x15);
+    frame = func_0021cce0(func_0021cca0(atlas, 0x15));
     (*setState)(1, frame);
+    draw = (OpMenuDraw*)D_0096009C;
     (*draw)(work + 0x920 / 4, 4, 0, 1, 2);
     (*draw)(work + 0x920 / 4, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
@@ -623,16 +623,17 @@ void opMenu0026cc90(void)
     {
         for (i = 0; i < 4; i++)
         {
-            u8* item = (u8*)work + 0xb00 + i * 0x310;
+            u8* item = (u8*)work + 0xb00 + i * 0x370;
             switch (i)
             {
                 case 0: id = 0; break;
                 case 1: id = 2; break;
                 case 2: id = 4; break;
-                default: id = 0x19; break;
+                case 3: id = 0x19; break;
             }
-            frame = opResGetTitleRasterU32(id);
+            frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
+            draw = (OpMenuDraw*)D_0096009C;
             (*draw)(item + 0x10, 4, 0, 1, 2);
             (*draw)(item + 0x10, 4, 0, 2, 3);
             switch (i)
@@ -640,38 +641,48 @@ void opMenu0026cc90(void)
                 case 0: id = 6; break;
                 case 1: id = 7; break;
                 case 2: id = 8; break;
-                default: id = 0x1b; break;
+                case 3: id = 0x1b; break;
             }
-            frame = opResGetTitleRasterU32(id);
+            frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
-            (*draw)(item + 0x110, 4, 0, 1, 2);
-            (*draw)(item + 0x110, 4, 0, 2, 3);
-            switch (i)
-            {
-                case 0: id = 1; break;
-                case 1: id = 3; break;
-                case 2: id = 5; break;
-                default: id = 0x1a; break;
-            }
-            frame = opResGetTitleRasterU32(id);
-            (*setState)(1, frame);
+            draw = (OpMenuDraw*)D_0096009C;
             (*draw)(item + 0x210, 4, 0, 1, 2);
             (*draw)(item + 0x210, 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
+        for (i = 0; i < 4; i++)
+        {
+            u8* item = (u8*)work + 0xb00 + i * 0x370;
+            switch (i)
+            {
+                case 0: id = 1; break;
+                case 1: id = 3; break;
+                case 2: id = 5; break;
+                case 3: id = 0x1a; break;
+            }
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            draw = (OpMenuDraw*)D_0096009C;
+            (*draw)(item + 0x110, 4, 0, 1, 2);
+            (*draw)(item + 0x110, 4, 0, 2, 3);
+        }
+        func_004d7f60(3, 0x717fb);
+        func_004d7f60(2, 0x44);
         {
             u8* item = (u8*)work + 0x1740;
             id = work[0x1a50 / 4] + 0x22;
-            frame = opResGetTitleRasterU32(id);
+            frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
             if (work[0x1a50 / 4] == 0)
             {
+                draw = (OpMenuDraw*)D_0096009C;
                 (*draw)(item + 0x10, 4, 0, 1, 2);
                 (*draw)(item + 0x10, 4, 0, 2, 3);
             }
             else
             {
+                draw = (OpMenuDraw*)D_0096009C;
                 (*draw)(item + 0x110, 4, 0, 1, 2);
                 (*draw)(item + 0x110, 4, 0, 2, 3);
             }
@@ -681,14 +692,15 @@ void opMenu0026cc90(void)
     {
         for (i = 0; i < 2; i++)
         {
-            u8* item = (u8*)work + 0x1a60 + i * 0x310;
+            u8* item = (u8*)work + 0x1a60 + i * 0x370;
             switch (i)
             {
                 case 0: id = 0x1c; break;
-                default: id = 0x1e; break;
+                case 1: id = 0x1e; break;
             }
-            frame = opResGetTitleRasterU32(id);
+            frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
+            draw = (OpMenuDraw*)D_0096009C;
             (*draw)(item + 0x10, 4, 0, 1, 2);
             (*draw)(item + 0x10, 4, 0, 2, 3);
         }
@@ -696,14 +708,15 @@ void opMenu0026cc90(void)
         func_004d7f60(2, 0x48);
         for (i = 0; i < 2; i++)
         {
-            u8* item = (u8*)work + 0x1a60 + i * 0x310;
+            u8* item = (u8*)work + 0x1a60 + i * 0x370;
             switch (i)
             {
                 case 0: id = 0x1d; break;
-                default: id = 0x1f; break;
+                case 1: id = 0x1f; break;
             }
-            frame = opResGetTitleRasterU32(id);
+            frame = func_0021cce0(func_0021cca0(atlas, id));
             (*setState)(1, frame);
+            draw = (OpMenuDraw*)D_0096009C;
             (*draw)(item + 0x110, 4, 0, 1, 2);
             (*draw)(item + 0x110, 4, 0, 2, 3);
         }

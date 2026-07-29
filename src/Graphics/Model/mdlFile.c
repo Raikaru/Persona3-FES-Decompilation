@@ -27418,6 +27418,8 @@ void FUN_003387c0(int param_1)
   if ((iVar5 <= iVar6) || (iVar6 == 0)) {
 
     FUN_00339620(piVar2[1]);
+    factor = (float)iVar5 / (float)iVar6;
+
 
     FUN_00493370(*(u32 *)(*(int *)(puVar4 + 8) + 0x18),2);
 
@@ -27435,13 +27437,35 @@ void FUN_003387c0(int param_1)
 
       for (uVar11 = 0; uVar11 < uVar7; uVar11 = uVar11 + 1) {
 
-        factor = *pfVar12 * ((float)iVar5 / (float)iVar6);
+        *(float *)(DAT_0069c4d0_abs + 0) = *(float *)(iVar9 + 0xc);
+        *(float *)(DAT_0069c4d0_abs + 4) = *(float *)(iVar9 + 0x10);
+        *(float *)(DAT_0069c4d0_abs + 8) = *(float *)(iVar9 + 0x14);
         __asm__ volatile (
             ".set noreorder                      \n"
             "lqc2 vf10, 0(%0)                   \n"
             "vmove.xyzw vf12, vf10              \n"
-            "lqc2 vf11, 0(%1)                   \n"
-            "sqc2 vf10, 24(%2)                  \n"
+            ".set reorder"
+            :
+            : "r" (DAT_0069c4d0_abs)
+            : "vf10", "vf12", "memory"
+        );
+        *(float *)(DAT_0069c4d0_abs + 0) = *(float *)(iVar9 + 0x24);
+        *(float *)(DAT_0069c4d0_abs + 4) = *(float *)(iVar9 + 0x28);
+        *(float *)(DAT_0069c4d0_abs + 8) = *(float *)(iVar9 + 0x2c);
+        __asm__ volatile (
+            ".set noreorder                      \n"
+            "lqc2 vf11, 0(%0)                   \n"
+            "sqc2 vf10, 0(%0)                   \n"
+            ".set reorder"
+            :
+            : "r" (DAT_0069c4d0_abs)
+            : "vf10", "vf11", "memory"
+        );
+        puVar10[6] = DAT_0069c4d0;
+        puVar10[7] = DAT_0069c4d4;
+        puVar10[8] = DAT_0069c4d8;
+        __asm__ volatile (
+            ".set noreorder                      \n"
             "vsub.xyzw vf10, vf10, vf11         \n"
             "vmul.xyz vf2, vf10, vf10           \n"
             "vmulax.w ACC, vf0, vf2x            \n"
@@ -27450,19 +27474,21 @@ void FUN_003387c0(int param_1)
             "vrsqrt Q, vf0w, vf2w               \n"
             "vwaitq                             \n"
             "vmulq.xyz vf10, vf10, Q            \n"
-            "mfc1 $v0, %3                       \n"
+            "mfc1 $v0, %0                       \n"
             "nop                                \n"
             "qmtc2.ni $v0, vf2                  \n"
             "vmulx.xyzw vf10, vf10, vf2x        \n"
             "vadd.xyzw vf10, vf10, vf12         \n"
-            "sqc2 vf10, 0(%2)                   \n"
+            "sqc2 vf10, 0(%1)                   \n"
             ".set reorder"
             :
-            : "r" (iVar9 + 0xc), "r" (iVar9 + 0x24), "r" (puVar10),
-              "f" (factor)
+            : "f" (*pfVar12 * factor), "r" (DAT_0069c4d0_abs)
             : "v0", "vf0", "vf2", "vf10", "vf11", "vf12", "ACC", "Q",
               "memory"
         );
+        puVar10[0] = DAT_0069c4d0;
+        puVar10[1] = DAT_0069c4d4;
+        puVar10[2] = DAT_0069c4d8;
 
         uVar18 = *(u32 *)(iVar9 + 0x40);
         uVar14 = *(u32 *)(iVar9 + 0x44);

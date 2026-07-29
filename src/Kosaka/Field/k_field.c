@@ -292,27 +292,36 @@ void func_001b9140(u16 majorId, u16 minorId)
     {
         fGpffffb544 = fGpffff844c;
         fGpffffb540 = fGpffff8450;
+        uGpffffb53c = 0x40800000;
     }
-    else if (((majorId == 6) &&
-              (minorId == 1 || minorId == 2 || minorId == 4 || minorId == 7 ||
-               minorId == 0x0b || minorId == 0x10 || minorId == 0x14)) ||
-             ((majorId == 7) &&
-              (minorId == 2 || minorId == 3 || minorId == 4 || minorId == 5)))
+    else if ((majorId == 6 && minorId == 1) ||
+             (majorId == 6 && minorId == 2) ||
+             (majorId == 6 && minorId == 4) ||
+             (majorId == 6 && minorId == 7) ||
+             (majorId == 6 && minorId == 0x0b) ||
+             (majorId == 6 && minorId == 0x10) ||
+             (majorId == 6 && minorId == 0x14) ||
+             (majorId == 7 && minorId == 2) ||
+             (majorId == 7 && minorId == 3) ||
+             (majorId == 7 && minorId == 4) ||
+             (majorId == 7 && minorId == 5))
     {
         fGpffffb544 = fGpffff82fc;
         fGpffffb540 = fGpffff82b8;
+        uGpffffb53c = 0x40800000;
     }
     else if (scale > 0.0f)
     {
         fGpffffb540 = scale * 128.0f;
         fGpffffb544 = scale;
+        uGpffffb53c = 0x40800000;
     }
     else
     {
         fGpffffb544 = fGpffff82fc;
         fGpffffb540 = fGpffff82b8;
+        uGpffffb53c = 0x40800000;
     }
-    uGpffffb53c = 0x40800000;
 
 }
 // Retail reconstruction note: states 3, 5, and 11 each perform field-load
@@ -2259,7 +2268,6 @@ void func_001bd8c0(void)
 
 // FUN_001bd950 NONMATCHING
 #pragma push
-#pragma optimization_level 3
 void func_001bd950(void)
 {
     Resrc* fieldResource;
