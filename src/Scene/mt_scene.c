@@ -640,23 +640,24 @@ void FUN_003b58c0(short param_1)
 }
 #define FUN_003b58c0(...) ((void (*)(...))FUN_003b58c0)(__VA_ARGS__)
 #undef FUN_003b5980
-// FUN_003B5980 NONMATCHING
+// FUN_003B5980
 
 void FUN_003b5980(short param_1)
 {
-    int iVar1;
     int iVar2;
 
     if ((gMtScene->flags & 1) != 0) {
-        if (gMtScene->unk_16 != param_1) {
-            gMtScene->flags |= 4;
-            gMtScene->unk_16 = param_1;
-            if ((gMtScene->flags & 2) == 0) {
-                iVar2 = 0x28;
-                iVar1 = FUN_001b9120();
-                *(u32 *)(iVar1 + 0x1058) = iVar2;
-            }
+        if (gMtScene->unk_16 == param_1) {
+            return;
         }
+        gMtScene->flags |= 4;
+        gMtScene->unk_16 = param_1;
+        if ((gMtScene->flags & 2) != 0) {
+            return;
+        }
+        iVar2 = 0x28;
+        *(u32 *)(FUN_001b9120() + 0x1058) = iVar2;
+        return;
     }
     gMtScene->unk_16 = param_1;
 }

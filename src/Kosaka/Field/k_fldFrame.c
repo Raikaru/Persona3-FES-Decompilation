@@ -1214,7 +1214,7 @@ void* func_001ae580(KwlnTask* task)
                 localAngleB = amount;
             }
             work->frame = 0;
-            work->angleStep = localAngleB / (f32)(u32)work->turnMode;
+            work->angleStep = localAngleB / (f32)work->turnMode;
             work->currentAngle = localAngle;
         }
         else

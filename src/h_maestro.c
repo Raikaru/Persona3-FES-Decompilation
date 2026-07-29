@@ -1306,7 +1306,7 @@ void func_00112110(void* param_1)
                 node->sourceOffset += sizeof(record);
                 node->resources[node->resourceIndex] = func_0010e880(node->source + record[1]);
                 node->resourceIndex++;
-            } while (node->resourceIndex != *((u16*)(node->header + 0x14)));
+            } while (*((u16*)(node->header + 0x14)) != node->resourceIndex);
             node->state = 4;
             goto state_4;
         }

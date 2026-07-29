@@ -1265,13 +1265,11 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   int iVar6;
   int iVar7;
-  int copyCount;
 
-
-  u32 *puVar8;
 
   u32 *puVar9;
-
+  u32 *puVar8;
+  int copyCount;
   u32 *puVar10;
 
   u32 auStack_20 [8];
@@ -3441,13 +3439,9 @@ void FUN_003d9cc0(int param_1)
   
 
   iVar7 = (int)param_1;
-
   entry_base = iVar7 + 0x11c;
-
   iVar1 = *(int *)(iVar7 + 0x14);
-
   for (iVar5 = 0; iVar5 < 0xc; iVar5 = iVar5 + 1) {
-
     iVar8 = entry_base + iVar5 * 0xc;
 
     lVar6 = 0;

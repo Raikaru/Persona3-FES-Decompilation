@@ -620,23 +620,31 @@ void func_001ce880(void)
 {
     s32 i;
     s32 j;
+    s32 hasResources;
     FldUnit* unit;
+    Model* model;
     Model* weapon;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
+        hasResources = false;
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase == NULL || unit->resrc == NULL)
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            continue;
+            hasResources = true;
         }
-        for (j = 0; j < 5; j++)
+        hasResources = (hasResources != 0);
+        if (hasResources)
         {
-            weapon = *(Model**)((u8*)unit->mdl + 0x3b8 + j * 0xc);
-            if (weapon != NULL)
+            for (j = 0; j < 5; j++)
             {
-                func_00319230(weapon,
-                              *(u16*)((u8*)unit + 0x19e + j * sizeof(u16)));
+                model = unit->mdl;
+                weapon = *(Model**)((u8*)model + 0x3b8 + j * 0xc);
+                if (weapon != NULL)
+                {
+                    func_00319230(weapon,
+                                  *(u16*)((u8*)unit + 0x19e + j * sizeof(u16)));
+                }
             }
         }
     }

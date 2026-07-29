@@ -2383,18 +2383,18 @@ void func_0010e630(void* destination, const void* source, u32 size)
 }
 
 // Retail reconstruction covers TMX validation, raster setup, pixel decode, and palette upload from offsets 0x00-0x3C8; all non-padding retail logic is represented, with only register/relocation differences remaining.
-// FUN_0010E880 NONMATCHING
+// FUN_0010E880
 void* func_0010e880(const u8* stream)
 {
-    s32 bits;
-    s32 flags = 0;
-    s32 paletteFormat = 0;
     const u8* source;
-    const u8* pixelSource;
-    s32 pixelsPerPalette;
-    void* raster;
     void* pixels;
+    const u8* pixelSource;
+    void* raster;
     void* palette;
+    s32 bits;
+    s32 paletteFormat = 0;
+    s32 flags = 0;
+    s32 pixelsPerPalette;
 
     if (stream == NULL)
     {
