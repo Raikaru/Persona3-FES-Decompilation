@@ -1310,7 +1310,7 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             definition = DAT_007ce420[fallback_text_id];
             FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + 1);
-            scaled_color = ((u32)(u8)(DAT_007cadd0 * (float)alpha)) | 0xffffff00;
+            scaled_color = (s32)(DAT_007cadd0 * (float)alpha) | 0xffffff00;
             FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, scaled_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[fallback_text_id], 0x10, 0x6e);

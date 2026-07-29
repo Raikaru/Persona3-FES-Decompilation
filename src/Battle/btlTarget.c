@@ -4070,7 +4070,7 @@ void FUN_002d6620(BtlAction *action)
     u16 targetIndex;
 
     specificId = action->target.specificId;
-    *(u16 *)((u8 *)action + 0x72) = action->target.specificId;
+    action->target.originalSpecificId = action->target.specificId;
     mappedId = FUN_002d5570(specificId);
     if (mappedId != -1)
     {

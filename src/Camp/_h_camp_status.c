@@ -432,38 +432,38 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     dx = position.x + 79.0f;
     if (val >= 100) {
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
-                                (u32)(u8)alpha, dx, dy, 0);
+                                (u32)(u8)fade, dx, dy, 0);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
-                                (u32)(u8)alpha, dx, dy, 0);
+                                (u32)(u8)fade, dx, dy, 0);
         val %= 10;
         dx += 15.0f;
     }
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
-                            (u32)(u8)alpha, dx, dy, 0);
+                            (u32)(u8)fade, dx, dy, 0);
     /* Separator */
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 4,
-                            (u32)(u8)alpha, position.x + 85.0f, dy, 0);
+                            (u32)(u8)fade, position.x + 85.0f, dy, 0);
     /* Draw max HP digits */
     val = datGetMaxHp(pcId);
     dx = position.x + 138.0f;
     if (val >= 100) {
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
-                                (u32)(u8)alpha, dx, dy, 0);
+                                (u32)(u8)fade, dx, dy, 0);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
         campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
-                                (u32)(u8)alpha, dx, dy, 0);
+                                (u32)(u8)fade, dx, dy, 0);
         val %= 10;
         dx += 15.0f;
     }
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
-                            (u32)(u8)alpha, dx, dy, 0);
+                            (u32)(u8)fade, dx, dy, 0);
 }
 
 // FUN_00123B70 NONMATCHING
@@ -488,38 +488,38 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     dx = position.x + 79.0f;
     if (val >= 100) {
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
-                                 (u32)(u8)alpha, dx, dy, alpha);
+                                 (u32)(u8)fade, dx, dy, alpha);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
-                                 (u32)(u8)alpha, dx, dy, alpha);
+                                 (u32)(u8)fade, dx, dy, alpha);
         val %= 10;
         dx += 15.0f;
     }
     campStatusDrawSpriteCall(parent, font, val + 0xb,
-                             (u32)(u8)alpha, dx, dy, alpha);
+                             (u32)(u8)fade, dx, dy, alpha);
     /* Separator */
-    campStatusDrawSpriteCall(parent, font, 4, (u32)(u8)alpha,
+    campStatusDrawSpriteCall(parent, font, 4, (u32)(u8)fade,
                              position.x + 97.0f, dy, alpha);
     /* Draw max SP digits */
     val = func_0016c670(pcId);
     dx = position.x + 138.0f;
     if (val >= 100) {
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
-                                 (u32)(u8)alpha, dx, dy, alpha);
+                                 (u32)(u8)fade, dx, dy, alpha);
         val %= 100;
         dx += 15.0f;
     }
     if (val >= 10) {
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
-                                 (u32)(u8)alpha, dx, dy, alpha);
+                                 (u32)(u8)fade, dx, dy, alpha);
         val %= 10;
         dx += 15.0f;
     }
     campStatusDrawSpriteCall(parent, font, val + 0xb,
-                             (u32)(u8)alpha, dx, dy, alpha);
+                             (u32)(u8)fade, dx, dy, alpha);
 }
 
 // FUN_00123F80
