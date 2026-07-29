@@ -11054,8 +11054,6 @@ void FUN_00326c70(u32 *param_1,u16 param_2,u32 param_3)
 
 void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
 
-
-
 {
 
   u32 uVar1;
@@ -11068,23 +11066,29 @@ void FUN_00326cf0(int param_1,u16 param_2,u32 param_3)
 
   }
 
-  if (param_3 != 7) {
+  switch (param_3) {
 
-    if (param_3 == 2) {
+    case 1:
 
-      uVar1 = FUN_003234f0_u32(param_2,0x200000a7);
+    case 4:
 
-      *(u32 *)(param_1 + 0x50) = uVar1;
-
-    }
-
-    else if ((param_3 == 4) || (param_3 == 1)) {
-
-      uVar1 = FUN_003234f0_u32(param_2,0x20080027);
+      uVar1 = FUN_003234f0_u32((u32)param_2,0x20080027);
 
       *(u32 *)(param_1 + 0x50) = uVar1;
 
-    }
+      break;
+
+    case 2:
+
+      uVar1 = FUN_003234f0_u32((u32)param_2,0x200000a7);
+
+      *(u32 *)(param_1 + 0x50) = uVar1;
+
+      break;
+
+    case 7:
+
+      break;
 
   }
 
