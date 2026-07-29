@@ -836,6 +836,7 @@ void *FUN_0015B430(KwlnTask *task)
         scratch.pair.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
                      0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        work->state = 10;
         break;
 
     case 10:

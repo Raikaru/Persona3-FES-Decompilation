@@ -1600,71 +1600,76 @@ s32 func_0010cce0(void* dst, const void* src, s32 size)
 // FUN_0010CDD0 NONMATCHING
 void func_0010cdd0(void)
 {
-    HSfdDecodeSlot* slot;
     const char* path;
     u32 size[1];
     s32 copySize;
     s16 i;
-    s16 pathIndex;
+    s32 pathIndex;
 
     for (i = 0; i < HSFD_DECODE_SLOTS; i++)
     {
-        slot = &sSfdDecodeSlots[i];
-        switch (slot->state)
+        switch (sSfdDecodeSlots[i].state)
         {
             case 0:
-                slot->state = 1;
+                sSfdDecodeSlots[i].state = 1;
                 break;
 
             case 1:
                 break;
 
             case 2:
-                pathIndex = slot->fileIndex * 3;
-                slot->request = H_Cdvd_Request(sSfdDecodePaths[pathIndex], 0);
-                slot->state = 3;
+            {
+                pathIndex = sSfdDecodeSlots[i].fileIndex * 3;
+                sSfdDecodeSlots[i].request = H_Cdvd_Request(sSfdDecodePaths[pathIndex], 0);
+                sSfdDecodeSlots[i].state = 3;
                 break;
+            }
 
             case 3:
-                if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
+            {
+                if ((sSfdDecodeSlots[i].request != NULL) && H_Cdvd_IsFileLoaded(sSfdDecodeSlots[i].request))
                 {
                     void* fileData;
                     void* allocBuf;
 
-                    pathIndex = slot->fileIndex * 3;
+                    pathIndex = sSfdDecodeSlots[i].fileIndex * 3;
                     fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex], &size[0]);
                     allocBuf = (void*)func_0050B690(0, size[0], 0);
                     if (allocBuf == NULL) { K_Assert("h_sndcom.c", 0x144); }
                     func_00521250(D_00823650, fileData, size[0]);
                     func_0010cce0(allocBuf, D_00823650, size[0]);
-                    slot->input = allocBuf;
-                    slot->inputSize = size[0];
-                    H_Cdvd_Destroy(slot->request);
-                    slot->request = NULL;
-                    slot->state = 4;
+                    sSfdDecodeSlots[i].input = allocBuf;
+                    sSfdDecodeSlots[i].inputSize = size[0];
+                    H_Cdvd_Destroy(sSfdDecodeSlots[i].request);
+                    sSfdDecodeSlots[i].request = NULL;
+                    sSfdDecodeSlots[i].state = 4;
                 }
                 break;
+            }
 
             case 4:
-                pathIndex = slot->fileIndex * 3;
-                slot->request = H_Cdvd_Request(sSfdDecodePaths[pathIndex + 1], 0);
-                slot->state = 5;
+            {
+                pathIndex = sSfdDecodeSlots[i].fileIndex * 3;
+                sSfdDecodeSlots[i].request = H_Cdvd_Request(sSfdDecodePaths[pathIndex + 1], 0);
+                sSfdDecodeSlots[i].state = 5;
                 break;
+            }
 
             case 5:
-                if ((slot->request != NULL) && H_Cdvd_IsFileLoaded(slot->request))
+            {
+                if ((sSfdDecodeSlots[i].request != NULL) && H_Cdvd_IsFileLoaded(sSfdDecodeSlots[i].request))
                 {
                     void* fileData;
                     void* chunkBuf;
                     void* intermediate;
                     s32 remaining;
 
-                    pathIndex = slot->fileIndex * 3;
+                    pathIndex = sSfdDecodeSlots[i].fileIndex * 3;
                     fileData = H_Cdvd_CacheFindFile(sSfdDecodePaths[pathIndex + 1], &size[0]);
                     chunkBuf = (void*)func_0050B690(0, 0x1000, 0);
                     if (chunkBuf == NULL) { K_Assert("h_sndcom.c", 0x177); }
-                    intermediate = slot->intermediate;
-                    slot->intermediateSize = size[0];
+                    intermediate = sSfdDecodeSlots[i].intermediate;
+                    sSfdDecodeSlots[i].intermediateSize = size[0];
                     remaining = size[0];
 
                     do {
@@ -1682,21 +1687,25 @@ void func_0010cdd0(void)
                         intermediate = (void*)((u8*)intermediate + chunkSize);
                     } while (remaining != 0);
 
-                    H_Cdvd_Destroy(slot->request);
-                    slot->request = NULL;
+                    H_Cdvd_Destroy(sSfdDecodeSlots[i].request);
+                    sSfdDecodeSlots[i].request = NULL;
                     func_0050B710(chunkBuf);
-                    slot->state = 6;
+                    sSfdDecodeSlots[i].state = 6;
                 }
                 break;
+            }
 
             case 6:
-                pathIndex = slot->fileIndex * 3;
-                slot->request = H_Cdvd_Request(sSfdDecodePaths[pathIndex + 2], 0);
-                slot->state = 7;
+            {
+                pathIndex = sSfdDecodeSlots[i].fileIndex * 3;
+                sSfdDecodeSlots[i].request = H_Cdvd_Request(sSfdDecodePaths[pathIndex + 2], 0);
+                sSfdDecodeSlots[i].state = 7;
                 break;
+            }
 
             case 7:
             {
+                HSfdDecodeSlot* slot = &sSfdDecodeSlots[i];
                 void* fileData;
                 void* allocBuf;
                 void* input;
@@ -1749,6 +1758,7 @@ void func_0010cdd0(void)
 
             case 8:
             {
+                HSfdDecodeSlot* slot = &sSfdDecodeSlots[i];
                 void* input;
                 void* intermediate;
                 void* output;
