@@ -231,6 +231,9 @@ u64  FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,  
 #pragma alias FUN_003a53b0_typed FUN_003a53b0
 extern u64 FUN_003a53b0_typed(int param_1,int param_2,f32 param_3,int param_4,int param_5,
                               u32 param_6,int param_7,int param_8,int param_9);
+#pragma alias FUN_003a53b0_u32 FUN_003a53b0
+extern u32 FUN_003a53b0_u32(int param_1,int param_2,f32 param_3,int param_4,int param_5,
+                           u32 param_6,int param_7,int param_8,int param_9);
 extern u64 FUN_003a53b0_8(int param_1,int param_2,u64 param_3,int param_4,int param_5,
                           u32 param_6,int param_7,int param_8);
 #pragma alias FUN_003a53b0_8f FUN_003a53b0
@@ -3042,7 +3045,7 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
   int iVar1;
 
-  int uVar2;
+  u32 uVar2;
 
   u64 uVar3;
 
@@ -3072,7 +3075,7 @@ FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
 
   FUN_003a5fd0(iVar1 + 0xd4);
 
-  uVar2 = FUN_003a53b0_typed(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
+  uVar2 = FUN_003a53b0_u32(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
 
   if (param_11 != 0) {
 

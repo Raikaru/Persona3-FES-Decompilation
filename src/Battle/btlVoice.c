@@ -578,7 +578,7 @@ void func_002f05f0(BtlAction *action)
     FUN_002a1b00_voice((s32)action, 0, 0x10);
 
     for (i = 0; i < 3; i++) {
-        childId = *(u16*)((u8*)action + i * 2 + 0x76);
+        childId = action->target.unk_3e[i];
         voiceData = (u32)FUN_002ff540(*(u32*)(DAT_007ce3ec + 0xbbc), childId);
         childUnit = ((BtlAction*)FUN_00289650(1, childId, voiceData))->unit;
         scratch.units[i] = childUnit;
@@ -861,7 +861,6 @@ u32 func_002f14a0(BtlAction* action)
     BtlAction* current;
     BtlPacket* packet;
     u16 cleanupIndex;
-
     count = *(u16*)(iGpffffb6fc + 0xb50);
     for (actionIndex = 0; (actionIndex & 0xffff) < count;
          actionIndex = (actionIndex + 1) & 0xffff)

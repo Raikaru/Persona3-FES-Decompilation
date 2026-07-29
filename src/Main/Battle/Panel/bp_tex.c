@@ -1631,7 +1631,7 @@ void bpTexShuffleNodes(void)
             nodeCount++;
         }
     }
-    func_005225a8(0x68ea40, BP_TEX_U32(work, 0x126b0));
+    func_005225a8((u32)"speed:%d\n", BP_TEX_U32(work, 0x126b0));
     BP_TEX_U32(work, 0x4a22 * 4) =
         (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 10.0f + 3.0f);
     BP_TEX_U32(work, 0x4a23 * 4) =
@@ -2434,7 +2434,7 @@ void bpTexApplyActions(void)
         }
     }
     BP_TEX_U32(BP_TEX_GLOBAL, 0x127a8) = 0;
-    func_005225a8(0x68ea80, BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
+    func_005225a8((u32)"speed: %d\n", BP_TEX_U32(BP_TEX_GLOBAL, 0x127b0));
 }
 #pragma optimization_level 2
 
@@ -2465,8 +2465,7 @@ void bpTexBuildFixedPosition(void* output, void* source)
     BP_TEX_F32(output, 4) += 100.0f;
 }
 
-#pragma optimization_level 3
-// FUN_00257E20 NONMATCHING
+// FUN_00257E20
 void bpTexDumpNodes(void)
 {
     u32* work;
@@ -2474,27 +2473,27 @@ void bpTexDumpNodes(void)
 
     K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
-    func_005225a8(0x7cc478);
+    func_005225a8((u32)"dump\n");
     for (node = BP_TEX_PTR(work, 0x1265c);
          node != NULL;
          node = bpTexNodeNext(node))
     {
-        func_005225a8(0x7cc480, node[5]);
+        func_005225a8((u32)"%d", node[5]);
         if ((node[0] & 2) != 0)
         {
-            func_005225a8(0x7cc484);
+            func_005225a8((u32)"c");
         }
         if ((node[0] & 8) != 0)
         {
-            func_005225a8(0x7cc488);
+            func_005225a8((u32)"n");
         }
         if ((node[0] & 0x20) != 0)
         {
-            func_005225a8(0x7cc48c);
+            func_005225a8((u32)"a");
         }
-        func_005225a8(0x7cc490);
+        func_005225a8((u32)",");
     }
-    func_005225a8(0x7cc494);
+    func_005225a8((u32)"\n\n");
 }
 #pragma optimization_level 2
 
