@@ -499,7 +499,8 @@ extern u8 *PTR_s_DIRECT_007cd258;
 extern f32 PTR_s_DIRECT_007cd258_f32;
 extern f32 PTR_DAT_007cd25c_f32;
 #pragma alias PTR_DAT_007cd25c_f32 PTR_DAT_007cd25c
-extern u8 *PTR_s_DISABLE_0069e6c8;
+#pragma alias PTR_s_DISABLE_0069e6c8_abs PTR_s_DISABLE_0069e6c8
+extern u8 *PTR_s_DISABLE_0069e6c8_abs[];
 extern u8 *PTR_s_DISPONOFF_007ccaa8;
 extern u8 *PTR_s_FADEOUT_0069ee14;
 extern u8 *PTR_s_FADEOUT_WAIT_007ccf9c;
@@ -1584,7 +1585,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
         cVar2 = *(char *)((u8 *)piVar4 + 0x22);
         if (cVar2 < '\x03') {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa068, (u32)(&PTR_s_DISABLE_0069e6c8)[cVar2]);
+          evtMenuDrawText(iVar5, iVar6, uVar10, uVar7, (const char *)&gp0xffffa068, (u32)PTR_s_DISABLE_0069e6c8_abs[cVar2]);
         }
         else {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
@@ -2926,6 +2927,8 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 
   
 
+  iVar3 = 0;
+
   if (param_3 == *(int *)(param_4 + 0x108) + *(int *)(param_4 + 0x110)) {
 
     uVar2 = 4;
@@ -2970,7 +2973,7 @@ void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 
   }
 
-  iVar3 = 3;
+  iVar3 += 3;
 
   for (puVar1 = (u16 *)FUN_003b5d50(3); puVar1 != (u16 *)0x0;
 
@@ -8972,29 +8975,29 @@ void FUN_00379c30(int param_1,int param_2,int param_3,int param_4)
 
 {
 
-  char cVar1;
-
-  char cVar2;
-
-  int sVar3;
-
-  u16 uVar4;
-
-  int iVar5;
-
-  char *pcVar6;
-
-  char *pcVar7;
-
-  int *piVar8;
-
-  u32 uVar9;
-
-  u32 uVar10;
+  char acStack_600 [1536];
 
   f32 uVar11;
 
-  char acStack_600 [1536];
+  u32 uVar10;
+
+  u32 uVar9;
+
+  int *piVar8;
+
+  char *pcVar7;
+
+  char *pcVar6;
+
+  int iVar5;
+
+  u16 uVar4;
+
+  int sVar3;
+
+  char cVar2;
+
+  char cVar1;
 
   
 
@@ -10149,11 +10152,11 @@ u32 FUN_0037b2e0(int param_1,int param_2,int param_3)
 
 void FUN_0037b350(int param_1,int param_2,int param_3,int param_4)
 {
-  u32 sVar1;
-  u32 uVar2;
-  f32 uVar3;
-  u8 *apuStack_10 [3];
   u32 uStack_4;
+  u8 *apuStack_10 [3];
+  f32 uVar3;
+  u32 uVar2;
+  u32 sVar1;
 
   uVar2 = 0;
   apuStack_10[0] = PTR_DAT_0069f9d8;

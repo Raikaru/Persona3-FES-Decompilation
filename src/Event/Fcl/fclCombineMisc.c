@@ -2058,7 +2058,7 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
   u32 uVar9;
 
-  u32 uVar10;
+  u16 uVar10;
 
   int iVar11;
 
@@ -2238,7 +2238,7 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
   u32 uVar9;
 
-  u32 uVar10;
+  u16 uVar10;
 
   int iVar11;
 

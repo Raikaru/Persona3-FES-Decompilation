@@ -3351,8 +3351,6 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
-/* Removing this worsens FUN_002bc9c0 (nd562 -> nd618) - measured W161. */
-#pragma opt_loop_invariants on
 // FUN_002bc9c0 NONMATCHING
 
 void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5,
@@ -3407,7 +3405,6 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
   (*DAT_009600a4)(3,&fStack_100,4,0x696da8,6);
   return;
 }
-#pragma opt_loop_invariants off
 
 // FUN_002bccd0
 
@@ -7409,7 +7406,7 @@ u32 func_002c3ce0(u32 param_1)
   selected = 0;
   best = 0xffff;
   for (index = 0; index < *(u16 *)(param_1 + 0xc0); index++) {
-    unit = *(int *)(param_1 + index * 4 + 0x88);
+    unit = *(int *)(param_1 + (index & 0xffff) * 4 + 0x88);
     score = func_002ffcc0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
     if (score < best) {
       best = score;
@@ -7899,19 +7896,18 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   u32 uVar4;
   int iVar5;
   s64 lVar6;
-  u32 uVar7;
+  u16 uVar7;
   u32 uVar8;
   s64 lVar9;
-  u16 *puVar10;
   
   uVar3 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar4 = func_002ffdf0(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar8 = 0xffffffff;
   lVar9 = 0xffffff;
-  puVar10 = param_3;
   param_4 &= 0xffff;
-  for (uVar7 = 0; uVar7 < param_4; uVar7++, puVar10++) {
-    uVar2 = *puVar10;
+  param_5 &= 0xffff;
+  for (uVar7 = 0; uVar7 < param_4; uVar7++) {
+    uVar2 = param_3[uVar7];
     if (uVar2 != 0 && uVar2 < 0x1d0) {
       cVar1 = *(u8 *)(DAT_007ce3f8 + ((u32)uVar2 * 44) + 8);
       if ((param_5 != 0 || cVar1 == 1) && (param_5 != 1 || cVar1 == 0)) {
@@ -7919,7 +7915,7 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
                              *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,0,1);
         lVar6 = func_0051e0e0((uVar4) - (uVar3 + iVar5));
         if (lVar6 < lVar9) {
-          uVar8 = (u32)*puVar10;
+          uVar8 = param_3[uVar7];
           lVar9 = lVar6;
         }
       }
@@ -14483,7 +14479,7 @@ u32 func_002d03e0(void)
     func_0035f060(*(u32 *)(iVar10 + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(-1);
   }
   return 1;
 }

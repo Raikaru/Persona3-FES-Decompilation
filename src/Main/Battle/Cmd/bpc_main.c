@@ -764,10 +764,10 @@ void FUN_00244770(void)
     break;
   case 2:
     for (iVar4 = 0; iVar4 < (int)puVar2[3]; iVar4 = iVar4 + 1) {
-      FUN_00245970(puVar2 + iVar4 * 0x290 + 0x10);
-      if ((puVar2[iVar4 * 0x290 + 0x10] & 0x480) == 0) {
-        puVar2[iVar4 * 0x290 + 0x10] =
-            puVar2[iVar4 * 0x290 + 0x10] & 0xffffffdf;
+      action = (int)(puVar2 + iVar4 * 0x290);
+      FUN_00245970((uint *)(action + 0x40));
+      if ((*(uint *)(action + 0x40) & 0x480) == 0) {
+        *(uint *)(action + 0x40) &= 0xffffffdf;
       }
     }
     break;

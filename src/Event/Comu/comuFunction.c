@@ -76,6 +76,8 @@ extern u32 DAT_0095b700;
 extern u32 DAT_0095b704;
 extern u32 DAT_0095b708;
 extern u32 DAT_0095b70c;
+#pragma alias DAT_0095b70c_abs DAT_0095b70c
+extern u8 DAT_0095b70c_abs[];
 extern u32 DAT_0095b710;
 #pragma alias DAT_0095b710_abs DAT_0095b710
 extern u8 *DAT_0095b710_abs[];
@@ -409,9 +411,9 @@ u32 FUN_003be020(int param_1,int param_2,u32 param_3)
 
   u8 bVar2;
 
-  u16 uVar3;
+  s16 uVar3;
 
-  u16 uVar4;
+  s16 uVar4;
 
   int iVar5;
 
@@ -421,7 +423,7 @@ u32 FUN_003be020(int param_1,int param_2,u32 param_3)
 
   u8 *pbVar8;
 
-  u16 *puVar9;
+  s16 *puVar9;
 
   int lVar10;
 
@@ -483,7 +485,7 @@ u32 FUN_003be020(int param_1,int param_2,u32 param_3)
 
              FUN_00172160(uVar11) != 1))) {
 
-          puVar9 = (u16 *)(DAT_0095b70c + (bVar1 - 6) * 6);
+          puVar9 = (s16 *)(*(int *)DAT_0095b70c_abs + (bVar1 - 6) * 6);
 
           uVar3 = puVar9[1];
 

@@ -6976,11 +6976,11 @@ u64 FUN_00367230(u64 param_1,u64 param_2,int param_3)
     iVar4 = 0;
   }
   else {
+    iVar4 = piVar1[0x1b];
     iVar3 = 0;
     limit = *(int *)(iVar2 + 0x160) + *(int *)(iVar2 + 0x15c);
-    for (iVar4 = piVar1[0x1b];
-        (iVar3 < limit && (iVar4 != 0));
-        iVar4 = *(int *)(iVar4 + 0x4c)) {
+    while ((iVar3 < limit) && (iVar4 != 0)) {
+      iVar4 = *(int *)(iVar4 + 0x4c);
       iVar3 = iVar3 + 1;
     }
   }
@@ -7541,17 +7541,12 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
   else {
 
+    iVar7 = *(int *)(iVar2 + 0x6c);
     iVar5 = 0;
     limit = *(int *)(iVar6 + 0x160) + *(int *)(iVar6 + 0x15c);
-
-    for (iVar7 = *(int *)(iVar2 + 0x6c);
-
-        (iVar5 < limit && (iVar7 != 0));
-
-        iVar7 = *(int *)(iVar7 + 0x4c)) {
-
+    while ((iVar5 < limit) && (iVar7 != 0)) {
+      iVar7 = *(int *)(iVar7 + 0x4c);
       iVar5 = iVar5 + 1;
-
     }
 
   }
@@ -8078,18 +8073,12 @@ u64 FUN_003680e0(u64 param_1,u64 param_2,int param_3)
 
   else {
 
+    iVar8 = piVar2[0x1b];
     iVar6 = 0;
-
     limit = *(int *)(iVar7 + 0x160) + *(int *)(iVar7 + 0x15c);
-
-    for (iVar8 = piVar2[0x1b];
-
-        (iVar6 < limit && (iVar8 != 0));
-
-        iVar8 = *(int *)(iVar8 + 0x4c)) {
-
+    while ((iVar6 < limit) && (iVar8 != 0)) {
+      iVar8 = *(int *)(iVar8 + 0x4c);
       iVar6 = iVar6 + 1;
-
     }
 
   }
@@ -9761,6 +9750,7 @@ u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
   short *psVar3;
   int iVar4;
   int iVar5;
+  int limit;
   int extraout_t0;
 
   iVar5 = (int)param_3;
@@ -9769,10 +9759,11 @@ u32 FUN_003698a0(u64 param_1,u64 param_2,int param_3)
     psVar3 = (short *)0x0;
   }
   else {
+    psVar3 = (short *)piVar2[0x1b];
     iVar4 = 0;
-    for (psVar3 = (short *)piVar2[0x1b];
-        (iVar4 < *(int *)(iVar5 + 0x160) + *(int *)(iVar5 + 0x15c) && (psVar3 != (short *)0x0));
-        psVar3 = *(short **)(psVar3 + 0x26)) {
+    limit = *(int *)(iVar5 + 0x160) + *(int *)(iVar5 + 0x15c);
+    while ((iVar4 < limit) && (psVar3 != (short *)0x0)) {
+      psVar3 = *(short **)(psVar3 + 0x26);
       iVar4 = iVar4 + 1;
     }
   }

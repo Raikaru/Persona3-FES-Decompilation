@@ -1235,7 +1235,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
   puVar4 = (u8 *)param_1[1];
   for (iVar3 = 0; iVar3 < *param_1; puVar4 += 0x18, iVar3 = iVar3 + 1) {
     if ((*(u32 *)puVar4 & 4) != 0) {
-      if (FUN_003f03e0_u32(FUN_003e6dc0()) != 0) {
+      if (FUN_003f03e0_u32(FUN_003e6dc0()) == 0) {
         continue;
       }
     }
