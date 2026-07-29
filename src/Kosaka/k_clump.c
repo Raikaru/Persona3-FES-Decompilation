@@ -1191,11 +1191,6 @@ void func_001a8140(void* state, u32 mode)
 {
     KClumpMaterialNode* item;
     RwSphere* sphere;
-    void* resources;
-    u32 found;
-    void* object;
-    void (**resourceCall)(void*);
-
     if (state == NULL)
     {
         return;

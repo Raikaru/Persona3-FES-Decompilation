@@ -1159,7 +1159,7 @@ void FUN_0015CE50(u64 packedPosition, void *listPointer, s32 alpha,
     f32 value_tens_x;
     f32 value_units_x;
     f32 value_suffix_x;
-    u8 text_buffer[256];
+    u8 text_buffer[240];
 
     position.packed = packedPosition;
     list = camp_list_base_address((u32)(uintptr_t)listPointer);
