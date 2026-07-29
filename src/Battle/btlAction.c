@@ -1264,7 +1264,7 @@ BtlPacket* result;
     }
 }
 
-// FUN_0028b800 NONMATCHING
+// FUN_0028b800
 void btlActionInitStateStartHome(BtlAction* action)
 {
     BtlPacket* packet;
@@ -1300,8 +1300,7 @@ void btlActionInitStateStartHome(BtlAction* action)
             break;
         case UNIT_GENUS_EC:
             enemyRecords = iGpffffb728;
-            speedIndex = *(u16*)((u8*)enemyRecords +
-                                 unitId * 0xe8 + (u32)allowMove * 4 + 0x24);
+            speedIndex = enemyRecords[unitId].moveSpeed[allowMove].speedIndex;
             break;
         default:
             break;

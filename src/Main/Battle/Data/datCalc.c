@@ -5952,7 +5952,7 @@ u32 FUN_0030af00_narrow(u16 *param_1, u16 *param_2, u16 param_3,
                           u16 param_4, u32 param_5)
 {
   u16 uVar1;
-  short sVar2;
+  int sVar2;
   int iVar3;
   u32 uVar4;
   u16 *puVar5;

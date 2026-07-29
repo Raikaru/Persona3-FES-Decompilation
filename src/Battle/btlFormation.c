@@ -7486,7 +7486,7 @@ void func_002c3f00(int param_1)
         (func_00300580(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0x80000) == 0))
        )) {
       aiStack_30[uVar3] = iVar1;
-      uVar3 = uVar3 + 1 & 0xffff;
+      uVar3++;
     }
   }
   if (uVar3 == 0) {

@@ -8192,52 +8192,37 @@ int FUN_003fb2f0(u32 *param_1)
 
   datGetMoney();
 
-  if (((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) && ((*(u16 *)DAT_007e095a_abs & 0x1000) == 0)) {
-    if (((*(u16 *)DAT_007e0952_abs & 0x4000) == 0) && ((*(u16 *)DAT_007e095a_abs & 0x4000) == 0)) {
-      if (((*(u16 *)DAT_007e0952_abs & 0x2000) == 0) && ((*(u16 *)DAT_007e095a_abs & 0x2000) == 0)) {
-        if (((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) || ((*(u16 *)DAT_007e095a_abs & 0x8000) != 0)) {
-          iVar5 = -10;
-        }
-      }
-      else {
-        iVar5 = 10;
-      }
-    }
-    else {
-      iVar5 = -1;
-    }
-  }
-  else {
+  if (((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) || ((*(u16 *)DAT_007e095a_abs & 0x1000) != 0)) {
     iVar5 = 1;
+  }
+  else if (((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) || ((*(u16 *)DAT_007e095a_abs & 0x4000) != 0)) {
+    iVar5 = -1;
+  }
+  else if (((*(u16 *)DAT_007e0952_abs & 0x2000) != 0) || ((*(u16 *)DAT_007e095a_abs & 0x2000) != 0)) {
+    iVar5 = 10;
+  }
+  else if (((*(u16 *)DAT_007e0952_abs & 0x8000) != 0) || ((*(u16 *)DAT_007e095a_abs & 0x8000) != 0)) {
+    iVar5 = -10;
   }
 
   if (iVar5 != 0) {
 
     uVar6 = param_1[2] + iVar5;
 
-    if ((int)uVar6 < 100) {
-
-      if ((int)uVar6 < 1) {
-
-        uVar6 = 1;
-
-      }
-
-    }
-
-    else {
-
+    if ((int)uVar6 >= 100) {
       uVar6 = 99;
-
     }
-
+    else if ((int)uVar6 < 1) {
+      uVar6 = 1;
+    }
     uVar4 = 99;
+
 
     if (param_1[6] != 0) {
 
       iVar2 = datGetMoney();
 
-      uVar4 = iVar2 / (int)param_1[6];
+      uVar4 = (u32)iVar2 / param_1[6];
 
     }
 
@@ -8257,58 +8242,30 @@ int FUN_003fb2f0(u32 *param_1)
 
     }
 
-    if ((int)uVar6 < (int)uVar4) {
-
-      *param_1 = *param_1 & 0xfffffff7;
-
-    }
-
-    else {
-
+    if ((int)uVar6 >= (int)uVar4) {
       *param_1 = *param_1 | 8;
-
       uVar6 = uVar4;
-
     }
-
-    if (uVar6 != 1) {
-
-      *param_1 = *param_1 & 0xffffffef;
-
-    }
-
     else {
+      *param_1 = *param_1 & 0xfffffff7;
+    }
 
+    if (uVar6 == 1) {
       *param_1 = *param_1 | 0x10;
-
+    }
+    else {
+      *param_1 = *param_1 & 0xffffffef;
     }
 
     if (param_1[2] == uVar6) {
-
-      iVar5 = 0;
-
+      return 0;
     }
-
-    else {
-
-      param_1[2] = uVar6;
-
-      if (iVar5 < 1) {
-
-        if (iVar5 < 0) {
-
-          iVar5 = 2;
-
-        }
-
-      }
-
-      else {
-
-        iVar5 = 1;
-
-      }
-
+    param_1[2] = uVar6;
+    if (iVar5 > 0) {
+      iVar5 = 1;
+    }
+    else if (iVar5 < 0) {
+      iVar5 = 2;
     }
 
   }

@@ -827,7 +827,6 @@ u16* func_001b8d60(u32 index)
 s16* func_001b8db0(s16* table)
 {
     s16* record;
-    s16* previous;
     s16 chosenMajor;
     s16 chosenMinor;
     u16 chosenDay;
@@ -854,26 +853,26 @@ s16* func_001b8db0(s16* table)
     i = 0;
     while (i < count)
     {
-        previous = record - 0x40;
+        record -= 0x40;
         if (puGpffffa850 != NULL &&
-            (u16)puGpffffa850[0] == (u16)record[-0x10] &&
-            (u16)puGpffffa850[1] == (u16)record[-0x0f] &&
-            func_0017e480((u16)previous[1], (u16)previous[2], 3, 0x1f) != 0)
+            (u16)puGpffffa850[0] == (u16)record[0x30] &&
+            (u16)puGpffffa850[1] == (u16)record[0x31] &&
+            func_0017e480((u16)record[1], (u16)record[2], 3, 0x1f) != 0)
         {
-            if ((u16)previous[1] == func_0017d920() &&
-                (u16)previous[2] == func_0017da40() &&
+            if ((u16)record[1] == func_0017d920() &&
+                (u16)record[2] == func_0017da40() &&
                 (day = func_0016ef30() & 0xff) < chosenDay)
             {
-                chosenMajor = previous[1];
-                chosenMinor = previous[2];
-                chosenDay = previous[3];
+                chosenMajor = record[1];
+                chosenMinor = record[2];
+                chosenDay = record[3];
             }
             else
             {
                 for (slot = 0; slot < 0x0f; slot++)
                 {
-                    if (previous[slot + 9] == -1 ||
-                        func_0016f190((u16)previous[slot + 9]) != 1)
+                    if (record[slot + 9] == -1 ||
+                        func_0016f190((u16)record[slot + 9]) != 1)
                     {
                         break;
                     }
@@ -882,24 +881,23 @@ s16* func_001b8db0(s16* table)
                 {
                     for (slot = 0; slot < 7; slot++)
                     {
-                        if (previous[slot + 2] == -1 ||
-                            func_0016f190((u16)previous[slot + 2]) != 1)
+                        if (record[slot + 2] == -1 ||
+                            func_0016f190((u16)record[slot + 2]) != 1)
                         {
                             break;
                         }
                     }
                     if (slot < 7)
                     {
-                        return previous;
+                        return record;
                     }
                 }
             }
         }
-        chosenMajor = previous[1];
-        chosenMinor = previous[2];
-        chosenDay = previous[3];
+        chosenMajor = record[1];
+        chosenMinor = record[2];
+        chosenDay = record[3];
         i++;
-        record = previous;
     }
     (void)chosenMajor;
     (void)chosenMinor;

@@ -4371,7 +4371,6 @@ u64 FUN_003ade70(int param_1,int param_2)
   u8 bVar2;
   u8 bVar3;
   u8 bVar4;
-  u16 sVar5;
   u32 uVar5;
   u32 uVar6;
   u32 uVar7;
@@ -4391,12 +4390,11 @@ u64 FUN_003ade70(int param_1,int param_2)
   bVar4 = ((u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[3];
   if (bVar4 == 0xff) {
     uVar8 = 0;
-    sVar5 = uVar5;
   } else {
     uVar8 = (u8)(bVar4 - 1);
-    sVar5 = uVar5;
+    uVar5 = (u16)uVar5;
   }
-  FUN_003bb060(sVar5,(u16)(uVar8 << 8 | uVar7 & 0xff));
+  FUN_003bb060((u16)uVar5,(u16)(uVar8 << 8 | uVar7 & 0xff));
   return 0;
 }
 #undef FUN_003adf40
