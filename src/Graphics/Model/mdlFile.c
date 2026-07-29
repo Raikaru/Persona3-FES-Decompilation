@@ -14055,6 +14055,7 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 {
 
   u32 uVar1;
+  float fVar2;
 
 
 
@@ -14071,15 +14072,15 @@ void FUN_0032a770(u8 (*param_1) [16],int param_2,int param_3,
 
   *(u32 *)(param_1[1] + 4) = uVar1;
 
-  uVar1 = FUN_0032a540((char *)(param_2 + 0x60),param_3,*(u32 *)(param_2 + 0xb8));
+  fVar2 = FUN_0032a540((char *)(param_2 + 0x60),param_3,*(u32 *)(param_2 + 0xb8));
 
-  *(u32 *)(param_1[1] + 8) = uVar1;
+  *(float *)(param_1[1] + 8) = fVar2;
 
-  if (*(char *)(param_2 + 0x9c) != '\x02') {
+  if (*(u8 *)(param_2 + 0x9c) != 2) {
 
-    uVar1 = FUN_0032a540((char *)(param_2 + 0x8c),param_3,*(u32 *)(param_2 + 0xb8));
+    fVar2 = FUN_0032a540((char *)(param_2 + 0x8c),param_3,*(u32 *)(param_2 + 0xb8));
 
-    *(u32 *)(param_1[1] + 0xc) = uVar1;
+    *(float *)(param_1[1] + 0xc) = fVar2;
 
   }
 

@@ -6123,13 +6123,13 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
     if ((*puVar5 & 2) != 0) {
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_20[(short)puVar4[1] * 4],0);
+      FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4],0);
 
       if ((*puVar5 & 8) == 0) {
 
         if ((*puVar5 & 4) != 0) {
 
-          FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_20[(short)puVar4[1] * 4 + 1],0);
+          FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4 + 1],0);
 
         }
 
@@ -6137,17 +6137,17 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
       else {
 
-        FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_20[(short)puVar4[1] * 4 + 2],0);
+        FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4 + 2],0);
 
       }
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_20[(short)puVar4[1] * 4 + 3],0);
+      FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_20[(short)puVar4[1] * 4 + 3],0);
 
     }
 
     if ((*puVar4 & 1) == 0) {
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,0x23,0);
+      FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,0x23,0);
 
     }
 
@@ -6195,13 +6195,13 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
     if ((*puVar5 & 2) != 0) {
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4],0);
+      FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4],0);
 
       if ((*puVar5 & 8) == 0) {
 
         if ((*puVar5 & 4) != 0) {
 
-          FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4 + 1],0);
+          FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4 + 1],0);
 
         }
 
@@ -6209,11 +6209,11 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
       else {
 
-        FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4 + 2],0);
+        FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4 + 2],0);
 
       }
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4 + 3],0);
+      FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,auStack_40[(short)puVar4[1] * 4 + 3],0);
 
     }
 

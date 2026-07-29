@@ -60,6 +60,8 @@ extern u32 func_001c7160(const FldUnit* enemy, const FldUnit* party, f32 distanc
 extern u16 func_003b6dd0(u16 resourceId, const RwV3d* position, f32 angle);
 extern u32 FUN_0016F380(u32 parameter);
 extern void FUN_0016F3E0(u32 parameter, u32 value);
+extern s32 DAT_007ce250;
+extern s32 DAT_007ce254;
 static u32 sDungeonGenerationAttempts;  // 007ce260
 static u32 sDungeonGenerationFailed;    // 007ce264
 static u32 sDungeonRoomCounter;         // 007ce25c
@@ -1068,14 +1070,12 @@ static inline u8* dungeonPatternCell(DungeonPattern* pattern, u32 x, u32 y)
     return pattern->raw + y * 0x18 + x * 8;
 }
 
-static void dungeonCopyQuad(u8* dst, const u8* src)
+static inline void dungeonCopyQuad(u8* dst, const u8* src)
 {
-    u32 i;
-
-    for (i = 0; i < 4; i++)
-    {
-        ((u16*)dst)[i] = ((const u16*)src)[i];
-    }
+    ((s16*)dst)[0] = ((const s16*)src)[0];
+    ((s16*)dst)[1] = ((const s16*)src)[1];
+    ((s16*)dst)[2] = ((const s16*)src)[2];
+    ((s16*)dst)[3] = ((const s16*)src)[3];
 }
 static const s16 sDungeonVisibilityOffsets0[] = {
     -0xc4, -0xb4, -0xa4, 0x2c, 0x3c, 0x4c, 0x5c, 0x6c,
@@ -1149,7 +1149,7 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
     u32 y;
     u32 rotation;
     u32 rotationCount;
-    u8 temp[4];
+    u8 temp[8];
     u8* cell;
     u8 value;
     u8 low;
@@ -2265,7 +2265,7 @@ void func_001bd8c0(void)
 void func_001bd950(void)
 {
     Resrc* fieldResource;
-    Resrc* heroResource;
+    ResrcModelChar* heroResource;
     Resrc* modelFld;
     Resrc* modelNpc;
     s32 xGrid;
@@ -2278,16 +2278,14 @@ void func_001bd950(void)
     }
 
     fieldResource = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-    heroResource = MT_Scene_GetRes(0x400);
+    heroResource = (ResrcModelChar*)MT_Scene_GetRes(0x400);
     modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
     modelNpc = MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
 
     if (heroResource != NULL)
     {
-        xGrid = K_FldFrame_CtlGetXGrid(
-            ((ResrcModelChar*)heroResource)->collisCtlTask);
-        zGrid = K_FldFrame_CtlGetZGrid(
-            ((ResrcModelChar*)heroResource)->collisCtlTask);
+        DAT_007ce250 = K_FldFrame_CtlGetXGrid(heroResource->collisCtlTask);
+        DAT_007ce254 = K_FldFrame_CtlGetZGrid(heroResource->collisCtlTask);
         for (; fieldResource != NULL; fieldResource = fieldResource->next)
         {
             fieldResource->flags &= ~2u;
@@ -2301,199 +2299,199 @@ void func_001bd950(void)
             fieldResource->flags |= 2;
         }
         (void)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-        xGrid = 0;
-        zGrid = 0;
     }
+    xGrid = DAT_007ce250;
+    zGrid = DAT_007ce254;
 
     angle = FUN_001A5AA0(
         &((RwFrame*)kwlnGetMainCamera()->object.object.parent)->modelling);
     if (angle <= 22.5f && angle >= -22.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x33c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
     }
     else if (angle > 22.5f && angle <= 67.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x17c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
     }
     else if (angle > 67.5f && angle <= 112.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x194), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x84), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x17c), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 3].resourceId, 1);
     }
     else if (angle > 112.5f && angle <= 157.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x84), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x194), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
     }
     else if (angle > 157.5f || angle < -157.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x11c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 3][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
     }
     else if (angle >= -157.5f && angle < -112.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xe4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x11c), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 2][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 3].resourceId, 1);
     }
     else if (angle >= -112.5f && angle < -67.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xe4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 3].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
     }
     else
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x194), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2c4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid + 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 1][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 2][xGrid + 2].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid - 1].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid].resourceId, 1);
+        func_001a0150(K_Field_Get()->dungeonCells[zGrid - 3][xGrid + 1].resourceId, 1);
     }
     for (; modelFld != NULL; modelFld = modelFld->next)
     {

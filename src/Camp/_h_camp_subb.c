@@ -29,7 +29,9 @@ typedef struct CampEquipmentTargetEntry
 {
     u32 itemId;
     s32 sourceIndex;
-    u8 reserved08[0x0c];
+    u8 reserved08[4];
+    u32 ownedFlag;
+    u32 availableFlag;
     u32 categoryMask;
     u8 effect;
     u8 slotType;
@@ -528,10 +530,9 @@ void FUN_0013c780(CampEquipmentWork* work)
     s32 recordCount;
     s32 index;
     s32 category;
-    s16 candidate;
-    CampEquipmentEntry* entry;
-    u32 categoryMask;
-    u32 previousCategory;
+    CampEquipmentSlotAtBase* slot;
+    CampEquipmentTargetEntry* entry;
+    u8* equipmentClass;
 
     while (scanIndex < 300) {
         if (datGetEquipmentId(1, scanIndex) != 0) {
@@ -548,12 +549,36 @@ void FUN_0013c780(CampEquipmentWork* work)
     scanIndex = 0;
     while (scanIndex < 0x14) {
         if (datGetEquipmentId(-1, scanIndex) != 0) {
-            entry = &work->entries[recordCount];
-            campEquipmentPopulate(entry, -1, scanIndex);
-            entry->categoryMask = FUN_0013c6a0((s16)entry->itemId);
-            entry->sourceIndex = scanIndex + 0x1000;
-            entry->ownedFlag = 1;
-            entry->availableFlag = 1;
+            slot = (CampEquipmentSlotAtBase*)(recordCount * 9 * 4 +
+                                              (u8*)work);
+            entry = &slot->entry;
+            entry->itemId = datGetEquipmentId(-1, scanIndex);
+            slot->entry.categoryMask = FUN_0013c6a0((s16)entry->itemId);
+            equipmentClass = &slot->entry.equipmentClass;
+            *equipmentClass = (u8)func_00171250((s16)entry->itemId);
+            slot->entry.effect = datGetEquipmentEffect(-1, scanIndex);
+            slot->entry.slotType = func_0016f810(-1, scanIndex);
+            slot->entry.sourceIndex = scanIndex + 0x1000;
+            slot->entry.ownedFlag = 1;
+            slot->entry.availableFlag = 1;
+            switch (*equipmentClass) {
+            case 0:
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x80) =
+                    func_0016f9f0(-1, scanIndex);
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x82) =
+                    func_0016fae0(-1, scanIndex);
+                break;
+            case 1:
+                slot->entry.valueC = func_0016fbd0(-1, scanIndex);
+                break;
+            case 2:
+                slot->entry.valueD = func_0016fcc0(-1, scanIndex);
+                break;
+            case 3:
+                break;
+            default:
+                break;
+            }
             recordCount++;
         }
         scanIndex++;
@@ -562,37 +587,66 @@ void FUN_0013c780(CampEquipmentWork* work)
     work->categoryCounts[0] = recordCount;
     index = 0;
     while (index < candidateCount) {
-        candidate = (s16)candidateIndices[index];
-        if (datGetEquipmentId(1, candidate) != 0) {
-            entry = &work->entries[recordCount];
-            previousCategory = entry->categoryMask;
-            campEquipmentPopulate(entry, 1, candidate);
-            categoryMask = func_0016f720(1, (s16)candidateIndices[index]);
+        if (datGetEquipmentId(1, candidateIndices[index]) != 0) {
+            slot = (CampEquipmentSlotAtBase*)(recordCount * 9 * 4 +
+                                              (u8*)work);
+            entry = &slot->entry;
+            entry->itemId = datGetEquipmentId(1, candidateIndices[index]);
             category = 0;
             while (category < 0x15) {
-                if ((categoryMask & (1u << category)) != 0) {
-                    entry->categoryMask = category;
+                if ((func_0016f720(1, candidateIndices[index]) &
+                     (1u << category)) != 0) {
+                    slot->entry.categoryMask = category;
                     break;
                 }
                 category++;
             }
-            if (category == 0x15) {
-                entry->categoryMask = previousCategory;
+            equipmentClass = &slot->entry.equipmentClass;
+            *equipmentClass = (u8)func_00171250((s16)entry->itemId);
+            slot->entry.effect =
+                datGetEquipmentEffect(1, candidateIndices[index]);
+            slot->entry.slotType =
+                func_0016f810(1, candidateIndices[index]);
+            slot->entry.sourceIndex = candidateIndices[index];
+            slot->entry.ownedFlag = 0;
+            if (candidateIndices[index] == datGetEquipmentIdx(1, 0) ||
+                candidateIndices[index] == datGetEquipmentIdx(1, 1) ||
+                candidateIndices[index] == datGetEquipmentIdx(1, 2) ||
+                candidateIndices[index] == datGetEquipmentIdx(1, 3)) {
+                slot->entry.availableFlag = 0;
+            } else {
+                slot->entry.availableFlag = 1;
             }
-            entry->ownedFlag = 0;
-            entry->availableFlag = 1;
-            if (candidate == datGetEquipmentIdx(1, 0) ||
-                candidate == datGetEquipmentIdx(1, 1) ||
-                candidate == datGetEquipmentIdx(1, 2) ||
-                candidate == datGetEquipmentIdx(1, 3)) {
-                entry->availableFlag = 0;
+            switch (*equipmentClass) {
+            case 0:
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x80) =
+                    func_0016f9f0(1, candidateIndices[index]);
+                *(u16*)((u8*)work + recordCount * 9 * 4 + 0x82) =
+                    func_0016fae0(1, candidateIndices[index]);
+                break;
+            case 1:
+                slot->entry.valueC =
+                    func_0016fbd0(1, candidateIndices[index]);
+                break;
+            case 2:
+                slot->entry.valueD =
+                    func_0016fcc0(1, candidateIndices[index]);
+                break;
+            case 3:
+                break;
+            default:
+                break;
             }
             recordCount++;
         }
         index++;
     }
 
-    campEquipmentClearCategoryCounts(work);
+    category = 0;
+    while (category < 0x15) {
+        work->categoryCounts[category] = 0;
+        category++;
+    }
     work->entryCount = recordCount;
 }
 
