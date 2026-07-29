@@ -1207,10 +1207,8 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
           uVar3 = (u32)(iVar5 != 0);
           break;
         case 0:
-          uVar3 = 1;
-          break;
         default:
-          uVar3 = 0;
+          uVar3 = 1;
           break;
         }
       }
@@ -6162,14 +6160,14 @@ void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 // functions above (3/3/1 true-branch, 2/2/0 false-branch constants to
 // func_003f55b0/func_003f5830). Residual: a register-bank floor (obj
 // 1088B vs 1056B window); logic and constants verified against retail.
+
+
 // FUN_003F8180 NONMATCHING
 
 
 void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
                  )
-
-
 
 {
 
@@ -6182,8 +6180,6 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
   u32 *puVar4;
 
   u32 *puVar5;
-
-  u32 uVar6;
 
   int iVar7;
 
@@ -6231,11 +6227,9 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
       FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_20[(short)puVar4[1] * 4],0);
 
-      uVar6 = *puVar5;
+      if ((*puVar5 & 8) == 0) {
 
-      if ((uVar6 & 8) == 0) {
-
-        if ((uVar6 & 4) != 0) {
+        if ((*puVar5 & 4) != 0) {
 
           FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_20[(short)puVar4[1] * 4 + 1],0);
 
@@ -6303,15 +6297,13 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
     if ((*puVar5 & 2) != 0) {
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_40[(short)puVar4[1] * 4],0);
+      FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4],0);
 
-      uVar6 = *puVar5;
+      if ((*puVar5 & 8) == 0) {
 
-      if ((uVar6 & 8) == 0) {
+        if ((*puVar5 & 4) != 0) {
 
-        if ((uVar6 & 4) != 0) {
-
-          FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_40[(short)puVar4[1] * 4 + 1],0);
+          FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4 + 1],0);
 
         }
 
@@ -6319,11 +6311,11 @@ void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
       else {
 
-        FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_40[(short)puVar4[1] * 4 + 2],0);
+        FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4 + 2],0);
 
       }
 
-      FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3 & 0xff,auStack_40[(short)puVar4[1] * 4 + 3],0);
+      FUN_0040e3c0_u32(0.0f,param_1,param_2,(u8)param_3,auStack_40[(short)puVar4[1] * 4 + 3],0);
 
     }
 

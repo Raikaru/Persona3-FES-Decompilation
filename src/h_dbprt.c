@@ -103,7 +103,6 @@ void H_Dbprt_Flush()
 // FUN_00104420 NONMATCHING
 void H_Dbprt_Main()
 {
-    f32 uv[8];
     RwIm2DVertex vertices[4];
     f32 recipZ;
     f32 z;
@@ -166,22 +165,20 @@ void H_Dbprt_Main()
                 vertices[3].u.els.scrVertex.y = rowY;
                 glyphIndex = (s32)line[column] - ' ';
                 glyphByte = (u8)glyphIndex;
-                uv[0] = 0.0625f * (f32)(glyphByte % 16);
-                uv[1] = 0.0625f * (f32)(glyphByte / 16);
-                uv[2] = uv[0] + 0.03125f;
-                uv[3] = uv[1];
-                uv[4] = uv[0];
-                uv[5] = uv[1] + 0.03125f;
-                uv[6] = uv[2];
-                uv[7] = uv[5];
-
-                for (vertex = 0; vertex < 4; vertex++)
                 {
-                    f32* uvPtr = &uv[vertex * 2];
-                    RwIm2DVertex* vertexPtr = &vertices[vertex];
-
-                    vertexPtr->u.els.u = uvPtr[0];
-                    vertexPtr->u.els.v = uvPtr[1];
+                    const f32 inv16 = 0.0625f;
+                    f32 u0 = inv16 * (f32)(glyphByte % 16);
+                    f32 v0 = inv16 * (f32)(glyphByte / 16);
+                    f32 u1 = u0 + 0.03125f;
+                    f32 v1 = v0 + 0.03125f;
+                    vertices[0].u.els.u = u0;
+                    vertices[0].u.els.v = v0;
+                    vertices[1].u.els.u = u1;
+                    vertices[1].u.els.v = v0;
+                    vertices[2].u.els.u = u0;
+                    vertices[2].u.els.v = v1;
+                    vertices[3].u.els.u = u1;
+                    vertices[3].u.els.v = v1;
                 }
 
                 D_009600A0_abs[0](rwPRIMTYPETRISTRIP, vertices, 4);

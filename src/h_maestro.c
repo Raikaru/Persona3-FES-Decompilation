@@ -2066,15 +2066,6 @@ void func_00113a30(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
         v->u.els.scrVertex.y = corners[i][1];
     }
 
-    vertices[0].u.els.u = 0.0f;
-    vertices[0].u.els.v = 0.0f;
-    vertices[1].u.els.u = 1.0f;
-    vertices[1].u.els.v = 0.0f;
-    vertices[2].u.els.u = 0.0f;
-    vertices[2].u.els.v = 1.0f;
-    vertices[3].u.els.u = 1.0f;
-    vertices[3].u.els.v = 1.0f;
-
     (*setState)(1, 0);
 
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
@@ -2140,15 +2131,6 @@ void func_00113d80(f32 depth, f32 x, f32 y, u32 color, s32 width, s32 height)
         v->u.els.scrVertex.x = corners[i][0];
         v->u.els.scrVertex.y = corners[i][1];
     }
-
-    vertices[0].u.els.u = 0.0f;
-    vertices[0].u.els.v = 0.0f;
-    vertices[1].u.els.u = 1.0f;
-    vertices[1].u.els.v = 0.0f;
-    vertices[2].u.els.u = 0.0f;
-    vertices[2].u.els.v = 1.0f;
-    vertices[3].u.els.u = 1.0f;
-    vertices[3].u.els.v = 1.0f;
 
     (*setState)(1, 0);
 
