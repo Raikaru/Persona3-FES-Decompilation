@@ -153,7 +153,7 @@ u8 *FUN_003b0970(u8 *param_1,u8 param_2,u8 param_3,u8 param_4,u8 *param_5);
 #pragma alias FUN_003b0970_typed FUN_003b0970
 extern long FUN_003b0970_typed(void *param_1,u8 param_2,u8 param_3,u8 param_4,u32 param_5);
 void FUN_003b05c0(u16 *param_1);
-long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
+int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 #pragma alias FUN_003b0620_typed FUN_003b0620
 extern int FUN_003b0620_typed(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 int FUN_003b0840(short *param_1);
@@ -1032,7 +1032,7 @@ void FUN_003b05c0(u16 *param_1)
 #undef FUN_003b0620
 // FUN_003B0620 NONMATCHING
 
-long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
+int FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
 {
   u16 uVar5;
   int iVar6;
@@ -1089,7 +1089,7 @@ long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
       *(u32 *)(puVar7 + 8) = 0;
     }
   }
-  return (long)puVar7;
+  return (int)puVar7;
 }
 #define FUN_003b0620(...) ((long (*)(...))FUN_003b0620)(__VA_ARGS__)
 #undef FUN_003b0840
