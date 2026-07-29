@@ -1381,7 +1381,7 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
 // FUN_0012F6D0 NONMATCHING
 void FUN_0012f6d0(void* work, s32 index, u8* record)
 {
-    char text[0x100];
+    char text[0x70];
     register void* parent;
     s16 pcId;
     s16 slot;

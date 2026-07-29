@@ -461,13 +461,15 @@ u32 FUN_00398530(int param_1)
 
     if (lVar10 == 1) {
 
+      f32 fVar20;
+
       uVar5 = FUN_003b6270(0x389,3,puVar3[0x26]);
 
       *(u16 *)(puVar3 + 0x25) = uVar5;
 
       FUN_0038d840(*(u32 *)(puVar3[0x13] + 0x40),acStack_140,0);
 
-      uVar8 = FUN_0038a900(5);
+      fVar20 = FUN_0038a900(5);
 
       lVar10 = FUN_003bc8f0(acStack_140);
 
@@ -491,7 +493,7 @@ u32 FUN_00398530(int param_1)
 
         FUN_003bb1d0(*(u16 *)(puVar3 + 0x25),1,1,0xd,6);
 
-        FUN_003b89f0(uVar8,*(u16 *)(puVar3 + 0x25),acStack_140,0);
+        FUN_003b89f0(fVar20,*(u16 *)(puVar3 + 0x25),acStack_140,0);
 
         FUN_003b91c0(0x3f800000,*(u16 *)(puVar3 + 0x25),0,1,0,1,0);
 
