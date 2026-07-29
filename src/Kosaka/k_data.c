@@ -851,7 +851,8 @@ s16* func_001b8db0(s16* table)
     chosenMinor = 0x1f;
     chosenDay = 8;
     record = table + count * 0x40;
-    for (i = 0; i < count; i++)
+    i = 0;
+    while (i < count)
     {
         previous = record - 0x40;
         if (puGpffffa850 != NULL &&
@@ -897,6 +898,7 @@ s16* func_001b8db0(s16* table)
         chosenMajor = previous[1];
         chosenMinor = previous[2];
         chosenDay = previous[3];
+        i++;
         record = previous;
     }
     (void)chosenMajor;

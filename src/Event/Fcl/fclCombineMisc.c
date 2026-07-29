@@ -3455,7 +3455,7 @@ void FUN_003d9cc0(int param_1)
 
     iVar2 = *(int *)(iVar8 + 4);
 
-    if ((iVar2 != 0) && (*(short *)(iVar2 + 2) != 0)) {
+    if ((iVar2 != 0) && (*(u16 *)(iVar2 + 2) != 0)) {
       lVar6 = FUN_003c5a40(iVar1,*(u16 *)(iVar1 + 0x10) + 1,0x8c,0);
       unaff_s1_lo = *(int *)(*(int *)((int)lVar6 + 0x14) + 0x1c);
       if (*(int *)(iVar7 + 4) == 0) {

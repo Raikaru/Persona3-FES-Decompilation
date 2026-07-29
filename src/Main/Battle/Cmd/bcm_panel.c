@@ -1828,6 +1828,9 @@ void FUN_00227800(void)
     s32 loopCount;
     void (**setState)(u32, u32);
     void (**setQuad)(u32*, u32, u32, u32, u32);
+    void (**setState2)(u32, u32);
+    void (**setQuad2)(u32*, u32, u32, u32, u32);
+    void (**setQuad3)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -1863,31 +1866,31 @@ void FUN_00227800(void)
     }
 
     resource = FUN_0021cca0(table0, 0x26);
-    setState = (void (**)(u32, u32))D_00960090_abs;
-    (*setState)(1, FUN_0021cce0(resource));
-    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-    (*setQuad)((u32*)(work + 0x1e30), 4, 0, 1, 2);
-    (*setQuad)((u32*)(work + 0x1e30), 4, 0, 2, 3);
+    setState2 = (void (**)(u32, u32))D_00960090_abs;
+    (*setState2)(1, FUN_0021cce0(resource));
+    setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuad2)((u32*)(work + 0x1e30), 4, 0, 1, 2);
+    (*setQuad2)((u32*)(work + 0x1e30), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table0, 0x27);
-    (*setState)(1, FUN_0021cce0(resource));
-    (*setQuad)((u32*)(work + 0x1f30), 4, 0, 1, 2);
-    (*setQuad)((u32*)(work + 0x1f30), 4, 0, 2, 3);
+    (*setState2)(1, FUN_0021cce0(resource));
+    (*setQuad2)((u32*)(work + 0x1f30), 4, 0, 1, 2);
+    (*setQuad2)((u32*)(work + 0x1f30), 4, 0, 2, 3);
 
     resource = FUN_0021cca0(table0, 0x26);
-    (*setState)(1, FUN_0021cce0(resource));
-    (*setQuad)((u32*)(work + 0x2030), 4, 0, 1, 2);
-    (*setQuad)((u32*)(work + 0x2030), 4, 0, 2, 3);
+    (*setState2)(1, FUN_0021cce0(resource));
+    (*setQuad2)((u32*)(work + 0x2030), 4, 0, 1, 2);
+    (*setQuad2)((u32*)(work + 0x2030), 4, 0, 2, 3);
 
     if (*(u32*)(work + 0x463c) == 3 && *(s32*)(work + 0x6074) < 5) {
         resource = FUN_0021cca0(table0, 0x1d);
-        (*setState)(1, FUN_0021cce0(resource));
-        (*setQuad)((u32*)(work + 0x2130), 4, 0, 1, 2);
-        (*setQuad)((u32*)(work + 0x2130), 4, 0, 2, 3);
+        (*setState2)(1, FUN_0021cce0(resource));
+        (*setQuad2)((u32*)(work + 0x2130), 4, 0, 1, 2);
+        (*setQuad2)((u32*)(work + 0x2130), 4, 0, 2, 3);
     }
 
     resource = FUN_0021cca0(table0, 0x2c);
-    (*setState)(1, FUN_0021cce0(resource));
+    (*setState2)(1, FUN_0021cce0(resource));
 
     switch (*(u32*)(work + 0x7210)) {
     case 0:
@@ -1901,12 +1904,13 @@ void FUN_00227800(void)
         break;
     }
 
+    setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
     for (j = 0; j < loopCount; j++) {
         record = work + (j << 9);
-        (*setQuad)((u32*)(record + 0x2230), 4, 0, 1, 2);
-        (*setQuad)((u32*)(record + 0x2230), 4, 0, 2, 3);
-        (*setQuad)((u32*)(record + 0x2330), 4, 0, 1, 2);
-        (*setQuad)((u32*)(record + 0x2330), 4, 0, 2, 3);
+        (*setQuad3)((u32*)(record + 0x2230), 4, 0, 1, 2);
+        (*setQuad3)((u32*)(record + 0x2230), 4, 0, 2, 3);
+        (*setQuad3)((u32*)(record + 0x2330), 4, 0, 1, 2);
+        (*setQuad3)((u32*)(record + 0x2330), 4, 0, 2, 3);
     }
 }
 
@@ -2810,7 +2814,6 @@ void FUN_0022AE80(void)
     table0 = FUN_0021c3f0(0);
     table6 = FUN_0021c3f0(6);
     records = work + 0x4660;
-
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x23));
     pRender = (void (*)(u32, u32))D_00960090;
     BCM_2AE_STATE(1, texture);
@@ -2822,7 +2825,6 @@ void FUN_0022AE80(void)
 
     for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
         record = records + i * 0x410;
-
         FUN_003b1360(*(u32*)record, 1, 0);
 
         texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
@@ -2858,7 +2860,6 @@ void FUN_0022AE80(void)
     }
 
     overlay = work + 0x6d00;
-
     FUN_003b1360(*(u32*)overlay, 1, 0);
 
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));

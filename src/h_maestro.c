@@ -1319,7 +1319,7 @@ void func_00112110(void* param_1)
                 node->resourceIndex++;
             } while (node->resourceIndex != *((u16*)(node->header + 0x14)));
             node->state = 4;
-            break;
+            goto state_4;
         }
 
         case 3:
@@ -1338,6 +1338,7 @@ void func_00112110(void* param_1)
         {
             s32 i;
 
+state_4:
             node->output = MAESTRO_ALLOC(*((u16*)(node->header + 0x16)), 0x80, 0x40000);
             for (i = 0; i < (s32)*((u16*)(node->header + 0x16)); i++)
             {

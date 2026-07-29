@@ -2909,7 +2909,7 @@ FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
   int lVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   
 
@@ -2921,15 +2921,15 @@ FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
   }
 
-  iVar1 = param_8 * 8 + *(int *)(iVar1 + 4);
+  iVar1 = param_8 * 8 + *(int *)(iVar1 + 4) + 0x20;
 
-  if (iVar1 == -0x20) {
+  if (iVar1 == 0) {
 
     FUN_0019d3f0("itfMesManager.c",0xfb0);
 
   }
 
-  iVar1 = *(int *)(iVar1 + 0x24);
+  iVar1 = *(int *)(iVar1 + 4);
 
   if (iVar1 == 0) {
 

@@ -249,6 +249,8 @@ extern u64 func_002ffbc0();
 extern u16 func_002ffbc0_u16(u32 max);
 #pragma alias func_002ffbc0_noarg func_002ffbc0
 extern u16 func_002ffbc0_noarg(void);
+#pragma alias func_002ffbc0_noarg_u32 func_002ffbc0
+extern u32 func_002ffbc0_noarg_u32(void);
 extern u64 func_002ffcc0();
 extern u16 func_002ffd70(u32 unit);
 extern u16 func_002ffd80(u32 unit);
@@ -7473,28 +7475,26 @@ void func_002c3f00(int param_1)
 
 {
   int iVar1 = 0;
-  long lVar2 = 0;
-  u32 uVar3 = 0;
+  u16 uVar3 = 0;
   int aiStack_30[12];
   
   uVar3 = 0;
   for (iVar1 = *(int *)(iGpffffb6fc + 0x14c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x4a8)) {
     if ((((param_1 != iVar1) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)) &&
         ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
-       ((*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == *(char *)(*(int *)(iVar1 + 0x30) + 0xa2) &&
-        (lVar2 = func_00300580(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0x80000), lVar2 == 0))
+       ((*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) == *(u8 *)(*(int *)(iVar1 + 0x30) + 0xa2) &&
+        (func_00300580(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0x80000) == 0))
        )) {
       aiStack_30[uVar3] = iVar1;
       uVar3 = uVar3 + 1 & 0xffff;
     }
   }
-  if (uVar3 != 0) {
-    iVar1 = func_002ffbc0();
-    *(int *)(param_1 + 0x38) = aiStack_30[iVar1];
+  if (uVar3 == 0) {
+    *(int *)(param_1 + 0x38) = param_1;
     *(u16 *)(param_1 + 0x6a) = 1;
   }
   else {
-    *(int *)(param_1 + 0x38) = param_1;
+    *(int *)(param_1 + 0x38) = aiStack_30[func_002ffbc0_noarg_u32()];
     *(u16 *)(param_1 + 0x6a) = 1;
   }
   return;
