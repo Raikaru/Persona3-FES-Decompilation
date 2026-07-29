@@ -348,41 +348,6 @@ typedef struct CampBridgeBlendWork
     u32 targetTask;  /* 0x18 */
 } CampBridgeBlendWork;
 
-typedef struct CampTargetListRecord
-{
-    s32 value;                /* +0x00 */
-    s32 secondaryValue;       /* +0x04 */
-    s32 selectedValue;        /* +0x08 */
-    s32 flags;                /* +0x0c */
-    s32 availability;         /* +0x10 (record +0x74 from table base) */
-    u8 unused[0x10];          /* +0x14 */
-} CampTargetListRecord;
-/*
- * The item payload assembled for FUN_001830c0 is laid out exactly like the
- * Ghidra auStack_* locals: two halfwords, one word, two bytes, then four
- * halfwords (0x12 bytes total).
- */
-typedef struct CampTargetItemRecord
-{
-    u16 itemId;                /* +0x00 */
-    u16 reserved02;            /* +0x02 */
-    u32 quantity;              /* +0x04 */
-    u8 byte08;                 /* +0x08 */
-    u8 byte09;                 /* +0x09 */
-    u16 value0a;               /* +0x0a */
-    u16 value0c;               /* +0x0c */
-    u16 value0e;               /* +0x0e */
-    u16 value10;               /* +0x10 */
-} CampTargetItemRecord;
-
-typedef struct CampTargetList
-{
-    u8 prefix[0x64];           /* +0x0000 */
-    CampTargetListRecord records[0x140]; /* +0x0064 */
-    s32 count;                 /* +0x2d64 */
-    s32 cursor;                /* +0x2d68 */
-    s32 selected;              /* +0x2d6c */
-} CampTargetList;
 
 /* Work area used by FUN_00168810/FUN_00169040. */
 typedef struct CampTargetLoadWork
@@ -1808,7 +1773,7 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
         s32 hasRecord;
 
         recordIndex = row + i;
-        hasRecord = *(s32*)((u8*)param_4 + recordIndex * 0x24 + 0x70);
+        hasRecord = ((CampTargetList*)param_4)->records[recordIndex].flags;
         if (selected == i) {
             if (hasRecord != 0) {
                 campDataDrawSpriteFade(x + 196.0f, y + 61.0f + (f32)(i * 0x21),
@@ -1839,7 +1804,7 @@ void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
             break;
         }
         recordIndex = row + i;
-        type = *(u32*)((u8*)param_4 + recordIndex * 0x24 + 0x78);
+        type = ((CampTargetList*)param_4)->records[recordIndex].type;
 
         if (i == selected) {
             /* jtbl_007B63A0: the cases are not empty; they select the

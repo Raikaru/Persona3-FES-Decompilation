@@ -40,6 +40,43 @@ typedef struct CampRootDrawWork
     KwlnTask* drawChild;       // 0x28
 } CampRootDrawWork;
 
+typedef struct CampTargetListRecord
+{
+    s32 value;                 // 0x00
+    s32 secondaryValue;        // 0x04
+    s32 selectedValue;         // 0x08
+    s32 flags;                 // 0x0c
+    s32 availability;          // 0x10
+    u32 type;                  // 0x14
+    u8 valueStyle;             // 0x18
+    u8 effect;                 // 0x19
+    u8 textMode;               // 0x1a
+    u8 unk_1b;                 // 0x1b
+    u16 textIds[4];            // 0x1c
+} CampTargetListRecord;
+
+typedef struct CampTargetItemRecord
+{
+    u16 itemId;                // 0x00
+    u16 reserved02;            // 0x02
+    u32 quantity;              // 0x04
+    u8 byte08;                 // 0x08
+    u8 byte09;                 // 0x09
+    u16 value0a;               // 0x0a
+    u16 value0c;               // 0x0c
+    u16 value0e;               // 0x0e
+    u16 value10;               // 0x10
+} CampTargetItemRecord;
+
+typedef struct CampTargetList
+{
+    u8 prefix[0x64];           // 0x0000
+    CampTargetListRecord records[0x140]; // 0x0064
+    s32 count;                 // 0x2d64
+    s32 cursor;                // 0x2d68
+    s32 selected;              // 0x2d6c
+} CampTargetList;
+
 typedef struct CampMenuWork
 {
     u32 state;                 // 0x00: menu dispatcher state

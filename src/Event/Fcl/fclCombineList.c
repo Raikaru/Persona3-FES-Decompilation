@@ -1,3 +1,4 @@
+#include "Event/Fcl/fclCombineTypes.h"
  #include "Kosaka/k_assert.h"
 typedef int code(...);
 
@@ -103,7 +104,6 @@ typedef struct FclCreatedTask FclCreatedTask;
 typedef struct FclFusionDetail FclFusionDetail;
 typedef struct FclFusionOutput FclFusionOutput;
 typedef struct FclPersonaDefinition FclPersonaDefinition;
-typedef struct FclPersonaTableEntry FclPersonaTableEntry;
 typedef struct FclListUi FclListUi;
 
 struct FclFusionDetail {
@@ -125,9 +125,6 @@ struct FclFusionOutput {
     s32 bonus_experience;                 /* 0x050 */
 };
 
-struct FclPersonaTableEntry {
-    byte data[0xe];
-};
 
 struct FclPersonaDefinition {
     u16 unused_00;                        /* 0x000 */

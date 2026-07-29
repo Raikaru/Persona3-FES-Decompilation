@@ -1,4 +1,5 @@
 #include "temporary.h"
+#include "Yajima/y_runtime.h"
 
 typedef int (*code)(...);
 typedef struct YajimaVec2 {
@@ -214,6 +215,8 @@ extern u8 DAT_008717a0_bytes[];
 extern u8 DAT_008717a0_rows_abs[][0x1c0];
 #pragma alias DAT_008717a0_rows_check DAT_008717a0
 extern u8 DAT_008717a0_rows_check[][0x1c0];
+#pragma alias DAT_008717a0_unit_rows DAT_008717a0
+extern YRuntimeUnitRow DAT_008717a0_unit_rows[];
 #pragma alias DAT_0086eda0_bytes DAT_0086eda0
 extern u8 DAT_0086eda0_bytes[];
 #pragma alias DAT_006b4650_bytes DAT_006b4650
@@ -5491,12 +5494,14 @@ void FUN_004350e0(char param_1,char param_2)
   short sVar4;
   u16 uVar5;
   int iVar6;
+  YRuntimeUnitRow *row;
   
   for (iVar6 = 1; iVar6 < 4; iVar6 = iVar6 + 1) {
-    if ((DAT_008717e8_rows[iVar6 * 0x70 + 0x12] != 0) &&
-        (DAT_008717e8_rows[iVar6 * 0x70 + 0x15] != 0) &&
+    row = &DAT_008717a0_unit_rows[iVar6];
+    if ((row->unk_048 != 0) &&
+        (row->unk_054 != 0) &&
         (param_1 != iVar6)) {
-      iVar1 = *(int *)(*(int *)((u8 *)DAT_0087190c + iVar6 * 0x1c0) + 0x3c);
+      iVar1 = *(int *)((u8 *)row->unit + 0x3c);
       *(char *)(iVar1 + 0x1215) = param_2;
       if (param_2 != '\x01') {
         FUN_001b0260(*(u32 *)(*(int *)(iVar1 + 0x24) + 0x170),0);
@@ -5504,9 +5509,9 @@ void FUN_004350e0(char param_1,char param_2)
       else {
         FUN_001b0260(*(u32 *)(*(int *)(iVar1 + 0x24) + 0x170),1);
         sVar3 = FUN_00318540_typed((void *)(*(u32 *)(*(int *)(iVar1 + 0xc) + 0x128)),0);
-        sVar4 = FUN_001ded40_typed(*(u16 *)((u8 *)DAT_00871948 + iVar6 * 0x1c0));
+        sVar4 = FUN_001ded40_typed(row->unit_id);
         if (sVar3 == sVar4) {
-          uVar5 = FUN_001dde00_typed(*(u16 *)((u8 *)DAT_00871948 + iVar6 * 0x1c0));
+          uVar5 = FUN_001dde00_typed(row->unit_id);
           FUN_003182d0(*(u32 *)(*(int *)(iVar1 + 0xc) + 0x128),0,uVar5,8,1);
         }
       }
@@ -5662,29 +5667,28 @@ char FUN_00435440(char param_1)
 // FUN_00435660 NONMATCHING
 
 u16 FUN_00435660(char param_1)
-
 {
   short sVar1;
   u8 bVar2;
   u32 uVar3;
   int iVar4;
-  int iVar5;
   char cVar6;
   int lVar8;
-  
+  YRuntimeUnitRow *target;
+  YRuntimeUnitRow *entry;
+  target = &DAT_008717a0_unit_rows[(int)param_1];
   for (lVar8 = 0; lVar8 < 4; lVar8 = lVar8 + 1) {
     if (lVar8 != param_1) {
       bVar2 = 0;
-      iVar5 = lVar8 * 0x1c0;
-      if (((short *)((u8 *)DAT_008717e8)[lVar8 * 0x70] != (short *)0x0) &&
-         (((u8 *)DAT_008717f4)[lVar8 * 0x70] != 0)) {
+      entry = &DAT_008717a0_unit_rows[lVar8];
+      if ((entry->unk_048 != 0) && (entry->unk_054 != 0)) {
         bVar2 = 1;
       }
       if (bVar2) {
         if (lVar8 == 0) {
-          uVar3 = FUN_0016c970(*(u16 *)((u8 *)DAT_00871948 + iVar5));
+          uVar3 = FUN_0016c970(entry->unit_id);
           if ((uVar3 & 0x80) != 0) {
-            iVar4 = FUN_001c7160_i32(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0);
+            iVar4 = FUN_001c7160_i32(500.0f,target,DAT_008717a0_unit_rows);
 joined_r0x004357c4:
             if (iVar4 == 1) {
               return (short)lVar8;
@@ -5693,16 +5697,16 @@ joined_r0x004357c4:
         }
         else {
           cVar6 = '\0';
-          sVar1 = *(short *)((u8 *)DAT_008717e8)[lVar8 * 0x70];
+          sVar1 = *(short *)entry->unk_048;
           if (sVar1 == 0) {
-            cVar6 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar5) + 0x3c) + 1);
+            cVar6 = *(char *)(*(int *)((u8 *)entry->unit + 0x3c) + 1);
           }
           else if (sVar1 == 1) {
-            cVar6 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar5) + 0x3c) + 2);
+            cVar6 = *(char *)(*(int *)((u8 *)entry->unit + 0x3c) + 2);
           }
           if ((cVar6 == '\x01') &&
-             (uVar3 = FUN_0016c970(*(u16 *)((u8 *)DAT_00871948 + iVar5)), (uVar3 & 0x80) != 0)) {
-            iVar4 = FUN_001c7160_i32(500.0f,(u8 *)DAT_008717a0 + param_1 * 0x1c0,(u8 *)DAT_008717a0 + iVar5);
+             (uVar3 = FUN_0016c970(entry->unit_id), (uVar3 & 0x80) != 0)) {
+            iVar4 = FUN_001c7160_i32(500.0f,target,entry);
             goto joined_r0x004357c4;
           }
         }
@@ -5716,49 +5720,48 @@ joined_r0x004357c4:
 // FUN_00435810 NONMATCHING
 
 u8 FUN_00435810(void)
-
 {
   short sVar1;
   u8 bVar2;
   u16 uVar3;
   int iVar4;
-  int iVar5;
   char cVar6;
   int iVar7;
   int iVar8;
   u8 uVar9;
   u16 uVar10;
+  YRuntimeUnitRow *entry;
   
   uVar10 = 0;
   uVar9 = 0xff;
   for (iVar7 = 1; iVar7 < 4; iVar7 = iVar7 + 1) {
     bVar2 = 0;
-    iVar5 = iVar7 * 0x1c0;
-    if ((((u8 *)DAT_008717e8)[iVar7 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar7 * 0x70] != 0)) {
+    entry = &DAT_008717a0_unit_rows[iVar7];
+    if ((entry->unk_048 != 0) && (entry->unk_054 != 0)) {
       bVar2 = 1;
     }
     if (bVar2) {
-      iVar4 = (int)FUN_00173380_typed(*(u16 *)((u8 *)DAT_00871948 + iVar7 * 0x1c0));
+      iVar4 = (int)FUN_00173380_typed(entry->unit_id);
       cVar6 = '\0';
-      if (*(short *)((u8 *)DAT_008717e8)[iVar7 * 0x70] == 0) {
-        cVar6 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar5) + 0x3c) + 1);
+      if (*(short *)entry->unk_048 == 0) {
+        cVar6 = *(char *)(*(int *)((u8 *)entry->unit + 0x3c) + 1);
       }
-      else if (*(short *)((u8 *)DAT_008717e8)[iVar7 * 0x70] == 1) {
-        cVar6 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar5) + 0x3c) + 2);
+      else if (*(short *)entry->unk_048 == 1) {
+        cVar6 = *(char *)(*(int *)((u8 *)entry->unit + 0x3c) + 2);
       }
       if (cVar6 == '\x01') {
         for (iVar8 = 0; iVar8 < 8; iVar8 = iVar8 + 1) {
           sVar1 = *(short *)(iVar4 + iVar8 * 2);
           if (sVar1 != 0) {
             if (sVar1 == 0xca) {
-              uVar3 = FUN_0016c570_typed(*(u16 *)((u8 *)DAT_00871948 + iVar5));
+              uVar3 = FUN_0016c570_typed(entry->unit_id);
               if (uVar10 < uVar3) {
                 uVar9 = (char)iVar7;
                 uVar10 = uVar3;
               }
             }
             else if (sVar1 == 0xcb) {
-              uVar3 = FUN_0016c570_typed(*(u16 *)((u8 *)DAT_00871948 + iVar5));
+              uVar3 = FUN_0016c570_typed(entry->unit_id);
               if (uVar10 < uVar3) {
                 uVar9 = (char)iVar7;
                 uVar10 = uVar3;

@@ -1,3 +1,4 @@
+#include "Event/Fcl/fclCombineTypes.h"
 #include "Kosaka/k_assert.h"
 
 extern const char DAT_006a5f70[];
@@ -2073,9 +2074,9 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
     iVar11 = (int)uVar10 * 0xe;
 
-    if (param_1 == (char)((u16 *)(DAT_007ce420 + iVar11))[1]) {
+    if (param_1 == ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.arcana) {
 
-      uVar2 = *(u16 *)(DAT_007ce420 + iVar11);
+      uVar2 = ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.flags;
 
       if ((uVar2 & 1) != 0) {
 
@@ -2149,7 +2150,7 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
           if ((uVar8 == 0) ||
 
-             (*(u8 *)(DAT_007ce420 + (int)uVar8 * 0xe + 3) < *(u8 *)(DAT_007ce420 + iVar11 + 3))
+             (((FclPersonaTableEntry *)DAT_007ce420)[uVar8].fields.level < ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.level)
 
              ) {
 
@@ -2157,7 +2158,7 @@ u32 FUN_003d7ac0(u8 param_1,u8 param_2,u16 *param_3)
 
           }
 
-          bVar1 = *(u8 *)(DAT_007ce420 + iVar11 + 3);
+          bVar1 = ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.level;
 
           if (param_2 <= bVar1) {
 
@@ -2179,7 +2180,7 @@ LAB_003d7cb4:
 
             if ((!bVar3) &&
 
-               ((uVar9 == 0 || (bVar1 < *(u8 *)(DAT_007ce420 + (int)uVar9 * 0xe + 3))))) {
+               ((uVar9 == 0 || (bVar1 < ((FclPersonaTableEntry *)DAT_007ce420)[uVar9].fields.level)))) {
 
               uVar9 = uVar10;
 
@@ -2201,7 +2202,7 @@ LAB_003d7cb4:
 
   }
 
-  if ((uVar9 == 0) && (*(u8 *)((int)uVar8 * 0xe + DAT_007ce420 + 3) < param_2)) {
+  if ((uVar9 == 0) && (((FclPersonaTableEntry *)DAT_007ce420)[uVar8].fields.level < param_2)) {
 
     uVar9 = uVar8;
 
@@ -2253,9 +2254,9 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
     iVar11 = (int)uVar10 * 0xe;
 
-    if (param_1 == (char)((u16 *)(DAT_007ce420 + iVar11))[1]) {
+    if (param_1 == ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.arcana) {
 
-      uVar2 = *(u16 *)(DAT_007ce420 + iVar11);
+      uVar2 = ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.flags;
 
       if ((uVar2 & 1) != 0) {
 
@@ -2329,7 +2330,7 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
           if ((uVar8 == 0) ||
 
-             (*(u8 *)(DAT_007ce420 + (int)uVar8 * 0xe + 3) < *(u8 *)(DAT_007ce420 + iVar11 + 3))
+             (((FclPersonaTableEntry *)DAT_007ce420)[uVar8].fields.level < ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.level)
 
              ) {
 
@@ -2337,7 +2338,7 @@ u32 FUN_003d7da0(u8 param_1,u8 param_2,u16 *param_3)
 
           }
 
-          bVar1 = *(u8 *)(DAT_007ce420 + iVar11 + 3);
+          bVar1 = ((FclPersonaTableEntry *)DAT_007ce420)[uVar10].fields.level;
 
           if (bVar1 <= param_2) {
 
@@ -2359,7 +2360,7 @@ LAB_003d7f94:
 
             if ((!bVar3) &&
 
-               ((uVar9 == 0 || (*(u8 *)(DAT_007ce420 + (int)uVar9 * 0xe + 3) < bVar1)))) {
+               ((uVar9 == 0 || (((FclPersonaTableEntry *)DAT_007ce420)[uVar9].fields.level < bVar1)))) {
 
               uVar9 = uVar10;
 
@@ -2381,7 +2382,7 @@ LAB_003d7f94:
 
   }
 
-  if ((uVar9 == 0) && (*(u8 *)((int)uVar8 * 0xe + DAT_007ce420 + 3) < param_2)) {
+  if ((uVar9 == 0) && (((FclPersonaTableEntry *)DAT_007ce420)[uVar8].fields.level < param_2)) {
 
     uVar9 = uVar8;
 

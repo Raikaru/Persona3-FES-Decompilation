@@ -1268,7 +1268,7 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     s32 startY;
     s32 col;
     s32 row;
-    u8* cell;
+    FieldDungeonCell* cell;
     const u8* patternCell;
 
     if ((u16)x + pattern->raw[1] - 1 >= 0x10)
@@ -1283,44 +1283,35 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     startX = (u16)x;
     startY = (u16)y;
 
-    cell = (u8*)K_Field_Get() + startY * 0x100 + startX * 0x10;
-    cell[0x49] = 1;
+    cell = &K_Field_Get()->dungeonCells[startY][startX];
+    cell->placed = 1;
     for (row = 0; row < pattern->raw[2]; row++)
     {
         for (col = 0; col < pattern->raw[1]; col++)
         {
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            if (cell[0x48] != 0)
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            if (cell->occupied != 0)
             {
                 K_Assert((const char*)D_006833A0, 0x124);
                 continue;
             }
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x48] = 1;
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->occupied = 1;
             patternCell = pattern->raw + row * 0x18 + col * 8;
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x53] = patternCell[0x0e];
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x4f] = pattern->raw[1];
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x50] = pattern->raw[2];
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x4a] = pattern->raw[0];
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x4e] = direction;
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x52] = patternCell[0x0f];
-            cell = (u8*)K_Field_Get() +
-                   (startY + row) * 0x100 + (startX + col) * 0x10;
-            cell[0x51] = sDungeonRoomCounter;
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->connections = patternCell[0x0e];
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->width = pattern->raw[1];
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->height = pattern->raw[2];
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->patternId = pattern->raw[0];
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->direction = direction;
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->elevation = patternCell[0x0f];
+            cell = &K_Field_Get()->dungeonCells[startY + row][startX + col];
+            cell->roomId = sDungeonRoomCounter;
         }
     }
     sDungeonRoomCounter++;
