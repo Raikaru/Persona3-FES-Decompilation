@@ -26,6 +26,10 @@ extern void FUN_004c31b0_evt_main(void *matrix, void *axis, f32 angle, s32 mode)
 extern void FUN_004c35d0_evt_main(void *matrix, void *vector, s32 mode);
 #pragma alias FUN_004c6c60_evt_main FUN_004c6c60
 extern void FUN_004c6c60_evt_main(void *out, void *in, void *matrix);
+#pragma alias FUN_003bb010_evt_main FUN_003bb010
+extern void FUN_003bb010_evt_main(u16 param_1,u8 param_2);
+#pragma alias FUN_003bb1d0_evt_main FUN_003bb1d0
+extern void FUN_003bb1d0_evt_main(u16 param_1,s32 param_2,u8 param_3,s8 param_4,s8 param_5);
 extern u32 DAT_0069d590;
 #pragma alias DAT_0069d590_abs DAT_0069d590
 extern s8 DAT_0069d590_abs[];
@@ -4389,8 +4393,8 @@ u16 * FUN_00364470(u32 param_1,int param_2)
   stack[2] = 0;
   FUN_003b8b30(*(u16 *)(param_2 + 0xc),stack,*(short *)(puVar5 + 0x12),0);
   if ((char)puVar5[0x14] != '\0') {
-    FUN_003bb1d0(*(u16 *)(param_2 + 0xc),2,(u8)(*(char *)((int)puVar5 + 0x29) + 1),
-                 (char)puVar5[0x15],*(char *)((int)puVar5 + 0x2b));
+    FUN_003bb1d0_evt_main(*(u16 *)(param_2 + 0xc),2,(u8)(*(char *)((int)puVar5 + 0x29) + 1),
+                          (char)puVar5[0x15],*(char *)((int)puVar5 + 0x2b));
     FUN_005225a8((const char *)(DAT_006a0000 - 0x2960));
   }
   return puVar5;
@@ -5135,7 +5139,7 @@ void FUN_003650c0(int param_1,u64 param_2,int param_3)
 // Corrected the case-0 byte contract to u8 (retail lbu). The seven remaining
 // differing words are b210 call-argument setup order at +0x8c/+0x90 and
 // +0xc8/+0xcc: retail materializes a1 before the independent a0 load.
-// FUN_00365250 NONMATCHING
+// FUN_00365250
 
 
 void FUN_00365250(u32 param_1,u64 param_2,int param_3)
@@ -5162,13 +5166,13 @@ void FUN_00365250(u32 param_1,u64 param_2,int param_3)
 
       switch (*(char *)((int)puVar1 + 0x15)) {
       case 0:
-        FUN_003bb010(*(u16 *)(param_3 + 0xc),(u8)puVar1[10]);
+        FUN_003bb010_evt_main(*(u16 *)(param_3 + 0xc),(u8)puVar1[10]);
         break;
       case 1:
         uStack_4 = 0;
         lVar2 = FUN_00397630(param_2,(char)puVar1[10],&uStack_4);
         if (lVar2 == 1) {
-          FUN_003bb010(*(u16 *)(param_3 + 0xc),(u8)uStack_4);
+          FUN_003bb010_evt_main(*(u16 *)(param_3 + 0xc),(u8)uStack_4);
         }
         break;
       }
@@ -7415,7 +7419,7 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 }
 
 
-// FUN_00367A20 NONMATCHING
+// FUN_00367A20
 
 
 u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
@@ -7430,7 +7434,7 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
   u32 uVar3;
 
-  u32 lVar4;
+  u8 *lVar4;
 
   int iVar5;
 
@@ -7524,11 +7528,11 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
     else if (cVar1 == '\x01') {
 
-      lVar4 = FUN_003b5d10(*(u16 *)(iVar2 + 0xc));
+      lVar4 = FUN_003b5d10_evt_main(*(u16 *)(iVar2 + 0xc));
 
       if (lVar4 != 0) {
 
-        FUN_0037cf50((u32 *)(*(u32 *)(iVar7 + 0x40)),(u32 *)((int)lVar4 + 4),(u32 *)((int)lVar4 + 0x10));
+        FUN_0037cf50((u32 *)(*(u32 *)(iVar7 + 0x40)),(u32 *)(lVar4 + 4),(u32 *)(lVar4 + 0x10));
 
         FUN_0036f5f0(0x1c,0xc,0x1c,param_3);
 

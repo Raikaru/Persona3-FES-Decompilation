@@ -610,6 +610,8 @@ void FUN_003b2cb0_f32(f32 scale,s32 x,s32 y,u32 color,s8 font,s32 align,const vo
 void FUN_003b2cb0_i(s32 x,s32 y,f32 scale,u32 color,u32 font,u32 align,const void *text,u32 width,u32 shadow);
 #pragma alias FUN_003b32d0_f32 FUN_003b32d0
 void FUN_003b32d0_f32(f32 scale,s32 x,s32 y,u32 color,s8 font,s32 align,const void *text,s32 width,s32 shadow);
+#pragma alias FUN_003b32d0_i FUN_003b32d0
+void FUN_003b32d0_i(s32 x,s32 y,f32 scale,u32 color,s8 font,s32 align,const void *text,s32 width,s32 shadow);
 #pragma alias FUN_0040eb50_f32 FUN_0040eb50
 s32 FUN_0040eb50_f32(f32 scale,s32 x,s32 y,u8 color,s32 font,const void *text,s32 width);
 #pragma alias FUN_0040eb50_i FUN_0040eb50
@@ -4402,21 +4404,21 @@ void FUN_003f5830(int param_1,int param_2,int param_3,int param_4,int param_5,
   FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3,0x86,iVar4 << 1);
   iVar6 = param_1;
   iVar5 = param_2;
-  FUN_0040e3c0_f32(0.0f,iVar6 + 0xe,iVar5 + 3,param_3,3,
+  FUN_0040e3c0_i(iVar6 + 0xe,iVar5 + 3,0.0f,param_3,3,
                    (*(u8 *)((u32)*(u16 *)(puVar2[5] + 2) * 0xe +
                              DAT_007ce420 + 2) - 1) * 2 + iVar4);
-  FUN_003b32d0_f32(0.0f,iVar6 + 0x75,iVar5 + 2,param_3 | 0xffffff00,
+  FUN_003b32d0_i(iVar6 + 0x75,iVar5 + 2,0.0f,param_3 | 0xffffff00,
                    (s8)iVar7,1,
                    DAT_007ce4e4 + (u32)*(u16 *)(puVar2[5] + 2) * 0x11,
                    0,0x78);
   sprintf((char *)auStack_20,(char *)&gp0xffffac10,*(u8 *)(puVar2[5] + 4));
-  FUN_0040eb50_f32(0.0f,iVar6 + 0x14e,iVar5 + 10,param_3 & 0xff,
-                   auStack_8.u[iVar4],auStack_20,1);
+  FUN_0040eb50_i(iVar6 + 0x14e,iVar5 + 10,0.0f,param_3 & 0xff,
+                 auStack_8.u[iVar4],auStack_20,1);
   if ((s16)puVar2[7] != 0) {
-    FUN_0040e3c0_f32(0.0f,iVar6 + 0x15e,iVar5 + -1,param_3,4,
+    FUN_0040e3c0_i(iVar6 + 0x15e,iVar5 + -1,0.0f,param_3,4,
                      (u32)(u8)puVar2[6] * 2 + iVar4);
     pcVar3 = func_00171110_ptr((s16)puVar2[7],2);
-    FUN_003b32d0_f32(0.0f,iVar6 + 0x184,iVar5 + 1,param_3 | 0xffffff00,
+    FUN_003b32d0_i(iVar6 + 0x184,iVar5 + 1,0.0f,param_3 | 0xffffff00,
                      (s8)iVar7,1,pcVar3,0,0x73);
   }
   if (iVar4 == 0) {

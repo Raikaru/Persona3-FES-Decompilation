@@ -17,6 +17,8 @@ extern f32 FUN_00394040_evt_misc(f32 param_1,f32 param_2,f32 param_3,long param_
 extern void FUN_00394070_evt_misc(f32 param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
 #pragma alias FUN_001050e0_typed FUN_001050e0
 extern void FUN_001050e0_typed(u64 param_1,float param_2,u32 param_3,u8 *param_4);
+#pragma alias FUN_004cb2f0_evt_misc FUN_004cb2f0
+extern u8 *FUN_004cb2f0_evt_misc(u32 param_1);
 extern void FUN_00523ac8(u8 *,const char *,u32);
 extern char DAT_006a0a20[];
 #pragma alias DAT_006a0a20_abs DAT_006a0a20
@@ -3313,7 +3315,7 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
   }
 
   if (camera != NULL && *(int *)(camera + 4) != 0) {
-    vectors = (EvtMiscVectorSource *)FUN_004cb2f0();
+    vectors = (EvtMiscVectorSource *)FUN_004cb2f0_evt_misc(*(u32 *)(camera + 4));
 
     input = vectors->vector20;
     input.y = 0;

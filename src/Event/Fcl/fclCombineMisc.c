@@ -35,6 +35,8 @@ extern void *memcpy_003d6e60(void *dest,const void *src,u32 size);
 extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,u16 param_2);
 #pragma alias datPersonaSetSkill_003d6e60 datPersonaSetSkill
 extern void datPersonaSetSkill_003d6e60(s32 param_1,u16 param_2);
+#pragma alias fclCombineMisc003d7a30_u32 fclCombineMisc003d7a30
+extern s32 fclCombineMisc003d7a30_u32(u32 *param_1, int *param_2, u32 param_3);
 u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 #pragma alias FUN_003d5510_i FUN_003d5510
 extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
@@ -1244,7 +1246,7 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
   return cVar1;
 }
 
-// FUN_003D6AE0 NONMATCHING
+// FUN_003D6AE0
 
 
 u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
@@ -1318,7 +1320,7 @@ u8 FUN_003d6ae0(void *param_1,int param_2,int *param_3)
 
   memcpy(&scratch,puVar10 + 1,0x34);
 
-  fclCombineMisc003d7a30(puVar10 + 1,param_3,auStack_20[(int)param_2]);
+  fclCombineMisc003d7a30_u32(puVar10 + 1,param_3,auStack_20[(int)param_2]);
 
   uVar3 = *(u8 *)(puVar10 + 2);
 

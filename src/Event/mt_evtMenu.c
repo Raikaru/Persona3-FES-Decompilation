@@ -849,7 +849,7 @@ code * FUN_0036edd0(void);
 code * FUN_0036ee30(void);
 float FUN_0038a220(int param_1);
 #pragma alias FUN_00523ac8_evt4 FUN_00523ac8
-extern void FUN_00523ac8_evt4(u8 *param_1,void *param_2,int param_3,int param_4);
+extern void FUN_00523ac8_evt4(u8 *param_1,const char *param_2,void *param_3,void *param_4);
 float FUN_0038a900(int param_1);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
@@ -919,7 +919,7 @@ u32 FUN_00375a40(int param_1,int param_2,int param_3);
 u32 FUN_00375d70(int param_1,int param_2,int param_3);
 u32 FUN_00375f30(int param_1,int param_2,int param_3);
 u32 FUN_003798f0(int param_1,int param_2,int param_3);
-u32 FUN_0037a150(int param_1,int param_2,int param_3);
+u32 FUN_0037a150(int param_1,int param_2,u8 *param_3);
 u32 FUN_0037a2b0(int param_1,int param_2,int param_3);
 u32 FUN_0037a4d0(int param_1,int param_2,int param_3);
 u32 FUN_0037acc0(int param_1,int param_2,int param_3);
@@ -6121,7 +6121,7 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
 // b210 floor: the remaining nd19 is callback argument setup ordering at +0x1c..+0x34;
 // the clamp/input body and its 332-byte object otherwise match retail instruction-for-instruction.
-// FUN_00375590 NONMATCHING
+// FUN_00375590
 
 
 u32 FUN_00375590(int param_1,int param_2,int param_3)
@@ -6138,8 +6138,8 @@ u32 FUN_00375590(int param_1,int param_2,int param_3)
 
   
 
-  FUN_0036f900(param_1,param_2,0x16,9,0,1,param_3,(int)(code *)FUN_00375350,
-               (code *)FUN_003753c0);
+  FUN_0036f900_evt(param_1,param_2,0x16,9,0,1,param_3,(code *)FUN_00375350,
+                   (code *)FUN_003753c0);
 
   work = (EvtMenuClampWork *)param_3;
 
@@ -9273,10 +9273,10 @@ u64 FUN_00379f30(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0037A150 NONMATCHING
+// FUN_0037A150
 
 
-u32 FUN_0037a150(int param_1,int param_2,int param_3)
+u32 FUN_0037a150(int param_1,int param_2,u8 *param_3)
 
 
 
@@ -9285,7 +9285,7 @@ u32 FUN_0037a150(int param_1,int param_2,int param_3)
   f32 uVar1;
 
   u8 auStack_10 [16];
-  FUN_00523ac8_evt4(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
+  FUN_00523ac8_evt4(auStack_10,(const char *)&gp0xffffa4b0,(void *)(param_3 + 0x130),(void *)(param_3 + 0x13c));
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
