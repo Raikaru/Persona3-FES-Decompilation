@@ -4909,7 +4909,6 @@ BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
 }
 
 // FUN_00286540 NONMATCHING
-#pragma optimization_level 3
 void func_00286540(void)
 {
     BtlUnit* unit;
@@ -5029,32 +5028,32 @@ void func_00286540(void)
                     color.b = unit->cols[BTLUNIT_COL_MAIN].b;
                     color.a = unit->cols[BTLUNIT_COL_MAIN].a;
 
-                    color.g = (u8)(((f32)unit->cols[1].g * fGpffff8218) *
-                                   ((f32)color.g * fGpffff8218) + 0.5f);
-                    color.b = (u8)(((f32)unit->cols[1].b * fGpffff8218) *
-                                   ((f32)color.b * fGpffff8218) + 0.5f);
-                    color.a = (u8)(((f32)unit->cols[1].a * fGpffff8218) *
-                                   ((f32)color.a * fGpffff8218) + 0.5f);
-                    color.r = (u8)(((f32)unit->cols[1].r * fGpffff8218) *
-                                   ((f32)color.r * fGpffff8218) + 0.5f);
+                    color.g = (s32)(((f32)unit->cols[1].g * fGpffff8218) *
+                                    ((f32)color.g * fGpffff8218) + 0.5f);
+                    color.b = (s32)(((f32)unit->cols[1].b * fGpffff8218) *
+                                    ((f32)color.b * fGpffff8218) + 0.5f);
+                    color.a = (s32)(((f32)unit->cols[1].a * fGpffff8218) *
+                                    ((f32)color.a * fGpffff8218) + 0.5f);
+                    color.r = (s32)(((f32)unit->cols[1].r * fGpffff8218) *
+                                    ((f32)color.r * fGpffff8218) + 0.5f);
 
-                    color.g = (u8)(((f32)unit->cols[3].g * fGpffff8218) *
-                                   ((f32)color.g * fGpffff8218) + 0.5f);
-                    color.b = (u8)(((f32)unit->cols[3].b * fGpffff8218) *
-                                   ((f32)color.b * fGpffff8218) + 0.5f);
-                    color.a = (u8)(((f32)unit->cols[3].a * fGpffff8218) *
-                                   ((f32)color.a * fGpffff8218) + 0.5f);
-                    color.r = (u8)(((f32)unit->cols[3].r * fGpffff8218) *
-                                   ((f32)color.r * fGpffff8218) + 0.5f);
+                    color.g = (s32)(((f32)unit->cols[3].g * fGpffff8218) *
+                                    ((f32)color.g * fGpffff8218) + 0.5f);
+                    color.b = (s32)(((f32)unit->cols[3].b * fGpffff8218) *
+                                    ((f32)color.b * fGpffff8218) + 0.5f);
+                    color.a = (s32)(((f32)unit->cols[3].a * fGpffff8218) *
+                                    ((f32)color.a * fGpffff8218) + 0.5f);
+                    color.r = (s32)(((f32)unit->cols[3].r * fGpffff8218) *
+                                    ((f32)color.r * fGpffff8218) + 0.5f);
 
-                    color.g = (u8)(((f32)unit->cols[4].g * fGpffff8218) *
-                                   ((f32)color.g * fGpffff8218) + 0.5f);
-                    color.b = (u8)(((f32)unit->cols[4].b * fGpffff8218) *
-                                   ((f32)color.b * fGpffff8218) + 0.5f);
-                    color.a = (u8)(((f32)unit->cols[4].a * fGpffff8218) *
-                                   ((f32)color.a * fGpffff8218) + 0.5f);
-                    color.r = (u8)(((f32)unit->cols[4].r * fGpffff8218) *
-                                   ((f32)color.r * fGpffff8218) + 0.5f);
+                    color.g = (s32)(((f32)unit->cols[4].g * fGpffff8218) *
+                                    ((f32)color.g * fGpffff8218) + 0.5f);
+                    color.b = (s32)(((f32)unit->cols[4].b * fGpffff8218) *
+                                    ((f32)color.b * fGpffff8218) + 0.5f);
+                    color.a = (s32)(((f32)unit->cols[4].a * fGpffff8218) *
+                                    ((f32)color.a * fGpffff8218) + 0.5f);
+                    color.r = (s32)(((f32)unit->cols[4].r * fGpffff8218) *
+                                    ((f32)color.r * fGpffff8218) + 0.5f);
 
                     if (color.a >= 0xfe)
                     {
@@ -5120,7 +5119,6 @@ void func_00286540(void)
         }
     }
 }
-#pragma optimization_level 2
 extern void func_00287ea0(BtlUnit* unit);
 extern u32 DAT_007cc970;
 void FUN_002878d0(BtlUnit* unit);
