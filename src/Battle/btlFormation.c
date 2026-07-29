@@ -314,7 +314,7 @@ extern u32 func_0030bc20_u32(u16 param_1);
 extern u64 func_003174e0();
 extern u64 func_003176c0();
 extern u64 func_00317730();
-extern u64 func_00317a20();
+extern u64 FUN_00317a20();
 extern u64 func_00318ad0();
 extern u64 func_00318b90();
 extern u64 func_00318d10();
@@ -2590,7 +2590,7 @@ void func_002bb3a0(void)
       if (*(int *)(puVar4 + 0xc) != 0) {
         uStack_4 = uVar3;
         func_00318ad0(*(u32 *)(puVar4 + 0xc),&uStack_4);
-        func_00317a20(*(u32 *)(puVar4 + 0xc));
+        FUN_00317a20(*(u32 *)(puVar4 + 0xc));
       }
       if (*(int *)(puVar4 + 10) != 0) {
         func_00326030(*(int *)(puVar4 + 10),uVar3);
@@ -15120,43 +15120,5 @@ u32 func_002d1510(void)
 // FUN_002d1560
 u32 func_002d1560(void)
 {
-  return 1;
-}
-
-/* ---- Straggler recovery: 0x2BD4F0-0x2D0970 ---- */
-
-
-// FUN_002BF370 MATCHING
-void FUN_002bf370(u32 param_1)
-
-{
-  int result;
-  
-  FUN_001fdda0();
-  result = FUN_002d1a70();
-  if (result == 1) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x4000;
-    FUN_001ff370();
-  }
-  result = FUN_00195540(param_1);
-  (*DAT_0096017c)(result);
-  *(u32 *)(DAT_007ce3ec + 0xd1c) = 0;
-}
-
-// FUN_002D0970
-u32 FUN_002d0970(void)
-
-{
-  extern u32 FUN_002f5320(void);
-  extern void FUN_0035f060(u32);
-  u32 uVar1;
-  
-  if (*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) == 0x1b0) {
-    uVar1 = FUN_002f5320();
-    FUN_0035f060(uVar1);
-  }
-  else {
-    FUN_0035f060(7);
-  }
   return 1;
 }
