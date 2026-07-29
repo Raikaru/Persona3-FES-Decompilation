@@ -936,8 +936,7 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     work->taskSlot = i;
     D_00875A40[i] = task;
     work->duration = 0x78;
-    if (ec != NULL && ec->genusBase != NULL &&
-        *(u16*)((u8*)ec->genusBase + 8) == 0x1FA)
+    if (*(u16*)((u8*)ec->genusBase + 8) == 0x1FA)
     {
         work->reaperFlag = 1;
     }

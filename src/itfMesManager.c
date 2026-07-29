@@ -5352,24 +5352,27 @@ u32 FUN_003a7a40(int param_1)
 
 void FUN_003a7cb0(int param_1,int param_2)
 {
+  int cur;
+  int max;
   int next;
 
-  FUN_003a6380(*(u32 *)(param_1 + 0xc),*(s16 *)(param_1 + 0x16),
-               *(s16 *)(param_1 + 0x1a),0);
+  cur = *(s16 *)(param_1 + 0x16);
+  max = *(s16 *)(param_1 + 0x1a);
+  FUN_003a6380(*(u32 *)(param_1 + 0xc),cur,max,0);
   if (param_2 < 0) {
-    next = *(s16 *)(param_1 + 0x16) - 1;
+    next = cur - 1;
     if (next < 0) {
-      next = *(s16 *)(param_1 + 0x1a) - 1;
+      next = max - 1;
     }
   } else {
-    next = *(s16 *)(param_1 + 0x16) + 1;
-    if (*(s16 *)(param_1 + 0x1a) <= next) {
+    next = cur + 1;
+    if (max <= next) {
       next = 0;
     }
   }
-  FUN_003a6380(*(u32 *)(param_1 + 0xc),next,*(s16 *)(param_1 + 0x1a),6);
   *(s16 *)(param_1 + 0x16) = next;
   *(s16 *)(param_1 + 0x18) = next;
+  FUN_003a6380(*(u32 *)(param_1 + 0xc),next,max,6);
   FUN_0010a4e0(0,0,0,0);
 }
 #define FUN_003a7cb0(...) ((void (*)(...))FUN_003a7cb0)(__VA_ARGS__)

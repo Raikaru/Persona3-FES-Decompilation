@@ -785,7 +785,6 @@ static s32 hmallocTaskUpdateE(void* task)
     u32 state;
     f32 value0;
     f32 value1;
-    u64 packed;
     union
     {
         f32 f;
@@ -822,11 +821,7 @@ static s32 hmallocTaskUpdateE(void* task)
                                 NULL, 0x106f, D_005E4D10,
                                 (KwlnTaskUpdateFunc)hmallocTaskUpdateC,
                                 (KwlnTaskDestroyFunc)hmallocTaskDestroyC, workMemory);
-                            if (created == NULL)
-                            {
-                                created = NULL;
-                            }
-                            else
+                            if (created != NULL)
                             {
                                 func_0017d7f0(0);
                             }
@@ -845,11 +840,7 @@ static s32 hmallocTaskUpdateE(void* task)
                                 NULL, 0x106f, D_005E4D30,
                                 (KwlnTaskUpdateFunc)hmallocTaskUpdateD,
                                 (KwlnTaskDestroyFunc)hmallocTaskDestroyD, workMemory);
-                            if (created == NULL)
-                            {
-                                created = NULL;
-                            }
-                            else
+                            if (created != NULL)
                             {
                                 func_0017d7f0(1);
                             }
@@ -875,16 +866,13 @@ static s32 hmallocTaskUpdateE(void* task)
             }
             values[2].u = 0x40800000;
             values[3].u = 0x40800000;
-            packed = *(u64*)&values[2];
-            func_00104d10(packed, HMALLOC_GLOBAL_IMAGE_VALUES,
+            func_00104d10(*(u64*)&values[2], HMALLOC_GLOBAL_IMAGE_VALUES,
                           values[work[1]].u);
             break;
         case 2:
-            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
-            {
-                return -1;
-            }
-            break;
+            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) != 3)
+                break;
+            return -1;
     }
     return 0;
 }
