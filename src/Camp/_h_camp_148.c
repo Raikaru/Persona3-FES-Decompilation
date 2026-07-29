@@ -285,7 +285,7 @@ void h_campDrawStatusOverview(int param_1)
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {
-    register void* parent;
+    void* parent;
     switch (param_2) {
     case 0:
         campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x2c,
@@ -905,7 +905,7 @@ void h_campDrawSocialList(int param_1)
 // FUN_0014C290
 void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
 {
-    register void* parent;
+    void* parent;
 
     switch (param_2) {
     case 0:

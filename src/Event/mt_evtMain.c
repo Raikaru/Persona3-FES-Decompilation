@@ -1662,8 +1662,8 @@ void FUN_00361980(int param_1)
 
   else {
 
-    iVar3 = 0;
     iVar4 = *(int *)(*(int *)(iVar2 + 0x164) + 0x6c);
+    iVar3 = 0;
     iVar5 = *(int *)(iVar2 + 0x160) + *(int *)(iVar2 + 0x15c);
     for (; (iVar3 < iVar5 && (iVar4 != 0));) {
       iVar4 = *(int *)(iVar4 + 0x4c);
@@ -6680,6 +6680,7 @@ int FUN_00366eb0(int param_1,int param_2,int param_3)
   int iVar1;
 
   int iVar3;
+  int iVar4;
 
   
 
@@ -6693,16 +6694,13 @@ int FUN_00366eb0(int param_1,int param_2,int param_3)
 
   else {
 
+
+    iVar2 = *(int *)(*(int *)(iVar3 + 0x164) + 0x6c);
     iVar1 = 0;
-
-    for (iVar2 = *(int *)(*(int *)(iVar3 + 0x164) + 0x6c);
-
-        (iVar1 < *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c) && (iVar2 != 0));
-
-        iVar2 = *(int *)(iVar2 + 0x4c)) {
-
-      iVar1 = iVar1 + 1;
-
+    iVar4 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
+    for (;
+        (iVar1 < iVar4 && (iVar2 != 0));
+        iVar2 = *(int *)(iVar2 + 0x4c), iVar1 = iVar1 + 1) {
     }
 
   }
@@ -7154,6 +7152,7 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
   int iVar3;
 
   int iVar5;
+  int iVar6;
 
   u8 *iVar4;
 
@@ -7191,16 +7190,12 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 
   else {
 
+    iVar5 = piVar1[0x1b];
     iVar3 = 0;
-
-    for (iVar5 = piVar1[0x1b];
-
-        (iVar3 < *(int *)(iVar4 + 0x160) + *(int *)(iVar4 + 0x15c) && (iVar5 != 0));
-
-        iVar5 = *(int *)(iVar5 + 0x4c)) {
-
-      iVar3 = iVar3 + 1;
-
+    iVar6 = *(int *)(iVar4 + 0x160) + *(int *)(iVar4 + 0x15c);
+    for (;
+        (iVar3 < iVar6 && (iVar5 != 0));
+        iVar5 = *(int *)(iVar5 + 0x4c), iVar3 = iVar3 + 1) {
     }
 
   }

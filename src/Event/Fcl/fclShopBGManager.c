@@ -3497,7 +3497,7 @@ int iVar17;
 
 u32 uVar18;
 
-register long lVar19;
+long lVar19;
 
 u32 *puStack_20360;
 

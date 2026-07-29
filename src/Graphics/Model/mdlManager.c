@@ -3726,7 +3726,7 @@ void func_00313e60(void* param_1)
 // FUN_00313F40
 
 
-int func_00313f40(register int param_1,register void* param_2)
+int func_00313f40(int param_1, void* param_2)
 {
   int *piVar1;
   void* list;

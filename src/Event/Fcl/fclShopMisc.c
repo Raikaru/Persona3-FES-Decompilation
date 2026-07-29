@@ -3041,8 +3041,6 @@ u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3)
 }
 
 // Retail sibling begins at 0x3f3280; comparator body reconstructed from 0x3f3280-0x3f33c8.
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_003F3280
 s32 FUN_003f3280(u32 *param_1,u32 *param_2)
 {
@@ -3106,7 +3104,6 @@ s32 FUN_003f3280(u32 *param_1,u32 *param_2)
 ret:
   return result;
 }
-#pragma pop
 
 // FUN_003F33D0 NONMATCHING
 
@@ -7099,8 +7096,6 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
 // Ghidra's boundary scan absorbed it into FUN_003f9b20's window (784B
 // instead of the true 400B). Splitting it out here as its own function
 // per the p3-window-nullsub-discovery Case C procedure.
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_003F9CB0
 s32 FUN_003f9cb0(u32 *param_1, u32 *param_2)
 {
@@ -7172,7 +7167,6 @@ s32 FUN_003f9cb0(u32 *param_1, u32 *param_2)
 ret:
   return result;
 }
-#pragma pop
 
 
 #pragma alias fclShopCreateEquipmentItemList FUN_003f9e30
@@ -17376,8 +17370,6 @@ u32 FUN_0040a490(u32 param_1)
   return uVar1;
 }
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0040A5B0
 s32 FUN_0040a5b0(u32 *param_1, u32 *param_2)
 {
@@ -17419,10 +17411,7 @@ s32 FUN_0040a5b0(u32 *param_1, u32 *param_2)
 ret:
   return result;
 }
-#pragma pop
 
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_0040A640
 s32 FUN_0040a640(u32 *param_1, u32 *param_2)
 {
@@ -17464,7 +17453,6 @@ s32 FUN_0040a640(u32 *param_1, u32 *param_2)
 ret:
   return result;
 }
-#pragma pop
 
 // Confirmed pre-JAL setup-order floor: +72/+76/+80 and +104/+108/+112 contain
 // the same two callback addresses, but retail moves $a0 before materializing $a1.

@@ -937,7 +937,7 @@ static void campEquipDrawCategory(void* work, u8* record, s16 category,
 // FUN_0012E3B0 NONMATCHING
 void FUN_0012e3b0(void* work, s32 index, u8* record)
 {
-    register void* parent;
+    void* parent;
     s32 styles[4];
     char labels[4][0x100];
     CampVec2 position;
@@ -1334,7 +1334,7 @@ static void campEquipDrawEquipmentEffect(void* work, u8* record,
 static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
                                   s32 yOffset, char* text)
 {
-    register void* parent;
+    void* parent;
     s32 row;
     s32 first;
     s32 count;
@@ -1382,7 +1382,7 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
 void FUN_0012f6d0(void* work, s32 index, u8* record)
 {
     char text[0x70];
-    register void* parent;
+    void* parent;
     s16 pcId;
     s16 slot;
     s32 yDiv;

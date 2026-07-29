@@ -3769,8 +3769,6 @@ extern BtlPacket* func_002d7e20(BtlAction*, BtlAction*, void*, u32, ...);
 extern BtlPacket* func_002d8090(BtlAction*);
 extern BtlPacket* func_002d7fb0(BtlAction*, u32);
 extern BtlPacket* func_002db740(BtlAction*, u16, ...);
-/* Removing this worsens FUN_00290be0 (nd11796 -> nd11860) - measured W161. */
-#pragma opt_loop_invariants on
 /* Skill-state reconstruction is complete; remaining drift is MWCC local-layout codegen. */
 // FUN_00290be0 NONMATCHING
 void btlActionUpdateStateSkill(BtlAction *action) {
@@ -5604,7 +5602,6 @@ block_394:
         btlActionSetState(action, BTLACTION_STATE_PACKET);
     }
 }
-#pragma opt_loop_invariants off
 /* Warning: struct Model is not defined (only forward-declared) */
 
 // FUN_00294d10

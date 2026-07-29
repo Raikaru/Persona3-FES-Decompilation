@@ -227,7 +227,7 @@ u32 FUN_00417160(void *param_1)
 
   int iVar2;
 
-  register u32 lVar3;
+  u32 lVar3;
 
 
   
@@ -2943,7 +2943,6 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 }
 #pragma optimization_level 2
 
-#pragma optimization_level 3
 // FUN_0041ABC0 NONMATCHING
 
 
@@ -3070,7 +3069,6 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
 }
 
-#pragma optimization_level 2
 
 // FUN_0041AE20 NONMATCHING
 
@@ -3169,7 +3167,6 @@ u32 FUN_0041ae20(int param_1)
 
 
 
-#pragma optimization_level 3
 // FUN_0041AFF0 NONMATCHING
 u8 FUN_0041aff0(int param_1,int param_2)
 {
@@ -3292,7 +3289,6 @@ u8 FUN_0041aff0(int param_1,int param_2)
   }
   return bVar3;
 }
-#pragma optimization_level 2
 
 // FUN_0041B530
 

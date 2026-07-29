@@ -392,11 +392,11 @@ static void campMainDrawPersonaRow(const CampMainDrawItem* item,
  * and level digits from the retail instruction sequence.
  * Remaining differences are MWCC register coloring and outlined helpers. */
 // FUN_00133E10 NONMATCHING
-void FUN_00133E10(register CampMainDrawItem* item,
-                  register const void* resources, s32 mode,
-                  const s16* personaIds, register s16 selected)
+void FUN_00133E10(CampMainDrawItem* item,
+                  const void* resources, s32 mode,
+                  const s16* personaIds, s16 selected)
 {
-    register void* parent;
+    void* parent;
     DatPersonaWork* persona;
     const char* personaName;
     char text[0x100];
@@ -1801,7 +1801,7 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 // FUN_00136A10 NONMATCHING
 void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
 {
-    register void* parent;
+    void* parent;
     CampCarouselPackedPosition p;
     s32 socialLevel;
     s32 i;
@@ -2190,8 +2190,8 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
     CampMainPackedPosition input;
-    register f32 inputX;
-    register f32 inputY;
+    f32 inputX;
+    f32 inputY;
     CampMainQuadPosition header;
     CampMainQuadPosition row;
     CampMainQuadPosition footer;
@@ -2305,8 +2305,8 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
     CampMainPackedPosition input;
-    register f32 inputX;
-    register f32 inputY;
+    f32 inputX;
+    f32 inputY;
     volatile u64 copied;
     volatile CampMainPackedPosition local;
     CampMainQuadPosition header;

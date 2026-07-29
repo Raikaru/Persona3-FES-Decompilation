@@ -146,13 +146,13 @@ static inline void campDrawRows(const CampMenuDrawItem* item, s32 count, f32 spa
  * cases explicit makes the mode contract visible while preserving the same
  * draw helpers used by the screen callbacks below. */
 // FUN_00154970 NONMATCHING
-void FUN_00154970(register CampMenuDrawItem* item,
-                  register const char** labels, s32 mode, s32 first,
+void FUN_00154970(CampMenuDrawItem* item,
+                  const char** labels, s32 mode, s32 first,
                   s32 count)
 {
     s32 i;
     u32 color;
-    register u32 parent;
+    u32 parent;
 
     switch (mode) {
     case 0:
@@ -830,7 +830,7 @@ static void campDrawItemStatus(CampMenuDrawItem* item, s32 itemId)
 // FUN_00156F80 NONMATCHING
 void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 selected)
 {
-    register u32 parent;
+    u32 parent;
     s32 i;
     s32 width;
     s32 nameWidth;
@@ -1294,7 +1294,7 @@ static void campDrawSkillDescription(CampMenuDrawItem* item, s32 skillId, s32 se
 void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 category,
                   s32 selected)
 {
-    register u32 parent;
+    u32 parent;
     s32 i;
     u8 text[0x120];
     u32 workId;

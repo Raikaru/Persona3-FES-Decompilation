@@ -593,7 +593,7 @@ done:;
 void FUN_00124e60(CampVec2 position, f32 alpha, void* persona, s32 fade)
 {
     u8 level;
-    register void* parent;
+    void* parent;
 
     level = *((u8*)persona + 4);
     if (level >= 10) {
@@ -622,7 +622,7 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
     f32 x;
     f32 y;
     f32 scale;
-    register void* parent;
+    void* parent;
 
     bright = 0xff - fade;
     FUN_00523ac8(text, gp0xffff897c,
@@ -734,7 +734,7 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
     CampVec2 iconPosition;
     CampVec2 levelPosition;
     CampVec2 fadePosition;
-    register void* parent;
+    void* parent;
     shortFrame = (s16)frame;
 
     if (shortFrame < 15) {
@@ -805,7 +805,7 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
 void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
                   void* persona, s32 fade)
 {
-    register void* parent;
+    void* parent;
     f32 drawAlpha;
     void* resource;
     s32 personaId;
@@ -859,7 +859,7 @@ static s32 campPersonaTransitionIsReady(void)
 // FUN_00125D70 NONMATCHING
 void* FUN_00125d70(KwlnTask* task)
 {
-    register void* parent;
+    void* parent;
     CampPersonaTransitionWork* work;
     s32 fade;
     f32 x;

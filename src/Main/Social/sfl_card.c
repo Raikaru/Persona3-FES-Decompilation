@@ -403,9 +403,9 @@ void FUN_00253a40(void)
 
 {
 
-  register u32 *puVar1;
+  u32 *puVar1;
 
-  register int iVar2;
+  int iVar2;
 
   u32 *puVar3;
 

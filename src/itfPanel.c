@@ -882,87 +882,71 @@ u64 FUN_003a9580(int param_1)
 #define FUN_003a9580(...) ((u64 (*)(...))FUN_003a9580)(__VA_ARGS__)
 #undef FUN_003a95f0
 // FUN_003A95F0
-#pragma push
-#pragma opt_rebuildconditionals off
 
 
 int FUN_003a95f0(int param_1)
 {
   int uVar1;
 
-  if (*(code **)(param_1 + 0x40) == (code *)0x0)
-    goto set_one;
-  uVar1 = (*(code *)(param_1 + 0x40))();
-  goto done;
-set_one:
-  uVar1 = 1;
-done:
+  if (*(code **)(param_1 + 0x40) != (code *)0x0) {
+    uVar1 = (*(code *)(param_1 + 0x40))();
+  }
+  else {
+    uVar1 = 1;
+  }
   return uVar1;
 }
-#pragma pop
 #define FUN_003a95f0(...) ((u64 (*)(...))FUN_003a95f0)(__VA_ARGS__)
 #undef FUN_003a9630
 // FUN_003A9630
-#pragma push
-#pragma opt_rebuildconditionals off
 
 
 int FUN_003a9630(int param_1)
 {
   int uVar1;
 
-  if (*(code **)(param_1 + 0x44) == (code *)0x0)
-    goto set_one;
-  uVar1 = (*(code *)(param_1 + 0x44))();
-  goto done;
-set_one:
-  uVar1 = 1;
-done:
+  if (*(code **)(param_1 + 0x44) != (code *)0x0) {
+    uVar1 = (*(code *)(param_1 + 0x44))();
+  }
+  else {
+    uVar1 = 1;
+  }
   return uVar1;
 }
-#pragma pop
 #define FUN_003a9630(...) ((u64 (*)(...))FUN_003a9630)(__VA_ARGS__)
 #undef FUN_003a9670
 // FUN_003A9670
-#pragma push
-#pragma opt_rebuildconditionals off
 
 
 int FUN_003a9670(int param_1)
 {
   int uVar1;
 
-  if (*(code **)(param_1 + 0x48) == (code *)0x0)
-    goto set_one;
-  uVar1 = (*(code *)(param_1 + 0x48))();
-  goto done;
-set_one:
-  uVar1 = 1;
-done:
+  if (*(code **)(param_1 + 0x48) != (code *)0x0) {
+    uVar1 = (*(code *)(param_1 + 0x48))();
+  }
+  else {
+    uVar1 = 1;
+  }
   return uVar1;
 }
-#pragma pop
 #define FUN_003a9670(...) ((u64 (*)(...))FUN_003a9670)(__VA_ARGS__)
 #undef FUN_003a96b0
 // FUN_003A96B0
-#pragma push
-#pragma opt_rebuildconditionals off
 
 
 int FUN_003a96b0(int param_1)
 {
   int uVar1;
 
-  if (*(code **)(param_1 + 0x4c) == (code *)0x0)
-    goto set_one;
-  uVar1 = (*(code *)(param_1 + 0x4c))();
-  goto done;
-set_one:
-  uVar1 = 1;
-done:
+  if (*(code **)(param_1 + 0x4c) != (code *)0x0) {
+    uVar1 = (*(code *)(param_1 + 0x4c))();
+  }
+  else {
+    uVar1 = 1;
+  }
   return uVar1;
 }
-#pragma pop
 #define FUN_003a96b0(...) ((u64 (*)(...))FUN_003a96b0)(__VA_ARGS__)
 #undef FUN_003a96f0
 // FUN_003A96F0 MATCHING
@@ -1475,7 +1459,7 @@ void FUN_003a9e20(int param_1,u64 param_2)
 
 void FUN_003a9ed0(int param_1,u64 param_2)
 {
-  register int index;
+  int index;
   u32 uVar1;
   u8 *iVar2;
   u8 *iVar3;
@@ -1510,7 +1494,7 @@ void FUN_003a9ed0(int param_1,u64 param_2)
 
 void FUN_003aa000(int param_1,u64 param_2)
 {
-  register int index;
+  int index;
   u32 uVar1;
   int iVar2;
   int iVar3;

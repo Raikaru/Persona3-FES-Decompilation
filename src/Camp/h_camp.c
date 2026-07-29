@@ -1009,9 +1009,9 @@ KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 men
 // FUN_0011bbb0 NONMATCHING
 void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
 {
-    register void* parent;
-    register CampRootDrawWork* root;
-    register void* reserve;
+    void* parent;
+    CampRootDrawWork* root;
+    void* reserve;
     f32 x;
     f32 y;
     u32 color;
@@ -1487,7 +1487,7 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
 void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
 {
     s32 temp_16;
-    register void* parent;
+    void* parent;
     struct {
         f32 x;
         f32 y;
@@ -1659,7 +1659,7 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
 // FUN_0011d6d0 NONMATCHING
 void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
 {
-    register void* parent;
+    void* parent;
     s32 frame;
     s32 fade;
     s32 remaining;
@@ -1813,7 +1813,7 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
 // FUN_0011ddb0 NONMATCHING
 void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 {
-    register void* parent;
+    void* parent;
     CampVec2 source;
     CampVec2 position;
     f32 oldDuration;
@@ -1848,8 +1848,8 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 // FUN_0011dfe0 NONMATCHING
 void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
 {
-    register void* parent;
-    register void* textureState;
+    void* parent;
+    void* textureState;
     void* stage;
     void* node;
     s32 cacheIndex;
