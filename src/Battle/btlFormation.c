@@ -7389,38 +7389,35 @@ u32 func_002c3be0(u32 param_1)
 u32 func_002c3ce0(u32 param_1)
 
 {
-  int iVar1 = 0;
-  s32 sVar2 = 0;
-  u32 uVar3 = 0;
-  int iVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  int iVar7 = 0;
+  u16 result;
+  u16 copyIndex;
+  u16 index;
+  int selected;
+  u16 best;
+  int unit;
+  u8 score;
   extern u8 func_002ffcc0(u32);
-  
-  iVar7 = (int)param_1;
-  sVar2 = func_002bff60_u16(param_1,iVar7 + 0x88,*(u16 *)(iVar7 + 0x6e),0);
-  if (sVar2 != 0) {
-    for (uVar5 = 0; uVar5 < *(u16 *)(iVar7 + 0xc0); uVar5 = uVar5 + 1 & 0xffff) {
-      iVar4 = iVar7 + uVar5 * 4;
-      *(u32 *)(iVar4 + 0x38) = *(u32 *)(iVar4 + 0x88);
+
+  result = func_002bff60_u16(param_1,param_1 + 0x88,*(u16 *)(param_1 + 0x6e),0);
+  if (result != 0) {
+    for (copyIndex = 0; copyIndex < *(u16 *)(param_1 + 0xc0); copyIndex++) {
+      *(u32 *)(param_1 + copyIndex * 4 + 0x38) = *(u32 *)(param_1 + copyIndex * 4 + 0x88);
     }
-    *(u16 *)(iVar7 + 0x6a) = *(u16 *)(iVar7 + 0xc0);
+    *(u16 *)(param_1 + 0x6a) = *(u16 *)(param_1 + 0xc0);
+    return 1;
   }
-  else {
-    iVar4 = 0;
-    uVar6 = 0xffff;
-    for (uVar5 = 0; uVar5 < *(u16 *)(iVar7 + 0xc0); uVar5 = uVar5 + 1 & 0xffff) {
-      iVar1 = *(int *)(iVar7 + uVar5 * 4 + 0x88);
-      uVar3 = func_002ffcc0(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-      if ((uVar3 & 0xff) < uVar6) {
-        uVar6 = uVar3 & 0xff;
-        iVar4 = iVar1;
-      }
+  selected = 0;
+  best = 0xffff;
+  for (index = 0; index < *(u16 *)(param_1 + 0xc0); index++) {
+    unit = *(int *)(param_1 + index * 4 + 0x88);
+    score = func_002ffcc0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
+    if (score < best) {
+      best = score;
+      selected = unit;
     }
-    *(int *)(iVar7 + 0x38) = iVar4;
-    *(u16 *)(iVar7 + 0x6a) = 1;
   }
+  *(int *)(param_1 + 0x38) = selected;
+  *(u16 *)(param_1 + 0x6a) = 1;
   return 1;
 }
 

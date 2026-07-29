@@ -21450,6 +21450,8 @@ u32 FUN_00332370(int param_1)
   u32 *puVar4;
 
   u32 uVar5;
+  u16 *indexBase;
+  u32 index;
 
   
 
@@ -21489,9 +21491,12 @@ u32 FUN_00332370(int param_1)
 
   *(u16 *)(puVar4 + 0xd) = 1;
 
-  FUN_00332a30((int *)(uVar3),(u16)(*(u16 *)(param_1 + 0xc)),(int *)(uVar2));
-
-  FUN_00332ac0((u32 *)(uVar3),(u16)(*(u16 *)(param_1 + 0xc)),(int *)(iVar1 + 0x1c));
+  indexBase = (u16 *)param_1;
+  index = indexBase[6];
+  FUN_00332a30((int *)(uVar3),index,(int *)(uVar2));
+  indexBase = (u16 *)param_1;
+  index = indexBase[6];
+  FUN_00332ac0((u32 *)(uVar3),index,(int *)(iVar1 + 0x1c));
 
   return uVar3;
 
@@ -30328,7 +30333,7 @@ u32 FUN_0033bfa0(u32 *param_1,int param_2)
 
 
 
-// FUN_0033C0A0 NONMATCHING
+// FUN_0033C0A0
 
 
 u32 FUN_0033c0a0(int param_1)
@@ -30345,15 +30350,15 @@ u32 FUN_0033c0a0(int param_1)
 
   u32 uVar4;
 
-  int iVar1;
+  u32 *model;
 
   
 
   iVar3 = *(int *)(param_1 + 0x3c);
 
-  iVar1 = *(int *)(param_1 + 0x40);
+  model = *(u32 **)(param_1 + 0x40);
 
-  uVar4 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000));
+  uVar4 = (u32)(piVarTmp = (int *)(*DAT_00960178_abs)(model[0xe] * 0x18 + 0x10,0x40000));
 
   *piVarTmp = (int)(piVarTmp + 4);
 
@@ -30361,15 +30366,15 @@ u32 FUN_0033c0a0(int param_1)
 
   piVar1 = (int *)uVar4;
 
-  if (*(int *)(iVar1 + 0x70) == 0)
+  if (model[0x1c] == 0)
 
-    *(u32 *)(iVar1 + 0x70) = 1;
+    model[0x1c] = 1;
 
   iVar3 = FUN_00323640_u32((u16 *)(*(u32 *)(iVar3 + 4)));
 
   piVar1[1] = iVar3;
 
-  FUN_0033be90(uVar4,iVar1);
+  FUN_0033be90(uVar4,(int)model);
 
   return uVar4;
 
@@ -36318,7 +36323,7 @@ u32 FUN_00342890(u32 *param_1,int param_2)
 
 
 
-// FUN_00342990 NONMATCHING
+// FUN_00342990
 
 
 u32 FUN_00342990(int param_1)
@@ -36329,7 +36334,7 @@ u32 FUN_00342990(int param_1)
 
   u32 uVar3;
 
-  int iVar1;
+  u32 *model;
 
   int iVar2;
 
@@ -36339,9 +36344,9 @@ u32 FUN_00342990(int param_1)
 
   iVar2 = *(int *)(param_1 + 0x3c);
 
-  iVar1 = *(int *)(param_1 + 0x40);
+  model = *(u32 **)(param_1 + 0x40);
 
-  uVar3 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x30 + 0xc,0x40000);
+  uVar3 = (*DAT_00960178_abs)(model[0xe] * 0x30 + 0xc,0x40000);
 
   piVar4 = (int *)uVar3;
 
@@ -36349,9 +36354,9 @@ u32 FUN_00342990(int param_1)
 
   piVar4[2] = (int)piVar4;
 
-  if (*(u32 *)(iVar1 + 0x8c) < 3) {
+  if (model[0x23] < 3) {
 
-    *(u32 *)(iVar1 + 0x8c) = 3;
+    model[0x23] = 3;
 
   }
 
@@ -36359,7 +36364,7 @@ u32 FUN_00342990(int param_1)
 
   piVar4[1] = iVar2;
 
-  FUN_00342550(uVar3,iVar1);
+  FUN_00342550(uVar3,(int)model);
 
   return uVar3;
 
@@ -41876,19 +41881,22 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
 {
 
-  long lVar1;
+  int iVar1;
+
+  u8 auStack_110 [256];
 
   u8 auStack_210 [256];
 
-  u8 auStack_110 [268];
-
   u32 uStack_4;
+  void (**setState)(int, int);
+  void (**setBuffer)(int, void *, int, void *, int);
 
   
 
   FUN_004d81b0(2,&uStack_4);
 
-  (*DAT_00960090_abs)(1,*param_2);
+  setState = (void (**)(int, int))DAT_00960090_abs;
+  (*setState)(1,*param_2);
 
   FUN_003294d0();
 
@@ -41898,23 +41906,24 @@ void FUN_00348da0(int param_1,u32 *param_2)
 
   FUN_00348760((u8 *)(param_1 + 4),(float *)(&auStack_110));
 
-  (*DAT_009600a4_abs)(3,auStack_110,4,0x69cb80,6);
+  setBuffer = (void (**)(int, void *, int, void *, int))DAT_009600a4_abs;
+  (*setBuffer)(3,auStack_110,4,DAT_0069cb80_abs,6);
 
   FUN_00329550();
 
   RpSkyRenderStateSet(2,uStack_4 | 0x10);
 
-  lVar1 = FUN_00348340((u8 *)(param_1 + 4),(float *)(auStack_210));
+  iVar1 = FUN_00348340((u8 *)(param_1 + 4),(float *)(auStack_210));
 
-  if (lVar1 != 0) {
+  if (iVar1 != 0) {
 
-    (*DAT_00960090_abs)(1,*(u32 *)DAT_00957ba8_abs);
+    (*setState)(1,*(u32 *)DAT_00957ba8_abs);
 
     RpSkyRenderStateSet(3,0x31001);
 
     FUN_003295c0(0x6fc009fc00a);
 
-    (*DAT_009600a4_abs)(3,auStack_210,4,0x69cb80,6);
+    (*setBuffer)(3,auStack_210,4,DAT_0069cb80_abs,6);
 
     FUN_00329630();
 

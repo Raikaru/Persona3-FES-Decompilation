@@ -4809,14 +4809,14 @@ void FUN_0039d880(int param_1)
 }
 #define FUN_0039d880(...) ((void (*)(...))FUN_0039d880)(__VA_ARGS__)
 #undef FUN_0039d8e0
-// FUN_0039D8E0 NONMATCHING
+// FUN_0039D8E0
 
 
 u32 FUN_0039d8e0(int param_1)
 {
   u32 *config;
   int *piVar1;
-  u8 uVar2;
+  s8 uVar2;
   short sVar3;
   int iVar4;
   u32 uVar5;
@@ -4860,7 +4860,7 @@ u32 FUN_0039d8e0(int param_1)
     break;
   case 2:
     uVar2 = FUN_0016df30_u64((short)piVar1[3]);
-    uVar7 = FUN_0030bbb0(uVar2);
+    uVar7 = FUN_0030bbb0((u8)uVar2);
     FUN_0039ef30(piVar8,0,uVar7);
     uVar7 = FUN_00173220((u16)piVar1[0xd]);
     FUN_0039ef30(piVar8,1,uVar7);
