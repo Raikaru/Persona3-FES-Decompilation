@@ -1453,6 +1453,8 @@ void* func_0018db20(KwlnTask* task)
 {
     u8* object = (u8*)task;
     void* transition = GS_PTR(object, 0x70);
+    if (func_0018b700(transition) != 0 && GS_S32(object, 0x24) != 0)
+    {
     {
         switch (GS_S32(object, 0xc))
         {
@@ -1476,6 +1478,7 @@ void* func_0018db20(KwlnTask* task)
         default:
             break;
         }
+    }
     }
     return KWLNTASK_CONTINUE;
 }
@@ -1538,11 +1541,10 @@ void* func_0018de60(KwlnTask* task)
         }
         else
         {
-            partyId = datGetPartyId(GS_S32(work, 8) - 1);
-            if (GS_S32(work, 0x14) != partyId)
+            if (GS_S32(work, 0x14) != datGetPartyId(GS_S32(work, 8) - 1))
             {
                 GS_S32(work, 4) = 0;
-                GS_S32(work, 0x14) = partyId;
+                GS_S32(work, 0x14) = datGetPartyId(GS_S32(work, 8) - 1);
             }
         }
         if (GS_S32(work, 4) == 3)

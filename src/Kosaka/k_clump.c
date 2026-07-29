@@ -2040,27 +2040,23 @@ void func_001a9850(void)
     else if (gMtScene->fldMajorId == 0x23) FUN_001099d0(0x15);
     else if (gMtScene->fldMajorId == 0x25) FUN_001099d0(0x47);
     else if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 5) FUN_00108fd0(0x14);
-    else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 5) &&
-             gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
+    else if (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
+    else if (gMtScene->fldMajorId == 5 && gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
+    else if (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 9) FUN_00108fd0(0x14);
     else if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1)
     {
         if ((u8)FUN_0016ef30() < 2 || (u8)FUN_0016ef30() > 6)
             FUN_00108fd0(0x14);
     }
-    else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
-              gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||
-              (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9)) &&
-             (FUN_0017e480(4, 5, 0xc, 0x1f) == 1 ||
-              FUN_0017e480(3, 1, 3, 5) == 1))
+    else if (gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
+             gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||
+             (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9))
     {
-        FUN_001099d0(0x57, 1);
-    }
-    else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
-              gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||
-              (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9)) &&
-             FUN_0017e480(1, 1, 2, 0x1c) == 1)
-    {
-        FUN_001099d0(0x50);
+        if (FUN_0017e480(4, 5, 0xc, 0x1f) == 1 ||
+            FUN_0017e480(3, 1, 3, 5) == 1)
+            FUN_001099d0(0x57, 1);
+        else if (FUN_0017e480(1, 1, 2, 0x1c) == 1)
+            FUN_001099d0(0x50);
     }
     else if (gMtScene->fldMajorId == 5 && gMtScene->fldMinorId == 1) FUN_001099d0(0x19);
     else if (gMtScene->fldMajorId == 0x0e) FUN_001099d0(0x20, 1);

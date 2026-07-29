@@ -262,6 +262,10 @@ void* K_VPad_UpdateTask(KwlnTask* task)
             {
                 playerHeading += 360.0f;
             }
+            if (K_VPad_IsRotating(work->rotateTask) == true)
+            {
+                return KWLNTASK_CONTINUE;
+            }
             inputHeading = func_001b02c0(0, 0);
             RwMatrixSetIdentity(&rotateMat);
             RwMatrixRotate(&rotateMat, &axis, cameraHeading, rwCOMBINEPRECONCAT);

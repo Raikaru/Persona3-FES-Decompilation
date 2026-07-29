@@ -930,6 +930,7 @@ void FUN_0015C520(void *param_1, s32 param_2)
                         owner = campC520PartyId(i);
                         result = FUN_0017BC20(1, owner, item_id & 0xffffU, 0);
                         if (result == NULL) {
+                            owner = campC520PartyId(i);
                             FUN_0017B860(1, owner, item_id & 0xffffU, 0);
                         }
                     }
@@ -957,6 +958,7 @@ void FUN_0015C520(void *param_1, s32 param_2)
                             owner = campC520PartyId(i);
                             result = FUN_0017BC20(1, owner, item_id & 0xffffU, 0);
                             if (result == NULL) {
+                                owner = campC520PartyId(i);
                                 FUN_0017B860(1, owner, item_id & 0xffffU, 0);
                             }
                         }

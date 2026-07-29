@@ -18,6 +18,7 @@ extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
 #pragma alias datSetTimeSkipTarget_u8 datSetTimeSkipTarget
 extern void datSetTimeSkipTarget_u8(u8 time);
+extern u16 datGetMaxHp(s16 pcId);
 #define CLND_ALLOC(count, size, flags) \
     (*(void* (**)(u32, u32, u32))D_00960184)((count), (size), (flags))
 #define CLND_FREE(memory) (*(void (**)(void*))jtbl_0096017C)((memory))
@@ -300,23 +301,24 @@ void func_0017fe10(KwlnTask* clndTask)
 void func_00180030(void)
 {
     CalendarDateTable* table;
-    const u8* record;
     u32 i;
-    s16 month;
-    s16 day;
+    u32 currentDate;
 
     table = func_003bd890();
-    month = clndGetCurrentMonth();
-    day = clndGetCurrentDay();
     for (i = 0; i < table->total; i++)
     {
-        record = table->records + i * 4;
-        if (record[0] != month || record[1] != day)
+        currentDate = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+        if (currentDate != table->records[i * 4])
+        {
+            continue;
+        }
+        currentDate = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+        if (currentDate != table->records[i * 4 + 1])
         {
             continue;
         }
 
-        if (record[2] == 1)
+        if (table->records[i * 4 + 2] == 1)
         {
             datSetFlag(0xa95, false);
             datSetFlag(0xa96, false);
@@ -327,21 +329,22 @@ void func_00180030(void)
             datSetFlag(0xa7a, false);
             datSetFlag(0xa9b, false);
             datSetFlag(0xa9c, false);
-            if (record[3] == 5)
+            if (table->records[i * 4 + 3] == 5)
             {
                 datSetFlag(0xa98, true);
             }
-            if (record[3] == 3)
+            if (table->records[i * 4 + 3] == 3)
             {
                 datSetFlag(0xa99, true);
             }
-            if (record[3] == 2)
+            if (table->records[i * 4 + 3] == 2)
             {
                 datSetFlag(0xa9b, true);
             }
         }
 
-        func_0016d6b0(record[2], record[3]);
+        func_0016d6b0(table->records[i * 4 + 2],
+                      table->records[i * 4 + 3]);
     }
 }
 
@@ -349,153 +352,159 @@ void func_00180030(void)
 void func_00180220(void)
 {
     CalendarDateTable* table;
-    const u8* record;
     u32 i;
-    s16 socialLink;
-    s16 oldCondition;
-    s16 newCondition;
-    s32 value;
+    s32 socialLink;
+    s32 oldCondition;
+    s32 newCondition;
     s32 amount;
     u32 randomValue;
-    u32 found;
+    u32 currentDate;
 
     for (socialLink = 1; socialLink <= 10; socialLink++)
     {
-        found = false;
         table = func_003bd890();
         for (i = 0; i < table->total; i++)
         {
-            record = table->records + i * 4;
-            if (record[0] == clndGetCurrentMonth() &&
-                record[1] == clndGetCurrentDay() &&
-                record[2] == socialLink)
+            currentDate = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+            if (currentDate != table->records[i * 4])
             {
-                found = true;
+                continue;
+            }
+            currentDate = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+            if (currentDate != table->records[i * 4 + 1])
+            {
+                continue;
+            }
+            if (table->records[i * 4 + 2] == socialLink)
+            {
                 break;
             }
         }
-        if (found)
+        if (i < table->total)
         {
             continue;
         }
 
         oldCondition = func_0016c920(socialLink);
         newCondition = oldCondition;
-        value = FUN_0016f380(socialLink + 0x19);
-        FUN_0016f3e0(socialLink + 0x19, value);
+        FUN_0016f3e0(socialLink + 0x19,
+                     FUN_0016f380(socialLink + 0x19));
 
-        if (oldCondition == 2)
+        if (oldCondition == 5)
         {
-            value = FUN_0016f380(socialLink + 0xf) - 1;
-            if (value < 0)
-            {
-                value = 0;
-            }
-            FUN_0016f3e0(socialLink + 0xf, value);
-            if (value == 0)
-            {
-                newCondition = 0;
-            }
-        }
-        else if (oldCondition == 3)
-        {
-            value = FUN_0016f380(socialLink + 0x19);
-            if (value < 0)
-            {
-                value = 0;
-            }
-            FUN_0016f3e0(socialLink + 0x19, value);
-            if (socialLink == 3)
-            {
-                randomValue = func_00488f30();
-                value = FUN_0016f380(0x12);
-                amount = value - (randomValue % 20 + 25);
+                amount = FUN_0016f380(socialLink + 0x19);
                 if (amount < 0)
                 {
                     amount = 0;
                 }
-                FUN_0016f3e0(0x12, amount);
+                FUN_0016f3e0(socialLink + 0x19, amount);
+                randomValue = func_00488f30();
+                amount = FUN_0016f380(socialLink + 0xf) -
+                         (randomValue % 40 + 20);
+                if (socialLink == 1)
+                {
+                    if (datGetFlag(0xa8e) == 0)
+                    {
+                        if (datGetFlag(0xa8f) != 0)
+                        {
+                            amount -= 60;
+                        }
+                    }
+                    else
+                    {
+                        amount -= 30;
+                    }
+                }
+                else
+                {
+                    if (datGetFlag(0xa2e - socialLink) != 0)
+                    {
+                        amount -= 30;
+                    }
+                    if (datGetFlag(0xa40 - socialLink) != 0)
+                    {
+                        amount -= 60;
+                    }
+                }
+                if (amount < 1)
+                {
+                    amount = 0;
+                }
+                FUN_0016f3e0(socialLink + 0xf, amount);
                 if (amount == 0)
                 {
                     newCondition = 0;
                 }
-            }
-            else
-            {
-                randomValue = func_00488f30();
-                if (randomValue % 100 < 0x15)
+                if (socialLink == 1 && datGetFlag(0xa9e) != 0)
                 {
-                    newCondition = 5;
+                    newCondition = 0;
                 }
-                else
+        }
+
+        else if (oldCondition == 3)
+        {
+                amount = FUN_0016f380(socialLink + 0x19);
+                if (amount < 0)
                 {
-                    value = FUN_0016f380(socialLink + 0xf);
-                    amount = value - (randomValue % 20 + 25);
+                    amount = 0;
+                }
+                FUN_0016f3e0(socialLink + 0x19, amount);
+                if (socialLink == 3)
+                {
+                    randomValue = func_00488f30();
+                    amount = FUN_0016f380(0x12) -
+                             (randomValue % 20 + 25);
                     if (amount < 0)
                     {
                         amount = 0;
                     }
-                    FUN_0016f3e0(socialLink + 0xf, amount);
+                    FUN_0016f3e0(0x12, amount);
                     if (amount == 0)
                     {
                         newCondition = 0;
                     }
                 }
-            }
-            if (socialLink == 1 && datGetFlag(0xa9e) != 0)
-            {
-                newCondition = 0;
-            }
-        }
-        else if (oldCondition == 5)
-        {
-            value = FUN_0016f380(socialLink + 0x19);
-            if (value < 0)
-            {
-                value = 0;
-            }
-            FUN_0016f3e0(socialLink + 0x19, value);
-            randomValue = func_00488f30();
-            value = FUN_0016f380(socialLink + 0xf);
-            amount = value - (randomValue % 40 + 20);
-            if (socialLink == 1)
-            {
-                if (datGetFlag(0xa8e) == 0)
-                {
-                    if (datGetFlag(0xa8f) != 0)
-                    {
-                        amount -= 60;
-                    }
-                }
                 else
                 {
-                    amount -= 30;
+                    randomValue = func_00488f30();
+                    if (randomValue % 100 < 0x15)
+                    {
+                        newCondition = 5;
+                    }
+                    else
+                    {
+                        randomValue = func_00488f30();
+                        amount = FUN_0016f380(socialLink + 0xf) -
+                                 (randomValue % 20 + 25);
+                        if (amount < 0)
+                        {
+                            amount = 0;
+                        }
+                        FUN_0016f3e0(socialLink + 0xf, amount);
+                        if (amount == 0)
+                        {
+                            newCondition = 0;
+                        }
+                    }
                 }
-            }
-            else
-            {
-                if (datGetFlag(0xa2e - socialLink) != 0)
+                if (socialLink == 1 && datGetFlag(0xa9e) != 0)
                 {
-                    amount -= 30;
+                    newCondition = 0;
                 }
-                if (datGetFlag(0xa40 - socialLink) != 0)
+        }
+
+        else if (oldCondition == 2)
+        {
+                amount = FUN_0016f380(socialLink + 0xf) - 1;
+                if (amount < 0)
                 {
-                    amount -= 60;
+                    amount = 0;
                 }
-            }
-            if (amount < 1)
-            {
-                amount = 0;
-            }
-            FUN_0016f3e0(socialLink + 0xf, amount);
-            if (amount == 0)
-            {
-                newCondition = 0;
-            }
-            if (socialLink == 1 && datGetFlag(0xa9e) != 0)
-            {
-                newCondition = 0;
-            }
+                FUN_0016f3e0(socialLink + 0xf, amount);
+                if (amount == 0)
+                {
+                    newCondition = 0;
+                }
         }
 
         if (socialLink != 3 && FUN_0016f380(socialLink + 0x19) > 99)
@@ -586,6 +595,12 @@ void func_00180220(void)
     }
 
     datSetFlag(0x141c, true);
+    for (socialLink = 1; socialLink <= 10; socialLink++)
+    {
+        datSetHp(socialLink, datGetMaxHp(socialLink));
+        datSetSp(socialLink, func_0016c670(socialLink));
+        datClearBadStatus(socialLink, 0x80000);
+    }
 }
 
 // FUN_00180A20
@@ -2958,12 +2973,10 @@ extern void func_001842c0(KwlnTask* task,
 void* func_00183410(KwlnTask* task)
 {
     CalendarConfirmWork* work;
-    RwCamera* camera;
     u32 oldState;
 
     work = (CalendarConfirmWork*)task->workData;
-    camera = kwlnGetMainCamera();
-    if (RwCameraBeginUpdate(camera) == NULL)
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) == NULL)
     {
         return KWLNTASK_CONTINUE;
     }
@@ -2972,8 +2985,13 @@ void* func_00183410(KwlnTask* task)
     D_00960090(14, 0);
     work->frame = (work->frame + 1) % 0x168;
 
-    if (work->state < 2 || work->confirmed != 0)
+    if (work->state >= 2 && work->confirmed == 0)
     {
+        D_00960090(14, oldState);
+        RwCameraEndUpdate(kwlnGetMainCamera());
+        return KWLNTASK_CONTINUE;
+    }
+
         switch (work->state)
         {
             case 0:
@@ -3103,10 +3121,9 @@ void* func_00183410(KwlnTask* task)
                 }
                 break;
         }
-    }
 
     D_00960090(14, oldState);
-    RwCameraEndUpdate(camera);
+    RwCameraEndUpdate(kwlnGetMainCamera());
     return KWLNTASK_CONTINUE;
 }
 
@@ -4003,6 +4020,30 @@ void* func_00184f00(KwlnTask* task)
             }
             break;
 
+        case 6:
+            func_00185980(work->resource,
+                          clndPackPosition(&position, 0.0f, 0.0f),
+                          0,
+                          work->targetMonth);
+            func_00185ae0(work->resource,
+                          *(u64*)&position,
+                          0,
+                          work->targetMonth);
+            func_00185b40(work->resource,
+                          *(u64*)&position,
+                          0,
+                          work->targetMonth,
+                          work->targetDay);
+            func_00186050(work->resource, *(u64*)&position, 0);
+            func_00186100(work->resource, *(u64*)&position, 0);
+            func_00186140(work->resource, *(u64*)&position, 0);
+            if (++work->frame == 20)
+            {
+                work->frame = 0;
+                work->state = 8;
+            }
+            break;
+
         case 8:
             if (datGetFlag(0x141c) == 0)
             {
@@ -4511,11 +4552,11 @@ void* func_00186190(KwlnTask* task)
         {
             f32 _x;
             f32 _y;
-            f32 sine;
             timer = ++work->timer;
-            sine = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f);
-            _x = sine * CLND_MOON_X_SCALE;
-            _y = sine * CLND_MOON_Y_SCALE;
+            _x = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) *
+                 CLND_MOON_X_SCALE;
+            _y = sinf((DAT_007caf38 * (f32)((timer * 0x5a) / 5)) / 180.0f) *
+                 CLND_MOON_Y_SCALE;
             alpha = (timer * 0xff) / 5;
             func_00186a40(work->resource,
                           clndPackPosition(&position, _x, _y),

@@ -1010,7 +1010,7 @@ KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 men
 void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
 {
     void* parent;
-    CampRootDrawWork* root;
+
     void* reserve;
     f32 x;
     f32 y;
@@ -1024,7 +1024,7 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
     void* font;
     char text[0x100];
 
-    root = work;
+
 
     for (i = 0; i < 7; i++) {
         if (func_0018b700((u8*)iGpffffb25c + i * 0x44) == 0) {
@@ -1060,7 +1060,7 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
         color = *(u32*)((u8*)iGpffffb25c + 0x32c);
         func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x11, 0,
                       color & 0xff, x - 27.0f, y, alpha);
-        func_00115ad0(parent, *(void**)DAT_00833B80_abs, root->selectedEntry + 7, 0,
+        func_00115ad0(parent, *(void**)DAT_00833B80_abs, work->selectedEntry + 7, 0,
                       color & 0xff, x, y, alpha);
     }
 
@@ -1077,12 +1077,11 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
 
         switch (func_0016ef30() & 0xff) {
         case 0:
+        case 7:
             glyph = 0x22;
             break;
         case 1:
             glyph = 0x1c;
-            if (func_0017dcf0() != 0)
-                glyph = 0x23;
             break;
         case 2:
             glyph = 0x1d;
@@ -1101,12 +1100,11 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
             break;
         case 5:
             glyph = 0x20;
+            if (func_0017dcf0() != 0)
+                glyph = 0x23;
             break;
         case 6:
             glyph = 0x21;
-            break;
-        case 7:
-            glyph = 0x22;
             break;
         case 8:
             glyph = 0x24;
@@ -1155,33 +1153,35 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
         x += 15.0f;
 
         weekday = func_0017db00();
-        if (weekday < 7) {
-            switch (weekday) {
-            case 0:
-                glyph = 0x1b;
-                break;
-            case 1:
-                glyph = 0x15;
-                break;
-            case 2:
-                glyph = 0x16;
-                break;
-            case 3:
-                glyph = 0x17;
-                break;
-            case 4:
-                glyph = 0x18;
-                break;
-            case 5:
-                glyph = 0x19;
-                break;
-            default:
-                glyph = 0x1a;
-                break;
-            }
-            func_00115ad0(parent, *(void**)DAT_00833B84_abs, glyph, 0x78,
-                          color & 0xff, y, x, alpha);
+        switch (weekday) {
+        case 0:
+            glyph = 0x1b;
+            break;
+        case 1:
+            glyph = 0x15;
+            break;
+        case 2:
+            glyph = 0x16;
+            break;
+        case 3:
+            glyph = 0x17;
+            break;
+        case 4:
+            glyph = 0x18;
+            break;
+        case 5:
+            glyph = 0x19;
+            break;
+        case 6:
+            glyph = 0x1a;
+            break;
+        default:
+            goto weekday_done;
         }
+        func_00115ad0(parent, *(void**)DAT_00833B84_abs, glyph, 0x78,
+                      color & 0xff, y, x, alpha);
+weekday_done:
+        ;
     }
 
     if (func_0018b700((u8*)iGpffffb25c + 0x374) != 0) {
@@ -1190,7 +1190,7 @@ void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
         color = *(u32*)((u8*)iGpffffb25c + 0x3b4);
         h_campDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
                          color & 0xff, x, y, alpha);
-        h_campDrawSprite(parent, *(void**)DAT_00833B74_abs, root->selectedEntry + 1,
+        h_campDrawSprite(parent, *(void**)DAT_00833B74_abs, work->selectedEntry + 1,
                          color & 0xff, x + 16.0f, y, alpha);
         h_campDrawSprite(parent, *(void**)DAT_00833BA0_abs, 0,
                          color & 0xff, x + 450.0f, y, alpha);

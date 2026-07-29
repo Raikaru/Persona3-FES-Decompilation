@@ -1837,12 +1837,16 @@ void FUN_00302d40(u32 param_1)
       if (!(uVar4 < 0x15)) {
         FUN_0019d3f0((u32)D_0069aa80, 0x455);
       }
+      bVar2 = bVar2 + 1;
+      if (bVar2 < 0) {
+        FUN_0019d3f0((u32)D_0069aa80, 0x456);
+      }
       if ((uVar5 & 1) != 0) {
         *(u8 *)(iVar6 + iVar3 + 0x29) =
-             *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf | (bVar2 + 1) * '\x10';
+             *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf | bVar2 * '\x10';
       }
       else {
-        *(u8 *)(iVar6 + iVar3 + 0x29) = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf0 | bVar2 + 1 & 0xf;
+        *(u8 *)(iVar6 + iVar3 + 0x29) = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf0 | bVar2 & 0xf;
       }
     }
   }

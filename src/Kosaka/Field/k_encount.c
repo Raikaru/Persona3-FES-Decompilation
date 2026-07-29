@@ -574,12 +574,9 @@ void* func_001d7d40(KwlnTask* task)
     void* fieldWord;
     void* fieldWord2;
     RwV3d pos;
-    RwV3d epos;
     RwV3d ppos;
     RwV3d tmpPos;
-    f32 half;
     f32 scale;
-    f32 yOffset;
     u32 pcAliveCount;
     u32 ecAliveCount;
     u32 curIdx;
@@ -608,19 +605,17 @@ void* func_001d7d40(KwlnTask* task)
         pc = work->pc[0];
         ec = work->ec[0];
         {
-            pos = mdlGetMatrix(pc->mdl)->pos;
-            epos = mdlGetMatrix(ec->mdl)->pos;
-            half = 0.5f;
-            yOffset = 3.0f;
-            pos.x = (pos.x + epos.x) * half;
-            pos.y = (pos.y + epos.y) * half + yOffset;
-            pos.z = (pos.z + epos.z) * half;
-            fieldWord = K_Encount_FieldWord(0x1200);
-            base = (u8*)fieldWord;
-            offset1200 = 0x1200;
-            effectField = func_001a91b0(*(KwlnTask**)(base + offset1200), &pos);
+            pos.x = (mdlGetMatrix(pc->mdl)->pos.x +
+                     mdlGetMatrix(ec->mdl)->pos.x) * 0.5f;
+            pos.y = (mdlGetMatrix(pc->mdl)->pos.y +
+                     mdlGetMatrix(ec->mdl)->pos.y) * 0.5f + 3.0f;
+            pos.z = (mdlGetMatrix(pc->mdl)->pos.z +
+                     mdlGetMatrix(ec->mdl)->pos.z) * 0.5f;
+            effectField = func_001a91b0(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x1200), &pos);
             work->effectHandle = effectField;
-            func_001a9390(*(KwlnTask**)(base + offset1200), effectField, 3);
+            func_001a9390(*(KwlnTask**)((u8*)K_Field_Get() + 0x1200),
+                          effectField, 3);
         }
         K_Encount_Face(pc, ec);
         K_Encount_Face(ec, pc);
