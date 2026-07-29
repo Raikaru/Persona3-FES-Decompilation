@@ -280,8 +280,7 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
         fldRes = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
         xGrid = (line[0].x + 400.0f) / 800.0f;
         zGrid = (line[0].z + 400.0f) / 800.0f;
-        gridResTypeId = *(u16*)((u8*)K_Field_Get() + 0x4c +
-                                zGrid * 0x100 + xGrid * 0x10);
+        gridResTypeId = K_Field_Get()->dungeonCells[zGrid][xGrid].resourceId;
         while (fldRes != NULL)
         {
             if (fldRes->resTypeId == gridResTypeId)

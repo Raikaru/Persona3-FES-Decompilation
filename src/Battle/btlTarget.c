@@ -2347,7 +2347,7 @@ short FUN_002d9d70(int param_1)
     }
     bVar12 = false;
     for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
-      if ((*(ushort *)(iGpffffb720 + (uint)*(ushort *)(iVar2 + 0xa4) * 0x3e) & 0x40) != 0) {
+      if ((((BtlEnemyData*)iGpffffb720)[*(u16 *)(iVar2 + 0xa4)].flags & 0x40) != 0) {
         bVar12 = true;
       }
     }
@@ -4453,7 +4453,7 @@ void FUN_002d7560(BtlAction *action)
                         }
                     }
                 }
-                if ((*(u16 *)(DAT_007ce410 + (u32)unit->charId * 0x3e) & 0x40) != 0)
+                if ((((BtlEnemyData*)DAT_007ce410)[unit->charId].flags & 0x40) != 0)
                     BTLT_B32(0xbdc) |= 2;
                 switch (BTLT_D16(unit->datUnit, 2))
                 {
@@ -5339,7 +5339,7 @@ u32 FUN_002dbb00(BtlUnit* param_1)
     {
         K_Assert(D_00697B18, 0x96f);
     }
-    if ((*(u16*)(iGpffffb720 + (u32)param_1->charId * 0x3e + 0x1e) & 0x20) != 0)
+    if ((((BtlEnemyData*)iGpffffb720)[param_1->charId].analyzeFlags & 0x20) != 0)
     {
         return 0xffffffff;
     }

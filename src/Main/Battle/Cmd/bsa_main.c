@@ -1,6 +1,7 @@
 #include "Utils.h"
 #include "Kosaka/k_assert.h"
 #include "Main/Battle/Result/bp_ifont.h"
+#include "Main/Battle/Data/datUnit.h"
 
 /*
  * Battle status/analyze (BSA) owns one large, contiguous panel work area.  The
@@ -176,19 +177,19 @@ void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
     }
 
     /* Retail 0x0134-0x031c: re-read the stored enemy id for each table access. */
-    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 2) != 0)
+    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 2) != 0)
         p[1] |= BSA_FLAG_TOP_LABEL;
-    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 0x40) != 0)
+    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 0x40) != 0)
         p[1] |= BSA_FLAG_RESOURCE;
-    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 8) != 0)
+    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 8) != 0)
         p[1] |= BSA_FLAG_STATUS;
-    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 0x10) != 0)
+    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 0x10) != 0)
         p[1] |= BSA_FLAG_PERSONA;
-    if ((*(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 0x1e) & 0x20) != 0)
+    if ((((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].analyzeFlags & 0x20) != 0)
         p[1] |= BSA_FLAG_AILMENT;
     p[0x1310] = DAT_007ce410[*(u16*)(p + 3) * 0x3e + 3];
-    p[0x1394] = *(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 4);
-    p[0x1498] = *(u16*)(DAT_007ce410 + *(u16*)(p + 3) * 0x3e + 6);
+    p[0x1394] = ((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].unk_04;
+    p[0x1498] = ((BtlEnemyData*)DAT_007ce410)[*(u16*)(p + 3)].unk_06;
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0: slotId = 0; break;

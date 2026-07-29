@@ -42,6 +42,19 @@ typedef struct DatUnit
     u8 unkData1[0x28];
 } DatUnit;
 
+// 62 bytes
+typedef struct BtlEnemyData
+{
+    u16 flags;         // 0x00
+    u8 unk_02;         // 0x02
+    u8 unk_03;         // 0x03
+    u16 unk_04;        // 0x04
+    u16 unk_06;        // 0x06
+    u8 unkData1[0x16];
+    u16 analyzeFlags;  // 0x1e
+    u8 unkData2[0x1e];
+} BtlEnemyData;
+
 // 8 bytes
 typedef struct DatUnitGenusBase
 {

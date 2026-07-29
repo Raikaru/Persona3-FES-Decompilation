@@ -3,6 +3,18 @@
 
 #include "Utils.h"
 
+typedef struct BrPanelResultEntry {
+    s32 type;
+    s16 characterId;
+    u16 unk_06;
+    s32 value;
+    u32 fontHandle;
+    u8 background[0x100];
+    u8 label[0x100];
+    u8 digits[2][0x100];
+    u8 typeIcon[0x100];
+} BrPanelResultEntry;
+
 void brPanel00234820(u32* work);
 void brPanel00234960(void);
 void brPanel00234a00(u32* params);
