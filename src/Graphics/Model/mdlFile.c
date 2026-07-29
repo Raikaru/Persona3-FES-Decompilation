@@ -2561,8 +2561,8 @@ void FUN_0031d9c0(int *param_1,u32 *param_2)
         } while (0 < iVar4);
       }
 
-      if ((((*(short *)((int)param_2 + 0xd6) == 0xf1) &&
-            (*(short *)(param_2 + 0x35) == 2)) &&
+      if ((((*(u16 *)((int)param_2 + 0xd6) == 0xf1) &&
+            (*(u16 *)(param_2 + 0x35) == 2)) &&
            (4999 < *(u16 *)(iVar7 + 4))) &&
           (*(u16 *)(iVar7 + 4) < 0x138d)) {
         out.f[10] = 1.0f;
@@ -43568,11 +43568,13 @@ u64 FUN_0034b1a0(u32 param_1)
 
   int iVar2;
 
+  int headerSize;
+
   u32 uVar4;
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int lVar7;
 
@@ -43588,7 +43590,8 @@ u64 FUN_0034b1a0(u32 param_1)
 
   iVar2 = DAT_0069cb90[(u32)uVar1].allocationSize;
 
-  iVar8 = iVar2 + 0x30;
+  headerSize = 0x30;
+  iVar8 = iVar2 + headerSize;
 
   uVar6 = (*DAT_00960178_abs)(iVar8,0x40000);
 
@@ -43608,9 +43611,9 @@ u64 FUN_0034b1a0(u32 param_1)
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar9) : "memory");
 
-  *(u8 (**) [16])(pauVar9[2] + 4) = pauVar9 + 3;
+  *(u8 **)(pauVar9[2] + 4) = (u8 *)pauVar9 + headerSize;
 
-  FUN_00521250(pauVar9 + 3,uVar5,iVar2);
+  FUN_00521250((u8 *)pauVar9 + headerSize,uVar5,iVar2);
 
   if (DAT_0069cb90[(u32)uVar1].destroy != (code)0x0) {
     uVar4 = DAT_0069cb90[(u32)uVar1].destroy(*(u32 *)(pauVar9[2] + 4));
@@ -43685,9 +43688,11 @@ u64 FUN_0034b3a0(int param_1)
 
   int iVar2;
 
+  int headerSize;
+
   u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
@@ -43701,7 +43706,8 @@ u64 FUN_0034b3a0(int param_1)
 
   iVar2 = DAT_0069cb90[(u32)uVar1].allocationSize;
 
-  iVar6 = iVar2 + 0x30;
+  headerSize = 0x30;
+  iVar6 = iVar2 + headerSize;
 
   uVar5 = (*DAT_00960178_abs)(iVar6,0x40000);
 
@@ -43721,9 +43727,9 @@ u64 FUN_0034b3a0(int param_1)
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
-  *(u8 (**) [16])(pauVar7[2] + 4) = pauVar7 + 3;
+  *(u8 **)(pauVar7[2] + 4) = (u8 *)pauVar7 + headerSize;
 
-  FUN_00521250(pauVar7 + 3,uVar4,iVar2);
+  FUN_00521250((u8 *)pauVar7 + headerSize,uVar4,iVar2);
 
   if (DAT_0069cb90[(u32)uVar1].destroy != (code)0x0) {
     uVar4 = DAT_0069cb90[(u32)uVar1].destroy(*(u32 *)(pauVar7[2] + 4));
@@ -43864,11 +43870,13 @@ u64 FUN_0034b6b0(u32 param_1)
 
   int iVar2;
 
+  int headerSize;
+
   u32 uVar4;
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int lVar7;
 
@@ -43884,7 +43892,8 @@ u64 FUN_0034b6b0(u32 param_1)
 
   iVar2 = DAT_0069cc50[(u32)uVar1].allocationSize;
 
-  iVar8 = iVar2 + 0x30;
+  headerSize = 0x30;
+  iVar8 = iVar2 + headerSize;
 
   uVar6 = (*DAT_00960178_abs)(iVar8,0x40000);
 
@@ -43904,9 +43913,9 @@ u64 FUN_0034b6b0(u32 param_1)
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar9) : "memory");
 
-  *(u8 (**) [16])(pauVar9[2] + 4) = pauVar9 + 3;
+  *(u8 **)(pauVar9[2] + 4) = (u8 *)pauVar9 + headerSize;
 
-  FUN_00521250(pauVar9 + 3,uVar5,iVar2);
+  FUN_00521250((u8 *)pauVar9 + headerSize,uVar5,iVar2);
 
   if (DAT_0069cc50[(u32)uVar1].destroy != (code)0x0) {
     uVar4 = DAT_0069cc50[(u32)uVar1].destroy(uVar5);
@@ -43981,9 +43990,11 @@ u64 FUN_0034b8b0(int param_1)
 
   int iVar2;
 
+  int headerSize;
+
   u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
@@ -43997,7 +44008,8 @@ u64 FUN_0034b8b0(int param_1)
 
   iVar2 = DAT_0069cc50[(u32)uVar1].allocationSize;
 
-  iVar6 = iVar2 + 0x30;
+  headerSize = 0x30;
+  iVar6 = iVar2 + headerSize;
 
   uVar5 = (*DAT_00960178_abs)(iVar6,0x40000);
 
@@ -44017,9 +44029,9 @@ u64 FUN_0034b8b0(int param_1)
 
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
-  *(u8 (**) [16])(pauVar7[2] + 4) = pauVar7 + 3;
+  *(u8 **)(pauVar7[2] + 4) = (u8 *)pauVar7 + headerSize;
 
-  FUN_00521250(pauVar7 + 3,uVar4,iVar2);
+  FUN_00521250((u8 *)pauVar7 + headerSize,uVar4,iVar2);
 
   if (DAT_0069cc50[(u32)uVar1].destroy != (code)0x0) {
     uVar4 = DAT_0069cc50[(u32)uVar1].destroy(uVar4);
@@ -47563,7 +47575,7 @@ void FUN_0034f6b0(int param_1)
 
       }
 
-      if (-1 < *(int *)(iVar4 + 0x10)) {
+      if (*(int *)(iVar4 + 0x10) >= 0) {
 
         *pfVar3 = *pfVar3 + pfVar3[1];
 

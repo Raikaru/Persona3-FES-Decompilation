@@ -2912,17 +2912,18 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   u16 *puVar4;
 
-  int lVar5;
+  long lVar5;
 
   
 
   puVar4 = (u16 *)param_2;
 
+  lVar5 = (short)puVar4[2];
+
   piVar1 = *(int **)(puVar4 + 0x16);
 
   if (piVar1 != (int *)0x0) {
 
-    lVar5 = (short)puVar4[2];
 
 
     if (((lVar5 < (u32)*(u16 *)(piVar1 + 1)) &&
@@ -8477,7 +8478,7 @@ u32 func_0031be80(u32 param_1)
 
   short sVar2;
 
-  short sVar3;
+  u16 sVar3;
 
   bool bVar4;
 
@@ -8557,7 +8558,7 @@ u32 func_0031be80(u32 param_1)
 
     } while (0 < iVar7);
 
-    if (*(short *)(iVar8 + 0xd4) != 5) {
+    if (*(u16 *)(iVar8 + 0xd4) != 5) {
 
       bVar4 = false;
 
@@ -8567,9 +8568,9 @@ u32 func_0031be80(u32 param_1)
 
       for (iVar8 = 0; iVar8 < 0x14; iVar8 = iVar8 + 1) {
 
-        if (sVar3 == asStack_20[iVar8]) {
+        if (sVar3 == (u16)asStack_20[iVar8]) {
 
-          if (asStack_20[iVar8] == 0x3e6) {
+          if ((u16)asStack_20[iVar8] == 0x3e6) {
 
             iStack_4 = 9;
 
@@ -8594,6 +8595,7 @@ u32 func_0031be80(u32 param_1)
     }
 
 LAB_0031bfb8:
+
 
     if (bVar4) {
 

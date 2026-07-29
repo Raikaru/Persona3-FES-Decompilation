@@ -284,7 +284,7 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
   short *psVar12;
   u32 uVar12;
-  u8 *puVar14;
+  FclPersonaTableEntry *puVar14;
   u32 *puVar13;
 
   
@@ -318,7 +318,7 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
       if (uVar5 != 0) {
 
-        puVar14 = (u8 *)DAT_007ce420;
+        puVar14 = (FclPersonaTableEntry *)DAT_007ce420;
         for (sVar7 = 0; bVar2 = 0, sVar7 < 0xc; sVar7 = sVar7 + 1) {
 
           uVar1 = *(u32 *)((int)param_4 + sVar7 * 0xc + 4);
@@ -333,7 +333,7 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
               if ((long)*(char *)((int)psVar12 + iVar10 * 2 + 5) << 0x39 < 0) {
 
-                uVar12 = (u32)puVar14[(u32)*(u16 *)(uVar1 + 2) * 0xe + 2];
+                uVar12 = puVar14[*(u16 *)(uVar1 + 2)].fields.arcana;
 
               }
               if (uVar12 == uVar5) {

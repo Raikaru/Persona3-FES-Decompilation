@@ -134,12 +134,16 @@ extern code DAT_00960178_abs[];
 extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
+#pragma alias FUN_001339a0_f32 FUN_001339a0
+extern int FUN_001339a0_f32(float param_1,int param_2,int param_3,int param_4,int param_5);
 
 extern u32 LAB_003c84bc;
 extern u32 LAB_003cf728;
 extern u32 LAB_003cf7a4;
 extern u32 LAB_003cf9d8;
 extern u8 * PTR_LAB_006a4060;
+#pragma alias PTR_LAB_006a4060_abs PTR_LAB_006a4060
+extern u8 *PTR_LAB_006a4060_abs[];
 extern u8 * PTR_s_facility_pss_battle_pak_006a4040;
 #pragma alias fclMiscFacilityPssBattlePakTable PTR_s_facility_pss_battle_pak_006a4040
 extern u8 *fclMiscFacilityPssBattlePakTable[];
@@ -1316,17 +1320,17 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   u32 uVar3;
 
-  int iVar4;
+  u8 **ppuVar6;
 
   u32 *puVar5;
 
-  u8 **ppuVar6;
-
   int *piVar7;
 
-  u32 auStack_60 [16];
+  int iVar4;
 
   int aiStack_20 [8];
+
+  u32 auStack_60 [16];
 
   
 
@@ -1356,7 +1360,7 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   } while (0 < iVar4);
 
-  ppuVar6 = &PTR_LAB_006a4060;
+  ppuVar6 = PTR_LAB_006a4060_abs;
 
   puVar5 = auStack_60;
 
@@ -1376,7 +1380,7 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   } while (0 < iVar4);
 
-  uVar2 = (*DAT_00960178)(0xec,0x40000);
+  uVar2 = DAT_00960178_abs[0](0xec,0x40000);
 
   FUN_00521408(uVar2,0,0xec);
 
@@ -1416,7 +1420,7 @@ u64 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   FUN_00194b20(uVar3,fclMiscTaskDescriptor2,0x18aa,fclMiscTaskDrawCallback,0,uVar2);
 
-  iVar4 = FUN_001339a0(0,uVar3,0x1488,0,0xffffffffffffffff);
+  iVar4 = FUN_001339a0_f32(0.0f,uVar3,0x1488,0,-1);
 
   piVar7[0x31] = iVar4;
 

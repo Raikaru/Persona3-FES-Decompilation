@@ -2786,7 +2786,7 @@ void FUN_003b2020(int param_1,int param_2)
 
   u8 uVar2;
 
-  u8 *pbVar3;
+  int clearCount;
 
   int iVar4;
 
@@ -2796,7 +2796,6 @@ void FUN_003b2020(int param_1,int param_2)
 
   long lVar7;
 
-  u8 *pbVar8;
 
   u8 *pbVar9;
 
@@ -2812,22 +2811,12 @@ void FUN_003b2020(int param_1,int param_2)
 
   
 
-  pbVar8 = (u8 *)0x3;
-
+  clearCount = 3;
   pbVar9 = abStack_4;
-
-  pbVar3 = pbVar9;
-
-  while (pbVar3 != (u8 *)0x0) {
-
+  while (clearCount != 0) {
     *pbVar9 = 0;
-
     pbVar9 = pbVar9 + 1;
-
-    pbVar8 = pbVar8 + -1;
-
-    pbVar3 = pbVar8;
-
+    clearCount = clearCount - 1;
   }
 
   if (param_1 != 0) {
@@ -2913,15 +2902,10 @@ void FUN_003b2020(int param_1,int param_2)
       }
 
       lVar7 = FUN_003b0970_typed(abStack_4,cVar1,*(u8 *)(param_2 + 0xd),
-
                            *(u8 *)(param_2 + 0xe),*(u32 *)(param_2 + 0x14));
-
       uVar2 = uGpffffa7fc;
-
       iVar5 = (int)lVar7;
-
       *(int *)(param_2 + 0x14) = iVar5;
-
       if (lVar7 == 0) {
 
         FUN_0019d3f0(DAT_006a2730,0x848);
@@ -2985,13 +2969,10 @@ void FUN_003b22a0(u32 *param_1)
     iVar6 = param_1[5];
 
     lVar7 = FUN_003b0970_typed(&gp0xffffa838,0,*(u8 *)((int)param_1 + 0xd),
-
                          *(u8 *)((int)param_1 + 0xe),0);
 
     if (lVar7 != 0) {
-
       iVar6 = FUN_003b1920_typed(iVar6,lVar7,1);
-
     }
 
     param_1[5] = iVar6;
