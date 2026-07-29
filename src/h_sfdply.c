@@ -3110,9 +3110,9 @@ void func_0010f6c0(KwlnTask* task)
                                 record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                                 screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
                                                      record->x0);
-                                screenY = (s16)(448 -
-                                                ((s32)*(f32*)(work + 0x3dc) +
-                                                 record->y0));
+                                screenY = (s16)(s32)(448.0f -
+                                                (f32)((s32)*(f32*)(work + 0x3dc) +
+                                                      record->y0));
                                 func_004a5dd0(*(void**)(entry + 0x148),
                                               (s8*)colorBytes, (s8*)colorBytes,
                                               (s8*)colorBytes, (s8*)colorBytes);
@@ -3153,9 +3153,9 @@ void func_0010f6c0(KwlnTask* task)
                                 record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                                 screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
                                                      record->x0);
-                                screenY = (s16)(448 -
-                                                ((s32)*(f32*)(work + 0x3dc) +
-                                                 record->y0));
+                                screenY = (s16)(s32)(448.0f -
+                                                (f32)((s32)*(f32*)(work + 0x3dc) +
+                                                      record->y0));
                                 func_004a5dd0(*(void**)(entry + 0x148),
                                               (s8*)colorBytes, (s8*)colorBytes,
                                               (s8*)colorBytes, (s8*)colorBytes);
@@ -3187,9 +3187,9 @@ void func_0010f6c0(KwlnTask* task)
                                 record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                                 screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
                                                      record->x1);
-                                screenY = (s16)(448 -
-                                                ((s32)*(f32*)(work + 0x3dc) +
-                                                 record->y1));
+                                screenY = (s16)(s32)(448.0f -
+                                                (f32)((s32)*(f32*)(work + 0x3dc) +
+                                                      record->y1));
                                 func_004a5dd0(*(void**)(entry + 0x148),
                                               (s8*)colorBytes, (s8*)colorBytes,
                                               (s8*)colorBytes, (s8*)colorBytes);

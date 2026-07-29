@@ -1038,7 +1038,11 @@ void func_002771f0(void)
         else
             alpha = 0.0f;
 
-        func_003b0d70(OP_U32(work, 0x3950), 680, 2704);
+        {
+            f32 x = 424.0f;
+            f32 y = 169.0f;
+            func_003b0d70(OP_U32(work, 0x3950), (s32)(x * 16.0f), (s32)(y * 16.0f));
+        }
         color[0] = (u8)(alpha * 55.0f + 199.0f);
         color[1] = (u8)(alpha * 70.0f + 185.0f);
         color[2] = (u8)(alpha * -95.0f + 255.0f);

@@ -187,6 +187,7 @@ void func_00208f60(void)
     f32 layoutY;
     f32 originX2;
     f32 scale;
+    f32 fullAlpha;
     s32 i;
     s32 j;
 
@@ -194,6 +195,7 @@ void func_00208f60(void)
     work = (u8*)gBattlePanelWork;
     texture1 = func_0021c3f0(1);
     texture5 = func_0021c3f0(5);
+    fullAlpha = 255.0f;
     for (i = 0; i < *(s32*)(work + 0x2950); i++) {
         slot = work + i * 0x420 + 0x10;
         *(u32*)slot &= ~1u;
@@ -257,7 +259,7 @@ void func_00208f60(void)
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
-        color[3] = (u8)255.0f;
+        color[3] = (u8)fullAlpha;
         func_0021d950(slot + 0x320, color);
         frame = func_0021cca0(texture5, 4);
         func_0021cd00(frame, rectangle);
@@ -275,7 +277,7 @@ void func_00208f60(void)
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
-        color[3] = (u8)255.0f;
+        color[3] = (u8)fullAlpha;
         func_0021d950(slot + 0x220, color);
     }
 }

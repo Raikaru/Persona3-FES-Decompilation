@@ -1692,7 +1692,7 @@ void FUN_002265D0(void)
 
     ratio = 40.0f + 215.0f * transAlpha;
     color[0] = (u8)ratio;
-    color[1] = color[0];
+    color[1] = (u8)ratio;
     ratio = 30.0f + 225.0f * transAlpha;
     color[2] = (u8)ratio;
     ratio = stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) * *(f32*)(work + 0x7214);
@@ -1790,7 +1790,7 @@ void FUN_002265D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    ratio = (f32)((s32)(30.0f + 225.0f * transAlpha) & 0xff) * 2.0f *
+    ratio = (f32)(u8)(30.0f + 225.0f * transAlpha) * 2.0f *
             stateAlpha * *(f32*)(work + 0x7214);
     color[3] = (u8)ratio;
     for (j = 0; j < 2; ++j) {
@@ -1799,7 +1799,8 @@ void FUN_002265D0(void)
         FUN_0021d950(slot + 0x2330, color);
     }
 
-    ratio = 255.0f * transAlpha;
+    ratio = (f32)(u8)(255.0f * transAlpha) * 2.0f *
+            stateAlpha * *(f32*)(work + 0x7214);
     color[3] = (u8)ratio;
     for (j = 2; j < 6; ++j) {
         u8* slot = work + j * 0x200;
@@ -2250,8 +2251,6 @@ void FUN_00228E40(void)
     f32 alpha2;
     f32 blend;
     f32 weight;
-    u8 alphaByte;
-    s32 rawInt;
     u32 percentColour;
     u32 signedColour;
     u32 greyColour;
@@ -2313,15 +2312,14 @@ void FUN_00228E40(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    alphaByte = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
-    color[3] = alphaByte;
+    color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
     FUN_0021d950(work + 0x4230, color);
     FUN_0021d950(work + 0x4330, color);
 
-    percentColour = ((u8)(u32)(255.0f * (alpha1 * alpha2) * weight) * 50 / 100) | 0xffffff00u;
-    rawInt = (s32)(255.0f * (alpha1 * alpha2) * weight);
-    signedColour = (u32)rawInt | 0xffffff00u;
-    greyColour = (u32)rawInt | 0xcccccc00u;
+    percentColour = ((u8)(u32)(255.0f * (alpha1 * alpha2) *
+                               *(f32*)(work + 0x7214)) * 50 / 100) | 0xffffff00u;
+    signedColour = (u32)(255.0f * (1.0f - blend) * weight) | 0xffffff00u;
+    greyColour = (u32)(255.0f * (1.0f - blend) * weight) | 0xcccccc00u;
 
     for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
         record = records + i * 0x510;
@@ -2356,7 +2354,8 @@ void FUN_00228E40(void)
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
-        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
+        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) *
+                             *(f32*)(work + 0x7214));
         FUN_0021d950(record + 0x10, color);
 
         rect[0] = 281.0f + basePos[0];
@@ -2373,8 +2372,8 @@ void FUN_00228E40(void)
             color[1] = 0x5a;
             color[2] = 0x5a;
         }
-        alphaByte = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
-        color[3] = alphaByte;
+        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) *
+                             *(f32*)(work + 0x7214));
         FUN_0021d950(record + 0x110, color);
         FUN_0021d950(record + 0x210, color);
         FUN_0021d950(record + 0x310, color);
@@ -2396,7 +2395,8 @@ void FUN_00228E40(void)
             color[1] = 0x4e;
             color[2] = 0x50;
         }
-        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) * weight);
+        color[3] = (u8)(u32)(255.0f * (alpha1 * alpha2) *
+                             *(f32*)(work + 0x7214));
         FUN_0021d950(record + 0x410, color);
     }
 
@@ -2412,7 +2412,7 @@ void FUN_00228E40(void)
     rect[1] = 19.0f + basePos[1] + 77.0f;
     FUN_003b0d70(sub, (s32)rect[0] << 4, (s32)rect[1] << 3);
 
-    colour = (u8)(u32)(255.0f * blend * weight) | 0xffffff00u;
+    colour = (u8)(u32)(255.0f * blend * *(f32*)(work + 0x7214)) | 0xffffff00u;
     FUN_003b0e20(sub, colour);
 
     if (*(u32*)(overlay + 8) == 0) {
@@ -2429,7 +2429,7 @@ void FUN_00228E40(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    color[3] = (u8)(u32)(255.0f * blend * weight);
+    color[3] = (u8)(u32)(255.0f * blend * *(f32*)(work + 0x7214));
     FUN_0021d950(overlay + 0x10, color);
 
     rect[0] = 281.0f + basePos[0];
@@ -2439,8 +2439,7 @@ void FUN_00228E40(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    alphaByte = (u8)(u32)(255.0f * blend * weight);
-    color[3] = alphaByte;
+    color[3] = (u8)(u32)(255.0f * blend * *(f32*)(work + 0x7214));
     FUN_0021d950(overlay + 0x110, color);
     FUN_0021d950(overlay + 0x210, color);
     FUN_0021d950(overlay + 0x310, color);
@@ -2455,7 +2454,7 @@ void FUN_00228E40(void)
     color[0] = *((u8*)frame + 0x1c);
     color[1] = *((u8*)frame + 0x1d);
     color[2] = *((u8*)frame + 0x1e);
-    color[3] = (u8)(u32)(255.0f * blend * weight);
+    color[3] = (u8)(u32)(255.0f * blend * *(f32*)(work + 0x7214));
     FUN_0021d950(overlay + 0x410, color);
 }
 #pragma pop

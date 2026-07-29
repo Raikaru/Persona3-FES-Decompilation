@@ -1790,7 +1790,7 @@ void func_001f3270(KwlnTask *task)
             if (func_0016f190(0x1319) != 0) {
                 f32 chance = (f32)(s32)(s8)value;
                 chance = chance + chance;
-                value = (u32)(s32)chance;
+                value = (u32)chance;
             }
             if (randomValue < (value & 0xffff)) {
                 resultFlags |= 4;

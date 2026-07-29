@@ -151,7 +151,7 @@ extern KwlnTask* func_001d3c40(KwlnTask* parent, u32 model);
 extern KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit);
 extern u32 func_0016c970(s16 pcId);
 extern u16 func_0016c4f0(s16 pcId);
-extern u16 func_0016c5f0(s16 pcId);
+extern u32 func_0016c5f0(s16 pcId);
 extern void func_0016cf40(s16 pcId, u16 value);
 extern void func_001adc20(KwlnTask* collisCtlTask, const RwV3d* position);
 extern s32 func_001dde00(s32 value);
@@ -3010,15 +3010,29 @@ void* func_001d3ce0(KwlnTask* task)
 {
     s32* work;
     RwV3d pos;
-    RwRGBA color;
+    RwRGBA colors[2];
     u32 status;
     u32 now;
-    s32 hp;
+    u32 hp;
     s32 damage;
     u8* scene;
+    s32 i;
+    u8* colorSrc;
+    u8* colorDst;
 
     u8* colorData;
     work = (s32*)task->workData;
+    colorSrc = gp0xffff95d0;
+    colorDst = (u8*)colors;
+    i = 4;
+    do
+    {
+        colorDst[0] = colorSrc[0];
+        colorDst[1] = colorSrc[1];
+        colorSrc += 2;
+        colorDst += 2;
+        i--;
+    } while (i > 0);
     status = func_0016c970((s16)((FldUnit*)work[1])->charId);
     if ((status & 0x80) != 0 &&
         !(piGpffffa850[0] == 0x20 && piGpffffa850[1] == 2) &&
@@ -3048,7 +3062,8 @@ void* func_001d3ce0(KwlnTask* task)
         if ((u32)work[4] + 0x960 < now)
         {
             hp = func_0016c5f0((s16)((FldUnit*)work[1])->charId);
-            damage = hp / 20;
+            damage = (s32)(f32)hp;
+            damage = (s32)((f32)damage / 20.0f);
             if (damage < 1) damage = 1;
             damage = (s32)func_0016c4f0((s16)((FldUnit*)work[1])->charId) - damage;
             if (damage < 1) damage = 1;
@@ -3057,28 +3072,22 @@ void* func_001d3ce0(KwlnTask* task)
                 ((FldUnit*)work[1])->resrc->collisCtlTask);
         }
         colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
-        color.r = colorData[0];
-        color.g = colorData[1];
-        color.b = colorData[2];
-        color.a = colorData[3];
-        func_00318ad0(((FldUnit*)work[1])->mdl, &color);
+        colors[1].a = colorData[3];
+        func_00318ad0(((FldUnit*)work[1])->mdl, &colors[1]);
         scene = func_001b9120();
         func_001a92d0(*(void**)(scene + 0x11f8), (void*)work[3], &pos);
     }
     else
     {
         colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
-        color.r = colorData[0];
-        color.g = colorData[1];
-        color.b = colorData[2];
-        color.a = colorData[3];
+        colors[0].a = colorData[3];
         if (work[2] == 1)
         {
             work[2] = 0;
             scene = func_001b9120();
             func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
         }
-        func_00318ad0(((FldUnit*)work[1])->mdl, &color);
+        func_00318ad0(((FldUnit*)work[1])->mdl, &colors[0]);
     }
     return NULL;
 }

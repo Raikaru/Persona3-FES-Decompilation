@@ -72,19 +72,20 @@ extern void func_004d7f60(s32 state, u32 value);
 
 #define bsaAlpha(value) ((u8)(u32)(value))
 
-#define bsaPlaceQuad(work, destination, frame, x, y, width, height, alpha) \
+#define bsaPlaceQuad(work, destination, frame, x, y, width, height, alphaSource) \
     do { \
         s32* quadDestination = (work) + (destination); \
+        u8 quadColor[4]; \
         rect[0] = (x); \
         rect[1] = (y); \
         rect[2] = (width) < 0.0f ? BSA_FRAME_W(frame) : (width); \
         rect[3] = (height) < 0.0f ? BSA_FRAME_H(frame) : (height); \
         func_0021d8e0(quadDestination, rect); \
-        drawColor[0] = 0xff; \
-        drawColor[1] = 0xff; \
-        drawColor[2] = 0xff; \
-        drawColor[3] = (alpha); \
-        func_0021d950(quadDestination, drawColor); \
+        quadColor[0] = 0xff; \
+        quadColor[1] = 0xff; \
+        quadColor[2] = 0xff; \
+        quadColor[3] = (u32)(alphaSource); \
+        func_0021d950(quadDestination, quadColor); \
     } while (0)
 #define bsaSetColor(destination, alpha) \
     do { \
@@ -426,6 +427,7 @@ void bsaMain00210d90(BsaWork* work)
     u32 image;
     u32 resource;
     f32 alpha;
+    f32* alphaSource;
     f32 slide;
     f32 iconAlpha;
     f32 x;
@@ -435,6 +437,7 @@ void bsaMain00210d90(BsaWork* work)
     s32 i;
     f32 rect[4];
     u8 drawColor[4];
+    u8 cachedAlpha;
 
     p = (s32*)work->words;
     table6 = func_0021c3f0(6);
@@ -447,7 +450,9 @@ void bsaMain00210d90(BsaWork* work)
     slide = 0.0f;
     iconAlpha = 1.0f;
     bsaTransition(p, &alpha, &slide, &iconAlpha);
-    #define alpha255 (alpha * 255.0f)
+    cachedAlpha = bsaAlpha(alpha * 255.0f);
+    alphaSource = &alpha;
+    #define alpha255 (*alphaSource * 255.0f)
     base = (p[0] == 0) ? 180.0f : 0.0f;
 
     image = func_0021cca0(table2, 0x1f);
@@ -462,8 +467,7 @@ void bsaMain00210d90(BsaWork* work)
     drawColor[3] = bsaAlpha(alpha255);
     func_0021d950(p + 0x10, drawColor);
     image = func_0021cca0(table2, 0x28);
-    bsaPlaceQuad(p, 0x510, image, 18.0f, 54.0f + base + slide,
-                 -1.0f, -1.0f, bsaAlpha(iconAlpha * 255.0f));
+    bsaPlaceQuad(p, 0x510, image, 18.0f, 54.0f + base + slide, -1.0f, -1.0f, iconAlpha * 255.0f);
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
         f32 origin[2];
         origin[0] = p[0x4c40] < 10 ? 113.0f : 106.0f;
@@ -472,16 +476,12 @@ void bsaMain00210d90(BsaWork* work)
         for (i = 0; i < 2; i++) bsaSetColor(p + 0x4c50 + i * 0x40, bsaAlpha(alpha255));
     } else {
         image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f, -1.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x33);
-        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
-        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image),
-                     base + 58.0f, 30.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f, -1.0f, -1.0f, cachedAlpha);
+        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image), base + 58.0f, 30.0f, -1.0f, cachedAlpha);
         image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f, -1.0f, -1.0f, cachedAlpha);
     }
     if ((p[1] & BSA_FLAG_STATUS) == 0) {
         f32 origin[2];
@@ -491,16 +491,12 @@ void bsaMain00210d90(BsaWork* work)
         for (i = 0; i < 4; i++) bsaSetColor(p + 0x1398 + i * 0x40, bsaAlpha(alpha255));
     } else {
         image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x192c, image, 178.0f, base + 109.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x192c, image, 178.0f, base + 109.0f, -1.0f, -1.0f, cachedAlpha);
         image = func_0021cca0(table2, 0x34);
-        bsaPlaceQuad(p, 0x196c, image, 167.0f, base + 109.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
-        bsaPlaceQuad(p, 0x19ac, image, 167.0f + BSA_FRAME_W(image),
-                     base + 109.0f, 43.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x196c, image, 167.0f, base + 109.0f, -1.0f, -1.0f, cachedAlpha);
+        bsaPlaceQuad(p, 0x19ac, image, 167.0f + BSA_FRAME_W(image), base + 109.0f, 43.0f, -1.0f, cachedAlpha);
         image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x19ec, image, 214.0f, base + 109.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x19ec, image, 214.0f, base + 109.0f, -1.0f, -1.0f, cachedAlpha);
     }
     if ((p[1] & BSA_FLAG_PERSONA) == 0) {
         f32 origin[2];
@@ -510,16 +506,12 @@ void bsaMain00210d90(BsaWork* work)
         for (i = 0; i < 4; i++) bsaSetColor(p + 0x149c + i * 0x40, bsaAlpha(alpha255));
     } else {
         image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x1a2c, image, 178.0f, base + 126.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1a2c, image, 178.0f, base + 126.0f, -1.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x34);
-        bsaPlaceQuad(p, 0x1a6c, image, 167.0f, base + 126.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
-        bsaPlaceQuad(p, 0x1aac, image, 167.0f + BSA_FRAME_W(image),
-                     base + 126.0f, 43.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1a6c, image, 167.0f, base + 126.0f, -1.0f, -1.0f, alpha255);
+        bsaPlaceQuad(p, 0x1aac, image, 167.0f + BSA_FRAME_W(image), base + 126.0f, 43.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x1aec, image, 214.0f, base + 126.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1aec, image, 214.0f, base + 126.0f, -1.0f, -1.0f, alpha255);
     }
 
 
@@ -527,72 +519,50 @@ void bsaMain00210d90(BsaWork* work)
     func_003b0e20(resource, 0xffffff00u | bsaAlpha(alpha255));
     func_003b0d70(resource, 0xa10, (s32)((base + 77.0f) * 8.0f));
     image = bsaMain00215830(DAT_007ce410[(*(u16*)(p + 3)) * 0x3e + 2]);
-    bsaPlaceQuad(p, 0x590, image, 59.0f, base + 78.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x590, image, 59.0f, base + 78.0f, -1.0f, -1.0f, alpha255);
     image = func_0021cca0(table2, 0x2f);
-    bsaPlaceQuad(p, 0x5d0, image, 148.0f, base + 88.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x5d0, image, 148.0f, base + 88.0f, -1.0f, -1.0f, alpha255);
     image = func_0021cca0(table1, 0x47);
-    bsaPlaceQuad(p, 0x50, image, 59.0f, base + 111.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x50, image, 59.0f, base + 111.0f, -1.0f, -1.0f, alpha255);
     image = func_0021cca0(table2, 0x30);
-    bsaPlaceQuad(p, 0x90, image, 146.0f, base + 112.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x90, image, 146.0f, base + 112.0f, -1.0f, -1.0f, alpha255);
     image = func_0021cca0(table1, 0x48);
-    bsaPlaceQuad(p, 0xd0, image, 59.0f, base + 128.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0xd0, image, 59.0f, base + 128.0f, -1.0f, -1.0f, alpha255);
     image = func_0021cca0(table2, 0x30);
-    bsaPlaceQuad(p, 0x110, image, 146.0f, base + 129.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x110, image, 146.0f, base + 129.0f, -1.0f, -1.0f, alpha255);
     image = func_0021cca0(table2, 0x21);
-    bsaPlaceQuad(p, 0x150, image, 46.0f, base + 141.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
-    bsaPlaceQuad(p, 0x190, image, 46.0f, base + 53.0f,
-                 -1.0f, 88.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x150, image, 46.0f, base + 141.0f, -1.0f, -1.0f, alpha255);
+    bsaPlaceQuad(p, 0x190, image, 46.0f, base + 53.0f, -1.0f, 88.0f, alpha255);
     image = func_0021cca0(table2, 0x24);
-    bsaPlaceQuad(p, 0x1d0, image, 58.0f, base + 141.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
-    bsaPlaceQuad(p, 0x210, image, 58.0f + BSA_FRAME_W(image),
-                 base + 141.0f, 318.0f, -1.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x1d0, image, 58.0f, base + 141.0f, -1.0f, -1.0f, alpha255);
+    bsaPlaceQuad(p, 0x210, image, 58.0f + BSA_FRAME_W(image), base + 141.0f, 318.0f, -1.0f, alpha255);
     image = func_0021cca0(table2, 0x22);
-    bsaPlaceQuad(p, 0x250, image, 46.0f, base + 203.0f,
-                 -1.0f, -1.0f, bsaAlpha(alpha255));
-    bsaPlaceQuad(p, 0x290, image, 46.0f, base + 158.0f,
-                 -1.0f, 45.0f, bsaAlpha(alpha255));
+    bsaPlaceQuad(p, 0x250, image, 46.0f, base + 203.0f, -1.0f, -1.0f, alpha255);
+    bsaPlaceQuad(p, 0x290, image, 46.0f, base + 158.0f, -1.0f, 45.0f, alpha255);
 
     for (i = 0; i < 9; i++) {
         image = func_0021cca0(table2, 0x26);
-        bsaPlaceQuad(p, i * 0x40 + 0x2d0, image,
-                     (f32)i * 37.0f + 53.0f, base + 203.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, i * 0x40 + 0x2d0, image, (f32)i * 37.0f + 53.0f, base + 203.0f, -1.0f, -1.0f, alpha255);
     }
     for (i = 0; i < 9; i++) {
         image = func_0021cca0(table2, i + 0x16);
-        bsaPlaceQuad(p, i * 0x40 + 0x610, image,
-                     (f32)i * 37.0f + 53.0f, base + 166.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, i * 0x40 + 0x610, image, (f32)i * 37.0f + 53.0f, base + 166.0f, -1.0f, -1.0f, alpha255);
     }
     if ((p[1] & BSA_FLAG_AILMENT) == 0) {
         for (i = 0; i < 9; i++) {
             if (p[0x159c + i] != 5) {
                 image = func_0021cca0(table2, p[0x159c + i] + 0x29);
-                bsaPlaceQuad(p, i * 0x40 + 0x15a8, image,
-                             (f32)i * 37.0f + 53.0f, base + 190.0f,
-                             -1.0f, -1.0f, bsaAlpha(alpha255));
+                bsaPlaceQuad(p, i * 0x40 + 0x15a8, image, (f32)i * 37.0f + 53.0f, base + 190.0f, -1.0f, -1.0f, alpha255);
             }
         }
     } else {
         image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x1b2c, image, 178.0f, base + 171.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1b2c, image, 178.0f, base + 171.0f, -1.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x35);
-        bsaPlaceQuad(p, 0x1b6c, image, 137.0f, base + 171.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
-        bsaPlaceQuad(p, 0x1bac, image, 137.0f + BSA_FRAME_W(image),
-                     base + 171.0f, 103.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1b6c, image, 137.0f, base + 171.0f, -1.0f, -1.0f, alpha255);
+        bsaPlaceQuad(p, 0x1bac, image, 137.0f + BSA_FRAME_W(image), base + 171.0f, 103.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x1bec, image, 244.0f, base + 171.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1bec, image, 244.0f, base + 171.0f, -1.0f, -1.0f, alpha255);
     }
 
     if (p[0] == 1) {
@@ -612,14 +582,11 @@ void bsaMain00210d90(BsaWork* work)
         }
         value = personaSlide;
         image = func_0021cca0(table2, 0x27);
-        bsaPlaceQuad(p, 0x550, image, 18.0f, value + 274.0f,
-                     -1.0f, -1.0f, bsaAlpha(personaAlpha * 255.0f));
+        bsaPlaceQuad(p, 0x550, image, 18.0f, value + 274.0f, -1.0f, -1.0f, personaAlpha * 255.0f);
         image = func_0021cca0(table2, 0x20);
-        bsaPlaceQuad(p, 0x12d0, image, 46.0f, 227.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x12d0, image, 46.0f, 227.0f, -1.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x31);
-        bsaPlaceQuad(p, 0x1250, image, 82.0f, 227.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha255));
+        bsaPlaceQuad(p, 0x1250, image, 82.0f, 227.0f, -1.0f, -1.0f, alpha255);
         if ((p[1] & BSA_FLAG_BOSS) == 0 && p[0x17e8] != 7)
             image = func_0021cca0(table2, p[0x17e8] + 0x16);
         else
@@ -643,15 +610,11 @@ void bsaMain00210d90(BsaWork* work)
             groupX = baseX + 46.0f;
             groupY = (f32)(i & 3) * 30.0f + 292.0f;
             image = func_0021cca0(table2, 0x23);
-            bsaPlaceQuad(p, i * 0x80 + 0x850, image,
-                         groupX, groupY, -1.0f, -1.0f, bsaAlpha(alpha255));
-            bsaPlaceQuad(p, i * 0x80 + 0x890, image,
-                         groupX, groupY - 17.0f, -1.0f, 17.0f, bsaAlpha(alpha255));
+            bsaPlaceQuad(p, i * 0x80 + 0x850, image, groupX, groupY, -1.0f, -1.0f, alpha255);
+            bsaPlaceQuad(p, i * 0x80 + 0x890, image, groupX, groupY - 17.0f, -1.0f, 17.0f, alpha255);
             image = func_0021cca0(table2, 0x25);
-            bsaPlaceQuad(p, i * 0x80 + 0xc50, image,
-                         panelBaseX + 58.0f, groupY, -1.0f, -1.0f, bsaAlpha(alpha255));
-            bsaPlaceQuad(p, i * 0x80 + 0xc90, image,
-                         panelBaseX + 58.0f + BSA_FRAME_W(image), groupY, 236.0f, -1.0f, bsaAlpha(alpha255));
+            bsaPlaceQuad(p, i * 0x80 + 0xc50, image, panelBaseX + 58.0f, groupY, -1.0f, -1.0f, alpha255);
+            bsaPlaceQuad(p, i * 0x80 + 0xc90, image, panelBaseX + 58.0f + BSA_FRAME_W(image), groupY, 236.0f, -1.0f, alpha255);
             if (i < (s32)p[0xd]) {
                 image = func_0021cca0(table6,
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
@@ -672,20 +635,12 @@ void bsaMain00210d90(BsaWork* work)
                 }
             } else {
                 image = func_0021cca0(table2, 0x32);
-                bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image,
-                             panelBaseX + 142.0f, groupY - 14.0f,
-                             -1.0f, -1.0f, bsaAlpha(alpha255));
+                bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image, panelBaseX + 142.0f, groupY - 14.0f, -1.0f, -1.0f, alpha255);
                 image = func_0021cca0(table2, 0x35);
-                bsaPlaceQuad(p, i * 0x100 + 0x1c6c, image,
-                             panelBaseX + 101.0f, groupY - 14.0f,
-                             -1.0f, -1.0f, bsaAlpha(alpha255));
-                bsaPlaceQuad(p, i * 0x100 + 0x1cac, image,
-                             panelBaseX + 101.0f + BSA_FRAME_W(image), groupY - 14.0f,
-                             103.0f, -1.0f, bsaAlpha(alpha255));
+                bsaPlaceQuad(p, i * 0x100 + 0x1c6c, image, panelBaseX + 101.0f, groupY - 14.0f, -1.0f, -1.0f, alpha255);
+                bsaPlaceQuad(p, i * 0x100 + 0x1cac, image, panelBaseX + 101.0f + BSA_FRAME_W(image), groupY - 14.0f, 103.0f, -1.0f, alpha255);
                 image = func_0021cca0(table2, 0x36);
-                bsaPlaceQuad(p, i * 0x100 + 0x1cec, image,
-                             panelBaseX + 208.0f, groupY - 14.0f,
-                             -1.0f, -1.0f, bsaAlpha(alpha255));
+                bsaPlaceQuad(p, i * 0x100 + 0x1cec, image, panelBaseX + 208.0f, groupY - 14.0f, -1.0f, -1.0f, alpha255);
             }
         }
     }

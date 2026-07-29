@@ -1472,12 +1472,14 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             equipVecA.y = posY + 15.0f;
             valA = func_0016f9f0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecA,
-                         (s32)scale, 0xff, 0xff, 0xff, alpha, valA, 3);
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, alpha, valA, 3);
             equipVecB.x = posX + 525.0f;
             equipVecB.y = posY + 15.0f;
             valB = func_0016fae0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecB,
-                         (s32)scale, 0xff, 0xff, 0xff, alpha, valB, 3);
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, alpha, valB, 3);
             break;
         case 1:
             campEquipDrawSpriteCall(
@@ -1496,7 +1498,8 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             equipVecA.y = posY + 15.0f;
             valA = func_0016fbd0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecA,
-                         (s32)scale, 0xff, 0xff, 0xff, alpha, valA, 3);
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, alpha, valA, 3);
             break;
         case 2:
             campEquipDrawSpriteCall(
@@ -1515,7 +1518,8 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             equipVecA.y = posY + 15.0f;
             valA = func_0016fcc0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecA,
-                         (s32)scale, 0xff, 0xff, 0xff, alpha, valA, 3);
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, alpha, valA, 3);
             break;
         case 3:
             campEquipDrawSpriteCall(
@@ -1677,7 +1681,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                         statBlue = 0xff;
                     }
                     FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
-                                 equipVecA, (s32)scale,
+                                 equipVecA, (s32)*(f32*)(record + 0x24),
                                  statRed, statGreen, statBlue, alpha,
                                  itemStatA, 3);
 
@@ -1706,7 +1710,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                         statBlue = 0xff;
                     }
                     FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
-                                 equipVecB, (s32)scale,
+                                 equipVecB, (s32)*(f32*)(record + 0x24),
                                  statRed, statGreen, statBlue, alpha,
                                  itemStatB, 3);
                     break;
@@ -1734,7 +1738,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                         statBlue = 0xff;
                     }
                     FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
-                                 equipVecA, (s32)scale,
+                                 equipVecA, (s32)*(f32*)(record + 0x24),
                                  statRed, statGreen, statBlue, alpha,
                                  itemStatA, 3);
                     break;
@@ -1763,7 +1767,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                         statBlue = 0xff;
                     }
                     FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
-                                 equipVecA, (s32)scale,
+                                 equipVecA, (s32)*(f32*)(record + 0x24),
                                  statRed, statGreen, statBlue, alpha,
                                  itemStatA, 3);
                     break;
