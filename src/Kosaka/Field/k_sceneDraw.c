@@ -463,6 +463,7 @@ s32 func_0019e1f0(const void* charPtr1, const void* charPtr2)
 
 #pragma push
 /* Removing this worsens K_SceneDraw_UpdateDrwChrMdlTask (nd1774 -> nd1777) - measured W161. */
+#pragma opt_common_subs off
 // FUN_0019e330 NONMATCHING
 void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 {
@@ -745,6 +746,7 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_common_subs on
 #pragma pop
 
 // FUN_0019ee40

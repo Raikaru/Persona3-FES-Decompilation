@@ -1575,6 +1575,7 @@ void func_002f2890(BtlAction* action)
   func_002b9030(object);
 }
 
+#pragma optimization_level 2
 // FUN_002f2b40
 u32 func_002f2b40(BtlAction* action)
 {

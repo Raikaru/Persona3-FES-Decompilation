@@ -41,6 +41,10 @@ extern u8 DAT_006a9930[];
 /* FUSION_EXACT_PROTOS */
 void FUN_003e5e20(u8* param_1, u8* param_2);
 void FUN_0040e3f0(float param_1, float param_2, float param_3, float param_4, s32 param_5, s32 param_6, u8 param_7, s32 param_8, s32 param_9, s32 param_10, s32 param_11);
+#pragma alias FUN_0040e3f0_i2f1i3f3 FUN_0040e3f0
+extern void FUN_0040e3f0_i2f1i3f3(s32 param_5, s32 param_6, f32 param_1, u8 param_7,
+                                  s32 param_8, s32 param_9, s32 param_10, s32 param_11,
+                                  f32 param_2, f32 param_3, f32 param_4);
 void FUN_003e6130(int param_1);
 void FUN_003e6400(u32 param_1,u8* param_2);
 u64 FUN_003e6d40(void);
@@ -381,11 +385,9 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
         if (*(u8 *)(param_2 + 8) != 0)
         {
             fVar4 = DAT_007cad84 * (f32)*(u8 *)(param_2 + 8);
-            FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
-                         1.0f, 1.0f, *(s16 *)(param_2 + 4),
-                         *(s16 *)(param_2 + 6),
-                         (u8)fVar4,
-                         0xf7, 0, 0, 0);
+            FUN_0040e3f0_i2f1i3f3(*(s16 *)(param_2 + 4), *(s16 *)(param_2 + 6), 0.0f,
+                                  (u8)fVar4, 0xf7, 0, 0, 0,
+                                  (f32)(int)*(s16 *)(param_2 + 0xe), 1.0f, 1.0f);
         }
 
         *(u16 *)(param_2 + 10) = *(u16 *)(param_2 + 10) - 1;
@@ -6560,9 +6562,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
                (cVar3 = FUN_003c9ee0(*(u32 *)(iVar2 + 8)), cVar3 == '\x01')) {
 
               iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
-
               uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
-
               lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
 
               if (lVar5 != 0) {
@@ -6586,9 +6586,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
             if (cVar3 == '\0') {
 
               iVar4 = *(int *)(*(int *)(*(int *)(iVar1 + 0xc) + 0x14) + 0x1c);
-
               uVar7 = datGetPersonaByCompendium(*(u16 *)(*(int *)(iVar4 + 4) + 2));
-
               lVar5 = fclMisc003c9c10(*(u32 *)(iVar2 + 8),*(u32 *)(iVar4 + 4),uVar7);
 
               if (lVar5 != 0) {
@@ -6806,10 +6804,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
     }
 
     return (u8 *)0x0;
-
   }
-
   return (u8 *)&LAB_003c5170;
+
 
 }
 

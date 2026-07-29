@@ -302,6 +302,7 @@ FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int pa
 
 #pragma push
 /* Removing this worsens FUN_0040e710 (nd14 -> nd76) - measured W161. */
+#pragma opt_rebuildconditionals off
 // Confirmed b210 floor: +276/+368 only reverse commutative mul.s operands;
 // +308..+352 and +400..+444 select $v0 here versus $v1 in retail.
 // FUN_0040E710 NONMATCHING
@@ -373,6 +374,7 @@ scale_y_done:
   return 0;
 
 }
+#pragma opt_loop_invariants off
 #pragma pop
 
 // FUN_0040E930 NONMATCHING

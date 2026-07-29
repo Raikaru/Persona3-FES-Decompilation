@@ -614,6 +614,7 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     }
     *(u32*)0x007ce164 = *(u32*)0x007cdeac;
 }
+#pragma opt_loop_invariants off
 #pragma pop
 /*
  * Retail keeps the field resource table as direct archive pointers.
@@ -1513,6 +1514,7 @@ void FUN_001b4720(void* camera, u32* resource)
 
 #pragma push
 /* Removing this worsens FUN_001b4e00 (nd650 -> nd651) - measured W161. */
+#pragma opt_loop_invariants on
 // FUN_001b4e00 NONMATCHING
 void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
 {

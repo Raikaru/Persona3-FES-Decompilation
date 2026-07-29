@@ -121,6 +121,7 @@ void bsaMain0020fe20(BsaWork* work)
     work->words[1] = 0;
 }
 
+#pragma optimization_level 2
 // FUN_0020FE30 NONMATCHING
 void bsaMain0020fe30(u32* p, s32 mode, u32 unitId)
 {

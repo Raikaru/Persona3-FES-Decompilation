@@ -5194,6 +5194,7 @@ u8 func_002bff60(u64 param_1,long param_2,u32 original,long param_4)
   return DAT_007ce3f8[(original & 0xffff) * 0x2c + 8];
 }
 
+#pragma opt_propagation on
 // FUN_002c0070 NONMATCHING
 
 void func_002c0070(int param_1,int param_2)

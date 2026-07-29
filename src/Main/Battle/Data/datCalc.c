@@ -511,7 +511,11 @@ extern u32 FUN_0016f190();
 extern u32 FUN_0016f630();
 extern u32 FUN_0016f900();
 extern u32 FUN_0016f9f0();
+#pragma alias FUN_0016f9f0_datcalc FUN_0016f9f0
+extern u32 FUN_0016f9f0_datcalc(s16 pcId, s32 equipmentIdx);
 extern u32 FUN_0016fae0();
+#pragma alias FUN_0016fae0_datcalc FUN_0016fae0
+extern u32 FUN_0016fae0_datcalc(s16 pcId, s32 equipmentIdx);
 extern u32 FUN_0016fbd0();
 extern u32 FUN_0016fcc0();
 extern u32 FUN_00170760();
@@ -4897,7 +4901,7 @@ u32 FUN_00309080(u16 *param_1,u8 param_2)
 
 {
   u16 uVar1;
-  u16 uVar2;
+  s32 uVar2;
   u32 uVar3;
   int iVar4;
   
@@ -4925,13 +4929,13 @@ u32 FUN_00309080(u16 *param_1,u8 param_2)
     if (10 < uVar1) {
       FUN_0019d3f0((u32)D_0069aa80, 0x1116);
     }
-    uVar2 = FUN_0016cb80((s16)uVar1,0);
+    uVar2 = (s16)FUN_0016cb80((s16)uVar1,0);
     switch (param_2) {
     case 0:
-      uVar3 = FUN_0016f9f0((s16)uVar1);
+      uVar3 = FUN_0016f9f0_datcalc((s16)uVar1,uVar2);
       return uVar3;
     case 1:
-      uVar3 = FUN_0016fae0((s16)uVar1,uVar2);
+      uVar3 = FUN_0016fae0_datcalc((s16)uVar1,uVar2);
       return uVar3;
     default:
       FUN_0019d3f0((u32)D_0069aa80, 0x111f);
