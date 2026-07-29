@@ -325,6 +325,11 @@ void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
     case 4:
         campDrawRows(item, 8, 0x23);
         campSprite(item, campDrawX(item), campDrawY(item) + (f32)(selected * 0x23));
+        for (i = 0; i < 8 && first + i < count; i++) {
+            campText(item, campDrawX(item),
+                     campDrawY(item) + (f32)(i * 0x23 + 3),
+                     labels[first + i], i == selected ? 6 : 10, 0x78);
+        }
         break;
     case 3:
         {
@@ -692,9 +697,15 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
                     u32 col = (0xff - item->alpha) | 0xffffff00U;
                     FUN_00523ac8(text, 0x7cb66c,
                         DAT_007ce4ec + (personaBase + i + 0x110) * 0x13);
-                    FUN_003b2cb0(item->scale, (s32)(35.0f + item->x),
-                        (s32)((8.0f + (9.0f + item->y + (f32)rowOffset)) - 3.0f - 2.0f),
-                        col, selected == i ? 6 : 10, 1, (const char*)text, 0x10, 0);
+                    if (selected == i) {
+                        FUN_003b2cb0(item->scale, (s32)(35.0f + item->x),
+                            (s32)((8.0f + (9.0f + item->y + (f32)rowOffset)) - 3.0f - 2.0f),
+                            col, 6, 1, (const char*)text, 0x10, 0);
+                    } else {
+                        FUN_003b2cb0(item->scale, (s32)(35.0f + item->x),
+                            (s32)((8.0f + (9.0f + item->y + (f32)rowOffset)) - 3.0f - 2.0f),
+                            col, 10, 1, (const char*)text, 0x10, 0);
+                    }
                 }
             } else if (selected == i)
                 campMenuDrawSprite(parent, *labels, 0x15, item->alpha,

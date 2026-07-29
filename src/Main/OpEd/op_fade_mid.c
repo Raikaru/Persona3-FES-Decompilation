@@ -1225,9 +1225,11 @@ void func_00278550(void)
         rect[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
         rect[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
         func_0021d8e0(vertices, rect);
+        func_004d7f60(3, 0x717fb);
+        func_004d7f60(2, 0x44);
         D_00960090(1, func_0021cce0(frame));
-        D_0096009C(vertices, 4, 0, 1, 2);
         quad = (code *)&D_0096009C_abs;
+        D_0096009C(vertices, 4, 0, 1, 2);
         D_0096009C(vertices, 4, 0, 2, 3);
     }
     for (i = 0; i < 8; i++)

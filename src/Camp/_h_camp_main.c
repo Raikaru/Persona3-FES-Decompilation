@@ -1157,7 +1157,6 @@ void* FUN_001355c0(KwlnTask* task)
     s32 resourceSize;
     s32 index;
     s32 key;
-    u16 cardId;
     void* knownText;
     void* resource;
     char path[256];
@@ -1341,18 +1340,29 @@ void* FUN_001355c0(KwlnTask* task)
                 if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x56])) {
                     current = (s32)work[work[1] + work[2] + 8];
                     if (current == 0 || current == 0x1d) {
-                        cardId = (u16)DAT_00833A60[work[5]];
+                        knownText = FUN_00172160(current);
+                        if (knownText == NULL) {
+                            knownText = FUN_001717c0(current);
+                        }
+                        if (knownText != NULL) {
+                            sprintf(path, D_005DBBC0,
+                                    (u16)DAT_00833A60[work[5]]);
+                        } else {
+                            sprintf(path, D_005DBBF0,
+                                    (u16)DAT_00833A60[work[5]]);
+                        }
                     } else {
-                        cardId = D_005DBB00[current * 3 + work[5]];
-                    }
-                    knownText = FUN_00172160(current);
-                    if (knownText == NULL) {
-                        knownText = FUN_001717c0(current);
-                    }
-                    if (knownText != NULL) {
-                        sprintf(path, D_005DBBC0, cardId);
-                    } else {
-                        sprintf(path, D_005DBBF0, cardId);
+                        knownText = FUN_00172160(current);
+                        if (knownText == NULL) {
+                            knownText = FUN_001717c0(current);
+                        }
+                        if (knownText != NULL) {
+                            sprintf(path, D_005DBBC0,
+                                    D_005DBB00[current * 3 + work[5]]);
+                        } else {
+                            sprintf(path, D_005DBBF0,
+                                    D_005DBB00[current * 3 + work[5]]);
+                        }
                     }
                     work[0x59] = (u32)FUN_0010c1a0(
                         NULL, path, 0, 0, 0, 0, 0, 0,
@@ -2316,16 +2326,30 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
         FUN_001127D0(sprite, 1);
         FUN_00115980(sprite);
     }
+    local.x = 0.0f;
+    local.y = 0.0f;
+    FUN_001368a0(alpha, *(u64*)&local, 0);
 
-    start = 2;
     visibleCount = count;
-    if (count == 4) {
+    switch (count) {
+    case 0:
         start = 0;
-    } else if (count == 3) {
+        visibleCount = 0;
+        break;
+    case 1:
+    case 2:
+        start = 2;
+        break;
+    case 3:
         start = 1;
-    } else if (count > 4) {
+        break;
+    case 4:
+        start = 0;
+        break;
+    default:
         start = 0;
         visibleCount = 5;
+        break;
     }
     for (i = 0; i < visibleCount; i++) {
         id = entries[offset + i];
@@ -2428,16 +2452,29 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
         FUN_001127D0(sprite, 1);
         FUN_00115980(sprite);
     }
+    local.value = 0;
+    FUN_001368a0(alpha, local.value, 0);
 
-    start = 2;
     visibleCount = count;
-    if (count == 4) {
+    switch (count) {
+    case 0:
         start = 0;
-    } else if (count == 3) {
+        visibleCount = 0;
+        break;
+    case 1:
+    case 2:
+        start = 2;
+        break;
+    case 3:
         start = 1;
-    } else if (count > 4) {
+        break;
+    case 4:
+        start = 0;
+        break;
+    default:
         start = 0;
         visibleCount = 5;
+        break;
     }
     for (i = 0; i < visibleCount; i++) {
         id = entries[offset + i];

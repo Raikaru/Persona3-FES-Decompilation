@@ -79,7 +79,7 @@ extern const char D_00683D50[];
 
 typedef s32 (*FootstepAnimSelector)(s32 charId);
 
-static u32 K_Footstep_IsFrameWindow(f32 frame, f32 first, f32 second, f32 third, f32 fourth)
+static inline u32 K_Footstep_IsFrameWindow(f32 frame, f32 first, f32 second, f32 third, f32 fourth)
 {
     return ((frame > first) && (frame < second)) ||
            ((frame > third) && (frame < fourth));

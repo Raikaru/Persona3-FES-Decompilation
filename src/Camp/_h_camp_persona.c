@@ -910,7 +910,12 @@ process:
             FUN_0011bba0(0, 0, 102.0f, (u16)fade, 0);
         }
         if (work->timer > 14) {
-            fade = campPersonaClampFade((20 - work->timer) * 0xff / 5);
+            fade = (20 - work->timer) * 0xff / 5;
+            if (fade < 0) {
+                fade = 0;
+            } else if (fade > 0xff) {
+                fade = 0xff;
+            }
             x = 428.0f + (f32)(((work->timer - 15) * 21) / 10);
             y = 27.0f + (f32)(((work->timer - 15) * 2) / 10);
             particle = (CampPersonaParticle*)FUN_001158b0(

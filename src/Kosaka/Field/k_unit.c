@@ -1520,12 +1520,12 @@ typedef struct FldUnitNode
     RwV3d pos;
 } FldUnitNode;
 
-static RwV3d* FldUnit_NodePos(u8* node)
+static inline RwV3d* FldUnit_NodePos(u8* node)
 {
     return &((FldUnitNode*)node)->pos;
 }
 
-static f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
+static inline f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
 {
     RwV3d delta;
 
@@ -1603,6 +1603,7 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
     u8* best;
     RwV3d heroPos;
     RwV3d* nodePos;
+    RwMatrix* modelMatrix;
     RwV3d delta;
     f32 bestDistance;
     f32 distance;
@@ -1610,18 +1611,22 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
     s32 index;
     s32 bestIndex;
     u32 sceneMode;
+    u32 distanceMode;
 
     node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_15);
     best = NULL;
     bestIndex = 0;
+    func_001bff20();
+    distanceMode = func_001c0040();
+    threshold = (distanceMode == 3 || distanceMode == 1) ? 1500.0f : 2000.0f;
     sceneMode = K_Scene_001a0250();
-    threshold = (func_001c0040() == 3 || func_001c0040() == 1) ? 1500.0f : 2000.0f;
     if (sceneMode == 1)
     {
         if (func_001d0e40() < (u32)targetCount)
         {
             heroPos = mdlGetMatrix(gFldUnitsPc[0].mdl)->pos;
             bestDistance = 1.1754944e-38f;
+            node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_15);
             while (node != NULL)
             {
                 nodePos = FldUnit_NodePos(node);
@@ -1629,9 +1634,10 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
                 {
                     if (gFldUnitsPc[index].genusBase != NULL && gFldUnitsPc[index].resrc != NULL)
                     {
-                        delta.x = nodePos->x - mdlGetMatrix(gFldUnitsPc[index].mdl)->pos.x;
-                        delta.y = nodePos->y - mdlGetMatrix(gFldUnitsPc[index].mdl)->pos.y;
-                        delta.z = nodePos->z - mdlGetMatrix(gFldUnitsPc[index].mdl)->pos.z;
+                        modelMatrix = mdlGetMatrix(gFldUnitsPc[index].mdl);
+                        delta.x = nodePos->x - modelMatrix->pos.x;
+                        delta.y = nodePos->y - modelMatrix->pos.y;
+                        delta.z = nodePos->z - modelMatrix->pos.z;
                         if (RwV3dLength(&delta) < threshold)
                         {
                             break;

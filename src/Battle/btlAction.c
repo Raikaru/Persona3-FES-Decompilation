@@ -2448,11 +2448,6 @@ genus0_action:
     goto position_check_thresholds;
 
 check_boss_flag2:
-    if (FUN_002fdb90() == 0)
-    {
-        goto check_distance_threshold;
-    }
-    goto check_distance_threshold;
 
 position_check_thresholds:
     if (moveSpeed >= 300.0f)

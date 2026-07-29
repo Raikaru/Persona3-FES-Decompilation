@@ -20,6 +20,10 @@ typedef struct HChrdspTexture
 extern HChrdspWork D_007E2680[HCHRDP_WORK_COUNT];
 #pragma alias D_00960090_abs D_00960090
 extern void (*D_00960090_abs[])(u32 state, u32 value);
+typedef void (*HChrdspDrawPrimitive)(s32 primitiveType, RwIm2DVertex* vertices,
+                                     s32 vertexCount);
+#pragma alias hChrdspDrawPrimitiveSlot D_009600A0
+extern HChrdspDrawPrimitive hChrdspDrawPrimitiveSlot[];
 extern void* D_007E2BA8[][0x19C];
 extern void* D_007E2BC8[][0x19C];
 extern s16 D_007E2684[][0x338];
@@ -358,6 +362,8 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
     const char* archiveEntry;
     HChrdspTexture* texture;
     RwCamera* camera;
+    void (**setRenderState)(u32 state, u32 value);
+    HChrdspDrawPrimitive* drawPrimitive;
     RwV2d position;
     f32 recipZ;
     f32 z;
@@ -428,6 +434,8 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         break;
     case HCHRDP_STATE_DRAW:
     {
+        setRenderState = (void (**)(u32, u32))D_00960090_abs;
+        drawPrimitive = hChrdspDrawPrimitiveSlot;
         camera = kwlnGetMainCamera();
         recipZ = 1.0f / camera->nearPlane;
         z = RwIm2DGetNearScreenZ() - work->zOffset;
@@ -479,8 +487,8 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             work->vertices[quadIndex][3].u.els.u = 1.0f;
             work->vertices[quadIndex][3].u.els.v = 1.0f;
         }
-        D_00960090(1, (u32)((HChrdspTexture*)work->resources[0])->raster);
-        D_009600A0(rwPRIMTYPETRISTRIP, work->vertices[0], 4);
+        (*setRenderState)(1, (u32)((HChrdspTexture*)work->resources[0])->raster);
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, work->vertices[0], 4);
 
         if ((work->resourceIndex < 2) || (work->color.a != 255) ||
             (work->drawMiddleLayer == 0))
@@ -497,7 +505,23 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             {
                 work->alphaIndex = 0;
             }
-            work->alphaTimer = H_Chrdsp_GetFadeFrames(work->alphaIndex);
+            switch (work->alphaIndex)
+            {
+            case 0:
+                work->alphaTimer = 3;
+                break;
+            case 1:
+                work->alphaTimer = 100;
+                break;
+            case 2:
+            case 3:
+            case 4:
+                work->alphaTimer = 2;
+                break;
+            default:
+                work->alphaTimer = 80;
+                break;
+            }
         }
 
         switch (work->characterId)
@@ -592,8 +616,8 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             overlayYOffset;
         overlayVertices[3].u.els.u = 1.0f;
         overlayVertices[3].u.els.v = 1.0f;
-        D_00960090(1, (u32)((HChrdspTexture*)work->resources[1])->raster);
-        D_009600A0(rwPRIMTYPETRISTRIP, overlayVertices, 4);
+        (*setRenderState)(1, (u32)((HChrdspTexture*)work->resources[1])->raster);
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, overlayVertices, 4);
 
         if ((work->resourceIndex < HCHRDP_LAYER_COUNT) ||
             (work->color.a != 255) || (work->drawTopLayer == 0))
@@ -639,8 +663,8 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             overlayYOffset + 155.0f;
         overlayVertices[3].u.els.u = 1.0f;
         overlayVertices[3].u.els.v = 1.0f;
-        D_00960090(1, (u32)((HChrdspTexture*)work->resources[2])->raster);
-        D_009600A0(rwPRIMTYPETRISTRIP, overlayVertices, 4);
+        (*setRenderState)(1, (u32)((HChrdspTexture*)work->resources[2])->raster);
+        (*drawPrimitive)(rwPRIMTYPETRISTRIP, overlayVertices, 4);
         break;
 
     }

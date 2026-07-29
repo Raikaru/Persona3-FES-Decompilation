@@ -182,7 +182,6 @@ void* func_001a1550(KwlnTask* task)
             work->verticalOffset = 0.0f;
             work->horizontalInset = 0.0f;
             work->verticalInset = 0.0f;
-            work->fieldOfView = func_001a4600(kwlnGetMainCamera());
             work->state = 1;
             break;
         }
@@ -935,8 +934,16 @@ void func_001a2720(KwlnTask* task)
             }
             else if (entry->type == 3)
             {
-                position.x = (f32)(right - (entry->flags != 0 ? 0x86 : 0x6e));
-                H_Dbprt_FmtCol3D(position, color, "%d", entry->intValue);
+                if (entry->flags == 0)
+                {
+                    position.x = (f32)(right - 0x6e);
+                    H_Dbprt_FmtCol3D(position, color, "%d", entry->intValue);
+                }
+                else
+                {
+                    position.x = (f32)(right - 0x86);
+                    H_Dbprt_FmtCol3D(position, color, "%d", entry->intValue);
+                }
             }
             else if (entry->type == 4)
             {

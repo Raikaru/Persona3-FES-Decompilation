@@ -1466,14 +1466,20 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     fieldRoot = (u8*)K_Field_Get();
     fieldCell = fieldRoot + rowOffset + colOffset;
     sourceIndex = fieldCell[0x4a];
+    fieldRoot = (u8*)K_Field_Get();
     source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
     source = *(u8**)(source + 0xa3c);
-    matrix = func_004c38c0();
     if (source == NULL)
     {
-        func_004c3880(matrix);
         return;
     }
+    matrix = func_004c38c0();
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + rowOffset + colOffset;
+    sourceIndex = fieldCell[0x4a];
+    fieldRoot = (u8*)K_Field_Get();
+    source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
+    source = *(u8**)(source + 0xa3c);
 
     version = *(u32*)(source + 4);
     if (version == 0x1000)
@@ -1602,34 +1608,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     }
     records += *(u32*)(source + 0x20) * 0x14;
 
-    if (version >= 0x1001)
-    {
-        for (i = 0; i < *(u32*)(source + 0x28); i++)
-        {
-            record = records + i * 0x14;
-            if (K_Scene_001a0250() == 1)
-            {
-                position = *(RwV3d*)(record + 4);
-                fieldRoot = (u8*)K_Field_Get();
-                fieldCell = fieldRoot + rowOffset + colOffset;
-                orientation = (fieldCell[0x4e] + 2) & 3;
-                angle = (f32)orientation * 90.0f;
-                func_004c31b0(matrix, &axis, angle, 2);
-                func_004c6be0(&position, &position, matrix);
-                position.x += origin.x;
-                position.y += origin.y;
-                position.z += origin.z;
-                angle += *(f32*)(record + 0x10);
-                while (angle > 360.0f)
-                {
-                    angle -= 360.0f;
-                }
-                resourceId = K_Misc_FindNextFreeResId(0x11);
-                func_003b6d10((u16)resourceId, &position, angle);
-            }
-        }
-        records += *(u32*)(source + 0x28) * 0x14;
-    }
+    records += *(u32*)(source + 0x28) * 0x14;
     if (version >= 0x1002)
     {
         records += *(u32*)(source + 0x30) * 0x20;

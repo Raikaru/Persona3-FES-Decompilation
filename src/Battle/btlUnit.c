@@ -4222,9 +4222,7 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
         radius2 = *(const u16*)(table + 8);
         unit->unk_8c = (f32)radius * 2.0f;
         unit->sphereRadius = (f32)radius2 * 2.0f;
-        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
-        func_002bcde0(unit, &unit->unkData8);
-        return;
+        goto update;
 
     default:
         return;
@@ -4257,6 +4255,7 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
         }
     }
 
+update:
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     func_002bcde0(unit, &unit->unkData8);
 }

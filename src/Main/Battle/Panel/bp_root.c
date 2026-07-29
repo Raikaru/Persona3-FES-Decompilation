@@ -1656,6 +1656,7 @@ void FUN_00202D70(void)
     u32 i;
     u32 visible;
     u16 selected;
+    u32 selectedValue;
     PanelSkillRow* row;
 
     work = panelWork();
@@ -1676,11 +1677,12 @@ void FUN_00202D70(void)
     *(u32*)(work + 0x769c) = *(u32*)(work + 0x260);
     func_00208570(work + 0x768c);
     selected = 0;
-    if (datGetFlag(0x186) && FUN_0016F380(0x32))
+    selectedValue = 0;
+    if (datGetFlag(0x186) && (selectedValue = FUN_0016F380(0x32)) != 0)
     {
         for (i = 0; i < out; i++)
         {
-            if (*(u16*)(work + 0x9c + i * 2) == (u16)FUN_0016F380(0x32))
+            if (*(u16*)(work + 0x9c + i * 2) == (u16)selectedValue)
             {
                 selected = (u16)i;
                 break;
@@ -1692,7 +1694,7 @@ void FUN_00202D70(void)
     visible = *(u32*)(work + 0x25c);
     for (i = 0; i < visible; i++)
     {
-        row = panelItemRow(i);
+        row = (PanelSkillRow*)(work + 0x4a90 + i * 0x310);
         row->flags = 0;
         row->handle = *(u32*)(work + 0x8c + i * 4);
         row->type = 0;
@@ -2811,7 +2813,6 @@ void FUN_002057C0(void)
             if (datGetFlag(0x121a) != 0) continue;
             break;
         case 8:
-            if (datGetFlag(0x121f) != 0) continue;
             break;
         case 10:
             entry = work + work[0x7700 / 4] * 0x18 + 0x2e0;
@@ -2914,8 +2915,7 @@ void FUN_002057C0(void)
     *(u32*)(work + 0x6498) = *(u32*)(work + 0x7700);
     *(u32*)(work + 0x649c) = *(u32*)(work + 0x76f8);
     *(u32*)(work + 0x64a4) = *(u32*)(work + 0x3a8);
-    func_002230e0();
-    func_002255f0();
+    func_002254a0();
     FUN_0010a4e0(0, 0, 0, 4);
     *(u32*)(work + 0x1c) = 2;
     printf("start command operation ----------+\n");

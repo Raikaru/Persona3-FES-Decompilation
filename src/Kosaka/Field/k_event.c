@@ -55,6 +55,8 @@ extern u32 DAT_0096017c_abs[];
 extern u8 D_0086B180[];
 extern RwV3d D_008717D0;
 extern u8 DAT_0086be80[0x2700];
+#pragma alias DAT_0086eda0_units DAT_0086eda0
+extern FldUnit DAT_0086eda0_units[];
 extern u8 DAT_0086e580[0x114];
 extern const char D_00683730[];
 extern void func_0019d3f0(const char* file, s32 line);
@@ -901,6 +903,26 @@ void func_001c8120(void* work)
                 {
                     occupied = true;
                     break;
+                }
+            }
+
+            if (occupied == false)
+            {
+                for (j = 0; j < 0x18; j++)
+                {
+                    unit = &DAT_0086eda0_units[j];
+                    if (unit->genusBase == NULL)
+                    {
+                        continue;
+                    }
+                    pcDelta.x = candidate->x - unit->matBeforeBtl.pos.x;
+                    pcDelta.y = candidate->y - unit->matBeforeBtl.pos.y;
+                    pcDelta.z = candidate->z - unit->matBeforeBtl.pos.z;
+                    if (RwV3dLength(&pcDelta) < 70.0f)
+                    {
+                        occupied = true;
+                        break;
+                    }
                 }
             }
 
