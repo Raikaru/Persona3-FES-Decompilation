@@ -2574,7 +2574,7 @@ static inline int bpPanelInTransition(u32 value)
 
 static inline u8 bpPanelColor(f32 value)
 {
-    return (u8)value;
+    return (u8)(s32)value;
 }
 
 static inline void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
@@ -2850,7 +2850,6 @@ static inline void bpPanelBindAndDraw(u8* work, u32 offset, void* frame)
     D_0096009C((u32*)(work + offset), 4, 0, 2, 3);
 }
 
-#pragma optimization_level 3
 
 // FUN_0021f410 NONMATCHING
 void func_0021f410(void)
@@ -3345,7 +3344,6 @@ void func_0021f410(void)
         break;
     }
 }
-#pragma optimization_level 2
 
 
 static void bpPanelDrawBridgeQuad(u8* work, u32 offset, void* texture, s32 frameId)

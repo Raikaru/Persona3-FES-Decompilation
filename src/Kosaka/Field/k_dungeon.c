@@ -963,15 +963,47 @@ void func_001c0d30(KwlnTask* task)
     ((void (*)(void*))DAT_0096017c[0])(task->workData);
 }
 
+// 0x20c bytes. The transition controller keeps its collision-controller task
+// at offset 0x204; the remaining tail is reserved by the retail work layout.
+typedef struct
+{
+    u32 state;
+    u8 unkData[0x200];
+    KwlnTask* collisionTask;
+    u8 reserved[4];
+} TransWallCtlWork;
+
+typedef struct
+{
+    Resrc base;
+    s32 unk_100;
+    Model* model;
+    KwlnTask* fadeTask;
+    u32 fadeTimer;
+    u8 unkData[0x20];
+} DungeonModelFld;
+
+typedef struct DungeonNode
+{
+    u8 unk_00[8];
+    u32 active;
+    u8 unk_0c[0x0c];
+    f32 alpha;
+    KwlnTask* fadeTask;
+    u32 fadeTimer;
+    struct DungeonNode* next;
+} DungeonNode;
+
 static inline void K_Dungeon_ProcessFieldNodes(
     KwlnTask* parentTask,
-    u8* node,
+    DungeonNode* node,
     const RwV4d* collisionQueryPosition,
     void* cameraFrame,
     const RwV3d* cameraDirection,
     u8* queryData,
     RwV3d* probe,
-    RwV3d* special)
+    RwV3d* special,
+    u32 extendedProbes)
 {
     void* camera;
     u8* fadeWork;
@@ -980,7 +1012,7 @@ static inline void K_Dungeon_ProcessFieldNodes(
 
     while (node != NULL)
     {
-        if (*(u32*)(node + 8) != 0)
+        if (node->active != 0)
         {
             memset(queryData, 0, 0x208);
 
@@ -1005,39 +1037,42 @@ static inline void K_Dungeon_ProcessFieldNodes(
             *(RwV3d*)collisionQueryPosition = probe[1];
             func_001ad220(node, &probe[0], queryData);
 
-            if (func_001a01c0() == 0)
+            if (extendedProbes != 0)
             {
-                probe[0] = *(RwV3d*)((u8*)cameraFrame + 0x30);
-                func_001ad220(node, &probe[0], queryData);
-            }
+                if (func_001a01c0() == 0)
+                {
+                    probe[0] = *(RwV3d*)((u8*)cameraFrame + 0x30);
+                    func_001ad220(node, &probe[0], queryData);
+                }
 
-            if (gMtScene->fldMajorId == 0x23)
-            {
-                camera = kwlnGetMainCamera();
-                cameraFrame = func_004cb2f0(*(void**)((u8*)camera + 4));
-                special[0] = *(RwV3d*)cameraFrame;
-                func_004c69f0(&special[0], &special[0]);
-                special[1] = special[0];
-                special[0].x *= 100.0f;
-                special[0].y *= 100.0f;
-                special[0].z *= 100.0f;
-                special[1].x *= -100.0f;
-                special[1].y *= -100.0f;
-                special[1].z *= -100.0f;
-                special[0].x += *(f32*)((u8*)cameraFrame + 0x30);
-                special[0].y += *(f32*)((u8*)cameraFrame + 0x34);
-                special[0].z += *(f32*)((u8*)cameraFrame + 0x38);
-                special[1].x += *(f32*)((u8*)cameraFrame + 0x30);
-                special[1].y += *(f32*)((u8*)cameraFrame + 0x34);
-                special[1].z += *(f32*)((u8*)cameraFrame + 0x38);
-                func_001ad220(node, &special[0], queryData);
+                if (gMtScene->fldMajorId == 0x23)
+                {
+                    camera = kwlnGetMainCamera();
+                    cameraFrame = func_004cb2f0(*(void**)((u8*)camera + 4));
+                    special[0] = *(RwV3d*)cameraFrame;
+                    func_004c69f0(&special[0], &special[0]);
+                    special[1] = special[0];
+                    special[0].x *= 100.0f;
+                    special[0].y *= 100.0f;
+                    special[0].z *= 100.0f;
+                    special[1].x *= -100.0f;
+                    special[1].y *= -100.0f;
+                    special[1].z *= -100.0f;
+                    special[0].x += *(f32*)((u8*)cameraFrame + 0x30);
+                    special[0].y += *(f32*)((u8*)cameraFrame + 0x34);
+                    special[0].z += *(f32*)((u8*)cameraFrame + 0x38);
+                    special[1].x += *(f32*)((u8*)cameraFrame + 0x30);
+                    special[1].y += *(f32*)((u8*)cameraFrame + 0x34);
+                    special[1].z += *(f32*)((u8*)cameraFrame + 0x38);
+                    func_001ad220(node, &special[0], queryData);
+                }
             }
 
             if (*(u32*)(queryData + 4) > 0)
             {
-                if (*(KwlnTask**)(node + 0x20) == NULL)
+                if (node->fadeTask == NULL)
                 {
-                    alpha = *(f32*)(node + 0x18);
+                    alpha = node->alpha;
                     if (alpha == 1.0f)
                     {
                         fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
@@ -1048,21 +1083,21 @@ static inline void K_Dungeon_ProcessFieldNodes(
                             child = kwlnTaskCreateWithAutoPriority(
                                 parentTask, 10, "field npc alpha",
                                 func_001c0880, func_001c0920, fadeWork);
-                            *(u8**)(fadeWork + 4) = node;
+                            *(DungeonNode**)(fadeWork + 4) = node;
                             *(u32*)(fadeWork + 8) = 5;
                             *(f32*)(fadeWork + 0x0c) = 0.0f;
                         }
-                        *(KwlnTask**)(node + 0x20) = child;
-                        *(u32*)(node + 0x24) = 0;
+                        node->fadeTask = child;
+                        node->fadeTimer = 0;
                     }
                 }
             }
-            else if (*(KwlnTask**)(node + 0x20) == NULL)
+            else if (node->fadeTask == NULL)
             {
-                alpha = *(f32*)(node + 0x18);
+                alpha = node->alpha;
                 if (alpha == 0.0f)
                 {
-                    if (*(u32*)(node + 0x24) >= 0xb)
+                    if (node->fadeTimer >= 0xb)
                     {
                         fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
                             1, 0x14, rwMEMHINTDUR_GLOBAL);
@@ -1072,25 +1107,24 @@ static inline void K_Dungeon_ProcessFieldNodes(
                             child = kwlnTaskCreateWithAutoPriority(
                                 parentTask, 10, "field npc alpha",
                                 func_001c0880, func_001c0920, fadeWork);
-                            *(u8**)(fadeWork + 4) = node;
+                            *(DungeonNode**)(fadeWork + 4) = node;
                             *(u32*)(fadeWork + 8) = 10;
                             *(f32*)(fadeWork + 0x0c) = 1.0f;
                         }
-                        *(KwlnTask**)(node + 0x20) = child;
-                        *(u32*)(node + 0x24) = 0;
+                        node->fadeTask = child;
+                        node->fadeTimer = 0;
                     }
                     else
                     {
-                        *(u32*)(node + 0x24) += 1;
+                        node->fadeTimer += 1;
                     }
                 }
             }
         }
-        node = *(u8**)(node + 0x28);
+        node = node->next;
     }
 }
 
-#pragma optimization_level 3
 // Retail uses a 100-unit normalized camera ray and reloads the frame origin
 // for each model probe and before field-node traversal.
 // The previous reconstruction reused a mutated origin and omitted this scale.
@@ -1103,8 +1137,8 @@ static inline void K_Dungeon_ProcessFieldNodes(
 // FUN_001c0d70 NONMATCHING
 void* func_001c0d70(KwlnTask* task)
 {
-    u8* work;
-    ResrcModelFld* modelFld;
+    TransWallCtlWork* work;
+    DungeonModelFld* modelFld;
     ResrcFld* fld;
     Model* model;
     KwlnTask* child;
@@ -1119,11 +1153,11 @@ void* func_001c0d70(KwlnTask* task)
     RwV3d special[2];
     u8 queryData[0x208];
 
-    work = (u8*)task->workData;
-    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    work = (TransWallCtlWork*)task->workData;
+    modelFld = (DungeonModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
     fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
 
-    switch (*(u32*)work)
+    switch (work->state)
     {
     case 0:
         break;
@@ -1133,23 +1167,19 @@ void* func_001c0d70(KwlnTask* task)
         goto done;
     }
 
-    K_FldFrame_CtlCopyPos(&collisionPosition,
-                          *(KwlnTask**)(work + 0x204));
+    K_FldFrame_CtlCopyPos(&collisionPosition, work->collisionTask);
     collisionQueryPosition.x = collisionPosition.x;
     collisionQueryPosition.y = collisionPosition.y;
     collisionQueryPosition.z = collisionPosition.z;
     collisionQueryPosition.w =
-        K_FldFrame_CtlGetSphereCollisRadius(
-            *(KwlnTask**)(work + 0x204));
+        K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
     collisionPosition.y +=
         60.0f + collisionQueryPosition.w;
     collisionQueryPosition.x = collisionPosition.x;
     collisionQueryPosition.y = collisionPosition.y;
     collisionQueryPosition.z = collisionPosition.z;
     collisionQueryPosition.w =
-        K_FldFrame_CtlGetSphereCollisRadius(
-            *(KwlnTask**)(work + 0x204));
-
+        K_FldFrame_CtlGetSphereCollisRadius(work->collisionTask);
     camera = kwlnGetMainCamera();
     cameraFrame = func_004cb2f0(*(void**)((u8*)camera + 4));
     cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
@@ -1171,7 +1201,7 @@ void* func_001c0d70(KwlnTask* task)
     {
         if ((modelFld->base.flags & 2) != 0)
         {
-            model = *(Model**)((u8*)modelFld + 0x104);
+            model = modelFld->model;
             memset(queryData, 0, 0x208);
             cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
 
@@ -1189,7 +1219,7 @@ void* func_001c0d70(KwlnTask* task)
                           &cameraPosition, queryData);
             if (*(u32*)queryData > 0)
             {
-                if (*(KwlnTask**)((u8*)modelFld + 0x108) == NULL &&
+                if (modelFld->fadeTask == NULL &&
                     ((u8*)mdlGetColor(model))[3] == 255)
                 {
                     fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
@@ -1204,14 +1234,14 @@ void* func_001c0d70(KwlnTask* task)
                         *(u32*)(fadeWork + 8) = 5;
                         *(f32*)(fadeWork + 0x0c) = 0.0f;
                     }
-                    *(KwlnTask**)((u8*)modelFld + 0x108) = child;
-                    *(u32*)((u8*)modelFld + 0x10c) = 0;
+                    modelFld->fadeTask = child;
+                    modelFld->fadeTimer = 0;
                 }
             }
-            else if (*(KwlnTask**)((u8*)modelFld + 0x108) == NULL &&
+            else if (modelFld->fadeTask == NULL &&
                      ((u8*)mdlGetColor(model))[3] == 0)
             {
-                if (*(u32*)((u8*)modelFld + 0x10c) >= 0xb)
+                if (modelFld->fadeTimer >= 0xb)
                 {
                     fadeWork = (u8*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
                         1, 0x14, rwMEMHINTDUR_GLOBAL);
@@ -1225,16 +1255,16 @@ void* func_001c0d70(KwlnTask* task)
                         *(u32*)(fadeWork + 8) = 10;
                         *(f32*)(fadeWork + 0x0c) = 255.0f;
                     }
-                    *(KwlnTask**)((u8*)modelFld + 0x108) = child;
-                    *(u32*)((u8*)modelFld + 0x10c) = 0;
+                    modelFld->fadeTask = child;
+                    modelFld->fadeTimer = 0;
                 }
                 else
                 {
-                    *(u32*)((u8*)modelFld + 0x10c) += 1;
+                    modelFld->fadeTimer += 1;
                 }
             }
         }
-        modelFld = (ResrcModelFld*)modelFld->base.next;
+        modelFld = (DungeonModelFld*)modelFld->base.next;
     }
     cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
 
@@ -1254,17 +1284,17 @@ void* func_001c0d70(KwlnTask* task)
                 if (entry != NULL)
                 {
                     K_Dungeon_ProcessFieldNodes(
-                        task, *(u8**)(entry + 0x14), &collisionQueryPosition,
+                        task, (DungeonNode*)*(u8**)(entry + 0x14), &collisionQueryPosition,
                         cameraFrame, &cameraDirection, queryData,
-                        &ray[0], &special[0]);
+                        &ray[0], &special[0], 1);
                     K_Dungeon_ProcessFieldNodes(
-                        task, *(u8**)(entry + 0x28), &collisionQueryPosition,
+                        task, (DungeonNode*)*(u8**)(entry + 0x28), &collisionQueryPosition,
                         cameraFrame, &cameraDirection, queryData,
-                        &ray[0], &special[0]);
+                        &ray[0], &special[0], 0);
                     K_Dungeon_ProcessFieldNodes(
-                        task, *(u8**)(entry + 0x24), &collisionQueryPosition,
+                        task, (DungeonNode*)*(u8**)(entry + 0x24), &collisionQueryPosition,
                         cameraFrame, &cameraDirection, queryData,
-                        &ray[0], &special[0]);
+                        &ray[0], &special[0], 0);
                 }
                 i++;
             }
@@ -1277,7 +1307,6 @@ done:
 stop:
     return KWLNTASK_STOP;
 }
-#pragma optimization_level 2
 
 
 extern void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
@@ -1292,14 +1321,6 @@ extern u32 adminiGetNowSeqId_u32(void);
 #pragma alias adminiGetNextSeqId_u32 adminiGetNextSeqId
 extern u32 adminiGetNextSeqId_u32(void);
 
-// 0x20c bytes. The transition controller keeps its collision-controller task
-// at offset 0x204; the remaining tail is reserved by the retail work layout.
-typedef struct
-{
-    u8 unkData[0x204];
-    KwlnTask* collisionTask;
-    u8 reserved[4];
-} TransWallCtlWork;
 
 // 28-byte payload used when switching to the field sequence.
 typedef struct

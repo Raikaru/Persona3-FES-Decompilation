@@ -355,7 +355,7 @@ void func_001f0f40(KwlnTask *);
 void func_001f0ff0(void);
 u8 *brRoot001f1c50(void);
 void func_001f1140(KwlnTask *);
-void *func_001f13b0(KwlnTask *);
+void func_001f13b0(KwlnTask *);
 void brRoot001f1e90(KwlnTask *);
 void func_001f30d0(KwlnTask *);
 void func_001f30f0(KwlnTask *);
@@ -496,48 +496,64 @@ void func_001f0ab0(KwlnTask *task)
     BR_U32(task, 0xc) = 7;
 }
 
+typedef struct BrRootSetupParams {
+    u32 flags;
+    struct {
+        u16 id;
+        u16 pad;
+        u32 value;
+    } entries[3];
+    u32 entryCount;
+    u32 field20;
+    u16 partyIds[4];
+    u32 partyCount;
+    u32 field30;
+    u32 field34;
+    u32 field38;
+    u32 field3c;
+    u32 field40;
+} BrRootSetupParams;
+
 // FUN_001f0ad0 NONMATCHING
-#pragma optimization_level 3
-void func_001f0ad0(KwlnTask *task, const u8 *params)
+void func_001f0ad0(KwlnTask *task, const BrRootSetupParams *params)
 {
-    u8 *work;
+    u32 *work;
     s32 i;
     s32 j;
 
-    work = BR_TASK_WORK(task);
-    if ((BR_U32(params, 0) & 1) != 0) {
-        BR_U32(work, 0) |= 2;
+    work = (u32 *)BR_TASK_WORK(task);
+    if ((params->flags & 1) != 0) {
+        work[0] |= 2;
     }
-    BR_U32(work, 0xb0) = BR_U32(params, 0x1c);
-    for (i = 0; i < (s32)BR_U32(params, 0x1c); i++) {
-        BR_U16(work + i * 8, 0x98) = BR_U16(params + i * 8, 4);
-        BR_U32(work + i * 8, 0x9c) = BR_U32(params + i * 8, 8);
+    work[0xb0 / 4] = params->entryCount;
+    for (i = 0; i < (s32)params->entryCount; i++) {
+        BR_U16((u8 *)work + i * 8, 0x98) = params->entries[i].id;
+        BR_U32((u8 *)work + i * 8, 0x9c) = params->entries[i].value;
     }
-    BR_U32(work, 0xb4) = BR_U32(params, 0x20);
-    BR_U32(work, 0x118) = BR_U32(params, 0x2c);
-    BR_U32(work, 0x11c) = BR_U32(params, 0x30);
-    printf(D_006845c0, BR_U32(work, 0x118));
-    printf(D_006845d0, BR_U32(work, 0x11c));
-    BR_U32(work, 0x114) = 0;
-    for (j = 0; j < (s32)BR_U32(params, 0x2c); j++) {
-        u16 id = BR_U16(params + j * 2, 0x24);
+    work[0xb4 / 4] = params->field20;
+    work[0x118 / 4] = params->partyCount;
+    work[0x11c / 4] = params->field30;
+    printf(D_006845c0, work[0x118 / 4]);
+    printf(D_006845d0, work[0x11c / 4]);
+    work[0x114 / 4] = 0;
+    for (j = 0; j < (s32)params->partyCount; j++) {
+        u16 id = params->partyIds[j];
         if (id == 1) {
             continue;
         }
-        BR_U16(work, 0x10c + BR_U32(work, 0x114) * 2) = id;
-        BR_U32(work, 0x114) = BR_U32(work, 0x114) + 1;
+        BR_U16((u8 *)work + work[0x114 / 4] * 2, 0x10c) = id;
+        work[0x114 / 4] = work[0x114 / 4] + 1;
     }
-    BR_U32(work, 0x2a58) = BR_U32(params, 0x3c);
-    BR_U32(work, 0x12c) = BR_U32(params, 0x34);
-    BR_U32(work, 0x130) = BR_U32(params, 0x38);
-    BR_U32(work, 0x124) = BR_U32(params, 0x3c);
-    BR_U32(work, 0x128) = BR_U32(params, 0x40);
-    BR_U32(work, 0x120) = 0;
-    if ((BR_U32(params, 0) & 2) != 0) {
-        BR_U32(work, 0x120) |= 1;
+    work[0x2a58 / 4] = params->field3c;
+    work[0x12c / 4] = params->field34;
+    work[0x130 / 4] = params->field38;
+    work[0x124 / 4] = params->field3c;
+    work[0x128 / 4] = params->field40;
+    work[0x120 / 4] = 0;
+    if ((params->flags & 2) != 0) {
+        work[0x120 / 4] |= 1;
     }
 }
-#pragma optimization_level 2
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
@@ -706,131 +722,138 @@ void *func_001f1210(void)
 }
 
 // FUN_001f1240 NONMATCHING
-#pragma optimization_level 3
 void func_001f1240(KwlnTask *task)
 {
     u32 *work = (u32 *)BR_TASK_WORK(task);
     f32 ratio;
 
-    K_ASSERT((~BR_U32(work, 0) & 0x20000) != 0, 0x603);
-    if ((BR_U32(work, 0) & 2) == 0) {
-        ratio = (f32)BR_S32(work, 0xb4) / (f32)BR_S32(work, 0x11c);
+    K_ASSERT((~work[0] & 0x20000) != 0, 0x603);
+    if ((work[0] & 2) == 0) {
+        ratio = (f32)(s32)work[0xb4 / 4] / (f32)(s32)work[0x11c / 4];
     } else {
-        ratio = ((f32)BR_S32(work, 0xb4) * (f32)BR_S32(work, 0x2a5c) / 100.0f) /
-                (f32)BR_S32(work, 0x11c);
+        ratio = ((f32)(s32)work[0xb4 / 4] * (f32)(s32)work[0x2a5c / 4] / 100.0f) /
+                (f32)(s32)work[0x11c / 4];
     }
     if (ratio == 0.0f) {
-        BR_U32(work, 0xb8) = 0;
+        work[0xb8 / 4] = 0;
     } else if (ratio < 1.0f) {
-        BR_U32(work, 0xb8) = 1;
+        work[0xb8 / 4] = 1;
     } else {
-        BR_U32(work, 0xb8) = (s32)ratio;
+        work[0xb8 / 4] = (s32)ratio;
     }
-    BR_U32(work, 0x2a54) = BR_U32(work, 0x130);
-    BR_U32(work, 0x2a50) = func_001fbdf0((u8)datGetLevel(1), BR_U32(work, 0x2a54),
-                                         BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
-                                         BR_U32(work, 0x11c));
+    work[0x2a54 / 4] = work[0x130 / 4];
+    work[0x2a50 / 4] = func_001fbdf0((u8)datGetLevel(1), work[0x2a54 / 4],
+                                     work[0xb8 / 4], work[0x2a58 / 4],
+                                     work[0x11c / 4]);
     func_001f13b0(task);
-    BR_U32(work, 0) |= 0x20000;
+    work[0] |= 0x20000;
 }
-#pragma optimization_level 2
 
 /* Retail 0x1f13f0-0x1f1a64: level-up propagation, hero/party EXP, and
  * newly learned-skill collection. */
 // FUN_001f13b0 NONMATCHING
-#pragma optimization_level 3
-void *func_001f13b0(KwlnTask *task)
+void func_001f13b0(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    u32 oldLevel;
-    u32 newLevel;
-    u32 heroCount;
-    u32 i;
-    u16 heroId;
+    s32 *work = (s32 *)BR_TASK_WORK(task);
+    s32 oldLevel;
+    s32 newLevel;
+    s32 heroCount;
+    s32 i;
+    s32 heroId;
     DatPersonaWork *persona;
     u16 *skills;
-    u32 skillCount;
-    u32 skill;
+    s32 skillCount;
+    s32 skill;
     s32 firstIndex;
     s32 indexCount;
     s32 j;
+    s32 learnedCount;
     u8 *entry;
     u8 *current;
 
     /* Retail +0x24..+0x94: apply the hero's pending EXP before deriving
      * the resulting level, then print the level transition. */
     oldLevel = datGetLevel(1);
-    BR_U32(work, 0xbc) = oldLevel;
-    datDidCharacterLevelUp(1, BR_U32(work, 0x2a50));
+    work[0xbc / 4] = oldLevel;
+    datDidCharacterLevelUp(1, work[0x2a50 / 4]);
     newLevel = func_0016d280(datGetNextExp(1));
     datSetLevel(1, newLevel);
-    BR_U32(work, 0xc0) = datGetLevel(1);
-    printf((const char *)0x006845f0, BR_U32(work, 0xbc), BR_U32(work, 0xc0));
-    if (BR_U32(work, 0xbc) != BR_U32(work, 0xc0)) {
-        BR_U32(work, 0) |= 8;
-        if (BR_U32(work, 0xc0) > 0 && !datGetFlag(0x120c)) {
+    work[0xc0 / 4] = datGetLevel(1);
+    printf((const char *)0x006845f0, work[0xbc / 4], work[0xc0 / 4]);
+    if (work[0xbc / 4] != work[0xc0 / 4]) {
+        work[0] |= 8;
+        if (work[0xc0 / 4] > 0 && !datGetFlag(0x120c)) {
             datSetFlag(0x120c, 1);
-            BR_U32(work, 0) |= 0x40000;
+            work[0] |= 0x40000;
         }
-        if (BR_U32(work, 0xc0) >= 10 && !datGetFlag(0x120d)) {
+        if (work[0xc0 / 4] >= 10 && !datGetFlag(0x120d)) {
             datSetFlag(0x120d, 1);
-            BR_U32(work, 0) |= 0x40000;
+            work[0] |= 0x40000;
         }
-        if (BR_U32(work, 0xc0) >= 20 && !datGetFlag(0x1201)) {
+        if (work[0xc0 / 4] >= 20 && !datGetFlag(0x1201)) {
             datSetFlag(0x1201, 1);
-            BR_U32(work, 0) |= 0x40000;
+            work[0] |= 0x40000;
         }
-        if (BR_U32(work, 0xc0) >= 30 && !datGetFlag(0x1202)) {
+        if (work[0xc0 / 4] >= 30 && !datGetFlag(0x1202)) {
             datSetFlag(0x1202, 1);
-            BR_U32(work, 0) |= 0x40000;
+            work[0] |= 0x40000;
         }
     }
 
     /* Retail +0x1c8..+0x3d0: walk every hero Persona.  The three skill
      * IDs are separate retail call sites, not one merged fallback call. */
-    BR_U32(work, 0xec) = 0;
+    work[0xec / 4] = 0;
     heroId = datPersonaGetByPcId(1)->id;
-    heroCount = func_001756f0();
+    heroCount = func_001756f0() & 0xffff;
     for (i = 0; i < heroCount; i++) {
         persona = datPersonaGetHeroPersona((s16)i);
         K_ASSERT(persona != NULL, 0x665);
         if (persona->id == heroId) {
             datPersonaAddExp(persona, (s32)func_001fbdf0(
-                (u32)persona->level, BR_U32(work, 0x2a54),
-                BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
-                BR_U32(work, 0x11c)));
+                (u32)persona->level, work[0x2a54 / 4],
+                work[0xb8 / 4], work[0x2a58 / 4],
+                work[0x11c / 4]));
         } else {
             skills = datPersonaGetSkills(persona);
             skillCount = datPersonaCountValidSkills(persona);
             skill = 0;
-            while (skill < skillCount && skills[skill] != 0x22b) {
+            while (skill < skillCount) {
+                if (skills[skill] == 0x22b) {
+                    break;
+                }
                 skill++;
             }
             if (skill < skillCount) {
                 datPersonaAddExp(persona, (s32)func_001fbfa0(
-                    (u32)persona->level, BR_U32(work, 0x2a54),
-                    BR_U32(work, 0xb8), 0x22b,
-                    BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+                    (u32)persona->level, work[0x2a54 / 4],
+                    work[0xb8 / 4], 0x22b,
+                    work[0x2a58 / 4], work[0x11c / 4]));
             } else {
                 skill = 0;
-                while (skill < skillCount && skills[skill] != 0x22a) {
+                while (skill < skillCount) {
+                    if (skills[skill] == 0x22a) {
+                        break;
+                    }
                     skill++;
                 }
                 if (skill < skillCount) {
                     datPersonaAddExp(persona, (s32)func_001fbfa0(
-                        (u32)persona->level, BR_U32(work, 0x2a54),
-                        BR_U32(work, 0xb8), 0x22a,
-                        BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+                        (u32)persona->level, work[0x2a54 / 4],
+                        work[0xb8 / 4], 0x22a,
+                        work[0x2a58 / 4], work[0x11c / 4]));
                 } else {
                     skill = 0;
-                    while (skill < skillCount && skills[skill] != 0x229) {
+                    while (skill < skillCount) {
+                        if (skills[skill] == 0x229) {
+                            break;
+                        }
                         skill++;
                     }
                     if (skill < skillCount) {
                         datPersonaAddExp(persona, (s32)func_001fbfa0(
-                            (u32)persona->level, BR_U32(work, 0x2a54),
-                            BR_U32(work, 0xb8), 0x229,
-                            BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+                            (u32)persona->level, work[0x2a54 / 4],
+                            work[0xb8 / 4], 0x229,
+                            work[0x2a58 / 4], work[0x11c / 4]));
                     }
                 }
             }
@@ -838,27 +861,28 @@ void *func_001f13b0(KwlnTask *task)
     }
 
     /* Retail +0x3e0..+0x464: collect Personas that learned skills. */
-    BR_U32(work, 0xec) = 0;
+    learnedCount = 0;
     for (i = 0; i < heroCount; i++) {
         persona = datPersonaGetHeroPersona((s16)i);
         K_ASSERT(persona != NULL, 0x6ac);
-        if (func_001761b0(persona) != 0 && BR_U32(work, 0xec) < 8) {
-            BR_U16(work, 0xd4 + BR_U32(work, 0xec) * 2) = persona->id;
-            BR_U32(work, 0xec)++;
+        if (func_001761b0(persona) != 0) {
+            BR_U16((u8 *)work + learnedCount * 2, 0xd4) = persona->id;
+            learnedCount++;
         }
     }
-    if (BR_U32(work, 0xec) != 0) {
-        BR_U32(work, 0) |= 0x20;
+    work[0xec / 4] = learnedCount;
+    if (learnedCount != 0) {
+        work[0] |= 0x20;
     }
 
     /* Retail +0x494..+0x4d8: update each non-hero party member's result. */
-    for (i = 0; i < BR_U32(work, 0x114); i++) {
-        u8 *pcEntry = work + 0x10c + i * 2;
+    for (i = 0; i < work[0x114 / 4]; i++) {
+        u8 *pcEntry = (u8 *)work + 0x10c + i * 2;
         s16 pc = *(s16 *)pcEntry;
-        u32 exp = func_001fbdf0(datGetLevel(pc), BR_U32(work, 0x2a54),
-                                BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
-                                BR_U32(work, 0x11c));
-        func_001f9e90(*(u16 *)pcEntry, exp);
+        func_001f9e90(*(u16 *)pcEntry,
+                       func_001fbdf0(datGetLevel(pc), work[0x2a54 / 4],
+                                     work[0xb8 / 4], work[0x2a58 / 4],
+                                     work[0x11c / 4]));
     }
 
     /* Retail +0x4e0..+0x640: process the optional sixth Persona's
@@ -867,41 +891,39 @@ void *func_001f13b0(KwlnTask *task)
         persona = datPersonaGetByPcId(6);
         K_ASSERT(persona != NULL, 0x6c9);
         datPersonaAddExp(persona, (s32)func_001fbdf0(
-            datGetLevel(6), BR_U32(work, 0x2a54), BR_U32(work, 0xb8),
-            BR_U32(work, 0x2a58), BR_U32(work, 0x11c)));
+            datGetLevel(6), work[0x2a54 / 4], work[0xb8 / 4],
+            work[0x2a58 / 4], work[0x11c / 4]));
         if (func_001761b0(persona) != 0) {
-            func_00175ce0(persona, (u16 *)(work + 0x158));
+            func_00175ce0(persona, (u16 *)((u8 *)work + 0x158));
             entry = DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
             func_001fb4b0(entry, 0x20, persona->level,
-                          BR_U8(work, 0x158), &firstIndex, &indexCount);
-            BR_U32(work, 0x150) = 0;
+                          BR_U8((u8 *)work, 0x158), &firstIndex, &indexCount);
+            work[0x150 / 4] = 0;
             current = entry + firstIndex * 4;
             for (j = 0; j < indexCount; j++, current += 4) {
                 if (current[1] == 1) {
-                    BR_U16(work, 0x140 + BR_U32(work, 0x150) * 2) =
+                    BR_U16((u8 *)work + work[0x150 / 4] * 2, 0x140) =
                         BR_U16(current, 2);
-                    BR_U32(work, 0x150)++;
+                    work[0x150 / 4]++;
                 }
             }
-            func_00176100(persona, (u16 *)(work + 0x158));
-            if (BR_U32(work, 0x150) != 0) {
-                BR_U32(work, 0) |= 4;
+            func_00176100(persona, (u16 *)((u8 *)work + 0x158));
+            if (work[0x150 / 4] != 0) {
+                work[0] |= 4;
             }
         }
     }
 
-    if (BR_U32(work, 0xec) != 0) {
-        BR_U32(work, 0x10000 - 0x5980) = 3;
-    } else if ((BR_U32(work, 0) & 8) != 0) {
-        BR_U32(work, 0x10000 - 0x5980) = 2;
-    } else if ((BR_U32(work, 0) & 4) != 0) {
-        BR_U32(work, 0x10000 - 0x5980) = 1;
+    if (work[0xec / 4] != 0) {
+        work[(0x10000 - 0x5980) / 4] = 3;
+    } else if ((work[0] & 8) != 0) {
+        work[(0x10000 - 0x5980) / 4] = 2;
+    } else if ((work[0] & 4) != 0) {
+        work[(0x10000 - 0x5980) / 4] = 1;
     } else {
-        BR_U32(work, 0x10000 - 0x5980) = 0;
+        work[(0x10000 - 0x5980) / 4] = 0;
     }
-    return KWLNTASK_CONTINUE;
 }
-#pragma optimization_level 2
 
 // FUN_001f1aa0
 void *func_001f1aa0(KwlnTask *task)
