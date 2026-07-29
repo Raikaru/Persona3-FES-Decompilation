@@ -629,6 +629,8 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3);
 u64 FUN_0036be10(u64 param_1,u64 param_2,u32 param_3);
 u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3);
 u64 FUN_0036f500(long param_1);
+#pragma alias FUN_0036f500_s32 FUN_0036f500
+extern s32 FUN_0036f500_s32(long param_1);
 u64 FUN_003709d0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_003715b0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_00379f30(u64 param_1,u64 param_2,u64 param_3);
@@ -6469,7 +6471,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
   u16 *puVar3;
 
-  bool bVar4;
+  u32 bVar4;
 
   int lVar5;
 
@@ -6485,9 +6487,10 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
   uVar1 = *(u32 *)(iVar6 + 4);
 
-  *(u32 *)(iVar6 + 4) = uVar1 & 0xfffffffd;
-
-  *(u32 *)(iVar6 + 4) = uVar1 & 0xfffffff9;
+  uVar1 &= 0xfffffffd;
+  *(u32 *)(iVar6 + 4) = uVar1;
+  uVar1 &= 0xfffffffb;
+  *(u32 *)(iVar6 + 4) = uVar1;
 
   *(u32 *)(iVar6 + 0xec) = 0;
 
@@ -6621,7 +6624,7 @@ void FUN_00366ac0(u32 param_1,u32 param_2)
 
       }
 
-      lVar5 = FUN_0036f500(*piVar2);
+      lVar5 = FUN_0036f500_s32(*piVar2);
 
       if (lVar5 == 1) {
 

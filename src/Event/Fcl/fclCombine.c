@@ -4352,16 +4352,16 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
   
   s32 lVar9;
 
-  int iVar10;
+  u8 *puVar10;
 
   FusionU128 *puVar11;
 
   FusionU128 uVar1;
-  u32 auStack_90 [16];
+  u8 auStack_4 [4];
 
   u8 auStack_50 [76];
 
-  u8 auStack_4 [4];
+  u32 auStack_90 [16];
 
   
 
@@ -4375,278 +4375,142 @@ u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
     iVar7 = *(int *)(iVar4 + 0xc);
 
-    iVar10 = iVar7 * 8;
+    puVar10 = DAT_006a4380 + iVar7 * 8;
 
-    if (*(int *)(iVar4 + 4) == 1) {
-
-LAB_003d29c0:
-
-      switch(*(u16 *)(DAT_006a4380 + iVar10)) {
-
+    switch (*(int *)(iVar4 + 4)) {
+    case 0:
+      switch(*(u16 *)puVar10) {
       case 1:
-
-        lVar9 = fclMisc003c9ab0(*(u32 *)(iVar3 + 0xd0));
-
-        if (lVar9 != 0) {
-
-          bVar2 = 1;
-
-        }
-
-        break;
-
-      case 2:
-
-        lVar9 = FUN_0040e390();
-
-        if (lVar9 != 0) {
-
-          bVar2 = 1;
-
-        }
-
-        break;
-
-      case 3:
-
-        if ((bVar2) || (lVar9 = H_Cdvd_IsFileLoaded(*(u32 *)(iVar3 + 0xc4)), lVar9 != 0)) {
-
-          if (*(int *)(iVar3 + 0xc4) != 0) {
-
-            *(u32 *)(iVar3 + 200) = *(u32 *)(*(int *)(iVar3 + 0xc4) + 0x110);
-
-          }
-
-          bVar2 = 1;
-
-        }
-
-        break;
-
-      case 4:
-
-        lVar9 = MT_Scene_TryLoadFinish();
-
-        if (lVar9 != 0) {
-
-          puVar6 = (FusionU128 *)func_001a1150();
-
-          puVar11 = (FusionU128 *)auStack_90;
-
-          iVar7 = 4;
-
-          do {
-
-            uVar1 = *puVar6;
-
-            puVar6 = puVar6 + 1;
-
-            iVar7 = iVar7 + -1;
-
-            *puVar11 = uVar1;
-
-            puVar11 = puVar11 + 1;
-
-          } while (0 < iVar7);
-
-          iVar7 = kwlnGetMainCamera();
-
-          FUN_004cb7f0(*(u32 *)(iVar7 + 4),auStack_90,0);
-
-          uVar8 = kwlnGetMainCamera();
-
-          uVar5 = func_001a1190();
-
-          K_View_SetFov(uVar5,uVar8);
-
-          func_001a0040(1,1);
-
-          bVar2 = 1;
-
-        }
-
-        break;
-
-      case 5:
-
-        lVar9 = fclCombine003d54a0(0);
-
-        if (lVar9 != 0) {
-
-          bVar2 = 1;
-
-        }
-
-        break;
-
-      case 6:
-
-        if ((bVar2) || (lVar9 = H_Cdvd_IsFileLoaded(*(u32 *)(iVar3 + 0xd8)), lVar9 != 0)) {
-
-          if (*(int *)(iVar3 + 0xd8) != 0) {
-
-            *(u32 *)(iVar3 + 0xdc) = *(u32 *)(*(int *)(iVar3 + 0xd8) + 0x110);
-
-          }
-
-          bVar2 = 1;
-
-        }
-
-        break;
-
-      case 7:
-
-        if ((bVar2) || (lVar9 = H_Cdvd_IsFileLoaded(*(u32 *)(iVar3 + 0xbc)), lVar9 != 0)) {
-
-          if (*(int *)(iVar3 + 0xbc) != 0) {
-
-            *(u32 *)(iVar3 + 0xc0) = *(u32 *)(*(int *)(iVar3 + 0xbc) + 0x110);
-
-          }
-
-          bVar2 = 1;
-
-        }
-
-      }
-
-      if (bVar2) {
-
-        iVar7 = *(int *)(iVar4 + 0xc) + 1;
-
-        *(int *)(iVar4 + 0xc) = iVar7;
-
-        if (5 < iVar7) {
-
-          return LAB_003c5170;
-
-        }
-
-        *(u32 *)(iVar4 + 4) = 0;
-
-      }
-
-    }
-
-    else if (*(int *)(iVar4 + 4) == 0) {
-
-      switch(*(u16 *)(DAT_006a4380 + iVar10)) {
-
-      case 1:
-
         uVar5 = FUN_003c9850(*(u32 *)(iVar3 + 0xcc),2,5,5);
-
         *(u32 *)(iVar3 + 0xd0) = uVar5;
-
         break;
-
       case 2:
-
-        uVar8 = FUN_003efed0(7);
-
-        FUN_0040e300(uVar8,*(u32 *)(iVar3 + 0xbc));
-
+        FUN_0040e300(FUN_003efed0(7),*(u32 *)(iVar3 + 0xbc));
         break;
-
       case 3:
-
         if (*(int *)(iVar3 + 0xc4) != 0) {
-
           K_Assert((const char *)(u32)0x6a4648,0x387);
-
         }
-
         lVar9 = datGetScenarioMode();
-
         if (lVar9 != 0) {
-
           sprintf(auStack_50,0x6a4660);
-
         }
-
         else {
-
-          sprintf(auStack_50,&gp0xffffaa60,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
-
+          sprintf(auStack_50,&gp0xffffaa60,*(char **)(puVar10 + 4));
         }
-
         bVar2 = 1;
-
         lVar9 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
-
         *(int *)(iVar3 + 200) = (int)lVar9;
-
         if (lVar9 == 0) {
-
           K_Assert((const char *)(u32)0x6a4648,0x393);
-
         }
-
         break;
-
       case 4:
-
-        MT_Scene_Load((DAT_006a4382)[iVar10],(DAT_006a4383)[iVar10]);
-
+        MT_Scene_Load(puVar10[2],puVar10[3]);
         break;
-
       case 5:
-
         fclCombine003d5420(0);
-
         break;
-
       case 6:
-
         if (*(int *)(iVar3 + 0xd8) != 0) {
-
           K_Assert((const char *)(u32)0x6a4648,0x39f);
-
         }
-
-        sprintf(auStack_50,&gp0xffffaa60,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
-
+        sprintf(auStack_50,&gp0xffffaa60,*(char **)(puVar10 + 4));
         bVar2 = 1;
-
         lVar9 = H_Cdvd_CacheFindFile(auStack_50,auStack_4);
-
         *(int *)(iVar3 + 0xdc) = (int)lVar9;
-
         if (lVar9 == 0) {
-
           K_Assert((const char *)(u32)0x6a4648,0x3a5);
-
         }
-
         break;
-
       case 7:
-
         lVar9 = datGetScenarioMode();
-
         if (lVar9 != 0) {
-
-          sprintf(auStack_50,0x6a4690,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
-
+          sprintf(auStack_50,0x6a4690,*(char **)(puVar10 + 4));
         }
-
         else {
-
-          sprintf(auStack_50,0x6a46a0,(PTR_s_fcl_combine_pak_006a4384)[iVar7 * 2]);
-
+          sprintf(auStack_50,0x6a46a0,*(char **)(puVar10 + 4));
         }
-
         uVar5 = H_Cdvd_Request(auStack_50,1);
-
         *(u32 *)(iVar3 + 0xbc) = uVar5;
-
       }
-
       *(u32 *)(iVar4 + 4) = 1;
-
-      goto LAB_003d29c0;
-
+      /* fall through */
+    case 1:
+      switch(*(u16 *)puVar10) {
+      case 1:
+        lVar9 = fclMisc003c9ab0(*(u32 *)(iVar3 + 0xd0));
+        if (lVar9 != 0) {
+          bVar2 = 1;
+        }
+        break;
+      case 2:
+        lVar9 = FUN_0040e390();
+        if (lVar9 != 0) {
+          bVar2 = 1;
+        }
+        break;
+      case 3:
+        if ((bVar2) || (lVar9 = H_Cdvd_IsFileLoaded(*(u32 *)(iVar3 + 0xc4)), lVar9 != 0)) {
+          if (*(int *)(iVar3 + 0xc4) != 0) {
+            *(u32 *)(iVar3 + 200) = *(u32 *)(*(int *)(iVar3 + 0xc4) + 0x110);
+          }
+          bVar2 = 1;
+        }
+        break;
+      case 4:
+        lVar9 = MT_Scene_TryLoadFinish();
+        if (lVar9 != 0) {
+          puVar6 = (FusionU128 *)func_001a1150();
+          puVar11 = (FusionU128 *)auStack_90;
+          iVar7 = 4;
+          do {
+            uVar1 = *puVar6;
+            puVar6 = puVar6 + 1;
+            iVar7 = iVar7 + -1;
+            *puVar11 = uVar1;
+            puVar11 = puVar11 + 1;
+          } while (0 < iVar7);
+          iVar7 = kwlnGetMainCamera();
+          FUN_004cb7f0(*(u32 *)(iVar7 + 4),auStack_90,0);
+          uVar8 = kwlnGetMainCamera();
+          uVar5 = func_001a1190();
+          K_View_SetFov(uVar5,uVar8);
+          func_001a0040(1,1);
+          bVar2 = 1;
+        }
+        break;
+      case 5:
+        lVar9 = fclCombine003d54a0(0);
+        if (lVar9 != 0) {
+          bVar2 = 1;
+        }
+        break;
+      case 6:
+        if ((bVar2) || (lVar9 = H_Cdvd_IsFileLoaded(*(u32 *)(iVar3 + 0xd8)), lVar9 != 0)) {
+          if (*(int *)(iVar3 + 0xd8) != 0) {
+            *(u32 *)(iVar3 + 0xdc) = *(u32 *)(*(int *)(iVar3 + 0xd8) + 0x110);
+          }
+          bVar2 = 1;
+        }
+        break;
+      case 7:
+        if ((bVar2) || (lVar9 = H_Cdvd_IsFileLoaded(*(u32 *)(iVar3 + 0xbc)), lVar9 != 0)) {
+          if (*(int *)(iVar3 + 0xbc) != 0) {
+            *(u32 *)(iVar3 + 0xc0) = *(u32 *)(*(int *)(iVar3 + 0xbc) + 0x110);
+          }
+          bVar2 = 1;
+        }
+      }
+      if (bVar2) {
+        iVar7 = *(int *)(iVar4 + 0xc) + 1;
+        *(int *)(iVar4 + 0xc) = iVar7;
+        if (5 < iVar7) {
+          return LAB_003c5170;
+        }
+        *(u32 *)(iVar4 + 4) = 0;
+      }
+      break;
     }
 
     if (!bVar2) {
@@ -4657,6 +4521,12 @@ LAB_003d29c0:
 
   } while( 1 );
 
+}
+
+// FUN_003D2C00
+u32 FUN_003d2c00(void)
+{
+  return 0;
 }
 
 // FUN_003D2C10

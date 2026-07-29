@@ -130,7 +130,7 @@ extern u64 func_00195540();
 extern u32 func_00195340_u32();
 extern u32 func_00195540_u32();
 extern u64 func_00195550();
-extern u64 func_00198590();
+extern u32 func_00198590();
 extern u64 func_0019d3f0();
 extern u64 func_001fdd60();
 extern u64 func_001fdda0();
@@ -425,8 +425,13 @@ extern u32 DAT_00957170;
 extern u32 DAT_00957174;
 extern u32 DAT_00957178;
 extern float DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern float DAT_00960088_abs[];
 extern u64 (*DAT_00960090)();
-extern u64 (*DAT_009600a4)();
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u64 (*DAT_00960090_abs)();
+#pragma alias DAT_009600a4_abs DAT_009600a4
+extern u64 (*DAT_009600a4_abs)();
 extern u64 (*DAT_00960178)();
 #pragma alias DAT_00960178_u32_abs DAT_00960178
 extern u32 (*DAT_00960178_u32_abs[])(...);
@@ -634,7 +639,9 @@ extern u32 func_002bc830(u8 *param_1);
 extern void func_002bc890(u8 *param_1,u16 param_2);
 extern u32 func_002bc910(u32 *param_1);
 extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
-extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
+extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,int param_8);
+#pragma alias func_002bc9c0_long func_002bc9c0
+extern void func_002bc9c0_long(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
 extern void func_002bccd0(u32 param_1, u32 param_2);
 extern void func_002bcde0(u64 param_1,u32 *param_2);
 extern void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5);
@@ -3354,55 +3361,63 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
 // FUN_002bc9c0 NONMATCHING
 
 void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5,
-                 float param_6,u32 param_7,long param_8)
+                 float param_6,u32 param_7,int param_8)
 
 {
   int iVar1;
   u32 uVar2;
-  float fVar3;
-  float fStack_100;
-  float fStack_fc;
-  float afStack_f8[62];
+  float invDepth;
+  float channel0;
+  float channel1;
+  float channel2;
+  float channel3;
+  float defaultValue;
+  float vertexData[64];
   
   iVar1 = func_00198590();
-  fVar3 = *(float *)(iVar1 + 0x80);
+  invDepth = 1.0f / *(float *)(iVar1 + 0x80);
+  defaultValue = DAT_00960088_abs[0];
+  channel0 = (float)(param_7 >> 0x18);
+  channel1 = (float)(param_7 >> 0x10 & 0xff);
+  channel2 = (float)(param_7 >> 8 & 0xff);
+  channel3 = (float)(param_7 & 0xff);
   for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
-    afStack_f8[uVar2 * 0x10 + 4] = 1.0f / fVar3;
-    afStack_f8[uVar2 * 0x10 + 6] = (float)(param_7 >> 0x18);
-    afStack_f8[uVar2 * 0x10 + 7] = (float)(param_7 >> 0x10 & 0xff);
-    afStack_f8[uVar2 * 0x10 + 8] = (float)(param_7 >> 8 & 0xff);
-    afStack_f8[uVar2 * 0x10 + 9] = (float)(param_7 & 0xff);
-    afStack_f8[uVar2 * 0x10] = DAT_00960088;
+    vertexData[uVar2 * 0x10 + 6] = invDepth;
+    vertexData[uVar2 * 0x10 + 8] = channel0;
+    vertexData[uVar2 * 0x10 + 9] = channel1;
+    vertexData[uVar2 * 0x10 + 10] = channel2;
+    vertexData[uVar2 * 0x10 + 11] = channel3;
+    vertexData[uVar2 * 0x10 + 2] = defaultValue;
   }
   if (param_8 != 0) {
-    afStack_f8[0x22] = (float)*(int *)((int)param_8 + 0xc);
-    afStack_f8[0x13] = (float)*(int *)((int)param_8 + 0x10);
-    afStack_f8[2] = param_5 / afStack_f8[0x22];
-    afStack_f8[3] = param_6 / afStack_f8[0x13];
-    afStack_f8[0x13] = (param_6 + param_4) / afStack_f8[0x13];
-    afStack_f8[0x22] = (param_5 + param_3) / afStack_f8[0x22];
-    afStack_f8[0x12] = afStack_f8[2];
-    afStack_f8[0x23] = afStack_f8[0x13];
-    afStack_f8[0x32] = afStack_f8[0x22];
-    afStack_f8[0x33] = afStack_f8[3];
+    vertexData[0x24] = (float)*(int *)(param_8 + 0xc);
+    vertexData[0x15] = (float)*(int *)(param_8 + 0x10);
+    vertexData[4] = param_5 / vertexData[0x24];
+    vertexData[5] = param_6 / vertexData[0x15];
+    vertexData[0x15] = (param_6 + param_4) / vertexData[0x15];
+    vertexData[0x24] = (param_5 + param_3) / vertexData[0x24];
+    vertexData[0x14] = vertexData[4];
+    vertexData[0x25] = vertexData[0x15];
+    vertexData[0x34] = vertexData[0x24];
+    vertexData[0x35] = vertexData[5];
   }
-  (*DAT_00960090)(6,0);
-  (*DAT_00960090)(7,2);
-  (*DAT_00960090)(8,0);
-  (*DAT_00960090)(10,5);
-  (*DAT_00960090)(0xb,6);
-  (*DAT_00960090)(9,2);
-  (*DAT_00960090)(0xc,1);
-  (*DAT_00960090)(1,param_8);
-  afStack_f8[0xf] = param_2 + param_4;
-  afStack_f8[0x1e] = param_1 + param_3;
-  fStack_100 = param_1;
-  fStack_fc = param_2;
-  afStack_f8[0xe] = param_1;
-  afStack_f8[0x1f] = afStack_f8[0xf];
-  afStack_f8[0x2e] = afStack_f8[0x1e];
-  afStack_f8[0x2f] = param_2;
-  (*DAT_009600a4)(3,&fStack_100,4,0x696da8,6);
+  (*DAT_00960090_abs)(6,0);
+  (*DAT_00960090_abs)(7,2);
+  (*DAT_00960090_abs)(8,0);
+  (*DAT_00960090_abs)(10,5);
+  (*DAT_00960090_abs)(0xb,6);
+  (*DAT_00960090_abs)(9,2);
+  (*DAT_00960090_abs)(0xc,1);
+  (*DAT_00960090_abs)(1,param_8);
+  vertexData[0x11] = param_2 + param_4;
+  vertexData[0x20] = param_1 + param_3;
+  vertexData[0] = param_1;
+  vertexData[1] = param_2;
+  vertexData[0x10] = param_1;
+  vertexData[0x21] = vertexData[0x11];
+  vertexData[0x30] = vertexData[0x20];
+  vertexData[0x31] = param_2;
+  (*DAT_009600a4_abs)(3,vertexData,4,0x696da8,6);
   return;
 }
 
@@ -3492,14 +3507,14 @@ void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *pa
       uVar4 = func_0021cce0(uVar3);
       iVar5 = (int)uVar3;
       fVar7 = (fStack_8 + param_1) - (float)(*(int *)(iVar5 + 0xc) >> 1);
-      func_002bc9c0(fVar7,param_2,(float)*(int *)(iVar5 + 0xc),(float)*(int *)(iVar5 + 0x10),
+      func_002bc9c0_long(fVar7,param_2,(float)*(int *)(iVar5 + 0xc),(float)*(int *)(iVar5 + 0x10),
                    (float)*(int *)(iVar5 + 0x14),(float)*(int *)(iVar5 + 0x18),0xffffffffffffffff,
                    uVar4);
       uVar3 = func_0021c3f0(5);
       uVar3 = func_0021cca0(uVar3,4);
       uVar4 = func_0021cce0(uVar3);
       iVar5 = (int)uVar3;
-      func_002bc9c0(fVar7 + 8.0f,param_2 + 4.0f,(float)(int)((float)*(int *)(iVar5 + 0xc) * fVar6),
+      func_002bc9c0_long(fVar7 + 8.0f,param_2 + 4.0f,(float)(int)((float)*(int *)(iVar5 + 0xc) * fVar6),
                    (float)*(int *)(iVar5 + 0x10),(float)(int)((float)*(int *)(iVar5 + 0x14) * fVar6)
                    ,(float)*(int *)(iVar5 + 0x18),0xffffffffffffffff,uVar4);
     }

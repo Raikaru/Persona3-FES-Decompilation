@@ -2917,6 +2917,14 @@ LAB_003e8b7c:
 
 }
 
+/* Reached only through a shop function-pointer table, never by jal, which is why nothing
+ * in this file references it. Retail 0x003e8e10 is `daddu $v0, $zero, $zero; jr $ra; nop`. */
+// FUN_003E8E10
+u32 FUN_003e8e10(void)
+{
+    return 0;
+}
+
 // FUN_003E8E20
 int FUN_003e8e20(u8* owner)
 {

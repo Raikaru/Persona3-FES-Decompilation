@@ -283,7 +283,7 @@ void* func_001b7e60(KwlnTask* task)
         {
             if (request->fileSize >= 0x2000)
             {
-                K_Assert((const char*)0x0067F440, 0xcd);
+                K_Assert("k_data.c", 0xcd);
             }
             memcpy(gFldDngFloorsData, request->fileMemory,
                    request->fileSize);

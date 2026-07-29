@@ -2429,6 +2429,10 @@ void FUN_00204760(void)
             func_003b0e20(handle, -1);
             slot = work + i * 8;
             *(u32*)(slot + 0x370) = handle;
+            handle = func_003b0970(*(u32*)0x00684f20, 2, alpha, 0, 0);
+            func_003b2c60(handle, 0.0f);
+            func_003b0e20(handle, -1);
+            *(u32*)(slot + 0x374) = handle;
             break;
         }
     }

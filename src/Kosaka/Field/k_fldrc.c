@@ -872,8 +872,8 @@ init_phase7:
 
         eventRequest = *(HCdvd**)((u8*)K_Field_Get() + 0x10cc);
         eventPayload = *(void**)((u8*)eventRequest + 0x110);
-        memcpy((u8*)eventPayload + 4,
-               (u8*)*(HCdvd**)((u8*)K_Field_Get() + 0x10cc) + 0x48, 0x1000);
+        memcpy(K_Field_Get()->dungeonCells, (u8*)eventPayload + 4,
+               sizeof(K_Field_Get()->dungeonCells));
         func_001e7520(*(HCdvd**)((u8*)K_Field_Get() + 0x10cc));
         *(HCdvd**)((u8*)K_Field_Get() + 0x10cc) =
             func_001e6cb0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId);
