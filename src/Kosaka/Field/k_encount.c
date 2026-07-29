@@ -921,9 +921,9 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     task = kwlnTaskCreateWithAutoPriority(parent, 10, "field encounter",
                                           func_001d7d40, func_001d89b0, work);
     work->pc[0] = pc;
-    work->pcCount = pc != NULL ? 1 : 0;
+    work->pcCount = 1;
     work->ec[0] = ec;
-    work->ecCount = ec != NULL ? 1 : 0;
+    work->ecCount = work->pcCount;
     tasks = D_00875A40;
     for (i = 0; i < 3 && tasks[i] != NULL; ++i)
     {

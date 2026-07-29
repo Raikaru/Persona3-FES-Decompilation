@@ -244,7 +244,7 @@ void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 #pragma alias FUN_003b0ce0_typed FUN_003b0ce0
 extern void FUN_003b0ce0_typed(u64 param_1,u64 param_2);
 void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
-u64 FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,s32 param_4,s32 param_5,s32 param_6,s32 param_7,s32 param_8,s32 param_9);
+u64 FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,u32 param_4,s32 param_5,s32 param_6,s32 param_7,s32 param_8,s32 param_9);
 u64  FUN_003a56f0(u32 param_1,s32 param_2,f32 param_3,u32 param_4,  s32 param_5,s32 param_6,s32 param_7,s32 param_8,s32 param_9,  int param_10,int param_11);
 u32 FUN_003a5940(int param_1,int param_2);
 void FUN_003a5980(u32 *param_1);
@@ -2971,11 +2971,12 @@ void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7)
 #define FUN_003a53b0(...) ((u64 (*)(...))FUN_003a53b0)(__VA_ARGS__)
 #define FUN_003a5540(...) ((void (*)(...))FUN_003a5540)(__VA_ARGS__)
 #undef FUN_003a5570
+#undef FUN_003a53b0
 // W212: correcting the mixed-ABI signature from integer-like u64 slots to
 // the matched sibling's s32/f32 contract held nd 222 -> 222 and changed
 // 380 -> 356 bytes (384 window). The first residual is now the +0x0 frame
 // (ours 0xb0, retail 0xa0); the typed contract is retained as honest source.
-// FUN_003A5570 NONMATCHING
+// FUN_003A5570
 
 
 
@@ -2984,7 +2985,7 @@ void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7)
 
 u64
 
-FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
+FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,u32 param_4,
             s32 param_5,s32 param_6,s32 param_7,s32 param_8,s32 param_9)
 
 
@@ -2992,8 +2993,10 @@ FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 {
 
   u64 uVar1;
+  int iVar2;
 
   
+  iVar2 = *(int *)(DAT_00959eec_abs + (int)param_8 * 0xd);
 
   if (param_6 == 10) {
 
@@ -3003,7 +3006,7 @@ FUN_003a5570(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 
   }
 
-  FUN_003a5fd0(*(int *)(DAT_00959eec_abs + (int)param_8 * 0xd) + 0xd4);
+  FUN_003a5fd0(iVar2 + 0xd4);
 
   uVar1 = FUN_003a53b0(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9);
 
@@ -3387,7 +3390,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
 
-      uVar3 = (*DAT_00960178)(uVar1,0x40000);
+      uVar3 = (*DAT_00960178_abs)(uVar1,0x40000);
 
       *puVar5 = uVar3;
 
@@ -3421,7 +3424,7 @@ void FUN_003a5ca0(int param_1,int param_2,u32 param_3,int param_4)
 
       puVar5 = (u32 *)(iVar9 + iVar10 + 0x80);
 
-      uVar3 = (*DAT_00960178)(uVar1,0x40000);
+      uVar3 = (*DAT_00960178_abs)(uVar1,0x40000);
 
       *puVar5 = uVar3;
 

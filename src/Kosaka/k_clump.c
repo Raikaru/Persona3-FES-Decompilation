@@ -1491,7 +1491,7 @@ void func_001a8b10(u32* entries)
     qsort(entries + 1, entries[0], 0x2c, (int (*)(const void*, const void*))func_001a89c0);
     for (i = (s32)entries[0] - 1; i >= 0; i--)
     {
-        item = (KClumpMaterialNode*)(entries + i * 11 + 1);
+        item = &((KClumpMaterialNode*)(entries + 1))[i];
         if (func_004912b0(item->object) != NULL &&
             RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, func_004912b0(item->object)) != rwSPHEREOUTSIDE)
         {

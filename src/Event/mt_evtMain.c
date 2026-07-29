@@ -6047,9 +6047,7 @@ void FUN_00366210(u32 param_1,int param_2)
   u32 uStack_8 = 0;
 
   for (piVar1 = *(int **)(param_2 + 0x84); (piVar1 != (int *)0x0 && (*piVar1 != 0x22));
-
       piVar1 = (int *)piVar1[0x25]) {
-
   }
 
   if (((piVar1 != (int *)0x0) &&
@@ -7524,29 +7522,10 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
   int iVar7;
   int limit;
 
-  u32 uStack_40;
-
-  u32 uStack_3c;
-
-  u32 uStack_38;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  RwV4d source1;
+  RwV4d target1;
+  RwV4d source2;
+  RwV4d target2;
 
   
 
@@ -7597,7 +7576,7 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
   if ((*(int *)(iVar6 + 400) == 6) && (*(int *)(iVar6 + 0x198) != 2)) {
 
-    *(u32 *)(iVar6 + 400) = 0;
+    *(u32 *)(param_3 + 400) = 0;
 
     *(int *)(iVar6 + 0x1b8) = (int)*(char *)(iVar7 + 0x34);
 
@@ -7617,19 +7596,13 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
     if (cVar1 == '\0') {
 
-      uStack_10 = *(u32 *)(iVar7 + 0x18);
-
-      uStack_c = *(u32 *)(iVar7 + 0x1c);
-
-      uStack_8 = *(u32 *)(iVar7 + 0x20);
-
-      uStack_20 = 0;
-
-      uStack_1c = 0;
-
-      uStack_18 = 0;
-
-      uVar3 = FUN_00386130(param_3,&uStack_10,&uStack_20);
+      source1.x = *(f32 *)(iVar7 + 0x18);
+      source1.y = *(f32 *)(iVar7 + 0x1c);
+      source1.z = *(f32 *)(iVar7 + 0x20);
+      target1.x = 0.0f;
+      target1.y = 0.0f;
+      target1.z = 0.0f;
+      uVar3 = FUN_00386130(param_3,(u32 *)&source1,(u32 *)&target1);
 
       *(u32 *)(iVar6 + 0xe8) = uVar3;
 
@@ -7653,19 +7626,13 @@ u64 FUN_00367a20(u64 param_1,u64 param_2,int param_3)
 
     else if (cVar1 == '\x02') {
 
-      uStack_30 = *(u32 *)(iVar7 + 0x18);
-
-      uStack_2c = *(u32 *)(iVar7 + 0x1c);
-
-      uStack_28 = *(u32 *)(iVar7 + 0x20);
-
-      uStack_40 = *(u32 *)(iVar7 + 0x28);
-
-      uStack_3c = *(u32 *)(iVar7 + 0x2c);
-
-      uStack_38 = 0;
-
-      uVar3 = FUN_00386130(param_3,&uStack_30,&uStack_40);
+      source2.x = *(f32 *)(iVar7 + 0x18);
+      source2.y = *(f32 *)(iVar7 + 0x1c);
+      source2.z = *(f32 *)(iVar7 + 0x20);
+      target2.x = *(f32 *)(iVar7 + 0x28);
+      target2.y = *(f32 *)(iVar7 + 0x2c);
+      target2.z = 0.0f;
+      uVar3 = FUN_00386130(param_3,(u32 *)&source2,(u32 *)&target2);
 
       *(u32 *)(iVar6 + 0xe8) = uVar3;
 

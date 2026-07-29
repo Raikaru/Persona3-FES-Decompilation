@@ -445,26 +445,8 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
     categoryBit = 0x20u << ((pcId - 1) & 31);
     outCount = 0;
     selected = datGetEquipmentIdx(pcId, equipmentType);
-    work->entries[0].itemId = datGetEquipmentId(pcId, selected);
+    campEquipmentPopulate(&work->entries[0], pcId, selected);
     work->entries[0].categoryMask = func_0016f720(pcId, selected);
-    work->entries[0].equipmentClass = (u8)func_00171250((s16)work->entries[0].itemId);
-    work->entries[0].effect = datGetEquipmentEffect(pcId, selected);
-    work->entries[0].slotType = func_0016f810(pcId, selected);
-    work->entries[0].sourceIndex = selected;
-    switch (work->entries[0].equipmentClass) {
-    case 0:
-        work->entries[0].valueA = func_0016f9f0(pcId, selected);
-        work->entries[0].valueB = func_0016fae0(pcId, selected);
-        break;
-    case 1:
-        work->entries[0].valueC = func_0016fbd0(pcId, selected);
-        break;
-    case 2:
-        work->entries[0].valueD = func_0016fcc0(pcId, selected);
-        break;
-    default:
-        break;
-    }
     outCount++;
 
     expectedType = equipmentType;
@@ -477,41 +459,15 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
             if ((categoryMask & categoryBit) != 0 &&
                 (s16)func_00171250((s16)datGetEquipmentId(1, candidate)) == expectedType &&
                 candidate != datGetEquipmentIdx(1, equipmentType)) {
-                work->entries[outCount].itemId = datGetEquipmentId(1, candidate);
-                work->entries[outCount].categoryMask = func_0016f720(1, indices[index]);
-                work->entries[outCount].equipmentClass =
-                    (u8)func_00171250((s16)work->entries[outCount].itemId);
-                work->entries[outCount].effect = datGetEquipmentEffect(1, indices[index]);
-                work->entries[outCount].slotType = func_0016f810(1, indices[index]);
-                work->entries[outCount].sourceIndex = indices[index];
-                switch (work->entries[outCount].equipmentClass) {
-                case 0:
-                    work->entries[outCount].valueA =
-                        func_0016f9f0(1, indices[index]);
-                    work->entries[outCount].valueB =
-                        func_0016fae0(1, indices[index]);
-                    break;
-                case 1:
-                    work->entries[outCount].valueC =
-                        func_0016fbd0(1, indices[index]);
-                    break;
-                case 2:
-                    work->entries[outCount].valueD =
-                        func_0016fcc0(1, indices[index]);
-                    break;
-                default:
-                    break;
-                }
+                campEquipmentPopulateWithCategory(
+                    &work->entries[outCount], 1, candidate,
+                    func_0016f720(1, candidate));
                 outCount++;
             }
         }
         index++;
     }
-    category = 0;
-    while (category < 0x15) {
-        work->categoryCounts[category] = 0;
-        category++;
-    }
+    campEquipmentClearCategoryCounts(work);
     work->entryCount = outCount;
 }
 
@@ -575,6 +531,7 @@ void FUN_0013c780(CampEquipmentWork* work)
     s16 candidate;
     CampEquipmentEntry* entry;
     u32 categoryMask;
+    u32 previousCategory;
 
     while (scanIndex < 300) {
         if (datGetEquipmentId(1, scanIndex) != 0) {
@@ -592,32 +549,11 @@ void FUN_0013c780(CampEquipmentWork* work)
     while (scanIndex < 0x14) {
         if (datGetEquipmentId(-1, scanIndex) != 0) {
             entry = &work->entries[recordCount];
-            entry->itemId = datGetEquipmentId(-1, scanIndex);
-            entry->categoryMask =
-                FUN_0013c6a0((s16)entry->itemId);
-            entry->equipmentClass =
-                (u8)func_00171250((s16)entry->itemId);
-            entry->effect = datGetEquipmentEffect(-1, scanIndex);
-            entry->slotType = func_0016f810(-1, scanIndex);
+            campEquipmentPopulate(entry, -1, scanIndex);
+            entry->categoryMask = FUN_0013c6a0((s16)entry->itemId);
             entry->sourceIndex = scanIndex + 0x1000;
             entry->ownedFlag = 1;
             entry->availableFlag = 1;
-            switch (entry->equipmentClass) {
-            case 0:
-                entry->valueA = func_0016f9f0(-1, scanIndex);
-                entry->valueB = func_0016fae0(-1, scanIndex);
-                break;
-            case 1:
-                entry->valueC = func_0016fbd0(-1, scanIndex);
-                break;
-            case 2:
-                entry->valueD = func_0016fcc0(-1, scanIndex);
-                break;
-            case 3:
-                break;
-            default:
-                break;
-            }
             recordCount++;
         }
         scanIndex++;
@@ -628,62 +564,35 @@ void FUN_0013c780(CampEquipmentWork* work)
     while (index < candidateCount) {
         candidate = (s16)candidateIndices[index];
         if (datGetEquipmentId(1, candidate) != 0) {
-            work->entries[recordCount].itemId =
-                datGetEquipmentId(1, (s16)candidateIndices[index]);
+            entry = &work->entries[recordCount];
+            previousCategory = entry->categoryMask;
+            campEquipmentPopulate(entry, 1, candidate);
             categoryMask = func_0016f720(1, (s16)candidateIndices[index]);
             category = 0;
             while (category < 0x15) {
                 if ((categoryMask & (1u << category)) != 0) {
-                    work->entries[recordCount].categoryMask = category;
+                    entry->categoryMask = category;
                     break;
                 }
                 category++;
             }
-            work->entries[recordCount].equipmentClass =
-                (u8)func_00171250((s16)work->entries[recordCount].itemId);
-            work->entries[recordCount].effect =
-                datGetEquipmentEffect(1, (s16)candidateIndices[index]);
-            work->entries[recordCount].slotType =
-                func_0016f810(1, (s16)candidateIndices[index]);
-            work->entries[recordCount].sourceIndex = candidateIndices[index];
-            work->entries[recordCount].ownedFlag = 0;
-            work->entries[recordCount].availableFlag = 1;
+            if (category == 0x15) {
+                entry->categoryMask = previousCategory;
+            }
+            entry->ownedFlag = 0;
+            entry->availableFlag = 1;
             if (candidate == datGetEquipmentIdx(1, 0) ||
                 candidate == datGetEquipmentIdx(1, 1) ||
                 candidate == datGetEquipmentIdx(1, 2) ||
                 candidate == datGetEquipmentIdx(1, 3)) {
-                work->entries[recordCount].availableFlag = 0;
-            }
-            switch (work->entries[recordCount].equipmentClass) {
-            case 0:
-                work->entries[recordCount].valueA =
-                    func_0016f9f0(1, (s16)candidateIndices[index]);
-                work->entries[recordCount].valueB =
-                    func_0016fae0(1, (s16)candidateIndices[index]);
-                break;
-            case 1:
-                work->entries[recordCount].valueC =
-                    func_0016fbd0(1, (s16)candidateIndices[index]);
-                break;
-            case 2:
-                work->entries[recordCount].valueD =
-                    func_0016fcc0(1, (s16)candidateIndices[index]);
-                break;
-            case 3:
-                break;
-            default:
-                break;
+                entry->availableFlag = 0;
             }
             recordCount++;
         }
         index++;
     }
 
-    category = 0;
-    while (category < 0x15) {
-        work->categoryCounts[category] = 0;
-        category++;
-    }
+    campEquipmentClearCategoryCounts(work);
     work->entryCount = recordCount;
 }
 

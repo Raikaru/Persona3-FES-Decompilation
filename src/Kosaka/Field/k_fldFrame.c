@@ -109,8 +109,9 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
         switch (axis)
         {
         case 0:
+            i = 0;
             primary0 = point->y;
-            for (i = 0; i < 3; i++)
+            for (; i < 3; i++)
             {
                 if (((tri[i]->y <= primary0) && (primary0 < tri[previous]->y)) ||
                     ((tri[previous]->y <= primary0) && (primary0 < tri[i]->y)))
@@ -126,8 +127,9 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
             }
             break;
         case 1:
+            i = 0;
             primary1 = point->z;
-            for (i = 0; i < 3; i++)
+            for (; i < 3; i++)
             {
                 if (((tri[i]->z <= primary1) && (primary1 < tri[previous]->z)) ||
                     ((tri[previous]->z <= primary1) && (primary1 < tri[i]->z)))
@@ -143,8 +145,9 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
             }
             break;
         case 2:
+            i = 0;
             primary2 = point->y;
-            for (i = 0; i < 3; i++)
+            for (; i < 3; i++)
             {
                 if (((tri[i]->y <= primary2) && (primary2 < tri[previous]->y)) ||
                     ((tri[previous]->y <= primary2) && (primary2 < tri[i]->y)))
