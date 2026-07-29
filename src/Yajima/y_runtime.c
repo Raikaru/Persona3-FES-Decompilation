@@ -4994,9 +4994,8 @@ u32 FUN_00433de0(int param_1)
       node->y = currentY;
       node->previousX = work->x;
       node->previousY = work->y;
-      work->openNodes[work->openCount] = (work->x - 1) + (u32)work->y * 16;
+      work->openNodes[work->openCount] = index;
       work->openCount++;
-      node = &work->nodes[(work->x - 1) + (u32)work->y * 16];
       if ((node->x == work->targetX) && (node->y == work->targetY)) {
         target = &work->nodes[targetIndex];
         target->x = work->targetX;
@@ -5015,13 +5014,12 @@ u32 FUN_00433de0(int param_1)
     index = currentX + 1 + (u32)currentY * 16;
     node = &work->nodes[index];
     if ((node->x == 0) && (node->y == 0)) {
-      work->nodes[work->x + 1 + (u32)work->y * 16].x = currentX + 1;
-      work->nodes[work->x + 1 + (u32)work->y * 16].y = currentY;
-      work->nodes[work->x + 1 + (u32)work->y * 16].previousX = work->x;
-      work->nodes[work->x + 1 + (u32)work->y * 16].previousY = work->y;
-      work->openNodes[work->openCount] = work->x + 1 + (u32)work->y * 16;
+      node->x = currentX + 1;
+      node->y = currentY;
+      node->previousX = work->x;
+      node->previousY = work->y;
+      work->openNodes[work->openCount] = index;
       work->openCount++;
-      node = &work->nodes[work->x + 1 + (u32)work->y * 16];
       if ((node->x == work->targetX) && (node->y == work->targetY)) {
         target = &work->nodes[targetIndex];
         target->x = work->targetX;
@@ -5040,13 +5038,12 @@ u32 FUN_00433de0(int param_1)
     index = (u32)currentX + (currentY + 1) * 16;
     node = &work->nodes[index];
     if ((node->x == 0) && (node->y == 0)) {
-      work->nodes[(u32)work->x + (work->y + 1) * 16].x = currentX;
-      work->nodes[(u32)work->x + (work->y + 1) * 16].y = currentY + 1;
-      work->nodes[(u32)work->x + (work->y + 1) * 16].previousX = work->x;
-      work->nodes[(u32)work->x + (work->y + 1) * 16].previousY = work->y;
-      work->openNodes[work->openCount] = (u32)work->x + (work->y + 1) * 16;
+      node->x = currentX;
+      node->y = currentY + 1;
+      node->previousX = work->x;
+      node->previousY = work->y;
+      work->openNodes[work->openCount] = index;
       work->openCount++;
-      node = &work->nodes[(u32)work->x + (work->y + 1) * 16];
       if ((node->x == work->targetX) && (node->y == work->targetY)) {
         target = &work->nodes[targetIndex];
         target->x = work->targetX;
@@ -5872,6 +5869,8 @@ void FUN_00435c00(int param_1)
   u8 uVar17;
   u8 bVar18;
   int iVar19;
+  YRuntimeUnitRow *row;
+  YRuntimeUnitRow *selfRow;
   u32 uVar20;
   float fVar21;
   float fVar22;
@@ -5972,15 +5971,16 @@ void FUN_00435c00(int param_1)
     }
   }
   cVar3 = *(char *)(iVar2 + 4);
+  selfRow = &DAT_008717a0_unit_rows[(int)cVar3];
   for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+    row = &DAT_008717a0_unit_rows[iVar19];
     if (iVar19 != cVar3) {
       bVar18 = 0;
-      if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
+      if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
         bVar18 = 1;
       }
-      if (((bVar18) && (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar19 * 0x1c0)), cVar4 == '\x06')) &&
-         (lVar13 = FUN_001c7160_f32(500.0f,(u8 *)DAT_008717a0 + cVar3 * 0x1c0,
-                                (u8 *)DAT_008717a0 + iVar19 * 0x1c0), lVar13 == 1)) {
+      if (((bVar18) && (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')) &&
+         (lVar13 = FUN_001c7160_f32(500.0f,selfRow,row), lVar13 == 1)) {
         cVar3 = (char)iVar19;
         goto LAB_00435de4;
       }
@@ -6859,6 +6859,8 @@ void FUN_00438010(int param_1)
   char cVar13;
   int iVar14;
   int iVar15;
+  YRuntimeUnitRow *row;
+  YRuntimeUnitRow *selfRow;
   u32 uStack_70 [3];
   u32 uStack_60 [3];
   u8 auStack_50 [16];
@@ -6880,15 +6882,16 @@ void FUN_00438010(int param_1)
       FUN_00456670(param_1,*(u8 *)(iVar2 + 4));
     }
     cVar13 = *(char *)(iVar2 + 4);
+    selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
     for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+      row = &DAT_008717a0_unit_rows[iVar15];
       if (iVar15 != cVar13) {
         bVar12 = 0;
-        if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0)) {
+        if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
           bVar12 = 1;
         }
-        if (((bVar12) && (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06')) &&
-           (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                  (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+        if (((bVar12) && (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')) &&
+           (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
           cVar13 = (char)iVar15;
           goto LAB_004381a4;
         }
@@ -6898,15 +6901,16 @@ void FUN_00438010(int param_1)
 LAB_004381a4:
     if (cVar13 != '\0') {
       cVar13 = *(char *)(iVar2 + 4);
+      selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
       for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+        row = &DAT_008717a0_unit_rows[iVar15];
         if (iVar15 != cVar13) {
           bVar12 = 0;
-          if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0)) {
+          if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
             bVar12 = 1;
           }
-          if (((bVar12) && (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06'))
-             && (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                       (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+          if (((bVar12) && (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06'))
+             && (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
             uVar11 = (u8)iVar15;
             goto LAB_00438294;
           }
@@ -6917,15 +6921,16 @@ LAB_00438294:
       sVar5 = FUN_0043c910(uVar11);
       if (sVar5 == 0) {
         cVar13 = *(char *)(iVar2 + 4);
+        selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
         for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+          row = &DAT_008717a0_unit_rows[iVar15];
           if (iVar15 != cVar13) {
             bVar12 = 0;
-            if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0)) {
+            if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
               bVar12 = 1;
             }
-            if (((bVar12) && (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06')
-                ) && (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                            (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+            if (((bVar12) && (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')
+                ) && (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
               uVar11 = (u8)iVar15;
               goto LAB_00438388;
             }
@@ -6936,16 +6941,17 @@ LAB_00438388:
         sVar5 = FUN_0043c180(uVar11);
         if (sVar5 == 0) {
           cVar13 = *(char *)(iVar2 + 4);
+          selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
           for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+            row = &DAT_008717a0_unit_rows[iVar15];
             if (iVar15 != cVar13) {
               bVar12 = 0;
-              if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0)) {
+              if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
                 bVar12 = 1;
               }
               if (((bVar12) &&
-                  (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06')) &&
-                  (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                        (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+                  (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')) &&
+                  (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
                 uVar11 = (u8)iVar15;
                 goto LAB_00438480;
               }
@@ -6957,17 +6963,18 @@ LAB_00438480:
           sVar5 = FUN_0043c340(uVar11);
           if (iVar15 == sVar5) {
             cVar13 = (char)iVar15;
+            selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
             for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+              row = &DAT_008717a0_unit_rows[iVar15];
               if (iVar15 != cVar13) {
                 bVar12 = 0;
-                if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0))
+                if ((row->unk_048 != 0) && (row->unk_054 != 0))
                 {
                   bVar12 = 1;
                 }
                 if (((bVar12) &&
-                    (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06')) &&
-                   (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                          (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+                    (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')) &&
+                   (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
                   cVar13 = (char)iVar15;
                   goto LAB_00438580;
                 }
@@ -6982,16 +6989,17 @@ LAB_00438580:
         }
         else {
           cVar13 = *(char *)(iVar2 + 4);
+          selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
           for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+            row = &DAT_008717a0_unit_rows[iVar15];
             if (iVar15 != cVar13) {
               bVar12 = 0;
-              if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0)) {
+              if ((row->unk_048 != 0) && (row->unk_054 != 0)) {
                 bVar12 = 1;
               }
               if (((bVar12) &&
-                  (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06')) &&
-                  (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                        (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+                  (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')) &&
+                  (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
                 uVar11 = (u8)iVar15;
                 goto LAB_00438680;
               }
@@ -7003,17 +7011,18 @@ LAB_00438680:
           sVar5 = FUN_0043c180(uVar11);
           if (iVar15 == sVar5) {
             cVar13 = (char)iVar15;
+            selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
             for (iVar15 = 1; iVar15 < 4; iVar15 = iVar15 + 1) {
+              row = &DAT_008717a0_unit_rows[iVar15];
               if (iVar15 != cVar13) {
                 bVar12 = 0;
-                if ((((u8 *)DAT_008717e8)[iVar15 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar15 * 0x70] != 0))
+                if ((row->unk_048 != 0) && (row->unk_054 != 0))
                 {
                   bVar12 = 1;
                 }
                 if (((bVar12) &&
-                    (cVar4 = FUN_004353f0((int)((u8 *)DAT_008717a0 + iVar15 * 0x1c0)), cVar4 == '\x06')) &&
-                   (iVar10 = FUN_001c7160(500.0f,(u8 *)DAT_008717a0 + cVar13 * 0x1c0,
-                                          (u8 *)DAT_008717a0 + iVar15 * 0x1c0), iVar10 == 1)) {
+                    (cVar4 = FUN_004353f0((int)row), cVar4 == '\x06')) &&
+                   (iVar10 = FUN_001c7160(500.0f,selfRow,row), iVar10 == 1)) {
                   cVar13 = (char)iVar15;
                   goto LAB_00438780;
                 }
@@ -16016,6 +16025,7 @@ u32 FUN_004534b0(char param_1)
   int iVar5;
   int lVar6;
   u32 uVar7;
+  u16 *cell;
   float afStack_10 [2];
   float fStack_8;
   
@@ -16035,21 +16045,22 @@ u32 FUN_004534b0(char param_1)
       lVar6 = FUN_00454400((f32*)(afStack_10),(char)(puVar2[1]));
       if ((lVar6 == 1) || (*(int *)((u8 *)DAT_0086ef2c + (char)puVar2[1] * 0x1c0) == 4)) {
         uVar7 = (u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] - 1) * 0x10 & 0xff;
-        if ((*(short *)(puVar2 + uVar7 * 8 + 0x98) == 0) &&
-           (*(short *)(puVar2 + uVar7 * 8 + 0x9a) == 0)) {
-          *(u16 *)(puVar2 + uVar7 * 8 + 0x98) = (u16)(u8)puVar2[0x78];
-          *(u16 *)(puVar2 + uVar7 * 8 + 0x9a) = (u8)puVar2[0x79] - 1;
-          *(u16 *)(puVar2 + uVar7 * 8 + 0x9c) = (u16)(u8)puVar2[0x78];
-          *(u16 *)(puVar2 + uVar7 * 8 + 0x9e) = (u16)(u8)puVar2[0x79];
+        cell = (u16 *)(puVar2 + uVar7 * 8 + 0x98);
+        if ((cell[0] == 0) && (cell[1] == 0)) {
+          cell[0] = (u16)(u8)puVar2[0x78];
+          cell[1] = (u8)puVar2[0x79] - 1;
+          cell[2] = (u16)(u8)puVar2[0x78];
+          cell[3] = (u16)(u8)puVar2[0x79];
           *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) = uVar7;
           *(int *)(puVar2 + 0x94) = *(int *)(puVar2 + 0x94) + 1;
-          if ((*(u16 *)(puVar2 + uVar7 * 8 + 0x98) == (u16)(u8)puVar2[0x8b]) &&
-             (*(u16 *)(puVar2 + uVar7 * 8 + 0x9a) == (u16)(u8)puVar2[0x8c])) {
+          if ((cell[0] == (u16)(u8)puVar2[0x8b]) &&
+             (cell[1] == (u16)(u8)puVar2[0x8c])) {
             uVar3 = uVar3 & 0xff;
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x98) = (u16)(u8)puVar2[0x8b];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9a) = (u16)(u8)puVar2[0x8c];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9c) = (u16)(u8)puVar2[0x8b];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9e) = (u8)puVar2[0x8c] + 1;
+            cell = (u16 *)(puVar2 + uVar3 * 8 + 0x98);
+            cell[0] = (u16)(u8)puVar2[0x8b];
+            cell[1] = (u16)(u8)puVar2[0x8c];
+            cell[2] = (u16)(u8)puVar2[0x8b];
+            cell[3] = (u8)puVar2[0x8c] + 1;
             return 2;
           }
         }
@@ -16064,29 +16075,22 @@ u32 FUN_004534b0(char param_1)
       lVar6 = FUN_00454400((f32*)(afStack_10),(char)(puVar2[1]));
       if ((lVar6 == 1) || (*(int *)((u8 *)DAT_0086ef2c + (char)puVar2[1] * 0x1c0) == 4)) {
         iVar5 = ((u8)puVar2[0x78] - 1) + (u32)(u8)puVar2[0x79] * 0x10;
-        if ((*(short *)(puVar2 + iVar5 * 8 + 0x98) == 0) &&
-           (*(short *)(puVar2 + iVar5 * 8 + 0x9a) == 0)) {
-          *(short *)(puVar2 + iVar5 * 8 + 0x98) = (short)((u8)puVar2[0x78] - 1);
-          *(u16 *)
-           (puVar2 + (((u8)puVar2[0x78] - 1) + (u32)(u8)puVar2[0x79] * 0x10) * 8 + 0x9a) =
-               (u16)(u8)puVar2[0x79];
-          *(u16 *)
-           (puVar2 + (((u8)puVar2[0x78] - 1) + (u32)(u8)puVar2[0x79] * 0x10) * 8 + 0x9c) =
-               (u16)(u8)puVar2[0x78];
-          *(u16 *)
-           (puVar2 + (((u8)puVar2[0x78] - 1) + (u32)(u8)puVar2[0x79] * 0x10) * 8 + 0x9e) =
-               (u16)(u8)puVar2[0x79];
-          *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) =
-               ((u8)puVar2[0x78] - 1) + (u32)(u8)puVar2[0x79] * 0x10;
+        cell = (u16 *)(puVar2 + iVar5 * 8 + 0x98);
+        if ((cell[0] == 0) && (cell[1] == 0)) {
+          cell[0] = (short)((u8)puVar2[0x78] - 1);
+          cell[1] = (u16)(u8)puVar2[0x79];
+          cell[2] = (u16)(u8)puVar2[0x78];
+          cell[3] = (u16)(u8)puVar2[0x79];
+          *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) = iVar5;
           *(int *)(puVar2 + 0x94) = *(int *)(puVar2 + 0x94) + 1;
-          iVar5 = ((u8)puVar2[0x78] - 1) + (u32)(u8)puVar2[0x79] * 0x10;
-          if ((*(u16 *)(puVar2 + iVar5 * 8 + 0x98) == (u16)(u8)puVar2[0x8b]) &&
-             (*(u16 *)(puVar2 + iVar5 * 8 + 0x9a) == (u16)(u8)puVar2[0x8c])) {
+          if ((cell[0] == (u16)(u8)puVar2[0x8b]) &&
+             (cell[1] == (u16)(u8)puVar2[0x8c])) {
             uVar3 = uVar3 & 0xff;
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x98) = (u16)(u8)puVar2[0x8b];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9a) = (u16)(u8)puVar2[0x8c];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9c) = (u8)puVar2[0x8b] + 1;
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9e) = (u16)(u8)puVar2[0x8c];
+            cell = (u16 *)(puVar2 + uVar3 * 8 + 0x98);
+            cell[0] = (u16)(u8)puVar2[0x8b];
+            cell[1] = (u16)(u8)puVar2[0x8c];
+            cell[2] = (u8)puVar2[0x8b] + 1;
+            cell[3] = (u16)(u8)puVar2[0x8c];
             return 2;
           }
         }
@@ -16101,29 +16105,22 @@ u32 FUN_004534b0(char param_1)
       lVar6 = FUN_00454400((f32*)(afStack_10),(char)(puVar2[1]));
       if ((lVar6 == 1) || (*(int *)((u8 *)DAT_0086ef2c + (char)puVar2[1] * 0x1c0) == 4)) {
         iVar5 = (u8)puVar2[0x78] + 1 + (u32)(u8)puVar2[0x79] * 0x10;
-        if ((*(short *)(puVar2 + iVar5 * 8 + 0x98) == 0) &&
-           (*(short *)(puVar2 + iVar5 * 8 + 0x9a) == 0)) {
-          *(short *)(puVar2 + iVar5 * 8 + 0x98) = (short)((u8)puVar2[0x78] + 1);
-          *(u16 *)
-           (puVar2 + ((u8)puVar2[0x78] + 1 + (u32)(u8)puVar2[0x79] * 0x10) * 8 + 0x9a) =
-               (u16)(u8)puVar2[0x79];
-          *(u16 *)
-           (puVar2 + ((u8)puVar2[0x78] + 1 + (u32)(u8)puVar2[0x79] * 0x10) * 8 + 0x9c) =
-               (u16)(u8)puVar2[0x78];
-          *(u16 *)
-           (puVar2 + ((u8)puVar2[0x78] + 1 + (u32)(u8)puVar2[0x79] * 0x10) * 8 + 0x9e) =
-               (u16)(u8)puVar2[0x79];
-          *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) =
-               (u8)puVar2[0x78] + 1 + (u32)(u8)puVar2[0x79] * 0x10;
+        cell = (u16 *)(puVar2 + iVar5 * 8 + 0x98);
+        if ((cell[0] == 0) && (cell[1] == 0)) {
+          cell[0] = (short)((u8)puVar2[0x78] + 1);
+          cell[1] = (u16)(u8)puVar2[0x79];
+          cell[2] = (u16)(u8)puVar2[0x78];
+          cell[3] = (u16)(u8)puVar2[0x79];
+          *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) = iVar5;
           *(int *)(puVar2 + 0x94) = *(int *)(puVar2 + 0x94) + 1;
-          iVar5 = (u8)puVar2[0x78] + 1 + (u32)(u8)puVar2[0x79] * 0x10;
-          if ((*(u16 *)(puVar2 + iVar5 * 8 + 0x98) == (u16)(u8)puVar2[0x8b]) &&
-             (*(u16 *)(puVar2 + iVar5 * 8 + 0x9a) == (u16)(u8)puVar2[0x8c])) {
+          if ((cell[0] == (u16)(u8)puVar2[0x8b]) &&
+             (cell[1] == (u16)(u8)puVar2[0x8c])) {
             uVar3 = uVar3 & 0xff;
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x98) = (u16)(u8)puVar2[0x8b];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9a) = (u16)(u8)puVar2[0x8c];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9c) = (u8)puVar2[0x8b] - 1;
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9e) = (u16)(u8)puVar2[0x8c];
+            cell = (u16 *)(puVar2 + uVar3 * 8 + 0x98);
+            cell[0] = (u16)(u8)puVar2[0x8b];
+            cell[1] = (u16)(u8)puVar2[0x8c];
+            cell[2] = (u8)puVar2[0x8b] - 1;
+            cell[3] = (u16)(u8)puVar2[0x8c];
             return 2;
           }
         }
@@ -16138,28 +16135,22 @@ u32 FUN_004534b0(char param_1)
       lVar6 = FUN_00454400((f32*)(afStack_10),(char)(puVar2[1]));
       if ((lVar6 == 1) || (*(int *)((u8 *)DAT_0086ef2c + (char)puVar2[1] * 0x1c0) == 4)) {
         iVar5 = (u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] + 1) * 0x10;
-        if ((*(short *)(puVar2 + iVar5 * 8 + 0x98) == 0) &&
-           (*(short *)(puVar2 + iVar5 * 8 + 0x9a) == 0)) {
-          *(u16 *)(puVar2 + iVar5 * 8 + 0x98) = (u16)(u8)puVar2[0x78];
-          *(short *)(puVar2 + ((u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] + 1) * 0x10) * 8 +
-                              0x9a) = (short)((u8)puVar2[0x79] + 1);
-          *(u16 *)
-           (puVar2 + ((u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] + 1) * 0x10) * 8 + 0x9c) =
-               (u16)(u8)puVar2[0x78];
-          *(u16 *)
-           (puVar2 + ((u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] + 1) * 0x10) * 8 + 0x9e) =
-               (u16)(u8)puVar2[0x79];
-          *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) =
-               (u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] + 1) * 0x10;
+        cell = (u16 *)(puVar2 + iVar5 * 8 + 0x98);
+        if ((cell[0] == 0) && (cell[1] == 0)) {
+          cell[0] = (u16)(u8)puVar2[0x78];
+          cell[1] = (short)((u8)puVar2[0x79] + 1);
+          cell[2] = (u16)(u8)puVar2[0x78];
+          cell[3] = (u16)(u8)puVar2[0x79];
+          *(u32 *)(puVar2 + *(int *)(puVar2 + 0x94) * 4 + 0x898) = iVar5;
           *(int *)(puVar2 + 0x94) = *(int *)(puVar2 + 0x94) + 1;
-          iVar5 = (u32)(u8)puVar2[0x78] + ((u8)puVar2[0x79] + 1) * 0x10;
-          if ((*(u16 *)(puVar2 + iVar5 * 8 + 0x98) == (u16)(u8)puVar2[0x8b]) &&
-             (*(u16 *)(puVar2 + iVar5 * 8 + 0x9a) == (u16)(u8)puVar2[0x8c])) {
+          if ((cell[0] == (u16)(u8)puVar2[0x8b]) &&
+             (cell[1] == (u16)(u8)puVar2[0x8c])) {
             uVar3 = uVar3 & 0xff;
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x98) = (u16)(u8)puVar2[0x8b];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9a) = (u16)(u8)puVar2[0x8c];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9c) = (u16)(u8)puVar2[0x8b];
-            *(u16 *)(puVar2 + uVar3 * 8 + 0x9e) = (u8)puVar2[0x8c] - 1;
+            cell = (u16 *)(puVar2 + uVar3 * 8 + 0x98);
+            cell[0] = (u16)(u8)puVar2[0x8b];
+            cell[1] = (u16)(u8)puVar2[0x8c];
+            cell[2] = (u16)(u8)puVar2[0x8b];
+            cell[3] = (u8)puVar2[0x8c] - 1;
             return 2;
           }
         }
@@ -17659,6 +17650,9 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
   int iVar11;
   u16 *puVar12;
   char cVar13;
+  YRuntimeUnitRow *selfRow;
+  YRuntimeUnitRow *targetRow;
+  YRuntimeUnitRow *loopRow;
   u64 uVar14;
   u64 uVar15;
   YVec3f target;
@@ -17666,21 +17660,22 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
   YVec3f midpoint;
   
   cVar13 = (char)param_2;
-  iVar1 = *(int *)(*(int *)((u8 *)DAT_0087190c + cVar13 * 0x1c0) + 0x3c);
+  selfRow = &DAT_008717a0_unit_rows[(int)cVar13];
+  iVar1 = *(int *)((u8 *)selfRow->unit + 0x3c);
   iVar11 = 1;
   cVar10 = (char)param_3;
   do {
     if (3 < (long)iVar11) {
       sVar4 = FUN_0043bda0(param_2,param_3);
       if (sVar4 != -1) {
-        iVar11 = cVar10 * 0x1c0;
-        FUN_001ad940(&target,*(u32 *)(((u8 *)DAT_008717f4)[cVar10 * 0x70] + 0x1e0));
+        targetRow = &DAT_008717a0_unit_rows[(int)cVar10];
+        FUN_001ad940(&target,*(u32 *)((u8 *)targetRow->unk_054 + 0x1e0));
         uVar14 = 0xffffffffffffffff;
-        FUN_00318ed0_typed(*(u32 *)(((u8 *)DAT_008717f4)[cVar10 * 0x70] + 0x128),2,(float *)(&origin));
+        FUN_00318ed0_typed(*(u32 *)((u8 *)targetRow->unk_054 + 0x128),2,(float *)(&origin));
         midpoint.x = (origin.x + target.x) / 2.0f;
         midpoint.y = (origin.y + target.y) / 2.0f;
         midpoint.z = (origin.z + target.z) / 2.0f;
-        lVar9 = FUN_001c7130(2400.0f,(u32)((u8 *)DAT_008717a0 + iVar11));
+        lVar9 = FUN_001c7130(2400.0f,(u32)targetRow);
         if (lVar9 == 1) {
           FUN_0010a4e0(1,8,3,2);
           uVar15 = uVar14;
@@ -17695,25 +17690,24 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
         iVar8 = FUN_001b9120_u32();
         if (*(int *)(iVar8 + 0x28) != 0) {
           iVar8 = FUN_001b9120_u32();
-          FUN_0018bee0_typed(*(u32 *)(iVar8 + 0x28),*(u16 *)((u8 *)DAT_00871948 + iVar11),0);
+          FUN_0018bee0_typed(*(u32 *)(iVar8 + 0x28),targetRow->unit_id,0);
         }
         uVar5 = FUN_0043bda0(param_2,*(u8 *)(iVar1 + 0x1226));
-        FUN_0017b860_typed(*(u16 *)((u8 *)DAT_00871948 + cVar13 * 0x1c0),
-                     *(u16 *)((u8 *)DAT_00871948 + cVar10 * 0x1c0),uVar5,0);
-        lVar9 = FUN_002ff790_typed((void *)(((u8 *)DAT_008717e8)[cVar10 * 0x70]));
+        FUN_0017b860_typed(selfRow->unit_id,targetRow->unit_id,uVar5,0);
+        lVar9 = FUN_002ff790_typed(targetRow->unk_048);
         if (lVar9 == 0) {
-          uVar6 = FUN_001dde00_typed(*(u16 *)((u8 *)DAT_00871948 + cVar10 * 0x1c0));
-          FUN_003182d0(((u8 *)DAT_008717f0)[cVar10 * 0x70],0,uVar6,0,1);
+          uVar6 = FUN_001dde00_typed(targetRow->unit_id);
+          FUN_003182d0((u32)targetRow->unk_050,0,uVar6,0,1);
         }
-        sVar4 = FUN_0017b500_ret(*(u16 *)((u8 *)DAT_00871948 + cVar13 * 0x1c0),uVar5);
+        sVar4 = FUN_0017b500_ret(selfRow->unit_id,uVar5);
         if (sVar4 == 1) {
-          puVar12 = (u16 *)((u8 *)DAT_00871948 + cVar13 * 0x1c0);
+          puVar12 = &selfRow->unit_id;
           sVar4 = FUN_0016c4f0(*puVar12);
           sVar7 = FUN_0017b5b0(*puVar12,uVar5);
           FUN_0016cf40_typed(*puVar12,sVar4 - sVar7);
         }
         else if (sVar4 == 2) {
-          puVar12 = (u16 *)((u8 *)DAT_00871948 + cVar13 * 0x1c0);
+          puVar12 = &selfRow->unit_id;
           sVar4 = FUN_0016c570_typed(*puVar12);
           sVar7 = FUN_0017b5b0(*puVar12,uVar5);
           FUN_0016cf90_typed(*puVar12,sVar4 - sVar7);
@@ -17723,7 +17717,8 @@ void FUN_00456ea0(u64 param_1,u64 param_2,u64 param_3)
       return;
     }
     bVar2 = 0;
-    if ((((u8 *)DAT_008717e8)[iVar11 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar11 * 0x70] != 0)) {
+    loopRow = &DAT_008717a0_unit_rows[iVar11];
+    if ((loopRow->unk_048 != 0) && (loopRow->unk_054 != 0)) {
       bVar2 = 1;
     }
     if ((bVar2) && ((long)iVar11 != (long)cVar13)) {

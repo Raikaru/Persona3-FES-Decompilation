@@ -2694,6 +2694,11 @@ void FUN_003abb10(int param_1)
 
 }
 #define FUN_003abb10(...) ((void (*)(...))FUN_003abb10)(__VA_ARGS__)
+// FUN_003AC230
+void FUN_003ac230(void)
+{
+}
+
 #undef FUN_003ac240
 // FUN_003AC240 NONMATCHING
 
