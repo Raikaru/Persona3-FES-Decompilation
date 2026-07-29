@@ -34,6 +34,14 @@ extern f32 DAT_006a0f0c;
 extern f32 DAT_006a0f10;
 extern f32 DAT_006a0f14;
 extern f32 DAT_006a0f18;
+#pragma alias DAT_006a0ee0_abs DAT_006a0ee0
+extern char DAT_006a0ee0_abs[];
+#pragma alias DAT_006a0ef0_abs DAT_006a0ef0
+extern char DAT_006a0ef0_abs[];
+#pragma alias DAT_006a0f00_abs DAT_006a0f00
+extern char DAT_006a0f00_abs[];
+#pragma alias DAT_006a0f10_abs DAT_006a0f10
+extern char DAT_006a0f10_abs[];
 extern f32 DAT_007cad60;
 extern f32 DAT_007cafbc;
 extern f32 DAT_007cb12c;
@@ -1256,6 +1264,10 @@ void FUN_00395950(int param_1)
 #undef FUN_003bbc90
 #define FUN_00395950(...) ((void (*)(...))FUN_00395950)(__VA_ARGS__)
 #undef FUN_00395e20
+extern void FUN_00386f70(f32 depth, RwV2d *position, RwV2d *size, RwRGBA *color);
+extern void FUN_00388a40(f32 depth, RwV2d *start, RwV2d *end, RwRGBA *color);
+extern void FUN_0038a260(f32 depth, int width, int height, int unused, void *data, ...);
+
 // FUN_00395E20 NONMATCHING
 
 
@@ -1268,9 +1280,6 @@ void FUN_00395e20(int param_1)
 
 {
 
-  u8 uVar1;
-
-  u8 uVar2;
 
   float *pfVar3;
 
@@ -1280,194 +1289,96 @@ void FUN_00395e20(int param_1)
 
   int iVar6;
 
-  u8 *puVar7;
-
-  u8 *puVar8;
 
   float fVar9;
 
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  float fStack_74;
-
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_68;
-
-  float fStack_64;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_54;
-
-  float fStack_50;
-
-  float fStack_4c;
-
-  float fStack_48;
-
-  float fStack_44;
-
-  u64 uStack_40;
-
-  u32 uStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  u32 auStack_28 [2];
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  float fStack_18;
-
-  float fStack_14;
-
-  u8 auStack_10 [8];
-
-  u8 auStack_8 [8];
+  RwV4d curveA;
+  RwV4d curveB;
+  RwV4d curveC;
+  RwRGBA colors[3];
+  RwV2d drawPosition;
+  RwV2d drawSize;
+  RwV3d sample;
+  RwV3d previousSample;
+  RwV2d previousPoint;
+  RwV2d point;
 
   
 
-  puVar8 = (u8 *)&DAT_006a0ee0;
+  {
+    char *src = DAT_006a0ee0_abs;
+    char *dst = (char *)colors;
+    int count = 6;
+    do {
+      char first = *src;
+      char second = src[1];
+      src += 2;
+      count--;
+      *dst = first;
+      dst[1] = second;
+      dst += 2;
+    } while (0 < count);
+  }
 
-  puVar7 = auStack_10;
-
-  iVar6 = 6;
-
-  do {
-
-    uVar1 = *puVar8;
-
-    uVar2 = puVar8[1];
-
-    puVar8 = puVar8 + 2;
-
-    iVar6 = iVar6 + -1;
-
-    *puVar7 = uVar1;
-
-    puVar7[1] = uVar2;
-
-    puVar7 = puVar7 + 2;
-
-  } while (0 < iVar6);
-
-  fStack_60 = *(float *)&DAT_006a0ef0;
-
-  fStack_54 = DAT_006a0efc;
-
-  fStack_70 = DAT_006a0f00;
-
-  fStack_64 = DAT_006a0f0c;
-
-  fStack_80 = DAT_006a0f10;
-
-  fStack_7c = DAT_006a0f14;
-
-  fStack_78 = DAT_006a0f18;
-
-  fStack_74 = _DAT_006a0f1c;
+  curveA = *(RwV4d *)DAT_006a0ef0_abs;
+  curveB = *(RwV4d *)DAT_006a0f00_abs;
+  curveC = *(RwV4d *)DAT_006a0f10_abs;
 
   pfVar3 = *(float **)(param_1 + 0x6e8);
 
   if (*(int *)(param_1 + 0x6e4) != 0) {
 
-    fStack_5c = *pfVar3;
+    curveA.y = pfVar3[0];
+    curveB.y = pfVar3[2];
+    curveA.z = pfVar3[1];
+    curveB.z = pfVar3[3];
+    drawPosition.x = 210.0f;
+    drawPosition.y = 70.0f;
+    drawSize.x = 220.0f;
+    drawSize.y = 220.0f;
+    FUN_00386f70(8.0f,&drawPosition,&drawSize,&colors[0]);
 
-    fStack_6c = pfVar3[2];
+    drawPosition.x = curveA.y * 220.0f + 210.0f;
+    drawPosition.y = (1.0f - curveB.y) * 220.0f + 70.0f;
+    drawSize.x = 3.0f;
+    drawSize.y = 3.0f;
+    FUN_00386f70(7.0f,&drawPosition,&drawSize,&colors[2]);
 
-    fStack_58 = pfVar3[1];
+    drawPosition.x = curveA.z * 220.0f + 210.0f;
+    drawPosition.y = (1.0f - curveB.z) * 220.0f + 70.0f;
+    FUN_00386f70(7.0f,&drawPosition,&drawSize,&colors[2]);
 
-    fStack_68 = pfVar3[3];
+    uVar4 = FUN_00530da0_evt(curveA.y);
+    uVar5 = FUN_00530da0_evt(curveB.y);
 
-    fStack_18 = 210.0f;
+    FUN_0038a260(7.0f,0x24,0x48,0,DAT_006a0f10_abs + 0x10,uVar4,uVar5);
 
-    fStack_14 = 70.0f;
+    uVar4 = FUN_00530da0_evt(curveA.z);
+    uVar5 = FUN_00530da0_evt(curveB.z);
 
-    uStack_20 = 0x435c0000;
+    FUN_0038a260(7.0f,0x24,0x54,0,DAT_006a0f10_abs + 0x20,uVar4,uVar5);
 
-    uStack_1c = 0x435c0000;
+    FUN_0038a260(7.0f,0x24,0x60,0,DAT_006a0f10_abs + 0x30);
 
-    FUN_00386f70(0x41000000,&fStack_18,&uStack_20,auStack_10);
-
-    fStack_18 = fStack_5c * 220.0f + 210.0f;
-
-    fStack_14 = (1.0f - fStack_6c) * 220.0f + 70.0f;
-
-    uStack_20 = 0x40400000;
-
-    uStack_1c = 0x40400000;
-
-    FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_8);
-
-    fStack_18 = fStack_58 * 220.0f + 210.0f;
-
-    fStack_14 = (1.0f - fStack_68) * 220.0f + 70.0f;
-
-    FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_8);
-
-    uVar4 = FUN_00530da0_evt(fStack_5c);
-
-    uVar5 = FUN_00530da0_evt(fStack_6c);
-
-    FUN_0038a260(0x40e00000,0x24,0x48,0,0x6a0f20,uVar4,uVar5);
-
-    uVar4 = FUN_00530da0_evt(fStack_58);
-
-    uVar5 = FUN_00530da0_evt(fStack_68);
-
-    FUN_0038a260(0x40e00000,0x24,0x54,0,0x6a0f30,uVar4,uVar5);
-
-    FUN_0038a260(0x40e00000,0x24,0x60,0,0x6a0f40);
-
-    fStack_18 = 36.0f;
-
-    fStack_14 = 72.0f;
-
-    uStack_20 = 0x43200000;
-
-    uStack_1c = 0x42100000;
-
-    FUN_00386f70(0x40e00000,&fStack_18,&uStack_20,auStack_10);
+    drawPosition.x = 36.0f;
+    drawPosition.y = 72.0f;
+    drawSize.x = 160.0f;
+    drawSize.y = 36.0f;
+    FUN_00386f70(7.0f,&drawPosition,&drawSize,&colors[0]);
 
     fVar9 = 0.0f;
 
-    for (iVar6 = 0; iVar6 < 0x29; iVar6 = iVar6 + 1) {
+    for (iVar6 = 0; iVar6 < 0x29; iVar6++) {
 
-      FUN_003bbc90(fVar9,&fStack_60,&fStack_70,&fStack_80,&fStack_30,&fStack_2c,auStack_28);
-
+      FUN_003bbc90(fVar9,&curveA.x,&curveB.x,&curveC.x,&sample.x,&sample.y,&sample.z);
       if (0 < iVar6) {
-
-        fStack_48 = ((float *)&uStack_40)[0] * 220.0f + 210.0f;
-
-        fStack_44 = (1.0f - ((float *)&uStack_40)[1]) * 220.0f + 70.0f;
-
-        fStack_50 = fStack_30 * 220.0f + 210.0f;
-
-        fStack_4c = (1.0f - fStack_2c) * 220.0f + 70.0f;
-
-        FUN_00388a40(0x40800000,&fStack_48,&fStack_50,auStack_10 + 4);
-
+        previousPoint.x = previousSample.x * 220.0f + 210.0f;
+        previousPoint.y = (1.0f - previousSample.y) * 220.0f + 70.0f;
+        point.x = sample.x * 220.0f + 210.0f;
+        point.y = (1.0f - sample.y) * 220.0f + 70.0f;
+        FUN_00388a40(4.0f,&previousPoint,&point,&colors[1]);
       }
-
-      ((float *)&uStack_40)[0] = fStack_30;
-      ((float *)&uStack_40)[1] = fStack_2c;
-
-      uStack_38 = auStack_28[0];
+      previousSample = sample;
 
       fVar9 = fVar9 + DAT_007cafbc;
 

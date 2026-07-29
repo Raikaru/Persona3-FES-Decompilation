@@ -1728,538 +1728,202 @@ void FUN_003b79a0(u32 *param_1, u64 param_2, u32 *param_3)
 
 
 void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
-
-
-
 {
-
-  u32 uVar1;
-
-  u32 uVar2;
-
-  int iVar3;
-
-  u32 *puVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  u8 auStack_290 [32];
-
-  float fStack_270;
-
-  float fStack_26c;
-
-  float fStack_268;
-
-  u8 auStack_250 [64];
-
-  u8 auStack_210 [64];
-
-  float uStack_1d0;
-
-  u32 uStack_1cc;
-
-  u32 uStack_1c8;
-
-  u32 uStack_1c4;
-
-  u32 uStack_1c0;
-
-  float uStack_1bc;
-
-  u32 uStack_1b8;
-
-  u32 uStack_1b0;
-
-  u32 uStack_1ac;
-
-  float uStack_1a8;
-
-  u32 uStack_1a0;
-
-  u32 uStack_19c;
-
-  u32 uStack_198;
-
-  u8 auStack_190 [32];
-
-  float fStack_170;
-
-  float fStack_16c;
-
-  float fStack_168;
-
-  u8 auStack_150 [64];
-
-  float uStack_110;
-
-  u32 uStack_10c;
-
-  u32 uStack_108;
-
-  u32 uStack_104;
-
-  u32 uStack_100;
-
-  float uStack_fc;
-
-  u32 uStack_f8;
-
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  float uStack_e8;
-
-  u32 uStack_e0;
-
-  u32 uStack_dc;
-
-  u32 uStack_d8;
-
-  u32 uStack_d0;
-
-  float fStack_cc;
-
-  float fStack_c0;
-
-  float fStack_bc;
-
-  float fStack_b8;
-
-  float fStack_b0;
-
-  float fStack_ac;
-
-  float fStack_a8;
-
-  u32 uStack_a0;
-
-  u32 uStack_9c;
-
-  u32 uStack_98;
-
-  float fStack_90;
-
-  float fStack_8c;
-
-  float fStack_88;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  u64 uStack_50;
-
-  float fStack_48;
-
-  u32 uStack_40;
-
-  float fStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  puVar4 = &uStack_d0;
-
-  iVar3 = 8;
-
+  u32 *src;
+  u32 *dst;
+  RwV3d *right;
+  RwV3d *up;
+  RwV3d *at;
+  int count;
+  float angle1;
+  float angle2;
+  float angle3;
+  RwMatrix inputMatrix;
+  RwMatrix rotationMatrix;
+  RwMatrix rotationRwMatrix;
+  RwMatrix transformedMatrix;
+  RwMatrix rotationMatrix2;
+  RwMatrix rotationRwMatrix2;
+  RwMatrix transformedMatrix2;
+  RwV3d axis;
+  RwV3d normalized;
+  RwV3d cross;
+  RwMatrix finalMatrix;
+  RwV3d crossNormalized;
+  RwV3d difference;
+  RwV3d transformedAt;
+  RwV3d transformedDifference;
+  RwV3d worldAxis;
+  RwV3d finalAt;
+  RwV3d finalDifference;
+
+  src = param_1;
+  dst = (u32 *)&inputMatrix;
+  count = 8;
   do {
+    dst[0] = src[0];
+    dst[1] = src[1];
+    src += 2;
+    dst += 2;
+    count--;
+  } while (count > 0);
 
-    uVar1 = *param_1;
+  param_3[0] = *(u32 *)&inputMatrix.pos.x;
+  param_3[1] = *(u32 *)&inputMatrix.pos.y;
+  param_3[2] = *(u32 *)&inputMatrix.pos.z;
+  inputMatrix.pos.x = 0.0f;
+  inputMatrix.pos.y = 0.0f;
+  inputMatrix.pos.z = 0.0f;
+  right = &inputMatrix.right;
+  up = &inputMatrix.up;
+  at = &inputMatrix.at;
 
-    uVar2 = param_1[1];
+  axis.x = 0.0f;
+  axis.y = 1.0f;
+  axis.z = 0.0f;
+  normalized = axis;
+  if (FUN_004c69f0_mt_scene(&axis.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x5f5);
+  }
+  cross.x = at->y * axis.z - at->z * axis.y;
+  cross.y = at->z * axis.x - at->x * axis.z;
+  cross.z = at->x * axis.y - at->y * axis.x;
+  normalized = cross;
+  if (FUN_004c69f0_mt_scene(&cross.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x5f9);
+  }
+  crossNormalized.x = cross.y * at->z - cross.z * at->y;
+  crossNormalized.y = cross.z * at->x - cross.x * at->z;
+  crossNormalized.z = cross.x * at->y - cross.y * at->x;
+  normalized = crossNormalized;
+  if (FUN_004c69f0_mt_scene(&crossNormalized.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x5fd);
+  }
+  normalized = crossNormalized;
 
-    param_1 = param_1 + 2;
-
-    iVar3 = iVar3 + -1;
-
-    *puVar4 = uVar1;
-
-    puVar4[1] = uVar2;
-
-    puVar4 = puVar4 + 2;
-
-  } while (0 < iVar3);
-
-  *param_3 = uStack_a0;
-
-  param_3[1] = uStack_9c;
-
-  param_3[2] = uStack_98;
-
-  uStack_a0 = 0;
-
-  uStack_9c = 0;
-
-  uStack_98 = 0;
-
-  fStack_10 = 0.0;
-
-  fStack_c = 1.0;
-
-  fStack_8 = 0.0;
-
-  uStack_40 = 0x3f80000000000000;
-
-  fStack_38 = 0.0;
-
-  fVar5 = FUN_004c69f0_mt_scene(&fStack_10,(const float *)&uStack_40);
-
-  if (fVar5 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x5f5);
-
+  difference.x = up->x - normalized.x;
+  difference.y = up->y - normalized.y;
+  difference.z = up->z - normalized.z;
+  if (FUN_004c6ac0_mt_scene(&difference.x) <= DAT_007caf24) {
+    angle1 = 0.0f;
+  } else {
+    angle1 = FUN_0052e9e8_mt_scene(up->z * normalized.z +
+                                  up->x * normalized.x +
+                                  up->y * normalized.y);
+    angle1 = DAT_007caf34 * angle1;
+  }
+  if (right->y < 0.0f) {
+    angle1 *= -1.0f;
   }
 
-  fStack_30 = fStack_ac * fStack_8 - fStack_a8 * fStack_c;
+  rotationMatrix.right.x = 1.0f;
+  rotationMatrix.up.y = 1.0f;
+  rotationMatrix.at.z = 1.0f;
+  rotationMatrix.up.x = 0.0f;
+  rotationMatrix.right.z = 0.0f;
+  rotationMatrix.right.y = 0.0f;
+  rotationMatrix.at.y = 0.0f;
+  rotationMatrix.at.x = 0.0f;
+  rotationMatrix.up.z = 0.0f;
+  rotationMatrix.pos.z = 0.0f;
+  rotationMatrix.pos.y = 0.0f;
+  rotationMatrix.pos.x = 0.0f;
+  rotationMatrix.flags |= rwMATRIXTYPEORTHONORMAL | rwMATRIXINTERNALIDENTITY;
+  FUN_004c31b0_mt_scene_f32(angle1, &rotationMatrix, 0x6a2a80, 1);
+  FUN_004c32a0(&rotationRwMatrix, &rotationMatrix);
+  FUN_004c2f30(&transformedMatrix, &rotationRwMatrix, &inputMatrix);
 
-  fStack_2c = fStack_a8 * fStack_10 - fStack_b0 * fStack_8;
-
-  fStack_38 = fStack_b0 * fStack_c - fStack_ac * fStack_10;
-
-  uStack_40 = CONCAT44_F32(fStack_2c,fStack_30);
-
-  fStack_28 = fStack_38;
-
-  fVar5 = FUN_004c69f0_mt_scene(&fStack_30,(const float *)&uStack_40);
-
-  if (fVar5 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x5f9);
-
+  axis.x = transformedMatrix.at.x;
+  axis.y = 0.0f;
+  axis.z = transformedMatrix.at.z;
+  normalized = axis;
+  if (FUN_004c69f0_mt_scene(&axis.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x633);
+  }
+  transformedAt = transformedMatrix.at;
+  normalized = transformedAt;
+  if (FUN_004c69f0_mt_scene(&transformedAt.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x637);
+  }
+  transformedDifference.x = transformedAt.x - axis.x;
+  transformedDifference.y = transformedAt.y - axis.y;
+  transformedDifference.z = transformedAt.z - axis.z;
+  if (FUN_004c6ac0_mt_scene(&transformedDifference.x) <= DAT_007caf24) {
+    angle2 = 0.0f;
+  } else {
+    angle2 = FUN_0052e9e8_mt_scene(transformedAt.z * axis.z +
+                                  transformedAt.x * axis.x +
+                                  transformedAt.y * axis.y);
+    angle2 = DAT_007caf34 * angle2;
+  }
+  if (transformedMatrix.at.y > 0.0f) {
+    angle2 *= -1.0f;
   }
 
-  fStack_60 = fStack_2c * fStack_a8 - fStack_28 * fStack_ac;
+  rotationMatrix2.right.x = 1.0f;
+  rotationMatrix2.up.y = 1.0f;
+  rotationMatrix2.at.z = 1.0f;
+  rotationMatrix2.up.x = 0.0f;
+  rotationMatrix2.right.z = 0.0f;
+  rotationMatrix2.right.y = 0.0f;
+  rotationMatrix2.at.y = 0.0f;
+  rotationMatrix2.at.x = 0.0f;
+  rotationMatrix2.up.z = 0.0f;
+  rotationMatrix2.pos.z = 0.0f;
+  rotationMatrix2.pos.y = 0.0f;
+  rotationMatrix2.pos.x = 0.0f;
+  rotationMatrix2.flags |= rwMATRIXTYPEORTHONORMAL | rwMATRIXINTERNALIDENTITY;
+  FUN_004c31b0_mt_scene_f32(angle1, &rotationMatrix2, 0x6a2a80, 1);
+  FUN_004c32a0(&rotationRwMatrix2, &rotationMatrix2);
+  FUN_004c2f30(&transformedMatrix2, &rotationRwMatrix2, &inputMatrix);
 
-  fStack_5c = fStack_28 * fStack_b0 - fStack_30 * fStack_a8;
+  rotationMatrix2.right.x = 1.0f;
+  rotationMatrix2.up.y = 1.0f;
+  rotationMatrix2.at.z = 1.0f;
+  rotationMatrix2.up.x = 0.0f;
+  rotationMatrix2.right.z = 0.0f;
+  rotationMatrix2.right.y = 0.0f;
+  rotationMatrix2.at.y = 0.0f;
+  rotationMatrix2.at.x = 0.0f;
+  rotationMatrix2.up.z = 0.0f;
+  rotationMatrix2.pos.z = 0.0f;
+  rotationMatrix2.pos.y = 0.0f;
+  rotationMatrix2.pos.x = 0.0f;
+  rotationMatrix2.flags |= rwMATRIXTYPEORTHONORMAL | rwMATRIXINTERNALIDENTITY;
+  FUN_004c31b0_mt_scene_f32(angle2, &rotationMatrix2, 0x6a2a60, 1);
+  FUN_004c32a0(&rotationRwMatrix2, &rotationMatrix2);
+  FUN_004c2f30(&finalMatrix, &rotationRwMatrix2, &transformedMatrix2);
 
-  fStack_58 = fStack_30 * fStack_ac - fStack_2c * fStack_b0;
-
-  uStack_40 = CONCAT44_F32(fStack_5c,fStack_60);
-
-  fStack_38 = fStack_58;
-
-  fVar5 = FUN_004c69f0_mt_scene(&fStack_60,(const float *)&uStack_40);
-
-  if (fVar5 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x5fd);
-
+  worldAxis.x = 0.0f;
+  worldAxis.y = 0.0f;
+  worldAxis.z = 1.0f;
+  normalized = worldAxis;
+  if (FUN_004c69f0_mt_scene(&worldAxis.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x669);
+  }
+  finalAt = finalMatrix.at;
+  normalized = finalAt;
+  if (FUN_004c69f0_mt_scene(&finalAt.x, &normalized.x) == 0.0f) {
+    FUN_0019d3f0("mt_scene.c", 0x66d);
+  }
+  finalDifference.x = finalAt.x - worldAxis.x;
+  finalDifference.y = finalAt.y - worldAxis.y;
+  finalDifference.z = finalAt.z - worldAxis.z;
+  if (FUN_004c6ac0_mt_scene(&finalDifference.x) <= DAT_007caf24) {
+    angle3 = 0.0f;
+  } else {
+    angle3 = FUN_0052e9e8_mt_scene(finalAt.z * worldAxis.z +
+                                  finalAt.x * worldAxis.x +
+                                  finalAt.y * worldAxis.y);
+    angle3 = DAT_007caf34 * angle3;
+  }
+  if (finalAt.x < 0.0f) {
+    angle3 = 360.0f - angle3;
   }
 
-  fVar5 = fStack_58;
-
-  uStack_50 = CONCAT44_F32(fStack_5c,fStack_60);
-  fStack_48 = fStack_58;
-
-
-
-  fStack_70 = fStack_c0 - fStack_60;
-  fStack_6c = fStack_bc - fStack_5c;
-
-  fStack_68 = fStack_b8 - fStack_58;
-
-
-
-
-  fVar7 = fStack_5c;
-
-  fVar6 = FUN_004c6ac0_mt_scene(&fStack_70);
-
-  if (fVar6 <= DAT_007caf24) {
-
-    fVar5 = 0.0;
-
-  }
-
-  else {
-    fVar5 = FUN_0052e9e8_mt_scene(fStack_b8 * fVar5 + fStack_c0 * (*(float *)&uStack_50) +
-                               fStack_bc * fVar7);
-
-
-    fVar5 = DAT_007caf34 * fVar5;
-
-  }
-
-  if (fStack_cc < 0.0f) {
-
-    fVar5 = fVar5 * -1.0f;
-
-  }
-
-
-  uStack_e8 = 1.0f;
-
-  uStack_fc = 1.0f;
-
-  uStack_110 = 1.0f;
-
-  uStack_100 = 0;
-
-  uStack_108 = 0;
-
-  uStack_10c = 0;
-
-  uStack_ec = 0;
-
-  uStack_f0 = 0;
-
-  uStack_f8 = 0;
-
-  uStack_d8 = 0;
-
-  uStack_dc = 0;
-
-  uStack_e0 = 0;
-
-
-
-  uStack_104 = uStack_104 | 0x20003;
-
-  FUN_004c31b0_mt_scene_f32(fVar5,&uStack_110,0x6a2a80,1);
-
-  FUN_004c32a0(auStack_150,&uStack_110);
-
-  FUN_004c2f30(auStack_190,auStack_150,&uStack_d0);
-
-  fStack_10 = fStack_170;
-
-  fStack_c = 0.0;
-
-  fStack_8 = fStack_168;
-
-  uStack_40 = (u32)(u32)fStack_170;
-
-  fStack_38 = fStack_168;
-
-  fVar7 = FUN_004c69f0_mt_scene(&fStack_10,(const float *)&uStack_40);
-
-  if (fVar7 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x633);
-
-  }
-
-  fStack_20 = fStack_170;
-
-  fStack_1c = fStack_16c;
-
-  fStack_18 = fStack_168;
-
-  fStack_38 = fStack_168;
-
-  fVar7 = FUN_004c69f0_mt_scene(&fStack_20,(const float *)&uStack_40);
-
-  if (fVar7 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x637);
-
-  }
-
-  fStack_80 = fStack_20 - fStack_10;
-  fStack_7c = fStack_1c - fStack_c;
-
-  fStack_78 = fStack_18 - fStack_8;
-
-
-
-  fVar7 = FUN_004c6ac0_mt_scene(&fStack_80);
-
-  if (fVar7 <= DAT_007caf24) {
-
-    fVar7 = 0.0;
-
-  }
-
-  else {
-
-    fVar7 = FUN_0052e9e8_mt_scene(fStack_18 * fStack_8 + fStack_20 * fStack_10 +
-                               fStack_1c * fStack_c)
-    ;
-
-    fVar7 = DAT_007caf34 * fVar7;
-
-  }
-
-  if (0.0f < fStack_16c) {
-
-    fVar7 = fVar7 * -1.0f;
-
-  }
-
-  uStack_1a8 = 1.0f;
-
-  uStack_1bc = 1.0f;
-
-  uStack_1d0 = 1.0f;
-
-  uStack_1c0 = 0;
-
-  uStack_1c8 = 0;
-
-  uStack_1cc = 0;
-
-  uStack_1ac = 0;
-
-  uStack_1b0 = 0;
-
-  uStack_1b8 = 0;
-
-  uStack_198 = 0;
-
-  uStack_19c = 0;
-
-  uStack_1a0 = 0;
-
-  uStack_1c4 = uStack_1c4 | 0x20003;
-
-  FUN_004c31b0_mt_scene_f32(fVar5,&uStack_1d0,0x6a2a80,1);
-
-  FUN_004c32a0(auStack_210,&uStack_1d0);
-
-  FUN_004c2f30(auStack_250,auStack_210,&uStack_d0);
-
-  uStack_1a8 = 1.0f;
-
-  uStack_1bc = 1.0f;
-
-  uStack_1d0 = 1.0f;
-
-  uStack_1c0 = 0;
-
-  uStack_1c8 = 0;
-
-  uStack_1cc = 0;
-
-  uStack_1ac = 0;
-
-  uStack_1b0 = 0;
-
-  uStack_1b8 = 0;
-
-  uStack_198 = 0;
-
-  uStack_19c = 0;
-
-  uStack_1a0 = 0;
-
-  uStack_1c4 = uStack_1c4 | 0x20003;
-
-  FUN_004c31b0_mt_scene_f32(fVar7,&uStack_1d0,0x6a2a60,1);
-
-  FUN_004c32a0(auStack_210,&uStack_1d0);
-
-  FUN_004c2f30(auStack_290,auStack_210,auStack_250);
-
-  fStack_10 = 0.0;
-
-  fStack_c = 0.0;
-
-  fStack_8 = 1.0;
-
-  uStack_40 = 0;
-
-  fStack_38 = 1.0;
-
-  fVar6 = FUN_004c69f0_mt_scene(&fStack_10,(const float *)&uStack_40);
-
-  if (fVar6 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x669);
-
-  }
-
-  fStack_20 = fStack_270;
-
-  fStack_1c = fStack_26c;
-
-  fStack_18 = fStack_268;
-
-  fStack_38 = fStack_268;
-
-  fVar6 = FUN_004c69f0_mt_scene(&fStack_20,(const float *)&uStack_40);
-
-  if (fVar6 == 0.0f) {
-
-    FUN_0019d3f0("mt_scene.c",0x66d);
-
-  }
-
-  fStack_90 = fStack_20 - fStack_10;
-  fStack_8c = fStack_1c - fStack_c;
-
-  fStack_88 = fStack_18 - fStack_8;
-
-
-
-  fVar6 = FUN_004c6ac0_mt_scene(&fStack_90);
-
-  if (fVar6 <= DAT_007caf24) {
-
-    fVar6 = 0.0;
-
-  }
-
-  else {
-
-    fVar6 = FUN_0052e9e8_mt_scene(fStack_18 * fStack_8 + fStack_20 * fStack_10 +
-                               fStack_1c * fStack_c)
-    ;
-
-    fVar6 = DAT_007caf34 * fVar6;
-
-  }
-
-  if (fStack_20 < 0.0f) {
-
-    fVar6 = 360.0f - fVar6;
-
-  }
-
-  *param_2 = fVar7;
-
-  param_2[1] = fVar6;
-
-  param_2[2] = fVar5;
-
-  return;
-
+  param_2[0] = angle2;
+  param_2[1] = angle3;
+  param_2[2] = angle1;
 }
 #define FUN_003b7ac0(...) ((void (*)(...))FUN_003b7ac0)(__VA_ARGS__)
 #undef FUN_003b8210
