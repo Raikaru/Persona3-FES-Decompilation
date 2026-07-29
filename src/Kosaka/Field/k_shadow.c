@@ -59,6 +59,8 @@ extern RwCamera* func_004ca090(void);
 extern RwFrame* func_004caf10(void);
 extern RwCamera* func_004d1840(RwCamera* camera, RwFrame* frame);
 extern RwFrame* func_004cb930(RwFrame* frame, const RwV3d* translation, RwOpCombineType combineOp);
+#pragma alias func_004cb930_one func_004cb930
+extern void func_004cb930_one(RwFrame* frame);
 extern RwMatrix* func_004c2fb0(RwMatrix* matrixOut, RwMatrix* matrixIn);
 extern void func_004c32a0(RwMatrix* destination, const RwMatrix* source);
 extern RwCamera* func_004c9db0(RwCamera* camera, f32 nearPlane);
@@ -109,6 +111,9 @@ extern void func_003176c0(Model* model);
 extern void func_00318b90(Model* model);
 extern u32 func_00319010(Model* model);
 extern u32 mdlStreamRead(Model* model);
+extern void func_004c2cc0(void* quaternion);
+extern void func_004c2d20(RwMatrix* matrix, const void* quaternion);
+extern void func_004c2f10(RwMatrix* matrix);
 
 extern void* func_00464020(void* collisionWorld, void* query, void* callback, void* context);
 extern void* func_004916d0(void* list, void* callback, void* context);
@@ -1270,7 +1275,6 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     FldShadowBoundsAccum bounds;
     RwCamera* camera;
     RwMatrix savedMatrix;
-    RwMatrixTolerance tolerance;
     RwV3d scale;
     RwV3d position;
     FldShadowRingWork* ring;
@@ -1286,6 +1290,8 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     s32 i;
     void (*render)(void*);
     f32 ringBounds[4];
+    RwV3d projectionBounds[2];
+    f32 quaternion[4];
 
     shadow = (FldShadowRenderTex*)renderTexTask->workData;
     if ((shadow->res->flags & FLDSHADOW_RESOURCE_FLAGS_DRAW) == 0)
@@ -1297,6 +1303,15 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
 
     if (shadow->state == 0)
     {
+        if (shadow->mode == 2)
+        {
+            if (shadow->model != NULL && mdlStreamRead(shadow->model) != 0)
+            {
+                func_00319010(shadow->model);
+                shadow->state++;
+            }
+            return KWLNTASK_CONTINUE;
+        }
         if (shadow->mode == 3 || shadow->mode == 4)
         {
             if (shadow->model != NULL && mdlStreamRead(shadow->model) != 0)
@@ -1335,13 +1350,13 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
                     vertex[0] = ring->radius * cosf(ringAngle);
                     vertex[1] = 5.0f;
                     vertex[2] = ring->radius * sinf(ringAngle);
-                    index = (u16*)((u8*)*(void**)((u8*)layout + 0x2c) + i * 8);
-                    func_00493210(layout, index, 0, (u16)(i + 2), (u16)(i + 1));
                     ringAngle += FLDSHADOW_RING_ANGLE_STEP;
                 }
-                *(f32*)(vertices + 99 * sizeof(f32)) = ring->radius;
+                *(f32*)(vertices + 99 * sizeof(f32)) =
+                    ring->radius * cosf(ringAngle);
                 *(f32*)(vertices + 100 * sizeof(f32)) = 5.0f;
-                *(f32*)(vertices + 101 * sizeof(f32)) = 0.0f;
+                *(f32*)(vertices + 101 * sizeof(f32)) =
+                    ring->radius * sinf(ringAngle);
                 func_004933d0(layout);
                 geometry = *(void**)((u8*)layout + 0x5c);
                 func_00492e20(geometry, ringBounds);
@@ -1355,7 +1370,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
                 func_00493b60(layout);
                 frame = func_004caf10();
                 func_00492d10(renderObject, frame);
-                ((void (*)(RwFrame*))func_004cb930)(
+                func_004cb930_one(
                     (RwFrame*)*(void**)((u8*)renderObject + 4));
                 shadow->state++;
             }
@@ -1391,17 +1406,44 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
             D_00960090(14, 0);
             if (field != NULL && shadow->model != NULL)
             {
-                position = mdlGetMatrix(shadow->model)->pos;
-                func_0019ab80(1.0f, shadow->projectionDistance / 2.0f,
-                              shadow->camera, shadow->raster,
-                              field->unk_160 != NULL &&
-                                  (*(u32*)field->unk_160 & 1) == 0,
-                              &position, 0,
-                              (FldShadowProjectionWork*)shadow->unk_48);
+                if (field->unk_160 != NULL &&
+                    (*(u32*)field->unk_160 & 1) != 0)
+                {
+                    projectionBounds[0].x =
+                        shadow->projectionDistance +
+                        mdlGetMatrix(shadow->model)->pos.x;
+                    projectionBounds[0].y =
+                        shadow->projectionDistance +
+                        mdlGetMatrix(shadow->model)->pos.y;
+                    projectionBounds[0].z =
+                        shadow->projectionDistance +
+                        mdlGetMatrix(shadow->model)->pos.z;
+                    projectionBounds[1].x =
+                        mdlGetMatrix(shadow->model)->pos.x -
+                        shadow->projectionDistance;
+                    projectionBounds[1].y =
+                        mdlGetMatrix(shadow->model)->pos.y -
+                        shadow->projectionDistance;
+                    projectionBounds[1].z =
+                        mdlGetMatrix(shadow->model)->pos.z -
+                        shadow->projectionDistance;
+                    func_0019ab80(
+                        1.0f, shadow->projectionDistance / 2.0f,
+                        shadow->camera, shadow->raster, 0, projectionBounds, 0,
+                        (FldShadowProjectionWork*)shadow->unk_48);
+                }
+                else
+                {
+                    position = mdlGetMatrix(shadow->model)->pos;
+                    func_0019ab80(
+                        1.0f, shadow->projectionDistance / 2.0f,
+                        shadow->camera, shadow->raster, 1, &position, 0,
+                        (FldShadowProjectionWork*)shadow->unk_48);
+                }
             }
             if (gFogEnabled == 1)
                 D_00960090(14, 0);
-            RwCameraEndUpdate(camera);
+            RwCameraEndUpdate(kwlnGetMainCamera());
         }
         return KWLNTASK_CONTINUE;
     }
@@ -1430,9 +1472,9 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
             shadow->model->flags |= 4;
             mdlScale(shadow->model, &scale, rwCOMBINEPOSTCONCAT);
             mdlGetMatrix(shadow->model)->pos = position;
-            RwEngineGetMatrixTolerances(&tolerance);
-            RwMatrixOptimize(mdlGetMatrix(shadow->model), &tolerance);
-            RwMatrixUpdate(mdlGetMatrix(shadow->model));
+            func_004c2cc0(quaternion);
+            func_004c2d20(mdlGetMatrix(shadow->model), quaternion);
+            func_004c2f10(mdlGetMatrix(shadow->model));
             shadow->model->flags |= 0x40;
             func_003176c0(shadow->model);
             func_00318b90(shadow->model);
@@ -1443,7 +1485,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
             shadow->model->flags &= ~4;
             func_003176c0(shadow->model);
             func_00318b90(shadow->model);
-            RwCameraEndUpdate(camera);
+            RwCameraEndUpdate(kwlnGetMainCamera());
         }
     }
 
@@ -1466,7 +1508,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
             render(ring->renderObject);
             if (gFogEnabled == 1)
                 D_00960090(14, 0);
-            RwCameraEndUpdate(camera);
+            RwCameraEndUpdate(kwlnGetMainCamera());
         }
     }
     return KWLNTASK_CONTINUE;

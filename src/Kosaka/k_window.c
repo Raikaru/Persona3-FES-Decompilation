@@ -1101,7 +1101,6 @@ void* func_001a2a80(KwlnTask* task)
             }
 
             input = DAT_007e0952;
-            entry = func_001a4330(task, func_001a4510(task));
             if ((manager->flags & 1) == 0)
             {
                 KWindow_DrawSelection(manager);
@@ -1115,35 +1114,42 @@ void* func_001a2a80(KwlnTask* task)
                 }
                 else if ((input & 0x2000) != 0)
                 {
-                    KWindow_ApplyValueDelta(entry, 1, 1.0f);
+                    KWindow_ApplyValueDelta(
+                        func_001a4330(task, func_001a4510(task)), 1, 1.0f);
                 }
                 else if ((input & 0x8000) != 0)
                 {
-                    KWindow_ApplyValueDelta(entry, -1, -1.0f);
+                    KWindow_ApplyValueDelta(
+                        func_001a4330(task, func_001a4510(task)), -1, -1.0f);
                 }
                 else if ((input & 8) != 0)
                 {
-                    KWindow_ApplyValueDelta(entry, 10, 10.0f);
+                    KWindow_ApplyValueDelta(
+                        func_001a4330(task, func_001a4510(task)), 10, 10.0f);
                 }
                 else if ((input & 4) != 0)
                 {
-                    KWindow_ApplyValueDelta(entry, -10, -10.0f);
+                    KWindow_ApplyValueDelta(
+                        func_001a4330(task, func_001a4510(task)), -10, -10.0f);
                 }
                 else if ((input & 2) != 0)
                 {
-                    KWindow_ApplyValueDelta(entry,
-                                             uGpffffb450 > 0x95 ? 1000 : 100,
-                                             uGpffffb450 > 0x95 ? 10.0f : 1.0f);
+                    KWindow_ApplyValueDelta(
+                        func_001a4330(task, func_001a4510(task)),
+                        uGpffffb450 > 0x95 ? 1000 : 100,
+                        uGpffffb450 > 0x95 ? 10.0f : 1.0f);
                 }
                 else if ((input & 1) != 0)
                 {
-                    KWindow_ApplyValueDelta(entry,
-                                             uGpffffb454 > 0x95 ? -1000 : -100,
-                                             uGpffffb454 > 0x95 ? -10.0f : -1.0f);
+                    KWindow_ApplyValueDelta(
+                        func_001a4330(task, func_001a4510(task)),
+                        uGpffffb454 > 0x95 ? -1000 : -100,
+                        uGpffffb454 > 0x95 ? -10.0f : -1.0f);
                 }
                 else if ((DAT_007e094e & 0x40) != 0)
                 {
-                    KWindow_InvokeEntryCallback(entry);
+                    KWindow_InvokeEntryCallback(
+                        func_001a4330(task, func_001a4510(task)));
                 }
             }
             else if ((input & 0x1000) != 0)

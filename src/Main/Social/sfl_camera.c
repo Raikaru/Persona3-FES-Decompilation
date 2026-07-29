@@ -144,6 +144,7 @@ extern void gcPose0024fba0(void* pose, RtQuat* output);
 extern void func_0024f7f0(void* pose, const RwV3d* offset);
 extern void func_00250280(void* pose, const RwV3d* offset);
 extern void FUN_004bdde0(f32 angle, f32* output, const f32* axis, s32 mode);
+extern void FUN_004c69f0(RwV3d* output, const RwV3d* input);
 extern f32 fGpffff81f8;
 extern RwV3d DAT_0068e9b0;
 void func_0024da60(void* camera);
@@ -459,9 +460,8 @@ void func_0024dc90(void* camera)
     RwV3d offset;
     RwV3d axis;
     RwV3d cross;
-    RtQuat quat;
-    RtQuat nextQuat;
-    RtQuat composed;
+    RwV3d* firstPoseVector;
+    RwV3d* secondPoseVector;
 
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
     list = sSflCameraNodes;
@@ -671,37 +671,25 @@ void func_0024dc90(void* camera)
                         }
                     }
                     if (queued == 0) {
-                        queued = 0;
-                        for (i = 0; i < 3; i++) {
-                            pose = poses[i];
-                            if (pose != NULL) {
-                                if (queued == 0) {
-                                    gcPose0024fba0(pose, &quat);
-                                    queued = 1;
-                                }
-                                else {
-                                    gcPose0024fba0(pose, &nextQuat);
-                                    composed.real = quat.real * nextQuat.real -
-                                        (quat.imag.x * nextQuat.imag.x +
-                                         quat.imag.y * nextQuat.imag.y +
-                                         quat.imag.z * nextQuat.imag.z);
-                                    composed.imag.x = quat.real * nextQuat.imag.x +
-                                        quat.imag.x * nextQuat.real +
-                                        quat.imag.y * nextQuat.imag.z -
-                                        quat.imag.z * nextQuat.imag.y;
-                                    composed.imag.y = quat.real * nextQuat.imag.y +
-                                        quat.imag.y * nextQuat.real +
-                                        quat.imag.z * nextQuat.imag.x -
-                                        quat.imag.x * nextQuat.imag.z;
-                                    composed.imag.z = quat.real * nextQuat.imag.z +
-                                        quat.imag.z * nextQuat.real +
-                                        quat.imag.x * nextQuat.imag.y -
-                                        quat.imag.y * nextQuat.imag.x;
-                                    quat = composed;
-                                }
-                            }
+                        firstPoseVector = gcPose0024faa0(poses[0]);
+                        secondPoseVector = gcPose0024faa0(poses[1]);
+                        FUN_004c69f0(&first, firstPoseVector);
+                        FUN_004c69f0(&second, secondPoseVector);
+                        cross.x = first.y * second.z - first.z * second.y;
+                        cross.y = first.z * second.x - first.x * second.z;
+                        cross.z = first.x * second.y - first.y * second.x;
+                        FUN_004c69f0(&cross, &cross);
+                        dot = first.x * second.x +
+                              first.y * second.y +
+                              first.z * second.z;
+                        if (dot == 1.0f) {
+                            cross.x = 0.0f;
+                            cross.y = 1.0f;
+                            cross.z = 0.0f;
                         }
-                        *(RtQuat*)(node + 0x14) = quat;
+                        angle = 180.0f * (dot - 1.0f) / 2.0f;
+                        FUN_004bdde0(angle, (f32*)(node + 0x14),
+                                     (const f32*)&cross, 0);
                     }
                 }
                 else if (mode == 3) {

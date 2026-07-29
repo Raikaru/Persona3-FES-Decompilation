@@ -5957,6 +5957,7 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
     accum.y += delta.y;
     accum.z += delta.z;
 
+    func_004c69f0(&accum, &accum);
     accum.x *= weight0;
     accum.y *= weight0;
     accum.z *= weight0;
@@ -6052,6 +6053,7 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
     accum.y += delta.y;
     accum.z += delta.z;
 
+    func_004c69f0(&accum, &accum);
     accum.x *= weight1;
     accum.y *= weight1;
     accum.z *= weight1;
@@ -6090,6 +6092,9 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
     accum.x = 0.0f;
     accum.y = 0.0f;
     accum.z = 0.0f;
+
+    weight0 = weightNear[sideBool] * func_001ecd90(queue, param2, 0);
+    weight0 += weightFar[sideBool] * func_001ecec0(queue, param2);
 
     func_001e8360((RuntimeWork*)queue, section2, 0, &delta);
     delta.x *= coefA;
@@ -6167,6 +6172,7 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
     accum.y += delta.y;
     accum.z += delta.z;
 
+    func_004c69f0(&accum, &accum);
     accum.x *= weight0;
     accum.y *= weight0;
     accum.z *= weight0;
@@ -6182,6 +6188,9 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
     accum.x = 0.0f;
     accum.y = 0.0f;
     accum.z = 0.0f;
+
+    weight1 = weightNear[!sideBool] * func_001ecd90(queue, param2, 1);
+    weight1 += weightFar[!sideBool] * func_001ecec0(queue, param2);
 
     func_001e8360((RuntimeWork*)queue, section2, 1, &delta);
     delta.x *= coefA;
@@ -6259,6 +6268,7 @@ void func_001ebd80(RuntimeWork* work, s32 param2)
     accum.y += delta.y;
     accum.z += delta.z;
 
+    func_004c69f0(&accum, &accum);
     accum.x *= weight1;
     accum.y *= weight1;
     accum.z *= weight1;

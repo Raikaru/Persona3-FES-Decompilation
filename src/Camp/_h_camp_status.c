@@ -1151,21 +1151,24 @@ void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
     s32 value;
     s32 current;
     char text[0x100];
+    u32 headerParent;
+    u32 footerParent;
 
     (void)unused;
     for (i = 0; i < 9; i++) {
         h_campStatusRenderStatIcon(position, scale, i, alpha);
     }
     h_campStatusDrawStatLabels(position, scale, persona, alpha);
-    campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
-                         (125.0f + position.y) - 25.0f, scale, alpha);
-    campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
-                         (184.0f + position.y) - 25.0f, scale, alpha);
-    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
-    campStatusDrawSprite(DAT_00833B90, 0x11, position.x + 33.0f,
-                         position.y + 278.0f, scale, alpha);
-    campStatusDrawSprite(DAT_00833B90, 0x22, position.x + 287.0f,
-                         position.y + 280.0f, scale, alpha);
+    campStatusDrawSpriteCall(headerParent, DAT_00833B98, 0x12, alpha,
+                             position.x + 30.0f,
+                             (125.0f + position.y) - 25.0f, scale);
+    campStatusDrawSpriteCall(headerParent, DAT_00833B98, 0x13, alpha,
+                             position.x + 30.0f,
+                             (184.0f + position.y) - 25.0f, scale);
+    campStatusDrawSpriteCall(footerParent, DAT_00833B90, 0x11, alpha,
+                             position.x + 33.0f, position.y + 278.0f, scale);
+    campStatusDrawSpriteCall(footerParent, DAT_00833B90, 0x22, alpha,
+                             position.x + 287.0f, position.y + 280.0f, scale);
     if (*((u8*)persona + 4) == 0x63) {
         sprintf(text, "%d", 0);
     } else {

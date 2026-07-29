@@ -664,7 +664,6 @@ void func_001c7830(void* output, void* script)
 {
     void* list;
     FldUnit* unit;
-    RwMatrix* matrix;
     RwV3d delta;
     f32 distance;
     u32 hidden;
@@ -703,10 +702,9 @@ void func_001c7830(void* output, void* script)
                 continue;
             }
         }
-        matrix = mdlGetMatrix(unit->mdl);
-        delta.x = matrix->pos.x - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.x;
-        delta.y = matrix->pos.y - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.y;
-        delta.z = matrix->pos.z - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.z;
+        delta.x = mdlGetMatrix(unit->mdl)->pos.x - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.x;
+        delta.y = mdlGetMatrix(unit->mdl)->pos.y - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.y;
+        delta.z = mdlGetMatrix(unit->mdl)->pos.z - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.z;
         distance = RwV3dLength(&delta);
         if (gMtScene->fldMajorId == 0x33 && gMtScene->fldMinorId == 1)
         {

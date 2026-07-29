@@ -956,7 +956,13 @@ void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
         if (work->rws == NULL)
         {
             printf(D_005D6B80);
-            goto restore_stop;
+            camera = kwlnGetMainCamera();
+            RwCameraEndUpdate(camera);
+            camera = kwlnGetMainCamera();
+            func_004c9d70(camera, savedNearPlane);
+            camera = kwlnGetMainCamera();
+            RwCameraBeginUpdate(camera);
+            return KWLNTASK_STOP;
         }
         if (func_004c1600(work->rws, 0x1B1, 0, 0) == 0)
         {

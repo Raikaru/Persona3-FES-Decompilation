@@ -16,6 +16,8 @@
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 void FUN_00287b20(int param_1,u16 param_2);
+#pragma alias btlUnitFabs FUN_0052e118
+extern f64 btlUnitFabs(f64 value);
 void FUN_00287cf0(BtlUnit* unit, u16 mode);
 void FUN_00287ea0(BtlUnit* unit);
 void FUN_00288110(BtlUnit* unit);
@@ -741,11 +743,7 @@ void func_00280da0(BtlUnit* unit)
     RtQuatTransformVectors(&forward, &D_00697890, 1, &unit->rot);
     currentAngle = func_0052ea18(forward.x, unit->targetRot.z - unit->pos.z) * 57.295776f;
     angleDelta = angle - currentAngle;
-    angleMagnitude = angleDelta;
-    if (angleMagnitude < 0.0f)
-    {
-        angleMagnitude = -angleMagnitude;
-    }
+    angleMagnitude = btlUnitFabs(angleDelta);
 
     if (angleMagnitude <= 5.0f || (unit->unk_c4 & 2) != 0)
     {
@@ -895,7 +893,9 @@ void func_002826d0(BtlUnit* unit)
         break;
 
     case 3:
-        if (mdl->animSlots[0].anim.blendFactor >= 1.0f)
+        reported = btlUnit00282c30(unit);
+        current = btlUnitGetAnimFrame(unit);
+        if (current >= func_002835e0(unit, reported, 1.0f))
         {
             mdlAnimSetSpeed(mdl, 0, 0.0f);
         }
@@ -3030,6 +3030,7 @@ u32 btlUnitUpdateModelPacket(void* work)
 
     unit->flags2 &= ~BTLUNIT_FLAG2_UPDATE;
     unit->flags2 |= BTLUNIT_FLAG2_UPDATE;
+    FUN_00287b20((int)unit, 4);
 
     if (packet->flags & 8)
     {
@@ -3037,9 +3038,11 @@ u32 btlUnitUpdateModelPacket(void* work)
     }
     if (packet->flags & 1)
     {
+        FUN_00287b20((int)unit, 2);
     }
     if (packet->flags & 2)
     {
+        FUN_00287b20((int)unit, 1);
     }
     if (packet->flags & 0x100)
     {

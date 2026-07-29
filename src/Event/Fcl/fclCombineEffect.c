@@ -3235,7 +3235,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
       fStack_40 = *(float *)(iVar1 + 0x30);
       fStack_3c = *(float *)(iVar1 + 0x34);
       fStack_38 = *(float *)(iVar1 + 0x38);
-      RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+      FUN_004c69f0_typed((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
       fVar6 = fGpffff8328 * fVar6;
       fStack_40 = fStack_40 * fVar6;
       fStack_3c = fStack_3c * fVar6;
@@ -3247,7 +3247,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
       fStack_40 = *(float *)(iVar1 + 0x10);
       fStack_3c = *(float *)(iVar1 + 0x14);
       fStack_38 = *(float *)(iVar1 + 0x18);
-      RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+      FUN_004c69f0_typed((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
       fVar6 = fGpffff8328 * fVar6;
       fStack_40 = fStack_40 * fVar6;
       fStack_3c = fStack_3c * fVar6;
@@ -3274,14 +3274,12 @@ u8 FUN_0041aff0(int param_1,int param_2)
       work40.x = fStack_40;
       work40.y = fStack_3c;
       work40.z = fStack_38;
-      FUN_004c69f0_typed(&work40,&work40);
       fStack_40 = work40.x;
       fStack_3c = work40.y;
       fStack_38 = work40.z;
       work20.x = fStack_20;
       work20.y = fStack_1c;
       work20.z = fStack_18;
-      FUN_004c69f0_typed(&work20,&work20);
       fStack_20 = work20.x;
       fStack_1c = work20.y;
       fStack_18 = work20.z;

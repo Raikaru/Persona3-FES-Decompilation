@@ -623,6 +623,7 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
     f32 y;
     f32 scale;
     void* parent;
+    void (*setRenderState)(s32 state, s32 value);
 
     bright = 0xff - fade;
     FUN_00523ac8(text, gp0xffff897c,
@@ -633,15 +634,16 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
     if (FUN_00176600(persona) == 0) {
         return;
     }
+    setRenderState = DAT_00960090;
 
-    campPersonaSetRenderState(6, 1);
-    campPersonaSetRenderState(7, 2);
-    campPersonaSetRenderState(8, 1);
-    campPersonaSetRenderState(9, 1);
-    campPersonaSetRenderState(12, 1);
-    campPersonaSetRenderState(11, 6);
-    campPersonaSetRenderState(10, 5);
-    campPersonaSetRenderState(2, 4);
+    setRenderState(6, 1);
+    setRenderState(7, 2);
+    setRenderState(8, 1);
+    setRenderState(9, 1);
+    setRenderState(12, 1);
+    setRenderState(11, 6);
+    setRenderState(10, 5);
+    setRenderState(2, 4);
     RpSkyRenderStateSet(2, 0x44);
     RpSkyRenderStateSet(3, 0x717fb);
 
@@ -650,8 +652,8 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
     campPersonaDrawSprite(parent, DAT_00833B90, 0x1a,
                           (u8)fade, x, y, alpha);
 
-    campPersonaSetRenderState(6, 0);
-    campPersonaSetRenderState(8, 1);
+    setRenderState(6, 0);
+    setRenderState(8, 1);
     if (fade == 0) {
         particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B90, 0x1b);
         particle->drawAlpha = alpha;
@@ -661,8 +663,8 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
         FUN_001127d0(particle, 0);
         FUN_00115980(particle);
 
-        campPersonaSetRenderState(6, 1);
-        campPersonaSetRenderState(8, 0);
+        setRenderState(6, 1);
+        setRenderState(8, 0);
 
         DAT_007cdf68++;
         if (DAT_007cdf68 >= 20) {

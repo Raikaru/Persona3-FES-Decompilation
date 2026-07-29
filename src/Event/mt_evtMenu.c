@@ -3186,6 +3186,9 @@ void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4)
           if (FUN_0039f750(param_4 + 0x82c,(u32)uStack_2) == 0) {
             fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
             evtMenuDrawText((param_1 + 0x12) * 0xc, param_2 * 0xc, fVar5, iVar4, s_evtMenu_0069e9e0);
+          } else {
+            fVar5 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+            evtMenuDrawText((param_1 + 0x12) * 0xc, param_2 * 0xc, fVar5, iVar4, (const char *)(void *)0x69e9f0);
           }
         }
         else {

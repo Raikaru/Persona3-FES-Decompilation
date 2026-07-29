@@ -984,33 +984,37 @@ init_phase8:
         }
     }
     scenePath = K_Scene_001a0250();
-    if (scenePath == 1)
+    if (scenePath == 1 || (gMtScene->fldMajorId < 0x3b) ||
+        ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
     {
-        for (i = 0; i < 9; i++)
+        D_0086BDC0[0] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0xa3c);
+        D_0086BDC0[1] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x1170) + 0xa3c);
+        D_0086BDC0[2] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x1174) + 0xa3c);
+        D_0086BDC0[3] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x1178) + 0xa3c);
+        D_0086BDC0[4] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x117c) + 0xa3c);
+        D_0086BDC0[5] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x1180) + 0xa3c);
+        D_0086BDC0[6] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x1184) + 0xa3c);
+        D_0086BDC0[7] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x1188) + 0xa3c);
+        D_0086BDC0[8] =
+            *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x118c) + 0xa3c);
+        if (scenePath == 1)
         {
-            D_0086BDC0[i] =
-                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
-                          0xa3c);
-        }
-        if (datGetScenarioMode() == 0)
-        {
-            func_001bd450((u32)(gMtScene->fldMajorId - 0x14), 1);
-        }
-        else
-        {
-            func_001bd450((u32)(gMtScene->fldMajorId - 0x28), 1);
-        }
-        func_001bd8c0();
-    }
-    else if ((gMtScene->fldMajorId < 0x3b) ||
-             ((gMtScene->fldMajorId >= 0x47) &&
-              (gMtScene->fldMajorId < 0x4f)))
-    {
-        for (i = 0; i < 9; i++)
-        {
-            D_0086BDC0[i] =
-                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c + i * 4) +
-                          0xa3c);
+            if (datGetScenarioMode() == 0)
+            {
+                func_001bd450((u32)(gMtScene->fldMajorId - 0x14), 1);
+            }
+            else
+            {
+                func_001bd450((u32)(gMtScene->fldMajorId - 0x28), 1);
+            }
         }
         func_001bd8c0();
     }

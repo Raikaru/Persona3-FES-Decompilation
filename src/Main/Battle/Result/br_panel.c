@@ -344,6 +344,8 @@ void brPanel002350f0(void)
     D_00960090(1, frame);
     D_0096009C((u32*)(work + 0xc20), 4, 0, 1, 2);
     D_0096009C((u32*)(work + 0xc20), 4, 0, 2, 3);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
     for (i = 0; i < *(s32*)(work + 0x1d50); i++) {
         entry = (BrPanelResultEntry*)(work + 0xe20) + i;
         frame = (u32)(uintptr_t)func_0021cca0(texture, 4);
