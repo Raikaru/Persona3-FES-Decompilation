@@ -5332,7 +5332,7 @@ static inline void MaestroEffectSetReady(MaestroPerEffectWork* work)
 void* func_00117540(KwlnTask* task)
 {
     MaestroPerEffectWork* work;
-    char path[0x140];
+    char path[0x120];
     void (**stateFn)(u32, u32);
     u32 ready;
     u32 size;

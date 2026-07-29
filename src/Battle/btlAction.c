@@ -2850,7 +2850,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     u64 actionUID;
     u64 sp260;
     u64 sp258;
-    u32 workBuf[12];
+    u32 workBuf[4];
     s16 sp190;
     s16 sp180;
     s16 sp1D0;
@@ -7216,7 +7216,7 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
     u32 posY;
 
     u32 mode;
-    u8 workBuf[0x130];
+    u8 workBuf[0x100];
     u32 extraWork[4];
     BtlAction* basis;
 

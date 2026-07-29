@@ -10187,13 +10187,15 @@ void FUN_00326030(int param_1,int param_2)
   u32 baseColor;
   u32 nodeColor;
   u32 color;
+  float inv255;
 
+  inv255 = DAT_007cae4c;
   *(int *)(param_1 + 100) = param_2;
   node = *(int *)(param_1 + 0x8c);
   while (node != 0) {
     baseColor = *(u32 *)(param_1 + 100);
     nodeColor = *(u32 *)(node + 100);
-    color = mdlVuModulateStacked(&baseColor, &nodeColor, DAT_007cae4c);
+    color = mdlVuModulateStacked(&baseColor, &nodeColor, inv255);
     type = *(u16 *)(*(int *)(node + 0x90) + 4);
     if (PTR_LAB_0069be50[(u32)type * 0xc + (u32)type] != NULL) {
       PTR_LAB_0069be50[(u32)type * 0xc + (u32)type]

@@ -860,7 +860,7 @@ void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 a
   float originX;
   float originY;
   CampBits packedPosition;
-  char textBuffer[256];
+  char textBuffer[272];
   packedPosition = position;
   originX = packedPosition.f[0];
   originY = packedPosition.f[1];
@@ -1104,7 +1104,7 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
 {
   register void* parent;
   CampPair origin;
-  char textBuffer[256];
+  char textBuffer[272];
   char category;
   u16 value;
   u32 colorBase;

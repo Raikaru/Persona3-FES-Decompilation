@@ -3042,7 +3042,8 @@ void func_001f6630(void)
     switch (work[2]) {
     case 1:
     {
-        f32 output[4];
+        /* INFERRED FROM FRAME ARITHMETIC: output[12] (48 bytes, 0x30) closes the 0x20 frame gap vs retail. */
+        f32 output[12];
         for (i = 0; i < (s32)work[0xcf7]; i++) {
             u8 *entry;
             entry = (u8 *)work +

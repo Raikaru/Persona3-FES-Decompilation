@@ -2809,7 +2809,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     u16 reward;
     void* hasResource;
     const char* text;
-    char textBuffer[256];
+    char textBuffer[304];
     f32 x;
     f32 y;
     f32 rowY;
@@ -3086,7 +3086,7 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     s16 level;
     u16 reward;
     s32 socialLevel;
-    char textBuffer[256];
+    char textBuffer[416];
     const char* text;
     f32 rowY;
     f32 x;

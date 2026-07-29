@@ -1697,7 +1697,7 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
 void* FUN_00164920(KwlnTask* task)
 {
     CampSkillInnerWork* work;
-    char path[0x100];
+    char path[0xF0];
     u32 fileSize;
     s32 parserReady;
     s32 complete;
