@@ -1640,7 +1640,7 @@ void FUN_00388ff0(int param_1)
 
       if (iVar2 != 0) {
 
-        (*DAT_0096017c)();
+        (*DAT_0096017c_abs)(iVar2);
 
         *(u32 *)(*(int *)(param_1 + 0x980) + iVar3 * 4) = 0;
 
@@ -1648,10 +1648,10 @@ void FUN_00388ff0(int param_1)
 
     }
 
-    iVar1 = *(int *)(param_1 + 0x97c);
+    iVar1 = *(int *)(param_1 + 0x97c) * 4;
 
-    (*DAT_0096017c)(*(u32 *)(param_1 + 0x980));
-    DAT_00958a90 = DAT_00958a90 + iVar1 * -4;
+    (*DAT_0096017c_abs)(*(u32 *)(param_1 + 0x980));
+    *DAT_00958a90_abs = *DAT_00958a90_abs - iVar1;
 
     *(u32 *)(param_1 + 0x980) = 0;
 

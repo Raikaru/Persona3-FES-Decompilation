@@ -8764,13 +8764,16 @@ u32 func_0031c1d0(int param_1)
   u16 uVar2;
 
   int sVar3;
-
   u32 uVar4;
-  u32 uVar5;
 
+
+  u32 uVar5;
   int lVar6;
 
   int iVar7;
+
+
+
 
   int sVar8;
 
@@ -8852,11 +8855,8 @@ u32 func_0031c1d0(int param_1)
         }
 
       }
-
       else {
-
         func_00319490(param_1,0,10,sVar3,0);
-
       }
 
       break;
