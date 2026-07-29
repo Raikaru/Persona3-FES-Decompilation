@@ -6268,9 +6268,9 @@ void FUN_00322010(void)
 
   int iVar2;
 
-  u32 *puVar3;
+  Qword128 *pqVar3;
 
-  float *pfVar4;
+  Qword128 *pqVar4;
 
   u32 uVar5;
 
@@ -6430,9 +6430,9 @@ void FUN_00322010(void)
   uStack_34 = 3;
 
 
-  pfVar4 = &fStack_40;
+  pqVar4 = (Qword128 *)&fStack_40;
 
-  puVar3 = (u32 *)DAT_00957270_abs;
+  pqVar3 = (Qword128 *)DAT_00957270_abs;
 
   iVar2 = 4;
 
@@ -6446,25 +6446,13 @@ void FUN_00322010(void)
 
   do {
 
-    uVar1 = *(u64 *)pfVar4;
+    *pqVar3 = *pqVar4;
 
-    fVar6 = pfVar4[2];
+    pqVar4 = pqVar4 + 1;
 
-    fVar7 = pfVar4[3];
-
-    pfVar4 = pfVar4 + 4;
+    pqVar3 = pqVar3 + 1;
 
     iVar2 = iVar2 + -1;
-
-    *puVar3 = (int)uVar1;
-
-    puVar3[1] = (int)((u32)uVar1 >> 0x20);
-
-    puVar3[2] = fVar6;
-
-    puVar3[3] = fVar7;
-
-    puVar3 = puVar3 + 4;
 
   } while (0 < iVar2);
 
@@ -50514,11 +50502,13 @@ void FUN_00352f70(float *param_1)
 
   int *piVar2;
 
-  float fVar3;
+  u32 *work;
 
-  float fVar4;
+  u32 entryAddress;
 
-  float fVar5;
+  u32 frame;
+
+  u32 duration;
 
   int iVar6;
 
@@ -50596,27 +50586,29 @@ void FUN_00352f70(float *param_1)
 
   
 
-  piVar2 = (int *)(u32)param_1[0xc];
+  work = (u32 *)param_1;
 
-  fVar3 = param_1[0xe];
+  piVar2 = (int *)work[0xc];
 
-  fVar4 = param_1[10];
+  entryAddress = work[0xe];
 
-  fVar5 = *(float *)((int)fVar3 + 0xc);
+  frame = work[10];
 
-  if (((u32)fVar4 <= (u32)fVar5) || (fVar5 == 0.0f)) {
+  duration = *(u32 *)(entryAddress + 0xc);
+
+  if ((duration <= frame) || (duration == 0)) {
 
     iVar10 = 0;
 
-    if (fVar5 != 0.0f) {
+    if (duration != 0) {
 
-      uVar1 = *(u16 *)((int)fVar3 + 0x10);
+      uVar1 = *(u16 *)(entryAddress + 0x10);
 
-      if ((u32)uVar1 < (u32)fVar4) {
+      if (uVar1 < frame) {
 
-        uVar1 = *(u16 *)((int)fVar3 + 0x12);
+        uVar1 = *(u16 *)(entryAddress + 0x12);
 
-        if ((int)fVar5 - (u32)uVar1 <= (u32)fVar4) {
+        if (duration - uVar1 <= frame) {
 
           if (uVar1 == 0) {
 
@@ -50626,7 +50618,7 @@ void FUN_00352f70(float *param_1)
 
           else {
 
-            in_f21 = (float)(u32)((int)fVar5 - (int)fVar4) / (float)uVar1;
+            in_f21 = (float)(duration - frame) / (float)uVar1;
 
           }
 
@@ -50646,7 +50638,7 @@ void FUN_00352f70(float *param_1)
 
         else {
 
-          in_f21 = (float)(u32)fVar4 / (float)uVar1;
+          in_f21 = (float)frame / (float)uVar1;
 
         }
 
@@ -50664,7 +50656,7 @@ void FUN_00352f70(float *param_1)
 
       FUN_00318a70(*piVar2,&uStack_a0,0);
 
-      fStack_20 = param_1[8] * *(float *)((int)fVar3 + 0x1c);
+      fStack_20 = param_1[8] * *(float *)(entryAddress + 0x1c);
 
       fStack_1c = fStack_20;
 
@@ -50680,7 +50672,7 @@ void FUN_00352f70(float *param_1)
 
       FUN_00318a30(*piVar2,&fStack_20,2);
 
-      FUN_003189f0_f32(*(float *)((int)fVar3 + 0x18),*piVar2,0);
+      FUN_003189f0_f32(*(float *)(entryAddress + 0x18),*piVar2,0);
 
       FUN_00317730(*piVar2);
 
@@ -50702,11 +50694,11 @@ void FUN_00352f70(float *param_1)
 
           iVar6 = *(int *)(iVar6 + 0xa34)) {
 
-        lVar8 = FUN_00352c70_u32((int)(iVar6), (u8 *)(&fVar3));
+        lVar8 = FUN_00352c70_u32((int)(iVar6), (u8 *)(&entryAddress));
 
         if (lVar8 != 0) {
 
-          if ((fVar4 == 0.0f) && ((*(u32 *)(iVar6 + 0x98) & 2) != 0)) {
+          if ((frame == 0) && ((*(u32 *)(iVar6 + 0x98) & 2) != 0)) {
 
             *(u8 *)(*(int *)(iVar6 + 0x9f4) + 0x388) =
 
@@ -50793,7 +50785,7 @@ void FUN_00352f70(float *param_1)
 
           if (iVar10 == 2) {
 
-            if (fVar4 == (float)((int)fVar5 - (u32)*(u16 *)((int)fVar3 + 0x12))) {
+            if (frame == duration - *(u16 *)(entryAddress + 0x12)) {
 
               *(u32 *)(iVar6 + 0x60) = *(u32 *)(iVar6 + 0x70);
 
@@ -50825,7 +50817,7 @@ void FUN_00352f70(float *param_1)
 
           else if (iVar10 == 1) {
 
-            if (fVar4 == 0.0f) {
+            if (frame == 0) {
 
               *(u32 *)(iVar6 + 0x60) = *(u32 *)(iVar6 + 0x70);
 
@@ -50837,7 +50829,7 @@ void FUN_00352f70(float *param_1)
 
             }
 
-            uStack_4 = *(u32 *)((int)fVar3 + 0x14);
+            uStack_4 = *(u32 *)(entryAddress + 0x14);
 
             *(float *)(iVar6 + 0x70) =
 
@@ -50865,9 +50857,9 @@ void FUN_00352f70(float *param_1)
 
           }
 
-          else if ((iVar10 == 0) && (fVar4 == 0.0f)) {
+          else if ((iVar10 == 0) && (frame == 0)) {
 
-            uStack_4 = *(u32 *)((int)fVar3 + 0x14);
+            uStack_4 = *(u32 *)(entryAddress + 0x14);
 
             *(float *)(iVar6 + 0x70) = fGpffff815c * (float)(uStack_4 & 0xff);
 

@@ -7474,7 +7474,7 @@ int func_0031aad0(Model* param_1)
 
   
 
-  iVar2 = *(int *)(param_1 + 0x428);
+  iVar2 = (int)param_1->stream;
 
   iVar16 = 1;
 
@@ -7514,7 +7514,7 @@ int func_0031aad0(Model* param_1)
 
     if (iStack_8 == 1) {
 
-      if (*(int *)(param_1 + 0x37c) == 0) {
+      if (*(int **)(param_1->unkData2 + 0x1c) == 0) {
 
         uVar1 = *(u16 *)(iVar2 + 0x20);
 
@@ -7532,11 +7532,11 @@ int func_0031aad0(Model* param_1)
 
         *(u16 *)((int)piVar14 + 0xe) = 1;
 
-        *(int **)(param_1 + 0x37c) = piVar14;
+        *(int **)(param_1->unkData2 + 0x1c) = piVar14;
 
       }
 
-      *(int *)(*(int *)(param_1 + 0x37c) + 4) = (int)uVar8;
+      (*(int **)(param_1->unkData2 + 0x1c))[1] = (int)uVar8;
 
       func_004b7760(0x77e4e0,uVar8);
 
@@ -7568,7 +7568,7 @@ int func_0031aad0(Model* param_1)
 
         if (iStack_8 == 1) {
 
-          if (*(int *)(param_1 + 0x37c) == 0) {
+          if (*(int **)(param_1->unkData2 + 0x1c) == 0) {
 
             uVar1 = *(u16 *)(iVar2 + 0x20);
 
@@ -7586,11 +7586,11 @@ int func_0031aad0(Model* param_1)
 
             *(u16 *)((int)piVar14 + 0xe) = 1;
 
-            *(int **)(param_1 + 0x37c) = piVar14;
+            *(int **)(param_1->unkData2 + 0x1c) = piVar14;
 
           }
 
-          *(u32 *)(**(int **)(param_1 + 0x37c) + (uVar18 & 0xffff) * 8) = uVar6;
+          *(u32 *)(**(int **)(param_1->unkData2 + 0x1c) + (uVar18 & 0xffff) * 8) = uVar6;
 
           func_004c5780(uStack_4,0);
 
@@ -7622,7 +7622,7 @@ int func_0031aad0(Model* param_1)
 
         if (iStack_8 == 1) {
 
-          *(u32 *)(param_1 + 0xdc) = uVar6;
+          param_1->clump = (RpClump *)uVar6;
 
           func_004c5780(uStack_4,0);
 
@@ -7664,11 +7664,11 @@ int func_0031aad0(Model* param_1)
 
   if (puVar17 != (u32 *)0x0) {
 
-    if (*(int *)(param_1 + 0xdc) != 0) {
+    if (param_1->clump != NULL) {
 
       while (puVar17 != (u32 *)0x0) {
 
-        if (*(int *)(param_1 + 0x35c) == 0) {
+        if (param_1->unk_35c == NULL) {
 
           uVar1 = *(u16 *)(iVar2 + 0x20);
 
@@ -7686,15 +7686,15 @@ int func_0031aad0(Model* param_1)
 
           *(u16 *)((int)piVar14 + 6) = 1;
 
-          *(int **)(param_1 + 0x35c) = piVar14;
+          param_1->unk_35c = piVar14;
 
         }
 
-        if (*(int *)(**(int **)(param_1 + 0x35c) + (u32)*(u16 *)(puVar17 + 1) * 8) == 0) {
+        if (*(int *)(*(int *)param_1->unk_35c + (u32)*(u16 *)(puVar17 + 1) * 8) == 0) {
 
           uVar6 = func_00320230();
 
-          *(u32 *)(**(int **)(param_1 + 0x35c) + (u32)*(u16 *)(puVar17 + 1) * 8) = uVar6;
+          *(u32 *)(*(int *)param_1->unk_35c + (u32)*(u16 *)(puVar17 + 1) * 8) = uVar6;
 
         }
 
@@ -7702,9 +7702,9 @@ int func_0031aad0(Model* param_1)
 
                      *(u32 *)
 
-                      (**(int **)(param_1 + 0x35c) + (u32)*(u16 *)(puVar17 + 1) * 8),*puVar17,
+                      (*(int *)param_1->unk_35c + (u32)*(u16 *)(puVar17 + 1) * 8),*puVar17,
 
-                     *(u32 *)(param_1 + 0xdc));
+                     (u32)param_1->clump);
 
         func_004c5780(puVar17[2],0);
 
@@ -7764,7 +7764,7 @@ int func_0031aad0(Model* param_1)
 
             if (uVar18 == 0) {
 
-              piVar14 = *(int **)(param_1 + 0x35c);
+              piVar14 = (int *)param_1->unk_35c;
 
               uVar7 = (u32)uVar1;
 
@@ -7782,7 +7782,7 @@ int func_0031aad0(Model* param_1)
 
               }
 
-              piVar14 = *(int **)(param_1 + 0x37c);
+              piVar14 = *(int **)(param_1->unkData2 + 0x1c);
 
               if (((piVar14 != (int *)0x0) &&
 

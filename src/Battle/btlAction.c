@@ -1904,32 +1904,33 @@ void btlActionInitStateSupport(BtlAction* action)
 void btlActionUpdateStateSupport(BtlAction* action)
 {
     BtlPacket* packet;
-    s32 work[4];
+    BtlUnit* unit = action->unit;
     u8 status;
-    u16 messageId = 0;
-    u8 special = 0;
+    s32 work[4];
+    s32 messageId = 0;
+    s32 special = 0;
 
     if (btlPacketCountById(0x506) != 0)
     {
         return;
     }
-    status = FUN_00302f50(action->unit->datUnit);
+    status = FUN_00302f50(unit->datUnit);
     switch (status)
     {
-        case 0: case 1: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x16 : 0x17; FUN_00301540(action->unit->datUnit, 0); FUN_00301540(action->unit->datUnit, 1); break;
-        case 2: case 4: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x18 : 0x19; FUN_00301540(action->unit->datUnit, 4); FUN_00301540(action->unit->datUnit, 2); break;
-        case 3: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x1a : 0x1b; FUN_00301540(action->unit->datUnit, 3); break;
-        case 5: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x1c : 0x1d; FUN_00301540(action->unit->datUnit, 5); break;
-        case 6: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x1e : 0x1f; FUN_00301540(action->unit->datUnit, 6); break;
-        case 7: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x20 : 0x21; FUN_00301540(action->unit->datUnit, 7); break;
-        case 8: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x22 : 0x23; FUN_00301540(action->unit->datUnit, 8); break;
-        case 9: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x24 : 0x25; FUN_00301540(action->unit->datUnit, 9); special = 1; break;
-        case 10: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x26 : 0x27; FUN_00301540(action->unit->datUnit, 10); break;
-        case 11: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x46 : 0x47; FUN_00301540(action->unit->datUnit, 11); break;
-        case 13: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x5a : 0x5b; FUN_00301540(action->unit->datUnit, 13); break;
-        case 14: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x5c : 0x5d; FUN_00301540(action->unit->datUnit, 14); break;
-        case 15: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x5e : 0x5f; FUN_00301540(action->unit->datUnit, 15); break;
-        case 16: messageId = action->unit->genus == UNIT_GENUS_PC ? 0x60 : 0x61; FUN_00301540(action->unit->datUnit, 16); break;
+        case 0: case 1: messageId = unit->genus == UNIT_GENUS_PC ? 0x16 : 0x17; FUN_00301540(unit->datUnit, 0); FUN_00301540(unit->datUnit, 1); break;
+        case 2: case 4: messageId = unit->genus == UNIT_GENUS_PC ? 0x18 : 0x19; FUN_00301540(unit->datUnit, 4); FUN_00301540(unit->datUnit, 2); break;
+        case 3: messageId = unit->genus == UNIT_GENUS_PC ? 0x1a : 0x1b; FUN_00301540(unit->datUnit, 3); break;
+        case 5: messageId = unit->genus == UNIT_GENUS_PC ? 0x1c : 0x1d; FUN_00301540(unit->datUnit, 5); break;
+        case 6: messageId = unit->genus == UNIT_GENUS_PC ? 0x1e : 0x1f; FUN_00301540(unit->datUnit, 6); break;
+        case 7: messageId = unit->genus == UNIT_GENUS_PC ? 0x20 : 0x21; FUN_00301540(unit->datUnit, 7); break;
+        case 8: messageId = unit->genus == UNIT_GENUS_PC ? 0x22 : 0x23; FUN_00301540(unit->datUnit, 8); break;
+        case 9: messageId = unit->genus == UNIT_GENUS_PC ? 0x24 : 0x25; FUN_00301540(unit->datUnit, 9); special = 1; break;
+        case 10: messageId = unit->genus == UNIT_GENUS_PC ? 0x26 : 0x27; FUN_00301540(unit->datUnit, 10); break;
+        case 11: messageId = unit->genus == UNIT_GENUS_PC ? 0x46 : 0x47; FUN_00301540(unit->datUnit, 11); break;
+        case 13: messageId = unit->genus == UNIT_GENUS_PC ? 0x5a : 0x5b; FUN_00301540(unit->datUnit, 13); break;
+        case 14: messageId = unit->genus == UNIT_GENUS_PC ? 0x5c : 0x5d; FUN_00301540(unit->datUnit, 14); break;
+        case 15: messageId = unit->genus == UNIT_GENUS_PC ? 0x5e : 0x5f; FUN_00301540(unit->datUnit, 15); break;
+        case 16: messageId = unit->genus == UNIT_GENUS_PC ? 0x60 : 0x61; FUN_00301540(unit->datUnit, 16); break;
     }
     if (messageId == 0)
     {
@@ -1947,15 +1948,15 @@ void btlActionUpdateStateSupport(BtlAction* action)
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_OWN);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    packet = FUN_002bd850(action->unit, messageId);
+    packet = FUN_002bd850(unit, messageId);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
     if (special)
     {
         FUN_002d5dc0(work);
-        work[0] = -((FUN_002ffd70(action->unit->datUnit) & 0xffff) - 1);
+        work[0] = -((FUN_002ffd70(unit->datUnit) & 0xffff) - 1);
         if (work[0] >= 0) work[0] = 0;
-        work[1] = -((FUN_002ffd80(action->unit->datUnit) & 0xffff) - 1);
+        work[1] = -((FUN_002ffd80(unit->datUnit) & 0xffff) - 1);
         if (work[1] >= 0) work[1] = 0;
         packet = FUN_002d7e20(action, action, work, 1, 1);
         packet->actionUID = action->uid;
