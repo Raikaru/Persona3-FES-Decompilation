@@ -554,8 +554,8 @@ u32 FUN_003aea50(u64 param_1,int param_2)
 
 u32 FUN_003aec20(u64 unused, int context)
 {
-  u8 *cursor = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
-  u8 low = cursor[0] - 1;
+  u8 *cursor;
+  u8 low;
   u8 high;
   int count;
   int glyph;
@@ -563,6 +563,13 @@ u32 FUN_003aec20(u64 unused, int context)
   char tag[3];
   char *source;
   char *dest;
+  int offset;
+  int base;
+
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  cursor = (u8 *)(offset + base);
+  low = cursor[0] - 1;
 
   if (cursor[1] == 0xff) {
     high = 0;

@@ -1322,7 +1322,7 @@ int FUN_003c9840(void)
 #define FUN_003c9570(...) ((void (*)(...))FUN_003c9570)(__VA_ARGS__)
 #define FUN_003c9790(...) ((u8 (*)(...))FUN_003c9790)(__VA_ARGS__)
 #undef FUN_003c9850
-// FUN_003C9850 NONMATCHING
+// FUN_003C9850
 
 
 u32 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
@@ -1346,6 +1346,7 @@ u32 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
   FclMisc9850Work *work;
 
   int iVar4;
+  u32 ok;
 
   int aiStack_20 [8];
 
@@ -1353,11 +1354,16 @@ u32 FUN_003c9850(int param_1,int param_2,u16 param_3,u16 param_4)
 
   
 
-  if ((param_2 < 0) || (4 < param_2)) {
-
-    FUN_0019d3f0("fclMisc.c",0x661);
-
+  if (param_2 < 0) {
+    goto invalidFacility;
   }
+  ok = (param_2 < 5);
+  if (ok) {
+    goto validFacility;
+  }
+invalidFacility:
+  FUN_0019d3f0("fclMisc.c",0x661);
+validFacility:
 
   ppuVar6 = fclMiscFacilityPssBattlePakTable;
 

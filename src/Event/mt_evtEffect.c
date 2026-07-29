@@ -1268,7 +1268,7 @@ extern void FUN_00386f70(f32 depth, RwV2d *position, RwV2d *size, RwRGBA *color)
 extern void FUN_00388a40(f32 depth, RwV2d *start, RwV2d *end, RwRGBA *color);
 extern void FUN_0038a260(f32 depth, int width, int height, int unused, void *data, ...);
 
-// FUN_00395E20 NONMATCHING
+// FUN_00395E20
 
 
 
@@ -1368,7 +1368,7 @@ void FUN_00395e20(int param_1)
 
     fVar9 = 0.0f;
 
-    for (iVar6 = 0; iVar6 < 0x29; iVar6++) {
+    for (iVar6 = 0; iVar6 <= 0x28; iVar6++) {
 
       FUN_003bbc90(fVar9,&curveA.x,&curveB.x,&curveC.x,&sample.x,&sample.y,&sample.z);
       if (0 < iVar6) {

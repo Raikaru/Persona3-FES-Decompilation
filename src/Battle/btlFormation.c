@@ -7430,7 +7430,7 @@ u32 func_002c3ce0(u32 param_1)
   int selected;
   u16 index;
   u16 best;
-  u8 score;
+  u16 score;
   extern u8 func_002ffcc0(u32);
 
   result = func_002bff60_u16(param_1,param_1 + 0x88,*(u16 *)(param_1 + 0x6e),0);
