@@ -2534,19 +2534,19 @@ void func_00114e70(f32 depth,
     f32 z;
     void (**setState)(u32, u32);
     RwCamera* camera;
-    s8 r;
-    s8 g;
-    s8 b;
-    s8 a;
+    u32 r;
+    u32 g;
+    u32 b;
+    u32 a;
     s32 i;
 
     camera = kwlnGetMainCamera();
     recipZ = 1.0f / camera->nearPlane;
 
-    r = (s8)(color >> 24);
-    g = (s8)(color >> 16);
-    b = (s8)(color >> 8);
-    a = (s8)color;
+    r = (color >> 24) & 0xff;
+    g = (color >> 16) & 0xff;
+    b = (color >> 8) & 0xff;
+    a = color & 0xff;
 
     setState = (void (**)(u32, u32))D_00960090_abs;
     (*setState)(6, 1);

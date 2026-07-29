@@ -1164,7 +1164,7 @@ void func_0018c0c0(KwlnTask* task, s32 visible)
 void func_0018c150(KwlnTask* task)
 {
     void* object;
-    void* transition;
+    GsTransition* transition;
     void* atlas;
     s16 pcId;
     s32 i;
@@ -1180,22 +1180,22 @@ void func_0018c150(KwlnTask* task)
     u32 maxHp;
     u32 sp;
     u32 maxSp;
-    u32 width;
+    s32 width;
 
     object = (void*)task;
-    transition = GS_PTR(object, 0x70);
+    transition = (GsTransition*)GS_PTR(object, 0x70);
     pcId = GS_S16(object, 0x14);
     atlas = gsPcAtlas(object, pcId);
-    gsDrawSprite(atlas, 1, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 20.0f, GS_F32(transition, 0x3c) + 18.0f, GS_F32(transition, 0x24));
+    gsDrawSprite(atlas, 1, GS_U8(transition, 0x40), transition->position.valueF[0] + 20.0f, transition->position.valueF[1] + 18.0f, transition->depth);
     if ((datGetBadStatusNoDown(pcId) & 0x80) == 0)
     {
-        gsDrawSprite(atlas, 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 20.0f, GS_F32(transition, 0x3c) + 18.0f, GS_F32(transition, 0x24));
+        gsDrawSprite(atlas, 0, GS_U8(transition, 0x40), transition->position.valueF[0] + 20.0f, transition->position.valueF[1] + 18.0f, transition->depth);
     }
     else
     {
-        gsDrawSprite(atlas, 2, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 20.0f, GS_F32(transition, 0x3c) + 18.0f, GS_F32(transition, 0x24));
+        gsDrawSprite(atlas, 2, GS_U8(transition, 0x40), transition->position.valueF[0] + 20.0f, transition->position.valueF[1] + 18.0f, transition->depth);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 44.0f, GS_F32(transition, 0x3c) + 39.0f, GS_F32(transition, 0x24));
+    gsDrawSprite(GS_PTR(object, 0x2c), 0, GS_U8(transition, 0x40), transition->position.valueF[0] + 44.0f, transition->position.valueF[1] + 39.0f, transition->depth);
 
     if ((datGetBadStatusNoDown(pcId) & 0x80) != 0)
     {
@@ -1229,10 +1229,10 @@ void func_0018c150(KwlnTask* task)
             }
             sprite = func_001158b0(NULL, GS_PTR(object, 0x30), (i % 3) + 1);
             node = (GsSprite*)sprite;
-            node->depth = GS_F32(transition, 0x24);
-            node->x = GS_F32(transition, 0x38) + 44.0f +
+            node->depth = transition->depth;
+            node->x = transition->position.valueF[0] + 44.0f +
                       (f32)(s32)((f32)radius * cosine);
-            node->y = GS_F32(transition, 0x3c) + 34.0f -
+            node->y = transition->position.valueF[1] + 34.0f -
                       (f32)(s32)((f32)radius * sine);
             node->alpha = (u8)alpha;
             func_001127d0(sprite, 1);
@@ -1245,23 +1245,23 @@ void func_0018c150(KwlnTask* task)
     width = ((hp & 0xffff) << 5) / (maxHp & 0xffff);
     if (width != 0x20)
     {
-        func_00113a30(GS_F32(transition, 0x24) - 1.0f,
-                      GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 46.0f,
+        func_00113a30(transition->depth - 1.0f,
+                      transition->position.valueF[0] + (f32)width + 50.0f,
+                      transition->position.valueF[1] + 46.0f,
                       0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 50.0f, GS_F32(transition, 0x3c) + 46.0f, GS_F32(transition, 0x24));
+    gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 46.0f, transition->depth);
     sp = datGetSp(pcId);
     maxSp = func_0016c670(pcId);
     width = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
     if (width != 0x20)
     {
-        func_00113a30(GS_F32(transition, 0x24) - 3.0f,
-                      GS_F32(transition, 0x38) + (f32)width + 50.0f,
-                      GS_F32(transition, 0x3c) + 51.0f,
+        func_00113a30(transition->depth - 3.0f,
+                      transition->position.valueF[0] + (f32)width + 50.0f,
+                      transition->position.valueF[1] + 51.0f,
                       0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 50.0f, GS_F32(transition, 0x3c) + 51.0f, GS_F32(transition, 0x24) - 2.0f);
+    gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), transition->position.valueF[0] + 50.0f, transition->position.valueF[1] + 51.0f, transition->depth - 2.0f);
 }
 
 // FUN_0018C780 NONMATCHING

@@ -51150,7 +51150,7 @@ void FUN_003542a0(int param_1)
   u32 uVar7;
 
   int iVar8;
-  long lVar9;
+  int lVar9;
 
 
   u32 uVar10;
@@ -51182,7 +51182,7 @@ void FUN_003542a0(int param_1)
   
 
   piVar2 = *(int **)(param_1 + 0x38);
-  lVar9 = (long)(int)piVar2;
+  lVar9 = (int)piVar2;
 
 
   uVar3 = *(u32 *)(param_1 + 0x28);
@@ -51203,7 +51203,7 @@ void FUN_003542a0(int param_1)
 
         uVar1 = *(u16 *)((int)piVar2 + 6);
 
-        if ((u32)(long)(int)(iVar8 - (u32)uVar1) <= uVar7) {
+        if ((u32)(iVar8 - (u32)uVar1) <= uVar7) {
 
           if (uVar1 == 0) {
 
@@ -51228,7 +51228,7 @@ void FUN_003542a0(int param_1)
 
       else {
 
-        if ((long)uVar7 < 0) {
+        if ((int)uVar7 < 0) {
 
           fVar11 = (float)uVar3;
 
@@ -51263,7 +51263,7 @@ void FUN_003542a0(int param_1)
 
           if (extraout_t3 == 2) {
 
-            if (uVar7 == (long)(int)((int)uVar6 - (u32)*(u16 *)(iVar8 + 6))) {
+            if (uVar7 == (u32)((int)uVar6 - (u32)*(u16 *)(iVar8 + 6))) {
 
               *(u8 *)(extraout_a0_lo + 0x38) = *(u8 *)(extraout_a0_lo + 0x3c);
 

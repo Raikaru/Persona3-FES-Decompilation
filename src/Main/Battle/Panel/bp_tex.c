@@ -2144,7 +2144,7 @@ void bpTexApplyActions(void)
     s32 directCount;
     u32 rootCount;
     u8 quad[16];
-    unsigned __int128 childValue;
+    u32 childValue;
     f32 position[3];
     f32 offsets[3];
     f32 offsetsA[3];
@@ -2283,7 +2283,7 @@ void bpTexApplyActions(void)
             for (j = 0; j < (s32)action[8]; j++)
             {
                 child = (u32*)action[2 + j];
-                childValue = (unsigned __int128)(u32)child;
+                childValue = (u32)child;
                 bpTexCollect(child, leavesB, &leafCounts[2]);
                 for (idx = 0; idx < leafCounts[2]; idx++)
                 {

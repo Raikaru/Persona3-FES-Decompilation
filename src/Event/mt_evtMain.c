@@ -673,7 +673,7 @@ void FUN_00362f20(int param_1);
 void FUN_00362fa0(int param_1);
 void FUN_00362ff0(int param_1);
 void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4);
-void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5);
+void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5);
 void FUN_003648e0(int param_1,u32 param_2,int param_3);
 void FUN_00364a30(u32 param_1,int param_2);
 void FUN_00364e40(u32 param_1,int param_2,int param_3);
@@ -3537,7 +3537,7 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 // FUN_003638E0 NONMATCHING
 
 
-void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
+void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
 
 
@@ -3549,7 +3549,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
   u32 lVar3;
 
-  long lVar4;
+  int lVar4;
 
   u32 uVar5;
 
@@ -3571,7 +3571,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,u64 param_5)
 
   u16 *puVar14;
 
-  long lVar15;
+  int lVar15;
 
   long lVar16;
 
