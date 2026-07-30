@@ -720,6 +720,7 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
     FclNodeData* data;
     s32 mode;
     s32 i;
+    s32 value;
     s32 scratch[8];
 
     node = param_1->list->links;
@@ -729,11 +730,25 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
     while (node != 0) {
         data = node->payload->data.node_data;
         i = 0;
-        while (i < param_1->capacity &&
-               fclCombineList003da3e0(param_1, i) != (s32)data->selection_detail) {
+        while (i < param_1->capacity) {
+            K_ASSERT(param_1 != 0, 0x411);
+            if (i < param_1->capacity) {
+                value = (s32)param_1->values[i];
+                if (value == 0) {
+                    value = 0;
+                }
+            } else {
+                value = 0;
+            }
+            if (value == (s32)data->selection_detail) {
+                break;
+            }
             i++;
         }
         if (i >= param_1->capacity) {
+            i = -1;
+        }
+        if (i == -1) {
             scratch[param_1->used] = (s32)data->selection_detail;
             FUN_003d6ae0((s32)&data->fusion, param_1->mode, (s32)scratch);
             scratch[param_1->used] = 0;
@@ -1295,12 +1310,13 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     FclTextResourceData* resource_data;
     FclTextRecord* record;
     FclPersonaDefinition* definition;
-    char formatted_text[0x28];
+    FclTextLayout formatted_text;
     u16 text_styles[4];
     s32 i;
     s32 fallback_text_id;
     s32 row_y;
     u32 scaled_color;
+    u32 normal_color;
 
     resource_node = source_link->payload->data.text_node;
     resource_data = resource_node->meta->data;
@@ -1308,6 +1324,8 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     text_styles[3] = DAT_007cd7a6;
     text_styles[0] = DAT_007cd7a8;
     text_styles[1] = DAT_007cd7aa;
+    normal_color = ((u32)(byte)alpha) | 0xffffff00;
+    scaled_color = (s32)(DAT_007cadd0 * (float)alpha) | 0xffffff00;
     for (i = 0; i < owner->container->work->capacity; i++) {
         record = resource_data->item_records[i];
         row_y = base_y + i * 0x18;
@@ -1317,22 +1335,21 @@ void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
             definition = DAT_007ce420[fallback_text_id];
             FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + 1);
-            scaled_color = (s32)(DAT_007cadd0 * (float)alpha) | 0xffffff00;
             FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, scaled_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[fallback_text_id], 0x10, 0x6e);
             FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24, i * 2 + 1);
         } else {
             definition = DAT_007ce420[record->text_id];
-            sprintf(formatted_text, DAT_007cd798.format_string, record->format_value);
+            FUN_00523ac8(&formatted_text, &DAT_007cd798.layout_template,
+                          record->format_value);
             FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x25,
                           (definition->field_02.variant_count - 1) * 2 + selected_style);
-            FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e,
-                          ((u32)(byte)alpha) | 0xffffff00,
+            FUN_003b32d0(0.0f, base_x + 0x76, row_y + 0x7e, normal_color,
                           (s8)text_styles[selected_style + 2], 1,
                           DAT_007ce4e4[record->text_id], 0x10, 0x6e);
             FUN_0040eb50(0.0f, base_x + 0x145, row_y + 0x7f, (byte)alpha,
-                          (s16)text_styles[selected_style], formatted_text, 1);
+                          (s16)text_styles[selected_style], &formatted_text, 1);
             FUN_0040e3c0(0.0f, base_x, row_y, (byte)alpha, 0x24,
                           i * 2 + selected_style);
         }
@@ -1507,8 +1524,14 @@ void fclCombineList003dd260(FclResultStream* callback_target, FclDrawResult* res
     x = record->x + result->x_offset;
     y = record->y + result->y_offset;
     alpha = (s16)(((s32)record->alpha * (s32)result->alpha_scale) / 0xff);
-    selected = (record->flags & 1) != 0;
-    alternate = (record->flags & 2) != 0;
+    selected = 0;
+    if ((record->flags & 1) != 0) {
+        selected = 1;
+    }
+    alternate = 0;
+    if ((record->flags & 2) != 0) {
+        alternate = 1;
+    }
     mode = result->mode;
 
     if (alpha != 0) {

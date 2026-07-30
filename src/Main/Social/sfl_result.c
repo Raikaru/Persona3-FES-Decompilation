@@ -199,14 +199,14 @@ extern u8* iGpffffb7b8;
 extern f32 fGpffff8070;
 extern f32 fGpffff83b0;
 extern f32 fGpffff83b4;
-extern char* pcGpffffb75c;
-extern char* pcGpffffb760;
-extern char* pcGpffffb764;
-extern char* pcGpffffb768;
-extern char* pcGpffffb76c;
-extern char* pcGpffffb770;
-extern char* pcGpffffb774;
-extern char* pcGpffffb778;
+extern u8* pcGpffffb75c;
+extern u8* pcGpffffb760;
+extern u8* pcGpffffb764;
+extern u8* pcGpffffb768;
+extern u8* pcGpffffb76c;
+extern u8* pcGpffffb770;
+extern u8* pcGpffffb774;
+extern u8* pcGpffffb778;
 extern u8 DAT_00684d70[];
 #pragma alias DAT_00684d60 DAT_00684d70
 extern u8 DAT_00684d60[];
@@ -282,7 +282,7 @@ u32 sflResult001f9170(u32 player)
             break;
         case 7: {
             u16 condition = datGetPhysicalCondition(1);
-            if ((u16)(condition - 3) < 3) {
+            if ((u32)(u16)(condition - 3) < 3) {
                 return 1;
             }
             break;
@@ -558,8 +558,8 @@ void sflResult001f9e90(u16 owner, s32 exp)
 
 void func_001fa0d0(void)
 {
-    char* pcVar2;
     u32 uVar3;
+    u8* pcVar2;
     u8 auStack_20[16];
 
     for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
@@ -573,10 +573,6 @@ void func_001fa0d0(void)
         case 9:
         case 10:
             switch (uVar3 & 0xffff) {
-            default:
-                FUN_0019d3f0(0x684ba8, 0x35);
-                pcVar2 = (char*)0;
-                break;
             case 2:
                 pcVar2 = pcGpffffb75c;
                 break;
@@ -601,9 +597,13 @@ void func_001fa0d0(void)
             case 10:
                 pcVar2 = pcGpffffb778;
                 break;
+            default:
+                FUN_0019d3f0(sflResultAssertBA8_abs, 0x35);
+                pcVar2 = (u8*)0;
+                break;
             }
             if (*pcVar2 != '\0') {
-                FUN_0019d3f0(0x684ba8, 200);
+                FUN_0019d3f0(sflResultAssertBA8_abs, 200);
             }
             if (*(u16*)(pcVar2 + 2) != 0) {
                 FUN_00182c50((s16)*(u16*)(pcVar2 + 2), auStack_20);

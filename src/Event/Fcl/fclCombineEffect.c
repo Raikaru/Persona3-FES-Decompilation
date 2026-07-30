@@ -1497,8 +1497,6 @@ u8 FUN_00418c70(int param_1,int *param_2)
   int iVar4;
   u32 *puVar5;
   u32 *puVar6;
-  int iVar7;
-  int iVar8;
   float fVar9;
   u32 uVar10;
   float fVar11;
@@ -1522,11 +1520,7 @@ u8 FUN_00418c70(int param_1,int *param_2)
     case '@':
       switch (*(char *)(iVar1 + 5)) {
       case '\x01':
-        iVar7 = *(int *)(iVar2 + 0x44);
-        iVar8 = *(int *)(iVar2 + 0x48);
-        param_2[0x18] = *(int *)(iVar2 + 0x40);
-        param_2[0x19] = iVar7;
-        param_2[0x1a] = iVar8;
+        *(RwV3d *)(param_2 + 0x18) = *(RwV3d *)(iVar2 + 0x40);
         break;
       case '\x02':
         break;
@@ -2891,7 +2885,10 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
   *(int *)(param_2 + 0xc) = *(int *)(param_2 + 0xc) + 1;
 
-  return 5.0f < (float)*(int *)(param_2 + 0xc);
+  if ((float)*(int *)(param_2 + 0xc) <= 5.0f) {
+    return 0;
+  }
+  return 1;
 
 }
 

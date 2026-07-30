@@ -472,6 +472,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
     void* framePixels;
     void (**setRenderState)(u32, u32);
     u8* config;
+    void* stream;
     work = (HSfd*)sfdPlayTask->workData;
 
     switch (work->state)
@@ -535,10 +536,10 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             *(s32*)(config + 0x10) = 2;
             *(s32*)(config + 0x14) = 1;
             *(s32*)(config + 0x24) = 2;
-            work->decoder = func_0057c680(config);
+            *(void**)(config + 0x1C) = func_0057c680(config);
             datSetFlag(0x141A, 1);
             work->compressedFrameBuffer =
-                D_00960178((u32)((u8*)work->decoder + 0x40), 0x40000);
+                D_00960178((u32)((u8*)*(void**)(config + 0x1C) + 0x40), 0x40000);
             work->displayBuffer = D_00960184(1, 0x118000, 0x40000);
             datSetFlag(0x141A, 0);
             if (work->compressedFrameBuffer == NULL ||
@@ -575,8 +576,9 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 return KWLNTASK_CONTINUE;
             }
             *(void**)(config + 0x18) = work->compressedFrameBuffer;
-            work->streamDescriptor = func_0057d5d8(config);
-            if (work->streamDescriptor == NULL)
+            work->streamDescriptor = work->compressedFrameBuffer;
+            stream = func_0057d5d8(config);
+            if (stream == NULL)
             {
                 D_0096017c(work->compressedFrameBuffer);
                 work->compressedFrameBuffer = NULL;
@@ -587,13 +589,13 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                     uGpffffb220 = NULL;
                 }
             }
-            func_0057e378(work->streamDescriptor, 0);
-            work->decoder = work->streamDescriptor;
+            func_0057e378(stream, 0);
+            work->decoder = stream;
             if (work->streamAux != NULL)
-                func_001023f0(work->streamDescriptor,
+                func_001023f0(stream,
                               *(const char**)HSFD_TABLE(D_005D4B74, work->id), 1);
             else
-                func_001023f0(work->streamDescriptor,
+                func_001023f0(stream,
                               *(const char**)HSFD_TABLE(D_005D4B74, work->id), 0);
             datSetFlag(0x141A, 1);
             movieType = *(s16*)HSFD_TABLE(D_005D4B70, work->id);

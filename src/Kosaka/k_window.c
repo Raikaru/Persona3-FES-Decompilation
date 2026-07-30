@@ -490,6 +490,8 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
         quad[0].vertex[1].y = (f32)localRect.y;
         quad[0].vertex[2].x = (f32)localRect.x;
         quad[0].vertex[2].y = (f32)(localRect.y + 2);
+        quad[0].vertex[3].x = (f32)(localRect.x + localRect.w);
+        quad[0].vertex[3].y = (f32)(localRect.y + 2);
         func_001e7b10(&quad[0], func_001e7c20(-16));
     }
 
@@ -503,6 +505,8 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
         quad[1].vertex[1].y = (f32)localRect.y;
         quad[1].vertex[2].x = (f32)(localRect.x + localRect.w - 2);
         quad[1].vertex[2].y = (f32)(localRect.y + 2);
+        quad[1].vertex[3].x = (f32)(localRect.x + localRect.w);
+        quad[1].vertex[3].y = (f32)(localRect.y + 2);
         func_001e7b10(&quad[1], func_001e7c20(-16));
     }
 
@@ -516,6 +520,8 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
         quad[2].vertex[1].y = (f32)(localRect.y + localRect.h - 2);
         quad[2].vertex[2].x = (f32)localRect.x;
         quad[2].vertex[2].y = (f32)(localRect.y + localRect.h);
+        quad[2].vertex[3].x = (f32)(localRect.x + localRect.w);
+        quad[2].vertex[3].y = (f32)(localRect.y + localRect.h);
         func_001e7b10(&quad[2], func_001e7c20(-16));
     }
 
@@ -529,6 +535,8 @@ void func_001a23e0(KwlnTask* task, const RwRect* rect)
         quad[3].vertex[1].y = (f32)(localRect.y + localRect.h - 2);
         quad[3].vertex[2].x = (f32)localRect.x;
         quad[3].vertex[2].y = (f32)(localRect.y + localRect.h);
+        quad[3].vertex[3].x = (f32)(localRect.x + 2);
+        quad[3].vertex[3].y = (f32)(localRect.y + localRect.h);
         func_001e7b10(&quad[3], func_001e7c20(-16));
     }
 
@@ -895,34 +903,41 @@ void func_001a2720(KwlnTask* task)
     s32 textWidth;
 
     manager = KWindow_GetManager(task);
-    if (manager == NULL)
-    {
-        return;
-    }
-
-    color = *(RwRGBA*)&gp0xffff9480;
+    entry = manager->entries;
     position.x = (f32)(manager->x + 2);
     position.y = (f32)(manager->y + 2);
-    right = manager->x + manager->width;
-    entry = manager->entries;
     index = 0;
     while (entry != NULL)
     {
-        if (index >= manager->firstVisible &&
-            index < manager->firstVisible + manager->visibleRows)
+        if (index < manager->cursor)
         {
-            position.x = (f32)(manager->x + 2);
-            H_Dbprt_Fmt3D(position, "%s", entry->name);
-            if (entry->type == 1)
-            {
+            entry = entry->next;
+            index++;
+            continue;
+        }
+        if (index > manager->cursor + manager->visibleRows - 1)
+        {
+            break;
+        }
+
+        H_Dbprt_Fmt3D(position, "%s", entry->name);
+        switch (entry->type)
+        {
+            case 0:
+                break;
+
+            case 1:
                 textWidth = strlen(entry->text);
-                position.x = (f32)(right - 2 - (textWidth + 1) * 12);
+                right = manager->x + manager->width - 2 -
+                        (textWidth + 1) * 12;
+                position.x = (f32)(u32)right;
                 H_Dbprt_FmtCol3D(position, color, "%s", entry->text);
-            }
-            else if (entry->type == 2)
-            {
+                break;
+
+            case 2:
+                right = manager->x + manager->width - 2;
                 textWidth = strlen(sKWindowType2Label);
-                position.x = (f32)(right - 2 - (textWidth + 1) * 12);
+                position.x = (f32)(u32)(right - (textWidth + 1) * 12);
                 if (entry->intValue == 1)
                 {
                     H_Dbprt_FmtCol3D(position, color, "on");
@@ -931,27 +946,34 @@ void func_001a2720(KwlnTask* task)
                 {
                     H_Dbprt_FmtCol3D(position, color, "off");
                 }
-            }
-            else if (entry->type == 3)
-            {
+                break;
+
+            case 3:
                 if (entry->flags == 0)
                 {
-                    position.x = (f32)(right - 0x6e);
-                    H_Dbprt_FmtCol3D(position, color, "%d", entry->intValue);
+                    position.x =
+                        (f32)(manager->x + manager->width - 0x6e);
+                    H_Dbprt_FmtCol3D(position, color, "%d",
+                                     entry->intValue);
                 }
                 else
                 {
-                    position.x = (f32)(right - 0x86);
-                    H_Dbprt_FmtCol3D(position, color, "%d", entry->intValue);
+                    position.x =
+                        (f32)(manager->x + manager->width - 0x86);
+                    H_Dbprt_FmtCol3D(position, color, "%d",
+                                     entry->intValue);
                 }
-            }
-            else if (entry->type == 4)
-            {
-                position.x = (f32)(right - 0x62);
+                break;
+
+            case 4:
+                position.x =
+                    (f32)(manager->x + manager->width - 0x62);
                 H_Dbprt_FmtCol3D_f32(position, color, "%.2f",
                                      func_00530da0(entry->floatValue));
-            }
+                break;
         }
+
+        position.x = (f32)(manager->x + 2);
         position.y += 12.0f;
         entry = entry->next;
         index++;

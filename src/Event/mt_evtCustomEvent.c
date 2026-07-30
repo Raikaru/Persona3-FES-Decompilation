@@ -72,7 +72,7 @@ extern void FUN_003196f0_ea20(int,u32);
 #pragma alias FUN_005225a8_eaa0 FUN_005225a8
 extern void FUN_005225a8_eaa0(const char *,...);
 #pragma alias FUN_00388000_d1c0 FUN_00388000
-extern void FUN_00388000_d1c0(f64, u32, void *, void *, void *, void *, u32, void *, long);
+extern void FUN_00388000_d1c0();
 #pragma alias FUN_003b91c0_a5c0 FUN_003b91c0
 extern u64 FUN_003b91c0_a5c0(float,u16,u32,u32,u32,u32,u32);
 
@@ -4394,197 +4394,105 @@ void FUN_0039d190(int param_1)
 
 
 void FUN_0039d1c0(int param_1)
-
-
-
 {
-
-  float uStack_28;
-
-
-  float uStack_24;
-
-
-  float uStack_20;
-
-
-  float uStack_1c;
-
-
-  float uStack_18;
-
-
-  float uStack_14;
-
-
-  float uStack_10;
-
-
-  u32 uStack_c;
-
+  RwV2d position;
+  RwV2d size;
+  RwV2d uv0;
+  RwV2d uv1;
   union {
     u32 value;
     u8 bytes[4];
-  } uStack_4;
+  } color;
 
-  
-
+  color.value = (u32)DAT_007cd488;
   if (0 < *(int *)(param_1 + 0x18)) {
+    color.bytes[3] = (u8)*(int *)(param_1 + 0x18);
 
-    uStack_4.bytes[3] = (u8)*(int *)(param_1 + 0x18);
-
-    uStack_4.value = (undefined3)DAT_007cd488;
-
-    uStack_10 = 127.0f;
-
-    uStack_c = 183.0f;
-
+    position.x = 127.0f;
+    position.y = 183.0f;
     if (*(int *)(param_1 + 0x1c) == 1) {
-
-      uStack_c = 213.0f;
-
+      position.y = position.y + 30.0f;
     }
+    size.x = 10.0f;
+    size.y = 29.0f;
+    uv0.x = 0.4765625f;
+    uv0.y = 0.4296875f;
+    uv1.x = 0.515625f;
+    uv1.y = 0.65625f;
+    FUN_00388000_d1c0(5.0, &position, &size, &uv0, &uv1,
+                      *(u32 *)(param_1 + 0x14), &color.value, 0);
 
-    uStack_18 = 10.0f;
+    position.x = 137.0f;
+    size.x = 367.0f;
+    size.y = 29.0f;
+    uv0.x = 0.51171875f;
+    uv0.y = 0.4296875f;
+    uv1.x = 0.515625f;
+    uv1.y = 0.65625f;
+    FUN_00388000_d1c0(5.0, &position, &size, &uv0, &uv1,
+                      *(u32 *)(param_1 + 0x14), &color.value, 0);
 
-    uStack_14 = 29.0f;
-
-    uStack_20 = 0.4765625f;
-
-    uStack_1c = 0.4296875f;
-
-    uStack_28 = 0.515625f;
-
-    uStack_24 = 0.65625f;
-
-    FUN_00388000_d1c0(5.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
-
-    uStack_10 = 137.0f;
-
-    uStack_18 = 367.0f;
-
-    uStack_14 = 29.0f;
-
-    uStack_20 = 0.51171875f;
-
-    uStack_1c = 0.4296875f;
-
-    uStack_28 = 0.515625f;
-
-    uStack_24 = 0.65625f;
-
-    FUN_00388000_d1c0(5.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
-
-    uStack_10 = 504.0f;
-
-    uStack_18 = 10.0f;
-
-    uStack_14 = 29.0f;
-
-    uStack_20 = 0.5390625f;
-
-    uStack_1c = 0.4296875f;
-
-    uStack_28 = 0.578125f;
-
-    uStack_24 = 0.65625f;
-
-    FUN_00388000_d1c0(5.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
+    position.x = 504.0f;
+    size.x = 10.0f;
+    size.y = 29.0f;
+    uv0.x = 0.5390625f;
+    uv0.y = 0.4296875f;
+    uv1.x = 0.578125f;
+    uv1.y = 0.65625f;
+    FUN_00388000_d1c0(5.0, &position, &size, &uv0, &uv1,
+                      *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     if (*(int *)(param_1 + 0x1c) == 0) {
-
-      uStack_4.value = 0;
-
+      color.bytes[1] = 0;
+      color.bytes[2] = 0;
+      color.bytes[0] = 0;
+    } else {
+      color.bytes[0] = 0xb6;
+      color.bytes[1] = 0xde;
+      color.bytes[2] = 0xff;
     }
-
-    else {
-
-      uStack_4.value = 0xffdeb6;
-
-    }
-
-    uStack_10 = 215.0f;
-
-    uStack_c = 184.0f;
-
-    uStack_18 = 216.0f;
-
-    uStack_14 = 26.0f;
-
-    uStack_20 = 0.00390625f;
-
-    uStack_1c = 0.0078125f;
-
-    uStack_28 = 0.83203125f;
-
-    uStack_24 = 0.2109375f;
-
-    FUN_00388000_d1c0(4.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
+    position.x = 215.0f;
+    position.y = 184.0f;
+    size.x = 216.0f;
+    size.y = 26.0f;
+    uv0.x = 0.00390625f;
+    uv0.y = 0.0078125f;
+    uv1.x = 0.83203125f;
+    uv1.y = 0.2109375f;
+    FUN_00388000_d1c0(4.0, &position, &size, &uv0, &uv1,
+                      *(u32 *)(param_1 + 0x14), &color.value, 0);
 
     if (*(int *)(param_1 + 0x1c) == 1) {
-
-      uStack_4.value = 0;
-
+      color.bytes[1] = 0;
+      color.bytes[2] = 0;
+      color.bytes[0] = 0;
+    } else {
+      color.bytes[0] = 0xb6;
+      color.bytes[1] = 0xde;
+      color.bytes[2] = 0xff;
     }
+    position.x = 184.0f;
+    position.y = 214.0f;
+    size.x = 159.0f;
+    size.y = 26.0f;
+    uv0.x = 0.00390625f;
+    uv0.y = 0.21875f;
+    uv1.x = 0.625f;
+    uv1.y = 0.421875f;
+    FUN_00388000_d1c0(4.0, &position, &size, &uv0, &uv1,
+                      *(u32 *)(param_1 + 0x14), &color.value, 0);
 
-    else {
-
-      uStack_4.value = 0xffdeb6;
-
-    }
-
-    uStack_10 = 184.0f;
-
-    uStack_c = 0x43560000;
-
-    uStack_18 = 159.0f;
-
-    uStack_14 = 26.0f;
-
-    uStack_20 = 0.00390625f;
-
-    uStack_1c = 0x3e600000;
-
-    uStack_28 = 0x3f200000;
-
-    uStack_24 = 0x3ed80000;
-
-    FUN_00388000_d1c0(4.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
-
-    uStack_10 = 0x43aa8000;
-
-    uStack_c = 0x43560000;
-
-    uStack_18 = 0x42ec0000;
-
-    uStack_14 = 26.0f;
-
-    uStack_20 = 0.00390625f;
-
-    uStack_1c = 0.4296875f;
-
-    uStack_28 = 0x3eee0000;
-
-    uStack_24 = 0x3f220000;
-
-    FUN_00388000_d1c0(4.0,0,&uStack_10,&uStack_18,&uStack_20,&uStack_28,
-
-                 *(u32 *)(param_1 + 0x14),&uStack_4.value,0);
-
+    position.x = 341.0f;
+    position.y = 214.0f;
+    size.x = 118.0f;
+    size.y = 26.0f;
+    uv0.x = 0.00390625f;
+    uv0.y = 0.4296875f;
+    uv1.x = 0.46484375f;
+    uv1.y = 0.6328125f;
+    FUN_00388000_d1c0(4.0, &position, &size, &uv0, &uv1,
+                      *(u32 *)(param_1 + 0x14), &color.value, 0);
   }
-
-  return;
-
 }
 #define FUN_0039d1c0(...) ((void (*)(...))FUN_0039d1c0)(__VA_ARGS__)
 #undef FUN_0039d550

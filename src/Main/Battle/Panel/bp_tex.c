@@ -1673,7 +1673,8 @@ void bpTexShuffleNodes(void)
                   position,
                   BP_TEX_U32(work, 0x4a23 * 4));
     FUN_0010a4e0(1, 0, 6, 2);
-    *node |= 0x60;
+    *node |= 0x20;
+    *node |= 0x40;
     BP_TEX_U32(work, 0x49ed * 4) = 0;
     BP_TEX_U32(work, 0x49ee * 4) = 0;
     *work |= 0x10;
@@ -2165,6 +2166,8 @@ void bpTexApplyActions(void)
         action = (u32*)((u8*)work + 0x12688 + i * 0x24);
         switch (action[0])
         {
+        case 0:
+            break;
         case 1:
             frame -= (s32)action[8] - 1;
             break;
@@ -2216,11 +2219,11 @@ void bpTexApplyActions(void)
                 child[0x493] = 1;
                 child[0] |= 0x200;
             }
-            if (action[1] < 5)
+            if ((s32)action[1] < 5)
             {
                 FUN_0010a4e0(1, 0, 6, 4);
             }
-            else if (action[1] < 10)
+            else if ((s32)action[1] < 10)
             {
                 FUN_0010a4e0(1, 0, 6, 3);
             }
@@ -2308,11 +2311,11 @@ void bpTexApplyActions(void)
             node[0x493] = 0;
             *node |= 0x200;
             BP_TEX_U32(work, 0x1267c) = frame;
-            if (action[1] < 5)
+            if ((s32)action[1] < 5)
             {
                 FUN_0010a4e0(1, 0, 6, 4);
             }
-            else if (action[1] < 10)
+            else if ((s32)action[1] < 10)
             {
                 FUN_0010a4e0(1, 0, 6, 3);
             }
@@ -2364,11 +2367,11 @@ void bpTexApplyActions(void)
             left[4] = right[4];
             right[4] = tempIndex;
             BP_TEX_U32(work, 0x1267c) = frame;
-            if (action[1] < 5)
+            if ((s32)action[1] < 5)
             {
                 FUN_0010a4e0(1, 0, 6, 4);
             }
-            else if (action[1] < 10)
+            else if ((s32)action[1] < 10)
             {
                 FUN_0010a4e0(1, 0, 6, 3);
             }
