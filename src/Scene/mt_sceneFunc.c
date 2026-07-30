@@ -458,6 +458,8 @@ typedef struct SceneVecBits {
 } __attribute__((packed)) SceneVecBits;
 #pragma alias DAT_006a2f48_abs DAT_006a2f48
 extern SceneVecBits DAT_006a2f48_abs[];
+#pragma alias DAT_006a2f50_abs DAT_006a2f50
+extern float DAT_006a2f50_abs[];
 void FUN_003bcc80();
 void FUN_003bceb0(int param);
 void FUN_0034fd70(Model* mdl, s32 type);
@@ -3573,17 +3575,22 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
 }
 #define FUN_003bbaa0(...) ((void (*)(...))FUN_003bbaa0)(__VA_ARGS__)
 #undef FUN_003bbb90
-// FUN_003BBB90 NONMATCHING
+// FUN_003BBB90
 
 
 void FUN_003bbb90(const float *param_1,float *param_2)
 {
   u32 uVar1;
   float fVar2;
+  u64 txy;
+  float tz;
   SceneVecBits source;
   float afStack_20 [4];
 
-  source = DAT_006a2f48_abs[0];
+  txy = ((volatile SceneVecBits *)DAT_006a2f48_abs)->xy;
+  tz = *(volatile float *)DAT_006a2f50_abs;
+  *(volatile u64 *)&source.xy = txy;
+  *(volatile float *)&source.z = tz;
   fVar2 = FUN_004c69f0_scene_typed(afStack_20,param_1);
   if (fVar2 == 0.0f) {
     param_2[0] = 0.0f;
@@ -3596,8 +3603,7 @@ void FUN_003bbb90(const float *param_1,float *param_2)
                          afStack_20[1] * ((float *)&source.xy)[1] +
                          afStack_20[2] * source.z);
     uVar1 = FUN_0052e9a0_scene_typed(uVar1);
-    fVar2 = FUN_005318a0_scene_typed(uVar1);
-    fVar2 = fVar2 * fGpffff8228;
+    fVar2 = fGpffff8228 * FUN_005318a0_scene_typed(uVar1);
     if (afStack_20[0] < 0.0f) {
       fVar2 = fVar2 * -1.0f;
     }
