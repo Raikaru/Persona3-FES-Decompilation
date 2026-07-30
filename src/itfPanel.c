@@ -3496,7 +3496,7 @@ u64 FUN_003ad130(u32 param_1,int param_2)
 #undef FUN_003ad1b0
 // b210 floor: swapping the integer operand order fixed the independent load
 // order; only commutative addu orientation remains (ours 21186200; retail 21184300).
-// FUN_003AD1B0 NONMATCHING
+// FUN_003AD1B0
 
 
 u32 FUN_003ad1b0(u32 param_1,int param_2)
@@ -3517,7 +3517,8 @@ u32 FUN_003ad1b0(u32 param_1,int param_2)
   } else {
     offset = *(int *)(param_2 + 0x18);
     base = *(int *)(param_2 + 0x10);
-    data = (u8 *)(offset + base);
+    offset = (int)((u8 *)base + offset);
+    data = (u8 *)offset;
     low = data[0] - 1;
     high = data[1];
     if (high == 0xff) {

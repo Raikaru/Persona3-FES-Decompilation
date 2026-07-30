@@ -134,7 +134,7 @@ u64 FUN_00397950(void)
     if (iVar3 == 7) {
       goto done;
     }
-    if (iVar3 == 1) {
+    if (1 == iVar3) {
       goto state1_nonzero;
     }
     switch (iVar3) {
