@@ -4322,15 +4322,16 @@ void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1)
     int mode;
   } interpolation;
   uVar3 = *(u16 *)(param_2 + 0x74);
-  for (; fGpffff82c8 <= param_1; param_1 = param_1 - fGpffff82c8) {
-    uVar3 = uVar3 + 1 & 0xffff;
+  fVar6 = fGpffff82c8;
+  for (; !(param_1 < fVar6); param_1 = param_1 - fVar6) {
+    uVar3++;
   }
-  param_1 = param_1 / fGpffff82c8;
-  if (3 < uVar3) {
+  param_1 = param_1 / fVar6;
+  if (uVar3 >= 4) {
     uVar3 = uVar3 & 3;
   }
   uVar2 = uVar3 + 1 & 0xffff;
-  if (3 < uVar2) {
+  if (uVar2 >= 4) {
     uVar2 = uVar3 + 1 & 3;
   }
   iVar1 = param_2 + uVar2 * 0x1c + 0x10;
