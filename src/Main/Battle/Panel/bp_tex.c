@@ -2567,7 +2567,7 @@ static inline int bpPanelInTransition(u32 value)
 
 static inline u8 bpPanelColor(f32 value)
 {
-    return (u8)(s32)value;
+    return (u8)value;
 }
 
 static inline void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
@@ -2592,9 +2592,9 @@ static inline void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue,
     func_0021d950(destination, color);
 }
 
-static inline void bpPanelSetColorUnsigned(void* destination, u8 red, u8 green, u8 blue, f32 alpha)
+static inline void bpPanelSetColorUnsigned(void* destination, u8* color,
+                                           u8 red, u8 green, u8 blue, f32 alpha)
 {
-    u8 color[4];
 
     color[0] = red;
     color[1] = green;
@@ -2853,6 +2853,7 @@ static inline void bpPanelBindAndDraw(u8* work, u32 offset, void* frame)
 void func_0021f410(void)
 {
     u8* work;
+    u8 color[4];
     void* texture;
     void* frame;
     u32 mode;
@@ -2940,7 +2941,7 @@ void func_0021f410(void)
 
     frame = func_0021cca0(texture, 0x10);
     bpPanelSetRect(work + 0x10, centerX - 62.5f, centerY - 62.5f, frame);
-    bpPanelSetColorUnsigned(work + 0x10, 0xff, 0xff, 0xff, 255.0f * dt);
+    bpPanelSetColorUnsigned(work + 0x10, color, 0xff, 0xff, 0xff, 255.0f * dt);
 
     bpPanelGetCommandPosition(mode, sub, (f32)timerB, &commandX, &commandY);
     frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
@@ -2967,8 +2968,8 @@ void func_0021f410(void)
         case 0:
             factor = (f32)timerB / 3.0f;
             alpha = (3.0f - (f32)timerB) / 3.0f;
-            bpPanelSetColorUnsigned(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
-            bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
+            bpPanelSetColorUnsigned(work + 0x1230, color, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+            bpPanelSetColorUnsigned(work + 0x1330, color, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
             break;
         case 1:
         case 2:
@@ -2976,8 +2977,8 @@ void func_0021f410(void)
         case 4:
             factor = (3.0f - (f32)timerB) / 3.0f;
             alpha = (f32)timerB / 3.0f;
-            bpPanelSetColorUnsigned(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
-            bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
+            bpPanelSetColorUnsigned(work + 0x1230, color, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+            bpPanelSetColorUnsigned(work + 0x1330, color, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
             break;
         default:
             break;
@@ -2994,19 +2995,20 @@ void func_0021f410(void)
         {
             factor *= 0.5f;
         }
-        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
-        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff,
-                        255.0f * (4.0f - (f32)timerA) / 4.0f * dt);
+        bpPanelSetColorUnsigned(work + 0x1230, color, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+        bpPanelSetColorUnsigned(work + 0x1330, color, 0xff, 0xff, 0xff, 255.0f * (4.0f - (f32)timerA) / 4.0f * dt);
     }
     else if (sub == 0)
     {
-        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * dt);
-        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 0.0f);
+        bpPanelSetColorUnsigned(work + 0x1230, color, 0xff, 0xff, 0xff, 255.0f * dt);
+        alpha = 0.0f;
+        bpPanelSetColorUnsigned(work + 0x1330, color, 0xff, 0xff, 0xff, alpha * dt);
     }
     else if (bpPanelInTransition(sub))
     {
-        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 0.0f);
-        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * dt);
+        alpha = 0.0f;
+        bpPanelSetColorUnsigned(work + 0x1230, color, 0xff, 0xff, 0xff, alpha * dt);
+        bpPanelSetColorUnsigned(work + 0x1330, color, 0xff, 0xff, 0xff, 255.0f * dt);
     }
 
     frame = func_0021cca0(texture, 0x1b);
@@ -3027,7 +3029,7 @@ void func_0021f410(void)
         angle = 0.0f;
     }
     bpPanelSetRotatedQuad(work + 0x110, centerX, centerY, centerX - 91.5f, centerY - 90.5f, frame, angle);
-    bpPanelSetColor(work + 0x110, 0xff, 0xff, 0xff, 255.0f * dt);
+    bpPanelSetColorUnsigned(work + 0x110, color, 0xff, 0xff, 0xff, 255.0f * dt);
 
     frame = func_0021cca0(texture, 0x1c);
     bpPanelSetRotatedQuad(work + 0x210, centerX, centerY, centerX - 79.5f, centerY - 85.5f, frame, angle);
@@ -3047,7 +3049,7 @@ void func_0021f410(void)
     {
         factor = 0.0f;
     }
-    bpPanelSetColor(work + 0x210, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+    bpPanelSetColorUnsigned(work + 0x210, color, 0xff, 0xff, 0xff, 255.0f * factor * dt);
 
     frame = func_0021cca0(texture, 0x22);
     if (mode == 3 && bpPanelInTransition(sub))
@@ -3079,7 +3081,7 @@ void func_0021f410(void)
     {
         factor = 1.0f;
     }
-    bpPanelSetColor(work + 0x1430, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+    bpPanelSetColorUnsigned(work + 0x1430, color, 0xff, 0xff, 0xff, 255.0f * factor * dt);
 
     pi = 3.1415927f;
     arrowFactor = factor;
@@ -3146,7 +3148,7 @@ void func_0021f410(void)
     }
     frame = func_0021cca0(texture, 0x0e);
     bpPanelSetRect(work + 0x310, centerX + 23.0f, centerY - 9.0f, frame);
-    bpPanelSetColor(work + 0x310, 0xff, 0xff, 0xff, 255.0f * arrowFactor * dt);
+    bpPanelSetColorUnsigned(work + 0x310, color, 0xff, 0xff, 0xff, 255.0f * arrowFactor * dt);
 
     for (i = 0; i < 7; i++)
     {
@@ -3193,10 +3195,8 @@ void func_0021f410(void)
                 green = 116;
                 blue = 116;
             }
-            bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
-                            255.0f * brightness * dt);
-            bpPanelSetColor(work + 0x410 + i * 0x100, 0xff, 0xff, 0xff,
-                            255.0f * brightness * (1.0f - selectionFactor) * dt);
+            bpPanelSetColorUnsigned(work + 0xb10 + i * 0x100, color, red, green, blue, 255.0f * brightness * dt);
+            bpPanelSetColorUnsigned(work + 0x410 + i * 0x100, color, 0xff, 0xff, 0xff, 255.0f * brightness * (1.0f - selectionFactor) * dt);
         }
         else if (i == *(u32*)(work + 0x4638))
         {
@@ -3215,10 +3215,8 @@ void func_0021f410(void)
                 green = 116;
                 blue = 116;
             }
-            bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
-                            255.0f * brightness * arrowFactor * dt);
-            bpPanelSetColor(work + 0x410 + i * 0x100, 0xff, 0xff, 0xff,
-                            255.0f * arrowFactor * brightness * selectionFactor * dt);
+            bpPanelSetColorUnsigned(work + 0xb10 + i * 0x100, color, red, green, blue, 255.0f * brightness * arrowFactor * dt);
+            bpPanelSetColorUnsigned(work + 0x410 + i * 0x100, color, 0xff, 0xff, 0xff, 255.0f * arrowFactor * brightness * selectionFactor * dt);
         }
         else
         {
@@ -3234,52 +3232,43 @@ void func_0021f410(void)
                 green = 0x74;
                 blue = 0x74;
             }
-            bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
-                            255.0f * arrowFactor * dt);
-            bpPanelSetColor(work + 0x410 + i * 0x100, 0xff, 0xff, 0xff,
-                            255.0f * arrowFactor * brightness * selectionFactor * dt);
+            bpPanelSetColorUnsigned(work + 0xb10 + i * 0x100, color, red, green, blue, 255.0f * arrowFactor * dt);
+            bpPanelSetColorUnsigned(work + 0x410 + i * 0x100, color, 0xff, 0xff, 0xff, 255.0f * arrowFactor * brightness * selectionFactor * dt);
         }
     }
 
     sub = *(u32*)(work + 0x463c);
-    if (*(u32*)(work + 0x4658) < 6)
-    {
-        switch (sub)
-        {
-        case 0:
-            break;
-        case 2:
-        case 1:
-        case 3:
-        case 4:
-            func_002265d0();
-            break;
-        }
-    }
-    previous = *(u32*)(work + 0x4640);
-    if (*(u32*)(work + 0x4650) != 3)
-    {
-        switch (previous)
-        {
-        case 0:
-            break;
-        case 3:
-        case 4:
-        case 1:
-        case 2:
-            func_002265d0();
-            break;
-        }
-    }
-    sub = *(u32*)(work + 0x463c);
     switch (sub)
     {
     case 0:
-    case 1:
+        break;
     case 2:
+    case 1:
+    case 3:
     case 4:
+        func_002265d0();
+        break;
+    }
+    previous = *(u32*)(work + 0x4640);
+    switch (previous)
+    {
+    case 0:
         break;
     case 3:
+        if (*(u32*)(work + 0x4650) != 3)
+        {
+            func_002265d0();
+        }
+        break;
+    case 4:
+    case 1:
+    case 2:
+        func_002265d0();
+        break;
+    }
+    sub = *(u32*)(work + 0x463c);
+    if (sub == 3)
+    {
         switch (*(u32*)(work + 0x4644))
         {
         case 2:
@@ -3303,7 +3292,6 @@ void func_0021f410(void)
             }
             break;
         }
-        break;
     }
     sub = *(u32*)(work + 0x463c);
     switch (sub)
@@ -3336,14 +3324,8 @@ void func_0021f410(void)
         func_00223290();
     }
     sub = *(u32*)(work + 0x463c);
-    switch (sub)
+    if (sub == 3)
     {
-    case 0:
-    case 1:
-    case 2:
-    case 4:
-        break;
-    case 3:
         switch (*(u32*)(work + 0x4644))
         {
         case 3:
@@ -3367,7 +3349,6 @@ void func_0021f410(void)
             func_002257f0();
             break;
         }
-        break;
     }
 }
 

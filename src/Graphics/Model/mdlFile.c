@@ -23536,6 +23536,8 @@ u32 FUN_00334390(int param_1)
 
   u32 uVar5;
 
+
+
   int iVar6;
 
   u32 uVar7;
@@ -23568,7 +23570,8 @@ u32 FUN_00334390(int param_1)
 
   *puVar12 = (u32)(puVar12 + 1);
 
-  if (*(u32 *)(param_1 + 0x3c) < 3) {
+  uVar3 = *(u32 *)(param_1 + 0x3c);
+  if (uVar3 < 3) {
 
     *(u32 *)(param_1 + 0x3c) = 3;
 
@@ -23579,6 +23582,8 @@ u32 FUN_00334390(int param_1)
   uVar4 = *(u32 *)(param_1 + 0x74);
 
   uVar5 = *(u32 *)(param_1 + 0x78);
+
+
 
   piVar11 = (int *)*puVar12;
 
@@ -23600,15 +23605,15 @@ u32 FUN_00334390(int param_1)
 
     uVar9 = 0;
 
-    while (uVar9 < (u32)(long)iVar1) {
+    while (uVar9 < (u32)iVar1) {
 
       iVar6 = (int)uVar9;
 
-      if (uVar9 >= (u32)(long)iVar14) {
+      if (uVar9 >= (u32)iVar14) {
 
         fVar13 = 1.0f;
 
-        if ((u32)(long)iVar15 < uVar9) {
+        if ((u32)iVar15 < uVar9) {
 
           fVar13 = (float)(u32)(iVar1 - iVar6) / (float)(u32)(iVar1 - iVar15);
 
@@ -23618,7 +23623,7 @@ u32 FUN_00334390(int param_1)
 
       else {
 
-        if ((long)uVar9 >= 0) {
+        if ((s32)uVar9 >= 0) {
 
           fVar13 = (float)iVar6;
 
@@ -23637,17 +23642,17 @@ u32 FUN_00334390(int param_1)
       fVar16 = (float)(uVar5 >> 0x18) * fVar13;
 
 
-      *puVar8 = (u32)(((u64)uVar5 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      *puVar8 = (uVar5 & 0xffffff) | (u32)fVar16 << 0x18;
 
       fVar16 = (float)(uVar4 >> 0x18) * fVar13;
 
 
-      puVar8[1] = (u32)(((u64)uVar4 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      puVar8[1] = (uVar4 & 0xffffff) | (u32)fVar16 << 0x18;
 
       fVar13 = (float)(uVar3 >> 0x18) * fVar13;
 
 
-      puVar8[2] = (u32)(((u64)uVar3 << 0x28) >> 0x28) | (int)fVar13 << 0x18;
+      puVar8[2] = (uVar3 & 0xffffff) | (int)fVar13 << 0x18;
 
       *(char *)(puVar8 + 3) = (char)puVar8[1];
 
@@ -24487,6 +24492,7 @@ u32 FUN_00335540(int param_1)
 
   u32 *puVar8;
 
+
   u32 uVar9;
 
   u32 uVar10;
@@ -24515,7 +24521,8 @@ u32 FUN_00335540(int param_1)
 
   puVar12[3] = (u32)puVar12;
 
-  if (*(u32 *)(param_1 + 0x3c) < 3) {
+  uVar3 = *(u32 *)(param_1 + 0x3c);
+  if (uVar3 < 3) {
 
     *(u32 *)(param_1 + 0x3c) = 3;
 
@@ -24526,6 +24533,7 @@ u32 FUN_00335540(int param_1)
   uVar4 = *(u32 *)(param_1 + 0x74);
 
   uVar5 = *(u32 *)(param_1 + 0x78);
+
 
   piVar11 = (int *)*puVar12;
 
@@ -24547,15 +24555,15 @@ u32 FUN_00335540(int param_1)
 
     uVar9 = 0;
 
-    while (uVar9 < (u32)(long)iVar1) {
+    while (uVar9 < (u32)iVar1) {
 
       iVar6 = (int)uVar9;
 
-      if (uVar9 >= (u32)(long)iVar14) {
+      if (uVar9 >= (u32)iVar14) {
 
         fVar13 = 1.0f;
 
-        if ((u32)(long)iVar15 < uVar9) {
+        if ((u32)iVar15 < uVar9) {
 
           fVar13 = (float)(u32)(iVar1 - iVar6) / (float)(u32)(iVar1 - iVar15);
 
@@ -24565,7 +24573,7 @@ u32 FUN_00335540(int param_1)
 
       else {
 
-        if ((long)uVar9 >= 0) {
+        if ((s32)uVar9 >= 0) {
 
           fVar13 = (float)iVar6;
 
@@ -24584,17 +24592,17 @@ u32 FUN_00335540(int param_1)
       fVar16 = (float)(uVar5 >> 0x18) * fVar13;
 
 
-      *puVar8 = (u32)(((u64)uVar5 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      *puVar8 = (uVar5 & 0xffffff) | (u32)fVar16 << 0x18;
 
       fVar16 = (float)(uVar4 >> 0x18) * fVar13;
 
 
-      puVar8[1] = (u32)(((u64)uVar4 << 0x28) >> 0x28) | (int)fVar16 << 0x18;
+      puVar8[1] = (uVar4 & 0xffffff) | (u32)fVar16 << 0x18;
 
       fVar13 = (float)(uVar3 >> 0x18) * fVar13;
 
 
-      puVar8[2] = (u32)(((u64)uVar3 << 0x28) >> 0x28) | (int)fVar13 << 0x18;
+      puVar8[2] = (uVar3 & 0xffffff) | (int)fVar13 << 0x18;
 
       *(RwRGBA *)((u8 *)puVar8 + 0xc) = *(RwRGBA *)((u8 *)puVar8 + 4);
       *(RwRGBA *)((u8 *)puVar8 + 0x10) = *(RwRGBA *)puVar8;
@@ -37419,6 +37427,8 @@ void FUN_00343860(int param_1,int param_2)
   float *puVar4;
 
   u32 uVar5;
+  u32 white;
+
 
   float *puVar6;
 
@@ -37457,6 +37467,8 @@ void FUN_00343860(int param_1,int param_2)
     uVar10 = (int)(*(float *)(param_2 + 0x7c) * (float)iVar2);
 
     uVar5 = iVar2 + 1;
+    white = 0xffffff;
+
 
     puVar6 = puVar4;
 
@@ -37482,17 +37494,12 @@ void FUN_00343860(int param_1,int param_2)
 
       }
 
-      *puVar7 = 0xffffff;
+      *puVar7 = white;
 
       fVar11 = fVar11 * 255.0f;
 
-      if (2.1474836e+09f <= fVar11) {
 
-        fVar11 = fVar11 - 2.1474836e+09f;
-
-      }
-
-      puVar7[1] = (int)fVar11 << 0x18 | 0xffffff;
+      puVar7[1] = (u32)fVar11 << 0x18 | white;
 
       *(u8 *)(puVar7 + 2) = *(u8 *)(puVar7 + 1);
 
@@ -37502,7 +37509,7 @@ void FUN_00343860(int param_1,int param_2)
 
       *(u8 *)((int)puVar7 + 0xb) = *(u8 *)((int)puVar7 + 7);
 
-      puVar7[3] = 0xffffff;
+      puVar7[3] = white;
 
       puVar7 = puVar7 + 4;
 
