@@ -2494,9 +2494,9 @@ u32 FUN_003a4360(u32 param_1,int param_2)
 }
 #define FUN_003a4360(...) ((u64 (*)(...))FUN_003a4360)(__VA_ARGS__)
 #undef FUN_003a4a70
-// b210 floor: only remaining word is commutative addu orientation:
-// ours 21184700 addu $v1,$v0,$a3; retail 2118e200 addu $v1,$a3,$v0.
-// FUN_003A4A70 NONMATCHING
+// W295: addu orientation fell to container-cast base-first form + load-to-temp compare
+// (sVal = ((ItfMesChoiceWork *)((u8 *)work + i * 4))->entries[0].type) - not a floor.
+// FUN_003A4A70
 
 
 u32 FUN_003a4a70(int param_1, int param_2, int param_3)
@@ -2506,6 +2506,7 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
     ItfMesChoiceEntry *found;
     int count;
     s32 i;
+    s16 sVal;
 
     object = *(u32**)(DAT_00959eec_abs + param_1 * 0xd);
     work = (ItfMesChoiceWork*)((u8*)object + 0x40);
@@ -2522,9 +2523,10 @@ u32 FUN_003a4a70(int param_1, int param_2, int param_3)
     count = work->count;
     while (i < count)
     {
-        if (work->entries[i].type == param_2)
+        sVal = ((ItfMesChoiceWork *)((u8 *)work + i * 4))->entries[0].type;
+        if (sVal == param_2)
         {
-            found = &work->entries[i];
+            found = work->entries + i;
             break;
         }
         i++;

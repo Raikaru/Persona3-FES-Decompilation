@@ -7400,7 +7400,7 @@ u32 func_002c3be0(u32 param_1)
   return 1;
 }
 
-// FUN_002c3ce0 NONMATCHING
+// FUN_002c3ce0
 
 u32 func_002c3ce0(u32 param_1)
 
@@ -7412,6 +7412,7 @@ u32 func_002c3ce0(u32 param_1)
   u16 index;
   u16 best;
   u16 score;
+  u32 idx32;
   extern u8 func_002ffcc0(u32);
 
   result = func_002bff60_u16(param_1,param_1 + 0x88,*(u16 *)(param_1 + 0x6e),0);
@@ -7425,7 +7426,9 @@ u32 func_002c3ce0(u32 param_1)
   selected = 0;
   best = 0xffff;
   for (index = 0; index < *(u16 *)(param_1 + 0xc0); index++) {
-    unit = *(int *)(param_1 + (index & 0xffff) * 4 + 0x88);
+    idx32 = index;
+    idx32 = idx32 & 0xffff;
+    unit = *(int *)(param_1 + idx32 * 4 + 0x88);
     score = func_002ffcc0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
     if (score < best) {
       selected = unit;
@@ -8861,7 +8864,7 @@ u32 func_002c6f50(u32 param_1,int param_2,u32 param_3,u32 param_4)
   return 1;
 }
 
-// FUN_002c70d0 NONMATCHING
+// FUN_002c70d0
 
 void func_002c70d0(int param_1, int param_2)
 {
@@ -8886,9 +8889,9 @@ void func_002c70d0(int param_1, int param_2)
       u8 *table;
       u32 off;
 
-      table = DAT_007ce41c;
+      table = *(u8 * volatile *)&DAT_007ce41c;
       off = ((u32)baseActionId * 0x28 + (u32)baseActionId) * 4;
-      table = table + off;
+      table = (u8 *)(off) + (int)table;
       actionId = *(u16 *)(table + 2);
       data = (u32)DAT_007ce4d0;
     }
