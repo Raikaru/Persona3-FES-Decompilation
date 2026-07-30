@@ -711,7 +711,7 @@ u32 DAT_006aef50;
 u32 DAT_006aef60;
 u32 DAT_006aef98;
 u32 DAT_006aefa8;
-u32 DAT_006aefb8;
+u8 DAT_006aefb8[];
 u32 DAT_006aefd0;
 u32 DAT_006aeff0;
 u32 DAT_006af000;
@@ -811,8 +811,8 @@ u32 DAT_007cd942;
 u32 DAT_007cd944;
 u32 DAT_007cd946;
 u32 DAT_007cd948;
-u32 DAT_007cd950;
-u32 DAT_007cd952;
+s16 DAT_007cd950;
+s16 DAT_007cd952;
 u32 DAT_007cd958;
 u32 DAT_007cd95c;
 u32 DAT_007cd960;
@@ -5438,7 +5438,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   scratch.xOffset = DAT_007cd950;
   scratch.yOffset = DAT_007cd952;
 
-  pcVar6 = (char *)(&DAT_006aefb8);
+  pcVar6 = (char *)DAT_006aefb8;
 
   pcVar5 = scratch.itemSlots;
 

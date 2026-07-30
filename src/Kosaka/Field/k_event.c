@@ -2227,15 +2227,15 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     {
                         u_long128* dataSrc = eventStack.eventData;
                         u_long128* dataDst = (u_long128*)&EVENT_WORD(0x20);
-                        i = 3;
+                        s32 copyCount = 3;
                         do
                         {
                             u_long128 data0 = *dataSrc++;
                             u_long128 data1 = *dataSrc++;
-                            i--;
+                            copyCount--;
                             *dataDst++ = data0;
                             *dataDst++ = data1;
-                        } while (i > 0);
+                        } while (copyCount > 0);
                         }
                     FUN_00195020(FIELD_WORD(0x04));
                     FIELD_WORD(0x04) = 0;
