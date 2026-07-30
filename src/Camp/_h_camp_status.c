@@ -412,7 +412,8 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
 {
     char text[0x100];
     s32 bright;
-    u32 val;
+    s32 val;
+    s32 drewHundreds;
     f32 dx;
     f32 dy;
     u32 parent;
@@ -435,14 +436,16 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     /* Draw current HP digits */
     val = datGetHp(pcId);
     dx = position.x + 79.0f;
+    drewHundreds = 0;
     if (val >= 100) {
+        drewHundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha);
         val %= 100;
         dx += 15.0f;
     }
-    if (val >= 10) {
+    if (val >= 10 || drewHundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 10 + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha);
@@ -455,14 +458,16 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     /* Draw max HP digits */
     val = datGetMaxHp(pcId);
     dx = position.x + 138.0f;
+    drewHundreds = 0;
     if (val >= 100) {
+        drewHundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 100 + 0xb,
                                      (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 100;
         dx += 15.0f;
     }
-    if (val >= 10) {
+    if (val >= 10 || drewHundreds != 0) {
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
                                      (u32)(u8)fade, dx, dy, alpha, 0x66);
@@ -701,15 +706,27 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
 
     if (phase > 5) {
         if (phase < 11) {
-            hpFade = 0xff - ((phase - 6) * 0xff) / 4;
+            fade = 0xff - ((phase - 6) * 0xff) / 4;
+            slide = (f32)(((11 - phase) * 0x28) / 4);
+        } else {
+            fade = 0;
+            slide = 0.0f;
+        }
+        transitionPosition = position;
+        transitionPosition.x -= slide;
+    }
+
+    if (phase > 10) {
+        if (phase < 15) {
+            hpFade = 0xff - ((phase - 11) * 0xff) / 4;
         } else {
             hpFade = 0;
         }
-        if (phase < 11) {
+        if (phase < 15) {
             hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
             maxHp = (s32)(u32)datGetMaxHp(pcId);
             ratio = hpScaled / maxHp;
-            hpBarOffset = (ratio * (phase - 6)) / 4;
+            hpBarOffset = (ratio * (phase - 11)) / 4;
             if (ratio < hpBarOffset) {
                 hpBarOffset = ratio;
             }

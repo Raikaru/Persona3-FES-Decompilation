@@ -2503,6 +2503,7 @@ void FUN_00229B40(void)
     BCM_29_QUAD((u32*)(base + 0x4230), 4, 0, 1, 2);
     BCM_29_QUAD((u32*)(base + 0x4230), 4, 0, 2, 3);
     BCM_29_QUAD((u32*)(base + 0x4330), 4, 0, 1, 2);
+    BCM_29_QUAD((u32*)(base + 0x4330), 4, 0, 2, 3);
     for (i = 0; i < *(u32*)(base + 0x6070); i++) {
         record = records + i * 0x510;
         RpSkyRenderStateSet(3, (void*)0x717fb);

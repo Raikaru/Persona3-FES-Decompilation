@@ -622,12 +622,14 @@ void mdl00317730(Model* mdl)
     void* hierarchy;
     Model* wpnMdl;
     MdlAnimResourceSet* resources;
+    RwFrame* frame;
     u32 i;
 
     if (mdl->flags & MDL_FLAG_STREAMDONE)
     {
+        frame = *(RwFrame**)((u8*)mdl->clump + 4);
         FUN_004c2f30(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
-        FUN_004cb7f0(*(RwFrame**)((u8*)mdl->clump + 4), &matrix, 0);
+        FUN_004cb7f0(frame, &matrix, 0);
         func_003197c0(mdl, &matrix);
 
         hierarchy = NULL;
