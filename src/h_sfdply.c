@@ -1431,15 +1431,17 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
 // FUN_0010C5F0 NONMATCHING
 void func_0010c5f0(void)
 {
-    HSfdAsyncEntry* entry;
     s16 i;
+    HSfdAsyncEntry* entry;
     s32 enabled;
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
     {
         entry = sSfdQueueEntries[i].next;
-        while (entry != NULL)
+        if (entry != NULL)
         {
+            do
+            {
             switch (entry->state)
             {
                 case 0:
@@ -1464,8 +1466,11 @@ void func_0010c5f0(void)
                         FUN_0050d3f0();
                     enabled = 0;
 request_ready:
-                    sSfdQueue[i].state = 1;
-                    sSfdQueue[i].entry = entry;
+                    {
+                        HSfdQueueSlot* slot = &sSfdQueue[i];
+                        slot->state = 1;
+                        slot->entry = entry;
+                    }
                     entry->state = 2;
                     func_00503090(sSfdThreadIds[i]);
 request_restore:
@@ -1478,9 +1483,10 @@ request_restore:
                 case 3:
                     entry = entry->next;
                     if (entry == NULL)
-                        goto queue_done;
+                        return;
                     break;
             }
+            } while (entry != NULL);
         }
 queue_done:
         ;
