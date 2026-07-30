@@ -4120,7 +4120,9 @@ void func_00314730(f32 param_1,u8* param_2)
 
       lVar4 = func_00469030(*puVar2);
 
-      if ((lVar4 == 6) || (lVar4 == 5)) {
+      switch (lVar4) {
+      case 5:
+      case 6:
 
         lVar4 = func_004b97b0(*puVar2,0);
 
@@ -4135,6 +4137,8 @@ void func_00314730(f32 param_1,u8* param_2)
           func_004b74c0_frame(param_1,lVar4);
 
         }
+
+        break;
 
       }
 
