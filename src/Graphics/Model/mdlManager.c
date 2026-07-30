@@ -7878,7 +7878,7 @@ int func_0031aad0(Model* param_1)
 
 
 
-// FUN_0031B220 NONMATCHING
+// FUN_0031B220
 
 
 u32 func_0031b220(Model* param_1)
@@ -7906,7 +7906,7 @@ u32 func_0031b220(Model* param_1)
 
   if (piVar1 == (int *)0x0) {
 
-    uVar2 = 1;
+    return 1;
 
   }
 
@@ -7975,7 +7975,13 @@ u32 func_0031b220(Model* param_1)
 
       if (*(u8 *)(piVar1 + 0x12) != 1) goto switchD_0031b278_caseD_2;
 
-      while (lVar5 = func_0031aad0(param_1), lVar5 != 0) {
+      for (;;) {
+
+        lVar5 = func_0031aad0(param_1);
+
+        if (lVar5 == 0) {
+          goto switch_end;
+        }
 
         *(u8 *)(piVar1 + 0x12) = 2;
 
@@ -7987,11 +7993,7 @@ switchD_0031b278_caseD_2:
 
           *(u8 *)(piVar1 + 0x12) = 3;
 
-          if ((*(u16 *)(iVar6 + 0xd8) & 0x4000) == 0) goto switchD_0031b278_caseD_3;
-
-          *(u8 *)(piVar1 + 0x12) = 4;
-
-          goto switchD_0031b278_caseD_4;
+          break;
 
         }
 
@@ -7999,7 +8001,11 @@ switchD_0031b278_caseD_2:
 
       }
 
-      break;
+      if ((*(u16 *)(iVar6 + 0xd8) & 0x4000) == 0) goto switchD_0031b278_caseD_3;
+
+      *(u8 *)(piVar1 + 0x12) = 4;
+
+      goto switchD_0031b278_caseD_4;
 
 
 
@@ -8025,7 +8031,7 @@ switchD_0031b278_caseD_4:
 
       if (piVar1[0x10] != 0) {
 
-        func_001a14c0();
+        func_001a14c0(piVar1[0x10]);
 
       }
 
