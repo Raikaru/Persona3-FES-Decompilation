@@ -274,7 +274,7 @@ extern void FUN_003a6060_typed(u32 *param_1, u8 *param_2);
 int FUN_003a6100(int param_1,u32 param_2);
 #pragma alias FUN_003a6100_typed FUN_003a6100
 extern s32 FUN_003a6100_typed(s32 param_1, u32 param_2);
-long FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,  u32 param_6,long param_7,u32 param_8);
+u32 FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,  u32 param_6,s32 param_7,u32 param_8);
 #pragma alias FUN_003a6140_typed FUN_003a6140
 extern u32 FUN_003a6140_typed(u32 *param_1, s32 param_2, u32 param_3, u32 param_4, u32 param_5, u32 param_6, s32 param_7, u32 param_8);
 int FUN_003a628c(int param_1);
@@ -3615,12 +3615,13 @@ int FUN_003a6100(int param_1,u32 param_2)
 }
 #define FUN_003a6100(...) ((int (*)(...))FUN_003a6100)(__VA_ARGS__)
 #undef FUN_003a6140
-// FUN_003A6140 NONMATCHING
+#undef FUN_003a6410
+// FUN_003A6140
 
 
-long FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,
+u32 FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,
 
-                 u32 param_6,long param_7,u32 param_8)
+                 u32 param_6,s32 param_7,u32 param_8)
 
 
 
@@ -3628,39 +3629,43 @@ long FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u32 param_4,int param_5,
 
   int iVar1;
 
-  u32 lVar2;
-
   int iVar3;
+
+  u32 lVar2;
 
   
 
   lVar2 = 0;
 
-  for (iVar3 = 0; iVar3 < param_2; iVar3 = iVar3 + 1) {
+  for (iVar3 = 0; iVar3 < param_2; iVar3 = iVar3 + 1, param_1 = param_1 + 1) {
 
-    if ((param_3 & 1) == 0) {
+    if ((param_3 & 1) != 0) {
 
-      lVar2 = FUN_003b2940(param_4,param_5,param_8,0,0,0xff,*param_1,lVar2);
+      param_3 = param_3 >> 1;
 
-      if (param_7 != 0) {
+    }
 
-        iVar1 = (int)param_7;
+    else {
+
+      lVar2 = FUN_003b2940(param_4,param_5,(u8)param_8,0,0,0xff,*param_1,lVar2);
+
+      if (param_7 == 0) {
+
+        param_5 = param_5 + *(short *)((int)lVar2 + 0x12) * 8;
 
       }
 
       else {
 
-        iVar1 = *(short *)((int)lVar2 + 0x12) * 8;
+        param_5 = param_5 + param_7;
 
       }
 
-      param_5 = param_5 + iVar1;
+      param_3 = param_3 >> 1;
 
     }
 
-    param_3 = param_3 >> 1;
 
-    param_1 = param_1 + 1;
 
   }
 
@@ -3689,6 +3694,7 @@ int thunk_FUN_003a628c(int param_1)
 }
 #pragma optimization_level 2
 #define FUN_003a6140(...) ((long (*)(...))FUN_003a6140)(__VA_ARGS__)
+#define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
 
 /* Fall-through-only branch target for the loop in FUN_003a628c; never returns
  * on its own and has no C equivalent (a normal C function always emits a
