@@ -1414,7 +1414,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 1, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 28.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSprite(GS_PTR(object, 0x38), 1, randomFrame & 0xff, GS_F32(transition, 0x38) + 28.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -1427,7 +1427,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 2, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 59.0f, GS_F32(transition, 0x3c) + 23.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSprite(GS_PTR(object, 0x38), 2, randomFrame & 0xff, GS_F32(transition, 0x38) + 59.0f, GS_F32(transition, 0x3c) + 23.0f, GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -1440,7 +1440,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 3, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 21.0f, GS_F32(transition, 0x3c) + 47.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSprite(GS_PTR(object, 0x38), 3, randomFrame & 0xff, GS_F32(transition, 0x38) + 21.0f, GS_F32(transition, 0x3c) + 47.0f, GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -1453,7 +1453,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 4, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 49.0f, GS_F32(transition, 0x3c) + 43.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSprite(GS_PTR(object, 0x38), 4, randomFrame & 0xff, GS_F32(transition, 0x38) + 49.0f, GS_F32(transition, 0x3c) + 43.0f, GS_F32(transition, 0x24) - 4.0f);
     }
     burstFrame = GS_S32(object, 0x18) - 5;
     if (burstFrame >= 0)
@@ -1466,7 +1466,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 5, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 67.0f, GS_F32(transition, 0x3c) + 62.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSprite(GS_PTR(object, 0x38), 5, randomFrame & 0xff, GS_F32(transition, 0x38) + 67.0f, GS_F32(transition, 0x3c) + 62.0f, GS_F32(transition, 0x24) - 4.0f);
     }
     GS_S32(object, 0x18)++;
     if (GS_S32(object, 0x18) > 0x1e)
@@ -1934,7 +1934,6 @@ void* func_0018eb40(KwlnTask* task)
         case 1:
         case 2:
         case 6:
-        default:
             sprintf(path, (const char*)D_005E4580);
             break;
         case 3:
@@ -1953,10 +1952,20 @@ void* func_0018eb40(KwlnTask* task)
             sprintf(path, (const char*)D_005E4620);
             break;
         case 9:
-            sprintf(path, (const char*)(datGetScenarioMode() == 0 ? D_005E4660 : D_005E4640));
+            if (datGetScenarioMode() == 0)
+            {
+                sprintf(path, (const char*)D_005E4660);
+            }
+            else
+            {
+                sprintf(path, (const char*)D_005E4640);
+            }
             break;
         case 10:
             sprintf(path, (const char*)D_005E4680);
+            break;
+        default:
+            sprintf(path, (const char*)D_005E4580);
             break;
         }
         GS_U32(work, 0) = 1;
@@ -1967,16 +1976,18 @@ void* func_0018eb40(KwlnTask* task)
         dimensions.valueS[2] = 0xb;
         switch (GS_U32(work, 4))
         {
-        case 0: dimensions.valueS[3] = 0; break;
-        case 1: dimensions.valueS[3] = 0; break;
-        case 2: dimensions.valueS[3] = 0; break;
+        case 0:
+        case 1:
+        case 2:
+        case 6:
+            dimensions.valueS[3] = 0;
+            break;
         case 3: dimensions.valueS[3] = 1; break;
         case 4: dimensions.valueS[3] = 2; break;
         case 5: dimensions.valueS[3] = 3; break;
-        case 6: dimensions.valueS[3] = 0; break;
         case 7: dimensions.valueS[3] = 4; break;
         case 8: dimensions.valueS[3] = 5; break;
-        case 9: dimensions.valueS[3] = datGetScenarioMode() == 0 ? 6 : 8; break;
+        case 9: dimensions.valueS[3] = datGetScenarioMode() == 0 ? 8 : 6; break;
         case 10: dimensions.valueS[3] = 7; break;
         default: dimensions.valueS[3] = 0; break;
         }

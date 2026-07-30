@@ -121,7 +121,7 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
     unit->sp = sp;
 }
 
-// FUN_002ffdf0 NONMATCHING
+// FUN_002ffdf0
 u16 datCalcGetMaxHp(DatUnit* unit)
 {
     s32 hp;
@@ -175,11 +175,14 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1d) * 40;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1e) * 50;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x8e) * 100;
-    result = hp + baseHp;
+    result = baseHp + hp;
 
-    if (!(unit->flags & UNIT_FLAG_ENEMY) && result >= 1000)
+    if (!(unit->flags & UNIT_FLAG_ENEMY))
     {
-        result = 999;
+        if (999 < result)
+        {
+            result = 999;
+        }
     }
 
     return (u16)result;

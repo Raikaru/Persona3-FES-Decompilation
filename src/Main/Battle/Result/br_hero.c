@@ -281,15 +281,15 @@ void brHero00263170(void)
     void* text1;
     u32* w;
     BrHeroResource* resource;
-    float rect[4];
+    float rect[8];
     s32 width4;
     s32 width2;
     float offset;
     float scroll;
     u8 color[4];
     s32 i;
-    union { u32 bits; f32 value; } scaleX;
-    union { u32 bits; f32 value; } scaleY;
+    f32 scaleX;
+    f32 scaleY;
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     if ((~*w & 1) != 0)
@@ -512,10 +512,10 @@ void brHero00263170(void)
     rect[2] = (float)resource->width;
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0xa94, rect);
-    scaleX.bits = 0x431b0000;
-    scaleY.bits = 0x434e0000;
-    FUN_003b0d70(w[0xad4], (s32)scaleX.value * 0x10,
-                 (s32)scaleY.value * 8);
+    scaleX = 155.0f;
+    scaleY = 206.0f;
+    FUN_003b0d70(w[0xad4], (s32)scaleX * 0x10,
+                 (s32)scaleY * 8);
     FUN_003b0e20(w[0xad4], -0x33);
 
     resource = (BrHeroResource*)FUN_0021cca0(text1, 0x11);

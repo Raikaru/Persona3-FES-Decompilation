@@ -1328,7 +1328,7 @@ void func_002168f0(void)
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
     sflPsel00260e00();
-    if ((*(u32*)work & 1) == 0)
+    if (((~*(u32*)work) & 1) != 0)
     {
         return;
     }
@@ -2141,8 +2141,8 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     func_004d7f60(2, 0x44);
     if (selected != 0)
     {
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        func_004d7f60(3, 0x717fb);
+        func_004d7f60(2, 0x44);
         frame = 0x1b;
         value = 0x1c;
     }
@@ -2171,7 +2171,17 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     (*draw)((u32*)((u8*)panel + 0x200), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    frame = selected != 0 ? 0x1a : ((*entry & 2) != 0 ? 0x3b : 0x18);
+    if (selected != 0)
+    {
+        if ((*entry & 2) != 0)
+            frame = 0x3b;
+        else
+            frame = 0x18;
+    }
+    else
+    {
+        frame = 0x17;
+    }
     (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
     (*draw)((u32*)((u8*)panel + 0x300), 4, 0, 1, 2);
     (*draw)((u32*)((u8*)panel + 0x300), 4, 0, 2, 3);
