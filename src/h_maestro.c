@@ -1423,13 +1423,21 @@ void func_001124b0(void* param_1)
     s32 i;
 
     node = (MaestroBlobNode*)param_1;
-    if (node->prev != NULL)
+    if (node->prev == NULL)
     {
-        node->prev->next = node->next;
+        if (node->next == NULL)
+        {
+            DAT_00833a50 = NULL;
+        }
+        else
+        {
+            DAT_00833a50 = node->next;
+            node->next->prev = NULL;
+        }
     }
     else
     {
-        DAT_00833a50 = node->next;
+        node->prev->next = node->next;
     }
     if (node->next != NULL)
     {
