@@ -779,6 +779,7 @@ extern u8 DAT_006af3a0_abs[];
 #pragma alias DAT_006af3a0_abs DAT_006af3a0
 #pragma alias fclShopEmptyFormat DAT_006af3d0
 extern char fclShopEmptyFormat[];
+extern char DAT_007cd900;
 u32 DAT_006af5e0;
 u32 DAT_006af600;
 u32 DAT_006af620;
@@ -5227,7 +5228,7 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
     if (lVar9 == -1) {
 
-      uVar13 = param_3 >> 1;
+      uVar13 = (s32)((f32)(s32)param_3 * 0.5f);
 
     }
 
@@ -5308,12 +5309,12 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
     }
 
-    sprintf((char *)auStack_30,0x7cd900,uVar3);
+    sprintf((char *)auStack_30,&DAT_007cd900,uVar3);
 
     FUN_0040eb50(0,param_1 + sStack_10,param_2 + 0x1c + (int)sStack_e,param_3 & 0xff,1,auStack_30,2);
     FUN_0040e3c0_f32(0,param_1,param_2 + 0x1c,param_3 & 0xff,0xb6,0);
 
-    sprintf((char *)auStack_30,0x7cd900,*(u16 *)((int)lVar9 * 2 + iVar5 + 0x14));
+    sprintf((char *)auStack_30,&DAT_007cd900,*(u16 *)((int)lVar9 * 2 + iVar5 + 0x14));
 
     FUN_0040eb50(0,param_1 + sStack_c,param_2 + 0x1c + (int)sStack_a,param_3 & 0xff,1,auStack_30,2);
 
@@ -5350,12 +5351,12 @@ void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5,
 
     }
 
-    sprintf((char *)auStack_30,0x7cd900,uVar4);
+    sprintf((char *)auStack_30,&DAT_007cd900,uVar4);
 
     FUN_0040eb50(0,param_1 + sStack_10,param_2 + 0x38 + (int)sStack_e,param_3 & 0xff,1,auStack_30,2);
     FUN_0040e3c0_f32(0,param_1,param_2 + 0x38,param_3 & 0xff,0xb6,0);
 
-    sprintf((char *)auStack_30,0x7cd900,*(u16 *)((int)lVar12 * 2 + iVar5 + 0x14));
+    sprintf((char *)auStack_30,&DAT_007cd900,*(u16 *)((int)lVar12 * 2 + iVar5 + 0x14));
 
     FUN_0040eb50(0,param_1 + sStack_c,param_2 + 0x38 + (int)sStack_a,param_3 & 0xff,1,auStack_30,2);
 

@@ -482,7 +482,9 @@ extern code FUN_00108fd0;
 #pragma alias FUN_00108fd0_va FUN_00108fd0
 extern void FUN_00108fd0_va(u32 value, ...);
 extern void FUN_0010a4e0(int param_1, int param_2, int param_3, int param_4);
-extern u32 FUN_0010c1a0(int param_1, u32 param_2, int param_3, int param_4, int param_5, int param_6, int param_7, int param_8);
+extern u32 FUN_0010c1a0(int param_1, u32 param_2, int param_3, int param_4,
+                        int param_5, int param_6, int param_7, int param_8,
+                        int param_9, int param_10, u32 param_11, u32 param_12);
 extern u32 FUN_0010c3a0(u32 param_1, int *param_2, int param_3);
 extern code FUN_00111f30;
 #pragma alias FUN_00111f30_typed FUN_00111f30
@@ -9028,31 +9030,31 @@ u32 FUN_0043ca30(int param_1)
     *puVar2 = 0xb;
     break;
   case 0xb:
-    uVar6 = FUN_0010c1a0(0,0x6b4860,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4860,0,0,0,0,0,0,0,0,0x6b4878,0x1cd);
     *(u32 *)(puVar2 + 0x380) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b4890,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4890,0,0,0,0,0,0,0,0,0x6b4878,0x1ce);
     *(u32 *)(puVar2 + 900) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b48b0,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b48b0,0,0,0,0,0,0,0,0,0x6b4878,0x1cf);
     *(u32 *)(puVar2 + 0x388) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b48d0,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b48d0,0,0,0,0,0,0,0,0,0x6b4878,0x1d0);
     *(u32 *)(puVar2 + 0x38c) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b48f0,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b48f0,0,0,0,0,0,0,0,0,0x6b4878,0x1d1);
     *(u32 *)(puVar2 + 0x390) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b4910,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4910,0,0,0,0,0,0,0,0,0x6b4878,0x1d2);
     *(u32 *)(puVar2 + 0x394) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b4930,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4930,0,0,0,0,0,0,0,0,0x6b4878,0x1d4);
     *(u32 *)(puVar2 + 0x398) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b4950,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4950,0,0,0,0,0,0,0,0,0x6b4878,0x1d5);
     *(u32 *)(puVar2 + 0x39c) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b4970,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4970,0,0,0,0,0,0,0,0,0x6b4878,0x1d6);
     *(u32 *)(puVar2 + 0x3a0) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b4990,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b4990,0,0,0,0,0,0,0,0,0x6b4878,0x1d7);
     *(u32 *)(puVar2 + 0x3a4) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b49b0,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b49b0,0,0,0,0,0,0,0,0,0x6b4878,0x1d8);
     *(u32 *)(puVar2 + 0x3a8) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b49d0,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b49d0,0,0,0,0,0,0,0,0,0x6b4878,0x1da);
     *(u32 *)(puVar2 + 0x3ac) = uVar6;
-    uVar6 = FUN_0010c1a0(0,0x6b49e0,0,0,0,0,0,0);
+    uVar6 = FUN_0010c1a0(0,0x6b49e0,0,0,0,0,0,0,0,0,0x6b4878,0x1db);
     *(u32 *)(puVar2 + 0x3b0) = uVar6;
     *puVar2 = 0xc;
   case 0xc:
