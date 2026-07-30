@@ -2522,6 +2522,7 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
 int FUN_002d2c10(float *param_1, float *param_2)
 {
     u8 *node;
+    int i;
 
     if (*(u8 **)((u8 *)param_2 + 0x10) == (u8 *)param_1)
     {
@@ -2530,13 +2531,18 @@ int FUN_002d2c10(float *param_1, float *param_2)
 
     for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
-        int i;
         for (i = 0; i < 4; ++i)
         {
+            int wrap = (i + 1) & 3;
             float *edge = (float *)(node + i * 0x130 + 0x08);
-            float *next = (float *)(node + (((i + 1) & 3) * 0x130) + 0x08);
+            float *next;
 
-            if ((edge == param_1) || (edge == param_2) || (next == param_1) || (next == param_2))
+            if ((edge == param_1) || (edge == param_2))
+            {
+                continue;
+            }
+            next = (float *)(node + wrap * 0x130 + 0x08);
+            if ((next == param_1) || (next == param_2))
             {
                 continue;
             }
@@ -2572,17 +2578,17 @@ int FUN_002d2c10(float *param_1, float *param_2)
 
     for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
-        int i;
         for (i = 0; i < 4; ++i)
         {
             u8 *record = node + i * 0x130;
             float *edge = (float *)(record + 0x08);
-            float *next = *(float **)(record + 0x18);
+            float *next;
 
             if (edge == param_1)
             {
                 return 0;
             }
+            next = *(float **)(record + 0x18);
             if ((0.0f < *(float *)(record + 0x1c)) && (next != NULL))
             {
                 int intersects;
