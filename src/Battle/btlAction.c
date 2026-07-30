@@ -6295,7 +6295,7 @@ void btlActionUpdateStateWait(BtlAction* action)
     }
 }
 
-// FUN_00297480 NONMATCHING
+// FUN_00297480
 void btlActionInitStatePersona(BtlAction* action)
 {
     BtlPacket* packet;
@@ -6331,8 +6331,8 @@ void btlActionInitStatePersona(BtlAction* action)
         goto persona_init_done;
     }
     FUN_00175130_btlAction(*(u16*)action->target.unkData1);
-    personaId = *(u16*)action->target.unkData1;
-    personaUnit = action->unit;
+    personaId = *(volatile u16*)action->target.unkData1;
+    personaUnit = (BtlUnit*)*(volatile BtlUnit**)&action->unit;
     btlUnitInitPersona(personaUnit, personaId);
 persona_init_done:
     table = FUN_002fcf50(action);

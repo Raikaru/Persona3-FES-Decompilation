@@ -23,6 +23,18 @@ extern int DAT_0067ef00_abs[];
 extern u8 DAT_006a2da0_abs[];
 #pragma alias DAT_006a2da8_abs DAT_006a2da8
 extern u8 DAT_006a2da8_abs[];
+#pragma alias DAT_006a2f18_abs DAT_006a2f18
+extern u8 DAT_006a2f18_abs[];
+#pragma alias DAT_006a2f20_abs DAT_006a2f20
+extern u8 DAT_006a2f20_abs[];
+#pragma alias DAT_006a2f28_abs DAT_006a2f28
+extern u8 DAT_006a2f28_abs[];
+#pragma alias DAT_006a2f30_abs DAT_006a2f30
+extern u8 DAT_006a2f30_abs[];
+#pragma alias DAT_006a2f38_abs DAT_006a2f38
+extern u8 DAT_006a2f38_abs[];
+#pragma alias DAT_006a2f40_abs DAT_006a2f40
+extern u8 DAT_006a2f40_abs[];
 extern u32 DAT_006a2ed8;
 extern u32 DAT_006a2ee0;
 extern u32 DAT_006a2ee8;
@@ -575,6 +587,10 @@ void FUN_003bb340(void);
 #pragma alias FUN_004c31b0_sceneFunc FUN_004c31b0
 extern void FUN_004c31b0_sceneFunc(RwMatrix *matrix, const RwV3d *axis,
                                    f32 angle, s32 mode);
+#pragma alias FUN_001a4580_sceneF FUN_001a4580
+extern void FUN_001a4580_sceneF(int handle, float value);
+#pragma alias FUN_003bc900_sceneI FUN_003bc900
+extern int FUN_003bc900_sceneI(float *out);
 void FUN_003bb390(u32 param_2,u16 param_3,float param_1);
 void FUN_003bb400(u32 param_1);
 void FUN_003bb450(float *param_2,float param_1,float param_3,float param_4,float param_5,float *param_6);
@@ -2515,8 +2531,6 @@ u32 FUN_003baa70(char *param_1)
 
 {
 
-  int iVar1;
-
   int lVar2;
   int tbl;
 
@@ -2524,14 +2538,16 @@ u32 FUN_003baa70(char *param_1)
 
   u32 uVar4;
 
+  int iVar1;
+
   float fVar5;
 
-  struct {
+  struct SceneBlk {
     u64 xy;
     f32 z;
-  } bounds;
-
-  int addrs[3];
+    u32 pad;
+    int addrs[3];
+  } blk;
   u64 txy;
   f32 tz;
 
@@ -2561,48 +2577,46 @@ u32 FUN_003baa70(char *param_1)
 
       txy = *(volatile u64 *)DAT_006a2da0_abs;
       tz = *(volatile f32 *)DAT_006a2da8_abs;
-      *(volatile u64 *)&bounds.xy = txy;
-      *(volatile f32 *)&bounds.z = tz;
+      *(volatile u64 *)&blk.xy = txy;
+      *(volatile f32 *)&blk.z = tz;
 
-      addrs[0] = iVar1 + 0x11c;
+      blk.addrs[0] = iVar1 + 0x11c;
 
-      addrs[1] = iVar1 + 0x128;
+      blk.addrs[1] = iVar1 + 0x128;
 
-      addrs[2] = iVar1 + 0x134;
+      blk.addrs[2] = iVar1 + 0x134;
 
-      lVar2 = FUN_001aaad0(param_1,addrs,&bounds);
+      lVar2 = FUN_001aaad0(param_1,blk.addrs,&blk);
 
       if (lVar2 == 1) {
 
-        fVar5 = *(float *)((int)param_1 + 4);
+        if ((*(float *)(blk.addrs[0] + 4) + 100.0f > (fVar5 = *(float *)((int)param_1 + 4))) &&
 
-        if ((fVar5 < *(float *)(addrs[0] + 4) + 100.0f) &&
+           (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
 
-           (*(float *)(addrs[0] + 4) - 100.0f < fVar5)) {
-
-          return *(u32 *)(iVar1 + 0x14c);
+          uVar4 = *(u32 *)(iVar1 + 0x14c);
+          break;
 
         }
 
       }
 
-      addrs[0] = iVar1 + 0x128;
+      blk.addrs[0] = iVar1 + 0x128;
 
-      addrs[1] = iVar1 + 0x134;
+      blk.addrs[1] = iVar1 + 0x134;
 
-      addrs[2] = iVar1 + 0x140;
+      blk.addrs[2] = iVar1 + 0x140;
 
-      lVar2 = FUN_001aaad0(param_1,addrs,&bounds);
+      lVar2 = FUN_001aaad0(param_1,blk.addrs,&blk);
 
       if (lVar2 == 1) {
 
-        fVar5 = *(float *)((int)param_1 + 4);
+        if ((*(float *)(blk.addrs[0] + 4) + 100.0f > (fVar5 = *(float *)((int)param_1 + 4))) &&
 
-        if ((fVar5 < *(float *)(addrs[0] + 4) + 100.0f) &&
+           (fVar5 > *(float *)(blk.addrs[0] + 4) - 100.0f)) {
 
-           (*(float *)(addrs[0] + 4) - 100.0f < fVar5)) {
-
-          return *(u32 *)(iVar1 + 0x14c);
+          uVar4 = *(u32 *)(iVar1 + 0x14c);
+          break;
 
         }
 
@@ -3249,33 +3263,31 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
   u32 uVar2;
 
-  long lVar3;
+  int lVar3;
 
-  int iVar4;
-  int cnt;
-
-  u64 *puVar5;
+  u16 mode;
 
   u32 *puVar6;
 
+  u64 *puVar5;
+
+  int cnt;
+
+  f32 *pdir;
+
+  u64 dstbuf[8];
+
   u32 auStack_d0 [16];
-
-  u64 uStack_90;
-
-  u32 uStack_88;
-
-  float normal[3];
-
-  struct {
-    u64 xy;
-    u32 z;
-  } direction;
 
   float src1[3];
 
   float src2[3];
 
   float out[3];
+
+  f32 direction[3];
+
+  float normal[3];
 
   float t0;
   float t1;
@@ -3297,15 +3309,15 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
   *(volatile float *)&src2[1] = t1;
   *(volatile float *)&src2[2] = t2;
 
-  if ((*(u16 *)(param_3 + 0x10c) != 0) && (lVar3 = FUN_003b5d10(), lVar3 != 0)) {
+  mode = *(u16 *)(param_3 + 0x10c);
 
-    iVar4 = (int)lVar3;
+  if ((mode != 0) && (lVar3 = FUN_003b5d10(mode), lVar3 != 0)) {
 
-    src1[0] = *(float *)(iVar4 + 4);
+    src1[0] = *(float *)((int)lVar3 + 4);
 
-    src1[1] = *(float *)(iVar4 + 8);
+    src1[1] = *(float *)((int)lVar3 + 8);
 
-    src1[2] = *(float *)(iVar4 + 0xc);
+    src1[2] = *(float *)((int)lVar3 + 0xc);
 
     param_1 = *(float *)(param_3 + 0x104);
 
@@ -3313,7 +3325,7 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
     puVar6 = auStack_d0;
 
-    puVar5 = &uStack_90;
+    puVar5 = dstbuf;
 
     cnt = 8;
 
@@ -3335,9 +3347,10 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
     } while (0 < cnt);
 
-    direction.xy = uStack_90;
-    direction.z = uStack_88;
-    FUN_004c69f0(normal,&direction);
+    pdir = direction;
+    *(u64 *)pdir = dstbuf[0];
+    pdir[2] = ((f32 *)dstbuf)[2];
+    FUN_004c69f0(normal,pdir);
 
     src1[0] = src1[0] - normal[0] * 15.0f;
 
@@ -3347,11 +3360,12 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
   FUN_003bb450_scene_typed(src1,param_1,src2[0],src2[1],src2[2],out);
 
-  *(float *)param_2 = out[0];
-
-  *(float *)(param_2 + 1) = out[1];
-
-  *(float *)(param_2 + 2) = out[2];
+  t0 = *(volatile float *)&out[0];
+  t1 = *(volatile float *)&out[1];
+  t2 = *(volatile float *)&out[2];
+  *(float *)param_2 = t0;
+  *(float *)(param_2 + 1) = t1;
+  *(float *)(param_2 + 2) = t2;
 
   return;
 
@@ -3359,7 +3373,9 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 #define FUN_003bb450(...) ((void (*)(...))FUN_003bb450)(__VA_ARGS__)
 #define FUN_003bb620(...) ((void (*)(...))FUN_003bb620)(__VA_ARGS__)
 #undef FUN_003bb7a0
-// FUN_003BB7A0 NONMATCHING
+// FUN_003BB7A0
+#pragma push
+#pragma opt_rebuildconditionals off
 
 
 void FUN_003bb7a0(Resrc* param_1)
@@ -3368,68 +3384,62 @@ void FUN_003bb7a0(Resrc* param_1)
 
 {
 
-  int iVar1;
-
   int lVar2;
-
-  u32 *puVar3;
 
   int lVar4;
 
-  int iVar6;
+  int iVar1;
 
-  struct {
-    u32 x;
-    u32 y;
-    u32 z;
-  } correction;
+  u32 *puVar3;
 
-  u32 uStack_48;
+  float outv[4];
 
-  u32 uStack_44;
+  float vec0[4];
+  float vec1[4];
+  float vec2[4];
 
-  struct {
-    u64 xy;
-    u32 z;
-    u32 pad;
-  } stackVec[3];
+  struct { u64 pad0; float v[6]; } sc;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  int uVar5;
+  u64 txy;
+  f32 tz;
+  f32 fc;
+  f32 fb;
+  f32 fa;
 
   
 
   lVar4 = FUN_00198590();
 
-  stackVec[0].xy = DAT_006a2f18;
-  stackVec[0].z = DAT_006a2f20;
-  stackVec[1].xy = DAT_006a2f28;
-  stackVec[1].z = DAT_006a2f30;
-  stackVec[2].xy = DAT_006a2f38;
-  stackVec[2].z = DAT_006a2f40;
+  txy = *(volatile u64 *)DAT_006a2f18_abs;
+  tz = *(volatile f32 *)DAT_006a2f20_abs;
+  *(volatile u64 *)vec0 = txy;
+  *(volatile f32 *)&vec0[2] = tz;
+  txy = *(volatile u64 *)DAT_006a2f28_abs;
+  tz = *(volatile f32 *)DAT_006a2f30_abs;
+  *(volatile u64 *)vec1 = txy;
+  *(volatile f32 *)&vec1[2] = tz;
+  txy = *(volatile u64 *)DAT_006a2f38_abs;
+  tz = *(volatile f32 *)DAT_006a2f40_abs;
+  *(volatile u64 *)vec2 = txy;
+  *(volatile f32 *)&vec2[2] = tz;
 
   iVar1 = *(int *)((int)lVar4 + 4);
 
-  if (((param_1 != 0) && (lVar4 != 0)) && (iVar1 != 0)) {
+  if (((param_1 == 0) || (lVar4 == 0)) || (iVar1 == 0)) {
+    return;
+  }
+  else {
 
-    FUN_003bb620(0,&uStack_10,param_1);
+    (FUN_003bb620)(0.0f,(u32 *)outv,(int)param_1);
 
-    iVar6 = (int)param_1;
+    fa = *(volatile f32 *)&outv[0];
+    fb = *(volatile f32 *)&outv[1];
+    fc = *(volatile f32 *)&outv[2];
+    *(float *)((int)param_1 + 4) = fa;
+    *(float *)((int)param_1 + 8) = fb;
+    *(float *)((int)param_1 + 0xc) = fc;
 
-    *(u32 *)(iVar6 + 4) = uStack_10;
-
-    *(u32 *)(iVar6 + 8) = uStack_c;
-
-    *(u32 *)(iVar6 + 0xc) = uStack_8;
-
-    uVar5 = FUN_004c38c0();
-
-    puVar3 = (u32 *)uVar5;
+    puVar3 = (u32 *)FUN_004c38c0();
 
     puVar3[10] = 0x3f800000;
 
@@ -3457,36 +3467,37 @@ void FUN_003bb7a0(Resrc* param_1)
 
     puVar3[3] = puVar3[3] | 0x20003;
 
-    FUN_004c31b0(*(u32 *)(iVar6 + 0x14),uVar5,&stackVec[0].xy,1);
-    FUN_004c31b0(*(u32 *)(iVar6 + 0x10),uVar5,&stackVec[1].xy,1);
-    FUN_004c31b0(*(u32 *)(iVar6 + 0x18),uVar5,&stackVec[2].xy,1);
+    FUN_004c31b0_sceneFunc((RwMatrix *)puVar3,(const RwV3d *)vec0,*(f32 *)((int)param_1 + 0x14),1);
+    FUN_004c31b0_sceneFunc((RwMatrix *)puVar3,(const RwV3d *)vec1,*(f32 *)((int)param_1 + 0x10),1);
+    FUN_004c31b0_sceneFunc((RwMatrix *)puVar3,(const RwV3d *)vec2,*(f32 *)((int)param_1 + 0x18),1);
 
-    FUN_004c35d0(uVar5,&uStack_10,2);
+    FUN_004c35d0((int)puVar3,outv,2);
 
-    lVar2 = FUN_003bc900(&uStack_48);
+    lVar2 = FUN_003bc900_sceneI(&sc.v[4]);
 
     if (lVar2 == 1) {
 
-      correction.x = uStack_48;
-      correction.y = uStack_44;
-      correction.z = 0;
-      FUN_004c35d0(uVar5,&correction,1);
+      sc.v[0] = sc.v[4];
+      sc.v[1] = sc.v[5];
+      sc.v[2] = 0.0f;
+      FUN_004c35d0((int)puVar3,sc.v,1);
 
     }
 
     FUN_004cb930(iVar1);
 
-    FUN_004cb7f0(iVar1,uVar5,0);
+    FUN_004cb7f0(iVar1,(int)puVar3,0);
 
-    FUN_004c3880(uVar5);
+    FUN_004c3880((int)puVar3);
 
-    FUN_001a4580(*(u32 *)(iVar6 + 0x100),lVar4);
+    FUN_001a4580_sceneF((int)lVar4,*(f32 *)((int)param_1 + 0x100));
 
   }
 
   return;
 
 }
+#pragma pop
 #define FUN_003bb7a0(...) ((void (*)(...))FUN_003bb7a0)(__VA_ARGS__)
 #undef FUN_003bb9b0
 #pragma push

@@ -3074,6 +3074,7 @@ void func_002f5a70(void)
 void func_002f6840(BtlAction* action);
 u32 func_002f6ab0(BtlAction* action);
 
+#pragma opt_loop_invariants on
 // FUN_002f5bf0 NONMATCHING
 void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_3)
 
@@ -3134,6 +3135,7 @@ LAB_002f5d34:
   }
   return;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f5d80 NONMATCHING
 void func_002f5d80(u32 param_1)
@@ -3215,7 +3217,9 @@ void func_002f5d80(u32 param_1)
   }
 }
 
-// FUN_002f6120 NONMATCHING
+/* Removing this loses func_002f6120 (MATCH nd0 -> MISMATCH nd12) - measured W296. */
+#pragma opt_loop_invariants on
+// FUN_002f6120
 void func_002f6120(void)
 {
   BtlUnit* target;
@@ -3260,6 +3264,7 @@ void func_002f6120(void)
   btlPacketRegister(packet, 1);
   func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f6330
 u32 func_002f6330(void *param_1)

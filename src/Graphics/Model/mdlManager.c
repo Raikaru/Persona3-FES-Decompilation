@@ -1204,7 +1204,20 @@ extern u32 DAT_0069b190;
 extern u8 DAT_0069b190_abs[];
 extern u8 LAB_0031bfb8;
 extern u32 DAT_0069b1b0;
+#pragma alias DAT_0069b1b0_abs DAT_0069b1b0
+extern u8 DAT_0069b1b0_abs[];
 extern u32 DAT_0069b0d0;
+#pragma alias DAT_0069b0d0_abs DAT_0069b0d0
+extern u8 DAT_0069b0d0_abs[];
+extern u32 DAT_0069b1c0;
+#pragma alias DAT_0069b1c0_abs DAT_0069b1c0
+extern u8 DAT_0069b1c0_abs[];
+extern u32 DAT_0069b1d0;
+#pragma alias DAT_0069b1d0_abs DAT_0069b1d0
+extern u8 DAT_0069b1d0_abs[];
+extern u32 DAT_0069b1e0;
+#pragma alias DAT_0069b1e0_abs DAT_0069b1e0
+extern u8 DAT_0069b1e0_abs[];
 extern void* PTR_PTR_0069ae80[];
 extern void* RpMaterialGetUserDataArray(void* material,int data);
 extern char* RpUserDataArrayGetName(void* userData);
@@ -1256,7 +1269,7 @@ void func_0031b4a0(char* param_1,u16 param_2);
 u32 func_0031b680(int param_1,int param_2,int *param_3,int *param_4);
 void func_0031b820(u32 param_1,u32 param_2);
 u32 func_0031be80(u32 param_1);
-void func_0031c000(char* param_1,u16 param_2);
+void func_0031c000(char* param_1,u32 param_2);
 u32 func_0031c1d0(int param_1);
 u32 func_0031c7e0(int param_1);
 u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
@@ -8678,53 +8691,57 @@ LAB_0031bfb8:
 // FUN_0031C000 NONMATCHING
 
 
-void func_0031c000(char* param_1,u16 param_2)
+void func_0031c000(char* param_1,u32 param_2)
 
 
 
 {
 
-  u16 uVar1;
+  short uVar1;
 
-  u16 uVar2;
+  short uVar2;
 
-  u32 uVar3;
+  u8 uVar3;
 
   u32 lVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
-  u16 *puVar7;
+  short *puVar7;
 
-  u16 *puVar8;
+  short *puVar8;
 
-  u16 auStack_20 [12];
-
-  int iStack_8;
+  short auStack_20 [12];
 
   int iStack_4;
 
+  int iStack_8;
+
+  u32 uVar9;
+
   
+
+  uVar9 = param_2 & 0xffff;
 
   iStack_4 = 0;
 
   iStack_8 = 0;
 
-  lVar4 = func_0031b680(5,param_2,&iStack_4,&iStack_8);
+  lVar4 = func_0031b680(5,uVar9,&iStack_4,&iStack_8);
 
   if (lVar4 == 1) {
 
-    if (10 < iStack_4) {
+    if (iStack_4 >= 0xb) {
 
-      K_Assert(0x69b1c0,0x1a7);
+      K_Assert((const char*)DAT_0069b1c0_abs,0x1a7);
 
     }
 
     if (iStack_4 == 0) {
 
-      sprintf(param_1, (const char*)0x69b1d0, 0x7cca10);
+      sprintf(param_1, (const char*)DAT_0069b1d0_abs, &gp0xffff9d20);
 
       return;
 
@@ -8732,7 +8749,7 @@ void func_0031c000(char* param_1,u16 param_2)
 
     if ((iStack_4 == 1) && (iStack_8 == 2)) {
 
-      puVar8 = (u16*)&DAT_0069b1b0;
+      puVar8 = (short*)DAT_0069b1b0_abs;
 
       puVar7 = auStack_20;
 
@@ -8760,9 +8777,9 @@ void func_0031c000(char* param_1,u16 param_2)
 
       uVar3 = datCalcGetHeldWeaponType(uVar5);
 
-      if (7 < (uVar3 & 0xff)) {
+      if (uVar3 >= 8) {
 
-        K_Assert(0x69b1c0,0x1bc);
+        K_Assert((const char*)DAT_0069b1c0_abs,0x1bc);
 
       }
 
@@ -8770,35 +8787,35 @@ void func_0031c000(char* param_1,u16 param_2)
 
       if (lVar4 != 0) {
 
-        param_2 = 0x91;
+        uVar9 = 0x91;
 
       }
 
       else {
 
-        param_2 = auStack_20[uVar3 & 0xff];
+        uVar9 = (u16)auStack_20[uVar3];
 
       }
 
-      printf((const char*)0x69b1e0,param_2);
+      printf((const char*)DAT_0069b1e0_abs,uVar9);
 
     }
 
     else if ((iStack_4 == 9) && (lVar4 = datGetScenarioMode(), lVar4 != 0)) {
 
-      param_2 = 0x3e6;
+      uVar9 = 0x3e6;
 
     }
 
     else {
 
-      param_2 = *(u16 *)(&DAT_0069b0d0 + iStack_4 * 2);
+      uVar9 = *(u16 *)(DAT_0069b0d0_abs + iStack_4 * 2);
 
     }
 
   }
 
-  func_0031b4a0(param_1,param_2);
+  func_0031b4a0(param_1,uVar9);
 
   return;
 

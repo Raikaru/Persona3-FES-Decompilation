@@ -12768,6 +12768,8 @@ void FUN_0044a630(int param_1)
   int iVar1;
   int lVar2;
   int iVar3;
+  u32 slot;
+  int iVar4;
   
   iVar1 = *(int *)(param_1 + 0x3c);
   for (lVar2 = 0; lVar2 < *(char *)(iVar1 + 0x93f); lVar2++) {
@@ -12777,17 +12779,21 @@ void FUN_0044a630(int param_1)
     *(u8 *)(*(int *)(iVar3 + 0x4f0) + 0x18) = 0xff;
     *(u8 *)(*(int *)(iVar3 + 0x4d8) + 0x18) = 0xff;
   }
-  *(u8 *)(*(int *)(DAT_006b46d0_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
-  *(u8 *)(*(int *)(DAT_006b4784_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
-  *(u8 *)(*(int *)(DAT_006b477e_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
-  *(u8 *)(*(int *)(DAT_006b478a_abs[0] * 4 + iVar1 + 8) + 0x18) = 0xff;
+  *(u8 *)(*(int *)((u8 *)(DAT_006b46d0_abs[0] * 4) + iVar1 + 8) + 0x18) = 0xff;
+  slot = (u32)DAT_006b4784_abs;
+  *(u8 *)(*(int *)((u8 *)(*(volatile s8 *)slot * 4) + iVar1 + 8) + 0x18) = 0xff;
+  slot = (u32)DAT_006b477e_abs;
+  *(u8 *)(*(int *)((u8 *)(*(volatile s8 *)slot * 4) + iVar1 + 8) + 0x18) = 0xff;
+  slot = (u32)DAT_006b478a_abs;
+  *(u8 *)(*(int *)((u8 *)(*(volatile s8 *)slot * 4) + iVar1 + 8) + 0x18) = 0xff;
   *(u8 *)(*(int *)(iVar1 + 0x868) + 0x18) = 0xff;
   *(u8 *)(*(int *)(iVar1 + 0x86c) + 0x18) = 0xff;
-  for (iVar3 = 0; iVar3 < 6; iVar3 = iVar3 + 1) {
-    *(u8 *)(*(int *)(iVar1 + iVar3 * 4 + 0x33c) + 0x18) = 0xff;
+  for (iVar4 = 0; iVar4 < 6; iVar4 = iVar4 + 1) {
+    *(u8 *)(*(int *)(iVar1 + iVar4 * 4 + 0x33c) + 0x18) = 0xff;
   }
   for (iVar3 = 0; iVar3 < 0x38; iVar3 = iVar3 + 1) {
-    if (DAT_006b46d0_abs[iVar3 * 6] != -1) {
+    slot = (u32)DAT_006b46d0_abs;
+    if (*(volatile s8 *)(slot + iVar3 * 6) != -1) {
       *(u8 *)(*(int *)(iVar1 + iVar3 * 4 + 8) + 0x18) = 0xff;
     }
   }
@@ -15806,8 +15812,8 @@ u32 FUN_00452a70(char param_1,char param_2)
 void FUN_00452f70(YVec3f *param_1,int param_2)
 
 {
-  int columnOffset;
   int iVar3;
+  int columnOffset;
   int iVar1;
   u32 uVar5;
   u32 uVar6;

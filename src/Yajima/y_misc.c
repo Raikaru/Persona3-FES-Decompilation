@@ -103,7 +103,7 @@ void FUN_004264a0(int param_1);
 u32 FUN_004264d0(u64 param_1,s8 param_2);
 u32 FUN_00426590(int param_1);
 void FUN_00427640(int param_1);
-u32 FUN_00427670(float param_1,float param_2,u64 param_3,u32 param_4, char param_5,u8 param_6);
+u32 FUN_00427670(u32 param_3,u32 param_4, char param_5,u8 param_6, float param_1,float param_2);
 #pragma alias FUN_00427670_typed FUN_00427670
 extern u32 FUN_00427670_typed(float param_1,float param_2,int param_3,u32 param_4, char param_5,u8 param_6);
 u32 FUN_00427830(int param_2, u32 param_3, YajimaVec2 param_4, u32 param_5,
@@ -2735,11 +2735,13 @@ void FUN_00427640(int param_1)
 
 }
 
-// FUN_00427670 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00427670
 
 
-u32 FUN_00427670(float param_1, float param_2, u64 param_3, u32 param_4,
-                 char param_5, u8 param_6)
+u32 FUN_00427670(u32 param_3, u32 param_4, char param_5, u8 param_6,
+                 float param_1, float param_2)
 {
   u32 allocation;
   u32 result;
@@ -2792,6 +2794,7 @@ u32 FUN_00427670(float param_1, float param_2, u64 param_3, u32 param_4,
   work[0x18c] = 0;
   return result;
 }
+#pragma pop
 
 // FUN_00427830
 
