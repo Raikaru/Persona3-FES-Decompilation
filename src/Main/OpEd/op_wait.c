@@ -549,16 +549,19 @@ void opWait0026eed0(void)
     OpWaitWork* work;
     void* atlas;
     void* frame;
-    f32 points[8];
     union {
-        f32 values[4];
+        f32 points[8];
+        f32 rect[4];
+    } geometry;
+    union {
         u8 rgba[4];
         struct {
             void (*function)(u32*);
             u32* work;
         } callback_data;
     } scratch;
-#define rect scratch.values
+#define points geometry.points
+#define rect geometry.rect
 #define callback scratch.callback_data
 #define opWaitSetColor(quad, alpha) opWaitSetColor(quad, alpha, scratch.rgba)
     f32 alpha;
@@ -812,12 +815,13 @@ void opWait0026eed0(void)
 
     for (i = 0; i < 3; i++)
     {
-        s32 elapsed = (s32)work->counters[6] - work->parts[i].startFrame;
+        s32 elapsed;
         s32 start;
         s32 hold;
         s32 end;
         f32 partAlpha;
         f32 fade;
+        f32 fadeProgress;
         f32 startX;
         f32 startY;
         f32 endX;
@@ -828,51 +832,110 @@ void opWait0026eed0(void)
         f32 rotationStart;
         f32 rotationEnd;
         f32 progress;
+        f32 interpolationProgress;
+        unsigned __int128 partBase;
+        unsigned __int128* partBaseRef;
         s32 j;
+        partBase = (unsigned __int128)&work->parts[i];
+        partBaseRef = &partBase;
+        elapsed = (s32)work->counters[6] - work->parts[i].startFrame;
+
+        if (elapsed < 0)
+        {
+            partAlpha = 0.0f;
+        }
+        else
+        {
+            switch (i)
+            {
+            case 0:
+                start = 100;
+                break;
+            case 1:
+                start = 100;
+                break;
+            case 2:
+                start = 100;
+                break;
+            }
+            switch (i)
+            {
+            case 0:
+                hold = 160;
+                break;
+            case 1:
+                hold = 160;
+                break;
+            case 2:
+                hold = 160;
+                break;
+            }
+            switch (i)
+            {
+            case 0:
+                end = 200;
+                break;
+            case 1:
+                end = 100;
+                break;
+            case 2:
+                end = 200;
+                break;
+            }
+            if (elapsed < start)
+                partAlpha = (f32)elapsed / (f32)start;
+            else if (elapsed < hold)
+                partAlpha = 1.0f;
+            else if (elapsed < end)
+                partAlpha = 1.0f - (f32)(elapsed - hold) /
+                            (f32)(end - hold);
+            else
+                partAlpha = 0.0f;
+        }
+
+        if (work->mode != 1)
+        {
+            fade = 1.0f;
+        }
+        else
+        {
+            if ((s32)work->timer < 0)
+                fadeProgress = 0.0f;
+            else if ((s32)work->timer < 20)
+                fadeProgress = (f32)(s32)work->timer / 20.0f;
+            else
+                fadeProgress = 1.0f;
+            fade = 1.0f - fadeProgress;
+        }
 
         switch (i)
         {
         case 0:
-            start = 100;
             break;
         case 1:
-            start = 100;
             break;
         case 2:
-            start = 100;
             break;
         }
         switch (i)
         {
         case 0:
-            hold = 160;
+            startX = 196.0f;
+            startY = 84.0f;
+            endX = -115.0f;
+            endY = 233.0f;
             break;
         case 1:
-            hold = 160;
+            startX = 123.0f;
+            startY = 237.0f;
+            endX = -123.0f;
+            endY = 21.0f;
             break;
         case 2:
-            hold = 160;
-            break;
-        }
-        switch (i)
-        {
-        case 0:
-            end = 200;
-            break;
-        case 1:
-            end = 100;
-            break;
-        case 2:
-            end = 200;
-            break;
-        }
-        switch (i)
-        {
-        case 0:
-            break;
-        case 1:
-            break;
-        case 2:
+            startX = -77.0f;
+            startY = 173.0f;
+            endX = 271.0f;
+            endY = 45.0f;
             break;
         }
         switch (i)
@@ -902,27 +965,19 @@ void opWait0026eed0(void)
             height = 256.0f;
             break;
         }
-        switch (i)
-        {
-        case 0:
-            startX = 196.0f;
-            startY = 84.0f;
-            endX = -115.0f;
-            endY = 233.0f;
-            break;
-        case 1:
-            startX = 123.0f;
-            startY = 237.0f;
-            endX = -123.0f;
-            endY = 21.0f;
-            break;
-        case 2:
-            startX = -77.0f;
-            startY = 173.0f;
-            endX = 271.0f;
-            endY = 45.0f;
-            break;
-        }
+
+        x = 0.0f;
+        y = 0.0f;
+        points[0] = x;
+        points[1] = y;
+        points[2] = x + width;
+        points[3] = y;
+        points[4] = x + width;
+        points[5] = y + height;
+        points[6] = x;
+        points[7] = y + height;
+        halfW = width / 2.0f;
+        halfH = height / 2.0f;
         switch (i)
         {
         case 0:
@@ -938,36 +993,18 @@ void opWait0026eed0(void)
             rotationEnd = DAT_007cb10c;
             break;
         }
-
-        if (elapsed < 0)
-            partAlpha = 0.0f;
-        else if (elapsed < start)
-            partAlpha = (f32)elapsed / (f32)start;
-        else if (elapsed < hold)
-            partAlpha = 1.0f;
-        else if (elapsed < end)
-            partAlpha = 1.0f - (f32)(elapsed - hold) /
-                        (f32)(end - hold);
-        else
-            partAlpha = 0.0f;
-
-        if (work->mode == 1)
-            fade = 1.0f - opWaitClamp01(work->timer, 0, 20);
-        else
-            fade = 1.0f;
-
         progress = (f32)elapsed / (f32)end;
         rotation = rotationStart + progress * (rotationEnd - rotationStart);
-        halfW = width * 0.5f;
-        halfH = height * 0.5f;
-        points[0] = 0.0f;
-        points[1] = 0.0f;
-        points[2] = width;
-        points[3] = 0.0f;
-        points[4] = width;
-        points[5] = height;
-        points[6] = 0.0f;
-        points[7] = height;
+        x = 0.0f;
+        y = 0.0f;
+        points[0] = x;
+        points[1] = y;
+        points[2] = x + width;
+        points[3] = y;
+        points[4] = x + width;
+        points[5] = y + height;
+        points[6] = x;
+        points[7] = y + height;
         for (j = 0; j < 4; j++)
         {
             points[j * 2] -= halfW;
@@ -988,15 +1025,16 @@ void opWait0026eed0(void)
             points[j * 2 + 1] += halfH;
         }
 
-        x = startX + progress * (endX - startX);
-        y = startY + progress * (endY - startY);
+        interpolationProgress = (f32)elapsed / (f32)end;
+        x = startX + interpolationProgress * (endX - startX);
+        y = startY + interpolationProgress * (endY - startY);
         for (j = 0; j < 4; j++)
         {
             points[j * 2] += x;
             points[j * 2 + 1] += y;
         }
-        func_0021d890(work->parts[i].quad, points);
-        opWaitSetColor(work->parts[i].quad,
+        func_0021d890((void*)((u8*)*partBaseRef + 0x10), points);
+        opWaitSetColor((void*)((u8*)*partBaseRef + 0x10),
                        partAlpha * fade * 255.0f);
     }
 
@@ -1010,6 +1048,7 @@ void opWait0026eed0(void)
 #undef opWaitSetColor
 #undef callback
 #undef rect
+#undef points
 }
 extern f32 func_00269c80(f32 value);
 extern f32 func_00269ca0(f32 value);

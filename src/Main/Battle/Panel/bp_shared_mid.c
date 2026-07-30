@@ -203,6 +203,8 @@ void func_00208f60(void)
         func_00280580(unit, &position);
         if (func_002d20a0(&position, &projected) == 0) {
             *(u32*)slot |= 1;
+        }
+        if ((*(u32*)slot & 1) != 0) {
             continue;
         }
         x = projected.x - 55.0f;
@@ -212,7 +214,7 @@ void func_00208f60(void)
         originY = 47.0f + y;
         layoutY = originY - 3.0f;
         originY = y + 40.0f;
-        originX2 = originX + 31.0f;
+        originX2 = originX + 30.0f;
         for (j = 0; j < *(s32*)(slot + 0x218); j++) {
             s32 value = *(s32*)(slot + 0x210 + j * 4);
             u8* destination = slot + 0x10 + (j << 8);
@@ -241,7 +243,7 @@ void func_00208f60(void)
                 scale = 1.0f;
             }
             if (value == -1)
-                func_00209a00(destination, 1, 1 - j, 1, scale, origin);
+                func_00209a00(destination, 1, 1 - j, 1, 1.0f, origin);
             else
                 func_00209a00(destination, 1, value + 1, 1, scale, origin);
             color[0] = 0xff;
@@ -269,8 +271,8 @@ void func_00208f60(void)
         layout[2] = (rectangle[2] - rectangle[0]) * scale;
         layout[3] = rectangle[3] - rectangle[1];
         func_0021eb80(slot + 0x220, layout);
-        layout[0] = 55.0f + x;
-        layout[1] = 55.0f + y;
+        layout[0] = (8.0f + x) + 55.0f;
+        layout[1] = (4.0f + y) + 55.0f;
         layout[2] = (f32)*(s32*)((u8*)frame + 0xc) * scale;
         layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
         func_0021d8e0(slot + 0x220, layout);

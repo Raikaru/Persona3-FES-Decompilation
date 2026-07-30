@@ -1579,11 +1579,16 @@ void FUN_002265D0(void)
     f32 rowStep;
     f32 ratio;
     f32 y150;
+    f32 panelAlpha;
+    f32 baseX;
+    f32 baseY;
+    f32 quadBaseX;
+    f32 quadBaseY;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
-    stateAlpha = *(f32*)(work + 0x7214);
+    panelAlpha = *(f32*)(work + 0x7214);
     rowOffset = -26.0f * (f32)*(s32*)(work + 0x7210);
     rowStep = 26.0f * (f32)*(s32*)(work + 0x7210);
 
@@ -1646,6 +1651,8 @@ void FUN_002265D0(void)
         rect[1] = rect[1] + complement * negRowOffset;
         rect[1] = rect[1] + rowOffset;
     }
+    baseX = rect[0];
+    baseY = rect[1];
     *(f32*)(work + 0x6050) = rect[0];
     *(f32*)(work + 0x6054) = rect[1];
 
@@ -1660,8 +1667,8 @@ void FUN_002265D0(void)
                 resource = (BcmPanelResource*)FUN_0021cca0(table0, i + 0x1a);
                 break;
             }
-            rect[0] = *(f32*)(work + 0x6050);
-            rect[1] = *(f32*)(work + 0x6054);
+            rect[0] = baseX;
+            rect[1] = baseY;
             switch (i) {
             case 0: rect[0] += 11.0f; rect[1] += 4.0f; break;
             case 1: rect[0] += 11.0f; rect[1] += y150; break;
@@ -1700,7 +1707,7 @@ void FUN_002265D0(void)
     color[1] = (u8)ratio;
     ratio = 30.0f + 225.0f * transAlpha;
     color[2] = (u8)ratio;
-    ratio = stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) * *(f32*)(work + 0x7214);
+    ratio = stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) * panelAlpha;
     color[3] = (u8)ratio;
     for (i = 0; i < 9; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1530, color);
@@ -1708,31 +1715,31 @@ void FUN_002265D0(void)
 
     resource = (BcmPanelResource*)FUN_0021cca0(table0, 0x26);
     {
-        rect[0] = 20.0f + *(f32*)(work + 0x6050);
-        rect[1] = 32.0f + *(f32*)(work + 0x6054) - 4.0f;
+        rect[0] = 20.0f + baseX;
+        rect[1] = 32.0f + baseY - 4.0f;
         rect[2] = (f32)resource->width;
         rect[3] = (f32)resource->height;
         FUN_0021d8e0(work + 0x1e30, rect);
 
         resource = (BcmPanelResource*)FUN_0021cca0(table0, 0x27);
-        rect[0] = 20.0f + *(f32*)(work + 0x6050);
-        rect[1] = 102.0f + *(f32*)(work + 0x6054) + rowStep;
+        rect[0] = 20.0f + baseX;
+        rect[1] = 102.0f + baseY + rowStep;
         rect[2] = (f32)resource->width;
         rect[3] = (f32)resource->height;
         FUN_0021d8e0(work + 0x1f30, rect);
 
         resource = (BcmPanelResource*)FUN_0021cca0(table0, 0x26);
-        rect[0] = 20.0f + *(f32*)(work + 0x6050);
-        rect[1] = 16.0f + (32.0f + *(f32*)(work + 0x6054)) - 4.0f;
+        rect[0] = 20.0f + baseX;
+        rect[1] = 16.0f + (32.0f + baseY) - 4.0f;
         rect[2] = (f32)resource->width;
         rect[3] = 57.0f + rowStep;
         FUN_0021d8e0(work + 0x2030, rect);
 
         resource = (BcmPanelResource*)FUN_0021cca0(table0, 0x1d);
         {
-            f32 top = (36.0f + *(f32*)(work + 0x6054) + rowOffset) - 4.0f;
-            f32 bottom = 91.0f + *(f32*)(work + 0x6054) + rowOffset;
-            rect[0] = 22.0f + *(f32*)(work + 0x6050);
+            f32 top = (36.0f + baseY + rowOffset) - 4.0f;
+            f32 bottom = 91.0f + baseY + rowOffset;
+            rect[0] = 22.0f + baseX;
             if (*(s32*)(work + 0x6074) >= 5) {
                 f32 t = (f32)*(s32*)(work + 0x606c);
                 f32 range = bottom - top;
@@ -1750,7 +1757,7 @@ void FUN_002265D0(void)
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
-    ratio = 255.0f * stateAlpha * *(f32*)(work + 0x7214);
+    ratio = 255.0f * stateAlpha * panelAlpha;
     color[3] = (u8)ratio;
     for (i = 0; i < 3; ++i) {
         FUN_0021d950(work + i * 0x100 + 0x1e30, color);
@@ -1758,17 +1765,19 @@ void FUN_002265D0(void)
     FUN_0021d950(work + 0x2130, color);
 
     resource = (BcmPanelResource*)FUN_0021cca0(table0, 0x2c);
+    quadBaseX = 47.0f + baseX;
+    quadBaseY = 43.0f + baseY;
     {
         for (j = 0; j < 6; ++j) {
             u8* slot = work + j * 0x200;
-            f32 quadY = 43.0f + *(f32*)(work + 0x6054) + (f32)(j * 26);
-            rect[0] = 47.0f + *(f32*)(work + 0x6050);
+            f32 quadY = quadBaseY + (f32)(j * 26);
+            rect[0] = quadBaseX;
             rect[1] = quadY;
             rect[2] = (f32)resource->width;
             rect[3] = (f32)resource->height;
             FUN_0021d8e0(slot + 0x2230, rect);
 
-            rect[0] = 47.0f + *(f32*)(work + 0x6050) + (f32)resource->width;
+            rect[0] = quadBaseX + (f32)resource->width;
             rect[1] = quadY;
             rect[2] = 311.0f;
             rect[3] = (f32)resource->height;
@@ -1796,7 +1805,7 @@ void FUN_002265D0(void)
     color[1] = 0xff;
     color[2] = 0xff;
     ratio = (f32)(u8)(30.0f + 225.0f * transAlpha) * 2.0f *
-            stateAlpha * *(f32*)(work + 0x7214);
+            stateAlpha * panelAlpha;
     color[3] = (u8)ratio;
     for (j = 0; j < 2; ++j) {
         u8* slot = work + j * 0x200;
@@ -1805,7 +1814,7 @@ void FUN_002265D0(void)
     }
 
     ratio = (f32)(u8)(255.0f * transAlpha) * 2.0f *
-            stateAlpha * *(f32*)(work + 0x7214);
+            stateAlpha * panelAlpha;
     color[3] = (u8)ratio;
     for (j = 2; j < 6; ++j) {
         u8* slot = work + j * 0x200;
