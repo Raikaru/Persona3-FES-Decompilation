@@ -1858,44 +1858,16 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
 
 {
   int iVar1 = 0;
-  u8 auVar2 [16] = {0};
   long lVar3 = 0;
   u32 uVar4 = 0;
-  u32 uStack_90 = 0;
-  u32 uStack_8c = 0;
-  u32 uStack_88 = 0;
-  u32 uStack_80 = 0;
-  u32 uStack_7c = 0;
-  u32 uStack_78 = 0;
-  u32 uStack_70 = 0;
-  u32 uStack_6c = 0;
-  u32 uStack_68 = 0;
-  u32 uStack_60 = 0;
-  u32 uStack_5c = 0;
-  u32 uStack_58 = 0;
-  u32 uStack_50 = 0;
-  u32 uStack_4c = 0;
-  u32 uStack_48 = 0;
-  u32 uStack_44 = 0;
-  u32 uStack_40 = 0;
-  u32 uStack_3c = 0;
-  u32 uStack_38 = 0;
-  u32 uStack_34 = 0;
-  u32 uStack_30 = 0;
-  u32 uStack_2c = 0;
-  u32 uStack_28 = 0;
-  u32 uStack_24 = 0;
-  u32 uStack_20 = 0;
-  u32 uStack_1c = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_14 = 0;
-  float afStack_10 [2] = {0};
-  float fStack_8 = 0;
+  RwV4d transform[4];
+  RwV4d source[4];
+  RwV3d direction;
   
   switch(*param_3) {
   case '\0':
-    func_004be1e0(afStack_10,(const void *)0x697890,1,(const void *)(param_1 + 0x40));
-    if ((afStack_10[0] == 0.0f) && (fStack_8 == 0.0f)) {
+    func_004be1e0(&direction,(const void *)0x697890,1,(const void *)(param_1 + 0x40));
+    if ((direction.x == 0.0f) && (direction.z == 0.0f)) {
       __asm__ volatile (
           ".set noreorder          \n"
           "sqc2 vf0, 0(%0)         \n"
@@ -1906,7 +1878,7 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
       );
     }
     else {
-      uVar4 = func_0052ea18(afStack_10[0],fStack_8);
+      uVar4 = func_0052ea18(direction.x,direction.z);
       func_00357ea0(0,uVar4,0);
       __asm__ volatile (
           ".set noreorder          \n"
@@ -1930,8 +1902,7 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
       );
     }
     else {
-      lVar3 = func_00318d10(*(u32 *)(param_2 + 0x9f4),*(u16 *)(param_3 + 4),&uStack_90)
-      ;
+      lVar3 = func_00318d10(*(u32 *)(param_2 + 0x9f4),*(u16 *)(param_3 + 4),source);
       if (lVar3 == 0) {
         __asm__ volatile (
             ".set noreorder          \n"
@@ -1943,23 +1914,23 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
         );
       }
       else {
-        uStack_50 = uStack_90;
-        uStack_4c = uStack_8c;
-        uStack_48 = uStack_88;
-        uStack_44 = 0;
-        uStack_40 = uStack_80;
-        uStack_3c = uStack_7c;
-        uStack_38 = uStack_78;
-        uStack_34 = 0;
-        uStack_30 = uStack_70;
-        uStack_2c = uStack_6c;
-        uStack_28 = uStack_68;
-        uStack_24 = 0;
-        uStack_20 = uStack_60;
-        uStack_1c = uStack_5c;
-        uStack_18 = uStack_58;
-        uStack_14 = 0;
-        func_00329ed0(&uStack_50);
+        transform[0].x = source[0].x;
+        transform[0].y = source[0].y;
+        transform[0].z = source[0].z;
+        transform[0].w = 0.0f;
+        transform[1].x = source[1].x;
+        transform[1].y = source[1].y;
+        transform[1].z = source[1].z;
+        transform[1].w = 0.0f;
+        transform[2].x = source[2].x;
+        transform[2].y = source[2].y;
+        transform[2].z = source[2].z;
+        transform[2].w = 0.0f;
+        transform[3].x = source[3].x;
+        transform[3].y = source[3].y;
+        transform[3].z = source[3].z;
+        transform[3].w = 0.0f;
+        func_00329ed0(transform);
         __asm__ volatile (
             ".set noreorder          \n"
             "sqc2 vf10, 0(%0)         \n"
@@ -2011,7 +1982,7 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
     else {
       iVar1 = *(int *)(*(int *)(param_2 + 0x9f4) + 0x3b8 + (u32)(*param_3 == '\b') * 0xc);
       if (iVar1 != 0) {
-        lVar3 = func_00318d10(iVar1,*(u16 *)(param_3 + 4),&uStack_90);
+        lVar3 = func_00318d10(iVar1,*(u16 *)(param_3 + 4),source);
         if (lVar3 == 0) {
           __asm__ volatile (
               ".set noreorder          \n"
@@ -2023,23 +1994,23 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
           );
         }
         else {
-          uStack_50 = uStack_90;
-          uStack_4c = uStack_8c;
-          uStack_48 = uStack_88;
-          uStack_44 = 0;
-          uStack_40 = uStack_80;
-          uStack_3c = uStack_7c;
-          uStack_38 = uStack_78;
-          uStack_34 = 0;
-          uStack_30 = uStack_70;
-          uStack_2c = uStack_6c;
-          uStack_28 = uStack_68;
-          uStack_24 = 0;
-          uStack_20 = uStack_60;
-          uStack_1c = uStack_5c;
-          uStack_18 = uStack_58;
-          uStack_14 = 0;
-          func_00329ed0(&uStack_50);
+          transform[0].x = source[0].x;
+          transform[0].y = source[0].y;
+          transform[0].z = source[0].z;
+          transform[0].w = 0.0f;
+          transform[1].x = source[1].x;
+          transform[1].y = source[1].y;
+          transform[1].z = source[1].z;
+          transform[1].w = 0.0f;
+          transform[2].x = source[2].x;
+          transform[2].y = source[2].y;
+          transform[2].z = source[2].z;
+          transform[2].w = 0.0f;
+          transform[3].x = source[3].x;
+          transform[3].y = source[3].y;
+          transform[3].z = source[3].z;
+          transform[3].w = 0.0f;
+          func_00329ed0(transform);
           __asm__ volatile (
               ".set noreorder          \n"
               "sqc2 vf10, 0(%0)         \n"

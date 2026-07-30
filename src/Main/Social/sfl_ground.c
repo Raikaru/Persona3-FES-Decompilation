@@ -1042,7 +1042,7 @@ void func_0023b990(void)
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflResGetGroundRaster(2));
         for (i = 0; i < 48; i++) {
-            u8* particle = (u8*)work + 0xd10 + i * 0x1300;
+            u8* particle = (u8*)work + 0xd10 + i * SFL_GROUND_PARTICLE_STRIDE;
             if ((GROUND_U32(particle, 0) & 1) != 0) {
                 u32 particleType = GROUND_U32(particle, 4);
                 if (particleType == 0 || particleType == 2) {

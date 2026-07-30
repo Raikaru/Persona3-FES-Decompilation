@@ -2258,8 +2258,8 @@ void* func_001ab640(const RwV3d* point, const void* triangle,
 
     if (normal.x * *(f32*)((u8*)collector + 0xb0c) +
         normal.y * *(f32*)((u8*)collector + 0xb10) +
-        normal.z * *(f32*)((u8*)collector + 0xb14) < 0.0f &&
-        collector->mode != 0)
+        normal.z * *(f32*)((u8*)collector + 0xb14) >= 0.0f &&
+        collector->mode == 0)
     {
         return (void*)triangle;
     }
@@ -2469,6 +2469,7 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                     translation->y = hitPoint.y - (pos->y - sphereCollisRadius);
             }
         }
+        listNode = *(void**)((u8*)listNode + 0xf8);
     }
 
     listThree = *(void**)((u8*)type3ListHead + 0xf8);
@@ -2652,18 +2653,18 @@ s32 func_001abd20(void* collisionWorld, const RwV3d* pos,
                 continue;
         }
 
-        translation->x += diff.x;
-        translation->y += diff.y;
-        translation->z += diff.z;
+        translation->x += diff.x * correction;
+        translation->y += diff.y * correction;
+        translation->z += diff.z * correction;
         returnVal = 1;
 
         if (translation->x == 0.0f &&
             translation->y == 0.0f &&
             translation->z == 0.0f)
         {
-            translation->x += diff.x;
-            translation->y += diff.y;
-            translation->z += diff.z;
+            translation->x += diff.x * correction;
+            translation->y += diff.y * correction;
+            translation->z += diff.z * correction;
         }
     }
 

@@ -665,6 +665,7 @@ u32 FUN_004178c0(int param_1)
   u8 *puVar17;
 
   u8 *puVar18;
+  u16 *puVar20;
 
   u32 uVar19;
 
@@ -908,15 +909,15 @@ LAB_00417a90:
     func_00219d90();
     lVar13 = func_0021a120();
     if (lVar13 == 0) {
-      puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),4);
-      *(int *)(*(int *)(puVar9 + 4) + 4) = *(short *)(param_1 + 0x20) + 2;
+      puVar20 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),4);
+      *(int *)(*(int *)(puVar20 + 4) + 4) = *(short *)(param_1 + 0x20) + 2;
       for (uVar19 = 0; (int)uVar19 < *(short *)(param_1 + 0x20) + 2; uVar19 = uVar19 + 1) {
         uStack_18 = DAT_006b2e10;
         uStack_10 = DAT_006b2e18;
         uStack_c = DAT_007cda6c;
         puVar9 = FUN_004180e0_alloc(*(u32 *)(param_1 + 0x3c),(u16)((uVar19 & 0xff) << 8) | 6);
         *puVar9 = *puVar9 | 0x10;
-        *(u16 **)(*(int *)(puVar9 + 4) + uVar19 * 4 + 8) = puVar9;
+        *(u16 **)(*(int *)(puVar20 + 4) + uVar19 * 4 + 8) = puVar9;
         func_00209f00(*(u32 *)(puVar9 + 4));
         func_0020c590(*(u32 *)(puVar9 + 4),*(u16 *)(param_1 + uVar19 * 2 + 0x24));
         func_0020cc80(*(u32 *)(puVar9 + 4),&uStack_c);
@@ -1510,17 +1511,27 @@ u8 FUN_00418c70(int param_1,int *param_2)
   iVar1 = *param_2;
   iVar2 = *(int *)(param_1 + 0x38);
   if (param_2[3] == 0) {
-    if (*(char *)(iVar1 + 4) == '@') {
-      if ((*(char *)(iVar1 + 5) != '\x02') && (*(char *)(iVar1 + 5) == '\x01')) {
+    switch (*(char *)(iVar1 + 4)) {
+    case '\x01':
+    case '\x02':
+    case '\x03':
+      break;
+    case '\x06':
+      sflResGetSpritePosition((const void *)*(u32 *)(iVar4 + 8),(f32 *)(param_2 + 0x18));
+      break;
+    case '@':
+      switch (*(char *)(iVar1 + 5)) {
+      case '\x01':
         iVar7 = *(int *)(iVar2 + 0x44);
         iVar8 = *(int *)(iVar2 + 0x48);
         param_2[0x18] = *(int *)(iVar2 + 0x40);
         param_2[0x19] = iVar7;
         param_2[0x1a] = iVar8;
+        break;
+      case '\x02':
+        break;
       }
-    }
-    else if (*(char *)(iVar1 + 4) == '\x06') {
-      sflResGetSpritePosition((const void *)*(u32 *)(iVar4 + 8),(f32 *)(param_2 + 0x18));
+      break;
     }
   }
   fVar11 = (float)param_2[0x18];
@@ -1539,6 +1550,10 @@ u8 FUN_00418c70(int param_1,int *param_2)
   afStack_b0[2] = fVar11 + (((fVar11 + (float)(*(int *)(iVar1 + 0x14) / 0xffff)) - fVar11) *
                       (fVar9 + 1.0f)) / 2.0f;
   switch (*(char *)(iVar1 + 4)) {
+  case '\x01':
+  case '\x02':
+  case '\x03':
+    break;
   case '@':
     switch (*(char *)(iVar1 + 5)) {
     case '\x01':
@@ -1675,111 +1690,68 @@ u8 FUN_00419050(int param_1,int *param_2)
 
 
   if (param_2[3] == 0) {
-
-    if (*(char *)(iVar2 + 4) == '@') {
-
-      if ((*(char *)(iVar2 + 5) != '\x02') && (*(char *)(iVar2 + 5) == '\x01')) {
-
-        piVar10 = (int *)(iVar3 + 0x10);
-
-        piVar8 = param_2 + 8;
-
-        iVar6 = 8;
-
-        do {
-
-          iVar4 = *piVar10;
-
-          iVar5 = piVar10[1];
-
-          piVar10 = piVar10 + 2;
-
-          iVar6 = iVar6 + -1;
-
-          *piVar8 = iVar4;
-
-          piVar8[1] = iVar5;
-
-          piVar8 = piVar8 + 2;
-
-        } while (0 < iVar6);
-
-      }
-
-    }
-
-    else if (*(char *)(iVar2 + 4) == '\x06') {
-
+    switch (*(char *)(iVar2 + 4)) {
+    case '\x01':
+    case '\x02':
+    case '\x03':
+      break;
+    case '\x06':
       iVar6 = *(int *)(iVar1 + 8);
-
       fVar15 = *(float *)(iVar6 + 0x14);
-
       fVar17 = *(float *)(iVar6 + 0x10);
-
       fVar16 = *(float *)(iVar6 + 0x18);
-
       fVar14 = *(float *)(iVar6 + 0x1c);
-
       fVar12 = 2.0f / (fVar14 * fVar14 + fVar16 * fVar16 + fVar17 * fVar17 + fVar15 * fVar15);
-
       fVar13 = fVar17 * fVar12;
-
       fVar11 = fVar15 * fVar12;
-
       fVar12 = fVar16 * fVar12;
-
       afStack_60[0] = 1.0f - (fVar15 * fVar11 + fVar16 * fVar12);
-
       afStack_60[1] = fVar17 * fVar11 + fVar12 * fVar14;
-
       afStack_60[2] = fVar16 * fVar13 - fVar11 * fVar14;
-
       afStack_60[4] = fVar17 * fVar11 - fVar12 * fVar14;
-
       fStack_4c = 1.0f - (fVar16 * fVar12 + fVar17 * fVar13);
-
       fStack_48 = fVar15 * fVar12 + fVar13 * fVar14;
-
       fStack_40 = fVar16 * fVar13 + fVar11 * fVar14;
-
       fStack_3c = fVar15 * fVar12 - fVar13 * fVar14;
-
       fStack_38 = 1.0f - (fVar17 * fVar13 + fVar15 * fVar11);
-
       uStack_30 = 0;
-
       uStack_2c = 0;
-
       uStack_28 = 0;
-
       afStack_60[3] = 4.2039e-45f;
-
       pfVar9 = afStack_60;
-
       pfVar7 = (float *)(param_2 + 8);
-
       iVar6 = 8;
-
       do {
-
         fVar11 = *pfVar9;
-
         fVar12 = pfVar9[1];
-
         pfVar9 = pfVar9 + 2;
-
         iVar6 = iVar6 + -1;
-
         *pfVar7 = fVar11;
-
         pfVar7[1] = fVar12;
-
         pfVar7 = pfVar7 + 2;
-
       } while (0 < iVar6);
-
+      break;
+    case '@':
+      switch (*(char *)(iVar2 + 5)) {
+      case '\x01':
+        piVar10 = (int *)(iVar3 + 0x10);
+        piVar8 = param_2 + 8;
+        iVar6 = 8;
+        do {
+          iVar4 = *piVar10;
+          iVar5 = piVar10[1];
+          piVar10 = piVar10 + 2;
+          iVar6 = iVar6 + -1;
+          *piVar8 = iVar4;
+          piVar8[1] = iVar5;
+          piVar8 = piVar8 + 2;
+        } while (0 < iVar6);
+        break;
+      case '\x02':
+        break;
+      }
+      break;
     }
-
   }
 
   uStack_10 = 0x3f800000;
@@ -1840,8 +1812,14 @@ u8 FUN_00419050(int param_1,int *param_2)
   memcpy(&fStack_d0,auStack_100,0x10);
 
   switch (*(char *)(iVar2 + 4)) {
+  case '\x01':
+  case '\x02':
+  case '\x03':
+    break;
   case '@':
     switch (*(char *)(iVar2 + 5)) {
+    case '\x02':
+      break;
     case '\x01':
       fVar12 = 2.0f / (fStack_c4 * fStack_c4 +
                      fStack_c8 * fStack_c8 + fStack_d0 * fStack_d0 + fStack_cc * fStack_cc);
@@ -2459,8 +2437,8 @@ u8 FUN_00419f20(int param_1,int *param_2)
       fStack_28 = 550.0f;
 
       RwMatrixRotate((void*)&matrix,(void*)&axis,fGpffffad78,0);
-      FUN_0041bee0(*(u32 *)(iVar5 + 8));
-      FUN_0041beb0(*(u32 *)(iVar5 + 8));
+      FUN_0041bee0(*(u32 *)(iVar5 + 8),&matrix,0);
+      FUN_0041beb0(*(u32 *)(iVar5 + 8),&fStack_30,2);
 
 
 
@@ -2559,9 +2537,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
   u8 auStack_b0 [48];
 
-  float afStack_80 [4];
-
-  float afStack_70 [12];
+  float afStack_80 [16];
 
   float fStack_40;
 
@@ -2569,9 +2545,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
   float fStack_38;
 
-  u64 uStack_30;
-
-  float fStack_28;
+  RwV3d center;
 
   u64 uStack_20;
 
@@ -2617,9 +2591,9 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
   uStack_18 = DAT_006b2f80;
 
-  uStack_30 = DAT_006b2f88;
+  *(u64 *)&center = DAT_006b2f88;
 
-  fStack_28 = DAT_006b2f90;
+  center.z = DAT_006b2f90;
 
   pfVar6 = (float *)&DAT_006b2fa0;
 
@@ -2649,9 +2623,9 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
   }
 
-  fVar2 = fStack_28;
+  fVar2 = center.z;
 
-  fVar10 = *((float *)&uStack_30 + 1);
+  fVar10 = center.y;
 
   for (uVar8 = 0; (int)uVar8 < (int)puVar1[1]; uVar8 = uVar8 + 1) {
 
@@ -2689,7 +2663,7 @@ u8 FUN_0041a3f0(u64 param_1,int param_2)
 
       FUN_004c6c60(&fStack_40,&fStack_40,auStack_b0);
 
-      fStack_40 = fStack_40 + *(float *)&uStack_30;
+      fStack_40 = fStack_40 + center.x;
 
       fStack_3c = fStack_3c + fVar10;
 
@@ -2809,17 +2783,11 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
   float afStack_c8 [10];
 
-  u8 auStack_a0 [48];
+  RwMatrix matrix;
 
-  float afStack_70 [4];
+  float afStack_70 [16];
 
-  float afStack_60 [12];
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
+  RwV3d position;
 
   RwV3d center;
 
@@ -2881,13 +2849,13 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
                               (fGpffff8248 * (5.0f - (float)*(int *)(param_2 + 0xc))) / 5.0f);
 
-  fVar2 = center.z;
-
   fVar9 = (afStack_c8[*(int *)(iVar1 + 4)] * (fVar7 + 1.0f)) / 2.0f;
 
   fVar10 = -fVar9;
 
   fVar7 = center.y;
+
+  fVar2 = center.z;
 
   for (iVar4 = 0; iVar4 < *(int *)(iVar1 + 4); iVar4 = iVar4 + 1) {
 
@@ -2897,27 +2865,27 @@ u8 FUN_0041a900(u64 param_1,int param_2)
 
                                 afStack_70[*(int *)(iVar1 + 4) * 2] + 0.0f);
 
-    fStack_30 = fVar9 * fVar8;
+    position.x = fVar9 * fVar8;
 
-    fStack_2c = (float)sinf((float)iVar4 * afStack_70[*(int *)(iVar1 + 4) * 2 + 1] +
+    position.y = (float)sinf((float)iVar4 * afStack_70[*(int *)(iVar1 + 4) * 2 + 1] +
 
                                     afStack_70[*(int *)(iVar1 + 4) * 2] + 0.0f);
 
-    fStack_2c = fVar10 * fStack_2c;
+    position.y = fVar10 * position.y;
 
-    fStack_28 = 0.0f;
+    position.z = 0.0f;
 
-    RwMatrixRotate((void*)auStack_a0,(void*)&axis,*(float*)&uGpffffad78,0);
+    RwMatrixRotate((void*)&matrix,(void*)&axis,*(float*)&uGpffffad78,0);
 
-    FUN_004c6c60(&fStack_30,&fStack_30,auStack_a0);
+    FUN_004c6c60(&position,&position,&matrix);
 
-    fStack_30 = fStack_30 + center.x;
+    position.x = position.x + center.x;
 
-    fStack_2c = fStack_2c + fVar7;
+    position.y = position.y + fVar7;
 
-    fStack_28 = fStack_28 + fVar2;
+    position.z = position.z + fVar2;
 
-    sflResSetSpritePosition((void *)uVar3,&fStack_30);
+    sflResSetSpritePosition((void *)uVar3,(const f32 *)&position);
 
   }
 
@@ -2950,27 +2918,21 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
   u16 *puVar7;
 
-  u8 auStack_80 [64];
+  RwMatrix matrix;
 
   u32 auStack_40 [8];
 
-  u64 uStack_20;
+  RwV3d position;
 
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
+  RwV3d direction;
 
   
 
   iVar1 = *param_2;
 
-  uStack_20 = DAT_006b3038;
+  *(u64 *)&position = DAT_006b3038;
 
-  fStack_18 = DAT_006b3040;
+  position.z = DAT_006b3040;
 
   puVar6 = &DAT_006b3050;
 
@@ -3010,32 +2972,33 @@ u8 FUN_0041abc0(int param_1,int *param_2)
 
   iVar4 = kwlnGetMainCamera();
 
-  fStack_10 = (-(*(float *)&uStack_20 - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
+  direction.x = (-(position.x - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
 
-  fStack_c = (-(*((float *)&uStack_20 + 1) - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
+  direction.y = (-(position.y - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
 
-  fStack_8 = 1.0f;
+  direction.z = 1.0f;
 
-  RwV3dNormalize((RwV3d*)&fStack_10,(RwV3d*)&fStack_10);
+  RwV3dNormalize(&direction,&direction);
 
   iVar4 = *(int *)(param_1 + 0x38);
 
-  FUN_004c32a0(auStack_80,iVar4 + 0x10);
+  FUN_004c32a0(&matrix,iVar4 + 0x10);
 
-  FUN_004c6c60(&fStack_10,&fStack_10,auStack_80);
+  FUN_004c6c60(&direction,&direction,&matrix);
 
-  fStack_10 = fStack_10 * fStack_18;
+  direction.x = direction.x * position.z;
 
-  fStack_c = fStack_c * fStack_18;
+  direction.y = direction.y * position.z;
 
-  fStack_8 = fStack_8 * fStack_18;
+  direction.z = direction.z * position.z;
 
-  *(float *)&uStack_20 = *(float *)(iVar4 + 0x40) + fStack_10;
-  *((float *)&uStack_20 + 1) = *(float *)(iVar4 + 0x44) + fStack_c;
+  position.x = *(float *)(iVar4 + 0x40) + direction.x;
 
-  fStack_18 = *(float *)(iVar4 + 0x48) + fStack_8;
+  position.y = *(float *)(iVar4 + 0x44) + direction.y;
 
-  FUN_0034fdf0(*(u32 *)(puVar7 + 4),&uStack_20);
+  position.z = *(float *)(iVar4 + 0x48) + direction.z;
+
+  FUN_0034fdf0(*(u32 *)(puVar7 + 4),&position);
 
   if (param_2[3] == 0) {
 

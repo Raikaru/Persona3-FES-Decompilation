@@ -115,7 +115,9 @@ typedef struct HsndChannel
     char name[0x102];        /* 0x16 */
     void* modeData;          /* 0x118 */
     HsndChannelModeArg modeArg; /* 0x11C */
-    u8 pad120[0x14];         /* 0x120 */
+    u8 pad120[0x10];         /* 0x120 */
+    s16 resetId;             /* 0x130 */
+    u8 pad132[2];            /* 0x132 */
 } HsndChannel;
 
 /* Retail D_007E5770: deferred sound request consumed by func_00108e80. */

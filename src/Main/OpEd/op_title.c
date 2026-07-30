@@ -604,8 +604,9 @@ void opTitle00267430(void)
             }
         }
 
-        if (work[2] == 1)
+        switch (work[2])
         {
+        case 1:
             timer = work[1];
             if ((s32)timer < 0)
             {
@@ -621,6 +622,7 @@ void opTitle00267430(void)
             }
             scaleX = scale * 1.5f + 1.0f;
             scaleY = 1.0f - DAT_007cb08c * scale;
+            break;
         }
         (void)func_0021cca0(resource, 0xf);
         for (i = 0; i < 9; i++)

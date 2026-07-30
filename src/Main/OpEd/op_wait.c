@@ -578,12 +578,18 @@ void opWait0026eed0(void)
     work = (OpWaitWork*)sOpWait;
     atlas = opResGetTitleSprite(0);
 
-    if (work->mode == 1)
-        alpha = 1.0f - opWaitClamp01(work->timer, 0, 0x28);
-    else if (work->mode == 0)
+    switch (work->mode)
+    {
+    case 0:
         alpha = opWaitClamp01(work->timer, 0, 100);
-    else
+        break;
+    case 1:
+        alpha = 1.0f - opWaitClamp01(work->timer, 0, 0x28);
+        break;
+    default:
         alpha = 1.0f;
+        break;
+    }
     {
         rect[0] = 0.0f;
         rect[1] = 0.0f;

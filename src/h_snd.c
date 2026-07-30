@@ -25,7 +25,7 @@ typedef struct HsndBackendControl
 
 
 
-static HsndChannel sChannels[HSND_CHANNEL_COUNT];
+static HsndChannel sChannels[16];
 static HsndSlotWork sSlotWork[HSND_SLOT_COUNT];
 #pragma alias sSlotWork_alt sSlotWork
 extern u8 sSlotWork_alt[];
@@ -281,11 +281,12 @@ void func_00108740(void)
         slotWork[i].state = 0;
         slotWork[i].completed = false;
     }
-    for (i = 0; i < HSND_CHANNEL_COUNT; i++)
+    for (i = 0; i < 16; i++)
     {
         sChannels[i].active = false;
+        sChannels[i].previousId = 0;
         sChannels[i].state = HSND_CHANNEL_INACTIVE;
-        sChannels[i].id = HSND_BGM_NONE;
+        sChannels[i].resetId = HSND_BGM_NONE;
     }
     sBgmRestartCountdown = 0;
 }
@@ -351,7 +352,7 @@ static void H_Snd_ApplyChannelFade(HsndChannel* channel, s32 frames)
 // FUN_00108BC0 NONMATCHING
 void func_00108bc0(void)
 {
-    s32 i;
+    s16 i;
     HsndChannel* channel;
     void** handle;
     s16* state;
@@ -593,6 +594,7 @@ void H_Snd_00109180(s32 channelIndex)
     sBackendControls[channelIndex].data18 = 0;
     sBackendControls[channelIndex].data20 = 0;
     sBackendControls[channelIndex].data1C = 0;
+    sBackendControls[channelIndex].class = channelIndex == 2 ? 2 : 3;
     sBackendControls[channelIndex].flags = 2;
     sBackendControls[channelIndex].voiceCount = 2;
     sBackendControls[channelIndex].timeout = 0x5DC0;
@@ -624,8 +626,7 @@ void H_Snd_00109180(s32 channelIndex)
         case HSND_START_CDVD:
             if (channelIndex >= 2)
             {
-                if (*requestType == HSND_START_BGM ||
-                    *requestType == HSND_START_CDVD)
+                if (*requestType == HSND_START_CDVD)
                 {
                     sBackendControls[channelIndex].data20 = 0;
                 }

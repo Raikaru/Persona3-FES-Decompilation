@@ -66,7 +66,7 @@ typedef struct CampPersonaKaniWork
     s32 command;
     void* persona;
     s32 visible;
-    s16 personaId;
+    u16 personaId;
     s16 screen;
 } CampPersonaKaniWork;
 

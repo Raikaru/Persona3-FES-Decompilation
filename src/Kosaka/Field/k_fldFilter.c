@@ -490,6 +490,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     RwV3d curvePosition;
     RwV3d point0;
     RwV3d point1;
+    RwV3d cross;
     RwCamera* mainCamera;
     RwFrame* mainFrame;
     void* curve;
@@ -503,6 +504,8 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     f32 denominator;
     f32 fraction;
     f32 dot;
+    f32 lineLength;
+    f32 crossLength;
     f32 debugDeltaX;
     f32 debugDeltaY;
     f32 debugDeltaZ;
@@ -632,22 +635,29 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 {
                     fraction = (debugProjectionX * debugDeltaX + debugProjectionY * debugDeltaY +
                                 debugProjectionZ * debugDeltaZ) / denominator;
+                    cross.x = debugDeltaY * debugProjectionZ -
+                              debugDeltaZ * debugProjectionY;
+                    cross.y = debugDeltaZ * debugProjectionX -
+                              debugDeltaX * debugProjectionZ;
+                    cross.z = debugDeltaX * debugProjectionY -
+                              debugDeltaY * debugProjectionX;
+                    lineLength = sqrtf(denominator);
+                    crossLength = sqrtf(cross.x * cross.x +
+                                        cross.y * cross.y +
+                                        cross.z * cross.z);
                     debugProjectionX = point0.x + debugDeltaX * fraction - point0.x;
                     debugProjectionY = point0.y + debugDeltaY * fraction - point0.y;
                     debugProjectionZ = point0.z + debugDeltaZ * fraction - point0.z;
                     projection.x = debugProjectionX;
                     projection.y = debugProjectionY;
                     projection.z = debugProjectionZ;
-                    amount = sqrtf(debugProjectionX * debugProjectionX +
-                                   debugProjectionY * debugProjectionY +
-                                   debugProjectionZ * debugProjectionZ);
-                    fraction = amount / sqrtf(denominator);
+                    amount = crossLength / lineLength;
                     dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
                           debugDeltaZ * debugProjectionZ;
                     printf(D_00683A48,
+                           func_00530da0(lineLength),
+                           func_00530da0(crossLength),
                            func_00530da0(amount),
-                           func_00530da0(amount),
-                           func_00530da0(fraction),
                            func_00530da0(dot));
                     dot = debugDeltaX * debugProjectionX + debugDeltaY * debugProjectionY +
                           debugDeltaZ * debugProjectionZ;

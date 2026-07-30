@@ -242,8 +242,11 @@ u32 sflResult001f9170(u32 player)
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetHp(members[j]) < datGetMaxHp(members[j])) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         case 2:
@@ -255,8 +258,11 @@ u32 sflResult001f9170(u32 player)
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetSp(members[j]) < func_0016c670(members[j])) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         case 4:
@@ -272,6 +278,8 @@ u32 sflResult001f9170(u32 player)
                 }
             }
             break;
+        case 6:
+            break;
         case 7: {
             u16 condition = datGetPhysicalCondition(1);
             if ((u16)(condition - 3) < 3) {
@@ -284,8 +292,11 @@ u32 sflResult001f9170(u32 player)
             for (j = 0; j < memberCount; j++) {
                 u16 condition = datGetPhysicalCondition(members[j]);
                 if (condition == 3 || condition == 4 || condition == 5) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         case 9: {
@@ -300,8 +311,11 @@ u32 sflResult001f9170(u32 player)
             for (j = 0; j < memberCount; j++) {
                 u16 condition = datGetPhysicalCondition(members[j]);
                 if (condition != 1 && condition != 2) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         case 11:
@@ -313,8 +327,11 @@ u32 sflResult001f9170(u32 player)
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetPhysicalCondition(members[j]) != 2) {
-                    return 1;
+                    break;
                 }
+            }
+            if (j < memberCount) {
+                return 1;
             }
             break;
         }
@@ -541,13 +558,11 @@ void sflResult001f9e90(u16 owner, s32 exp)
 
 void func_001fa0d0(void)
 {
-    s16 uVar1;
     char* pcVar2;
     u32 uVar3;
     u8 auStack_20[16];
 
     for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
-        uVar1 = (s16)uVar3;
         switch (uVar3) {
         case 2:
         case 3:
@@ -592,38 +607,38 @@ void func_001fa0d0(void)
             }
             if (*(u16*)(pcVar2 + 2) != 0) {
                 FUN_00182c50((s16)*(u16*)(pcVar2 + 2), auStack_20);
-                FUN_001831e0(uVar1, 0, auStack_20);
-                FUN_0016da50(uVar1, 0, 0);
+                FUN_001831e0((s16)uVar3, 0, auStack_20);
+                FUN_0016da50((s16)uVar3, 0, 0);
             }
             if (*(u16*)(pcVar2 + 4) != 0) {
                 FUN_00182c50((s16)*(u16*)(pcVar2 + 4), auStack_20);
-                FUN_001831e0(uVar1, 1, auStack_20);
-                FUN_0016da50(uVar1, 1, 1);
+                FUN_001831e0((s16)uVar3, 1, auStack_20);
+                FUN_0016da50((s16)uVar3, 1, 1);
             }
             if (*(u16*)(pcVar2 + 6) != 0) {
                 FUN_00182c50((s16)*(u16*)(pcVar2 + 6), auStack_20);
-                FUN_001831e0(uVar1, 2, auStack_20);
-                FUN_0016da50(uVar1, 2, 2);
+                FUN_001831e0((s16)uVar3, 2, auStack_20);
+                FUN_0016da50((s16)uVar3, 2, 2);
             }
             if (*(u16*)(pcVar2 + 8) != 0) {
                 FUN_00182c50((s16)*(u16*)(pcVar2 + 8), auStack_20);
-                FUN_001831e0(uVar1, 3, auStack_20);
-                FUN_0016da50(uVar1, 3, 3);
+                FUN_001831e0((s16)uVar3, 3, auStack_20);
+                FUN_0016da50((s16)uVar3, 3, 3);
             }
             break;
         case 6:
             FUN_00182c50(0xfe, auStack_20);
-            FUN_001831e0(uVar1, 0, auStack_20);
-            FUN_0016da50(uVar1, 0, 0);
+            FUN_001831e0((s16)uVar3, 0, auStack_20);
+            FUN_0016da50((s16)uVar3, 0, 0);
             FUN_00182c50(0x43f, auStack_20);
-            FUN_001831e0(uVar1, 1, auStack_20);
-            FUN_0016da50(uVar1, 1, 1);
+            FUN_001831e0((s16)uVar3, 1, auStack_20);
+            FUN_0016da50((s16)uVar3, 1, 1);
             FUN_00182c50(0x821, auStack_20);
-            FUN_001831e0(uVar1, 2, auStack_20);
-            FUN_0016da50(uVar1, 2, 2);
+            FUN_001831e0((s16)uVar3, 2, auStack_20);
+            FUN_0016da50((s16)uVar3, 2, 2);
             FUN_00182c50(0xc47, auStack_20);
-            FUN_001831e0(uVar1, 3, auStack_20);
-            FUN_0016da50(uVar1, 3, 3);
+            FUN_001831e0((s16)uVar3, 3, auStack_20);
+            FUN_0016da50((s16)uVar3, 3, 3);
         }
     }
 }
@@ -1628,9 +1643,9 @@ u16 func_001fb560(u32 param_1)
 
   u32 unaff_s8_lo;
 
-  u16 auStack_220 [16];
-
   u16 auStack_200 [256];
+
+  u16 auStack_220 [16];
 
   
 
@@ -2140,20 +2155,22 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
 
   }
 
-  fVar3 = fGpffff8070;
-
-  if (param_6 != 4) {
-    if (param_6 == 3) {
-      fVar3 = 1.0;
-    } else {
-      fVar3 = fGpffff83b4;
-      if (param_6 != 2) {
-        fVar3 = fGpffff83b0;
-        if (param_6 != 1) {
-          FUN_0019d3f0(0x684c28,0x24e);
-        }
-      }
-    }
+  switch (param_6) {
+  case 1:
+    fVar3 = fGpffff83b0;
+    break;
+  case 2:
+    fVar3 = fGpffff83b4;
+    break;
+  case 3:
+    fVar3 = 1.0f;
+    break;
+  case 4:
+    fVar3 = fGpffff8070;
+    break;
+  default:
+    FUN_0019d3f0(0x684c28,0x24e);
+    break;
   }
 
   if ((*puVar1 & 0x80) == 0) {
@@ -2598,15 +2615,16 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
     sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),uVar1);
 
-    if (sVar4 == 2) {
-      sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-      FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-    }
-    else if (sVar4 == 1) {
+    switch (sVar4) {
+    case 1:
       sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
       FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+      break;
+    case 2:
+      sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
+      FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+      break;
     }
-
   }
 
   else {
@@ -2697,13 +2715,15 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
       sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),uVar1);
 
-      if (sVar4 == 2) {
-        sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-        FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-      }
-      else if (sVar4 == 1) {
+      switch (sVar4) {
+      case 1:
         sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
         FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        break;
+      case 2:
+        sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
+        FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        break;
       }
 
     }
@@ -2724,13 +2744,15 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
 
       sVar4 = FUN_0017b500(*(u16 *)(iVar13 + 2),auStack_50[0]);
 
-      if (sVar4 == 2) {
-        sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
-        FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
-      }
-      else if (sVar4 == 1) {
+      switch (sVar4) {
+      case 1:
         sVar4 = FUN_0016c4f0(*(u16 *)(iVar13 + 2));
         FUN_0016cf40(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        break;
+      case 2:
+        sVar4 = FUN_0016c570(*(u16 *)(iVar13 + 2));
+        FUN_0016cf90(*(u16 *)(iVar13 + 2),sVar4 - sVar3);
+        break;
       }
 
     }

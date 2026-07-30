@@ -188,30 +188,30 @@ static inline u32 K_FldShadow_AxisHasAtMostOne(f32 a, f32 b, f32 c)
 }
 
 static inline void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
-                                            const RwV3d* normal,
-                                            const RwV3d* vertices)
+                                            const RwV3d* clipVertices,
+                                            const RwV3d* outputVertices)
 {
     RwIm3DVertex* output;
     s32 vertexCount;
     u8 alpha;
 
-    if (vertices[0].z < 0.0f && vertices[1].z < 0.0f && vertices[2].z < 0.0f)
+    if (clipVertices[0].z < 0.0f && clipVertices[1].z < 0.0f && clipVertices[2].z < 0.0f)
     {
         return;
     }
-    if (vertices[0].x < 0.0f && vertices[1].x < 0.0f && vertices[2].x < 0.0f)
+    if (clipVertices[0].x < 0.0f && clipVertices[1].x < 0.0f && clipVertices[2].x < 0.0f)
     {
         return;
     }
-    if (vertices[0].x > 1.0f && vertices[1].x > 1.0f && vertices[2].x > 1.0f)
+    if (clipVertices[0].x > 1.0f && clipVertices[1].x > 1.0f && clipVertices[2].x > 1.0f)
     {
         return;
     }
-    if (vertices[0].y < 0.0f && vertices[1].y < 0.0f && vertices[2].y < 0.0f)
+    if (clipVertices[0].y < 0.0f && clipVertices[1].y < 0.0f && clipVertices[2].y < 0.0f)
     {
         return;
     }
-    if (vertices[0].y > 1.0f && vertices[1].y > 1.0f && vertices[2].y > 1.0f)
+    if (clipVertices[0].y > 1.0f && clipVertices[1].y > 1.0f && clipVertices[2].y > 1.0f)
     {
         return;
     }
@@ -231,48 +231,52 @@ static inline void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
 
     output = (RwIm3DVertex*)work->vertexBuffer;
     output += vertexCount;
-    output[0].objVertex = vertices[0];
-    output[1].objVertex = vertices[1];
-    output[2].objVertex = vertices[2];
+    output[0].objVertex = outputVertices[0];
+    output[1].objVertex = outputVertices[1];
+    output[2].objVertex = outputVertices[2];
+    output[0].u = clipVertices[0].x;
+    output[0].v = clipVertices[0].y;
+    output[1].u = clipVertices[1].x;
+    output[1].v = clipVertices[1].y;
+    output[2].u = clipVertices[2].x;
+    output[2].v = clipVertices[2].y;
 
     if (work->depthAlpha == 0)
     {
         alpha = work->alpha;
+        output[0].c.color.r = alpha;
+        output[0].c.color.g = alpha;
+        output[0].c.color.b = alpha;
+        output[0].c.color.a = alpha;
+        output[1].c.color.r = alpha;
+        output[1].c.color.g = alpha;
+        output[1].c.color.b = alpha;
+        output[1].c.color.a = alpha;
+        output[2].c.color.r = alpha;
+        output[2].c.color.g = alpha;
+        output[2].c.color.b = alpha;
+        output[2].c.color.a = alpha;
     }
     else
     {
-        alpha = K_FldShadow_DepthAlpha(vertices[0].z, work->alpha);
-    }
-    output[0].c.color.r = alpha;
-    output[0].c.color.g = alpha;
-    output[0].c.color.b = alpha;
-    output[0].c.color.a = alpha;
+        alpha = K_FldShadow_DepthAlpha(clipVertices[0].z, work->alpha);
+        output[0].c.color.r = alpha;
+        output[0].c.color.g = alpha;
+        output[0].c.color.b = alpha;
+        output[0].c.color.a = alpha;
 
-    if (work->depthAlpha == 0)
-    {
-        alpha = work->alpha;
-    }
-    else
-    {
-        alpha = K_FldShadow_DepthAlpha(vertices[1].z, work->alpha);
-    }
-    output[1].c.color.r = alpha;
-    output[1].c.color.g = alpha;
-    output[1].c.color.b = alpha;
-    output[1].c.color.a = alpha;
+        alpha = K_FldShadow_DepthAlpha(clipVertices[1].z, work->alpha);
+        output[1].c.color.r = alpha;
+        output[1].c.color.g = alpha;
+        output[1].c.color.b = alpha;
+        output[1].c.color.a = alpha;
 
-    if (work->depthAlpha == 0)
-    {
-        alpha = work->alpha;
+        alpha = K_FldShadow_DepthAlpha(clipVertices[2].z, work->alpha);
+        output[2].c.color.r = alpha;
+        output[2].c.color.g = alpha;
+        output[2].c.color.b = alpha;
+        output[2].c.color.a = alpha;
     }
-    else
-    {
-        alpha = K_FldShadow_DepthAlpha(vertices[2].z, work->alpha);
-    }
-    output[2].c.color.r = alpha;
-    output[2].c.color.g = alpha;
-    output[2].c.color.b = alpha;
-    output[2].c.color.a = alpha;
     work->vertexCount = vertexCount + 3;
 }
 static inline u32 K_FldShadow_EmitProjectedTriangle(
@@ -334,48 +338,52 @@ static inline u32 K_FldShadow_EmitProjectedTriangle(
     output[0].objVertex = outputVertices[0];
     output[1].objVertex = outputVertices[1];
     output[2].objVertex = outputVertices[2];
+    output[0].u = clipVertices[0].x;
+    output[0].v = clipVertices[0].y;
+    output[1].u = clipVertices[1].x;
+    output[1].v = clipVertices[1].y;
+    output[2].u = clipVertices[2].x;
+    output[2].v = clipVertices[2].y;
 
     if (*(const s32*)(workFields + 0x54) == 0)
     {
         alpha = *(const u8*)(workFields + 0x50);
+        output[0].c.color.r = alpha;
+        output[0].c.color.g = alpha;
+        output[0].c.color.b = alpha;
+        output[0].c.color.a = alpha;
+        output[1].c.color.r = alpha;
+        output[1].c.color.g = alpha;
+        output[1].c.color.b = alpha;
+        output[1].c.color.a = alpha;
+        output[2].c.color.r = alpha;
+        output[2].c.color.g = alpha;
+        output[2].c.color.b = alpha;
+        output[2].c.color.a = alpha;
     }
     else
     {
         alpha = K_FldShadow_DepthAlpha(
             clipVertices[0].z, *(const u8*)(workFields + 0x50));
-    }
-    output[0].c.color.r = alpha;
-    output[0].c.color.g = alpha;
-    output[0].c.color.b = alpha;
-    output[0].c.color.a = alpha;
+        output[0].c.color.r = alpha;
+        output[0].c.color.g = alpha;
+        output[0].c.color.b = alpha;
+        output[0].c.color.a = alpha;
 
-    if (*(const s32*)(workFields + 0x54) == 0)
-    {
-        alpha = *(const u8*)(workFields + 0x50);
-    }
-    else
-    {
         alpha = K_FldShadow_DepthAlpha(
             clipVertices[1].z, *(const u8*)(workFields + 0x50));
-    }
-    output[1].c.color.r = alpha;
-    output[1].c.color.g = alpha;
-    output[1].c.color.b = alpha;
-    output[1].c.color.a = alpha;
+        output[1].c.color.r = alpha;
+        output[1].c.color.g = alpha;
+        output[1].c.color.b = alpha;
+        output[1].c.color.a = alpha;
 
-    if (*(const s32*)(workFields + 0x54) == 0)
-    {
-        alpha = *(const u8*)(workFields + 0x50);
-    }
-    else
-    {
         alpha = K_FldShadow_DepthAlpha(
             clipVertices[2].z, *(const u8*)(workFields + 0x50));
+        output[2].c.color.r = alpha;
+        output[2].c.color.g = alpha;
+        output[2].c.color.b = alpha;
+        output[2].c.color.a = alpha;
     }
-    output[2].c.color.r = alpha;
-    output[2].c.color.g = alpha;
-    output[2].c.color.b = alpha;
-    output[2].c.color.a = alpha;
     work->vertexCount = vertexCount + 3;
     return 1;
 }
@@ -482,7 +490,7 @@ void* func_0019a420(void* ignored,
                     FldShadowAtomicContext* context)
 {
     RwV4d normal;
-    RwV3d vertices[3];
+    RwV3d sourceVertices[3];
     RwV3d projected[3];
     s32 i;
 
@@ -493,26 +501,30 @@ void* func_0019a420(void* ignored,
     normal.w = 0.0f;
     for (i = 0; i < 3; i++)
     {
-        func_004c6c20(&vertices[i], triangle->vertices[i], 1,
+        func_004c6c20(&sourceVertices[i], triangle->vertices[i], 1,
                       func_004cb2f0(*(void**)((u8*)context->atomic + 4)));
     }
-    if (!(RwV3dDotProductMacro((const RwV3d*)&normal,
-                               &context->work->projectionNormal) > 0.0f))
+    if (RwV3dDotProductMacro((const RwV3d*)&normal,
+                             &context->work->projectionNormal) > 0.0f)
     {
-        vertices[0].x += normal.x * 1.5f;
-        vertices[0].y += normal.y * 1.5f;
-        vertices[0].z += normal.z * 1.5f;
-        vertices[1].x += normal.x * 1.5f;
-        vertices[1].y += normal.y * 1.5f;
-        vertices[1].z += normal.z * 1.5f;
-        vertices[2].x += normal.x * 1.5f;
-        vertices[2].y += normal.y * 1.5f;
-        vertices[2].z += normal.z * 1.5f;
-        func_004c6c20(projected, vertices, 3,
-                      &context->work->projectionMatrix);
-        K_FldShadow_EmitTriangle(context->work, (const RwV3d*)&normal,
-                                 projected);
+        return (void*)triangle;
     }
+
+    projected[0] = sourceVertices[0];
+    projected[1] = sourceVertices[1];
+    projected[2] = sourceVertices[2];
+    func_004c6c20(projected, projected, 3,
+                  &context->work->projectionMatrix);
+    sourceVertices[0].x += normal.x * 1.5f;
+    sourceVertices[0].y += normal.y * 1.5f;
+    sourceVertices[0].z += normal.z * 1.5f;
+    sourceVertices[1].x += normal.x * 1.5f;
+    sourceVertices[1].y += normal.y * 1.5f;
+    sourceVertices[1].z += normal.z * 1.5f;
+    sourceVertices[2].x += normal.x * 1.5f;
+    sourceVertices[2].y += normal.y * 1.5f;
+    sourceVertices[2].z += normal.z * 1.5f;
+    K_FldShadow_EmitTriangle(context->work, projected, sourceVertices);
     return (void*)triangle;
 }
 
@@ -1304,6 +1316,11 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
 
     if (shadow->state == 0)
     {
+        if (shadow->mode == 0)
+        {
+            shadow->state++;
+            return KWLNTASK_CONTINUE;
+        }
         if (shadow->mode == 2)
         {
             if (shadow->model != NULL && mdlStreamRead(shadow->model) != 0)
