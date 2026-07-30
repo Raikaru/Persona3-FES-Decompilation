@@ -8318,9 +8318,9 @@ void FUN_003243d0(void)
 
 
 
-// Confirmed b210 loop-rotation colouring floor (W211): the sole residual is
-// +40 ffff8230/ffff0232 (andi v0,a0 vs andi v0,s0).
-// FUN_003243F0 NONMATCHING
+// Resolved (W291): not a colouring floor - the array-index form
+// (*(u32**)(p+0x28))[i] defeats the cross-block andi CSE and matches retail.
+// FUN_003243F0
 
 
 void FUN_003243f0(int param_1,u32 param_2)
@@ -8334,7 +8334,7 @@ void FUN_003243f0(int param_1,u32 param_2)
   
 
   for (uVar1 = 0; uVar1 < *(s16 *)(param_1 + 0x1c); uVar1++) {
-    FUN_00494d50(*(u32 *)(*(int *)(param_1 + 0x28) + (uVar1 & 0xffff) * 4),param_2);
+    FUN_00494d50((*(u32 **)(param_1 + 0x28))[uVar1],param_2);
 
   }
 
