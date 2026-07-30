@@ -41420,7 +41420,7 @@ void FUN_00348f30(int param_1,float *param_2)
 
 
 
-// FUN_00349090 NONMATCHING
+// FUN_00349090
 
 
 
@@ -41485,7 +41485,7 @@ void FUN_00349090(int *param_1,float *param_2)
 
       fVar7 = alpha * wave;
 
-      alphaByte = (u8)(u32)fVar7;
+      alphaByte = (u8)fVar7;
 
       *((u8 *)param_2 + 0xf) = alphaByte;
 
@@ -41524,14 +41524,14 @@ void FUN_00349260(int param_1,float *param_2)
 
   float fVar2;
 
-  float fVar3;
-
-  float fVar4;
+  float *output;
 
   float fVar5;
 
   float fVar6;
-  float *output;
+
+  float fVar3;
+  float fVar4;
 
   
 
@@ -41552,7 +41552,9 @@ void FUN_00349260(int param_1,float *param_2)
 
   fVar2 = (float)FUN_00358030(0);
 
-  fVar6 = fGpffff8168 * (fVar2 - 0.5f) * 2.0f;
+  fVar2 = fVar2 - 0.5f;
+  fVar2 = fVar2 * 2.0f;
+  fVar6 = fGpffff8168 * fVar2;
 
   fVar3 = *(float *)(param_1 + 0x30);
 
@@ -41564,9 +41566,9 @@ void FUN_00349260(int param_1,float *param_2)
 
   fVar2 = (float)FUN_00358030(0);
 
-  fVar3 = fVar3 + fGpffff80a4 * fVar4;
-
   fVar5 = fGpffff80a4 * fVar4 + (((650.0f - fVar4) - fVar5) * fVar2 + fVar5 + 0.0f) * 0.5f;
+
+  fVar3 = fVar3 + fGpffff80a4 * fVar4;
 
   fVar2 = (float)FUN_0052e6d8_f32(fVar6);
 
@@ -41590,7 +41592,7 @@ void FUN_00349260(int param_1,float *param_2)
 
 
 
-// FUN_00349450 NONMATCHING
+// FUN_00349450
 
 
 
@@ -41626,7 +41628,7 @@ void FUN_00349450(int *param_1,float *param_2)
       uVar3 = FUN_00531230_u32(uGpffff8018,uVar3);
       wave = FUN_005318a0_f32(uVar3);
       fVar7 = alpha * wave;
-      alphaByte = (u8)(u32)fVar7;
+      alphaByte = (u8)fVar7;
       *((u8 *)param_2 + 0xf) = alphaByte;
       param_2[1] = param_2[1] + ((float *)piVar4)[2];
     }
@@ -41642,7 +41644,7 @@ void FUN_00349450(int *param_1,float *param_2)
 
 
 
-// FUN_00349620 NONMATCHING
+// FUN_00349620
 
 
 
@@ -41683,33 +41685,17 @@ void FUN_00349620(int *param_1,float *param_2)
 
   for (iVar4 = 0; iVar4 < iVar1; iVar4 = iVar4 + 1) {
 
-    if (0.0f > *param_2) {
-
-      *param_2 = *param_2 + ((float *)param_1)[1];
-
-    }
-
-    else {
+    if (!(*param_2 < 0.0f)) {
 
       fVar6 = FUN_0052e878_f32(param_2[1]);
 
-      param_2[6] = (1.0f - *param_2) * ((float *)param_1)[6] * fVar6 + 1.0f;
+      param_2[6] = ((float *)param_1)[6] * fVar6 * (1.0f - *param_2) + 1.0f;
 
       ((int *)param_2)[3] = param_1[3];
 
       fVar6 = alphaF * (1.0f - *param_2);
 
-      if (fVar6 < 2.1474836e+09f) {
-
-        uVar3 = (u8)(int)fVar6;
-
-      }
-
-      else {
-
-        uVar3 = (u8)(int)(fVar6 - 2.1474836e+09f);
-
-      }
+      uVar3 = (u8)(u32)fVar6;
 
       *((u8 *)param_2 + 0xf) = uVar3;
 
@@ -41737,7 +41723,7 @@ void FUN_00349620(int *param_1,float *param_2)
 
       *param_2 = fVar8 + fVar6;
 
-      if (1.0f < fVar8 + fVar6) {
+      if (!(fVar8 + fVar6 <= 1.0f)) {
 
         param_2[1] = 0.0f;
 
@@ -41747,6 +41733,12 @@ void FUN_00349620(int *param_1,float *param_2)
         param_2[5] = ((float *)param_1)[5];
 
       }
+
+    }
+
+    else {
+
+      *param_2 = *param_2 + ((float *)param_1)[1];
 
     }
 
