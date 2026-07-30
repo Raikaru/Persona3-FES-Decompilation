@@ -4388,7 +4388,7 @@ void FUN_003bcc80(void)
 }
 #define FUN_003bcc80(...) ((void (*)(...))FUN_003bcc80)(__VA_ARGS__)
 #undef FUN_003bcda0
-// FUN_003BCDA0 NONMATCHING
+// FUN_003BCDA0
 
 
 int FUN_003bcda0(int *param_1,int *param_2)
@@ -4407,6 +4407,8 @@ int FUN_003bcda0(int *param_1,int *param_2)
   RwMatrix first;
   RwV3d *firstPosition;
   RwV3d *secondPosition;
+  float oy;
+  float oz;
 
   matrix = FUN_00198590();
   matrix = FUN_004cb2f0(*(u32 *)(matrix + 4));
@@ -4419,11 +4421,13 @@ int FUN_003bcda0(int *param_1,int *param_2)
   secondPosition = &first.pos;
 
   vectors.firstDelta.x = firstPosition->x - vectors.origin.x;
-  vectors.firstDelta.y = firstPosition->y - vectors.origin.y;
-  vectors.firstDelta.z = firstPosition->z - vectors.origin.z;
+  oy = *(volatile float *)&vectors.origin.y;
+  vectors.firstDelta.y = firstPosition->y - oy;
+  oz = *(volatile float *)&vectors.origin.z;
+  vectors.firstDelta.z = firstPosition->z - oz;
   vectors.secondDelta.x = secondPosition->x - vectors.origin.x;
-  vectors.secondDelta.y = secondPosition->y - vectors.origin.y;
-  vectors.secondDelta.z = secondPosition->z - vectors.origin.z;
+  vectors.secondDelta.y = secondPosition->y - oy;
+  vectors.secondDelta.z = secondPosition->z - oz;
 
   return (int)(FUN_004c6ac0(&vectors.firstDelta) - FUN_004c6ac0(&vectors.secondDelta));
 }
