@@ -683,7 +683,7 @@ s32 func_0018b360(KwlnTask* task)
 }
 
 
-// FUN_0018B380 NONMATCHING
+// FUN_0018B380
 void* func_0018b380(KwlnTask* task)
 {
     struct GsB380Work
@@ -706,11 +706,10 @@ void* func_0018b380(KwlnTask* task)
         func_00111530(work->tasks[1]);
         func_00111530(work->tasks[2]);
         work->status = -2;
-        allocator = (void* (**)(u32, u32, u32))D_00960184_abs;
-
         {
             u32 payload = work->payload38;
             void* allocation;
+            allocator = (void* (**)(u32, u32, u32))D_00960184_abs;
             allocation = (*allocator)(1, 0x10, 0x40000);
             if (allocation != NULL)
             {
