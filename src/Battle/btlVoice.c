@@ -3148,14 +3148,13 @@ void func_002f5d80(u32 param_1)
   int iVar4;
   float fVar5;
   u32 uVar6;
-  u32 cVar7;
   u32 uStack_4;
   
   iVar4 = (int)param_1;
-  if (((*(char *)(iVar4 + 0xa2) == '\x01') && (*(short *)(iVar4 + 0xa4) == 0xf1)) &&
+  if (((*(u8 *)(iVar4 + 0xa2) == 1) && (*(u16 *)(iVar4 + 0xa4) == 0xf1)) &&
      ((*(u32 *)(iVar4 + 0x98) & 2) != 0)) {
     for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-      if (*(short *)(iVar4 + 0xa4) == 0xf2) {
+      if (*(u16 *)(iVar4 + 0xa4) == 0xf2) {
         bVar1 = *(short *)(DAT_007ce3ec + 0xb54) == 0;
         if (!bVar1) {
           *(short *)(DAT_007ce3ec + 0xb54) = *(short *)(DAT_007ce3ec + 0xb54) + -1;
@@ -3170,12 +3169,12 @@ void func_002f5d80(u32 param_1)
               fVar5 = ((float)*(u16 *)(DAT_007ce3ec + 0xb58) * 255.0f) /
                       (float)*(u16 *)(DAT_007ce3ec + 0xb56);
               if (fVar5 < 2.1474836e+09f) {
-                cVar7 = (char)(int)fVar5;
+                uVar6 = (char)(int)fVar5;
               }
               else {
-                cVar7 = (char)(int)(fVar5 - 2.1474836e+09f);
+                uVar6 = (char)(int)(fVar5 - 2.1474836e+09f);
               }
-              uStack_4 = CONCAT13(-1 - cVar7,0xffffff);
+              uStack_4 = CONCAT13(-1 - uVar6,0xffffff);
               *(short *)(DAT_007ce3ec + 0xb58) = *(short *)(DAT_007ce3ec + 0xb58) + 1;
               bVar1 = true;
             }
