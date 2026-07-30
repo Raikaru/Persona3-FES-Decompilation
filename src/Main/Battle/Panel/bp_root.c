@@ -2043,12 +2043,13 @@ void FUN_00203B70(void)
     *(u32*)p &= ~8u;
 }
 
-// FUN_00203C30 NONMATCHING
+// FUN_00203C30
 void FUN_00203C30(void)
 {
     u8* work;
     u8* rows;
     s32 i;
+    s32 j;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
@@ -2068,13 +2069,13 @@ void FUN_00203C30(void)
         func_003b0d70(*(u32*)(work + 0x2c8 + i * 4),
                       0x730, (i * 18 + 0x118) * 8);
     }
-    for (i = 0; i < *(s32*)(work + 0x2d8); i++)
+    for (j = 0; j < *(s32*)(work + 0x2d8); j++)
     {
-        *(u32*)(rows + i * 0x310 + 0x300) =
-            *(u32*)(work + 0x2c8 + i * 4);
-        *(u32*)(rows + i * 0x310 + 0x304) =
+        *(u32*)(rows + j * 0x310 + 0x300) =
+            *(u32*)(work + 0x2c8 + j * 4);
+        *(u32*)(rows + j * 0x310 + 0x304) =
             *(u32*)(work + 0x26c +
-                    (i + *(s32*)(work + 0x76c4)) * 8);
+                    (j + *(s32*)(work + 0x76c4)) * 8);
     }
     *(u32*)(work + 0x7640) = 0;
     *(u32*)(work + 0x64a0) = *(u32*)(work + 0x2d8);
