@@ -60,13 +60,13 @@ u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3);
 u32 FUN_002a3010(u8* param_2,f32 param_1);
 void FUN_002a3110(u8* param_2,float param_1);
 void FUN_002a3160(u8* param_2,float param_1);
-extern u32 DAT_00693850;
-extern u32 DAT_00693854;
-extern u32 DAT_00693858;
-extern u32 DAT_0069385c;
-extern u32 DAT_00693860;
-extern u32 DAT_00693864;
-extern u32 DAT_00693868;
+extern f32 DAT_00693850[];
+extern f32 DAT_00693854[];
+extern f32 DAT_00693858[];
+extern f32 DAT_0069385c[];
+extern f32 DAT_00693860[];
+extern f32 DAT_00693864[];
+extern f32 DAT_00693868[];
 extern f32 DAT_00697880;
 extern f32 DAT_00697888;
 extern f32 DAT_00697884;
@@ -100,7 +100,7 @@ extern u32 DAT_009572c4;
 extern u32 DAT_009572c8;
 extern u32 DAT_009572cc;
 extern u32 DAT_009572d0;
-extern u32 _DAT_0069386c;
+extern f32 _DAT_0069386c[];
 extern f32 fGpffff8044;
 extern f32 fGpffff804c;
 extern f32 fGpffff8054;
@@ -1439,15 +1439,26 @@ void btlMainInitStateCondition(BtlStateWork* work)
     (*(u8*)((u8*)(packet) + (0x00))) = 5;
     packet->parentUID = cameraPacket->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    if (newCondition == 3)
+    switch (newCondition)
     {
-        conditionPacket = 0x12;
-        messagePacket = 0x13;
-    }
-    else
-    {
-        conditionPacket = 0x10;
-        messagePacket = 0x12;
+        case 0:
+        case 1:
+        case 2:
+            conditionPacket = 0x10;
+            messagePacket = 0x12;
+            break;
+        case 3:
+            conditionPacket = 0x12;
+            messagePacket = 0x13;
+            break;
+        case 4:
+            conditionPacket = 0x10;
+            messagePacket = 0x12;
+            break;
+        case 5:
+            conditionPacket = 0x10;
+            messagePacket = 0x12;
+            break;
     }
     packet = FUN_002e2be0(action, messagePacket, 0, 0, 0);
     (*(u8*)((u8*)(packet) + (0x00))) = 5;
@@ -2125,21 +2136,15 @@ void FUN_0029ee20(u32 param_1)
     case '\x02':
       FUN_004c31b0(0xc2b40000,&matrix,0x697870,0);
       puVar3 = (u32 *)FUN_001a0700(*(u16 *)(iVar4 + 0x9f2));
-      uVar8 = DAT_0069385c;
-      uVar7 = DAT_00693858;
-      uVar6 = DAT_00693854;
-      *puVar3 = DAT_00693850;
-      puVar3[1] = uVar6;
-      puVar3[2] = uVar7;
-      puVar3[3] = uVar8;
+      ((f32 *)puVar3)[0] = DAT_00693850[0];
+      ((f32 *)puVar3)[1] = DAT_00693854[0];
+      ((f32 *)puVar3)[2] = DAT_00693858[0];
+      ((f32 *)puVar3)[3] = DAT_0069385c[0];
       puVar3 = (u32 *)FUN_001a07f0(*(u16 *)(iVar4 + 0x9f2));
-      uVar8 = _DAT_0069386c;
-      uVar7 = DAT_00693868;
-      uVar6 = DAT_00693864;
-      *puVar3 = DAT_00693860;
-      puVar3[1] = uVar6;
-      puVar3[2] = uVar7;
-      puVar3[3] = uVar8;
+      ((f32 *)puVar3)[0] = DAT_00693860[0];
+      ((f32 *)puVar3)[1] = DAT_00693864[0];
+      ((f32 *)puVar3)[2] = DAT_00693868[0];
+      ((f32 *)puVar3)[3] = _DAT_0069386c[0];
       puVar3 = (u32 *)FUN_001a08e0(*(u16 *)(iVar4 + 0x9f2));
       puVar5 = (u64 *)&matrix;
       iVar4 = 8;
@@ -3362,76 +3367,47 @@ u8 FUN_002a10e0(BtlMainLerpWork *param_1)
 
 // FUN_002A1400 NONMATCHING
 u8 FUN_002a1400(float *param_1)
-
-
-
 {
-
   float fVar1;
-
   float fVar2;
-
   float fVar3;
-
   float fVar4;
-
   float fVar5;
-
   float fVar6;
-
   float fVar7;
   u32 duration;
   u32 counter;
+  RwRGBAReal output;
   RwRGBAReal target;
 
-  
+  if (*(u32 *)(param_1 + 5) == 0) {
+    *(RwRGBAReal *)param_1 = *(RwRGBAReal *)(iGpffffb6fc + 0x234);
+  }
 
+  target.r = (float)bGpffffb808 * fGpffff8218;
+  target.g = (float)bGpffffb809 * fGpffff8218;
+  target.b = (float)bGpffffb80a * fGpffff8218;
+  target.a = (float)bGpffffb80b * fGpffff8218;
   duration = *(u32 *)(param_1 + 4);
   counter = *(u32 *)(param_1 + 5);
-  if (counter == 0) {
-
-    fVar6 = *(float *)(iGpffffb6fc + 0x238);
-    fVar1 = *(float *)(iGpffffb6fc + 0x23c);
-    fVar4 = *(float *)(iGpffffb6fc + 0x240);
-    *param_1 = *(float *)(iGpffffb6fc + 0x234);
-    param_1[1] = fVar6;
-    param_1[2] = fVar1;
-    param_1[3] = fVar4;
-
-  }
-
-  target.r = fGpffff8218 * (float)bGpffffb808;
-  target.g = fGpffff8218 * (float)bGpffffb809;
-  target.b = fGpffff8218 * (float)bGpffffb80a;
-  target.a = fGpffff8218 * (float)bGpffffb80b;
-  if (duration > counter) {
+  if (counter < duration) {
     fVar5 = (float)counter / (float)duration;
-
     fVar7 = 1.0f - fVar5;
-
     fVar6 = param_1[1];
-
     fVar2 = param_1[2];
-
     fVar3 = param_1[3];
-
-    *(float *)(iGpffffb6fc + 0x234) = *param_1 * fVar7 + target.r * fVar5;
-    *(float *)(iGpffffb6fc + 0x238) = fVar6 * fVar7 + target.g * fVar5;
-    *(float *)(iGpffffb6fc + 0x23c) = fVar2 * fVar7 + target.b * fVar5;
-    *(float *)(iGpffffb6fc + 0x240) = fVar3 * fVar7 + target.a * fVar5;
-
-    *(u32 *)(param_1 + 5) = counter + 1;
-
+    output.r = *param_1 * fVar7 + target.r * fVar5;
+    output.g = fVar6 * fVar7 + target.g * fVar5;
+    output.b = fVar2 * fVar7 + target.b * fVar5;
+    output.a = fVar3 * fVar7 + target.a * fVar5;
+    *(RwRGBAReal *)(iGpffffb6fc + 0x234) = output;
   }
-
   else {
-
     *(RwRGBAReal *)(iGpffffb6fc + 0x234) = target;
-
+    return 1;
   }
-
-  return duration <= counter;
-
+  *(u32 *)(param_1 + 5) = counter + 1;
+  return 0;
 }
 
 // FUN_002A1710 NONMATCHING

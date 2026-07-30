@@ -15434,31 +15434,33 @@ u32 FUN_004514a0(char param_1)
 void FUN_00451d70(int param_1)
 
 {
-  char cVar1;
+  u8 cVar1;
   int iVar2;
   u8 uVar3;
   u8 uVar4;
   int lVar5;
+  YVec3f firstRaw;
   YVec3f firstPos;
+  YVec3f secondRaw;
   YVec3f secondPos;
   YVec3f thirdPos;
-  u32 output[3];
+  YVec3f output;
   
   iVar2 = *(int *)(param_1 + 0x3c);
-  cVar1 = *(char *)(iVar2 + 0x8b);
-  if ((cVar1 == '\0') && (*(char *)(iVar2 + 0x8c) == '\0')) {
+  cVar1 = *(u8 *)(iVar2 + 0x8b);
+  if ((cVar1 == 0) && (*(u8 *)(iVar2 + 0x8c) == 0)) {
     lVar5 = FUN_004514a0(*(u8 *)(iVar2 + 1));
     if (lVar5 == 0) {
       FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
-      FUN_001ad940((float *)&firstPos,
+      FUN_001ad940((float *)&firstRaw,
                    *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-      FUN_001ad940((float *)&secondPos,
+      firstPos = firstRaw;
+      FUN_001ad940((float *)&secondRaw,
                    *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-      FUN_001bf220(output,(int)((secondPos.x + 400.0f) / 800.0f) & 0xffff,
-                   (int)((secondPos.z + 400.0f) / 800.0f) & 0xffff);
-      *(u32 *)(iVar2 + 0x6c) = output[0];
-      *(u32 *)(iVar2 + 0x70) = output[1];
-      *(u32 *)(iVar2 + 0x74) = output[2];
+      secondPos = secondRaw;
+      FUN_001bf220(&output,(int)((secondPos.x + 400.0f) / 800.0f) & 0xffff,
+                   (int)((firstPos.z + 400.0f) / 800.0f) & 0xffff);
+      *(YVec3f *)(iVar2 + 0x6c) = output;
       *(u8 *)(iVar2 + 3) = 0xf;
     }
   }
@@ -15469,7 +15471,7 @@ void FUN_00451d70(int param_1)
                           (*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
     FUN_001ad940((float *)&thirdPos,
                  *(u32 *)(*(int *)((u8 *)DAT_0086edf4 + *(char *)(iVar2 + 1) * 0x1c0) + 0x1e0));
-    lVar5 = FUN_00453ed0(*(u8 *)(iVar2 + 1),uVar3,uVar4,(u32 *)&thirdPos,cVar1,
+    lVar5 = FUN_00453ed0(*(u8 *)(iVar2 + 1),uVar3,uVar4,(u32 *)&thirdPos,(char)cVar1,
                          *(u8 *)(iVar2 + 0x8c));
     if (lVar5 == 1) {
       *(u8 *)(iVar2 + 3) = 0xd;
@@ -16541,80 +16543,53 @@ u64 FUN_00454620(char param_1)
 u8 FUN_00454a70(char param_1,RwV3d param_2)
 
 {
-  int iVar1;
-  u8 bVar2;
-  int lVar3;
-  int iVar4;
-  int iVar5;
-  float *pfVar6;
-  float fVar7;
-  float afStack_60 [3];
-  float fStack_54;
-  u32 uStack_50;
-  float fStack_4c;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  fStack_10 = param_2.x;
-  fStack_c = param_2.y;
-  fStack_8 = param_2.z;
-  iVar1 = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_1 * 0x1c0) + 0x3c);
-  iVar5 = *(char *)(iVar1 + 1) * 0x1c0;
-  pfVar6 = (float *)(DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + iVar5) * 0x40);
-  iVar5 = *(int *)((u8 *)DAT_0086ef08 + iVar5);
-  fStack_20 = fStack_10 - *(float *)(iVar5 + 0x100);
-  fStack_1c = fStack_c - *(float *)(iVar5 + 0x104);
-  fStack_18 = fStack_8 - *(float *)(iVar5 + 0x108);
-  FUN_004c69f0(&fStack_20,&fStack_20);
-  fVar7 = *pfVar6;
-  iVar4 = *(char *)(iVar1 + 1) * 0x1c0;
-  iVar5 = *(int *)((u8 *)DAT_0086ef08 + iVar4);
-  afStack_60[0] = fStack_20 * fVar7 + *(float *)(iVar5 + 0x100) + 0.0f;
-  fStack_1c = fStack_1c * fVar7 + *(float *)(iVar5 + 0x104);
-  afStack_60[2] = fStack_18 * fVar7 + *(float *)(iVar5 + 0x108);
-  afStack_60[1] = 400.0f;
-  uStack_50 = 0xc3c80000;
-  fStack_54 = afStack_60[0];
-  fStack_4c = afStack_60[2];
-  fStack_38 = afStack_60[2];
-  fStack_28 = afStack_60[2];
-  fStack_20 = afStack_60[0];
-  fStack_18 = afStack_60[2];
-  fStack_30 = afStack_60[0];
-  fStack_2c = fStack_1c;
-  fStack_40 = afStack_60[0];
-  fStack_3c = fStack_1c;
+  int actor;
+  int rowOffset;
+  int position;
+  int result;
+  float *movement;
+  float distance;
+  RwV3d direction;
+  RwV3d destination;
+  RwV3d collision;
+  RwV3d line[2];
+
+  actor = *(int *)(*(int *)((u8 *)DAT_0086ef0c + param_1 * 0x1c0) + 0x3c);
+  rowOffset = *(char *)(actor + 1) * 0x1c0;
+  movement = (float *)(DAT_007ce290 + *(int *)((u8 *)DAT_0086ef2c + rowOffset) * 0x40);
+  position = *(int *)((u8 *)DAT_0086ef08 + rowOffset);
+  direction.x = param_2.x - *(float *)(position + 0x100);
+  direction.y = param_2.y - *(float *)(position + 0x104);
+  direction.z = param_2.z - *(float *)(position + 0x108);
+  FUN_004c69f0((float *)&direction,(float *)&direction);
+  distance = *movement;
+  rowOffset = *(char *)(actor + 1) * 0x1c0;
+  position = *(int *)((u8 *)DAT_0086ef08 + rowOffset);
+  destination.x = direction.x * distance + *(float *)(position + 0x100) + 0.0f;
+  destination.y = direction.y * distance + *(float *)(position + 0x104);
+  destination.z = direction.z * distance + *(float *)(position + 0x108);
+  collision = destination;
+  line[1] = collision;
+  line[0] = line[1];
+  line[0].y = 400.0f;
+  line[1].y = -400.0f;
   if (*(int *)((u8 *)DAT_0086ef2c +
-              *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + iVar4) + 0x3c) + 1) * 0x1c0) == 4) {
-    bVar2 = 1;
+              *(char *)(*(int *)(*(int *)((u8 *)DAT_0086ef0c + rowOffset) + 0x3c) + 1) * 0x1c0) == 4) {
+    result = 1;
   }
   else {
-    lVar3 = FUN_001acc30_typed((void*)(afStack_60),(void*)(&fStack_30));
-    bVar2 = 1;
-    if (lVar3 == 1) {
-      if (50.0f < fStack_2c) {
-        bVar2 = 0;
-      }
-    }
-    else {
-      bVar2 = 0;
+    result = FUN_001acc30_typed((void *)line,(void *)&collision);
+    if ((result != 1) || (50.0f < collision.y)) {
+      result = 0;
     }
   }
-  if (bVar2) {
-    FUN_001afa20_typed((pfVar6[3]),(void*)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar1 + 1) * 0x1c0)),(void*)(&fStack_20))
-    ;
+  if ((result == 1) &&
+      (FUN_001afa20_typed(movement[3],
+                         (void *)(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(actor + 1) * 0x1c0)),
+                         (void *)&destination) == 1)) {
+    return 1;
   }
-  return bVar2;
+  return 0;
 }
 
 // FUN_00454D00 NONMATCHING

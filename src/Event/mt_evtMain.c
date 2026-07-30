@@ -20,6 +20,7 @@ extern u8 *FUN_003b5d10_evt_main(u16 param_1);
 extern u32 FUN_0039f710_evt_main(int *param_1);
 #pragma alias FUN_003bb390_evt FUN_003bb390
 extern void FUN_003bb390_evt(float param_1,u32 param_2);
+extern u32 FUN_003b8e80(u32 param_1,float param_2,u32 param_3);
 #pragma alias FUN_004c31b0_evt_main FUN_004c31b0
 extern void FUN_004c31b0_evt_main(void *matrix, void *axis, f32 angle, s32 mode);
 #pragma alias FUN_004c35d0_evt_main FUN_004c35d0
@@ -5273,8 +5274,6 @@ void FUN_00365430(int param_1,int param_2)
 }
 
 
-// An ascending two-case switch reproduced the intended physical body order but
-// regressed nd214 -> nd216 and size448 -> 452, so the if/else form was restored.
 // FUN_003655F0 NONMATCHING
 
 
@@ -5294,9 +5293,9 @@ u16 * FUN_003655f0(u32 param_1,int param_2,int param_3)
 
   u32 uVar5;
 
-  u32 stack20[3];
+  float stack20[3];
 
-  u32 stack10[3];
+  float stack10[3];
 
   
 
@@ -5322,30 +5321,39 @@ u16 * FUN_003655f0(u32 param_1,int param_2,int param_3)
 
   }
 
-  if (((puVar4 != (u16 *)0x0) && (*puVar4 == param_1)) &&
-
-     (lVar3 = FUN_003b5d10(*(u16 *)(param_2 + 0xc)), lVar3 != 0)) {
-
-    if ((char)puVar4[9] == '\x01') {
-      if ((int)(puVar4[10] & 0xfc00) >> 10 != 0) {
-        FUN_003bb390_evt((float)(int)(short)puVar4[0xb],0x1e58);
-        FUN_005225a8(0x69d720);
+  switch (puVar4 != (u16 *)0x0) {
+  case 1:
+    switch (*puVar4 == param_1) {
+    case 1:
+      lVar3 = FUN_003b5d10(*(u16 *)(param_2 + 0xc));
+      switch (lVar3 != 0) {
+      case 1:
+        switch ((char)puVar4[9]) {
+        case 0:
+          FUN_003bb400(0x1e58);
+          stack20[0] = *(float *)(puVar4 + 0xc);
+          stack20[1] = *(float *)(puVar4 + 0xe);
+          stack20[2] = *(float *)(puVar4 + 0x10);
+          stack10[0] = *(float *)(puVar4 + 0x12);
+          stack10[1] = *(float *)(puVar4 + 0x14);
+          stack10[2] = 0.0f;
+          FUN_003b87f0(*(u16 *)(param_2 + 0xc),stack20,puVar4[1],(char)puVar4[0x18]);
+          FUN_003b8b30(*(u16 *)(param_2 + 0xc),stack10,puVar4[1],(char)puVar4[0x18]);
+          FUN_003b8e80(*(u16 *)(param_2 + 0xc),*(float *)(puVar4 + 0x16),puVar4[1]);
+          FUN_005225a8(0x69d700,puVar4[1]);
+          break;
+        case 1:
+          if ((int)(puVar4[10] & 0xfc00) >> 10 != 0) {
+            FUN_003bb390_evt((float)(int)(short)puVar4[0xb],0x1e58);
+            FUN_005225a8(0x69d720);
+          }
+          break;
+        }
+        break;
       }
+      break;
     }
-    else if ((char)puVar4[9] == '\0') {
-      FUN_003bb400(0x1e58);
-      stack10[0] = *(u32 *)(puVar4 + 0xc);
-      stack10[1] = *(u32 *)(puVar4 + 0xe);
-      stack10[2] = *(u32 *)(puVar4 + 0x10);
-      stack20[0] = *(u32 *)(puVar4 + 0x12);
-      stack20[1] = *(u32 *)(puVar4 + 0x14);
-      stack20[2] = 0;
-      FUN_003b87f0(*(u16 *)(param_2 + 0xc),stack10,puVar4[1],(char)puVar4[0x18]);
-      FUN_003b8b30(*(u16 *)(param_2 + 0xc),stack20,puVar4[1],(char)puVar4[0x18]);
-      FUN_003b8e80(*(u32 *)(puVar4 + 0x16),*(u16 *)(param_2 + 0xc),puVar4[1]);
-      FUN_005225a8(0x69d700,puVar4[1]);
-    }
-
+    break;
   }
 
   return puVar4;
@@ -7032,15 +7040,15 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 
   int iStack_1c;
 
-  u32 *puStack_18;
+  float *puStack_18;
 
-  u32 *puStack_14;
+  float *puStack_14;
 
-  u32 *puStack_10;
+  float *puStack_10;
 
-  u32 *puStack_c;
+  float *puStack_c;
 
-  u32 *puStack_8;
+  float *puStack_8;
 
   u32 uStack_4;
 
@@ -7154,14 +7162,12 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 
   case 6:
 
-    if (*(char *)(iVar5 + 0x10) == '\0') {
-
+    switch (*(char *)(iVar5 + 0x10)) {
+    case 0:
       *(char *)(iVar5 + 0x11) = (char)*(u32 *)(iVar4 + 0x198);
-
       *(char *)(iVar5 + 0x12) = (char)*(u32 *)(iVar4 + 0x19c);
-
       *(char *)(iVar5 + 0x13) = (char)*(u32 *)(iVar4 + 0x1a0);
-
+      break;
     }
 
     break;
@@ -7177,65 +7183,42 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
   case 8:
 
     iVar3 = *piVar1;
-
-    if ((iVar3 == 0x30) || (iVar3 == 1)) {
-
-      if (*(char *)(iVar5 + 0x10) == '\x01') {
-
-        puStack_14 = (u32 *)0x0;
-
-        puStack_18 = (u32 *)0x0;
-
-        FUN_00386110((u32 *)&puStack_14,(u32 *)&puStack_18);
-
-        if (*(char *)(iVar5 + 0x14) == '\x02') {
-
-          *(u32 *)(iVar5 + 0x18) = *puStack_14;
-
-          *(u32 *)(iVar5 + 0x1c) = puStack_14[1];
-
-          *(u32 *)(iVar5 + 0x20) = puStack_14[2];
-
-          *(u32 *)(iVar5 + 0x28) = *puStack_18;
-
-          *(u32 *)(iVar5 + 0x2c) = puStack_18[1];
-
-        }
-
-        else if (*(char *)(iVar5 + 0x14) == '\0') {
-
-          *(u32 *)(iVar5 + 0x18) = *puStack_14;
-
-          *(u32 *)(iVar5 + 0x1c) = puStack_14[1];
-
-          *(u32 *)(iVar5 + 0x20) = puStack_14[2];
-
-        }
-
-      }
-
-    }
-
-    else if (iVar3 == 0x25) {
-
-      puStack_c = (u32 *)0x0;
-
-      puStack_10 = (u32 *)0x0;
-
+    switch (iVar3) {
+    case 0x25:
+      puStack_c = (float *)0x0;
+      puStack_10 = (float *)0x0;
       FUN_00386110((u32 *)&puStack_c,(u32 *)&puStack_10);
-
-      *(u32 *)(iVar5 + 0x14) = *puStack_c;
-
-      *(u32 *)(iVar5 + 0x18) = puStack_c[1];
-
-      *(u32 *)(iVar5 + 0x1c) = puStack_c[2];
-
-      *(u32 *)(iVar5 + 0x20) = *puStack_10;
-
-      *(u32 *)(iVar5 + 0x24) = puStack_10[1];
-
-      *(u32 *)(iVar5 + 0x28) = puStack_10[2];
-
+      *(float *)(iVar5 + 0x14) = puStack_c[0];
+      *(float *)(iVar5 + 0x18) = puStack_c[1];
+      *(float *)(iVar5 + 0x1c) = puStack_c[2];
+      *(float *)(iVar5 + 0x20) = puStack_10[0];
+      *(float *)(iVar5 + 0x24) = puStack_10[1];
+      *(float *)(iVar5 + 0x28) = puStack_10[2];
+      break;
+    case 1:
+    case 0x30:
+      switch (*(char *)(iVar5 + 0x10)) {
+      case 1:
+        puStack_14 = (float *)0x0;
+        puStack_18 = (float *)0x0;
+        FUN_00386110((u32 *)&puStack_14,(u32 *)&puStack_18);
+        switch (*(char *)(iVar5 + 0x14)) {
+        case 0:
+          *(float *)(iVar5 + 0x18) = puStack_14[0];
+          *(float *)(iVar5 + 0x1c) = puStack_14[1];
+          *(float *)(iVar5 + 0x20) = puStack_14[2];
+          break;
+        case 2:
+          *(float *)(iVar5 + 0x18) = puStack_14[0];
+          *(float *)(iVar5 + 0x1c) = puStack_14[1];
+          *(float *)(iVar5 + 0x20) = puStack_14[2];
+          *(float *)(iVar5 + 0x28) = puStack_18[0];
+          *(float *)(iVar5 + 0x2c) = puStack_18[1];
+          break;
+        }
+        break;
+      }
+      break;
     }
 
     break;
@@ -7260,16 +7243,13 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 
   case 10:
 
-    if (*piVar1 == 0x21) {
-
+    switch (*piVar1) {
+    case 0x21:
       iStack_1c = 0;
-
       FUN_00386390((u32 *)&iStack_1c,(u32 *)auStack_20,(u32 *)&piStack_24,(u32 *)&puStack_28);
-
       *(u16 *)(iVar5 + 0x14) = *(u16 *)(iStack_1c + *piStack_24 * 2);
-
       *(short *)(iVar5 + 0x16) = (short)*puStack_28;
-
+      break;
     }
 
     break;
@@ -7282,20 +7262,20 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 
   case 0xc:
 
-    if (((*piVar1 == 0x30) || (*piVar1 == 1)) && (*(char *)(iVar5 + 0x10) == '\x06')) {
-
-      uStack_4 = 0;
-
-      puStack_8 = (u32 *)0x0;
-
-      FUN_00386210(&uStack_4,(u32 *)&puStack_8);
-
-      *(u32 *)(iVar5 + 0x18) = *puStack_8;
-
-      *(u32 *)(iVar5 + 0x1c) = puStack_8[1];
-
-      *(u32 *)(iVar5 + 0x20) = 0;
-
+    switch (*piVar1) {
+    case 1:
+    case 0x30:
+      switch (*(char *)(iVar5 + 0x10)) {
+      case 6:
+        uStack_4 = 0;
+        puStack_8 = (float *)0x0;
+        FUN_00386210(&uStack_4,(u32 *)&puStack_8);
+        *(float *)(iVar5 + 0x18) = puStack_8[0];
+        *(float *)(iVar5 + 0x1c) = puStack_8[1];
+        *(u32 *)(iVar5 + 0x20) = 0;
+        break;
+      }
+      break;
     }
 
     break;
@@ -7314,28 +7294,25 @@ u64 FUN_003674b0(u64 param_1,u64 param_2,u32 *param_3)
 
   case 0xe:
 
-    if ((*piVar1 == 0x30) || (*piVar1 == 1)) {
-
+    switch (*piVar1) {
+    case 1:
+    case 0x30:
       *(short *)(iVar5 + 0x14) = (short)*(u32 *)(iVar4 + 0x198);
-
       *(char *)(iVar5 + 0x18) = (char)*(u32 *)(iVar4 + 0x19c);
-
       *(char *)(iVar5 + 0x19) = (char)*(u32 *)(iVar4 + 0x1a0);
-
+      break;
     }
 
     break;
 
   case 0xf:
 
-    if (*piVar1 == 0x25) {
-
+    switch (*piVar1) {
+    case 0x25:
       *(char *)(iVar5 + 0x11) = (char)*(u32 *)(iVar4 + 0x198);
-
       *(short *)(iVar5 + 0x14) = (short)*(u32 *)(iVar4 + 0x19c);
-
       *(char *)(iVar5 + 0x12) = (char)*(u32 *)(iVar4 + 0x1a0);
-
+      break;
     }
 
     break;
