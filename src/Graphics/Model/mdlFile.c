@@ -25560,6 +25560,8 @@ void FUN_00336df0(int param_1)
 
 
 
+// Genuine VU0 macro-mode asm: complete 190-operation retail graph reconstruction.
+// The aligned f32[4] buffers preserve the retail vector interfaces and ribbon-state flow.
 // FUN_00336E80 NONMATCHING
 
 
@@ -25621,55 +25623,19 @@ void FUN_00336e80(int param_1)
 
   float fVar24;
 
-  u32 in_vc6;
-
-  __int128 in_vf0;
-
-  __int128 auVar25;
-
-  __int128 auVar26;
-
-  __int128 auVar27;
-
-  __int128 extraout_vf28;
-
-  __int128 extraout_vf28_00;
-
-  __int128 extraout_vf29;
-
-  __int128 extraout_vf29_00;
-
-  __int128 extraout_vf30;
-
-  __int128 extraout_vf30_00;
-
-  u32 uVar28;
-
-  __int128 auStack_a0;
-
-  __int128 auStack_90;
-
-  __int128 auStack_80;
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  u32 uStack_68;
-
-  u32 uStack_64;
-
-  __int128 auStack_60;
-
-  __int128 auStack_50;
-
-  __int128 auStack_40;
-
-  __int128 auStack_30;
-
-  __int128 auStack_20;
-
-  __int128 auStack_10;
+  u32 dotBits;
+  float stack100[4] __attribute__((aligned(16)));
+  float stack110[4] __attribute__((aligned(16)));
+  float stack120[4] __attribute__((aligned(16)));
+  float stack130[4] __attribute__((aligned(16)));
+  float stack140[4] __attribute__((aligned(16)));
+  float stack150[4] __attribute__((aligned(16)));
+  float stack160[4] __attribute__((aligned(16)));
+  float stack170[4] __attribute__((aligned(16)));
+  float stack180[4] __attribute__((aligned(16)));
+  float stack190[4] __attribute__((aligned(16)));
+  float stackF0[4] __attribute__((aligned(16)));
+  float *selectedVec;
 
   
 
@@ -25683,85 +25649,61 @@ void FUN_00336e80(int param_1)
 
     iVar2 = *(int *)(iVar12 + 0x40);
 
-    FUN_00329740((u32 *)(&auStack_a0));
-
-    auVar26 = _lqc2(_DAT_0069c4a0);
-
-    auVar27 = _vmove(auVar26);
-
-    auVar25 = _qmtc2(*(float *)(iVar12 + 0x7c));
-
-    auVar25 = _vmulbc(auVar26,auVar25);
-
-    auStack_10 = _sqc2(auVar25);
-
-    auVar26 = _vmove(auVar27);
-
-    auVar25 = _qmtc2(*(float *)(iVar12 + 0x7c) + *(float *)(iVar12 + 0x80));
-
-    auVar25 = _vmulbc(auVar26,auVar25);
-
-    auStack_20 = _sqc2(auVar25);
-
-    auVar25 = _vsub(in_vf0,auVar25);
-
-    auStack_30 = _sqc2(auVar25);
-
-    _lqc2(*(u8 (*) [16])(param_1 + 0x10));
-
+    FUN_00329740((u32 *)stack100);
+    __asm__ volatile (
+        "lqc2 vf10, 0(%0)\n"
+        "vmove.xyzw vf12, vf10\n"
+        "mfc1 $v0, %4\n"
+        "nop\n"
+        "qmtc2.ni $v0, vf2\n"
+        "vmulx.xyzw vf10, vf10, vf2x\n"
+        "sqc2 vf10, 0(%1)\n"
+        "vmove.xyzw vf10, vf12\n"
+        "mfc1 $v0, %5\n"
+        "nop\n"
+        "qmtc2.ni $v0, vf2\n"
+        "vmulx.xyzw vf10, vf10, vf2x\n"
+        "sqc2 vf10, 0(%2)\n"
+        "vsub.xyz vf10, vf0, vf10\n"
+        "sqc2 vf10, 0(%3)"
+        : : "r"(&_DAT_0069c4a0), "r"(stack190), "r"(stack180), "r"(stack170),
+            "f"(*(float *)(iVar12 + 0x7c)),
+            "f"(*(float *)(iVar12 + 0x7c) + *(float *)(iVar12 + 0x80))
+        : "v0", "vf0", "vf2", "vf10", "vf12", "memory");
+    __asm__ volatile ("lqc2 vf10, 0(%0)" : : "r"(param_1 + 0x10) : "vf10");
     FUN_00357e30();
-
     fVar6 = DAT_007cae94;
-
     fVar5 = DAT_007cae58;
-
     fVar4 = DAT_007cae18;
-
-    auVar25 = _lqc2(_DAT_0069c4c0);
-
-    _vmulabc(extraout_vf28,auVar25);
-
-    _vmaddabc(extraout_vf29,auVar25);
-
-    auVar26 = _vmaddbc(extraout_vf30,auVar25);
-
-    auVar25 = _qmtc2(*(u32 *)(iVar12 + 0x84));
-
-    auVar26 = _vmulbc(auVar26,auVar25);
-
-    _vmove(in_vf0);
-
-    auVar25 = _vmul(auVar26,auVar26);
-
-    auVar25 = _vaddbc(auVar25,auVar25);
-
-    auVar25 = _vaddbc(auVar25,auVar25);
-
-    _vsqrt(auVar25);
-
-    _vwaitq();
-
-    uVar7 = _cfc2(in_vc6);
-
-    auVar25 = _vmul(auVar26,auVar26);
-
-    _vmulabc(in_vf0,auVar25);
-
-    _vmaddabc(in_vf0,auVar25);
-
-    auVar25 = _vmaddbc(in_vf0,auVar25);
-
-    _vrsqrt(in_vf0,auVar25);
-
-    uVar28 = _vwaitq();
-
-    auVar25 = _vmulq(auVar26,uVar28);
-
-    auStack_40 = _sqc2(auVar25);
+    __asm__ volatile (
+        "lqc2 vf10, 0(%1)\n"
+        "vmulax.xyzw ACC, vf28, vf10x\n"
+        "vmadday.xyzw ACC, vf29, vf10y\n"
+        "vmaddz.xyzw vf10, vf30, vf10z\n"
+        "qmtc2.ni %2, vf2\n"
+        "vmulx.xyzw vf10, vf10, vf2x\n"
+        "vmove.xyzw vf11, vf0\n"
+        "vmul.xyz vf2, vf10, vf10\n"
+        "vaddy.x vf2, vf2, vf2y\n"
+        "vaddz.x vf2, vf2, vf2z\n"
+        "vsqrt Q, vf2x\n"
+        "vwaitq\n"
+        "cfc2.ni %0, vi22\n"
+        "vmul.xyz vf2, vf10, vf10\n"
+        "vmulax.w ACC, vf0, vf2x\n"
+        "vmadday.w ACC, vf0, vf2y\n"
+        "vmaddz.w vf2, vf0, vf2z\n"
+        "vrsqrt Q, vf0w, vf2w\n"
+        "vwaitq\n"
+        "vmulq.xyz vf10, vf10, Q\n"
+        "sqc2 vf10, 0(%3)"
+        : "=r"(dotBits)
+        : "r"((u8 *)0x0069c4c0), "r"(*(u32 *)(iVar12 + 0x84)), "r"(stack160)
+        : "vf0", "vf2", "vf10", "vf11", "ACC", "Q", "memory");
 
     fVar18 = 2.0f;
 
-    fVar24 = ((float)uVar7 * 2.0f) / (float)*(u32 *)(iVar12 + 0x3c);
+    fVar24 = (*(float *)&dotBits * 2.0f) / (float)*(u32 *)(iVar12 + 0x3c);
 
     fVar21 = *(float *)(iVar12 + 0x44);
 
@@ -25787,29 +25729,21 @@ void FUN_00336e80(int param_1)
 
           puVar11 = *(u32 **)(*(int *)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x5c) + 0x14);
 
-          auVar25 = _lqc2(auStack_a0);
-
-          auVar26 = _lqc2(auStack_40);
-
-          _vopmula(auVar25,auVar26);
-
-          auVar26 = _vopmsub(auVar26,auVar25);
-
-          auVar25 = _vmul(auVar26,auVar26);
-
-          _vmulabc(in_vf0,auVar25);
-
-          _vmaddabc(in_vf0,auVar25);
-
-          auVar25 = _vmaddbc(in_vf0,auVar25);
-
-          _vrsqrt(in_vf0,auVar25);
-
-          uVar28 = _vwaitq();
-
-          auVar25 = _vmulq(auVar26,uVar28);
-
-          auStack_50 = _sqc2(auVar25);
+          __asm__ volatile (
+              "lqc2 vf10, 0(%0)\n"
+              "lqc2 vf11, 0(%1)\n"
+              "vopmula.xyz ACC, vf10, vf11\n"
+              "vopmsub.xyz vf10, vf11, vf10\n"
+              "vmul.xyz vf2, vf10, vf10\n"
+              "vmulax.w ACC, vf0, vf2x\n"
+              "vmadday.w ACC, vf0, vf2y\n"
+              "vmaddz.w vf2, vf0, vf2z\n"
+              "vrsqrt Q, vf0w, vf2w\n"
+              "vwaitq\n"
+              "vmulq.xyz vf10, vf10, Q\n"
+              "sqc2 vf10, 0(%2)"
+              : : "r"(stack100), "r"(stack160), "r"(stack150)
+              : "vf0", "vf2", "vf10", "vf11", "ACC", "Q", "memory");
 
           fVar14 = (float)FUN_00358030(0);
 
@@ -25821,57 +25755,45 @@ void FUN_00336e80(int param_1)
 
           fVar15 = fVar17 * fVar15;
 
-          auVar26 = _lqc2(auStack_50);
-
-          auVar25 = _qmtc2(fVar15);
-
-          auVar25 = _vmulbc(auVar26,auVar25);
-
-          auStack_80 = _sqc2(auVar25);
-
+          __asm__ volatile (
+              "lqc2 vf10, 0(%0)\n"
+              "mfc1 $v0, %1\n"
+              "nop\n"
+              "qmtc2.ni $v0, vf2\n"
+              "vmulx.xyzw vf10, vf10, vf2x\n"
+              "sqc2 vf10, 0(%2)"
+              : : "r"(stack150), "f"(fVar15), "r"(stack120)
+              : "v0", "vf2", "vf10", "memory");
           fVar16 = (float)FUN_0052e878_f32(fVar14);
-
-          auVar26 = _lqc2(auStack_40);
-
-          auVar25 = _qmtc2(fVar24);
-
-          auVar25 = _vmulbc(auVar26,auVar25);
-
-          auVar27 = _vmove(auVar25);
-
-          auVar26 = _lqc2(auStack_50);
-
-          auVar25 = _qmtc2(fVar17 * fVar16 - fVar15);
-
-          auVar25 = _vmulbc(auVar26,auVar25);
-
-          auVar25 = _vadd(auVar25,auVar27);
-
-          auVar27 = _vmove(auVar25);
-
-          auVar26 = _lqc2(auStack_80);
-
-          auVar25 = _vadd(auVar26,auVar25);
-
-          auStack_90 = _sqc2(auVar25);
-
-          auVar26 = _vmove(auVar27);
-
-          auVar25 = _vmul(auVar26,auVar26);
-
-          _vmulabc(in_vf0,auVar25);
-
-          _vmaddabc(in_vf0,auVar25);
-
-          auVar25 = _vmaddbc(in_vf0,auVar25);
-
-          _vrsqrt(in_vf0,auVar25);
-
-          uVar28 = _vwaitq();
-
-          auVar25 = _vmulq(auVar26,uVar28);
-
-          auStack_60 = _sqc2(auVar25);
+          __asm__ volatile (
+              "lqc2 vf10, 0(%0)\n"
+              "mfc1 $v0, %4\n"
+              "nop\n"
+              "qmtc2.ni $v0, vf2\n"
+              "vmulx.xyzw vf10, vf10, vf2x\n"
+              "vmove.xyzw vf12, vf10\n"
+              "lqc2 vf11, 0(%1)\n"
+              "mfc1 $v0, %5\n"
+              "nop\n"
+              "qmtc2.ni $v0, vf2\n"
+              "vmulx.xyzw vf10, vf11, vf2x\n"
+              "vadd.xyzw vf10, vf10, vf12\n"
+              "vmove.xyzw vf12, vf10\n"
+              "lqc2 vf11, 0(%2)\n"
+              "vadd.xyzw vf10, vf11, vf10\n"
+              "sqc2 vf10, 0(%3)\n"
+              "vmove.xyzw vf10, vf12\n"
+              "vmul.xyz vf2, vf10, vf10\n"
+              "vmulax.w ACC, vf0, vf2x\n"
+              "vmadday.w ACC, vf0, vf2y\n"
+              "vmaddz.w vf2, vf0, vf2z\n"
+              "vrsqrt Q, vf0w, vf2w\n"
+              "vwaitq\n"
+              "vmulq.xyz vf10, vf10, Q\n"
+              "sqc2 vf10, 0(%6)"
+              : : "r"(stack160), "r"(stack150), "r"(stack120), "r"(stack110),
+                  "f"(fVar24), "f"(fVar17 * fVar16 - fVar15), "r"(stack140)
+              : "v0", "vf0", "vf2", "vf10", "vf11", "vf12", "ACC", "Q", "memory");
 
           fVar23 = fVar19 * (fVar5 / (float)iVar10);
 
@@ -25879,197 +25801,135 @@ void FUN_00336e80(int param_1)
 
           for (iVar13 = 0; iVar13 < iVar10; iVar13 = iVar13 + 1) {
 
-            auVar25 = _lqc2(auStack_60);
-
-            auVar26 = _lqc2(auStack_a0);
-
-            _vopmula(auVar25,auVar26);
-
-            auVar26 = _vopmsub(auVar26,auVar25);
-
-            auVar25 = _vmul(auVar26,auVar26);
-
-            _vmulabc(in_vf0,auVar25);
-
-            _vmaddabc(in_vf0,auVar25);
-
-            auVar25 = _vmaddbc(in_vf0,auVar25);
-
-            _vrsqrt(in_vf0,auVar25);
-
-            uVar28 = _vwaitq();
-
-            auVar25 = _vmulq(auVar26,uVar28);
-
-            auStack_60 = _sqc2(auVar25);
-
-            auVar26 = _vmove(auVar25);
-
-            auVar25 = _lqc2(auStack_80);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[6] = DAT_0069c4d0;
-
-            puVar11[7] = DAT_0069c4d4;
-
-            puVar11[8] = DAT_0069c4d8;
-
-            auVar25 = _vmove(auVar26);
-
-            auVar26 = _lqc2(auStack_10);
-
-            auVar25 = _vmul(auVar25,auVar26);
-
-            auVar27 = _vmove(auVar25);
-
-            auVar25 = _lqc2(auStack_80);
-
-            auVar26 = _vmove(auVar25);
-
-            auVar25 = _vadd(auVar25,auVar27);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[3] = DAT_0069c4d0;
-
-            puVar11[4] = DAT_0069c4d4;
-
-            puVar11[5] = DAT_0069c4d8;
-
-            auVar25 = _vmove(auVar27);
-
-            auVar25 = _vsub(auVar26,auVar25);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[9] = DAT_0069c4d0;
-
-            puVar11[10] = DAT_0069c4d4;
-
-            puVar11[0xb] = DAT_0069c4d8;
-
-            auVar25 = _lqc2(auStack_60);
-
-            auVar26 = _lqc2(auStack_20);
-
-            auVar25 = _vmul(auVar25,auVar26);
-
-            auVar27 = _vmove(auVar25);
-
-            auVar25 = _lqc2(auStack_80);
-
-            auVar26 = _vmove(auVar25);
-
-            auVar25 = _vadd(auVar25,auVar27);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            *puVar11 = DAT_0069c4d0;
-
-            puVar11[1] = DAT_0069c4d4;
-
-            puVar11[2] = DAT_0069c4d8;
-
-            auVar25 = _vmove(auVar27);
-
-            auVar25 = _vsub(auVar26,auVar25);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[0xc] = DAT_0069c4d0;
-
-            puVar11[0xd] = DAT_0069c4d4;
-
-            puVar11[0xe] = DAT_0069c4d8;
-
-            uStack_70 = auStack_60._0_4_;
-
-            uStack_6c = auStack_60._4_4_;
-
-            uStack_68 = auStack_60._8_4_;
-
-            uStack_64 = auStack_60._12_4_;
-
-            auStack_80 = auStack_90;
-
-            auVar25 = _lqc2(auStack_90);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[0x15] = DAT_0069c4d0;
-
-            puVar11[0x16] = DAT_0069c4d4;
-
-            puVar11[0x17] = DAT_0069c4d8;
-
-            auVar25 = _lqc2(auStack_60);
-
-            auVar26 = _lqc2(auStack_10);
-
-            auVar25 = _vmul(auVar25,auVar26);
-
-            auVar27 = _vmove(auVar25);
-
-            auVar25 = _lqc2(auStack_90);
-
-            auVar26 = _vmove(auVar25);
-
-            auVar25 = _vadd(auVar25,auVar27);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[0x12] = DAT_0069c4d0;
-
-            puVar11[0x13] = DAT_0069c4d4;
-
-            puVar11[0x14] = DAT_0069c4d8;
-
-            auVar25 = _vmove(auVar27);
-
-            auVar25 = _vsub(auVar26,auVar25);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[0x18] = DAT_0069c4d0;
-
-            puVar11[0x19] = DAT_0069c4d4;
-
-            puVar11[0x1a] = DAT_0069c4d8;
-
-            auVar25 = _lqc2(auStack_60);
-
-            auVar26 = _lqc2(auStack_20);
-
-            auVar25 = _vmul(auVar25,auVar26);
-
-            auVar27 = _vmove(auVar25);
-
-            auVar25 = _lqc2(auStack_90);
-
-            auVar26 = _vmove(auVar25);
-
-            auVar25 = _vadd(auVar25,auVar27);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[0xf] = DAT_0069c4d0;
-
-            puVar11[0x10] = DAT_0069c4d4;
-
-            puVar11[0x11] = DAT_0069c4d8;
-
-            auVar25 = _vmove(auVar27);
-
-            auVar25 = _vsub(auVar26,auVar25);
-
-            _DAT_0069c4d0 = _sqc2(auVar25);
-
-            puVar11[0x1b] = DAT_0069c4d0;
-
-            puVar11[0x1c] = DAT_0069c4d4;
-
-            puVar11[0x1d] = DAT_0069c4d8;
+            __asm__ volatile (
+                "lqc2 vf10, 0(%0)\n"
+                "lqc2 vf11, 0(%1)\n"
+                "vopmula.xyz ACC, vf10, vf11\n"
+                "vopmsub.xyz vf10, vf11, vf10\n"
+                "vmul.xyz vf2, vf10, vf10\n"
+                "vmulax.w ACC, vf0, vf2x\n"
+                "vmadday.w ACC, vf0, vf2y\n"
+                "vmaddz.w vf2, vf0, vf2z\n"
+                "vrsqrt Q, vf0w, vf2w\n"
+                "vwaitq\n"
+                "vmulq.xyz vf10, vf10, Q\n"
+                "sqc2 vf10, 0(%0)\n"
+                "vmove.xyzw vf11, vf10\n"
+                "lqc2 vf10, 0(%2)\n"
+                "sqc2 vf10, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 24(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 28(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 32(%8)\n"
+                "vmove.xyzw vf10, vf11\n"
+                "lqc2 vf11, 0(%4)\n"
+                "vmul.xyzw vf10, vf10, vf11\n"
+                "vmove.xyzw vf12, vf10\n"
+                "lqc2 vf10, 0(%2)\n"
+                "vmove.xyzw vf11, vf10\n"
+                "vadd.xyzw vf10, vf10, vf12\n"
+                "sqc2 vf10, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 12(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 16(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 20(%8)\n"
+                "vmove.xyzw vf10, vf12\n"
+                "vsub.xyzw vf11, vf11, vf10\n"
+                "sqc2 vf11, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 36(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 40(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 44(%8)\n"
+                "lqc2 vf10, 0(%0)\n"
+                "lqc2 vf11, 0(%5)\n"
+                "vmul.xyzw vf10, vf10, vf11\n"
+                "vmove.xyzw vf12, vf10\n"
+                "lqc2 vf10, 0(%2)\n"
+                "vmove.xyzw vf11, vf10\n"
+                "vadd.xyzw vf10, vf10, vf12\n"
+                "sqc2 vf10, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 0(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 4(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 8(%8)\n"
+                "vmove.xyzw vf10, vf12\n"
+                "vsub.xyzw vf11, vf11, vf10\n"
+                "sqc2 vf11, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 48(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 52(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 56(%8)\n"
+                "lq $v0, 0(%0)\n"
+                "sq $v0, 0(%6)\n"
+                "lq $v0, 0(%7)\n"
+                "sq $v0, 0(%2)\n"
+                "lqc2 vf10, 0(%2)\n"
+                "sqc2 vf10, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 84(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 88(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 92(%8)\n"
+                "lqc2 vf10, 0(%0)\n"
+                "lqc2 vf11, 0(%4)\n"
+                "vmul.xyzw vf10, vf10, vf11\n"
+                "vmove.xyzw vf12, vf10\n"
+                "lqc2 vf10, 0(%2)\n"
+                "vmove.xyzw vf11, vf10\n"
+                "vadd.xyzw vf10, vf10, vf12\n"
+                "sqc2 vf10, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 72(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 76(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 80(%8)\n"
+                "vmove.xyzw vf10, vf12\n"
+                "vsub.xyzw vf11, vf11, vf10\n"
+                "sqc2 vf11, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 96(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 100(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 104(%8)\n"
+                "lqc2 vf10, 0(%0)\n"
+                "lqc2 vf11, 0(%5)\n"
+                "vmul.xyzw vf10, vf10, vf11\n"
+                "vmove.xyzw vf12, vf10\n"
+                "lqc2 vf10, 0(%2)\n"
+                "vmove.xyzw vf11, vf10\n"
+                "vadd.xyzw vf10, vf10, vf12\n"
+                "sqc2 vf10, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 60(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 64(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 68(%8)\n"
+                "vmove.xyzw vf10, vf12\n"
+                "vsub.xyzw vf11, vf11, vf10\n"
+                "sqc2 vf11, 0(%3)\n"
+                "lwc1 $f0, 0(%3)\n"
+                "swc1 $f0, 108(%8)\n"
+                "lwc1 $f0, 4(%3)\n"
+                "swc1 $f0, 112(%8)\n"
+                "lwc1 $f0, 8(%3)\n"
+                "swc1 $f0, 116(%8)"
+                : : "r"(stack140), "r"(stack100), "r"(stack120), "r"(&_DAT_0069c4d0),
+                    "r"(stack190), "r"(stack180), "r"(stack130), "r"(stack110), "r"(puVar11)
+                : "v0", "f0", "vf0", "vf2", "vf10", "vf11", "vf12", "ACC", "Q", "memory");
 
             fVar14 = fVar14 + fVar23;
 
@@ -26089,149 +25949,92 @@ void FUN_00336e80(int param_1)
 
             fVar16 = fVar17 * fVar16;
 
-            auVar26 = _lqc2(auStack_40);
-
-            auVar25 = _qmtc2(fVar24);
-
-            auVar25 = _vmulbc(auVar26,auVar25);
-
-            auVar27 = _vmove(auVar25);
-
-            auVar26 = _lqc2(auStack_50);
-
-            auVar25 = _qmtc2(fVar16 - fVar15);
-
-            auVar25 = _vmulbc(auVar26,auVar25);
-
-            auVar25 = _vadd(auVar25,auVar27);
-
-            auVar25 = _sqc2(auVar25);
-
+            __asm__ volatile (
+                "lqc2 vf10, 0(%0)\n"
+                "mfc1 $v0, %3\n"
+                "nop\n"
+                "qmtc2.ni $v0, vf2\n"
+                "vmulx.xyzw vf10, vf10, vf2x\n"
+                "vmove.xyzw vf12, vf10\n"
+                "lqc2 vf10, 0(%1)\n"
+                "mfc1 $v0, %4\n"
+                "nop\n"
+                "qmtc2.ni $v0, vf2\n"
+                "vmulx.xyzw vf10, vf10, vf2x\n"
+                "vadd.xyzw vf10, vf10, vf12\n"
+                "sqc2 vf10, 0(%2)"
+                : : "r"(stack160), "r"(stack150), "r"(stackF0),
+                    "f"(fVar24), "f"(fVar16 - fVar15)
+                : "v0", "vf2", "vf10", "vf12", "memory");
             fVar15 = (float)FUN_00358030(0);
-
-            FUN_00358340_vec(fVar6 * fVar18 * (fVar15 - 0.5f),(void *)&auStack_a0);
-
-            auVar25 = _lqc2(auVar25);
-
-            _vmulabc(extraout_vf28_00,auVar25);
-
-            _vmaddabc(extraout_vf29_00,auVar25);
-
-            auVar25 = _vmaddbc(extraout_vf30_00,auVar25);
-
-            auVar27 = _vmove(auVar25);
-
-            auVar26 = _lqc2(auStack_80);
-
-            auVar25 = _vadd(auVar26,auVar25);
-
-            auStack_90 = _sqc2(auVar25);
-
-            auVar26 = _vmove(auVar27);
-
-            auVar25 = _vmul(auVar26,auVar26);
-
-            _vmulabc(in_vf0,auVar25);
-
-            _vmaddabc(in_vf0,auVar25);
-
-            auVar25 = _vmaddbc(in_vf0,auVar25);
-
-            _vrsqrt(in_vf0,auVar25);
-
-            uVar28 = _vwaitq();
-
-            auVar25 = _vmulq(auVar26,uVar28);
-
-            auStack_60 = _sqc2(auVar25);
-
-            auVar25 = _lqc2(auStack_90);
-
-            auVar26 = _lqc2(auStack_80);
-
-            auVar26 = _vsub(auVar25,auVar26);
-
-            auVar25 = _vmul(auVar26,auVar26);
-
-            _vmulabc(in_vf0,auVar25);
-
-            _vmaddabc(in_vf0,auVar25);
-
-            auVar25 = _vmaddbc(in_vf0,auVar25);
-
-            _vrsqrt(in_vf0,auVar25);
-
-            uVar28 = _vwaitq();
-
-            auVar26 = _vmulq(auVar26,uVar28);
-
-            auVar25._4_4_ = uStack_6c;
-
-            auVar25._0_4_ = uStack_70;
-
-            auVar25._8_4_ = uStack_68;
-
-            auVar25._12_4_ = uStack_64;
-
-            auVar25 = _lqc2(auVar25);
-
-            auVar25 = _vmul(auVar26,auVar25);
-
-            auVar25 = _vaddbc(auVar25,auVar25);
-
-            auVar25 = _vaddbc(auVar25,auVar25);
-
-            auVar25 = _qmfc2(auVar25._0_4_);
-
-            if (*(float *)&auVar25._0_4_ < 0.0f) {
-
+            FUN_00358340_vec(fVar6 * fVar18 * (fVar15 - 0.5f),(void *)stack100);
+            __asm__ volatile (
+                "lqc2 vf10, 0(%1)\n"
+                "vmulax.xyzw ACC, vf28, vf10x\n"
+                "vmadday.xyzw ACC, vf29, vf10y\n"
+                "vmaddz.xyzw vf10, vf30, vf10z\n"
+                "vmove.xyzw vf12, vf10\n"
+                "lqc2 vf11, 0(%2)\n"
+                "vadd.xyzw vf11, vf11, vf10\n"
+                "sqc2 vf11, 0(%3)\n"
+                "vmove.xyzw vf10, vf12\n"
+                "vmul.xyz vf2, vf10, vf10\n"
+                "vmulax.w ACC, vf0, vf2x\n"
+                "vmadday.w ACC, vf0, vf2y\n"
+                "vmaddz.w vf2, vf0, vf2z\n"
+                "vrsqrt Q, vf0w, vf2w\n"
+                "vwaitq\n"
+                "vmulq.xyz vf10, vf10, Q\n"
+                "sqc2 vf10, 0(%4)\n"
+                "lqc2 vf10, 0(%3)\n"
+                "lqc2 vf11, 0(%2)\n"
+                "vsub.xyzw vf10, vf10, vf11\n"
+                "vmul.xyz vf2, vf10, vf10\n"
+                "vmulax.w ACC, vf0, vf2x\n"
+                "vmadday.w ACC, vf0, vf2y\n"
+                "vmaddz.w vf2, vf0, vf2z\n"
+                "vrsqrt Q, vf0w, vf2w\n"
+                "vwaitq\n"
+                "vmulq.xyz vf10, vf10, Q\n"
+                "lqc2 vf11, 0(%5)\n"
+                "vmul.xyz vf2, vf10, vf11\n"
+                "vaddy.x vf2, vf2, vf2y\n"
+                "vaddz.x vf2, vf2, vf2z\n"
+                "qmfc2.ni %0, vf2"
+                : "=r"(dotBits)
+                : "r"(stackF0), "r"(stack120), "r"(stack110), "r"(stack140), "r"(stack130)
+                : "vf0", "vf2", "vf10", "vf11", "vf12", "ACC", "Q", "memory");
+            if (*(float *)&dotBits < 0.0f) {
               pauVar8 = (u8 (*) [12])(puVar11 + 0x1b);
-
-              auVar25 = _lqc2(auStack_20);
-
+              selectedVec = stack180;
             }
-
             else {
-
               pauVar8 = (u8 (*) [12])(puVar11 + 0xf);
-
-              auVar25 = _lqc2(auStack_30);
-
+              selectedVec = stack170;
             }
-
-            auVar26 = _lqc2(auStack_60);
-
-            auVar27 = _lqc2(auStack_a0);
-
-            _vopmula(auVar26,auVar27);
-
-            auVar27 = _vopmsub(auVar27,auVar26);
-
-            auVar26 = _vmul(auVar27,auVar27);
-
-            _vmulabc(in_vf0,auVar26);
-
-            _vmaddabc(in_vf0,auVar26);
-
-            auVar26 = _vmaddbc(in_vf0,auVar26);
-
-            _vrsqrt(in_vf0,auVar26);
-
-            uVar28 = _vwaitq();
-
-            auVar26 = _vmulq(auVar27,uVar28);
-
-            auVar25 = _vmove(auVar25);
-
-            auVar25 = _vmul(auVar26,auVar25);
-
+            __asm__ volatile (
+                "lqc2 vf10, 0(%0)\n"
+                "lqc2 vf11, 0(%1)\n"
+                "vopmula.xyz ACC, vf10, vf11\n"
+                "vopmsub.xyz vf10, vf11, vf10\n"
+                "vmul.xyz vf2, vf10, vf10\n"
+                "vmulax.w ACC, vf0, vf2x\n"
+                "vmadday.w ACC, vf0, vf2y\n"
+                "vmaddz.w vf2, vf0, vf2z\n"
+                "vrsqrt Q, vf0w, vf2w\n"
+                "vwaitq\n"
+                "vmulq.xyz vf10, vf10, Q\n"
+                "lqc2 vf11, 0(%2)\n"
+                "vmul.xyzw vf10, vf10, vf11"
+                : : "r"(stack140), "r"(stack100), "r"(selectedVec)
+                : "vf0", "vf2", "vf10", "vf11", "ACC", "Q");
             memcpy(&_DAT_0069c4d0, *pauVar8, 12);
-
-            auVar26 = _lqc2(_DAT_0069c4d0);
-
-            auVar25 = _vadd(auVar25,auVar26);
-
-            auStack_80 = _sqc2(auVar25);
+            __asm__ volatile (
+                "lqc2 vf11, 0(%0)\n"
+                "vadd.xyzw vf10, vf10, vf11\n"
+                "sqc2 vf10, 0(%1)"
+                : : "r"(&_DAT_0069c4d0), "r"(stack120)
+                : "vf10", "vf11", "memory");
 
             fVar15 = fVar16;
 

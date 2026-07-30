@@ -80,8 +80,7 @@ typedef struct CampSkillInnerWork
 {
     u32 state;            /* 0x00 */
     u32 displayMode;      /* 0x04 */
-    s16 pcId;             /* 0x08 */
-    s16 reserved0a;       /* 0x0a */
+    s32 pcId;             /* 0x08 */
     u32 command;          /* 0x0c */
     s32 category;         /* 0x10 */
     u32 commandFlags;     /* 0x14 */
@@ -1587,7 +1586,7 @@ void FUN_00161d60(KwlnTask* task)
     RwFree(task->workData);
 }
 
-static inline void campSkillBuildAnimationPath(char* path, s16 pcId)
+static inline void campSkillBuildAnimationPath(char* path, s32 pcId)
 {
     if (datGetScenarioMode() != 0) {
         if (pcId == 9) {

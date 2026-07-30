@@ -581,10 +581,22 @@ void func_0023f540(void)
                 layout[j].y += 63.0f + y;
             }
             func_0021d890(slot + 0x110, (f32*)layout);
+            age = (s32)BI_U32(slot, 0x310);
+            if (age < 0) {
+                colorAlpha = 0.0f;
+            } else if (age < 8) {
+                colorAlpha = 1.0f;
+            } else if (age < 30) {
+                colorAlpha = 1.0f;
+            } else if (age < 34) {
+                colorAlpha = 1.0f - (f32)(age - 34) / 4.0f;
+            } else {
+                colorAlpha = 0.0f;
+            }
             color[0] = 0xff;
             color[1] = 0xff;
             color[2] = 0xff;
-            color[3] = (u8)(u32)(255.0f * alpha);
+            color[3] = (u8)(u32)(255.0f * colorAlpha);
             func_0021d950(slot + 0x110, color);
 
             frame = func_0021cca0(renderContext, 0x1c);

@@ -8126,41 +8126,42 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       fVar16 = 3.75f;
     }
     else {
-      sVar1 = *(short *)(*(int *)(iVar9 + 0xe0) + 0x6e);
-      if (sVar1 == 0x38) {
-        mid[1] = 1000.0f;
-        fStack_cc = 500.0f;
-        fVar16 = 1.5f;
-        bVar5 = 1;
-        *(undefined4 *)(iVar9 + 0xdc) = 4;
-      }
-      else if (sVar1 == 0x2c) {
-        mid[1] = 800.0f;
-        fStack_cc = 500.0f;
-        fVar16 = 2.0f;
-        bVar5 = 1;
-        *(undefined4 *)(iVar9 + 0xdc) = 0xc;
-      }
-      else if (sVar1 == 0x27) {
-        mid[1] = 600.0f;
-        fStack_cc = 200.0f;
-        bVar5 = 0;
-        *(undefined4 *)(iVar9 + 0xdc) = 8;
-        fVar16 = *(f32*)&uGpffff80ac;
-      }
-      else if (sVar1 == 0x26) {
+      switch (sVar1) {
+      case 0x26:
         mid[1] = 500.0f;
         fStack_cc = 200.0f;
         fVar16 = 1.25f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
-      }
-      else {
+        break;
+      case 0x27:
+        mid[1] = 600.0f;
+        fStack_cc = 200.0f;
+        bVar5 = 0;
+        *(undefined4 *)(iVar9 + 0xdc) = 8;
+        fVar16 = *(f32*)&uGpffff80ac;
+        break;
+      case 0x2c:
+        mid[1] = 800.0f;
+        fStack_cc = 500.0f;
+        fVar16 = 2.0f;
+        bVar5 = 1;
+        *(undefined4 *)(iVar9 + 0xdc) = 0xc;
+        break;
+      case 0x38:
+        mid[1] = 1000.0f;
+        fStack_cc = 500.0f;
+        fVar16 = 1.5f;
+        bVar5 = 1;
+        *(undefined4 *)(iVar9 + 0xdc) = 4;
+        break;
+      default:
         mid[1] = 500.0f;
         fStack_cc = 200.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0;
         fVar16 = *(f32*)&uGpffff809c;
+        break;
       }
       param_2 = 0;
       fStack_d0 = fStack_b4;
