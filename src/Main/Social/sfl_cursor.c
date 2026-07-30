@@ -162,24 +162,24 @@ void FUN_0025a130(void)
         fVar4 = (f32)(s32)puVar1[10] / 4.0f;
         f10 = ((SflCursorWork*)puVar1)->to[0] -
               ((SflCursorWork*)puVar1)->from[0];
+        fStack_10 = f10;
         f14 = ((SflCursorWork*)puVar1)->to[1] -
               ((SflCursorWork*)puVar1)->from[1];
+        fStack_14 = f14;
         f18 = ((SflCursorWork*)puVar1)->to[2] -
               ((SflCursorWork*)puVar1)->from[2];
-        fStack_10 = f10;
-        fStack_14 = f14;
         fStack_18 = f18;
         f10 *= fVar4;
-        f14 *= fVar4;
-        f18 *= fVar4;
         fStack_10 = f10;
+        f14 *= fVar4;
         fStack_14 = f14;
+        f18 *= fVar4;
         fStack_18 = f18;
         f10 += ((SflCursorWork*)puVar1)->from[0];
-        f14 += ((SflCursorWork*)puVar1)->from[1];
-        f18 += ((SflCursorWork*)puVar1)->from[2];
         fStack_10 = f10;
+        f14 += ((SflCursorWork*)puVar1)->from[1];
         fStack_14 = f14;
+        f18 += ((SflCursorWork*)puVar1)->from[2];
         fStack_18 = f18;
         ((SflCursorWork*)puVar1)->position[0] = fStack_10;
         ((SflCursorWork*)puVar1)->position[1] = fStack_14;
