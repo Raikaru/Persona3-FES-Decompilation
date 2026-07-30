@@ -14101,18 +14101,18 @@ int FUN_00380d70(int param_1,int param_2,int param_3)
   iVar3 = (int)param_3;
   switch (*(int *)(iVar3 + 0xd4)) {
   case 0x23:
-    if ((*(u16 *)DAT_007e0952_abs & 0x1000) == 0) {
-      if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
-        if (*(int *)(iVar3 + 400) == 3) {
-          *(u32 *)(iVar3 + 400) = 0;
-        } else {
-          *(int *)(iVar3 + 400) = *(int *)(iVar3 + 400) + 1;
-        }
+    if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
+      if (*(int *)(iVar3 + 400) == 0) {
+        *(u32 *)(iVar3 + 400) = 3;
+      } else {
+        *(int *)(iVar3 + 400) = *(int *)(iVar3 + 400) + -1;
       }
-    } else if (*(int *)(iVar3 + 400) == 0) {
-      *(u32 *)(iVar3 + 400) = 3;
-    } else {
-      *(int *)(iVar3 + 400) = *(int *)(iVar3 + 400) + -1;
+    } else if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
+      if (*(int *)(iVar3 + 400) == 3) {
+        *(u32 *)(iVar3 + 400) = 0;
+      } else {
+        *(int *)(iVar3 + 400) = *(int *)(iVar3 + 400) + 1;
+      }
     }
 
     iVar1 = *(int *)(iVar3 + 400);
