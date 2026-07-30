@@ -519,7 +519,7 @@ u32 FUN_003b3e60(u32 param_1,u32 param_2,u32 param_3)
 }
 #define FUN_003b3e60(...) ((u32 (*)(...))FUN_003b3e60)(__VA_ARGS__)
 #undef FUN_003b3f90
-// FUN_003B3F90 NONMATCHING
+// FUN_003B3F90
 
 
 void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
@@ -547,6 +547,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
   u32 base;
   u32 outer16;
   u32 inner16;
+  u32 rowOffset;
 
   u8 rawByte;
 
@@ -605,8 +606,10 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
       while ((int)uVar7 < 0x20) {
         inner16 = uVar7 & 0xffff;
 
-        uVar9 = ((u32)puVar6[inner16 & 0xf] +
-                (base + ((int)inner16 >> 4) * 0x20 & 0xffffU)) & 0xffff;
+        uVar9 = (u32)puVar6[inner16 & 0xf];
+        rowOffset = ((int)inner16 >> 4) * 0x20;
+        rowOffset += base;
+        uVar9 = (uVar9 + (rowOffset & 0xffffU)) & 0xffff;
         pbVar11 = (u8 *)(iVar4 + ((int)uVar9 >> 1));
         uVar10 = *src >> ((uVar7 & 1) << 2);
         rawByte = uVar10 & 0xf;

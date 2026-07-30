@@ -714,7 +714,7 @@ void FUN_002441b0(u32 param_1)
 
 
 
-// FUN_00244770 NONMATCHING
+// FUN_00244770
 void FUN_00244770(void)
 {
   uint uVar1;
@@ -733,7 +733,7 @@ void FUN_00244770(void)
     func_003b0170(sBpcWork[0x1b30]);
   }
   for (iVar4 = 0; (int)iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-    action = func_001ff430(puVar2[iVar4 + 4]);
+    action = func_001ff430(*(uint *)((u32)puVar2 + iVar4 * 4 + 0x10));
     switch (*(u8 *)(action + 0xa2)) {
     case 0:
       bppMain0020f8b0_u16(*(u16 *)(*(int *)(action + 0xa2c) + 2));
@@ -759,7 +759,7 @@ void FUN_00244770(void)
   case 0:
   case 1:
     for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-      FUN_00245970(FUN_00245bf0(puVar2[iVar4 + 4]));
+      FUN_00245970(FUN_00245bf0(*(uint *)((u32)puVar2 + iVar4 * 4 + 0x10)));
     }
     break;
   case 2:

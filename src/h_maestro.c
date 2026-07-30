@@ -1264,7 +1264,7 @@ void func_001120c0(void)
     }
 }
 
-// FUN_00112110 NONMATCHING
+// FUN_00112110
 void func_00112110(void* param_1)
 {
     MaestroBlobNode* node;
@@ -1304,7 +1304,8 @@ void func_00112110(void* param_1)
 
                 memcpy(record, node->source + node->sourceOffset, sizeof(record));
                 node->sourceOffset += sizeof(record);
-                node->resources[node->resourceIndex] = func_0010e880(node->source + record[1]);
+                *(void**)((u32)node + node->resourceIndex * 4 + 0x104) =
+                    func_0010e880(node->source + record[1]);
                 node->resourceIndex++;
             } while (*((u16*)(node->header + 0x14)) != node->resourceIndex);
             node->state = 4;

@@ -316,7 +316,9 @@ void func_00180030(void)
             continue;
         }
         currentDate = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-        recordDate = table->records[i * 4 + 1];
+        records = table->records;
+        records += i * 4;
+        recordDate = records[1];
         if (recordDate != currentDate)
         {
             continue;
@@ -333,15 +335,21 @@ void func_00180030(void)
             datSetFlag(0xa7a, false);
             datSetFlag(0xa9b, false);
             datSetFlag(0xa9c, false);
-            if (table->records[i * 4 + 3] == 5)
+            records = table->records;
+            records += i * 4;
+            if (records[3] == 5)
             {
                 datSetFlag(0xa98, true);
             }
-            if (table->records[i * 4 + 3] == 3)
+            records = table->records;
+            records += i * 4;
+            if (records[3] == 3)
             {
                 datSetFlag(0xa99, true);
             }
-            if (table->records[i * 4 + 3] == 2)
+            records = table->records;
+            records += i * 4;
+            if (records[3] == 2)
             {
                 datSetFlag(0xa9b, true);
             }
