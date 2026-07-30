@@ -200,11 +200,7 @@ void FUN_00252340(void)
         break;
     }
     fVar11 = fVar11 * 255.0f;
-    if (!(2.1474836e+09f <= fVar11)) {
-        auStack_20[3] = (u8)(int)fVar11;
-    } else {
-        auStack_20[3] = (u8)(int)(fVar11 - 2.1474836e+09f);
-    }
+    auStack_20[3] = (u8)fVar11;
     FUN_0021d950(puVar2 + 4, auStack_20);
 
     switch (puVar2[2]) {
@@ -245,6 +241,10 @@ void FUN_00252340(void)
         afStack_30[iVar4 * 2] = afStack_30[iVar4 * 2] - 127.0f;
         afStack_30[iVar4 * 2 + 1] = afStack_30[iVar4 * 2 + 1] - 61.0f;
     }
+    for (iVar4 = 0; iVar4 < 4; iVar4 = iVar4 + 1) {
+        afStack_30[iVar4 * 2] = afStack_30[iVar4 * 2] * fVar13;
+        afStack_30[iVar4 * 2 + 1] = afStack_30[iVar4 * 2 + 1] * fVar13;
+    }
 
     fVar13 = fGpffff8248 * (in_f21 / 360.0f) * 2.0f;
     for (iVar8 = 0; iVar8 < 4; iVar8 = iVar8 + 1) {
@@ -284,11 +284,7 @@ void FUN_00252340(void)
         break;
     }
     fVar11 = fVar11 * 255.0f * 0.5f;
-    if (!(2.1474836e+09f <= fVar11)) {
-        auStack_20[3] = (u8)(int)fVar11;
-    } else {
-        auStack_20[3] = (u8)(int)(fVar11 - 2.1474836e+09f);
-    }
+    auStack_20[3] = (u8)fVar11;
     FUN_0021d950(puVar2 + 0x44, auStack_20);
 
     if (puVar2[2] == 1) {
@@ -348,11 +344,7 @@ void FUN_00252340(void)
         break;
     }
     fVar11 = fVar11 * 255.0f;
-    if (!(2.1474836e+09f <= fVar11)) {
-        auStack_20[3] = (u8)(int)fVar11;
-    } else {
-        auStack_20[3] = (u8)(int)(fVar11 - 2.1474836e+09f);
-    }
+    auStack_20[3] = (u8)fVar11;
     FUN_0021d950(puVar2 + 0x84, auStack_20);
     *puVar2 = *puVar2 & 0xfffffffd;
 }

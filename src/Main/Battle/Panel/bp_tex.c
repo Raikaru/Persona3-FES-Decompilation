@@ -1653,6 +1653,7 @@ void bpTexShuffleNodes(void)
             break;
         }
     }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     node = BP_TEX_PTR(work, 0x1265c);
     while (node != NULL)
     {
@@ -2149,16 +2150,19 @@ void bpTexApplyActions(void)
     u32 tempIndex;
     u32* direct[8];
     u32* directOut[8];
-    u64 preload64;
-    f32 preloadFloat;
+    struct
+    {
+        u64 xy;
+        f32 z;
+    } preload;
 
     if (BP_TEX_GLOBAL == NULL)
     {
         func_0019d3f0((const char*)0x0068ea00, 0xbc);
     }
     work = BP_TEX_GLOBAL;
-    preload64 = *(u64*)0x0068ea70;
-    preloadFloat = *(f32*)0x0068ea78;
+    preload.xy = *(u64*)0x0068ea70;
+    preload.z = *(f32*)0x0068ea78;
     actionCount = BP_TEX_S32(work, 0x127a8);
     frame = BP_TEX_S32(work, 0x1267c);
     for (i = 0; i < actionCount; i++)
@@ -2256,7 +2260,7 @@ void bpTexApplyActions(void)
                 func_0019d3f0((const char*)0x0068ea00, 0xbc);
             }
             func_00258630(node);
-            func_004bdde0(0, &preload64, 0, 0);
+            func_004bdde0(0, &preload, 0, 0);
             func_0024fc40((u8*)node + 0x45a, quad);
             for (j = 0; j < (s32)action[8]; j++)
             {

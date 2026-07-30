@@ -3188,7 +3188,7 @@ void FUN_003cd0b0(int *param_1)
     case 2:
     case 4:
       FUN_003ca780(0,0,1.0f,1.0f,0x16,0xc,*(s16 *)(context + 0x12) | -0x100,0x15,0,0,
-                   *(int *)(context + 0xd4));
+                   *(int *)(context + 0xd0));
       FUN_003ca780(0,0,1.0f,1.0f,0x21b,0xc,*(s16 *)(context + 0x12) | -0x100,
                    0x16,0,0,*(int *)(context + 0xd0));
       break;

@@ -3263,13 +3263,13 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
   long lVar2;
 
-  int iVar3;
-
-  u32 uVar4;
+  int iVar6;
 
   u32 uVar5;
 
-  int iVar6;
+  u32 uVar4;
+
+  int iVar3;
 
   int iVar7;
 
@@ -3281,11 +3281,14 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
   uStack_2 = 0;
 
-  FUN_0036f900(param_1,param_2,0x1e,10,0,1,param_3,0x371710,0);
+  FUN_0036f900(param_1,param_2,0x1e,10,0,1,param_3,
+               (int)(code *)FUN_00371710,(code *)FUN_00371790);
 
   iVar7 = (int)param_3;
 
-  if (*(int *)(iVar7 + 0xd4) == 0xd) {
+  if (*(int *)(iVar7 + 0xd4) != 0xd) {
+    return 0;
+  }
 
     iVar3 = *(int *)(iVar7 + 0x198);
 
@@ -3476,13 +3479,6 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
     iVar6 = -(u32)((DAT_007e094e & 0x20) != 0);
 
-  }
-
-  else {
-
-    iVar6 = 0;
-
-  }
 
   return iVar6;
 
