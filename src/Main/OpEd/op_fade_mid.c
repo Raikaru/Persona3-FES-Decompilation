@@ -578,13 +578,9 @@ void func_002760f0(void)
     baseResource = brRes00234630(0);
     if ((OP_U32(work, 0) & 2) != 0)
     {
-        if (OP_S32(work, 0x614) == 1)
+        switch (OP_S32(work, 0x614))
         {
-            alpha = 1.0f;
-            offset = 0.0f;
-        }
-        else if (OP_S32(work, 0x614) == 0)
-        {
+        case 0:
             if (OP_S32(work, 0x610) < 0)
             {
                 alpha = 0.0f;
@@ -599,6 +595,11 @@ void func_002760f0(void)
             {
                 alpha = 1.0f;
             }
+            break;
+        case 1:
+            alpha = 1.0f;
+            offset = 0.0f;
+            break;
         }
     }
     else
@@ -633,19 +634,9 @@ void func_002760f0(void)
 
     if ((OP_U32(work, 0) & 2) != 0)
     {
-        if (OP_S32(work, 0x614) == 1)
+        switch (OP_S32(work, 0x614))
         {
-            s32 frame = OP_S32(work, 0x610);
-            if (frame < 0)
-                alpha = 0.0f;
-            else if (frame < 3)
-                alpha = (f32)frame / 3.0f;
-            else if (frame < 0x21)
-                alpha = 1.0f - (f32)(frame - 3) / 30.0f;
-            else
-                alpha = 0.0f;
-        }
-        else if (OP_S32(work, 0x614) == 0)
+        case 0:
         {
             s32 frame = OP_S32(work, 0x610);
             if (frame < 3)
@@ -656,6 +647,21 @@ void func_002760f0(void)
                 alpha = 1.0f - (f32)(frame - 6) / 30.0f;
             else
                 alpha = 0.0f;
+            break;
+        }
+        case 1:
+        {
+            s32 frame = OP_S32(work, 0x610);
+            if (frame < 0)
+                alpha = 0.0f;
+            else if (frame < 3)
+                alpha = (f32)frame / 3.0f;
+            else if (frame < 0x21)
+                alpha = 1.0f - (f32)(frame - 3) / 30.0f;
+            else
+                alpha = 0.0f;
+            break;
+        }
         }
     }
     else

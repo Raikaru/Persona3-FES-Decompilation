@@ -1052,7 +1052,7 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
         nextAnimation = 9;
     }
     if (datCalcIsDead(unit->datUnit, 0) != 0 &&
-        (unit->flags3 & BTLUNIT_FLAG3_UNK40) != 0 &&
+        (unit->flags3 & 0x20) != 0 &&
         (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
     {
         animation = func_00283510(unit, 0x12);
@@ -1087,15 +1087,27 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
         break;
     }
 
-    animCheck = 0;
-    if (unit->genus == UNIT_GENUS_EC || unit->genus == UNIT_GENUS_PC)
+    switch (unit->genus)
     {
+    case UNIT_GENUS_PC:
+        animCheck = 0;
         if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
             animCheck = unit->unk_9ce;
         if (unit->unk_9e0 == animCheck && unit->unk_9e0 != nextAnimation)
         {
             btlUnitAnimate(unit, nextAnimation, blendFrameCount, speed, mode);
         }
+        break;
+
+    case UNIT_GENUS_EC:
+        animCheck = 0;
+        if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
+            animCheck = unit->unk_9ce;
+        if (unit->unk_9e0 == animCheck && unit->unk_9e0 != nextAnimation)
+        {
+            btlUnitAnimate(unit, nextAnimation, blendFrameCount, speed, mode);
+        }
+        break;
     }
     unit->unk_9e0 = nextAnimation;
     unit->unk_9e2 = blend;
@@ -4254,6 +4266,7 @@ void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
         radius2 = *(const u16*)(table + 8);
         unit->unk_8c = (f32)radius * 2.0f;
         unit->sphereRadius = (f32)radius2 * 2.0f;
+        unit->scale = (f32)scale / 50.0f;
         goto update;
 
     default:

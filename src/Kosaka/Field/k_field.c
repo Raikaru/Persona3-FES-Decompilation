@@ -1775,11 +1775,11 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
 
     for (roomY = 0, startY = *y;
          roomY < pattern->raw[2];
-         roomY++, startY--)
+         roomY++, startY++)
     {
         for (roomX = 0, startX = *x;
              roomX < pattern->raw[1];
-             roomX++, startX--)
+             roomX++, startX++)
         {
             field = (u8*)K_Field_Get();
             for (row = 0; row < pattern->raw[2]; row++)
@@ -1803,22 +1803,22 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                     if (startY == 0x0e &&
                         (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x40) != 0)
                     {
-                        goto reject;
+                        return false;
                     }
                     if (startY == 1 &&
                         (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x10) != 0)
                     {
-                        goto reject;
+                        return false;
                     }
                     if (startX + col == 0x0e &&
                         (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x80) != 0)
                     {
-                        goto reject;
+                        return false;
                     }
                     if (startX + col == 1 &&
                         (pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x20) != 0)
                     {
-                        goto reject;
+                        return false;
                     }
 
                     neighbor = (u8*)K_Field_Get() +
@@ -1832,7 +1832,7 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                         if (((neighborFlags & 0x40) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x10) != 0))
                         {
-                            goto reject;
+                            return false;
                         }
                     }
                     neighbor = (u8*)K_Field_Get() +
@@ -1846,7 +1846,7 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                         if (((neighborFlags & 0x80) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x20) != 0))
                         {
-                            goto reject;
+                            return false;
                         }
                     }
                     neighbor = (u8*)K_Field_Get() +
@@ -1860,7 +1860,7 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                         if (((neighborFlags & 0x10) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x40) != 0))
                         {
-                            goto reject;
+                            return false;
                         }
                     }
                     neighbor = (u8*)K_Field_Get() +
@@ -1874,7 +1874,7 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
                         if (((neighborFlags & 0x20) != 0) !=
                             ((pattern->raw[row * 0x18 + col * 8 + 0x0e] & 0x80) != 0))
                         {
-                            goto reject;
+                            return false;
                         }
                     }
                 }
@@ -2637,9 +2637,9 @@ u32 func_001bf340(const FldDungeonFloorData* floorData)
         lower = (s32)FUN_0016F380(0x3d);
         upper = (s32)FUN_0016F380(0x3e);
         total = (s32)FUN_0016F380(0x37);
-        (void)FUN_0016F380(0x36);
         total += lower + upper;
-        choice = (s32)(RpRandom() % total);
+        i = (s32)FUN_0016F380(0x36);
+        choice = (s32)(RpRandom() % (total + i));
         FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
         if (choice < lower)
         {
