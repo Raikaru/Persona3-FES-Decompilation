@@ -1719,6 +1719,7 @@ void FUN_003b9610(Resrc* param_1)
 
   float fVar12;
 
+
   struct {
     float m_fStack_88;
     float m_fStack_84;
@@ -1758,25 +1759,19 @@ void FUN_003b9610(Resrc* param_1)
 
     uVar1 = *(u32 *)(puVar8 + 0x14);
 
-    if ((uVar1 & 0x20) == 0) {
-
-      if ((uVar1 & 8) == 0) {
-
-        iVar10 = 1;
-
-      }
-
-    }
-
-    else {
+    if ((uVar1 & 0x20) != 0) {
 
       iVar10 = *(int *)(puVar8 + 0x7a);
 
       *(u32 *)(puVar8 + 0x14) = uVar1 & 0xffffffdf;
 
-      puVar8[0x7a] = 0;
+      *(u32 *)(puVar8 + 0x7a) = 0;
 
-      puVar8[0x7b] = 0;
+    }
+
+    else if ((uVar1 & 8) == 0) {
+
+      iVar10 = 1;
 
     }
 

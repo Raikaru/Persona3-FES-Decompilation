@@ -1418,60 +1418,23 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
   float fVar25;
 
   float fVar26;
+  float qxx;
+  float qyy;
+  float qzz;
+  float qyz;
+  float qzx;
+  float qxy;
+  float qwx;
+  float qwy;
+  float qwz;
 
   int iStack_3a0;
 
-  float fStack_380;
-
-  float fStack_37c;
-
-  float fStack_378;
-
-  float fStack_374;
-
-  float fStack_370;
-
-  float fStack_36c;
-
-  float fStack_368;
-
-  float fStack_364;
-
-  float fStack_360;
-
-  float fStack_35c;
-
-  float fStack_358;
-
-  float fStack_354;
-
-  float fStack_350;
-
-  float fStack_34c;
-
-  float fStack_348;
-
-  float fStack_344;
-
-  float fStack_340;
-
-  float fStack_33c;
-
-  float fStack_338;
-
-  float fStack_334;
-
-  float fStack_330;
-
-  int iStack_32c;
-
-  float fStack_320;
-
-  float fStack_31c;
-
-  float fStack_318;
-
-  float fStack_314;
+  float quat380[4];
+  float quat370[4];
+  float quat360[4];
+  float slerpWork[10];
+  float quat320[4];
 
   RwMatrix rotation;
 
@@ -1515,35 +1478,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
   float afStack_90 [16];
 
-  float fStack_50;
-
-  float fStack_4c;
-
-  float fStack_48;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  RwV3d vector50;
+  RwV3d vector40;
+  RwV3d vector30;
+  RwV3d vector20;
+  RwV3d vector10;
 
   
 
@@ -1573,6 +1512,47 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 #define fStack_2e0 rotation.pos.x
 #define fStack_2dc rotation.pos.y
 #define fStack_2d8 rotation.pos.z
+#define fStack_380 quat380[0]
+#define fStack_37c quat380[1]
+#define fStack_378 quat380[2]
+#define fStack_374 quat380[3]
+#define fStack_370 quat370[0]
+#define fStack_36c quat370[1]
+#define fStack_368 quat370[2]
+#define fStack_364 quat370[3]
+#define fStack_360 quat360[0]
+#define fStack_35c quat360[1]
+#define fStack_358 quat360[2]
+#define fStack_354 quat360[3]
+#define fStack_350 slerpWork[0]
+#define fStack_34c slerpWork[1]
+#define fStack_348 slerpWork[2]
+#define fStack_344 slerpWork[3]
+#define fStack_340 slerpWork[4]
+#define fStack_33c slerpWork[5]
+#define fStack_338 slerpWork[6]
+#define fStack_334 slerpWork[7]
+#define fStack_330 slerpWork[8]
+#define iStack_32c (*(s32*)&slerpWork[9])
+#define fStack_320 quat320[0]
+#define fStack_31c quat320[1]
+#define fStack_318 quat320[2]
+#define fStack_314 quat320[3]
+#define fStack_50 vector50.x
+#define fStack_4c vector50.y
+#define fStack_48 vector50.z
+#define fStack_40 vector40.x
+#define fStack_3c vector40.y
+#define fStack_38 vector40.z
+#define fStack_30 vector30.x
+#define fStack_2c vector30.y
+#define fStack_28 vector30.z
+#define fStack_20 vector20.x
+#define fStack_1c vector20.y
+#define fStack_18 vector20.z
+#define uStack_10 (*(u32*)&vector10.x)
+#define uStack_c (*(u32*)&vector10.y)
+#define uStack_8 (*(u32*)&vector10.z)
 
   bVar14 = false;
 
@@ -1618,7 +1598,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       auStack_d0[12] = 0;
 
-      auStack_d0[3] = 0x20003;
+      auStack_d0[3] |= 0x20003;
 
       pfVar16 = (float *)auStack_d0;
 
@@ -1673,7 +1653,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
       afStack_90[13] = 0.0f;
       afStack_90[12] = 0.0f;
 
-      afStack_90[3] = (float)((u32)afStack_90[3] | 0x20003);
+      *(u32*)&afStack_90[3] |= 0x20003;
 
     }
 
@@ -1804,23 +1784,24 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       fVar21 = *(float *)(iVar15 + 0x14);
 
-      fStack_210 = 1.0f - (fVar23 * fVar23 + fVar20 * fVar20) * 2.0f;
-
-      fStack_20c = (fVar22 * fVar23 + fVar21 * fVar20) * 2.0f;
-
-      fStack_208 = (fVar20 * fVar22 - fVar21 * fVar23) * 2.0f;
-
-      fStack_200 = (fVar22 * fVar23 - fVar21 * fVar20) * 2.0f;
-
-      fStack_1fc = 1.0f - (fVar22 * fVar22 + fVar20 * fVar20) * 2.0f;
-
-      fStack_1f8 = (fVar23 * fVar20 + fVar21 * fVar22) * 2.0f;
-
-      fStack_1f0 = (fVar20 * fVar22 + fVar21 * fVar23) * 2.0f;
-
-      fStack_1ec = (fVar23 * fVar20 - fVar21 * fVar22) * 2.0f;
-
-      fStack_1e8 = 1.0f - (fVar22 * fVar22 + fVar23 * fVar23) * 2.0f;
+      qxx = fVar22 * fVar22;
+      qyy = fVar23 * fVar23;
+      qzz = fVar20 * fVar20;
+      qyz = fVar23 * fVar20;
+      qzx = fVar20 * fVar22;
+      qxy = fVar22 * fVar23;
+      qwx = fVar21 * fVar22;
+      qwy = fVar21 * fVar23;
+      qwz = fVar21 * fVar20;
+      fStack_210 = 1.0f - (qyy + qzz) * 2.0f;
+      fStack_20c = (qxy + qwz) * 2.0f;
+      fStack_208 = (qzx - qwy) * 2.0f;
+      fStack_200 = (qxy - qwz) * 2.0f;
+      fStack_1fc = 1.0f - (qxx + qzz) * 2.0f;
+      fStack_1f8 = (qyz + qwx) * 2.0f;
+      fStack_1f0 = (qzx + qwy) * 2.0f;
+      fStack_1ec = (qyz - qwx) * 2.0f;
+      fStack_1e8 = 1.0f - (qxx + qyy) * 2.0f;
 
       uStack_204 = 3;
 
@@ -1888,7 +1869,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       } while (0 < iVar9);
 
-      RwMatrixScale((RwMatrix*)afStack_190,(const RwV3d*)&fStack_30,1);
+      RwMatrixScale((RwMatrix*)afStack_190,&vector30,1);
 
       FUN_004c2f30((RwMatrix*)&fStack_310,(RwMatrix*)&fStack_210,(RwMatrix*)afStack_190);
 
@@ -1900,7 +1881,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       if (param_4 == 0) {
 
-        RwMatrixScale((RwMatrix*)&fStack_310,(const RwV3d*)&fStack_30,1);
+        RwMatrixScale((RwMatrix*)&fStack_310,&vector30,1);
 
         uStack_10 = 0;
 
@@ -1954,13 +1935,13 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             }
 
-            RwV3dNormalize((RwV3d*)&fStack_30,(RwV3d*)&fStack_30);
+            RwV3dNormalize(&vector30,&vector30);
 
             func_004c32a0(auStack_2d0,afStack_90);
 
-            func_004c6c60(&fStack_30,&fStack_30,auStack_2d0);
+            func_004c6c60(&vector30,&vector30,auStack_2d0);
 
-            RwV3dNormalize((RwV3d*)&fStack_30,(RwV3d*)&fStack_30);
+            RwV3dNormalize(&vector30,&vector30);
 
             fStack_50 = 0.0f;
 
@@ -1968,7 +1949,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             fStack_48 = -100.0f;
 
-            FUN_004c6be0((RwV3d*)&fStack_50,(const RwV3d*)&fStack_50,(const RwMatrix*)afStack_190);
+            FUN_004c6be0(&vector50,&vector50,(const RwMatrix*)afStack_190);
 
             fStack_40 = fStack_20 - fStack_50;
 
@@ -1976,9 +1957,9 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             fStack_38 = fStack_18 - fStack_48;
 
-            func_004c6c60(&fStack_40,&fStack_40,auStack_2d0);
+            func_004c6c60(&vector40,&vector40,auStack_2d0);
 
-            RwV3dNormalize((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+            RwV3dNormalize(&vector40,&vector40);
 
             fVar20 = (float)func_0052e9e8(fStack_3c);
 
@@ -2064,7 +2045,7 @@ finished_direct_rotation:
 
           FUN_004c2f30((RwMatrix*)pfVar5,(RwMatrix*)auStack_250,(RwMatrix*)auStack_290);
 
-          RtQuatConvertFromMatrix((RtQuat*)&fStack_320,(const RwMatrix*)pfVar5);
+          RtQuatConvertFromMatrix((RtQuat*)quat320,(const RwMatrix*)pfVar5);
 
           if (((*param_3 & 0x1000) == 0) || (!bVar14)) {
 
@@ -2104,7 +2085,7 @@ finished_direct_rotation:
         }
         goto finished_rotation_setup;
 use_existing_rotation:
-        RtQuatConvertFromMatrix((RtQuat*)&fStack_320,(const RwMatrix*)&fStack_310);
+        RtQuatConvertFromMatrix((RtQuat*)quat320,(const RwMatrix*)&fStack_310);
 finished_rotation_setup:
 
         if ((*param_3 & 0x200) != 0) {
@@ -2169,7 +2150,7 @@ finished_rotation_setup:
 
           fStack_364 = *(float *)(param_3 + 0xe);
 
-          func_004be310(&fStack_370,&fStack_320,&fStack_350);
+          func_004be310(quat370,quat320,slerpWork);
 
           fVar20 = *(float *)(param_3 + 2);
 
@@ -2257,7 +2238,7 @@ finished_rotation_setup:
 
           else {
 
-            RtQuatConvertFromMatrix((RtQuat*)&fStack_380,(const RwMatrix*)&fStack_310);
+            RtQuatConvertFromMatrix((RtQuat*)quat380,(const RwMatrix*)&fStack_310);
 
             fVar20 = fStack_374 * fStack_354 +
 
@@ -2291,7 +2272,7 @@ finished_rotation_setup:
 
               fVar20 = 1.0f - fGpffff8154 / (fVar20 * 2.0f);
 
-              func_004be310(&fStack_360,&fStack_380,&fStack_350);
+              func_004be310(quat360,quat380,slerpWork);
 
               if (fVar20 <= 0.0f) {
 
@@ -2437,7 +2418,7 @@ finished_rotation_setup:
 
         }
 
-        RwMatrixScale((RwMatrix*)pfVar5,(const RwV3d*)&fStack_30,1);
+        RwMatrixScale((RwMatrix*)pfVar5,&vector30,1);
 
         pfVar5[0xc] = fStack_20;
 
@@ -2507,7 +2488,7 @@ finished_rotation_setup:
 
         }
 
-        RwMatrixScale((RwMatrix*)&fStack_310,(const RwV3d*)&fStack_30,1);
+        RwMatrixScale((RwMatrix*)&fStack_310,&vector30,1);
 
         fStack_2e0 = fStack_20;
 
@@ -2686,6 +2667,47 @@ special_matrix_done:
 #undef fStack_2e0
 #undef fStack_2dc
 #undef fStack_2d8
+#undef fStack_380
+#undef fStack_37c
+#undef fStack_378
+#undef fStack_374
+#undef fStack_370
+#undef fStack_36c
+#undef fStack_368
+#undef fStack_364
+#undef fStack_360
+#undef fStack_35c
+#undef fStack_358
+#undef fStack_354
+#undef fStack_350
+#undef fStack_34c
+#undef fStack_348
+#undef fStack_344
+#undef fStack_340
+#undef fStack_33c
+#undef fStack_338
+#undef fStack_334
+#undef fStack_330
+#undef iStack_32c
+#undef fStack_320
+#undef fStack_31c
+#undef fStack_318
+#undef fStack_314
+#undef fStack_50
+#undef fStack_4c
+#undef fStack_48
+#undef fStack_40
+#undef fStack_3c
+#undef fStack_38
+#undef fStack_30
+#undef fStack_2c
+#undef fStack_28
+#undef fStack_20
+#undef fStack_1c
+#undef fStack_18
+#undef uStack_10
+#undef uStack_c
+#undef uStack_8
 
 
 
@@ -5819,10 +5841,16 @@ void FUN_00317a20(Model* param_1)
   u16 uStack_14;
   int iStack_c;
   int iStack_8;
-  u8 uStack_4;
-  u8 uStack_3;
-  u8 uStack_2;
-  char cStack_1;
+  float red;
+  float green;
+  float blue;
+  float alpha;
+  struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    char a;
+  } color;
   
   iVar8 = (int)param_1;
   if ((*(u16 *)(iVar8 + 0xd8) & 0x1000) != 0) {
@@ -5878,19 +5906,20 @@ void FUN_00317a20(Model* param_1)
         }
         if (bVar5) {
           if ((*(u16 *)(iVar8 + 0xd8) & 0x80) == 0) {
-            uStack_4 = (u8)
-                       (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd0) *
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a) * 255.0f + 0.5f);
-            uStack_3 = (u8)
-                       (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd1) *
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b) * 255.0f + 0.5f);
-            uStack_2 = (u8)
-                       (int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd2) *
-                             DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c) * 255.0f + 0.5f);
-            cStack_1 = (char)(int)(DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd3) *
-                                   DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d) * 255.0f + 0.5f);
-            FUN_0031dd40(*(u32 *)(iVar8 + 0x3f4),&uStack_4);
-            if (cStack_1 != '\0') {
+            red = DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd0);
+            green = DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd1);
+            blue = DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd2);
+            alpha = DAT_007caf08 * (float)*(u8 *)(iVar8 + 0xd3);
+            red = red * DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41a);
+            green = green * DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41b);
+            blue = blue * DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41c);
+            alpha = alpha * DAT_007caf08 * (float)*(u8 *)(iVar8 + 0x41d);
+            color.r = (u8)(int)(red * 255.0f + 0.5f);
+            color.g = (u8)(int)(green * 255.0f + 0.5f);
+            color.b = (u8)(int)(blue * 255.0f + 0.5f);
+            color.a = (char)(int)(alpha * 255.0f + 0.5f);
+            FUN_0031dd40(*(u32 *)(iVar8 + 0x3f4),&color.r);
+            if (color.a != '\0') {
               FUN_0031dc80(*(u32 *)(iVar8 + 0x3f4),*(u16 *)(iVar8 + 0x418));
             }
           }

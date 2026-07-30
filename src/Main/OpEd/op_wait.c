@@ -825,6 +825,9 @@ void opWait0026eed0(void)
         f32 halfW;
         f32 halfH;
         f32 rotation;
+        f32 rotationStart;
+        f32 rotationEnd;
+        f32 progress;
         s32 j;
 
         switch (i)
@@ -920,6 +923,21 @@ void opWait0026eed0(void)
             endY = 45.0f;
             break;
         }
+        switch (i)
+        {
+        case 0:
+            rotationStart = DAT_007cb160;
+            rotationEnd = DAT_007cb10c;
+            break;
+        case 1:
+            rotationStart = DAT_007cb160;
+            rotationEnd = DAT_007cb10c;
+            break;
+        case 2:
+            rotationStart = DAT_007cb160;
+            rotationEnd = DAT_007cb10c;
+            break;
+        }
 
         if (elapsed < 0)
             partAlpha = 0.0f;
@@ -938,11 +956,8 @@ void opWait0026eed0(void)
         else
             fade = 1.0f;
 
-        rotation = (f32)elapsed / (f32)end;
-        x = startX + rotation * (endX - startX);
-        y = startY + rotation * (endY - startY);
-        rotation = DAT_007cb160 + rotation *
-                   (DAT_007cb10c - DAT_007cb160);
+        progress = (f32)elapsed / (f32)end;
+        rotation = rotationStart + progress * (rotationEnd - rotationStart);
         halfW = width * 0.5f;
         halfH = height * 0.5f;
         points[0] = 0.0f;
@@ -969,8 +984,16 @@ void opWait0026eed0(void)
         }
         for (j = 0; j < 4; j++)
         {
-            points[j * 2] += halfW + x;
-            points[j * 2 + 1] += halfH + y;
+            points[j * 2] += halfW;
+            points[j * 2 + 1] += halfH;
+        }
+
+        x = startX + progress * (endX - startX);
+        y = startY + progress * (endY - startY);
+        for (j = 0; j < 4; j++)
+        {
+            points[j * 2] += x;
+            points[j * 2 + 1] += y;
         }
         func_0021d890(work->parts[i].quad, points);
         opWaitSetColor(work->parts[i].quad,

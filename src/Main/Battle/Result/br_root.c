@@ -1593,10 +1593,6 @@ void func_001f3270(KwlnTask *task)
         u32 low;
     } BrResultEntry;
     typedef struct {
-        u32 table0;
-        u32 table1;
-        u32 table2;
-        u32 table3;
         u32 limit;
         u32 total;
         u32 next;
@@ -1653,15 +1649,11 @@ void func_001f3270(KwlnTask *task)
     s16 card;
 
     /* Retail 0x1f32a0-0x1f32d4: data-table setup. */
-    local.table0 = (u32)func_00209e10();
-    local.table1 = (u32)func_00209e20();
-    local.table2 = (u32)func_00209e60();
-    local.table3 = (u32)func_00209e70();
+    table0 = (u8 *)func_00209e10();
+    table1 = (u8 *)func_00209e20();
+    table2 = (u8 *)func_00209e60();
+    table3 = (u8 *)func_00209e70();
     func_00209dd0();
-    table0 = (u8 *)local.table0;
-    table1 = (u8 *)local.table1;
-    table2 = (u8 *)local.table2;
-    table3 = (u8 *)local.table3;
 
     /* Retail 0x1f32d8-0x1f33b0: level-to-card threshold. */
     candidateCount = 0;
