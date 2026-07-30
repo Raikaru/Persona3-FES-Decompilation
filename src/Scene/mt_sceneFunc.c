@@ -5040,7 +5040,9 @@ u32 * FUN_003bd8a0(void)
 }
 #define FUN_003bd8a0(...) ((u32 * (*)(...))FUN_003bd8a0)(__VA_ARGS__)
 #undef FUN_003bd8b0
-// FUN_003BD8B0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_003BD8B0
 
 
 u32 FUN_003bd8b0(u32 id, u32 variant, u32 subVariant)
@@ -5078,6 +5080,7 @@ u32 FUN_003bd8b0(u32 id, u32 variant, u32 subVariant)
   }
   return (u32)-1;
 }
+#pragma pop
 #define FUN_003bd8b0(...) ((u32 (*)(...))FUN_003bd8b0)(__VA_ARGS__)
 #undef FUN_003bd9a0
 // FUN_003BD9A0
