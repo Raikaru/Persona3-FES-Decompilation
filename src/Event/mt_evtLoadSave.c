@@ -3496,11 +3496,8 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
       iVar21 = *(int *)(iVar24 + 0x9c) + iVar22;
 
       uVar6 = *(u16 *)(iVar21 + 0xe);
-
       uVar1 = *(u16 *)(iVar21 + 0x10);
-
       uVar2 = *(u16 *)(iVar21 + 0x12);
-
       *(u16 *)(iVar20 + 8) = *(u16 *)(iVar21 + 0xc);
       *(u16 *)(iVar20 + 10) = uVar6;
       *(u16 *)(iVar20 + 0xc) = uVar1;
@@ -4609,38 +4606,22 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
         puVar19 = (u32 *)(*(int *)(iVar24 + 0x104) + iVar14 * 0x14);
 
-        if (*(short *)((int)puVar19 + 2) == -1) {
-
-          if ((*puVar9 != (u32)(u8)*puVar19) || (puVar9[1] != (u32)*(u8 *)((int)puVar19 + 1)))
-
-          goto LAB_00392bb0;
-
-          puVar9 = puVar9 + 7;
-
-          iVar14 = 5;
-
-          do {
-
-            uVar7 = *puVar19;
-
-            puVar19 = puVar19 + 1;
-
-            iVar14 = iVar14 + -1;
-
-            *puVar9 = uVar7;
-
-            puVar9 = puVar9 + 1;
-
-          } while (0 < iVar14);
-
-          break;
-
+        if (*(short *)((int)puVar19 + 2) != -1) {
+          FUN_0019d3f0(0x6a0b00,0x7e7);
         }
-
-        FUN_0019d3f0(0x6a0b00,0x7e7);
-
-LAB_00392bb0:
-        ;
+        else if ((*puVar9 == (u32)(u8)*puVar19) &&
+                 (puVar9[1] == (u32)*(u8 *)((int)puVar19 + 1))) {
+          puVar17 = puVar9 + 7;
+          iVar20 = 5;
+          do {
+            uVar7 = *puVar19;
+            puVar19 = puVar19 + 1;
+            iVar20 = iVar20 + -1;
+            *puVar17 = uVar7;
+            puVar17 = puVar17 + 1;
+          } while (0 < iVar20);
+          break;
+        }
 
       }
 

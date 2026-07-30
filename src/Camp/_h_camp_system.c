@@ -132,7 +132,7 @@ typedef struct CampMenuWork
     u8 unknown34[0x120];
     u32 selectedPanel;
     u32 panelFlags[7];
-    u32 fadeStep;
+    s32 fadeStep;
     u32 unknown178;
 } CampMenuWork;
 typedef char CampMenuEntrySizeCheck[(sizeof(CampMenuEntry) == 0x44) ? 1 : -1];
@@ -390,6 +390,9 @@ extern u16 DAT_007e095a;
 extern s32 DAT_007cdf8c;
 extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
 extern const char D_005DBD20[];
+extern const char D_005DB050[];
+extern const char D_005DB0A0[];
+extern const char D_005DBC80[];
 extern char DAT_007cb66c[];
 
 extern void FUN_0018bc10(f32 first, void *animation, s32 start,
@@ -401,7 +404,9 @@ extern void campListAnimate(f32 first, void *animation, s32 start,
                             u64 endValues, u32 param8, u32 param9,
                             u32 param10, u32 param11);
 /* Explicit unresolved retail API declarations. */
-extern void *FUN_0010c1a0(u32 mode, const char *path, u32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6, u32 arg7);
+extern void *FUN_0010c1a0(u32 mode, const char *path, u32 arg2, u32 arg3,
+                          u32 arg4, u32 arg5, u32 arg6, u32 arg7,
+                          u32 arg8, u32 arg9, const char *source, u32 line);
 extern s32 FUN_0010c3a0(void *request, u32 *loaded, u64 arg3);
 extern void *FUN_00100d80(const char *path, u32 mode);
 extern void *FUN_00100d80(const char *path, u32 mode);
@@ -569,7 +574,7 @@ void *FUN_0015B430(KwlnTask *task)
 
     /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
     FUN_00113a30(100.0f, 0.0f, 20.0f,
-                 ((work->fadeStep * 0xffu) / 10u) | 0x72b5ff00u,
+                 ((work->fadeStep * 0xff) / 10) | 0x72b5ff00u,
                  0x280, 0x19a);
 
     switch (work->state) {
@@ -577,8 +582,12 @@ void *FUN_0015B430(KwlnTask *task)
         if (iGpffffb258 == NULL) {
             systemReady = -1;
         } else {
-            /* Retail dereferences the task's +0x3c work pointer directly. */
-            systemReady = (camp_menu_work(iGpffffb258)->state == 3);
+            /* Preserve retail's branch-fed scalar assignment. */
+            systemReady = 0;
+            if (camp_menu_work(iGpffffb258)->state != 3) {
+            } else {
+                systemReady = 1;
+            }
         }
         if (systemReady != 1) {
             return 0;
@@ -586,10 +595,12 @@ void *FUN_0015B430(KwlnTask *task)
 
         if (FUN_0017d800() != 0) {
             work->request = camp_menu_address(FUN_0010c1a0(
-                0, (const char *)(D_005E3E70 - 0x8e20), 0, 0, 0, 0, 0, 0));
+                0, D_005DB050, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DBC80, 0xef9));
         } else {
             work->request = camp_menu_address(FUN_0010c1a0(
-                0, (const char *)(D_005E3E70 - 0x8dd0), 0, 0, 0, 0, 0, 0));
+                0, D_005DB0A0, 0, 0, 0, 0, 0, 0,
+                0, 0, D_005DBC80, 0xefb));
         }
         work->allocation10 = camp_menu_address(func_0018b6d0(10));
         work->entriesAddress = camp_menu_address(func_0018b6d0(CAMP_MENU_ENTRY_COUNT));

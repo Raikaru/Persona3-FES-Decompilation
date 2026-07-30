@@ -2566,7 +2566,7 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     f32 drawY;
     u32 i;
     u32 row;
-    s8 alpha;
+    s32 alpha;
     s32 fade;
     s32 rank;
     void* glyph;
@@ -2649,6 +2649,7 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         drawPos.y = position.y;
         h_campStatusDrawStatValues(drawPos, scale, NULL, persona, (u8)alpha);
     }
+    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
     for (row = 0; row < 5; row++) {
         if (frame >= 3) {
             fade = frame - 3;
@@ -2696,7 +2697,6 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
             FUN_00115980(glyph);
         }
     }
-    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
     campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 0x11,
                              (u8)alpha, bottomPos.x + 21.0f,
                              bottomPos.y + 86.0f, scale);

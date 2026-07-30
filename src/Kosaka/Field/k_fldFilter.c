@@ -601,7 +601,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
             K_FldFrame_CtlCopyPos(&target, work->playerResrc->collisCtlTask);
             nearest = FUN_001d5140(cameraTask);
             curve = *(void**)((u8*)K_Field_Get() + 0x116c);
-            if (curve != NULL && *(void**)((u8*)K_Field_Get() + 0x116c) != NULL)
+            if (curve != NULL && *(void**)((u8*)curve + 0xa1c) != NULL)
             {
                 previous = nearest - 1;
                 if (previous < 0)

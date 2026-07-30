@@ -800,6 +800,7 @@ extern s32 func_00530da0(f32 value);
 extern s32 func_0052e118(s32 value);
 extern s32 func_0045ec20(s32 left, s32 right);
 extern f32 fGpffff82b0;
+extern f32 fGpffff82b4;
 extern void func_00318a30(Model* model, const RwV3d* offset, s32 combine);
 extern void func_00318a50(Model* model, const RwV3d* axis, f32 angle,
                           s32 combine);
@@ -1312,16 +1313,37 @@ void* func_001ae580(KwlnTask* task)
     }
     case 5:
     {
-        RwV3d axis = {0.0f, 1.0f, 0.0f};
-        if (model != NULL)
+        CollisCtl* ctl;
+        RwV3d velocity = {0.0f, 0.0f, 0.0f};
+
+        ctl = (CollisCtl*)fldFrameMoveCtl(work)->workData;
+        amount = work->points[0].duration;
+        if (ctl->state == COLLISCTL_STATE_NOTDIRTY)
         {
-            mdlRotate(model, &axis, localAngleStep, rwCOMBINEPOSTCONCAT);
+            velocity = ((RwMatrix*)func_00318b60((u32)ctl->mdl))->at;
+            func_004c69f0(&velocity, &velocity);
+            velocity.x *= amount;
+            velocity.y *= amount;
+            velocity.z *= amount;
+            ctl->totalDist += (u32)amount;
+            ctl->velocity = velocity;
+            ctl->state = COLLISCTL_STATE_DIRTY;
+        }
+        if ((*(u16*)work->resource & 0x3ff) >= 100)
+        {
+            f32 speed = amount / fGpffff82b4 * 2.0f;
+
+            if (ctl->mdl->id == 3)
+            {
+                speed = 1.0f;
+            }
+            func_003189f0(ctl->mdl, 0, speed);
         }
         work->frameCount--;
-        if (work->frameCount <= 0)
+        if (work->frameCount < 0)
         {
             func_001ae480(task);
-            work->state = 1;
+            work->state = (mode == 1 || mode == 4) ? 1 : 2;
         }
         return KWLNTASK_CONTINUE;
     }
