@@ -169,13 +169,7 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
   int iStack_50;
 
-  int iStack_30;
-
-  int iStack_2c;
-
-  int iStack_28;
-
-  int iStack_24;
+  int entry[4];
 
   MtEvtSaveHeader header;
   volatile /* Removing this qualifier worsens FUN_0038dad0 (NONMATCHING nd1389 -> NONMATCHING nd1581, size 2420 -> 2064) - measured W170. */ u64 aSize[15];
@@ -573,13 +567,13 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
     for (iVar12 = 0; iVar12 < 0x1c; iVar12 = iVar12 + 1) {
 
-      iStack_2c = 0;
+      entry[1] = 0;
 
-      iStack_28 = 0;
+      entry[2] = 0;
 
-      iStack_24 = 0;
+      entry[3] = 0;
 
-      iStack_30 = iVar12;
+      entry[0] = iVar12;
 
       switch(iVar12) {
 
@@ -587,9 +581,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if (param_2 == 2) {
 
-          iStack_2c = 0x24;
+          entry[1] = 0x24;
 
-          iStack_28 = 1;
+          entry[2] = 1;
 
         }
 
@@ -599,9 +593,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar1) && (param_2 != 3)) {
 
-          iStack_2c = 0x20;
+          entry[1] = 0x20;
 
-          iStack_28 = iVar1;
+          entry[2] = iVar1;
 
         }
 
@@ -611,9 +605,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if (param_2 == 1) {
 
-          iStack_2c = 0x10;
+          entry[1] = 0x10;
 
-          iStack_28 = iVar2;
+          entry[2] = iVar2;
 
         }
 
@@ -623,9 +617,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if (param_2 == 1) {
 
-          iStack_2c = 0x20;
+          entry[1] = 0x20;
 
-          iStack_28 = iVar3;
+          entry[2] = iVar3;
 
         }
 
@@ -635,9 +629,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((int)param_2 - 2U < 2) {
 
-          iStack_2c = 0x3c;
+          entry[1] = 0x3c;
 
-          iStack_28 = iVar4;
+          entry[2] = iVar4;
 
         }
 
@@ -647,9 +641,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < lVar5) && (param_2 == 2)) {
 
-          iStack_2c = 0x10;
+          entry[1] = 0x10;
 
-          iStack_28 = (int)lVar5;
+          entry[2] = (int)lVar5;
 
         }
 
@@ -681,9 +675,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar15) && (param_2 == 2)) {
 
-          iStack_2c = 0x30;
+          entry[1] = 0x30;
 
-          iStack_28 = iVar15;
+          entry[2] = iVar15;
 
         }
 
@@ -693,9 +687,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iStack_60) && (param_2 == 2)) {
 
-          iStack_2c = 0x20;
+          entry[1] = 0x20;
 
-          iStack_28 = iStack_60;
+          entry[2] = iStack_60;
 
         }
 
@@ -705,9 +699,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar16) && (param_2 == 2)) {
 
-          iStack_2c = 0x28;
+          entry[1] = 0x28;
 
-          iStack_28 = iVar16;
+          entry[2] = iVar16;
 
         }
 
@@ -717,9 +711,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar10) && (param_2 == 2)) {
 
-          iStack_2c = 0x2c;
+          entry[1] = 0x2c;
 
-          iStack_28 = iVar10;
+          entry[2] = iVar10;
 
         }
 
@@ -729,9 +723,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar13) && (param_2 == 2)) {
 
-          iStack_2c = 0x2c;
+          entry[1] = 0x2c;
 
-          iStack_28 = iVar13;
+          entry[2] = iVar13;
 
         }
 
@@ -741,9 +735,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iStack_70) && (param_2 == 2)) {
 
-          iStack_2c = 0x18;
+          entry[1] = 0x18;
 
-          iStack_28 = iStack_70;
+          entry[2] = iStack_70;
 
         }
 
@@ -753,9 +747,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iStack_80) && (param_2 == 2)) {
 
-          iStack_2c = 0x24;
+          entry[1] = 0x24;
 
-          iStack_28 = iStack_80;
+          entry[2] = iStack_80;
 
         }
 
@@ -765,9 +759,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar14) && (param_2 == 2)) {
 
-          iStack_2c = 0x2c;
+          entry[1] = 0x2c;
 
-          iStack_28 = iVar14;
+          entry[2] = iVar14;
 
         }
 
@@ -777,9 +771,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < lVar6) && (param_2 == 2)) {
 
-          iStack_2c = 0x14;
+          entry[1] = 0x14;
 
-          iStack_28 = (int)lVar6;
+          entry[2] = (int)lVar6;
 
         }
 
@@ -789,9 +783,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iStack_90) && (param_2 == 2)) {
 
-          iStack_2c = 0x28;
+          entry[1] = 0x28;
 
-          iStack_28 = iStack_90;
+          entry[2] = iStack_90;
 
         }
 
@@ -801,9 +795,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iStack_a0) && (param_2 == 2)) {
 
-          iStack_2c = 0x40;
+          entry[1] = 0x40;
 
-          iStack_28 = iStack_a0;
+          entry[2] = iStack_a0;
 
         }
 
@@ -813,9 +807,9 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
         if ((0 < iVar9) && (param_2 == 2)) {
 
-          iStack_2c = 0x130;
+          entry[1] = 0x130;
 
-          iStack_28 = iVar9;
+          entry[2] = iVar9;
 
         }
 
@@ -827,13 +821,13 @@ void FUN_0038dad0(u32 param_1,int param_2,int param_3)
 
       }
 
-      if ((iStack_2c != 0) || (iStack_28 != 0)) {
+      if ((entry[1] != 0) || (entry[2] != 0)) {
 
-        iStack_24 = iStack_50;
+        entry[3] = iStack_50;
 
-        iStack_50 = iStack_50 + iStack_2c * iStack_28;
+        iStack_50 = iStack_50 + entry[1] * entry[2];
 
-        FUN_004c0420(&iStack_30,0x10,1,param_1);
+        FUN_004c0420(&entry[0],0x10,1,param_1);
 
       }
 

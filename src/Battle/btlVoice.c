@@ -5627,7 +5627,7 @@ LAB_002e4af0:
       FUN_00280130_btlVoice_typed((BtlUnit *)iVar2,&sourcePos);
       cameraPos = initialPos;
       fVar6 = height * 1.25f;
-      if (height * 1.25f <= initialPos.y) {
+      if (initialPos.y >= height * 1.25f) {
         fVar6 = cameraPos.y;
       }
       cameraPos.y = fVar6;

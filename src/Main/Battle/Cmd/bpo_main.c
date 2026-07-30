@@ -181,10 +181,10 @@ void FUN_00252340(void)
     }
 
     fVar13 = 1.5f;
-    afStack_30[0] = (-0.5f * (float)*(int *)(unaff_s2_lo + 0xc)) / 2.0f + 133.0f;
-    afStack_30[1] = (-0.5f * (float)*(int *)(unaff_s2_lo + 0x10)) / 2.0f + 146.0f;
-    afStack_30[2] = 1.5f * (float)*(int *)(unaff_s2_lo + 0xc);
-    afStack_30[3] = 1.5f * (float)*(int *)(unaff_s2_lo + 0x10);
+    afStack_30[0] = ((float)*(int *)(unaff_s2_lo + 0xc) * -(fVar13 - 1.0f)) / 2.0f + 133.0f;
+    afStack_30[1] = ((float)*(int *)(unaff_s2_lo + 0x10) * -(fVar13 - 1.0f)) / 2.0f + 146.0f;
+    afStack_30[2] = fVar13 * (float)*(int *)(unaff_s2_lo + 0xc);
+    afStack_30[3] = fVar13 * (float)*(int *)(unaff_s2_lo + 0x10);
     FUN_0021d8e0(puVar2 + 4, afStack_30);
 
     switch (puVar2[2]) {

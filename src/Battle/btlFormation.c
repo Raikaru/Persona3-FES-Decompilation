@@ -603,7 +603,7 @@ extern void func_002b9d40(int param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4);
 extern void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4);
-extern void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16]);
+extern void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16]);
 extern void func_002ba3a0(int param_1);
 #pragma alias func_002ba3a0_void func_002ba3a0
 extern void func_002ba3a0_void(void);
@@ -1854,7 +1854,7 @@ void func_002ba0d0(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
 
 // FUN_002ba0f0 NONMATCHING
 
-void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
+void func_002ba0f0(int param_1,int param_2,u8 *param_3,u8 (*param_4) [16])
 
 {
   int iVar1 = 0;
@@ -2144,7 +2144,7 @@ void func_002ba3a0(int param_1)
            (((piVar10[2] & 0x1eU) == 0 && (0x31 < *(u8 *)(piVar10 + 5))))) {
           (*(PTR_FUN_00696490)[(u8)pcVar11[8]])(param_1,iVar3,pcVar11 + 8,auStack_30);
           func_00325c10(*piVar12,auStack_30);
-          func_002ba0f0(param_1,iVar3,pcVar11 + 8,&auStack_40);
+          func_002ba0f0(param_1,iVar3,(u8 *)pcVar11 + 8,&auStack_40);
           func_00325d60(*piVar12,auStack_40);
           func_00326030(*piVar12,uVar4);
           func_003252a0(*piVar12);

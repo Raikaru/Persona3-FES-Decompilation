@@ -1021,6 +1021,7 @@ BtlPacket* func_00282130(BtlUnit* unit, u16 blendFrameCount)
 void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
 {
     u32 canUseLowHp;
+    u32 canUseDeath;
     s16 animation;
     s16 nextAnimation;
     s16 mode;
@@ -1030,14 +1031,12 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
 
     nextAnimation = 0;
     canUseLowHp = 0;
+    canUseDeath = 0;
     if (datCalcIsLowHp(unit->datUnit) != 0 && (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
     {
         animation = func_00283510(unit, 0x11);
-        if (func_00318620(unit->mdl, 0, animation) != 0 &&
-            func_003186e0(unit->mdl, 0, animation) != 1)
-        {
-            canUseLowHp = 1;
-        }
+        canUseLowHp = func_00318620(unit->mdl, 0, animation) != 0 &&
+                      func_003186e0(unit->mdl, 0, animation) != 1;
     }
     if (canUseLowHp)
     {
@@ -1056,11 +1055,12 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
         (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
     {
         animation = func_00283510(unit, 0x12);
-        if (func_00318620(unit->mdl, 0, animation) != 0 &&
-            func_003186e0(unit->mdl, 0, animation) != 1)
-        {
-            nextAnimation = 0x12;
-        }
+        canUseDeath = func_00318620(unit->mdl, 0, animation) != 0 &&
+                      func_003186e0(unit->mdl, 0, animation) != 1;
+    }
+    if (canUseDeath)
+    {
+        nextAnimation = 0x12;
     }
 
     if (nextAnimation == 0x12)

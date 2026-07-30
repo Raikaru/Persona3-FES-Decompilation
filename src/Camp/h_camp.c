@@ -214,6 +214,7 @@ void* h_campUpdateTask(KwlnTask* task)
         sCampPersonaDisplayTask = FUN_00122660(task);
         sCampPersonaControlTask = FUN_00123000(task, func_00174800(1));
         sCampMenuTask = work->menuTask;
+        sCampSelectedEntry = 0;
         work->rootStarted = 0;
         work->state = 1;
         break;

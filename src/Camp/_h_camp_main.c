@@ -1312,7 +1312,7 @@ void* FUN_001355c0(KwlnTask* task)
         }
         FUN_00138e80(100.0f, 0, (const s32*)&work[8], (s32)work[4],
                      (s32)work[2], (s32)work[1], (s32)work[5], 0,
-                     (s32)work[3], 0, 0);
+                     (s32)work[3], (s32)work[6], 0);
         if ((s32)work[3] > 9 && (s32)work[6] < 10) {
             work[6]++;
         }
