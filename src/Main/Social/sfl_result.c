@@ -553,14 +553,14 @@ void sflResult001f9e90(u16 owner, s32 exp)
 #define FUN_00182c50 FUN_00182c50_typed
 #define FUN_001831e0 FUN_001831e0_typed
 #define FUN_0016da50 FUN_0016da50_typed
-// FUN_001FA0D0 NONMATCHING
+// FUN_001FA0D0
 
 
 void func_001fa0d0(void)
 {
     u32 uVar3;
     u8* pcVar2;
-    u8 auStack_20[16];
+    u8 auStack_20[32];
 
     for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
         switch (uVar3) {
