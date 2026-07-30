@@ -629,7 +629,7 @@ RwMemoryFunctions* H_Pad_GetRwMemoryFunctions(void)
 // second parameter (hint) - added as an unused param (its body never
 // reads it) since the caller passes it in $a1 per retail. obj 88B->312B/
 // 320B; residual is a small OR-condition register-choice floor.
-// FUN_00104140 NONMATCHING
+// FUN_00104140
 void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint)
 {
     HPadRwAllocation* allocation;
@@ -639,11 +639,11 @@ void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint)
 
     if (kwlnTaskGetUpdating() != NULL) {
         if (strcmp("H_CutInDraw", (const char*)kwlnTaskGetUpdating()) == 0) {
-            switch (size) {
-            case 0x1fe0:
-            case 0x27d8:
+            if (size == 0x27d8) goto pr;
+            if (size == 0x1fe0) goto pr;
+            if (size == 0x27d8) {
+pr:
                 printf(D_005CEAE0_sda);
-                break;
             }
         }
     }
