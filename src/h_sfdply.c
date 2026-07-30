@@ -248,6 +248,8 @@ typedef struct HSfdRenderView
 } HSfdRenderView;
 
 static s32 sSfdFrameIndex;
+#pragma alias sSfdFrameIndex_abs sSfdFrameIndex
+extern u8 sSfdFrameIndex_abs[];
 static KwlnTask* sSfdPlayTask;
 static HSfdQueueEntry sSfdQueueEntries[HSFD_QUEUE_COUNT];
 static s32 sSfdThreadIds[HSFD_QUEUE_COUNT];
@@ -1430,7 +1432,7 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
 void func_0010c5f0(void)
 {
     HSfdAsyncEntry* entry;
-    s32 i;
+    s16 i;
     s32 enabled;
 
     for (i = 0; i < HSFD_QUEUE_COUNT; i++)
@@ -1449,7 +1451,7 @@ void func_0010c5f0(void)
                         if (enabled != 0)
                             FUN_0050d3f0();
                         entry->state = 1;
-                        goto request_done;
+                        goto queue_done;
                     }
                     entry->request = NULL;
                     enabled = 0;
@@ -1469,16 +1471,19 @@ request_ready:
 request_restore:
                     if (enabled != 0)
                         FUN_0050d3f0();
-                    break;
+                    goto queue_done;
                 case 2:
                     entry->age++;
-                    break;
+                    goto queue_done;
                 case 3:
+                    entry = entry->next;
+                    if (entry == NULL)
+                        goto queue_done;
                     break;
             }
-request_done:
-            entry = entry->next;
         }
+queue_done:
+        ;
     }
 }
 
@@ -1576,7 +1581,8 @@ void func_0010cac0(void)
 {
     HSfdDecodeSlot* slot;
     HSfdDecodeSlot* slots;
-    s32 i;
+    s16 i;
+    s16 j;
 
     FUN_00512868();
     FUN_0051da48(0);
@@ -1599,9 +1605,9 @@ void func_0010cac0(void)
         slot->status = 0;
         slot->index = i;
     }
-    for (i = 0; i < 16; i++)
+    for (j = 0; j < 16; j++)
         ;
-    sSfdFrameIndex = 0;
+    *(s32*)sSfdFrameIndex_abs = 0;
 
     sSfdDecodeSlots[0].intermediate = (u8*)FUN_0051d6f8(0x96000);
     sSfdDecodeSlots[1].intermediate = (u8*)FUN_0051d6f8(0xAF000);
@@ -1819,6 +1825,7 @@ void func_0010cdd0(void)
                 void* sourceData;
                 void* inputBuf;
                 void* auxBuf;
+                void* auxData;
                 void* outputData;
                 void* outputBuf;
                 s32 chunkSize;
@@ -1838,6 +1845,7 @@ void func_0010cdd0(void)
                 output = slot->output;
                 outputSize = slot->outputSize;
                 resourceData = slot->resource;
+                auxData = slot->aux;
 
                 copySize = inputSize;
                 inputBuf = (void*)func_0050B690(0, copySize, 0);
@@ -1859,9 +1867,9 @@ void func_0010cdd0(void)
                         chunkSize = (remaining + 0x7F) & ~0x7F;
                         remaining = 0;
                     }
-                    func_0010cce0(auxBuf, inputBuf, chunkSize);
+                    func_0010cce0(auxBuf, auxData, chunkSize);
                     func_8051DBC0(1, auxBuf, outputData, chunkSize);
-                    inputBuf = (void*)((u8*)inputBuf + chunkSize);
+                    auxData = (void*)((u8*)auxData + chunkSize);
                     outputData = (void*)((u8*)outputData + chunkSize);
                 } while (remaining != 0);
 

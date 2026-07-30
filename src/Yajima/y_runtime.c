@@ -1222,7 +1222,7 @@ u64 FUN_00430bb0(int param_1);
 u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4);
 u64 FUN_004312b0(int param_1);
 u32 FUN_00431670(int param_1,char param_2,u32 param_3);
-u64 FUN_00439f60(u64 param_1,char param_2);
+u64 FUN_00439f60(int param_1,char param_2);
 u64 FUN_0043a0b0(u64 param_1,char param_2);
 u32 FUN_0043c690(u32 param_1);
 u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3);
@@ -2639,8 +2639,8 @@ u64 FUN_00430060(int param_1);
 u64 FUN_00430bb0(int param_1);
 u32 FUN_00431110(u64 param_1,YajimaVec2 param_2,char param_3,u8 param_4);
 u32 FUN_00431670(int param_1,char param_2,u32 param_3);
-u64 FUN_00439f60(u64 param_1,char param_2);
-u64 FUN_00439f60(u64 param_1,char param_2);
+u64 FUN_00439f60(int param_1,char param_2);
+u64 FUN_00439f60(int param_1,char param_2);
 u64 FUN_0043a0b0(u64 param_1,char param_2);
 u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3);
 u64 FUN_0044aaf0(int param_1);
@@ -6864,7 +6864,7 @@ void FUN_00438010(int param_1)
   u16 uVar7;
   short sVar8;
   u32 uVar9;
-  long iVar10;
+  u32 iVar10;
   u8 uVar11;
   u8 bVar12;
   char cVar13;
@@ -7095,7 +7095,7 @@ LAB_00438780:
           *(u8 *)(iVar2 + 0x100) = uVar11;
           *(u8 *)(iVar2 + 0x102) = uVar11;
         }
-        iVar14 = *(int *)((int)param_1 + 0x3c);
+        iVar14 = iVar2;
         if (('\0' < *(char *)(iVar14 + (u32)*(u8 *)(iVar14 + 0xf8) +
                               (u32)*(u8 *)(iVar14 + 0xf9) * 0x10 + 0x109)) &&
            (cVar13 = FUN_00433160(param_1), cVar13 != '\0')) {
@@ -7632,7 +7632,7 @@ void FUN_00439520(int param_1)
 
 // FUN_00439F60 NONMATCHING
 
-u64 FUN_00439f60(u64 param_1,char param_2)
+u64 FUN_00439f60(int param_1,char param_2)
 
 {
   int iVar1;
@@ -15201,7 +15201,7 @@ u32 FUN_004514a0(char param_1)
 
 {
   short sVar1;
-  u64 uVar2;
+    u64 uVar2;
   int iVar3;
   u32 uVar4;
   char cVar5;
@@ -15220,30 +15220,30 @@ u32 FUN_004514a0(char param_1)
   int lVar18;
   float fVar19;
   float fVar20;
-  float unaff_f20;
+    float unaff_f20;
   int iStack_6b0;
   int iStack_6ac;
   short sStack_6a0;
   short asStack_692 [257];
   short asStack_490 [256];
   short asStack_290 [256];
-  u32 uStack_90;
-  float fStack_88;
-  u64 uStack_80;
-  float fStack_78;
-  u32 uStack_70;
-  float fStack_68;
-  u32 uStack_60;
-  float fStack_58;
-  u64 uStack_50;
-  float fStack_48;
-  u64 uStack_40;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  u64 uStack_20;
-  float fStack_18;
+    u32 uStack_90;
+    float fStack_88;
+    u64 uStack_80;
+    float fStack_78;
+    u32 uStack_70;
+    float fStack_68;
+    u32 uStack_60;
+    float fStack_58;
+    u64 uStack_50;
+    float fStack_48;
+    u64 uStack_40;
+    float fStack_38;
+    float fStack_30;
+    float fStack_2c;
+    float fStack_28;
+    u64 uStack_20;
+    float fStack_18;
   float fStack_10;
   float fStack_c;
   float fStack_8;

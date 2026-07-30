@@ -1183,58 +1183,41 @@ u32 func_0017e050(s32 category, s16 month, s32 day)
         }
     }
 
-    if (category == 0x65)
+    switch (category)
     {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX != CALENDAR_DAY_SUNDAY;
-    }
-    if (category == 100)
-    {
-        return func_0017db40(datGetDaysSinceApr5());
-    }
-    if (category == 7)
-    {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_SATURDAY;
-    }
-    if (category == 6)
-    {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_FRIDAY;
-    }
-    if (category == 5)
-    {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_THURSDAY;
-    }
-    if (category == 4)
-    {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_WEDNESDAY;
-    }
-    if (category == 3)
-    {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_TUESDAY;
-    }
-    if (category == 2)
-    {
-        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-                   CALENDAR_DAY_MAX == CALENDAR_DAY_MONDAY;
-    }
-    if (category == 1)
-    {
+    case 0:
+        return currentMonth == month && daysSinceApr5 + 1 == day;
+    case 1:
         return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
                    CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY;
+    case 2:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_MONDAY;
+    case 3:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_TUESDAY;
+    case 4:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_WEDNESDAY;
+    case 5:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_THURSDAY;
+    case 6:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_FRIDAY;
+    case 7:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == CALENDAR_DAY_SATURDAY;
+    case 100:
+        return func_0017db40(datGetDaysSinceApr5());
+    case 0x65:
+        return (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX != CALENDAR_DAY_SUNDAY;
+    default:
+        return week == category / 10 - 1 &&
+               (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
+                   CALENDAR_DAY_MAX == category % 10 - 1;
     }
-    if (category == 0)
-    {
-        return daysBeforeMonth == month && daysSinceApr5 + 1 == day;
-    }
-
-    return week == category / 10 - 1 &&
-           (datGetDaysSinceApr5() + CALENDAR_DAY_MAX) %
-               CALENDAR_DAY_MAX == category % 10 - 1;
 }
 
 // FUN_0017F8D0
