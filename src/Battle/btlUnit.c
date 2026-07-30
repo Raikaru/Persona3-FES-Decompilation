@@ -1247,7 +1247,6 @@ s32 btlUnit0027f930(s32 param_1)
 void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
                    u16 tableIndex, RwV3d* position, void* rotationOut, u8 mode)
 {
-    u8* table;
     u8* entry;
     u16 charId;
     f32 distance;
@@ -1256,11 +1255,11 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     RwV3d firstOffset;
     RwV3d secondOffset;
     RwV3d transformed;
+    RwV3d scaledOffset;
     RwV3d positionValue;
     RwV3d center;
     RtQuat rotation;
 
-    table = DAT_007ce42c;
     charId = unit->charId;
 
     if (mode != 2)
@@ -1273,11 +1272,14 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
         {
             btlUnitGetSphereWorldCenter(source, &center);
             center.y -= source->unk_8c * source->scale * 0.5f;
-            entry = table + ((charId * 11) * 8) + mode * 6;
-            secondOffset.x = (f32)*(s16*)(entry + 0x0c) * unit->scale;
-            secondOffset.y = (f32)*(s16*)(entry + 0x0e) * unit->scale;
-            secondOffset.z = (f32)*(s16*)(entry + 0x10) * unit->scale;
-            RtQuatTransformVectors(&transformed, &secondOffset, 1, &source->rot);
+            entry = DAT_007ce42c + ((charId * 11) * 8) + mode * 6;
+            secondOffset.x = (f32)*(s16*)(entry + 0x0c);
+            secondOffset.y = (f32)*(s16*)(entry + 0x0e);
+            secondOffset.z = (f32)*(s16*)(entry + 0x10);
+            scaledOffset.x = secondOffset.x * unit->scale;
+            scaledOffset.y = secondOffset.y * unit->scale;
+            scaledOffset.z = secondOffset.z * unit->scale;
+            RtQuatTransformVectors(&transformed, &scaledOffset, 1, &source->rot);
             position->x = transformed.x + center.x;
             position->y = transformed.y + center.y;
             position->z = transformed.z + center.z;
@@ -1286,18 +1288,23 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     else
     {
         func_002802d0(target, source, &origin);
-        distance = func_002812d0(unit, target, tableIndex);
+        distance = func_002812d0(unit, target, tableIndex) + 50.0f;
         rotation.real = 0.0f;
         func_002d1de0((RwV3d*)&rotation, &source->pos, &origin);
         RtQuatTransformVectors(&firstOffset, &D_006978A0, 1, &rotation);
+        firstOffset.x *= distance;
+        firstOffset.z *= distance;
 
-        entry = table + ((charId * 11) * 8);
+        entry = DAT_007ce42c + ((charId * 11) * 8);
         scale = (f32)*(s16*)(entry + 0x0c) * unit->scale;
         RtQuatTransformVectors(&secondOffset, &D_00697870, 1, &rotation);
+        secondOffset.x *= scale;
+        secondOffset.y *= scale;
+        secondOffset.z *= scale;
 
-        positionValue.x = origin.x + firstOffset.x * (distance + 50.0f) + secondOffset.x * scale;
+        positionValue.x = origin.x + firstOffset.x + secondOffset.x;
         positionValue.y = 0.0f;
-        positionValue.z = origin.z + firstOffset.z * (distance + 50.0f) + secondOffset.z * scale;
+        positionValue.z = origin.z + firstOffset.z + secondOffset.z;
         if (position != NULL)
         {
             *position = positionValue;
@@ -2108,9 +2115,9 @@ u32 btlUnit00282cd0(BtlUnit* unit)
 // FUN_00282d40 NONMATCHING
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
-    const BtlUnitAnimInfo* animInfo;
     const BtlUnitAnimBounds* bounds;
     s16 animId;
+    u16 requestedId;
     u16 mdlFlags;
 
     unit->unk_9d0 = mode;
@@ -2120,26 +2127,34 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
         return;
     }
 
+    requestedId = id;
     unit->unk_9ce = id;
-    animId = func_00283510(unit, id);
-    animInfo = (const BtlUnitAnimInfo*)unit->unk_9ec;
+    animId = func_00283510(unit, requestedId);
 
     if (animId < unit->unk_9d8)
     {
-        unit->unk_9d4 = speed * ((f32)animInfo[animId].speedPercent / 100.0f);
+        unit->unk_9d4 = speed * ((f32)((const BtlUnitAnimInfo*)unit->unk_9ec)[animId].speedPercent / 100.0f);
     }
     else
     {
         unit->unk_9d4 = 1.0f;
     }
 
-    if (mode == BTLUNIT_ANIM_MODE_ONCE)
+    switch (mode)
     {
+    case 0:
         mdlFlags = 0;
-    }
-    else
-    {
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    default:
         mdlFlags = MDLANIM_FLAG_LOOP;
+        break;
     }
 
     if (speed != 1.0f &&
@@ -2151,7 +2166,7 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     mdlAnimSet(unit->mdl, 0, animId, blendFrameCount, mdlFlags);
     mdlAnimSetSpeed(unit->mdl, 0, unit->unk_9d4);
 
-    bounds = func_00288da0(unit, id);
+    bounds = func_00288da0(unit, requestedId);
     unit->sphereCenter.x = bounds->centerX;
     unit->sphereCenter.y = bounds->centerY;
     unit->sphereCenter.z = bounds->centerZ;
@@ -2161,12 +2176,12 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     if (id == 15 || id == 7)
     {
         if (animId < unit->unk_9d8 &&
-            animInfo[animId].unk_0 >= 0 &&
-            animInfo[animId].unk_4 > 0)
+            ((const BtlUnitAnimInfo*)unit->unk_9ec)[animId].unk_0 >= 0 &&
+            ((const BtlUnitAnimInfo*)unit->unk_9ec)[animId].unk_4 > 0)
         {
             unit->unk_9cc |= 4;
-            unit->unk_9da = animInfo[animId].unk_0;
-            unit->unk_9dc = animInfo[animId].unk_4;
+            unit->unk_9da = ((const BtlUnitAnimInfo*)unit->unk_9ec)[animId].unk_0;
+            unit->unk_9dc = ((const BtlUnitAnimInfo*)unit->unk_9ec)[animId].unk_4;
         }
     }
     else
@@ -2209,7 +2224,7 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
     default:
         if (animId < unit->unk_9d8)
         {
-            unit->unk_9e2 = animInfo[animId].unk_8;
+            unit->unk_9e2 = ((const BtlUnitAnimInfo*)unit->unk_9ec)[animId].unk_8;
         }
         else
         {

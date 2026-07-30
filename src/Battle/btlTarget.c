@@ -123,7 +123,7 @@ extern u8* iGpffffb720;
 extern const char D_00697B18[];
 extern const char* D_00697B90[];
 extern s32 FUN_002daa20(BtlAction*, u16, s32, s32, s32);
-typedef s64 (*BtlTargetEffectFn)(u64, u64, u64, u64);
+typedef s32 (*BtlTargetEffectFn)(BtlAction*, s32, s32, s32);
 extern u8* iGpffffb7b8;
 extern BtlTargetEffectFn D_006978F0[];
 void FUN_002db2a0(u32 param_1);
@@ -4749,23 +4749,21 @@ u64 FUN_002da930(u64 param_1, u64 command, u64 param_3, u64 param_4)
 // FUN_002daa20 NONMATCHING
 s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 param_5)
 {
-    u8* btl;
     u32 effectId;
     u32* effectFlags;
     u8* resourceTable;
     u8* resultTable;
     u8* resultRecord;
     BtlTargetEffectFn effect;
-    u64 result;
+    s32 result;
 
-    btl = iGpffffb6fc;
     effectId = param_2;
 
-    if ((*(u32*)(btl + 0xc) & 0x01000000) == 0)
+    if ((*(u32*)(iGpffffb6fc + 0xc) & 0x01000000) == 0)
     {
         return 1;
     }
-    if (*(u16*)(btl + 0xa18) != 0)
+    if (*(u16*)(iGpffffb6fc + 0xa18) != 0)
     {
         return 0;
     }
@@ -4773,21 +4771,21 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
     {
         return 1;
     }
-    if ((param_5 & 6) == 0 && (*(u16*)(btl + 0xa16) & 1) != 0)
+    if ((param_5 & 6) == 0 && (*(u16*)(iGpffffb6fc + 0xa16) & 1) != 0)
     {
         return 1;
     }
 
     effectFlags = (u32*)(iGpffffb7b8 +
-        (u32)*(u16*)(*(u8**)(btl + 0xbbc) + 8) * 0x1c);
+        (u32)*(u16*)(*(u8**)(iGpffffb6fc + 0xbbc) + 8) * 0x1c);
     if (effectId != 0x1f && (*effectFlags & 0x400) != 0)
     {
         return 1;
     }
-    if ((*(u16*)(btl + 0xa16) & 1) != 0)
+    if ((*(u16*)(iGpffffb6fc + 0xa16) & 1) != 0)
     {
-        if ((s32)*(s16*)(btl + 0xa24) == (s32)effectId ||
-            (s32)*(s16*)(btl + 0xa2c) == (s32)effectId)
+        if ((s32)*(s16*)(iGpffffb6fc + 0xa24) == (s32)effectId ||
+            (s32)*(s16*)(iGpffffb6fc + 0xa2c) == (s32)effectId)
         {
             return 1;
         }
@@ -4798,13 +4796,13 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
     {
         return 1;
     }
-    result = effect((u64)(uintptr_t)param_1, param_3, param_4, 0);
+    result = effect(param_1, param_3, param_4, 0);
     if (result < 0)
     {
         return 1;
     }
 
-    resourceTable = *(u8**)(btl + 0xa1c);
+    resourceTable = *(u8**)(iGpffffb6fc + 0xa1c);
     resultTable = *(u8**)(resourceTable + 0x110);
     resultRecord = resultTable + ((u32)result & 0xffff) * 0xc;
     if ((*effectFlags & 0x1000) != 0 && *resultRecord != 0)
@@ -4814,25 +4812,32 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
 
     if (datGetScenarioMode() != 0)
     {
-        u64 mode = FUN_002d5550();
-        if ((mode == 0x1b3 || mode == 0x1b2 || mode == 0x1b1) &&
-            ((*(u16*)resultRecord >> 8) != 0))
+        switch ((u32)FUN_002d5550())
         {
-            return 1;
+        case 0x1b1:
+        case 0x1b2:
+        case 0x1b3:
+            if ((*(u16*)resultRecord >> 8) != 0)
+            {
+                return 1;
+            }
+            break;
+        default:
+            break;
         }
     }
 
     if ((param_5 & 2) != 0)
     {
         FUN_002dba80();
-        *(u16*)(btl + 0xa36) = 2;
+        *(u16*)(iGpffffb6fc + 0xa36) = 2;
     }
     else
     {
-        *(u16*)(btl + 0xa36) = 0;
+        *(u16*)(iGpffffb6fc + 0xa36) = 0;
     }
 
-    return FUN_002db9f0(param_2, (u64)result);
+    return FUN_002db9f0(param_2, result);
 }
 
 // FUN_002dad00

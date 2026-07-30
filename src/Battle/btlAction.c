@@ -6166,7 +6166,7 @@ void btlActionUpdateStateEndure(BtlAction* action)
     BtlUnit* unit;
     s32 work[4];
     u16 skillId;
-    u16 messageId;
+    s16 messageId;
     u16 count;
 
     unit = action->unit;
@@ -6226,12 +6226,12 @@ void btlActionUpdateStateEndure(BtlAction* action)
         packet->parentUID = animPacket->uid;
         packet->unk_47 &= ~0x20;
         packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002baf90(ACTION_U32(gBtl, 0xc24), unit, unit, 0, 0);
+        btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+        packet = FUN_002baf90(ACTION_U32(gBtl, 0xce0), unit, unit, 1, 0);
         packet->unk_00 = 4;
         packet->parentUID = animPacket->uid;
         packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
     }
     barrier = FUN_0027dc80(0x80000);
     barrier->unk_00 = 4;

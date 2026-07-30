@@ -897,7 +897,6 @@ void func_001a2720(KwlnTask* task)
     KWindowManagerWork* manager;
     KWindowEntry* entry;
     RwV2d position;
-    RwRGBA color;
     s32 index;
     s32 right;
     s32 textWidth;
@@ -931,7 +930,7 @@ void func_001a2720(KwlnTask* task)
                 right = manager->x + manager->width - 2 -
                         (textWidth + 1) * 12;
                 position.x = (f32)(u32)right;
-                H_Dbprt_FmtCol3D(position, color, "%s", entry->text);
+                H_Dbprt_FmtCol3D(position, *(RwRGBA*)&gp0xffff9480, "%s", entry->text);
                 break;
 
             case 2:
@@ -940,11 +939,11 @@ void func_001a2720(KwlnTask* task)
                 position.x = (f32)(u32)(right - (textWidth + 1) * 12);
                 if (entry->intValue == 1)
                 {
-                    H_Dbprt_FmtCol3D(position, color, "on");
+                    H_Dbprt_FmtCol3D(position, *(RwRGBA*)&gp0xffff9480, "on");
                 }
                 else
                 {
-                    H_Dbprt_FmtCol3D(position, color, "off");
+                    H_Dbprt_FmtCol3D(position, *(RwRGBA*)&gp0xffff9480, "off");
                 }
                 break;
 
@@ -953,14 +952,14 @@ void func_001a2720(KwlnTask* task)
                 {
                     position.x =
                         (f32)(manager->x + manager->width - 0x6e);
-                    H_Dbprt_FmtCol3D(position, color, "%d",
+                    H_Dbprt_FmtCol3D(position, *(RwRGBA*)&gp0xffff9480, "%d",
                                      entry->intValue);
                 }
                 else
                 {
                     position.x =
                         (f32)(manager->x + manager->width - 0x86);
-                    H_Dbprt_FmtCol3D(position, color, "%d",
+                    H_Dbprt_FmtCol3D(position, *(RwRGBA*)&gp0xffff9480, "%d",
                                      entry->intValue);
                 }
                 break;
@@ -968,7 +967,7 @@ void func_001a2720(KwlnTask* task)
             case 4:
                 position.x =
                     (f32)(manager->x + manager->width - 0x62);
-                H_Dbprt_FmtCol3D_f32(position, color, "%.2f",
+                H_Dbprt_FmtCol3D_f32(position, *(RwRGBA*)&gp0xffff9480, "%.2f",
                                      func_00530da0(entry->floatValue));
                 break;
         }

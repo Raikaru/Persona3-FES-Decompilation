@@ -594,6 +594,7 @@ void func_002760f0(void)
             else
             {
                 alpha = 1.0f;
+                offset = 0.0f;
             }
             break;
         case 1:

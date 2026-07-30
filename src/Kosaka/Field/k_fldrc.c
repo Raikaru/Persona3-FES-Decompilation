@@ -2713,71 +2713,73 @@ void FUN_001b2b90(u32 resource)
     header = (u32*)FUN_004c58a0(3, 1, streamInfo);
     if (header == NULL)
     {
-        if (payload != 0)
-        {
-            FUN_00100ec0(*(u32*)(payload + 0x80));
-            (*(void (**)(void*))DAT_0096017c_abs)((void*)payload);
-        }
-        if (resource != 0)
-        {
-            (*(void (**)(void*))DAT_0096017c_abs)((void*)resource);
-        }
-        return;
+        goto cleanup;
     }
     while (FUN_004c1970((u32)header, entryInfo) != 0)
     {
-        if (entryInfo[0] == 0x0c)
+        switch (entryInfo[0])
         {
-            *(u32*)(resource + 0xa1c) = FUN_0048d0e0((u32)header);
-        }
-        else if (entryInfo[0] == 0x16)
-        {
-            entry = FUN_004c8680((u32)header);
-            FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
-            FUN_004d0d10(entry);
-        }
-        else if (entryInfo[0] == 0x23)
-        {
-            entry = FUN_004bda10((u32)header);
-            FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
-            FUN_004d0d10(entry);
-        }
-        else if (entryInfo[0] == 0x10)
-        {
-            substream[0] =
-                streamInfo[0] + *(u32*)((u8*)header + 0x0c);
-            substream[1] = streamInfo[1];
-            entry = FUN_004c58a0(3, 1, substream);
-            index = *(u32*)(payload + 0x98);
-            *(u32*)(payload + index * 4 + 0x9c) =
-                FUN_0010c1a0(2, 0, 0, 0, entry, 0, 0, 0);
-            FUN_004c5620((u32)header, entryInfo[1]);
-            *(u32*)(payload + 0x98) = index + 1;
-        }
-        else if (entryInfo[0] == 0x0b)
-        {
-            index = *(u32*)(payload + 0x8c);
-            substream[0] =
-                streamInfo[0] + *(u32*)((u8*)header + 0x0c);
-            if (*(u32*)(payload + index * 4 + 0x90) != 0)
-            {
-                substream[0] = streamInfo[0];
-            }
-            substream[1] = streamInfo[1];
-            entry = FUN_004c58a0(3, 1, substream);
-            *(u32*)(payload + index * 4 + 0x90) =
-                FUN_0010c1a0(1, 0, 0, 0, entry, 0, 0, 0);
-            FUN_004c5620((u32)header, entryInfo[1]);
-            *(u32*)(payload + 0x8c) = index + 1;
-        }
-        else
-        {
-            FUN_004c5620((u32)header, entryInfo[1]);
+            case 0x0b:
+                index = *(u32*)(payload + 0x8c);
+                substream[0] =
+                    streamInfo[0] + *(u32*)((u8*)header + 0x0c);
+                if (*(u32*)(payload + index * 4 + 0x90) != 0)
+                {
+                    substream[0] = streamInfo[0];
+                }
+                substream[1] = streamInfo[1];
+                entry = FUN_004c58a0(3, 1, substream);
+                *(u32*)(payload + index * 4 + 0x90) =
+                    FUN_0010c1a0(1, 0, 0, 0, entry, 0, 0, 0,
+                                 0, 0, __FILE__, 0x4c8);
+                FUN_004c5620((u32)header, entryInfo[1]);
+                *(u32*)(payload + 0x8c) = index + 1;
+                break;
+            case 0x10:
+                substream[0] =
+                    streamInfo[0] + *(u32*)((u8*)header + 0x0c);
+                substream[1] = streamInfo[1];
+                entry = FUN_004c58a0(3, 1, substream);
+                index = *(u32*)(payload + 0x98);
+                *(u32*)(payload + index * 4 + 0x9c) =
+                    FUN_0010c1a0(2, 0, 0, 0, entry, 0, 0, 0,
+                                 0, 0, __FILE__, 0x4d6);
+                FUN_004c5620((u32)header, entryInfo[1]);
+                *(u32*)(payload + 0x98) = index + 1;
+                break;
+            case 0x23:
+                entry = FUN_004bda10((u32)header);
+                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
+                FUN_004d0d10(entry);
+                break;
+            case 0x16:
+                entry = FUN_004c8680((u32)header);
+                FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
+                FUN_004d0d10(entry);
+                break;
+            case 0x0c:
+                *(u32*)(resource + 0xa1c) = FUN_0048d0e0((u32)header);
+                break;
+            default:
+                FUN_004c5620((u32)header, entryInfo[1]);
+                break;
         }
     }
     if (header != NULL)
     {
         FUN_004c5780((u32)header, 0);
+    }
+    return;
+
+cleanup:
+    if (payload != 0)
+    {
+        FUN_00100ec0(*(u32*)(payload + 0x80));
+        (*(void (**)(void*))DAT_0096017c_abs)((void*)payload);
+    }
+    if (resource != 0)
+    {
+        (*(void (**)(void*))DAT_0096017c_abs)((void*)resource);
     }
 }
 // FUN_001b2f00 NONMATCHING
