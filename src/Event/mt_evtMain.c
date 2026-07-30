@@ -569,6 +569,7 @@ u64 FUN_003952b0(u64 param_1,int param_2);
 u64 FUN_003952a0(u64 param_1,int param_2);
 u32 FUN_00397870(int param_1,long param_2,u32 *param_3,u32 *param_4,u32 *param_5,u32 *param_6);
 void FUN_00396f50(int param_1);
+u32 FUN_00396c70(int param_1,int param_2,int param_3,long param_4,long param_5,long param_6,long param_7,float param_8);
 long FUN_0038ab00(int param_1,u64 param_2);
 short FUN_0036f640(int param_1);
 #pragma alias FUN_0036f640_evt FUN_0036f640
@@ -3454,10 +3455,35 @@ void FUN_00363030(int *param_1,u16 *param_2,u32 param_3,u8 *param_4)
 
     }
 
-    else if ((iVar10 == 0x29) && (param_3 == *param_2)) {
-
-      FUN_0039e1b0(param_4);
-
+    else {
+      switch (iVar10) {
+      case 0:
+      case 1:
+      case 2:
+      case 6:
+      case 0xc:
+      case 0xa:
+      case 0xb:
+      case 0xd:
+      case 0xe:
+      case 0xf:
+      case 0x10:
+      case 0x11:
+      case 0x16:
+      case 0x17:
+      case 0x1b:
+      case 3:
+      case 0x1a:
+      case 0x14:
+      case 0x15:
+      case 0x12:
+        break;
+      case 0x29:
+        if (param_3 == *param_2) {
+          FUN_0039e1b0(param_4);
+        }
+        break;
+      }
     }
 
   }
@@ -3486,7 +3512,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
   u32 uVar5;
 
-  u16 uVar6;
+  long uVar6;
 
   u32 uVar7;
 
@@ -3496,7 +3522,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
   int iVar10;
 
-  u16 uVar11;
+  long uVar11;
 
   int iVar12;
 
@@ -3634,9 +3660,9 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
         lVar3 = 0;
 
-        uVar11 = puVar14[0xe];
+        uVar11 = (long)(short)puVar14[0xe];
 
-        uVar6 = puVar14[0xf];
+        uVar6 = (long)(short)puVar14[0xf];
 
         if ((char)puVar14[0x10] == '\0') {
 
@@ -3666,7 +3692,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 
         }
 
-        FUN_00396c70(param_1[1],uVar11,uVar6,lVar17,lVar16,lVar15,lVar3);
+        FUN_00396c70(param_1[1],uVar11,uVar6,lVar17,lVar16,lVar15,lVar3,fVar18);
 
       }
 

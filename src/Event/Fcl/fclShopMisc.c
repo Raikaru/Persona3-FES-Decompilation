@@ -160,6 +160,8 @@ extern u32 fclCombineList003df100();
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 u64 FUN_00172660(s32 socialLink);
 extern u8 DAT_006aede8[];
+#pragma alias DAT_006aeff0_abs DAT_006aeff0
+extern s16 DAT_006aeff0_abs[];
 extern char DAT_006af340[];
 extern char DAT_006af360[];
 extern char DAT_006af380[];
@@ -2506,8 +2508,7 @@ u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
   int lVar12;
 
   u32 uStack_8;
-
-  int iStack_4;
+  s32 category_scratch[21];
 
   
 
@@ -2531,22 +2532,22 @@ u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3)
 
       bVar3 = 1;
 
-      iVar6 = func_00170ed0(sVar1,&iStack_4);
+      iVar6 = func_00170ed0(sVar1,category_scratch);
       uVar7 = FUN_003f1a10(*(u32 *)(iVar6 + 4)) & 0xff;
 
-      if (((param_3 & 0x400) != 0) && (iStack_4 != 0)) {
+      if (((param_3 & 0x400) != 0) && (category_scratch[0] != 0)) {
 
         bVar3 = 0;
 
       }
 
-      if (((((param_3 & 0x800) != 0) && (iStack_4 != 1)) && (iStack_4 != 2)) && (iStack_4 != 3)) {
+      if (((((param_3 & 0x800) != 0) && (category_scratch[0] != 1)) && (category_scratch[0] != 2)) && (category_scratch[0] != 3)) {
 
         bVar3 = 0;
 
       }
 
-      if (iStack_4 < 1) {
+      if (category_scratch[0] < 1) {
 
 
         if ((((uVar7 & 0xff) != 6) || (lVar8 = datGetScenarioMode(), lVar8 == 0)) &&
@@ -5721,83 +5722,45 @@ void FUN_003f7730(int param_1,int param_2,u8 param_3,int param_4,int param_5)
 
 
 void FUN_003f7890(int param_1,int param_2,u8 param_3,int param_4,int param_5,int param_6)
-
-
-
 {
+  s16 value1;
+  s16 value2;
+  s32 count;
+  s16 *source;
+  s16 *dest;
+  u8 text[16];
+  s16 values[6];
+  s32 data;
 
-  u16 uVar1;
-
-  u16 uVar2;
-
-  int iVar3;
-
-  u16 *puVar4;
-
-  u16 *puVar5;
-
-  u8 auStack_20[16];
-
-  u16 auStack_10 [5];
-
-  u16 uStack_6;
-
-  
-
-  puVar5 = (u16 *)(&DAT_006aeff0);
-
-  puVar4 = auStack_10;
-
-  iVar3 = 3;
-
+  source = DAT_006aeff0_abs;
+  dest = values;
+  count = 3;
   do {
+    value1 = *source;
+    value2 = source[1];
+    source += 2;
+    count--;
+    *dest = value1;
+    dest[1] = value2;
+    dest += 2;
+  } while (count > 0);
 
-    uVar1 = *puVar5;
-
-    uVar2 = puVar5[1];
-
-    puVar5 = puVar5 + 2;
-
-    iVar3 = iVar3 + -1;
-
-    *puVar4 = uVar1;
-
-    puVar4[1] = uVar2;
-
-    puVar4 = puVar4 + 2;
-
-  } while (0 < iVar3);
-
-  iVar3 = *(int *)(*(int *)(param_6 + 0x14) + 0x1c);
-
-  if (param_4 == 1) {
-
-    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_10[3],0);
-
-    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,uStack_6,0);
-
-    sprintf((char *)auStack_20,0x7cd954,*(u16 *)(iVar3 + 0xe));
-
-    FUN_0040eb50(0,(int)param_1 + 0x223,(int)param_2 + 0xa2,param_3,3,auStack_20,1);
-
+  data = *(int *)(*(int *)(param_6 + 0x14) + 0x1c);
+  switch (param_4) {
+  case 0:
+    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[0],0);
+    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[1],0);
+    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[2],0);
+    sprintf((char *)text,0x7cd954,*(u16 *)(data + 0xe));
+    FUN_0040eb50(0,param_1 + 0x95,param_2 + 0x99,param_3,3,text,1);
+    break;
+  case 1:
+    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[3],0);
+    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,values[5],0);
+    sprintf((char *)text,0x7cd954,*(u16 *)(data + 0xe));
+    FUN_0040eb50(0,param_1 + 0x223,param_2 + 0xa2,param_3,3,text,1);
+    break;
   }
-
-  else if (param_4 == 0) {
-
-    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_10[0],0);
-
-    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_10[1],0);
-
-    FUN_0040e3c0_u32(0.0f,param_1,param_2,param_3,auStack_10[2],0);
-
-    sprintf((char *)auStack_20,0x7cd954,*(u16 *)(iVar3 + 0xe));
-
-    FUN_0040eb50(0,(int)param_1 + 0x95,(int)param_2 + 0x99,param_3,3,auStack_20,1);
-
-  }
-
-  return;
-
 }
 
 // FUN_003F7A80 NONMATCHING
@@ -19520,18 +19483,8 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 
   u32 uVar4;
 
-  float fStack_140, fStack_13c, fStack_138, fStack_128;
-  float fStack_120, fStack_11c, fStack_118, fStack_114;
-  float fStack_100, fStack_fc, fStack_f8, fStack_e8;
-  float fStack_e0, fStack_dc, fStack_d8, fStack_d4;
-  float fStack_c0, fStack_bc, fStack_b8, fStack_a8;
-  float fStack_a0, fStack_9c, fStack_98, fStack_94;
-  float fStack_80, fStack_7c, fStack_78, fStack_68;
-  float fStack_60, fStack_5c, fStack_58, fStack_54;
-  u32 uStack_130, uStack_12c;
-  u32 uStack_f0, uStack_ec;
-  u32 uStack_b0, uStack_ac;
-  u32 uStack_70, uStack_6c;
+  f32 vertices[64];
+  f32 reciprocal;
 
   if (param_7 == 0) {
 
@@ -19572,57 +19525,58 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 
     iVar2 = kwlnGetMainCamera();
 
-    fStack_128 = 1.0f / *(float *)(iVar2 + 0x84);
+    reciprocal = 1.0f / *(float *)(iVar2 + 0x84);
 
   }
 
-  // Use a float array as a single addressable object to prevent dead-store elimination
-  { float *v = (float *)&fStack_140;
-    v[0]  = (float)param_2;           // vertex 0 x
-    v[1]  = (float)param_3;           // vertex 0 y
-    v[3]  = (float)uVar1;             // vertex 0 r
-    v[4]  = (float)uVar4;             // vertex 0 g
-    v[5]  = (float)uVar3;             // vertex 0 b
-    v[6]  = (float)param_6;           // vertex 0 a
-    v[7]  = (float)param_2;           // vertex 1 x
-    v[8]  = (float)(param_3 + param_5); // vertex 1 y
-    v[10] = (float)uVar1;             // vertex 1 r
-    v[11] = (float)uVar4;             // vertex 1 g
-    v[12] = (float)uVar3;             // vertex 1 b
-    v[13] = (float)param_6;           // vertex 1 a
-    v[14] = (float)(param_2 + param_4); // vertex 2 x
-    v[15] = (float)param_3;           // vertex 2 y
-    v[17] = (float)uVar1;             // vertex 2 r
-    v[18] = (float)uVar4;             // vertex 2 g
-    v[19] = (float)uVar3;             // vertex 2 b
-    v[20] = (float)param_6;           // vertex 2 a
-    v[21] = (float)(param_2 + param_4); // vertex 3 x
-    v[22] = (float)(param_3 + param_5); // vertex 3 y
-    v[24] = (float)uVar1;             // vertex 3 r
-    v[25] = (float)uVar4;             // vertex 3 g
-    v[26] = (float)uVar3;             // vertex 3 b
-    v[27] = (float)param_6;           // vertex 3 a
-    v[2]  = param_1;                  // vertex 0 z
-    v[9]  = param_1;                  // vertex 1 z
-    v[16] = param_1;                  // vertex 2 z
-    v[23] = param_1;                  // vertex 3 z
-  }
+  vertices[0] = (f32)param_2;
+  vertices[1] = (f32)param_3;
+  vertices[2] = param_1;
+  vertices[8] = (f32)uVar1;
+  vertices[9] = (f32)uVar4;
+  vertices[10] = (f32)uVar3;
+  vertices[11] = (f32)param_6;
 
+  vertices[16] = (f32)param_2;
+  vertices[17] = (f32)(param_3 + param_5);
+  vertices[18] = param_1;
+  vertices[24] = (f32)uVar1;
+  vertices[25] = (f32)uVar4;
+  vertices[26] = (f32)uVar3;
+  vertices[27] = (f32)param_6;
+
+  vertices[32] = (f32)(param_2 + param_4);
+  vertices[33] = (f32)param_3;
+  vertices[34] = param_1;
+  vertices[40] = (f32)uVar1;
+  vertices[41] = (f32)uVar4;
+  vertices[42] = (f32)uVar3;
+  vertices[43] = (f32)param_6;
+
+  vertices[48] = (f32)(param_2 + param_4);
+  vertices[49] = (f32)(param_3 + param_5);
+  vertices[50] = param_1;
+  vertices[56] = (f32)uVar1;
+  vertices[57] = (f32)uVar4;
+  vertices[58] = (f32)uVar3;
+  vertices[59] = (f32)param_6;
   if (param_8 != 0) {
-    uStack_130 = 0;
-    uStack_12c = 0;
-    uStack_f0 = 0;
-    uStack_ec = 0x3f800000;
-    uStack_b0 = 0x3f800000;
-    uStack_ac = 0;
-    uStack_70 = 0x3f800000;
-    uStack_6c = 0x3f800000;
-    fStack_e8 = fStack_128;
-    fStack_a8 = fStack_128;
-    fStack_68 = fStack_128;
+    vertices[4] = 0.0f;
+    vertices[5] = 0.0f;
+    vertices[6] = reciprocal;
+    vertices[20] = 0.0f;
+    vertices[21] = 1.0f;
+    vertices[22] = reciprocal;
+    vertices[36] = 1.0f;
+    vertices[37] = 0.0f;
+    vertices[38] = reciprocal;
+    vertices[52] = 1.0f;
+    vertices[53] = 1.0f;
+    vertices[54] = reciprocal;
   }
 
-  (*DAT_009600a0)(4,&fStack_140,4);
+
+  (*DAT_009600a0)(4,vertices,4);
   (*DAT_00960090)(1,0);
 }
 

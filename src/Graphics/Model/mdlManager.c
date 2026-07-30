@@ -1171,6 +1171,10 @@ extern u8 LAB_00314060_abs[];
 extern u8 LAB_0031494c;
 extern u8 LAB_003140a0;
 extern u8 LAB_003140b0;
+#pragma alias LAB_003140a0_abs LAB_003140a0
+extern u8 LAB_003140a0_abs[];
+#pragma alias LAB_003140b0_abs LAB_003140b0
+extern u8 LAB_003140b0_abs[];
 extern f32 DAT_007cadd4;
 extern f32 DAT_007caf0c;
 extern f32 DAT_007caf10;
@@ -4452,9 +4456,8 @@ void func_00314d30(void* param_1)
 
           iVar6 = (int)lVar4;
 
-          if ((*(u8 **)(iVar6 + 0x40) == &LAB_00314020) &&
-
-             (*(u8 **)(iVar6 + 0x44) == &LAB_00314060)) {
+          if ((*(u8 **)(iVar6 + 0x40) == LAB_00314020_abs) &&
+             (*(u8 **)(iVar6 + 0x44) == LAB_00314060_abs)) {
 
             func_004b7240_frame(DAT_007cadd4, lVar4);
 
@@ -4476,9 +4479,8 @@ void func_00314d30(void* param_1)
 
           if (lVar4 != 0) {
 
-            if ((*(u8 **)((int)lVar4 + 0x40) == &LAB_00314020) &&
-
-               (*(u8 **)((int)lVar4 + 0x44) == &LAB_00314060)) {
+            if ((*(u8 **)((int)lVar4 + 0x40) == LAB_00314020_abs) &&
+               (*(u8 **)((int)lVar4 + 0x44) == LAB_00314060_abs)) {
 
               func_004b7010(lVar4,0x314170,param_1);
 
@@ -4502,9 +4504,8 @@ void func_00314d30(void* param_1)
 
             iVar6 = (int)lVar4;
 
-            if ((*(u8 **)(iVar6 + 0x40) == &LAB_00314020) &&
-
-               (*(u8 **)(iVar6 + 0x44) == &LAB_00314060)) {
+            if ((*(u8 **)(iVar6 + 0x40) == LAB_00314020_abs) &&
+               (*(u8 **)(iVar6 + 0x44) == LAB_00314060_abs)) {
 
               func_004b7010(lVar4,0x314170,param_1);
 
@@ -4516,9 +4517,8 @@ void func_00314d30(void* param_1)
 
               func_004b7010(lVar4,0x3140c0,param_1);
 
-              if ((*(u8 **)(iVar6 + 0x40) != &LAB_003140a0) &&
-
-                 (*(u8 **)(iVar6 + 0x44) != &LAB_003140b0)) {
+              if ((*(u8 **)(iVar6 + 0x40) != LAB_003140a0_abs) &&
+                 (*(u8 **)(iVar6 + 0x44) != LAB_003140b0_abs)) {
 
                 func_004b74c0_frame(*(f32*)(iVar5 + 0x10), lVar4);
 

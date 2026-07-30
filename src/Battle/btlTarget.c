@@ -1610,7 +1610,11 @@ int FUN_002d8f70(int param_1)
   int uVar3;
   int iVar4;
   
-  if (*(u8 *)(*(u32 *)(param_1 + 0x30) + 0xa2) == 0) {
+  switch (*(u8 *)(*(u32 *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    iVar4 = -1;
+    break;
+  case 0:
     uVar3 = FUN_002d4e10(2,0x80000);
     uVar2 = *(ushort *)(param_1 + 0x1a);
     *(ushort *)(param_1 + 0x1a) = uVar2 | 0x40;
@@ -2024,9 +2028,7 @@ int FUN_002d8f70(int param_1)
         iVar4 = -1;
       }
   }
-  }
-  else {
-    iVar4 = -1;
+    break;
   }
   return iVar4;
 }
