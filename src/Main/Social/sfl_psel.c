@@ -25,6 +25,8 @@ extern float fGpffff8300;
 extern char D_00960088[];
 extern u32 uGpffffb948;
 extern u16 DAT_007e0952;
+#pragma alias DAT_007e0952_a DAT_007e0952
+extern u16 DAT_007e0952_a[8];
 extern u32 func_00173220(u16 id);
 extern u32 func_00173280(u16 id);
 extern u8* DAT_007ce420;
@@ -1017,13 +1019,15 @@ void func_00215fc0(void)
     work = (u8*)sSflPsel;
     sflPsel00260d20();
     flags = *(u32*)work;
-    if ((flags & 1) == 0)
+    if ((~flags & 1) != 0)
     {
         return;
     }
     if ((flags & 4) != 0)
     {
-        if (*(u32*)(work + 0x5c48) == 1)
+        switch (*(u32*)(work + 0x5c48))
+        {
+        case 0:
         {
             u32 frame = *(u32*)(work + 0x5c44) + 1;
             *(u32*)(work + 0x5c44) = frame;
@@ -1031,9 +1035,10 @@ void func_00215fc0(void)
             {
                 *(u32*)work &= ~4u;
             }
-            *(f32*)(work + 0x5c40) = (f32)(s32)frame / 6.0f;
+            *(f32*)(work + 0x5c40) = 1.0f - (f32)*(s32*)(work + 0x5c44) / 6.0f;
+            break;
         }
-        else if (*(u32*)(work + 0x5c48) == 0)
+        case 1:
         {
             u32 frame = *(u32*)(work + 0x5c44) + 1;
             *(u32*)(work + 0x5c44) = frame;
@@ -1041,22 +1046,16 @@ void func_00215fc0(void)
             {
                 *(u32*)work &= ~4u;
             }
-            *(f32*)(work + 0x5c40) = 1.0f - (f32)(s32)frame / 6.0f;
+            *(f32*)(work + 0x5c40) = (f32)*(s32*)(work + 0x5c44) / 6.0f;
+            break;
+        }
         }
     }
     if ((*(u32*)work & 0x10) != 0)
     {
-        if (*(u32*)(work + 0x5c54) == 1)
+        switch (*(u32*)(work + 0x5c54))
         {
-            u32 frame = *(u32*)(work + 0x5c50) + 1;
-            *(u32*)(work + 0x5c50) = frame;
-            if (frame == 3)
-            {
-                *(u32*)work &= ~0x10u;
-            }
-            *(f32*)(work + 0x5c4c) = (f32)(s32)frame / 3.0f;
-        }
-        else if (*(u32*)(work + 0x5c54) == 0)
+        case 0:
         {
             u32 frame = *(u32*)(work + 0x5c50) + 1;
             *(u32*)(work + 0x5c50) = frame;
@@ -1065,7 +1064,20 @@ void func_00215fc0(void)
                 func_00219b00();
                 *(u32*)work &= ~0x10u;
             }
-            *(f32*)(work + 0x5c4c) = 1.0f - (f32)(s32)frame / 3.0f;
+            *(f32*)(work + 0x5c4c) = 1.0f - (f32)*(s32*)(work + 0x5c50) / 3.0f;
+            break;
+        }
+        case 1:
+        {
+            u32 frame = *(u32*)(work + 0x5c50) + 1;
+            *(u32*)(work + 0x5c50) = frame;
+            if (frame == 3)
+            {
+                *(u32*)work &= ~0x10u;
+            }
+            *(f32*)(work + 0x5c4c) = (f32)*(s32*)(work + 0x5c50) / 3.0f;
+            break;
+        }
         }
     }
     updateFlags = 0;
@@ -1074,37 +1086,54 @@ void func_00215fc0(void)
     case 0:
         switch (*(u32*)(work + 0x5338))
         {
-        case 2:
-            if (sflPersonaIsTransitioning() == 0)
+        case 3:
+            (*(u32*)(work + 0x5338))++;
+            break;
+        case 4:
+            *(u32*)(work + 0x5338) = 0;
+            break;
+        case 0:
+            if ((*(u32*)work & 0x10) == 0)
             {
-                sflPersonaDestroy();
-                if (*(u32*)(work + 0x6090) == 1)
-                {
-                    *(u32*)(work + 0x5338) = 3;
-                }
-                else if (*(u32*)(work + 0x6090) == 0)
+                if ((DAT_007e0952_a[0] & 0x40) != 0)
                 {
                     func_00219b90();
+                    break;
                 }
+                if ((DAT_007e0952_a[0] & 0x80) != 0)
+                {
+                    func_0010a4e0(0, 0, 0, 0);
+                    sflPersonaLoad((u16)*(u16*)(work + 0x10 +
+                                                *(u32*)(work + 0x52e0 + *(u32*)(work + 0x5c68) * 4) *
+                                                    0x10 + 4));
+                    *(u32*)(work + 0x5338) = 1;
+                    break;
+                }
+            }
+            *(u32*)(work + 0x5c5c) &= ~1u;
+            func_0024a260((u32*)(work + 0x5c5c));
+            if ((*(u32*)(work + 0x5c5c) & 1) != 0)
+            {
+                updateFlags |= 3;
             }
             break;
         case 1:
             if (sflPersonaIsLoading() == 0 && sflPersonaIsTransitioning() == 0)
             {
-                if ((DAT_007e0952 & 0x40) != 0)
+                if ((DAT_007e0952_a[0] & 0x40) != 0)
                 {
                     *(u32*)(work + 0x6090) = 0;
                     sflPersonaStartExitTransition();
                     *(u32*)(work + 0x5338) = 2;
                 }
-                else if ((DAT_007e0952 & 0x20) != 0)
+                else if ((DAT_007e0952_a[0] & 0x20) != 0)
                 {
                     func_0010a4e0(0, 0, 0, 2);
                     *(u32*)(work + 0x6090) = 1;
                     sflPersonaStartExitTransition();
                     *(u32*)(work + 0x5338) = 2;
                 }
-                else if ((DAT_007e0952 & 8) != 0)
+                else if ((DAT_007e0952_a[0] & 8) != 0)
                 {
                     u32 current = *(u32*)(work + 0x5c68);
                     u32 total = *(u32*)(work + 0x5c6c);
@@ -1126,11 +1155,10 @@ void func_00215fc0(void)
                     updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
                     sflPersonaSetPersona((u16)*(u16*)(work + 0x10 +
-                                                *(u32*)(work + 0x52e0 +
-                                                        *(u32*)(work + 0x5c68) * 4) *
+                                                *(u32*)(work + 0x52e0 + *(u32*)(work + 0x5c68) * 4) *
                                                     0x10 + 4));
                 }
-                else if ((DAT_007e0952 & 4) != 0)
+                else if ((DAT_007e0952_a[0] & 4) != 0)
                 {
                     u32 current = *(u32*)(work + 0x5c68);
                     u32 total = *(u32*)(work + 0x5c6c);
@@ -1152,43 +1180,24 @@ void func_00215fc0(void)
                     updateFlags |= 3;
                     func_0010a4e0(0, 0, 0, 0);
                     sflPersonaSetPersona((u16)*(u16*)(work + 0x10 +
-                                                *(u32*)(work + 0x52e0 +
-                                                        *(u32*)(work + 0x5c68) * 4) *
+                                                *(u32*)(work + 0x52e0 + *(u32*)(work + 0x5c68) * 4) *
                                                     0x10 + 4));
                 }
             }
             break;
-        case 0:
-            if ((*(u32*)work & 0x10) == 0)
+        case 2:
+            if (sflPersonaIsTransitioning() == 0)
             {
-                if ((DAT_007e0952 & 0x40) != 0)
+                sflPersonaDestroy();
+                if (*(u32*)(work + 0x6090) == 1)
+                {
+                    *(u32*)(work + 0x5338) = 3;
+                }
+                else if (*(u32*)(work + 0x6090) == 0)
                 {
                     func_00219b90();
-                    break;
-                }
-                if ((DAT_007e0952 & 0x80) != 0)
-                {
-                    func_0010a4e0(0, 0, 0, 0);
-                    sflPersonaLoad((u16)*(u16*)(work + 0x10 +
-                                                *(u32*)(work + 0x52e0 +
-                                                        *(u32*)(work + 0x5c68) * 4) *
-                                                    0x10 + 4));
-                    *(u32*)(work + 0x5338) = 1;
-                    break;
                 }
             }
-            *(u32*)(work + 0x5c5c) &= ~1u;
-            func_0024a260((u32*)(work + 0x5c5c));
-            if ((*(u32*)(work + 0x5c5c) & 1) != 0)
-            {
-                updateFlags |= 3;
-            }
-            break;
-        case 4:
-            *(u32*)(work + 0x5338) = 0;
-            break;
-        case 3:
-            *(u32*)(work + 0x5338) = 4;
             break;
         }
         break;
