@@ -1921,11 +1921,11 @@ void func_001d1360(void)
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {
         unit = &gFldUnitsEc[i];
-        model = &unit->mdl;
-        resource = &unit->resrc;
         if (unit->genusBase != NULL)
         {
-            resourceId = func_003b6030((u16)(i + 100), 0, *model);
+            model = &unit->mdl;
+            resourceId = func_003b6030((u16)(i + 100), 0, unit->mdl);
+            resource = &unit->resrc;
             *resource = (ResrcModelChar*)func_003b5d10(resourceId);
             func_00318a90(*model, &DAT_00683780[unit->scaleIdx], 2);
             *(RwMatrix*)func_00318b60(*model) = unit->matBeforeBtl;
@@ -1935,20 +1935,23 @@ void func_001d1360(void)
             func_001add40((*resource)->collisCtlTask);
             func_001ad8c0(35.0f, (*resource)->collisCtlTask);
             (*resource)->baseMdl = (Model*)func_00317450(uGpffffb52c);
-            light.x = func_001ad8b0((*resource)->collisCtlTask);
-            light.y = light.x;
-            light.z = light.x;
+            light.z = func_001ad8b0((*resource)->collisCtlTask);
+            light.y = light.z;
+            light.x = light.z;
             func_00318a90((*resource)->baseMdl, &light, 2);
             func_004cb420(func_00318b70(*model),
                           func_00318b70((*resource)->baseMdl));
             func_00317730((*resource)->baseMdl);
             unit->unk_170 = (KwlnTask*)func_001af930(0, *resource);
             unit->unk_16c = (KwlnTask*)func_0044ad20(0, (s32)(s8)i);
-            taskSlot = &unit->unk_178;
-            if (unit->unk_18c == 2 && *taskSlot == NULL)
+            if (unit->unk_18c == 2)
             {
-                *taskSlot = (KwlnTask*)func_001d3c40(
-                    0, *(u32*)((u8*)(*resource)->mdl + 0x128));
+                taskSlot = &unit->unk_178;
+                if (unit->unk_178 == NULL)
+                {
+                    *taskSlot = (KwlnTask*)func_001d3c40(
+                        0, *(u32*)((u8*)(*resource)->mdl + 0x128));
+                }
             }
             if (func_001c65e0(unit) == 0)
             {
