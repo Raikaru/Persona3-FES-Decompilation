@@ -13622,6 +13622,9 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
   u32 uVar12;
   short sVar12;
   short rawKey;
+  int flagId;
+  int flagVal;
+  u32 hasEntry;
 
   short *psVar13;
 
@@ -13965,51 +13968,39 @@ LAB_00402100:
   *puVar10 = *puVar10 | 1;
 
 
-  lVar9 = FUN_00401800(puVar10[2]);
-  if ((lVar9 == 0) || (lVar9 = datGetFlag(lVar9), lVar9 != 0)) {
+  flagId = FUN_00401800(puVar10[2]);
+  if ((flagId == 0) || (flagVal = datGetFlag(flagId), flagVal != 0)) {
 
-    bVar3 = 0;
+    hasEntry = 0;
 
   }
 
   else {
 
-    bVar3 = 1;
+    hasEntry = 1;
 
   }
 
-  if (bVar3) {
+  if (hasEntry) {
 
     iVar8 = func_00170ed0(puVar10[2],&iStack_4);
 
-    if (iStack_4 == 4) {
-
-      unaff_s5_lo = *(u32 *)(iVar8 + 0x18);
-
-    }
-
-    else if (iStack_4 == 3) {
-
-      unaff_s5_lo = *(u32 *)(iVar8 + 0x20);
-
-    }
-
-    else if (iStack_4 == 2) {
-
-      unaff_s5_lo = *(u32 *)(iVar8 + 0x1c);
-
-    }
-
-    else if (iStack_4 == 1) {
-
-      unaff_s5_lo = *(u32 *)(iVar8 + 0x1c);
-
-    }
-
-    else if (iStack_4 == 0) {
-
+    switch (iStack_4) {
+    case 0:
       unaff_s5_lo = *(u32 *)(iVar8 + 0x24);
-
+      break;
+    case 1:
+      unaff_s5_lo = *(u32 *)(iVar8 + 0x1c);
+      break;
+    case 2:
+      unaff_s5_lo = *(u32 *)(iVar8 + 0x1c);
+      break;
+    case 3:
+      unaff_s5_lo = *(u32 *)(iVar8 + 0x20);
+      break;
+    case 4:
+      unaff_s5_lo = *(u32 *)(iVar8 + 0x18);
+      break;
     }
 
     *(u32 *)(puVar10 + 0xc) = unaff_s5_lo;
