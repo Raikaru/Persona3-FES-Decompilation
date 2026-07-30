@@ -8137,7 +8137,7 @@ void FUN_003fb0c0(u32 param_1,u32 param_2)
 
 }
 
-// FUN_003FB2F0 NONMATCHING
+// FUN_003FB2F0
 
 
 int FUN_003fb2f0(u32 *param_1)
@@ -8185,7 +8185,7 @@ int FUN_003fb2f0(u32 *param_1)
 
     uVar6 = param_1[2] + iVar5;
 
-    if ((int)uVar6 >= 100) {
+    if (99 < (int)uVar6) {
       uVar6 = 99;
     }
     else if ((int)uVar6 < 1) {

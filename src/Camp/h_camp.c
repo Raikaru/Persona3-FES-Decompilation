@@ -475,8 +475,8 @@ void* h_campUpdateSpriteSetupTask(KwlnTask* task)
     case 1:
         ready = 1;
         for (i = 0; i < 14; i++) {
-            if (work->maestroResources[i] != NULL &&
-                !H_Maestro_00111f30(work->maestroResources[i])) {
+            if (*(void**)((u32)work + i * 4 + 4) != NULL &&
+                !H_Maestro_00111f30(*(void**)((u32)work + i * 4 + 4))) {
                 ready = 0;
             }
         }

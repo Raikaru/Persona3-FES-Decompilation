@@ -327,11 +327,13 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
     }
 }
 
-// FUN_003E5E20 NONMATCHING
+// FUN_003E5E20
 void FUN_003e5e20(u8* param_1, u8* param_2)
 {
     s16 iVar1;
     f32 fVar4;
+    f32 step;
+    f32 angle;
     u32 random;
 
     if (*(u8 *)(param_2 + 0xd) > 0)
@@ -360,8 +362,12 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
 
         fVar4 = (f32)*(s8 *)(param_2 + 0xc);
         fVar4 /= 5.0f;
-        fVar4 = fVar4 + 1.0f;
-        fVar4 = (f32)*(s16 *)(param_2 + 0xe) + fVar4;
+        step = fVar4;
+        fVar4 = 1.0f;
+        fVar4 += step;
+        angle = (f32)*(s16 *)(param_2 + 0xe);
+        angle += fVar4;
+        fVar4 = angle;
         *(s16 *)(param_2 + 0xe) = (s16)(int)fVar4;
         if (*(s16 *)(param_2 + 0xe) < 0)
         {

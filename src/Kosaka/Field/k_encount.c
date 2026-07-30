@@ -1039,7 +1039,7 @@ KwlnTask* func_001d8d80(FldUnit* unit)
 
 // Retail offsets 0x00-0x4a8 reconstruct unit registration, facing rotation,
 // field updates, and active-count aggregation; 1196 of 1200 bytes are implemented.
-// FUN_001d8e60 NONMATCHING
+// FUN_001d8e60
 u32 func_001d8e60(KwlnTask* owner, FldUnit* pc, FldUnit* ec)
 {
     EncounterWork* work;
@@ -1151,7 +1151,9 @@ u32 func_001d8e60(KwlnTask* owner, FldUnit* pc, FldUnit* ec)
         i = 0;
         while (i < (s32)activeWork->ecCount)
         {
-            activeWork->ecTotal += activeWork->ec[i]->genusBase->count;
+            activeWork->ecTotal +=
+                ((EncounterWork*)((u8*)activeWork +
+                    i * sizeof(activeWork->ec[0])))->ec[0]->genusBase->count;
             i += 1;
         }
         activeWork->totalActive = activeWork->pcTotal + activeWork->ecTotal;
