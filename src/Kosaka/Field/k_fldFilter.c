@@ -672,6 +672,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                     {
                         fraction = 0.0f;
                     }
+                    curve = *(void**)((u8*)K_Field_Get() + 0x116c);
                     FUN_0048d480(fraction, *(void**)((u8*)curve + 0xa1c), 10, &curvePosition, 0);
                     K_Draw_SetPointCenter(work->pointTask0, &curvePosition);
                     K_Draw_SetPointCenter(work->pointTask1, &point0);
