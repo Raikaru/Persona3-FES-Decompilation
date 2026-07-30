@@ -3533,10 +3533,7 @@ u32 FUN_002a1710(int *param_1)
       }
       if ((u32)param_1[2] < (u32)param_1[1]) {
         fVar9 = (1.0f - (float)(u32)param_1[2] / (float)(u32)param_1[1]) * 255.0f;
-        if (2.1474836e+09f <= fVar9) {
-          fVar9 = fVar9 - 2.1474836e+09f;
-        }
-        uVar8 = (u8)(int)fVar9;
+        uVar8 = (u8)(u32)fVar9;
         uVar7 = 0;
       }
       else {
@@ -3602,10 +3599,7 @@ u32 FUN_002a1b70(u32 *param_1)
     uVar2 = 1;
     if (param_1[1] < *param_1) {
       fVar5 = ((float)param_1[1] / (float)*param_1) * 255.0f;
-      if (2.1474836e+09f <= fVar5) {
-        fVar5 = fVar5 - 2.1474836e+09f;
-      }
-      uVar3 = (int)fVar5 & 0xff;
+      uVar3 = (u32)fVar5 & 0xff;
       uVar2 = 0;
     }
     else {

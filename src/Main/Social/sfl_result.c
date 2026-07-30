@@ -2159,16 +2159,16 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   if ((*puVar1 & 0x80) == 0) {
 
     fVar4 = (float)param_3 * fVar4;
+    iVar2 = (int)(fVar3 * fVar4 * fVar5);
 
   }
 
   else {
 
     fVar4 = (float)param_3;
+    iVar2 = (int)(fVar3 * fVar4 * fVar5);
 
   }
-
-  iVar2 = (int)(fVar3 * fVar4 * fVar5);
 
   if (0xffff < iVar2) {
 

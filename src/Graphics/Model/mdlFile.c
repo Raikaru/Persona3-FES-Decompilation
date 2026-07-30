@@ -36473,7 +36473,7 @@ void FUN_00342550(int param_1,int param_2)
 
       }
 
-      puVar8[1] = (int)fVar12 << 0x18 | 0xffffff;
+      puVar8[1] = (u32)fVar12 << 0x18 | 0xffffff;
 
       *(u8 *)(puVar8 + 2) = *(u8 *)(puVar8 + 1);
 
@@ -38483,7 +38483,7 @@ void FUN_00344b70(int param_1,int param_2)
 
       }
 
-      puVar8[1] = (int)fVar12 << 0x18 | 0xffffff;
+      puVar8[1] = (u32)fVar12 << 0x18 | 0xffffff;
 
       *(u8 *)(puVar8 + 2) = *(u8 *)(puVar8 + 1);
 

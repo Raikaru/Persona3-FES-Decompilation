@@ -2858,9 +2858,9 @@ void func_0021f410(void)
     u32 mode;
     u32 sub;
     u32 previous;
-    u32 timerA;
-    u32 timerB;
-    u32 timerC;
+    s32 timerA;
+    s32 timerB;
+    s32 timerC;
     f32 dt;
     f32 centerX;
     f32 centerY;
@@ -2878,7 +2878,7 @@ void func_0021f410(void)
     f32 baseY;
     f32 pi;
     u32 flags;
-    u32 i;
+    s32 i;
 
     K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
     work = BP_PANEL_GLOBAL;
@@ -2913,7 +2913,7 @@ void func_0021f410(void)
             *(u32*)(work + 0x4650) = timerB;
             if (timerB == 3)
             {
-                *(u32*)work &= ~3;
+                *(u32*)work &= ~2;
             }
         }
         break;
@@ -2925,7 +2925,7 @@ void func_0021f410(void)
             *(u32*)(work + 0x4658) = timerC;
             if (timerC == 6)
             {
-                *(u32*)work &= ~9;
+                *(u32*)work &= ~8;
             }
         }
         break;

@@ -5399,9 +5399,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   int iVar9;
 
   int iVar10;
-  int halfAlpha;
 
-  float fVar11;
   float fHalf;
 
   struct {
@@ -5467,10 +5465,9 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 
   iVar9 = (int)(*(u32 *)(iVar4 + 8) & 0xf00) >> 8;
 
-  fVar11 = DAT_007caef0 * (float)(int)param_3;
 
-  FUN_0040e3c0_f32(0.0f,param_1,param_2,(u32)fVar11 & 0xff,0x75,0);
-  FUN_0040e3c0_f32(0.0f,param_1,param_2,(u32)fVar11 & 0xff,0x76,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,(u32)(DAT_007caef0 * (float)param_3) & 0xff,0x75,0);
+  FUN_0040e3c0_f32(0.0f,param_1,param_2,(u32)(DAT_007caef0 * (float)param_3) & 0xff,0x76,0);
   FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x77,0);
   FUN_0040e3c0_f32(0.0f,param_1,param_2,param_3 & 0xff,0x78,0);
 
@@ -5493,11 +5490,10 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
   FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,param_3 & 0xff,0x7d,0);
 
   iVar9 = iVar9 * 2;
-  halfAlpha = (int)fHalf & 0xff;
 
   if (scratch.itemSlots[iVar9] == -1) {
 
-    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,halfAlpha,0x7e,0);
+    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x23,(int)((float)param_3 * 0.5f) & 0xff,0x7e,0);
   }
 
   else {
@@ -5514,7 +5510,7 @@ void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5)
 
   if (scratch.itemSlots[iVar9 + 1] == -1) {
 
-    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x3e,halfAlpha,0x7e,0);
+    FUN_0040e3c0_f32(0.0f,param_1,iVar7 + 0x3e,(int)((float)param_3 * 0.5f) & 0xff,0x7e,0);
   }
 
   else {

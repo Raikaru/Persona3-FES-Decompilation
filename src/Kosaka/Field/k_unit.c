@@ -3071,23 +3071,31 @@ void* func_001d3ce0(KwlnTask* task)
             work[4] = func_001ad930(
                 ((FldUnit*)work[1])->resrc->collisCtlTask);
         }
-        colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
-        colors[1].a = colorData[3];
+        {
+            RwRGBA sourceColor;
+            colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
+            sourceColor = *(RwRGBA*)colorData;
+            colors[1].a = sourceColor.a;
+        }
         func_00318ad0(((FldUnit*)work[1])->mdl, &colors[1]);
         scene = func_001b9120();
         func_001a92d0(*(void**)(scene + 0x11f8), (void*)work[3], &pos);
     }
     else
     {
-        colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
-        colors[0].a = colorData[3];
+        {
+            RwRGBA sourceColor;
+            colorData = (u8*)func_00318b00(((FldUnit*)work[1])->mdl);
+            sourceColor = *(RwRGBA*)colorData;
+            colors[0].a = sourceColor.a;
+        }
+        func_00318ad0(((FldUnit*)work[1])->mdl, &colors[0]);
         if (work[2] == 1)
         {
             work[2] = 0;
             scene = func_001b9120();
             func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
         }
-        func_00318ad0(((FldUnit*)work[1])->mdl, &colors[0]);
     }
     return NULL;
 }

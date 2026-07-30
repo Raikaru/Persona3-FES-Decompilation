@@ -1896,7 +1896,7 @@ void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
         sprintf(text, gp0xffff897c,
                 D_005D80E4[id * 10 + socialLevel]);
         FUN_003b2f90(100.0f, (s32)p.value.x + 0xad,
-                     (s32)p.value.y + 0x35, color | 0xffffff00U,
+                     (s32)((f32)((s32)p.value.y + 0x35) + 2.0f), color | 0xffffff00U,
                      6, 1, text, 0x10, -1);
     } else {
         socialLevel = datGetSocialLinkLevel((s16)id);
