@@ -1706,28 +1706,30 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
 }
 #pragma opt_loop_invariants off
 
-// FUN_001d0bc0 NONMATCHING
+// FUN_001d0bc0
 void func_001d0bc0(void* output, u32 count)
 {
     u8* node;
     u8* dst;
-    u8* selectedDst;
     RwV3d nodePos;
     RwV3d delta;
     f32 distance;
     f32 bestDistance;
     u32 i;
+    u32 k;
     u32 j;
+    u8* selectedDst;
+    u8* node2;
     typedef struct
     {
         u32 data[0x44];
     } SpawnCopy;
 
     node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_15);
+    i = 0;
     memset(output, 0, 0x330);
     if (K_Scene_001a0250() == 1)
     {
-        i = 0;
         while (node != NULL)
         {
             i++;
@@ -1737,19 +1739,19 @@ void func_001d0bc0(void* output, u32 count)
         {
             K_Assert(__FILE__, 0x60d);
         }
-        for (i = 0; i < count; i++)
+        for (k = 0; k < count; k++)
         {
-            selectedDst = (u8*)output + i * 0x110;
             bestDistance = 1.1754944e-38f;
-            node = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_15);
-            while (node != NULL)
+            node2 = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_15);
+            selectedDst = (u8*)output + k * 0x110;
+            while (node2 != NULL)
             {
-                nodePos = *FldUnit_NodePos(node);
+                nodePos = *FldUnit_NodePos(node2);
                 delta.x = nodePos.x - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.x;
                 delta.y = nodePos.y - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.y;
                 delta.z = nodePos.z - mdlGetMatrix(gFldUnitsPc[0].mdl)->pos.z;
                 distance = func_004c6ac0(&delta);
-                for (j = 0; j < i; j++)
+                for (j = 0; j < k; j++)
                 {
                     dst = (u8*)output + j * 0x110;
                     delta.x = nodePos.x - *(f32*)(dst + 0x100);
@@ -1759,10 +1761,10 @@ void func_001d0bc0(void* output, u32 count)
                 }
                 if (distance > bestDistance)
                 {
-                    *(SpawnCopy*)selectedDst = *(SpawnCopy*)node;
                     bestDistance = distance;
+                    *(SpawnCopy*)selectedDst = *(SpawnCopy*)node2;
                 }
-                node = *(u8**)(node + 0xf8);
+                node2 = *(u8**)(node2 + 0xf8);
             }
         }
     }
