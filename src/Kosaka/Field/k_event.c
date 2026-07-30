@@ -1995,12 +1995,14 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         case 4:
             if (FUN_00318990(PTR_U32(EVENT_WORD(9), 0x50), 0) >= 13.0f)
             {
-                case4Marker = ((RwMatrix*)FUN_00318b60(((u32*)0x008717f0)[FUN_00453480() * 0x70]))->pos;
+                case4Marker = ((RwMatrix*)FUN_00318b60(
+                    ((u32*)D_008717F0_abs)[(s8)FUN_00453480() * 0x70]))->pos;
                 case4Marker.y += 100.0f;
-                FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &case4Marker), 3);
+                taskResult = FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &case4Marker);
+                FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), taskResult, 3);
                 FUN_00103c30(3, 0xff, 3, 0);
                 FUN_0010a4e0(0, 7, 3, 0);
-                FUN_003182d0(((u32*)0x008717f0)[FUN_00453480() * 0x70], 0, 2, 0, 0);
+                FUN_003182d0(((u32*)D_008717F0_abs)[(s8)FUN_00453480() * 0x70], 0, 2, 0, 0);
                 FUN_0045a430(true);
                 FUN_003c8f70();
                 FUN_003c8f20();
@@ -2449,13 +2451,19 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         case 0x15:
             FUN_003c7b90();
             currentActor = gMtScene->fldMajorId;
-            active = true;
-            if (currentActor == 7 || currentActor == 4)
+            if (currentActor != 7 && currentActor != 4)
             {
-                if (currentActor == 7 && EVENT_WORD(8) >= 4) active = false;
             }
-            if (active != false && PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) == 1 &&
-                EVENT_WORD(8) != (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+            else if (currentActor == 7 && EVENT_WORD(8) >= 4)
+            {
+            }
+            else if (PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) != 1)
+            {
+            }
+            else if (EVENT_WORD(8) == (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+            {
+            }
+            else
             {
                 FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 7, true);
                 FUN_005225a8(0x00683750, (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0));
@@ -2465,12 +2473,16 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FUN_003c7700();
                 FUN_003c77a0();
                 currentActor = gMtScene->fldMajorId;
-                active = true;
-                if (currentActor == 7 || currentActor == 4)
+                if (currentActor != 7 && currentActor != 4)
                 {
-                    if (currentActor == 7 && EVENT_WORD(8) >= 4) active = false;
                 }
-                if (active != false && EVENT_WORD(8) != (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+                else if (currentActor == 7 && EVENT_WORD(8) >= 4)
+                {
+                }
+                else if (EVENT_WORD(8) == (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+                {
+                }
+                else
                 {
                     FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 0x10, true);
                 }
@@ -2487,20 +2499,42 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 
         case 0x16:
             currentActor = gMtScene->fldMajorId;
-            active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
-            if (active != false && EVENT_WORD(7) != 0 && PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) == 1 &&
-                EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+            if (currentActor == 7 || currentActor == 4)
             {
-                FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, EVENT_WORD(8), 7, true);
+                if (currentActor == 7 && EVENT_WORD(8) < 4) goto case16_first_action;
+                if (currentActor != 4) goto case16_first_action_done;
+                if (EVENT_WORD(8) >= 4) goto case16_first_action_done;
             }
+case16_first_action:
+            if (PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) != 1)
+            {
+            }
+            else if (EVENT_WORD(8) == (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+            {
+            }
+            else
+            {
+                FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 7, true);
+            }
+case16_first_action_done:
             if (FUN_00195460(EVENT_WORD(0x18)) != true)
             {
                 currentActor = gMtScene->fldMajorId;
-                active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
-                if (active != false && EVENT_WORD(7) != 0 && EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+                if (currentActor == 7 || currentActor == 4)
                 {
-                    FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, EVENT_WORD(8), 0x10, true);
+                    if (currentActor == 7 && EVENT_WORD(8) < 4) goto case16_second_action;
+                    if (currentActor != 4) goto case16_second_action_done;
+                    if (EVENT_WORD(8) >= 4) goto case16_second_action_done;
                 }
+case16_second_action:
+                if (EVENT_WORD(8) == (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+                {
+                }
+                else
+                {
+                    FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 0x10, true);
+                }
+case16_second_action_done:
                 if (EVENT_WORD(7) != 0 && PTR_U32((void*)EVENT_WORD(7), 0x210) != 0) FUN_001dd5e0((void*)PTR_U32((void*)EVENT_WORD(7), 0x210), true);
                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), false);
                 FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);

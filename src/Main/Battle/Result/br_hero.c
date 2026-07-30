@@ -282,7 +282,8 @@ void brHero00263170(void)
     u32* w;
     BrHeroResource* resource;
     float rect[4];
-    float width4;
+    s32 width4;
+    s32 width2;
     float offset;
     float scroll;
     u8 color[4];
@@ -428,18 +429,19 @@ void brHero00263170(void)
     FUN_0021d8e0(w + 0x444, rect);
 
     resource = (BrHeroResource*)FUN_00233df0(1);
-    width4 = (float)(resource->width * 4);
-    offset = width4 + 30.0f;
+    width4 = resource->width * 4;
+    offset = (float)width4 + 30.0f;
     scroll = ((float)(s32)w[0xe58] / 1050.0f) * -offset;
+    width2 = resource->width * 2;
     rect[0] = 190.0f;
     rect[1] = scroll;
-    rect[2] = (float)(resource->width * 2);
-    rect[3] = width4;
+    rect[2] = (float)width2;
+    rect[3] = (float)width4;
     FUN_0021d8e0(w + 0x4c8, rect);
     rect[0] = 190.0f;
     rect[1] = scroll + offset;
-    rect[2] = (float)(resource->width * 2);
-    rect[3] = width4;
+    rect[2] = (float)width2;
+    rect[3] = (float)width4;
     FUN_0021d8e0(w + 0x508, rect);
 
     rect[0] = 449.0f;

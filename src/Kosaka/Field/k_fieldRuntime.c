@@ -5228,51 +5228,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         }
 
 
-        if (work->state == 1)
-        {
-            amount = 0.0f;
-            func_001e7f90((const RuntimeDistanceWork*)work, amount,
-                          &section, &fraction);
-        }
-        if (work->state == 2)
-        {
-            void* camera;
-            RuntimeMatrix* cameraMatrix;
-            RuntimeVec3 cameraAxis;
-            f32 cameraScale;
-
-            camera = func_00198590();
-            cameraMatrix = *(RuntimeMatrix**)((u8*)camera + 4);
-            cameraScale = 0.25f;
-            if (cameraMatrix != NULL)
-            {
-                cameraAxis.x = cameraMatrix->values[12];
-                cameraAxis.y = cameraMatrix->values[13];
-                cameraAxis.z = cameraMatrix->values[14];
-                cameraScale += cameraAxis.x * 0.001f;
-                cameraScale += cameraAxis.y * 0.001f;
-                cameraScale += cameraAxis.z * 0.001f;
-            }
-            amount = cameraScale;
-        }
-        if (work->state == 1)
-        {
-            amount = 1.0f;
-            func_001e7f90((const RuntimeDistanceWork*)work, amount,
-                          &section, &fraction);
-            if (vertices != NULL && vector2 != NULL && vector3 != NULL)
-            {
-                sample0 = vector2[section < count ? section : 0];
-                sample1 = vector3[section < count ? section : 0];
-                blended.x = sample0.x +
-                            (sample1.x - sample0.x) * fraction;
-                blended.y = sample0.y +
-                            (sample1.y - sample0.y) * fraction;
-                blended.z = sample0.z +
-                            (sample1.z - sample0.z) * fraction;
-                vertices[0] = blended;
-            }
-        }
         {
             RuntimeVec3* surface;
             RuntimeVec3 first;
@@ -5340,6 +5295,12 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                                  surface[scratchIndex].z * inverseWeight;
                     surface[index] = blended0;
                 }
+            }
+            if (work->state == 1)
+            {
+                amount = 0.0f;
+                func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                              &section, &fraction);
             }
             if (surface != NULL && vertices != NULL &&
                 vector0 != NULL && vector1 != NULL)
@@ -5423,6 +5384,31 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             (void)x;
             (void)y;
             (void)z;
+        }
+        if (work->state == 2)
+        {
+            void* camera;
+            RuntimeMatrix* cameraMatrix;
+
+            camera = func_00198590();
+            cameraMatrix = *(RuntimeMatrix**)((u8*)camera + 4);
+            (void)cameraMatrix;
+            denominator = (f32)count + 0.5f;
+            amount = 0.5f / denominator;
+            func_001e7f90((const RuntimeDistanceWork*)work, amount,
+                          &section, &fraction);
+            if (vertices != NULL && vector2 != NULL && vector3 != NULL)
+            {
+                sample0 = vector2[section < count ? section : 0];
+                sample1 = vector3[section < count ? section : 0];
+                blended.x = sample0.x +
+                            (sample1.x - sample0.x) * fraction;
+                blended.y = sample0.y +
+                            (sample1.y - sample0.y) * fraction;
+                blended.z = sample0.z +
+                            (sample1.z - sample0.z) * fraction;
+                vertices[0] = blended;
+            }
         }
         if (work->state == 2 && vertices != NULL &&
             vector2 != NULL && vector3 != NULL)

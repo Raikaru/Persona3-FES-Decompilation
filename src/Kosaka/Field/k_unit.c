@@ -152,7 +152,7 @@ extern KwlnTask* func_001d40e0(KwlnTask* parent, FldUnit* unit);
 extern u32 func_0016c970(s16 pcId);
 extern u16 func_0016c4f0(s16 pcId);
 extern u32 func_0016c5f0(s16 pcId);
-extern void func_0016cf40(s16 pcId, u16 value);
+extern void func_0016cf40(s16 pcId, s64 value);
 extern void func_001adc20(KwlnTask* collisCtlTask, const RwV3d* position);
 extern s32 func_001dde00(s32 value);
 extern u32 func_001a01c0(void);
@@ -3005,7 +3005,7 @@ KwlnTask* func_001d3c40(KwlnTask* parent, u32 model)
     return task;
 }
 
-// FUN_001d3ce0 NONMATCHING
+// FUN_001d3ce0
 void* func_001d3ce0(KwlnTask* task)
 {
     s32* work;
@@ -3013,25 +3013,32 @@ void* func_001d3ce0(KwlnTask* task)
     RwRGBA colors[2];
     u32 status;
     u32 now;
+    u32 deadline;
     u32 hp;
     s32 damage;
+    s32 finalDamage;
+    s16 pcId;
     u8* scene;
+    s8* colorSrc;
+    s8* colorDst;
     s32 i;
-    u8* colorSrc;
-    u8* colorDst;
+    s8 color0;
+    s8 color1;
 
     u8* colorData;
     work = (s32*)task->workData;
-    colorSrc = gp0xffff95d0;
-    colorDst = (u8*)colors;
+    colorSrc = (s8*)gp0xffff95d0;
+    colorDst = (s8*)colors;
     i = 4;
     do
     {
-        colorDst[0] = colorSrc[0];
-        colorDst[1] = colorSrc[1];
+        color0 = colorSrc[0];
+        color1 = colorSrc[1];
         colorSrc += 2;
-        colorDst += 2;
         i--;
+        colorDst[0] = color0;
+        colorDst[1] = color1;
+        colorDst += 2;
     } while (i > 0);
     status = func_0016c970((s16)((FldUnit*)work[1])->charId);
     if ((status & 0x80) != 0 &&
@@ -3051,23 +3058,25 @@ void* func_001d3ce0(KwlnTask* task)
             func_001a9390(*(void**)(scene + 0x11f8), (void*)work[3], 3);
             work[4] = func_001ad930(((FldUnit*)work[1])->resrc->collisCtlTask);
             work[2] = 1;
-            return NULL;
+            goto done;
         }
         if (func_00318ed0(((FldUnit*)work[1])->mdl, 2, &pos) == 0)
         {
             pos = ((RwMatrix*)func_00318b60(((FldUnit*)work[1])->mdl))->pos;
             pos.y += 200.0f;
         }
+        deadline = (u32)work[4] + 0x960;
         now = func_001ad930(((FldUnit*)work[1])->resrc->collisCtlTask);
-        if ((u32)work[4] + 0x960 < now)
+        if (deadline < now)
         {
             hp = func_0016c5f0((s16)((FldUnit*)work[1])->charId);
             damage = (s32)(f32)hp;
             damage = (s32)((f32)damage / 20.0f);
             if (damage < 1) damage = 1;
-            damage = (s32)func_0016c4f0((s16)((FldUnit*)work[1])->charId) - damage;
-            if (damage < 1) damage = 1;
-            func_0016cf40((s16)((FldUnit*)work[1])->charId, (u16)damage);
+            finalDamage = (s32)func_0016c4f0((s16)((FldUnit*)work[1])->charId) - damage;
+            pcId = (s16)((FldUnit*)work[1])->charId;
+            if (finalDamage < 1) finalDamage = 1;
+            func_0016cf40(pcId, (s16)finalDamage);
             work[4] = func_001ad930(
                 ((FldUnit*)work[1])->resrc->collisCtlTask);
         }
@@ -3097,6 +3106,7 @@ void* func_001d3ce0(KwlnTask* task)
             func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
         }
     }
+done:
     return NULL;
 }
 
