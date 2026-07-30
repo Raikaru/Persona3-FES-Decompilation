@@ -1620,7 +1620,7 @@ int FUN_00388df0(int param_1,int param_2)
 }
 
 
-// FUN_00388FF0 NONMATCHING
+// FUN_00388FF0
 
 
 void FUN_00388ff0(int param_1)
@@ -1649,7 +1649,8 @@ void FUN_00388ff0(int param_1)
 
     for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {
 
-      iVar2 = *(int *)(*(int *)(param_1 + 0x980) + iVar3 * 4);
+      iVar2 = *(int *)(param_1 + 0x980);
+      iVar2 = *(int *)(iVar2 + iVar3 * 4);
 
       if (iVar2 != 0) {
 
