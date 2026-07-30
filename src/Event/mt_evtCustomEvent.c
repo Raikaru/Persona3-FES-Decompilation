@@ -4830,9 +4830,9 @@ void FUN_0039db00(int param_1)
 #define FUN_0039db00(...) ((void (*)(...))FUN_0039db00)(__VA_ARGS__)
 #undef FUN_0039db60
 // An explicit s16 result local confirms the contract but leaves the same four-word
-// b210 allocation floor at +0xa4..+0xac: retail sign-extends/stores through a0,
-// while b210 uses v0 for the equivalent value.
-// FUN_0039DB60 NONMATCHING
+// W295: the a0-sext was FUN_00172660's hidden short argument (sVar2), not an
+// allocation floor; passing it explicitly matched.
+// FUN_0039DB60
 
 
 u32 FUN_0039db60(int param_1)
@@ -4858,7 +4858,7 @@ u32 FUN_0039db60(int param_1)
     }
     sVar2 = (short)FUN_0016dd40();
     piVar1[3] = sVar2;
-    lVar5 = FUN_00172660();
+    lVar5 = FUN_00172660(sVar2);
     if (lVar5 == 0) {
       return 0xffffffff;
     }
