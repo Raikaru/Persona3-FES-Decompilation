@@ -17,6 +17,12 @@ typedef u32 int3;
 extern u32 DAT_0067ef00;
 extern u32 DAT_006a2da0;
 extern u32 DAT_006a2da8;
+#pragma alias DAT_0067ef00_abs DAT_0067ef00
+extern int DAT_0067ef00_abs[];
+#pragma alias DAT_006a2da0_abs DAT_006a2da0
+extern u8 DAT_006a2da0_abs[];
+#pragma alias DAT_006a2da8_abs DAT_006a2da8
+extern u8 DAT_006a2da8_abs[];
 extern u32 DAT_006a2ed8;
 extern u32 DAT_006a2ee0;
 extern u32 DAT_006a2ee8;
@@ -2512,6 +2518,7 @@ u32 FUN_003baa70(char *param_1)
   int iVar1;
 
   int lVar2;
+  int tbl;
 
   u32 uVar3;
 
@@ -2521,53 +2528,57 @@ u32 FUN_003baa70(char *param_1)
 
   struct {
     u64 xy;
-    u32 z;
+    f32 z;
   } bounds;
 
-  int iStack_10;
-
-  int iStack_c;
-
-  int iStack_8;
+  int addrs[3];
+  u64 txy;
+  f32 tz;
 
   
 
   iVar1 = FUN_003b5d50(0x15);
 
-  uVar4 = *puGpffffa850;
+  uVar4 = ((u32 *)puGpffffa850)[0];
 
-  uVar3 = puGpffffa850[1];
+  uVar3 = ((u32 *)puGpffffa850)[1];
 
-  if (((0x13 < uVar4) && (uVar4 < 0x1d)) && (0x31 < uVar3)) {
+  if (((uVar4 >= 0x14) && (uVar4 < 0x1d)) && (uVar3 >= 0x32)) {
 
     uVar3 = uVar3 - 0x31;
 
   }
 
-  if (*(int *)(&DAT_0067ef00 + uVar4 * 4) != 0) {
+  tbl = DAT_0067ef00_abs[uVar4];
 
-    uVar4 = (u32)*(u8 *)(*(int *)(&DAT_0067ef00 + uVar4 * 4) + uVar3);
+  if (tbl == 0) {
+    return 0;
+  }
+
+  uVar4 = (u32)*(u8 *)(tbl + uVar3);
 
     for (; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
-      bounds.xy = DAT_006a2da0;
-      bounds.z = DAT_006a2da8;
+      txy = *(volatile u64 *)DAT_006a2da0_abs;
+      tz = *(volatile f32 *)DAT_006a2da8_abs;
+      *(volatile u64 *)&bounds.xy = txy;
+      *(volatile f32 *)&bounds.z = tz;
 
-      iStack_10 = iVar1 + 0x11c;
+      addrs[0] = iVar1 + 0x11c;
 
-      iStack_c = iVar1 + 0x128;
+      addrs[1] = iVar1 + 0x128;
 
-      iStack_8 = iVar1 + 0x134;
+      addrs[2] = iVar1 + 0x134;
 
-      lVar2 = FUN_001aaad0(param_1,&iStack_10,&bounds);
+      lVar2 = FUN_001aaad0(param_1,addrs,&bounds);
 
       if (lVar2 == 1) {
 
         fVar5 = *(float *)((int)param_1 + 4);
 
-        if ((fVar5 < *(float *)(iStack_10 + 4) + 100.0f) &&
+        if ((fVar5 < *(float *)(addrs[0] + 4) + 100.0f) &&
 
-           (*(float *)(iStack_10 + 4) - 100.0f < fVar5)) {
+           (*(float *)(addrs[0] + 4) - 100.0f < fVar5)) {
 
           return *(u32 *)(iVar1 + 0x14c);
 
@@ -2575,21 +2586,21 @@ u32 FUN_003baa70(char *param_1)
 
       }
 
-      iStack_10 = iVar1 + 0x128;
+      addrs[0] = iVar1 + 0x128;
 
-      iStack_c = iVar1 + 0x134;
+      addrs[1] = iVar1 + 0x134;
 
-      iStack_8 = iVar1 + 0x140;
+      addrs[2] = iVar1 + 0x140;
 
-      lVar2 = FUN_001aaad0(param_1,&iStack_10,&bounds);
+      lVar2 = FUN_001aaad0(param_1,addrs,&bounds);
 
       if (lVar2 == 1) {
 
         fVar5 = *(float *)((int)param_1 + 4);
 
-        if ((fVar5 < *(float *)(iStack_10 + 4) + 100.0f) &&
+        if ((fVar5 < *(float *)(addrs[0] + 4) + 100.0f) &&
 
-           (*(float *)(iStack_10 + 4) - 100.0f < fVar5)) {
+           (*(float *)(addrs[0] + 4) - 100.0f < fVar5)) {
 
           return *(u32 *)(iVar1 + 0x14c);
 
@@ -2598,14 +2609,6 @@ u32 FUN_003baa70(char *param_1)
       }
 
     }
-
-  }
-
-  else {
-
-    uVar4 = 0;
-
-  }
 
   return uVar4;
 

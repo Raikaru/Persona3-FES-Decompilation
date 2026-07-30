@@ -46053,7 +46053,11 @@ u32 FUN_0034e4c0(int param_1)
 
   FUN_00521250(puVar5 + 3,uVar2,0x48);
 
-  FUN_0034e820(uVar3,*(u16 *)(file + 0xc),iVar1 + 0x48);
+  {
+    u16 fidx;
+    fidx = *(volatile u16 *)(file + 0xc);
+    FUN_0034e820(uVar3,fidx,iVar1 + 0x48);
+  }
 
   if (*(int *)(puVar5[0x17] + 8) != 0) {
     goto do_update;
