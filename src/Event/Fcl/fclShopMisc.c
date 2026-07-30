@@ -15333,7 +15333,7 @@ LAB_00403b38:
 
 }
 
-// FUN_00403E40 NONMATCHING
+// FUN_00403E40
 
 
 u32 FUN_00403e40(int ids,int count)
@@ -15341,14 +15341,16 @@ u32 FUN_00403e40(int ids,int count)
   int entry;
   int i;
   int slot;
-  u8 found;
+  s32 found;
+  s32 key;
 
   slot = 0;
   while (slot < 3) {
     entry = FUN_0017c670(slot);
     if (entry != 0) {
+      key = *(short *)entry;
       for (i = 0; i < count; i++) {
-        if (*(short *)entry == *(short *)(ids + i * 2)) {
+        if (key == *(short *)(ids + i * 2)) {
           found = 1;
           goto search_done;
         }
