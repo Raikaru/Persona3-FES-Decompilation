@@ -135,9 +135,9 @@ u32 DAT_006b2de0;
 u32 DAT_006b2e00;
 u32 DAT_006b2e10;
 u32 DAT_006b2e18;
-u32 DAT_006b2e38;
-u32 DAT_006b2e3c;
-u32 DAT_006b2e40;
+u32 DAT_006b2e38[];
+u32 DAT_006b2e3c[];
+u32 DAT_006b2e40[];
 u32 DAT_006b2e48;
 u32 DAT_006b2e4c;
 u32 DAT_006b2e50;
@@ -182,10 +182,10 @@ u32 DAT_007cda6c;
 extern float DAT_007cdae0;
 extern float DAT_007cdae4;
 extern u8 DAT_006b2aa0[];
-u32 DAT_007e094c;
-u32 DAT_007e094e;
-u32 DAT_007e0956;
-u32 DAT_007e0958;
+u16 DAT_007e094c[];
+u16 DAT_007e094e[];
+u16 DAT_007e0956[];
+u16 DAT_007e0958[];
 #pragma alias DAT_007e094e_0041ae20 DAT_007e094e
 extern u16 DAT_007e094e_0041ae20[];
 #pragma alias DAT_007e0958_0041ae20 DAT_007e0958
@@ -1253,25 +1253,16 @@ u8 FUN_00418510(int param_1,int *param_2)
   u32 uVar5;
 
   f32 fVar18;
+  f32 spriteScale;
   u8 auStack_80 [72];
 
-  float fStack_38;
-
-  float fStack_34;
+  float spriteInput[2];
 
   u32 auStack_30 [4];
 
-  float fStack_20;
+  RwV3d vector;
 
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
+  RwV3d position;
 
   
 
@@ -1281,69 +1272,73 @@ u8 FUN_00418510(int param_1,int *param_2)
 
   uVar5 = *(u32 *)(param_1 + 0x38);
 
-  auStack_30[0] = DAT_006b2e38;
-  auStack_30[1] = DAT_006b2e3c;
-  auStack_30[2] = DAT_006b2e40;
+  auStack_30[0] = DAT_006b2e38[0];
+  auStack_30[1] = DAT_006b2e3c[0];
+  auStack_30[2] = DAT_006b2e40[0];
 
-  fStack_10 = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
+  position.x = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
 
-  fStack_c = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
+  position.y = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
 
-  fStack_8 = (float)(*(int *)(iVar3 + 0x14) / 0xffff);
+  position.z = (float)(*(int *)(iVar3 + 0x14) / 0xffff);
 
   if ((*(u32 *)(iVar3 + 0x18) & 4) != 0) {
 
     iVar4 = kwlnGetMainCamera();
 
-    fStack_20 = (-(fStack_10 - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
-    fStack_1c = (-(fStack_c - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
-    fStack_18 = 1.0f;
+    vector.x = (-(position.x - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
+    vector.y = (-(position.y - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
+    vector.z = 1.0f;
 
-    RwV3dNormalize((RwV3d*)&fStack_20,(RwV3d*)&fStack_20);
+    RwV3dNormalize(&vector,&vector);
 
     iVar4 = *(int *)(param_1 + 0x38);
 
     FUN_004c32a0(auStack_80,iVar4 + 0x10);
 
-    FUN_004c6c60(&fStack_20,&fStack_20,auStack_80);
+    FUN_004c6c60(&vector,&vector,auStack_80);
 
-    fStack_20 = fStack_20 * fStack_8;
+    vector.x = vector.x * position.z;
 
-    fStack_1c = fStack_1c * fStack_8;
+    vector.y = vector.y * position.z;
 
-    fStack_18 = fStack_18 * fStack_8;
+    vector.z = vector.z * position.z;
 
-    fStack_10 = *(float *)(iVar4 + 0x40) + fStack_20;
+    position.x = *(float *)(iVar4 + 0x40) + vector.x;
 
-    fStack_c = *(float *)(iVar4 + 0x44) + fStack_1c;
+    position.y = *(float *)(iVar4 + 0x44) + vector.y;
 
-    fStack_8 = *(float *)(iVar4 + 0x48) + fStack_18;
+    position.z = *(float *)(iVar4 + 0x48) + vector.z;
 
   }
 
   cVar1 = *(char *)(iVar3 + 4);
 
-  if (cVar1 == '@') {
-    if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
-      FUN_004cb750_typed(uVar5,&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
-    }
-  }
-  else if (cVar1 == '\x06') {
-    fStack_38 = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
-    fStack_34 = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
-    fVar18 = func_0020c500((const f32 *)(iVar2 + 8),fStack_8);
-    func_0020c320(iVar2 + 8,&fStack_38,fVar18,&fStack_10);
-    sflResSetSpritePosition((void *)*(u32 *)(iVar2 + 8),&fStack_10);
-  }
-  else if (cVar1 == '\x03') {
-    mdlTranslate(*(u32 *)(iVar2 + 8),&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
-  }
-  else if (cVar1 == '\x02') {
-    FUN_0041beb0(*(u32 *)(iVar2 + 8),&fStack_10,
+  switch (cVar1) {
+  case '\x01':
+    FUN_0034fdf0(*(u32 *)(iVar2 + 8),&position);
+    break;
+  case '\x02':
+    FUN_0041beb0(*(u32 *)(iVar2 + 8),&position,
                  auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
-  }
-  else if (cVar1 == '\x01') {
-    FUN_0034fdf0(*(u32 *)(iVar2 + 8),&fStack_10);
+    break;
+  case '\x03':
+    mdlTranslate(*(u32 *)(iVar2 + 8),&position,
+                 auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
+    break;
+  case '\x06':
+    spriteInput[0] = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
+    spriteInput[1] = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
+    spriteScale = (float)(*(int *)(iVar3 + 0x14) / 0xffff);
+    fVar18 = func_0020c500((const f32 *)(iVar2 + 8),spriteScale);
+    func_0020c320(iVar2 + 8,spriteInput,fVar18,&position);
+    sflResSetSpritePosition((void *)*(u32 *)(iVar2 + 8),(float *)&position);
+    break;
+  case '@':
+    if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
+      FUN_004cb750_typed(uVar5,&position,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
+    }
+    break;
   }
 
   iVar2 = param_2[3];
@@ -3176,38 +3171,27 @@ u32 FUN_0041ae20(int param_1)
 u8 FUN_0041aff0(int param_1,int param_2)
 {
   int iVar1;
-  float *pfVar2;
+  u8 *clear;
+  int count;
   u8 bVar3;
-  float *pfVar4;
-  float *pfVar5;
   float fVar6;
   float fVar7;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  RwV3d work40;
-  RwV3d work20;
-  float fStack_1c;
-  float fStack_18;
   RwV3d direction;
+  RwV3d cameraPosition;
+  RwV3d negativePosition;
+  RwV3d movement;
   iVar1 = *(int *)(param_1 + 0x38);
   fVar7 = 0.0f;
   direction = DAT_006b3090;
   bVar3 = 0;
-  pfVar4 = (float *)0xc;
-  pfVar5 = &fStack_40;
-  pfVar2 = pfVar5;
-  while (pfVar2 != (float *)0x0) {
-    *(u8 *)pfVar5 = 0;
-    pfVar5 = (float *)((int)pfVar5 + 1);
-    pfVar4 = (float *)((int)pfVar4 + -1);
-    pfVar2 = pfVar4;
+  count = 0xc;
+  clear = (u8 *)&movement;
+  while (count != 0) {
+    *clear = 0;
+    clear++;
+    count--;
   }
-  if (((DAT_007e094e & 0x80) != 0) || ((DAT_007e0958 & 0x80) != 0)) {
+  if (((DAT_007e094e[0] & 0x80) != 0) || ((DAT_007e0958[0] & 0x80) != 0)) {
     *(u32 *)(param_2 + 0x10) = *(u32 *)(param_2 + 0x10) ^ 1;
   }
   if (*(int *)(param_2 + 0x10) == 0) {
@@ -3216,77 +3200,60 @@ u8 FUN_0041aff0(int param_1,int param_2)
   else {
     *(int *)(*(int *)(param_1 + 0x3c) + 8) =
       *(int *)(*(int *)(param_1 + 0x3c) + 8) + -1;
-    if (((DAT_007e094e & 8) != 0) || ((DAT_007e0958 & 8) != 0)) {
+    if (((DAT_007e094e_0041ae20[0] & 8) != 0) ||
+        ((DAT_007e0958_0041ae20[0] & 8) != 0)) {
       *(u32 *)(*(int *)(param_1 + 0x3c) + 8) = 499;
     }
-    fVar6 = (float)*((u8*)&DAT_007e095e) - 128.0f;
-    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
+    fVar6 = (float)DAT_007e095e[0] - 128.0f;
+    if ((fVar6 < -48.0f) || (48.0f <= fVar6)) {
       fVar7 = 0.0f - fGpffff82cc * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e095f) - 128.0f;
-    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
+    fVar6 = (float)DAT_007e095f[0] - 128.0f;
+    if ((fVar6 < -48.0f) || (48.0f <= fVar6)) {
       direction = *(RwV3d *)(iVar1 + 0x10);
       fVar7 = (fVar7 + 0.0f) - fGpffff82cc * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e0961) - 128.0f;
-    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-      fStack_40 = *(float *)(iVar1 + 0x30);
-      fStack_3c = *(float *)(iVar1 + 0x34);
-      fStack_38 = *(float *)(iVar1 + 0x38);
-      FUN_004c69f0_typed((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+    fVar6 = (float)DAT_007e0961[0] - 128.0f;
+    if ((fVar6 < -48.0f) || (48.0f <= fVar6)) {
+      movement = *(RwV3d *)(iVar1 + 0x30);
+      FUN_004c69f0_typed(&movement,&movement);
       fVar6 = fGpffff8328 * fVar6;
-      fStack_40 = fStack_40 * fVar6;
-      fStack_3c = fStack_3c * fVar6;
-      fStack_38 = fStack_38 * fVar6;
+      movement.x = movement.x * fVar6;
+      movement.y = movement.y * fVar6;
+      movement.z = movement.z * fVar6;
       bVar3 = 1;
     }
-    fVar6 = (float)*((u8*)&DAT_007e0960) - 128.0f;
-    if ((fVar6 < -48.0f) || (48.0f < fVar6)) {
-      fStack_40 = *(float *)(iVar1 + 0x10);
-      fStack_3c = *(float *)(iVar1 + 0x14);
-      fStack_38 = *(float *)(iVar1 + 0x18);
-      FUN_004c69f0_typed((RwV3d*)&fStack_40,(RwV3d*)&fStack_40);
+    fVar6 = (float)DAT_007e0960[0] - 128.0f;
+    if ((fVar6 < -48.0f) || (48.0f <= fVar6)) {
+      movement = *(RwV3d *)(iVar1 + 0x10);
+      FUN_004c69f0_typed(&movement,&movement);
       fVar6 = fGpffff8328 * fVar6;
-      fStack_40 = fStack_40 * fVar6;
-      fStack_3c = fStack_3c * fVar6;
-      fStack_38 = fStack_38 * fVar6;
+      movement.x = movement.x * fVar6;
+      movement.y = movement.y * fVar6;
+      movement.z = movement.z * fVar6;
       bVar3 = 1;
     }
-    if (((DAT_007e094c & 4) == 0) && ((DAT_007e0956 & 4) == 0)) {
-      if (((DAT_007e094c & 8) != 0) || ((DAT_007e0956 & 8) != 0)) {
-        fStack_3c = fStack_3c + 10.0f;
+    if (((DAT_007e094c[0] & 4) == 0) && ((DAT_007e0956[0] & 4) == 0)) {
+      if (((DAT_007e094c[0] & 8) != 0) || ((DAT_007e0956[0] & 8) != 0)) {
+        movement.y = movement.y + 10.0f;
         bVar3 = 1;
       }
     }
     else {
-      fStack_3c = fStack_3c - 10.0f;
+      movement.y = movement.y - 10.0f;
       bVar3 = 1;
     }
     if (bVar3) {
-      fStack_20 = *(float *)(iVar1 + 0x40);
-      fStack_1c = *(float *)(iVar1 + 0x44);
-      fStack_18 = *(float *)(iVar1 + 0x48);
-      fStack_30 = fStack_20 * -1.0f;
-      fStack_2c = fStack_1c * -1.0f;
-      fStack_28 = fStack_18 * -1.0f;
-      work40.x = fStack_40;
-      work40.y = fStack_3c;
-      work40.z = fStack_38;
-      fStack_40 = work40.x;
-      fStack_3c = work40.y;
-      fStack_38 = work40.z;
-      work20.x = fStack_20;
-      work20.y = fStack_1c;
-      work20.z = fStack_18;
-      fStack_20 = work20.x;
-      fStack_1c = work20.y;
-      fStack_18 = work20.z;
-      FUN_004cb750_typed(iVar1,&fStack_30,2);
+      cameraPosition = *(RwV3d *)(iVar1 + 0x40);
+      negativePosition.x = cameraPosition.x * -1.0f;
+      negativePosition.y = cameraPosition.y * -1.0f;
+      negativePosition.z = cameraPosition.z * -1.0f;
+      FUN_004cb750_typed(iVar1,&negativePosition,2);
       FUN_004cb890_typed((RwFrame *)iVar1,fVar7,&direction,2);
-      FUN_004cb750_typed(iVar1,&fStack_40,2);
-      FUN_004cb750_typed(iVar1,&fStack_20,2);
+      FUN_004cb750_typed(iVar1,&movement,2);
+      FUN_004cb750_typed(iVar1,&cameraPosition,2);
     }
     bVar3 = 0;
   }

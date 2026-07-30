@@ -1509,15 +1509,14 @@ u32 btlUnitUpdateMovePacket(void* work)
                 packet->targetPos = target;
             }
             packet->state++;
-            break;
 
         case 1:
             func_002d4800(&unit->unk_ec);
-            unit->unk_e8 = packet->unk_1c;
+            *(f32*)&unit->unk_e8 = packet->unk_1c;
             unit->unk_c4 = packet->flags;
-            unit->unk_cc = 13.5f * packet->speed;
+            unit->unk_cc = 2.0f * (13.5f * packet->speed);
 
-            if (!(packet->flags & 1))
+            if (!(unit->unk_c4 & 1))
             {
                 unit->unk_ec.x = unit->pos.x;
                 unit->unk_ec.y = unit->pos.z;
@@ -1554,7 +1553,13 @@ u32 btlUnitUpdateMovePacket(void* work)
             break;
 
         case 2:
-            if (!(unit->movementFlags & (BTLUNIT_MOVEMENTFLAGS_MOVE | BTLUNIT_MOVEMENTFLAGS_ROTATE)))
+            if (unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_MOVE)
+            {
+            }
+            else if (unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE)
+            {
+            }
+            else
             {
                 return 1;
             }
@@ -1572,25 +1577,47 @@ u32 btlUnitUpdateMovePacket(void* work)
                 packet->targetPos = target;
             }
             packet->state++;
-            break;
 
         case 1:
             func_002d4800(&unit->unk_ec);
-            unit->unk_e8 = packet->unk_1c;
+            *(f32*)&unit->unk_e8 = packet->unk_1c;
             unit->unk_c4 = packet->flags;
-            unit->unk_cc = 13.5f * packet->speed;
-            start.x = unit->pos.x;
-            start.y = unit->pos.z;
-            start.z = 0.0f;
-            end.x = packet->targetPos.x;
-            end.y = packet->targetPos.z;
-            end.z = 0.0f;
+            unit->unk_cc = 2.0f * (13.5f * packet->speed);
+            ((f32*)&start)[0] = unit->pos.x;
+            ((f32*)&start)[1] = unit->pos.z;
+            ((f32*)&end)[0] = packet->targetPos.x;
+            ((f32*)&end)[1] = packet->targetPos.z;
             func_002d48c0(&unit->unk_ec, &start, &end, 50.0f);
             unit->unk_dc = packet->targetPos;
             packet->state++;
             break;
 
         case 2:
+            if (unit->unk_4ec == 0)
+            {
+                unit->unk_dc = packet->targetPos;
+            }
+            else
+            {
+                start.x = ((f32*)&unit->unk_dc)[unit->unk_4ec * 2];
+                start.y = 0.0f;
+                start.z = ((f32*)&unit->unk_dc)[unit->unk_4ec * 2 + 1];
+                target = packet->targetPos;
+                target.y = 0.0f;
+                direction.x = start.x - target.x;
+                direction.y = start.y - target.y;
+                direction.z = start.z - target.z;
+                RwV3dNormalize(&direction, &direction);
+                direction.x *= packet->unk_1c;
+                direction.y *= packet->unk_1c;
+                direction.z *= packet->unk_1c;
+                target.x += direction.x;
+                target.y += direction.y;
+                target.z += direction.z;
+                unit->unk_dc = target;
+            }
+            packet->state++;
+
             if (unit->unk_4f0 == 2)
             {
                 unit->movementFlags &= ~0x20;
@@ -1600,21 +1627,26 @@ u32 btlUnitUpdateMovePacket(void* work)
             }
             else if (unit->unk_4f0 == 3)
             {
-                direction.x = unit->pos.x - packet->targetPos.x;
-                direction.y = 0.0f;
-                direction.z = unit->pos.z - packet->targetPos.z;
-                RwV3dNormalize(&direction, &direction);
-                target = packet->targetPos;
-                target.x += direction.x * packet->unk_1c;
-                target.y += direction.y * packet->unk_1c;
-                target.z += direction.z * packet->unk_1c;
-                unit->unk_dc = target;
+                unit->unk_ec.x = unit->pos.x;
+                unit->unk_ec.y = unit->pos.z;
+                unit->unk_ec.z = packet->targetPos.x;
+                unit->unk_f8 = packet->targetPos.z;
+                unit->unk_4ec = 2;
+                unit->movementFlags &= ~0x20;
+                unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_MOVE;
+                unit->movementFlags |= 0x10;
                 packet->state++;
             }
             break;
 
         case 3:
-            if (!(unit->movementFlags & (BTLUNIT_MOVEMENTFLAGS_MOVE | BTLUNIT_MOVEMENTFLAGS_ROTATE)))
+            if (unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_MOVE)
+            {
+            }
+            else if (unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE)
+            {
+            }
+            else
             {
                 return 1;
             }

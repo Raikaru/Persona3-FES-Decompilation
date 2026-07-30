@@ -357,7 +357,24 @@ s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
         if (itemId >= 3000 && itemId <= 3999)
         {
             itemTable = iGpffffb2e4 + (itemId - 3000) * 0x24;
-            total += *(s16*)(itemTable + 4 + statId * 2);
+            switch (statId)
+            {
+            case 0:
+                total += *(s16*)(itemTable + 4);
+                break;
+            case 1:
+                total += *(s16*)(itemTable + 6);
+                break;
+            case 2:
+                total += *(s16*)(itemTable + 8);
+                break;
+            case 3:
+                total += *(s16*)(itemTable + 0xA);
+                break;
+            case 4:
+                total += *(s16*)(itemTable + 0xC);
+                break;
+            }
         }
     }
     switch (statId)
