@@ -540,8 +540,11 @@ extern u32 FUN_00530da0_scene(float param_1);
 extern float FUN_003bc0e0_scene(char *param_1);
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 #pragma alias FUN_00100d80_typed_scene FUN_00100d80
 extern void *FUN_00100d80_typed_scene(const char *param_1,u32 param_2);
+extern void FUN_005225f8(u32 base, int count, int size, int (*cmp)(int *, int *));
 
 // Note: FUN_003bd130 keeps an absolute table base in retail.
 #pragma alias DAT_0095b000_abs DAT_0095b000
@@ -3197,8 +3200,8 @@ void FUN_003bb450(float *input, float scale, float angle_y, float angle_x,
   z = *(f32 *)DAT_006a2f00_abs;
   axis2.raw.xy = xy;
   axis2.raw.z = z;
-  xy = *(u64 *)DAT_006a2f08_abs;
-  z = *(f32 *)DAT_006a2f10_abs;
+  xy = *(volatile u64 *)DAT_006a2f08_abs;
+  z = *(volatile f32 *)DAT_006a2f10_abs;
   axis3.raw.xy = xy;
   axis3.raw.z = z;
 
@@ -3545,7 +3548,9 @@ void FUN_003bba70(int param_1)
 }
 #define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
 #undef FUN_003bbaa0
-// FUN_003BBAA0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_003BBAA0
 
 
 void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
@@ -3573,6 +3578,7 @@ void FUN_003bbaa0(float *param_1,float *param_2,float *param_3)
   param_3[1] = adjusted[1];
   param_3[2] = adjusted[2];
 }
+#pragma pop
 #define FUN_003bbaa0(...) ((void (*)(...))FUN_003bbaa0)(__VA_ARGS__)
 #undef FUN_003bbb90
 // FUN_003BBB90
@@ -3614,7 +3620,7 @@ void FUN_003bbb90(const float *param_1,float *param_2)
 }
 #define FUN_003bbb90(...) ((void (*)(...))FUN_003bbb90)(__VA_ARGS__)
 #undef FUN_003bbc90
-// FUN_003BBC90 NONMATCHING
+// FUN_003BBC90
 
 
 void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
@@ -3622,16 +3628,34 @@ void FUN_003bbc90(float t, float *x, float *y, float *z, float *outX,
 {
   float oneMinus = 1.0f - t;
   float oneMinusSquared = oneMinus * oneMinus;
-  float w0 = oneMinus * oneMinusSquared;
-  float w1 = t * (3.0f * oneMinusSquared);
-  float tSquared = t * t;
-  float w2 = (3.0f * oneMinus) * tSquared;
-  float w3 = t * tSquared;
+  float w0;
+  float w1;
+  float w2;
+  float w3;
+  float tSquared;
+  float rx;
 
   RwV3d result;
-  result.x = x[0] * w0 + x[1] * w1 + x[2] * w2 + x[3] * w3;
-  result.y = y[0] * w0 + y[1] * w1 + y[2] * w2 + y[3] * w3;
-  result.z = z[0] * w0 + z[1] * w1 + z[2] * w2 + z[3] * w3;
+  w0 = oneMinus * oneMinusSquared;
+  rx = x[0] * w0;
+  w1 = t * (3.0f * oneMinusSquared);
+  rx += x[1] * w1;
+  tSquared = t * t;
+  w2 = (3.0f * oneMinus) * tSquared;
+  rx += x[2] * w2;
+  w3 = t * tSquared;
+  rx += x[3] * w3;
+  result.x = rx;
+  rx = y[0] * w0;
+  rx += y[1] * w1;
+  rx += y[2] * w2;
+  rx += y[3] * w3;
+  result.y = rx;
+  rx = z[0] * w0;
+  rx += z[1] * w1;
+  rx += z[2] * w2;
+  rx += z[3] * w3;
+  result.z = rx;
 
   *outX = result.x;
   *outY = result.y;
@@ -3673,8 +3697,8 @@ void FUN_003bbd40(float param_1,char *param_2,float *param_3)
 
     if (!(param_1 < 1.0f)) {
 
-      segmentIndex = cVar1 - 1;
       iVar3 = 0;
+      segmentIndex = cVar1 - 1;
       param_2 += segmentIndex * 0x24;
 
       for (; iVar3 < 4; iVar3 = iVar3 + 1) {
@@ -4433,7 +4457,7 @@ int FUN_003bcda0(int *param_1,int *param_2)
 }
 #define FUN_003bcda0(...) ((int (*)(...))FUN_003bcda0)(__VA_ARGS__)
 #undef FUN_003bceb0
-// FUN_003BCEB0 NONMATCHING
+// FUN_003BCEB0
 
 
 void FUN_003bceb0(int param_1)
@@ -4446,6 +4470,7 @@ void FUN_003bceb0(int param_1)
 
   int iVar2;
 
+  int j;
   int iVar3;
   int originalHead;
 
@@ -4457,37 +4482,45 @@ void FUN_003bceb0(int param_1)
 
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0xf8)) {
 
-    if ((((*(u32 *)(param_1 + 0x28) & 2) != 0) && (*(int *)(param_1 + 0x104) != 0)) &&
+    if (((*(u32 *)(param_1 + 0x28) & 2) != 0) && (*(int *)(param_1 + 0x104) != 0)) {
 
-       (*(char *)(param_1 + 0x100) == '\0')) {
+      switch (*(char *)(param_1 + 0x100)) {
 
-      iVar3 = iVar3 + 1;
+      case 0:
+
+        iVar3 = iVar3 + 1;
+
+      }
 
     }
 
   }
 
-  uVar1 = (*DAT_00960178)(iVar3 << 2,0x40000);
+  uVar1 = (*DAT_00960178_abs)(iVar3 << 2,0x40000);
+
+  j = 0;
 
   param_1 = originalHead;
 
-  iVar2 = 0;
-
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0xf8)) {
 
-    if ((((*(u32 *)(param_1 + 0x28) & 2) != 0) && (*(int *)(param_1 + 0x104) != 0)) &&
+    if (((*(u32 *)(param_1 + 0x28) & 2) != 0) && (*(int *)(param_1 + 0x104) != 0)) {
 
-       (*(char *)(param_1 + 0x100) == '\0')) {
+      switch (*(char *)(param_1 + 0x100)) {
 
-      *(int *)((int)uVar1 + iVar2 * 4) = param_1;
+      case 0:
 
-      iVar2 = iVar2 + 1;
+        *(int *)((int)uVar1 + j * 4) = param_1;
+
+        j = j + 1;
+
+      }
 
     }
 
   }
 
-  FUN_005225f8(uVar1,iVar3,4,0x3bcda0);
+  FUN_005225f8(uVar1,iVar3,4,FUN_003bcda0);
 
   for (iVar2 = 0; iVar2 < iVar3; iVar2 = iVar2 + 1) {
 
@@ -4495,7 +4528,7 @@ void FUN_003bceb0(int param_1)
 
   }
 
-  (*DAT_0096017c)(uVar1);
+  (*DAT_0096017c_abs)(uVar1);
 
   return;
 
