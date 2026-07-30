@@ -113,6 +113,10 @@ void FUN_003b4ee0(void);
 extern u8 DAT_0095aebc_abs[];
 #pragma alias DAT_0095aeb8_abs DAT_0095aeb8
 extern u8 DAT_0095aeb8_abs[];
+#pragma alias DAT_0095aebc_sc DAT_0095aebc
+extern u32 DAT_0095aebc_sc[4];
+#pragma alias DAT_0095aeb8_sc DAT_0095aeb8
+extern u32 DAT_0095aeb8_sc[4];
 #pragma alias DAT_0095aea0_abs DAT_0095aea0
 extern u8 DAT_0095aea0_abs[];
 #pragma alias DAT_0095aea4_abs DAT_0095aea4
@@ -305,13 +309,13 @@ void FUN_003b4580(int param_1)
   if (node == 0) {
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
-  head = *(GslListNode **)DAT_0095aebc_abs;
+  head = (GslListNode *)DAT_0095aebc_sc[0];
   next = head->next;
   node->prev = head;
   node->next = next;
   head->next = node;
   next->prev = node;
-  ++*(int *)DAT_0095aeb8_abs;
+  DAT_0095aeb8_sc[0] = DAT_0095aeb8_sc[0] + 1;
 }
 #define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
 #undef FUN_003b45f0
