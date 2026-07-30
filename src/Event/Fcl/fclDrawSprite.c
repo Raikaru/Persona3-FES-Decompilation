@@ -1594,7 +1594,7 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
         fVar11 = 65535.0f - (float)(*(short *)((int)puVar1 + 0x1a) * 0xffff) / 600.0f;
 
-        uVar12 = (u16)(s32)fVar11;
+        uVar12 = (u16)(u32)fVar11;
   
         *(u16 *)((int)puVar1 + 0x16) = uVar12;
   
@@ -1604,7 +1604,7 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
         fVar11 = (float)(*(short *)((int)puVar1 + 0x1a) * 0xffff) / 600.0f;
 
-        uVar12 = (u16)(s32)fVar11;
+        uVar12 = (u16)(u32)fVar11;
   
         *(u16 *)((int)puVar1 + 0x16) = uVar12;
   
@@ -1630,7 +1630,7 @@ u64 FUN_0040fb90(u64 param_1,int param_2,int param_3)
   
         bVar5 = 1;
   
-        if ((long)iVar8 <= (long)*psVar9) {
+        if (iVar8 <= (int)*psVar9) {
   
           *puVar1 = *puVar1 | 2;
   
