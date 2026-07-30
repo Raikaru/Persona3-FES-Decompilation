@@ -5929,10 +5929,9 @@ void FUN_002891e0(void)
 
 }
 
-// Confirmed compiler floor (W200): the only residual is the order of the adjacent
-// `move $a0, $s1` and `lhu $a1, 2($v0)` argument-setup instructions before a JAL.
-// MWCCPS2 b210 does not expose source control over independent call-argument setup order.
-// FUN_00289650 NONMATCHING
+// W295: NOT a floor - retail loads the lhu (persona id) before `move $a0,$s1`;
+// a volatile-cast temp for the id reproduces it.
+// FUN_00289650
 
 
 BtlAction* FUN_00289650(u16 mode, u16 charId, void* data)
@@ -5953,7 +5952,11 @@ BtlAction* FUN_00289650(u16 mode, u16 charId, void* data)
       action->unk_14 = 5;
       gBtl->actionList.head = action;
     }
-    btlUnitInitPersona(unit, datPersonaGetByPcId(charId)->id);
+    {
+      u16 pid;
+      pid = *(volatile u16 *)&datPersonaGetByPcId(charId)->id;
+      btlUnitInitPersona(unit, pid);
+    }
     action->unk_1a |= 0x10;
     break;
   case 1:
