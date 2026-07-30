@@ -1018,11 +1018,11 @@ int FUN_003f00d0(int *param_1,int param_2,int *param_3)
 
   int lVar3;
 
+  int iVar5;
   int iVar4;
 
-  int iVar5;
-
   int iStack_4;
+  int *cursor;
 
   
 
@@ -1030,30 +1030,33 @@ int FUN_003f00d0(int *param_1,int param_2,int *param_3)
 
   if (param_3 == (int *)0x0) {
 
-    param_3 = &iStack_4;
+    cursor = &iStack_4;
+
+  }
+  else {
+
+    cursor = param_3;
 
   }
 
   iVar5 = param_1[1];
 
-  iVar4 = *param_3;
+  iVar4 = *cursor;
 
-  do {
-    if (*param_1 <= iVar4) {
-      *param_3 = -1;
-      return 0;
-    }
+  while (iVar4 < *param_1) {
     sVar1 = *(short *)(iVar5 + 4);
     if ((sVar1 == 0) || (uVar2 = datGetLevel(1), sVar1 <= (short)(uVar2 & 0xff))) {
       lVar3 = FUN_003f04f0((u32)(iVar5 + 0xc),param_2);
       if (lVar3 != 0) {
-        *param_3 = iVar4;
+        *cursor = iVar4;
         return iVar5;
       }
     }
     iVar5 = iVar5 + 0x14;
     iVar4 = iVar4 + 1;
-  } while( 1 );
+  }
+  *cursor = -1;
+  return 0;
 
 }
 
