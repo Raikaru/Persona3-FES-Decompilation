@@ -644,57 +644,6 @@ void func_00272810(void)
                 break;
             }
             break;
-        case 4:
-            if (brpSeqU32(0x20) == 1)
-            {
-                FUN_003c7990(1);
-                if (FUN_003c7850() == 0)
-                {
-                    FUN_003c7650(1);
-                    func_00273800();
-                }
-            }
-            else if (brpSeqU32(0x20) == 0)
-            {
-                FUN_003c7990(1);
-                if (FUN_003c7850() == 0)
-                {
-                    FUN_003c7650(1);
-                    done = FUN_003c7610();
-                    if (done == 1)
-                    {
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-                        FUN_003c7430(0xe);
-                        brpSeqPutU32(0x20, 1);
-                    }
-                    else if (done == 0)
-                    {
-                        if (brpSeqU32(0x9c) == 1)
-                        {
-                            FUN_003c7bc0(0, DAT_007ce4ec +
-                                          brpSeqU16(0xa2) * 0x13);
-                            FUN_003c7bc0(1, DAT_007ce4ec +
-                                          brpSeqU16(0xa2) * 0x13);
-                            FUN_003c7430(0x10);
-                            FUN_0010a4e0(1, 0, 8, 3);
-                        }
-                        else if (brpSeqU32(0x9c) == 0)
-                        {
-                            FUN_003c7bc0(0, DAT_007ce4ec +
-                                          brpSeqU16(0xa2) * 0x13);
-                            FUN_003c7bc0(1, DAT_007ce4ec +
-                                          brpSeqU16(0xa2) * 0x13);
-                            FUN_003c7430(0xf);
-                            FUN_0010a4e0(1, 0, 8, 3);
-                        }
-                        persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-                        FUN_001768e0(persona, brpSeqS16(0xa0));
-                        FUN_00176840(persona, brpSeqU16(0xa2));
-                        brpSeqPutU32(0x20, 1);
-                    }
-                }
-            }
-            break;
         case 5:
             switch (brpSeqU32(0x1c))
             {
@@ -703,18 +652,12 @@ void func_00272810(void)
                 if (FUN_003c7850() == 0)
                 {
                     done = FUN_003c7610();
-                    if (done == 1)
+                    switch (done)
                     {
-                        FUN_003c7650(0);
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-                        FUN_003c7430(10);
-                        brpSeqPutU32(0x1c, 1);
-                    }
-                    else if (done == 0)
-                    {
+                    case 0:
                         FUN_003c7650(1);
                         persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-                        if ((persona->flags & 8) != 0)
+                        if ((persona->flags & 8) == 0)
                         {
                             brpSeqPutU16(0x80, FUN_001fb560(brpSeqS16(4)));
                             brpSeqPutU32(0xa4, 0);
@@ -742,6 +685,13 @@ void func_00272810(void)
                             H_Fade_SetType(2);
                             brpSeqPutU32(0x1c, 3);
                         }
+                        break;
+                    case 1:
+                        FUN_003c7650(0);
+                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7430(10);
+                        brpSeqPutU32(0x1c, 1);
+                        break;
                     }
                     FUN_003c77a0();
                     persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
@@ -779,25 +729,34 @@ void func_00272810(void)
                 if (func_0024b9e0() == 0)
                 {
                     FUN_003c72d0((void*)FUN_002347e0());
-                    if (brpSeqU32(0xa4) == 1)
+                    switch (brpSeqU32(0xa4))
                     {
-                        if (FUN_00171250(brpSeqS16(0x84)) == 4)
-                            FUN_003c7bc0(1, FUN_00171110(brpSeqS16(0x84), 0));
-                        else
-                        {
-                            FUN_001828d0(brpSeqS16(0x84), brpSeqBytes() + 0x88);
-                            FUN_003c7bc0(1,
-                                         FUN_00171110(brpSeqS16(0x84),
-                                                      brpSeqU8(0x90)));
-                        }
-                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-                        FUN_003c7430(0xc);
-                    }
-                    else
-                    {
+                    case 0:
                         FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
                         FUN_003c7bc0(1, FUN_00173220(brpSeqU16(0x80)));
                         FUN_003c7430(0xb);
+                        break;
+                    case 1:
+                        switch (FUN_00171250(brpSeqS16(0x84)))
+                        {
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                            FUN_001828d0(brpSeqS16(0x84),
+                                         brpSeqBytes() + 0x88);
+                            FUN_003c7bc0(1,
+                                         FUN_00171110(brpSeqS16(0x84),
+                                                      brpSeqU8(0x90)));
+                            break;
+                        case 4:
+                            FUN_003c7bc0(1,
+                                         FUN_00171110(brpSeqS16(0x84), 0));
+                            break;
+                        }
+                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7430(0xc);
+                        break;
                     }
                     brpSeqPutU32(0x1c, 2);
                 }
@@ -816,6 +775,60 @@ void func_00272810(void)
             case 6:
                 if (FUN_00108710() != 0)
                     func_00273800();
+                break;
+            }
+            break;
+        case 4:
+            switch (brpSeqU32(0x20))
+            {
+            case 0:
+                FUN_003c7990(1);
+                if (FUN_003c7850() == 0)
+                {
+                    FUN_003c7650(1);
+                    done = FUN_003c7610();
+                    switch (done)
+                    {
+                    case 0:
+                        switch (brpSeqU32(0x9c))
+                        {
+                        case 0:
+                            FUN_003c7bc0(0, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7bc0(1, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7430(0xf);
+                            FUN_0010a4e0(1, 0, 8, 3);
+                            break;
+                        case 1:
+                            FUN_003c7bc0(0, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7bc0(1, DAT_007ce4ec +
+                                          brpSeqU16(0xa2) * 0x13);
+                            FUN_003c7430(0x10);
+                            FUN_0010a4e0(1, 0, 8, 3);
+                            break;
+                        }
+                        persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
+                        FUN_001768e0(persona, brpSeqS16(0xa0));
+                        FUN_00176840(persona, brpSeqU16(0xa2));
+                        brpSeqPutU32(0x20, 1);
+                        break;
+                    case 1:
+                        FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
+                        FUN_003c7430(0xe);
+                        brpSeqPutU32(0x20, 1);
+                        break;
+                    }
+                }
+                break;
+            case 1:
+                FUN_003c7990(1);
+                if (FUN_003c7850() == 0)
+                {
+                    FUN_003c7650(1);
+                    func_00273800();
+                }
                 break;
             }
             break;

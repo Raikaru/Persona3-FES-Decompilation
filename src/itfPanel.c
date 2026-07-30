@@ -4323,8 +4323,9 @@ u32 FUN_003ade70(int param_1,int param_2)
     uVar8 = 0;
   } else {
     uVar8 = (u8)(bVar4 - 1);
-    uVar5 = (u16)uVar5;
   }
+  uVar5 = (u16)uVar5;
+  uVar8 = (u8)uVar8;
   FUN_003bb060((u16)uVar5,(u16)(uVar8 << 8 | uVar7 & 0xff));
   return 0;
 }
