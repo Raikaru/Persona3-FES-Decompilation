@@ -7305,32 +7305,20 @@ u32 FUN_002b7c50(u32 *work)
     f32 scale;
     f32 factor;
     RwV3d center;
-    f32 centerZ2;
+    RwV3d targetCenter;
     f32 centerY;
-    s64 centerPair;
-    f32 centerZ;
-    s64 targetPair;
     RwV3d direction;
-    f32 directionZ;
-    f32 directionY;
-    f32 directionX;
-    f32 deltaZ;
-    f32 deltaY;
-    f32 deltaX;
+    RwV3d transformed;
+    RwV3d delta;
     RwV3d candidate;
-    f32 candidateZ;
-    s64 candidatePair;
+    RwV3d iterCenter;
+    RwV3d nearestCenter;
     f32 candidateY;
-    f32 candidateX;
-    f32 workZ;
-    f32 workY;
-    f32 workX;
-    f32 workZ2;
-    f32 workY2;
-    f32 workX2;
-    f32 workZ3;
-    f32 workY3;
-    f32 workX3;
+    RwV3d workPos;
+    f32 query2[2];
+    f32 source2[2];
+    f32 projected2[2];
+    f32 offset2[2];
     RtQuat rotation;
 
     action = *(BtlAction **)work_p;
@@ -7356,7 +7344,7 @@ u32 FUN_002b7c50(u32 *work)
                 *(u16 *)(DAT_007ce3ec + 0x18) |= 0xe;
             }
             btlUnitGetSphereWorldCenter(source, &center);
-            FUN_002802d0_b64d0(target, source, (RwV3d *)&centerPair);
+            FUN_002802d0_b64d0(target, source, &targetCenter);
             centerY = source->pos.y;
             center.y = centerY;
             if ((work_p[2] == 1) && (target != source) &&
@@ -7367,26 +7355,24 @@ u32 FUN_002b7c50(u32 *work)
                     btlUnitGetSphereWorldCenter(target, &candidate);
                     FUN_002d1de0(&rotation, &candidate, &center);
                     scale = target->scale;
-                    workX = target->sphereCenter.x * scale;
-                    workY = target->sphereCenter.y * scale;
-                    workZ = target->sphereCenter.z * scale;
-                    FUN_004be1e0((RwV3d *)&directionX,
-                                 (RwV3d *)&workX, 1, &rotation);
-                    workX = candidate.x - directionX;
-                    workY = candidate.y - directionY;
-                    workZ = candidate.z - directionZ;
+                    workPos.x = target->sphereCenter.x * scale;
+                    workPos.y = target->sphereCenter.y * scale;
+                    workPos.z = target->sphereCenter.z * scale;
+                    FUN_004be1e0(&transformed, &workPos, 1, &rotation);
+                    workPos.x = candidate.x - transformed.x;
+                    workPos.y = candidate.y - transformed.y;
+                    workPos.z = candidate.z - transformed.z;
                     candidateY = target->pos.y;
-                    workY = candidateY;
+                    workPos.y = candidateY;
                     candidate.y = candidateY;
-                    btlUnitSetPos(target, (RwV3d *)&workX);
-                    FUN_002d1de0(&rotation, (RwV3d *)&workX, &source->pos);
+                    btlUnitSetPos(target, &workPos);
+                    FUN_002d1de0(&rotation, &workPos, &source->pos);
                     btlUnitSetRot(target, &rotation);
-                    targetPair = *(s64 *)&candidate;
-                    centerZ2 = candidate.z;
+                    nearestCenter = candidate;
                 }
                 else
                 {
-                    FUN_002d1de0(&rotation, (RwV3d *)&centerPair, &center);
+                    FUN_002d1de0(&rotation, &targetCenter, &center);
                     btlUnitSetRot(target, &rotation);
                 }
                 btlUnitStopRotating(target);
@@ -7394,8 +7380,8 @@ u32 FUN_002b7c50(u32 *work)
             }
             if (work_p[1] == 1)
             {
-                direction.x = center.x - *(f32 *)&centerPair;
-                direction.z = center.z - centerZ2;
+                direction.x = center.x - targetCenter.x;
+                direction.z = center.z - targetCenter.z;
                 direction.y = 0.0f;
                 radius = RwV3dNormalize(&direction, &direction);
                 radius2 = source->sphereRadius * source->scale;
@@ -7417,23 +7403,23 @@ u32 FUN_002b7c50(u32 *work)
                         {
                             FUN_0027f940(persona, source, target,
                                          (s64)(s16)relation,
-                                         (RwV3d *)&workX, 0, 1);
+                                         &workPos, 0, 1);
                         }
                         else if ((relation2 == 2) || (relation2 == 0))
                         {
                             FUN_0027f940(persona, source, target,
                                          (s64)(s16)relation,
-                                         (RwV3d *)&workX, 0, 0);
+                                         &workPos, 0, 0);
                         }
                     }
                     else
                     {
                         FUN_0027f940(persona, source, target,
                                      (s64)(s16)relation,
-                                     (RwV3d *)&workX, 0, 2);
+                                     &workPos, 0, 2);
                     }
-                    direction.x = workX - *(f32 *)&centerPair;
-                    direction.z = workZ - centerZ2;
+                    direction.x = workPos.x - targetCenter.x;
+                    direction.z = workPos.z - targetCenter.z;
                     direction.y = 0.0f;
                     radius2 = persona->sphereRadius * persona->scale;
                     distance = RwV3dNormalize(&direction, &direction) - radius2;
@@ -7442,11 +7428,10 @@ u32 FUN_002b7c50(u32 *work)
                         if ((distance + radius2) <=
                             source->sphereRadius * source->scale + radius)
                         {
-                            deltaX = center.x - workX;
-                            deltaY = center.y - workY;
-                            deltaZ = center.z - workZ;
-                            factor = RwV3dNormalize((RwV3d *)&deltaX,
-                                                    (RwV3d *)&deltaX);
+                            delta.x = center.x - workPos.x;
+                            delta.y = center.y - workPos.y;
+                            delta.z = center.z - workPos.z;
+                            factor = RwV3dNormalize(&delta, &delta);
                             radius2 = distance;
                             radius = distance;
                         }
@@ -7455,13 +7440,13 @@ u32 FUN_002b7c50(u32 *work)
                     {
                         radius2 = persona->sphereRadius * persona->scale;
                         FUN_0027f940(persona, source, NULL, -1,
-                                     (RwV3d *)&workX, 0, 0);
-                        workX = center.x;
-                        workY = center.y;
-                        deltaX = center.x - center.x;
-                        deltaY = center.y - center.y;
-                        deltaZ = workZ - centerZ2;
-                        factor = RwV3dLength((RwV3d *)&deltaX);
+                                     &workPos, 0, 0);
+                        workPos.x = center.x;
+                        workPos.y = center.y;
+                        delta.x = center.x - center.x;
+                        delta.y = center.y - center.y;
+                        delta.z = workPos.z - targetCenter.z;
+                        factor = RwV3dLength(&delta);
                         radius = distance;
                         if ((factor + distance + radius2) <= radius)
                         {
@@ -7487,10 +7472,10 @@ u32 FUN_002b7c50(u32 *work)
                     direction.x = direction.x * factor;
                     direction.y = direction.y * factor;
                     direction.z = direction.z * factor;
-                    workX = *(f32 *)&centerPair + direction.x;
-                    workY = centerY + direction.y;
-                    workZ = centerZ2 + direction.z;
-                    btlUnitSetPos(source, (RwV3d *)&workX);
+                    workPos.x = targetCenter.x + direction.x;
+                    workPos.y = centerY + direction.y;
+                    workPos.z = targetCenter.z + direction.z;
+                    btlUnitSetPos(source, &workPos);
                 }
             }
         }
@@ -7516,59 +7501,52 @@ u32 FUN_002b7c50(u32 *work)
                 }
             }
             btlUnitGetSphereWorldCenter(source, &center);
-            FUN_00280870(2, 0, &centerPair, 0, 0, 1);
+            FUN_00280870(2, 0, &targetCenter, 0, 0, 1);
             centerY = source->pos.y;
             center.y = centerY;
-            targetPair = centerPair;
-            centerZ2 = centerZ;
+            nearestCenter = targetCenter;
             factor = 0.0f;
             moved = 1;
-            candidateX = *(f32 *)&center;
-            candidateZ = center.z;
-            workX = *(f32 *)&centerPair;
-            workY = centerY;
-            workZ = centerZ2;
+            workPos = targetCenter;
+            workPos.y = centerY;
             iter = *(BtlUnit **)(DAT_007ce3ec + 0x15c);
             while (iter != NULL)
             {
                 if ((iter->flags3 & 8) != 0)
                 {
-                    FUN_002802d0_b64d0(iter, source, (RwV3d *)&candidatePair);
-                    candidateX = *(f32 *)&candidatePair;
-                    candidateZ = candidateZ;
-                    FUN_002d1fd0(&candidateX, &workX, &candidateX,
-                                 &workZ2);
-                    candidateX = candidateX - workZ2;
-                    candidateZ = candidateZ - workZ3;
-                    distance = RwV2dLength((RwV2d *)&candidateX);
+                    FUN_002802d0_b64d0(iter, source, &iterCenter);
+                    query2[0] = iterCenter.x;
+                    query2[1] = iterCenter.z;
+                    source2[0] = targetCenter.x;
+                    source2[1] = targetCenter.z;
+                    FUN_002d1fd0(query2, source2, query2, projected2);
+                    offset2[0] = query2[0] - projected2[0];
+                    offset2[1] = query2[1] - projected2[1];
+                    distance = RwV2dLength((RwV2d *)offset2);
                     if ((distance < factor) || (moved != 0))
                     {
-                        targetPair = *(s64 *)&workZ2;
-                        centerZ2 = workZ3;
+                        nearestCenter.x = projected2[0];
+                        nearestCenter.z = projected2[1];
                         factor = distance;
                         moved = 0;
                     }
                 }
                 iter = iter->prev;
             }
-            if ((factor) - source->sphereRadius * source->scale <
-                300.0f)
+            if (factor - source->sphereRadius * source->scale < 300.0f)
             {
-                direction.x = center.x - *(f32 *)&targetPair;
-                direction.y = center.y - centerZ2;
-                direction.z = center.z - centerZ2;
-                direction.y = direction.y;
+                direction.x = center.x - nearestCenter.x;
+                direction.y = center.y - nearestCenter.y;
+                direction.z = center.z - nearestCenter.z;
                 RwV3dNormalize(&direction, &direction);
-                factor = factor;
-                limit = factor + source->sphereRadius * source->scale +
-                        300.0f;
+                limit = factor + source->sphereRadius * source->scale + 300.0f;
                 direction.x = direction.x * limit;
                 direction.y = direction.y * limit;
                 direction.z = direction.z * limit;
-                workX = *(f32 *)&targetPair + direction.x;
-                workY = centerZ2 + direction.y;
-                workZ = centerZ2 + direction.z;
-                btlUnitSetPos(source, (RwV3d *)&workX);
+                workPos.x = nearestCenter.x + direction.x;
+                workPos.y = nearestCenter.y + direction.y;
+                workPos.z = nearestCenter.z + direction.z;
+                btlUnitSetPos(source, &workPos);
             }
         }
         else if ((*(u32 *)(DAT_007ce3ec + 0x10) & 0x80) != 0)
@@ -7578,9 +7556,9 @@ u32 FUN_002b7c50(u32 *work)
             {
                 if ((iter->flags3 & 8) != 0)
                 {
-                    FUN_0027f7c0(iter, (RwV3d *)&workX, 0, 0);
-                    workZ += 200.0f;
-                    btlUnitSetPos(iter, (RwV3d *)&workX);
+                    FUN_0027f7c0(iter, &workPos, 0, 0);
+                    workPos.z += 200.0f;
+                    btlUnitSetPos(iter, &workPos);
                 }
                 iter = iter->prev;
             }
@@ -7601,7 +7579,8 @@ u32 FUN_002b7c50(u32 *work)
             radius = source->sphereRadius * source->scale;
             if (work_p[2] == 1)
             {
-                FUN_00280870(result, 1, &centerPair, 0, 0, 1);
+                FUN_00280870(result, 1, &targetCenter, 0, 0, 1);
+                nearestCenter = targetCenter;
                 factor = 0.0f;
                 index = 0;
                 while ((index & 0xffff) < action->target.targetedCount)
@@ -7611,21 +7590,19 @@ u32 FUN_002b7c50(u32 *work)
                     {
                         target = targetAction->unit;
                         FUN_00280050_typed(target, &candidate);
-                        direction.x = *(f32 *)&centerPair - candidate.x;
+                        direction.x = targetCenter.x - candidate.x;
                         direction.y = center.y - candidate.y;
-                        direction.z = centerZ2 - candidate.z;
+                        direction.z = targetCenter.z - candidate.z;
                         distance = RwV3dLength(&direction);
                         if (!(distance <= factor))
                         {
-                            targetPair = *(s64 *)&candidate;
-                            centerZ2 = candidate.z;
+                            nearestCenter = candidate;
                             factor = distance;
                         }
                     }
                     index = (index + 1) & 0xffff;
                 }
-                FUN_002d1de0(&rotation, &center,
-                             (RwV3d *)&targetPair);
+                FUN_002d1de0(&rotation, &center, &nearestCenter);
                 btlUnitSetRot(source, &rotation);
                 btlUnitStopRotating(source);
                 FUN_00288110(source);
@@ -7635,22 +7612,22 @@ u32 FUN_002b7c50(u32 *work)
             {
                 if ((iter->flags3 & 8) != 0)
                 {
-                    FUN_002802d0_b64d0(iter, source, (RwV3d *)&centerPair);
-                    direction.x = *(f32 *)&centerPair - center.x;
-                    direction.z = centerZ2 - center.z;
+                    FUN_002802d0_b64d0(iter, source, &iterCenter);
+                    direction.x = iterCenter.x - center.x;
+                    direction.z = iterCenter.z - center.z;
                     direction.y = 0.0f;
                     distance = RwV3dNormalize(&direction, &direction);
                     limit = gp0xffff80e0 * (distance - radius) + radius;
                     if ((limit < distance) && !(limit <= 300.0f))
                     {
-                        workX = direction.x * limit;
-                        workY = direction.y * limit;
-                        workZ = direction.z * limit;
-                        workX = center.x + workX;
-                        workY = center.y + workY;
-                        workZ = center.z + workZ;
-                        workY = 0.0f;
-                        btlUnitSetPos(iter, (RwV3d *)&workX);
+                        workPos.x = direction.x * limit;
+                        workPos.y = direction.y * limit;
+                        workPos.z = direction.z * limit;
+                        workPos.x = center.x + workPos.x;
+                        workPos.y = center.y + workPos.y;
+                        workPos.z = center.z + workPos.z;
+                        workPos.y = 0.0f;
+                        btlUnitSetPos(iter, &workPos);
                         moved = 1;
                     }
                 }
@@ -7885,25 +7862,17 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   float fStack_118;
   float fStack_114;
   undefined1 auStack_110 [64];
-  float fStack_d0;
-  float fStack_cc;
-  float fStack_c8;
+  RwV3d outputPos;
   u32 transformedQuat[4];
-  float fStack_b4;
-  float fStack_b0;
-  float fStack_ac;
+  RwV3d basePos;
   undefined4 uStack_a8;
   undefined4 uStack_a4;
   undefined4 uStack_a0;
   undefined4 uStack_9c;
   float fStack_98;
   float fStack_94;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
+  RwV3d secondaryPos;
+  RwV3d anchorPos;
   float mid[3];
   float centerB[3];
   float target[3];
@@ -7977,13 +7946,13 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     }
     axis[2] = axis[2] * fVar11;
     axis[0] = axis[0] * fVar11;
-    fStack_80 = centerA[0] + axis[0];
-    fStack_78 = centerA[2] + axis[2];
+    anchorPos.x = centerA[0] + axis[0];
+    anchorPos.z = centerA[2] + axis[2];
     fVar15 = fGpffff80a4 * fVar15;
-    axis[0] = fStack_80 - mid[0];
-    axis[1] = fVar15 - mid[1];
-    axis[2] = fStack_78 - mid[2];
-    fStack_7c = fVar15;
+    anchorPos.y = fVar15;
+    axis[0] = anchorPos.x - mid[0];
+    axis[1] = anchorPos.y - mid[1];
+    axis[2] = anchorPos.z - mid[2];
     fVar11 = (float)FUN_004c69f0_b6070((RwV3d*)axis,(RwV3d*)axis);
     fVar17 = fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f;
     fVar12 = (float)FUN_0052e930(fVar17);
@@ -8004,10 +7973,10 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     FUN_004c6b20_b6070(&fStack_98,&fStack_98);
     mid[0] = fStack_94 * fVar15 + mid[0];
     mid[2] = (mid[2]) - fStack_98 * fVar15;
-    fStack_b4 = mid[0] + axis[0] * fVar11;
-    fStack_b0 = mid[1] + axis[1] * fVar11;
-    fStack_ac = mid[2] + axis[2] * fVar11;
-    FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_b4,(const void*)mid,(const void*)&D_00697880);
+    basePos.x = mid[0] + axis[0] * fVar11;
+    basePos.y = mid[1] + axis[1] * fVar11;
+    basePos.z = mid[2] + axis[2] * fVar11;
+    FUN_002a4690_b6070((void*)auStack_110, &basePos, (const void*)mid, (const void*)&D_00697880);
     btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)centerA);
     centerA[1] = fGpffff8094 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) + centerA[1];
     fVar15 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 2.5f;
@@ -8018,19 +7987,19 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     axis[2] = axis[2] * fVar15;
     axis[1] = axis[1] * fVar15;
     axis[0] = axis[0] * fVar15;
-    fStack_90 = centerA[0] + axis[0];
-    fStack_8c = centerA[1] + axis[1];
-    fStack_88 = centerA[2] + axis[2];
-    FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_90,
+    secondaryPos.x = centerA[0] + axis[0];
+    secondaryPos.y = centerA[1] + axis[1];
+    secondaryPos.z = centerA[2] + axis[2];
+    FUN_002a4690_b6070((void*)auStack_110, &secondaryPos,
                         (const void*)mid,(const void*)&D_00697880);
     fVar14 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 4.0f;
     delta[0] = centerA[0] - target[0];
     delta[1] = centerA[1] - target[1];
     delta[2] = centerA[2] - target[2];
     fVar15 = (float)FUN_004c69f0_b6070((RwV3d*)delta,(RwV3d*)delta);
-    axis[0] = fStack_90 - mid[0];
-    axis[1] = fStack_8c - mid[1];
-    axis[2] = fStack_88 - mid[2];
+    axis[0] = secondaryPos.x - mid[0];
+    axis[1] = secondaryPos.y - mid[1];
+    axis[2] = secondaryPos.z - mid[2];
     fVar13 = (float)FUN_0052e930(fVar17);
     fVar15 = fVar15 + fVar14 / fVar13;
     FUN_004be1e0_b6070((RwV3d*)axis,&D_006978A0,1,(const void*)transformedQuat);
@@ -8039,24 +8008,24 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fStack_98 = axis[0];
     fStack_94 = axis[2];
     FUN_004c6b20_b6070(&fStack_98,&fStack_98);
-    fStack_d0 = fStack_94 * fVar13 + mid[0];
-    mid[0] = fStack_d0;
-    mid[2] = (mid[2]) - fStack_98 * fVar13;
+    outputPos.x = fStack_94 * fVar13 + mid[0];
+    mid[0] = outputPos.x;
+    mid[2] = mid[2] - fStack_98 * fVar13;
     axis[0] = axis[0] * fVar15;
     axis[1] = axis[1] * fVar15;
     axis[2] = axis[2] * fVar15;
-    fStack_d0 = fStack_d0 + axis[0];
-    fStack_cc = mid[1] + axis[1];
-    fStack_c8 = mid[2] + axis[2];
+    outputPos.x = outputPos.x + axis[0];
+    outputPos.y = mid[1] + axis[1];
+    outputPos.z = mid[2] + axis[2];
     fVar16 = *(f32*)&uGpffff8074;
   }
   else {
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar3),0);
     *(int *)(iVar9 + 0x120) = iVar3;
     *(undefined2 *)(iVar9 + 0x124) = 1;
-    fStack_78 = target[2];
-    fStack_7c = fGpffff80a8 * fStack_4;
-    fStack_80 = target[0];
+    anchorPos.z = target[2];
+    anchorPos.y = fGpffff80a8 * fStack_4;
+    anchorPos.x = target[0];
     if (*(short *)(*(int *)(iVar9 + 0xe0) + 0x6a) == 1) {
       iVar2 = *(int *)(*(int *)(*(int *)(iVar9 + 0xe0) + 0x38) + 0x30);
       if (0.0f <= fVar14) {
@@ -8068,16 +8037,16 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       axis[2] = axis[2] * fVar15;
       axis[1] = axis[1] * fVar15;
       axis[0] = axis[0] * fVar15;
-      fStack_80 = target[0] + axis[0];
-      fStack_7c = fStack_7c + axis[1];
-      fStack_78 = target[2] + axis[2];
+      anchorPos.x = target[0] + axis[0];
+      anchorPos.y = anchorPos.y + axis[1];
+      anchorPos.z = target[2] + axis[2];
     }
-    if (fStack_7c < 125.0f) {
-      fStack_7c = 125.0f;
+    if (anchorPos.y < 125.0f) {
+      anchorPos.y = 125.0f;
     }
-    axis[0] = fStack_80 - mid[0];
-    axis[1] = fStack_7c - mid[1];
-    axis[2] = fStack_78 - mid[2];
+    axis[0] = anchorPos.x - mid[0];
+    axis[1] = anchorPos.y - mid[1];
+    axis[2] = anchorPos.z - mid[2];
     fVar13 = (float)FUN_004c69f0((RwV3d*)axis,(RwV3d*)axis);
     fVar15 = 300.0f;
     if (300.0f <= fVar10) {
@@ -8092,9 +8061,9 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     FUN_004c6b20(&fStack_98,&fStack_98);
     mid[0] = fStack_94 * fVar15 + mid[0];
     mid[2] = (mid[2]) - fStack_98 * fVar15;
-    fStack_b4 = mid[0] + axis[0] * fVar13;
-    fStack_b0 = mid[1] + axis[1] * fVar13;
-    fStack_ac = mid[2] + axis[2] * fVar13;
+    basePos.x = mid[0] + axis[0] * fVar13;
+    basePos.y = mid[1] + axis[1] * fVar13;
+    basePos.z = mid[2] + axis[2] * fVar13;
     if (lVar7 == 0) {
       if (0.0f <= fVar14) {
         FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, -27.5f, 0);
@@ -8111,9 +8080,9 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       FUN_004c6b20_b6070(&fStack_98,&fStack_98);
       mid[0] = fStack_94 * fVar15 + mid[0];
       mid[2] = (mid[2]) - fStack_98 * fVar15;
-      fStack_d0 = mid[0] + delta[0] * fVar13;
-      fStack_c8 = mid[2] + delta[2] * fVar13;
-      fStack_cc = fGpffff80a4 * fStack_4;
+      outputPos.x = mid[0] + delta[0] * fVar13;
+      outputPos.z = mid[2] + delta[2] * fVar13;
+      outputPos.y = fGpffff80a4 * fStack_4;
       delta[0] = centerA[0] - target[0];
       delta[1] = centerA[1] - target[1];
       delta[2] = centerA[2] - target[2];
@@ -8122,51 +8091,51 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       mid[0] = delta[0] * fVar15 + target[0];
       mid[1] = delta[1] * fVar15 + target[1];
       mid[2] = delta[2] * fVar15 + target[2];
-      FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,(const void*)mid,(const void*)&D_00697880);
+      FUN_002a4690_b6070((void*)auStack_110, &outputPos, (const void*)mid, (const void*)&D_00697880);
       fVar16 = 3.75f;
     }
     else {
       switch (sVar1) {
       case 0x26:
         mid[1] = 500.0f;
-        fStack_cc = 200.0f;
+        outputPos.y = 200.0f;
         fVar16 = 1.25f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
         break;
       case 0x27:
         mid[1] = 600.0f;
-        fStack_cc = 200.0f;
+        outputPos.y = 200.0f;
         bVar5 = 0;
         *(undefined4 *)(iVar9 + 0xdc) = 8;
         fVar16 = *(f32*)&uGpffff80ac;
         break;
       case 0x2c:
         mid[1] = 800.0f;
-        fStack_cc = 500.0f;
+        outputPos.y = 500.0f;
         fVar16 = 2.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
         break;
       case 0x38:
         mid[1] = 1000.0f;
-        fStack_cc = 500.0f;
+        outputPos.y = 500.0f;
         fVar16 = 1.5f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 4;
         break;
       default:
         mid[1] = 500.0f;
-        fStack_cc = 200.0f;
+        outputPos.y = 200.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0;
         fVar16 = *(f32*)&uGpffff809c;
         break;
       }
       param_2 = 0;
-      fStack_d0 = fStack_b4;
-      fStack_c8 = fStack_ac;
-      FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,
+      outputPos.x = basePos.x;
+      outputPos.z = basePos.z;
+      FUN_002a4690_b6070((void*)auStack_110, &outputPos,
                           (const void*)mid,(const void*)&D_00697880);
     }
   }
@@ -8179,18 +8148,17 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     axis[0] = axis[0] * 100.0f;
     axis[1] = axis[1] * 100.0f;
     axis[2] = axis[2] * 100.0f;
-    fStack_d0 = fStack_b4 + axis[0];
-    fStack_cc = fStack_b0 + axis[1];
-    fStack_c8 = fStack_ac + axis[2];
-    FUN_002a4690_b6070((void*)auStack_110,(const void*)&fStack_d0,(const void*)mid,(const void*)&D_00697880);
+    outputPos.x = basePos.x + axis[0];
+    outputPos.y = basePos.y + axis[1];
+    outputPos.z = basePos.z + axis[2];
+    FUN_002a4690_b6070((void*)auStack_110, &outputPos, (const void*)mid, (const void*)&D_00697880);
   }
   if (0 < *(int *)(iVar9 + 0xdc)) {
     FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);
   }
-  FUN_002a3590(&fStack_d0, &fStack_d0);
-  FUN_002a3590(&fStack_b4, &fStack_b4);
-  FUN_002a2290_b6070(camera, (RwV3d*)&fStack_d0,
-                     (RwV3d*)&fStack_b4, 1);
+  FUN_002a3590((f32 *)&outputPos, (f32 *)&outputPos);
+  FUN_002a3590((f32 *)&basePos, (f32 *)&basePos);
+  FUN_002a2290_b6070(camera, &outputPos, &basePos, 1);
   if (!bVar5) {
     FUN_002a3110_b6070(camera, fVar16);
   }
@@ -8271,8 +8239,6 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar7), (RwV3d*)sphere0);
   btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), (RwV3d*)sphere1);
   btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)sphere2);
-  fVar15 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + sphere0[1];
-  fVar12 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1];
   fVar13 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.5f + sphere2[1];
   fVar14 = *(float *)(iVar7 + 0x90) * *(float *)(iVar7 + 0x2c);
   fVar10 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c);
@@ -8286,7 +8252,8 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   }
   if ((*(u32 *)(iGpffffb6fc + 0xc) & 0x200000) == 0) {
     bVar3 = FUN_002a3420((int)camera) != 0;
-    if (125.0f <= fVar13 - fVar12) {
+    if (125.0f <= fVar13 -
+        (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1])) {
       bVar3 = 0;
     }
     else if (!bVar3 && (FUN_00357fd0(0) & 1) != 0) {
@@ -8349,7 +8316,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       cam[0] = dir[2] * fVar9 + sphere2[0];
       cam[2] = (sphere2[2]) - dir[0] * fVar9;
     }
-    if (fVar12 <= fVar13) {
+    if (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1] <= fVar13) {
       pos[1] = fGpffff8094 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) +
                   pos[1];
       if (pos[1] < fVar13) {
@@ -8360,7 +8327,8 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
         cam[1] = sphere2[1];
       }
     }
-    else if (((*(u32 *)(iGpffffb6fc + 0xc) & 0x200000) == 0) || (fVar12 < 500.0f)) {
+    else if (((*(u32 *)(iGpffffb6fc + 0xc) & 0x200000) == 0) ||
+             (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1] < 500.0f)) {
       pos[1] = (pos[1]) -
                   fGpffff80b0 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c);
       cam[1] = fVar13 * 0.25f + sphere2[1];
@@ -8385,7 +8353,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       fVar10 = fVar8;
     }
     cam[0] = outPair[0];
-    if (fVar12 <= fVar13) {
+    if (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1] <= fVar13) {
       if (pos[1] < fVar13) {
         cam[1] = fGpffff80b4 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
                     pos[1];
@@ -8433,9 +8401,13 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     lVar5 = FUN_0017d800();
     if ((lVar5 != 0) && (450.0f < sphere1[1])) {
       fVar10 = fVar10 + 150.0f;
-      fVar15 = fVar15 + 350.0f;
+      cam[1] = (*(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f +
+                sphere0[1] + 350.0f) * 0.5f + target[1];
     }
-    cam[1] = fVar15 * 0.5f + target[1];
+    else {
+      cam[1] = (*(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f +
+                sphere0[1]) * 0.5f + target[1];
+    }
     if (0.0f > fVar16) {
       cam[0] = (target[0]) - dir[2] * fVar10;
       cam[2] = dir[0] * fVar10 + target[2];
@@ -8459,7 +8431,14 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     targetPair[1] = target[2];
     fVar10 = (float)FUN_002d1fd0((f32*)posPair,(f32*)camPair,(f32*)targetPair,(f32*)outPair);
     cam[0] = outPair[0];
-    cam[1] = fVar15 * 0.25f + target[1];
+    if ((lVar5 != 0) && (450.0f < sphere1[1])) {
+      cam[1] = (*(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f +
+                sphere0[1] + 350.0f) * 0.25f + target[1];
+    }
+    else {
+      cam[1] = (*(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f +
+                sphere0[1]) * 0.25f + target[1];
+    }
     cam[2] = outPair[1];
     fVar13 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar6 + 0xb8) * 0.5f);
     fVar13 = (fVar14 * 3.0f + fVar10) / fVar13;
@@ -8512,7 +8491,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
       cam[0] = (sphere1[0]) - dir[2] * fVar10;
       cam[2] = dir[0] * fVar10 + sphere1[2];
     }
-    if (fVar12 <= fVar13) {
+    if (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5f + sphere1[1] <= fVar13) {
       pos[1] = fGpffff8030 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
                   pos[1];
     }
