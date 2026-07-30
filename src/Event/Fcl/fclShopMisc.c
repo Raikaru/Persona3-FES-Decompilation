@@ -6857,18 +6857,23 @@ u32 FUN_003f98f0(u16 param_1)
 {
   u16 *range;
   u32 i;
+  s32 id;
+  u16 hi;
 
   range = DAT_006acca0_abs;
-  for (i = 0; i < 16; i++, range += 2) {
+  i = 0;
+  id = param_1;
+  for (; i < 16; i++, range += 2) {
     if ((range[0] == 0) && (range[1] != 0)) {
       K_Assert((const char *)DAT_006aede8,0xe12);
     }
-    if (range[1] != 0) {
-      if ((range[0] <= param_1) && (param_1 <= range[1])) {
+    hi = range[1];
+    if (hi != 0) {
+      if (!(id < range[0]) && !(hi < id)) {
         return 0;
       }
     }
-    else if (param_1 == range[0]) {
+    else if (id == range[0]) {
       return 0;
     }
   }
