@@ -832,6 +832,8 @@ void opWait0026eed0(void)
         f32 rotationStart;
         f32 rotationEnd;
         f32 progress;
+        f32 transformedX;
+        f32 transformedY;
         f32 interpolationProgress;
         unsigned __int128 partBase;
         unsigned __int128* partBaseRef;
@@ -1012,17 +1014,20 @@ void opWait0026eed0(void)
         }
         for (j = 0; j < 4; j++)
         {
-            f32 px = points[j * 2];
-            f32 py = points[j * 2 + 1];
-            points[j * 2] = px * func_0052e6d8(rotation) -
-                             py * func_0052e878(rotation);
-            points[j * 2 + 1] = px * func_0052e878(rotation) +
-                                 py * func_0052e6d8(rotation);
+            f32* pointX = &points[j * 2];
+            f32* pointY = pointX + 1;
+            transformedX = *pointX * func_0052e6d8(rotation) -
+                           *pointY * func_0052e878(rotation);
+            transformedY = *pointX * func_0052e878(rotation) +
+                           *pointY * func_0052e6d8(rotation);
+            *pointX = transformedX;
+            *pointY = transformedY;
         }
         for (j = 0; j < 4; j++)
         {
-            points[j * 2] += halfW;
-            points[j * 2 + 1] += halfH;
+            f32* point = &points[j * 2];
+            point[0] += halfW;
+            point[1] += halfH;
         }
 
         interpolationProgress = (f32)elapsed / (f32)end;
@@ -1030,8 +1035,9 @@ void opWait0026eed0(void)
         y = startY + interpolationProgress * (endY - startY);
         for (j = 0; j < 4; j++)
         {
-            points[j * 2] += x;
-            points[j * 2 + 1] += y;
+            f32* point = &points[j * 2];
+            point[0] += x;
+            point[1] += y;
         }
         func_0021d890((void*)((u8*)*partBaseRef + 0x10), points);
         opWaitSetColor((void*)((u8*)*partBaseRef + 0x10),
