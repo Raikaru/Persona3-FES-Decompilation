@@ -160,6 +160,8 @@ extern u32 fclCombineList003df100();
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 u64 FUN_00172660(s32 socialLink);
 extern u8 DAT_006aede8[];
+extern u8 DAT_006aede8_abs[];
+#pragma alias DAT_006aede8_abs DAT_006aede8
 #pragma alias DAT_006aeff0_abs DAT_006aeff0
 extern s16 DAT_006aeff0_abs[];
 extern char DAT_006af340[];
@@ -444,7 +446,7 @@ u32 FUN_004016d0(u32 param_1);
 int FUN_00401800(short param_1);
 u32 FUN_00401890(short param_1);
 u32 FUN_00401950(u16 param_1);
-u32 FUN_00401a00(u16 param_1,long param_2,short *param_3);
+u32 FUN_00401a00(u16 param_1,u16 *param_2,short *param_3);
 #pragma alias FUN_00401a00_i FUN_00401a00
 u32 FUN_00401a00_i(short param_1,int param_2,short *param_3);
 u8 * FUN_00401c90(u32 *param_1,int param_2);
@@ -13203,17 +13205,23 @@ found:
 
 
 
-u32 FUN_00401a00(u16 param_1,long param_2,short *param_3)
+u32 FUN_00401a00(u16 param_1,u16 *param_2,short *param_3)
 
 
 
 {
 
-  u16 uVar1;
 
-  u8 bVar2;
+  u32 bVar2;
+  u32 j;
+  u32 key2;
+  u16 *srcB;
+  u16 *dstB;
+  int cnt;
+  short tmpA;
+  short tmpB;
 
-  short sVar3;
+  u32 sVar3;
 
   u32 uVar4;
 
@@ -13233,39 +13241,43 @@ u32 FUN_00401a00(u16 param_1,long param_2,short *param_3)
 
   u32 *puVar12;
 
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  u32 uStack_24;
-
   u16 auStack_20 [15];
 
+  unsigned __int128 snapshot;
+
   short sStack_2;
+  short *out;
+  u32 key;
+  u16 *tblBase;
+  int tblCount;
 
   
+  s32 key3;
+  s32 hit;
 
-  if (param_3 == (short *)0x0) {
-
-    param_3 = &sStack_2;
-
+  if (param_3 != (short *)0x0) {
+    out = param_3;
+  }
+  else {
+    out = &sStack_2;
   }
 
-  if (param_2 == 0) {
+  if (param_2 == (u16 *)0x0) {
 
     K_Assert((const char *)DAT_006aede8,0x1aa8);
 
   }
 
-  for (iVar8 = 0; iVar8 < iGpffffabfc; iVar8 = iVar8 + 1) {
+  key = *((u16 *)param_2 + 1);
+  tblBase = (u16 *)iGpffffabf8;
+  tblCount = iGpffffabfc;
+  for (iVar8 = 0; iVar8 < tblCount; iVar8 = iVar8 + 1) {
 
-    psVar7 = (short *)(iGpffffabf8 + iVar8 * 4);
+    puVar9 = tblBase + iVar8 * 2;
 
-    if (*(short *)((int)param_2 + 2) == *psVar7) {
+    if (key == *puVar9) {
 
-      sVar3 = psVar7[1];
+      sVar3 = puVar9[1];
 
       goto LAB_00401aa4;
 
@@ -13277,7 +13289,9 @@ u32 FUN_00401a00(u16 param_1,long param_2,short *param_3)
 
 LAB_00401aa4:
 
-  *param_3 = sVar3;
+  *out = sVar3;
+
+  iVar8 = 4;
 
   if (sVar3 != 0) {
 
@@ -13287,41 +13301,55 @@ LAB_00401aa4:
 
   else {
 
-    uVar11 = 0;
+    j = 0;
 
-    uStack_30 = _DAT_006af180;
+    key2 = param_1;
 
-    uStack_2c = _DAT_006af184;
+    snapshot = *(unsigned __int128 *)DAT_006af180_abs;
 
-    uStack_28 = DAT_006af188;
+    srcB = (u16 *)&snapshot;
 
-    uStack_24 = DAT_006af18c;
+    dstB = auStack_20;
 
-    puVar10 = (u16 *)&uStack_30;
+    goto copy2;
+    for (;;) {
 
-    puVar9 = auStack_20;
+      if (key2 == uVar6) {
 
-    iVar8 = 4;
+        bVar2 = 1;
 
-    while( 1 ) {
+        goto LAB_00401b60;
+
+      }
+
+      j = j + 1;
+
+copy2:
+
+      cnt = iVar8;
+
+      puVar10 = srcB;
+
+      puVar9 = dstB;
 
       do {
 
-        uVar1 = puVar10[1];
+        tmpA = ((s16 *)puVar10)[0];
 
-        iVar8 = iVar8 + -1;
-
-        *puVar9 = *puVar10;
-
-        puVar9[1] = uVar1;
+        tmpB = ((s16 *)puVar10)[1];
 
         puVar10 = puVar10 + 2;
 
+        cnt = cnt + -1;
+
+        *puVar9 = tmpA;
+
+        puVar9[1] = tmpB;
+
         puVar9 = puVar9 + 2;
 
-      } while (0 < iVar8);
-
-      if (uVar11 >= 8) {
+      } while (0 < cnt);
+      if (j >= 8) {
 
         uVar6 = 0;
 
@@ -13329,7 +13357,7 @@ LAB_00401aa4:
 
       else {
 
-        uVar6 = (u32)auStack_20[uVar11];
+        uVar6 = (u32)auStack_20[j];
 
       }
 
@@ -13341,19 +13369,8 @@ LAB_00401aa4:
 
       }
 
-      if (param_1 == uVar6) break;
-
-      uVar11 = uVar11 + 1;
-
-      puVar10 = (u16 *)&uStack_30;
-
-      puVar9 = auStack_20;
-
-      iVar8 = 4;
-
     }
 
-    bVar2 = 1;
 
 LAB_00401b60:
 
@@ -13383,19 +13400,21 @@ LAB_00401bc4:
 
     puVar12 = puGpffffabe0;
 
+    key3 = (long)(short)param_1;
     for (uVar11 = 0; uVar11 < uGpffffabe4; uVar11 = uVar11 + 1) {
 
-      if ((u32)(u16)puVar12[1] == (long)(short)param_1) {
+      if ((u32)(u16)puVar12[1] == key3) {
 
         if (puVar12 == (u32 *)0x0) {
 
-          K_Assert((const char *)DAT_006aede8,0x1a47);
+          K_Assert((const char *)DAT_006aede8_abs,0x1a47);
 
         }
 
 
-        uVar5 = FUN_004016d0(param_2);
-        if ((*puVar12 & uVar5) != 0) goto LAB_00401c48;
+        uVar5 = FUN_004016d0((u32)param_2);
+        hit = (*puVar12 & uVar5) != 0;
+        if (hit) goto LAB_00401c48;
 
       }
 
@@ -13415,7 +13434,7 @@ LAB_00401c48:
 
     else {
 
-      *param_3 = *(short *)((int)puVar12 + 6);
+      *out = *(short *)((int)puVar12 + 6);
 
       uVar4 = 1;
 
