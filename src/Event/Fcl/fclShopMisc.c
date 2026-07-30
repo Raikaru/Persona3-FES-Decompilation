@@ -13588,7 +13588,20 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
 
   u16 uVar2;
 
-  u8 bVar3;
+  u32 bVar3;
+  u32 j;
+  u32 found;
+  u32 keyA;
+  u32 key2;
+  u16 *tblBase;
+  int tblCount;
+  u16 *srcB;
+  u16 *dstB;
+  int cnt;
+  short tmpA;
+  short tmpB;
+  s32 key3;
+  s32 hit;
 
   short sVar4;
 
@@ -13606,7 +13619,9 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
 
   u32 uVar11;
 
-  u16 uVar12;
+  u32 uVar12;
+  short sVar12;
+  short rawKey;
 
   short *psVar13;
 
@@ -13621,15 +13636,9 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
 
   u32 unaff_s5_lo;
 
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  u32 uStack_24;
-
   u16 auStack_20 [14];
+
+  unsigned __int128 snapshot;
 
   int iStack_4;
 
@@ -13637,26 +13646,27 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
 
   if (param_2 == 0) {
 
-    K_Assert((const char *)DAT_006aede8,0x1b5d);
+    K_Assert((const char *)DAT_006aede8_abs,0x1b5d);
 
   }
 
   if (param_3 == 0) {
 
-    K_Assert((const char *)DAT_006aede8,0x1b5e);
+    K_Assert((const char *)DAT_006aede8_abs,0x1b5e);
 
   }
 
   memset(param_1,0,0x1c);
 
 
-  uVar2 = *(u16 *)(param_3 + 2);
+  keyA = *(u16 *)(param_3 + 2);
+  tblBase = (u16 *)iGpffffabf8;
+  tblCount = iGpffffabfc;
+  for (iVar8 = 0; iVar8 < tblCount; iVar8 = iVar8 + 1) {
 
-  for (iVar8 = 0; iVar8 < iGpffffabfc; iVar8 = iVar8 + 1) {
+    puVar10 = tblBase + iVar8 * 2;
 
-    puVar10 = (u16 *)(iGpffffabf8 + iVar8 * 4);
-
-    if (uVar2 == *puVar10) {
+    if (keyA == *puVar10) {
 
       uVar12 = puVar10[1];
 
@@ -13670,99 +13680,111 @@ u32 FUN_00401de0(u32 param_1,int param_2,int param_3)
 
 LAB_00401ea8:
 
+  sVar12 = (short)uVar12;
+
   puVar10 = (u16 *)param_1;
 
   if (uVar12 != 0) {
 
-    *puVar10 = *puVar10 | 2;
+    *(short *)puVar10 = *(short *)puVar10 | 2;
 
-    if (puVar10 == (u16 *)0xfffffffc) {
+    if (puVar10 + 2 == (u16 *)0x0) {
 
-      K_Assert((const char *)DAT_006aede8,0x1b2f);
+      K_Assert((const char *)DAT_006aede8_abs,0x1b2f);
 
     }
 
-    func_001828d0(uVar12,puVar10 + 2);
+    func_001828d0(sVar12,puVar10 + 2);
 
   }
 
   else {
 
-    uVar12 = *(u16 *)param_2;
+    rawKey = *(short *)param_2;
 
-    uVar16 = 0;
+    j = 0;
 
-    uStack_30 = _DAT_006af180;
+    key2 = rawKey & 0xffff;
 
-    uStack_2c = _DAT_006af184;
+    snapshot = *(unsigned __int128 *)DAT_006af180_abs;
 
-    uStack_28 = DAT_006af188;
+    srcB = (u16 *)&snapshot;
 
-    uStack_24 = DAT_006af18c;
-
-    puVar15 = (u16 *)&uStack_30;
-
-    puVar14 = auStack_20;
+    dstB = auStack_20;
 
     iVar8 = 4;
 
-    while( 1 ) {
+    goto copy2;
 
-      do {
+    for (;;) {
 
-        uVar1 = puVar15[1];
+      if (key2 == uVar11) {
 
-        iVar8 = iVar8 + -1;
-
-        *puVar14 = *puVar15;
-
-        puVar14[1] = uVar1;
-
-        puVar15 = puVar15 + 2;
-
-        puVar14 = puVar14 + 2;
-
-      } while (0 < iVar8);
-
-      if (uVar16 < 8) {
-
-        uVar11 = (u32)auStack_20[uVar16];
-
-      }
-
-      else {
-
-        uVar11 = 0;
-
-      }
-
-      if (uVar11 == 0) {
-
-        bVar3 = 0;
+        found = 1;
 
         goto LAB_00401fa8;
 
       }
 
-      if (uVar12 == uVar11) break;
+      j = j + 1;
 
-      uVar16 = uVar16 + 1;
+copy2:
 
-      puVar15 = (u16 *)&uStack_30;
+      cnt = iVar8;
 
-      puVar14 = auStack_20;
+      puVar15 = srcB;
 
-      iVar8 = 4;
+      puVar14 = dstB;
+
+      do {
+
+        tmpA = ((s16 *)puVar15)[0];
+
+        tmpB = ((s16 *)puVar15)[1];
+
+        puVar15 = puVar15 + 2;
+
+        cnt = cnt + -1;
+
+        *puVar14 = tmpA;
+
+        puVar14[1] = tmpB;
+
+        puVar14 = puVar14 + 2;
+
+      } while (0 < cnt);
+
+      if (j >= 8) {
+
+        uVar11 = 0;
+
+      }
+
+      else {
+
+        uVar11 = (u32)auStack_20[j];
+
+      }
+
+      uVar11 &= 0xffff;
+
+
+
+      if (uVar11 == 0) {
+
+        found = 0;
+
+        goto LAB_00401fa8;
+
+      }
 
     }
 
-    bVar3 = 1;
-
 LAB_00401fa8:
 
-    if (bVar3) {
+    if (found) {
 
-      if (*(char *)((u32)uVar2 * 0xe + iGpffffb730 + 2) == '\x01') {
+      if (*(char *)((u32)*(u16 *)(param_3 + 2) * 0xe + iGpffffb730 + 2) == '\x01') {
 
         bVar3 = 1;
 
@@ -13812,21 +13834,22 @@ LAB_0040203c:
 
     }
 
-    uVar7 = FUN_004016d0(param_3);
     puVar17 = puGpffffabe0;
 
+    key3 = (long)(short)uVar12;
     for (uVar16 = 0; uVar16 < uGpffffabe4; uVar16 = uVar16 + 1) {
 
-      if ((u32)(u16)puVar17[1] == (long)(short)uVar12) {
+      if ((u32)(u16)puVar17[1] == key3) {
 
         if (puVar17 == (u32 *)0x0) {
 
-          K_Assert((const char *)DAT_006aede8,0x1a47);
+          K_Assert((const char *)DAT_006aede8_abs,0x1a47);
 
         }
 
-
-        if ((*puVar17 & uVar7) != 0) goto LAB_00402100;
+        uVar7 = FUN_004016d0(param_3);
+        hit = (*puVar17 & uVar7) != 0;
+        if (hit) goto LAB_00402100;
 
       }
 
@@ -13846,7 +13869,7 @@ LAB_00402100:
 
     if (puVar17 == (u32 *)0x0) {
 
-      K_Assert((const char *)DAT_006aede8,0x1b37);
+      K_Assert((const char *)DAT_006aede8_abs,0x1b37);
 
     }
 
@@ -13865,7 +13888,7 @@ LAB_00402100:
     lVar9 = (long)FUN_00401c90(puVar17 + 2,param_3);
     if (lVar9 == 0) {
 
-      K_Assert((const char *)DAT_006aede8,0x1afa);
+      K_Assert((const char *)DAT_006aede8_abs,0x1afa);
 
     }
 
@@ -13877,7 +13900,7 @@ LAB_00402100:
     lVar9 = (long)FUN_00401cf0(param_3);
     if (lVar9 == 0) {
 
-      K_Assert((const char *)DAT_006aede8,0x1b05);
+      K_Assert((const char *)DAT_006aede8_abs,0x1b05);
 
     }
 
@@ -13895,13 +13918,13 @@ LAB_00402100:
       lVar9 = (long)FUN_00401d90(param_3);
       if (lVar9 == 0) {
 
-        K_Assert((const char *)DAT_006aede8,0x1b51);
+        K_Assert((const char *)DAT_006aede8_abs,0x1b51);
 
       }
 
       if (puVar10 == (u16 *)0xfffffffc) {
 
-        K_Assert((const char *)DAT_006aede8,0x1b52);
+        K_Assert((const char *)DAT_006aede8_abs,0x1b52);
 
       }
 
