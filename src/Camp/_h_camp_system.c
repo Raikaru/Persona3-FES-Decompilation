@@ -648,6 +648,7 @@ void *FUN_0015B430(KwlnTask *task)
         break;
 
     case 6:
+        work->selectedPanel = 0;
         scratch.pair.f[0] = 21.0f;
         scratch.pair.f[1] = 215.0f;
         scratch.shifted = scratch.pair;
@@ -1742,53 +1743,87 @@ void FUN_0015EE40(CampDrawWork *work, s32 changedIndex)
     void *draw;
     f32 x;
     f32 tailHeight;
-    u64 first;
-    u64 second;
+    CampMenuAnimPair first;
+    CampMenuAnimPair second;
     s32 i;
     s32 base;
 
     draw = camp_draw_ptr32(work->records);
     for (i = 0; i < 4; ++i) {
         if (i < work->partyCount) {
-        x = (f32)(i * 0x55) + 42.0f;
-        if (i == work->cursor) {
-            tailHeight = 48.0f;
-            first = camp_draw_concat44_f32(x + 2.0f, 41.0f);
-            second = camp_draw_concat44_f32(x + 2.0f, 62.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
-                         0, 2, 1, first, second, 0, 0);
-        } else {
-            if (i != changedIndex) {
-                continue;
+            x = (f32)(i * 0x55) + 42.0f;
+            if (i == work->cursor) {
+                tailHeight = 48.0f;
+                second.f[0] = 14.0f;
+                second.f[1] = x + 2.0f;
+                first = second;
+                first.f[0] += 27.0f;
+                second.f[0] += tailHeight;
+                FUN_0018bc10(100.0f,
+                             camp_draw_ptr_add(draw,
+                                               (size_t)(i * 10 + 0x10) * 0x44),
+                             0, 2, 1, first.q, second.q, 0, 0);
+            } else {
+                if (i != changedIndex) {
+                    continue;
+                }
+                tailHeight = 27.0f;
+                first.q = camp_draw_load_u64(
+                    draw, (size_t)i * 0x2a8 + 0x478);
+                second.f[0] = 14.0f;
+                second.f[1] = x + 2.0f;
+                second.f[0] += tailHeight;
+                FUN_0018bc10(100.0f,
+                             camp_draw_ptr_add(draw,
+                                               (size_t)(i * 10 + 0x10) * 0x44),
+                             0, 2, 2, first.q, second.q, 0, 0);
             }
-            tailHeight = 27.0f;
-            first = camp_draw_load_u64(draw, (size_t)i * 0x2a8 + 0x478);
-            second = camp_draw_concat44_f32(x + 2.0f, 41.0f);
-            FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
-                         0, 2, 2, first, second, 0, 0);
-        }
-        base = i * 0x2a8;
-        first = camp_draw_load_u64(draw, (size_t)base + 0x2e0);
-        second = camp_draw_concat44_f32(x + 8.0f, tailHeight + 65.0f);
-        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
-                     0, 2, 0, first, second, 0, 0);
-        base = i * 10;
-        first = camp_draw_load_u64(draw, (size_t)(i * 0x2a8) + 0x324);
-        second = camp_draw_concat44_f32(x + 31.0f, tailHeight + 65.0f);
-        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
-                     0, 2, 0, first, second, 0, 0);
-        first = camp_draw_load_u64(draw, (size_t)(i * 0x2a8) + 0x368);
-        second = camp_draw_concat44_f32(x + 45.0f, tailHeight + 65.0f);
-        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
-                     0, 2, 0, first, second, 0, 0);
-        first = camp_draw_load_u64(draw, (size_t)(i * 0x2a8) + 0x3ac);
-        second = camp_draw_concat44_f32(x + 64.0f, tailHeight + 65.0f);
-        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
-                     0, 2, 0, first, second, 0, 0);
-        first = camp_draw_load_u64(draw, (size_t)(i * 0x2a8) + 0x3f0);
-        second = camp_draw_concat44_f32(x + 2.0f, tailHeight + 14.0f);
-        FUN_0018bc10(100.0f, camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
-                     0, 2, 0, first, second, 0, 0);
+
+            base = i * 0x2a8;
+            first.q = camp_draw_load_u64(draw, (size_t)base + 0x2e0);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 8.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(i + 1) * 0x2a8),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            base = i * 10;
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x324);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 31.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xb) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x368);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 45.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xc) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x3ac);
+            second.f[0] = 65.0f;
+            second.f[1] = x + 64.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xd) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
+
+            first.q = camp_draw_load_u64(
+                draw, (size_t)(i * 0x2a8) + 0x3f0);
+            second.f[0] = 14.0f;
+            second.f[1] = x + 2.0f;
+            second.f[0] += tailHeight;
+            FUN_0018bc10(100.0f,
+                         camp_draw_ptr_add(draw, (size_t)(base + 0xe) * 0x44),
+                         0, 2, 0, first.q, second.q, 0, 0);
         }
     }
 }
@@ -2218,9 +2253,11 @@ void *FUN_00160800(KwlnTask *task)
                 s16 fade = 0;
                 if (i >= 3) {
                     displacement = (f32)(((i - 3) * 400) / 5);
+                    verticalOffset = 0.0f;
                     fade = (s16)(((i - 3) * 0xff) / 5);
                 } else {
                     verticalOffset = 0.0f;
+                    displacement = verticalOffset;
                 }
                 if (iGpffffb270 == NULL) {
                     ready = NULL;

@@ -1349,7 +1349,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     s32 npc;
     s32 hit;
     s32 i;
-    u32 currentArea;
+    s16 currentArea;
     u32 active;
     u32 allLoaded;
     u8 scriptPath[128];
@@ -2150,11 +2150,12 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     else
                     {
                         heroMat = (RwMatrix*)FUN_00318b60(PTR_U32((void*)EVENT_WORD(9), 0x50));
-                        markerPos = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)EVENT_WORD(9), 0x50)))->pos;
+                        markerPos = heroMat->pos;
                         markerPos.y += 50.0f;
                         FUN_0010a4e0(1, 8, 2, 8);
                         FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1204), &markerPos);
                         FUN_001d0110(EVENT_WORD(9));
+case8_teardown:
                         if (FUN_0017d800() == true) FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
                         FUN_003182d0(*(u32*)D_008717F0_abs, 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
                         FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);
@@ -2172,13 +2173,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 heroMat->pos.x = *(f32*)((u8*)fldEvent + 0x114);
                 heroMat->pos.y = *(f32*)((u8*)fldEvent + 0x118);
                 heroMat->pos.z = *(f32*)((u8*)fldEvent + 0x11c);
-                if (FUN_0017d800() == true) FUN_003189f0(1.0f, *(u32*)D_008717F0_abs, 0);
-                FUN_003182d0(*(u32*)D_008717F0_abs, 0, FUN_001dde00(true), EVENT_WORD(0x3b) == 6 ? 0 : 4, true);
-                FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), false);
-                FUN_001d8c60(false);
-                FUN_001d5c10((KwlnTask*)FIELD_WORD(0x04), EVENT_WORD(0x3d));
-                if (FIELD_WORD(0x18) != 0) FUN_00429e90((void*)FIELD_WORD(0x18), false);
-                fldEvent->eventType = FLDEVENT_TYPE_IDLE;
+                goto case8_teardown;
             }
             else if (currentArea >= 0)
             {
@@ -2578,13 +2573,59 @@ case16_second_action_done:
                     active = EVENT_WORD(0x3b) != currentArea;
                     if (active == false)
                     {
-                        active = ((currentActor == 0x439) != (EVENT_WORD(0x3c) == 0x439)) ||
-                                 ((currentActor == 0x452) != (EVENT_WORD(0x3c) == 0x452)) ||
-                                 ((currentActor == 0x453) != (EVENT_WORD(0x3c) == 0x453)) ||
-                                 ((currentActor == 0x40e) != (EVENT_WORD(0x3c) == 0x40e)) ||
-                                 ((currentActor == 0x466) != (EVENT_WORD(0x3c) == 0x466)) ||
-                                 ((currentActor == 0x43d) != (EVENT_WORD(0x3c) == 0x43d)) ||
-                                 ((currentActor == 0x464) != (EVENT_WORD(0x3c) == 0x464));
+                        if (currentActor == 0x439)
+                        {
+                            if (EVENT_WORD(0x3c) != 0x439) active = true;
+                        }
+                        else if (EVENT_WORD(0x3c) == 0x439) active = true;
+                        if (active == false)
+                        {
+                            if (currentActor == 0x452)
+                            {
+                                if (EVENT_WORD(0x3c) != 0x452) active = true;
+                            }
+                            else if (EVENT_WORD(0x3c) == 0x452) active = true;
+                        }
+                        if (active == false)
+                        {
+                            if (currentActor == 0x453)
+                            {
+                                if (EVENT_WORD(0x3c) != 0x453) active = true;
+                            }
+                            else if (EVENT_WORD(0x3c) == 0x453) active = true;
+                        }
+                        if (active == false)
+                        {
+                            if (currentActor == 0x40e)
+                            {
+                                if (EVENT_WORD(0x3c) != 0x40e) active = true;
+                            }
+                            else if (EVENT_WORD(0x3c) == 0x40e) active = true;
+                        }
+                        if (active == false)
+                        {
+                            if (currentActor == 0x466)
+                            {
+                                if (EVENT_WORD(0x3c) != 0x466) active = true;
+                            }
+                            else if (EVENT_WORD(0x3c) == 0x466) active = true;
+                        }
+                        if (active == false)
+                        {
+                            if (currentActor == 0x43d)
+                            {
+                                if (EVENT_WORD(0x3c) != 0x43d) active = true;
+                            }
+                            else if (EVENT_WORD(0x3c) == 0x43d) active = true;
+                        }
+                        if (active == false)
+                        {
+                            if (currentActor == 0x464)
+                            {
+                                if (EVENT_WORD(0x3c) != 0x464) active = true;
+                            }
+                            else if (EVENT_WORD(0x3c) == 0x464) active = true;
+                        }
                     }
                     if (active == false)
                     {

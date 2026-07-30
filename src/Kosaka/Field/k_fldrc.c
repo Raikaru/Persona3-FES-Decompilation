@@ -646,15 +646,6 @@ u32 K_Fldrc_Init()
     u16 handle;
 
     state = *(u32*)((u8*)K_Field_Get() + 0x1058);
-    if (state == 0x3e7)
-    {
-        if (sFldPacCdvd != NULL)
-        {
-            H_Cdvd_Destroy(sFldPacCdvd);
-            sFldPacCdvd = NULL;
-        }
-        return true;
-    }
     switch (state)
     {
         case 0:
@@ -689,6 +680,13 @@ u32 K_Fldrc_Init()
             goto init_phase28;
         case 0x29:
             goto init_phase29;
+        case 0x3e7:
+            if (sFldPacCdvd != NULL)
+            {
+                H_Cdvd_Destroy(sFldPacCdvd);
+                sFldPacCdvd = NULL;
+            }
+            return true;
         default:
             return false;
     }
@@ -1539,12 +1537,14 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
     u32 count;
     s16 type;
     u32 object;
-    u32 frame;
     u32 matrix;
     f32* pos;
-    f32 xyz[3];
-    u32 localMatrix[16];
-    u32 atomic;
+    RwV3d firstPos;
+    RwV3d secondPos;
+    RwV3d listPos;
+    u32 firstMatrix[4];
+    u32 secondMatrix[4];
+    u32 listMatrix[4];
 
     (void)unused;
     pos = (f32*)offset;
@@ -1554,28 +1554,26 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
         {
             object = *(u32*)(resource[2] + 4);
             matrix = FUN_004cb2f0(object);
-            xyz[0] = *(f32*)(matrix + 0x30) + pos[0];
-            xyz[1] = *(f32*)(matrix + 0x34) + pos[1];
-            xyz[2] = *(f32*)(matrix + 0x38) + pos[2];
-            *(f32*)(object + 0x40) = xyz[0];
-            *(f32*)(object + 0x44) = xyz[1];
-            *(f32*)(object + 0x48) = xyz[2];
-            FUN_004c2cc0(localMatrix);
-            FUN_004c2d20(object + 0x10, localMatrix);
+            firstPos = *(RwV3d*)(matrix + 0x30);
+            firstPos.x += pos[0];
+            firstPos.y += pos[1];
+            firstPos.z += pos[2];
+            *(RwV3d*)(object + 0x40) = firstPos;
+            FUN_004c2cc0(firstMatrix);
+            FUN_004c2d20(object + 0x10, firstMatrix);
             FUN_004cb270(object);
         }
         if (resource[4] != 0)
         {
             object = *(u32*)(resource[4] + 4);
             matrix = FUN_004cb2f0(object);
-            xyz[0] = *(f32*)(matrix + 0x30) + pos[0];
-            xyz[1] = *(f32*)(matrix + 0x34) + pos[1];
-            xyz[2] = *(f32*)(matrix + 0x38) + pos[2];
-            *(f32*)(object + 0x40) = xyz[0];
-            *(f32*)(object + 0x44) = xyz[1];
-            *(f32*)(object + 0x48) = xyz[2];
-            FUN_004c2cc0(localMatrix);
-            FUN_004c2d20(object + 0x10, localMatrix);
+            secondPos = *(RwV3d*)(matrix + 0x30);
+            secondPos.x += pos[0];
+            secondPos.y += pos[1];
+            secondPos.z += pos[2];
+            *(RwV3d*)(object + 0x40) = secondPos;
+            FUN_004c2cc0(secondMatrix);
+            FUN_004c2d20(object + 0x10, secondMatrix);
             FUN_004cb270(object);
         }
     }
@@ -1586,14 +1584,13 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
         {
             object = *(u32*)(resource[i + 6] + 4);
             matrix = FUN_004cb2f0(object);
-            xyz[0] = *(f32*)(matrix + 0x30) + pos[0];
-            xyz[1] = *(f32*)(matrix + 0x34) + pos[1];
-            xyz[2] = *(f32*)(matrix + 0x38) + pos[2];
-            *(f32*)(object + 0x40) = xyz[0];
-            *(f32*)(object + 0x44) = xyz[1];
-            *(f32*)(object + 0x48) = xyz[2];
-            FUN_004c2cc0(localMatrix);
-            FUN_004c2d20(object + 0x10, localMatrix);
+            listPos = *(RwV3d*)(matrix + 0x30);
+            listPos.x += pos[0];
+            listPos.y += pos[1];
+            listPos.z += pos[2];
+            *(RwV3d*)(object + 0x40) = listPos;
+            FUN_004c2cc0(listMatrix);
+            FUN_004c2d20(object + 0x10, listMatrix);
             FUN_004cb270(object);
         }
     }
@@ -1607,7 +1604,7 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
         }
         else if (type == 1)
         {
-            u32 transform[15];
+            u32 transform[3];
             f32 modelPos[3];
             u32* params;
 
@@ -1615,7 +1612,7 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
             params[0] = 0x3f800000;
             params[1] = 0;
             params[2] = 0;
-            params[3] = 0x20003;
+            params[3] |= 0x20003;
             params[4] = 0;
             params[5] = 0x3f800000;
             params[6] = 0;
@@ -1625,8 +1622,8 @@ void FUN_001b4e00(u32* resource, const f32* offset, f32 unused)
             params[12] = 0;
             params[13] = 0;
             params[14] = 0x3f800000;
-            transform[0] = DAT_00678f58;
-            transform[1] = DAT_00678f60;
+            *(u64*)&transform[0] = DAT_00678f58;
+            transform[2] = DAT_00678f60;
             FUN_004c31b0(params, transform, unused, 2);
             matrix = FUN_004cb2f0(resource[i * 6 + 0x49]);
             modelPos[0] = *(f32*)(matrix + 0x30);
@@ -2591,6 +2588,7 @@ void* FUN_001b2860(char* path)
     char digits[4];
     u32 valid;
 
+    valid = 1;
     resource = (u32)(*DAT_00960184)(1, 0xa4c, 0x40000);
     if (resource == 0)
     {
@@ -2613,16 +2611,40 @@ void* FUN_001b2860(char* path)
     {
         end--;
     }
-    valid = 0;
-    if (end[1] == 'f')
+    if (end[1] != 'f')
     {
-        valid = ((PTR_DAT_007be9c8[(u8)end[7]] & 4) != 0) &&
-                ((PTR_DAT_007be9c8[(u8)end[6]] & 4) != 0) &&
-                (end[5] == '_') &&
-                ((PTR_DAT_007be9c8[(u8)end[4]] & 4) != 0) &&
-                ((PTR_DAT_007be9c8[(u8)end[3]] & 4) != 0) &&
-                ((PTR_DAT_007be9c8[(u8)end[2]] & 4) != 0) &&
-                ((PTR_DAT_007be9c8[(u8)end[8]] & 4) != 0);
+        valid = 0;
+    }
+    else
+    {
+        if ((PTR_DAT_007be9c8[(u8)end[2]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[3]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[4]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if (end[5] != '_')
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[6]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[7]] & 4) == 0)
+        {
+            valid = 0;
+        }
+        if ((PTR_DAT_007be9c8[(u8)end[8]] & 4) == 0)
+        {
+            valid = 0;
+        }
     }
     if (valid != 0)
     {
@@ -2674,23 +2696,21 @@ u32 FUN_001b2b30(u32 resource)
 void FUN_001b2b90(u32 resource)
 {
     u32 payload;
-    u32 metadata;
-    u32 stream;
+    u32 streamInfo[2];
+    u32 entryInfo[2];
+    u32 substream[2];
     u32 entry;
-    u32 type;
-    u32 entryOffset;
     u32* header;
     u32 index;
 
     payload = *(u32*)(resource + 0xa40);
-    metadata = 0;
-    stream = FUN_001021c0(payload, &metadata);
-    entryOffset = stream;
-    if (stream == 0)
+    streamInfo[1] = 0;
+    streamInfo[0] = FUN_001021c0(payload, &streamInfo[1]);
+    if (streamInfo[0] == 0)
     {
         return;
     }
-    header = (u32*)FUN_004c58a0(3, 1, &entryOffset);
+    header = (u32*)FUN_004c58a0(3, 1, streamInfo);
     if (header == NULL)
     {
         if (payload != 0)
@@ -2704,53 +2724,55 @@ void FUN_001b2b90(u32 resource)
         }
         return;
     }
-    while (FUN_004c1970((u32)header, &type) != 0)
+    while (FUN_004c1970((u32)header, entryInfo) != 0)
     {
-        if (type == 0x0c)
+        if (entryInfo[0] == 0x0c)
         {
             *(u32*)(resource + 0xa1c) = FUN_0048d0e0((u32)header);
         }
-        else if (type == 0x16)
+        else if (entryInfo[0] == 0x16)
         {
             entry = FUN_004c8680((u32)header);
             FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
             FUN_004d0d10(entry);
         }
-        else if (type == 0x23)
+        else if (entryInfo[0] == 0x23)
         {
             entry = FUN_004bda10((u32)header);
             FUN_004d0dc0(entry, 0x1a13b0, payload + 0x120);
             FUN_004d0d10(entry);
         }
-        else if (type == 0x10)
+        else if (entryInfo[0] == 0x10)
         {
-            entryOffset = stream + *(u32*)((u8*)header + 0x0c);
-            metadata = 0;
-            entry = FUN_004c58a0(3, 1, &entryOffset);
+            substream[0] =
+                streamInfo[0] + *(u32*)((u8*)header + 0x0c);
+            substream[1] = streamInfo[1];
+            entry = FUN_004c58a0(3, 1, substream);
             index = *(u32*)(payload + 0x98);
             *(u32*)(payload + index * 4 + 0x9c) =
                 FUN_0010c1a0(2, 0, 0, 0, entry, 0, 0, 0);
-            FUN_004c5620((u32)header, &metadata);
+            FUN_004c5620((u32)header, entryInfo[1]);
             *(u32*)(payload + 0x98) = index + 1;
         }
-        else if (type == 0x0b)
+        else if (entryInfo[0] == 0x0b)
         {
             index = *(u32*)(payload + 0x8c);
-            entryOffset = stream + *(u32*)((u8*)header + 0x0c);
+            substream[0] =
+                streamInfo[0] + *(u32*)((u8*)header + 0x0c);
             if (*(u32*)(payload + index * 4 + 0x90) != 0)
             {
-                entryOffset = stream;
+                substream[0] = streamInfo[0];
             }
-            metadata = 0;
-            entry = FUN_004c58a0(3, 1, &entryOffset);
+            substream[1] = streamInfo[1];
+            entry = FUN_004c58a0(3, 1, substream);
             *(u32*)(payload + index * 4 + 0x90) =
                 FUN_0010c1a0(1, 0, 0, 0, entry, 0, 0, 0);
-            FUN_004c5620((u32)header, &metadata);
+            FUN_004c5620((u32)header, entryInfo[1]);
             *(u32*)(payload + 0x8c) = index + 1;
         }
         else
         {
-            FUN_004c5620((u32)header, &metadata);
+            FUN_004c5620((u32)header, entryInfo[1]);
         }
     }
     if (header != NULL)
@@ -2993,7 +3015,6 @@ void FUN_001b3480(u32 resource)
     u32 overlay;
     u32 mode;
     u32 flags;
-    u32 record;
     u32 metadata;
     u32 stream;
     char path[256];
@@ -3018,13 +3039,15 @@ void FUN_001b3480(u32 resource)
             {
                 FUN_0019d3f0(D_00678DF8, 0x60a);
             }
-            record = resource + *(u32*)(resource + 0x118) * 0x18;
-            *(u16*)(record + 0x20) = (u16)id;
+            *(u16*)(resource +
+                    *(u32*)(resource + 0x118) * 0x18 + 0x120) =
+                (u16)id;
             FUN_001a6e90(&query[2], *(u32*)(entry + 0x18), 0x678e90, i);
             overlay = query[2];
             if (overlay != 0)
             {
-                *(u16*)(record + 0x1e) = 2;
+                *(u16*)(resource +
+                        *(u32*)(resource + 0x118) * 0x18 + 0x11e) = 2;
             }
             FUN_001a6e90(&query[3], *(u32*)(entry + 0x18), 0x678e50, i);
             mode = query[3];
@@ -3038,7 +3061,8 @@ void FUN_001b3480(u32 resource)
                     FUN_00523e68(path, token);
                     FUN_00523ac8(token, 0x678ed8, id);
                     FUN_00523e68(path, token);
-                    *(u32*)(record + 0x28) =
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x128) =
                         FUN_00316b40(4, (u16)id, path, 0);
                 }
                 else
@@ -3051,7 +3075,8 @@ void FUN_001b3480(u32 resource)
                     FUN_00523e68(path, token);
                     metadata = 0;
                     stream = FUN_001021c0(path, &metadata);
-                    *(u32*)(record + 0x28) =
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x128) =
                         FUN_00316bd0(4, (u16)id, stream, metadata, 0);
                 }
             }
@@ -3065,8 +3090,12 @@ void FUN_001b3480(u32 resource)
                     FUN_00523e68(path, token);
                     FUN_00523ac8(token, 0x678f08, id);
                     FUN_00523e68(path, token);
-                    *(u32*)(record + 0x30) = FUN_00100d80(path, 0);
-                    if (*(u32*)(record + 0x30) == 0)
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x130) =
+                        FUN_00100d80(path, 0);
+                    if (*(u32*)(resource +
+                                *(u32*)(resource + 0x118) * 0x18 +
+                                0x130) == 0)
                     {
                         FUN_0019d3f0(D_00678DF8, 0x650);
                     }
@@ -3080,7 +3109,9 @@ void FUN_001b3480(u32 resource)
                     FUN_00523ac8(token, 0x678f08, id);
                     FUN_00523e68(path, token);
                     metadata = 0;
-                    *(u32*)(record + 0x30) = FUN_001021c0(path, &metadata);
+                    *(u32*)(resource +
+                            *(u32*)(resource + 0x118) * 0x18 + 0x130) =
+                        FUN_001021c0(path, &metadata);
                 }
             }
             else if (mode == 2)
@@ -3089,16 +3120,20 @@ void FUN_001b3480(u32 resource)
                 FUN_00523ac8(token, 0x678ed8, id);
                 FUN_00523e68(path, token);
                 fieldId = (id + 1000) & 0xffff;
-                *(u32*)(record + 0x28) =
+                *(u32*)(resource +
+                        *(u32*)(resource + 0x118) * 0x18 + 0x128) =
                     FUN_00316b40(4, fieldId, path, 0);
             }
             FUN_001a6e90(&query[4], *(u32*)(entry + 0x18), 0x678f40, i);
             flags = query[4];
             if (mode == 0)
             {
-                *(u16*)(record + 0x1e) |= (u16)flags;
+                *(u16*)(resource +
+                        *(u32*)(resource + 0x118) * 0x18 + 0x11e) |=
+                    (u16)flags;
             }
-            *(u32*)(record + 4) = 0;
+            *(u32*)(resource +
+                    *(u32*)(resource + 0x118) * 0x18 + 0x124) = 0;
             *(u32*)(resource + 0x118) += 1;
         }
     }
