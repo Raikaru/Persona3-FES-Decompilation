@@ -8180,11 +8180,11 @@ int FUN_003fb2f0(u32 *param_1)
 
   u32 uVar3;
 
-  u32 uVar4;
+  u32 uVar6;
 
   int iVar5;
 
-  u32 uVar6;
+  u32 uVar4;
 
 
   
@@ -10306,7 +10306,7 @@ u32 FUN_003fe5d0(u64 param_1)
   return uVar1;
 }
 
-// FUN_003FE690 NONMATCHING
+// FUN_003FE690
 
 
 u64 FUN_003fe690(u32 param_1,u8 *param_2)
@@ -10323,11 +10323,11 @@ u64 FUN_003fe690(u32 param_1,u8 *param_2)
 
   u32 uVar4;
 
+  u32 uVar6;
+
   int iVar7;
 
   int lVar5;
-
-  u32 uVar6;
 
   u8 auStack_8 [6];
 

@@ -21317,7 +21317,6 @@ u32 FUN_00332370(int param_1)
   u32 uVar3;
 
   u32 uVar2;
-  
   int iVar1;
 
   u32 *puVar4;
@@ -48201,7 +48200,7 @@ void FUN_00351510(int param_1)
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
     ratio = 255.0f * ratio;
-    if (2147483648.0f >= ratio) {
+    if (2147483648.0f > ratio) {
       alphaByte = (s32)ratio & 0xff;
     } else {
       alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
@@ -52422,6 +52421,7 @@ void FUN_00357550(int param_1)
   int *piVar1;
 
   int state;
+
   int node;
 
   u32 uVar3;
@@ -52443,6 +52443,7 @@ void FUN_00357550(int param_1)
     FUN_002a38f0(1,0,1);
 
     FUN_002a3e80_typed(0.0f,0,0,0,0x40);
+
 
     state = *piVar1;
 
