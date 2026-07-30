@@ -1826,7 +1826,7 @@ void FUN_00302d40(u32 param_1)
       cVar1 = FUN_00300f60(param_1,(u8)(uVar5 & 0xff));
     }
     else {
-      cVar1 = (*(u32 *)(iVar6 + 0x14) & 1 << uVar4) != 0;
+      cVar1 = (*(u32 *)(iVar6 + 0x14) & 1 << (uVar5 & 0xff)) != 0;
     }
     if (!(uVar4 < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x421);
@@ -1880,11 +1880,11 @@ u8 FUN_00302f50(u32 param_1)
       FUN_0019d3f0((u32)D_0069aa80, 0x4b8);
     }
     iVar6 = (int)param_1;
-    if (uVar4 >= 0x11) {
-      cVar1 = (*(u32 *)(iVar6 + 0x14) & 1 << (uVar5 & 0x1f)) != 0;
+    if (uVar4 < 0x11) {
+      cVar1 = FUN_00300f60(param_1,(u8)(uVar5 & 0xff));
     }
     else {
-      cVar1 = FUN_00300f60(param_1,(u8)(uVar5 & 0xff));
+      cVar1 = (*(u32 *)(iVar6 + 0x14) & 1 << (uVar5 & 0xff)) != 0;
     }
     if (!(uVar4 < 0x15)) {
       FUN_0019d3f0((u32)D_0069aa80, 0x421);
@@ -4766,6 +4766,8 @@ done:
 
 
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00308a80 NONMATCHING
 u16 FUN_00308a80(u32 param_1)
 
@@ -4804,6 +4806,7 @@ u16 FUN_00308a80(u32 param_1)
   iVar4 = FUN_002ffbc0(uVar6);
   return auStack_20[iVar4];
 }
+#pragma pop
 
 
 
@@ -6311,25 +6314,15 @@ u32 FUN_0030b9a0(u16 *param_1,u16 param_2,u16 param_3)
   pbVar4 = (u8 *)(iGpffffb708 + (u32)param_2 * 0x2c);
   if ((*pbVar4 & 2) != 0) {
     if ((*param_1 & 4) != 0) {
-      uVar1 = 1;
+      return 1;
     }
-    else {
-      if ((*param_1 & 4) != 0) {
-        uVar2 = 1;
-      }
-      else {
-        uVar2 = (u8)(&gp0xffff9d08)[FUN_00308c60((u32)param_1) & 0xff];
-      }
-      uVar1 = 1;
-      if (uVar2 != 1) {
-        uVar1 = uVar2;
-        if ((param_3 & 6) == 0) {
-          if (param_3 == 8) {
-            uVar1 = 2;
-          }
-          else {
-            uVar1 = 1;
-          }
+    uVar2 = (u8)(&gp0xffff9d08)[FUN_00308c60((u32)param_1) & 0xff];
+    uVar1 = 1;
+    if (uVar2 != 1) {
+      uVar1 = uVar2;
+      if ((param_3 & 6) == 0) {
+        if (param_3 == 8) {
+          uVar1 = 2;
         }
       }
     }
