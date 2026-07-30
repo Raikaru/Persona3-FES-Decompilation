@@ -2511,7 +2511,10 @@ void FUN_00143a00(CampEquipmentPanelWork* work,s32 targetSlot)
   int entryIndex;
   float slotY;
   float panelX;
-  u64 spriteTopLeft8;
+  CampPair selectedStart;
+  CampPair selectedEnd;
+  CampPair hoverStart;
+  CampPair hoverEnd;
   
   entryIndex = 0;
   do {
@@ -2522,21 +2525,30 @@ void FUN_00143a00(CampEquipmentPanelWork* work,s32 targetSlot)
       panelX = (float)(entryIndex * 0x55) + 62.0f;
       if (entryIndex == work->selectedSlot) {
         slotY = 48.0f;
-        spriteTopLeft8 = CAMP_SUBB_PAIR_FLOAT_HIGH(panelX + 2.0f, 0x42240000);
-        func_0018bc10(100.0f, (void*)(work->drawBuffer + (entryIndex * 10 + 0x24) * 0x44), 0, 2, 1, spriteTopLeft8, CAMP_SUBB_PAIR_FLOAT_HIGH(panelX + 2.0f, 0x42780000), 0, 0, 0, 0);
+        selectedEnd.x = 14.0f;
+        selectedEnd.y = panelX + 2.0f;
+        selectedStart = selectedEnd;
+        selectedStart.x += 27.0f;
+        selectedEnd.x += slotY;
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (entryIndex * 10 + 0x24) * 0x44), 0, 2, 1, *(u64*)&selectedStart, *(u64*)&selectedEnd, 0, 0, 0, 2);
       }
       else {
         if (entryIndex != targetSlot) goto LAB_00143e94;
         slotY = 27.0f;
-        func_0018bc10(100.0f, (void*)(work->drawBuffer + (entryIndex * 10 + 0x24) * 0x44), 0, 2, 2, *(u64 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x9c8), CAMP_SUBB_PAIR_FLOAT_HIGH(panelX + 2.0f, 0x42240000), 0, 0, 0, 0);
+        hoverStart.x = *(f32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x9c8);
+        hoverStart.y = *(f32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x9cc);
+        hoverEnd.x = 14.0f;
+        hoverEnd.y = panelX + 2.0f;
+        hoverEnd.x += slotY;
+        func_0018bc10(100.0f, (void*)(work->drawBuffer + (entryIndex * 10 + 0x24) * 0x44), 0, 2, 2, *(u64*)&hoverStart, *(u64*)&hoverEnd, 0, 0, 0, 2);
       }
       row = entryIndex * 0x2a8;
       index = entryIndex * 10;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x830), CAMP_SUBB_PAIR_FLOATS(panelX + 8.0f, slotY + 65.0f), 0, 0, 0, 0);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x874), CAMP_SUBB_PAIR_FLOATS(panelX + 31.0f, slotY + 65.0f), 0, 0, 0, 0);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x8b8), CAMP_SUBB_PAIR_FLOATS(panelX + 45.0f, slotY + 65.0f), 0, 0, 0, 0);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x8fc), CAMP_SUBB_PAIR_FLOATS(panelX + 64.0f, slotY + 65.0f), 0, 0, 0, 0);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x940), CAMP_SUBB_PAIR_FLOATS(panelX + 2.0f, slotY + 14.0f), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1e) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x830), CAMP_SUBB_PAIR_FLOATS(panelX + 8.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x1f) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x874), CAMP_SUBB_PAIR_FLOATS(panelX + 31.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x20) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x8b8), CAMP_SUBB_PAIR_FLOATS(panelX + 45.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x21) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x8fc), CAMP_SUBB_PAIR_FLOATS(panelX + 64.0f, slotY + 65.0f), 0, 0, 0, 2);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (index + 0x22) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + row + 0x940), CAMP_SUBB_PAIR_FLOATS(panelX + 2.0f, slotY + 14.0f), 0, 0, 0, 2);
     }
 LAB_00143e94:
     entryIndex = entryIndex + 1;
@@ -2622,6 +2634,8 @@ void FUN_00144910(CampEquipmentPanelWork* work)
   int index;
   int row;
   float slotX;
+  CampPair panelStart;
+  CampPair panelEnd;
   u64 spriteTopLeft2;
   u64 spriteTopLeft3;
   u64 spriteTopLeft4;
@@ -2630,16 +2644,21 @@ void FUN_00144910(CampEquipmentPanelWork* work)
   u32 labelY;
   u32 labelX;
   
-  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0, 0x4140000042dc0000, 0x4140000042200000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d800004404c000, 0x41d80000435b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, 0x41d800004404c000, 0x41d800004404c000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, 0x41d80000439f0000, 0x41d80000439f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, 0x41d8000043aa8000, 0x41d8000043aa8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, 0x41d8000043f20000, 0x41d8000043f20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, 0x41d8000043fd8000, 0x41d8000043fd8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, *(u64 *)(work->drawBuffer + 0x214), 0x4274000043630000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, *(u64 *)(work->drawBuffer + 600), 0x435b000043770000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, *(u64 *)(work->drawBuffer + 0x830), 0x42860000440b8000, 0, 0, 0, 0);
+  panelEnd.x = 40.0f;
+  panelEnd.y = 12.0f;
+  panelStart = panelEnd;
+  panelStart.x = 110.0f;
+  func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 0,
+                *(u64*)&panelStart, *(u64*)&panelEnd, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d800004404c000, 0x41d80000435b0000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x88), 0, 2, 2, 0x41d800004404c000, 0x41d800004404c000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0xcc), 0, 2, 1, 0x41d80000439f0000, 0x41d80000439f0000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x110), 0, 2, 1, 0x41d8000043aa8000, 0x41d8000043aa8000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x154), 0, 2, 1, 0x41d8000043f20000, 0x41d8000043f20000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x198), 0, 2, 1, 0x41d8000043fd8000, 0x41d8000043fd8000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x1dc), 0, 2, 0, *(u64 *)(work->drawBuffer + 0x214), 0x4274000043630000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x220), 0, 2, 0, *(u64 *)(work->drawBuffer + 600), 0x435b000043770000, 0, 0, 0, 10);
+  func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x7f8), 0, 2, 0, *(u64 *)(work->drawBuffer + 0x830), 0x42860000440b8000, 0, 0, 0, 10);
   for (row = 0; row < 4; row = row + 1) {
     if (row < work->visibleCount) {
       slotX = (float)(row * 0x55) + 62.0f;
@@ -2700,32 +2719,32 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
     s32 index;
     f32 x;
     f32 y;
-    u64 start;
-    u64 end;
-    union { u64 u; f32 f[2]; } packed;
+    CampPair selectedStart;
+    CampPair hoverStart;
+    CampPair end;
 
     for (index = 0; index < 0xc; index++) {
         if (index < work->listCount) {
             if (index == work->highlightedSlot) {
                 y = 21.0f;
                 x = (f32)(index * 0x1d) + 61.0f;
-                start = *(u64*)(work->drawBuffer + index * 0x44 + 0x2e0);
-                packed.f[0] = y;
-                packed.f[1] = x;
-                end = packed.u;
+                selectedStart.x = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e0);
+                selectedStart.y = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e4);
+                end.x = y;
+                end.y = x;
                 func_0018bc10(103.0f,
                               work->drawBuffer + (index + 0xa) * 0x44,
-                              0, 2, 0, start, end, 0, 0, 0, 0);
+                              0, 2, 0, *(u64*)&selectedStart, *(u64*)&end, 0, 0, 0, 2);
             } else if (index == hoverSlot) {
                 y = 0.0f;
                 x = (f32)(index * 0x1d) + 61.0f;
-                start = *(u64*)(work->drawBuffer + index * 0x44 + 0x2e0);
-                packed.f[0] = y;
-                packed.f[1] = x;
-                end = packed.u;
+                hoverStart.x = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e0);
+                hoverStart.y = *(f32*)(work->drawBuffer + index * 0x44 + 0x2e4);
+                end.x = y;
+                end.y = x;
                 func_0018bc10(103.0f,
                               work->drawBuffer + (index + 0xa) * 0x44,
-                              0, 2, 0, start, end, 0, 0, 0, 0);
+                              0, 2, 0, *(u64*)&hoverStart, *(u64*)&end, 0, 0, 0, 2);
             }
         }
     }

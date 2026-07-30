@@ -963,6 +963,34 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 return KWLNTASK_CONTINUE;
             }
             break;
+        default:
+            if (work->decoder != NULL)
+            {
+                if (work->streamAux != NULL)
+                    func_00584338(work->decoder);
+                func_0057db58(work->decoder);
+                work->decoder = NULL;
+            }
+            if (work->compressedFrameBuffer != NULL)
+            {
+                D_0096017c(work->compressedFrameBuffer);
+                work->compressedFrameBuffer = NULL;
+            }
+            if (work->displayBuffer != NULL)
+            {
+                D_0096017c(work->displayBuffer);
+                work->displayBuffer = NULL;
+                uGpffffb220 = NULL;
+            }
+            if (work->renderTarget != NULL)
+            {
+                func_004cde90(work->renderTarget);
+                work->renderTarget = NULL;
+            }
+            datSetFlag(0x1407, 0);
+            work->stateTimer = 0;
+            work->state = HSFD_STATE_IDLE;
+            return KWLNTASK_CONTINUE;
     }
     return KWLNTASK_CONTINUE;
 
@@ -1364,6 +1392,11 @@ void* func_0010c3a0(HSfdAsyncEntry* entry, u32* wasReady, s32* byteCount)
                 if (byteCount != NULL)
                     *byteCount = (s32)entry->source;
                 break;
+            case 9:
+                result = entry->result4;
+                if (byteCount != NULL)
+                    *byteCount = (s32)entry->source;
+                break;
             default:
                 result = entry->result5;
                 break;
@@ -1451,8 +1484,11 @@ request_done:
 void func_0010c7d0(HSfdQueueSlot* slot)
 {
     HSfdAsyncEntry* entry;
+    HSfdAsyncEntry* next;
     s32 enabled;
 
+    for (;;)
+    {
     func_00503080();
     while (slot->state != 1)
     {
@@ -1488,37 +1524,49 @@ void func_0010c7d0(HSfdQueueSlot* slot)
             entry->result1 = (void*)func_004c5250(entry->source,
                                                  (void*)entry->buffer,
                                                  entry->byteCount);
-            entry->resultF = func_00464540(entry->source);
             break;
         case 5:
-            entry->resultG = func_0048d960(entry->name + 0x24);
+            entry->resultF = func_00464540(entry->source);
             break;
         case 6:
+            entry->resultG = func_0048d960(entry->name + 0x24);
+            break;
+        case 7:
             entry->result2 = func_004b79d0((u32)entry->buffer,
                                            entry->source);
             break;
-        case 7:
-            entry->result3 = func_004c8680(entry->source);
+        case 8:
+            entry->result4 = func_004c8680(entry->source);
             break;
-        default:
+        case 9:
             entry->result5 = func_004b45b0(0, entry->source);
-            if (entry->request != NULL)
-            {
-                enabled = FUN_0050d3a0();
-                func_00100ec0(entry->request);
-                entry->request = NULL;
-                if (enabled != 0)
-                    FUN_0050d3f0();
-            }
             break;
+    }
+
+    if (entry->request != NULL)
+    {
+        enabled = FUN_0050d3a0();
+        func_00100ec0(entry->request);
+        entry->request = NULL;
+        if (enabled != 0)
+            FUN_0050d3f0();
     }
 
     enabled = FUN_0050d3a0();
     entry->state = 3;
+    next = entry->next;
+    if ((next != NULL) && (next->state == 0) && (next->path[0] == '\0'))
+    {
+        next->state = 2;
+        slot->entry = next;
+        if (enabled != 0)
+            FUN_0050d3f0();
+        continue;
+    }
     slot->state = 0;
     if (enabled != 0)
         FUN_0050d3f0();
-    FUN_0050d3f0();
+    }
 }
 
 // FUN_0010CAC0 NONMATCHING
@@ -1830,6 +1878,7 @@ void func_0010cdd0(void)
                                             *intermediateSizePtr);
                 slot->queueHandle = queueHandle;
                 decodeHandle = func_0051DC70(5, -1, queueHandle, 0);
+                slot->decodeHandle = decodeHandle;
                 auxHandle = func_0051DDF0(0, -1, (s32)slot->output,
                                           slot->outputSize);
                 slot->aux = (void*)(s32)auxHandle;
@@ -2878,7 +2927,7 @@ void func_0010ec50(KwlnTask* task)
 // Retail 0x10fbe4-0x110250 re-fetches command pointers and carries the prior
 // endpoint into command-2 rectangles; preserve those conversions and spill slots.
 // FUN_0010F6C0 NONMATCHING
-void func_0010f6c0(KwlnTask* task)
+void* func_0010f6c0(KwlnTask* task)
 {
     u8* work;
     u8* entry;
@@ -2991,12 +3040,12 @@ void func_0010f6c0(KwlnTask* task)
             break;
 
         case 2:
-            return;
+            return NULL;
 
         case 3:
             if (*(s32*)(work + 0x4e8) != 0)
             {
-                return;
+                return NULL;
             }
             func_004aaa60();
             func_004a9bf0();
@@ -3252,4 +3301,5 @@ void func_0010f6c0(KwlnTask* task)
             func_004aad50();
             break;
     }
+    return NULL;
 }

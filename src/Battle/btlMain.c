@@ -1407,6 +1407,8 @@ void btlMainInitStateCondition(BtlStateWork* work)
                         newCondition = 5;
                     }
                     break;
+                case 5:
+                    break;
             }
         }
         if (newCondition != oldCondition)
@@ -2078,9 +2080,7 @@ void FUN_0029ee20(u32 param_1)
     switch (cVar1) {
     case '\0':
     case '\x01':
-      unitPos.x = *(float *)(iVar4 + 0x54);
-      unitPos.y = *(float *)(iVar4 + 0x58);
-      unitPos.z = *(float *)(iVar4 + 0x5c);
+      unitPos = *(RwV3d *)(iVar4 + 0x54);
       FUN_0027ffb0(param_1,&targetPos);
       fVar2 = targetPos.y + 5.0f;
       if (targetPos.y + 5.0f < unitPos.y) {
@@ -2100,7 +2100,7 @@ void FUN_0029ee20(u32 param_1)
       matrix.up.x = direction.y * cross.z - direction.z * cross.y;
       matrix.up.y = direction.z * cross.x - direction.x * cross.z;
       matrix.up.z = direction.x * cross.y - direction.y * cross.x;
-      matrix.pos = matrix.up;
+      matrix.pos = unitPos;
       puVar3 = (u32 *)FUN_001a07f0(*(u16 *)(iVar4 + 0x9f2));
       uVar8 = *(u32 *)(iVar4 + 0x74);
       uVar6 = *(u32 *)(iVar4 + 0x78);
@@ -2534,63 +2534,19 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
       iVar5 = (int)(uintptr_t)DAT_007ce3ec;
 
-      fVar10 = *(float *)(DAT_007ce3ec + 0x228);
+      *(RwRGBAReal *)&colorWork->unk_10 =
+          *(RwRGBAReal *)(DAT_007ce3ec + 0x224);
 
-      fVar11 = *(float *)(DAT_007ce3ec + 0x22c);
+      *(RwRGBAReal *)&colorWork->unk_30 =
+          *(RwRGBAReal *)(iVar5 + 0x1c4);
 
-      fVar9 = *(float *)(DAT_007ce3ec + 0x230);
+      *(RwRGBAReal *)&colorWork->unk_50 =
+          *(RwRGBAReal *)(iVar5 + 0x1d4);
 
-      colorWork->unk_10 = *(float *)(DAT_007ce3ec + 0x224);
-
-      colorWork->unk_14 = fVar10;
-
-      colorWork->unk_18 = fVar11;
-
-      colorWork->unk_1c = fVar9;
-
-      fVar10 = *(float *)(iVar5 + 0x1c8);
-
-      fVar11 = *(float *)(iVar5 + 0x1cc);
-
-      fVar9 = *(float *)(iVar5 + 0x1d0);
-
-      colorWork->unk_30 = *(float *)(iVar5 + 0x1c4);
-
-      colorWork->unk_34 = fVar10;
-
-      colorWork->unk_38 = fVar11;
-
-      colorWork->unk_3c = fVar9;
-
-      fVar10 = *(float *)(iVar5 + 0x1d8);
-
-      fVar11 = *(float *)(iVar5 + 0x1dc);
-
-      fVar9 = *(float *)(iVar5 + 0x1e0);
-
-      colorWork->unk_50 = *(float *)(iVar5 + 0x1d4);
-
-      colorWork->unk_54 = fVar10;
-
-      colorWork->unk_58 = fVar11;
-
-      colorWork->unk_5c = fVar9;
-
-      DAT_009572b0 = *(u32 *)(iVar5 + 0x194);
-
-      DAT_009572b4 = *(u32 *)(iVar5 + 0x198);
-
-      DAT_009572b8 = *(u32 *)(iVar5 + 0x19c);
-
-      DAT_009572bc = *(u32 *)(iVar5 + 0x1a0);
-
-      DAT_009572c0 = *(u32 *)(iVar5 + 0x1a4);
-
-      DAT_009572c4 = *(u32 *)(iVar5 + 0x1a8);
-
-      DAT_009572c8 = *(u32 *)(iVar5 + 0x1ac);
-
-      DAT_009572cc = *(u32 *)(iVar5 + 0x1b0);
+      *(RwRGBAReal *)DAT_009572B0 =
+          *(RwRGBAReal *)(iVar5 + 0x194);
+      *(RwRGBAReal *)(DAT_009572B0 + 4) =
+          *(RwRGBAReal *)(iVar5 + 0x1a4);
 
       fVar14 = *(float *)(iVar5 + 0x1b8);
 
@@ -3426,10 +3382,7 @@ u8 FUN_002a1400(float *param_1)
   float fVar7;
   u32 duration;
   u32 counter;
-  float target0;
-  float target1;
-  float target2;
-  float target3;
+  RwRGBAReal target;
 
   
 
@@ -3447,10 +3400,10 @@ u8 FUN_002a1400(float *param_1)
 
   }
 
-  target0 = fGpffff8218 * (float)bGpffffb808;
-  target1 = fGpffff8218 * (float)bGpffffb809;
-  target2 = fGpffff8218 * (float)bGpffffb80a;
-  target3 = fGpffff8218 * (float)bGpffffb80b;
+  target.r = fGpffff8218 * (float)bGpffffb808;
+  target.g = fGpffff8218 * (float)bGpffffb809;
+  target.b = fGpffff8218 * (float)bGpffffb80a;
+  target.a = fGpffff8218 * (float)bGpffffb80b;
   if (duration > counter) {
     fVar5 = (float)counter / (float)duration;
 
@@ -3462,10 +3415,10 @@ u8 FUN_002a1400(float *param_1)
 
     fVar3 = param_1[3];
 
-    *(float *)(iGpffffb6fc + 0x234) = *param_1 * fVar7 + target0 * fVar5;
-    *(float *)(iGpffffb6fc + 0x238) = fVar6 * fVar7 + target1 * fVar5;
-    *(float *)(iGpffffb6fc + 0x23c) = fVar2 * fVar7 + target2 * fVar5;
-    *(float *)(iGpffffb6fc + 0x240) = fVar3 * fVar7 + target3 * fVar5;
+    *(float *)(iGpffffb6fc + 0x234) = *param_1 * fVar7 + target.r * fVar5;
+    *(float *)(iGpffffb6fc + 0x238) = fVar6 * fVar7 + target.g * fVar5;
+    *(float *)(iGpffffb6fc + 0x23c) = fVar2 * fVar7 + target.b * fVar5;
+    *(float *)(iGpffffb6fc + 0x240) = fVar3 * fVar7 + target.a * fVar5;
 
     *(u32 *)(param_1 + 5) = counter + 1;
 
@@ -3473,10 +3426,7 @@ u8 FUN_002a1400(float *param_1)
 
   else {
 
-    *(float *)(iGpffffb6fc + 0x234) = target0;
-    *(float *)(iGpffffb6fc + 0x238) = target1;
-    *(float *)(iGpffffb6fc + 0x23c) = target2;
-    *(float *)(iGpffffb6fc + 0x240) = target3;
+    *(RwRGBAReal *)(iGpffffb6fc + 0x234) = target;
 
   }
 
@@ -3498,8 +3448,7 @@ u32 FUN_002a1710(int *param_1)
   u32 uVar7;
   u8 uVar8;
   float fVar9;
-  u8 uStack_8[4];
-  u32 uStack_4;
+  RwRGBA color;
   uVar7 = 1;
   iVar1 = *param_1;
   if ((*(u32 *)(iGpffffb6fc + 0x10) & 8) == 0) {
@@ -3545,18 +3494,17 @@ u32 FUN_002a1710(int *param_1)
           if (((((uVar4 & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0) &&
                (*(short *)(iVar2 + 0x9f2) != 0)) && ((*(u32 *)(iVar2 + 0x9c) & 1) == 0)) &&
              (iVar2 != *(int *)(iVar1 + 0x30))) {
-            uStack_4 = ((((u32)(uVar8) & 0xffu) << 24) | ((u32)(*(u32 *)(iVar2 + 0x30) & 0x00ffffffu) & 0x00ffffffu));
-            FUN_0027f730(iVar2,uStack_4);
+            color = *(RwRGBA *)(iVar2 + 0x30);
+            color.a = uVar8;
+            FUN_0027f730(iVar2,*(u32 *)&color);
           }
         }
       }
       for (uVar4 = 0; uVar4 < *(u16 *)(iVar1 + 0x6a); uVar4 = uVar4 + 1 & 0xffff) {
         iVar2 = *(int *)(*(int *)(iVar1 + uVar4 * 4 + 0x38) + 0x30);
-        uStack_8[0] = *(u8 *)(iVar2 + 0x30);
-        uStack_8[1] = *(u8 *)(iVar2 + 0x31);
-        uStack_8[2] = *(u8 *)(iVar2 + 0x32);
-        uStack_8[3] = 0xff;
-        FUN_0027f730(iVar2,*(u32*)uStack_8);
+        color = *(RwRGBA *)(iVar2 + 0x30);
+        color.a = 0xff;
+        FUN_0027f730(iVar2,*(u32 *)&color);
       }
       param_1[2] = param_1[2] + 1;
     }

@@ -2771,23 +2771,23 @@ void func_00312d40(u8* param_1,u8* param_2)
 
   if (iVar1 != 0) {
 
-    DAT_009571b0 = (code)*(u32 *)(iVar1 + 0x3c);
+    *(u32*)DAT_009571b0_abs = *(u32 *)(iVar1 + 0x3c);
 
     *(code *)(iVar1 + 0x3c) = (code)func_00312c70;
 
-    DAT_009571b4 = *(int *)(iVar2 + 0x20) + 0x4c +
-                   *(int *)(*(int *)(iVar2 + 0x20) + 0x24) * *(int *)(iVar3 + 0x34);
-    DAT_009571b8 = DAT_009571b4;
-
-    if (*(float *)(iVar3 + 8) == 0.0f) {
-      DAT_009571b8 = 0;
-
+    *(s32*)DAT_009571b4_abs = *(int *)(iVar2 + 0x20) + 0x4c;
+    *(s32*)DAT_009571b4_abs +=
+        *(int *)(*(int *)(iVar2 + 0x20) + 0x24) * *(int *)(iVar3 + 0x34);
+    if (*(float *)(iVar3 + 8) != 0.0f) {
+      *(s32*)DAT_009571b8_abs = *(s32*)DAT_009571b4_abs;
+    }
+    else {
+      *(s32*)DAT_009571b8_abs = 0;
     }
 
-    DAT_009571bc = (float*)(iVar3 + 0x38);
-    DAT_009571c0 = *(float *)(iVar3 + 0x44);
-    DAT_009571c4 = *(float *)(iVar3 + 0x48);
-
+    *(float**)DAT_009571bc_abs = (float*)(iVar3 + 0x38);
+    *(f32*)DAT_009571c0_abs = *(float *)(iVar3 + 0x44);
+    *(f32*)DAT_009571c4_abs = *(float *)(iVar3 + 0x48);
     if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) != 0) {
 
       func_00311730((u32*)param_1,(u16*)param_2,(u16*)(iVar3 + 0x4c),0);
@@ -2804,7 +2804,7 @@ void func_00312d40(u8* param_1,u8* param_2)
 
     }
 
-    *(u32 *)(*(int *)(iVar2 + 0x20) + 0x3c) = (u32)(void*)DAT_009571b0;
+    *(u32 *)(*(int *)(iVar2 + 0x20) + 0x3c) = *(u32*)DAT_009571b0_abs;
 
   }
 
@@ -5403,6 +5403,7 @@ u32 func_00315f50(void* param_1,u32 *param_2)
   float fVar12;
 
   float fVar13;
+  RwRGBA color;
 
   
 
@@ -5427,22 +5428,25 @@ u32 func_00315f50(void* param_1,u32 *param_2)
     iVar4 = *(int *)(*(int *)(iVar1 + 0x20) + uVar6 * 4);
 
     uVar5 = K_Clump_MatUsrDataGetInt(iVar4,0x69aba0);
+    color.b = (u8)uVar5;
+    color.g = (u8)(uVar5 >> 8);
+    color.r = (u8)(uVar5 >> 0x10);
+    color.a = (u8)(uVar5 >> 0x18);
 
-    fVar9 = DAT_007caf08 * (float)(uVar5 >> 8 & 0xff);
-
-    fVar7 = DAT_007caf08 * (float)(uVar5 & 0xff);
+    fVar9 = DAT_007caf08 * (float)color.g;
+    fVar7 = DAT_007caf08 * (float)color.b;
 
     fVar8 = fVar11;
 
     if ((*(u16 *)(param_2 + 1) & 1) == 0) {
 
-      fVar8 = DAT_007caf08 * (float)(uVar5 >> 0x18) * fVar11;
+      fVar8 = DAT_007caf08 * (float)color.a * fVar11;
 
     }
 
     *(char *)(iVar4 + 4) =
 
-         (char)(int)(DAT_007caf08 * (float)(uVar5 >> 0x10 & 0xff) * fVar12 * 255.0f + 0.5f);
+         (char)(int)(DAT_007caf08 * (float)color.r * fVar12 * 255.0f + 0.5f);
 
     *(char *)(iVar4 + 5) = (char)(int)(fVar9 * fVar13 * 255.0f + 0.5f);
 

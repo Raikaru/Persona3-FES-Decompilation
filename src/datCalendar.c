@@ -3140,12 +3140,6 @@ void func_00183840(void* resource,
                    f32 baseX,
                    f32 baseY)
 {
-    static const u8 moonFrames[30] =
-    {
-        3, 3, 4, 4, 5, 5, 6, 7, 7, 8,
-        8, 8, 9, 9, 10, 11, 11, 12, 12, 12,
-        13, 13, 14, 15, 15, 16, 16, 17, 17, 18,
-    };
     s32 days;
     s32 phase;
     s32 blink;
@@ -3160,13 +3154,73 @@ void func_00183840(void* resource,
                       baseX + 584.0f, baseY + 57.0f, 50.0f);
     }
 
-    if (phase < 30)
+    switch (phase)
     {
-        frame = moonFrames[phase];
-    }
-    else
-    {
-        frame = 0;
+        case 0:
+        case 1:
+            frame = 3;
+            break;
+        case 2:
+        case 3:
+            frame = 4;
+            break;
+        case 4:
+        case 5:
+            frame = 5;
+            break;
+        case 6:
+            frame = 6;
+            break;
+        case 7:
+        case 8:
+            frame = 7;
+            break;
+        case 9:
+        case 10:
+        case 11:
+            frame = 8;
+            break;
+        case 12:
+        case 13:
+            frame = 9;
+            break;
+        case 14:
+            frame = 10;
+            break;
+        case 15:
+        case 16:
+            frame = 11;
+            break;
+        case 17:
+        case 18:
+        case 19:
+            frame = 12;
+            break;
+        case 20:
+        case 21:
+            frame = 13;
+            break;
+        case 22:
+            frame = 14;
+            break;
+        case 23:
+        case 24:
+            frame = 15;
+            break;
+        case 25:
+        case 26:
+            frame = 16;
+            break;
+        case 27:
+        case 28:
+            frame = 17;
+            break;
+        case 29:
+            frame = 18;
+            break;
+        default:
+            frame = 0;
+            break;
     }
     func_001159f0(NULL, resource, frame, alpha & 0xff,
                   baseX + 595.0f, baseY + 67.0f, 50.0f);
@@ -3510,8 +3564,10 @@ void func_001848f0(KwlnTask* task, u32 confirmed)
 
     if (func_0017db40(currentDays) == 1 &&
         func_0017db40(oldDays) == 1 &&
-        currentTime >= 2 && currentTime <= 5 &&
-        work->time >= 2 && work->time <= 5)
+        (currentTime == 2 || currentTime == 3 ||
+         currentTime == 4 || currentTime == 5) &&
+        (work->time == 2 || work->time == 3 ||
+         work->time == 4 || work->time == 5))
     {
         if (work->month != currentMonth || work->day != currentDay)
         {

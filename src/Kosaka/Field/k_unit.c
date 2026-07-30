@@ -41,6 +41,8 @@ extern char s__field_script_reserve_xxx_006837af[];
 extern RwV3d DAT_00683780[];
 extern RwV3d DAT_00683910;
 extern RwV3d DAT_00683920;
+extern const char D_00683930[];
+extern const char D_00683940[];
 extern u64 DAT_00683960;
 extern u32 DAT_00683968;
 extern u64 DAT_00683970;
@@ -104,7 +106,8 @@ extern void func_00452010(RwV3d* value);
 extern f32 func_004c6ac0(const RwV3d* value);
 extern void func_004cb420(u64 left, u64 right);
 extern f32 func_0052e878(f32 value);
-extern u32 func_00523ac8(char* buffer, const char* path);
+extern u32 func_00523ac8(char* buffer, const char* path, ...);
+extern void func_0019d400(const char* file, s32 line, s32 value);
 extern void func_00521250(void* dst, const void* src, u32 size);
 extern u32 func_001008b0(const char* path);
 extern void* func_00100d80(const char* path, u32 mode);
@@ -1039,6 +1042,7 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     FldUnit* current;
     DatUnitEc* enemy;
     const u8* spawn;
+    char message[0x100];
 
     unit = NULL;
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
@@ -1096,7 +1100,8 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     }
     else
     {
-        K_Abort("unsupported field encounter tier", "k_unit.c", 0x430);
+        func_00523ac8(message, D_00683930, encounter);
+        func_0019d400(D_00683940, 0x430, 0);
         unit->unk_18c = 1;
     }
 
@@ -1683,11 +1688,19 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
     }
     else
     {
-        for (index = 0; node != NULL && index != ordinal; index++)
+        index = 0;
+        best = NULL;
+        while (node != NULL)
         {
+            if (index == ordinal)
+            {
+                best = node;
+                break;
+            }
             node = *(u8**)(node + 0xf8);
+            index++;
         }
-        return node;
+        return best;
     }
     return NULL;
 }
@@ -1765,60 +1778,66 @@ void func_001d0e50(s32 isDungeon)
 {
     s32 i;
     FldUnit* unit;
-    ResrcModelChar* resource;
+    DatUnitGenusBase** genusBase;
+    Model** model;
+    ResrcModelChar** resource;
     u16 resourceId;
+    RwMatrix* modelMatrix;
     RwV3d light;
-    RwV3d* modelMatrix;
     RwV3d scale;
-    RwV3d temp;
-    u64 modelData;
+
     for (i = isDungeon ? 0 : 1; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL)
+        genusBase = &unit->genusBase;
+        if (*genusBase != NULL)
         {
-            resourceId = func_003b6030(i, 1, unit->mdl);
-            resource = (ResrcModelChar*)func_003b5d10(resourceId);
-            unit->resrc = resource;
-            modelMatrix = (RwV3d*)func_00318b60(unit->mdl);
-            *(RwMatrix*)modelMatrix = unit->matBeforeBtl;
-            func_004c2f10((u64)func_00318b60(unit->mdl));
+            model = &unit->mdl;
+            resource = &unit->resrc;
+            resourceId = func_003b6030(i, 1, *model);
+            *resource = (ResrcModelChar*)func_003b5d10(resourceId);
+            modelMatrix = (RwMatrix*)func_00318b60(*model);
+            *modelMatrix = unit->matBeforeBtl;
+            func_004c2f10((u64)func_00318b60(*model));
             func_001a0dc0(resourceId, 1);
-            func_001ad870(resource->collisCtlTask, 0x40000000);
-            func_001add40(resource->collisCtlTask);
+            func_001ad870((*resource)->collisCtlTask, 0x40000000);
+            func_001add40((*resource)->collisCtlTask);
             if (i == 0)
             {
-                func_001ad8c0(60.0f, resource->collisCtlTask);
+                func_001ad8c0(60.0f, (*resource)->collisCtlTask);
             }
             else
             {
-                func_001ad8c0(35.0f, resource->collisCtlTask);
+                func_001ad8c0(35.0f, (*resource)->collisCtlTask);
             }
-            resource->baseMdl = (Model*)func_00317450(uGpffffb52c);
-            light.x = func_001ad8b0(resource->collisCtlTask);
+            (*resource)->baseMdl = (Model*)func_00317450(uGpffffb52c);
+            light.x = func_001ad8b0((*resource)->collisCtlTask);
             light.y = light.x;
             light.z = light.x;
             scale = light;
-            func_00318a90(resource->baseMdl, &scale, 2);
-            func_004cb420(func_00318b70(unit->mdl), func_00318b70(resource->baseMdl));
-            func_00317730(resource->baseMdl);
-            if (func_002ff790(unit->genusBase) == 0)
+            func_00318a90((*resource)->baseMdl, &scale, 2);
+            func_004cb420(func_00318b70(*model),
+                         func_00318b70((*resource)->baseMdl));
+            func_00317730((*resource)->baseMdl);
+            if (func_002ff790(*genusBase) == 0)
             {
-                func_003182d0(unit->mdl, 0, func_001dde00(unit->charId), 0, 1);
+                func_003182d0(*model, 0,
+                              func_001dde00(gFldUnitsPc[i].charId), 0, 1);
             }
             if (i != 0)
             {
-                unit->unk_170 = (KwlnTask*)func_001af930(0, resource);
-                unit->unk_16c = (KwlnTask*)func_00431670(0, i, unit);
+                gFldUnitsPc[i].unk_170 =
+                    (KwlnTask*)func_001af930(0, *resource);
+                gFldUnitsPc[i].unk_16c =
+                    (KwlnTask*)func_00431670(0, i, &gFldUnitsPc[i]);
             }
-            unit->unk_180 = (KwlnTask*)func_001d40e0(0, unit);
+            gFldUnitsPc[i].unk_180 =
+                (KwlnTask*)func_001d40e0(0, &gFldUnitsPc[i]);
             if (i == 0)
             {
-                unit->unk_174 = (KwlnTask*)func_001dd460(0, 0, 0x106f);
+                gFldUnitsPc[i].unk_174 =
+                    (KwlnTask*)func_001dd460(0, 0, 0x106f);
             }
-            (void)modelMatrix;
-            (void)scale;
-            (void)temp;
         }
     }
     if (K_Scene_001a0250() == 1)
@@ -2269,9 +2288,15 @@ void func_001d1fa0(void)
     memset(DAT_0086be80, 0, 0x2700);
     iGpffffb598 = 0;
     count = func_001d77d0(*puGpffffa850, puGpffffa850[2], area);
-    if (func_001c0040() == 2)
+    switch (func_001c0040())
     {
-        count = 10;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            count = 10;
+            break;
     }
     if (count == 0)
     {
@@ -2558,6 +2583,7 @@ void func_001d2a10(void)
     s32 gridZ;
     s32 kind;
     f32 extent;
+    f32 recordExtent;
     f32 x;
     f32 z;
     RwMatrix* matrix;
@@ -2598,6 +2624,7 @@ void func_001d2a10(void)
         }
         return;
     }
+    recordExtent = -80.0f;
     for (j = 0; j < 4; j++)
     {
         for (i = 0; i < 4; i++)
@@ -2638,11 +2665,12 @@ void func_001d2a10(void)
                 record = DAT_0086be80 + k * 0x138;
                 if (K_Scene_001a0250() != 0 && *(u32*)record != 0)
                 {
-                    x = *(f32*)(record + 0x10c) - 80.0f;
-                    z = *(f32*)(record + 0x114) - 80.0f;
+                    x = *(f32*)(record + 0x10c) + recordExtent;
+                    z = *(f32*)(record + 0x114) + recordExtent;
                     for (dir = 0; dir < 3; dir++)
                     {
-                        gridX = FldUnit_GridCoord(x + dir * 80.0f);
+                        gridX = FldUnit_GridCoord(
+                            x - dir * recordExtent);
                         gridZ = FldUnit_GridCoord(z);
                         if (K_Scene_001a0250() != 0 &&
                             gridX == i && gridZ == j)
@@ -2700,7 +2728,15 @@ void* func_001d32a0(KwlnTask* task)
     RwV3d spawnPosCopy;
 
     work = (s32*)task->workData;
-    if ((piGpffffa850[0] == 0xe && piGpffffa850[1] == 5) || work[1] == 1 || work[2] == 1)
+    if (piGpffffa850[0] == 0xe && piGpffffa850[1] == 5)
+    {
+        return NULL;
+    }
+    if (work[1] == 1)
+    {
+        return NULL;
+    }
+    if (work[2] == 1)
     {
         return NULL;
     }

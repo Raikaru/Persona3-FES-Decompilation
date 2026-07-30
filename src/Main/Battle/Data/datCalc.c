@@ -1892,13 +1892,18 @@ u8 FUN_00302f50(u32 param_1)
       bVar2 = *(u8 *)(iVar6 + iVar3 + 0x29) & 0xf;
     }
     if ((cVar1 != '\0') && (uVar5 != 0xb)) {
-      if ((uVar5 == 9) || (uVar5 == 8)) {
+      switch (uVar5) {
+      case 8:
+      case 9:
         if (bVar2 != 0) {
           return (char)uVar5;
         }
-      }
-      else if (2 < bVar2) {
-        return (char)uVar5;
+        break;
+      default:
+        if (2 < bVar2) {
+          return (char)uVar5;
+        }
+        break;
       }
     }
     uVar5 = uVar5 + 1;

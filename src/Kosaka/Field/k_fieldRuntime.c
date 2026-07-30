@@ -2107,6 +2107,10 @@ void func_001e3f10(RuntimeTask* task)
                     work->state = 3;
                 }
             }
+            if ((DAT_007e094e & 0x20) != 0)
+            {
+                work->state = 6;
+            }
             break;
 
         case 2:
@@ -2774,21 +2778,18 @@ s32 func_001e58d0(RuntimeTask* task)
 
     work = (RuntimeTransitionWork*)task->workData;
 
-    if (work->state == 3)
+    switch (work->state)
     {
-        return -1;
-    }
-    if (work->state == 2)
-    {
-        goto state2;
-    }
-    if (work->state == 1)
-    {
-        goto state1;
-    }
-    if (work->state != 0)
-    {
-        return 0;
+        case 0:
+            break;
+        case 1:
+            goto state1;
+        case 2:
+            goto state2;
+        case 3:
+            return -1;
+        default:
+            return 0;
     }
 
     work->windowTask = func_001a3b10(task, 0x20, 0x20, 2);
@@ -2798,26 +2799,30 @@ s32 func_001e58d0(RuntimeTask* task)
     return 0;
 
 state1:
-    if ((DAT_007e094e & 0x40) == 0)
+    input = DAT_007e094e;
+    if ((input & 0x40) != 0)
     {
-        return 0;
+        if (func_001a4510(work->windowTask) == 1)
+        {
+            resourceId = (u16)*func_001a41b0(work->windowTask, 0);
+            resourceId = (u16)((resourceId & 0x3ff) | 0x2000);
+            if (func_001e29e0(resourceId) != NULL)
+            {
+                func_001a1540(0, 0, 0xb4, D_00684380);
+                return 0;
+            }
+            work->resourceId = func_003b5e90(resourceId);
+            func_003b5d10(work->resourceId);
+            work->positionTask = func_001a4cd0(0);
+            func_00195020(work->windowTask);
+            work->state++;
+            return 0;
+        }
     }
-    if (func_001a4510(work->windowTask) != 1)
+    if ((input & 0x20) != 0)
     {
-        return 0;
+        work->state = 3;
     }
-    resourceId = (u16)*func_001a41b0(work->windowTask, 0);
-    resourceId = (u16)((resourceId & 0x3ff) | 0x2000);
-    if (func_001e29e0(resourceId) == NULL)
-    {
-        return 0;
-    }
-    func_001a1540(0, 0, 0xb4, D_00684380);
-    work->resourceId = func_003b5e90(resourceId);
-    func_003b5d10(work->resourceId);
-    work->positionTask = func_001a4cd0(0);
-    func_00195020(work->windowTask);
-    work->state++;
     return 0;
 
 state2:
@@ -3076,11 +3081,11 @@ s32 func_001e60b0(RuntimeTask* task)
                     func_001a3bf0(work->windowTask, 0);
                     work->state = work->state + 1;
                 }
-                else if ((DAT_007e094e & 0x20) != 0)
-                {
-                    func_00195020(work->windowTask);
-                    work->state = 0;
-                }
+            }
+            if ((DAT_007e094e & 0x20) != 0)
+            {
+                func_00195020(work->windowTask);
+                work->state = 0;
             }
             break;
 
@@ -3139,6 +3144,7 @@ s32 func_001e60b0(RuntimeTask* task)
                 direction.x = -direction.x;
                 direction.y = -direction.y;
                 direction.z = -direction.z;
+                func_004c6be0(&direction, &direction, &rotation);
                 distance = (x + y) * D_007CB118[0] / 2.0f;
                 K_Draw_MovePositionInDir(
                     distance, work->positionTask, &direction);
@@ -3200,12 +3206,12 @@ s32 func_001e60b0(RuntimeTask* task)
                     work->state = 3;
                     func_001a3bf0(work->windowTask, 1);
                 }
-                else if (result == 0)
-                {
-                    work->state = 0;
-                }
                 else
                 {
+                    if (result == 0)
+                    {
+                        work->state = 0;
+                    }
                     taskNode = func_001e29e0(work->resourceId);
                     func_001e2a70(taskNode, 1);
                     func_00195020(work->windowTask);
@@ -7187,43 +7193,49 @@ RuntimeWork* func_001ee2e0(const void* rawData)
         {
             entry->secondValue = *(u16*)(source + 0x12);
         }
-        if (input->version == 0x65)
+        switch (input->version)
         {
-            entry->thirdValue = *(u16*)(source + 0x14);
+            case 0x64:
+                entry->thirdValue = 0;
+                break;
+            case 0x65:
+                entry->thirdValue = *(u16*)(source + 0x14);
+                break;
         }
-        else if (input->version == 0x64)
+        switch (input->version)
         {
-            entry->thirdValue = 0;
+            case 0x64:
+                entry->scale = 10.0f;
+                break;
+            case 0x65:
+                entry->scale = *(f32*)(source + 0x18);
+                break;
         }
-        if (input->version == 0x65)
+        switch (input->version)
         {
-            entry->scale = *(f32*)(source + 0x18);
+            case 0x64:
+                output->vectors[entryIndex * 2] = *(u32*)(source + 8);
+                output->vectors[entryIndex * 2 + 1] =
+                    *(u32*)(source + 0x0c);
+                break;
+            case 0x65:
+                output->vectors[entryIndex * 2] = *(u32*)(source + 8);
+                output->vectors[entryIndex * 2 + 1] =
+                    *(u32*)(source + 0x0c);
+                break;
         }
-        else if (input->version == 0x64)
+        switch (input->version)
         {
-            entry->scale = 10.0f;
-        }
-        if (input->version == 0x65)
-        {
-            output->vectors[entryIndex * 2] = *(u32*)(source + 8);
-            output->vectors[entryIndex * 2 + 1] = *(u32*)(source + 0x0c);
-        }
-        else if (input->version == 0x64)
-        {
-            output->vectors[entryIndex * 2] = *(u32*)(source + 8);
-            output->vectors[entryIndex * 2 + 1] = *(u32*)(source + 0x0c);
-        }
-        if (input->version == 0x65)
-        {
-            FUN_00521250(output->payloads[entryIndex],
-                         inputPayloads[entryIndex],
-                         *(u32*)(source + 0x1c));
-        }
-        else if (input->version == 0x64)
-        {
-            FUN_00521250(output->payloads[entryIndex],
-                         inputPayloads[entryIndex],
-                         *(u32*)(source + 0x14));
+            case 0x64:
+                FUN_00521250(output->payloads[entryIndex],
+                             inputPayloads[entryIndex],
+                             *(u32*)(source + 0x14));
+                break;
+            case 0x65:
+                FUN_00521250(output->payloads[entryIndex],
+                             inputPayloads[entryIndex],
+                             *(u32*)(source + 0x1c));
+                break;
         }
     }
     return (RuntimeWork*)output;

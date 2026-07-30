@@ -138,9 +138,9 @@ extern u32 FUN_00119f10();
 extern void* campDataCreateTask(void* task, s32 mode);
 extern u32 FUN_0011abd0();
 extern u32 FUN_00122710();
-extern u32 FUN_0012a560(f32, u64, void*, s32);
-extern u32 FUN_0012ac60(f32, u64, void*, s32);
-extern u32 FUN_00129b30(f32, u64, void*, s32);
+extern u32 FUN_0012a560(f32, RwV2d, void*, s32);
+extern u32 FUN_0012ac60(f32, RwV2d, void*, s32);
+extern u32 FUN_00129b30(f32, RwV2d, void*, s32);
 extern u32 FUN_0013c240();
 extern u32 FUN_0013c780();
 extern u32 FUN_0013cf80();
@@ -544,6 +544,7 @@ void* FUN_00167930(KwlnTask* task)
     KwlnTask* child;
     s16 fadeValue;
     void* persona;
+    RwV2d coordinates = {0.0f, 0.0f};
 
     work = (CampBridgeScreenWork*)task->workData;
     switch (work->state) {
@@ -606,7 +607,7 @@ void* FUN_00167930(KwlnTask* task)
             }
             opacity = *(s16*)((u8*)work + 0x0c);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_0012ac60(100.0f, 0, persona, 0xff - opacity);
+            FUN_0012ac60(100.0f, coordinates, persona, 0xff - opacity);
         }
         else {
             timer = *(s16*)((u8*)work + 0x04);
@@ -617,7 +618,7 @@ void* FUN_00167930(KwlnTask* task)
             }
             value = *(s16*)((u8*)work + 0x04);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_00129b30(100.0f, 0, persona, value);
+            FUN_00129b30(100.0f, coordinates, persona, value);
         }
         if (complete) {
             if (transitionKind == 0) {
@@ -665,11 +666,11 @@ void* FUN_00167930(KwlnTask* task)
             return KWLNTASK_STOP;
         }
         persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        FUN_0012ac60(100.0f, 0, persona, 0xff - opacity);
+        FUN_0012ac60(100.0f, coordinates, persona, 0xff - opacity);
         /* Retail intentionally falls through into case 4. */
     case 4:
         persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        FUN_0012ac60(100.0f, 0, persona, 0);
+        FUN_0012ac60(100.0f, coordinates, persona, 0);
         *(s16*)((u8*)work + 0x10) = 0;
         work->state = 5;
         break;
@@ -682,7 +683,7 @@ void* FUN_00167930(KwlnTask* task)
         *(s16*)((u8*)work + 0x10) = timer;
         persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
         fadeValue = timer;
-        FUN_0012a560(100.0f, 0, persona, fadeValue);
+        FUN_0012a560(100.0f, coordinates, persona, fadeValue);
         break;
     }
     return KWLNTASK_CONTINUE;

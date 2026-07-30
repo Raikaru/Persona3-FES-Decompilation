@@ -5545,28 +5545,16 @@ void func_002e4a40(u64 param_1)
   s32 lVar4;
   int iVar5;
   float fVar6;
-  float fVar7;
   float fVar8;
   float fVar9;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
-  u8 auStack_74 [16];
-  float fStack_64;
-  float fStack_60;
-  float fStack_5c;
-  u8 auStack_58 [24];
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float afStack_20 [4];
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  float fStack_4;
+  RwV3d initialPos;
+  RtQuat cameraQuat;
+  RwV3d cameraPos;
+  RwV3d direction;
+  RwV3d targetPos;
+  RwV3d unitPos;
+  RwV3d sourcePos;
+  float height;
   
   iVar5 = (int)param_1;
   iVar1 = *(int *)(iVar5 + 0xe0);
@@ -5590,8 +5578,7 @@ void func_002e4a40(u64 param_1)
   }
 LAB_002e4af0:
   iVar2 = *(int *)(iVar1 + 0x30);
-  fVar6 = *(float *)(iVar2 + 0x90);
-  fVar7 = *(float *)(iVar2 + 0x2c);
+  fVar6 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c);
   if ((*(short *)(DAT_007ce3ec + 0x104) == 9) &&
      (*(int *)(DAT_007ce3ec + 0xb7c) == *(int *)(iVar1 + 8))) {
     if (*(int *)(DAT_007ce3ec + 0xb80) != 0) {
@@ -5602,53 +5589,51 @@ LAB_002e4af0:
   else {
     *(u32 *)(DAT_007ce3ec + 0xb7c) = *(u32 *)(iVar1 + 8);
     *(u32 *)(DAT_007ce3ec + 0xb80) = 0;
-    FUN_002a4470((f32 *)auStack_58,(f32 *)((u8 *)param_1 + 0x9c));
+    FUN_002a4470((f32 *)&initialPos,(f32 *)((u8 *)param_1 + 0x9c));
     if (*(char *)(iVar2 + 0xa2) == '\0') {
-      FUN_00280870_btlVoice_typed(2,1,(RwV3d *)&fStack_10,0,0,1);
-      FUN_0027ffb0_btlVoice_typed((BtlUnit *)iVar2,(RwV3d *)afStack_20);
-      afStack_20[1] = 0.0f;
-      fStack_c = 0.0f;
-      fStack_40 = afStack_20[0] - fStack_10;
-      fStack_3c = 0.0f;
-      fStack_38 = afStack_20[2] - fStack_8;
-      fVar8 = (float)FUN_004c69f0(&fStack_40,&fStack_40);
+      FUN_00280870_btlVoice_typed(2,1,&sourcePos,0,0,1);
+      FUN_0027ffb0_btlVoice_typed((BtlUnit *)iVar2,&unitPos);
+      unitPos.y = 0.0f;
+      sourcePos.y = 0.0f;
+      direction.x = unitPos.x - sourcePos.x;
+      direction.y = 0.0f;
+      direction.z = unitPos.z - sourcePos.z;
+      fVar8 = (float)FUN_004c69f0(&direction,&direction);
       fVar8 = DAT_007cad50 * fVar8;
-      fStack_10 = fStack_10 + fStack_40 * fVar8;
-      fStack_c = fStack_c + fStack_3c * fVar8;
-      fStack_8 = fStack_8 + fStack_38 * fVar8;
-      fStack_30 = afStack_20[0];
-      fStack_2c = DAT_007cad54 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
-                  fStack_2c + 0.0f;
-      fStack_28 = afStack_20[2];
+      sourcePos.x = sourcePos.x + direction.x * fVar8;
+      sourcePos.y = sourcePos.y + direction.y * fVar8;
+      sourcePos.z = sourcePos.z + direction.z * fVar8;
+      targetPos.x = unitPos.x;
+      targetPos.y = DAT_007cad54 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) +
+                    unitPos.y + 0.0f;
+      targetPos.z = unitPos.z;
       fVar8 = (float)FUN_0052e930(*(float *)(iVar5 + 0xb8) * 0.5f);
-      fVar8 = (fVar6 * fVar7 * 5.5f) / fVar8;
-      fStack_40 = fStack_30 - fStack_10;
-      fStack_3c = fStack_2c - fStack_c;
-      fStack_38 = fStack_28 - fStack_8;
-      FUN_004c69f0(&fStack_40,&fStack_40);
-      fStack_64 = fStack_40 * fVar8 + fStack_30 + 0.0f;
-      fStack_60 = fStack_3c * fVar8 + fStack_2c + 0.0f;
-      fStack_5c = fStack_38 * fVar8 + fStack_28 + 0.0f;
-      FUN_002a4690(auStack_74,&fStack_80,&fStack_64,D_00697880);
+      fVar8 = (fVar6 * 5.5f) / fVar8;
+      direction.x = targetPos.x - sourcePos.x;
+      direction.y = targetPos.y - sourcePos.y;
+      direction.z = targetPos.z - sourcePos.z;
+      FUN_004c69f0(&direction,&direction);
+      cameraPos.x = direction.x * fVar8 + targetPos.x + 0.0f;
+      cameraPos.y = direction.y * fVar8 + targetPos.y + 0.0f;
+      cameraPos.z = direction.z * fVar8 + targetPos.z + 0.0f;
+      FUN_002a4690(&cameraQuat,(f32 *)&initialPos,(f32 *)&cameraPos,D_00697880);
     }
     else {
       if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
          (lVar4 = FUN_002f6330(param_1), lVar4 != 0)) {
         return;
       }
-      FUN_00280870_btlVoice_typed(2,1,(RwV3d *)afStack_20,&fStack_4,0,1);
-      FUN_00280130_btlVoice_typed((BtlUnit *)iVar2,(RwV3d *)&fStack_10);
-      fStack_64 = fStack_80;
-      fStack_60 = fStack_7c;
-      fStack_5c = fStack_78;
-      fVar6 = fStack_4 * 1.25f;
-      if (fStack_4 * 1.25f <= fStack_7c) {
-        fVar6 = fStack_60;
+      FUN_00280870_btlVoice_typed(2,1,&unitPos,&height,0,1);
+      FUN_00280130_btlVoice_typed((BtlUnit *)iVar2,&sourcePos);
+      cameraPos = initialPos;
+      fVar6 = height * 1.25f;
+      if (height * 1.25f <= initialPos.y) {
+        fVar6 = cameraPos.y;
       }
-      fStack_60 = fVar6;
+      cameraPos.y = fVar6;
     }
-    FUN_002a4690(auStack_74,&fStack_80,&fStack_64,D_00697880);
-    fVar9 = FUN_002d1f30_btlVoice_typed((f32 *)auStack_74, (f32 *)&fStack_80);
+    FUN_002a4690(&cameraQuat,(f32 *)&initialPos,(f32 *)&cameraPos,D_00697880);
+    fVar9 = FUN_002d1f30_btlVoice_typed((f32 *)&cameraQuat, (f32 *)&initialPos);
     if ((fVar9 > DAT_007cad58) && bVar3) {
       if ((*(char *)(iVar2 + 0xa2) == '\x01') &&
          (lVar4 = FUN_0030c3a0(*(u32 *)(iVar2 + 0xa2c)), lVar4 != 0)) {
@@ -5660,13 +5645,13 @@ LAB_002e4af0:
       FUN_002a3e80(0.0f,(u8 *)(uintptr_t)*(u32 *)(iVar5 + 0xe0),0,0,8);
       *(u32 *)(DAT_007ce3ec + 0xb80) = 1;
     }
-    if (fStack_7c < 25.0f) {
-      fStack_7c = 25.0f;
+    if (initialPos.y < 25.0f) {
+      initialPos.y = 25.0f;
     }
-    if (fStack_60 < 25.0f) {
-      fStack_60 = 25.0f;
+    if (cameraPos.y < 25.0f) {
+      cameraPos.y = 25.0f;
     }
-    FUN_002a2290((BtlCamera *)param_1, &fStack_80, &fStack_64, 1);
+    FUN_002a2290((BtlCamera *)param_1, (f32 *)&initialPos, (f32 *)&cameraPos, 1);
     FUN_002a3110((BtlCamera *)param_1, bVar3 ? 2.5f : 1.25f);
     }
   return;
@@ -5750,18 +5735,16 @@ void func_002e5060(BtlCamera* camera)
   f32 poly;
   f32 tmp;
   RwV3d position;
-  RwV3d start;
-  RwV3d end;
+  RwV3d target;
   RwV3d direction;
   RwV3d transformed;
   RwV3d output;
-  RtQuat startRot;
-  RtQuat endRot;
-  RtQuat blendRot;
+  RtQuat facingRot;
+  BtlCameraKeyFrame startFrame;
+  BtlCameraKeyFrame endFrame;
   RwMatrix matrix;
   struct {
     f32 values[10];
-    RtQuat rotation;
   } blendOutput;
 
   if ((*(u16 *)(*(u32 *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
@@ -5806,13 +5789,13 @@ void func_002e5060(BtlCamera* camera)
     result = FUN_002d6290(action);
     if (result == 0) {
       targetId = FUN_002d1600((u8 *)action + 0x38);
-      FUN_00280870_btlVoice_typed(targetId, 1, &end, 0, 0, 1);
+      FUN_00280870_btlVoice_typed(targetId, 1, &target, 0, 0, 1);
     } else {
       targetUnit = action->target.targetedActions[0]->unit;
-      FUN_0027ffb0_btlVoice_typed(targetUnit, (RwV3d *)&end);
+      FUN_0027ffb0_btlVoice_typed(targetUnit, &target);
     }
-    FUN_002d1de0_btlVoice_typed(&startRot, &position, &end);
-    FUN_004be1e0_btlVoice_typed(&direction, &D_006978A0, 1, &startRot);
+    FUN_002d1de0_btlVoice_typed(&facingRot, &position, &target);
+    FUN_004be1e0_btlVoice_typed(&direction, &D_006978A0, 1, &facingRot);
     radius = unit->sphereRadius * unit->scale;
     if (useLargeOffset != 0) {
       width = radius * 2.75f;
@@ -5857,27 +5840,27 @@ void func_002e5060(BtlCamera* camera)
     transformed.x = transformed.x * scale;
     transformed.y = transformed.y * scale;
     transformed.z = transformed.z * scale;
-    start.x = position.x + transformed.x;
-    start.y = position.y + transformed.y;
-    start.z = position.z + transformed.z;
+    startFrame.pos.x = position.x + transformed.x;
+    startFrame.pos.y = position.y + transformed.y;
+    startFrame.pos.z = position.z + transformed.z;
     scale = (f32)FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f);
     scale = height / scale;
     output.x = direction.x * scale;
     output.y = direction.y * scale;
     output.z = direction.z * scale;
-    end.x = position.x + output.x;
-    end.y = position.y + output.y;
-    end.z = position.z + output.z;
-    FUN_002a4690(&endRot, &start, &position, D_00697880);
-    FUN_002a4690(&blendRot, &end, &position, D_00697880);
+    endFrame.pos.x = position.x + output.x;
+    endFrame.pos.y = position.y + output.y;
+    endFrame.pos.z = position.z + output.z;
+    FUN_002a4690(&startFrame.rot, &startFrame.pos, &position, D_00697880);
+    FUN_002a4690(&endFrame.rot, &endFrame.pos, &position, D_00697880);
     FUN_002a3e80(0.0f, (u8 *)action, 0, 0, 1);
-    if (start.y < 25.0f) {
-      start.y = 25.0f;
+    if (startFrame.pos.y < 25.0f) {
+      startFrame.pos.y = 25.0f;
     }
-    if (end.y < 25.0f) {
-      end.y = 25.0f;
+    if (endFrame.pos.y < 25.0f) {
+      endFrame.pos.y = 25.0f;
     }
-    FUN_002a2290(camera, (f32 *)&start, (f32 *)&end, 1);
+    FUN_002a2290(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
     FUN_002a3110(camera, 2.0f);
     return;
   }
@@ -5888,15 +5871,15 @@ void func_002e5060(BtlCamera* camera)
   voiceData = (u8 *)(*(u32 *)(DAT_007ce3ec + 0xb18) +
                      index * 0x34 + 0x1a4);
   if (usePreset != 0) {
-    FUN_002a4690(&startRot, voiceData + 4, voiceData + 0x10,
+    FUN_002a4690(&startFrame.rot, voiceData + 4, voiceData + 0x10,
                  D_00697880);
-    start = *(RwV3d *)(voiceData + 4);
+    startFrame.pos = *(RwV3d *)(voiceData + 4);
   } else {
-    FUN_002a4470((f32 *)&start, (f32 *)&camera->pos);
+    FUN_002a4470((f32 *)&startFrame, (f32 *)&camera->pos);
   }
-  FUN_002a4690(&endRot, &start, &position, D_00697880);
-  end = start;
-  FUN_004be310_btlVoice_typed((f32 *)&startRot, (f32 *)&endRot, blendOutput.values);
+  FUN_002a4690(&endFrame.rot, &startFrame.pos, &position, D_00697880);
+  endFrame.pos = startFrame.pos;
+  FUN_004be310_btlVoice_typed((f32 *)&startFrame.rot, (f32 *)&endFrame.rot, blendOutput.values);
   factorA = DAT_007cad7c;
   factorB = DAT_007cadd0;
   if (blendOutput.values[9] == 0.0f) {
@@ -5919,14 +5902,14 @@ void func_002e5060(BtlCamera* camera)
     factorB = curve * tmp;
     factorB = factorB * poly + tmp + 0.0f;
   }
-  blendOutput.rotation.imag.x = blendOutput.values[0] * factorA + blendOutput.values[4] * factorB;
-  blendOutput.rotation.imag.y = blendOutput.values[1] * factorA + blendOutput.values[5] * factorB;
-  blendOutput.rotation.imag.z = blendOutput.values[2] * factorA + blendOutput.values[6] * factorB;
-  blendOutput.rotation.real = blendOutput.values[3] * factorA + blendOutput.values[7] * factorB;
+  endFrame.rot.imag.x = blendOutput.values[0] * factorA + blendOutput.values[4] * factorB;
+  endFrame.rot.imag.y = blendOutput.values[1] * factorA + blendOutput.values[5] * factorB;
+  endFrame.rot.imag.z = blendOutput.values[2] * factorA + blendOutput.values[6] * factorB;
+  endFrame.rot.real = blendOutput.values[3] * factorA + blendOutput.values[7] * factorB;
   if (usePreset != 0) {
     FUN_00351bb0_btlVoice_typed(8);
   }
-  FUN_002a2290(camera, (f32 *)&start, (f32 *)&end, 1);
+  FUN_002a2290(camera, (f32 *)&startFrame.pos, (f32 *)&endFrame.pos, 1);
   FUN_002a3110(camera, 2.0f);
   return;
 }
@@ -8713,7 +8696,10 @@ void func_002eba50(BtlAction* action)
     void* object;
     u32 mode;
     int iVar5;
-    int aiStack_10[4];
+    BtlUnit* pair[2];
+    BtlUnit* playback[2];
+    BtlUnit* first;
+    BtlUnit* second;
 
     *(u32*)((u8*)gBtl + 0xc) &= ~0x02000000;
     *(u32*)((u8*)gBtl + 0xc) |= 0x00080000;
@@ -8727,56 +8713,58 @@ void func_002eba50(BtlAction* action)
             selected = selected->prev;
         }
     }
-    aiStack_10[0] = 0;
-    aiStack_10[1] = 0;
+    pair[0] = NULL;
+    pair[1] = NULL;
     for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
          unit != NULL; unit = unit->next) {
         if (FUN_0030b5a0(unit->datUnit, 0) != 0) {
             if (unit->charId == 0x106) {
-                aiStack_10[1] = (int)unit;
+                pair[1] = unit;
             }
             else if (unit->charId == 0x105) {
-                aiStack_10[0] = (int)unit;
+                pair[0] = unit;
             }
         }
     }
-    if ((aiStack_10[0] == 0) || (aiStack_10[1] == 0)) {
+    if ((pair[0] == NULL) || (pair[1] == NULL)) {
         for (iVar5 = 0; iVar5 < 2; iVar5++) {
-            if (aiStack_10[iVar5] != 0) {
+            if (pair[iVar5] != NULL) {
                 parent = FUN_00284200_packet_voice(
-                    1.0f, (BtlUnit*)aiStack_10[iVar5], 0x12, 0, 2);
+                    1.0f, pair[iVar5], 0x12, 0, 2);
                 btlPacketRegister(parent, 1);
             }
         }
     }
     else {
         object = func_002b8f90(0);
+        first = pair[0];
+        second = pair[1];
         if (action == NULL) {
-            aiStack_10[2] = aiStack_10[0];
-            aiStack_10[3] = aiStack_10[1];
+            playback[0] = first;
+            playback[1] = second;
             mode = 2;
             packet = FUN_002dd690_packet_voice(3, voiceStream115Both);
             btlPacketRegister(packet, 1);
         }
-        else if (selected->unit == (BtlUnit*)aiStack_10[0]) {
-            aiStack_10[2] = aiStack_10[0];
-            aiStack_10[3] = 0;
+        else if (selected->unit == first) {
+            playback[0] = first;
+            playback[1] = NULL;
             mode = 3;
             packet = FUN_002dd690_packet_voice(3, voiceStream115First);
             btlPacketRegister(packet, 1);
         }
         else {
-            aiStack_10[2] = aiStack_10[1];
-            aiStack_10[3] = 0;
+            playback[0] = second;
+            playback[1] = NULL;
             mode = 4;
             packet = FUN_002dd690_packet_voice(3, voiceStream115Second);
             btlPacketRegister(packet, 1);
         }
         func_002b90d0(object, func_002f87e0((u16)mode));
         for (iVar5 = 0; iVar5 < 2; iVar5++) {
-            if (aiStack_10[iVar5 + 2] != 0) {
+            if (playback[iVar5] != NULL) {
                 parent = FUN_00284200_packet_voice(
-                    1.0f, (BtlUnit*)aiStack_10[iVar5 + 2], 0x12, 0, 2);
+                    1.0f, playback[iVar5], 0x12, 0, 2);
                 parent->preUpdateDelay = 3;
                 parent->actionUID = selected->uid;
                 btlPacketRegister(parent, 1);
@@ -8802,7 +8790,7 @@ void func_002eba50(BtlAction* action)
         packet->actionUID = selected->uid;
         btlPacketRegister(packet, 0);
         packet = FUN_002baf90_packet_voice(
-            object, (BtlUnit*)aiStack_10[0], (BtlUnit*)aiStack_10[1], 0, 0x200);
+            object, first, second, 0, 0x200);
         packet->actionUID = selected->uid;
         btlPacketRegister(packet, 2);
         func_002b9030(object);
