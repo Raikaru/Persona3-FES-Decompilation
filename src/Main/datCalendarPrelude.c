@@ -1700,11 +1700,14 @@ s32 FUN_0017ca10(const void* record)
         if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
         if ((s32)signedValue != (s32)*(s8*)(source + 0x26 + i)) return 1;
     }
+    {
+        const u16* storedValues = (const u16*)(stored + 0xc);
+        const u16* sourceValues = (const u16*)(source + 0xc);
     for (j = 0; j < 8; j++)
     {
-        if (*(const u16*)(stored + 0xc + j * 2) !=
-            *(const u16*)(source + 0xc + j * 2))
+        if (storedValues[j] != sourceValues[j])
             return 1;
+    }
     }
     return 0;
 }

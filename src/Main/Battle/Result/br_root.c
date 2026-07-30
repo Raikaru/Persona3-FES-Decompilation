@@ -40,6 +40,7 @@ extern u32 jtbl_0096017C[];
 extern s32 printf(const char *, ...);
 extern const char D_006845c0[];
 extern const char D_006845d0[];
+extern const char D_006845f0[];
  
 extern void func_002350f0(void);
 extern void func_00278550(void);
@@ -62,7 +63,7 @@ extern void func_0010a370(s32, const char *);
 extern void func_00171390(u32);
 extern void func_00174e20(u16);
 extern u32 dat00171360(u16);
-extern u8 func_0016d280(s32);
+extern s32 func_0016d280(s32);
 extern u32 func_0016f380(u32);
 extern void func_0016f3e0(u32, u32);
 extern u32 func_00173220(u16);
@@ -779,7 +780,7 @@ void func_001f13b0(KwlnTask *task)
     newLevel = func_0016d280(datGetNextExp(1));
     datSetLevel(1, newLevel);
     work[0xc0 / 4] = datGetLevel(1);
-    printf((const char *)0x006845f0, work[0xbc / 4], work[0xc0 / 4]);
+    printf(D_006845f0, work[0xbc / 4], work[0xc0 / 4]);
     if (work[0xbc / 4] != work[0xc0 / 4]) {
         work[0] |= 8;
         if (work[0xc0 / 4] > 0 && !datGetFlag(0x120c)) {
@@ -3020,16 +3021,19 @@ void func_001f6630(void)
     work[0xd01] = 0;
     work[0xd00] = 0;
     if (work[0xd07] != 0) {
-        u32 available = func_001756f0() & 0xffff;
+        s32 available;
+        s32 copyIndex;
+
         work[0] |= 8;
-        if ((func_00175410() & 0xffff) < available + work[0xd07]) {
+        available = func_001756f0() & 0xffff;
+        if ((s32)(func_00175410() & 0xffff) < available + (s32)work[0xd07]) {
             work[0] |= 0x10;
         } else {
             K_ASSERT(work[0xd07] < 9, 0x272);
-            for (i = 0; i < (s32)work[0xd07]; i++) {
-                *(u16 *)((u8 *)work + 0x33f0 + i * 2) =
+            for (copyIndex = 0; copyIndex < (s32)work[0xd07]; copyIndex++) {
+                *(u16 *)((u8 *)work + 0x33f0 + copyIndex * 2) =
                     *(u16 *)((u8 *)work +
-                             ((u32 *)((u8 *)work + 0x3c))[i] * 0x670 + 0x60);
+                             ((u32 *)((u8 *)work + 0x3c))[copyIndex] * 0x670 + 0x60);
             }
             work[0xd01] = work[0xd07];
         }
@@ -3040,7 +3044,6 @@ void func_001f6630(void)
     switch (work[2]) {
     case 1:
     {
-        /* INFERRED FROM FRAME ARITHMETIC: output[12] (48 bytes, 0x30) closes the 0x20 frame gap vs retail. */
         f32 output[12];
         for (i = 0; i < (s32)work[0xcf7]; i++) {
             u8 *entry;

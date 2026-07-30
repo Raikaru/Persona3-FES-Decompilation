@@ -10494,134 +10494,119 @@ u64 FUN_003fea10(u32 param_1,u32 *param_2)
 
 
 u64 FUN_003feb30(u32 param_1,int param_2)
-
-
-
 {
+  struct ShopRequirements {
+    u32 flags;
+    s16 item;
+    u8 pad06[8];
+    s16 value;
+    u8 pad10[4];
+    s16 item1;
+    s16 target1;
+    s16 item2;
+    s16 target2;
+  };
+  struct ShopRequirements *requirements;
+  short item;
+  u32 count;
+  int kind;
 
-  short sVar1;
-
-  u32 *puVar2;
-
-  short sVar3;
-
-  u32 uVar4;
-
-  int iVar5;
-
-  u32 uVar6;
-
-  int iStack_c;
-
-  int iStack_8;
-
-  int iStack_4;
-
-  
-
-  puVar2 = *(u32 **)(*(int *)(param_2 + 0x14) + 0x1c);
-
-  sVar1 = (short)puVar2[1];
-
-  iStack_4 = -1;
-
-  sVar3 = 0;
-
-  func_00170ed0(sVar1,&iStack_4);
-
-  if (iStack_4 == 4) {
-    sVar3 = func_00170760(1,sVar1);
-  }
-  else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
-    sVar3 = 0;
-    for (iVar5 = 0; iVar5 < 300; iVar5 = iVar5 + 1) {
-      uVar6 = datGetEquipmentId(1,iVar5);
-      if ((int)sVar1 == (int)(uVar6 & 0xffff)) {
-        sVar3 = sVar3 + 1;
-      }
-    }
-  }
-
-  *(short *)((int)puVar2 + 0xe) = sVar3;
-
-  if (0x62 < sVar3) {
-
-    *puVar2 = *puVar2 | 0x10;
-
-  }
-
-  if (*(short *)((int)puVar2 + 0x16) == 0) {
-
-    K_Assert((const char *)DAT_006aede8,0x15b8);
-
-  }
-
-  sVar1 = (short)puVar2[5];
-
-  if (sVar1 != 0) {
-
-    iStack_8 = -1;
-
-    uVar6 = 0;
-
-    func_00170ed0(sVar1,&iStack_8);
-
-    if (iStack_8 == 4) {
-      uVar6 = func_00170760(1,sVar1);
-      uVar6 = uVar6 & 0xffff;
-    }
-    else if (((iStack_8 == 3) || (iStack_8 == 2)) || ((iStack_8 == 1 || (iStack_8 == 0)))) {
-      for (iVar5 = 0; iVar5 < 300; iVar5 = iVar5 + 1) {
-        uVar4 = datGetEquipmentId(1,iVar5);
-        if ((int)sVar1 == (int)(uVar4 & 0xffff)) {
-          uVar6 = (u32)((int)uVar6 + 1);
+  requirements = *(struct ShopRequirements **)(*(int *)(param_2 + 0x14) + 0x1c);
+  item = requirements->item;
+  kind = -1;
+  count = 0;
+  func_00170ed0(item,&kind);
+  switch (kind) {
+  case 0:
+  case 1:
+  case 2:
+  case 3:
+    {
+      int index;
+      for (index = 0; index < 300; index++) {
+        if ((int)(short)item == (int)(datGetEquipmentId(1,index) & 0xffff)) {
+          count++;
         }
       }
     }
-
-    if ((int)uVar6 < (int)*(short *)((int)puVar2 + 0x16)) goto LAB_003fee10;
-
+    break;
+  case 4:
+    count = func_00170760(1,item) & 0xffff;
+    break;
   }
 
-  sVar1 = (short)puVar2[6];
-
-  if (sVar1 == 0) {
-
-    return 0;
-
+  requirements->value = count;
+  if (requirements->value > 0x62) {
+    requirements->flags |= 0x10;
+  }
+  if (requirements->target1 == 0) {
+    K_Assert((const char *)DAT_006aede8,0x15b8);
   }
 
-  iStack_c = -1;
-
-  uVar6 = 0;
-
-  func_00170ed0(sVar1,&iStack_c);
-
-  if (iStack_c == 4) {
-    uVar6 = func_00170760(1,sVar1);
-    uVar6 = uVar6 & 0xffff;
-  }
-  else if (((iStack_c == 3) || (iStack_c == 2)) || ((iStack_c == 1 || (iStack_c == 0)))) {
-    for (iVar5 = 0; iVar5 < 300; iVar5 = iVar5 + 1) {
-      uVar4 = datGetEquipmentId(1,iVar5);
-      if ((long)sVar1 == (uVar4 & 0xffff)) {
-        uVar6 = (u32)((int)uVar6 + 1);
+  item = requirements->item1;
+  if (item != 0) {
+    u32 item_count;
+    kind = -1;
+    item_count = 0;
+    func_00170ed0(item,&kind);
+    switch (kind) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      {
+        int index;
+        for (index = 0; index < 300; index++) {
+          if ((int)(short)item == (int)(datGetEquipmentId(1,index) & 0xffff)) {
+            item_count++;
+          }
+        }
       }
+      break;
+    case 4:
+      item_count = func_00170760(1,item) & 0xffff;
+      break;
+    }
+    if ((int)item_count < requirements->target1) {
+      goto set_disabled;
     }
   }
 
-  if ((int)*(short *)((int)puVar2 + 0x1a) <= (int)uVar6) {
-
+  item = requirements->item2;
+  if (item == 0) {
     return 0;
-
   }
-
-LAB_003fee10:
-
-  *puVar2 = *puVar2 | 0x10;
-
+  {
+    u32 item_count;
+    kind = -1;
+    item_count = 0;
+    func_00170ed0(item,&kind);
+    switch (kind) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      {
+        int index;
+        for (index = 0; index < 300; index++) {
+          if ((int)(short)item == (int)(datGetEquipmentId(1,index) & 0xffff)) {
+            item_count++;
+          }
+        }
+      }
+      break;
+    case 4:
+      item_count = func_00170760(1,item) & 0xffff;
+      break;
+    }
+    if ((int)item_count < requirements->target2) {
+      goto set_disabled;
+    }
+    return 0;
+  }
+set_disabled:
+  requirements->flags |= 0x10;
   return 0;
-
 }
 
 // W212: signed short result local measured nd94 -> nd117 and 240/240 -> 248/240; rejected as over-window.

@@ -107,7 +107,7 @@ void FUN_0025b4f0(void)
 #pragma push
 /* Removing this worsens FUN_0025b690 (nd14 -> nd74) - measured W161. */
 #pragma opt_rebuildconditionals off
-// FUN_0025B690 NONMATCHING
+// FUN_0025B690
 void FUN_0025b690(void)
 {
     u32 uVar1;
@@ -165,8 +165,12 @@ void FUN_0025b690(void)
             resource = (u8*)FUN_0020e610(iVar5);
             fVar6 = (f32)*(s32*)(resource + 0xc);
             fVar7 = (f32)*(s32*)(resource + 0x10);
-            fVar6 = fGpffff83c4 * fVar6;
-            fVar7 = fGpffff83c4 * fVar7;
+            temp_f1 = fGpffff83c4;
+            temp_f1 *= fVar6;
+            fVar6 = temp_f1;
+            temp_f1 = fGpffff83c4;
+            temp_f1 *= fVar7;
+            fVar7 = temp_f1;
             stack.sp80 = 236.0f;
             stack.sp84 = 196.0f;
             stack.sp88 = 236.0f + fVar6;

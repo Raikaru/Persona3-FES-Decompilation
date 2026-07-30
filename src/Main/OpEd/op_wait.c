@@ -21,6 +21,8 @@ extern void func_004d7f60(s32 state, u32 value);
 #pragma alias opWaitGetTitleRasterU32 opResGetTitleRaster
 extern u32 opWaitGetTitleRasterU32(u32 id);
 extern u32 D_00960090[];
+#pragma alias D_00960088_abs D_00960088
+extern u8 D_00960088_abs[];
 extern u32 D_0096009C[];
 extern void func_00269a10(u32 id, void* callback);
 extern void func_00271230(u32* param);
@@ -1087,7 +1089,7 @@ static inline void opWaitSetVertex(RwIm2DVertex* vertex, f32 x, f32 y,
 {
     vertex->u.els.scrVertex.x = x;
     vertex->u.els.scrVertex.y = y;
-    vertex->u.els.scrVertex.z = D_00960088;
+    vertex->u.els.scrVertex.z = *(f32*)D_00960088_abs;
     vertex->u.els.camVertex_z = 0.0f;
     vertex->u.els.u = u;
     vertex->u.els.v = v;
@@ -1176,6 +1178,8 @@ void func_002716d0(u32* param)
     f32 height;
     f32 x;
     f32 y;
+    f32 offsetX;
+    f32 offsetY;
     f32 angle;
     f32 angle2;
     f32 distance;
@@ -1191,9 +1195,10 @@ void func_002716d0(u32* param)
     height = (f32)*(s32*)(context + 0x30) / 512.0f;
     x = *(f32*)&param[1] * 640.0f;
     y = *(f32*)&param[2] * 448.0f;
-    angle = func_0052ea18(y - 100.0f, x - 100.0f);
-    distance = sqrtf((y - 100.0f) * (y - 100.0f) +
-                     (x - 100.0f) * (x - 100.0f));
+    offsetX = x - 100.0f;
+    offsetY = y - 100.0f;
+    angle = func_0052ea18(offsetY, offsetX);
+    distance = sqrtf(offsetY * offsetY + offsetX * offsetX);
 
     wave = func_00269c80(fGpffff8248 *
                          (fGpffff846c + distance / 1200.0f - width) * 2.0f);
@@ -1210,9 +1215,9 @@ void func_002716d0(u32* param)
                       (*(f32*)&param[2] * 448.0f) *
                       (*(f32*)&param[2] * 448.0f));
     wave3 = func_00269c80((f32)*(s32*)(context + 0x30) / 30.0f * 3.0f -
-                          distance / 100.0f);
+                          distance2 / 100.0f);
     wave = func_00269c80(fGpffff8248 *
-                         (fGpffff82fc * wave3 + distance / 1200.0f +
+                         (fGpffff82fc * wave3 + distance2 / 1200.0f +
                           angle / fGpffff81f8) * 2.0f);
     alpha = fGpffff839c + fGpffff82fc * wave;
 
@@ -1229,7 +1234,7 @@ void func_002716d0(u32* param)
         (f32)(u8)(255.0f * alpha * *(f32*)(context + 0x1178));
     vertex->u.els.color.a =
         (f32)(u8)(204.0f * alpha * *(f32*)(context + 0x1178));
-    vertex->u.els.scrVertex.z = D_00960088;
+    vertex->u.els.scrVertex.z = *(f32*)D_00960088_abs;
     vertex->u.els.recipZ = recipZ;
 }
 

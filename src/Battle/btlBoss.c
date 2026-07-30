@@ -1471,9 +1471,8 @@ u32 func_002f9c10(BtlAction* action)
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
                 (charId == 0x102 || charId == 0x101))
             {
+                *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x100;
-                unit->flags3 |= 0x40;
-                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a2:
@@ -1507,9 +1506,8 @@ u32 func_002f9c10(BtlAction* action)
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
                 (charId == 0x10a || charId == 0x109))
             {
+                *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x100;
-                unit->flags3 |= 0x40;
-                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a7:
@@ -1699,7 +1697,7 @@ void func_002fa510(BtlAction* action, s32 mode)
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
             func_002e4250() == 0)
         {
-            if (*(s16*)((u8*)0x0069a1d0 + *(u16*)((u8*)gBtl + 0xb48) * 4) == 0)
+            if (*(u16*)((u8*)0x0069a1d0 + *(u16*)((u8*)gBtl + 0xb48) * 4) == 0)
             {
                 func_002e4220(0x2f3320, 0x2f3520, action);
             }
@@ -1712,11 +1710,22 @@ void func_002fa510(BtlAction* action, s32 mode)
     case 0x1b1:
     case 0x1b2:
     case 0x1b3:
-        if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId >= 0xeb && charId <= 0xf0) &&
-            mode != 0 && func_002e4250() == 0)
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1)
         {
-            func_002e4220(0x2f5660, 0x2f5870, action);
+            switch (charId)
+            {
+            case 0xeb:
+            case 0xec:
+            case 0xed:
+            case 0xee:
+            case 0xef:
+            case 0xf0:
+                if (mode != 0 && func_002e4250() == 0)
+                {
+                    func_002e4220(0x2f5660, 0x2f5870, action);
+                }
+                break;
+            }
         }
         break;
     case 0x1b4:
