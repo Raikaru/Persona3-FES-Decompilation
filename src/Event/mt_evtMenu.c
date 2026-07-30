@@ -3295,184 +3295,97 @@ int FUN_00371dd0(int param_1,int param_2,int param_3)
 
     iVar1 = *(int *)(iVar7 + 0x214);
 
-    if (iVar1 == 3) {
-
-      if (((DAT_007e0952 & 0x8000) != 0) || ((DAT_007e0952 & 0x2000) != 0)) {
-
-        *(u32 *)(iVar7 + 0x19c) = (u32)(*(int *)(iVar7 + 0x19c) == 0);
-
-      }
-
-    }
-
-    else if (iVar1 == 2) {
-
+    switch (iVar1) {
+    case 0:
       if ((DAT_007e0952 & 0x8000) == 0) {
-
         if ((DAT_007e0952 & 0x2000) != 0) {
-
-          if (uVar5 >= 10) {
-
-            uVar5 = 0;
-
-          }
-
-          else {
-
-            uVar5 = uVar5 + 1;
-
-          }
-
-        }
-
-      }
-
-      else if (uVar5 == 0) {
-
-        uVar5 = 10;
-
-      }
-
-      else {
-
-        uVar5 = uVar5 - 1;
-
-      }
-
-      *(u32 *)(iVar7 + 0x16c) = uVar4 | uVar5 << 0xc;
-
-    }
-
-    else if (iVar1 == 1) {
-
-      switch(iVar3) {
-
-      case 0:
-
-        if ((DAT_007e0952 & 0x8000) == 0) {
-
-          if ((DAT_007e0952 & 0x2000) != 0) {
-
-            iVar6 = 1;
-
-          }
-
-        }
-
-        else {
-
-          iVar6 = -1;
-
-        }
-
-        uVar4 = uVar4 + iVar6;
-
-        if ((int)uVar4 < *(int *)(iVar7 + 0x170)) {
-
-          uVar4 = *(u32 *)(iVar7 + 0x174);
-
-        }
-
-        if (*(int *)(iVar7 + 0x174) < (int)uVar4) {
-
-          uVar4 = 0;
-
-        }
-
-        *(u32 *)(iVar7 + 0x16c) = uVar4 | uVar5 << 0xc;
-
-        break;
-
-      case 1:
-
-      case 2:
-
-      case 3:
-
-      case 4:
-
-      case 5:
-
-        if ((DAT_007e0952 & 0x8000) == 0) {
-
-          if ((DAT_007e0952 & 0x2000) != 0) {
-
-            iVar6 = 1;
-
-          }
-
-        }
-
-        else {
-
-          iVar6 = -1;
-
-        }
-
-        uVar4 = uVar4 + iVar6;
-
-        if (*(int *)(iVar7 + 0x174) < (int)(uVar4 + uStack_2)) {
-
-          uVar4 = 0;
-
-        }
-
-        if ((int)uVar4 < 0) {
-
-          uVar4 = *(int *)(iVar7 + 0x174) - (u32)uStack_2;
-
-        }
-
-      }
-
-    }
-
-    else if (iVar1 == 0) {
-
-      if ((DAT_007e0952 & 0x8000) == 0) {
-
-        if ((DAT_007e0952 & 0x2000) != 0) {
-
           if (iVar3 >= 6) {
-
             iVar3 = 0;
-
           }
-
           else {
-
             iVar3 = iVar3 + 1;
-
           }
-
           uVar4 = 0;
-
           uVar5 = 0;
-
         }
-
       }
-
       else {
-
         if (iVar3 != 0) {
-
           iVar3 = iVar3 + -1;
-
         }
-
         else {
-
           iVar3 = 6;
-
         }
-
         uVar4 = 0;
-
         uVar5 = 0;
-
       }
-
+      break;
+    case 1:
+      switch(iVar3) {
+      case 0:
+        if ((DAT_007e0952 & 0x8000) == 0) {
+          if ((DAT_007e0952 & 0x2000) != 0) {
+            iVar6 = 1;
+          }
+        }
+        else {
+          iVar6 = -1;
+        }
+        uVar4 = uVar4 + iVar6;
+        if ((int)uVar4 < *(int *)(iVar7 + 0x170)) {
+          uVar4 = *(u32 *)(iVar7 + 0x174);
+        }
+        if (*(int *)(iVar7 + 0x174) < (int)uVar4) {
+          uVar4 = 0;
+        }
+        *(u32 *)(iVar7 + 0x16c) = uVar4 | uVar5 << 0xc;
+        break;
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+        if ((DAT_007e0952 & 0x8000) == 0) {
+          if ((DAT_007e0952 & 0x2000) != 0) {
+            iVar6 = 1;
+          }
+        }
+        else {
+          iVar6 = -1;
+        }
+        uVar4 = uVar4 + iVar6;
+        if (*(int *)(iVar7 + 0x174) < (int)(uVar4 + uStack_2)) {
+          uVar4 = 0;
+        }
+        if ((int)uVar4 < 0) {
+          uVar4 = *(int *)(iVar7 + 0x174) - (u32)uStack_2;
+        }
+      }
+      break;
+    case 2:
+      if ((DAT_007e0952 & 0x8000) == 0) {
+        if ((DAT_007e0952 & 0x2000) != 0) {
+          if (uVar5 >= 10) {
+            uVar5 = 0;
+          }
+          else {
+            uVar5 = uVar5 + 1;
+          }
+        }
+      }
+      else if (uVar5 == 0) {
+        uVar5 = 10;
+      }
+      else {
+        uVar5 = uVar5 - 1;
+      }
+      *(u32 *)(iVar7 + 0x16c) = uVar4 | uVar5 << 0xc;
+      break;
+    case 3:
+      if (((DAT_007e0952 & 0x8000) != 0) || ((DAT_007e0952 & 0x2000) != 0)) {
+        *(u32 *)(iVar7 + 0x19c) = (u32)(*(int *)(iVar7 + 0x19c) == 0);
+      }
+      break;
     }
 
     *(u32 *)(iVar7 + 0x16c) = uVar4 | uVar5 << 0xc;

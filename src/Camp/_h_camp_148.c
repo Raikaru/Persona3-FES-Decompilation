@@ -2005,52 +2005,67 @@ KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)
 // FUN_0014EF60 NONMATCHING
 void h_campDrawItemFrame(int param_1)
 {
-    f32 fVar1;
-    CampBits start;
-    CampBits end;
+    struct {
+        CampBits third;
+        CampBits fourth;
+        CampBits fifth;
+        CampBits sixth;
+        CampBits second;
+        CampBits pair;
+    } local;
 
-    start.f[0] = 47.0f;
-    start.f[1] = -14.0f;
+    local.pair.f[0] = 47.0f;
+    local.pair.f[1] = -14.0f;
     func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xc)), 0, 2, 1,
-                  start.u, start.u, 0, 0, 0, 10);
-    fVar1 = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
-    end.f[0] = 590.0f;
-    end.f[1] = fVar1 - 300.0f;
-    start.f[0] = 590.0f;
-    start.f[1] = fVar1;
+                  local.pair.u, local.pair.u, 0, 0, 0, 10);
+
+    local.pair.f[0] = 590.0f;
+    local.pair.f[1] = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;
+    local.second.u = local.pair.u;
+    local.second.f[1] = local.second.f[1] - 300.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x88), 0, 2, 1,
-                  end.u, start.u, 0, 0, 0, 10);
+                  local.second.u, local.pair.u, 0, 0, 0, 10);
+
+    local.pair.f[0] = 394.0f;
+    local.pair.f[1] = 125.0f;
+    local.third.u = local.pair.u;
+    local.third.f[0] = local.third.f[0] - 600.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x44), 0, 2, 1,
-                  start.u, end.u, 0, 0, 0, 10);
-    start.f[0] = 126.0f;
-    start.f[1] = 703.0f;
-    end.f[0] = 126.0f;
-    end.f[1] = 402.0f;
+                  local.third.u, local.pair.u, 0, 0, 0, 10);
+
+    local.pair.f[0] = 402.0f;
+    local.pair.f[1] = 126.0f;
+    local.fourth.u = local.pair.u;
+    local.fourth.f[0] = local.fourth.f[0] + 300.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0xcc), 0, 2, 1,
-                  start.u, end.u, 0, 0, 0, 10);
+                  local.fourth.u, local.pair.u, 0, 0, 0, 10);
+
+    local.pair.f[0] = 321.0f;
+    local.pair.f[1] = 15.0f;
+    local.fifth.u = local.pair.u;
+    local.fifth.f[1] = local.fifth.f[1] - 300.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x150) = 0;
-    start.f[0] = -285.0f;
-    start.f[1] = 321.0f;
-    end.f[0] = 15.0f;
-    end.f[1] = 321.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x110), 0, 2, 0,
-                  start.u, end.u, 0, 0, 0, 10);
+                  local.fifth.u, local.pair.u, 4, 7, 0, 0);
+
+    local.pair.f[0] = 355.0f;
+    local.pair.f[1] = 124.0f;
+    local.sixth.u = local.pair.u;
+    local.sixth.f[1] = local.sixth.f[1] - 300.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-    start.f[0] = -176.0f;
-    start.f[1] = 354.0f;
-    end.f[0] = 124.0f;
-    end.f[1] = 354.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x154), 0, 2, 1,
-                  start.u, end.u, 0, 0, 0, 10);
+                  local.sixth.u, local.pair.u, 0, 7, 0, 0);
+
+    local.pair.f[0] = 47.0f;
+    local.pair.f[1] = 385.0f;
     *(u32 *)(*(int *)(param_1 + 0xc) + 0x194) = 0;
-    start.f[0] = 384.0f;
-    start.f[1] = 47.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x198), 0, 2, 1,
-                  start.u, start.u, 0, 0, 0, 10);
-    start.f[0] = 392.0f;
-    start.f[1] = 384.0f;
+                  local.pair.u, local.pair.u, 0, 0, 0, 10);
+
+    local.pair.f[0] = 392.0f;
+    local.pair.f[1] = 385.0f;
     func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc) + 0x1dc), 0, 2, 1,
-                  start.u, start.u, 0, 0, 0, 10);
+                  local.pair.u, local.pair.u, 0, 0, 0, 10);
 }
 
 // FUN_0014F320 NONMATCHING
