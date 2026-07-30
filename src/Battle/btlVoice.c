@@ -4395,8 +4395,8 @@ void func_002e8c90(int param_1);
 void func_002e8d20(void);
 void func_002e8d40(void);
 void func_002e8d70(void *param_1);
-void func_002e8e20(void);
-void func_002e8f40(void);
+void func_002e8e20();
+void func_002e8f40();
 void func_002e9060(void);
 void func_002e9170(void);
 void func_002e92c0(void);
@@ -5759,7 +5759,10 @@ void func_002e5060(BtlCamera* camera)
   RtQuat endRot;
   RtQuat blendRot;
   RwMatrix matrix;
-  f32 blend[10];
+  struct {
+    f32 values[10];
+    RtQuat rotation;
+  } blendOutput;
 
   if ((*(u16 *)(*(u32 *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) &&
       (FUN_002f6510() != 0)) {
@@ -5893,11 +5896,11 @@ void func_002e5060(BtlCamera* camera)
   }
   FUN_002a4690(&endRot, &start, &position, D_00697880);
   end = start;
-  FUN_004be310_btlVoice_typed((f32 *)&startRot, (f32 *)&endRot, blend);
+  FUN_004be310_btlVoice_typed((f32 *)&startRot, (f32 *)&endRot, blendOutput.values);
   factorA = DAT_007cad7c;
   factorB = DAT_007cadd0;
-  if (blend[9] == 0.0f) {
-    tmp = DAT_007cad7c * blend[8];
+  if (blendOutput.values[9] == 0.0f) {
+    tmp = DAT_007cad7c * blendOutput.values[8];
     curve = tmp * tmp;
     poly = DAT_007cad34 * curve + DAT_007cad38 + 0.0f;
     poly = curve * poly + DAT_007cad3c + 0.0f;
@@ -5906,7 +5909,7 @@ void func_002e5060(BtlCamera* camera)
     poly = curve * poly + DAT_007cad48 + 0.0f;
     factorA = curve * tmp;
     factorA = factorA * poly + tmp + 0.0f;
-    tmp = DAT_007cadd0 * blend[8];
+    tmp = DAT_007cadd0 * blendOutput.values[8];
     curve = tmp * tmp;
     poly = DAT_007cad34 * curve + DAT_007cad38 + 0.0f;
     poly = curve * poly + DAT_007cad3c + 0.0f;
@@ -5916,9 +5919,10 @@ void func_002e5060(BtlCamera* camera)
     factorB = curve * tmp;
     factorB = factorB * poly + tmp + 0.0f;
   }
-  blendRot.imag.x = blend[0] * factorA + blend[4] * factorB;
-  blendRot.imag.y = blend[1] * factorA + blend[5] * factorB;
-  blendRot.imag.z = blend[2] * factorA + blend[6] * factorB;
+  blendOutput.rotation.imag.x = blendOutput.values[0] * factorA + blendOutput.values[4] * factorB;
+  blendOutput.rotation.imag.y = blendOutput.values[1] * factorA + blendOutput.values[5] * factorB;
+  blendOutput.rotation.imag.z = blendOutput.values[2] * factorA + blendOutput.values[6] * factorB;
+  blendOutput.rotation.real = blendOutput.values[3] * factorA + blendOutput.values[7] * factorB;
   if (usePreset != 0) {
     FUN_00351bb0_btlVoice_typed(8);
   }
@@ -5932,12 +5936,15 @@ void func_002e58a0(BtlCamera* param_1)
 
 {
   u32 bVar1;
-  char cVar2;
+  u8 cVar2;
   u32 bVar3;
-  int iVar4;
-  u32 uVar6;
   int iVar7;
   int iVar8;
+  BtlAction *action;
+  BtlUnit *actionUnit;
+  BtlUnit *targetUnit;
+  BtlUnit *scanUnit;
+  u16 actionIndex;
   float fVar9;
   float fVar10;
   float fVar11;
@@ -5967,26 +5974,26 @@ void func_002e58a0(BtlCamera* param_1)
   float fStack_d8;
   float fStack_dc;
 
-  iVar4 = *(int *)((int)param_1 + 0xe0);
-  if ((iVar4 != 0) && (iVar8 = *(int *)(iVar4 + 0x30), *(char *)(iVar8 + 0xa2) == '\0')) {
-    for (uVar6 = 0; iVar4 = *(int *)((int)param_1 + 0xe0), uVar6 < *(u16 *)(iVar4 + 0x6a);
-        uVar6 = uVar6 + 1 & 0xffff) {
-      iVar4 = *(int *)(*(int *)(iVar4 + uVar6 * 4 + 0x38) + 0x30);
-      if (*(char *)(iVar4 + 0xa2) == '\x01') {
-        FUN_0027fcf0(iVar4,iVar8 + 4);
+  action = param_1->action;
+  if ((action != NULL) && (action->unit->genus == UNIT_GENUS_PC)) {
+    actionUnit = action->unit;
+    for (actionIndex = 0; actionIndex < action->target.targetedCount; actionIndex++) {
+      scanUnit = action->target.targetedActions[actionIndex]->unit;
+      if (scanUnit->genus == 1) {
+        FUN_0027fcf0(scanUnit, &actionUnit->pos);
       }
     }
   }
-  if (iVar4 != 0) {
-    if (*(char *)(*(int *)(iVar4 + 0x30) + 0xa2) == '\0') {
-      if ((*(short *)(DAT_007ce3ec + 0x104) == 0x1d) || (*(short *)(DAT_007ce3ec + 0x104) == 0x1c))
-      {
+  if (action != NULL) {
+    if (action->unit->genus == UNIT_GENUS_PC) {
+      if ((*(u16 *)(DAT_007ce3ec + 0x104) == 0x1d) ||
+          (*(u16 *)(DAT_007ce3ec + 0x104) == 0x1c)) {
         bVar3 = false;
         goto LAB_002e59dc;
       }
     }
-    else if ((*(short *)(DAT_007ce3ec + 0x104) == 0x1f) ||
-            (*(short *)(DAT_007ce3ec + 0x104) == 0x12)) {
+    else if ((*(u16 *)(DAT_007ce3ec + 0x104) == 0x1f) ||
+             (*(u16 *)(DAT_007ce3ec + 0x104) == 0x12)) {
       bVar3 = false;
       goto LAB_002e59dc;
     }
@@ -5996,23 +6003,24 @@ void func_002e58a0(BtlCamera* param_1)
     bVar3 = true;
   }
 LAB_002e59dc:
-  iVar4 = *(int *)(iVar4 + 0x30);
-  bVar1 = *(char *)(iVar4 + 0xa2) != '\0';
+  actionUnit = action->unit;
+  bVar1 = actionUnit->genus != UNIT_GENUS_PC;
+  targetUnit = action->target.targetedActions[0]->unit;
   if (bVar1) {
-    iVar8 = *(int *)(*(int *)(*(int *)((int)param_1 + 0xe0) + 0x38) + 0x30);
-    iVar7 = iVar4;
+    iVar8 = (int)actionUnit;
+    iVar7 = (int)targetUnit;
   }
   else {
-    iVar7 = *(int *)(*(int *)(*(int *)((int)param_1 + 0xe0) + 0x38) + 0x30);
-    iVar8 = iVar4;
+    iVar8 = (int)targetUnit;
+    iVar7 = (int)actionUnit;
   }
-  cVar2 = *(char *)(iVar8 + 0xa2);
-  if (cVar2 == *(char *)(iVar7 + 0xa2)) {
-    if (cVar2 == '\0') {
-      func_002e8e20();
+  cVar2 = *(u8 *)(iVar8 + 0xa2);
+  if (cVar2 == *(u8 *)(iVar7 + 0xa2)) {
+    if (cVar2 == 0) {
+      func_002e8e20(param_1);
     }
     else {
-      func_002e8f40();
+      func_002e8f40(param_1);
     }
     return;
   }

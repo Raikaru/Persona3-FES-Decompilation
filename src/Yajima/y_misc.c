@@ -6115,163 +6115,84 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
           *(u8 *)(param_2 + iVar10 + 0x937) = 1;
 
           uVar8 = datGetBadStatusNoDown(*(u16 *)(&DAT_00871948 + iVar7 * 0x1c0));
-
-          if ((uVar8 & 0x80) == 0) {
-
-            uVar8 = datGetBadStatusNoDown(*(u16 *)(&DAT_00871948 + iVar7 * 0x1c0));
-
-            if ((uVar8 & 0x80000) != 0) {
-
-              iVar7 = param_2 * 2 + iVar10;
-
-              psVar14 = (short *)(iVar7 + 0x930);
-
-              fVar17 = (float)sinf(DAT_007cb134 * (float)(int)*(short *)(iVar7 + 0x930));
-
-              fVar17 = fVar17 * -128.0f + 128.0f;
-
-              sVar4 = *psVar14;
-
-              *psVar14 = sVar4 + 1;
-
-              if (0x28 < (short)(sVar4 + 1)) {
-
-                *psVar14 = 0;
-
-              }
-
-              uVar9 = FUN_001158b0(0,DAT_007ce6e4,10);
-
-              iVar7 = (int)uVar9;
-
-              *(u32 *)(iVar7 + 0x2c) = 0x40400000;
-
-
-              *(float *)(iVar7 + 0x10) = paramSlot[0] + 3.0f;
-              *(float *)(iVar7 + 0x14) = paramSlot[1] + 3.0f;
-
-              if (fVar17 < 2.1474836e+09f) {
-
-                uVar16 = (u8)(int)fVar17;
-
-              }
-
-              else {
-
-                uVar16 = (u8)(int)(fVar17 - 2.1474836e+09f);
-
-              }
-
-              *(u8 *)(iVar7 + 0x18) = uVar16;
-
-              func_001127d0(uVar9,1);
-
-              FUN_00115980(uVar9);
-
-              uVar9 = FUN_001158b0(0,DAT_007ce6e4,9);
-
-              iVar7 = (int)uVar9;
-
-              *(u32 *)(iVar7 + 0x2c) = uVar18;
-
-              *(u32 *)(iVar7 + 0x10) = *(u32 *)(iVar10 + 0x8b8);
-
-              *(u32 *)(iVar7 + 0x14) = *(u32 *)(iVar10 + 0x8bc);
-
-              *(u8 *)(iVar7 + 0x18) = 0;
-
-              func_001127d0(uVar9,1);
-
-              FUN_00115980(uVar9);
-
-            }
-
-            else {
-
-              uVar9 = FUN_001158b0(0,DAT_007ce6e4,7);
-
-              iVar10 = (int)uVar9;
-
-              *(u32 *)(iVar10 + 0x2c) = uVar18;
-
-              *(float *)(iVar10 + 0x10) = *pfVar15;
-
-              *(float *)(iVar10 + 0x14) = *pfVar13;
-
-              *(u8 *)(iVar10 + 0x18) = 0;
-
-              func_001127d0(uVar9,1);
-
-              FUN_00115980(uVar9);
-
-            }
-
-          }
-
-          else {
-
+          if ((uVar8 & 0x80) != 0) {
             iVar7 = param_2 * 2 + iVar10;
-
             psVar14 = (short *)(iVar7 + 0x930);
-
-            fVar17 = (float)sinf(DAT_007cb134 * (float)(int)*(short *)(iVar7 + 0x930));
-
+            fVar17 = (float)sinf(DAT_007cb134 * (float)(int)*psVar14);
             fVar17 = fVar17 * -128.0f + 128.0f;
-
             sVar4 = *psVar14;
-
             *psVar14 = sVar4 + 1;
-
             if (0x28 < (short)(sVar4 + 1)) {
-
               *psVar14 = 0;
-
             }
-
             uVar9 = FUN_001158b0(0,DAT_007ce6e4,10);
-
             iVar7 = (int)uVar9;
-
             *(u32 *)(iVar7 + 0x2c) = 0x40400000;
-
-
             *(float *)(iVar7 + 0x10) = paramSlot[0] + 3.0f;
             *(float *)(iVar7 + 0x14) = paramSlot[1] + 3.0f;
-
             if (fVar17 < 2.1474836e+09f) {
-
               uVar16 = (u8)(int)fVar17;
-
             }
-
             else {
-
               uVar16 = (u8)(int)(fVar17 - 2.1474836e+09f);
-
             }
-
             *(u8 *)(iVar7 + 0x18) = uVar16;
-
             func_001127d0(uVar9,1);
-
             FUN_00115980(uVar9);
-
             uVar9 = FUN_001158b0(0,DAT_007ce6e4,8);
-
             iVar7 = (int)uVar9;
-
             *(u32 *)(iVar7 + 0x2c) = uVar18;
-
             *(u32 *)(iVar7 + 0x10) = *(u32 *)(iVar10 + 0x8b8);
-
             *(u32 *)(iVar7 + 0x14) = *(u32 *)(iVar10 + 0x8bc);
-
             *(u8 *)(iVar7 + 0x18) = 0;
-
             func_001127d0(uVar9,1);
-
             FUN_00115980(uVar9);
-
+          }
+          else {
+            uVar8 = datGetBadStatusNoDown(*(u16 *)(&DAT_00871948 + iVar7 * 0x1c0));
+            if ((uVar8 & 0x80000) != 0) {
+              iVar7 = param_2 * 2 + iVar10;
+              psVar14 = (short *)(iVar7 + 0x930);
+              fVar17 = (float)sinf(DAT_007cb134 * (float)(int)*psVar14);
+              fVar17 = fVar17 * -128.0f + 128.0f;
+              sVar4 = *psVar14;
+              *psVar14 = sVar4 + 1;
+              if (0x28 < (short)(sVar4 + 1)) {
+                *psVar14 = 0;
+              }
+              uVar9 = FUN_001158b0(0,DAT_007ce6e4,10);
+              iVar7 = (int)uVar9;
+              *(u32 *)(iVar7 + 0x2c) = 0x40400000;
+              *(float *)(iVar7 + 0x10) = paramSlot[0] + 3.0f;
+              *(float *)(iVar7 + 0x14) = paramSlot[1] + 3.0f;
+              if (fVar17 < 2.1474836e+09f) {
+                uVar16 = (u8)(int)fVar17;
+              }
+              else {
+                uVar16 = (u8)(int)(fVar17 - 2.1474836e+09f);
+              }
+              *(u8 *)(iVar7 + 0x18) = uVar16;
+              func_001127d0(uVar9,1);
+              FUN_00115980(uVar9);
+              uVar9 = FUN_001158b0(0,DAT_007ce6e4,9);
+              iVar7 = (int)uVar9;
+              *(u32 *)(iVar7 + 0x2c) = uVar18;
+              *(u32 *)(iVar7 + 0x10) = *(u32 *)(iVar10 + 0x8b8);
+              *(u32 *)(iVar7 + 0x14) = *(u32 *)(iVar10 + 0x8bc);
+              *(u8 *)(iVar7 + 0x18) = 0;
+              func_001127d0(uVar9,1);
+              FUN_00115980(uVar9);
+            }
+            else {
+              uVar9 = FUN_001158b0(0,DAT_007ce6e4,7);
+              iVar10 = (int)uVar9;
+              *(u32 *)(iVar10 + 0x2c) = uVar18;
+              *(float *)(iVar10 + 0x10) = *pfVar15;
+              *(float *)(iVar10 + 0x14) = *pfVar13;
+              *(u8 *)(iVar10 + 0x18) = 0;
+              func_001127d0(uVar9,1);
+              FUN_00115980(uVar9);
+            }
           }
 
         }

@@ -1862,7 +1862,11 @@ void bpTexUpdateNode(void* nodeData)
     RwMatrix* cameraMatrix;
     void* resource;
 
-    work = bpTexWork();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
     node = (u32*)nodeData;
     phase = (f32)BP_TEX_S32(work, 0x12680) / 300.0f;
     offsets[0] = func_0052e878(DAT_007caf38 * phase * -2.0f) * -1000.0f;
@@ -1874,7 +1878,7 @@ void bpTexUpdateNode(void* nodeData)
 
     if ((*node & 0x80) != 0)
     {
-        node[0x496] = (node[0x496] + 1) % 0x5a;
+        BP_TEX_S32(node, 0x1258) = (BP_TEX_S32(node, 0x1258) + 1) % 0x5a;
     }
     func_00256fa0(node, leaves, &count);
     for (i = 0; i < count; i++)

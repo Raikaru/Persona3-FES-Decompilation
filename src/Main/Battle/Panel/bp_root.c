@@ -4555,7 +4555,6 @@ void FUN_001FFF40(void)
 {
     u32* work;
     u32 flags;
-    u32 panelFlags;
     u32 renderFlags;
     u32 state;
     u32 substate;
@@ -4576,43 +4575,39 @@ void FUN_001FFF40(void)
     work = (u32*)gBcmWork;
     renderFlags = 0;
     flags = work[0];
-    panelFlags = work[1];
     if (flags & 0x08000000)
     {
-        if (work[0x77a4 / 4] != 0)
+        if ((s32)work[0x77a4 / 4] > 0)
             work[0x77a4 / 4]--;
     }
-    if (flags & 0x10000000)
+    else if (flags & 0x10000000)
     {
-        if (work[0x77a4 / 4] < 0x10)
+        if ((s32)work[0x77a4 / 4] < 0x10)
             work[0x77a4 / 4]++;
     }
     *(f32*)((u8*)work + 0x7644) =
         (f32)(s32)work[0x77a4 / 4] / 16.0f;
-    if ((panelFlags & 1) && !bcmPanel0022b4e0())
+    if ((work[1] & 1) && !bcmPanel0022b4e0())
     {
         FUN_00202BC0();
         work[1] &= ~2u;
-        panelFlags = work[1];
     }
-    if ((panelFlags & 2) && !bcmPanel0022b4e0())
+    if ((work[1] & 2) && !bcmPanel0022b4e0())
     {
         bcmDestroyCommandResources();
         work[1] &= ~3u;
-        panelFlags = work[1];
     }
-    if ((panelFlags & 4) && !bcmPanel0022b4e0())
+    if ((work[1] & 4) && !bcmPanel0022b4e0())
     {
         FUN_00204BE0();
         work[1] &= ~5u;
-        panelFlags = work[1];
     }
 
     state = work[4];
     switch (state)
     {
     case 0:
-        if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
+        if (!FUN_00201AF0() && !(flags & 0x40) && work[1] == 0)
         {
             if ((*(u16*)0x007E094E) & 4)
             {
@@ -5001,7 +4996,7 @@ void FUN_001FFF40(void)
         }
         break;
     case 4:
-        if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
+        if (!FUN_00201AF0() && !(flags & 0x40) && work[1] == 0)
         {
             if ((*(u16*)0x007E094E) & 0x40)
             {
@@ -5043,7 +5038,7 @@ void FUN_001FFF40(void)
         }
         break;
     case 5:
-        if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
+        if (!FUN_00201AF0() && !(flags & 0x40) && work[1] == 0)
         {
             substate = work[7];
             if (substate == 0)
