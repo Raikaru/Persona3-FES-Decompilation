@@ -1326,16 +1326,10 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     sDungeonRoomCounter++;
 }
 
-// Tail count dispatch now follows retail's repeated field accessor calls and single-ID path.
-// The count==3/4 direction cases intentionally rematerialize each destination cell.
-// This restores missing runtime behavior that the prior cached-pointer reconstruction omitted.
-// The resulting normalized diff is temporarily higher because MWCC register allocation shifts.
-// Keep this logic rather than reverting to the smaller but semantically incomplete tail.
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
 {
     u8* fieldRoot;
-    u8* fieldCell;
     FieldDungeonCell* dungeon;
     u8* source;
     u8* roomCopy;
@@ -1345,7 +1339,9 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     u8* sceneResource;
     RwV3d origin;
     RwV3d axis;
-    RwV3d position;
+    RwV3d position0;
+    RwV3d position1;
+    RwV3d position2;
     RwMatrix* matrix;
     u32 row;
     u32 col;
@@ -1354,16 +1350,13 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     u32 version;
     u32 direction;
     u32 sourceIndex;
-    u32 orientation;
+    s8 orientation;
     u32 resourceId;
     u16 roomResId;
     u16 ids[4];
-    u32 colOffset;
-    u32 rowOffset;
+    RwV3d position3;
     f32 angle;
     axis = *(RwV3d*)D_006833B0;
-    colOffset = (u32)x * 0x10;
-    rowOffset = (u32)y * 0x100;
 
     dungeon = &K_Field_Get()->dungeonCells[y][x];
     if (dungeon->occupied == 0)
@@ -1377,24 +1370,22 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     }
 
     dungeon = &K_Field_Get()->dungeonCells[y][x];
-    if ((u32)x + dungeon->width - 1 >= 0x10)
+    if ((s32)x + dungeon->width - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x139);
     }
     dungeon = &K_Field_Get()->dungeonCells[y][x];
-    if ((u32)y + dungeon->height - 1 >= 0x10)
+    if ((s32)y + dungeon->height - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x13a);
     }
 
-    dungeon = &K_Field_Get()->dungeonCells[y][x];
     origin.x = (f32)x * 800.0f +
-               (f32)(dungeon->width - 1) * 400.0f;
+               (f32)(K_Field_Get()->dungeonCells[y][x].width - 1) * 400.0f;
     dungeon = &K_Field_Get()->dungeonCells[y][x];
     origin.y = (f32)dungeon->elevation * 300.0f;
-    dungeon = &K_Field_Get()->dungeonCells[y][x];
     origin.z = (f32)y * 800.0f +
-               (f32)(dungeon->height - 1) * 400.0f;
+               (f32)(K_Field_Get()->dungeonCells[y][x].height - 1) * 400.0f;
 
     fieldRoot = (u8*)K_Field_Get();
     dungeon = &((Field*)fieldRoot)->dungeonCells[y][x];
@@ -1409,17 +1400,14 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     func_0019ff10();
 
     for (row = 0;
-         row < (u32)(((u8*)K_Field_Get() + rowOffset + colOffset)[0x50]);
+         row < K_Field_Get()->dungeonCells[y][x].height;
          row++)
     {
         for (col = 0;
-             col < (u32)(((u8*)K_Field_Get() + rowOffset + colOffset)[0x4f]);
+             col < K_Field_Get()->dungeonCells[y][x].width;
              col++)
         {
-            fieldRoot = (u8*)K_Field_Get();
-            fieldCell = fieldRoot + rowOffset + row * 0x100 +
-                        colOffset + col * 0x10;
-            *(u16*)(fieldCell + 0x4c) = roomResId;
+            K_Field_Get()->dungeonCells[y + row][x + col].resourceId = roomResId;
         }
     }
     for (i = 0; i < *(u32*)(roomCopy + 0x118); i++)
@@ -1463,9 +1451,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     }
     *(u32*)(roomCopy + 0x118) = 0;
 
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    sourceIndex = fieldCell[0x4a];
+    sourceIndex = K_Field_Get()->dungeonCells[y][x].patternId;
     fieldRoot = (u8*)K_Field_Get();
     source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
     source = *(u8**)(source + 0xa3c);
@@ -1474,9 +1460,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
         return;
     }
     matrix = func_004c38c0();
-    fieldRoot = (u8*)K_Field_Get();
-    fieldCell = fieldRoot + rowOffset + colOffset;
-    sourceIndex = fieldCell[0x4a];
+    sourceIndex = K_Field_Get()->dungeonCells[y][x].patternId;
     fieldRoot = (u8*)K_Field_Get();
     source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
     source = *(u8**)(source + 0xa3c);
@@ -1499,9 +1483,10 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
         records = source + 0x48;
     }
 
-    for (i = 0; i < *(u32*)(source + 8); i++)
+    for (i = 0, record = records;
+         i < *(u32*)(source + 8);
+         i++, record += 0x20)
     {
-        record = records + i * 0x20;
         if (K_Scene_001a0250() == 1)
         {
             resourceId = func_003b6870(*(u16*)record & 0x3ff,
@@ -1514,99 +1499,145 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
                           *(f32*)(modelResource + 0x110),
                           *(f32*)(modelResource + 0x114),
                           *(f32*)(modelResource + 0x118));
-            fieldRoot = (u8*)K_Field_Get();
-            fieldCell = fieldRoot + rowOffset + colOffset;
-            orientation = (fieldCell[0x4e] + 2) & 3;
+            orientation = (K_Field_Get()->dungeonCells[y][x].direction + 2) & 3;
             angle = (f32)orientation * 90.0f;
+            matrix->at.z = 1.0f;
+            matrix->up.y = 1.0f;
+            matrix->right.x = 1.0f;
+            matrix->up.x = 0.0f;
+            matrix->right.z = 0.0f;
+            matrix->right.y = 0.0f;
+            matrix->at.y = 0.0f;
+            matrix->at.x = 0.0f;
+            matrix->up.z = 0.0f;
+            matrix->pos.z = 0.0f;
+            matrix->pos.y = 0.0f;
+            matrix->pos.x = 0.0f;
+            matrix->flags |= 0x20003;
             func_004c31b0(matrix, &axis, angle, 2);
             for (count = 0; count < 4; count++)
             {
-                position = *(RwV3d*)(modelResource + 0x11c + count * 0xc);
-                func_004c6be0(&position, &position, matrix);
-                position.x += origin.x;
-                position.y += origin.y;
-                position.z += origin.z;
-                *(RwV3d*)(modelResource + 0x11c + count * 0xc) = position;
+                RwV3d* vertex = (RwV3d*)(modelResource + 0x11c + count * 0xc);
+                func_004c6be0(vertex, vertex, matrix);
+                vertex->x += origin.x;
+                vertex->y += origin.y;
+                vertex->z += origin.z;
             }
         }
     }
 
-    records += *(u32*)(source + 8) * 0x20;
-    for (i = 0; i < *(u32*)(source + 0x10); i++)
+    records = record;
+    for (i = 0, record = records;
+         i < *(u32*)(source + 0x10);
+         i++, record += 0x14)
     {
-        record = records + i * 0x14;
         if (K_Scene_001a0250() == 1)
         {
-            position = *(RwV3d*)(record + 4);
-            fieldRoot = (u8*)K_Field_Get();
-            fieldCell = fieldRoot + rowOffset + colOffset;
-            orientation = (fieldCell[0x4e] + 2) & 3;
+            position0 = *(RwV3d*)(record + 4);
+            orientation = (K_Field_Get()->dungeonCells[y][x].direction + 2) & 3;
             angle = (f32)orientation * 90.0f;
+            matrix->at.z = 1.0f;
+            matrix->up.y = 1.0f;
+            matrix->right.x = 1.0f;
+            matrix->up.x = 0.0f;
+            matrix->right.z = 0.0f;
+            matrix->right.y = 0.0f;
+            matrix->at.y = 0.0f;
+            matrix->at.x = 0.0f;
+            matrix->up.z = 0.0f;
+            matrix->pos.z = 0.0f;
+            matrix->pos.y = 0.0f;
+            matrix->pos.x = 0.0f;
+            matrix->flags |= 0x20003;
             func_004c31b0(matrix, &axis, angle, 2);
-            func_004c6be0(&position, &position, matrix);
-            position.x += origin.x;
-            position.y += origin.y;
-            position.z += origin.z;
+            func_004c6be0(&position0, &position0, matrix);
+            position0.x += origin.x;
+            position0.y += origin.y;
+            position0.z += origin.z;
             angle += *(f32*)(record + 0x10);
             while (angle > 360.0f)
             {
                 angle -= 360.0f;
             }
             resourceId = K_Misc_FindNextFreeResId(0xf);
-            func_003b6b90((u16)resourceId, &position, angle);
+            func_003b6b90((u16)resourceId, &position0, angle);
         }
     }
-    records += *(u32*)(source + 0x10) * 0x14;
-    for (i = 0; i < *(u32*)(source + 0x18); i++)
+    records = record;
+    for (i = 0, record = records;
+         i < *(u32*)(source + 0x18);
+         i++, record += 0x14)
     {
-        record = records + i * 0x14;
         if (K_Scene_001a0250() == 1)
         {
-            position = *(RwV3d*)(record + 4);
-            fieldRoot = (u8*)K_Field_Get();
-            fieldCell = fieldRoot + rowOffset + colOffset;
-            orientation = (fieldCell[0x4e] + 2) & 3;
+            position1 = *(RwV3d*)(record + 4);
+            orientation = (K_Field_Get()->dungeonCells[y][x].direction + 2) & 3;
             angle = (f32)orientation * 90.0f;
+            matrix->at.z = 1.0f;
+            matrix->up.y = 1.0f;
+            matrix->right.x = 1.0f;
+            matrix->up.x = 0.0f;
+            matrix->right.z = 0.0f;
+            matrix->right.y = 0.0f;
+            matrix->at.y = 0.0f;
+            matrix->at.x = 0.0f;
+            matrix->up.z = 0.0f;
+            matrix->pos.z = 0.0f;
+            matrix->pos.y = 0.0f;
+            matrix->pos.x = 0.0f;
+            matrix->flags |= 0x20003;
             func_004c31b0(matrix, &axis, angle, 2);
-            func_004c6be0(&position, &position, matrix);
-            position.x += origin.x;
-            position.y += origin.y;
-            position.z += origin.z;
+            func_004c6be0(&position1, &position1, matrix);
+            position1.x += origin.x;
+            position1.y += origin.y;
+            position1.z += origin.z;
             angle += *(f32*)(record + 0x10);
             while (angle > 360.0f)
             {
                 angle -= 360.0f;
             }
             resourceId = K_Misc_FindNextFreeResId(0x10);
-            func_003b6c50((u16)resourceId, &position, angle);
+            func_003b6c50((u16)resourceId, &position1, angle);
         }
     }
-    records += *(u32*)(source + 0x18) * 0x14;
-    for (i = 0; i < *(u32*)(source + 0x20); i++)
+    records = record;
+    for (i = 0, record = records;
+         i < *(u32*)(source + 0x20);
+         i++, record += 0x14)
     {
-        record = records + i * 0x14;
         if (K_Scene_001a0250() == 1)
         {
-            position = *(RwV3d*)(record + 4);
-            fieldRoot = (u8*)K_Field_Get();
-            fieldCell = fieldRoot + rowOffset + colOffset;
-            orientation = (fieldCell[0x4e] + 2) & 3;
+            position2 = *(RwV3d*)(record + 4);
+            orientation = (K_Field_Get()->dungeonCells[y][x].direction + 2) & 3;
             angle = (f32)orientation * 90.0f;
+            matrix->at.z = 1.0f;
+            matrix->up.y = 1.0f;
+            matrix->right.x = 1.0f;
+            matrix->up.x = 0.0f;
+            matrix->right.z = 0.0f;
+            matrix->right.y = 0.0f;
+            matrix->at.y = 0.0f;
+            matrix->at.x = 0.0f;
+            matrix->up.z = 0.0f;
+            matrix->pos.z = 0.0f;
+            matrix->pos.y = 0.0f;
+            matrix->pos.x = 0.0f;
+            matrix->flags |= 0x20003;
             func_004c31b0(matrix, &axis, angle, 2);
-            func_004c6be0(&position, &position, matrix);
-            position.x += origin.x;
-            position.y += origin.y;
-            position.z += origin.z;
+            func_004c6be0(&position2, &position2, matrix);
+            position2.x += origin.x;
+            position2.y += origin.y;
+            position2.z += origin.z;
             angle += *(f32*)(record + 0x10);
             while (angle > 360.0f)
             {
                 angle -= 360.0f;
             }
             resourceId = K_Misc_FindNextFreeResId(0x11);
-            func_003b6d10((u16)resourceId, &position, angle);
+            func_003b6d10((u16)resourceId, &position2, angle);
         }
     }
-    records += *(u32*)(source + 0x20) * 0x14;
+    records = record;
 
     records += *(u32*)(source + 0x28) * 0x14;
     if (version >= 0x1002)
@@ -1614,28 +1645,40 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
         records += *(u32*)(source + 0x30) * 0x20;
         if (version >= 0x1003)
         {
-            for (i = 0; i < *(u32*)(source + 0x38); i++)
+            for (i = 0, record = records;
+                 i < *(u32*)(source + 0x38);
+                 i++, record += 0x14)
             {
-                record = records + i * 0x14;
                 if (K_Scene_001a0250() == 1)
                 {
-                    position = *(RwV3d*)(record + 4);
-                    fieldRoot = (u8*)K_Field_Get();
-                    fieldCell = fieldRoot + rowOffset + colOffset;
-                    orientation = (fieldCell[0x4e] + 2) & 3;
+                    position3 = *(RwV3d*)(record + 4);
+                    orientation = (K_Field_Get()->dungeonCells[y][x].direction + 2) & 3;
                     angle = (f32)orientation * 90.0f;
+                    matrix->at.z = 1.0f;
+                    matrix->up.y = 1.0f;
+                    matrix->right.x = 1.0f;
+                    matrix->up.x = 0.0f;
+                    matrix->right.z = 0.0f;
+                    matrix->right.y = 0.0f;
+                    matrix->at.y = 0.0f;
+                    matrix->at.x = 0.0f;
+                    matrix->up.z = 0.0f;
+                    matrix->pos.z = 0.0f;
+                    matrix->pos.y = 0.0f;
+                    matrix->pos.x = 0.0f;
+                    matrix->flags |= 0x20003;
                     func_004c31b0(matrix, &axis, angle, 2);
-                    func_004c6be0(&position, &position, matrix);
-                    position.x += origin.x;
-                    position.y += origin.y;
-                    position.z += origin.z;
+                    func_004c6be0(&position3, &position3, matrix);
+                    position3.x += origin.x;
+                    position3.y += origin.y;
+                    position3.z += origin.z;
                     angle += *(f32*)(record + 0x10);
                     while (angle > 360.0f)
                     {
                         angle -= 360.0f;
                     }
                     ids[i] = (u16)K_Misc_FindNextFreeResId(0x12);
-                    func_003b6dd0(ids[i], &position, angle);
+                    func_003b6dd0(ids[i], &position3, angle);
                 }
             }
         }
@@ -1648,71 +1691,67 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     }
     if (count == 1)
     {
-        *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[0];
+        K_Field_Get()->dungeonCells[y][x].unk_0c = ids[0];
     }
     else if (count == 3)
     {
-        fieldRoot = (u8*)K_Field_Get();
-        fieldCell = fieldRoot + rowOffset + colOffset;
-        direction = fieldCell[0x4e];
+        direction = K_Field_Get()->dungeonCells[y][x].direction;
         switch (direction)
         {
         case 0:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[0];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[1];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[2];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[3];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = -1;
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[0];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[1];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[2];
             break;
         case 1:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[1];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[3];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[0];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[2];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[0];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[2];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = -1;
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[1];
             break;
         case 2:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[3];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[2];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[1];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[0];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[2];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[1];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[0];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = -1;
             break;
         case 3:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[2];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[0];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[3];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[1];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[1];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = -1;
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[2];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[0];
             break;
         }
     }
     else if (count == 4)
     {
-        fieldRoot = (u8*)K_Field_Get();
-        fieldCell = fieldRoot + rowOffset + colOffset;
-        direction = fieldCell[0x4e];
+        direction = K_Field_Get()->dungeonCells[y][x].direction;
         switch (direction)
         {
         case 0:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[0];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[1];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[2];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[3];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[0];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[1];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[2];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[3];
             break;
         case 1:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[1];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[3];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[0];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[2];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[1];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[3];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[0];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[2];
             break;
         case 2:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[3];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[2];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[1];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[0];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[3];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[2];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[1];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[0];
             break;
         case 3:
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[2];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[0];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[3];
-            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[1];
+            K_Field_Get()->dungeonCells[y][x].unk_0c = ids[2];
+            K_Field_Get()->dungeonCells[y][x + 1].unk_0c = ids[0];
+            K_Field_Get()->dungeonCells[y + 1][x].unk_0c = ids[3];
+            K_Field_Get()->dungeonCells[y + 1][x + 1].unk_0c = ids[1];
             break;
         }
     }
