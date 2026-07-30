@@ -10108,35 +10108,45 @@ u32 FUN_003fe1f0(u64 param_1)
   return uVar1;
 }
 
-// FUN_003FE2B0 NONMATCHING
-
+// FUN_003FE2B0
 
 u32 FUN_003fe2b0(void)
 {
   u16 sVar1;
-  u8 bVar2;
+  u32 bVar2;
+  s16 copyA;
+  s16 copyB;
   u32 uVar3;
   u32 uVar4;
   u32 uVar5;
-  int iVar6;
-  u16 *psVar7;
   u16 *psVar8;
+  u16 *psVar7;
+  int iVar6;
   u16 sVar9;
   u32 uVar10;
+  s16 counter;
   u16 asStack_10[8];
 
   uVar10 = 0;
-  while (1) {
+  goto copy_entry;
+  for (;;) {
+    uVar4 = func_00170760(1,(s16)sVar9);
+    if (uVar4 != 0) {
+      bVar2 = 1;
+      goto LAB_003fe35c;
+    }
+    uVar10++;
+copy_entry:
     psVar8 = DAT_006af180_abs;
     psVar7 = asStack_10;
     iVar6 = 4;
     do {
-      sVar9 = *psVar8;
-      sVar1 = psVar8[1];
+      copyA = ((s16 *)psVar8)[0];
+      copyB = ((s16 *)psVar8)[1];
       psVar8 += 2;
       iVar6--;
-      *psVar7 = sVar9;
-      psVar7[1] = sVar1;
+      *psVar7 = copyA;
+      psVar7[1] = copyB;
       psVar7 += 2;
     } while (iVar6 > 0);
 
@@ -10150,12 +10160,6 @@ u32 FUN_003fe2b0(void)
     if (sVar9 == 0) {
       break;
     }
-    uVar4 = func_00170760(1,(s16)sVar9);
-    if (uVar4 != 0) {
-      bVar2 = 1;
-      goto LAB_003fe35c;
-    }
-    uVar10++;
   }
   bVar2 = 0;
 
@@ -10164,8 +10168,8 @@ LAB_003fe35c:
     uVar3 = 1;
   }
   else {
-    for (sVar9 = 0; sVar9 < 300; sVar9++) {
-      uVar5 = func_0016f720(1);
+    for (counter = 0; counter < 300; counter++) {
+      uVar5 = func_0016f720(1,counter);
       if ((uVar5 & 0xff00) != 0) {
         return 1;
       }
