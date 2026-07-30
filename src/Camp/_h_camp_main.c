@@ -38,6 +38,8 @@ extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize, u32 hint);
 extern void* (*DAT_00960184_abs[])(...);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
+#pragma alias jtbl_0096017C_fn jtbl_0096017C
+extern void (*jtbl_0096017C_fn)(void* memory);
 extern void (*jtbl_0096017C)(void* memory);
 extern const char D_005DB190[];
 extern const char D_005DB1B0[];
@@ -1744,6 +1746,7 @@ void FUN_001365b0(KwlnTask* task)
     void* request;
     void* record;
     KwlnTask* queued;
+    void (*fn)(void*);
 
     work = (u8*)task->workData;
     iGpffffb280 = 0;
@@ -1778,8 +1781,9 @@ void FUN_001365b0(KwlnTask* task)
             }
             pending = *(void**)(slot + 0x16c);
             if (pending != NULL) {
+                slot = work + i * 4 + 0x16c;
                 FUN_004d0f00(pending);
-                *(void**)(slot + 0x16c) = NULL;
+                *(void**)slot = NULL;
             }
         }
     }
@@ -1789,7 +1793,8 @@ void FUN_001365b0(KwlnTask* task)
         *(void**)(work + 0x150) = NULL;
     }
     FUN_003C7DD0(0x0b);
-    (*jtbl_0096017C)(work);
+    fn = *(void (**)(void*))jtbl_0096017C_abs;
+    fn(work);
 }
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
@@ -1846,7 +1851,7 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
     sprite->spriteScale = alpha;
     x = (p.value.x + 318.0f) - 100.0f;
     sprite->x = x;
-    y += 20.0f;
+    y = 20.0f + y;
     sprite->y = y + (f32)DAT_007cdf9c;
     sprite->alpha = drawAlpha;
     FUN_001127D0(sprite, 1);

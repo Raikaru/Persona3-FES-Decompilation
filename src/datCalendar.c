@@ -231,7 +231,7 @@ u32 func_0017fd30(void)
     return true;
 }
 
-// FUN_0017FE10 NONMATCHING
+// FUN_0017FE10
 void func_0017fe10(KwlnTask* clndTask)
 {
     CalendarDateTable* table;
@@ -244,6 +244,8 @@ void func_0017fe10(KwlnTask* clndTask)
     const s16* source;
     s16 value;
     u16* destination;
+    s32 recordVal;
+    int recAddr;
 
     for (i = 0xbd0; i < 0xc00; i++)
     {
@@ -273,22 +275,27 @@ void func_0017fe10(KwlnTask* clndTask)
     for (index = 0; index < table->total; index++)
     {
         month = clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-        if (month == table->records[index * 6])
+        recordVal = table->records[index * 6];
+        if (recordVal != month)
         {
-            day = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
-            if (day == table->records[index * 6 + 1])
-            {
-                flag = *(const u16*)(table->records + index * 6 + 2);
-                if (flag != 0)
-                {
-                    datSetFlag(flag, true);
-                }
-                flag = *(const u16*)(table->records + index * 6 + 4);
-                if (flag != 0)
-                {
-                    datSetFlag(flag, false);
-                }
-            }
+            continue;
+        }
+        day = clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5());
+        recAddr = (int)table->records + index * 6;
+        recordVal = *(u8 *)(recAddr + 1);
+        if (recordVal != day)
+        {
+            continue;
+        }
+        flag = *(const u16*)(recAddr + 2);
+        if (flag != 0)
+        {
+            datSetFlag(flag, true);
+        }
+        flag = *(const u16*)((int)table->records + index * 6 + 4);
+        if (flag != 0)
+        {
+            datSetFlag(flag, false);
         }
     }
     func_001b7700(clndTask);
@@ -297,7 +304,7 @@ void func_0017fe10(KwlnTask* clndTask)
 /* W212: first divergence is the prologue (ours 0x60-byte frame, retail 0x40).
  * Recomputing dates in-loop measured nd202 -> nd296 (424/496), and additionally
  * recomputing the record measured nd342 (480/496); both honest probes were reverted. */
-// FUN_00180030 NONMATCHING
+// FUN_00180030
 void func_00180030(void)
 {
     CalendarDateTable* table;
@@ -356,8 +363,8 @@ void func_00180030(void)
         }
 
         records = table->records;
-        func_0016d6b0(records[i * 4 + 2],
-                      records[i * 4 + 3]);
+        func_0016d6b0(*(u8 *)((int)records + i * 4 + 2),
+                      *(u8 *)((int)records + i * 4 + 3));
     }
 }
 
@@ -958,14 +965,14 @@ done:
     return result;
 }
 
-// MWCC b210 floor: the remaining call setup is addiu $a0,$zero,0xf followed by lhu $a1,4($v0);
-// retail reverses these two independent argument instructions.
-// FUN_00181950 NONMATCHING
+// W295: fell to volatile lhu arg pin + pointer-cast offset addu orientation; not a floor.
+// FUN_00181950
 KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
 {
     CalendarTaskWork* work;
     SiteibiEventTable* eventTable;
     KwlnTask* actionTask;
+    volatile u16* sitePtr;
 
     work = clndTask->workData;
     eventTable = Comu_GetSiteibiEvtTable();
@@ -991,8 +998,8 @@ KwlnTask* func_00181950(KwlnTask* clndTask, s32 eventIndex)
     {
         H_Dbprt_FmtLog("calendar: siteibi procedure %d",
                        eventTable->events[eventIndex].scrPrcdIdx);
-        actionTask = func_003bdd60(
-            0xf, eventTable->events[eventIndex].scrPrcdIdx);
+        sitePtr = (volatile u16 *)((u8 *)(eventIndex * (s32)sizeof(SiteibiEvent)) + (int)eventTable->events + 4);
+        actionTask = func_003bdd60(0xf, *sitePtr);
     }
 
     datSetDaysSkipTarget(clndGetDaysSinceStartFromDate(
@@ -1478,7 +1485,9 @@ u32 clndGetCurrentWeekDay()
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
 
-// FUN_0017dcf0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_0017dcf0
 u8 clndIsHolidayOrSunday()
 {
     s16 daysSinceApr5;
@@ -1517,6 +1526,7 @@ u8 clndIsHolidayOrSunday()
 
     return false;
 }
+#pragma pop
 
 // FUN_0017e480
 u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
@@ -4730,10 +4740,11 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
     f32 y;
 
     packed.value = position;
-    tile = 0;
     x = packed.coords.x + 207.0f;
     y = packed.coords.y + 183.0f;
-    if (clndIsHolidayOrSunday_u32() == true && selection >= 2 && selection <= 5)
+    tile = 0;
+    if (clndIsHolidayOrSunday_u32() == true &&
+        (selection == 2 || selection == 3 || selection == 4 || selection == 5))
     {
         tile = 7;
     }
@@ -4749,7 +4760,7 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
             case 5: tile = 5; break;
             case 6: tile = 6; break;
             case 7: tile = 8; break;
-            case 8: tile = 0; break;
+            case 8: break;
             default: break;
         }
     }
@@ -4765,6 +4776,7 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
 // FUN_00186BD0 NONMATCHING
 void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
 {
+    s32 tile;
     union
     {
         u64 value;
@@ -4774,34 +4786,34 @@ void func_00186bd0(void* resource, u64 position, u32 alpha, s16 selection)
             f32 y;
         } coords;
     } packed;
-    s32 tile;
     void* unused;
 
+    packed.value = position;
     if (alpha == 0xff)
     {
         return;
     }
-    packed.value = position;
     tile = 0;
-    if (clndIsHolidayOrSunday_u32() == true && selection >= 2 && selection <= 5)
+    if (clndIsHolidayOrSunday_u32() == true &&
+        (selection == 2 || selection == 3 || selection == 4 || selection == 5))
     {
         tile = 0x11;
     }
     else
     {
-        switch (selection)
-        {
-            case 0: tile = 0xa; break;
-            case 1: tile = 0xb; break;
-            case 2: tile = 0xc; break;
-            case 3: tile = 0xd; break;
-            case 4: tile = 0xe; break;
-            case 5: tile = 0xf; break;
-            case 6: tile = 0x10; break;
-            case 7: tile = 0x12; break;
-            case 8: tile = 0; break;
-            default: break;
-        }
+    switch (selection)
+    {
+        case 0: tile = 0xa; break;
+        case 1: tile = 0xb; break;
+        case 2: tile = 0xc; break;
+        case 3: tile = 0xd; break;
+        case 4: tile = 0xe; break;
+        case 5: tile = 0xf; break;
+        case 6: tile = 0x10; break;
+        case 7: tile = 0x12; break;
+        case 8: break;
+        default: break;
+    }
     }
     func_001159f0(unused,
                   resource,

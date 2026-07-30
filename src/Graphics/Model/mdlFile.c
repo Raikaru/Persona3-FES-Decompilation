@@ -928,6 +928,9 @@ int FUN_00323e10(u32 param_1,u32 param_2,u32 param_3,u32 param_4,int param_5,
 extern int FUN_00323e10_ptr(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
                             u8 *param_5,u32 param_6);
 int FUN_00323fb0(u32 param_1,u32 param_2,int param_3,u16 param_4,u32 param_5);
+#pragma alias FUN_00323fb0_ptr FUN_00323fb0
+extern int FUN_00323fb0_ptr(u32 param_1,u32 param_2,u8 *param_3,u16 param_4,
+                            u32 param_5);
 u32 FUN_00324160(int param_1);
 #pragma alias FUN_00324160_u32 FUN_00324160
 extern u32 FUN_00324160_u32(int param_1);
@@ -1132,7 +1135,7 @@ void FUN_00333020(int param_1);
 void FUN_00333050(int param_1);
 void FUN_00333080(int param_1,u32 param_2);
 void FUN_003330b0(f32 param_1, int param_2);
-u32 FUN_003330e0(u16 param_1,u16 param_2);
+u32 FUN_003330e0(u32 param_1,u32 param_2);
 #pragma alias FUN_003330e0_u32 FUN_003330e0
 extern u32 FUN_003330e0_u32(u32 param_1,u16 param_2);
 void FUN_00333300(int param_1,u32 param_2,u8 *param_3);
@@ -1805,6 +1808,7 @@ extern u32 DAT_0069bd60;
 #pragma alias DAT_0069bd60_abs DAT_0069bd60
 extern u8 DAT_0069bd60_abs[];
 extern u8 DAT_0069bcd0[];
+extern u8 DAT_0069bde0[];
 extern u32 DAT_0069bd50;
 #pragma alias DAT_0069bd50_abs DAT_0069bd50
 extern u8 DAT_0069bd50_abs[];
@@ -7127,7 +7131,7 @@ u32 FUN_00322da0(int *param_1,int param_2)
 
 
 
-// FUN_00322DC0 NONMATCHING
+// FUN_00322DC0
 u32 FUN_00322dc0(u32 *param_1)
 
 
@@ -7137,23 +7141,26 @@ u32 FUN_00322dc0(u32 *param_1)
   u32 uVar2;
 
   u32 uVar3;
-  u32 uVar4;
 
-  int iVar5;
   int iVar6;
+  int iVar5;
+  u32 uVar4;
   int iVar7;
+  u32 dataOffset;
+  int total;
+  u32 elementCount;
 
   
 
   uVar3 = param_1[1];
-
-  uVar2 = (*DAT_00960178_u32)(uVar3 * 0x14 + 0x28,0x40000);
+  dataOffset = uVar3 * 0x10;
+  uVar2 = (*DAT_00960178_abs)(dataOffset + 0x28 + uVar3 * 4,0x40000);
 
   iVar7 = (int)uVar2;
 
   *(int *)(iVar7 + 0x10) = iVar7 + 0x28;
 
-  *(u32 *)(iVar7 + 0x14) = iVar7 + 0x28 + uVar3 * 0x10;
+  *(u32 *)(iVar7 + 0x14) = iVar7 + 0x28 + dataOffset;
 
   *(u32 *)(iVar7 + 0x1c) = 0;
 
@@ -7164,37 +7171,27 @@ u32 FUN_00322dc0(u32 *param_1)
   FUN_00521250(uVar2,param_1,0x10);
 
   iVar6 = (int)param_1 + 0x10;
-  iVar5 = iVar6 + uVar3 * 0x10;
+  iVar5 = iVar6 + dataOffset;
 
-  uVar4 = 0;
-
-  while( true ) {
-
-    if (uVar3 <= uVar4) break;
-
-    FUN_00521250(*(int *)(iVar7 + 0x10) + uVar4 * 0x10,iVar6,0x10);
-
+  for (uVar4 = 0; uVar4 < uVar3; uVar4 = uVar4 + 1) {
+    dataOffset = uVar4 * 0x10;
+    FUN_00521250(*(int *)(iVar7 + 0x10) + dataOffset,iVar6,0x10);
     uVar1 = FUN_003210c0_int(iVar5);
-
-    *(u32 *)(*(int *)(iVar7 + 0x14) + uVar4 * 4) = uVar1;
-
+    dataOffset = uVar4 * 4;
+    *(u32 *)(*(int *)(iVar7 + 0x14) + dataOffset) = uVar1;
     iVar5 = iVar5 + *(int *)(iVar6 + 4);
-
     iVar6 = iVar6 + 0x10;
-
-    uVar4 = uVar4 + 1;
-
   }
 
-  iVar5 = 0;
-
-  for (uVar3 = 0; uVar3 < *(u32 *)(iVar7 + 4); uVar3 = uVar3 + 1) {
-
-    iVar5 = iVar5 + 1 + *(int *)(*(int *)(iVar7 + 0x10) + uVar3 * 0x10);
-
+  total = 0;
+  uVar1 = 0;
+  elementCount = *(u32 *)(iVar7 + 4);
+  for (; uVar1 < elementCount; uVar1 = uVar1 + 1) {
+    total = total + 1;
+    dataOffset = uVar1 * 0x10;
+    total = total + *(int *)(*(int *)(iVar7 + 0x10) + dataOffset);
   }
-
-  *(int *)(iVar7 + 0x18) = iVar5;
+  *(int *)(iVar7 + 0x18) = total;
 
   *(int *)(iVar7 + 0x1c) = *(int *)(iVar7 + 0x1c) + 1;
 
@@ -22132,13 +22129,11 @@ void FUN_003330b0(f32 param_1, int param_2)
 
 
 
-// FUN_003330E0 NONMATCHING
-
-
-u32 FUN_003330e0(u16 param_1,u16 param_2)
-
-
-
+/* Volatile batch as on the MATCHED twin FUN_00337E10; pragma hoists the
+   0xff/0xfe constants into the loop preheader - W295. */
+// FUN_003330E0
+#pragma opt_loop_invariants on
+u32 FUN_003330e0(u32 param_1,u32 param_2)
 {
 
   int iVar1;
@@ -22147,17 +22142,29 @@ u32 FUN_003330e0(u16 param_1,u16 param_2)
 
   u32 uVar3;
 
-  int iVar4;
-
   u32 uVar5;
 
+  int iVar4;
+
   int iVar6;
+
+  u8 cr;
+
+  u8 cg;
+
+  u8 cb;
+
+  u8 ca;
+
+  int base10;
+
+  int base14;
 
   
 
   iVar6 = (param_1 & 0xffff) * 2 + 0x1c;
 
-  uVar3 = (*DAT_00960178)(iVar6,0x40000);
+  uVar3 = (*DAT_00960178_abs)(iVar6,0x40000);
 
   FUN_00521408(uVar3,0,iVar6);
 
@@ -22165,13 +22172,13 @@ u32 FUN_003330e0(u16 param_1,u16 param_2)
 
   *(int *)(iVar6 + 0x18) = iVar6 + 0x1c;
 
-  puVar2 = (u16 *)FUN_00323fb0(param_1,param_2,0x69bcd0,3,0x48);
+  puVar2 = (u16 *)FUN_00323fb0_ptr(param_1,param_2,DAT_0069bcd0,3,0x48);
 
   *(u16 **)(iVar6 + 0x10) = puVar2;
 
   *puVar2 = *puVar2 & 0xfffb;
 
-  puVar2 = (u16 *)FUN_00323e10(param_1,1,6,8,0x69bde0,0x48);
+  puVar2 = (u16 *)FUN_00323e10_ptr(param_1,1,6,8,DAT_0069bde0,0x48);
 
   *(u16 **)(iVar6 + 0x14) = puVar2;
 
@@ -22179,67 +22186,83 @@ u32 FUN_003330e0(u16 param_1,u16 param_2)
 
   for (uVar5 = 0; uVar5 < (param_1 & 0xffff); uVar5 = uVar5 + 1) {
 
-    if (cGpffffb857 != -1) {
+    base10 = *(int *)(iVar6 + 0x10);
+
+    if (*(volatile u8 *)&bGpffffb857 != 0xff) {
 
       iVar4 = (uVar5 & 0xffff) * 4;
 
-      iVar1 = *(int *)(*(int *)(*(int *)(iVar6 + 0x10) + 0x28) + iVar4);
+      iVar1 = *(int *)(*(int *)(base10 + 0x28) + iVar4);
 
-      *(u8 *)(iVar1 + 4) = uGpffffb854;
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
 
-      *(u8 *)(iVar1 + 5) = uGpffffb855;
-
-      *(u8 *)(iVar1 + 6) = uGpffffb856;
-
-      *(char *)(iVar1 + 7) = cGpffffb857;
+      *(u8 *)(iVar1 + 4) = cr;
+      *(u8 *)(iVar1 + 5) = cg;
+      *(u8 *)(iVar1 + 6) = cb;
+      *(u8 *)(iVar1 + 7) = ca;
 
     }
 
     else {
 
+      *(volatile u8 *)&bGpffffb857 = 0xfe;
+
       iVar4 = (uVar5 & 0xffff) * 4;
 
-      iVar1 = *(int *)(*(int *)(*(int *)(iVar6 + 0x10) + 0x28) + iVar4);
+      iVar1 = *(int *)(*(int *)(base10 + 0x28) + iVar4);
 
-      *(u8 *)(iVar1 + 4) = uGpffffb854;
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
 
-      *(u8 *)(iVar1 + 5) = uGpffffb855;
+      *(u8 *)(iVar1 + 4) = cr;
+      *(u8 *)(iVar1 + 5) = cg;
+      *(u8 *)(iVar1 + 6) = cb;
+      *(u8 *)(iVar1 + 7) = ca;
 
-      *(u8 *)(iVar1 + 6) = uGpffffb856;
-
-      *(u8 *)(iVar1 + 7) = 0xfe;
-
-      cGpffffb857 = -1;
+      *(volatile u8 *)&bGpffffb857 = 0xff;
 
     }
 
-    if (cGpffffb857 != -1) {
+    base14 = *(int *)(iVar6 + 0x14);
 
-      iVar1 = *(int *)(*(int *)(*(int *)(iVar6 + 0x14) + 0x28) + iVar4);
+    if (*(volatile u8 *)&bGpffffb857 != 0xff) {
 
-      *(u8 *)(iVar1 + 4) = uGpffffb854;
+      iVar1 = *(int *)(*(int *)(base14 + 0x28) + iVar4);
 
-      *(u8 *)(iVar1 + 5) = uGpffffb855;
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
 
-      *(u8 *)(iVar1 + 6) = uGpffffb856;
-
-      *(char *)(iVar1 + 7) = cGpffffb857;
+      *(u8 *)(iVar1 + 4) = cr;
+      *(u8 *)(iVar1 + 5) = cg;
+      *(u8 *)(iVar1 + 6) = cb;
+      *(u8 *)(iVar1 + 7) = ca;
 
     }
 
     else {
 
-      iVar1 = *(int *)(*(int *)(*(int *)(iVar6 + 0x14) + 0x28) + iVar4);
+      *(volatile u8 *)&bGpffffb857 = 0xfe;
 
-      *(u8 *)(iVar1 + 4) = uGpffffb854;
+      iVar1 = *(int *)(*(int *)(base14 + 0x28) + iVar4);
 
-      *(u8 *)(iVar1 + 5) = uGpffffb855;
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
 
-      *(u8 *)(iVar1 + 6) = uGpffffb856;
+      *(u8 *)(iVar1 + 4) = cr;
+      *(u8 *)(iVar1 + 5) = cg;
+      *(u8 *)(iVar1 + 6) = cb;
+      *(u8 *)(iVar1 + 7) = ca;
 
-      *(u8 *)(iVar1 + 7) = 0xfe;
-
-      cGpffffb857 = -1;
+      *(volatile u8 *)&bGpffffb857 = 0xff;
 
     }
 
@@ -22248,6 +22271,7 @@ u32 FUN_003330e0(u16 param_1,u16 param_2)
   return uVar3;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -26727,8 +26751,10 @@ void FUN_00338360(int param_1)
 // Fixed DAT_007ce544-547 mistyped u32 (should be u8 packed color bytes);
 // fixed the u8==-1 int-promotion bug (never true) by comparing 0xff;
 // fixed if/else body order to get retail's positive beq-into-body shape.
-// Residual: pure register allocation (a0/a1 vs a2/a3 scratch choices).
-// FUN_00338530 NONMATCHING
+/* The volatile qualifier batch is the one banked on the MATCHED twin
+   FUN_00337E10 (W170): without it b210 CSEs the DAT_007ce547 test load and
+   forwards the 0xfe store, losing two lbu per branch - measured W295. */
+// FUN_00338530
 
 
 void FUN_00338530(int param_1)
@@ -26739,39 +26765,49 @@ void FUN_00338530(int param_1)
 
   int iVar1;
   int iVar2;
+  int model;
+  u8 cr;
+  u8 cg;
+  u8 cb;
+  u8 ca;
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
   iVar2 = *(int *)(iVar1 + 8);
 
-  if (DAT_007ce547 != 0xff) {
+  if (*(volatile u8 *)&DAT_007ce547 != 0xff) {
 
-    iVar2 = *(int *)(iVar2 + 0x14);
+    model = *(int *)(iVar2 + 0x14);
 
-    *(u8 *)(iVar2 + 4) = DAT_007ce544;
+    cr = *(volatile u8 *)&DAT_007ce544;
+    cg = *(volatile u8 *)&DAT_007ce545;
+    cb = *(volatile u8 *)&DAT_007ce546;
+    ca = *(volatile u8 *)&DAT_007ce547;
 
-    *(u8 *)(iVar2 + 5) = DAT_007ce545;
-
-    *(u8 *)(iVar2 + 6) = DAT_007ce546;
-
-    *(char *)(iVar2 + 7) = DAT_007ce547;
+    *(u8 *)(model + 4) = cr;
+    *(u8 *)(model + 5) = cg;
+    *(u8 *)(model + 6) = cb;
+    *(u8 *)(model + 7) = ca;
 
   }
 
   else {
 
+    *(volatile u8 *)&DAT_007ce547 = 0xfe;
 
-    iVar2 = *(int *)(iVar2 + 0x14);
+    model = *(int *)(iVar2 + 0x14);
 
-    *(u8 *)(iVar2 + 4) = DAT_007ce544;
+    cr = *(volatile u8 *)&DAT_007ce544;
+    cg = *(volatile u8 *)&DAT_007ce545;
+    cb = *(volatile u8 *)&DAT_007ce546;
+    ca = *(volatile u8 *)&DAT_007ce547;
 
-    *(u8 *)(iVar2 + 5) = DAT_007ce545;
+    *(u8 *)(model + 4) = cr;
+    *(u8 *)(model + 5) = cg;
+    *(u8 *)(model + 6) = cb;
+    *(u8 *)(model + 7) = ca;
 
-    *(u8 *)(iVar2 + 6) = DAT_007ce546;
-
-    *(u8 *)(iVar2 + 7) = 0xfe;
-
-    DAT_007ce547 = -1;
+    *(volatile u8 *)&DAT_007ce547 = 0xff;
 
   }
 
@@ -26784,6 +26820,13 @@ void FUN_00338530(int param_1)
 
 
 
+/* W295 finding: retail stores the FUN_003233a0_ptr result at pfVar9[2]
+   (sw $v0,8($s4)) where this source has a dead `fVar5 = *(float*)&uVar4`, and
+   retail advances the counter before both pointers in the loop increment.
+   Applying both gives the exact 416B size but the object is then uniformly
+   shifted by one early `addiu $v1,$s5,0x38` address hoist that no source form
+   tried (param_1 vs iVar6 base, pre-loaded clamp, opt_loop_invariants) removes,
+   so nd goes 140 -> 231. Reverted; fix the hoist first, then re-apply. */
 // FUN_003385D0 NONMATCHING
 
 
@@ -26877,6 +26920,7 @@ float * FUN_003385d0(u32 param_1)
   return pfVar9;
 
 }
+
 
 
 
@@ -27273,29 +27317,44 @@ void FUN_00338ac0(u64 param_1)
   return;
 
 }
-// FUN_00338CE0 NONMATCHING
+/* The volatile qualifier batch below is the same one banked on the MATCHED twin
+   FUN_00337E10 (W170): without it b210 CSEs the bGpffffb857 test load and
+   forwards the 0xfe store, losing two lbu (size 124 -> 116) - measured W295. */
+// FUN_00338CE0
 void FUN_00338ce0(int param_1)
 {
   int *chain;
   int model;
   u8 *color;
+  u8 cr;
+  u8 cg;
+  u8 cb;
+  u8 ca;
 
   chain = *(int **)(param_1 + 0x3c);
   model = *chain;
-  if (bGpffffb857 != 0xff) {
+  if (*(volatile u8 *)&bGpffffb857 != 0xff) {
     color = *(u8 **)(model + 0x14);
-    color[4] = bGpffffb854;
-    color[5] = bGpffffb855;
-    color[6] = bGpffffb856;
-    color[7] = bGpffffb857;
+    cr = *(volatile u8 *)&bGpffffb854;
+    cg = *(volatile u8 *)&bGpffffb855;
+    cb = *(volatile u8 *)&bGpffffb856;
+    ca = *(volatile u8 *)&bGpffffb857;
+    color[4] = cr;
+    color[5] = cg;
+    color[6] = cb;
+    color[7] = ca;
   } else {
-    bGpffffb857 = 0xfe;
+    *(volatile u8 *)&bGpffffb857 = 0xfe;
     color = *(u8 **)(model + 0x14);
-    color[4] = bGpffffb854;
-    color[5] = bGpffffb855;
-    color[6] = bGpffffb856;
-    color[7] = bGpffffb857;
-    bGpffffb857 = 0xff;
+    cr = *(volatile u8 *)&bGpffffb854;
+    cg = *(volatile u8 *)&bGpffffb855;
+    cb = *(volatile u8 *)&bGpffffb856;
+    ca = *(volatile u8 *)&bGpffffb857;
+    color[4] = cr;
+    color[5] = cg;
+    color[6] = cb;
+    color[7] = ca;
+    *(volatile u8 *)&bGpffffb857 = 0xff;
   }
 }
 
@@ -35528,36 +35587,55 @@ void FUN_00342460(int param_1,float *param_2)
   *(float *)(param_1 + 0x24) = param_2[1];
   *(float *)(param_1 + 0x28) = param_2[2];
 }
-/* Removing this worsens FUN_00342480 (nd128 -> nd132) - measured W161. */
+/* Same shape as MATCHED FUN_00343790; the pragma hoists the 0xff/0xfe/-1
+   constants and the count load into the preheader - measured W161/W295. */
 #pragma opt_loop_invariants on
-// FUN_00342480 NONMATCHING
+// FUN_00342480
 void FUN_00342480(int param_1)
 {
-  int iVar1;
-  int *piVar1;
-  int *piVar2;
-  u32 uVar3;
+  u32 *chain;
+  u32 *cursor;
+  u32 *header;
+  u32 *records;
+  u8 *entry;
+  u32 count;
+  u32 n;
+  u8 cr;
+  u8 cg;
+  u8 cb;
+  u8 ca;
 
-  iVar1 = *(int *)(param_1 + 0x3c);
-  piVar1 = *(int **)iVar1;
-  for (uVar3 = 0; uVar3 < (u32)*(int *)(*(int *)(param_1 + 0x40) + 0x38); uVar3++) {
-    piVar2 = (int *)*(int *)(*(int *)(iVar1 + 4) + 0x28 + (uVar3 & 0xffff) * 4);
-    if (bGpffffb857 == 0xff) {
-      bGpffffb857 = 0xfe;
-      *((u8 *)piVar2 + 4) = bGpffffb854;
-      *((u8 *)piVar2 + 5) = bGpffffb855;
-      *((u8 *)piVar2 + 6) = bGpffffb856;
-      *((u8 *)piVar2 + 7) = bGpffffb857;
-      bGpffffb857 = 0xff;
+  chain = *(u32 **)(param_1 + 0x3c);
+  cursor = (u32 *)*chain;
+  header = *(u32 **)(param_1 + 0x40);
+  count = header[0xe];
+  for (n = 0; n < count; n = n + 1, cursor = (u32 *)((u8 *)cursor + 0x30)) {
+    records = (u32 *)chain[1];
+    if (*(volatile u8 *)&bGpffffb857 != 0xff) {
+      entry = (u8 *)((u32 *)records[0xa])[n & 0xffff];
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
+      entry[4] = cr;
+      entry[5] = cg;
+      entry[6] = cb;
+      entry[7] = ca;
     }
     else {
-      *((u8 *)piVar2 + 4) = bGpffffb854;
-      *((u8 *)piVar2 + 5) = bGpffffb855;
-      *((u8 *)piVar2 + 6) = bGpffffb856;
-      *((u8 *)piVar2 + 7) = bGpffffb857;
+      *(volatile u8 *)&bGpffffb857 = 0xfe;
+      entry = (u8 *)((u32 *)records[0xa])[n & 0xffff];
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
+      entry[4] = cr;
+      entry[5] = cg;
+      entry[6] = cb;
+      entry[7] = ca;
+      *(volatile u8 *)&bGpffffb857 = 0xff;
     }
-    *piVar1 = -1;
-    piVar1 = (int *)((u8 *)piVar1 + 0x30);
+    *cursor = 0xffffffff;
   }
 }
 #pragma opt_loop_invariants off
@@ -36422,9 +36500,9 @@ void FUN_00343410(int param_1)
 
   iVar7 = (int)param_1;
 
-  iVar1 = *(int *)(iVar7 + 0x40);
-
   puVar2 = (u16 *)(*(u32 **)(iVar7 + 0x3c))[1];
+
+  iVar1 = *(int *)(iVar7 + 0x40);
 
   if ((*(u32 *)(iVar7 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
 
@@ -36436,7 +36514,7 @@ void FUN_00343410(int param_1)
 
     c2s1 = (u32)(iVar5);
 
-    *(u32 *)packed1 = mdlVuModulate(&c1s1,&c2s1,DAT_007cae4c);
+    *(u32 *)packed1 = mdlVuModulateStacked(&c1s1,&c2s1,DAT_007cae4c);
 
     uVar3 = *(u32 *)(iVar1 + 0x38);
 
@@ -36452,7 +36530,7 @@ void FUN_00343410(int param_1)
 
         c2s2 = (u32)(*(u32 *)packed1);
 
-        *(u32 *)packed2 = mdlVuModulate(&c1s2,&c2s2,DAT_007cae4c);
+        *(u32 *)packed2 = mdlVuModulateStacked(&c1s2,&c2s2,DAT_007cae4c);
 
         cStack_1 = packed2[3];
 
@@ -36547,7 +36625,11 @@ void FUN_00343410(int param_1)
   return;
 
 }
-// FUN_00343790 NONMATCHING
+/* Fixed the records base offset (byte 0xa -> word 0xa, retail lw 0x28) and
+   recomputed it per iteration; volatile batch as on MATCHED twin FUN_00337E10;
+   the pragma hoists the 0xff/0xfe/-1 constants into the preheader - W295. */
+// FUN_00343790
+#pragma opt_loop_invariants on
 void FUN_00343790(int param_1)
 {
   u32 *chain;
@@ -36557,32 +36639,45 @@ void FUN_00343790(int param_1)
   u8 *entry;
   u32 count;
   u32 n;
+  u8 cr;
+  u8 cg;
+  u8 cb;
+  u8 ca;
 
   chain = *(u32 **)(param_1 + 0x3c);
   cursor = (u32 *)*chain;
   header = *(u32 **)(param_1 + 0x40);
   count = header[0xe];
-  records = *(u32 **)(chain[1] + 0xa);
-  for (n = 0; n < count; n = n + 1) {
-    entry = (u8 *)records[n & 0xffff];
-    if (bGpffffb857 == 0xff) {
-      bGpffffb857 = 0xfe;
-      entry[4] = (u8)uGpffffb854;
-      entry[5] = (u8)uGpffffb855;
-      entry[6] = (u8)uGpffffb856;
-      entry[7] = bGpffffb857;
-      bGpffffb857 = 0xff;
+  for (n = 0; n < count; n = n + 1, cursor = (u32 *)((u8 *)cursor + 0x30)) {
+    records = (u32 *)chain[1];
+    if (*(volatile u8 *)&bGpffffb857 != 0xff) {
+      entry = (u8 *)((u32 *)records[0xa])[n & 0xffff];
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
+      entry[4] = cr;
+      entry[5] = cg;
+      entry[6] = cb;
+      entry[7] = ca;
     }
     else {
-      entry[4] = (u8)uGpffffb854;
-      entry[5] = (u8)uGpffffb855;
-      entry[6] = (u8)uGpffffb856;
-      entry[7] = bGpffffb857;
+      *(volatile u8 *)&bGpffffb857 = 0xfe;
+      entry = (u8 *)((u32 *)records[0xa])[n & 0xffff];
+      cr = *(volatile u8 *)&bGpffffb854;
+      cg = *(volatile u8 *)&bGpffffb855;
+      cb = *(volatile u8 *)&bGpffffb856;
+      ca = *(volatile u8 *)&bGpffffb857;
+      entry[4] = cr;
+      entry[5] = cg;
+      entry[6] = cb;
+      entry[7] = ca;
+      *(volatile u8 *)&bGpffffb857 = 0xff;
     }
     *cursor = 0xffffffff;
-    cursor = (u32 *)((u8 *)cursor + 0x30);
   }
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -37525,7 +37620,11 @@ void FUN_00344720(int param_1)
   return;
 
 }
-// FUN_00344AA0 NONMATCHING
+/* Same shape as MATCHED FUN_00343790: records base is word 0xa (retail lw 0x28)
+   recomputed per iteration, volatile batch as on MATCHED twin FUN_00337E10,
+   pragma hoists the 0xff/0xfe/-1 constants into the preheader - W295. */
+// FUN_00344AA0
+#pragma opt_loop_invariants on
 void FUN_00344AA0(int param_1)
 {
   u32 *chain;
@@ -37535,32 +37634,45 @@ void FUN_00344AA0(int param_1)
   u8 *entry;
   u32 count;
   u32 n;
+  u8 cr;
+  u8 cg;
+  u8 cb;
+  u8 ca;
 
   chain = *(u32 **)(param_1 + 0x3c);
   cursor = (u32 *)*chain;
   header = *(u32 **)(param_1 + 0x40);
   count = header[0xe];
-  records = *(u32 **)(chain[1] + 0xa);
-  for (n = 0; n < count; n = n + 1) {
-    entry = (u8 *)records[n & 0xffff];
-    if (DAT_007ce547 == 0xff) {
-      DAT_007ce547 = 0xfe;
-      entry[4] = DAT_007ce544;
-      entry[5] = DAT_007ce545;
-      entry[6] = DAT_007ce546;
-      entry[7] = 0xfe;
-      DAT_007ce547 = 0xff;
+  for (n = 0; n < count; n = n + 1, cursor = (u32 *)((u8 *)cursor + 0x2c)) {
+    records = (u32 *)chain[1];
+    if (*(volatile u8 *)&DAT_007ce547 != 0xff) {
+      entry = (u8 *)((u32 *)records[0xa])[n & 0xffff];
+      cr = *(volatile u8 *)&DAT_007ce544;
+      cg = *(volatile u8 *)&DAT_007ce545;
+      cb = *(volatile u8 *)&DAT_007ce546;
+      ca = *(volatile u8 *)&DAT_007ce547;
+      entry[4] = cr;
+      entry[5] = cg;
+      entry[6] = cb;
+      entry[7] = ca;
     }
     else {
-      entry[4] = DAT_007ce544;
-      entry[5] = DAT_007ce545;
-      entry[6] = DAT_007ce546;
-      entry[7] = DAT_007ce547;
+      *(volatile u8 *)&DAT_007ce547 = 0xfe;
+      entry = (u8 *)((u32 *)records[0xa])[n & 0xffff];
+      cr = *(volatile u8 *)&DAT_007ce544;
+      cg = *(volatile u8 *)&DAT_007ce545;
+      cb = *(volatile u8 *)&DAT_007ce546;
+      ca = *(volatile u8 *)&DAT_007ce547;
+      entry[4] = cr;
+      entry[5] = cg;
+      entry[6] = cb;
+      entry[7] = ca;
+      *(volatile u8 *)&DAT_007ce547 = 0xff;
     }
     *cursor = 0xffffffff;
-    cursor = (u32 *)((u8 *)cursor + 0x2c);
   }
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -39701,7 +39813,10 @@ void FUN_00347160(u32 *param_1,float param_2)
 
 
 
-// FUN_00347170 NONMATCHING
+/* Removing this loses FUN_00347170 (MATCH nd0 -> MISMATCH): retail hoists the
+   -1 fill constant into the loop preheader - measured W295. */
+#pragma opt_loop_invariants on
+// FUN_00347170
 
 
 u32 FUN_00347170(u64 param_1)
@@ -39716,9 +39831,9 @@ u32 FUN_00347170(u64 param_1)
 
   u32 uVar4;
 
-  u32 uVar5;
-
   u32 *puVar6;
+
+  u32 uVar5;
 
   u8 (*pauVar7) [16];
 
@@ -39775,6 +39890,7 @@ u32 FUN_00347170(u64 param_1)
   return uVar4;
 
 }
+#pragma opt_loop_invariants off
 
 // FUN_003472D0
 void FUN_003472d0(void)

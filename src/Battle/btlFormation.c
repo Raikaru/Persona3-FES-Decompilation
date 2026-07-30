@@ -822,7 +822,7 @@ extern void func_002c3e20(u64 param_1,u64 param_2);
 extern void func_002c3e60(u64 param_1,u64 param_2);
 extern void func_002c3ea0(u64 param_1,u64 param_2);
 extern u32 func_002c3ee0(int param_1);
-extern void func_002c3f00(int param_1);
+extern u32 func_002c3f00(int param_1);
 extern void func_002c4000(u64 param_1,u64 param_2);
 extern void func_002c4040(u64 param_1,u64 param_2);
 extern void func_002c4080(u64 param_1,u64 param_2);
@@ -3521,41 +3521,49 @@ void LAB_002bd210(u32 **param_1)
 }
 
 
-// FUN_002bd080 NONMATCHING
+// FUN_002bd080
 
 u32 func_002bd080(int *work)
 {
   int unit;
-  s32 value;
-  s32 maximum;
 
   unit = *work;
   switch (*(u8 *)((int)work + 4)) {
   case 0:
-    value = (s16)func_002ffd70(*(u32 *)(unit + 0xa2c));
-    maximum = (s16)func_002ffdf0(*(u32 *)(unit + 0xa2c));
-    if (*(s16 *)((int)work + 6) != 0) {
-      value = (s16)(value + *(s16 *)((int)work + 6));
-      if (value > (s16)maximum) {
-        value = (s16)maximum;
-      } else if (value < 0) {
-        value = 0;
+    {
+      s32 value;
+      s32 maximum;
+
+      value = (s16)func_002ffd70(*(u32 *)(unit + 0xa2c));
+      maximum = (s16)func_002ffdf0(*(u32 *)(unit + 0xa2c));
+      if (*(s16 *)((int)work + 6) != 0) {
+        value = (s16)(value + *(s16 *)((int)work + 6));
+        if (value > (s16)maximum) {
+          value = (s16)maximum;
+        } else if (value < 0) {
+          value = 0;
+        }
       }
+      *(float *)(unit + 0xa04) = (float)(int)value / (float)(int)maximum;
     }
-    *(float *)(unit + 0xa04) = (float)(int)value / (float)(int)maximum;
     break;
   case 1:
-    value = (s16)func_002ffd80(*(u32 *)(unit + 0xa2c));
-    maximum = (s16)func_00300100(*(u32 *)(unit + 0xa2c));
-    if (*(s16 *)((int)work + 6) != 0) {
-      value = (s16)(value + *(s16 *)((int)work + 6));
-      if (value > (s16)maximum) {
-        value = (s16)maximum;
-      } else if (value < 0) {
-        value = 0;
+    {
+      s32 value;
+      s32 maximum;
+
+      value = (s16)func_002ffd80(*(u32 *)(unit + 0xa2c));
+      maximum = (s16)func_00300100(*(u32 *)(unit + 0xa2c));
+      if (*(s16 *)((int)work + 6) != 0) {
+        value = (s16)(value + *(s16 *)((int)work + 6));
+        if (value > (s16)maximum) {
+          value = (s16)maximum;
+        } else if (value < 0) {
+          value = 0;
+        }
       }
+      *(float *)(unit + 0xa18) = (float)(int)value / (float)(int)maximum;
     }
-    *(float *)(unit + 0xa18) = (float)(int)value / (float)(int)maximum;
     break;
   }
   return 1;
@@ -7152,19 +7160,19 @@ bool func_002c3400(int param_1)
 }
 
 #pragma alias func_002c3430_u32 func_002c3430
-// FUN_002c3430 NONMATCHING
+// FUN_002c3430
 
 u32
 func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int rejectedResult,
                   code predicate)
 {
   extern int func_002c5030(int,int,int,int);
+
   int candidates[12];
   int unit;
   int unitData;
   int index;
   int candidateCount;
-  int chosenIndex;
   int loopFlags;
   int requireFlag;
   int requireActive;
@@ -7221,9 +7229,11 @@ func_002c3430_u32(int formation,u32 selector,u32 excludedFlags,int options,int r
   }
 
   if ((flags & 4) == 0) {
+    int chosenIndex;
+
     chosenIndex = 0;
-    if ((u16)candidateCount >= 2) {
-      chosenIndex = func_002ffbc0_noarg();
+    if (1 < (u16)candidateCount) {
+      chosenIndex = func_002ffbc0_u16((u16)candidateCount);
     }
     *(int *)(formation + 0x38) = candidates[(u16)chosenIndex];
     *(u16 *)(formation + 0x6a) = 1;
@@ -7472,15 +7482,16 @@ u32 func_002c3ee0(int param_1)
   return 1;
 }
 
-// FUN_002c3f00 NONMATCHING
+// FUN_002c3f00
 
-void func_002c3f00(int param_1)
+u32 func_002c3f00(int param_1)
 
 {
-  int iVar1 = 0;
-  u16 uVar3 = 0;
+  extern u32 func_002ffbc0(u32);
+  int iVar1;
+  u16 uVar3;
   int aiStack_30[12];
-  
+
   uVar3 = 0;
   for (iVar1 = *(int *)(iGpffffb6fc + 0x14c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x4a8)) {
     if ((((param_1 != iVar1) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)) &&
@@ -7495,12 +7506,13 @@ void func_002c3f00(int param_1)
   if (uVar3 == 0) {
     *(int *)(param_1 + 0x38) = param_1;
     *(u16 *)(param_1 + 0x6a) = 1;
+    return 1;
   }
   else {
-    *(int *)(param_1 + 0x38) = aiStack_30[func_002ffbc0_noarg_u32()];
+    *(int *)(param_1 + 0x38) = aiStack_30[func_002ffbc0(uVar3)];
     *(u16 *)(param_1 + 0x6a) = 1;
+    return 1;
   }
-  return;
 }
 
 // FUN_002c4000
@@ -7905,23 +7917,28 @@ u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,int param_5)
   u32 uVar4;
   int iVar5;
   s64 lVar6;
+  s64 lVar9;
   u32 uVar8;
   u16 uVar7;
-  s64 lVar9;
+  int count;
+  int mode;
   
   uVar3 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar4 = func_002ffdf0(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar8 = 0xffffffff;
   lVar9 = 0xffffff;
-  param_4 &= 0xffff;
-  param_5 &= 0xffff;
-  for (uVar7 = 0; uVar7 < param_4; uVar7++) {
+  mode = param_5;
+  mode &= 0xffff;
+  count = param_4 & 0xffff;
+  for (uVar7 = 0; uVar7 < count; uVar7++) {
     uVar2 = param_3[uVar7];
     if (uVar2 != 0 && uVar2 < 0x1d0) {
       cVar1 = *(u8 *)(DAT_007ce3f8 + ((u32)uVar2 * 44) + 8);
-      if ((param_5 != 0 || cVar1 == 1) && (param_5 != 1 || cVar1 == 0)) {
-        iVar5 = func_00303130_s32(uVar2,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-                             *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,0,1);
+      if ((mode != 0 || cVar1 == 1) && (mode != 1 || cVar1 == 0)) {
+        int dataA = *(int *)(param_1 + 0x30);
+        int dataB = *(int *)(param_2 + 0x30);
+        iVar5 = func_00303130_s32(uVar2,*(u32 *)(dataA + 0xa2c),
+                             *(u32 *)(dataB + 0xa2c),1,1,1,0,1);
         lVar6 = func_0051e0e0((uVar4) - (uVar3 + iVar5));
         if (lVar6 < lVar9) {
           uVar8 = param_3[uVar7];
@@ -8773,30 +8790,31 @@ u16 func_002c6ba0(int param_1)
 
 undefined* func_002c6e30(int unit, u32 group)
 {
+  extern u32 func_002ffbc0(u32);
   u16 unitId;
   u16 total;
   u16 random;
   u16 cumulative;
-  s32 i;
+  u16 i;
   s32 weight;
   u8* weights;
 
   unitId = *(u16*)(*(int*)(unit + 0x30) + 0xa4);
-  weights = DAT_007ce41c + ((unitId * 0x29) * 4) + (group & 0xffff) * 0x28;
+  weights = DAT_007ce41c + (unitId * 0x29) * 4 + (group & 0xffff) * 0x28;
   total = 0;
-  for (i = 0; i < 5; i = (i + 1) & 0xffff) {
+  for (i = 0; i < 5; i++) {
     total += weights[i * 8 + 0x2c];
   }
   if (total == 0) {
     return &DAT_007cc740;
   }
 
-  random = func_002ffbc0();
+  random = func_002ffbc0(total);
   cumulative = 0;
-  for (i = 0; i < 5; i = (i + 1) & 0xffff) {
+  for (i = 0; i < 5; i++) {
     weight = weights[i * 8 + 0x2c];
     cumulative += weight;
-    if (random <= cumulative && weight != 0) {
+    if (random <= cumulative && weight > 0) {
       return weights + i * 8 + 0x2c;
     }
   }
@@ -8865,10 +8883,14 @@ void func_002c70d0(int param_1, int param_2)
     break;
   case 1:
     {
-      u8* table = DAT_007ce41c;
-      u8* action = table + ((u32)baseActionId * 0x28 + (u32)baseActionId) * 4;
-      actionId = *(u16 *)(action + 2);
-    data = (u32)DAT_007ce4d0;
+      u8 *table;
+      u32 off;
+
+      table = DAT_007ce41c;
+      off = ((u32)baseActionId * 0x28 + (u32)baseActionId) * 4;
+      table = table + off;
+      actionId = *(u16 *)(table + 2);
+      data = (u32)DAT_007ce4d0;
     }
     break;
   }

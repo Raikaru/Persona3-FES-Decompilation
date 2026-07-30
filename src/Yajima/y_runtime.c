@@ -5136,7 +5136,7 @@ void FUN_004343d0(int param_1)
 }
 
 #pragma pop
-// FUN_004344F0 NONMATCHING
+// FUN_004344F0
 
 void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float *param_5)
 
@@ -5156,8 +5156,8 @@ void FUN_004344f0(float *param_2,float param_1,int param_3,float *param_4,float 
   start = *(YVec3f *)param_4;
   end = *(YVec3f *)param_5;
   iVar2 = *(int *)(param_3 + 0x3c);
-  fVar5 = *(float *)DAT_006b4610_abs;
-  uVar4 = *(u64 *)DAT_006b4608_abs;
+  uVar4 = *(volatile u64 *)DAT_006b4608_abs;
+  fVar5 = *(volatile float *)DAT_006b4610_abs;
   *(u64 *)&axis = uVar4;
   axis.z = fVar5;
   delta.x = start.x - end.x;
@@ -11995,7 +11995,7 @@ u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_00447F90 NONMATCHING
+// FUN_00447F90
 
 void FUN_00447f90(float *param_1,int param_2,char param_3)
 
@@ -12017,8 +12017,8 @@ void FUN_00447f90(float *param_1,int param_2,char param_3)
   index = (int)param_3 * 4;
   table = iGpffffb9fc_ptr;
   row = table;
-  row = row + index;
-  cVar1 = *(s8 *)(row + 4);
+  row = (u8 *)(index + (int)row);
+  cVar1 = *(volatile s8 *)(row + 4);
   {
     struct CoordinateValues *coordinateBase;
     
@@ -15799,13 +15799,13 @@ u32 FUN_00452a70(char param_1,char param_2)
 void FUN_00452f70(YVec3f *param_1,int param_2)
 
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
   int columnOffset;
+  int iVar3;
+  int iVar1;
   u32 uVar5;
   u32 uVar6;
+  int iVar2;
+  int iVar4;
   u32 uVar7;
   u32 uVar8;
   YVec3f position;
@@ -15816,13 +15816,16 @@ void FUN_00452f70(YVec3f *param_1,int param_2)
   
   iVar1 = *(int *)(param_2 + 0x3c);
   for (uVar5 = 0; (int)uVar5 < 0x10; uVar5 = uVar5 + 1) {
+    uVar6 = 0;
     iVar3 = uVar5 * 0x100;
-    for (uVar6 = 0; (int)uVar6 < 0x10; uVar6 = uVar6 + 1) {
+    for (; (int)uVar6 < 0x10; uVar6 = uVar6 + 1) {
       columnOffset = uVar6 * 0x10;
       iVar4 = FUN_001b9120_u32();
-      if ((*(u8 *)(iVar3 + iVar4 + columnOffset + 0x49) == 1) &&
-         (iVar4 = FUN_001b9120_u32(),
-         *(u8 *)(iVar3 + iVar4 + columnOffset + 0x4a) == 8)) {
+      iVar2 = iVar3 + iVar4;
+      iVar2 = iVar2 + columnOffset;
+      if ((*(u8 *)(iVar2 + 0x49) == 1) &&
+         (iVar4 = FUN_001b9120_u32(), iVar2 = iVar3 + iVar4, iVar2 = iVar2 + columnOffset,
+         *(u8 *)(iVar2 + 0x4a) == 8)) {
         uVar7 = uVar6;
         uVar8 = uVar5;
         goto LAB_00453278;
@@ -15831,33 +15834,46 @@ void FUN_00452f70(YVec3f *param_1,int param_2)
   }
 LAB_00453278:
   for (uVar5 = uVar8; (int)uVar5 < (int)(uVar8 + 2); uVar5 = uVar5 + 1) {
+    uVar6 = uVar7;
     iVar3 = uVar5 * 0x100;
-    for (uVar6 = uVar7; (int)uVar6 < (int)(uVar7 + 2); uVar6 = uVar6 + 1) {
+    for (; (int)uVar6 < (int)(uVar7 + 2); uVar6 = uVar6 + 1) {
       columnOffset = uVar6 * 0x10;
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 1) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + -0xb6) != 8)) {
+      iVar2 = columnOffset + iVar2;
+      iVar2 = iVar2 + iVar3;
+      if (((*(u8 *)(iVar2 + 0x53) & 1) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         *(u8 *)(iVar2 + -0xb6) != 8)) {
         FUN_001bf220(&position,uVar6,uVar5 - 1);
         FUN_001bf220(&northPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = northPosition;
       }
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 2) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + 0x3a) != 8)) {
+      iVar2 = columnOffset + iVar2;
+      iVar2 = iVar2 + iVar3;
+      if (((*(u8 *)(iVar2 + 0x53) & 2) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         *(u8 *)(iVar2 + 0x3a) != 8)) {
         FUN_001bf220(&position,uVar6 - 1,uVar5);
         FUN_001bf220(&westPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = westPosition;
       }
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 4) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + 0x14a) != 8)) {
+      iVar2 = columnOffset + iVar2;
+      iVar2 = iVar2 + iVar3;
+      if (((*(u8 *)(iVar2 + 0x53) & 4) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         *(u8 *)(iVar2 + 0x14a) != 8)) {
         FUN_001bf220(&position,uVar6,uVar5 + 1);
         FUN_001bf220(&southPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = southPosition;
       }
       iVar2 = FUN_001b9120_u32();
-      if (((*(u8 *)(columnOffset + iVar2 + iVar3 + 0x53) & 8) != 0) &&
-         (iVar2 = FUN_001b9120_u32(), *(u8 *)(columnOffset + iVar2 + iVar3 + 0x5a) != 8)) {
+      iVar2 = columnOffset + iVar2;
+      iVar2 = iVar2 + iVar3;
+      if (((*(u8 *)(iVar2 + 0x53) & 8) != 0) &&
+         (iVar2 = FUN_001b9120_u32(), iVar2 = columnOffset + iVar2, iVar2 = iVar2 + iVar3,
+         *(u8 *)(iVar2 + 0x5a) != 8)) {
         FUN_001bf220(&position,uVar6 + 1,uVar5);
         FUN_001bf220(&eastPosition,uVar6,uVar5);
         *(YVec3f *)(iVar1 + 0x34) = eastPosition;
@@ -16118,18 +16134,19 @@ u32 FUN_004534b0(char param_1)
   return uVar4;
 }
 
-// FUN_00453D90 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00453D90
 void FUN_00453d90(char param_1)
 {
   int iVar4;
-  u8 bVar5;
+  int bVar5;
   int iVar6;
   int iVar7;
   int iVar8;
   short sVar2;
-  short sVar3;
-  short sVar4;
-  short sVar5;
+  int sVar4;
+  int sVar5;
   int iVar9;
   int iVar10;
   u8 bVar1;
@@ -16149,18 +16166,21 @@ void FUN_00453d90(char param_1)
   bVar2 = *(volatile /* Removing this function's qualifier batch worsens FUN_00453d90 (NONMATCHING nd98 -> NONMATCHING nd113, size 320 -> 320) - measured W170. */ u8 *)(iVar4 + 0x8b);
   bVar1 = *(volatile /* Removing this function's qualifier batch worsens FUN_00453d90 (NONMATCHING nd98 -> NONMATCHING nd113, size 320 -> 320) - measured W170. */ u8 *)(iVar4 + 0x8c);
   iVar7 = *(int *)(iVar4 + 0x94);
-  iVar8 = iVar4 + iVar7 * 4;
+  iVar8 = iVar7 * 4;
+  iVar8 = iVar8 + iVar4;
   *(u16 *)(iVar8 + 0xc98) = bVar2;
   iVar7 = *(int *)(iVar4 + 0x94);
-  iVar8 = iVar4 + iVar7 * 4;
+  iVar8 = iVar7 * 4;
+  iVar8 = iVar8 + iVar4;
   *(u16 *)(iVar8 + 0xc9a) = bVar1;
   do {
-    iVar8 = iVar4 + iVar7 * 4;
+    iVar7 = *(int *)(iVar4 + 0x94);
+    iVar8 = iVar7 * 4 + iVar4;
     sVar2 = *(short *)(iVar8 + 0xc9a);
     iVar9 = (int)sVar2 << 4;
-    sVar3 = *(short *)(iVar8 + 0xc98);
-    iVar9 = iVar9 + (int)sVar3;
-    iVar9 = iVar4 + iVar9 * 8;
+    iVar10 = *(short *)(iVar8 + 0xc98);
+    iVar10 = iVar10 + iVar9;
+    iVar9 = iVar4 + iVar10 * 8;
     sVar4 = *(short *)(iVar9 + 0x9c);
     sVar5 = *(short *)(iVar9 + 0x9e);
     *(int *)(iVar4 + 0x94) = iVar7 + 1;
@@ -16179,11 +16199,12 @@ void FUN_00453d90(char param_1)
       *(u16 *)(iVar8 + 0xc9a) = sVar5;
     }
     iVar6 = iVar6 + 1;
-    if (99 < iVar6) {
+    if (iVar6 >= 100) {
       bVar5 = 1;
     }
-  } while (!bVar5);
+  } while (bVar5 == 0);
 }
+#pragma pop
 
 // FUN_00453ED0
 
@@ -17697,9 +17718,9 @@ int FUN_00457410(void)
   return result;
 }
 
-// MWCC b210 floor: the final call setup emits addiu $a1,$v0,0x100 before lw $a0,0x1e0($v1);
-// retail reverses these two independent argument instructions.
-// FUN_00457470 NONMATCHING
+// W295: retail reloads row+0x54/row+0x168 for the FUN_001adc20 call (no CSE from the
+// previous call) - three volatile-ordered loads reproduce it; not a scheduling floor.
+// FUN_00457470
 
 u32 FUN_00457470(int param_1)
 
@@ -17736,8 +17757,12 @@ u32 FUN_00457470(int param_1)
   FUN_003182d0(*(u32 *)(row + 0x50),0,0,0x10,1);
   FUN_001adff0_typed((void *)(*(u32 *)(*(int *)(row + 0x54) + 0x1e0)),
                       &axis,*(f32 *)(*(int *)(row + 0x168) + 0x10c));
-  FUN_001adc20_typed((void *)(*(u32 *)(*(int *)(row + 0x54) + 0x1e0)),
-                     (const void *)(*(int *)(row + 0x168) + 0x100));
+  {
+    int b54 = *(volatile int *)(row + 0x54);
+    int b168 = *(volatile int *)(row + 0x168);
+    u32 hdl = *(volatile u32 *)(b54 + 0x1e0);
+    FUN_001adc20_typed((void *)hdl, (const void *)(b168 + 0x100));
+  }
   FUN_001a0dc0_typed(**(u16 **)(row + 0x54),1);
   FUN_001ad870_typed((void *)(*(u32 *)(*(int *)(row + 0x54) + 0x1e0)),0x40000000);
   uVar2 = (u32)FUN_001af930_typed((void *)0,(void *)(*(u32 *)(row + 0x54)));
@@ -17751,10 +17776,10 @@ u32 FUN_004575e0(int param_1)
 
 {
   char *puVar1;
-  u32 uVar2;
+  u32 uVar5;
   u32 uVar3;
   u32 uVar4;
-  u32 uVar5;
+  u32 uVar2;
   u32 lVar6;
   int iVar7;
   
