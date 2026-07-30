@@ -5410,6 +5410,50 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 vertices[0] = blended;
             }
         }
+        {
+            u32 curveIndex;
+            u8* curveRecord;
+            RuntimeVec3 curve0;
+            RuntimeVec3 curve1;
+            RuntimeVec3 curve2;
+            RuntimeVec3 curve3;
+            f32 curveT;
+            f32 curveInverse;
+            f32 curveT2;
+            f32 curveInverse2;
+            f32 curveT3;
+            f32 curveInverse3;
+
+            for (curveIndex = 0; curveIndex < count; curveIndex++)
+            {
+                curve0 = vector0[curveIndex];
+                curve1 = vector1[curveIndex];
+                curve2 = vector2[curveIndex];
+                curve3 = vector3[curveIndex];
+                curveT = (f32)curveIndex / (f32)count;
+                curveInverse = 1.0f - curveT;
+                curveT2 = curveT * curveT;
+                curveInverse2 = curveInverse * curveInverse;
+                curveT3 = curveT2 * curveT;
+                curveInverse3 = curveInverse2 * curveInverse;
+                blended.x = curve0.x * curveInverse3 +
+                            3.0f * curve1.x * curveInverse2 * curveT +
+                            3.0f * curve2.x * curveInverse * curveT2 +
+                            curve3.x * curveT3;
+                blended.y = curve0.y * curveInverse3 +
+                            3.0f * curve1.y * curveInverse2 * curveT +
+                            3.0f * curve2.y * curveInverse * curveT2 +
+                            curve3.y * curveT3;
+                blended.z = curve0.z * curveInverse3 +
+                            3.0f * curve1.z * curveInverse2 * curveT +
+                            3.0f * curve2.z * curveInverse * curveT2 +
+                            curve3.z * curveT3;
+                curveRecord = (u8*)vertices + curveIndex * 0x24 + 0x30;
+                *(f32*)(curveRecord + 0) = blended.x;
+                *(f32*)(curveRecord + 4) = blended.y;
+                *(f32*)(curveRecord + 8) = blended.z;
+            }
+        }
         if (work->state == 2 && vertices != NULL &&
             vector2 != NULL && vector3 != NULL)
         {
@@ -5467,6 +5511,35 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             edge1.z = vector3[geometryIndex].z -
                       vector2[geometryIndex].z;
             func_004c69f0(&edge1, &edge1);
+            if (count != 0 && vector0 != NULL && vector1 != NULL)
+            {
+                u32 recordIndex;
+                u8* recordBase;
+
+                recordBase = (u8*)vertices;
+                for (recordIndex = 0; recordIndex < count; recordIndex++)
+                {
+                    *(f32*)(recordBase + 0) =
+                        vector0[recordIndex].x + vector1[recordIndex].x;
+                    *(f32*)(recordBase + 4) =
+                        vector0[recordIndex].y + vector1[recordIndex].y;
+                    *(f32*)(recordBase + 8) =
+                        vector0[recordIndex].z + vector1[recordIndex].z;
+                    *(f32*)(recordBase + 0xc) =
+                        vector2[recordIndex].x + vector3[recordIndex].x;
+                    *(f32*)(recordBase + 0x10) =
+                        vector2[recordIndex].y + vector3[recordIndex].y;
+                    *(f32*)(recordBase + 0x14) =
+                        vector2[recordIndex].z + vector3[recordIndex].z;
+                    *(f32*)(recordBase + 0x18) =
+                        (*(f32*)(recordBase + 0) +
+                         *(f32*)(recordBase + 0xc)) * 0.5f;
+                    *(f32*)(recordBase + 0x1c) =
+                        (*(f32*)(recordBase + 4) +
+                         *(f32*)(recordBase + 0x10)) * 0.5f;
+                    recordBase += 0x24;
+                }
+            }
             normal0.x = edge1.y * edge0.z - edge1.z * edge0.y;
             normal0.y = edge1.z * edge0.x - edge1.x * edge0.z;
             normal0.z = edge1.x * edge0.y - edge1.y * edge0.x;
@@ -5489,81 +5562,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
             blended.y = vector2[geometryIndex].y + normal0.y;
             blended.z = vector2[geometryIndex].z + normal0.z;
             vertices[geometryIndex] = blended;
-        }
-        if (work->state == 2 && vertices != NULL && count != 0 &&
-            vector0 != NULL && vector1 != NULL &&
-            vector2 != NULL && vector3 != NULL)
-        {
-            u32 recordIndex;
-            u8* recordBase;
-
-            recordBase = (u8*)vertices;
-            for (recordIndex = 0; recordIndex < count; recordIndex++)
-            {
-                *(f32*)(recordBase + 0) =
-                    vector0[recordIndex].x + vector1[recordIndex].x;
-                *(f32*)(recordBase + 4) =
-                    vector0[recordIndex].y + vector1[recordIndex].y;
-                *(f32*)(recordBase + 8) =
-                    vector0[recordIndex].z + vector1[recordIndex].z;
-                *(f32*)(recordBase + 0xc) =
-                    vector2[recordIndex].x + vector3[recordIndex].x;
-                *(f32*)(recordBase + 0x10) =
-                    vector2[recordIndex].y + vector3[recordIndex].y;
-                *(f32*)(recordBase + 0x14) =
-                    vector2[recordIndex].z + vector3[recordIndex].z;
-                *(f32*)(recordBase + 0x18) =
-                    (*(f32*)(recordBase + 0) +
-                     *(f32*)(recordBase + 0xc)) * 0.5f;
-                *(f32*)(recordBase + 0x1c) =
-                    (*(f32*)(recordBase + 4) +
-                     *(f32*)(recordBase + 0x10)) * 0.5f;
-                recordBase += 0x24;
-            }
-        }
-        {
-            u32 curveIndex;
-            u8* curveRecord;
-            RuntimeVec3 curve0;
-            RuntimeVec3 curve1;
-            RuntimeVec3 curve2;
-            RuntimeVec3 curve3;
-            f32 curveT;
-            f32 curveInverse;
-            f32 curveT2;
-            f32 curveInverse2;
-            f32 curveT3;
-            f32 curveInverse3;
-
-            for (curveIndex = 0; curveIndex < count; curveIndex++)
-            {
-                curve0 = vector0[curveIndex];
-                curve1 = vector1[curveIndex];
-                curve2 = vector2[curveIndex];
-                curve3 = vector3[curveIndex];
-                curveT = (f32)curveIndex / (f32)count;
-                curveInverse = 1.0f - curveT;
-                curveT2 = curveT * curveT;
-                curveInverse2 = curveInverse * curveInverse;
-                curveT3 = curveT2 * curveT;
-                curveInverse3 = curveInverse2 * curveInverse;
-                blended.x = curve0.x * curveInverse3 +
-                            3.0f * curve1.x * curveInverse2 * curveT +
-                            3.0f * curve2.x * curveInverse * curveT2 +
-                            curve3.x * curveT3;
-                blended.y = curve0.y * curveInverse3 +
-                            3.0f * curve1.y * curveInverse2 * curveT +
-                            3.0f * curve2.y * curveInverse * curveT2 +
-                            curve3.y * curveT3;
-                blended.z = curve0.z * curveInverse3 +
-                            3.0f * curve1.z * curveInverse2 * curveT +
-                            3.0f * curve2.z * curveInverse * curveT2 +
-                            curve3.z * curveT3;
-                curveRecord = (u8*)vertices + curveIndex * 0x24 + 0x30;
-                *(f32*)(curveRecord + 0) = blended.x;
-                *(f32*)(curveRecord + 4) = blended.y;
-                *(f32*)(curveRecord + 8) = blended.z;
-            }
         }
         if (vertices != NULL && count != 0 &&
             work->vectors[4] != NULL && work->vectors[5] != NULL &&

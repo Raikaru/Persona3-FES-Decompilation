@@ -1635,7 +1635,6 @@ extern u64 FUN_00318a90_u32(u32 param_1,void *param_2,u32 param_3);
 #pragma alias FUN_00318a30_u32 FUN_00318a30
 extern u64 FUN_00318a30_u32(u32 param_1,void *param_2,u32 param_3);
 extern u64 FUN_00318a30();
-extern u64 FUN_00318a70();
 extern u64 FUN_00318a90();
 extern u64 FUN_00318ad0();
 extern u64 FUN_00318b10();
@@ -22809,7 +22808,7 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
 
   u16 uVar1;
 
-  u32 *puVar2;
+  float *puVar2;
 
   u16 *puVar3;
 
@@ -22817,17 +22816,17 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
 
   u32 uVar5;
 
-  u32 *puVar6;
+  float *puVar6;
 
   u32 uVar7;
 
   u32 uVar8;
 
-  u32 *puVar9;
+  float *puVar9;
 
-  u32 uVar10;
+  float uVar10;
 
-  u32 uVar11;
+  float uVar11;
 
   float fVar9;
   float fVar10;
@@ -22841,14 +22840,14 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
   float fVar15;
 
   u32 dotBits;
-  u8 direction[16] __attribute__((aligned(16)));
-  u8 transformed[16] __attribute__((aligned(16)));
+  float direction[4] __attribute__((aligned(16)));
+  float transformed[4] __attribute__((aligned(16)));
 
   
 
   uVar1 = *(u16 *)(*(int *)param_2[1] + 8);
 
-  puVar9 = (u32 *)
+  puVar9 = (float *)
 
            (*(int *)(*(int *)(*(int *)(*(int *)(*(int *)param_2[1] + 0x10) + 0x18) + 0x5c) + 0x14) +
 
@@ -22933,10 +22932,18 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
         : "r"((u8 *)0x0069c4c0), "r"(param_2)
         : "vf2", "vf10", "vf11");
     fVar13 = fGpffff8110 * *(float *)&dotBits;
-    memcpy(&_DAT_0069c4d0, *(u8 (*) [12])(puVar9 + 3), 12);
+    *(float *)&DAT_0069c4d0_abs[0] = puVar9[3];
+    *(float *)&DAT_0069c4d0_abs[4] = puVar9[4];
+    *(float *)&DAT_0069c4d0_abs[8] = puVar9[5];
     __asm__ volatile (
-        "lqc2 vf12, 0(%0)\n"
-        "lqc2 vf10, 36(%1)\n"
+        "lqc2 vf12, 0(%0)"
+        : : "r"(&_DAT_0069c4d0)
+        : "vf12");
+    *(float *)&DAT_0069c4d0_abs[0] = puVar9[12];
+    *(float *)&DAT_0069c4d0_abs[4] = puVar9[13];
+    *(float *)&DAT_0069c4d0_abs[8] = puVar9[14];
+    __asm__ volatile (
+        "lqc2 vf10, 0(%0)\n"
         "vsub.xyzw vf10, vf10, vf12\n"
         "vmul.xyz vf2, vf10, vf10\n"
         "vmulax.w ACC, vf0, vf2x\n"
@@ -22945,8 +22952,8 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
         "vrsqrt Q, vf0w, vf2w\n"
         "vwaitq\n"
         "vmulq.xyz vf10, vf10, Q\n"
-        "sqc2 vf10, 0(%2)"
-        : : "r"(&_DAT_0069c4d0), "r"(puVar9), "r"(direction)
+        "sqc2 vf10, 0(%1)"
+        : : "r"(&_DAT_0069c4d0), "r"(direction)
         : "vf0", "vf2", "vf10", "vf12", "ACC", "Q", "memory");
     FUN_00329890(fVar13);
     __asm__ volatile (
@@ -22960,12 +22967,21 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
         "qmtc2.ni $v0, vf2\n"
         "vmulx.xyzw vf10, vf10, vf2x\n"
         "vadd.xyzw vf12, vf12, vf10\n"
-        "sqc2 vf12, 0(%2)\n"
-        "vsub.xyzw vf12, vf12, vf10\n"
-        "vsub.xyzw vf12, vf12, vf10\n"
-        "sqc2 vf12, 24(%2)"
-        : : "r"(transformed), "f"(fVar12), "r"(puVar9)
+        "sqc2 vf12, 0(%2)"
+        : : "r"(transformed), "f"(fVar12), "r"(&_DAT_0069c4d0)
         : "v0", "vf2", "vf10", "vf12", "ACC", "memory");
+    puVar9[0] = *(float *)&DAT_0069c4d0_abs[0];
+    puVar9[1] = *(float *)&DAT_0069c4d0_abs[4];
+    puVar9[2] = *(float *)&DAT_0069c4d0_abs[8];
+    __asm__ volatile (
+        "vsub.xyzw vf12, vf12, vf10\n"
+        "vsub.xyzw vf12, vf12, vf10\n"
+        "sqc2 vf12, 0(%0)"
+        : : "r"(&_DAT_0069c4d0)
+        : "vf10", "vf12", "memory");
+    puVar9[6] = *(float *)&DAT_0069c4d0_abs[0];
+    puVar9[7] = *(float *)&DAT_0069c4d0_abs[4];
+    puVar9[8] = *(float *)&DAT_0069c4d0_abs[8];
 
     uVar8 = 1;
 
@@ -22979,9 +22995,18 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
 
       if ((uVar5 - 1 & 0xffff) <= uVar8) break;
 
+      *(float *)&DAT_0069c4d0_abs[0] = puVar6[3];
+      *(float *)&DAT_0069c4d0_abs[4] = puVar6[4];
+      *(float *)&DAT_0069c4d0_abs[8] = puVar6[5];
       __asm__ volatile (
-          "lqc2 vf12, 48(%0)\n"
-          "lqc2 vf10, 84(%0)\n"
+          "lqc2 vf12, 0(%0)"
+          : : "r"(&_DAT_0069c4d0)
+          : "vf12");
+      *(float *)&DAT_0069c4d0_abs[0] = puVar6[12];
+      *(float *)&DAT_0069c4d0_abs[4] = puVar6[13];
+      *(float *)&DAT_0069c4d0_abs[8] = puVar6[14];
+      __asm__ volatile (
+          "lqc2 vf10, 0(%0)\n"
           "vsub.xyzw vf10, vf10, vf12\n"
           "vmul.xyz vf2, vf10, vf10\n"
           "vmulax.w ACC, vf0, vf2x\n"
@@ -22990,7 +23015,7 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
           "vrsqrt Q, vf0w, vf2w\n"
           "vwaitq\n"
           "vmulq.xyz vf10, vf10, Q"
-          : : "r"(puVar6)
+          : : "r"(&_DAT_0069c4d0)
           : "vf0", "vf2", "vf10", "vf12", "ACC", "Q");
       FUN_00329890(fVar13);
       fVar9 = param_1 * fVar14;
@@ -23004,12 +23029,21 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
           "qmtc2.ni $v0, vf2\n"
           "vmulx.xyzw vf10, vf10, vf2x\n"
           "vadd.xyzw vf12, vf12, vf10\n"
-          "sqc2 vf12, 0(%1)\n"
-          "vsub.xyzw vf12, vf12, vf10\n"
-          "vsub.xyzw vf12, vf12, vf10\n"
-          "sqc2 vf12, 24(%1)"
-          : : "f"(fVar9), "r"(puVar2)
+          "sqc2 vf12, 0(%1)"
+          : : "f"(fVar9), "r"(&_DAT_0069c4d0)
           : "v0", "vf2", "vf10", "vf12", "ACC", "memory");
+      puVar2[0] = *(float *)&DAT_0069c4d0_abs[0];
+      puVar2[1] = *(float *)&DAT_0069c4d0_abs[4];
+      puVar2[2] = *(float *)&DAT_0069c4d0_abs[8];
+      __asm__ volatile (
+          "vsub.xyzw vf12, vf12, vf10\n"
+          "vsub.xyzw vf12, vf12, vf10\n"
+          "sqc2 vf12, 0(%0)"
+          : : "r"(&_DAT_0069c4d0)
+          : "vf10", "vf12", "memory");
+      puVar2[6] = *(float *)&DAT_0069c4d0_abs[0];
+      puVar2[7] = *(float *)&DAT_0069c4d0_abs[4];
+      puVar2[8] = *(float *)&DAT_0069c4d0_abs[8];
 
       uVar8 = uVar8 + 1 & 0xffff;
 
@@ -23069,7 +23103,7 @@ void FUN_00333970(float param_1,u8 (*param_2) [16],u32 param_3,u32 *param_4)
 
   }
 
-  puVar2 = (u32 *)
+  puVar2 = (float *)
 
            (*(int *)(*(int *)(*(int *)(*(int *)(*(int *)(param_2[1] + 4) + 0x10) + 0x18) + 0x5c) +
 

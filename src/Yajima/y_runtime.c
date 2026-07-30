@@ -864,11 +864,11 @@ extern code FUN_00423fe0;
 extern void FUN_00423fe0_typed(float *param_1, char param_2, short param_3, short param_4, short param_5, short param_6);
 extern code FUN_00427830;
 #pragma alias FUN_00427830_typed FUN_00427830
-extern u64 FUN_00427830_typed(float param_1,int param_2,u32 param_3,u64 param_4,u32 param_5,
+extern u32 FUN_00427830_typed(float param_1,int param_2,u32 param_3,u64 param_4,u32 param_5,
                                char *param_6,char *param_7,int param_8);
 extern code FUN_00427a10;
 #pragma alias FUN_00427a10_typed FUN_00427a10
-extern u64 FUN_00427a10_typed(float param_1,int param_2,u32 param_3,u64 param_4,u32 param_5,
+extern u32 FUN_00427a10_typed(float param_1,int param_2,u32 param_3,u64 param_4,u32 param_5,
                                char *param_6,char *param_7,int param_8);
 extern code FUN_00427db0;
 #pragma alias FUN_00427db0_typed FUN_00427db0
@@ -9161,7 +9161,7 @@ u32 FUN_0043ca30(int param_1)
       FUN_00423fe0_typed((float *)(&uStack_c8),1,0x280,0x280,*(u16 *)(puVar2 + 0x304),
                    *(u16 *)(puVar2 + 0x308));
       *(u32 *)(puVar2 + iVar17 * 8 + 0x2cc) = uStack_c8;
-      *(u32 *)(puVar2 + iVar17 * 8 + 0x2d0) = uStack_c4;
+      *(u32 *)(puVar2 + iVar17 * 8 + 0x2d0) = uStack_cc;
     }
     for (iVar17 = 0; iVar17 < 5; iVar17 = iVar17 + 1) {
       iVar13 = **(int **)(puVar2 + iVar17 * 4 + 0x3c8);
