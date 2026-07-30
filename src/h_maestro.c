@@ -2597,21 +2597,29 @@ void func_00114e70(f32 depth,
     if (orientation == 2)
     {
         swap = *(u64*)&textureCoordinates[0][0];
-        *(u64*)&textureCoordinates[0][0] = *(u64*)&textureCoordinates[2][0];
-        *(u64*)&textureCoordinates[2][0] = swap;
+        textureCoordinates[0][0] = textureCoordinates[2][0];
+        textureCoordinates[0][1] = textureCoordinates[2][1];
+        textureCoordinates[2][0] = ((f32*)&swap)[0];
+        textureCoordinates[2][1] = ((f32*)&swap)[1];
         swap = *(u64*)&textureCoordinates[1][0];
-        *(u64*)&textureCoordinates[1][0] = *(u64*)&textureCoordinates[3][0];
-        *(u64*)&textureCoordinates[3][0] = swap;
+        textureCoordinates[1][0] = textureCoordinates[3][0];
+        textureCoordinates[1][1] = textureCoordinates[3][1];
+        textureCoordinates[3][0] = ((f32*)&swap)[0];
+        textureCoordinates[3][1] = ((f32*)&swap)[1];
     }
 
     if (orientation == 1)
     {
         swap = *(u64*)&textureCoordinates[0][0];
-        *(u64*)&textureCoordinates[0][0] = *(u64*)&textureCoordinates[1][0];
-        *(u64*)&textureCoordinates[1][0] = swap;
+        textureCoordinates[0][0] = textureCoordinates[1][0];
+        textureCoordinates[0][1] = textureCoordinates[1][1];
+        textureCoordinates[1][0] = ((f32*)&swap)[0];
+        textureCoordinates[1][1] = ((f32*)&swap)[1];
         swap = *(u64*)&textureCoordinates[2][0];
-        *(u64*)&textureCoordinates[2][0] = *(u64*)&textureCoordinates[3][0];
-        *(u64*)&textureCoordinates[3][0] = swap;
+        textureCoordinates[2][0] = textureCoordinates[3][0];
+        textureCoordinates[2][1] = textureCoordinates[3][1];
+        textureCoordinates[3][0] = ((f32*)&swap)[0];
+        textureCoordinates[3][1] = ((f32*)&swap)[1];
     }
 
     for (i = 0; i < 4; i++)
@@ -2844,9 +2852,10 @@ extern void* func_00116f80();
 extern void* func_001158b0();
 extern void func_00115980();
 extern void func_00195020(void* task);
-extern void func_0018bc10(f32 duration, void* animation, s32 start,
-                          s32 end, s32 mode, u64 startValues,
-                          u64 endValues, u32 param8, u32 param9);
+extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
+                          s32 positionMode, s32 alphaMode,
+                          u64 start, u64 end, s32 param0, s32 tile,
+                          s32 startFrame, s32 endFrame);
 extern u32 func_0018b700(void* animation);
 extern void* func_0018b6d0(s32 size);
 extern u32 datGetScenarioMode(void);
@@ -4323,247 +4332,149 @@ void func_00116f50(int param_1)
 
 
 void* func_00116f80(KwlnTask* task)
-
-
-
 {
+    int* work;
+    int state;
+    int result;
+    u32 nodeValue;
+    u32 convertedA;
+    u32 convertedB;
+    int node;
+    int frame;
 
-  int param_1 = (int)task;
+    work = *(int**)((int)task + 0x3c);
+    switch (*work)
+    {
+    case 0:
+        func_0018bc10(666.0f, work + 5, 0, 2, 0,
+                      0x42f0000044268000, 0x42f00000433b0000, 0, 0, 0, 0);
+        *work = 1;
+        break;
 
-  int *piVar1;
-
-  int iVar2;
-
-  int lVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  int iVar6;
-
-  
-
-  piVar1 = *(int **)(param_1 + 0x3c);
-
-  iVar2 = *piVar1;
-
-  if (iVar2 == 4) {
-
-    lVar3 = FUN_0018b700(piVar1 + 5);
-
-    if (lVar3 != 0) {
-
-      if (piVar1[0xd] == piVar1[0xb]) {
-
-        piVar1[1] = 0;
-
-        return (void *)0xffffffff;
-
-      }
-
-      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
-
-      iVar2 = (int)uVar4;
-
-      *(u32 *)(iVar2 + 0x2c) = 0x42c80000;
-
-      *(int *)(iVar2 + 0x10) = piVar1[0x13];
-
-      *(int *)(iVar2 + 0x14) = piVar1[0x14];
-
-      *(u16 *)(iVar2 + 0x24) = 0x10;
-
-      *(u16 *)(iVar2 + 0x26) = 0x60;
-
-      *(char *)(iVar2 + 0x18) = (char)piVar1[0x15];
-
-      FUN_001127d0(uVar4,1);
-
-      func_00115980((int*)uVar4);
-
-    }
-
-  }
-  else if (iVar2 == 3) {
-
-    lVar3 = FUN_0018b700(piVar1 + 5);
-
-    if (lVar3 != 0) {
-
-      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
-
-      iVar2 = (int)uVar4;
-
-      *(u32 *)(iVar2 + 0x2c) = 0x42c80000;
-
-      *(int *)(iVar2 + 0x10) = piVar1[0x13];
-
-      *(int *)(iVar2 + 0x14) = piVar1[0x14];
-
-      *(u16 *)(iVar2 + 0x24) = 0x10;
-
-      *(u16 *)(iVar2 + 0x26) = 0x60;
-
-      *(u8 *)(iVar2 + 0x18) = 0;
-
-      FUN_001127d0(uVar4,1);
-
-      func_00115980((int*)uVar4);
-
-    }
-
-    if (piVar1[3] != 0) {
-
-      FUN_0018bc10(0x42c80000,piVar1 + 5,0,2,2,0x42f00000433b0000,0x42f00000433b0000,0,0);
-
-      *piVar1 = 4;
-
-    }
-
-  }
-  else if (iVar2 == 2) {
-
-    lVar3 = FUN_0018b700(piVar1 + 5);
-
-    if (lVar3 != 0) {
-
-      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
-
-      iVar2 = piVar1[1];
-
-      iVar6 = iVar2 + 1;
-
-      piVar1[1] = iVar6;
-
-      if (iVar6 < 3) {
-
-        iVar2 = (int)((u32)((long)(iVar6 * 0xf) << 0x21) >> 0x20);
-
-        if (iVar6 * 0x1e < 0) {
-
-          iVar2 = iVar6 * 0x1e + 1;
-
+    case 1:
+        result = FUN_0018b700(work + 5);
+        if (result != 0)
+        {
+            convertedA = FUN_00530da0(work[0x11]);
+            convertedB = FUN_00530da0(work[0x13]);
+            FUN_005225a8(0x5d6e20, convertedA, convertedB);
+            if (work[0xd] == work[0xb])
+            {
+                work[1] = 0;
+                *work = 2;
+            }
+            nodeValue = (u32)func_001158b0(0, work[4], 0);
+            node = (int)nodeValue;
+            *(u32*)(node + 0x2c) = 0x42c80000;
+            *(int*)(node + 0x10) = work[0x13];
+            *(int*)(node + 0x14) = work[0x14];
+            *(u16*)(node + 0x24) = 0x10;
+            *(u16*)(node + 0x26) = 0x60;
+            state = (4 - (work[0xd] - work[0xb])) * 0x19;
+            if (state < 0)
+            {
+                state += 3;
+            }
+            *(float*)(node + 0x20) = (float)((state >> 2) - 5);
+            *(u8*)(node + 0x18) = 0;
+            FUN_001127d0(nodeValue, 1);
+            func_00115980((int*)nodeValue);
         }
+        break;
 
-        iVar2 = 0x14 - (iVar2 >> 1);
-
-      }
-
-      else if (iVar6 < 6) {
-
-        iVar2 = iVar2 + -2;
-
-        iVar6 = iVar2 * 10;
-
-        iVar2 = (int)((u32)((long)(iVar2 * 5) << 0x21) >> 0x20);
-
-        if (iVar6 < 0) {
-
-          iVar2 = iVar6 + 1;
-
+    case 2:
+        result = FUN_0018b700(work + 5);
+        if (result != 0)
+        {
+            nodeValue = (u32)func_001158b0(0, work[4], 0);
+            state = work[1];
+            frame = state + 1;
+            work[1] = frame;
+            if (frame < 3)
+            {
+                state = (int)((u32)((long)(frame * 0xf) << 0x21) >> 0x20);
+                if (frame * 0x1e < 0)
+                {
+                    state = frame * 0x1e + 1;
+                }
+                state = 0x14 - (state >> 1);
+            }
+            else if (frame < 6)
+            {
+                state -= 2;
+                frame = state * 10;
+                state = (int)((u32)((long)(state * 5) << 0x21) >> 0x20);
+                if (frame < 0)
+                {
+                    state = frame + 1;
+                }
+                state = (state >> 1) - 10;
+            }
+            else
+            {
+                state = 0;
+                *work = 3;
+                work[1] = 0;
+            }
+            node = (int)nodeValue;
+            *(float*)(node + 0x20) = (float)state;
+            *(u32*)(node + 0x2c) = 0x42c80000;
+            *(int*)(node + 0x10) = work[0x13];
+            *(int*)(node + 0x14) = work[0x14];
+            *(u16*)(node + 0x24) = 0x10;
+            *(u16*)(node + 0x26) = 0x60;
+            *(u8*)(node + 0x18) = 0;
+            FUN_001127d0(nodeValue, 1);
+            func_00115980((int*)nodeValue);
         }
+        break;
 
-        iVar2 = (iVar2 >> 1) + -10;
+    case 3:
+        result = FUN_0018b700(work + 5);
+        if (result != 0)
+        {
+            nodeValue = (u32)func_001158b0(0, work[4], 0);
+            node = (int)nodeValue;
+            *(u32*)(node + 0x2c) = 0x42c80000;
+            *(int*)(node + 0x10) = work[0x13];
+            *(int*)(node + 0x14) = work[0x14];
+            *(u16*)(node + 0x24) = 0x10;
+            *(u16*)(node + 0x26) = 0x60;
+            *(u8*)(node + 0x18) = 0;
+            FUN_001127d0(nodeValue, 1);
+            func_00115980((int*)nodeValue);
+        }
+        if (work[3] != 0)
+        {
+            func_0018bc10(100.0f, work + 5, 0, 2, 2,
+                          0x42f00000433b0000, 0x42f00000433b0000, 0, 0, 0, 0);
+            *work = 4;
+        }
+        break;
 
-      }
-
-      else {
-
-        iVar2 = 0;
-
-        *piVar1 = 3;
-
-        piVar1[1] = 0;
-
-      }
-
-      iVar6 = (int)uVar4;
-
-      *(float *)(iVar6 + 0x20) = (float)iVar2;
-
-      *(u32 *)(iVar6 + 0x2c) = 0x42c80000;
-
-      *(int *)(iVar6 + 0x10) = piVar1[0x13];
-
-      *(int *)(iVar6 + 0x14) = piVar1[0x14];
-
-      *(u16 *)(iVar6 + 0x24) = 0x10;
-
-      *(u16 *)(iVar6 + 0x26) = 0x60;
-
-      *(u8 *)(iVar6 + 0x18) = 0;
-
-      FUN_001127d0(uVar4,1);
-
-      func_00115980((int*)uVar4);
-
+    case 4:
+        result = FUN_0018b700(work + 5);
+        if (result != 0)
+        {
+            if (work[0xd] == work[0xb])
+            {
+                work[1] = 0;
+                return (void*)-1;
+            }
+            nodeValue = (u32)func_001158b0(0, work[4], 0);
+            node = (int)nodeValue;
+            *(u32*)(node + 0x2c) = 0x42c80000;
+            *(int*)(node + 0x10) = work[0x13];
+            *(int*)(node + 0x14) = work[0x14];
+            *(u16*)(node + 0x24) = 0x10;
+            *(u16*)(node + 0x26) = 0x60;
+            *(char*)(node + 0x18) = (char)work[0x15];
+            FUN_001127d0(nodeValue, 1);
+            func_00115980((int*)nodeValue);
+        }
+        break;
     }
-
-  }
-  else if (iVar2 == 1) {
-
-    lVar3 = FUN_0018b700(piVar1 + 5);
-
-    if (lVar3 != 0) {
-
-      uVar4 = FUN_00530da0(piVar1[0x11]);
-
-      uVar5 = FUN_00530da0(piVar1[0x13]);
-
-      FUN_005225a8(0x5d6e20,uVar4,uVar5);
-
-      if (piVar1[0xd] == piVar1[0xb]) {
-
-        piVar1[1] = 0;
-
-        *piVar1 = 2;
-
-      }
-
-      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
-
-      iVar6 = (int)uVar4;
-
-      *(u32 *)(iVar6 + 0x2c) = 0x42c80000;
-
-      *(int *)(iVar6 + 0x10) = piVar1[0x13];
-
-      *(int *)(iVar6 + 0x14) = piVar1[0x14];
-
-      *(u16 *)(iVar6 + 0x24) = 0x10;
-
-      *(u16 *)(iVar6 + 0x26) = 0x60;
-
-      iVar2 = (4 - (piVar1[0xd] - piVar1[0xb])) * 0x19;
-
-      if (iVar2 < 0) {
-
-        iVar2 = iVar2 + 3;
-
-      }
-
-      *(float *)(iVar6 + 0x20) = (float)((iVar2 >> 2) + -5);
-
-      *(u8 *)(iVar6 + 0x18) = 0;
-
-      FUN_001127d0(uVar4,1);
-
-      func_00115980((int*)uVar4);
-
-    }
-
-  }
-  else if (iVar2 == 0) {
-
-    FUN_0018bc10(0x42c80000,piVar1 + 5,0,2,0,0x42f0000044268000,0x42f00000433b0000,0,0);
-
-    *piVar1 = 1;
-
-  }
-
-  return (void *)0;
-
+    return NULL;
 }
 // FUN_00117440
 void func_00117440(KwlnTask* task)
@@ -4805,19 +4716,19 @@ void* func_001193d0(KwlnTask* task)
         {
             func_0018bc10(100.0f, &work->animation, 0, 2, 0,
                           0xc298000043280000ULL,
-                          0x430d000043840000ULL, 0, 0);
+                          0x430d000043840000ULL, 0, 0, 0, 0);
         }
         else if (work->mode == 1)
         {
             func_0018bc10(100.0f, &work->animation, 0, 2, 0,
                           0xc31e000042a80000ULL,
-                          0x4298000043630000ULL, 0, 0);
+                          0x4298000043630000ULL, 0, 0, 0, 0);
         }
         else if (work->mode == 0)
         {
             func_0018bc10(100.0f, &work->animation, 0, 2, 0,
                           0xc298000043280000ULL,
-                          0x430d000043840000ULL, 0, 0);
+                          0x430d000043840000ULL, 0, 0, 0, 0);
         }
         work->state = 1;
         break;

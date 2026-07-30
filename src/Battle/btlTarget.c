@@ -2534,8 +2534,13 @@ int FUN_002d2c10(float *param_1, float *param_2)
             float *edge = (float *)(node + i * 0x130 + 0x08);
             float *next = (float *)(node + (((i + 1) & 3) * 0x130) + 0x08);
 
-            if ((edge != param_1) && (edge != param_2) && (next != param_1) && (next != param_2))
+            if ((edge == param_1) || (edge == param_2) || (next == param_1) || (next == param_2))
             {
+                continue;
+            }
+            else
+            {
+                int intersects;
                 int side_a = FUN_002d2ee0(edge, next, param_1);
                 int side_b = FUN_002d2ee0(edge, next, param_2);
                 if (side_a != side_b)
@@ -2544,8 +2549,20 @@ int FUN_002d2c10(float *param_1, float *param_2)
                     side_b = FUN_002d2ee0(param_1, param_2, next);
                     if (side_a != side_b)
                     {
-                        return 1;
+                        intersects = 1;
                     }
+                    else
+                    {
+                        intersects = 0;
+                    }
+                }
+                else
+                {
+                    intersects = 0;
+                }
+                if (intersects != 0)
+                {
+                    return 1;
                 }
             }
         }
@@ -2566,6 +2583,7 @@ int FUN_002d2c10(float *param_1, float *param_2)
             }
             if ((0.0f < *(float *)(record + 0x1c)) && (next != NULL))
             {
+                int intersects;
                 int side_a = FUN_002d2ee0(edge, next, param_1);
                 int side_b = FUN_002d2ee0(edge, next, param_2);
                 if (side_a != side_b)
@@ -2574,8 +2592,20 @@ int FUN_002d2c10(float *param_1, float *param_2)
                     side_b = FUN_002d2ee0(param_1, param_2, next);
                     if (side_a != side_b)
                     {
-                        return 1;
+                        intersects = 1;
                     }
+                    else
+                    {
+                        intersects = 0;
+                    }
+                }
+                else
+                {
+                    intersects = 0;
+                }
+                if (intersects != 0)
+                {
+                    return 1;
                 }
             }
         }
@@ -3341,6 +3371,7 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
         *(u8*)((u8*)work + 0x404) = 2;
         return 1;
     }
+    *(u16*)((u8*)work + 0x400) = 0;
 
     *(f32*)(iGpffffb6fc + 0x798) = start->x;
     *(f32*)(iGpffffb6fc + 0x79c) = start->y;
@@ -3381,12 +3412,14 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
         {
             score = *(f32*)(selected + 0x1c) +
                     *(f32*)(selected + 0xb0 + index * 4);
+            slot = selected + 0x30 + index * 4;
+            record = *(u8**)slot;
             inFirst = 0;
             for (current = *(u8**)(iGpffffb6fc + 0x9f0);
                  current != NULL;
                  current = *(u8**)(current + 0x24))
             {
-                if (current == iGpffffb6fc)
+                if (current == record)
                 {
                     inFirst = 1;
                     break;
@@ -3397,7 +3430,7 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
                  current != NULL;
                  current = *(u8**)(current + 0x28))
             {
-                if (current == iGpffffb6fc)
+                if (current == record)
                 {
                     inSecond = 1;
                     break;
@@ -3406,9 +3439,8 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
             if ((inFirst == 0 && inSecond == 0) ||
                 *(f32*)(selected + 0x1c) > score)
             {
-                slot = selected + 0x30 + index * 4;
-                record = *(u8**)slot;
-                *(f32*)(selected + 0x1c) = score;
+                *(f32*)(record + 0x1c) = score;
+                *(f32*)(record + 0x20) = score;
                 delta.x = *(f32*)(record + 0x08) -
                           *(f32*)(iGpffffb6fc + 0x8c8);
                 delta.y = *(f32*)(record + 0x0c) -
@@ -3420,17 +3452,24 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
                 {
                     previous = NULL;
                     current = *(u8**)(iGpffffb6fc + 0x9f4);
-                    while (current != record)
+                    while (current != NULL)
                     {
+                        if (current == record)
+                        {
+                            break;
+                        }
                         previous = current;
                         current = *(u8**)(current + 0x28);
                     }
-                    if (previous != NULL)
-                        *(u8**)(previous + 0x28) =
-                            *(u8**)(current + 0x28);
-                    else
-                        *(u8**)(iGpffffb6fc + 0x9f4) =
-                            *(u8**)(current + 0x28);
+                    if (current != NULL)
+                    {
+                        if (previous != NULL)
+                            *(u8**)(previous + 0x28) =
+                                *(u8**)(current + 0x28);
+                        else
+                            *(u8**)(iGpffffb6fc + 0x9f4) =
+                                *(u8**)(current + 0x28);
+                    }
                 }
                 if (inFirst == 0)
                 {
@@ -5496,6 +5535,7 @@ u32 FUN_002dc180(BtlAction* action)
         u32 chance = 0;
         u32 threshold = 0;
         u32 useCounter = 1;
+        u32 reduceBySkills = 0;
 
         if ((status & bit) == 0)
         {
@@ -5506,18 +5546,22 @@ u32 FUN_002dc180(BtlAction* action)
         case 1:
             chance = FUN_0030FC40(8, unit->datUnit, unit->datUnit, 0, 1);
             threshold = 4;
+            reduceBySkills = 1;
             break;
         case 2:
             chance = FUN_0030FC40(9, unit->datUnit, unit->datUnit, 0, 2);
             threshold = 3;
+            reduceBySkills = 1;
             break;
         case 4:
             chance = FUN_0030FC40(0xa, unit->datUnit, unit->datUnit, 0, 4);
             threshold = 3;
+            reduceBySkills = 1;
             break;
         case 8:
             chance = FUN_0030FC40(0xb, unit->datUnit, unit->datUnit, 0, 8);
             threshold = 3;
+            reduceBySkills = 1;
             break;
         case 0x10:
             if (*(u8*)((u8*)action + 0x28) == 0 &&
@@ -5525,17 +5569,20 @@ u32 FUN_002dc180(BtlAction* action)
             {
                 chance = FUN_0030FC40(0xc, unit->datUnit, unit->datUnit, 0, 0x10);
                 threshold = 4;
+                reduceBySkills = 1;
             }
             break;
         case 0x20:
             chance = FUN_0030FC40(0xd, unit->datUnit, unit->datUnit, 0, 0x20);
             threshold = 2;
             useCounter = 0;
+            reduceBySkills = 1;
             break;
         case 0x40:
             chance = FUN_0030FC40(0xe, unit->datUnit, unit->datUnit, 0, 0x40);
             threshold = 2;
             useCounter = 0;
+            reduceBySkills = 1;
             break;
         case 0x200:
             threshold = 3;
@@ -5548,7 +5595,7 @@ u32 FUN_002dc180(BtlAction* action)
         default:
             break;
         }
-        if (bit <= 0x40 && threshold != 0)
+        if (reduceBySkills && threshold != 0)
         {
             if (datCalcHasSkill(unit->datUnit, 0x262) != 0)
             {
@@ -6040,6 +6087,10 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
     do
     {
 
+        if ((list == NULL) || (result != 0))
+        {
+            return result;
+        }
         for (i = 0; i < 4; i++)
         {
             u8* cell = list + i * 0x130;
@@ -6055,6 +6106,7 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
                 const f32* cellY = (const f32*)(cell + 0x14);
                 s32 side1;
                 s32 side2;
+                s32 intersects;
 
                 delta.x = *cellX - *(const f32*)(param_1 + 8);
                 delta.y = *cellY - *(const f32*)(param_1 + 0xc);
@@ -6079,9 +6131,21 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
                                                  otherPoint);
                             if (side1 != side2)
                             {
-                                result = 1;
-                                break;
+                                intersects = 1;
                             }
+                            else
+                            {
+                                intersects = 0;
+                            }
+                        }
+                        else
+                        {
+                            intersects = 0;
+                        }
+                        if (intersects != 0)
+                        {
+                            result = 1;
+                            break;
                         }
                     }
                 }
@@ -6090,14 +6154,14 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
 
         if (result == 0)
         {
-            if ((*(f32*)(list + 8) < *(const f32*)(param_1 + 8)) &&
-                (*(f32*)(list + 0xc) < *(const f32*)(param_1 + 0xc)) &&
-                ((*(f32*)(list + 0x268) <= *(const f32*)(param_1 + 8)) ||
-                 (*(f32*)(list + 0x26c) <= *(const f32*)(param_1 + 0xc))) &&
-                (*(f32*)(list + 8) < *(const f32*)(param_2 + 8)) &&
-                (*(f32*)(list + 0xc) < *(const f32*)(param_2 + 0xc)) &&
-                ((*(f32*)(list + 0x268) <= *(const f32*)(param_2 + 8)) ||
-                 (*(f32*)(list + 0x26c) <= *(const f32*)(param_2 + 0xc))))
+            if ((((*(const f32*)(param_1 + 8) <= *(f32*)(list + 8)) ||
+                  (*(const f32*)(param_1 + 0xc) <= *(f32*)(list + 0xc))) ||
+                 ((*(f32*)(list + 0x268) <= *(const f32*)(param_1 + 8)) ||
+                  (*(f32*)(list + 0x26c) <= *(const f32*)(param_1 + 0xc)))) &&
+                (((*(const f32*)(param_2 + 8) <= *(f32*)(list + 8)) ||
+                  (*(const f32*)(param_2 + 0xc) <= *(f32*)(list + 0xc))) ||
+                 ((*(f32*)(list + 0x268) <= *(const f32*)(param_2 + 8)) ||
+                  (*(f32*)(list + 0x26c) <= *(const f32*)(param_2 + 0xc)))))
             {
                 for (i = 0; i < 4; i++)
                 {
@@ -6108,6 +6172,7 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
                                              (const f32*)(param_1 + 8));
                     s32 side2 = FUN_002d2990(edgeB, edgeA,
                                              (const f32*)(param_2 + 8));
+                    s32 intersects;
 
                     if (side1 != side2)
                     {
@@ -6117,15 +6182,27 @@ s32 FUN_002d25c0(const u8* param_1, const u8* param_2)
                                              (const f32*)(param_2 + 8), edgeA);
                         if (side1 != side2)
                         {
-                            result = 1;
-                            break;
+                            intersects = 1;
                         }
+                        else
+                        {
+                            intersects = 0;
+                        }
+                    }
+                    else
+                    {
+                        intersects = 0;
+                    }
+                    if (intersects != 0)
+                    {
+                        result = 1;
+                        break;
                     }
                 }
             }
         }
 
         list = *(u8**)(list + 0x4cc);
-    } while ((list != NULL) && (result == 0));
+    } while (1);
     return result;
 }

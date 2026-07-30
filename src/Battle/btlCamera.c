@@ -8095,6 +8095,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       fVar16 = 3.75f;
     }
     else {
+      sVar1 = *(u16 *)(*(int *)(iVar9 + 0xe0) + 0x6e);
       switch (sVar1) {
       case 0x26:
         mid.y = 500.0f;
@@ -8276,10 +8277,10 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   else {
     dir[0] = (sphere2[0] + sphere0[0]) * 0.5f;
     dir[1] = (sphere2[1] + sphere0[1]) * 0.5f;
-    target[2] = (sphere2[2] + sphere0[2]) * 0.5f;
+    dir[2] = (sphere2[2] + sphere0[2]) * 0.5f;
     dir[0] = dir[0] - sphere1[0];
     dir[1] = dir[1] - sphere1[1];
-    dir[2] = target[2] - sphere1[2];
+    dir[2] = dir[2] - sphere1[2];
     fVar8 = (float)FUN_004c69f0(dir,dir);
     pos[2] = fGpffff8098 * fVar8;
     pos[0] = dir[0] * pos[2];
