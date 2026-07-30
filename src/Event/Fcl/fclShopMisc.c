@@ -10180,7 +10180,7 @@ LAB_003fe35c:
 }
 
 // W212: rotating the copied-table loop to retail's apparent branch target measured nd206 -> nd295 (488 -> 492 bytes); rejected.
-// FUN_003FE3E0 NONMATCHING
+// FUN_003FE3E0
 
 
 u32 FUN_003fe3e0(u16 param_1)
@@ -10189,47 +10189,65 @@ u32 FUN_003fe3e0(u16 param_1)
   int listWork;
   int entry;
   int persona;
-  int i;
+  u32 i;
   u16 itemId;
-  short itemIds[8];
   u8 itemData[32];
+  u16 itemIds[8];
 
   list = FUN_003c58f0(0,0x58,7,0x1a);
   listWork = (int)list;
   entry = *(int *)(*(int *)(listWork + 0x24) + 0x44);
   *(u16 *)(entry + 4) = param_1;
   *(short *)(entry + 6) = -4;
-
-  for (i = 0; ; i++) {
-    short *source = (short *)&DAT_006af180;
-    short *dest = itemIds;
-    int count = 4;
+  i = 0;
+  {
+    short *source;
+    u16 *dest;
+    int count;
+    short tmpA;
+    short tmpB;
+    goto copy_entry;
+    for (;;) {
+      if (FUN_003f2240_u32((int)itemData,itemId) != 0) {
+        entry = FUN_003c5a40(list,*(u16 *)(listWork + 0x10) + 1,0x20,0);
+        memcpy((void *)(*(int *)(*(int *)(entry + 0x14) + 0x1c) + 4),itemData,0x1c);
+        for (persona = 0; persona < (int)(FUN_00175410() & 0xffff); persona++) {
+          datPersonaGetHeroPersona((short)persona);
+        }
+      }
+      i++;
+copy_entry:
+      source = (short *)DAT_006af180_abs;
+      dest = itemIds;
+      count = 4;
     do {
-      dest[0] = source[0];
-      dest[1] = source[1];
+      tmpA = source[0];
+      tmpB = source[1];
       source += 2;
-      dest += 2;
       count--;
+      dest[0] = tmpA;
+      dest[1] = tmpB;
+      dest += 2;
     } while (count > 0);
 
-    itemId = i < 8 ? itemIds[i] : 0;
-    if (itemId == 0) {
-      break;
-    }
-    if (FUN_003f2240((int)itemData,itemId) != 0) {
-      entry = FUN_003c5a40(list,*(u16 *)(listWork + 0x10) + 1,0x20,0);
-      memcpy((void *)(*(int *)(*(int *)(entry + 0x14) + 0x1c) + 4),itemData,0x1c);
-      for (persona = 0; persona < (int)(FUN_00175410() & 0xffff); persona++) {
-        datPersonaGetHeroPersona((short)persona);
+      if (i >= 8) {
+        itemId = 0;
+      }
+      else {
+        itemId = itemIds[i];
+      }
+      itemId &= 0xffff;
+      if (itemId == 0) {
+        break;
       }
     }
   }
 
   FUN_003f99d0(list,0xff00);
   FUN_003c6ee0(list);
-  FUN_003c5e80(list,0x3fadc0);
-  FUN_003c5e20(list,0x3f4de0);
-  FUN_003c5ee0(list,0x3f9510);
+  FUN_003c5e80_p(list,(code)FUN_003fadc0);
+  FUN_003c5e20_p(list,(code)FUN_003f4de0);
+  FUN_003c5ee0_p(list,(code)FUN_003f9510);
   FUN_003c6d40(list,0x39,0x48);
   *(u16 *)(*(int *)(listWork + 0x24) + 6) = 0xb;
   *(u16 *)(*(int *)(listWork + 0x24) + 8) = 6;
