@@ -5096,6 +5096,17 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 }
                 break;
             case 1:
+                clearCursor = *(u8**)((u8*)renderObject + 0x70);
+                for (clearIndex = 0;
+                     clearIndex < clearCount * 3 + 6;
+                     clearIndex++)
+                {
+                    *(f32*)(clearCursor + 0) = 0.0f;
+                    *(f32*)(clearCursor + 4) = 0.0f;
+                    *(f32*)(clearCursor + 8) = 0.0f;
+                    clearCursor += 0xc;
+                }
+                break;
             case 2:
                 clearCursor = *(u8**)((u8*)renderObject + 0x70);
                 for (clearIndex = 0;
@@ -5128,6 +5139,47 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         f32 fraction;
         f32 amount;
         f32 denominator;
+        RuntimeVec3* gridEnd;
+        u32 gridIndex;
+        u32 segmentIndex;
+        s32 segmentCount;
+
+        switch (work->state)
+        {
+        case 0:
+            vertices =
+                *(RuntimeVec3**)((u8*)*(void**)renderObject + 0x5c + 0x14);
+            gridEnd = vertices +
+                      *(u32*)((u8*)*(void**)renderObject + 0x14) * 3;
+            count = *(u32*)((u8*)work->config + 0xc);
+            for (gridIndex = 0; vertices + gridIndex * 3 != gridEnd;
+                 gridIndex++)
+            {
+                segmentCount = -1;
+                switch (gridIndex)
+                {
+                case 0:
+                    segmentCount = count;
+                    break;
+                case 1:
+                    segmentCount = count - 1;
+                    break;
+                default:
+                    break;
+                }
+                for (segmentIndex = 0; segmentIndex < segmentCount;
+                     segmentIndex++)
+                {
+                    if (count < 2)
+                    {
+                        func_0019d3f0(D_006844F8, 0x483);
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+        }
 
         vertices = *(RuntimeVec3**)((u8*)renderObject + 0x5c + 0x14);
         vector0 = work->vectors[0];
@@ -5139,11 +5191,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         fraction = 0.0f;
         amount = 0.0f;
         denominator = (f32)(count - 1);
-
-        if (work->state == 2 && count < 2)
-        {
-            func_0019d3f0(D_006844F8, 0x483);
-        }
 
         amount = 0.0f;
         func_001e7f90((const RuntimeDistanceWork*)work, amount,
@@ -5168,18 +5215,18 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                             (sample1.y - sample0.y) * fraction;
                 blended.z = sample0.z +
                             (sample1.z - sample0.z) * fraction;
+                if (&vertices[index] >= gridEnd)
+                {
+                    func_0019d3f0(D_006844F8, 0x4a0);
+                }
                 vertices[index] = blended;
+            }
+            if (&vertices[index] >= gridEnd)
+            {
+                func_0019d3f0(D_006844F8, 0x4b1);
             }
         }
 
-        if (work->state == 2 && count < 2)
-        {
-            func_0019d3f0(D_006844F8, 0x4a0);
-        }
-        if (work->state == 2 && count < 2)
-        {
-            func_0019d3f0(D_006844F8, 0x4b1);
-        }
 
         if (work->state == 1)
         {
