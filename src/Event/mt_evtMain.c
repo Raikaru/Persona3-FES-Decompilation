@@ -4772,13 +4772,60 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
   if ((puVar11 != (u16 *)0x0) && (*puVar11 == param_1)) {
 
     cVar1 = (char)puVar11[10];
-
-    if (cVar1 == '\x02') {
-
+    switch (cVar1) {
+    case '\0':
+      uStack_10 = *(u32 *)(puVar11 + 0xc);
+      uStack_c = *(u32 *)(puVar11 + 0xe);
+      uStack_8 = *(u32 *)(puVar11 + 0x10);
+      if (*(char *)((int)puVar11 + 0x15) == '\0') {
+        uVar12 = FUN_0038a900(puVar11[0xb]);
+        lVar8 = FUN_003b8730(uVar12,*(u16 *)(param_2 + 0xc),&uStack_10);
+        if (lVar8 == 1) {
+          *(u32 *)(param_2 + 100) = (u32)(*(char *)((int)puVar11 + 0x25) != '\0');
+          if ((char)puVar11[0x1a] != '\0') {
+            FUN_003bb1d0(*(u16 *)(param_2 + 0xc),1,*(char *)((int)puVar11 + 0x35) + '\x01',
+                         (char)puVar11[0x1b],*(u8 *)((int)puVar11 + 0x37));
+          }
+          if ((char)puVar11[0x13] == '\0') {
+            iVar6 = FUN_003b5d10(*(u16 *)(param_2 + 0xc));
+            lVar8 = FUN_003b8690(iVar6 + 4,&uStack_10,&uStack_4);
+            if (lVar8 == 1) {
+              puVar7 = (u8 *)0xc;
+              puVar9 = auStack_20;
+              puVar3 = puVar9;
+              while (puVar3 != (u8 *)0x0) {
+                *puVar9 = 0;
+                puVar9 = puVar9 + 1;
+                puVar7 = puVar7 + -1;
+                puVar3 = puVar7;
+              }
+              uStack_1c = uStack_4;
+              FUN_003b8b30(*(u16 *)(param_2 + 0xc),auStack_20,0xf,0);
+            }
+          }
+        }
+      }
+      break;
+    case '\x01':
+      FUN_0038d840((char *)(*(u32 *)(puVar11 + 0x20)),(u8 *)acStack_170,0);
+      if (*(char *)((int)puVar11 + 0x15) == '\0') {
+        uVar12 = FUN_0038a900(puVar11[0xb]);
+        uVar4 = puVar11[0x12];
+        cVar1 = *(char *)((int)puVar11 + 0x25);
+        if ((char)puVar11[0x1a] != '\0') {
+          FUN_003bb1d0(*(u16 *)(param_2 + 0xc),1,*(char *)((int)puVar11 + 0x35) + '\x01',
+                       (char)puVar11[0x1b],*(u8 *)((int)puVar11 + 0x37));
+        }
+        if ('\0' < acStack_170[0]) {
+          FUN_003b89f0(uVar12,*(u16 *)(param_2 + 0xc),acStack_170,(char)uVar4 != '\0');
+          *(u32 *)(param_2 + 100) = (u32)(cVar1 != '\0');
+          FUN_005225a8((const char *)(DAT_006a0000 - 0x2930));
+        }
+      }
+      break;
+    case '\x02':
       lVar8 = FUN_003b5d10(*(u16 *)(param_2 + 0xc));
-
       if (lVar8 != 0) {
-
         uStack_30 = *(u32 *)(puVar11 + 0xc);
         uStack_2c = *(u32 *)(puVar11 + 0xe);
         uStack_28 = *(u32 *)(puVar11 + 0x10);
@@ -4786,107 +4833,8 @@ u16 * FUN_00364b10(u32 param_1,int param_2)
         uStack_3c = *(u32 *)(puVar11 + 0x16);
         uStack_38 = 0;
         FUN_003b7460(lVar8,&uStack_30,&uStack_40,0);
-
       }
-
-    }
-
-    else if (cVar1 == '\x01') {
-
-      FUN_0038d840((char *)(*(u32 *)(puVar11 + 0x20)),(u8 *)acStack_170,0);
-
-      if (*(char *)((int)puVar11 + 0x15) == '\0') {
-
-        uVar12 = FUN_0038a900(puVar11[0xb]);
-
-        uVar4 = puVar11[0x12];
-
-        cVar1 = *(char *)((int)puVar11 + 0x25);
-
-        if ((char)puVar11[0x1a] != '\0') {
-
-          FUN_003bb1d0(*(u16 *)(param_2 + 0xc),1,*(char *)((int)puVar11 + 0x35) + '\x01',
-
-                       (char)puVar11[0x1b],*(u8 *)((int)puVar11 + 0x37));
-
-        }
-
-        if ('\0' < acStack_170[0]) {
-
-          FUN_003b89f0(uVar12,*(u16 *)(param_2 + 0xc),acStack_170,(char)uVar4 != '\0');
-
-          *(u32 *)(param_2 + 100) = (u32)(cVar1 != '\0');
-
-          FUN_005225a8((const char *)(DAT_006a0000 - 0x2930));
-
-        }
-
-      }
-
-    }
-
-    else if (cVar1 == '\0') {
-
-      uStack_10 = *(u32 *)(puVar11 + 0xc);
-      uStack_c = *(u32 *)(puVar11 + 0xe);
-      uStack_8 = *(u32 *)(puVar11 + 0x10);
-
-      if (*(char *)((int)puVar11 + 0x15) == '\0') {
-
-        uVar12 = FUN_0038a900(puVar11[0xb]);
-
-        lVar8 = FUN_003b8730(uVar12,*(u16 *)(param_2 + 0xc),&uStack_10);
-
-        if (lVar8 == 1) {
-
-          *(u32 *)(param_2 + 100) = (u32)(*(char *)((int)puVar11 + 0x25) != '\0');
-
-          if ((char)puVar11[0x1a] != '\0') {
-
-            FUN_003bb1d0(*(u16 *)(param_2 + 0xc),1,*(char *)((int)puVar11 + 0x35) + '\x01',
-
-                         (char)puVar11[0x1b],*(u8 *)((int)puVar11 + 0x37));
-
-          }
-
-          if ((char)puVar11[0x13] == '\0') {
-
-            iVar6 = FUN_003b5d10(*(u16 *)(param_2 + 0xc));
-
-            lVar8 = FUN_003b8690(iVar6 + 4,&uStack_10,&uStack_4);
-
-            if (lVar8 == 1) {
-
-              puVar7 = (u8 *)0xc;
-
-              puVar9 = auStack_20;
-
-              puVar3 = puVar9;
-
-              while (puVar3 != (u8 *)0x0) {
-
-                *puVar9 = 0;
-
-                puVar9 = puVar9 + 1;
-
-                puVar7 = puVar7 + -1;
-
-                puVar3 = puVar7;
-
-              }
-
-              uStack_1c = uStack_4;
-
-              FUN_003b8b30(*(u16 *)(param_2 + 0xc),auStack_20,0xf,0);
-
-            }
-
-          }
-
-        }
-
-      }
-
+      break;
     }
 
   }
@@ -11031,53 +10979,33 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
         case 0x17:
 
           cVar1 = (char)puVar9[8];
-
-          if (cVar1 == '\x03') {
-
-            *(u32 *)(iVar10 + 0x118) = 0;
-
-            *(u32 *)(iVar10 + 0x11c) = 2;
-
-            *(u8 **)(iVar10 + 0x120) = &gp0xffff9e60;
-
-            *(u8 **)(iVar10 + 0x124) = &gp0xffff9f58;
-
-            FUN_0036f5f0(2,0x12,10,param_3);
-
-          }
-
-          else if (cVar1 == '\x02') {
-
-            *(u32 *)(iVar10 + 0x118) = 0;
-
-            *(u32 *)(iVar10 + 0x11c) = 2;
-
-            *(u8 **)(iVar10 + 0x120) = &gp0xffff9e58;
-
-            *(u8 **)(iVar10 + 0x124) = &gp0xffff9f58;
-
-            FUN_0036f5f0(2,0x12,10,param_3);
-
-          }
-
-          else if ((cVar1 != '\x01') && (cVar1 == '\0')) {
-
+          switch (cVar1) {
+          case '\0':
             *(int *)(iVar10 + 0x198) = (int)(short)puVar9[10];
-
             *(int *)(iVar10 + 0x19c) = (int)(short)puVar9[0xb];
-
             *(int *)(iVar10 + 0x1a0) = (int)(short)puVar9[0xc];
-
             *(int *)(iVar10 + 0x1a4) = (int)(short)puVar9[0xd];
-
             *(int *)(iVar10 + 0x1a8) = (int)(short)puVar9[0xe];
-
             uVar11 = FUN_00385bd0(param_3,*(u32 *)(iVar10 + 0x92c));
-
             *(u32 *)(iVar10 + 0xe8) = uVar11;
-
             FUN_0036f5f0(0x1a,0,0,param_3);
-
+            break;
+          case '\x01':
+            break;
+          case '\x02':
+            *(u32 *)(iVar10 + 0x118) = 0;
+            *(u32 *)(iVar10 + 0x11c) = 2;
+            *(u8 **)(iVar10 + 0x120) = &gp0xffff9e58;
+            *(u8 **)(iVar10 + 0x124) = &gp0xffff9f58;
+            FUN_0036f5f0(2,0x12,10,param_3);
+            break;
+          case '\x03':
+            *(u32 *)(iVar10 + 0x118) = 0;
+            *(u32 *)(iVar10 + 0x11c) = 2;
+            *(u8 **)(iVar10 + 0x120) = &gp0xffff9e60;
+            *(u8 **)(iVar10 + 0x124) = &gp0xffff9f58;
+            FUN_0036f5f0(2,0x12,10,param_3);
+            break;
           }
 
           break;
@@ -11085,59 +11013,34 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
         case 0x19:
 
           cVar1 = (char)puVar9[8];
-
-          if (cVar1 == '\x03') {
-
-            uVar11 = FUN_00386860(param_3,*(u8 *)((int)puVar9 + 0x11),puVar9[10],
-
-                                  (char)puVar9[9]);
-
-            *(u32 *)(iVar10 + 0xe8) = uVar11;
-
-            FUN_0036f5f0(0x1a,10,0x12,param_3);
-
-          }
-
-          else if (cVar1 == '\x02') {
-
-            *(int *)(iVar10 + 0x16c) = (int)*(char *)((int)puVar9 + 0x11);
-
-            *(u32 *)(iVar10 + 0x170) = 0;
-
-            *(u32 *)(iVar10 + 0x174) = 0x10;
-
-            FUN_0036f5f0(7,0xd,0x11,param_3);
-
-          }
-
-          else if (cVar1 == '\x01') {
-
+          switch (cVar1) {
+          case '\0':
             *(int *)(iVar10 + 0x198) = (int)*(char *)((int)puVar9 + 0x11);
-
-            *(int *)(iVar10 + 0x19c) = (int)(short)puVar9[9];
-
-            uVar11 = FUN_00386060(param_3);
-
-            *(u32 *)(iVar10 + 0xe8) = uVar11;
-
-            FUN_0036f5f0(0x1a,0,0,param_3);
-
-          }
-
-          else if (cVar1 == '\0') {
-
-            *(int *)(iVar10 + 0x198) = (int)*(char *)((int)puVar9 + 0x11);
-
             *(int *)(iVar10 + 0x19c) = (int)(char)puVar9[9];
-
             *(int *)(iVar10 + 0x1a0) = (int)*(char *)((int)puVar9 + 0x13);
-
             uVar11 = FUN_00385f90(param_3);
-
             *(u32 *)(iVar10 + 0xe8) = uVar11;
-
             FUN_0036f5f0(0x1a,0,0,param_3);
-
+            break;
+          case '\x01':
+            *(int *)(iVar10 + 0x198) = (int)*(char *)((int)puVar9 + 0x11);
+            *(int *)(iVar10 + 0x19c) = (int)(short)puVar9[9];
+            uVar11 = FUN_00386060(param_3);
+            *(u32 *)(iVar10 + 0xe8) = uVar11;
+            FUN_0036f5f0(0x1a,0,0,param_3);
+            break;
+          case '\x02':
+            *(int *)(iVar10 + 0x16c) = (int)*(char *)((int)puVar9 + 0x11);
+            *(u32 *)(iVar10 + 0x170) = 0;
+            *(u32 *)(iVar10 + 0x174) = 0x10;
+            FUN_0036f5f0(7,0xd,0x11,param_3);
+            break;
+          case '\x03':
+            uVar11 = FUN_00386860(param_3,*(u8 *)((int)puVar9 + 0x11),puVar9[10],
+                                  (char)puVar9[9]);
+            *(u32 *)(iVar10 + 0xe8) = uVar11;
+            FUN_0036f5f0(0x1a,10,0x12,param_3);
+            break;
           }
 
           break;
@@ -11170,44 +11073,27 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
         case 0x1b:
 
-          if ((char)puVar9[9] == '\0') {
-
+          switch ((char)puVar9[9]) {
+          case '\0':
             lVar7 = (int)FUN_003b5d10_evt_main(0x1e59);
-
             if (lVar7 != 0) {
-
               FUN_0038a590(param_3,2);
-
               *(u32 *)(iVar10 + 0x198) = *(u32 *)(puVar9 + 0xc);
-
               *(u32 *)(iVar10 + 0x19c) = *(u32 *)(puVar9 + 0xe);
-
               *(u32 *)(iVar10 + 0x1a0) = *(u32 *)(puVar9 + 0x10);
-
               *(u32 *)(iVar10 + 0x1a4) = *(u32 *)(puVar9 + 0x12);
-
               *(u32 *)(iVar10 + 0x1a8) = *(u32 *)(puVar9 + 0x14);
-
               *(u32 *)(iVar10 + 0x1ac) = *(u32 *)(puVar9 + 0x16);
-
               uVar11 = FUN_00386310(param_3);
-
               *(u32 *)(iVar10 + 0xe8) = uVar11;
-
               FUN_0036f5f0(0x1a,0,0,param_3);
-
             }
-
-          }
-
-          else if ((char)puVar9[9] == '\x01') {
-
+            break;
+          case '\x01':
             uVar11 = FUN_00386430(param_3,puVar9[10],puVar9[0xb]);
-
             *(u32 *)(iVar10 + 0xe8) = uVar11;
-
             FUN_0036f5f0(0x1a,0,0,param_3);
-
+            break;
           }
 
           break;

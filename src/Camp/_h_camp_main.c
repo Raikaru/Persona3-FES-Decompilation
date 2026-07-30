@@ -442,6 +442,11 @@ void FUN_00133E10(CampMainDrawItem* item,
         FUN_001159f0(parent, campMainResource(resources, 0), 4,
                      (u8)item->alpha, item->x, item->y,
                      item->spriteScale);
+        break;
+    case 0x1c:
+        FUN_001159f0(parent, campMainResource(resources, 2), 0,
+                     (u8)item->alpha, item->x, item->y,
+                     item->spriteScale);
         FUN_001159f0(parent, campMainResource(resources, 2), 1,
                      (u8)item->alpha, item->x + 16.0f, item->y,
                      item->spriteScale);
@@ -453,11 +458,6 @@ void FUN_00133E10(CampMainDrawItem* item,
                      item->spriteScale);
         FUN_001159f0(parent, D_00833BA4, 4,
                      (u8)item->alpha, item->x + 336.0f, item->y,
-                     item->spriteScale);
-        break;
-    case 0x1c:
-        FUN_001159f0(parent, campMainResource(resources, 2), 0,
-                     (u8)item->alpha, item->x, item->y,
                      item->spriteScale);
         break;
     case 0x1d:
@@ -1304,6 +1304,18 @@ void* FUN_001355c0(KwlnTask* task)
         }
         FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
                      (s32)work[2], (s32)work[1], 2, 0, 0);
+        break;
+    case 10:
+        if ((DAT_007e094e & 0x20) != 0) {
+            FUN_0010a4e0(0, 0, 0, 2);
+            work[0] = 2;
+        }
+        FUN_00138e80(100.0f, 0, (const s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], (s32)work[5], 0,
+                     (s32)work[3], 0, 0);
+        if ((s32)work[3] > 9 && (s32)work[6] < 10) {
+            work[6]++;
+        }
         break;
     case 0x0b:
         if ((s32)work[3] < 0x14) {

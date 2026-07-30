@@ -32265,6 +32265,12 @@ void FUN_0033e8e0(int param_1)
   u32 uVar32;
 
   u32 uStack_44;
+  float vuColor0[4];
+  float vuColor1[4];
+  u32 vuTmp;
+  u32 packedColor;
+  u32 packed0;
+  u32 packed1;
 
   
 
@@ -32306,33 +32312,37 @@ void FUN_0033e8e0(int param_1)
 
       puVar14 = *(u32 **)(*(int *)(*(int *)(puVar3 + 8) + 0x18) + 0x30);
 
-      auVar13 = _pextlb(0,(long)(int)(u32)((u32)((long)*(int *)(iVar2 + 0x58) << 0x28) >> 0x28));
+      packedColor = *(u32 *)(iVar2 + 0x58);
+      __asm__ volatile (
+          ".set noreorder                  \n"
+          "pextlb      %0, $zero, %1       \n"
+          "pextlh      %0, $zero, %0       \n"
+          "qmtc2       %0, $vf10           \n"
+          "vitof0.xyzw $vf10, $vf10        \n"
+          "mfc1        %0, %2              \n"
+          "qmtc2       %0, $vf2            \n"
+          "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+          "sqc2        $vf10, 0(%3)        \n"
+          ".set reorder"
+          : "=&r"(vuTmp)
+          : "r"(packedColor), "f"(DAT_007cae4c), "r"(vuColor0)
+          : "vf2", "vf10", "memory");
 
-      auVar13 = _pextlh(0,auVar13._0_8_);
-
-      auVar13 = _qmtc2(auVar13._0_4_);
-
-      auVar26 = _vitof0(auVar13);
-
-      auVar13 = _qmtc2(DAT_007cae4c);
-
-      auVar13 = _vmulbc(auVar26,auVar13);
-
-      auVar13 = _sqc2(auVar13);
-
-      auVar26 = _pextlb(0,(long)(int)(*(u32 *)(iVar2 + 0x5c) & 0xffffff));
-
-      auVar26 = _pextlh(0,auVar26._0_8_);
-
-      auVar26 = _qmtc2(auVar26._0_4_);
-
-      auVar27 = _vitof0(auVar26);
-
-      auVar26 = _qmtc2(DAT_007cae4c);
-
-      auVar26 = _vmulbc(auVar27,auVar26);
-
-      auVar26 = _sqc2(auVar26);
+      packedColor = *(u32 *)(iVar2 + 0x5c) & 0xffffff;
+      __asm__ volatile (
+          ".set noreorder                  \n"
+          "pextlb      %0, $zero, %1       \n"
+          "pextlh      %0, $zero, %0       \n"
+          "qmtc2       %0, $vf10           \n"
+          "vitof0.xyzw $vf10, $vf10        \n"
+          "mfc1        %0, %2              \n"
+          "qmtc2       %0, $vf2            \n"
+          "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+          "sqc2        $vf10, 0(%3)        \n"
+          ".set reorder"
+          : "=&r"(vuTmp)
+          : "r"(packedColor), "f"(DAT_007cae4c), "r"(vuColor1)
+          : "vf2", "vf10", "memory");
 
       iVar19 = (int)(*(float *)(iVar2 + 0x44) * (float)iVar5);
 
@@ -32477,137 +32487,71 @@ void FUN_0033e8e0(int param_1)
             fVar22 = (float)FUN_0052e878_f32(fVar22);
 
             auVar27._4_4_ = fVar8 - fVar23;
-
             auVar27._0_4_ = fVar21 * fVar23;
-
             auVar27._8_4_ = fVar22 * fVar23;
-
             auVar27._12_4_ = uStack_44;
-
             auVar28 = _lqc2(auVar27);
-
             auVar27 = _vmul(auVar28,auVar28);
-
             _vmulabc(in_vf0,auVar27);
-
             _vmaddabc(in_vf0,auVar27);
-
             auVar27 = _vmaddbc(in_vf0,auVar27);
-
             _vrsqrt(in_vf0,auVar27);
-
             uVar32 = _vwaitq();
-
             auVar27 = _vmulq(auVar28,uVar32);
-
             auVar31 = _vmove(auVar27);
-
             auVar28._4_4_ = 0;
-
             auVar28._0_4_ = fVar22;
-
             auVar28._8_4_ = -fVar21;
-
             auVar28._12_4_ = uStack_44;
-
             auVar28 = _lqc2(auVar28);
-
             auVar29 = _vmove(auVar28);
-
             auVar27 = _qmtc2(piVar16[9]);
-
             auVar28 = _vmulbc(auVar28,auVar27);
-
             auVar27 = _qmtc2(piVar16[10]);
-
             auVar29 = _vmulbc(auVar29,auVar27);
-
             auVar27 = _sqc2(auVar28);
-
             auVar28 = _sqc2(auVar29);
-
             auVar29._4_4_ = 0;
-
             auVar29._0_4_ = fVar21 * fVar24;
-
             auVar29._8_4_ = fVar22 * fVar24;
-
             auVar29._12_4_ = 0;
-
             auVar29 = _lqc2(auVar29);
-
             _DAT_0069c4d0 = _sqc2(auVar29);
-
             puVar15[9] = DAT_0069c4d0;
-
             puVar15[10] = DAT_0069c4d4;
-
             puVar15[0xb] = DAT_0069c4d8;
-
             auVar30 = _lqc2(auVar27);
-
             auVar27 = _vadd(auVar29,auVar30);
-
             _DAT_0069c4d0 = _sqc2(auVar27);
-
             puVar15[6] = DAT_0069c4d0;
-
             puVar15[7] = DAT_0069c4d4;
-
             puVar15[8] = DAT_0069c4d8;
-
             auVar27 = _vsub(auVar27,auVar30);
-
             auVar27 = _vsub(auVar27,auVar30);
-
             _DAT_0069c4d0 = _sqc2(auVar27);
-
             puVar15[0xc] = DAT_0069c4d0;
-
             puVar15[0xd] = DAT_0069c4d4;
-
             puVar15[0xe] = DAT_0069c4d8;
-
             auVar29 = _vmove(auVar31);
-
             auVar27 = _qmtc2(piVar16[3]);
-
             auVar29 = _vmulbc(auVar29,auVar27);
-
             auVar30._4_4_ = 0;
-
             auVar30._0_4_ = fVar21 * fVar24;
-
             auVar30._8_4_ = fVar22 * fVar24;
-
             auVar30._12_4_ = 0;
-
             auVar27 = _lqc2(auVar30);
-
             auVar27 = _vadd(auVar27,auVar29);
-
             auVar28 = _lqc2(auVar28);
-
             auVar27 = _vadd(auVar27,auVar28);
-
             _DAT_0069c4d0 = _sqc2(auVar27);
-
             *puVar15 = DAT_0069c4d0;
-
             puVar15[1] = DAT_0069c4d4;
-
             puVar15[2] = DAT_0069c4d8;
-
             auVar27 = _vsub(auVar27,auVar28);
-
             auVar27 = _vsub(auVar27,auVar28);
-
             _DAT_0069c4d0 = _sqc2(auVar27);
-
             puVar15[3] = DAT_0069c4d0;
-
             puVar15[4] = DAT_0069c4d4;
-
             puVar15[5] = DAT_0069c4d8;
 
             piVar16[3] = (int)((float)piVar16[3] + (float)piVar16[4]);
@@ -32634,51 +32578,40 @@ void FUN_0033e8e0(int param_1)
 
             }
 
-            auVar28 = _lqc2(_DAT_0069c4a0);
-
-            auVar27 = _qmtc2(fVar21);
-
-            auVar29 = _vmulbc(auVar28,auVar27);
-
-            auVar27 = _lqc2(auVar26);
-
-            auVar28 = _vmul(auVar27,auVar29);
-
-            auVar27 = _qmtc2(0x437f0000);
-
-            auVar27 = _vmulbc(auVar28,auVar27);
-
-            auVar27 = _vftoi0(auVar27);
-
-            auVar27 = _qmfc2(auVar27._0_4_);
-
-            auVar27 = _ppach(in_zero_qw,auVar27);
-
-            auVar27 = _ppacb(in_zero_qw,auVar27);
-
-            *puVar14 = auVar27._0_4_;
-
-            puVar14[1] = auVar27._0_4_;
-
-            auVar27 = _lqc2(auVar13);
-
-            auVar28 = _vmul(auVar27,auVar29);
-
-            auVar27 = _qmtc2(0x437f0000);
-
-            auVar27 = _vmulbc(auVar28,auVar27);
-
-            auVar27 = _vftoi0(auVar27);
-
-            auVar27 = _qmfc2(auVar27._0_4_);
-
-            auVar27 = _ppach(in_zero_qw,auVar27);
-
-            auVar27 = _ppacb(in_zero_qw,auVar27);
+            __asm__ volatile (
+                ".set noreorder                  \n"
+                "lqc2        $vf11, 0(%2)        \n"
+                "mfc1        %0, %5              \n"
+                "qmtc2       %0, $vf2            \n"
+                "vmulx.xyzw  $vf11, $vf11, $vf2x \n"
+                "lqc2        $vf10, 0(%3)        \n"
+                "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+                "lui         %0, 0x437f          \n"
+                "qmtc2       %0, $vf2            \n"
+                "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+                "vftoi0.xyzw $vf10, $vf10        \n"
+                "qmfc2       %0, $vf10           \n"
+                "ppach       %0, $zero, %0       \n"
+                "ppacb       %0, $zero, %0       \n"
+                "lqc2        $vf10, 0(%4)        \n"
+                "vmul.xyzw   $vf10, $vf10, $vf11 \n"
+                "lui         %1, 0x437f          \n"
+                "qmtc2       %1, $vf2            \n"
+                "vmulx.xyzw  $vf10, $vf10, $vf2x \n"
+                "vftoi0.xyzw $vf10, $vf10        \n"
+                "qmfc2       %1, $vf10           \n"
+                "ppach       %1, $zero, %1       \n"
+                "ppacb       %1, $zero, %1       \n"
+                ".set reorder"
+                : "=&r"(packed1), "=&r"(packed0)
+                : "r"((u8 *)0x0069c4a0), "r"(vuColor1), "r"(vuColor0), "f"(fVar21)
+                : "vf2", "vf10", "vf11", "memory");
+            *puVar14 = packed1;
+            puVar14[1] = packed1;
 
             if ((uVar17 & 1) != 0) {
 
-              puVar14[3] = auVar27._0_4_ | 0xff000000;
+              puVar14[3] = packed0 | 0xff000000;
 
               fVar21 = fVar10 * fVar21;
 
@@ -32696,7 +32629,7 @@ void FUN_0033e8e0(int param_1)
 
             else {
 
-              puVar14[3] = auVar27._0_4_ | 0x80000000;
+              puVar14[3] = packed0 | 0x80000000;
 
               fVar21 = fVar21 * 255.0f;
 

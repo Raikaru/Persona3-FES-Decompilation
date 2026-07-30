@@ -2817,8 +2817,9 @@ void FUN_0022AE80(void)
     u32 table6;
     u32 texture;
     s32 i;
-    void (*pRender)(u32, u32);
-    void (*pQuad)(u32*, u32, u32, u32, u32);
+    void (**pRender)(u32, u32);
+    void (**pRenderInitial)(u32, u32);
+    void (**pQuad)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -2826,9 +2827,9 @@ void FUN_0022AE80(void)
     table6 = FUN_0021c3f0(6);
     records = work + 0x4660;
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x23));
-    pRender = (void (*)(u32, u32))D_00960090;
-    BCM_2AE_STATE(1, texture);
-    pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
+    pRenderInitial = (void (**)(u32, u32))D_00960090_abs;
+    (*pRenderInitial)(1, texture);
+    pQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
     BCM_2AE_QUAD((u32*)(work + 0x4230), 4, 0, 1, 2);
     BCM_2AE_QUAD((u32*)(work + 0x4230), 4, 0, 2, 3);
     BCM_2AE_QUAD((u32*)(work + 0x4330), 4, 0, 1, 2);
@@ -2839,11 +2840,10 @@ void FUN_0022AE80(void)
         FUN_003b1360(*(u32*)record, 1, 0);
 
         texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
-        pRender = (void (*)(u32, u32))D_00960090;
+        pRender = (void (**)(u32, u32))D_00960090_abs;
         BCM_2AE_STATE(1, texture);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
         BCM_2AE_QUAD((u32*)(record + 0x10), 4, 0, 1, 2);
         BCM_2AE_QUAD((u32*)(record + 0x10), 4, 0, 2, 3);
 
@@ -2874,11 +2874,10 @@ void FUN_0022AE80(void)
     FUN_003b1360(*(u32*)overlay, 1, 0);
 
     texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
-    pRender = (void (*)(u32, u32))D_00960090;
+    pRender = (void (**)(u32, u32))D_00960090_abs;
     BCM_2AE_STATE(1, texture);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
     BCM_2AE_QUAD((u32*)(overlay + 0x10), 4, 0, 1, 2);
     BCM_2AE_QUAD((u32*)(overlay + 0x10), 4, 0, 2, 3);
 
@@ -2886,12 +2885,12 @@ void FUN_0022AE80(void)
     BCM_2AE_STATE(1, texture);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    pQuad((u32*)(overlay + 0x110), 4, 0, 1, 2);
-    pQuad((u32*)(overlay + 0x110), 4, 0, 2, 3);
-    pQuad((u32*)(overlay + 0x210), 4, 0, 1, 2);
-    pQuad((u32*)(overlay + 0x210), 4, 0, 2, 3);
-    pQuad((u32*)(overlay + 0x310), 4, 0, 1, 2);
-    pQuad((u32*)(overlay + 0x310), 4, 0, 2, 3);
+    (*pQuad)((u32*)(overlay + 0x110), 4, 0, 1, 2);
+    (*pQuad)((u32*)(overlay + 0x110), 4, 0, 2, 3);
+    (*pQuad)((u32*)(overlay + 0x210), 4, 0, 1, 2);
+    (*pQuad)((u32*)(overlay + 0x210), 4, 0, 2, 3);
+    (*pQuad)((u32*)(overlay + 0x310), 4, 0, 1, 2);
+    (*pQuad)((u32*)(overlay + 0x310), 4, 0, 2, 3);
 
     texture = FUN_0021cce0(FUN_0021cca0(table6, 0x1a));
     BCM_2AE_STATE(1, texture);
