@@ -4360,7 +4360,7 @@ void FUN_003638e0(int *param_1,int param_2,int param_3,u32 param_4,int param_5)
 // b210 floor: the only residual is call-argument setup order. At +0xc8/+0xcc,
 // retail loads a2 before a0; at +0xec..+0x100, retail loads v0/addiu/andi,
 // a3/t0 before a0, while b210 emits the independent a0 load first.
-// FUN_00364470 NONMATCHING
+// FUN_00364470
 
 u16 * FUN_00364470(u32 param_1,int param_2)
 {
@@ -4390,7 +4390,13 @@ u16 * FUN_00364470(u32 param_1,int param_2)
   stack[0] = 0;
   stack[1] = *(f32 *)(puVar5 + 10);
   stack[2] = 0;
-  FUN_003b8b30(*(u16 *)(param_2 + 0xc),stack,*(short *)(puVar5 + 0x12),0);
+  {
+    short third;
+    u16 first;
+    third = *(volatile short *)(puVar5 + 0x12);
+    first = *(volatile u16 *)(param_2 + 0xc);
+    FUN_003b8b30(first,stack,third,0);
+  }
   if ((char)puVar5[0x14] != '\0') {
     FUN_003bb1d0_evt_main(*(u16 *)(param_2 + 0xc),2,(u8)(*(char *)((int)puVar5 + 0x29) + 1),
                           (char)puVar5[0x15],*(char *)((int)puVar5 + 0x2b));
@@ -4399,10 +4405,10 @@ u16 * FUN_00364470(u32 param_1,int param_2)
   return puVar5;
 }
 
-// b210 floor: the only residual is call-argument setup order at +0xb8..+0xcc.
-// Retail loads a2, then the three float stores, then a0; b210 emits the stores,
-// a0, then a2 for the same FUN_003b8c30 call.
-// FUN_003645C0 NONMATCHING
+// W295: the "call-argument setup order" here was fixable: retail loads the lh
+// (arg3) before the stack fills and the lhu (arg1) last - two volatile-ordered
+// temps reproduce it (same lever as FUN_00364470).
+// FUN_003645C0
 
 u16 * FUN_003645c0(u32 param_1,int param_2)
 {
@@ -4429,10 +4435,16 @@ u16 * FUN_003645c0(u32 param_1,int param_2)
   if (*puVar5 != param_1) {
     return puVar5;
   }
-  stack[2] = *(f32 *)(puVar5 + 0xc);
-  stack[1] = stack[2];
-  stack[0] = stack[2];
-  FUN_003b8c30(*(u16 *)(param_2 + 0xc),stack,*(short *)(puVar5 + 10));
+  {
+    short third;
+    u16 first;
+    third = *(volatile short *)(puVar5 + 10);
+    stack[2] = *(f32 *)(puVar5 + 0xc);
+    stack[1] = stack[2];
+    stack[0] = stack[2];
+    first = *(volatile u16 *)(param_2 + 0xc);
+    FUN_003b8c30(first,stack,third);
+  }
   return puVar5;
 }
 
