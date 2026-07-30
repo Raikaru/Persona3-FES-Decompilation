@@ -1383,6 +1383,9 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
 #pragma push
 /* Removing this worsens FUN_0012f6d0 (nd4178 -> nd4407) - measured W161. */
 #pragma opt_loop_invariants on
+#define scale (*(f32*)(record + 0x24))
+#define posX (*(f32*)(record + 0x38))
+#define alpha ((u8)*(u32*)(record + 0x40))
 // FUN_0012F6D0 NONMATCHING
 void FUN_0012f6d0(void* work, s32 index, u8* record)
 {
@@ -1397,10 +1400,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
     u16 equipment;
     u16 id;
     u8 effect;
-    f32 posX;
     f32 posY;
-    f32 scale;
-    u8 alpha;
     CampVec2 equipVecA;
     CampVec2 equipVecB;
 
@@ -1450,10 +1450,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         effect = func_0016f810(pcId, equipment);
         campEquipFormatTextCall(text, "%d", (s32)func_00171110(id, effect));
         slot = *(s16*)((u8*)work + 0x1c);
-        scale = *(f32*)(record + 0x24);
-        posX = *(f32*)(record + 0x38);
         posY = *(f32*)(record + 0x3c);
-        alpha = (u8)*(u32*)(record + 0x40);
         switch (slot) {
         case 0:
             campEquipDrawSpriteCall(
@@ -1562,10 +1559,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             slot = *(s16*)((u8*)work + 0x1c);
             itemCount = *(s32*)((u8*)work + 0x2ac);
             firstItem = *(s32*)((u8*)work + 0x24);
-            scale = *(f32*)(record + 0x24);
-            posX = *(f32*)(record + 0x38);
             posY = *(f32*)(record + 0x3c);
-            alpha = (u8)*(u32*)(record + 0x40);
 
             campEquipDrawSpriteCall(
                 parent, *(void**)((u8*)work + 0x2b0), 0x27,
@@ -1826,4 +1820,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
     }
 
 }
+#undef scale
+#undef posX
+#undef alpha
 #pragma pop

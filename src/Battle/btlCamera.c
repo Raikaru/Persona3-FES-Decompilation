@@ -7873,12 +7873,12 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   float fStack_94;
   RwV3d secondaryPos;
   RwV3d anchorPos;
-  float mid[3];
-  float centerB[3];
+  RwV3d mid;
+  RwV3d centerB;
   float target[3];
-  float centerA[3];
-  float delta[3];
-  float axis[3];
+  RwV3d centerA;
+  RwV3d delta;
+  RwV3d axis;
   float fStack_4;
   
   iVar9 = (int)camera;
@@ -7892,12 +7892,12 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     bVar4 = 1;
   }
   bVar5 = 0;
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)centerA);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar3), (RwV3d*)centerB);
-  fVar15 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.5f + centerA[1];
-  fVar13 = *(float *)(iVar3 + 0x8c) * *(float *)(iVar3 + 0x2c) * 0.5f + centerB[1];
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), &centerA);
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar3), &centerB);
+  fVar15 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) * 0.5f + centerA.y;
+  fVar13 = *(float *)(iVar3 + 0x8c) * *(float *)(iVar3 + 0x2c) * 0.5f + centerB.y;
   if ((fVar15 < fVar13) && (!bVar4)) {
-    centerA[1] = (fVar15 + fVar13) * 0.25f;
+    centerA.y = (fVar15 + fVar13) * 0.25f;
     fVar15 = fVar13;
   }
   fVar14 = *(float *)(iVar3 + 0x90) * *(float *)(iVar3 + 0x2c);
@@ -7906,26 +7906,26 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fVar13 = fVar14;
   }
   if (fVar15 < 275.0f) {
-    centerA[1] = fGpffff80a0;
+    centerA.y = fGpffff80a0;
     fVar15 = 275.0f;
   }
   fVar10 = func_00280870_ae740(2,0,target,&fStack_4,0,1);
-  FUN_004be1e0_b6070((RwV3d*)axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
+  FUN_004be1e0_b6070(&axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
   target[1] = fStack_4 * 0.5f;
-  delta[0] = centerA[0] - target[0];
-  delta[1] = centerA[1] - target[1];
-  delta[2] = centerA[2] - target[2];
-  fVar14 = (float)FUN_004c69f0_b6070((RwV3d*)delta,(RwV3d*)delta);
+  delta.x = centerA.x - target[0];
+  delta.y = centerA.y - target[1];
+  delta.z = centerA.z - target[2];
+  fVar14 = (float)FUN_004c69f0_b6070(&delta,&delta);
   fVar14 = fGpffff8098 * fVar14;
-  mid[0] = delta[0] * fVar14 + target[0];
-  mid[1] = delta[1] * fVar14 + target[1];
-  mid[2] = delta[2] * fVar14 + target[2];
-  fStack_118 = *(float *)(iVar9 + 0x9c) - mid[0];
-  fStack_114 = *(float *)(iVar9 + 0xa4) - mid[2];
+  mid.x = delta.x * fVar14 + target[0];
+  mid.y = delta.y * fVar14 + target[1];
+  mid.z = delta.z * fVar14 + target[2];
+  fStack_118 = *(float *)(iVar9 + 0x9c) - mid.x;
+  fStack_114 = *(float *)(iVar9 + 0xa4) - mid.z;
   FUN_004c6b20_b6070(&fStack_118,&fStack_118);
   lVar8 = FUN_002a3420(iVar9);
   lVar7 = FUN_002a3820_u32(iVar9);
-  fVar14 = delta[2] * fStack_118 + -delta[0] * fStack_114;
+  fVar14 = delta.z * fStack_118 + -delta.x * fStack_114;
   if ((bVar4) ||
      ((*(ushort *)
         (iGpffffb73c + ((u32)*(ushort *)(iVar3 + 0xa4) * 10 + (u32)*(ushort *)(iVar3 + 0xa4)) * 8)
@@ -7944,16 +7944,16 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     if (fVar14 < 0.0f) {
       fVar11 = -fVar13;
     }
-    axis[2] = axis[2] * fVar11;
-    axis[0] = axis[0] * fVar11;
-    anchorPos.x = centerA[0] + axis[0];
-    anchorPos.z = centerA[2] + axis[2];
+    axis.z = axis.z * fVar11;
+    axis.x = axis.x * fVar11;
+    anchorPos.x = centerA.x + axis.x;
+    anchorPos.z = centerA.z + axis.z;
     fVar15 = fGpffff80a4 * fVar15;
     anchorPos.y = fVar15;
-    axis[0] = anchorPos.x - mid[0];
-    axis[1] = anchorPos.y - mid[1];
-    axis[2] = anchorPos.z - mid[2];
-    fVar11 = (float)FUN_004c69f0_b6070((RwV3d*)axis,(RwV3d*)axis);
+    axis.x = anchorPos.x - mid.x;
+    axis.y = anchorPos.y - mid.y;
+    axis.z = anchorPos.z - mid.z;
+    fVar11 = (float)FUN_004c69f0_b6070(&axis,&axis);
     fVar17 = fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f;
     fVar12 = (float)FUN_0052e930(fVar17);
     fVar13 = fVar13 / fVar12;
@@ -7968,55 +7968,55 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     }
     fVar15 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
     fVar15 = fVar11 * fVar15 * 0.21875f;
-    fStack_98 = axis[0];
-    fStack_94 = axis[2];
+    fStack_98 = axis.x;
+    fStack_94 = axis.z;
     FUN_004c6b20_b6070(&fStack_98,&fStack_98);
-    mid[0] = fStack_94 * fVar15 + mid[0];
-    mid[2] = (mid[2]) - fStack_98 * fVar15;
-    basePos.x = mid[0] + axis[0] * fVar11;
-    basePos.y = mid[1] + axis[1] * fVar11;
-    basePos.z = mid[2] + axis[2] * fVar11;
-    FUN_002a4690_b6070((void*)auStack_110, &basePos, (const void*)mid, (const void*)&D_00697880);
-    btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), (RwV3d*)centerA);
-    centerA[1] = fGpffff8094 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) + centerA[1];
+    mid.x = fStack_94 * fVar15 + mid.x;
+    mid.z = mid.z - fStack_98 * fVar15;
+    basePos.x = mid.x + axis.x * fVar11;
+    basePos.y = mid.y + axis.y * fVar11;
+    basePos.z = mid.z + axis.z * fVar11;
+    FUN_002a4690_b6070((void*)auStack_110, &basePos, &mid, (const void*)&D_00697880);
+    btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar2), &centerA);
+    centerA.y = fGpffff8094 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) + centerA.y;
     fVar15 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 2.5f;
-    FUN_004be1e0_b6070((RwV3d*)axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
+    FUN_004be1e0_b6070(&axis,&D_00697870,1,(const void*)(iVar2 + 0x1c));
     if (0.0f <= fVar14) {
       fVar15 = -fVar15;
     }
-    axis[2] = axis[2] * fVar15;
-    axis[1] = axis[1] * fVar15;
-    axis[0] = axis[0] * fVar15;
-    secondaryPos.x = centerA[0] + axis[0];
-    secondaryPos.y = centerA[1] + axis[1];
-    secondaryPos.z = centerA[2] + axis[2];
+    axis.z = axis.z * fVar15;
+    axis.y = axis.y * fVar15;
+    axis.x = axis.x * fVar15;
+    secondaryPos.x = centerA.x + axis.x;
+    secondaryPos.y = centerA.y + axis.y;
+    secondaryPos.z = centerA.z + axis.z;
     FUN_002a4690_b6070((void*)auStack_110, &secondaryPos,
-                        (const void*)mid,(const void*)&D_00697880);
+                        &mid,(const void*)&D_00697880);
     fVar14 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c) * 4.0f;
-    delta[0] = centerA[0] - target[0];
-    delta[1] = centerA[1] - target[1];
-    delta[2] = centerA[2] - target[2];
-    fVar15 = (float)FUN_004c69f0_b6070((RwV3d*)delta,(RwV3d*)delta);
-    axis[0] = secondaryPos.x - mid[0];
-    axis[1] = secondaryPos.y - mid[1];
-    axis[2] = secondaryPos.z - mid[2];
+    delta.x = centerA.x - target[0];
+    delta.y = centerA.y - target[1];
+    delta.z = centerA.z - target[2];
+    fVar15 = (float)FUN_004c69f0_b6070(&delta,&delta);
+    axis.x = secondaryPos.x - mid.x;
+    axis.y = secondaryPos.y - mid.y;
+    axis.z = secondaryPos.z - mid.z;
     fVar13 = (float)FUN_0052e930(fVar17);
     fVar15 = fVar15 + fVar14 / fVar13;
-    FUN_004be1e0_b6070((RwV3d*)axis,&D_006978A0,1,(const void*)transformedQuat);
+    FUN_004be1e0_b6070(&axis,&D_006978A0,1,(const void*)transformedQuat);
     fVar13 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
     fVar13 = fVar15 * fVar13 * 0.21875f;
-    fStack_98 = axis[0];
-    fStack_94 = axis[2];
+    fStack_98 = axis.x;
+    fStack_94 = axis.z;
     FUN_004c6b20_b6070(&fStack_98,&fStack_98);
-    outputPos.x = fStack_94 * fVar13 + mid[0];
-    mid[0] = outputPos.x;
-    mid[2] = mid[2] - fStack_98 * fVar13;
-    axis[0] = axis[0] * fVar15;
-    axis[1] = axis[1] * fVar15;
-    axis[2] = axis[2] * fVar15;
-    outputPos.x = outputPos.x + axis[0];
-    outputPos.y = mid[1] + axis[1];
-    outputPos.z = mid[2] + axis[2];
+    outputPos.x = fStack_94 * fVar13 + mid.x;
+    mid.x = outputPos.x;
+    mid.z = mid.z - fStack_98 * fVar13;
+    axis.x = axis.x * fVar15;
+    axis.y = axis.y * fVar15;
+    axis.z = axis.z * fVar15;
+    outputPos.x = outputPos.x + axis.x;
+    outputPos.y = mid.y + axis.y;
+    outputPos.z = mid.z + axis.z;
     fVar16 = *(f32*)&uGpffff8074;
   }
   else {
@@ -8034,20 +8034,20 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       else {
         fVar15 = -(*(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c));
       }
-      axis[2] = axis[2] * fVar15;
-      axis[1] = axis[1] * fVar15;
-      axis[0] = axis[0] * fVar15;
-      anchorPos.x = target[0] + axis[0];
-      anchorPos.y = anchorPos.y + axis[1];
-      anchorPos.z = target[2] + axis[2];
+      axis.z = axis.z * fVar15;
+      axis.y = axis.y * fVar15;
+      axis.x = axis.x * fVar15;
+      anchorPos.x = target[0] + axis.x;
+      anchorPos.y = anchorPos.y + axis.y;
+      anchorPos.z = target[2] + axis.z;
     }
     if (anchorPos.y < 125.0f) {
       anchorPos.y = 125.0f;
     }
-    axis[0] = anchorPos.x - mid[0];
-    axis[1] = anchorPos.y - mid[1];
-    axis[2] = anchorPos.z - mid[2];
-    fVar13 = (float)FUN_004c69f0((RwV3d*)axis,(RwV3d*)axis);
+    axis.x = anchorPos.x - mid.x;
+    axis.y = anchorPos.y - mid.y;
+    axis.z = anchorPos.z - mid.z;
+    fVar13 = (float)FUN_004c69f0(&axis,&axis);
     fVar15 = 300.0f;
     if (300.0f <= fVar10) {
       fVar15 = fVar10;
@@ -8056,14 +8056,14 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fVar13 = fVar13 + fVar15 / fVar10;
     fVar15 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
     fVar15 = fVar13 * fVar15 * 0.21875f * 0.5f;
-    fStack_98 = axis[0];
-    fStack_94 = axis[2];
+    fStack_98 = axis.x;
+    fStack_94 = axis.z;
     FUN_004c6b20(&fStack_98,&fStack_98);
-    mid[0] = fStack_94 * fVar15 + mid[0];
-    mid[2] = (mid[2]) - fStack_98 * fVar15;
-    basePos.x = mid[0] + axis[0] * fVar13;
-    basePos.y = mid[1] + axis[1] * fVar13;
-    basePos.z = mid[2] + axis[2] * fVar13;
+    mid.x = fStack_94 * fVar15 + mid.x;
+    mid.z = mid.z - fStack_98 * fVar15;
+    basePos.x = mid.x + axis.x * fVar13;
+    basePos.y = mid.y + axis.y * fVar13;
+    basePos.z = mid.z + axis.z * fVar13;
     if (lVar7 == 0) {
       if (0.0f <= fVar14) {
         FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, -27.5f, 0);
@@ -8071,61 +8071,61 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       else {
         FUN_004c31b0_typed((RwMatrix*)auStack_110, &D_00697880, 27.5f, 0);
       }
-      FUN_004c6c60(delta,(RwV3d*)axis,auStack_110);
+      FUN_004c6c60(&delta,&axis,auStack_110);
       fVar13 = fVar13 * fGpffff807c;
       fVar15 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar9 + 0xb8) * 0.5f);
       fVar15 = fVar13 * fVar15 * 0.21875f * 0.5f;
-      fStack_98 = delta[0];
-      fStack_94 = delta[2];
+      fStack_98 = delta.x;
+      fStack_94 = delta.z;
       FUN_004c6b20_b6070(&fStack_98,&fStack_98);
-      mid[0] = fStack_94 * fVar15 + mid[0];
-      mid[2] = (mid[2]) - fStack_98 * fVar15;
-      outputPos.x = mid[0] + delta[0] * fVar13;
-      outputPos.z = mid[2] + delta[2] * fVar13;
+      mid.x = fStack_94 * fVar15 + mid.x;
+      mid.z = mid.z - fStack_98 * fVar15;
+      outputPos.x = mid.x + delta.x * fVar13;
+      outputPos.z = mid.z + delta.z * fVar13;
       outputPos.y = fGpffff80a4 * fStack_4;
-      delta[0] = centerA[0] - target[0];
-      delta[1] = centerA[1] - target[1];
-      delta[2] = centerA[2] - target[2];
-      fVar15 = (float)FUN_004c69f0_b6070((RwV3d*)delta,(RwV3d*)delta);
+      delta.x = centerA.x - target[0];
+      delta.y = centerA.y - target[1];
+      delta.z = centerA.z - target[2];
+      fVar15 = (float)FUN_004c69f0_b6070(&delta,&delta);
       fVar15 = fVar15 * 0.25f;
-      mid[0] = delta[0] * fVar15 + target[0];
-      mid[1] = delta[1] * fVar15 + target[1];
-      mid[2] = delta[2] * fVar15 + target[2];
-      FUN_002a4690_b6070((void*)auStack_110, &outputPos, (const void*)mid, (const void*)&D_00697880);
+      mid.x = delta.x * fVar15 + target[0];
+      mid.y = delta.y * fVar15 + target[1];
+      mid.z = delta.z * fVar15 + target[2];
+      FUN_002a4690_b6070((void*)auStack_110, &outputPos, &mid, (const void*)&D_00697880);
       fVar16 = 3.75f;
     }
     else {
       switch (sVar1) {
       case 0x26:
-        mid[1] = 500.0f;
+        mid.y = 500.0f;
         outputPos.y = 200.0f;
         fVar16 = 1.25f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
         break;
       case 0x27:
-        mid[1] = 600.0f;
+        mid.y = 600.0f;
         outputPos.y = 200.0f;
         bVar5 = 0;
         *(undefined4 *)(iVar9 + 0xdc) = 8;
         fVar16 = *(f32*)&uGpffff80ac;
         break;
       case 0x2c:
-        mid[1] = 800.0f;
+        mid.y = 800.0f;
         outputPos.y = 500.0f;
         fVar16 = 2.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0xc;
         break;
       case 0x38:
-        mid[1] = 1000.0f;
+        mid.y = 1000.0f;
         outputPos.y = 500.0f;
         fVar16 = 1.5f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 4;
         break;
       default:
-        mid[1] = 500.0f;
+        mid.y = 500.0f;
         outputPos.y = 200.0f;
         bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 0;
@@ -8136,7 +8136,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
       outputPos.x = basePos.x;
       outputPos.z = basePos.z;
       FUN_002a4690_b6070((void*)auStack_110, &outputPos,
-                          (const void*)mid,(const void*)&D_00697880);
+                          &mid,(const void*)&D_00697880);
     }
   }
   if ((param_3 == 0) && (lVar7 == 0)) {
@@ -8144,14 +8144,14 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     transformedQuat[1] = uStack_a4;
     transformedQuat[2] = uStack_a0;
     transformedQuat[3] = uStack_9c;
-    FUN_004be1e0(axis,&D_00697890,1,transformedQuat);
-    axis[0] = axis[0] * 100.0f;
-    axis[1] = axis[1] * 100.0f;
-    axis[2] = axis[2] * 100.0f;
-    outputPos.x = basePos.x + axis[0];
-    outputPos.y = basePos.y + axis[1];
-    outputPos.z = basePos.z + axis[2];
-    FUN_002a4690_b6070((void*)auStack_110, &outputPos, (const void*)mid, (const void*)&D_00697880);
+    FUN_004be1e0(&axis,&D_00697890,1,transformedQuat);
+    axis.x = axis.x * 100.0f;
+    axis.y = axis.y * 100.0f;
+    axis.z = axis.z * 100.0f;
+    outputPos.x = basePos.x + axis.x;
+    outputPos.y = basePos.y + axis.y;
+    outputPos.z = basePos.z + axis.z;
+    FUN_002a4690_b6070((void*)auStack_110, &outputPos, &mid, (const void*)&D_00697880);
   }
   if (0 < *(int *)(iVar9 + 0xdc)) {
     FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);

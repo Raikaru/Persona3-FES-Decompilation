@@ -741,8 +741,8 @@ void opMenu0026d430(void)
     f32 inverseZ;
     void* frame;
     s32 i;
-    u32* item;
     u32 choice;
+    u8* itemBase;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = sOpMenu;
@@ -798,9 +798,9 @@ void opMenu0026d430(void)
     work[0xaf8 / 4] = 0;
     for (i = 0; i < 4; i++)
     {
-        item = (u32*)((u8*)work + 0xb00 + i * 0x310);
-        item[0] = i == work[0xaf8 / 4] ? 0 : 8;
-        item[1] = 0;
+        itemBase = (u8*)work + i * 0x310;
+        *(u32*)(itemBase + 0xb00) = i == work[0xaf8 / 4] ? 0 : 8;
+        *(u32*)(itemBase + 0xb04) = 0;
         switch (i)
         {
         case 0:
@@ -817,40 +817,79 @@ void opMenu0026d430(void)
             break;
         }
         frame = func_0021cca0(atlas, choice);
-        func_0021d3b0((u8*)item + 0x10, frame);
-        if (i == 3) choice = 0x1a;
-        else if (i == 2) choice = 5;
-        else if (i == 1) choice = 3;
-        else choice = 1;
+        func_0021d3b0(itemBase + 0xb10, frame);
+        switch (i)
+        {
+        case 0:
+            choice = 1;
+            break;
+        case 1:
+            choice = 3;
+            break;
+        case 2:
+            choice = 5;
+            break;
+        case 3:
+            choice = 0x1a;
+            break;
+        }
         frame = func_0021cca0(atlas, choice);
-        func_0021d3b0((u8*)item + 0x110, frame);
-        if (i == 3) choice = 0x1b;
-        else if (i == 2) choice = 8;
-        else if (i == 1) choice = 7;
-        else choice = 6;
+        func_0021d3b0(itemBase + 0xc10, frame);
+        switch (i)
+        {
+        case 0:
+            choice = 6;
+            break;
+        case 1:
+            choice = 7;
+            break;
+        case 2:
+            choice = 8;
+            break;
+        case 3:
+            choice = 0x1b;
+            break;
+        }
         frame = func_0021cca0(atlas, choice);
-        func_0021d3b0((u8*)item + 0x210, frame);
+        func_0021d3b0(itemBase + 0xd10, frame);
     }
 
     work[0x1740 / 4] = 0;
     work[0x1744 / 4] = 0;
     frame = func_0021cca0(atlas, 0x22);
     func_0021d3b0((u8*)work + 0x1750, frame);
-    frame = func_0021cca0(atlas, 0x23);
+    choice = 0x23;
+    frame = func_0021cca0(atlas, choice);
     func_0021d3b0((u8*)work + 0x1850, frame);
 
     work[0x1a50 / 4] = 0;
     for (i = 0; i < 2; i++)
     {
-        item = (u32*)((u8*)work + 0x1a60 + i * 0x310);
-        item[0] = i == work[0x1a50 / 4] ? 0 : 8;
-        item[1] = 0;
-        choice = i == 0 ? 0x1c : 0x1e;
+        itemBase = (u8*)work + i * 0x310;
+        *(u32*)(itemBase + 0x1a60) = i == work[0x1a50 / 4] ? 0 : 8;
+        *(u32*)(itemBase + 0x1a64) = 0;
+        switch (i)
+        {
+        case 0:
+            choice = 0x1c;
+            break;
+        case 1:
+            choice = 0x1e;
+            break;
+        }
         frame = func_0021cca0(atlas, choice);
-        func_0021d3b0((u8*)item + 0x10, frame);
-        choice = i == 0 ? 0x1d : 0x1f;
+        func_0021d3b0(itemBase + 0x1a70, frame);
+        switch (i)
+        {
+        case 0:
+            choice = 0x1d;
+            break;
+        case 1:
+            choice = 0x1f;
+            break;
+        }
         frame = func_0021cca0(atlas, choice);
-        func_0021d3b0((u8*)item + 0x110, frame);
+        func_0021d3b0(itemBase + 0x1b70, frame);
     }
 
     work[0xa28 / 4] = 0;
