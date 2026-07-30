@@ -1618,7 +1618,7 @@ void func_001f3270(KwlnTask *task)
     u8 *entry;
     u8 *reward;
     u8 *cardRecord;
-    u32 candidateCount;
+    u16 candidateCount;
     u32 i;
     u32 j;
     u32 mode;
@@ -1630,13 +1630,13 @@ void func_001f3270(KwlnTask *task)
     u32 randomValue;
     u32 value;
     u32 value2;
-    s32 currentLevel;
-    s32 baseLevel;
-    s32 threshold;
-    s32 lower;
-    s32 upper;
-    s32 best;
-    s32 level;
+    s16 currentLevel;
+    s16 baseLevel;
+    s16 threshold;
+    s16 lower;
+    s16 upper;
+    s16 best;
+    s16 level;
     s32 sum;
     s32 selectedIndex;
     s32 start;
@@ -1657,7 +1657,7 @@ void func_001f3270(KwlnTask *task)
 
     /* Retail 0x1f32d8-0x1f33b0: level-to-card threshold. */
     candidateCount = 0;
-    currentLevel = (s32)(s8)(datGetLevel(1) & 0xff);
+    currentLevel = (s32)(s16)(datGetLevel(1) & 0xff);
     baseLevel = currentLevel;
     if (datGetScenarioMode() != 0) {
         if (currentLevel >= 0x19 && currentLevel < 0x23) {

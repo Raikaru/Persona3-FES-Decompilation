@@ -2348,28 +2348,25 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             break;
 
         case 0x10:
-            if (FUN_001b08d0() == true)
+            if (FUN_001b08d0() != false)
             {
                 currentActor = K_Field_GetMajorId((KwlnTask*)FIELD_WORD(0));
                 taskResult = K_Field_GetMinorId((KwlnTask*)FIELD_WORD(0));
-                if (currentActor == 0xffff)
-                {
-                    EVENT_WORD(0x1b) = false;
-                }
-                else if (FUN_001b0910() == false)
-                {
-                    FUN_00523ac8(scriptPath, 0x006836f0, currentActor, taskResult);
-                    EVENT_WORD(0x1b) = FUN_001008b0(scriptPath) == false ? false : FUN_00100d80(scriptPath, false);
-                }
-                else
-                {
-                    EVENT_WORD(0x1b) = true;
-                }
-                EVENT_WORD(0x1c) = FUN_001e7200(currentActor);
+                EVENT_WORD(0x1b) =
+                    taskResult == -1
+                        ? false
+                        : FUN_001b0910() == false
+                              ? (FUN_00523ac8(scriptPath, 0x006836f0, taskResult, currentActor),
+                                 FUN_001008b0(scriptPath) == false
+                                     ? false
+                                     : FUN_00100d80(scriptPath, false))
+                              : true;
+                EVENT_WORD(0x1c) = FUN_001e7200(K_Field_GetMinorId((KwlnTask*)FIELD_WORD(0)));
                 FIELD_WORD(0x38) |= 0x80000000;
-                FUN_003b5760(currentActor, taskResult);
-                FUN_003b58c0(FUN_001bab40((KwlnTask*)FIELD_WORD(0)));
-                FUN_003b5980(FUN_001bab50((KwlnTask*)FIELD_WORD(0)));
+                FUN_003b5760(K_Field_GetMinorId((KwlnTask*)FIELD_WORD(0)),
+                             K_Field_GetMajorId((KwlnTask*)FIELD_WORD(0)));
+                FUN_003b58c0((s16)FUN_001bab40((KwlnTask*)FIELD_WORD(0)));
+                FUN_003b5980((s16)FUN_001bab50((KwlnTask*)FIELD_WORD(0)));
                 fldEvent->eventType = 0x11;
             }
             break;
@@ -2429,13 +2426,13 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 FUN_001a9850();
                 if (gMtScene->fldMajorId == 0x1f)
                 {
-                    if (FUN_0016f190(0xe39) == false)
+                    if (FUN_0016f190(0xe39) != false)
                     {
-                        FUN_003952d0(0, 0x2d0, 3);
+                        FUN_003952d0(0, 0x2cf, 3);
                     }
                     else
                     {
-                        FUN_003952d0(0, 0x2cf, 3);
+                        FUN_003952d0(0, 0x2d0, 3);
                     }
                 }
                 FUN_001c0110();
@@ -2452,22 +2449,30 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
         case 0x15:
             FUN_003c7b90();
             currentActor = gMtScene->fldMajorId;
-            active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
-            if (active != false && EVENT_WORD(7) != 0 && PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) == 1 &&
-                EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+            active = true;
+            if (currentActor == 7 || currentActor == 4)
             {
-                FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, EVENT_WORD(8), 7, true);
-                FUN_005225a8(0x00683750, FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0));
+                if (currentActor == 7 && EVENT_WORD(8) >= 4) active = false;
+            }
+            if (active != false && PTR_U8((void*)PTR_U32((void*)EVENT_WORD(7), 0x128), 0xee) == 1 &&
+                EVENT_WORD(8) != (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+            {
+                FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 7, true);
+                FUN_005225a8(0x00683750, (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0));
             }
             if (FUN_003c7850() == false)
             {
                 FUN_003c7700();
                 FUN_003c77a0();
                 currentActor = gMtScene->fldMajorId;
-                active = !((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) >= 4);
-                if (active != false && EVENT_WORD(7) != 0 && EVENT_WORD(8) != FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+                active = true;
+                if (currentActor == 7 || currentActor == 4)
                 {
-                    FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, EVENT_WORD(8), 0x10, true);
+                    if (currentActor == 7 && EVENT_WORD(8) >= 4) active = false;
+                }
+                if (active != false && EVENT_WORD(8) != (s16)FUN_00318540(PTR_U32((void*)EVENT_WORD(7), 0x128), 0))
+                {
+                    FUN_003182d0(PTR_U32((void*)EVENT_WORD(7), 0x128), 0, (s16)EVENT_WORD(8), 0x10, true);
                 }
                 if (EVENT_WORD(7) != 0 && PTR_U32((void*)EVENT_WORD(7), 0x210) != 0) FUN_001dd5e0((void*)PTR_U32((void*)EVENT_WORD(7), 0x210), true);
                 FUN_001da000((KwlnTask*)FIELD_WORD(0x20), false);
