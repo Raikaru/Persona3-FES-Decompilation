@@ -2026,6 +2026,7 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
     f32 value;
     f32 factor;
     s32 i;
+    s32 result;
 
     flags = (u32*)(iGpffffb7b8 + category * 0x1c);
     switch (scaleMode)
@@ -2049,28 +2050,25 @@ int func_001fbdf0(s32 start, s32 end, s32 amount, s32 category, s32 scaleMode)
 
     if ((*flags & 0x80) != 0)
     {
-        value = (f32)amount;
+        result = (s32)((f32)amount * factor);
     }
     else
     {
         i = end - start;
-        if (i < 10)
-        {
-            if (i < -9)
-                i = 0;
-            else
-                i += 10;
-        }
-        else
+        if (!(i < 10))
             i = 0x14;
-        K_ASSERT(i >= 0 && i <= 0x14, 0x20b);
-        value = (f32)amount * *(f32*)(iGpffffb7ac + i * 4);
+        else if (i < -9)
+            i = 0;
+        else
+            i += 10;
+        K_ASSERT(i >= 0 && i < 0x15, 0x20b);
+        value = *(f32*)(iGpffffb7ac + i * 4);
+        value *= (f32)amount;
+        result = (s32)(factor * value);
     }
-
-    i = (s32)(value * factor);
-    if (i > 0xffff)
-        i = 0xffff;
-    return i;
+    if (result > 0xffff)
+        result = 0xffff;
+    return result;
 }
 // FUN_001FBFA0 NONMATCHING
 
