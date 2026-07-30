@@ -2734,15 +2734,15 @@ void func_0010ec50(KwlnTask* task)
                         func_004ab200(
                             resource,
                             (f32)((s32)*(f32*)(work + 0x3d8) + record->x0),
-                            (f32)(448 - ((s32)*(f32*)(work + 0x3dc) + record->y0)));
+                            (f32)(s32)(448.0f - (f32)((s32)*(f32*)(work + 0x3dc) + record->y0)));
                         frames = *(u8**)(entry + 8);
                         frameOffset = (u64)(frame * 0x12);
                         record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                         screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
                                              record->x0);
-                        screenY = (s16)(448 -
-                                        ((s32)*(f32*)(work + 0x3dc) +
-                                         record->y0));
+                        screenY = (s16)(s32)(448.0f -
+                                        (f32)((s32)*(f32*)(work + 0x3dc) +
+                                              record->y0));
                         func_004a5dd0(*(void**)(entry + 0x148),
                                       (s8*)colorBytes, (s8*)colorBytes,
                                       (s8*)colorBytes, (s8*)colorBytes);
@@ -2761,9 +2761,9 @@ void func_0010ec50(KwlnTask* task)
                                 resource,
                                 (f32)((s32)*(f32*)(work + 0x3d8) +
                                       record->x0),
-                                (f32)(448 -
-                                      ((s32)*(f32*)(work + 0x3dc) +
-                                       record->y0)));
+                                (f32)(s32)(448.0f -
+                                      (f32)((s32)*(f32*)(work + 0x3dc) +
+                                            record->y0)));
                         }
                         else
                         {
@@ -2774,18 +2774,18 @@ void func_0010ec50(KwlnTask* task)
                                 resource,
                                 (f32)((s32)*(f32*)(work + 0x3d8) +
                                       record->x0),
-                                (f32)(448 -
-                                      ((s32)*(f32*)(work + 0x3dc) +
-                                       record->y0)));
+                                (f32)(s32)(448.0f -
+                                      (f32)((s32)*(f32*)(work + 0x3dc) +
+                                            record->y0)));
                         }
                         frames = *(u8**)(entry + 8);
                         frameOffset = (u64)(frame * 0x12);
                         record = (HSfdRenderFrame*)(frames + (u32)frameOffset);
                         screenX = (s64)(s16)((s32)*(f32*)(work + 0x3d8) +
                                              record->x0);
-                        screenY = (s16)(448 -
-                                        ((s32)*(f32*)(work + 0x3dc) +
-                                         record->y0));
+                        screenY = (s16)(s32)(448.0f -
+                                        (f32)((s32)*(f32*)(work + 0x3dc) +
+                                              record->y0));
                         func_004a5dd0(*(void**)(entry + 0x148),
                                       (s8*)colorBytes, (s8*)colorBytes,
                                       (s8*)colorBytes, (s8*)colorBytes);

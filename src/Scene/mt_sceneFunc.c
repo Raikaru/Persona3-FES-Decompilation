@@ -2195,12 +2195,7 @@ void FUN_003b9610(Resrc* param_1)
 
                  * (float)*(u32 *)(puVar8 + 0x5e) + (float)(u8)puVar8[0x5a];
 
-        /* Native u8 cast worsens FUN_003b9610 (size 5036 -> 5068, nd3677 -> nd3694); retail contains this bias expansion - measured W180. */
-        if (2147483648.0f <= fVar11) {
-          fVar11 = fVar11 - 2147483648.0f;
-        }
-
-        cVar9 = (char)(int)fVar11;
+        cVar9 = (char)(u32)fVar11;
 
         *(int *)(puVar8 + 0x5e) = *(int *)(puVar8 + 0x5e) + iVar10;
 

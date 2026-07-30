@@ -347,7 +347,9 @@ void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
     case 2:
         if (page + selected < count) {
             for (i = 0; i < 6; i++) {
-                campText(item, campDrawX(item), campDrawY(item) + (f32)(i * 0x18),
+                campText(item, campDrawX(item),
+                         (f32)(s32)campDrawY(item) + (f32)(i * 0x18) +
+                             5.0f - 5.0f - 4.0f,
                          labels[page + selected], 10, 0x78);
             }
         }

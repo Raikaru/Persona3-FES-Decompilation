@@ -450,7 +450,6 @@ void bsaMain00210d90(BsaWork* work)
     slide = 0.0f;
     iconAlpha = 1.0f;
     bsaTransition(p, &alpha, &slide, &iconAlpha);
-    cachedAlpha = bsaAlpha(alpha * 255.0f);
     alphaSource = &alpha;
     #define alpha255 (*alphaSource * 255.0f)
     base = (p[0] == 0) ? 180.0f : 0.0f;
@@ -464,7 +463,7 @@ void bsaMain00210d90(BsaWork* work)
     drawColor[0] = 0xff;
     drawColor[1] = 0xff;
     drawColor[2] = 0xff;
-    drawColor[3] = bsaAlpha(alpha255);
+    drawColor[3] = cachedAlpha = bsaAlpha(alpha255);
     func_0021d950(p + 0x10, drawColor);
     image = func_0021cca0(table2, 0x28);
     bsaPlaceQuad(p, 0x510, image, 18.0f, 54.0f + base + slide, -1.0f, -1.0f, iconAlpha * 255.0f);
@@ -478,8 +477,8 @@ void bsaMain00210d90(BsaWork* work)
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f, -1.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x33);
-        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f, -1.0f, -1.0f, cachedAlpha);
-        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image), base + 58.0f, 30.0f, -1.0f, cachedAlpha);
+        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f, -1.0f, -1.0f, alpha255);
+        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image), base + 58.0f, 30.0f, -1.0f, alpha255);
         image = func_0021cca0(table2, 0x36);
         bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f, -1.0f, -1.0f, cachedAlpha);
     }
@@ -645,7 +644,6 @@ void bsaMain00210d90(BsaWork* work)
         }
     }
 
-    base = (p[0] == 0) ? 180.0f : 0.0f;
     switch (p[0]) {
     case 0:
         rect[0] = -1.0f; rect[1] = 219.0f; rect[2] = 51.0f; rect[3] = 190.0f;

@@ -291,7 +291,7 @@ void brHero00263170(void)
     union { u32 bits; f32 value; } scaleY;
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
-    if ((*w & 1) == 0)
+    if ((~*w & 1) != 0)
         return;
 
     if ((s32)w[0xe58] < 0x41a)
@@ -346,11 +346,13 @@ void brHero00263170(void)
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0x244, rect);
     resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1c);
+    rect[0] = 127.0f;
     rect[1] = 111.0f;
     rect[2] = (float)resource->width;
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0x284, rect);
     resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1c);
+    rect[0] = 127.0f;
     rect[1] = 161.0f;
     rect[2] = (float)resource->width;
     rect[3] = (float)resource->height;
@@ -434,7 +436,10 @@ void brHero00263170(void)
     rect[2] = (float)(resource->width * 2);
     rect[3] = width4;
     FUN_0021d8e0(w + 0x4c8, rect);
+    rect[0] = 190.0f;
     rect[1] = scroll + offset;
+    rect[2] = (float)(resource->width * 2);
+    rect[3] = width4;
     FUN_0021d8e0(w + 0x508, rect);
 
     rect[0] = 449.0f;
@@ -478,6 +483,10 @@ void brHero00263170(void)
     rect[0] = 168.0f;
     rect[1] = 252.0f;
     FUN_00238bf0(w + 0x894, 3, w[0x58c], 2, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0x99;
     for (i = 0; i < 3; i++) {
         FUN_0021d950(w + i * 0x40 + 0x894, color);
     }
@@ -514,6 +523,7 @@ void brHero00263170(void)
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0xc58, rect);
     rect[0] = 51.0f + (float)resource->width;
+    rect[1] = 299.0f;
     rect[2] = 106.0f;
     rect[3] = (float)resource->height;
     FUN_0021d8e0(w + 0xc98, rect);

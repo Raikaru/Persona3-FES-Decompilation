@@ -30,9 +30,9 @@ extern f32 fGpffff8218;
 extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
 extern void func_0029ee20(BtlUnit* unit);
 extern void func_002fd520(BtlUnit* unit);
-extern u32 func_002bbfa0(u32 bad);
+extern u32 func_002bbfa0(u64 bad);
 extern s16 func_002bbdf0(void* value);
-extern void func_002bc0e0(u32 bad, u8* color);
+extern void func_002bc0e0(u64 bad, u8* color);
 extern void func_002bbdc0(void* value, s16 id);
 extern void func_002bbf80(void* value, u32 color);
 extern void func_002bbe00(void* value);
@@ -4915,7 +4915,7 @@ void func_00286540(void)
 {
     BtlUnit* unit;
     u32 genus;
-    u32 badStatus;
+    u64 badStatus;
     s16 statusId;
     u32 magic;
     u32 i;
@@ -4934,16 +4934,19 @@ void func_00286540(void)
             func_00280da0(unit);
             func_002826d0(unit);
 
-            if (genus == UNIT_GENUS_PS)
+            switch (genus)
             {
+            case UNIT_GENUS_PS:
                 func_002fd520(unit);
-            }
-            else if (genus == UNIT_GENUS_EC &&
-                     (unit->flags2 & BTLUNIT_FLAG2_UPDATE) &&
-                     unit->resTypeId != 0)
-            {
-                func_001a0e50(unit->resTypeId,
-                              *(u8*)((u8*)unit + 0xac) == 1);
+                break;
+            case UNIT_GENUS_EC:
+                if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) &&
+                    unit->resTypeId != 0)
+                {
+                    func_001a0e50(unit->resTypeId,
+                                  *(u8*)((u8*)unit + 0xac) == 1);
+                }
+                break;
             }
 
             if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
@@ -4988,6 +4991,8 @@ void func_00286540(void)
                         (u8)(unit->unk_44[6] +
                              (u32)(fade * (f32)(unit->unk_44[2] - unit->unk_44[6])));
 
+                    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+                    unit->unk_4c--;
                 }
                 if (unit->flags2 & BTLUNIT_FLAG2_DIRTY)
                 {
@@ -5064,21 +5069,20 @@ void func_00286540(void)
                         FUN_00287cf0(unit, 2);
                         FUN_00287cf0(unit, 5);
                     }
-                    else if (genus != UNIT_GENUS_EC)
+                    else if (genus != UNIT_GENUS_PS)
                     {
                         magic = 0x737fb;
                         FUN_00287b20((int)unit, 2);
                         FUN_00287b20((int)unit, 5);
                     }
 
-                    mdl = unit->mdl;
-                    if (mdl->gsTest1Reg != magic)
+                    if (unit->mdl->gsTest1Reg != magic)
                     {
-                        mdl->gsTest1Reg = magic;
+                        unit->mdl->gsTest1Reg = magic;
                         for (i = 0; i < 5; i++)
-                            if (mdl->attachedWpns[i].wpnMdl != NULL)
+                            if (unit->mdl->attachedWpns[i].wpnMdl != NULL)
                             {
-                                mdl->attachedWpns[i].wpnMdl->gsTest1Reg = magic;
+                                unit->mdl->attachedWpns[i].wpnMdl->gsTest1Reg = magic;
                             }
                     }
 
@@ -5086,7 +5090,7 @@ void func_00286540(void)
                     unit->unk_4e[1] = color.g;
                     unit->unk_4e[2] = color.b;
                     unit->unk_4e[3] = color.a;
-                    mdlSetColor(mdl, &color);
+                    mdlSetColor(unit->mdl, &color);
                     func_002d4040(unit);
                     unit->flags2 &= ~BTLUNIT_FLAG2_DIRTY;
                 }
@@ -5100,7 +5104,7 @@ void func_00286540(void)
                 {
                     if (unit->datUnit != NULL)
                     {
-                        badStatus = unit->datUnit->bad;
+                        badStatus = unit->datUnit->bad & 0xfffff;
                         statusId = (s16)func_002bbfa0(badStatus);
                         if (statusId != (s16)func_002bbdf0(unit->unk_9f8))
                         {

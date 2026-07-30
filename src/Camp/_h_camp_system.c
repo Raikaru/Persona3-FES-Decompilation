@@ -1936,7 +1936,7 @@ void FUN_0015FA90(CampDrawRecord *record, s32 recordIndex, CampDrawWork *work)
             *(const s16 *)((const u8 *)groupBase + 0x3c));
         campCE50FormatText(textBuffer, DAT_007cb66c, spriteHandle);
         campCE50DrawText(
-            (s32)record->x, (s32)(record->y + 3.0f),
+            (s32)record->x, (s32)((f32)(s32)record->y + 3.0f),
             ((u32)(0xffU - alpha) | 0xffffff00U),
             camp_draw_load_f32(record, 0x24), 10, 1,
             (const char *)textBuffer, 0x10, 0x78);
