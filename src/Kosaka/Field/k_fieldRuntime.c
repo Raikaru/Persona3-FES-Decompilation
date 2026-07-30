@@ -4952,30 +4952,26 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         f32 step2;
         f32 amount2;
         u8* cursor2;
+        u8* sample2;
 
         color2 = *(u8**)((u8*)renderObject + 0x30);
         count2 = *(u32*)((u8*)work->config + 0xc);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 0, color2);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color2 + 4);
-        for (index2 = 0; index2 < count2; index2++)
-        {
-            u8* sample;
-
-            sample = color2 + index2 * 12 + 8;
-            sample[0] = (u8)((sample[-8] + sample[-4] +
-                              sample[4] + sample[8]) >> 2);
-            sample[1] = (u8)((sample[-7] + sample[-3] +
-                              sample[5] + sample[9]) >> 2);
-            sample[2] = (u8)((sample[-6] + sample[-2] +
-                              sample[6] + sample[10]) >> 2);
-            sample[3] = (u8)((sample[-5] + sample[-1] +
-                              sample[7] + sample[11]) >> 2);
-        }
+        color2[8] = (u8)((color2[0] + color2[4]) >> 1);
+        color2[9] = (u8)((color2[1] + color2[5]) >> 1);
+        color2[10] = (u8)((color2[2] + color2[6]) >> 1);
+        color2[11] = (u8)((color2[3] + color2[7]) >> 1);
         tail2 = count2 * 3 + 6;
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 0, color2 + (tail2 - 3) * 4);
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 1, color2 + (tail2 - 2) * 4);
+        sample2 = color2 + tail2 * 4;
+        sample2[-4] = (u8)((sample2[-12] + sample2[-8]) >> 1);
+        sample2[-3] = (u8)((sample2[-11] + sample2[-7]) >> 1);
+        sample2[-2] = (u8)((sample2[-10] + sample2[-6]) >> 1);
+        sample2[-1] = (u8)((sample2[-9] + sample2[-5]) >> 1);
         denominator2 = (f32)count2 + 0.5f;
         step2 = 1.0f / denominator2;
         amount2 = 0.5f / denominator2;
@@ -4989,6 +4985,19 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 amount2, (RuntimeWork*)work, 1, cursor2);
             cursor2 += 8;
             amount2 += step2;
+        }
+        sample2 = color2 + 20;
+        for (index2 = 0; index2 < count2; index2++)
+        {
+            sample2[0] = (u8)((sample2[-8] + sample2[-4] +
+                               sample2[4] + sample2[8]) >> 2);
+            sample2[1] = (u8)((sample2[-7] + sample2[-3] +
+                               sample2[5] + sample2[9]) >> 2);
+            sample2[2] = (u8)((sample2[-6] + sample2[-2] +
+                               sample2[6] + sample2[10]) >> 2);
+            sample2[3] = (u8)((sample2[-5] + sample2[-1] +
+                               sample2[7] + sample2[11]) >> 2);
+            sample2 += 12;
         }
         work->flags |= 2;
     }
@@ -5006,7 +5015,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         color3 = *(u8**)((u8*)renderObject + 0x30);
         count3 = *(u32*)((u8*)work->config + 0xc);
         func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color3);
-        func_001ed0f0(1.0f, (RuntimeWork*)work, 1, color3 + 4);
+        func_001ed0f0(0.0f, (RuntimeWork*)work, 1, color3 + 4);
         tail3 = count3 * 3 + 6;
         func_001ed0f0(
             1.0f, (RuntimeWork*)work, 1, color3 + (tail3 - 3) * 4);
@@ -5065,7 +5074,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 {
                     if (clearCursor == clearEnd)
                     {
-                        clearCursor = clearEnd;
+                        func_0019d3f0(D_006844F8, 0x43f);
                     }
                     *(f32*)(clearCursor + 0) = 0.0f;
                     *(f32*)(clearCursor + 4) = 0.0f;
@@ -5078,7 +5087,7 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
                 {
                     if (clearCursor == clearEnd)
                     {
-                        clearCursor = clearEnd;
+                        func_0019d3f0(D_006844F8, 0x449);
                     }
                     *(f32*)(clearCursor + 0) = 0.0f;
                     *(f32*)(clearCursor + 4) = 0.0f;
@@ -5131,15 +5140,6 @@ void func_001e9af0(RuntimeWork* workData, u32* renderRef)
         amount = 0.0f;
         denominator = (f32)(count - 1);
 
-        if (work->state == 0 && vertices != NULL &&
-            vector0 != NULL && vector1 != NULL && count < 2)
-        {
-            func_0019d3f0(D_006844F8, 0x43f);
-        }
-        if (work->state == 1 && count < 2)
-        {
-            func_0019d3f0(D_006844F8, 0x449);
-        }
         if (work->state == 2 && count < 2)
         {
             func_0019d3f0(D_006844F8, 0x483);

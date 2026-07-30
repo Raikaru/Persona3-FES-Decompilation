@@ -834,105 +834,89 @@ static void brPanel00236390(void)
     BR_PANEL_SET_COLOR(work + 0xd20, alpha);
     for (i = 0; i < (s32)*(u32*)(work + 0x1d50); i++) {
         entry = (BrPanelResultEntry*)(work + 0xe20) + i;
-        baseShift = (f32)(i * 30);
-        progressShift = (f32)((*(s32*)(work + 0x2668)) - i);
-        secondShift = (f32)((*(s32*)(work + 0x2668)) + i + 1);
+        timer = *(s32*)(work + 0x2668) - (i + 4);
         if ((*(s32*)(work + 0x266c)) == 0) {
             shift = 0.0f;
             alpha = 0.0f;
             scale = 1.0f;
-            progressShift = 0.0f;
-            secondShift = 0.0f;
         } else if ((*(s32*)(work + 0x266c)) == 1) {
-            shift = progressShift;
-            alpha = 1.0f;
-            scale = 1.0f;
-            if (progressShift <= 0.0f) {
+            if (timer <= 0) {
                 shift = -40.0f;
                 alpha = 0.0f;
-                scale = 0.0f;
-            } else if (progressShift < 4.0f) {
-                scale = 1.0f - (progressShift - 1.0f) / 3.0f;
-                shift = -40.0f * scale;
-                alpha = scale;
-            } else if (progressShift < 8.0f) {
-                secondShift = (progressShift - 4.0f) / 4.0f;
-                shift = -40.0f * (1.0f - secondShift);
-                scale = 0.75f + secondShift * 0.25f;
-                alpha = 0.75f + secondShift * 0.25f;
+            } else if (timer < 4) {
+                alpha = (f32)(timer - 1) / 3.0f;
+                shift = (1.0f - alpha) * -40.0f;
             } else {
                 shift = 0.0f;
+                alpha = 1.0f;
+            }
+            if (timer < 0) {
+                scale = 0.0f;
+            } else if (timer < 2) {
+                scale = (f32)timer / 2.0f;
+            } else {
+                scale = 1.0f;
             }
         } else {
             shift = 0.0f;
             scale = 1.0f;
             alpha = 1.0f;
-            if ((*(s32*)(work + 0x2668)) < 3) {
-                secondShift = (f32)(*(s32*)(work + 0x2668)) / 3.0f;
-                shift = -40.0f * (1.0f - secondShift);
-                scale = secondShift;
-                alpha = secondShift;
-            } else if ((*(s32*)(work + 0x2668)) < 10) {
-                secondShift = (f32)((*(s32*)(work + 0x2668)) - 3) / 7.0f;
-                shift = -40.0f * (1.0f - secondShift);
-                scale = 0.5f + secondShift * 0.5f;
-                alpha = 0.5f + secondShift * 0.5f;
+            if ((*(s32*)(work + 0x2668)) < 10) {
+                alpha = 1.0f - (f32)*(s32*)(work + 0x2668) / 10.0f;
             } else {
                 alpha = 0.0f;
-                scale = 0.0f;
             }
         }
+
+        baseShift = (f32)(i * 30);
         func_003b0d70(entry->fontHandle,
-                      (s32)((174.0f - baseShift + shift +
-                             progressShift * 2.0f) * 16.0f),
-                      (s32)((210.0f + baseShift +
-                             secondShift * 2.0f) * 8.0f));
+                      (s32)((174.0f - baseShift + shift) * 16.0f),
+                      (s32)((210.0f + baseShift) * 8.0f));
         packedColor = 0xffffff00 | (u8)(u32)(255.0f * alpha);
         func_003b0e20(entry->fontHandle, packedColor);
 
         frame = func_0021cca0(brRes00234570(0), 4);
-        BR_PANEL_SET_RECT(entry->background, progressShift * 0.5f,
-                          233.0f + baseShift + progressShift,
-                          (f32)*(s32*)((u8*)frame + 0xc) * scale +
-                          secondShift,
-                          (f32)*(s32*)((u8*)frame + 0x10) +
-                          secondShift * 0.25f);
+        BR_PANEL_SET_RECT(entry->background, 0.0f,
+                          233.0f + baseShift,
+                          640.0f * scale,
+                          (f32)*(s32*)((u8*)frame + 0x10));
         BR_PANEL_ANIMATE(entry->background, 0x28);
-        BR_PANEL_SET_COLOR(entry->background, alpha);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = 0xff;
+        func_0021d950(entry->background, color);
 
         frame = func_0021cca0(brRes00234570(0), 1);
         BR_PANEL_SET_RECT(entry->label,
-                          373.0f - baseShift + shift + secondShift,
-                          221.0f + (f32)i + progressShift * 0.5f,
-                          (f32)*(s32*)((u8*)frame + 0xc) * scale,
-                          (f32)*(s32*)((u8*)frame + 0x10) +
-                          progressShift * 0.25f);
+                          373.0f - baseShift + shift,
+                          221.0f + baseShift,
+                          (f32)*(s32*)((u8*)frame + 0xc),
+                          (f32)*(s32*)((u8*)frame + 0x10));
         BR_PANEL_ANIMATE(entry->label, 0x28);
         BR_PANEL_SET_COLOR(entry->label, alpha);
 
         if (entry->value < 10) {
-            rect[0] = 389.5f + shift + secondShift -
-                      baseShift * 0.05f;
+            rect[0] = 401.0f - baseShift + shift;
         } else {
-            rect[0] = 370.0f + shift + secondShift -
-                      baseShift * 0.05f;
+            rect[0] = 393.0f - baseShift + shift;
         }
-        rect[1] = 221.0f + (f32)i + progressShift * 0.5f;
+        rect[1] = 221.0f + baseShift;
         brPanel00235ff0(entry->digits, 2, entry->value, 1, rect);
-        BR_PANEL_SET_COLOR(entry->digits, alpha);
+        for (mode = 0; mode < 2; mode++) {
+            func_0021d950(entry->digits[mode], color);
+        }
 
         if (entry->type == 0) {
             frame = func_0021cca0(brRes00234570(1), 0xa);
         } else {
             frame = func_0021cca0(brRes00234570(1), 0xb);
         }
-        rect[0] = 142.0f - baseShift + shift + secondShift;
-        rect[1] = 205.0f + baseShift +
-                  progressShift * 0.5f;
-        rect[2] = (f32)*(s32*)((u8*)frame + 0xc) * scale;
-        rect[3] = (f32)*(s32*)((u8*)frame + 0x10) +
-                  secondShift * 0.25f;
-        BR_PANEL_SET_RECT(entry->typeIcon, rect[0], rect[1], rect[2], rect[3]);
+        BR_PANEL_SET_RECT(entry->typeIcon,
+                          142.0f - baseShift + shift,
+                          205.0f + baseShift,
+                          (f32)*(s32*)((u8*)frame + 0xc),
+                          (f32)*(s32*)((u8*)frame + 0x10));
         BR_PANEL_ANIMATE(entry->typeIcon, 0x28);
         BR_PANEL_SET_COLOR(entry->typeIcon, alpha);
     }
