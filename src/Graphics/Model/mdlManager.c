@@ -1200,6 +1200,8 @@ extern u8 LAB_0031b594;
 extern u8 gp0xffff9d20;
 extern u32 DAT_0069af00;
 extern u32 DAT_0069b190;
+#pragma alias DAT_0069b190_abs DAT_0069b190
+extern u8 DAT_0069b190_abs[];
 extern u8 LAB_0031bfb8;
 extern u32 DAT_0069b1b0;
 extern u32 DAT_0069b0d0;
@@ -2754,7 +2756,7 @@ void func_00312c70(u8* param_1,int param_2)
 
 
 
-// FUN_00312D40 NONMATCHING
+// FUN_00312D40
 
 
 void func_00312d40(u8* param_1,u8* param_2)
@@ -2803,7 +2805,7 @@ void func_00312d40(u8* param_1,u8* param_2)
     *(f32*)DAT_009571c4_abs = pfVar6[5];
     if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) != 0) {
 
-      func_00311730((u32*)param_1,(u16*)param_2,(u16*)(iVar3 + 0x4c),0);
+      func_00311730((u32*)param_1,(u16*)param_2,(u16*)(param_2 + 0x4c),0);
 
       *(u16 *)(iVar3 + 0x4c) = *(u16 *)(iVar3 + 0x4c) | 0x4000;
 
@@ -2944,13 +2946,13 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
   u16 *puVar4;
 
-  long lVar5;
+  short sVar5;
 
   
 
   puVar4 = (u16 *)param_2;
 
-  lVar5 = (short)puVar4[2];
+  sVar5 = *(short *)(puVar4 + 2);
 
   piVar1 = *(int **)(puVar4 + 0x16);
 
@@ -2958,18 +2960,18 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
 
 
-    if (((lVar5 < (u32)*(u16 *)(piVar1 + 1)) &&
+    if ((((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) &&
 
-        (puVar2 = *(u8 **)(*piVar1 + 0x40 + (short)puVar4[2] * 0x50),
+        (puVar2 = *(u8 **)((u8 *)(sVar5 * 0x50) + (*piVar1 + 0x40)),
 
         puVar2 != (u8 *)0x0)) && (puVar2 != (u8 *)&DAT_009571d0)) {
 
       if ((*puVar4 & 1) == 0) {
 
-        if ((lVar5 < (u32)*(u16 *)(piVar1 + 1)) && (-1 < lVar5)) {
+        if (((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) && ((s64)sVar5 >= 0)) {
 
-          func_004b74c0(*(u32 *)(puVar2 + 0xc),*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20)
-                      );
+          func_004b74c0_ptrfirst(*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
+                      *(f32 *)(puVar2 + 0xc));
 
           *(u8 *)(puVar4 + 1) = 1;
 
@@ -2985,13 +2987,13 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
           if (*(int *)(iVar3 + 0x18) != 0) {
 
-            func_0031dce0();
+            func_0031dce0(*(int *)(iVar3 + 0x18));
 
           }
 
           if (*(int *)(iVar3 + 0x24) != 0) {
 
-            func_0031e210();
+            func_0031e210(*(int *)(iVar3 + 0x24));
 
           }
 
@@ -3001,9 +3003,9 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
         *(float *)(puVar4 + 6) = fGpffff80e4 * *(float *)(puVar4 + 4);
 
-        func_004b74c0(*(u32 *)(puVar4 + 6),*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20));
+        func_004b74c0_ptrfirst(*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),*(f32 *)(puVar4 + 6));
 
-        func_004b7010(*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),0x313090,param_2);
+        func_004b7010(*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),func_00313090,param_2);
 
       }
 
@@ -5557,6 +5559,8 @@ u32 func_00316410(void* param_1)
 
 
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_003164F0 NONMATCHING
 
 
@@ -5566,13 +5570,13 @@ void func_003164f0(int param_1,int param_2)
 
 {
 
-  u32 uVar1;
+  u16 uVar1;
 
   int iVar2;
 
   int iVar3;
 
-  u32 uVar4;
+  u16 uVar4;
 
   float in_f1;
 
@@ -5582,23 +5586,23 @@ void func_003164f0(int param_1,int param_2)
 
   
 
-  for (uVar1 = 0; uVar1 < 0x10; uVar1 = uVar1 + 1 & 0xffff) {
+  for (uVar1 = 0; uVar1 < 0x10; uVar1 = uVar1 + 1) {
 
     iVar3 = param_2 + uVar1 * 2;
 
-    if (*(short *)(iVar3 + 0x198) != 0) {
+    if (0 < (int)*(u16 *)(iVar3 + 0x198)) {
 
       if (uVar1 == 0) {
 
         fVar5 = 1.0f / *(float *)(param_2 + 0x184);
         in_f5 = (1.0f / *(float *)(param_2 + 0x188)) *
-                fVar5 * *(float *)(param_2 + 0x18c) * *(float *)(param_2 + 400);
+                (fVar5 * (*(float *)(param_2 + 0x18c) * *(float *)(param_2 + 0x190)));
 
         in_f1 = *(float *)(param_2 + 0x18c) * fVar5;
 
       }
 
-      for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1 & 0xffff) {
+      for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
 
         iVar2 = param_1 + uVar4 * 0x9c;
 
@@ -5606,11 +5610,11 @@ void func_003164f0(int param_1,int param_2)
 
         *(float *)(iVar2 + 0x128) = in_f5;
 
-        *(float *)(iVar2 + 300) = in_f5;
+        *(float *)(iVar2 + 0x12c) = in_f5;
 
-        *(u32 *)(iVar2 + 0x130) = *(u32 *)(param_2 + 0x18c);
+        *(float *)(iVar2 + 0x130) = *(float *)(param_2 + 0x18c);
 
-        *(u32 *)(iVar2 + 0x134) = *(u32 *)(param_2 + 400);
+        *(float *)(iVar2 + 0x134) = *(float *)(param_2 + 0x190);
 
         *(u32 *)(iVar2 + 0x120) = (u32)*(u16 *)(iVar3 + 0x198);
 
@@ -5625,6 +5629,7 @@ void func_003164f0(int param_1,int param_2)
   return;
 
 }
+#pragma pop
 
 
 
@@ -8529,21 +8534,21 @@ u32 func_0031be80(u32 param_1)
 
   short sVar2;
 
-  u16 sVar3;
-
-  bool bVar4;
+  int bVar4;
 
   u32 uVar5;
 
   int lVar6;
 
-  int iVar7;
-
   int iVar8;
+
+  int iVar7;
 
   short *psVar9;
 
   short *psVar10;
+
+  int sVar3;
 
   short asStack_20 [12];
 
@@ -8565,17 +8570,17 @@ u32 func_0031be80(u32 param_1)
 
   if (lVar6 == 1) {
 
-    if ((iStack_4 == 0) || (iStack_8 == 0)) {
+    if ((iStack_8 != 0) && (iStack_4 != 0)) {
 
-      uVar5 = 0;
+      func_0031b820(param_1,iStack_8);
+
+      uVar5 = 1;
 
     }
 
     else {
 
-      func_0031b820(param_1,*(u16 *)((int)param_1 + 0xd6));
-
-      uVar5 = 1;
+      uVar5 = 0;
 
     }
 
@@ -8583,9 +8588,9 @@ u32 func_0031be80(u32 param_1)
 
   else {
 
-    sVar3 = *(short *)(iVar8 + 0xd6);
+    sVar3 = *(u16 *)(iVar8 + 0xd6);
 
-    psVar10 = (short*)&DAT_0069b190;
+    psVar10 = (short*)DAT_0069b190_abs;
 
     psVar9 = asStack_20;
 
@@ -8608,10 +8613,9 @@ u32 func_0031be80(u32 param_1)
       psVar9 = psVar9 + 2;
 
     } while (0 < iVar7);
-
     if (*(u16 *)(iVar8 + 0xd4) != 5) {
 
-      bVar4 = false;
+      bVar4 = 0;
 
     }
 
@@ -8621,19 +8625,19 @@ u32 func_0031be80(u32 param_1)
 
         if (sVar3 == (u16)asStack_20[iVar8]) {
 
-          if ((u16)asStack_20[iVar8] == 0x3e6) {
+          if ((u16)asStack_20[iVar8] != 0x3e6) {
 
-            iStack_4 = 9;
+            iStack_8 = iVar8 + 1;
 
           }
 
           else {
 
-            iStack_4 = iVar8 + 1;
+            iStack_8 = 9;
 
           }
 
-          bVar4 = true;
+          bVar4 = 1;
 
           goto LAB_0031bfb8;
 
@@ -8641,16 +8645,16 @@ u32 func_0031be80(u32 param_1)
 
       }
 
-      bVar4 = false;
+      bVar4 = 0;
 
     }
 
 LAB_0031bfb8:
 
 
-    if (bVar4) {
+    if (bVar4 == 1) {
 
-      func_0031b820(param_1,iStack_4);
+      func_0031b820(param_1,iStack_8);
 
       uVar5 = 1;
 

@@ -3252,6 +3252,7 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
   long lVar3;
 
   int iVar4;
+  int cnt;
 
   u64 *puVar5;
 
@@ -3263,66 +3264,58 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
   u32 uStack_88;
 
-  float afStack_50 [2];
-
-  float fStack_48;
+  float normal[3];
 
   struct {
     u64 xy;
     u32 z;
   } direction;
 
-  float uStack_30;
+  float src1[3];
 
-  float uStack_2c;
+  float src2[3];
 
-  float uStack_28;
+  float out[3];
 
-  float uStack_20;
-
-  float uStack_1c;
-
-  float uStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  float fStack_8;
+  float t0;
+  float t1;
+  float t2;
 
   
 
-  fStack_10 = *(float *)(param_3 + 4);
+  t0 = *(volatile float *)(param_3 + 4);
+  t1 = *(volatile float *)(param_3 + 8);
+  t2 = *(volatile float *)(param_3 + 0xc);
+  *(volatile float *)&src1[0] = t0;
+  *(volatile float *)&src1[1] = t1;
+  *(volatile float *)&src1[2] = t2;
 
-  uStack_c = *(u32 *)(param_3 + 8);
+  t0 = *(volatile float *)(param_3 + 0x10);
+  t1 = *(volatile float *)(param_3 + 0x14);
+  t2 = *(volatile float *)(param_3 + 0x18);
+  *(volatile float *)&src2[0] = t0;
+  *(volatile float *)&src2[1] = t1;
+  *(volatile float *)&src2[2] = t2;
 
-  fStack_8 = *(float *)(param_3 + 0xc);
-
-  uStack_20 = *(float *)(param_3 + 0x10);
-
-  uStack_1c = *(float *)(param_3 + 0x14);
-
-  uStack_18 = *(float *)(param_3 + 0x18);
-
-  if ((*(short *)(param_3 + 0x10c) != 0) && (lVar3 = FUN_003b5d10(), lVar3 != 0)) {
+  if ((*(u16 *)(param_3 + 0x10c) != 0) && (lVar3 = FUN_003b5d10(), lVar3 != 0)) {
 
     iVar4 = (int)lVar3;
 
-    fStack_10 = *(float *)(iVar4 + 4);
+    src1[0] = *(float *)(iVar4 + 4);
 
-    uStack_c = *(u32 *)(iVar4 + 8);
+    src1[1] = *(float *)(iVar4 + 8);
 
-    fStack_8 = *(float *)(iVar4 + 0xc);
+    src1[2] = *(float *)(iVar4 + 0xc);
 
     param_1 = *(float *)(param_3 + 0x104);
 
-    FUN_003b79a0(auStack_d0,&fStack_10,&uStack_20);
+    FUN_003b79a0(auStack_d0,src1,src2);
 
     puVar6 = auStack_d0;
 
     puVar5 = &uStack_90;
 
-    iVar4 = 8;
+    cnt = 8;
 
     do {
 
@@ -3332,7 +3325,7 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
       puVar6 = puVar6 + 2;
 
-      iVar4 = iVar4 + -1;
+      cnt = cnt + -1;
 
       *(u32 *)puVar5 = uVar1;
 
@@ -3340,25 +3333,25 @@ void FUN_003bb620(float param_1,u32 *param_2,int param_3)
 
       puVar5 = puVar5 + 1;
 
-    } while (0 < iVar4);
+    } while (0 < cnt);
 
     direction.xy = uStack_90;
     direction.z = uStack_88;
-    FUN_004c69f0(afStack_50,&direction);
+    FUN_004c69f0(normal,&direction);
 
-    fStack_10 = (fStack_10) - afStack_50[0] * 15.0f;
+    src1[0] = src1[0] - normal[0] * 15.0f;
 
-    fStack_8 = (fStack_8) - fStack_48 * 15.0f;
+    src1[2] = src1[2] - normal[2] * 15.0f;
 
   }
 
-  FUN_003bb450_scene_typed(&fStack_10,param_1,uStack_20,uStack_1c,uStack_18,&uStack_30);
+  FUN_003bb450_scene_typed(src1,param_1,src2[0],src2[1],src2[2],out);
 
-  *(float *)param_2 = uStack_30;
+  *(float *)param_2 = out[0];
 
-  *(float *)(param_2 + 1) = uStack_2c;
+  *(float *)(param_2 + 1) = out[1];
 
-  *(float *)(param_2 + 2) = uStack_28;
+  *(float *)(param_2 + 2) = out[2];
 
   return;
 
