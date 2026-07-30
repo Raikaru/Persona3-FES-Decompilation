@@ -483,6 +483,7 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     f32 dy;
     u32 parent;
     void* font;
+    s32 hundreds;
 
     if (barOffset != 0) {
         campStatusDrawGaugeCall(alpha - 1.0f, position.y + 196.0f +
@@ -496,7 +497,9 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     /* Draw current SP digits */
     val = datGetSp(pcId);
     dx = position.x + 79.0f;
+    hundreds = 0;
     if (val >= 100) {
+        hundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteCall(parent, font, val / 100 + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha);
@@ -510,13 +513,21 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         val %= 10;
         dx += 15.0f;
     }
+    else if (hundreds != 0) {
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, font, 0xb,
+                                 (u32)(u8)fade, dx, dy, alpha);
+        dx += 15.0f;
+    }
     font = campStatusGetFont(2);
     campStatusDrawSpriteCall(parent, font, val + 0xb,
                              (u32)(u8)fade, dx, dy, alpha);
     /* Draw max SP digits */
     val = func_0016c670(pcId);
     dx = position.x + 138.0f;
+    hundreds = 0;
     if (val >= 100) {
+        hundreds = 1;
         font = campStatusGetFont(2);
         campStatusDrawSpriteFadeCall(parent, font, val / 100 + 0xb,
                                      (u32)(u8)fade, dx, dy, alpha, 0x66);
@@ -528,6 +539,12 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
         campStatusDrawSpriteFadeCall(parent, font, val / 10 + 0xb,
                                      (u32)(u8)fade, dx, dy, alpha, 0x66);
         val %= 10;
+        dx += 15.0f;
+    }
+    else if (hundreds != 0) {
+        font = campStatusGetFont(2);
+        campStatusDrawSpriteFadeCall(parent, font, 0xb,
+                                     (u32)(u8)fade, dx, dy, alpha, 0x66);
         dx += 15.0f;
     }
     font = campStatusGetFont(2);
@@ -623,6 +640,7 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
     f32 slide;
     f32 transitionX;
 
+    CampVec2 transitionPosition;
     void* font;
 
     if (phase < 3) {
@@ -668,18 +686,30 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                  alpha);
     }
 
+    if (phase > 3) {
+        if (phase < 9) {
+            fade = 0xff - ((phase - 4) * 0xff) / 4;
+            slide = (f32)(((9 - phase) * 0x28) / 4);
+        } else {
+            fade = 0;
+            slide = 0.0f;
+        }
+        transitionPosition = position;
+        transitionPosition.x -= slide;
+    }
 
-    if (phase > 10) {
-        if (phase < 15) {
-            hpFade = 0xff - ((phase - 11) * 0xff) / 4;
+
+    if (phase > 5) {
+        if (phase < 11) {
+            hpFade = 0xff - ((phase - 6) * 0xff) / 4;
         } else {
             hpFade = 0;
         }
-        if (phase < 15) {
+        if (phase < 11) {
             hpScaled = (s32)(u32)datGetHp(pcId) * 0x4c;
             maxHp = (s32)(u32)datGetMaxHp(pcId);
             ratio = hpScaled / maxHp;
-            hpBarOffset = (ratio * (phase - 11)) / 4;
+            hpBarOffset = (ratio * (phase - 6)) / 4;
             if (ratio < hpBarOffset) {
                 hpBarOffset = ratio;
             }
@@ -689,7 +719,8 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
             maxHp = (s32)(u32)datGetMaxHp(pcId);
             hpBarOffset = 0x4c - hpScaled / maxHp;
         }
-        h_campStatusDrawHp(position, alpha, pcId, hpBarOffset, hpFade);
+        h_campStatusDrawHp(transitionPosition, alpha, pcId,
+                           hpBarOffset, hpFade);
     }
 
     if (phase > 14) {
@@ -712,13 +743,15 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
             maxSp = (s32)(u32)func_0016c670(pcId);
             spBarOffset = 0x4c - spScaled / maxSp;
         }
-        h_campStatusDrawSp(position, alpha, pcId, spBarOffset, spFade);
+        h_campStatusDrawSp(transitionPosition, alpha, pcId,
+                           spBarOffset, spFade);
         if (phase < 19) {
             spFade = 0xff - ((phase - 15) * 0xff) / 4;
         } else {
             spFade = 0;
         }
-        h_campStatusDrawPhysicalCondition(position, alpha, pcId, spFade);
+        h_campStatusDrawPhysicalCondition(transitionPosition, alpha,
+                                          pcId, spFade);
     }
 
     if (phase > 15) {
@@ -727,7 +760,8 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
         } else {
             effectFade = 0;
         }
-        h_campStatusDrawBadStatus(position, alpha, pcId, effectFade);
+        h_campStatusDrawBadStatus(transitionPosition, alpha, pcId,
+                                  effectFade);
     }
 }
 
@@ -1906,6 +1940,10 @@ void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
                              position.x + 128.0f +
                                  (f32)((count - 1) * 20),
                              position.y + 161.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x18, drawAlpha,
+                             left, position.y + 197.0f, 100.0f);
+    campStatusDrawSpriteCall(drawParent, DAT_00833B94, 0x1b, drawAlpha,
+                             right, position.y + 197.0f, 100.0f);
 
     bottomPosition = position;
     footerAlpha = (s16)alpha;
@@ -2649,7 +2687,16 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         drawPos.y = position.y;
         h_campStatusDrawStatValues(drawPos, scale, NULL, persona, (u8)alpha);
     }
-    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    if (frame >= 5) {
+        fade = frame - 5;
+        if (fade < 3) {
+            alpha = 0xff - (fade * 0xff) / 3;
+        }
+        else {
+            alpha = 0;
+        }
+        h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    }
     for (row = 0; row < 5; row++) {
         if (frame >= 3) {
             fade = frame - 3;
@@ -2746,6 +2793,7 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
     if (frame >= 5) {
         return;
     }
+    position.x += (f32)((frame * 300) / 5);
     drawPosition = position;
     panelX = drawPosition.x + 30.0f;
     panelY = drawPosition.y + 100.0f;

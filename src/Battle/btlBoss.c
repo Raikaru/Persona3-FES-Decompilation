@@ -1213,7 +1213,7 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     u16 encounterId;
     u16 charId;
     u16 value;
-    u32 i;
+    u16 i;
 
     encounterId = btlBossGetEncounterId();
     switch (encounterId)
@@ -1271,15 +1271,38 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     {
         return 0xffff;
     }
-    if (unit->genus == 1 && unit->charId >= 0x95 && unit->charId <= 0x9c)
+    if (unit->genus == 1)
     {
-        for (i = 0; i < 4; i++)
+        switch (unit->charId)
         {
-            value = *(u16*)(DAT_007ce4b4 + (unit->charId - 0x95) * 8 + i * 2);
-            if (id == value)
-                return i == 3 ? 0x18 : i == 2 ? 0x17 : i == 1 ? 7 : 4;
+        case 0x95:
+        case 0x96:
+        case 0x97:
+        case 0x98:
+        case 0x99:
+        case 0x9a:
+        case 0x9b:
+        case 0x9c:
+            for (i = 0; i < 4; i++)
+            {
+                value = *(u16*)(DAT_007ce4b4 + (unit->charId - 0x95) * 8 + i * 2);
+                if (id == value)
+                {
+                    switch (i)
+                    {
+                    case 0:
+                        return 4;
+                    case 1:
+                        return 7;
+                    case 2:
+                        return 0x17;
+                    case 3:
+                        return 0x18;
+                    }
+                }
+            }
+            return 7;
         }
-        return 7;
     }
     return -1;
 }
@@ -1439,27 +1462,34 @@ u32 func_002f9c10(BtlAction* action)
         case 0x1a0:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x100)
             {
-                unit->flags3 |= 0x540;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a1:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
                 (charId == 0x102 || charId == 0x101))
             {
-                *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a2:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x103)
             {
-                unit->flags3 |= 0x540;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a3:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x104)
             {
-                unit->flags3 |= 0x540;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a4:
@@ -1468,15 +1498,18 @@ u32 func_002f9c10(BtlAction* action)
         case 0x1a5:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x107)
             {
-                unit->flags3 |= 0x540;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a6:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
                 (charId == 0x10a || charId == 0x109))
             {
-                *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x400;
             }
             return 1;
         case 0x1a7:
@@ -1487,13 +1520,16 @@ u32 func_002f9c10(BtlAction* action)
             {
                 if (charId == 0x118 || charId == 0x117 || charId == 0x116)
                 {
-                    *(u16*)unit->datUnit |= 0x40;
                     unit->flags3 |= 0x100;
+                    unit->flags3 |= 0x40;
+                    unit->flags3 |= 0x400;
                 }
                 else if (charId == 0x10d)
                 {
                     action->unk_1a &= ~8;
-                    unit->flags3 |= 0x540;
+                    unit->flags3 |= 0x100;
+                    unit->flags3 |= 0x40;
+                    unit->flags3 |= 0x400;
                 }
             }
             return 1;
@@ -1501,7 +1537,9 @@ u32 func_002f9c10(BtlAction* action)
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x108)
             {
                 action->unk_1a |= 0x10;
-                unit->flags3 |= 0x1c0;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x80;
                 func_00288f80(unit, 0xd2);
             }
             return 0;
@@ -1509,7 +1547,9 @@ u32 func_002f9c10(BtlAction* action)
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x10f)
             {
                 action->unk_1a |= 0x10;
-                unit->flags3 |= 0x1c0;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x80;
                 func_00288f80(unit, 0xd1);
             }
             return 0;
@@ -1517,14 +1557,17 @@ u32 func_002f9c10(BtlAction* action)
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x110)
             {
                 action->unk_1a |= 0x10;
-                unit->flags3 |= 0x1c0;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
+                unit->flags3 |= 0x80;
                 func_00288f80(unit, 0xd0);
             }
             return 0;
         case 0x1ac:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x111)
             {
-                unit->flags3 |= 0x500;
+                unit->flags3 |= 0x100;
+                unit->flags3 |= 0x40;
                 *(u16*)unit->datUnit |= 0x40;
                 unit->flags3 |= 0x400;
                 func_0029a2c0();
@@ -1597,26 +1640,62 @@ void func_002fa510(BtlAction* action, s32 mode)
     encounterId = btlBossGetEncounterId();
     unit = action->unit;
     charId = unit->charId;
-    if (encounterId == 0x1b4)
+    switch (encounterId)
     {
-        if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0xf1 &&
-            mode != 0 && func_002e4250() == 0)
-        {
-            *(void**)((u8*)gBtl + 0xb4c) = NULL;
-            func_002e4220(0x2f6840, 0x2f6ab0, action);
-        }
-    }
-    else if (encounterId == 0x1b1 || encounterId == 0x1b2 || encounterId == 0x1b3)
-    {
+    case 0x1a1:
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId >= 0xeb && charId <= 0xf0) &&
+            (charId == 0x102 || charId == 0x101) && mode == 1)
+        {
+            func_002e4220(0x2e9c20, 0x2e9f10, action);
+        }
+        break;
+    case 0x1a4:
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1)
+        {
+            if (charId == 0x106 || charId == 0x105)
+            {
+                if (mode == 0)
+                {
+                    if (func_002e4250() != 0)
+                    {
+                        action = NULL;
+                    }
+                    func_002e4220(0x2eba50, 0x2ebec0, action);
+                }
+            }
+            else if (charId == 0x115 && mode == 1)
+            {
+                func_002e4220(0x2eabf0, 0x2eb250, action);
+            }
+        }
+        break;
+    case 0x1a6:
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
+            (charId == 0x10a || charId == 0x109) &&
+            mode == 1 && func_002e4250() == 0)
+        {
+            func_002e4220(0x2ee640, 0x2eea10, action);
+        }
+        break;
+    case 0x1a7:
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
+            (charId == 0x10c || charId == 0x10b) &&
             mode != 0 && func_002e4250() == 0)
         {
-            func_002e4220(0x2f5660, 0x2f5870, action);
+            func_002e4220(0x2ef000, 0x2ef250, action);
         }
-    }
-    else if (encounterId == 0x1ac)
-    {
+        break;
+    case 0x1a8:
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
+            (charId == 0x118 || charId == 0x117 || charId == 0x116) && mode == 1)
+        {
+            slot = *(u16*)((u8*)gBtl + 0xb50);
+            *(BtlAction**)((u8*)gBtl + 0xb44 + slot * 4) = action;
+            *(u16*)((u8*)gBtl + 0xb50) = slot + 1;
+            func_002e4220(0x2f0ea0, 0x2f14a0, action);
+        }
+        break;
+    case 0x1ac:
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
             func_002e4250() == 0)
         {
@@ -1629,58 +1708,25 @@ void func_002fa510(BtlAction* action, s32 mode)
                 func_002e4220(0x2f2b90, 0x2f3190, action);
             }
         }
-    }
-    else if (encounterId == 0x1a8)
-    {
+        break;
+    case 0x1b1:
+    case 0x1b2:
+    case 0x1b3:
         if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x118 || charId == 0x117 || charId == 0x116) && mode == 1)
-        {
-            slot = *(u16*)((u8*)gBtl + 0xb50);
-            *(BtlAction**)((u8*)gBtl + 0xb44 + slot * 4) = action;
-            *(u16*)((u8*)gBtl + 0xb50) = slot + 1;
-            func_002e4220(0x2f0ea0, 0x2f14a0, action);
-        }
-    }
-    else if (encounterId == 0x1a7)
-    {
-        if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x10c || charId == 0x10b) &&
+            (charId >= 0xeb && charId <= 0xf0) &&
             mode != 0 && func_002e4250() == 0)
         {
-            func_002e4220(0x2ef000, 0x2ef250, action);
+            func_002e4220(0x2f5660, 0x2f5870, action);
         }
-    }
-    else if (encounterId == 0x1a6)
-    {
-        if ((action->unk_1a & 1) != 0 && unit->genus == 1 &&
-            (charId == 0x10a || charId == 0x109) &&
-            mode == 1 && func_002e4250() == 0)
+        break;
+    case 0x1b4:
+        if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0xf1 &&
+            mode != 0 && func_002e4250() == 0)
         {
-            func_002e4220(0x2ee640, 0x2eea10, action);
+            *(void**)((u8*)gBtl + 0xb4c) = NULL;
+            func_002e4220(0x2f6840, 0x2f6ab0, action);
         }
-    }
-    else if (encounterId == 0x1a4 && (action->unk_1a & 1) != 0 && unit->genus == 1)
-    {
-        if (charId == 0x106 || charId == 0x105)
-        {
-            if (mode == 0)
-            {
-                if (func_002e4250() != 0)
-                {
-                    action = NULL;
-                }
-                func_002e4220(0x2eba50, 0x2ebec0, action);
-            }
-        }
-        else if (charId == 0x115 && mode == 1)
-        {
-            func_002e4220(0x2eabf0, 0x2eb250, action);
-        }
-    }
-    else if (encounterId == 0x1a1 && (action->unk_1a & 1) != 0 &&
-             unit->genus == 1 && (charId == 0x102 || charId == 0x101) && mode == 1)
-    {
-        func_002e4220(0x2e9c20, 0x2e9f10, action);
+        break;
     }
 }
 
@@ -2124,7 +2170,9 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
         case 0x1ac:
         {
             if (unit->genus != 1) return -1;
+            switch (unit->charId)
             {
+            case 0x112:
                 if ((index == 0x11 || index == 3 || index == 0) &&
                     func_00301750(*(u32*)unit->datUnit, 0xb) > 0)
                 {
@@ -2137,6 +2185,7 @@ s64 func_002fb860(BtlUnit* unit, u16 index)
                 }
                 return (s32)DAT_0069A230[index];
             }
+            return -1;
         }
         case 0x1ad:
         {
@@ -2311,15 +2360,15 @@ f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 animation)
     {
         return -1.0f;
     }
+    value = (u16)animation;
     if (unit->genus == 2 && target->charId == 0xf1)
     {
-        if (animation == 2 || animation == 0)
+        if (value == 2 || value == 0)
         {
             return target->sphereRadius * target->scale + 500.0f;
         }
         return -1.0f;
     }
-    value = (u16)animation;
     if (value != 0xb && value != 6 && value != 5 && value != 4)
     {
         return -1.0f;
