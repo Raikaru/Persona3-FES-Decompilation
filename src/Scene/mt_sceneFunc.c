@@ -5105,7 +5105,7 @@ LAB_003bd9f0:
 }
 #define FUN_003bd9a0(...) ((u16 (*)(...))FUN_003bd9a0)(__VA_ARGS__)
 #undef FUN_003bda60
-// FUN_003BDA60 NONMATCHING
+// FUN_003BDA60
 
 
 
@@ -5122,46 +5122,45 @@ u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
   u8 *pbVar3;
 
   int iVar4;
+  int off;
+  u32 uv;
 
   
 
-  iVar1 = DAT_0095b674;
+  iVar1 = *(int *)DAT_0095b674_abs;
 
-  iVar4 = 0;
+  for (iVar4 = 0; iVar4 < iVar1; iVar4 = iVar4 + 1) {
 
-  do {
+    pbVar3 = (u8 *)*(int *)DAT_0095b670_abs;
 
-    if (iVar1 <= iVar4) {
+    off = iVar4 * 10;
 
-      return 0xffffffff;
-
-    }
-
-    pbVar3 = (u8 *)(DAT_0095b670 + iVar4 * 10);
+    pbVar3 = pbVar3 + off;
 
     if ((((param_1 == *pbVar3) && (param_2 == pbVar3[1])) && (param_3 == *(u16 *)(pbVar3 + 2)))
 
        && (param_4 == pbVar3[4])) {
 
-      if (*(short *)(pbVar3 + 8) == 0) {
+      uv = *(u16 *)(pbVar3 + 8);
 
-        return (u32)*(u16 *)(pbVar3 + 6);
+      if (uv == 0) goto ret1;
 
-      }
+      lVar2 = FUN_003951d0(uv);
 
-      lVar2 = FUN_003951d0();
+      if (lVar2 == 1) goto next;
 
-      if (lVar2 != 1) {
+      return (u32)*(u16 *)(off + *(int *)DAT_0095b670_abs + 6);
 
-        return (u32)*(u16 *)(iVar4 * 10 + DAT_0095b670 + 6);
+ret1:
+      return (u32)*(u16 *)(pbVar3 + 6);
 
-      }
+next:;
 
     }
 
-    iVar4 = iVar4 + 1;
+  }
 
-  } while( 1 );
+  return 0xffffffff;
 
 }
 #define FUN_003bda60(...) ((u32 (*)(...))FUN_003bda60)(__VA_ARGS__)
