@@ -824,16 +824,16 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
 // Inline macro overrides: expand helpers to direct campDrawSprite calls.
 #undef campEquipmentDrawFixed
 #define campEquipmentDrawFixed(scale,alpha,frame,x,y) \
-    campDrawSprite((void*)(u32)(scale),DAT_00833A50[0],(frame),(u32)(alpha),(x),(y),(scale))
+    campDrawSprite(parent,DAT_00833A50[0],(frame),(u32)(alpha),(x),(y),(scale))
 #undef campEquipmentDrawAtlas
 #define campEquipmentDrawAtlas(scale,alpha,frame,x,y) \
-    campDrawSprite((void*)(u32)(scale),DAT_00833B70,(frame),(u32)(alpha),(x),(y),(scale))
+    campDrawSprite(parent,DAT_00833B70,(frame),(u32)(alpha),(x),(y),(scale))
 #undef campEquipmentDrawAlt
 #define campEquipmentDrawAlt(scale,alpha,frame,x,y) \
-    campDrawSpriteAlt((void*)(u32)(scale),DAT_00833B70,(frame),(u32)(alpha),0x20,0x43,0x78,(x),(y),(scale))
+    campDrawSpriteAlt(parent,DAT_00833B70,(frame),(u32)(alpha),0x20,0x43,0x78,(x),(y),(scale))
 #undef campEquipmentDrawDigit
 #define campEquipmentDrawDigit(scale,alpha,font,frame,x,y) \
-    campDrawSprite((void*)(u32)(scale),H_Maestro_001120a0(font),(frame),(u32)(alpha),(x),(y),(scale))
+    campDrawSprite(parent,H_Maestro_001120a0(font),(frame),(u32)(alpha),(x),(y),(scale))
 #define campEquipmentEntry(work,index) (&(work)->entries[(index)])
  
 // FUN_0013d1a0 NONMATCHING
@@ -841,9 +841,12 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
 void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 alpha)
 
 {
-  char category;
-  u16 value;
+  void* parent;
+  u8 category;
+  s32 value;
   u32 color;
+  u32 categoryMask;
+  s32 style;
   const char* textValue;
   int rowIndex;
   s32 entryIndex;
@@ -909,11 +912,37 @@ void FUN_0013d1a0(f32 texture, CampBits position, CampEquipmentWork* work, s32 a
     }
     if (rowIndex == work->selectedEntry) {
       textureIndex = rowIndex * 0x1a;
+      categoryMask = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->categoryMask;
+      style = 9;
+      switch (categoryMask) {
+      case 0: style = 0; break;
+      case 1: style = 1; break;
+      case 2: style = 2; break;
+      case 3: style = 3; break;
+      case 4: style = 4; break;
+      case 5: style = 5; break;
+      case 6: style = 6; break;
+      case 7: style = 7; break;
+      case 8: style = 0; break;
+      case 9: style = 1; break;
+      case 10: style = 2; break;
+      case 11: style = 3; break;
+      case 12: style = 4; break;
+      case 13: style = 5; break;
+      case 14: style = 6; break;
+      case 15: style = 7; break;
+      case 16: style = 9; break;
+      case 17: style = 10; break;
+      case 18: style = 11; break;
+      case 19: style = 13; break;
+      case 20: style = 14; break;
+      default: break;
+      }
       campEquipmentDrawAtlas(texture, (u32)alpha,
-                             campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass * 2 + 1,
+                             style * 2 + 1,
                              xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
       ;
-      textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
+      textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)(s8)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
       sprintf(textBuffer,DAT_007cb66c,textValue);
       campDrawText(texture,(int)((float)(int)originX + 55.0f),
                    (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f + 1.0f),color,6,1,
@@ -996,11 +1025,37 @@ LAB_0013ddc4:
     }
     else {
       textureIndex = rowIndex * 0x1a;
+      categoryMask = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->categoryMask;
+      style = 9;
+      switch (categoryMask) {
+      case 0: style = 0; break;
+      case 1: style = 1; break;
+      case 2: style = 2; break;
+      case 3: style = 3; break;
+      case 4: style = 4; break;
+      case 5: style = 5; break;
+      case 6: style = 6; break;
+      case 7: style = 7; break;
+      case 8: style = 0; break;
+      case 9: style = 1; break;
+      case 10: style = 2; break;
+      case 11: style = 3; break;
+      case 12: style = 4; break;
+      case 13: style = 5; break;
+      case 14: style = 6; break;
+      case 15: style = 7; break;
+      case 16: style = 9; break;
+      case 17: style = 10; break;
+      case 18: style = 11; break;
+      case 19: style = 13; break;
+      case 20: style = 13; break;
+      default: break;
+      }
       campEquipmentDrawAlt(texture, (u32)alpha,
-                           campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass * 2,
+                           style * 2,
                            xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
       ;
-      textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
+      textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)(s8)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
       sprintf(textBuffer,DAT_007cb66c,textValue);
       campDrawText(texture,(int)((float)(int)originX + 55.0f),
                    (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f),color,10,1,textBuffer,
@@ -1111,8 +1166,8 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
   void* parent;
   CampPair origin;
   char textBuffer[272];
-  char category;
-  u16 value;
+  u8 category;
+  s32 value;
   u32 colorBase;
   u32 color;
   u32 categoryMask;
@@ -1186,34 +1241,50 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
       style = 9;
       switch (categoryMask) {
       case 0:
-      case 8:
         style = 0;
         break;
       case 1:
-      case 9:
         style = 1;
         break;
       case 2:
-      case 10:
         style = 2;
         break;
       case 3:
-      case 11:
         style = 3;
         break;
       case 4:
-      case 12:
         style = 4;
         break;
       case 5:
-      case 13:
         style = 5;
         break;
       case 6:
-      case 14:
         style = 6;
         break;
       case 7:
+        style = 7;
+        break;
+      case 8:
+        style = 0;
+        break;
+      case 9:
+        style = 1;
+        break;
+      case 10:
+        style = 2;
+        break;
+      case 11:
+        style = 3;
+        break;
+      case 12:
+        style = 4;
+        break;
+      case 13:
+        style = 5;
+        break;
+      case 14:
+        style = 6;
+        break;
       case 15:
         style = 7;
         break;
@@ -1238,7 +1309,7 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
       campEquipmentDrawAtlas(texture, (u32)alpha, style * 2 + 1,
                              xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
       textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + rowIndex].itemId,
-                                 (s16)work->entries[work->firstVisibleEntry + rowIndex].slotType);
+                                 (s16)(s8)work->entries[work->firstVisibleEntry + rowIndex].slotType);
       sprintf(textBuffer,DAT_007cb66c,textValue);
       campDrawTextAltScale(texture,(int)((float)(int)originX + 55.0f),
                    (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f + 1.0f),color,6,1,
@@ -1326,34 +1397,50 @@ LAB_0013f350:
       style = 9;
       switch (categoryMask) {
       case 0:
-      case 8:
         style = 0;
         break;
       case 1:
-      case 9:
         style = 1;
         break;
       case 2:
-      case 10:
         style = 2;
         break;
       case 3:
-      case 11:
         style = 3;
         break;
       case 4:
-      case 12:
         style = 4;
         break;
       case 5:
-      case 13:
         style = 5;
         break;
       case 6:
-      case 14:
         style = 6;
         break;
       case 7:
+        style = 7;
+        break;
+      case 8:
+        style = 0;
+        break;
+      case 9:
+        style = 1;
+        break;
+      case 10:
+        style = 2;
+        break;
+      case 11:
+        style = 3;
+        break;
+      case 12:
+        style = 4;
+        break;
+      case 13:
+        style = 5;
+        break;
+      case 14:
+        style = 6;
+        break;
       case 15:
         style = 7;
         break;
@@ -1367,6 +1454,8 @@ LAB_0013f350:
         style = 11;
         break;
       case 19:
+        style = 13;
+        break;
       case 20:
         style = 13;
         break;
@@ -1377,7 +1466,7 @@ LAB_0013f350:
                            xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
       ;
       textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + rowIndex].itemId,
-                                (s16)work->entries[work->firstVisibleEntry + rowIndex].slotType);
+                                (s16)(s8)work->entries[work->firstVisibleEntry + rowIndex].slotType);
       sprintf(textBuffer,DAT_007cb66c,textValue);
       campDrawTextAltScale(texture,(int)((float)(int)originX + 55.0f),
                    (int)((float)(int)originY + 11.0f + (float)textureIndex + 1.0f),color,10,1,textBuffer,
@@ -1473,54 +1562,65 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     const char* textValue;
     u32 categoryMask;
     u32 color;
-    u16 value;
+    s32 value;
     s32 frame;
     s32 hadHundreds;
-    char category;
+    s32 selectedEntry;
+    u8 category;
     f32 originX;
     f32 originY;
-    f32 digitY;
     char textBuffer[256];
     CampBits packedPosition;
-    CampBits spritePair;
-    CampBits textPair;
-    CampBits iconPair;
-    CampBits digitPair;
-    CampBits secondaryPair;
-    CampBits finalPair;
 
-    categoryMask = work->entries[work->firstVisibleEntry + work->selectedEntry].categoryMask;
-    frame = 0x1a;
+    selectedEntry = work->selectedEntry;
+    categoryMask = work->entries[work->firstVisibleEntry + selectedEntry].categoryMask;
+    frame = 9;
     switch (categoryMask) {
     case 0:
-    case 8:
         frame = 0;
         break;
     case 1:
-    case 9:
         frame = 2;
         break;
     case 2:
-    case 10:
         frame = 4;
         break;
     case 3:
-    case 11:
         frame = 6;
         break;
     case 4:
-    case 12:
         frame = 8;
         break;
     case 5:
-    case 13:
         frame = 10;
         break;
     case 6:
-    case 14:
         frame = 12;
         break;
     case 7:
+        frame = 14;
+        break;
+    case 8:
+        frame = 0;
+        break;
+    case 9:
+        frame = 2;
+        break;
+    case 10:
+        frame = 4;
+        break;
+    case 11:
+        frame = 6;
+        break;
+    case 12:
+        frame = 8;
+        break;
+    case 13:
+        frame = 10;
+        break;
+    case 14:
+        frame = 12;
+        break;
     case 15:
         frame = 14;
         break;
@@ -1534,6 +1634,8 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
         frame = 22;
         break;
     case 19:
+        frame = 26;
+        break;
     case 20:
         frame = 26;
         break;
@@ -1544,118 +1646,104 @@ void FUN_0013fca0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     packedPosition.u = position;
     originX = packedPosition.f[0];
     originY = packedPosition.f[1];
-    spritePair.f[0] = originX + 15.0f;
-    spritePair.f[1] = originY + 1.0f;
-    textPair.f[0] = originX + 55.0f;
-    textPair.f[1] = originY + 12.0f;
-    iconPair.f[0] = originX + 288.0f;
-    iconPair.f[1] = originY + 9.0f;
-    digitPair.f[0] = originX + 325.0f;
-    digitPair.f[1] = digitY;
-    secondaryPair.f[0] = originX + 404.0f;
-    secondaryPair.f[1] = digitY;
-    finalPair.f[0] = originX + 473.0f;
-    finalPair.f[1] = digitY;
     campDrawSprite(parent, DAT_00833B70, frame + 1, (u32)alpha,
-                   spritePair.f[0], spritePair.f[1], texture);
-    textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + work->selectedEntry].itemId,
-                               (s16)work->entries[work->firstVisibleEntry + work->selectedEntry].slotType);
+                   originX + 15.0f, (originY + 2.0f) - 1.0f, texture);
+    textValue = func_00171110((s16)work->entries[work->firstVisibleEntry + selectedEntry].itemId,
+                               (s16)(s8)work->entries[work->firstVisibleEntry + selectedEntry].slotType);
     sprintf(textBuffer, DAT_007cb66c, textValue);
     color = (0xffU - alpha) | 0xffffff00;
-    campDrawText(texture, (s32)textPair.f[0], (s32)textPair.f[1],
+    campDrawText(texture, (s32)((f32)(s32)originX + 55.0f),
+                 (s32)((f32)(s32)originY + 11.0f + 1.0f),
                  color, 10, 1, textBuffer, 0x10, 0);
 
-    category = work->entries[work->firstVisibleEntry + work->selectedEntry].equipmentClass;
-    digitY = originY + 13.0f;
-    if (category == 3) {
-        return;
-    }
-    if (category == 2) {
-        campDrawSprite(parent, DAT_00833A50[0], 0x32, (u32)alpha,
-                       iconPair.f[0], iconPair.f[1], texture);
-        value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueD;
+    category = work->entries[work->firstVisibleEntry + selectedEntry].equipmentClass;
+    switch (category) {
+    case 0:
+        campDrawSprite(parent, DAT_00833A50[0], 0x2e, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueA;
         hadHundreds = 0;
         if (value >= 100) {
             hadHundreds = 1;
             campDrawSprite(parent, H_Maestro_001120a0(2),
-                            value / 100 + 0xb, (u32)alpha,
-                            digitPair.f[0], digitPair.f[1], texture);
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 325.0f, (originY + 16.0f) - 3.0f, texture);
             value %= 100;
         }
         if (value >= 10 || hadHundreds != 0) {
             campDrawSprite(parent, H_Maestro_001120a0(2),
-                            value / 10 + 0xb, (u32)alpha,
-                            digitPair.f[0] + 16.0f, digitPair.f[1], texture);
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 341.0f, (originY + 16.0f) - 3.0f, texture);
         }
         campDrawSprite(parent, H_Maestro_001120a0(2),
-                        value % 10 + 0xb, (u32)alpha,
-                        digitPair.f[0] + 32.0f, digitPair.f[1], texture);
-        return;
-    }
-    if (category == 1) {
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 357.0f, (originY + 16.0f) - 3.0f, texture);
+        campDrawSprite(parent, DAT_00833A50[0], 0x34, (u32)alpha,
+                       originX + 404.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueB;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 441.0f, (originY + 16.0f) - 3.0f, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 457.0f, (originY + 16.0f) - 3.0f, texture);
+        }
+        campDrawSprite(parent, H_Maestro_001120a0(2),
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 473.0f, (originY + 16.0f) - 3.0f, texture);
+        break;
+    case 1:
         campDrawSprite(parent, DAT_00833A50[0], 0x30, (u32)alpha,
-                       iconPair.f[0], iconPair.f[1], texture);
-        value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueC;
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueC;
         hadHundreds = 0;
         if (value >= 100) {
             hadHundreds = 1;
             campDrawSprite(parent, H_Maestro_001120a0(2),
-                                value / 100 + 0xb, (u32)alpha,
-                                digitPair.f[0], digitPair.f[1], texture);
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 325.0f, (originY + 16.0f) - 3.0f, texture);
             value %= 100;
         }
         if (value >= 10 || hadHundreds != 0) {
             campDrawSprite(parent, H_Maestro_001120a0(2),
-                            value / 10 + 0xb, (u32)alpha,
-                            digitPair.f[0] + 16.0f, digitPair.f[1], texture);
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 341.0f, (originY + 16.0f) - 3.0f, texture);
         }
         campDrawSprite(parent, H_Maestro_001120a0(2),
-                        value % 10 + 0xb, (u32)alpha,
-                        digitPair.f[0] + 32.0f, digitPair.f[1], texture);
-        return;
-    }
-    if (category != 0) {
-        return;
-    }
-
-    campDrawSprite(parent, DAT_00833A50[0], 0x2e, (u32)alpha,
-                   iconPair.f[0], iconPair.f[1], texture);
-    value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueA;
-    hadHundreds = 0;
-    if (value >= 100) {
-        hadHundreds = 1;
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 357.0f, (originY + 16.0f) - 3.0f, texture);
+        break;
+    case 2:
+        campDrawSprite(parent, DAT_00833A50[0], 0x32, (u32)alpha,
+                       originX + 288.0f, originY + 9.0f, texture);
+        value = work->entries[work->firstVisibleEntry + selectedEntry].valueD;
+        hadHundreds = 0;
+        if (value >= 100) {
+            hadHundreds = 1;
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           value / 100 + 0xb, (u32)alpha,
+                           originX + 325.0f, (originY + 16.0f) - 3.0f, texture);
+            value %= 100;
+        }
+        if (value >= 10 || hadHundreds != 0) {
+            campDrawSprite(parent, H_Maestro_001120a0(2),
+                           value / 10 + 0xb, (u32)alpha,
+                           originX + 341.0f, (originY + 16.0f) - 3.0f, texture);
+        }
         campDrawSprite(parent, H_Maestro_001120a0(2),
-                        value / 100 + 0xb, (u32)alpha,
-                        digitPair.f[0], digitPair.f[1], texture);
-        value %= 100;
+                       value % 10 + 0xb, (u32)alpha,
+                       originX + 357.0f, (originY + 16.0f) - 3.0f, texture);
+        break;
+    case 3:
+    default:
+        break;
     }
-    if (value >= 10 || hadHundreds != 0) {
-        campDrawSprite(parent, H_Maestro_001120a0(2),
-                        value / 10 + 0xb, (u32)alpha,
-                        digitPair.f[0] + 16.0f, digitPair.f[1], texture);
-    }
-    campDrawSprite(parent, H_Maestro_001120a0(2),
-                    value % 10 + 0xb, (u32)alpha,
-                    digitPair.f[0] + 32.0f, digitPair.f[1], texture);
-    campDrawSprite(parent, DAT_00833A50[0], 0x34, (u32)alpha,
-                   secondaryPair.f[0], secondaryPair.f[1], texture);
-    value = work->entries[work->firstVisibleEntry + work->selectedEntry].valueB;
-    hadHundreds = 0;
-    if (value >= 100) {
-        hadHundreds = 1;
-        campDrawSprite(parent, H_Maestro_001120a0(2),
-                        value / 100 + 0xb, (u32)alpha,
-                        secondaryPair.f[0] + 37.0f, secondaryPair.f[1], texture);
-        value %= 100;
-    }
-    if (value >= 10 || hadHundreds != 0) {
-        campDrawSprite(parent, H_Maestro_001120a0(2),
-                        value / 10 + 0xb, (u32)alpha,
-                        secondaryPair.f[0] + 53.0f, secondaryPair.f[1], texture);
-    }
-    campDrawSprite(parent, H_Maestro_001120a0(2),
-                    value % 10 + 0xb, (u32)alpha,
-                    finalPair.f[0], finalPair.f[1], texture);
 }
 
 

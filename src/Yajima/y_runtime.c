@@ -9149,7 +9149,8 @@ u32 FUN_0043ca30(int param_1)
       *puVar2 = 0x1a;
     }
     break;
-  case 0x1a:
+  case 0x1a: {
+    float spriteExtent[2];
     for (iVar17 = 0; iVar17 < 6; iVar17 = iVar17 + 1) {
       iVar13 = **(int **)(puVar2 + iVar17 * 4 + 0x274);
       uVar6 = *(u32 *)(iVar13 + 0x10);
@@ -9158,10 +9159,10 @@ u32 FUN_0043ca30(int param_1)
       uVar6 = *(u32 *)(iVar13 + 0xc);
       *(u32 *)(puVar2 + 0x304) = uVar6;
       *(u32 *)(puVar2 + 0x2ac) = uVar6;
-      FUN_00423fe0_typed((float *)(&uStack_c8),1,0x280,0x280,*(u16 *)(puVar2 + 0x304),
+      FUN_00423fe0_typed(spriteExtent,1,0x280,0x280,*(u16 *)(puVar2 + 0x304),
                    *(u16 *)(puVar2 + 0x308));
-      *(u32 *)(puVar2 + iVar17 * 8 + 0x2cc) = uStack_c8;
-      *(u32 *)(puVar2 + iVar17 * 8 + 0x2d0) = uStack_cc;
+      *(float *)(puVar2 + iVar17 * 8 + 0x2cc) = spriteExtent[0];
+      *(float *)(puVar2 + iVar17 * 8 + 0x2d0) = spriteExtent[1];
     }
     for (iVar17 = 0; iVar17 < 5; iVar17 = iVar17 + 1) {
       iVar13 = **(int **)(puVar2 + iVar17 * 4 + 0x3c8);
@@ -9247,6 +9248,7 @@ u32 FUN_0043ca30(int param_1)
       FUN_001085c0();
     }
     break;
+  }
   case 0x1b:
     FUN_0044a990((int)(puVar2),(u32*)(*(u32 *)(puVar2 + 0x424)));
     cVar4 = '\0';

@@ -3726,9 +3726,7 @@ u32 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u32 param_4)
 #define FUN_003ad400(...) ((u64 (*)(...))FUN_003ad400)(__VA_ARGS__)
 // measured: the fixed message buffer cuts nd157 to nd1; lint: allow S003
 #undef FUN_003ad640
-// b210 floor: only remaining word is commutative addu orientation:
-// ours 21186200 addu $v1,$v1,$v0; retail 21184300 addu $v1,$v0,$v1.
-// FUN_003AD640 NONMATCHING
+// FUN_003AD640
 
 
 u32 FUN_003ad640(u64 param_1,int param_2)
@@ -3743,8 +3741,6 @@ u32 FUN_003ad640(u64 param_1,int param_2)
 
   u32 uVar3;
 
-  u8 *pbVar4;
-
   u8 uVar5;
 
   int iVar6;
@@ -3755,11 +3751,9 @@ u32 FUN_003ad640(u64 param_1,int param_2)
   
 
   iVar6 = (int)param_2;
-  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x18) + *(int *)(iVar6 + 0x10));
+  uVar5 = *(u8 *)(*(int *)(iVar6 + 0x10) + *(int *)(iVar6 + 0x18)) - 1 & 0xff;
 
-  uVar5 = *pbVar4 - 1 & 0xff;
-
-  bVar1 = pbVar4[1];
+  bVar1 = ((u8 *)(*(int *)(iVar6 + 0x10) + *(int *)(iVar6 + 0x18)))[1];
   if (bVar1 == 0xff) {
 
     uVar3 = 0;

@@ -2933,17 +2933,14 @@ u64 FUN_00489160(u64 param_1,long param_2)
 }
 
 #pragma schedule on
-// FUN_00489320 NONMATCHING
+// FUN_00489320
 int FUN_00489320(int *param_1)
 {
   int iVar1;
   int iVar2;
-  int iVar3;
   iVar1 = 0xc;
   if (param_1[0xc] != 0) {
-    iVar2 = param_1[0xc] * 2;
-    iVar3 = *param_1;
-    iVar2 = iVar3 + iVar2 * 1;
+    iVar2 = *param_1 + param_1[0xc] * 2;
     iVar2 = iVar2 + param_1[0xd] * 2;
     iVar1 = iVar1 + iVar2;
   }
