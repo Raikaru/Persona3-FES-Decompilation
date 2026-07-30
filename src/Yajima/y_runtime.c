@@ -4552,14 +4552,16 @@ done:
   return 0;
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00433160 NONMATCHING
 
 u32 FUN_00433160(int param_1)
 {
-  u32 result = 0;
   u8 *work = *(u8 **)(param_1 + 0x3c);
-  s8 row = *(s8 *)(work + 0xdd);
-  s8 column = *(s8 *)(work + 0xdc);
+  u32 result = 0;
+  int row = *(s8 *)(work + 0xdd);
+  int column = *(s8 *)(work + 0xdc);
   if ((work[column + row * 0x10 + 0x10a] == 0) &&
       ((*(u8 *)(FUN_001b9120_u32() + row * 0x100 + column * 0x10 + 0x53) & 8) != 0)) {
     result = 4;
@@ -4590,6 +4592,7 @@ u32 FUN_00433160(int param_1)
 done:
   return result;
 }
+#pragma pop
 
 // FUN_004332F0
 

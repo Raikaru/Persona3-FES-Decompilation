@@ -47,7 +47,7 @@ void func_00313be0(MdlAnimEntryTable* table);
 void func_00313e60(void* data);
 void func_003143c0(u8* state, RpClump* clump);
 void func_00314d30(void* state);
-void func_00314730(f32 frame, u8* state);
+void func_00314730(u8* state, f32 frame);
 #pragma alias func_00314730_ptrfirst func_00314730
 void func_00314730_ptrfirst(u8* state, f32 frame);
 void func_00314850(RpClump* clump, void* state, s16 id, u16 blendFrameCount, u16 flags);
@@ -71,6 +71,8 @@ void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
 extern void func_004b74c0_typed(f32 frame, void* interpolator);
 #pragma alias func_004b74c0_frame FUN_004b74c0
 extern void func_004b74c0_frame(f32 frame, u32 interpolator);
+#pragma alias func_004b74c0_ptrfirst FUN_004b74c0
+extern void func_004b74c0_ptrfirst(u32 interpolator, f32 frame);
 #pragma alias func_004b7240_frame FUN_004b7240
 extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 #pragma alias func_00320640_frame FUN_00320640
@@ -2763,17 +2765,21 @@ void func_00312d40(u8* param_1,u8* param_2)
 
   int iVar1;
 
-  int iVar2;
-
   int iVar3;
+
+  int iVar4;
+
+  int iVar5;
+
+  float *pfVar6;
 
   
 
   iVar3 = (int)param_2;
 
-  iVar2 = (int)param_1;
+  pfVar6 = (float *)(iVar3 + 0x34);
 
-  iVar1 = *(int *)(iVar2 + 0x20);
+  iVar1 = *(int *)(param_1 + 0x20);
 
   if (iVar1 != 0) {
 
@@ -2781,9 +2787,10 @@ void func_00312d40(u8* param_1,u8* param_2)
 
     *(code *)(iVar1 + 0x3c) = (code)func_00312c70;
 
-    *(s32*)DAT_009571b4_abs = *(int *)(iVar2 + 0x20) + 0x4c;
-    *(s32*)DAT_009571b4_abs +=
-        *(int *)(*(int *)(iVar2 + 0x20) + 0x24) * *(int *)(iVar3 + 0x34);
+    iVar4 = *(int *)(param_1 + 0x20);
+    iVar5 = *(int *)(iVar4 + 0x24);
+    *(s32*)DAT_009571b4_abs = iVar4 + 0x4c;
+    *(s32*)DAT_009571b4_abs += iVar5 * *(int *)pfVar6;
     if (*(float *)(iVar3 + 8) != 0.0f) {
       *(s32*)DAT_009571b8_abs = *(s32*)DAT_009571b4_abs;
     }
@@ -2791,9 +2798,9 @@ void func_00312d40(u8* param_1,u8* param_2)
       *(s32*)DAT_009571b8_abs = 0;
     }
 
-    *(float**)DAT_009571bc_abs = (float*)(iVar3 + 0x38);
-    *(f32*)DAT_009571c0_abs = *(float *)(iVar3 + 0x44);
-    *(f32*)DAT_009571c4_abs = *(float *)(iVar3 + 0x48);
+    *(float**)DAT_009571bc_abs = pfVar6 + 1;
+    *(f32*)DAT_009571c0_abs = pfVar6[4];
+    *(f32*)DAT_009571c4_abs = pfVar6[5];
     if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) != 0) {
 
       func_00311730((u32*)param_1,(u16*)param_2,(u16*)(iVar3 + 0x4c),0);
@@ -2810,7 +2817,7 @@ void func_00312d40(u8* param_1,u8* param_2)
 
     }
 
-    *(u32 *)(*(int *)(iVar2 + 0x20) + 0x3c) = *(u32*)DAT_009571b0_abs;
+    *(u32 *)(*(int *)(param_1 + 0x20) + 0x3c) = *(u32*)DAT_009571b0_abs;
 
   }
 
@@ -3943,7 +3950,7 @@ u32 func_003142b0(void* param_1)
 
 
 
-// FUN_003143C0 NONMATCHING
+// FUN_003143C0
 
 
 void func_003143c0(u8* param_1,RpClump* param_2)
@@ -3986,11 +3993,11 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
       userData = func_003142b0((void*)*puVar2);
 
-      if (((userData != 0) && (func_00524670(userData,(u32)&gp0xffff9d10,5) == 0)) &&
+      if (((userData != 0) && (func_00524670(userData,&gp0xffff9d10,5) == 0)) &&
 
          (animation = func_004b97b0(*puVar2,0), animation != 0)) {
 
-        func_004b7010(animation,(u32)func_00314170,0);
+        func_004b7010(animation,func_00314170,0);
 
         *(u8 **)((int)animation + 0x40) = LAB_00314020_abs;
 
@@ -4090,15 +4097,15 @@ u32 func_00314650(u32 param_1)
 
 
 
-// FUN_00314730 NONMATCHING
+// FUN_00314730
 
 
-void func_00314730(f32 param_1,u8* param_2)
+void func_00314730(u8* param_2,f32 param_1)
 {
 
-  u32 uVar1;
-
   u32 *puVar2;
+
+  u32 uVar1;
 
   u32 *puVar3;
 
@@ -4128,13 +4135,13 @@ void func_00314730(f32 param_1,u8* param_2)
 
         if (lVar4 != 0) {
 
-          func_004b74c0_frame(param_1,lVar4);
+          func_004b74c0_ptrfirst(lVar4,param_1);
 
         }
 
-        if ((*(char *)(param_2 + 2) != '\x01') && (lVar4 = func_004b97b0(*puVar2), lVar4 != 0)) {
+        if ((*(u8 *)(param_2 + 2) != 1) && (lVar4 = func_004b97b0(*puVar2,1), lVar4 != 0)) {
 
-          func_004b74c0_frame(param_1,lVar4);
+          func_004b74c0_ptrfirst(lVar4,param_1);
 
         }
 
