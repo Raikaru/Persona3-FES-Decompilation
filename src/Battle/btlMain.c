@@ -2253,7 +2253,8 @@ u32 FUN_0029f150(float *param_1)
       pfVar2 = (float *)FUN_0019fd70();
       *(RwRGBAReal *)pfVar2 = color;
 
-      goto counter_update;
+      *(u32 *)(param_1 + 0x19) = *(u32 *)(param_1 + 0x19) + 1;
+      uVar1 = 0;
 
     }
 
@@ -2266,15 +2267,10 @@ u32 FUN_0029f150(float *param_1)
       *(RwRGBAReal *)pfVar2 = *(RwRGBAReal *)(param_1 + 0xc);
 
       uVar1 = 1;
-      goto done;
 
     }
 
   }
-counter_update:
-  *(u32 *)(param_1 + 0x19) = *(u32 *)(param_1 + 0x19) + 1;
-  uVar1 = 0;
-done:
 
   return uVar1;
 

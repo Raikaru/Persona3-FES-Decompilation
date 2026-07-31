@@ -598,7 +598,7 @@ s32 FUN_003d5cd0(u32 *param_1)
   u32 uVar2;
   u32 *puVar3;
   s32 sVar5;
-  long sVar4;
+  s32 sVar4;
   sVar4 = 0;
   memset(param_1,0,0x90);
   for (sVar5 = 0; (long)sVar5 < (long)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = sVar5 + 1) {
