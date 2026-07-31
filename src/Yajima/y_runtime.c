@@ -15811,9 +15811,9 @@ u32 FUN_00452a70(char param_1,char param_2)
 void FUN_00452f70(YVec3f *param_1,int param_2)
 
 {
+  int iVar1;
   int iVar3;
   int columnOffset;
-  int iVar1;
   u32 uVar5;
   u32 uVar6;
   int iVar2;

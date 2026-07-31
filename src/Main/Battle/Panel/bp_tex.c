@@ -891,8 +891,8 @@ void func_0021e170(void* destination,
                    const f32* size)
 {
     f32 sourcePoints[4][2];
-    f32* point;
     f32* nextPoint;
+    f32* point;
     f32 length;
     f32 angle;
     f32 sine;

@@ -840,7 +840,6 @@ void* func_001b9480(KwlnTask* fldRootTask)
 
 
 
-#pragma opt_lifetimes on
 // FUN_001ba3d0 NONMATCHING
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
@@ -884,10 +883,13 @@ void func_001ba3d0(KwlnTask* fldRootTask)
         MT_Scene_Destroy();
         DUNGEON_SEQUENCE_FLAG = 0;
     }
-    if (work->majorId > 0x1d && work->majorId < 0x28 &&
-        K_FldDungeon_GetCurrentFloor() == 0)
+    if (work->majorId >= 0x1e)
     {
-        func_001c07f0();
+        if (work->majorId < 0x28 &&
+            K_FldDungeon_GetCurrentFloor() == 0)
+        {
+            func_001c07f0();
+        }
     }
     func_00350080(0);
     func_00350080(2);
@@ -897,7 +899,6 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     sField.rootTask = NULL;
     (*(void (**)(void*))jtbl_0096017C_abs)(fldRootTask->workData);
 }
-#pragma opt_lifetimes off
 
 // FUN_001ba5f0 NONMATCHING
 KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
