@@ -12735,9 +12735,8 @@ char FUN_0044a420(int param_1,int param_2,int param_3)
   if (cVar1 == '\0') {
     iVar4 = iVar8 * 8 + iVar3;
     FUN_001140d0_f3(4.0f,*(float *)(iVar4 + 0x2cc) - 128.0f,
-                    *(float *)(iVar4 + 0x2d0) - 64.0f,
-                    uVar10 | 0xffffff00,0x100,0x80,
-                    *(u32 *)(iVar8 * 4 + iVar3 + 0x274));
+                 *(float *)(iVar4 + 0x2d0) - 64.0f,
+                 uVar10 | 0xffffff00,0x100,0x80,*(u32 *)(iVar8 * 4 + iVar3 + 0x274));
     psVar5 = (short *)(iGpffffb9fc + 0x7c + iVar6);
     sVar2 = *psVar5;
     if (sVar2 < (short)param_3) {

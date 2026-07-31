@@ -170,8 +170,6 @@ u64 DAT_006b2f88;
 f32 DAT_006b2f90;
 u32 DAT_006b2fa0;
 RwV3d DAT_006b2fb8;
-#pragma alias DAT_006b2fb8_abs DAT_006b2fb8
-extern u8 DAT_006b2fb8_abs[];
 u32 DAT_006b2fd0;
 RwV3d DAT_006b2ff8;
 RwV3d DAT_006b3008;
@@ -2707,14 +2705,13 @@ u32 FUN_0041a730(u64 param_1,int param_2)
   u32 uVar4;
 
   RwV3d position;
-  RwV3d source;
+  int iVar2;
 
   
 
   puVar1 = *(u32 **)(*(int *)(param_2 + 4) + 8);
 
-  source = *(RwV3d *)DAT_006b2fb8_abs;
-  position = source;
+  position = DAT_006b2fb8;
 
   if (*(int *)(param_2 + 0xc) == 0) {
 
@@ -2738,7 +2735,7 @@ u32 FUN_0041a730(u64 param_1,int param_2)
 
     if (((*puVar1 & uVar3) != 0) &&
 
-       (FUN_004bdde0(0xc1f00000,iVar2 + 0x10,&position),
+       (FUN_004bdde0_fcl(-30.0f,iVar2 + 0x10,&position,0),
 
        (float)*(int *)(param_2 + 0xc) == ((float)(int)(uVar4 << 1) + 6.0f) - 1.0f)) {
 
