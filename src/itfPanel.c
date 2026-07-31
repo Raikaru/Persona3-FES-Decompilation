@@ -4038,7 +4038,7 @@ u32 FUN_003ada00(u64 param_1,int param_2)
 
   char msg[8];
 
-  int bVar7;
+  u8 bVar1;
 
   u8 uVar2;
 
@@ -4048,7 +4048,7 @@ u32 FUN_003ada00(u64 param_1,int param_2)
   int iVar5;
 
   u8 bVar6;
-  u8 bVar1;
+  int bVar7;
 
   int offset;
   int base;

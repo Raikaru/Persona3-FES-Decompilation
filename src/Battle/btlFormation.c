@@ -8795,18 +8795,21 @@ undefined* func_002c6e30(int unit, u32 group)
 {
   extern u32 func_002ffbc0(u32);
   u16 unitId;
-  u16 total;
+  u16 i1;
   u16 random;
   u16 cumulative;
-  u16 i;
+  u16 total;
+  u16 i2;
   s32 weight;
   u8* weights;
 
   unitId = *(u16*)(*(int*)(unit + 0x30) + 0xa4);
-  weights = DAT_007ce41c + (unitId * 0x29) * 4 + (group & 0xffff) * 0x28;
+  weights = DAT_007ce41c + (unitId * 0x29) * 4;
   total = 0;
-  for (i = 0; i < 5; i++) {
-    total += weights[i * 8 + 0x2c];
+  i1 = 0;
+  weights += (group & 0xffff) * 0x28;
+  for (; i1 < 5; i1++) {
+    total += weights[i1 * 8 + 0x2c];
   }
   if (total == 0) {
     return &DAT_007cc740;
@@ -8814,11 +8817,11 @@ undefined* func_002c6e30(int unit, u32 group)
 
   random = func_002ffbc0(total);
   cumulative = 0;
-  for (i = 0; i < 5; i++) {
-    weight = weights[i * 8 + 0x2c];
+  for (i2 = 0; i2 < 5; i2++) {
+    weight = weights[i2 * 8 + 0x2c];
     cumulative += weight;
     if (random <= cumulative && weight > 0) {
-      return weights + i * 8 + 0x2c;
+      return weights + i2 * 8 + 0x2c;
     }
   }
   return NULL;

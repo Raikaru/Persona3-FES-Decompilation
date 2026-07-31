@@ -642,7 +642,7 @@ void func_001ce880(void)
             for (j = 0; j < 5; j++)
             {
                 model = unit->mdl;
-                weapon = *(Model**)((u8*)model + 0x3b8 + j * 0xc);
+                weapon = model->attachedWpns[j].wpnMdl;
                 if (weapon != NULL)
                 {
                     func_00319230(weapon,
@@ -3186,19 +3186,26 @@ void func_001d4180(void)
 {
     s32 i;
     u32 hasResources;
-    KwlnTask** taskSlot;
     s32* work;
     u8* scene;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         hasResources = false;
-        if (gFldUnitsPc[i].genusBase != NULL && gFldUnitsPc[i].resrc != NULL)
         {
-            hasResources = true;
+            FldUnit* unit;
+
+            unit = &gFldUnitsPc[i];
+            if (unit->genusBase != NULL && unit->resrc != NULL)
+            {
+                hasResources = true;
+            }
         }
+        hasResources = (hasResources != 0);
         if (hasResources)
         {
+            KwlnTask** taskSlot;
+
             taskSlot = &gFldUnitsPc[i].unk_180;
             if (*taskSlot != NULL)
             {
@@ -3212,7 +3219,7 @@ void func_001d4180(void)
                 if (*taskSlot != NULL)
                 {
                     func_00195020(*taskSlot);
-                    gFldUnitsPc[i].unk_180 = NULL;
+                    *taskSlot = NULL;
                 }
             }
         }

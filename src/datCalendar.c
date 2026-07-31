@@ -4734,8 +4734,8 @@ void func_00186a40(void* resource, u64 position, u32 alpha, s16 selection)
             f32 y;
         } coords;
     } packed;
-    s32 tile;
     void* unused;
+    s32 tile;
     f32 x;
     f32 y;
 

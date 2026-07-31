@@ -1103,8 +1103,8 @@ void FUN_00225040(void)
     RpSkyRenderStateSet(2, (void*)0x44);
 
     resource = FUN_0021cca0(table0, 0x23);
-    texture = FUN_0021cce0(resource);
     setState = (void (**)(u32, u32))D_00960090_abs;
+    texture = FUN_0021cce0(resource);
     (*setState)(1, texture);
 
     setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;

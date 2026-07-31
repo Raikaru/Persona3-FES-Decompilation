@@ -81,10 +81,14 @@ extern u32 DAT_0095ad50;
 extern u32 DAT_0095ad70;
 extern u32 DAT_0095ad90;
 extern u32 DAT_0095ae10;
+#pragma alias DAT_0095ae10_abs DAT_0095ae10
+extern u32 DAT_0095ae10_abs[];
 extern u32 DAT_0095ae14;
 #pragma alias DAT_0095ae14_abs DAT_0095ae14
 extern u32 DAT_0095ae14_abs[];
 extern u32 DAT_0095ae18;
+#pragma alias DAT_0095ae18_abs DAT_0095ae18
+extern u32 DAT_0095ae18_abs[];
 extern u32 DAT_0095ae1c;
 #pragma alias DAT_0095ae1c_abs DAT_0095ae1c
 extern u32 DAT_0095ae1c_abs[];
@@ -621,7 +625,7 @@ u64 FUN_003affd0(u64 param_1)
 }
 #define FUN_003affd0(...) ((u64 (*)(...))FUN_003affd0)(__VA_ARGS__)
 #undef FUN_003b0030
-// FUN_003B0030 NONMATCHING
+// FUN_003B0030
 
 
 u32 FUN_003b0030(int param_1)
@@ -630,17 +634,19 @@ u32 FUN_003b0030(int param_1)
 
 {
 
+  int iVar4;
+
   int iVar1;
+  int next_list;
 
   int iVar2;
 
   u32 *puVar3;
 
-  int iVar4;
-
   
-
-  if (param_1 != 0) {
+  if (param_1 == 0) {
+    return param_1;
+  }
 
     while (param_1 != 0) {
 
@@ -652,11 +658,11 @@ u32 FUN_003b0030(int param_1)
 
         if (*(int *)(iVar4 + 0x20) == 0) {
 
-          *(short *)(*(int *)(iVar4 + 0x1c) + 4) = *(short *)(*(int *)(iVar4 + 0x1c) + 4) + -1;
+          *(u16 *)(*(int *)(iVar4 + 0x1c) + 4) = *(u16 *)(*(int *)(iVar4 + 0x1c) + 4) + -1;
 
           iVar2 = *(int *)(iVar4 + 0x1c);
 
-          if ((iVar2 != 0) && (*(short *)(iVar2 + 4) == 0)) {
+          if ((iVar2 != 0) && (*(u16 *)(iVar2 + 4) == 0)) {
 
             puVar3 = *(u32 **)(iVar2 + 0xc);
 
@@ -670,31 +676,30 @@ u32 FUN_003b0030(int param_1)
 
             FUN_003b4580(*(u32 *)(iVar2 + 8));
 
-            DAT_0095ae10 = DAT_0095ae10 + -1;
+            DAT_0095ae10_abs[0] = DAT_0095ae10_abs[0] + -1;
 
           }
 
         }
 
-        FUN_003b46f0(iVar4,DAT_0095ae1c);
-
-        DAT_0095ae14 = DAT_0095ae14 + -1;
+        FUN_003b46f0(iVar4,DAT_0095ae1c_abs[0]);
 
         iVar4 = iVar1;
 
+        DAT_0095ae14_abs[0] = DAT_0095ae14_abs[0] + -1;
+
       }
 
-      iVar4 = *(int *)(param_1 + 0x24);
+      next_list = *(int *)(param_1 + 0x24);
 
-      FUN_003b46f0(param_1,DAT_0095ae20);
+      FUN_003b46f0(param_1,*(u32 *)DAT_0095ae20_abs);
 
-      DAT_0095ae18 = DAT_0095ae18 + -1;
+      param_1 = next_list;
 
-      param_1 = iVar4;
+      DAT_0095ae18_abs[0] = DAT_0095ae18_abs[0] + -1;
 
     }
 
-  }
 
   return 0;
 
@@ -1571,6 +1576,8 @@ u16 FUN_003b0e90(u16 param_1)
 #define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
 #undef FUN_003b0ec0
 // FUN_003B0EC0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
 
 
 u32 FUN_003b0ec0(int list)
@@ -1604,6 +1611,8 @@ u32 FUN_003b0ec0(int list)
   }
   return result;
 }
+#pragma opt_loop_invariants off
+#pragma pop
 #define FUN_003b0ec0(...) ((u32 (*)(...))FUN_003b0ec0)(__VA_ARGS__)
 #undef FUN_003b0f50
 // FUN_003B0F50 NONMATCHING
