@@ -1584,8 +1584,8 @@ void func_0010c7d0(HSfdQueueSlot* slot)
 // FUN_0010CAC0 NONMATCHING
 void func_0010cac0(void)
 {
-    HSfdDecodeSlot* slots;
     s16 i;
+    HSfdDecodeSlot* slots;
     s16 j;
 
     FUN_00512868();
@@ -1609,9 +1609,9 @@ void func_0010cac0(void)
         slots[i].status = 0;
         slots[i].index = i;
     }
+    *(s32*)sSfdFrameIndex_abs = 0;
     for (j = 0; j < 16; j++)
         ;
-    *(s32*)sSfdFrameIndex_abs = 0;
 
     sSfdDecodeSlots[0].intermediate = (u8*)FUN_0051d6f8(0x96000);
     sSfdDecodeSlots[1].intermediate = (u8*)FUN_0051d6f8(0xAF000);

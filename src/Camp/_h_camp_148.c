@@ -870,7 +870,7 @@ CAMP_DRAW_CALC_FIRST_AT(u9, 100.0f, (void*)(*(u32*)(param_1 + 0xc4) + 0x83c), 2,
     campDrawTransitionBuffirst((transition), (depth), (drawMode), (positionMode), \
                                (alphaMode), (start), (end), (param0), (tile), \
                                (startFrame), (endFrame))
-// FUN_0014BCE0 NONMATCHING
+// FUN_0014BCE0
 void h_campDrawSocialList(int param_1)
 {
     CampPair t0;
