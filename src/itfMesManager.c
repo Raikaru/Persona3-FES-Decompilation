@@ -5473,11 +5473,9 @@ void FUN_003a7dd0(int object)
   s16 *source;
   s16 *dest;
 
-  anim = (ItfMesAnim *)(object + 0x1d4);
-    source = DAT_006a1bd0_signed;
-    dest = values;
-    count = 3;
-
+  count = (anim = (ItfMesAnim *)(object + 0x1d4), 3);
+  source = DAT_006a1bd0_signed;
+  dest = values;
   do {
     s16 first = source[0];
     s16 second = source[1];
