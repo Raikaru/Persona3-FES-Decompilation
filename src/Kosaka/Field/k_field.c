@@ -1354,8 +1354,8 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     sDungeonRoomCounter++;
 }
 
-#pragma opt_loop_invariants on
-#pragma opt_lifetimes on
+/* W377: opt_propagation off improves func_001bb300 (nd3604 -> nd3024; object 4780/4912). */
+#pragma opt_propagation off
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
 {
@@ -1787,11 +1787,13 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     }
     func_004c3880(matrix);
 }
+#pragma opt_propagation reset
 
 // Residual MWCC register allocation and loop scheduling differ from retail; accepted floor.
 // Candidate bounds now follow the pattern dimensions; remaining mismatch is compiler codegen.
-#pragma opt_lifetimes reset
-#pragma opt_loop_invariants reset
+/* W377: stacking opt_loop_invariants on and opt_propagation off improves func_001bc630 (nd756 -> nd667; object 996/1168). */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_001bc630 NONMATCHING
 u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
 {
@@ -1922,7 +1924,12 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
     }
     return false;
 }
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 
+/* W377: stacking opt_common_subs off and opt_lifetimes on improves func_001bcac0 (nd1569 -> nd1551; object 2384/2448). */
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_001bcac0 NONMATCHING
 void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
 {
@@ -2183,7 +2190,11 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
         return;
     }
 }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 
+/* W377: opt_loop_invariants on improves func_001bd450 (nd439 -> nd431; object 1132/1136). */
+#pragma opt_loop_invariants on
 // FUN_001bd450 NONMATCHING
 void func_001bd450(u32 patternId)
 {
@@ -2299,6 +2310,7 @@ check:
         goto generate;
     }
 }
+#pragma opt_loop_invariants reset
 
 // FUN_001bd8c0
 void func_001bd8c0(void)
@@ -2320,6 +2332,9 @@ void func_001bd8c0(void)
     }
 }
 
+/* W377: stacking opt_loop_invariants on and opt_dead_assignments off improves func_001bd950 (nd3513 -> nd2143; object 6328/6352). */
+#pragma opt_loop_invariants on
+#pragma opt_dead_assignments off
 // FUN_001bd950 NONMATCHING
 #pragma push
 void func_001bd950(void)
@@ -2600,6 +2615,8 @@ void func_001bd950(void)
 }
 
 #pragma pop
+#pragma opt_dead_assignments reset
+#pragma opt_loop_invariants reset
 // FUN_001bf220
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
 {

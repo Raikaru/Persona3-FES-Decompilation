@@ -491,6 +491,9 @@ void* func_00199d90(void* ignored1,
     return (void*)triangle;
 }
 
+/* W377: stacking opt_loop_invariants on and opt_propagation off improves func_0019a420 (nd1122 -> nd1083; object 1748/1808). */
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_0019a420 NONMATCHING
 void* func_0019a420(void* ignored,
                     const FldShadowTriangle* triangle,
@@ -538,6 +541,8 @@ void* func_0019a420(void* ignored,
     K_FldShadow_EmitTriangle(context, projected, sourceVertices);
     return (void*)triangle;
 }
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 
 // FUN_0019ab30
 void* func_0019ab30(void* atomic, FldShadowAtomicContext* context)
@@ -729,6 +734,8 @@ static void K_FldShadow_SubmitFieldGeometry(const RwV3d* position,
 
 /* Removing this worsens FUN_0019ab80 (nd1126 -> nd1129) - measured W161. */
 #pragma opt_loop_invariants on
+/* W377: adding opt_lifetimes on to the existing opt_loop_invariants scope improves func_0019ab80 (nd1126 -> nd1115; object 1820/1840). */
+#pragma opt_lifetimes on
 // FUN_0019ab80 NONMATCHING
 u32 func_0019ab80(f32 alpha,
                   f32 projectionHalf,
@@ -977,6 +984,7 @@ u32 func_0019ab80(f32 alpha,
 }
 
 #pragma opt_loop_invariants reset
+#pragma opt_lifetimes reset
 // FUN_0019beb0 NONMATCHING
 KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3)
 {
@@ -1919,6 +1927,8 @@ static inline void K_FldShadow_UpdateModelNpc(ResrcModelNpc* res)
 #undef K_FldShadow_PositionCamera
 #undef K_FldShadow_UsesCharRenderGuard
 #undef K_FldShadow_SetAttachedShadowEnabled
+/* W377: opt_dead_assignments off improves K_FldShadow_UpdateShadowMapTask (nd2297 -> nd2260; object 3520/3520). */
+#pragma opt_dead_assignments off
 // FUN_0019c4b0 NONMATCHING
 void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 {
@@ -1976,6 +1986,7 @@ void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_dead_assignments reset
 
 // FUN_0019d270
 void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)

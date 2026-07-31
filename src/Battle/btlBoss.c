@@ -30,7 +30,8 @@ void FUN_002fd520(int param_1);
 u32 FUN_002fd660(void);
 u32 FUN_002fd7c0(void);
 void FUN_002fd820(void);
-void FUN_002fd8a0(int param_1);
+u32 FUN_00289860(void);
+void FUN_002fd8a0(BtlAction* action);
 u32 FUN_002fdb70(void);
 u32 FUN_002fdb90(void);
 s32 FUN_002fdbb0(BtlAction* param_1,BtlUnit* param_2);
@@ -1207,6 +1208,8 @@ return_result:
     }
 }
 
+/* W373 pragma sweep nd/obj: base 879/1300; singles LI=874/1296 LT=879/1300 CS=938/1428(over) PR=884/1300 SR=879/1300 DA=884/1308; retain LI on. */
+#pragma opt_loop_invariants on
 // FUN_002f8fd0 NONMATCHING
 s16 func_002f8fd0(BtlUnit* unit, s16 id)
 {
@@ -1306,6 +1309,7 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     }
     return -1;
 }
+#pragma opt_loop_invariants reset
 
 // FUN_002f9560
 s16 func_002f9560(BtlUnit* unit, u16* flags)
@@ -1633,6 +1637,8 @@ u32 func_002fa240(void)
     }
 }
 
+/* W373 pragma sweep nd/obj: base 904/1228; singles LI=904/1228 CS=871/1304 LT=904/1228 PR=904/1228 SR=904/1228 DA=904/1228; retain CS off. */
+#pragma opt_common_subs off
 // FUN_002fa510 NONMATCHING
 void func_002fa510(BtlAction* action, s32 mode)
 {
@@ -1744,6 +1750,7 @@ void func_002fa510(BtlAction* action, s32 mode)
         break;
     }
 }
+#pragma opt_common_subs reset
 
 
 // FUN_002faa50
@@ -3157,19 +3164,19 @@ void FUN_002fd820(void)
 }
 
 // FUN_002FD8A0 NONMATCHING
-void FUN_002fd8a0(int param_1)
+void FUN_002fd8a0(BtlAction* action)
 {
-    u8* data;
+    BtlUnit* data;
 
     switch (*(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8))
     {
     case 0x1a7:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0x10b:
                 case 0x10c:
@@ -3182,12 +3189,12 @@ void FUN_002fd8a0(int param_1)
         }
         break;
     case 0x1a9:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0x108:
                     FUN_00289860();
@@ -3199,12 +3206,12 @@ void FUN_002fd8a0(int param_1)
         }
         break;
     case 0x1aa:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0x10f:
                     FUN_00289860();
@@ -3216,12 +3223,12 @@ void FUN_002fd8a0(int param_1)
         }
         break;
     case 0x1ab:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0x110:
                     FUN_00289860();
@@ -3233,12 +3240,12 @@ void FUN_002fd8a0(int param_1)
         }
         break;
     case 0x1ae:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0x126:
                     FUN_00289860();
@@ -3250,12 +3257,12 @@ void FUN_002fd8a0(int param_1)
         }
         break;
     case 0x1af:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0xe9:
                     FUN_00289860();
@@ -3267,12 +3274,12 @@ void FUN_002fd8a0(int param_1)
         }
         break;
     case 0x1b0:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0xea:
                     FUN_00289860();
@@ -3286,12 +3293,12 @@ void FUN_002fd8a0(int param_1)
     case 0x1b1:
     case 0x1b2:
     case 0x1b3:
-        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        if ((action->unk_1a & 1) != 0)
         {
-            data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1)
+            data = action->unit;
+            if (data->genus == 1)
             {
-                switch (*(u16*)(data + 0xa4))
+                switch (data->charId)
                 {
                 case 0xeb:
                 case 0xec:
@@ -3803,6 +3810,9 @@ void FUN_002fe780(float param_1, u8* param_2, u8* param_3,
     (*(void (**)(...))DAT_009600a0_abs)(5, vertices, 0x2a);
 }
 
+/* W373 pragma sweep nd/obj: base 889/1356; singles LI=889/1356 CS=982/1444(over) LT=889/1356 PR=837/1348 SR=889/1356 DA=887/1356. */
+/* Pair nd/obj: LI+CS=982/1444 LI+LT=889/1356 LI+PR=837/1348 LI+SR=889/1356 LI+DA=887/1356 CS+LT=982/1444 CS+PR=982/1444 CS+SR=982/1444 CS+DA=982/1444 LT+PR=837/1348 LT+SR=889/1356 LT+DA=887/1356 PR+SR=837/1348 PR+DA=837/1348 SR+DA=887/1356; retain PR off. */
+#pragma opt_propagation off
 // FUN_002FED10 NONMATCHING
 u32 FUN_002fed10(int param_1)
 {
@@ -3930,3 +3940,4 @@ fd10_restore:
     FUN_004d7f60(3, 0x717fb);
     return result;
 }
+#pragma opt_propagation reset

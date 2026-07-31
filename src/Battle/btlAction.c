@@ -937,6 +937,10 @@ void btlActionUpdateStateStandBy(BtlAction* action)
     }
 }
 
+/* W373 pragma sweep nd/obj: base 1392/2044; singles LI=1392/2044 CS=1377/2060 LT=1339/1984 PR=1392/2044 SR=1392/2044 DA=1392/2044. */
+/* Pair nd/obj: LI+CS=1377/2060 LI+LT=1339/1984 LI+PR=1392/2044 LI+SR=1392/2044 LI+DA=1392/2044 CS+LT=1334/2000 CS+PR=1377/2060 CS+SR=1377/2060 CS+DA=1377/2060 LT+PR=1339/1984 LT+SR=1339/1984 LT+DA=1339/1984 PR+SR=1392/2044 PR+DA=1392/2044 SR+DA=1392/2044; retain CS+LT. */
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_0028aa20 NONMATCHING
 void btlActionInitStateStart(BtlAction* action)
 {
@@ -1136,6 +1140,8 @@ void btlActionInitStateStart(BtlAction* action)
         }
     }
 }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 /* W212: transferring 00297760's early-return cascade holds nd907/1480 (window 1488). Narrow u16 stat/message/table contracts improve nd907 to nd285 but grow to 1504, so were reverted; residual first differs at offset 48, a common-exit branch displaced by the 8-byte deficit. */
 // FUN_0028b230 NONMATCHING
 void btlActionUpdateStateStart(BtlAction* action)
@@ -1957,6 +1963,8 @@ void btlActionInitStateSupport(BtlAction* action)
 {
     // nothing
 }
+/* W373 pragma sweep nd/obj: base 846/1228; singles LI=846/1228 CS=846/1228 LT=846/1228 PR=839/1232 SR=846/1228 DA=846/1228; retain PR off. */
+#pragma opt_propagation off
 // FUN_0028d080 NONMATCHING
 void btlActionUpdateStateSupport(BtlAction* action)
 {
@@ -2021,6 +2029,7 @@ void btlActionUpdateStateSupport(BtlAction* action)
         return;
     }
 }
+#pragma opt_propagation reset
 
 // FUN_0028d560
 void btlActionInitStateBad(BtlAction* action)
@@ -2030,6 +2039,8 @@ void btlActionInitStateBad(BtlAction* action)
     action->unk_488 = 0;
 }
 /* Retail reconstruction covers the guard, down-status packet sequence, result dispatch, and moved-home state paths at 0x28d5e8-0x28dbc0. */
+/* W373 pragma sweep nd/obj: base 338/1600; singles LI=338/1600 CS=273/1596 LT=338/1600 PR=338/1600 SR=338/1600 DA=338/1600; retain CS off. */
+#pragma opt_common_subs off
 // FUN_0028d5a0 NONMATCHING
 void btlActionUpdateStateBad(BtlAction* action)
 {
@@ -2203,6 +2214,7 @@ void btlActionUpdateStateBad(BtlAction* action)
         btlActionSetState(action, BTLACTION_STATE_PACKET);
     }
 }
+#pragma opt_common_subs reset
 
 // FUN_0028dbe0
 void btlActionInitStateReady(BtlAction* action)
@@ -2283,6 +2295,8 @@ void btlActionUpdateStateReady(BtlAction* action)
     }
 }
 
+/* W373 pragma sweep nd/obj: base 1396/1948; singles LI=1444/1992 CS=1459/2020 LT=1362/1936 PR=1397/1948 SR=1396/1948 DA=1396/1964; retain LT on. */
+#pragma opt_lifetimes on
 // FUN_0028df00 NONMATCHING
 void btlActionInitStateMoveTarget(BtlAction* action)
 {
@@ -2716,6 +2730,7 @@ do_camera_packet_0x13:
 epilogue:
     action->unk_18 &= ~0x10;
 }
+#pragma opt_lifetimes reset
 // FUN_0028e740
 void btlActionUpdateStateMoveTarget(BtlAction* action)
 {
@@ -2886,6 +2901,8 @@ void btlActionInitStateAttack(BtlAction* action)
 }
 extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
 
+/* W373 pragma sweep nd/obj: base 6050/8252; singles LI=5905/8252 CS=6344/8452(over) LT=6050/8252 PR=6137/8280 SR=6050/8252 DA=6052/8252; retain LI on. */
+#pragma opt_loop_invariants on
 // FUN_0028eb50 NONMATCHING
 void btlActionUpdateStateAttack(BtlAction* action)
 {
@@ -3740,6 +3757,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
         }
     }
 }
+#pragma opt_loop_invariants reset
 // FUN_00290bd0
 void btlActionInitStateSkill(BtlAction* action)
 {
@@ -3825,6 +3843,8 @@ extern BtlPacket* func_002d8090(BtlAction*);
 extern BtlPacket* func_002d7fb0(BtlAction*, u32);
 extern BtlPacket* func_002db740(BtlAction*, u16, ...);
 /* Skill-state reconstruction is complete; remaining drift is MWCC local-layout codegen. */
+/* W373 pragma sweep nd/obj: base 11197/16672; singles LI=11166/16660 CS=12393/17036(over) LT=11197/16672 PR=12288/16848 SR=11197/16672 DA=11639/16696(over); retain LI on. */
+#pragma opt_loop_invariants on
 // FUN_00290be0 NONMATCHING
 void btlActionUpdateStateSkill(BtlAction *action) {
     extern u8 *gp0xffffb714;
@@ -5657,6 +5677,7 @@ block_394:
         btlActionSetState(action, BTLACTION_STATE_PACKET);
     }
 }
+#pragma opt_loop_invariants reset
 /* Warning: struct Model is not defined (only forward-declared) */
 
 // FUN_00294d10
@@ -5753,8 +5774,9 @@ void btlActionInitStateSummon(BtlAction* action)
 {
     (void)action;
 }
-#pragma opt_common_subs off
-#pragma opt_dead_assignments off
+/* W373 pragma sweep nd/obj: base 1255/2180; singles LI=1253/2180 CS=1324/2188 LT=1210/2172 PR=1503/2188 SR=1255/2180 DA=1254/2180. */
+/* Pair nd/obj: LI+CS=1324/2188 LI+LT=1210/2172 LI+PR=1531/2196 LI+SR=1253/2180 LI+DA=1252/2180 CS+LT=1270/2180 CS+PR=1325/2188 CS+SR=1324/2188 CS+DA=1324/2188 LT+PR=1446/2180 LT+SR=1210/2172 LT+DA=1210/2172 PR+SR=1503/2188 PR+DA=1503/2188 SR+DA=1254/2180; retain LT on. */
+#pragma opt_lifetimes on
 // FUN_00295160 NONMATCHING
 void btlActionUpdateStateSummon(BtlAction* action)
 {
@@ -6011,9 +6033,8 @@ void btlActionUpdateStateSummon(BtlAction* action)
     }
     btlActionSetState(action, state);
 }
+#pragma opt_lifetimes reset
 
-#pragma opt_dead_assignments reset
-#pragma opt_common_subs reset
 // FUN_00295a10
 void btlActionInitStateAssist(BtlAction* action)
 {
@@ -6067,6 +6088,8 @@ void btlActionInitStateError(BtlAction* action)
 {
     (void)action;
 }
+/* W373 pragma sweep nd/obj: base 366/768; singles LI=366/768 CS=308/756 LT=366/768 PR=451/752 SR=366/768 DA=510/748; retain CS off. */
+#pragma opt_common_subs off
 // FUN_00295c00 NONMATCHING
 void btlActionUpdateStateError(BtlAction* action)
 {
@@ -6163,6 +6186,7 @@ void btlActionUpdateStateError(BtlAction* action)
     }
     btlActionSetState(action, state);
 }
+#pragma opt_common_subs reset
 
 // FUN_00295f00
 void btlActionInitStateEndure(BtlAction* action)
@@ -6622,6 +6646,9 @@ void btlActionInitStateEscape(BtlAction* action)
 {
     (void)action;
 }
+/* W373 pragma sweep nd/obj: base 1683/3052; singles LI=1672/3052 CS=2244/3188(over) LT=1677/3052 PR=1683/3052 SR=1683/3052 DA=1683/3052. */
+/* Pair nd/obj: LI+CS=2224/3188(over) LI+LT=1674/3052 LI+PR=2320/3124(over) LI+SR=1672/3052 LI+DA=1673/3052 CS+LT=2248/3188(over) CS+PR=2244/3188(over) CS+SR=2244/3188(over) CS+DA=2244/3188(over) LT+PR=1677/3052 LT+SR=1677/3052 LT+DA=1677/3052 PR+SR=1683/3052 PR+DA=1683/3052 SR+DA=1683/3052; retain LI on. */
+#pragma opt_loop_invariants on
 // FUN_00296890 NONMATCHING
 void btlActionUpdateStateEscape(BtlAction* action)
 {
@@ -6951,7 +6978,10 @@ void btlActionUpdateStateEscape(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     btlActionSetState(action, BTLACTION_STATE_PACKET);
 }
+#pragma opt_loop_invariants reset
 
+/* W373 pragma sweep nd/obj: base 1024/1492; singles LI=907/1488 CS=1073/1532 LT=1024/1492 PR=1024/1492 SR=1024/1492 DA=1024/1492; retain LI on. */
+#pragma opt_loop_invariants on
 // FUN_00297a60 NONMATCHING
 void btlActionInitStateRoundUpMes(BtlAction* action)
 {
@@ -7128,6 +7158,7 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     ACTION_U32(action, 0x48c) = 0;
     ACTION_U16(action, 0x490) = 0x12;
 }
+#pragma opt_loop_invariants reset
 // FUN_00298060 NONMATCHING
 void btlActionUpdateStateRoundUpMes(BtlAction* action)
 {
@@ -7299,6 +7330,10 @@ void btlActionInitStateRoundUp(BtlAction* action)
         ACTION_U32(action, 0x498) = 0;
     }
 }
+/* W373 pragma sweep nd/obj: base 1892/2704; singles LI=1888/2704 CS=1923/2688 LT=1813/2592 PR=1815/2712 SR=1892/2704 DA=1892/2704. */
+/* Pair nd/obj: LI+CS=1925/2688 LI+LT=1805/2592 LI+PR=1840/2712 LI+SR=1888/2704 LI+DA=1888/2704 CS+LT=1766/2576 CS+PR=1923/2688 CS+SR=1923/2688 CS+DA=1923/2688 LT+PR=1809/2600 LT+SR=1813/2592 LT+DA=1813/2592 PR+SR=1815/2712 PR+DA=1815/2712 SR+DA=1892/2704; retain CS+LT. */
+#pragma opt_common_subs off
+#pragma opt_lifetimes on
 // FUN_00298610 NONMATCHING
 void btlActionUpdateStateRoundUp(BtlAction* action)
 {
@@ -7549,6 +7584,8 @@ void btlActionUpdateStateRoundUp(BtlAction* action)
     FUN_002b9030(rootH);
     btlActionSetState(action, BTLACTION_STATE_PACKET);
 }
+#pragma opt_lifetimes reset
+#pragma opt_common_subs reset
 
 // FUN_002990f0
 void btlActionInitStatePacket(BtlAction* action)
