@@ -1587,15 +1587,15 @@ static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
 // FUN_00126710 NONMATCHING
 #pragma push
 #pragma opt_loop_invariants on
-void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
+void h_campStatusDrawViewport(void* texture, f32 x, CampVec2 position,
                               s32 alpha)
 {
     CampStatusVertex vertices[4];
     void* camera;
     f32 recipZ;
     s32 i;
-    void (**setState)(u32, u32);
     void (**submitVertices)(u32, CampStatusVertex*, s32);
+    void (**setState)(u32, u32);
     void* textureWork;
 
     textureWork = texture;
@@ -1655,7 +1655,7 @@ static void h_campStatusDrawPanel(CampStatusPartsWork* work, s32 alpha,
 
     position.x = 188.0f - yOffset;
     position.y = work->scrollY;
-    h_campStatusDrawViewport(105.0f, work->parsedResource, position, alpha);
+    h_campStatusDrawViewport(work->parsedResource, 105.0f, position, alpha);
     h_campStatusDrawStatIcons(parent, position, persona, alpha);
     h_campStatusDrawLabelRow(parent, position, persona, bonus, alpha, 0);
     h_campStatusDrawEquipmentSlots(parent, position, persona, bonus, alpha);
@@ -1764,7 +1764,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
                 position.x = 188.0f -
                     (f32)(((8 - frame) * 25) / 8);
                 h_campStatusDrawViewport(
-                    105.0f, work->parsedResource, position, 0xff);
+                    work->parsedResource, 105.0f, position, 0xff);
                 work->scrollY -= 1.0f;
                 if (work->scrollY < -1104.0f) {
                     work->scrollY = 0.0f;
@@ -1776,7 +1776,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
             }
             else {
                 h_campStatusDrawViewport(
-                    105.0f, work->parsedResource, position, 0xff);
+                    work->parsedResource, 105.0f, position, 0xff);
                 work->scrollY -= 1.0f;
                 if (work->scrollY < -1104.0f) {
                     work->scrollY = 0.0f;
@@ -1792,7 +1792,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
             frame = work->detailFrame;
             if (frame == 8) {
                 h_campStatusDrawViewport(
-                    105.0f, work->parsedResource, position, 0xff);
+                    work->parsedResource, 105.0f, position, 0xff);
                 work->scrollY -= 1.0f;
                 if (work->scrollY < -1104.0f) {
                     work->scrollY = 0.0f;
@@ -1815,7 +1815,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         position.x = 188.0f;
         position.y = work->scrollY;
         h_campStatusDrawViewport(
-            105.0f, work->parsedResource, position, 0xff);
+            work->parsedResource, 105.0f, position, 0xff);
         work->scrollY -= 1.0f;
         if (work->scrollY < -1064.0f) {
             work->scrollY = 0.0f;
@@ -1832,7 +1832,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         position.x = 188.0f;
         position.y = work->scrollY;
         h_campStatusDrawViewport(
-            105.0f, work->parsedResource, position, 0xff);
+            work->parsedResource, 105.0f, position, 0xff);
         work->scrollY -= 1.0f;
         if (work->scrollY < -1104.0f) {
             work->scrollY = 0.0f;
@@ -1845,7 +1845,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
         position.x = 188.0f;
         position.y = work->scrollY;
         h_campStatusDrawViewport(
-            105.0f, work->parsedResource, position, 0xff);
+            work->parsedResource, 105.0f, position, 0xff);
         work->scrollY -= 1.0f;
         if (work->scrollY < -1104.0f) {
             work->scrollY = 0.0f;
@@ -1871,7 +1871,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
             (f32)((work->detailFrame * 500) / 8);
         position.y = work->scrollY;
         h_campStatusDrawViewport(
-            105.0f, work->parsedResource, position, 0xff);
+            work->parsedResource, 105.0f, position, 0xff);
         work->scrollY -= 1.0f;
         if (work->scrollY < -1104.0f) {
             work->scrollY = 0.0f;

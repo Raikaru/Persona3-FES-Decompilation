@@ -25,8 +25,8 @@ typedef struct YajimaVec16 {
     f32 lane[16];
 } YajimaVec16;
 typedef struct YajimaPackedRow {
-    u8 pad[0x8c0];
-    u64 value;
+    u8 pad[0x8c1];
+    u8 value[8];
 } __attribute__((packed)) YajimaPackedRow;
 typedef int (*code)(...);
 char cGpffffb9d4;
@@ -6244,14 +6244,14 @@ void FUN_0042cd80(int param_1)
     if ((*(s8 *)(work + outer + 0x938) == 1) &&
         (FUN_0043a230((s8)(outer + 1)) == 1)) {
       inner = outer * 5;
-      row = (YajimaPackedRow *)(work + outer * 8);
       end = (outer + 1) * 5;
+      row = (YajimaPackedRow *)(work + outer * 8 - 1);
       for (; inner < end; inner++) {
         entry = work + inner;
         counter = (s8 *)(entry + 0x8d8);
         offsetY = (s16 *)(work + inner * 2 + 0x914);
         offsetX = (s16 *)(work + inner * 2 + 0x8f6);
-        FUN_00430780(8.0f, row->value,
+        FUN_00430780(8.0f, *(u64 *)row->value,
                      *(s8 *)offsetX, *(s8 *)offsetY, *counter);
         delay = (s8 *)(entry + 0x8e7);
         if (*delay < 1) {
