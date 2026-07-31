@@ -202,8 +202,8 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     axisPtr = (RwV3d*)((u8*)&axis + 0);
     axisXY = *(volatile u64*)D_00683A98_abs;
     axisZ = D_00683AA0;
-    *(u64*)axisPtr = axisXY;
-    axisPtr->z = axisZ;
+    *(u64*)&axis = axisXY;
+    axis.z = axisZ;
     FUN_004cb890(cameraFrame, amount, axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();

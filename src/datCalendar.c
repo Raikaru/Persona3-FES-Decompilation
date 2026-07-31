@@ -4239,6 +4239,7 @@ KwlnTask* func_00185880(KwlnTask* parent,
 // FUN_00185980 NONMATCHING
 void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 {
+    void* unused;
     union
     {
         u64 bits;
@@ -4246,7 +4247,6 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     } packed;
     f32 x;
     f32 y;
-    void* unused;
 
     packed.bits = position;
     x = packed.coords[0] + 289.0f;

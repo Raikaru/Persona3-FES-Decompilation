@@ -6,6 +6,8 @@ typedef struct {
   f32 z;
 } EvtPosition65430;
 typedef u8 bool;
+#pragma alias FUN_00393e30_evt_main FUN_00393e30
+extern void FUN_00393e30_evt_main(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,code *param_6);
 
 extern u8 D_0069DFF0[];
 extern u8 D_0069E088[];
@@ -9009,7 +9011,7 @@ u32 FUN_00368d70(u64 param_1,u64 param_2,int param_3)
 
       uVar5 = FUN_00386e30(param_3);
 
-      FUN_00393e30(param_3,uVar4,uVar5,0,0,(int)(code *)FUN_0036e690);
+      FUN_00393e30_evt_main((u32)param_3,uVar4,uVar5,0,0,FUN_0036e690);
 
     }
 
@@ -9019,7 +9021,7 @@ u32 FUN_00368d70(u64 param_1,u64 param_2,int param_3)
 
       uVar5 = FUN_00386e30(param_3);
 
-      FUN_00393e30(param_3,uVar4,uVar5,0,1,(int)(code *)FUN_0036e690);
+      FUN_00393e30_evt_main((u32)param_3,uVar4,uVar5,0,1,FUN_0036e690);
 
     }
 
