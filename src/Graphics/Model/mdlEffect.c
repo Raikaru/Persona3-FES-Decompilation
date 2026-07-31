@@ -7666,7 +7666,6 @@ u32 FUN_00326510(u32 param_1)
 
 
 
-#pragma opt_common_subs off
 // FUN_00326740 NONMATCHING
 
 
@@ -7767,7 +7766,7 @@ void FUN_00326740(int param_1)
 
 
 
-#pragma opt_common_subs reset
+#pragma opt_lifetimes on
 // FUN_003268C0 NONMATCHING
 
 
@@ -7845,6 +7844,7 @@ u32 FUN_003268c0(u32 param_1)
 
 
 
+#pragma opt_lifetimes reset
 // FUN_003269E0 NONMATCHING
 
 

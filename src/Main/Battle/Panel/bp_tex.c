@@ -2151,11 +2151,11 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
         }
         else
         {
-            s32 stackIndex;
             u32* nestedChild;
+            s32 stackIndex;
             func_00259190(child, scratch.nested, &scratch.nestedCount);
-            stackIndex = scratch.stackCount;
             nestedChild = scratch.nested[0];
+            stackIndex = scratch.stackCount;
             scratch.stack[stackIndex] = nestedChild;
             scratch.stackCount = stackIndex + 1;
         }
