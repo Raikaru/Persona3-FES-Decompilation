@@ -13176,6 +13176,9 @@ void FUN_0032cd70(int param_1, float scale)
   *(float *)(dest + 0xf0) = *(float *)(source + 0xf0) * scale;
 }
 
+#pragma opt_lifetimes on
+// probe: opt_lifetimes on
+ 
 // FUN_0032CE10 NONMATCHING
 
 
@@ -13287,7 +13290,7 @@ void FUN_0032ce10(int param_1)
 
     motionVec[3] = 0.0f;
     vuVec[3] = 0.0f;
-    memcpy(basePos, puVar4, 16);
+    *(u_long128 *)basePos = *(u_long128 *)puVar4;
 
     if ((iVar6 == 0) || (*(int *)(iVar15 + 0x10) < iVar6)) {
 
@@ -13717,6 +13720,7 @@ void FUN_0032ce10(int param_1)
   return;
 
 }
+#pragma opt_lifetimes reset
 
 
 
