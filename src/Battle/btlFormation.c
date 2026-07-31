@@ -656,6 +656,9 @@ extern void func_002bc9c0_long(float param_1,float param_2,float param_3,float p
 extern void func_002bccd0(u32 param_1, u32 param_2);
 extern void func_002bcde0(u64 param_1,u32 *param_2);
 extern void func_002bce10(float param_1,float param_2,u8* param_3,int param_4,float *param_5);
+#pragma alias func_002bce10_reordered func_002bce10
+extern void func_002bce10_reordered(int param_3,float param_1,float param_2,
+                                    int param_4,float *param_5);
 extern u32 func_002bd080(int *param_1);
 extern void func_002bd230(u32 param_1,u8 param_2,u16 param_3);
 extern u32 func_002bd2e0(int *param_1);
@@ -2343,7 +2346,7 @@ u32 func_002bad60(u32 *param_1)
           return 0;
         }
         if ((param_1[6] == 0) &&
-            ((*(u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
+            ((*(volatile u32 *)(param_1 + 7) & 0xc00) != 0xc00)) {
           sVar1 = *(short *)(param_1 + 3);
           switch (sVar1) {
           case 0:
@@ -4952,8 +4955,8 @@ void func_002bf9b0(void)
           }
           firstZero = zero;
           callColor = alpha | 0xb4736400;
-          func_002bce10(firstZero, zero, entry, callColor,
-                        (float *)((u8 *)(uintptr_t)entry + 0xa04));
+          func_002bce10_reordered(entry, firstZero, zero, callColor,
+                                  (float *)((u8 *)(uintptr_t)entry + 0xa04));
         }
       }
     }

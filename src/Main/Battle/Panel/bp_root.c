@@ -1393,6 +1393,8 @@ void FUN_00202010(void)
     }
     for (i = 0; i < visible; i++)
     {
+        u16* skill;
+
         row = rowBase + i * 0x510;
         *(u32*)row = 0;
         if (*(u32*)(p + i * 8 + 0x28) & 1)
@@ -1404,11 +1406,19 @@ void FUN_00202010(void)
             *(u32*)row |= 2;
         }
         *(u32*)(row + 4) = *(u32*)(p + i * 4 + 0x78);
-        *(u32*)(row + 8) =
-            (((DAT_007ce3f8 + *(u16*)(p + i * 8 + 0x2c) * 0x2c)[3] == 1) ||
-             ((DAT_007ce3f8 + *(u16*)(p + i * 8 + 0x2c) * 0x2c)[3] == 2)) ? 1 : 0;
+        skill = (u16*)(p + i * 8 + 0x2c);
+        switch (((u8*)((uintptr_t)DAT_007ce3f8 + *skill * 0x2c))[3])
+        {
+        case 1:
+            *(u32*)(row + 8) = 1;
+            break;
+        case 2:
+        default:
+            *(u32*)(row + 8) = 0;
+            break;
+        }
         *(u32*)(row + 0xc) =
-            func_003083f0(*(u32*)(misc2 + 0xa2c), *(u16*)(p + i * 8 + 0x2c));
+            func_003083f0(*(u32*)(misc2 + 0xa2c), *skill);
     }
     *(u32*)(p + 0x7640) = 0;
     *(u32*)(p + 0x64a0) = visible;

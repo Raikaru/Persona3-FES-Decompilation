@@ -683,100 +683,40 @@ void sflPsel00261480(void)
     color[2] = 0xff;
     color[3] = 0xff;
     channel = color[0];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x830) = channelFloat;
     channel = color[1];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x834) = channelFloat;
     channel = color[2];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x838) = channelFloat;
     channel = color[3];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x83c) = channelFloat;
     channel = color[0];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x870) = channelFloat;
     channel = color[1];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x874) = channelFloat;
     channel = color[2];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x878) = channelFloat;
     channel = color[3];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x87c) = channelFloat;
     channel = color[0];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x8b0) = channelFloat;
     channel = color[1];
-    if (channel >= 0) {
-        channelFloat = (f32)(u32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x8b4) = channelFloat;
     channel = color[2];
-    if (channel >= 0) {
-        channelFloat = (f32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x8b8) = channelFloat;
     channel = color[3];
-    if (channel >= 0) {
-        channelFloat = (f32)channel;
-    } else {
-        channelFloat = (f32)((channel >> 1) | (channel & 1));
-        channelFloat += channelFloat;
-    }
+    channelFloat = (f32)(u32)channel;
     *(f32*)sflPselBytes(work, 0x8bc) = channelFloat;
 }
 
