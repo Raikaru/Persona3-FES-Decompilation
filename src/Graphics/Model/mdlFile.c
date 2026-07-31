@@ -44525,7 +44525,7 @@ void FUN_0034cc00(u32 *param_1)
   float renderStack [16];
   u32 *stackPtr;
 
-  float scaleStack [3];
+  float scaleStack [4];
 
   u32 uStack_c;
 
@@ -44600,7 +44600,7 @@ void FUN_0034cc00(u32 *param_1)
 
           FUN_00325c10((u8 (*) [16])(*puVar7),(u8 (*) [16])(positionStack));
 
-          renderStack[0] = matrixStack[0];
+          FUN_00326030(*puVar7,uStack_c);
 
           renderStack[1] = matrixStack[1];
 

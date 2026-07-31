@@ -488,8 +488,6 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
-    s16 id;
-    /* id is staged before draw setup to preserve integer liveness. */
     s32 val;
     s32 hundreds;
     u32 parent;
@@ -505,7 +503,6 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                                 (87.0f + position.y) - 12.0f,
                                 0xffffff00, barOffset, 10);
     }
-    id = (s32)(s16)pcId;
     y = position.y;
     x = position.x + 195.0f;
     fade8 = (u8)fade;
@@ -513,7 +510,7 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
     campStatusDrawSpriteCallXY(parent, *(void**)DAT_00833B90_abs, 5,
                                x, (87.0f + y) - 12.0f, fade8, alpha);
     /* Draw current SP digits */
-    val = datGetSp(id);
+    val = datGetSp((s32)(s16)pcId);
     hundreds = 0;
     if (val >= 100) {
         hundreds = 1;

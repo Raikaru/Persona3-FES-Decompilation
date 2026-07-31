@@ -2052,12 +2052,14 @@ void func_0010dd10(HSfdImage* image, const u8* source)
         y++;
     }
 }
+/* W318 measured: opt_loop_invariants on changes ddc0 nd48->11 and de40 nd79->0. */
+#pragma opt_loop_invariants on
 // FUN_0010DDC0 NONMATCHING
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
     s32 x;
-    s32 y;
     u8* dst;
+    s32 y;
     s32 width;
     s32 height;
 
@@ -2082,7 +2084,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
         y++;
     }
 }
-// FUN_0010DE40 NONMATCHING
+// FUN_0010DE40
 void func_0010de40(HSfdImage* image, const u8* source)
 {
     u8* dst;
@@ -2116,6 +2118,7 @@ void func_0010de40(HSfdImage* image, const u8* source)
         y++;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_0010DEE0
 void func_0010dee0(HSfdImage* image, const u8* source)

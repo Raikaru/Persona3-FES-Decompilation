@@ -4133,6 +4133,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   *param_3 = fVar4;
   param_3[1] = fVar5;
   param_3[2] = fVar9;
+  f32 zero = 0.0f;
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
     fVar6 = *(float *)((u8 *)afStack_10 + (u32)uVar3 * 4 + 0);
     currentAddress = (u32)uVar2 * 0x1c;

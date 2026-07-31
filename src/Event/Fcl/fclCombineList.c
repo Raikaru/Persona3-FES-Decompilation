@@ -734,41 +734,26 @@ da470_compare:
 // FUN_003da570 NONMATCHING
 void fclCombineList003da570(FclList* param_1, s32 param_2)
 {
+    FclOwner* list;
     FclTaskLink* node;
     FclNodeData* data;
-    s32 mode;
     s32 i;
-    s32 value;
     s32 scratch[8];
 
-    node = param_1->list->links;
-    mode = param_1->mode;
+    list = param_1->list;
     memset(scratch, 0, sizeof(scratch));
     memcpy(scratch, param_1->values, param_1->used * 4);
+    node = list->links;
     while (node != 0) {
         data = node->payload->data.node_data;
-        i = 0;
-        while (i < param_1->capacity) {
-            K_ASSERT(param_1 != 0, 0x411);
-            if (i < param_1->capacity) {
-                value = (s32)param_1->values[i];
-                if (value == 0) {
-                    value = 0;
-                }
-            } else {
-                value = 0;
-            }
-            if (value == (s32)data->selection_detail) {
+        for (i = 0; i < param_1->capacity; i++) {
+            if (fclCombineList003da3e0(param_1, i) == (s32)data->selection_detail) {
                 break;
             }
-            i++;
         }
         if (i >= param_1->capacity) {
-            i = -1;
-        }
-        if (i == -1) {
             scratch[param_1->used] = (s32)data->selection_detail;
-            FUN_003d6ae0((s32)&data->fusion, mode, (s32)scratch);
+            FUN_003d6ae0((s32)&data->fusion, param_1->mode, (s32)scratch);
             scratch[param_1->used] = 0;
         } else {
             memset(&data->fusion, 0, 0x54);

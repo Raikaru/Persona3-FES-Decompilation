@@ -8813,7 +8813,7 @@ undefined* func_002c6e30(int unit, u32 group)
   total = 0;
   i1 = 0;
   weights += (group & 0xffff) * 0x28;
-  for (; i1 < 5; i1++) {
+  for (; i1 < 5; i1 = (i1 + 1) & 0xffff) {
     total += weights[i1 * 8 + 0x2c];
   }
   if (total == 0) {
@@ -8822,7 +8822,7 @@ undefined* func_002c6e30(int unit, u32 group)
 
   random = func_002ffbc0(total);
   cumulative = 0;
-  for (i2 = 0; i2 < 5; i2++) {
+  for (i2 = 0; i2 < 5; i2 = (i2 + 1) & 0xffff) {
     weight = weights[i2 * 8 + 0x2c];
     cumulative += weight;
     if (random <= cumulative && weight > 0) {
