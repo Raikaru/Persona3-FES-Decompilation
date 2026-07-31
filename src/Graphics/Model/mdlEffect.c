@@ -6386,7 +6386,6 @@ void FUN_003252a0(u64 param_1)
 
 
 
-#pragma opt_common_subs off
 // FUN_00325500 NONMATCHING
 
 
@@ -6563,7 +6562,6 @@ void FUN_00325500(u64 param_1)
 
 
 
-#pragma opt_common_subs reset
 // FUN_003257a0
 void FUN_003257a0(u64 param_1)
 
@@ -6659,6 +6657,7 @@ void FUN_003257e0(u32 param_1)
 
 
 
+#pragma opt_strength_reduction off
 // FUN_00325920 NONMATCHING
 
 
@@ -6805,6 +6804,7 @@ u32 FUN_00325920(u64 *param_1)
 
 
 
+#pragma opt_strength_reduction reset
 // FUN_00325B80
 
 

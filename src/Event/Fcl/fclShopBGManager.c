@@ -1324,7 +1324,7 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   u32 *puVar1;
 
-  float fVar2;
+  u32 uVar2;
 
   u32 uVar3;
 
@@ -1334,9 +1334,8 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   int iVar6;
 
-  float *pfVar7;
-
-  float *pfVar8;
+  u32 *pfVar7;
+  u32 *pfVar8;
 
   u32 *puVar9;
 
@@ -1350,25 +1349,22 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   puVar1 = *(u32 **)(param_2 + 0xc);
 
-  pfVar8 = (float *)&DAT_006b0020;
-
-  pfVar7 = afStack_30;
+  pfVar8 = (u32 *)&DAT_006b0020;
+  pfVar7 = (u32 *)afStack_30;
 
   iVar6 = 5;
 
   do {
 
-    fVar11 = *pfVar8;
-
-    fVar2 = pfVar8[1];
+    uVar2 = *pfVar8;
+    uVar3 = pfVar8[1];
 
     pfVar8 = pfVar8 + 2;
 
     iVar6 = iVar6 + -1;
 
-    *pfVar7 = fVar11;
-
-    pfVar7[1] = fVar2;
+    *pfVar7 = uVar2;
+    pfVar7[1] = uVar3;
 
     pfVar7 = pfVar7 + 2;
 
