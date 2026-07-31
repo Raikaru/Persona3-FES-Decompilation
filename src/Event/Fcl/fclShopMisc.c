@@ -1478,7 +1478,6 @@ not_found:
 
 // Confirmed b210 floor: only five branch immediates differ at +136/+148/+160/+172/+184;
 // our inner-switch exits target the final join, while retail targets the shared exit branch.
-#pragma opt_loop_invariants on
 // FUN_003F0D60 NONMATCHING
 
 
@@ -1529,7 +1528,7 @@ long FUN_003f0d60(int param_1,u64 param_2)
   return (s64)var_17;
 }
 
-#pragma opt_loop_invariants reset
+#pragma opt_loop_invariants on
 // FUN_003F0EC0 NONMATCHING
 
 
@@ -1717,6 +1716,7 @@ u32 FUN_003f0ec0(u16 param_1)
 
 }
 
+#pragma opt_loop_invariants reset
 // FUN_003F10B0
 
 
