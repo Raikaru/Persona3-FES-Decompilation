@@ -2301,7 +2301,7 @@ void func_001d1fa0(void)
     area = func_001bff20();
     memset(DAT_0086be80, 0, 0x2700);
     iGpffffb598 = 0;
-    count = func_001d77d0(*puGpffffa850, puGpffffa850[2], (u16)area);
+    count = func_001d77d0(*puGpffffa850, puGpffffa850[2], area);
     switch (func_001c0040())
     {
         case 0:
@@ -2319,7 +2319,7 @@ void func_001d1fa0(void)
     index = 0;
     while ((spawn = (u8*)func_001d2300(index, count)) != NULL)
     {
-        model = func_001d78c0(*puGpffffa850, puGpffffa850[2], (u16)area);
+        model = func_001d78c0(*puGpffffa850, puGpffffa850[2], area);
         if (model == NULL)
         {
             K_Assert(D_00683940, 0x85c);
