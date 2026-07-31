@@ -100,6 +100,7 @@ u32 FUN_003c23f0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003c23f0(...) ((u32 (*)(...))FUN_003c23f0)(__VA_ARGS__)
 
 #undef FUN_003bf720
+/* W389 residual: switch scalar register-coloring cycle (retail keeps state in $v1 and constants in $v0/$a0; candidate uses $a0/$v1/$a1). Baseline nd=11/object=448 at the window; common-subs off exceeded it (nd=241/object=464), other singles and all pairs were neutral. Indexed, explicit-state, and volatile-load forms were neutral and reverted. */
 // FUN_003BF720 NONMATCHING
 
 
@@ -1329,6 +1330,10 @@ code * FUN_003c0d20(void)
 }
 #define FUN_003c0d20(...) ((code * (*)(...))FUN_003c0d20)(__VA_ARGS__)
 #undef FUN_003c0db0
+/* W389 pragma pair: opt_loop_invariants on + opt_lifetimes on; without nd=173/object=324, with nd=145/object=324; window=368. */
+#pragma push
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
 // FUN_003C0DB0 NONMATCHING
 
 
@@ -1415,6 +1420,9 @@ u32 FUN_003c0db0(u32 *param_1,u32 *param_2,u32 *param_3)
   } while( 1 );
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
+#pragma opt_loop_invariants reset
 #define FUN_003c0db0(...) ((u32 (*)(...))FUN_003c0db0)(__VA_ARGS__)
 #undef FUN_003c0f20
 // FUN_003C0F20
@@ -1983,6 +1991,10 @@ void FUN_003c1a70(void)
 }
 #define FUN_003c1a70(...) ((void (*)(...))FUN_003c1a70)(__VA_ARGS__)
 #undef FUN_003c1ab0
+/* W389 pragma pair: opt_lifetimes on + opt_propagation off; without nd=91/object=624, with nd=40/object=624; window=624. */
+#pragma push
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_003C1AB0 NONMATCHING
 
 
@@ -2129,6 +2141,9 @@ u32 FUN_003c1ab0(u32 param_1,u32 param_2)
   return uVar1;
 
 }
+#pragma pop
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 #define FUN_003c1ab0(...) ((u32 (*)(...))FUN_003c1ab0)(__VA_ARGS__)
 #undef FUN_003c1d20
 // FUN_003C1D20 NONMATCHING

@@ -558,6 +558,7 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
     return allocation + 1;
 }
 
+/* W389 residual: callee-saved register-coloring cycle (retail keeps intrState in $s1/copySize in $s0; candidate swaps them). Baseline nd=6/object=228/window=240; propagation off worsened nd=13, the other singles and all pairs were neutral; declaration and type swaps were neutral. */
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {

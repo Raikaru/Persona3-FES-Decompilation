@@ -302,6 +302,7 @@ void FUN_003afa40(void)
 
 #define FUN_003afa40(...) ((void (*)(...))FUN_003afa40)(__VA_ARGS__)
 #undef FUN_003afad0
+/* W389 residual: register-coloring/address-expression floor after recovering the real block-pointer form (candidate id uses $a0 vs retail $a1; final slot/data temporaries also differ). Baseline nd=10/object=348/window=352; six-knob singles stayed nd=10 except common-subs off, which exceeded the window at nd=73/object=356; declaration swap was neutral; pair sweep had no win. */
 // FUN_003AFAD0 NONMATCHING
 
 
@@ -373,6 +374,9 @@ void FUN_003afc30(u32 param_1)
 #undef FUN_003afc70
 /* W340 loop probe: opt_propagation off; without nd=279/object=392, with nd=247/object=400; window=448. */
 #pragma opt_propagation off
+/* W389 pragma: opt_lifetimes on; without nd=247/object=400, with nd=246/object=400; window=448. */
+#pragma push
+#pragma opt_lifetimes on
 // FUN_003AFC70 NONMATCHING
 
 
@@ -545,6 +549,8 @@ void FUN_003afc70(void)
   return;
 
 }
+#pragma pop
+#pragma opt_lifetimes reset
 #define FUN_003afc70(...) ((void (*)(...))FUN_003afc70)(__VA_ARGS__)
 #pragma opt_propagation reset
 #undef FUN_003afe30
@@ -1909,6 +1915,9 @@ void FUN_003b1330(void *param_1,u32 param_2)
 #undef FUN_003b1360
 /* W340 loop probe: opt_common_subs off; without nd=378/object=936, with nd=375/object=944; window=944. */
 #pragma opt_common_subs off
+/* W389 pragma: opt_loop_invariants on; without nd=375/object=944, with nd=364/object=936; window=944. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_003B1360 NONMATCHING
 
 
@@ -2133,6 +2142,8 @@ int FUN_003b1360(void *param_1,u32 param_2,u32 param_3)
   return iVar9;
 
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 #define FUN_003b1360(...) ((int (*)(...))FUN_003b1360)(__VA_ARGS__)
 #pragma opt_common_subs reset
 #undef FUN_003b1710

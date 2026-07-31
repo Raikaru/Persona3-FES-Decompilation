@@ -473,6 +473,9 @@ void func_002807a0(BtlUnit* unit, RwV3d* param_2)
     param_2->y += unit->unk_8c * unit->scale * 0.25f;
 }
 
+/* W389 measured: opt_loop_invariants on nd964->936, object 1260/1328 -> 1244/1328. */
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00280870 NONMATCHING
 f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
                   f32* param_4, f32* param_5, u32 param_6)
@@ -633,10 +636,12 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
     }
     return radius;
 }
+#pragma pop
+#pragma opt_loop_invariants reset
 
-/* W212: template 002823b0 confirms direct flag-first guarded movement, but target remains nd800/1076 (window 1232); residual begins at offset 4 (saved-ra slot 0x80 versus retail 0x60) and retail has 140 bytes of real tail logic, so no honest local template transfer was kept. */
-// opt_loop_invariants on: normalized_diff 875 -> 871 (object 1176/1232; off=875)
-#pragma opt_loop_invariants on
+/* W389 measured: opt_propagation off (replacing prior loop-invariants scope) nd871->862, object 1176/1232 -> 1168/1232. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00280DA0 NONMATCHING
 void func_00280da0(BtlUnit* unit)
 {
@@ -774,7 +779,8 @@ void func_00280da0(BtlUnit* unit)
     }
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
-#pragma opt_loop_invariants reset
+#pragma pop
+#pragma opt_propagation reset
 
 // FUN_002812D0
 f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
@@ -946,6 +952,9 @@ void func_00282bc0(BtlUnit* unit)
     animation = (s16)func_002ffbc0(animation);
     btlUnit00283c00(unit, animation);
 }
+/* W389 measured: opt_dead_assignments off nd246->245, object 528/528 -> 528/528. */
+#pragma push
+#pragma opt_dead_assignments off
 // FUN_00281F20 NONMATCHING
 u32 func_00281f20(void* workData)
 {
@@ -1003,6 +1012,8 @@ u32 func_00281f20(void* workData)
     work->counter++;
     return var_2;
 }
+#pragma pop
+#pragma opt_dead_assignments reset
 
 // FUN_00282130
 BtlPacket* func_00282130(BtlUnit* unit, u16 blendFrameCount)
@@ -4245,6 +4256,9 @@ BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags)
     return packet;
 }
 
+/* W389 measured: opt_propagation off nd742->707, object 988/992 -> 984/992. */
+#pragma push
+#pragma opt_propagation off
 // FUN_002889c0 NONMATCHING
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
@@ -4315,6 +4329,8 @@ update:
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     func_002bcde0(unit, &unit->unkData8);
 }
+#pragma pop
+#pragma opt_propagation reset
 
 // FUN_00288f80
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId)
@@ -4951,6 +4967,9 @@ BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
     return packet;
 }
 
+/* W389 measured: opt_propagation off nd2216->2197, object 3760/3776 -> 3672/3776. */
+#pragma push
+#pragma opt_propagation off
 // FUN_00286540 NONMATCHING
 void func_00286540(void)
 {
@@ -5166,6 +5185,8 @@ void func_00286540(void)
         }
     }
 }
+#pragma pop
+#pragma opt_propagation reset
 extern void func_00287ea0(BtlUnit* unit);
 extern u32 DAT_007cc970;
 void FUN_002878d0(BtlUnit* unit);
@@ -5640,6 +5661,10 @@ int FUN_002890a0(BtlUnitSortEntry** param_1, BtlUnitSortEntry** param_2)
     return (int)(firstDistance - RwV3dLength(&secondDelta));
 }
 
+/* W389 measured: opt_lifetimes on + opt_propagation off nd503->498, object 1136/1136 -> 1116/1136. */
+#pragma push
+#pragma opt_lifetimes on
+#pragma opt_propagation off
 // FUN_002891E0 NONMATCHING
 
 
@@ -5912,6 +5937,9 @@ void FUN_002891e0(void)
   return;
 
 }
+#pragma pop
+#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 
 // W295: NOT a floor - retail loads the lhu (persona id) before `move $a0,$s1`;
 // a volatile-cast temp for the id reproduces it.

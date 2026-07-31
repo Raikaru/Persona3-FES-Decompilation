@@ -226,7 +226,7 @@ u64 FUN_003ae560(u64 param_1,int param_2)
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
-// FUN_003AE650 NONMATCHING
+// FUN_003AE650
 
 
 u32 FUN_003ae650(u64 param_1,int param_2)
@@ -575,6 +575,7 @@ u32 FUN_003aea50(u64 param_1, int param_2)
 
 #define FUN_003aea50(...) ((u64 (*)(...))FUN_003aea50)(__VA_ARGS__)
 #undef FUN_003aec20
+/* W389 residual: register-coloring cycle and one commutative addu (retail keeps glyph in $a2/count in $v1; candidate swaps them). Baseline nd=8/object=240 at the window; common-subs off exceeded the window (nd=141/object=244), other singles and all pairs were neutral. Declaration reorder stayed nd=8; moving count's first use gave nd=182/object=248; s16 glyph gave nd=70/object=248; all were reverted. */
 // FUN_003AEC20 NONMATCHING
 
 

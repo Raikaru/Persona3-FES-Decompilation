@@ -64,6 +64,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 #define FUN_003b3f90(...) ((void (*)(...))FUN_003b3f90)(__VA_ARGS__)
 
 #undef FUN_003b35e0
+/* W389 residual: register-coloring cycle in the loop (retail keeps limit in $a0 and node in $a1; candidate swaps them) plus commutative addu. Six-knob singles left nd=7/object=344 unchanged for lifetimes, propagation, strength-reduction, and dead-assignments; loop-invariants/common-subs worsened nd to 81/151; pair sweep had no win; declaration swaps were neutral. */
 // FUN_003B35E0 NONMATCHING
 void FUN_003b35e0(int count)
 {
