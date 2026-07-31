@@ -3430,7 +3430,7 @@ static void bpPanelDrawBridgeQuad(u8* work, u32 offset, void* texture, s32 frame
     bpPanelBindAndDraw(work, offset, frame);
 }
 
-// FUN_00221b60 NONMATCHING
+// FUN_00221b60
 void func_00221b60(void)
 {
     u8* work;

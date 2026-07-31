@@ -698,6 +698,15 @@ s32 fclCombineList003da3e0(FclList* param_1, s32 param_2)
     if (p != 0) return p;
     return 0;
 }
+static inline s32 fclCombineListGetValue(FclList* param_1, s32 param_2)
+{
+    s32 p;
+    K_ASSERT(param_1 != 0, 0x411);
+    if (param_1->capacity <= param_2) return 0;
+    p = (s32)param_1->values[param_2];
+    if (p != 0) return p;
+    return 0;
+}
 // FUN_003da470
 s32 fclCombineList003da470(FclList* param_1, s32 param_2)
 {
@@ -738,7 +747,6 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
     FclNodeData* data;
     s32 mode;
     s32 i;
-    s32 value;
     s32 scratch[8];
 
     node = param_1->list->links;
@@ -747,21 +755,11 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
     memcpy(scratch, param_1->values, param_1->used * 4);
     while (node != 0) {
         data = node->payload->data.node_data;
-        i = 0;
-        while (i < param_1->capacity) {
-            K_ASSERT(param_1 != 0, 0x411);
-            if (param_1->capacity <= i) {
-                value = 0;
-            } else {
-                value = (s32)param_1->values[i];
-                if (value == 0) {
-                    value = 0;
-                }
-            }
-            if (value == (s32)data->selection_detail) {
+        for (i = 0; i < param_1->capacity; i++) {
+            if (fclCombineListGetValue(param_1, i) ==
+                (s32)data->selection_detail) {
                 goto da570_found;
             }
-            i++;
         }
         i = -1;
 da570_found:

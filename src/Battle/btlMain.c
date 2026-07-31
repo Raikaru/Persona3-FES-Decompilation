@@ -3460,115 +3460,54 @@ void FUN_002a1db0(s32 param_1)
 
 
 void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4)
-
-
-
 {
-
   float fVar1;
-
   float fVar2;
-
   float fVar3;
-
   float fVar4;
-
   float fVar5;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_24;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_14;
-
-  float fStack_10;
-
-  int iStack_c;
-
-  
+  struct {
+    float values[10];
+  } interpolation;
 
   fVar5 = 1.0f - param_1;
-
   fVar1 = param_3[1];
-
   fVar2 = param_3[2];
-
   fVar3 = param_4[1];
-
   fVar4 = param_4[2];
-
   *param_2 = *param_3 * fVar5 + *param_4 * param_1;
-
   param_2[1] = fVar1 * fVar5 + fVar3 * param_1;
-
   param_2[2] = fVar2 * fVar5 + fVar4 * param_1;
-
-  FUN_004be310(param_3 + 3,param_4 + 3,&fStack_30);
-
+  FUN_004be310(param_3 + 3,param_4 + 3,interpolation.values);
   if (param_1 <= 0.0f) {
-
     *(RwV4d*)(param_2 + 3) = *(RwV4d*)(param_3 + 3);
-
   }
-
   else if (1.0f <= param_1) {
-
     *(RwV4d*)(param_2 + 3) = *(RwV4d*)(param_4 + 3);
-
   }
-
   else {
-
-    if (iStack_c == 0) {
-
-      fVar5 = fVar5 * fStack_10;
-
+    if (interpolation.values[9] == 0) {
+      fVar5 = fVar5 * interpolation.values[8];
       fVar1 = fVar5 * fVar5;
-
       fVar5 = fVar1 * fVar5 *
-
               (fVar1 * (fVar1 * (fVar1 * (fVar1 * (fGpffff8044 * fVar1 + fGpffff8048 + 0.0f) +
                                          fGpffff804c + 0.0f) + fGpffff8050 + 0.0f) + fGpffff8054 + 0.0f
                        ) + fGpffff8058 + 0.0f) + fVar5 + 0.0f;
-
-      param_1 = param_1 * fStack_10;
-
+      param_1 = param_1 * interpolation.values[8];
       fVar1 = param_1 * param_1;
-
       param_1 = fVar1 * param_1 *
-
                 (fVar1 * (fVar1 * (fVar1 * (fVar1 * (fGpffff8044 * fVar1 + fGpffff8048 + 0.0f) +
                                            fGpffff804c + 0.0f) + fGpffff8050 + 0.0f) +
-                         fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + param_1 + 0.0f;
-
+                         fGpffff8054 + 0.0f) + param_1 + 0.0f;
     }
-
-    param_2[3] = fStack_30 * fVar5;
-
-    param_2[4] = fStack_2c * fVar5;
-
-    param_2[5] = fStack_28 * fVar5;
-
-    param_2[3] = fStack_20 * param_1 + param_2[3] + 0.0f;
-    param_2[4] = fStack_1c * param_1 + param_2[4] + 0.0f;
-    param_2[5] = fStack_18 * param_1 + param_2[5] + 0.0f;
-
-    param_2[6] = fStack_24 * fVar5 + fStack_14 * param_1;
-
+    param_2[3] = interpolation.values[0] * fVar5;
+    param_2[4] = interpolation.values[1] * fVar5;
+    param_2[5] = interpolation.values[2] * fVar5;
+    param_2[3] = interpolation.values[4] * param_1 + param_2[3] + 0.0f;
+    param_2[4] = interpolation.values[5] * param_1 + param_2[4] + 0.0f;
+    param_2[5] = interpolation.values[6] * param_1 + param_2[5] + 0.0f;
+    param_2[6] = interpolation.values[3] * fVar5 + interpolation.values[7] * param_1;
   }
-
-  return;
-
 }
 
 // FUN_002A2050

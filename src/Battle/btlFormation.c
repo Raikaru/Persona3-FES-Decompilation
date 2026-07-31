@@ -8803,6 +8803,7 @@ undefined* func_002c6e30(int unit, u32 group)
   u16 i1;
   u16 random;
   u32 idx;
+  u32 idx2;
   u16 cumulative;
   u16 total;
   u16 i2;
@@ -8825,7 +8826,8 @@ undefined* func_002c6e30(int unit, u32 group)
   random = func_002ffbc0(total);
   cumulative = 0;
   for (i2 = 0; i2 < 5; i2 = (i2 + 1) & 0xffff) {
-    weight = weights[i2 * 8 + 0x2c];
+    idx2 = i2;
+    weight = weights[idx2 * 8 + 0x2c];
     cumulative += weight;
     if (random <= cumulative && weight > 0) {
       return weights + i2 * 8 + 0x2c;
