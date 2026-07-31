@@ -1757,12 +1757,11 @@ u32 FUN_003965f0(int *param_1)
         }
 
         else {
-          typedef int EntryRow[11];
-          EntryRow *entry;
-          entry = (EntryRow *)param_1 + iVar1;
+          int *entryResult;
+          entryResult = param_1 + iVar1 * 0xb + 0xe;
 
-          iVar3 = (int)FUN_00100d80((const char *)((*entry) + 5),0);
-          (*entry)[14] = iVar3;
+          iVar3 = (int)FUN_00100d80((const char *)(entryResult - 9),0);
+          *entryResult = iVar3;
 
           param_1[3] = iVar3;
 
