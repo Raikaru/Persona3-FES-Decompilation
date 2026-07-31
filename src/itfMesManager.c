@@ -5468,17 +5468,20 @@ void FUN_003a7dd0(int object)
     s16 value;
   } ItfMesAnim;
   s16 values[8];
+  s16 first;
+  s16 second;
   ItfMesAnim *anim;
   int count;
   s16 *source;
   s16 *dest;
 
+  anim = (ItfMesAnim *)(object + 0x1d4);
   source = DAT_006a1bd0_signed;
   dest = values;
-  count = (anim = (ItfMesAnim *)(object + 0x1d4), 3);
+  count = 3;
   do {
-    s16 first = source[0];
-    s16 second = source[1];
+    first = source[0];
+    second = source[1];
     source += 2;
     count--;
     dest[0] = first;

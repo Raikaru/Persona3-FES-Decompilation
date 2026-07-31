@@ -4255,10 +4255,16 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
     y = packed.coords[1] + 112.0f;
     /* Keep the y aggregate load ahead of the first draw call as in retail. */
     asm ("" : "+m"(y));
+    /* Keep alpha live across each draw so retail rematerializes its byte mask. */
+    asm volatile ("" : "+r"(alpha) : : "memory");
     func_001159f0(unused, resource, month < 4 ? 0x50 : 0x4f,
                   alpha & 0xff, x, y, 50.0f);
+    /* Keep alpha live across each draw so retail rematerializes its byte mask. */
+    asm volatile ("" : "+r"(alpha) : : "memory");
     func_001159f0(unused, resource, month - 1,
                   alpha & 0xff, x + 251.0f, y + 131.0f, 50.0f);
+    /* Keep alpha live across each draw so retail rematerializes its byte mask. */
+    asm volatile ("" : "+r"(alpha) : : "memory");
     func_001159f0(unused, resource, month + 0xb,
                   alpha & 0xff, x + 251.0f, y + 163.0f, 50.0f);
 }

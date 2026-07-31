@@ -5665,21 +5665,18 @@ void FUN_0039eaa0(int param_1)
   int iVar6;
   int *piVar7;
   int iVar2;
-  int entryType;
 
   piVar7 = (int *)(param_1 + 0x7f4);
   FUN_00521408_b8b0(piVar7,0,0x38);
   iVar1 = *(int *)(param_1 + 8);
-  entryType = 2;
-  __asm__ volatile ("" : "+r"(entryType) : : "memory");
   for (iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
     iVar5 = *(int *)(iVar1 + 0x34) + iVar6 * 0x20;
-    if (2 == *(int *)(iVar5 + 0x18)) {
+    if (*(int *)(iVar5 + 0x18) == 2) {
       iVar2 = *piVar7;
       if (4 < iVar2) break;
       iVar3 = *(int *)(iVar1 + 0x10);
       iVar4 = *(int *)(iVar5 + 0x10);
-    if (*(int *)(iVar5 + 0x18) == entryType) {
+      iVar5 = *(int *)(iVar5 + 0x14);
       *(short *)((int)piVar7 + iVar2 * 2 + 0x18) = (short)iVar2 + 31000;
       piVar7[iVar2 + 1] = iVar3 + iVar4;
       piVar7[iVar2 + 9] = iVar5;
