@@ -602,17 +602,17 @@ s32 FUN_003d5cd0(u32 *param_1)
   long temp;
   sVar4 = 0;
   memset(param_1,0,0x90);
-  for (sVar5 = 0; (long)sVar5 < (long)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = (long)(sVar5 + 1)) {
+  for (sVar5 = 0; (s64)sVar5 < (s64)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = (s64)(sVar5 + 1)) {
     lVar1 = datPersonaGetHeroPersona(sVar5);
     if (lVar1 != 0) {
-      temp = sVar4;
-      puVar3 = (u32 *)((int)param_1 + (int)temp * 0xc);
+      puVar3 = (u32 *)((int)param_1 + (int)sVar4 * 0xc);
       *puVar3 = 0;
       puVar3[1] = (int)lVar1;
-      sVar4 = (long)(sVar4 + 1);
+      puVar3[2] = DAT_007ce420 + (u32)*(u16 *)((int)lVar1 + 2) * 0xe;
+      sVar4 = (s64)(sVar4 + 1);
     }
   }
-  return sVar4;
+  return (s64)sVar4;
 }
 // FUN_003D5DC0
 

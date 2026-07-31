@@ -163,7 +163,7 @@ extern void FUN_004c6be0_ymisc(float *out,const float *in,u32 matrix);
 void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
-extern u32 RpRandom(void);
+extern int FUN_00488f30(void);
 extern void FUN_00430780(f32, YajimaVec2, s32, s32, s32);
 #pragma alias DAT_006b4470_abs DAT_006b4470
 extern char DAT_006b4470_abs[];
@@ -6258,9 +6258,9 @@ void FUN_0042cd80(int param_1)
           count = *(s8 *)(entry + 0x8d8) + 1;
           *(s8 *)(entry + 0x8d8) = count;
           if (count > 20) {
-            random = RpRandom();
+            random = FUN_00488f30();
             *offsetX = (s16)(8.0f - (f32)(random & 0xf));
-            random = RpRandom();
+            random = FUN_00488f30();
             *offsetY = (s16)(8.0f - (f32)(random & 0xf));
             *counter = 0;
             *delay = 4;
