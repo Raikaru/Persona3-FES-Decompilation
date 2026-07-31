@@ -3204,7 +3204,6 @@ else {
 return uVar4; }
 
 #pragma opt_loop_invariants reset
-#pragma opt_lifetimes on
 // FUN_00413680 NONMATCHING
 
 
@@ -3322,7 +3321,6 @@ u64 FUN_00413680(u64 param_1,int param_2)
 
 }
 
-#pragma opt_lifetimes reset
 // FUN_004138E0 NONMATCHING
 
 
@@ -4235,6 +4233,7 @@ void FUN_00414d70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
 }
 
+#pragma opt_strength_reduction off
 // FUN_00414E10 NONMATCHING
 
 
@@ -4394,6 +4393,7 @@ u64 FUN_00414e10(int param_1,int param_2)
 
 /* W327 measured: opt_loop_invariants on normalized_diff 719 -> 672; object 1252/1280 -> 1252/1280 (without/with). */
 #pragma opt_loop_invariants on
+#pragma opt_strength_reduction reset
 // FUN_00414FE0 NONMATCHING
 
 

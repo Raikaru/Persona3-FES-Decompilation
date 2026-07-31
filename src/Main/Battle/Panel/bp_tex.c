@@ -1464,20 +1464,20 @@ u32* bpTexFindFreeNode(void)
 // FUN_00255440 bpTexFindNodeByIndex
 u32* bpTexFindNodeByIndex(u32 index)
 {
-    __asm__ (
-        ".set noreorder ;"
-        ".word 0x27bdffd0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
-        ".word 0x0080882d ; .word 0x8f82b664 ; .word 0x14400006 ; .word 0x00000000 ;"
-        ".word 0x3c040069 ; .word 0x2484ea00 ; .word 0x240500bc ; .word 0x0c0674fc ; .word 0x00000000 ;"
-        ".word 0x8f83b664 ; .word 0x3c020001 ; .word 0x00621021 ; .word 0x8c43265c ;"
-        ".word 0x1000000a ; .word 0x00000000 ; .word 0x0060802d ; .word 0x8c620000 ;"
-        ".word 0x30420002 ; .word 0x14400004 ; .word 0x00000000 ; .word 0x8c620010 ;"
-        ".word 0x10510004 ; .word 0x00000000 ; .word 0x8c630fc4 ; .word 0x1460fff6 ;"
-        ".word 0x00000000 ; .word 0x14600006 ; .word 0x00000000 ; .word 0x3c040069 ;"
-        ".word 0x2484ea00 ; .word 0x2405047a ; .word 0x0c0674fc ; .word 0x00000000 ;"
-        ".word 0x0200102d ; .word 0xdfbf0020 ; .word 0x7bb10010 ; .word 0x7bb00000 ;"
-        ".word 0x27bd0030 ; .set reorder"
-    );
+    u32* node;
+
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        if ((node[0] & 2) == 0 && node[4] == index)
+        {
+            break;
+        }
+    }
+    K_ASSERT(node != NULL, 0x47a);
+    return node;
 }
 
 // FUN_002554F0 bpTexGetNodeCount
@@ -1826,47 +1826,22 @@ u32* bpTexFindNodeById(u32 id)
 // FUN_002561E0
 void bpTexApplyGlobalAlpha(f32 amount, void* node)
 {
-    __asm__ (
-        ".set noreorder ;"
-        ".word 0x27bdffb0 ; .word 0xffbf0010 ; .word 0x7fb00000 ; .word 0xc7809780 ;"
-        ".word 0xe7a00048 ; .word 0x93a20048 ; .word 0x2442ff01 ; .word 0x44820000 ;"
-        ".word 0x00000000 ; .word 0x468000a0 ; .word 0x3c02437f ; .word 0x44820800 ;"
-        ".word 0x44800000 ; .word 0x00000000 ; .word 0x46010018 ; .word 0x460c105c ;"
-        ".word 0x3c024f00 ; .word 0x44820000 ; .word 0x00000000 ; .word 0x46010036 ;"
-        ".word 0x45010007 ; .word 0x00000000 ; .word 0x46000824 ; .word 0x44030000 ;"
-        ".word 0x00000000 ; .word 0x306300ff ; .word 0x10000007 ; .word 0x00000000 ;"
-        ".word 0x46000801 ; .word 0x46000024 ; .word 0x44030000 ; .word 0x3c028000 ;"
-        ".word 0x00621825 ; .word 0x306300ff ; .word 0xa3a3004c ; .word 0x93a20049 ;"
-        ".word 0x2442ff01 ; .word 0x44820000 ; .word 0x00000000 ; .word 0x468000a0 ;"
-        ".word 0x3c02437f ; .word 0x44820800 ; .word 0x44800000 ; .word 0x00000000 ;"
-        ".word 0x46010018 ; .word 0x460c105c ; .word 0x3c024f00 ; .word 0x44820000 ;"
-        ".word 0x00000000 ; .word 0x46010036 ; .word 0x45010007 ; .word 0x00000000 ;"
-        ".word 0x46000824 ; .word 0x44030000 ; .word 0x00000000 ; .word 0x306300ff ;"
-        ".word 0x10000007 ; .word 0x00000000 ; .word 0x46000801 ; .word 0x46000024 ;"
-        ".word 0x44030000 ; .word 0x3c028000 ; .word 0x00621825 ; .word 0x306300ff ;"
-        ".word 0xa3a3004d ; .word 0x93a2004a ; .word 0x2442ff01 ; .word 0x44820000 ;"
-        ".word 0x00000000 ; .word 0x468000a0 ; .word 0x3c02437f ; .word 0x44820800 ;"
-        ".word 0x44800000 ; .word 0x00000000 ; .word 0x46010018 ; .word 0x460c105c ;"
-        ".word 0x3c024f00 ; .word 0x44820000 ; .word 0x00000000 ; .word 0x46010036 ;"
-        ".word 0x45010007 ; .word 0x00000000 ; .word 0x46000824 ; .word 0x44030000 ;"
-        ".word 0x00000000 ; .word 0x306300ff ; .word 0x10000007 ; .word 0x00000000 ;"
-        ".word 0x46000801 ; .word 0x46000024 ; .word 0x44030000 ; .word 0x3c028000 ;"
-        ".word 0x00621825 ; .word 0x306300ff ; .word 0xa3a3004e ; .word 0x93a2004b ;"
-        ".word 0x2442ff01 ; .word 0x44820000 ; .word 0x00000000 ; .word 0x468000a0 ;"
-        ".word 0x3c02437f ; .word 0x44820800 ; .word 0x44800000 ; .word 0x00000000 ;"
-        ".word 0x46010018 ; .word 0x460c105c ; .word 0x3c024f00 ; .word 0x44820000 ;"
-        ".word 0x00000000 ; .word 0x46010036 ; .word 0x45010007 ; .word 0x00000000 ;"
-        ".word 0x46000824 ; .word 0x44030000 ; .word 0x00000000 ; .word 0x306300ff ;"
-        ".word 0x10000007 ; .word 0x00000000 ; .word 0x46000801 ; .word 0x46000024 ;"
-        ".word 0x44030000 ; .word 0x3c028000 ; .word 0x00621825 ; .word 0x306300ff ;"
-        ".word 0xa3a3004f ; .word 0x27a50020 ; .word 0x27a60044 ; .word 0x0c095bc8 ;"
-        ".word 0x00000000 ; .word 0x0000802d ; .word 0x10000008 ; .word 0x00000000 ;"
-        ".word 0x00101080 ; .word 0x005d1021 ; .word 0x8c440020 ; .word 0x27a5004c ;"
-        ".word 0x0c083320 ; .word 0x00000000 ; .word 0x26100001 ; .word 0x8fa30044 ;"
-        ".word 0x0203182a ; .word 0x1460fff6 ; .word 0x00000000 ; .word 0xdfbf0010 ;"
-        ".word 0x7bb00000 ; .word 0x27bd0050 ;"
-        ".set reorder"
-    );
+    u32 color;
+    RwRGBA rgba;
+    u32* leaves[8];
+    s32 count;
+    s32 i;
+
+    color = *(u32*)0x007cc470;
+    rgba.r = (u8)(((s32)(color & 0xff) - 0xff) * amount + 255.0f);
+    rgba.g = (u8)(((s32)((color >> 8) & 0xff) - 0xff) * amount + 255.0f);
+    rgba.b = (u8)(((s32)((color >> 16) & 0xff) - 0xff) * amount + 255.0f);
+    rgba.a = (u8)(((s32)(color >> 24) - 0xff) * amount + 255.0f);
+    bpTexCollect(node, leaves, &count);
+    for (i = 0; i < count; i++)
+    {
+        func_0020cc80((u8*)leaves[i] + 0x18, &rgba);
+    }
 }
 
 // FUN_00256430
@@ -2140,35 +2115,49 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
 // FUN_00256FA0
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
-    __asm__ (
-        ".set noreorder ;"
-        ".word 0x27bdff40 ; .word 0xffbf0050 ; .word 0x7fb40040 ; .word 0x7fb30030 ;"
-        ".word 0x7fb20020 ; .word 0x7fb10010 ; .word 0x7fb00000 ; .word 0x0080a02d ;"
-        ".word 0x00a0982d ; .word 0x00c0902d ; .word 0x8c830000 ; .word 0x00601827 ;"
-        ".word 0x30630008 ; .word 0x10600006 ; .word 0x00000000 ; .word 0xae740000 ;"
-        ".word 0x24030001 ; .word 0xae430000 ; .word 0x10000047 ; .word 0x00000000 ;"
-        ".word 0x27a50060 ; .word 0x27a600b8 ; .word 0x0c096464 ; .word 0x00000000 ;"
-        ".word 0x8fb000b8 ; .word 0x0000882d ; .word 0x1000001d ; .word 0x00000000 ;"
-        ".word 0x8fa300b8 ; .word 0x2463ffff ; .word 0xafa300b8 ; .word 0x00031880 ;"
-        ".word 0x007d1821 ; .word 0x8c640060 ; .word 0x8c830000 ; .word 0x00601827 ;"
-        ".word 0x30630008 ; .word 0x10600007 ; .word 0x00000000 ; .word 0x00111880 ;"
-        ".word 0x007d1821 ; .word 0xac6400a0 ; .word 0x26310001 ; .word 0x1000000c ;"
-        ".word 0x00000000 ; .word 0x27a50080 ; .word 0x27a600bc ; .word 0x0c096464 ;"
-        ".word 0x00000000 ; .word 0x8fa50080 ; .word 0x8fa400b8 ; .word 0x00041880 ;"
-        ".word 0x007d1821 ; .word 0xac650060 ; .word 0x24830001 ; .word 0xafa300b8 ;"
-        ".word 0x8fa300b8 ; .word 0x1460ffe2 ; .word 0x00000000 ; .word 0x12110006 ;"
-        ".word 0x00000000 ; .word 0x3c040069 ; .word 0x2484ea00 ; .word 0x24050702 ;"
-        ".word 0x0c0674fc ; .word 0x00000000 ; .word 0x0000302d ; .word 0x2625ffff ;"
-        ".word 0x10000009 ; .word 0x00000000 ; .word 0x00a61823 ; .word 0x00031880 ;"
-        ".word 0x007d1821 ; .word 0x8c6400a0 ; .word 0x00061880 ; .word 0x02631821 ;"
-        ".word 0xac640000 ; .word 0x24c60001 ; .word 0x00d1182a ; .word 0x1460fff6 ;"
-        ".word 0x00000000 ; .word 0x8e830000 ; .word 0x30630010 ; .word 0x10600004 ;"
-        ".word 0x00000000 ; .word 0xae510000 ; .word 0x10000003 ; .word 0x00000000 ;"
-        ".word 0x24030001 ; .word 0xae430000 ; .word 0xdfbf0050 ; .word 0x7bb40040 ;"
-        ".word 0x7bb30030 ; .word 0x7bb20020 ; .word 0x7bb10010 ; .word 0x7bb00000 ;"
-        ".word 0x27bd00c0 ;"
-        ".set reorder"
-    );
+    u32* node;
+    u32* stack[8];
+    u32* leaves[8];
+    s32 stackCount;
+    s32 leafCount;
+    s32 i;
+    s32 initialCount;
+
+    node = (u32*)nodeData;
+    if ((*node & 8) == 0)
+    {
+        ((u32*)values)[0] = (u32)node;
+        *count = 1;
+        return;
+    }
+
+    func_00259190(node, stack, &stackCount);
+    initialCount = stackCount;
+    while (stackCount > 0)
+    {
+        u32* child;
+        child = stack[--stackCount];
+        if ((*child & 8) == 0)
+        {
+            leaves[leafCount++] = child;
+        }
+        else
+        {
+            u32* nested[8];
+            s32 nestedCount;
+            func_00259190(child, nested, &nestedCount);
+            for (i = 0; i < nestedCount; i++)
+            {
+                stack[stackCount++] = nested[i];
+            }
+        }
+    }
+    K_ASSERT(initialCount == leafCount, 0x702);
+    for (i = 0; i < leafCount; i++)
+    {
+        ((u32*)values)[i] = (u32)leaves[leafCount - 1 - i];
+    }
+    *count = ((*node & 0x10) == 0) ? 1 : leafCount;
 }
 
 /*

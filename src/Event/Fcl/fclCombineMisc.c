@@ -169,8 +169,8 @@ extern char DAT_006a4ba0[];
 extern char DAT_006a4e10[];
 extern char DAT_006a5630[];
 extern char DAT_006a5f44[];
-extern u8 D_006A48D0[];
-extern u8 D_006A48D1[];
+extern s8 D_006A48D0[];
+extern s8 D_006A48D1[];
 extern s16 D_006A48F0[];
 extern u32 DAT_007ce420;
 
@@ -260,6 +260,7 @@ void fclCombineMisc003d9c90(s32 param_1, s32 param_2)
 
 // HARVESTED 3D-42FF
 
+#pragma opt_loop_invariants on
 // FUN_003D5510 NONMATCHING
 
 
@@ -394,6 +395,7 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
 }
 
+#pragma opt_loop_invariants reset
 // FUN_003D5730
 
 
@@ -1783,7 +1785,7 @@ void FUN_003d74f0(int param_1,int param_2,int param_3)
   int iVar15;
 
   int iVar16;
-  u8 *thresholds;
+s8 *thresholds;
 
   
 

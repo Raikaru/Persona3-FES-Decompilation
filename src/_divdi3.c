@@ -94,6 +94,8 @@ u64 FUN_0052eeb0(long param_1,long param_2)
 }
 #pragma optimization_level 3
 #pragma optimization_level 2
+/* opt_propagation off: 1748/1736 nd1571 -> 1732/1736 nd1521. */
+#pragma opt_propagation off
 // FUN_0052EFD8 NONMATCHING
 u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
 {
@@ -305,5 +307,8 @@ u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
     }
   }
 
-  return CONCAT44(q1, q0);
+  ww.s.low = q0;
+  ww.s.high = q1;
+  return ww.ll;
 }
+#pragma opt_propagation reset

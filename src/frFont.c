@@ -924,6 +924,7 @@ int FUN_003b03a0(void)
 }
 #define FUN_003b03a0(...) ((int (*)(...))FUN_003b03a0)(__VA_ARGS__)
 #undef FUN_003b0430
+#pragma opt_lifetimes on
 // FUN_003B0430 NONMATCHING
 
 
@@ -1006,6 +1007,7 @@ void FUN_003b0430(int param_1,u32 param_2)
 }
 #define FUN_003b0430(...) ((void (*)(...))FUN_003b0430)(__VA_ARGS__)
 #undef FUN_003b05c0
+#pragma opt_lifetimes reset
 // FUN_003B05C0
 
 

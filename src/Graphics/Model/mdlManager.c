@@ -83,7 +83,7 @@ extern void func_004b74c0_ptrfirst(u32 interpolator, f32 frame);
 #pragma alias func_004b7240_frame FUN_004b7240
 extern u32 func_004b7240_frame(f32 frame, u32 interpolator);
 #pragma alias func_00320640_frame FUN_00320640
-extern void func_00320640_frame(u32 arg0, f32 frame, u32 interpolator);
+extern void func_00320640_frame(f32 arg0, f32 frame, u32 interpolator);
 extern f32 func_00320810(void* animation);
 void func_00316970(Model* mdl);
 u32 func_003115a0(void* param_1, u32* param_2);

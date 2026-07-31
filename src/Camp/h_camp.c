@@ -55,10 +55,7 @@ extern u8 DAT_007e0952_abs[];
 extern u8 DAT_007e0958_abs[];
 extern u8 DAT_007e095a_abs[];
 extern u8* iGpffffb25c;
-extern void func_0018bc10(void* transition, s32 drawMode,
-                          s32 positionMode, s32 alphaMode,
-                          u64 start, u64 end, s32 param0, s32 tile,
-                          f32 depth, s32 startFrame, s32 endFrame);
+extern void func_0018bc10();
 extern void* DAT_00833B78;
 extern void* DAT_00833B8C;
 #pragma alias DAT_00833B80_abs DAT_00833B80

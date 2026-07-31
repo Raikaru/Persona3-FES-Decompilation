@@ -51,7 +51,7 @@ extern u32 gSpecialStatusMessage;
 extern u8 DAT_00833bb0[];
 extern u8 DAT_00833bd0[];
 extern u8 DAT_00833bf0[];
-extern u8 DAT_00836200[];
+extern u32 DAT_00836200;
 extern u8 DAT_00836212[];
 extern u8* PTR_s_Aigis_005e35ec;
 extern u8* PTR_s_Aigis_005e379c;
