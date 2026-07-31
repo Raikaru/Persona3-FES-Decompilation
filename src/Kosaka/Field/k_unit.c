@@ -65,8 +65,12 @@ extern u32 func_001bff20(void);
 extern u32 func_001d7300(u32 major, u16 minor, u32 area);
 extern u16 func_001d75f0(u32 major, u16 minor, u32 area);
 extern u16 func_001d76e0(u32 major, u16 minor, u32 area);
-extern u16 func_001d77d0(u32 major, u16 minor, u32 area);
-extern u16* func_001d78c0(u32 major, u16 minor, u32 area);
+extern u16 func_001d77d0(u32 major, u16 minor, u16 area);
+ #pragma alias func_001d77d0_u32 func_001d77d0
+extern u32 func_001d77d0_u32(u32 major, u16 minor, u16 area);
+#pragma alias func_001d1db0_u32 func_001d1db0
+extern void func_001d1db0_u32(void* work, const void* source, u32 resourceId);
+extern u16* func_001d78c0(u32 major, u16 minor, u16 area);
 extern FldUnit* func_001cf940(u32 encounter, void* unit);
 extern u32 func_001cfdd0(u32 index);
 extern void* func_001cd9a0(u32 charId);
@@ -139,8 +143,8 @@ extern void* func_001af930(u32 parent, void* resource);
 extern KwlnTask* func_00194b80(KwlnTask* parent, u32 priority,
                                const char* name, void* update,
                                void* destroy, void* work);
-extern void* func_001828d0(u16 id, void* dst);
-extern void* func_00182d90(u16 id, u32 mode, u8 value, void* dst);
+extern void* func_001828d0(s16 id, void* dst);
+extern void* func_00182d90(s16 id, u32 mode, u8 value, void* dst);
 extern u32 func_00316f70(void* model);
 extern void* func_00316e00(u32 type, u32 id, u32 mode);
 extern u32 func_001c65e0(FldUnit* unit);
@@ -2303,7 +2307,7 @@ void func_001d1fa0(void)
     area = func_001bff20();
     memset(DAT_0086be80, 0, 0x2700);
     iGpffffb598 = 0;
-    count = func_001d77d0(*puGpffffa850, puGpffffa850[2], area);
+    count = func_001d77d0_u32(*puGpffffa850, puGpffffa850[2], area);
     switch (func_001c0040())
     {
         case 0:
@@ -2334,18 +2338,17 @@ void func_001d1fa0(void)
         while (slot < 0x20)
         {
             candidate = base + slot * 0x138;
-            if (*(u32*)candidate != 0)
+            if (*(u32*)candidate == 0)
             {
-                slot++;
-                continue;
+                record = candidate;
+                break;
             }
-            record = candidate;
-            break;
+            slot++;
         }
         *(u32*)record = 1;
         *(u32*)(record + 0x11c) = (u32)model;
         *(SpawnCopy*)(record + 0x0c) = *(SpawnCopy*)spawn;
-        func_001d1db0(record, spawn, (u16)(0x3fe - index));
+        func_001d1db0_u32(record, spawn, 0x3fe - index);
         spawnId = model[1];
         if (spawnId < 5000)
         {
@@ -2924,23 +2927,19 @@ s32 func_001d3830(KwlnTask* task)
     result = -1;
     if (((s32*)task->workData)[3] != 0)
     {
-        goto active;
+        remaining = func_001d38a0(task);
+        if (remaining == 0)
+        {
+            result = 2;
+        }
+        else if (remaining < 0x3c)
+        {
+            result = 1;
+        }
     }
-    goto done;
-active:
-    remaining = func_001d38a0(task);
-    if (remaining == 0)
-    {
-        result = 2;
-        goto done;
-    }
-    if (remaining < 0x3c)
-    {
-        result = 1;
-    }
-done:
     return result;
 }
+#pragma pop
 
 // FUN_001d38a0
 s32 func_001d38a0(KwlnTask* task)
@@ -3220,20 +3219,20 @@ void func_001d4180(void)
         hasResources = (hasResources != 0);
         if (hasResources)
         {
-            if (gFldUnitsPc[i].unk_180 != NULL)
+            KwlnTask** taskSlot;
+
+            taskSlot = &gFldUnitsPc[i].unk_180;
+            if (*taskSlot != NULL)
             {
-                work = (s32*)gFldUnitsPc[i].unk_180->workData;
+                work = (s32*)(*taskSlot)->workData;
                 if (work[2] == 1)
                 {
                     work[2] = 0;
                     scene = func_001b9120();
                     func_001a9400(*(void**)(scene + 0x11f8), (void*)work[3]);
                 }
-                if (gFldUnitsPc[i].unk_180 != NULL)
+                if (*taskSlot != NULL)
                 {
-                    KwlnTask** taskSlot;
-
-                    taskSlot = &gFldUnitsPc[i].unk_180;
                     func_00195020(*taskSlot);
                     *taskSlot = NULL;
                 }

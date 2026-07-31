@@ -861,16 +861,17 @@ void func_002f0ea0(u64 *param_1)
 // FUN_002f14a0 NONMATCHING
 u32 func_002f14a0(BtlAction* action)
 {
+    u16 actionIndex;
     u16 count;
-    u16 index;
     BtlAction* cleanupAction;
     BtlAction* current;
     BtlPacket* packet;
+    u16 cleanupIndex;
     count = *(u16*)(iGpffffb6fc + 0xb50);
-    for (index = 0; (index & 0xffff) < count;
-         index = (index + 1) & 0xffff)
+    for (actionIndex = 0; (actionIndex & 0xffff) < count;
+         actionIndex = (actionIndex + 1) & 0xffff)
     {
-        current = *(BtlAction**)(iGpffffb6fc + (index & 0xffff) * 4 + 0xb44);
+        current = *(BtlAction**)(iGpffffb6fc + (actionIndex & 0xffff) * 4 + 0xb44);
         if (current != btlActionCurrent())
         {
             if ((current->unit->flags3 & BTLUNIT_FLAG3_ENDURE) != 0)
@@ -887,10 +888,10 @@ u32 func_002f14a0(BtlAction* action)
     if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
     {
         gBtl->flags &= ~0x80000;
-        for (index = 0; (index & 0xffff) < count;
-             index = (index + 1) & 0xffff)
+        for (cleanupIndex = 0; (cleanupIndex & 0xffff) < count;
+             cleanupIndex = (cleanupIndex + 1) & 0xffff)
         {
-            cleanupAction = *(BtlAction**)(iGpffffb6fc + (index & 0xffff) * 4 + 0xb44);
+            cleanupAction = *(BtlAction**)(iGpffffb6fc + (cleanupIndex & 0xffff) * 4 + 0xb44);
             FUN_002d7890(cleanupAction, 0);
             FUN_0029a320(cleanupAction);
         }

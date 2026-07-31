@@ -29,6 +29,25 @@ typedef struct FrFontState {
   u8 position_dirty;
 } FrFontState;
 
+typedef struct FrFontGlyphLayout {
+  u8 pad0[0xc];
+  int width;
+  u8 pad10[0x18];
+  struct FrFontGlyphLayout *next;
+} FrFontGlyphLayout;
+
+typedef struct FrFontLineLayout {
+  u8 pad0[3];
+  s8 spacing;
+  int x;
+  int y;
+  u8 pad0c[0x10];
+  FrFontGlyphLayout *glyphs;
+  u8 pad20[8];
+  struct FrFontLineLayout *next;
+  struct FrFontLineLayout *line;
+} FrFontLineLayout;
+
 typedef struct FrFontSlot {
   void *resource;
   void *font_data;
@@ -192,7 +211,7 @@ int FUN_003b1a90(int param_1);
 int FUN_003b1b00(int param_1,int param_2);
 void FUN_003b1bc0(u32 *param_1,int param_2,int param_3);
 void FUN_003b1c40(int param_1,int param_2,int param_3);
-void FUN_003b1c90(int param_1,int param_2,int param_3);
+void FUN_003b1c90(int param_1,int param_2,FrFontLineLayout *param_3);
 void FUN_003b1d90(u32 param_1,int param_2);
 void FUN_003b2020(int param_1,int param_2);
 void FUN_003b22a0(u32 *param_1);
@@ -2538,37 +2557,19 @@ void FUN_003b1c40(int param_1,int param_2,int param_3)
 // FUN_003B1C90 NONMATCHING
 
 
-void FUN_003b1c90(int x, int y, int object)
+void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 {
-  typedef struct FrGlyphNode {
-    u8 pad0[0xc];
-    int width;
-    u8 pad10[0x18];
-    struct FrGlyphNode *next;
-  } FrGlyphNode;
-  typedef struct FrLineNode {
-    u8 pad0[3];
-    s8 spacing;
-    int x;
-    int y;
-    u8 pad0c[0x10];
-    FrGlyphNode *glyphs;
-    u8 pad20[8];
-    struct FrLineNode *next;
-    struct FrLineNode *first;
-  } FrLineNode;
-  FrLineNode *line;
   int yDelta;
 
-  if (object == 0) {
+  if (line == NULL) {
     return;
   }
 
-  line = *(FrLineNode **)(object + 0x2c);
+  line = line->line;
   yDelta = y - line->y;
   while (line != NULL) {
     int totalWidth = 0;
-    FrLineNode *scan = line;
+    FrFontLineLayout *scan = line;
     int firstY = line->y;
     int limit = firstY + 100;
     int xDelta;
@@ -2576,7 +2577,7 @@ void FUN_003b1c90(int x, int y, int object)
 
     while (scan != NULL) {
       int lineWidth;
-      FrGlyphNode *glyph;
+      FrFontGlyphLayout *glyph;
 
       if (scan->y >= limit) {
         break;
