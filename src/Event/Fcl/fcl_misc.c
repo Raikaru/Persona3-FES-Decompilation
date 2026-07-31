@@ -1802,7 +1802,7 @@ u64 FUN_003ca230(void)
     if (state != 3) {
       if (state != 2) {
         if (state != 1) {
-          return 0;
+          goto fclMiscCa230Return;
         }
         *(u32 *)(context + 4) = 2;
         FUN_005225a8(&gp0xffffaa08,0x6a3e18,0x73d);
@@ -1891,6 +1891,7 @@ u64 FUN_003ca230(void)
     }
   }
 
+fclMiscCa230Return:
   return 0;
 }
 #define FUN_003ca230(...) ((u64 (*)(...))FUN_003ca230)(__VA_ARGS__)
@@ -1957,13 +1958,15 @@ void FUN_003ca6b0(void)
 #undef FUN_003ca780
 #pragma push
 #pragma opt_rebuildconditionals off
+// Conditional-rebuild pragma and integer-first signature measured normalized_diff
+// 36 -> 14; remaining residuals are mul.s operand order and v0/v1 coloring.
 // FUN_003CA780 NONMATCHING
 
 
 u64
-FUN_003ca780(int param_1,int param_2,float param_3,float param_4,float param_5,
-            float param_6,u32 param_7,u32 param_8,u16 param_9,u16 param_10,
-            u32 param_11)
+FUN_003ca780(int param_1,int param_2,float param_3,u32 param_7,u32 param_8,
+            u16 param_9,u16 param_10,u32 param_11,float param_4,float param_5,
+            float param_6)
 {
   int iVar1;
   u32 uVar2;

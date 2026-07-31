@@ -2323,7 +2323,9 @@ u32 func_002bad60(u32 *param_1)
 {
   short sVar1;
   u16 *puVar2;
+  u32 flags;
   int iVar3;
+  u16 functionIndex;
   u32 unaff_s2_lo;
   u32 unaff_s1_lo;
   
@@ -2334,13 +2336,16 @@ u32 func_002bad60(u32 *param_1)
       return 1;
     }
     else {
-      iVar3 = func_002b9370(*param_1,*(u16 *)(param_1 + 3));
+      functionIndex = *(volatile u16 *)(param_1 + 3);
+      iVar3 = func_002b9370(*param_1,functionIndex);
       if ((*puVar2 & 0x40) == 0) {
         if ((int)param_1[6] >= iVar3 * 2 + -0xd) {
           *puVar2 = *puVar2 | 0x100;
           return 0;
         }
-        if ((param_1[6] == 0) && ((param_1[7] & 0xc00) != 0xc00)) {
+        if ((param_1[6] == 0) &&
+            (((flags = *(volatile u32 *)((u8 *)(uintptr_t)param_1 + 0x1c)) &
+              0xc00) != 0xc00)) {
           sVar1 = *(short *)(param_1 + 3);
           switch (sVar1) {
           case 0:
