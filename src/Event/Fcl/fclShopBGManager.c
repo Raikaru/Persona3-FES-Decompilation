@@ -2780,7 +2780,7 @@ else if (*(short *)(iVar2 + 0x78) == 0) {
 return 1; }
 
 #pragma opt_propagation off
-/* probe: opt_propagation off */
+/* Measured normalized_diff 154 -> 153; object_size remains 400B. */
 // FUN_00413010 NONMATCHING
 
 
@@ -2885,10 +2885,10 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
-    u8 *psVar9;
+    short *psVar9;
     short *psVar8;
 
-    psVar9 = (u8 *)(iVar4 + iVar11 * 0xc);
+    psVar9 = (short *)(iVar4 + iVar11 * 0xc);
 
     psVar8 = (s16 *)(puVar6 + iVar11 * 4);
 
@@ -2897,9 +2897,9 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
     FUN_0040e3f0_typed(0.0f,fGpffff80d0 * *(float *)(psVar9 + 4),1.0f,1.0f,
 
-                 ((int)*(short *)psVar9 + (int)*psVar8) - (int)sVar3,
+                 ((int)*psVar9 + (int)*psVar8) - (int)sVar3,
 
-                 ((int)((short *)psVar9)[1] + (int)psVar8[1]) - (int)sVar3,(char)((short *)psVar9)[2],psVar8[3],0,iVar10,
+                 ((int)psVar9[1] + (int)psVar8[1]) - (int)sVar3,(char)psVar9[2],psVar8[3],0,iVar10,
 
                  iVar10);
 
@@ -2908,8 +2908,8 @@ u64 FUN_00413010(u64 param_1,int param_2)
   return 0;
 
 }
-#pragma opt_propagation on
 
+#pragma opt_propagation on
 // FUN_004131A0 NONMATCHING
 
 

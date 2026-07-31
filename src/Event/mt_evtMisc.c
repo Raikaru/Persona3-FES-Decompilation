@@ -2470,7 +2470,6 @@ void FUN_00389b50(int *param_1)
     for (iVar8 = param_1[0x1b]; iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x4c)) {
 
       iVar6 = iVar6 + 1;
-
     }
 
     if (iVar6 != 0) {

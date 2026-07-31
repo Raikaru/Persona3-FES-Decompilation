@@ -139,6 +139,11 @@ extern void campDrawTransition(f32 depth, void* transition, s32 drawMode,
                                u64 start, u64 end, s32 param0, s32 tile,
                                s32 startFrame, s32 endFrame);
 #pragma alias campDrawTransition func_0018bc10
+#pragma alias campDrawTransitionPair func_0018bc10
+extern void campDrawTransitionPair(f32 depth, void* transition,
+                                   s32 drawMode, s32 positionMode, s32 alphaMode,
+                                   CampBits start, CampBits end, s32 param0,
+                                   s32 tile, s32 startFrame, s32 endFrame);
 #pragma alias campDrawItemFrameAlias FUN_0014EF60
 extern void campDrawItemFrameAlias(int param_1);
 extern void h_campItemDestroyNewItemTask(KwlnTask* task);
@@ -2079,8 +2084,8 @@ void h_campDrawItemFrameSelected(int param_1)
     } local;
 
     local.position.pair = *(CampPair *)(*(int *)(param_1 + 0xc) + 0x30);
-    func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc)), 0, 2, 2,
-                  local.position.u, local.position.u, 0, 0, 0, 10);
+    campDrawTransitionPair(100.0f, (void*)(*(int *)(param_1 + 0xc)), 0, 2, 2,
+                           local.position, local.position, 0, 0, 0, 10);
 
     local.position.f[0] = 590.0f;
     local.position.f[1] = (f32)(*(int *)(param_1 + 4) * 0x21) + 124.0f;

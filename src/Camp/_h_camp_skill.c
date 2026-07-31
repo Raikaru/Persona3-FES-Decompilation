@@ -1553,6 +1553,7 @@ void* FUN_001618a0(KwlnTask* task)
                                           0x18c1, h_campUpdatePanelTransition,
                                           FUN_00122630, panelWork);
             if (DAT_007cdf54 != NULL) {
+                panelWork->unused_0c = 0;
                 panelWork->drawId = panelPcId;
             } else {
                 RwFree(panelWork);
@@ -2142,6 +2143,7 @@ void* FUN_00166c70(KwlnTask* task)
                         task, "H_CampSkillPanel", 0x18c1,
                         h_campUpdatePanelTransition, FUN_00122630, panelWork);
                     if (DAT_007cdf54 != NULL) {
+                        panelWork->unused_0c = 0;
                         panelWork->drawId = panelSelectedId;
                     } else {
                         RwFree(panelWork);

@@ -2560,6 +2560,14 @@ void FUN_003b1c40(int param_1,int param_2,int param_3)
 void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
 {
   int yDelta;
+  int totalWidth;
+  FrFontGlyphLayout *glyph;
+  FrFontLineLayout *scan;
+  int firstY;
+  int limit;
+  int lineWidth;
+  int xDelta;
+  int halfWidth;
 
   if (line == NULL) {
     return;
@@ -2568,17 +2576,12 @@ void FUN_003b1c90(int x, int y, FrFontLineLayout *line)
   line = line->line;
   yDelta = y - line->y;
   while (line != NULL) {
-    int totalWidth = 0;
-    FrFontLineLayout *scan = line;
-    int firstY = line->y;
-    int limit = firstY + 100;
-    int xDelta;
-    int halfWidth;
+    totalWidth = 0;
+    scan = line;
+    firstY = line->y;
+    limit = firstY + 100;
 
     while (scan != NULL) {
-      int lineWidth;
-      FrFontGlyphLayout *glyph;
-
       if (scan->y >= limit) {
         break;
       }
