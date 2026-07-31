@@ -4416,32 +4416,21 @@ void FUN_0031fde0(void)
 {
 
 
-  u8 bVar1;
 
-  u8 bVar2;
-
-  int iVar3;
+  f32 *result;
 
   u8 *extraout_t1_lo;
 
-  float extraout_f13;
-
   
+  float extraout_f13;
+  result = (f32 *)FUN_0031fbd0_noargs();
 
-  iVar3 = (int)FUN_0031fbd0_noargs();
-
-  bVar1 = extraout_t1_lo[1];
-
-  bVar2 = extraout_t1_lo[2];
-
-  *(float *)(iVar3 + 4) =
-       extraout_f13 * ((float)*extraout_t1_lo / 255.0f - *(float *)(iVar3 + 4)) +
-       *(float *)(iVar3 + 4) + 0.0f;
-  *(float *)(iVar3 + 8) =
-       extraout_f13 * ((float)bVar1 / 255.0f - *(float *)(iVar3 + 8)) + *(float *)(iVar3 + 8) + 0.0f;
-  *(float *)(iVar3 + 0xc) =
-       extraout_f13 * ((float)bVar2 / 255.0f - *(float *)(iVar3 + 0xc)) +
-       *(float *)(iVar3 + 0xc) + 0.0f;
+  result[1] =
+       extraout_f13 * ((float)*extraout_t1_lo / 255.0f - result[1]) + result[1] + 0.0f;
+  result[2] =
+       extraout_f13 * ((float)extraout_t1_lo[1] / 255.0f - result[2]) + result[2] + 0.0f;
+  result[3] =
+       extraout_f13 * ((float)extraout_t1_lo[2] / 255.0f - result[3]) + result[3] + 0.0f;
 
   return;
 }

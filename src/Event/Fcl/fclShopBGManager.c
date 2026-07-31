@@ -5501,9 +5501,9 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   short sStack_6;
 
-  short sStack_4;
+  int sStack_4;
 
-  short sStack_2;
+  int sStack_2;
 
   
 
