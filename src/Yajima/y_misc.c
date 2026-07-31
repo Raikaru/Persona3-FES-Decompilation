@@ -44,9 +44,9 @@ typedef struct YPositionWork {
     u8 pad_0f0[4];
     s16 counter1;
 } YPositionWork;
-#ifndef RWPLCORE_H
 #ifndef Y_MISC_RW_TYPES
 #define Y_MISC_RW_TYPES
+#ifndef RWPLCORE_H
 typedef struct RwV2d { f32 x; f32 y; } RwV2d;
 typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
 typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
@@ -68,6 +68,8 @@ typedef struct RwFrame RwFrame;
 extern int RwCameraBeginUpdate_u32(u32 camera);
 #pragma alias RwCameraEndUpdate_u32 RwCameraEndUpdate
 extern void RwCameraEndUpdate_u32(u32 camera);
+#pragma alias RpSkyRenderStateSet_u32 RpSkyRenderStateSet
+extern int RpSkyRenderStateSet_u32(int state, u32 param);
 RwCamera *RwCameraBeginUpdate(RwCamera *camera);
 RwCamera *RwCameraEndUpdate(RwCamera *camera);
 extern u32 mdlCreateFromRmdMemory(u32, u32, u32, u32, u32);
@@ -6744,9 +6746,9 @@ u32 FUN_00426590(int param_1)
 
     (*DAT_00960090)(2,3);
 
-    RpSkyRenderStateSet(2,0x44);
+    RpSkyRenderStateSet_u32(2,0x44);
 
-    RpSkyRenderStateSet(3,0x717fb);
+    RpSkyRenderStateSet_u32(3,0x717fb);
 
   }
 
@@ -6770,9 +6772,9 @@ u32 FUN_00426590(int param_1)
 
     (*DAT_00960090)(2,3);
 
-    RpSkyRenderStateSet(2,0x44);
+    RpSkyRenderStateSet_u32(2,0x44);
 
-    RpSkyRenderStateSet(3,0x717fb);
+    RpSkyRenderStateSet_u32(3,0x717fb);
 
   }
 
@@ -6796,9 +6798,9 @@ u32 FUN_00426590(int param_1)
 
     (*DAT_00960090)(2,3);
 
-    RpSkyRenderStateSet(2,0x48);
+    RpSkyRenderStateSet_u32(2,0x48);
 
-    RpSkyRenderStateSet(3,0x71801);
+    RpSkyRenderStateSet_u32(3,0x71801);
 
   }
 
@@ -7574,8 +7576,8 @@ void FUN_00427e70(float depth, u32 color, float x, float y, int width, int heigh
   (*DAT_00960090)(0xb, 6);
   (*DAT_00960090)(10, 5);
   (*DAT_00960090)(2, 4);
-  RpSkyRenderStateSet(2, 0x48);
-  RpSkyRenderStateSet(3, 0x71801);
+  RpSkyRenderStateSet_u32(2, 0x48);
+  RpSkyRenderStateSet_u32(3, 0x71801);
 
   positions[0][0] = x;
   positions[0][1] = y;
@@ -8707,11 +8709,11 @@ u32 FUN_004281f0(u32 param_1)
 
     uStack_50 = 0;
 
-    uVar26 = RwV3dLength(&uStack_58);
+    uVar26 = RwV3dLength((const RwV3d *)&uStack_58);
 
     uVar12 = FUN_00530da0(uVar26);
 
-    printf(0x6b4458,uVar12);
+    printf((const char *)0x6b4458,uVar12);
 
   }
 
@@ -9390,8 +9392,8 @@ u8 FUN_0042aa40(int param_1, u32 param_2, u32 param_3)
         DAT_0095bee0_abs[clearIndex] = 0;
       }
       *(short *)(work + result * 2 + 0xb7c) = i;
-      sprintf(DAT_0095bee0_abs, DAT_006b4490, param_2,
-              table[i].secondary);
+      sprintf((char *)DAT_0095bee0_abs, (const char *)DAT_006b4490, param_2,
+              (char *)table[i].secondary);
       request = H_Cdvd_Request(DAT_0095bee0_abs, 0);
       *(u32 *)(work + result * 4 + 4) = request;
       result++;
@@ -9430,7 +9432,7 @@ void FUN_0042ac60(int param_1,int param_2)
       for (; iVar5 < 0xff; iVar5 = iVar5 + 1) {
         puVar5[iVar5] = 0;
       }
-      sprintf(DAT_0095bfe0_abs,DAT_006b44b0,param_2,*(u16 *)((int)piVar4 + 10));
+      sprintf((char *)DAT_0095bfe0_abs, (const char *)DAT_006b44b0,param_2,*(u16 *)((int)piVar4 + 10));
       uVar3 = FUN_004d1260(DAT_0095bfe0_abs,0);
       *(u32 *)(iVar1 + iVar7 * 4 + 0x28) = uVar3;
       iVar7 = iVar7 + 1;
@@ -11835,7 +11837,7 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
           delta.z = *(float *)(&DAT_0086be0c + iVar15 * 0x10) - posZ.z;
 
-          fVar16 = (float)RwV3dLength(&delta);
+          fVar16 = (float)RwV3dLength((const RwV3d *)&delta);
 
           if (fVar16 < 2000.0f) {
 

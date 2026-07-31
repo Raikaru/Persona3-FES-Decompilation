@@ -3333,11 +3333,11 @@ u32 btlUnitUpdate00285d30Packet(void* work)
                 factor = 1.0f;
             }
             color = (color & 0xff000000) |
-                    ((u32)(u8)((1.0f - factor) * (u8)color +
+                    ((u32)(s32)((1.0f - factor) * (u8)color +
                                factor * (u8)packet->targetCol)) |
-                    ((u32)(u8)((1.0f - factor) * (u8)(color >> 8) +
+                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 8) +
                                factor * (u8)(packet->targetCol >> 8)) << 8) |
-                    ((u32)(u8)((1.0f - factor) * (u8)(color >> 16) +
+                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 16) +
                                factor * (u8)(packet->targetCol >> 16)) << 16);
         }
 
@@ -3352,7 +3352,7 @@ u32 btlUnitUpdate00285d30Packet(void* work)
                 factor = 1.0f;
             }
             color = (color & 0x00ffffff) |
-                    ((u32)(u8)((1.0f - factor) * (u8)(color >> 24) +
+                    ((u32)(s32)((1.0f - factor) * (u8)(color >> 24) +
                                factor * (u8)(packet->targetCol >> 24)) << 24);
         }
 
