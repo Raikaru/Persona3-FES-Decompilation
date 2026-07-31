@@ -12254,7 +12254,7 @@ void FUN_004006c0(int param_1,int param_2,int param_3,int param_4)
 
 }
 
-// FUN_00400740 NONMATCHING
+// FUN_00400740
 
 
 void FUN_00400740(int param_1,int param_2,int param_3,int param_4)
@@ -12283,7 +12283,7 @@ void FUN_00400740(int param_1,int param_2,int param_3,int param_4)
     iVar3 = iVar2;
     iVar2 = *(int *)(iVar2 + 0x10);
     if (lVar2 != 0) {
-      FUN_003c49e0_ro((int *)iVar1,(int *)(iVar1 + 4),iVar3);
+      FUN_003c49e0_ro((int *)iVar1,(int *)((u8 *)iVar1 + 4),iVar3);
     }
   }
 }

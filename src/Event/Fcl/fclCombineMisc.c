@@ -597,13 +597,13 @@ s32 FUN_003d5cd0(u32 *param_1)
   int lVar1;
   u32 uVar2;
   u32 *puVar3;
-  s16 sVar5;
+  s32 sVar5;
   s32 sVar4;
   s64 temp;
 
   sVar4 = 0;
   memset(param_1,0,0x90);
-  for (sVar5 = 0; (s64)sVar5 < (s64)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = sVar5 + 1) {
+  for (sVar5 = 0; (s64)sVar5 < (s64)((uVar2 = FUN_00175410()) & 0xffff); sVar5 = (s64)(sVar5 + 1)) {
     lVar1 = datPersonaGetHeroPersona(sVar5);
     if (lVar1 != 0) {
       temp = (s64)sVar4;
