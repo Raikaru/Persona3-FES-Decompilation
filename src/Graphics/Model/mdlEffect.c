@@ -7162,6 +7162,7 @@ void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
       :
       : "r"(param_1)
       : "vf10", "ACC", "memory");
+  for (iVar3 = *(int *)(param_1[8] + 0xc); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xac)) {
     __asm__ volatile (
         ".set noreorder                   \n"
         "lqc2        $vf10, 0x50(%0)       \n"
