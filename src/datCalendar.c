@@ -3924,15 +3924,9 @@ KwlnTask* func_00184db0(KwlnTask* parent)
                                childWork);
         if (child != NULL)
         {
-            union
-            {
-                u32 bits;
-                f32 value;
-            } calendarX;
-            calendarX.value = 400.0f;
-            *(u32*)(childWork + 0x10) = calendarX.bits;
-            *(u32*)(childWork + 0x08) = calendarX.bits;
-            CLND_CALENDAR_X = calendarX.value;
+            CLND_CALENDAR_X = 400.0f;
+            *(f32*)(childWork + 0x10) = 400.0f;
+            *(f32*)(childWork + 0x08) = 400.0f;
         }
     }
 
