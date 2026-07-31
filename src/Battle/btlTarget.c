@@ -943,7 +943,7 @@ extern u8* iGpffffb720;
 #pragma alias FUN_001706c0_u16 FUN_001706c0
 extern u16 FUN_001706c0_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170710_void FUN_00170710
-extern void FUN_00170710_void(s16 pcId, s16 index, s32 value);
+extern void FUN_00170710_void(s16 pcId, s16 index, u16 value);
 #pragma alias FUN_00170760_u16 FUN_00170760
 extern u16 FUN_00170760_u16(s16 pcId, s16 index);
 #pragma alias FUN_00170860_void FUN_00170860
@@ -1072,8 +1072,7 @@ u32 FUN_002d8110(BtlAction **param_1)
         {
             u8 *table = DAT_007ce3f8;
             u32 tableIndex = (u32)personaId & 0xffff;
-            u8 effect = *(u8 *)(table + tableIndex * 44 + 3);
-            switch (effect)
+            u8 effect = *(u8 *)(DAT_007ce3f8 + tableIndex * 44 + 3);
             {
             case 1:
                 FUN_00300410_void(unit->datUnit, -(s32)amount);
@@ -1103,7 +1102,6 @@ u32 FUN_002d8110(BtlAction **param_1)
                 u16 i;
                 u32 stateMasked;
                 u16 value;
-                s32 count;
                 i = 0;
                 stateMasked = (u32)state & 0xffff;
                 for (; i < 0xc; i++)
@@ -1113,9 +1111,9 @@ u32 FUN_002d8110(BtlAction **param_1)
                     if (stateMasked == value)
                         break;
                 }
-                count = (s16)(value - 1);
+                value = FUN_001706c0_u16((s16)unit->datUnit->id, (s16)i);
                 FUN_00170710_void((s16)unit->datUnit->id, (s16)i,
-                                  count);
+                                  (u16)(value - 1));
         }
         }
         break;

@@ -666,12 +666,12 @@ void func_00110e70(KwlnTask* task)
     MAESTRO_FREE(work);
 }
 
-// FUN_00110F80 NONMATCHING
+// FUN_00110F80
 KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions)
 {
     s32 i;
-    MaestroStreamWork* work;
     KwlnTask* task;
+    MaestroStreamWork* work;
     char name[256];
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);

@@ -2813,6 +2813,7 @@ u64 FUN_00413010(u64 param_1,int param_2)
   FclShopBgLocal stack;
 
 
+
   
 
   iVar4 = *(int *)(param_2 + 0xc);
@@ -2865,23 +2866,24 @@ u64 FUN_00413010(u64 param_1,int param_2)
 
   } while (0 < iVar5);
 
-  stack.header.floats[0] = *(float *)((u8 *)DAT_006b0e64_abs - 4);
+  *(float *)((u8 *)&stack + 0) = *(float *)((u8 *)DAT_006b0e64_abs - 4);
 
-  stack.header.floats[1] = *(float *)DAT_006b0e64_abs;
+  *(float *)((u8 *)&stack + 4) = *(float *)DAT_006b0e64_abs;
 
-  stack.header.floats[2] = *(float *)((u8 *)DAT_006b0e64_abs + 4);
+  *(float *)((u8 *)&stack + 8) = *(float *)((u8 *)DAT_006b0e64_abs + 4);
 
-  stack.header.floats[3] = *(float *)((u8 *)DAT_006b0e64_abs + 8);
+  *(float *)((u8 *)&stack + 0xc) = *(float *)((u8 *)DAT_006b0e64_abs + 8);
 
-  stack.header.words[0] = (u32)stack.table1;
+  *(u32 *)((u8 *)&stack + 0) = (u32)stack.table1;
 
-  stack.header.words[2] = (u32)stack.table2;
+  *(u32 *)((u8 *)&stack + 8) = (u32)stack.table2;
 
   iVar5 = *(int *)(iVar4 + 0x7c) >> 1;
 
-  puVar6 = (s16 *)stack.header.words[iVar5 * 2];
+  puVar6 = (s16 *)*(u32 *)((u8 *)&stack + iVar5 * 8);
 
-  iVar5 = ((int *)stack.header.words)[iVar5 * 2 + 1];
+  iVar5 = *(int *)((u8 *)&stack + iVar5 * 8 + 4);
+
 
   for (iVar11 = 0; iVar11 < iVar5; iVar11 = iVar11 + 1) {
 
