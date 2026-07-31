@@ -642,7 +642,6 @@ u32 FUN_00424730(void)
 
 // MWCC b210 register-colouring floor: retail swaps $s1/$s2 throughout the function.
 // Moving the result declaration after the type initializer regressed nd10 -> nd19 and was reverted.
-#pragma opt_common_subs off
 // FUN_00424880 NONMATCHING
 
 
@@ -672,7 +671,6 @@ u32 FUN_00424880(void)
   return 1;
 }
 
-#pragma opt_common_subs reset
 // FUN_004249B0
 
 
@@ -753,6 +751,7 @@ u32 FUN_004249b0(void)
 
 }
 
+#pragma opt_common_subs off
 // FUN_00424B60 NONMATCHING
 
 
@@ -845,6 +844,7 @@ u32 FUN_00424b60(void)
   return 1;
 }
 
+#pragma opt_common_subs reset
 // FUN_00424F10
 
 
