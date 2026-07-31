@@ -9,6 +9,209 @@
 #include "Main/g_data.h"
 #include "h_pad.h"
 #include "libm.h"
+typedef struct RuntimeTask RuntimeTask;
+typedef struct RuntimeWork RuntimeWork;
+typedef struct RuntimeListNode RuntimeListNode;
+typedef struct RuntimeVec3
+{
+    f32 x;
+    f32 y;
+    f32 z;
+} RuntimeVec3;
+typedef struct RuntimeRenderCollection
+{
+    u32 flags;
+    u8* input;
+    u8* entries;
+    void** renderObjects;
+    u8* commands;
+    RuntimeVec3* worldPositions;
+} RuntimeRenderCollection;
+struct RuntimeTask
+{
+    u8 reserved[0x3c];
+    RuntimeWork* workData;
+};
+struct RuntimeWork
+{
+    u32 flags;
+    u32 requestFlags;
+    u32 completedFlags;
+    u32 state;
+    u32 phase;
+    u32 selection;
+    u32 currentIndex;
+    u32 count;
+    void* owner;
+    void* resource;
+    void* renderData;
+    void* childTask;
+    RuntimeListNode* previous;
+    RuntimeListNode* next;
+    RuntimeVec3* positions;
+    RuntimeVec3* normals;
+    u32 slots[1024];
+};
+typedef struct RuntimeTransitionWork
+{
+    u32 state;
+    void* windowTask;
+    u32 flags;
+    u32 reserved0c;
+    u16 resourceId;
+    u8 reserved12[2];
+    void* positionTask;
+} RuntimeTransitionWork;
+typedef struct RuntimeFieldEditorWork
+{
+    u32 state;
+    void* controllerTask;
+    void* noticeTask;
+    void* menuTask;
+    void* choiceTask;
+    s32 selection;
+} RuntimeFieldEditorWork;
+typedef struct RuntimeControllerWork RuntimeControllerWork;
+struct RuntimeControllerWork
+{
+    u32 state;
+    void* windowTask;
+    void* secondaryTask;
+    u32 count;
+    u16 majorId;
+    u16 minorId;
+    u16 resourceId;
+    u8 type;
+    u8 flags;
+    f32 angle;
+    u32 value;
+    u8 sourceType;
+    u8 sourceFlags;
+    u8 reserved22[2];
+    f32 scale;
+    void* model;
+    void* controller;
+};
+struct RuntimeListNode
+{
+    u32 flags;
+    RuntimeWork* work;
+    void* vertices;
+    void* renderObjects;
+    u8 reserved[8];
+    RuntimeListNode* previous;
+    RuntimeListNode* next;
+};
+typedef struct RuntimeMatrix
+{
+    f32 values[16];
+} RuntimeMatrix;
+typedef struct RuntimeTransitionAngles
+{
+    u8 reserved[0x24];
+    RuntimeVec3 value;
+} RuntimeTransitionAngles;
+typedef struct RuntimeResetWork
+{
+    u32 flags;
+    u32 value;
+    u32 completedFlags;
+    u32 reserved;
+    void* work;
+} RuntimeResetWork;
+typedef struct RuntimePathWork
+{
+    u32 flags;
+    RuntimeVec3* firstVectors;
+    RuntimeVec3* secondVectors;
+    RuntimeVec3* thirdVectors;
+    RuntimeMatrix* matrix;
+    u32 rowCount;
+    u32 columnCount;
+    u32 reserved;
+    u8 color[4];
+} RuntimePathWork;
+typedef struct RuntimeDistanceWork
+{
+    void** config;
+    u8 reserved04[4];
+    s32 count;
+    u8 reserved0c[4];
+    RuntimeVec3* firstVectors;
+    RuntimeVec3* secondVectors;
+} RuntimeDistanceWork;
+typedef struct RuntimeCommandWork
+{
+    u32 flags;
+    u16* cursor;
+    u8 reserved08[8];
+    RuntimeWork* target;
+    u32 elapsed;
+    u16 delay;
+    u16 reserved1a;
+    u32 duration;
+} RuntimeCommandWork;
+typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
+typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
+typedef struct FieldArchiveRequest FieldArchiveRequest;
+struct FieldRuntimeResourceNode
+{
+    void* resource;
+    u16 areaId;
+    u16 roomId;
+    u16 resourceId;
+    u8 type;
+    u8 flags;
+    f32 angle;
+    u32 value;
+    u8 reserved14[0x0c];
+    RuntimeMatrix matrix;
+    u8 state;
+    u8 sourceType;
+    u8 reserved62[2];
+    f32 scale;
+    FieldRuntimeResourceNode* previous;
+    FieldRuntimeResourceNode* next;
+};
+struct FieldRuntimeTaskNode
+{
+    void* task;
+    u8 reserved04[0x0c];
+    RuntimeMatrix matrix;
+    u16 resourceId;
+    u8 reserved52[2];
+    FieldRuntimeTaskNode* previous;
+    FieldRuntimeTaskNode* next;
+    u8 reserved5c[4];
+};
+struct FieldArchiveRequest
+{
+    u8 reserved0[0x110];
+    void* data;
+    u8 reserved1[4];
+    u32 size;
+};
+extern void* func_00316b40(s32 majorId, s32 minorId, const char* path,
+                           s32 mode);
+extern void func_001ed0f0(f32 amount, const RuntimeWork* work, s32 channel,
+                          u8* output);
+extern void* (*DAT_00960184)(u32, ...);
+#pragma alias DAT_00960184_abs DAT_00960184
+extern void* (*DAT_00960184_abs[])(...);
+
+/* Header declarations are canonical; suppress carrying the old-TU forms. */
+#if 0
+extern s32 datGetFlag(u32 flag);
+extern void* RwCalloc(u32 count, u32 size, u32 hint);
+extern void RwFree(void* memory);
+extern void* kwlnTaskCreateWithAutoPriority(void* parent, s32 priority,
+                                             const char* name, void* update,
+                                             void* destroy, void* work);
+extern void kwlnTaskDestroyWithHierarchy(void* task);
+extern s32 kwlnTaskExists(void* task);
+extern u8* K_Field_Get(void);
+extern void* kwlnGetMainCamera(void);
+#endif
 /* Retail addresses the controller state by absolute address. */
 #pragma alias gPads_abs gPads
 extern u8 gPads_abs[];
@@ -35,7 +238,7 @@ extern RwV3d D_00683D78;
 extern f32 D_007CE82C;
 extern f32 D_007CE834;
 extern f32 D_007CAF38;
-extern u32 D_007CE2B8;
+extern FieldRuntimeResourceNode* D_007CE2B8;
 
 extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ f32 DAT_007cb144;
 extern volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ f32 DAT_007caf24;
@@ -618,3 +821,8 @@ void* func_001e1840(void)
 {
     return &D_007CE2B8;
 }
+#define kwlnTaskCreateWithAutoPriority(parent, priority, name, update, destroy, work) \
+    ((RuntimeTask*)kwlnTaskCreateWithAutoPriority( \
+        (KwlnTask*)(parent), priority, name, \
+        (void* (*)(KwlnTask*))(update), (void (*)(KwlnTask*))(destroy), work))
+#define kwlnGetMainCamera() ((void*)kwlnGetMainCamera())

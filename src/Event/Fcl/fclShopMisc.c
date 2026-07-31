@@ -17485,6 +17485,7 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 
 // FUN_0040A7F0 NONMATCHING
 
+#define FUN_0040e3f0 FUN_0040e3f0_f32
 
 void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
@@ -17878,6 +17879,7 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   return;
 
 }
+#undef FUN_0040e3f0
 
 // FUN_0040B3A0
 
