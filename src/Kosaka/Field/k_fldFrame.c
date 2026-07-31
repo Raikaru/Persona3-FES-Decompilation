@@ -2178,6 +2178,16 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
     query.center.z = pos->z + translation->z;
     query.radius = sphereCollisRadius;
     query.type = 3;
+    /*
+     * The engine consumes the copied 16-byte center/radius block at +0x20.
+     * Retail uses the EE's quadword load/store pair for this aggregate copy.
+     */
+    __asm__ volatile (
+        "lq $v0, 0xbb0($sp)\n"
+        "sq $v0, 0xbc0($sp)\n"
+        :
+        :
+        : "$v0", "memory");
     for (i = 0; i < 64; i++)
     {
         memset(&collector.points[i], 0, sizeof(RwV3d));
@@ -2187,7 +2197,7 @@ s32 func_001ab390(void* collision, const RwV3d* pos,
     collector.count = 0;
     if (collision == NULL)
     {
-        return result;
+        return 0;
     }
 
     func_00464020(collision, (u8*)&query + 0x20, func_001aaf30, &collector);

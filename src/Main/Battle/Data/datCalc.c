@@ -1261,7 +1261,6 @@ void FUN_00301540(int param_1,u32 param_2)
   s32 uVar2;
   u16 iVar1;
   
-  iVar1 = 0;
   uVar2 = param_2 & 0xff;
   if (!(uVar2 < 0x15)) {
     FUN_0019d3f0((u32)D_0069aa80, 0x499);
@@ -6525,7 +6524,7 @@ int FUN_0030c0c0(void)
 {
   s32 outer;
   u16 currentValue;
-  u16 current;
+  s16 current;
   u16 inner;
   u16 raw;
   s32 target;
