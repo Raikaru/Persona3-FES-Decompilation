@@ -8530,7 +8530,7 @@ u32 func_0031be80(u32 param_1)
   short *psVar10;
   int sVar3;
   u16 asStack_20[12];
-  int iStack_8;
+  u32 iStack_8;
   int iStack_4;
 
   iStack_8 = 0;

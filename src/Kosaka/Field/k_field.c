@@ -1011,7 +1011,7 @@ otherTest:
     {
         rootTask = sField.rootTask;
         printf(D_0067F5E0);
-        ((u8*)rootTask->workData)[8] = 1;
+        ROOT_U32(rootTask->workData, 8) = 1;
     }
     func_001cd8e0();
     H_Snd_StopBgmFade(10);

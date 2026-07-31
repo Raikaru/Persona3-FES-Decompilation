@@ -884,7 +884,6 @@ void func_0021dd60(void* destination, const u8* colors)
     BP_TEX_F32(destination, 0xec) = converted;
 }
 
-#pragma optimization_level 1
 // FUN_0021e170 NONMATCHING
 void func_0021e170(void* destination,
                    const f32* center,
