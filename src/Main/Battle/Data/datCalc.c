@@ -6498,13 +6498,13 @@ short FUN_0030bde0_narrow(u16 *param_1,s32 *param_2)
 // FUN_0030c0c0 NONMATCHING
 int FUN_0030c0c0(void)
 {
-  u32 outer;
+  s32 outer;
   u16 currentValue;
   u16 inner;
   u16 raw;
   s32 target;
-  u16 current;
   u16 count;
+  u16 current;
   u32 offset;
   u8* entry;
   u8* member;
@@ -6517,9 +6517,7 @@ int FUN_0030c0c0(void)
   outer = 0;
   current = (u16)currentValue;
   for (; outer < 0x20; outer = (outer + 1) & 0xffff) {
-    entry = (u8*)DAT_007ce3fc;
-    offset = outer * 6;
-    entry += offset;
+    entry = (u8*)DAT_007ce3fc + outer * 6;
     if (current == *(u16 *)(entry + 2)) {
       raw = *(u16 *)(entry + 4);
     }

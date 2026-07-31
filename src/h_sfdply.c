@@ -1267,6 +1267,7 @@ HSfdAsyncEntry* func_0010c1a0(s32 kind, const char* name, const char* path,
                                s32 byteCount, const char* cacheName,
                                void* result2, void* result3, void* result4)
 {
+    HSfdPoolEntry* pool;
     HSfdAsyncEntry** link;
     HSfdAsyncEntry* entry;
     s16 index;
@@ -1280,12 +1281,13 @@ link_check:
         goto link_next;
     }
     index = 0;
+    pool = (HSfdPoolEntry*)sSfdEntries;
     goto pool_check;
 pool_body:
-    if (((HSfdPoolEntry*)sSfdEntries)[index].state == 0)
+    if (pool[index].state == 0)
     {
-        ((HSfdPoolEntry*)sSfdEntries)[index].state = 1;
-        entry = (HSfdAsyncEntry*)((HSfdPoolEntry*)sSfdEntries)[index].entry;
+        pool[index].state = 1;
+        entry = (HSfdAsyncEntry*)pool[index].entry;
         memset(entry, 0, 0x1d8);
         goto entry_found;
     }
@@ -2061,19 +2063,17 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
     u8* dst;
     s32 width;
     s32 height;
-    u32 opaque;
 
     dst = image->pixels;
     width = image->width;
     height = image->height;
     y = 0;
-    opaque = 0xFF;
     while (y < height)
     {
         x = 0;
         while (x < width)
         {
-            pixel = dst + (x * 4);
+            u8* pixel = dst + (x * 4);
             pixel[0] = source[0];
             pixel[1] = source[1];
             pixel[2] = source[2];
@@ -2085,9 +2085,6 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
         y++;
     }
 }
-
-
-// FUN_0010DE40 NONMATCHING
 void func_0010de40(HSfdImage* image, const u8* source)
 {
     u8* dst;

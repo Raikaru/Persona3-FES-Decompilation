@@ -20,6 +20,7 @@ extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce3ec;
 extern u32 D_00684F00[];
 extern u8 gp0xffff972c;
+extern u8* gp0xffffb708;
 
 static u8* panelWork(void)
 {
@@ -1266,7 +1267,7 @@ static PanelSkillRow* panelSkillRow(u32 index)
     return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x2d0);
 }
 
-// FUN_00202010 NONMATCHING
+// FUN_00202010
 void FUN_00202010(void)
 {
     u8* p;
@@ -1407,14 +1408,13 @@ void FUN_00202010(void)
         }
         *(u32*)(row + 4) = *(u32*)(p + i * 4 + 0x78);
         skill = (u16*)(p + i * 8 + 0x2c);
-        switch (((u8*)((uintptr_t)DAT_007ce3f8 + *skill * 0x2c))[3])
+        switch (((u8*)((uintptr_t)gp0xffffb708 + *skill * 0x2c))[3])
         {
-        case 2:
         case 1:
-            *(u32*)(row + 8) = 1;
-            break;
-        default:
             *(u32*)(row + 8) = 0;
+            break;
+        case 2:
+            *(u32*)(row + 8) = 1;
             break;
         }
         *(u32*)(row + 0xc) =
@@ -2321,8 +2321,9 @@ void FUN_00204000(void)
     }
 }
 
-#pragma opt_loop_invariants on
 
+/* Removing this loses FUN_00204480 (MATCH nd0 -> MISMATCH nd341) - measured W308. */
+#pragma opt_loop_invariants on
 // FUN_00204480
 void FUN_00204480(void)
 {
@@ -3189,6 +3190,7 @@ void FUN_00206310(void)
     *(u32*)work &= ~0x1000u;
 }
 
+/* Removing this loses FUN_002063F0 (MATCH nd0 -> MISMATCH nd128) - measured W308. */
 #pragma opt_loop_invariants on
 // FUN_002063F0
 void FUN_002063F0(void)
@@ -3255,6 +3257,7 @@ void FUN_002063F0(void)
 }
 #pragma opt_loop_invariants off
 
+/* Removing this loses FUN_002065A0 (MATCH nd0 -> MISMATCH nd159) - measured W308. */
 #pragma opt_loop_invariants on
 // FUN_002065A0
 void FUN_002065A0(void)
