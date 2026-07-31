@@ -1324,7 +1324,6 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   u32 *puVar1;
 
-  u32 uVar2;
 
   u32 uVar3;
 
@@ -1334,8 +1333,6 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   int iVar6;
 
-  u32 *pfVar7;
-  u32 *pfVar8;
 
   u32 *puVar9;
 
@@ -1348,6 +1345,10 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   puVar1 = *(u32 **)(param_2 + 0xc);
 
+  {
+    u32 uVar2;
+    u32 *pfVar7;
+    u32 *pfVar8;
   pfVar8 = (u32 *)&DAT_006b0020;
   pfVar7 = (u32 *)afStack_30;
 
@@ -1368,6 +1369,7 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
     pfVar7 = pfVar7 + 2;
 
   } while (0 < iVar6);
+  }
 
   if (param_3 != 0) {
 
@@ -1637,7 +1639,7 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
   sVar4 = (short)puVar1[0x19];
 
-  if (((sVar4 != 2) && (sVar4 != 1)) && (sVar4 == 0)) {
+  if (sVar4 == 0) {
 
     iVar6 = 0;
 
@@ -1681,9 +1683,9 @@ u32 FUN_00411790(u64 param_1,int param_2,int param_3)
 
             *(short *)((int)puVar9 + 0x12) = sVar5;
 
-            sVar4 = *(short *)((int)puVar9 + 0xe);
 
             fVar11 = (float)sinf_fclShop((fGpffff8110 * (float)(int)sVar5) / 14.0f);
+            sVar4 = *(short *)((int)puVar9 + 0xe);
 
             *(short *)(puVar9 + 3) =
 

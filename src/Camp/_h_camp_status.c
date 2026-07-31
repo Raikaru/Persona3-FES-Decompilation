@@ -6,12 +6,8 @@
 #include "Main/Game/game_support.h"
 #include "libm.h"
 #include "rw/rwplcore.h"
-extern void func_0018bc10(void* transition, s32 drawMode,
-                          s32 positionMode, s32 alphaMode,
-                          u64 start, u64 end, s32 param0, s32 tile,
-                          f32 depth, s32 startFrame, s32 endFrame);
 #define campStatusDrawTransitionCall(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame) \
-    func_0018bc10(transition, drawMode, positionMode, alphaMode, start, end, param0, tile, depth, startFrame, endFrame)
+    func_0018bc10(depth, transition, drawMode, positionMode, alphaMode, start, end, param0, tile, startFrame, endFrame)
 
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask*);
 void* FUN_001311d0(KwlnTask*);

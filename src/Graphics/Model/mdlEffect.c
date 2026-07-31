@@ -6975,7 +6975,6 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
 // b210 floor: the remaining rows are three VU-asm operand-address setup order/color groups
 // at +0x14..+0x1c, +0x4c..+0x50, and +0x60..+0x64; all ordinary C and calls now agree.
-#pragma opt_lifetimes on
 // FUN_00325D60 NONMATCHING
 #pragma alias FUN_00325d60_u32 FUN_00325d60
 void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
@@ -7028,7 +7027,6 @@ void FUN_00325d60_u32(u8 (*param_1) [16],u8 (*param_2) [16])
 }
 
 
-#pragma opt_lifetimes reset
 // FUN_00325E40 NONMATCHING
 
 
@@ -7317,6 +7315,7 @@ int FUN_00326240(int param_1,int param_2)
 
 
 
+#pragma opt_common_subs off
 // FUN_00326280 NONMATCHING
 
 
@@ -7426,6 +7425,7 @@ void FUN_00326280(int param_1,u32 param_2,u8 (*param_3) [16])
 
 
 
+#pragma opt_common_subs reset
 // FUN_003263B0 NONMATCHING
 void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 

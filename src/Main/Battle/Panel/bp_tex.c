@@ -2116,13 +2116,17 @@ void bpTexCollectLeafPos(void* node, void* values, s32* count)
 // FUN_00256FA0
 void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
 {
+    struct BpTexCollectScratch
+    {
+        u32* stack[8];
+        u32* nested[8];
+        u32* leaves[6];
+        s32 stackCount;
+        s32 nestedCount;
+    } scratch;
     u32* node;
-    u32* leaves[6];
-    u32* nested[8];
-    u32* stack[8];
-    s32 stackCount;
-    s32 nestedCount;
     s32 leafCount;
+    s32 last;
     s32 i;
     s32 initialCount;
 
@@ -2134,30 +2138,44 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
         return;
     }
 
-    func_00259190(node, stack, &stackCount);
-    initialCount = stackCount;
+    func_00259190(node, scratch.stack, &scratch.stackCount);
+    initialCount = scratch.stackCount;
     leafCount = 0;
-    while (stackCount > 0)
+    while (scratch.stackCount != 0)
     {
         u32* child;
-        child = stack[--stackCount];
+        child = scratch.stack[--scratch.stackCount];
         if ((~*child & 8) != 0)
         {
-            leaves[leafCount++] = child;
+            scratch.leaves[leafCount++] = child;
         }
         else
         {
-            s32 nestedCount;
-            func_00259190(child, nested, &nestedCount);
-            stack[stackCount++] = nested[0];
+            u32* nestedChild;
+            s32 stackIndex;
+            func_00259190(child, scratch.nested, &scratch.nestedCount);
+            nestedChild = scratch.nested[0];
+            stackIndex = scratch.stackCount;
+            scratch.stack[stackIndex] = nestedChild;
+            scratch.stackCount = stackIndex + 1;
         }
     }
     K_ASSERT(initialCount == leafCount, 0x702);
-    for (i = 0; i < leafCount; i++)
+    last = leafCount - 1;
+    i = 0;
+    while (i < leafCount)
     {
-        ((u32*)values)[i] = (u32)leaves[leafCount - 1 - i];
+        ((u32*)values)[i] = (u32)scratch.leaves[last - i];
+        i++;
     }
-    *count = ((*node & 0x10) == 0) ? 1 : leafCount;
+    if ((*node & 0x10) != 0)
+    {
+        *count = leafCount;
+    }
+    else
+    {
+        *count = 1;
+    }
 }
 
 /*

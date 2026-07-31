@@ -361,7 +361,6 @@ float FUN_0052ea60(float param_1)
 }
 #pragma tailcall off
 #pragma optimization_level 2
-#pragma opt_common_subs off
 // FUN_0052EA78 NONMATCHING
 u64 FUN_0052ea78(long param_1, long param_2)
 {
@@ -369,7 +368,6 @@ u64 FUN_0052ea78(long param_1, long param_2)
 }
 #pragma optimization_level 2
 #pragma optimization_level 3
-#pragma opt_common_subs reset
 // FUN_0052EAC8 NONMATCHING
 u64 FUN_0052eac8(u64 param_1)
 {
@@ -446,6 +444,7 @@ long FUN_0052ec28(u64 param_1)
   return lVar4;
 }
 #pragma optimization_level 2
+#pragma opt_loop_invariants on
 // FUN_0052ED30 NONMATCHING
 long FUN_0052ed30(u64 param_1)
 {
@@ -466,6 +465,7 @@ long FUN_0052ed30(u64 param_1)
     lVar1 = FUN_0052ec28(uVar2);
     return -lVar1;
 }
+#pragma opt_loop_invariants reset
 // FUN_0052EDA0 NONMATCHING
 #pragma optimization_level 3
 long FUN_0052eda0(void)

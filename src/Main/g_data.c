@@ -11,8 +11,6 @@
 extern u8* FUN_00172c50(s16* outValue);
 extern s32 FUN_00172660(s32 socialLink);
 extern void FUN_00172a20(u32 value);
-#pragma alias DAT_00836200_ptr DAT_00836200
-extern u8 DAT_00836200_ptr[];
 extern u8 D_008364BC[];
 extern s32 D_008364F4[];
 extern s32 D_008365F4[];
@@ -84,7 +82,9 @@ extern u32 gSpecialStatusMessage;
 extern u8 DAT_00833bb0[];
 extern u8 DAT_00833bd0[];
 extern u8 DAT_00833bf0[];
-extern u32 DAT_00836200;
+extern u8 DAT_00836200[];
+#pragma alias DAT_00836200_u32 DAT_00836200
+extern u32 DAT_00836200_u32;
 extern u8 DAT_00836212[];
 extern u8* PTR_s_Aigis_005e35ec;
 extern u8* PTR_s_Aigis_005e379c;
@@ -3862,7 +3862,7 @@ s32 datGetSocialLinksForToday(s32* outSocialLinks)
     u32 month = clndGetCurrentMonth();
     u32 day = clndGetCurrentDay();
     s32 socialLink = 0;
-    s8* data = (s8*)DAT_00836200_ptr;
+    s8* data = (s8*)DAT_00836200;
 
     for (; socialLink < SOCIAL_LINK_COUNT; socialLink++)
     {
@@ -4159,7 +4159,7 @@ void func_001774e0(void)
 
   FUN_00521250(DAT_00833bd0, DAT_00836212, 0x12);
 
-  FUN_00523ac8(DAT_00833bf0, &DAT_00836200, DAT_00833bd0, DAT_00833bb0);
+  FUN_00523ac8(DAT_00833bf0, &DAT_00836200_u32, DAT_00833bd0, DAT_00833bb0);
 
   return;
 

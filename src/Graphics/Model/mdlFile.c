@@ -4398,6 +4398,7 @@ u8 * FUN_0031fd00(float firstTime, int *track)
 
 
 
+/* opt_common_subs off: FUN_0031fde0 380B with pragma vs 368B without; neighboring FUN_0031ff40 requires this layout. */
 #pragma opt_common_subs off
 // FUN_0031FDE0 NONMATCHING
 
@@ -4440,8 +4441,8 @@ void FUN_0031fde0(float param_1,u8 *param_2)
 void FUN_0031ff40(float *param_1,u8 *param_2)
 {
   u8 *puVar1;
-
   puVar1 = param_2 + 4;
+
   puVar1[0] = (u8)(param_1[1] * 255.0f);
   puVar1[1] = (u8)(param_1[2] * 255.0f);
   puVar1[2] = (u8)(param_1[3] * 255.0f);
