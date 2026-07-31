@@ -35,7 +35,7 @@ u32 uGpffff8208;
 u32 uGpffffad1c;
 #pragma alias fGpffffad1c uGpffffad1c
 extern float fGpffffad1c;
-char DAT_007cda50[];
+u32 DAT_007cda50;
 
 #pragma alias sinf_fclShop sinf
 extern f32 sinf_fclShop(f32);
@@ -5497,9 +5497,9 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   u8 auStack_10 [8];
 
-  short sStack_8;
+  int sStack_8;
 
-  short sStack_6;
+  int sStack_6;
 
   int sStack_4;
 
@@ -5542,7 +5542,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   else {
 
-    sprintf((char *)auStack_10,DAT_007cda50,*(u16 *)(iVar1 + 0x60));
+    sprintf((char *)auStack_10,(const char *)&DAT_007cda50,*(u16 *)(iVar1 + 0x60));
 
     FUN_0040eb50(0,param_3 + 0x17d + (int)sStack_8,param_4 + 0xb3 + (int)sStack_6,param_6,1,
 
@@ -5552,7 +5552,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0xb3, param_6 & 0xff, 0xb6, 0);
 
-  sprintf((char *)auStack_10,DAT_007cda50,*(u16 *)(iVar1 + 0xb0));
+  sprintf((char *)auStack_10,(const char *)&DAT_007cda50,*(u16 *)(iVar1 + 0xb0));
 
   iVar2 = param_3 + 0x17d + (int)sStack_4;
 
@@ -5571,7 +5571,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   else {
 
-      sprintf((char *)auStack_10,DAT_007cda50,*(u16 *)(iVar1 + 0x62));
+      sprintf((char *)auStack_10,(const char *)&DAT_007cda50,*(u16 *)(iVar1 + 0x62));
 
     FUN_0040eb50(0,param_3 + 0x17d + (int)sStack_8,param_4 + 0xcf + (int)sStack_6,param_6,1,
 
@@ -5581,7 +5581,7 @@ void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5,
 
   FUN_0040e3c0((float)param_5, param_3 + 0x17d, param_4 + 0xcf, param_6 & 0xff, 0xb6, 0);
 
-  sprintf((char *)auStack_10,DAT_007cda50,*(u16 *)(iVar1 + 0xb2));
+  sprintf((char *)auStack_10,(const char *)&DAT_007cda50,*(u16 *)(iVar1 + 0xb2));
 
   FUN_0040eb50(0,iVar2,param_4 + 0xcf + iVar3,param_6,1,auStack_10,2);
 

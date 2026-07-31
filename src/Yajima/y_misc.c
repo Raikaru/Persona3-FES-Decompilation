@@ -359,15 +359,15 @@ u8 *PTR_DAT_007cd540;
 #include "sce/eeregs.h"
 
 // FUN_004241d0
+u32 Y_Misc_GetT0Count()
+{
+    return DGET_T0_COUNT();
+}
 #ifndef RWPLCORE_H
 typedef struct RwV2d { f32 x; f32 y; } RwV2d;
 typedef struct RwV3d { f32 x; f32 y; f32 z; } RwV3d;
 typedef struct RwV4dTag { f32 x; f32 y; f32 z; f32 w; } RwV4d;
 #endif
-u32 Y_Misc_GetT0Count()
-{
-    return DGET_T0_COUNT();
-}
 
 // HARVESTED 3D-42FF
 
@@ -1413,11 +1413,11 @@ u32 FUN_00425690(int param_1)
 
   uVar9 = K_Scene_GetFldAmbLightColor();
 
-  FUN_004944b0(uVar8,uVar9);
+  FUN_004944b0(uVar8,(u32 *)uVar9);
 
   uVar8 = kwlnGetDirectionalLight();
 
-  FUN_004944b0(uVar8,iVar4 + 0x110);
+  FUN_004944b0(uVar8,(u32 *)(iVar4 + 0x110));
 
   iVar5 = kwlnGetDirectionalLight();
 
@@ -1531,11 +1531,11 @@ LAB_00425aec:
 
   uVar8 = kwlnGetAmbientLight();
 
-  FUN_004944b0(uVar8,&ambientColor);
+  FUN_004944b0(uVar8,(u32 *)&ambientColor);
 
   uVar8 = kwlnGetDirectionalLight();
 
-  FUN_004944b0(uVar8,&directionalColor);
+  FUN_004944b0(uVar8,(u32 *)&directionalColor);
 
   iVar4 = kwlnGetDirectionalLight();
 
@@ -2040,11 +2040,11 @@ u64 FUN_004260a0(int param_1)
 
   uVar9 = K_Scene_GetFldAmbLightColor();
 
-  FUN_004944b0(uVar8,uVar9);
+  FUN_004944b0(uVar8,(u32 *)uVar9);
 
   uVar8 = kwlnGetDirectionalLight();
 
-  FUN_004944b0(uVar8,iVar6 + 0x110);
+  FUN_004944b0(uVar8,(u32 *)(iVar6 + 0x110));
 
   iVar7 = kwlnGetDirectionalLight();
 
@@ -2130,11 +2130,11 @@ u64 FUN_004260a0(int param_1)
 
   uVar8 = kwlnGetAmbientLight();
 
-  FUN_004944b0(uVar8,&ambientColor);
+  FUN_004944b0(uVar8,(u32 *)&ambientColor);
 
   uVar8 = kwlnGetDirectionalLight();
 
-  FUN_004944b0(uVar8,&directionalColor);
+  FUN_004944b0(uVar8,(u32 *)&directionalColor);
 
   iVar6 = kwlnGetDirectionalLight();
 
