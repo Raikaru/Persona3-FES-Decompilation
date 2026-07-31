@@ -2081,6 +2081,7 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
         y++;
     }
 }
+// FUN_0010DE40 NONMATCHING
 void func_0010de40(HSfdImage* image, const u8* source)
 {
     u8* dst;

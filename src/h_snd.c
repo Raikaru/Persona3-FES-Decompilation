@@ -392,7 +392,7 @@ void func_00108bc0(void)
     }
 
     {
-        s16 i;
+        s32 i;
         HsndChannel* channel;
         void** handle;
         s32 status;
