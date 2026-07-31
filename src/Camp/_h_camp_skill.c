@@ -120,7 +120,11 @@ extern void* DAT_00833B70;
 #pragma alias DAT_00833B70_abs DAT_00833B70
 extern u8 DAT_00833B70_abs[];
 extern void* DAT_00833B94;
+#pragma alias DAT_00833B94_abs DAT_00833B94
+extern u8 DAT_00833B94_abs[];
 extern void* DAT_00833BA0;
+#pragma alias DAT_00833BA0_abs DAT_00833BA0
+extern u8 DAT_00833BA0_abs[];
 extern void* DAT_00833B9C;
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;
@@ -231,6 +235,8 @@ typedef void (*CampSkillValueCall)(f32 depth, s32 x, s32 y, s32 color,
 
 #pragma alias campSkillDrawSpriteDirect FUN_001159f0
 extern void campSkillDrawSpriteDirect(f32 x, f32 y, f32 depth);
+#pragma alias datGetEquipmentId_int datGetEquipmentId
+extern int datGetEquipmentId_int(s16 pcId, s32 equipmentIdx);
 #pragma alias FUN_001159f0_typed FUN_001159f0
 extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 f32 x, f32 y, f32 depth);
@@ -417,28 +423,276 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
                         record->y);
 }
 
-/* Removing this worsens FUN_00161d90 (nd3376 -> nd3786) - measured W161. */
 // FUN_00161D90 NONMATCHING
-#pragma schedule on
 void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
 {
-    CampSkillRecord* record;
     /* Retail draw calls read an inherited, uninitialized owner register. */
+    CampSkillRecord* record;
     void* owner;
     s16 equipment;
-    u16 id;
-    u8 effect;
     s32 style;
     s32 value;
     s32 valueA;
     s32 valueB;
     void* atlas;
     void* glyphs;
-    char text[0x120];
+    char text[0x100];
     CampSkillVec2 position;
+    f32 fx;
+    f32 fy;
 
     record = (CampSkillRecord*)recordData;
     switch (index) {
+    case 2:
+    {
+        /* -- category 0 -- */
+        s16 id;
+        s32 effect;
+        equipment = datGetEquipmentIdx(work->pcId, 0);
+        valueA = (s32)func_0016f9f0(work->pcId, equipment);
+        equipment = datGetEquipmentIdx(work->pcId, 0);
+        valueB = (s32)func_0016fae0(work->pcId, equipment);
+        fx = record->x - 15.0f;
+        fy = record->y + 4.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x24, record->alpha, fx, fy, record->depth);
+        if (work->category == 0 && work->commandFlags == 0)
+        {
+            fx = record->x - 15.0f;
+        fy = record->y - 3.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 0);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               10, 1, text, 0x10, 0x76);
+
+            fx = record->x + 247.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x26, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 284.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueA, 3);
+            fx = record->x + 348.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x27, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 385.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueB, 3);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 0);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            fx = record->x;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0x76);
+
+            fx = record->x + 247.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x20, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 284.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueA, 3);
+            fx = record->x + 348.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x21, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 385.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueB, 3);
+        }
+        break;
+    }
+    case 3:
+    {
+        /* -- category 1 -- */
+        s16 id;
+        s32 effect;
+        equipment = datGetEquipmentIdx(work->pcId, 1);
+        valueA = (s32)func_0016fbd0(work->pcId, equipment);
+        fx = record->x - 15.0f;
+        fy = record->y + 4.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x24, record->alpha, fx, fy, record->depth);
+        if (work->category == 1 && work->commandFlags == 0)
+        {
+            fx = record->x - 15.0f;
+        fy = record->y - 3.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 1);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               10, 1, text, 0x10, 0x76);
+
+            fx = record->x + 247.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x28, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 284.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueA, 3);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 1);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            fx = record->x;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0x76);
+
+            fx = record->x + 247.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x22, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 284.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueA, 3);
+        }
+        break;
+    }
+    case 4:
+    {
+        /* -- category 2 -- */
+        s16 id;
+        s32 effect;
+        equipment = datGetEquipmentIdx(work->pcId, 2);
+        valueA = (s32)func_0016fcc0(work->pcId, equipment);
+        fx = record->x - 15.0f;
+        fy = record->y + 4.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x24, record->alpha, fx, fy, record->depth);
+        if (work->category == 2 && work->commandFlags == 0)
+        {
+            fx = record->x - 15.0f;
+        fy = record->y - 3.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 2);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               10, 1, text, 0x10, 0x76);
+
+            fx = record->x + 247.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x29, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 284.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueA, 3);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 2);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            fx = record->x;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0x76);
+
+            fx = record->x + 247.0f;
+        fy = record->y + 7.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x23, record->alpha, fx, fy, record->depth);
+            position.x = record->x + 284.0f;
+            position.y = record->y + 14.0f;
+            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
+                         (s32)record->depth, 0xff, 0xff, 0xff,
+                         (s32)record->alpha, valueA, 3);
+        }
+        break;
+    }
+    case 5:
+    {
+        /* -- category 3 -- */
+        s16 id;
+        s32 effect;
+        fx = record->x - 15.0f;
+        fy = record->y + 4.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x24, record->alpha, fx, fy, record->depth);
+        if (work->category == 3 && work->commandFlags == 0)
+        {
+            fx = record->x - 15.0f;
+        fy = record->y - 3.0f;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B94_abs, 0x2a, record->alpha, fx, fy, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 3);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(owner, *(void**)DAT_00833B70_abs, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               10, 1, text, 0x10, 0x76);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 3);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            fx = record->x;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha, fx, fy, record->depth);
+            id = datGetEquipmentId_int(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, (s16)effect);
+            sprintf(text, "%d", value);
+            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
+                               (s32)(record->y + 11.0f),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0x76);
+        }
+        break;
+    }
     case 0:
     {
         s32 color;
@@ -453,230 +707,40 @@ void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
         }
         break;
     }
-    case 1:
-        break;
-    case 2:
-    {
-        /* -- category 0 -- */
-        equipment = datGetEquipmentIdx(work->pcId, 0);
-        valueA = (s32)func_0016f9f0(work->pcId, equipment);
-        equipment = datGetEquipmentIdx(work->pcId, 0);
-        valueB = (s32)func_0016fae0(work->pcId, equipment);
-        FUN_001159f0_typed(owner, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
-        if (work->category == 0 && work->commandFlags == 0)
-        {
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
-            equipment = datGetEquipmentIdx(work->pcId, 0);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               10, 1, text + 0x20, 0x10, 0x76);
-
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x26, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 284.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueA, 3);
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x27, record->alpha, record->x + 348.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 385.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueB, 3);
-        }
-        else
-        {
-            equipment = datGetEquipmentIdx(work->pcId, 0);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_001159f0_typed(owner, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text + 0x20, 0x10, 0x76);
-
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x20, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 284.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueA, 3);
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x21, record->alpha, record->x + 348.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 385.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueB, 3);
-        }
-        break;
-    }
-    case 3:
-    {
-        /* -- category 1 -- */
-        equipment = datGetEquipmentIdx(work->pcId, 1);
-        valueA = (s32)func_0016fbd0(work->pcId, equipment);
-        FUN_001159f0_typed(owner, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
-        if (work->category == 1 && work->commandFlags == 0)
-        {
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
-            equipment = datGetEquipmentIdx(work->pcId, 1);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               10, 1, text + 0x20, 0x10, 0x76);
-
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x28, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 284.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueA, 3);
-        }
-        else
-        {
-            equipment = datGetEquipmentIdx(work->pcId, 1);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_001159f0_typed(owner, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text + 0x20, 0x10, 0x76);
-
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x22, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 284.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueA, 3);
-        }
-        break;
-    }
-    case 4:
-    {
-        /* -- category 2 -- */
-        equipment = datGetEquipmentIdx(work->pcId, 2);
-        valueA = (s32)func_0016fcc0(work->pcId, equipment);
-        FUN_001159f0_typed(owner, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
-        if (work->category == 2 && work->commandFlags == 0)
-        {
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
-            equipment = datGetEquipmentIdx(work->pcId, 2);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               10, 1, text + 0x20, 0x10, 0x76);
-
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x29, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 284.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(2), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueA, 3);
-        }
-        else
-        {
-            equipment = datGetEquipmentIdx(work->pcId, 2);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_001159f0_typed(owner, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text + 0x20, 0x10, 0x76);
-
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x23, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
-            position.x = record->x + 284.0f;
-            position.y = record->y + 14.0f;
-            FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                         (s32)record->depth, 0xff, 0xff, 0xff,
-                         (s32)record->alpha, valueA, 3);
-        }
-        break;
-    }
-    case 5:
-    {
-        /* -- category 3 -- */
-        FUN_001159f0_typed(owner, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
-        if (work->category == 3 && work->commandFlags == 0)
-        {
-            FUN_001159f0_typed(owner, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
-            equipment = datGetEquipmentIdx(work->pcId, 3);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_00115bc0_typed(owner, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               10, 1, text + 0x20, 0x10, 0x76);
-        }
-        else
-        {
-            equipment = datGetEquipmentIdx(work->pcId, 3);
-            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-            FUN_001159f0_typed(owner, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
-            id = datGetEquipmentId(work->pcId, equipment);
-            effect = func_0016f810(work->pcId, equipment);
-            value = (s32)func_00171110(id, effect);
-            sprintf(text + 0x20, "%d", value);
-            FUN_003b32d0_typed(record->depth, (s32)(record->x + 40.0f),
-                               (s32)(record->y + 11.0f),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text + 0x20, 0x10, 0x76);
-        }
-        break;
-    }
-    case 6:
-        break;
     case 7:
-        FUN_001159f0_typed(owner, work->resource0, 1, record->alpha, record->x, record->y, record->depth);
+        fx = record->x;
+        fy = record->y;
+        FUN_001159f0_typed(owner, work->resource0, 1, record->alpha, fx, fy, record->depth);
         break;
     case 8:
         if (work->commandFlags != 0) {
-            FUN_001159f0_typed(owner, DAT_00833BA0, 8, record->alpha, record->x + 182.0f, record->y, record->depth);
-            FUN_001159f0_typed(owner, DAT_00833BA0, 4, record->alpha, record->x + 342.0f, record->y, record->depth);
-            FUN_001159f0_typed(owner, DAT_00833BA0, 1, record->alpha, record->x + 561.0f, record->y, record->depth);
+            fx = record->x + 182.0f;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 8, record->alpha, fx, fy, record->depth);
+            fx = record->x + 342.0f;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 4, record->alpha, fx, fy, record->depth);
+            fx = record->x + 561.0f;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 1, record->alpha, fx, fy, record->depth);
         } else {
-            FUN_001159f0_typed(owner, DAT_00833BA0, 4, record->alpha, record->x + 232.0f, record->y, record->depth);
-            FUN_001159f0_typed(owner, DAT_00833BA0, 2, record->alpha, record->x + 451.0f, record->y, record->depth);
-            FUN_001159f0_typed(owner, DAT_00833BA0, 1, record->alpha, record->x + 561.0f, record->y, record->depth);
+            fx = record->x + 232.0f;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 4, record->alpha, fx, fy, record->depth);
+            fx = record->x + 451.0f;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 2, record->alpha, fx, fy, record->depth);
+            fx = record->x + 561.0f;
+        fy = record->y;
+        FUN_001159f0_typed(owner, *(void**)DAT_00833BA0_abs, 1, record->alpha, fx, fy, record->depth);
         }
+        break;
+    case 1:
+    case 6:
         break;
     }
 }
 
-#pragma schedule off
 static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 {
     return work->detailData + index * 0x24;
