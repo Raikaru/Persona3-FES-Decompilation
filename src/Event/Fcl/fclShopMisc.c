@@ -7011,7 +7011,6 @@ u64 FUN_003f9b20(u64 param_1,int param_2)
     case 3:
       lVar5 = sVar1;
       for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
-        uVar4 = datGetEquipmentId(1,iVar6);
         if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
         }
@@ -17421,9 +17420,8 @@ ret:
   return result;
 }
 
-// Confirmed pre-JAL setup-order floor: +72/+76/+80 and +104/+108/+112 contain
-// the same two callback addresses, but retail moves $a0 before materializing $a1.
-// FUN_0040A6D0 NONMATCHING
+// Typed callback values preserve retail's call setup order.
+// FUN_0040A6D0
 
 
 void FUN_0040a6d0(u32 param_1,int param_2)
@@ -17448,13 +17446,13 @@ void FUN_0040a6d0(u32 param_1,int param_2)
 
   if (param_2 == 1) {
 
-    FUN_003c7000(param_1,(int)FUN_0040a640,0);
+    FUN_003c7000(param_1,FUN_0040a640,0);
 
   }
 
   else {
 
-    FUN_003c7000(param_1,(int)FUN_0040a5b0,0);
+    FUN_003c7000(param_1,FUN_0040a5b0,0);
 
   }
 

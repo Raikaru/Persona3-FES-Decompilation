@@ -43,7 +43,13 @@ extern s16 DAT_006a2080[];
 extern u32 DAT_006a20a0;
 extern u32 DAT_006a20c0;
 extern u8 DAT_006a20e0[];
+#pragma alias DAT_006a20e0_abs DAT_006a20e0
+extern u8 DAT_006a20e0_abs[];
+ 
+ 
 extern u8 DAT_006a20f0[];
+#pragma alias DAT_006a20f0_abs DAT_006a20f0
+extern u8 DAT_006a20f0_abs[];
 extern u8 DAT_006a1ee0[];
 extern u8 DAT_006a1ef0[];
 #pragma alias DAT_006a1ee0_abs DAT_006a1ee0
@@ -2708,8 +2714,8 @@ void FUN_003ac230(void)
 void FUN_003ac240(int param_1,u64 param_2)
 {
   u32 *panel;
-  int lower;
   int upper;
+  int lower;
   u32 bounds[4];
 
   panel = *(u32 **)(param_1 + 8);
@@ -2719,20 +2725,20 @@ void FUN_003ac240(int param_1,u64 param_2)
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = upper;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4e90(bounds,DAT_006a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
+  FUN_003b4e90(bounds,DAT_006a20e0_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),
                *panel,0,param_2);
 
   bounds[0] = upper;
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = lower;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4ea0(bounds,DAT_006a20f0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
+  FUN_003b4ea0(bounds,DAT_006a20f0_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
 
   bounds[0] = *(u32 *)(param_1 + 0x18);
   bounds[1] = *(u32 *)(param_1 + 0x14);
   bounds[2] = lower;
   bounds[3] = *(u32 *)(param_1 + 0x1c);
-  FUN_003b4ea0(bounds,DAT_006a20e0,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
+  FUN_003b4ea0(bounds,DAT_006a20e0_abs,param_1 + 0x2c,*(u32 *)(param_1 + 0xc),0,param_2);
 }
 #define FUN_003ac240(...) ((void (*)(...))FUN_003ac240)(__VA_ARGS__)
 #undef FUN_003ac350
@@ -4489,33 +4495,22 @@ u32 FUN_003ae160(u64 param_1,int param_2)
 {
 
   u8 bVar1;
-
   u8 bVar2;
-
   u8 cVar3;
-
   int iVar4;
   int iVar8;
-
-
   int counter;
   u32 uVar6;
-
   u32 uVar5;
-
   int firstIndex;
   int secondIndex;
   u32 firstLow;
   u32 secondLow;
   int first2;
   int second2;
-
-
   u8 *pbVar7;
   int *piVar10;
-
   int *piVar9;
-
   int aiStack_20 [8];
 
   

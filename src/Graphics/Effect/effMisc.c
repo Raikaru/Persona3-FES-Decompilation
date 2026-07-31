@@ -290,7 +290,6 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     x = normalizedAxis.x;
     y = normalizedAxis.y;
     z = normalizedAxis.z;
-
     matrix_p->right.x = x * x + (1.0f - x * x) * cosine;
     matrix_p->right.y = z * sine + x * y * (1.0f - cosine);
     matrix_p->right.z = x * z * (1.0f - cosine) - y * sine;
@@ -421,13 +420,15 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
     u32 savedRenderStates[6];
     f32 zBufferNear;
     f32 recipZ;
+    u32* savedRenderState;
 
     if (saveAndRestoreRenderState)
     {
         for (i = 0; i < 6; i++)
         {
             renderState = &sEffRenderStates[i];
-            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, &savedRenderStates[i]);
+            savedRenderState = savedRenderStates;
+            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, savedRenderState + i);
             (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)renderState->value);
         }
 
@@ -482,7 +483,8 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (j = 0; j < 6; j++)
         {
             renderState = &sEffRenderStates[j];
-            (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)savedRenderStates[j]);
+            savedRenderState = &savedRenderStates[j];
+            (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)*savedRenderState);
         }
     }
 }

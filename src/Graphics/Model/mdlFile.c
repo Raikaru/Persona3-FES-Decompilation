@@ -7553,7 +7553,6 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
 
   u32 uVar4;
-
   u8 *model;
 
 
@@ -7587,7 +7586,6 @@ u32 FUN_003234f0(u16 param_1,u32 param_2)
 
   model = *(u8 **)(puVar1 + 8);
   *(u32 *)(*(int *)(model + (int)iGpffffba80) + 0xb4) = 1;
-
   if ((param_2 & 0x80000) != 0) {
     model = *(u8 **)(puVar1 + 8);
 
@@ -21401,6 +21399,7 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
   }
 
 
+
   switch(param_2) {
   case 1:
 
@@ -21444,7 +21443,6 @@ void FUN_00332470(u32 *param_1,u16 param_2,int *param_3)
     FUN_003271c0(param_1[0xb],(u32)param_3);
 
   }
-
   *(u16 *)(param_1[0xb] + 0xc) = param_2;
 
   return;
@@ -35288,9 +35286,7 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
 {
 
   u32 uVar6;
-
   int iVar1;
-
   u8 (*pauVar7) [16];
   u32 colourAddress;
 
@@ -35312,7 +35308,6 @@ u32 FUN_00341f10(u32 param_1,u32 param_2)
 
   colourAddress = (u32)DAT_0069c4a0_abs;
   *(Qword128 *)pauVar7[2] = *(Qword128 *)colourAddress;
-
   __asm__ volatile ("sqc2 vf0, 0(%0)" : : "r"(pauVar7) : "memory");
 
   __asm__ volatile ("sqc2 vf0, 16(%0)" : : "r"(pauVar7) : "memory");
@@ -38713,9 +38708,7 @@ u32 FUN_00345cf0(u32 param_1,u64 param_2)
 {
 
   u32 uVar6;
-
   int iVar1;
-
   u8 (*pauVar7) [16];
   u32 colourAddress;
 
@@ -48259,7 +48252,7 @@ void FUN_00351510(int param_1)
     widthF = (f32)(u32)(*(u16 *)(param_1 + 2));
     ratio = heightF / widthF;
     ratio = 1.0f - ratio;
-    ratio = 255.0f * ratio;
+    ratio = ratio * 255.0f;
     if (2147483648.0f > ratio) {
       alphaByte = (s32)ratio & 0xff;
     } else {

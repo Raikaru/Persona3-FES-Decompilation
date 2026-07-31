@@ -1486,10 +1486,14 @@ void func_001a8b10(u32* entries)
     KClumpMaterialNode* item;
     RwSphere* sphere;
 
-    qsort(entries + 1, entries[0], 0x2c, (int (*)(const void*, const void*))func_001a89c0);
+    {
+        s32 count = (s32)entries[0];
+        qsort(entries + 1, count, 0x2c,
+              (int (*)(const void*, const void*))func_001a89c0);
+    }
     for (i = (s32)entries[0] - 1; i >= 0; i--)
     {
-        item = &((KClumpMaterialNode*)(entries + 1))[i];
+        item = (KClumpMaterialNode*)((u8*)entries + 4 + i * 0x2c);
         sphere = func_004912b0(item->object);
         if (RwCameraFrustumTestSphere(
                 (RwCamera*)*(void**)D_007D2D60_abs, sphere) != rwSPHEREOUTSIDE)
@@ -1594,7 +1598,9 @@ s32 func_001a8db0(KwlnTask* task)
                 if (work[6] < work[2])
                 {
                     func_0034fd30((void*)work[5]);
-                    func_0034fd70((void*)work[5], (u16)work[7]);
+                    func_0034fd70(
+                        (void*)*(volatile u32*)&work[5],
+                        (u16)work[7]);
                     work[6]++;
                 }
                 else
@@ -1604,7 +1610,7 @@ s32 func_001a8db0(KwlnTask* task)
             }
             for (i = 0; i < 8; i++)
             {
-                if (work[9 + i] != 0)
+                if (*(u32*)((u8*)work + (9 + i) * 4) != 0)
                 {
                     if (work[0x11 + i] < work[2])
                     {
@@ -1856,7 +1862,6 @@ void func_001a9470(KwlnTask* task)
 
 /* Remaining code differences are two commutative address-add operand reversals. */
 #pragma push
-#pragma opt_propagation off
 // FUN_001a9500 NONMATCHING
 s32 func_001a9500(KwlnTask* task)
 {
@@ -1899,7 +1904,7 @@ s32 func_001a9500(KwlnTask* task)
             work->count--;
             for (i = 1; i < 8; i++)
             {
-                work->values[i - 1] = work->values[i];
+                *((u32*)work + 4 + i - 1) = *((u32*)work + 4 + i);
                 work->positions[i - 1] = work->positions[i];
                 work->sounds[i - 1] = work->sounds[i];
                 work->flags[i - 1] = work->flags[i];

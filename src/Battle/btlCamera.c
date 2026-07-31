@@ -4373,7 +4373,7 @@ void FUN_002b1e00(int param_1)
   return;
 }
 
-// FUN_002b2060 NONMATCHING
+// FUN_002b2060
 
 void FUN_002b2060(int param_1)
 {
@@ -4392,7 +4392,7 @@ void FUN_002b2060(int param_1)
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
       FUN_002b64d0((BtlCamera*)iVar4,
-                   (struct B64CameraWork*)(iVar4 + 0xec));
+                   (struct B64CameraWork*)((u8*)(uintptr_t)iVar4 + 0xec));
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);
     if (pVar != 0) {
