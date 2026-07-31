@@ -840,6 +840,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
 
 
 
+#pragma opt_lifetimes on
 // FUN_001ba3d0 NONMATCHING
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
@@ -896,6 +897,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     sField.rootTask = NULL;
     (*(void (**)(void*))jtbl_0096017C_abs)(fldRootTask->workData);
 }
+#pragma opt_lifetimes off
 
 // FUN_001ba5f0 NONMATCHING
 KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
@@ -968,12 +970,14 @@ KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId,
     return fldRootTask;
 }
 
+/* Removing this pragma leaves func_001ba8d0 at normalized_diff 132 (object 372B); with it, normalized_diff 0 (object 376B) — measured W310. */
 #pragma opt_loop_invariants on
-// FUN_001ba8d0 NONMATCHING
+// FUN_001ba8d0 MATCHING
 void func_001ba8d0(void)
 {
     Resrc* resource;
     Resrc* other;
+    void* workData;
     KwlnTask* rootTask;
     u32 otherFlags;
 
@@ -1010,8 +1014,9 @@ otherTest:
     else
     {
         rootTask = sField.rootTask;
+        workData = rootTask->workData;
         printf(D_0067F5E0);
-        ROOT_U32(rootTask->workData, 8) = 1;
+        ROOT_U32(workData, 8) = 1;
     }
     func_001cd8e0();
     H_Snd_StopBgmFade(10);

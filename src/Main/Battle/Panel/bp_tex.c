@@ -891,6 +891,8 @@ void func_0021e170(void* destination,
                    const f32* size)
 {
     f32 sourcePoints[4][2];
+    f32* point;
+    f32* nextPoint;
     f32 length;
     f32 angle;
     f32 sine;
@@ -917,8 +919,10 @@ void func_0021e170(void* destination,
     sourcePoints[3][1] = sourcePoints[2][1];
     for (i = 0; i < 4; i++)
     {
-        y = sourcePoints[i][1];
-        x = sourcePoints[i][0];
+        point = sourcePoints[i];
+        nextPoint = point + 1;
+        y = *nextPoint;
+        x = *point;
         sine = func_0052e878(angle);
         cosine = func_0052e6d8(angle);
         rotatedX = x * cosine - y * sine;
@@ -927,12 +931,15 @@ void func_0021e170(void* destination,
         sourcePoints[i][0] = rotatedX;
         sourcePoints[i][1] = x * sine + y * cosine;
     }
+    j = 0;
     cx = center[0];
     cy = center[1];
-    for (j = 0; j < 4; j++)
+    while (j < 4)
     {
-        sourcePoints[j][0] += cx;
-        sourcePoints[j][1] += cy;
+        point = sourcePoints[j];
+        point[0] += cx;
+        point[1] += cy;
+        j++;
     }
     BP_TEX_F32(destination, 0x00) = sourcePoints[0][0];
     BP_TEX_F32(destination, 0x04) = sourcePoints[0][1];
