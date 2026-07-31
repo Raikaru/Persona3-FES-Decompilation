@@ -1671,6 +1671,7 @@ void FUN_0017c960(const void* record)
 
 /* W357 measured opt_lifetimes on: without nd42/object796, with nd15/object796; window 800 (under). */
 #pragma opt_lifetimes on
+/* W389 classification: loop-index lifetime/register-colouring floor; six singles and all 15 knob pairs were neutral; final nd15/object796/800 with opt_lifetimes on. */
 // FUN_0017ca10 NONMATCHING
 s32 FUN_0017ca10(const void* record)
 {
