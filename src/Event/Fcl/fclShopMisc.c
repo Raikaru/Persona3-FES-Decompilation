@@ -259,8 +259,6 @@ u32 FUN_003f1830(short *param_1,int param_2);
 u32 FUN_003f1910(u64 param_1);
 u32 FUN_003f1a10(u32 param_1);
 void FUN_003f1ba0(int param_1,u32 param_2);
-#pragma alias FUN_003f1ba0_reordered FUN_003f1ba0
-extern void FUN_003f1ba0_reordered(u32 param_2,int param_1);
 u32 FUN_003f1dc0(long param_1,int param_2,int param_3);
 u8 FUN_003f2240(int param_1,long param_2);
 u64 FUN_003f2320(int param_1,int param_2);
@@ -10479,7 +10477,7 @@ u64 FUN_003fea10(u32 param_1,u32 *param_2)
 
       iVar2 = *(int *)(*(int *)((int)uVar4 + 0x14) + 0x1c);
 
-      FUN_003f1ba0_reordered(sVar1,iVar2 + 4);
+      FUN_003f1ba0(iVar2 + 4,sVar1);
 
 
       memcpy(iVar2 + 0x14,psVar6 + 3,0xe);

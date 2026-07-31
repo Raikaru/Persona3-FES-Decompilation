@@ -1073,12 +1073,12 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     switch (mode) {
     case 4:
         if ((work->flags & 0x10000) != 0) return;
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x1a, 0);
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x1b, 0);
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x1c, 0);
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x1d, 0);
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x1e, 0);
-        FUN_0040e3c0(0.0f, x, y, alpha, 0x1f, 0);
+        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1a, 0);
+        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1b, 0);
+        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1c, 0);
+        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1d, 0);
+        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1e, 0);
+        FUN_0040e3c0_i(x, y, 0.0f, alpha, 0x1f, 0);
         return;
 
     case 5:
@@ -2803,13 +2803,15 @@ int FUN_003dffc0(int *param_1,int param_2,s32 param_3)
 
   iVar1 = *param_1;
   iVar2 = *(int *)(iVar1 + 4);
-  do {
-    iVar3 = *(int *)(iVar2 + 0x14);
-    if (*(int *)(iVar3 + 0x10) == param_2) {
-      break;
-    }
-    iVar2 = *(int *)(iVar2 + 0x10);
-  } while (iVar2 != 0);
+  if (iVar2 != 0) {
+    do {
+      iVar3 = *(int *)(iVar2 + 0x14);
+      if (*(int *)(iVar3 + 0x10) == param_2) {
+        break;
+      }
+      iVar2 = *(int *)(iVar2 + 0x10);
+    } while (iVar2 != 0);
+  }
   if (iVar2 == 0) {
     iVar3 = 0;
   }

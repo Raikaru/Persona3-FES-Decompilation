@@ -222,9 +222,6 @@ def main():
                   f"({ncompiles[0]} compiles)", flush=True)
         if stale > 80:
             cur_fn, cur_score, stale = best_fn, best_score, 0
-    if args.out:
-        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.out).write_text(ast_util.to_c(best_fn) + "\n", newline="\n")
     print(f"[{args.function}] no match. best={best_score} after "
           f"{ncompiles[0]} compiles / {time.time()-t0:.0f}s", flush=True)
     sys.exit(1)

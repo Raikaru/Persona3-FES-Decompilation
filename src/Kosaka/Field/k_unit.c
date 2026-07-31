@@ -1548,13 +1548,13 @@ static inline f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
 // FUN_001d0720 NONMATCHING
 s32 func_001d0720(s32 targetCount)
 {
+    s32* ptr;
     s32 spawned;
     s32 major;
     u16* values;
     u16 gridId;
     u32 area;
     u8* entry;
-    s32* ptr;
 
     spawned = 0;
     if (datGetFlag(0x1415) == 1)
