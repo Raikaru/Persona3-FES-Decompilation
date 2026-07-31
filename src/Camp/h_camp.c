@@ -193,6 +193,8 @@ typedef struct CampUiRecord
 // Reconstructed the retail Camp task state machine and all screen transition paths.
 // Remaining differences are compiler control-flow/register scheduling and relocation layout;
 // the implementation covers states 0-20, task readiness, menu commands, and teardown.
+/* opt_dead_assignments off: default nd880/1684B -> off nd875/1696B; retained. */
+#pragma opt_dead_assignments off
 // FUN_0011a050 NONMATCHING
 void* h_campUpdateTask(KwlnTask* task)
 {
@@ -394,6 +396,7 @@ void* h_campUpdateTask(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_dead_assignments reset
 
 // FUN_0011a710
 void h_campDestroyTask(KwlnTask* task)
@@ -539,6 +542,8 @@ void h_campDestroySpriteSetupTask(KwlnTask* task)
 }
 #pragma pop
 
+/* opt_common_subs off: default nd659/1220B -> off nd488/1240B; retained. */
+#pragma opt_common_subs off
 // FUN_0011abd0 NONMATCHING
 u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* selectedEntry)
 {
@@ -672,6 +677,7 @@ u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* 
     }
     return changed;
 }
+#pragma opt_common_subs reset
 
 // FUN_0011b0b0
 void* h_campUpdatePersonaTextureControlTask(KwlnTask* task)
@@ -1016,6 +1022,8 @@ KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 men
 }
 // Reconstructed root UI rendering and data-driven date/currency draws.
 // Residual differences are compiler register allocation and switch layout.
+/* opt_common_subs off: default nd1699/2360B -> off nd1626/2424B; retained. */
+#pragma opt_common_subs off
 // FUN_0011bbb0 NONMATCHING
 void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
 {
@@ -1219,6 +1227,7 @@ weekday_done:
                       (0xff - color) & 0xff, 4, text, 9);
     }
 }
+#pragma opt_common_subs reset
 
 static void h_campDrawMenuEntryPass(CampRootDrawWork* work, f32 alpha, s32 mode)
 {
@@ -1308,6 +1317,8 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
                   alpha, 0xf, 0x15);
 }
 
+/* opt_propagation off: default nd645/1020B -> off nd634/1020B; retained. */
+#pragma opt_propagation off
 // FUN_0011c880 NONMATCHING
 void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
 {
@@ -1412,6 +1423,7 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
     }
     h_campDrawRootUi(work, alpha);
 }
+#pragma opt_propagation reset
 
 // FUN_0011cc80
 void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
@@ -1490,6 +1502,8 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
                   alpha, 0, 0xa);
 }
 
+/* opt_common_subs off: default nd528/1008B -> off nd451/1008B; retained. */
+#pragma opt_common_subs off
 // FUN_0011cfb0 NONMATCHING
 void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
 {
@@ -1586,6 +1600,7 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
     }
     h_campDrawRootUi(work, alpha);
 }
+#pragma opt_common_subs reset
 
 // FUN_0011d3a0
 void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
@@ -1663,6 +1678,8 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
                   alpha, 0, 0xa);
 }
 
+/* opt_dead_assignments off: default nd535/852B -> off nd534/852B; retained. */
+#pragma opt_dead_assignments off
 // FUN_0011d6d0 NONMATCHING
 void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
 {
@@ -1739,6 +1756,7 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
     }
     h_campDrawRootUi(work, alpha);
 }
+#pragma opt_dead_assignments reset
 
 // FUN_0011da80
 void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
@@ -5630,6 +5648,8 @@ done:;
 }
 
 #pragma opt_common_subs off
+/* opt_propagation off: default nd765/1040B -> off nd729/1040B; retained. */
+#pragma opt_propagation off
 // FUN_001236A0 NONMATCHING
 void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
@@ -5702,6 +5722,7 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
     campStatusDrawSpriteFadeCall(parent, font, val + 0xb,
                                  (u32)(u8)fade, dx, dy, alpha, 0x66);
 }
+#pragma opt_propagation reset
 #pragma opt_common_subs reset
 
 #pragma opt_common_subs off
@@ -5801,6 +5822,8 @@ void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                (u8)bright, alpha);
 }
 
+/* opt_dead_assignments off: default nd517/736B -> off nd504/732B; retained. */
+#pragma opt_dead_assignments off
 // FUN_00124090 NONMATCHING
 void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
                                s32 fade)
@@ -5845,7 +5868,10 @@ void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
                                particleAlpha, i % 3 + 7);
     }
 }
+#pragma opt_dead_assignments reset
 
+/* opt_dead_assignments off: default nd1292/1728B -> off nd1246/1748B; retained. */
+#pragma opt_dead_assignments off
 // FUN_00124370 NONMATCHING
 void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                        s16 pcId, s32 phase)
@@ -6001,7 +6027,10 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
                                   effectFade);
     }
 }
+#pragma opt_dead_assignments reset
 
+/* opt_lifetimes on: default nd439/716B -> on nd437/716B; retained. */
+#pragma opt_lifetimes on
 // FUN_00124B30 NONMATCHING
 void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
                             f32 alpha, s16 pcId, s32 fade)
@@ -6035,6 +6064,7 @@ void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
     h_campStatusDrawPhysicalCondition(position, alpha, pcId, fade);
     h_campStatusDrawBadStatus(position, alpha, pcId, fade);
 }
+#pragma opt_lifetimes reset
 
 // FUN_001266e0. Destroy callback of the "H_PcStatusParts00" task
 void h_campStatusDestroyPcStatusPartsTask(KwlnTask* task)
@@ -6106,6 +6136,8 @@ void h_campStatusDrawViewport(void* texture, CampVec2 position, f32 x,
 #pragma pop
 
 #pragma opt_common_subs off
+/* opt_lifetimes on: default nd1549/2488B -> on nd1538/2480B; retained. */
+#pragma opt_lifetimes on
 // FUN_001269A0 NONMATCHING
 void* h_campStatusUpdatePartsTask(KwlnTask* task)
 {
@@ -6318,6 +6350,7 @@ void* h_campStatusUpdatePartsTask(KwlnTask* task)
 }
 
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes reset
 #pragma opt_common_subs reset
 // FUN_001273B0 NONMATCHING
 void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
@@ -6785,6 +6818,8 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
     }
 }
 
+/* opt_dead_assignments off: default nd783/1312B -> off nd199/1308B; retained. */
+#pragma opt_dead_assignments off
 // FUN_00128720 NONMATCHING
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
                                 void* persona, s32 alpha)
@@ -6802,6 +6837,9 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 0);
 }
 
+#pragma opt_dead_assignments reset
+/* opt_dead_assignments off: default nd783/1312B -> off nd199/1308B; retained. */
+#pragma opt_dead_assignments off
 // FUN_00128C40 NONMATCHING
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
@@ -6819,6 +6857,9 @@ void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                            alpha, 4, 1);
 }
 
+#pragma opt_dead_assignments reset
+/* opt_propagation off: default nd386/532B -> off nd317/536B; retained. */
+#pragma opt_propagation off
 // FUN_00129160 NONMATCHING
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
                                s32 value, s32 extra, s32 alpha)
@@ -6853,6 +6894,7 @@ void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
         FUN_00115980(sprite);
     }
 }
+#pragma opt_propagation reset
 
 // FUN_001293B0 NONMATCHING
 #pragma push
@@ -7151,6 +7193,8 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
                  4, text, 1);
 }
 
+/* opt_propagation off: default nd1164/1536B -> off nd1090/1528B; retained. */
+#pragma opt_propagation off
 // FUN_0012A560 NONMATCHING
 void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                               void* persona, s32 frame)
@@ -7266,6 +7310,7 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                  0xff - alpha, 4, text, 1);
 }
 
+#pragma opt_propagation reset
 #pragma opt_loop_invariants on
 // FUN_0012AC60 NONMATCHING
 void h_campStatusDrawSteady(CampVec2 position, f32 scale,
@@ -7382,6 +7427,8 @@ void h_campStatusDrawSteady(CampVec2 position, f32 scale,
 #pragma opt_loop_invariants reset
 
 #pragma opt_loop_invariants on
+/* opt_lifetimes on: default nd755/1232B -> on nd748/1232B; retained. */
+#pragma opt_lifetimes on
 // FUN_0012B300 NONMATCHING
 void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
 {
@@ -7447,6 +7494,7 @@ void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
     FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
                  (u8)(0xff - alpha), 4, text, 1);
 }
+#pragma opt_lifetimes reset
 #pragma opt_loop_invariants reset
 
 // FUN_0012B860 NONMATCHING
@@ -7533,6 +7581,8 @@ void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
 }
 
 #pragma opt_loop_invariants on
+/* opt_dead_assignments off: default nd391/612B -> off nd374/608B; retained. */
+#pragma opt_dead_assignments off
 // FUN_0012BCE0 NONMATCHING
 void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
                   void* persona, u8 alpha)
@@ -7569,9 +7619,9 @@ void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
     FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
                  (u8)(0xff - alpha), 4, text, 1);
 }
+#pragma opt_dead_assignments reset
 #pragma opt_loop_invariants reset
 
-#pragma opt_lifetimes on
 // FUN_0012BFB0 NONMATCHING
 void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
                       void* persona, s32 alpha)
@@ -7656,7 +7706,8 @@ void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
     }
 }
 
-#pragma opt_lifetimes reset
+/* opt_propagation off: default nd5937/7952B -> off nd5895/7772B; retained. */
+#pragma opt_propagation off
 // FUN_001311D0 NONMATCHING
 void* FUN_001311d0(KwlnTask* task)
 {
@@ -8168,6 +8219,7 @@ void* FUN_001311d0(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_propagation reset
 
 // FUN_00133180
 void FUN_00133180(CampStatusPackedPosition position, f32 alpha, void* unused,

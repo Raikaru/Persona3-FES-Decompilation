@@ -25,13 +25,21 @@ extern s64 FUN_005316d0_u64(u64, u64);
 #pragma alias FUN_00531720_u64 FUN_00531720
 extern u64 FUN_00531720_u64(u32);
 #pragma alias FUN_005318a0_f32 FUN_005318a0
-extern float FUN_005318a0_f32(u32);
+extern float FUN_005318a0_f32(u64);
 #pragma alias FUN_005318f8_u32 FUN_005318f8
 extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
 extern u64 FUN_0052efd8(u64, u64, u64 *);
 extern u64 FUN_0052f7d0(u64, u64, u64 *);
+#pragma alias FUN_00531170_long FUN_00531170
+extern unsigned long FUN_00531170_long(unsigned long, unsigned long);
+#pragma alias FUN_00531230_long FUN_00531230
+extern unsigned long FUN_00531230_long(unsigned long, unsigned long);
+#pragma alias FUN_00531720_long FUN_00531720
+extern unsigned long FUN_00531720_long(u32);
+#pragma alias FUN_005318a0_long FUN_005318a0
+extern float FUN_005318a0_long(unsigned long);
 
 static const float sAtanHi[] = {
     0.463647603989f,
@@ -384,20 +392,27 @@ f64 FUN_0052eac8(s64 u)
 }
 #pragma optimization_level 2
 // FUN_0052EB60 NONMATCHING
-float FUN_0052eb60(s64 u)
+float FUN_0052eb60(long u)
 {
-  f64 f;
-
-  if (!(-((s64)1 << 0x35) < u && u < ((s64)1 << 0x35))) {
-    if (((u64)u & 0x7ff) != 0) {
-      u |= 0x800;
+    unsigned long uVar1;
+    unsigned long uVar2;
+    long low;
+    u64 round = (u64)-0x800;
+    if ((unsigned long)u + ((unsigned long)-0x800 >> 0xb) >
+        (unsigned long)-0x800 >> 0xa &&
+        (((unsigned long)u & 0x7ff) != 0)) {
+        u |= 0x800;
     }
-  }
-  f = (s32)(u >> 0x20);
-  f *= 65536.0;
-  f *= 65536.0;
-  f += (u32)u;
-  return (float)f;
+    uVar1 = FUN_00531720_u64((u64)(u >> 0x20));
+    uVar1 = FUN_00531230_u64(uVar1, 0x40f0000000000000);
+    uVar1 = FUN_00531230_u64(uVar1, 0x40f0000000000000);
+    low = (s32)u;
+    uVar2 = FUN_00531720_u64((u64)low);
+    if (low < 0) {
+        uVar2 = FUN_00531170_u64(uVar2, 0x41f0000000000000);
+    }
+    uVar1 = FUN_00531170_u64(uVar1, uVar2);
+    return FUN_005318a0_f32(uVar1);
 }
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)
