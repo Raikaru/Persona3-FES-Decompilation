@@ -641,7 +641,6 @@ s16 FUN_003d5dc0(u32 param_1)
     return u_NDEFGHIJKLM_006a53b0[iVar4];
 }
 
-#pragma opt_common_subs off
 // FUN_003D5E60 NONMATCHING
 
 
@@ -826,7 +825,6 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
 }
 
-#pragma opt_common_subs reset
 // FUN_003D6200 NONMATCHING
 
 
@@ -976,6 +974,7 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
+#pragma opt_common_subs off
 // FUN_003D64A0 NONMATCHING
 
 
@@ -1111,6 +1110,7 @@ u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3)
 
 /* W327 sweep: opt_common_subs off improves FUN_003d6740 from nd294/obj448 to nd283/obj448 (window 464); retained. */
 #pragma opt_common_subs off
+#pragma opt_common_subs reset
 // FUN_003D6740 NONMATCHING
 
 

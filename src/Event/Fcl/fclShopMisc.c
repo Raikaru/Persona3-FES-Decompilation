@@ -1192,7 +1192,6 @@ char FUN_003f03e0(int param_1)
 }
 
 /* Reconstructed the packed shop-date availability gate and all date-mode paths. */
-#pragma opt_common_subs off
 // FUN_003F04F0 NONMATCHING
 
 
@@ -1263,7 +1262,7 @@ u32 FUN_003f04f0(u32 param_1,int param_2)
   return uVar3;
 }
 
-#pragma opt_common_subs reset
+#pragma opt_dead_assignments off
 // FUN_003F06E0 NONMATCHING
 
 
@@ -1303,6 +1302,7 @@ u32 * FUN_003f06e0(int *param_1,u32 param_2)
 }
 
 #pragma alias fclShopSelectStockItemId FUN_003f0830
+#pragma opt_dead_assignments reset
 // FUN_003F0830
 
 
@@ -14914,16 +14914,7 @@ state_done:;
 
 s16 FUN_00403740(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x8442003a;"
-      ".set reorder"
-  );
+  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x3a);
 }
 
 // FUN_00403760
@@ -14931,15 +14922,7 @@ s16 FUN_00403740(short param_1)
 
 s16 FUN_00403760(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x84420030;"
-  );
+  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x30);
 }
 
 // FUN_00403780
@@ -14947,16 +14930,7 @@ s16 FUN_00403760(short param_1)
 
 s16 FUN_00403780(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x84420032;"
-      ".set reorder"
-  );
+  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x32);
 }
 
 // FUN_004037A0
@@ -14964,16 +14938,7 @@ s16 FUN_00403780(short param_1)
 
 s16 FUN_004037a0(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x84420036;"
-      ".set reorder"
-  );
+  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x36);
 }
 
 // FUN_004037C0
@@ -14981,16 +14946,7 @@ s16 FUN_004037a0(short param_1)
 
 s16 FUN_004037c0(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x84420034;"
-      ".set reorder"
-  );
+  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x34);
 }
 
 // FUN_004037E0
@@ -15076,16 +15032,7 @@ u32 FUN_004038a0(short param_1)
 
 u32 FUN_004038e0(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x8c42002c;"
-      ".set reorder"
-  );
+  return *(u32 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x2c);
 }
 
 // FUN_00403900
@@ -15093,16 +15040,7 @@ u32 FUN_004038e0(short param_1)
 
 s16 FUN_00403900(short param_1)
 {
-  __asm__ (
-      ".set noreorder;"
-      ".word 0x8f83ac00;"
-      ".word 0x0004143c;"
-      ".word 0x0002143f;"
-      ".word 0x00021180;"
-      ".word 0x00431021;"
-      ".word 0x8442003c;"
-      ".set reorder"
-  );
+  return *(s16 *)(iGpffffac00 + (u16)param_1 * 0x40 + 0x3c);
 }
 
 // FUN_00403920
