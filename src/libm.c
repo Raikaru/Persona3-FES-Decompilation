@@ -159,23 +159,22 @@ float cosf(float x)
 
     ix = *(u32*)&x;
     ix &= 0x7FFFFFFF;
-    if (ix <= 0x3F490FD8)
+    if (0x3F490FD8 < ix)
     {
-        return func_0052d2d8(x, 0.0f);
+        n = func_0052c000(x, y);
+        switch (n & 3)
+        {
+        case 0:
+            return func_0052d2d8(y[0], y[1]);
+        case 1:
+            return -func_0052dc48(y[0], y[1], 1);
+        case 2:
+            return -func_0052d2d8(y[0], y[1]);
+        default:
+            return func_0052dc48(y[0], y[1], 1);
+        }
     }
-
-    n = func_0052c000(x, y);
-    switch (n & 3)
-    {
-    case 0:
-        return func_0052d2d8(y[0], y[1]);
-    case 1:
-        return -func_0052dc48(y[0], y[1], 1);
-    case 2:
-        return -func_0052d2d8(y[0], y[1]);
-    default:
-        return func_0052dc48(y[0], y[1], 1);
-    }
+    return func_0052d2d8(x, 0.0f);
 }
 #pragma optimization_level 2
 

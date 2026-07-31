@@ -3319,10 +3319,13 @@ u32 btlUnitUpdate00285d30Packet(void* work)
 
     {
         RwRGBA color;
-        RwRGBA* targetColor;
+        u8* colorBytes;
+        u8* targetBytes;
+        s32 i;
 
         color = *(RwRGBA*)&packet->startCol;
-        targetColor = (RwRGBA*)&packet->targetCol;
+        colorBytes = (u8*)&color;
+        targetBytes = (u8*)&packet->targetCol;
         if (counter >= rgbStart)
         {
             if (rgbDuration > 0 && counter < rgbStart + rgbDuration)
@@ -3333,12 +3336,11 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-            color.r = (u8)(s32)((1.0f - factor) * color.r +
-                                factor * targetColor->r);
-            color.g = (u8)(s32)((1.0f - factor) * color.g +
-                                factor * targetColor->g);
-            color.b = (u8)(s32)((1.0f - factor) * color.b +
-                                factor * targetColor->b);
+            for (i = 0; i < 3; i++)
+            {
+                colorBytes[i] = (u8)(s32)((1.0f - factor) * colorBytes[i] +
+                                          factor * targetBytes[i]);
+            }
         }
 
         if (counter >= alphaStart)
@@ -3351,8 +3353,8 @@ u32 btlUnitUpdate00285d30Packet(void* work)
             {
                 factor = 1.0f;
             }
-            color.a = (u8)(s32)((1.0f - factor) * color.a +
-                                factor * targetColor->a);
+            colorBytes[3] = (u8)(s32)((1.0f - factor) * colorBytes[3] +
+                                      factor * targetBytes[3]);
         }
 
         unit->cols[BTLUNIT_COL_MAIN] = color;

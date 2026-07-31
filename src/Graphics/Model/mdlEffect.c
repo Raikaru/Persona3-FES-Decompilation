@@ -7491,7 +7491,7 @@ void FUN_003263b0(int param_1,u32 param_2,u8 (*param_3) [16])
 
   case 0:
 
-    *(__int128 *)*param_3 = *(__int128 *)(param_1 + 0x50);
+    *(u_long128 *)*param_3 = *(u_long128 *)(param_1 + 0x50);
 
     break;
 
