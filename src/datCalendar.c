@@ -1163,6 +1163,7 @@ check:
     }
 }
 #pragma pop
+#pragma opt_loop_invariants reset
 
 #pragma opt_lifetimes reset
 // FUN_0017E050 NONMATCHING
