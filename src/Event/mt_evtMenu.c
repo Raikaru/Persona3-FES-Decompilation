@@ -1648,6 +1648,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 }
 
 
+#pragma opt_propagation off
 // FUN_0036FDA0 NONMATCHING
 
 
@@ -1924,6 +1925,7 @@ int FUN_0036fda0(int param_1,int param_2,int param_3)
 }
 
 
+#pragma opt_propagation reset
 // FUN_00370230
 
 

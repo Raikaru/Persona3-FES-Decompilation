@@ -5445,14 +5445,13 @@ void FUN_0039e700(u8 *param_1)
   int iVar4;
   u32 uVar5;
   MtEvtCustomEntry *entry;
-  MtEvtCustomEntry *entries;
   int iVar7;
   int outputAddress;
 
   *(u32 *)(param_1 + 0x78c) = 0;
   iVar1 = *(MtEvtCustomData **)(param_1 + 8);
-  for (iVar7 = 0, entries = iVar1->entries; iVar7 < iVar1->entryCount; iVar7 = iVar7 + 1) {
-    entry = &entries[iVar7];
+  for (iVar7 = 0; iVar7 < iVar1->entryCount; iVar7 = iVar7 + 1) {
+    entry = iVar1->entries + iVar7;
     if (entry->type == 1) {
       iVar2 = *(int *)(param_1 + 0x78c);
       if (9 < iVar2) break;

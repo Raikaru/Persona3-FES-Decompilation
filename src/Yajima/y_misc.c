@@ -2378,21 +2378,12 @@ u32 FUN_004198f0(int param_1,int param_2)
 {
 
   short sVar1;
-
-
-
   u32 uVar3;
   int lVar4;
-
   short *psVar8;
-
   u16 *psVar6;
-
   u32 uVar7;
-
   int iVar5;
-
-
   float fVar9;
   u16 asStack_20 [16];
   u32 sVar2;

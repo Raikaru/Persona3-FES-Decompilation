@@ -5521,18 +5521,16 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
         }
         else
         {
-            u32* nestedChild;
             s32 stackIndex;
             func_00259190(child, scratch.nested, &scratch.nestedCount);
-            nestedChild = scratch.nested[0];
             stackIndex = scratch.stackCount;
-            scratch.stack[stackIndex] = nestedChild;
+            scratch.stack[stackIndex] = scratch.nested[0];
             scratch.stackCount = stackIndex + 1;
         }
     }
     K_ASSERT(initialCount == leafCount, 0x702);
-    last = leafCount - 1;
     i = 0;
+    last = leafCount - 1;
     while (i < leafCount)
     {
         ((u32*)values)[i] = (u32)scratch.leaves[last - i];

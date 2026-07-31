@@ -4410,14 +4410,19 @@ u8 * FUN_0031fd00(float firstTime, int *track)
 void FUN_0031fde0(int *track, u8 *color, f32 firstTime, f32 blend)
 {
   u32 *result;
+  u8 redByte;
+  u8 greenByte;
+  u8 blueByte;
   f32 red;
   f32 green;
   f32 blue;
-
   result = FUN_0031fbd0(firstTime, track);
-  red = (f32)color[1] / 255.0f;
-  green = (f32)color[2] / 255.0f;
-  blue = (f32)color[0] / 255.0f;
+  redByte = color[1];
+  greenByte = color[2];
+  blueByte = color[0];
+  red = (f32)redByte / 255.0f;
+  green = (f32)greenByte / 255.0f;
+  blue = (f32)blueByte / 255.0f;
 
   *(f32 *)(result + 1) =
       blend * (red - *(f32 *)(result + 1)) + *(f32 *)(result + 1) + 0.0f;
@@ -4923,7 +4928,6 @@ void FUN_00320810(int *param_1)
         }
       }
     }
-  }
 
   return;
 
@@ -5291,7 +5295,7 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
     arrayCount = RpMaterialGetUserDataArrayCount(material);
     arrayIndex = 0;
     while (arrayIndex < arrayCount) {
-      userData = (void *)RpMaterialGetUserDataArray(material,arrayIndex);
+      userData = (u32 *)RpMaterialGetUserDataArray(material,arrayIndex);
       name = (char *)RpUserDataArrayGetName((u32)userData);
       if (strcmp(name,(char *)&gp0xffff9d30) == 0) {
         dataCount = FUN_0048ef30((u32)userData);

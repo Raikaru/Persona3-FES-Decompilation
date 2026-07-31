@@ -7420,7 +7420,6 @@ void FUN_003a9ed0(int param_1,u64 param_2)
     *(u32 *)(iVar4 + 0xc) = uVar1;
   }
   iVar2 = *(u8 **)(param_1 + 8);
-  iVar3 = iVar2 + 0x140;
   for (index = 0; index < 3; index = index + 1) {
     FUN_003b4eb0(iVar2,iVar3,DAT_006a1f00_abs + index * 8,
                  DAT_006a1f20_abs + index * 8,8,
@@ -10552,8 +10551,8 @@ u32 FUN_003ae160(u64 param_1,int param_2)
   secondIndex = (u8)uVar6 << 8 | (u8)secondLow;
   piVar10 = (int *)DAT_006a2680;
   piVar9 = aiStack_20;
-
   counter = 5;
+
 
   do {
 
@@ -10662,8 +10661,8 @@ u32 FUN_003ae260(u64 param_1,int param_2)
   uVar6 = (u8)uVar6 << 8 | (u8)secondLow;
   piVar10 = (int *)DAT_006a2680;
   piVar9 = aiStack_20;
-
   iVar8 = 5;
+
   do {
     iVar4 = *piVar10;
     piVar10 = piVar10 + 1;

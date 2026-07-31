@@ -1682,7 +1682,7 @@ extern u64 FUN_0027f7c0();
 extern u64 FUN_0027ffb0();
 extern u64 FUN_00282d40();
 #pragma alias FUN_00282d40_anim FUN_00282d40
-extern void FUN_00282d40_anim(u32 param_1,int param_2,u16 param_3,float param_4,u16 param_5);
+extern void FUN_00282d40_anim(u32 param_1,s16 param_2,u16 param_3,float param_4,s8 param_5);
 extern u64 FUN_002831c0();
 extern u64 FUN_00287b20();
 extern u64 FUN_00287cf0();
@@ -18504,17 +18504,13 @@ void FUN_00332330(u16 *param_1)
 u32 FUN_00332370(int param_1)
 {
 
-  u32 uVar3;
-
   u32 uVar2;
   int iVar1;
-
   u32 *puVar4;
-
   u32 uVar5;
   u16 *indexBase;
   u32 index;
-
+  u32 uVar3;
   
 
   uVar2 = FUN_003245b0((int)(param_1));
@@ -18558,7 +18554,7 @@ u32 FUN_00332370(int param_1)
   FUN_00332a30((int *)(uVar3),index,(int *)(uVar2));
   indexBase = (u16 *)param_1;
   index = indexBase[6];
-  FUN_00332ac0((u32 *)(uVar3),index,(int *)(iVar1 + 0x1c));
+  FUN_00332ac0(puVar4,index,(int *)(iVar1 + 0x1c));
 
   return uVar3;
 

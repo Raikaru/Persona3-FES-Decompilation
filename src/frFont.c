@@ -552,7 +552,7 @@ void FUN_003afc70(void)
 #undef FUN_003afe30
 /* W340 loop probe: opt_loop_invariants on; without nd=61/object=284, with nd=2/object=288; window=288. */
 #pragma opt_loop_invariants on
-// FUN_003AFE30 NONMATCHING
+// FUN_003AFE30
 
 
 void FUN_003afe30(void)
@@ -576,14 +576,14 @@ void FUN_003afe30(void)
         FUN_0019d3f0(DAT_006a2730, 0x432);
       }
 
-      if (gFrFontManagerData_abs[0].allocations[slotIndex] != NULL) {
-        FUN_00100ec0(gFrFontManagerData_abs[0].allocations[slotIndex]);
-        gFrFontManagerData_abs[0].allocations[slotIndex] = NULL;
+      if (gFrFontManagerData_abs[0].allocations[(u8)i] != NULL) {
+        FUN_00100ec0(gFrFontManagerData_abs[0].allocations[(u8)i]);
+        gFrFontManagerData_abs[0].allocations[(u8)i] = NULL;
         FUN_005225a8(DAT_006a2800, checkedIndex);
         slot->resource = NULL;
         slot->object = NULL;
-        slot->flags = 0;
       }
+        slot->flags = 0;
     }
   }
 }
@@ -1617,7 +1617,7 @@ u16 FUN_003b0e90(u16 param_1)
 #undef FUN_003b0ec0
 // Retail hoists the loop-invariant mask/type constants here; without
 // opt_loop_invariants this function measures nd102 at 136B instead of nd1 at 140B.
-// FUN_003B0EC0 NONMATCHING
+// FUN_003B0EC0
 #pragma push
 #pragma opt_loop_invariants on
 
@@ -1635,13 +1635,16 @@ u32 FUN_003b0ec0(int list)
       if (*(u8 *)(node + 0x16) == type) {
         u32 word = *(u32 *)(node + 0x10);
         u32 fade = word & 0xff;
+        u32 merged;
 
         if (fade != 0) {
           fade -= 8;
           if ((s32)fade < 0) {
             fade = 0;
           }
-          *(u32 *)(node + 0x10) = (word & mask) | fade;
+          merged = word & mask;
+          merged |= fade;
+          *(u32 *)(node + 0x10) = merged;
           *(u32 *)(node + 8) += 0x10;
           result = changed;
         }
