@@ -1768,13 +1768,11 @@ void func_002faab0()
         u16 expectedCharId = 0x107;
         while (unit != NULL)
         {
-            switch (unit->charId)
+            if (unit->charId == expectedCharId)
             {
-            case 0x107:
                 ((u8*)unit->mdl)[0x388] |= 8;
                 *(u32*)((u8*)gBtl + 0xb4c) = 0;
                 ((u8*)unit->mdl)[0x41d] = 0;
-                break;
             }
             unit = unit->next;
         }
@@ -1789,13 +1787,11 @@ void func_002faab0()
         u16 expectedCharId = 0x111;
         while (unit != NULL)
         {
-            switch (unit->charId)
+            if (unit->charId == expectedCharId)
             {
-            case 0x111:
                 ((u8*)unit->mdl)[0x388] |= 8;
                 *(u32*)((u8*)gBtl + 0xb50) = 0;
                 ((u8*)unit->mdl)[0x41d] = 0;
-                break;
             }
             unit = unit->next;
         }

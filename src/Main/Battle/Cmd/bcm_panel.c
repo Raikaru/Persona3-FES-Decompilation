@@ -747,6 +747,7 @@ alpha_done:
 // counter on the other switch arm). nd 198->6 (obj 1292B/1296B); residual
 // is a 2-variable register-bank swap (slot0/setQuad), unfixable per the
 // usual declaration/statement-order floor.
+#pragma opt_loop_invariants on
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
@@ -857,6 +858,7 @@ void FUN_00224150(void)
         }
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_00224660
 void FUN_00224660(void)

@@ -3074,7 +3074,8 @@ void func_002f5a70(void)
 void func_002f6840(BtlAction* action);
 u32 func_002f6ab0(BtlAction* action);
 
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
+// Measured 002f5bf0: opt_loop_invariants on gives normalized_diff 0; off gives 209 (object 400B/window 400B).
 // FUN_002f5bf0
 void func_002f5bf0(BtlAction* param_1,BtlAction* param_2,BtlTargetResult* param_3)
 

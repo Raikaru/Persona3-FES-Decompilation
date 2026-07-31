@@ -444,7 +444,7 @@ const char* h_camp_getCourageLevelString(s16 idx)
 /* Removing this loop-invariant pragma leaves h_campUpdateSpriteSetupTask at normalized_diff 16; measured with it, normalized_diff is 0. */
 #pragma opt_loop_invariants on
 
-// FUN_0011a8a0 NONMATCHING
+// FUN_0011a8a0
 void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
     CampSpriteSetupWork* work;
@@ -1408,7 +1408,7 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
     h_campDrawRootUi(work, alpha);
 }
 
-// FUN_0011cc80 NONMATCHING
+// FUN_0011cc80
 void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
 {
     struct {

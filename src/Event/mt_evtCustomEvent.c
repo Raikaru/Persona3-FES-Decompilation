@@ -5671,7 +5671,7 @@ void FUN_0039eaa0(int param_1)
   iVar1 = *(int *)(param_1 + 8);
   for (iVar6 = 0; iVar6 < *(int *)(iVar1 + 0x38); iVar6 = iVar6 + 1) {
     iVar5 = *(int *)(iVar1 + 0x34) + iVar6 * 0x20;
-    if (*(int *)(iVar5 + 0x18) == 2) {
+    if (2 == *(int *)(iVar5 + 0x18)) {
       iVar2 = *piVar7;
       if (4 < iVar2) break;
       iVar3 = *(int *)(iVar1 + 0x10);

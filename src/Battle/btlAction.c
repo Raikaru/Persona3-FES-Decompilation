@@ -696,18 +696,18 @@ u32 FUN_0028a200(BtlAction* action)
 // FUN_0028a3e0 NONMATCHING
 u32 FUN_0028a3e0(BtlAction* action)
 {
-    BtlAction* target;
-    u16 i;
-    u16 j;
-    s32 count;
-    s32 targetedCount;
-    u32 badStatus;
-
     switch (action->unit->genus)
     {
     case 0:
+    {
+        BtlAction* target;
+        u16 i;
+        u16 j;
+        s32 count;
+        u16 targetedCount;
+        u32 badStatus = 0x100000;
+
         targetedCount = action->target.targetedCount;
-        badStatus = 0x100000;
         for (i = 0; i < targetedCount; i++)
         {
             target = action->target.targetedActions[i];
@@ -721,7 +721,15 @@ u32 FUN_0028a3e0(BtlAction* action)
             }
         }
         break;
+    }
     case 1:
+    {
+        BtlAction* target;
+        u16 i;
+        u16 j;
+        s32 count;
+        u16 targetedCount;
+
         targetedCount = action->target.targetedCount;
         for (i = 0; i < targetedCount; i++)
         {
@@ -736,6 +744,7 @@ u32 FUN_0028a3e0(BtlAction* action)
             }
         }
         break;
+    }
     default:
         break;
     }
