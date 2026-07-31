@@ -33,8 +33,12 @@ extern int datSocialLinkLevelIsNotZero(int);
 extern void *memcpy_003d6e60(void *dest,const void *src,u32 size);
 #pragma alias datPersonaFindSkillIdx_003d6e60 datPersonaFindSkillIdx
 extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,u16 param_2);
+#pragma alias datPersonaFindSkillIdx_003d6e60_ptr datPersonaFindSkillIdx
+extern s32 datPersonaFindSkillIdx_003d6e60_ptr(u8 *param_1,u16 param_2);
 #pragma alias datPersonaSetSkill_003d6e60 datPersonaSetSkill
 extern void datPersonaSetSkill_003d6e60(s32 param_1,u16 param_2);
+#pragma alias datPersonaSetSkill_003d6e60_ptr datPersonaSetSkill
+extern void datPersonaSetSkill_003d6e60_ptr(u8 *param_1,u16 param_2);
 #pragma alias fclCombineMisc003d7a30_u32 fclCombineMisc003d7a30
 extern s32 fclCombineMisc003d7a30_u32(u32 *param_1, int *param_2, u32 param_3);
 u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
@@ -1442,9 +1446,7 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
-// b210 floor: at +0x78/+0x7c and +0x94/+0x98 candidate emits a0 then a1,
-// while retail emits the identical two call arguments in a1 then a0 order.
-// FUN_003D6E60 NONMATCHING
+// FUN_003D6E60
 s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {
   u8 sp50[0x34];
@@ -1457,7 +1459,7 @@ s32 FUN_003d6e60(s32 param_1,s32 param_2)
   void *dest;
 
   dest = sp50;
-  /* Removing this barrier worsens FUN_003d6e60 (nd16 -> nd22) - measured W164. */
+  /* Removing this barrier leaves the 288B frame but changes memcpy argument order (nd0 -> nd2) - measured W302. */
   asm ("" : "+r"(dest));
   memcpy_003d6e60(dest,(void *)(param_1 + 4),0x34);
   var_16 = 0;
@@ -1469,8 +1471,10 @@ outer_body:
     if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
       return 0;
     }
-    if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_19) == -1) {
-      datPersonaSetSkill_003d6e60(param_1 + 4,temp_19);
+    if (datPersonaFindSkillIdx_003d6e60_ptr((u8 *)(uintptr_t)param_1 + 4,temp_19) == -1) {
+      /* Removing this barrier grows FUN_003d6e60 from 288B to 300B - measured W302. */
+      asm ("" : "+r"(param_1));
+      datPersonaSetSkill_003d6e60_ptr((u8 *)(uintptr_t)param_1 + 4,temp_19);
     }
   }
 outer_increment:
@@ -3409,7 +3413,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
 done:
   ;
 }
-// FUN_003D9CC0 NONMATCHING
+// FUN_003D9CC0
 
 
 void FUN_003d9cc0(int param_1)

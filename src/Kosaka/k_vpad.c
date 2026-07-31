@@ -92,16 +92,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         }
 
         value = *(u8*)(gPads_abs + 0x1f);
-        if (value >= 0)
-        {
-            valueF = (f32)value;
-        }
-        else
-        {
-            value = (value >> 1) | (value & 1);
-            valueF = (f32)value;
-            valueF += valueF;
-        }
+        valueF = (f32)(u32)value;
         move.z = valueF - 128.0f;
         if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_UP) != 0)
         {
@@ -113,16 +104,7 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         }
 
         value = *(u8*)(gPads_abs + 0x1e);
-        if (value >= 0)
-        {
-            valueF = (f32)value;
-        }
-        else
-        {
-            value = (value >> 1) | (value & 1);
-            valueF = (f32)value;
-            valueF += valueF;
-        }
+        valueF = (f32)(u32)value;
         move.x = valueF - 128.0f;
         if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_LEFT) != 0)
         {
@@ -134,28 +116,10 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         }
 
         value = *(u8*)(gPads_abs + 0x21);
-        if (value >= 0)
-        {
-            valueF = (f32)value;
-        }
-        else
-        {
-            value = (value >> 1) | (value & 1);
-            valueF = (f32)value;
-            valueF += valueF;
-        }
+        valueF = (f32)(u32)value;
         right.z = valueF - 128.0f;
         value = *(u8*)(gPads_abs + 0x20);
-        if (value >= 0)
-        {
-            valueF = (f32)value;
-        }
-        else
-        {
-            value = (value >> 1) | (value & 1);
-            valueF = (f32)value;
-            valueF += valueF;
-        }
+        valueF = (f32)(u32)value;
         right.x = valueF - 128.0f;
         cameraInput = 0;
 

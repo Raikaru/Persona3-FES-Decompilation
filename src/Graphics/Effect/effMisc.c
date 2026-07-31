@@ -250,6 +250,9 @@ void func_00358160(f32 angle)
 void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
 {
     f32 angle_p;
+    f32 xSquared;
+    f32 ySquared;
+    f32 zSquared;
     const RwV3d* axis_p;
     RwMatrix* matrix_p;
     RwV3d normalizedAxis;
@@ -290,19 +293,24 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     x = normalizedAxis.x;
     y = normalizedAxis.y;
     z = normalizedAxis.z;
-    matrix_p->right.x = x * x + (1.0f - x * x) * cosine;
-    matrix_p->right.y = z * sine + x * y * (1.0f - cosine);
+    xSquared = x * x;
+    matrix_p->right.x = xSquared + (1.0f - xSquared) * cosine;
+    ySquared = 1.0f - cosine;
+    zSquared = z * sine;
+    matrix_p->right.y = zSquared + x * y * ySquared;
     matrix_p->right.z = x * z * (1.0f - cosine) - y * sine;
     matrix_p->flags = 0;
 
     matrix_p->up.x = z * sine - x * y * (1.0f - cosine);
-    matrix_p->up.y = y * y + (1.0f - y * y) * cosine;
+    ySquared = y * y;
+    matrix_p->up.y = ySquared + (1.0f - ySquared) * cosine;
     matrix_p->up.z = x * sine + y * z * (1.0f - cosine);
     matrix_p->pad1 = 0;
 
     matrix_p->at.x = x * z * (1.0f - cosine) + y * sine;
     matrix_p->at.y = y * z * (1.0f - cosine) - x * sine;
-    matrix_p->at.z = z * z + (1.0f - z * z) * cosine;
+    zSquared = z * z;
+    matrix_p->at.z = zSquared + (1.0f - zSquared) * cosine;
     matrix_p->pad2 = 0;
 
     __asm__ volatile (

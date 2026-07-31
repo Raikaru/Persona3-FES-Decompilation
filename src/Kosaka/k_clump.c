@@ -1554,6 +1554,10 @@ void func_001a8b10(u32* entries)
 // FUN_001a8db0 NONMATCHING
 s32 func_001a8db0(KwlnTask* task)
 {
+    typedef struct
+    {
+        u32 value;
+    } KClumpWord;
     u32* work;
     s32 i;
     u32 mode;
@@ -1610,7 +1614,7 @@ s32 func_001a8db0(KwlnTask* task)
             }
             for (i = 0; i < 8; i++)
             {
-                if (work[9 + i] != 0)
+                if (((KClumpWord*)work)[9 + i].value != 0)
                 {
                     if (work[0x11 + i] < work[2])
                     {
@@ -1905,7 +1909,7 @@ s32 func_001a9500(KwlnTask* task)
             for (i = 1; i < 8; i++)
             {
                 *((u32*)work + 4 + i - 1) = *((u32*)work + 4 + i);
-                work->positions[i - 1] = work->positions[i];
+                ((RwV3d*)work)[4 + i - 1] = ((RwV3d*)work)[4 + i];
                 work->sounds[i - 1] = work->sounds[i];
                 work->flags[i - 1] = work->flags[i];
             }

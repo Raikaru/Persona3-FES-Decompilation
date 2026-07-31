@@ -64,8 +64,9 @@ extern const char D_00683AD0[];
 extern const char D_00683A90[];
 extern const u64 D_00683A98;
 #pragma alias D_00683A98_abs D_00683A98
-extern u8 D_00683A98_abs[];
-extern const f32 D_00683AA0;
+extern volatile u8 D_00683A98_abs[];
+#pragma alias D_00683AA0_abs D_00683AA0
+extern u8 D_00683AA0_abs[];
 extern void* DAT_00960184[];
 extern u32* PTR_DAT_007cd540;
 extern void* D_007CE2B0;
@@ -173,8 +174,9 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwV3d cameraPosition;
     RwV3d target;
     RwV3d axis;
-    RwV3d* axisPtr;
+    u8* axisPtr;
     u64 axisXY;
+    f32 axisZ;
     u8* targetBytes;
     u32 i;
 
@@ -198,11 +200,12 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
             i--;
         } while (i != 0);
     }
-    axisPtr = (RwV3d*)((u8*)&axis + 0);
-    axisXY = *(u64*)D_00683A98_abs;
+    axisPtr = (u8*)&axis + 0;
+    axisXY = *(volatile u64*)D_00683A98_abs;
+    axisZ = *(f32*)D_00683AA0_abs;
     *(u64*)axisPtr = axisXY;
-    axisPtr->z = D_00683AA0;
-    FUN_004cb890(cameraFrame, amount, axisPtr, 2);
+    *(f32*)(axisPtr + 8) = axisZ;
+    FUN_004cb890(cameraFrame, amount, (RwV3d*)axisPtr, 2);
     cameraPosition = cameraFrame->modelling.pos;
     camera = kwlnGetMainCamera();
     FUN_001a1210(camera, &cameraPosition, &target, NULL);
