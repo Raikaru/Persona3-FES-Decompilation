@@ -301,7 +301,6 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 // The remaining register coloring/layout differences are intentionally NONMATCHING.
 // Measured opt_loop_invariants on: nd2603 -> 2599, object 3784/3808; retained (under window).
 #pragma opt_loop_invariants on
-#pragma opt_propagation off
 // FUN_001cd9a0 NONMATCHING
 void* func_001cd9a0(u32 charId)
 {
@@ -631,7 +630,6 @@ static inline void FldUnit_SetPcDungeonPosition(s32 index,
     }
 }
 
-#pragma opt_propagation reset
 // FUN_001CE880 NONMATCHING
 void func_001ce880(void)
 {
@@ -1146,6 +1144,7 @@ FldUnit* func_001cf940(u32 encounter, void* unitData)
     return unit;
 }
 
+#pragma opt_loop_invariants on
 // FUN_001CFDD0 NONMATCHING
 u32 func_001cfdd0(u32 index)
 {
@@ -1215,6 +1214,7 @@ u32 func_001cfdd0(u32 index)
     return true;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_001D00B0
 u32 func_001d00b0(void)
 {

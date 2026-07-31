@@ -1516,6 +1516,7 @@ void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
 #pragma push
 #pragma opt_loop_invariants on
 #pragma opt_lifetimes on
+#pragma opt_dead_assignments off
 // FUN_00388DF0 NONMATCHING
 
 
@@ -1631,6 +1632,7 @@ int FUN_00388df0(int param_1,int param_2)
 #pragma pop
 
 
+#pragma opt_dead_assignments reset
 // FUN_00388FF0
 
 

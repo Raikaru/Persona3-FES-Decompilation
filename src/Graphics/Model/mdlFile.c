@@ -41066,7 +41066,6 @@ u32 FUN_00348340(u8 *param_1,float *param_2)
 
 
 
-#pragma opt_loop_invariants on
 // FUN_00348760 NONMATCHING
 void FUN_00348760(u8 *param_1,float *param_2)
 
@@ -41180,7 +41179,6 @@ void FUN_00348760(u8 *param_1,float *param_2)
 
 
 
-#pragma opt_loop_invariants reset
 // FUN_00348950 NONMATCHING
 void FUN_00348950(u8 *param_1,float *param_2)
 
@@ -44445,6 +44443,7 @@ void FUN_0034cb60(int param_1)
 
 
 
+#pragma opt_loop_invariants on
 // FUN_0034CC00 NONMATCHING
 
 
@@ -44629,6 +44628,7 @@ void FUN_0034cc00(u32 *param_1)
 
 
 
+#pragma opt_loop_invariants reset
 // FUN_0034CF30
 
 

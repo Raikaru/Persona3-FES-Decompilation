@@ -292,7 +292,6 @@ void sflPsel00260d20(void)
     FUN_00261480();
 }
 
-#pragma opt_dead_assignments off
 // FUN_00260e00 NONMATCHING
 void sflPsel00260e00(void)
 {
@@ -389,7 +388,6 @@ extern void FUN_0021d890(void*, const void*);
 // Restoring these stores increases the instruction window while preserving logic.
 // Remaining differences are primarily MWCC register allocation and scheduling.
 // This function remains NONMATCHING until those code-generation details converge.
-#pragma opt_dead_assignments reset
 // FUN_00261480 NONMATCHING
 void sflPsel00261480(void)
 {
@@ -1264,6 +1262,7 @@ u32 func_002168a0(void)
     return *sSflPsel & 0x20;
 }
 
+#pragma opt_lifetimes on
 // FUN_002168F0 NONMATCHING
 void func_002168f0(void)
 {
@@ -1368,6 +1367,7 @@ void func_002168f0(void)
     }
 }
 
+#pragma opt_lifetimes reset
 // FUN_002170C0
 void func_002170c0(void)
 {

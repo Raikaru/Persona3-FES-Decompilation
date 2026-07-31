@@ -937,6 +937,7 @@ void btlActionUpdateStateStandBy(BtlAction* action)
     }
 }
 
+#pragma opt_strength_reduction off
 // FUN_0028aa20 NONMATCHING
 void btlActionInitStateStart(BtlAction* action)
 {
@@ -1137,6 +1138,7 @@ void btlActionInitStateStart(BtlAction* action)
     }
 }
 /* W212: transferring 00297760's early-return cascade holds nd907/1480 (window 1488). Narrow u16 stat/message/table contracts improve nd907 to nd285 but grow to 1504, so were reverted; residual first differs at offset 48, a common-exit branch displaced by the 8-byte deficit. */
+#pragma opt_strength_reduction reset
 // FUN_0028b230 NONMATCHING
 void btlActionUpdateStateStart(BtlAction* action)
 {
@@ -7122,7 +7124,6 @@ void btlActionInitStateRoundUpMes(BtlAction* action)
     ACTION_U32(action, 0x48c) = 0;
     ACTION_U16(action, 0x490) = 0x12;
 }
-#pragma opt_common_subs off
 // FUN_00298060 NONMATCHING
 void btlActionUpdateStateRoundUpMes(BtlAction* action)
 {
@@ -7253,7 +7254,6 @@ set_state:
     btlActionSetState(action, BTLACTION_STATE_ROUNDUP);
 }
 
-#pragma opt_common_subs reset
 // FUN_002984e0
 void btlActionInitStateRoundUp(BtlAction* action)
 {

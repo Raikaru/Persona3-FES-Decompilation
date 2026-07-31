@@ -1137,15 +1137,9 @@ shared_tail:
     if (*(u32*)(panel + 0) & 1)
     {
         *(u32*)(panel + 0x44) += 0x10000;
-        if (*(s32*)(panel + 0x48) == 1)
+        if (*(s32*)(panel + 0x48) == 0 && *(u32*)(panel + 0x44) >= 0x1e0000)
         {
-        }
-        else if (*(s32*)(panel + 0x48) == 0)
-        {
-            if (*(u32*)(panel + 0x44) >= 0x1e0000)
-            {
-                *(u32*)(panel + 0) &= ~1u;
-            }
+            *(u32*)(panel + 0) &= ~1u;
         }
     }
 

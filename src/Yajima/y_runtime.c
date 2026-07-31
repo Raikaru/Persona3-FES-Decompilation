@@ -3456,7 +3456,6 @@ void FUN_00430630(int param_1)
 /* W212: first divergence is offset 216 after an exact prefix; the residual begins with
  * retail retaining the divided float in $f2 while this build puts it in $f0.  The
  * FUN_0045b620 template shares calls but not this straight-line float lifetime shape. */
-#pragma opt_common_subs off
 // FUN_00430780 NONMATCHING
 
 void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4)
@@ -3514,7 +3513,6 @@ void FUN_00430780(u64 param_1,int param_2,int param_3,int param_4)
 }
 
 #pragma opt_loop_invariants on
-#pragma opt_common_subs reset
 // FUN_00430A40
 
 
@@ -3796,6 +3794,7 @@ void FUN_00431630(int param_1)
   return;
 }
 
+#pragma opt_common_subs off
 // FUN_00431670 NONMATCHING
 
 u32 FUN_00431670(int param_1,char param_2,u32 param_3)
@@ -3863,6 +3862,7 @@ u32 FUN_00431670(int param_1,char param_2,u32 param_3)
   return uVar3;
 }
 
+#pragma opt_common_subs reset
 // FUN_00431880
 
 

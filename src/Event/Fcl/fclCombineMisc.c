@@ -257,7 +257,6 @@ void fclCombineMisc003d9c90(s32 param_1, s32 param_2)
 
 // HARVESTED 3D-42FF
 
-#pragma opt_strength_reduction off
 // FUN_003D5510 NONMATCHING
 
 
@@ -392,7 +391,6 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
 }
 
-#pragma opt_strength_reduction reset
 // FUN_003D5730
 
 
@@ -824,6 +822,7 @@ u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3)
 
 }
 
+#pragma opt_common_subs off
 // FUN_003D6200 NONMATCHING
 
 
@@ -973,6 +972,7 @@ u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4)
 
 }
 
+#pragma opt_common_subs reset
 // FUN_003D64A0 NONMATCHING
 
 

@@ -399,7 +399,6 @@ void btlCameraUpdate(BtlCamera* camera)
     FUN_002a2ed0(g + 0x20, g + 0xbc, g + 0xc8);
 }
 
-#pragma opt_common_subs off
 // FUN_002a38f0 NONMATCHING
 void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
 {
@@ -458,7 +457,6 @@ void btlCameraSetState(u16 state, BtlAction* action, u32 param_3)
     }
 }
 
-#pragma opt_common_subs reset
 // FUN_002a3b00
 u32 btlCameraUpdateSetStatePacket(void* work)
 {
@@ -2218,6 +2216,7 @@ typedef struct BtlCameraTargetingWork
 } BtlCameraTargetingWork;
 
 
+#pragma opt_propagation off
 // FUN_002a79f0 NONMATCHING
 void btlCameraFrameActionTargeting(BtlCamera* camera)
 {
@@ -2412,6 +2411,7 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
     FUN_002a3110((u16*)camera, 10.0f);
 }
 
+#pragma opt_propagation reset
 // FUN_002a8150 NONMATCHING
 void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
                                  u32 useCurrentTarget)
