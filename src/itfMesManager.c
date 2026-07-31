@@ -5468,8 +5468,8 @@ void FUN_003a7dd0(int object)
     s16 value;
   } ItfMesAnim;
   s16 values[8];
-  ItfMesAnim *anim;
   int count;
+  ItfMesAnim *anim;
   s16 *source;
   s16 *dest;
 

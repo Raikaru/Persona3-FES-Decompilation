@@ -200,7 +200,7 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
         } while (i != 0);
     }
     axisPtr = (RwV3d*)((u8*)&axis + 0);
-    axisXY = *(volatile u64*)D_00683A98_abs;
+    axisPtr = (RwV3d*)((u8*)(uintptr_t)&axis + 0);
     axisZ = D_00683AA0;
     *(u64*)axisPtr = axisXY;
     axisPtr->z = axisZ;

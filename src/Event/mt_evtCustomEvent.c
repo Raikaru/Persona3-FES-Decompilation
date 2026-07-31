@@ -5472,8 +5472,8 @@ void FUN_0039e700(u8 *param_1)
 
     entry = &iVar1->entries[iVar7];
 
-    switch (entry->type) {
-    case 1:
+    if (entry->type == 1) {
+
       iVar2 = *(int *)(param_1 + 0x78c);
 
       if (9 < iVar2) break;
@@ -5494,7 +5494,7 @@ void FUN_0039e700(u8 *param_1)
       *(u32 *)(outputAddress + 0x7cc) = uVar5;
 
       *(int *)(param_1 + 0x78c) = *(int *)(param_1 + 0x78c) + 1;
-      break;
+
     }
 
   }
