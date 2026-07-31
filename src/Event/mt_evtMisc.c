@@ -5371,9 +5371,9 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
   FUN_0038c460_reordered(param_2,param_3,(u32 *)&puStack_8,(u8 **)&puStack_4);
 
 
-  if (puStack_4 != (u16 *)0x0) {
+  if (puStack_8 != (u16 *)0x0) {
 
-    uVar5 = (u32)*puStack_4;
+    uVar5 = (u32)*puStack_8;
 
   }
 
@@ -5383,9 +5383,9 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
   }
 
-  if (puStack_8 != (u16 *)0x0) {
+  if (puStack_4 != (u16 *)0x0) {
 
-    uVar2 = (u32)*puStack_8;
+    uVar2 = (u32)*puStack_4;
 
   }
 
@@ -5409,23 +5409,23 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
   puVar7 = (u32 *)param_4;
 
-  if (puStack_4 != (u16 *)0x0) {
+  if (puStack_8 != (u16 *)0x0) {
 
-    iVar1 = *(int *)(puStack_4 + 0x24);
+    iVar1 = *(int *)(puStack_8 + 0x24);
 
-    fVar13 = *(f32 *)(puStack_4 + 8);
+    fVar13 = *(f32 *)(puStack_8 + 8);
 
-    fVar12 = *(f32 *)(puStack_4 + 10);
+    fVar12 = *(f32 *)(puStack_8 + 10);
 
-    iVar6 = *(int *)(puStack_4 + 2);
+    iVar6 = *(int *)(puStack_8 + 2);
 
-    if (puStack_8 != (u16 *)0x0) {
+    if (puStack_4 != (u16 *)0x0) {
 
-      fVar11 = *(f32 *)(puStack_8 + 8);
+      fVar11 = *(f32 *)(puStack_4 + 8);
 
-      fVar9 = *(f32 *)(puStack_8 + 10);
+      fVar9 = *(f32 *)(puStack_4 + 10);
 
-      if ((iVar1 == 0) && (*(int *)(puStack_8 + 0x24) == 0)) {
+      if ((iVar1 == 0) && (*(int *)(puStack_4 + 0x24) == 0)) {
 
         uVar8 = DAT_007cadd0;
         *puVar7 = DAT_007cadd0;
@@ -5484,7 +5484,7 @@ void FUN_0038c540(int param_1,int param_2,int param_3,u32 *param_4,
 
       else {
 
-        FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_8 + 0x24),param_4);
+        FUN_00394070_evt_misc(fVar10,iVar6,(u32 *)iVar1,(u32 *)*(int *)(puStack_4 + 0x24),param_4);
 
         *(f32 *)param_5 = FUN_00394040_evt_misc(fVar10,fVar13,fVar12,iVar6);
 

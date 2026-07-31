@@ -877,7 +877,6 @@ void h_campDrawSocialList(int param_1)
     CampPair pair;
     CampPair t10, t9, t8, t7, t6, t5, t4, t3, t2, t1;
     s32 i;
-    s32 offset;
     f32 y;
     f32 fade = 0.0f;
 
@@ -902,9 +901,9 @@ void h_campDrawSocialList(int param_1)
     for (i = 0; i < 4; i++) {
         if (i <= *(s32*)(param_1 + 0x1c) - 1) {
             y = (f32)(i * 0x55) + 64.0f;
-            offset = (i + 10) * 0x44;
             CAMP_DRAW_PAIR_FIRST_AT(t6, 100.0f,
-                                    (void*)((u8 *)(uintptr_t)*(u32 *)(param_1 + 0xc4) + offset), 2,
+                                    (void*)(*(u32 *)(param_1 + 0xc4) +
+                                            (i + 10) * 0x44), 2,
                                     610.0f, y, fade);
         } else {
             *(u32*)(*(u32 *)(param_1 + 0xc4) + i * 0x44 + 0x2ac) = 0;

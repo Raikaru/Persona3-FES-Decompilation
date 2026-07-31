@@ -3696,8 +3696,9 @@ void func_00221b60(void)
         func_00224150();
     }
 
-    if (*(u32*)(work + 0x463c) == 3)
+    switch (*(u32*)(work + 0x463c))
     {
+    case 3:
         switch (*(u32*)(work + 0x4644))
         {
         case 1:
@@ -3711,6 +3712,7 @@ void func_00221b60(void)
             }
             break;
         }
+        break;
     }
 
     switch (*(u32*)(work + 0x463c))
