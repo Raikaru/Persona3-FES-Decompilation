@@ -2907,7 +2907,7 @@ FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 }
 
 
-// FUN_003A53B0 NONMATCHING
+// FUN_003A53B0
 u32
 
 FUN_003a53b0_int(int param_1,int param_2,u32 param_3,int param_4,int param_5,

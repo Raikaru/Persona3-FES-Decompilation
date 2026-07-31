@@ -764,7 +764,6 @@ void FUN_00224150(void)
     s32 i;
     s32 j;
     void (**setState)(u32, u32);
-    void (**setQuad)(u32*, u32, u32, u32, u32);
     void (**setQuad2)(u32*, u32, u32, u32, u32);
     void (**setQuad3)(u32*, u32, u32, u32, u32);
 
@@ -779,11 +778,11 @@ void FUN_00224150(void)
     texture = FUN_0021cce0(resource);
     (*setState)(1, texture);
 
-    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
-    (*setQuad)((u32*)(work + 0x4230), 4, 0, 1, 2);
-    (*setQuad)((u32*)(work + 0x4230), 4, 0, 2, 3);
-    (*setQuad)((u32*)(work + 0x4330), 4, 0, 1, 2);
-    (*setQuad)((u32*)(work + 0x4330), 4, 0, 2, 3);
+    setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuad3)((u32*)(work + 0x4230), 4, 0, 1, 2);
+    (*setQuad3)((u32*)(work + 0x4230), 4, 0, 2, 3);
+    (*setQuad3)((u32*)(work + 0x4330), 4, 0, 1, 2);
+    (*setQuad3)((u32*)(work + 0x4330), 4, 0, 2, 3);
 
     if ((*(u32*)work & 4) != 0) {
         selected = *(u32*)(records + 0x18c0);
@@ -796,8 +795,8 @@ void FUN_00224150(void)
             (*setState)(1, texture);
             RpSkyRenderStateSet(3, (void*)0x717fb);
             RpSkyRenderStateSet(2, (void*)0x44);
-            (*setQuad)((u32*)(records + 0x18f0), 4, 0, 1, 2);
-            (*setQuad)((u32*)(records + 0x18f0), 4, 0, 2, 3);
+            (*setQuad3)((u32*)(records + 0x18f0), 4, 0, 1, 2);
+            (*setQuad3)((u32*)(records + 0x18f0), 4, 0, 2, 3);
             break;
         case 1:
             break;
