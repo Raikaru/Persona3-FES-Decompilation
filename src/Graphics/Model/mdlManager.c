@@ -8,6 +8,9 @@
 f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
 
 static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
+typedef struct MdlShortVec8 {
+    short values[8];
+} MdlShortVec8;
 
 void mdlStreamInit(Model* mdl);
 void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
@@ -2954,6 +2957,7 @@ u32 func_00313090(u32 param_1,u32 param_2)
   int *piVar1;
 
   u8 *puVar2;
+  u8 *base;
 
   int iVar3;
 
@@ -2975,7 +2979,8 @@ u32 func_00313090(u32 param_1,u32 param_2)
 
     if ((((s64)(u32)*(u16 *)(piVar1 + 1) > (s64)sVar5) &&
 
-        (puVar2 = *(u8 **)((u8 *)(sVar5 * 0x50) + (*piVar1 + 0x40)),
+        (base = (u8 *)(*piVar1 + 0x40),
+        puVar2 = *(u8 **)(base + sVar5 * 0x50),
 
         puVar2 != (u8 *)0x0)) && (puVar2 != (u8 *)&DAT_009571d0)) {
 
@@ -6727,7 +6732,7 @@ void func_003197c0(Model* param_1, RwMatrix* param_2)
         iVar3 = (int)param_1->attachedWpns[uVar6].wpnMdl;
         if (iVar3 != 0)
         {
-            *(RwMatrix *)(iVar3 + 0x90) = *param_2;
+            *(RwMatrix *)((u8 *)(u32)iVar3 + 0x90) = *param_2;
         }
     }
 }
@@ -8732,29 +8737,8 @@ void func_0031c000(char* param_1,u32 param_2)
 
     if ((iStack_4 == 1) && (iStack_8 == 2)) {
 
-      puVar8 = (short*)DAT_0069b1b0_abs;
-
-      puVar7 = auStack_20;
-
-      iVar6 = 4;
-
-      do {
-
-        uVar1 = *puVar8;
-
-        uVar2 = puVar8[1];
-
-        puVar8 = puVar8 + 2;
-
-        iVar6 = iVar6 + -1;
-
-        *puVar7 = uVar1;
-
-        puVar7[1] = uVar2;
-
-        puVar7 = puVar7 + 2;
-
-      } while (0 < iVar6);
+      *(MdlShortVec8 *)((u8 *)auStack_20) =
+          *(MdlShortVec8 *)((u8 *)DAT_0069b1b0_abs);
 
       uVar5 = datGetUnit(1);
 

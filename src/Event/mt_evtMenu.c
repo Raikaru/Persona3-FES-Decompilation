@@ -1078,6 +1078,12 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5, i
 #pragma alias FUN_0036f680_ret FUN_0036f680
 extern u32 FUN_0036f680_ret(int param_1,int param_2,int param_3,int param_4,
                             u64 param_5,int param_6,int param_7);
+#pragma alias FUN_0036f680_ptr2 FUN_0036f680
+extern void FUN_0036f680_ptr2(int param_1,u32 *param_2,int param_3,int param_4,
+                              u64 param_5,int param_6,int param_7);
+#pragma alias FUN_0036f680_ret_ptr2 FUN_0036f680
+extern u32 FUN_0036f680_ret_ptr2(int param_1,u32 *param_2,int param_3,int param_4,
+                                 u64 param_5,int param_6,int param_7);
 void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,int param_8,code *param_9);
 #pragma alias FUN_0036f900_evt FUN_0036f900
 extern void FUN_0036f900_evt(int param_1,int param_2,int param_3,int param_4,
@@ -9428,7 +9434,6 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
 {
   int rowCount;
   u16 buttons;
-
   if (*(int *)(param_3 + 0x120) == 0) {
     rowCount = 10;
   }
@@ -9444,13 +9449,13 @@ u32 FUN_0037a640(int param_1,int param_2,int param_3)
   if (*(int *)(param_3 + 0xd4) != 2) {
     return 0;
   }
-  FUN_0036f680(0,param_3 + 0x118,*(u32 *)(param_3 + 0x11c),
+  FUN_0036f680_ptr2(0,(u32 *)((u8 *)(uintptr_t)param_3 + 0x118),
+               *(u32 *)(param_3 + 0x11c),
                *(u32 *)(param_3 + 0x11c),0,0x4000,0x1000);
-  int one = 1;
-  FUN_0036f680(0,0,one,one,0,0x2000,0x8000);
+  FUN_0036f680(0,0,1,1,0,0x2000,0x8000);
   buttons = *(u16 *)DAT_007e094e_abs;
   if ((buttons & 0x40) != 0) {
-    return one;
+    return 1;
   }
   if ((buttons & 0x20) != 0) {
     return -1;
@@ -9669,7 +9674,8 @@ u32 FUN_0037abd0(int param_1,int param_2,int param_3)
     return 0;
   }
   else {
-    u32 result = FUN_0036f680_ret(0,(int)param_3 + 0x104,0x11,0x11,0,0x4000,0x1000);
+    u32 result = FUN_0036f680_ret_ptr2(0,(u32 *)((u8 *)(uintptr_t)param_3 + 0x104),
+                                       0x11,0x11,0,0x4000,0x1000);
     FUN_0036f680(0,0,result,result,0,0x2000,0x8000);
 
     if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {

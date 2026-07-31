@@ -19,9 +19,6 @@ void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
 u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
 u64 FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,int param_10,int param_11,int param_12,float param_2,float param_3,float param_4);
-#pragma alias fclDrawSpriteCreate FUN_001158b0
-extern u32 fclDrawSpriteCreate();
-extern u32 FUN_001158b0(int param_1, u32 param_2, int param_3);
 #pragma alias fclDrawSpriteCreate_i FUN_001158b0
 extern u32 fclDrawSpriteCreate_i(int param_1, u32 param_2, int param_3);
 #pragma alias fclDrawSpriteEmit FUN_0040e3c0
@@ -324,13 +321,12 @@ FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, 
   char *pcVar3;
 
   u16 uVar4;
-  float fScale;
 
   
 
   pcVar3 = (char *)(*(int *)(param_10 + 0xc) + param_8 * 8);
 
-  uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
+  uVar2 = fclDrawSpriteCreate_i(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
 
                        *(short *)(pcVar3 + 2) + param_9);
 
@@ -349,26 +345,24 @@ FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, 
 
   *(float *)(iVar1 + 0x20) = param_2;
 
-  fScale = 4096.0f;
-  param_3 = fScale * param_3;
+  param_3 = 4096.0f * param_3;
 
   if (2147483648.0f <= param_3) goto scale_x_high;
   uVar4 = (u16)(int)param_3;
   goto scale_x_done;
 scale_x_high:
-  uVar4 = (u16)((u32)(int)(param_3 - 2147483648.0f) | 0x80000000);
+  uVar4 = (u16)(0x80000000 | (u32)(int)(param_3 - 2147483648.0f));
 scale_x_done:
   *(u16 *)(iVar1 + 0x28) = uVar4;
 
 
-  fScale = 4096.0f;
-  param_4 = fScale * param_4;
+  param_4 = 4096.0f * param_4;
 
   if (2147483648.0f <= param_4) goto scale_y_high;
   uVar4 = (u16)(int)param_4;
   goto scale_y_done;
 scale_y_high:
-  uVar4 = (u16)((u32)(int)(param_4 - 2147483648.0f) | 0x80000000);
+  uVar4 = (u16)(0x80000000 | (u32)(int)(param_4 - 2147483648.0f));
 scale_y_done:
   *(u16 *)(iVar1 + 0x2a) = uVar4;
 
@@ -406,7 +400,7 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
 
   pcVar3 = (char *)(*(int *)(param_10 + 0xc) + param_8 * 8);
 
-  uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
+  uVar2 = fclDrawSpriteCreate_i(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
 
                        *(short *)(pcVar3 + 2) + param_9);
 
@@ -426,24 +420,24 @@ FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int p
 
   *(float *)(iVar1 + 0x20) = param_2;
 
-  param_3 = param_3 * 4096.0f;
+  param_3 = 4096.0f * param_3;
 
   if (2147483648.0f > param_3) {
     uVar4 = (u16)(int)param_3;
   }
   else {
-    uVar4 = (u16)((u32)(int)(param_3 - 2147483648.0f) | 0x80000000);
+    uVar4 = (u16)(0x80000000 | (u32)(int)(param_3 - 2147483648.0f));
   }
 
   *(u16 *)(iVar1 + 0x28) = uVar4;
 
-  param_4 = param_4 * 4096.0f;
+  param_4 = 4096.0f * param_4;
 
   if (2147483648.0f > param_4) {
     uVar4 = (u16)(int)param_4;
   }
   else {
-    uVar4 = (u16)((u32)(int)(param_4 - 2147483648.0f) | 0x80000000);
+    uVar4 = (u16)(0x80000000 | (u32)(int)(param_4 - 2147483648.0f));
   }
 
   *(u16 *)(iVar1 + 0x2a) = uVar4;

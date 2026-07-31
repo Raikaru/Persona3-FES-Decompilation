@@ -104,7 +104,6 @@ static void K_FldFilter_InitQuads(RwCamera* camera)
     f32 recipZ;
     f32 bottom;
     f32 top;
-
     z = camera->nearPlane;
     recipZ = 1.0f / z;
     y = 0;
