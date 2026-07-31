@@ -260,49 +260,6 @@ extern void H_Fade_SetType();
 extern void H_Fade_SetDuration();
 extern void opResRequestLogo();
 
-// FUN_00265c20
-u32 opRootCreateTask(KwlnTask* parent)
-{
-    u32 task;
-    u32* work;
-    u32* root;
-    u32 child;
-    u8 color[4];
-
-    work = (u32*)H_Malloc(0x4530);
-    task = kwlnCreateTaskWithAutoPriority(parent, 10, "op",
-                        opRootUpdateTask, opRootDestroyTask, work);
-    child = kwlnInitTaskEx("op draw", 0x106f, 1, 2,
-                         opRootDrawTask, 0, 0);
-    work[3] = child;
-    kwlnAddTaskChild(task, child);
-    work[0] = 0;
-    work[2] = task;
-    opResInit(work + 8);
-    opLogoInit(work + 0x20);
-    opTitleInit(work + 0x68);
-    opWaitInit(work + 0x47c);
-    opMenuInit(work + 0x8dc);
-    opFadeInit(work + 0x1100);
-    kwlnSetClearColor(0, 0, 0, 0xff);
-    sWork = (GmRootWork*)work;
-    K_ASSERT(work != NULL, 0x9a);
-    root = (u32*)sWork;
-    root[0x1148] = 0;
-    color[0] = 0;
-    color[1] = 0;
-    color[2] = 0;
-    color[3] = 0xff;
-    opFadeSetColor(color);
-    opFadeIn();
-    H_Fade_FadeIn();
-    H_Fade_SetType(5);
-    H_Fade_SetDuration(10);
-    opResRequestLogo();
-    root[1] = 0;
-    *root |= 1;
-    return task;
-}
 
 // FUN_00266660
 void gmRootSetResult(u32 result)

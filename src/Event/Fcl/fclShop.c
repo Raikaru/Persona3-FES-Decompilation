@@ -266,6 +266,134 @@ u32 PTR_FUN_006a75e0[];
 u32 PTR_PTR_006a99c0[];
 #include "Kosaka/k_assert.h"
 
+#pragma alias FUN_003f03e0_y2 FUN_003f03e0
+#pragma alias FUN_003f0830_y2 FUN_003f0830
+#pragma alias FUN_003f9e30_y2 FUN_003f9e30
+#pragma alias FUN_00403800_y2 FUN_00403800
+#pragma alias FUN_00403830_y2 FUN_00403830
+#pragma alias datGetFlag_y2 datGetFlag
+#pragma alias sinf_y2 sinf_y2
+#pragma alias cosf_y2 cosf_y2
+#pragma alias datGetScenarioMode_y2 datGetScenarioMode_y2
+#pragma alias FUN_003c9e30_y2 FUN_003c9e30_y2
+#pragma alias FUN_003f0090_y2 FUN_003f0090_y2
+#pragma alias FUN_003f00b0_y2 FUN_003f00b0_y2
+#pragma alias FUN_003f0240_y2 FUN_003f0240_y2
+#pragma alias FUN_003f0ac0_y2 FUN_003f0ac0_y2
+#pragma alias FUN_003f0d60_y2 FUN_003f0d60_y2
+#pragma alias FUN_003f10b0_y2 FUN_003f10b0_y2
+#pragma alias FUN_003f12a0_y2 FUN_003f12a0_y2
+#pragma alias FUN_003f1470_y2 FUN_003f1470_y2
+#pragma alias FUN_003f1520_y2 FUN_003f1520_y2
+#pragma alias FUN_003f15d0_y2 FUN_003f15d0_y2
+#pragma alias FUN_0017c220_y2 FUN_0017c220_y2
+#pragma alias FUN_003f1720_y2 FUN_003f1720_y2
+#pragma alias FUN_003f1830_y2 FUN_003f1830_y2
+#pragma alias FUN_003f2d60_y2 FUN_003f2d60_y2
+#pragma alias FUN_003f33d0_y2 FUN_003f33d0_y2
+#pragma alias FUN_003f3f00_y2 FUN_003f3f00_y2
+#pragma alias FUN_003f9b20_y2 FUN_003f9b20_y2
+#pragma alias FUN_003fa0d0_y2 FUN_003fa0d0_y2
+#pragma alias FUN_003fa190_y2 FUN_003fa190_y2
+#pragma alias FUN_003fa1b0_y2 FUN_003fa1b0_y2
+#pragma alias FUN_003fb0c0_y2 FUN_003fb0c0_y2
+#pragma alias FUN_003fb6b0_y2 FUN_003fb6b0_y2
+#pragma alias FUN_003fbc00_y2 FUN_003fbc00_y2
+#pragma alias FUN_003fbe70_y2 FUN_003fbe70_y2
+#pragma alias FUN_003fbf10_y2 FUN_003fbf10_y2
+#pragma alias FUN_003fbf20_y2 FUN_003fbf20_y2
+#pragma alias FUN_003fc980_y2 FUN_003fc980_y2
+#pragma alias FUN_003fd730_y2 FUN_003fd730_y2
+#pragma alias FUN_003fd820_y2 FUN_003fd820_y2
+#pragma alias FUN_003fd8a0_y2 FUN_003fd8a0_y2
+#pragma alias FUN_003fd8e0_y2 FUN_003fd8e0_y2
+#pragma alias FUN_003fd990_y2 FUN_003fd990_y2
+#pragma alias FUN_003fdf80_y2 FUN_003fdf80_y2
+#pragma alias FUN_003fe2b0_y2 FUN_003fe2b0_y2
+#pragma alias FUN_003fe3e0_y2 FUN_003fe3e0_y2
+#pragma alias FUN_003fe5d0_y2 FUN_003fe5d0_y2
+#pragma alias FUN_003fe850_y2 FUN_003fe850_y2
+#pragma alias FUN_003fe950_y2 FUN_003fe950_y2
+#pragma alias FUN_003fee40_y2 FUN_003fee40_y2
+#pragma alias FUN_003fef30_y2 FUN_003fef30_y2
+#pragma alias FUN_003ff570_y2 FUN_003ff570_y2
+#pragma alias FUN_003ffe00_y2 FUN_003ffe00_y2
+#pragma alias FUN_003ffe60_y2 FUN_003ffe60_y2
+#pragma alias FUN_004003a0_y2 FUN_004003a0_y2
+#pragma alias FUN_004003f0_y2 FUN_004003f0_y2
+#pragma alias FUN_00400690_y2 FUN_00400690_y2
+#pragma alias FUN_00400e30_y2 FUN_00400e30_y2
+#pragma alias FUN_00400d60_y2 FUN_00400d60_y2
+#pragma alias FUN_00401170_y2 FUN_00401170_y2
+#pragma alias FUN_00401420_y2 FUN_00401420_y2
+#pragma alias FUN_004014e0_y2 FUN_004014e0_y2
+#pragma alias FUN_004015a0_y2 FUN_004015a0_y2
+#pragma alias FUN_004015e0_y2 FUN_004015e0_y2
+#pragma alias FUN_00401890_y2 FUN_00401890_y2
+#pragma alias FUN_00401950_y2 FUN_00401950_y2
+#pragma alias FUN_00401de0_y2 FUN_00401de0_y2
+#pragma alias FUN_00402400_y2 FUN_00402400_y2
+#pragma alias FUN_00402480_y2 FUN_00402480_y2
+#pragma alias FUN_004030b0_y2 FUN_004030b0_y2
+#pragma alias FUN_004030f0_y2 FUN_004030f0_y2
+#pragma alias FUN_004032f0_y2 FUN_004032f0_y2
+#pragma alias FUN_00403340_y2 FUN_00403340_y2
+#pragma alias FUN_00403410_y2 FUN_00403410_y2
+#pragma alias FUN_00403520_y2 FUN_00403520_y2
+#pragma alias FUN_00403610_y2 FUN_00403610_y2
+#pragma alias FUN_004038a0_y2 FUN_004038a0_y2
+#pragma alias FUN_004038e0_y2 FUN_004038e0_y2
+#pragma alias FUN_00403970_y2 FUN_00403970_y2
+#pragma alias FUN_00403e40_y2 FUN_00403e40_y2
+#pragma alias FUN_00403f20_y2 FUN_00403f20_y2
+#pragma alias FUN_00404120_y2 FUN_00404120_y2
+#pragma alias FUN_004044c0_y2 FUN_004044c0_y2
+#pragma alias FUN_00405970_y2 FUN_00405970_y2
+#pragma alias FUN_00405ac0_y2 FUN_00405ac0_y2
+#pragma alias FUN_00405d60_y2 FUN_00405d60_y2
+#pragma alias FUN_00405e30_y2 FUN_00405e30_y2
+#pragma alias FUN_00409f50_y2 FUN_00409f50_y2
+#pragma alias FUN_0040a200_y2 FUN_0040a200_y2
+#pragma alias FUN_0040a260_y2 FUN_0040a260_y2
+#pragma alias FUN_0040a2b0_y2 FUN_0040a2b0_y2
+#pragma alias FUN_0040a490_y2 FUN_0040a490_y2
+#pragma alias FUN_0040a6d0_y2 FUN_0040a6d0_y2
+#pragma alias FUN_0040b840_y2 FUN_0040b840_y2
+#pragma alias FUN_0040b910_y2 FUN_0040b910_y2
+#pragma alias FUN_0040c150_y2 FUN_0040c150_y2
+#pragma alias FUN_0040c170_y2 FUN_0040c170_y2
+#pragma alias FUN_0040c310_y2 FUN_0040c310_y2
+#pragma alias FUN_0040c490_y2 FUN_0040c490_y2
+#pragma alias FUN_0040c520_y2 FUN_0040c520_y2
+#pragma alias FUN_0040c5b0_y2 FUN_0040c5b0_y2
+#pragma alias FUN_0040c650_y2 FUN_0040c650_y2
+#pragma alias FUN_0040c6a0_y2 FUN_0040c6a0_y2
+#pragma alias FUN_0040c6f0_y2 FUN_0040c6f0_y2
+#pragma alias FUN_0040c9a0_y2 FUN_0040c9a0_y2
+#pragma alias FUN_0040ca00_y2 FUN_0040ca00_y2
+#pragma alias FUN_0040cad0_y2 FUN_0040cad0_y2
+#pragma alias FUN_0040e3c0_i_y2 FUN_0040e3c0_i_y2
+#pragma alias FUN_0040eb50_i_y2 FUN_0040eb50_i_y2
+#pragma alias DAT_007e094e_y2 DAT_007e094e_y2
+#pragma alias DAT_007e0958_y2 DAT_007e0958_y2
+#pragma alias FUN_0040e300_y2 FUN_0040e300_y2
+#pragma alias FUN_0040e390_y2 FUN_0040e390_y2
+#pragma alias H_Cdvd_CacheFindFile_y2 H_Cdvd_CacheFindFile_y2
+#pragma alias FUN_003eec60_y2 FUN_003eec60_y2
+#pragma alias FUN_0040e3f0_y2 FUN_0040e3f0_y2
+#pragma alias datGetEquipmentIdx_y2 datGetEquipmentIdx_y2
+#pragma alias FUN_0040e3c0_y2 FUN_0040e3c0_y2
+#pragma alias FUN_0040eb50_y2 FUN_0040eb50_y2
+#pragma alias func_00171110_y2 func_00171110_y2
+#pragma alias FUN_003c6ce0_y2 FUN_003c6ce0_y2
+#pragma alias FUN_003c6d10_y2 FUN_003c6d10_y2
+#pragma alias FUN_003c6ca0_y2 FUN_003c6ca0_y2
+#pragma alias FUN_003c6cc0_y2 FUN_003c6cc0_y2
+#pragma alias FUN_0017c700_y2 FUN_0017c700_y2
+#pragma alias datGetPersonaByCompendium_y2 datGetPersonaByCompendium_y2
+#pragma alias memset_y2 memset_y2
+
+
 
 
 
@@ -511,7 +639,7 @@ u64 FUN_003e6e80(void)
 
       uVar4 = FUN_003f00b0(*piVar10);
 
-      lVar8 = datGetFlag(uVar4);
+      lVar8 = datGetFlag_y2(uVar4);
 
       if (lVar8 == 0) {
 
@@ -563,7 +691,7 @@ u64 FUN_003e6e80(void)
 
     piVar10[1] = 10;
 
-    lVar8 = FUN_003f0830(*piVar10);
+    lVar8 = FUN_003f0830_y2(*piVar10);
 
     if (lVar8 == -1) {
 
@@ -1163,7 +1291,7 @@ LAB_003e789c:
 
   case 0x27:
 
-    lVar8 = datGetFlag(0x121f);
+    lVar8 = datGetFlag_y2(0x121f);
 
     if (lVar8 == 1) {
 
@@ -1554,7 +1682,7 @@ LAB_003e789c:
 
     }
 
-    lVar7 = FUN_003f03e0(*piVar10);
+    lVar7 = FUN_003f03e0_y2(*piVar10);
 
     iVar5 = FUN_003a2090(0,lVar8,lVar7 != 1,0xc00);
 
@@ -3562,7 +3690,7 @@ u64 FUN_003ea770(u64 param_1,u64 param_2)
 
   iVar2 = FUN_003c5470(param_2);
 
-  uVar3 = FUN_003f9e30(*puVar1);
+  uVar3 = FUN_003f9e30_y2(*puVar1);
 
   *(u32 *)(iVar2 + 0xc) = uVar3;
 
@@ -5016,10 +5144,10 @@ u8 * FUN_003ec2c0(u64 unused, u64 handle)
     case 5:
         *(u32*)(work + 8) = 6;
         item = *(u8**)(*(u8**)(*(u8**)(work + 0x10) + 0x14) + 0x1c);
-        value = FUN_00403800(*(s16*)(item + 4));
+        value = FUN_00403800_y2(*(s16*)(item + 4));
         sprintf(text, (const char*)&gp0xffffaad8, value);
         FUN_003c7bc0(0, text);
-        value = FUN_00403830(*(s16*)(item + 4));
+        value = FUN_00403830_y2(*(s16*)(item + 4));
         sprintf(text, (const char*)&gp0xffffaad8, value);
         FUN_003c7bc0(1, text);
         mode = FUN_00403410(*(s16*)(item + 4));
@@ -7960,3 +8088,1815 @@ u8 ** FUN_003efef0(void)
   return (u8 **)&PTR_PTR_006a99c0;
 
 }
+
+
+typedef struct FclShopDispatchResult {
+  u32 value;
+  u32 value_aux;
+  s16 field08;
+  s16 field0a;
+  s16 field0c;
+  s16 field0e;
+  s16 field10;
+  s16 field12;
+  s16 field14;
+  s16 field16;
+  s16 field18;
+  u16 field1a;
+} FclShopDispatchResult;
+typedef union FclShopFloatPair {
+  f32 f[2];
+  u32 u[2];
+} FclShopFloatPair;
+
+typedef struct FclShopDispatchSource {
+  FclShopDispatchResult alternate[18];
+  u8 pad1f8[8];
+  FclShopDispatchResult primary[18];
+  u8 pad3f8[8];
+} FclShopDispatchSource;
+
+typedef struct FclShopDispatchOutput {
+  FclShopDispatchResult result;
+  u8 pad1c[4];
+} FclShopDispatchOutput;
+
+typedef struct FclShopDispatchStack {
+  FclShopDispatchSource source[8];
+  FclShopDispatchOutput output[16];
+} FclShopDispatchStack;
+typedef struct FclShopDispatchRegion {
+  FclShopDispatchResult result[18];
+  u8 pad[0x118];
+} FclShopDispatchRegion;
+
+typedef struct FclShopDispatchStorage {
+  FclShopDispatchResult tail0;
+  u8 tail_gap[0x2f4];
+  FclShopDispatchResult tail1;
+  u8 tail_path_gap[0x2f4];
+  FclShopDispatchRegion path[28];
+  FclShopDispatchOutput output[30];
+} FclShopDispatchStorage;
+
+extern u32 D_006AF3E0[];
+extern u32 FUN_003dffc0();
+extern u32 fclCombineList003df100();
+
+#define FCL_SHOP_DISPATCH_BUILD(SRC, OUT, OWNER, ID, COPY_OFFSET) do { \
+  u32 *copy_src = D_006AF3E0; \
+  u32 *copy_dst = (u32 *)(SRC); \
+  int copy_count = 0x3f; \
+  u32 copy_value0; \
+  u32 copy_value1; \
+  do { \
+    copy_value0 = copy_src[0]; \
+    copy_value1 = copy_src[1]; \
+    copy_src += 2; \
+    copy_count = copy_count - 1; \
+    copy_dst[0] = copy_value0; \
+    copy_dst[1] = copy_value1; \
+    copy_dst += 2; \
+  } while (copy_count > 0); \
+  (SRC)[0].value = (ID); \
+  (SRC)[0].field18 = 0; \
+  (SRC)[1].value = (ID); \
+  (SRC)[1].field18 = 0; \
+  (SRC)[2].value = (ID); \
+  (SRC)[2].field18 = 0; \
+  (SRC)[3].value = (ID); \
+  (SRC)[3].field18 = 0; \
+  (SRC)[4].value = (ID); \
+  (SRC)[4].field18 = 0; \
+  (SRC)[5].value = (ID); \
+  (SRC)[5].field18 = 0; \
+  (SRC)[6].value = (ID); \
+  (SRC)[6].field18 = 0; \
+  (SRC)[7].value = (ID); \
+  (SRC)[7].field18 = 0; \
+  (SRC)[8].value = (ID); \
+  (SRC)[8].field18 = 0; \
+  (SRC)[9].value = (ID); \
+  (SRC)[9].field18 = 0; \
+  (SRC)[10].value = (ID); \
+  (SRC)[10].field18 = 0; \
+  (SRC)[11].value = (ID); \
+  (SRC)[11].field18 = 0; \
+  (SRC)[12].value = (ID); \
+  (SRC)[12].field18 = 0; \
+  (SRC)[13].value = (ID); \
+  (SRC)[13].field18 = 0; \
+  (SRC)[14].value = (ID); \
+  (SRC)[14].field18 = 0; \
+  (SRC)[15].value = (ID); \
+  (SRC)[15].field18 = 0; \
+  (SRC)[16].value = (ID); \
+  (SRC)[16].field18 = 0; \
+  (SRC)[17].value = (ID); \
+  (SRC)[17].field18 = 0; \
+  memcpy((OUT), (SRC) + (COPY_OFFSET), 0x1c); \
+  fclCombineList003df100( \
+      FUN_003dffc0((OWNER), (ID), *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), \
+      (OUT)); \
+} while (0)
+#define FCL_SHOP_MISC_BUILD(SRC, OUT, OWNER, ID, VALUE, FIELD, COPY_OFFSET) do { \
+    u32 *copy_src = D_006AF3E0; \
+    u32 *copy_dst = (u32 *)(SRC); \
+    int copy_count = 0x62; \
+    u32 copy_value0; \
+    u32 copy_value1; \
+    do { \
+        copy_value0 = *copy_src++; \
+        copy_value1 = *copy_src++; \
+        copy_count--; \
+        copy_dst[0] = copy_value0; \
+        copy_dst[1] = copy_value1; \
+        copy_dst += 2; \
+    } while (copy_count > 0); \
+    (SRC)[0].value = (VALUE); (SRC)[0].field18 = (FIELD); \
+    (SRC)[1].value = (VALUE); (SRC)[1].field18 = (FIELD); \
+    (SRC)[2].value = (VALUE); (SRC)[2].field18 = (FIELD); \
+    (SRC)[3].value = (VALUE); (SRC)[3].field18 = (FIELD); \
+    (SRC)[4].value = (VALUE); (SRC)[4].field18 = (FIELD); \
+    (SRC)[5].value = (VALUE); (SRC)[5].field18 = (FIELD); \
+    (SRC)[6].value = (VALUE); (SRC)[6].field18 = (FIELD); \
+    (SRC)[7].value = (VALUE); (SRC)[7].field18 = (FIELD); \
+    (SRC)[8].value = (VALUE); (SRC)[8].field18 = (FIELD); \
+    (SRC)[9].value = (VALUE); (SRC)[9].field18 = (FIELD); \
+    (SRC)[10].value = (VALUE); (SRC)[10].field18 = (FIELD); \
+    (SRC)[11].value = (VALUE); (SRC)[11].field18 = (FIELD); \
+    (SRC)[12].value = (VALUE); (SRC)[12].field18 = (FIELD); \
+    (SRC)[13].value = (VALUE); (SRC)[13].field18 = (FIELD); \
+    (SRC)[14].value = (VALUE); (SRC)[14].field18 = (FIELD); \
+    (SRC)[15].value = (VALUE); (SRC)[15].field18 = (FIELD); \
+    (SRC)[16].value = (VALUE); (SRC)[16].field18 = (FIELD); \
+    (SRC)[17].value = (VALUE); (SRC)[17].field18 = (FIELD); \
+    (SRC)[18].value = (VALUE); (SRC)[18].field18 = (FIELD); \
+    (SRC)[19].value = (VALUE); (SRC)[19].field18 = (FIELD); \
+    (SRC)[20].value = (VALUE); (SRC)[20].field18 = (FIELD); \
+    (SRC)[21].value = (VALUE); (SRC)[21].field18 = (FIELD); \
+    (SRC)[22].value = (VALUE); (SRC)[22].field18 = (FIELD); \
+    (SRC)[23].value = (VALUE); (SRC)[23].field18 = (FIELD); \
+    (SRC)[24].value = (VALUE); (SRC)[24].field18 = (FIELD); \
+    (SRC)[25].value = (VALUE); (SRC)[25].field18 = (FIELD); \
+    (SRC)[26].value = (VALUE); (SRC)[26].field18 = (FIELD); \
+    (SRC)[27].value = (VALUE); (SRC)[27].field18 = (FIELD); \
+    memcpy((OUT), (SRC) + (COPY_OFFSET), 0x1c); \
+    fclCombineList003df100( \
+        FUN_003dffc0((OWNER), (ID), \
+            *((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32 *)((u8 *)(OUT) + 4))), (OUT)); \
+} while (0)
+#define FCL_SHOP_MISC_AT(OFFSET) \
+    ((volatile /* Removing this file's qualifier batch loses 2 MATCH(es) and worsens 0 other function(s) - measured W170. */ FclShopDispatchResult *)((u8 *)source + (OFFSET)))
+u32 datSocialLinkLevelIsNotZero(s16 socialLink);
+u64 FUN_00172660(s32 socialLink);
+extern u8 DAT_006aede8[];
+extern u8 DAT_006aede8_abs[];
+#pragma alias DAT_006aede8_abs DAT_006aede8
+#pragma alias DAT_006aeff0_abs DAT_006aeff0
+extern s16 DAT_006aeff0_abs[];
+extern char DAT_006af340[];
+extern char DAT_006af360[];
+extern char DAT_006af380[];
+extern u32 gp0xffffac10;
+extern u32 gp0xfffface0;
+typedef int (*code)();
+float fGpffff8084;
+float fGpffff808c;
+float fGpffff8090;
+float fGpffff8110;
+float fGpffff8230;
+float fGpffff8234;
+float fGpffff8238;
+float fGpffff823c;
+int *iGpffffabf8;
+int iGpffffabfc;
+int iGpffffac00;
+u8 *iGpffffb730;
+int *iGpffffb7f4;
+int iGpffffb7f8;
+extern u8 *pbGpffffabe8;
+short *psGpffffabd0;
+short *psGpffffabf0;
+u32 *puGpffffabe0;
+u32 uGpffffabd4;
+u32 uGpffffabe4;
+extern u32 uGpffffabec;
+u32 uGpffffabf4;
+u32 fGpffffacf0;
+u32 fGpffffacf4;
+u32 fGpffffacf8;
+u32 fGpffffacfc;
+u32 fGpffffad00;
+u32 fGpffffad04;
+u32 uGpffffb9a8;
+/* FUSION_EXACT_PROTOS */
+extern float sinf_y2(float);
+extern float cosf_y2(float);
+#pragma alias FUN_0040e3f0_f32 FUN_0040e3f0_y2
+extern void FUN_0040e3f0_f32(float,float,float,float,int,int,int,int,int,int,int);
+void FUN_003c45f0(int param_1);
+u32 datGetScenarioMode_y2(void);
+u16 FUN_001752b0(void);
+void FUN_003c9e30_y2(u32 param_1,int param_2,s8 param_3);
+f32 func_00171510(s16 row, s16 column);
+void FUN_003eff00(u64 param_1,u8 *param_2);
+u8 * FUN_003efff0(int param_1);
+#pragma alias FUN_003efff0_u64 FUN_003efff0
+u8 * FUN_003efff0_u64(u64 param_1);
+s16 FUN_003f0090_y2(int param_1);
+s16 FUN_003f00b0_y2(int param_1);
+int FUN_003f00d0(int *param_1,int param_2,int *param_3);
+ #pragma alias FUN_003f00d0_i FUN_003f00d0
+ int *FUN_003f00d0_i(int *param_1,int param_2,int *param_3);
+ #pragma alias FUN_003f25e0_i FUN_003f25e0
+ u32 FUN_003f25e0_i(u32 param_1,int *param_2,u32 param_3);
+ #pragma alias FUN_003f2940_i FUN_003f2940
+ u32 FUN_003f2940_i(u32 param_1,short *param_2,int param_3,u32 param_4);
+ #pragma alias FUN_003f2320_i FUN_003f2320
+ u32 FUN_003f2320_i(u32 param_1,int *param_2);
+void FUN_003f01d0(int param_1,int param_2,int *param_3);
+u32 FUN_003f0240_y2(int param_1);
+int FUN_003f0350(int param_1,int *param_2);
+char FUN_003f03e0(int param_1);
+#pragma alias FUN_003f03e0_u64 FUN_003f03e0
+char FUN_003f03e0_u64(u64 param_1);
+#pragma alias FUN_003f03e0_u32 FUN_003f03e0
+u32 FUN_003f03e0_u32(u32 param_1);
+u32 FUN_003f04f0(u32 param_1,int param_2);
+u32 * FUN_003f06e0(int *param_1,u32 param_2);
+short FUN_003f0830(int param_1);
+short FUN_003f0ac0_y2(int param_1);
+long FUN_003f0d60_y2(int param_1,u64 param_2);
+u32 FUN_003f0ec0(u16 param_1);
+#pragma alias FUN_003f0ec0_s16 FUN_003f0ec0
+u32 FUN_003f0ec0_s16(s16 param_1);
+s16 FUN_003f10b0_y2(int param_1,u16 param_2);
+short FUN_003f12a0_y2(int param_1,int param_2);
+u64 FUN_003f1470_y2(int param_1);
+void FUN_003f1520_y2(int param_1);
+int FUN_003f15d0_y2(int param_1,int param_2);
+int FUN_003f1690(u64 param_1);
+#pragma alias FUN_003f1690_i FUN_003f1690
+int FUN_003f1690_i(int param_1);
+int clndIsDateInRangeFromStart(s8 month, s8 day, u32 range);
+#pragma alias clndIsDateInRangeFromStart_long clndIsDateInRangeFromStart
+int clndIsDateInRangeFromStart_long(long month,long day,u32 range);
+#pragma alias clndIsDateInRange_long clndIsDateInRange
+int clndIsDateInRange_long(long startMonth,long startDay,long endMonth,long endDay);
+void FUN_0017c220_y2(u16 *param_1);
+u32 FUN_003f1720_y2(u32 param_1,short param_2);
+u32 FUN_003f1830_y2(short *param_1,int param_2);
+u32 FUN_003f1910(u64 param_1);
+u32 FUN_003f1a10(u32 param_1);
+void FUN_003f1ba0(int param_1,u32 param_2);
+u32 FUN_003f1dc0(long param_1,int param_2,int param_3);
+u8 FUN_003f2240(int param_1,long param_2);
+u64 FUN_003f2320(int param_1,int param_2);
+u32 FUN_003f2510(void);
+u32 FUN_003f25e0(int param_1,int *param_2,u32 param_3);
+u32 FUN_003f2940(int param_1,short *param_2,int param_3,u32 param_4);
+u64 FUN_003f2d60_y2(int param_1);
+u64 FUN_003f2dc0(int param_1,int param_2);
+u32 FUN_003f2f70(u32 param_1,int param_2,u32 param_3);
+#pragma alias FUN_003f2f70_i FUN_003f2f70
+u32 FUN_003f2f70_i(int param_1,int param_2,int param_3);
+ #pragma alias FUN_003f33d0_i FUN_003f33d0_y2
+ u64 FUN_003f33d0_i(int param_1,u32 param_2);
+ #pragma alias FUN_003f3970_i FUN_003f3970
+ u32 FUN_003f3970_i(int param_1,u32 param_2);
+ #pragma alias FUN_003f39a0_i FUN_003f39a0
+ u32 FUN_003f39a0_i(int param_1,int param_2,u32 param_3);
+ #pragma alias FUN_003f3e60_i FUN_003f3e60
+ u32 FUN_003f3e60_i(u32 param_1,int *param_2);
+ #pragma alias FUN_003f3dc0_i FUN_003f3dc0
+ void FUN_003f3dc0_i(int param_1,u32 param_2);
+ #pragma alias FUN_003c58f0_i FUN_003c58f0
+ u32 FUN_003c58f0_i(u32 param_1,int param_2,u32 param_3,u32 param_4);
+ #pragma alias FUN_0019d3f0_fcl FUN_0019d3f0
+ void FUN_0019d3f0_fcl(const char *param_1,int param_2);
+#pragma alias fclShopNmlistFind FUN_003c4bf0
+extern int fclShopNmlistFind(int *list,int *head,int id);
+#pragma alias fclShopNmlistRemove FUN_003c49e0
+extern int fclShopNmlistRemove(int *list,int *head,int node);
+// Measured FUN_00400740: direct call nd8; alias alone nd8; typed byte-pointer a1 nd0 (object 432).
+#pragma alias FUN_003c49e0_ro FUN_003c49e0
+extern int FUN_003c49e0_ro(int *list,int *head,int node);
+u64 FUN_003f33d0_y2(int param_1,u32 param_2);
+u64 FUN_003f3970(long param_1,u32 param_2);
+u64 FUN_003f39a0(long param_1,long param_2,u32 param_3);
+void FUN_003f3dc0(int param_1,int *param_2);
+u32 FUN_003f3e60(int param_1,int *param_2);
+u32 FUN_003f3f00_y2(u64 param_1);
+void FUN_003f3fc0(int param_1,int param_2,u32 param_3,int param_4);
+void FUN_003f4350(int param_1,int param_2,int param_3,int param_4);
+void FUN_003f45e0(int param_1,int param_2,int param_3,int param_4);
+void FUN_003f4870(int param_1,int param_2,int param_3,int param_4);
+int FUN_003f4a90(int param_1,int param_2,int param_3,int param_4,int param_5,short *param_6);
+void FUN_003f4de0(int param_1,int param_2,u32 param_3,int param_4);
+void FUN_003f55b0(int param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
+#pragma alias FUN_003f55b0_i FUN_003f55b0
+void FUN_003f55b0_i(int,int,int,int,int,int);
+void FUN_003f5830(int param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_003f5ab0(u32 param_1,u32 param_2,u32 param_3,u64 param_4, int param_5);
+#pragma alias FUN_003f5ab0_i FUN_003f5ab0
+void FUN_003f5ab0_i(int,int,int,int,int);
+void FUN_003f5d10(u32 param_1,u32 param_2,u32 param_3,u64 param_4, int param_5);
+void FUN_003f5f50(u32 param_1,u32 param_2,u8 param_3,u64 param_4, int param_5);
+void FUN_003f61d0(int param_1,int param_2,u32 param_3,u64 param_4,int param_5);
+#pragma alias FUN_003f61d0_i FUN_003f61d0
+void FUN_003f61d0_i(int,int,int,int,int);
+void FUN_003f67e0(int param_1,int param_2,u32 param_3,int param_4,int param_5, int param_6);
+void FUN_003f6f20(int param_1,int param_2,int param_3,int param_4,int param_5);
+void FUN_003f7390(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003f7730(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003f7890(int param_1,int param_2,u8 param_3,int param_4,int param_5,int param_6);
+void FUN_003f7a80(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
+void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4, int param_5);
+#pragma alias FUN_003f7d50_i FUN_003f7d50
+void FUN_003f7d50_i(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003f7fe0(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+#pragma alias FUN_003f7fe0_i FUN_003f7fe0
+void FUN_003f7fe0_i(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+void FUN_003f85a0(int param_1,int param_2,u32 param_3,int param_4, int param_5);
+void FUN_003f86a0(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+void FUN_003f8a00(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+void FUN_003f8e10(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+void FUN_003f9220(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+void FUN_003f9510(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+u32 FUN_003f98f0(u16 param_1);
+u64 FUN_003f99d0(u32 param_1,u32 param_2);
+u64 FUN_003f9b20_y2(u64 param_1,int param_2);
+s32 FUN_003f9cb0(u32 *param_1, u32 *param_2);
+u32 FUN_003f9e30(int param_1);
+u32 FUN_003fa0d0_y2(u64 param_1);
+u64 FUN_003fa190_y2(int param_1);
+u64 FUN_003fa1b0_y2(int param_1);
+u8 FUN_003fa1e0(void);
+#pragma alias FUN_003fa1e0_u32 FUN_003fa1e0
+u32 FUN_003fa1e0_u32(void);
+void FUN_003fa210(int param_1);
+void FUN_003fa520(int param_1);
+void FUN_003fa800(int param_1);
+void FUN_003faae0(int param_1);
+void FUN_003fadc0(int param_1);
+void FUN_003fb0c0_y2(u32 param_1,u32 param_2);
+int FUN_003fb2f0(u32 *param_1);
+int FUN_003fb530(u32 *param_1);
+int FUN_003fb6b0_y2(u64 param_1);
+u32 FUN_003fbc00_y2(u32 *param_1);
+void FUN_003fbe70_y2(u8 *param_1,u8 *param_2);
+void FUN_003fbf10_y2(u16 *param_1);
+u64 FUN_003fbf20_y2(short *param_1);
+u64 FUN_003fc060(int param_1);
+#pragma alias FUN_003fc060_u32 FUN_003fc060
+u32 FUN_003fc060_u32(int param_1);
+#pragma alias FUN_003fc540_u32 FUN_003fc540
+u32 FUN_003fc540_u32(int param_1);
+u64 FUN_003fc540(int param_1);
+u32 FUN_003fc980_y2(int param_1);
+void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3);
+void FUN_003fcad0(u64 param_1,u64 param_2,u32 param_3,int param_4);
+void FUN_003fcbe0(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003fd010(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003fd030(u64 param_1,u64 param_2,u32 param_3,int param_4);
+void FUN_003fd140(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5);
+u64 FUN_003fd570(int param_1,u32 *param_2);
+u64 FUN_003fd730_y2(u64 param_1,int param_2);
+u64 FUN_003fd7e0(u64 param_1,int param_2);
+int * FUN_003fd820_y2(int param_1);
+void FUN_003fd8a0_y2(u32 *param_1);
+void FUN_003fd8e0_y2(int *param_1);
+u64 FUN_003fd990_y2(int *param_1);
+void FUN_003fdcc0(int *param_3,int param_2,int param_1);
+u64 FUN_003fdf80_y2(u32 *param_1);
+u32 FUN_003fe020(int param_1,u64 param_2);
+u32 FUN_003fe1f0(u64 param_1);
+u32 FUN_003fe2b0_y2(void);
+u32 FUN_003fe3e0_y2(u16 param_1);
+u32 FUN_003fe5d0_y2(u64 param_1);
+u64 FUN_003fe690(u32 param_1,u8 *param_2);
+#pragma alias FUN_003fe690_p FUN_003fe690
+u64 FUN_003fe690_p(u32 param_1,u64 param_2,int param_3);
+#pragma alias FUN_003fe690_3 FUN_003fe690
+u64 FUN_003fe690_3(u64 param_1,u64 param_2,int param_3);
+#pragma alias FUN_003c5e80_p FUN_003c5e80
+void FUN_003c5e80_p(u32 param_1,code param_2);
+#pragma alias FUN_003c5e20_p FUN_003c5e20
+void FUN_003c5e20_p(u32 param_1,code param_2);
+#pragma alias FUN_003c5ee0_p FUN_003c5ee0
+void FUN_003c5ee0_p(u32 param_1,code param_2);
+u64 FUN_003fe7d0(u64 param_1,int param_2);
+#pragma alias FUN_003fe7d0_i FUN_003fe7d0
+u64 FUN_003fe7d0_i(u32 param_1,int param_2);
+u32 FUN_003fe850_y2(u16 param_1,u64 param_2);
+#pragma alias FUN_003fea10_3 FUN_003fea10
+u64 FUN_003fea10_3(int param_1,u32 *param_2,int param_3);
+u32 FUN_003fe950_y2(u64 param_1);
+u64 FUN_003fea10(u32 param_1,u32 *param_2);
+u64 FUN_003feb30(u32 param_1,int param_2);
+u64 FUN_003fee40_y2(int param_1);
+#pragma alias FUN_003ff150_i FUN_003ff150
+u64 FUN_003ff150_i(int param_1,int param_2);
+#pragma alias FUN_003ff150_u32 FUN_003ff150
+u32 FUN_003ff150_u32(int param_1,int param_2);
+u32 FUN_003fef30_y2(int param_1,int param_2);
+u64 FUN_003ff150(int param_1,int param_2);
+void FUN_003ff460(int param_1,u32 param_2);
+u32 FUN_003ff570_y2(u64 param_1);
+void FUN_003ff630(u32 param_1,u64 param_2,u64 param_3,u64 param_4, u8 param_5,short param_6,short param_7,u32 param_8);
+#pragma alias FUN_003ff630_f32 FUN_003ff630
+void FUN_003ff630_f32(float param_1,int param_2,int param_3,int param_4,int param_5,short param_6,short param_7,u32 param_8);
+u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3);
+#pragma alias FUN_003ffa20_3 FUN_003ffa20
+int FUN_003ffa20_3(u64 param_1,u64 param_2,short *param_3);
+void FUN_003ffbb0(int param_1,int param_2);
+void FUN_003ffe00_y2(int param_1);
+int * FUN_003ffe60_y2(int param_1);
+void FUN_004003a0_y2(int param_1);
+u32 FUN_004003f0_y2(int *param_1);
+u64 FUN_00400690_y2(u32 *param_1);
+void FUN_004006c0(int param_1,int param_2,int param_3,int param_4);
+void FUN_00400740(int param_1,int param_2,int param_3,int param_4);
+void FUN_004008f0(int param_1,int param_2,u8 param_3,int param_4);
+void FUN_00400a90(int param_1,int param_2,int param_3,int param_4,u32 *param_5);
+void FUN_00400b90(int param_1,int param_2,int param_3,int param_4,u32 *param_5);
+void FUN_00400e30_y2(int param_1);
+int FUN_00400d60_y2(void);
+u32 FUN_00401210(int param_1);
+void FUN_00401170_y2(int param_1);
+u64 FUN_004012c0(int param_1);
+u64 FUN_00401370(int param_1);
+void FUN_00401420_y2(int param_1,int param_2);
+u32 FUN_004014e0_y2(u32 param_1);
+void FUN_004015a0_y2(u32 *param_1,u32 param_2);
+u8 FUN_004015e0_y2(u32 *param_1);
+int FUN_00401600(u64 param_1,u64 param_2,int param_3);
+u32 FUN_004016d0(u32 param_1);
+int FUN_00401800(short param_1);
+u32 FUN_00401890_y2(short param_1);
+u32 FUN_00401950_y2(u16 param_1);
+u32 FUN_00401a00(u16 param_1,u16 *param_2,short *param_3);
+#pragma alias FUN_00401a00_i FUN_00401a00
+u32 FUN_00401a00_i(short param_1,int param_2,short *param_3);
+u8 * FUN_00401c90(u32 *param_1,int param_2);
+u8 * FUN_00401cf0(int param_1);
+short * FUN_00401d90(int param_1);
+u32 FUN_00401de0_y2(u32 param_1,int param_2,int param_3);
+void FUN_00402400_y2(int param_1,u16 *param_2);
+u32 FUN_00402480_y2(u16 *param_1);
+u32 FUN_00402510(u32 param_1,long param_2,u32 param_3,short param_4);
+u32 FUN_004026b0(int param_1,int param_2,u32 param_3);
+void FUN_00402800(int param_1);
+void FUN_00402c80(int param_1);
+s16 FUN_004030b0_y2(u16 param_1);
+s16 FUN_004030f0_y2(u16 param_1);
+void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,s16 param_7);
+void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,s16 param_7);
+void FUN_004032f0_y2(u64 param_1);
+void FUN_00403340_y2(u16 param_1);
+u8 FUN_00403380(u64 param_1);
+#pragma alias FUN_00403380_i FUN_00403380
+int FUN_00403380_i(u64 param_1);
+u8 FUN_00403410_y2(short param_1);
+u32 FUN_00403520_y2(void);
+int FUN_00403610_y2(void);
+s16 FUN_00403740(short param_1);
+s16 FUN_00403760(short param_1);
+s16 FUN_00403780(short param_1);
+s16 FUN_004037a0(short param_1);
+s16 FUN_004037c0(short param_1);
+int FUN_004037e0(short param_1);
+long FUN_00403800(short param_1);
+long FUN_00403830(short param_1);
+int FUN_00403860(short param_1);
+int FUN_00403880(short param_1);
+u32 FUN_004038a0_y2(short param_1);
+u32 FUN_004038e0_y2(short param_1);
+#pragma alias FUN_00403740_i FUN_00403740
+int FUN_00403740_i(int param_1);
+#pragma alias FUN_00403800_i FUN_00403800
+int FUN_00403800_i(int param_1);
+#pragma alias FUN_00403830_i FUN_00403830
+int FUN_00403830_i(int param_1);
+#pragma alias FUN_00403860_i FUN_00403860
+int FUN_00403860_i(int param_1);
+#pragma alias FUN_00403880_i FUN_00403880
+int FUN_00403880_i(int param_1);
+#pragma alias FUN_004038e0_i FUN_004038e0_y2
+int FUN_004038e0_i(int param_1);
+s16 FUN_00403900(short param_1);
+u32 FUN_00403920(short param_1,short param_2);
+u32 FUN_00403970_y2(short param_1);
+u32 FUN_00403e40_y2(int param_1,int param_2);
+u32 FUN_00403f20_y2(short param_1,int param_2);
+u32 FUN_00404120_y2(short param_1,int param_2);
+void FUN_00404470(short param_1);
+#pragma alias FUN_00404470_alt FUN_00404470
+void FUN_00404470_alt(short param_1,int param_2);
+#pragma alias FUN_00404470_long FUN_00404470
+void FUN_00404470_long(long param_1,int param_2);
+void FUN_004044c0_y2(short param_1);
+void FUN_004045d0(u64 param_1);
+#pragma alias FUN_004045d0_u32 FUN_004045d0
+void FUN_004045d0_u32(u32 param_1);
+void FUN_00404750(u32 param_1,u32 param_2,u32 param_3);
+u64 FUN_00405970_y2(u64 param_1,int param_2);
+void FUN_00405a90(u64 param_1,int param_2);
+u32 FUN_00405ac0_y2(u64 param_1,long param_2);
+void FUN_00405d60_y2(int param_1);
+void FUN_00405e00(u64 param_1);
+#pragma alias FUN_00405e00_u32 FUN_00405e00
+void FUN_00405e00_u32(u32 param_1);
+extern int FUN_00405db0(u32* param_1, u32* param_2);
+u32 FUN_00405e30_y2(u32 param_1);
+void FUN_00405f70(s32 param_1,s32 param_2,s32 param_3,int param_4,u64 param_5, int param_6,int param_7);
+#pragma alias FUN_00405f70_i FUN_00405f70
+void FUN_00405f70_i(s32 param_1,s32 param_2,s32 param_3,int param_4,int param_5,
+                    int param_6,int param_7);
+void FUN_004064e0(int param_1,int param_2,int param_3,int param_4);
+void FUN_00406aa0(int param_1,int param_2,u32 param_3);
+void FUN_00406ca0(int param_1,int param_2,int *param_3);
+void FUN_00407180(u32 param_1,u32 param_2,u16 param_3,int param_4);
+void FUN_00407210(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5);
+void FUN_004072d0(int param_1,long param_2,long param_3);
+ #pragma alias FUN_004072d0_i FUN_004072d0
+ void FUN_004072d0_i(u32 param_1,int param_2,int param_3);
+u32 FUN_00409c80(u32 param_1);
+ #pragma alias FUN_00409c80_i FUN_00409c80
+ u32 FUN_00409c80_i(u32 param_1);
+u32 FUN_00409e90(void);
+void FUN_00409f20(u64 param_1,int param_2);
+u32 FUN_00409f50_y2(u32 param_1,int param_2);
+void FUN_0040a200_y2(int param_1);
+void FUN_0040a260_y2(int param_1);
+u32 FUN_0040a2b0_y2(u32 param_1);
+u32 FUN_0040a490_y2(u32 param_1);
+void FUN_0040a6d0_y2(u32 param_1,int param_2);
+ #pragma alias FUN_0040a6d0_i FUN_0040a6d0_y2
+ void FUN_0040a6d0_i(u32 param_1,int param_2);
+ #pragma alias FUN_00174a90_fcl FUN_00174a90
+ u32 FUN_00174a90_fcl(short param_1);
+void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3);
+void FUN_0040ec20_y2(float scale,int x,int y,u32 color,int type,const void *text,int width,int shadow,code callback);
+void FUN_0040a7f0(u64 param_1,int param_2,int *param_3);
+void FUN_0040b3a0(u64 param_1,int param_2,int param_3);
+void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,int param_4);
+void FUN_0040b780(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5);
+void FUN_0040b840_y2(int param_1);
+u32 FUN_0040b910_y2(u32 param_1);
+void FUN_0040c150_y2(u32 param_1);
+u32 FUN_0040c170_y2(void);
+void FUN_0040c1e0(int param_1,int param_2,int param_3);
+#pragma alias FUN_0040c1e0_2 FUN_0040c1e0
+void FUN_0040c1e0_2(int param_1,int param_2);
+void FUN_0040c310_y2(int param_1);
+void FUN_0040c460(u64 param_1,int param_2);
+void FUN_0040c490_y2(u64 param_1);
+void FUN_0040c520_y2(u64 param_1);
+void FUN_0040c5b0_y2(u64 param_1);
+void FUN_0040c650_y2(u64 param_1);
+void FUN_0040c6a0_y2(u64 param_1);
+int FUN_0040c6f0_y2(int param_1);
+void FUN_0040c9a0_y2(int param_1);
+u32 FUN_0040ca00_y2(int param_1);
+void FUN_0040cad0_y2(int param_1);
+void FUN_0040cc30(u64 param_1,int param_2,int *param_3);
+void FUN_0040d330(int param_1);
+void FUN_0040d3b0(u32 param_1,u32 param_2,u16 param_3,int param_4);
+void FUN_0040d400(void);
+u32 FUN_0040d410(void);
+u32 FUN_0040d490(void);
+u32 FUN_0040d540(void);
+void FUN_0040d5b0(int param_1,int param_2,int param_3,int param_4,u32 param_5);
+void FUN_0040d5e0(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_0040d610(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6,long param_7);
+void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6, long param_7,long param_8);
+void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u32 param_7,int param_8,long param_9);
+#pragma alias datGetFlag_s32 datGetFlag
+s32 datGetFlag_s32(s32 param_1);
+#pragma alias datGetFlag_u32 datGetFlag
+u32 datGetFlag_u32();
+#pragma alias datGetFlag_u32_arg datGetFlag
+u32 datGetFlag_u32_arg(int param_1);
+#pragma alias datSocialLinkLevelIsNotZero_s32 datSocialLinkLevelIsNotZero
+u32 datSocialLinkLevelIsNotZero_s32(s32 socialLink);
+void FUN_001725a0(u64 socialLink);
+#pragma alias datGetEquipmentIdx_s16 datGetEquipmentIdx_y2
+s16 datGetEquipmentIdx_s16(s16 param_1,s16 param_2);
+#pragma alias FUN_0017c610_u64 FUN_0017c610
+s32 FUN_0017c610_u64(u64 param_1);
+#pragma alias FUN_004037e0_u64 FUN_004037e0
+int FUN_004037e0_u64(u64 param_1);
+#pragma alias FUN_003f04f0_u32 FUN_003f04f0
+u32 FUN_003f04f0_u32(u32 param_1,int param_2);
+#pragma alias FUN_003f1dc0_u32 FUN_003f1dc0
+u32 FUN_003f1dc0_u32(s32 param_1,void *param_2,s32 param_3);
+#pragma alias FUN_003f1dc0_u64 FUN_003f1dc0
+u32 FUN_003f1dc0_u64(u64 param_1,void *param_2,s32 param_3);
+#pragma alias FUN_003f2240_u32 FUN_003f2240
+u32 FUN_003f2240_u32();
+#pragma alias FUN_0040e3c0_f32 FUN_0040e3c0_y2
+void FUN_0040e3c0_f32(float param_1,int param_2,int param_3,u8 param_4,int param_5,int param_6);
+#pragma alias FUN_0040e3c0_u32 FUN_0040e3c0_y2
+void FUN_0040e3c0_u32(float param_1,int param_2,int param_3,u32 param_4,int param_5,int param_6);
+void FUN_0040e3c0_i_y2(s32 x,s32 y,f32 scale,u8 color,s32 type,s32 value);
+#pragma alias FUN_003b2cb0_f32 FUN_003b2cb0
+void FUN_003b2cb0_f32(f32 scale,s32 x,s32 y,u32 color,s8 font,s32 align,const void *text,s32 width,s32 shadow);
+#pragma alias FUN_003b2cb0_i FUN_003b2cb0
+void FUN_003b2cb0_i(s32 x,s32 y,f32 scale,u32 color,u32 font,u32 align,const void *text,u32 width,u32 shadow);
+#pragma alias FUN_003b32d0_f32 FUN_003b32d0
+void FUN_003b32d0_f32(f32 scale,s32 x,s32 y,u32 color,s8 font,s32 align,const void *text,s32 width,s32 shadow);
+#pragma alias FUN_003b32d0_i FUN_003b32d0
+void FUN_003b32d0_i(s32 x,s32 y,f32 scale,u32 color,s8 font,s32 align,const void *text,s32 width,s32 shadow);
+#pragma alias FUN_0040eb50_f32 FUN_0040eb50_y2
+s32 FUN_0040eb50_f32(f32 scale,s32 x,s32 y,u8 color,s32 font,const void *text,s32 width);
+s32 FUN_0040eb50_i_y2(s32 x,s32 y,f32 scale,u8 color,s32 font,const void *text,s32 width);
+#pragma alias FUN_0040ebc0_f32 FUN_0040ebc0
+s32 FUN_0040ebc0_f32(f32 scale,s32 x,s32 y,u32 color,s32 font,const void *text,s32 width);
+#pragma alias func_00171110_ptr func_00171110_y2
+const char *func_00171110_ptr(s16 id,s16 field);
+#pragma alias FUN_003c7e20_f32 FUN_003c7e20
+void FUN_003c7e20_f32(f32 p1,s32 p2,s32 p3,u32 p4,s32 p5,s32 p6,s32 p7,u32 p8);
+#pragma alias FUN_003c7e20_f32_u64 FUN_003c7e20
+void FUN_003c7e20_f32_u64(f32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,s32 p7,u32 p8);
+#pragma alias FUN_003c7e20_mid FUN_003c7e20
+void FUN_003c7e20_mid(u64 p1,u64 p2,f32 p3,u64 p4,u64 p5,u64 p6,s32 p7,u32 p8);
+#pragma alias FUN_003c6270_u32 FUN_003c6270
+u32 FUN_003c6270_u32(u32 param_1);
+#pragma alias FUN_003c6ce0_u32 FUN_003c6ce0_y2
+u32 FUN_003c6ce0_u32(u32 param_1);
+#pragma alias FUN_003c6d10_u32 FUN_003c6d10_y2
+u32 FUN_003c6d10_u32(u32 param_1);
+#pragma alias FUN_003c6ca0_u32 FUN_003c6ca0_y2
+u32 FUN_003c6ca0_u32(u32 param_1);
+#pragma alias FUN_003c6cc0_u32 FUN_003c6cc0_y2
+u32 FUN_003c6cc0_u32(u32 param_1);
+#pragma alias FUN_0017c700_u32 FUN_0017c700_y2
+u32 FUN_0017c700_u32(void);
+#pragma alias FUN_00175410_u32 FUN_00175410
+u32 FUN_00175410_u32(void);
+#pragma alias datPersonaGetHeroPersona_u32 datPersonaGetHeroPersona
+u32 datPersonaGetHeroPersona_u32(s16 param_1);
+#pragma alias datGetPersonaByCompendium_ptr datGetPersonaByCompendium_y2
+void *datGetPersonaByCompendium_ptr(s32 idx);
+#pragma alias datPersonaGetTotalStat_u16 datPersonaGetTotalStat
+u16 datPersonaGetTotalStat_u16(void *persona,u16 statId);
+#pragma alias FUN_0017ca10_u32 FUN_0017ca10
+u32 FUN_0017ca10_u32(u32 param_1);
+#pragma alias FUN_00173a00_u32 FUN_00173a00
+u32 FUN_00173a00_u32(u32 param_1,u32 param_2);
+#pragma alias FUN_00173a00_s32 FUN_00173a00
+s32 FUN_00173a00_s32(u32 param_1,u32 param_2);
+#pragma alias FUN_003e0680_typed FUN_003e0680
+void FUN_003e0680_typed(int param_1,code param_2,void *param_3);
+#pragma alias memset_typed memset_y2
+void memset_typed(void *param_1,int param_2,u32 param_3);
+#pragma alias memcpy_typed memcpy
+void memcpy_typed(void *param_1,const void *param_2,u32 param_3);
+#pragma alias H_Maestro_00111c50_i H_Maestro_00111c50
+void H_Maestro_00111c50_i(u64 param_1);
+#pragma alias H_Maestro_SetAlphaMult_f32 H_Maestro_SetAlphaMult
+void H_Maestro_SetAlphaMult_f32(float param_1,u64 param_2);
+#pragma alias H_Maestro_RequestDraw_i H_Maestro_RequestDraw
+#pragma alias FUN_003c4e70_u64 FUN_003c4e70
+void FUN_003c4e70_u64(int param_1);
+#pragma alias scrGetIntPara_u32 scrGetIntPara
+u32 scrGetIntPara_u32(int param_1);
+#pragma alias FUN_003e0700_u32 FUN_003e0700
+void FUN_003e0700_u32(u32 param_1);
+#pragma alias fclCombine003d02f0_i fclCombine003d02f0
+void fclCombine003d02f0_i(void);
+#pragma alias FUN_00175410_u32 FUN_00175410
+u32 FUN_00175410_u32(void);
+#pragma alias datPersonaGetHeroPersona_s16 datPersonaGetHeroPersona
+u32 datPersonaGetHeroPersona_s16(s16 param_1);
+#pragma alias FUN_0017ca10_u32 FUN_0017ca10
+u32 FUN_0017ca10_u32(u32 param_1);
+
+
+/* FUSION_GLOBALS */
+u32 DAT_006ac9e8;
+u32 DAT_006ad4b4;
+float DAT_007cada4;
+u32 DAT_007ce420;
+u32 DAT_007ce4e8;
+extern u8 DAT_006ac9d0[];
+#pragma alias DAT_006acc60_abs DAT_006acc60
+extern u8 DAT_006acc60_abs[];
+u32 DAT_006acc60;
+extern u8 DAT_006acc70[];
+extern u8 DAT_006acc72[];
+#pragma alias DAT_006acca0_abs DAT_006acca0
+extern u16 DAT_006acca0_abs[];
+u32 DAT_006acca0;
+u32 DAT_006aedc0[];
+u32 DAT_006aedc4[];
+u32 DAT_006aee60;
+u32 DAT_006aeea0;
+u32 DAT_006aeee0;
+u32 DAT_006aef00;
+#pragma alias DAT_006aef00_abs DAT_006aef00
+extern u8 DAT_006aef00_abs[];
+u32 DAT_006aef30;
+#pragma alias DAT_006aef30_abs DAT_006aef30
+extern s16 DAT_006aef30_abs[];
+u32 DAT_006aef40;
+#pragma alias DAT_006aef40_abs DAT_006aef40
+extern s16 DAT_006aef40_abs[];
+u32 DAT_006aef50;
+#pragma alias DAT_006aef50_abs DAT_006aef50
+extern s16 DAT_006aef50_abs[];
+u32 DAT_006aef60;
+u32 DAT_006aef98;
+u32 DAT_006aefa8;
+u8 DAT_006aefb8[];
+u32 DAT_006aefd0;
+#pragma alias DAT_006aefd0_abs DAT_006aefd0
+extern s16 DAT_006aefd0_abs[];
+u32 DAT_006aeff0;
+u32 DAT_006af000;
+u32 DAT_006af004;
+u32 DAT_006af008;
+u32 DAT_006af010;
+#pragma alias DAT_006af010_abs DAT_006af010
+extern u8 DAT_006af010_abs[];
+u32 DAT_006af0b0;
+u32 DAT_006af140;
+#pragma alias DAT_006af140_003fd570 DAT_006af140
+extern int DAT_006af140_003fd570[];
+typedef struct {
+  f32 x, y, z, w;
+} FclShopFloatQuad;
+typedef union {
+  FclShopFloatQuad vector;
+  u8 *value[4];
+} FclShopDataSet;
+typedef struct {
+  u8 *default_data;
+  u32 pad04;
+  u8 *alternate_data;
+  u32 pad0c;
+  u8 *entry_table;
+  int entry_count;
+} FclShopStockConfig;
+#pragma alias fclShopStockConfig PTR_DAT_006ad4a0
+extern FclShopStockConfig fclShopStockConfig;
+FclShopDataSet DAT_006af170;
+u32 DAT_006af180;
+extern u16 DAT_006af180_abs[];
+#pragma alias DAT_006af180_abs DAT_006af180
+u32 DAT_006af188;
+u32 DAT_006af18c;
+u32 DAT_006af190;
+u32 DAT_006af1c0;
+u32 DAT_006af240;
+u32 DAT_006af270;
+u32 DAT_006af290;
+u32 DAT_006af2b0;
+u32 DAT_006af2d0;
+u32 DAT_006af300;
+u32 DAT_006af320;
+#pragma alias fclShopEquipmentPairTable DAT_006af190
+extern u16 fclShopEquipmentPairTable[];
+#pragma alias fclShopEquipmentIndexTable DAT_006af1c0
+extern u8 fclShopEquipmentIndexTable[];
+#pragma alias fclShopEquipmentValues0 DAT_006af240
+extern u16 fclShopEquipmentValues0[];
+#pragma alias fclShopEquipmentValues1 DAT_006af270
+extern u16 fclShopEquipmentValues1[];
+#pragma alias fclShopEquipmentValues2 DAT_006af290
+extern u16 fclShopEquipmentValues2[];
+#pragma alias fclShopEquipmentValues3 DAT_006af2b0
+extern u16 fclShopEquipmentValues3[];
+#pragma alias fclShopEquipmentValues4 DAT_006af2d0
+extern u16 fclShopEquipmentValues4[];
+#pragma alias fclShopEquipmentValues5 DAT_006af300
+extern u16 fclShopEquipmentValues5[];
+#pragma alias fclShopEquipmentValues6 DAT_006af320
+extern u16 fclShopEquipmentValues6[];
+extern u32 DAT_006af3a0;
+extern u8 DAT_006af3a0_abs[];
+#pragma alias DAT_006af3a0_abs DAT_006af3a0
+#pragma alias fclShopEmptyFormat DAT_006af3d0
+extern char fclShopEmptyFormat[];
+extern char DAT_007cd900;
+u32 DAT_006af5e0;
+u32 DAT_006af600;
+u32 DAT_006af620;
+u32 DAT_006af930;
+extern float DAT_007cad74;
+float DAT_007cad78;
+float DAT_007cad80;
+float DAT_007cad94;
+float DAT_007caef0;
+float DAT_007caf14;
+float DAT_007caf38;
+u32 DAT_007cd8f4;
+f32 DAT_007cd8f8;
+f32 DAT_007cd8fc;
+f32 DAT_007cd908;
+f32 DAT_007cd90c;
+u32 DAT_007cd910;
+u32 DAT_007cd918;
+u32 DAT_007cd920;
+u32 DAT_007cd928;
+u32 DAT_007cd930;
+u32 DAT_007cd932;
+u32 DAT_007cd934;
+u32 DAT_007cd936;
+u32 DAT_007cd938;
+u32 DAT_007cd940;
+u32 DAT_007cd942;
+u32 DAT_007cd944;
+u32 DAT_007cd946;
+u32 DAT_007cd948;
+s16 DAT_007cd950;
+s16 DAT_007cd952;
+u32 DAT_007cd958;
+u32 DAT_007cd95c;
+u32 DAT_007cd960;
+u32 DAT_007cd964;
+u32 DAT_007cd968;
+u32 DAT_007cd96c;
+u32 DAT_007cd980;
+u32 DAT_007cd988;
+u32 DAT_007cd990;
+u32 DAT_007cd998;
+u32 DAT_007cd9a0;
+u32 DAT_007cd9a8;
+u32 DAT_007cd9b0;
+u32 DAT_007cd9b8;
+u32 DAT_007cd9c0;
+u32 DAT_007cd9c8;
+u32 DAT_007cd9f8;
+u32 DAT_007cd9fc;
+u32 DAT_007cda00;
+u8 *DAT_007ce4e4;
+u32 DAT_007e094e_y2;
+u32 DAT_007e0952;
+u32 DAT_007e0958_y2;
+u32 DAT_007e095a;
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e095a_abs[];
+u32 DAT_00960088;
+code DAT_00960090;
+code DAT_009600a0;
+u32 DAT_0098967f;
+u32 LAB_003eff84[];
+u32 LAB_003f0748[];
+u32 LAB_003f07f4[];
+u32 LAB_003f23a8[];
+u32 LAB_003fe35c[];
+u32 LAB_003fee10[];
+u32 LAB_00401910[];
+u32 LAB_004019d0[];
+u32 LAB_00401aa4[];
+u32 LAB_00401b60[];
+u32 LAB_00401bc4[];
+u32 LAB_00401c48[];
+u32 LAB_00401ea8[];
+u32 LAB_00401fa8[];
+u32 LAB_0040203c[];
+u32 LAB_00402100[];
+u32 LAB_0040370c[];
+u32 LAB_00403b38[];
+u32 LAB_00403d20[];
+u32 LAB_00403ec0[];
+u32 LAB_004046bc[];
+u32 LAB_004062e0[];
+u32 LAB_00406468[];
+u32 LAB_0040c3c4[];
+u32 PTR_DAT_006ac9ec[];
+u32 PTR_DAT_006ac9f0[];
+u32 PTR_DAT_006ad4a0[];
+u32 PTR_DAT_006ad4b0[];
+u32 PTR_DAT_007cd8f0[];
+#pragma alias PTR_DAT_007cd8f0_ptr PTR_DAT_007cd8f0
+extern u8 *PTR_DAT_007cd8f0_ptr;
+u32 PTR_FUN_006aee00[];
+u32 PTR_FUN_006aee20[];
+u32 PTR_FUN_006aee40[];
+u32 PTR_FUN_006af050[];
+u32 PTR_FUN_006af070[];
+u32 PTR_FUN_006af090[];
+#pragma alias PTR_FUN_006af050_abs PTR_FUN_006af050
+extern u8 PTR_FUN_006af050_abs[];
+#pragma alias PTR_FUN_006af070_abs PTR_FUN_006af070
+extern u8 PTR_FUN_006af070_abs[];
+#pragma alias PTR_FUN_006af090_abs PTR_FUN_006af090
+extern u8 PTR_FUN_006af090_abs[];
+typedef struct {
+  f32 x, y;
+} FclShopFloatVector2;
+typedef union {
+  FclShopFloatVector2 vector;
+  u8 *value[2];
+} FclShopCallbackPair;
+FclShopCallbackPair PTR_FUN_007cd970;
+FclShopCallbackPair PTR_FUN_007cd978;
+typedef struct {
+  FclShopDataSet data;
+  FclShopCallbackPair callbacks[2];
+} FclShopCallbackData;
+u32 PTR_LAB_007bbde0[];
+u32 PTR_PTR_006ac9d4[];
+u32 _DAT_006af180;
+u32 _DAT_006af184;
+
+#pragma alias FUN_0040ec20_y2 FUN_0040ec20
+#pragma alias FUN_0040e3c0_y2 FUN_0040e3c0_y2
+#pragma alias FUN_0040eb50_y2 FUN_0040eb50_y2
+#pragma alias FUN_0040ebc0_y2 FUN_0040ebc0_y2
+#pragma alias H_Maestro_00111c50_y2 H_Maestro_00111c50_y2
+#pragma alias H_Maestro_SetAlphaMult_y2 H_Maestro_SetAlphaMult_y2
+#pragma alias FUN_0040e3c0_i_y2 FUN_0040e3c0_i_y2
+#pragma alias FUN_003b2cb0_i_y2 FUN_003b2cb0_i_y2
+#pragma alias DAT_007ce420_y2 DAT_007ce420_y2
+#pragma alias sinf_y2 sinf_y2
+#pragma alias cosf_y2 cosf_y2
+#pragma alias FUN_003b2cb0_y2 FUN_003b2cb0_y2
+
+
+// HARVESTED 3D-42FF
+
+// FUN_003EFF00
+
+
+void FUN_003eff00(u64 param_1,u8 *param_2)
+{
+  u8 *puVar1;
+  u8 *puVar2;
+  u32 uStack_20[4];
+  int iVar1;
+  int iStack_4;
+
+  puVar1 = FUN_003efff0_u64(param_1);
+  iStack_4 = 0;
+  while ((puVar2 = (u8 *)FUN_003f0350((int)puVar1,&iStack_4)) != 0) {
+    iVar1 = *(int *)puVar2;
+    if ((datGetLevel(1) & 0xff) < iVar1) {
+      iStack_4 = iStack_4 - 1;
+      break;
+    }
+  }
+  *param_2 = (u8)iStack_4;
+  param_2[1] = (u8)FUN_003f03e0_u64(param_1);
+  *(u16 *)(param_2 + 2) = (u16)FUN_003f2510();
+  iStack_4 = 0;
+  FUN_003f01d0((int)puVar1,0,&iStack_4);
+  *(u32 *)(param_2 + 4) = (u32)iStack_4;
+}
+
+
+
+
+
+
+
+
+
+/* Reconstructed the packed shop-date availability gate and all date-mode paths. */
+
+
+#pragma alias fclShopSelectStockItemId FUN_003f0830
+
+
+// Confirmed b210 floor: only five branch immediates differ at +136/+148/+160/+172/+184;
+// our inner-switch exits target the final join, while retail targets the shared exit branch.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma alias fclShopPopulateEquipmentEntry FUN_003f1ba0
+
+
+// Confirmed b210 floor: only +128/+132 differ, with the signed halfword extension
+// routed through $v0 here versus directly through $a0 in retail.
+
+typedef struct {
+  s16 id;
+  u8 pad[3];
+  s8 flags;
+  s16 value;
+} FclShopListEntry;
+
+
+
+
+
+
+// W212: narrowing the maintained result to short measured nd187 -> nd227 and 416/432 -> 444/432; rejected as over-window.
+
+
+// Retail sibling begins at 0x3f3280; comparator body reconstructed from 0x3f3280-0x3f33c8.
+
+
+#pragma opt_loop_invariants reset
+#pragma alias FUN_003f39a0_u32ret FUN_003f39a0
+u32 FUN_003f39a0_u32ret(long param_1,long param_2,u32 param_3);
+
+
+
+
+
+
+// Typed integer call views preserve the retail 32-bit ABI for these draw helpers.
+#pragma alias FUN_003f7730_i FUN_003f7730
+void FUN_003f7730_i(int,int,int,int,int);
+#pragma alias FUN_003f5d10_i FUN_003f5d10
+void FUN_003f5d10_i(int,int,int,int,int);
+#pragma alias FUN_003f5f50_i FUN_003f5f50
+void FUN_003f5f50_i(int,int,int,int,int);
+#pragma alias FUN_003f7a80_i FUN_003f7a80
+void FUN_003f7a80_i(int,int,int,int,int);
+
+
+
+
+
+
+
+
+
+
+#undef auStack_30
+#undef acStack_20
+#undef sStack_10
+#undef sStack_e
+#undef sStack_c
+#undef sStack_a
+#undef acStack_8
+
+#undef auStack_30
+#undef acStack_20
+#undef sStack_10
+#undef sStack_e
+#undef sStack_c
+#undef sStack_a
+#undef acStack_8
+
+
+
+
+
+
+
+// Filled in from retail disassembly: sibling FUN_003f7fe0's pattern (3/3/1
+// true-branch, 2/2/0 false-branch constants to FUN_003f55b0/FUN_003f5830)
+// applies here too, except the "else" sub-case in each branch substitutes
+// iVar6 (a computed draw-x offset) and iVar5 (a computed fade alpha) for
+// param_1/param_3 - a background/unselected variant of the same draw call.
+
+
+
+// Filled in from retail disassembly, same dispatch family as the sibling
+// functions above (3/3/1 true-branch, 2/2/0 false-branch constants to
+// func_003f55b0/func_003f5830). Residual: a register-bank floor (obj
+// 1088B vs 1056B window); logic and constants verified against retail.
+
+
+
+// Retyped params to match retail's dispatch to func_003f7d50/7fe0/8180
+// (int coords/index, not u64); case 0xc/1 now byte-identical to retail.
+// Residual: case 0x14's two adds route through a scratch reg instead of
+// landing directly in $a0/$a1 - compiler scheduling floor.
+
+
+
+
+
+
+
+
+// Window was wrongly 784B (should be 400B) - see FUN_003f9cb0 split below.
+// Full logic rewritten from retail disasm: if/else order, switch-based
+// dispatch, and int/long typing all fixed. Residual: register-bank
+// choice for param_1/param_2 (s2/s1 in retail vs s5/s4 here).
+// Exact remaining words are the +164/+168/+172 ordering of the $s3 sign extension
+// and the independent initialization of $s5; their values and uses are identical.
+
+// Hidden sibling: only referenced via FUN_003c7000(uVar7,0x3f9cb0,0) as a
+// raw callback pointer literal in FUN_003f9e30 below, never via jal, so
+// Ghidra's boundary scan absorbed it into FUN_003f9b20_y2's window (784B
+// instead of the true 400B). Splitting it out here as its own function
+// per the p3-window-nullsub-discovery Case C procedure.
+
+
+#pragma alias fclShopCreateEquipmentItemList FUN_003f9e30
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// W325 pragma sweep: opt_common_subs off nd91 -> nd89 (obj 260/272).
+
+
+
+
+
+
+// W325 pragma sweep: opt_common_subs off nd156 -> nd131 (obj 440/448).
+
+
+
+
+
+
+
+
+
+
+
+
+// W212: rotating the copied-table loop to retail's apparent branch target measured nd206 -> nd295 (488 -> 492 bytes); rejected.
+
+
+
+
+
+
+
+// Confirmed pre-JAL setup-order floor: +160/+164/+168 contain the same address
+// computation and signed extension, with retail materializing $a1 before $a0.
+
+
+// W212: signed short result local measured nd94 -> nd117 and 240/240 -> 248/240; rejected as over-window.
+
+
+
+
+
+// W325 pragma sweep: opt_common_subs off nd718 -> nd713 (obj 1004/1008).
+
+
+
+
+// W212: signed-byte and typed-callback transfer measured nd914 -> nd972 (1344 -> 1320 bytes); rejected.
+// W212: retaining the final callback across calls fixed the 0x100-byte frame but measured nd914 -> nd942 and 1344/1344 -> 1352/1344; rejected as over-window.
+// W325 pragma sweep: opt_loop_invariants on nd953 -> nd939 (obj 1328/1344).
+
+
+
+
+
+
+
+
+
+
+
+
+// Confirmed cyclic register-coloring floor: +60 through +100 use $a2/$a1 here
+// where retail uses $a1/$a2; all five loads and their dataflow are otherwise identical.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// W325 pragma sweep: opt_common_subs off nd564 -> nd463 (obj 840/848).
+
+
+// Confirmed b210 floor: only +0xd0 differs in commutative addu operand order
+// (`addu $v0,$v1,$v0` versus `$v0,$v0,$v1`); all table loads and remaining words match.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// W325 pragma sweep: opt_loop_invariants on nd953 -> nd872 (obj 1460/1472).
+#undef bStack_3c
+#undef FORMAT_SHOP_RECORD_TEXT
+
+// Addressing-signal audit: retail really uses the same two $gp-relative format-string
+// addresses and the same $gp-relative float load. Only +440/+444/+448 call setup differs.
+
+
+
+
+
+// Confirmed control-flow placement floor: +400 through +444 booleanizes the clamp
+// switch here; a direct if/else measured worse (nd16 -> nd19) and was reverted.
+
+
+
+
+
+
+
+
+
+
+// Typed callback values preserve retail's call setup order.
+
+
+/* Measured with schedule on: opt_common_subs on/off gives 2772B/2748B (window 2992B); retained off. */
+#pragma schedule off
+#pragma opt_common_subs reset
+#undef FUN_0040e3f0_y2
+
+
+
+
+
+// W325 pragma sweep: opt_common_subs off nd1235 -> nd1212 (obj 2112/2112).
+
+
+
+
+
+
+
+
+
+
+
+// W212: absolute u32 alias for DAT_006af930 measured nd290 -> nd295 (588 -> 592 bytes); rejected.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef int (*code)();
+/* FUSION_EXACT_PROTOS */
+void FUN_0040e300_y2(u32 param_1,u32 param_2);
+void FUN_0040e360(void);
+void FUN_0040e390_y2(void);
+#pragma alias FUN_0040e3c0_draw FUN_0040e3c0_y2
+void FUN_0040e3c0_draw(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6);
+void FUN_0040e3f0_draw(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
+extern void FUN_0040e3f0_i2f1i3f3(int param_5,int param_6,float param_1,u8 param_7,int param_8,
+                                  int param_9,int param_10,int param_11,float param_2,
+                                  float param_3,float param_4);
+void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
+                   u8 param_7,int param_8,int param_9,int param_10,int param_11);
+u32 FUN_0040e450(int param_1);
+u32 FUN_0040e4f0(int *param_1);
+void FUN_0040e580(u32 param_1);
+u64 FUN_0040e610(int param_2,int param_3,float param_1,u8 param_4,int param_5,int param_6,int param_7);
+u64 FUN_0040e710(int param_5, int param_6, float param_1, int param_7, int param_8, int param_9, int param_10, int param_11, int param_12, float param_2, float param_3, float param_4);
+#pragma alias FUN_0040e710_i2f1u8i4i3f FUN_0040e710
+extern void FUN_0040e710_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
+                                     int param_8,int param_9,int param_10,int param_11,
+                                     int param_12,float param_2,float param_3,float param_4);
+#pragma alias FUN_0040e930_i2f1u8i4i3f FUN_0040e930
+extern void FUN_0040e930_i2f1u8i4i3f(int param_5,int param_6,float param_1,u8 param_7,
+                                     int param_8,int param_9,int param_10,int param_11,
+                                     int param_12,float param_2,float param_3,float param_4);
+u64 FUN_0040e930(int param_5,int param_6,float param_1,int param_7,int param_8,int param_9,int param_10,int param_11,int param_12,float param_2,float param_3,float param_4);
+#pragma alias fclDrawSpriteCreate_i FUN_001158b0
+extern u32 fclDrawSpriteCreate_i(int param_1, u32 param_2, int param_3);
+#pragma alias fclDrawSpriteEmit FUN_0040e3c0_draw
+extern void fclDrawSpriteEmit(int param_1,int param_2,float param_3,int param_4,int param_5,int param_6);
+s32 FUN_0040eb50_y2(float param_1,int param_2,int param_3,u8 param_4,int param_5,const void *param_6,int param_7);
+s32 FUN_0040ebc0_y2(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7);
+void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
+#pragma alias FUN_0040ec20_typed FUN_0040ec20
+void FUN_0040eef0(int param_2,int param_3,float param_1,int param_4,int param_5,
+
+                  int param_6);
+u32 FUN_0040ec50();
+u32 FUN_0040f030(int param_1,int param_2,int param_3);
+u32 FUN_0040f430(int param_1,int param_2);
+u32 FUN_0040f5d0(int param_1,int param_2,int param_3);
+u64 FUN_0040fab0(u64 param_1,int param_2);
+u64 FUN_0040fb90(u64 param_1,int param_2,int param_3);
+void FUN_00521408(void *destination,s32 value,u32 size);
+extern void *H_Cdvd_CacheFindFile_y2(const char *path,u32 *fileSize);
+extern u32 DAT_006af960[];
+extern u32 DAT_006af980[];
+float DAT_006af9d8;
+float DAT_006af9dc;
+float DAT_006af9e0;
+#pragma alias DAT_006af9d8_abs DAT_006af9d8
+#pragma alias DAT_006af9dc_abs DAT_006af9dc
+#pragma alias DAT_006af9e0_abs DAT_006af9e0
+extern float DAT_006af9d8_abs[];
+extern float DAT_006af9dc_abs[];
+extern float DAT_006af9e0_abs[];
+typedef struct {
+  float x;
+  float y;
+  float z;
+} FclDrawSpriteVec3;
+u32 DAT_006af9a0;
+#pragma alias DAT_006af9a0_abs DAT_006af9a0
+extern u32 DAT_006af9a0_abs[];
+u16 DAT_006af9c0[];
+typedef short DAT_006af9c0_abs_t;
+#pragma alias DAT_006af9c0_abs DAT_006af9c0
+extern DAT_006af9c0_abs_t DAT_006af9c0_abs[];
+u32 DAT_006af9f0;
+u32 DAT_006afa70;
+int DAT_006afaf0[];
+u32 DAT_006afb10;
+#pragma alias DAT_006afb10_abs DAT_006afb10
+extern u32 DAT_006afb10_abs[];
+extern u32 DAT_007ce69c;
+extern s32 DAT_007ce6a0;
+extern code DAT_00960178[];
+extern code DAT_0096017c[];
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma opt_loop_invariants off
+
+
+
+
+
+
+
+
+
+
+
+#undef asStack_80
+#undef afStack_7c
+#undef auStack_70
+#undef auStack_60
+#undef afStack_40
+
+
+typedef int (*code)();
+typedef void (*FclShopBgCallback)(float, float, float, int, int, int, int, int, int, int, int);
+typedef struct {
+    u32 *callbacks;
+    int count;
+} FclShopBgCallbackPair;
+
+typedef union {
+    float floats[4];
+    u32 words[4];
+} FclShopBgHeader;
+typedef struct {
+    FclShopBgHeader header;
+    s16 table2[24];
+    s16 table1[40];
+} FclShopBgLocal;
+u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
+u32 H_Maestro_FinishedInit(u32 task);
+void H_Maestro_SetShouldLoop(u32 task,u32 shouldLoop);
+void H_Maestro_00111f20(u32 task,u32 value);
+void H_Maestro_00111c50_y2(u32 task);
+void H_Maestro_00111cb0(u32 task);
+void H_Maestro_SetAlphaMult_y2(float alpha,u32 task);
+void func_00111f10(u32 task,u32 value);
+void func_00111ca0(u32 task,u32 value);
+float fGpffff80d0;
+float fGpffff8168;
+float fGpffff81f8;
+float fGpffff81fc;
+float fGpffff8204;
+float fGpffffad18;
+u32 uGpffff8208;
+u32 uGpffffad1c;
+#pragma alias fGpffffad1c uGpffffad1c
+extern float fGpffffad1c;
+u32 DAT_007cda50;
+
+#pragma alias sinf_fclShop sinf_y2
+extern f32 sinf_fclShop(f32);
+#pragma alias cosf_fclShop cosf_y2
+extern f32 cosf_fclShop(f32);
+/* FUSION_EXACT_PROTOS */
+void FUN_0040e3c0_y2(float, s32, s32, u8, s32, s32);
+void FUN_0040e3c0_i_y2(s32, s32, float, u8, s32, s32);
+#pragma alias FUN_0040e3f0_typed FUN_0040e3f0_y2
+void FUN_0040e3f0_typed(float, float, float, float, s32, s32, u8, s32, s32, s32, s32);
+#pragma alias FUN_003b2cb0_typed FUN_003b2cb0_y2
+void FUN_003b2cb0_typed(float, s32, s32, u32, u32, u32, u32, u32, u32);
+void FUN_003b2cb0_i_y2(s32, s32, float, u32, u32, u32, u32, u32, u32);
+void FUN_003eec60_y2(s32);
+u64 FUN_004101b0(u64 param_1,int param_2);
+u32 FUN_004105e0(int param_1, int param_2, int param_3);
+u64 FUN_00410a10(u64 param_1,int param_2);
+u32 FUN_00410d30(int param_1,int param_2);
+u32 FUN_00410e70(u32 param_1,int param_2,int param_3);
+u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3);
+u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3);
+u32 FUN_00411340(u64 param_1,u64 param_2,s16 *param_3);
+u32 FUN_004113f0(u64 param_1,int param_2,int param_3);
+u64 FUN_00411710(u64 param_1,int param_2);
+u32 FUN_00411790(u64 param_1,int param_2,int param_3);
+u64 FUN_00411ee0(u64 param_1,int param_2);
+u32 FUN_004120a0(u64 param_1, int param_2, int param_3);
+u64 FUN_00412580(u64 param_1,int param_2);
+u32 FUN_00412610(u64 param_1, int param_2, long param_3);
+u64 FUN_00412af0(u64 param_1,int param_2);
+u32 FUN_00412bc0(u64 param_1, int param_2, long param_3);
+u64 FUN_00413010(u64 param_1,int param_2);
+u32 FUN_004131a0(u64 param_1, int param_2, int param_3);
+u64 FUN_00413680(u64 param_1,int param_2);
+u64 FUN_004138e0(u64 param_1,int param_2,int param_3);
+u64 FUN_00413b10(u64 param_1,int param_2);
+u32 FUN_00413b70(u64 param_1, int param_2, int param_3);
+void FUN_00414100(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_004141e0(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,u32 param_6);
+void FUN_00414280(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414320(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414500(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004145f0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004146b0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414770(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_004148b0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414950(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004149f0(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_00414ad0(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_00414bd0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00414c70(u64 param_1,u64 param_2,int param_3,int param_4,u64 param_5, u32 param_6);
+void FUN_00414d70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+u64 FUN_00414e10(int param_1,int param_2);
+u32 FUN_00414fe0(u64 param_1,int param_2,long param_3);
+void FUN_004154e0(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
+void FUN_00415650(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
+void FUN_004157c0(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00415880(u64 param_1,u64 param_2,int param_3,int param_4, int param_5,int param_6);
+void FUN_00415a70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_00415b30(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u8 param_6);
+void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
+u64 FUN_00415c30(int param_1, int param_2);
+u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3);
+void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
+void FUN_004167d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
+void FUN_00416b90(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_00416d20(u64 param_1,int param_2,int param_3,int param_4,int param_5, u8 param_6);
+u64 FUN_00417030(int param_1, int param_2);
+/* FUSION_GLOBALS */
+float DAT_007cadc0;
+u32 DAT_006afb90;
+u32 DAT_006b0020;
+u32 DAT_006b0050;
+u32 DAT_006b0450;
+u32 DAT_006b04d0;
+u32 DAT_006b0a00;
+u32 DAT_006b0a60;
+float DAT_006b0ac0;
+float DAT_006b0ac4;
+float DAT_006b0ac8;
+float DAT_006b0acc;
+#pragma alias DAT_006b0ac0_abs DAT_006b0ac0
+extern u8 DAT_006b0ac0_abs[];
+#pragma alias DAT_006b0ac4_abs DAT_006b0ac4
+extern u8 DAT_006b0ac4_abs[];
+#pragma alias DAT_006b0ac8_abs DAT_006b0ac8
+extern u8 DAT_006b0ac8_abs[];
+#pragma alias DAT_006b0acc_abs DAT_006b0acc
+extern u8 DAT_006b0acc_abs[];
+u32 DAT_006b0ad0;
+u32 DAT_006b0cb0;
+u32 DAT_006b0dd4;
+u32 DAT_006b0ddc;
+u32 DAT_006b0de0;
+#pragma alias DAT_006b0de0_abs DAT_006b0de0
+extern u8 DAT_006b0de0_abs[];
+u32 DAT_006b0e30;
+#pragma alias DAT_006b0e30_abs DAT_006b0e30
+extern u8 DAT_006b0e30_abs[];
+
+u32 DAT_006b0e64;
+u32 DAT_006b0e6c;
+#pragma alias DAT_006b0e64_abs DAT_006b0e64
+extern u8 DAT_006b0e64_abs[];
+u32 DAT_006b10e0;
+u32 DAT_006b1130;
+u32 DAT_006b1178;
+u32 DAT_006b1190;
+u32 DAT_006b1220;
+u32 DAT_006b1340;
+u32 DAT_006b1370;
+u32 DAT_006b13a0;
+u32 DAT_006b1400;
+u32 DAT_006b1460;
+u32 DAT_006b14c0;
+u32 DAT_006b14f0;
+u32 DAT_006b1520;
+u32 DAT_006b1580;
+u32 DAT_006b1610;
+u32 DAT_006b1640;
+u32 DAT_006b16a0;
+u32 DAT_006b16e0;
+u32 DAT_006b1710;
+float DAT_007caee8;
+u32 DAT_007cda4c;
+u32 DAT_007cda58;
+u32 DAT_007cda5a;
+u32 DAT_007cda5c;
+u32 DAT_007cda5e;
+u32 DAT_007cda64;
+#pragma alias DAT_007cda64_f DAT_007cda64
+extern float DAT_007cda64_f;
+u8 *DAT_007ce420_y2;
+u32 PTR_FUN_006b1490[];
+u32 PTR_FUN_006b1494[];
+u32 PTR_FUN_006b1498[];
+u32 PTR_FUN_006b14a0[];
+u32 PTR_FUN_006b16c8[];
+u32 PTR_FUN_006b16cc[];
+u32 PTR_FUN_006b16d0[];
+u32 PTR_FUN_006b1830[];
+u32 PTR_FUN_007cda10[];
+u32 PTR_FUN_007cda14[];
+u32 PTR_FUN_007cda18[];
+u32 PTR_FUN_007cda1c[];
+u32 PTR_FUN_007cda20[];
+u32 PTR_FUN_007cda24[];
+u32 PTR_FUN_007cda28[];
+u32 PTR_FUN_007cda30[];
+u32 PTR_FUN_007cda34[];
+u32 PTR_FUN_007cda38[];
+u32 PTR_FUN_007cda40[];
+u32 PTR_FUN_007cda44[];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W327 measured: opt_common_subs off normalized_diff 431 -> 409; object 640/640 -> 616/640 (without/with). */
+
+#pragma opt_common_subs reset
+
+
+
+
+
+
+
+/* W327 measured: opt_loop_invariants on normalized_diff 804 -> 786; object 1172/1248 -> 1164/1248 (without/with). */
+
+#pragma opt_loop_invariants reset
+
+
+
+
+
+
+#pragma opt_propagation reset
+/* W327 measured: opt_loop_invariants on normalized_diff 792 -> 780; object 1172/1248 -> 1164/1248 (without/with). */
+
+#pragma opt_loop_invariants reset
+
+
+
+
+
+
+/* W327 measured: opt_loop_invariants on normalized_diff 1006 -> 986; object 1404/1424 -> 1404/1424 (without/with). */
+
+#pragma opt_loop_invariants reset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W327 measured: opt_loop_invariants on normalized_diff 719 -> 672; object 1252/1280 -> 1252/1280 (without/with). */
+
+#pragma opt_loop_invariants reset
+
+
+
+
+
+
+
+
+/* W327 measured: opt_loop_invariants on normalized_diff 573 -> 524; object 1116/1152 -> 1116/1152 (without/with). */
+
+#pragma opt_loop_invariants reset
+
+/* W327 measured: opt_common_subs off normalized_diff 555 -> 486; object 752/736 -> 736/736 (without/with). */
+
+#pragma opt_common_subs reset
+
+
+
+/* W327 measured: opt_common_subs off normalized_diff 582 -> 458; object 804/784 -> 784/784 (without/with). */
+
+#pragma opt_common_subs reset

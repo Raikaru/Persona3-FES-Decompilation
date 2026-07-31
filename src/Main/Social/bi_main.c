@@ -2,6 +2,20 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwcore.h"
 
+#pragma alias sinf_y2 sinf_y2
+#pragma alias cosf_y2 cosf_y2
+#pragma alias D_00960090_y2 D_00960090_y2
+#pragma alias D_0096009C_y2 D_0096009C_y2
+#pragma alias func_0021c3f0_y2 func_0021c3f0_y2
+#pragma alias func_0021cca0_y2 func_0021cca0_y2
+#pragma alias func_0021cce0_y2 func_0021cce0_y2
+#pragma alias func_0021d3b0_y2 func_0021d3b0_y2
+#pragma alias func_0021d890_y2 func_0021d890_y2
+#pragma alias func_0021d8e0_y2 func_0021d8e0_y2
+#pragma alias func_0021d950_y2 func_0021d950_y2
+#pragma alias func_002d20a0_y2 func_002d20a0_y2
+
+
 /* bi_main.c owns 16 battle-information slots, each 0xF50 bytes. */
 static u8* sBiMain; // DAT_007CE31C / GP -0x49D4
 /* 0x00242C40 switches to bpc_main.c and its DAT_007CE320 work pointer. */
@@ -1210,3 +1224,191 @@ void func_00242c20(void* slot, u32 leftValue, u32 rightValue)
     BI_U32(slot, 0xf44) = leftValue;
     BI_U32(slot, 0xf40) = rightValue;
 }
+
+
+#include "Utils.h"
+#include "Battle/battle.h"
+#include "Main/Battle/Cmd/bpp_main.h"
+#include "rw/rwplcore.h"
+extern const char D_0068E880[];
+extern const char DAT_007cc468[];
+
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned int ulong;
+extern f32 sinf_y2(f32 angle);
+extern f32 cosf_y2(f32 angle);
+
+/* BPC state rooted at DAT_007CE320 / GP-0x49D0. */
+extern u32* DAT_007ce320;
+#define sBpcWork DAT_007ce320
+#pragma alias bppMain0020f8b0_u16 bppMain0020f8b0
+extern void bppMain0020f8b0_u16(u16 pcId);
+#pragma alias bppMain0020fb60_u16 bppMain0020fb60
+extern void bppMain0020fb60_u16(u16 pcId);
+#pragma alias bppMain0020f7d0_u16 bppMain0020f7d0
+extern void bppMain0020f7d0_u16(u16 pcId);
+#pragma alias bppMain0020fa80_u16 bppMain0020fa80
+extern void bppMain0020fa80_u16(u16 pcId);
+#pragma alias func_001775a0_s16 func_001775a0
+extern u32 func_001775a0_s16(s16 id);
+
+typedef void (*BpcRenderState)(s32 property, u32 value);
+typedef void (*BpcRenderQuad)(void* quad, s32 count, s32 group, s32 pass, s32 blend);
+extern BpcRenderState D_00960090_y2;
+#pragma alias D_0096009C_abs D_0096009C_y2
+extern u8 D_0096009C_abs[];
+extern BpcRenderQuad D_0096009C_y2;
+extern f32 DAT_007caf38;
+extern u32 DAT_007ce4e8;
+extern u8* DAT_007ce410;
+
+extern int func_001ff430(u32 id);
+extern u32 func_0021c3f0_y2(s32 texture);
+extern u32 func_0021cca0_y2(u32 texture, s32 frame);
+extern u32 func_0021cce0_y2(u32 frame);
+extern void func_0021d3b0_y2(void* destination, u32 frame);
+extern void func_0021d890_y2(void* destination, const f32* layout);
+extern void func_0021d8e0_y2(void* destination, const f32* layout);
+extern void func_0021d950_y2(void* destination, const u8* color);
+extern void func_0021e380(void* destination, u32 frame, s32 mode);
+extern void func_0021eb80(void* destination, const f32* layout);
+extern void func_0021cd00(u32 frame, f32* rect);
+extern void func_00280580(int unit, void* projected);
+extern u32 func_002d20a0_y2(const void* projected, void* screen);
+// Typed aliases preserve the established ABI of unrelated callers.
+#pragma alias func_00280580_vec func_00280580
+extern void func_00280580_vec(int unit, RwV3d* projected);
+#pragma alias func_002d20a0_vec func_002d20a0_y2
+extern u32 func_002d20a0_vec(const RwV3d* projected, RwV2d* screen);
+extern int func_0029a1d0(int unit);
+extern int func_00301ca0(u32 calc, u32 skill);
+extern int func_00300e90();
+extern u32 func_00306e80(u32 calc, s16 mode);
+extern s16 func_003082f0();
+extern void func_003b0170(u32 resource);
+extern u32 func_003b0970(u32 resource, s32 mode, s32 group, s32 a, s32 b);
+extern void func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e20(u32 resource, u32 value);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern void func_003b1360(u32 resource, s32 mode, s32 value);
+extern s32 func_003b19d0(u32 resource);
+extern void func_004d7f60(s32 state, u32 value);
+extern u32 func_00173370(u32 persona);
+extern u32 func_00174800(s32 id);
+extern s32 func_00176a30(u32 persona);
+extern u32 func_001775a0(u16 id);
+extern u32 func_0017b260(u16 id);
+extern u32 func_001ff630(s32 index);
+extern u32 func_0010a4e0(s32 a, s32 b, s32 c, s32 d);
+extern u32 datPersonaGetByPcId(s32 id);
+extern u32 datPersonaGetSkills(u32 persona);
+extern s32 datPersonaCountValidSkills(u32 persona);
+extern int printf(const char* format, ...);
+
+
+
+
+/* High-gap entry points; declarations keep cross-calls typed under MWCC. */
+void FUN_00242c40(u32*);
+void FUN_00242c60(void);
+void FUN_00242cc0(void);
+void FUN_00243150(void);
+void FUN_00244120(u32);
+void FUN_002441b0(u32);
+void FUN_00244770(void);
+void FUN_002449d0(void);
+void FUN_00244a00(void);
+void FUN_00244a40(u32);
+u32 FUN_00244e10(void);
+void FUN_00244e80(void);
+void FUN_002453d0(u16);
+void FUN_00245420(uint*,u32);
+void FUN_00245910(uint*);
+void FUN_00245970(uint*);
+void FUN_002459d0(uint*);
+void FUN_00245a00(void);
+uint *FUN_00245bf0(int);
+void FUN_00245cd0(void);
+void FUN_00245e00(void);
+void FUN_00245e50(void);
+void FUN_00245ea0(void);
+
+// FUN_00242C40
+void FUN_00242c40(u32 *param_1)
+
+{
+  *param_1 = 0;
+  param_1[2] = 0;
+  param_1[0x1cb5] = 0;
+  sBpcWork = param_1;
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 measured opt_dead_assignments off: nd16/1264B -> nd8/1264B (window 1264B). */
+/* W389 volatile staging of calc/skill and mode/skill loads was neutral at nd8/1264B; reverted. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* W389 measured opt_propagation off: nd7126/9636B -> nd6938/9468B (window 9712B). */

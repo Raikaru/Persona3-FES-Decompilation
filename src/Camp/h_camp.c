@@ -26258,6 +26258,9 @@ extern void RpSkyRenderStateSet_persona();
 #include "Camp/_h_camp_persona.h"
 #include "libm.h"
 
+
+
+
 #pragma alias FUN_001120a0_y7 FUN_001120a0
 #pragma alias FUN_0017d8b0_y7 FUN_0017d8b0
 #pragma alias FUN_0017dae0_y7 FUN_0017dae0
@@ -30808,4 +30811,48 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         }
         break;
     }
+}
+
+
+#include "Camp/_h_camp_item.h"
+
+
+// workData[2] holds the "camp/camp_item.pak" cdvd handle.
+// FUN_0014ed20. Destroy callback of the "H_CampNewItem" (item screen) task
+void h_campItemDestroyNewItemTask(KwlnTask* task)
+{
+    int* workData;
+    int i;
+
+    workData = (int*)task->workData;
+    for (i = 0; i < 3; i++) {
+        if (*(int*)((int)workData + i * 4 + 0xb0) != 0) {
+            FUN_001124b0(*(int*)((int)workData + i * 4 + 0xb0));
+            *(int*)((int)workData + i * 4 + 0xb0) = 0;
+            DAT_00833a50[i] = 0;
+        }
+    }
+    if (workData[2] != 0) {
+        H_Cdvd_Destroy(workData[2]);
+        workData[2] = 0;
+    }
+    if (workData[0x29] != 0) {
+        RwFree((void*)workData[0x29]);
+    }
+    if (workData[0x2a] != 0) {
+        RwFree((void*)workData[0x2a]);
+    }
+    if (workData[0x2b] != 0) {
+        RwFree((void*)workData[0x2b]);
+    }
+    if (workData[0x2f] != 0) {
+        RwFree((void*)workData[0x2f]);
+    }
+    if (workData[0x30] != 0) {
+        RwFree((void*)workData[0x30]);
+    }
+    if (workData[0x31] != 0) {
+        RwFree((void*)workData[0x31]);
+    }
+    RwFree(workData);
 }

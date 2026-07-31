@@ -284,21 +284,6 @@ s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 #define FUN_003b2bf0(...) ((u8 (*)(...))FUN_003b2bf0)(__VA_ARGS__)
 
 #undef FUN_003afa40
-// FUN_003AFA40 MATCHING
-
-
-void FUN_003afa40(void)
-{
-  FUN_003afe30_direct();
-  FUN_003b0030_direct(*(u32 *)DAT_0095ae60_abs);
-  FUN_003b0030_direct(*(u32 *)DAT_0095ae64_abs);
-  FUN_003b4740(*(u32 *)DAT_0095ae1c_abs);
-  FUN_003b4740(*(u32 *)DAT_0095ae20_abs);
-  FUN_003b44a0();
-  FUN_0035ac80(*(u32 *)DAT_0095ae24_abs);
-  FUN_0035ac80(*(u32 *)DAT_0095ae28_abs);
-  FUN_003b3740();
-}
 
 #define FUN_003afa40(...) ((void (*)(...))FUN_003afa40)(__VA_ARGS__)
 #undef FUN_003afad0

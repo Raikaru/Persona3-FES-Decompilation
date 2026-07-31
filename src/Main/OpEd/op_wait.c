@@ -4,6 +4,14 @@
 #include "Main/OpEd/op_res.h"
 #include "rw/rwcore.h"
 
+#pragma alias func_0021d8e0_y2 func_0021d8e0_y2
+#pragma alias func_00198590_y2 func_00198590_y2
+#pragma alias func_0021d3b0_y2 func_0021d3b0_y2
+#pragma alias func_0021cca0_y2 func_0021cca0_y2
+#pragma alias func_0021cce0_y2 func_0021cce0_y2
+#pragma alias func_0021eac0_y2 func_0021eac0_y2
+
+
 void opWait0026eed0(void);
 void opWait0026edd0(void);
 extern void opWait0026ed40(void);
@@ -1259,3 +1267,56 @@ void func_00271c10(void)
         *work &= ~8u;
     }
 }
+
+
+#include "Main/OpEd/op_fade.h"
+
+
+
+
+typedef void (*OpFadeSetRenderState)(u32 state, u32 value);
+typedef void (*OpFadeRenderQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+
+extern void func_0021d8e0_y2(void* destination, f32* layout);
+extern u32 D_00960090_y2[];
+extern u32 D_0096009C_y2[];
+
+static OpFadeWork* sWork; // 007ce3bc
+
+
+
+
+// FUN_00271CD0
+void func_00271cd0(OpFadeWork* work)
+{
+    f32 layout[8];
+
+    work->flags = 0;
+
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 0.0f;
+    layout[3] = 0.0f;
+    func_0021eb80(&work->vertices[0], layout);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 640.0f;
+    layout[3] = 448.0f;
+    func_0021d8e0_y2(&work->vertices[0], layout);
+    work->state = OPFADE_STATE_START;
+    work->timer = 0;
+    work->duration = 0;
+    work->color.r = 0;
+    work->color.g = 0;
+    work->color.b = 0;
+    work->color.a = 0xff;
+    sWork = work;
+}
+
+
+
+
+
+
+
+

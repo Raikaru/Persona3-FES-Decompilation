@@ -362,15 +362,6 @@ u32 scrComu0035fd00(void)
     return 1;
 }
 
-// FUN_0035f170
-u32 scrComu0035f170(void)
-{
-    int uVar1;
-
-    uVar1 = scrGetIntPara(0);
-    FUN_0016dfb0(uVar1);
-    return 1;
-}
 
 // FUN_0035f1b0
 u32 scrComu0035f1b0(void)

@@ -3,6 +3,13 @@
 #include "Battle/battle.h"
 #include "Main/Battle/Cmd/bpp_main.h"
 #include "rw/rwplcore.h"
+
+#pragma alias D_00960090_y2 D_00960090_y2
+#pragma alias D_0096009C_y2 D_0096009C_y2
+#pragma alias func_003b1360_y2 func_003b1360_y2
+#pragma alias func_003b0e20_y2 func_003b0e20_y2
+#pragma alias func_001775a0_y2 func_001775a0_y2
+
 extern const char D_0068E880[];
 extern const char DAT_007cc468[];
 
@@ -110,16 +117,6 @@ void FUN_00245e00(void);
 void FUN_00245e50(void);
 void FUN_00245ea0(void);
 
-// FUN_00242C40
-void FUN_00242c40(u32 *param_1)
-
-{
-  *param_1 = 0;
-  param_1[2] = 0;
-  param_1[0x1cb5] = 0;
-  sBpcWork = param_1;
-  return;
-}
 
 
 
@@ -2236,3 +2233,82 @@ LAB_00247ba8:
 
 
 
+
+
+#include "Kernel/Kwln/kwlnTask.h"
+
+#pragma alias FUN_002491f0_y2 FUN_002491f0
+
+
+#pragma alias bpcInit FUN_00248490
+#pragma alias bpmUpdate FUN_00249180
+
+
+static u32* sBpmWork; // puGpffffb634
+extern u32* sBpc324; // 007ce324 / GP -0x49CC
+
+// FUN_00248490
+void bpcInit(u32* param_1)
+{
+    *param_1 = 0;
+    sBpc324 = param_1;
+}
+
+void FUN_002491f0_y2();
+
+
+
+
+/* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
+extern u32* sBpc324; // 007CE324 / GP -0x49CC
+/* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
+u32* sBpc328;
+
+typedef void (*BpcRenderState)(s32 property, u32 value);
+typedef void (*BpcRenderQuad)(void* quad, s32 count, s32 group, s32 pass, s32 blend);
+extern BpcRenderState gBpcRenderState;
+extern BpcRenderQuad gBpcRenderQuad;
+extern u32 D_00960090_y2[];
+extern u32 D_0096009C_y2[];
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern void* func_0021c550(s32 index);
+extern void* func_003a52c0(f32 angle, s32 width, s32 height, s32 first,
+                            s32 mode, s32 count, void* left, void* right);
+extern void func_003b1360_y2(u32 resource, s32 mode, s32 group);
+extern void func_003b0e20_y2(u32 resource, u32 color);
+extern void frFontSetTextScale(u32 resource, f32 angle);
+extern void func_003c72d0(void* resource);
+extern void func_003c7430(s32 mode);
+extern void func_003c7650(s32 mode);
+extern u32 func_003c7850(void);
+extern void func_003c7990(s32 mode);
+extern void func_003c7bc0(s32 mode, u32 value);
+extern void func_003c7c20(s32 mode, u32 value, s32 count);
+extern void func_003c77a0(void);
+extern u32 func_00173220(u16 value);
+extern u32 func_001775a0_y2(u16 value);
+extern void func_003c94e0(void* resource);
+extern void func_003c9790(s32 mode);
+extern s32 datGetFlag(s32 flag);
+extern void datSetFlag(s32 flag, u8 value);
+extern void* func_0030c0c0(void);
+
+static void bpc324RenderState(u32 state, u32 value)
+{
+    gBpcRenderState(state, value);
+}
+
+static void bpc324Draw(void* quad, s32 pass, s32 blend)
+{
+    gBpcRenderQuad(quad, 4, 0, pass, blend);
+}
+
+static u32 bpc324Flags(void)
+{
+    K_ASSERT(sBpc324 != NULL, 0x3d);
+    return *sBpc324;
+}
+
+void* FUN_00248f40(void*);
+void FUN_002491f0(void);
+void FUN_00248fc0(void*);
