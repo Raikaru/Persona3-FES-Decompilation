@@ -4273,15 +4273,18 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
   u32 uVar1;
   float fVar2;
   u8 rgba[4];
+  u32 alpha;
   uVar1 = FUN_001a6400(param_2,(u32)DAT_0069baf0);
 
   fVar2 = (1.0f - param_1[1]) * 255.0f;
 
-  rgba[3] = (u8)(u32)fVar2;
+  alpha = (u32)fVar2;
+  alpha &= 0xff;
 
   rgba[2] = (u8)uVar1;
   rgba[1] = (u8)((u32)uVar1 >> 8);
   rgba[0] = (u8)((u32)uVar1 >> 0x10);
+  rgba[3] = (u8)alpha;
   FUN_001b5ae0(param_2,rgba);
 
   return;

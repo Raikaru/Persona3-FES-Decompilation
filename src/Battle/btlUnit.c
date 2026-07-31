@@ -2354,6 +2354,7 @@ void btlUnitInit002843e0Packet(void* work)
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
     BtlUnitPacket002843e0* packet;
+    s16 frame;
     BtlUnit* unit;
     s16 activeAnimation;
 
@@ -2371,7 +2372,8 @@ u32 btlUnitUpdate002843e0Packet(void* work)
 
     if (unit->unk_9e0 != activeAnimation)
     {
-        btlUnitAnimate(unit, unit->unk_9e0, packet->unk_4,
+        frame = packet->unk_4;
+        btlUnitAnimate(unit, unit->unk_9e0, frame,
                        unit->unk_9e4, unit->unk_9e8);
     }
 
