@@ -1253,7 +1253,6 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
 }
 
 
-#pragma opt_loop_invariants off
 // FUN_00388000 NONMATCHING
 void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,float *param_5,u32 *param_6,u8 *param_7,u32 param_8)
 {
@@ -1459,7 +1458,6 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
 
   (*DAT_009600a0_abs)(3,vertices,6);
 }
-#pragma opt_loop_invariants reset
 // FUN_00388A40
 void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
 {
@@ -3293,6 +3291,7 @@ void FUN_0038a730(int param_1)
 // Typed vector-source reconstruction holds nd12/size320.
 // Call census is CLEAN with no data relocations.
 // Residual is a pure saved-register coloring cycle.
+#pragma opt_common_subs on
 // FUN_0038A7C0 NONMATCHING
 
 
@@ -3350,6 +3349,7 @@ void FUN_0038a7c0(RwV3d *param_1,RwV3d *param_2)
 }
 
 
+#pragma opt_common_subs reset
 // FUN_0038A900
 
 

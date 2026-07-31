@@ -595,13 +595,13 @@ u64 FUN_003d5bb0(u32 param_1)
 // FUN_003D5CD0 NONMATCHING
 
 
-s32 FUN_003d5cd0(u32 *param_1)
+s16 FUN_003d5cd0(u32 *param_1)
 {
   int lVar1;
   u32 uVar2;
   u32 *puVar3;
   s32 sVar5;
-  s16 sVar4;
+  s32 sVar4;
   s64 temp;
 
   sVar4 = 0;

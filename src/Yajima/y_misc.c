@@ -3033,6 +3033,8 @@ void FUN_00427e60(int param_1,u8 param_2)
 
 #define DAT_00960090 Yajima_setState
 
+/* W327 measured: opt_loop_invariants on reduces normalized_diff 574 -> 566 (object 896/896 -> 872/896). */
+#pragma opt_loop_invariants on
 // FUN_00427E70 NONMATCHING
 
 
@@ -3100,6 +3102,7 @@ void FUN_00427e70(float depth, u32 color, float x, float y, int width, int heigh
   (*DAT_00960090)(1, *raster);
   (*(code *)DAT_009600a0_abs)(4, vertices, 4);
 }
+#pragma opt_loop_invariants reset
 
 #undef DAT_00960090
 
@@ -5590,6 +5593,8 @@ void FUN_0042ba50(u32 param_1)
 
 }
 
+/* W327 measured: opt_common_subs off reduces normalized_diff 240 -> 218 (object 360/368 -> 364/368). */
+#pragma opt_common_subs off
 // FUN_0042BC10 NONMATCHING
 
 
@@ -5657,6 +5662,7 @@ void FUN_0042bc10(int param_1)
   return;
 
 }
+#pragma opt_common_subs reset
 
 /* W212: first divergence is the prologue (ours 0xc0-byte frame, retail 0xb0),
  * followed by different nested-loop induction lifetimes.  FUN_0042fd80 has a
@@ -6280,6 +6286,8 @@ void FUN_0042cd80(int param_1)
     }
   }
 
+/* W327 measured: opt_loop_invariants on reduces normalized_diff 2541 -> 2533 (object 3304/3536 -> 3328/3536). */
+#pragma opt_loop_invariants on
 // FUN_0042CFC0 NONMATCHING
 
 
@@ -6852,6 +6860,7 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
   return;
 
 }
+#pragma opt_loop_invariants reset
 
 /*
  * The retail routine keeps collision positions as contiguous three-float
@@ -7392,6 +7401,8 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
 }
 
+/* W327 measured: opt_loop_invariants on reduces normalized_diff 1890 -> 1837 (object 2468/2528 -> 2468/2528). */
+#pragma opt_loop_invariants on
 // FUN_0042EA60 NONMATCHING
 
 
@@ -7769,8 +7780,8 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
   return;
 
 }
+#pragma opt_loop_invariants reset
 
-#pragma opt_loop_invariants on
 // FUN_0042F440 NONMATCHING
 
 
@@ -8130,7 +8141,6 @@ void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_
 
 }
 
-#pragma opt_loop_invariants reset
 // FUN_0042FD80
 
 

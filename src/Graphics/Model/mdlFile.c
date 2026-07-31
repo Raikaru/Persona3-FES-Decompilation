@@ -16723,7 +16723,6 @@ void FUN_0032d7c0(int param_1, float scale)
   *(float *)(dest + 0xe4) = *(float *)(source + 0xe4) * scale;
 }
 
-#pragma opt_common_subs off
 // FUN_0032D840 NONMATCHING
 
 
@@ -17254,7 +17253,6 @@ void FUN_0032d840(int param_1)
 
 
 
-#pragma opt_common_subs reset
 // FUN_0032E110
 void FUN_0032e110(int param_1, float scale)
 {
@@ -21782,6 +21780,7 @@ void FUN_00332b30(int param_1)
 
 
 
+#pragma opt_common_subs off
 // FUN_00332B60 NONMATCHING
 
 
@@ -21944,6 +21943,7 @@ void FUN_00332b60(int *param_1)
 // declaration order + wrong (float)int cast fixed to raw reinterpret. nd
 // 70 -> 10. Residual: retail evaluates the final call's 2nd argument
 // before the 1st; not reproduced.
+#pragma opt_common_subs reset
 // FUN_00332E10
 
 void FUN_00332e10(int *param_1)

@@ -2580,6 +2580,7 @@ u64 FUN_003e8830(u64 param_1,u64 param_2)
 
 }
 
+#pragma opt_common_subs off
 // FUN_003E8860 NONMATCHING
 
 
@@ -2939,6 +2940,7 @@ LAB_003e8b7c:
 
 /* Reached only through a shop function-pointer table, never by jal, which is why nothing
  * in this file references it. Retail 0x003e8e10 is `daddu $v0, $zero, $zero; jr $ra; nop`. */
+#pragma opt_common_subs reset
 // FUN_003E8E10
 u32 FUN_003e8e10(void)
 {
@@ -6447,7 +6449,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   u32 uVar6;
 
   u32 uVar7;
-  u8 * result = (u8 *)&LAB_003c5170;
+
 
 
 
@@ -6473,12 +6475,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   lVar5 = FUN_0040a490(iVar1);
 
 
-  if (lVar5 != 0) {
+  if (lVar5 == 0) {
 
-    return result;
-
-  }
-  switch(*(u32 *)(iVar4 + 8)) {
+    switch(*(u32 *)(iVar4 + 8)) {
     case 0:
 
       FUN_003c9d00(*(u32 *)(iVar2 + 8),0x10);
@@ -6847,8 +6846,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   }
   }
-  result = (u8 *)0x0;
-  return result;
+  return (u8 *)0x0;
+  }
+  return (u8 *)&LAB_003c5170;
 }
 
 // FUN_003EDD80
