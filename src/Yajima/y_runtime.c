@@ -14477,7 +14477,6 @@ void FUN_0044f270(float *param_1,float *param_2)
   return;
 }
 
-#pragma opt_common_subs off
 // FUN_0044F300 NONMATCHING
 
 u32 FUN_0044f300(char param_1)
@@ -14659,7 +14658,6 @@ u32 FUN_0044f300(char param_1)
 
 #pragma push
 #pragma opt_loop_invariants on
-#pragma opt_common_subs reset
 // FUN_0044FAB0 NONMATCHING
 
 u8 FUN_0044fab0(int param_1)
@@ -15449,6 +15447,7 @@ u32 FUN_004514a0(char param_1)
   return uVar4;
 }
 
+#pragma opt_common_subs off
 // FUN_00451D70 NONMATCHING
 
 void FUN_00451d70(int param_1)
@@ -15508,6 +15507,7 @@ void FUN_00451d70(int param_1)
 /* W212: first divergence is the prologue (ours 0x100-byte frame, retail 0x150);
  * the missing 0x50 bytes are live search-state/aggregate structure, not a transfer
  * from the scalar FUN_00431aa0 template. */
+#pragma opt_common_subs reset
 // FUN_00452010 NONMATCHING
 
 void FUN_00452010(float *param_1)

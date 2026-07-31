@@ -1946,6 +1946,8 @@ u32 FUN_00370230(int param_1,int param_2,int param_3)
 }
 
 
+/* opt_common_subs off: default nd919/1840B -> nd274/1836B; retained. */
+#pragma opt_common_subs off
 // FUN_003702A0 NONMATCHING
 
 
@@ -2221,8 +2223,11 @@ void FUN_003702a0(int param_1,int param_2,int param_3,int param_4)
   return;
 
 }
+#pragma opt_common_subs reset
 
 
+/* opt_loop_invariants on: default nd1738/2420B -> nd1719/2424B; retained. */
+#pragma opt_loop_invariants on
 // FUN_003709D0 NONMATCHING
 
 
@@ -2942,6 +2947,7 @@ u64 FUN_003709d0(int param_1,int param_2,u8 *param_3)
   return uVar3;
 
 }
+#pragma opt_loop_invariants reset
 
 
 // FUN_00371350 NONMATCHING
@@ -6357,9 +6363,16 @@ u32 FUN_00375d70(int param_1,int param_2,int param_3)
   goto done_75d70;
 process_75d70:
 
-    if ((*(u16 *)DAT_007e094e_abs & 0x40) == 0) {
+    if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
+      uVar1 = 1;
+      goto done_75d70;
+    }
 
-      if ((*(u16 *)DAT_007e094e_abs & 0x20) == 0) {
+
+    if ((*(u16 *)DAT_007e094e_abs & 0x20) != 0) {
+      uVar1 = 0xffffffff;
+      goto done_75d70;
+    }
 
         iVar2 = 0;
 
@@ -6443,21 +6456,8 @@ process_75d70:
 
         uVar1 = 0;
 
-      }
 
-      else {
 
-        uVar1 = 0xffffffff;
-
-      }
-
-    }
-
-    else {
-
-      uVar1 = 1;
-
-    }
 
 done_75d70:
 
@@ -8852,6 +8852,8 @@ u32 FUN_003798f0(int param_1,int param_2,int param_3)
 }
 
 
+/* opt_loop_invariants on: default nd380/756B -> nd364/744B; retained. */
+#pragma opt_loop_invariants on
 // FUN_00379C30 NONMATCHING
 
 
@@ -9010,6 +9012,7 @@ void FUN_00379c30(int param_1,int param_2,int param_3,int param_4)
   return;
 
 }
+#pragma opt_loop_invariants reset
 
 
 // FUN_00379F30 NONMATCHING
@@ -11386,6 +11389,8 @@ void FUN_0037cf50(u32 *param_1,u32 *param_2,u32 *param_3)
 }
 
 
+/* opt_loop_invariants on: default nd749/1072B -> nd748/1052B; retained. */
+#pragma opt_loop_invariants on
 // FUN_0037CFE0 NONMATCHING
 
 
@@ -11498,6 +11503,7 @@ void FUN_0037cfe0(void)
     }
   }
 }
+#pragma opt_loop_invariants reset
 
 
 // FUN_0037D4D0
@@ -11544,6 +11550,8 @@ void FUN_0037d540(int param_1,int param_2,long param_3,int param_4)
 }
 
 
+/* opt_loop_invariants on: default nd1666/2300B -> nd1637/2268B; retained. */
+#pragma opt_loop_invariants on
 // FUN_0037D5D0 NONMATCHING
 
 
@@ -11944,6 +11952,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
   return iVar10;
 
 }
+#pragma opt_loop_invariants reset
 
 
 // FUN_0037DF50
@@ -16969,7 +16978,6 @@ void FUN_00384a50(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-#pragma opt_common_subs off
 // FUN_00384D30 NONMATCHING
 
 
@@ -17201,7 +17209,6 @@ u32 FUN_00384d30(int param_1,int param_2,int param_3)
 }
 
 
-#pragma opt_common_subs reset
 // FUN_003851F0
 
 

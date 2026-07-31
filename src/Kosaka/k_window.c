@@ -883,6 +883,7 @@ static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
     }
 }
 
+#pragma opt_common_subs off
 // FUN_001A2720 NONMATCHING
 void func_001a2720(KwlnTask* task)
 {
@@ -971,6 +972,7 @@ void func_001a2720(KwlnTask* task)
     }
 }
 
+#pragma opt_common_subs reset
 // FUN_001A2A80 NONMATCHING
 void* func_001a2a80(KwlnTask* task)
 {

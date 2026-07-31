@@ -829,11 +829,11 @@ void func_00215b00(void)
 {
     u8* work;
     DatPersonaWork* hero;
-    s32 heroCount;
-    s32 totalCount;
-    s32 count;
+    u32 heroCount;
+    u32 totalCount;
+    u32 count;
     u32 texture;
-    s32 i;
+    u32 i;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
@@ -2077,8 +2077,9 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     u32 frame;
     u32 value;
     s32 i;
-    SflPselStateCallback* state;
     SflPselDrawCallback* draw;
+    SflPselStateCallback* state;
+    SflPselStateCallback* stateTexture;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     texture = sflResGetPersonaChangeSprite();
@@ -2109,13 +2110,14 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
         frame = 0x21;
         value = 0x22;
     }
-    (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
+    stateTexture = (SflPselStateCallback*)D_00960090_abs;
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, frame)));
     draw = (SflPselDrawCallback*)D_0096009C_abs;
     (*draw)((u32*)panel, 4, 0, 1, 2);
     (*draw)((u32*)panel, 4, 0, 2, 3);
     (*draw)((u32*)((u8*)panel + 0x100), 4, 0, 1, 2);
     (*draw)((u32*)((u8*)panel + 0x100), 4, 0, 2, 3);
-    (*state)(1, func_0021cce0(func_0021cca0(texture, value)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, value)));
     (*draw)((u32*)((u8*)panel + 0x200), 4, 0, 1, 2);
     (*draw)((u32*)((u8*)panel + 0x200), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
@@ -2131,17 +2133,17 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     {
         frame = 0x17;
     }
-    (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, frame)));
     (*draw)((u32*)((u8*)panel + 0x300), 4, 0, 1, 2);
     (*draw)((u32*)((u8*)panel + 0x300), 4, 0, 2, 3);
-    (*state)(1, func_0021cce0(func_002180b0(entry[2])));
+    (*stateTexture)(1, func_0021cce0(func_002180b0(entry[2])));
     (*draw)((u32*)((u8*)panel + 0x400), 4, 0, 1, 2);
     (*draw)((u32*)((u8*)panel + 0x400), 4, 0, 2, 3);
     frame = selected != 0 ? 0x1a : 0x19;
-    (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
+    (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, frame)));
     (*draw)((u32*)((u8*)panel + 0x600), 4, 0, 1, 2);
     (*draw)((u32*)((u8*)panel + 0x600), 4, 0, 2, 3);
-    (*state)(1, func_00239140(selected != 0 ? 1 : 2));
+    (*stateTexture)(1, func_00239140(selected != 0 ? 1 : 2));
     for (i = 0; i < 2; i++)
     {
         (*draw)((u32*)((u8*)panel + 0x700 + i * 0x100), 4, 0, 1, 2);
@@ -2151,7 +2153,7 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     {
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
-        (*state)(1, func_0021cce0(func_0021cca0(texture, 0x25)));
+        (*stateTexture)(1, func_0021cce0(func_0021cca0(texture, 0x25)));
         (*draw)((u32*)((u8*)panel + 0x500), 4, 0, 1, 2);
         (*draw)((u32*)((u8*)panel + 0x500), 4, 0, 2, 3);
     }

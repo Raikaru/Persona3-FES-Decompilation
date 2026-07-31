@@ -911,6 +911,7 @@ void func_001115e0(KwlnTask* task)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_00111610 NONMATCHING
 void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
 {
@@ -1072,6 +1073,7 @@ restore_stop:
     return KWLNTASK_STOP;
 }
 
+#pragma opt_loop_invariants reset
 // FUN_00111c50
 void H_Maestro_00111c50(KwlnTask* hmaestroTask)
 {

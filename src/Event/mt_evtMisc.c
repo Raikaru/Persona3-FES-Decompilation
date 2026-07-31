@@ -4112,7 +4112,6 @@ void FUN_0038b140(int param_1)
 }
 
 
-#pragma opt_common_subs on
 // FUN_0038B2C0 NONMATCHING
 
 
@@ -4293,7 +4292,6 @@ void FUN_0038b2c0(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,
 }
 
 
-#pragma opt_common_subs reset
 // FUN_0038B550
 
 
@@ -5598,6 +5596,7 @@ C540_done:
 // A named target-type local intended to reproduce retail's preheader constant
 // was optimized back to identical nd235/size464 and was removed as unnecessary.
 // The first divergence remains loop-preheader constant/branch scheduling.
+#pragma opt_lifetimes off
 // FUN_0038C830 NONMATCHING
 
 
@@ -5669,6 +5668,7 @@ switchD_0038c8e0_caseD_0:
 /* opt_loop_invariants on: FUN_0038CA00 nd50 -> nd0, object 128/128; measured W319. */
 #pragma push
 #pragma opt_loop_invariants on
+#pragma opt_lifetimes reset
 // FUN_0038CA00
 
 

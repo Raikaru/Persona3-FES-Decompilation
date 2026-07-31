@@ -6454,6 +6454,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
 
 
+
   
 
   FUN_003c5460();
@@ -6471,6 +6472,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   iVar2 = *(int *)(*(int *)(iVar1 + 0x24) + 0x44);
 
   lVar5 = FUN_0040a490(iVar1);
+  uVar7 = (u32)&LAB_003c5170;
 
 
   if (lVar5 == 0) {
@@ -6846,7 +6848,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   return (u8 *)0x0;
   }
-  return (u8 *)&LAB_003c5170;
+  return (u8 *)uVar7;
 }
 
 // FUN_003EDD80
@@ -7887,7 +7889,6 @@ u64 FUN_003eee80(u64 unused, u64 handle)
 
 /* Measured: opt_loop_invariants on gives FUN_003ef2b0 nd989/obj1724; reset gives nd995/obj1728. */
 #pragma opt_loop_invariants on
-#pragma opt_common_subs off
 // FUN_003EF2B0 NONMATCHING
 
 
@@ -8271,7 +8272,6 @@ u64 FUN_003ef2b0(u64 param_1,u64 param_2)
 #pragma opt_loop_invariants reset
 #undef FUN_0040e3c0
 
-#pragma opt_common_subs reset
 // FUN_003EF970
 
 
