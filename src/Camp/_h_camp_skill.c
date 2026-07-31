@@ -240,6 +240,9 @@ extern int datGetEquipmentId_int(s16 pcId, s32 equipmentIdx);
 #pragma alias FUN_001159f0_typed FUN_001159f0
 extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 f32 x, f32 y, f32 depth);
+#pragma alias FUN_001159f0_reordered FUN_001159f0
+extern void FUN_001159f0_reordered(f32 x, void* owner, void* atlas,
+                                   s32 tile, u8 alpha, f32 y, f32 depth);
 #pragma alias FUN_00115bc0_typed FUN_00115bc0
 extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 u32 red, u32 green, u32 blue, f32 x, f32 y,
@@ -1555,6 +1558,8 @@ void* FUN_001618a0(KwlnTask* task)
             if (DAT_007cdf54 != NULL) {
                 panelWork->unused_0c = 0;
                 panelWork->drawId = panelPcId;
+            } else {
+                RwFree(panelWork);
         }
         }
         personaWork = (u32*)(*callocFunc)(1, 0x1c, 0x40000);
@@ -1634,8 +1639,9 @@ void* FUN_001618a0(KwlnTask* task)
         FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
                            work->scrollX, work->scrollY, 100.0f);
         if (work->scrollX < 0.0f) {
-            FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
-                               work->scrollX + 640.0f, work->scrollY, 100.0f);
+            FUN_001159f0_reordered(work->scrollX + 640.0f, owner,
+                                   DAT_00833B9C, 0, (u8)alpha,
+                                   work->scrollY, 100.0f);
         }
         work->scrollX -= 1.0f;
         if (work->scrollX < -640.0f) {

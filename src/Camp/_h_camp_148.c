@@ -139,12 +139,12 @@ extern void campDrawTransition(f32 depth, void* transition, s32 drawMode,
                                u64 start, u64 end, s32 param0, s32 tile,
                                s32 startFrame, s32 endFrame);
 #pragma alias campDrawTransition func_0018bc10
-static inline void campDrawTransitionAt(u32 base, s32 offset, f32 depth,
-                                        s32 mode, u64 start, u64 end)
-{
-    campDrawTransition(depth, (void*)(base + offset), 0, 2, mode,
-                       start, end, 0, 0, 0, 10);
-}
+#pragma alias campDrawTransitionRetailOrder func_0018bc10
+extern void campDrawTransitionRetailOrder(void* transition,
+                                          s32 drawMode, s32 positionMode,
+                                          s32 alphaMode, u64 start, u64 end,
+                                          s32 param0, s32 tile, f32 depth,
+                                          s32 startFrame, s32 endFrame);
 #pragma alias campDrawItemFrameAlias FUN_0014EF60
 extern void campDrawItemFrameAlias(int param_1);
 extern void h_campItemDestroyNewItemTask(KwlnTask* task);
@@ -883,8 +883,9 @@ void h_campDrawSocialList(int param_1)
     pair.y = 27.0f;
     t1 = pair;
     t1.x = t1.x + fade;
-    campDrawTransitionAt(*(u32 *)(param_1 + 0xc4), 0x44, 100.0f, 2,
-                         *(u64*)&t1, *(u64*)&pair);
+    campDrawTransitionRetailOrder(
+        (void*)(*(u32 *)(param_1 + 0xc4) + 0x44), 0, 2, 2,
+        *(u64*)&t1, *(u64*)&pair, 0, 0, 100.0f, 0, 10);
     CAMP_DRAW_PAIR_FIRST_AT(t2, 100.0f,
                             (void*)(*(u32 *)(param_1 + 0xc4) + 0x88), 2,
                             112.0f, 27.0f, fade);

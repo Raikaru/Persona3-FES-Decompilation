@@ -547,6 +547,8 @@ s32 FUN_003d9cc0(s32);
 void FUN_003d9ea0(FclList*);
 void FUN_003c9b00(FclListUi*, FclFusionDetail*, FclFusionOutput*);
 void FUN_0040e3c0(float, s32, s32, byte, s32, s32);
+#pragma alias FUN_0040e3c0_i FUN_0040e3c0
+void FUN_0040e3c0_i(s32, s32, float, byte, s32, s32);
 void FUN_0040e3f0(float, float, float, float, s32, s32, byte, s32, s32, s32, s32);
 s32 FUN_0040eb50(float, s32, s32, byte, s16, const void*, s32);
 s32 FUN_003b32d0(float, s32, s32, s32, s8, s32, const FclGlyphSet*, s32, s32);
@@ -1386,15 +1388,15 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
         for (i = 0; i < 0xc; i++) {
             if (i < available_count) {
                 if ((resource_data->selection_mask & (1 << i)) == 0) {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2b, selected_style);
+                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                                   0x2b, selected_style);
                 } else {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2a, selected_style);
+                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                                   0x2a, selected_style);
                 }
             } else {
-                FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                              0x2d, 0);
+                FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                               0x2d, 0);
             }
         }
     } else {
@@ -1402,15 +1404,15 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
         do {
             if (i < available_count) {
                 if ((resource_data->selection_mask & (1 << i)) == 0) {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2b, selected_style);
+                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                                   0x2b, selected_style);
                 } else {
-                    FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                                  0x2a, selected_style);
+                    FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                                   0x2a, selected_style);
                 }
             } else {
-                FUN_0040e3c0(0.0f, base_x + i * 0x16, base_y, (byte)alpha,
-                              0x2d, 0);
+                FUN_0040e3c0_i(base_x + i * 0x16, base_y, 0.0f, (byte)alpha,
+                               0x2d, 0);
             }
         } while (++i < 0xc);
     }
