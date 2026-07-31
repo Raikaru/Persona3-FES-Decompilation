@@ -12,8 +12,8 @@ extern void func_0021eb80(void* destination, const f32* layout);
 extern void func_0021d8e0(void* destination, f32* layout);
 extern void func_0021d950(void* destination, const u8* color);
 extern void func_004d7f60(s32 state, u32 value);
-extern u32 D_00960090[];
-extern u32 D_0096009C[];
+extern u32 D_00960090_y2[];
+extern u32 D_0096009C_y2[];
 extern f32 D_00960088;
 extern f32 fGpffff8248;
 extern f32 fGpffff82fc;
@@ -197,14 +197,14 @@ void func_002720c0(void)
 
     K_ASSERT(sWork != NULL, 31);
     work = sWork;
-    setRenderState = (OpFadeSetRenderState*)D_00960090;
+    setRenderState = (OpFadeSetRenderState*)D_00960090_y2;
     (*setRenderState)(8, 0);
     (*setRenderState)(6, 0);
     (*setRenderState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     (*setRenderState)(1, 0);
-    renderQuad = (OpFadeRenderQuad*)D_0096009C;
+    renderQuad = (OpFadeRenderQuad*)D_0096009C_y2;
     (*renderQuad)(&work->vertices[0], 4, 0, 1, 2);
     (*renderQuad)(&work->vertices[0], 4, 0, 2, 3);
 }
@@ -213,6 +213,24 @@ void func_002720c0(void)
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Main/Battle/Data/datPersona.h"
 #include "Main/g_data.h"
+
+#pragma alias func_00272330_y2 func_00272330
+#pragma alias D_00960090_y2 D_00960090
+#pragma alias D_0096009C_y2 D_0096009C
+#pragma alias DAT_007ce420_y2 DAT_007ce420_y2
+#pragma alias FUN_00173220_y2 FUN_00173220_y2
+#pragma alias FUN_001749a0_y2 FUN_001749a0_y2
+#pragma alias func_0021d8e0_y2 func_0021d8e0_y2
+#pragma alias func_0021d950_y2 func_0021d950_y2
+#pragma alias func_00272380_y2 func_00272380_y2
+#pragma alias func_00272400_y2 func_00272400_y2
+#pragma alias func_002727c0_y2 func_002727c0_y2
+#pragma alias func_002791b0_y2 func_002791b0_y2
+#pragma alias func_00279330_y2 func_00279330_y2
+#pragma alias func_00279510_y2 func_00279510_y2
+#pragma alias func_00279580_y2 func_00279580_y2
+#pragma alias func_002795f0_y2 func_002795f0_y2
+
 
 static u32* sBrpSeq; // puGpffffb6d0 / iGpffffb6d0
 #pragma alias sBrpSeq_abs sBrpSeq
@@ -465,7 +483,7 @@ void brpSeq00273c70(void)
     puVar1[4] = 5;
 }
 // FUN_00272330
-void func_00272330(u32* work)
+void func_00272330_y2(u32* work)
 {
     K_ASSERT(sBrpSeq == NULL, 0xb7);
     *work = 0;
@@ -1720,3 +1738,324 @@ s32 func_00274f00(void)
     } while (++i != (s32)work[0x1f]);
     return count;
 }
+
+
+#include "Main/OpEd/op_fade_mid.h"
+#include "Main/Battle/Result/br_res.h"
+typedef int (*code)(...);
+extern void K_Assert(const char* file, s32 line);
+extern const char D_0068ED88[];
+
+#define OP_MATCH_ASSERT(condition, line) \
+    do {                                 \
+        if (!(condition)) {              \
+            K_Assert(__FILE__, (line));  \
+        }                                \
+    } while (0)
+
+/* Retail helpers used by the opening/ending result state. */
+extern u32 D_00960178[];
+extern u32 D_0096017C[];
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
+                          u32 first, u32 second);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
+extern void *D_007D2D60;
+extern u8 *DAT_007ce420_y2;
+extern s32 DAT_007cc4dc;
+extern f32 DAT_007cad74;
+extern f32 DAT_007caf38;
+extern f32 DAT_007caf8c;
+extern f32 DAT_007cafec;
+extern f32 DAT_007cb04c;
+extern const char DAT_0068EEB8[];
+extern const char DAT_0068EED0[];
+
+extern void *FUN_00173220_y2(u16 id);
+extern void *FUN_001749a0_y2(u16 id);
+extern u32 func_00194b80(void *parent, u32 priority, const void *name,
+                          void *update, void *destroy, void *work);
+extern u32 func_00194e10(const void *name, u32 size, u32 a, u32 b,
+                          void *update, void *destroy, u32 flags);
+extern void func_00195020(u32 resource);
+extern void func_0010a370(s32 channel, const char *message);
+extern u32 func_00119a60(u32 id);
+extern u32 func_00198590(void);
+extern void func_001985b0(u8 r, u8 g, u8 b, u8 a);
+extern void func_0019d3f0(const char *file, s32 line);
+extern void func_001fb1f0(void *persona, u16 *out, s32 *count);
+extern u32 func_001fc230(void *persona);
+extern u32 func_001fc3c0(void *persona);
+extern void func_0021d3b0(void *destination, u32 source);
+extern void func_0021d8e0_y2(void *destination, const f32 *layout);
+extern void func_0021d950_y2(void *destination, const u8 *color);
+extern u32 func_0021cca0(u32 resource, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void func_0021e380(void *destination, u32 source, s32 mode);
+extern void func_0021eac0(void *destination, f32 value);
+extern void func_00238980(void *destination, s32 count, u32 value, s32 mode);
+extern void func_00238dc0(void *destination, s32 count, u32 value, s32 mode,
+                           const f32 *layout);
+extern void func_0025f5d0(void *destination, u32 resource, s32 frame);
+extern void func_0025fc50(void *destination, u32 resource, s32 frame, s32 mode);
+extern u32 func_00239140(s32 font);
+extern s32 sflPsel00260900(u32 *resource, s32 frame);
+extern s32 sflPsel00260920(u32 *resource, s32 frame);
+extern f32 sinf(f32 angle);
+extern u32 sflPsel00260940(u32 *resource, s32 frame);
+extern void func_00272330(void *task);
+extern void func_00272380_y2(void);
+extern void func_00272400_y2(u64 value);
+extern u32 func_002727c0_y2(void);
+extern void func_002791b0_y2(u16 id);
+extern void func_00279330_y2(u16 id);
+extern void func_00279510_y2(s32 index, u32 value);
+extern void func_00279580_y2(s32 index, u32 value);
+extern void func_002795f0_y2(s32 index, u32 value);
+extern void func_003b0170(u32 resource);
+extern u32 func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e20(u32 resource, u32 color);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern u32 func_003b1360(u32 resource, s32 visible, s32 flags);
+extern void func_003c7430(s32 value);
+extern void func_003c7bc0(s32 channel, u32 value);
+extern void func_003c7e20(s32 mode, s32 x, s32 y, u64 value, s32 a,
+                           s32 b, s32 c);
+extern u32 func_003c9ab0(u32 resource);
+extern void func_003c9ba0(u32 stream, u32 resource);
+extern void func_003c9cd0(u32 resource, s32 value);
+extern void func_003c9d00(u32 resource, s32 value);
+extern void func_003c9d80(u32 resource, s32 value);
+extern void func_00521250(void *destination, const void *source, u32 size);
+extern void func_005225a8(const void *message, ...);
+extern void brLvpnlStartEntranceAnimation(void);
+extern u32 *DAT_007ce3c0;
+extern u32 *DAT_007ce3c4;
+extern u32 *DAT_007ce3c8;
+extern u32 *DAT_007ce3cc;
+extern u32 *DAT_007ce3d0;
+#undef gOpWorkC0
+#undef gOpWorkC4
+#undef gOpWorkC8
+#undef gOpWorkCC
+#undef gOpWorkD0
+#define gOpWorkC0 DAT_007ce3c0
+#define gOpWorkC4 DAT_007ce3c4
+#define gOpWorkC8 DAT_007ce3c8
+#define gOpWorkCC DAT_007ce3cc
+#define gOpWorkD0 DAT_007ce3d0
+#define opTexW(resource, frame) \
+    ((s32)sflPsel00260900((u32 *)(uintptr_t)(resource), (frame)))
+#define opTexH(resource, frame) \
+    ((s32)sflPsel00260920((u32 *)(uintptr_t)(resource), (frame)))
+#define opTexFrame(resource, frame) \
+    (sflPsel00260940((u32 *)(uintptr_t)(resource), (frame)))
+
+#define OP_U8(base, offset) (*(u8 *)((u8 *)(base) + (offset)))
+#define OP_S8(base, offset) (*(s8 *)((u8 *)(base) + (offset)))
+#define OP_U16(base, offset) (*(u16 *)((u8 *)(base) + (offset)))
+#define OP_S16(base, offset) (*(s16 *)((u8 *)(base) + (offset)))
+#define OP_U32(base, offset) (*(u32 *)((u8 *)(base) + (offset)))
+#define OP_S32(base, offset) (*(s32 *)((u8 *)(base) + (offset)))
+#define OP_PTR(base, offset) (*(void **)((u8 *)(base) + (offset)))
+#define OP_WORD(base, index) (((u32 *)(base))[index])
+#define OP_ALLOC(size, flags) (*(void *(**)(u32, u32))D_00960178)((size), (flags))
+#define OP_WORK0 ((u8 *)gOpWorkC0)
+#define OP_WORK4 ((u8 *)gOpWorkC4)
+#define OP_WORK8 ((u8 *)gOpWorkC8)
+#define OP_WORKC ((u8 *)gOpWorkCC)
+#define OP_WORKD ((u8 *)gOpWorkD0)
+
+
+static inline u8 opFadeColorByte(f32 value)
+{
+    return (u8)(u32)value;
+}
+
+
+// FUN_00275050 NONMATCHING
+void func_00275050(s32 index)
+{
+    u32 *work;
+    u16 *skills;
+    s32 skillCount;
+    s32 slot;
+    s32 skillIndex;
+    s32 recordIndex;
+    s32 unavailable;
+    s8 kind;
+    u8 *entry;
+    u8 *record;
+
+    if (gOpWorkC0 == NULL)
+        K_Assert(D_0068ED88, 0xb0);
+    work = gOpWorkC0;
+    skills = datPersonaGetSkills((void *)(uintptr_t)work[0x30 / 4]);
+    skillCount = (s32)datPersonaCountValidSkills(
+        (void *)(uintptr_t)work[0x30 / 4]);
+    OP_MATCH_ASSERT(index < (s32)work[0x1c0 / 4], 0x638);
+    slot = 0;
+    unavailable = 0;
+
+loop:
+    recordIndex = (s32)work[0x78 / 4] + slot;
+    record = (u8 *)(uintptr_t)work[0x34 / 4] + recordIndex * 4;
+    entry = record + 6;
+    kind = *(s8 *)(record + 7);
+    if (kind == 4)
+        goto next;
+    if (kind != 1)
+    {
+        K_Assert(D_0068ED88, 0x644);
+        goto next;
+    }
+    skillIndex = 0;
+    while (skillIndex < skillCount)
+    {
+        if (skills[skillIndex] == *(u16 *)(entry + 2))
+            break;
+        skillIndex++;
+    }
+    if (skillIndex != skillCount)
+        goto next;
+    if (unavailable != index)
+        goto unavailableSkill;
+    goto done;
+unavailableSkill:
+    unavailable++;
+next:
+    slot++;
+    if ((s32)work[0x78 / 4] + slot >= 0x10)
+        K_Assert(D_0068ED88, 0x65b);
+    goto loop;
+    done:
+    return;
+}
+
+// FUN_002751e0
+s32 func_002751e0(void)
+{
+    s32 remaining;
+    s32 slot;
+    s32 unavailable;
+    s32 i;
+    u16 *skills;
+    s32 skillCount;
+    u32 *work;
+    u8 *entry;
+    u8 *persona;
+
+    if (gOpWorkC0 == NULL)
+        K_Assert(D_0068ED88, 0xb0);
+    work = gOpWorkC0;
+    skills = datPersonaGetSkills((void *)(uintptr_t)work[0x30 / 4]);
+    skillCount = (s32)datPersonaCountValidSkills(
+        (void *)(uintptr_t)work[0x30 / 4]);
+    slot = 0;
+    unavailable = 0;
+    persona = (u8 *)(uintptr_t)work[0x30 / 4];
+    remaining = persona[4] -
+                DAT_007ce420_y2[*(u16 *)(persona + 2) * 0xe + 3] -
+                OP_U8(work, 0x38);
+
+loop:
+    entry = (u8 *)(uintptr_t)(
+                work[0x34 / 4] +
+                ((s32)work[0x78 / 4] + slot) * 4) +
+            6;
+    switch (OP_S8(entry, 1))
+    {
+    default:
+        K_Assert(D_0068ED88, 0x686);
+        break;
+    case 1:
+        if (remaining < (s32)OP_U8(entry, 0))
+        {
+            for (i = 0; i < skillCount; i++)
+            {
+                if (OP_U16(entry, 2) == skills[i])
+                    break;
+            }
+            if (i == skillCount)
+                unavailable++;
+        }
+        break;
+    case 4:
+        break;
+    case 0:
+        goto done;
+    }
+    slot++;
+    if ((s32)work[0x78 / 4] + slot != 0x10)
+        goto loop;
+done:
+    return unavailable;
+}
+
+// FUN_00275370
+u32 func_00275370(void)
+{
+    OP_MATCH_ASSERT(gOpWorkC0 != NULL, 0xb0);
+    return *gOpWorkC0 & 0x100;
+}
+
+// FUN_002753c0
+void func_002753c0(void)
+{
+    u8 *work;
+    OP_MATCH_ASSERT(gOpWorkC0 != NULL, 0xb0);
+    work = OP_WORK0;
+    brLvpnlStartEntranceAnimation();
+    func_003c7bc0(0, (u32)(uintptr_t)FUN_00173220_y2(OP_U16(work, 4)));
+    func_003c7430(0);
+    OP_U32(work, 0x14) = 0;
+    OP_U32(work, 0x10) = 1;
+}
+
+// FUN_00275440
+void func_00275440(void)
+{
+    u8 *work = (u8 *)OP_ALLOC(0x4510, 0x40000);
+    OP_U32(work, 0x4500) = 0;
+    func_00272330(work);
+    brRes00233970((u32 *)(work + 0x210));
+    func_00275a70((u32 *)(work + 0x260));
+    func_00276910((u32 *)(work + 0x880));
+    func_00276d10((u32 *)(work + 0x890));
+    OP_U32(work, 0x4504) = func_00194b80(NULL, 10, DAT_0068EEB8,
+                                           (void *)func_002756c0, NULL, NULL);
+    OP_U32(work, 0x4508) = func_00194e10(DAT_0068EED0, 0x18ab,
+                                           1, 2, (void *)func_002757a0, NULL, 0);
+    gOpWorkC4 = (u32 *)work;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

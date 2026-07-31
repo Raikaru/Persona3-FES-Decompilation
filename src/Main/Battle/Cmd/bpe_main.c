@@ -357,6 +357,7 @@ void func_00249c10(void* work)
     func_004747f0(*(void**)(base + 0x600));
     func_004c3880(matrix);
 }
+#pragma opt_loop_invariants reset
 
 
 

@@ -14,6 +14,10 @@
 #include "libm.h"
 #include "temporary.h"
 
+#pragma alias memset_y2 memset
+#pragma alias PTR_DAT_007cd540_y2 PTR_DAT_007cd540_y2
+
+
 #define CAMERA_DATA_U32(address) (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32*)(uintptr_t)(address))
 #define CAMERA_FIELD_IDS (*(volatile /* Removing this file's qualifier batch loses 1 MATCH(es) and worsens 0 other function(s) - measured W170. */ u32**)(uintptr_t)0x007cd540)
 #define CAMERA_UP_AXIS ((const RwV3d*)(uintptr_t)0x00683a98)
@@ -543,7 +547,7 @@ void func_001d68e0(CmrFile* cmr, KwlnTask* fldCameraTask)
     fldCamera = (FldCamera*)fldCameraTask->workData;
     camera = kwlnGetMainCamera();
     cameraFrame = (RwFrame*)camera->object.object.parent;
-    memset(data, 0, 0x60);
+    memset_y2(data, 0, 0x60);
     ((FldCameraRuntimeCmr*)data)->fields.fov =
         K_View_GetFov(kwlnGetMainCamera());
     ((FldCameraRuntimeCmr*)data)->fields.mat = cameraFrame->modelling;
@@ -815,4 +819,949 @@ void func_001d7260(void)
             count, volatileObject->fileSize, 0x40000);
     func_00521250(opmap, object->fileMemory, volatileObject->fileSize);
     func_00100ec0(object);
+}
+
+#include "Kosaka/Field/k_encount.h"
+#include "Kosaka/Field/k_unit.h"
+#include "Kosaka/Field/k_fldFrame.h"
+#include "Kosaka/Field/k_event.h"
+#include "Main/g_data.h"
+#include "Main/Battle/Data/datUnit.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Script/scrScriptProcess.h"
+#include "rw/rprandom.h"
+
+extern s32 func_001c0040(void);
+extern u32 RpRandom(void);
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
+
+extern u8* DAT_007ce4ac;
+extern u8* DAT_007ce4b0;
+extern u8* DAT_007ce4b4;
+extern u8* DAT_007ce4b8;
+extern u32 iGpffffb418;
+extern s32* PTR_DAT_007cd540_y2;
+extern RwMatrix* func_004c38c0(void);
+extern void func_004c3880(RwMatrix* matrix);
+extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
+extern f32 acosf(f32 value);
+#pragma alias sDegreesPerRadian D_007CAFA0
+extern f32 sDegreesPerRadian;
+#pragma alias sEncountAxis D_00683B78
+extern RwV3d sEncountAxis;
+#pragma alias sEncountForward D_00683B88
+extern RwV3d sEncountForward;
+
+// FUN_001d75f0
+u8 K_Encount_001d75f0(u32 param_1, u16 flag, u32 areaId)
+{
+    u8 result;
+    int mapId;
+
+    result = 0;
+    mapId = param_1 & 0xffff;
+    if ((0x14 <= mapId && mapId < 0x1d && flag == 0) ||
+        (0x28 <= mapId && mapId < 0x31 && flag == 0) ||
+        (0x33 <= mapId && mapId <= 0x3a) ||
+        (0x47 <= mapId && mapId < 0x4f))
+    {
+        result = DAT_007ce4b0[(areaId & 0xffff) * 10 + 3];
+    }
+    else if (0x1e <= mapId && mapId < 0x28)
+    {
+        result = DAT_007ce4b4[mapId * 200 - 0x176d];
+    }
+    return result;
+}
+
+// FUN_001d76e0
+u8 K_Encount_001d76e0(u32 param_1, u16 flag, u32 areaId)
+{
+    u8 result;
+    int mapId;
+
+    result = 0;
+    mapId = param_1 & 0xffff;
+    if ((0x14 <= mapId && mapId < 0x1d && flag == 0) ||
+        (0x28 <= mapId && mapId < 0x31 && flag == 0) ||
+        (0x33 <= mapId && mapId <= 0x3a) ||
+        (0x47 <= mapId && mapId < 0x4f))
+    {
+        result = DAT_007ce4b0[(areaId & 0xffff) * 10 + 2];
+    }
+    else if (0x1e <= mapId && mapId < 0x28)
+    {
+        result = DAT_007ce4b4[mapId * 200 - 0x176e];
+    }
+    return result;
+}
+
+// FUN_001d77d0
+u8 K_Encount_001d77d0(u32 param_1, u16 flag, u32 areaId)
+{
+    u8 result;
+    int mapId;
+
+    result = 0;
+    mapId = param_1 & 0xffff;
+    if ((0x14 <= mapId && mapId < 0x1d && flag == 0) ||
+        (0x28 <= mapId && mapId < 0x31 && flag == 0) ||
+        (0x33 <= mapId && mapId <= 0x3a) ||
+        (0x47 <= mapId && mapId < 0x4f))
+    {
+        result = DAT_007ce4b0[(areaId & 0xffff) * 10 + 4];
+    }
+    else if (0x1e <= mapId && mapId < 0x28)
+    {
+        result = DAT_007ce4b4[mapId * 200 - 0x176c];
+    }
+    return result;
+}
+
+// FUN_001d7300 NONMATCHING
+u32 K_Encount_001d7300(u32 param_1, u16 flag, u32 areaId)
+{
+    s32 temp_16;
+    s32 temp_3;
+    s32 temp_3_3;
+    s32 temp_5_2;
+    s32 var_20;
+    s32 var_19;
+    s32 temp_18;
+    s32 var_5;
+    s32 var_7;
+    u16 var_21;
+    u32 var_17;
+    u32 temp_6;
+    s32 temp_hi;
+    u8* temp_3_2;
+    u8* temp_4;
+
+    var_21 = 0xffff;
+    temp_3 = param_1 & 0xffff;
+    if (((temp_3 >= 0x14) && (temp_3 < 0x1d) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x28) && (temp_3 < 0x31) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x33) && (temp_3 <= 0x3a)) ||
+        ((temp_3 >= 0x47) && (temp_3 < 0x4f)))
+    {
+        var_17 = *(u16*)(DAT_007ce4b0 + (areaId & 0xffff) * 0xa);
+        goto block_15;
+    }
+    if ((temp_3 >= 0x1f) && (temp_3 < 0x28))
+    {
+        var_17 = *(u16*)(DAT_007ce4b4 + temp_3 * 0xc8 + (flag & 0xffff) * 0xa -
+                         0x1842);
+        goto block_15;
+    }
+    else
+    {
+        return 0xffffffff;
+    }
+block_15:
+        temp_16 = (var_17 & 0xffff) * 0x7c;
+        temp_4 = DAT_007ce4ac + temp_16;
+        temp_18 = temp_4[2] + (temp_4[0] + temp_4[1]);
+        temp_hi = RpRandom() % temp_18;
+        if ((s32)temp_hi < (s32)DAT_007ce4ac[temp_16])
+        {
+            var_20 = 1;
+            var_19 = 0;
+            temp_18 = 0x14;
+        }
+        else if ((s32)temp_hi < (s32)(DAT_007ce4ac[temp_16] +
+                                      DAT_007ce4ac[temp_16 + 1]))
+        {
+            var_20 = 2;
+            var_19 = 0x14;
+            temp_18 = 0x19;
+        }
+        else
+        {
+            var_20 = 4;
+            var_19 = 0x19;
+            temp_18 = 0x1e;
+        }
+        if (func_001c0040() == 3)
+        {
+            var_20 = 4;
+            var_19 = 0x19;
+            temp_18 = 0x1e;
+        }
+        var_17 = 0;
+        temp_3_2 = DAT_007ce4ac + temp_16;
+        for (var_5 = var_19; var_5 < temp_18; var_5 += 1)
+        {
+            temp_3_3 = var_5 * 4;
+            if (*(u16*)(temp_3_2 + temp_3_3 + 4) != 0)
+            {
+                var_17 += *(u16*)(temp_3_2 + temp_3_3 + 6);
+            }
+        }
+        if (var_17 == 0)
+        {
+            return 0xffffffff;
+        }
+        temp_6 = RpRandom() % var_17;
+        var_7 = 0;
+        temp_5_2 = (s32)(DAT_007ce4ac + temp_16);
+        for (; var_19 < temp_18; var_19 += 1)
+        {
+            temp_3_3 = var_19 * 4;
+            var_7 += *(u16*)(temp_5_2 + temp_3_3 + 6);
+            if ((s32)temp_6 < var_7)
+            {
+                var_21 = *(u16*)(temp_3_3 + temp_5_2 + 4);
+                break;
+            }
+        }
+        return (var_20 << 0x10) | (var_21 & 0xffff);
+    }
+
+// FUN_001d78c0 NONMATCHING
+u16* K_Encount_001d78c0(u32 param_1, u16 flag, u32 areaId)
+{
+    s32 temp_3;
+    s32 var_16;
+    s32 var_18;
+    s32 var_4;
+    s32 var_4_2;
+    s32 var_6;
+    u16* temp_5;
+    u16* var_19;
+    u32 temp_3_3;
+    u32 var_17;
+    void* temp_3_2;
+
+    var_19 = NULL;
+    temp_3 = param_1 & 0xffff;
+    if (((temp_3 >= 0x14) && (temp_3 < 0x1d) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x28) && (temp_3 < 0x31) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x33) && (temp_3 < 0x3b)) ||
+        ((temp_3 >= 0x47) && (temp_3 < 0x4f)))
+    {
+        var_18 = (s32)(DAT_007ce4b8 +
+                       (*(u16*)(DAT_007ce4b0 + ((areaId & 0xffff) * 0xa) + 6) & 0xffff) *
+                           0xb4);
+        goto block_15;
+    }
+    if ((temp_3 >= 0x1f) && (temp_3 < 0x28))
+    {
+        var_18 = (s32)(DAT_007ce4b8 +
+                       (*(u16*)(DAT_007ce4b4 + (temp_3 * 0xc8) +
+                                ((flag & 0xffff) * 0xa) - 0x183c) & 0xffff) *
+                           0xb4);
+        goto block_15;
+    }
+    return NULL;
+block_15:
+    var_16 = 1;
+    if (func_001c0040() == 2)
+    {
+        var_16 = 2;
+    }
+    var_4 = 0;
+    var_17 = 0;
+loop_23:
+    if (var_4 < 0xf)
+    {
+        temp_3_2 = (u8*)var_18 + var_4 * 0xc;
+        if (*(u16*)((u8*)temp_3_2 + 2) != 0)
+        {
+            if ((*(u8*)((u8*)temp_3_2 + 7) & 1) != 0)
+            {
+                var_17 += var_16 * *(u16*)temp_3_2;
+            }
+            else
+            {
+                var_17 += *(u16*)temp_3_2;
+            }
+        }
+        var_4 += 1;
+        goto loop_23;
+    }
+    if (var_17 == 0)
+    {
+        K_ASSERT(0, 0x147);
+    }
+    temp_3_3 = RpRandom() % var_17;
+    var_4_2 = 0;
+    var_6 = 0;
+loop_34:
+    if (var_4_2 < 0xf)
+    {
+        temp_5 = (u16*)((u8*)var_18 + var_4_2 * 0xc);
+        if (temp_5[1] != 0)
+        {
+            if ((((u8*)temp_5)[7] & 1) != 0)
+            {
+                var_6 += var_16 * temp_5[0];
+            }
+            else
+            {
+                var_6 += temp_5[0];
+            }
+            if ((s32)temp_3_3 < var_6)
+            {
+                var_19 = temp_5;
+            }
+            else
+            {
+                goto block_33;
+            }
+        }
+        else
+        {
+block_33:
+            var_4_2 += 1;
+            goto loop_34;
+        }
+    }
+    return var_19;
+}
+typedef struct EncounterWork
+{
+    u32 state;
+    u32 taskSlot;
+    u32 paused;
+    void* effectHandle;
+    u32 pcCount;
+    u32 ecCount;
+    FldUnit* pc[4];
+    FldUnit* ec[4];
+    u32 progress;
+    u32 duration;
+    u32 reaperFlag;
+    u32 totalActive;
+    u32 pcTotal;
+    u32 ecTotal;
+    u32 selectedFlatIndex;
+} EncounterWork;
+
+typedef struct EncounterRecord
+{
+    u32 count;
+    u32 ids[3];
+} EncounterRecord;
+
+typedef struct PeriodicWork
+{
+    u32 state;
+    u32 disabled;
+    u32 initialGate;
+    u32 timestamp;
+    KwlnTask* scriptTask[16];
+    EncounterRecord records[16];
+} PeriodicWork;
+
+extern KwlnTask* D_00875A40[3];
+extern void* func_001a9180(KwlnTask* task);
+extern void* func_001a91b0(KwlnTask* task, const RwV3d* position);
+extern void func_001a9390(KwlnTask* task, void* handle, u32 value);
+extern void func_001a9400(KwlnTask* task, void* handle);
+extern void func_00434f70(void);
+extern u32 func_001fc720(DatUnit* unit);
+extern void func_001fc590(DatUnit* src, DatUnit* dst);
+extern u32 func_002ff790(DatUnitGenusBase* genus);
+#pragma alias func_002ffb00_u32 func_002ffb00
+extern u32 func_002ffb00_u32(DatUnitGenusBase* genus);
+extern u16 func_002ffb00(DatUnitGenusBase* genus);
+extern u32 datGetMaxHp(s16 pcId);
+extern void func_0035c1a0(KwlnTask* task, int record);
+extern ScrHeader* D_007CE220;
+extern void func_001b00c0(KwlnTask* task);
+extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+
+static u32 K_Encount_Now(KwlnTask* task)
+{
+    return task != NULL ? kwlnTaskGetTimer(task) : 0;
+}
+
+static void* K_Encount_FieldWord(u32 offset)
+{
+    Field* field = K_Field_Get();
+    return field != NULL ? *(void**)((u8*)field + offset) : NULL;
+}
+
+static void K_Encount_Face(FldUnit* unit, FldUnit* target)
+{
+    RwMatrix matrix;
+    RwV3d axis = {0.0f, 1.0f, 0.0f};
+    RwV3d delta;
+    f32 heading;
+
+    if (unit == NULL || target == NULL || unit->mdl == NULL || target->mdl == NULL ||
+        unit->resrc == NULL)
+    {
+        return;
+    }
+    delta = mdlGetMatrix(target->mdl)->pos;
+    delta.x -= mdlGetMatrix(unit->mdl)->pos.x;
+    delta.y = 0.0f;
+    delta.z -= mdlGetMatrix(unit->mdl)->pos.z;
+    heading = atan2f(delta.x, delta.z) * (180.0f / 3.14159265f);
+    memset(&matrix, 0, sizeof(matrix));
+    matrix.right.x = 1.0f;
+    matrix.up.y = 1.0f;
+    matrix.at.z = 1.0f;
+    matrix.pos = mdlGetMatrix(unit->mdl)->pos;
+    matrix.flags = 0x20003;
+    RwMatrixRotate(&matrix, &axis, heading, rwCOMBINEPRECONCAT);
+    K_FldFrame_CtlUpdateMdlMat(unit->resrc->collisCtlTask, &matrix);
+}
+
+// FUN_001d7b70 NONMATCHING
+DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
+{
+    s32 temp_3;
+    s32 temp_6;
+    s32 var_10;
+    s32 var_11;
+    s32 var_4;
+    s32 var_9;
+    s32 pcCount;
+    s32 ecCount;
+    void* temp_8;
+    void* ecBase;
+
+    temp_8 = task->workData;
+    var_10 = 0;
+    var_4 = 0;
+    pcCount = *(s32*)((u8*)temp_8 + 0x10);
+    goto pc_check;
+pc_body:
+    if (flatIndex == var_10)
+    {
+        return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + var_4 * 4 + 0x18) +
+                                      0x48))->unit;
+    }
+    var_10 += 1;
+    var_4 += 1;
+pc_check:
+    if (var_4 < pcCount)
+    {
+        goto pc_body;
+    }
+    var_9 = 0;
+    ecCount = *(s32*)((u8*)temp_8 + 0x14);
+    goto ec_check;
+ec_body:
+    var_11 = 0;
+    temp_6 = var_9 * 4;
+    ecBase = (u8*)temp_8 + temp_6;
+    goto unit_check;
+unit_body:
+    temp_3 = var_11 * 0x3c;
+    if (((DatUnit*)((u8*)(*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) +
+                                                      0x48))->unit + temp_3))->id != 0)
+    {
+        if (flatIndex == var_10)
+        {
+            return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + temp_6 +
+                                                           0x28) +
+                                          0x48))->unit + var_11;
+        }
+        var_10 += 1;
+        goto unit_next;
+    }
+unit_next:
+    var_11 += 1;
+unit_check:
+    if (var_11 < 6)
+    {
+        goto unit_body;
+    }
+    var_9 += 1;
+ec_check:
+    if (var_9 < ecCount)
+    {
+        goto ec_body;
+    }
+    return NULL;
+}
+
+
+// FUN_001d7c60
+FldUnit* func_001d7c60(KwlnTask* task, s32 flatIndex)
+{
+    s32 unitIndex;
+    s32 flatUnitIndex;
+    s32 pcIndex;
+    s32 pcCount;
+    s32 ecIndex;
+    s32 ecCount;
+    EncounterWork* work;
+    s32 unitOffset;
+    u32 ecOffset;
+    u8* ecBase;
+
+    work = (EncounterWork*)task->workData;
+    flatUnitIndex = 0;
+    pcIndex = 0;
+    pcCount = work->pcCount;
+    goto pc_check;
+pc_body:
+    if (flatIndex == flatUnitIndex)
+    {
+        return work->pc[pcIndex];
+    }
+    flatUnitIndex++;
+    pcIndex++;
+pc_check:
+    if (pcIndex < pcCount)
+    {
+        goto pc_body;
+    }
+
+    ecIndex = 0;
+    ecCount = work->ecCount;
+    goto ec_check;
+ec_body:
+    unitIndex = 0;
+    ecOffset = ecIndex * 4;
+    ecBase = (u8*)work + ecOffset;
+    goto unit_check;
+unit_body:
+    unitOffset = unitIndex * sizeof(DatUnit);
+    if (((DatUnit*)((u8*)(*(FldUnit**)(ecBase + 0x28))->genusBase->unit + unitOffset))->id != 0)
+    {
+        if (flatIndex == flatUnitIndex)
+        {
+            return work->ec[ecIndex];
+        }
+        flatUnitIndex++;
+    }
+    unitIndex++;
+unit_check:
+    if (unitIndex < 6)
+    {
+        goto unit_body;
+    }
+    ecIndex++;
+ec_check:
+    if (ecIndex < ecCount)
+    {
+        goto ec_body;
+    }
+    return NULL;
+}
+
+static void K_Encount_CompactEc(EncounterWork* work)
+{
+    u32 i;
+    u32 out = 0;
+    for (i = 0; i < work->ecCount && i < 4; ++i)
+    {
+        if (work->ec[i] != NULL)
+        {
+            work->ec[out++] = work->ec[i];
+        }
+    }
+    while (out < 4)
+    {
+        work->ec[out++] = NULL;
+    }
+}
+
+// FUN_001d7d40 NONMATCHING
+void* func_001d7d40(KwlnTask* task)
+{
+    EncounterWork* work;
+    FldUnit* pc;
+    FldUnit* ec;
+    FldUnit* ec2;
+    DatUnit* src;
+    DatUnit* dst;
+    DatUnit* t4;
+    u32 i;
+    u32 j;
+    u32 alivePc;
+    u32 aliveEc;
+    u32 deadPc;
+    u32 deadEc;
+    u32 faceDir;
+    u32 modelType;
+    u32 randVal;
+    s16 hpVal;
+    u8* base;
+    void* effectField;
+    void* modelId;
+    void* fieldWord;
+    void* fieldWord2;
+    RwV3d pos;
+    RwV3d ppos;
+    RwV3d tmpPos;
+    f32 scale;
+    u32 pcAliveCount;
+    u32 ecAliveCount;
+    u32 curIdx;
+    u32 total;
+    s32 genResult;
+    u32 procIdx;
+    u32 offset1200;
+
+    if (task == NULL || task->workData == NULL)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    work = (EncounterWork*)task->workData;
+    if (work->paused != 0)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    if (work->state == 0)
+    {
+        if (work->pcCount == 0 || work->ecCount == 0 ||
+            work->pc[0] == NULL || work->ec[0] == NULL)
+        {
+            work->state = 2;
+            return KWLNTASK_CONTINUE;
+        }
+        pc = work->pc[0];
+        ec = work->ec[0];
+        {
+            pos.x = (mdlGetMatrix(pc->mdl)->pos.x +
+                     mdlGetMatrix(ec->mdl)->pos.x) * 0.5f;
+            pos.y = (mdlGetMatrix(pc->mdl)->pos.y +
+                     mdlGetMatrix(ec->mdl)->pos.y) * 0.5f + 3.0f;
+            pos.z = (mdlGetMatrix(pc->mdl)->pos.z +
+                     mdlGetMatrix(ec->mdl)->pos.z) * 0.5f;
+            effectField = func_001a91b0(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x1200), &pos);
+            work->effectHandle = effectField;
+            func_001a9390(*(KwlnTask**)((u8*)K_Field_Get() + 0x1200),
+                          effectField, 3);
+        }
+        K_Encount_Face(pc, ec);
+        K_Encount_Face(ec, pc);
+        mdlAnimSet(pc->mdl, 0, 4, 0, 1);
+        mdlAnimSetSpeed(pc->mdl, 0, 1.0f);
+        mdlAnimSet(ec->mdl, 0, 3, 0, 1);
+        mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+        func_001b00c0(pc->unk_170);
+        func_001b00c0(ec->unk_170);
+        work->pcTotal = work->pcCount;
+        work->ecTotal = 0;
+        for (i = 0; i < work->ecCount; ++i)
+        {
+            if (work->ec[i] != NULL && work->ec[i]->genusBase != NULL)
+            {
+                work->ecTotal += work->ec[i]->genusBase->count;
+            }
+        }
+        work->totalActive = work->pcTotal + work->ecTotal;
+        if (work->totalActive != 0)
+        {
+            work->selectedFlatIndex = RpRandom() % work->totalActive;
+        }
+        work->state = 1;
+        return KWLNTASK_CONTINUE;
+    }
+    if (work->state == 2)
+    {
+        return KWLNTASK_STOP;
+    }
+    if (work->state != 1)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    if (work->progress++ <= work->duration)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    work->progress = 0;
+    src = func_001d7b70(task, (s32)work->selectedFlatIndex);
+    if (src == NULL)
+    {
+        work->state = 2;
+        return KWLNTASK_CONTINUE;
+    }
+    if (func_001fc720(src) == 0)
+    {
+        goto skip_attack;
+    }
+    if (work->selectedFlatIndex < work->pcTotal && work->reaperFlag == 0)
+    {
+        pc = func_001d7c60(task, (s32)work->selectedFlatIndex);
+        if (pc != NULL && work->ecTotal != 0)
+        {
+            do
+            {
+                dst = func_001d7b70(task,
+                                   (s32)(work->pcTotal + (RpRandom() % work->ecTotal)));
+            } while (dst != NULL && (s16)dst->hp <= 0);
+            if (dst != NULL)
+            {
+                func_001fc590(src, dst);
+                pos = mdlGetMatrix(pc->mdl)->pos;
+                base = (u8*)K_Encount_FieldWord(0x1200);
+                func_001a91b0(*(KwlnTask**)(base + 0x120c), &pos);
+                func_0010a4e0(1, 8, 2, 0x15);
+                randVal = RpRandom();
+                t4 = func_001d7b70(task,
+                                  (s32)(work->pcTotal + (randVal % work->ecTotal)));
+                if (t4 != NULL && (s16)t4->hp > 0)
+                {
+                    src = func_001d7b70(task, (s32)work->selectedFlatIndex);
+                    if (src != NULL)
+                    {
+                        func_001fc590(t4, src);
+                        pos = mdlGetMatrix(pc->mdl)->pos;
+                        base = (u8*)K_Encount_FieldWord(0x1200);
+                        func_001a91b0(*(KwlnTask**)(base + 0x120c), &pos);
+                    }
+                }
+            }
+        }
+    }
+    else if (work->pcTotal != 0)
+    {
+        do
+        {
+            dst = func_001d7b70(task, (s32)(RpRandom() % work->pcTotal));
+        } while (dst != NULL && (s16)dst->hp <= 0);
+        if (dst != NULL)
+        {
+            func_001fc590(src, dst);
+            if (work->ec[0] != NULL && work->ec[0]->mdl != NULL)
+            {
+                pos = mdlGetMatrix(work->ec[0]->mdl)->pos;
+                base = (u8*)K_Encount_FieldWord(0x1200);
+                func_001a91b0(*(KwlnTask**)(base + 0x120c), &pos);
+            }
+            func_0010a4e0(1, 8, 2, 0x15);
+        }
+    }
+skip_attack:
+    /* Count alive PCs and set animations */
+    alivePc = 0;
+    deadPc = 0;
+    for (i = 0; i < work->pcCount; ++i)
+    {
+        if (work->pc[i] != NULL && work->pc[i]->genusBase != NULL)
+        {
+            genResult = func_002ff790(work->pc[i]->genusBase);
+            if (genResult == 0)
+            {
+                ++alivePc;
+                ppos = mdlGetMatrix(work->pc[i]->mdl)->pos;
+                mdlAnimSet(work->pc[i]->mdl, 0, 0, 2, 0);
+                mdlAnimSetSpeed(work->pc[i]->mdl, 0, 1.0f);
+            }
+            else
+            {
+                ++deadPc;
+                if (work->pc[i]->mdl != NULL)
+                {
+                    ppos = mdlGetMatrix(work->pc[i]->mdl)->pos;
+                    base = (u8*)K_Encount_FieldWord(0x1200);
+                    func_001a91b0(*(KwlnTask**)(base + 0x1204), &ppos);
+                }
+                func_0010a4e0(1, 8, 3, 0);
+            }
+        }
+    }
+    if (alivePc == 0)
+    {
+        base = (u8*)K_Encount_FieldWord(0x1200);
+        func_001a9400(*(KwlnTask**)(base + 0x1200), work->effectHandle);
+        work->state = 2;
+        return KWLNTASK_CONTINUE;
+    }
+    if (deadPc != 0)
+    {
+        fieldWord = K_Encount_FieldWord(0x1200);
+        for (procIdx = 0; procIdx < work->pcCount; ++procIdx)
+        {
+            pc = work->pc[procIdx];
+            if (pc != NULL && pc->genusBase != NULL &&
+                func_002ff790(pc->genusBase) == 0)
+            {
+                ppos = mdlGetMatrix(pc->mdl)->pos;
+                mdlAnimSet(pc->mdl, 0, 0, 2, 1);
+                mdlAnimSetSpeed(pc->mdl, 0, 1.0f);
+            }
+        }
+    }
+    /* Count alive ECs and set animations */
+    aliveEc = 0;
+    deadEc = 0;
+    for (i = 0; i < work->ecCount; ++i)
+    {
+        ec = work->ec[i];
+        if (ec == NULL || ec->genusBase == NULL)
+        {
+            continue;
+        }
+        genResult = func_002ff790(ec->genusBase);
+        if (genResult == 0)
+        {
+            ++aliveEc;
+            if (ec->mdl != NULL)
+            {
+                ppos = mdlGetMatrix(ec->mdl)->pos;
+                mdlAnimSet(ec->mdl, 0, 0, 2, 0);
+                mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+            }
+        }
+        else
+        {
+            ++deadEc;
+            if (ec->mdl != NULL)
+            {
+                ppos = mdlGetMatrix(ec->mdl)->pos;
+                ppos.y += 100.0f;
+                base = (u8*)K_Encount_FieldWord(0x1200);
+                func_001a91b0(*(KwlnTask**)(base + 0x1204), &ppos);
+                func_0010a4e0(1, 8, 3, 0);
+            }
+            K_FldUnit_Destroy(ec);
+            work->ec[i] = NULL;
+        }
+    }
+    K_Encount_CompactEc(work);
+    if (aliveEc == 0)
+    {
+        base = (u8*)K_Encount_FieldWord(0x1200);
+        func_001a9400(*(KwlnTask**)(base + 0x1200), work->effectHandle);
+        work->state = 2;
+        return KWLNTASK_CONTINUE;
+    }
+    if (deadEc != 0)
+    {
+        fieldWord2 = K_Encount_FieldWord(0x1200);
+        for (procIdx = 0; procIdx < work->ecCount; ++procIdx)
+        {
+            ec = work->ec[procIdx];
+            if (ec != NULL && ec->genusBase != NULL && ec->mdl != NULL &&
+                func_002ff790(ec->genusBase) == 0)
+            {
+                ppos = mdlGetMatrix(ec->mdl)->pos;
+                mdlAnimSet(ec->mdl, 0, 0, 2, 1);
+                mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+            }
+        }
+    }
+    /* Final pass: iterate units and apply effects */
+    for (procIdx = 0; procIdx < work->ecCount; ++procIdx)
+    {
+        ec = work->ec[procIdx];
+        if (ec != NULL && ec->genusBase != NULL && ec->mdl != NULL &&
+            func_002ff790(ec->genusBase) == 0)
+        {
+            ppos = mdlGetMatrix(ec->mdl)->pos;
+            mdlAnimSet(ec->mdl, 0, 0, 0, 1);
+            mdlAnimSetSpeed(ec->mdl, 0, 1.0f);
+        }
+    }
+    for (procIdx = 0; procIdx < work->pcCount; ++procIdx)
+    {
+        pc = work->pc[procIdx];
+        if (pc != NULL && pc->genusBase != NULL && pc->mdl != NULL &&
+            func_002ff790(pc->genusBase) == 0)
+        {
+            ppos = mdlGetMatrix(pc->mdl)->pos;
+            mdlAnimSet(pc->mdl, 0, 0, 0, 1);
+            mdlAnimSetSpeed(pc->mdl, 0, 1.0f);
+        }
+    }
+    if (work->totalActive != 0)
+    {
+        curIdx = work->selectedFlatIndex + 1;
+        total = work->totalActive;
+        if (curIdx >= total)
+        {
+            curIdx = 0;
+        }
+        work->selectedFlatIndex = curIdx;
+    }
+    if (work->duration > 0x16)
+    {
+        work->duration = 0x16;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001d89b0
+void func_001d89b0(KwlnTask* task)
+{
+    EncounterWork* work;
+    u32 i;
+
+    work = (EncounterWork*)task->workData;
+    for (i = 0; i < work->pcCount; ++i)
+    {
+        FldUnit** slot = &work->pc[i];
+        if ((*slot)->genusBase != NULL)
+        {
+            if (datGetFlag(0xC22) == 0 &&
+                datGetScenarioMode() == 0 &&
+                RpRandom() % 100 < 50)
+            {
+                func_002ffb00_u32((*slot)->genusBase);
+            }
+            if (func_002ff790((*slot)->genusBase) == 0)
+            {
+                if (*(KwlnTask**)((u8*)K_Field_Get() + 0x28) != NULL)
+                {
+                    func_0018bee0(
+                        *(KwlnTask**)((u8*)K_Field_Get() + 0x28),
+                        (*slot)->charId, 0);
+                }
+            }
+        }
+    }
+    D_00875A40[work->taskSlot] = NULL;
+    RwFree(task->workData);
+}
+
+
+
+
+
+
+
+
+// Retail offsets 0x00-0x4a8 reconstruct unit registration, facing rotation,
+// field updates, and active-count aggregation; 1196 of 1200 bytes are implemented.
+
+static u32 K_Encount_AppendRecord(EncounterRecord* out, u16 id)
+{
+    if (out->count >= 3)
+    {
+        return 0;
+    }
+    out->ids[out->count++] = id;
+    return 1;
+}
+
+static u32 K_Encount_HpRatio(u16 id, f32* ratio)
+{
+    u32 maxHp = datGetMaxHp((s16)id);
+    if (maxHp == 0)
+    {
+        return 0;
+    }
+    *ratio = (f32)datGetHp((s16)id) / (f32)maxHp;
+    return 1;
+}
+
+
+
+
+
+static KwlnTask* K_Encount_CreatePeriodicScript(PeriodicWork* work, u32 slot, u32 procedure)
+{
+    KwlnTask* child;
+    if (slot >= 16)
+    {
+        return NULL;
+    }
+    child = scrCreateTaskFromHeader(10, D_007CE220, procedure);
+    work->scriptTask[slot] = child;
+    if (child != NULL)
+    {
+        func_0035c1a0(child, (int)&work->records[slot]);
+    }
+    return child;
 }

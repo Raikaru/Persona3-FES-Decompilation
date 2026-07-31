@@ -2627,6 +2627,7 @@ void FUN_00394070(u32 param_2,float param_1,u32 *param_3,u32 *param_4,u32 *param
   return;
 }
 #pragma pop
+#pragma opt_loop_invariants reset
 #define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
 #undef FUN_00394270
 // FUN_00394270

@@ -7,6 +7,17 @@
 #include "rw/rwplcore.h"
 #include "rw/rtquat.h"
 
+#pragma alias gcPose0024f960_y2 gcPose0024f960
+#pragma alias gcPose0024faa0_y2 gcPose0024faa0
+#pragma alias FUN_004bdde0_y2 FUN_004bdde0
+#pragma alias FUN_004c69f0_y2 FUN_004c69f0
+#pragma alias gcPose0024f090_y2 gcPose0024f090_y2
+#pragma alias gcPose002503f0_y2 gcPose002503f0_y2
+#pragma alias gcPose0024fd20_y2 gcPose0024fd20_y2
+#pragma alias gcPose0024fd40_y2 gcPose0024fd40_y2
+#pragma alias gcPose0024fba0_y2 gcPose0024fba0_y2
+
+
 #pragma alias gcPoseStartDirectedTranslation FUN_002505B0
 #pragma alias gcPoseStartEaseOutTranslation FUN_002508C0
 #pragma alias gcPoseStartEaseInTranslation FUN_00250A30
@@ -26,7 +37,7 @@ void gcPoseStartRotation(u32 *work, void *target, f32 startAngle, f32 endAngle, 
 void gcPoseProjectToScreen(float* output, const RwV3d* input);
 
 extern f32 fGpffff81f8;
-extern void FUN_004bdde0(f32 angle, void *output, void *target, s32 mode);
+extern void FUN_004bdde0_y2(f32 angle, void *output, void *target, s32 mode);
 extern f32 RwV3dNormalize(RwV3d *out, const RwV3d *in);
 extern f32 RwV3dLength(const RwV3d *in);
 
@@ -71,7 +82,7 @@ void gcPose00250ef0(GcPoseController *pose, float param_2)
 }
 
 // FUN_0024f960
-void gcPose0024f960(GcPoseController *pose, RwV3d *param_2)
+void gcPose0024f960_y2(GcPoseController *pose, RwV3d *param_2)
 {
     K_ASSERT(pose->type.s32Value == 0, 0x375);
     K_ASSERT(pose->state.position.mode.s32Value < 4, 0x376);
@@ -91,7 +102,7 @@ void gcPose00250500(GcPoseController *pose, RwV3d *param_2, int param_3)
 }
 
 // FUN_0024faa0
-RwV3d* gcPose0024faa0(GcPoseController *pose)
+RwV3d* gcPose0024faa0_y2(GcPoseController *pose)
 {
     K_ASSERT(pose->state.position.mode.s32Value < 2, 0x38e);
     return &pose->state.position.value;
@@ -720,7 +731,7 @@ void gcPoseStartRotation(u32 *work, void *target, f32 startAngle, f32 endAngle, 
     motion->target = *(RwV3d *)target;
     motion->startAngle = startAngle;
     motion->endAngle = endAngle;
-    FUN_004bdde0((motion->startAngle / fGpffff81f8) * 360.0f,
+    FUN_004bdde0_y2((motion->startAngle / fGpffff81f8) * 360.0f,
                  &((GcPoseController *)work)->state.rotation.value, target, 0);
 
     duration = (f32)(frames << 16) / 1966080.0f;
@@ -743,4 +754,558 @@ void gcPoseProjectToScreen(float* output, const RwV3d* input)
     RwV3dTransformPoint(&projected, input, &kwlnGetMainCamera()->viewMatrix);
     output[0] = (projected.x / projected.z) * SCREEN_WIDTH;
     output[1] = (projected.y / projected.z) * SCREEN_HEIGHT;
+}
+
+
+
+static u32* sSflCamera; // DAT_007ce33c
+extern u32 DAT_00960070[];
+u32 FUN_0024d430();
+void FUN_0024d5e0();
+void FUN_0024d7d0();
+u32 FUN_0024d3b0();
+
+
+
+
+
+
+
+
+
+static u32* sSflCameraNodes; // DAT_007ce350
+
+extern void gcPose0024f090_y2(void* pose);
+extern void gcPose002503f0_y2(void* pose, s32 index, u32 value);
+extern void gcPose0024fd20_y2(void* pose);
+extern void gcPose0024fd40_y2(void* pose);
+extern void* func_004c38c0(void);
+extern void func_004c3880(void* matrix);
+extern void func_004cb750(void* matrix, const void* source, s32 mode);
+extern u32 RpRandom(void);
+extern void gcPose0024f960(void* pose, RwV3d* output);
+extern RwV3d* gcPose0024faa0(void* pose);
+extern void gcPose0024fba0_y2(void* pose, RtQuat* output);
+extern void func_0024f7f0(void* pose, const RwV3d* offset);
+extern void func_00250280(void* pose, const RwV3d* offset);
+extern void FUN_004bdde0(f32 angle, f32* output, const f32* axis, s32 mode);
+extern void FUN_004c69f0(RwV3d* output, const RwV3d* input);
+extern RwV3d DAT_0068e9b0;
+void func_0024da60(void* camera);
+
+void func_0024dc90(void* camera);
+static u32* sflCameraNodeHead(void)
+{
+    K_ASSERT(sSflCamera != NULL, 0x3b);
+    return (u32*)sSflCamera[1];
+}
+
+static u32* sflCameraFindNode(u16 id)
+{
+    u32* node;
+
+    node = sflCameraNodeHead();
+    while (node != NULL) {
+        if (*(u16*)((u8*)node + 4) == id) {
+            return node;
+        }
+        node = (u32*)node[3];
+    }
+    return NULL;
+}
+
+static inline u32* sflCameraFindRequiredNode(u32* node, s32 id)
+{
+    u32 key;
+
+    key = (u16)id;
+    while (node != NULL) {
+        if (*(u16*)((u8*)node + 4) == key) {
+            return node;
+        }
+        node = (u32*)node[3];
+    }
+    K_ASSERT(0, 0xaf);
+    return NULL;
+}
+
+
+
+
+
+
+// FUN_0024DA20
+void func_0024da20(void)
+{
+    K_ASSERT(sSflCameraNodes != NULL, 0x5d);
+    sSflCameraNodes = NULL;
+}
+
+// FUN_0024DA60
+void func_0024da60(void* camera)
+{
+    u32* list;
+
+    K_ASSERT(sSflCameraNodes != NULL, 0x5d);
+    list = sSflCameraNodes;
+    *(u32*)((u8*)camera + 8) = 0;
+    *(u32*)((u8*)camera + 0x10) = 0;
+    if (list[0] != 0) {
+        *(u32*)((u8*)camera + 0) = list[1];
+        *(u32*)((u8*)camera + 4) = 0;
+        ((u32*)list[1])[1] = (u32)camera;
+        list[1] = (u32)camera;
+    } else {
+        *(u32*)((u8*)camera + 4) = 0;
+        *(u32*)((u8*)camera + 0) = 0;
+        list[0] = (u32)camera;
+        list[1] = (u32)camera;
+    }
+}
+
+// FUN_0024DAF0
+void func_0024daf0(u32* camera)
+{
+    u32* list;
+    u32* link;
+
+    K_ASSERT(sSflCameraNodes != NULL, 0x5d);
+    list = sSflCameraNodes;
+    link = (u32*)camera[1];
+    if (link != NULL) {
+        link[0] = camera[0];
+    }
+    link = (u32*)camera[0];
+    if (link != NULL) {
+        link[1] = camera[1];
+    }
+    if (camera == (u32*)list[0]) {
+        list[0] = camera[1];
+    }
+    if (camera == (u32*)list[1]) {
+        list[1] = camera[0];
+    }
+}
+
+// FUN_0024DB90
+void func_0024db90(void)
+{
+    u32* camera;
+
+    K_ASSERT(sSflCameraNodes != NULL, 0x5d);
+    camera = (u32*)sSflCameraNodes[0];
+    while (camera != NULL) {
+        if ((~camera[2] & 1u) == 0) {
+            bpTut00251010(camera, 0x10000);
+        }
+        camera = (u32*)camera[1];
+    }
+}
+
+// FUN_0024DC10
+void func_0024dc10(void)
+{
+    u32* camera;
+    u32* list;
+
+    K_ASSERT(sSflCameraNodes != NULL, 0x5d);
+    list = sSflCameraNodes;
+    list[0x82] = 0;
+    camera = (u32*)list[0];
+    while (camera != NULL) {
+        func_0024dc90(camera);
+        camera = (u32*)camera[1];
+    }
+}
+
+// Retail cross-check restored the state-0 interpolation path and state-2 mode fields.
+// The state-0 mode-3 path now clamps, interpolates, and clears completion flags.
+// State-2 mode-3 uses the node's inline pose payload, matching retail addressing.
+// State-2 mode-4 uses its distinct duration field for the second cubic segment.
+// Queue setup and cleanup avoid an unnecessary persistent counter local.
+// The function remains NONMATCHING while these semantic repairs alter scheduling.
+// FUN_0024DC90 NONMATCHING
+void func_0024dc90(void* camera)
+{
+    u32* list;
+    u8* node;
+    u32 queued;
+    u32 i;
+    u32* pose;
+    u32** poses;
+    f32* p;
+    f32 ratio;
+    f32 ratio2;
+    f32 oneMinus;
+    f32 dot;
+    f32 angle;
+    f32 extent;
+    u32 random;
+    u32 duration;
+    RwV3d first;
+    RwV3d second;
+    RwV3d value;
+    RwV3d offset;
+    RwV3d axis;
+    RwV3d cross;
+    RwV3d* firstPoseVector;
+    RwV3d* secondPoseVector;
+
+    K_ASSERT(sSflCameraNodes != NULL, 0x5d);
+    list = sSflCameraNodes;
+    K_ASSERT(list[0x82] == 0, 0xe6);
+    list[list[0x82] + 2] = (u32)camera;
+    list[0x82]++;
+
+    while (list[0x82] != 0) {
+        u32 flags;
+        u32 state;
+        u32 mode;
+        node = (u8*)list[list[0x82] + 1];
+        flags = *(u32*)(node + 8);
+        queued = 0;
+        if ((flags & 1) != 0 && (flags & 2) != 0) {
+            state = *(u32*)(node + 0xc);
+
+            switch (state) {
+            case 0: {
+                mode = *(u32*)(node + 0x20);
+                switch (mode) { case 1: { u32 oldTimer;
+                u32 firstDuration;
+                
+                p = (f32*)(node + 0x24);
+                oldTimer = *(u32*)(node + 0x10);
+                firstDuration = (*(u32*)(node + 0x58)) << 16;
+                ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
+                
+                offset.x = p[6] - p[9];
+                offset.y = p[7] - p[10];
+                offset.z = p[8] - p[11];
+                first = offset;
+                first.x = -first.x;
+                first.y = -first.y;
+                first.z = -first.z;
+                *(RwV3d*)&p[0] = *(RwV3d*)&p[9];
+                extent = p[12];
+                
+                random = RpRandom() & 0xfff;
+                offset.x = extent / 2.0f - extent * (f32)random / 4096.0f;
+                random = RpRandom() & 0xfff;
+                offset.y = extent / 2.0f - extent * (f32)random / 4096.0f;
+                random = RpRandom() & 0xfff;
+                offset.z = extent / 2.0f - extent * (f32)random / 4096.0f;
+                *(RwV3d*)&p[9] = offset;
+                func_0024f7f0(node, &first);
+                *(u32*)(node + 0x10) = 0;
+                
+                if (oldTimer >= firstDuration) {
+                    oneMinus = 1.0f - ratio;
+                    value.x = p[0] * oneMinus * oneMinus * oneMinus +
+                              3.0f * p[3] * ratio * oneMinus * oneMinus +
+                              3.0f * p[6] * ratio * ratio * oneMinus +
+                              p[9] * ratio * ratio * ratio;
+                    value.y = p[1] * oneMinus * oneMinus * oneMinus +
+                              3.0f * p[4] * ratio * oneMinus * oneMinus +
+                              3.0f * p[7] * ratio * ratio * oneMinus +
+                              p[10] * ratio * ratio * ratio;
+                    value.z = p[2] * oneMinus * oneMinus * oneMinus +
+                              3.0f * p[5] * ratio * oneMinus * oneMinus +
+                              3.0f * p[8] * ratio * ratio * oneMinus +
+                              p[11] * ratio * ratio * ratio;
+                    *(RwV3d*)(node + 0x14) = value;
+                }
+                duration = (*(u32*)(node + 0x34)) << 16;
+                ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
+                         (f32)(s32)duration;
+                oneMinus = 1.0f - ratio2;
+                value.x = p[0] * oneMinus * oneMinus * oneMinus +
+                          3.0f * p[3] * ratio2 * oneMinus * oneMinus +
+                          3.0f * p[6] * ratio2 * ratio2 * oneMinus +
+                          p[9] * ratio2 * ratio2 * ratio2;
+                value.y = p[1] * oneMinus * oneMinus * oneMinus +
+                          3.0f * p[4] * ratio2 * oneMinus * oneMinus +
+                          3.0f * p[7] * ratio2 * ratio2 * oneMinus +
+                          p[10] * ratio2 * ratio2 * ratio2;
+                value.z = p[2] * oneMinus * oneMinus * oneMinus +
+                          3.0f * p[5] * ratio2 * oneMinus * oneMinus +
+                          3.0f * p[8] * ratio2 * ratio2 * oneMinus +
+                          p[11] * ratio2 * ratio2 * ratio2;
+                *(RwV3d*)(node + 0x14) = value; } break; case 0: break; case 2: { poses = (u32**)(node + 0x24);
+                queued = 0;
+                for (i = 0; i < 3; i++) {
+                    pose = poses[i];
+                    if (pose != NULL && (pose[2] & 2) == 0) {
+                        K_ASSERT(list[0x82] < 0x80, 0x132);
+                        list[list[0x82] + 2] = (u32)pose;
+                        list[0x82]++;
+                        queued = 1;
+                    }
+                }
+                if (queued == 0) {
+                    value.x = 0.0f;
+                    value.y = 0.0f;
+                    value.z = 0.0f;
+                    for (i = 0; i < 3; i++) {
+                        if (poses[i] != NULL) {
+                            gcPose0024f960(poses[i], &first);
+                            value.x += first.x;
+                            value.y += first.y;
+                            value.z += first.z;
+                        }
+                    }
+                    *(RwV3d*)(node + 0x14) = value;
+                } } break; case 3: { p = (f32*)(node + 0x24);
+                if ((*(u32*)(node + 0x28) & 1u) != 0) {
+                    if (*(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
+                        *(u32*)(node + 0x10) = *(u32*)(node + 0x2c);
+                    }
+                    if (*(u32*)p == 0) {
+                        ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                (f32)(s32)*(u32*)(node + 0x2c);
+                        first.x = p[6];
+                        first.y = p[7];
+                        first.z = p[8];
+                        second.x = p[3];
+                        second.y = p[4];
+                        second.z = p[5];
+                        second.x -= first.x;
+                        second.y -= first.y;
+                        second.z -= first.z;
+                        second.x *= ratio;
+                        second.y *= ratio;
+                        second.z *= ratio;
+                        value.x = first.x + second.x;
+                        value.y = first.y + second.y;
+                        value.z = first.z + second.z;
+                        *(RwV3d*)(node + 0x14) = value;
+                    }
+                    else if (*(u32*)p == 1) {
+                        ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                1966080.0f;
+                        ratio *= 0.5f;
+                        value.x = p[3] * ratio + p[6];
+                        value.y = p[4] * ratio + p[7];
+                        value.z = p[5] * ratio + p[8];
+                        *(RwV3d*)(node + 0x14) = value;
+                    }
+                }
+                if ((*(u32*)(node + 0x28) & 1u) != 0 &&
+                    *(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
+                    *(u32*)(node + 0x28) &= ~2u;
+                } } break; default: { K_ASSERT(0, 0x17d); } break; }
+                break;
+            }
+            case 1: {
+                mode = *(u32*)(node + 0x20);
+                if (mode == 1) {
+                    poses = (u32**)(node + 0x28);
+                    queued = 0;
+                    for (i = 0; i < 2; i++) {
+                        pose = poses[i];
+                        if ((pose[2] & 2) == 0) {
+                            K_ASSERT(list[0x82] < 0x80, 0x1a9);
+                            list[list[0x82] + 2] = (u32)pose;
+                            list[0x82]++;
+                            queued = 1;
+                        }
+                    }
+                    if (queued == 0) {
+                        gcPose0024f960(poses[0], &first);
+                        gcPose0024f960(poses[1], &second);
+                        value.x = second.x - first.x;
+                        value.y = second.y - first.y;
+                        value.z = second.z - first.z;
+                        *(RwV3d*)(node + 0x14) = value;
+                    }
+                }
+                else if (mode != 0) {
+                    K_ASSERT(0, 0x1a9);
+                }
+                break;
+            }
+            case 2: {
+                mode = *(u32*)(node + 0x24);
+                if (mode == 1) {
+                    poses = (u32**)(node + 0x28);
+                    queued = 0;
+                    for (i = 0; i < 2; i++) {
+                        pose = poses[i];
+                        if (pose != NULL && (pose[2] & 2) == 0) {
+                            K_ASSERT(list[0x82] < 0x80, 0x1c4);
+                            list[list[0x82] + 2] = (u32)pose;
+                            list[0x82]++;
+                            queued = 1;
+                        }
+                    }
+                    if (queued == 0) {
+                        gcPose0024f960(poses[0], &second);
+                        gcPose0024f960(poses[1], &first);
+                        value.x = first.x - second.x;
+                        value.y = first.y - second.y;
+                        value.z = first.z - second.z;
+                        *(RwV3d*)(node + 0x14) = value;
+                    }
+                }
+                else if (mode == 2) {
+                    poses = (u32**)(node + 0x28);
+                    queued = 0;
+                    for (i = 0; i < 3; i++) {
+                        pose = poses[i];
+                        if (pose != NULL && (pose[2] & 2) == 0) {
+                            K_ASSERT(list[0x82] < 0x80, 0x212);
+                            list[list[0x82] + 2] = (u32)pose;
+                            list[0x82]++;
+                            queued = 1;
+                        }
+                    }
+                    if (queued == 0) {
+                        firstPoseVector = gcPose0024faa0(poses[0]);
+                        secondPoseVector = gcPose0024faa0(poses[1]);
+                        FUN_004c69f0(&first, firstPoseVector);
+                        FUN_004c69f0(&second, secondPoseVector);
+                        cross.x = first.y * second.z - first.z * second.y;
+                        cross.y = first.z * second.x - first.x * second.z;
+                        cross.z = first.x * second.y - first.y * second.x;
+                        FUN_004c69f0(&cross, &cross);
+                        dot = first.x * second.x +
+                              first.y * second.y +
+                              first.z * second.z;
+                        if (dot == 1.0f) {
+                            cross.x = 0.0f;
+                            cross.y = 1.0f;
+                            cross.z = 0.0f;
+                        }
+                        angle = 180.0f * (dot - 1.0f) / 2.0f;
+                        FUN_004bdde0(angle, (f32*)(node + 0x14),
+                                     (const f32*)&cross, 0);
+                    }
+                }
+                else if (mode == 3) {
+                    pose = (u32*)(node + 0x28);
+                    if ((*(u32*)(node + 0x10) >= pose[2]) &&
+                        ((pose[1] & 1) != 0)) {
+                        *(u32*)(node + 0x10) = pose[2];
+                    }
+                    if (pose[0] == 0) {
+                        ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                (f32)(s32)pose[2];
+                        angle = ((f32)*(s32*)((u8*)pose + 0x1c) -
+                                 (f32)*(s32*)((u8*)pose + 0x18)) * ratio +
+                                (f32)*(s32*)((u8*)pose + 0x18);
+                        angle = angle / fGpffff81f8 * 360.0f;
+                        FUN_004bdde0(angle, (f32*)(node + 0x14),
+                                     (const f32*)(node + 0x34), 0);
+                    }
+                    else if (pose[0] == 1) {
+                        ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                1966080.0f;
+                        angle = (f32)*(s32*)((u8*)pose + 0x20) +
+                                0.5f * (f32)*(s32*)((u8*)pose + 0x24) * ratio;
+                        angle = angle / fGpffff81f8 * 360.0f;
+                        FUN_004bdde0(angle, (f32*)(node + 0x14),
+                                     (const f32*)(node + 0x34), 0);
+                    }
+                    else {
+                        K_ASSERT(0, 0x2a5);
+                    }
+                    if ((pose[1] & 1) != 0 &&
+                        *(u32*)(node + 0x10) >= pose[2]) {
+                        pose[1] &= ~2u;
+                    }
+                }
+                else if (mode == 4) {
+                    u32 oldTimer;
+                    u32 firstDuration;
+
+                    p = (f32*)(node + 0x28);
+                    oldTimer = *(u32*)(node + 0x10);
+                    firstDuration = (*(u32*)(node + 0x64)) << 16;
+                    ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
+                    offset.x = p[6] - p[9];
+                    offset.y = p[7] - p[10];
+                    offset.z = p[8] - p[11];
+                    first = offset;
+                    first.x = -first.x;
+                    first.y = -first.y;
+                    first.z = -first.z;
+                    *(RwV3d*)&p[0] = *(RwV3d*)&p[9];
+                    extent = p[12];
+                    random = RpRandom() & 0xfff;
+                    offset.x = extent / 2.0f - extent * (f32)random / 4096.0f;
+                    random = RpRandom() & 0xfff;
+                    offset.y = extent / 2.0f - extent * (f32)random / 4096.0f;
+                    random = RpRandom() & 0xfff;
+                    offset.z = extent / 2.0f - extent * (f32)random / 4096.0f;
+                    *(RwV3d*)&p[9] = offset;
+                    func_00250280(node, &first);
+                    *(u32*)(node + 0x10) = 0;
+                    if (oldTimer >= firstDuration) {
+                        oneMinus = 1.0f - ratio;
+                        value.x = p[0] * oneMinus * oneMinus * oneMinus +
+                                  3.0f * p[3] * ratio * oneMinus * oneMinus +
+                                  3.0f * p[6] * ratio * ratio * oneMinus +
+                                  p[9] * ratio * ratio * ratio;
+                        value.y = p[1] * oneMinus * oneMinus * oneMinus +
+                                  3.0f * p[4] * ratio * oneMinus * oneMinus +
+                                  3.0f * p[7] * ratio * ratio * oneMinus +
+                                  p[10] * ratio * ratio * ratio;
+                        value.z = p[2] * oneMinus * oneMinus * oneMinus +
+                                  3.0f * p[5] * ratio * oneMinus * oneMinus +
+                                  3.0f * p[8] * ratio * ratio * oneMinus +
+                                  p[11] * ratio * ratio * ratio;
+                        *(RwV3d*)(node + 0x14) = value;
+                    }
+                    duration = (*(u32*)(node + 0x3c)) << 16;
+                    ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
+                             (f32)(s32)duration;
+                    oneMinus = 1.0f - ratio2;
+                    value.x = p[0] * oneMinus * oneMinus * oneMinus +
+                              3.0f * p[3] * ratio2 * oneMinus * oneMinus +
+                              3.0f * p[6] * ratio2 * ratio2 * oneMinus +
+                              p[9] * ratio2 * ratio2 * ratio2;
+                    value.y = p[1] * oneMinus * oneMinus * oneMinus +
+                              3.0f * p[4] * ratio2 * oneMinus * oneMinus +
+                              3.0f * p[7] * ratio2 * ratio2 * oneMinus +
+                              p[10] * ratio2 * ratio2 * ratio2;
+                    value.z = p[2] * oneMinus * oneMinus * oneMinus +
+                              3.0f * p[5] * ratio2 * oneMinus * oneMinus +
+                              3.0f * p[8] * ratio2 * ratio2 * oneMinus +
+                              p[11] * ratio2 * ratio2 * ratio2;
+                    value.x *= p[17];
+                    value.y *= p[17];
+                    value.z *= p[17];
+                    *(RwV3d*)(node + 0xe0) = value;
+                    axis.x = 1.0f;
+                    axis.y = 0.0f;
+                    axis.z = 0.0f;
+                    FUN_004bdde0(value.x, (f32*)(node + 0x90),
+                                 (const f32*)&axis, 0);
+                    axis.x = 0.0f;
+                    axis.y = 1.0f;
+                    axis.z = 0.0f;
+                    FUN_004bdde0(value.y, (f32*)(node + 0x90),
+                                 (const f32*)&axis, 2);
+                    axis.x = 0.0f;
+                    axis.y = 0.0f;
+                    axis.z = 1.0f;
+                    FUN_004bdde0(value.z, (f32*)(node + 0x90),
+                                 (const f32*)&axis, 2);
+                    *(RtQuat*)(node + 0x14) = *(RtQuat*)(node + 0x90);
+                }
+                else {
+                    K_ASSERT(0, 0x2ab);
+                break;
+            }
+                break;
+            }
+            default:
+                K_ASSERT(0, 0x2ab);
+                break;
+            }
+        }
+        if (queued == 0) {
+            *(u32*)(node + 8) &= ~3u;
+            list[0x82]--;
+        }
+    }
 }
