@@ -10805,25 +10805,25 @@ void FUN_00329ed0(float *param_1)
 
     if (fVar5 == 0.0f) {
 
-      ((volatile float *)afStack_10)[uVar4] = 1.0f;
+      afStack_10[uVar4] = 1.0f;
 
-      ((volatile float *)afStack_10)[uVar1] = 0.0f;
+      afStack_10[uVar1] = 0.0f;
 
-      ((volatile float *)afStack_10)[uVar2] = 0.0f;
+      afStack_10[uVar2] = 0.0f;
 
-      ((volatile float *)afStack_10)[3] = 0.0f;
+      afStack_10[3] = 0.0f;
 
     }
 
     else {
 
-      ((volatile float *)afStack_10)[uVar4] = fVar5 / 4.0f;
+      afStack_10[uVar4] = fVar5 / 4.0f;
 
-      ((volatile float *)afStack_10)[uVar1] = (row4[uVar1] + row1[uVar4]) / fVar5;
+      afStack_10[uVar1] = (row4[uVar1] + row1[uVar4]) / fVar5;
 
-      ((volatile float *)afStack_10)[uVar2] = (row4[uVar2] + row2[uVar4]) / fVar5;
+      afStack_10[uVar2] = (row4[uVar2] + row2[uVar4]) / fVar5;
 
-      ((volatile float *)afStack_10)[3] = -((row1[uVar2] - row2[uVar1]) / fVar5);
+      afStack_10[3] = -((row1[uVar2] - row2[uVar1]) / fVar5);
 
     }
 
