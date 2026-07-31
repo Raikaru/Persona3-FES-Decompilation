@@ -24,14 +24,10 @@ typedef struct YajimaColor {
 typedef struct YajimaVec16 {
     f32 lane[16];
 } YajimaVec16;
-typedef struct YajimaPackedValue {
-    u32 low;
-    u32 high;
-} __attribute__((packed)) YajimaPackedValue;
 typedef struct YajimaPackedRow {
     u8 pad[0x8c0];
-    YajimaPackedValue value;
-} YajimaPackedRow;
+    YajimaVec2 value;
+} __attribute__((packed)) YajimaPackedRow;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -168,7 +164,7 @@ void FUN_004563b0(f32 value, int object);
 int FUN_0044f120();
 int FUN_0044f170();
 extern u32 RpRandom(void);
-extern void FUN_00430780(f32, u64, s32, s32, s32);
+extern void FUN_00430780(f32, YajimaVec2, s32, s32, s32);
 #pragma alias DAT_006b4470_abs DAT_006b4470
 extern char DAT_006b4470_abs[];
 /* FUSION_GLOBALS */
@@ -6233,6 +6229,7 @@ void FUN_0042cd80(int param_1)
   u8 *work;
   YajimaPackedRow *row;
   u8 *entry;
+  u8 *countEntry;
   s8 *counter;
   s8 *delay;
   s16 *offsetX;
@@ -6248,19 +6245,20 @@ void FUN_0042cd80(int param_1)
     if ((*(s8 *)(work + outer + 0x938) == 1) &&
         (FUN_0043a230((s8)(outer + 1)) == 1)) {
       inner = outer * 5;
-      end = (outer + 1) * 5;
       row = (YajimaPackedRow *)(work + outer * 8);
+      end = (outer + 1) * 5;
       for (; inner < end; inner++) {
         entry = work + inner;
         counter = (s8 *)(entry + 0x8d8);
         offsetY = (s16 *)(work + inner * 2 + 0x914);
         offsetX = (s16 *)(work + inner * 2 + 0x8f6);
-        FUN_00430780(8.0f, *(u64 *)&row->value,
+        FUN_00430780(8.0f, row->value,
                      *(s8 *)offsetX, *(s8 *)offsetY, *counter);
         delay = (s8 *)(entry + 0x8e7);
         if (*delay < 1) {
-          count = *(s8 *)(entry + 0x8d8) + 1;
-          *(s8 *)(entry + 0x8d8) = count;
+          countEntry = entry;
+          count = *(s8 *)(countEntry + 0x8d8) + 1;
+          *(s8 *)(countEntry + 0x8d8) = count;
           if (count > 20) {
             random = RpRandom();
             *offsetX = (s16)(8.0f - (f32)(random & 0xf));

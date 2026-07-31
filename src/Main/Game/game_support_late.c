@@ -2122,29 +2122,32 @@ void* func_0018eb40(KwlnTask* task)
         GS_U32(work, 0) = 2;
         break;
     case 2:
-        if (func_001114b0(GS_TASK(work, 8)) != 0)
+        if (func_001114b0(*(KwlnTask* volatile*)(work + 8)) != 0)
         {
-            func_00111520(GS_TASK(work, 8), 0x32);
+            func_00111520(*(KwlnTask* volatile*)(work + 8), 0x32);
             GS_U32(work, 0) = 3;
         }
         break;
     case 3:
         break;
     case 4:
-        func_00111530(GS_TASK(work, 8));
+        func_00111530(*(KwlnTask* volatile*)(work + 8));
         GS_U32(work, 0) = 5;
         break;
     case 5:
-        if (((GsEb40WorkView*)work)->frame < 0x32)
+        if (((GsEb40WorkView*)work)->frame >= 0x32)
         {
-            ((GsEb40WorkView*)work)->frame++;
+            if (((GsEb40WorkView*)work)->release != 0)
+            {
+                GS_U32(work, 0x60) = GS_U32(work, 0x60) + 1;
+                func_00111500(*(KwlnTask* volatile*)(work + 8));
+            }
         }
-        else if (((GsEb40WorkView*)work)->release != 0)
+        else
         {
-            ((GsEb40WorkView*)work)->frame++;
-            func_00111500(GS_TASK(work, 8));
+            GS_U32(work, 0x60) = GS_U32(work, 0x60) + 1;
         }
-        if (kwlnTaskGetState(GS_TASK(work, 8)) == 3)
+        if (kwlnTaskGetState(*(KwlnTask* volatile*)(work + 8)) == 3)
         {
             return KWLNTASK_STOP;
         }

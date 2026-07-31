@@ -3633,22 +3633,31 @@ void func_00221b60(void)
     {
     case 3:
     case 4:
-        func_00227800();
-        break;
+        goto bpTexSubOuterBody;
     case 0:
-        previousSub = *(u32*)(work + 0x4640);
-        switch (previousSub)
-        {
-        case 3:
-        case 4:
-            if (*(u32*)(work + 0x4650) != 3)
-            {
-                func_00227800();
-            }
-            break;
-        }
-        break;
+        goto bpTexSubPreviousPath;
     }
+    goto bpTexSubAfter;
+bpTexSubOuterBody:
+    func_00227800();
+    goto bpTexSubAfter;
+bpTexSubPreviousPath:
+    previousSub = *(u32*)(work + 0x4640);
+    if (previousSub == 4)
+    {
+        goto bpTexSubTimerPath;
+    }
+    if (previousSub != 3)
+    {
+        goto bpTexSubAfter;
+    }
+bpTexSubTimerPath:
+    if (*(u32*)(work + 0x4650) == 3)
+    {
+        goto bpTexSubAfter;
+    }
+    func_00227800();
+bpTexSubAfter:
 
     sub = *(u32*)(work + 0x463c);
     if (sub == 2 ||

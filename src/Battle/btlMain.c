@@ -2201,7 +2201,6 @@ u32 FUN_0029f150(float *param_1)
   float fVar11;
 
   float fVar12;
-  u32 counter;
 
   
 
@@ -2219,41 +2218,15 @@ u32 FUN_0029f150(float *param_1)
 
   else {
   u32 duration;
+  RwRGBAReal color;
 
-  counter = *(u32 *)(param_1 + 0x19);
-  if (counter == 0) {
+  if (*(u32 *)(param_1 + 0x19) == 0) {
 
       pfVar2 = (float *)FUN_0019fd40();
-
-      fVar8 = pfVar2[1];
-
-      fVar3 = pfVar2[2];
-
-      fVar4 = pfVar2[3];
-
-      param_1[0x10] = *pfVar2;
-
-      param_1[0x11] = fVar8;
-
-      param_1[0x12] = fVar3;
-
-      param_1[0x13] = fVar4;
+      *(RwRGBAReal *)(param_1 + 0x10) = *(RwRGBAReal *)pfVar2;
 
       pfVar2 = (float *)FUN_0019fd70();
-
-      fVar8 = pfVar2[1];
-
-      fVar3 = pfVar2[2];
-
-      fVar4 = pfVar2[3];
-
-      param_1[0x14] = *pfVar2;
-
-      param_1[0x15] = fVar8;
-
-      param_1[0x16] = fVar3;
-
-      param_1[0x17] = fVar4;
+      *(RwRGBAReal *)(param_1 + 0x14) = *(RwRGBAReal *)pfVar2;
 
       param_1[8] = param_1[0x10] * *param_1;
 
@@ -2274,64 +2247,34 @@ u32 FUN_0029f150(float *param_1)
     }
   duration = *(u32 *)(param_1 + 0x18);
 
-    if (counter < duration) {
-      fVar11 = (float)counter / (float)duration;
+    if (*(u32 *)(param_1 + 0x19) < duration) {
+      fVar11 = (float)*(u32 *)(param_1 + 0x19) / (float)duration;
 
       fVar12 = 1.0f - fVar11;
 
-      fVar4 = param_1[0x10];
+      color.r = param_1[0x10] * fVar12 + param_1[8] * fVar11;
 
-      fVar8 = param_1[0x11];
+      color.g = param_1[0x11] * fVar12 + param_1[9] * fVar11;
 
-      fVar5 = param_1[0x12];
+      color.b = param_1[0x12] * fVar12 + param_1[10] * fVar11;
 
-      fVar6 = param_1[0x13];
-
-      fVar10 = param_1[8] * fVar11;
-
-      fVar7 = param_1[9] * fVar11;
-
-      fVar9 = param_1[10] * fVar11;
-
-      fVar3 = param_1[0xb] * fVar11;
+      color.a = param_1[0x13] * fVar12 + param_1[0xb] * fVar11;
 
       pfVar2 = (float *)FUN_0019fd40();
+      *(RwRGBAReal *)pfVar2 = color;
 
-      *pfVar2 = fVar4 * fVar12 + fVar10;
+      color.r = param_1[0x14] * fVar12 + param_1[0xc] * fVar11;
 
-      pfVar2[1] = fVar8 * fVar12 + fVar7;
+      color.g = param_1[0x15] * fVar12 + param_1[0xd] * fVar11;
 
-      pfVar2[2] = fVar5 * fVar12 + fVar9;
+      color.b = param_1[0x16] * fVar12 + param_1[0xe] * fVar11;
 
-      pfVar2[3] = fVar3 + fVar6 * fVar12;
-
-      fVar3 = param_1[0x14];
-
-      fVar6 = param_1[0xc];
-
-      fVar4 = param_1[0x15];
-
-      fVar7 = param_1[0xd];
-
-      fVar8 = param_1[0x16];
-
-      fVar9 = param_1[0xe];
-
-      fVar5 = param_1[0x17];
-
-      fVar10 = param_1[0xf];
+      color.a = param_1[0x17] * fVar12 + param_1[0xf] * fVar11;
 
       pfVar2 = (float *)FUN_0019fd70();
+      *(RwRGBAReal *)pfVar2 = color;
 
-      *pfVar2 = fVar3 * fVar12 + fVar6 * fVar11;
-
-      pfVar2[1] = fVar4 * fVar12 + fVar7 * fVar11;
-
-      pfVar2[2] = fVar8 * fVar12 + fVar9 * fVar11;
-
-      pfVar2[3] = fVar5 * fVar12 + fVar10 * fVar11;
-
-      *(u32 *)(param_1 + 0x19) = counter + 1;
+      *(u32 *)(param_1 + 0x19) = *(u32 *)(param_1 + 0x19) + 1;
 
       uVar1 = 0;
 
@@ -2340,36 +2283,10 @@ u32 FUN_0029f150(float *param_1)
     else {
 
       pfVar2 = (float *)FUN_0019fd40();
-
-      fVar8 = param_1[9];
-
-      fVar3 = param_1[10];
-
-      fVar4 = param_1[0xb];
-
-      *pfVar2 = param_1[8];
-
-      pfVar2[1] = fVar8;
-
-      pfVar2[2] = fVar3;
-
-      pfVar2[3] = fVar4;
+      *(RwRGBAReal *)pfVar2 = *(RwRGBAReal *)(param_1 + 8);
 
       pfVar2 = (float *)FUN_0019fd70();
-
-      fVar8 = param_1[0xd];
-
-      fVar3 = param_1[0xe];
-
-      fVar4 = param_1[0xf];
-
-      *pfVar2 = param_1[0xc];
-
-      pfVar2[1] = fVar8;
-
-      pfVar2[2] = fVar3;
-
-      pfVar2[3] = fVar4;
+      *(RwRGBAReal *)pfVar2 = *(RwRGBAReal *)(param_1 + 0xc);
 
       uVar1 = 1;
 
