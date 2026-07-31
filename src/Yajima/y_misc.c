@@ -1,5 +1,9 @@
 #include "Yajima/y_misc.h"
 #include "Yajima/y_runtime.h"
+#if 0
+#include "temporary.h"
+#include "Main/Social/sfl_res.h"
+#endif
 typedef struct YajimaVec2 {
     f32 x;
     f32 y;
@@ -61,6 +65,12 @@ typedef struct RwMatrixTag {
 typedef struct RwCamera RwCamera;
 typedef struct RwFrame RwFrame;
 #endif
+#pragma alias RwCameraBeginUpdate_fcl RwCameraBeginUpdate
+extern RwCamera *RwCameraBeginUpdate_fcl(RwCamera *camera);
+#pragma alias RwCameraEndUpdate_fcl RwCameraEndUpdate
+extern RwCamera *RwCameraEndUpdate_fcl(RwCamera *camera);
+extern u32 mdlCreateFromRmdMemory(u32, u32, u32, u32, u32);
+extern u32 func_0010c3a0(u32, void *, u32);
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;

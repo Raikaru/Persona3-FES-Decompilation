@@ -6583,10 +6583,9 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
       uVar6 = FUN_003c6d80(iVar1);
 
       if ((uVar6 & 5) != 0) {
-
-        return (u8 *)0x0;
-
+        goto done;
       }
+
 
       *(u32 *)(work + 8) = 4;
 
@@ -6850,6 +6849,7 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
 
   }
   }
+done:
   return (u8 *)0x0;
 }
 // FUN_003EDD80
