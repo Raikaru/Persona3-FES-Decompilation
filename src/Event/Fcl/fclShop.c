@@ -6424,7 +6424,6 @@ u64 FUN_003ed5a0(u64 param_1,u64 param_2)
 
 }
 
-#pragma opt_rebuildconditionals off
 // FUN_003ED5E0 NONMATCHING
 
 
@@ -6853,7 +6852,6 @@ u8 * FUN_003ed5e0(u32 param_1,u32 param_2)
   }
   return (u8 *)0x0;
 }
-#pragma opt_rebuildconditionals reset
 // FUN_003EDD80
 
 

@@ -1528,7 +1528,6 @@ long FUN_003f0d60(int param_1,u64 param_2)
   return (s64)var_17;
 }
 
-#pragma opt_loop_invariants on
 // FUN_003F0EC0 NONMATCHING
 
 
@@ -1716,7 +1715,6 @@ u32 FUN_003f0ec0(u16 param_1)
 
 }
 
-#pragma opt_loop_invariants reset
 // FUN_003F10B0
 
 
@@ -14058,8 +14056,6 @@ LAB_00402100:
       unaff_s5_lo = *(u32 *)(iVar8 + 0x24);
       break;
     case 1:
-      unaff_s5_lo = *(u32 *)(iVar8 + 0x1c);
-      break;
     case 2:
       unaff_s5_lo = *(u32 *)(iVar8 + 0x1c);
       break;

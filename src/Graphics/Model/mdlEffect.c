@@ -3972,7 +3972,7 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
   int *piVar5;
 
-  int iVar6;
+  u32 *puVar6;
 
   int iVar7;
 
@@ -3988,9 +3988,9 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
   piVar5 = (int *)*param_1;
 
-  iVar6 = *(int *)(param_2 + 0xc);
+  puVar6 = (u32 *)*(int *)(param_2 + 0xc);
 
-  if ((*(u32 *)(iVar6 + 0x10) & 0x10000000) == 0) {
+  if ((puVar6[4] & 0x10000000) == 0) {
 
     if (*(int *)(param_2 + 8) < 1) {
 
@@ -3998,9 +3998,9 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
       *(u32 *)(param_2 + 4) = uVar9;
 
-      if (*(u32 *)(iVar6 + 0xc) <= uVar9) {
+      if (puVar6[3] <= uVar9) {
 
-        if ((*(u32 *)(iVar6 + 0x10) & 0x10) == 0) {
+        if ((puVar6[4] & 0x10) == 0) {
 
           *(u32 *)(param_2 + 4) = 0;
 
@@ -4010,7 +4010,7 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
           *(u16 *)(param_1 + 5) = 0;
 
-          *(int *)(param_2 + 4) = *(int *)(iVar6 + 0xc) + -1;
+          *(int *)(param_2 + 4) = puVar6[3] + -1;
 
         }
 
@@ -4030,7 +4030,7 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
     psVar8 = (short *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 4) * 0x18);
 
-    if ((*(u32 *)(iVar6 + 0x10) & 1) == 0) {
+    if ((puVar6[4] & 1) == 0) {
 
       fVar10 = -(*(f32*)&sMdlNanBits);
 
@@ -4038,7 +4038,7 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
     else {
 
-      fVar10 = *(float *)(*piVar5 + *(int *)(iVar6 + 4) + *(int *)(param_2 + 4) * 4);
+      fVar10 = *(float *)(*piVar5 + puVar6[1] + *(int *)(param_2 + 4) * 4);
 
     }
 
@@ -4052,9 +4052,9 @@ void FUN_00322ab0(int *param_1,int param_2,float *param_3)
 
     fVar10 = (float)*(int *)(iVar7 + 0x10);
 
-    if ((*(u32 *)(iVar6 + 0x10) & 2) == 0) {
+    if ((puVar6[4] & 2) == 0) {
 
-      if ((*(u32 *)(iVar6 + 0x10) & 4) == 0) {
+      if ((puVar6[4] & 4) == 0) {
 
         *(u16 *)(param_3 + 10) = 1;
 
