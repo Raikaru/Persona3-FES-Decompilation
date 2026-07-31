@@ -5887,8 +5887,10 @@ void FUN_003f7d50(int param_1,int param_2,u32 param_3,int param_4,
 
   sVar1 = *(short *)(iVar5 + 4);
 
-  iVar5 = *(int *)(*(int *)(param_5 + 0x14) + 0xc) -
-          *(int *)(*(int *)(*(int *)(iVar5 + 0x2c) + 0x14) + 0xc);
+  iVar6 = *(int *)(*(int *)(iVar5 + 0x2c) + 0x14);
+  iVar5 = *(int *)(param_5 + 0x14);
+  iVar5 = *(volatile int *)(iVar5 + 0xc) -
+          *(volatile int *)(iVar6 + 0xc);
 
   if ((iVar5 <= sVar1) && (iVar3 = sVar1 - iVar5, 4 < iVar3)) {
 
@@ -11388,11 +11390,13 @@ u8 FUN_003ffa20(u64 param_1,u64 param_2,int param_3)
 
   if (*(short *)(param_3 + 0xe) == 0) {
 
-    sVar1 = *(short *)(param_3 + 10);
+    iVar2 = *(volatile short *)(param_3 + 0xc);
 
-    fVar3 = ((float)(int)sVar1 * 0.5f) / (float)(int)*(short *)(param_3 + 0xc);
+    sVar1 = *(volatile short *)(param_3 + 10);
 
-    iVar2 = 0xff - (sVar1 * 0x100 - (int)sVar1) / (int)*(short *)(param_3 + 0xc);
+    fVar3 = ((float)(int)sVar1 * 0.5f) / (float)(int)iVar2;
+
+    iVar2 = 0xff - (sVar1 * 0x100 - (int)sVar1) / iVar2;
 
   }
 

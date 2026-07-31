@@ -10765,7 +10765,7 @@ void FUN_00329ed0(float *param_1)
 
   
 
-  fVar5 = param_1[10] + *param_1 + param_1[5] + 1.0f;
+  fVar5 = param_1[5] + *param_1 + param_1[10] + 1.0f;
 
   if (1.0f <= fVar5) {
 

@@ -4278,11 +4278,10 @@ void FUN_0031faf0(f32 *param_1,u32 param_2)
 
   fVar2 = (1.0f - param_1[1]) * 255.0f;
 
-  rgba[3] = (u8)(u32)fVar2;
-
   rgba[2] = (u8)uVar1;
   rgba[1] = (u8)((u32)uVar1 >> 8);
   rgba[0] = (u8)((u32)uVar1 >> 0x10);
+  rgba[3] = (u8)(u32)fVar2;
   FUN_001b5ae0(param_2,rgba);
 
   return;
@@ -5251,8 +5250,6 @@ u64 FUN_00320da0(u64 param_1,u64 param_2)
 // FUN_00320DE0 NONMATCHING
 
 
-#pragma push
-#pragma opt_common_subs off
 u32 FUN_00320de0(u32 param_1,u32 *param_2)
 {
   s32 materialCount;
@@ -5297,7 +5294,6 @@ u32 FUN_00320de0(u32 param_1,u32 *param_2)
   }
   return param_1;
 }
-#pragma pop
 
 
 

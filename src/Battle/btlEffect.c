@@ -6480,6 +6480,7 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
   u16 uVar6 = 0;
   u32 uVar7 = 0;
   int iVar8 = 0;
+  int iVar9 = 0;
   
   uVar3 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar7 = 0xffffffff;
@@ -6494,8 +6495,10 @@ u32 func_002c48a0(int param_1,int param_2,u16 *param_3,u16 param_4,u16 param_5)
       cVar2 = *(u8 *)(DAT_007ce3f8 + ((u32)uVar1 * 10 + (u32)uVar1) * 4 + 8);
     }
     if (((param_5 != 0) || (cVar2 == 1)) && ((param_5 != 1 || (cVar2 == 0)))) {
-      iVar4 = func_00303130_s32(uVar1,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-                           *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,0,1);
+      iVar9 = *(volatile u32 *)(param_1 + 0x30);
+      iVar4 = *(volatile u32 *)(param_2 + 0x30);
+      iVar4 = func_00303130_s32(uVar1,*(volatile u32 *)(iVar9 + 0xa2c),
+                           *(u32 *)(iVar4 + 0xa2c),1,1,1,0,1);
       iVar4 = uVar3 + iVar4;
       if ((iVar4 < 1) || (iVar8 < 1)) {
         if ((iVar4 < 1) && ((0 < iVar8 || (iVar8 < iVar4)))) {
@@ -6531,6 +6534,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   u32 uVar7 = 0;
   int iVar8 = 0;
   u16 mode;
+  int iVar9 = 0;
   
   uVar2 = func_002ffd70(*(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
   uVar7 = 0xffffffff;
@@ -6543,8 +6547,10 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
     if ((uVar3 != 0) && (uVar3 < 0x1d0)) {
       cVar1 = *(u8 *)(DAT_007ce3f8 + uVar3 * 0x2c + 8);
       if (((mode != 0) || (cVar1 == 1)) && ((mode != 1 || (cVar1 == 0)))) {
-      iVar4 = func_00303130_s32(uVar3,*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-                           *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c),1,1,1,1,1);
+      iVar9 = *(volatile u32 *)(param_1 + 0x30);
+      iVar4 = *(volatile u32 *)(param_2 + 0x30);
+      iVar4 = func_00303130_s32(uVar3,*(volatile u32 *)(iVar9 + 0xa2c),
+                           *(u32 *)(iVar4 + 0xa2c),1,1,1,1,1);
       iVar4 = uVar2 + iVar4;
       if ((iVar4 < 1) || (iVar8 < 1)) {
         if ((iVar4 < 1) && ((0 < iVar8 || (iVar8 < iVar4)))) {
