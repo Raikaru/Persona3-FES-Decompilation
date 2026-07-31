@@ -156,7 +156,6 @@ float cosf(float x)
     u32 ix;
     s32 n;
     float y[2];
-
     ix = *(u32*)&x;
     ix &= 0x7FFFFFFF;
     if (ix <= 0x3F490FD8)
