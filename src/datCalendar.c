@@ -1163,6 +1163,7 @@ check:
     }
 }
 #pragma pop
+/* Reset the outer loop-invariant state restored by the 17DDF0 push/pop: without this, 185B40 is 1304/1296; with it, 1280/1296. */
 #pragma opt_loop_invariants reset
 
 #pragma opt_lifetimes reset
