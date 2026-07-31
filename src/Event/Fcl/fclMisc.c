@@ -391,6 +391,8 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
 #pragma push
 /* W389 sweep: opt_common_subs off measured nd126/obj328 -> nd95/obj336 (window 336). */
 #pragma opt_common_subs off
+#pragma opt_loop_invariants on
+#pragma opt_propagation off
 // FUN_003C8400 NONMATCHING
 u32 FUN_003c8400(u32 param_1,int param_2)
 {
@@ -440,6 +442,8 @@ LAB_003c84bc:
 #pragma pop
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #undef FUN_003c8550
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 // FUN_003C8550
 
 
